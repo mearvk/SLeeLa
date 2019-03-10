@@ -1,0 +1,97 @@
+instrument nordshrift.instruments.network.
+instrument nordshrift.instruments.ui.
+instrument nordshrift.instrument.app.
+instrument nordshrift.instrument.system.
+instrument nordshrift.instruments.extensions.
+
+::nordshrift:{$}
+
+$ input.language java
+$ output.language java
+
+$ submodule @bodi
+$ submodule @http
+$ submodule @monitors
+$ submodule @factory
+$ submodules signer strict
+$ submodules namings implicit on always
+
+//
+
+$ module chatclient
+
+//
+
+@chatclient submodules list("bodi://$") 
+@chatclient settings   list("bodi://$")
+@chatclient system     list("bodi://$")
+@chatclient bodi       list("bodi://$")
+
+//
+
+@chatclient monitor @instantiation     ref("{bodi}/instantiation")
+@chatclient monitor @name              ref("{bodi}/name")            
+@chatclient monitor @structure         ref("{bodi}/structure")       
+@chatclient monitor @function          ref("{bodi}/function")        
+@chatclient monitor @startup           ref("{bodi}/startup")         
+@chatclient monitor @runtime           ref("{bodi}/runtime")         
+@chatclient monitor @shutdown          ref("{bodi}/shutdown")        
+
+//
+
+@chatclient monitor @instantiation submodule @allocation
+@chatclient monitor @startup submodule @gree extensible
+@chatclient monitor @runtime submodule @gree @extensible
+@chatclient monitor @shutdown submodule @gree @extensible
+
+//
+
+@chatclient loader @bodi @network   ref("")
+@chatclient loader @bodi @ui        ref("")
+@chatclient loader @bodi @app       ref("")
+@chatclient loader @bodi @system    ref("")
+
+//
+
+@chatclient @network name("network")
+: version 1.00
+: package nio
+: socket name("socket") in/out 88
+    : facet name("in") in
+    : facet name("out") out
+
+//
+
+@chatclient @ui
+: version 1.00
+: package swingx, swing, awt
+: facet @jframe
+    : facet @jpanel connect @parent
+        : facet @jbutton connect @parent
+        : facet @jbutton connect @parent
+        : facet @jbutton connect @parent
+        : facet @jtextpane connect @parent
+        : facet @jbutton connect @parent
+    : facet @jpanel connect @parent
+        : facet @jeditorpane connect @parent
+    : facet @jpanel connect @parent
+        : facet @jtextpane connect @parent
+
+//
+
+@chatclient @app
+: version 1.00
+: package appx
+: build cordx
+    : facet orderer
+    : facet integration
+    : facet extender
+
+//
+
+@chatclient @system
+: version 1.00
+: package systemx
+    : facet orderer
+    : facet integrator
+    : facet extender
