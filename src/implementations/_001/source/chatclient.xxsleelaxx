@@ -4,7 +4,7 @@ instrument nordshrift.instrument.app.
 instrument nordshrift.instrument.system.
 instrument nordshrift.instruments.extensions.
 
-::nordshrift:{$}
+::nordshrift:{$}  s
 
 $ input.language java
 $ output.language java
