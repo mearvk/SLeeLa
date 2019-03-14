@@ -6,8 +6,7 @@ instrument sleela.instruments.extensions.
 
 ::nordshrift:{$}
 
-$ input.language java
-$ output.language java
+$ language in/out java
 
 //
 
