@@ -11,37 +11,47 @@ $ output.language java
 
 //
 
-$ submodule     sys("bodi")      version("1")
-$ submodule     sys("http")      version("1")
-$ submodule     sys("monitors")  version("1")
-$ submodule     sys("factory")   version("1")
-$ submodule     sys("io")        version("1")
+$ submodule     system      @bodi               setting("strict")       ref("{auto}")       ver 1.0+        note("")
+$ submodule     system      @connector          setting("strict")       ref("{auto}")       ver 1.0+        note("")
+$ submodule     system      @crypto             setting("strict")       ref("{auto}")       ver 1.0+        note("")
+$ submodule     system      @factory            setting("strict")       ref("{auto}")       ver 1.0+        note("")
+$ submodule     system      @frame              setting("strict")       ref("{auto}")       ver 1.0+        note("")
+$ submodule     system      @http               setting("strict")       ref("{auto}")       ver 1.0+        note("")
+$ submodule     system      @monitors           setting("strict")       ref("{auto}")       ver 1.0+        note("")
+$ submodule     system      @servers            setting("strict")       ref("{auto}")       ver 1.0+        note("")
 
 //
 
-$ submodules signer strict
-$ submodules namings implicit on always
+$ submodules    settings    @compiler           setting("strict")       ref("{auto}")
+$ submodules    settings    @viewers            setting("strict")       ref("{auto}")
+$ submodules    settings    @integrator         setting("strict")       ref("{auto}")
+$ submodules    settings    @signatures         setting("strict")       ref("{auto}")
+$ submodules    settings    @naming             setting("implied")      ref("{auto}")
+$ submodules    settings    @namespaces         setting("implied")      ref("{auto}")
 
 //
 
-$ module @chatserver
+$ module        load        @chatserver         ref("http://nordshrift.examples.chatserver/events/onload")     namespace("nordshrift.examples.chatserver")
 
 //
 
-@chatserver     submodules                      ref("bodi://setup/@submodules")
-@chatserver     settings                        ref("bodi://setup/@settings")
-@chatserver     system                          ref("bodi://setup/@system")
-@chatserver     bodi                            ref("bodi://setup/@bodi")
+@chatserver     settings    @submodules         ref("{auto}")
+@chatserver     settings    @encryption         ref("{auto}")
+@chatserver     settings    @signatures         ref("{auto}")
+@chatserver     settings    @settings           ref("{auto}")
+@chatserver     settings    @system             ref("{auto}")
+@chatserver     settings    @security           ref("{auto}")
+@chatserver     settings    @bodi               ref("{auto}")
 
 //
 
-@chatserver     monitor     @instantiation      ref("bodi://monitors/{autoid}/{autoname}")
-@chatserver     monitor     @name               ref("bodi://monitors/{autoid}/{autoname}")
-@chatserver     monitor     @structure          ref("bodi://monitors/{autoid}/{autoname}")
-@chatserver     monitor     @function           ref("bodi://monitors/{autoid}/{autoname}")
-@chatserver     monitor     @startup            ref("bodi://monitors/{autoid}/{autoname}")
-@chatserver     monitor     @runtime            ref("bodi://monitors/{autoid}/{autoname}")
-@chatserver     monitor     @shutdown           ref("bodi://monitors/{autoid}/{autoname}")
+@chatserver     monitor     @instantiation      ref("{auto}")
+@chatserver     monitor     @name               ref("{auto}")
+@chatserver     monitor     @structure          ref("{auto}")
+@chatserver     monitor     @function           ref("{auto}")
+@chatserver     monitor     @startup            ref("{auto}")
+@chatserver     monitor     @runtime            ref("{auto}")
+@chatserver     monitor     @shutdown           ref("{auto}")
 
 //
 
