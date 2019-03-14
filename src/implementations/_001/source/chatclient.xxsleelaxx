@@ -4,7 +4,7 @@ instrument nordshrift.instrument.app.
 instrument nordshrift.instrument.system.
 instrument nordshrift.instruments.extensions.
 
-::nordshrift:{$}  s
+::nordshrift:{$}
 
 $ input.language java
 $ output.language java
@@ -22,27 +22,27 @@ $ module chatclient
 
 //
 
-@chatclient submodules list("bodi://$") 
-@chatclient settings   list("bodi://$")
-@chatclient system     list("bodi://$")
-@chatclient bodi       list("bodi://$")
+@chatclient     submodules                      list("bodi://$")
+@chatclient     settings                        list("bodi://$")
+@chatclient     system                          list("bodi://$")
+@chatclient     bodi                            list("bodi://$")
 
 //
 
-@chatclient monitor @instantiation     ref("{bodi}/instantiation")
-@chatclient monitor @name              ref("{bodi}/name")            
-@chatclient monitor @structure         ref("{bodi}/structure")       
-@chatclient monitor @function          ref("{bodi}/function")        
-@chatclient monitor @startup           ref("{bodi}/startup")         
-@chatclient monitor @runtime           ref("{bodi}/runtime")         
-@chatclient monitor @shutdown          ref("{bodi}/shutdown")        
+@chatclient     monitor     @instantiation      ref("{bodi}/instantiation")
+@chatclient     monitor     @name               ref("{bodi}/name")
+@chatclient     monitor     @structure          ref("{bodi}/structure")
+@chatclient     monitor     @function           ref("{bodi}/function")
+@chatclient     monitor     @startup            ref("{bodi}/startup")
+@chatclient     monitor     @runtime            ref("{bodi}/runtime")
+@chatclient     monitor     @shutdown           ref("{bodi}/shutdown")
 
 //
 
-@chatclient monitor @instantiation submodule @allocation
-@chatclient monitor @startup submodule @gree extensible
-@chatclient monitor @runtime submodule @gree @extensible
-@chatclient monitor @shutdown submodule @gree @extensible
+@chatclient     monitor     @instantiation      submodule @degree @additive @transitive @extensible
+@chatclient     monitor     @startup            submodule @degree @additive @transitive @extensible
+@chatclient     monitor     @runtime            submodule @degree @additive @transitive @extensible
+@chatclient     monitor     @shutdown           submodule @degree @additive @transitive @extensible
 
 //
 

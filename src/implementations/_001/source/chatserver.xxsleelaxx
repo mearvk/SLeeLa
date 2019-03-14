@@ -1,0 +1,115 @@
+instrument sleela.instruments.network.
+instrument sleela.instruments.ui.
+instrument sleela.instrument.app.
+instrument sleela.instrument.system.
+instrument sleela.instruments.extensions.
+
+::nordshrift:{$}
+
+$ input.language java
+$ output.language java
+
+//
+
+$ submodule     sys("bodi")      version("1")
+$ submodule     sys("http")      version("1")
+$ submodule     sys("monitors")  version("1")
+$ submodule     sys("factory")   version("1")
+$ submodule     sys("io")        version("1")
+
+//
+
+$ submodules signer strict
+$ submodules namings implicit on always
+
+//
+
+$ module @chatserver
+
+//
+
+@chatserver     submodules                      ref("bodi://setup/@submodules")
+@chatserver     settings                        ref("bodi://setup/@settings")
+@chatserver     system                          ref("bodi://setup/@system")
+@chatserver     bodi                            ref("bodi://setup/@bodi")
+
+//
+
+@chatserver     monitor     @instantiation      ref("bodi://monitors/{autoid}/{autoname}")
+@chatserver     monitor     @name               ref("bodi://monitors/{autoid}/{autoname}")
+@chatserver     monitor     @structure          ref("bodi://monitors/{autoid}/{autoname}")
+@chatserver     monitor     @function           ref("bodi://monitors/{autoid}/{autoname}")
+@chatserver     monitor     @startup            ref("bodi://monitors/{autoid}/{autoname}")
+@chatserver     monitor     @runtime            ref("bodi://monitors/{autoid}/{autoname}")
+@chatserver     monitor     @shutdown           ref("bodi://monitors/{autoid}/{autoname}")
+
+//
+
+@chatserver     monitor     @instantiation      submodule @degree @additive @transitive @extensible
+@chatserver     monitor     @startup            submodule @degree @additive @transitive @extensible
+@chatserver     monitor     @runtime            submodule @degree @additive @transitive @extensible
+@chatserver     monitor     @shutdown           submodule @degree @additive @transitive @extensible
+
+//
+
+@chatserver     loader      @network            ref("bodi://network/{auto}/chatserver")
+@chatserver     loader      @ui                 ref("bodi://network/{auto}/ui")
+@chatserver     loader      @app                ref("bodi://network/{auto}/app")
+@chatserver     loader      @system             ref("bodi://network/{auto}/system")
+
+//
+
+@chatserver @network name("network")
+: version 1.00
+: package netx
+: socket name("socket") in/out 88
+    : facet display yes
+    : facet in
+    : facet out
+
+//
+
+@chatserver @stream name("log")
+: version 1.00
+: package logx
+: writer name("log")
+    : facet     outfile("log.txt", synchronous)
+    : facet     database("log", 3306)
+    : facet     bodi("{auto}", 8888)
+
+//
+
+@chatserver @stream name("status")
+: version 1.00
+: package logx
+: writer name("status")
+    : facet     names "ME I LIKE ME" "ME I LIKE ME""
+    : facet     outfile("status.txt", synchronous)
+    : facet     database("status", 3306)
+    : facet     bodi("{auto}", 8888)
+
+//
+
+@chatserver @ui
+: version 1.00
+: package swingx
+    : facet @headless
+
+//
+
+@chatserver @app
+: version 1.00
+: package appx
+: build cordx
+    : facet orderer
+    : facet integration
+    : facet extender
+
+//
+
+@chatserver @system
+: version 1.00
+: package systemx
+    : facet orderer
+    : facet integrator
+    : facet extender
