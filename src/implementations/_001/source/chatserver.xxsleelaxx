@@ -74,7 +74,7 @@ $ module        load        @chatserver         ref("http://nordshrift.examples.
 : package netx
 : socket name("socket") in/out 88
 
-    : root      auto            name("@network/$")          build
+    : root      auto            name("@network/@root")      build
 
     : facet     display         ref("@ui/serverbar")
     : facet     persistence     file("socket.txt")          SYNCHRONOUS
@@ -89,7 +89,7 @@ $ module        load        @chatserver         ref("http://nordshrift.examples.
 : package logx
 : writer name("log")
 
-    : root      auto            name("@log/$")              build
+    : root      auto            name("@log/@root")          build
 
     : facet     display         ref("@ui/serverbar")
     : facet     persistence     file("log.txt")             SYNCHRONOUS
@@ -104,7 +104,7 @@ $ module        load        @chatserver         ref("http://nordshrift.examples.
 : package logx
 : writer name("status")
 
-    : root      auto            name("@status/$")           build
+    : root      auto            name("@status/@root")       build
 
     : facet     display         ref("@ui/serverbar")
     : facet     persistence     file("status.txt")          SYNCHRONOUS
@@ -120,7 +120,7 @@ $ module        load        @chatserver         ref("http://nordshrift.examples.
 : package munction
 : build
 
-    : root      auto            name("@ui/$")               build
+    : root      auto            name("@ui/@root")           build
 
     : facet     struct          @serverbar                  name("{auto},serverbar")
 
@@ -133,7 +133,7 @@ $ module        load        @chatserver         ref("http://nordshrift.examples.
 : package munction
 : build
 
-    : root      auto            name("@app/$")              build
+    : root      auto            name("@app/@root")          build
 
     : facet     @ui             name("ui")                  existing
     : facet     @network        name("network")             existing
@@ -156,7 +156,7 @@ $ module        load        @chatserver         ref("http://nordshrift.examples.
 : version 1.00
 : package systemx
 
-    : root      auto            name("@system/$")           build
+    : root      auto            name("@system/@root")       build
 
     : facet     struct          @orderer                    options("QUEUE")
     : facet     struct          @integrator                 options("SYSTEM_ALL")
