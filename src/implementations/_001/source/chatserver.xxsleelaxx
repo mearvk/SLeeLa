@@ -30,7 +30,7 @@ $ submodules    settings    @namespaces         setting("implied")      ref("{au
 
 //
 
-$ module        load        @chatserver         ref("http://nordshrift.examples.chatserver/events/onload")     namespace("nordshrift.examples.chatserver")
+$ module        load        @chatserver         ref("http://nordshrift.examples.chatserver/events/onload")     namespace("nordshrift.examples.chatserver")      name("@chatserver","@chatserver/@root")
 
 //
 
