@@ -68,68 +68,72 @@ $ module        load        @chatserver         ref("http://nordshrift.examples.
 
 //
 
-@chatserver     @network        name("network")
+@chatserver     @network        name("{auto},network")
 
 : version 1.00
 : package netx
 : socket name("socket") in/out 88
-    : facet display yes
-    : facet in
-    : facet out
+
+    : root      auto            name("@network/$")          build
+
+    : facet     display         ref("@ui/serverbar")
+    : facet     persistence     file("socket.txt")          SYNCHRONOUS
+    : facet     persistence     table("{auto}/socket")      {DEFAULT_MYSQL_PORT}
+    : facet     persistence     bodi("{auto}/socket")       {DEFAULT_BODI_PORT}
 
 //
 
-@chatserver     @datastream     name("{auto}:log")
+@chatserver     @datastream     name("{auto},log")
 
 : version 1.00
 : package logx
 : writer name("log")
 
-    : root      auto            name("@log/root")           build
+    : root      auto            name("@log/$")              build
 
     : facet     display         ref("@ui/serverbar")
     : facet     persistence     file("log.txt")             SYNCHRONOUS
     : facet     persistence     table("{auto}/log")         {DEFAULT_MYSQL_PORT}
-    : facet     persistence     bodi("{auto}")              {DEFAULT_BODI_PORT}
+    : facet     persistence     bodi("{auto}/log")          {DEFAULT_BODI_PORT}
 
 //
 
-@chatserver     @datastream     name("{auto}:status")
+@chatserver     @datastream     name("{auto},status")
 
 : version 1.00
 : package logx
 : writer name("status")
 
-    : root      auto            name("@status/root")        build
+    : root      auto            name("@status/$")           build
 
     : facet     display         ref("@ui/serverbar")
     : facet     persistence     file("status.txt")          SYNCHRONOUS
     : facet     persistence     table("{auto}/status")      {DEFAULT_MYSQL_PORT}
-    : facet     persistence     bodi("{auto}")              {DEFAULT_BODI_PORT}
+    : facet     persistence     bodi("{auto}/status")       {DEFAULT_BODI_PORT}
 
 //
 
-@chatserver     @ui             name("{auto}:ui")
+@chatserver     @ui             name("{auto},ui")
 
 : version 1.00
 : package swingx
 : package munction
 : build
 
-    : root      auto            name("@ui/root")            build
+    : root      auto            name("@ui/$")               build
 
-    : facet     struct          @serverbar                  name("{auto}:serverbar")
+    : facet     struct          @serverbar                  name("{auto},serverbar")
 
 //
 
-@chatserver     @app            name("{auto}:app")
+@chatserver     @app            name("{auto},app")
 
 : version 1.00
 : package appx
 : package munction
 : build
 
-    : root      auto            name("@app/root")           build
+    : root      auto            name("@app/$")              build
 
     : facet     @ui             name("ui")                  existing
     : facet     @network        name("network")             existing
@@ -148,11 +152,11 @@ $ module        load        @chatserver         ref("http://nordshrift.examples.
 
 //
 
-@chatserver     @system         name("system")
+@chatserver     @system         name("@system,system")
 : version 1.00
 : package systemx
 
-    : root      auto            name("@system/root")        build
+    : root      auto            name("@system/$")           build
 
     : facet     struct          @orderer                    options("QUEUE")
     : facet     struct          @integrator                 options("SYSTEM_ALL")
