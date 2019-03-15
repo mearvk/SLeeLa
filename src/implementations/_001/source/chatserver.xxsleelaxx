@@ -79,67 +79,86 @@ $ module        load        @chatserver         ref("http://nordshrift.examples.
 
 //
 
-@chatserver     @datastream     name("log")
+@chatserver     @datastream     name("{auto}:log")
 
 : version 1.00
 : package logx
 : writer name("log")
-    : facet display yes
-    : facet     outfile("log.txt", synchronous)
-    : facet     database("{auto}/log", 3306)
-    : facet     bodi("{auto}", 8888)
+
+    : root      auto            name("@log/root")           build
+
+    : facet     display         ref("@ui/serverbar")
+    : facet     persistence     file("log.txt")             SYNCHRONOUS
+    : facet     persistence     table("{auto}/log")         {DEFAULT_MYSQL_PORT}
+    : facet     persistence     bodi("{auto}")              {DEFAULT_BODI_PORT}
 
 //
 
-@chatserver     @datastream     name("status")
+@chatserver     @datastream     name("{auto}:status")
 
 : version 1.00
 : package logx
 : writer name("status")
-    : facet display yes
-    : facet     outfile("status.txt", synchronous)
-    : facet     database("{auto}/status", 3306)
-    : facet     bodi("{auto}", 8888)
+
+    : root      auto            name("@status/root")        build
+
+    : facet     display         ref("@ui/serverbar")
+    : facet     persistence     file("status.txt")          SYNCHRONOUS
+    : facet     persistence     table("{auto}/status")      {DEFAULT_MYSQL_PORT}
+    : facet     persistence     bodi("{auto}")              {DEFAULT_BODI_PORT}
 
 //
 
-@chatserver     @ui             name("ui")
+@chatserver     @ui             name("{auto}:ui")
 
 : version 1.00
 : package swingx
 : package munction
 : build
-    : facet @headless
+
+    : root      auto            name("@ui/root")            build
+
+    : facet     struct          @serverbar                  name("{auto}:serverbar")
 
 //
 
-@chatserver     @app            name("app")
+@chatserver     @app            name("{auto}:app")
 
 : version 1.00
 : package appx
 : package munction
 : build
 
-    : root
-    : facet     @ui             name("ui")          existing
-    : facet     @network        name("network")     existing
-    : facet     @system         name("system")      existing
-    : facet     @datastream     name("log")         existing
-    : facet     @datastream     name("status")      existing
+    : root      auto            name("@app/root")           build
 
-    : facet     struct          @orderer            options("QUEUE")
-    : facet     struct          @integrator         options("SYSTEM_ALL")
-    : facet     struct          @password           options("MANDATORY")
+    : facet     @ui             name("ui")                  existing
+    : facet     @network        name("network")             existing
+    : facet     @system         name("system")              existing
+    : facet     @datastream     name("log")                 existing
+    : facet     @datastream     name("status")              existing
 
-    : require   monitor         @socket             options("LOG_ALL")
-    : require   monitor         @onconnect          options("IP_ADDRESS, TIME")
-    : require   monitor         @ondisconnect       options("IP_ADDRESS, TIME")
+    : facet     struct          @orderer                    options("QUEUE")
+    : facet     struct          @integrator                 options("SYSTEM_ALL")
+    : facet     struct          @password                   options("MANDATORY")
+    : facet     struct          @extender                   options("")
+
+    : require   monitor         @socket                     options("LOG_ALL")
+    : require   monitor         @onconnect                  options("IP_ADDRESS, TIME")
+    : require   monitor         @ondisconnect               options("IP_ADDRESS, TIME")
 
 //
 
 @chatserver     @system         name("system")
 : version 1.00
 : package systemx
-    : facet orderer
-    : facet integrator
-    : facet extender
+
+    : root      auto            name("@system/root")        build
+
+    : facet     struct          @orderer                    options("QUEUE")
+    : facet     struct          @integrator                 options("SYSTEM_ALL")
+    : facet     struct          @password                   options("MANDATORY")
+    : facet     struct          @extender                   options("")
+
+    : require   monitor         @socket                     options("LOG_ALL")
+    : require   monitor         @onconnect                  options("IP_ADDRESS, TIME")
+    : require   monitor         @ondisconnect               options("IP_ADDRESS, TIME")
