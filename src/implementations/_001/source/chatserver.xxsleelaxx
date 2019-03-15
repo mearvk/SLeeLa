@@ -78,7 +78,7 @@ $ module        load        @chatserver         ref("http://nordshrift.examples.
 
 //
 
-@chatserver @stream name("log")
+@chatserver @datastream name("log")
 : version 1.00
 : package logx
 : writer name("log")
@@ -88,35 +88,50 @@ $ module        load        @chatserver         ref("http://nordshrift.examples.
 
 //
 
-@chatserver @stream name("status")
+@chatserver @datastream name("status")
 : version 1.00
 : package logx
 : writer name("status")
-    : facet     names "ME I LIKE ME" "ME I LIKE ME""
+    : facet     names ""
     : facet     outfile("status.txt", synchronous)
     : facet     database("status", 3306)
     : facet     bodi("{auto}", 8888)
 
 //
 
-@chatserver @ui
+@chatserver @ui name("")
 : version 1.00
 : package swingx
+: package munction
+: build
     : facet @headless
 
 //
 
-@chatserver @app
+@chatserver @app name("")
 : version 1.00
 : package appx
-: build cordx
-    : facet orderer
-    : facet integration
-    : facet extender
+: package munction
+: build
+
+    : facet root
+        : facet @ui             name("ui")          existing
+        : facet @network        name("network")     existing
+        : facet @system         name("system")      existing
+        : facet @datastream     name("log")         existing
+        : facet @datastream     name("status")      existing
+
+    : facet     struct          @orderer            options("QUEUE")
+    : facet     struct          @integrator         options("SYSTEM_ALL")
+    : facet     struct          @password           options("MANDATORY")
+
+    : require   monitor         @socket             options("LOG_ALL")
+    : require   monitor         @onconnect          options("IP_ADDRESS, TIME")
+    : require   monitor         @ondisconnect       options("IP_ADDRESS, TIME")
 
 //
 
-@chatserver @system
+@chatserver @system name("")
 : version 1.00
 : package systemx
     : facet orderer
