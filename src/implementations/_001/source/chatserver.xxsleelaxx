@@ -143,12 +143,13 @@ $ module        load        @chatserver         ref("http://nordshrift.examples.
 
     : facet     struct          @orderer                    options("QUEUE")
     : facet     struct          @integrator                 options("SYSTEM_ALL")
+    : facet     struct          @extender                   options("SYSTEM_ALL")
     : facet     struct          @password                   options("MANDATORY")
-    : facet     struct          @extender                   options("")
 
     : require   monitor         @socket                     options("LOG_ALL")
     : require   monitor         @onconnect                  options("IP_ADDRESS, TIME")
     : require   monitor         @ondisconnect               options("IP_ADDRESS, TIME")
+    : require   monitor         @systemextension            options("ADD, REMOVE, ALTER")
 
 //
 
@@ -160,9 +161,10 @@ $ module        load        @chatserver         ref("http://nordshrift.examples.
 
     : facet     struct          @orderer                    options("QUEUE")
     : facet     struct          @integrator                 options("SYSTEM_ALL")
+    : facet     struct          @extender                   options("SYSTEM_ALL")
     : facet     struct          @password                   options("MANDATORY")
-    : facet     struct          @extender                   options("")
 
     : require   monitor         @socket                     options("LOG_ALL")
     : require   monitor         @onconnect                  options("IP_ADDRESS, TIME")
     : require   monitor         @ondisconnect               options("IP_ADDRESS, TIME")
+    : require   monitor         @systemextension            options("ADD, REMOVE, ALTER")
