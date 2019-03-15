@@ -70,9 +70,10 @@ $ module        load        @chatserver         ref("http://nordshrift.examples.
 
 @chatserver     @network        name("{auto},network")
 
-: version 1.00
-: package netx
-: socket name("socket") in/out 88
+: version       1.0+
+: package       netx
+: package       munction
+: socket        name("socket")  in/out                      88
 
     : root      auto            name("@network/@root")      build
 
@@ -85,9 +86,10 @@ $ module        load        @chatserver         ref("http://nordshrift.examples.
 
 @chatserver     @datastream     name("{auto},log")
 
-: version 1.00
-: package logx
-: writer name("log")
+: version       1.0+
+: package       logx
+: package       munction
+: writer        name("log")
 
     : root      auto            name("@log/@root")          build
 
@@ -100,9 +102,10 @@ $ module        load        @chatserver         ref("http://nordshrift.examples.
 
 @chatserver     @datastream     name("{auto},status")
 
-: version 1.00
-: package logx
-: writer name("status")
+: version       1.0+
+: package       logx
+: package       munction
+: writer        name("status")
 
     : root      auto            name("@status/@root")       build
 
@@ -115,9 +118,9 @@ $ module        load        @chatserver         ref("http://nordshrift.examples.
 
 @chatserver     @ui             name("{auto},ui")
 
-: version 1.00
-: package swingx
-: package munction
+: version       1.0+
+: package       swingx
+: package       munction
 : build
 
     : root      auto            name("@ui/@root")           build
@@ -128,9 +131,9 @@ $ module        load        @chatserver         ref("http://nordshrift.examples.
 
 @chatserver     @app            name("{auto},app")
 
-: version 1.00
-: package appx
-: package munction
+: version       1.0+
+: package       appx
+: package       munction
 : build
 
     : root      auto            name("@app/@root")          build
