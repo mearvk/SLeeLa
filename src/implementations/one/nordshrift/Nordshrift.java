@@ -1,26 +1,18 @@
 package implementations.one.nordshrift;
 
+import implementations.one.parsers.NordshriftExtent;
+import implementations.one.parsers.NordshriftParser;
 import implementations.one.system.System;
 
-public class Nordshrift
+public class Nordshrift extends NordshriftSystem
 {
-    protected static Nordshrift prototype = new Nordshrift();
+    public String name = "$";
 
     //
 
-    protected NordshriftExtender function;
+    public Nordshrift nordshrift = this;
 
-    protected NordshriftExtender factor;
-
-    protected NordshriftExtender parser;
-
-    protected NordshriftExtender loader;
-
-    //
-
-    protected Nordshrift nordshrift = Nordshrift.prototype;
-
-    protected Nordshrift reference = Nordshrift.prototype;
+    public Nordshrift reference = this;
 
     //
 
@@ -31,25 +23,19 @@ public class Nordshrift
 
     //
 
-    private Nordshrift(Fantasy param)
-    {
-        System.list(this);
-    }
-
     public Nordshrift()
     {
         System.list(this);
     }
-
-    private class Fantasy {}
 }
 
-class NordshriftExtent extends Nordshrift
+class NordshriftSystem
 {
+    public NordshriftExtender functionary   = new NordshriftFunctionary();
 
-}
+    public NordshriftExtender factory       = new NordshriftFactory();
 
-class NordshriftAtom extends Nordshrift
-{
+    public NordshriftExtender parser        = new NordshriftParser();
 
+    public NordshriftExtender loader        = new NordshriftLoader();
 }

@@ -1,6 +1,8 @@
 package implementations.one.nordshrift;
 
-public class NordshriftExtender
+import implementations.one.parsers.NordshriftExtent;
+
+public class NordshriftExtender extends NordshriftExtent
 {
 
 }
