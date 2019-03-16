@@ -30,11 +30,18 @@ public class Nordshrift extends NordshriftSystem
 
 class NordshriftSystem
 {
-    public NordshriftExtender extender001 = new NordshriftExtender("nordshrift.extenders.Functional");
+    public NordshriftExtender extender001 = new NordshriftExtender("extenders.Functional");
 
-    public NordshriftExtender extender002 = new NordshriftExtender("nordshrift.extenders.Factorial");
+    public NordshriftExtender extender002 = new NordshriftExtender("extenders.Factorial");
 
-    public NordshriftExtender extender003 = new NordshriftExtender("nordshrift.extenders.Loader");
+    public NordshriftExtender extender003 = new NordshriftExtender("extenders.Loader");
 
-    public NordshriftExtender extender004 = new NordshriftExtender("nordshrift.extenders.Starter");
+    public NordshriftExtender extender004 = new NordshriftExtender("extenders.Starter");
+
+    //
+
+    public void init()
+    {
+
+    }
 }
