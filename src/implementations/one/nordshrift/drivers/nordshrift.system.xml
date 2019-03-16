@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<document>
+
+    <container mode="1" purpose="startup">
+
+        <guard>
+
+            <container class="nordshrift.NordshriftSystem">
+
+                <inferrer class="nordshrift.NordshriftExtenderInferrer">
+
+                    <extender id="1">nordshrift.NordshriftStartup</extender>
+
+                    <extender id="2">nordshrift.NordshriftLoader</extender>
+
+                    <extender id="3">nordshrift.NordshriftFunctional</extender>
+
+                    <extender id="4">nordshrift.NordshriftFactorial</extender>
+
+                </inferrer>
+
+            </container>
+
+        </guard>
+
+    </container>
+
+    <container mode="2" purpose="runtime">
+
+    </container>
+
+    <container mode="3" purpose="shutdown">
+
+    </container>
+
+</document>

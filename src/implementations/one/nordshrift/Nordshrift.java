@@ -19,10 +19,8 @@ public class Nordshrift extends NordshriftSystem
         System.list(Nordshrift.class);
     }
 
-    //
-
     public Nordshrift()
     {
-        System.list(this);
+        System.list(this.getClass().getCanonicalName());
     }
 }

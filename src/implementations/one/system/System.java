@@ -2,13 +2,16 @@ package implementations.one.system;
 
 public class System
 {
+    private static boolean include_static = false;
+
     public static void list(Class klass)
     {
-        java.lang.System.out.println(klass);
+        if(include_static)
+            java.lang.System.out.println("[static] "+klass);
     }
 
     public static void list(Object object)
     {
-        java.lang.System.out.println(object);
+        java.lang.System.out.println("[instance] "+object);
     }
 }

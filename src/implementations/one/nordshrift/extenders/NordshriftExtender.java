@@ -7,6 +7,15 @@ public class NordshriftExtender extends NordshriftExtent
 {
     public NordshriftExtender extender;
 
+    public NordshriftSystem system;
+
+    //
+
+    public NordshriftExtender(NordshriftSystem system)
+    {
+        this.system = system;
+    }
+
     public NordshriftExtender(String type)
     {
         try
