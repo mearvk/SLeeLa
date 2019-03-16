@@ -4,7 +4,7 @@ public class NordshriftMonitor
 {
     public Thread thread;
 
-    public NordshriftMonitor(String type)
+    public NordshriftMonitor(NordshriftSystem system, String type)
     {
 
     }

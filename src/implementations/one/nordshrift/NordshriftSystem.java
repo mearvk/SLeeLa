@@ -1,37 +1,38 @@
 package implementations.one.nordshrift;
 
-import implementations.one.bodi.BodiAnnotation;
-import implementations.one.cord.Cord;
+import implementations.one.bodi.Bodi;
 import implementations.one.nordshrift.extenders.NordshriftExtender;
 
 public class NordshriftSystem
 {
-    public NordshriftExtender extender001 = new NordshriftExtender(this, "functional");
+    @NordshriftAnnotation(id=1)
+    public NordshriftExtender extender001 = new NordshriftExtender(this, "{}"); //
 
-    public NordshriftExtender extender002 = new NordshriftExtender(this, "factorial");
+    @NordshriftAnnotation(id=2)
+    public NordshriftExtender extender002 = new NordshriftExtender(this, "{}"); //
 
-    public NordshriftExtender extender003 = new NordshriftExtender(this, "loader");
+    @NordshriftAnnotation(id=3)
+    public NordshriftExtender extender003 = new NordshriftExtender(this, "{}"); //
 
-    public NordshriftExtender extender004 = new NordshriftExtender(this, "starter");
-
-    //
-
-    public NordshriftMonitor monitor001 = new NordshriftMonitor("startup");
-
-    public NordshriftMonitor monitor002 = new NordshriftMonitor("runtime");
-
-    public NordshriftMonitor monitor003 = new NordshriftMonitor("shutdown");
+    @NordshriftAnnotation(id=4)
+    public NordshriftExtender extender004 = new NordshriftExtender(this, "{}"); //
 
     //
 
-    @BodiAnnotation(requirement = "nordshrift.deferred.NordshriftSystemSequence")
+    @NordshriftAnnotation(id=1)
+    public NordshriftMonitor monitor001 = new NordshriftMonitor(this,"{}");     //
+
+    @NordshriftAnnotation(id=2)
+    public NordshriftMonitor monitor002 = new NordshriftMonitor(this, "{}");    //
+
+    @NordshriftAnnotation(id=3)
+    public NordshriftMonitor monitor003 = new NordshriftMonitor(this, "{}");    //
+
+    //
+
+    @NordshriftAnnotation(ref="::")
     public NordshriftSystem()
     {
-        Cord
-                .reference
-                .cord("{bodi}", "{nordshrift.NordshriftStarter}", "{start}")
-                .cord("{bodi}", "{nordshrift.NordshriftLoader}", "{load}")
-                .pack("{bodi}", "{nordshrift.NordshriftContext}", "{context}")
-                .defer();
+        Bodi.run("Nordshrift", "::", "fill");                   //
     }
 }

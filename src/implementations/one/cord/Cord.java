@@ -6,16 +6,29 @@ public class Cord
 {
     public static Cord reference;
 
-    public Cord pack(String protocol, String classname, String methodname)
+    //
+
+    public Cord cold = new CordExtender(this);
+
+    public Cord hot = new CordExtender(this);
+
+    //
+
+    public Cord pack()
     {
-        ExecutionContext context = new ExecutionContext();
+        return this;
+    }
+
+    public Cord push(String protocol, String classname, String methodname)
+    {
+        Bodi.run(protocol, classname, methodname);
 
         return this;
     }
 
-    public Cord cord(String protocol, String classname, String methodname)
+    public Cord push(String classname, String methodname)
     {
-        Bodi.run(protocol, classname, methodname);
+        Bodi.run("{bodi}", classname, methodname);
 
         return this;
     }
@@ -28,5 +41,13 @@ public class Cord
     public Cord defer()
     {
         return this;
+    }
+}
+
+class CordExtender extends Cord
+{
+    public CordExtender(Cord cord)
+    {
+
     }
 }
