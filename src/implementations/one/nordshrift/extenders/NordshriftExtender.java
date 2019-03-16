@@ -7,6 +7,8 @@ public class NordshriftExtender extends NordshriftExtent
 {
     public NordshriftExtender extender;
 
+    public String type;
+
     public NordshriftSystem system;
 
     //

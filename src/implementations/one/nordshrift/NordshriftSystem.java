@@ -35,4 +35,10 @@ public class NordshriftSystem
     {
         Bodi.run("Nordshrift", "::", "fill");                   //
     }
+
+    @NordshriftAnnotation
+    public void load(String file)
+    {
+
+    }
 }

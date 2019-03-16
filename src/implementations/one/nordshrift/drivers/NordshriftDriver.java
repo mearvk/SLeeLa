@@ -34,11 +34,29 @@ public class NordshriftDriver
 
             //
 
+            nordshrift.extender001.type = nordshrift.extender001.extender.getClass().getSimpleName();
+
+            nordshrift.extender002.type = nordshrift.extender002.extender.getClass().getSimpleName();
+
+            nordshrift.extender003.type = nordshrift.extender003.extender.getClass().getSimpleName();
+
+            nordshrift.extender004.type = nordshrift.extender004.extender.getClass().getSimpleName();
+
+            //
+
             nordshrift.monitor001.thread = (NordshriftSystemStartupMonitor)Class.forName("implementations.one.nordshrift.monitors.NordshriftSystemStartupMonitor").newInstance();
 
             nordshrift.monitor002.thread = (NordshriftSystemRuntimeMonitor)Class.forName("implementations.one.nordshrift.monitors.NordshriftSystemRuntimeMonitor").newInstance();
 
             nordshrift.monitor003.thread = (NordshriftSystemShutdownMonitor)Class.forName("implementations.one.nordshrift.monitors.NordshriftSystemShutdownMonitor").newInstance();
+
+            //
+
+            nordshrift.monitor001.type = nordshrift.monitor001.thread.getClass().getSimpleName();
+
+            nordshrift.monitor002.type = nordshrift.monitor002.thread.getClass().getSimpleName();
+
+            nordshrift.monitor003.type = nordshrift.monitor003.thread.getClass().getSimpleName();
         }
         catch (Exception exception)
         {
