@@ -1,4 +1,6 @@
 package implementations.one.drivers;
 
-public class NordshriftDriver {
+public class NordshriftDriver
+{
+
 }

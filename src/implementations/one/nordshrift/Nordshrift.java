@@ -4,7 +4,7 @@ import implementations.one.system.System;
 
 public class Nordshrift
 {
-    static NordshriftExtender starter;
+    protected static Nordshrift prototype = new Nordshrift();
 
     //
 
@@ -18,9 +18,9 @@ public class Nordshrift
 
     //
 
-    protected Nordshrift nordshrift = new Nordshrift();
+    protected Nordshrift nordshrift = Nordshrift.prototype;
 
-    protected Nordshrift reference = new Nordshrift();
+    protected Nordshrift reference = Nordshrift.prototype;
 
     //
 
@@ -31,8 +31,25 @@ public class Nordshrift
 
     //
 
+    private Nordshrift(Fantasy param)
+    {
+        System.list(this);
+    }
+
     public Nordshrift()
     {
         System.list(this);
     }
+
+    private class Fantasy {}
+}
+
+class NordshriftExtent extends Nordshrift
+{
+
+}
+
+class NordshriftAtom extends Nordshrift
+{
+
 }
