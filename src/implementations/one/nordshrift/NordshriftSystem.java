@@ -1,6 +1,7 @@
 package implementations.one.nordshrift;
 
-import implementations.one.bodi.Bodi;
+import implementations.one.bodi.BodiAnnotation;
+import implementations.one.cord.Cord;
 import implementations.one.nordshrift.extenders.NordshriftExtender;
 
 public class NordshriftSystem
@@ -23,8 +24,14 @@ public class NordshriftSystem
 
     //
 
+    @BodiAnnotation(requirement = "nordshrift.deferred.NordshriftSystemSequence")
     public NordshriftSystem()
     {
-        Bodi.run("{bodi}", "{nordshriftloader}", "{load}");
+        Cord
+                .reference
+                .cord("{bodi}", "{nordshrift.NordshriftStarter}", "{start}")
+                .cord("{bodi}", "{nordshrift.NordshriftLoader}", "{load}")
+                .pack("{bodi}", "{nordshrift.NordshriftContext}", "{context}")
+                .run();
     }
 }

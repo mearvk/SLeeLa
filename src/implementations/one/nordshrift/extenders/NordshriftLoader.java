@@ -4,7 +4,7 @@ import implementations.one.bodi.BodiAnnotation;
 
 public class NordshriftLoader extends NordshriftExtender
 {
-    @BodiAnnotation(ref="bodi://nordshrift/nordshrift.NordshriftLoader load")
+    @BodiAnnotation(protocol="{bodi}", classname = "{nordshrift.NordshriftLoader}", methodname = "{load}")
     public void load()
     {
 
