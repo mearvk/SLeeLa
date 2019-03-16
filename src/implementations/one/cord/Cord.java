@@ -24,4 +24,9 @@ public class Cord
     {
         return this;
     }
+
+    public Cord defer()
+    {
+        return this;
+    }
 }

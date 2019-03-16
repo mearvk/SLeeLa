@@ -32,6 +32,6 @@ public class NordshriftSystem
                 .cord("{bodi}", "{nordshrift.NordshriftStarter}", "{start}")
                 .cord("{bodi}", "{nordshrift.NordshriftLoader}", "{load}")
                 .pack("{bodi}", "{nordshrift.NordshriftContext}", "{context}")
-                .run();
+                .defer();
     }
 }
