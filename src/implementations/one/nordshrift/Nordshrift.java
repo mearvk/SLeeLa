@@ -1,7 +1,6 @@
 package implementations.one.nordshrift;
 
-import implementations.one.parsers.NordshriftExtent;
-import implementations.one.parsers.NordshriftParser;
+import implementations.one.nordshrift.extenders.NordshriftExtender;
 import implementations.one.system.System;
 
 public class Nordshrift extends NordshriftSystem
@@ -31,11 +30,11 @@ public class Nordshrift extends NordshriftSystem
 
 class NordshriftSystem
 {
-    public NordshriftExtender functionary   = new NordshriftFunctionary();
+    public NordshriftExtender extender001 = new NordshriftExtender("nordshrift.extenders.Functional");
 
-    public NordshriftExtender factory       = new NordshriftFactory();
+    public NordshriftExtender extender002 = new NordshriftExtender("nordshrift.extenders.Factorial");
 
-    public NordshriftExtender parser        = new NordshriftParser();
+    public NordshriftExtender extender003 = new NordshriftExtender("nordshrift.extenders.Loader");
 
-    public NordshriftExtender loader        = new NordshriftLoader();
+    public NordshriftExtender extender004 = new NordshriftExtender("nordshrift.extenders.Starter");
 }

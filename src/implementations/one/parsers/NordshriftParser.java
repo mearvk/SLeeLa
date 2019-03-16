@@ -1,6 +1,6 @@
 package implementations.one.parsers;
 
-import implementations.one.nordshrift.NordshriftExtender;
+import implementations.one.nordshrift.extenders.NordshriftExtender;
 
 import java.io.File;
 

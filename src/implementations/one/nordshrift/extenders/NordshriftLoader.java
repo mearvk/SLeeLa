@@ -1,4 +1,4 @@
-package implementations.one.nordshrift;
+package implementations.one.nordshrift.extenders;
 
 public class NordshriftLoader extends NordshriftExtender{
 }
