@@ -1,14 +1,20 @@
 package implementations.one.nordshrift;
 
+import implementations.one.system.System;
+
 public class Nordshrift
 {
-    protected NordshriftExtender functional;
+    static NordshriftExtender starter;
 
-    protected NordshriftExtender factorial;
+    //
 
-    protected NordshriftExtender parsorial;
+    protected NordshriftExtender function;
 
-    protected NordshriftExtender loadorial;
+    protected NordshriftExtender factor;
+
+    protected NordshriftExtender parser;
+
+    protected NordshriftExtender loader;
 
     //
 
@@ -20,17 +26,13 @@ public class Nordshrift
 
     static
     {
-
+        System.list(Nordshrift.class);
     }
 
     //
 
-    static NordshriftExtender starter;
-
-    //
-
-    private Nordshrift()
+    public Nordshrift()
     {
-
+        System.list(this);
     }
 }
