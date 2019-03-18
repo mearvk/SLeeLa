@@ -1,5 +1,7 @@
 package implementations.one.nordshrift;
 
+import implementations.one.system.System;
+
 public class Nordshrift extends NordshriftSystem
 {
     public static final String quickname = "$";
@@ -24,6 +26,6 @@ public class Nordshrift extends NordshriftSystem
 
     public Nordshrift()
     {
-
+        System.list(this);
     }
 }

@@ -1,5 +1,7 @@
 package implementations.one.bodi;
 
+import java.rmi.Remote;
+
 public class Bodi
 {
     public Bodi bodi = this;
@@ -16,5 +18,17 @@ public class Bodi
     public static void run(String protocol, String bodiref, String methodname, StackTraceElement[] stack)
     {
 
+    }
+
+    //
+
+    public static Remote pull(String bodiref)
+    {
+        return null;
+    }
+
+    public static Remote push(String bodiref)
+    {
+        return null;
     }
 }

@@ -25,7 +25,7 @@ public class NordshriftSystem
 
     //
 
-    public static NordshriftThreading nordshriftthreadcontroller = new NordshriftThreading();
+    public static NordshriftThreading threading = new NordshriftThreading();
 
     //
 
@@ -39,9 +39,9 @@ public class NordshriftSystem
 
     public static NordshriftThreading getThreadController()
     {
-        if(nordshriftthreadcontroller==null) return null;
+        if(threading ==null) return null;
 
-        return nordshriftthreadcontroller;
+        return threading;
     }
 
     //

@@ -1,8 +1,5 @@
 package implementations.one.bodi;
 
-import implementations.one.nordshrift.NordshriftSystem;
-import implementations.one.nordshrift.threading.NordshriftThreading;
-
 public class NordshriftFactory extends ProtectedNordshriftFactory
 {
     private final Integer PROTECTED_DIRECT = 1;
@@ -21,29 +18,11 @@ public class NordshriftFactory extends ProtectedNordshriftFactory
 
     public NordshriftFactory()
     {
-        StackTraceElement[] stacktrace001 = Thread.currentThread().getStackTrace();
+        //check if nordshrift has been configured to run with threading
 
-        //
+        //scan classpath to find references to instantiation that are not protected
 
-        NordshriftThreading threads = NordshriftSystem.getThreadController();
-
-        //
-
-        for(StackTraceElement element : stacktrace001) //
-        {
-            if(element.getClassName().equals("NordshriftStartup"))
-            {
-                this.SUGGESTED_CAUSE += 0b0001;
-            }
-        }
-
-        for(StackTraceElement element : stacktrace001) //
-        {
-            if(element.getClassName().equals("NordshriftDriver"))
-            {
-                this.SUGGESTED_CAUSE += 0b0010;
-            }
-        }
+        //dump stacktrace to check if dynamic load has been used
     }
 }
 
