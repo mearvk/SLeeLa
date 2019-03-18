@@ -7,7 +7,7 @@ public class NordshriftDescriptor
 {
     //public NordshriftListDescriptor descriptor001;
 
-    public NordshriftInstanceDescriptor descriptor002;
+    public NordshriftInstanceDescriptor descriptor002 = new NordshriftInstanceDescriptor();
 
     //public NordshriftConfigurationDescriptor descriptor003;
 
