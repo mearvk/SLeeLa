@@ -1,5 +1,7 @@
 package implementations.one.nordshrift.factory;
 
+import implementations.one.bodi.Bodi;
+
 public class NordshriftFactory extends ProtectedNordshriftFactory
 {
     private final Integer PROTECTED_DIRECT = 1;
@@ -18,13 +20,17 @@ public class NordshriftFactory extends ProtectedNordshriftFactory
 
     public NordshriftFactory()
     {
-        java.lang.System.out.println("[factory] checking for threading config ... ");
+        Bodi.push("", new RegisterableNordshriftEvent());
 
-        java.lang.System.out.println("[factory] checking for threading config(s) ... ");
+        //
 
-        java.lang.System.out.println("[factory] checking for dynamic loader(s) ... ");
+        java.lang.System.out.println("  [ns::security]   Nordshrift Threading Model™ safeguarded");
 
-        java.lang.System.out.println("[factory] checking for java agent(s) ... ");
+        java.lang.System.out.println("  [ns::security]   Nordshrift Classpath Model™ safeguarded");
+
+        java.lang.System.out.println("  [ns::security]   Nordshrift Classloader Model™ safeguarded");
+
+        java.lang.System.out.println("  [ns::security]   Nordshrift JavaAgent Model™ safeguarded");
 
         //
 

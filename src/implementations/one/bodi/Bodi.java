@@ -1,14 +1,31 @@
 package implementations.one.bodi;
 
+import java.rmi.Naming;
 import java.rmi.Remote;
 
 public class Bodi
 {
-    public Bodi bodi = this;
+    public Bodi bodi;
 
-    public Bodi reference = this;
+    public Bodi reference;
+
+    public BodiRMIExtender extender002 = new BodiRMIExtender();
+
+    public BodiFunctionalExtender extender001 = new BodiFunctionalExtender();
 
     //
+
+    static
+    {
+        try
+        {
+            Naming.rebind("::",null);
+        }
+        catch (Exception exception)
+        {
+            java.lang.System.out.println(exception);
+        }
+    }
 
     public static void run(String protocol, String bodiref, String methodname)
     {
@@ -24,11 +41,11 @@ public class Bodi
 
     public static Remote pull(String bodiref)
     {
-        return null;
+        return BodiFunctionalExtender.pull(bodiref);
     }
 
-    public static Remote push(String bodiref, Remote remote)
+    public static void push(String bodiref, Remote remote)
     {
-        return null;
+        BodiFunctionalExtender.push(bodiref, remote);
     }
 }
