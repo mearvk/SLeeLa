@@ -1,6 +1,6 @@
 package implementations.one.nordshrift.drivers;
 
-import implementations.one.bodi.NordshriftFactory;
+import implementations.one.nordshrift.factory.NordshriftFactory;
 
 public class NordshriftDriver
 {

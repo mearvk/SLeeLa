@@ -1,5 +1,8 @@
 package implementations.one.nordshrift;
 
+import implementations.one.nordshrift.descriptors.NordshriftConfigurationDescriptor;
+import implementations.one.nordshrift.descriptors.NordshriftInstanceDescriptor;
+import implementations.one.nordshrift.descriptors.NordshriftListDescriptor;
 import implementations.one.system.System;
 
 public class Nordshrift extends NordshriftSystem
@@ -10,9 +13,11 @@ public class Nordshrift extends NordshriftSystem
 
     //
 
-    public NordshriftInstanceDescriptor descriptor001;
+    public NordshriftListDescriptor descriptor001;
 
-    public NordshriftConfigurationDescriptor descriptor002;
+    public NordshriftInstanceDescriptor descriptor002;
+
+    public NordshriftConfigurationDescriptor descriptor003;
 
     //
 

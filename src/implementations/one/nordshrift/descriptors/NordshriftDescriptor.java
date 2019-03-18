@@ -1,4 +1,4 @@
-package implementations.one.nordshrift.game;
+package implementations.one.nordshrift.descriptors;
 
 public class NordshriftDescriptor
 {

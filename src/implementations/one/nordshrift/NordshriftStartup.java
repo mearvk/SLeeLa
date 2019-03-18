@@ -6,7 +6,7 @@ public class NordshriftStartup
     {
         try
         {
-            Class.forName("implementations.one.nordshrift.Nordshrift").newInstance();
+            Class.forName("implementations.one.nordshrift.factory.NordshriftFactory").newInstance();
         }
         catch (Exception exception)
         {
