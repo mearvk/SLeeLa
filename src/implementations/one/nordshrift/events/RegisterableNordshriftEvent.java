@@ -1,4 +1,4 @@
-package implementations.one.nordshrift.factory;
+package implementations.one.nordshrift.events;
 
 import java.rmi.Remote;
 

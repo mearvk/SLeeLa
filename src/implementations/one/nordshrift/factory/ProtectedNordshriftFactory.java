@@ -1,4 +1,12 @@
 package implementations.one.nordshrift.factory;
 
-public class ProtectedNordshriftFactory {
+import implementations.one.nordshrift.NordshriftAnnotation;
+
+public class ProtectedNordshriftFactory
+{
+    @NordshriftAnnotation
+    public ProtectedNordshriftFactory()
+    {
+
+    }
 }

@@ -1,9 +1,8 @@
 package implementations.one.nordshrift;
 
-import implementations.one.nordshrift.descriptors.NordshriftConfigurationDescriptor;
-import implementations.one.nordshrift.descriptors.NordshriftInstanceDescriptor;
-import implementations.one.nordshrift.descriptors.NordshriftListDescriptor;
-import implementations.one.system.System;
+import implementations.one.bodi.Bodi;
+import implementations.one.nordshrift.descriptors.NordshriftDescriptor;
+import implementations.one.nordshrift.events.RegisterableNordshriftEvent;
 
 public class Nordshrift extends NordshriftSystem
 {
@@ -13,24 +12,29 @@ public class Nordshrift extends NordshriftSystem
 
     //
 
-    public NordshriftListDescriptor descriptor001;
-
-    public NordshriftInstanceDescriptor descriptor002;
-
-    public NordshriftConfigurationDescriptor descriptor003;
+    public NordshriftDescriptor descriptor001;
 
     //
 
-    public Nordshrift nordshrift001 = this;
+    public Nordshrift nordshrift001;
 
-    public Nordshrift nordshrift002 = this;
+    public Nordshrift nordshrift002;
 
-    public Nordshrift nordshrift003 = this;
+    public Nordshrift nordshrift003;
+
+    public Nordshrift nordshrift004;
+
+    //
+
+    static
+    {
+        Bodi.reference.push("::", new RegisterableNordshriftEvent());
+    }
 
     //
 
     public Nordshrift()
     {
-        System.list(this);
+        Bodi.reference.push("::", new RegisterableNordshriftEvent());
     }
 }

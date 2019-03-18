@@ -7,11 +7,11 @@ public class System
     public static void list(Class klass)
     {
         if(include_static)
-            java.lang.System.out.println("[ns::static]  "+klass);
+            java.lang.System.out.println("  [ns::static]   "+klass);
     }
 
     public static void list(Object object)
     {
-        java.lang.System.out.println("[ns::instance]     "+object);
+        java.lang.System.out.println("  [ns::instance]   "+object);
     }
 }

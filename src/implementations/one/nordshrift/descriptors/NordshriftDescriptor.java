@@ -1,14 +1,23 @@
 package implementations.one.nordshrift.descriptors;
 
+import implementations.one.bodi.Bodi;
+import implementations.one.nordshrift.events.RegisterableNordshriftEvent;
+
 public class NordshriftDescriptor
 {
+    public NordshriftListDescriptor descriptor001;
+
+    public NordshriftInstanceDescriptor descriptor002;
+
+    public NordshriftConfigurationDescriptor descriptor003;
+
     static
     {
-        java.lang.System.out.println("[static] NordshriftDescriptor");
+        Bodi.reference.push("::", new RegisterableNordshriftEvent());
     }
 
     public NordshriftDescriptor()
     {
-        java.lang.System.out.println("[instance] NordshriftDescriptor");
+        Bodi.reference.push("::", new RegisterableNordshriftEvent());
     }
 }
