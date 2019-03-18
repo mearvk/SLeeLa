@@ -5,7 +5,7 @@ import implementations.one.nordshrift.events.RegisterableNordshriftEvent;
 
 public class NordshriftDriver
 {
-    public NordshriftDocument document001 = new NordshriftDocument("implementations/one/documents/nordshrift.ns");
+    public NordshriftDocument document001 = new NordshriftDocument("documents/nordshrift.ns");
 
     public NordshriftDriver()
     {

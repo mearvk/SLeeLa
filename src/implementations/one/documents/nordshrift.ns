@@ -12,10 +12,9 @@ $ language in/out java
 
 //
 
-$ submodule     system      @bodi               setting("strict")       ref("{auto}")       ver 1.0+        note("")
-$ submodule     system      @http               setting("strict")       ref("{auto}")       ver 1.0+        note("")
-$ submodule     system      @security           setting("strict")       ref("{auto}")       ver 1.0+        note("")
-$ submodule     system      @framing            setting("strict")       ref("{auto}")       ver 1.0+        note("")
+$ submodule     system          @bodi               setting("empty")        ref("{auto}")       ver 1.1         note("")
+$ submodule     system          @http               setting("empty")        ref("{auto}")       ver 1.1         note("")
+$ submodule     system          @descriptors        setting("empty")        ref("{auto}")       ver 1.1         note("")
 
 //
 
@@ -23,15 +22,22 @@ $ module        build       @nordshrift         ref("http://nordshrift.org/event
 
 //
 
-@nordshrift     @build    name("startup")
+@nordshrift     @build      name("startup")
 
 : version       1.0
 : package       buildx
 
-    : facet     build           id("1")     classname("implementations.one.nordshrift.Nordshrift")
+    : root      auto            id("1")     classname("implementations.one.nordshrift.Nordshrift")
     : facet     ref             id("1")     classname("implementations.one.nordshrift.descriptors.NordshriftDescriptor")
 
-    : facet     build           id("2")     classname("implementations.one.nordshrift.monitors.NordshriftSystemStartupMonitor")
-    : facet     build           id("2")     classname("implementations.one.nordshrift.monitors.NordshriftSystemStartupMonitor")
-    : facet     build           id("2")     classname("implementations.one.nordshrift.monitors.NordshriftSystemStartupMonitor")
+    : facet     build           id("2")     classname("implementations.one.nordshrift.extenders.NordshriftStarter")
+    : facet     build           id("2")     classname("implementations.one.nordshrift.extenders.NordshriftLoader")
+    : facet     build           id("2")     classname("implementations.one.nordshrift.extenders.NordshriftFunctional")
+    : facet     build           id("2")     classname("implementations.one.nordshrift.extenders.NordshriftFactorial")
     : facet     ref             id("2")     classname("implementations.one.nordshrift.descriptors.NordshriftDescriptor")
+
+    : facet     build           id("3")     classname("implementations.one.nordshrift.monitors.NordshriftSystemStartupMonitor")
+    : facet     ref             id("3")     classname("implementations.one.nordshrift.descriptors.NordshriftDescriptor")
+
+    : facet     build           id("4")     classname("implementations.one.nordshrift.Nordshrift")
+    : facet     ref             id("4")     classname("implementations.one.nordshrift.descriptors.NordshriftDescriptor")
