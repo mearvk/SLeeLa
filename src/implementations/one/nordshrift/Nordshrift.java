@@ -5,7 +5,7 @@ import implementations.one.nordshrift.descriptors.NordshriftDescriptor;
 import implementations.one.nordshrift.events.RegisterableNordshriftEvent;
 
 @NordshriftAnnotation
-public class Nordshrift extends NordshriftSystem
+public class Nordshrift
 {
     public static final String quickname = "$";
 
@@ -13,26 +13,32 @@ public class Nordshrift extends NordshriftSystem
 
     //
 
-    @NordshriftAnnotation
     public NordshriftDescriptor descriptor001;
 
+    public NordshriftDescriptor descriptor002;
+
+    public NordshriftDescriptor descriptor003;
+
+    public NordshriftDescriptor descriptor004;
+
     //
 
-    @NordshriftAnnotation
     public NordshriftSystem nordshriftsystem001;
 
+    public NordshriftSystem nordshriftsystem002;
+
+    public NordshriftSystem nordshriftsystem003;
+
+    public NordshriftSystem nordshriftsystem004;
+
     //
 
-    @NordshriftAnnotation
     public Nordshrift nordshrift001;
 
-    @NordshriftAnnotation
     public Nordshrift nordshrift002;
 
-    @NordshriftAnnotation
     public Nordshrift nordshrift003;
 
-    @NordshriftAnnotation
     public Nordshrift nordshrift004;
 
     //

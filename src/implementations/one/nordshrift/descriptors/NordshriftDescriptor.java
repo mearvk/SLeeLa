@@ -5,11 +5,13 @@ import implementations.one.nordshrift.events.RegisterableNordshriftEvent;
 
 public class NordshriftDescriptor
 {
-    public NordshriftListDescriptor descriptor001;
+    //public NordshriftListDescriptor descriptor001;
 
     public NordshriftInstanceDescriptor descriptor002;
 
-    public NordshriftConfigurationDescriptor descriptor003;
+    //public NordshriftConfigurationDescriptor descriptor003;
+
+    //
 
     static
     {

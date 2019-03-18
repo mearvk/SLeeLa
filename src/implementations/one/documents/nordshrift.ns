@@ -31,7 +31,8 @@ $module         build           @nordshrift
 
 //
 
-@nordshrift     @build          phase("0")
+phase("0")
+@nordshrift     @build          name("nordshrift")
 
 : package       buildx
 
@@ -51,44 +52,48 @@ $module         build           @nordshrift
 
 //
 
-@nordshrift     @run            phase("1")
+phase("1")
+@nordshrift     @run            name("nordshrift.starter")
 
 : package       runx
 
-    : precondition              buildx.phase("0")
+    : precondition              phase("1")
 
     : runner    auto            id("1")     classname("implementations.one.nordshrift.NordshriftStarter")
     : facet     descriptor      id("1")     classname("implementations.one.nordshrift.descriptors.NordshriftDescriptor")
 
 //
 
-@nordshrift     @run          phase("1")
+phase("1")
+@nordshrift     @run            name("nordshrift.loader")
 
 : package       runx
 
-    : precondition              buildx.phase("0")
+    : precondition              phase("1")
 
     : runner    auto            id("1")     classname("implementations.one.nordshrift.NordshriftLoader")
     : facet     descriptor      id("1")     classname("implementations.one.nordshrift.descriptors.NordshriftDescriptor")
 
 //
 
-@nordshrift     @run          phase("1")
+phase("1")
+@nordshrift     @run            name("nordshrift.context")
 
 : package       runx
 
-    : precondition              buildx.phase("0")
+    : precondition              phase("1")
 
     : runner    auto            id("1")     classname("implementations.one.nordshrift.NordshriftContext")
     : facet     descriptor      id("1")     classname("implementations.one.nordshrift.descriptors.NordshriftDescriptor")
 
 //
 
-@nordshrift     @run          phase("1")
+phase("1")
+@nordshrift     @run            name("nordshrift.monitor")
 
 : package       runx
 
-    : precondition              buildx.phase("0")
+    : precondition              phase("1")
 
     : runner    auto            id("1")     classname("implementations.one.nordshrift.NordshriftMonitor")
     : facet     descriptor      id("1")     classname("implementations.one.nordshrift.descriptors.NordshriftDescriptor")
