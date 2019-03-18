@@ -1,26 +1,29 @@
 package implementations.one.nordshrift;
 
-import implementations.one.system.System;
-
 public class Nordshrift extends NordshriftSystem
 {
-    public String name = "$";
+    public static final String quickname = "$";
+
+    public static final String name = "nordshrift";
 
     //
 
-    public Nordshrift nordshrift = this;
+    public NordshriftInstanceDescriptor descriptor001;
 
-    public Nordshrift reference = this;
+    public NordshriftConfigurationDescriptor descriptor002;
 
     //
 
-    static
-    {
-        System.list(Nordshrift.class);
-    }
+    public Nordshrift nordshrift001 = this;
+
+    public Nordshrift nordshrift002 = this;
+
+    public Nordshrift nordshrift003 = this;
+
+    //
 
     public Nordshrift()
     {
-        System.list(this.getClass().getCanonicalName());
+
     }
 }
