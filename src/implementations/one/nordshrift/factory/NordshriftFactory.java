@@ -20,7 +20,7 @@ public class NordshriftFactory extends ProtectedNordshriftFactory
 
     public NordshriftFactory()
     {
-        Bodi.push("", new RegisterableNordshriftEvent());
+        Bodi.reference.push("", new RegisterableNordshriftEvent());
 
         //
 

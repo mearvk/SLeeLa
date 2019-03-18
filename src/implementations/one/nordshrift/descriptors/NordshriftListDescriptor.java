@@ -8,6 +8,6 @@ public class NordshriftListDescriptor
 
     public NordshriftListDescriptor()
     {
-        Bodi.push("//descriptors/NordshriftListDescriptor", this.list001);
+        Bodi.reference.push("//descriptors/NordshriftListDescriptor", this.list001);
     }
 }

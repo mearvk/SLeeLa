@@ -8,6 +8,6 @@ public class NordshriftConfigurationDescriptor
 
     public NordshriftConfigurationDescriptor()
     {
-        this.list001 = (NordshriftConfigurationList) Bodi.pull("//descriptors/NordshriftConfigurationDescriptor");
+        this.list001 = (NordshriftConfigurationList) Bodi.reference.pull("//descriptors/NordshriftConfigurationDescriptor");
     }
 }

@@ -14,7 +14,7 @@ public class BodiFunctionalExtender
     {
         try
         {
-            Naming.rebind(bodiref, remote);
+            //Naming.rebind(bodiref, remote);
         }
         catch (Exception exception)
         {

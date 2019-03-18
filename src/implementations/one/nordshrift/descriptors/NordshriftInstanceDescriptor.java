@@ -8,6 +8,6 @@ public class NordshriftInstanceDescriptor
 
     public NordshriftInstanceDescriptor()
     {
-        this.list001 = (NordshriftInstancingList)Bodi.pull("//descriptors/NordshriftInstanceDescriptor");
+        this.list001 = (NordshriftInstancingList)Bodi.reference.pull("//descriptors/NordshriftInstanceDescriptor");
     }
 }
