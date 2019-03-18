@@ -7,24 +7,32 @@ import implementations.one.nordshrift.threading.NordshriftThreading;
 @NordshriftAnnotation
 public class NordshriftSystem
 {
+    @NordshriftAnnotation
     public NordshriftExtender extender001 = new NordshriftExtender(this, "{nordshrift:extender}");  //
 
+    @NordshriftAnnotation
     public NordshriftExtender extender002 = new NordshriftExtender(this, "{nordshrift:extender}");  //
 
+    @NordshriftAnnotation
     public NordshriftExtender extender003 = new NordshriftExtender(this, "{nordshrift::extender}"); //
 
+    @NordshriftAnnotation
     public NordshriftExtender extender004 = new NordshriftExtender(this, "{nordshrift::extender}"); //
 
     //
 
+    @NordshriftAnnotation
     public NordshriftMonitor monitor001 = new NordshriftMonitor(this, "{nordshrift::monitor}");     //
 
+    @NordshriftAnnotation
     public NordshriftMonitor monitor002 = new NordshriftMonitor(this, "{nordshrift::monitor}");     //
 
+    @NordshriftAnnotation
     public NordshriftMonitor monitor003 = new NordshriftMonitor(this, "{nordshrift::monitor}");     //
 
     //
 
+    @NordshriftAnnotation
     public static NordshriftThreading threading = new NordshriftThreading();
 
     //

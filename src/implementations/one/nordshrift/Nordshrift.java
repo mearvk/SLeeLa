@@ -4,6 +4,7 @@ import implementations.one.bodi.Bodi;
 import implementations.one.nordshrift.descriptors.NordshriftDescriptor;
 import implementations.one.nordshrift.events.RegisterableNordshriftEvent;
 
+@NordshriftAnnotation
 public class Nordshrift extends NordshriftSystem
 {
     public static final String quickname = "$";
@@ -12,16 +13,26 @@ public class Nordshrift extends NordshriftSystem
 
     //
 
+    @NordshriftAnnotation
     public NordshriftDescriptor descriptor001;
 
     //
 
+    @NordshriftAnnotation
+    public NordshriftSystem nordshriftsystem001;
+
+    //
+
+    @NordshriftAnnotation
     public Nordshrift nordshrift001;
 
+    @NordshriftAnnotation
     public Nordshrift nordshrift002;
 
+    @NordshriftAnnotation
     public Nordshrift nordshrift003;
 
+    @NordshriftAnnotation
     public Nordshrift nordshrift004;
 
     //
