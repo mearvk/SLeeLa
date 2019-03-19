@@ -3,7 +3,9 @@ package implementations.one.nordshrift.drivers;
 import implementations.one.bodi.Bodi;
 import implementations.one.nordshrift.events.RegisterableNordshriftEvent;
 
-public class NordshriftDriver
+import java.rmi.Remote;
+
+public class NordshriftDriver implements Remote
 {
     public NordshriftDocument document001 = new NordshriftDocument("nordshrift.driver.ns");
 
@@ -13,6 +15,6 @@ public class NordshriftDriver
 
     public NordshriftDriver()
     {
-        Bodi.reference.push("::", new RegisterableNordshriftEvent());
+        Bodi.reference.push("::", this, new RegisterableNordshriftEvent());
     }
 }

@@ -1,5 +1,8 @@
 package implementations.one.bodi;
 
+import implementations.one.nordshrift.Nordshrift;
+import implementations.one.nordshrift.events.RegisterableNordshriftEvent;
+
 import java.rmi.Remote;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -74,5 +77,15 @@ public class Bodi implements Remote
         {
             java.lang.System.out.println(exception);
         }
+    }
+
+    public void push(String bodiref, Remote remote, RegisterableNordshriftEvent event)
+    {
+
+    }
+
+    public void push(String bodiref, Remote remote, Class<RegisterableNordshriftEvent> klass)
+    {
+        //call the corresponding map with function
     }
 }
