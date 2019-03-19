@@ -21,14 +21,14 @@ public class Cord
 
     public Cord push(String protocol, String classname, String methodname)
     {
-        Bodi.run(protocol, classname, methodname);
+        Bodi.reference.run(protocol, classname, methodname);
 
         return this;
     }
 
     public Cord push(String classname, String methodname)
     {
-        Bodi.run("{bodi}", classname, methodname);
+        Bodi.reference.run("{bodi}", classname, methodname);
 
         return this;
     }

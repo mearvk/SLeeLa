@@ -40,7 +40,7 @@ public class NordshriftSystem
     @NordshriftAnnotation(ref="::")
     public NordshriftSystem()
     {
-        Bodi.run("Nordshrift", "::", "fill");                                       //
+        Bodi.reference.run("Nordshrift", "::", "fill");                                       //
     }
 
     //
