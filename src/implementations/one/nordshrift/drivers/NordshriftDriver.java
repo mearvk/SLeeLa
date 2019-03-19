@@ -5,19 +5,14 @@ import implementations.one.nordshrift.events.RegisterableNordshriftEvent;
 
 public class NordshriftDriver
 {
-    public NordshriftDocument document001 = new NordshriftDocument("documents/nordshrift.ns");
+    public NordshriftDocument document001 = new NordshriftDocument("nordshrift.driver.ns");
+
+    public NordshriftDocument document002 = new NordshriftDocument("nordshrift.ns");
+
+    //
 
     public NordshriftDriver()
     {
-        try
-        {
-            Class.forName("implementations.one.nordshrift.factory.NordshriftFactory").newInstance();
-        }
-        catch(Exception exception)
-        {
-            java.lang.System.out.println(exception);
-        }
-
         Bodi.reference.push("::", new RegisterableNordshriftEvent());
     }
 }

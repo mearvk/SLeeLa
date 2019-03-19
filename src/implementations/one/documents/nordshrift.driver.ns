@@ -1,0 +1,9 @@
+@non-phasic
+@nordshrift     @run            name("nordshrift.starter")
+
+: package       runx
+
+    : preconditions             precondition({phase(0).completed,phase(0).noerrors})
+
+    : runner    auto            id("1")     classname("implementations.one.nordshrift.NordshriftStarter")
+    : facet     descriptor      id("1")     classname("implementations.one.nordshrift.descriptors.NordshriftDescriptor")
