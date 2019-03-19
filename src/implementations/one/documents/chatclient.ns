@@ -76,7 +76,6 @@ $ module chatclient
         : facet @jeditorpane connect @parent
     : facet @jpanel connect @parent
         : facet @jtextpane connect @parent
-
 //
 
 @chatclient @app

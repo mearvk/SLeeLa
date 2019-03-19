@@ -47,7 +47,7 @@ public class NordshriftSystem
 
     public static NordshriftThreading getThreadController()
     {
-        if(threading ==null) return null;
+        if(threading==null) return null;
 
         return threading;
     }
