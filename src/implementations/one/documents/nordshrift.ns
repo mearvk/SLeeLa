@@ -57,7 +57,7 @@ phase("1")
 
 : package       runx
 
-    : precondition              phase("1")
+    : preconditions             precondition({phase(0).completed,phase(0).noerrors})
 
     : runner    auto            id("1")     classname("implementations.one.nordshrift.NordshriftStarter")
     : facet     descriptor      id("1")     classname("implementations.one.nordshrift.descriptors.NordshriftDescriptor")

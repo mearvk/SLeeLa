@@ -3,16 +3,8 @@ package implementations.one.nordshrift.descriptors;
 import implementations.one.bodi.Bodi;
 import implementations.one.nordshrift.events.RegisterableNordshriftEvent;
 
-public class NordshriftDescriptor
+public class NordshriftDescriptor extends GenericDescriptor
 {
-    //public NordshriftListDescriptor descriptor001;
-
-    public NordshriftInstanceDescriptor descriptor002 = new NordshriftInstanceDescriptor();
-
-    //public NordshriftConfigurationDescriptor descriptor003;
-
-    //
-
     static
     {
         Bodi.reference.push("::", new RegisterableNordshriftEvent());

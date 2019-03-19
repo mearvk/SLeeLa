@@ -8,7 +8,7 @@ public class NordshriftStartup
 
         try
         {
-            Class.forName("implementations.one.nordshrift.factory.NordshriftDriver").newInstance();
+            Class.forName("implementations.one.nordshrift.drivers.NordshriftDriver").newInstance();
         }
         catch (Exception exception)
         {

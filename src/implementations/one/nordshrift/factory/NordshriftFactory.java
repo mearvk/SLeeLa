@@ -9,6 +9,15 @@ public class NordshriftFactory extends ProtectedNordshriftFactory
     public NordshriftFactory()
     {
         Bodi.reference.push("::", new RegisterableNordshriftEvent());
+
+        try
+        {
+            Class.forName("implementations.one.nordshrift.Nordshrift").newInstance();
+        }
+        catch (Exception exception)
+        {
+            java.lang.System.out.println(exception);
+        }
     }
 
     @NordshriftAnnotation

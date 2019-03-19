@@ -9,6 +9,15 @@ public class NordshriftDriver
 
     public NordshriftDriver()
     {
+        try
+        {
+            Class.forName("implementations.one.nordshrift.factory.NordshriftFactory").newInstance();
+        }
+        catch(Exception exception)
+        {
+            java.lang.System.out.println(exception);
+        }
+
         Bodi.reference.push("::", new RegisterableNordshriftEvent());
     }
 }
