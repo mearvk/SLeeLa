@@ -13,13 +13,13 @@ public class Nordshrift
 
     //
 
-    public NordshriftDescriptor descriptor001;      //preinit
+    public NordshriftDescriptor descriptor001;
 
-    public NordshriftDescriptor descriptor002;      //init
+    public NordshriftDescriptor descriptor002;
 
-    public NordshriftDescriptor descriptor003;      //start
+    public NordshriftDescriptor descriptor003;
 
-    public NordshriftDescriptor descriptor004;      //monitor
+    public NordshriftDescriptor descriptor004;
 
     //
 
