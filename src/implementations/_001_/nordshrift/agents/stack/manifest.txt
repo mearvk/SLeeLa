@@ -1,1 +1,1 @@
-Premain-Class: StackAgent
+Premain-Class: implementations._001_.nordshrift.agents.stack.StackAgent

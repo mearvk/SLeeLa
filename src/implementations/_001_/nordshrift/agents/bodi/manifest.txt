@@ -1,1 +1,1 @@
-Premain-Class: BodiAgent
+Premain-Class: implementations._001_.nordshrift.agents.bodi.BodiAgent
