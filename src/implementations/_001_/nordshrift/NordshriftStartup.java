@@ -17,16 +17,3 @@ public class NordshriftStartup implements Remote
         Bodi.reference.push("::", this, RegisterableNordshriftEvent.class);
     }
 }
-
-/**
- *         java.lang.System.out.println("[ns:nordshrift]  Nordshrift Guarded Startup™ ");
- *
- *         try
- *         {
- *             Class.forName("implementations._001_.nordshrift.drivers.NordshriftDriver").newInstance();
- *         }
- *         catch (Exception exception)
- *         {
- *             java.lang.System.out.println(exception);
- *         }
- */

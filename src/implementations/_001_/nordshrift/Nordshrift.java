@@ -4,8 +4,10 @@ import implementations._001_.bodi.Bodi;
 import implementations._001_.nordshrift.descriptors.NordshriftDescriptor;
 import implementations._001_.nordshrift.events.RegisterableNordshriftEvent;
 
+import java.rmi.Remote;
+
 @NordshriftAnnotation
-public class Nordshrift
+public class Nordshrift implements Remote
 {
     public static final String quickname = "$";
 
@@ -45,13 +47,13 @@ public class Nordshrift
 
     static
     {
-        Bodi.reference.push("::", new RegisterableNordshriftEvent());
+        Bodi.reference.push("::", RegisterableNordshriftEvent.class);
     }
 
     //
 
     public Nordshrift()
     {
-        Bodi.reference.push("::", new RegisterableNordshriftEvent());
+        Bodi.reference.push("::", this, RegisterableNordshriftEvent.class);
     }
 }

@@ -1,4 +1,4 @@
-package implementations._001_.nordshrift.datastructures;
+package implementations._001_.nordshrift.structures;
 
 public class Sphere
 {

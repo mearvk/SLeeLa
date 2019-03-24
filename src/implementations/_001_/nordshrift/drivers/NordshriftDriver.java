@@ -15,7 +15,7 @@ public class NordshriftDriver extends NordshriftDriverExtent implements Remote
 
     public NordshriftDriver()
     {
-        Bodi.reference.push("::", this, new RegisterableNordshriftEvent());
+        Bodi.reference.push("::", this, RegisterableNordshriftEvent.class);
     }
 
     public void init()

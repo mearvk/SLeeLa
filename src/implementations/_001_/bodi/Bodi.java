@@ -4,7 +4,7 @@ import implementations._001_.nordshrift.events.RegisterableNordshriftEvent;
 import java.rmi.Remote;
 import java.rmi.registry.LocateRegistry;
 
-public class Bodi implements Remote
+public class Bodi extends BodiExtent implements Remote
 {
     public static Bodi reference = new Bodi();
 
@@ -12,13 +12,9 @@ public class Bodi implements Remote
 
     //
 
-    public BodiExtender extender001 = new BodiExtender();
-
-    //
-
     static
     {
-        System.out.println("  [ns::bodi]       Bodi Registry™ initialized");
+        //System.out.println("  [ns::bodi]       Bodi Registry™ initialized");
 
         try
         {
@@ -73,8 +69,18 @@ public class Bodi implements Remote
         {
             java.lang.System.out.println(exception);
         }
+    }
 
-        Bodi.reference.run(new Encapsulator(Thread.currentThread().getStackTrace()));
+    public void push(String bodiref, Class klass)
+    {
+        try
+        {
+            //this.extender001.push(bodiref, remote);
+        }
+        catch (Exception exception)
+        {
+            java.lang.System.out.println(exception);
+        }
     }
 
     public void push(String bodiref, Remote remote, RegisterableNordshriftEvent event)
@@ -118,4 +124,9 @@ public class Bodi implements Remote
             return (this.buffer.toString().contains(string));
         }
     }
+}
+
+class BodiExtent
+{
+    public BodiExtender extender001 = new BodiExtender();
 }
