@@ -1,0 +1,892 @@
+SLEELA LANGUAGE FORMAL CORE
+
+Featherweight Sleela — Type System, Operational Semantics, and Metatheory
+
+Document Status:    Pre-Normative (Draft)
+Document Series:    SL-FORMAL-0001
+Revision:           0.1.0
+Date:               September 2026
+Governing Authority: Sleela Language Design Council (SLDC)
+Supersedes:         Nothing. Companion to SL-META-0001.
+Depends On:         SL-META-0001 (Sleela Language Metadocument)
+
+================================================================================
+Table of Contents
+================================================================================
+
+Preamble — Purpose and Relationship to SL-META-0001
+
+Part I  — The Formal Core (Featherweight Sleela)
+  Chapter 1 — Judgment Forms and Notation
+  Chapter 2 — Syntax of Featherweight Sleela (FS)
+  Chapter 3 — Static Semantics (Typing Rules)
+  Chapter 4 — Dynamic Semantics (Operational Semantics)
+  Chapter 5 — Metatheory: Progress and Preservation
+
+Part II — Type Inference Discipline
+  Chapter 6 — Why Not Classic Hindley-Milner
+  Chapter 7 — The Adopted Discipline: Bidirectional Checking over Algebraic Subtyping
+
+Part III — The Effect Algebra
+  Chapter 8 — Effects as an Ordered Row
+  Chapter 9 — Effect Discharge (Handlers)
+  Chapter 10 — Correcting the Read/Write Lattice Direction
+
+Part IV — Conformance, Sealing, and Exhaustiveness
+  Chapter 11 — The Structural/Sealed Contradiction and Its Resolution
+
+Part V — Lens Laws
+  Chapter 12 — The Three Lens Laws and the Effectful-Lens Restriction
+
+Part VI — Determinism
+  Chapter 13 — Canonical Ordering for Deterministic Compilation
+
+Appendix A — Redline: Specific Amendments Proposed to SL-META-0001
+Appendix B — Open Questions for the SLDC
+Appendix C — Metatheorem Register
+
+================================================================================
+Preamble — Purpose and Relationship to SL-META-0001
+================================================================================
+
+SL-META-0001 (the Sleela Language Metadocument) is a constitutive, conceptual
+document. It establishes the design mandate, the meta-model, and the governing
+rules of Sleela in prose, each rule accompanied by a rationale. It is, by its
+own declaration, pre-normative and conceptual rather than formal.
+
+This document, SL-FORMAL-0001, begins the work that SL-META-0001 repeatedly
+defers to "SL-SPEC": it gives the language a formal core. Where SL-META-0001
+asserts properties (for example, SEM-01 "if a program type-checks, no type
+error can occur at runtime"), this document supplies the mathematical objects
+that make those assertions provable rather than merely stated — a judgment
+form, a core calculus, typing rules, an operational semantics, and the theorems
+(Progress and Preservation) whose proof discharges SEM-01.
+
+This document is deliberately a *core*. It formalizes a minimal fragment —
+Featherweight Sleela (FS) — sufficient to pin down the load-bearing semantic
+decisions (Entities, Contracts, Flows, Effects) and to expose and resolve the
+internal tensions identified during review of SL-META-0001. FS is to Sleela
+what Featherweight Java is to Java: not the whole language, but a faithful,
+provable nucleus that the full specification (SL-SPEC) must conservatively
+extend.
+
+Status of the resolutions herein. Several sections of this document do more
+than formalize existing prose: they identify contradictions within SL-META-0001
+and propose resolutions. Those resolutions are collected as concrete redline
+amendments in Appendix A. Until ratified by the SLDC, the amendments in
+Appendix A are proposals; where this document and SL-META-0001 currently
+conflict, SL-META-0001 remains authoritative and the conflict is flagged
+explicitly in-line.
+
+================================================================================
+Part I — The Formal Core (Featherweight Sleela)
+================================================================================
+
+--------------------------------------------------------------------------------
+Chapter 1 — Judgment Forms and Notation
+--------------------------------------------------------------------------------
+
+The reader of SL-META-0001 cannot determine what a Sleela typing judgment looks
+like, because none is displayed. This chapter fixes the judgment forms used
+throughout the formal core. All later rules are instances of these forms.
+
+1.1  Metavariables
+
+    x, y            term variables (identifiers subject to Binding)
+    E               Entity names (nominal)
+    C               Contract names
+    o               operation names (members of a Contract)
+    f              field names
+    e              expressions (terms)
+    v              values
+    tau, sigma      types
+    eps             effect rows (see Part III)
+    Gamma           typing context: a finite map from variables to types
+    Delta           conformance environment: sealed conformance declarations
+    Sigma           store (dynamic): a finite map from locations to values
+
+1.2  The core typing judgment
+
+    Gamma; Delta |- e : tau ! eps
+
+  read as: "under variable context Gamma and conformance environment Delta,
+  expression e has type tau and, when evaluated, produces at most the effects
+  in row eps." The effect row eps is an integral part of the judgment, not an
+  afterthought: a Flow's type is meaningless without it (SL-META INV-01,
+  SEM-02).
+
+  A pure expression is one for which eps = <> (the empty row). We abbreviate
+
+    Gamma; Delta |- e : tau        for        Gamma; Delta |- e : tau ! <>
+
+1.3  Auxiliary judgments
+
+    Delta |- E conforms-to C            Entity E nominally conforms to Contract C
+    |- tau1 <: tau2                     tau1 is a subtype of tau2
+    |- eps1 <: eps2                     effect row subsumption (Part III)
+    Delta |- C sealed { E1 .. En }      C is a sealed Contract with exactly
+                                        the listed conforming Entities
+
+1.4  The evaluation judgment (dynamic semantics)
+
+    <e, Sigma>  -->  <e', Sigma'>       small-step reduction with a store
+    <e, Sigma>  -->*  <e', Sigma'>      reflexive-transitive closure
+
+  We thread a store Sigma so that the state-mutation Effect has real dynamic
+  content; a semantics without a store cannot distinguish a pure Flow from an
+  effectful one and thus cannot make INV-01 meaningful.
+
+1.5  A note on the two contexts named "context"
+
+  SL-META-0001 uses the word "Context" for an ambient value carrier (the
+  meta-model primitive). This document uses "typing context" (Gamma) in the
+  standard type-theoretic sense. To avoid collision we always write "Gamma" or
+  "typing context" for the former and "Context primitive" (or the ambient row
+  rho of Part III) for the SL-META notion. SL-SPEC should adopt the same
+  convention.
+
+--------------------------------------------------------------------------------
+Chapter 2 — Syntax of Featherweight Sleela (FS)
+--------------------------------------------------------------------------------
+
+FS models the four load-bearing meta-model primitives: Entity, Contract, Flow,
+Effect. Scope, Binding, Lens, Projection, Rule, and Context appear in the full
+language; FS includes only what is needed to state and prove the core
+metatheorems. Their formalization is scheduled for SL-SPEC and sketched where
+relevant.
+
+2.1  Grammar
+
+  Programs
+    P    ::= CD* ED* e                       contracts, entities, then a main expr
+
+  Contract declarations
+    CD   ::= contract C [sealed] { osig* }
+    osig ::= o : tau -> tau ! eps            operation signature (with effects)
+
+  Entity declarations
+    ED   ::= entity E conforms C* { fd* od* }
+    fd   ::= f : tau                         field declaration
+    od   ::= o(x) = e                        operation definition
+
+  Types
+    tau  ::= E                               entity type (nominal)
+          |  C                               contract type (structural OR sealed)
+          |  Maybe tau                       optional (no null; SL-META SEM-10)
+          |  tau -{eps}-> tau                flow type carrying an effect row
+          |  Proj E                          projection over Entity E (read-only)
+
+  Effect rows (detailed in Part III)
+    eps  ::= <>                              pure (empty row)
+          |  <l | eps>                       row extension by effect label l
+          |  r                               a row variable (for inference)
+    l    ::= Read | Write | Raise | IO       effect labels (extensible)
+
+  Expressions
+    e    ::= x                               variable (a Binding use)
+          |  new E { f = e, .. }             entity construction
+          |  e.f                             field access
+          |  e.o(e)                          operation invocation
+          |  flow (x : tau) ! eps => e       flow literal (declares its effects)
+          |  e e                             flow application
+          |  let x = e in e                  binding (final by default; SEM-08)
+          |  just e  |  nothing              Maybe introduction
+          |  case e of just x => e; nothing => e   exhaustive Maybe elimination
+          |  raise                           performs the Raise effect
+          |  handle e with { l => e }        effect discharge (Chapter 9)
+          |  match e { E1 x => e; .. }       exhaustive Contract match (sealed)
+
+  Values
+    v    ::= new E { f = v, .. }
+          |  flow (x : tau) ! eps => e
+          |  just v  |  nothing
+
+2.2  Well-formedness side conditions
+
+  (WF-1) A flow literal's declared row eps must be a syntactic upper bound on
+         the effects of its body (checked by rule T-FLOW, Chapter 3).
+  (WF-2) `match` is only well-formed on a value whose type is a *sealed*
+         Contract; on a non-sealed (structural) Contract, `match` is rejected.
+         This is the syntactic half of the resolution in Part IV.
+  (WF-3) `case` on Maybe must supply both arms; there is no partial unwrap.
+         This is the syntactic enforcement of SEM-10.
+
+--------------------------------------------------------------------------------
+Chapter 3 — Static Semantics (Typing Rules)
+--------------------------------------------------------------------------------
+
+We display the core typing rules in natural-deduction style. Premises appear
+above the line, the conclusion below. These rules are the concrete content that
+SL-META-0001 promised but never showed.
+
+  (T-VAR)
+        x : tau in Gamma
+        --------------------------------
+        Gamma; Delta |- x : tau ! <>
+
+  (T-NEW)         entity E { f_i : tau_i } declared
+                  for each i:  Gamma; Delta |- e_i : tau_i ! eps_i
+        --------------------------------------------------------------
+        Gamma; Delta |- new E { f_i = e_i } : E ! (join eps_i)
+
+  (T-FIELD)       Gamma; Delta |- e : E ! eps      (f : tau) in E
+        --------------------------------------------------------------
+        Gamma; Delta |- e.f : tau ! eps
+
+  (T-FLOW)        Gamma, x : tau1 ; Delta |- e : tau2 ! eps_body
+                  |- eps_body <: eps            (declared row bounds the body)
+        --------------------------------------------------------------
+        Gamma; Delta |- (flow (x:tau1) ! eps => e) : (tau1 -{eps}-> tau2) ! <>
+
+     A flow *literal* is itself pure (<>): constructing a flow performs no
+     effects; only *applying* it does. This is the formal content of
+     "Flows are first-class values" (SL-META 2.2).
+
+  (T-APP)         Gamma; Delta |- e1 : (tau1 -{eps_f}-> tau2) ! eps_1
+                  Gamma; Delta |- e2 : tau1' ! eps_2
+                  |- tau1' <: tau1
+        --------------------------------------------------------------
+        Gamma; Delta |- e1 e2 : tau2 ! (eps_1 join eps_2 join eps_f)
+
+     Application incurs the callee's declared effects eps_f in addition to the
+     effects of evaluating the operands. This is Effect Transparency (SEM-02)
+     made mechanical: the caller's row is a superset of the callee's.
+
+  (T-LET)         Gamma; Delta |- e1 : tau1 ! eps_1
+                  Gamma, x : tau1 ; Delta |- e2 : tau2 ! eps_2
+        --------------------------------------------------------------
+        Gamma; Delta |- let x = e1 in e2 : tau2 ! (eps_1 join eps_2)
+
+     x is final within e2 (SEM-08). A `var` binding, omitted from FS, would add
+     a Write effect on assignment.
+
+  (T-JUST)        Gamma; Delta |- e : tau ! eps
+        --------------------------------------------------------------
+        Gamma; Delta |- just e : Maybe tau ! eps
+
+  (T-NOTHING)
+        --------------------------------------------------------------
+        Gamma; Delta |- nothing : Maybe tau ! <>
+
+  (T-CASE)        Gamma; Delta |- e : Maybe tau ! eps_0
+                  Gamma, x : tau ; Delta |- e_j : sigma ! eps_j
+                  Gamma; Delta |- e_n : sigma ! eps_n
+        --------------------------------------------------------------
+        Gamma; Delta |- (case e of just x => e_j; nothing => e_n)
+                          : sigma ! (eps_0 join eps_j join eps_n)
+
+     Both arms are mandatory and must agree on result type sigma. There is no
+     rule that eliminates a Maybe without handling both arms: SEM-10 holds
+     because no such rule exists, not because a side condition forbids it.
+
+  (T-RAISE)
+        --------------------------------------------------------------
+        Gamma; Delta |- raise : tau ! <Raise>
+
+  (T-INVOKE)      Gamma; Delta |- e : E ! eps_0
+                  E conforms C in Delta     (o : tau1 -> tau2 ! eps_o) in C
+                  Gamma; Delta |- e_arg : tau1' ! eps_a    |- tau1' <: tau1
+        --------------------------------------------------------------
+        Gamma; Delta |- e.o(e_arg) : tau2 ! (eps_0 join eps_a join eps_o)
+
+  (T-MATCH)       Gamma; Delta |- e : C ! eps_0
+                  Delta |- C sealed { E_1 .. E_n }        (must be sealed; WF-2)
+                  for each k in 1..n:
+                     Gamma, x_k : E_k ; Delta |- e_k : sigma ! eps_k
+        --------------------------------------------------------------
+        Gamma; Delta |- match e { E_k x_k => e_k } : sigma ! (join eps_0 eps_k)
+
+     T-MATCH requires C to be sealed with a *closed* set of variants E_1..E_n,
+     and requires an arm for each. Exhaustiveness is decidable precisely because
+     the variant set is closed. See Part IV.
+
+  (T-HANDLE) — see Chapter 9 (effect discharge).
+
+  (T-SUB)         Gamma; Delta |- e : tau ! eps      |- tau <: tau'
+                  |- eps <: eps'
+        --------------------------------------------------------------
+        Gamma; Delta |- e : tau' ! eps'
+
+     The single subsumption rule covers both type subtyping and effect-row
+     subsumption (SEM-09). Note its presence is exactly why classic
+     Hindley-Milner inference does not apply unchanged (Part II).
+
+3.1  Subtyping relation (excerpt)
+
+  (S-REFL)  |- tau <: tau
+  (S-TRANS) |- tau1 <: tau2 and |- tau2 <: tau3  =>  |- tau1 <: tau3
+  (S-ENTITY) entity E2 extends E1  =>  |- E2 <: E1      (nominal, single parent)
+  (S-CONTRACT-STRUCT)
+             C1 declares a superset of C2's operations, each with a subsumptive
+             type  =>  |- C1 <: C2          (structural; SL-META 5.4)
+  (S-FLOW)   |- tau1' <: tau1   |- tau2 <: tau2'   |- eps <: eps'
+             --------------------------------------------------------
+             |- (tau1 -{eps}-> tau2) <: (tau1' -{eps'}-> tau2')
+             (contravariant in argument, covariant in result and effects)
+
+--------------------------------------------------------------------------------
+Chapter 4 — Dynamic Semantics (Operational Semantics)
+--------------------------------------------------------------------------------
+
+Small-step, call-by-value, with a store Sigma so that Write/Read/Raise/IO have
+observable dynamic content. Evaluation contexts capture the left-to-right,
+call-by-value order that SEM-07 and SR-06 assume elsewhere.
+
+4.1  Evaluation contexts
+
+    Ev ::= [.]
+        |  new E { f=v, .., f=Ev, e.. }
+        |  Ev.f
+        |  Ev e   |  v Ev
+        |  Ev.o(e) | v.o(Ev)
+        |  let x = Ev in e
+        |  just Ev
+        |  case Ev of just x => e; nothing => e
+        |  match Ev { .. }
+        |  handle Ev with { l => e }
+
+4.2  Reduction rules (selected)
+
+  (E-CTX)     <e, Sigma> --> <e', Sigma'>
+              -------------------------------------
+              <Ev[e], Sigma> --> <Ev[e'], Sigma'>
+
+  (E-APP)     <(flow (x:tau)!eps => e) v, Sigma> --> <e[v/x], Sigma>
+
+  (E-FIELD)   <(new E {.., f=v, ..}).f, Sigma> --> <v, Sigma>
+
+  (E-LET)     <let x = v in e, Sigma> --> <e[v/x], Sigma>
+
+  (E-CASE-J)  <case (just v) of just x => e_j; nothing => e_n, Sigma>
+                 --> <e_j[v/x], Sigma>
+  (E-CASE-N)  <case nothing   of just x => e_j; nothing => e_n, Sigma>
+                 --> <e_n, Sigma>
+
+  (E-MATCH)   v = new E_k {..}      arm (E_k x_k => e_k) present
+              -------------------------------------------------------
+              <match v { E_j x_j => e_j }, Sigma> --> <e_k[v/x_k], Sigma>
+
+  (E-RAISE)   <Ev[raise], Sigma> --> <RAISED, Sigma>
+              (propagates to the nearest enclosing `handle` for Raise; see Ch.9)
+
+  Effectful primitives (state, IO) reduce by consulting/updating Sigma; their
+  reduction is what a declared Read/Write/IO effect denotes. A flow whose type
+  carries <> never triggers a store-updating reduction — this is the dynamic
+  counterpart of INV-01 and is exactly the fact Preservation must maintain.
+
+--------------------------------------------------------------------------------
+Chapter 5 — Metatheory: Progress and Preservation
+--------------------------------------------------------------------------------
+
+SL-META-0001 states SEM-01 ("if a Sleela program type-checks, then no type error
+can occur at runtime") as a *rule*. That is backwards: type soundness is not a
+rule the language obeys by fiat, it is a *theorem* about the interaction of the
+typing rules (Chapter 3) and the reduction rules (Chapter 4). This chapter names
+the theorems and states them precisely. Their full proofs are scheduled for
+SL-SPEC; the structure below fixes exactly what must be proven.
+
+5.1  Definition (well-typed configuration).
+     A configuration <e, Sigma> is well-typed at tau ! eps if
+     Gamma; Delta |- e : tau ! eps and Sigma is well-typed with respect to
+     Gamma (every location holds a value of its declared type).
+
+5.2  Theorem (Progress).
+     If  {} ; Delta |- e : tau ! eps  then either
+       (a) e is a value, or
+       (b) e = Ev[raise] with Raise in eps and no enclosing handler (a declared,
+           typed outcome — not a stuck state), or
+       (c) there exist e', Sigma' with <e, Sigma> --> <e', Sigma'>.
+     In particular a well-typed FS term is never *stuck* on a type error:
+     it never attempts a field access on a non-entity, an application of a
+     non-flow, or an unhandled Maybe unwrap.
+
+5.3  Theorem (Preservation / Subject Reduction).
+     If  Gamma; Delta |- e : tau ! eps  and  <e, Sigma> --> <e', Sigma'>
+     with Sigma well-typed w.r.t. Gamma, then there exist tau', eps' with
+       Gamma; Delta |- e' : tau' ! eps',
+       |- tau' <: tau,  |- eps' <: eps,
+     and Sigma' is well-typed w.r.t. Gamma.
+     Crucially the effect row does not grow under reduction (eps' <: eps): a
+     step never introduces an effect the type did not already permit. This is
+     the formal content of INV-01 (Effect Declaration Completeness).
+
+5.4  Corollary (SEM-01, discharged).
+     By Progress + Preservation, a well-typed closed FS program either reduces
+     to a value, or diverges, or terminates in a declared Raise outcome. It
+     never reaches a type-erroneous stuck state. Thus SEM-01 holds as a derived
+     property, and INV-01, INV-09, and SEM-01 are all consequences of the same
+     two theorems rather than independent assertions.
+
+5.5  Proof obligations for SL-SPEC (see Appendix C for the register):
+     - Standard substitution lemma: typing is preserved under [v/x].
+     - Canonical forms lemma: a value of type tau1 -{eps}-> tau2 is a flow
+       literal; of type E is a `new E {..}`; of Maybe tau is just/nothing.
+     - Effect weakening lemma: if Gamma;Delta |- e : tau ! eps and eps <: eps'
+       then Gamma;Delta |- e : tau ! eps'.
+     - Preservation for E-HANDLE must show the handled effect is *removed*
+       from the row (Chapter 9), which is the only place the row shrinks.
+
+================================================================================
+Part II — Type Inference Discipline
+================================================================================
+
+--------------------------------------------------------------------------------
+Chapter 6 — Why Not Classic Hindley-Milner
+--------------------------------------------------------------------------------
+
+SL-META-0001 Section 5.1 states that "the type theory basis of Sleela is
+Hindley-Milner type inference, extended with (a) row polymorphism ... (b)
+structural subtyping for Contracts ... (c) an effect system ..." This claim is
+internally inconsistent and should be corrected.
+
+6.1  The problem. Classic Hindley-Milner (Algorithm W) rests on the existence
+     of *principal types* computed by first-order unification. Its principal-
+     type property is known to fail in the presence of subtyping: once a
+     subsumption rule (T-SUB, Chapter 3) is admitted, a term no longer has a
+     single most-general type under unification alone — it has a most-general
+     *constraint set*. SL-META-0001 admits subtyping twice: structurally for
+     Contracts (5.4) and over effect rows (SEM-09). Therefore "Hindley-Milner"
+     as literally stated cannot be the inference basis.
+
+6.2  Compounding factors already present in SL-META-0001:
+     - Local-only inference (5.2, "Type inference is performed locally ... not
+       globally") is *not* Hindley-Milner, which is a global algorithm. This is
+       actually good news (see Chapter 7) but it contradicts the HM label.
+     - Mandatory annotations at export boundaries (5.2) again diverge from HM,
+       which needs no annotations at all.
+
+--------------------------------------------------------------------------------
+Chapter 7 — The Adopted Discipline: Bidirectional Checking over Algebraic Subtyping
+--------------------------------------------------------------------------------
+
+We propose Sleela adopt, and SL-SPEC formalize, the following two-part
+discipline. It keeps everything SL-META-0001 actually wants (local inference,
+subtyping for Contracts and effects, row-typed Contexts and Effects) and drops
+only the inaccurate "Hindley-Milner" label.
+
+7.1  Bidirectional type checking at the outer level.
+     Two mutually recursive judgments replace global inference:
+        Gamma; Delta |- e => tau ! eps      (synthesis: e produces tau)
+        Gamma; Delta |- e <= tau ! eps      (checking: e checks against tau)
+     Introduction forms (flow literals, new, just/nothing) are *checked*;
+     elimination forms (application, field access, invocation) *synthesize*.
+     Annotations at export boundaries (SL-META 5.2) supply the checking type,
+     which is exactly why the requirement exists. This makes T-SUB algorithmic:
+     subsumption is applied only at the synthesis/checking mode switch.
+
+7.2  Algebraic subtyping (MLsub / Dolan) for the inferred interior.
+     Within a Flow body, where inference is desired, we adopt algebraic
+     subtyping in the style of Dolan & Mycroft. It provides:
+        - principal *types* even in the presence of subtyping (via polar types
+          and a distinction between input and output type positions),
+        - a natural, unifying treatment of *rows*, which we use for BOTH the
+          Context primitive (ambient row rho) and the Effect row (eps). This
+          directly realizes SL-META 5.1's "Effect row ... unified during type
+          inference in a manner analogous to the Context row" — algebraic
+          subtyping is the framework in which "analogous to" becomes "the same
+          mechanism."
+     Consequence: the two features SL-META-0001 names (row polymorphism +
+     subtyping) are not bolted onto HM; they are the *native* content of
+     algebraic subtyping, which subsumes HM as the subtyping-free special case.
+
+7.3  Proposed replacement text for SL-META 5.1 — see Appendix A, Amendment A-1.
+
+================================================================================
+Part III — The Effect Algebra
+================================================================================
+
+--------------------------------------------------------------------------------
+Chapter 8 — Effects as an Ordered Row
+--------------------------------------------------------------------------------
+
+SL-META-0001 describes effects two ways that do not compose: Section 5.1 calls
+them a *row* (unified during inference, i.e. an open, extensible set with a tail
+variable), while Section 5.4 calls them a *lattice* with `pure` at the bottom
+and `impure` at the top. Row unification and lattice meet/join are different
+operations over different structures. This chapter fixes a single primary
+structure and derives the other as a view.
+
+8.1  Primary structure: the effect row.
+     An effect is a set of labels drawn from an extensible label universe
+     {Read, Write, Raise, IO, ...}. An effect row is either closed (a finite
+     label set) or open (a label set plus a row variable r for the "rest").
+        eps ::= <>  |  <l | eps>  |  r
+     Rows are equal up to reordering and duplicate elision: <Read | <Write>> =
+     <Write | <Read>>, and <Read | <Read>> = <Read>. Formally, a closed row
+     denotes a finite subset of the label universe.
+
+8.2  Row subsumption (the ONLY subtyping on effects).
+        |- eps1 <: eps2   iff   labels(eps1) is a subset of labels(eps2)
+     under an appropriate treatment of the tail variable. This is SEM-09
+     ("E1 <: E2 iff E1 subset of E2") and it is exactly subset ordering.
+
+8.3  The lattice is a *derived view*, not a second structure.
+     Ordered by subset inclusion, closed rows form a lattice automatically:
+        bottom = <> = `pure`;   top = the full label universe = `impure`;
+        join = set union;   meet = set intersection.
+     SL-META 5.4's "lattice" is therefore not a competing definition but the
+     poset induced by 8.2. We recommend SL-META retain the word "lattice" only
+     as this derived view and define the row as primary. See Appendix A,
+     Amendment A-2.
+
+8.4  join in the typing rules. The `join` used throughout Chapter 3 (T-APP,
+     T-LET, etc.) is exactly row union under 8.3. Effects accumulate by union
+     as evaluation composes subterms; they never silently disappear — except at
+     a handler (Chapter 9), which is the sole shrinking operation.
+
+--------------------------------------------------------------------------------
+Chapter 9 — Effect Discharge (Handlers)
+--------------------------------------------------------------------------------
+
+This is the single most important *addition* to the model. As written,
+SL-META-0001 defines how effects are declared (SR-03), propagated (SEM-02), and
+accumulated, but provides no construct that *removes* an effect from a Flow's
+row. Without discharge, the effect row only ever grows: every program that does
+any I/O has `IO` in the row of `main`, every subterm that touches state is
+`Write`, and the effect system degrades from a type-and-effect system into a
+monotone taint tracker. Nothing can ever be made pure again by handling it.
+
+9.1  The handle construct.
+        handle e with { l => h }
+     evaluates e; if e performs effect l, control transfers to handler h. The
+     handled label l is *removed* from the resulting row.
+
+  (T-HANDLE)   Gamma; Delta |- e : tau ! eps
+               Gamma; Delta |- h : tau ! eps_h
+               ------------------------------------------------------------
+               Gamma; Delta |- handle e with { l => h }
+                                : tau ! ((eps minus l) join eps_h)
+
+     The result row is (eps with l removed) unioned with whatever the handler
+     itself does. If the handler is pure and l was the only effect, the whole
+     expression becomes pure again. This is the ONLY typing rule in which the
+     effect row shrinks, and it is what makes Preservation's "eps' <: eps"
+     (5.3) hold everywhere else.
+
+  (E-HANDLE-VAL)  <handle v with { l => h }, Sigma> --> <v, Sigma>
+  (E-HANDLE-RAISE) for l = Raise:
+        <handle Ev[raise] with { Raise => h }, Sigma> --> <h, Sigma>
+        (nearest enclosing Raise-handler catches; models exception discharge)
+
+9.2  Consequence for the Read/Write/IO labels. A `handle e with { IO => ... }`
+     that supplies IO via an in-memory implementation discharges the IO label,
+     enabling pure testing of effectful Flows — a concrete engineering payoff
+     that motivates the whole effect system (SL-META 1.1). Without Chapter 9
+     this payoff is unreachable.
+
+9.3  Proposed new rule for SL-META Chapter 5 — Appendix A, Amendment A-3
+     (SEM-11 Effect Discharge Rule) and a companion runtime rule.
+
+--------------------------------------------------------------------------------
+Chapter 10 — Correcting the Read/Write Lattice Direction
+--------------------------------------------------------------------------------
+
+SL-META-0001 Section 5.4 states: "Read Effects are subtypes of Write Effects."
+Combined with SEM-09 ("a Flow promising fewer Effects is substitutable for one
+promising more") this produces the wrong substitutability.
+
+10.1 The bug. Under 8.2, "Read <: Write" would have to mean labels({Read}) is a
+     subset of labels({Write}), which is false — they are distinct labels, so
+     neither is a subset of the other. If instead 5.4 intends an *ordering
+     among labels themselves* (a capability order where Write implies Read),
+     then the correct reading is: a flow that only Reads performs *fewer*
+     effects than one that Writes, so
+
+        <Read>  <:  <Read, Write>       (reader substitutable for writer-context)
+
+     i.e. {Read} is the subset. The direction "Read is a subtype of Write"
+     read as flows is inverted: a Read-only flow is the SAFE substitute where a
+     more-capable flow is expected, consistent with SEM-09, precisely because
+     its label set is smaller.
+
+10.2 Resolution. Do not order the labels Read and Write against each other at
+     all. Treat Write as the pair {Read, Write} at the point of use if the
+     intent is "writing implies the capability to read"; then subset ordering
+     (8.2) gives the correct and only substitutability, with no special-case
+     lattice edge. See Appendix A, Amendment A-4, which deletes the sentence
+     "Read Effects are subtypes of Write Effects" and replaces it with the
+     subset treatment.
+
+================================================================================
+Part IV — Conformance, Sealing, and Exhaustiveness
+================================================================================
+
+--------------------------------------------------------------------------------
+Chapter 11 — The Structural/Sealed Contradiction and Its Resolution
+--------------------------------------------------------------------------------
+
+Three provisions of SL-META-0001 are individually reasonable but jointly
+inconsistent:
+
+  (i)   5.2 / 5.4: Contract conformance is STRUCTURAL — "an Entity conforms to a
+        Contract if and only if it structurally implements all of the Contract's
+        required operations, regardless of whether it explicitly declares
+        conformance."
+  (ii)  SR-04 + "Sealed Hierarchies by Default" (5.2): a Pattern Block matching
+        a Contract-typed value must be EXHAUSTIVE over "every Entity known to
+        conform to that Contract within the compilation unit."
+  (iii) INV-03: `abstract contract` permits conformance from OTHER modules.
+
+11.1 Why they collide. If conformance is structural, then "the set of Entities
+     that conform to C" is not a declared, closed set — it is every present or
+     future Entity, in this or any other module, that happens to have the right
+     shape. Exhaustiveness checking (ii) requires a CLOSED set of variants.
+     Structural conformance makes the set OPEN. Therefore exhaustiveness over a
+     structurally-conformed Contract is unsound: a new conforming Entity added
+     in another module (permitted by iii) silently invalidates every existing
+     `match`, with no error at the match site. This breaks the safety SR-04
+     claims to provide.
+
+11.2 Resolution — split the concept into two kinds of Contract.
+
+     SEALED (nominal) Contracts:
+        - Conformance is by EXPLICIT declaration only (`entity E conforms C`).
+        - The set of conforming Entities is closed and known at the declaring
+          module. New conformers outside the module are rejected unless C is
+          declared `open`.
+        - `match` / Pattern Blocks are permitted and exhaustiveness is checked
+          against the closed variant set. This is FS's T-MATCH (Chapter 3),
+          which requires `Delta |- C sealed { E_1..E_n }`.
+
+     STRUCTURAL (open) Contracts:
+        - Conformance is structural, as in current 5.2 — any Entity of the
+          right shape conforms, in any module.
+        - `match` / Pattern Blocks are NOT permitted on a structural Contract
+          (WF-2 in Chapter 2). Consumers use operation invocation (duck-typed
+          dispatch), never exhaustive casing.
+
+     The distinction is exactly the one Scala (sealed trait vs. trait), Kotlin
+     (sealed interface vs. interface), and Rust (enum vs. trait objects) draw,
+     and for the same reason. It preserves both goals of SL-META-0001 — the
+     flexibility of structural conformance AND the safety of exhaustive
+     matching — by never applying them to the same Contract.
+
+11.3 Effect on SR-04, SEM-05, and 5.2. SR-04 should say "a Pattern Block may
+     match only on a SEALED Contract, and must be exhaustive over that
+     Contract's declared conforming Entities." SEM-05 (Contract Conformance)
+     remains correct for both kinds; only the *matchability* differs. See
+     Appendix A, Amendment A-5.
+
+================================================================================
+Part V — Lens Laws
+================================================================================
+
+--------------------------------------------------------------------------------
+Chapter 12 — The Three Lens Laws and the Effectful-Lens Restriction
+--------------------------------------------------------------------------------
+
+SL-META-0001 states the lens laws in two places that disagree, and both are
+incomplete:
+  - INV-04 lists only  s(a, g(a)) = a          (GetPut)
+  - SEM-04 lists  g(s(a,v)) = v  (PutGet)  and  s(a, g(a)) = a  (GetPut)
+Neither states PutPut, which is required for the "Lenses ... form a category"
+and "composition is associative" claims of SL-META 2.3.
+
+12.1 The three laws. A well-behaved Lens L with get g : A -> B and
+     set s : A x B -> A must satisfy:
+
+        (GetPut)  s(a, g(a)) = a
+                    "setting the value you just got changes nothing"
+        (PutGet)  g(s(a, v)) = v
+                    "getting after setting returns what you set"
+        (PutPut)  s(s(a, v1), v2) = s(a, v2)
+                    "a later set overrides an earlier one"
+
+     A Lens satisfying GetPut + PutGet is *well-behaved*. A Lens ALSO satisfying
+     PutPut is *very well-behaved*. Only very-well-behaved lenses compose into a
+     lawful category with associative composition; therefore SL-META 2.3's
+     categorical claim REQUIRES PutPut. Both INV-04 and SEM-04 must be amended
+     to state all three. See Appendix A, Amendment A-6.
+
+12.2 Effectful lenses (SR-09) and the laws. SR-09 permits a Lens whose `set`
+     declares effects ("effectful lens"). But the three laws above are
+     EQUATIONAL and presuppose that get and set are pure functions; the equation
+     g(s(a,v)) = v is not even well-formed if s performs I/O, because s(a,v) is
+     then not a value but an effectful computation. Resolution:
+
+        - The algebraic laws (12.1) and the "forms a category" guarantee apply
+          ONLY to pure lenses.
+        - An effectful lens is a DIFFERENT object: a pair of Flows with a
+          non-empty effect row. It does not claim the lens laws and MUST NOT be
+          composed via the categorical `>>` operator (SL-META 2.3), which is
+          defined only for lawful lenses.
+        - SR-09's allowance stands, but SL-META must state that effectful lenses
+          forfeit the algebraic guarantees and the composition algebra. See
+          Appendix A, Amendment A-7.
+
+================================================================================
+Part VI — Determinism
+================================================================================
+
+--------------------------------------------------------------------------------
+Chapter 13 — Canonical Ordering for Deterministic Compilation
+--------------------------------------------------------------------------------
+
+CR-03 (Deterministic IR) requires byte-identical IR "regardless of platform,
+thread scheduling, or hash seed randomization." This cannot be guaranteed by
+decree: several compiler operations iterate over sets, and set iteration order
+is exactly what hash-seed randomization perturbs. Determinism must be *designed
+in* by fixing a total order at every such site.
+
+13.1 Sites that iterate over unordered collections:
+     - Structural conformance discovery (which Entities conform to a structural
+       Contract) — a set membership computation.
+     - Rule evaluation across compilation units — SL-META 2.3 says
+       "topological dependency order," but topological order is not unique.
+     - Effect-row and Context-row canonicalization — rows are equal up to
+       reordering (8.1), so a canonical serialization order is needed.
+     - Contract operation sets, Entity field sets, Derive Block output.
+
+13.2 The canonical order rule (proposed). At every site above, iteration and
+     emission proceed in a single total order defined as:
+        primary key:   source declaration order within a compilation unit;
+        cross-unit:    a topological sort broken by fully-qualified name
+                        (lexicographic, NFC-normalized UTF-8 code points);
+        rows/sets with no source order (e.g. inferred effect rows):
+                        sorted by label name, then by origin position.
+     This makes "topological dependency order" (2.3) and CR-03 realizable:
+     the tie-break by FQN removes the freedom that non-unique topological sorts
+     and hashed set iteration would otherwise leave. See Appendix A,
+     Amendment A-8, which adds this as CR-09 (Canonical Ordering Rule).
+
+================================================================================
+Appendix A — Redline: Specific Amendments Proposed to SL-META-0001
+================================================================================
+
+Each amendment is a concrete, ratifiable change. Format: [target] OLD -> NEW.
+
+A-1  [SL-META 5.1, type theory basis]
+     OLD: "The type theory basis of Sleela is Hindley-Milner type inference,
+           extended with (a) row polymorphism ... (b) structural subtyping ...
+           (c) an effect system ..."
+     NEW: "The type discipline of Sleela is bidirectional type checking at
+           declaration boundaries over an algebraic-subtyping core (in the style
+           of Dolan & Mycroft's MLsub). Algebraic subtyping natively provides
+           principal types in the presence of subtyping, and a single row
+           mechanism that serves both the Context primitive and the Effect
+           system. Classic Hindley-Milner is the subtyping-free special case.
+           Full inference is confined to Flow bodies; module-exported
+           declarations require explicit annotations, which supply the checking
+           direction." (See SL-FORMAL-0001 Chapters 6-7.)
+
+A-2  [SL-META 5.4, effect structure]
+     Reconcile with SL-META 5.1: declare the EFFECT ROW primary and the LATTICE
+     derived. Add: "Effects form an extensible row; row subsumption is subset
+     inclusion (SEM-09). The effect lattice of this section is the poset induced
+     by that subset order: bottom = pure = <>, top = impure = full label set,
+     join = union, meet = intersection. It is a derived view, not an independent
+     structure." (See SL-FORMAL-0001 Chapter 8.)
+
+A-3  [SL-META Chapter 5, NEW rule SEM-11; and Chapter 7, NEW runtime rule]
+     ADD SEM-11 Effect Discharge Rule: "A `handle` construct discharges a named
+     effect label from the effect row of its guarded expression. The handled
+     label is removed from the resulting Flow's declared Effect set; this is the
+     only operation that reduces an Effect row. A Flow all of whose effects are
+     discharged becomes pure." (See SL-FORMAL-0001 Chapter 9.)
+     Rationale: without discharge the Effect system is a monotone taint tracker,
+     not a type-and-effect system, and effectful Flows can never be tested
+     purely.
+
+A-4  [SL-META 5.4, Effect Subtyping paragraph]
+     OLD: "Read Effects are subtypes of Write Effects."
+     NEW: (delete the sentence). "Effect labels are not ordered against one
+           another; the only subtyping on effects is subset inclusion of label
+           sets (SEM-09). Where a capability model is intended (writing implies
+           the ability to read), model Write at a use site as the set
+           {Read, Write}; subset inclusion then yields the correct and only
+           substitutability, with a Read-only Flow substitutable where a
+           more-capable Flow is expected." (See SL-FORMAL-0001 Chapter 10.)
+
+A-5  [SL-META 5.2 / 5.4 / SR-04, conformance and matching]
+     ADD the sealed/structural Contract distinction:
+       - Sealed (nominal) Contracts: conformance by explicit declaration;
+         closed variant set; Pattern Blocks permitted with exhaustiveness
+         checked against the declared conformers.
+       - Structural (open) Contracts: structural conformance as in current 5.2;
+         Pattern Blocks NOT permitted; consumers use operation invocation only.
+     AMEND SR-04: "A Pattern Block may match only on a SEALED Contract and must
+       be exhaustive over that Contract's declared conforming Entities (or
+       provide an explicit wildcard)." (See SL-FORMAL-0001 Chapter 11.)
+
+A-6  [SL-META INV-04 and SEM-04, lens laws]
+     REPLACE both with the full set of three laws:
+       (GetPut)  s(a, g(a)) = a
+       (PutGet)  g(s(a, v)) = v
+       (PutPut)  s(s(a, v1), v2) = s(a, v2)
+     State that PutPut is required for the categorical composition claim of
+     SL-META 2.3, and that INV-04 and SEM-04 must agree. (See SL-FORMAL-0001
+     Chapter 12.)
+
+A-7  [SL-META SR-09, effectful lenses]
+     ADD: "The Lens laws (INV-04/SEM-04) and the Lens composition algebra
+     (2.3) apply only to pure Lenses. An effectful Lens forfeits the algebraic
+     guarantees and may not be composed via the categorical composition
+     operator." (See SL-FORMAL-0001 Chapter 12.2.)
+
+A-8  [SL-META Chapter 6, NEW rule CR-09]
+     ADD CR-09 Canonical Ordering Rule: "Wherever the compiler iterates over or
+     serializes an unordered collection (structural conformance sets, cross-unit
+     rule order, effect/Context rows, field and operation sets), it must use a
+     single total order: source declaration order within a unit; cross-unit
+     topological order broken by NFC-normalized fully-qualified name; and for
+     collections with no source order, sorted by name then origin. This makes
+     CR-03 (Deterministic IR) realizable." (See SL-FORMAL-0001 Chapter 13.)
+
+A-9  [SL-META cross-cutting, rule/invariant direction]
+     Adopt one direction consistently: INVARIANTS are properties that hold of
+     well-formed programs; RULES are the mechanisms (typing/compilation) that
+     enforce them. Where a rule restates an invariant (SR-03 vs INV-01,
+     SR-07 vs INV-07, SEM-06 vs INV-05), the Rule Index (Appendix C of SL-META)
+     should cross-link "rule R enforces invariant I" rather than duplicating the
+     statement. (Editorial; no semantic change.)
+
+================================================================================
+Appendix B — Open Questions for the SLDC
+================================================================================
+
+B-1  Context suppression vs. monotonic propagation. SEM-03 forbids removing keys
+     from an ambient Context downstream, but 2.3 permits a "context barrier" that
+     suppresses a Context. Is suppression (a) shadowing (key present but
+     inaccessible — compatible with SEM-03), or (b) removal (row minus key —
+     violates SEM-03)? This document assumes (a). SLDC to confirm.
+
+B-2  Rules as predicates vs. rewriters. 2.3 / INV-08 treat Rules both as
+     constraints (predicates over the AST) and as transformations (which can
+     rewrite the AST and thereby interfere, INV-08). These need different
+     soundness arguments. Should FS/SL-SPEC restrict compile-time Rules to pure
+     predicates, with rewriting confined to Desugaring (Phase 3)?
+
+B-3  Diagnostic namespace. SL-E-XXXX / SL-W-0001 are referenced but never
+     defined. Propose a stability policy: codes are permanent, never reused or
+     renumbered; a registry file governs allocation.
+
+B-4  Version taxonomy. Three version axes exist (syntax pragma `#sleela M.N`,
+     document revision, SRL version). A single normative table should state
+     which governs what and the permitted drift between them.
+
+B-5  Non-goal framing. "Not a research language" (1.3) sits uneasily beside a
+     language-level effect system, row polymorphism, and algebraic lenses.
+     Recommend a sentence acknowledging these are ambitious features adopted for
+     engineering payoff, not theoretical novelty — so the non-goal is not read
+     as inaccurate.
+
+================================================================================
+Appendix C — Metatheorem Register
+================================================================================
+
+The following must be proven in SL-SPEC to discharge the properties SL-META-0001
+asserts. Each entry names the theorem/lemma, its statement location in this
+document, and the SL-META provision it discharges.
+
+  MT-01  Substitution Lemma .................. 5.5      (foundation)
+  MT-02  Canonical Forms Lemma ............... 5.5      (foundation)
+  MT-03  Effect Weakening Lemma .............. 5.5      supports SEM-09
+  MT-04  Progress ............................ 5.2      part of SEM-01
+  MT-05  Preservation (Subject Reduction) .... 5.3      INV-01, INV-09, SEM-01
+  MT-06  Effect Rows Do Not Grow Under Step ... 5.3     INV-01 (dynamic half)
+  MT-07  Handler Discharge Soundness ......... 9.1      SEM-11 (proposed)
+  MT-08  Exhaustiveness Decidability (sealed) . 11.2    SR-04 (amended)
+  MT-09  Lens Law Preservation under >> ....... 12.1    INV-04/SEM-04, 2.3
+  MT-10  Deterministic IR under Canonical Order  13.2   CR-03
+
+End of Document — SL-FORMAL-0001 Revision 0.1.0 — Sleela Language Design Council — September 2026
