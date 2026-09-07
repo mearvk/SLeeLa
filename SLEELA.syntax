@@ -1,0 +1,285 @@
+# Sleela — Language Syntax Specification
+
+    Language:        Sleela
+    Version:         9.09.1
+    Surface:         Java-like
+    Core:            Turing-complete, thread-friendly C/C++ execution core
+    Companion:       SHEET.sheet (system-object catalog), SST.model (NS-SST-0001)
+    Status:          Normative for the v9.09.1 surface
+
+Sleela is a **Java-like** programming language. Its programs are classes of
+fields and methods that compile to bytecode on the C/C++ core. Beyond ordinary
+Java-like code, Sleela can **address every object type named in `SHEET.sheet`**
+through its *conducted methods*, and it honors the **Constitution** invariants
+(system depth 3024, complexity degree ≤ 4).
+
+This document is normative for the syntax the v9.09.1 front end accepts. Every
+production and built-in below is implemented in `impl/frontend` and executes on
+`impl/core`.
+
+--------------------------------------------------------------------------------
+## 1. Lexical grammar
+
+### 1.1 Encoding & trivia
+Source is UTF-8. Whitespace (space, tab, CR, LF) separates tokens and is
+otherwise insignificant. Two comment forms:
+
+    // line comment — to end of line
+    /* block comment — may span lines */
+
+### 1.2 Keywords (reserved)
+
+    class   static   void
+    int     double   boolean   String
+    if      else     while     for      return
+    true    false    null      print
+
+`print` is a reserved statement keyword (§4.6). The seven conducted-method and
+six threading names (§6, §7) are **contextual built-ins**, not reserved words:
+they are recognized in call position only, so they may otherwise be used as
+identifiers.
+
+### 1.3 Identifiers
+
+    ident      ::= (letter | "_") (letter | digit | "_")*
+
+Case-sensitive. Class names are conventionally `PascalCase`; methods and
+variables `camelCase` (convention, not enforced).
+
+### 1.4 Literals
+
+    int-lit    ::= digit+                         // 64-bit signed
+    double-lit ::= digit+ "." digit+
+    bool-lit   ::= "true" | "false"
+    string-lit ::= '"' (char | escape)* '"'       // escapes: \n \t \r \\ \"
+    null-lit   ::= "null"
+
+### 1.5 Operators & punctuation
+
+    arithmetic   +   -   *   /   %
+    comparison   ==  !=  <   <=  >   >=
+    logical      &&  ||  !
+    assignment   =
+    grouping     (   )   {   }
+    separators   ;   ,
+
+--------------------------------------------------------------------------------
+## 2. Program structure
+
+    program    ::= class-decl+
+    class-decl ::= "class" ident "{" member* "}"
+    member     ::= field-decl | method-decl
+
+A program is one or more classes. Execution begins at the method named `main`
+(signature `void main()`); exactly one `main` is required across the program.
+
+--------------------------------------------------------------------------------
+## 3. Types & declarations
+
+### 3.1 Types
+
+    type       ::= "int" | "double" | "boolean" | "String" | "void"
+
+`int` is 64-bit. `void` is a return type only. The core is dynamically typed
+underneath; v9.09.1 type annotations are surface-level (parsed, not enforced),
+so a declared type documents intent without constraining the runtime value.
+
+### 3.2 Fields (shared state)
+
+    field-decl ::= ["static"] type ident ["=" expr] ";"
+
+A field is **class-level shared state** and compiles to a thread-safe core
+global. Fields declared with initializers are initialized once, in order, at the
+top of `main`. Because fields are shared, they are the correct place for state
+that spawned threads (§7) read or write.
+
+### 3.3 Methods
+
+    method-decl ::= ["static"] type ident "(" params? ")" block
+    params      ::= param ("," param)*
+    param       ::= type ident
+
+`static` is accepted and optional; all methods behave as static (bound to the
+class, not an instance). Method **locals** are per-thread; **fields** are shared.
+
+--------------------------------------------------------------------------------
+## 4. Statements
+
+    block      ::= "{" statement* "}"
+    statement  ::= block
+                 | var-decl
+                 | assign
+                 | if-stmt
+                 | while-stmt
+                 | for-stmt
+                 | return-stmt
+                 | print-stmt
+                 | expr-stmt
+
+### 4.1 Local variable declaration
+    var-decl   ::= type ident ["=" expr] ";"
+
+### 4.2 Assignment
+    assign     ::= ident "=" expr ";"
+Resolves to a local if one is in scope, otherwise to a field (a local shadows a
+field of the same name).
+
+### 4.3 If / else
+    if-stmt    ::= "if" "(" expr ")" statement ["else" statement]
+
+### 4.4 While
+    while-stmt ::= "while" "(" expr ")" statement
+
+### 4.5 For
+    for-stmt   ::= "for" "(" [simple] ";" [expr] ";" [simple] ")" statement
+    simple     ::= var-decl-noSemi | assign-noSemi | expr
+
+### 4.6 Print (built-in output)
+    print-stmt ::= "print" "(" expr ")" ";"
+Renders the value and appends a newline; each printed line is atomic across
+threads.
+
+### 4.7 Return
+    return-stmt ::= "return" [expr] ";"
+
+### 4.8 Expression statement
+    expr-stmt  ::= expr ";"
+Typically a call (including a conducted-method or threading built-in used for
+its effect).
+
+--------------------------------------------------------------------------------
+## 5. Expressions (precedence, lowest → highest)
+
+    expr        ::= logic-or
+    logic-or    ::= logic-and   ("||" logic-and)*
+    logic-and   ::= equality    ("&&" equality)*
+    equality    ::= comparison  (("==" | "!=") comparison)*
+    comparison  ::= additive    (("<" | "<=" | ">" | ">=") additive)*
+    additive    ::= multiplic.  (("+" | "-") multiplic.)*
+    multiplic.  ::= unary       (("*" | "/" | "%") unary)*
+    unary       ::= ("-" | "!") unary | primary
+    primary     ::= int-lit | double-lit | string-lit | bool-lit | null-lit
+                  | ident
+                  | call
+                  | "(" expr ")"
+    call        ::= ident "(" args? ")"
+    args        ::= expr ("," expr)*
+
+`+` is arithmetic on numbers and **concatenation** when either operand is a
+`String` (Java-style). Comparisons and logical operators yield `boolean`.
+
+--------------------------------------------------------------------------------
+## 6. Conducted methods — addressing `.sheet` object types
+
+Sleela's defining v9.09.1 feature: a program can **address every object type in
+`SHEET.sheet`** — all 16 role categories (root, start, idiom, highlight, call,
+method, attention, gain, conversation, piping, transitive, completitive,
+inheritance, smart-move, congruence, limit) and every object within them — via
+*conducted methods*. These are contextual built-ins resolved against the catalog
+at compile time; an object is named by a **string literal**.
+
+    conduct("Name")        -> boolean   // is Name a catalogued object?
+    role("Name")           -> String    // its conduct role (one of the 16)
+    insight("Name")        -> String    // its insight/gloss
+    congruent("A", "B")    -> boolean    // do A and B route to a congruence?
+    route("A", "B")        -> String     // "A -> B" if congruent, else ""
+    sysdepth()             -> int        // Constitution: system depth (3024)
+    degreemax()            -> int        // Constitution: complexity degree max (4)
+
+**Addressing any object type.** Because the argument is any catalogued name,
+these built-ins reach the whole `SHEET.sheet` object space uniformly — there is
+no per-type syntax to learn. Examples across roles:
+
+    conduct("System")          // root
+    role("Pipeline")           // -> "piping"
+    role("CircuitBreaker")     // -> "smart-move"
+    insight("Reward")          // gain: "accrued value guiding adaptive behavior."
+    insight("Invariant")       // congruence/constraint
+    congruent("Retry", "CircuitBreaker")   // same role -> true
+    route("Pipeline", "Stream")            // siblings   -> "Pipeline -> Stream"
+
+**Congruence rule.** `congruent(A, B)` is true when A and B share a conduct role
+or are listed as each other's siblings in `SHEET.sheet` — this is the routable
+relation used for system insight and connection.
+
+--------------------------------------------------------------------------------
+## 7. Threading (bounded, thread-friendly)
+
+The core provides a bounded, clean concurrency model (up to **128** threads).
+Sleela exposes it as contextual built-ins:
+
+    spawn(method)          // start a no-arg method on a new thread; yields a thread id
+    join()                 // wait for all spawned threads to finish
+    lock(n)                // acquire lock-table slot n   (n a compile-time int, 0..31)
+    unlock(n)              // release lock-table slot n
+    send(slot, value)      // put the 2-tuple (slot, value) on the mailbox line
+    recv(slot)             // block until a tuple arrives on slot; yields its value
+
+Guidance: guard shared **field** access with `lock`/`unlock`; hand values
+between threads over the 2-tuple mailbox with `send`/`recv`; `join()` before
+reading final results. `print` output stays atomic per line.
+
+--------------------------------------------------------------------------------
+## 8. The Constitution (invariants in force)
+
+Every Sleela program runs under the ordained invariants (see README §The
+Constitution):
+
+  * **System depth** = `sysdepth()` = **3024** — maximum reachability depth.
+  * **Complexity degree** = `degreemax()` = **4** — maximum connection order
+    (1 direct · 2 mediated · 3 brokered · 4 federated).
+  * **Connect rule**: connecting `n` congruent-linear systems is permitted iff
+    `n <= 3024` and `degree(topology) <= 4`.
+
+These values are constants a program can read directly via the conducted
+methods, so behavior can be gated on the system's own limits.
+
+--------------------------------------------------------------------------------
+## 9. Complete example
+
+    // v9.09.1 — Java-like surface + conducted methods + threading.
+    class Atlas {
+
+        int hits = 0;                        // shared field (thread-safe global)
+
+        void worker() {
+            lock(0);
+            hits = hits + 1;                 // guarded shared update
+            unlock(0);
+            send(1, 1);                      // announce completion on the burble line
+        }
+
+        void main() {
+            // Address .sheet object types by name (any of the 16 roles).
+            print("depth=" + sysdepth() + " degree<=" + degreemax());
+            print(role("Pipeline") + ": " + insight("Pipeline"));
+            print(route("Retry", "CircuitBreaker"));   // same role -> a route
+
+            // Bounded concurrency: spawn 8 workers, drain, join.
+            int i = 0;
+            while (i < 8) { spawn(worker); i = i + 1; }
+            int got = 0;
+            while (got < 8) { recv(1); got = got + 1; }
+            join();
+            print("hits = " + hits);
+        }
+    }
+
+Expected output (order of the concurrent phase aside):
+
+    depth=3024 degree<=4
+    piping: an ordered composition of transforming stages.
+    Retry -> CircuitBreaker
+    hits = 8
+
+--------------------------------------------------------------------------------
+## 10. Reserved-word & built-in summary
+
+    keywords (14):  class static void int double boolean String
+                    if else while for return true false null print
+    conduct (7):    conduct role insight congruent route sysdepth degreemax
+    threading (6):  spawn join lock unlock send recv
+
+--------------------------------------------------------------------------------
+Sleela 9.09.1 — Java-like surface, addressing the full SHEET.sheet object space,
+on the Turing-complete threaded C/C++ core.
