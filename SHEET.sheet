@@ -1,0 +1,797 @@
+#sheet SHEET.sheet
+#kind  system-object-catalog
+#for   Sleela / Nordshrift software systems
+#rev   1.0.0
+
+# ===========================================================================
+# SHEET.sheet — Catalog of Common System Objects in Software Programming
+# ===========================================================================
+# A structured naming sheet. Each section names the common objects of a given
+# category, together with any well-known child and sibling objects. `System`
+# itself is the root object (see section 0). Objects are written as:
+#
+#     object-name
+#       children:  a, b, c        # objects owned / composed by this one
+#       siblings:  x, y, z        # peer objects at the same conceptual level
+#       note:      short gloss
+#
+# Categories (as requested):
+#   0  System (root)              8  gain
+#   1  standard starts            9  conversations
+#   2  idioms                    10  pipings
+#   3  highlights                11  transitives
+#   4  calls                     12  completitives
+#   5  methods                   13  inheritances
+#   6  attentions                14  smart moves
+#   7  (see 6/attentions)        15  congrains (constraints)
+#                                16  limits
+# ===========================================================================
+
+
+# ---------------------------------------------------------------------------
+# 0. SYSTEM — the root object
+# ---------------------------------------------------------------------------
+# The System is the whole; every other object in this sheet is reachable from
+# it. It carries the two governing invariants of this catalog.
+section system:
+
+  System
+    children:  Subsystem, Module, Component, Service, Process, Resource, Runtime, Kernel
+    siblings:  Environment, Platform, Host
+    note:      the composite root; owns lifecycle, identity, and topology.
+
+  # ---- governing invariants -------------------------------------------------
+  # Relevant system depth: 3024. This is the maximum nesting/reachability depth
+  # measured from System down to any leaf object.
+  depth:       3024
+
+  # Connectivity invariant: up to 3024 congruent linear systems may be
+  # connected together, provided the composed system's complexity degree never
+  # exceeds 4. "Congruent linear" = same shape, connected end-to-end in a chain
+  # or lattice; "degree of complexity" counts the interaction order between any
+  # two connected systems (1 = direct, 2 = mediated, 3 = brokered, 4 = federated).
+  congruent-linear-systems-max:   3024
+  complexity-degree-max:          4
+  invariant:   connect(n) is permitted when n <= 3024 AND degree(topology) <= 4
+
+  Subsystem
+    children:  Module, Component
+    siblings:  System, Service
+    note:      a bounded region of System with its own local invariants.
+
+  Module
+    children:  Package, Namespace, Unit
+    siblings:  Component, Library
+    note:      a unit of code organization and compilation.
+
+  Component
+    children:  Interface, Implementation, Port
+    siblings:  Module, Service
+    note:      a replaceable part exposing and requiring interfaces.
+
+  Service
+    children:  Endpoint, Handler, Contract
+    siblings:  Component, Daemon
+    note:      a long-lived provider of capability over a boundary.
+
+  Runtime
+    children:  Scheduler, Allocator, GarbageCollector, ThreadPool
+    siblings:  Kernel, VirtualMachine
+    note:      the machinery that executes and manages running code.
+
+  Kernel
+    children:  Scheduler, MemoryManager, DeviceDriver, SyscallTable
+    siblings:  Runtime, Hypervisor
+    note:      the privileged core mediating hardware and processes.
+
+  Process
+    children:  Thread, AddressSpace, FileDescriptor, Signal
+    siblings:  Task, Job
+    note:      an isolated unit of execution with its own resources.
+
+  Thread
+    children:  Stack, Register, ThreadLocal
+    siblings:  Fiber, Coroutine
+    note:      a schedulable line of execution within a Process.
+
+  Resource
+    children:  Handle, Buffer, Connection, Lock
+    siblings:  Asset, Capability
+    note:      anything acquired, held, and released under a lifecycle.
+
+
+# ---------------------------------------------------------------------------
+# 1. STANDARD STARTS — canonical entry points and bootstraps
+# ---------------------------------------------------------------------------
+section standard-starts:
+
+  Main
+    children:  ArgumentVector, ExitCode
+    siblings:  Entrypoint, Bootstrap
+    note:      the conventional program start; `main()`.
+
+  Entrypoint
+    children:  Init, Startup
+    siblings:  Main, Loader
+    note:      the first user code the runtime hands control to.
+
+  Bootstrap
+    children:  Bootloader, Initializer, Seed
+    siblings:  Init, Loader
+    note:      staged bring-up of a system from a minimal core.
+
+  Init
+    children:  ConfigLoad, DependencyWire, RegisterHooks
+    siblings:  Setup, Constructor
+    note:      one-time initialization before steady-state work.
+
+  Constructor
+    children:  Allocator, FieldInitializer
+    siblings:  Factory, Builder
+    note:      object creation and invariant establishment.
+
+  Factory
+    children:  AbstractFactory, Prototype, Pool
+    siblings:  Constructor, Builder
+    note:      centralized creation decoupling caller from concrete type.
+
+  Loader
+    children:  ClassLoader, ModuleLoader, PluginLoader
+    siblings:  Linker, Bootstrap
+    note:      brings code/data into the running image.
+
+  HelloWorld
+    children:  -
+    siblings:  Smoke, Ping
+    note:      the minimal proof-of-life start.
+
+
+# ---------------------------------------------------------------------------
+# 2. IDIOMS — recurring shapes and named patterns
+# ---------------------------------------------------------------------------
+section idioms:
+
+  RAII                       # Resource Acquisition Is Initialization
+    children:  Guard, ScopeExit
+    siblings:  TryFinally, Defer
+    note:      tie resource lifetime to object/scope lifetime.
+
+  Iterator
+    children:  ForwardIterator, BidirectionalIterator, RandomAccessIterator
+    siblings:  Enumerator, Generator, Cursor
+    note:      sequential access without exposing representation.
+
+  Singleton
+    children:  LazyHolder
+    siblings:  Registry, Monostate
+    note:      exactly one instance with a global access point.
+
+  Observer
+    children:  Subject, Listener, Subscription
+    siblings:  PubSub, Signal
+    note:      one-to-many change notification.
+
+  Strategy
+    children:  Policy, Comparator
+    siblings:  Visitor, Command
+    note:      interchangeable algorithms behind one interface.
+
+  Visitor
+    children:  Element, AcceptMethod
+    siblings:  Strategy, Interpreter
+    note:      add operations to a type hierarchy without editing it.
+
+  Decorator
+    children:  Wrapper
+    siblings:  Adapter, Proxy
+    note:      layer behavior around an object transparently.
+
+  Adapter
+    children:  Shim, Bridge
+    siblings:  Decorator, Facade
+    note:      make an incompatible interface usable.
+
+  Builder
+    children:  FluentBuilder, StepBuilder
+    siblings:  Factory, Prototype
+    note:      construct complex objects step by step.
+
+  MementoIdiom
+    children:  Snapshot, Caretaker
+    siblings:  Undo, Checkpoint
+    note:      capture/restore state without breaking encapsulation.
+
+  NullObject
+    children:  -
+    siblings:  Optional, Maybe
+    note:      a do-nothing default that avoids null checks.
+
+
+# ---------------------------------------------------------------------------
+# 3. HIGHLIGHTS — the load-bearing objects worth calling out
+# ---------------------------------------------------------------------------
+section highlights:
+
+  Interface
+    children:  Method, Property, Event
+    siblings:  AbstractClass, Protocol, Trait
+    note:      a contract of capability with no implementation.
+
+  Contract
+    children:  Precondition, Postcondition, Invariant
+    siblings:  Interface, Specification
+    note:      the promises an object makes and requires.
+
+  StateMachine
+    children:  State, Transition, Guard, Action
+    siblings:  Workflow, Automaton
+    note:      explicit states and legal transitions.
+
+  Registry
+    children:  Entry, Key, Lookup
+    siblings:  Directory, Catalog
+    note:      a named lookup table of live objects.
+
+  EventLoop
+    children:  Queue, Poller, Timer, Callback
+    siblings:  Reactor, Dispatcher
+    note:      central wait-and-dispatch driver.
+
+  Cache
+    children:  Entry, EvictionPolicy, TTL
+    siblings:  Buffer, Memo
+    note:      fast reuse of previously computed/fetched values.
+
+
+# ---------------------------------------------------------------------------
+# 4. CALLS — invocation objects and forms
+# ---------------------------------------------------------------------------
+section calls:
+
+  Call
+    children:  Argument, ReturnValue, Frame
+    siblings:  Invocation, Dispatch
+    note:      the act of transferring control to a callable.
+
+  CallStack
+    children:  Frame, ReturnAddress
+    siblings:  Heap, OperandStack
+    note:      the LIFO record of active calls.
+
+  Callback
+    children:  Continuation, Handler
+    siblings:  Hook, Listener
+    note:      a callable passed to be invoked later.
+
+  RPC                        # remote procedure call
+    children:  Stub, Skeleton, Marshaller, Transport
+    siblings:  RESTCall, MessageSend
+    note:      invoke a procedure across a process/host boundary.
+
+  SystemCall
+    children:  Trap, SyscallNumber
+    siblings:  Interrupt, Fault
+    note:      request a privileged service from the Kernel.
+
+  VirtualCall
+    children:  VTable, DispatchEntry
+    siblings:  StaticCall, DynamicDispatch
+    note:      runtime-resolved method dispatch.
+
+  TailCall
+    children:  -
+    siblings:  Call, Recursion
+    note:      a call in tail position, eligible for frame reuse.
+
+
+# ---------------------------------------------------------------------------
+# 5. METHODS — the members that do work
+# ---------------------------------------------------------------------------
+section methods:
+
+  Method
+    children:  Parameter, Body, ReturnType, Signature
+    siblings:  Function, Procedure
+    note:      a named operation bound to a type.
+
+  Function
+    children:  Closure, Parameter, ReturnValue
+    siblings:  Method, Lambda
+    note:      a callable, possibly free of any object.
+
+  Constructor
+    children:  InitializerList
+    siblings:  Destructor, Factory
+    note:      builds and validates a new instance.
+
+  Destructor
+    children:  Finalizer
+    siblings:  Constructor, Dispose
+    note:      releases an object's held resources.
+
+  Accessor
+    children:  Getter, Setter
+    siblings:  Property, Lens
+    note:      controlled read/write of internal state.
+
+  Override
+    children:  -
+    siblings:  Overload, Shadow
+    note:      redefine an inherited method in a subtype.
+
+  StaticMethod
+    children:  -
+    siblings:  InstanceMethod, ClassMethod
+    note:      a method not bound to an instance.
+
+  Coroutine
+    children:  Yield, Resume, SuspendPoint
+    siblings:  Generator, Fiber
+    note:      a method that can suspend and resume.
+
+
+# ---------------------------------------------------------------------------
+# 6. ATTENTIONS — objects that watch, signal, and demand handling
+# ---------------------------------------------------------------------------
+section attentions:
+
+  Signal
+    children:  Handler, Mask, DeliveryQueue
+    siblings:  Interrupt, Event
+    note:      asynchronous notification to a Process/Thread.
+
+  Interrupt
+    children:  ISR, InterruptVector, Priority
+    siblings:  Signal, Trap
+    note:      hardware/software attention request to the Kernel.
+
+  Exception
+    children:  StackTrace, Cause, Handler
+    siblings:  Error, Fault, Panic
+    note:      a raised condition unwinding the CallStack.
+
+  Watchdog
+    children:  Timer, Heartbeat, Reset
+    siblings:  Monitor, Sentinel
+    note:      detects and reacts to a stalled system.
+
+  Monitor
+    children:  Probe, Threshold, Alert
+    siblings:  Watchdog, Logger
+    note:      observes health/metrics and raises attentions.
+
+  Alarm
+    children:  Trigger, Severity, Acknowledgement
+    siblings:  Alert, Notification
+    note:      a raised, actionable attention with severity.
+
+  Assertion
+    children:  Predicate, Message
+    siblings:  Guard, Invariant
+    note:      a fail-fast check on an expected condition.
+
+
+# ---------------------------------------------------------------------------
+# 7. (reserved / folded into ATTENTIONS above)
+# ---------------------------------------------------------------------------
+
+
+# ---------------------------------------------------------------------------
+# 8. GAIN — objects that accrue, amplify, or measure benefit
+# ---------------------------------------------------------------------------
+section gain:
+
+  Metric
+    children:  Counter, Gauge, Histogram, Meter
+    siblings:  Measurement, KPI
+    note:      a recorded quantity used to judge gain.
+
+  Counter
+    children:  -
+    siblings:  Gauge, Accumulator
+    note:      a monotonically increasing tally.
+
+  Accumulator
+    children:  Sum, Reducer
+    siblings:  Counter, Aggregate
+    note:      folds many values into a running total.
+
+  Throughput
+    children:  Rate, Window
+    siblings:  Latency, Bandwidth
+    note:      work completed per unit time (a gain measure).
+
+  Optimization
+    children:  Objective, Gradient, Search
+    siblings:  Tuning, Heuristic
+    note:      the process of increasing a gain objective.
+
+  Reward
+    children:  Signal, Return, Discount
+    siblings:  Score, Fitness
+    note:      accrued value guiding adaptive behavior.
+
+  Amplifier
+    children:  Gain, Bias
+    siblings:  Multiplier, Booster
+    note:      scales a quantity upward by a gain factor.
+
+
+# ---------------------------------------------------------------------------
+# 9. CONVERSATIONS — objects of dialogue and exchange
+# ---------------------------------------------------------------------------
+section conversations:
+
+  Session
+    children:  Handshake, Token, State, Timeout
+    siblings:  Connection, Transaction
+    note:      a bounded, stateful dialogue between parties.
+
+  Protocol
+    children:  Message, Frame, Sequence, State
+    siblings:  Grammar, Convention
+    note:      the agreed rules governing a conversation.
+
+  Message
+    children:  Header, Body, Envelope, Correlation
+    siblings:  Packet, Request, Response
+    note:      one unit exchanged in a conversation.
+
+  Request
+    children:  Method, Params, Headers
+    siblings:  Response, Query
+    note:      an ask that expects a reply.
+
+  Response
+    children:  Status, Payload, Headers
+    siblings:  Request, Acknowledgement
+    note:      the reply to a Request.
+
+  Channel
+    children:  Endpoint, Buffer, Duplex
+    siblings:  Pipe, Socket, Queue
+    note:      the medium a conversation flows through.
+
+  Negotiation
+    children:  Offer, Counter, Agreement
+    siblings:  Handshake, Bidding
+    note:      converging on shared parameters (e.g. version, cipher).
+
+  Dialogue
+    children:  Turn, Context, Intent
+    siblings:  Exchange, Transcript
+    note:      an ordered sequence of turns between agents.
+
+
+# ---------------------------------------------------------------------------
+# 10. PIPINGS — objects that route and transform flowing data
+# ---------------------------------------------------------------------------
+section pipings:
+
+  Pipe
+    children:  ReadEnd, WriteEnd, Buffer
+    siblings:  Channel, Stream
+    note:      a unidirectional conduit between stages.
+
+  Pipeline
+    children:  Stage, Filter, Connector, Backpressure
+    siblings:  Chain, Flow
+    note:      an ordered composition of transforming stages.
+
+  Stream
+    children:  Source, Sink, Operator, Window
+    siblings:  Pipe, Flow
+    note:      a possibly-unbounded sequence in motion.
+
+  Filter
+    children:  Predicate, Transform
+    siblings:  Map, Reduce
+    note:      a stage that admits, drops, or reshapes elements.
+
+  Stage
+    children:  Input, Work, Output
+    siblings:  Step, Node
+    note:      one processing step within a Pipeline.
+
+  Connector
+    children:  Adapter, Coupling
+    siblings:  Joint, Link
+    note:      binds one stage's output to the next's input.
+
+  Backpressure
+    children:  Signal, Buffer, Throttle
+    siblings:  FlowControl, RateLimit
+    note:      downstream slowing upstream to prevent overrun.
+
+  Sink
+    children:  Writer, Terminal
+    siblings:  Source, Drain
+    note:      the terminal consumer of a pipe/stream.
+
+
+# ---------------------------------------------------------------------------
+# 11. TRANSITIVES — objects that pass through / relay across boundaries
+# ---------------------------------------------------------------------------
+section transitives:
+
+  Relay
+    children:  Forwarder, Hop
+    siblings:  Proxy, Gateway
+    note:      passes a call/message onward toward its target.
+
+  Proxy
+    children:  RemoteProxy, VirtualProxy, ProtectionProxy
+    siblings:  Relay, Broker
+    note:      stands in for and forwards to a real subject.
+
+  Gateway
+    children:  Ingress, Egress, Router
+    siblings:  Proxy, Bridge
+    note:      transitive boundary between two systems/protocols.
+
+  Bridge
+    children:  Abstraction, Implementor
+    siblings:  Adapter, Gateway
+    note:      couples two independent hierarchies transitively.
+
+  Router
+    children:  Route, Table, NextHop
+    siblings:  Dispatcher, Switch
+    note:      chooses the onward path for a message.
+
+  Delegate
+    children:  Target, Forwarding
+    siblings:  Callback, Proxy
+    note:      an object that forwards work to another.
+
+  Middleware
+    children:  ChainLink, Context
+    siblings:  Interceptor, Filter
+    note:      transitive processing wrapped around a core call.
+
+  Transaction
+    children:  Begin, Commit, Rollback, Savepoint
+    siblings:  Session, UnitOfWork
+    note:      a transitive step from one consistent state to the next.
+
+
+# ---------------------------------------------------------------------------
+# 12. COMPLETITIVES — objects marking finishing, closure, and settlement
+# ---------------------------------------------------------------------------
+section completitives:
+
+  Completion
+    children:  Result, Status, Timestamp
+    siblings:  Termination, Done
+    note:      the object representing a finished unit of work.
+
+  Future
+    children:  Promise, Resolver, Callback
+    siblings:  Task, Deferred
+    note:      a stand-in for a value that completes later.
+
+  Promise
+    children:  Resolve, Reject, Then
+    siblings:  Future, Awaitable
+    note:      the settle-once side of a Future.
+
+  Finalizer
+    children:  Cleanup, ReleaseHook
+    siblings:  Destructor, Dispose
+    note:      runs completion actions before reclamation.
+
+  Commit
+    children:  WriteSet, LogRecord
+    siblings:  Rollback, Flush
+    note:      makes a transaction's effects durable/complete.
+
+  Barrier
+    children:  Arrival, Release, Phase
+    siblings:  Latch, Rendezvous
+    note:      completes only when all participants have arrived.
+
+  Latch
+    children:  Count, Await
+    siblings:  Barrier, Semaphore
+    note:      a one-shot completion gate.
+
+  Join
+    children:  JoinAll, JoinAny
+    siblings:  Await, Rendezvous
+    note:      waits for spawned work to complete.
+
+
+# ---------------------------------------------------------------------------
+# 13. INHERITANCES — objects of derivation and specialization
+# ---------------------------------------------------------------------------
+section inheritances:
+
+  Class
+    children:  Field, Method, Constructor, NestedClass
+    siblings:  Struct, Record, Interface
+    note:      a type template that can be extended.
+
+  BaseClass
+    children:  VirtualMethod, ProtectedMember
+    siblings:  DerivedClass, Mixin
+    note:      the parent in an inheritance relation.
+
+  DerivedClass
+    children:  Override, Extension
+    siblings:  BaseClass, Subtype
+    note:      a child specializing/extending a base.
+
+  AbstractClass
+    children:  AbstractMethod, TemplateMethod
+    siblings:  Interface, ConcreteClass
+    note:      a partial base requiring completion by children.
+
+  Interface
+    children:  Method, DefaultMethod
+    siblings:  Trait, Protocol
+    note:      pure contract inherited by implementers.
+
+  Trait
+    children:  ProvidedMethod, RequiredMethod
+    siblings:  Mixin, Interface
+    note:      reusable behavior composed into classes.
+
+  Mixin
+    children:  -
+    siblings:  Trait, Decorator
+    note:      supplemental behavior blended into a type.
+
+  VTable
+    children:  Slot, DispatchEntry
+    siblings:  TypeInfo, ClassObject
+    note:      the dispatch structure underpinning virtual inheritance.
+
+  Prototype
+    children:  ProtoChain, Clone
+    siblings:  Class, Delegate
+    note:      object-to-object inheritance via a prototype link.
+
+
+# ---------------------------------------------------------------------------
+# 14. SMART MOVES — objects encoding safe, efficient, self-managing choices
+# ---------------------------------------------------------------------------
+section smart-moves:
+
+  SmartPointer
+    children:  UniquePtr, SharedPtr, WeakPtr
+    siblings:  Handle, Reference
+    note:      ownership-aware pointer that auto-manages lifetime.
+
+  LazyInit
+    children:  Thunk, OnceCell
+    siblings:  Memo, Deferred
+    note:      compute only on first use.
+
+  Memoization
+    children:  Cache, KeyFunction
+    siblings:  LazyInit, CoW
+    note:      cache results of pure computation.
+
+  CopyOnWrite               # CoW
+    children:  SharedState, WriteBarrier
+    siblings:  Memoization, Snapshot
+    note:      share until mutation, then copy — a smart move.
+
+  Pool
+    children:  ObjectPool, ThreadPool, ConnectionPool
+    siblings:  Cache, Arena
+    note:      reuse expensive objects instead of re-creating.
+
+  CircuitBreaker
+    children:  Closed, Open, HalfOpen
+    siblings:  Retry, Bulkhead
+    note:      stop calling a failing dependency to protect the system.
+
+  Retry
+    children:  Backoff, Jitter, MaxAttempts
+    siblings:  CircuitBreaker, Timeout
+    note:      re-attempt with a considered policy.
+
+  Debounce
+    children:  Window, Trailing
+    siblings:  Throttle, RateLimit
+    note:      collapse bursts into a single considered action.
+
+
+# ---------------------------------------------------------------------------
+# 15. CONGRAINS — constraints that bind objects together / hold them true
+# ---------------------------------------------------------------------------
+# ("congrains" read as constraints / co-grained bindings.)
+section congrains:
+
+  Invariant
+    children:  Predicate, Scope
+    siblings:  Precondition, Postcondition
+    note:      a condition that must always hold for an object.
+
+  Precondition
+    children:  Requirement, Guard
+    siblings:  Postcondition, Invariant
+    note:      what must be true before an operation runs.
+
+  Postcondition
+    children:  Guarantee, Effect
+    siblings:  Precondition, Invariant
+    note:      what the operation promises afterward.
+
+  Constraint
+    children:  Bound, Relation, Domain
+    siblings:  Rule, Policy
+    note:      a restriction on legal object states/relations.
+
+  Dependency
+    children:  Requirement, Provider, Version
+    siblings:  Coupling, Import
+    note:      a binding one object has on another (co-grained).
+
+  Coupling
+    children:  Afferent, Efferent
+    siblings:  Cohesion, Dependency
+    note:      strength of inter-object binding (keep it loose).
+
+  Congruence
+    children:  ShapeMatch, TypeMatch
+    siblings:  Equivalence, Isomorphism
+    note:      structural sameness enabling congruent-linear connection.
+
+  Contract
+    children:  Precondition, Postcondition, Invariant
+    siblings:  Specification, Interface
+    note:      the bundle of congrains an object honors.
+
+
+# ---------------------------------------------------------------------------
+# 16. LIMITS — objects bounding capacity, extent, and permission
+# ---------------------------------------------------------------------------
+section limits:
+
+  Bound
+    children:  UpperBound, LowerBound, Range
+    siblings:  Limit, Threshold
+    note:      an inclusive/exclusive extent on a value.
+
+  Quota
+    children:  Allowance, Period, Reset
+    siblings:  RateLimit, Budget
+    note:      a permitted amount over a scope/time.
+
+  RateLimit
+    children:  TokenBucket, LeakyBucket, Window
+    siblings:  Quota, Throttle
+    note:      cap on operations per unit time.
+
+  Timeout
+    children:  Deadline, Cancellation
+    siblings:  TTL, Watchdog
+    note:      a limit on how long an operation may take.
+
+  Capacity
+    children:  Size, HighWaterMark, Overflow
+    siblings:  Bound, Buffer
+    note:      the maximum a container/resource may hold.
+
+  Threshold
+    children:  Trigger, Hysteresis
+    siblings:  Limit, Bound
+    note:      a boundary value that changes behavior when crossed.
+
+  DepthLimit
+    children:  RecursionLimit, NestingLimit
+    siblings:  Bound, StackLimit
+    note:      maximum reachable depth; here the System depth is 3024.
+
+  ComplexityDegree
+    children:  InteractionOrder, TopologyDegree
+    siblings:  Coupling, Congruence
+    note:      the connection order between systems; capped at 4 for
+               the 3024 congruent-linear connection invariant (see section 0).
+
+
+# ===========================================================================
+# End of SHEET.sheet — System depth 3024; complexity degree <= 4.
+# ===========================================================================
