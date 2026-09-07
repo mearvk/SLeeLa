@@ -175,6 +175,11 @@ SLValue  slvm_result(SLVM* vm);
  * at the end of slvm_run and slvm_free, and exposed for embedders. */
 void     slvm_joinall(SLVM* vm);
 
+/* Set a soft cap on the number of concurrently spawned threads (clamped to
+ * [1, SL_MAX_THREADS]). Used by the STP "safe trim" fallback to run a program
+ * conservatively when it is executing unsupervised. */
+void     slvm_set_thread_cap(SLVM* vm, int cap);
+
 /* Helpers for constructing values. */
 SLValue slval_null(void);
 SLValue slval_int(int64_t v);

@@ -1,0 +1,251 @@
+Sleela Transition Protocol (STP) — Secured Pipe to SecureJDK 28
+
+Document Series:    STP-0001
+Revision:           1.0.0
+Date:               September 2026
+Status:             Normative for the v1 transition bridge
+Endpoints:          Sleela (client)  <->  SecureJDK 28 Transition Supervisor (server)
+Companions:         SLEELA.syntax (Sleela surface), userland/openjdk/jvm-config.xml
+                    (SecureJDK 28 module configuration), userland/openjdk/SECUREJDK28.md
+
+================================================================================
+0. Purpose
+================================================================================
+
+The Sleela Transition Protocol (STP) is the wire contract by which a Sleela
+program *transitions* its execution under the supervision of SecureJDK 28. A
+Sleela process does not blindly run: before (and while) executing, it asks the
+SecureJDK 28 Transition Supervisor to admit, monitor, and acknowledge its
+memory model and parse, using SecureJDK's own security measures — class-load
+guarding, integrity guardianship, the observer circuit (monitorability),
+memory-proxy governance, and administrative supervision (see jvm-config.xml).
+
+The transition is *secured with state-of-the-art cryptography* and carried over
+a *local pipe* (a UNIX-domain socket by default) or, optionally, a *remote*
+channel (TCP wrapped in TLS 1.3). If the supervisor acknowledges the parse in a
+regioned, memorable, secured way, Sleela proceeds under supervision. If it does
+NOT (deny, timeout, crypto failure, or supervisor unreachable), Sleela continues
+LOCALLY as its own secure "safe trim", and the failed transition result is
+persisted to a private, secured MySQL store for later review by an Admin.
+
+This document fixes: the transport, the cryptographic envelope, the framing, the
+message set, the region/acknowledgement model, and the failure/fallback rules.
+
+================================================================================
+1. Transport
+================================================================================
+
+1.1 Local pipe (default, "as local as its own secure safe trim").
+    A UNIX-domain stream socket. Default path:
+        $SLEELA_STP_PIPE  or  /run/sleela/stp.sock  (fallback: /tmp/sleela-stp.sock)
+    The socket file MUST be owned by the launching user or root, mode 0600 or
+    0660, never world-writable, never a symlink (checked on both ends). On a
+    system without /run access the fallback path under the user's runtime dir
+    is used.
+
+1.2 Remote pipe (optional).
+    A TCP connection to host:port (default port 8443) wrapped in TLS 1.3. The
+    supervisor presents an X.509 certificate; the client pins the supervisor's
+    long-term Ed25519 identity key (below) in addition to normal TLS validation
+    (channel binding: the STP handshake transcript includes the TLS exporter
+    value RFC 8446 §7.5, keyed with label "EXPORTER-STP-v1"). Selected with
+        sleela run --secure --remote=host:port
+    Remote is a strict superset: the same STP messages ride inside TLS.
+
+1.3 The transport carries STP frames (§3). STP applies its own end-to-end
+    cryptographic envelope (§2) EVEN on the local pipe, so a compromised pipe
+    cannot forge or read a transition. On the remote path the envelope is
+    nested inside TLS (defense in depth).
+
+================================================================================
+2. Cryptographic envelope (state of the art)
+================================================================================
+
+Primitives (all modern, all constant-time reference implementations):
+
+    Identity / signatures     Ed25519            (long-term key per endpoint)
+    Key agreement             X25519             (ephemeral ECDH per session)
+    KDF                        HKDF-SHA-256
+    AEAD (record encryption)   ChaCha20-Poly1305 (IETF, 96-bit nonce)
+    Hash / transcript          SHA-256
+    Random                     OS CSPRNG (getrandom / SecureRandom)
+
+2.1 Long-term identities.
+    Each endpoint owns an Ed25519 key pair. Public keys are exchanged out of
+    band and pinned:
+      - Sleela pins the supervisor's public key in $SLEELA_STP_SUP_PUBKEY
+        (or /etc/sleela/supervisor.ed25519.pub).
+      - The supervisor pins allowed client public keys in its authorized-clients
+        set (jvm-config: transition.authorized-clients).
+    An unpinned/unknown peer key is a hard failure (STP-DENY reason UNKNOWN_PEER).
+
+2.2 Session handshake (a Noise-IK-style 1.5-RTT exchange).
+      C -> S  ClientHello : { client_pub_ed25519, client_eph_x25519, nonce_c,
+                              region_hint, proto = "STP-0001" }, signed by C.
+      S -> C  ServerHello : { server_eph_x25519, nonce_s, region_grant,
+                              policy_digest }, signed by S.
+    Both sides compute:
+        ss   = X25519(eph_priv, peer_eph_pub)
+        th   = SHA-256( ClientHello || ServerHello )          (transcript hash)
+        ikm  = ss  (|| TLS-exporter on the remote path)
+        keys = HKDF-SHA-256(ikm, salt = th,
+                            info = "STP-0001|c2s" / "STP-0001|s2c" / "STP-0001|region")
+    yielding directional AEAD keys (k_c2s, k_s2c) and a 32-byte region key
+    (k_region, §4). Each signature covers the running transcript hash, so the
+    handshake is bound end-to-end and replay of a whole session is rejected by
+    the fresh nonces.
+
+2.3 Record layer.
+    After the handshake, every frame body (§3) is sealed with the directional
+    AEAD key. Nonce = 4-byte fixed salt (from HKDF) || 8-byte big-endian
+    monotonic counter, per direction; the counter MUST NOT repeat under a key.
+    The AEAD associated-data is the 8-byte frame header (§3.1). A decryption /
+    tag failure aborts the session (reason CRYPTO_FAIL) and triggers fallback.
+
+2.4 What "state of the art" buys us here.
+      - Confidentiality + integrity of the transition even over an untrusted
+        pipe (ChaCha20-Poly1305).
+      - Mutual authentication and key pinning (Ed25519), so only an authorized
+        Sleela talks to the real supervisor and vice-versa.
+      - Forward secrecy (ephemeral X25519): capturing a pipe today does not
+        decrypt a past transition if a long-term key later leaks.
+      - Transcript binding + fresh nonces: no cut-and-paste / replay of acks.
+
+================================================================================
+3. Framing
+================================================================================
+
+3.1 Frame header (8 bytes, little-endian, sent in the clear; it is the AEAD
+    associated data so it cannot be tampered with undetected):
+
+        offset 0  u8   version        = 1
+        offset 1  u8   type           (§3.2)
+        offset 2  u16  flags          (bit0 = ENCRYPTED, bit1 = LAST)
+        offset 4  u32  body_len       (length of the sealed body that follows)
+
+3.2 Frame types
+
+        0x01  HELLO_CLIENT     handshake (unencrypted, signed)
+        0x02  HELLO_SERVER     handshake (unencrypted, signed)
+        0x10  TRANSITION_REQ   sealed; the parse/memory-model submission (§5)
+        0x11  ACK              sealed; regioned parse acknowledgement (§4)
+        0x12  DENY             sealed; supervisor refuses (reason code)
+        0x13  HEARTBEAT        sealed; observer-circuit liveness (monitorability)
+        0x1E  CLOSE            sealed; graceful shutdown
+        0x1F  ERROR            sealed or clear; protocol error (reason code)
+
+3.3 Bodies are CBOR-like flat maps (documented per message). On the wire they
+    are the AEAD-sealed bytes when flags.ENCRYPTED is set.
+
+================================================================================
+4. The region model — "regioned, memorable, secured" acknowledgement
+================================================================================
+
+A successful transition is acknowledged in a way that is (a) regioned — bound
+to a named memory region the supervisor reserved for this program, (b) memorable
+— carrying a stable, human-referable region id and mnemonic, and (c) secured —
+authenticated with the region key so it cannot be forged or replayed.
+
+4.1 Region.
+    On admit, the supervisor reserves a supervised memory region for the Sleela
+    memory model and returns:
+        region_id     : u64        stable id (survives for the session)
+        region_name   : text       e.g. "reg-emerald-0007" (the "memorable" name)
+        region_class  : text       SecureJDK grade (Main/Manager/Archetype/...)
+        capacity       : { ram_soft, ram_hard, ... } mirrored from memory-proxy
+    region_name is a deterministic mnemonic derived from region_id via a small
+    adjective+gem wordlist, so operators and Admin can refer to it by name.
+
+4.2 Acknowledgement (ACK body).
+        parse_ok      : bool       supervisor accepted the parse/memory model
+        region        : { region_id, region_name, region_class, capacity }
+        ack_tag       : 32 bytes   HMAC-style tag = HKDF/PRF(k_region,
+                                    "ACK" || region_id || parse_digest)
+        policy_digest : 32 bytes   SHA-256 of the applied module policy
+        monitor       : { observer_endpoint, heartbeat_interval_ms }
+    Sleela verifies ack_tag with k_region (from §2.2). A valid ACK with
+    parse_ok = true means "proceed under supervision in this region." Anything
+    else is a failure (§6).
+
+4.3 Memorability at rest. region_id, region_name, parse_digest and ack_tag are
+    what get recorded — on success in the supervisor's audit log, and on
+    FAILURE in the MySQL admin store (§ MySQL) so an Admin can look the specific
+    transition up by its memorable region name later.
+
+================================================================================
+5. TRANSITION_REQ — the parse / memory-model submission
+================================================================================
+
+Body fields:
+        program_id    : text       stable id (e.g. sha256 of source path+mtime)
+        source_name   : text       file name (for admin display)
+        parse_digest  : 32 bytes   SHA-256 of the canonicalized Sleela parse
+        mem_model     : {                       the Sleela memory model summary
+            globals      : u32                  shared field slots
+            functions    : u32
+            code_len     : u32                  core instruction count
+            max_threads  : u32                  requested (<= 128 core cap)
+            locks        : u32
+            mailboxes    : u32
+            est_heap     : u64                  estimated bytes
+        }
+        constitution  : { sysdepth, degreemax } Sleela Constitution invariants
+        want          : [ "monitorability", "admin", "supervision" ]  requested measures
+
+The supervisor evaluates mem_model against its configured budgets (memory-proxy)
+and grades (class-load-guard), applies the requested measures, and answers with
+ACK (§4) or DENY (§6).
+
+================================================================================
+6. Failure & fallback ("continue as local secure safe trim")
+================================================================================
+
+6.1 A transition FAILS on any of:
+        - DENY from the supervisor (reason: BUDGET_EXCEEDED, GRADE_DENIED,
+          UNKNOWN_PEER, POLICY, ...);
+        - CRYPTO_FAIL (bad signature, AEAD tag, or key pin);
+        - TIMEOUT (no ACK within stp.timeout, default 3000 ms);
+        - UNREACHABLE (no supervisor on the pipe / remote).
+
+6.2 On failure Sleela does NOT abort. It continues LOCALLY as a "safe trim":
+        - runs the program on its own C core (the normal path), but under a
+          trimmed, conservative local policy: thread cap lowered to
+          min(requested, safe_trim.max_threads = 16), print still atomic, and a
+          local integrity note recorded;
+        - marks the run "unsupervised (safe-trim)" in its output banner.
+    The safe trim is the same deterministic core execution, just self-governed
+    rather than JDK-supervised — "as local as its own secure, safe trim."
+
+6.3 Every failed transition is written to the private secure MySQL store (see
+    the MySQL Admin section) with: program_id, source_name, parse_digest,
+    mem_model, the failure reason, the (attempted) region name if one was
+    granted before failure, a UTC timestamp, and a status of NEW. An Admin later
+    reviews, annotates, and resolves these rows. Persisting the failed result is
+    best-effort and MUST NOT itself crash the safe-trim run (a store outage is
+    logged locally and the run still completes).
+
+================================================================================
+7. State machine (client)
+================================================================================
+
+    IDLE --connect--> CONNECTING --hello--> HANDSHAKING --keys--> REQUESTING
+    REQUESTING --ACK(parse_ok)--> SUPERVISED --run--> DONE
+    REQUESTING --DENY/TIMEOUT/CRYPTO/UNREACHABLE--> FALLBACK
+    HANDSHAKING/CONNECTING --error--> FALLBACK
+    FALLBACK --safe-trim run + MySQL record--> DONE
+
+The supervisor mirrors this: LISTEN -> HANDSHAKE -> EVALUATE -> {ADMIT+MONITOR |
+DENY} -> CLOSE, emitting observer-circuit heartbeats while a region is live.
+
+================================================================================
+8. Versioning
+================================================================================
+The 1-byte header version and the "STP-0001" proto string gate compatibility.
+A peer that does not speak version 1 receives ERROR(UNSUPPORTED_VERSION) and the
+client falls back locally.
+
+--------------------------------------------------------------------------------
+STP-0001 Revision 1.0.0 — the secured transition contract between Sleela and
+SecureJDK 28. Local pipe by default; TLS 1.3 remote optional; modern AEAD +
+Ed25519/X25519 throughout; regioned/memorable/secured acknowledgement; local
+safe-trim fallback with MySQL admin capture on failure.
