@@ -1,0 +1,38 @@
+// server.sst -- a small system described as a Style Sheet.
+// Two components combined via `uses`; structural props + functional attaches.
+
+component Logger {
+    level: "info";
+
+    // a named attach (a callable method)
+    banner: {
+        print("[" + prop(level) + "] logger ready");
+    }
+}
+
+component Server {
+    port: 8080;
+    threads: 2;      // activation fans out (sequential passes on the Sleela core)
+    repeat: 3;       // tick runs 3 times per activation
+    uses: Logger;    // Server depends on Logger -> Logger activates first
+
+    on-start: {
+        print("server starting on port " + prop(port));
+        call Logger.banner();
+    }
+
+    tick: {
+        print("tick");
+    }
+
+    main: {
+        let i = 0;
+        let sum = 0;
+        while (i < 5) {
+            sum = sum + i;
+            i = i + 1;
+        }
+        print("sum 0..4 = " + sum);
+        print("server done");
+    }
+}

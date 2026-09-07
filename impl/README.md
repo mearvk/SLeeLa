@@ -146,14 +146,34 @@ impl/
     compiler.{h,cpp}    AST -> core bytecode
     driver.cpp          the `sleela` CLI
   examples/             sample .sleela programs
+  nordshrift/           Nordshrift: the .sst Style-Sheet system language
+    sst_lexer/parser/sema, emit_java/sleela/c, nordshrift CLI, examples/*.sst
   Makefile
   DESIGN.md
   README.md
 ```
 
 > **Note on the repository.** This `impl/` tree is the current C/C++-backed
-> Sleela implementation. The older 2019 Java "Nordshrift" exploration remains
-> under `src/` as project history and is untouched.
+> implementation. The older 2019 Java "Nordshrift" exploration remains under
+> `src/` as project history and is untouched.
+
+## Nordshrift (the Style-Sheet system language)
+
+Layered on top of Sleela is **Nordshrift** — an interpreter/transpiler that
+addresses and combines *system components* described as **Style Sheets**
+(`.sst`: structural properties + functional attaches). One `.sst` source runs
+into a **triple manifold** of targets — **Java**, **Sleela** (executed on the C
+core here), and **C/C++** — with behaviorally equivalent output. It is
+Turing-complete via the attach language and thread-friendly via isolated,
+optionally-threaded components.
+
+```sh
+./build/nordshrift run nordshrift/examples/counter.sst      # runs on the C core
+./build/nordshrift emit --target=java nordshrift/examples/server.sst
+```
+
+See [`nordshrift/README.md`](nordshrift/README.md) and
+[`nordshrift/NORDSHRIFT.md`](nordshrift/NORDSHRIFT.md).
 
 ## Status
 
