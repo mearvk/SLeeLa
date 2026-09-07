@@ -1,0 +1,56 @@
+// ===========================================================================
+// HttpServer.sleela — the server face of the HTTP symmetry. It accepts a small
+// batch of requests, routes each by method+path to a status code, and emits a
+// response. The server's status-selection is the mirror of the client's
+// expectation (see HttpClient.sleela).
+//
+// Driven by: symmetry/build.sst. Catalogued objects: Service, Router, Request,
+// Response, Session.
+// ===========================================================================
+class HttpServer {
+
+    int served = 0;               // shared: total responses emitted
+
+    // Map a (method, path) pair to an HTTP status. method: 1=GET 2=POST 3=DELETE.
+    // path code: 1=/ 2=/health 3=/missing.
+    int statusFor(int method, int pathCode) {
+        if (pathCode == 3) {
+            return 404;                       // unknown path
+        }
+        if (method == 1) {
+            return 200;                       // GET ok
+        }
+        if (method == 2) {
+            return 201;                       // POST created
+        }
+        if (method == 3) {
+            return 204;                       // DELETE no content
+        }
+        return 405;                           // method not allowed
+    }
+
+    void handle(int method, int pathCode) {
+        int status = statusFor(method, pathCode);
+        lock(0);
+        served = served + 1;
+        unlock(0);
+        print("server: method=" + method + " path=" + pathCode + " -> " + status);
+    }
+
+    void main() {
+        print("== HTTP server ==");
+        print("Service role  = " + role("Service"));
+        print("Router role   = " + role("Router"));
+        print("Session role  = " + role("Session"));
+
+        // A fixed request batch: {method, pathCode} pairs.
+        // GET / , POST / , DELETE / , GET /missing
+        handle(1, 1);
+        handle(2, 1);
+        handle(3, 1);
+        handle(1, 3);
+
+        print("responses served = " + served);
+        print("done");
+    }
+}
