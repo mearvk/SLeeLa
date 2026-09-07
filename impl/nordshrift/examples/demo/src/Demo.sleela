@@ -1,0 +1,16 @@
+// A small Sleela program driven by the demo sheet.
+class Demo {
+
+    int square(int n) {
+        return n * n;
+    }
+
+    void main() {
+        int i = 1;
+        while (i <= 5) {
+            print("square(" + i + ") = " + square(i));
+            i = i + 1;
+        }
+        print("done");
+    }
+}

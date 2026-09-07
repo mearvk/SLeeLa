@@ -1,0 +1,20 @@
+#nordshrift 1.0
+#sleela     1.0
+
+/// Minimal Nordshrift sheet driving the triplet for the demo module.
+/// Switch `target-language` between sleela | java | c to retarget.
+sheet demo:
+  version      1.0.0
+  author       "Sleela Design Council"
+  description  "Transpiles the demo Sleela sources; sleela target runs on the core."
+
+source:
+  root  "src"
+  glob  "**/*.sleela"
+
+target:
+  root            "out"
+  layout          mirror-source
+  java-version    21
+  package-root    "com.example.demo"
+  target-language sleela
