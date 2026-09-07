@@ -18,9 +18,9 @@ FE_SRC   := frontend/lexer.cpp frontend/parser.cpp frontend/compiler.cpp
 FE_OBJ   := $(patsubst frontend/%.cpp,$(BUILD)/%.o,$(FE_SRC))
 DRIVER_OBJ := $(BUILD)/driver.o
 
-# ---- Nordshrift ----
-NS_SRC := nordshrift/sst_lexer.cpp nordshrift/sst_parser.cpp nordshrift/sst_sema.cpp \
-          nordshrift/emit_java.cpp nordshrift/emit_c.cpp nordshrift/emit_sleela.cpp \
+# ---- Nordshrift (NS-SST-0001 driver) ----
+NS_SRC := nordshrift/sst_lexer.cpp nordshrift/sst_parser.cpp \
+          nordshrift/source_resolve.cpp nordshrift/sleela_emit.cpp \
           nordshrift/nordshrift.cpp
 NS_OBJ := $(patsubst nordshrift/%.cpp,$(BUILD)/ns_%.o,$(NS_SRC))
 
@@ -32,7 +32,7 @@ all: $(SLEELA_BIN) $(NORDSHRIFT_BIN)
 $(SLEELA_BIN): $(CORE_OBJ) $(FE_OBJ) $(DRIVER_OBJ)
 	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS)
 
-# nordshrift reuses the Sleela front end + core for its `run` path.
+# nordshrift reuses the Sleela front end + core to transpile/run the sources.
 $(NORDSHRIFT_BIN): $(NS_OBJ) $(CORE_OBJ) $(FE_OBJ)
 	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS)
 
@@ -67,12 +67,15 @@ test-sleela: $(SLEELA_BIN)
 		$(SLEELA_BIN) run $$f || exit 1; \
 	done
 
-# Run every .sst through the Sleela arm of the manifold.
+# Validate every top-level .sst sheet, then drive a real build (sleela target
+# runs on the core) from the self-contained demo sheet.
 test-nordshrift: $(NORDSHRIFT_BIN)
 	@for f in nordshrift/examples/*.sst; do \
-		echo "=== $$f (run via Sleela core) ==="; \
-		$(NORDSHRIFT_BIN) run $$f || exit 1; \
+		echo "=== check $$f ==="; \
+		$(NORDSHRIFT_BIN) check $$f || exit 1; \
 	done
+	@echo "=== build nordshrift/examples/demo/build.sst (target sleela -> core) ==="; \
+	$(NORDSHRIFT_BIN) build nordshrift/examples/demo/build.sst || exit 1
 
 clean:
 	rm -rf $(BUILD)

@@ -1,143 +1,81 @@
 # Nordshrift
 
-**Nordshrift** is an interpreter/transpiler that **addresses system components
-and combines them**. A Nordshrift program is a **Style Sheet** — *structural
-input* (components and their properties) with some *functional attach*
-(behavior bound to lifecycle points). The file format is **`.sst`**.
+**Nordshrift** is the transpiler driver for Sleela. It reads a **`.sst` control
+sheet** (the format specified by **NS-SST-0001** — see `/SST.model`) and drives
+the transpilation of the Sleela sources the sheet names into the target the
+sheet selects — the **triplet**: **Java**, **Sleela** (executed on the C core),
+or **C**.
 
-Nordshrift reads one `.sst` source, builds a **component graph**, and then
-**runs into** one of three backends — the **triple input manifold**:
-
-```
-                       example.sst   (one Style-Sheet source)
-                              │
-                   ┌──────────┴──────────┐
-                   │ Nordshrift front end │  lexer → parser → graph → sema
-                   │        (C++)         │  (resolve uses, topo-order, checks)
-                   └──────────┬──────────┘
-              ┌───────────────┼────────────────────┐
-              ▼               ▼                     ▼
-        Java emitter    Sleela emitter (.sleela)  C/C++ emitter
-        → .java         → runs on the C core       → .c
-        (javac + run)   (executes in-process)      (gcc + run)
-```
-
-For the same `.sst`, the three emissions are **behaviorally equivalent**: the
-deterministic parts of the program produce identical output on Java, on Sleela
-(executed by the C core in [`../core`](../core)), and on compiled C.
+The `.sst` file is the *control surface*, not the program. The program is the
+set of `.sleela` files named by the sheet's `source:` section.
 
 ## Build & run
 
 ```sh
 cd impl
-make                                   # builds build/sleela and build/nordshrift
+make                                          # builds build/sleela and build/nordshrift
 
-# Emit each target:
-./build/nordshrift emit --target=sleela nordshrift/examples/counter.sst
-./build/nordshrift emit --target=java   nordshrift/examples/counter.sst
-./build/nordshrift emit --target=c      nordshrift/examples/counter.sst
-
-# Run through the Sleela C core (in-process):
-./build/nordshrift run nordshrift/examples/counter.sst
-# -> factorial of 6 = 720
-
-make test-nordshrift                   # runs every .sst example via the Sleela core
+nordshrift check <sheet.sst>                  # validate a sheet; print NSS-* diagnostics
+nordshrift build <sheet.sst>                  # transpile the sheet's sources to its target
 ```
 
-Emitting and actually compiling all three for `counter.sst`:
+### Self-contained demo
 
 ```sh
-mkdir -p out
-./build/nordshrift emit --target=c      nordshrift/examples/counter.sst > out/p.c
-gcc -std=c11 -pthread out/p.c -o out/p_c && ./out/p_c          # factorial of 6 = 720
-
-./build/nordshrift emit --target=java   nordshrift/examples/counter.sst > out/NordshriftProgram.java
-javac -d out out/NordshriftProgram.java && java -cp out NordshriftProgram   # factorial of 6 = 720
-
-./build/nordshrift run nordshrift/examples/counter.sst          # factorial of 6 = 720
+./build/nordshrift check nordshrift/examples/demo/build.sst
+./build/nordshrift build nordshrift/examples/demo/build.sst    # target-language sleela -> runs on the core
 ```
 
-## The `.sst` Style-Sheet language
-
-A program is a set of **components**. A component holds three kinds of members:
-
-```
-component Logger {
-    level: "info";                 // structural property (data)
-
-    banner: {                      // functional attach (a callable method)
-        print("[" + prop(level) + "] logger ready");
-    }
-}
-
-component Server {
-    port: 8080;
-    threads: 2;                    // activation runs on 2 workers
-    repeat: 3;                     // `tick` runs 3 times per activation
-    uses: Logger;                  // combination: Server depends on Logger
-
-    on-start: {                    // lifecycle attach: runs when activated
-        print("server starting on port " + prop(port));
-        call Logger.banner();      // address + invoke a sibling component
-    }
-
-    tick: { print("tick"); }
-
-    main: {                        // program entry (exactly one component has it)
-        let i = 0;
-        while (i < 5) { i = i + 1; }
-        print("server done");
-    }
-}
-```
-
-- **Structural properties** (`name: value;`) are plain data, read inside
-  attaches with `prop(name)`. Well-known ones: `threads`, `repeat`.
-- **Functional attaches** (`name: { ... }`) are blocks of behavior. Reserved
-  names: `on-start` (run on activation), `tick` (run `repeat` times), `main`
-  (the entry point). Any other name is a callable method.
-- **`uses: A, B;`** records dependency edges; components are activated in
-  dependency-first order (topologically sorted). Cyclic `uses` is a compile
-  error.
-- The attach language is **Turing-complete**: `let`/assignment, `if/else`,
-  `while`, arithmetic and comparisons, `&& || !`, string concatenation with
-  `+`, `print(...)`, and `call C.f();`.
-
-## Thread model (thread-friendly)
-
-Components are **isolated**: an attach touches only its own component's
-properties and interacts with siblings solely through explicit `call`. With no
-shared mutable state at the language level, the emitters are free to run
-components concurrently. `threads: N` renders as:
-
-| Target | Rendering |
-|--------|-----------|
-| Java   | a fixed `ExecutorService(N)`, joined before continuing (real threads) |
-| C/C++  | `N` `pthread`s, joined before continuing (real threads) |
-| Sleela | `N` × `spawn(Comp_activate)` + `join()` on the core's threading model (real threads, up to 128) |
-
-All three now run threaded activations on **real threads**. Because the
-components are isolated, the program's **result** is consistent across targets;
-only the interleaving of a threaded activation's output differs (visible when
-`server.sst` runs on multiple threads, which is expected and correct). The
-Sleela core keeps each `print` line atomic.
-
-## Files
+The demo sheet sets `target-language sleela`, so `build` transpiles
+`examples/demo/src/Demo.sleela` and runs it on the Sleela core:
 
 ```
-nordshrift/
-  NORDSHRIFT.md          full design: grammar, semantics, thread model, lowering
-  README.md              this file
-  sst_lexer.{h,cpp}      .sst tokenizer
-  sst_ast.h              component graph + functional-attach IR
-  sst_parser.{h,cpp}     recursive-descent parser
-  sst_sema.{h,cpp}       resolve uses, cycle check, topological order, validation
-  emit_java.cpp          Java emitter
-  emit_sleela.cpp        Sleela emitter (runs on the C core)
-  emit_c.cpp             C/C++ emitter
-  nordshrift.cpp         the `nordshrift` CLI
-  examples/*.sst         counter, server
+square(1) = 1
+square(2) = 4
+...
+done
 ```
 
-See [`NORDSHRIFT.md`](NORDSHRIFT.md) for the complete grammar and the per-target
-lowering table.
+Flip `target-language` to `java` or `c` in the sheet to retarget the same source
+— the emitted Java compiles with `javac` and the emitted C compiles with `gcc`,
+producing identical output.
+
+## The `.sst` sheet (NS-SST-0001)
+
+Indentation-significant, pragma-first:
+
+```sst
+#nordshrift 1.0
+#sleela     1.0
+
+sheet demo:
+  version      1.0.0
+  description  "Transpiles the demo Sleela sources."
+
+source:
+  root  "src"
+  glob  "**/*.sleela"
+
+target:
+  root            "out"
+  layout          mirror-source
+  java-version    21
+  target-language sleela      // java | sleela | c   (Nordshrift triplet superset)
+```
+
+The parser handles all the spec's sections (`sheet`, `import`, `source`,
+`target`, `pipeline`, `rules`, `effects`, `derive`, `guards`, `interop`,
+`profile`, inline `rule` blocks) and emits the structured **NSS-*** diagnostics.
+`source`/`target`/`pipeline` are honored by the build; the analysis-oriented
+sections (`rules`/`effects`/`derive`/`guards`/`interop`/`profile`) are parsed and
+validated now and applied to emission in a later stage.
+
+## Conformance notes
+
+- The spec's `target` section is Java-only; Nordshrift adds `target-language`
+  (default `java`) to drive the triplet — a conformant superset.
+- The spec references a companion `SL-META-0001` (Sleela meta-model). It is not
+  in the repo; the meta-model concepts are stubbed for the deferred sections.
+
+See [`NORDSHRIFT.md`](NORDSHRIFT.md) for the architecture, the section table, and
+the implemented diagnostic codes; see `/SST.model` for the normative grammar.

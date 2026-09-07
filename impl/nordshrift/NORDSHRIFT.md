@@ -1,193 +1,153 @@
-# Nordshrift — the Style-Sheet system language
+# Nordshrift — the `.sst` transpiler driver (NS-SST-0001)
 
-Nordshrift is an **interpreter/transpiler that addresses system components and
-combines them**. A Nordshrift program is not a list of statements; it is a
-**Style Sheet** — *structural input* (components and their properties) with some
-*functional attach* (behavior bound to lifecycle points). The file format is
-**`.sst`**.
+Nordshrift is the **transpiler driver for Sleela**. It reads a **`.sst` Scripting
+Sheet** — the human-authored *control surface* defined by the normative
+specification **NS-SST-0001** (`/SST.model` in this repo) — and uses it to drive
+transpilation of the Sleela source files the sheet names.
 
-Nordshrift reads one `.sst` source, builds a **component graph**, and then
-**runs into** one of three backends — the *triple input manifold*:
-
-```
-                       example.sst   (one Style-Sheet source)
-                              │
-                              ▼
-                 ┌────────────────────────────┐
-                 │  Nordshrift front end (C++) │
-                 │  lexer → parser → graph     │
-                 │  + semantics (uses, order,  │
-                 │    thread annotations)      │
-                 └──────────────┬─────────────┘
-                                │  one graph, three emitters
-              ┌─────────────────┼──────────────────────┐
-              ▼                 ▼                        ▼
-        Java emitter      Sleela emitter (.sleela)   C/C++ emitter
-        → .java           → runs on the C core        → .c
-        (javac + run)     (sleela run)                (gcc + run)
-```
-
-The three emissions are **behaviorally equivalent**: the same `.sst` produces
-the same observable output on Java, on Sleela (executed by the C core built in
-`../core`), and on C/C++.
-
-## Why a style sheet
-
-A style sheet is the natural notation for *"address a component, then describe
-it."* CSS rules are `selector { property: value; }`. Nordshrift keeps that
-shape and adds **functional attaches** — property values that are `{ ... }`
-blocks of behavior — plus **combination** via `uses:`, which wires one component
-to others (the "addresses system components and combines" part).
-
-## `.sst` grammar
+The `.sst` file is **not a program**: it is a build-control sheet. The program
+is the set of `.sleela` source files the sheet's `source:` section points at.
+Nordshrift resolves those, runs them through the shared Sleela front end, and
+emits the target the sheet selects.
 
 ```
-program        := item*
-item           := component
-
-component      := "component" IDENT "{" member* "}"
-
-member         := property | attach | uses
-property       := IDENT ":" value ";"
-uses           := "uses" ":" IDENT ("," IDENT)* ";"
-attach         := ("on" "-")? IDENT ":" block   // e.g. on-start:, tick:, main:
-                  // any property whose value is a block is a functional attach
-
-value          := STRING | NUMBER | BOOL | IDENT
-block          := "{" stmt* "}"
-
-// ---- functional attach language (Turing-complete) ----
-stmt           := "let" IDENT "=" expr ";"
-                | IDENT "=" expr ";"
-                | "if" "(" expr ")" stmt ("else" stmt)?
-                | "while" "(" expr ")" stmt
-                | "print" "(" expr ")" ";"
-                | "call" IDENT "." IDENT "(" args? ")" ";"   // invoke sibling attach
-                | block
-expr           := or
-or             := and ("||" and)*
-and            := eq  ("&&" eq)*
-eq             := rel (("=="|"!=") rel)*
-rel            := add (("<"|"<="|">"|">=") add)*
-add            := mul (("+"|"-") mul)*
-mul            := un  (("*"|"/"|"%") un)*
-un             := ("-"|"!") un | primary
-primary        := NUMBER | STRING | BOOL | IDENT
-                | "prop" "(" IDENT ")"           // read this component's property
-                | "(" expr ")"
-args           := expr ("," expr)*
+   build.sst (control sheet)          src/**/*.sleela (the program)
+        │                                     │
+        ▼                                     │
+   lex → parse → validate  ── source: glob ──▶ resolve file set
+   (Sheet model + NSS-* diagnostics)          │
+        │                                     ▼
+        │                        Sleela front end (lex → parse → AST)
+        │                                     │
+        └────────── target-language ─────────┤  triplet emitter
+                                              │
+                       ┌──────────────────────┼──────────────────────┐
+                       ▼                       ▼                      ▼
+                     java                   sleela                    c
+                 (javac + run)        (runs on the C core)       (gcc + run)
 ```
 
-Comments are `// line` and `/* block */`.
+## Relationship to the spec
 
-### Reserved lifecycle attaches
+`/SST.model` (NS-SST-0001, Revision 1.0.0) is authoritative. This implementation
+follows it for the lexical layer, file structure, the section schemas, and the
+diagnostic code system. Two deliberate, conformant deviations/extensions:
 
-| Attach       | Meaning                                                        |
-|--------------|----------------------------------------------------------------|
-| `on-start`   | run once when the component is activated                      |
-| `main`       | the program entry attach (exactly one component should have it)|
-| `tick`       | body run `repeat:` times (a simple bounded loop hook)         |
+1. **Triplet target.** The spec's `target` section is Java-only. Nordshrift
+   drives a *triplet*, so `target` accepts an additional directive
+   **`target-language`** (`java` | `sleela` | `c`, default `java`). This is a
+   superset: a spec-conformant sheet with no `target-language` behaves exactly
+   as the spec describes (Java).
+2. **Deferred semantics.** The `rules`, `effects`, `derive`, `guards`,
+   `interop`, and `profile` sections are fully **lexed, parsed, and validated**
+   (with their NSS-* diagnostics), but are **not yet applied** to emission in
+   this pass. They are recorded in the sheet model for the next stage. The
+   `sheet`, `import`, `source`, `target`, and `pipeline` sections are honored.
 
-Any other `name: { ... }` is a **named attach** (a method) callable via
-`call Component.name();`.
+The companion `SL-META-0001` (the Sleela Language Metadocument the spec refers
+to for Entity/Contract/Effect/Rule/Lens/Flow) is not present in the repo; the
+meta-model concepts those deferred sections reference are stubbed accordingly.
 
-### Structural properties (well-known)
+## The `.sst` sheet
 
-| Property   | Type   | Effect                                                             |
-|------------|--------|--------------------------------------------------------------------|
-| `threads`  | number | component runs its `on-start`/`tick` on N worker threads           |
-| `repeat`   | number | how many times `tick` runs                                         |
-| `port`,... | any    | plain data, readable in attaches via `prop(port)`                  |
+A sheet is **indentation-significant** (2- or 4-space unit, fixed by the first
+indent) and **pragma-first**. Structure: pragmas → `sheet` block → optional
+`import`s → configuration sections.
 
-`uses: A, B;` records dependency edges; the semantic pass **topologically
-orders** components so a component's dependencies start first, and reports a
-clear error on a cycle.
+```sst
+#nordshrift 1.0            // required (NSS-E-0003 if missing)
+#sleela     1.0            // optional
 
-## Example
+/// A documentation comment attaches to the block it precedes.
+sheet demo:
+  version      1.0.0
+  author       "Sleela Design Council"
+  description  "Transpiles the demo sources; the sleela target runs on the core."
 
-```
-// server.sst
-component Logger {
-    level: "info";
-    log: {
-        print("[" + prop(level) + "] " + msg);
-    }
-}
+source:
+  root  "src"
+  glob  "**/*.sleela"      // recursive glob; ** crosses directories
 
-component Server {
-    port: 8080;
-    threads: 2;
-    uses: Logger;
-
-    on-start: {
-        print("server starting on port " + prop(port));
-    }
-
-    main: {
-        let i = 0;
-        while (i < 3) {
-            print("request " + i);
-            i = i + 1;
-        }
-        print("server done");
-    }
-}
+target:
+  root            "out"
+  layout          mirror-source
+  java-version    21       // must be >= 17 (NSS-E-0040)
+  package-root    "com.example.demo"
+  target-language sleela   // triplet selector: java | sleela | c
 ```
 
-## Thread model (thread-friendly, modern sense)
+### Sections (per the spec)
 
-Nordshrift components are **isolated units**: an attach reads its own component's
-properties and only interacts with siblings through explicit `call`. There is no
-shared mutable global state at the language level, so the emitters are free to
-run components concurrently:
-
-- **`threads: N`** on a component means its activation body is dispatched onto
-  `N` workers.
-- **Java** emitter: an `ExecutorService` (fixed thread pool) per threaded
-  component; `main` joins.
-- **C/C++** emitter: `pthread_create` workers joined before continuing.
-- **Sleela** emitter: a real fan-out. The component's activation is emitted as
-  a `Comp_activate()` method, and `main` does `spawn(Comp_activate)` N times
-  then `join()` — running on the Sleela core's threading model (up to 128
-  threads). Output stays atomic per line via the core's guarded `print`.
-
-Turing-completeness comes from the attach language: unbounded `while` +
-mutable `let` bindings + conditionals + arithmetic.
-
-## Lowering summary (per target)
-
-| Nordshrift            | Java                          | Sleela                         | C/C++                        |
-|-----------------------|-------------------------------|--------------------------------|------------------------------|
-| component `C`         | `class C`                     | `class C` methods              | struct `C` + funcs           |
-| property `p: v`       | field / constant              | local/const in accessor        | `#define`/const / struct field |
-| attach `name: {..}`   | method `name()`               | method `name()`                | function `C_name()`          |
-| `prop(p)`             | field read                    | inlined constant               | field/const read             |
-| `uses: A`             | reference / start order       | call order                     | call order                   |
-| `call A.f()`          | `A.f()`                       | `A_f()`                        | `C_f()`                      |
-| `threads: N`          | `ExecutorService(N)`          | N × `spawn` + `join` (real threads) | N `pthread`s            |
-| `print(e)`            | `System.out.println`          | `print`                        | `printf`                     |
+| Section    | Purpose                                                          | Status here |
+|------------|------------------------------------------------------------------|-------------|
+| `sheet`    | file manifest: version, author, description, tags, extends       | honored     |
+| `import`   | compose sheets (`as`, `only`, `except`)                          | parsed      |
+| `source`   | root + globs − exclude; encoding, watch                          | honored     |
+| `target`   | root, layout, java-version, package-root, +`target-language`     | honored     |
+| `pipeline` | phases, skip, parallel-threshold, cache, verbosity, fail-fast    | validated   |
+| `rules`    | activate/deactivate, severity, config                            | parsed      |
+| `effects`  | policy, declare, aliases, default-effect                         | parsed      |
+| `derive`   | lens/projection/equality/…, target-style                        | parsed      |
+| `guards`   | mode, on-failure, message-format                                 | parsed      |
+| `interop`  | assume-impure, null-wrapping, checked-exceptions, type-mapping   | parsed      |
+| `profile`  | named variant with `inherits` + overriding sections              | parsed      |
 
 ## CLI
 
-```
-nordshrift emit --target=java   file.sst   # writes/prints Java source
-nordshrift emit --target=sleela file.sst   # writes/prints Sleela source
-nordshrift emit --target=c      file.sst   # writes/prints C source
-nordshrift run file.sst                     # emit Sleela + execute on the C core
+```sh
+nordshrift check <sheet.sst>    # lex + parse + validate; print all NSS-* diagnostics
+nordshrift build <sheet.sst>    # resolve source: files, transpile to target-language;
+                                #   the sleela target additionally runs on the C core
+nordshrift version
 ```
 
-## Layout
+`build` resolves `source.root`/globs relative to the sheet's own directory. Each
+resolved `.sleela` file is parsed by the shared Sleela front end and emitted in
+the selected language. For `target-language sleela`, the emitted program is also
+executed on the Sleela core, closing the loop.
+
+## Diagnostics (NS-SST-0001 Part XV)
+
+Every diagnostic is `NSS-{E|W|N}-{XXXX}` with the file, line, a concrete
+message, and the governing rule. Implemented so far:
+
+| Code | Condition |
+|------|-----------|
+| NSS-E-0001 | invalid UTF-8 |
+| NSS-E-0002 | mixed / inconsistent indentation (IND-01/03) |
+| NSS-E-0003 | missing `#nordshrift` pragma |
+| NSS-E-0004 | unsupported `#nordshrift` version |
+| NSS-E-0010 | multiple `sheet` blocks |
+| NSS-E-0021 | duplicate import alias |
+| NSS-E-0030 | `source.root` does not exist |
+| NSS-E-0031 | empty source set after glob/exclude |
+| NSS-E-0032 | absolute path in `source.glob` |
+| NSS-E-0040 | `target.java-version` < 17 |
+| NSS-E-0050 | pipeline phases out of order |
+| NSS-E-0051 | skipping a mandatory phase |
+| NSS-E-0080 | `derive builder true` with `target-style record` |
+| NSS-E-0110 | multiple-parent profile inheritance |
+| NSS-W-0001 | orphaned documentation comment |
+| NSS-W-0100 | `null-wrapping trust` activated |
+
+## Files
 
 ```
-impl/nordshrift/
-  NORDSHRIFT.md          this document
-  sst_lexer.{h,cpp}      .sst tokenizer
-  sst_ast.h              component graph + attach IR
-  sst_parser.{h,cpp}     .sst parser
-  sst_sema.{h,cpp}       resolve uses, cycle check, topo order
-  emit_java.{h,cpp}      Java emitter
-  emit_sleela.{h,cpp}    Sleela emitter (runs on the C core)
-  emit_c.{h,cpp}         C/C++ emitter
-  nordshrift.cpp         the CLI driver
-  examples/*.sst
+nordshrift/
+  NORDSHRIFT.md         this document
+  README.md             quick start
+  diagnostics.h         NSS-* diagnostic model (Part XV)
+  sst_lexer.{h,cpp}     indentation-significant tokenizer (Part I) -> INDENT/DEDENT
+  sheet_model.h         the Sheet model (all sections, §II–§XIII)
+  sst_parser.{h,cpp}    recursive-descent parser over INDENT/DEDENT (Part XIV EBNF)
+  source_resolve.{h,cpp} filesystem glob resolution of the source section (§V)
+  sleela_emit.{h,cpp}   Sleela AST -> java | sleela | c  (the triplet emitter)
+  nordshrift.cpp        the `nordshrift` CLI (check / build)
+  examples/
+    commerce-engine.sst the spec's full annotated example (validates clean)
+    demo/build.sst      a minimal, self-contained sheet
+    demo/src/Demo.sleela the program it transpiles
 ```
+
+See `/SST.model` for the complete normative grammar (Part XIV) and the full
+diagnostic index (Part XV §15.2).

@@ -1,48 +1,23 @@
 // ===========================================================================
-// sst_parser.h  --  Recursive-descent parser: .sst tokens -> component graph.
+// sst_parser.h  --  Spec-conformant .sst parser (NS-SST-0001 Part XIV).
+//
+// Consumes the INDENT/DEDENT token stream from the lexer and builds a Sheet.
+// Structural and semantic diagnostics (NSS-E-0003, 0004, 0010, 0040, 0050,
+// 0051, 0080, 0110, ...) are appended to the DiagnosticBag.
 // ===========================================================================
 #ifndef NORDSHRIFT_SST_PARSER_H
 #define NORDSHRIFT_SST_PARSER_H
 
-#include "sst_ast.h"
+#include "sheet_model.h"
 #include "sst_lexer.h"
+#include "diagnostics.h"
 
 namespace nordshrift {
 
-class Parser {
-public:
-    explicit Parser(std::vector<Token> toks) : toks_(std::move(toks)) {}
-    Sheet parseSheet();     // throws std::runtime_error on syntax error
-
-private:
-    std::vector<Token> toks_;
-    size_t i_ = 0;
-
-    const Token& cur() const { return toks_[i_]; }
-    const Token& peek(int off) const;
-    bool check(Tok k) const { return cur().kind == k; }
-    bool accept(Tok k);
-    const Token& expect(Tok k, const char* what);
-    [[noreturn]] void error(const std::string& msg) const;
-
-    Component parseComponent();
-    // member name may be hyphenated: IDENT ('-' IDENT)*
-    std::string parseMemberName();
-    PropValue parseScalar();
-
-    std::unique_ptr<Block> parseBlock();
-    StmtP parseStmt();
-
-    ExprP parseExpr();
-    ExprP parseOr();
-    ExprP parseAnd();
-    ExprP parseEq();
-    ExprP parseRel();
-    ExprP parseAdd();
-    ExprP parseMul();
-    ExprP parseUnary();
-    ExprP parsePrimary();
-};
+// Parse a token stream into a Sheet. Always returns a Sheet (possibly partial);
+// callers should consult diags.hasErrors().
+Sheet parseSheet(const std::vector<Token>& toks, const std::string& file,
+                 DiagnosticBag& diags);
 
 } // namespace nordshrift
 

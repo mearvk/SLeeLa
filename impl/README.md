@@ -167,8 +167,8 @@ impl/
     compiler.{h,cpp}    AST -> core bytecode
     driver.cpp          the `sleela` CLI
   examples/             sample .sleela programs
-  nordshrift/           Nordshrift: the .sst Style-Sheet system language
-    sst_lexer/parser/sema, emit_java/sleela/c, nordshrift CLI, examples/*.sst
+  nordshrift/           Nordshrift: the .sst transpiler driver (NS-SST-0001)
+    sst_lexer/parser, sheet_model, source_resolve, sleela_emit, nordshrift CLI
   Makefile
   DESIGN.md
   README.md
@@ -178,19 +178,18 @@ impl/
 > implementation. The older 2019 Java "Nordshrift" exploration remains under
 > `src/` as project history and is untouched.
 
-## Nordshrift (the Style-Sheet system language)
+## Nordshrift (the `.sst` transpiler driver)
 
-Layered on top of Sleela is **Nordshrift** — an interpreter/transpiler that
-addresses and combines *system components* described as **Style Sheets**
-(`.sst`: structural properties + functional attaches). One `.sst` source runs
-into a **triple manifold** of targets — **Java**, **Sleela** (executed on the C
-core here), and **C/C++** — with behaviorally equivalent output. It is
-Turing-complete via the attach language and thread-friendly via isolated,
-optionally-threaded components.
+Layered on top of Sleela is **Nordshrift** — the transpiler *driver* defined by
+the normative spec **NS-SST-0001** (`/SST.model`). It reads a **`.sst` control
+sheet** (indentation-significant, pragma-first) that names Sleela source files
+and selects a target, then drives their transpilation into the **triplet** —
+**Java**, **Sleela** (executed on the C core here), or **C** — chosen by the
+sheet's `target-language` directive.
 
 ```sh
-./build/nordshrift run nordshrift/examples/counter.sst      # runs on the C core
-./build/nordshrift emit --target=java nordshrift/examples/server.sst
+./build/nordshrift check nordshrift/examples/demo/build.sst   # validate; NSS-* diagnostics
+./build/nordshrift build nordshrift/examples/demo/build.sst   # transpile + (sleela) run on core
 ```
 
 See [`nordshrift/README.md`](nordshrift/README.md) and
