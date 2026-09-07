@@ -11,8 +11,10 @@
 #include "lexer.h"
 #include "parser.h"
 #include "compiler.h"
+#include "../catalog/sheet_catalog.h"
 
 #include <cstdio>
+#include <cstdlib>
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -22,7 +24,28 @@ extern "C" {
 #include "../core/sleela_core.h"
 }
 
-static const char* kVersion = "Sleela 0.1.0 (C/C++ core)";
+static const char* kVersion = "Sleela 0.1.1 (C/C++ core; SHEET.sheet conducted methods)";
+
+// Locate SHEET.sheet: honor $SLEELA_SHEET, else probe common relative paths up
+// from the working dir / build tree. Returns an empty catalog if not found
+// (the conducted-method built-ins then resolve against nothing but still work).
+static catalog::Catalog loadCatalog() {
+    const char* env = std::getenv("SLEELA_SHEET");
+    const char* candidates[] = {
+        env,
+        "SHEET.sheet",
+        "../SHEET.sheet",
+        "../../SHEET.sheet",
+        "../../../SHEET.sheet",
+    };
+    for (const char* p : candidates) {
+        if (!p || !*p) continue;
+        bool ok = false;
+        catalog::Catalog c = catalog::parseCatalogFile(p, &ok);
+        if (ok) return c;
+    }
+    return catalog::Catalog{};
+}
 
 static int usage() {
     std::cerr <<
@@ -48,6 +71,8 @@ static int runFile(const std::string& path) {
         return 1;
     }
 
+    catalog::Catalog cat = loadCatalog();
+
     SLVM* vm = slvm_new();
     int rc = 0;
     try {
@@ -57,7 +82,7 @@ static int runFile(const std::string& path) {
         sleela::Parser parser(std::move(tokens));
         sleela::Program prog = parser.parseProgram();
 
-        sleela::compile(prog, vm);        // lowers AST -> core bytecode
+        sleela::compile(prog, vm, &cat);  // lowers AST -> core bytecode (sheet-aware)
 
         SLResult r = slvm_run(vm);        // execute through the core
         if (r == SLR_ERROR) {

@@ -79,3 +79,30 @@ validated now and applied to emission in a later stage.
 
 See [`NORDSHRIFT.md`](NORDSHRIFT.md) for the architecture, the section table, and
 the implemented diagnostic codes; see `/SST.model` for the normative grammar.
+
+
+## Object compatibility list (SHEET.sheet)
+
+Beyond driving `.sst` builds, Nordshrift carries every object from the repo-root
+`SHEET.sheet` catalog (129 objects, 16 role categories, the `System` root with
+depth 3024 / complexity degree 4) in an **object compatibility list**, and
+converts each object into a per-target **relevance**:
+
+- **direct** — the object maps to a concrete target construct
+  (e.g. `Thread -> pthread_t` in C, `class` in Java, `spawn(...)` in Sleela).
+- **model** — the object has no single construct, so it is realized as an
+  abstract role/pattern (e.g. `Pipeline` as a "piping" shape).
+- **none** — the object is not on the compatibility list.
+
+This is the bridge from a catalogued system object to something a target can
+eventually compile and an OS can execute. Commands (locate the sheet via
+`$SLEELA_SHEET` or a nearby `SHEET.sheet`):
+
+```sh
+nordshrift objects                        # list the whole compatibility list by section
+nordshrift relevance --target=c           # per-object direct/model table + tally
+nordshrift relevance --target=c Thread    # one object's relevance (direct -> pthread_t)
+```
+
+The catalog is parsed by the shared `../catalog/` module — the same one Sleela
+uses for its conducted methods — so the two tools stay in lock-step.

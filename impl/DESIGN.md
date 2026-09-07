@@ -227,3 +227,28 @@ Lowering rules:
 
 `main()` is registered as the entry via `slvm_set_entry`, then `slvm_run` executes
 it through the core dispatch loop.
+
+
+## Conducted methods (SHEET.sheet catalog)
+
+Sleela's system-object vocabulary lives in the repo-root `SHEET.sheet`, parsed by
+the shared `catalog/` module (`catalog::Catalog`). The compiler is handed the
+catalog (`compile(prog, vm, &catalog)`) and resolves a family of *conducted
+method* built-ins entirely at compile time — no runtime library, no core
+opcodes. Each lowers to a plain constant:
+
+| Sleela built-in       | Lowering                                                      |
+|-----------------------|---------------------------------------------------------------|
+| `conduct("Name")`     | `bool` — is `Name` a catalogued object?                       |
+| `role("Name")`        | `String` — the object's conduct role                          |
+| `insight("Name")`     | `String` — the object's note (insight)                        |
+| `congruent("A","B")`  | `bool` — `catalog::congruent(A,B)`                            |
+| `route("A","B")`      | `String` — `"A -> B"` if congruent, else `""`                 |
+| `sysdepth()`          | `int` — `catalog.depth` (3024)                                |
+| `degreemax()`         | `int` — `catalog.complexityDegreeMax` (4)                     |
+
+Congruence (the routing relation) holds when two objects share a conduct role or
+list each other as siblings — the sheet's own child/sibling graph. The driver
+finds `SHEET.sheet` via `$SLEELA_SHEET` or nearby paths; if absent, the built-ins
+still compile but resolve against an empty catalog. The same catalog module backs
+Nordshrift's object-compatibility list, so both tools agree object-for-object.

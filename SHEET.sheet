@@ -1,7 +1,32 @@
 #sheet SHEET.sheet
-#kind  system-object-catalog
-#for   Sleela / Nordshrift software systems
-#rev   1.0.0
+#kind    system-object-catalog
+#for     Sleela / Nordshrift software systems
+#rev     1.0.0
+#format  1.0
+#machine yes
+
+# ---- machine-readable parse contract --------------------------------------
+# Both the Sleela conduct registry and the Nordshrift object-compatibility list
+# parse this file with the same rules:
+#   * a line `#key value`          is a header directive.
+#   * a line `section <name>:`     opens a category section.
+#   * a line indented and bare     (`  Word`) names an Object.
+#   * under an Object, indented `children:`/`siblings:`/`note:` give its
+#     relations and gloss (comma-separated lists; `-` means none).
+#   * a line `key: value` directly under a section (not under an Object) is a
+#     section-level value (e.g. depth, complexity-degree-max).
+#   * `#` and blank lines are ignored.
+#
+# Each section carries a conduct ROLE. Sleela turns every Object into a
+# "conducted method" whose groove is typed by its section role; Nordshrift uses
+# the role to choose a direct vs model relevance for a target. Roles:
+#   system=root  standard-starts=start   idioms=idiom       highlights=highlight
+#   calls=call   methods=method          attentions=attention  gain=gain
+#   conversations=conversation  pipings=piping  transitives=transitive
+#   completitives=completitive  inheritances=inheritance  smart-moves=smart-move
+#   congrains=congruence  limits=limit
+#
+# Role tags are declared inline on each `section` header as `# role: <role>`.
 
 # ===========================================================================
 # SHEET.sheet — Catalog of Common System Objects in Software Programming
@@ -33,7 +58,7 @@
 # ---------------------------------------------------------------------------
 # The System is the whole; every other object in this sheet is reachable from
 # it. It carries the two governing invariants of this catalog.
-section system:
+section system:              # role: root
 
   System
     children:  Subsystem, Module, Component, Service, Process, Resource, Runtime, Kernel
@@ -103,7 +128,7 @@ section system:
 # ---------------------------------------------------------------------------
 # 1. STANDARD STARTS — canonical entry points and bootstraps
 # ---------------------------------------------------------------------------
-section standard-starts:
+section standard-starts:     # role: start
 
   Main
     children:  ArgumentVector, ExitCode
@@ -149,7 +174,7 @@ section standard-starts:
 # ---------------------------------------------------------------------------
 # 2. IDIOMS — recurring shapes and named patterns
 # ---------------------------------------------------------------------------
-section idioms:
+section idioms:              # role: idiom
 
   RAII                       # Resource Acquisition Is Initialization
     children:  Guard, ScopeExit
@@ -210,7 +235,7 @@ section idioms:
 # ---------------------------------------------------------------------------
 # 3. HIGHLIGHTS — the load-bearing objects worth calling out
 # ---------------------------------------------------------------------------
-section highlights:
+section highlights:          # role: highlight
 
   Interface
     children:  Method, Property, Event
@@ -246,7 +271,7 @@ section highlights:
 # ---------------------------------------------------------------------------
 # 4. CALLS — invocation objects and forms
 # ---------------------------------------------------------------------------
-section calls:
+section calls:               # role: call
 
   Call
     children:  Argument, ReturnValue, Frame
@@ -287,7 +312,7 @@ section calls:
 # ---------------------------------------------------------------------------
 # 5. METHODS — the members that do work
 # ---------------------------------------------------------------------------
-section methods:
+section methods:             # role: method
 
   Method
     children:  Parameter, Body, ReturnType, Signature
@@ -333,7 +358,7 @@ section methods:
 # ---------------------------------------------------------------------------
 # 6. ATTENTIONS — objects that watch, signal, and demand handling
 # ---------------------------------------------------------------------------
-section attentions:
+section attentions:          # role: attention
 
   Signal
     children:  Handler, Mask, DeliveryQueue
@@ -379,7 +404,7 @@ section attentions:
 # ---------------------------------------------------------------------------
 # 8. GAIN — objects that accrue, amplify, or measure benefit
 # ---------------------------------------------------------------------------
-section gain:
+section gain:                # role: gain
 
   Metric
     children:  Counter, Gauge, Histogram, Meter
@@ -420,7 +445,7 @@ section gain:
 # ---------------------------------------------------------------------------
 # 9. CONVERSATIONS — objects of dialogue and exchange
 # ---------------------------------------------------------------------------
-section conversations:
+section conversations:       # role: conversation
 
   Session
     children:  Handshake, Token, State, Timeout
@@ -466,7 +491,7 @@ section conversations:
 # ---------------------------------------------------------------------------
 # 10. PIPINGS — objects that route and transform flowing data
 # ---------------------------------------------------------------------------
-section pipings:
+section pipings:             # role: piping
 
   Pipe
     children:  ReadEnd, WriteEnd, Buffer
@@ -512,7 +537,7 @@ section pipings:
 # ---------------------------------------------------------------------------
 # 11. TRANSITIVES — objects that pass through / relay across boundaries
 # ---------------------------------------------------------------------------
-section transitives:
+section transitives:         # role: transitive
 
   Relay
     children:  Forwarder, Hop
@@ -558,7 +583,7 @@ section transitives:
 # ---------------------------------------------------------------------------
 # 12. COMPLETITIVES — objects marking finishing, closure, and settlement
 # ---------------------------------------------------------------------------
-section completitives:
+section completitives:       # role: completitive
 
   Completion
     children:  Result, Status, Timestamp
@@ -604,7 +629,7 @@ section completitives:
 # ---------------------------------------------------------------------------
 # 13. INHERITANCES — objects of derivation and specialization
 # ---------------------------------------------------------------------------
-section inheritances:
+section inheritances:        # role: inheritance
 
   Class
     children:  Field, Method, Constructor, NestedClass
@@ -655,7 +680,7 @@ section inheritances:
 # ---------------------------------------------------------------------------
 # 14. SMART MOVES — objects encoding safe, efficient, self-managing choices
 # ---------------------------------------------------------------------------
-section smart-moves:
+section smart-moves:         # role: smart-move
 
   SmartPointer
     children:  UniquePtr, SharedPtr, WeakPtr
@@ -702,7 +727,7 @@ section smart-moves:
 # 15. CONGRAINS — constraints that bind objects together / hold them true
 # ---------------------------------------------------------------------------
 # ("congrains" read as constraints / co-grained bindings.)
-section congrains:
+section congrains:           # role: congruence
 
   Invariant
     children:  Predicate, Scope
@@ -748,7 +773,7 @@ section congrains:
 # ---------------------------------------------------------------------------
 # 16. LIMITS — objects bounding capacity, extent, and permission
 # ---------------------------------------------------------------------------
-section limits:
+section limits:              # role: limit
 
   Bound
     children:  UpperBound, LowerBound, Range

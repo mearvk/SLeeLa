@@ -118,6 +118,40 @@ Class **fields** are shared across threads (they compile to the core's
 thread-safe globals); method **locals** are per-thread. `print` output is
 atomic per line. See [`DESIGN.md`](DESIGN.md) for the full model.
 
+### Conducted methods (SHEET.sheet)
+
+Sleela draws its system-object vocabulary from [`../SHEET.sheet`](../SHEET.sheet),
+the catalog of common system objects (129 objects across 16 role categories,
+carrying the `System` root and its invariants — depth **3024**, complexity
+degree **4**). These are *conducted methods*: sheet-backed grooves the compiler
+resolves at compile time, giving a program method control, routing, and insight.
+
+| Built-in              | Meaning                                                       |
+|-----------------------|---------------------------------------------------------------|
+| `conduct("Name")`     | `true` if `Name` is a conducted (catalogued) method           |
+| `role("Name")`        | the object's conduct role (e.g. `piping`, `smart-move`)       |
+| `insight("Name")`     | the object's insight/gloss (an insight about the object/gain) |
+| `congruent("A","B")`  | `true` if A and B route to a known congruence                 |
+| `route("A","B")`      | `"A -> B"` when congruent, else `""` (no route)               |
+| `sysdepth()`          | the relevant system depth (`3024`)                            |
+| `degreemax()`         | the max complexity degree (`4`)                               |
+
+```java
+class Conduct {
+    void main() {
+        print("depth " + sysdepth() + ", degree " + degreemax());
+        print(role("Pipeline"));                     // piping
+        print(insight("Reward"));                    // accrued value guiding ...
+        print(route("Pipeline", "Stream"));          // Pipeline -> Stream
+    }
+}
+```
+
+Run with the sheet located (via `$SLEELA_SHEET` or a nearby `SHEET.sheet`):
+`SLEELA_SHEET=../SHEET.sheet ./build/sleela run examples/conduct.sleela`.
+The catalog is parsed by the shared `catalog/` module, which Nordshrift also
+uses for its object-compatibility list.
+
 ## The exchange API (core C ABI)
 
 Declared in [`core/sleela_core.h`](core/sleela_core.h). The whole core can be
@@ -166,9 +200,12 @@ impl/
     parser.{h,cpp}      recursive-descent parser
     compiler.{h,cpp}    AST -> core bytecode
     driver.cpp          the `sleela` CLI
-  examples/             sample .sleela programs
+  examples/             sample .sleela programs (incl. conduct.sleela)
+  catalog/              shared SHEET.sheet parser (conduct + object compat)
+    sheet_catalog.{h,cpp}  Catalog model: objects, roles, congruence, invariants
   nordshrift/           Nordshrift: the .sst transpiler driver (NS-SST-0001)
-    sst_lexer/parser, sheet_model, source_resolve, sleela_emit, nordshrift CLI
+    sst_lexer/parser, sheet_model, source_resolve, sleela_emit,
+    object_compat (compatibility list + relevance), nordshrift CLI
   Makefile
   DESIGN.md
   README.md
@@ -190,6 +227,17 @@ sheet's `target-language` directive.
 ```sh
 ./build/nordshrift check nordshrift/examples/demo/build.sst   # validate; NSS-* diagnostics
 ./build/nordshrift build nordshrift/examples/demo/build.sst   # transpile + (sleela) run on core
+```
+
+Nordshrift also carries the [`../SHEET.sheet`](../SHEET.sheet) objects in an
+**object compatibility list** and converts each into a per-target *relevance* —
+either **direct** (a concrete target construct, e.g. `Thread -> pthread_t`) or
+**model** (an abstract role/pattern) — for eventual OS-executable compilation:
+
+```sh
+./build/nordshrift objects                       # the 129-object compatibility list
+./build/nordshrift relevance --target=c Thread   # direct -> pthread_t
+./build/nordshrift relevance --target=java       # whole-catalog table + direct/model tally
 ```
 
 See [`nordshrift/README.md`](nordshrift/README.md) and

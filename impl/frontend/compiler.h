@@ -10,6 +10,7 @@
 #define SLEELA_COMPILER_H
 
 #include "ast.h"
+#include "../catalog/sheet_catalog.h"
 
 extern "C" {
 #include "../core/sleela_core.h"
@@ -20,7 +21,12 @@ namespace sleela {
 // Compile `prog` into `vm`. Returns the entry function index (the one holding
 // `main`). Throws std::runtime_error on a semantic error (unknown variable,
 // unknown function, missing main, etc.).
-int compile(const Program& prog, SLVM* vm);
+//
+// `cat` (optional) is the SHEET.sheet catalog that backs Sleela's conducted
+// methods -- the sheet-derived built-ins insight()/role()/route()/congruent()/
+// conduct()/sysdepth()/degreemax(). When null, those built-ins still compile
+// but resolve against an empty catalog.
+int compile(const Program& prog, SLVM* vm, const catalog::Catalog* cat = nullptr);
 
 } // namespace sleela
 

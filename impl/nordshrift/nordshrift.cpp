@@ -22,12 +22,16 @@
 #include <string>
 #include <vector>
 
+#include <cstdlib>
+
 #include "sst_lexer.h"
 #include "sst_parser.h"
 #include "sheet_model.h"
 #include "diagnostics.h"
 #include "source_resolve.h"
 #include "sleela_emit.h"
+#include "object_compat.h"
+#include "../catalog/sheet_catalog.h"
 
 // Shared Sleela front end + core for parsing/executing the source programs.
 #include "../frontend/lexer.h"
@@ -45,10 +49,34 @@ static const char* kVersion =
 static int usage() {
     std::cerr <<
         "Usage:\n"
-        "  nordshrift check <sheet.sst>   validate a sheet; print diagnostics\n"
-        "  nordshrift build <sheet.sst>   transpile the sheet's sources to its target\n"
+        "  nordshrift check <sheet.sst>              validate a sheet; print diagnostics\n"
+        "  nordshrift build <sheet.sst>              transpile the sheet's sources to its target\n"
+        "  nordshrift objects                        list the SHEET.sheet object compatibility list\n"
+        "  nordshrift relevance --target=java|sleela|c [Object]\n"
+        "                                            show direct/model relevance conversions\n"
         "  nordshrift version\n";
     return 2;
+}
+
+// Locate SHEET.sheet the same way the Sleela driver does.
+static catalog::Catalog loadCatalog() {
+    const char* env = std::getenv("SLEELA_SHEET");
+    const char* candidates[] = { env, "SHEET.sheet", "../SHEET.sheet",
+                                 "../../SHEET.sheet", "../../../SHEET.sheet" };
+    for (const char* p : candidates) {
+        if (!p || !*p) continue;
+        bool ok = false;
+        catalog::Catalog c = catalog::parseCatalogFile(p, &ok);
+        if (ok) return c;
+    }
+    return catalog::Catalog{};
+}
+
+static bool parseTargetLang(const std::string& s, TargetLang& out) {
+    if (s == "java")   { out = TargetLang::Java;   return true; }
+    if (s == "sleela") { out = TargetLang::Sleela; return true; }
+    if (s == "c")      { out = TargetLang::C;      return true; }
+    return false;
 }
 
 static bool readFile(const std::string& path, std::string& out) {
@@ -165,11 +193,91 @@ static int doBuild(const std::string& path) {
     return rc;
 }
 
+// `objects`: print the object compatibility list from SHEET.sheet.
+static int doObjects() {
+    catalog::Catalog cat = loadCatalog();
+    if (cat.objectCount() == 0) {
+        std::cerr << "nordshrift: could not load SHEET.sheet (set SLEELA_SHEET)\n";
+        return 1;
+    }
+    std::cout << "Nordshrift object compatibility list — from SHEET.sheet\n";
+    std::cout << "system depth = " << cat.depth
+              << ", congruent-linear-max = " << cat.congruentLinearMax
+              << ", complexity-degree-max = " << cat.complexityDegreeMax << "\n";
+    std::cout << cat.objectCount() << " objects across "
+              << cat.sections.size() << " sections\n\n";
+    for (const auto& s : cat.sections) {
+        std::cout << "[" << s.name << "]  role=" << s.role
+                  << "  (" << s.objects.size() << ")\n";
+        for (const auto& name : s.objects) {
+            const catalog::Object* o = cat.find(name);
+            std::cout << "  - " << name;
+            if (o && !o->children.empty()) {
+                std::cout << "  children:";
+                for (auto& c : o->children) std::cout << " " << c;
+            }
+            std::cout << "\n";
+        }
+    }
+    return 0;
+}
+
+// `relevance --target=T [Object]`: show how catalog objects convert to the
+// target as a direct construct or a modeled shape.
+static int doRelevance(int argc, char** argv) {
+    TargetLang target = TargetLang::Java;
+    bool haveTarget = false;
+    std::string only;
+    for (int i = 2; i < argc; i++) {
+        std::string a = argv[i];
+        if (a.rfind("--target=", 0) == 0) { haveTarget = parseTargetLang(a.substr(9), target); }
+        else if (a == "--target" && i + 1 < argc) { haveTarget = parseTargetLang(argv[++i], target); }
+        else only = a;   // an optional single object name
+    }
+    if (!haveTarget) { std::cerr << "nordshrift: relevance requires --target=java|sleela|c\n"; return usage(); }
+
+    catalog::Catalog cat = loadCatalog();
+    if (cat.objectCount() == 0) {
+        std::cerr << "nordshrift: could not load SHEET.sheet (set SLEELA_SHEET)\n";
+        return 1;
+    }
+    const char* tn = target == TargetLang::Java ? "java" : target == TargetLang::Sleela ? "sleela" : "c";
+
+    if (!only.empty()) {
+        ObjectRelevance r = relevanceOf(cat, only, target);
+        if (r.relevance == Relevance::None) {
+            std::cerr << "nordshrift: '" << only << "' is not on the compatibility list\n";
+            return 1;
+        }
+        std::cout << only << " -> " << tn << "\n";
+        std::cout << "  relevance : " << relevanceName(r.relevance) << "\n";
+        std::cout << "  mapping   : " << r.mapping << "\n";
+        std::cout << "  role      : " << r.role << "\n";
+        std::cout << "  insight   : " << r.note << "\n";
+        return 0;
+    }
+
+    // whole-catalog relevance table
+    auto list = relevanceList(cat, target);
+    int direct = 0, model = 0;
+    std::cout << "Relevance conversions for target '" << tn << "' ("
+              << list.size() << " objects)\n\n";
+    for (const auto& r : list) {
+        std::cout << (r.relevance == Relevance::Direct ? "  [direct] " : "  [model ] ")
+                  << r.object << "  ->  " << r.mapping << "\n";
+        if (r.relevance == Relevance::Direct) direct++; else model++;
+    }
+    std::cout << "\n" << direct << " direct, " << model << " model (for OS-executable compilation)\n";
+    return 0;
+}
+
 int main(int argc, char** argv) {
     if (argc < 2) return usage();
     std::string cmd = argv[1];
     if (cmd == "version" || cmd == "--version" || cmd == "-v") { std::cout << kVersion << "\n"; return 0; }
     if (cmd == "check") { if (argc < 3) return usage(); return doCheck(argv[2]); }
     if (cmd == "build") { if (argc < 3) return usage(); return doBuild(argv[2]); }
+    if (cmd == "objects") { return doObjects(); }
+    if (cmd == "relevance") { return doRelevance(argc, argv); }
     return usage();
 }

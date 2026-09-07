@@ -32,7 +32,8 @@ struct MethodCtx {
 
 class Compiler {
 public:
-    Compiler(const Program& prog, SLVM* vm) : prog_(prog), vm_(vm) {}
+    Compiler(const Program& prog, SLVM* vm, const catalog::Catalog* cat)
+        : prog_(prog), vm_(vm), cat_(cat) {}
 
     int run() {
         // Pass 0: declare a core global for every class field. Fields are
@@ -77,6 +78,7 @@ private:
 
     const Program& prog_;
     SLVM* vm_;
+    const catalog::Catalog* cat_;   // SHEET.sheet catalog for conducted methods
     std::map<std::string, int> funcIndex_;   // method name -> core func index
     std::vector<MethodInfo> methods_;
     std::map<std::string, int> fieldGlobal_; // field name -> core global slot
@@ -351,6 +353,77 @@ private:
             emit(OP_RECV, slot);              // pushes the received value
             return true;
         }
+
+        // -----------------------------------------------------------------
+        // Conducted-method built-ins, backed by SHEET.sheet (the catalog).
+        // These give Sleela full method control/support: express a groove,
+        // read an object's insight, and route to known congruences.
+        //   conduct("Name")     -> 1 if Name is a conducted (catalogued) method
+        //   role("Name")        -> the object's conduct role (string)
+        //   insight("Name")     -> the object's insight/note (string)
+        //   congruent("A","B")  -> 1 if A and B are congruent (routable)
+        //   route("A","B")      -> "A -> B" if congruent, else "" (no route)
+        //   sysdepth()          -> the relevant system depth (3024)
+        //   degreemax()         -> the max complexity degree (4)
+        // Object-name arguments are string literals resolved at compile time.
+        // -----------------------------------------------------------------
+        auto litStr = [&](const Expr* e, const char* what) -> std::string {
+            auto sl = dynamic_cast<const StrLit*>(e);
+            if (!sl)
+                throw std::runtime_error("Semantic error: " + std::string(what) +
+                    " must be a string literal (an object name)");
+            return sl->value;
+        };
+        auto emitStr = [&](const std::string& s) { emit(OP_CONST, slvm_add_const_str(vm_, s.c_str())); };
+        auto emitBool = [&](bool b) { emit(OP_CONST, slvm_add_const_bool(vm_, b ? 1 : 0)); };
+
+        if (n == "conduct") {
+            if (c.args.size() != 1) throw std::runtime_error("Semantic error: conduct(name) takes one argument");
+            std::string name = litStr(c.args[0].get(), "conduct name");
+            bool known = cat_ && cat_->find(name) != nullptr;
+            emitBool(known);
+            return true;
+        }
+        if (n == "role") {
+            if (c.args.size() != 1) throw std::runtime_error("Semantic error: role(name) takes one argument");
+            std::string name = litStr(c.args[0].get(), "role name");
+            const auto* o = cat_ ? cat_->find(name) : nullptr;
+            emitStr(o ? o->role : "");
+            return true;
+        }
+        if (n == "insight") {
+            if (c.args.size() != 1) throw std::runtime_error("Semantic error: insight(name) takes one argument");
+            std::string name = litStr(c.args[0].get(), "insight name");
+            const auto* o = cat_ ? cat_->find(name) : nullptr;
+            emitStr(o ? o->note : "");
+            return true;
+        }
+        if (n == "congruent") {
+            if (c.args.size() != 2) throw std::runtime_error("Semantic error: congruent(a, b) takes two arguments");
+            std::string a = litStr(c.args[0].get(), "congruent a");
+            std::string b = litStr(c.args[1].get(), "congruent b");
+            emitBool(cat_ && cat_->congruent(a, b));
+            return true;
+        }
+        if (n == "route") {
+            if (c.args.size() != 2) throw std::runtime_error("Semantic error: route(a, b) takes two arguments");
+            std::string a = litStr(c.args[0].get(), "route a");
+            std::string b = litStr(c.args[1].get(), "route b");
+            bool ok = cat_ && cat_->congruent(a, b);
+            emitStr(ok ? (a + " -> " + b) : "");
+            return true;
+        }
+        if (n == "sysdepth") {
+            if (!c.args.empty()) throw std::runtime_error("Semantic error: sysdepth() takes no arguments");
+            emit(OP_CONST, slvm_add_const_int(vm_, cat_ ? cat_->depth : 0));
+            return true;
+        }
+        if (n == "degreemax") {
+            if (!c.args.empty()) throw std::runtime_error("Semantic error: degreemax() takes no arguments");
+            emit(OP_CONST, slvm_add_const_int(vm_, cat_ ? cat_->complexityDegreeMax : 0));
+            return true;
+        }
+
         return false;
     }
 
@@ -372,8 +445,8 @@ private:
 
 } // anonymous namespace
 
-int compile(const Program& prog, SLVM* vm) {
-    Compiler c(prog, vm);
+int compile(const Program& prog, SLVM* vm, const catalog::Catalog* cat) {
+    Compiler c(prog, vm, cat);
     return c.run();
 }
 
