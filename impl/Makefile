@@ -15,6 +15,9 @@ THREAD_SMOKE   := $(BUILD)/thread_smoke
 # ---- Shared catalog (SHEET.sheet parser) ----
 CATALOG_OBJ := $(BUILD)/sheet_catalog.o
 
+# ---- .xclass loader (SecureJDK 28 XML class input) ----
+XCLASS_OBJ := $(BUILD)/xclass_loader.o
+
 # ---- Sleela ----
 CORE_OBJ := $(BUILD)/sleela_core.o
 FE_SRC   := frontend/lexer.cpp frontend/parser.cpp frontend/compiler.cpp
@@ -32,7 +35,7 @@ NS_OBJ := $(patsubst nordshrift/%.cpp,$(BUILD)/ns_%.o,$(NS_SRC))
 all: $(SLEELA_BIN) $(NORDSHRIFT_BIN)
 
 # ---- link ----
-$(SLEELA_BIN): $(CORE_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ)
+$(SLEELA_BIN): $(CORE_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ)
 	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS)
 
 # nordshrift reuses the Sleela front end + core to transpile/run the sources.
@@ -51,6 +54,9 @@ $(BUILD)/%.o: frontend/%.cpp | $(BUILD)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 $(BUILD)/sheet_catalog.o: catalog/sheet_catalog.cpp catalog/sheet_catalog.h | $(BUILD)
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+$(BUILD)/xclass_loader.o: xclass/xclass_loader.cpp xclass/xclass_loader.h | $(BUILD)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 $(BUILD)/ns_%.o: nordshrift/%.cpp | $(BUILD)
