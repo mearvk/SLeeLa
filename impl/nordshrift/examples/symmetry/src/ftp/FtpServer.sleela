@@ -1,0 +1,58 @@
+// ===========================================================================
+// FtpServer.sleela — the server face of the FTP symmetry. FTP splits a control
+// channel (commands + reply codes) from a data channel (bytes). The server
+// answers each command with a reply code; those codes mirror what the client
+// expects (see FtpClient.sleela). Reply codes: 220 ready, 331 need password,
+// 230 logged in, 150 opening data, 226 transfer complete, 550 no such file.
+//
+// Driven by: symmetry/build.sst. Catalogued objects: Service, Session, Channel,
+// Connector.
+// ===========================================================================
+class FtpServer {
+
+    int replies = 0;              // shared: reply codes emitted
+
+    // Command code: 1=CONNECT 2=USER 3=PASS 4=RETR-ok 5=RETR-missing.
+    int replyFor(int command) {
+        if (command == 1) {
+            return 220;
+        }
+        if (command == 2) {
+            return 331;
+        }
+        if (command == 3) {
+            return 230;
+        }
+        if (command == 4) {
+            return 226;                 // (after an implicit 150)
+        }
+        if (command == 5) {
+            return 550;
+        }
+        return 500;                     // syntax error
+    }
+
+    void serve(int command) {
+        int code = replyFor(command);
+        lock(0);
+        replies = replies + 1;
+        unlock(0);
+        print("ftp-server: cmd=" + command + " -> " + code);
+    }
+
+    void main() {
+        print("== FTP server ==");
+        print("Service role   = " + role("Service"));
+        print("Connector role = " + role("Connector"));
+
+        // A session: CONNECT, USER, PASS, RETR (ok), RETR (missing).
+        serve(1);
+        serve(2);
+        serve(3);
+        serve(4);
+        serve(5);
+
+        print("replies emitted = " + replies);
+        print("done");
+    }
+}

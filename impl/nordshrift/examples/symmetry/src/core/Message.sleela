@@ -1,0 +1,42 @@
+// ===========================================================================
+// Message.sleela — the unit that crosses the Channel. A Request and a Response
+// are the two faces of one Message shape: a status/verb line plus a length.
+// This file models message framing symmetrically — the framing a sender emits
+// is exactly the framing a receiver expects.
+//
+// Driven by: symmetry/build.sst. Catalogued objects: Message, Request, Response.
+// ===========================================================================
+class Message {
+
+    // A frame's on-wire size is header (fixed 8) + body length. The sender's
+    // computed size must equal the receiver's expected size — that equality is
+    // the symmetry we assert.
+    int frameSize(int bodyLen) {
+        return 8 + bodyLen;
+    }
+
+    // Round a body length up to a 4-byte word boundary (both ends agree).
+    int align4(int n) {
+        int r = n % 4;
+        if (r == 0) {
+            return n;
+        }
+        return n + (4 - r);
+    }
+
+    void main() {
+        print("== Message (Request/Response framing) ==");
+        print("Message role  = " + role("Message"));
+        print("Request role  = " + role("Request"));
+        print("Response role = " + role("Response"));
+
+        int body = 13;
+        int senderSize   = frameSize(align4(body));
+        int receiverSize = frameSize(align4(body));   // same computation both ends
+        print("body=" + body + " aligned=" + align4(body));
+        print("sender frame size   = " + senderSize);
+        print("receiver frame size = " + receiverSize);
+        print("framing symmetric   = " + (senderSize == receiverSize));
+        print("done");
+    }
+}

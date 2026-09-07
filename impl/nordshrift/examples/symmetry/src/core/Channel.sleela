@@ -1,0 +1,44 @@
+// ===========================================================================
+// Channel.sleela — the symmetric medium. A Channel is the shared object both
+// endpoints hold: whatever one side writes, the other side reads. Here we use
+// the core's bounded 2-tuple mailbox (send/recv) to move framed bytes across a
+// single Channel and prove the read side observes exactly the write side.
+//
+// Driven by: symmetry/build.sst. Catalogued objects: Channel, Pipe, Stream.
+// ===========================================================================
+class Channel {
+
+    int framesMoved = 0;          // shared field (thread-safe core global)
+
+    // Producer end: write N frames onto mailbox slot 0.
+    void writer() {
+        int i = 0;
+        while (i < 4) {
+            send(0, 100 + i);     // frame payload = 100 + index
+            i = i + 1;
+        }
+    }
+
+    void main() {
+        print("== Channel (symmetric medium) ==");
+        print("Channel role  = " + role("Channel"));
+        print("Pipe -> Stream route = " + route("Pipe", "Stream"));
+
+        // One writer thread pushes frames; main is the symmetric reader.
+        spawn(writer);
+
+        int got = 0;
+        while (got < 4) {
+            int frame = recv(0);            // reader observes each written frame
+            print("recv frame = " + frame);
+            lock(0);
+            framesMoved = framesMoved + 1;  // guarded shared counter
+            unlock(0);
+            got = got + 1;
+        }
+        join();
+
+        print("frames moved = " + framesMoved);
+        print("done");
+    }
+}

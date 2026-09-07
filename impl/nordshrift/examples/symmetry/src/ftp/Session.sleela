@@ -1,0 +1,51 @@
+// ===========================================================================
+// Session.sleela — the lifecycle symmetry shared by both protocols. Every
+// exchange is bracketed: open must be matched by close, and nesting must
+// balance (open,open,close,close is legal; open,close,close is not). This file
+// runs a small state machine that tracks the open-session depth and asserts it
+// returns to zero — the balance law that makes a Session symmetric.
+//
+// Driven by: symmetry/build.sst. Catalogued objects: Session, StateMachine,
+// Watchdog.
+// ===========================================================================
+class Session {
+
+    // Apply an event to a depth counter. event: 1=open, -1=close.
+    // Returns the new depth, or -1 to signal an underflow (illegal close).
+    int apply(int depth, int event) {
+        int next = depth + event;
+        if (next < 0) {
+            return -1;                 // close without a matching open
+        }
+        return next;
+    }
+
+    void main() {
+        print("== Session (balanced lifecycle) ==");
+        print("Session role      = " + role("Session"));
+        print("StateMachine role = " + role("StateMachine"));
+        print("Watchdog role     = " + role("Watchdog"));
+
+        // Event script: open, open, close, open, close, close  -> balances to 0.
+        // Encoded as a 6-step sequence read from a helper.
+        int depth = 0;
+        int step = 0;
+        boolean legal = true;
+        while (step < 6) {
+            int event = 1;                          // default open
+            if (step == 2) { event = -1; }          // close
+            if (step == 4) { event = -1; }          // close
+            if (step == 5) { event = -1; }          // close
+            depth = apply(depth, event);
+            if (depth < 0) {
+                legal = false;
+                depth = 0;
+            }
+            print("step=" + step + " event=" + event + " depth=" + depth);
+            step = step + 1;
+        }
+        print("balanced (depth==0) = " + (depth == 0));
+        print("all closes legal    = " + legal);
+        print("done");
+    }
+}

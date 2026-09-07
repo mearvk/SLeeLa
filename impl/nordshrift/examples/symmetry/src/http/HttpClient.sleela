@@ -1,0 +1,62 @@
+// ===========================================================================
+// HttpClient.sleela — the client face, the mirror of HttpServer. The client
+// predicts the status it *expects* for each request; the symmetry holds when
+// the client's expectation equals the server's statusFor(...) logic. This file
+// re-derives the same status table from the requesting side and checks a
+// success-class predicate.
+//
+// Driven by: symmetry/build.sst. Catalogued objects: Client? (Service/Gateway),
+// Request, Response, Retry.
+// ===========================================================================
+class HttpClient {
+
+    int ok = 0;                    // shared: count of 2xx responses seen
+
+    // The client's mirror of the server's status rule (must agree with
+    // HttpServer.statusFor for the symmetry to hold).
+    int expectStatus(int method, int pathCode) {
+        if (pathCode == 3) {
+            return 404;
+        }
+        if (method == 1) {
+            return 200;
+        }
+        if (method == 2) {
+            return 201;
+        }
+        if (method == 3) {
+            return 204;
+        }
+        return 405;
+    }
+
+    boolean isSuccess(int status) {
+        return status >= 200 && status < 300;
+    }
+
+    void request(int method, int pathCode) {
+        int status = expectStatus(method, pathCode);
+        if (isSuccess(status)) {
+            lock(0);
+            ok = ok + 1;
+            unlock(0);
+        }
+        print("client: method=" + method + " path=" + pathCode
+              + " expect=" + status + " success=" + isSuccess(status));
+    }
+
+    void main() {
+        print("== HTTP client ==");
+        print("Gateway role  = " + role("Gateway"));
+        print("Retry role    = " + role("Retry"));
+        print("Retry/CircuitBreaker congruent = " + congruent("Retry", "CircuitBreaker"));
+
+        request(1, 1);       // GET /
+        request(2, 1);       // POST /
+        request(3, 1);       // DELETE /
+        request(1, 3);       // GET /missing
+
+        print("successful (2xx) = " + ok);
+        print("done");
+    }
+}

@@ -1,0 +1,43 @@
+// ===========================================================================
+// Symmetry.sleela — the protocol-neutral core that both servers and clients
+// share. It states the *system symmetry* thesis in code: a Server and a Client
+// are mirror images across a Channel, exchanging a Request for a Response.
+//
+// Driven by: symmetry/build.sst (source: glob **/*.sleela; target-language
+// sleela -> runs on the Sleela core). This file names catalogued SHEET.sheet
+// objects through conducted methods so the model is anchored to the catalog.
+// ===========================================================================
+class Symmetry {
+
+    // A pure "reflection" helper: the client's send is the server's receive,
+    // the server's send is the client's receive. We model the direction as an
+    // int (+1 request-ward, -1 response-ward) and mirror it.
+    int mirror(int direction) {
+        return -direction;
+    }
+
+    // The round-trip is symmetric: forward hops + return hops are equal.
+    int roundTrip(int hops) {
+        return hops + hops;
+    }
+
+    void main() {
+        // Constitution values (real under `sleela` + SLEELA_SHEET; 0 under a
+        // bare nordshrift build with no catalog bound).
+        print("== Symmetry core ==");
+        print("system depth  = " + sysdepth());
+        print("degree max    = " + degreemax());
+
+        // The two mirrored roles and the medium between them are catalogued.
+        print("Service role  = " + role("Service"));
+        print("Channel role  = " + role("Channel"));
+        print("Request/Response congruent = " + congruent("Request", "Response"));
+
+        // Demonstrate the mirror + round-trip laws.
+        int d = 1;
+        print("mirror(" + d + ") = " + mirror(d));
+        print("mirror(mirror(" + d + ")) = " + mirror(mirror(d)));
+        print("roundTrip(3) = " + roundTrip(3));
+        print("done");
+    }
+}
