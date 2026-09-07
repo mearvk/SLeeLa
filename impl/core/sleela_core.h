@@ -69,8 +69,29 @@ typedef enum {
     OP_RET,       /*                                  return top to caller    */
 
     OP_PRINT,     /*                                  pop and println         */
+
+    /* -----------------------------------------------------------------
+     * Threading (bounded, clean). A "thread" is one line of execution with
+     * its own stack and frames; the shared VM owns code/consts/globals plus
+     * a small fixed lock table and a 2-tuple mailbox for coordination.
+     * ----------------------------------------------------------------- */
+    OP_SPAWN,     /* a: function index               start fn on a new thread;
+                     top `nargs` stack slots are the thread's initial locals;
+                     pushes a thread handle (SL_INT id, or -1 if at capacity) */
+    OP_JOINALL,   /*                                  wait for all spawned threads */
+    OP_LOCK,      /* a: lock id [0..SL_MAX_LOCKS)     acquire lock a          */
+    OP_UNLOCK,    /* a: lock id                       release lock a          */
+    OP_SEND,      /* a: mailbox slot [0..SL_MAX_LOCKS) send 2-tuple (a, pop) onto the burble line */
+    OP_RECV,      /* a: mailbox slot                  block until a tuple for slot a; push its value */
+
     OP_HALT
 } SLOp;
+
+/* Bounds. Threading here is deliberately simple and bounded: at most 128
+ * concurrent lines of execution, and a modest fixed set of locks / mailbox
+ * slots (comfortably covering "~24 concurrent locks on a 2-tuple line"). */
+#define SL_MAX_THREADS 128
+#define SL_MAX_LOCKS   32
 
 /* Result codes returned across the ABI. */
 typedef enum {
@@ -101,6 +122,13 @@ typedef enum {
     SLX_RUN,             /* execute entry; arg.value = result                */
     SLX_GET_RESULT       /* arg.value = last run result                      */
 } SLExchangeOp;
+
+/* The threading opcodes (OP_SPAWN, OP_JOINALL, OP_LOCK, OP_UNLOCK, OP_SEND,
+ * OP_RECV) need no new exchange ops: they are assembled like any other
+ * instruction through SLX_EMIT (arg.op = the opcode, arg.a = its operand),
+ * so slcore_exchange remains the single dispatch entry point. slvm_run then
+ * executes the whole program -- main thread plus any spawned threads -- and
+ * joins all workers before returning. */
 
 typedef struct {
     SLValue     value;   /* const value in / run result out                  */
@@ -135,12 +163,17 @@ int  slvm_begin_func(SLVM* vm, const char* name, int nargs, int nlocals);
 void slvm_end_func(SLVM* vm);
 
 int  slvm_emit(SLVM* vm, SLOp op, int32_t a);   /* returns instr index */
+int  slvm_emit0(SLVM* vm, SLOp op);              /* emit an opcode with operand 0 */
 void slvm_patch(SLVM* vm, int at, int32_t a);   /* backpatch jump target */
 int  slvm_here(SLVM* vm);                        /* current code length */
 
 void slvm_set_entry(SLVM* vm, int func_index);
 SLResult slvm_run(SLVM* vm);
 SLValue  slvm_result(SLVM* vm);
+
+/* Wait for every thread spawned via OP_SPAWN to finish. Called automatically
+ * at the end of slvm_run and slvm_free, and exposed for embedders. */
+void     slvm_joinall(SLVM* vm);
 
 /* Helpers for constructing values. */
 SLValue slval_null(void);

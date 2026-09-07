@@ -55,6 +55,10 @@ struct SleelaEmitter {
         for (auto& c : sheet.components)
             for (auto& a : c.attaches) emitAttach(c, a);
 
+        // For threaded components, emit a 0-arg worker method that performs one
+        // activation pass (on-start + ticks). main() spawns N of these.
+        for (auto& c : sheet.components) emitWorkerIfThreaded(c);
+
         emitMain();
 
         out << "}\n";
@@ -126,24 +130,50 @@ struct SleelaEmitter {
         }
     }
 
+    // Emit the body of one activation pass (on-start once, then tick x repeat).
+    void emitPassBody(const Component& c, int ind) {
+        if (c.findAttach("on-start")) { indent(ind); out << c.name << "_" << sanitize("on-start") << "();\n"; }
+        if (c.findAttach("tick")) {
+            indent(ind); out << "for (int _t = 0; _t < " << c.repeat() << "; _t = _t + 1) {\n";
+            indent(ind+1); out << c.name << "_" << sanitize("tick") << "();\n";
+            indent(ind); out << "}\n";
+        }
+    }
+
+    // A threaded component gets a 0-arg worker method that runs one pass, so
+    // main() can spawn N of them onto real threads.
+    void emitWorkerIfThreaded(const Component& c) {
+        if (c.threads() <= 1) return;
+        if (!c.findAttach("on-start") && !c.findAttach("tick")) return;
+        self = &c;
+        indent(1); out << "void " << c.name << "_activate() {\n";
+        emitPassBody(c, 2);
+        indent(1); out << "}\n\n";
+        self = nullptr;
+    }
+
     void emitActivation(const Component& c, int ind) {
         bool hasStart = c.findAttach("on-start");
         bool hasTick  = c.findAttach("tick");
         if (!hasStart && !hasTick) return;
-        long long passes = c.threads();   // sequential passes stand in for threads
+        long long th = c.threads();
 
-        indent(ind); out << "// activate " << c.name;
-        if (passes > 1) out << " (" << passes << " sequential passes for threads)";
-        out << "\n";
-
-        for (long long pass = 0; pass < passes; pass++) {
-            if (hasStart) { indent(ind); out << c.name << "_" << sanitize("on-start") << "();\n"; }
-            if (hasTick) {
-                indent(ind); out << "for (int _t = 0; _t < " << c.repeat() << "; _t = _t + 1) {\n";
-                indent(ind+1); out << c.name << "_" << sanitize("tick") << "();\n";
-                indent(ind); out << "}\n";
-            }
+        if (th <= 1) {
+            indent(ind); out << "// activate " << c.name << "\n";
+            emitPassBody(c, ind);
+            return;
         }
+
+        // threads: N  ->  spawn N real worker threads, then join.
+        indent(ind); out << "// activate " << c.name << " on " << th << " real thread(s)\n";
+        indent(ind); out << "{\n";
+        indent(ind+1); out << "int _n = 0;\n";
+        indent(ind+1); out << "while (_n < " << th << ") {\n";
+        indent(ind+2); out << "spawn(" << c.name << "_activate);\n";
+        indent(ind+2); out << "_n = _n + 1;\n";
+        indent(ind+1); out << "}\n";
+        indent(ind+1); out << "join();\n";
+        indent(ind); out << "}\n";
     }
 
     void emitMain() {

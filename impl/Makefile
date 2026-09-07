@@ -3,12 +3,14 @@
 # =============================================================================
 CC       ?= gcc
 CXX      ?= g++
-CFLAGS   ?= -std=c11   -O2 -Wall -Wextra
-CXXFLAGS ?= -std=c++17 -O2 -Wall -Wextra
+CFLAGS   ?= -std=c11   -O2 -Wall -Wextra -pthread
+CXXFLAGS ?= -std=c++17 -O2 -Wall -Wextra -pthread
+LDFLAGS  ?= -pthread
 BUILD    := build
 
 SLEELA_BIN     := $(BUILD)/sleela
 NORDSHRIFT_BIN := $(BUILD)/nordshrift
+THREAD_SMOKE   := $(BUILD)/thread_smoke
 
 # ---- Sleela ----
 CORE_OBJ := $(BUILD)/sleela_core.o
@@ -28,11 +30,15 @@ all: $(SLEELA_BIN) $(NORDSHRIFT_BIN)
 
 # ---- link ----
 $(SLEELA_BIN): $(CORE_OBJ) $(FE_OBJ) $(DRIVER_OBJ)
-	$(CXX) $(CXXFLAGS) $^ -o $@
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS)
 
 # nordshrift reuses the Sleela front end + core for its `run` path.
 $(NORDSHRIFT_BIN): $(NS_OBJ) $(CORE_OBJ) $(FE_OBJ)
-	$(CXX) $(CXXFLAGS) $^ -o $@
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS)
+
+# The C-level threading smoke test drives the core through the builder API.
+$(THREAD_SMOKE): core/thread_smoke.c $(CORE_OBJ)
+	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
 # ---- compile ----
 $(BUILD)/sleela_core.o: core/sleela_core.c core/sleela_core.h | $(BUILD)
@@ -48,7 +54,12 @@ $(BUILD):
 	mkdir -p $(BUILD)
 
 # ---- tests ----
-test: test-sleela test-nordshrift
+test: test-sleela test-nordshrift test-threads
+
+# Threading smoke test: spawn 128 workers, guarded increments + tuple channel.
+test-threads: $(THREAD_SMOKE)
+	@echo "=== core threading smoke (128 threads) ==="; \
+	$(THREAD_SMOKE) 128
 
 test-sleela: $(SLEELA_BIN)
 	@for f in examples/*.sleela; do \

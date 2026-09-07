@@ -35,6 +35,17 @@ public:
     Compiler(const Program& prog, SLVM* vm) : prog_(prog), vm_(vm) {}
 
     int run() {
+        // Pass 0: declare a core global for every class field. Fields are
+        // shared state (thread-safe globals), so threads see the same value.
+        for (const auto& cls : prog_.classes) {
+            for (const auto& f : cls.fields) {
+                if (fieldGlobal_.count(f.name))
+                    throw std::runtime_error("Semantic error: duplicate field '" + f.name + "'");
+                fieldGlobal_[f.name] = slvm_declare_global(vm_, f.name.c_str());
+                fields_.push_back(&f);
+            }
+        }
+
         // Pass 1: assign a core function index to every method and count locals.
         // We flatten all methods across all classes into the core function table.
         for (const auto& cls : prog_.classes) {
@@ -68,7 +79,14 @@ private:
     SLVM* vm_;
     std::map<std::string, int> funcIndex_;   // method name -> core func index
     std::vector<MethodInfo> methods_;
+    std::map<std::string, int> fieldGlobal_; // field name -> core global slot
+    std::vector<const Field*> fields_;       // fields, in declaration order
     MethodCtx* ctx_ = nullptr;
+
+    int fieldSlot(const std::string& name) const {
+        auto it = fieldGlobal_.find(name);
+        return it == fieldGlobal_.end() ? -1 : it->second;
+    }
 
     // ---- local counting (params + all declared vars) --------------------
     int countLocals(const Method& m) {
@@ -110,6 +128,14 @@ private:
         slvm_begin_func(vm_, m.name.c_str(), nargs, mi.nlocals);
 
         ctx_ = &ctx;
+        // Initialize shared fields once, at the top of main().
+        if (m.name == "main") {
+            for (const Field* f : fields_) {
+                if (f->init) emitExpr(f->init.get());
+                else         emit(OP_CONST, addNullConst());
+                emit(OP_STOREG, fieldGlobal_[f->name]);
+            }
+        }
         emitBlock(*m.body);
         ctx_ = nullptr;
 
@@ -155,10 +181,18 @@ private:
 
     void emitAssign(const Assign& a) {
         int slot = ctx_->slotOf(a.name);
-        if (slot < 0)
-            throw std::runtime_error("Semantic error: assignment to undeclared variable '" + a.name + "'");
-        emitExpr(a.value.get());
-        emit(OP_STOREL, slot);
+        if (slot >= 0) {                       // a local (shadows any field)
+            emitExpr(a.value.get());
+            emit(OP_STOREL, slot);
+            return;
+        }
+        int g = fieldSlot(a.name);             // otherwise a shared field
+        if (g >= 0) {
+            emitExpr(a.value.get());
+            emit(OP_STOREG, g);
+            return;
+        }
+        throw std::runtime_error("Semantic error: assignment to undeclared variable '" + a.name + "'");
     }
 
     void emitReturn(const ReturnStmt& r) {
@@ -217,9 +251,10 @@ private:
 
     void emitVar(const VarExpr& v) {
         int slot = ctx_->slotOf(v.name);
-        if (slot < 0)
-            throw std::runtime_error("Semantic error: use of undeclared variable '" + v.name + "'");
-        emit(OP_LOADL, slot);
+        if (slot >= 0) { emit(OP_LOADL, slot); return; }   // local (shadows field)
+        int g = fieldSlot(v.name);
+        if (g >= 0) { emit(OP_LOADG, g); return; }         // shared field
+        throw std::runtime_error("Semantic error: use of undeclared variable '" + v.name + "'");
     }
 
     void emitUnary(const Unary& u) {
@@ -251,7 +286,77 @@ private:
         else throw std::runtime_error("Semantic error: unknown binary operator '" + o + "'");
     }
 
+    // Threading built-ins are recognized by callee name. They lower directly
+    // to the core's concurrency opcodes, so no runtime library is needed.
+    //   spawn(methodName)     start methodName on a new thread; yields a thread id
+    //   join()                wait for all spawned threads
+    //   lock(n) / unlock(n)   acquire / release lock table slot n (compile-time int)
+    //   send(slot, value)     send the 2-tuple (slot, value) onto the burble line
+    //   recv(slot)            block for a tuple on slot; yields its value
+    // Returns true if `c` was a built-in and was emitted.
+    bool tryEmitBuiltin(const Call& c) {
+        const std::string& n = c.callee;
+
+        auto litInt = [&](const Expr* e, const char* what) -> int {
+            auto il = dynamic_cast<const IntLit*>(e);
+            if (!il)
+                throw std::runtime_error("Semantic error: " + std::string(what) +
+                    " must be an integer literal");
+            return (int)il->value;
+        };
+
+        if (n == "spawn") {
+            if (c.args.size() != 1)
+                throw std::runtime_error("Semantic error: spawn(method) takes exactly one argument");
+            auto var = dynamic_cast<const VarExpr*>(c.args[0].get());
+            if (!var)
+                throw std::runtime_error("Semantic error: spawn(method) argument must be a method name");
+            auto it = funcIndex_.find(var->name);
+            if (it == funcIndex_.end())
+                throw std::runtime_error("Semantic error: spawn of unknown method '" + var->name + "'");
+            if (!methods_[it->second].method->params.empty())
+                throw std::runtime_error("Semantic error: spawn target '" + var->name +
+                    "' must take no parameters");
+            emit(OP_SPAWN, it->second);   // pushes a thread id
+            return true;
+        }
+        if (n == "join") {
+            if (!c.args.empty())
+                throw std::runtime_error("Semantic error: join() takes no arguments");
+            emit(OP_JOINALL);
+            emit(OP_CONST, addNullConst());   // join() yields null (expression form)
+            return true;
+        }
+        if (n == "lock" || n == "unlock") {
+            if (c.args.size() != 1)
+                throw std::runtime_error("Semantic error: " + n + "(id) takes exactly one argument");
+            int id = litInt(c.args[0].get(), (n + " id").c_str());
+            emit(n == "lock" ? OP_LOCK : OP_UNLOCK, id);
+            emit(OP_CONST, addNullConst());   // yields null
+            return true;
+        }
+        if (n == "send") {
+            if (c.args.size() != 2)
+                throw std::runtime_error("Semantic error: send(slot, value) takes two arguments");
+            int slot = litInt(c.args[0].get(), "send slot");
+            emitExpr(c.args[1].get());        // value on stack
+            emit(OP_SEND, slot);
+            emit(OP_CONST, addNullConst());   // yields null
+            return true;
+        }
+        if (n == "recv") {
+            if (c.args.size() != 1)
+                throw std::runtime_error("Semantic error: recv(slot) takes exactly one argument");
+            int slot = litInt(c.args[0].get(), "recv slot");
+            emit(OP_RECV, slot);              // pushes the received value
+            return true;
+        }
+        return false;
+    }
+
     void emitCall(const Call& c) {
+        if (tryEmitBuiltin(c)) return;
+
         auto it = funcIndex_.find(c.callee);
         if (it == funcIndex_.end())
             throw std::runtime_error("Semantic error: call to unknown method '" + c.callee + "'");

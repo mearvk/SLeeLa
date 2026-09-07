@@ -100,6 +100,15 @@ CALL    a   call function; a = argc  (target/nargs resolved via callee const)
 RET         return top of stack to caller
 
 PRINT       pop and print + newline
+
+SPAWN   a   start function a on a new thread; its `nargs` args are taken from
+            the top of the stack and become the thread's locals; pushes a
+            thread id (or -1 if at the 128-thread cap)
+JOINALL     wait for every spawned thread to finish
+LOCK    a   acquire lock-table slot a   (a in [0, SL_MAX_LOCKS))
+UNLOCK  a   release lock-table slot a
+SEND    a   send the 2-tuple (a, pop()) onto mailbox slot a (blocks while full)
+RECV    a   block until a tuple is present on slot a; push its value
 HALT        stop the VM
 ```
 
@@ -108,6 +117,36 @@ function table. `CONST` can push a function reference; `CALL a` invokes the func
 reference sitting under `a` arguments on the stack. Simpler equivalent used here:
 `CALL` takes the target function index in `a` and the argc is encoded by the callee
 descriptor, with args already on the stack.
+
+## Threading model (bounded, clean)
+
+Threading is deliberately simple and bounded — a thread is one *line of
+execution*, synchronization is a small fixed set of locks, and coordination
+happens over 2-tuples rather than arbitrary shared memory.
+
+- **Per-thread state.** Execution state (operand stack, call frames, `ip`,
+  `sp`, `fp`, error slot) lives in an `SLThread`, so the interpreter loop
+  (`run_thread`) is fully re-entrant. `slvm_run` runs `main` on one `SLThread`
+  and joins all workers before returning.
+- **Shared state.** Code, constants, functions, globals and the string table
+  live in the `SLVM`. Globals, interning, and `print` are each guarded by a
+  mutex, so those are the only cross-thread interactions and they stay
+  race-free. Output lines print atomically.
+- **Bounds.** `SL_MAX_THREADS = 128` concurrent threads; `SL_MAX_LOCKS = 32`
+  lock-table slots and 32 mailbox slots (comfortably covers "~24 concurrent
+  locks on a 2-tuple line of execution").
+- **Locks.** `LOCK n` / `UNLOCK n` acquire/release a fixed mutex from the table
+  — a simple, bounded critical-section mechanism.
+- **The burble line (2-tuple mailbox).** Each mailbox slot carries one pending
+  `(tag, value)` tuple. `SEND a` puts a tuple on slot `a` (blocking while a
+  tuple is still in flight); `RECV a` blocks until one is present and yields its
+  value. Senders and the receiver share a condition variable, so both `SEND`
+  and `RECV` use `pthread_cond_broadcast` and re-check their predicate to avoid
+  lost wakeups.
+
+Because coordination is confined to guarded globals, the bounded lock table,
+and the tuple mailbox, the model is easy to reason about while remaining
+Turing-complete and genuinely concurrent.
 
 ## The Exchange API (the C ABI)
 

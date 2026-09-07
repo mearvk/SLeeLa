@@ -114,11 +114,13 @@ components concurrently. `threads: N` renders as:
 |--------|-----------|
 | Java   | a fixed `ExecutorService(N)`, joined before continuing (real threads) |
 | C/C++  | `N` `pthread`s, joined before continuing (real threads) |
-| Sleela | `N` sequential passes (the current core is single-threaded) |
+| Sleela | `N` × `spawn(Comp_activate)` + `join()` on the core's threading model (real threads, up to 128) |
 
-Because the components are isolated, the program's **result** is consistent
-across targets; only the interleaving of a threaded activation's output differs
-(visible in the Java run of `server.sst`, which is expected and correct).
+All three now run threaded activations on **real threads**. Because the
+components are isolated, the program's **result** is consistent across targets;
+only the interleaving of a threaded activation's output differs (visible when
+`server.sst` runs on multiple threads, which is expected and correct). The
+Sleela core keeps each `print` line atomic.
 
 ## Files
 

@@ -94,8 +94,29 @@ Supported today:
 | Strings        | literals with escapes; `+` concatenates (Java-style)         |
 | I/O            | `print(expr)` built-in                                       |
 | `return`       | with or without a value                                      |
+| Fields         | class-level `int total = 0;` — shared state (compile to globals) |
+| Threading      | `spawn(m)`, `join()`, `lock(n)`/`unlock(n)`, `send(slot,v)`/`recv(slot)` |
 
-See `examples/` for `hello`, `factorial`, `fibonacci`, and `fizzbuzz`.
+See `examples/` for `hello`, `factorial`, `fibonacci`, `fizzbuzz`, and
+`threads` (spawns 8 workers, guards a shared field with a lock, and coordinates
+via the 2-tuple mailbox).
+
+### Threading built-ins
+
+The core ships a clean, bounded threading model (up to **128** threads); the
+Sleela surface exposes it as built-ins:
+
+| Built-in            | Meaning                                                    |
+|---------------------|-------------------------------------------------------------|
+| `spawn(method)`     | run a no-arg method on a new thread; yields a thread id     |
+| `join()`            | wait for all spawned threads to finish                      |
+| `lock(n)`/`unlock(n)`| acquire/release lock-table slot `n` (a compile-time int)   |
+| `send(slot, value)` | send the 2-tuple `(slot, value)` onto the mailbox line      |
+| `recv(slot)`        | block until a tuple arrives on `slot`; yields its value     |
+
+Class **fields** are shared across threads (they compile to the core's
+thread-safe globals); method **locals** are per-thread. `print` output is
+atomic per line. See [`DESIGN.md`](DESIGN.md) for the full model.
 
 ## The exchange API (core C ABI)
 

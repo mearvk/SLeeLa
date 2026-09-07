@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <pthread.h>
 
 /* ---- tunables ---------------------------------------------------------- */
 #define STACK_MAX   4096
@@ -32,30 +33,58 @@ typedef struct {
     int32_t nargs;
 } SLFrame;
 
-struct SLVM {
-    /* code */
-    SLInstr* code; int codelen, codecap;
-
-    /* constants */
-    SLValue* consts; int nconst, constcap;
-
-    /* interned strings */
-    char**   strs;  int nstr, strcap;
-
-    /* globals */
-    SLValue* globals; char** gnames; int nglobal, globalcap;
-
-    /* functions */
-    SLFunc*  funcs; int nfunc, funccap;
-    int      cur_func;   /* function currently being emitted, or -1 */
-    int      entry;      /* entry function index */
-
-    /* runtime */
+/* ---- per-thread execution state --------------------------------------- *
+ * Each line of execution owns its own operand stack, call frames, and error
+ * slot, so the interpreter loop is fully re-entrant across threads. Only the
+ * shared SLVM state (code/consts/funcs/globals/strings/locks/mailbox) is
+ * touched under locks.                                                     */
+typedef struct SLThread {
+    SLVM*    vm;                    /* the shared VM                        */
     SLValue  stack[STACK_MAX]; int sp;
     SLFrame  frames[FRAMES_MAX]; int fp;
-    SLValue  last_result;
-
+    int      entry_func;            /* function this thread runs            */
+    SLValue  result;                /* value returned by entry_func         */
     char     err[256];
+    /* backing for spawned threads */
+    pthread_t handle;
+    int       started;
+} SLThread;
+
+/* A single mailbox slot: a bounded 2-tuple channel ("burble line"). Holds
+ * one pending (tag, value) tuple; a receiver blocks until one is present. */
+typedef struct {
+    pthread_mutex_t mtx;
+    pthread_cond_t  cond;
+    int             has;      /* 1 if a tuple is waiting                    */
+    int32_t         tag;      /* first element of the 2-tuple               */
+    SLValue         value;    /* second element                            */
+} SLMailbox;
+
+struct SLVM {
+    /* ---- shared program (immutable during run) ---- */
+    SLInstr* code; int codelen, codecap;
+    SLValue* consts; int nconst, constcap;
+    char**   strs;  int nstr, strcap;
+    SLValue* globals; char** gnames; int nglobal, globalcap;
+    SLFunc*  funcs; int nfunc, funccap;
+    int      cur_func;
+    int      entry;
+
+    /* ---- shared result of the entry (main) thread ---- */
+    SLValue  last_result;
+    char     err[256];
+
+    /* ---- concurrency primitives ---- */
+    pthread_mutex_t intern_mtx;   /* guards the string table               */
+    pthread_mutex_t global_mtx;   /* guards global slot reads/writes       */
+    pthread_mutex_t print_mtx;    /* keeps printed lines atomic            */
+
+    pthread_mutex_t locks[SL_MAX_LOCKS];   /* the bounded lock table        */
+    SLMailbox       mailbox[SL_MAX_LOCKS]; /* the bounded 2-tuple channels  */
+
+    pthread_mutex_t thr_mtx;               /* guards the spawned-thread set */
+    SLThread*       threads[SL_MAX_THREADS];
+    int             nthreads;
 };
 
 /* ---- small helpers ----------------------------------------------------- */
@@ -72,8 +101,11 @@ SLValue slval_bool(int x)         { SLValue v; v.type = SL_BOOL;   v.as.b = x ? 
 
 const char* slvm_error(SLVM* vm)  { return (vm && vm->err[0]) ? vm->err : NULL; }
 const char* slvm_str(SLVM* vm, int32_t id) {
-    if (!vm || id < 0 || id >= vm->nstr) return "";
-    return vm->strs[id];
+    if (!vm) return "";
+    pthread_mutex_lock(&vm->intern_mtx);
+    const char* r = (id >= 0 && id < vm->nstr) ? vm->strs[id] : "";
+    pthread_mutex_unlock(&vm->intern_mtx);
+    return r;
 }
 
 /* growable-array push macros keep the plumbing terse */
@@ -85,13 +117,16 @@ const char* slvm_str(SLVM* vm, int32_t id) {
         }                                                             \
     } while (0)
 
-/* ---- interning --------------------------------------------------------- */
+/* ---- interning (thread-safe) ------------------------------------------- */
 static int intern(SLVM* vm, const char* s) {
+    pthread_mutex_lock(&vm->intern_mtx);
     for (int i = 0; i < vm->nstr; i++)
-        if (strcmp(vm->strs[i], s) == 0) return i;
+        if (strcmp(vm->strs[i], s) == 0) { pthread_mutex_unlock(&vm->intern_mtx); return i; }
     ENSURE(vm->strs, vm->nstr, vm->strcap, char*);
     vm->strs[vm->nstr] = strdup(s);
-    return vm->nstr++;
+    int id = vm->nstr++;
+    pthread_mutex_unlock(&vm->intern_mtx);
+    return id;
 }
 
 /* ---- lifecycle --------------------------------------------------------- */
@@ -100,11 +135,35 @@ SLVM* slvm_new(void) {
     vm->cur_func = -1;
     vm->entry    = -1;
     vm->last_result = slval_null();
+
+    pthread_mutex_init(&vm->intern_mtx, NULL);
+    pthread_mutex_init(&vm->global_mtx, NULL);
+    pthread_mutex_init(&vm->print_mtx, NULL);
+    pthread_mutex_init(&vm->thr_mtx, NULL);
+    for (int i = 0; i < SL_MAX_LOCKS; i++) {
+        pthread_mutex_init(&vm->locks[i], NULL);
+        pthread_mutex_init(&vm->mailbox[i].mtx, NULL);
+        pthread_cond_init(&vm->mailbox[i].cond, NULL);
+        vm->mailbox[i].has = 0;
+    }
     return vm;
 }
 
 void slvm_free(SLVM* vm) {
     if (!vm) return;
+    /* join any threads still outstanding, then reap their handles */
+    slvm_joinall(vm);
+
+    for (int i = 0; i < SL_MAX_LOCKS; i++) {
+        pthread_mutex_destroy(&vm->locks[i]);
+        pthread_mutex_destroy(&vm->mailbox[i].mtx);
+        pthread_cond_destroy(&vm->mailbox[i].cond);
+    }
+    pthread_mutex_destroy(&vm->intern_mtx);
+    pthread_mutex_destroy(&vm->global_mtx);
+    pthread_mutex_destroy(&vm->print_mtx);
+    pthread_mutex_destroy(&vm->thr_mtx);
+
     free(vm->code);
     free(vm->consts);
     for (int i = 0; i < vm->nstr; i++) free(vm->strs[i]);
@@ -174,6 +233,8 @@ int slvm_emit(SLVM* vm, SLOp op, int32_t a) {
     return vm->codelen++;
 }
 
+int slvm_emit0(SLVM* vm, SLOp op) { return slvm_emit(vm, op, 0); }
+
 void slvm_patch(SLVM* vm, int at, int32_t a) {
     if (at >= 0 && at < vm->codelen) vm->code[at].a = a;
 }
@@ -214,31 +275,104 @@ static void print_value(SLVM* vm, SLValue v) {
     }
 }
 
-/* ---- the interpreter loop ---------------------------------------------- */
-#define PUSH(v) do { if (vm->sp >= STACK_MAX) { set_err(vm,"stack overflow"); return SLR_ERROR; } vm->stack[vm->sp++] = (v); } while(0)
-#define POP()   (vm->stack[--vm->sp])
+/* ---- thread bookkeeping ------------------------------------------------ */
+static SLResult run_thread(SLThread* t);   /* fwd */
 
-SLResult slvm_run(SLVM* vm) {
-    if (vm->entry < 0 || vm->entry >= vm->nfunc) {
-        set_err(vm, "no entry function set");
-        return SLR_ERROR;
+/* Spawn a function on a fresh thread. `args` are `nargs` values that become
+ * the new thread's initial locals. Returns the thread id, or -1 at capacity. */
+static void* thread_trampoline(void* arg) {
+    SLThread* t = (SLThread*)arg;
+    run_thread(t);
+    return NULL;
+}
+
+static int spawn_thread(SLVM* vm, int fi, const SLValue* args, int nargs) {
+    if (fi < 0 || fi >= vm->nfunc) return -1;
+    pthread_mutex_lock(&vm->thr_mtx);
+    if (vm->nthreads >= SL_MAX_THREADS) { pthread_mutex_unlock(&vm->thr_mtx); return -1; }
+
+    SLThread* t = (SLThread*)calloc(1, sizeof(SLThread));
+    t->vm = vm;
+    t->entry_func = fi;
+    t->result = slval_null();
+    /* seed the thread's stack with the arguments as locals 0..nargs-1 */
+    SLFunc* f = &vm->funcs[fi];
+    int n = nargs; if (n > f->nlocals) n = f->nlocals;
+    for (int i = 0; i < n; i++) t->stack[t->sp++] = args[i];
+    for (int i = n; i < f->nlocals; i++) t->stack[t->sp++] = slval_null();
+    /* first frame */
+    t->frames[t->fp].ret_ip = -1;
+    t->frames[t->fp].base   = 0;
+    t->frames[t->fp].nargs  = f->nargs;
+    t->fp = 1;
+
+    int id = vm->nthreads;
+    vm->threads[id] = t;
+    vm->nthreads++;
+    pthread_mutex_unlock(&vm->thr_mtx);
+
+    if (pthread_create(&t->handle, NULL, thread_trampoline, t) != 0) {
+        /* roll back on failure */
+        pthread_mutex_lock(&vm->thr_mtx);
+        vm->threads[id] = NULL;
+        vm->nthreads--;
+        pthread_mutex_unlock(&vm->thr_mtx);
+        free(t);
+        return -1;
     }
-    vm->sp = 0;
-    vm->fp = 0;
-    vm->err[0] = 0;
+    t->started = 1;
+    return id;
+}
 
-    SLFunc* ef = &vm->funcs[vm->entry];
-    /* entry frame: reserve locals region (args=0 for main) */
-    SLFrame* fr = &vm->frames[vm->fp++];
-    fr->ret_ip = -1;
-    fr->base   = vm->sp;
-    fr->nargs  = ef->nargs;
-    for (int i = 0; i < ef->nlocals; i++) PUSH(slval_null());
+void slvm_joinall(SLVM* vm) {
+    for (;;) {
+        pthread_mutex_lock(&vm->thr_mtx);
+        int n = vm->nthreads;
+        SLThread* t = NULL;
+        int idx = -1;
+        for (int i = 0; i < n; i++) {
+            if (vm->threads[i]) { t = vm->threads[i]; idx = i; break; }
+        }
+        pthread_mutex_unlock(&vm->thr_mtx);
+        if (!t) break;
+        if (t->started) pthread_join(t->handle, NULL);
+        pthread_mutex_lock(&vm->thr_mtx);
+        vm->threads[idx] = NULL;
+        pthread_mutex_unlock(&vm->thr_mtx);
+        free(t);
+    }
+    pthread_mutex_lock(&vm->thr_mtx);
+    vm->nthreads = 0;
+    pthread_mutex_unlock(&vm->thr_mtx);
+}
+
+/* ---- the interpreter loop (re-entrant, per-thread) --------------------- */
+#define TERR(msg) do { strncpy(t->err,(msg),sizeof(t->err)-1); t->err[sizeof(t->err)-1]=0; \
+                       strncpy(vm->err,(msg),sizeof(vm->err)-1); vm->err[sizeof(vm->err)-1]=0; \
+                       return SLR_ERROR; } while(0)
+#define PUSH(v) do { if (t->sp >= STACK_MAX) { TERR("stack overflow"); } t->stack[t->sp++] = (v); } while(0)
+#define POP()   (t->stack[--t->sp])
+
+static SLResult run_thread(SLThread* t) {
+    SLVM* vm = t->vm;
+    int fi = t->entry_func;
+    if (fi < 0 || fi >= vm->nfunc) { TERR("no entry function set"); }
+
+    SLFunc* ef = &vm->funcs[fi];
+    /* The spawn path pre-seeds stack/frames; the main path sets them here. */
+    if (t->fp == 0) {
+        t->sp = 0;
+        t->frames[t->fp].ret_ip = -1;
+        t->frames[t->fp].base   = t->sp;
+        t->frames[t->fp].nargs  = ef->nargs;
+        t->fp = 1;
+        for (int i = 0; i < ef->nlocals; i++) PUSH(slval_null());
+    }
 
     int ip = ef->entry;
 
     for (;;) {
-        if (ip < 0 || ip >= vm->codelen) { set_err(vm, "ip out of range"); return SLR_ERROR; }
+        if (ip < 0 || ip >= vm->codelen) { TERR("ip out of range"); }
         SLInstr in = vm->code[ip++];
         switch (in.op) {
         case OP_NOP: break;
@@ -246,13 +380,13 @@ SLResult slvm_run(SLVM* vm) {
 
         case OP_CONST: PUSH(vm->consts[in.a]); break;
         case OP_POP:   (void)POP(); break;
-        case OP_DUP:   { SLValue t = vm->stack[vm->sp-1]; PUSH(t); } break;
+        case OP_DUP:   { SLValue tv = t->stack[t->sp-1]; PUSH(tv); } break;
 
-        case OP_LOADG:  PUSH(vm->globals[in.a]); break;
-        case OP_STOREG: vm->globals[in.a] = POP(); break;
+        case OP_LOADG:  { pthread_mutex_lock(&vm->global_mtx); SLValue g = vm->globals[in.a]; pthread_mutex_unlock(&vm->global_mtx); PUSH(g); } break;
+        case OP_STOREG: { SLValue v = POP(); pthread_mutex_lock(&vm->global_mtx); vm->globals[in.a] = v; pthread_mutex_unlock(&vm->global_mtx); } break;
 
-        case OP_LOADL:  { SLFrame* f = &vm->frames[vm->fp-1]; PUSH(vm->stack[f->base + in.a]); } break;
-        case OP_STOREL: { SLFrame* f = &vm->frames[vm->fp-1]; vm->stack[f->base + in.a] = POP(); } break;
+        case OP_LOADL:  { SLFrame* f = &t->frames[t->fp-1]; PUSH(t->stack[f->base + in.a]); } break;
+        case OP_STOREL: { SLFrame* f = &t->frames[t->fp-1]; t->stack[f->base + in.a] = POP(); } break;
 
         case OP_ADD: {
             SLValue b = POP(), a = POP();
@@ -277,11 +411,11 @@ SLResult slvm_run(SLVM* vm) {
         case OP_SUB: { SLValue b=POP(),a=POP(); if(both_int(a,b)) PUSH(slval_int(a.as.i-b.as.i)); else PUSH(slval_double(as_num(a)-as_num(b))); } break;
         case OP_MUL: { SLValue b=POP(),a=POP(); if(both_int(a,b)) PUSH(slval_int(a.as.i*b.as.i)); else PUSH(slval_double(as_num(a)*as_num(b))); } break;
         case OP_DIV: { SLValue b=POP(),a=POP();
-            if (both_int(a,b)) { if(b.as.i==0){set_err(vm,"integer divide by zero");return SLR_ERROR;} PUSH(slval_int(a.as.i/b.as.i)); }
+            if (both_int(a,b)) { if(b.as.i==0){TERR("integer divide by zero");} PUSH(slval_int(a.as.i/b.as.i)); }
             else PUSH(slval_double(as_num(a)/as_num(b))); } break;
         case OP_MOD: { SLValue b=POP(),a=POP();
-            if (both_int(a,b)) { if(b.as.i==0){set_err(vm,"integer modulo by zero");return SLR_ERROR;} PUSH(slval_int(a.as.i%b.as.i)); }
-            else { set_err(vm,"modulo requires integers"); return SLR_ERROR; } } break;
+            if (both_int(a,b)) { if(b.as.i==0){TERR("integer modulo by zero");} PUSH(slval_int(a.as.i%b.as.i)); }
+            else { TERR("modulo requires integers"); } } break;
         case OP_NEG: { SLValue a=POP(); if(a.type==SL_INT) PUSH(slval_int(-a.as.i)); else PUSH(slval_double(-as_num(a))); } break;
 
         case OP_EQ: { SLValue b=POP(),a=POP();
@@ -309,13 +443,13 @@ SLResult slvm_run(SLVM* vm) {
         case OP_JMPF: { SLValue c = POP(); if (!is_truthy(c)) ip = in.a; } break;
 
         case OP_CALL: {
-            int fi = in.a;
-            if (fi < 0 || fi >= vm->nfunc) { set_err(vm,"call to unknown function"); return SLR_ERROR; }
-            SLFunc* callee = &vm->funcs[fi];
-            if (vm->fp >= FRAMES_MAX) { set_err(vm,"call depth exceeded"); return SLR_ERROR; }
+            int cfi = in.a;
+            if (cfi < 0 || cfi >= vm->nfunc) { TERR("call to unknown function"); }
+            SLFunc* callee = &vm->funcs[cfi];
+            if (t->fp >= FRAMES_MAX) { TERR("call depth exceeded"); }
             /* args are the top `nargs` stack slots; they become locals 0..nargs-1 */
-            int base = vm->sp - callee->nargs;
-            SLFrame* nf = &vm->frames[vm->fp++];
+            int base = t->sp - callee->nargs;
+            SLFrame* nf = &t->frames[t->fp++];
             nf->ret_ip = ip;
             nf->base   = base;
             nf->nargs  = callee->nargs;
@@ -325,22 +459,106 @@ SLResult slvm_run(SLVM* vm) {
         } break;
 
         case OP_RET: {
-            SLValue rv = (vm->sp > vm->frames[vm->fp-1].base) ? POP() : slval_null();
-            SLFrame f = vm->frames[--vm->fp];
-            vm->sp = f.base;          /* discard the frame's locals */
+            SLValue rv = (t->sp > t->frames[t->fp-1].base) ? POP() : slval_null();
+            SLFrame f = t->frames[--t->fp];
+            t->sp = f.base;           /* discard the frame's locals */
             if (f.ret_ip < 0) {       /* returned from entry: done  */
-                vm->last_result = rv;
+                t->result = rv;
                 return SLR_OK;
             }
             PUSH(rv);                 /* deliver return value to caller */
             ip = f.ret_ip;
         } break;
 
-        case OP_PRINT: { SLValue v = POP(); print_value(vm, v); printf("\n"); } break;
+        case OP_PRINT: {
+            SLValue v = POP();
+            pthread_mutex_lock(&vm->print_mtx);   /* keep each printed line atomic */
+            print_value(vm, v); printf("\n");
+            pthread_mutex_unlock(&vm->print_mtx);
+        } break;
 
-        default: set_err(vm, "illegal opcode"); return SLR_ERROR;
+        /* ---- threading ------------------------------------------------- */
+        case OP_SPAWN: {
+            /* a = function index; that function's nargs args are on top */
+            int sfi = in.a;
+            if (sfi < 0 || sfi >= vm->nfunc) { TERR("spawn of unknown function"); }
+            int nargs = vm->funcs[sfi].nargs;
+            if (t->sp < nargs) { TERR("spawn: not enough arguments on stack"); }
+            SLValue argbuf[FRAMES_MAX];
+            for (int i = 0; i < nargs; i++) argbuf[i] = t->stack[t->sp - nargs + i];
+            t->sp -= nargs;
+            int id = spawn_thread(vm, sfi, argbuf, nargs);
+            PUSH(slval_int(id));      /* thread id, or -1 if at capacity */
+        } break;
+
+        case OP_JOINALL: {
+            slvm_joinall(vm);
+        } break;
+
+        case OP_LOCK: {
+            int L = in.a;
+            if (L < 0 || L >= SL_MAX_LOCKS) { TERR("lock id out of range"); }
+            pthread_mutex_lock(&vm->locks[L]);
+        } break;
+
+        case OP_UNLOCK: {
+            int L = in.a;
+            if (L < 0 || L >= SL_MAX_LOCKS) { TERR("lock id out of range"); }
+            pthread_mutex_unlock(&vm->locks[L]);
+        } break;
+
+        case OP_SEND: {
+            /* send the 2-tuple (a, top-of-stack) onto mailbox slot a */
+            int slot = in.a;
+            if (slot < 0 || slot >= SL_MAX_LOCKS) { TERR("mailbox slot out of range"); }
+            SLValue v = POP();
+            SLMailbox* mb = &vm->mailbox[slot];
+            pthread_mutex_lock(&mb->mtx);
+            while (mb->has) pthread_cond_wait(&mb->cond, &mb->mtx);  /* one in flight */
+            mb->has = 1; mb->tag = slot; mb->value = v;
+            /* broadcast: senders and the receiver share one condvar, so wake
+             * all waiters and let each re-check its predicate (avoids the
+             * lost-wakeup where a SEND signal wakes another blocked sender). */
+            pthread_cond_broadcast(&mb->cond);
+            pthread_mutex_unlock(&mb->mtx);
+        } break;
+
+        case OP_RECV: {
+            /* block until a tuple is present on mailbox slot a; push its value */
+            int slot = in.a;
+            if (slot < 0 || slot >= SL_MAX_LOCKS) { TERR("mailbox slot out of range"); }
+            SLMailbox* mb = &vm->mailbox[slot];
+            pthread_mutex_lock(&mb->mtx);
+            while (!mb->has) pthread_cond_wait(&mb->cond, &mb->mtx);
+            SLValue v = mb->value;
+            mb->has = 0;
+            pthread_cond_broadcast(&mb->cond);
+            pthread_mutex_unlock(&mb->mtx);
+            PUSH(v);
+        } break;
+
+        default: TERR("illegal opcode");
         }
     }
+}
+
+/* ---- the public run entry: runs `entry` on the main thread ------------- */
+SLResult slvm_run(SLVM* vm) {
+    if (vm->entry < 0 || vm->entry >= vm->nfunc) {
+        set_err(vm, "no entry function set");
+        return SLR_ERROR;
+    }
+    vm->err[0] = 0;
+    SLThread* t = (SLThread*)calloc(1, sizeof(SLThread));
+    t->vm = vm;
+    t->entry_func = vm->entry;
+    t->result = slval_null();
+    SLResult r = run_thread(t);
+    vm->last_result = t->result;
+    free(t);
+    /* ensure no orphaned worker threads outlive the run */
+    slvm_joinall(vm);
+    return r;
 }
 
 /* ---- the exchange dispatch --------------------------------------------- */

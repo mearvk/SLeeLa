@@ -27,6 +27,7 @@ private:
 
     // declarations
     ClassDecl parseClass();
+    Field     parseField();
     Method    parseMethod();
     bool      isTypeTok(Tok k) const;
     std::string parseType();

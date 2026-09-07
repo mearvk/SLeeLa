@@ -91,8 +91,17 @@ struct Method {
     std::unique_ptr<Block> body;
 };
 
+// A class-level field. Fields are shared state: they compile to core globals
+// (which are thread-safe), so they are visible across spawned threads.
+struct Field {
+    std::string type;
+    std::string name;
+    ExprP init;               // may be null (defaults to null/0)
+};
+
 struct ClassDecl {
     std::string name;
+    std::vector<Field> fields;
     std::vector<Method> methods;
 };
 

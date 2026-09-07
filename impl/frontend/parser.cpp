@@ -51,10 +51,35 @@ ClassDecl Parser::parseClass() {
     c.name = expect(Tok::Ident, "class name").text;
     expect(Tok::LBrace, "'{'");
     while (!check(Tok::RBrace) && !check(Tok::Eof)) {
-        c.methods.push_back(parseMethod());
+        // A member is a field or a method. Both begin with an optional
+        // 'static', a type, and a name; a method then has '(' while a field
+        // has '=' or ';'. Look past static+type+name to decide.
+        int save = (int)i_;
+        accept(Tok::KwStatic);
+        if (!isTypeTok(cur().kind)) error("expected a type for a field or method");
+        i_++;                                   // type
+        if (!check(Tok::Ident)) error("expected a field or method name");
+        Tok after = peek(1).kind;               // token after the name
+        i_ = (size_t)save;                      // rewind; let the real parser run
+
+        if (after == Tok::LParen) {
+            c.methods.push_back(parseMethod());
+        } else {
+            c.fields.push_back(parseField());
+        }
     }
     expect(Tok::RBrace, "'}'");
     return c;
+}
+
+Field Parser::parseField() {
+    accept(Tok::KwStatic);
+    Field f;
+    f.type = parseType();
+    f.name = expect(Tok::Ident, "field name").text;
+    if (accept(Tok::Assign)) f.init = parseExpr();
+    expect(Tok::Semicolon, "';'");
+    return f;
 }
 
 bool Parser::isTypeTok(Tok k) const {

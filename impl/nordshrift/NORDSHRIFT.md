@@ -146,10 +146,10 @@ run components concurrently:
 - **Java** emitter: an `ExecutorService` (fixed thread pool) per threaded
   component; `main` joins.
 - **C/C++** emitter: `pthread_create` workers joined before continuing.
-- **Sleela** emitter: the current Sleela core is single-threaded, so threaded
-  components are emitted as a deterministic sequential fold (N sequential
-  passes) — same observable output, honoring the isolation contract. (When the
-  core gains threads this becomes a real fan-out.)
+- **Sleela** emitter: a real fan-out. The component's activation is emitted as
+  a `Comp_activate()` method, and `main` does `spawn(Comp_activate)` N times
+  then `join()` — running on the Sleela core's threading model (up to 128
+  threads). Output stays atomic per line via the core's guarded `print`.
 
 Turing-completeness comes from the attach language: unbounded `while` +
 mutable `let` bindings + conditionals + arithmetic.
@@ -164,7 +164,7 @@ mutable `let` bindings + conditionals + arithmetic.
 | `prop(p)`             | field read                    | inlined constant               | field/const read             |
 | `uses: A`             | reference / start order       | call order                     | call order                   |
 | `call A.f()`          | `A.f()`                       | `A_f()`                        | `C_f()`                      |
-| `threads: N`          | `ExecutorService(N)`          | N sequential passes            | N `pthread`s                 |
+| `threads: N`          | `ExecutorService(N)`          | N × `spawn` + `join` (real threads) | N `pthread`s            |
 | `print(e)`            | `System.out.println`          | `print`                        | `printf`                     |
 
 ## CLI
