@@ -85,6 +85,8 @@ struct SLVM {
     pthread_mutex_t thr_mtx;               /* guards the spawned-thread set */
     SLThread*       threads[SL_MAX_THREADS];
     int             nthreads;
+    int             thread_cap;            /* soft cap (<= SL_MAX_THREADS); for
+                                            * safe-trim under STP fallback     */
 };
 
 /* ---- small helpers ----------------------------------------------------- */
@@ -135,6 +137,7 @@ SLVM* slvm_new(void) {
     vm->cur_func = -1;
     vm->entry    = -1;
     vm->last_result = slval_null();
+    vm->thread_cap  = SL_MAX_THREADS;   /* full cap unless trimmed (STP fallback) */
 
     pthread_mutex_init(&vm->intern_mtx, NULL);
     pthread_mutex_init(&vm->global_mtx, NULL);
@@ -147,6 +150,13 @@ SLVM* slvm_new(void) {
         vm->mailbox[i].has = 0;
     }
     return vm;
+}
+
+void slvm_set_thread_cap(SLVM* vm, int cap) {
+    if (!vm) return;
+    if (cap < 1) cap = 1;
+    if (cap > SL_MAX_THREADS) cap = SL_MAX_THREADS;
+    vm->thread_cap = cap;
 }
 
 void slvm_free(SLVM* vm) {
@@ -289,7 +299,8 @@ static void* thread_trampoline(void* arg) {
 static int spawn_thread(SLVM* vm, int fi, const SLValue* args, int nargs) {
     if (fi < 0 || fi >= vm->nfunc) return -1;
     pthread_mutex_lock(&vm->thr_mtx);
-    if (vm->nthreads >= SL_MAX_THREADS) { pthread_mutex_unlock(&vm->thr_mtx); return -1; }
+    int cap = vm->thread_cap > 0 && vm->thread_cap < SL_MAX_THREADS ? vm->thread_cap : SL_MAX_THREADS;
+    if (vm->nthreads >= cap) { pthread_mutex_unlock(&vm->thr_mtx); return -1; }
 
     SLThread* t = (SLThread*)calloc(1, sizeof(SLThread));
     t->vm = vm;
