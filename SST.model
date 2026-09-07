@@ -1,0 +1,1165 @@
+Nordshrift .sst Scripting Sheet Format Specification
+
+.sst Format Reference — Normative Edition
+
+Document Series:	NS-SST-0001
+Document Status:	Normative
+Revision:	1.0.0
+Date:	September 2026
+Governing Tool:	Nordshrift Transpiler Driver, version 1.0
+Companion Document:	Sleela Language Metadocument SL-META-0001
+Preamble
+Purpose
+Nordshrift is the transpiler driver for the Sleela programming language. It reads one or more .sst (Scripting Sheet) files and uses them to configure, drive, and extend every phase of the Sleela-to-Java transpilation pipeline defined in SL-META-0001, Chapter 6. A .sst file is the primary human-authored control surface for Nordshrift: it specifies source inputs, transformation targets, pipeline phase configuration, rule activation, effect policies, derivation instructions, Java interoperability settings, and named compilation profiles.
+
+Scope
+This document specifies:
+
+The lexical conventions of the .sst format
+The complete block and section grammar
+Every directive, its syntax, its operands, and its semantics
+Import and composition rules
+Profile resolution and override mechanics
+All Nordshrift-specific error codes and their triggering conditions
+The relationship between .sst constructs and Sleela meta-model concepts
+Normative Status
+All statements in this document using must, must not, shall, shall not, required, and forbidden are normative. Statements using should, may, recommended, and optional are non-normative guidance.
+
+Relationship to SL-META-0001
+The .sst format is explicitly subordinate to the Sleela Language Metadocument. Where this document refers to Sleela meta-model concepts — Entity, Contract, Effect, Rule, Lens, Context, Flow, Projection — those terms carry the definitions from SL-META-0001 §2.2. Where this document specifies compilation pipeline phases, phase numbering and naming follow SL-META-0001 §6.1.
+
+Table of Contents
+Part I — Lexical Conventions
+
+1.1   Character Set and Encoding
+
+1.2   Whitespace and Indentation
+
+1.3   Comments
+
+1.4   Identifiers
+
+1.5   Literals
+
+1.6   Pragmas
+
+Part II — File Structure
+
+2.1   Anatomy of a .sst File
+
+2.2   Block Syntax Generalization
+
+Part III — The Sheet Block
+
+3.1   Purpose · 3.2 Syntax · 3.3 Directives
+
+Part IV — The Import Block
+
+4.1   Purpose · 4.2 Syntax · 4.3 Merge and Override Rules
+
+Part V — The Source Section
+
+5.1–5.3   Purpose, Syntax, Directives
+
+Part VI — The Target Section
+
+6.1–6.4   Purpose, Syntax, Layout Modes, Additional Directives
+
+Part VII — The Pipeline Section
+
+7.1–7.4   Purpose, Syntax, Phase Names, Verbosity Levels
+
+Part VIII — The Rules Section
+
+8.1–8.6   Purpose, Syntax, Activation, Severity, Built-in Rules, Inline Rule Block
+
+Part IX — The Effects Section
+
+9.1–9.5   Purpose, Syntax, Policies, Built-in Effects, Aliases
+
+Part X — The Derive Section
+
+10.1–10.3   Purpose, Syntax, Derive Styles
+
+Part XI — The Guards Section
+
+11.1–11.4   Purpose, Syntax, Guard Modes, Failure Actions
+
+Part XII — The Interop Section
+
+12.1–12.6   Purpose, Syntax, Directives, Null Wrapping, Checked Exceptions, Type Mapping
+
+Part XIII — The Profile Section
+
+13.1–13.4   Purpose, Syntax, Profile Rules, Example
+
+Part XIV — Formal Grammar
+
+14.1–14.2   EBNF Notation, Complete .sst Grammar
+
+Part XV — Diagnostics
+
+15.1–15.3   Error Code System, Code Index, Diagnostic Format
+
+Part XVI — Complete Annotated Example
+
+Appendices A–E
+
+Part I — Lexical Conventions
+1.1 Character Set and Encoding
+.sst files must be encoded in UTF-8 without BOM. Any byte sequence that is not valid UTF-8 is a lexical error (NSS-E-0001). Line endings may be LF (\n) or CRLF (\r\n); a Nordshrift implementation must normalize both to LF before lexical analysis. A file need not end with a newline, though it is recommended.
+
+1.2 Whitespace and Indentation
+The .sst format is indentation-significant. Block structure is determined by indentation level, not by braces or terminating keywords. The following rules govern whitespace:
+
+IND-01 — Indent Unit Rule: The indent unit of a .sst file is established by the first indented line encountered. It must be either two spaces or four spaces. All subsequent indentation in the file must be a whole multiple of the same indent unit. Mixed indentation within a file is a lexical error (NSS-E-0002).
+
+IND-02 — Block Open Rule: A block is opened when a line ends with a colon (:) and the next non-blank, non-comment line is indented exactly one indent unit deeper than the block-opening line.
+
+IND-03 — Block Close Rule: A block is closed when a line is encountered whose indentation is less than or equal to the indentation of the block-opening line.
+
+IND-04 — Blank Line Rule: Blank lines (containing only whitespace) are ignored and do not affect block structure.
+
+IND-05 — Trailing Whitespace Rule: Trailing whitespace on any line is ignored before lexical token extraction.
+
+1.3 Comments
+Three comment forms are recognized:
+
+// Single-line comment: extends from // to end of line
+
+/* Block comment: may span multiple lines */
+
+/// Documentation comment: attached to the immediately following
+    directive or block, and parsed into the Nordshrift sheet model
+Comments may appear anywhere except inside a string literal or a pragma. Documentation comments (///) must immediately precede the directive or block they annotate with no intervening blank lines. A documentation comment not followed by a directive or block is a warning (NSS-W-0001).
+
+1.4 Identifiers
+An identifier is a sequence of Unicode letters, digits, underscores, and hyphens, beginning with a letter or underscore. Identifiers are case-sensitive. The following naming conventions are non-normative but are enforced as warnings when violated:
+
+Sheet names, profile names: kebab-case
+Rule names, effect names: PascalCase
+Directive operand names: camelCase
+Path aliases: SCREAMING_SNAKE_CASE
+1.5 Literals
+String literals: Enclosed in double quotes ("). Escape sequences: \\, \", \n, \t, \r, \uXXXX. Multiline string literals use triple double-quotes ("""); leading whitespace up to the indent level of the closing """ is stripped from each line.
+
+Path literals: A string literal whose value is interpreted as a filesystem path relative to the .sst file's own directory unless it begins with / (absolute) or ~/ (home-relative). Path literals support glob patterns (*, **, ?) where explicitly noted in the governing directive.
+
+Boolean literals: true and false. The tokens on and off are accepted as aliases in boolean directive positions.
+
+Integer literals: Decimal digits, optionally with _ separators (e.g., 1_000). Octal and hexadecimal literals are not permitted in .sst files.
+
+Version literals: Three dot-separated integers conforming to Semantic Versioning: MAJOR.MINOR.PATCH (e.g., 1.0.0).
+
+List literals: A comma-separated sequence enclosed in square brackets: [ item1, item2, item3 ]. Items may be any scalar literal type. A line-continuation list may place each item on its own indented line without commas; the closing bracket must be at or below the opening indent level.
+
+1.6 Pragmas
+A pragma is a file-level directive beginning with #. Pragmas must appear before any other non-comment content. The following pragmas are defined:
+
+#nordshrift 1.0          // required: declares the .sst format version
+#sleela     1.0          // optional: pins the target Sleela language version
+#encoding   utf-8        // optional: explicit encoding declaration
+The #nordshrift pragma is mandatory (NSS-E-0003 if absent). Its version operand must match a version supported by the executing Nordshrift implementation, or Nordshrift emits NSS-E-0004 and halts. The #encoding pragma, if present, must match the file's actual encoding; a mismatch is NSS-E-0001.
+
+Part II — File Structure
+2.1 Anatomy of a .sst File
+A .sst file is composed of the following top-level elements, in the order prescribed:
+
+Pragma block (mandatory) — one or more # pragmas, including the required #nordshrift pragma.
+Sheet header block (mandatory) — the sheet block providing sheet metadata.
+Import block (optional) — zero or more import directives.
+Section blocks (one or more) — named configuration sections in any order, subject to the constraints of §3–§13.
+A structural skeleton of a well-formed .sst file follows:
+
+#nordshrift 1.0
+#sleela     1.0
+
+sheet my-app-transpile:
+  version    1.0.0
+  author     "Sleela Design Council"
+  description """
+    Transpilation sheet for the my-app Sleela module.
+    Targets Java 21 LTS.
+    """
+
+import "./base.sst" as base
+import "./effects-policy.sst" as fx
+
+source:
+  root   "src/main/sleela"
+  glob   "**/*.sl"
+  exclude [ "**/*_test.sl", "**/scratch/**" ]
+
+target:
+  root          "src/generated/java"
+  layout        mirror-source
+  java-version  21
+
+pipeline:
+  phases [ lex, parse, bind, infer, effect-check, rule-eval, ir, java-emit ]
+  parallel-threshold  4
+
+rules:
+  activate   [ NullSafety, EffectBoundary, ContractExhaustion ]
+  deactivate [ ]
+  severity:
+    NullSafety      error
+    EffectBoundary  warning
+
+effects:
+  policy   strict
+  declare  [ DatabaseWrite, NetworkCall, FileSystem ]
+
+derive:
+  lens        on
+  projection  on
+  equality    on
+  hashcode    on
+
+guards:
+  mode       compile-and-runtime
+  on-failure throw
+
+interop:
+  assume-impure  true
+  null-wrapping  maybe
+
+profile release:
+  inherits base
+  pipeline:
+    parallel-threshold  8
+  target:
+    optimize  true
+2.2 Block Syntax Generalization
+Every section in a .sst file follows the same block syntax pattern:
+
+section-name [identifier] [operand]:
+  directive-or-nested-block
+  directive-or-nested-block
+  ...
+In this pattern: section-name is a keyword identifying the block type; identifier is an optional name used by sheet, profile, rule, and effect blocks; operand is an optional scalar or list operand used by import, activate, and phase; the colon (:) terminates the block header and opens the block body; the block body contains zero or more directives or nested blocks, each indented exactly one level deeper than the block header.
+
+Part III — The Sheet Block
+3.1 Purpose
+The sheet block provides metadata about the .sst file itself. It functions as a file manifest and must appear exactly once per .sst file as the first section block following any import directives.
+
+3.2 Syntax
+sheet <identifier>:
+  version     <version-literal>
+  author      <string-literal>
+  description <string-literal>
+  extends     <path-literal>     // optional: inherits from a base sheet
+  tags        <list-literal>     // optional: categorization tags
+3.3 Directives
+Directive	Required	Type	Description
+version	Yes	Version	Semantic version of this sheet.
+author	No	String	Author or authoring team name.
+description	No	String	Human-readable purpose statement; multiline strings are permitted.
+extends	No	Path	Base .sst file this sheet inherits all sections from, prior to local overrides.
+tags	No	List	Arbitrary string tags for tooling categorization; no semantic effect on transpilation.
+SST-01 — Sheet Singleton Rule: A .sst file must contain exactly one sheet block. A second sheet block in the same file is NSS-E-0010.
+
+SST-02 — Sheet Name Uniqueness Rule: Within a Nordshrift project, no two loaded .sst files may declare a sheet with the same identifier. A collision is NSS-E-0011.
+
+Part IV — The Import Block
+4.1 Purpose
+Import directives compose .sst files. An imported sheet's section blocks are merged into the importing sheet's configuration, subject to the override and conflict resolution rules defined in §4.3. Imports are resolved and merged before any section processing begins.
+
+4.2 Syntax
+import <path-literal> as <identifier>
+import <path-literal> as <identifier> only [ <section-name>, ... ]
+import <path-literal> as <identifier> except [ <section-name>, ... ]
+The as <identifier> clause assigns a namespace prefix to the imported sheet's directives, enabling qualified reference (e.g., base.rules.NullSafety). The only [...] qualifier imports only the listed sections. The except [...] qualifier imports all sections except those listed. only and except are mutually exclusive on a single import statement.
+
+4.3 Merge and Override Rules
+IMPORT-01 — Scalar Override Rule: When both the importing and imported sheet declare the same scalar directive, the importing sheet's value takes precedence. The imported value is shadowed, not removed from the model.
+
+IMPORT-02 — List Merge Rule: When both sheets declare the same list directive (e.g., activate, glob), the lists are concatenated: imported items first, local items appended. Duplicates are eliminated; last occurrence wins.
+
+IMPORT-03 — Block Override Rule: A nested block (e.g., pipeline:, rules:) declared in the importing sheet replaces the entire corresponding block from the imported sheet. Partial block-level override is not supported; use inherits within profile blocks for finer-grained override mechanics.
+
+IMPORT-04 — Circular Import Rule: Circular imports (A imports B imports A) are NSS-E-0020. Nordshrift performs full cycle detection before any section processing.
+
+IMPORT-05 — Alias Uniqueness Rule: No two import directives in the same file may declare the same alias identifier. A collision is NSS-E-0021.
+
+Part V — The Source Section
+5.1 Purpose
+The source section declares the Sleela source inputs that Nordshrift will process. It maps to Phase 1 (Lexical Analysis) input configuration in the SL-META-0001 compilation pipeline.
+
+5.2 Syntax
+source:
+  root     <path-literal>
+  glob     <path-literal>          // may appear multiple times
+  exclude  <list-of-path-literals>
+  encoding <string-literal>        // default: utf-8
+  watch    <boolean-literal>       // default: false
+5.3 Directives
+Directive	Required	Default	Description
+root	Yes	—	Base directory for all relative source paths. Must be an existing directory.
+glob	Yes (≥1)	—	Glob pattern(s) selecting Sleela source files relative to root. Multiple occurrences are permitted and unioned.
+exclude	No	[]	Glob pattern(s) of files to exclude after glob selection.
+encoding	No	"utf-8"	Source file character encoding. Must name a Java-supported charset.
+watch	No	false	Enable filesystem watch mode for incremental recompilation on source change.
+SRC-01 — Root Existence Rule: The path given in root must resolve to an existing directory at the time Nordshrift is invoked. Failure is NSS-E-0030.
+
+SRC-02 — Non-Empty Source Rule: After applying all glob patterns and the exclude list, at least one source file must be selected. An empty source set is NSS-E-0031.
+
+SRC-03 — Glob Anchoring Rule: All glob patterns are evaluated relative to root. Absolute path globs in the glob directive are NSS-E-0032.
+
+Part VI — The Target Section
+6.1 Purpose
+The target section specifies where and how Nordshrift writes generated Java source. It governs Phase 10 (Java Source pretty-printing) and Phase 11 (Source Mapping) of the compilation pipeline.
+
+6.2 Syntax
+target:
+  root          <path-literal>
+  layout        <layout-mode>
+  java-version  <integer-literal>
+  package-root  <string-literal>
+  overwrite     <boolean-literal>     // default: true
+  source-map    <boolean-literal>     // default: true
+  optimize      <boolean-literal>     // default: false
+  clean         <boolean-literal>     // default: false
+6.3 Layout Modes
+The layout directive controls how the target directory tree is organized relative to the source tree:
+
+Mode	Description
+mirror-source	Reproduces the source directory tree under root; each .sl file becomes a .java file at the same relative path.
+flat	All generated .java files are placed directly in root with no subdirectories. File name collision is NSS-E-0041.
+package-mapped	Generated files are placed in subdirectories matching their declared Sleela package hierarchy.
+custom	Requires a layout-map nested block specifying per-glob output paths.
+6.4 Additional Directives
+Directive	Required	Default	Description
+java-version	Yes	—	Target Java language version (integer). Minimum permitted value is 17.
+package-root	No	""	Java package prefix prepended to all generated package declarations.
+overwrite	No	true	If false, Nordshrift will not overwrite existing generated files; pre-existing files are skipped.
+source-map	No	true	Emit .smap source-map files alongside each generated Java file.
+optimize	No	false	Enable IR-level optimizations (constant folding, dead branch elimination) before Java emission.
+clean	No	false	Delete all prior generated files in root before beginning emission.
+TGT-01 — Java Version Floor Rule: java-version must be 17 or higher. Values below 17 are NSS-E-0040.
+
+TGT-02 — Idiomatic Java Guarantee (derived from SL-META-0001 §3.4): Nordshrift must emit Java source that a senior Java engineer would consider idiomatic at the declared java-version. This is a conformance requirement, not merely aspirational guidance.
+
+TGT-03 — Deterministic Output Rule (derived from SL-META-0001 §3.4): Given identical source inputs and .sst configuration, Nordshrift must always produce byte-for-byte identical Java output. Any source of non-determinism is NSS-E-0042.
+
+Part VII — The Pipeline Section
+7.1 Purpose
+The pipeline section configures the compilation pipeline phases defined in SL-META-0001 §6.1. It controls which phases are active, their execution order (where order is permitted to vary), parallelism settings, caching behavior, and diagnostic verbosity.
+
+7.2 Syntax
+pipeline:
+  phases              <list-of-phase-names>   // default: all phases
+  skip                <list-of-phase-names>   // optional
+  parallel-threshold  <integer-literal>       // default: 1
+  cache               <boolean-literal>       // default: true
+  cache-dir           <path-literal>          // default: .nordshrift-cache
+  verbosity           <verbosity-level>       // default: normal
+  fail-fast           <boolean-literal>       // default: false
+7.3 Phase Names
+The recognized phase name tokens, corresponding to SL-META-0001 §6.1 phases:
+
+Token	Phase Name	SL-META Phase
+lex	Lexical Analysis	Phase 1
+parse	Syntactic Analysis → CST	Phase 2
+desugar	CST → AST	Phase 3
+bind	Name Resolution and Binding	Phase 4
+infer	Type Inference and Checking	Phase 5
+effect-check	Effect Analysis	Phase 6
+rule-eval	Rule Evaluation	Phase 7
+ir	AST → Sleela IR	Phase 8
+java-emit	IR → Java AST	Phase 9
+java-print	Java AST → Java Source	Phase 10
+diagnostic	Diagnostic Emission and Source Mapping	Phase 11
+PIPE-01 — Phase Ordering Rule: Phases must execute in the order listed above. Specifying phases out of mandatory order in the phases list is NSS-E-0050.
+
+PIPE-02 — Mandatory Phase Rule: The phases lex, parse, bind, infer, and java-print may not be skipped. Attempting to skip any of them via the skip directive is NSS-E-0051.
+
+PIPE-03 — Parallel Threshold Rule: When parallel-threshold is set to a value greater than 1, Nordshrift may process up to that many source files concurrently through each pipeline phase. File-level parallelism is permitted; phase-level parallelism is not — phases are always sequential relative to one another.
+
+7.4 Verbosity Levels
+Level	Description
+silent	No output except fatal errors that prevent process exit.
+quiet	Errors and warnings only; summary suppressed.
+normal	Standard progress reporting and a post-run diagnostic summary.
+verbose	Per-file phase completion messages with timing.
+debug	Full diagnostic trace including IR dumps and phase transition details.
+Part VIII — The Rules Section
+8.1 Purpose
+The rules section activates and configures Sleela compile-time Rules (SL-META-0001 §2.2, Rule primitive). Rules are evaluated during Phase 7 (Rule Evaluation) of the compilation pipeline and may interact with the outputs of Phases 4 through 6.
+
+8.2 Syntax
+rules:
+  activate   <list-of-rule-names>
+  deactivate <list-of-rule-names>
+  severity:
+    <RuleName>  <severity-level>
+    ...
+  config:
+    <RuleName>:
+      <key>  <value>
+      ...
+8.3 Rule Activation
+RULE-01 — Default Activation Rule: All built-in Nordshrift rules are activated by default. The activate and deactivate directives modify this set additively relative to the default.
+
+RULE-02 — Deactivation Primacy Rule: If a rule name appears in both activate and deactivate, deactivation takes precedence unconditionally.
+
+RULE-03 — Unknown Rule Rule: Referencing a rule name not registered with Nordshrift (neither built-in nor supplied via plugin) is NSS-E-0060.
+
+8.4 Severity Levels
+Level	Behavior
+error	Triggers NSS-E-XXXX; compilation halts at the end of the current phase after collecting all errors within that phase.
+warning	Triggers NSS-W-XXXX; compilation continues. Reported in the diagnostic summary.
+notice	Triggers NSS-N-XXXX; informational only. Suppressed at quiet and silent verbosity.
+8.5 Built-in Rules
+Rule Name	Default Severity	Governing Rule	Description
+NullSafety	error	—	Enforces that no Entity field may hold null; all nullable Java boundaries are wrapped in Maybe.
+EffectBoundary	error	SEM-02	Enforces Effect Transparency: every Effect must be declared and propagated through Flow signatures.
+ContractExhaustion	error	SR-04	Every declared Contract must have at least one conforming Entity in the compilation unit.
+LensPurity	warning	SR-09	Lens accessors must be free of observable side effects.
+ProjectionIsolation	warning	SR-10	Projection fields may not reference mutable Entity state directly.
+DeriveExplicit	notice	SR-05	Derive blocks must be explicitly invoked rather than implicitly activated.
+ScopeDelimitation	error	SR-01	Block boundaries must align to indent units; misaligned blocks are a structural error.
+GuardPlacement	warning	SR-08	Guard clauses must appear before the body of the guarded Flow.
+PipelineLinearity	error	SR-06	Pipelines must not contain cycles; cycle detection is performed on the IR graph.
+ContextImmutability	error	SR-07	Context values may not be reassigned within a Scope.
+8.6 Inline Rule Block
+An individual rule may also be declared and configured as a full named block at the top level of the .sst file. This form takes precedence over severity: entries in the parent rules: block:
+
+rule NullSafety:
+  severity  error
+  config:
+    allow-legacy-interop  false
+    report-call-sites     true
+Part IX — The Effects Section
+9.1 Purpose
+The effects section declares the set of named Effects (SL-META-0001 §2.2) recognized within this compilation unit and configures the effect-checking policy applied during Phase 6 (Effect Analysis).
+
+9.2 Syntax
+effects:
+  policy         <effect-policy>
+  declare        <list-of-effect-names>
+  aliases:
+    <EffectName>  <list-of-effect-names>
+  default-effect  <string-literal>      // default: "Pure"
+9.3 Effect Policies
+Policy	Description
+strict	Every Flow that produces an Effect must declare it in its type signature. Undeclared effects are NSS-E-0070.
+lenient	Undeclared effects produce NSS-W-0070 but do not halt compilation.
+audit	Like lenient but also emits a full effect report as a standalone output artifact alongside diagnostic output.
+off	Effect analysis is disabled entirely; Phase 6 is skipped.
+EFF-01 — Strict Default Rule: The default effect policy is strict. Omitting the policy directive is equivalent to policy strict.
+
+EFF-02 — Declaration Completeness Rule: Under strict policy, every effect name referenced in any Sleela source file in the compilation unit must appear in the effects.declare list, the built-in set, or an imported sheet's effects section. Undeclared references are NSS-E-0070.
+
+9.4 Built-in Effect Names
+The following effect names are always available without declaration:
+
+Name	Description
+Pure	No observable side effects; the default effect for all Sleela-native Flows.
+Impure	Unspecified or unknown side effects; assigned by default to all Java-boundary calls.
+IO	General input/output: file, network, console, or any external system.
+State	Mutation of shared mutable state.
+Exception	Checked or declared exception propagation at or across a Java boundary.
+9.5 Effect Aliases
+The aliases block maps a compound alias name to a set of component effect names. An alias may be used anywhere a primitive effect name is accepted in Sleela source:
+
+effects:
+  aliases:
+    Persistence  [ DatabaseWrite, FileSystem ]
+    Network      [ NetworkCall, DNS ]
+Part X — The Derive Section
+10.1 Purpose
+The derive section configures automatic derivation of Lenses, Projections, equality methods, hash codes, and other structural artifacts from Entity declarations (SL-META-0001 §3.3, Derive Blocks). Each directive toggles or configures one category of derived artifact.
+
+10.2 Syntax
+derive:
+  lens          <boolean-literal>    // default: true
+  projection    <boolean-literal>    // default: true
+  equality      <boolean-literal>    // default: true
+  hashcode      <boolean-literal>    // default: true
+  toString      <boolean-literal>    // default: true
+  builder       <boolean-literal>    // default: false
+  copy          <boolean-literal>    // default: true
+  target-style  <derive-style>       // default: record
+10.3 Derive Styles
+The target-style directive controls the Java idiom used for all derived artifacts in the compilation unit:
+
+Style	Generated Java Construct
+record	Java record types with compact constructor. Requires java-version ≥ 17.
+immutable-class	Traditional final class with all-args constructor and no public mutators.
+builder	Builder pattern with inner static Builder class and fluent setter chain.
+lombok	Lombok-annotated class. Requires Lombok on the downstream annotation-processor classpath.
+DRV-01 — Builder Conflict Rule: builder true and target-style record are mutually exclusive, as Java records do not support the Builder pattern via derivation. Combining them is NSS-E-0080.
+
+DRV-02 — Purity Guarantee: All derived Lens accessors must satisfy SR-09 (Lens Purity). If an Entity field carries an Effect annotation, its derived Lens accessor is omitted from emission and NSS-W-0081 is emitted for that field.
+
+Part XI — The Guards Section
+11.1 Purpose
+The guards section configures how Guard Clauses (SL-META-0001 §3.3) — preconditions and postconditions declared on Flows — are compiled and enforced. Configuration here applies uniformly to all guards in the compilation unit; per-Flow override is not supported in .sst files.
+
+11.2 Syntax
+guards:
+  mode            <guard-mode>
+  on-failure      <failure-action>
+  message-format  <string-literal>
+  // default message-format: "Guard violation: {guard-name} in {flow-name}"
+11.3 Guard Modes
+Mode	Description
+compile-only	Guards are checked statically where possible; no runtime assertion code is emitted.
+runtime-only	Guards are not analyzed statically; runtime assertion code is always emitted unconditionally.
+compile-and-runtime	Static analysis is performed first; runtime code is emitted only for guards that cannot be fully resolved statically.
+off	Guards are parsed and retained in the AST but entirely ignored during code emission.
+11.4 Failure Actions
+Action	Behavior on Guard Violation
+throw	Throws SleelaGuardException (unchecked) with the configured message format.
+assert	Uses Java assert keyword; subject to JVM -ea flag at runtime.
+log-and-continue	Logs the violation at WARN level via java.util.logging and continues execution.
+halt	Calls System.exit(1); use only in batch or CLI contexts where abrupt termination is acceptable.
+GRD-01 — Static Analysis Priority Rule: Under compile-and-runtime mode, a guard proven unconditionally true by static analysis must not emit runtime code. A guard proven unconditionally false by static analysis is NSS-E-0090 (unconditional guard failure detected at compile time); this is a hard error regardless of on-failure configuration.
+
+Part XII — The Interop Section
+12.1 Purpose
+The interop section governs how Nordshrift handles the boundary between Sleela-compiled code and external Java libraries (SL-META-0001 §7.4). All directives in this section affect code generated at call sites where Sleela code invokes Java methods or receives Java-typed values.
+
+12.2 Syntax
+interop:
+  assume-impure       <boolean-literal>    // default: true
+  null-wrapping       <null-wrap-mode>     // default: maybe
+  checked-exceptions  <checked-ex-mode>   // default: wrap
+  type-mapping:
+    <JavaType>  <SleelationType>
+    ...
+  package-allow  <list-of-string-literals>
+  package-deny   <list-of-string-literals>
+12.3 Core Directives
+Directive	Default	Description
+assume-impure	true	When true, all Java methods called from Sleela are assigned the Impure effect unless annotated with a Sleela-compatible effect annotation.
+null-wrapping	maybe	Controls how null-returning Java methods are typed within Sleela. See §12.4.
+checked-exceptions	wrap	Controls handling of Java checked exceptions at the Sleela boundary. See §12.5.
+package-allow	[]	Whitelist of Java package prefixes (glob-style) permitted for direct interop calls. If non-empty, calls to packages not on this list are NSS-E-0043.
+package-deny	[]	Blacklist of Java package prefixes explicitly forbidden from direct interop calls. Takes precedence over package-allow.
+12.4 Null Wrapping Modes
+Mode	Behavior
+maybe	All Java return types entering Sleela are wrapped in Maybe<T> at the boundary call site.
+nullable-annotation	Types annotated @Nullable in Java source are wrapped; all others are treated as non-null without wrapping.
+trust	No wrapping performed; Sleela treats all Java return types as non-null. This is unsafe and emits NSS-W-0100.
+12.5 Checked Exception Modes
+Mode	Behavior
+wrap	Java checked exceptions are captured and represented as a Sleela Exception effect at the call site boundary.
+propagate	Checked exceptions propagate as-is through generated code to calling Java code.
+rethrow-unchecked	Checked exceptions are caught and re-thrown wrapped in RuntimeException at the boundary.
+12.6 Type Mapping
+The type-mapping nested block allows custom Java-to-Sleela type substitutions. Each entry maps a fully qualified Java type name to a fully qualified Sleela type name:
+
+interop:
+  type-mapping:
+    "java.util.List"      "sleela.core.Sequence"
+    "java.util.Map"       "sleela.core.Mapping"
+    "java.util.Optional"  "sleela.core.Maybe"
+INTEROP-01 — Standard Library Precedence Rule: Type mappings for types in the Sleela Standard Library are predefined and cannot be overridden by user-supplied entries. Attempting to remap a stdlib type emits NSS-W-0101 and the user-supplied mapping is ignored.
+
+Part XIII — The Profile Section
+13.1 Purpose
+A profile block defines a named, override-capable variant of the sheet's configuration. Profiles allow a single .sst file to serve multiple build scenarios — development, release, CI, testing — without duplication. Only directive values differ between profiles; the sheet identity and import graph are invariant across all profiles.
+
+13.2 Syntax
+profile <identifier>:
+  inherits  <identifier>    // optional: another profile or "base"
+  <section-name>:
+    <directive>  <value>
+    ...
+A profile block may contain any subset of the top-level section blocks. Directives within a profile's section blocks override the corresponding directives in the base sheet or inherited profile. Directives not mentioned in the profile are inherited unchanged from the parent.
+
+13.3 Profile Rules
+PROF-01 — Base Keyword: The identifier base is reserved and refers to the root-level configuration of the sheet (outside any profile block). inherits base is the default when inherits is omitted from a profile declaration.
+
+PROF-02 — Profile Inheritance Chain: Profile inheritance is single-parent. A profile may inherit from exactly one other profile or from base. Multiple-parent inheritance is NSS-E-0110.
+
+PROF-03 — Circular Profile Rule: Circular profile inheritance (A inherits B inherits A) is NSS-E-0111. Nordshrift performs cycle detection on the profile inheritance graph before any profile resolution.
+
+PROF-04 — Profile Activation: A profile is activated by passing its identifier to Nordshrift at invocation time via the --profile flag (e.g., nordshrift --profile release). If no --profile flag is supplied, the base configuration is used with no profile overrides applied.
+
+13.4 Example
+profile dev:
+  pipeline:
+    verbosity  verbose
+    fail-fast  false
+  guards:
+    mode  runtime-only
+
+profile ci:
+  inherits dev
+  pipeline:
+    fail-fast           true
+    parallel-threshold  8
+  rules:
+    severity:
+      NullSafety  error
+      LensPurity  error
+
+profile release:
+  target:
+    optimize  true
+    clean     true
+  pipeline:
+    verbosity           quiet
+    parallel-threshold  16
+Part XIV — Formal Grammar
+14.1 EBNF Notation
+The following grammar uses Extended Backus-Naur Form (EBNF). Terminals are enclosed in "double quotes". [x] denotes optional; {x} denotes zero or more; (x | y) denotes alternation. INDENT and DEDENT are synthetic tokens produced by the indentation-sensitive lexer, equivalent to block open and block close respectively.
+
+14.2 Complete .sst Grammar
+sst-file           ::= pragma-block sheet-block { import-stmt } { section }
+
+pragma-block       ::= pragma-nordshrift { pragma-line }
+pragma-nordshrift  ::= "#nordshrift" version-literal NEWLINE
+pragma-line        ::= "#" identifier scalar-value NEWLINE
+
+sheet-block        ::= "sheet" identifier ":" NEWLINE INDENT
+                         { sheet-directive }
+                       DEDENT
+sheet-directive    ::= ( "version"     version-literal
+                       | "author"      string-literal
+                       | "description" string-literal
+                       | "extends"     path-literal
+                       | "tags"        list-literal ) NEWLINE
+
+import-stmt        ::= "import" path-literal "as" identifier
+                       [ ( "only" | "except" ) list-literal ] NEWLINE
+
+section            ::= ( source-section
+                       | target-section
+                       | pipeline-section
+                       | rules-section
+                       | effects-section
+                       | derive-section
+                       | guards-section
+                       | interop-section
+                       | profile-section
+                       | rule-block
+                       | effect-block )
+
+source-section     ::= "source" ":" NEWLINE INDENT
+                         "root" path-literal NEWLINE
+                         { "glob" path-literal NEWLINE }
+                         [ "exclude" list-literal NEWLINE ]
+                         [ "encoding" string-literal NEWLINE ]
+                         [ "watch" boolean-literal NEWLINE ]
+                       DEDENT
+
+target-section     ::= "target" ":" NEWLINE INDENT
+                         "root" path-literal NEWLINE
+                         "layout" layout-mode NEWLINE
+                         "java-version" integer-literal NEWLINE
+                         { target-directive }
+                         [ layout-map-block ]
+                       DEDENT
+target-directive   ::= ( "package-root" string-literal
+                       | "overwrite"    boolean-literal
+                       | "source-map"   boolean-literal
+                       | "optimize"     boolean-literal
+                       | "clean"        boolean-literal ) NEWLINE
+
+pipeline-section   ::= "pipeline" ":" NEWLINE INDENT
+                         { pipeline-directive }
+                       DEDENT
+pipeline-directive ::= ( "phases"              list-literal
+                       | "skip"               list-literal
+                       | "parallel-threshold" integer-literal
+                       | "cache"              boolean-literal
+                       | "cache-dir"          path-literal
+                       | "verbosity"          verbosity-level
+                       | "fail-fast"          boolean-literal ) NEWLINE
+
+rules-section      ::= "rules" ":" NEWLINE INDENT
+                         { rules-directive }
+                       DEDENT
+rules-directive    ::= ( "activate"   list-literal
+                       | "deactivate" list-literal
+                       | severity-block
+                       | config-block ) NEWLINE
+
+severity-block     ::= "severity" ":" NEWLINE INDENT
+                         { identifier severity-level NEWLINE }
+                       DEDENT
+
+effects-section    ::= "effects" ":" NEWLINE INDENT
+                         { effects-directive }
+                       DEDENT
+effects-directive  ::= ( "policy"         effect-policy
+                       | "declare"        list-literal
+                       | "default-effect" string-literal
+                       | aliases-block ) NEWLINE
+
+derive-section     ::= "derive" ":" NEWLINE INDENT
+                         { derive-directive }
+                       DEDENT
+derive-directive   ::= ( "lens" | "projection" | "equality" | "hashcode"
+                       | "toString" | "builder" | "copy" ) boolean-literal NEWLINE
+                     | "target-style" derive-style NEWLINE
+
+guards-section     ::= "guards" ":" NEWLINE INDENT
+                         { guards-directive }
+                       DEDENT
+guards-directive   ::= ( "mode"           guard-mode
+                       | "on-failure"     failure-action
+                       | "message-format" string-literal ) NEWLINE
+
+interop-section    ::= "interop" ":" NEWLINE INDENT
+                         { interop-directive }
+                       DEDENT
+interop-directive  ::= ( "assume-impure"      boolean-literal
+                       | "null-wrapping"      null-wrap-mode
+                       | "checked-exceptions" checked-ex-mode
+                       | type-mapping-block
+                       | "package-allow"      list-literal
+                       | "package-deny"       list-literal ) NEWLINE
+
+profile-section    ::= "profile" identifier ":" NEWLINE INDENT
+                         [ "inherits" identifier NEWLINE ]
+                         { section }
+                       DEDENT
+
+rule-block         ::= "rule" identifier ":" NEWLINE INDENT
+                         [ "severity" severity-level NEWLINE ]
+                         [ config-block ]
+                       DEDENT
+
+config-block       ::= "config" ":" NEWLINE INDENT
+                         { identifier scalar-value NEWLINE }
+                       DEDENT
+
+aliases-block      ::= "aliases" ":" NEWLINE INDENT
+                         { identifier list-literal NEWLINE }
+                       DEDENT
+
+type-mapping-block ::= "type-mapping" ":" NEWLINE INDENT
+                         { string-literal string-literal NEWLINE }
+                       DEDENT
+
+layout-map-block   ::= "layout-map" ":" NEWLINE INDENT
+                         { path-literal path-literal NEWLINE }
+                       DEDENT
+
+scalar-value       ::= string-literal | boolean-literal | integer-literal
+                     | version-literal | identifier
+
+list-literal       ::= "[" [ scalar-value { "," scalar-value } ] "]"
+                     | NEWLINE INDENT { scalar-value NEWLINE } DEDENT
+
+layout-mode        ::= "mirror-source" | "flat" | "package-mapped" | "custom"
+verbosity-level    ::= "silent" | "quiet" | "normal" | "verbose" | "debug"
+severity-level     ::= "error" | "warning" | "notice"
+effect-policy      ::= "strict" | "lenient" | "audit" | "off"
+guard-mode         ::= "compile-only" | "runtime-only" | "compile-and-runtime" | "off"
+failure-action     ::= "throw" | "assert" | "log-and-continue" | "halt"
+null-wrap-mode     ::= "maybe" | "nullable-annotation" | "trust"
+checked-ex-mode    ::= "wrap" | "propagate" | "rethrow-unchecked"
+derive-style       ::= "record" | "immutable-class" | "builder" | "lombok"
+
+identifier         ::= LETTER { LETTER | DIGIT | "-" | "_" }
+version-literal    ::= DIGIT+ "." DIGIT+ "." DIGIT+
+boolean-literal    ::= "true" | "false" | "on" | "off"
+integer-literal    ::= DIGIT+ { "_" DIGIT+ }
+string-literal     ::= '"' { CHAR | ESCAPE } '"'
+                     | '"""' MULTILINE_CHARS '"""'
+path-literal       ::= string-literal
+Part XV — Diagnostics
+15.1 Error Code System
+All Nordshrift diagnostics carry a structured code of the form NSS-{tier}-{XXXX}, where {tier} is one of the following:
+
+NSS-E-XXXX — Errors: halt compilation at the end of the current phase after all intra-phase errors are collected.
+NSS-W-XXXX — Warnings: compilation continues; all warnings are reported in the diagnostic summary.
+NSS-N-XXXX — Notices: informational; suppressed at quiet and silent verbosity levels.
+15.2 Error Code Index
+Code	Triggering Condition	§ Reference	Recoverable
+NSS-E-0001	Invalid UTF-8 byte sequence in .sst file	§1.1	No
+NSS-E-0002	Mixed or inconsistent indentation within file	§1.2, IND-01	No
+NSS-E-0003	Missing #nordshrift pragma	§1.6	No
+NSS-E-0004	Unsupported #nordshrift version	§1.6	No
+NSS-E-0010	Multiple sheet blocks in one file	§3.3, SST-01	No
+NSS-E-0011	Duplicate sheet identifier across loaded files	§3.3, SST-02	No
+NSS-E-0020	Circular import chain detected	§4.3, IMPORT-04	No
+NSS-E-0021	Duplicate import alias within one file	§4.3, IMPORT-05	No
+NSS-E-0030	source.root path does not exist at invocation time	§5.3, SRC-01	No
+NSS-E-0031	Source file set is empty after glob and exclude evaluation	§5.3, SRC-02	No
+NSS-E-0032	Absolute path used in source.glob directive	§5.3, SRC-03	No
+NSS-E-0040	target.java-version below minimum (17)	§6.4, TGT-01	No
+NSS-E-0041	File name collision in flat layout mode	§6.3	Yes (within phase)
+NSS-E-0042	Non-deterministic output detected	§6.4, TGT-03	No
+NSS-E-0043	Java package call not on package-allow list	§12.3	Yes (within phase)
+NSS-E-0050	Phases specified out of mandatory execution order	§7.3, PIPE-01	No
+NSS-E-0051	Attempt to skip a mandatory phase	§7.3, PIPE-02	No
+NSS-E-0060	Unknown rule name referenced	§8.3, RULE-03	Yes (within phase)
+NSS-E-0070	Undeclared effect used in source under strict policy	§9.3, EFF-02	Yes (within phase)
+NSS-E-0080	builder true combined with target-style record	§10.3, DRV-01	No
+NSS-E-0090	Guard proven unconditionally false at compile time	§11.4, GRD-01	Yes (within phase)
+NSS-E-0110	Multiple-parent profile inheritance declared	§13.3, PROF-02	No
+NSS-E-0111	Circular profile inheritance chain	§13.3, PROF-03	No
+NSS-W-0001	Documentation comment not followed by a directive or block	§1.3	N/A
+NSS-W-0070	Undeclared effect used in source under lenient policy	§9.3	N/A
+NSS-W-0081	Lens derivation skipped for effect-bearing Entity field	§10.3, DRV-02	N/A
+NSS-W-0100	null-wrapping trust mode activated	§12.4	N/A
+NSS-W-0101	Attempt to remap a Sleela Standard Library type	§12.6, INTEROP-01	N/A
+15.3 Diagnostic Format
+Every diagnostic emitted by Nordshrift must include all of the following fields:
+
+The diagnostic code (e.g., NSS-E-0030).
+The .sst file path and line number of the triggering directive; or, for Phases 1–7 source errors, the Sleela source file path and line number.
+A plain-English message describing the violation in concrete terms, identifying the offending token or value.
+A pointer to the governing rule (e.g., "see SRC-01" or "see §5.3").
+For errors only: whether the error is recoverable within the current phase (i.e., whether Nordshrift will continue collecting additional errors before halting).
+Part XVI — Complete Annotated Example
+The following is a complete, production-grade .sst file demonstrating all major features in a realistic project configuration for the commerce-engine Sleela module. Annotations appear as inline documentation comments.
+
+/// Nordshrift Scripting Sheet for the 'commerce-engine' Sleela module.
+/// Targets Java 21; strict effect and null safety throughout.
+
+#nordshrift 1.0
+#sleela     1.0
+
+/// Sheet metadata — version, authorship, and purpose declaration.
+sheet commerce-engine:
+  version      1.2.0
+  author       "Platform Engineering Team"
+  description  """
+    Transpilation configuration for the commerce-engine Sleela module.
+    Produces Java 21 source under src/generated/java.
+    All effects must be declared; null safety enforced at all Java boundaries.
+    """
+  tags  [ "commerce", "backend", "production" ]
+
+/// Organization-wide defaults; commerce-specific effect declarations.
+import "./org-defaults.sst"      as org
+import "./effects/commerce.sst"  as fx  only [ effects ]
+
+/// Source: all .sl and .sle files under src/main/sleela,
+/// excluding stub files and the legacy subtree.
+source:
+  root     "src/main/sleela"
+  glob     "**/*.sl"
+  glob     "**/*.sle"
+  exclude  [ "**/*_stub.sl", "**/legacy/**" ]
+  watch    false
+
+/// Target: Java 21, mirror-source layout, source maps enabled.
+target:
+  root          "src/generated/java"
+  layout        mirror-source
+  java-version  21
+  package-root  "com.example.commerce"
+  source-map    true
+  overwrite     true
+  clean         false
+
+/// Pipeline: all 11 phases, 4-file concurrency, normal verbosity.
+pipeline:
+  phases  [ lex, parse, desugar, bind, infer,
+            effect-check, rule-eval, ir, java-emit,
+            java-print, diagnostic ]
+  parallel-threshold  4
+  cache      true
+  cache-dir  ".nordshrift-cache"
+  verbosity  normal
+  fail-fast  false
+
+/// Rules: strict safety posture; DeriveExplicit notice suppressed.
+rules:
+  activate   [ NullSafety, EffectBoundary, ContractExhaustion,
+               LensPurity, ProjectionIsolation ]
+  deactivate [ DeriveExplicit ]
+  severity:
+    NullSafety           error
+    EffectBoundary       error
+    ContractExhaustion   error
+    LensPurity           warning
+    ProjectionIsolation  warning
+    GuardPlacement       warning
+
+/// Fine-grained NullSafety configuration: legacy interop disabled.
+rule NullSafety:
+  severity  error
+  config:
+    allow-legacy-interop  false
+    report-call-sites     true
+
+/// Effects: strict policy; commerce domain effects declared;
+/// compound aliases for convenience in Flow signatures.
+effects:
+  policy   strict
+  declare  [ DatabaseRead, DatabaseWrite, CacheRead, CacheWrite,
+             PaymentGateway, EventEmit ]
+  aliases:
+    Persistence   [ DatabaseRead, DatabaseWrite, CacheRead, CacheWrite ]
+    ExternalCall  [ PaymentGateway, EventEmit ]
+  default-effect  "Pure"
+
+/// Derivation: all artifacts on; record style for Java 21 idiom.
+derive:
+  lens          on
+  projection    on
+  equality      on
+  hashcode      on
+  toString      on
+  copy          on
+  builder       off
+  target-style  record
+
+/// Guards: full compile-and-runtime enforcement; descriptive messages.
+guards:
+  mode        compile-and-runtime
+  on-failure  throw
+  message-format
+    "Guard violation [{guard-name}] in {flow-name} at {source-location}"
+
+/// Interop: strict null wrapping; all Java assumed impure;
+/// stdlib types mapped to Sleela equivalents.
+interop:
+  assume-impure       true
+  null-wrapping       maybe
+  checked-exceptions  wrap
+  type-mapping:
+    "java.util.List"      "sleela.core.Sequence"
+    "java.util.Map"       "sleela.core.Mapping"
+    "java.util.Optional"  "sleela.core.Maybe"
+  package-allow  [ "com.example.*", "org.springframework.*" ]
+  package-deny   [ "sun.*", "com.sun.*" ]
+
+/// Development profile: verbose output, no fail-fast, runtime guards.
+profile dev:
+  pipeline:
+    verbosity           verbose
+    fail-fast           false
+    parallel-threshold  2
+  guards:
+    mode  runtime-only
+  target:
+    clean  false
+
+/// CI profile: inherits dev; strict, fast-fail, full parallelism.
+profile ci:
+  inherits dev
+  pipeline:
+    fail-fast           true
+    parallel-threshold  8
+    verbosity           quiet
+  rules:
+    severity:
+      LensPurity           error
+      ProjectionIsolation  error
+
+/// Release profile: optimized output, silent, maximum parallelism.
+profile release:
+  target:
+    optimize  true
+    clean     true
+  pipeline:
+    verbosity           silent
+    parallel-threshold  16
+    fail-fast           true
+Appendices
+Appendix A — Directive Quick Reference
+The following table provides a complete flat listing of every directive across all .sst sections.
+
+Section	Directive	Type	Required	Default	Description
+sheet	version	Version	Yes	—	Semantic version of this sheet.
+sheet	author	String	No	—	Author or team name.
+sheet	description	String	No	—	Purpose statement.
+sheet	extends	Path	No	—	Base sheet for inheritance.
+sheet	tags	List	No	[]	Categorization tags for tooling.
+source	root	Path	Yes	—	Source root directory.
+source	glob	Path	Yes (≥1)	—	Glob pattern for source files.
+source	exclude	List	No	[]	Exclusion glob patterns.
+source	encoding	String	No	"utf-8"	Source file encoding.
+source	watch	Boolean	No	false	Enable watch/incremental mode.
+target	root	Path	Yes	—	Output root directory.
+target	layout	Enum	Yes	—	Output directory layout mode.
+target	java-version	Integer	Yes	—	Target Java language version (min 17).
+target	package-root	String	No	""	Java package prefix for generated types.
+target	overwrite	Boolean	No	true	Overwrite existing generated files.
+target	source-map	Boolean	No	true	Emit .smap files.
+target	optimize	Boolean	No	false	Enable IR-level optimizations.
+target	clean	Boolean	No	false	Delete prior output before emission.
+pipeline	phases	List	No	all	Active phases in order.
+pipeline	skip	List	No	[]	Non-mandatory phases to skip.
+pipeline	parallel-threshold	Integer	No	1	Max concurrent files per phase.
+pipeline	cache	Boolean	No	true	Enable incremental build cache.
+pipeline	cache-dir	Path	No	.nordshrift-cache	Cache directory path.
+pipeline	verbosity	Enum	No	normal	Diagnostic verbosity level.
+pipeline	fail-fast	Boolean	No	false	Halt on first error rather than collecting all.
+rules	activate	List	No	all built-ins	Rules to activate.
+rules	deactivate	List	No	[]	Rules to deactivate.
+effects	policy	Enum	No	strict	Effect checking policy.
+effects	declare	List	No	[]	User-defined effect names.
+effects	default-effect	String	No	"Pure"	Default effect for unannotated Flows.
+derive	lens	Boolean	No	true	Derive Lens accessors.
+derive	projection	Boolean	No	true	Derive Projection views.
+derive	equality	Boolean	No	true	Derive equals().
+derive	hashcode	Boolean	No	true	Derive hashCode().
+derive	toString	Boolean	No	true	Derive toString().
+derive	builder	Boolean	No	false	Derive Builder inner class.
+derive	copy	Boolean	No	true	Derive structural copy method.
+derive	target-style	Enum	No	record	Java idiom for derived artifacts.
+guards	mode	Enum	No	compile-and-runtime	Guard analysis and emission mode.
+guards	on-failure	Enum	No	throw	Runtime guard violation action.
+guards	message-format	String	No	see §11.2	Guard violation message template.
+interop	assume-impure	Boolean	No	true	Treat all Java calls as Impure.
+interop	null-wrapping	Enum	No	maybe	Null boundary wrapping mode.
+interop	checked-exceptions	Enum	No	wrap	Checked exception boundary handling.
+interop	package-allow	List	No	[]	Permitted Java package prefixes.
+interop	package-deny	List	No	[]	Forbidden Java package prefixes.
+Appendix B — Error Code Reference
+Code	Tier	Governing Rule	Triggering Condition	Recoverable
+NSS-E-0001	Error	§1.1	Invalid UTF-8 byte sequence or encoding mismatch	No
+NSS-E-0002	Error	IND-01	Mixed or inconsistent indentation	No
+NSS-E-0003	Error	§1.6	Missing #nordshrift pragma	No
+NSS-E-0004	Error	§1.6	Unsupported #nordshrift version	No
+NSS-E-0010	Error	SST-01	Multiple sheet blocks in one file	No
+NSS-E-0011	Error	SST-02	Duplicate sheet identifier across loaded files	No
+NSS-E-0020	Error	IMPORT-04	Circular import chain	No
+NSS-E-0021	Error	IMPORT-05	Duplicate import alias	No
+NSS-E-0030	Error	SRC-01	source.root does not exist	No
+NSS-E-0031	Error	SRC-02	Empty source file set	No
+NSS-E-0032	Error	SRC-03	Absolute path in source.glob	No
+NSS-E-0040	Error	TGT-01	java-version below 17	No
+NSS-E-0041	Error	§6.3	File name collision in flat layout	Yes
+NSS-E-0042	Error	TGT-03	Non-deterministic output detected	No
+NSS-E-0043	Error	§12.3	Java package call outside package-allow	Yes
+NSS-E-0050	Error	PIPE-01	Out-of-order phase specification	No
+NSS-E-0051	Error	PIPE-02	Attempt to skip mandatory phase	No
+NSS-E-0060	Error	RULE-03	Unknown rule name referenced	Yes
+NSS-E-0070	Error	EFF-02	Undeclared effect under strict policy	Yes
+NSS-E-0080	Error	DRV-01	builder true with target-style record	No
+NSS-E-0090	Error	GRD-01	Guard proven unconditionally false	Yes
+NSS-E-0110	Error	PROF-02	Multiple-parent profile inheritance	No
+NSS-E-0111	Error	PROF-03	Circular profile inheritance	No
+NSS-W-0001	Warning	§1.3	Orphaned documentation comment	N/A
+NSS-W-0070	Warning	§9.3	Undeclared effect under lenient policy	N/A
+NSS-W-0081	Warning	DRV-02	Lens skipped for effect-bearing field	N/A
+NSS-W-0100	Warning	§12.4	null-wrapping trust activated	N/A
+NSS-W-0101	Warning	INTEROP-01	Attempt to remap stdlib type	N/A
+Appendix C — Section Keyword Index
+Keyword / Token	Category	Section Reference
+aliases	Nested block	§9.5
+assert	Failure action value	§11.4
+assume-impure	Directive	§12.3
+audit	Effect policy value	§9.3
+author	Directive	§3.3
+base	Reserved identifier	§13.3, PROF-01
+bind	Phase token	§7.3
+builder	Directive / Derive style value	§10.2, §10.3
+cache	Directive	§7.2
+cache-dir	Directive	§7.2
+checked-exceptions	Directive	§12.2
+clean	Directive	§6.2
+compile-and-runtime	Guard mode value	§11.3
+compile-only	Guard mode value	§11.3
+config	Nested block	§8.2, §8.6
+copy	Directive	§10.2
+custom	Layout mode value	§6.3
+declare	Directive	§9.2
+debug	Verbosity level value	§7.4
+default-effect	Directive	§9.2
+deactivate	Directive	§8.2
+description	Directive	§3.3
+derive	Section keyword	§10
+desugar	Phase token	§7.3
+diagnostic	Phase token	§7.3
+effect-check	Phase token	§7.3
+effects	Section keyword	§9
+encoding	Directive / Pragma	§1.6, §5.2
+equality	Directive	§10.2
+except	Import qualifier	§4.2
+exclude	Directive	§5.2
+extends	Directive	§3.3
+fail-fast	Directive	§7.2
+flat	Layout mode value	§6.3
+glob	Directive	§5.2
+guards	Section keyword	§11
+halt	Failure action value	§11.4
+hashcode	Directive	§10.2
+immutable-class	Derive style value	§10.3
+import	Top-level keyword	§4
+infer	Phase token	§7.3
+inherits	Directive	§13.2
+interop	Section keyword	§12
+ir	Phase token	§7.3
+java-emit	Phase token	§7.3
+java-print	Phase token	§7.3
+java-version	Directive	§6.2
+layout	Directive	§6.2
+layout-map	Nested block	§6.3
+lenient	Effect policy value	§9.3
+lens	Directive	§10.2
+lex	Phase token	§7.3
+log-and-continue	Failure action value	§11.4
+lombok	Derive style value	§10.3
+maybe	Null wrap mode value	§12.4
+message-format	Directive	§11.2
+mirror-source	Layout mode value	§6.3
+mode	Directive	§11.2
+normal	Verbosity level value	§7.4
+null-wrapping	Directive	§12.2
+nullable-annotation	Null wrap mode value	§12.4
+on-failure	Directive	§11.2
+only	Import qualifier	§4.2
+optimize	Directive	§6.2
+overwrite	Directive	§6.2
+package-allow	Directive	§12.2
+package-deny	Directive	§12.2
+package-mapped	Layout mode value	§6.3
+package-root	Directive	§6.2
+parallel-threshold	Directive	§7.2
+parse	Phase token	§7.3
+phases	Directive	§7.2
+pipeline	Section keyword	§7
+policy	Directive	§9.2
+profile	Section keyword	§13
+projection	Directive	§10.2
+propagate	Checked exception mode value	§12.5
+quiet	Verbosity level value	§7.4
+record	Derive style value	§10.3
+rethrow-unchecked	Checked exception mode value	§12.5
+root	Directive (source, target)	§5.2, §6.2
+rule	Section keyword	§8.6
+rule-eval	Phase token	§7.3
+rules	Section keyword	§8
+runtime-only	Guard mode value	§11.3
+severity	Directive / Nested block	§8.2, §8.4, §8.6
+sheet	Section keyword	§3
+silent	Verbosity level value	§7.4
+skip	Directive	§7.2
+source	Section keyword	§5
+source-map	Directive	§6.2
+strict	Effect policy value	§9.3
+tags	Directive	§3.3
+target	Section keyword	§6
+target-style	Directive	§10.2
+throw	Failure action value	§11.4
+toString	Directive	§10.2
+trust	Null wrap mode value	§12.4
+type-mapping	Nested block	§12.6
+verbose	Verbosity level value	§7.4
+verbosity	Directive	§7.2
+version	Directive	§3.3
+watch	Directive	§5.2
+wrap	Checked exception mode value	§12.5
+Appendix D — Relationship to SL-META-0001
+.sst Section	SL-META Concept	SL-META Chapter / Phase	Notes
+source	Source Input Set	Chapter 6, Phase 1	Configures the file set fed to Lexical Analysis.
+target	Java Emission Surface	§3.4; Phases 10–11	Implements Idiomatic Java and Deterministic Output guarantees.
+pipeline	Compilation Pipeline	§6.1; Phases 1–11	Maps tokens directly to SL-META phase numbers and names.
+rules	Rule primitive	§2.2; Phase 7	Activates and configures Rule evaluation at Phase 7.
+effects	Effect primitive	§2.2; Phase 6	Declares the Effect vocabulary and configures Phase 6 policy.
+derive	Derive Blocks	§3.3	Controls derivation of Lenses, Projections, and structural methods from Entities.
+guards	Guard Clauses	§3.3	Configures compile-time and runtime enforcement of Flow preconditions and postconditions.
+interop	Java Interoperability Boundary	§7.4	Governs effect assignment, null wrapping, and type mapping at the Java call boundary.
+profile	(no direct meta-model concept)	§6.1 (invocation)	Nordshrift-level mechanism for named build variant configuration; no Sleela meta-model counterpart.
+sheet	(no direct meta-model concept)	—	File-level manifest; provides identity and versioning metadata for the .sst file itself.
+import	(no direct meta-model concept)	—	Composition mechanism for .sst files; analogous to module imports in Sleela source but distinct.
+rule (inline block)	Rule primitive	§2.2; Phase 7	Per-rule configuration block; fine-grained override of rules: section entries.
+Appendix E — Changelog and Deprecation Log
+Version	Date	Status	Changes
+1.0.0	September 2026	Current — Normative	Initial normative release of NS-SST-0001. Defines all lexical conventions, section schemas, merge rules, profile mechanics, formal EBNF grammar, and the complete diagnostic code set NSS-E-0001 through NSS-W-0101. No prior versions exist; no deprecations apply.
+Document NS-SST-0001  |  Revision 1.0.0  |  September 2026  |  Nordshrift Transpiler Driver 1.0  |  Normative Edition
+Companion: Sleela Language Metadocument SL-META-0001
