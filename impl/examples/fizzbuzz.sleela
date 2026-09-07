@@ -1,0 +1,22 @@
+// if/else, modulo, boolean operators, string concatenation.
+class FizzBuzz {
+
+    String label(int n) {
+        if (n % 15 == 0) {
+            return "FizzBuzz";
+        } else if (n % 3 == 0) {
+            return "Fizz";
+        } else if (n % 5 == 0) {
+            return "Buzz";
+        }
+        return "" + n;
+    }
+
+    void main() {
+        int n = 1;
+        while (n <= 20) {
+            print(label(n));
+            n = n + 1;
+        }
+    }
+}

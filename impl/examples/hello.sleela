@@ -1,0 +1,6 @@
+// The classic. Sleela is Java-like; main() is the entry point.
+class Hello {
+    void main() {
+        print("Hello, Sleela!");
+    }
+}
