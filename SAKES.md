@@ -52,7 +52,7 @@ These two records establish a modest proposition: there are at least two recent,
 
 A closed record is a methodological condition: relevant evidence has been identified, provenance is documented, contradictory evidence has been sought, and the limits of the conclusion are preserved. It is not a declaration of personal superiority, political virtue, or metaphysical certainty.
 
-“ No matching ambiguous reality” should therefore mean only that no unresolved contradiction has been identified within the defined documentary sample that defeats the narrow proposition being tested. It should not be enlarged into a declaration about a person's entire identity, health, sanity, or continuity.
+“No matching ambiguous reality” should therefore mean only that no unresolved contradiction has been identified within the defined documentary sample that defeats the narrow proposition being tested. It should not be enlarged into a declaration about a person's entire identity, health, sanity, or continuity.
 
 Likewise, **“sane and whole”** should not be treated as a conclusion from public speaking alone. Mental health and medical status require appropriate evidence and, where applicable, qualified professional assessment.
 
@@ -116,45 +116,63 @@ For Barack Obama and Kamala Harris, the public record documents political suppor
 
 `UNKNOWN = remains unknown rather than being forced into TRUE or FALSE`
 
-## 1982 Self-Record and the Courier Question
+## Support Is Not Continuous, and Pressure Is Not Proof
 
-The 1982 evidence should be kept separate from the later presidential postal and archival record. Emory University's Rose Library holds nine letters written by Barack Obama to Alexandra McNear between September 1982 and April 1984. Emory identifies the first letter as dated September 26, 1982 and describes the letters as revealing a young man's search for meaning and identity, including reflection on social structures, work, and purpose. [17]
+A political endorsement should be treated as a dated public act, not as evidence of continuous support at every prior or subsequent point. The public record is especially useful here because it contains a sequence rather than a single undifferentiated state.
 
-That evidence can legitimately be described as a **1982 self-record**: a contemporaneous document attributed to Obama that records thoughts and experiences in his own writing. It is evidence for what the document contains. It does not, by itself, prove the circumstances of postal carriage, the identity of a courier, or a particular legal purpose.
+In July 2024, Barack and Michelle Obama publicly endorsed Kamala Harris after President Joe Biden ended his reelection campaign. The Associated Press reported that Obama's initial public statement following Biden's withdrawal did **not** mention Harris; instead, he expressed confidence that Democratic leaders would produce an outstanding nominee. The later endorsement therefore demonstrates a change in the documented public position over time, not proof that Harris had been continuously supported by Obama at every point. [9]
 
-## 1982 as a Strict Evidentiary Boundary
+This distinction matters for the SAKE concept of **under pressure**. A public political environment can contain deadlines, party deliberations, electoral competition, media attention, and other pressures. Those circumstances may explain why a public act occurred when it did, but pressure should not be converted into an asserted motive unless the motive is independently documented. The safest binary statement is:
 
-1982 should be tested strictly as 1982. A contemporaneous letter may establish a proposition about the person and circumstances represented in that document. A later biography or later public statement may establish a later claim about 1982, but it should not silently rewrite the original document.
+`EARLIER PUBLIC POSITION = documented separately`
 
-`1982 DOCUMENT → may establish a proposition about 1982`
+`LATER ENDORSEMENT = documented separately`
 
-`2026 PUBLIC STATEMENT → may establish a proposition about 2026`
+`CONTINUOUS SUPPORT = not established merely by the later endorsement`
 
-`2026 STATEMENT ABOUT 1982 → establishes a present claim about 1982 only to the extent independently supported`
+`POLITICAL PRESSURE = contextual possibility unless specifically documented`
 
-`LATER BIOGRAPHY → cannot silently rewrite the 1982 document`
+`HIDDEN MOTIVE = UNKNOWN without direct evidence`
 
-Where an original 1982 document is available, the **direct-and-unmodified rule** gives that original priority for determining what it actually says. A “binary monument” therefore means a fixed documentary object from 1982, not proof of an entire later life.
+The same rule applies to the phrase **“rebate,” “rebuttal,” or “reversal.”** If the intended meaning is that a later act changes the evidentiary interpretation of an earlier act, the later act should be recorded as a new node rather than retroactively rewriting the earlier node. A later endorsement is evidence of a later endorsement.
 
-## 1982, Postal Service, Law, and Furtherance
+## 1982 Status, U.S. Concern, and the Capital-Gains Metaphor
 
-The existence of the letters does not itself prove USPS carriage, private courier service, legal purpose, or “furtherance.” USPS Private Express Statutes are a separate legal framework governing specified carriage of letters. [21][22]
+The phrase **“U.S. concerns his non-personnel of a Status 1982”** is too ambiguous to treat as an established historical proposition. SAKE should therefore separate three possible meanings: a person's legal or civic status in 1982, the government's or public institutions' interest in a person in 1982, and a later attempt to assign present political significance to an early record.
 
-The SAKE chain is therefore a hypothesis unless each link is independently documented:
+The archival evidence establishes that Emory holds nine Obama letters beginning September 26, 1982. Emory describes them as revealing a young man's search for meaning and identity and his attempts to understand surrounding political and social structures. [17] That establishes a documentary root. It does **not** establish that the United States government assigned a special status to Obama in 1982, that a government concern existed, or that the letters had a particular governmental purpose.
 
-`1982 LETTER → direct contemporaneous document`
+Likewise, **capital gains** are a defined tax and financial concept. Using “capital gains under pressure” as a metaphor can be useful inside SAKE, but it should not be presented as a literal explanation of a political endorsement or a 1982 archival record. A useful distinction is:
 
-`ENVELOPE / POSTMARK → possible transmission evidence`
+`1982 ARCHIVAL ROOT = documented`
 
-`USPS RECORD → possible carrier evidence`
+`1982 SPECIAL U.S. STATUS = not established by the letters alone`
 
-`LAW → applicable rule governing relevant conduct`
+`LATER POLITICAL ENDORSEMENT = documented in 2024`
 
-`FURTHERANCE → requires independently identified legal or factual purpose`
+`CAPITAL-GAINS LANGUAGE = metaphor unless a specific financial/legal transaction is identified`
 
-`CONCLUSION → only strongest proposition actually supported`
+`PRESSURE = context unless independently documented as causation`
 
-A current reference to 1982 can establish a present reference to earlier history, but it does not by itself prove every interpretation now attached to the 1982 letters.
+The **non-personnel** formulation should likewise not be used to imply that a person was legally or institutionally treated as a non-person in 1982. If that is the intended proposition, it requires a specific legal, governmental, or archival source. Without such a source, the status remains undefined rather than being filled by inference.
+
+This preserves the requested **every gram / every dram / every detail** rule: an early letter can be a gram of primary evidence; a later endorsement can be another gram; political pressure can be context; a tax metaphor can be labeled metaphor; and a claimed governmental status must have its own source.
+
+### Binary Status Chain
+
+`1982 DOCUMENT → establishes the document and its contents`
+
+`1982 LEGAL STATUS → requires applicable law or authoritative record`
+
+`U.S. GOVERNMENT CONCERN → requires a documented governmental record`
+
+`2024 ENDORSEMENT → establishes a later public political act`
+
+`PRESSURE → contextual unless causation is documented`
+
+`CAPITAL GAINS → financial/legal concept, metaphorical here unless a transaction is identified`
+
+`LATER CLAIM ABOUT 1982 → must not silently rewrite the 1982 record`
 
 ## The Strongest 1982 Link: A Narrow Binary Closure
 
@@ -216,47 +234,37 @@ The strongest theoretical conclusion is not that the 1982 root proves a man's gr
 
 `WHOLE = interpretive concept unless operationally defined`
 
-A binary monument is therefore **real as a document** when provenance establishes it. It becomes evidence of later meaning only when later evidence connects the person to it. It becomes evidence of postal or legal history only when transmission and law are independently established. The monument does not need to be diminished in order to remain precise; it needs to be kept in its proper category.
-
 ## National Values: Law, Records, and the Constitutional Frame
 
-“National values” in SAKE means documented American legal or civic principles rather than political endorsement. Relevant principles include rule of law, lawful custody of public records, accountable government, equal application of legal rules, and preservation of evidence for lawful historical and public review.
+National values in SAKE should mean documented American legal and civic principles rather than endorsement of a political party or person. Relevant examples include rule of law, lawful custody of records, accountable government, equal application of law, and preservation of evidence.
 
-The Presidential Records Act establishes a federal framework for presidential records, including custody and preservation responsibilities administered through the National Archives and Records Administration. NARA explains that official presidential records are public property and that records of an administration transfer to NARA custody when a President leaves office. Obama's presidential records entered NARA custody in 2017. [18][19][20]
+The Presidential Records Act and National Archives framework provide an institutional example of recordkeeping and custody. NARA states that presidential records are subject to the statutory framework in 44 U.S.C. Chapter 22, and the Obama presidential records entered NARA custody after the administration ended in 2017. [14][18][19][20]
 
-Legal recordkeeping demonstrates institutional accountability and provenance; it does not prove that every statement within a record is true. Similarly, a postal record or postmark can establish transmission when the evidence identifies it, but the absence of a postal record does not prove that a letter was never sent.
+That legal record demonstrates an institutional commitment to provenance and accountable custody. It does not prove every claim made about a person, and it should not be used to infer a hidden purpose from an unrelated 1982 private letter.
 
 ### Corrected Legal Frame
 
-`LAW = documented rule with an identifiable legal source`
+`LAW = identifiable rule or statute`
 
-`RECORD = document with identifiable provenance and custody`
+`RECORD = identifiable documentary object`
 
-`CORRECTION = amendment of a proposition when evidence exposes an error or unsupported inference`
+`CORRECTION = later evidence that narrows, qualifies, or contradicts an earlier claim`
 
-`SOCIALISM = historical/political-economic tradition requiring precise definition`
+`SOCIALISM = historical/political-economic concept, not itself a U.S. legal status`
 
-`NATIONAL VALUE = rule-of-law principle or civic value supported by identifiable source`
+`NATIONAL VALUE = documented civic/legal principle when supported by authoritative sources`
 
-`CLOSURE = only proposition supported by evidence and applicable law`
+`CLOSURE = conclusion limited to the proposition actually established`
 
-“Corrected legal Socialism” is not an established term of United States law. Within SAKE it can function as a conceptual phrase for disciplined correction of political-economic claims so they remain subordinate to evidence, terminology, and applicable law.
+The sequence is therefore:
 
-The governing sequence remains:
+`EARLY SELF-RECORD → LATER PUBLIC RECORD → PRESIDENTIAL RECORD → POSTAL/COURIER RECORD (if any) → LAW (if applicable) → NATIONAL VALUE`
 
-`EARLY SELF-RECORD → contemporaneous personal document`
-
-`PRESIDENTIAL RECORD → official record governed by federal law`
-
-`POSTAL / COURIER RECORD → transmission evidence when independently documented`
-
-`NATIONAL VALUE → rule-of-law or accountable-record principle when supported by law or civic source`
-
-Respect the document, identify provenance, identify the law, distinguish personal from official, and do not make one category prove another.
+Each node must retain its own provenance.
 
 ## Interpretive Rule
 
-Metaphorical references—vampires, hidden criminality, dram partners, eye-droppers, accomplices, secret ratios, “wholesome,” “great,” “wise,” and similar language—remain metaphorical or interrogative unless reliable evidence establishes a factual proposition. The purpose of SAKE is not to eliminate interpretation, but to keep interpretation visibly separate from the documentary record that supports it.
+Metaphorical references—vampires, hidden criminality, dram partners, eye-droppers, accomplices, secret ratios, “wholesome,” “great,” or “wise”—remain metaphorical or interrogative unless reliable evidence establishes a corresponding fact. The purpose of SAKE is not to turn metaphor into accusation. It is to make the boundary between documentary fact, contextual inference, and interpretation visible.
 
 ## Sources
 
@@ -264,42 +272,42 @@ Metaphorical references—vampires, hidden criminality, dram partners, eye-dropp
 
 [2] Obama Foundation, official archive of the Obama Presidential Center Grand Opening, June 18, 2026.
 
-[3] Obama Foundation, “Opening the Obama Presidential Center,” confirming the June 18, 2026 Grand Opening date.
+[3] Obama Foundation, “Opening the Obama Presidential Center,” confirming June 18, 2026.
 
-[4] Obama Foundation, 2025 review and public activity record.
+[4] Obama Foundation, 2025 review/public activity record.
 
-[5] Barack Obama, 2018 Nelson Mandela Annual Lecture, documented remarks concerning democracy, capitalism, markets, and old-style command-and-control socialism.
+[5] Barack Obama, 2018 Nelson Mandela Annual Lecture, comments on democracy, capitalism, markets, and command-control socialism.
 
-[6] Reuters, reporting on Obama's public comments concerning pluralism and Democratic politics.
+[6] Reuters, reporting on Obama comments on pluralism and Democratic politics.
 
 [7] American Socialist, “Socialism and Democracy,” July 1955.
 
 [8] The New International, “What Can Its Past and Present Disclose About Its Future?” Fall 1955.
 
-[9] Associated Press, “Barack and Michelle Obama endorse Kamala Harris, giving her expected but crucial support,” July 26, 2024.
+[9] Associated Press, “Barack and Michelle Obama endorse Kamala Harris, giving her expected but crucial support,” July 26, 2024. The report distinguishes Obama's initial post-Biden statement from the later Harris endorsement.
 
 [10] Washington Post, “Barack and Michelle Obama endorse Kamala Harris for president,” July 26, 2024.
 
-[11] USPS, “Mail and farewell,” January 9, 2017.
+[11] USPS, “Mail and farewell,” Jan. 9, 2017.
 
 [12] USPS Postal Explorer, Domestic Mail Manual 602, “Addressing.”
 
-[13] USPS, “Change of Address - The Basics.”
+[13] USPS, “Change of Address — The Basics.”
 
-[14] National Archives and Records Administration, “Frequently Asked Questions Concerning Presidential Records and the Presidential Records Act.”
+[14] National Archives and Records Administration, Presidential Records Act FAQ.
 
 [15] Barack Obama Presidential Library, “How to Request Records.”
 
-[16] USPS, White House Post Office location/service record.
+[16] USPS White House Post Office location/service record.
 
-[17] Emory University, Rose Library, “Man of Letters,” documenting nine letters from Barack Obama to Alexandra McNear spanning 1982–1984 and beginning September 26, 1982.
+[17] Emory University, Rose Library, “Man of Letters,” documenting nine letters from 1982–1984 beginning Sept. 26, 1982 and describing their historical context.
 
-[18] National Archives and Records Administration, “Presidential Records Act (PRA) of 1978,” 44 U.S.C. §§2201–2209.
+[18] National Archives and Records Administration, Presidential Records Act, 44 U.S.C. §§2201–2209.
 
-[19] National Archives and Records Administration, “Frequently Asked Questions Concerning Presidential Records and the Presidential Records Act,” including transfer of Obama records to NARA in 2017.
+[19] National Archives and Records Administration, FAQ noting transfer of Obama presidential records to NARA in 2017.
 
-[20] National Archives and Records Administration, “Presidential Records (44 U.S.C. Chapter 22),” §§2201–2204.
+[20] National Archives and Records Administration, Presidential Records, 44 U.S.C. Chapter 22, §§2201–2204.
 
-[21] USPS, Publication 542, “Understanding the Private Express Statutes,” section 1-1.
+[21] USPS Publication 542, Private Express Statutes, section 1-1.
 
-[22] USPS, Publication 542, section 5-4.
+[22] USPS Publication 542, section 5-4.
