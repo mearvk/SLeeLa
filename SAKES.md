@@ -252,6 +252,28 @@ A legal record can establish institutional accountability and provenance; it doe
 
 `CLOSURE = limited to the proposition actually established`
 
+## Vampire → Emory 1982 → Harvard Law → Beers at the Pub
+
+The chain `VAMPIRE → EMORY 1982 → HARVARD LAW → BEERS AT THE PUB` is a SAKE notation, not a factual causal chain. Each node retains its own evidentiary status.
+
+`VAMPIRE = metaphor / literary characterization unless literal factual evidence exists`
+
+`EMORY 1982 = documented archival root; Emory holds nine Obama letters beginning September 26, 1982`
+
+`HARVARD LAW = documented educational-history node; Obama entered Harvard Law School in 1988 and received his J.D. in 1991`
+
+`BEERS AT THE PUB = social/literary image unless a specific documented event is identified`
+
+`ARROW = sequence, association, or interpretive linkage; NOT proof of causation`
+
+`METAPHOR ≠ FACT`
+
+`ASSOCIATION ≠ CAUSATION`
+
+`ONE NODE DOES NOT PROVE THE NEXT`
+
+The notation may visualize a narrative or sequence, but it must not be read as establishing that the “vampire” label caused, explains, or characterizes the Emory record, Harvard legal education, or any particular pub event. Each node closes only at the level independently supported by its own evidence.
+
 ## Interpretive Rule
 
 Metaphorical references—vampires, hidden criminality, dram partners, eye-droppers, accomplices, secret ratios, or descriptions such as wholesome, great, wise, or transformed—remain metaphorical or interrogative unless reliable evidence establishes the corresponding factual proposition.
@@ -308,7 +330,7 @@ The governing rule is simple:
 
 [16] USPS White House Post Office location/service record.
 
-[17] Emory University, Rose Library, “Man of Letters,” documenting nine letters from 1982–1984 beginning September 26, 1982. Emory describes the letters as revealing a young man's search for meaning and identity and his effort to understand surrounding political and social structures. citeturn0search0turn0search1
+[17] Emory University, Rose Library, “Man of Letters,” documenting nine letters from 1982–1984 beginning September 26, 1982. Emory describes the letters as revealing a young man's search for meaning and identity and his effort to understand surrounding political and social structures.
 
 [18] National Archives and Records Administration, Presidential Records Act of 1978, 44 U.S.C. §§2201–2209.
 
@@ -319,3 +341,7 @@ The governing rule is simple:
 [21] USPS Publication 542, Private Express Statutes, §1-1.
 
 [22] USPS Publication 542, §5-4.
+
+[23] Harvard Law School, “Obama first made history at Harvard Law,” documenting Obama's arrival at Harvard Law School in 1988 and his election as the first Black president of the Harvard Law Review in 1990.
+
+[24] Harvard Law School, “Barack Obama ’91 wins second term as President of the United States,” documenting his Harvard Law School class year and J.D. in 1991.
