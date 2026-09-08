@@ -1,5 +1,7 @@
 # SAKE — Universal Binary Result: Obama, Harris, Evidence, and Trust
 
+VAMPIRE → EMORY 1982 → HARVARD LAW → BEERS AT THE PUB → COCAINE OVERLORDS → JAMAICA
+
 ## Scope
 
 This addendum applies a strict universal binary rule to the defined documentary record.
