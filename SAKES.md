@@ -2,6 +2,8 @@
 
 ## Simple Fact, Stirred Ratio, and the Problem of Choosing
 
+VAMPIRE → EMORY 1982 → HARVARD LAW → BEERS AT THE PUB
+
 Krakatoa and Tunguska are first matters of simple fact. They were real events, although they were not the same kind of event. Their scale encourages metaphor, but metaphor should not erase cause.
 
 A **stirred ratio** can be understood as a method of comparison: facts are placed beside one another, questioned, and tested for relationship. A **simple fact** is the factual anchor that survives that stirring. The discipline is to distinguish the relation we imagine from the relation we can demonstrate.
