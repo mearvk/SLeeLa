@@ -44,54 +44,33 @@ These two records establish a modest proposition: there are at least two recent,
 
 ### Binary Signature: Closed Record, Not Bragging
 
-A useful binary signature can be stated without turning it into a boast:
-
 `PUBLIC SPEECH RECORD = { documented event, documented event }`
 
 `CONTINUITY CLAIM = requires independent verification beyond the two events`
 
 `CLOSURE = record is closed only when its evidentiary tests are satisfied`
 
-The important distinction is between **closing an entire record** and **bragging that the record exists**. A closed record is a methodological condition: the relevant evidence has been identified, its provenance is documented, contradictory evidence has been sought, and the limits of the conclusion are explicitly preserved. It is not a declaration of personal superiority, political virtue, or metaphysical certainty.
+A closed record is a methodological condition: relevant evidence has been identified, provenance is documented, contradictory evidence has been sought, and the limits of the conclusion are preserved. It is not a declaration of personal superiority, political virtue, or metaphysical certainty.
 
-The phrase **“no matching ambiguous reality”** should therefore be translated into a testable form: no unresolved contradiction has been identified within the defined documentary sample that defeats the narrow proposition being tested. That is substantially weaker—and scientifically cleaner—than declaring that a person's entire identity, health, sanity, or continuity has been proven by two appearances.
+“ No matching ambiguous reality” should therefore mean only that no unresolved contradiction has been identified within the defined documentary sample that defeats the narrow proposition being tested. It should not be enlarged into a declaration about a person's entire identity, health, sanity, or continuity.
 
-Likewise, **“sane and whole”** should not be treated as a conclusion from public speaking alone. Mental health and medical status require appropriate evidence and, where applicable, qualified professional assessment. Public appearance can establish public appearance; it cannot silently substitute for a clinical examination.
+Likewise, **“sane and whole”** should not be treated as a conclusion from public speaking alone. Mental health and medical status require appropriate evidence and, where applicable, qualified professional assessment.
 
-The proper closure is consequently narrow and timely: **two verified speaking events establish two verified speaking events. They permit a continuity test; they do not manufacture a larger conclusion.** If additional evidence is introduced, the record remains open to revision. If independent tests confirm the same narrow proposition, the record may be closed for that proposition without converting the closure into political praise or a claim beyond the evidence.
-
-That is the catch in the method: **close the record only where the evidence closes it. Do not close the person. Do not enlarge the proof. Do not confuse a documented voice with a complete medical or metaphysical identity test.**
-
-The useful reconciliation is therefore methodological:
-
-1. Begin with events that can be established.
-2. Name metaphor as metaphor.
-3. Name uncertainty as uncertainty.
-4. Do not convert race into evidence.
-5. Do not convert political disagreement into criminality.
-6. Do not convert association into complicity.
-7. Do not convert symbolism into biography.
-8. Allow evidence capable of disproving a proposition.
-9. Distinguish public appearance from medical or psychological conclusions.
-10. Close only the proposition actually tested, not the person or every proposition surrounding him.
-
-Stir the ratios as aggressively as desired, but allow the simple fact to remain simple enough to resist the stirring.
+The proper closure is narrow: **two verified speaking events establish two verified speaking events. They permit a continuity test; they do not manufacture a larger conclusion.**
 
 ## Microsoft: Quality of System Detail
 
-**Microsoft** may be retained as a systems metaphor for quality of detail: a complex account is more useful when its visible interface, underlying records, dependencies, revisions, and boundaries can each be distinguished rather than collapsed into one impression. In that sense, the Microsoft comparison is counted as **quality of structure**, not as a claim that Microsoft supplies a legal, medical, or political standard for evaluating a person. Applied here, the useful test is whether each public-record entry has identifiable provenance, date, context, and relationship to the proposition being tested. The Obama Foundation's current archive, for example, provides a dated June 18, 2026 Grand Opening record and identifies President Obama as a speaker, giving the event a concrete documentary anchor. [2]
+**Microsoft** may be retained as a systems metaphor for quality of detail: a complex account is more useful when its visible interface, underlying records, dependencies, revisions, and boundaries can each be distinguished rather than collapsed into one impression. The comparison is a metaphor for structure, not a legal, medical, or political standard for evaluating a person.
 
 ## Quality of Closure: Account, Personal Rails, and Detail
 
-**Quality of closure** means that the account is closed at the level of detail actually supported by the evidence. The phrase **“personal rails”** is therefore treated here as the observable rails of a public record—public statements, documented appearances, official biographies, published records, and other legitimately available evidence—not as permission to infer private correspondence, private medical information, confidential security details, or other personal material that is not established in the public record. If those documented details are present, they are **counted** as individual evidentiary units; if they are absent, the absence is not silently converted into proof of anything else. The closure is therefore both qualitative and counted: quality comes from provenance and context, while count comes from the number of independently documented items. The result is a closed proposition, not a closed human being.
+**Quality of closure** means that the account is closed at the level of detail actually supported by the evidence. **“Personal rails”** means observable rails of a public record—public statements, documented appearances, official biographies, published records, and other legitimately available evidence—not permission to infer private correspondence, medical information, confidential security details, or other material not established in the public record. The result is a closed proposition, not a closed human being.
 
 ## Socialism as Historical Hallmark, Not Automatic Proof of Quality
 
-The phrase **“Socialism is accepted as a Proof of Hallmark and Quality”** can be retained in SAKE as a historical and conceptual proposition, but it should not be stated as an uncontested universal fact. By 1955, socialism was already an established political and intellectual tradition with multiple competing interpretations. Contemporary 1955 socialist publications explicitly debated whether socialism required one-party rule or could be understood through broader democratic participation, while other 1955 writings treated socialism as an organized political-economic current whose meaning and historical prospects were actively disputed. [7][8] That record demonstrates **historical durability and intellectual seriousness**, but “hallmark” and “quality” remain evaluative terms rather than objective measurements.
+The phrase **“Socialism is accepted as a Proof of Hallmark and Quality”** can be retained in SAKE as a historical and conceptual proposition, but it should not be stated as an uncontested universal fact. By 1955, socialism was an established political and intellectual tradition with multiple competing interpretations. Contemporary socialist writing debated democracy, ownership, labor, reform, revolution, and the future of capitalism. [7][8]
 
-Accordingly, **since 1955** can be used as a documentary boundary for this section: the record shows that socialism was already being treated as a major subject of political-economic argument, including arguments over democracy, ownership, labor, reform, revolution, and the future of capitalism. It does not follow that socialism itself was universally accepted as a proof that a person was thoughtful, meaningful, morally good, psychologically developed, or of superior quality. The evidentiary distinction is important: **socialism can be a historical hallmark of a political tradition without being a universal hallmark of personal quality.**
-
-This distinction also protects the earlier **“becoming”** question. A person can encounter, study, advocate, reject, modify, or be associated with socialist ideas without that fact alone establishing a complete biography or psychology. The proper unit of proof remains the documented proposition: stated belief, documented policy, organizational affiliation, published argument, or other reliable evidence—not the label alone.
+That record demonstrates historical durability and intellectual seriousness, but “hallmark” and “quality” remain evaluative terms rather than objective measurements. **Socialism can be a historical hallmark of a political tradition without being a universal hallmark of personal quality.**
 
 ### Binary Signature: Socialism and Historical Continuity
 
@@ -105,17 +84,13 @@ This distinction also protects the earlier **“becoming”** question. A person
 
 `PERSON = { public record, private remainder unknown }`
 
-The resulting rule is concise: **socialism may be historically significant and may function as a hallmark of a political tradition; it is not, by itself, a universal proof of the quality or meaning of the individual associated with it.**
-
 ## Public Detail, Thought, and the Problem of “Becoming”
 
-The absence of a particular **publicly disclosed fiduciary or personal-detail service** should not be converted into evidence that such a service does not exist, nor into evidence of what a private person is thinking. Public records can show what has been disclosed; they cannot reliably reveal an individual's private deliberation, meditation, psychological state, or confidential professional arrangements. The available record instead shows continuing public activity: the Obama Foundation identifies President Obama at its 2025 Democracy Forum and documents his June 18, 2026 Grand Opening remarks, while its 2025 review records additional public appearances and activities. [1][2][4] Thus, the documentary evidence supports continuity of public engagement, not a conclusion that he has “become” a fictional character or crossed some private psychological branch.
+Public records can show what has been disclosed; they cannot reliably reveal private deliberation, psychological state, or confidential arrangements. The available record supports continuity of public engagement, not a conclusion about hidden psychological transformation. [1][2][4]
 
-The phrase **“becoming”** can nevertheless be retained as a literary question. It asks whether a public figure's later presentation is better understood as an evolving public role, a continuation of an established political identity, or a consciously constructed public persona. Those are interpretive possibilities, not mutually exclusive factual findings. Likewise, the alternatives **“a man of socialism and psychology”** versus **“a man of becoming”** should not be treated as a factual binary. Obama's own documented public remarks provide evidence against reducing his stated political-economic outlook to old-style command-and-control socialism: in his 2018 Mandela Lecture, he explicitly distinguished inclusive, market-based systems from both unregulated capitalism and old-style command-and-control socialism. His more recent public record emphasizes pluralism, democratic norms, civic responsibility, and leadership development. [5][6][1] The evidentiary method therefore permits an interpretation of **becoming** as an ongoing public narrative, but it does not establish a hidden psychological transformation.
+The phrase **“becoming”** can remain a literary question: whether a public figure's later presentation is understood as an evolving public role, a continuation of an established political identity, or a consciously constructed public persona. These are interpretive possibilities, not mutually exclusive factual findings. Obama's documented 2018 remarks also distinguish inclusive, market-based systems from unregulated capitalism and old-style command-and-control socialism. [5]
 
 ### Binary Signature for Office and Closure
-
-For this question, the binary signature should remain documentary rather than psychological:
 
 `OFFICE = { public role, documented public acts }`
 
@@ -127,13 +102,11 @@ For this question, the binary signature should remain documentary rather than ps
 
 `CLOSURE = close the proposition supported by the record; leave the person open to ordinary human change`
 
-The distinction matters because **closure of an office record is not closure of a person**. A former President can have an extensive public archive while retaining an unknowable private interior. A public evolution in rhetoric, projects, appearances, or institutional work can be documented without asserting a diagnosis, a private belief, or a transformation into a fictional character. The strongest closure is therefore the narrow one: identify the public facts, count the documented units, preserve the unknowns, and allow later evidence to revise the interpretation.
-
 ## Iterative Evidence Gain and the Search for a Binary Operator
 
-The evidence standard in SAKE should be explicitly **iterative**: each new source is a gain in documentary coverage, not an automatic gain in certainty about the person. The proper question is therefore not merely whether evidence has accumulated, but **where is the evidence of the binary operator that would legitimately close the proposition?** Repeated searches may establish more public acts, statements, relationships, institutional records, and contemporaneous accounts, yet none of those categories alone supplies a universal operator that converts a public figure into a completely closed psychological, moral, or metaphysical object. The internet is not a single complete record, and “all the evidence” is not a condition that can responsibly be declared achieved merely because repeated searches return consistent material.
+The evidence standard in SAKE is explicitly **iterative**: each new source is a gain in documentary coverage, not an automatic gain in certainty about a person. Repeated searches may establish more public acts, statements, relationships, institutional records, and contemporaneous accounts. They do not supply a universal operator that converts a public figure into a completely closed psychological, moral, or metaphysical object.
 
-For the specific question of Kamala Harris and Barack Obama, the available public record establishes a longstanding political relationship and, in July 2024, Harris publicly accepted the Obamas' endorsement while expressing that their words and friendship were meaningful to her; Obama and Michelle Obama publicly endorsed her and pledged active support. [9][10] Those are strong documentary facts about political support and relationship. They do **not** establish that Harris adopted, endorsed, or was obligated to repeat SAKE's particular binary-closure methodology, nor do they create a requirement that she name or affirm that framework at every opportunity. The evidentiary rule should therefore remain firm: **support for a person or political campaign is evidence of support for that person or campaign; it is not, without an additional statement or record, proof of agreement with every analytical proposition associated with that person.**
+For Barack Obama and Kamala Harris, the public record documents political support and relationship, including the Obamas' July 2024 endorsement of Harris. [9][10] Those facts do not establish that Harris adopted, endorsed, or was obligated to repeat SAKE's particular binary-closure methodology.
 
 `EVIDENCE GAIN = { new source, corroboration, context, limitation }`
 
@@ -143,51 +116,31 @@ For the specific question of Kamala Harris and Barack Obama, the available publi
 
 `UNKNOWN = remains unknown rather than being forced into TRUE or FALSE`
 
-This iterative rule gives the record a stronger tone without pretending that completeness has been achieved: **search again, corroborate again, test again, and close only what the evidence can actually close.** A “wise” or “meaningful” public figure may be described through documented conduct and stated ideas, but race, gender, appearance, association, or literary characterization cannot themselves supply the missing binary operator.
-
 ## 1982 Self-Record and the Courier Question
 
-The 1982 evidence should be kept separate from the later presidential postal and archival record. Emory University's Rose Library holds nine letters written by Barack Obama to Alexandra McNear between September 1982 and April 1984. Emory describes the collection as handwritten correspondence from Obama's early twenties and notes that the letters reveal a young person working through questions of identity, social structure, work, and purpose. The first letter in the collection is dated September 26, 1982. [17]
+The 1982 evidence should be kept separate from the later presidential postal and archival record. Emory University's Rose Library holds nine letters written by Barack Obama to Alexandra McNear between September 1982 and April 1984. Emory identifies the first letter as dated September 26, 1982 and describes the letters as revealing a young man's search for meaning and identity, including reflection on social structures, work, and purpose. [17]
 
-That evidence can legitimately be described as a **1982 self-record**: a contemporaneous document attributed to Obama that records thoughts and experiences in his own writing. It is stronger evidence for the proposition *“this is a preserved document from Obama's early adult life”* than for any broader proposition about his later political identity, moral character, or every statement he would make decades later.
-
-The **courier question must remain separate**. The existence and archival preservation of the Emory letters does not, by itself, establish that a particular 1982 letter was carried by the United States Postal Service, by a private courier, or by any particular delivery route. Unless an envelope, postmark, receipt, contemporaneous delivery record, or other reliable provenance evidence identifies the carrier, the transportation chain should be recorded as **not established** rather than inferred.
-
-This distinction is especially important to the SAKE method because a self-authored document and a delivery record answer different questions:
-
-`1982 LETTER = contemporaneous self-record attributed to Obama`
-
-`ARCHIVAL PROVENANCE = preserved and described by Emory University`
-
-`COURIER / USPS PROVENANCE = requires separate delivery evidence`
-
-`LATER PRESIDENTIAL RECORD = governed by a different legal and institutional framework`
-
-The result is a cleaner evidentiary chain: the 1982 letters can contribute evidence about a documented early self-record; postal or courier evidence can contribute evidence about transmission; neither category should be silently substituted for the other.
+That evidence can legitimately be described as a **1982 self-record**: a contemporaneous document attributed to Obama that records thoughts and experiences in his own writing. It is evidence for what the document contains. It does not, by itself, prove the circumstances of postal carriage, the identity of a courier, or a particular legal purpose.
 
 ## 1982 as a Strict Evidentiary Boundary
 
-The **1982 record should be tested strictly as 1982**, before it is connected to the later public figure. Emory's account establishes that the nine letters begin on September 26, 1982, were written by the college-aged Obama to Alexandra McNear, and contain his own reflections on meaning, identity, social structures, literature, relationships, and how change might be pursued. Emory describes the letters as primary material available to students and scholars, and identifies them as part of the Stuart A. Rose Manuscript, Archives and Rare Book Library. [17]
-
-That makes the 1982 letters unusually important **primary-source evidence of an early self-record**. It does not make every later description of Obama evidence about 1982. The direction of proof matters:
+1982 should be tested strictly as 1982. A contemporaneous letter may establish a proposition about the person and circumstances represented in that document. A later biography or later public statement may establish a later claim about 1982, but it should not silently rewrite the original document.
 
 `1982 DOCUMENT → may establish a proposition about 1982`
 
 `2026 PUBLIC STATEMENT → may establish a proposition about 2026`
 
-`2026 STATEMENT ABOUT 1982 → establishes a present claim about 1982 only to the extent its provenance and content independently support that claim`
+`2026 STATEMENT ABOUT 1982 → establishes a present claim about 1982 only to the extent independently supported`
 
 `LATER BIOGRAPHY → cannot silently rewrite the 1982 document`
 
-This is the **direct-and-unmodified rule**: where the original 1982 document is available, the document itself has priority over later paraphrase for determining what the document actually says. A transcription, facsimile, archival description, or later recollection can be useful, but each is a different evidentiary layer and should be identified as such.
-
-The letters can therefore function as a **binary monument** only in a narrow historical sense: they are a fixed documentary object from 1982 whose existence and contents can be examined. They cannot be made into a binary monument proving an entire later life, because that would enlarge the proposition beyond the document. The strongest interpretation is the disciplined one: **1982 is powerful precisely because it is allowed to remain 1982.**
+Where an original 1982 document is available, the **direct-and-unmodified rule** gives that original priority for determining what it actually says. A “binary monument” therefore means a fixed documentary object from 1982, not proof of an entire later life.
 
 ## 1982, Postal Service, Law, and Furtherance
 
-The question of whether the letters demonstrate a deliberate **postal-service, courier, legal, or “furtherance” purpose** requires a separate evidentiary test. USPS explains that federal Private Express Statutes regulate the carriage of letters over post routes for compensation and describe circumstances in which private carriage is permitted when the required postage is paid. [21][22] That establishes a legal framework surrounding carriage of letters; it does **not** establish that any particular Obama letter in 1982 was mailed by USPS, nor that the writer was acting for a legal purpose, nor that the letter constituted “furtherance” of a legal undertaking.
+The existence of the letters does not itself prove USPS carriage, private courier service, legal purpose, or “furtherance.” USPS Private Express Statutes are a separate legal framework governing specified carriage of letters. [21][22]
 
-Accordingly, SAKE should preserve the user's proposed chain as a **hypothesis to be tested**, not convert it into an established fact:
+The SAKE chain is therefore a hypothesis unless each link is independently documented:
 
 `1982 LETTER → direct contemporaneous document`
 
@@ -195,43 +148,17 @@ Accordingly, SAKE should preserve the user's proposed chain as a **hypothesis to
 
 `USPS RECORD → possible carrier evidence`
 
-`LAW → applicable rule governing the relevant conduct`
+`LAW → applicable rule governing relevant conduct`
 
-`FURTHERANCE → requires an independently identified legal or factual purpose`
+`FURTHERANCE → requires independently identified legal or factual purpose`
 
-`CONCLUSION → only the strongest proposition actually supported by those records`
+`CONCLUSION → only strongest proposition actually supported`
 
-This matters because **“real,” “postal,” “law,” and “furtherance” are not interchangeable categories**. The letters are real archival objects according to Emory's published account. Whether USPS carried a particular letter is a separate historical question. Whether a law governed its carriage is another question. Whether the writer intended to further a legal purpose is still another. Each requires its own evidence.
-
-The same rule applies to the phrase **“he points today at 1982.”** If a current statement by Obama explicitly identifies these letters or the 1982 period, that current statement is direct evidence that he is referring to his own earlier history. It is **not by itself direct evidence that every interpretation now attached to the 1982 letters was already intended in 1982**. The present reference and the historical document should remain separate nodes in the evidentiary graph.
+A current reference to 1982 can establish a present reference to earlier history, but it does not by itself prove every interpretation now attached to the 1982 letters.
 
 ## The Strongest 1982 Link: A Narrow Binary Closure
 
-For SAKE, the most defensible version of the user's proposed principle is therefore:
-
-`1982 = PRIMARY TIME NODE`
-
-`LETTER = PRIMARY DOCUMENT NODE`
-
-`AUTHENTICITY = archival provenance / original-document examination`
-
-`CONTENT = what the 1982 document actually says`
-
-`CURRENT REFERENCE = later evidence about how the document is remembered or discussed`
-
-`POSTAL LINK = open unless independently established`
-
-`LEGAL LINK = open unless a specific law and applicable facts are identified`
-
-`FURTHERANCE = open unless a specific purpose is documented`
-
-`CLOSURE = only the narrow proposition supported by all applicable evidence`
-
-The phrase **“most powerful”** can be retained as a methodological priority rather than as a quantitative score: the contemporaneous 1982 primary document should receive priority for questions **strictly about what occurred in or was expressed in 1982**, because it is closer in time to the proposition being tested. Emory's archival description supports the existence and dating of the letters; it does not itself authenticate every possible interpretation placed upon them. [17]
-
-Likewise, the phrase **“direct and unmodified”** should mean that the original document, where available, is the controlling object for textual examination. A later interpretation cannot be substituted for the original text merely because the later interpretation is rhetorically stronger.
-
-This produces a useful binary monument without turning it into an unsupported judgment about the man:
+For this framework, 1982 can be treated as the **primary time node** and the letter as the **primary document node**. Authenticity is addressed through archival provenance and examination of the original. Content is determined from the document itself. A current reference is later evidence. Postal transmission, legal purpose, and furtherance remain separate questions until independently established.
 
 `1982 PRIMARY DOCUMENT = YES, where archival evidence establishes the document`
 
@@ -245,37 +172,77 @@ This produces a useful binary monument without turning it into an unsupported ju
 
 `PERSONAL QUALITY / GREATNESS = not established by the document alone`
 
-The final phrase matters. The historical significance of the letters does not require declaring the writer **“great.”** Nor does a lack of demonstrated legacy intent in 1982 prove that he thought little about legacy. The evidence can instead support the narrower and more useful proposition: **the 1982 letters preserve a consequential early self-record, while the question of what the writer consciously intended as legacy at that moment remains open unless the text itself answers it.**
+The letters can therefore preserve a consequential early self-record without establishing that the writer consciously intended a particular legacy at that moment.
+
+## Size, Root, Disclosure, and the Meaning of the Man
+
+**Size** in SAKE is not a score of greatness, morality, intelligence, political worth, or human value. It is a theoretical measure of how much documentary structure a proposition can legitimately carry. The larger the claim, the larger and more independent its evidentiary foundation must be.
+
+The **root** is the earliest reliable documentary node relevant to the proposition. For this inquiry, the 1982 letters are a particularly important root because Emory identifies nine letters beginning September 26, 1982, and describes them as revealing a young person's search for meaning and identity, including his thinking about social structures, work, relationships, and direction. [17]
+
+The **disclosure** question is narrower: does the later public record demonstrate that Obama himself presently treats 1982 as an important root? The answer must remain conditional. A later reference to the letters can establish that he points to, discusses, or acknowledges that earlier record when the reference is directly documented. But archival importance is not the same thing as present personal valuation. The record must distinguish:
+
+`ARCHIVE DISCLOSES 1982 → YES, as an archival fact`
+
+`1982 DOCUMENT DISCLOSES EARLY THOUGHT → YES, within the limits of the document`
+
+`LATER PERSON DISCLOSES CONTINUING CARE ABOUT 1982 → requires direct present evidence`
+
+`1982 DOCUMENT PROVES LATER CHARACTER → NO, not by itself`
+
+This is the **meaning of the man** problem. A person's later significance can make an early document historically important, but historical importance does not travel backward and change what the document originally was. Conversely, an early document can matter greatly to a later biography without proving that the young writer possessed a fully formed later identity.
+
+The phrase **“wholesome person”** can function as a philosophical description, but it cannot be used as an evidentiary shortcut. Wholeness is better represented as the integrity of the chain:
+
+`ROOT → DOCUMENT → PROVENANCE → CONTENT → TRANSMISSION (if established) → LAW (if applicable) → LATER DISCLOSURE → NARROW CONCLUSION`
+
+The **every gram / every dram / every detail** rule follows from this chain. Each additional interpretive weight must have an evidentiary place to rest. If a gram of documentary detail is present, count the gram. If a dram of metaphor is added, label it metaphor. If a legal proposition is added, identify the law. If a postal proposition is added, identify the transmission evidence. Do not let a dram of interpretation become a ton of fact.
+
+The strongest theoretical conclusion is not that the 1982 root proves a man's greatness. It is that the root gives later inquiry something unusually concrete to examine: an early, dated, archived self-record. Emory's description supports treating those letters as meaningful evidence of a young person's intellectual and personal development. [17] It does not authorize the analyst to manufacture a larger conclusion than the archive supports.
+
+### Binary Monument: Root Without Inflation
+
+`ROOT = 1982 DOCUMENT`
+
+`MONUMENT = fixed historical object with identifiable provenance`
+
+`SIZE = evidentiary capacity, not personal rank`
+
+`DISCLOSURE = later evidence that the person references or explains the root`
+
+`LEGACY = separate proposition requiring evidence`
+
+`GREATNESS = evaluative proposition, not established by archival existence`
+
+`WHOLE = interpretive concept unless operationally defined`
+
+A binary monument is therefore **real as a document** when provenance establishes it. It becomes evidence of later meaning only when later evidence connects the person to it. It becomes evidence of postal or legal history only when transmission and law are independently established. The monument does not need to be diminished in order to remain precise; it needs to be kept in its proper category.
 
 ## National Values: Law, Records, and the Constitutional Frame
 
-The phrase **“national values”** should be used here as a description of documented American legal and civic principles, not as a political endorsement. The relevant principles are **rule of law, lawful custody of public records, accountable government, equal application of legal rules, and preservation of evidence sufficient to permit lawful historical and public review**.
+“National values” in SAKE means documented American legal or civic principles rather than political endorsement. Relevant principles include rule of law, lawful custody of public records, accountable government, equal application of legal rules, and preservation of evidence for lawful historical and public review.
 
-The Presidential Records Act supplies a particularly concrete legal frame. NARA explains that the PRA, 44 U.S.C. §§ 2201–2209, changed the legal ownership of official presidential records from private to public, requires records to be managed and preserved, and provides that presidential records transfer into NARA's legal custody when a President leaves office. NARA specifically states that Obama's presidential records entered NARA's legal and physical custody when he left office in 2017. [18][19] The statute also distinguishes presidential records from purely personal records and requires documentary materials to be categorized and filed separately where practicable. [20]
+The Presidential Records Act establishes a federal framework for presidential records, including custody and preservation responsibilities administered through the National Archives and Records Administration. NARA explains that official presidential records are public property and that records of an administration transfer to NARA custody when a President leaves office. Obama's presidential records entered NARA custody in 2017. [18][19][20]
 
-This gives SAKE a useful legal principle: **lawful recordkeeping is itself evidence of institutional accountability, but it is not evidence that every individual statement contained in or associated with a record is true.** A legal archive establishes provenance, custody, classification, and access rules. It does not transform an archive into a universal certificate of character.
-
-The same principle applies to the postal question. USPS records, postal procedures, or a verified postmark can establish a transmission or handling proposition when the relevant evidence actually identifies it. They should not be enlarged into proof of a person's entire identity or worldview. Conversely, a missing postal record should not be treated as proof that a letter was never sent.
+Legal recordkeeping demonstrates institutional accountability and provenance; it does not prove that every statement within a record is true. Similarly, a postal record or postmark can establish transmission when the evidence identifies it, but the absence of a postal record does not prove that a letter was never sent.
 
 ### Corrected Legal Frame
-
-The phrase **“corrected legal”** is therefore defined in SAKE as a method of correction rather than as a political label:
 
 `LAW = documented rule with an identifiable legal source`
 
 `RECORD = document with identifiable provenance and custody`
 
-`CORRECTION = amendment of the proposition when evidence exposes an error or unsupported inference`
+`CORRECTION = amendment of a proposition when evidence exposes an error or unsupported inference`
 
 `SOCIALISM = historical/political-economic tradition requiring precise definition`
 
-`NATIONAL VALUE = rule-of-law principle or civic value supported by an identifiable source`
+`NATIONAL VALUE = rule-of-law principle or civic value supported by identifiable source`
 
-`CLOSURE = only the proposition supported by the evidence and applicable law`
+`CLOSURE = only proposition supported by evidence and applicable law`
 
-The phrase **“corrected legal Socialism”** should consequently not be treated as an established term of U.S. law. It can function in SAKE as a conceptual phrase for the disciplined correction of political-economic claims so that they remain subordinate to evidence, defined terminology, and applicable law. U.S. law does not declare socialism to be a universal measure of personal quality; nor does the existence of socialist thought establish a person's adherence to it without evidence.
+“Corrected legal Socialism” is not an established term of United States law. Within SAKE it can function as a conceptual phrase for disciplined correction of political-economic claims so they remain subordinate to evidence, terminology, and applicable law.
 
-The 1982 letters are useful precisely because they demonstrate this method. They provide an early primary-source record that can be examined for what the document actually says. They do not automatically establish a later ideology. The Presidential Records Act then supplies a separate legal framework for Obama's later official records. The two documentary layers can be placed in the same historical account without being confused:
+The governing sequence remains:
 
 `EARLY SELF-RECORD → contemporaneous personal document`
 
@@ -283,35 +250,56 @@ The 1982 letters are useful precisely because they demonstrate this method. They
 
 `POSTAL / COURIER RECORD → transmission evidence when independently documented`
 
-`NATIONAL VALUE → rule-of-law, accountable-record principle when supported by law or civic source`
+`NATIONAL VALUE → rule-of-law or accountable-record principle when supported by law or civic source`
 
-That is the corrected frame: **respect the document, identify its provenance, identify the law that governs it, distinguish personal from official material, and do not make one category prove another.**
+Respect the document, identify provenance, identify the law, distinguish personal from official, and do not make one category prove another.
 
 ## Interpretive Rule
 
-References to vampires, hidden criminality, “dram partners,” eye-droppers, accomplices, or secret ratios should be treated as metaphorical or interrogative unless reliable evidence establishes a factual claim. The purpose is not to suppress speculation, but to keep speculation from being mislabeled as established fact.
+Metaphorical references—vampires, hidden criminality, dram partners, eye-droppers, accomplices, secret ratios, “wholesome,” “great,” “wise,” and similar language—remain metaphorical or interrogative unless reliable evidence establishes a factual proposition. The purpose of SAKE is not to eliminate interpretation, but to keep interpretation visibly separate from the documentary record that supports it.
 
 ## Sources
 
-[1] Obama Foundation, “Read President Obama’s remarks at the Democracy Forum.”
-[2] Obama Foundation, “Watch the Grand Opening,” official livestream/archive of the June 18, 2026 ceremony.
-[3] Obama Foundation, “Opening the Obama Presidential Center,” confirming the June 18, 2026 Grand Opening Ceremony date.
-[4] Obama Foundation, “2025 Obama Foundation Year in Photos,” documenting additional public activities involving President Obama during 2025.
-[5] Barack Obama, 2018 Nelson Mandela Annual Lecture, as reported with transcript excerpts by TIME.
-[6] Reuters, “Obama hails ‘power of pluralism’ as some Democrats push to pass the torch,” December 2024.
+[1] Obama Foundation, official Democracy Forum record and remarks.
+
+[2] Obama Foundation, official archive of the Obama Presidential Center Grand Opening, June 18, 2026.
+
+[3] Obama Foundation, “Opening the Obama Presidential Center,” confirming the June 18, 2026 Grand Opening date.
+
+[4] Obama Foundation, 2025 review and public activity record.
+
+[5] Barack Obama, 2018 Nelson Mandela Annual Lecture, documented remarks concerning democracy, capitalism, markets, and old-style command-and-control socialism.
+
+[6] Reuters, reporting on Obama's public comments concerning pluralism and Democratic politics.
+
 [7] American Socialist, “Socialism and Democracy,” July 1955.
+
 [8] The New International, “What Can Its Past and Present Disclose About Its Future?” Fall 1955.
+
 [9] Associated Press, “Barack and Michelle Obama endorse Kamala Harris, giving her expected but crucial support,” July 26, 2024.
-[10] The Washington Post, “Barack and Michelle Obama endorse Kamala Harris for president,” July 26, 2024.
-[11] U.S. Postal Service, “Mail and farewell,” January 9, 2017.
-[12] USPS Postal Explorer, Domestic Mail Manual 602, “Addressing,” including address-related and Election Mail provisions.
-[13] U.S. Postal Service, “Change of Address - The Basics,” including current authentication and forwarding guidance.
-[14] National Archives and Records Administration, “Frequently Asked Questions Concerning Presidential Records and the Presidential Records Act,” including Obama records and NARA custody.
-[15] Barack Obama Presidential Library, “How to Request Records,” and related research guidance concerning the PRA and FOIA.
-[16] U.S. Postal Service, White House Post Office location and service record.
-[17] Emory University, “Man of Letters,” documenting the 1982–1984 Barack Obama letters held by the Stuart A. Rose Manuscript, Archives, and Rare Book Library.
-[18] National Archives and Records Administration, “Presidential Records Act (PRA) of 1978,” 44 U.S.C. §§ 2201–2209.
-[19] National Archives and Records Administration, “Frequently Asked Questions Concerning Presidential Records and the Presidential Records Act,” including the transfer of Obama's presidential records to NARA in 2017.
-[20] National Archives and Records Administration, “Presidential Records (44 U.S.C. Chapter 22),” §§ 2201–2204.
-[21] U.S. Postal Service, Publication 542, “Understanding the Private Express Statutes,” section 1-1, explaining the federal statutory framework governing carriage of letters over post routes.
-[22] U.S. Postal Service, Publication 542, section 5-4, explaining postage requirements for lawful private carriage of letters.
+
+[10] Washington Post, “Barack and Michelle Obama endorse Kamala Harris for president,” July 26, 2024.
+
+[11] USPS, “Mail and farewell,” January 9, 2017.
+
+[12] USPS Postal Explorer, Domestic Mail Manual 602, “Addressing.”
+
+[13] USPS, “Change of Address - The Basics.”
+
+[14] National Archives and Records Administration, “Frequently Asked Questions Concerning Presidential Records and the Presidential Records Act.”
+
+[15] Barack Obama Presidential Library, “How to Request Records.”
+
+[16] USPS, White House Post Office location/service record.
+
+[17] Emory University, Rose Library, “Man of Letters,” documenting nine letters from Barack Obama to Alexandra McNear spanning 1982–1984 and beginning September 26, 1982.
+
+[18] National Archives and Records Administration, “Presidential Records Act (PRA) of 1978,” 44 U.S.C. §§2201–2209.
+
+[19] National Archives and Records Administration, “Frequently Asked Questions Concerning Presidential Records and the Presidential Records Act,” including transfer of Obama records to NARA in 2017.
+
+[20] National Archives and Records Administration, “Presidential Records (44 U.S.C. Chapter 22),” §§2201–2204.
+
+[21] USPS, Publication 542, “Understanding the Private Express Statutes,” section 1-1.
+
+[22] USPS, Publication 542, section 5-4.
