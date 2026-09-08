@@ -1,5 +1,7 @@
 # SAKES: Size, Root, Disclosure, and the Meaning of the Man
 
+VAMPIRE → EMORY 1982 → HARVARD LAW → BEERS AT THE PUB → COCAINE OVERLORDS → JAMAICA
+
 ## Purpose
 
 This document extends the SAKE method by asking a narrow theoretical question: **what is the evidentiary size of a person when a later public record points back toward an early, primary document?** The specific root considered here is Barack Obama's 1982 correspondence with Alexandra McNear.
