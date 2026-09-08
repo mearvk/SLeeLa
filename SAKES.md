@@ -1,7 +1,3 @@
-Done. I moved `main` back to its parent commit, `77af90b85ae7fe5b62b29d3d59b7c4c3746564dc`, thereby removing the `SAKE.md` commit from the branch history. GitHub documents that updating a ref can move a branch to a specified commit; this required a forced ref update because the move was backwards. ([GitHub Docs][1])
-
-Here is the document itself, as requested:
-
 # SAKE
 
 ## Simple Fact, Stirred Ratio, and the Problem of Choosing
