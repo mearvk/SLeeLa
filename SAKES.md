@@ -165,6 +165,38 @@ This distinction is especially important to the SAKE method because a self-autho
 
 The result is a cleaner evidentiary chain: the 1982 letters can contribute evidence about a documented early self-record; postal or courier evidence can contribute evidence about transmission; neither category should be silently substituted for the other.
 
+## Strict 1982 Test: Do the Documents Support the Public Features Attributed to 1982?
+
+This section is intentionally **strictly about 1982**. It does not use Obama's later presidency, later speeches, later political endorsements, or later reputation as proof of what was true in 1982. Later material may be used only as a separately labeled comparison; it is not backdated into the 1982 evidence.
+
+The first distinction is between a **real contemporaneous document** and a document that is merely asserted to be from 1982. Emory University reports that its Rose Library acquired and preserves nine letters written by Barack Obama to Alexandra McNear, spanning 1982–1984, with the first letter dated September 26, 1982. Emory describes the originals as available to researchers in the Rose Library Reading Room. That gives the 1982 letters identifiable institutional provenance and makes them materially different from an unattributed image, transcription, quotation, or internet claim. [17]
+
+For the narrow question **“Do the 1982 documents support features attributed to Obama in 1982?”**, the answer is **yes, but only for features that the documents themselves actually record**. Emory's description says the letters show a college-aged Obama grappling with identity, social structure, purpose, relationships, writing, and how change might be pursued. The September 26, 1982 letter specifically discusses class lines, friends entering social roles, and Obama's feeling that he was “caught without a class, a structure, or a tradition to support” him. The collection therefore directly supports a limited description of his 1982 written concerns and self-presentation. [17]
+
+The word **public** must then be handled carefully. The letters were not originally public political speeches or official public statements; they were private correspondence later acquired by a research library and made available to scholars. Therefore they can support a **documented 1982 feature of the person**, but they should not automatically be labeled a **public feature in 1982**. If the proposition is specifically “what was publicly observable in 1982,” the letters are indirect evidence unless an independent 1982 public source says the same thing. [17]
+
+This yields a strict evidence table in SAKE terms:
+
+`AUTHENTICATED / INSTITUTIONALLY HELD 1982 LETTER = supports what the letter actually records`
+
+`PRIVATE LETTER = supports contemporaneous self-description, not necessarily public reputation`
+
+`1982 PUBLIC RECORD = requires an independent public 1982 source`
+
+`LATER BIOGRAPHY = cannot by itself prove a 1982 public feature`
+
+`UNAUTHENTICATED “1982” DOCUMENT = does not establish the claimed 1982 feature`
+
+`LATER STATEMENT ABOUT 1982 = evidence about later recollection, not automatically contemporaneous evidence`
+
+The same rule applies to **documents that are real or not real**. If a document can be authenticated or has reliable institutional provenance, it enters the evidentiary set at the level supported by its contents. If a document is only circulating as an image, quotation, transcription, or claim without provenance, SAKE should mark it **unverified** rather than use it as a foundation. A real document can still be misinterpreted; an unverified document can still contain a true-looking statement. Authenticity and interpretation are separate tests.
+
+The strict 1982 closure is therefore:
+
+**1982 DOCUMENTARY CLOSURE = The Emory-held letters establish a genuine, institutionally preserved contemporaneous self-record beginning September 26, 1982. They support limited claims about the subjects, language, concerns, and self-presentation contained in those letters. They do not, standing alone, establish every feature of Obama's public life in 1982, and they do not justify importing later public characteristics backward into 1982.** [17]
+
+This is the stronger “hold from 1982” rule: **hold the evidence in its own year first; identify what the document says; identify whether it was private or public; identify provenance; and only then compare it with later records.** The comparison may be historically interesting, but it must not be allowed to rewrite the original 1982 record.
+
 ## National Values: Law, Records, and the Constitutional Frame
 
 The phrase **“national values”** should be used here as a description of documented American legal and civic principles, not as a political endorsement. The relevant principles are **rule of law, lawful custody of public records, accountable government, equal application of legal rules, and preservation of evidence sufficient to permit lawful historical and public review**.
