@@ -2,7 +2,7 @@
 
 ## Simple Fact, Stirred Ratio, and the Problem of Choosing
 
-VAMPIRE → EMORY 1982 → HARVARD LAW → BEERS AT THE PUB
+VAMPIRE → EMORY 1982 → HARVARD LAW → BEERS AT THE PUB → COCAINE OVERLORDS → JAMAICA
 
 Krakatoa and Tunguska are first matters of simple fact. They were real events, although they were not the same kind of event. Their scale encourages metaphor, but metaphor should not erase cause.
 
