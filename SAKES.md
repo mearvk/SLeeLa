@@ -107,12 +107,6 @@ This distinction also protects the earlier **“becoming”** question. A person
 
 The resulting rule is concise: **socialism may be historically significant and may function as a hallmark of a political tradition; it is not, by itself, a universal proof of the quality or meaning of the individual associated with it.**
 
-## Harris, Obama, and the Limits of Required Affirmation
-
-The available public record establishes a documented political relationship between Kamala Harris and Barack Obama, including Harris's longstanding support for Obama's political career and Obama's later support and advice during Harris's 2024 presidential campaign. Reuters reported that Harris had supported Obama in 2008, that the two had known one another for roughly two decades, and that Obama provided campaign and strategic advice after Harris became the Democratic nominee. [9] Those facts establish political association and cooperation; they do **not** establish that Harris accepts the particular **“binary closure”** framework developed in SAKE, nor that she has publicly adopted its terminology or its conclusions about Obama's private identity, psychology, or personal detail.
-
-Accordingly, SAKE should not state that Harris **is required** to name, affirm, or publicly support the binary closure “at all and every point of opportunity.” No source reviewed establishes such a duty. A public official or political figure may express support for another person's documented public work without being obligated to endorse every interpretive framework applied to that person. The phrase **“any man stands with his sheets, needs, quiet as feminine”** may remain as literary language about privacy, vulnerability, quietness, or gendered symbolism, but it should not be converted into a factual requirement imposed on Harris or on any other person. The documentary rule remains: **association may establish association; it does not manufacture consent, obligation, private belief, or endorsement.** [3][9]
-
 ## Public Detail, Thought, and the Problem of “Becoming”
 
 The absence of a particular **publicly disclosed fiduciary or personal-detail service** should not be converted into evidence that such a service does not exist, nor into evidence of what a private person is thinking. Public records can show what has been disclosed; they cannot reliably reveal an individual's private deliberation, meditation, psychological state, or confidential professional arrangements. The available record instead shows continuing public activity: the Obama Foundation identifies President Obama at its 2025 Democracy Forum and documents his June 18, 2026 Grand Opening remarks, while its 2025 review records additional public appearances and activities. [1][2][4] Thus, the documentary evidence supports continuity of public engagement, not a conclusion that he has “become” a fictional character or crossed some private psychological branch.
@@ -135,6 +129,22 @@ For this question, the binary signature should remain documentary rather than ps
 
 The distinction matters because **closure of an office record is not closure of a person**. A former President can have an extensive public archive while retaining an unknowable private interior. A public evolution in rhetoric, projects, appearances, or institutional work can be documented without asserting a diagnosis, a private belief, or a transformation into a fictional character. The strongest closure is therefore the narrow one: identify the public facts, count the documented units, preserve the unknowns, and allow later evidence to revise the interpretation.
 
+## Iterative Evidence Gain and the Search for a Binary Operator
+
+The evidence standard in SAKE should be explicitly **iterative**: each new source is a gain in documentary coverage, not an automatic gain in certainty about the person. The proper question is therefore not merely whether evidence has accumulated, but **where is the evidence of the binary operator that would legitimately close the proposition?** Repeated searches may establish more public acts, statements, relationships, institutional records, and contemporaneous accounts, yet none of those categories alone supplies a universal operator that converts a public figure into a completely closed psychological, moral, or metaphysical object. The internet is not a single complete record, and “all the evidence” is not a condition that can responsibly be declared achieved merely because repeated searches return consistent material.
+
+For the specific question of Kamala Harris and Barack Obama, the available public record establishes a longstanding political relationship and, in July 2024, Harris publicly accepted the Obamas' endorsement while expressing that their words and friendship were meaningful to her; Obama and Michelle Obama publicly endorsed her and pledged active support. [9][10] Those are strong documentary facts about political support and relationship. They do **not** establish that Harris adopted, endorsed, or was obligated to repeat SAKE's particular binary-closure methodology, nor do they create a requirement that she name or affirm that framework at every opportunity. The evidentiary rule should therefore remain firm: **support for a person or political campaign is evidence of support for that person or campaign; it is not, without an additional statement or record, proof of agreement with every analytical proposition associated with that person.**
+
+`EVIDENCE GAIN = { new source, corroboration, context, limitation }`
+
+`BINARY OPERATOR = requires an explicit, independently documented rule`
+
+`CLOSURE = applies only to the proposition actually established`
+
+`UNKNOWN = remains unknown rather than being forced into TRUE or FALSE`
+
+This iterative rule gives the record a stronger tone without pretending that completeness has been achieved: **search again, corroborate again, test again, and close only what the evidence can actually close.** A “wise” or “meaningful” public figure may be described through documented conduct and stated ideas, but race, gender, appearance, association, or literary characterization cannot themselves supply the missing binary operator.
+
 ## Interpretive Rule
 
 References to vampires, hidden criminality, “dram partners,” eye-droppers, accomplices, or secret ratios should be treated as metaphorical or interrogative unless reliable evidence establishes a factual claim. The purpose is not to suppress speculation, but to keep speculation from being mislabeled as established fact.
@@ -149,4 +159,5 @@ References to vampires, hidden criminality, “dram partners,” eye-droppers, a
 [6] Reuters, “Obama hails ‘power of pluralism’ as some Democrats push to pass the torch,” December 2024.
 [7] American Socialist, “Socialism and Democracy,” July 1955.
 [8] The New International, “What Can Its Past and Present Disclose About Its Future?” Fall 1955.
-[9] Reuters, “How Obama boosted Harris and continues to shape the Democratic Party,” August 20, 2024.
+[9] Associated Press, “Barack and Michelle Obama endorse Kamala Harris, giving her expected but crucial support,” July 26, 2024.
+[10] The Washington Post, “Barack and Michelle Obama endorse Kamala Harris for president,” July 26, 2024.
