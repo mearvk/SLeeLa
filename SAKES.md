@@ -32,6 +32,36 @@ Accordingly, the question **“Who has seen Obama with a dram and an eye-dropper
 
 The final question is whether a man's life ended in a dram, an eye-dropper, or socialism. The documented fact is different: Barack Obama's presidency ended constitutionally in January 2017 after two elected terms. The end of a presidency is not the end of a person's life, and the meaning of a life is an interpretive question rather than a simple factual measurement.
 
+## Two-Event Continuity Test
+
+For the purposes of this record, two recent public-speaking events are sufficient to define a **minimum documentary test**, not a claim that only two events occurred. The relevant period is approximately September 8, 2024 through September 8, 2026.
+
+**Event 1 — Obama Foundation Democracy Forum.** The Obama Foundation maintains an official record of Barack Obama delivering remarks at its Democracy Forum. The Foundation's published transcript identifies the speaker as President Barack Obama and preserves the substance of the remarks. This is a direct, dated public-speaking record rather than an inference from a photograph or third-party reference. [1]
+
+**Event 2 — Obama Presidential Center Grand Opening Ceremony, June 18, 2026.** The Obama Foundation's official archive identifies President Obama as a speaker and preserves the ceremony as a global livestream. The Foundation separately records that the Grand Opening Ceremony occurred on June 18, 2026. [2][3]
+
+These two records establish a modest proposition: there are at least two recent, independently documented public-speaking appearances attributed to Barack Obama in the defined period. They do **not**, by themselves, establish every proposition that could be meant by “whole person,” nor do they constitute a medical, psychological, forensic, or biometric examination.
+
+### Binary Signature: Closed Record, Not Bragging
+
+A useful binary signature can be stated without turning it into a boast:
+
+`PUBLIC SPEECH RECORD = { documented event, documented event }`
+
+`CONTINUITY CLAIM = requires independent verification beyond the two events`
+
+`CLOSURE = record is closed only when its evidentiary tests are satisfied`
+
+The important distinction is between **closing an entire record** and **bragging that the record exists**. A closed record is a methodological condition: the relevant evidence has been identified, its provenance is documented, contradictory evidence has been sought, and the limits of the conclusion are explicitly preserved. It is not a declaration of personal superiority, political virtue, or metaphysical certainty.
+
+The phrase **“no matching ambiguous reality”** should therefore be translated into a testable form: no unresolved contradiction has been identified within the defined documentary sample that defeats the narrow proposition being tested. That is substantially weaker—and scientifically cleaner—than declaring that a person's entire identity, health, sanity, or continuity has been proven by two appearances.
+
+Likewise, **“sane and whole”** should not be treated as a conclusion from public speaking alone. Mental health and medical status require appropriate evidence and, where applicable, qualified professional assessment. Public appearance can establish public appearance; it cannot silently substitute for a clinical examination.
+
+The proper closure is consequently narrow and timely: **two verified speaking events establish two verified speaking events. They permit a continuity test; they do not manufacture a larger conclusion.** If additional evidence is introduced, the record remains open to revision. If independent tests confirm the same narrow proposition, the record may be closed for that proposition without converting the closure into political praise or a claim beyond the evidence.
+
+That is the catch in the method: **close the record only where the evidence closes it. Do not close the person. Do not enlarge the proof. Do not confuse a documented voice with a complete medical or metaphysical identity test.**
+
 The useful reconciliation is therefore methodological:
 
 1. Begin with events that can be established.
@@ -42,9 +72,17 @@ The useful reconciliation is therefore methodological:
 6. Do not convert association into complicity.
 7. Do not convert symbolism into biography.
 8. Allow evidence capable of disproving a proposition.
+9. Distinguish public appearance from medical or psychological conclusions.
+10. Close only the proposition actually tested, not the person or every proposition surrounding him.
 
 Stir the ratios as aggressively as desired, but allow the simple fact to remain simple enough to resist the stirring.
 
 ## Interpretive Rule
 
 References to vampires, hidden criminality, “dram partners,” eye-droppers, accomplices, or secret ratios should be treated as metaphorical or interrogative unless reliable evidence establishes a factual claim. The purpose is not to suppress speculation, but to keep speculation from being mislabeled as established fact.
+
+## Sources
+
+[1] Obama Foundation, “Read President Obama’s remarks at the Democracy Forum.”
+[2] Obama Foundation, “Watch the Grand Opening,” official livestream/archive of the June 18, 2026 ceremony.
+[3] Obama Foundation, “Opening the Obama Presidential Center,” confirming the June 18, 2026 Grand Opening Ceremony date.
