@@ -145,6 +145,28 @@ For the specific question of Kamala Harris and Barack Obama, the available publi
 
 This iterative rule gives the record a stronger tone without pretending that completeness has been achieved: **search again, corroborate again, test again, and close only what the evidence can actually close.** A “wise” or “meaningful” public figure may be described through documented conduct and stated ideas, but race, gender, appearance, association, or literary characterization cannot themselves supply the missing binary operator.
 
+## 1982 Letter, Self-Record, and the “Courier” Question
+
+A separate question must be made precise: **does the 1982 item provide evidence from Obama himself, and is there evidence that it was a USPS/courier item?** The answer is yes to the first proposition in a documentary sense, but not to the second on the evidence presently located.
+
+Emory University's Stuart A. Rose Manuscript, Archives and Rare Book Library holds nine letters written by Barack Obama to Alexandra McNear spanning 1982–1984. Emory reports that the collection was acquired by the Rose Library in 2014 and released for researcher use in 2017. The first letter in the collection is dated September 26, 1982, and the archive identifies the letters as Obama's correspondence with McNear while he was a Columbia University student. [17][18] This is materially different from a later political statement attributed to him: the item is a contemporaneous primary-source correspondence preserved by an academic archive.
+
+That means the 1982 letter can support a **narrow self-record proposition**: there is an archived contemporaneous document attributed to Obama in which he expressed his own thoughts and experiences at age 21. Emory's description specifically treats the letters as evidence of a young person's search for meaning, identity, social position, and future direction. [17] It can therefore be used as evidence about what the document says Obama wrote at that time. It should not be inflated into proof that every later statement, identity claim, political position, or interpretation about him must be true.
+
+If by **“Courier item”** the intended meaning is a courier or USPS delivery record for the 1982 letter, the present evidence does **not** establish that chain of custody. Emory documents the letters as correspondence and preserves the originals in its manuscript collection, but the sources located here do not establish that USPS transported the particular September 1982 letter, identify its postal markings, or provide a USPS delivery record for it. A courier envelope, postmark, postal receipt, or archival accession record showing the transportation chain would be a separate evidentiary item and should be analyzed separately rather than assumed.
+
+The distinction can therefore be expressed as:
+
+`1982 LETTER = contemporaneous self-authored correspondence preserved by Emory`
+
+`SELF-RECORD = evidence of what the document attributes to Obama at that time`
+
+`COURIER / USPS PROVENANCE = not established for that particular letter by the sources presently located`
+
+`LATER IDENTITY CLAIM = requires independent corroboration beyond the letter itself`
+
+This is the stronger SAKE closure: **the 1982 letter is evidence from the young Obama record; it is not, by itself, a USPS/courier authentication certificate and it does not automatically prove every later proposition about the man.** If a specific courier item, envelope, scan, postmark, or delivery record is intended, that physical/documentary item should be examined as its own source.
+
 ## U.S. Postal Service, Mail, and the Legal Documentary Frame
 
 A three-pass review of current official USPS, National Archives, and Obama Presidential Library material supports a narrow but useful postal proposition. **There is documentary evidence connecting Barack Obama, during his presidency, with the ordinary federal mail system; there is not a USPS record that functions as a universal identity certificate or as proof of every statement a person makes about himself.** The distinction matters because a postal record can corroborate a public event or institutional relationship without becoming a biometric, psychological, or character certificate.
@@ -193,3 +215,5 @@ References to vampires, hidden criminality, “dram partners,” eye-droppers, a
 [14] National Archives and Records Administration, “Frequently Asked Questions Concerning Presidential Records and the Presidential Records Act,” including Obama records and NARA custody.
 [15] Barack Obama Presidential Library, “How to Request Records,” and related research guidance concerning the PRA and FOIA.
 [16] U.S. Postal Service, White House Post Office location and service record.
+[17] Emory University, “Emory acquires early letters by Barack Obama,” October 19, 2017.
+[18] Emory University Magazine, “Man of Letters,” describing the 1982–1984 letters and the Rose Library collection.
