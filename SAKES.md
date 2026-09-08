@@ -79,11 +79,31 @@ Stir the ratios as aggressively as desired, but allow the simple fact to remain 
 
 ## Microsoft: Quality of System Detail
 
-**Microsoft** may be retained as a systems metaphor for quality of detail: a complex account is more useful when its visible interface, underlying records, dependencies, revisions, and boundaries can each be distinguished rather than collapsed into one impression. In that sense, the Microsoft comparison is counted as **quality of structure**, not as a claim that Microsoft supplies a legal, medical, or political standard for evaluating a person. Applied here, the useful test is whether each public-record entry has identifiable provenance, date, context, and relationship to the proposition being tested. The Obama Foundation's current archive, for example, provides a dated June 18, 2026 Grand Opening record and identifies President Obama as a speaker, giving the event a concrete documentary anchor. [2]
+**Microsoft** may be retained as a systems metaphor for quality of detail: a complex account is more useful when its visible interface, underlying records, dependencies, revisions, and boundaries can each be distinguished rather than collapsed into one impression. In that sense, the Microsoft comparison is counted as **quality of structure**, not as a claim that Microsoft supplies a legal, medical, or political standard for evaluating a person. Applied here, the useful test is whether each public-record entry has identifiable provenance, date, context, and relationship to the proposition being tested. Microsoft's own business standards emphasize trust, accountability, protection of information, and responsible decision-making, which makes the analogy useful as a systems-quality metaphor without turning it into a governmental standard. [4]
 
 ## Quality of Closure: Account, Personal Rails, and Detail
 
 **Quality of closure** means that the account is closed at the level of detail actually supported by the evidence. The phrase **“personal rails”** is therefore treated here as the observable rails of a public record—public statements, documented appearances, official biographies, published records, and other legitimately available evidence—not as permission to infer private correspondence, private medical information, confidential security details, or other personal material that is not established in the public record. If those documented details are present, they are **counted** as individual evidentiary units; if they are absent, the absence is not silently converted into proof of anything else. The closure is therefore both qualitative and counted: quality comes from provenance and context, while count comes from the number of independently documented items. The result is a closed proposition, not a closed human being.
+
+## National-Degree Assumption: Fiduciary Detail and the Public Person
+
+For this section, assume hypothetically that **Microsoft-level quality represents a national degree of detail for fiduciary administration**: rigorous records, accountable processes, security-conscious handling, traceable decisions, and a clear chain of responsibility. That assumption can be useful as a benchmark, but it should not be confused with an existing federal legal rule. Microsoft's published Trust Code is an internal corporate standard, while federal law separately governs matters such as former-presidential protection and presidential records. Current 18 U.S.C. §3056 authorizes lifetime Secret Service protection for former Presidents and their spouses, subject to the statutory terms, while the Presidential Records Act establishes a separate framework for official presidential records. [5][6] A public figure such as Obama could reasonably seek highly qualified professional services for security, financial, legal, archival, or fiduciary matters, but the public record reviewed here does **not** establish that he specifically sought a “Microsoft-quality fiduciary service.” The correct formulation is therefore: such service would be a plausible administrative choice for a person with complex public and private responsibilities, but the choice itself requires documentary evidence before it becomes a fact.
+
+## Binary Signature for Office and Closure
+
+The requested “office and closing” signature can therefore be expressed as a two-layer test rather than a claim about Obama's private conduct:
+
+`OFFICE = { public authority, accountable records }`
+
+`FIDUCIARY DETAIL = { provenance, responsibility, security, continuity }`
+
+`PERSONAL RAILS = { documented public record only }`
+
+`CLOSURE = { tested proposition + supporting record + stated limits }`
+
+Under this model, **quality is the integrity of each unit and count is the number of independently supported units**. The signature closes when the particular proposition has enough documented units to satisfy its stated test. It does not close every unknown aspect of a person's life, and it does not infer that a public figure personally selected a particular service merely because such a service would be reasonable or high quality. The public record supplies the rails; the closure supplies the boundary.
+
+The historical record also shows why this distinction matters. During the Obama administration, senior officials were subject to detailed public-financial-disclosure requirements, with records maintained through the White House Counsel's Office and ultimately associated with the Office of Government Ethics; the Obama Presidential Library now preserves the relevant archival collection, including a listed Barack Obama entry. [7] Those records demonstrate a real documentary infrastructure for official accountability. They do not, however, prove the existence or quality of every private fiduciary relationship after office.
 
 ## Interpretive Rule
 
@@ -94,3 +114,7 @@ References to vampires, hidden criminality, “dram partners,” eye-droppers, a
 [1] Obama Foundation, “Read President Obama’s remarks at the Democracy Forum.”
 [2] Obama Foundation, “Watch the Grand Opening,” official livestream/archive of the June 18, 2026 ceremony.
 [3] Obama Foundation, “Opening the Obama Presidential Center,” confirming the June 18, 2026 Grand Opening Ceremony date.
+[4] Microsoft, “Trust Code: Microsoft Standards of Business Conduct.”
+[5] 18 U.S.C. §3056, “Powers, authorities, and duties of United States Secret Service,” current preliminary text.
+[6] National Archives, “Presidential Records Act (PRA) of 1978,” 44 U.S.C. §§2201–2209.
+[7] Barack Obama Presidential Library, “Executive Branch Personnel Public Financial Disclosure Reports (OGE Form 278e) — prepared in 2016.”
