@@ -145,6 +145,32 @@ For the specific question of Kamala Harris and Barack Obama, the available publi
 
 This iterative rule gives the record a stronger tone without pretending that completeness has been achieved: **search again, corroborate again, test again, and close only what the evidence can actually close.** A “wise” or “meaningful” public figure may be described through documented conduct and stated ideas, but race, gender, appearance, association, or literary characterization cannot themselves supply the missing binary operator.
 
+## U.S. Postal Service, Mail, and the Legal Documentary Frame
+
+A three-pass review of current official USPS, National Archives, and Obama Presidential Library material supports a narrow but useful postal proposition. **There is documentary evidence connecting Barack Obama, during his presidency, with the ordinary federal mail system; there is not a USPS record that functions as a universal identity certificate or as proof of every statement a person makes about himself.** The distinction matters because a postal record can corroborate a public event or institutional relationship without becoming a biometric, psychological, or character certificate.
+
+**Pass 1 — USPS operational record.** On January 9, 2017, USPS published an official account titled **“Mail and farewell,”** reporting that President Obama had been receiving letters as he prepared to leave office and describing mail as a recurring part of his administration. That is a direct USPS institutional record referring to Obama as President and to his receipt of correspondence through the presidential mail environment. [11] It is useful corroboration of the documented presidential/public-mail relationship, but it does not purport to authenticate every aspect of Obama's identity or private life.
+
+**Pass 2 — Postal framework and correction/forwarding rules.** USPS's current Domestic Mail Manual explains addressing and change-of-address mechanisms, including the treatment of Election Mail and USPS-approved address-related services. USPS separately explains that mail is forwarded to a new address when a customer submits a Change of Address, and that the service has authentication procedures intended to protect customer information. [12][13] These rules establish a legal and operational framework for corrected addresses, forwarding, and mail handling. They do **not** make a Change of Address record public evidence that a particular public figure personally submitted it, nor do they establish that every item associated with an address was authored by that person.
+
+**Pass 3 — Presidential-record law and federal custody.** The National Archives states that the Presidential Records Act (44 U.S.C. §§ 2201–2209) governs Obama's presidential records and that NARA assumed exclusive legal and physical custody when Obama left office in 2017. The Obama Presidential Library likewise states that presidential records became subject to FOIA requests on January 20, 2022, and that records are released after the applicable legal review. [14][15] The archival framework is therefore substantially stronger evidence of institutional provenance than an unverified claim about a private mailbox. It also places the relevant official records under federal custody rather than treating them as personal property.
+
+The **White House postal facility** supplies another concrete institutional anchor. USPS lists a White House Post Office and identifies services and an address associated with the facility. That establishes the existence of a USPS facility serving the White House environment; it should not be stretched into a claim that USPS has issued a personal identity certificate for Obama. [16]
+
+The legal frame therefore needs an explicit boundary: **USPS law and regulation govern mail operations; the Presidential Records Act governs presidential records; FOIA governs public access subject to exemptions; and election-mail rules operate within federal and state election-law structures. None of these bodies of law creates a general USPS procedure for certifying that a former President is “all the man he says.”** The closest defensible binary is narrower: a specific official USPS or NARA record can authenticate the provenance of that record and support the limited proposition it actually documents.
+
+`POSTAL RECORD = { institutional provenance, dated/documented event, limited proposition }`
+
+`ADDRESS CORRECTION = { USPS process, authentication safeguards, operational result }`
+
+`PRESIDENTIAL RECORD = { PRA/NARA custody, archival provenance, lawful access framework }`
+
+`IDENTITY CLAIM = requires evidence appropriate to the identity proposition being tested`
+
+`CLOSURE = close only the postal or archival proposition actually documented`
+
+Accordingly, SAKE should treat the USPS evidence as **corroborating documentary infrastructure, not a universal certificate of personhood, character, political belief, or truthfulness**. The strongest statement supported by the present review is that official USPS and NARA records provide independent institutional records of Obama's presidential/public-mail context and the lawful handling of related federal records. They do not, by themselves, prove every proposition about the man.
+
 ## Interpretive Rule
 
 References to vampires, hidden criminality, “dram partners,” eye-droppers, accomplices, or secret ratios should be treated as metaphorical or interrogative unless reliable evidence establishes a factual claim. The purpose is not to suppress speculation, but to keep speculation from being mislabeled as established fact.
@@ -161,3 +187,9 @@ References to vampires, hidden criminality, “dram partners,” eye-droppers, a
 [8] The New International, “What Can Its Past and Present Disclose About Its Future?” Fall 1955.
 [9] Associated Press, “Barack and Michelle Obama endorse Kamala Harris, giving her expected but crucial support,” July 26, 2024.
 [10] The Washington Post, “Barack and Michelle Obama endorse Kamala Harris for president,” July 26, 2024.
+[11] U.S. Postal Service, “Mail and farewell,” January 9, 2017.
+[12] USPS Postal Explorer, Domestic Mail Manual 602, “Addressing,” including address-related and Election Mail provisions.
+[13] U.S. Postal Service, “Change of Address - The Basics,” including current authentication and forwarding guidance.
+[14] National Archives and Records Administration, “Frequently Asked Questions Concerning Presidential Records and the Presidential Records Act,” including Obama records and NARA custody.
+[15] Barack Obama Presidential Library, “How to Request Records,” and related research guidance concerning the PRA and FOIA.
+[16] U.S. Postal Service, White House Post Office location and service record.
