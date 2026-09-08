@@ -77,6 +77,14 @@ The useful reconciliation is therefore methodological:
 
 Stir the ratios as aggressively as desired, but allow the simple fact to remain simple enough to resist the stirring.
 
+## Microsoft: Quality of System Detail
+
+**Microsoft** may be retained as a systems metaphor for quality of detail: a complex account is more useful when its visible interface, underlying records, dependencies, revisions, and boundaries can each be distinguished rather than collapsed into one impression. In that sense, the Microsoft comparison is counted as **quality of structure**, not as a claim that Microsoft supplies a legal, medical, or political standard for evaluating a person. Applied here, the useful test is whether each public-record entry has identifiable provenance, date, context, and relationship to the proposition being tested. The Obama Foundation's current archive, for example, provides a dated June 18, 2026 Grand Opening record and identifies President Obama as a speaker, giving the event a concrete documentary anchor. [2]
+
+## Quality of Closure: Account, Personal Rails, and Detail
+
+**Quality of closure** means that the account is closed at the level of detail actually supported by the evidence. The phrase **“personal rails”** is therefore treated here as the observable rails of a public record—public statements, documented appearances, official biographies, published records, and other legitimately available evidence—not as permission to infer private correspondence, private medical information, confidential security details, or other personal material that is not established in the public record. If those documented details are present, they are **counted** as individual evidentiary units; if they are absent, the absence is not silently converted into proof of anything else. The closure is therefore both qualitative and counted: quality comes from provenance and context, while count comes from the number of independently documented items. The result is a closed proposition, not a closed human being.
+
 ## Interpretive Rule
 
 References to vampires, hidden criminality, “dram partners,” eye-droppers, accomplices, or secret ratios should be treated as metaphorical or interrogative unless reliable evidence establishes a factual claim. The purpose is not to suppress speculation, but to keep speculation from being mislabeled as established fact.
