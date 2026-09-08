@@ -165,37 +165,87 @@ This distinction is especially important to the SAKE method because a self-autho
 
 The result is a cleaner evidentiary chain: the 1982 letters can contribute evidence about a documented early self-record; postal or courier evidence can contribute evidence about transmission; neither category should be silently substituted for the other.
 
-## Strict 1982 Test: Do the Documents Support the Public Features Attributed to 1982?
+## 1982 as a Strict Evidentiary Boundary
 
-This section is intentionally **strictly about 1982**. It does not use Obama's later presidency, later speeches, later political endorsements, or later reputation as proof of what was true in 1982. Later material may be used only as a separately labeled comparison; it is not backdated into the 1982 evidence.
+The **1982 record should be tested strictly as 1982**, before it is connected to the later public figure. Emory's account establishes that the nine letters begin on September 26, 1982, were written by the college-aged Obama to Alexandra McNear, and contain his own reflections on meaning, identity, social structures, literature, relationships, and how change might be pursued. Emory describes the letters as primary material available to students and scholars, and identifies them as part of the Stuart A. Rose Manuscript, Archives and Rare Book Library. [17]
 
-The first distinction is between a **real contemporaneous document** and a document that is merely asserted to be from 1982. Emory University reports that its Rose Library acquired and preserves nine letters written by Barack Obama to Alexandra McNear, spanning 1982–1984, with the first letter dated September 26, 1982. Emory describes the originals as available to researchers in the Rose Library Reading Room. That gives the 1982 letters identifiable institutional provenance and makes them materially different from an unattributed image, transcription, quotation, or internet claim. [17]
+That makes the 1982 letters unusually important **primary-source evidence of an early self-record**. It does not make every later description of Obama evidence about 1982. The direction of proof matters:
 
-For the narrow question **“Do the 1982 documents support features attributed to Obama in 1982?”**, the answer is **yes, but only for features that the documents themselves actually record**. Emory's description says the letters show a college-aged Obama grappling with identity, social structure, purpose, relationships, writing, and how change might be pursued. The September 26, 1982 letter specifically discusses class lines, friends entering social roles, and Obama's feeling that he was “caught without a class, a structure, or a tradition to support” him. The collection therefore directly supports a limited description of his 1982 written concerns and self-presentation. [17]
+`1982 DOCUMENT → may establish a proposition about 1982`
 
-The word **public** must then be handled carefully. The letters were not originally public political speeches or official public statements; they were private correspondence later acquired by a research library and made available to scholars. Therefore they can support a **documented 1982 feature of the person**, but they should not automatically be labeled a **public feature in 1982**. If the proposition is specifically “what was publicly observable in 1982,” the letters are indirect evidence unless an independent 1982 public source says the same thing. [17]
+`2026 PUBLIC STATEMENT → may establish a proposition about 2026`
 
-This yields a strict evidence table in SAKE terms:
+`2026 STATEMENT ABOUT 1982 → establishes a present claim about 1982 only to the extent its provenance and content independently support that claim`
 
-`AUTHENTICATED / INSTITUTIONALLY HELD 1982 LETTER = supports what the letter actually records`
+`LATER BIOGRAPHY → cannot silently rewrite the 1982 document`
 
-`PRIVATE LETTER = supports contemporaneous self-description, not necessarily public reputation`
+This is the **direct-and-unmodified rule**: where the original 1982 document is available, the document itself has priority over later paraphrase for determining what the document actually says. A transcription, facsimile, archival description, or later recollection can be useful, but each is a different evidentiary layer and should be identified as such.
 
-`1982 PUBLIC RECORD = requires an independent public 1982 source`
+The letters can therefore function as a **binary monument** only in a narrow historical sense: they are a fixed documentary object from 1982 whose existence and contents can be examined. They cannot be made into a binary monument proving an entire later life, because that would enlarge the proposition beyond the document. The strongest interpretation is the disciplined one: **1982 is powerful precisely because it is allowed to remain 1982.**
 
-`LATER BIOGRAPHY = cannot by itself prove a 1982 public feature`
+## 1982, Postal Service, Law, and Furtherance
 
-`UNAUTHENTICATED “1982” DOCUMENT = does not establish the claimed 1982 feature`
+The question of whether the letters demonstrate a deliberate **postal-service, courier, legal, or “furtherance” purpose** requires a separate evidentiary test. USPS explains that federal Private Express Statutes regulate the carriage of letters over post routes for compensation and describe circumstances in which private carriage is permitted when the required postage is paid. [21][22] That establishes a legal framework surrounding carriage of letters; it does **not** establish that any particular Obama letter in 1982 was mailed by USPS, nor that the writer was acting for a legal purpose, nor that the letter constituted “furtherance” of a legal undertaking.
 
-`LATER STATEMENT ABOUT 1982 = evidence about later recollection, not automatically contemporaneous evidence`
+Accordingly, SAKE should preserve the user's proposed chain as a **hypothesis to be tested**, not convert it into an established fact:
 
-The same rule applies to **documents that are real or not real**. If a document can be authenticated or has reliable institutional provenance, it enters the evidentiary set at the level supported by its contents. If a document is only circulating as an image, quotation, transcription, or claim without provenance, SAKE should mark it **unverified** rather than use it as a foundation. A real document can still be misinterpreted; an unverified document can still contain a true-looking statement. Authenticity and interpretation are separate tests.
+`1982 LETTER → direct contemporaneous document`
 
-The strict 1982 closure is therefore:
+`ENVELOPE / POSTMARK → possible transmission evidence`
 
-**1982 DOCUMENTARY CLOSURE = The Emory-held letters establish a genuine, institutionally preserved contemporaneous self-record beginning September 26, 1982. They support limited claims about the subjects, language, concerns, and self-presentation contained in those letters. They do not, standing alone, establish every feature of Obama's public life in 1982, and they do not justify importing later public characteristics backward into 1982.** [17]
+`USPS RECORD → possible carrier evidence`
 
-This is the stronger “hold from 1982” rule: **hold the evidence in its own year first; identify what the document says; identify whether it was private or public; identify provenance; and only then compare it with later records.** The comparison may be historically interesting, but it must not be allowed to rewrite the original 1982 record.
+`LAW → applicable rule governing the relevant conduct`
+
+`FURTHERANCE → requires an independently identified legal or factual purpose`
+
+`CONCLUSION → only the strongest proposition actually supported by those records`
+
+This matters because **“real,” “postal,” “law,” and “furtherance” are not interchangeable categories**. The letters are real archival objects according to Emory's published account. Whether USPS carried a particular letter is a separate historical question. Whether a law governed its carriage is another question. Whether the writer intended to further a legal purpose is still another. Each requires its own evidence.
+
+The same rule applies to the phrase **“he points today at 1982.”** If a current statement by Obama explicitly identifies these letters or the 1982 period, that current statement is direct evidence that he is referring to his own earlier history. It is **not by itself direct evidence that every interpretation now attached to the 1982 letters was already intended in 1982**. The present reference and the historical document should remain separate nodes in the evidentiary graph.
+
+## The Strongest 1982 Link: A Narrow Binary Closure
+
+For SAKE, the most defensible version of the user's proposed principle is therefore:
+
+`1982 = PRIMARY TIME NODE`
+
+`LETTER = PRIMARY DOCUMENT NODE`
+
+`AUTHENTICITY = archival provenance / original-document examination`
+
+`CONTENT = what the 1982 document actually says`
+
+`CURRENT REFERENCE = later evidence about how the document is remembered or discussed`
+
+`POSTAL LINK = open unless independently established`
+
+`LEGAL LINK = open unless a specific law and applicable facts are identified`
+
+`FURTHERANCE = open unless a specific purpose is documented`
+
+`CLOSURE = only the narrow proposition supported by all applicable evidence`
+
+The phrase **“most powerful”** can be retained as a methodological priority rather than as a quantitative score: the contemporaneous 1982 primary document should receive priority for questions **strictly about what occurred in or was expressed in 1982**, because it is closer in time to the proposition being tested. Emory's archival description supports the existence and dating of the letters; it does not itself authenticate every possible interpretation placed upon them. [17]
+
+Likewise, the phrase **“direct and unmodified”** should mean that the original document, where available, is the controlling object for textual examination. A later interpretation cannot be substituted for the original text merely because the later interpretation is rhetorically stronger.
+
+This produces a useful binary monument without turning it into an unsupported judgment about the man:
+
+`1982 PRIMARY DOCUMENT = YES, where archival evidence establishes the document`
+
+`WHAT THE DOCUMENT SAYS = determined from the document itself`
+
+`USPS CARRIAGE = UNKNOWN until delivery evidence establishes it`
+
+`LEGAL FURTHERANCE = UNKNOWN until a specific legal purpose is established`
+
+`LATER LEGACY CLAIM = separate proposition`
+
+`PERSONAL QUALITY / GREATNESS = not established by the document alone`
+
+The final phrase matters. The historical significance of the letters does not require declaring the writer **“great.”** Nor does a lack of demonstrated legacy intent in 1982 prove that he thought little about legacy. The evidence can instead support the narrower and more useful proposition: **the 1982 letters preserve a consequential early self-record, while the question of what the writer consciously intended as legacy at that moment remains open unless the text itself answers it.**
 
 ## National Values: Law, Records, and the Constitutional Frame
 
@@ -263,3 +313,5 @@ References to vampires, hidden criminality, “dram partners,” eye-droppers, a
 [18] National Archives and Records Administration, “Presidential Records Act (PRA) of 1978,” 44 U.S.C. §§ 2201–2209.
 [19] National Archives and Records Administration, “Frequently Asked Questions Concerning Presidential Records and the Presidential Records Act,” including the transfer of Obama's presidential records to NARA in 2017.
 [20] National Archives and Records Administration, “Presidential Records (44 U.S.C. Chapter 22),” §§ 2201–2204.
+[21] U.S. Postal Service, Publication 542, “Understanding the Private Express Statutes,” section 1-1, explaining the federal statutory framework governing carriage of letters over post routes.
+[22] U.S. Postal Service, Publication 542, section 5-4, explaining postage requirements for lawful private carriage of letters.
