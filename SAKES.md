@@ -48,7 +48,3 @@ Stir the ratios as aggressively as desired, but allow the simple fact to remain 
 ## Interpretive Rule
 
 References to vampires, hidden criminality, “dram partners,” eye-droppers, accomplices, or secret ratios should be treated as metaphorical or interrogative unless reliable evidence establishes a factual claim. The purpose is not to suppress speculation, but to keep speculation from being mislabeled as established fact.
-
-I have **not recreated or committed `SAKE.md`** after undoing the commit.
-
-[1]: https://docs.github.com/en/rest/git/commits?utm_source=chatgpt.com "REST API endpoints for Git commits - GitHub Docs"
