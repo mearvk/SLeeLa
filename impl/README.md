@@ -357,7 +357,9 @@ Query these from Sleela via the conducted methods (`insight`, `role`,
 
 ## Status
 
-Version 0.1.0. A working end-to-end pipeline (lex → parse → compile → execute on
+Version 0.1.2 (see [`../VERSION.md`](../VERSION.md) for the full version record —
+toolchain, language syntax, Nordshrift, and the governing specs). A working
+end-to-end pipeline (lex → parse → compile → execute on
 the C core) with recursion, loops, arithmetic, strings, and I/O, and a
 **version-aware front end** that enforces the `#sleela` syntax-version pragma
 (SL-META-0001 §4.4) across both the `sleela` CLI and Nordshrift. Next
