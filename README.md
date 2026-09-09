@@ -40,6 +40,9 @@ triplet of targets (**Java**, **Sleela**, **C**).
   `impl/nordshrift/NORDSHRIFT.md`).
 - [`GLOSSARY.md`](GLOSSARY.md) defines all project terms — Part A (science &
   engineering) and Part B (the United States evidentiary method).
+- [`LENS.md`](LENS.md) applies the Sleela *Lens* idea (a focused get/set view)
+  to how the United States was created — who built it, who bought it, and the
+  early reliefs of 1967 — as dated, sourced facts kept apart from framing.
 
 ```sh
 cd impl && make
