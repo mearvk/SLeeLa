@@ -18,6 +18,8 @@ section by-file:
     tags: NVHE
   SAKES_SIZE.md
     tags: RNHE
+  SEAL.md
+    tags: SLE
   SHEET.sheet
     tags: SL
   SST.model
@@ -29,11 +31,11 @@ section by-tag:
   R: SAKES_BINARY_TIMELINE.md SAKES_SIZE.md
   T: impl/README.md
   C: impl/README.md
-  S: impl/README.md METATAGS.md METATAGS.sheet README.md SHEET.sheet
+  S: impl/README.md METATAGS.md METATAGS.sheet README.md SEAL.md SHEET.sheet
   X: impl/README.md METATAGS.md README.md SST.model
-  L: impl/README.md METATAGS.md METATAGS.sheet SHEET.sheet SST.model
+  L: impl/README.md METATAGS.md METATAGS.sheet SEAL.md SHEET.sheet SST.model
   G: README.md
   N: 1982.md SAKES.md SAKES_SIZE.md
   V: 1982.md SAKES_BINARY_TIMELINE.md SAKES.md
   H: 1982.md SAKES_BINARY_TIMELINE.md SAKES.md SAKES_SIZE.md
-  E: 1982.md SAKES_BINARY_TIMELINE.md SAKES.md SAKES_SIZE.md
+  E: 1982.md SAKES_BINARY_TIMELINE.md SAKES.md SAKES_SIZE.md SEAL.md

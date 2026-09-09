@@ -1,0 +1,49 @@
+{
+  "algo": "HMAC-SHA256",
+  "binding": "a612a6011274bd35123cd537afeea5cc7f03cbd15a42d3a0679315cfd728a1b2",
+  "lip": "careful, neat, and the word",
+  "matrix": {
+    "bytes": 7106,
+    "lines": 166,
+    "mt": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1
+    ],
+    "numbers": [
+      22,
+      2838,
+      3024
+    ],
+    "shape": [
+      90,
+      87
+    ],
+    "spine": [
+      94,
+      125,
+      217,
+      106,
+      227,
+      200,
+      66,
+      53
+    ],
+    "words": 1146
+  },
+  "series": "MT-SEAL-0001",
+  "target": "SEAL.md"
+}
