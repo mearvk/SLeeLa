@@ -1,3 +1,4 @@
+<!-- @MT:RNHE -->
 # SAKES: Size, Root, Disclosure, and the Meaning of the Man
 
 VAMPIRE → EMORY 1982 → HARVARD LAW → BEERS AT THE PUB → COCAINE OVERLORDS → JAMAICA
