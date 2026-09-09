@@ -193,7 +193,76 @@ it on every push and pull request.
 > sufficient on its own. The seal record stores the matrix, the bindings, the
 > algorithm, and a `lip` hint — **never any password**.
 
-## 9. Verification performed
+## 9. Three-layer settling (TAC3-style) — wet, drying, dry
+
+A document does not become fixed the instant it is sealed. It acquires its
+metaframe across **three layers**, then **settles** — like ink drying — over a
+period of minutes. This mirrors the N-layer ("multitude") redundancy of the
+[TAC3 filesystem](https://github.com/mearvk/Ubuntu.Determinant.Beta.Restricted/tree/main/tools/tac3):
+the same artifact exists at more than one layer at once.
+
+| Layer | Name | What it is |
+|-------|------|------------|
+| **L1** | Sleela signature | the compiler's mark over the solve matrix — the *code and its numbers* |
+| **L2** | OS rider (temporary) | a short-lived certificate the 3-layer OS rides onto the seal while it is **wet**; valid only until `expiry` |
+| **L3** | Settled binding | once the drying window elapses and the body is unchanged, the rider is **folded** into a stable binding; the temporary expiry is dropped and the mark is **fixed** |
+
+### The lifecycle
+
+```
+seal ──▶ WET ──(dry-minutes elapse)──▶ DRYING ──settle──▶ DRY (stable)
+        rider live                     rider expired        rider folded into L3
+```
+
+```sh
+# seal: produces the WET state (L1 + a temporary L2 rider), one document
+impl/seal/seal.py seal notes.md --pass '<word>' --trailer --dry-minutes 3
+
+# before the window elapses, the doc is WET; settle refuses to force it dry
+impl/seal/seal.py settle notes.md      # -> "still WET — ~Ns of the window remain"
+
+# after the window, settle folds the rider into a stable L3 binding
+impl/seal/seal.py settle notes.md      # -> "settled — DRY and stable"
+```
+
+`--dry-minutes` sets the window (default **3**). While **wet**, the temporary
+rider is live; a document altered before it dries **cannot settle** (it reads
+`TAMPERED`). Once **dry**, the seal no longer depends on the temporary rider —
+the mark is fixed.
+
+### Seeing the document at more than one layer at once
+
+`layers` shows the same artifact resolved at each layer simultaneously — the
+answer to *"does the document exist in more than one layer at once?"*: **yes**.
+
+```sh
+impl/seal/seal.py layers notes.md
+```
+
+```
+notes.md — exists at 2 layers at once  (state: DRY)
+  ── Layer 1: the document itself
+       39 bytes   sha256 d290c63e903eba97…
+       (this is exactly what an editor shows)
+  ── Layer 2: the document + metaframe (one artifact)
+       L1 sleela signature : 25bfefbe6136cd6d…
+       L2 rider            : folded into L3 (retired)
+       L3 settled binding  : 6af4c0f59a6e6c74…  STABLE
+  store: one self-contained document (trailer)
+```
+
+- **Layer 1 — the document itself:** the bare body bytes and their digest. This
+  is exactly what `vim`/`gedit` render. It is recoverable at any time by
+  stripping the trailer (the seal excludes itself from its own digest), so L1
+  always coexists inside the one file.
+- **Layer 2 — the document *with* the metaframe:** the whole artifact, body plus
+  the settled seal, as **one self-contained document**.
+
+The two layers are not two files — they are two coexisting *readings* of one
+artifact, exactly as TAC3 keeps a file as several redundant replicas across its
+multitude of layers.
+
+## 10. Verification performed
 
 - **Invisibility (sidecar):** `sha256sum README.md` is identical before and after
   sealing; the seal appears only in `.mt/seals/README.md.seal`.
@@ -202,14 +271,21 @@ it on every push and pull request.
   metatags).
 - **M-of-N:** 1-of-3 → the lip stays shut; 2-of-3 → `IN ORDER`; one correct plus
   one wrong word → still shut (only distinct marksmen count).
-- **Trailer:** reveal via trailer → `IN ORDER`; re-seal is idempotent (identical
-  binding — the trailer is excluded from its own digest); a body edit → `TAMPERED`.
+- **Trailer / one document:** reveal via trailer → `IN ORDER`; re-seal is
+  idempotent (identical binding — the trailer is excluded from its own digest);
+  a body edit → `TAMPERED`.
+- **Settling:** freshly sealed → `WET` (settle refused, "~Ns remain"); after the
+  window → `settle` produces `DRY and stable`; `reveal` reports the settle state;
+  a document altered while wet → cannot settle, reads `TAMPERED`.
+- **Layers:** `layers` shows L1 (bare doc + digest) and L2 (doc + metaframe)
+  coexisting, with the wet/drying/dry state.
 - **JSON:** `reveal --json` / `verify --json` emit verdict + marksman tally + matrix.
 - **CI:** `mt-check.sh` is green on the clean tree; tampering a sealed file →
   `INTEGRITY FAILURE` (exit 1); an out-of-order metatag → scan failure; restoring
-  returns to green.
+  returns to green. Legacy (pre-settling) seals are treated as already-dry, so
+  they keep verifying unchanged.
 
-## 10. Relationship to MT-META-0001
+## 11. Relationship to MT-META-0001
 
 The seal reuses the metatag alphabet (the `mt` matrix row) and the `.mt/`
 namespace introduced by [`METATAGS.md`](METATAGS.md). A document's metatags say

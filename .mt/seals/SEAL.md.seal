@@ -1,5 +1,21 @@
 {
   "algo": "HMAC-SHA256",
+  "layers": {
+    "L1_sleela": {
+      "authority": "sleela-compiler",
+      "signature": "6acf20d197e742aca19073ff0d8e817997febbee9629173f49cea616e27e818c"
+    },
+    "L2_rider": {
+      "authority": "os:3-layer",
+      "certificate": "cc8b449f08503f3d2d69d9e76d6befd1efeaa8ac75f152189159f7109e1603ff",
+      "expiry": null,
+      "issued": 1788944893,
+      "temporary": false
+    },
+    "L3_settled": {
+      "binding": "9d27c8195b4d81c2c8acd0de65498354dddebc9320ba77b8e1b9bc393f2cdb19"
+    }
+  },
   "lip": "careful, neat, and the word",
   "marksmen": [
     {
@@ -50,6 +66,12 @@
     "words": 1128
   },
   "series": "MT-SEAL-0001",
+  "settle": {
+    "dried_at": 1788944897,
+    "dry_minutes": 0.05,
+    "sealed_at": 1788944893,
+    "state": "dry"
+  },
   "target": "SEAL.md",
   "threshold": 1
 }

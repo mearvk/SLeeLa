@@ -28,6 +28,29 @@ cd impl && make
 ./build/nordshrift build nordshrift/examples/demo/build.sst
 ```
 
+## Document metalayers
+
+Every document in this repository can carry two cooperating metalayers:
+
+- **Metatags — [`METATAGS.md`](METATAGS.md) (MT-META-0001).** A closed series of
+  16 single-letter tags (`@MT:…`) that make files findable by facet at a glance
+  — `P`rint, `M`ath/Methods, `R`eals, `T`asks … and concern tags for
+  governance, rights, voters, humans, and more. Reachable by `grep`, IDEs, OS
+  search, and web crawlers through one token. Tool: [`impl/metatag/`](impl/metatag/).
+
+- **Integrity seal — [`SEAL.md`](SEAL.md) (MT-SEAL-0001).** A tamper-evidence
+  metaframe bound to a document with a keyed HMAC and a *solve matrix* of the
+  document's machine natures and numbers. It is revealed only through its **lip**
+  (a careful load with the word) and settles across **three layers** — an L1
+  Sleela compiler signature, a temporary L2 OS rider, and, once it **dries** over
+  a few minutes, a stable L3 binding. `seal layers <file>` shows the same
+  artifact existing at two layers at once: the bare document (L1) and the
+  document *with* its metaframe (L2). Tool: [`impl/seal/`](impl/seal/).
+
+Both are verified together in CI by [`impl/ci/mt-check.sh`](impl/ci/mt-check.sh)
+(`metatag scan` + `seal audit`) via
+[`.github/workflows/mt-check.yml`](.github/workflows/mt-check.yml).
+
 ## The Constitution — ordained constraints, in order
 
 This is the ordered constitution of governing constraints ("congrains") the
