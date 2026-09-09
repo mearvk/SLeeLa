@@ -8,8 +8,13 @@ entry point — the **exchange** function (`slcore_exchange`). Sleela source is
 never interpreted directly: it is lexed, parsed, and compiled down to core
 bytecode, then executed by the C/C++ engine underneath.
 
+> **Wrapper™** — the name of the `.sleela` file type. A **Wrapper™** is a Sleela
+> source file: the program unit that carries the metadocument addend (it is
+> governed by the Sleela Language Metadocument, SL-META-0001). "`.sleela` file",
+> "Sleela source file", and "Wrapper™" are used interchangeably below.
+
 ```
-Sleela source (.sleela)
+Sleela source — a Wrapper™ (.sleela)
         |
         v
   [ Sleela front end — C++ ]
@@ -51,10 +56,27 @@ make            # produces build/sleela
 ## Running
 
 ```sh
-./build/sleela run examples/hello.sleela
-./build/sleela version
-make test       # runs every example under examples/
+./build/sleela run examples/hello.sleela      # run a Wrapper™ (.sleela file)
+./build/sleela check examples/hello.sleela    # validate (incl. #sleela version), don't run
+./build/sleela version                        # version + supported .sleela syntax range
+make test       # runs every example under examples/ (incl. version tests)
 ```
+
+### Version awareness (SL-META-0001 §4.4)
+
+The compiler is **version aware**. A Wrapper™ declares its syntax version with a
+`#sleela MAJOR.MINOR` pragma on the first non-blank, non-comment line:
+
+```java
+#sleela 1.0
+class Hello { void main() { print("Hello, Sleela!"); } }
+```
+
+The compiler **rejects** any file whose declared version is outside its
+supported range (shown by `sleela version`, currently `1.0 .. 1.0`); a file with
+no pragma is accepted with a warning and assumed to be the floor version. The
+supported range is defined in [`frontend/version.h`](frontend/version.h). See
+[`../SLEELA.md`](../SLEELA.md) §1.6 for the full rules and diagnostics.
 
 ## The language (first pass)
 
@@ -199,8 +221,9 @@ impl/
     ast.h               AST nodes
     parser.{h,cpp}      recursive-descent parser
     compiler.{h,cpp}    AST -> core bytecode
+    version.{h,cpp}     #sleela syntax-version awareness (SL-META-0001 §4.4)
     driver.cpp          the `sleela` CLI
-  examples/             sample .sleela programs (incl. conduct.sleela)
+  examples/             sample Wrapper™ (.sleela) programs (incl. conduct.sleela)
   catalog/              shared SHEET.sheet parser (conduct + object compat)
     sheet_catalog.{h,cpp}  Catalog model: objects, roles, congruence, invariants
   nordshrift/           Nordshrift: the .sst transpiler driver (NS-SST-0001)
@@ -220,7 +243,7 @@ impl/
 Layered on top of Sleela is **Nordshrift** — the transpiler *driver* defined by
 the normative spec **NS-SST-0001** (`/SST.model`). It reads a **`.sst` control
 sheet** (indentation-significant, pragma-first) that names Sleela source files
-and selects a target, then drives their transpilation into the **triplet** —
+and selects a target, (each a **Wrapper™**) then drives their transpilation into the **triplet** —
 **Java**, **Sleela** (executed on the C core here), or **C** — chosen by the
 sheet's `target-language` directive.
 
@@ -334,7 +357,11 @@ Query these from Sleela via the conducted methods (`insight`, `role`,
 
 ## Status
 
-Version 0.1.0. A working end-to-end pipeline (lex → parse → compile → execute on
-the C core) with recursion, loops, arithmetic, strings, and I/O. Next candidates:
-short-circuit `&&`/`||`, arrays, a REPL, and a static type checker on top of the
-Java-like surface.
+Version 0.1.2 (see [`../VERSION.md`](../VERSION.md) for the full version record —
+toolchain, language syntax, Nordshrift, and the governing specs). A working
+end-to-end pipeline (lex → parse → compile → execute on
+the C core) with recursion, loops, arithmetic, strings, and I/O, and a
+**version-aware front end** that enforces the `#sleela` syntax-version pragma
+(SL-META-0001 §4.4) across both the `sleela` CLI and Nordshrift. Next
+candidates: short-circuit `&&`/`||`, arrays, a REPL, and a static type checker
+on top of the Java-like surface.

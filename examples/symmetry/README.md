@@ -7,8 +7,10 @@ This module demonstrates **server/client system symmetry** across two protocols
 The `.sst` sheet is the *control surface*: it names the sources (`source:` glob
 `**/*.sleela`), selects the target (`target-language sleela` — runs on the C
 core), sequences the passes (`pipeline:`), and states the analysis posture
-(`rules:`/`effects:`/`derive:`/`guards:`/`interop:`). The `.sleela` files are the
-*program*. Flip `target-language` to `java` or `c` to retarget the same sources.
+(`rules:`/`effects:`/`derive:`/`guards:`/`interop:`). The `.sleela` files —
+**Wrapper™** files (the `.sleela` file type: Sleela source carrying the
+metadocument addend) — are the *program*. Flip `target-language` to `java` or
+`c` to retarget the same sources.
 
 ## Run it
 

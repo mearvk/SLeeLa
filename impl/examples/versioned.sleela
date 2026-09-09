@@ -1,0 +1,12 @@
+#sleela 1.0
+// versioned.sleela -- demonstrates SL-META-0001 Section 4.4 syntax versioning.
+//
+// The `#sleela 1.0` pragma on the first non-blank, non-comment line declares
+// the syntax version this Wrapper(TM) conforms to. The compiler is version
+// aware: it accepts this file because 1.0 is within its supported range, and it
+// would reject a file that declared a version newer than the compiler supports.
+class Versioned {
+    void main() {
+        print("Sleela syntax 1.0 -- accepted by a version-aware compiler.");
+    }
+}

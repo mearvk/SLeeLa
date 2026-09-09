@@ -20,7 +20,8 @@ XCLASS_OBJ := $(BUILD)/xclass_loader.o
 
 # ---- Sleela ----
 CORE_OBJ := $(BUILD)/sleela_core.o
-FE_SRC   := frontend/lexer.cpp frontend/parser.cpp frontend/compiler.cpp
+FE_SRC   := frontend/lexer.cpp frontend/parser.cpp frontend/compiler.cpp \
+            frontend/version.cpp
 FE_OBJ   := $(patsubst frontend/%.cpp,$(BUILD)/%.o,$(FE_SRC))
 DRIVER_OBJ := $(BUILD)/driver.o
 
@@ -30,7 +31,7 @@ NS_SRC := nordshrift/sst_lexer.cpp nordshrift/sst_parser.cpp \
           nordshrift/object_compat.cpp nordshrift/nordshrift.cpp
 NS_OBJ := $(patsubst nordshrift/%.cpp,$(BUILD)/ns_%.o,$(NS_SRC))
 
-.PHONY: all clean test test-sleela test-nordshrift
+.PHONY: all clean test test-sleela test-version test-nordshrift test-threads test-catalog
 
 all: $(SLEELA_BIN) $(NORDSHRIFT_BIN)
 
@@ -66,7 +67,7 @@ $(BUILD):
 	mkdir -p $(BUILD)
 
 # ---- tests ----
-test: test-sleela test-nordshrift test-threads test-catalog
+test: test-sleela test-version test-nordshrift test-threads test-catalog
 
 # Threading smoke test: spawn 128 workers, guarded increments + tuple channel.
 test-threads: $(THREAD_SMOKE)
@@ -79,6 +80,12 @@ test-sleela: $(SLEELA_BIN)
 		echo "=== $$f ==="; \
 		$(SLEELA_BIN) run $$f || exit 1; \
 	done
+
+# Assert SL-META-0001 Section 4.4 version awareness: accepted versions run,
+# out-of-range / malformed versions are rejected.
+test-version: $(SLEELA_BIN)
+	@export SLEELA_SHEET=$(CURDIR)/../SHEET.sheet; \
+	bash tests/version/run_version_tests.sh $(SLEELA_BIN)
 
 # Validate every top-level .sst sheet, then drive a real build (sleela target
 # runs on the core) from the self-contained demo sheet.

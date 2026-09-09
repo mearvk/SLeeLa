@@ -1,0 +1,4 @@
+{
+  "url": "https://github.com/mearvk/Sleela",
+  "_comment": "Target URL the Sleela Sigil QR code and stego frame encode. Change this to repoint the QR/frame. CLI --url and the SLEELA_QR_URL env var override this file."
+}
