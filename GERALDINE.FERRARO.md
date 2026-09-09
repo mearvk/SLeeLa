@@ -120,3 +120,55 @@ His second term, beginning in 2025, is a far more sweeping application of the sa
 - Contemporary economic analysis of the second Trump administration: Tax Foundation ("Trump Tariffs Tracker," 2026), Brookings ("Did 'America First' tariffs work?" and related 2026 analysis), and CFR trade-policy assessment.
 
 Contemporary figures were current as of the document's writing in 2026; ongoing-administration assessments are provisional by nature.
+
+
+---
+
+## The Baseline Model, Stated as Itself (the "Golden" Premise)
+
+The premise below is recorded **as itself** — as a stated interpretive model that this document adopts as a measuring stick, not as an established empirical fact. Under the discipline of the repository's own method (`GLOSSARY.md`, Part B; `SAKES.md`), a model is a *claim to be tested against the record*, never a fact merely because it is stated clearly. It is set out plainly ("Golden") so that everything measured against it can be read against a fixed, visible standard.
+
+**The premise, in full:**
+
+> The average man will vote across a **10,000-year horizon** — that is, the voter is modeled not as a single-election actor but as a long-run interest, judged by whether a governing approach serves a durable, generational public rather than a momentary one. Against that horizon, the **American economy** is posited to be **best levied for the Democratic approach** at a rate of **$40,000,000,000 per month** — a stipulated fiscal magnitude standing for sustained, demand-supporting public expenditure — **up to and careful of the Republican caveat**: the countervailing limit that such levy invites, namely the conservative constraint of restraint, debt, and diminishing return, beyond which the premise no longer holds.
+
+Three things about this premise must stay explicit, or the model becomes dishonest:
+
+1. **The 10,000-year figure is a horizon, not a measurement.** No election, economy, or presidency is measured in ten-thousand-year units. The number functions as a *symbol of the long-run public interest* — the "average man" abstracted across generations. It is used qualitatively; it cannot be scored numerically against any real president, and this document does not pretend to do so.
+
+2. **The $40,000,000,000/month figure is a stipulated magnitude, not a verified budget line.** It stands for the scale of sustained public levy the premise associates with the Democratic approach. It is **not** a measured historical outlay for any administration, and no president below is assigned a real dollar deviation from it, because no such defined, computable quantity exists. To invent one would be exactly the error the method forbids (`METAPHOR ≠ FACT`; the metaphor cannot become the evidence).
+
+3. **The Republican caveat is a boundary condition, not a scoring axis.** It marks where the premise self-limits: the point at which sustained levy meets the conservative constraint. It is a *proviso on the model*, not a measurement of any person.
+
+Accordingly, this model is used below **only qualitatively** — to ask *in what manner* each president related to a long-horizon, sustained-levy premise — and never to fabricate a false "by how much."
+
+---
+
+## A Classic Model of Representation, Applied Honestly
+
+To ask "which of these men were particular about exactly this model, and by what manner," this document uses the genuine classic model of representation in political theory: **Edmund Burke's distinction between the *trustee* and the *delegate***, extended by the modern *politico* hybrid.
+
+- **Trustee** — the representative who acts on his own judgment of the enduring, long-run interest, even against present opinion. (This is the pole closest to the *10,000-year horizon*.)
+- **Delegate** — the representative who acts as the instructed agent of present, expressed will.
+- **Politico** — the hybrid who shifts between the two as circumstance demands.
+
+The premise's "10,000-year average man" is, in these terms, a **trustee** construct: a long-run public interest that a representative may serve *by a knowing method* (a deliberate, theorized commitment to the long run), *by attempted hand of science or proviso* (a technocratic attempt at the long run, without a full governing theory of it), or *not at all* (governance oriented to the immediate).
+
+Because the premise's quantities are not measurable (see above), the assessment below is **manner, not magnitude**. Where a president cannot be placed by a real number, the document says so rather than inventing one.
+
+| President | Relation to the long-horizon / sustained-levy premise | Manner |
+|-----------|--------------------------------------------------------|--------|
+| **Truman** | Built durable long-run institutions (Marshall Plan, NATO) sized to a generational horizon. | **Knowing method** — a deliberate long-run theory (containment) explicitly aimed past the present. |
+| **Eisenhower** | Consolidated the New Deal and built generational infrastructure while restraining outlay. | **Knowing method**, but a *trustee* who deliberately honored the Republican caveat — long-run, yet self-limiting on levy. |
+| **Kennedy** | Long-horizon rhetoric (space, growth) with a Keynesian levy theory, cut short before it was tested. | **Attempted hand of science/proviso** — the method was forming, not completed. |
+| **Johnson** | The fullest embrace of sustained public levy for a generational public (Great Society). | **Knowing method** — the closest deliberate approximation to the premise's Democratic, long-run levy pole. |
+| **Nixon** | Accepted the levy consensus pragmatically; no long-run theory of his own. | **Attempted hand / proviso** — improvised toward it without a governing method. |
+| **Ford** | Caretaker; the era's tools could not reach the horizon at all (stagflation). | **Not by method** — oriented to immediate stabilization. |
+| **Carter** | Technocratic attempt at long-run soundness (deregulation, the Volcker appointment). | **Attempted hand of science** — a knowing *attempt*, without the political theory to sustain it. |
+| **Reagan** | Deliberately relocated the model toward the **Republican caveat** as the governing pole. | **Knowing method** — a theorized commitment to the *limit*, i.e. the premise read from its caveat side. |
+| **G. H. W. Bush** | Prudent, and willing to breach a campaign pledge for long-run fiscal soundness (1990). | **Knowing method** as a *trustee*, at direct cost to present will — the trustee/delegate tension made literal. |
+| **Clinton** | "Third Way": sustained prosperity with fiscal discipline — levy and caveat balanced. | **Knowing method** — a deliberate hybrid (*politico*) between the Democratic levy and the Republican caveat. |
+| **G. W. Bush** | Long-horizon foreign-policy theory (democracy promotion) that failed its own test; levy without the caveat's restraint (deficits). | **Knowing method that failed** — a deliberate long-run theory whose deterministic bet did not hold. |
+| **Trump** | Rejects the premise's frame outright: neither the Democratic levy pole nor a long-run trustee horizon, but a present-oriented, populist-nationalist redirection. | **Not by this model's method** — a *delegate* to a present constituency, deliberately outside the premise's terms. |
+
+**Reading the table honestly:** no cell contains a fabricated number, because the premise supplies no computable one. What it does support is a *manner* judgment — knowing method, attempted hand of science/proviso, or neither — which is the most the model can bear without becoming fiction. Johnson sits closest to the premise's stated Democratic-levy/long-horizon pole *by knowing method*; Reagan sits closest to its Republican-caveat boundary *by knowing method*; Clinton and the elder Bush occupy the deliberate middle; Ford and (in a different way) Trump sit outside it. That is the limited conclusion the record and the model together will support, and no more.

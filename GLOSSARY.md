@@ -124,6 +124,28 @@ not be turned into fact.
 > constitute evidence. This is the discipline the SAKE documents impose on
 > themselves, and the glossary preserves it.
 
+### B.1 Baseline model & representation terms (`GERALDINE.FERRARO.md`)
+
+These terms name a **stated interpretive model** used to assess presidencies, and
+the classic representation theory applied to it. Per the Part B method note, each
+model term is a *claim adopted as a measuring stick* — recorded "as itself" — and
+is **not** an empirical fact. Quantities in the premise are symbolic or
+stipulated; they are used qualitatively (manner, not magnitude) and are never
+converted into fabricated per-person numbers.
+
+| Term | Definition | Source |
+|------|-----------|--------|
+| **Golden premise** | The baseline model stated plainly and adopted "as itself" as a fixed measuring stick, not as fact: a long-run public interest (the 10,000-year horizon) against which a sustained economic levy is posited. | `GERALDINE.FERRARO.md` |
+| **10,000-year horizon** | A **symbol** of the long-run, generational public interest — the "average man" abstracted across generations. A qualitative horizon, **not** a measurable unit; no president is scored numerically against it. | `GERALDINE.FERRARO.md` |
+| **Sustained levy ($40,000,000,000/month)** | A **stipulated magnitude** standing for sustained, demand-supporting public expenditure the premise associates with the Democratic approach. **Not** a verified budget line for any administration and never assigned as a real dollar deviation. | `GERALDINE.FERRARO.md` |
+| **Republican caveat** | The premise's **boundary condition**: the conservative constraint of restraint, debt, and diminishing return beyond which the levy premise no longer holds. A proviso on the model, not a scoring axis. | `GERALDINE.FERRARO.md` |
+| **Trustee** | (Classic representation, after Burke.) A representative who acts on his own judgment of the enduring long-run interest — the pole closest to the 10,000-year horizon. | `GERALDINE.FERRARO.md` |
+| **Delegate** | (Classic representation.) A representative who acts as the instructed agent of present, expressed will. | `GERALDINE.FERRARO.md` |
+| **Politico (representation)** | (Classic representation.) The hybrid who shifts between trustee and delegate as circumstance demands. Distinct from the `politico/` directory name. | `GERALDINE.FERRARO.md` |
+| **Knowing method** | A president's relation to the premise **by deliberate, theorized commitment** to the long-run/levy horizon. | `GERALDINE.FERRARO.md` |
+| **Attempted hand of science / proviso** | A relation to the premise **by technocratic attempt** — reaching toward the long run without a completed governing theory of it. | `GERALDINE.FERRARO.md` |
+| **Manner, not magnitude** | The rule that presidents are placed by the *manner* of their relation to the premise (knowing method / attempted hand / neither), never by a fabricated numeric "how much," because the premise supplies no computable quantity. | `GERALDINE.FERRARO.md` |
+
 ---
 
 ## See also
@@ -134,4 +156,5 @@ not be turned into fact.
 - [`COMPILER.md`](COMPILER.md) — the compiler and its versions.
 - [`NORDSHRIFT.md`](NORDSHRIFT.md) — the `.sst` transpiler driver.
 - [`VERSION.md`](VERSION.md) — the single record of all versions.
+- [`GERALDINE.FERRARO.md`](GERALDINE.FERRARO.md) — presidential governance analysis, the Golden premise, and the classic model of representation.
 - `src/Sleela.manifest` (SL-META-0001) and `SST.model` (NS-SST-0001) — the governing specifications.
