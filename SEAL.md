@@ -46,6 +46,16 @@ On a correct, careful load of an unmodified document the seal reports:
 "Tine" is the point of the mark — the meaning of the marksman: the document
 holds true up to the point the mark was set.
 
+**Direction of the seal.** A seal goes *approvingly* **with** the document and
+*about* it, reading **top toward base**. It is bound *with* the document as one
+artifact; it speaks *about* the document through its solve matrix (§2); and it is
+computed and laid down **top-down** — the document **body first** (the top, what
+an editor shows), then the **solve matrix** *about* that body, then the **mark**
+at the base. Its settling follows the same descent: **L1** (the Sleela signature
+over the content, at the top) → **L2** (the temporary rider) → **L3** (the
+settled binding at the base). So the seal's approval flows from the content down
+to the mark: top toward down, toward the metadocument.
+
 ## 2. The solve matrix — the machine natures of the code and its numbers
 
 Each seal carries a **solve matrix**: integer rows that name the document's
