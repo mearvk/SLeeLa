@@ -1,0 +1,192 @@
+# @MT:SL
+#sheet   METATAGS.sheet
+#kind    file-metatag-registry
+#for     Sleela / Nordshrift software systems
+#series  MT-META-0001
+#rev     0.1.0
+#format  1.0
+#machine yes
+
+# ---- machine-readable parse contract --------------------------------------
+# This registry uses the same rules as SHEET.sheet so the shared catalog/
+# parser can read it:
+#   * a line `#key value`        is a header directive.
+#   * a line `section <name>:`   opens a section (here: families + config).
+#   * a line indented and bare   (`  Word`) names an entry (a Tag by letter).
+#   * under a Tag, indented `key: value` lines give its fields.
+#   * a line `key: value` directly under a section is a section-level value.
+#   * `#` and blank lines are ignored.
+#
+# A metatag is ONE upper-case letter [A-Z] stamped on a file to declare one
+# facet it bears. Tags split into two families drawn from the SAME alphabet, so
+# a single search matches either family. Every letter is unique across both
+# families: a letter never means two things.
+
+# ---- global configuration -------------------------------------------------
+section config:                       # role: registry-config
+
+  marker-token:      @MT:
+  os-keyword-prefix: MT-
+  # canonical order: Code family first (in listed order), then Concern family.
+  canonical-order:   P M R T C S X L G A W N V D H E
+  primary-rule:      first tag in canonical order
+  case:              upper-only
+  count:             16
+  range-min:         12
+  range-max:         26
+  reserved:          B F I J K O Q U Y Z
+
+
+# ---------------------------------------------------------------------------
+# CODE FAMILY — what the file DOES (mapped to SHEET.sheet roles)
+# ---------------------------------------------------------------------------
+section code:                         # role: code-facet
+
+  P
+    name:      Print
+    meaning:   emits output / I/O; print, formatting, rendering
+    sheet-role: piping
+    anchors:   Sink, Stream
+
+  M
+    name:      Math / Methods
+    meaning:   arithmetic, algorithms, or method/function definitions
+    sheet-role: method
+    anchors:   Method, Function
+
+  R
+    name:      Reals
+    meaning:   real-number / floating-point / measurement / metric content
+    sheet-role: gain
+    anchors:   Metric, Throughput
+
+  T
+    name:      Tasks
+    meaning:   threads, spawn/join, scheduling, concurrent units of work
+    sheet-role: completitive
+    anchors:   Join, Future, Barrier
+
+  C
+    name:      Calls
+    meaning:   invocation, dispatch, RPC, syscalls, the exchange API
+    sheet-role: call
+    anchors:   Call, CallStack, SystemCall
+
+  S
+    name:      System
+    meaning:   system / core / runtime / kernel / VM structure & invariants
+    sheet-role: root
+    anchors:   System, Runtime, Kernel
+
+  X
+    name:      Exchange & Transit
+    meaning:   protocols, channels, relays, gateways, transpile drivers (.sst)
+    sheet-role: transitive
+    anchors:   Relay, Gateway, Channel, Protocol
+
+  L
+    name:      Limits & Congrains
+    meaning:   bounds, quotas, timeouts, invariants, contracts, constraints
+    sheet-role: limit
+    anchors:   Bound, Timeout, Invariant, Contract
+
+
+# ---------------------------------------------------------------------------
+# CONCERN FAMILY — what the file is ABOUT (the requested domains)
+# ---------------------------------------------------------------------------
+# Letters avoid every Code-family letter. Where the natural first letter is
+# taken, an unambiguous mnemonic alternate is used (noted per entry).
+section concern:                      # role: concern-facet
+
+  G
+    name:      Governance / Management
+    meaning:   management, ownership, lifecycle, decision authority, process control
+    covers:    management
+    note:      first letter M is taken by Math/Methods; G = Governance.
+
+  A
+    name:      Assets / Material
+    meaning:   material, resources, money, holdings, physical/economic substance
+    covers:    material
+    note:      first letter M is taken; A = Assets.
+
+  W
+    name:      Warrants / Rights
+    meaning:   rights, entitlements, permissions, licenses, legal interests
+    covers:    rights
+    note:      first letter R is taken by Reals; W = Warrants.
+
+  N
+    name:      Notes / Concerns
+    meaning:   open concerns, caveats, risks, disputed or unsettled matters
+    covers:    concerns
+    note:      first letter C is taken by Calls; N = Notes.
+
+  V
+    name:      Voters / Public
+    meaning:   voters, electorate, constituencies, public record, civic process
+    covers:    voters
+
+  D
+    name:      Deity / God
+    meaning:   theological, sacred, or ultimate-authority content
+    covers:    God
+
+  H
+    name:      Humans / Persons
+    meaning:   individual persons, biography, identity, the human party
+    covers:    humans
+
+  E
+    name:      Evidence / Provenance
+    meaning:   records, sources, provenance, evidentiary chains, citations
+    covers:    (supporting) provenance for concern documents
+
+
+# ---------------------------------------------------------------------------
+# COVERAGE — every requested concern has exactly one tag
+# ---------------------------------------------------------------------------
+section coverage:                     # role: requirement-map
+
+  management:  G
+  material:    A
+  rights:      W
+  concerns:    N
+  voters:      V
+  God:         D
+  humans:      H
+
+
+# ---------------------------------------------------------------------------
+# CURRENT FILE ASSIGNMENTS (worked example; regenerate into METATAGS.index)
+# ---------------------------------------------------------------------------
+section files:                        # role: assignment
+
+  README.md
+    tags:      S X G
+
+  impl/README.md
+    tags:      P M T C S X L
+
+  SHEET.sheet
+    tags:      S L
+
+  SST.model
+    tags:      X L
+
+  1982.md
+    tags:      N V H E
+
+  SAKES.md
+    tags:      N V H E
+
+  SAKES_SIZE.md
+    tags:      R N H E
+
+  SAKES_BINARY_TIMELINE.md
+    tags:      R V H E
+
+# ===========================================================================
+# End of METATAGS.sheet — 16 tags; single upper-case letter each; every
+# letter unique across both families; 10 letters reserved for growth to 26.
+# ===========================================================================

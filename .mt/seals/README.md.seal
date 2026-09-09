@@ -1,0 +1,77 @@
+{
+  "algo": "HMAC-SHA256",
+  "layers": {
+    "L1_sleela": {
+      "authority": "sleela-compiler",
+      "signature": "2ae439cc9db7e64ff9a8ba861e44d1a3ab26123af5aba3dc93a2d99d643cd906"
+    },
+    "L2_rider": {
+      "authority": "os:3-layer",
+      "certificate": "d2999df4699dd5dc1f85c1c885f1efe6104cab89b13ee1785a3b9730b0271c8d",
+      "expiry": null,
+      "issued": 1788944893,
+      "temporary": false
+    },
+    "L3_settled": {
+      "binding": "b81559ff38764069d58955edacc82a35c77fa052f3c06242e818f3c250b1e08b"
+    }
+  },
+  "lip": "careful, neat, and the word",
+  "marksmen": [
+    {
+      "binding": "fcc46bf48346c7cfcdec6383fe31f84b22aab94821ea8cbed44df5325d3429e3",
+      "id": "378bf31139cd"
+    }
+  ],
+  "matrix": {
+    "bytes": 7878,
+    "lines": 142,
+    "mt": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "numbers": [
+      39,
+      290,
+      3024
+    ],
+    "shape": [
+      96,
+      92
+    ],
+    "spine": [
+      144,
+      16,
+      220,
+      72,
+      219,
+      202,
+      20,
+      194
+    ],
+    "words": 966
+  },
+  "series": "MT-SEAL-0001",
+  "settle": {
+    "dried_at": 1788944897,
+    "dry_minutes": 0.05,
+    "sealed_at": 1788944893,
+    "state": "dry"
+  },
+  "target": "README.md",
+  "threshold": 1
+}
