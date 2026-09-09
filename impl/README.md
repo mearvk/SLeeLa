@@ -57,9 +57,26 @@ make            # produces build/sleela
 
 ```sh
 ./build/sleela run examples/hello.sleela      # run a Wrapper™ (.sleela file)
-./build/sleela version
-make test       # runs every example under examples/
+./build/sleela check examples/hello.sleela    # validate (incl. #sleela version), don't run
+./build/sleela version                        # version + supported .sleela syntax range
+make test       # runs every example under examples/ (incl. version tests)
 ```
+
+### Version awareness (SL-META-0001 §4.4)
+
+The compiler is **version aware**. A Wrapper™ declares its syntax version with a
+`#sleela MAJOR.MINOR` pragma on the first non-blank, non-comment line:
+
+```java
+#sleela 1.0
+class Hello { void main() { print("Hello, Sleela!"); } }
+```
+
+The compiler **rejects** any file whose declared version is outside its
+supported range (shown by `sleela version`, currently `1.0 .. 1.0`); a file with
+no pragma is accepted with a warning and assumed to be the floor version. The
+supported range is defined in [`frontend/version.h`](frontend/version.h). See
+[`../SLEELA.md`](../SLEELA.md) §1.6 for the full rules and diagnostics.
 
 ## The language (first pass)
 
@@ -204,6 +221,7 @@ impl/
     ast.h               AST nodes
     parser.{h,cpp}      recursive-descent parser
     compiler.{h,cpp}    AST -> core bytecode
+    version.{h,cpp}     #sleela syntax-version awareness (SL-META-0001 §4.4)
     driver.cpp          the `sleela` CLI
   examples/             sample Wrapper™ (.sleela) programs (incl. conduct.sleela)
   catalog/              shared SHEET.sheet parser (conduct + object compat)
@@ -340,6 +358,8 @@ Query these from Sleela via the conducted methods (`insight`, `role`,
 ## Status
 
 Version 0.1.0. A working end-to-end pipeline (lex → parse → compile → execute on
-the C core) with recursion, loops, arithmetic, strings, and I/O. Next candidates:
-short-circuit `&&`/`||`, arrays, a REPL, and a static type checker on top of the
-Java-like surface.
+the C core) with recursion, loops, arithmetic, strings, and I/O, and a
+**version-aware front end** that enforces the `#sleela` syntax-version pragma
+(SL-META-0001 §4.4) across both the `sleela` CLI and Nordshrift. Next
+candidates: short-circuit `&&`/`||`, arrays, a REPL, and a static type checker
+on top of the Java-like surface.

@@ -1,0 +1,8 @@
+#sleela one.zero
+// A malformed version pragma: the version must be numeric MAJOR.MINOR.
+// A version-aware compiler MUST reject this file.
+class Malformed {
+    void main() {
+        print("unreachable");
+    }
+}

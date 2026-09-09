@@ -1,4 +1,6 @@
+#sleela 1.0
 // The classic. Sleela is Java-like; main() is the entry point.
+// The #sleela pragma above declares the syntax version (SL-META-0001 Sec 4.4).
 class Hello {
     void main() {
         print("Hello, Sleela!");

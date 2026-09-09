@@ -1,0 +1,9 @@
+#sleela 2.0
+// A future MAJOR syntax version. A version-aware compiler that supports only
+// up to 1.x MUST reject this file (SL-META-0001 Section 4.4): the declared
+// version exceeds the compiler's supported range.
+class TooNew {
+    void main() {
+        print("this must not run on a 1.x compiler");
+    }
+}

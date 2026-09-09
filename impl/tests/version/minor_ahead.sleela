@@ -1,0 +1,10 @@
+#sleela 1.9
+// A newer MINOR within the same MAJOR. Per SL-META-0001 Section 4.4, MINOR
+// increments only ADD constructs, so a 1.0-syntax program is forward-declarable
+// as 1.9 only if the compiler supports 1.9. With max supported = 1.0 this file
+// is still "too new" and MUST be rejected -- proving MINOR is enforced too.
+class MinorAhead {
+    void main() {
+        print("unreachable on a 1.0 compiler");
+    }
+}

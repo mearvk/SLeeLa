@@ -14,6 +14,7 @@
 #include "lexer.h"
 #include "parser.h"
 #include "compiler.h"
+#include "version.h"
 #include "../catalog/sheet_catalog.h"
 #include "../xclass/xclass_loader.h"
 
@@ -31,6 +32,24 @@ extern "C" {
 
 static const char* kVersion =
     "Sleela 0.1.2 (C/C++ core; SHEET.sheet conducted methods; .xclass input)";
+
+static bool readFile(const std::string& path, std::string& out);  // defined below
+
+// Apply SL-META-0001 Section 4.4 version awareness to `src`. On a rejectable
+// status (declared version out of range, or a malformed pragma) prints an error
+// and returns false; on an assumed-default (no pragma) prints a warning and
+// returns true; on an accepted declared version prints nothing and returns true.
+static bool checkSyntaxVersion(const std::string& path, const std::string& src) {
+    sleela::VersionResolution v = sleela::resolveSyntaxVersion(src);
+    if (v.isError()) {
+        std::cerr << "sleela: " << path << ": error: " << v.message << "\n";
+        return false;
+    }
+    if (v.isWarning()) {
+        std::cerr << "sleela: " << path << ": warning: " << v.message << "\n";
+    }
+    return true;
+}
 
 // True if `path` ends with the given (lower-case) extension.
 static bool hasExt(const std::string& path, const std::string& ext) {
@@ -89,8 +108,37 @@ static int usage() {
         "                                        --run  (default) ingest + run\n"
         "                                        --emit  print reconstructed Sleela source\n"
         "                                        --info  print identity/security/provenance\n"
-        "  sleela version                        print version\n";
+        "  sleela check <file.sleela>            check a program (incl. its\n"
+        "                                        #sleela version) without running\n"
+        "  sleela version                        print version + supported syntax range\n";
     return 2;
+}
+
+// `sleela check <file.sleela>`: run the front end far enough to validate the
+// program -- version pragma, lexing, and parsing -- but do not execute it.
+static int checkFile(const std::string& path) {
+    std::string src;
+    if (!readFile(path, src)) {
+        std::cerr << "sleela: cannot open '" << path << "'\n";
+        return 1;
+    }
+    if (!checkSyntaxVersion(path, src)) return 1;
+
+    sleela::VersionResolution v = sleela::resolveSyntaxVersion(src);
+    try {
+        sleela::Lexer lexer(src);
+        auto tokens = lexer.tokenize();
+        sleela::Parser parser(std::move(tokens));
+        sleela::Program prog = parser.parseProgram();
+        (void)prog;
+        std::cout << path << ": ok (syntax "
+                  << (v.pragmaPresent ? "declared " : "assumed ")
+                  << v.declared.str() << ")\n";
+        return 0;
+    } catch (const std::exception& ex) {
+        std::cerr << "sleela: " << path << ": " << ex.what() << "\n";
+        return 1;
+    }
 }
 
 static bool readFile(const std::string& path, std::string& out) {
@@ -127,6 +175,10 @@ static int runFile(const std::string& path) {
         std::cerr << "sleela: cannot open '" << path << "'\n";
         return 1;
     }
+
+    // Version awareness (SL-META-0001 Section 4.4): a compiler must reject files
+    // whose declared syntax version is outside its supported range.
+    if (!checkSyntaxVersion(path, src)) return 1;
 
     catalog::Catalog cat = loadCatalog();
     try {
@@ -186,7 +238,16 @@ int main(int argc, char** argv) {
 
     if (cmd == "version" || cmd == "--version" || cmd == "-v") {
         std::cout << kVersion << "\n";
+        std::cout << "  supported .sleela syntax: "
+                  << sleela::minSupportedSyntax().str() << " .. "
+                  << sleela::maxSupportedSyntax().str()
+                  << " (declare per-file with '#sleela "
+                  << sleela::defaultSyntaxVersion().str() << "')\n";
         return 0;
+    }
+    if (cmd == "check") {
+        if (argc < 3) return usage();
+        return checkFile(argv[2]);
     }
     if (cmd == "run") {
         if (argc < 3) return usage();

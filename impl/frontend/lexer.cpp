@@ -72,6 +72,12 @@ void Lexer::skipTrivia() {
         char c = peek();
         if (c == ' ' || c == '\t' || c == '\r' || c == '\n') {
             advance();
+        } else if (c == '#') {
+            // A '#' line is the syntax-version pragma (SL-META-0001 Section 4.4),
+            // e.g. `#sleela 1.0`. Version awareness is handled up front by the
+            // version module (see version.h); the lexer simply consumes the
+            // pragma line as trivia so the grammar proper starts after it.
+            while (!atEnd() && peek() != '\n') advance();
         } else if (c == '/' && peek(1) == '/') {
             while (!atEnd() && peek() != '\n') advance();
         } else if (c == '/' && peek(1) == '*') {

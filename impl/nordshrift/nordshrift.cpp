@@ -39,6 +39,7 @@
 #include "../frontend/lexer.h"
 #include "../frontend/parser.h"
 #include "../frontend/compiler.h"
+#include "../frontend/version.h"
 extern "C" {
 #include "../core/sleela_core.h"
 }
@@ -171,6 +172,17 @@ static int doBuild(const std::string& path) {
             std::cerr << "nordshrift: cannot read source '" << srcPath << "'\n";
             rc = 1; continue;
         }
+        // Version awareness (SL-META-0001 Sec 4.4): reject sources whose declared
+        // #sleela syntax version is outside the front end's supported range.
+        sleela::VersionResolution vr = sleela::resolveSyntaxVersion(code);
+        if (vr.isError()) {
+            std::cerr << "NSS-E (error): " << srcPath << ": " << vr.message << "\n";
+            rc = 1; continue;
+        }
+        if (vr.isWarning()) {
+            std::cerr << "NSS-W (warning): " << srcPath << ": " << vr.message << "\n";
+        }
+
         sleela::Program prog;
         try {
             sleela::Lexer lx(code);
