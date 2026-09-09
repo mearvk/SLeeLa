@@ -33,6 +33,11 @@ triplet of targets (**Java**, **Sleela**, **C**).
   **0.1.2**, language syntax **1.0**, Nordshrift **1.0**, and the governing specs).
 - [`COMPILER.md`](COMPILER.md) describes the Sleela compiler — its pipeline,
   version awareness (the `#sleela` pragma), and the versions it implements.
+- [`SOURCE.md`](SOURCE.md) describes the Sleela source file (the `.sleela`
+  **Wrapper™**) and its characteristics.
+- [`NORDSHRIFT.md`](NORDSHRIFT.md) gives a concise overview of the `.sst`
+  transpiler driver (authoritative detail in `SST.model` and
+  `impl/nordshrift/NORDSHRIFT.md`).
 
 ```sh
 cd impl && make
