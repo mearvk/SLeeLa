@@ -38,6 +38,8 @@ triplet of targets (**Java**, **Sleela**, **C**).
 - [`NORDSHRIFT.md`](NORDSHRIFT.md) gives a concise overview of the `.sst`
   transpiler driver (authoritative detail in `SST.model` and
   `impl/nordshrift/NORDSHRIFT.md`).
+- [`GLOSSARY.md`](GLOSSARY.md) defines all project terms — Part A (science &
+  engineering) and Part B (the United States evidentiary method).
 
 ```sh
 cd impl && make
