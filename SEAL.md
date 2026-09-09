@@ -107,17 +107,17 @@ hint — **never the password**.
 ## 5. The lip — a careful, neat load
 
 The **lip** is the seal's only opening. It parts only for a load that is *careful
-and neat*: the exact target path **and** the exact password.
+and neat*: the exact target path **and** the word(s).
 
 ```sh
-# affix a dormant seal (document is left untouched)
+# affix a dormant seal (document left untouched; stored in the sidecar)
 impl/seal/seal.py seal   README.md --pass '<the word>'
 
 # the lip: careful load -> verdict (+ solve matrix if in order)
 impl/seal/seal.py reveal README.md --pass '<the word>'
 
-# quiet check for CI (exit code only)
-impl/seal/seal.py verify README.md --pass '<the word>'
+# quiet check (exit code only); add --json for a machine-readable report
+impl/seal/seal.py verify README.md --pass '<the word>' --json
 
 # list sealed files (names only; discloses no contents)
 impl/seal/seal.py list
@@ -127,8 +127,8 @@ impl/seal/seal.py list
 
 | Situation | Message | Exit |
 |-----------|---------|------|
-| Correct word, document intact | `IN ORDER — careful until tine.` + solve matrix | 0 |
-| Wrong word (document intact) | `SEALED — the lip does not part. (careful, neat, and the word.)` | 1 |
+| Enough correct words, document intact | `IN ORDER — careful until tine.` + solve matrix | 0 |
+| Too few / wrong words (document intact) | `SEALED — the lip does not part.` | 1 |
 | Document modified since sealing | `TAMPERED — the mark is broken.` | 3 |
 | No seal present (dormant/absent) | `SEALED — the lip does not part.` | 1 |
 
@@ -136,30 +136,81 @@ A wrong word and a missing seal give the *same* closed response, so the seal
 never reveals whether it exists to someone without the word — it only opens for
 the careful, neat, correct load.
 
-## 6. Verification performed
+## 6. M-of-N marksmen (multi-party seals)
 
-Against `README.md` in this repo (password withheld here):
+A seal may bind **several marksmen**, each with their own word, and require a
+**threshold M** of them to agree before it reads *in order*:
 
-- **Invisibility:** `sha256sum README.md` is identical before and after sealing;
-  the seal appears only in `.mt/seals/README.md.seal`.
-- **In order:** correct password → `IN ORDER — careful until tine.` with the full
-  solve matrix (including `numbers.max = 3024` and the `mt` vector matching the
-  file's `@MT:SXG` metatags).
-- **Wrong word:** → `SEALED — the lip does not part.`
-- **Tamper:** appending one line then revealing with the correct password →
-  `TAMPERED — the mark is broken.`; restoring the file returns it to `IN ORDER`.
+```sh
+# three marksmen; any two of them must agree
+impl/seal/seal.py seal build.out --pass alpha --pass bravo --pass charlie --threshold 2
 
-## 7. Relationship to MT-META-0001
+impl/seal/seal.py reveal build.out --pass alpha --pass bravo   # 2-of-3 -> IN ORDER
+impl/seal/seal.py reveal build.out --pass alpha                # 1-of-3 -> the lip stays shut
+```
+
+The seal stores **one HMAC binding per marksman** plus a short public
+`marksman id` (a non-reversing SHA-256 prefix) so `reveal` can report *which* and
+*how many* marksmen agreed — **without ever storing a word**. A single-`--pass`
+seal is simply the `1-of-1` case, so existing seals keep working unchanged.
+
+## 7. Trailer mode (compiled / appendable artifacts)
+
+For artifacts where a sidecar is inconvenient, the seal can be embedded as a
+**trailer that is excluded from its own digest**:
+
+```sh
+impl/seal/seal.py seal artifact.bin --pass '<word>' --trailer
+```
+
+The trailer is a single fenced line — `<!-- MT-SEAL-0001:BEGIN {…} MT-SEAL-0001:END -->` —
+appended after the body. The binding is computed over the body **before** the
+trailer, so the trailer never seals itself: re-sealing an unchanged artifact
+produces the identical binding (idempotent), and any change to the *body* still
+reads `TAMPERED`. `reveal`/`verify` auto-detect a trailer and fall back to the
+sidecar otherwise.
+
+## 8. CI gate — passwordless integrity
+
+`seal audit` verifies that **every sealed document still matches its recorded
+solve matrix**. Because the matrix pins each document's shape, this catches
+tampering **without any password**, so no secret is needed in CI:
+
+```sh
+impl/seal/seal.py audit            # exit 0 = all intact; exit 3 = a seal broke
+impl/ci/mt-check.sh                # metatag scan + seal audit, one gate
+```
+
+The bundled [`impl/ci/mt-check.sh`](impl/ci/mt-check.sh) runs the MT-META-0001
+`metatag scan` and the MT-SEAL-0001 `seal audit` together, and the GitHub Actions
+workflow [`.github/workflows/mt-check.yml`](.github/workflows/mt-check.yml) runs
+it on every push and pull request.
+
+> **Note on storage.** Where the filesystem supports it, the binding **may** also
+> be mirrored into an OS extended attribute (`user.mt.seal` on Linux,
+> `com.apple.metadata` on macOS). On filesystems without xattr support (as in
+> some sandboxes/CI), the sidecar registry is the portable primary store and is
+> sufficient on its own. The seal record stores the matrix, the bindings, the
+> algorithm, and a `lip` hint — **never any password**.
+
+## 9. Verification performed
+
+- **Invisibility (sidecar):** `sha256sum README.md` is identical before and after
+  sealing; the seal appears only in `.mt/seals/README.md.seal`.
+- **In order:** enough correct words → `IN ORDER — careful until tine.` with the
+  full solve matrix (`numbers.max = 3024`; `mt` vector matching the file's
+  metatags).
+- **M-of-N:** 1-of-3 → the lip stays shut; 2-of-3 → `IN ORDER`; one correct plus
+  one wrong word → still shut (only distinct marksmen count).
+- **Trailer:** reveal via trailer → `IN ORDER`; re-seal is idempotent (identical
+  binding — the trailer is excluded from its own digest); a body edit → `TAMPERED`.
+- **JSON:** `reveal --json` / `verify --json` emit verdict + marksman tally + matrix.
+- **CI:** `mt-check.sh` is green on the clean tree; tampering a sealed file →
+  `INTEGRITY FAILURE` (exit 1); an out-of-order metatag → scan failure; restoring
+  returns to green.
+
+## 10. Relationship to MT-META-0001
 
 The seal reuses the metatag alphabet (the `mt` matrix row) and the `.mt/`
 namespace introduced by [`METATAGS.md`](METATAGS.md). A document's metatags say
 *what it is*; its seal says *that it is still that, unaltered, until tine*.
-
-## 8. Open questions (for reviewers)
-
-- Should compiled artifacts carry the seal in a reserved, digest-excluded trailer
-  (for formats that allow it) in addition to the sidecar?
-- Multi-party seals: allow N passwords (M-of-N) so a document is "in order" only
-  when several marksmen agree?
-- Should `reveal` optionally emit the solve matrix as machine-readable JSON for
-  downstream verification pipelines?
