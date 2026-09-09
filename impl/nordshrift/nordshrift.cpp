@@ -2,8 +2,10 @@
 // nordshrift.cpp  --  The `nordshrift` transpiler driver (NS-SST-0001).
 //
 // Nordshrift reads a .sst control sheet and drives the triplet transpilation
-// of the Sleela sources the sheet names, into the target language the sheet
-// selects (java | sleela | c).
+// of the Sleela sources the sheet names -- each a Wrapper(TM) (the .sleela
+// file type: a Sleela source file carrying the metadocument addend, governed
+// by SL-META-0001) -- into the target language the sheet selects
+// (java | sleela | c).
 //
 //   nordshrift check <sheet.sst>     lex+parse+validate the sheet; print diagnostics
 //   nordshrift build <sheet.sst>     resolve source: files, run the pipeline,
@@ -12,8 +14,8 @@
 //   nordshrift version
 //
 // The .sst file is the control surface (Part I-XIII). The Sleela source files
-// it points at are the program; those are transpiled through the shared Sleela
-// front end and emitted / executed here.
+// (Wrapper(TM) files) it points at are the program; those are transpiled
+// through the shared Sleela front end and emitted / executed here.
 // ===========================================================================
 #include <cstdio>
 #include <fstream>

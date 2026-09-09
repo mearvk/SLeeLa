@@ -4,6 +4,9 @@
 //   sleela run <file.sleela>     lex -> parse -> compile -> run on the C core
 //   sleela version
 //
+// A .sleela file is a Wrapper(TM): the .sleela file type -- a Sleela source
+// file that carries the metadocument addend (governed by SL-META-0001).
+//
 // This ties the whole pipeline together: source text is lowered to Sleela
 // Core bytecode by the compiler, loaded into an SLVM, and executed through
 // the core's exchange/run API.
@@ -199,7 +202,8 @@ int main(int argc, char** argv) {
         if (argc < 3) return usage();
         return xclassCmd(argc, argv);
     }
-    // Convenience: `sleela file.sleela` / `sleela file.xclass` behave like `run`.
+    // Convenience: `sleela file.sleela` (a Wrapper(TM)) / `sleela file.xclass`
+    // behave like `run`.
     if (hasExt(cmd, ".sleela") || hasExt(cmd, ".xclass")) {
         return runFile(cmd);
     }

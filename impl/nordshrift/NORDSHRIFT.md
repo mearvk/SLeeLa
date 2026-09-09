@@ -6,12 +6,14 @@ specification **NS-SST-0001** (`/SST.model` in this repo) — and uses it to dri
 transpilation of the Sleela source files the sheet names.
 
 The `.sst` file is **not a program**: it is a build-control sheet. The program
-is the set of `.sleela` source files the sheet's `source:` section points at.
-Nordshrift resolves those, runs them through the shared Sleela front end, and
-emits the target the sheet selects.
+is the set of `.sleela` source files — each a **Wrapper™** (the `.sleela` file
+type: a Sleela source file carrying the metadocument addend, governed by
+SL-META-0001) — that the sheet's `source:` section points at. Nordshrift
+resolves those, runs them through the shared Sleela front end, and emits the
+target the sheet selects.
 
 ```
-   build.sst (control sheet)          src/**/*.sleela (the program)
+   build.sst (control sheet)          src/**/*.sleela — Wrapper™ files (the program)
         │                                     │
         ▼                                     │
    lex → parse → validate  ── source: glob ──▶ resolve file set

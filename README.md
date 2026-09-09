@@ -13,6 +13,12 @@ thread-friendly **C/C++ execution core**, with **Nordshrift** — a `.sst`
 transpiler driver (spec `SST.model`, NS-SST-0001) — sitting on top to drive the
 triplet of targets (**Java**, **Sleela**, **C**).
 
+> **Wrapper™** — A Sleela source file (extension `.sleela`) is a **Wrapper™**:
+> the program unit that carries the metadocument addend, i.e. it is governed by
+> and consistent with the Sleela Language Metadocument (SL-META-0001). Throughout
+> this repository, "a `.sleela` file", "a Sleela source file", and "a Wrapper™"
+> all name the same file type.
+
 - The working implementation lives under [`impl/`](impl/) — see
   [`impl/README.md`](impl/README.md) for the full guide, and
   [`impl/DESIGN.md`](impl/DESIGN.md) for the architecture.

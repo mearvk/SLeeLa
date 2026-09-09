@@ -12,6 +12,8 @@ Preamble
 Purpose
 Nordshrift is the transpiler driver for the Sleela programming language. It reads one or more .sst (Scripting Sheet) files and uses them to configure, drive, and extend every phase of the Sleela-to-Java transpilation pipeline defined in SL-META-0001, Chapter 6. A .sst file is the primary human-authored control surface for Nordshrift: it specifies source inputs, transformation targets, pipeline phase configuration, rule activation, effect policies, derivation instructions, Java interoperability settings, and named compilation profiles.
 
+The Sleela source inputs a .sst sheet names are Wrapper™ files. Wrapper™ is the name of the .sleela file type: a Sleela source file — the program unit that carries the metadocument addend, being governed by and consistent with SL-META-0001. In this document, "Sleela source file", ".sleela file", and "Wrapper™" denote the same file type.
+
 Scope
 This document specifies:
 
@@ -284,7 +286,7 @@ IMPORT-05 — Alias Uniqueness Rule: No two import directives in the same file m
 
 Part V — The Source Section
 5.1 Purpose
-The source section declares the Sleela source inputs that Nordshrift will process. It maps to Phase 1 (Lexical Analysis) input configuration in the SL-META-0001 compilation pipeline.
+The source section declares the Sleela source inputs — the Wrapper™ files (the .sleela file type) — that Nordshrift will process. It maps to Phase 1 (Lexical Analysis) input configuration in the SL-META-0001 compilation pipeline.
 
 5.2 Syntax
 source:

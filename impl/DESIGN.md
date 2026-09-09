@@ -7,6 +7,10 @@ above it drives execution. The Sleela front end (lexer → parser → compiler) 
 executes anything itself: it lowers source code to core bytecode and then asks the
 core to run it via the exchange API.
 
+> **Wrapper™** is the name of the `.sleela` file type — a Sleela source file, the
+> program unit that carries the metadocument addend (governed by SL-META-0001).
+> "`.sleela` file", "Sleela source file", and "Wrapper™" refer to the same thing.
+
 ```
    +-------------------------------------------------------+
    |  Sleela front end  (C++)                              |
@@ -38,8 +42,8 @@ impl/
     ast.h                   # AST node definitions
     parser.h / parser.cpp   # recursive-descent parser
     compiler.h / compiler.cpp   # AST -> core bytecode via the builder API
-    driver.cpp              # CLI: sleela run file.sleela
-  examples/             # sample .sleela programs
+    driver.cpp              # CLI: sleela run file.sleela  (runs a Wrapper™)
+  examples/             # sample Wrapper™ (.sleela) programs
   Makefile
   DESIGN.md
 ```

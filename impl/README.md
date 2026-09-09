@@ -8,8 +8,13 @@ entry point — the **exchange** function (`slcore_exchange`). Sleela source is
 never interpreted directly: it is lexed, parsed, and compiled down to core
 bytecode, then executed by the C/C++ engine underneath.
 
+> **Wrapper™** — the name of the `.sleela` file type. A **Wrapper™** is a Sleela
+> source file: the program unit that carries the metadocument addend (it is
+> governed by the Sleela Language Metadocument, SL-META-0001). "`.sleela` file",
+> "Sleela source file", and "Wrapper™" are used interchangeably below.
+
 ```
-Sleela source (.sleela)
+Sleela source — a Wrapper™ (.sleela)
         |
         v
   [ Sleela front end — C++ ]
@@ -51,7 +56,7 @@ make            # produces build/sleela
 ## Running
 
 ```sh
-./build/sleela run examples/hello.sleela
+./build/sleela run examples/hello.sleela      # run a Wrapper™ (.sleela file)
 ./build/sleela version
 make test       # runs every example under examples/
 ```
@@ -200,7 +205,7 @@ impl/
     parser.{h,cpp}      recursive-descent parser
     compiler.{h,cpp}    AST -> core bytecode
     driver.cpp          the `sleela` CLI
-  examples/             sample .sleela programs (incl. conduct.sleela)
+  examples/             sample Wrapper™ (.sleela) programs (incl. conduct.sleela)
   catalog/              shared SHEET.sheet parser (conduct + object compat)
     sheet_catalog.{h,cpp}  Catalog model: objects, roles, congruence, invariants
   nordshrift/           Nordshrift: the .sst transpiler driver (NS-SST-0001)
@@ -220,7 +225,7 @@ impl/
 Layered on top of Sleela is **Nordshrift** — the transpiler *driver* defined by
 the normative spec **NS-SST-0001** (`/SST.model`). It reads a **`.sst` control
 sheet** (indentation-significant, pragma-first) that names Sleela source files
-and selects a target, then drives their transpilation into the **triplet** —
+and selects a target, (each a **Wrapper™**) then drives their transpilation into the **triplet** —
 **Java**, **Sleela** (executed on the C core here), or **C** — chosen by the
 sheet's `target-language` directive.
 

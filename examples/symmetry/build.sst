@@ -22,7 +22,7 @@ sheet system-symmetry:
     """
   tags  [ "symmetry", "http", "ftp", "server", "client", "demo" ]
 
-/// Source: every .sleela file in the module tree drives from this one glob.
+/// Source: every .sleela file (Wrapper™) in the module tree drives from this one glob.
 source:
   root     "src"
   glob     "**/*.sleela"
