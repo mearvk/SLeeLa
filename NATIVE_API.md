@@ -28,6 +28,8 @@ Calls are module-qualified. Sleelvac lowers executable scientific/economic/chemi
 
 Unknown modules and duplicate imports are rejected by Sleelvac. `chemistry` is handled by a dedicated frontend adapter so its inferred layer remains explicitly distinguishable from the established math/physics/economics registry.
 
+The current chemistry inference kernels depend on the numerical primitives in `math`; source programs using executable chemistry therefore declare both `import math;` and `import chemistry;`.
+
 ## Executable Chemistry API
 
 The current executable chemistry layer is deliberately evidence-oriented:
