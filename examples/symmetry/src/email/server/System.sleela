@@ -1,0 +1,21 @@
+system Email.Server {
+  role server
+
+  state mailboxes
+  state queue
+  state delivered_count
+
+  on start {
+    delivered_count = 0
+  }
+
+  on smtp.submit(message) {
+    enqueue message into queue
+    deliver message to mailboxes
+    delivered_count = delivered_count + 1
+  }
+
+  on mailbox.fetch(user) {
+    return mailboxes[user]
+  }
+}
