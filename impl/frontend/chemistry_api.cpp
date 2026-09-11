@@ -88,8 +88,13 @@ void lowerStmt(StmtP& s) {
 
 void lowerProgram(Program& program) {
     bool imported=false;
-    for (const auto& module:program.imports) if (module=="chemistry") imported=true;
+    bool math=false;
+    for (const auto& module:program.imports) {
+        if (module=="chemistry") imported=true;
+        if (module=="math") math=true;
+    }
     if (!imported) return;
+    if (!math) throw std::runtime_error("Semantic error: chemistry requires 'import math;' for its numerical inference kernels");
     bool helper=false;
     for (const auto& c:program.classes) if (c.name=="__NativeChemistry") helper=true;
     if (!helper) addChemistry(program);
