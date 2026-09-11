@@ -47,6 +47,50 @@ triplet of targets (**Java**, **Sleela**, **C**).
   to how the United States was created — who built it, who bought it, and the
   early reliefs of 1967 — as dated, sourced facts kept apart from framing.
 
+## Subject Libraries — primary references
+
+The subject libraries are first-class parts of the SLeeLa implementation. Each
+subject has a dedicated reference document in the repository and a corresponding
+implementation layer where applicable. These documents are the README-level map
+to the additions made across the compiler, runtime, and Nordshrift stack.
+
+| Subject | Primary README reference | Implementation / integration |
+|---|---|---|
+| **Math** | [`MATH.md`](MATH.md) | `impl/core/` and native math lowering |
+| **Physics** | [`PHYSICS.md`](PHYSICS.md) | native physics API and executable formula layer |
+| **Economics** | [`ECONOMICS.md`](ECONOMICS.md) | native economics API and executable formula layer |
+| **Chemistry** | [`CHEMISTRY.md`](CHEMISTRY.md) | [`impl/chemistry/`](impl/chemistry/) and [`impl/frontend/chemistry_api.cpp`](impl/frontend/chemistry_api.cpp) |
+| **Financial** | [`FINANCIAL.md`](FINANCIAL.md) | [`impl/finance/`](impl/finance/) and [`impl/frontend/financial_api.cpp`](impl/frontend/financial_api.cpp) |
+
+### How the subject libraries relate
+
+**Math** is the foundational numerical layer. Physics, Economics, Chemistry,
+and Financial use mathematical transformation, approximation, ratios, and
+algebraic relationships as appropriate to their domains.
+
+**Physics** provides executable constants and formula families for mechanics,
+relativity, electricity, gases, waves, and related modeled quantities.
+
+**Economics** provides executable time-value, elasticity, rate, profit, margin,
+and macroeconomic identity functions. Economic calculations remain models and
+are not automatically empirical forecasts.
+
+**Chemistry** adds structured chemical subjects, composition, valence and bond
+relationships, symmetry, physical-chemical properties, comparative ratios,
+signals, conferrers, and explicitly qualified inference. Its stochastic
+0–24 evaluation is a computational ranking mechanism, not a scientific
+certainty or psychometric score.
+
+**Financial** adds executable financial mathematics and algebra including time
+value of money, NPV, bonds, CAPM, WACC, determinants, 2×2 systems, quadratic
+relations, and ratios. Its subject-level explanation follows the chain
+**subject → quantities → units → assumptions → algebra → equation →
+transformation → numerical result → interpretation**.
+
+Together these references define a subject-oriented layer above the common
+Sleela execution core while keeping each domain's assumptions and numerical
+contracts explicit.
+
 ```sh
 cd impl && make
 ./build/sleela run examples/hello.sleela
