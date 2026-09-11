@@ -1,0 +1,11 @@
+# Nordshrift financial integration model
+
+integration financial:
+  subject: FinancialSubject
+  prior-subject: PriorSubject
+  preserve: [identity, quantity, unit, formula, assumptions, ratios, invariants, result-trace, explanation-trace]
+  order: [subject, quantity, algebra, formula, transformation, result, comparative-norm, interpretation]
+  evidence: [observed, supplied, derived, inferred]
+  targets: [sleela, sleela-artifact, java, c]
+
+# IQ Conservator is an information/insight-quality preservation concept, not a psychometric score.
