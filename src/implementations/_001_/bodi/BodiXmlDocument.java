@@ -25,10 +25,8 @@ public final class BodiXmlDocument
         factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
         factory.setXIncludeAware(false);
         factory.setExpandEntityReferences(false);
-        try { factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, ""); }
-        catch (IllegalArgumentException ignored) { }
-        try { factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, ""); }
-        catch (IllegalArgumentException ignored) { }
+        try { factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, ""); } catch (IllegalArgumentException ignored) { }
+        try { factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, ""); } catch (IllegalArgumentException ignored) { }
 
         Document document = factory.newDocumentBuilder().parse(
             new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)));
@@ -39,11 +37,13 @@ public final class BodiXmlDocument
         String system = root.getAttribute("system");
         String method = root.getAttribute("method");
         String sequence = root.getAttribute("sequence");
+        String starter = root.getAttribute("starter");
+        String man = root.getAttribute("man");
         String datum = textOf(root, "datum");
         if (datum.length() == 0)
             datum = orderedText(root);
 
-        return new BodiChange(system, method, datum, sequence);
+        return new BodiChange(system, method, datum, sequence, starter, man);
     }
 
     public static String response(String status, String message)
