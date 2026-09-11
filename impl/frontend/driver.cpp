@@ -58,11 +58,12 @@ static bool hasExt(const std::string& path, const std::string& ext) {
 }
 
 // Compile a fully-built Program and run it on the core.
-static int compileAndRun(sleela::Program& prog, const catalog::Catalog& cat) {
+static int compileAndRun(sleela::Program& prog, const catalog::Catalog& cat,
+                          const sleela::SyntaxVersion& syntax = sleela::SyntaxVersion{1, 0}) {
     SLVM* vm = slvm_new();
     int rc = 0;
     try {
-        sleela::compile(prog, vm, &cat);      // lowers AST -> core bytecode (sheet-aware)
+        sleela::compile(prog, vm, &cat, syntax); // lowers AST -> core bytecode (sheet-aware)
         SLResult r = slvm_run(vm);            // execute through the core
         if (r == SLR_ERROR) {
             const char* e = slvm_error(vm);
@@ -177,8 +178,10 @@ static int runFile(const std::string& path) {
     }
 
     // Version awareness (SL-META-0001 Section 4.4): a compiler must reject files
-    // whose declared syntax version is outside its supported range.
+    // whose declared syntax version is outside its supported range. The resolved
+    // version is also passed to the compiler so semantic features can be gated.
     if (!checkSyntaxVersion(path, src)) return 1;
+    sleela::VersionResolution syntax = sleela::resolveSyntaxVersion(src);
 
     catalog::Catalog cat = loadCatalog();
     try {
@@ -188,7 +191,7 @@ static int runFile(const std::string& path) {
         sleela::Parser parser(std::move(tokens));
         sleela::Program prog = parser.parseProgram();
 
-        return compileAndRun(prog, cat);
+        return compileAndRun(prog, cat, syntax.declared);
     } catch (const std::exception& ex) {
         std::cerr << "sleela: " << ex.what() << "\n";
         return 1;

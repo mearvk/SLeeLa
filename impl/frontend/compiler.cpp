@@ -32,8 +32,8 @@ struct MethodCtx {
 
 class Compiler {
 public:
-    Compiler(const Program& prog, SLVM* vm, const catalog::Catalog* cat)
-        : prog_(prog), vm_(vm), cat_(cat) {}
+    Compiler(const Program& prog, SLVM* vm, const catalog::Catalog* cat, const SyntaxVersion& syntax)
+        : prog_(prog), vm_(vm), cat_(cat), syntax_(syntax) {}
 
     int run() {
         // Pass 0: declare a core global for every class field. Fields are
@@ -79,6 +79,7 @@ private:
     const Program& prog_;
     SLVM* vm_;
     const catalog::Catalog* cat_;   // SHEET.sheet catalog for conducted methods
+    SyntaxVersion syntax_;          // source syntax version for feature gating
     std::map<std::string, int> funcIndex_;   // method name -> core func index
     std::vector<MethodInfo> methods_;
     std::map<std::string, int> fieldGlobal_; // field name -> core global slot
@@ -355,6 +356,68 @@ private:
         }
 
         // -----------------------------------------------------------------
+        // Networking built-ins. These are runtime operations backed by the
+        // bounded socket table in the C core. Handles and ports are runtime
+        // integer values; host/data are runtime strings.
+        //   listen(port)             -> socket handle
+        //   accept(listener)         -> client handle
+        //   connect(host, port)      -> client handle
+        //   sockread(socket)         -> String, empty String on EOF/error
+        //   sockwrite(socket, data)  -> byte count, or -1
+        //   sockclose(socket)        -> null
+        // -----------------------------------------------------------------
+        if (n == "listen" || n == "accept" || n == "connect" ||
+            n == "sockread" || n == "sockwrite" || n == "sockclose") {
+            if (syntax_ < SyntaxVersion{1, 1})
+                throw std::runtime_error("Semantic error: network built-ins require #sleela 1.1");
+        }
+
+        if (n == "listen") {
+            if (c.args.size() != 1)
+                throw std::runtime_error("Semantic error: listen(port) takes exactly one argument");
+            emitExpr(c.args[0].get());
+            emit(OP_LISTEN);
+            return true;
+        }
+        if (n == "accept") {
+            if (c.args.size() != 1)
+                throw std::runtime_error("Semantic error: accept(socket) takes exactly one argument");
+            emitExpr(c.args[0].get());
+            emit(OP_ACCEPT);
+            return true;
+        }
+        if (n == "connect") {
+            if (c.args.size() != 2)
+                throw std::runtime_error("Semantic error: connect(host, port) takes exactly two arguments");
+            emitExpr(c.args[0].get());
+            emitExpr(c.args[1].get());
+            emit(OP_CONNECT);
+            return true;
+        }
+        if (n == "sockread") {
+            if (c.args.size() != 1)
+                throw std::runtime_error("Semantic error: sockread(socket) takes exactly one argument");
+            emitExpr(c.args[0].get());
+            emit(OP_SOCKREAD);
+            return true;
+        }
+        if (n == "sockwrite") {
+            if (c.args.size() != 2)
+                throw std::runtime_error("Semantic error: sockwrite(socket, data) takes exactly two arguments");
+            emitExpr(c.args[0].get());
+            emitExpr(c.args[1].get());
+            emit(OP_SOCKWRITE);
+            return true;
+        }
+        if (n == "sockclose") {
+            if (c.args.size() != 1)
+                throw std::runtime_error("Semantic error: sockclose(socket) takes exactly one argument");
+            emitExpr(c.args[0].get());
+            emit(OP_SOCKCLOSE);
+            return true;
+        }
+
+        // -----------------------------------------------------------------
         // Conducted-method built-ins, backed by SHEET.sheet (the catalog).
         // These give Sleela full method control/support: express a groove,
         // read an object's insight, and route to known congruences.
@@ -445,8 +508,8 @@ private:
 
 } // anonymous namespace
 
-int compile(const Program& prog, SLVM* vm, const catalog::Catalog* cat) {
-    Compiler c(prog, vm, cat);
+int compile(const Program& prog, SLVM* vm, const catalog::Catalog* cat, const SyntaxVersion& syntax) {
+    Compiler c(prog, vm, cat, syntax);
     return c.run();
 }
 

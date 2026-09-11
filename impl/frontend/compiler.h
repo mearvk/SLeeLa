@@ -10,6 +10,7 @@
 #define SLEELA_COMPILER_H
 
 #include "ast.h"
+#include "version.h"
 #include "../catalog/sheet_catalog.h"
 
 extern "C" {
@@ -26,7 +27,8 @@ namespace sleela {
 // methods -- the sheet-derived built-ins insight()/role()/route()/congruent()/
 // conduct()/sysdepth()/degreemax(). When null, those built-ins still compile
 // but resolve against an empty catalog.
-int compile(const Program& prog, SLVM* vm, const catalog::Catalog* cat = nullptr);
+int compile(const Program& prog, SLVM* vm, const catalog::Catalog* cat = nullptr,
+            const SyntaxVersion& syntax = SyntaxVersion{1, 0});
 
 } // namespace sleela
 

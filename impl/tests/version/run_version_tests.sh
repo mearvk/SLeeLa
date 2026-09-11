@@ -36,11 +36,13 @@ echo "supported range:"
 echo "accepted:"
 expect_ok "$EX/versioned.sleela"      "#sleela 1.0 (declared, in range)"
 expect_ok "$EX/hello.sleela"          "#sleela 1.0 on classic hello"
+expect_ok "$HERE/network_1_1.sleela"  "#sleela 1.1 network built-ins"
 
 echo "rejected:"
 expect_reject "$HERE/too_new.sleela"     "#sleela 2.0 (major too new)"
 expect_reject "$HERE/minor_ahead.sleela" "#sleela 1.9 (minor too new)"
 expect_reject "$HERE/malformed.sleela"   "#sleela one.zero (malformed)"
+expect_reject "$HERE/network_too_early.sleela" "#sleela 1.0 using network built-ins"
 
 echo "diagnostics (stderr shown):"
 "$SLEELA" run "$HERE/too_new.sleela" 2>&1 >/dev/null | sed 's/^/  > /'

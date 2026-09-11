@@ -92,6 +92,7 @@ typedef enum {
  * slots (comfortably covering "~24 concurrent locks on a 2-tuple line"). */
 #define SL_MAX_THREADS 128
 #define SL_MAX_LOCKS   32
+#define SL_MAX_SOCKETS 128
 
 /* Result codes returned across the ABI. */
 typedef enum {
@@ -123,8 +124,7 @@ typedef enum {
     SLX_GET_RESULT       /* arg.value = last run result                      */
 } SLExchangeOp;
 
-/* The threading opcodes (OP_SPAWN, OP_JOINALL, OP_LOCK, OP_UNLOCK, OP_SEND,
- * OP_RECV) need no new exchange ops: they are assembled like any other
+/* The threading and networking opcodes need no new exchange ops: they are assembled like any other
  * instruction through SLX_EMIT (arg.op = the opcode, arg.a = its operand),
  * so slcore_exchange remains the single dispatch entry point. slvm_run then
  * executes the whole program -- main thread plus any spawned threads -- and

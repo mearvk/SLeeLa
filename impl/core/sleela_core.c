@@ -13,6 +13,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include <pthread.h>
+#include <errno.h>
+#include <netdb.h>
+#include <arpa/inet.h>
+#include <netinet/in.h>
+#include <sys/socket.h>
+#include <unistd.h>
 
 /* ---- tunables ---------------------------------------------------------- */
 #define STACK_MAX   4096
@@ -60,6 +66,14 @@ typedef struct {
     SLValue         value;    /* second element                            */
 } SLMailbox;
 
+/* A VM-local socket handle. The public Sleela value is the bounded slot
+ * index, not the operating-system descriptor, so the VM owns its lifecycle. */
+typedef struct {
+    pthread_mutex_t mtx;
+    int             active;
+    int             fd;
+} SLSocket;
+
 struct SLVM {
     /* ---- shared program (immutable during run) ---- */
     SLInstr* code; int codelen, codecap;
@@ -78,6 +92,9 @@ struct SLVM {
     pthread_mutex_t intern_mtx;   /* guards the string table               */
     pthread_mutex_t global_mtx;   /* guards global slot reads/writes       */
     pthread_mutex_t print_mtx;    /* keeps printed lines atomic            */
+    pthread_mutex_t sock_mtx;     /* allocates/reclaims socket slots       */
+
+    SLSocket        sockets[SL_MAX_SOCKETS];
 
     pthread_mutex_t locks[SL_MAX_LOCKS];   /* the bounded lock table        */
     SLMailbox       mailbox[SL_MAX_LOCKS]; /* the bounded 2-tuple channels  */
@@ -139,7 +156,13 @@ SLVM* slvm_new(void) {
     pthread_mutex_init(&vm->intern_mtx, NULL);
     pthread_mutex_init(&vm->global_mtx, NULL);
     pthread_mutex_init(&vm->print_mtx, NULL);
+    pthread_mutex_init(&vm->sock_mtx, NULL);
     pthread_mutex_init(&vm->thr_mtx, NULL);
+    for (int i = 0; i < SL_MAX_SOCKETS; i++) {
+        pthread_mutex_init(&vm->sockets[i].mtx, NULL);
+        vm->sockets[i].active = 0;
+        vm->sockets[i].fd = -1;
+    }
     for (int i = 0; i < SL_MAX_LOCKS; i++) {
         pthread_mutex_init(&vm->locks[i], NULL);
         pthread_mutex_init(&vm->mailbox[i].mtx, NULL);
@@ -153,6 +176,18 @@ void slvm_free(SLVM* vm) {
     if (!vm) return;
     /* join any threads still outstanding, then reap their handles */
     slvm_joinall(vm);
+
+    for (int i = 0; i < SL_MAX_SOCKETS; i++) {
+        pthread_mutex_lock(&vm->sockets[i].mtx);
+        if (vm->sockets[i].active) {
+            close(vm->sockets[i].fd);
+            vm->sockets[i].fd = -1;
+            vm->sockets[i].active = 0;
+        }
+        pthread_mutex_unlock(&vm->sockets[i].mtx);
+        pthread_mutex_destroy(&vm->sockets[i].mtx);
+    }
+    pthread_mutex_destroy(&vm->sock_mtx);
 
     for (int i = 0; i < SL_MAX_LOCKS; i++) {
         pthread_mutex_destroy(&vm->locks[i]);
@@ -263,6 +298,71 @@ static int is_truthy(SLValue v) {
     return 0;
 }
 static int both_int(SLValue a, SLValue b) { return a.type == SL_INT && b.type == SL_INT; }
+
+/* ---- networking -------------------------------------------------------- */
+static int socket_alloc(SLVM* vm, int fd) {
+    pthread_mutex_lock(&vm->sock_mtx);
+    for (int i = 0; i < SL_MAX_SOCKETS; i++) {
+        if (!vm->sockets[i].active) {
+            pthread_mutex_lock(&vm->sockets[i].mtx);
+            vm->sockets[i].fd = fd;
+            vm->sockets[i].active = 1;
+            pthread_mutex_unlock(&vm->sockets[i].mtx);
+            pthread_mutex_unlock(&vm->sock_mtx);
+            return i;
+        }
+    }
+    pthread_mutex_unlock(&vm->sock_mtx);
+    return -1;
+}
+
+static int socket_valid_handle(int h) {
+    return h >= 0 && h < SL_MAX_SOCKETS;
+}
+
+static int socket_fd_locked(SLSocket* s) {
+    return s->active ? s->fd : -1;
+}
+
+static int make_listener(int port) {
+    if (port < 0 || port > 65535) return -1;
+    int fd = socket(AF_INET, SOCK_STREAM, 0);
+    if (fd < 0) return -1;
+    int yes = 1;
+    (void)setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes));
+    struct sockaddr_in addr;
+    memset(&addr, 0, sizeof(addr));
+    addr.sin_family = AF_INET;
+    addr.sin_addr.s_addr = htonl(INADDR_ANY);
+    addr.sin_port = htons((uint16_t)port);
+    if (bind(fd, (struct sockaddr*)&addr, sizeof(addr)) < 0 || listen(fd, 16) < 0) {
+        close(fd);
+        return -1;
+    }
+    return fd;
+}
+
+static int make_connection(const char* host, int port) {
+    if (!host || port < 0 || port > 65535) return -1;
+    char service[16];
+    snprintf(service, sizeof(service), "%d", port);
+    struct addrinfo hints;
+    memset(&hints, 0, sizeof(hints));
+    hints.ai_socktype = SOCK_STREAM;
+    hints.ai_family = AF_UNSPEC;
+    struct addrinfo* list = NULL;
+    if (getaddrinfo(host, service, &hints, &list) != 0) return -1;
+    int fd = -1;
+    for (struct addrinfo* p = list; p; p = p->ai_next) {
+        fd = socket(p->ai_family, p->ai_socktype, p->ai_protocol);
+        if (fd < 0) continue;
+        if (connect(fd, p->ai_addr, p->ai_addrlen) == 0) break;
+        close(fd);
+        fd = -1;
+    }
+    freeaddrinfo(list);
+    return fd;
+}
 
 /* ---- printing ---------------------------------------------------------- */
 static void print_value(SLVM* vm, SLValue v) {
@@ -535,6 +635,121 @@ static SLResult run_thread(SLThread* t) {
             pthread_cond_broadcast(&mb->cond);
             pthread_mutex_unlock(&mb->mtx);
             PUSH(v);
+        } break;
+
+        /* ---- networking ------------------------------------------------ */
+        case OP_LISTEN: {
+            SLValue pv = POP();
+            if (pv.type != SL_INT) { TERR("listen(port) requires an integer port"); }
+            int fd = make_listener((int)pv.as.i);
+            if (fd < 0) { PUSH(slval_int(-1)); break; }
+            int h = socket_alloc(vm, fd);
+            if (h < 0) { close(fd); PUSH(slval_int(-1)); break; }
+            PUSH(slval_int(h));
+        } break;
+
+        case OP_ACCEPT: {
+            SLValue hv = POP();
+            if (hv.type != SL_INT || !socket_valid_handle((int)hv.as.i)) {
+                TERR("accept(socket) requires a valid socket handle");
+            }
+            int h = (int)hv.as.i;
+            SLSocket* listener = &vm->sockets[h];
+            pthread_mutex_lock(&listener->mtx);
+            int lfd = socket_fd_locked(listener);
+            if (lfd < 0) {
+                pthread_mutex_unlock(&listener->mtx);
+                PUSH(slval_int(-1));
+                break;
+            }
+            int cfd = accept(lfd, NULL, NULL);
+            pthread_mutex_unlock(&listener->mtx);
+            if (cfd < 0) { PUSH(slval_int(-1)); break; }
+            int ch = socket_alloc(vm, cfd);
+            if (ch < 0) { close(cfd); PUSH(slval_int(-1)); break; }
+            PUSH(slval_int(ch));
+        } break;
+
+        case OP_CONNECT: {
+            SLValue portv = POP();
+            SLValue hostv = POP();
+            if (hostv.type != SL_STR || portv.type != SL_INT) {
+                TERR("connect(host, port) requires a String and integer port");
+            }
+            const char* host = slvm_str(vm, hostv.as.s);
+            int fd = make_connection(host, (int)portv.as.i);
+            if (fd < 0) { PUSH(slval_int(-1)); break; }
+            int h = socket_alloc(vm, fd);
+            if (h < 0) { close(fd); PUSH(slval_int(-1)); break; }
+            PUSH(slval_int(h));
+        } break;
+
+        case OP_SOCKREAD: {
+            SLValue hv = POP();
+            if (hv.type != SL_INT || !socket_valid_handle((int)hv.as.i)) {
+                TERR("sockread(socket) requires a valid socket handle");
+            }
+            int h = (int)hv.as.i;
+            SLSocket* sock = &vm->sockets[h];
+            pthread_mutex_lock(&sock->mtx);
+            int fd = socket_fd_locked(sock);
+            if (fd < 0) {
+                pthread_mutex_unlock(&sock->mtx);
+                PUSH(slval_int(-1));
+                break;
+            }
+            char buf[4097];
+            ssize_t n = recv(fd, buf, sizeof(buf), 0);
+            if (n <= 0) {
+                pthread_mutex_unlock(&sock->mtx);
+                SLValue empty; empty.type = SL_STR; empty.as.s = intern(vm, "");
+                PUSH(empty);
+                break;
+            }
+            buf[n] = '\\0';
+            int sid = intern(vm, buf);
+            pthread_mutex_unlock(&sock->mtx);
+            SLValue out; out.type = SL_STR; out.as.s = sid;
+            PUSH(out);
+        } break;
+
+        case OP_SOCKWRITE: {
+            SLValue sv = POP();
+            SLValue hv = POP();
+            if (hv.type != SL_INT || sv.type != SL_STR || !socket_valid_handle((int)hv.as.i)) {
+                TERR("sockwrite(socket, string) requires a socket handle and String");
+            }
+            int h = (int)hv.as.i;
+            SLSocket* sock = &vm->sockets[h];
+            pthread_mutex_lock(&sock->mtx);
+            int fd = socket_fd_locked(sock);
+            if (fd < 0) {
+                pthread_mutex_unlock(&sock->mtx);
+                PUSH(slval_int(-1));
+                break;
+            }
+            const char* data = slvm_str(vm, sv.as.s);
+            size_t len = strlen(data);
+            ssize_t n = send(fd, data, len, 0);
+            pthread_mutex_unlock(&sock->mtx);
+            PUSH(slval_int(n < 0 ? -1 : (int64_t)n));
+        } break;
+
+        case OP_SOCKCLOSE: {
+            SLValue hv = POP();
+            if (hv.type != SL_INT || !socket_valid_handle((int)hv.as.i)) {
+                TERR("sockclose(socket) requires a valid socket handle");
+            }
+            int h = (int)hv.as.i;
+            SLSocket* sock = &vm->sockets[h];
+            pthread_mutex_lock(&sock->mtx);
+            if (sock->active) {
+                close(sock->fd);
+                sock->fd = -1;
+                sock->active = 0;
+            }
+            pthread_mutex_unlock(&sock->mtx);
+            PUSH(slval_null());
         } break;
 
         default: TERR("illegal opcode");

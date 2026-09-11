@@ -11,6 +11,7 @@ BUILD    := build
 SLEELA_BIN     := $(BUILD)/sleela
 NORDSHRIFT_BIN := $(BUILD)/nordshrift
 THREAD_SMOKE   := $(BUILD)/thread_smoke
+SOCKET_SMOKE   := $(BUILD)/socket_smoke
 
 # ---- Shared catalog (SHEET.sheet parser) ----
 CATALOG_OBJ := $(BUILD)/sheet_catalog.o
@@ -31,7 +32,7 @@ NS_SRC := nordshrift/sst_lexer.cpp nordshrift/sst_parser.cpp \
           nordshrift/object_compat.cpp nordshrift/nordshrift.cpp
 NS_OBJ := $(patsubst nordshrift/%.cpp,$(BUILD)/ns_%.o,$(NS_SRC))
 
-.PHONY: all clean test test-sleela test-version test-nordshrift test-threads test-catalog
+.PHONY: all clean test test-sleela test-version test-nordshrift test-threads test-network test-catalog
 
 all: $(SLEELA_BIN) $(NORDSHRIFT_BIN)
 
@@ -45,6 +46,10 @@ $(NORDSHRIFT_BIN): $(NS_OBJ) $(CORE_OBJ) $(FE_OBJ) $(CATALOG_OBJ)
 
 # The C-level threading smoke test drives the core through the builder API.
 $(THREAD_SMOKE): core/thread_smoke.c $(CORE_OBJ)
+	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
+
+# The C-level network smoke test exercises the complete TCP opcode path.
+$(SOCKET_SMOKE): core/socket_smoke.c $(CORE_OBJ)
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
 # ---- compile ----
@@ -67,7 +72,7 @@ $(BUILD):
 	mkdir -p $(BUILD)
 
 # ---- tests ----
-test: test-sleela test-version test-nordshrift test-threads test-catalog
+test: test-sleela test-version test-nordshrift test-threads test-network test-catalog
 
 # Threading smoke test: spawn 128 workers, guarded increments + tuple channel.
 test-threads: $(THREAD_SMOKE)
@@ -96,6 +101,11 @@ test-nordshrift: $(NORDSHRIFT_BIN)
 	done
 	@echo "=== build nordshrift/examples/demo/build.sst (target sleela -> core) ==="; \
 	$(NORDSHRIFT_BIN) build nordshrift/examples/demo/build.sst || exit 1
+
+# TCP networking smoke test: loopback listen/accept/connect/read/write/close.
+test-network: $(SOCKET_SMOKE)
+	@echo "=== core networking smoke (TCP loopback) ==="; \
+	$(SOCKET_SMOKE)
 
 # Exercise the SHEET.sheet object compatibility list + relevance conversion.
 test-catalog: $(NORDSHRIFT_BIN)
