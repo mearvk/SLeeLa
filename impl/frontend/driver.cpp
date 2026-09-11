@@ -6,9 +6,11 @@
 #include "compiler.h"
 #include "artifact.h"
 #include "native_api.h"
+#include "chemistry_api.h"
 #include "version.h"
 #include "../catalog/sheet_catalog.h"
 #include "../xclass/xclass_loader.h"
+#include <algorithm>
 #include <cstdio>
 #include <cstdlib>
 #include <fstream>
@@ -19,15 +21,15 @@
 extern "C" {
 #include "../core/sleela_core.h"
 }
-static const char* kVersion="Sleelvac™ 1.2 (Sleela compiler; executable native math/physics/economics modules; persistent .sleela Core artifacts; .xclass input)";
+static const char* kVersion="Sleelvac™ 1.3 (Sleela compiler; executable native math/physics/economics/chemistry modules; normed presumed chemistry; persistent .sleela Core artifacts; .xclass input)";
 static bool readFile(const std::string& path,std::string& out);
 static bool checkSyntaxVersion(const std::string& path,const std::string& src){sleela::VersionResolution v=sleela::resolveSyntaxVersion(src);if(v.isError()){std::cerr<<"sleelvac: "<<path<<": error: "<<v.message<<"\n";return false;}if(v.isWarning())std::cerr<<"sleelvac: "<<path<<": warning: "<<v.message<<"\n";return true;}
 static bool hasExt(const std::string& path,const std::string& ext){return path.size()>=ext.size()&&path.compare(path.size()-ext.size(),ext.size(),ext)==0;}
-static int compileAndRun(sleela::Program& prog,const catalog::Catalog& cat,const sleela::SyntaxVersion& syntax={1,0}){SLVM*vm=slvm_new();if(!vm){std::cerr<<"sleelvac: unable to allocate Sleela VM\n";return 1;}int rc=0;try{sleela::native::lowerProgram(prog);sleela::compile(prog,vm,&cat,syntax);SLResult r=slvm_run(vm);if(r==SLR_ERROR){const char*e=slvm_error(vm);std::cerr<<"sleelvac: runtime error: "<<(e?e:"unknown")<<"\n";rc=1;}}catch(const std::exception&ex){std::cerr<<"sleelvac: "<<ex.what()<<"\n";rc=1;}slvm_free(vm);return rc;}
+static int compileAndRun(sleela::Program& prog,const catalog::Catalog& cat,const sleela::SyntaxVersion& syntax={1,0}){SLVM*vm=slvm_new();if(!vm){std::cerr<<"sleelvac: unable to allocate Sleela VM\n";return 1;}int rc=0;try{sleela::chemistry::lowerProgram(prog);sleela::native::lowerProgram(prog);sleela::compile(prog,vm,&cat,syntax);SLResult r=slvm_run(vm);if(r==SLR_ERROR){const char*e=slvm_error(vm);std::cerr<<"sleelvac: runtime error: "<<(e?e:"unknown")<<"\n";rc=1;}}catch(const std::exception&ex){std::cerr<<"sleelvac: "<<ex.what()<<"\n";rc=1;}slvm_free(vm);return rc;}
 static catalog::Catalog loadCatalog(){const char*env=std::getenv("SLEELA_SHEET");const char*candidates[]={env,"SHEET.sheet","../SHEET.sheet","../../SHEET.sheet","../../../SHEET.sheet"};for(const char*p:candidates){if(!p||!*p)continue;bool ok=false;catalog::Catalog c=catalog::parseCatalogFile(p,&ok);if(ok)return c;}return catalog::Catalog{};}
 static int usage(){std::cerr<<"Usage:\n  sleela compile <file.sleela> -o <program.sleela>\n  sleela run <file.sleela>\n  sleela run <program.sleela>\n  sleela run <file.xclass> [more...]\n  sleela xclass [--run|--emit|--info] <file.xclass> [more...]\n  sleela check <file.sleela>\n  sleela version\n";return 2;}
-static bool parseSource(const std::string&path,std::string&src,sleela::Program&prog,sleela::VersionResolution&version){if(!readFile(path,src)){std::cerr<<"sleelvac: cannot open '"<<path<<"'\n";return false;}if(!checkSyntaxVersion(path,src))return false;version=sleela::resolveSyntaxVersion(src);try{sleela::Lexer lexer(src);auto tokens=lexer.tokenize();sleela::Parser parser(std::move(tokens));prog=parser.parseProgram();sleela::native::validateImports(prog);return true;}catch(const std::exception&ex){std::cerr<<"sleelvac: "<<path<<": "<<ex.what()<<"\n";return false;}}
-static int checkFile(const std::string&path){std::string src;sleela::Program prog;sleela::VersionResolution v;if(!parseSource(path,src,prog,v))return 1;std::cout<<path<<": ok (syntax "<<(v.pragmaPresent?"declared ":"assumed ")<<v.declared.str()<<")\n";return 0;}
+static bool parseSource(const std::string&path,std::string&src,sleela::Program&prog,sleela::VersionResolution&version){if(!readFile(path,src)){std::cerr<<"sleelvac: cannot open '"<<path<<"'\n";return false;}if(!checkSyntaxVersion(path,src))return false;version=sleela::resolveSyntaxVersion(src);try{sleela::Lexer lexer(src);auto tokens=lexer.tokenize();sleela::Parser parser(std::move(tokens));prog=parser.parseProgram();sleela::Program validation=prog;validation.imports.erase(std::remove(validation.imports.begin(),validation.imports.end(),"chemistry"),validation.imports.end());sleela::native::validateImports(validation);return true;}catch(const std::exception&ex){std::cerr<<"sleelvac: "<<path<<": "<<ex.what()<<"\n";return false;}}
+static int checkFile(const std::string&path){std::string src;sleela::Program prog;sleela::VersionResolution v;if(!parseSource(path,src,prog,v))return 1;try{sleela::chemistry::lowerProgram(prog);}catch(const std::exception&ex){std::cerr<<"sleelvac: "<<path<<": "<<ex.what()<<"\n";return 1;}std::cout<<path<<": ok (syntax "<<(v.pragmaPresent?"declared ":"assumed ")<<v.declared.str()<<")\n";return 0;}
 static int compileFile(const std::string&sourcePath,const std::string&outputPath){std::string src;sleela::Program prog;sleela::VersionResolution syntax;if(!parseSource(sourcePath,src,prog,syntax))return 1;catalog::Catalog cat=loadCatalog();try{int rc=sleela::compileToArtifact(prog,outputPath,&cat,syntax.declared);if(rc!=0)return 1;std::cout<<"sleelvac: "<<sourcePath<<" -> "<<outputPath<<" (runnable Sleela Core artifact)\n";return 0;}catch(const std::exception&ex){std::cerr<<"sleelvac: "<<ex.what()<<"\n";return 1;}}
 static int runArtifact(const std::string&path){SLVM*vm=slvm_load_file(path.c_str());if(!vm){std::cerr<<"sleelvac: cannot load runnable .sleela artifact '"<<path<<"'\n";return 1;}SLResult r=slvm_run(vm);if(r==SLR_ERROR){const char*e=slvm_error(vm);std::cerr<<"sleelvac: runtime error: "<<(e?e:"unknown")<<"\n";slvm_free(vm);return 1;}slvm_free(vm);return 0;}
 static int runSource(const std::string&path){std::string src;sleela::Program prog;sleela::VersionResolution syntax;if(!parseSource(path,src,prog,syntax))return 1;catalog::Catalog cat=loadCatalog();return compileAndRun(prog,cat,syntax.declared);}
