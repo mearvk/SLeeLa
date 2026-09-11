@@ -1,4 +1,4 @@
-# BODI — Witness, Change, and Mitigative Circumference
+# BODI — Witness, Change, Mitigative Circumference, and Wiggle Search
 
 Bodi is the witness layer to object change in SLeeLa. It gives a programmer a stable semantic address for a known or knowable system and records the change attempted against that address.
 
@@ -243,227 +243,398 @@ must be interpreted according to the target contract. It may be idempotent, dupl
 
 Bodi should never invent a state solely to make a repeated sequence appear valid.
 
-## 9. Circuit and State Coherence
+## 9. Wiggle Verb Set — XML-Directed Search and Harmonization
 
-The circuit analogy is intentionally bounded: it is a model for coherent state transitions, not a claim that software obeys a physical conservation law.
+The **wiggle layer** is a controlled exploratory vocabulary that operates *around and through the XML structure* without pretending that an exploratory observation is itself a system change. It is intended for best-guess linking to normally well-defined SLeeLa servers or other SLeeLa-aware endpoints.
 
-A valid transition has:
+A wiggle operation asks the XML structure a bounded question, follows an informed direction, records what was found, and converts a useful finding into a new witnessed input/output relationship.
+
+The canonical wiggle pairs are:
+
+| Family | Positive | Negative | Purpose |
+|---|---|---|---|
+| Structure | `trace` | `untrace` | follow an XML path / cease path following |
+| Direction | `seek` | `avoid` | search an intended structural direction / exclude it |
+| Harmonic | `tune` | `detune` | compare compatible system characteristics |
+| Causation | `cause` | `decause` | test a candidate cause / remove it from the active hypothesis |
+| Linkage | `link` | `unlink` | form or remove a *candidate* structural association |
+| Correlation | `correlate` | `decouple` | compare related observations / separate them |
+| Traversal | `ascend` | `descend` | move toward parent or child XML structure |
+| Ordering | `precede` | `follow` | inspect earlier or later structural context |
+| Query | `inspect` | `pass` | examine a node / deliberately skip it |
+| Resonance | `harmonize` | `dissonate` | test whether structures support a common interpretation |
+| Evidence | `confirm` | `question` | strengthen or reopen an interpretation |
+| Search | `scan` | `bound` | perform a bounded search / constrain its frontier |
+
+These verbs are deliberately different from the 18 middle verbs. A middle verb changes an addressed system. A wiggle verb primarily **investigates, compares, traverses, or constrains information in the XML/system description**.
+
+### Wiggle safety rule
+
+A wiggle may discover a candidate relationship but may not silently promote that candidate into an executed change.
 
 ```text
-state before
+XML structure
    ↓
-transition
+wiggle search
    ↓
-state after
+observation
+   ↓
+count / satisfaction
+   ↓
+science note
+   ↓
+validated candidate
+   ↓
+(optional) Bodi middle verb
+   ↓
+actual change
 ```
 
-A sequence has:
+Thus `link` in the wiggle layer means **candidate structural linkage** until the Bodi change layer explicitly accepts and applies the relationship.
+
+## 10. Four-to-Five Search Envelope
+
+For each stated functional concern, the wiggle layer may conduct approximately **four to five bounded searches** through relevant XML structure before producing a satisfaction record. This is a search budget, not a requirement to fabricate five findings.
+
+A typical envelope is:
 
 ```text
-S₀ → S₁ → S₂ → ... → Sₙ
+1. trace / inspect   → locate the relevant node
+2. seek / scan       → search the principal direction
+3. ascend / descend  → inspect structural context
+4. correlate / tune  → compare compatible evidence
+5. confirm / question → decide whether the result is sufficiently supported
 ```
 
-A later operation must not assume a prerequisite that an earlier operation has already removed.
-
-For example, if `write(resource)` requires an open resource:
+If a concern is simple, a **1-to-1** path is valid:
 
 ```text
-open(resource)
-→ start(resource)
-→ write(resource)
-→ stop(resource)
-→ close(resource)
+one input → one inspection → one output
 ```
 
-is coherent, while:
+A more involved concern may use:
 
 ```text
-open(resource)
-→ close(resource)
-→ write(resource)
+4–5 searches → 1 satisfaction result
 ```
 
-is not, unless the target explicitly defines `write` as valid after `close`.
-
-The principle is:
-
-> **A closed circuit or closed resource must not be rhetorically treated as open merely because a later verb says so.**
-
-## 10. Rhetorical Safety
-
-A Bodi expression is **rhetorically safe** when its wording claims no more than the system can establish.
-
-The Witness should distinguish states such as:
+and a larger composition may use:
 
 ```text
-REQUESTED
-ACCEPTED
-REJECTED
-APPLIED
-REVERSED
-CONTAINED
-PROPAGATED
-OBSERVED
-FAILED
+4–5 → 1 → 1 → 4–5 → satisfied output
 ```
 
-Therefore:
+All of these are valid forms when their boundaries and counts are recorded.
+
+The number of searches is not evidence of correctness by itself. The evidence must come from the XML structure, server response, schema relationship, or other explicitly recorded observation.
+
+## 11. Satisfaction Count and Science Gain
+
+A wiggle search produces a **satisfaction observation** only when the search returned a structurally intelligible result or a meaningful bounded negative result.
+
+A simple accounting model is:
 
 ```text
-install(network_witness)
+C₀ = 0
+Cₙ₊₁ = Cₙ + 1    when one search concern is satisfactorily resolved
 ```
 
-means that installation was requested through the Bodi semantic layer. It does not alone prove successful installation.
+The count is a bookkeeping measure, not a physical quantity.
 
-A witnessed path may instead be:
+A completed concern may produce a **science result**, such as:
 
 ```text
-REQUESTED → ACCEPTED → APPLIED → OBSERVED
+XML node → formula candidate → formula review → content gain
 ```
 
 or:
 
 ```text
-REQUESTED → REJECTED
+XML relation → comparison → validated linkage → content gain
 ```
 
-or:
+The term **content gain** means that the system has acquired a new usable, documented, or better-supported piece of information. It does not imply a physical energy gain.
+
+A useful conceptual chain is:
 
 ```text
-REQUESTED → ACCEPTED → FAILED
+input
+  ↓
+XML-directed search
+  ↓
+observation
+  ↓
+satisfaction count +1
+  ↓
+science note / formula review
+  ↓
+new content
+  ↓
+new input/output relation
+  ↓
+additional linkage
+  ↓
+containment index / boundary record
 ```
 
-This distinction keeps the language precise: **request is not fact, and fact is not inferred from syntax alone.**
+## 12. Electron / Transferon Language as Software Metaphor
 
-## 11. The Circumferent Rule
+The requested terms **electron gain** and **transferon gain** may be used as bounded software metaphors for a successful transfer of information or linkage state.
 
-Every operation should be readable from both its interior and its surrounding context.
+They must not be presented as claims about actual electrons, electrical charge, or conservation laws unless an independent physical measurement establishes such a claim.
+
+For Bodi:
 
 ```text
-             circumference
-          ↙                 ↘
-      context             consequence
-          ↘                 ↙
-             Bodi change
+transferon_gain = validated_information_transfer
+ electron_gain  = validated_local_increment
 ```
 
-The interior identifies the object, verb, datum, and sequence. The circumference identifies prerequisites, authority, boundary, inverse, consequences, and Witness.
+These are conceptual counters or labels, not physical units.
 
-A sequence is complete when these views agree rather than contradict one another.
-
-## 12. Propagation and Containment
-
-`propagate` and `contain` define the principal boundary relationship.
-
-Propagation is not unrestricted broadcast. It means a witnessed change is permitted to move to a defined recipient or boundary.
-
-Containment means that the change stops at the current boundary.
-
-A propagation chain is therefore:
+A safe implementation can therefore record:
 
 ```text
-A
- ↓ witness
-B
- ↓ witness
-C
+transferon +1
+content +1
+linkage +1
+containment_index +1
 ```
 
-Each boundary should have an identifiable recipient and independently interpretable Witness.
+only when the corresponding observation is actually established.
 
-## 13. XML Duality
+## 13. Linear Search Directions
 
-Bodi carries its semantic structure across a network using the agreed XML representation:
-
-```xml
-<bodi xmlns="urn:sleela:bodi:1"
-      system="xxx"
-      sequence="001"
-      method="install"
-      starter="network"
-      man="operator">
-    <datum>network_witness</datum>
-</bodi>
-```
-
-The schema is `src/implementations/_001_/bodi/bodi.xsd`.
-
-The relationship is:
+The XML structure may be searched in several explicit directions:
 
 ```text
-XML document
-    ↓
-BodiChange
-    ↓
-addressed system
-    ↓
-middle verb
-    ↓
-target operation
-    ↓
-Witness
+left → right       sibling/order traversal
+right → left       reverse sibling/order traversal
+parent → child     descent
+child → parent     ascent
+attribute → node   semantic context
+node → reference   external linkage
+reference → node   returned linkage
 ```
 
-XML is a transport representation, not proof that a remote operation occurred. The parser is intentionally small and deterministic, with external DTDs and external entities disabled.
+A **linear search** means that the search frontier advances according to a declared order. It does not mean that XML is literally one-dimensional.
 
-## 14. Middle Verbs and Target Methods
-
-The Bodi vocabulary should not collapse into arbitrary Java reflection:
+Each search should record:
 
 ```text
-method = arbitrary user supplied string
-```
-
-Instead:
-
-```text
-Bodi middle verb
-        ↓
-semantic adapter / contract
-        ↓
-target object method
-```
-
-The middle verb expresses the intended semantic transition; the target object determines how that transition is implemented and whether it is admissible.
-
-## 15. Transactional Groups
-
-For greater complexity, operations may be grouped:
-
-```text
-ChangeSet
- ├── operation 1
- ├── operation 2
- ├── operation 3
- └── operation n
-```
-
-A group should retain:
-
-```text
-identity
-sequence
-preconditions
-operations
-observations
+origin
+frontier
+Direction
+target
+match condition
 result
-reversal policy
-boundary policy
+count contribution
 ```
 
-A failed operation must remain visible. A group may finish as:
+This prevents an exploratory traversal from becoming an unbounded scan.
+
+## 14. XML Harmonics and Causation
+
+**System harmonics** are structural correspondences that recur across compatible XML documents or server descriptors: matching namespaces, compatible element names, repeated sequence identifiers, consistent capability descriptions, or other explicitly defined structural patterns.
+
+A harmonic match is evidence of correspondence, not proof of causation.
+
+Causation must therefore be treated as a hypothesis:
 
 ```text
-COMPLETE
-PARTIAL
-ROLLED_BACK
-CONTAINED
-FAILED
+candidate cause
+   ↓
+controlled search
+   ↓
+observed consequence
+   ↓
+comparison / counter-check
+   ↓
+causal confidence
 ```
 
-A later success must not erase an earlier failure.
+The wiggle layer should prefer `correlate`, `confirm`, and `question` before promoting a relationship to a causal assertion.
 
-## 16. Full-Sequence Completeness
+## 15. Science-Result Formation
+
+A successful search can produce a science result without changing the remote system:
+
+```text
+XML input
+  ↓
+search set
+  ↓
+observations
+  ↓
+count
+  ↓
+formula/content review
+  ↓
+result document
+```
+
+A result document should preserve:
+
+```text
+source XML reference
+search direction
+search count
+matched structure
+interpretation
+confidence
+unresolved questions
+next input/output
+```
+
+The next result can then become the next input, allowing iterative growth without losing provenance.
+
+## 16. Mixed 1-to-1 and 4-to-5 Composition
+
+Bodi explicitly permits mixed search topology:
+
+```text
+A → B
+```
+
+```text
+A → {B, C, D, E} → F
+```
+
+```text
+A → B → {C, D, E, F} → G → H
+```
+
+and:
+
+```text
+input
+ ↓
+4–5 XML searches
+ ↓
+1 satisfaction
+ ↓
+1 science result
+ ↓
+4–5 searches on the new result
+ ↓
+1 satisfied output
+```
+
+The topology is valid when each fan-out has a stated concern and each fan-in has a stated synthesis rule.
+
+A fan-out without a synthesis rule is exploratory noise. A fan-in without recorded evidence is an unsupported conclusion.
+
+## 17. Containment Count and Index Spark
+
+Every exploratory chain should maintain a **containment count** and **index spark**.
+
+The containment count records how many search/result boundaries were deliberately retained rather than allowed to propagate further.
+
+The index spark is a compact marker that a new linkage, result, or search frontier became eligible for indexing.
+
+Conceptually:
+
+```text
+search
+ ↓
+result
+ ├── propagate → next boundary
+ └── contain   → retained boundary
+                 ↓
+             index spark
+```
+
+A useful record is:
+
+```text
+search_count = 5
+satisfied = 1
+content_gain = 1
+linkage_gain = 1
+containment_count = 1
+index_spark = 1
+```
+
+These are bookkeeping quantities. They should never be interpreted as proof merely because their counters increased.
+
+## 18. Wiggle Circumference
+
+The wiggle layer has its own circumference inside the larger mitigative circumference:
+
+```text
+              BODI CIRCUMFERENCE
+        ┌────────────────────────────┐
+        │ semantic change            │
+        │                            │
+        │   WIGGLE CIRCUMFERENCE     │
+        │   ┌────────────────────┐   │
+        │   │ XML search         │   │
+        │   │ direction          │   │
+        │   │ harmonic test      │   │
+        │   │ causation test     │   │
+        │   │ count               │   │
+        │   │ science result     │   │
+        │   └────────────────────┘   │
+        │                            │
+        │ witnessed change           │
+        └────────────────────────────┘
+```
+
+The wiggle circumference is exploratory and evidentiary. The outer Bodi circumference remains authoritative for actual object change.
+
+## 19. Rhetorical Safety of Wiggle Results
+
+The following distinctions are mandatory:
+
+```text
+FOUND        ≠ VALIDATED
+VALIDATED    ≠ CAUSAL
+CAUSAL       ≠ EXECUTED
+EXECUTED     ≠ OBSERVED SUCCESS
+COUNTED      ≠ PROVEN
+GAIN         ≠ PHYSICAL ENERGY
+```
+
+A safe statement therefore looks like:
+
+```text
+Five bounded XML searches produced one structurally satisfactory
+candidate linkage, which generated one content-review result.
+```
+
+It should not silently become:
+
+```text
+Five searches proved the system caused the result.
+```
+
+The second statement exceeds the evidence unless a separate causal procedure establishes it.
+
+## 20. Relationship to Middle Verbs
+
+The two vocabularies form a disciplined stack:
+
+```text
+WIGGLE VERB
+   ↓
+inspect / seek / trace / correlate / confirm
+   ↓
+XML structural finding
+   ↓
+validated candidate
+   ↓
+BODI MIDDLE VERB
+   ↓
+install / connect / enable / start / propagate ...
+   ↓
+actual object/system transition
+   ↓
+BodiWitness
+```
+
+A wiggle verb therefore prepares knowledge for a possible Bodi change. It does not bypass the change layer.
+
+## 21. Full-Sequence Completeness
 
 A sequence is **FS-complete** for Bodi purposes when its Witness can reconstruct:
 
@@ -478,15 +649,23 @@ result
 inverse/containment policy
 ```
 
-The source expression can remain concise:
+For wiggle work, FS-completeness additionally requires:
 
-```java
-Bodi.system("xxx").install("yyy");
+```text
+XML source
+search direction
+search envelope
+observations
+satisfaction count
+science/content result
+linkage decision
+containment count
+index spark
 ```
 
-Defaults may supply contextual fields, but the runtime record should preserve enough information to reconstruct the meaningful event.
+The source expression may remain concise; the Witness and science record preserve the surrounding context.
 
-## 17. Recommended Invariants
+## 22. Recommended Invariants
 
 1. Unknown verbs are rejected.
 2. Declared inverses are explicit.
@@ -502,8 +681,14 @@ Defaults may supply contextual fields, but the runtime record should preserve en
 12. Reflection remains subordinate to a Bodi semantic contract.
 13. Complex compositions remain decomposable into witnessed transitions.
 14. No rhetorical statement exceeds the evidence recorded by the Witness.
+15. Wiggle searches remain bounded by an explicit concern.
+16. A search count is not itself evidence of truth.
+17. Correlation is not silently promoted to causation.
+18. Candidate linkage is not silently promoted to executed linkage.
+19. Physical metaphors remain explicitly metaphorical unless measured.
+20. Every science result retains enough provenance to reconstruct its input.
 
-## 18. Backend and Network Map
+## 23. Backend and Network Map
 
 ```text
 Bodi.java
@@ -540,7 +725,7 @@ BodiNetworkConfig.java <--> BodiNetworkBootstrap.java
 
 The network listener remains an explicit opt-in through configuration. The default loopback binding is a boundary safeguard; exposed deployments should apply appropriate authentication and host/network policy.
 
-## 19. Final Principle
+## 24. Final Principle
 
 Bodi should be **m-eloquent**: concise at the programming surface while retaining a disciplined, reconstructable meaning.
 
@@ -548,10 +733,8 @@ Bodi should be **circumferent**: every operation should be interpretable togethe
 
 Bodi should be **FS-complete**: a complex sequence should expand into a complete account of address, transition, datum, order, boundary, and result.
 
+The wiggle layer extends this discipline into XML exploration: search narrowly, follow declared directions, count what was actually resolved, preserve provenance, synthesize only from recorded evidence, and hand validated candidates back to the Bodi change layer.
+
 The governing rule is:
 
-> **Build carefully, witness continuously, propagate deliberately, contain explicitly, and tear down in dependency order.**
-
-The middle verbs provide the vocabulary. The mitigative circumference provides the discipline. The Witness provides the record. The target system provides the actual state transition.
-
-This permits Bodi sequences to grow from `2n` to `5n` and beyond while preserving logical coherence, explicit boundaries, and rhetorically safe statements about what the system actually did.
+> **Wiggle to discover; witness to establish; change to act; contain to preserve; propagate only when the boundary permits; and never let a counter claim more than its evidence.**
