@@ -3,6 +3,7 @@
 // ===========================================================================
 #include "artifact.h"
 #include "compiler.h"
+#include "native_api.h"
 #include "../core/sleela_core.h"
 
 #include <stdexcept>
@@ -10,13 +11,14 @@
 
 namespace sleela {
 
-int compileToArtifact(const Program& prog,
+int compileToArtifact(Program& prog,
                       const std::string& outputPath,
                       const catalog::Catalog* cat,
                       const SyntaxVersion& syntax) {
     if (outputPath.empty())
         throw std::runtime_error("artifact output path must not be empty");
 
+    native::lowerProgram(prog);
     SLVM* vm = slvm_new();
     if (!vm) throw std::runtime_error("unable to allocate Sleela VM");
 
