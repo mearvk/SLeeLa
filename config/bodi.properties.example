@@ -3,6 +3,19 @@ bind.address=127.0.0.1
 rmi.port=8888
 bodi.port=8890
 bodi.enabled=false
+
+# XML structural families that may own a bodisysctl monitor.
 bodi.xml.structures=tree,record,reference,state,command
+
+# Gardulus.II local science telemetry.
 bodi.gardulus.enabled=true
 bodi.gardulus.interval_ms=1000
+
+# P/B software-orbital synchronization model.
+# These are telemetry parameters, not physical electron controls.
+bodi.gardulus.p.start_phase_deg=0.0
+bodi.gardulus.b.start_phase_deg=0.0
+bodi.gardulus.p.speed_deg_s=360.0
+bodi.gardulus.b.speed_deg_s=359.640359640
+bodi.gardulus.sync.relative=true
+bodi.gardulus.sync.coherence=true
