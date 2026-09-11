@@ -355,6 +355,62 @@ private:
         }
 
         // -----------------------------------------------------------------
+        // Networking built-ins. These are runtime operations backed by the
+        // bounded socket table in the C core. Handles and ports are runtime
+        // integer values; host/data are runtime strings.
+        //   listen(port)             -> socket handle
+        //   accept(listener)         -> client handle
+        //   connect(host, port)      -> client handle
+        //   sockread(socket)         -> String, or -1 on EOF/error
+        //   sockwrite(socket, data)  -> byte count, or -1
+        //   sockclose(socket)        -> null
+        // -----------------------------------------------------------------
+        if (n == "listen") {
+            if (c.args.size() != 1)
+                throw std::runtime_error("Semantic error: listen(port) takes exactly one argument");
+            emitExpr(c.args[0].get());
+            emit(OP_LISTEN);
+            return true;
+        }
+        if (n == "accept") {
+            if (c.args.size() != 1)
+                throw std::runtime_error("Semantic error: accept(socket) takes exactly one argument");
+            emitExpr(c.args[0].get());
+            emit(OP_ACCEPT);
+            return true;
+        }
+        if (n == "connect") {
+            if (c.args.size() != 2)
+                throw std::runtime_error("Semantic error: connect(host, port) takes exactly two arguments");
+            emitExpr(c.args[0].get());
+            emitExpr(c.args[1].get());
+            emit(OP_CONNECT);
+            return true;
+        }
+        if (n == "sockread") {
+            if (c.args.size() != 1)
+                throw std::runtime_error("Semantic error: sockread(socket) takes exactly one argument");
+            emitExpr(c.args[0].get());
+            emit(OP_SOCKREAD);
+            return true;
+        }
+        if (n == "sockwrite") {
+            if (c.args.size() != 2)
+                throw std::runtime_error("Semantic error: sockwrite(socket, data) takes exactly two arguments");
+            emitExpr(c.args[0].get());
+            emitExpr(c.args[1].get());
+            emit(OP_SOCKWRITE);
+            return true;
+        }
+        if (n == "sockclose") {
+            if (c.args.size() != 1)
+                throw std::runtime_error("Semantic error: sockclose(socket) takes exactly one argument");
+            emitExpr(c.args[0].get());
+            emit(OP_SOCKCLOSE);
+            return true;
+        }
+
+        // -----------------------------------------------------------------
         // Conducted-method built-ins, backed by SHEET.sheet (the catalog).
         // These give Sleela full method control/support: express a groove,
         // read an object's insight, and route to known congruences.
