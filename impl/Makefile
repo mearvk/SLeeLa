@@ -13,20 +13,20 @@ NORDSHRIFT_BIN := $(BUILD)/nordshrift
 THREAD_SMOKE   := $(BUILD)/thread_smoke
 SOCKET_SMOKE   := $(BUILD)/socket_smoke
 
-# ---- Shared catalog (SHEET.sheet parser) ----
 CATALOG_OBJ := $(BUILD)/sheet_catalog.o
-
-# ---- .xclass loader (SecureJDK 28 XML class input) ----
 XCLASS_OBJ := $(BUILD)/xclass_loader.o
 
-# ---- Sleela ----
+# The artifact translation unit embeds the core implementation once and adds
+# persistent .sleela serialization. This keeps the VM's private layout private
+# while making the exact compiled bytecode loadable by the runtime.
 CORE_OBJ := $(BUILD)/sleela_core.o
+CORE_SRC := core/sleela_artifact.c
+
 FE_SRC   := frontend/lexer.cpp frontend/parser.cpp frontend/compiler.cpp \
-            frontend/version.cpp
+            frontend/version.cpp frontend/artifact.cpp
 FE_OBJ   := $(patsubst frontend/%.cpp,$(BUILD)/%.o,$(FE_SRC))
 DRIVER_OBJ := $(BUILD)/driver.o
 
-# ---- Nordshrift (NS-SST-0001 driver) ----
 NS_SRC := nordshrift/sst_lexer.cpp nordshrift/sst_parser.cpp \
           nordshrift/source_resolve.cpp nordshrift/sleela_emit.cpp \
           nordshrift/object_compat.cpp nordshrift/nordshrift.cpp
@@ -36,25 +36,21 @@ NS_OBJ := $(patsubst nordshrift/%.cpp,$(BUILD)/ns_%.o,$(NS_SRC))
 
 all: $(SLEELA_BIN) $(NORDSHRIFT_BIN)
 
-# ---- link ----
 $(SLEELA_BIN): $(CORE_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ)
 	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS)
 
-# nordshrift reuses the Sleela front end + core to transpile/run the sources.
 $(NORDSHRIFT_BIN): $(NS_OBJ) $(CORE_OBJ) $(FE_OBJ) $(CATALOG_OBJ)
 	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS)
 
-# The C-level threading smoke test drives the core through the builder API.
 $(THREAD_SMOKE): core/thread_smoke.c $(CORE_OBJ)
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
-# The C-level network smoke test exercises the complete TCP opcode path.
 $(SOCKET_SMOKE): core/socket_smoke.c $(CORE_OBJ)
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
-# ---- compile ----
-$(BUILD)/sleela_core.o: core/sleela_core.c core/sleela_core.h | $(BUILD)
-	$(CC) $(CFLAGS) -c $< -o $@
+# Build the core plus the persistent runnable-artifact layer in one object.
+$(CORE_OBJ): $(CORE_SRC) core/sleela_core.c core/sleela_core.h | $(BUILD)
+	$(CC) $(CFLAGS) -c $(CORE_SRC) -o $@
 
 $(BUILD)/%.o: frontend/%.cpp | $(BUILD)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
@@ -68,13 +64,14 @@ $(BUILD)/xclass_loader.o: xclass/xclass_loader.cpp xclass/xclass_loader.h | $(BU
 $(BUILD)/ns_%.o: nordshrift/%.cpp | $(BUILD)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
+$(BUILD)/driver.o: frontend/driver.cpp frontend/compiler.h frontend/artifact.h | $(BUILD)
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
 $(BUILD):
 	mkdir -p $(BUILD)
 
-# ---- tests ----
 test: test-sleela test-version test-nordshrift test-threads test-network test-catalog
 
-# Threading smoke test: spawn 128 workers, guarded increments + tuple channel.
 test-threads: $(THREAD_SMOKE)
 	@echo "=== core threading smoke (128 threads) ==="; \
 	$(THREAD_SMOKE) 128
@@ -86,28 +83,22 @@ test-sleela: $(SLEELA_BIN)
 		$(SLEELA_BIN) run $$f || exit 1; \
 	done
 
-# Assert SL-META-0001 Section 4.4 version awareness: accepted versions run,
-# out-of-range / malformed versions are rejected.
 test-version: $(SLEELA_BIN)
 	@export SLEELA_SHEET=$(CURDIR)/../SHEET.sheet; \
 	bash tests/version/run_version_tests.sh $(SLEELA_BIN)
 
-# Validate every top-level .sst sheet, then drive a real build (sleela target
-# runs on the core) from the self-contained demo sheet.
 test-nordshrift: $(NORDSHRIFT_BIN)
 	@for f in nordshrift/examples/*.sst; do \
 		echo "=== check $$f ==="; \
 		$(NORDSHRIFT_BIN) check $$f || exit 1; \
 	done
-	@echo "=== build nordshrift/examples/demo/build.sst (target sleela -> core) ==="; \
+	@echo "=== build nordshrift/examples/demo/build.sst (target sleela -> runnable artifact) ==="; \
 	$(NORDSHRIFT_BIN) build nordshrift/examples/demo/build.sst || exit 1
 
-# TCP networking smoke test: loopback listen/accept/connect/read/write/close.
 test-network: $(SOCKET_SMOKE)
 	@echo "=== core networking smoke (TCP loopback) ==="; \
 	$(SOCKET_SMOKE)
 
-# Exercise the SHEET.sheet object compatibility list + relevance conversion.
 test-catalog: $(NORDSHRIFT_BIN)
 	@export SLEELA_SHEET=$(CURDIR)/../SHEET.sheet; \
 	echo "=== nordshrift objects (summary) ==="; \
