@@ -1,10 +1,9 @@
 // ===========================================================================
-// compiler.h  --  Lowers the Sleela AST into Sleela Core bytecode.
+// compiler.h  --  Sleelvac™ lowers the Sleela AST into Sleela Core bytecode.
 //
-// The compiler owns no execution logic. It walks the AST and drives the C
-// core purely through the builder helpers declared in sleela_core.h (which
-// are themselves wrappers over slcore_exchange). The result is a program
-// loaded into the SLVM, ready for slvm_run().
+// The compiler owns semantic lowering, not execution. It walks the AST and
+// drives the C core builder API. The resulting VM program can either be run
+// immediately or persisted as a runnable .sleela artifact by artifact.h.
 // ===========================================================================
 #ifndef SLEELA_COMPILER_H
 #define SLEELA_COMPILER_H
@@ -27,6 +26,10 @@ namespace sleela {
 // methods -- the sheet-derived built-ins insight()/role()/route()/congruent()/
 // conduct()/sysdepth()/degreemax(). When null, those built-ins still compile
 // but resolve against an empty catalog.
+//
+// This is the common lowering stage used by both immediate execution and the
+// persistent .sleela artifact path; there is no second semantic compiler in
+// the runtime artifact loader.
 int compile(const Program& prog, SLVM* vm, const catalog::Catalog* cat = nullptr,
             const SyntaxVersion& syntax = SyntaxVersion{1, 0});
 
