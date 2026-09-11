@@ -1,0 +1,8 @@
+# Bodi network configuration
+bind.address=127.0.0.1
+rmi.port=8888
+bodi.port=8890
+bodi.enabled=false
+bodi.xml.structures=tree,record,reference,state,command
+bodi.gardulus.enabled=true
+bodi.gardulus.interval_ms=1000
