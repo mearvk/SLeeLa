@@ -1,155 +1,131 @@
-# Nordshrift — the `.sst` transpiler driver (NS-SST-0001)
+# Nordshrift — `.sst` transpiler driver and semantic layer
 
-Nordshrift is the **transpiler driver for Sleela**. It reads a **`.sst` Scripting
-Sheet** — the human-authored *control surface* defined by the normative
-specification **NS-SST-0001** (`/SST.model` in this repo) — and uses it to drive
-transpilation of the Sleela source files the sheet names.
+Nordshrift is the **transpiler driver and semantic coordination layer for Sleela**. It reads a **`.sst` Scripting Sheet**, validates its control sections, resolves Sleela Wrapper™ sources, and drives the selected target. Version 2.0 also gives the sheet a common semantic vocabulary for the Math, Physics, Economics, Chemistry, and Financial libraries.
 
-The `.sst` file is **not a program**: it is a build-control sheet. The program
-is the set of `.sleela` source files — each a **Wrapper™** (the `.sleela` file
-type: a Sleela source file carrying the metadocument addend, governed by
-SL-META-0001) — that the sheet's `source:` section points at. Nordshrift
-resolves those, runs them through the shared Sleela front end, and emits the
-target the sheet selects.
+## Version 2.0 architecture
 
-```
-   build.sst (control sheet)          src/**/*.sleela — Wrapper™ files (the program)
-        │                                     │
-        ▼                                     │
-   lex → parse → validate  ── source: glob ──▶ resolve file set
-   (Sheet model + NSS-* diagnostics)          │
-        │                                     ▼
-        │                        Sleela front end (lex → parse → AST)
-        │                                     │
-        └────────── target-language ─────────┤  triplet emitter
-                                              │
-                       ┌──────────────────────┼──────────────────────┐
-                       ▼                       ▼                      ▼
-                     java                   sleela                    c
-                 (javac + run)        (runs on the C core)       (gcc + run)
+```text
+.sst control surface
+       │
+       ├── source / target / pipeline / rules / effects / derive / guards / interop
+       │
+       └── subject / quantities / units / assumptions / relations
+                         │
+                         ▼
+              transformations / evidence / comparison
+                         │
+                         ▼
+                 explanation / validation / workplan
+                         │
+                         ▼
+                 Sleela front end → Java | Sleela | C
 ```
 
-## Relationship to the spec
+The normative semantic extension is [`/SST-2.0.model`](../../SST-2.0.model). The legacy 1.0 grammar remains in [`/SST.model`](../../SST.model).
 
-`/SST.model` (NS-SST-0001, Revision 1.0.0) is authoritative. This implementation
-follows it for the lexical layer, file structure, the section schemas, and the
-diagnostic code system. Two deliberate, conformant deviations/extensions:
+## Common subject model
 
-1. **Triplet target.** The spec's `target` section is Java-only. Nordshrift
-   drives a *triplet*, so `target` accepts an additional directive
-   **`target-language`** (`java` | `sleela` | `c`, default `java`). This is a
-   superset: a spec-conformant sheet with no `target-language` behaves exactly
-   as the spec describes (Java).
-2. **Deferred semantics.** The `rules`, `effects`, `derive`, `guards`,
-   `interop`, and `profile` sections are fully **lexed, parsed, and validated**
-   (with their NSS-* diagnostics), but are **not yet applied** to emission in
-   this pass. They are recorded in the sheet model for the next stage. The
-   `sheet`, `import`, `source`, `target`, and `pipeline` sections are honored.
+[`subject_model.h`](subject_model.h) defines the implementation vocabulary:
 
-The companion `SL-META-0001` (the Sleela Language Metadocument the spec refers
-to for Entity/Contract/Effect/Rule/Lens/Flow) is not present in the repo; the
-meta-model concepts those deferred sections reference are stubbed accordingly.
+- `Subject`
+- `Quantity`
+- `Assumption`
+- `Relation`
+- `Transformation`
+- `ComparativeNorm`
+- `Evidence`
+- `Explanation`
+- `Todo`
+- `EvidenceStatus`
+- `WorkStatus`
 
-## The `.sst` sheet
+The implementation intentionally keeps these structures dependency-light so that they can be used by the Nordshrift driver without coupling the semantic layer to a particular subject library.
 
-A sheet is **indentation-significant** (2- or 4-space unit, fixed by the first
-indent) and **pragma-first**. Structure: pragmas → `sheet` block → optional
-`import`s → configuration sections.
+### Canonical chain
 
-```sst
-#nordshrift 1.0            // required (NSS-E-0003 if missing)
-#sleela     1.0            // optional
+**Subject → Quantity → Unit → Assumption → Relation → Formula → Transformation → Result → ComparativeNorm → Evidence → Explanation → Validation**
 
-/// A documentation comment attaches to the block it precedes.
-sheet demo:
-  version      1.0.0
-  author       "Sleela Design Council"
-  description  "Transpiles the demo sources; the sleela target runs on the core."
+This chain is the principal bridge between declarative `.sst` sheets and executable subject libraries.
 
-source:
-  root  "src"
-  glob  "**/*.sleela"      // recursive glob; ** crosses directories
+## Evidence semantics
 
-target:
-  root            "out"
-  layout          mirror-source
-  java-version    21       // must be >= 17 (NSS-E-0040)
-  package-root    "com.example.demo"
-  target-language sleela   // triplet selector: java | sleela | c
-```
+`EvidenceStatus` is explicitly epistemic:
 
-### Sections (per the spec)
+- `Observed`
+- `Specified`
+- `Derived`
+- `Modeled`
+- `Inferred`
+- `Assumed`
 
-| Section    | Purpose                                                          | Status here |
-|------------|------------------------------------------------------------------|-------------|
-| `sheet`    | file manifest: version, author, description, tags, extends       | honored     |
-| `import`   | compose sheets (`as`, `only`, `except`)                          | parsed      |
-| `source`   | root + globs − exclude; encoding, watch                          | honored     |
-| `target`   | root, layout, java-version, package-root, +`target-language`     | honored     |
-| `pipeline` | phases, skip, parallel-threshold, cache, verbosity, fail-fast    | validated   |
-| `rules`    | activate/deactivate, severity, config                            | parsed      |
-| `effects`  | policy, declare, aliases, default-effect                         | parsed      |
-| `derive`   | lens/projection/equality/…, target-style                        | parsed      |
-| `guards`   | mode, on-failure, message-format                                 | parsed      |
-| `interop`  | assume-impure, null-wrapping, checked-exceptions, type-mapping   | parsed      |
-| `profile`  | named variant with `inherits` + overriding sections              | parsed      |
+The implementation must not silently convert a modeled or inferred result into an observation.
 
-## CLI
+## Work-plan semantics
 
-```sh
-nordshrift check <sheet.sst>    # lex + parse + validate; print all NSS-* diagnostics
-nordshrift build <sheet.sst>    # resolve source: files, transpile to target-language;
-                                #   the sleela target additionally runs on the C core
-nordshrift version
-```
+`Todo` provides an explicit plan with identity, subject, priority, dependencies, preconditions, action, expected result, validation, and `WorkStatus`.
 
-`build` resolves `source.root`/globs relative to the sheet's own directory. Each
-resolved `.sleela` file is parsed by the shared Sleela front end and emitted in
-the selected language. For `target-language sleela`, the emitted program is also
-executed on the Sleela core, closing the loop.
+`WorkStatus` values are:
 
-## Diagnostics (NS-SST-0001 Part XV)
+`Planned`, `Ready`, `Active`, `Blocked`, `Validating`, `Complete`, `Deferred`.
 
-Every diagnostic is `NSS-{E|W|N}-{XXXX}` with the file, line, a concrete
-message, and the governing rule. Implemented so far:
+Completion should be tied to a validation record rather than merely setting the status to `Complete`.
 
-| Code | Condition |
-|------|-----------|
-| NSS-E-0001 | invalid UTF-8 |
-| NSS-E-0002 | mixed / inconsistent indentation (IND-01/03) |
-| NSS-E-0003 | missing `#nordshrift` pragma |
-| NSS-E-0004 | unsupported `#nordshrift` version |
-| NSS-E-0010 | multiple `sheet` blocks |
-| NSS-E-0021 | duplicate import alias |
-| NSS-E-0030 | `source.root` does not exist |
-| NSS-E-0031 | empty source set after glob/exclude |
-| NSS-E-0032 | absolute path in `source.glob` |
-| NSS-E-0040 | `target.java-version` < 17 |
-| NSS-E-0050 | pipeline phases out of order |
-| NSS-E-0051 | skipping a mandatory phase |
-| NSS-E-0080 | `derive builder true` with `target-style record` |
-| NSS-E-0110 | multiple-parent profile inheritance |
-| NSS-W-0001 | orphaned documentation comment |
-| NSS-W-0100 | `null-wrapping trust` activated |
+## Domain ideals
+
+1. Identity before calculation.
+2. Quantity before formula.
+3. Unit/dimension before interpretation.
+4. Assumption before extrapolation.
+5. Relation before conclusion.
+6. Transformation before result.
+7. Provenance before trust.
+8. Comparison before ranking.
+9. Uncertainty before certainty claims.
+10. Validation before completion.
+11. Explicit dependency before hidden coupling.
+12. Computation remains distinguishable from observation.
+
+## Subject relationships
+
+Math is foundational. Physics, Economics, Chemistry, and Financial may declare Math as a dependency. Other dependencies must be declared when they are genuinely required; semantic declarations must not imply empirical causation.
+
+## Existing `.sst` pipeline
+
+The 1.0 control sections remain available and continue to describe the build process:
+
+| Section | Purpose |
+|---|---|
+| `sheet` | manifest and metadata |
+| `import` | composition |
+| `source` | Wrapper™ source selection |
+| `target` | output and target language |
+| `pipeline` | processing phases |
+| `rules` | rule activation |
+| `effects` | effect policy |
+| `derive` | derivation configuration |
+| `guards` | failure behavior |
+| `interop` | language interoperability |
+| `profile` | named configuration variants |
+
+2.0 adds semantic sections without removing these build-control concepts.
 
 ## Files
 
-```
+```text
 nordshrift/
-  NORDSHRIFT.md         this document
-  README.md             quick start
-  diagnostics.h         NSS-* diagnostic model (Part XV)
-  sst_lexer.{h,cpp}     indentation-significant tokenizer (Part I) -> INDENT/DEDENT
-  sheet_model.h         the Sheet model (all sections, §II–§XIII)
-  sst_parser.{h,cpp}    recursive-descent parser over INDENT/DEDENT (Part XIV EBNF)
-  source_resolve.{h,cpp} filesystem glob resolution of the source section (§V)
-  sleela_emit.{h,cpp}   Sleela AST -> java | sleela | c  (the triplet emitter)
-  nordshrift.cpp        the `nordshrift` CLI (check / build)
+  NORDSHRIFT.md
+  README.md
+  diagnostics.h
+  sst_lexer.{h,cpp}
+  sheet_model.h
+  sst_parser.{h,cpp}
+  source_resolve.{h,cpp}
+  sleela_emit.{h,cpp}
+  object_compat.cpp
+  subject_model.h
+  subject_model.cpp
+  nordshrift.cpp
   examples/
-    commerce-engine.sst the spec's full annotated example (validates clean)
-    demo/build.sst      a minimal, self-contained sheet
-    demo/src/Demo.sleela the program it transpiles
 ```
 
-See `/SST.model` for the complete normative grammar (Part XIV) and the full
-diagnostic index (Part XV §15.2).
+The build now compiles `subject_model.cpp` into the Nordshrift executable.
