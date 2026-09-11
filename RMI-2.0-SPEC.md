@@ -36,8 +36,41 @@ RMI 2.0 retains those principles and adds:
 - Better lifecycle semantics.
 - Transport-neutral observability.
 - More deliberate security policy.
+- Compact packing and reduced dispatch overhead.
+- Faster service-name resolution through explicit identity and caching.
 
-## 3. Layered Architecture
+## 3. Lean-by-Version Principle
+
+Every later SLeeLa RMI version should become **faster and leaner in its implementation path**, even when it becomes richer semantically.
+
+The optimization target is:
+
+```text
+faster name
+   -> faster pack
+   -> faster transport
+   -> faster unpack
+   -> faster dispatch
+```
+
+Additional features must not automatically mean additional mandatory work. Optional capabilities should be negotiated rather than imposed on every request.
+
+RMI 2.0 should therefore favor:
+
+- Compact field representations.
+- Length-delimited values instead of repeated parsing.
+- Direct operation identifiers after service negotiation.
+- Cached service identity and endpoint information.
+- Reusable connections where the transport permits it.
+- Bounded allocation.
+- Fewer intermediate object conversions.
+- Zero-copy or low-copy transfer where practical.
+- Fast-path handling for common scalar values.
+- Optional metadata rather than mandatory metadata on every message.
+
+The richer 2.0 semantic model must not require a heavier implementation for simple operations.
+
+## 4. Layered Architecture
 
 ```text
 +--------------------------------------------------------+
@@ -59,7 +92,7 @@ RMI 2.0 retains those principles and adds:
 
 The physical medium remains irrelevant to the SLeeLa application contract.
 
-## 4. Connector Contract
+## 5. Connector Contract
 
 The common Java integration surface is represented by:
 
@@ -78,7 +111,27 @@ SleelaResult result = connector.invoke(
 
 The connector may be implemented over local process execution, Java RMI, HTTP, or another approved transport.
 
-## 5. Typed Value Model
+## 6. Fast Naming and Service Identity
+
+RMI 2.0 should separate **human-readable names** from **fast dispatch identity**.
+
+The preferred sequence is:
+
+```text
+service name
+    -> endpoint/service identity
+    -> cached compact service identifier
+    -> operation identifier
+    -> dispatch
+```
+
+The full service name remains available for configuration, diagnostics, authorization, and interoperability. Once a trusted service identity has been established, repeated requests should not need to repeatedly compare or transmit the longest possible name.
+
+Where the transport and deployment permit it, a compact service identifier and compact operation identifier may be negotiated and reused for the lifetime of a session or cached endpoint binding.
+
+Identifiers are opaque protocol values; they are not security credentials and must not be accepted as proof of authorization.
+
+## 7. Typed Value Model
 
 RMI 2.0 introduces a logical typed-value envelope without requiring Java serialization as the universal wire format.
 
@@ -100,7 +153,36 @@ The wire representation must identify the value type explicitly when a typed mod
 
 The textual 1.0 representation remains a valid compatibility mode.
 
-## 6. Invocation Envelope
+## 8. Compact Packing
+
+RMI 2.0 should provide a compact representation for negotiated typed mode.
+
+The compact representation should favor:
+
+- Small type tags.
+- Length prefixes appropriate to the value size.
+- Compact integer encodings where practical.
+- Direct byte sequences for `BYTES`.
+- Sequential list/map encoding without redundant field names.
+- Explicit framing so the receiver can skip or reject an invalid value quickly.
+
+A conceptual packed request is:
+
+```text
+[version][service-id][operation-id][flags][arguments]
+```
+
+A conceptual packed result is:
+
+```text
+[version][request-id][status][value-or-error]
+```
+
+The exact binary encoding is an implementation-profile decision until a wire-format profile is standardized. Implementations must not claim wire-level interoperability merely because they use the same logical field names.
+
+The design goal is simple: **pack once, send once, unpack once, dispatch immediately.**
+
+## 9. Invocation Envelope
 
 A 2.0 invocation should be logically representable as:
 
@@ -126,7 +208,7 @@ arguments = [42]
 
 The exact serialization may differ between RMI, HTTP, and future transports, but the semantic fields remain stable.
 
-## 7. Result Envelope
+## 10. Result Envelope
 
 A 2.0 result should distinguish outcome from transport.
 
@@ -155,7 +237,7 @@ error  = "invalid account state"
 
 A transport failure remains a connector/transport event rather than being represented as an SLeeLa business decision.
 
-## 8. Request Correlation
+## 11. Request Correlation
 
 Every 2.0 invocation should have a request identifier when the selected transport supports it.
 
@@ -170,13 +252,15 @@ The identifier permits:
 
 Request identifiers must not be interpreted as authentication credentials.
 
-## 9. Capability Negotiation
+## 12. Capability Negotiation
 
 A 2.0 service may advertise capabilities such as:
 
 ```text
 TEXT-ARGUMENTS
 TYPED-VALUES
+COMPACT-PACKING
+COMPACT-NAMES
 ASYNC-INVOCATION
 STREAMING
 HEALTH
@@ -188,7 +272,7 @@ AUTHENTICATION
 
 A client must not assume a capability merely because the server supports RMI 2.0. The capability must be available through the selected endpoint or explicitly configured by the deployment.
 
-## 10. Version Negotiation
+## 13. Version Negotiation
 
 A client should identify the connector protocol version it understands.
 
@@ -204,7 +288,9 @@ A deployment may support:
 
 The compatibility rules should be explicit. Silent semantic downgrades are discouraged.
 
-## 11. RMI/JRMP Profile
+Future versions should preserve the rule that a version increase is not permission to make the common path slower without necessity.
+
+## 14. RMI/JRMP Profile
 
 The RMI transport remains based on standard Java RMI mechanisms where RMI is selected.
 
@@ -224,7 +310,9 @@ JavaFX / Swing / Java Server
        SLeeLa Service
 ```
 
-## 12. HTTP/HTTPS Profile
+The connector should keep the hot path small: established endpoint, compact identity, direct operation dispatch.
+
+## 15. HTTP/HTTPS Profile
 
 HTTP remains a first-class 2.0 transport for web-driven artifacts.
 
@@ -240,7 +328,9 @@ HTTPS should be preferred across untrusted networks.
 
 The logical invocation and result envelopes remain the same even when the serialization changes from Java RMI objects to HTTP payloads.
 
-## 13. Local Process Profile
+For repeated calls, HTTP connection reuse and compact negotiated payloads should be preferred where supported by the HTTP implementation.
+
+## 16. Local Process Profile
 
 A local process connector remains valid in 2.0.
 
@@ -256,7 +346,9 @@ Local Process
 SLeeLa
 ```
 
-## 14. Physical Medium Independence
+Local process implementations should avoid unnecessary shell interpretation, repeated executable discovery, and repeated conversion of already-encoded arguments.
+
+## 17. Physical Medium Independence
 
 RMI 2.0 remains independent of physical networking technology.
 
@@ -273,7 +365,7 @@ The same service contract may operate across:
 
 Optical, electrical, and radio engineering remain lower-layer responsibilities.
 
-## 15. Router and Network Appliance Compatibility
+## 18. Router and Network Appliance Compatibility
 
 A router, firewall, NAT gateway, switch, or other conventional network appliance should not need SLeeLa-specific forwarding logic for ordinary deployments.
 
@@ -290,7 +382,7 @@ A network appliance may enforce policy based on conventional properties such as:
 
 Application-aware inspection may exist, but it is not required for protocol correctness.
 
-## 16. Security Architecture
+## 19. Security Architecture
 
 RMI 2.0 treats security as an explicit service property.
 
@@ -308,7 +400,9 @@ The implementation should support a deployment policy covering:
 
 A capability advertisement is not authorization. The server must independently enforce authorization.
 
-## 17. Resource and Abuse Controls
+Compact identifiers must not weaken this rule. A short name or numeric identifier is an index, not a permission.
+
+## 20. Resource and Abuse Controls
 
 A 2.0 service should be able to establish limits such as:
 
@@ -322,7 +416,7 @@ A 2.0 service should be able to establish limits such as:
 
 These limits protect both the Java connector and the SLeeLa service from accidental or hostile resource consumption.
 
-## 18. Health and Observability
+## 21. Health and Observability
 
 Health is a first-class operational concern.
 
@@ -346,7 +440,7 @@ Optional observability may include:
 
 Observability data must not disclose sensitive business information merely for diagnostic convenience.
 
-## 19. Idempotency and Retry
+## 22. Idempotency and Retry
 
 RMI 2.0 should explicitly identify whether an operation is safe to retry.
 
@@ -363,7 +457,7 @@ UNKNOWN
 
 Clients should not automatically retry unknown or non-idempotent operations after uncertain transport failures.
 
-## 20. Asynchronous Operations
+## 23. Asynchronous Operations
 
 A future 2.0-compatible extension may support asynchronous invocation.
 
@@ -379,7 +473,7 @@ submit -> requestId
 
 Asynchronous support must not change the meaning of the ordinary synchronous connector call.
 
-## 21. Streaming
+## 24. Streaming
 
 Streaming is an optional capability rather than a mandatory feature.
 
@@ -393,7 +487,7 @@ Potential applications include:
 
 A service must explicitly advertise streaming support before a client relies on it.
 
-## 22. Java UI Integration
+## 25. Java UI Integration
 
 JavaFX and Swing applications are first-class Java hosts for RMI 2.0.
 
@@ -407,7 +501,7 @@ JavaFX and Swing applications are first-class Java hosts for RMI 2.0.
 
 Neither UI toolkit needs to understand the underlying RMI, HTTP, or process protocol.
 
-## 23. Web-Driven Integration
+## 26. Web-Driven Integration
 
 A web-driven artifact can use HTTP while a Java desktop application uses RMI or a local process connector.
 
@@ -423,7 +517,7 @@ Swing ------ Process --+
 
 This is a principal objective of RMI 2.0: **one SLeeLa authority, multiple conventional integration paths.**
 
-## 24. Compatibility Rule
+## 27. Compatibility Rule
 
 RMI 2.0 must preserve the 1.0 conceptual model:
 
@@ -435,7 +529,9 @@ RMI 2.0 must preserve the 1.0 conceptual model:
 
 Enhancement must occur without requiring every network component to become SLeeLa-aware.
 
-## 25. Reference Implementation Direction
+At the same time, each successive version should improve the common path through less packing overhead, faster naming, fewer copies, and more direct dispatch.
+
+## 28. Reference Implementation Direction
 
 The SLeeLa repository should treat the following as the reference implementation layers:
 
@@ -455,9 +551,21 @@ gui/
 
 The implementation should keep these layers separable so that adding HTTP, JavaFX, Swing, or future transports does not alter SLeeLa business semantics.
 
-## 26. Version 2.0 Design Statement
+The implementation should also measure the hot path independently:
 
-SLeeLa RMI 2.0 is therefore a **transport-neutral service contract layered over conventional communications infrastructure**.
+```text
+name resolution
+packing
+transport handoff
+unpacking
+dispatch
+```
+
+A performance regression in one stage should not be hidden by aggregate latency alone.
+
+## 29. Version 2.0 Design Statement
+
+SLeeLa RMI 2.0 is therefore a **transport-neutral service contract layered over conventional communications infrastructure**, with an explicit requirement that additional capability be accompanied by a leaner execution path wherever practical.
 
 It recognizes the practical reality of modern systems:
 
@@ -470,3 +578,7 @@ Application
 ```
 
 SLeeLa adds authority at the application layer rather than attempting to replace the infrastructure beneath it.
+
+The performance direction is equally explicit:
+
+> **Every version should make the common operation easier to name, faster to pack, faster to move, faster to unpack, and faster to dispatch.**
