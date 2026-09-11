@@ -56,7 +56,7 @@ struct SyntaxVersion {
 // Bump MAX_SUPPORTED when the front end learns a newer MINOR/MAJOR grammar;
 // raise MIN_SUPPORTED when an old grammar is finally dropped.
 inline SyntaxVersion minSupportedSyntax() { return SyntaxVersion{1, 0}; }
-inline SyntaxVersion maxSupportedSyntax() { return SyntaxVersion{1, 0}; }
+inline SyntaxVersion maxSupportedSyntax() { return SyntaxVersion{1, 1}; }
 
 // The version assumed when a file omits the pragma (Section 4.4 says a file
 // "must declare" its version; for backward compatibility with pre-pragma
