@@ -6,6 +6,9 @@
 // Sleelvac™ compiler/artifact boundary as the direct compiler and writes a
 // persistent runnable .sleela Core artifact. That artifact is loadable by the
 // Sleela runtime without a second front-end compilation.
+//
+// Nordshrift 2.0 also links the common semantic subject model used by the
+// Math, Physics, Economics, Chemistry, and Financial libraries.
 // ===========================================================================
 #include <cstdio>
 #include <filesystem>
@@ -23,6 +26,7 @@
 #include "source_resolve.h"
 #include "sleela_emit.h"
 #include "object_compat.h"
+#include "subject_model.h"
 #include "../catalog/sheet_catalog.h"
 #include "../frontend/lexer.h"
 #include "../frontend/parser.h"
@@ -36,7 +40,7 @@ extern "C" {
 using namespace nordshrift;
 
 static const char* kVersion =
-    "Nordshrift 1.1 (NS-SST-0001; Sleelvac™ runnable .sleela target)";
+    "Nordshrift 2.0 (NS-SST-0001; semantic subject model; Sleelvac™ runnable .sleela target)";
 
 static int usage() {
     std::cerr <<
@@ -116,7 +120,6 @@ static std::string runnablePathFor(const std::string& srcPath) {
     return (outDir / (src.stem().string() + ".sleela")).string();
 }
 
-// `build`: resolve sources and compile each source to the selected target.
 static int doBuild(const std::string& path) {
     Sheet sheet; DiagnosticBag diags;
     if (!loadSheet(path, sheet, diags)) return 1;
@@ -164,9 +167,6 @@ static int doBuild(const std::string& path) {
         }
 
         if (lang == TargetLang::Sleela) {
-            // This is the important boundary: Nordshrift does not emit Sleela
-            // source and then invoke another compiler. It directly uses the
-            // Sleelvac™ lowering stage to persist Core bytecode as .sleela.
             const std::string output = runnablePathFor(srcPath);
             try {
                 sleela::compileToArtifact(prog, output, nullptr, vr.declared);
