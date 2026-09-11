@@ -1,0 +1,46 @@
+#sleela 1.0
+import math;
+import financial;
+
+class FinancialExample {
+    static double future() {
+        return financial.future_value(1000.0, 0.05, 10.0);
+    }
+
+    static double present() {
+        return financial.present_value(1628.8946, 0.05, 10.0);
+    }
+
+    static double annuity() {
+        return financial.annuity_present(100.0, 0.05, 10.0);
+    }
+
+    static double systemRatio() {
+        return financial.ratio(75.0, 100.0);
+    }
+
+    static double determinant() {
+        return financial.determinant2(4.0, 7.0, 2.0, 6.0);
+    }
+
+    static double capmReturn() {
+        return financial.capm(0.04, 1.2, 0.10);
+    }
+
+    static double waccRate() {
+        return financial.wacc(0.60, 0.40, 0.09, 0.05, 0.21);
+    }
+
+    static double root() {
+        return financial.quadratic_root_plus(1.0, -3.0, 2.0);
+    }
+}
+
+print(FinancialExample.future());
+print(FinancialExample.present());
+print(FinancialExample.annuity());
+print(FinancialExample.systemRatio());
+print(FinancialExample.determinant());
+print(FinancialExample.capmReturn());
+print(FinancialExample.waccRate());
+print(FinancialExample.root());
