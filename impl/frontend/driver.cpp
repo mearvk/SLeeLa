@@ -19,7 +19,9 @@
 #include <sstream>
 #include <string>
 #include <vector>
-extern "C" { #include "../core/sleela_core.h" }
+extern "C" {
+#include "../core/sleela_core.h"
+}
 static const char* kVersion="Sleelvac™ 1.4 (Sleela compiler; executable native math/physics/economics/chemistry/financial modules; normed presumed chemistry; financial math/algebra; persistent .sleela Core artifacts; .xclass input)";
 static bool readFile(const std::string& path,std::string& out);
 static bool checkSyntaxVersion(const std::string& path,const std::string& src){sleela::VersionResolution v=sleela::resolveSyntaxVersion(src);if(v.isError()){std::cerr<<"sleelvac: "<<path<<": error: "<<v.message<<"\n";return false;}if(v.isWarning())std::cerr<<"sleelvac: "<<path<<": warning: "<<v.message<<"\n";return true;}
