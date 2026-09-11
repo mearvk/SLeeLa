@@ -1,108 +1,117 @@
 # Nordshrift
 
-**Nordshrift** is the transpiler driver for Sleela. It reads a **`.sst` control
-sheet** (the format specified by **NS-SST-0001** — see `/SST.model`) and drives
-the transpilation of the Sleela sources the sheet names into the target the
-sheet selects — the **triplet**: **Java**, **Sleela** (executed on the C core),
-or **C**.
+**Nordshrift 2.0** is the transpiler driver and semantic coordination layer for Sleela. It reads a **`.sst` control sheet** and drives the transpilation of Sleela sources into the target selected by the sheet — the **triplet**: **Java**, **Sleela** (executed on the C core), or **C**.
 
-The `.sst` file is the *control surface*, not the program. The program is the
-set of `.sleela` files named by the sheet's `source:` section.
+The `.sst` file remains the *control surface*, not the program. In 2.0 it can also carry explicit semantic models shared by the Math, Physics, Economics, Chemistry, and Financial libraries.
 
 ## Build & run
 
 ```sh
 cd impl
-make                                          # builds build/sleela and build/nordshrift
+make
 
-nordshrift check <sheet.sst>                  # validate a sheet; print NSS-* diagnostics
-nordshrift build <sheet.sst>                  # transpile the sheet's sources to its target
+./build/nordshrift check <sheet.sst>
+./build/nordshrift build <sheet.sst>
 ```
 
-### Self-contained demo
+The Nordshrift build now includes `subject_model.cpp`, providing the common
+semantic model implementation.
+
+## 2.0 specification
+
+- [`../../SST-2.0.model`](../../SST-2.0.model) — normative 2.0 specification.
+- [`../../SST.model`](../../SST.model) — 1.0 compatibility specification.
+- [`NORDSHRIFT.md`](NORDSHRIFT.md) — implementation architecture and semantics.
+- [`subject_model.h`](subject_model.h) — C++ semantic model vocabulary.
+
+## Common semantic models
+
+Nordshrift 2.0 defines a shared vocabulary so each subject library can remain
+domain-specific while participating in the same inspectable structure:
+
+| Model | Meaning |
+|---|---|
+| `Subject` | identity, domain, dependencies, semantic collections, work plan |
+| `Quantity` | value/expression, unit, dimension, domain, status |
+| `Assumption` | explicit model condition |
+| `Relation` | inputs, outputs, and formula |
+| `Transformation` | operation and provenance |
+| `ComparativeNorm` | prior/current/reference comparison |
+| `Evidence` | epistemic status and source |
+| `Explanation` | ordered semantic explanation |
+| `Todo` | declarative work item and validation plan |
+
+Canonical chain:
+
+**Subject → Quantity → Unit → Assumption → Relation → Formula → Transformation → Result → ComparativeNorm → Evidence → Explanation → Validation**
+
+## Evidence status
+
+The model distinguishes:
+
+`Observed`, `Specified`, `Derived`, `Modeled`, `Inferred`, `Assumed`.
+
+A numerical result is not automatically an observation. A model or inference
+must retain its assumptions and supporting relationships where available.
+
+## WorkPlan / TODO
+
+A `Todo` records identity, subject, priority, dependencies, preconditions,
+action, expected result, validation, and status.
+
+Statuses are:
+
+`Planned`, `Ready`, `Active`, `Blocked`, `Validating`, `Complete`, `Deferred`.
+
+## Domain ideals
+
+1. Identity before calculation.
+2. Quantity before formula.
+3. Unit/dimension before interpretation.
+4. Assumption before extrapolation.
+5. Relation before conclusion.
+6. Transformation before result.
+7. Provenance before trust.
+8. Comparison before ranking.
+9. Uncertainty before certainty claims.
+10. Validation before completion.
+11. Explicit dependency before hidden coupling.
+12. Computation remains distinguishable from observation.
+
+## The `.sst` sheet
+
+Indentation-significant, pragma-first. Existing 1.0 sections remain available:
+
+`sheet`, `import`, `source`, `target`, `pipeline`, `rules`, `effects`, `derive`, `guards`, `interop`, and `profile`.
+
+The 2.0 semantic extension adds subject-oriented sections for quantities,
+assumptions, relations, transformations, comparison, evidence, and work plans.
+
+## Self-contained demo
 
 ```sh
 ./build/nordshrift check nordshrift/examples/demo/build.sst
-./build/nordshrift build nordshrift/examples/demo/build.sst    # target-language sleela -> runs on the core
+./build/nordshrift build nordshrift/examples/demo/build.sst
 ```
-
-The demo sheet sets `target-language sleela`, so `build` transpiles
-`examples/demo/src/Demo.sleela` and runs it on the Sleela core:
-
-```
-square(1) = 1
-square(2) = 4
-...
-done
-```
-
-Flip `target-language` to `java` or `c` in the sheet to retarget the same source
-— the emitted Java compiles with `javac` and the emitted C compiles with `gcc`,
-producing identical output.
-
-## The `.sst` sheet (NS-SST-0001)
-
-Indentation-significant, pragma-first:
-
-```sst
-#nordshrift 1.0
-#sleela     1.0
-
-sheet demo:
-  version      1.0.0
-  description  "Transpiles the demo Sleela sources."
-
-source:
-  root  "src"
-  glob  "**/*.sleela"
-
-target:
-  root            "out"
-  layout          mirror-source
-  java-version    21
-  target-language sleela      // java | sleela | c   (Nordshrift triplet superset)
-```
-
-The parser handles all the spec's sections (`sheet`, `import`, `source`,
-`target`, `pipeline`, `rules`, `effects`, `derive`, `guards`, `interop`,
-`profile`, inline `rule` blocks) and emits the structured **NSS-*** diagnostics.
-`source`/`target`/`pipeline` are honored by the build; the analysis-oriented
-sections (`rules`/`effects`/`derive`/`guards`/`interop`/`profile`) are parsed and
-validated now and applied to emission in a later stage.
-
-## Conformance notes
-
-- The spec's `target` section is Java-only; Nordshrift adds `target-language`
-  (default `java`) to drive the triplet — a conformant superset.
-- The spec references a companion `SL-META-0001` (Sleela meta-model). It is not
-  in the repo; the meta-model concepts are stubbed for the deferred sections.
-
-See [`NORDSHRIFT.md`](NORDSHRIFT.md) for the architecture, the section table, and
-the implemented diagnostic codes; see `/SST.model` for the normative grammar.
-
 
 ## Object compatibility list (SHEET.sheet)
 
-Beyond driving `.sst` builds, Nordshrift carries every object from the repo-root
-`SHEET.sheet` catalog (129 objects, 16 role categories, the `System` root with
-depth 3024 / complexity degree 4) in an **object compatibility list**, and
-converts each object into a per-target **relevance**:
+Nordshrift also carries every object from the repo-root `SHEET.sheet` catalog
+(129 objects, 16 role categories, the `System` root with depth 3024 /
+complexity degree 4) in an **object compatibility list**, and converts each
+object into a per-target relevance:
 
-- **direct** — the object maps to a concrete target construct
-  (e.g. `Thread -> pthread_t` in C, `class` in Java, `spawn(...)` in Sleela).
-- **model** — the object has no single construct, so it is realized as an
-  abstract role/pattern (e.g. `Pipeline` as a "piping" shape).
+- **direct** — the object maps to a concrete target construct.
+- **model** — the object is realized as an abstract role/pattern.
 - **none** — the object is not on the compatibility list.
 
-This is the bridge from a catalogued system object to something a target can
-eventually compile and an OS can execute. Commands (locate the sheet via
-`$SLEELA_SHEET` or a nearby `SHEET.sheet`):
+Commands:
 
 ```sh
-nordshrift objects                        # list the whole compatibility list by section
-nordshrift relevance --target=c           # per-object direct/model table + tally
-nordshrift relevance --target=c Thread    # one object's relevance (direct -> pthread_t)
+nordshrift objects
+nordshrift relevance --target=c
+nordshrift relevance --target=c Thread
 ```
 
-The catalog is parsed by the shared `../catalog/` module — the same one Sleela
-uses for its conducted methods — so the two tools stay in lock-step.
+The catalog is parsed by the shared `../catalog/` module so the compiler and
+Nordshrift remain aligned.
