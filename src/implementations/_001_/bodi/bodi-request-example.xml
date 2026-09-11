@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bodi xmlns="urn:sleela:bodi:1"
+      system="xxx"
+      method="install"
+      sequence="001"
+      starter="network"
+      man="operator">
+    <datum>yyy</datum>
+</bodi>
