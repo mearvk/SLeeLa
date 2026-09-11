@@ -1,0 +1,23 @@
+system Proxy.AdminMonitor {
+  role admin
+
+  observe Proxy.Server.active_connections
+  observe Proxy.Server.forwarded_requests
+  observe Proxy.Server.upstreams
+
+  on inspect {
+    report active_connections
+    report forwarded_requests
+    report upstreams
+  }
+
+  on set_upstreams(list) {
+    authorize admin
+    set Proxy.Server.upstreams = list
+  }
+
+  on drain {
+    authorize admin
+    set Proxy.Server.accepting_connections = false
+  }
+}
