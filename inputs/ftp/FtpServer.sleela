@@ -1,0 +1,59 @@
+#sleela 1.0
+// FtpServer.sleela -- a model FTP control-channel command loop in Sleela.
+//
+// Toolchain INPUT (a Wrapper(TM)). Models the RFC 959 control channel: the
+// server replies to each command with a 3-digit reply code and text. Only
+// front-end-supported features are used (no sockets, no file system). A tiny
+// session state machine tracks whether USER/PASS have authenticated the client.
+class FtpServer {
+
+    // authenticated flag is shared session state (a class field)
+    boolean loggedIn = false;
+
+    String reason(int code) {
+        if (code == 220) { return "Service ready"; }
+        if (code == 331) { return "User name okay, need password"; }
+        if (code == 230) { return "User logged in, proceed"; }
+        if (code == 530) { return "Not logged in"; }
+        if (code == 257) { return "\"/\" is current directory"; }
+        if (code == 226) { return "Directory send OK"; }
+        if (code == 221) { return "Goodbye"; }
+        if (code == 502) { return "Command not implemented"; }
+        return "Unknown";
+    }
+
+    void reply(int code) {
+        print(code + " " + reason(code));
+    }
+
+    // Handle one control command with an optional argument.
+    void command(String verb, String arg) {
+        if (verb == "USER") {
+            reply(331);
+        } else if (verb == "PASS") {
+            loggedIn = true;         // model: any PASS after USER authenticates
+            reply(230);
+        } else if (verb == "PWD") {
+            if (loggedIn) { reply(257); } else { reply(530); }
+        } else if (verb == "LIST") {
+            if (loggedIn) { reply(226); } else { reply(530); }
+        } else if (verb == "QUIT") {
+            reply(221);
+        } else {
+            reply(502);
+        }
+    }
+
+    void main() {
+        print("== Sleela FTP server model: control-channel session ==");
+        reply(220);                    // greeting on connect
+        command("PWD", "");            // before login -> 530
+        command("USER", "anonymous");  // -> 331
+        command("PASS", "guest@");     // -> 230
+        command("PWD", "");            // now logged in -> 257
+        command("LIST", "/");          // -> 226
+        command("FOOBAR", "");         // unknown -> 502
+        command("QUIT", "");           // -> 221
+        print("== control channel closed ==");
+    }
+}

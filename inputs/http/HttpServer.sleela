@@ -1,0 +1,86 @@
+#sleela 1.0
+// HttpServer.sleela -- a model HTTP/1.1 request-handling loop in Sleela.
+//
+// This is a toolchain INPUT (a Wrapper(TM)): it exercises the request/response
+// shape of an HTTP server using only features the Sleela front end supports
+// today (classes, methods/recursion, int/String/boolean, if/else, while,
+// string `+` concatenation, and print). There are no real sockets; the
+// "connection" is modelled by feeding a small set of request lines through the
+// same routing/status logic a real server would use.
+class HttpServer {
+
+    // ---- status line helpers -------------------------------------------------
+
+    String reason(int code) {
+        if (code == 200) { return "OK"; }
+        if (code == 404) { return "Not Found"; }
+        if (code == 405) { return "Method Not Allowed"; }
+        if (code == 400) { return "Bad Request"; }
+        return "Unknown";
+    }
+
+    boolean isKnownMethod(String m) {
+        return m == "GET" || m == "HEAD" || m == "POST";
+    }
+
+    // ---- routing -------------------------------------------------------------
+    // Returns the status code for a (method, path) pair.
+    // (Named statusFor, not route(), since route() is a reserved conducted method.)
+    int statusFor(String method, String path) {
+        if (!isKnownMethod(method)) {
+            return 405;
+        }
+        if (path == "/") {
+            return 200;
+        }
+        if (path == "/index.html") {
+            return 200;
+        }
+        if (path == "/health") {
+            return 200;
+        }
+        return 404;
+    }
+
+    String bodyFor(String path, int code) {
+        if (code != 200) {
+            return "error " + code;
+        }
+        if (path == "/health") {
+            return "OK";
+        }
+        return "<html><body>Sleela HTTP model</body></html>";
+    }
+
+    // ---- one request/response exchange --------------------------------------
+    void handle(String method, String path) {
+        int code = statusFor(method, path);
+        String body = bodyFor(path, code);
+        // Status line, one header, blank line, body -- HTTP/1.1 shaped.
+        print("HTTP/1.1 " + code + " " + reason(code));
+        print("Content-Length: " + len(body));
+        print("");
+        print(body);
+        print("--- end of response ---");
+    }
+
+    // crude byte length used for Content-Length in this model
+    int len(String s) {
+        int n = 0;
+        // Sleela strings compare/concatenate; we approximate length by scanning
+        // a fixed set of known bodies rather than per-char (no indexing yet).
+        if (s == "OK") { return 2; }
+        if (s == "<html><body>Sleela HTTP model</body></html>") { return 44; }
+        return 8;
+    }
+
+    void main() {
+        print("== Sleela HTTP server model: serving a request batch ==");
+        handle("GET", "/");
+        handle("GET", "/health");
+        handle("POST", "/index.html");
+        handle("DELETE", "/");        // unsupported method -> 405
+        handle("GET", "/missing");    // -> 404
+        print("== server drained request batch ==");
+    }
+}
