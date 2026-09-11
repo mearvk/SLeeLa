@@ -17,5 +17,7 @@ bodi.gardulus.p.start_phase_deg=0.0
 bodi.gardulus.b.start_phase_deg=0.0
 bodi.gardulus.p.speed_deg_s=360.0
 bodi.gardulus.b.speed_deg_s=359.640359640
+bodi.gardulus.orbit.xml_size_bytes=1024
+bodi.gardulus.orbit.max_scale=1.5
 bodi.gardulus.sync.relative=true
 bodi.gardulus.sync.coherence=true
