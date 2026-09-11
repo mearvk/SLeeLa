@@ -7,10 +7,19 @@
 #include "chemistry_api.h"
 #include "../core/sleela_core.h"
 
+#include <algorithm>
 #include <stdexcept>
 #include <string>
 
 namespace sleela {
+
+static void lowerNativeModules(Program& prog) {
+    chemistry::lowerProgram(prog);
+    auto saved = prog.imports;
+    prog.imports.erase(std::remove(prog.imports.begin(), prog.imports.end(), "chemistry"), prog.imports.end());
+    native::lowerProgram(prog);
+    prog.imports = std::move(saved);
+}
 
 int compileToArtifact(Program& prog,
                       const std::string& outputPath,
@@ -19,8 +28,7 @@ int compileToArtifact(Program& prog,
     if (outputPath.empty())
         throw std::runtime_error("artifact output path must not be empty");
 
-    chemistry::lowerProgram(prog);
-    native::lowerProgram(prog);
+    lowerNativeModules(prog);
     SLVM* vm = slvm_new();
     if (!vm) throw std::runtime_error("unable to allocate Sleela VM");
 
