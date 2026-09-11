@@ -1,0 +1,20 @@
+system Email.Client {
+  role client
+
+  state server
+  state sent_count
+
+  on start {
+    sent_count = 0
+  }
+
+  on send(message) {
+    send smtp.submit(message) to server
+    sent_count = sent_count + 1
+  }
+
+  on fetch_mailbox(user) {
+    send mailbox.fetch(user) to server
+    await mailbox.response
+  }
+}
