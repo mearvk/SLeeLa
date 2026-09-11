@@ -10,13 +10,14 @@ The network layer is therefore not a separate runtime library bolted onto the la
 
 ## 1. Design Ordinance
 
-The network layer is governed by five principles:
+The network layer is governed by six principles:
 
 1. **Small surface** — expose only the primitives required to establish, accept, read, write, and close TCP connections.
 2. **VM ownership** — socket handles belong to the Sleela VM rather than exposing process-global operating-system descriptors directly to Sleela programs.
 3. **Bounded resources** — socket resources are kept inside a fixed-size table, consistent with the existing bounded thread, lock, and mailbox facilities.
 4. **Thread compatibility** — blocking network operations are compatible with Sleela's existing pthread-based execution model and can be used from spawned workers.
 5. **Explicit lifecycle** — sockets are allocated, used, closed, and drained as VM resources; shutdown does not depend on a program remembering every descriptor.
+6. **Execution-model separation** — blocking socket primitives and non-blocking execution are distinct concepts; asynchronous execution through workers is not represented as kernel-level `O_NONBLOCK`.
 
 The layer intentionally does **not** attempt to become a complete HTTP, TLS, UDP, asynchronous-event, or connection-pooling framework.
 
@@ -69,7 +70,176 @@ For a complete loopback example, see [`examples/network_echo.sleela`](examples/n
 
 ---
 
-## 3. Source-to-VM Pipeline
+## 3. Blocking Network Model
+
+The foundational SLeeLa network model is **blocking**. A network opcode executes the corresponding POSIX socket operation directly on the SLeeLa execution line performing the call.
+
+```text
+SLeeLa instruction
+      │
+      ▼
+VM network opcode
+      │
+      ▼
+POSIX socket call
+      │
+      ├── wait for connection/data/space
+      │
+      ▼
+result returned to the same execution line
+```
+
+### Blocking behavior
+
+| Call | Blocking behavior |
+|---|---|
+| `listen(port)` | Creates the listener; does not wait for a client. |
+| `accept(listener)` | Waits until a client connection is available. |
+| `connect(host, port)` | Waits for connection establishment/address attempts. |
+| `sockread(socket)` | Waits for data or EOF/error. |
+| `sockwrite(socket, data)` | May wait according to the operating system's send behavior. |
+| `sockclose(socket)` | Releases the socket. |
+
+The blocking model is intentionally direct. It gives the language a small, predictable TCP ABI without requiring an event loop, readiness API, or additional scheduler.
+
+A blocking call occupies the **SLeeLa worker executing that operation**, not necessarily the entire VM. Because SLeeLa already supports pthread-backed `spawn()`, other workers may continue independently.
+
+---
+
+## 4. Non-Blocking Execution Model
+
+SLeeLa also supports a distinct **non-blocking execution model** using its existing bounded worker-thread and mailbox facilities. This model does not make the socket descriptor itself non-blocking. Instead, the potentially blocking operation is moved to a worker so the coordinating execution line remains free to perform other work.
+
+```text
+                 +--------------------+
+                 | coordinator/main   |
+                 +---------+----------+
+                           │
+                       spawn(worker)
+                           │
+                           ▼
+                 +--------------------+
+                 | network worker      |
+                 | accept/read/write   |
+                 +---------+----------+
+                           │
+                    mailbox/send
+                           │
+                           ▼
+                 +--------------------+
+                 | coordinator resumes |
+                 +--------------------+
+```
+
+The coordinator therefore does not execute `accept()` or `sockread()` itself. A worker owns the network operation and communicates its result through the existing mailbox primitives.
+
+### Non-blocking execution rules
+
+- The coordinator does not wait on network I/O directly.
+- A network worker owns the socket operation it performs.
+- Results can be returned through `send(slot, value)` and `recv(slot)`.
+- `join()` remains available for worker lifecycle completion.
+- The VM socket table remains the sole owner of socket handles.
+- No second socket ownership system is introduced.
+- No lexer or parser changes are required.
+
+### Non-blocking execution example
+
+```sleela
+#sleela 1.1
+class AsyncEcho {
+    int listener;
+
+    void network_worker() {
+        int client = accept(listener);
+        if (client >= 0) {
+            String data = sockread(client);
+            sockwrite(client, data);
+            sockclose(client);
+            send(0, 1);
+        } else {
+            send(0, -1);
+        }
+    }
+
+    void main() {
+        listener = listen(8080);
+        if (listener < 0) {
+            print(-1);
+            return;
+        }
+
+        spawn(network_worker);
+
+        // The coordinator is not performing socket I/O. The worker owns
+        // accept/read/write while the coordinator waits on a mailbox result.
+        int result = recv(0);
+        print(result);
+
+        sockclose(listener);
+        join();
+    }
+}
+```
+
+The worker may block in `accept()` and `sockread()` while the coordinator remains available for other computation. This is **non-blocking execution**, not kernel-level non-blocking socket I/O.
+
+A corresponding example is maintained at [`impl/examples/network_nonblocking.sleela`](impl/examples/network_nonblocking.sleela).
+
+---
+
+## 5. Blocking vs. Non-Blocking Execution
+
+The two models use the same TCP primitives and VM socket ownership, but place the wait in different execution contexts.
+
+| Property | Blocking model | Non-blocking execution model |
+|---|---|---|
+| Socket API | Six TCP built-ins | Same six built-ins |
+| Where I/O runs | Current execution line | Spawned worker |
+| `accept()` / `sockread()` | May block caller | May block worker |
+| Coordinator availability | Occupied by direct I/O | Remains available |
+| Concurrency mechanism | Direct VM operation | `spawn()` + mailbox coordination |
+| Kernel socket mode | Blocking | Blocking unless separately changed |
+| Event loop required | No | No |
+| Additional socket ownership | No | No |
+
+This separation is important. Calling a worker-thread model “non-blocking” means **the coordinator is not blocked by the network operation**. It does not mean that the underlying descriptor has `O_NONBLOCK` set.
+
+---
+
+## 6. True Kernel-Level Non-Blocking I/O
+
+A future SLeeLa runtime model may expose actual POSIX non-blocking sockets:
+
+```text
+fcntl(fd, F_SETFL, O_NONBLOCK)
+        │
+        ├── accept()  → EAGAIN / EWOULDBLOCK
+        ├── connect() → EINPROGRESS
+        ├── recv()    → EAGAIN / EWOULDBLOCK
+        └── send()    → EAGAIN / EWOULDBLOCK
+```
+
+That model is intentionally separate from the worker abstraction. True kernel-level non-blocking I/O requires explicit readiness and status semantics and, for scalable multiplexing, a polling facility such as `poll`, `select`, `epoll`, `kqueue`, or an equivalent host mechanism.
+
+The architecture therefore distinguishes three layers:
+
+```text
+Layer 1 — Blocking TCP primitives
+    listen / accept / connect / sockread / sockwrite / sockclose
+
+Layer 2 — Non-blocking execution
+    spawn workers + mailbox coordination
+
+Layer 3 — Future kernel-level non-blocking I/O
+    O_NONBLOCK + readiness/polling/event integration
+```
+
+Layer 2 is available without changing the six-operation TCP ABI. Layer 3 should be introduced only with explicit readiness/error semantics rather than ambiguous reuse of the existing `-1` and empty-string conventions.
+
+---
+
+## 7. Source-to-VM Pipeline
 
 Network calls deliberately use the normal Sleela call machinery.
 
@@ -108,7 +278,7 @@ This keeps the grammar stable while allowing the runtime vocabulary to grow thro
 
 ---
 
-## 4. Core Opcode Model
+## 8. Core Opcode Model
 
 The network operations are represented by new `SLOp` values in `core/sleela_core.h`:
 
@@ -125,7 +295,7 @@ The important distinction is that socket handles are runtime values. Unlike the 
 
 ---
 
-## 5. VM Socket State
+## 9. VM Socket State
 
 The C core maintains a bounded socket table in the VM, parallel to the existing shared runtime state for threads, locks, and mailboxes.
 
@@ -146,7 +316,7 @@ The socket allocation table has its own synchronization. Individual socket opera
 
 ---
 
-## 6. Socket Lifecycle
+## 10. Socket Lifecycle
 
 ### `listen(port)`
 
@@ -185,7 +355,7 @@ When the VM is freed, remaining active socket descriptors are drained/closed and
 
 ---
 
-## 7. Threading Interaction
+## 11. Threading Interaction
 
 Sleela already uses pthreads for `spawn()` and a bounded thread table of 128 threads. The network layer intentionally works within that model rather than introducing a second concurrency architecture.
 
@@ -197,24 +367,25 @@ int client = accept(listener);
 
 blocks the **Sleela worker executing that operation**, just as `recv()` blocks an existing thread/mailbox operation. Other spawned Sleela workers remain independently schedulable by the host pthread implementation.
 
-This makes a natural server pattern possible:
+The non-blocking execution model simply makes this worker boundary explicit:
 
 ```text
-main
+main/coordinator
  ├── listen()
- ├── spawn(server-worker)
+ ├── spawn(network-worker)
  │     └── accept()
  │          ├── sockread()
  │          ├── sockwrite()
  │          └── sockclose()
- └── other work
+ ├── other coordinator work
+ └── recv()/join() when coordination is required
 ```
 
-The design does not currently provide nonblocking sockets or an event loop. Those can be layered later without changing the basic six-operation vocabulary.
+This makes a natural server pattern possible without requiring a second scheduler.
 
 ---
 
-## 8. Why Networking Is a Runtime Built-In
+## 12. Why Networking Is a Runtime Built-In
 
 Sleela has another category of built-in operation: the conducted methods (`conduct`, `role`, `insight`, `congruent`, `route`, `sysdepth`, `degreemax`). Those operations resolve against the static `SHEET.sheet` catalog during compilation and generally become constants.
 
@@ -233,7 +404,7 @@ Consequently, network operations belong beside the threading opcodes in the runt
 
 ---
 
-## 9. Compiler Integration
+## 13. Compiler Integration
 
 The principal compiler insertion point is `Compiler::tryEmitBuiltin()` in `frontend/compiler.cpp`.
 
@@ -265,7 +436,7 @@ There is currently no built-in registration table. The built-in vocabulary is ha
 
 ---
 
-## 10. Version Awareness
+## 14. Version Awareness
 
 Network operations are a **Sleela 1.1 feature**.
 
@@ -283,7 +454,7 @@ This is an important distinction: the network syntax itself does not require new
 
 ---
 
-## 11. Testing
+## 15. Testing
 
 The network layer includes both low-level and language-level coverage.
 
@@ -313,19 +484,25 @@ make test-network
 
 [`examples/network_echo.sleela`](examples/network_echo.sleela) demonstrates a real loopback exchange using the Sleela threading model.
 
+### Non-blocking execution example
+
+[`examples/network_nonblocking.sleela`](examples/network_nonblocking.sleela) demonstrates the worker-thread model: a spawned worker performs `accept()` / `sockread()` / `sockwrite()` while the coordinator receives a mailbox completion result.
+
 The intended server/client sequence is:
 
 ```text
 listener = listen()
         │
-        ├── server worker → accept() → sockread() → sockwrite() → sockclose()
+        ├── blocking worker → accept() → sockread() → sockwrite() → sockclose()
         │
         └── client → connect() → sockwrite() → sockread() → sockclose()
 ```
 
+The important test distinction is that the network primitives remain blocking at the socket level while the second example demonstrates non-blocking **execution** at the coordinator level.
+
 ---
 
-## 12. Resource and Safety Boundaries
+## 16. Resource and Safety Boundaries
 
 The network layer is deliberately bounded and explicit.
 
@@ -337,6 +514,8 @@ The network layer is deliberately bounded and explicit.
 | Network protocol | TCP / IPv4-oriented implementation |
 | Socket ownership | VM-local |
 | Blocking operations | Allowed |
+| Non-blocking execution | `spawn()` + mailbox coordination |
+| Kernel `O_NONBLOCK` | Not currently exposed |
 | Automatic HTTP parsing | No |
 | TLS | No |
 | UDP | No |
@@ -347,7 +526,7 @@ These boundaries are implementation constraints, not claims that the underlying 
 
 ---
 
-## 13. Future Extensions
+## 17. Future Extensions
 
 The six primitives intentionally leave room for higher-level facilities without making the VM overly complicated.
 
@@ -360,15 +539,17 @@ Potential future layers include:
 - Ephemeral-port discovery for `listen(0)`.
 - Configurable read/write limits.
 - Timeouts.
-- Nonblocking mode.
-- Poll/select/event-loop integration.
+- True kernel-level nonblocking mode.
+- `poll` / `select` / `epoll` / `kqueue` readiness integration.
+- A first-class event loop.
 - Higher-level connection objects.
+- Connection pooling.
 
 Such extensions should preserve the central rule: **language-level networking remains bounded, explicit, VM-owned, and compatible with the existing concurrency model.**
 
 ---
 
-## 14. Implementation Map
+## 18. Implementation Map
 
 For maintainers, the principal source locations are:
 
@@ -383,16 +564,23 @@ For maintainers, the principal source locations are:
 | Core test | `core/socket_smoke.c` | direct runtime/network smoke test |
 | Version tests | `tests/version/` | 1.0 rejection / 1.1 acceptance |
 | Example | `examples/network_echo.sleela` | end-to-end threaded TCP example |
+| Async example | `examples/network_nonblocking.sleela` | non-blocking execution through a spawned worker |
 | Build/test | `Makefile` | `test-network` target |
 
 The architecture intentionally requires no changes to `lexer.cpp`, `parser.cpp`, or `ast.h` for the six current network calls.
 
 ---
 
-## 15. Status
+## 19. Status
 
 **Sleela 1.1 TCP Network Layer: implemented.**
 
-The implementation is present on the repository's `main` branch together with the compiler integration, VM socket lifecycle, version gating, tests, example program, and this document.
+The implementation provides a foundational blocking TCP ABI and a non-blocking execution pattern based on the existing pthread/mailbox runtime. The repository includes the compiler integration, VM socket lifecycle, version gating, low-level and language-level tests, blocking and non-blocking examples, and this document.
 
-The network layer should be treated as a foundational runtime facility. Protocol-specific behavior belongs above it; resource ownership and primitive socket operations belong inside the VM.
+The distinction is deliberate:
+
+- **Blocking network operations** are the primitive runtime ABI.
+- **Non-blocking execution** is achieved by moving those operations into SLeeLa workers.
+- **Kernel-level non-blocking sockets** remain a future extension requiring explicit readiness semantics.
+
+Protocol-specific behavior belongs above the TCP primitive layer; resource ownership and primitive socket operations belong inside the VM.
