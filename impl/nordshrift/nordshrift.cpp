@@ -1,29 +1,19 @@
 // ===========================================================================
-// nordshrift.cpp  --  The `nordshrift` transpiler driver (NS-SST-0001).
+// nordshrift.cpp -- The `nordshrift` SST driver (NS-SST-0001).
 //
-// Nordshrift reads a .sst control sheet and drives the triplet transpilation
-// of the Sleela sources the sheet names -- each a Wrapper(TM) (the .sleela
-// file type: a Sleela source file carrying the metadocument addend, governed
-// by SL-META-0001) -- into the target language the sheet selects
-// (java | sleela | c).
-//
-//   nordshrift check <sheet.sst>     lex+parse+validate the sheet; print diagnostics
-//   nordshrift build <sheet.sst>     resolve source: files, run the pipeline,
-//                                     emit target source (per target-language);
-//                                     the sleela target additionally runs on the core
-//   nordshrift version
-//
-// The .sst file is the control surface (Part I-XIII). The Sleela source files
-// (Wrapper(TM) files) it points at are the program; those are transpiled
-// through the shared Sleela front end and emitted / executed here.
+// Nordshrift reads a .sst control sheet and drives source compilation to the
+// selected target. For target-language=sleela, Nordshrift now uses the same
+// Sleelvac™ compiler/artifact boundary as the direct compiler and writes a
+// persistent runnable .sleela Core artifact. That artifact is loadable by the
+// Sleela runtime without a second front-end compilation.
 // ===========================================================================
 #include <cstdio>
+#include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <sstream>
 #include <string>
 #include <vector>
-
 #include <cstdlib>
 
 #include "sst_lexer.h"
@@ -34,11 +24,10 @@
 #include "sleela_emit.h"
 #include "object_compat.h"
 #include "../catalog/sheet_catalog.h"
-
-// Shared Sleela front end + core for parsing/executing the source programs.
 #include "../frontend/lexer.h"
 #include "../frontend/parser.h"
 #include "../frontend/compiler.h"
+#include "../frontend/artifact.h"
 #include "../frontend/version.h"
 extern "C" {
 #include "../core/sleela_core.h"
@@ -47,13 +36,13 @@ extern "C" {
 using namespace nordshrift;
 
 static const char* kVersion =
-    "Nordshrift 1.0 (NS-SST-0001 driver; triplet: java | sleela | c)";
+    "Nordshrift 1.1 (NS-SST-0001; Sleelvac™ runnable .sleela target)";
 
 static int usage() {
     std::cerr <<
         "Usage:\n"
         "  nordshrift check <sheet.sst>              validate a sheet; print diagnostics\n"
-        "  nordshrift build <sheet.sst>              transpile the sheet's sources to its target\n"
+        "  nordshrift build <sheet.sst>              compile the sheet's sources to its target\n"
         "  nordshrift objects                        list the SHEET.sheet object compatibility list\n"
         "  nordshrift relevance --target=java|sleela|c [Object]\n"
         "                                            show direct/model relevance conversions\n"
@@ -61,7 +50,6 @@ static int usage() {
     return 2;
 }
 
-// Locate SHEET.sheet the same way the Sleela driver does.
 static catalog::Catalog loadCatalog() {
     const char* env = std::getenv("SLEELA_SHEET");
     const char* candidates[] = { env, "SHEET.sheet", "../SHEET.sheet",
@@ -93,21 +81,22 @@ static std::string dirOf(const std::string& path) {
     size_t s = path.find_last_of('/');
     return s == std::string::npos ? "." : path.substr(0, s);
 }
+
 static std::string langName(TargetLang l) {
     return l == TargetLang::Java ? "java" : l == TargetLang::Sleela ? "sleela" : "c";
 }
 
-// Load + parse + (lightly) validate a sheet. Returns false if it could not be
-// read; diagnostics carry every lexical/parse/semantic issue.
 static bool loadSheet(const std::string& path, Sheet& sheet, DiagnosticBag& diags) {
     std::string src;
-    if (!readFile(path, src)) { std::cerr << "nordshrift: cannot open '" << path << "'\n"; return false; }
+    if (!readFile(path, src)) {
+        std::cerr << "nordshrift: cannot open '" << path << "'\n";
+        return false;
+    }
     auto toks = lex(src, path, diags);
     sheet = parseSheet(toks, path, diags);
     return true;
 }
 
-// `check`: validate only, print all diagnostics + a summary.
 static int doCheck(const std::string& path) {
     Sheet sheet; DiagnosticBag diags;
     if (!loadSheet(path, sheet, diags)) return 1;
@@ -120,40 +109,23 @@ static int doCheck(const std::string& path) {
     return diags.hasErrors() ? 1 : 0;
 }
 
-// Run one emitted Sleela program on the C core (the sleela-target arm).
-static int runSleelaOnCore(const std::string& sleelaSrc) {
-    SLVM* vm = slvm_new();
-    int rc = 0;
-    try {
-        sleela::Lexer lx(sleelaSrc);
-        sleela::Parser ps(lx.tokenize());
-        sleela::Program prog = ps.parseProgram();
-        sleela::compile(prog, vm);
-        if (slvm_run(vm) == SLR_ERROR) {
-            const char* e = slvm_error(vm);
-            std::cerr << "nordshrift: sleela runtime error: " << (e ? e : "unknown") << "\n";
-            rc = 1;
-        }
-    } catch (const std::exception& ex) {
-        std::cerr << "nordshrift: while running emitted Sleela: " << ex.what() << "\n";
-        rc = 1;
-    }
-    slvm_free(vm);
-    return rc;
+static std::string runnablePathFor(const std::string& srcPath) {
+    std::filesystem::path src(srcPath);
+    std::filesystem::path outDir = src.parent_path() / "build";
+    std::filesystem::create_directories(outDir);
+    return (outDir / (src.stem().string() + ".sleela")).string();
 }
 
-// `build`: resolve sources, transpile each into the sheet's target language.
+// `build`: resolve sources and compile each source to the selected target.
 static int doBuild(const std::string& path) {
     Sheet sheet; DiagnosticBag diags;
     if (!loadSheet(path, sheet, diags)) return 1;
 
-    // Resolve the source file set (§V) unless the sheet omitted a source block.
     std::string sheetDir = dirOf(path);
     std::vector<std::string> sources;
     if (sheet.source.present)
         sources = resolveSources(sheet.source, sheetDir, diags);
 
-    // Report diagnostics; halt on errors (NSS-E are fatal at end of phase).
     std::cout << diags.render();
     if (diags.hasErrors()) {
         std::cerr << "nordshrift: build halted — " << diags.errorCount() << " error(s)\n";
@@ -172,16 +144,14 @@ static int doBuild(const std::string& path) {
             std::cerr << "nordshrift: cannot read source '" << srcPath << "'\n";
             rc = 1; continue;
         }
-        // Version awareness (SL-META-0001 Sec 4.4): reject sources whose declared
-        // #sleela syntax version is outside the front end's supported range.
+
         sleela::VersionResolution vr = sleela::resolveSyntaxVersion(code);
         if (vr.isError()) {
             std::cerr << "NSS-E (error): " << srcPath << ": " << vr.message << "\n";
             rc = 1; continue;
         }
-        if (vr.isWarning()) {
+        if (vr.isWarning())
             std::cerr << "NSS-W (warning): " << srcPath << ": " << vr.message << "\n";
-        }
 
         sleela::Program prog;
         try {
@@ -189,25 +159,33 @@ static int doBuild(const std::string& path) {
             sleela::Parser ps(lx.tokenize());
             prog = ps.parseProgram();
         } catch (const std::exception& ex) {
-            // Phase 1-7 source error, reported against the Sleela source file.
             std::cerr << "NSS-E (error): " << srcPath << ": " << ex.what() << "\n";
             rc = 1; continue;
+        }
+
+        if (lang == TargetLang::Sleela) {
+            // This is the important boundary: Nordshrift does not emit Sleela
+            // source and then invoke another compiler. It directly uses the
+            // Sleelvac™ lowering stage to persist Core bytecode as .sleela.
+            const std::string output = runnablePathFor(srcPath);
+            try {
+                sleela::compileToArtifact(prog, output, nullptr, vr.declared);
+                std::cout << "nordshrift: " << srcPath << " -> " << output
+                          << " (runnable Sleela Core artifact)\n";
+            } catch (const std::exception& ex) {
+                std::cerr << "NSS-E (error): " << srcPath << ": " << ex.what() << "\n";
+                rc = 1;
+            }
+            continue;
         }
 
         std::string emitted = emitProgram(prog, lang, sheet.target.packageRoot);
         std::cout << "\n// ==== " << srcPath << "  ->  " << langName(lang) << " ====\n";
         std::cout << emitted;
-
-        // The sleela target is executable: run it on the C core to prove it out.
-        if (lang == TargetLang::Sleela) {
-            std::cout << "// ---- executing on the Sleela core ----\n";
-            if (runSleelaOnCore(emitted) != 0) rc = 1;
-        }
     }
     return rc;
 }
 
-// `objects`: print the object compatibility list from SHEET.sheet.
 static int doObjects() {
     catalog::Catalog cat = loadCatalog();
     if (cat.objectCount() == 0) {
@@ -236,19 +214,20 @@ static int doObjects() {
     return 0;
 }
 
-// `relevance --target=T [Object]`: show how catalog objects convert to the
-// target as a direct construct or a modeled shape.
 static int doRelevance(int argc, char** argv) {
     TargetLang target = TargetLang::Java;
     bool haveTarget = false;
     std::string only;
     for (int i = 2; i < argc; i++) {
         std::string a = argv[i];
-        if (a.rfind("--target=", 0) == 0) { haveTarget = parseTargetLang(a.substr(9), target); }
-        else if (a == "--target" && i + 1 < argc) { haveTarget = parseTargetLang(argv[++i], target); }
-        else only = a;   // an optional single object name
+        if (a.rfind("--target=", 0) == 0) haveTarget = parseTargetLang(a.substr(9), target);
+        else if (a == "--target" && i + 1 < argc) haveTarget = parseTargetLang(argv[++i], target);
+        else only = a;
     }
-    if (!haveTarget) { std::cerr << "nordshrift: relevance requires --target=java|sleela|c\n"; return usage(); }
+    if (!haveTarget) {
+        std::cerr << "nordshrift: relevance requires --target=java|sleela|c\n";
+        return usage();
+    }
 
     catalog::Catalog cat = loadCatalog();
     if (cat.objectCount() == 0) {
@@ -271,7 +250,6 @@ static int doRelevance(int argc, char** argv) {
         return 0;
     }
 
-    // whole-catalog relevance table
     auto list = relevanceList(cat, target);
     int direct = 0, model = 0;
     std::cout << "Relevance conversions for target '" << tn << "' ("
