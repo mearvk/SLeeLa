@@ -2,158 +2,178 @@
 
 ## SLeeLa as a brother to Java RMI
 
-SLeeLa RMI is designed as a **peer integration with Java**, not as a Java imitation. Java supplies the mature RMI transport, registry, proxy, lifecycle, and distributed-object machinery; SLeeLa supplies the business logic that the remote object represents.
+SLeeLa RMI is a peer integration with Java, not a Java imitation. Java supplies the mature RMI/JRMP transport, registry, proxy, and distributed-object machinery; SLeeLa supplies the business logic represented by the remote service.
 
-The intended relationship is:
+The boundary is:
 
 ```text
-                    RMI
-                     |
-          +----------+----------+
-          |                     |
-        Java                  SLeeLa
-     transport              business logic
-     / registry              / Wrapper™
-          |                     |
-          +----------+----------+
-                     |
-              remote contract
+Remote Java client
+       |
+       v
+SleelaRmiClient
+       |
+       v
+Java RMI / JRMP
+       |
+       v
+SleelaRemote
+       |
+       v
+SleelaRmiService
+       |
+       v
+SleelaRuntime
+       |
+       +--------------------+
+       |                    |
+ProcessSleelaRuntime   JniSleelaRuntime
+       |                    |
+       +---------+----------+
+                 |
+                 v
+             SLeeLa VM
 ```
 
-In other words, SLeeLa is Java's **brother with its own flavor**: the two runtimes can meet at a strongly defined remote contract without requiring SLeeLa to become Java.
+The principle is simple: **Java transports; SLeeLa decides.**
 
-## Package
+## Complete backing package
+
+The RMI implementation now includes the server lifecycle, client facade, endpoint model, remote contract, service adapter, and executable demonstrations:
 
 ```text
 rmi/
   java/com/mearvk/sleela/rmi/
     SleelaRemote.java
+    SleelaRmiEndpoint.java
     SleelaRmiService.java
+    SleelaRmiServerHandle.java
     SleelaRmiServer.java
     SleelaRmiClient.java
     SleelaRmiClientDemo.java
+    SleelaRmiServerDemo.java
   examples/
     server/RmiServer.sleela
     client/RmiClient.sleela
 ```
 
-## Why Java RMI
+### Remote contract
 
-The first implementation intentionally uses the established Java RMI model:
+`SleelaRemote` is the stable RMI contract. It exposes three deliberately small operations:
 
-- `Remote` defines the remote contract.
-- `RemoteException` makes transport failure explicit.
-- `UnicastRemoteObject` exports the server object.
-- `LocateRegistry` provides the standard registry mechanism.
-- `Registry.rebind()` publishes the service.
-- `Registry.lookup()` obtains the client-side remote proxy.
-- JRMP remains the transport selected by the standard Java RMI stack.
-
-This gives SLeeLa a native Java-side RMI presence without inventing another RPC protocol prematurely.
-
-## SLeeLa ownership model
-
-The Java object is a **transport adapter**. The operation is still delegated to SLeeLa:
-
-```text
-Remote client
-     |
-     v
-SleelaRemote.invoke()
-     |
-     v
-SleelaRmiService
-     |
-     v
-SleelaRuntime
-     |
-     v
-SLeeLa Wrapper™
-     |
-     v
-C/C++ VM / slcore_exchange()
+```java
+String serviceName() throws RemoteException;
+String invoke(String operation, String arguments) throws RemoteException;
+String health() throws RemoteException;
 ```
 
-The current service uses the existing `ProcessSleelaRuntime`, which gives us a working process boundary today. The same `SleelaRmiService` can later be constructed around `JniSleelaRuntime` or another direct VM binding without changing the remote contract.
+The contract keeps transport concerns out of the SLeeLa language itself. Strings are used at the first boundary so that Java object serialization does not become the definition of SLeeLa semantics.
 
-## Server
+### Server adapter
 
-Example:
+`SleelaRmiService` extends `UnicastRemoteObject` and delegates `invoke()` directly into the configured `SleelaRuntime`. That runtime can be the process-backed implementation today or a native/JNI implementation later.
+
+### Server lifecycle
+
+`SleelaRmiServerHandle` owns the complete lifecycle:
+
+1. Create the standard Java RMI registry.
+2. Export the SLeeLa service.
+3. Bind the service name.
+4. Report health.
+5. Unbind and unexport during shutdown.
+
+This separates lifecycle management from the command-line bootstrap and makes the server usable from another Java host as a library.
+
+### Server executable
 
 ```sh
 java com.mearvk.sleela.rmi.SleelaRmiServer \
   SLeeLa /path/to/sleela /path/to/application 1099
 ```
 
-The server creates the registry, exports the SLeeLa service, and binds it under the supplied name.
+The server keeps the process alive and installs a JVM shutdown hook so the RMI service and SLeeLa runtime are released together.
 
-## Client
+### Client facade
+
+`SleelaRmiClient` resolves the registry entry and exposes a small client API:
+
+```java
+SleelaRmiEndpoint endpoint =
+    new SleelaRmiEndpoint("127.0.0.1", 1099, "SLeeLa");
+
+try (SleelaRmiClient client = new SleelaRmiClient(endpoint)) {
+    client.health();
+    client.serviceName();
+    client.invoke("main", "");
+}
+```
+
+`isHealthy()` provides a non-throwing liveness probe for administration and GUI code.
+
+### Client executable
 
 ```sh
 java com.mearvk.sleela.rmi.SleelaRmiClientDemo \
   127.0.0.1 1099 SLeeLa
 ```
 
-The client performs a health check, obtains the service name, and invokes the SLeeLa `main` operation through the remote contract.
+The demo performs health, identity, and invocation calls through the actual remote proxy.
+
+### End-to-end demo
+
+`SleelaRmiServerDemo` starts a complete in-process RMI registry and service, connects through a separate client facade, performs a round trip, and then closes the service. It is useful for validating the Java-side RMI machinery independently of a particular SLeeLa executable.
+
+## Runtime ownership
+
+The Java RMI objects are transport adapters. The operation remains SLeeLa-owned:
+
+```text
+SleelaRmiClient
+      |
+      | JRMP
+      v
+SleelaRmiService
+      |
+      v
+SleelaRuntime.call()
+      |
+      v
+SLeeLa business logic
+```
+
+The current command-line server selects `ProcessSleelaRuntime`. The architecture also leaves a direct JNI/native path available through `JniSleelaRuntime`, allowing the RMI contract to remain stable while the runtime binding becomes more direct.
 
 ## Contract discipline
 
-The initial contract deliberately uses strings at the outer boundary:
-
-```java
-String invoke(String operation, String arguments)
-```
-
-This is intentional. It avoids coupling the first SLeeLa RMI contract to Java's object serialization model. A future typed contract can map the SLeeLa core's value model directly. The current native core exposes `SLValue` with `null`, integer, double, boolean, and string variants, and exposes `slcore_exchange()` as its stable execution boundary.
-
-A future `SleelaRemoteValue` family can therefore provide:
+The first contract intentionally uses a bounded textual operation/argument pair. The next typed layer can map the SLeeLa core's value model into explicit RMI DTOs:
 
 ```text
-SLeeLa SLValue  <->  RMI value DTO  <->  Java value
+SLeeLa value
+    <-> explicit RMI DTO
+    <-> Java value
 ```
 
-rather than making Java serialization the definition of SLeeLa semantics.
+That is preferable to making arbitrary Java serialization the semantic boundary of SLeeLa.
 
 ## Security and deployment
 
-Java RMI is powerful but should not be treated as an unauthenticated Internet protocol. Production deployments should restrict registry and remote-object ports with network policy, bind only to intended interfaces, use authenticated/secured transport where required, and keep the remote contract narrow.
+Java RMI should not be exposed as an unauthenticated public Internet service. Production deployments should:
 
-The SLeeLa RMI layer should also avoid accepting arbitrary Java classes as remote parameters. Explicit SLeeLa DTOs and a bounded value model are preferred over unconstrained Java serialization.
+- restrict registry and remote-object ports with network policy;
+- bind only to intended interfaces;
+- use appropriate authentication and protected transport;
+- keep the remote contract narrow;
+- avoid arbitrary Java object parameters;
+- treat the SLeeLa operation set as an explicit capability boundary.
 
-## Future native path
+The current examples are intentionally simple local/service-network examples and should not be interpreted as a production security configuration.
 
-The long-term SLeeLa arrangement is:
+## GUI relationship
 
-```text
-       Java RMI client
-              |
-              v
-       SleelaRemote
-              |
-              v
-      SleelaRmiService
-              |
-       +------+------+
-       |             |
- Process runtime   JNI/native runtime
-       |             |
-       +------+------+
-              |
-              v
-       slcore_exchange()
-              |
-              v
-          SLeeLa VM
-```
-
-Thus the RMI contract remains stable while the implementation moves from a safe/simple process boundary toward a direct native runtime boundary.
-
-## Relationship to the GUI library
-
-RMI and GUI are complementary. A JavaFX or Swing application can act as an RMI client while SLeeLa remains the remote business-logic server. Conversely, a SLeeLa service can use the same contract while a Java host supplies administrative or monitoring interfaces.
+A Swing or JavaFX application can use `SleelaRmiClient` as its remote business-logic connection while SLeeLa remains the authority for application behavior. Administrative and monitoring interfaces can use the same remote contract.
 
 ```text
-JavaFX / Swing
+Swing / JavaFX
       |
       v
 SleelaRmiClient
@@ -165,7 +185,7 @@ Java RMI / JRMP
 SleelaRmiService
       |
       v
-SLeeLa business logic
+SLeeLa
 ```
 
-This preserves the division established by `gui/`: **Java presents; SLeeLa decides.**
+This preserves the broader SLeeLa architecture: **Java presents; SLeeLa decides.**
