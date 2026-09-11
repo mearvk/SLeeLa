@@ -362,7 +362,7 @@ private:
         //   listen(port)             -> socket handle
         //   accept(listener)         -> client handle
         //   connect(host, port)      -> client handle
-        //   sockread(socket)         -> String, or -1 on EOF/error
+        //   sockread(socket)         -> String, empty String on EOF/error
         //   sockwrite(socket, data)  -> byte count, or -1
         //   sockclose(socket)        -> null
         // -----------------------------------------------------------------
