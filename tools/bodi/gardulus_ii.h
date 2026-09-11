@@ -14,6 +14,16 @@ typedef struct gardulus_sample {
     int input_integer;
     double p_phase;
     double b_phase;
+    double p_start_phase;
+    double b_start_phase;
+    double p_speed_deg_s;
+    double b_speed_deg_s;
+    double p_orbital_frequency_hz;
+    double b_orbital_frequency_hz;
+    double relative_phase_deg;
+    double relative_speed_deg_s;
+    double relative_sync_ratio;
+    double sync_coherence;
     unsigned long memory_total_kb;
     unsigned long memory_available_kb;
     unsigned long connections;
