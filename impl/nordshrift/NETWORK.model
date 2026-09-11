@@ -1,0 +1,86 @@
+# Nordshrift Network Component Model — NS-NET-0001
+
+Status: implementation model
+Revision: 1.0.0
+Date: September 2026
+
+## Purpose
+
+This model defines the network components exposed to Nordshrift/Sleela builds.
+The network layer is deliberately target-neutral: the same component graph can
+be represented in Sleela source, emitted as C-backed execution, or represented
+as SecureJDK 28 `.xclass` structural metadata.
+
+## Components
+
+- `Endpoint` — logical communication endpoint
+- `NIC` — network interface attached to an endpoint
+- `Link` — point-to-point transport path with latency/capacity metadata
+- `Packet` — transferable network unit
+- `Queue` — bounded packet/event queue
+- `Switch` — layer-2 forwarding component
+- `Router` — layer-3 forwarding component
+- `Fabric` — collection of interconnected links and forwarding nodes
+- `Listener` — passive server-side connection endpoint
+- `Connector` — active client-side connection endpoint
+- `Gateway` — boundary between network domains
+- `LoadBalancer` — service-selection and distribution component
+- `Service` — named network service endpoint
+- `TLS` — transport security policy component
+- `DNS` — name-resolution component
+
+## Compile targets
+
+The Nordshrift target vocabulary is extended conceptually to:
+
+- `java` — Java source
+- `sleela` — canonical `.sleela` source, executable on the C core
+- `c` — C source using the Sleela runtime model
+- `xclass` — SecureJDK 28 XML class structure
+
+`.xclass` is structural: it carries class identity, fields, methods, and
+metadata rather than executable bytecode. The existing XCI-0001 loader can
+ingest the result back into a runnable Sleela program.
+
+## Network execution ABI
+
+The core VM exposes network operations as VM opcodes with VM-local socket
+handles: `LISTEN`, `ACCEPT`, `CONNECT`, `SOCKREAD`, `SOCKWRITE`, and `SOCKCLOSE`.
+These operations are compatible with the existing Sleela networking built-ins
+and the loopback socket smoke test.
+
+## SST guidance
+
+A network-oriented sheet should declare its component set and select a target,
+for example:
+
+```sst
+#nordshrift 1.0
+#sleela 1.0
+
+sheet network-demo:
+  version 1.0.0
+  author "Sleela Design Council"
+  description "Network component compilation test"
+
+source:
+  root "src"
+  glob "**/*.sleela"
+
+target:
+  root "out"
+  layout mirror-source
+  java-version 21
+  target-language sleela
+
+network:
+  components [ Endpoint, NIC, Link, Packet, Queue, Switch, Router, Fabric,
+               Listener, Connector, Gateway, LoadBalancer, Service, TLS, DNS ]
+  transports [ tcp, udp ]
+  topology mesh
+  address-family dual
+  security tls
+```
+
+The network block is metadata for the compilation model; executable network
+behavior remains expressed by Sleela built-ins and lowered into the core ABI.
