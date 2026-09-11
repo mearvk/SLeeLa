@@ -1,0 +1,14 @@
+# Bodi network configuration
+# Copy to bodi.properties or pass its path to BodiNetworkBootstrap.
+
+# Bind only where the SLeeLa-aware network is intended to listen.
+bind.address=127.0.0.1
+
+# Java RMI registry used for compatibility/object lookup.
+rmi.port=8888
+
+# Bodi XML TCP endpoint.
+bodi.port=8890
+
+# Explicit opt-in. No Bodi TCP listener opens when false.
+bodi.enabled=false
