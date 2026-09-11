@@ -39,10 +39,7 @@ public final class BodiNetworkServer implements AutoCloseable
         running = true;
         workers.submit(new Runnable()
         {
-            public void run()
-            {
-                acceptLoop();
-            }
+            public void run() { acceptLoop(); }
         });
     }
 
@@ -60,10 +57,7 @@ public final class BodiNetworkServer implements AutoCloseable
                 final Socket socket = server.accept();
                 workers.submit(new Runnable()
                 {
-                    public void run()
-                    {
-                        serve(socket);
-                    }
+                    public void run() { serve(socket); }
                 });
             }
             catch (Exception exception)
@@ -84,24 +78,24 @@ public final class BodiNetworkServer implements AutoCloseable
             if (xml == null)
                 return;
 
-            BodiChange change = BodiXmlDocument.parse(xml);
-            Object result = extender.invoke(change,
-                change.starter.length() == 0 ? "network" : change.starter,
-                change.man.length() == 0 ? "bodi-network" : change.man);
-            writer.write(BodiXmlDocument.response("ok", result == null ? "null" : String.valueOf(result)));
+            try
+            {
+                BodiChange change = BodiXmlDocument.parse(xml);
+                Object result = extender.invoke(change,
+                    change.starter.length() == 0 ? "network" : change.starter,
+                    change.man.length() == 0 ? "bodi-network" : change.man);
+                writer.write(BodiXmlDocument.response("ok", result == null ? "null" : String.valueOf(result)));
+            }
+            catch (Exception exception)
+            {
+                writer.write(BodiXmlDocument.response("error", exception.toString()));
+            }
             writer.newLine();
             writer.flush();
         }
-        catch (Exception exception)
+        catch (Exception ignored)
         {
-            try
-            {
-                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
-                writer.write(BodiXmlDocument.response("error", exception.toString()));
-                writer.newLine();
-                writer.flush();
-            }
-            catch (Exception ignored) { }
+            // Connection failure is isolated to this worker.
         }
     }
 
