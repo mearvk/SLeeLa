@@ -14,7 +14,7 @@ import java.rmi.server.UnicastRemoteObject;
  *
  * Java RMI remains the compatibility registry/transport underneath it.
  */
-public class Bodi extends BodiExtent implements Remote
+public class Bodi extends BodiExtent implements BodiRemote
 {
     public static Bodi reference;
     public Bodi bodi;
@@ -71,20 +71,16 @@ public class Bodi extends BodiExtent implements Remote
         run(protocol, bodiref, methodname);
     }
 
-    public Remote pull(String bodiref)
+    public Remote pull(String bodiref) throws RemoteException
     {
         try { return this.extender001.pull(bodiref); }
-        catch (Exception exception)
-        {
-            java.lang.System.out.println(exception);
-            return null;
-        }
+        catch (Exception exception) { throw new RemoteException("Bodi pull failed", exception); }
     }
 
-    public void push(String bodiref, Remote remote)
+    public void push(String bodiref, Remote remote) throws RemoteException
     {
         try { this.extender001.push(bodiref, remote); }
-        catch (Exception exception) { java.lang.System.out.println(exception); }
+        catch (Exception exception) { throw new RemoteException("Bodi push failed", exception); }
     }
 
     public void push(String bodiref, Class klass)
@@ -99,12 +95,14 @@ public class Bodi extends BodiExtent implements Remote
 
     public void push(String bodiref, Remote remote, RegisterableNordshriftEvent event)
     {
-        push(bodiref, remote);
+        try { this.extender001.push(bodiref, remote); }
+        catch (Exception exception) { java.lang.System.out.println(exception); }
     }
 
     public void push(String bodiref, Remote remote, Class<RegisterableNordshriftEvent> klass)
     {
-        push(bodiref, remote);
+        try { this.extender001.push(bodiref, remote); }
+        catch (Exception exception) { java.lang.System.out.println(exception); }
     }
 
     class Encapsulator
