@@ -1,0 +1,39 @@
+# IQ_CONSERVATORS.FINANCIAL.model
+# Semantic conservation layer for Nordshrift financial integration.
+# "IQ" here means system insight/quality, consistent with SHEET.sheet; it is
+# not a psychometric measure.
+
+conservators:
+  PriorSubject:
+    preserves: identity, quantities, units, assumptions
+    relation: precedes CurrentSubject
+  SubjectIdentity:
+    preserves: named financial subject
+  QuantityIdentity:
+    preserves: numerator, denominator, rate, period, cashflow
+  UnitIdentity:
+    preserves: currency, time, rate-convention, dimension
+  FormulaIdentity:
+    preserves: equation structure and variable roles
+  AssumptionIdentity:
+    preserves: compounding, timing, tax, discounting assumptions
+  ComparativeRatio:
+    preserves: relative comparison between CurrentSubject and ReferenceSubject
+  AlgebraicInvariant:
+    preserves: determinant, balance, equality, conservation relation
+  ResultTrace:
+    preserves: transformation path from inputs to result
+  ExplanationTrace:
+    preserves: ordered explanation from subject to interpretation
+
+relative_meaning:
+  ordering:
+    - PriorSubject
+    - CurrentSubject
+    - ReferenceSubject
+    - ComparativeNorm
+  rule: preserve relative meaning before optimization or target emission
+
+confidence:
+  evidence: explicit inputs + algebraic consistency + domain conditions
+  stochastic_role: ranking only; never substitutes for missing evidence
