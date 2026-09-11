@@ -2,22 +2,22 @@ package implementations._001_.bodi;
 
 import java.rmi.Remote;
 
+/** Static compatibility facade. New code should use Bodi.system(...). */
 public class BodiFunctionalExtender
 {
     public static Remote pull(String bodiref)
     {
-        return null;
+        return Bodi.reference == null ? null : Bodi.reference.pull(bodiref);
     }
 
     public static void push(String bodiref, Remote remote)
     {
-        try
-        {
-            //Naming.rebind(bodiref, remote);
-        }
-        catch (Exception exception)
-        {
-            java.lang.System.out.println(exception);
-        }
+        if (Bodi.reference != null)
+            Bodi.reference.push(bodiref, remote);
+    }
+
+    public static BodiObjectReference system(String name)
+    {
+        return Bodi.system(name);
     }
 }
