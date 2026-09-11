@@ -1,9 +1,15 @@
-#sleela 1.0
+#sleela 1.1
 // A small Sleela program driven by the demo sheet.
+// The network helper is compiled into the Sleela runnable; main does not
+// open a socket, so the demo remains deterministic and non-blocking.
 class Demo {
 
     int square(int n) {
         return n * n;
+    }
+
+    int networkListener(int port) {
+        return listen(port);
     }
 
     void main() {
