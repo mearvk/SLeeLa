@@ -35,7 +35,7 @@ void addChemistry(Program& p) {
     c.methods.push_back(std::move(m));
 
     m=M2("double","__native_chemistry_stochastic","double","seed","double","weight");
-    m.body->stmts.push_back(Ret(B("+",D(0.98),B("*",B("*",D(0.04),C2("__native_math_abs",C2("__native_math_fmod",B("*",V("seed"),D(0.6180339887498949)),D(1)))),C1("__native_math_clamp",V("weight"))))));
+    m.body->stmts.push_back(Ret(B("+",D(0.98),B("*",B("*",D(0.04),C1("__native_math_abs",C2("__native_math_fmod",B("*",V("seed"),D(0.6180339887498949)),D(1)))),C1("__native_math_clamp",V("weight"))))));
     c.methods.push_back(std::move(m));
 
     m=M6("double","__native_chemistry_inference_level");
