@@ -10,11 +10,10 @@
 
 namespace sleela {
 
-// Compile the already-parsed Sleela program into a persistent .sleela
-// runnable artifact. The output contains Sleela Core bytecode and can be
-// loaded directly by the runtime; it is not source text requiring another
-// front-end compilation pass.
-int compileToArtifact(const Program& prog,
+// Compile the parsed Sleela program into a persistent .sleela runnable
+// artifact. Native math/physics/economics modules are lowered before Core
+// bytecode is emitted, so the runtime loads the resulting artifact directly.
+int compileToArtifact(Program& prog,
                       const std::string& outputPath,
                       const catalog::Catalog* cat = nullptr,
                       const SyntaxVersion& syntax = SyntaxVersion{1, 0});
