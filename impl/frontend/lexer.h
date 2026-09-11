@@ -15,8 +15,9 @@ enum class Tok {
     // keywords
     KwClass, KwStatic, KwVoid, KwIntT, KwDoubleT, KwBoolT, KwStringT,
     KwIf, KwElse, KwWhile, KwFor, KwReturn, KwTrue, KwFalse, KwPrint, KwNull,
+    KwImport,
     // punctuation / operators
-    LParen, RParen, LBrace, RBrace, Semicolon, Comma,
+    LParen, RParen, LBrace, RBrace, Semicolon, Comma, Dot,
     Assign, Plus, Minus, Star, Slash, Percent,
     EqEq, NotEq, Lt, Le, Gt, Ge,
     AndAnd, OrOr, Not,
@@ -26,7 +27,7 @@ enum class Tok {
 
 struct Token {
     Tok         kind;
-    std::string text;   // raw lexeme (or decoded string contents for Str)
+    std::string text;
     int         line;
     int         col;
 };
@@ -34,7 +35,6 @@ struct Token {
 class Lexer {
 public:
     explicit Lexer(std::string src) : src_(std::move(src)) {}
-    // Tokenize the whole input. Throws std::runtime_error on a lexical error.
     std::vector<Token> tokenize();
 
 private:
@@ -47,14 +47,14 @@ private:
     char advance();
     bool match(char c);
     bool atEnd() const { return pos_ >= src_.size(); }
-    void skipTrivia();                     // whitespace + // and /* */ comments
+    void skipTrivia();
     Token makeNumber();
     Token makeString();
     Token makeIdentOrKeyword();
     [[noreturn]] void error(const std::string& msg) const;
 };
 
-const char* tokName(Tok t);   // for diagnostics
+const char* tokName(Tok t);
 
 } // namespace sleela
 
