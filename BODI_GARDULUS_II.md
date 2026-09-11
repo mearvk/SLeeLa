@@ -1,212 +1,142 @@
 # BodiSysCtl and Gardulus.II
 
-## Purpose
+`bodisysctl` is the Linux-native observation companion for Bodi/Wiggle XML structures. It monitors a bounded local picture of memory, connections, relations, items, status, iterations, P/B phase, and containment count.
 
-`bodisysctl` is the Linux-native observation companion for Bodi/Wiggle XML structures. It is installed by the Bodi installation script when the local toolchain is available.
+The integer argument is an observation interval in milliseconds. P and B are deterministic software telemetry phases rotating around the XML object representation in memory; they are not physical orbital or electromagnetic measurements.
 
-It monitors a bounded local picture of:
+## P/B Start, Speed, and Relative Synchronization
 
-- system memory
-- network connection counts
-- structural relations
-- observed items
-- status
-- iteration count
-- P/B orbital phase
-- containment count
+Gardulus.II now exposes a richer software-orbital telemetry set for each sample:
 
-It does not modify kernel state, alter process scheduling, or claim physical resonance. The orbital terminology is a deterministic telemetry model around an XML object representation held by the local Bodi/Wiggle system.
+```text
+p_start_phase
+b_start_phase
+p_speed_deg_s
+b_speed_deg_s
+p_orbital_frequency_hz
+b_orbital_frequency_hz
+relative_phase_deg
+relative_speed_deg_s
+relative_sync_ratio
+sync_coherence
+```
 
-## Integer Input and P/B Orbitals
+The integer input establishes the cadence and the base P frequency:
 
-The C monitor accepts a positive integer in milliseconds:
+```text
+fP = 1000 / interval_ms
+fB = 1000 / (interval_ms + 1)
+
+vP = 360 · fP
+vB = 360 · fB
+```
+
+The start phases are deterministic software seeds. The relative fields compare the two channels at the same observation instant. `relative_sync_ratio` is `fB / fP`. `sync_coherence` is a bounded 0–1 phase-alignment indicator derived from the observed relative phase.
+
+The existing “electron start” terminology may be represented in analysis as a **software electron-start metaphor**: the initial phase/seed at which a P or B telemetry orbit begins. It is not an electron, charge, particle velocity, or physical orbital state.
+
+Conceptually:
+
+```text
+                  XML OBJECT IN MEMORY
+                           │
+                ┌──────────┴──────────┐
+                │                     │
+          P software orbit       B software orbit
+                │                     │
+       start → speed → phase   start → speed → phase
+                │                     │
+                └──────────┬──────────┘
+                           ↓
+                 relative synchronization
+                           ↓
+                    Gardulus.II sample
+```
+
+This makes relative synchronization directly measurable by the Science API without asserting that the software telemetry corresponds to a physical orbital system.
+
+## Command
 
 ```text
 bodisysctl INTERVAL_MS ITERATIONS [LOG_FILE] [UNIX_SOCKET]
 ```
 
-The integer controls the observation cadence. Each sample contains two deterministic phases:
+`ITERATIONS=0` means run until SIGINT/SIGTERM. A finite count causes the monitor to unload naturally when complete.
 
-```text
-P phase = f(time, interval)
-B phase = f(time, interval + 1)
-```
+## Gardulus.II
 
-The phases are expressed in degrees and wrap at 360 degrees. They are deliberately software-defined control signals, not electromagnetic orbital measurements.
+The native API is in `tools/bodi/gardulus_ii.h` and provides `gardulus_run()` and `gardulus_emit_json()`. JSON Lines may be written to stdout, a file, or a connected Unix socket. `GardulusII.java` provides a local Java VM consumer for file or stream telemetry.
 
-Conceptually:
+A sample now records iteration, timestamp, input integer, P/B phase, deterministic starts, angular speeds, orbital frequencies, relative phase/speed, synchronization ratio, synchronization coherence, memory totals, connection/relation counts, items, status, and containment count.
 
-```text
-                 XML OBJECT IN MEMORY
-                         │
-              ┌──────────┴──────────┐
-              │                     │
-          P-orbital             B-orbital
-          easy control        higher middle-
-          / local state       control state
-              │                     │
-              └──────────┬──────────┘
-                         ↓
-                  Gardulus.II sample
-```
+## Configuration
 
-P represents local/easy-control telemetry. B represents the higher middle-management/control-plane telemetry associated with a structural set. The implementation keeps both channels predictable and observable.
-
-## Local Monitoring
-
-The Linux C implementation reads only local, ordinary observation interfaces such as `/proc/meminfo` and `/proc/net/tcp*`. It does not require root privileges for the normal telemetry path.
-
-The monitor may emit JSON Lines to:
-
-1. standard output;
-2. a log file; or
-3. a connected local Unix-domain socket.
-
-A local Java VM may consume compatible telemetry through `GardulusII.java`.
-
-## XML-Scoped Lifetime
-
-The installation configuration identifies XML structural families that may own a monitor:
+The installation properties expose the model explicitly:
 
 ```properties
-bodi.xml.structures=tree,record,reference,state,command
 bodi.gardulus.enabled=true
 bodi.gardulus.interval_ms=1000
+bodi.gardulus.p.start_phase_deg=0.0
+bodi.gardulus.b.start_phase_deg=0.0
+bodi.gardulus.p.speed_deg_s=360.0
+bodi.gardulus.b.speed_deg_s=359.640359640
+bodi.gardulus.sync.relative=true
+bodi.gardulus.sync.coherence=true
 ```
 
-The intended lifecycle is:
-
-```text
-XML feature discovered
-        ↓
-Wiggle structural profile
-        ↓
-monitor requested
-        ↓
-bodisysctl starts
-        ↓
-P/B telemetry
-        ↓
-Science listener
-        ↓
-feature complete
-        ↓
-monitor stops / unloads
-```
-
-`bodisysctl` can also be run for a finite iteration count. A signal causes an orderly stop. No persistent daemon is required by the design.
-
-## Gardulus.II Science API
-
-The native API is declared in `tools/bodi/gardulus_ii.h`.
-
-A sample contains:
-
-```text
-iteration
-timestamp_ms
-input_integer
-p_phase
-b_phase
-memory_total_kb
-memory_available_kb
-connections
-relations
-items
-status
-containment_count
-```
-
-The API provides:
-
-```c
-int gardulus_emit_json(...);
-int gardulus_run(int interval_ms, int iterations,
-                 gardulus_listener listener, void *user_data);
-```
-
-A Science officer or local analysis process can therefore subscribe through a callback, consume JSON Lines, or read the output file.
-
-## Java VM Listener
-
-`implementations._001_.bodi.GardulusII` provides local Java consumption from a telemetry file or TCP stream. It deliberately treats the telemetry as data rather than giving it authority over the Bodi change layer.
+The runtime currently derives the deterministic start and speed fields from the supplied integer so telemetry remains reproducible from the observation configuration. The properties document the intended control surface for later XML-scoped overrides.
 
 ## Resonance and Tone
 
-The P/B phase pair can be used to study software-defined resonance patterns, tone, cadence, recurrence, and structural correspondence. For example, a Science process can compare phase against:
+The P/B pair can be compared against XML structural changes, Wiggle satisfaction counts, Bodi Witness sequences, connection counts, memory pressure, item/relation counts, and containment boundaries.
 
-- XML structural changes
-- Wiggle satisfaction counts
-- Bodi Witness sequences
-- connection counts
-- memory pressure
-- item/relation counts
-- containment boundaries
-
-A correlation is not automatically a causal relationship.
-
-The proper scientific chain remains:
+Useful Science measures include:
 
 ```text
-measurement
-  ↓
-observation
-  ↓
-correlation
-  ↓
-hypothesis
-  ↓
-controlled comparison
-  ↓
-confidence
+phase difference over time
+speed difference over time
+frequency ratio
+coherence distribution
+phase-lock intervals
+structural event → phase relationship
 ```
+
+These permit software-defined resonance and tone studies. A measured correlation remains a correlation until controlled analysis supports a stronger conclusion.
 
 ## Safety and Semantics
 
-The following distinctions remain mandatory:
-
 ```text
-telemetry       ≠ control authority
-phase           ≠ physical orbit
-resonance       ≠ proof of causation
-count           ≠ truth
-correlation     ≠ causation
-local monitor   ≠ persistent system daemon
+software phase     ≠ physical orbit
+software speed     ≠ particle velocity
+start phase        ≠ electron emission
+resonance          ≠ proof of causation
+count              ≠ truth
+correlation        ≠ causation
+telemetry          ≠ control authority
 ```
 
-Gardulus.II is therefore a **science observation API**, while Bodi remains the semantic change layer and Wiggle remains the XML exploration layer.
+Gardulus.II remains an observation API. Bodi retains semantic change authority; Wiggle retains XML exploration authority; the P/B layer supplies structured telemetry for scientific comparison.
 
 ## Layered Architecture
 
 ```text
-             XML / SLeeLa structure
-                       │
-                       ▼
-                    Wiggle
-              structural inference
-                       │
-                       ▼
-                     Bodi
-              semantic change/witness
-                       │
-                       ▼
-                  bodisysctl
-               Linux observation
-                       │
-                 ┌─────┴─────┐
-                 ▼           ▼
-             P-orbital   B-orbital
-                 │           │
-                 └─────┬─────┘
-                       ▼
-                 Gardulus.II
-                 science API
-                       │
-              ┌────────┴────────┐
-              ▼                 ▼
-          log/file          local listener
+XML / SLeeLa structure
+        ↓
+     Wiggle
+        ↓
+      Bodi
+        ↓
+   bodisysctl
+     ↙     ↘
+P telemetry B telemetry
+     \     /
+ relative synchronization
+        ↓
+   Gardulus.II
+        ↓
+ Science listeners
 ```
 
 The governing rule is:
 
-> **Wiggle discovers structure; Bodi witnesses change; bodisysctl observes the local system; Gardulus.II makes those observations available for disciplined scientific analysis.**
+> **Wiggle discovers structure; Bodi witnesses change; bodisysctl observes the local system; P/B telemetry supplies reproducible phase relationships; Gardulus.II makes those observations available for disciplined scientific analysis.**
