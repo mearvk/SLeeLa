@@ -1,15 +1,12 @@
 #include "native_api.h"
 #include <stdexcept>
 #include <set>
-#include <map>
-#include <cmath>
+#include <string>
 
 namespace sleela { namespace native {
 
 bool isModuleAvailable(const std::string& module) {
-    static const std::set<std::string> modules = {
-        "math", "physics", "economics", "excel", "json", "crypto", "net"
-    };
+    static const std::set<std::string> modules = {"math","physics","economics","excel","json","crypto","net"};
     return modules.count(module) != 0;
 }
 
@@ -24,103 +21,94 @@ void validateImports(const Program& program) {
 }
 
 namespace {
+ExprP V(const std::string& n){return std::make_unique<VarExpr>(n);} ExprP I(long long n){return std::make_unique<IntLit>(n);} ExprP D(double n){return std::make_unique<DoubleLit>(n);}
+ExprP Bn(const char*o,ExprP a,ExprP b){return std::make_unique<Binary>(o,std::move(a),std::move(b));}
+ExprP C1(const std::string&n,ExprP a){auto c=std::make_unique<Call>(n);c->args.push_back(std::move(a));return c;}
+ExprP C2(const std::string&n,ExprP a,ExprP b){auto c=std::make_unique<Call>(n);c->args.push_back(std::move(a));c->args.push_back(std::move(b));return c;}
+ExprP C3(const std::string&n,ExprP a,ExprP b,ExprP d){auto c=std::make_unique<Call>(n);c->args.push_back(std::move(a));c->args.push_back(std::move(b));c->args.push_back(std::move(d));return c;}
+ExprP Neg(ExprP a){return std::make_unique<Unary>("-",std::move(a));}
+StmtP Ret(ExprP e){auto s=std::make_unique<ReturnStmt>();s->value=std::move(e);return s;}
+StmtP Decl(const char*t,const char*n,ExprP e){auto s=std::make_unique<VarDecl>();s->type=t;s->name=n;s->init=std::move(e);return s;}
+StmtP Set(const char*n,ExprP e){auto s=std::make_unique<Assign>();s->name=n;s->value=std::move(e);return s;}
+StmtP Loop(ExprP c,std::unique_ptr<Block>b){auto s=std::make_unique<WhileStmt>();s->cond=std::move(c);s->body=std::move(b);return s;}
+Method M0(const char*r,const char*n){Method m;m.retType=r;m.name=n;m.body=std::make_unique<Block>();return m;}
+Method M1(const char*r,const char*n,const char*t,const char*p){Method m=M0(r,n);m.params.push_back({t,p});return m;}
+Method M2(const char*r,const char*n,const char*t1,const char*p1,const char*t2,const char*p2){Method m=M1(r,n,t1,p1);m.params.push_back({t2,p2});return m;}
+Method M3(const char*r,const char*n,const char*t1,const char*p1,const char*t2,const char*p2,const char*t3,const char*p3){Method m=M2(r,n,t1,p1,t2,p2);m.params.push_back({t3,p3});return m;}
 
-ExprP V(const std::string& n) { return std::make_unique<VarExpr>(n); }
-ExprP I(long long n) { return std::make_unique<IntLit>(n); }
-ExprP D(double n) { return std::make_unique<DoubleLit>(n); }
-ExprP B(bool n) { return std::make_unique<BoolLit>(n); }
-ExprP Bin(const char* op, ExprP a, ExprP b) {
-    return std::make_unique<Binary>(op, std::move(a), std::move(b));
+void math(Program&p){ClassDecl c;c.name="__NativeMath";
+ auto m=M0("double","__native_math_pi");m.body->stmts.push_back(Ret(D(3.14159265358979323846)));c.methods.push_back(std::move(m));
+ m=M0("double","__native_math_e");m.body->stmts.push_back(Ret(D(2.71828182845904523536)));c.methods.push_back(std::move(m));
+ m=M0("double","__native_math_tau");m.body->stmts.push_back(Ret(D(6.28318530717958647692)));c.methods.push_back(std::move(m));
+ m=M1("double","__native_math_abs","double","x");{auto i=std::make_unique<IfStmt>();i->cond=Bn("<",V("x"),D(0));i->thenS=Ret(Neg(V("x")));i->elseS=Ret(V("x"));m.body->stmts.push_back(std::move(i));}c.methods.push_back(std::move(m));
+ m=M1("double","__native_math_sign","double","x");{auto i=std::make_unique<IfStmt>();i->cond=Bn(">",V("x"),D(0));i->thenS=Ret(D(1));auto j=std::make_unique<IfStmt>();j->cond=Bn("<",V("x"),D(0));j->thenS=Ret(D(-1));j->elseS=Ret(D(0));i->elseS=std::move(j);m.body->stmts.push_back(std::move(i));}c.methods.push_back(std::move(m));
+ m=M2("double","__native_math_min","double","a","double","b");{auto i=std::make_unique<IfStmt>();i->cond=Bn("<",V("a"),V("b"));i->thenS=Ret(V("a"));i->elseS=Ret(V("b"));m.body->stmts.push_back(std::move(i));}c.methods.push_back(std::move(m));
+ m=M2("double","__native_math_max","double","a","double","b");{auto i=std::make_unique<IfStmt>();i->cond=Bn(">",V("a"),V("b"));i->thenS=Ret(V("a"));i->elseS=Ret(V("b"));m.body->stmts.push_back(std::move(i));}c.methods.push_back(std::move(m));
+ m=M3("double","__native_math_clamp","double","x","double","lo","double","hi");m.body->stmts.push_back(Ret(C2("__native_math_min",C2("__native_math_max",V("x"),V("lo")),V("hi"))));c.methods.push_back(std::move(m));
+ m=M1("double","__native_math_sqrt","double","x");m.body->stmts.push_back(Decl("double","g",Bn("+",Bn("/",V("x"),D(2)),D(1))));m.body->stmts.push_back(Decl("int","i",I(0)));{auto b=std::make_unique<Block>();b->stmts.push_back(Set("g",Bn("/",Bn("+",V("g"),Bn("/",V("x"),V("g"))),D(2))));b->stmts.push_back(Set("i",Bn("+",V("i"),I(1)));m.body->stmts.push_back(Loop(Bn("<",V("i"),I(12)),std::move(b)));}m.body->stmts.push_back(Ret(V("g")));c.methods.push_back(std::move(m));
+ m=M1("double","__native_math_exp","double","x");m.body->stmts.push_back(Decl("double","term",D(1)));m.body->stmts.push_back(Decl("double","sum",D(1)));m.body->stmts.push_back(Decl("int","i",I(1)));{auto b=std::make_unique<Block>();b->stmts.push_back(Set("term",Bn("/",Bn("*",V("term"),V("x")),V("i"))));b->stmts.push_back(Set("sum",Bn("+",V("sum"),V("term"))));b->stmts.push_back(Set("i",Bn("+",V("i"),I(1)));m.body->stmts.push_back(Loop(Bn("<",V("i"),I(30)),std::move(b)));}m.body->stmts.push_back(Ret(V("sum")));c.methods.push_back(std::move(m));
+ m=M1("double","__native_math_log","double","x");m.body->stmts.push_back(Decl("double","z",Bn("/",Bn("-",V("x"),D(1)),Bn("+",V("x"),D(1)))));m.body->stmts.push_back(Decl("double","z2",Bn("*",V("z"),V("z"))));m.body->stmts.push_back(Decl("double","term",V("z")));m.body->stmts.push_back(Decl("double","sum",V("z")));m.body->stmts.push_back(Decl("int","i",I(1)));{auto b=std::make_unique<Block>();b->stmts.push_back(Set("term",Bn("*",V("term"),V("z2"))));b->stmts.push_back(Set("sum",Bn("+",V("sum"),Bn("/",V("term"),Bn("+",Bn("*",I(2),V("i")),I(1))))));b->stmts.push_back(Set("i",Bn("+",V("i"),I(1)));m.body->stmts.push_back(Loop(Bn("<",V("i"),I(24)),std::move(b)));}m.body->stmts.push_back(Ret(Bn("*",D(2),V("sum"))));c.methods.push_back(std::move(m));
+ m=M2("double","__native_math_pow","double","x","double","y");m.body->stmts.push_back(Ret(C1("__native_math_exp",Bn("*",V("y"),C1("__native_math_log",V("x"))))));c.methods.push_back(std::move(m));
+ m=M1("double","__native_math_sin","double","x");m.body->stmts.push_back(Decl("double","term",V("x")));m.body->stmts.push_back(Decl("double","sum",V("x")));m.body->stmts.push_back(Decl("double","xx",Bn("*",V("x"),V("x"))));m.body->stmts.push_back(Decl("int","i",I(1)));{auto b=std::make_unique<Block>();b->stmts.push_back(Set("term",Bn("/",Bn("*",V("term"),Neg(V("xx"))),Bn("*",Bn("+",Bn("*",I(2),V("i")),I(1)),Bn("+",Bn("*",I(2),V("i")),I(2))))));b->stmts.push_back(Set("sum",Bn("+",V("sum"),V("term"))));b->stmts.push_back(Set("i",Bn("+",V("i"),I(1)));m.body->stmts.push_back(Loop(Bn("<",V("i"),I(10)),std::move(b)));}m.body->stmts.push_back(Ret(V("sum")));c.methods.push_back(std::move(m));
+ m=M1("double","__native_math_cos","double","x");m.body->stmts.push_back(Ret(C1("__native_math_sin",Bn("+",V("x"),D(1.57079632679489661923)))));c.methods.push_back(std::move(m));
+ m=M1("double","__native_math_tan","double","x");m.body->stmts.push_back(Ret(Bn("/",C1("__native_math_sin",V("x")),C1("__native_math_cos",V("x")))));c.methods.push_back(std::move(m));
+ m=M2("double","__native_math_hypot","double","a","double","b");m.body->stmts.push_back(Ret(C1("__native_math_sqrt",Bn("+",Bn("*",V("a"),V("a")),Bn("*",V("b"),V("b"))))));c.methods.push_back(std::move(m));
+ m=M2("double","__native_math_fmod","double","a","double","b");m.body->stmts.push_back(Ret(Bn("-",V("a"),Bn("*",Bn("/",V("a"),V("b")),V("b")))));c.methods.push_back(std::move(m));
+ p.classes.push_back(std::move(c));}
+
+void physics(Program&p){ClassDecl c;c.name="__NativePhysics";
+ auto z=[&](const char*n,double v){auto m=M0("double",n);m.body->stmts.push_back(Ret(D(v)));c.methods.push_back(std::move(m));};
+ z("__native_physics_C",299792458.0);z("__native_physics_H",6.62607015e-34);z("__native_physics_HBAR",1.054571817e-34);z("__native_physics_E_CHARGE",1.602176634e-19);z("__native_physics_K_B",1.380649e-23);z("__native_physics_G",6.67430e-11);z("__native_physics_G0",9.80665);z("__native_physics_N_A",6.02214076e23);z("__native_physics_R",8.31446261815324);
+ auto m=M2("double","__native_physics_velocity","double","dx","double","dt");m.body->stmts.push_back(Ret(Bn("/",V("dx"),V("dt"))));c.methods.push_back(std::move(m));
+ m=M2("double","__native_physics_acceleration","double","dv","double","dt");m.body->stmts.push_back(Ret(Bn("/",V("dv"),V("dt"))));c.methods.push_back(std::move(m));
+ m=M3("double","__native_physics_kinematic_position","double","x0","double","v0","double","a");m.body->stmts.push_back(Ret(Bn("+",Bn("+",V("x0"),Bn("*",V("v0"),D(1))),Bn("*",D(.5),Bn("*",V("a"),V("a"))))));c.methods.push_back(std::move(m));
+ m=M2("double","__native_physics_force","double","mass","double","accel");m.body->stmts.push_back(Ret(Bn("*",V("mass"),V("accel"))));c.methods.push_back(std::move(m));
+ m=M2("double","__native_physics_kinetic_energy","double","mass","double","velocity");m.body->stmts.push_back(Ret(Bn("*",D(.5),Bn("*",V("mass"),Bn("*",V("velocity"),V("velocity"))))));c.methods.push_back(std::move(m));
+ m=M2("double","__native_physics_gravitational_force","double","m1","double","m2");m.body->stmts.push_back(Ret(Bn("/",Bn("*",C0("__native_physics_G"),Bn("*",V("m1"),V("m2"))),D(1))));c.methods.push_back(std::move(m));
+ m=M2("double","__native_physics_escape_velocity","double","mass","double","radius");m.body->stmts.push_back(Ret(C1("__native_math_sqrt",Bn("/",Bn("*",D(2),Bn("*",C0("__native_physics_G"),V("mass"))),V("radius")))));c.methods.push_back(std::move(m));
+ m=M1("double","__native_physics_lorentz_gamma","double","v");m.body->stmts.push_back(Ret(Bn("/",D(1),C1("__native_math_sqrt",Bn("-",D(1),Bn("/",Bn("*",V("v"),V("v")),Bn("*",C0("__native_physics_C"),C0("__native_physics_C"))))))));c.methods.push_back(std::move(m));
+ m=M2("double","__native_physics_relativistic_energy","double","mass","double","v");m.body->stmts.push_back(Ret(Bn("*",C1("__native_physics_lorentz_gamma",V("v")),Bn("*",V("mass"),Bn("*",C0("__native_physics_C"),C0("__native_physics_C"))))));c.methods.push_back(std::move(m));
+ m=M2("double","__native_physics_momentum","double","mass","double","v");m.body->stmts.push_back(Ret(Bn("*",C1("__native_physics_lorentz_gamma",V("v")),Bn("*",V("mass"),V("v")))));c.methods.push_back(std::move(m));
+ m=M2("double","__native_physics_ohms_voltage","double","current","resistance");m.body->stmts.push_back(Ret(Bn("*",V("current"),V("resistance"))));c.methods.push_back(std::move(m));
+ m=M2("double","__native_physics_electric_power","double","voltage","current");m.body->stmts.push_back(Ret(Bn("*",V("voltage"),V("current"))));c.methods.push_back(std::move(m));
+ m=M3("double","__native_physics_ideal_gas_pressure","double","n","double","R","double","T");m.body->stmts.push_back(Ret(Bn("/",Bn("*",V("n"),Bn("*",V("R"),V("T"))),D(1))));c.methods.push_back(std::move(m));
+ m=M2("double","__native_physics_wave_frequency","double","velocity","double","wavelength");m.body->stmts.push_back(Ret(Bn("/",V("velocity"),V("wavelength"))));c.methods.push_back(std::move(m));
+ m=M1("double","__native_physics_angular_frequency","double","frequency");m.body->stmts.push_back(Ret(Bn("*",C0("__native_math_tau"),V("frequency"))));c.methods.push_back(std::move(m));
+ m=M1("double","__native_physics_wavenumber","double","wavelength");m.body->stmts.push_back(Ret(Bn("/",C0("__native_math_tau"),V("wavelength"))));c.methods.push_back(std::move(m));
+ m=M3("double","__native_physics_neutrino_oscillation_probability","double","theta","double","dm2","double","L");m.body->stmts.push_back(Ret(Bn("*",Bn("*",C1("__native_math_sin",Bn("*",D(2),V("theta"))),C1("__native_math_sin",Bn("/",Bn("*",D(1.267),Bn("*",V("dm2"),V("L"))),D(1)))),D(1))));c.methods.push_back(std::move(m));
+ p.classes.push_back(std::move(c));}
+
+void economics(Program&p){ClassDecl c;c.name="__NativeEconomics";
+ auto m=M3("double","__native_economics_future_value","double","principal","double","rate","double","periods");m.body->stmts.push_back(Ret(Bn("*",V("principal"),C1("__native_math_pow",Bn("+",D(1),V("rate")),V("periods")))));c.methods.push_back(std::move(m));
+ m=M3("double","__native_economics_present_value","double","future","double","rate","double","periods");m.body->stmts.push_back(Ret(Bn("/",V("future"),C1("__native_math_pow",Bn("+",D(1),V("rate")),V("periods")))));c.methods.push_back(std::move(m));
+ m=M3("double","__native_economics_annuity_present","double","payment","double","rate","double","periods");m.body->stmts.push_back(Ret(Bn("*",V("payment"),Bn("/",Bn("-",D(1),Bn("/",D(1),C1("__native_math_pow",Bn("+",D(1),V("rate")),V("periods")))),V("rate")))));c.methods.push_back(std::move(m));
+ m=M3("double","__native_economics_annuity_future","double","payment","double","rate","double","periods");m.body->stmts.push_back(Ret(Bn("*",V("payment"),Bn("/",Bn("-",C1("__native_math_pow",Bn("+",D(1),V("rate")),V("periods")),D(1)),V("rate")))));c.methods.push_back(std::move(m));
+ m=M2("double","__native_economics_elasticity","double","pct_quantity","double","pct_price");m.body->stmts.push_back(Ret(Bn("/",V("pct_quantity"),V("pct_price"))));c.methods.push_back(std::move(m));
+ m=M2("double","__native_economics_real_rate","double","nominal","double","inflation");m.body->stmts.push_back(Ret(Bn("-",Bn("/",Bn("+",D(1),V("nominal")),Bn("+",D(1),V("inflation"))),D(1))));c.methods.push_back(std::move(m));
+ m=M2("double","__native_economics_fisher_nominal","double","real","double","inflation");m.body->stmts.push_back(Ret(Bn("-",Bn("*",Bn("+",D(1),V("real")),Bn("+",D(1),V("inflation"))),D(1))));c.methods.push_back(std::move(m));
+ m=M1("double","__native_economics_doubling_time","double","rate");m.body->stmts.push_back(Ret(Bn("/",C0("__native_math_log",D(2)),C0("__native_math_log"))));c.methods.push_back(std::move(m));
+ m=M3("double","__native_economics_continuous_value","double","principal","double","rate","double","time");m.body->stmts.push_back(Ret(Bn("*",V("principal"),C1("__native_math_exp",Bn("*",V("rate"),V("time"))))));c.methods.push_back(std::move(m));
+ m=M2("double","__native_economics_profit","double","revenue","double","cost");m.body->stmts.push_back(Ret(Bn("-",V("revenue"),V("cost"))));c.methods.push_back(std::move(m));
+ m=M2("double","__native_economics_margin","double","profit","double","revenue");m.body->stmts.push_back(Ret(Bn("/",V("profit"),V("revenue"))));c.methods.push_back(std::move(m));
+ m=M3("double","__native_economics_gdp_identity","double","C","double","I","double","G");m.body->stmts.push_back(Ret(Bn("+",Bn("+",V("C"),V("I")),V("G"))));c.methods.push_back(std::move(m));
+ p.classes.push_back(std::move(c));}
+
+bool imported(const Program&p,const std::string&m){for(const auto&s:p.imports)if(s==m)return true;return false;}
+std::string helper(const std::string&c){return "__native_"+c;}
+
+void lowerExpr(ExprP&e,const Program&p){
+ if(!e)return;
+ if(auto c=dynamic_cast<Call*>(e.get())){for(auto&a:c->args)lowerExpr(a,p);auto pos=c->callee.find('.');if(pos!=std::string::npos){std::string mod=c->callee.substr(0,pos),fn=c->callee.substr(pos+1);if(isModuleAvailable(mod)){if(!imported(p,mod))throw std::runtime_error("Semantic error: native module '"+mod+"' is not imported");c->callee=helper(mod+"_"+fn);}}return;}
+ if(auto u=dynamic_cast<Unary*>(e.get())){lowerExpr(u->operand,p);return;} if(auto b=dynamic_cast<Binary*>(e.get())){lowerExpr(b->lhs,p);lowerExpr(b->rhs,p);}
 }
-ExprP Call0(const std::string& n) { return std::make_unique<Call>(n); }
-ExprP Call1(const std::string& n, ExprP a) {
-    auto c = std::make_unique<Call>(n); c->args.push_back(std::move(a)); return c;
-}
-ExprP Call2(const std::string& n, ExprP a, ExprP b) {
-    auto c = std::make_unique<Call>(n); c->args.push_back(std::move(a)); c->args.push_back(std::move(b)); return c;
-}
-ExprP Call3(const std::string& n, ExprP a, ExprP b, ExprP c0) {
-    auto c = std::make_unique<Call>(n); c->args.push_back(std::move(a)); c->args.push_back(std::move(b)); c->args.push_back(std::move(c0)); return c;
-}
-ExprP Neg(ExprP a) { return std::make_unique<Unary>("-", std::move(a)); }
-StmtP Ret(ExprP e) { auto s=std::make_unique<ReturnStmt>(); s->value=std::move(e); return s; }
-StmtP Decl(const std::string& t,const std::string& n,ExprP e) { auto s=std::make_unique<VarDecl>(); s->type=t;s->name=n;s->init=std::move(e);return s; }
-StmtP Set(const std::string& n,ExprP e) { auto s=std::make_unique<Assign>();s->name=n;s->value=std::move(e);return s; }
-StmtP ExprS(ExprP e) { auto s=std::make_unique<ExprStmt>();s->expr=std::move(e);return s; }
-StmtP While(ExprP cond,std::unique_ptr<Block> body) { auto s=std::make_unique<WhileStmt>();s->cond=std::move(cond);s->body=std::move(body);return s; }
-
-Method Method0(const std::string& ret,const std::string& name) {
-    Method m;m.retType=ret;m.name=name;m.body=std::make_unique<Block>();return m;
-}
-Method Method1(const std::string& ret,const std::string& name,const std::string& t,const std::string& p) {
-    Method m=Method0(ret,name);m.params.push_back({t,p});return m;
-}
-Method Method2(const std::string& ret,const std::string& name,const std::string& t1,const std::string& p1,const std::string& t2,const std::string& p2) {
-    Method m=Method1(ret,name,t1,p1);m.params.push_back({t2,p2});return m;
-}
-Method Method3(const std::string& ret,const std::string& name,const std::string& t1,const std::string& p1,const std::string& t2,const std::string& p2,const std::string& t3,const std::string& p3) {
-    Method m=Method2(ret,name,t1,p1,t2,p2);m.params.push_back({t3,p3});return m;
-}
-
-void addMath(Program& p) {
-    ClassDecl c;c.name="__NativeMath";
-    auto m=Method0("double","__native_math_pi");m.body->stmts.push_back(Ret(D(3.141592653589793238462643383279502884)));c.methods.push_back(std::move(m));
-    m=Method0("double","__native_math_e");m.body->stmts.push_back(Ret(D(2.7182818284590452353602874713526625)));c.methods.push_back(std::move(m));
-    m=Method0("double","__native_math_tau");m.body->stmts.push_back(Ret(D(6.283185307179586476925286766559)));c.methods.push_back(std::move(m));
-
-    m=Method1("double","__native_math_abs","double","x");
-    {auto b=std::make_unique<Block>();b->stmts.push_back(Ret(Neg(V("x"))));auto i=std::make_unique<IfStmt>();i->cond=Bin("<",V("x"),D(0));i->thenS=std::move(b);i->elseS=Ret(V("x"));m.body->stmts.push_back(std::move(i));} c.methods.push_back(std::move(m));
-    m=Method1("double","__native_math_sign","double","x");
-    {auto i1=std::make_unique<IfStmt>();i1->cond=Bin(">",V("x"),D(0));i1->thenS=Ret(D(1));auto i2=std::make_unique<IfStmt>();i2->cond=Bin("<",V("x"),D(0));i2->thenS=Ret(D(-1));i2->elseS=Ret(D(0));i1->elseS=std::move(i2);m.body->stmts.push_back(std::move(i1));}c.methods.push_back(std::move(m));
-    m=Method2("double","__native_math_min","double","a","double","b");{auto i=std::make_unique<IfStmt>();i->cond=Bin("<",V("a"),V("b"));i->thenS=Ret(V("a"));i->elseS=Ret(V("b"));m.body->stmts.push_back(std::move(i));}c.methods.push_back(std::move(m));
-    m=Method2("double","__native_math_max","double","a","double","b");{auto i=std::make_unique<IfStmt>();i->cond=Bin(">",V("a"),V("b"));i->thenS=Ret(V("a"));i->elseS=Ret(V("b"));m.body->stmts.push_back(std::move(i));}c.methods.push_back(std::move(m));
-    m=Method3("double","__native_math_clamp","double","x","double","lo","double","hi");m.body->stmts.push_back(Ret(Call2("__native_math_min",Call1("__native_math_max",V("x"),V("lo")),V("hi"))));c.methods.push_back(std::move(m));
-
-    m=Method1("double","__native_math_sqrt","double","x");
-    m.body->stmts.push_back(Decl("double","g",Bin("+",Bin("/",V("x"),D(2)),D(1))));
-    m.body->stmts.push_back(Decl("int","i",I(0)));
-    {auto b=std::make_unique<Block>();b->stmts.push_back(Set("g",Bin("/",Bin("+",V("g"),Bin("/",V("x"),V("g"))),D(2))));b->stmts.push_back(Set("i",Bin("+",V("i"),I(1))));m.body->stmts.push_back(While(Bin("<",V("i"),I(12)),std::move(b)));}
-    m.body->stmts.push_back(Ret(V("g")));c.methods.push_back(std::move(m));
-
-    m=Method1("double","__native_math_exp","double","x");
-    m.body->stmts.push_back(Decl("double","term",D(1)));m.body->stmts.push_back(Decl("double","sum",D(1)));m.body->stmts.push_back(Decl("int","i",I(1)));
-    {auto b=std::make_unique<Block>();b->stmts.push_back(Set("term",Bin("/",Bin("*",V("term"),V("x")),V("i"))));b->stmts.push_back(Set("sum",Bin("+",V("sum"),V("term"))));b->stmts.push_back(Set("i",Bin("+",V("i"),I(1))));m.body->stmts.push_back(While(Bin("<",V("i"),I(30)),std::move(b)));}m.body->stmts.push_back(Ret(V("sum")));c.methods.push_back(std::move(m));
-
-    m=Method1("double","__native_math_log","double","x");
-    m.body->stmts.push_back(Decl("double","z",Bin("/",Bin("-",V("x"),D(1)),Bin("+",V("x"),D(1)))));m.body->stmts.push_back(Decl("double","z2",Bin("*",V("z"),V("z"))));m.body->stmts.push_back(Decl("double","term",V("z")));m.body->stmts.push_back(Decl("double","sum",V("z")));m.body->stmts.push_back(Decl("int","i",I(1)));
-    {auto b=std::make_unique<Block>();b->stmts.push_back(Set("term",Bin("*",V("term"),V("z2"))));b->stmts.push_back(Set("sum",Bin("+",V("sum"),Bin("/",V("term"),Bin("+",Bin("*",I(2),V("i")),I(1))))));b->stmts.push_back(Set("i",Bin("+",V("i"),I(1))));m.body->stmts.push_back(While(Bin("<",V("i"),I(24)),std::move(b)));}m.body->stmts.push_back(Ret(Bin("*",D(2),V("sum"))));c.methods.push_back(std::move(m));
-
-    m=Method2("double","__native_math_pow","double","x","double","y");m.body->stmts.push_back(Ret(Call1("__native_math_exp",Bin("*",V("y"),Call1("__native_math_log",V("x"))))));c.methods.push_back(std::move(m));
-
-    m=Method1("double","__native_math_sin","double","x");m.body->stmts.push_back(Decl("double","term",V("x")));m.body->stmts.push_back(Decl("double","sum",V("x")));m.body->stmts.push_back(Decl("double","xx",Bin("*",V("x"),V("x"))));m.body->stmts.push_back(Decl("int","i",I(1)));
-    {auto b=std::make_unique<Block>();b->stmts.push_back(Set("term",Bin("/",Bin("*",V("term"),Bin("-",D(0),V("xx"))),Bin("*",Bin("+",Bin("*",I(2),V("i")),I(1)),Bin("+",Bin("*",I(2),V("i")),I(2))))));b->stmts.push_back(Set("sum",Bin("+",V("sum"),V("term"))));b->stmts.push_back(Set("i",Bin("+",V("i"),I(1))));m.body->stmts.push_back(While(Bin("<",V("i"),I(10)),std::move(b)));}m.body->stmts.push_back(Ret(V("sum")));c.methods.push_back(std::move(m));
-    m=Method1("double","__native_math_cos","double","x");m.body->stmts.push_back(Ret(Call1("__native_math_sin",Bin("+",V("x"),D(1.57079632679489661923)))));c.methods.push_back(std::move(m));
-    m=Method1("double","__native_math_tan","double","x");m.body->stmts.push_back(Ret(Bin("/",Call1("__native_math_sin",V("x")),Call1("__native_math_cos",V("x")))));c.methods.push_back(std::move(m));
-    m=Method2("double","__native_math_hypot","double","a","double","b");m.body->stmts.push_back(Ret(Call1("__native_math_sqrt",Bin("+",Bin("*",V("a"),V("a")),Bin("*",V("b"),V("b"))))));c.methods.push_back(std::move(m));
-    m=Method2("double","__native_math_fmod","double","a","double","b");m.body->stmts.push_back(Ret(Bin("-",V("a"),Bin("*",Bin("/",V("a"),V("b")),V("b")))));c.methods.push_back(std::move(m));
-    p.classes.push_back(std::move(c));
-}
-
-void addPhysics(Program& p) {
-    ClassDecl c;c.name="__NativePhysics";
-    auto m=Method0("double","__native_physics_C");m.body->stmts.push_back(Ret(D(299792458.0)));c.methods.push_back(std::move(m));
-    m=Method0("double","__native_physics_H");m.body->stmts.push_back(Ret(D(6.62607015e-34)));c.methods.push_back(std::move(m));
-    m=Method0("double","__native_physics_HBAR");m.body->stmts.push_back(Ret(D(1.054571817e-34)));c.methods.push_back(std::move(m));
-    m=Method0("double","__native_physics_E_CHARGE");m.body->stmts.push_back(Ret(D(1.602176634e-19)));c.methods.push_back(std::move(m));
-    m=Method0("double","__native_physics_K_B");m.body->stmts.push_back(Ret(D(1.380649e-23)));c.methods.push_back(std::move(m));
-    m=Method0("double","__native_physics_G");m.body->stmts.push_back(Ret(D(6.67430e-11)));c.methods.push_back(std::move(m));
-    m=Method0("double","__native_physics_G0");m.body->stmts.push_back(Ret(D(9.80665)));c.methods.push_back(std::move(m));
-    m=Method0("double","__native_physics_N_A");m.body->stmts.push_back(Ret(D(6.02214076e23)));c.methods.push_back(std::move(m));
-    m=Method0("double","__native_physics_R");m.body->stmts.push_back(Ret(D(8.31446261815324)));c.methods.push_back(std::move(m));
-    m=Method2("double","__native_physics_velocity","double","dx","double","dt");m.body->stmts.push_back(Ret(Bin("/",V("dx"),V("dt"))));c.methods.push_back(std::move(m));
-    m=Method2("double","__native_physics_acceleration","double","dv","double","dt");m.body->stmts.push_back(Ret(Bin("/",V("dv"),V("dt"))));c.methods.push_back(std::move(m));
-    m=Method4_PLACEHOLDER;
+void lowerStmt(StmtP&s,const Program&p){if(auto v=dynamic_cast<VarDecl*>(s.get())){lowerExpr(v->init,p);return;}if(auto a=dynamic_cast<Assign*>(s.get())){lowerExpr(a->value,p);return;}if(auto r=dynamic_cast<ReturnStmt*>(s.get())){lowerExpr(r->value,p);return;}if(auto e=dynamic_cast<ExprStmt*>(s.get())){lowerExpr(e->expr,p);return;}if(auto q=dynamic_cast<PrintStmt*>(s.get())){lowerExpr(q->expr,p);return;}if(auto b=dynamic_cast<Block*>(s.get())){for(auto&x:b->stmts)lowerStmt(x,p);return;}if(auto i=dynamic_cast<IfStmt*>(s.get())){lowerExpr(i->cond,p);lowerStmt(i->thenS,p);if(i->elseS)lowerStmt(i->elseS,p);return;}if(auto w=dynamic_cast<WhileStmt*>(s.get())){lowerExpr(w->cond,p);lowerStmt(w->body,p);return;}if(auto f=dynamic_cast<ForStmt*>(s.get())){if(f->init)lowerStmt(f->init,p);lowerExpr(f->cond,p);if(f->update)lowerStmt(f->update,p);lowerStmt(f->body,p);}}
 }
 
-}
-
-void lowerProgram(Program& program) {
-    // implemented below
+void lowerProgram(Program&program){
+ validateImports(program);
+ bool m=imported(program,"math"),ph=imported(program,"physics"),ec=imported(program,"economics");
+ if(m)math(program); if(ph){if(!m)throw std::runtime_error("Semantic error: physics requires import math");physics(program);} if(ec){if(!m)throw std::runtime_error("Semantic error: economics requires import math");economics(program);}
+ for(auto&cl:program.classes)for(auto&me:cl.methods)for(auto&s:me.body->stmts)lowerStmt(s,program);
 }
 
 }} // namespace sleela::native
