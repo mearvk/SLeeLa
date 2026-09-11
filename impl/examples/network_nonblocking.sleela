@@ -1,0 +1,35 @@
+#sleela 1.1
+
+class NetworkNonBlocking {
+    int listener;
+
+    void network_worker() {
+        int client = accept(listener);
+        if (client >= 0) {
+            String data = sockread(client);
+            sockwrite(client, data);
+            sockclose(client);
+            send(0, 1);
+        } else {
+            send(0, -1);
+        }
+    }
+
+    void main() {
+        listener = listen(8080);
+        if (listener < 0) {
+            print(-1);
+            return;
+        }
+
+        spawn(network_worker);
+
+        // The coordinator is not performing socket I/O. The worker owns
+        // accept/read/write while the coordinator waits on a mailbox result.
+        int result = recv(0);
+        print(result);
+
+        sockclose(listener);
+        join();
+    }
+}
