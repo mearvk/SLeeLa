@@ -10,9 +10,9 @@ public interface SleelaGui extends AutoCloseable {
 
     void onAction(Runnable action);
 
+    @Override
     void close();
 
-    @Override
     default void closeQuietly() {
         try {
             close();
