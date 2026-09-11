@@ -10,7 +10,7 @@ import java.rmi.registry.LocateRegistry;
  * Preferred form:
  * Bodi.system("xxx").propagative("001").install("yyy");
  *
- * Java RMI remains the transport/registry compatibility layer underneath it.
+ * Java RMI remains the compatibility registry/transport underneath it.
  */
 public class Bodi extends BodiExtent implements Remote
 {
@@ -30,16 +30,16 @@ public class Bodi extends BodiExtent implements Remote
         }
     }
 
-    public BodiObjectReference system(String name)
+    public static BodiObjectReference system(String name)
     {
-        return this.extender001.system(name);
+        return Bodi.reference.extender001.system(name);
     }
 
     public BodiNetworkServer startNetwork(BodiNetworkConfig config) throws Exception
     {
         BodiNetworkServer server = new BodiNetworkServer(this.extender001);
         if (config != null && config.enabled)
-            server.start(config.bodiPort);
+            server.start(config.bindAddress, config.bodiPort);
         return server;
     }
 
@@ -52,8 +52,7 @@ public class Bodi extends BodiExtent implements Remote
     {
         try
         {
-            this.extender001.invoke(new BodiChange(bodiref, methodname, "", ""),
-                protocol, "run");
+            this.extender001.invoke(new BodiChange(bodiref, methodname, "", ""), protocol, "run");
         }
         catch (Exception exception)
         {
