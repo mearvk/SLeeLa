@@ -24,7 +24,8 @@ FE_OBJ := $(patsubst frontend/%.cpp,$(BUILD)/%.o,$(FE_SRC))
 DRIVER_OBJ := $(BUILD)/driver.o
 NS_SRC := nordshrift/sst_lexer.cpp nordshrift/sst_parser.cpp \
           nordshrift/source_resolve.cpp nordshrift/sleela_emit.cpp \
-          nordshrift/object_compat.cpp nordshrift/nordshrift.cpp
+          nordshrift/object_compat.cpp nordshrift/subject_model.cpp \
+          nordshrift/nordshrift.cpp
 NS_OBJ := $(patsubst nordshrift/%.cpp,$(BUILD)/ns_%.o,$(NS_SRC))
 .PHONY: all clean test test-sleela test-version test-nordshrift test-threads test-network test-catalog test-chemistry test-financial
 all: $(SLEELA_BIN) $(NORDSHRIFT_BIN)
