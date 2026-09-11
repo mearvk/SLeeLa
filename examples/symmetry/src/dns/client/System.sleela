@@ -1,0 +1,16 @@
+system DNS.Client {
+  role client
+
+  state resolver
+  state query_count
+
+  on start {
+    query_count = 0
+  }
+
+  on lookup(name) {
+    query_count = query_count + 1
+    send dns.query(name) to resolver
+    await dns.response
+  }
+}
