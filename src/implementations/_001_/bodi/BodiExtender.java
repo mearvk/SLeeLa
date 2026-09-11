@@ -14,16 +14,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Backend for Bodi's system/object address space.
- * Registry names remain compatible with Java RMI, while Bodi provides the
- * preferred semantic layer: system -> propagation -> operation -> datum.
- */
+/** Backend for Bodi's system/object address space. */
 public class BodiExtender
 {
     public static Registry registry001;
     public static Registry registry002;
-
     public static final HashMap<String, ReflectionItem> map001 = new HashMap<String, ReflectionItem>();
     public static final HashMap<String, ReflectionItem> map002 = new HashMap<String, ReflectionItem>();
     public static final HashMap<String, ReflectionItem[]> map003 = new HashMap<String, ReflectionItem[]>();
@@ -40,10 +35,7 @@ public class BodiExtender
             map001.put("implementations._001_.nordshrift.drivers.NordshriftDriver.init",
                 new ReflectionItem(NordshriftDriver.class.getMethod("init")));
         }
-        catch (Exception exception)
-        {
-            // Optional legacy discovery entries must not prevent Bodi startup.
-        }
+        catch (Exception exception) { }
     }
 
     public Remote pull(String bodiref) throws Exception
@@ -61,6 +53,11 @@ public class BodiExtender
     {
         ensureRegistry();
         return registry001.lookup(system);
+    }
+
+    public String describe(String system) throws Exception
+    {
+        return BodiDescriptor.describe(system, resolveSystem(system));
     }
 
     public BodiObjectReference system(String name)
@@ -91,8 +88,7 @@ public class BodiExtender
         synchronized (witnesses)
         {
             List<BodiWitness> list = witnesses.get(system);
-            return list == null
-                ? Collections.<BodiWitness>emptyList()
+            return list == null ? Collections.<BodiWitness>emptyList()
                 : Collections.unmodifiableList(new ArrayList<BodiWitness>(list));
         }
     }
@@ -108,11 +104,8 @@ public class BodiExtender
         Remote target = resolveSystem(change.reference);
         BodiWitness witness = witness(change.reference, change.reference,
             "object-change", change.method, change.sequence, starter, man);
-
         Object result = invokeMethod(target, change.method, change.datum);
-        if (result == null)
-            return witness.toString();
-        return result;
+        return result == null ? witness.toString() : result;
     }
 
     private Object invokeMethod(Object target, String methodName, String datum) throws Exception
