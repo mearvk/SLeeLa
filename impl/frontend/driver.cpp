@@ -1,19 +1,19 @@
 // ===========================================================================
-// driver.cpp  --  The `sleela` command-line front end.
+// driver.cpp -- Sleelvac™ command-line compiler/runtime front end.
 //
-//   sleela run <file.sleela>     lex -> parse -> compile -> run on the C core
+//   sleela compile <file.sleela> -o <program.sleela>
+//       source -> Sleelvac™ -> persistent runnable Core artifact
+//   sleela run <file.sleela>      run source immediately (compatibility path)
+//   sleela run <program.sleela>   load runnable artifact directly; no recompile
 //   sleela version
 //
-// A .sleela file is a Wrapper(TM): the .sleela file type -- a Sleela source
-// file that carries the metadocument addend (governed by SL-META-0001).
-//
-// This ties the whole pipeline together: source text is lowered to Sleela
-// Core bytecode by the compiler, loaded into an SLVM, and executed through
-// the core's exchange/run API.
+// A persistent .sleela artifact contains Sleela Core bytecode. Once produced
+// by Sleelvac™, the runtime can load it directly.
 // ===========================================================================
 #include "lexer.h"
 #include "parser.h"
 #include "compiler.h"
+#include "artifact.h"
 #include "version.h"
 #include "../catalog/sheet_catalog.h"
 #include "../xclass/xclass_loader.h"
@@ -31,65 +31,54 @@ extern "C" {
 }
 
 static const char* kVersion =
-    "Sleela 0.1.2 (C/C++ core; SHEET.sheet conducted methods; .xclass input)";
+    "Sleelvac™ 1.0 (Sleela compiler; persistent .sleela Core artifacts; .xclass input)";
 
-static bool readFile(const std::string& path, std::string& out);  // defined below
+static bool readFile(const std::string& path, std::string& out);
 
-// Apply SL-META-0001 Section 4.4 version awareness to `src`. On a rejectable
-// status (declared version out of range, or a malformed pragma) prints an error
-// and returns false; on an assumed-default (no pragma) prints a warning and
-// returns true; on an accepted declared version prints nothing and returns true.
 static bool checkSyntaxVersion(const std::string& path, const std::string& src) {
     sleela::VersionResolution v = sleela::resolveSyntaxVersion(src);
     if (v.isError()) {
-        std::cerr << "sleela: " << path << ": error: " << v.message << "\n";
+        std::cerr << "sleelvac: " << path << ": error: " << v.message << "\n";
         return false;
     }
-    if (v.isWarning()) {
-        std::cerr << "sleela: " << path << ": warning: " << v.message << "\n";
-    }
+    if (v.isWarning())
+        std::cerr << "sleelvac: " << path << ": warning: " << v.message << "\n";
     return true;
 }
 
-// True if `path` ends with the given (lower-case) extension.
 static bool hasExt(const std::string& path, const std::string& ext) {
     if (path.size() < ext.size()) return false;
     return path.compare(path.size() - ext.size(), ext.size(), ext) == 0;
 }
 
-// Compile a fully-built Program and run it on the core.
 static int compileAndRun(sleela::Program& prog, const catalog::Catalog& cat,
-                          const sleela::SyntaxVersion& syntax = sleela::SyntaxVersion{1, 0}) {
+                         const sleela::SyntaxVersion& syntax = sleela::SyntaxVersion{1, 0}) {
     SLVM* vm = slvm_new();
+    if (!vm) {
+        std::cerr << "sleelvac: unable to allocate Sleela VM\n";
+        return 1;
+    }
     int rc = 0;
     try {
-        sleela::compile(prog, vm, &cat, syntax); // lowers AST -> core bytecode (sheet-aware)
-        SLResult r = slvm_run(vm);            // execute through the core
+        sleela::compile(prog, vm, &cat, syntax);
+        SLResult r = slvm_run(vm);
         if (r == SLR_ERROR) {
             const char* e = slvm_error(vm);
-            std::cerr << "sleela: runtime error: " << (e ? e : "unknown") << "\n";
+            std::cerr << "sleelvac: runtime error: " << (e ? e : "unknown") << "\n";
             rc = 1;
         }
     } catch (const std::exception& ex) {
-        std::cerr << "sleela: " << ex.what() << "\n";
+        std::cerr << "sleelvac: " << ex.what() << "\n";
         rc = 1;
     }
     slvm_free(vm);
     return rc;
 }
 
-// Locate SHEET.sheet: honor $SLEELA_SHEET, else probe common relative paths up
-// from the working dir / build tree. Returns an empty catalog if not found
-// (the conducted-method built-ins then resolve against nothing but still work).
 static catalog::Catalog loadCatalog() {
     const char* env = std::getenv("SLEELA_SHEET");
-    const char* candidates[] = {
-        env,
-        "SHEET.sheet",
-        "../SHEET.sheet",
-        "../../SHEET.sheet",
-        "../../../SHEET.sheet",
-    };
+    const char* candidates[] = { env, "SHEET.sheet", "../SHEET.sheet",
+                                 "../../SHEET.sheet", "../../../SHEET.sheet" };
     for (const char* p : candidates) {
         if (!p || !*p) continue;
         bool ok = false;
@@ -102,42 +91,138 @@ static catalog::Catalog loadCatalog() {
 static int usage() {
     std::cerr <<
         "Usage:\n"
-        "  sleela run <file.sleela>              compile and run a Sleela program\n"
+        "  sleela compile <file.sleela> -o <program.sleela>\n"
+        "                                        compile source with Sleelvac™\n"
+        "                                        into a runnable Core artifact\n"
+        "  sleela run <file.sleela>              compile source in memory and run\n"
+        "  sleela run <program.sleela>           load runnable artifact directly\n"
         "  sleela run <file.xclass> [more...]    ingest SecureJDK 28 .xclass file(s)\n"
-        "                                        into a Sleela program and run it\n"
         "  sleela xclass [--run|--emit|--info] <file.xclass> [more...]\n"
-        "                                        --run  (default) ingest + run\n"
-        "                                        --emit  print reconstructed Sleela source\n"
-        "                                        --info  print identity/security/provenance\n"
-        "  sleela check <file.sleela>            check a program (incl. its\n"
-        "                                        #sleela version) without running\n"
-        "  sleela version                        print version + supported syntax range\n";
+        "  sleela check <file.sleela>            check source without running\n"
+        "  sleela version                        print compiler/runtime version\n";
     return 2;
 }
 
-// `sleela check <file.sleela>`: run the front end far enough to validate the
-// program -- version pragma, lexing, and parsing -- but do not execute it.
-static int checkFile(const std::string& path) {
-    std::string src;
+static bool parseSource(const std::string& path, std::string& src,
+                        sleela::Program& prog, sleela::VersionResolution& version) {
     if (!readFile(path, src)) {
-        std::cerr << "sleela: cannot open '" << path << "'\n";
-        return 1;
+        std::cerr << "sleelvac: cannot open '" << path << "'\n";
+        return false;
     }
-    if (!checkSyntaxVersion(path, src)) return 1;
-
-    sleela::VersionResolution v = sleela::resolveSyntaxVersion(src);
+    if (!checkSyntaxVersion(path, src)) return false;
+    version = sleela::resolveSyntaxVersion(src);
     try {
         sleela::Lexer lexer(src);
         auto tokens = lexer.tokenize();
         sleela::Parser parser(std::move(tokens));
-        sleela::Program prog = parser.parseProgram();
-        (void)prog;
-        std::cout << path << ": ok (syntax "
-                  << (v.pragmaPresent ? "declared " : "assumed ")
-                  << v.declared.str() << ")\n";
+        prog = parser.parseProgram();
+        return true;
+    } catch (const std::exception& ex) {
+        std::cerr << "sleelvac: " << path << ": " << ex.what() << "\n";
+        return false;
+    }
+}
+
+static int checkFile(const std::string& path) {
+    std::string src;
+    sleela::Program prog;
+    sleela::VersionResolution v;
+    if (!parseSource(path, src, prog, v)) return 1;
+    std::cout << path << ": ok (syntax "
+              << (v.pragmaPresent ? "declared " : "assumed ")
+              << v.declared.str() << ")\n";
+    return 0;
+}
+
+static int compileFile(const std::string& sourcePath, const std::string& outputPath) {
+    std::string src;
+    sleela::Program prog;
+    sleela::VersionResolution syntax;
+    if (!parseSource(sourcePath, src, prog, syntax)) return 1;
+
+    catalog::Catalog cat = loadCatalog();
+    try {
+        int rc = sleela::compileToArtifact(prog, outputPath, &cat, syntax.declared);
+        if (rc != 0) return 1;
+        std::cout << "sleelvac: " << sourcePath << " -> " << outputPath
+                  << " (runnable Sleela Core artifact)\n";
         return 0;
     } catch (const std::exception& ex) {
-        std::cerr << "sleela: " << path << ": " << ex.what() << "\n";
+        std::cerr << "sleelvac: " << ex.what() << "\n";
+        return 1;
+    }
+}
+
+static int runArtifact(const std::string& path) {
+    SLVM* vm = slvm_load_file(path.c_str());
+    if (!vm) {
+        std::cerr << "sleelvac: cannot load runnable .sleela artifact '" << path << "'\n";
+        return 1;
+    }
+    SLResult r = slvm_run(vm);
+    if (r == SLR_ERROR) {
+        const char* e = slvm_error(vm);
+        std::cerr << "sleelvac: runtime error: " << (e ? e : "unknown") << "\n";
+        slvm_free(vm);
+        return 1;
+    }
+    slvm_free(vm);
+    return 0;
+}
+
+static int runSource(const std::string& path) {
+    std::string src;
+    sleela::Program prog;
+    sleela::VersionResolution syntax;
+    if (!parseSource(path, src, prog, syntax)) return 1;
+    catalog::Catalog cat = loadCatalog();
+    return compileAndRun(prog, cat, syntax.declared);
+}
+
+static int runXclass(const std::vector<std::string>& paths) {
+    catalog::Catalog cat = loadCatalog();
+    try {
+        sleela::xclass::Loaded loaded = sleela::xclass::loadFiles(paths);
+        std::cout << "[xclass] ingested " << loaded.metas.size()
+                  << " SecureJDK 28 class(es):\n";
+        for (const auto& m : loaded.metas)
+            std::cout << "[xclass]   " << sleela::xclass::infoLine(m) << "\n";
+        return compileAndRun(loaded.program, cat);
+    } catch (const std::exception& ex) {
+        std::cerr << "sleelvac: " << ex.what() << "\n";
+        return 1;
+    }
+}
+
+static int xclassCmd(int argc, char** argv) {
+    enum { RUN, EMIT, INFO } mode = RUN;
+    std::vector<std::string> files;
+    for (int i = 2; i < argc; i++) {
+        std::string a = argv[i];
+        if (a == "--emit") mode = EMIT;
+        else if (a == "--info") mode = INFO;
+        else if (a == "--run") mode = RUN;
+        else if (a.rfind("--", 0) == 0) { std::cerr << "sleelvac: unknown option " << a << "\n"; return 2; }
+        else files.push_back(a);
+    }
+    if (files.empty()) { std::cerr << "sleela xclass: no .xclass files given\n"; return 2; }
+    if (mode == RUN) return runXclass(files);
+    try {
+        sleela::xclass::Loaded loaded = sleela::xclass::loadFiles(files);
+        if (mode == EMIT) std::cout << loaded.emitted;
+        else {
+            for (const auto& m : loaded.metas) {
+                std::cout << sleela::xclass::infoLine(m) << "\n";
+                if (!m.sourceFile.empty()) std::cout << "  source    : " << m.sourceFile << "\n";
+                if (!m.edition.empty())    std::cout << "  edition   : " << m.edition << "\n";
+                if (!m.signatureHex.empty())
+                    std::cout << "  signature : " << m.signatureAlg << ":" << m.signatureHex
+                              << (m.signed_ ? " (signed)" : "") << "\n";
+            }
+        }
+        return 0;
+    } catch (const std::exception& ex) {
+        std::cerr << "sleelvac: " << ex.what() << "\n";
         return 1;
     }
 }
@@ -151,102 +236,27 @@ static bool readFile(const std::string& path, std::string& out) {
     return true;
 }
 
-// Ingest one or more SecureJDK 28 .xclass files, reconstruct a Program, run it.
-static int runXclass(const std::vector<std::string>& paths) {
-    catalog::Catalog cat = loadCatalog();
-    try {
-        sleela::xclass::Loaded loaded = sleela::xclass::loadFiles(paths);
-        std::cout << "[xclass] ingested " << loaded.metas.size()
-                  << " SecureJDK 28 class(es):\n";
-        for (const auto& m : loaded.metas)
-            std::cout << "[xclass]   " << sleela::xclass::infoLine(m) << "\n";
-        return compileAndRun(loaded.program, cat);
-    } catch (const std::exception& ex) {
-        std::cerr << "sleela: " << ex.what() << "\n";
-        return 1;
-    }
-}
-
 static int runFile(const std::string& path) {
-    // SecureJDK 28 .xclass input: reconstruct a Program, then run it.
+    // The same .sleela extension is intentionally used for both source and
+    // compiled artifacts. The magic header makes the distinction unambiguous.
+    if (slvm_is_artifact_file(path.c_str())) return runArtifact(path);
     if (hasExt(path, ".xclass")) return runXclass({path});
-
-    std::string src;
-    if (!readFile(path, src)) {
-        std::cerr << "sleela: cannot open '" << path << "'\n";
-        return 1;
-    }
-
-    // Version awareness (SL-META-0001 Section 4.4): a compiler must reject files
-    // whose declared syntax version is outside its supported range. The resolved
-    // version is also passed to the compiler so semantic features can be gated.
-    if (!checkSyntaxVersion(path, src)) return 1;
-    sleela::VersionResolution syntax = sleela::resolveSyntaxVersion(src);
-
-    catalog::Catalog cat = loadCatalog();
-    try {
-        sleela::Lexer lexer(src);
-        auto tokens = lexer.tokenize();
-
-        sleela::Parser parser(std::move(tokens));
-        sleela::Program prog = parser.parseProgram();
-
-        return compileAndRun(prog, cat, syntax.declared);
-    } catch (const std::exception& ex) {
-        std::cerr << "sleela: " << ex.what() << "\n";
-        return 1;
-    }
-}
-
-// `sleela xclass [--emit|--info|--run] <file.xclass> [more.xclass ...]`
-static int xclassCmd(int argc, char** argv) {
-    enum { RUN, EMIT, INFO } mode = RUN;
-    std::vector<std::string> files;
-    for (int i = 2; i < argc; i++) {
-        std::string a = argv[i];
-        if (a == "--emit") mode = EMIT;
-        else if (a == "--info") mode = INFO;
-        else if (a == "--run") mode = RUN;
-        else if (a.rfind("--", 0) == 0) { std::cerr << "sleela: unknown option " << a << "\n"; return 2; }
-        else files.push_back(a);
-    }
-    if (files.empty()) { std::cerr << "sleela xclass: no .xclass files given\n"; return 2; }
-
-    if (mode == RUN) return runXclass(files);
-
-    try {
-        sleela::xclass::Loaded loaded = sleela::xclass::loadFiles(files);
-        if (mode == EMIT) {
-            std::cout << loaded.emitted;
-        } else { // INFO
-            for (const auto& m : loaded.metas) {
-                std::cout << sleela::xclass::infoLine(m) << "\n";
-                if (!m.sourceFile.empty()) std::cout << "  source    : " << m.sourceFile << "\n";
-                if (!m.edition.empty())    std::cout << "  edition   : " << m.edition << "\n";
-                if (!m.signatureHex.empty())
-                    std::cout << "  signature : " << m.signatureAlg << ":" << m.signatureHex
-                              << (m.signed_ ? " (signed)" : "") << "\n";
-            }
-        }
-        return 0;
-    } catch (const std::exception& ex) {
-        std::cerr << "sleela: " << ex.what() << "\n";
-        return 1;
-    }
+    return runSource(path);
 }
 
 int main(int argc, char** argv) {
     if (argc < 2) return usage();
     std::string cmd = argv[1];
-
     if (cmd == "version" || cmd == "--version" || cmd == "-v") {
         std::cout << kVersion << "\n";
         std::cout << "  supported .sleela syntax: "
                   << sleela::minSupportedSyntax().str() << " .. "
-                  << sleela::maxSupportedSyntax().str()
-                  << " (declare per-file with '#sleela "
-                  << sleela::defaultSyntaxVersion().str() << "')\n";
+                  << sleela::maxSupportedSyntax().str() << "\n";
         return 0;
+    }
+    if (cmd == "compile") {
+        if (argc != 5 || std::string(argv[3]) != "-o") return usage();
+        return compileFile(argv[2], argv[4]);
     }
     if (cmd == "check") {
         if (argc < 3) return usage();
@@ -254,7 +264,6 @@ int main(int argc, char** argv) {
     }
     if (cmd == "run") {
         if (argc < 3) return usage();
-        // `sleela run a.xclass b.xclass ...` ingests several into one Program.
         if (hasExt(argv[2], ".xclass")) {
             std::vector<std::string> files;
             for (int i = 2; i < argc; i++) files.push_back(argv[i]);
@@ -266,10 +275,6 @@ int main(int argc, char** argv) {
         if (argc < 3) return usage();
         return xclassCmd(argc, argv);
     }
-    // Convenience: `sleela file.sleela` (a Wrapper(TM)) / `sleela file.xclass`
-    // behave like `run`.
-    if (hasExt(cmd, ".sleela") || hasExt(cmd, ".xclass")) {
-        return runFile(cmd);
-    }
+    if (hasExt(cmd, ".sleela") || hasExt(cmd, ".xclass")) return runFile(cmd);
     return usage();
 }
