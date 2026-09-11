@@ -19,18 +19,220 @@ triplet of targets (**Java**, **Sleela**, **C**).
 > this repository, "a `.sleela` file", "a Sleela source file", and "a Wrapper™"
 > all name the same file type.
 
-- The working implementation lives under [`impl/`](impl/) — see
-  [`impl/README.md`](impl/README.md) for the full guide, and
-  [`impl/DESIGN.md`](impl/DESIGN.md) for the architecture.
+## Current implementation — native domains and persistent artifacts
+
+The implementation now includes a native-domain pipeline in which domain
+libraries are lowered into Sleela Core bytecode rather than delegated to a
+host-language runtime at execution time.
+
+```text
+Sleela source (.sleela)
+        │
+        ▼
+     Sleelvac™
+        │
+        ├── math
+        ├── physics
+        ├── economics
+        ├── chemistry
+        └── financial
+        │
+        ▼
+  native/domain lowering
+        │
+        ▼
+   Sleela Core bytecode
+        │
+        ▼
+ persistent .sleela artifact
+        │
+        ▼
+    Sleela Runtime
+```
+
+The compiled `.sleela` artifact is persistent Core bytecode. The runtime can
+load the artifact directly; it does **not** invoke Sleelvac again merely to
+execute an already compiled artifact. The artifact format has its own magic
+header and serialized constants, strings, globals, functions, bytecode, and
+entry-point information.
+
+The working implementation lives under [`impl/`](impl/) — see
+[`impl/README.md`](impl/README.md) for the full guide and
+[`impl/DESIGN.md`](impl/DESIGN.md) for the architecture.
+
+### Native libraries
+
+The executable native library layer currently includes:
+
+- **Math** — constants, elementary functions, powers, roots, logarithms,
+  trigonometric functions, `hypot`, and floating-point remainder.
+- **Physics** — physical constants, kinematics, mechanics, gravitation,
+  relativity, electrical relations, idealized gas relations, wave relations,
+  and a simplified neutrino-oscillation model.
+- **Economics** — time value of money, elasticity, real/nominal rates,
+  doubling time, continuous growth, profit, margin, and the GDP identity.
+- **Chemistry** — a dependency-light domain model for chemical subjects,
+  properties, ratios, similarity, stochastic evaluation, and structured
+  inference. Chemistry is deliberately treated as a model/inference layer,
+  not as an assertion of experimental fact.
+- **Financial** — algebraic quantitative-finance primitives including time
+  value of money, annuities, NPV, bond pricing, CAPM, WACC, ratios,
+  determinants, two-by-two linear systems, and quadratic equations.
+
+The current executable examples use:
+
+```sleela
+import math;
+import chemistry;
+import financial;
+```
+
+where the relevant domain is needed. Chemistry and financial lowering uses the
+existing executable math kernels as a dependency. The integration path is
+already wired for both source execution and persistent `.sleela` artifacts.
+
+The detailed API records are maintained in [`NATIVE_API.md`](NATIVE_API.md),
+[`MATH.md`](MATH.md), and [`FINANCIAL.md`](FINANCIAL.md).
+
+### Financial library design
+
+The financial library uses **QuantLib** as a conceptual benchmark for the
+breadth and seriousness of quantitative-finance modeling, while keeping the
+SLeeLa implementation original and dependency-light. No QuantLib source is
+copied into this repository.
+
+The internal dependency chain is:
+
+```text
+quantitative-finance concepts
+        ↓
+original SLeeLa algebra and formulas
+        ↓
+impl/finance/financial.cpp
+        ↓
+Sleelvac financial lowering
+        ↓
+Sleela Core
+        ↓
+runnable .sleela artifact
+```
+
+The financial explanation model follows:
+
+**Financial Subject → Quantity and Unit → Algebraic Relation → Financial
+Formula → Transformation → Result → Comparative Norm → Interpretation**.
+
+Domain assumptions remain explicit: rates, timing, compounding, units, tax
+parameters, and model conditions are not silently converted into empirical
+claims or investment recommendations.
+
+### Chemistry and scientific inference
+
+Chemistry follows the same disciplined distinction between a represented
+subject and a verified observation. A chemical or experimental subject can be
+represented through composition, properties, ratios, structural relationships,
+bond/valence concepts, symmetry, comparative similarity, and stochastic
+inference. The intended chain is:
+
+**Subject Identity → Formula / Composition → Valence and Bond Norm →
+Symmetry / Structural Norm → Physical-Chemical Properties → Comparative
+Similarity → Astronomical / Elemental Origin → Inference and Uncertainty**.
+
+Astronomical grounding is scientific: it refers to elemental origin,
+nucleosynthesis, planetary context, and related physical models. It is not a
+claim that a symbolic model constitutes direct observation.
+
+### Nordshrift integration and IQ Conservators
+
+Nordshrift now has declarative financial integration components in
+[`impl/nordshrift/FINANCIAL.model`](impl/nordshrift/FINANCIAL.model),
+[`impl/nordshrift/IQ_CONSERVATORS.FINANCIAL.model`](impl/nordshrift/IQ_CONSERVATORS.FINANCIAL.model),
+and [`impl/nordshrift/SST.FINANCIAL.md`](impl/nordshrift/SST.FINANCIAL.md).
+
+The financial integration preserves a causal explanation chain:
+
+```text
+subject
+  → quantities
+  → units
+  → assumptions
+  → algebra
+  → equation
+  → transformation
+  → numerical_result
+  → interpretation
+```
+
+The **IQ Conservator** preserves relative meaning across related subjects:
+
+```text
+PriorSubject
+  → CurrentSubject
+  → ReferenceSubject
+  → ComparativeNorm
+```
+
+Conserved items include:
+
+- `PriorSubject`
+- `SubjectIdentity`
+- `QuantityIdentity`
+- `UnitIdentity`
+- `FormulaIdentity`
+- `AssumptionIdentity`
+- `ComparativeRatio`
+- `AlgebraicInvariant`
+- `ResultTrace`
+- `ExplanationTrace`
+
+Here **IQ** means system insight/quality and preservation of inspectable
+meaning. It is **not a psychometric measurement of a person**. Stochastic
+scoring can rank or compare modeled alternatives, but it cannot manufacture
+missing evidence.
+
+The same conservation principle is intended for future chemistry, physics,
+economics, and other domain integrations: preserve the subject identity,
+quantities, units, assumptions, transformations, invariants, result trace,
+and explanation trace while allowing the domain-specific calculation to vary.
+
+### Network support
+
+Sleela Core also contains native network opcodes for listening, accepting,
+connecting, socket reads/writes, and socket close operations, with a bounded
+socket model. Nordshrift's network model represents endpoints, NICs, links,
+packets, queues, switches, routers, fabrics, listeners, connectors, gateways,
+load balancers, services, TLS, and DNS. The network contract is documented in
+[`impl/nordshrift/NETWORK.model`](impl/nordshrift/NETWORK.model) and
+[`impl/nordshrift/SST.NETWORK.md`](impl/nordshrift/SST.NETWORK.md).
+
+### `.sleela` artifact commands
+
+The current driver supports source compilation and artifact execution:
+
+```sh
+sleela compile <file.sleela> -o <program.sleela>
+sleela run <file.sleela>
+sleela run <program.sleela>
+sleela run <file.xclass> [more...]
+sleela xclass ...
+sleela check ...
+sleela version
+```
+
+The compiler therefore provides a clear separation between **source
+interpretation/compilation** and **persistent executable artifact** handling.
+
 - [`SHEET.sheet`](SHEET.sheet) is the catalog of common system objects (129
   objects across 16 role categories) that backs Sleela's *conducted methods*
   and Nordshrift's *object compatibility list*.
 - [`SST.model`](SST.model) is the normative `.sst` format specification.
 - [`SLEELA.md`](SLEELA.md) documents the `.sleela` filetype (**Wrapper™**), the
-  configurable Sigil **QR code**, and the deterministic 248×48 **steganographic
-  frame** — generated by the dependency-free tool in [`tools/sigil/`](tools/sigil/).
+  configurable Sigil **QR code**, and the deterministic 248×48
+  **steganographic frame** — generated by the dependency-free tool in
+  [`tools/sigil/`](tools/sigil/).
 - [`VERSION.md`](VERSION.md) is the single record of all versions (toolchain
-  **0.1.2**, language syntax **1.0**, Nordshrift **1.0**, and the governing specs).
+  **0.1.2**, language syntax **1.0**, Nordshrift **1.0**, and the governing
+  specs).
 - [`COMPILER.md`](COMPILER.md) describes the Sleela compiler — its pipeline,
   version awareness (the `#sleela` pragma), and the versions it implements.
 - [`SOURCE.md`](SOURCE.md) describes the Sleela source file (the `.sleela`
@@ -50,6 +252,7 @@ triplet of targets (**Java**, **Sleela**, **C**).
 ```sh
 cd impl && make
 ./build/sleela run examples/hello.sleela
+./build/sleela run examples/financial.sleela
 ./build/nordshrift build nordshrift/examples/demo/build.sst
 ```
 
