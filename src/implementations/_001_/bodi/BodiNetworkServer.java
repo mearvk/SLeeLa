@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
@@ -26,9 +27,15 @@ public final class BodiNetworkServer implements AutoCloseable
 
     public synchronized void start(int port) throws Exception
     {
+        start(BodiNetworkConfig.DEFAULT_BIND_ADDRESS, port);
+    }
+
+    public synchronized void start(String bindAddress, int port) throws Exception
+    {
         if (running)
             return;
-        server = new ServerSocket(port);
+        InetAddress address = InetAddress.getByName(bindAddress);
+        server = new ServerSocket(port, 50, address);
         running = true;
         workers.submit(new Runnable()
         {
@@ -78,7 +85,9 @@ public final class BodiNetworkServer implements AutoCloseable
                 return;
 
             BodiChange change = BodiXmlDocument.parse(xml);
-            Object result = extender.invoke(change, "network", "bodi-network");
+            Object result = extender.invoke(change,
+                change.starter.length() == 0 ? "network" : change.starter,
+                change.man.length() == 0 ? "bodi-network" : change.man);
             writer.write(BodiXmlDocument.response("ok", result == null ? "null" : String.valueOf(result)));
             writer.newLine();
             writer.flush();
@@ -92,10 +101,7 @@ public final class BodiNetworkServer implements AutoCloseable
                 writer.newLine();
                 writer.flush();
             }
-            catch (Exception ignored)
-            {
-                // Connection may already be closed.
-            }
+            catch (Exception ignored) { }
         }
     }
 
