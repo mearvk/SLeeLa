@@ -17,7 +17,8 @@ CORE_OBJ := $(BUILD)/sleela_core.o
 CHEMISTRY_OBJ := $(BUILD)/chemistry.o
 CORE_SRC := core/sleela_artifact.c
 FE_SRC := frontend/lexer.cpp frontend/parser.cpp frontend/compiler.cpp \
-          frontend/version.cpp frontend/artifact.cpp frontend/native_api.cpp
+          frontend/version.cpp frontend/artifact.cpp frontend/native_api.cpp \
+          frontend/chemistry_api.cpp
 FE_OBJ := $(patsubst frontend/%.cpp,$(BUILD)/%.o,$(FE_SRC))
 DRIVER_OBJ := $(BUILD)/driver.o
 NS_SRC := nordshrift/sst_lexer.cpp nordshrift/sst_parser.cpp \
@@ -46,7 +47,7 @@ $(BUILD)/xclass_loader.o: xclass/xclass_loader.cpp xclass/xclass_loader.h | $(BU
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 $(BUILD)/ns_%.o: nordshrift/%.cpp | $(BUILD)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
-$(BUILD)/driver.o: frontend/driver.cpp frontend/compiler.h frontend/artifact.h frontend/native_api.h | $(BUILD)
+$(BUILD)/driver.o: frontend/driver.cpp frontend/compiler.h frontend/artifact.h frontend/native_api.h frontend/chemistry_api.h | $(BUILD)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 $(BUILD):
 	mkdir -p $(BUILD)
