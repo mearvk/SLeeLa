@@ -11,34 +11,33 @@
 
 namespace nordshrift {
 
-// The implementation in sst_parser.cpp is renamed to parseSheetBase below.
-// The public wrapper consumes the SST network section first, removes that
-// declaration block from the token stream, and then delegates the remainder to
-// the established NS-SST parser. This keeps the original grammar behavior
-// intact while making network declarations first-class SST metadata.
 Sheet parseSheet(const std::vector<Token>& toks, const std::string& file,
                  DiagnosticBag& diags);
 
 #define parseSheet parseSheetBase
 
+// The implementation in sst_parser.cpp is renamed by the macro above.
+Sheet parseSheetBase(const std::vector<Token>& toks, const std::string& file,
+                     DiagnosticBag& diags);
+
 namespace sst_network_detail {
 
 inline bool objectFromName(const std::string& s, NetworkObject& out) {
-    if (s == "Endpoint")     { out = NetworkObject::Endpoint; return true; }
-    if (s == "NIC")         { out = NetworkObject::NIC; return true; }
-    if (s == "Link")        { out = NetworkObject::Link; return true; }
-    if (s == "Packet")      { out = NetworkObject::Packet; return true; }
-    if (s == "Queue")       { out = NetworkObject::Queue; return true; }
-    if (s == "Switch")      { out = NetworkObject::Switch; return true; }
-    if (s == "Router")      { out = NetworkObject::Router; return true; }
-    if (s == "Fabric")      { out = NetworkObject::Fabric; return true; }
-    if (s == "Listener")    { out = NetworkObject::Listener; return true; }
-    if (s == "Connector")   { out = NetworkObject::Connector; return true; }
-    if (s == "Gateway")     { out = NetworkObject::Gateway; return true; }
-    if (s == "LoadBalancer"){ out = NetworkObject::LoadBalancer; return true; }
-    if (s == "Service")     { out = NetworkObject::Service; return true; }
-    if (s == "TLS")         { out = NetworkObject::TLS; return true; }
-    if (s == "DNS")         { out = NetworkObject::DNS; return true; }
+    if (s == "Endpoint")      { out = NetworkObject::Endpoint; return true; }
+    if (s == "NIC")          { out = NetworkObject::NIC; return true; }
+    if (s == "Link")         { out = NetworkObject::Link; return true; }
+    if (s == "Packet")       { out = NetworkObject::Packet; return true; }
+    if (s == "Queue")        { out = NetworkObject::Queue; return true; }
+    if (s == "Switch")       { out = NetworkObject::Switch; return true; }
+    if (s == "Router")       { out = NetworkObject::Router; return true; }
+    if (s == "Fabric")       { out = NetworkObject::Fabric; return true; }
+    if (s == "Listener")     { out = NetworkObject::Listener; return true; }
+    if (s == "Connector")    { out = NetworkObject::Connector; return true; }
+    if (s == "Gateway")      { out = NetworkObject::Gateway; return true; }
+    if (s == "LoadBalancer") { out = NetworkObject::LoadBalancer; return true; }
+    if (s == "Service")      { out = NetworkObject::Service; return true; }
+    if (s == "TLS")          { out = NetworkObject::TLS; return true; }
+    if (s == "DNS")          { out = NetworkObject::DNS; return true; }
     return false;
 }
 
@@ -86,7 +85,7 @@ inline bool boolValue(const std::string& s) {
 inline Sheet parseWithNetwork(const std::vector<Token>& toks,
                               const std::string& file,
                               DiagnosticBag& diags) {
-    Sheet sheet;
+    NetworkSpec network;
     std::vector<Token> filtered;
     filtered.reserve(toks.size());
 
@@ -97,8 +96,8 @@ inline Sheet parseWithNetwork(const std::vector<Token>& toks,
             if (p < toks.size() && toks[p].kind == Tok::Colon) ++p;
             if (p < toks.size() && toks[p].kind == Tok::Newline) ++p;
             if (p < toks.size() && toks[p].kind == Tok::Indent) {
-                sheet.network.present = true;
-                sheet.network.line = toks[start].line;
+                network.present = true;
+                network.line = toks[start].line;
                 ++p;
                 int depth = 1;
                 while (p < toks.size() && depth > 0) {
@@ -110,9 +109,9 @@ inline Sheet parseWithNetwork(const std::vector<Token>& toks,
                         std::string key = toks[p].text;
                         ++p;
                         if (p < toks.size() && toks[p].kind == Tok::Colon) ++p;
-                        if (p < toks.size() && toks[p].kind == Tok::Newline) ++p;
 
                         if (key == "objects" || key == "object") {
+                            if (p < toks.size() && toks[p].kind == Tok::Newline) ++p;
                             std::vector<std::string> names;
                             if (key == "objects") names = list(toks, p);
                             else { std::string one = scalar(toks, p); if (!one.empty()) names.push_back(one); }
@@ -122,12 +121,12 @@ inline Sheet parseWithNetwork(const std::vector<Token>& toks,
                                     diags.error("NSS-E-NET-001", file, ln,
                                         "unknown network object '" + name + "'",
                                         "SST-NET-OBJECT", true);
-                                } else if (std::find(sheet.network.objects.begin(),
-                                                     sheet.network.objects.end(), o) == sheet.network.objects.end()) {
-                                    sheet.network.objects.push_back(o);
+                                } else if (std::find(network.objects.begin(), network.objects.end(), o) == network.objects.end()) {
+                                    network.objects.push_back(o);
                                 }
                             }
                         } else if (key == "transports" || key == "transport") {
+                            if (p < toks.size() && toks[p].kind == Tok::Newline) ++p;
                             std::vector<std::string> names;
                             if (key == "transports") names = list(toks, p);
                             else { std::string one = scalar(toks, p); if (!one.empty()) names.push_back(one); }
@@ -137,20 +136,21 @@ inline Sheet parseWithNetwork(const std::vector<Token>& toks,
                                     diags.error("NSS-E-NET-002", file, ln,
                                         "unknown network transport '" + name + "'",
                                         "SST-NET-TRANSPORT", true);
-                                } else if (std::find(sheet.network.transports.begin(),
-                                                     sheet.network.transports.end(), tr) == sheet.network.transports.end()) {
-                                    sheet.network.transports.push_back(tr);
+                                } else if (std::find(network.transports.begin(), network.transports.end(), tr) == network.transports.end()) {
+                                    network.transports.push_back(tr);
                                 }
                             }
                         } else if (key == "address-family") {
+                            if (p < toks.size() && toks[p].kind == Tok::Newline) ++p;
                             std::string v = scalar(toks, p);
-                            if (!addressFamilyFromName(v, sheet.network.addressFamily)) {
+                            if (!addressFamilyFromName(v, network.addressFamily)) {
                                 diags.error("NSS-E-NET-003", file, ln,
                                     "unknown network address-family '" + v + "'",
                                     "SST-NET-ADDRESS-FAMILY", true);
                             }
                         } else if (key == "tls") {
-                            sheet.network.tls = boolValue(scalar(toks, p));
+                            if (p < toks.size() && toks[p].kind == Tok::Newline) ++p;
+                            network.tls = boolValue(scalar(toks, p));
                         }
                         while (p < toks.size() && toks[p].kind != Tok::Newline &&
                                toks[p].kind != Tok::Dedent) ++p;
@@ -166,8 +166,8 @@ inline Sheet parseWithNetwork(const std::vector<Token>& toks,
         filtered.push_back(toks[i++]);
     }
 
-    sheet = parseSheetBase(filtered, file, diags);
-    sheet.network.present = sheet.network.present || false;
+    Sheet sheet = parseSheetBase(filtered, file, diags);
+    sheet.network = network;
     return sheet;
 }
 
