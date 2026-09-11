@@ -2,153 +2,126 @@
 
 ## Module Model
 
-Sleela uses explicit imports for native facilities. The source form is:
+Sleela uses explicit imports for native facilities:
 
 ```sleela
 import math;
 import physics;
 import economics;
-import excel;
 ```
 
-A module-qualified call is written as:
+Calls are module-qualified. Sleelvac lowers the executable scientific/economic calls into ordinary Sleela Core methods before bytecode emission. Consequently a compiled `.sleela` artifact contains the implementation and the runtime does not invoke Sleelvac again.
 
-```sleela
-math.sqrt(x)
-physics.kinetic_energy(m, v)
-economics.npv(cashflows, rate)
-excel.open("input.xlsx")
-```
+## Native Module Registry
 
-The compiler maintains a native module registry so dependencies are explicit and the global namespace remains small.
-
-## Current Native Module Registry
-
-The compiler recognizes these module namespaces:
-
-| Module | Purpose | API status |
+| Module | Purpose | Status |
 |---|---|---|
-| `math` | scalar mathematics, transforms, groups, numerical objects | contract established |
-| `physics` | constants, mechanics, fields, thermodynamics, relativity, quantum-aware models | contract established in `PHYSICS.md` |
-| `economics` | valuation, growth, elasticity, equilibrium, macro identities | contract established in `ECONOMICS.md` |
-| `excel` | workbook and worksheet I/O | reserved for Excel implementation |
+| `math` | scalar mathematics and numerical kernels | executable subset implemented |
+| `physics` | constants, mechanics, relativity, waves, selected neutrino model | executable subset implemented |
+| `economics` | valuation, compounding, elasticity, growth and macro identities | executable subset implemented |
+| `excel` | workbook/worksheet I/O | reserved for Excel backend |
 | `json` | structured data | reserved |
 | `crypto` | cryptographic APIs | reserved |
 | `net` | network APIs | reserved/overlaps existing network builtins |
 
-Unknown modules are rejected by Sleelvac. Duplicate imports are rejected.
+Unknown modules and duplicate imports are rejected by Sleelvac.
 
-## Math API
+## Executable Math API
 
-The native mathematics namespace is intended to include:
+Implemented native calls include:
 
 ```text
-math.abs
-math.sign
-math.min
-math.max
-math.clamp
-math.floor
-math.ceil
-math.round
-math.trunc
-math.fmod
-math.sqrt
-math.cbrt
-math.pow
-math.exp
-math.exp2
-math.log
-math.log2
-math.log10
-math.sin
-math.cos
-math.tan
-math.asin
-math.acos
-math.atan
-math.atan2
-math.sinh
-math.cosh
-math.tanh
-math.hypot
-math.isfinite
-math.isnan
-math.isinf
-math.fourier
-math.inverse_fourier
-math.laplace
-math.inverse_laplace
+math.pi()
+math.e()
+math.tau()
+math.abs(x)
+math.sign(x)
+math.min(a,b)
+math.max(a,b)
+math.clamp(x,lo,hi)
+math.sqrt(x)
+math.pow(x,y)
+math.exp(x)
+math.log(x)
+math.sin(x)
+math.cos(x)
+math.tan(x)
+math.hypot(a,b)
+math.fmod(a,b)
 ```
 
-Standard constants include `PI`, `TAU`, `E`, and `SQRT2`, with transform objects and mathematical objects added as the object layer matures.
+The transcendental kernels are Sleela bytecode numerical approximations rather than host-libm calls. Their approximation regimes are therefore part of the computational contract and should be tightened as the numerical object layer matures.
 
-## Physics API
+## Executable Physics API
 
-Representative calls:
+Implemented calls include:
 
 ```text
-physics.velocity(dx, dt)
-physics.acceleration(dv, dt)
-physics.kinematic_position(x0, v0, a, t)
-physics.force(m, a)
-physics.momentum(m, v)
-physics.kinetic_energy(m, v)
-physics.gravitational_force(m1, m2, r)
-physics.escape_velocity(M, r)
+physics.C()
+physics.H()
+physics.HBAR()
+physics.E_CHARGE()
+physics.K_B()
+physics.G()
+physics.G0()
+physics.N_A()
+physics.R()
+physics.velocity(dx,dt)
+physics.acceleration(dv,dt)
+physics.kinematic_position(x0,v0,a,t)
+physics.force(m,a)
+physics.kinetic_energy(m,v)
+physics.gravitational_force(m1,m2,r)
+physics.escape_velocity(M,r)
 physics.lorentz_gamma(v)
-physics.relativistic_energy(m, v)
-physics.electrical_power(V, I)
-physics.ideal_gas_pressure(n, R, T, V)
-physics.wave_number(lambda)
+physics.relativistic_energy(m,v)
+physics.momentum(m,v)
+physics.ohms_voltage(I,R)
+physics.electric_power(V,I)
+physics.ideal_gas_pressure(n,R,T)
+physics.wave_frequency(v,wavelength)
 physics.angular_frequency(f)
-physics.neutrino_oscillation_probability(theta, delta_m2, L, E)
+physics.wavenumber(wavelength)
+physics.neutrino_oscillation_probability(theta,delta_m2,L)
 ```
 
-Constants include `C`, `H`, `HBAR`, `E_CHARGE`, `K_B`, `N_A`, `G`, `G0`, `R`, `EPSILON_0`, and `MU_0`.
+The physics constants are represented with SI-compatible values. Domain restrictions remain important: for example, Lorentz gamma requires `|v| < C` for a real result, and the neutrino expression is an explicitly unit- and approximation-dependent model.
 
-## Economics API
+## Executable Economics API
 
-Representative calls:
+Implemented calls include:
 
 ```text
-economics.future_value(pv, rate, periods)
-economics.present_value(fv, rate, periods)
-economics.effective_annual_rate(rate, compounds)
-economics.compound_growth(initial, rate, periods)
-economics.real_value(nominal, price_index)
-economics.elasticity(dQdP, P, Q)
-economics.marginal_cost(dTCdQ)
-economics.marginal_revenue(dTRdQ)
-economics.npv(cashflows, discount_rate)
-economics.irr(cashflows)
-economics.consumer_surplus(demand, price)
-economics.producer_surplus(supply, price)
-economics.linear_equilibrium(a, b, c, d)
+economics.future_value(principal,rate,periods)
+economics.present_value(future,rate,periods)
+economics.annuity_present(payment,rate,periods)
+economics.annuity_future(payment,rate,periods)
+economics.elasticity(pct_quantity,pct_price)
+economics.real_rate(nominal,inflation)
+economics.fisher_nominal(real,inflation)
+economics.doubling_time(rate)
+economics.continuous_value(principal,rate,time)
+economics.profit(revenue,cost)
+economics.margin(profit,revenue)
+economics.gdp_identity(C,I,G)
 ```
 
-The API should distinguish accounting identities from empirical assumptions and preserve model provenance for Review objects.
+These are computational identities/models, not empirical forecasts. Units, period conventions, compounding assumptions, and the distinction between nominal and real quantities remain part of the model supplied by the caller.
 
 ## Compiler and Runtime Boundary
 
-The architecture is:
+The execution path is:
 
-**source import → module registry → native API resolution → Core lowering → runnable `.sleela` artifact**
+**source import → module validation → native lowering → Sleela Core bytecode → runnable `.sleela` artifact**
 
-The import grammar and compiler registry are now present. The native registry is intentionally separate from the Core VM so that native functions can be added without polluting the language grammar.
+Native lowering happens before both immediate source execution and persistent artifact generation. The artifact therefore carries executable Core instructions rather than a dependency on the front-end compiler.
 
-Native operations that require new VM instructions or external libraries must not be represented as implemented merely because their names appear in the API contract. Such operations should be added to Core with explicit opcode/serialization support and then marked implemented.
+## Numerical and Reasoning Contract
 
-## Reasoning Contract
+The 133+ through 181+ design range is a project complexity marker, not a psychometric claim. The intended bridge for advanced readers is:
 
-For advanced readers, every native scientific/economic function should eventually expose:
+**physical/economic observation → quantity → unit → assumption → equation → transformation → numerical approximation → result → interpretation**
 
-1. domain conditions;
-2. units or dimensional expectations;
-3. numerical stability notes;
-4. approximation regime;
-5. provenance of constants;
-6. failure/convergence semantics;
-7. relationship to mathematical objects and Review objects.
+A formula is not the same thing as its measurement, and a numerical answer is not automatically a conclusion about the world. Sleela's native layer should preserve those logical locations rather than collapse them.
 
-This is the bridge from a convenient formula library to a serious computational reasoning system.
+For every advanced function, future versions should expose domain conditions, dimensional expectations, stability notes, approximation regime, constant provenance, convergence/failure semantics, and relationships to mathematical and Review objects.
