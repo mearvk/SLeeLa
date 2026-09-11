@@ -1,0 +1,22 @@
+#sleela 1.0
+// Normed Presumed Chemistry example.
+// Values are normalized evidence scores in [0,1].
+import math;
+import chemistry;
+
+class ChemistryPresumed {
+    void main() {
+        double observation = 0.92;
+        double bond = 0.88;
+        double valence = 0.95;
+        double similarity = chemistry.similarity(0.91, 0.94);
+        double signal = 0.79;
+        double symmetry = 0.83;
+        double level = chemistry.inference_level(observation, bond, valence, similarity, signal, symmetry);
+        double confidence = chemistry.confidence(observation, bond, valence, similarity, signal, symmetry);
+        double uncertainty = chemistry.uncertainty(observation, bond, valence, similarity, signal, symmetry);
+        print(level);
+        print(confidence);
+        print(uncertainty);
+    }
+}
