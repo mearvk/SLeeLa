@@ -698,11 +698,12 @@ static SLResult run_thread(SLThread* t) {
                 PUSH(slval_int(-1));
                 break;
             }
-            char buf[4096];
+            char buf[4097];
             ssize_t n = recv(fd, buf, sizeof(buf), 0);
             if (n <= 0) {
                 pthread_mutex_unlock(&sock->mtx);
-                PUSH(slval_int(-1));
+                SLValue empty; empty.type = SL_STR; empty.as.s = intern(vm, "");
+                PUSH(empty);
                 break;
             }
             buf[n] = '\\0';
