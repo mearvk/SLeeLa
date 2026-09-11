@@ -2,7 +2,9 @@ package implementations._001_.bodi;
 
 import implementations._001_.nordshrift.events.RegisterableNordshriftEvent;
 import java.rmi.Remote;
+import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
+import java.rmi.server.UnicastRemoteObject;
 
 /**
  * Bodi is the witness layer for change to an addressed object.
@@ -14,15 +16,17 @@ import java.rmi.registry.LocateRegistry;
  */
 public class Bodi extends BodiExtent implements Remote
 {
-    public static Bodi reference = new Bodi();
-    public Bodi bodi = reference;
+    public static Bodi reference;
+    public Bodi bodi;
 
     static
     {
         try
         {
+            reference = new Bodi();
+            reference.bodi = reference;
             BodiExtender.registry001 = LocateRegistry.createRegistry(BodiNetworkConfig.DEFAULT_RMI_PORT);
-            BodiExtender.registry001.rebind("@bodi", Bodi.reference);
+            BodiExtender.registry001.rebind("@bodi", reference);
         }
         catch (Exception exception)
         {
@@ -30,8 +34,16 @@ public class Bodi extends BodiExtent implements Remote
         }
     }
 
+    public Bodi() throws RemoteException
+    {
+        super();
+        UnicastRemoteObject.exportObject(this, 0);
+    }
+
     public static BodiObjectReference system(String name)
     {
+        if (Bodi.reference == null)
+            throw new IllegalStateException("Bodi runtime is not initialized");
         return Bodi.reference.extender001.system(name);
     }
 
@@ -43,10 +55,7 @@ public class Bodi extends BodiExtent implements Remote
         return server;
     }
 
-    public void run(Encapsulator encapsulator)
-    {
-        // Witness execution is represented by the fluent API and invoke().
-    }
+    public void run(Encapsulator encapsulator) { }
 
     public void run(String protocol, String bodiref, String methodname)
     {
@@ -54,10 +63,7 @@ public class Bodi extends BodiExtent implements Remote
         {
             this.extender001.invoke(new BodiChange(bodiref, methodname, "", ""), protocol, "run");
         }
-        catch (Exception exception)
-        {
-            java.lang.System.out.println(exception);
-        }
+        catch (Exception exception) { java.lang.System.out.println(exception); }
     }
 
     public void run(String protocol, String bodiref, String methodname, StackTraceElement[] stack)
