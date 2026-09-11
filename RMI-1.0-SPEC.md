@@ -53,7 +53,41 @@ Relevant established families include:
 
 This profile intentionally avoids requiring a proprietary physical medium.
 
-## 4. Physical Medium Independence
+## 4. Lean Interoperability
+
+RMI 1.0 is the compatibility baseline, but compatibility does not require unnecessary bytes or unnecessary work.
+
+A compliant implementation should prefer:
+
+- Small request and response envelopes.
+- Direct operation-name lookup after service discovery.
+- Reuse of established connections where the selected transport permits it.
+- UTF-8 without redundant transcoding.
+- Bounded buffering rather than repeated whole-message copying.
+- Immediate dispatch once the required operation identity is known.
+- Stable service names that can be cached locally after successful discovery.
+
+The 1.0 wire model remains textual for broad interoperability. Implementations may internally pack, cache, index, or tokenize that representation for speed, provided the external 1.0 contract is unchanged.
+
+## 5. Fast Naming
+
+Service naming should be simple and deterministic.
+
+The preferred path is:
+
+```text
+configured host
+    -> configured registry/service endpoint
+    -> service name
+    -> cached remote reference
+    -> operation dispatch
+```
+
+A client should not repeatedly perform discovery when a valid service reference is already known. DNS, registry lookup, and other naming mechanisms remain conventional lower-layer or deployment mechanisms.
+
+A service name should be concise enough for efficient comparison and logging, while remaining stable and unambiguous within its service registry.
+
+## 6. Physical Medium Independence
 
 SLeeLa RMI 1.0 is medium-independent.
 
@@ -71,7 +105,7 @@ A compliant deployment may travel over:
 
 Fiber, coax, copper, and wireless characteristics belong to lower layers. SLeeLa RMI should not make assumptions about attenuation, modulation, wavelength, connector type, shielding, or physical signaling.
 
-## 5. Routing Independence
+## 7. Routing Independence
 
 Routers are permitted to forward SLeeLa traffic exactly as they forward other traffic belonging to the selected transport protocol.
 
@@ -95,7 +129,7 @@ SLeeLa Client
 
 The application protocol remains independent of the particular physical path.
 
-## 6. Java RMI Profile
+## 8. Java RMI Profile
 
 Where Java RMI is selected, SLeeLa RMI 1.0 uses standard Java RMI concepts:
 
@@ -117,7 +151,7 @@ invoke(operation, arguments)
 health()
 ```
 
-## 7. Textual Application Boundary
+## 9. Textual Application Boundary
 
 RMI 1.0 uses textual operation arguments and textual results as its conservative common representation.
 
@@ -133,7 +167,7 @@ This deliberately avoids requiring Java serialization of SLeeLa-specific objects
 
 Typed values may be added by a later specification without invalidating the 1.0 wire model.
 
-## 8. HTTP/Web Profile
+## 10. HTTP/Web Profile
 
 A SLeeLa service may expose an HTTP gateway for Java applications or web-driven artifacts.
 
@@ -148,7 +182,7 @@ The operation is explicitly identified and the request body carries the textual 
 
 HTTPS should be used whenever the network boundary is not otherwise trusted.
 
-## 9. Local Process Profile
+## 11. Local Process Profile
 
 A local Java program may invoke SLeeLa as a separate operating-system process.
 
@@ -162,7 +196,7 @@ Process Connector
 SLeeLa Executable
 ```
 
-## 10. Service Discovery
+## 12. Service Discovery
 
 RMI 1.0 prefers explicit service names and known endpoints.
 
@@ -170,7 +204,7 @@ DNS may be used to resolve a host name. A registry may then map a service name t
 
 The specification does not require multicast discovery, proprietary discovery packets, or automatic Internet-wide service discovery.
 
-## 11. Ports
+## 13. Ports
 
 A deployment should use explicitly configured ports.
 
@@ -178,7 +212,7 @@ The conventional Java RMI registry port is `1099`, but deployments may use anoth
 
 Application object ports must be controlled by the deployment and firewall policy.
 
-## 12. Security Baseline
+## 14. Security Baseline
 
 RMI 1.0 assumes that security is an architectural concern, not an optional afterthought.
 
@@ -195,7 +229,7 @@ A production deployment should provide:
 
 A publicly reachable RMI registry should not be treated as a secure Internet service merely because it uses Java RMI.
 
-## 13. Failure Semantics
+## 15. Failure Semantics
 
 The baseline system distinguishes:
 
@@ -207,7 +241,7 @@ The baseline system distinguishes:
 
 Health checks should not be confused with business operations.
 
-## 14. Physical and Network Engineering Boundary
+## 16. Physical and Network Engineering Boundary
 
 The following concerns remain outside SLeeLa RMI 1.0:
 
@@ -223,14 +257,33 @@ The following concerns remain outside SLeeLa RMI 1.0:
 
 SLeeLa RMI consumes the resulting reliable application transport rather than replacing those technologies.
 
-## 15. Compliance Target
+## 17. Performance Rule
+
+RMI 1.0 should be the **smallest practical interoperable SLeeLa RMI**, not merely the oldest one.
+
+Implementations should measure and minimize:
+
+```text
+name lookup
+message packing
+message unpacking
+dispatch overhead
+memory copies
+connection setup
+```
+
+No optimization may change the defined 1.0 external semantics. Where a faster implementation technique conflicts with interoperability, the interoperable boundary wins.
+
+## 18. Compliance Target
 
 A SLeeLa RMI 1.0 implementation should be understandable to an engineer familiar with ordinary open-source networking and Java infrastructure.
 
 The implementation should avoid unnecessary protocol novelty and should be portable across ordinary IP-capable network environments.
 
-## 16. Version Boundary
+It should also be deliberately lean: fewer layers, fewer bytes, fewer copies, and fewer naming operations wherever the established standards permit.
+
+## 19. Version Boundary
 
 Version 1.0 is the **compatibility baseline**.
 
-It establishes the simple, recognizable association between SLeeLa and existing open standards. Version 2.0 may add stronger typed semantics, richer capability negotiation, structured transport metadata, and additional operational controls, but it must preserve the conceptual layering established here.
+It establishes the simple, recognizable association between SLeeLa and existing open standards. Version 2.0 may add stronger typed semantics, richer capability negotiation, structured transport metadata, compact packing, and additional operational controls, but it must preserve the conceptual layering established here.
