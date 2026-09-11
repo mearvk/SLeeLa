@@ -32,8 +32,8 @@ struct MethodCtx {
 
 class Compiler {
 public:
-    Compiler(const Program& prog, SLVM* vm, const catalog::Catalog* cat)
-        : prog_(prog), vm_(vm), cat_(cat) {}
+    Compiler(const Program& prog, SLVM* vm, const catalog::Catalog* cat, const SyntaxVersion& syntax)
+        : prog_(prog), vm_(vm), cat_(cat), syntax_(syntax) {}
 
     int run() {
         // Pass 0: declare a core global for every class field. Fields are
@@ -79,6 +79,7 @@ private:
     const Program& prog_;
     SLVM* vm_;
     const catalog::Catalog* cat_;   // SHEET.sheet catalog for conducted methods
+    SyntaxVersion syntax_;          // source syntax version for feature gating
     std::map<std::string, int> funcIndex_;   // method name -> core func index
     std::vector<MethodInfo> methods_;
     std::map<std::string, int> fieldGlobal_; // field name -> core global slot
@@ -365,6 +366,12 @@ private:
         //   sockwrite(socket, data)  -> byte count, or -1
         //   sockclose(socket)        -> null
         // -----------------------------------------------------------------
+        if (n == "listen" || n == "accept" || n == "connect" ||
+            n == "sockread" || n == "sockwrite" || n == "sockclose") {
+            if (syntax_ < SyntaxVersion{1, 1})
+                throw std::runtime_error("Semantic error: network built-ins require #sleela 1.1");
+        }
+
         if (n == "listen") {
             if (c.args.size() != 1)
                 throw std::runtime_error("Semantic error: listen(port) takes exactly one argument");
@@ -501,8 +508,8 @@ private:
 
 } // anonymous namespace
 
-int compile(const Program& prog, SLVM* vm, const catalog::Catalog* cat) {
-    Compiler c(prog, vm, cat);
+int compile(const Program& prog, SLVM* vm, const catalog::Catalog* cat, const SyntaxVersion& syntax) {
+    Compiler c(prog, vm, cat, syntax);
     return c.run();
 }
 
