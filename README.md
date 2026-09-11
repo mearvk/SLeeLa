@@ -65,19 +65,28 @@ The working implementation lives under [`impl/`](impl/) — see
 The executable native library layer currently includes:
 
 - **Math** — constants, elementary functions, powers, roots, logarithms,
-  trigonometric functions, `hypot`, and floating-point remainder.
+  trigonometric functions, `hypot`, and floating-point remainder. See
+  [`MATH.md`](MATH.md).
 - **Physics** — physical constants, kinematics, mechanics, gravitation,
   relativity, electrical relations, idealized gas relations, wave relations,
-  and a simplified neutrino-oscillation model.
+  and a simplified neutrino-oscillation model. See
+  [`PHYSICS.md`](PHYSICS.md).
 - **Economics** — time value of money, elasticity, real/nominal rates,
-  doubling time, continuous growth, profit, margin, and the GDP identity.
+  doubling time, continuous growth, profit, margin, and the GDP identity. See
+  [`ECONOMICS.md`](ECONOMICS.md).
 - **Chemistry** — a dependency-light domain model for chemical subjects,
   properties, ratios, similarity, stochastic evaluation, and structured
   inference. Chemistry is deliberately treated as a model/inference layer,
-  not as an assertion of experimental fact.
+  not as an assertion of experimental fact. See
+  [`CHEMISTRY.md`](CHEMISTRY.md).
 - **Financial** — algebraic quantitative-finance primitives including time
   value of money, annuities, NPV, bond pricing, CAPM, WACC, ratios,
-  determinants, two-by-two linear systems, and quadratic equations.
+  determinants, two-by-two linear systems, and quadratic equations. See
+  [`FINANCIAL.md`](FINANCIAL.md).
+
+These five subject documents are the primary data/reference layer for their
+respective executable domains; `NATIVE_API.md` remains the cross-domain API
+and lowering overview.
 
 The current executable examples use:
 
@@ -91,8 +100,8 @@ where the relevant domain is needed. Chemistry and financial lowering uses the
 existing executable math kernels as a dependency. The integration path is
 already wired for both source execution and persistent `.sleela` artifacts.
 
-The detailed API records are maintained in [`NATIVE_API.md`](NATIVE_API.md),
-[`MATH.md`](MATH.md), and [`FINANCIAL.md`](FINANCIAL.md).
+The detailed API records are maintained in [`NATIVE_API.md`](NATIVE_API.md) and
+the five subject references listed above.
 
 ### Financial library design
 
@@ -287,15 +296,15 @@ In order of precedence:
 In `SHEET.sheet` order (`section congrains`):
 
 | # | Constraint      | Ordinance                                                        |
-|---|-----------------|-------------------------------------------------------------------|
+|---|-----------------|-----------------------------------------------------------------|
 | 1 | `Invariant`     | a condition that must always hold for an object                   |
 | 2 | `Precondition`  | what must be true before an operation runs                        |
 | 3 | `Postcondition` | what the operation promises afterward                             |
 | 4 | `Constraint`    | a restriction on legal object states/relations                    |
 | 5 | `Dependency`    | a binding one object has on another (co-grained)                  |
-| 6 | `Coupling`      | strength of inter-object binding (keep it loose)                  |
+| 6 | `Coupling`      | strength of inter-object binding (keep it loose)                   |
 | 7 | `Congruence`    | structural sameness enabling congruent-linear connection          |
-| 8 | `Contract`      | the bundle of congrains an object honors                          |
+| 8 | `Contract`      | the bundle of congrains an object honors                           |
 
 ### Article III — Limits grouping (the bounding constraints)
 
