@@ -1,14 +1,5 @@
 // ===========================================================================
 // sheet_model.h  --  The Nordshrift sheet model (NS-SST-0001 §II–§XIII).
-//
-// A parsed .sst file becomes a Sheet: pragmas + sheet metadata + optional
-// imports + the configuration sections. Every field mirrors a directive from
-// the spec. Fields carry a `has*` presence flag where the spec distinguishes
-// "unset" (use default) from an explicit value.
-//
-// Triplet extension: the spec's target section is Java-only. Nordshrift drives
-// a triplet, so Target adds a `language` selector (java|sleela|c) via the
-// conformant-superset directive `target-language` (default java).
 // ===========================================================================
 #ifndef NORDSHRIFT_SHEET_MODEL_H
 #define NORDSHRIFT_SHEET_MODEL_H
@@ -20,7 +11,6 @@
 
 namespace nordshrift {
 
-// ---- enums (spec §14.2 value productions) ------------------------------
 enum class Layout   { MirrorSource, Flat, PackageMapped, Custom };
 enum class Verbosity{ Silent, Quiet, Normal, Verbose, Debug };
 enum class Severity { Error, Warning, Notice };
@@ -31,42 +21,70 @@ enum class NullWrap { Maybe, NullableAnnotation, Trust };
 enum class CheckedEx { Wrap, Propagate, RethrowUnchecked };
 enum class DeriveStyle { Record, ImmutableClass, Builder, Lombok };
 
-// Triplet backend selector (Nordshrift superset of the spec's Java-only target).
 enum class TargetLang { Java, Sleela, C };
 
-// ---- pragmas (§1.6) -----------------------------------------------------
-struct Pragmas {
-    std::string nordshrift;   // required version operand, e.g. "1.0"
-    std::string sleela;       // optional
-    std::string encoding;     // optional
-    bool hasNordshrift = false;
-    int  nordshriftLine = 0;
+// Network objects are first-class SST declarations.  These names correspond
+// to the Nordshrift network model and are deliberately closed so an SST sheet
+// cannot silently request an unsupported runtime object.
+enum class NetworkObject {
+    Endpoint,
+    NIC,
+    Link,
+    Packet,
+    Queue,
+    Switch,
+    Router,
+    Fabric,
+    Listener,
+    Connector,
+    Gateway,
+    LoadBalancer,
+    Service,
+    TLS,
+    DNS
 };
 
-// ---- sheet block (§III) -------------------------------------------------
+enum class NetworkTransport { TCP, UDP, TLS, QUIC };
+enum class NetworkAddressFamily { IPv4, IPv6, Dual };
+
+struct NetworkSpec {
+    std::vector<NetworkObject> objects;
+    std::vector<NetworkTransport> transports;
+    NetworkAddressFamily addressFamily = NetworkAddressFamily::Dual;
+    bool tls = false;
+    bool present = false;
+    int line = 0;
+};
+
+struct Pragmas {
+    std::string nordshrift;
+    std::string sleela;
+    std::string encoding;
+    bool hasNordshrift = false;
+    int nordshriftLine = 0;
+};
+
 struct SheetMeta {
     std::string name;
     std::string version;
     std::string author;
     std::string description;
-    std::string extends;              // path
+    std::string extends;
     std::vector<std::string> tags;
     int line = 0;
     bool present = false;
 };
 
-// ---- import (§IV) -------------------------------------------------------
 struct Import {
     std::string path;
     std::string alias;
-    std::vector<std::string> only;    // mutually exclusive with except
+    std::vector<std::string> only;
     std::vector<std::string> except;
     bool hasOnly = false;
     bool hasExcept = false;
     int line = 0;
 };
 
-// ---- source (§V) --------------------------------------------------------
 struct Source {
     std::string root;
     std::vector<std::string> globs;
@@ -79,7 +97,6 @@ struct Source {
     int rootLine = 0;
 };
 
-// ---- target (§VI) -------------------------------------------------------
 struct Target {
     std::string root;
     Layout layout = Layout::MirrorSource;
@@ -89,10 +106,8 @@ struct Target {
     bool sourceMap = true;
     bool optimize = false;
     bool clean = false;
-    std::map<std::string, std::string> layoutMap;   // custom layout
-
-    TargetLang language = TargetLang::Java;          // triplet selector
-
+    std::map<std::string, std::string> layoutMap;
+    TargetLang language = TargetLang::Java;
     bool present = false;
     bool hasRoot = false;
     bool hasLayout = false;
@@ -101,9 +116,8 @@ struct Target {
     int javaVersionLine = 0;
 };
 
-// ---- pipeline (§VII) ----------------------------------------------------
 struct Pipeline {
-    std::vector<std::string> phases;   // ordered phase tokens
+    std::vector<std::string> phases;
     std::vector<std::string> skip;
     int parallelThreshold = 1;
     bool cache = true;
@@ -115,12 +129,11 @@ struct Pipeline {
     int phasesLine = 0;
 };
 
-// ---- rules (§VIII) ------------------------------------------------------
 struct RuleConfig {
     std::string name;
     Severity severity = Severity::Error;
     bool hasSeverity = false;
-    std::map<std::string, std::string> config;   // key -> scalar (as text)
+    std::map<std::string, std::string> config;
     int line = 0;
 };
 struct Rules {
@@ -132,7 +145,6 @@ struct Rules {
     int line = 0;
 };
 
-// ---- effects (§IX) ------------------------------------------------------
 struct Effects {
     EffectPolicy policy = EffectPolicy::Strict;
     std::vector<std::string> declare;
@@ -142,7 +154,6 @@ struct Effects {
     int line = 0;
 };
 
-// ---- derive (§X) --------------------------------------------------------
 struct Derive {
     bool lens = false, projection = false, equality = false, hashcode = false;
     bool toStringD = false, builder = false, copy = false;
@@ -153,7 +164,6 @@ struct Derive {
     int line = 0;
 };
 
-// ---- guards (§XI) -------------------------------------------------------
 struct Guards {
     GuardMode mode = GuardMode::CompileAndRuntime;
     FailureAction onFailure = FailureAction::Throw;
@@ -162,7 +172,6 @@ struct Guards {
     int line = 0;
 };
 
-// ---- interop (§XII) -----------------------------------------------------
 struct Interop {
     bool assumeImpure = false;
     NullWrap nullWrapping = NullWrap::Maybe;
@@ -175,24 +184,19 @@ struct Interop {
     int line = 0;
 };
 
-// ---- profile (§XIII): a named variant that overrides sections ----------
-struct Sheet;   // fwd
+struct Sheet;
 struct Profile {
     std::string name;
-    std::string inherits;      // single parent (PROF-02 forbids multiple)
+    std::string inherits;
     bool hasInherits = false;
-    // A profile carries its own (partial) set of sections to override with.
-    // Stored as a nested Sheet-like overlay via pointer to keep this header light.
     std::shared_ptr<Sheet> overlay;
     int line = 0;
 };
 
-// ---- the whole sheet ----------------------------------------------------
 struct Sheet {
     Pragmas   pragmas;
     SheetMeta meta;
     std::vector<Import> imports;
-
     Source    source;
     Target    target;
     Pipeline  pipeline;
@@ -201,11 +205,10 @@ struct Sheet {
     Derive    derive;
     Guards    guards;
     Interop   interop;
-
-    std::vector<RuleConfig> ruleBlocks;     // inline `rule Name:` blocks (§8.6)
+    NetworkSpec network;
+    std::vector<RuleConfig> ruleBlocks;
     std::vector<Profile>    profiles;
-
-    std::string file;   // originating .sst path
+    std::string file;
 };
 
 } // namespace nordshrift
