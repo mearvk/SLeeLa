@@ -1,0 +1,10 @@
+#sleela 1.0
+// RMI client-side model.
+// The actual remote transport is supplied by the Java RMI facade.
+class RmiClient {
+    void main() {
+        print("SLeeLa RMI client ready");
+        print("Remote contract = SleelaRemote");
+        print("Transport = Java RMI / JRMP");
+    }
+}
