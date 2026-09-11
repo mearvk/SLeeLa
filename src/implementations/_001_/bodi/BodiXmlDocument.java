@@ -5,26 +5,33 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Minimal agreed XML representation for Bodi network requests.
- * The parser accepts a single <bodi> document and walks attributes/elements
- * in document order. Unknown elements are retained as datum entries.
- */
+/** Minimal agreed XML representation for Bodi network requests. */
 public final class BodiXmlDocument
 {
     private BodiXmlDocument() { }
 
     public static BodiChange parse(String xml) throws Exception
     {
-        Document document = DocumentBuilderFactory.newInstance()
-            .newDocumentBuilder()
-            .parse(new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)));
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+        factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
+        factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+        factory.setXIncludeAware(false);
+        factory.setExpandEntityReferences(false);
+        try { factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, ""); }
+        catch (IllegalArgumentException ignored) { }
+        try { factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, ""); }
+        catch (IllegalArgumentException ignored) { }
+
+        Document document = factory.newDocumentBuilder().parse(
+            new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)));
         Element root = document.getDocumentElement();
         if (root == null || !"bodi".equals(root.getTagName()))
             throw new IllegalArgumentException("Bodi XML root must be <bodi>");
