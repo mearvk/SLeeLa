@@ -8,9 +8,10 @@ Sleela uses explicit imports for native facilities:
 import math;
 import physics;
 import economics;
+import chemistry;
 ```
 
-Calls are module-qualified. Sleelvac lowers the executable scientific/economic calls into ordinary Sleela Core methods before bytecode emission. Consequently a compiled `.sleela` artifact contains the implementation and the runtime does not invoke Sleelvac again.
+Calls are module-qualified. Sleelvac lowers executable scientific/economic/chemistry calls into ordinary Sleela Core methods before bytecode emission. Consequently a compiled `.sleela` artifact contains the implementation and the runtime does not invoke Sleelvac again.
 
 ## Native Module Registry
 
@@ -19,12 +20,78 @@ Calls are module-qualified. Sleelvac lowers the executable scientific/economic c
 | `math` | scalar mathematics and numerical kernels | executable subset implemented |
 | `physics` | constants, mechanics, relativity, waves, selected neutrino model | executable subset implemented |
 | `economics` | valuation, compounding, elasticity, growth and macro identities | executable subset implemented |
+| `chemistry` | periodic subjects, ratios, bonds/valences, signals, similarity norms and bounded presumed inference | executable inference subset implemented |
 | `excel` | workbook/worksheet I/O | reserved for Excel backend |
 | `json` | structured data | reserved |
 | `crypto` | cryptographic APIs | reserved |
 | `net` | network APIs | reserved/overlaps existing network builtins |
 
-Unknown modules and duplicate imports are rejected by Sleelvac.
+Unknown modules and duplicate imports are rejected by Sleelvac. `chemistry` is handled by a dedicated frontend adapter so its inferred layer remains explicitly distinguishable from the established math/physics/economics registry.
+
+## Executable Chemistry API
+
+The current executable chemistry layer is deliberately evidence-oriented:
+
+```text
+chemistry.ratio(numerator,denominator)
+chemistry.similarity(a,b)
+chemistry.stochastic(seed,weight)
+chemistry.inference_level(observation,bond,valence,similarity,signal,symmetry)
+chemistry.confidence(observation,bond,valence,similarity,signal,symmetry)
+chemistry.uncertainty(observation,bond,valence,similarity,signal,symmetry)
+```
+
+The inference level is bounded to the project's **0..24** semantic scale. It measures model support, not probability, IQ, educational attainment, or scientific certainty.
+
+### Presumed Chemistry
+
+For an experimental, newly proposed, or incompletely characterized subject, the chemistry layer maintains the distinction:
+
+**observed != derived != inferred**
+
+The intended causal-symmetry order is:
+
+**observation → measurement → structure → bond → valence → geometry → electronic state → reaction relationship → compound-family similarity → thermodynamic consequence → astronomical context**
+
+Ratios are first-class comparison objects. Similarity is relational compatibility rather than identity. Signals and conferrers support competing structural hypotheses. The current evidence weights are observation 0.24, bond 0.20, valence 0.22, similarity 0.13, signal 0.12, symmetry 0.09. These are inspectable project-model weights, not chemical laws.
+
+The stochastic function is deterministic for a supplied seed and bounded so it can rank close candidates without manufacturing evidence or overriding contradictory observations.
+
+## 0..24 Inference Norms
+
+| Level | Interpretation |
+|---:|---|
+| 0 | Raw subject; insufficient evidence |
+| 1–4 | Direct observations dominate |
+| 5–8 | Elementary structural inference |
+| 9–12 | Valence and bonding inference |
+| 13–16 | Similarity and compound-family inference |
+| 17–20 | Multi-property convergent inference |
+| 21–23 | Strong convergent model support |
+| 24 | Maximum model-supported inference; never experimental proof |
+
+## Chemistry Data Library
+
+The chemistry library is maintained under:
+
+```text
+impl/chemistry/chemistry.h
+impl/chemistry/chemistry.cpp
+impl/chemistry/periodic_table.model
+impl/chemistry/presumed_chemistry.model
+impl/frontend/chemistry_api.h
+impl/frontend/chemistry_api.cpp
+```
+
+The periodic registry contains all 118 recognized elements. The declarative presumed-chemistry model records the evidence classes, ratio norms, causal ordering, stochastic rule, and epistemic boundaries.
+
+## Normed Chemistry Description
+
+The planned high-level description layer should produce 2–8 paragraphs according to available evidence, using ordered titles such as:
+
+**Chemical Subject → Identity and Composition → Structural Presumption → Bond and Valence Norms → Signals and Similarity → Presumed Properties → Inference Status → Astronomical Norm**
+
+The astronomical norm connects elemental identity to periodic and astrophysical context only where supported. It must not imply that an arbitrary laboratory compound has an independently established astronomical origin.
 
 ## Executable Math API
 
@@ -112,15 +179,15 @@ These are computational identities/models, not empirical forecasts. Units, perio
 
 The execution path is:
 
-**source import → module validation → native lowering → Sleela Core bytecode → runnable `.sleela` artifact**
+**source import → module validation → chemistry lowering → native lowering → Sleela Core bytecode → runnable `.sleela` artifact**
 
-Native lowering happens before both immediate source execution and persistent artifact generation. The artifact therefore carries executable Core instructions rather than a dependency on the front-end compiler.
+Chemistry lowering happens before both immediate source execution and persistent artifact generation. The artifact therefore carries executable Core instructions rather than a dependency on the chemistry frontend.
 
 ## Numerical and Reasoning Contract
 
 The 133+ through 181+ design range is a project complexity marker, not a psychometric claim. The intended bridge for advanced readers is:
 
-**physical/economic observation → quantity → unit → assumption → equation → transformation → numerical approximation → result → interpretation**
+**physical/chemical/economic observation → quantity → unit → assumption → equation → transformation → numerical approximation → result → interpretation**
 
 A formula is not the same thing as its measurement, and a numerical answer is not automatically a conclusion about the world. Sleela's native layer should preserve those logical locations rather than collapse them.
 
