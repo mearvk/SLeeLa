@@ -4,6 +4,7 @@
 #include "artifact.h"
 #include "compiler.h"
 #include "native_api.h"
+#include "chemistry_api.h"
 #include "../core/sleela_core.h"
 
 #include <stdexcept>
@@ -18,6 +19,7 @@ int compileToArtifact(Program& prog,
     if (outputPath.empty())
         throw std::runtime_error("artifact output path must not be empty");
 
+    chemistry::lowerProgram(prog);
     native::lowerProgram(prog);
     SLVM* vm = slvm_new();
     if (!vm) throw std::runtime_error("unable to allocate Sleela VM");
