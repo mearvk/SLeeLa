@@ -1,5 +1,5 @@
 #nordshrift 1.0
-#sleela     1.0
+#sleela     1.1
 
 /// Minimal Nordshrift sheet driving the triplet for the demo module.
 /// Switch `target-language` between sleela | java | c to retarget.
@@ -11,6 +11,12 @@ sheet demo:
 source:
   root  "src"
   glob  "**/*.sleela"
+
+network:
+  objects: [Endpoint, NIC, Link, Packet, Queue, Switch, Router, Fabric, Listener, Connector, Gateway, LoadBalancer, Service, TLS, DNS]
+  transports: [tcp, udp, tls, quic]
+  address-family: dual
+  tls: true
 
 target:
   root            "out"
