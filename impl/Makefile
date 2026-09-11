@@ -15,21 +15,22 @@ CATALOG_OBJ := $(BUILD)/sheet_catalog.o
 XCLASS_OBJ := $(BUILD)/xclass_loader.o
 CORE_OBJ := $(BUILD)/sleela_core.o
 CHEMISTRY_OBJ := $(BUILD)/chemistry.o
+FINANCIAL_OBJ := $(BUILD)/financial.o
 CORE_SRC := core/sleela_artifact.c
 FE_SRC := frontend/lexer.cpp frontend/parser.cpp frontend/compiler.cpp \
           frontend/version.cpp frontend/artifact.cpp frontend/native_api.cpp \
-          frontend/chemistry_api.cpp
+          frontend/chemistry_api.cpp frontend/financial_api.cpp
 FE_OBJ := $(patsubst frontend/%.cpp,$(BUILD)/%.o,$(FE_SRC))
 DRIVER_OBJ := $(BUILD)/driver.o
 NS_SRC := nordshrift/sst_lexer.cpp nordshrift/sst_parser.cpp \
           nordshrift/source_resolve.cpp nordshrift/sleela_emit.cpp \
           nordshrift/object_compat.cpp nordshrift/nordshrift.cpp
 NS_OBJ := $(patsubst nordshrift/%.cpp,$(BUILD)/ns_%.o,$(NS_SRC))
-.PHONY: all clean test test-sleela test-version test-nordshrift test-threads test-network test-catalog test-chemistry
+.PHONY: all clean test test-sleela test-version test-nordshrift test-threads test-network test-catalog test-chemistry test-financial
 all: $(SLEELA_BIN) $(NORDSHRIFT_BIN)
-$(SLEELA_BIN): $(CORE_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(CHEMISTRY_OBJ)
+$(SLEELA_BIN): $(CORE_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ)
 	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS)
-$(NORDSHRIFT_BIN): $(NS_OBJ) $(CORE_OBJ) $(FE_OBJ) $(CATALOG_OBJ) $(CHEMISTRY_OBJ)
+$(NORDSHRIFT_BIN): $(NS_OBJ) $(CORE_OBJ) $(FE_OBJ) $(CATALOG_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ)
 	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS)
 $(THREAD_SMOKE): core/thread_smoke.c $(CORE_OBJ)
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
@@ -39,6 +40,8 @@ $(CORE_OBJ): $(CORE_SRC) core/sleela_core.c core/sleela_core.h | $(BUILD)
 	$(CC) $(CFLAGS) -c $(CORE_SRC) -o $@
 $(CHEMISTRY_OBJ): chemistry/chemistry.cpp chemistry/chemistry.h | $(BUILD)
 	$(CXX) $(CXXFLAGS) -c chemistry/chemistry.cpp -o $@
+$(FINANCIAL_OBJ): finance/financial.cpp finance/financial.h | $(BUILD)
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 $(BUILD)/%.o: frontend/%.cpp | $(BUILD)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 $(BUILD)/sheet_catalog.o: catalog/sheet_catalog.cpp catalog/sheet_catalog.h | $(BUILD)
@@ -47,11 +50,11 @@ $(BUILD)/xclass_loader.o: xclass/xclass_loader.cpp xclass/xclass_loader.h | $(BU
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 $(BUILD)/ns_%.o: nordshrift/%.cpp | $(BUILD)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
-$(BUILD)/driver.o: frontend/driver.cpp frontend/compiler.h frontend/artifact.h frontend/native_api.h frontend/chemistry_api.h | $(BUILD)
+$(BUILD)/driver.o: frontend/driver.cpp frontend/compiler.h frontend/artifact.h frontend/native_api.h frontend/chemistry_api.h frontend/financial_api.h | $(BUILD)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 $(BUILD):
 	mkdir -p $(BUILD)
-test: test-sleela test-version test-nordshrift test-threads test-network test-catalog test-chemistry
+test: test-sleela test-version test-nordshrift test-threads test-network test-catalog test-chemistry test-financial
 test-threads: $(THREAD_SMOKE)
 	@echo "=== core threading smoke (128 threads) ==="; $(THREAD_SMOKE) 128
 test-sleela: $(SLEELA_BIN)
@@ -67,5 +70,7 @@ test-catalog: $(NORDSHRIFT_BIN)
 	@export SLEELA_SHEET=$(CURDIR)/../SHEET.sheet; echo "=== nordshrift objects (summary) ==="; $(NORDSHRIFT_BIN) objects | head -4 || exit 1; echo "=== relevance --target=c Thread ==="; $(NORDSHRIFT_BIN) relevance --target=c Thread || exit 1; echo "=== relevance --target=java (tally) ==="; $(NORDSHRIFT_BIN) relevance --target=java | tail -1 || exit 1
 test-chemistry: $(CHEMISTRY_OBJ)
 	@echo "=== normed presumed chemistry library ==="; echo "chemistry object compiled: $(CHEMISTRY_OBJ)"
+test-financial: $(FINANCIAL_OBJ)
+	@echo "=== financial math/algebra reference library ==="; echo "financial object compiled: $(FINANCIAL_OBJ)"
 clean:
 	rm -rf $(BUILD)
