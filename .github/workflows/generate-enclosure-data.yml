@@ -7,6 +7,8 @@ on:
     paths:
       - 'http/spec/BYPASS.md'
       - 'tools/generate-enclosure-data.py'
+      - 'http/spec/COUNTRY_NETWORK_ENCLOSURE.md'
+      - 'tools/country-network-enclosure.py'
   workflow_dispatch:
 
 permissions:
@@ -24,14 +26,17 @@ jobs:
       - name: Generate enclosure data
         run: python3 tools/generate-enclosure-data.py
 
+      - name: Generate country network data
+        run: python3 tools/country-network-enclosure.py
+
       - name: Commit generated enclosure
         run: |
           git config user.name "SLeeLa Enclosure Generator"
           git config user.email "actions@github.com"
-          git add http/spec/ENCLOSURE.md
+          git add http/spec/ENCLOSURE.md http/spec/COUNTRY_NETWORK_ENCLOSURE.md
           if git diff --cached --quiet; then
             echo "No generated changes."
           else
-            git commit -m "Generate country-by-country enclosure data"
+            git commit -m "Generate country-by-country enclosure and network data"
             git push origin HEAD:master
           fi
