@@ -84,17 +84,15 @@ int http3_route_session_rekey(http3_route_session_t *session,
         return -1;
     }
 
-    if (decision.action == HTTP3_ROUTE_NAV_KEEP) {
+    if (decision.action == HTTP3_ROUTE_NAV_KEEP &&
+        key_epoch == session->key_epoch && session->established) {
         return 0;
     }
 
-    if (!session->established || key_epoch != session->key_epoch ||
-        decision.crypto_rebuild_required) {
-        return http3_route_session_establish(session, new_plan,
-                                             peer_public_key, key_epoch);
-    }
-
-    return derive_route_key(session, new_plan, peer_public_key);
+    /* Every actual route/key-epoch transition receives a fresh ephemeral key.
+     * This avoids reusing the same X25519 private key across route generations. */
+    return http3_route_session_establish(session, new_plan,
+                                         peer_public_key, key_epoch);
 }
 
 int http3_route_session_derive_country_key(const http3_route_session_t *session,
