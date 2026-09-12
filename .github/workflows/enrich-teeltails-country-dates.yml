@@ -1,0 +1,44 @@
+name: Enrich TEELTAILS Country Creation and End Years
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+    paths:
+      - 'tools/add-country-existence-dates.py'
+      - '.github/workflows/enrich-teeltails-country-dates.yml'
+      - 'http/spec/TEELTAILS.md.ms.max'
+
+concurrency:
+  group: enrich-teeltails-country-dates-master
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  enrich:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Enrich country creation and end years
+        run: python3 tools/add-country-existence-dates.py
+
+      - name: Commit enriched document
+        run: |
+          git config user.name "SLeeLa Country Date Generator"
+          git config user.email "actions@github.com"
+          git add http/spec/TEELTAILS.md.ms.max
+          if git diff --cached --quiet; then
+            echo "No country-date changes."
+          else
+            git commit -m "Add country creation and end years to TEELTAILS"
+            git fetch origin master
+            git rebase origin/master
+            git push origin HEAD:master
+          fi
