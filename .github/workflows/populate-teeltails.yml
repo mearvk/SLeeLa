@@ -23,6 +23,9 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Install Python dependency
+        run: python3 -m pip install --disable-pip-version-check openpyxl
+
       - name: Generate TEELTAILS country matrix
         run: python3 tools/populate-teeltails.py
 
