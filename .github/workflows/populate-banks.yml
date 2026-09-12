@@ -11,12 +11,19 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: national-banking-population
+  cancel-in-progress: false
+
 jobs:
   populate:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
 
       - name: Validate Python
         run: python3 --version
