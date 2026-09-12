@@ -11,9 +11,11 @@ on:
 permissions:
   contents: write
 
+# Keep only the newest population request. This prevents a stale queued run
+# from blocking the current data-generation run indefinitely.
 concurrency:
   group: national-banking-population
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   populate:
@@ -57,10 +59,13 @@ jobs:
           text = path.read_text(encoding="utf-8")
           old = "per_page=40000"
           new = "per_page=30000"
-          if old not in text:
-              raise SystemExit("Expected World Bank indicator page-size setting was not found.")
-          path.write_text(text.replace(old, new), encoding="utf-8")
-          print("World Bank indicator page size normalized: 40000 -> 30000")
+          if old in text:
+              path.write_text(text.replace(old, new), encoding="utf-8")
+              print("World Bank indicator page size normalized: 40000 -> 30000")
+          elif new in text:
+              print("World Bank indicator page size already normalized: 30000")
+          else:
+              raise SystemExit("World Bank indicator page-size setting was not found.")
           PY
 
       - name: Run national banking population script
