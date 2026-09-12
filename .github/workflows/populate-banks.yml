@@ -20,7 +20,7 @@ jobs:
 
       - name: Run national banking population script
         run: |
-          python3 tools/banking/populate_banks.py \
+          python3 .github/workflows/populate_banks.py \
             --registry data/banking/registry.json \
             --output data/banking/national_banking.json \
             --table BANKS.md
