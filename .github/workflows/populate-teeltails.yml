@@ -1,0 +1,38 @@
+name: Populate TEELTAILS Country Technology Data
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+    paths:
+      - 'http/spec/TEELTAILS.md.ms.max'
+      - 'tools/populate-teeltails.py'
+      - 'http/spec/country_network_overrides.json'
+
+permissions:
+  contents: write
+
+jobs:
+  populate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Generate TEELTAILS country matrix
+        run: python3 tools/populate-teeltails.py
+
+      - name: Commit populated document
+        run: |
+          git config user.name "SLeeLa TEELTAILS Generator"
+          git config user.email "actions@github.com"
+          git add http/spec/TEELTAILS.md.ms.max
+          if git diff --cached --quiet; then
+            echo "No generated changes."
+          else
+            git commit -m "Populate TEELTAILS country technology data"
+            git push origin HEAD:master
+          fi
