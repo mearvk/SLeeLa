@@ -1,8 +1,8 @@
 #include "crypto_identity_capsule.h"
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <time.h>
 
 static int is_forbidden_sensitive_name(const char *name)
 {
@@ -94,7 +94,9 @@ int http3_cic_bind_context(const uint8_t capsule_id[HTTP3_CIC_ID_SIZE],
      */
     memcpy(output, capsule_id, HTTP3_CIC_ID_SIZE);
     memcpy(output + HTTP3_CIC_ID_SIZE, jurisdiction_id, jurisdiction_len);
-    memcpy(output + HTTP3_CIC_ID_SIZE + jurisdiction_len, context, context_len);
+    if (context_len != 0U) {
+        memcpy(output + HTTP3_CIC_ID_SIZE + jurisdiction_len, context, context_len);
+    }
     *output_len = HTTP3_CIC_ID_SIZE + jurisdiction_len + context_len;
     return 0;
 }
