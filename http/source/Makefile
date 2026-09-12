@@ -38,7 +38,8 @@ key_distribution_server: $(C_OBJECTS) key_distribution_server_main.o
 	$(CC) $(CFLAGS) -I. -c $< -o $@
 
 cpp-check: $(C_OBJECTS)
-	$(CXX) $(CXXFLAGS) -I. -x c++ -fsyntax-only http3_crypto.hpp
+	$(CXX) $(CXXFLAGS) $(OPENSSL_CFLAGS) -I. -x c++ -fsyntax-only http3_crypto.hpp
+	$(CXX) $(CXXFLAGS) $(OPENSSL_CFLAGS) -I. -x c++ -fsyntax-only key_distribution_client.hpp
 
 clean:
 	rm -f $(C_OBJECTS) crypto_selftest.o key_distribution_server_main.o crypto_selftest key_distribution_server
