@@ -1,0 +1,286 @@
+# TEELTAILS.md.ms.max — Global Wi-Fi, Cellular, WiMAX & Internet Service Tiers
+
+**Parent specification:** `http/spec/ENCLOSURE.md`  
+**Country taxonomy:** `http/spec/BYPASS.md`  
+**Related network document:** `http/spec/COUNTRY_NETWORK_ENCLOSURE.md`  
+**Status:** Global telecommunications technology and service-quality enclosure
+
+## 1. Purpose
+
+`TEELTAILS.md.ms.max` records the practical telecommunications profile of each country or geographic entry in the SLeeLa country taxonomy. The document is designed to answer four questions for every entry:
+
+1. **Which Wi-Fi standards are deployed or permitted?**
+2. **Which cellular generations and radio technologies have been used or are currently deployed?**
+3. **Which alternative broadband technologies, including WiMAX, fixed wireless access, satellite, fiber, DSL, cable, and legacy systems, are relevant?**
+4. **What does Internet service cost at approximately three meaningful service tiers, and what quality should a user expect?**
+
+The underlying country taxonomy intentionally follows the project's 391 world entries. That taxonomy includes current countries and territories as well as historical entries; it is not a claim that international law recognizes 391 sovereign states. `BYPASS.md` explicitly defines this project convention. fileciteturn27file0
+
+## 2. Wi-Fi Standards Register
+
+The country record should identify all standards that are documented as commercially deployed, institutionally deployed, licensed/permitted, or historically significant. The register uses IEEE terminology rather than informal names.
+
+| Generation | IEEE family | Common name | Typical capability class | Country record value |
+|---|---|---|---|---|
+| Legacy | 802.11b | Wi-Fi 1-era | 2.4 GHz, low throughput | Historical / legacy |
+| Legacy | 802.11a | Wi-Fi 2-era | 5 GHz | Historical / legacy |
+| Legacy | 802.11g | Wi-Fi 3-era | 2.4 GHz | Historical / legacy |
+| N | 802.11n | Wi-Fi 4 | 2.4/5 GHz | Deployment status |
+| AC | 802.11ac | Wi-Fi 5 | 5 GHz | Deployment status |
+| AX | 802.11ax | Wi-Fi 6 | 2.4/5/6 GHz depending on regulatory allocation | Deployment status |
+| AX extended | 802.11ax | Wi-Fi 6E | 6 GHz | Deployment/regulatory status |
+| BE | 802.11be | Wi-Fi 7 | 2.4/5/6 GHz | Deployment/regulatory status |
+
+**Important:** A Wi-Fi generation is not automatically available merely because the IEEE standard exists. The country record must distinguish **standard existence**, **spectrum authorization**, **operator/device availability**, and **actual consumer deployment**.
+
+### 2.1 Wi-Fi country fields
+
+Each country profile should record:
+
+- 2.4 GHz Wi-Fi availability.
+- 5 GHz Wi-Fi availability.
+- 6 GHz / Wi-Fi 6E availability.
+- Wi-Fi 4 deployment.
+- Wi-Fi 5 deployment.
+- Wi-Fi 6 deployment.
+- Wi-Fi 6E deployment.
+- Wi-Fi 7 deployment.
+- DFS/radar restrictions where relevant.
+- Maximum or representative channel-width rules where documented.
+- Indoor/outdoor regulatory distinctions where applicable.
+- Public hotspot availability.
+- Enterprise Wi-Fi availability.
+- Rural/community Wi-Fi availability.
+
+## 3. Cellular Technology Register
+
+Country records should distinguish **generation**, **radio access technology**, and **commercial availability**.
+
+| Generation | Principal technologies | Record status |
+|---|---|---|
+| 1G | AMPS, NMT, TACS and regional analog systems | Historical |
+| 2G | GSM, GPRS, EDGE, CDMA/IS-95 | Historical or operational |
+| 3G | UMTS/WCDMA, HSPA/HSPA+, CDMA2000/EV-DO | Historical or operational |
+| 4G | LTE, LTE-A, LTE-A Pro, WiMAX-derived transitions where applicable | Operational / legacy |
+| 4G fixed/mobile | LTE FWA, LTE broadband routers | Operational |
+| 5G | 5G NR NSA/SA | Current deployment |
+| 5G FWA | 5G fixed wireless access | Current deployment |
+| Future | Later IMT generations | Not yet commercially verified |
+
+For each country, the record should identify operators where reliable public evidence exists, the generation(s) actually offered, and major shutdowns of legacy networks.
+
+## 4. WiMAX and Alternative Wireless
+
+WiMAX receives its own field because it has had a significant historical role in some national broadband markets.
+
+Record, where applicable:
+
+- IEEE 802.16 / WiMAX.
+- Fixed WiMAX.
+- Mobile WiMAX.
+- 4G WiMAX deployments.
+- WiMAX-to-LTE migration.
+- Fixed Wireless Access (FWA).
+- LTE FWA.
+- 5G FWA.
+- Licensed microwave backhaul.
+- Unlicensed point-to-point/point-to-multipoint wireless.
+- Community wireless networks.
+- Satellite broadband.
+
+A country should not be marked as having WiMAX merely because WiMAX was technically possible. Evidence should identify a real deployment, operator, spectrum assignment, or documented service.
+
+## 5. Internet Service Tiers
+
+Each country should use approximately three representative consumer/service tiers. Exact operator packages change frequently, so these are **comparison tiers**, not claims that every provider uses these names.
+
+### Tier 1 — Entry / Basic
+
+Representative characteristics:
+
+- Lowest mainstream continuously available Internet tier.
+- Suitable for messaging, web browsing, ordinary e-mail, low-resolution video, and basic cloud services.
+- Record advertised download/upload speed where available.
+- Record monthly allowance or data cap.
+- Record installation/equipment charges when material.
+- Record typical latency or reliability information when documented.
+
+### Tier 2 — Standard / Household
+
+Representative characteristics:
+
+- Normal household broadband service.
+- Suitable for HD streaming, multiple users, ordinary video conferencing, cloud applications, and software updates.
+- Record advertised download/upload speed.
+- Record data allowance or unlimited status.
+- Record monthly recurring price.
+- Record access technology: fiber, cable, DSL, FWA, satellite, etc.
+
+### Tier 3 — Premium / High-Speed
+
+Representative characteristics:
+
+- Highest broadly available residential or small-business tier with meaningful consumer availability.
+- Record advertised download/upload speed.
+- Record symmetric availability where applicable.
+- Record latency/reliability information where available.
+- Record monthly recurring price.
+- Identify whether the service is fiber, cable, 5G FWA, satellite, or another technology.
+
+## 6. Price Standard
+
+Prices must be recorded with a **source date, currency, nominal USD conversion, service speed, data allowance, and technology**. A price without a date and service description is not sufficiently comparable.
+
+The International Telecommunication Union (ITU) maintains internationally comparable ICT price baskets, including fixed broadband, data-only mobile broadband, and mobile data/voice baskets. The 2025 methodology covers approximately 200 economies and provides country-level data for international comparison. citeturn0search0
+
+The SLeeLa country record should therefore prefer the following evidence hierarchy:
+
+1. National telecommunications regulator.
+2. National statistics or government telecommunications publication.
+3. Operator tariff/service page.
+4. ITU ICT Price Basket data.
+5. Reputable national broadband comparison or measurement source.
+6. Other documented technical research.
+
+**Do not manufacture a price when no reliable country-specific price is available.** Use `Not yet curated` or `Not reliably comparable` instead.
+
+## 7. Quality Grade
+
+Internet quality should be recorded independently of price.
+
+| Grade | Description |
+|---|---|
+| A | Broad high-speed coverage, mature infrastructure, strong reliability, substantial fiber/5G or equivalent capacity, and generally good international connectivity. |
+| B | Good national service with meaningful high-speed availability but some geographic, infrastructure, or affordability limitations. |
+| C | Functional broadband/mobile Internet with significant regional, capacity, reliability, or affordability limitations. |
+| D | Limited broadband quality or coverage, significant infrastructure constraints, or substantial dependence on slower/expensive access. |
+| E | Very limited commercial Internet access, severe infrastructure constraints, or highly restricted availability. |
+| N/A | No meaningful civilian commercial Internet service or historical/non-populated entry where a consumer service grade would be misleading. |
+
+Quality grades are project-level comparative classifications, not official national rankings.
+
+## 8. Country Record Template
+
+For every current country or territory in the `BYPASS.md` taxonomy, the following record should ultimately be populated:
+
+```text
+COUNTRY:
+ISO / PROJECT ENTRY:
+RECORD DATE:
+
+WI-FI
+- 802.11b:
+- 802.11a:
+- 802.11g:
+- 802.11n / Wi-Fi 4:
+- 802.11ac / Wi-Fi 5:
+- 802.11ax / Wi-Fi 6:
+- Wi-Fi 6E / 6 GHz:
+- 802.11be / Wi-Fi 7:
+- Public hotspots:
+- Enterprise Wi-Fi:
+
+CELLULAR
+- 1G:
+- 2G:
+- 3G:
+- 4G LTE:
+- LTE-A:
+- LTE FWA:
+- 5G NSA:
+- 5G SA:
+- 5G FWA:
+
+OTHER WIRELESS
+- WiMAX:
+- Fixed wireless:
+- Microwave:
+- Satellite:
+- Community wireless:
+
+INTERNET SERVICE TIERS
+- Entry/basic: price / speed / technology / allowance / quality
+- Standard/household: price / speed / technology / allowance / quality
+- Premium/high-speed: price / speed / technology / allowance / quality
+
+INTERNATIONAL CONNECTIVITY
+- Major submarine cable systems:
+- Major terrestrial fiber routes:
+- International gateways:
+- IXPs:
+- Satellite dependency:
+
+QUALITY
+- Overall grade:
+- Fixed broadband quality:
+- Mobile broadband quality:
+- Rural quality:
+- Urban quality:
+- Reliability notes:
+
+SOURCES
+- Regulator:
+- Operators:
+- ITU:
+- Other technical sources:
+```
+
+## 9. Historical Technology Rule
+
+Historical technologies must be retained when they explain the country's telecommunications development. A country may therefore have entries for 1G, 2G, 3G, WiMAX, DSL, cable, or earlier Wi-Fi standards even when those technologies have subsequently been retired.
+
+The record should distinguish:
+
+- **Deployed:** documented commercial or institutional use.
+- **Authorized:** technically/regulatorily permitted but deployment not established.
+- **Available:** commercially offered to users.
+- **Legacy:** previously deployed but substantially retired.
+- **Not documented:** insufficient evidence.
+- **Not applicable:** technology is not meaningful for the entry.
+
+## 10. Quality and Price Must Not Be Confused
+
+A low monthly price does not necessarily mean poor service, and a high monthly price does not necessarily mean high quality. Rural availability, international capacity, congestion, latency, upload capacity, reliability, data caps, and equipment costs can materially change the user experience.
+
+ITU research specifically treats affordability and quality as separate dimensions and notes persistent affordability and quality divides between and within economies. citeturn0search2turn0search25
+
+## 11. International Interoperability
+
+Every country record should also state whether ordinary Internet services can interoperate with systems in the United States through standard protocols including:
+
+- IPv4.
+- IPv6 where deployed.
+- DNS.
+- HTTPS/TLS.
+- HTTP/1.1.
+- HTTP/2.
+- HTTP/3 / QUIC where supported.
+- SMTP/IMAP for ordinary e-mail where locally supported.
+- VPN technologies where legally and technically available.
+- Standard cloud and content-delivery services where locally reachable.
+
+This is a technical interoperability description, not a statement about government policy, censorship, surveillance, or political relations.
+
+## 12. Data Integrity Rule
+
+No country should receive a fabricated operator, technology, speed, price, or quality grade merely to fill a table cell. When country-specific evidence is unavailable, the correct value is an explicit unknown.
+
+The companion `COUNTRY_NETWORK_ENCLOSURE.md` follows the same principle for country-associated IP prefixes: aggregate network attribution must not be confused with identification or physical location of an individual endpoint. fileciteturn26file0
+
+## 13. Global Comparison Snapshot
+
+For high-level comparison, the document should eventually expose at least these fields for every entry:
+
+| Country | Wi-Fi generations | 6 GHz | Wi-Fi 7 | 2G/3G/4G/5G | WiMAX | Entry Internet | Standard Internet | Premium Internet | Quality |
+|---|---|---|---|---|---|---:|---:|---:|---|
+| Each BYPASS world entry | Curated | Curated | Curated | Curated | Curated | Source-dated | Source-dated | Source-dated | A–E/N/A |
+
+The purpose of this matrix is to make the telecommunications condition of every project country entry comparable without pretending that one global price, speed, or technology applies uniformly throughout an entire country.
+
+## 14. Source and Update Policy
+
+Technology and prices change quickly. The country records should therefore be reviewed on a recurring basis. The preferred update cycle is quarterly for operator technology/pricing and annually for the broader historical technology record, with immediate updates when a major national network generation is launched or retired.
+
+The ITU's current ICT-price program provides the preferred international benchmark for comparable country-level affordability data. citeturn0search0
+
+**Guiding principle:** document the technology that people can actually use, the price they can actually pay, the quality they can reasonably expect, and the evidence supporting each statement.
