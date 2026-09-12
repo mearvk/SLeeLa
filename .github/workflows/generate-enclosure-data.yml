@@ -1,0 +1,37 @@
+name: Generate Country Enclosure Data
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'http/spec/BYPASS.md'
+      - 'tools/generate-enclosure-data.py'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Generate enclosure data
+        run: python3 tools/generate-enclosure-data.py
+
+      - name: Commit generated enclosure
+        run: |
+          git config user.name "SLeeLa Enclosure Generator"
+          git config user.email "actions@github.com"
+          git add http/spec/ENCLOSURE.md
+          if git diff --cached --quiet; then
+            echo "No generated changes."
+          else
+            git commit -m "Generate country-by-country enclosure data"
+            git push origin HEAD:master
+          fi
