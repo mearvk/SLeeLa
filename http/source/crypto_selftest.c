@@ -55,7 +55,7 @@ int main(void)
     strcpy(metadata.jurisdiction_id, "US");
     strcpy(metadata.emergency_endpoint_reference, "registry://us/emergency");
     strcpy(metadata.sender_reference, "sender-reference");
-    metadata.expiration = 1U;
+    metadata.expiration = 4102444800ULL;
 
     if (http3_cic_encrypt(&metadata, bob_public, message, sizeof(message), &capsule) != 0 ||
         http3_cic_decrypt(&capsule, bob_private, plaintext, sizeof(plaintext),
