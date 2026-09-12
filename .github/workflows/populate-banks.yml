@@ -2,6 +2,9 @@ name: Populate National Banking and Economic Data
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - master
   schedule:
     - cron: "17 3 * * 1"
 
