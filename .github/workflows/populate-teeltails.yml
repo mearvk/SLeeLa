@@ -7,6 +7,7 @@ on:
       - master
     paths:
       - 'http/spec/TEELTAILS.md.ms.max'
+      - 'http/spec/BYPASS.md'
       - 'tools/populate-teeltails.py'
       - 'http/spec/country_network_overrides.json'
 
