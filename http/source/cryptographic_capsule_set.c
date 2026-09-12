@@ -50,3 +50,54 @@ int http3_capsule_set_authorized_index(const http3_capsule_set_t *set,
     }
     return -1;
 }
+
+int http3_capsule_set_encrypt(const http3_capsule_set_t *set,
+                              const http3_cic_metadata_t *metadata_template,
+                              const uint8_t *plaintext,
+                              size_t plaintext_len,
+                              http3_cic_capsule_t *capsules,
+                              size_t capsule_capacity,
+                              size_t *capsule_count)
+{
+    size_t i;
+
+    if (set == NULL || metadata_template == NULL || plaintext == NULL ||
+        capsules == NULL || capsule_count == NULL ||
+        capsule_capacity < set->recipient_count) {
+        return -1;
+    }
+
+    *capsule_count = 0U;
+    memset(capsules, 0, capsule_capacity * sizeof(*capsules));
+
+    for (i = 0U; i < set->recipient_count; ++i) {
+        http3_cic_metadata_t metadata = *metadata_template;
+        memcpy(metadata.jurisdiction_id, set->recipients[i].jurisdiction_id,
+               sizeof(metadata.jurisdiction_id));
+        memcpy(metadata.emergency_endpoint_reference,
+               set->recipients[i].emergency_endpoint_reference,
+               sizeof(metadata.emergency_endpoint_reference));
+
+        if (http3_cic_encrypt(&metadata, set->recipients[i].public_key,
+                              plaintext, plaintext_len, &capsules[i]) != 0) {
+            http3_capsule_set_free_capsules(capsules, i);
+            return -1;
+        }
+        ++(*capsule_count);
+    }
+
+    return 0;
+}
+
+void http3_capsule_set_free_capsules(http3_cic_capsule_t *capsules,
+                                     size_t capsule_count)
+{
+    size_t i;
+
+    if (capsules == NULL) {
+        return;
+    }
+    for (i = 0U; i < capsule_count; ++i) {
+        http3_cic_free_capsule(&capsules[i]);
+    }
+}
