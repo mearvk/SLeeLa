@@ -1,7 +1,3528 @@
 {
-  "registry_version": "1.0",
+  "registry_version": "1.1",
   "expected_count": 391,
   "source": "SLeeLa canonical country/jurisdiction registry",
-  "status": "BOOTSTRAP_REQUIRED",
-  "countries": []
+  "source_document": "http/spec/BYPASS.md",
+  "status": "GENERATED_FROM_REPO_SOURCE",
+  "countries": [
+    {
+      "registry_id": "001",
+      "country_name": "Afghanistan",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "002",
+      "country_name": "Albania",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "003",
+      "country_name": "Algeria",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "004",
+      "country_name": "American Samoa",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "005",
+      "country_name": "Andorra",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "006",
+      "country_name": "Angola",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "007",
+      "country_name": "Anguilla",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "008",
+      "country_name": "Antarctica",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "009",
+      "country_name": "Antigua and Barbuda",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "010",
+      "country_name": "Argentina",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "011",
+      "country_name": "Armenia",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "012",
+      "country_name": "Aruba",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "013",
+      "country_name": "Australia",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "014",
+      "country_name": "Austria",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "015",
+      "country_name": "Azerbaijan",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "016",
+      "country_name": "Bahamas",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "017",
+      "country_name": "Bahrain",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "018",
+      "country_name": "Bangladesh",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "019",
+      "country_name": "Barbados",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "020",
+      "country_name": "Belarus",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "021",
+      "country_name": "Belgium",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "022",
+      "country_name": "Belize",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "023",
+      "country_name": "Benin",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "024",
+      "country_name": "Bermuda",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "025",
+      "country_name": "Bhutan",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "026",
+      "country_name": "Bolivia",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "027",
+      "country_name": "Bonaire, Sint Eustatius and Saba",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "028",
+      "country_name": "Bosnia and Herzegovina",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "029",
+      "country_name": "Botswana",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "030",
+      "country_name": "Bouvet Island",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "031",
+      "country_name": "Brazil",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "032",
+      "country_name": "British Indian Ocean Territory",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "033",
+      "country_name": "Brunei",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "034",
+      "country_name": "Bulgaria",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "035",
+      "country_name": "Burkina Faso",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "036",
+      "country_name": "Burundi",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "037",
+      "country_name": "Cabo Verde",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "038",
+      "country_name": "Cambodia",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "039",
+      "country_name": "Cameroon",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "040",
+      "country_name": "Canada",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "041",
+      "country_name": "Cayman Islands",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "042",
+      "country_name": "Central African Republic",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "043",
+      "country_name": "Chad",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "044",
+      "country_name": "Chile",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "045",
+      "country_name": "China",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "046",
+      "country_name": "Christmas Island",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "047",
+      "country_name": "Cocos (Keeling) Islands",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "048",
+      "country_name": "Colombia",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "049",
+      "country_name": "Comoros",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "050",
+      "country_name": "Congo",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "051",
+      "country_name": "Cook Islands",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "052",
+      "country_name": "Costa Rica",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "053",
+      "country_name": "Côte d'Ivoire",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "054",
+      "country_name": "Croatia",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "055",
+      "country_name": "Cuba",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "056",
+      "country_name": "Curaçao",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "057",
+      "country_name": "Cyprus",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "058",
+      "country_name": "Czechia",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "059",
+      "country_name": "Democratic Republic of the Congo",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "060",
+      "country_name": "Denmark",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "061",
+      "country_name": "Djibouti",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "062",
+      "country_name": "Dominica",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "063",
+      "country_name": "Dominican Republic",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "064",
+      "country_name": "Ecuador",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "065",
+      "country_name": "Egypt",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "066",
+      "country_name": "El Salvador",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "067",
+      "country_name": "Equatorial Guinea",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "068",
+      "country_name": "Eritrea",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "069",
+      "country_name": "Estonia",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "070",
+      "country_name": "Eswatini",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "071",
+      "country_name": "Ethiopia",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "072",
+      "country_name": "Falkland Islands",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "073",
+      "country_name": "Faroe Islands",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "074",
+      "country_name": "Fiji",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "075",
+      "country_name": "Finland",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "076",
+      "country_name": "France",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "077",
+      "country_name": "French Guiana",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "078",
+      "country_name": "French Polynesia",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "079",
+      "country_name": "French Southern Territories",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "080",
+      "country_name": "Gabon",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "081",
+      "country_name": "Gambia",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "082",
+      "country_name": "Georgia",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "083",
+      "country_name": "Germany",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "084",
+      "country_name": "Ghana",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "085",
+      "country_name": "Gibraltar",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "086",
+      "country_name": "Greece",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "087",
+      "country_name": "Greenland",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "088",
+      "country_name": "Grenada",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "089",
+      "country_name": "Guadeloupe",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "090",
+      "country_name": "Guam",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "091",
+      "country_name": "Guatemala",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "092",
+      "country_name": "Guernsey",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "093",
+      "country_name": "Guinea",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "094",
+      "country_name": "Guinea-Bissau",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "095",
+      "country_name": "Guyana",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "096",
+      "country_name": "Haiti",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "097",
+      "country_name": "Heard Island and McDonald Islands",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "098",
+      "country_name": "Holy See",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "099",
+      "country_name": "Honduras",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "100",
+      "country_name": "Hong Kong",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "101",
+      "country_name": "Hungary",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "102",
+      "country_name": "Iceland",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "103",
+      "country_name": "India",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "104",
+      "country_name": "Indonesia",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "105",
+      "country_name": "Iran",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "106",
+      "country_name": "Iraq",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "107",
+      "country_name": "Ireland",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "108",
+      "country_name": "Isle of Man",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "109",
+      "country_name": "Israel",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "110",
+      "country_name": "Italy",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "111",
+      "country_name": "Jamaica",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "112",
+      "country_name": "Japan",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "113",
+      "country_name": "Jersey",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "114",
+      "country_name": "Jordan",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "115",
+      "country_name": "Kazakhstan",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "116",
+      "country_name": "Kenya",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "117",
+      "country_name": "Kiribati",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "118",
+      "country_name": "North Korea",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "119",
+      "country_name": "South Korea",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "120",
+      "country_name": "Kuwait",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "121",
+      "country_name": "Kyrgyzstan",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "122",
+      "country_name": "Lao People's Democratic Republic",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "123",
+      "country_name": "Latvia",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "124",
+      "country_name": "Lebanon",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "125",
+      "country_name": "Lesotho",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "126",
+      "country_name": "Liberia",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "127",
+      "country_name": "Libya",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "128",
+      "country_name": "Liechtenstein",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "129",
+      "country_name": "Lithuania",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "130",
+      "country_name": "Luxembourg",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "131",
+      "country_name": "Macao",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "132",
+      "country_name": "Madagascar",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "133",
+      "country_name": "Malawi",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "134",
+      "country_name": "Malaysia",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "135",
+      "country_name": "Maldives",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "136",
+      "country_name": "Mali",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "137",
+      "country_name": "Malta",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "138",
+      "country_name": "Marshall Islands",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "139",
+      "country_name": "Martinique",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "140",
+      "country_name": "Mauritania",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "141",
+      "country_name": "Mauritius",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "142",
+      "country_name": "Mayotte",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "143",
+      "country_name": "Mexico",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "144",
+      "country_name": "Micronesia",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "145",
+      "country_name": "Moldova",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "146",
+      "country_name": "Monaco",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "147",
+      "country_name": "Mongolia",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "148",
+      "country_name": "Montenegro",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "149",
+      "country_name": "Montserrat",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "150",
+      "country_name": "Morocco",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "151",
+      "country_name": "Mozambique",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "152",
+      "country_name": "Myanmar",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "153",
+      "country_name": "Namibia",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "154",
+      "country_name": "Nauru",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "155",
+      "country_name": "Nepal",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "156",
+      "country_name": "Netherlands",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "157",
+      "country_name": "New Caledonia",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "158",
+      "country_name": "New Zealand",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "159",
+      "country_name": "Nicaragua",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "160",
+      "country_name": "Niger",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "161",
+      "country_name": "Nigeria",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "162",
+      "country_name": "Niue",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "163",
+      "country_name": "Norfolk Island",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "164",
+      "country_name": "North Macedonia",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "165",
+      "country_name": "Northern Mariana Islands",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "166",
+      "country_name": "Norway",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "167",
+      "country_name": "Oman",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "168",
+      "country_name": "Pakistan",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "169",
+      "country_name": "Palau",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "170",
+      "country_name": "Palestine",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "171",
+      "country_name": "Panama",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "172",
+      "country_name": "Papua New Guinea",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "173",
+      "country_name": "Paraguay",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "174",
+      "country_name": "Peru",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "175",
+      "country_name": "Philippines",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "176",
+      "country_name": "Pitcairn",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "177",
+      "country_name": "Poland",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "178",
+      "country_name": "Portugal",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "179",
+      "country_name": "Puerto Rico",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "180",
+      "country_name": "Qatar",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "181",
+      "country_name": "Réunion",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "182",
+      "country_name": "Romania",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "183",
+      "country_name": "Russian Federation",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "184",
+      "country_name": "Rwanda",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "185",
+      "country_name": "Saint Barthélemy",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "186",
+      "country_name": "Saint Helena, Ascension and Tristan da Cunha",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "187",
+      "country_name": "Saint Kitts and Nevis",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "188",
+      "country_name": "Saint Lucia",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "189",
+      "country_name": "Saint Martin",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "190",
+      "country_name": "Saint Pierre and Miquelon",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "191",
+      "country_name": "Saint Vincent and the Grenadines",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "192",
+      "country_name": "Samoa",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "193",
+      "country_name": "San Marino",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "194",
+      "country_name": "Sao Tome and Principe",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "195",
+      "country_name": "Saudi Arabia",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "196",
+      "country_name": "Senegal",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "197",
+      "country_name": "Serbia",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "198",
+      "country_name": "Seychelles",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "199",
+      "country_name": "Sierra Leone",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "200",
+      "country_name": "Singapore",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "201",
+      "country_name": "Sint Maarten",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "202",
+      "country_name": "Slovakia",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "203",
+      "country_name": "Slovenia",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "204",
+      "country_name": "Solomon Islands",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "205",
+      "country_name": "Somalia",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "206",
+      "country_name": "South Africa",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "207",
+      "country_name": "South Georgia and the South Sandwich Islands",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "208",
+      "country_name": "South Sudan",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "209",
+      "country_name": "Spain",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "210",
+      "country_name": "Sri Lanka",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "211",
+      "country_name": "Sudan",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "212",
+      "country_name": "Suriname",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "213",
+      "country_name": "Svalbard and Jan Mayen",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "214",
+      "country_name": "Sweden",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "215",
+      "country_name": "Switzerland",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "216",
+      "country_name": "Syrian Arab Republic",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "217",
+      "country_name": "Taiwan",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "218",
+      "country_name": "Tajikistan",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "219",
+      "country_name": "Tanzania",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "220",
+      "country_name": "Thailand",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "221",
+      "country_name": "Timor-Leste",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "222",
+      "country_name": "Togo",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "223",
+      "country_name": "Tokelau",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "224",
+      "country_name": "Tonga",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "225",
+      "country_name": "Trinidad and Tobago",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "226",
+      "country_name": "Tunisia",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "227",
+      "country_name": "Türkiye",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "228",
+      "country_name": "Turkmenistan",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "229",
+      "country_name": "Turks and Caicos Islands",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "230",
+      "country_name": "Tuvalu",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "231",
+      "country_name": "Uganda",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "232",
+      "country_name": "Ukraine",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "233",
+      "country_name": "United Arab Emirates",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "234",
+      "country_name": "United Kingdom",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "235",
+      "country_name": "United States",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "236",
+      "country_name": "United States Minor Outlying Islands",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "237",
+      "country_name": "Uruguay",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "238",
+      "country_name": "Uzbekistan",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "239",
+      "country_name": "Vanuatu",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "240",
+      "country_name": "Venezuela",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "241",
+      "country_name": "Vietnam",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "242",
+      "country_name": "Virgin Islands, British",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "243",
+      "country_name": "Virgin Islands, U.S.",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "244",
+      "country_name": "Wallis and Futuna",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "245",
+      "country_name": "Western Sahara",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "246",
+      "country_name": "Yemen",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "247",
+      "country_name": "Zambia",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "248",
+      "country_name": "Zimbabwe",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "249",
+      "country_name": "Åland Islands",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "250",
+      "country_name": "Roman Republic",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "251",
+      "country_name": "Roman Empire",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "252",
+      "country_name": "Byzantine Empire",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "253",
+      "country_name": "Holy Roman Empire",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "254",
+      "country_name": "Western Roman Empire",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "255",
+      "country_name": "Eastern Roman Empire",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "256",
+      "country_name": "Ancient Egypt",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "257",
+      "country_name": "Kingdom of Kush",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "258",
+      "country_name": "Carthaginian Empire",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "259",
+      "country_name": "Kingdom of Aksum",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "260",
+      "country_name": "Mali Empire",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "261",
+      "country_name": "Songhai Empire",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "262",
+      "country_name": "Ghana Empire",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "263",
+      "country_name": "Kanem-Bornu Empire",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "264",
+      "country_name": "Benin Kingdom",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "265",
+      "country_name": "Oyo Empire",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "266",
+      "country_name": "Ashanti Empire",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "267",
+      "country_name": "Ethiopian Empire",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "268",
+      "country_name": "Kingdom of Kongo",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "269",
+      "country_name": "Mutapa Empire",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "270",
+      "country_name": "Maravi Kingdom",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "271",
+      "country_name": "Zulu Kingdom",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "272",
+      "country_name": "Sokoto Caliphate",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "273",
+      "country_name": "Almohad Caliphate",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "274",
+      "country_name": "Almoravid Empire",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "275",
+      "country_name": "Fatimid Caliphate",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "276",
+      "country_name": "Mamluk Sultanate",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "277",
+      "country_name": "Abbasid Caliphate",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "278",
+      "country_name": "Umayyad Caliphate",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "279",
+      "country_name": "Ottoman Empire",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "280",
+      "country_name": "Safavid Iran",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "281",
+      "country_name": "Qajar Iran",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "282",
+      "country_name": "Mughal Empire",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "283",
+      "country_name": "Maurya Empire",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "284",
+      "country_name": "Gupta Empire",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "285",
+      "country_name": "Chola Empire",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "286",
+      "country_name": "Pala Empire",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "287",
+      "country_name": "Delhi Sultanate",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "288",
+      "country_name": "Maratha Empire",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "289",
+      "country_name": "Vijayanagara Empire",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "290",
+      "country_name": "Kushan Empire",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "291",
+      "country_name": "Parthian Empire",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "292",
+      "country_name": "Sasanian Empire",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "293",
+      "country_name": "Achaemenid Empire",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "294",
+      "country_name": "Median Empire",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "295",
+      "country_name": "Hittite Empire",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "296",
+      "country_name": "Phoenicia",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "297",
+      "country_name": "Kingdom of Lydia",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "298",
+      "country_name": "Seleucid Empire",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "299",
+      "country_name": "Ptolemaic Kingdom",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "300",
+      "country_name": "Ancient Greece",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "301",
+      "country_name": "Macedonian Empire",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "302",
+      "country_name": "Spartan State",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "303",
+      "country_name": "Athens",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "304",
+      "country_name": "Carthage",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "305",
+      "country_name": "Han Dynasty",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "306",
+      "country_name": "Qin Dynasty",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "307",
+      "country_name": "Tang Dynasty",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "308",
+      "country_name": "Song Dynasty",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "309",
+      "country_name": "Yuan Dynasty",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "310",
+      "country_name": "Ming Dynasty",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "311",
+      "country_name": "Qing Dynasty",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "312",
+      "country_name": "Three Kingdoms China",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "313",
+      "country_name": "Korea under Joseon",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "314",
+      "country_name": "Goryeo",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "315",
+      "country_name": "Silla",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "316",
+      "country_name": "Baekje",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "317",
+      "country_name": "Goguryeo",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "318",
+      "country_name": "Ryukyu Kingdom",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "319",
+      "country_name": "Khmer Empire",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "320",
+      "country_name": "Pagan Kingdom",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "321",
+      "country_name": "Ayutthaya Kingdom",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "322",
+      "country_name": "Sukhothai Kingdom",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "323",
+      "country_name": "Majapahit",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "324",
+      "country_name": "Srivijaya",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "325",
+      "country_name": "Malacca Sultanate",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "326",
+      "country_name": "Brunei Sultanate",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "327",
+      "country_name": "Lan Xang",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "328",
+      "country_name": "Dai Viet",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "329",
+      "country_name": "Champa",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "330",
+      "country_name": "Nguyen Vietnam",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "331",
+      "country_name": "Mataram Kingdom",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "332",
+      "country_name": "Hawaiian Kingdom",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "333",
+      "country_name": "Kingdom of Tahiti",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "334",
+      "country_name": "Tu'i Tonga Empire",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "335",
+      "country_name": "Samoan Kingdom",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "336",
+      "country_name": "Maori Confederations",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "337",
+      "country_name": "Inca Empire",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "338",
+      "country_name": "Aztec Empire",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "339",
+      "country_name": "Maya City-States",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "340",
+      "country_name": "Mississippian Cultures",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "341",
+      "country_name": "Tarascan State",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "342",
+      "country_name": "Gran Colombia",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "343",
+      "country_name": "Viceroyalty of New Spain",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "344",
+      "country_name": "Viceroyalty of Peru",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "345",
+      "country_name": "Viceroyalty of New Granada",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "346",
+      "country_name": "Viceroyalty of the Río de la Plata",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "347",
+      "country_name": "Captaincy General of Guatemala",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "348",
+      "country_name": "Kingdom of Brazil",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "349",
+      "country_name": "United Provinces of Central America",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "350",
+      "country_name": "Federal Republic of Central America",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "351",
+      "country_name": "United States of Colombia",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "352",
+      "country_name": "New Granada",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "353",
+      "country_name": "Kingdom of Prussia",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "354",
+      "country_name": "German Empire",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "355",
+      "country_name": "Austro-Hungarian Empire",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "356",
+      "country_name": "Austrian Empire",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "357",
+      "country_name": "Kingdom of Hungary",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "358",
+      "country_name": "Kingdom of Bohemia",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "359",
+      "country_name": "Polish-Lithuanian Commonwealth",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "360",
+      "country_name": "Kingdom of Poland",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "361",
+      "country_name": "Grand Duchy of Lithuania",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "362",
+      "country_name": "Russian Empire",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "363",
+      "country_name": "Soviet Union",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "364",
+      "country_name": "Yugoslavia",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "365",
+      "country_name": "Czechoslovakia",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "366",
+      "country_name": "East Germany",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "367",
+      "country_name": "West Germany",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "368",
+      "country_name": "Kingdom of Italy",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "369",
+      "country_name": "Kingdom of Sardinia",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "370",
+      "country_name": "Papal States",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "371",
+      "country_name": "Kingdom of the Two Sicilies",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "372",
+      "country_name": "French Empire",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "373",
+      "country_name": "Kingdom of France",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "374",
+      "country_name": "Spanish Empire",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "375",
+      "country_name": "Kingdom of Spain",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "376",
+      "country_name": "Portuguese Empire",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "377",
+      "country_name": "Dutch Republic",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "378",
+      "country_name": "British Empire",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "379",
+      "country_name": "Irish Free State",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "380",
+      "country_name": "United Arab Republic",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "381",
+      "country_name": "United Arab Federation",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "382",
+      "country_name": "North Yemen",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "383",
+      "country_name": "South Yemen",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "384",
+      "country_name": "Democratic Kampuchea",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "385",
+      "country_name": "South Vietnam",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "386",
+      "country_name": "North Vietnam",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "387",
+      "country_name": "Republic of Vietnam",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "388",
+      "country_name": "Kingdom of Afghanistan",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "389",
+      "country_name": "Tibetan Government",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "390",
+      "country_name": "Manchu-led Qing successor states",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    },
+    {
+      "registry_id": "391",
+      "country_name": "Persian Empire",
+      "iso_alpha2": null,
+      "sources": [
+        "http/spec/BYPASS.md",
+        "http/spec/BYPASS.md"
+      ]
+    }
+  ]
 }
