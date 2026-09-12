@@ -5,6 +5,7 @@
 #include <openssl/rand.h>
 #include <openssl/core_names.h>
 #include <openssl/params.h>
+#include <limits.h>
 #include <string.h>
 
 static int get_raw_public(EVP_PKEY *key, uint8_t out[32])
