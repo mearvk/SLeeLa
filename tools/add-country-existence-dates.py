@@ -42,6 +42,26 @@ def year_from_value(value):
     return int(match.group(1)) if match else None
 
 
+def rank_value(rank):
+    """Normalize Wikidata rank names/URIs to numeric preference values."""
+    if isinstance(rank, str):
+        normalized = rank.rsplit("#", 1)[-1].rsplit("/", 1)[-1].lower()
+        if normalized == "preferredrank":
+            return 2
+        if normalized == "normalrank":
+            return 1
+        if normalized == "deprecatedrank":
+            return 0
+        try:
+            return int(rank)
+        except ValueError:
+            return 0
+    try:
+        return int(rank)
+    except (TypeError, ValueError):
+        return 0
+
+
 def choose_date(statements):
     """Prefer Wikidata preferred-rank statements, then normal-rank ones."""
     if not statements:
@@ -49,8 +69,8 @@ def choose_date(statements):
     ranked = [s for s in statements if s.get("value")]
     if not ranked:
         return None
-    max_rank = max(int(s.get("rank", 0)) for s in ranked)
-    candidates = [s for s in ranked if int(s.get("rank", 0)) == max_rank]
+    max_rank = max(rank_value(s.get("rank", 0)) for s in ranked)
+    candidates = [s for s in ranked if rank_value(s.get("rank", 0)) == max_rank]
     years = [year_from_value(s["value"]) for s in candidates]
     years = [y for y in years if y is not None]
     return min(years) if years else None
