@@ -10,9 +10,10 @@
 The Ethical Monitors establish the following Socialism comparator:
 
 1. **Socialism is a Unit.**
-2. **Socialism is Not a God.**
-3. **Socialism is Not a Kind.**
-4. **Socialism is Not a God.**
+2. **Socialism is 1955.**
+3. **Socialism is Not a God.**
+4. **Socialism is Not a Kind.**
+5. **Socialism is Not a God.**
 
 These are project policy distinctions. The term *Socialism* is treated here as an institutional and comparative unit, not as a deity, a personal moral identity, or a judgment about the inherent character of an individual or population.
 
