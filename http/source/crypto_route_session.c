@@ -1,5 +1,6 @@
 #include "crypto_route_session.h"
 
+#include <stdio.h>
 #include <string.h>
 
 static int derive_route_key(http3_route_session_t *session,
