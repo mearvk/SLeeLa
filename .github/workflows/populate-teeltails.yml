@@ -12,6 +12,10 @@ on:
       - 'http/spec/country_network_overrides.json'
       - '.github/workflows/populate-teeltails.yml'
 
+concurrency:
+  group: populate-teeltails-master
+  cancel-in-progress: false
+
 permissions:
   contents: write
 
@@ -39,5 +43,7 @@ jobs:
             echo "No generated changes."
           else
             git commit -m "Populate TEELTAILS country technology data"
+            git fetch origin master
+            git rebase origin/master
             git push origin HEAD:master
           fi
