@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <strings.h>
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <unistd.h>
@@ -21,7 +22,6 @@
 #define KDS_MAX_RESPONSE 12288U
 #define KDS_MAX_BODY 4096U
 #define KDS_MAX_CONNECTIONS 256U
-#define KDS_MAX_CLIENTS_PER_IP 64U
 
 static volatile sig_atomic_t running = 1;
 static http3_kds_server_t server_state;
@@ -30,6 +30,7 @@ static pthread_mutex_t connection_lock = PTHREAD_MUTEX_INITIALIZER;
 static unsigned int active_connections = 0;
 
 typedef struct {
+    int fd;
     struct sockaddr_storage address;
     socklen_t address_len;
 } connection_arg_t;
@@ -120,46 +121,39 @@ static int header_value(const char *headers, const char *name, char *out, size_t
     return 0;
 }
 
-static int read_http_request(SSL *ssl, char *request, size_t request_size, size_t *header_len,
-                             size_t *body_len) {
+static int read_http_request(SSL *ssl, char *request, size_t request_size,
+                             size_t *header_len, size_t *body_len) {
     size_t used = 0;
     size_t expected_body = 0;
-    int have_length = 0;
+    int have_headers = 0;
     int n;
     char length_text[32];
+
     while (used + 1U < request_size) {
         n = SSL_read(ssl, request + used, (int)(request_size - used - 1U));
         if (n <= 0) return 0;
         used += (size_t)n;
         request[used] = '\0';
-        {
+
+        if (!have_headers) {
             char *headers_end = strstr(request, "\r\n\r\n");
-            if (headers_end) {
-                size_t h = (size_t)(headers_end - request) + 4U;
-                if (!have_length) {
-                    if (h > KDS_MAX_REQUEST || request[0] == '\0') return 0;
-                    expected_body = 0;
-                }
-                if (have_length && expected_body > KDS_MAX_BODY) return 0;
-                if (used - h >= expected_body) {
-                    *header_len = h;
-                    *body_len = expected_body;
-                    request[h + expected_body] = '\0';
-                    return h + expected_body <= request_size;
-                }
-            }
-        }
-        if (!have_length && strstr(request, "\r\n\r\n")) {
+            if (!headers_end) continue;
+            *header_len = (size_t)(headers_end - request) + 4U;
+            if (*header_len >= request_size) return 0;
+            have_headers = 1;
             if (header_value(request, "Content-Length", length_text, sizeof(length_text))) {
                 char *end = NULL;
                 unsigned long parsed = strtoul(length_text, &end, 10);
                 if (!end || *end != '\0' || parsed > KDS_MAX_BODY) return 0;
                 expected_body = (size_t)parsed;
-                have_length = 1;
-            } else {
-                have_length = 1;
-                expected_body = 0;
             }
+        }
+
+        if (have_headers && used >= *header_len + expected_body) {
+            if (*header_len + expected_body >= request_size) return 0;
+            *body_len = expected_body;
+            request[*header_len + expected_body] = '\0';
+            return 1;
         }
     }
     return 0;
@@ -212,7 +206,7 @@ static int request_line(const char *request, char *method, size_t method_size,
 
 static void *handle_connection(void *arg) {
     connection_arg_t *connection = (connection_arg_t *)arg;
-    int fd = -1;
+    int fd = connection ? connection->fd : -1;
     SSL *ssl = NULL;
     char request[KDS_MAX_REQUEST];
     char method[16];
@@ -226,12 +220,11 @@ static void *handle_connection(void *arg) {
     size_t header_len = 0, body_len = 0;
     time_t now;
 
-    if (connection) {
-        fd = *((int *)connection); /* first member is the socket descriptor below */
-    }
     free(connection);
-    if (fd < 0) return NULL;
-
+    if (fd < 0) {
+        connection_release();
+        return NULL;
+    }
     ssl = SSL_new(tls_ctx);
     if (!ssl) goto done;
     SSL_set_fd(ssl, fd);
@@ -370,23 +363,22 @@ int main(int argc, char **argv) {
     while (running) {
         connection_arg_t *connection = (connection_arg_t *)calloc(1, sizeof(*connection));
         pthread_t thread;
-        int fd;
         if (!connection) break;
-        fd = accept(listener, (struct sockaddr *)&connection->address, &connection->address_len);
-        if (fd < 0) {
+        connection->address_len = sizeof(connection->address);
+        connection->fd = accept(listener, (struct sockaddr *)&connection->address,
+                                 &connection->address_len);
+        if (connection->fd < 0) {
             free(connection);
             if (errno == EINTR) continue;
             break;
         }
-        /* Store the descriptor in the first bytes of the connection object. */
-        memcpy(connection, &fd, sizeof(fd));
         if (!connection_acquire()) {
-            close(fd);
+            close(connection->fd);
             free(connection);
             continue;
         }
         if (pthread_create(&thread, NULL, handle_connection, connection) != 0) {
-            close(fd);
+            close(connection->fd);
             free(connection);
             connection_release();
             continue;
