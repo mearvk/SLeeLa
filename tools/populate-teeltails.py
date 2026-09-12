@@ -2,16 +2,18 @@
 """Populate TEELTAILS.md.ms.max from free public sources.
 
 Sources:
-- ITU 2025 ICT Price Basket Excel workbook: fixed broadband 5GB,
-  data-only mobile 5GB, and mobile high-consumption 140 min + 20 SMS + 5GB.
+- ITU 2025 ICT Price Basket Excel workbooks (public downloads): fixed
+  broadband 5GB, data-only mobile 5GB, and mobile high-consumption baskets.
 - World Bank World Development Indicators (ITU-sourced): Internet users and
   fixed-broadband subscriptions per 100 people.
 - Mledoze public country dataset for ISO-2/ISO-3 name resolution.
 
-The undocumented ITU DataHub API is deliberately NOT used.  This keeps the
-GitHub Actions job dependent only on public, downloadable data sources.
+The undocumented ITU DataHub API is deliberately NOT used.  The parser is
+intentionally tolerant of ITU workbook layout changes: it discovers sheets,
+header rows, 2025 USD columns, basket labels, and ISO/country columns instead
+of depending on fixed sheet names.
 
-The 391-entry BYPASS taxonomy remains authoritative.  Historical/project-only
+The 391-entry BYPASS taxonomy remains authoritative. Historical/project-only
 entries are retained as N/A where a current commercial service observation is
 not meaningful.
 """
@@ -27,7 +29,10 @@ ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "http/spec/TEELTAILS.md.ms.max"
 BYPASS = ROOT / "http/spec/BYPASS.md"
 COUNTRIES_URL = "https://raw.githubusercontent.com/mledoze/countries/master/countries.json"
-ITU_XLSX = "https://www.itu.int/en/ITU-D/Statistics/Documents/ICT_Prices/ITU_ICTPriceBaskets_2008-2025.xlsx"
+ITU_XLSX_URLS = [
+    "https://www.itu.int/en/ITU-D/Statistics/Documents/ICT_Prices/ITU_ICTPriceBaskets_Allowance_2025.xlsx",
+    "https://www.itu.int/en/ITU-D/Statistics/Documents/ICT_Prices/ITU_ICTPriceBaskets_2008-2025.xlsx",
+]
 WB_API = "https://api.worldbank.org/v2"
 BEGIN = "<!-- BEGIN GENERATED TEELTAILS COUNTRY MATRIX -->"
 END = "<!-- END GENERATED TEELTAILS COUNTRY MATRIX -->"
@@ -35,13 +40,13 @@ EXPECTED_ENTRIES = 391
 
 
 def get_bytes(url, timeout=120):
-    req = urllib.request.Request(url, headers={"User-Agent": "SLeeLa-TEELTAILS/3.0"})
+    req = urllib.request.Request(url, headers={"User-Agent": "SLeeLa-TEELTAILS/3.1"})
     with urllib.request.urlopen(req, timeout=timeout) as response:
         return response.read()
 
 
 def get_json(url, timeout=120):
-    req = urllib.request.Request(url, headers={"User-Agent": "SLeeLa-TEELTAILS/3.0"})
+    req = urllib.request.Request(url, headers={"User-Agent": "SLeeLa-TEELTAILS/3.1"})
     with urllib.request.urlopen(req, timeout=timeout) as response:
         return json.load(response)
 
@@ -78,8 +83,9 @@ def load_iso_dataset():
     aliases = {
         "cape verde": "cabo verde", "czech republic": "czechia",
         "the gambia": "gambia", "turkey": "turkiye", "vatican city": "holy see",
-        "russia": "russia", "south korea": "south korea", "north korea": "north korea",
-        "iran": "iran", "laos": "laos", "moldova": "moldova", "syria": "syria",
+        "south korea": "korea republic of", "north korea": "korea democratic people republic of",
+        "iran": "iran islamic republic of", "laos": "lao people s democratic republic",
+        "moldova": "moldova republic of", "syria": "syrian arab republic",
     }
     for source, target in aliases.items():
         if normalize_name(target) in by_name:
@@ -92,23 +98,24 @@ def clean_text(value):
 
 
 def find_header_row(rows):
-    for i, row in enumerate(rows[:40]):
+    for i, row in enumerate(rows[:100]):
         cells = [clean_text(x) for x in row]
         joined = " | ".join(cells)
-        if any(x in joined for x in ("economy", "country")) and any(x in joined for x in ("usd", "price")):
+        if any(x in joined for x in ("economy", "country")) and any(x in joined for x in ("usd", "price", "tariff")):
             return i
     return None
 
 
-def sheet_kind(title):
-    n = clean_text(title)
-    if "fixed" in n and "broadband" in n:
+def classify_basket(sheet_title, headers):
+    text = clean_text(sheet_title + " " + " ".join(str(x) for x in headers if x is not None))
+    if "fixed broadband" in text:
         return "fixed"
-    if "data only" in n or "data only mobile" in n:
+    if "data only" in text or "data only mobile" in text:
         return "data_only"
-    if "high" in n and "consumption" in n:
+    if "high consumption" in text or "high cons" in text:
         return "mobile_high"
-    if "mobile" in n and "5 gb" in n:
+    # Common abbreviations used in ITU spreadsheets.
+    if "mobile broadband" in text and "voice" not in text and "5 gb" in text:
         return "data_only"
     return None
 
@@ -126,12 +133,16 @@ def numeric(value):
         return None
 
 
-def find_column(headers, candidates):
+def find_column(headers, candidates, prefer_year_2025=False):
     normalized = [clean_text(x) for x in headers]
-    for i, h in enumerate(normalized):
-        if any(candidate in h for candidate in candidates):
-            return i
-    return None
+    indices = [i for i, h in enumerate(normalized) if any(candidate in h for candidate in candidates)]
+    if not indices:
+        return None
+    if prefer_year_2025:
+        for i in indices:
+            if "2025" in normalized[i]:
+                return i
+    return indices[0]
 
 
 def parse_itu_workbook(path):
@@ -145,18 +156,26 @@ def parse_itu_workbook(path):
     used_sheets = {}
 
     for ws in wb.worksheets:
-        kind = sheet_kind(ws.title)
-        if not kind:
-            continue
         rows = list(ws.iter_rows(values_only=True))
         header_i = find_header_row(rows)
         if header_i is None:
             continue
         headers = list(rows[header_i])
+        kind = classify_basket(ws.title, headers)
+        if not kind:
+            # Look at the first few rows as ITU sometimes places the basket
+            # title above the actual tabular header.
+            context = " ".join(" ".join(str(x) for x in row if x is not None) for row in rows[:header_i + 1])
+            kind = classify_basket(ws.title, [context])
+        if not kind:
+            continue
+
         country_col = find_column(headers, ["economy", "country"])
         iso3_col = find_column(headers, ["iso3", "iso 3", "iso alpha 3"])
-        usd_col = find_column(headers, ["price usd", "usd", "us dollar", "price"])
+        # Prefer an explicit 2025 USD column in historical workbooks.
+        usd_col = find_column(headers, ["price usd", "usd", "us dollar", "price"], prefer_year_2025=True)
         year_col = find_column(headers, ["year", "data year", "collection year"])
+        basket_col = find_column(headers, ["basket", "service", "product"])
         if usd_col is None:
             continue
         used_sheets[kind] = ws.title
@@ -164,22 +183,36 @@ def parse_itu_workbook(path):
         for row in rows[header_i + 1:]:
             if not row:
                 continue
-            iso3 = str(row[iso3_col]).upper().strip() if iso3_col is not None and row[iso3_col] else ""
-            country = str(row[country_col]).strip() if country_col is not None and row[country_col] else ""
-            price = numeric(row[usd_col])
-            if not price or price < 0 or (not iso3 and not country):
+            row_text = " ".join(str(x) for x in row if x is not None)
+            # If a year column exists, retain the 2025 observation. In a
+            # historical sheet without a year column, the selected 2025 USD
+            # column already identifies the desired observation.
+            if year_col is not None:
+                row_year = numeric(row[year_col]) if year_col < len(row) else None
+                if row_year is not None and int(row_year) != 2025:
+                    continue
+
+            iso3 = str(row[iso3_col]).upper().strip() if iso3_col is not None and iso3_col < len(row) and row[iso3_col] else ""
+            country = str(row[country_col]).strip() if country_col is not None and country_col < len(row) and row[country_col] else ""
+            price = numeric(row[usd_col]) if usd_col < len(row) else None
+            if price is None or price < 0 or (not iso3 and not country):
                 continue
-            year = numeric(row[year_col]) if year_col is not None else 2025
-            if year is None:
-                year = 2025
+
+            # If the sheet contains multiple baskets, use the basket/service
+            # cell to prevent cross-contamination.
+            if basket_col is not None and basket_col < len(row):
+                row_kind = classify_basket(str(row[basket_col]), [])
+                if row_kind and row_kind != kind:
+                    continue
+
             key = iso3 or normalize_name(country)
             old = result[kind].get(key)
-            if old is None or year >= old[1]:
-                result[kind][key] = (price, int(year), country)
+            if old is None or old[1] <= 2025:
+                result[kind][key] = (price, 2025, country)
 
     wb.close()
     if not any(result.values()):
-        raise RuntimeError("ITU workbook downloaded but no recognized price sheets/rows were found")
+        raise RuntimeError("ITU workbook downloaded but no recognized 2025 price sheets/rows were found")
     return result, used_sheets
 
 
@@ -213,8 +246,6 @@ def money(value):
 
 
 def quality_grade(internet, fixed):
-    # Transparent project scale: Internet use is the primary broad-access
-    # measure; fixed broadband density is a secondary infrastructure measure.
     if internet is None and fixed is None:
         return "N/A"
     if internet is None:
@@ -246,22 +277,6 @@ def cellular_value(price_available):
 
 def wimax_value(fixed_available):
     return "Fixed wireless/FWA may coexist; WiMAX not separately reported" if fixed_available else "FWA/WiMAX not separately reported"
-
-
-def lookup_price(table, iso3, country_name, aliases=None):
-    aliases = aliases or {}
-    item = table.get(iso3)
-    if item:
-        return item
-    key = normalize_name(country_name)
-    item = table.get(key)
-    if item:
-        return item
-    for alt in aliases.get(key, []):
-        item = table.get(normalize_name(alt))
-        if item:
-            return item
-    return None
 
 
 def build_rows(entries, iso_by_name, prices, internet, fixed):
@@ -310,16 +325,26 @@ def main():
     entries = load_bypass_entries()
     iso_by_name = load_iso_dataset()
 
-    with tempfile.NamedTemporaryFile(suffix=".xlsx", delete=False) as tmp:
-        workbook_path = Path(tmp.name)
-        tmp.write(get_bytes(ITU_XLSX))
+    prices_raw = None
+    sheets = None
+    last_error = None
+    for url in ITU_XLSX_URLS:
+        with tempfile.NamedTemporaryFile(suffix=".xlsx", delete=False) as tmp:
+            workbook_path = Path(tmp.name)
+            try:
+                tmp.write(get_bytes(url))
+                tmp.flush()
+                candidate_prices, candidate_sheets = parse_itu_workbook(workbook_path)
+                prices_raw, sheets = candidate_prices, candidate_sheets
+                print(f"Using ITU workbook: {url}")
+                break
+            except Exception as exc:
+                last_error = exc
+            finally:
+                workbook_path.unlink(missing_ok=True)
+    if prices_raw is None:
+        raise RuntimeError(f"No usable ITU public workbook was found: {last_error}")
 
-    try:
-        prices_raw, sheets = parse_itu_workbook(workbook_path)
-    finally:
-        workbook_path.unlink(missing_ok=True)
-
-    # Normalize workbook keys that are country names rather than ISO3 codes.
     prices = {"data_only": {}, "fixed": {}, "mobile_high": {}}
     iso_reverse = {normalize_name(name): pair[1] for name, pair in iso_by_name.items()}
     for kind, table in prices_raw.items():
