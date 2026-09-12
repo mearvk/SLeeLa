@@ -1,0 +1,29 @@
+name: HTTP 3.0 Crypto
+
+on:
+  push:
+    paths:
+      - 'http/source/**'
+      - '.github/workflows/http-crypto.yml'
+  pull_request:
+    paths:
+      - 'http/source/**'
+      - '.github/workflows/http-crypto.yml'
+
+jobs:
+  build-and-self-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install OpenSSL development headers
+        run: sudo apt-get update && sudo apt-get install -y libssl-dev pkg-config
+
+      - name: Build and run C self-test
+        working-directory: http/source
+        run: make clean all && ./crypto_selftest
+
+      - name: Check C++ interface
+        working-directory: http/source
+        run: make cpp-check
