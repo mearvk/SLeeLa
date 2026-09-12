@@ -10,6 +10,7 @@ on:
       - 'http/spec/BYPASS.md'
       - 'tools/populate-teeltails.py'
       - 'http/spec/country_network_overrides.json'
+      - '.github/workflows/populate-teeltails.yml'
 
 permissions:
   contents: write
