@@ -284,3 +284,405 @@ Technology and prices change quickly. The country records should therefore be re
 The ITU's current ICT-price program provides the preferred international benchmark for comparable country-level affordability data. citeturn0search0
 
 **Guiding principle:** document the technology that people can actually use, the price they can actually pay, the quality they can reasonably expect, and the evidence supporting each statement.
+
+<!-- BEGIN GENERATED TEELTAILS COUNTRY MATRIX -->
+
+**Generated from `http/spec/BYPASS.md`; ISO codes are enrichment data only.**
+
+| # | Country / World Entry | ISO | Wi-Fi standards | Cellular technology | WiMAX / FWA | Entry Internet tier | Standard Internet tier | Premium Internet tier | Quality |
+|---:|---|---|---|---|---|---|---|---|---|
+| 001 | Afghanistan | AF / AFG | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 002 | Albania | AL / ALB | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 003 | Algeria | DZ / DZA | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 004 | American Samoa | AS / ASM | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 005 | Andorra | AD / AND | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 006 | Angola | AO / AGO | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 007 | Anguilla | AI / AIA | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 008 | Antarctica | AQ / ATA | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 009 | Antigua and Barbuda | AG / ATG | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 010 | Argentina | AR / ARG | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 011 | Armenia | AM / ARM | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 012 | Aruba | AW / ABW | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 013 | Australia | AU / AUS | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 014 | Austria | AT / AUT | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 015 | Azerbaijan | AZ / AZE | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 016 | Bahamas | BS / BHS | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 017 | Bahrain | BH / BHR | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 018 | Bangladesh | BD / BGD | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 019 | Barbados | BB / BRB | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 020 | Belarus | BY / BLR | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 021 | Belgium | BE / BEL | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 022 | Belize | BZ / BLZ | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 023 | Benin | BJ / BEN | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 024 | Bermuda | BM / BMU | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 025 | Bhutan | BT / BTN | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 026 | Bolivia | BO / BOL | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 027 | Bonaire, Sint Eustatius and Saba | BQ / BES | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 028 | Bosnia and Herzegovina | BA / BIH | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 029 | Botswana | BW / BWA | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 030 | Bouvet Island | BV / BVT | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 031 | Brazil | BR / BRA | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 032 | British Indian Ocean Territory | IO / IOT | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 033 | Brunei | BN / BRN | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 034 | Bulgaria | BG / BGR | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 035 | Burkina Faso | BF / BFA | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 036 | Burundi | BI / BDI | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 037 | Cabo Verde | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 038 | Cambodia | KH / KHM | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 039 | Cameroon | CM / CMR | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 040 | Canada | CA / CAN | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 041 | Cayman Islands | KY / CYM | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 042 | Central African Republic | CF / CAF | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 043 | Chad | TD / TCD | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 044 | Chile | CL / CHL | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 045 | China | CN / CHN | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 046 | Christmas Island | CX / CXR | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 047 | Cocos (Keeling) Islands | CC / CCK | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 048 | Colombia | CO / COL | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 049 | Comoros | KM / COM | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 050 | Congo | CG / COG | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 051 | Cook Islands | CK / COK | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 052 | Costa Rica | CR / CRI | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 053 | Côte d'Ivoire | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 054 | Croatia | HR / HRV | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 055 | Cuba | CU / CUB | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 056 | Curaçao | CW / CUW | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 057 | Cyprus | CY / CYP | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 058 | Czechia | CZ / CZE | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 059 | Democratic Republic of the Congo | CD / COD | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 060 | Denmark | DK / DNK | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 061 | Djibouti | DJ / DJI | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 062 | Dominica | DM / DMA | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 063 | Dominican Republic | DO / DOM | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 064 | Ecuador | EC / ECU | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 065 | Egypt | EG / EGY | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 066 | El Salvador | SV / SLV | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 067 | Equatorial Guinea | GQ / GNQ | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 068 | Eritrea | ER / ERI | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 069 | Estonia | EE / EST | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 070 | Eswatini | SZ / SWZ | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 071 | Ethiopia | ET / ETH | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 072 | Falkland Islands | FK / FLK | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 073 | Faroe Islands | FO / FRO | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 074 | Fiji | FJ / FJI | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 075 | Finland | FI / FIN | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 076 | France | FR / FRA | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 077 | French Guiana | GF / GUF | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 078 | French Polynesia | PF / PYF | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 079 | French Southern Territories | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 080 | Gabon | GA / GAB | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 081 | Gambia | GM / GMB | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 082 | Georgia | GE / GEO | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 083 | Germany | DE / DEU | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 084 | Ghana | GH / GHA | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 085 | Gibraltar | GI / GIB | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 086 | Greece | GR / GRC | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 087 | Greenland | GL / GRL | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 088 | Grenada | GD / GRD | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 089 | Guadeloupe | GP / GLP | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 090 | Guam | GU / GUM | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 091 | Guatemala | GT / GTM | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 092 | Guernsey | GG / GGY | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 093 | Guinea | GN / GIN | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 094 | Guinea-Bissau | GW / GNB | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 095 | Guyana | GY / GUY | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 096 | Haiti | HT / HTI | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 097 | Heard Island and McDonald Islands | HM / HMD | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 098 | Holy See | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 099 | Honduras | HN / HND | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 100 | Hong Kong | HK / HKG | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 101 | Hungary | HU / HUN | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 102 | Iceland | IS / ISL | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 103 | India | IN / IND | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 104 | Indonesia | ID / IDN | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 105 | Iran | IR / IRN | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 106 | Iraq | IQ / IRQ | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 107 | Ireland | IE / IRL | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 108 | Isle of Man | IM / IMN | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 109 | Israel | IL / ISR | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 110 | Italy | IT / ITA | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 111 | Jamaica | JM / JAM | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 112 | Japan | JP / JPN | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 113 | Jersey | JE / JEY | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 114 | Jordan | JO / JOR | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 115 | Kazakhstan | KZ / KAZ | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 116 | Kenya | KE / KEN | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 117 | Kiribati | KI / KIR | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 118 | North Korea | KP / PRK | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 119 | South Korea | KR / KOR | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 120 | Kuwait | KW / KWT | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 121 | Kyrgyzstan | KG / KGZ | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 122 | Lao People's Democratic Republic | LA / LAO | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 123 | Latvia | LV / LVA | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 124 | Lebanon | LB / LBN | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 125 | Lesotho | LS / LSO | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 126 | Liberia | LR / LBR | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 127 | Libya | LY / LBY | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 128 | Liechtenstein | LI / LIE | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 129 | Lithuania | LT / LTU | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 130 | Luxembourg | LU / LUX | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 131 | Macao | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 132 | Madagascar | MG / MDG | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 133 | Malawi | MW / MWI | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 134 | Malaysia | MY / MYS | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 135 | Maldives | MV / MDV | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 136 | Mali | ML / MLI | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 137 | Malta | MT / MLT | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 138 | Marshall Islands | MH / MHL | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 139 | Martinique | MQ / MTQ | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 140 | Mauritania | MR / MRT | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 141 | Mauritius | MU / MUS | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 142 | Mayotte | YT / MYT | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 143 | Mexico | MX / MEX | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 144 | Micronesia | FM / FSM | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 145 | Moldova | MD / MDA | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 146 | Monaco | MC / MCO | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 147 | Mongolia | MN / MNG | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 148 | Montenegro | ME / MNE | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 149 | Montserrat | MS / MSR | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 150 | Morocco | MA / MAR | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 151 | Mozambique | MZ / MOZ | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 152 | Myanmar | MM / MMR | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 153 | Namibia | NA / NAM | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 154 | Nauru | NR / NRU | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 155 | Nepal | NP / NPL | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 156 | Netherlands | NL / NLD | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 157 | New Caledonia | NC / NCL | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 158 | New Zealand | NZ / NZL | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 159 | Nicaragua | NI / NIC | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 160 | Niger | NE / NER | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 161 | Nigeria | NG / NGA | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 162 | Niue | NU / NIU | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 163 | Norfolk Island | NF / NFK | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 164 | North Macedonia | MK / MKD | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 165 | Northern Mariana Islands | MP / MNP | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 166 | Norway | NO / NOR | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 167 | Oman | OM / OMN | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 168 | Pakistan | PK / PAK | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 169 | Palau | PW / PLW | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 170 | Palestine | PS / PSE | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 171 | Panama | PA / PAN | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 172 | Papua New Guinea | PG / PNG | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 173 | Paraguay | PY / PRY | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 174 | Peru | PE / PER | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 175 | Philippines | PH / PHL | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 176 | Pitcairn | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 177 | Poland | PL / POL | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 178 | Portugal | PT / PRT | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 179 | Puerto Rico | PR / PRI | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 180 | Qatar | QA / QAT | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 181 | Réunion | RE / REU | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 182 | Romania | RO / ROU | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 183 | Russian Federation | RU / RUS | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 184 | Rwanda | RW / RWA | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 185 | Saint Barthélemy | BL / BLM | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 186 | Saint Helena, Ascension and Tristan da Cunha | SH / SHN | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 187 | Saint Kitts and Nevis | KN / KNA | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 188 | Saint Lucia | LC / LCA | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 189 | Saint Martin | MF / MAF | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 190 | Saint Pierre and Miquelon | PM / SPM | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 191 | Saint Vincent and the Grenadines | VC / VCT | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 192 | Samoa | WS / WSM | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 193 | San Marino | SM / SMR | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 194 | Sao Tome and Principe | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 195 | Saudi Arabia | SA / SAU | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 196 | Senegal | SN / SEN | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 197 | Serbia | RS / SRB | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 198 | Seychelles | SC / SYC | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 199 | Sierra Leone | SL / SLE | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 200 | Singapore | SG / SGP | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 201 | Sint Maarten | SX / SXM | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 202 | Slovakia | SK / SVK | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 203 | Slovenia | SI / SVN | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 204 | Solomon Islands | SB / SLB | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 205 | Somalia | SO / SOM | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 206 | South Africa | ZA / ZAF | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 207 | South Georgia and the South Sandwich Islands | GS / SGS | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 208 | South Sudan | SS / SSD | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 209 | Spain | ES / ESP | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 210 | Sri Lanka | LK / LKA | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 211 | Sudan | SD / SDN | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 212 | Suriname | SR / SUR | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 213 | Svalbard and Jan Mayen | SJ / SJM | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 214 | Sweden | SE / SWE | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 215 | Switzerland | CH / CHE | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 216 | Syrian Arab Republic | SY / SYR | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 217 | Taiwan | TW / TWN | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 218 | Tajikistan | TJ / TJK | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 219 | Tanzania | TZ / TZA | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 220 | Thailand | TH / THA | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 221 | Timor-Leste | TL / TLS | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 222 | Togo | TG / TGO | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 223 | Tokelau | TK / TKL | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 224 | Tonga | TO / TON | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 225 | Trinidad and Tobago | TT / TTO | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 226 | Tunisia | TN / TUN | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 227 | Türkiye | TR / TUR | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 228 | Turkmenistan | TM / TKM | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 229 | Turks and Caicos Islands | TC / TCA | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 230 | Tuvalu | TV / TUV | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 231 | Uganda | UG / UGA | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 232 | Ukraine | UA / UKR | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 233 | United Arab Emirates | AE / ARE | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 234 | United Kingdom | GB / GBR | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 235 | United States | US / USA | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 236 | United States Minor Outlying Islands | UM / UMI | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 237 | Uruguay | UY / URY | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 238 | Uzbekistan | UZ / UZB | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 239 | Vanuatu | VU / VUT | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 240 | Venezuela | VE / VEN | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 241 | Vietnam | VN / VNM | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 242 | Virgin Islands, British | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 243 | Virgin Islands, U.S. | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 244 | Wallis and Futuna | WF / WLF | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 245 | Western Sahara | EH / ESH | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 246 | Yemen | YE / YEM | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 247 | Zambia | ZM / ZMB | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 248 | Zimbabwe | ZW / ZWE | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 249 | Åland Islands | AX / ALA | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 250 | Roman Republic | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 251 | Roman Empire | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 252 | Byzantine Empire | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 253 | Holy Roman Empire | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 254 | Western Roman Empire | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 255 | Eastern Roman Empire | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 256 | Ancient Egypt | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 257 | Kingdom of Kush | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 258 | Carthaginian Empire | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 259 | Kingdom of Aksum | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 260 | Mali Empire | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 261 | Songhai Empire | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 262 | Ghana Empire | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 263 | Kanem-Bornu Empire | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 264 | Benin Kingdom | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 265 | Oyo Empire | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 266 | Ashanti Empire | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 267 | Ethiopian Empire | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 268 | Kingdom of Kongo | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 269 | Mutapa Empire | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 270 | Maravi Kingdom | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 271 | Zulu Kingdom | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 272 | Sokoto Caliphate | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 273 | Almohad Caliphate | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 274 | Almoravid Empire | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 275 | Fatimid Caliphate | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 276 | Mamluk Sultanate | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 277 | Abbasid Caliphate | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 278 | Umayyad Caliphate | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 279 | Ottoman Empire | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 280 | Safavid Iran | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 281 | Qajar Iran | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 282 | Mughal Empire | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 283 | Maurya Empire | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 284 | Gupta Empire | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 285 | Chola Empire | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 286 | Pala Empire | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 287 | Delhi Sultanate | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 288 | Maratha Empire | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 289 | Vijayanagara Empire | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 290 | Kushan Empire | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 291 | Parthian Empire | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 292 | Sasanian Empire | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 293 | Achaemenid Empire | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 294 | Median Empire | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 295 | Hittite Empire | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 296 | Phoenicia | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 297 | Kingdom of Lydia | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 298 | Seleucid Empire | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 299 | Ptolemaic Kingdom | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 300 | Ancient Greece | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 301 | Macedonian Empire | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 302 | Spartan State | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 303 | Athens | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 304 | Carthage | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 305 | Han Dynasty | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 306 | Qin Dynasty | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 307 | Tang Dynasty | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 308 | Song Dynasty | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 309 | Yuan Dynasty | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 310 | Ming Dynasty | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 311 | Qing Dynasty | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 312 | Three Kingdoms China | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 313 | Korea under Joseon | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 314 | Goryeo | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 315 | Silla | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 316 | Baekje | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 317 | Goguryeo | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 318 | Ryukyu Kingdom | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 319 | Khmer Empire | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 320 | Pagan Kingdom | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 321 | Ayutthaya Kingdom | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 322 | Sukhothai Kingdom | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 323 | Majapahit | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 324 | Srivijaya | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 325 | Malacca Sultanate | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 326 | Brunei Sultanate | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 327 | Lan Xang | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 328 | Dai Viet | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 329 | Champa | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 330 | Nguyen Vietnam | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 331 | Mataram Kingdom | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 332 | Hawaiian Kingdom | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 333 | Kingdom of Tahiti | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 334 | Tu'i Tonga Empire | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 335 | Samoan Kingdom | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 336 | Maori Confederations | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 337 | Inca Empire | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 338 | Aztec Empire | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 339 | Maya City-States | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 340 | Mississippian Cultures | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 341 | Tarascan State | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 342 | Gran Colombia | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 343 | Viceroyalty of New Spain | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 344 | Viceroyalty of Peru | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 345 | Viceroyalty of New Granada | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 346 | Viceroyalty of the Río de la Plata | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 347 | Captaincy General of Guatemala | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 348 | Kingdom of Brazil | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 349 | United Provinces of Central America | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 350 | Federal Republic of Central America | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 351 | United States of Colombia | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 352 | New Granada | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 353 | Kingdom of Prussia | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 354 | German Empire | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 355 | Austro-Hungarian Empire | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 356 | Austrian Empire | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 357 | Kingdom of Hungary | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 358 | Kingdom of Bohemia | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 359 | Polish-Lithuanian Commonwealth | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 360 | Kingdom of Poland | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 361 | Grand Duchy of Lithuania | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 362 | Russian Empire | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 363 | Soviet Union | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 364 | Yugoslavia | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 365 | Czechoslovakia | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 366 | East Germany | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 367 | West Germany | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 368 | Kingdom of Italy | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 369 | Kingdom of Sardinia | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 370 | Papal States | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 371 | Kingdom of the Two Sicilies | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 372 | French Empire | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 373 | Kingdom of France | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 374 | Spanish Empire | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 375 | Kingdom of Spain | ES / ESP | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 376 | Portuguese Empire | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 377 | Dutch Republic | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 378 | British Empire | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 379 | Irish Free State | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 380 | United Arab Republic | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 381 | United Arab Federation | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 382 | North Yemen | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 383 | South Yemen | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 384 | Democratic Kampuchea | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 385 | South Vietnam | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 386 | North Vietnam | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 387 | Republic of Vietnam | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 388 | Kingdom of Afghanistan | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 389 | Tibetan Government | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 390 | Manchu-led Qing successor states | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+| 391 | Persian Empire | PROJECT / N/A | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated | Not yet curated |
+
+**Taxonomy entries:** 391  |  **Current ISO-enriched matches:** 241  |  **Project/historical/non-ISO entries:** 150
+
+<!-- END GENERATED TEELTAILS COUNTRY MATRIX -->
