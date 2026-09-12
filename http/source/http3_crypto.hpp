@@ -4,6 +4,7 @@
 #include "crypto_openssl.h"
 #include "crypto_route_session.h"
 
+#include <algorithm>
 #include <array>
 #include <cstdint>
 #include <stdexcept>
