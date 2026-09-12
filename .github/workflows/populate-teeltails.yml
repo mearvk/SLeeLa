@@ -9,6 +9,7 @@ on:
       - 'http/spec/TEELTAILS.md.ms.max'
       - 'http/spec/BYPASS.md'
       - 'tools/populate-teeltails.py'
+      - 'tools/add-country-existence-dates.py'
       - 'http/spec/country_network_overrides.json'
       - '.github/workflows/populate-teeltails.yml'
 
@@ -34,6 +35,9 @@ jobs:
       - name: Generate TEELTAILS country matrix
         run: python3 tools/populate-teeltails.py
 
+      - name: Add country creation and end years
+        run: python3 tools/add-country-existence-dates.py
+
       - name: Commit populated document
         run: |
           git config user.name "SLeeLa TEELTAILS Generator"
@@ -42,7 +46,7 @@ jobs:
           if git diff --cached --quiet; then
             echo "No generated changes."
           else
-            git commit -m "Populate TEELTAILS country technology data"
+            git commit -m "Populate TEELTAILS country technology and existence data"
             git fetch origin master
             git rebase origin/master
             git push origin HEAD:master
