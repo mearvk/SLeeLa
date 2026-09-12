@@ -177,7 +177,7 @@ def fetch_rest_countries():
 
 
 def fetch_indicator(indicator):
-    url = f"{WB_BASE}/country/all/indicator/{indicator}?format=json&per_page=40000"
+    url = f"{WB_BASE}/country/all/indicator/{indicator}?format=json&per_page=30000"
     data = get_json(url)
     rows = data[1] if isinstance(data, list) and len(data) > 1 else []
     latest = {}
