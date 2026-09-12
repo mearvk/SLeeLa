@@ -26,7 +26,7 @@ IP_URL = "https://raw.githubusercontent.com/ipverse/country-ip-blocks/master/cou
 
 
 def get_json(url: str):
-    req = urllib.request.Request(url, headers={"User-Agent": "SLeeLa-country-network-workflow/1.0"})
+    req = urllib.request.Request(url, headers={"User-Agent": "SLeeLa-country-network-workflow/1.1"})
     with urllib.request.urlopen(req, timeout=60) as response:
         return json.load(response)
 
@@ -48,9 +48,15 @@ def money(value):
 def ip_summary(code: str):
     try:
         data = get_json(IP_URL.format(code=code.lower()))
+        if not isinstance(data, dict):
+            return f"Not retrieved (unexpected {type(data).__name__} response)"
         prefixes = data.get("prefixes", {})
-        v4 = prefixes.get("ipv4", [])
-        v6 = prefixes.get("ipv6", [])
+        if not isinstance(prefixes, dict):
+            return "Not reliably geolocated (invalid prefix data)"
+        v4 = prefixes.get("ipv4", []) or []
+        v6 = prefixes.get("ipv6", []) or []
+        if not isinstance(v4, list) or not isinstance(v6, list):
+            return "Not reliably geolocated (invalid prefix lists)"
         # Keep the document useful and bounded: counts plus a representative set.
         sample4 = v4[:12]
         sample6 = v6[:8]
@@ -66,9 +72,26 @@ def load_overrides():
     if not OVERRIDES.exists():
         return {}
     try:
-        return json.loads(OVERRIDES.read_text(encoding="utf-8"))
+        data = json.loads(OVERRIDES.read_text(encoding="utf-8"))
+        return data if isinstance(data, dict) else {}
     except Exception:
         return {}
+
+
+def normalize_countries(data):
+    """Normalize the REST Countries response and fail clearly on bad API data."""
+    if isinstance(data, list):
+        return [item for item in data if isinstance(item, dict)]
+    if isinstance(data, dict):
+        # Some API/proxy layers may wrap the country list in a conventional key.
+        for key in ("countries", "data", "results"):
+            value = data.get(key)
+            if isinstance(value, list):
+                return [item for item in value if isinstance(item, dict)]
+    raise RuntimeError(
+        "REST Countries returned an unexpected response type: "
+        f"{type(data).__name__}. Expected a list of country objects."
+    )
 
 
 def replace_generated_section(text: str, section: str) -> str:
@@ -82,7 +105,7 @@ def replace_generated_section(text: str, section: str) -> str:
 
 
 def main():
-    countries = get_json(COUNTRIES_URL)
+    countries = normalize_countries(get_json(COUNTRIES_URL))
     overrides = load_overrides()
     countries = sorted(countries, key=lambda x: (x.get("name", {}).get("common", "")))
     generated = []
