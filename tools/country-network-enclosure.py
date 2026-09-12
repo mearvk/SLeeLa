@@ -2,8 +2,12 @@
 """Build the country-level network/geodata appendix for SLeeLa.
 
 Sources:
-- REST Countries v3.1 for country identity, geography and basic political metadata.
+- mledoze/countries for public country identity and geography metadata.
 - ipverse/country-ip-blocks for daily RIR-derived country IP prefixes.
+
+The former REST Countries v3.1 endpoint is no longer a reliable unauthenticated
+source. The generator therefore uses the public mledoze country dataset and
+normalizes its schema into the fields needed by this document.
 
 The generator intentionally records aggregate prefixes only; it does not enumerate
 individual hosts, customer endpoints, private addresses, or exposed services.
@@ -21,12 +25,12 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 DOC = ROOT / "http/spec/COUNTRY_NETWORK_ENCLOSURE.md"
 OVERRIDES = ROOT / "http/spec/country_network_overrides.json"
-COUNTRIES_URL = "https://restcountries.com/v3.1/all?fields=name,cca2,cca3,capital,latlng,region,subregion,area,borders,landlocked,tld,timezones,currencies"
+COUNTRIES_URL = "https://raw.githubusercontent.com/mledoze/countries/master/countries.json"
 IP_URL = "https://raw.githubusercontent.com/ipverse/country-ip-blocks/master/country/{code}/aggregated.json"
 
 
 def get_json(url: str):
-    req = urllib.request.Request(url, headers={"User-Agent": "SLeeLa-country-network-workflow/1.1"})
+    req = urllib.request.Request(url, headers={"User-Agent": "SLeeLa-country-network-workflow/1.2"})
     with urllib.request.urlopen(req, timeout=60) as response:
         return json.load(response)
 
@@ -57,7 +61,6 @@ def ip_summary(code: str):
         v6 = prefixes.get("ipv6", []) or []
         if not isinstance(v4, list) or not isinstance(v6, list):
             return "Not reliably geolocated (invalid prefix lists)"
-        # Keep the document useful and bounded: counts plus a representative set.
         sample4 = v4[:12]
         sample6 = v6[:8]
         sample = ", ".join(sample4 + sample6)
@@ -79,19 +82,36 @@ def load_overrides():
 
 
 def normalize_countries(data):
-    """Normalize the REST Countries response and fail clearly on bad API data."""
-    if isinstance(data, list):
-        return [item for item in data if isinstance(item, dict)]
-    if isinstance(data, dict):
-        # Some API/proxy layers may wrap the country list in a conventional key.
-        for key in ("countries", "data", "results"):
-            value = data.get(key)
-            if isinstance(value, list):
-                return [item for item in value if isinstance(item, dict)]
-    raise RuntimeError(
-        "REST Countries returned an unexpected response type: "
-        f"{type(data).__name__}. Expected a list of country objects."
-    )
+    """Normalize the public mledoze/countries response into country records."""
+    if not isinstance(data, list):
+        raise RuntimeError(
+            "Country metadata source returned an unexpected response type: "
+            f"{type(data).__name__}. Expected a list of country objects."
+        )
+
+    normalized = []
+    for item in data:
+        if not isinstance(item, dict):
+            continue
+        name = item.get("name") if isinstance(item.get("name"), dict) else {}
+        ids = item.get("cca2") or item.get("cca3")
+        if not ids or not isinstance(name.get("common"), str):
+            continue
+        latlng = item.get("latlng") or []
+        area = item.get("area", "—")
+        borders = item.get("borders") or []
+        normalized.append({
+            "name": {"common": name.get("common", "Unknown")},
+            "cca2": str(item.get("cca2", "")).upper(),
+            "cca3": str(item.get("cca3", "")).upper(),
+            "latlng": latlng,
+            "area": area,
+            "borders": borders,
+        })
+
+    if not normalized:
+        raise RuntimeError("Country metadata source returned no usable country objects.")
+    return normalized
 
 
 def replace_generated_section(text: str, section: str) -> str:
@@ -107,12 +127,12 @@ def replace_generated_section(text: str, section: str) -> str:
 def main():
     countries = normalize_countries(get_json(COUNTRIES_URL))
     overrides = load_overrides()
-    countries = sorted(countries, key=lambda x: (x.get("name", {}).get("common", "")))
+    countries = sorted(countries, key=lambda x: x.get("name", {}).get("common", ""))
     generated = []
     generated.append("## Generated Country Network & Geodata Table")
     generated.append("")
     generated.append(f"**Generated:** {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')}  ")
-    generated.append("**Country source:** REST Countries 3.1  ")
+    generated.append("**Country source:** mledoze/countries (public country metadata)  ")
     generated.append("**IP source:** ipverse country-ip-blocks (RIR-derived, daily-updated)  ")
     generated.append("")
     generated.append("> IP values below are aggregate country-associated network prefixes, not individual hosts. A prefix is an administrative/geographic association and does not prove that every address is physically inside a country's perimeter.")
