@@ -49,6 +49,20 @@ jobs:
           print("Generated 391-country registry invariant: PASS")
           PY
 
+      - name: Normalize World Bank indicator page size
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path("tools/banking/populate_banks.py")
+          text = path.read_text(encoding="utf-8")
+          old = "per_page=40000"
+          new = "per_page=30000"
+          if old not in text:
+              raise SystemExit("Expected World Bank indicator page-size setting was not found.")
+          path.write_text(text.replace(old, new), encoding="utf-8")
+          print("World Bank indicator page size normalized: 40000 -> 30000")
+          PY
+
       - name: Run national banking population script
         run: |
           python3 .github/workflows/populate_banks.py \
@@ -69,11 +83,11 @@ jobs:
           print("Coverage:", data.get("coverage", {}))
           PY
 
-      - name: Commit generated records
+      - name: Commit generated records and runtime fix
         run: |
           git config user.name "SLeeLa Data Workflow"
           git config user.email "actions@users.noreply.github.com"
-          git add BANKS.md data/banking/registry.json data/banking/national_banking.json
+          git add BANKS.md data/banking/registry.json data/banking/national_banking.json tools/banking/populate_banks.py
           if git diff --cached --quiet; then
             echo "No generated changes."
           else
