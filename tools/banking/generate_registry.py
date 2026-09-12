@@ -2,7 +2,7 @@
 """Generate the canonical 391-entry banking registry from SLeeLa country data.
 
 The project already maintains its country universe in
-http/spec/COUNTRY_NETWORK_ENCLOSURE.md.  That document identifies BYPASS.md as
+http/spec/COUNTRY_NETWORK_ENCLOSURE.md. This document identifies BYPASS.md as
 its companion country taxonomy and contains the generated country/network table.
 This script reads that existing project data; it does not invent or import a
 second 391-country universe.
@@ -12,7 +12,7 @@ Primary source:
 Fallback source:
     http/spec/BYPASS.md
 
-The hard 391-entry invariant remains enforced.  If the source does not contain
+The hard 391-entry invariant remains enforced. If the source does not contain
 exactly 391 distinct country/geographic entries, generation fails rather than
 padding or silently changing the project taxonomy.
 """
@@ -28,6 +28,23 @@ DEFAULT_FALLBACK = ROOT / "http" / "spec" / "BYPASS.md"
 DEFAULT_OUTPUT = ROOT / "data" / "banking" / "registry.json"
 
 EXPECTED = 391
+
+
+def repo_path(path):
+    """Resolve a CLI path without assuming it is already absolute."""
+    candidate = Path(path)
+    if not candidate.is_absolute():
+        candidate = ROOT / candidate
+    return candidate.resolve()
+
+
+def repo_label(path):
+    """Return a stable repository-relative path for logging and metadata."""
+    resolved = Path(path).resolve()
+    try:
+        return resolved.relative_to(ROOT).as_posix()
+    except ValueError:
+        return str(resolved)
 
 
 def parse_enclosure(path):
@@ -124,11 +141,11 @@ def main():
     parser.add_argument("--output", default=str(DEFAULT_OUTPUT))
     args = parser.parse_args()
 
-    source = Path(args.source)
-    fallback = Path(args.fallback)
+    source = repo_path(args.source)
+    fallback = repo_path(args.fallback)
 
     rows = []
-    source_label = str(source.relative_to(ROOT))
+    source_label = repo_label(source)
     if source.exists():
         try:
             rows = parse_enclosure(source)
@@ -142,12 +159,12 @@ def main():
                 f"fallback source is missing: {fallback}"
             )
         rows = parse_bypass(fallback)
-        source_label = str(fallback.relative_to(ROOT))
+        source_label = repo_label(fallback)
 
     rows = validate(rows, source_label)
     countries = build_registry(rows, source_label)
 
-    output = Path(args.output)
+    output = repo_path(args.output)
     output.parent.mkdir(parents=True, exist_ok=True)
     payload = {
         "registry_version": "1.1",
