@@ -38,20 +38,10 @@ typedef struct {
     size_t ciphertext_len;
 } http3_cic_capsule_t;
 
-/*
- * These APIs define the C boundary. Cryptographic primitives should be
- * supplied by an audited provider such as OpenSSL, LibreSSL, BoringSSL, or
- * another approved implementation. This project does not implement AES,
- * X25519, or a KEM from scratch.
- */
-
 int http3_cic_validate_metadata(const http3_cic_metadata_t *metadata,
                                 uint64_t current_time);
-
 int http3_cic_create_id(uint8_t capsule_id[HTTP3_CIC_ID_SIZE]);
-
 int http3_cic_reject_sensitive_attribute_name(const char *name);
-
 int http3_cic_bind_context(const uint8_t capsule_id[HTTP3_CIC_ID_SIZE],
                           const char *jurisdiction_id,
                           const uint8_t *context,
@@ -59,6 +49,20 @@ int http3_cic_bind_context(const uint8_t capsule_id[HTTP3_CIC_ID_SIZE],
                           uint8_t *output,
                           size_t output_capacity,
                           size_t *output_len);
+
+/* Actual provider-backed CIC construction and opening. The ciphertext buffer
+ * contains ciphertext followed by a 16-byte AES-GCM authentication tag. */
+int http3_cic_encrypt(const http3_cic_metadata_t *metadata,
+                      const uint8_t recipient_public_key[32],
+                      const uint8_t *plaintext,
+                      size_t plaintext_len,
+                      http3_cic_capsule_t *capsule);
+
+int http3_cic_decrypt(const http3_cic_capsule_t *capsule,
+                      const uint8_t recipient_private_key[32],
+                      uint8_t *plaintext,
+                      size_t plaintext_capacity,
+                      size_t *plaintext_len);
 
 void http3_cic_free_capsule(http3_cic_capsule_t *capsule);
 
