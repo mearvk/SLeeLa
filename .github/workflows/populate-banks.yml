@@ -18,6 +18,27 @@ jobs:
       - name: Validate Python
         run: python3 --version
 
+      - name: Generate canonical 391-country registry
+        run: |
+          python3 tools/banking/generate_registry.py \
+            --source http/spec/COUNTRY_NETWORK_ENCLOSURE.md \
+            --fallback http/spec/BYPASS.md \
+            --output data/banking/registry.json
+
+      - name: Validate generated registry
+        run: |
+          python3 - <<'PY'
+          import json
+          with open("data/banking/registry.json", encoding="utf-8") as f:
+              data = json.load(f)
+          assert data["expected_count"] == 391
+          assert len(data["countries"]) == 391
+          ids = [row["registry_id"] for row in data["countries"]]
+          assert ids == [f"{i:03d}" for i in range(1, 392)]
+          assert len(set(ids)) == 391
+          print("Generated 391-country registry invariant: PASS")
+          PY
+
       - name: Run national banking population script
         run: |
           python3 .github/workflows/populate_banks.py \
@@ -40,7 +61,7 @@ jobs:
         run: |
           git config user.name "SLeeLa Data Workflow"
           git config user.email "actions@users.noreply.github.com"
-          git add BANKS.md data/banking/national_banking.json
+          git add BANKS.md data/banking/registry.json data/banking/national_banking.json
           if git diff --cached --quiet; then
             echo "No generated changes."
           else
