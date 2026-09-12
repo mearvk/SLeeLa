@@ -5,7 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any, Mapping
 
-from crypto_identity_capsule import CapsuleMetadata, IdentityCapsule, new_capsule_id
+from .crypto_identity_capsule import CapsuleMetadata, IdentityCapsule, new_capsule_id
 
 
 @dataclass(frozen=True)
