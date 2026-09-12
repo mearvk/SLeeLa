@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 static int is_forbidden_sensitive_name(const char *name)
 {
@@ -108,15 +109,17 @@ int http3_cic_encrypt(const http3_cic_metadata_t *metadata,
     uint8_t aad[HTTP3_CIC_ID_SIZE + HTTP3_CIC_MAX_JURISDICTION];
     size_t aad_len = 0U;
     size_t total_len;
+    uint64_t now;
     int rc = -1;
 
     memset(ephemeral_private, 0, sizeof(ephemeral_private));
     memset(shared_secret, 0, sizeof(shared_secret));
     memset(key, 0, sizeof(key));
 
+    now = (uint64_t)time(NULL);
     if (metadata == NULL || recipient_public_key == NULL || plaintext == NULL ||
         capsule == NULL || plaintext_len > SIZE_MAX - HTTP3_CIC_TAG_SIZE ||
-        http3_cic_validate_metadata(metadata, 0U) != 0) {
+        now == (uint64_t)-1 || http3_cic_validate_metadata(metadata, now) != 0) {
         return -1;
     }
 
