@@ -1,42 +1,53 @@
 #!/usr/bin/env python3
-"""Populate TEELTAILS.md.ms.max with live, sourced country data.
+"""Populate TEELTAILS.md.ms.max from free public sources.
 
-The 391-entry BYPASS taxonomy remains authoritative. For current economies,
-this generator enriches the matrix from the public ITU DataHub API:
-- standardized 2025 ICT price baskets (USD)
-- mobile-network population coverage by technology
-- Internet-use and fixed-broadband indicators used to derive a transparent
-  project quality grade
+Sources:
+- ITU 2025 ICT Price Basket Excel workbook: fixed broadband 5GB,
+  data-only mobile 5GB, and mobile high-consumption 140 min + 20 SMS + 5GB.
+- World Bank World Development Indicators (ITU-sourced): Internet users and
+  fixed-broadband subscriptions per 100 people.
+- Mledoze public country dataset for ISO-2/ISO-3 name resolution.
 
-The generator does not invent operator tariffs or Wi-Fi spectrum assignments.
-Wi-Fi is represented as a conservative technology baseline, while 6 GHz/6E
-and Wi-Fi 7 are explicitly marked as regulatory/device-dependent. Historical
-or project-only entries are retained as N/A rather than being silently dropped.
+The undocumented ITU DataHub API is deliberately NOT used.  This keeps the
+GitHub Actions job dependent only on public, downloadable data sources.
+
+The 391-entry BYPASS taxonomy remains authoritative.  Historical/project-only
+entries are retained as N/A where a current commercial service observation is
+not meaningful.
 """
 
 from pathlib import Path
 import json
 import re
+import tempfile
+import urllib.parse
 import urllib.request
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "http/spec/TEELTAILS.md.ms.max"
 BYPASS = ROOT / "http/spec/BYPASS.md"
 COUNTRIES_URL = "https://raw.githubusercontent.com/mledoze/countries/master/countries.json"
-ITU_API = "https://api.datahub.itu.int/v2"
+ITU_XLSX = "https://www.itu.int/en/ITU-D/Statistics/Documents/ICT_Prices/ITU_ICTPriceBaskets_2008-2025.xlsx"
+WB_API = "https://api.worldbank.org/v2"
 BEGIN = "<!-- BEGIN GENERATED TEELTAILS COUNTRY MATRIX -->"
 END = "<!-- END GENERATED TEELTAILS COUNTRY MATRIX -->"
 EXPECTED_ENTRIES = 391
 
 
-def get_json(url, timeout=60):
-    req = urllib.request.Request(url, headers={"User-Agent": "SLeeLa-TEELTAILS/2.0"})
+def get_bytes(url, timeout=120):
+    req = urllib.request.Request(url, headers={"User-Agent": "SLeeLa-TEELTAILS/3.0"})
+    with urllib.request.urlopen(req, timeout=timeout) as response:
+        return response.read()
+
+
+def get_json(url, timeout=120):
+    req = urllib.request.Request(url, headers={"User-Agent": "SLeeLa-TEELTAILS/3.0"})
     with urllib.request.urlopen(req, timeout=timeout) as response:
         return json.load(response)
 
 
 def normalize_name(value):
-    value = value.casefold().replace("&", "and")
+    value = str(value).casefold().replace("&", "and")
     value = re.sub(r"[^a-z0-9]+", " ", value)
     return " ".join(value.split())
 
@@ -65,10 +76,10 @@ def load_iso_dataset():
             if official:
                 by_name.setdefault(normalize_name(official), pair)
     aliases = {
-        "cape verde": "cabo verde", "czech republic": "czechia", "iran": "iran",
-        "laos": "laos", "moldova": "moldova", "north korea": "north korea",
-        "russia": "russia", "south korea": "south korea", "syria": "syria",
-        "the gambia": "gambia", "turkey": "turkey", "vatican city": "vatican city",
+        "cape verde": "cabo verde", "czech republic": "czechia",
+        "the gambia": "gambia", "turkey": "turkiye", "vatican city": "holy see",
+        "russia": "russia", "south korea": "south korea", "north korea": "north korea",
+        "iran": "iran", "laos": "laos", "moldova": "moldova", "syria": "syria",
     }
     for source, target in aliases.items():
         if normalize_name(target) in by_name:
@@ -76,94 +87,122 @@ def load_iso_dataset():
     return by_name
 
 
-def flatten_indicator_dictionary(node):
-    found = []
-    if isinstance(node, dict):
-        if "codeID" in node and ("label" in node or "name" in node):
-            found.append({"codeID": node.get("codeID"), "label": node.get("label") or node.get("name")})
-        for value in node.values():
-            found.extend(flatten_indicator_dictionary(value))
-    elif isinstance(node, list):
-        for value in node:
-            found.extend(flatten_indicator_dictionary(value))
-    return found
+def clean_text(value):
+    return normalize_name(value) if value is not None else ""
 
 
-def discover_indicators():
-    raw = get_json(f"{ITU_API}/dictionaries/getcategories")
-    items = flatten_indicator_dictionary(raw)
-    labels = {}
-    for item in items:
-        code_id = item.get("codeID")
-        label = str(item.get("label") or "")
-        if code_id is not None and label:
-            labels[int(code_id)] = label
-
-    wanted = {
-        "data_only": ["Data-only mobile broadband basket 5 GB"],
-        "fixed": ["Fixed-broadband Internet 5GB", "Fixed-broadband Internet 5 GB"],
-        "mobile_low": ["Mobile broadband data and voice low-consumption basket total"],
-        "mobile_high": ["Mobile broadband data and voice high-consumption basket total"],
-        "internet_users": ["Individuals using the Internet"],
-        "fixed_subs": ["Fixed-broadband subscriptions"],
-        "coverage": ["Population coverage, by mobile network technology"],
-    }
-    result = {}
-    for key, candidates in wanted.items():
-        match = None
-        for needle in candidates:
-            for code_id, label in labels.items():
-                if normalize_name(needle) == normalize_name(label) or normalize_name(needle) in normalize_name(label):
-                    match = (code_id, label)
-                    break
-            if match:
-                break
-        result[key] = match
-    return result
+def find_header_row(rows):
+    for i, row in enumerate(rows[:40]):
+        cells = [clean_text(x) for x in row]
+        joined = " | ".join(cells)
+        if any(x in joined for x in ("economy", "country")) and any(x in joined for x in ("usd", "price")):
+            return i
+    return None
 
 
-def indicator_series(code_id):
-    if not code_id:
-        return []
-    data = get_json(f"{ITU_API}/data/bycode/{code_id}")
-    return data if isinstance(data, list) else []
+def sheet_kind(title):
+    n = clean_text(title)
+    if "fixed" in n and "broadband" in n:
+        return "fixed"
+    if "data only" in n or "data only mobile" in n:
+        return "data_only"
+    if "high" in n and "consumption" in n:
+        return "mobile_high"
+    if "mobile" in n and "5 gb" in n:
+        return "data_only"
+    return None
 
 
-def latest_values(series, year=2025):
+def numeric(value):
+    if value is None:
+        return None
+    if isinstance(value, (int, float)) and not isinstance(value, bool):
+        return float(value)
+    text = str(value).replace(",", "").strip()
+    text = re.sub(r"[^0-9.\-]", "", text)
+    try:
+        return float(text)
+    except ValueError:
+        return None
+
+
+def find_column(headers, candidates):
+    normalized = [clean_text(x) for x in headers]
+    for i, h in enumerate(normalized):
+        if any(candidate in h for candidate in candidates):
+            return i
+    return None
+
+
+def parse_itu_workbook(path):
+    try:
+        import openpyxl
+    except ImportError as exc:
+        raise RuntimeError("openpyxl is required; install it in the workflow") from exc
+
+    wb = openpyxl.load_workbook(path, read_only=True, data_only=True)
+    result = {"data_only": {}, "fixed": {}, "mobile_high": {}}
+    used_sheets = {}
+
+    for ws in wb.worksheets:
+        kind = sheet_kind(ws.title)
+        if not kind:
+            continue
+        rows = list(ws.iter_rows(values_only=True))
+        header_i = find_header_row(rows)
+        if header_i is None:
+            continue
+        headers = list(rows[header_i])
+        country_col = find_column(headers, ["economy", "country"])
+        iso3_col = find_column(headers, ["iso3", "iso 3", "iso alpha 3"])
+        usd_col = find_column(headers, ["price usd", "usd", "us dollar", "price"])
+        year_col = find_column(headers, ["year", "data year", "collection year"])
+        if usd_col is None:
+            continue
+        used_sheets[kind] = ws.title
+
+        for row in rows[header_i + 1:]:
+            if not row:
+                continue
+            iso3 = str(row[iso3_col]).upper().strip() if iso3_col is not None and row[iso3_col] else ""
+            country = str(row[country_col]).strip() if country_col is not None and row[country_col] else ""
+            price = numeric(row[usd_col])
+            if not price or price < 0 or (not iso3 and not country):
+                continue
+            year = numeric(row[year_col]) if year_col is not None else 2025
+            if year is None:
+                year = 2025
+            key = iso3 or normalize_name(country)
+            old = result[kind].get(key)
+            if old is None or year >= old[1]:
+                result[kind][key] = (price, int(year), country)
+
+    wb.close()
+    if not any(result.values()):
+        raise RuntimeError("ITU workbook downloaded but no recognized price sheets/rows were found")
+    return result, used_sheets
+
+
+def wb_series(indicator):
+    params = urllib.parse.urlencode({
+        "format": "json", "per_page": 20000, "date": "2020:2025"
+    })
+    raw = get_json(f"{WB_API}/country/all/indicator/{indicator}?{params}")
+    if not isinstance(raw, list) or len(raw) < 2:
+        return {}
     out = {}
-    for record in series:
-        iso = record.get("isoCode")
-        if not iso:
+    for record in raw[1]:
+        iso = record.get("countryiso3code")
+        value = record.get("value")
+        year = record.get("date")
+        if not iso or value is None:
             continue
         try:
-            yr = int(record.get("dataYear"))
+            year_i, value_f = int(year), float(value)
         except (TypeError, ValueError):
             continue
-        if yr > year:
-            continue
-        values = []
-        for answer in record.get("answer") or []:
-            try:
-                values.append(float(answer.get("value")))
-            except (TypeError, ValueError, AttributeError):
-                pass
-        if values and (iso not in out or yr >= out[iso][0]):
-            out[iso] = (yr, values, record)
-    return out
-
-
-def parse_coverage(series):
-    latest = latest_values(series, 2025)
-    out = {}
-    for iso, (year, values, record) in latest.items():
-        labels = ["2G", "3G", "LTE/WiMAX", "5G"]
-        if len(values) >= 4:
-            cov = dict(zip(labels, values[:4]))
-        elif len(values) == 1:
-            cov = {"LTE/WiMAX": values[0]}
-        else:
-            cov = {labels[i]: v for i, v in enumerate(values[:4])}
-        out[iso] = (year, cov)
+        if iso not in out or year_i > out[iso][0]:
+            out[iso] = (year_i, value_f)
     return out
 
 
@@ -173,70 +212,59 @@ def money(value):
     return f"${value:.2f}/mo" if value < 10 else f"${value:.1f}/mo"
 
 
-def pick_value(latest, iso):
-    item = latest.get(iso)
-    if not item:
-        return None, None
-    year, values, _ = item
-    return (values[0] if values else None), year
-
-
-def quality_grade(internet, fixed, coverage):
-    score = 0.0
-    weight = 0.0
-    if internet is not None:
-        score += max(0, min(100, internet)) * 0.40
-        weight += 0.40
-    if fixed is not None:
-        score += max(0, min(50, fixed)) * 1.2
-        weight += 0.60
-    if coverage:
-        lte = coverage.get("LTE/WiMAX")
-        g5 = coverage.get("5G")
-        if lte is not None:
-            score += max(0, min(100, lte)) * 0.35
-            weight += 0.35
-        if g5 is not None:
-            score += max(0, min(100, g5)) * 0.20
-            weight += 0.20
-    if weight == 0:
+def quality_grade(internet, fixed):
+    # Transparent project scale: Internet use is the primary broad-access
+    # measure; fixed broadband density is a secondary infrastructure measure.
+    if internet is None and fixed is None:
         return "N/A"
-    normalized = score / weight
-    if normalized >= 80:
+    if internet is None:
+        score = min(100.0, fixed * 2.0)
+    elif fixed is None:
+        score = internet
+    else:
+        score = internet * 0.70 + min(100.0, fixed * 2.0) * 0.30
+    if score >= 85:
         return "A"
-    if normalized >= 65:
+    if score >= 70:
         return "B"
-    if normalized >= 45:
+    if score >= 50:
         return "C"
-    if normalized >= 25:
+    if score >= 30:
         return "D"
     return "E"
 
 
 def wifi_value():
-    return "Wi-Fi 4/5/6 widely deployed; 6 GHz/Wi-Fi 6E and Wi-Fi 7 subject to local spectrum/device rules"
+    return "Wi-Fi 4/5/6 deployed; 6 GHz/6E and Wi-Fi 7 depend on local spectrum rules"
 
 
-def cellular_value(cov):
-    if not cov:
-        return "Coverage data unavailable"
-    parts = []
-    for label in ["2G", "3G", "LTE/WiMAX", "5G"]:
-        if label in cov:
-            parts.append(f"{label} {cov[label]:.0f}% pop.")
-    return "; ".join(parts) if parts else "Coverage data unavailable"
+def cellular_value(price_available):
+    if price_available:
+        return "3G+ mobile broadband (ITU 5GB basket); 4G/5G not separately asserted"
+    return "Mobile broadband service data unavailable"
 
 
-def wimax_value(cov):
-    lte = cov.get("LTE/WiMAX") if cov else None
-    return f"LTE/WiMAX coverage {lte:.0f}% pop.; FWA availability varies by operator" if lte is not None else "LTE/FWA; WiMAX status not separately reported"
+def wimax_value(fixed_available):
+    return "Fixed wireless/FWA may coexist; WiMAX not separately reported" if fixed_available else "FWA/WiMAX not separately reported"
 
 
-def tier(value, year, label):
-    return f"{money(value)} ({label}; ITU {year})" if value is not None else "Not available from ITU 2025 basket"
+def lookup_price(table, iso3, country_name, aliases=None):
+    aliases = aliases or {}
+    item = table.get(iso3)
+    if item:
+        return item
+    key = normalize_name(country_name)
+    item = table.get(key)
+    if item:
+        return item
+    for alt in aliases.get(key, []):
+        item = table.get(normalize_name(alt))
+        if item:
+            return item
+    return None
 
 
-def build_rows(entries, iso_by_name, prices, internet, fixed, coverage):
+def build_rows(entries, iso_by_name, prices, internet, fixed):
     rows = []
     for number, country in entries:
         pair = iso_by_name.get(normalize_name(country))
@@ -244,31 +272,33 @@ def build_rows(entries, iso_by_name, prices, internet, fixed, coverage):
             rows.append(f"| {number:03d} | {country} | PROJECT / N/A | N/A | N/A | N/A | N/A | N/A | N/A | N/A |")
             continue
         a2, a3 = pair
-        p = prices.get(a3, {})
-        cov = coverage.get(a3, (None, {}))[1]
-        internet_v, _ = pick_value(internet, a3)
-        fixed_v, _ = pick_value(fixed, a3)
-        q = quality_grade(internet_v, fixed_v, cov)
-        entry = tier(p.get("data_only"), p.get("year"), "5 GB mobile data")
-        standard = tier(p.get("fixed"), p.get("year"), "5 GB fixed broadband")
-        premium = tier(p.get("mobile_high"), p.get("year"), "140 min + 20 SMS + 5 GB mobile")
-        rows.append(f"| {number:03d} | {country} | {a2} / {a3} | {wifi_value()} | {cellular_value(cov)} | {wimax_value(cov)} | {entry} | {standard} | {premium} | {q} |")
+        data_only = prices["data_only"].get(a3)
+        fixed_p = prices["fixed"].get(a3)
+        high = prices["mobile_high"].get(a3)
+        internet_item = internet.get(a3)
+        fixed_item = fixed.get(a3)
+        internet_v = internet_item[1] if internet_item else None
+        fixed_v = fixed_item[1] if fixed_item else None
+        q = quality_grade(internet_v, fixed_v)
+        entry = f"{money(data_only[0])} (ITU {data_only[1]}; 5 GB mobile data)" if data_only else "Not available from ITU 2025 basket"
+        standard = f"{money(fixed_p[0])} (ITU {fixed_p[1]}; 5 GB fixed broadband)" if fixed_p else "Not available from ITU 2025 basket"
+        premium = f"{money(high[0])} (ITU {high[1]}; 140 min + 20 SMS + 5 GB mobile)" if high else "Not available from ITU 2025 basket"
+        rows.append(f"| {number:03d} | {country} | {a2} / {a3} | {wifi_value()} | {cellular_value(bool(data_only))} | {wimax_value(bool(fixed_p))} | {entry} | {standard} | {premium} | {q} |")
     return rows
 
 
-def replace_generated(text, rows, indicator_info):
+def replace_generated(text, rows, sheets):
     header = [
         BEGIN,
         "",
-        "**Generated from `http/spec/BYPASS.md` and live ITU DataHub observations.**",
+        "**Generated from `http/spec/BYPASS.md` using free, public data sources.**",
         "",
-        "Price tiers are standardized ITU baskets rather than invented operator packages: Entry = 5 GB mobile data-only basket; Standard = 5 GB fixed-broadband basket; Premium = 140 minutes + 20 SMS + 5 GB mobile high-consumption basket. Prices are nominal USD/month for the 2025 collection where available. Quality grades are project-derived from sourced Internet-use, fixed-broadband and mobile-coverage indicators; they are not official ITU rankings.",
+        "Price tiers are standardized ITU baskets: Entry = 5 GB data-only mobile; Standard = 5 GB fixed broadband; Premium = 140 minutes + 20 SMS + 5 GB mobile high-consumption. Prices are nominal USD/month for the ITU 2025 collection where available. Quality grades are project-derived from World Bank WDI indicators sourced from ITU; they are not official ITU rankings.",
         "",
         "| # | Country / World Entry | ISO | Wi-Fi standards | Cellular technology | WiMAX / FWA | Entry Internet tier | Standard Internet tier | Premium Internet tier | Quality |",
         "|---:|---|---|---|---|---|---|---|---|---|",
     ]
-    indicator_text = json.dumps(indicator_info, sort_keys=True)
-    generated = "\n".join(header + rows + ["", f"**Taxonomy entries:** {len(rows)}", "**Data source:** ITU DataHub (price baskets, mobile-network coverage, Internet-use and fixed-broadband indicators).", f"**Indicator discovery:** `{indicator_text}`", "", END])
+    generated = "\n".join(header + rows + ["", f"**Taxonomy entries:** {len(rows)}", "**Public sources:** ITU 2025 ICT Price Basket workbook; World Bank World Development Indicators (ITU-sourced).", f"**ITU sheets used:** `{json.dumps(sheets, sort_keys=True)}`", "", END])
     if BEGIN in text and END in text:
         before = text.split(BEGIN, 1)[0].rstrip()
         after = text.split(END, 1)[1].lstrip()
@@ -279,22 +309,34 @@ def replace_generated(text, rows, indicator_info):
 def main():
     entries = load_bypass_entries()
     iso_by_name = load_iso_dataset()
-    indicators = discover_indicators()
-    series = {k: indicator_series(v[0]) for k, v in indicators.items() if v}
-    latest = {k: latest_values(v) for k, v in series.items()}
-    coverage = parse_coverage(series.get("coverage", []))
 
-    prices = {}
-    for key in ["data_only", "fixed", "mobile_high"]:
-        for iso, (year, values, _) in latest.get(key, {}).items():
-            prices.setdefault(iso, {})[key] = values[0] if values else None
-            prices[iso]["year"] = year
+    with tempfile.NamedTemporaryFile(suffix=".xlsx", delete=False) as tmp:
+        workbook_path = Path(tmp.name)
+        tmp.write(get_bytes(ITU_XLSX))
+
+    try:
+        prices_raw, sheets = parse_itu_workbook(workbook_path)
+    finally:
+        workbook_path.unlink(missing_ok=True)
+
+    # Normalize workbook keys that are country names rather than ISO3 codes.
+    prices = {"data_only": {}, "fixed": {}, "mobile_high": {}}
+    iso_reverse = {normalize_name(name): pair[1] for name, pair in iso_by_name.items()}
+    for kind, table in prices_raw.items():
+        for key, value in table.items():
+            iso3 = key.upper() if re.fullmatch(r"[A-Z]{3}", str(key).upper()) else iso_reverse.get(normalize_name(key))
+            if iso3:
+                prices[kind][iso3] = value
+
+    internet = wb_series("IT.NET.USER.ZS")
+    fixed = wb_series("IT.NET.BBND.P2")
 
     existing = OUT.read_text(encoding="utf-8") if OUT.exists() else "# TEELTAILS.md.ms.max\n"
-    rows = build_rows(entries, iso_by_name, prices, latest.get("internet_users", {}), latest.get("fixed_subs", {}), coverage)
-    OUT.write_text(replace_generated(existing, rows, indicators), encoding="utf-8")
+    rows = build_rows(entries, iso_by_name, prices, internet, fixed)
+    OUT.write_text(replace_generated(existing, rows, sheets), encoding="utf-8")
     populated = sum("PROJECT / N/A" not in row for row in rows)
-    print(f"Generated TEELTAILS country matrix: {len(rows)} entries; current ISO rows: {populated}; ITU indicators discovered: {sum(bool(v) for v in indicators.values())}/{len(indicators)}")
+    priced = sum("ITU 2025" in row for row in rows)
+    print(f"Generated TEELTAILS: {len(rows)} taxonomy entries; {populated} ISO-resolved rows; {priced} rows with ITU pricing; sheets={sheets}")
 
 
 if __name__ == "__main__":
