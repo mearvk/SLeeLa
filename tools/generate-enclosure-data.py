@@ -178,3 +178,5 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
+# Workflow trigger: country-network enrichment is integrated with this generator.
