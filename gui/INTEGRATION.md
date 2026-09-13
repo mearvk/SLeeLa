@@ -82,6 +82,13 @@ The result is intentionally asymmetric: Java is not a second business-logic impl
 
 The production bridge should eventually define an explicit `SLValue` ↔ Java value mapping rather than relying on arbitrary `Object` values. The existing VM's tagged value model is the natural source for that contract.
 
+> **Now implemented.** The explicit `SLValue` ↔ Java value-and-handle contract
+> — and a working link that lets Sleela run against the Java 28 SecureJDK
+> memory model over both a **port** (socket) channel and a **JNI** (local
+> feedback) channel — lives under [`java28/`](../java28/), specified by
+> `java28/spec/JAVA28-MEMORY-INTEGRATION.md` (J28-MEM-0001). Model A there is the
+> inverse of Path 1: Sleela drives and the Java 28 SecureJDK owns the objects.
+
 ## JavaFX lifecycle
 
 `FxGui` currently assumes that the JavaFX toolkit has been initialized by its host. A production JavaFX launcher should extend `javafx.application.Application` (or otherwise initialize the toolkit) before constructing the GUI runtime. This keeps JavaFX lifecycle policy in the Java host rather than inside SLeeLa business logic.
