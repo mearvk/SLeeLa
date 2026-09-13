@@ -621,7 +621,7 @@ struct Parser {
 
 } // namespace
 
-Sheet parseSheet(const std::vector<Token>& toks, const std::string& file, DiagnosticBag& diags) {
+Sheet parseSheetBase(const std::vector<Token>& toks, const std::string& file, DiagnosticBag& diags) {
     Parser p(toks, file, diags);
     return p.run();
 }

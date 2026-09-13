@@ -172,12 +172,12 @@ The runtime therefore receives executable Core instructions rather than requirin
 ## Current source tree
 
 ```text
-impl/chemistry/chemistry.h
-impl/chemistry/chemistry.cpp
-impl/chemistry/periodic_table.model
-impl/chemistry/presumed_chemistry.model
-impl/frontend/chemistry_api.h
-impl/frontend/chemistry_api.cpp
+impl/subjects/chemistry/chemistry.h
+impl/subjects/chemistry/chemistry.cpp
+impl/subjects/chemistry/periodic_table.model
+impl/subjects/chemistry/presumed_chemistry.model
+impl/subjects/chemistry/chemistry_api.h
+impl/subjects/chemistry/chemistry_api.cpp
 impl/examples/chemistry_presumed.sleela
 ```
 

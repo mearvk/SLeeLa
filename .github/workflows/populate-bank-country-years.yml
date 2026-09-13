@@ -1,0 +1,34 @@
+name: Populate BANKS Country Start and End Years
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "BANKS.md"
+      - "tools/populate-bank-country-years.py"
+      - ".github/workflows/populate-bank-country-years.yml"
+
+jobs:
+  populate-country-years:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Populate country start and end years
+        run: python3 tools/populate-bank-country-years.py
+
+      - name: Commit updated BANKS.md
+        run: |
+          git config user.name "SLeeLa BANKS Country Years"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add BANKS.md
+          git diff --cached --quiet || git commit -m "Populate BANKS country start and end years"
+          git push origin HEAD:master

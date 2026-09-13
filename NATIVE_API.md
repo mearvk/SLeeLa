@@ -77,12 +77,12 @@ The stochastic function is deterministic for a supplied seed and bounded so it c
 The chemistry library is maintained under:
 
 ```text
-impl/chemistry/chemistry.h
-impl/chemistry/chemistry.cpp
-impl/chemistry/periodic_table.model
-impl/chemistry/presumed_chemistry.model
-impl/frontend/chemistry_api.h
-impl/frontend/chemistry_api.cpp
+impl/subjects/chemistry/chemistry.h
+impl/subjects/chemistry/chemistry.cpp
+impl/subjects/chemistry/periodic_table.model
+impl/subjects/chemistry/presumed_chemistry.model
+impl/subjects/chemistry/chemistry_api.h
+impl/subjects/chemistry/chemistry_api.cpp
 ```
 
 The periodic registry contains all 118 recognized elements. The declarative presumed-chemistry model records the evidence classes, ratio norms, causal ordering, stochastic rule, and epistemic boundaries.

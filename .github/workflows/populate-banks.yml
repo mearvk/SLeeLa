@@ -1,0 +1,105 @@
+name: Populate National Banking and Economic Data
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+  schedule:
+    - cron: "17 3 * * 1"
+
+permissions:
+  contents: write
+
+# Keep only the newest population request. This prevents a stale queued run
+# from blocking the current data-generation run indefinitely.
+concurrency:
+  group: national-banking-population
+  cancel-in-progress: true
+
+jobs:
+  populate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Validate Python
+        run: python3 --version
+
+      - name: Generate canonical 391-country registry
+        run: |
+          python3 tools/banking/generate_registry.py \
+            --source http/spec/COUNTRY_NETWORK_ENCLOSURE.md \
+            --fallback http/spec/BYPASS.md \
+            --output data/banking/registry.json
+
+      - name: Validate generated registry
+        run: |
+          python3 - <<'PY'
+          import json
+          with open("data/banking/registry.json", encoding="utf-8") as f:
+              data = json.load(f)
+          assert data["expected_count"] == 391
+          assert len(data["countries"]) == 391
+          ids = [row["registry_id"] for row in data["countries"]]
+          assert ids == [f"{i:03d}" for i in range(1, 392)]
+          assert len(set(ids)) == 391
+          print("Generated 391-country registry invariant: PASS")
+          PY
+
+      - name: Normalize World Bank indicator page size
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path("tools/banking/populate_banks.py")
+          text = path.read_text(encoding="utf-8")
+          old = "per_page=40000"
+          new = "per_page=30000"
+          if old in text:
+              path.write_text(text.replace(old, new), encoding="utf-8")
+              print("World Bank indicator page size normalized: 40000 -> 30000")
+          elif new in text:
+              print("World Bank indicator page size already normalized: 30000")
+          else:
+              raise SystemExit("World Bank indicator page-size setting was not found.")
+          PY
+
+      - name: Run national banking population script
+        run: |
+          python3 .github/workflows/populate_banks.py \
+            --registry data/banking/registry.json \
+            --output data/banking/national_banking.json \
+            --table BANKS.md
+
+      - name: Create additive BANKS2 currency table
+        run: |
+          python3 tools/banking/merge_bank_currency_to_banks2.py
+
+      - name: Validate 391-country invariant
+        run: |
+          python3 - <<'PY'
+          import json
+          with open("data/banking/national_banking.json", encoding="utf-8") as f:
+              data = json.load(f)
+          assert data["expected"] == 391
+          assert len(data["records"]) == 391
+          assert data.get("coverage", {}).get("total") == 391
+          print("391-country invariant: PASS")
+          print("Coverage:", data.get("coverage", {}))
+          PY
+
+      - name: Commit generated records and runtime fix
+        run: |
+          git config user.name "SLeeLa Data Workflow"
+          git config user.email "actions@users.noreply.github.com"
+          git add BANKS.md BANKS2.md data/banking/registry.json data/banking/national_banking.json tools/banking/populate_banks.py
+          if git diff --cached --quiet; then
+            echo "No generated changes."
+          else
+            git commit -m "Refresh national banking and economic data"
+            git push
+          fi

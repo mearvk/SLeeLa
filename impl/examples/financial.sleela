@@ -34,13 +34,15 @@ class FinancialExample {
     static double root() {
         return financial.quadratic_root_plus(1.0, -3.0, 2.0);
     }
-}
 
-print(FinancialExample.future());
-print(FinancialExample.present());
-print(FinancialExample.annuity());
-print(FinancialExample.systemRatio());
-print(FinancialExample.determinant());
-print(FinancialExample.capmReturn());
-print(FinancialExample.waccRate());
-print(FinancialExample.root());
+    void main() {
+        print(future());
+        print(present());
+        print(annuity());
+        print(systemRatio());
+        print(determinant());
+        print(capmReturn());
+        print(waccRate());
+        print(root());
+    }
+}
