@@ -8,10 +8,12 @@ This companion document extends `BANKS.md` with a four-value status field for th
 
 | Status | Definition |
 |---|---|
-| `YES` | The applicable condition is supported by the evidence recorded for the jurisdiction and period under review. |
-| `NO` | The applicable condition is not established by the evidence recorded for the jurisdiction and period under review. |
-| `CONVINCED` | The record documents substantial historical or institutional continuity relevant to the condition. |
-| `INDEED` | The record documents a current or continuing institutional condition relevant to the condition being measured. |
+| `YES` | Yes means the country is clean of its treatment of it; Socialism. |
+| `NO` | No means it never studied it. |
+| `CONVINCED` | Convinced means it certainly inherits the cause as a matter of trust. |
+| `INDEED` | Indeed means the country currently presses on from forward causes based on the institution of Socialism as it exists in modern democracies and economies. |
+| `1955` | 1955 Suggests indeed it is present and popular and know and widely used. |
+
 
 ### Required Companion Fields
 
