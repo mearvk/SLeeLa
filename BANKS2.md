@@ -660,6 +660,7 @@ This is the materialized union of `BANKS.md` and `BANKS2.md`, joined by the cano
 | 389 | Tibetan Government | 1912 | 1951 | N/A | N/A | N/A | N/A | N/A | Historical jurisdiction — no current banking authority | MISSING |
 | 390 | Manchu-led Qing successor states | 1932 | 1945 | N/A | N/A | N/A | N/A | N/A | Historical jurisdiction — no current banking authority | MISSING |
 | 391 | Persian Empire | -550 | 1935 | N/A | N/A | N/A | N/A | N/A | Historical jurisdiction — no current banking authority | MISSING |
+
 ## 391-Country National Economic Table
 
 This generated table is an evidence-backed data pull. `N/A` means the source did not provide a responsible value; it is not a zero. Banking authorities remain unpopulated unless independently sourced.
