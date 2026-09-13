@@ -19,6 +19,27 @@ network:
   address-family: dual
   tls: true
 
+finance:
+  objects: [ PresentValue, NetPresentValue, Ratio ]
+  currency:    USD
+  period:      annual
+  discounting: discrete
+
+subject DemoThroughput:
+  domain: economics
+  depends: [ math ]
+  quantity throughput:
+    value:  "completed / window"
+    unit:   "ops/second"
+    status: derived
+  relation rate:
+    formula: "throughput = completed / window"
+    inputs:  [ completed, window ]
+    outputs: [ throughput ]
+  evidence:
+    status: derived
+    source: "counter over a fixed window"
+
 target:
   root            "out"
   layout          mirror-source

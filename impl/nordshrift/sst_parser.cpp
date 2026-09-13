@@ -210,6 +210,7 @@ struct Parser {
         if (kw == "interop")  { parseInterop();  return true; }
         if (kw == "network")  { parseNetwork();  return true; }
         if (kw == "finance")  { parseFinance();  return true; }
+        if (kw == "subject")  { parseSubject();  return true; }
         if (kw == "rule")     { parseRuleBlock(); return true; }
         if (kw == "profile")  { parseProfile();  return true; }
         return false;
@@ -644,6 +645,239 @@ struct Parser {
             if (is(Tok::Newline)) i++;
         }
         exitBlock();
+    }
+
+    // ---- subject block (NS-SST-0001 2.0 semantic layer) ----------------
+    // A subject declares identity/domain/dependencies plus repeatable nested
+    // quantity/assumption/relation/transformation/comparison/evidence/
+    // explanation/todo blocks. It fills a nordshrift::semantic::Subject and is
+    // attached to sheet.subjects. Canonical chain: Subject -> Quantity -> Unit
+    // -> Assumption -> Relation -> Formula -> Transformation -> Result ->
+    // ComparativeNorm -> Evidence -> Explanation -> Validation.
+    void parseSubject() {
+        using namespace semantic;
+        Subject subj;
+        int subjLine = cur().line;
+        i++;                                   // 'subject'
+        if (is(Tok::Ident) || is(Tok::String)) subj.identity = take().text;
+        if (!enterBlock()) { syncToNewline();
+            if (!subj.identity.empty()) sheet.subjects.push_back(std::move(subj));
+            return;
+        }
+        while (!atBlockEnd()) {
+            if (is(Tok::Newline)) { i++; continue; }
+            if (!is(Tok::Ident)) { syncToNewline(); continue; }
+            int ln = cur().line;
+            std::string key = cur().text; i++;
+            // Scalar keys consume their own ':'; nested-block keys leave the
+            // ':' for the sub-parser's enterBlock() (a named block like
+            // `quantity range:` puts the name before the ':').
+            if (key == "domain")             { if (is(Tok::Colon)) i++; subj.domain = readScalarText(); }
+            else if (key == "depends" || key == "dependencies")
+                                             { if (is(Tok::Colon)) i++; subj.dependencies = readListOrScalar(); }
+            else if (key == "quantity")      parseQuantity(subj);
+            else if (key == "assumption")    parseAssumption(subj);
+            else if (key == "relation")      parseRelation(subj);
+            else if (key == "transformation")parseTransformation(subj);
+            else if (key == "comparison")    parseComparison(subj);
+            else if (key == "evidence")      parseEvidence(subj);
+            else if (key == "explanation")   parseExplanation(subj);
+            else if (key == "todo")          parseTodo(subj, ln);
+            else { if (is(Tok::Colon)) i++; (void)readScalarText(); }
+            if (is(Tok::Newline)) i++;
+        }
+        exitBlock();
+        if (subj.identity.empty())
+            errAt(subjLine, "NSS-E-SUB-001", "subject block without an identity", "SST-SUB-IDENTITY", true);
+        else
+            sheet.subjects.push_back(std::move(subj));
+    }
+
+    // Read an EvidenceStatus scalar with validation (default Specified).
+    semantic::EvidenceStatus readEvidence(int ln) {
+        semantic::EvidenceStatus st = semantic::EvidenceStatus::Specified;
+        std::string v = readScalarText();
+        if (!v.empty() && !semantic::evidenceStatusFromName(v, st))
+            errAt(ln, "NSS-E-SUB-002", "unknown evidence status '" + v + "'", "SST-SUB-EVIDENCE", true);
+        return st;
+    }
+
+    void parseQuantity(semantic::Subject& subj) {
+        semantic::Quantity q;
+        if (is(Tok::Ident) || is(Tok::String)) q.identity = take().text;
+        if (enterBlock()) {
+            while (!atBlockEnd()) {
+                if (is(Tok::Newline)) { i++; continue; }
+                if (!is(Tok::Ident)) { syncToNewline(); continue; }
+                int ln = cur().line;
+                std::string k = cur().text; i++;
+                if (is(Tok::Colon)) i++;
+                if (k == "value")          q.value = readScalarText();
+                else if (k == "unit")      q.unit = readScalarText();
+                else if (k == "dimension") q.dimension = readScalarText();
+                else if (k == "domain")    q.domain = readScalarText();
+                else if (k == "status")    q.status = readEvidence(ln);
+                else { (void)readScalarText(); }
+                if (is(Tok::Newline)) i++;
+            }
+            exitBlock();
+        }
+        subj.quantities.push_back(std::move(q));
+    }
+
+    void parseAssumption(semantic::Subject& subj) {
+        semantic::Assumption a;
+        if (is(Tok::Ident) || is(Tok::String)) a.identity = take().text;
+        if (enterBlock()) {
+            while (!atBlockEnd()) {
+                if (is(Tok::Newline)) { i++; continue; }
+                if (!is(Tok::Ident)) { syncToNewline(); continue; }
+                int ln = cur().line;
+                std::string k = cur().text; i++;
+                if (is(Tok::Colon)) i++;
+                if (k == "statement")  a.statement = readScalarText();
+                else if (k == "scope") a.scope = readScalarText();
+                else if (k == "source")a.source = readScalarText();
+                else if (k == "status")a.status = readEvidence(ln);
+                else { (void)readScalarText(); }
+                if (is(Tok::Newline)) i++;
+            }
+            exitBlock();
+        }
+        subj.assumptions.push_back(std::move(a));
+    }
+
+    void parseRelation(semantic::Subject& subj) {
+        semantic::Relation r;
+        if (is(Tok::Ident) || is(Tok::String)) r.identity = take().text;
+        if (enterBlock()) {
+            while (!atBlockEnd()) {
+                if (is(Tok::Newline)) { i++; continue; }
+                if (!is(Tok::Ident)) { syncToNewline(); continue; }
+                std::string k = cur().text; i++;
+                if (is(Tok::Colon)) i++;
+                if (k == "formula")       r.formula = readScalarText();
+                else if (k == "inputs")   r.inputs = readListOrScalar();
+                else if (k == "outputs")  r.outputs = readListOrScalar();
+                else { (void)readScalarText(); }
+                if (is(Tok::Newline)) i++;
+            }
+            exitBlock();
+        }
+        subj.relations.push_back(std::move(r));
+    }
+
+    void parseTransformation(semantic::Subject& subj) {
+        semantic::Transformation t;
+        if (is(Tok::Ident) || is(Tok::String)) t.identity = take().text;
+        if (enterBlock()) {
+            while (!atBlockEnd()) {
+                if (is(Tok::Newline)) { i++; continue; }
+                if (!is(Tok::Ident)) { syncToNewline(); continue; }
+                std::string k = cur().text; i++;
+                if (is(Tok::Colon)) i++;
+                if (k == "source")           t.source = readScalarText();
+                else if (k == "operation")   t.operation = readScalarText();
+                else if (k == "parameters")  t.parameters = readScalarText();
+                else if (k == "destination") t.destination = readScalarText();
+                else if (k == "approximate") t.approximate = parseBool(readScalarText(), false);
+                else { (void)readScalarText(); }
+                if (is(Tok::Newline)) i++;
+            }
+            exitBlock();
+        }
+        subj.transformations.push_back(std::move(t));
+    }
+
+    void parseComparison(semantic::Subject& subj) {
+        semantic::ComparativeNorm c;
+        if (enterBlock()) {
+            while (!atBlockEnd()) {
+                if (is(Tok::Newline)) { i++; continue; }
+                if (!is(Tok::Ident)) { syncToNewline(); continue; }
+                std::string k = cur().text; i++;
+                if (is(Tok::Colon)) i++;
+                if (k == "prior")          c.prior_subject = readScalarText();
+                else if (k == "current")   c.current_subject = readScalarText();
+                else if (k == "reference") c.reference_subject = readScalarText();
+                else if (k == "norm")      c.norm = readScalarText();
+                else { (void)readScalarText(); }
+                if (is(Tok::Newline)) i++;
+            }
+            exitBlock();
+        }
+        subj.comparisons.push_back(std::move(c));
+    }
+
+    void parseEvidence(semantic::Subject& subj) {
+        semantic::Evidence e;
+        if (enterBlock()) {
+            while (!atBlockEnd()) {
+                if (is(Tok::Newline)) { i++; continue; }
+                if (!is(Tok::Ident)) { syncToNewline(); continue; }
+                int ln = cur().line;
+                std::string k = cur().text; i++;
+                if (is(Tok::Colon)) i++;
+                if (k == "status")     e.status = readEvidence(ln);
+                else if (k == "source")e.source = readScalarText();
+                else if (k == "note")  e.note = readScalarText();
+                else { (void)readScalarText(); }
+                if (is(Tok::Newline)) i++;
+            }
+            exitBlock();
+        }
+        subj.evidence.push_back(std::move(e));
+    }
+
+    void parseExplanation(semantic::Subject& subj) {
+        semantic::Explanation ex;
+        if (is(Tok::Ident) || is(Tok::String)) ex.subject = take().text;
+        if (enterBlock()) {
+            while (!atBlockEnd()) {
+                if (is(Tok::Newline)) { i++; continue; }
+                if (!is(Tok::Ident)) { syncToNewline(); continue; }
+                std::string k = cur().text; i++;
+                if (is(Tok::Colon)) i++;
+                if (k == "steps")      ex.steps = readListOrScalar();
+                else if (k == "step")  { for (auto& s : readListOrScalar()) ex.steps.push_back(s); }
+                else if (k == "subject") ex.subject = readScalarText();
+                else { (void)readScalarText(); }
+                if (is(Tok::Newline)) i++;
+            }
+            exitBlock();
+        }
+        subj.explanations.push_back(std::move(ex));
+    }
+
+    void parseTodo(semantic::Subject& subj, int todoLine) {
+        semantic::Todo td;
+        td.subject = subj.identity;
+        if (is(Tok::Ident) || is(Tok::String)) td.identity = take().text;
+        if (enterBlock()) {
+            while (!atBlockEnd()) {
+                if (is(Tok::Newline)) { i++; continue; }
+                if (!is(Tok::Ident)) { syncToNewline(); continue; }
+                int ln = cur().line;
+                std::string k = cur().text; i++;
+                if (is(Tok::Colon)) i++;
+                if (k == "priority")             { std::string v = readScalarText(); td.priority = v.empty()?0:std::stoi(v); }
+                else if (k == "depends" || k == "dependencies") td.dependencies = readListOrScalar();
+                else if (k == "preconditions")   td.preconditions = readScalarText();
+                else if (k == "action")          td.action = readScalarText();
+                else if (k == "expected" || k == "expected-result") td.expected_result = readScalarText();
+                else if (k == "validation")      td.validation = readScalarText();
+                else if (k == "status") {
+                    std::string v = readScalarText();
+                    if (!v.empty() && !semantic::workStatusFromName(v, td.status))
+                        errAt(ln, "NSS-E-SUB-003", "unknown work status '" + v + "'", "SST-SUB-WORKSTATUS", true);
+                }
+                else { (void)readScalarText(); }
+                if (is(Tok::Newline)) i++;
+            }
+            exitBlock();
+        }
+        (void)todoLine;
+        subj.workplan.push_back(std::move(td));
     }
 
     // ---- inline rule block (§8.6) --------------------------------------

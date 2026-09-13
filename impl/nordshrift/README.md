@@ -84,13 +84,17 @@ Indentation-significant, pragma-first. Existing 1.0 sections remain available:
 
 `sheet`, `import`, `source`, `target`, `pipeline`, `rules`, `effects`, `derive`, `guards`, `interop`, and `profile`.
 
-Two first-class component-series blocks are also available:
+Three first-class series blocks are also available:
 
 - `network` — the closed network object series (see [`SST.NETWORK.md`](SST.NETWORK.md)).
 - `finance` — the closed finance object series (see [`SST.FINANCE.md`](SST.FINANCE.md)).
+- `subject` — the 2.0 semantic subject layer with nested `quantity`,
+  `assumption`, `relation`, `transformation`, `comparison`, `evidence`,
+  `explanation`, and `todo` blocks (see [`SST.SUBJECT.md`](SST.SUBJECT.md)).
 
-The 2.0 semantic extension adds subject-oriented sections for quantities,
-assumptions, relations, transformations, comparison, evidence, and work plans.
+On `build`, these three series are emitted into a **component manifest**
+artifact for the selected target (a Java class, C arrays, or a Sleela class), so
+declaring a series has a real, inspectable build effect.
 
 ## Self-contained demo
 

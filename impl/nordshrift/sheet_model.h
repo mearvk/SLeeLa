@@ -9,6 +9,8 @@
 #include <string>
 #include <vector>
 
+#include "subject_model.h"   // nordshrift::semantic::Subject and friends
+
 namespace nordshrift {
 
 enum class Layout   { MirrorSource, Flat, PackageMapped, Custom };
@@ -244,6 +246,7 @@ struct Sheet {
     Interop   interop;
     NetworkSpec network;
     FinanceSpec finance;
+    std::vector<semantic::Subject> subjects;   // 2.0 semantic subject blocks
     std::vector<RuleConfig> ruleBlocks;
     std::vector<Profile>    profiles;
     std::string file;

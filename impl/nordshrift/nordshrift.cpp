@@ -25,6 +25,7 @@
 #include "diagnostics.h"
 #include "source_resolve.h"
 #include "sleela_emit.h"
+#include "component_manifest.h"
 #include "object_compat.h"
 #include "subject_model.h"
 #include "../catalog/sheet_catalog.h"
@@ -134,11 +135,72 @@ static void reportComponentSeries(const Sheet& sheet) {
                   << ", period=" << financePeriodName(sheet.finance.period)
                   << ", discounting=" << financeDiscountingName(sheet.finance.discounting) << "\n";
     }
+    for (const auto& s : sheet.subjects) {
+        std::cout << "subject '" << s.identity << "'";
+        if (!s.domain.empty()) std::cout << " (domain=" << s.domain << ")";
+        std::cout << ": " << s.quantities.size() << " quantity, "
+                  << s.assumptions.size() << " assumption, "
+                  << s.relations.size() << " relation, "
+                  << s.transformations.size() << " transformation, "
+                  << s.comparisons.size() << " comparison, "
+                  << s.evidence.size() << " evidence, "
+                  << s.explanations.size() << " explanation, "
+                  << s.workplan.size() << " todo\n";
+        // Canonical chain rendering (Subject -> Quantity -> ... -> Validation).
+        std::cout << "  chain: Subject";
+        if (!s.quantities.empty())       std::cout << " -> Quantity/Unit";
+        if (!s.assumptions.empty())      std::cout << " -> Assumption";
+        if (!s.relations.empty())        std::cout << " -> Relation/Formula";
+        if (!s.transformations.empty())  std::cout << " -> Transformation -> Result";
+        if (!s.comparisons.empty())      std::cout << " -> ComparativeNorm";
+        if (!s.evidence.empty())         std::cout << " -> Evidence";
+        if (!s.explanations.empty())     std::cout << " -> Explanation";
+        if (!s.workplan.empty())         std::cout << " -> Validation";
+        std::cout << "\n";
+    }
+}
+
+// Semantic validation of declared subjects (dependency and provenance checks).
+// Warnings only: a subject sheet remains valid, but the ideals in
+// NORDSHRIFT.md ("provenance before trust", "explicit dependency before hidden
+// coupling") are surfaced so a modeled result is not silently trusted.
+static void validateSubjects(const Sheet& sheet, DiagnosticBag& diags) {
+    using namespace nordshrift::semantic;
+    // Set of declared subject identities for dependency resolution.
+    std::vector<std::string> known;
+    for (const auto& s : sheet.subjects) known.push_back(s.identity);
+    auto isKnown = [&](const std::string& id) {
+        for (const auto& k : known) if (k == id) return true;
+        return isFoundationalDomain(id);   // e.g. "math" is a foundational dep
+    };
+    for (const auto& s : sheet.subjects) {
+        for (const auto& dep : s.dependencies)
+            if (!isKnown(dep))
+                diags.warning("NSS-W-SUB-010", sheet.file, s.quantities.empty() ? 0 : 0,
+                              "subject '" + s.identity + "' depends on undeclared subject '" + dep + "'",
+                              "SST-SUB-DEPENDENCY");
+        // A modeled/inferred/derived quantity without any supporting relation,
+        // assumption, or evidence is a bare claim.
+        for (const auto& q : s.quantities) {
+            bool needsSupport = q.status == EvidenceStatus::Modeled ||
+                                q.status == EvidenceStatus::Inferred ||
+                                q.status == EvidenceStatus::Derived;
+            bool hasSupport = !s.relations.empty() || !s.assumptions.empty() ||
+                              !s.evidence.empty();
+            if (needsSupport && !hasSupport)
+                diags.warning("NSS-W-SUB-011", sheet.file, 0,
+                              "subject '" + s.identity + "' quantity '" + q.identity +
+                              "' is " + evidenceStatusName(q.status) +
+                              " but has no supporting relation/assumption/evidence",
+                              "SST-SUB-PROVENANCE");
+        }
+    }
 }
 
 static int doCheck(const std::string& path) {
     Sheet sheet; DiagnosticBag diags;
     if (!loadSheet(path, sheet, diags)) return 1;
+    validateSubjects(sheet, diags);
     std::cout << diags.render();
     std::cout << "sheet '" << sheet.meta.name << "' — "
               << diags.errorCount() << " error(s), "
@@ -219,6 +281,32 @@ static int doBuild(const std::string& path) {
         std::string emitted = emitProgram(prog, lang, sheet.target.packageRoot);
         std::cout << "\n// ==== " << srcPath << "  ->  " << langName(lang) << " ====\n";
         std::cout << emitted;
+    }
+
+    // Emit a component/subject manifest artifact from the declared network,
+    // finance, and subject series, so declaring those blocks has a real,
+    // inspectable build effect. Written next to the sheet for the sleela
+    // target; printed for java/c (matching the source emission behavior).
+    if (hasComponentManifest(sheet)) {
+        std::string manifest = emitComponentManifest(sheet, lang, sheet.target.packageRoot);
+        if (lang == TargetLang::Sleela) {
+            std::filesystem::path outDir = std::filesystem::path(sheetDir) / "build";
+            std::filesystem::create_directories(outDir);
+            const char* ext = ".sleela";
+            std::filesystem::path out = outDir / (std::string("ComponentManifest") + ext);
+            std::ofstream mf(out, std::ios::binary);
+            if (mf) {
+                mf << manifest;
+                std::cout << "nordshrift: manifest -> " << out.string()
+                          << " (network/finance/subject component manifest)\n";
+            } else {
+                std::cerr << "nordshrift: cannot write manifest '" << out.string() << "'\n";
+                rc = 1;
+            }
+        } else {
+            std::cout << "\n// ==== component manifest  ->  " << langName(lang) << " ====\n";
+            std::cout << manifest;
+        }
     }
     return rc;
 }
