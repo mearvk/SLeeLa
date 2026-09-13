@@ -23,6 +23,7 @@ from io import StringIO
 from pathlib import Path
 from urllib.request import Request, urlopen
 
+# Currency restoration pass: this script is the source of truth for BANKS.md.
 BANKS = Path("BANKS.md")
 COUNTRY_CODES_URL = (
     "https://raw.githubusercontent.com/datasets/country-codes/main/data/country-codes.csv"
