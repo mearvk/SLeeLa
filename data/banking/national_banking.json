@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-12",
+  "generated": "2026-09-13",
   "expected": 391,
   "coverage": {
     "total": 391,
@@ -85,7 +85,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -152,7 +152,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -219,7 +219,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -288,7 +288,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -358,7 +358,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -425,7 +425,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -493,7 +493,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -561,7 +561,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -629,7 +629,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -696,7 +696,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -763,7 +763,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -831,7 +831,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -898,7 +898,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -965,7 +965,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -1032,7 +1032,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -1100,7 +1100,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -1167,7 +1167,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -1234,7 +1234,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -1302,7 +1302,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -1369,7 +1369,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -1436,7 +1436,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -1503,7 +1503,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -1570,7 +1570,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -1639,7 +1639,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -1706,7 +1706,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -1773,7 +1773,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -1841,7 +1841,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -1908,7 +1908,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -1975,7 +1975,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -2043,7 +2043,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -2110,7 +2110,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -2178,7 +2178,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -2245,7 +2245,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -2312,7 +2312,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -2379,7 +2379,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -2447,7 +2447,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -2514,7 +2514,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -2581,7 +2581,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -2648,7 +2648,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -2715,7 +2715,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -2783,7 +2783,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -2850,7 +2850,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -2917,7 +2917,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -2984,7 +2984,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -3051,7 +3051,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -3119,7 +3119,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -3187,7 +3187,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -3254,7 +3254,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -3321,7 +3321,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -3389,7 +3389,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -3457,7 +3457,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -3524,7 +3524,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -3592,7 +3592,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -3659,7 +3659,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -3727,7 +3727,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -3795,7 +3795,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -3862,7 +3862,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -3929,7 +3929,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -3997,7 +3997,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -4064,7 +4064,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -4131,7 +4131,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -4200,7 +4200,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -4267,7 +4267,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -4334,7 +4334,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -4402,7 +4402,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -4469,7 +4469,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -4536,7 +4536,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -4604,7 +4604,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -4671,7 +4671,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -4738,7 +4738,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -4805,7 +4805,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -4873,7 +4873,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -4942,7 +4942,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -5009,7 +5009,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -5076,7 +5076,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -5143,7 +5143,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -5211,7 +5211,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -5279,7 +5279,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -5347,7 +5347,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -5414,7 +5414,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -5482,7 +5482,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -5549,7 +5549,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -5616,7 +5616,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -5683,7 +5683,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -5755,7 +5755,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -5822,7 +5822,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -5891,7 +5891,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -5960,7 +5960,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -6028,7 +6028,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -6096,7 +6096,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -6163,7 +6163,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -6231,7 +6231,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -6298,7 +6298,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -6365,7 +6365,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -6432,7 +6432,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -6499,7 +6499,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -6567,7 +6567,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -6635,7 +6635,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -6702,7 +6702,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -6770,7 +6770,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -6837,7 +6837,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -6904,7 +6904,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -6971,7 +6971,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -7038,7 +7038,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -7106,7 +7106,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -7173,7 +7173,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -7240,7 +7240,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -7310,7 +7310,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -7377,7 +7377,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -7444,7 +7444,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -7512,7 +7512,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -7579,7 +7579,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -7647,7 +7647,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -7714,7 +7714,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -7781,7 +7781,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -7848,7 +7848,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -7916,7 +7916,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -7984,7 +7984,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -8052,7 +8052,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -8119,7 +8119,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -8187,7 +8187,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -8255,7 +8255,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -8322,7 +8322,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -8389,7 +8389,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -8456,7 +8456,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -8524,7 +8524,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -8591,7 +8591,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -8661,7 +8661,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -8728,7 +8728,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -8795,7 +8795,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -8863,7 +8863,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -8930,7 +8930,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -8997,7 +8997,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -9064,7 +9064,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -9131,7 +9131,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -9198,7 +9198,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -9265,7 +9265,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -9334,7 +9334,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -9402,7 +9402,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -9469,7 +9469,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -9536,7 +9536,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -9604,7 +9604,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -9671,7 +9671,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -9739,7 +9739,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -9806,7 +9806,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -9876,7 +9876,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -9943,7 +9943,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -10010,7 +10010,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -10078,7 +10078,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -10145,7 +10145,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -10212,7 +10212,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -10280,7 +10280,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -10347,7 +10347,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -10415,7 +10415,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -10482,7 +10482,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -10549,7 +10549,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -10616,7 +10616,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -10683,7 +10683,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -10750,7 +10750,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -10817,7 +10817,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -10884,7 +10884,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -10952,7 +10952,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -11020,7 +11020,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -11087,7 +11087,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -11156,7 +11156,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -11223,7 +11223,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -11290,7 +11290,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -11357,7 +11357,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -11425,7 +11425,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -11493,7 +11493,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -11560,7 +11560,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -11627,7 +11627,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -11694,7 +11694,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -11761,7 +11761,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -11828,7 +11828,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -11896,7 +11896,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -11963,7 +11963,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -12030,7 +12030,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -12098,7 +12098,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -12165,7 +12165,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -12233,7 +12233,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -12300,7 +12300,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -12367,7 +12367,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -12434,7 +12434,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -12502,7 +12502,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -12570,7 +12570,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -12638,7 +12638,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -12706,7 +12706,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -12774,7 +12774,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -12842,7 +12842,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -12910,7 +12910,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -12977,7 +12977,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -13045,7 +13045,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -13112,7 +13112,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -13179,7 +13179,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -13246,7 +13246,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -13313,7 +13313,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -13381,7 +13381,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -13448,7 +13448,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -13515,7 +13515,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -13583,7 +13583,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -13651,7 +13651,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -13718,7 +13718,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -13785,7 +13785,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -13853,7 +13853,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -13920,7 +13920,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -13988,7 +13988,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -14055,7 +14055,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -14122,7 +14122,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -14189,7 +14189,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -14256,7 +14256,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -14323,7 +14323,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -14391,7 +14391,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -14458,7 +14458,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -14525,7 +14525,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -14592,7 +14592,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -14660,7 +14660,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -14727,7 +14727,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -14794,7 +14794,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -14861,7 +14861,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -14928,7 +14928,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -14995,7 +14995,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -15063,7 +15063,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -15130,7 +15130,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -15198,7 +15198,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -15265,7 +15265,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -15333,7 +15333,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -15401,7 +15401,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -15471,7 +15471,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -15540,7 +15540,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -15607,7 +15607,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -15674,7 +15674,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -15741,7 +15741,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -15808,7 +15808,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -15875,7 +15875,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -15943,7 +15943,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -16010,7 +16010,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -16077,7 +16077,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -16144,7 +16144,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -16212,7 +16212,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -16279,7 +16279,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -16347,7 +16347,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -16415,7 +16415,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -16483,7 +16483,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -16551,7 +16551,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -16619,7 +16619,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -16686,7 +16686,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -16753,7 +16753,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -16821,7 +16821,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -16889,7 +16889,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -16957,7 +16957,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -17025,7 +17025,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -17093,7 +17093,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -17161,7 +17161,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -17229,7 +17229,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -17297,7 +17297,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -17365,7 +17365,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -17433,7 +17433,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -17501,7 +17501,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -17569,7 +17569,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -17637,7 +17637,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -17705,7 +17705,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -17773,7 +17773,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -17841,7 +17841,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -17909,7 +17909,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -17977,7 +17977,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -18045,7 +18045,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -18113,7 +18113,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -18181,7 +18181,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -18249,7 +18249,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -18317,7 +18317,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -18385,7 +18385,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -18453,7 +18453,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -18521,7 +18521,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -18589,7 +18589,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -18657,7 +18657,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -18725,7 +18725,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -18793,7 +18793,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -18861,7 +18861,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -18929,7 +18929,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -18997,7 +18997,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -19065,7 +19065,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -19133,7 +19133,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -19201,7 +19201,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -19269,7 +19269,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -19337,7 +19337,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -19405,7 +19405,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -19473,7 +19473,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -19541,7 +19541,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -19609,7 +19609,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -19677,7 +19677,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -19745,7 +19745,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -19813,7 +19813,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -19881,7 +19881,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -19949,7 +19949,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -20017,7 +20017,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -20085,7 +20085,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -20153,7 +20153,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -20221,7 +20221,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -20289,7 +20289,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -20357,7 +20357,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -20425,7 +20425,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -20493,7 +20493,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -20561,7 +20561,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -20629,7 +20629,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -20697,7 +20697,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -20765,7 +20765,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -20833,7 +20833,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -20901,7 +20901,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -20969,7 +20969,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -21037,7 +21037,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -21105,7 +21105,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -21173,7 +21173,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -21241,7 +21241,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -21309,7 +21309,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -21377,7 +21377,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -21445,7 +21445,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -21513,7 +21513,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -21581,7 +21581,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -21649,7 +21649,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -21717,7 +21717,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -21785,7 +21785,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -21853,7 +21853,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -21921,7 +21921,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -21989,7 +21989,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -22057,7 +22057,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -22125,7 +22125,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -22193,7 +22193,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -22261,7 +22261,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -22329,7 +22329,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -22397,7 +22397,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -22465,7 +22465,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -22533,7 +22533,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -22601,7 +22601,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -22669,7 +22669,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -22737,7 +22737,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -22805,7 +22805,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -22873,7 +22873,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -22941,7 +22941,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -23009,7 +23009,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -23077,7 +23077,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -23145,7 +23145,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -23213,7 +23213,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -23281,7 +23281,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -23349,7 +23349,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -23417,7 +23417,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -23485,7 +23485,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -23553,7 +23553,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -23621,7 +23621,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -23689,7 +23689,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -23757,7 +23757,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -23825,7 +23825,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -23893,7 +23893,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -23961,7 +23961,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -24029,7 +24029,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -24097,7 +24097,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -24165,7 +24165,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -24233,7 +24233,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -24301,7 +24301,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -24369,7 +24369,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -24437,7 +24437,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -24505,7 +24505,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -24573,7 +24573,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -24641,7 +24641,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -24709,7 +24709,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -24777,7 +24777,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -24845,7 +24845,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -24913,7 +24913,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -24981,7 +24981,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -25049,7 +25049,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -25117,7 +25117,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -25185,7 +25185,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -25253,7 +25253,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -25321,7 +25321,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -25389,7 +25389,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -25457,7 +25457,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -25525,7 +25525,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -25593,7 +25593,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -25661,7 +25661,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -25729,7 +25729,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -25797,7 +25797,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -25865,7 +25865,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -25933,7 +25933,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -26001,7 +26001,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -26069,7 +26069,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -26137,7 +26137,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -26205,7 +26205,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -26273,7 +26273,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -26341,7 +26341,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -26409,7 +26409,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -26477,7 +26477,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-09-12",
+        "last_verified": "2026-09-13",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
