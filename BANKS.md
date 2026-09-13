@@ -265,7 +265,7 @@ The next data pass should populate all 391 individual records from SLeeLa's cano
 
 This generated table is an evidence-backed data pull. `N/A` means the source did not provide a responsible value; it is not a zero. Banking authorities remain unpopulated unless independently sourced.
 
-| ID | Country/Jurisdiction | ISO Alpha-2 | Currency Code | GDP | GDP/Capita | Inflation | Trade/GDP | World Bank Income | Banking | Status |
+| ID | Country/Jurisdiction | ISO | Currency | GDP | GDP/Capita | Inflation | Trade/GDP | World Bank Income | Banking | Status |
 |---|---|---|---|---:|---:|---:|---:|---|---|---|
 | 001 | Afghanistan | AF / AFG | N/A | $17.78B | 416.87 | -6.60 | 83.76 | Low income | PENDING | PARTIAL |
 | 002 | Albania | AL / ALB | N/A | $30.54B | $12,998 | 2.15 | 79.53 | Upper middle income | PENDING | PARTIAL |
