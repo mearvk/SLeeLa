@@ -223,6 +223,18 @@ impl/
     compiler.{h,cpp}    AST -> core bytecode
     version.{h,cpp}     #sleela syntax-version awareness (SL-META-0001 §4.4)
     driver.cpp          the `sleela` CLI
+  subjects/             subject libraries (one folder per subject) — see subjects/README.md
+    native/             shared native dispatcher + AST builders (math/physics/economics)
+      native_api.{h,cpp}   validate imports, enforce math dependency, dispatch, lower calls
+      native_builders.h    shared inline AST-builder helpers (V/D/Bn/C0..M4)
+      native_add.h         declarations for addMath/addPhysics/addEconomics
+    math/math_native.cpp        addMath        (__NativeMath class)
+    physics/physics_native.cpp  addPhysics     (__NativePhysics class)
+    economics/economics_native.cpp addEconomics (__NativeEconomics class)
+    chemistry/          chemistry library + frontend chemistry API + models
+      chemistry.{h,cpp}, chemistry_api.{h,cpp}, *.model
+    finance/            financial library + frontend financial API + model
+      financial.{h,cpp}, financial_api.{h,cpp}, FINANCIAL.model, README.md
   examples/             sample Wrapper™ (.sleela) programs (incl. conduct.sleela)
   catalog/              shared SHEET.sheet parser (conduct + object compat)
     sheet_catalog.{h,cpp}  Catalog model: objects, roles, congruence, invariants

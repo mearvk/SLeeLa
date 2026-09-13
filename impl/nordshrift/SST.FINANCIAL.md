@@ -37,7 +37,7 @@ The same financial operation therefore has a source form and a persistent artifa
 - QuadraticEquation
 - Ratio
 
-The executable subset is intentionally dependency-light and uses the existing Sleela math kernels. The standalone `impl/finance/financial.cpp` provides a conventional C++ reference implementation for the same core identities.
+The executable subset is intentionally dependency-light and uses the existing Sleela math kernels. The standalone `impl/subjects/finance/financial.cpp` provides a conventional C++ reference implementation for the same core identities.
 
 ## Mathematical basis
 
