@@ -42,6 +42,7 @@ DRIVER_OBJ := $(BUILD)/driver.o
 NS_SRC := nordshrift/sst_lexer.cpp nordshrift/sst_parser.cpp \
           nordshrift/source_resolve.cpp nordshrift/sleela_emit.cpp \
           nordshrift/object_compat.cpp nordshrift/subject_model.cpp \
+          nordshrift/component_manifest.cpp \
           nordshrift/nordshrift.cpp
 NS_OBJ := $(patsubst nordshrift/%.cpp,$(BUILD)/ns_%.o,$(NS_SRC))
 .PHONY: all clean test test-sleela test-version test-nordshrift test-threads test-network test-catalog test-chemistry test-financial test-math test-physics test-economics

@@ -63,6 +63,42 @@ A numerical result is therefore not silently promoted to an empirical fact, and 
 
 A TODO records what is intended, what it depends on, what result is expected, and how completion will be validated. It does not itself constitute evidence that the proposed work has been completed.
 
+## Network and Finance component series
+
+A `.sst` sheet may declare two first-class, closed object series as input:
+
+- A **`network:`** block — the network component series (`Endpoint`, `NIC`,
+  `Link`, `Packet`, `Queue`, `Switch`, `Router`, `Fabric`, `Listener`,
+  `Connector`, `Gateway`, `LoadBalancer`, `Service`, `TLS`, `DNS`), plus
+  `transports`, `address-family`, and `tls`. See
+  [`impl/nordshrift/SST.NETWORK.md`](impl/nordshrift/SST.NETWORK.md).
+- A **`finance:`** block — the finance component series (`FutureValue`,
+  `PresentValue`, `AnnuityPresent`, `AnnuityFuture`, `NetPresentValue`,
+  `BondPrice`, `CAPM`, `WACC`, `Determinant2x2`, `LinearSolve2x2`,
+  `QuadraticEquation`, `Ratio`), plus `currency`, `period`, and `discounting`.
+  See [`impl/nordshrift/SST.FINANCE.md`](impl/nordshrift/SST.FINANCE.md).
+
+Both series are also carried in the repo-root [`SHEET.sheet`](SHEET.sheet)
+catalog (sections `network` and `finance`), so every declared object has a home
+in the shared object-compatibility / relevance structure. Unknown members are
+rejected with structured diagnostics (`NSS-E-NET-00x` / `NSS-E-FIN-00x`).
+
+A sheet may also declare one or more **`subject:`** blocks — the 2.0 semantic
+layer (`Subject → Quantity → Unit → Assumption → Relation → Formula →
+Transformation → Result → ComparativeNorm → Evidence → Explanation →
+Validation`) — which fill the shared `nordshrift::semantic::Subject` model. See
+[`impl/nordshrift/SST.SUBJECT.md`](impl/nordshrift/SST.SUBJECT.md).
+
+## Build effect: the component manifest
+
+On `nordshrift build`, the declared `network:`, `finance:`, and `subject:`
+series are emitted into a **component manifest** artifact for the selected
+target — a Java class of static arrays, C name arrays with counts, or a Sleela
+class. For the `sleela` target it is written next to the sheet as
+`build/ComponentManifest.sleela`; for `java` / `c` it is emitted to stdout with
+the transpiled sources. Declaring a component series therefore has a real,
+inspectable build effect rather than being inert metadata.
+
 ## The triplet
 
 The `target-language` directive selects one of three targets — **`java`**, **`sleela`**, or **`c`**. For `target-language sleela`, the emitted program is also executed on the Sleela core.

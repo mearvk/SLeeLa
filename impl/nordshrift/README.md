@@ -84,8 +84,17 @@ Indentation-significant, pragma-first. Existing 1.0 sections remain available:
 
 `sheet`, `import`, `source`, `target`, `pipeline`, `rules`, `effects`, `derive`, `guards`, `interop`, and `profile`.
 
-The 2.0 semantic extension adds subject-oriented sections for quantities,
-assumptions, relations, transformations, comparison, evidence, and work plans.
+Three first-class series blocks are also available:
+
+- `network` — the closed network object series (see [`SST.NETWORK.md`](SST.NETWORK.md)).
+- `finance` — the closed finance object series (see [`SST.FINANCE.md`](SST.FINANCE.md)).
+- `subject` — the 2.0 semantic subject layer with nested `quantity`,
+  `assumption`, `relation`, `transformation`, `comparison`, `evidence`,
+  `explanation`, and `todo` blocks (see [`SST.SUBJECT.md`](SST.SUBJECT.md)).
+
+On `build`, these three series are emitted into a **component manifest**
+artifact for the selected target (a Java class, C arrays, or a Sleela class), so
+declaring a series has a real, inspectable build effect.
 
 ## Self-contained demo
 
@@ -97,9 +106,10 @@ assumptions, relations, transformations, comparison, evidence, and work plans.
 ## Object compatibility list (SHEET.sheet)
 
 Nordshrift also carries every object from the repo-root `SHEET.sheet` catalog
-(129 objects, 16 role categories, the `System` root with depth 3024 /
-complexity degree 4) in an **object compatibility list**, and converts each
-object into a per-target relevance:
+(156 objects across 18 role categories — including the `network` and `finance`
+component series — with the `System` root at depth 3024 / complexity degree 4)
+in an **object compatibility list**, and converts each object into a per-target
+relevance:
 
 - **direct** — the object maps to a concrete target construct.
 - **model** — the object is realized as an abstract role/pattern.
