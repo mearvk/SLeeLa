@@ -1,4 +1,4 @@
-# SLeeLa — BANKS2.md
+# SLeeLa — SOCIALISM.md
 
 ## Four-Value Banking, Economic & Historical Status Specification
 
