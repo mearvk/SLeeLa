@@ -11,8 +11,8 @@ ExprP V(const std::string& n) { return std::make_unique<VarExpr>(n); }
 ExprP D(double n) { return std::make_unique<DoubleLit>(n); }
 ExprP B(const char* op, ExprP a, ExprP b) { return std::make_unique<Binary>(op, std::move(a), std::move(b)); }
 ExprP C(const std::string& name) { return std::make_unique<Call>(name); }
-ExprP C1(const std::string& name, ExprP a) { auto c=C(name); c->args.push_back(std::move(a)); return c; }
-ExprP C2(const std::string& name, ExprP a, ExprP b) { auto c=C(name); c->args.push_back(std::move(a)); c->args.push_back(std::move(b)); return c; }
+ExprP C1(const std::string& name, ExprP a) { auto c=std::make_unique<Call>(name); c->args.push_back(std::move(a)); return c; }
+ExprP C2(const std::string& name, ExprP a, ExprP b) { auto c=std::make_unique<Call>(name); c->args.push_back(std::move(a)); c->args.push_back(std::move(b)); return c; }
 ExprP Clamp(ExprP x) { return C2("__native_math_max", C2("__native_math_min", std::move(x), D(1)), D(0)); }
 StmtP Ret(ExprP e) { auto s=std::make_unique<ReturnStmt>(); s->value=std::move(e); return s; }
 Method M1(const char* r,const char* n,const char* t,const char* p) { Method m; m.retType=r; m.name=n; m.params.push_back({t,p}); m.body=std::make_unique<Block>(); return m; }

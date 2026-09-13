@@ -56,6 +56,43 @@ struct NetworkSpec {
     int line = 0;
 };
 
+// Finance objects are first-class SST declarations, parallel to the network
+// object set.  These names correspond to the Nordshrift financial integration
+// model (SST.FINANCIAL.md) and are deliberately closed so an SST sheet cannot
+// silently request an unsupported financial component.
+enum class FinanceObject {
+    FutureValue,
+    PresentValue,
+    AnnuityPresent,
+    AnnuityFuture,
+    NetPresentValue,
+    BondPrice,
+    CAPM,
+    WACC,
+    Determinant2x2,
+    LinearSolve2x2,
+    QuadraticEquation,
+    Ratio
+};
+
+// Timing/period convention required before a financial quantity can be
+// interpreted (see the domain contract in SST.FINANCIAL.md).
+enum class FinancePeriodConvention { Annual, SemiAnnual, Quarterly, Monthly, Continuous };
+
+// How discounting is applied for time-value-of-money components.
+enum class FinanceDiscounting { Discrete, Continuous };
+
+struct FinanceSpec {
+    std::vector<FinanceObject> objects;
+    std::string currency;                 // currency identity, e.g. "USD"; empty = unset
+    FinancePeriodConvention period = FinancePeriodConvention::Annual;
+    FinanceDiscounting discounting = FinanceDiscounting::Discrete;
+    bool present = false;
+    bool hasCurrency = false;
+    bool hasPeriod = false;
+    int line = 0;
+};
+
 struct Pragmas {
     std::string nordshrift;
     std::string sleela;
@@ -206,6 +243,7 @@ struct Sheet {
     Guards    guards;
     Interop   interop;
     NetworkSpec network;
+    FinanceSpec finance;
     std::vector<RuleConfig> ruleBlocks;
     std::vector<Profile>    profiles;
     std::string file;

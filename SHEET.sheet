@@ -817,6 +817,164 @@ section limits:              # role: limit
                the 3024 congruent-linear connection invariant (see section 0).
 
 
+# ---------------------------------------------------------------------------
+# 17. NETWORK — the network component series (NS-SST-NET-0001)
+# ---------------------------------------------------------------------------
+# The closed network object series declared by an `.sst` `network:` block. Each
+# object is a compile-time network component; executable behavior is lowered by
+# the Sleela front end to the core socket ABI (LISTEN/ACCEPT/CONNECT/SOCKREAD/
+# SOCKWRITE/SOCKCLOSE). Nordshrift carries these on the object-compatibility
+# list so a declared network object has a home in the shared object structure.
+section network:             # role: network
+
+  Endpoint
+    children:  NIC, Service, TLS
+    siblings:  Listener, Connector
+    note:      a logical communication endpoint.
+
+  NIC
+    children:  Queue, Link
+    siblings:  Endpoint, Fabric
+    note:      a network interface attached to an endpoint.
+
+  Link
+    children:  Packet
+    siblings:  Switch, Router
+    note:      a point-to-point transport path with latency/capacity.
+
+  Packet
+    children:  Header, Payload
+    siblings:  Message, Frame
+    note:      a transferable network unit.
+
+  Queue
+    children:  Bound, Backpressure
+    siblings:  Buffer, Channel
+    note:      a bounded packet/event queue.
+
+  Switch
+    children:  Port, ForwardingTable
+    siblings:  Router, Fabric
+    note:      a layer-2 forwarding component.
+
+  Router
+    children:  Route, Table, NextHop
+    siblings:  Switch, Gateway
+    note:      a layer-3 forwarding component.
+
+  Fabric
+    children:  Link, Switch, Router
+    siblings:  Endpoint, Gateway
+    note:      a collection of interconnected links and forwarding nodes.
+
+  Listener
+    children:  AcceptQueue, Backlog
+    siblings:  Connector, Endpoint
+    note:      a passive server-side connection endpoint.
+
+  Connector
+    children:  Handshake, Session
+    siblings:  Listener, Endpoint
+    note:      an active client-side connection endpoint.
+
+  Gateway
+    children:  Ingress, Egress
+    siblings:  Router, LoadBalancer
+    note:      a boundary between network domains.
+
+  LoadBalancer
+    children:  Pool, HealthCheck, Selection
+    siblings:  Gateway, Service
+    note:      service-selection and distribution component.
+
+  Service
+    children:  Endpoint, Handler, Contract
+    siblings:  LoadBalancer, DNS
+    note:      a named network service endpoint.
+
+  TLS
+    children:  Certificate, Cipher, Session
+    siblings:  Handshake, Negotiation
+    note:      transport security policy component.
+
+  DNS
+    children:  Zone, Record, Resolver
+    siblings:  Service, Gateway
+    note:      a name-resolution component.
+
+
+# ---------------------------------------------------------------------------
+# 18. FINANCE — the finance component series (SST.FINANCIAL.md)
+# ---------------------------------------------------------------------------
+# The closed finance object series declared by an `.sst` `finance:` block. Each
+# object is a computational financial model (not a forecast or empirical fact);
+# rates require a period convention and values require currency identity. These
+# lower to the Sleela financial kernels; Nordshrift carries them on the object-
+# compatibility list so a declared finance object has a home in the object
+# structure alongside the network and system objects.
+section finance:             # role: finance
+
+  FutureValue
+    children:  Principal, Rate, Periods
+    siblings:  PresentValue, AnnuityFuture
+    note:      compounded value of a present sum at a future time.
+
+  PresentValue
+    children:  FutureAmount, Rate, Periods
+    siblings:  FutureValue, NetPresentValue
+    note:      discounted value today of a future cash amount.
+
+  AnnuityPresent
+    children:  Payment, Rate, Periods
+    siblings:  AnnuityFuture, PresentValue
+    note:      present value of a level payment stream.
+
+  AnnuityFuture
+    children:  Payment, Rate, Periods
+    siblings:  AnnuityPresent, FutureValue
+    note:      future value of a level payment stream.
+
+  NetPresentValue
+    children:  CashFlow, Rate
+    siblings:  PresentValue, BondPrice
+    note:      sum of discounted cash flows across periods.
+
+  BondPrice
+    children:  Face, Coupon, Yield, Periods
+    siblings:  NetPresentValue, PresentValue
+    note:      price of a coupon bond as discounted cash flows.
+
+  CAPM
+    children:  RiskFree, Beta, MarketReturn
+    siblings:  WACC, Ratio
+    note:      expected return from the capital asset pricing model.
+
+  WACC
+    children:  EquityWeight, DebtWeight, CostEquity, CostDebt, Tax
+    siblings:  CAPM, NetPresentValue
+    note:      weighted average cost of capital.
+
+  Determinant2x2
+    children:  A, B, C, D
+    siblings:  LinearSolve2x2, Ratio
+    note:      determinant of a 2x2 matrix (ad - bc).
+
+  LinearSolve2x2
+    children:  Determinant2x2, Ratio
+    siblings:  Determinant2x2, QuadraticEquation
+    note:      Cramer's-rule solution of a 2x2 linear system.
+
+  QuadraticEquation
+    children:  Discriminant, RootPlus, RootMinus
+    siblings:  LinearSolve2x2, Ratio
+    note:      roots of ax^2 + bx + c via the quadratic formula.
+
+  Ratio
+    children:  Numerator, Denominator
+    siblings:  Determinant2x2, CAPM
+    note:      guarded numerator/denominator ratio (zero-safe).
+
+
 # ===========================================================================
 # End of SHEET.sheet — System depth 3024; complexity degree <= 4.
 # ===========================================================================

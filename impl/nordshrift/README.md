@@ -84,6 +84,11 @@ Indentation-significant, pragma-first. Existing 1.0 sections remain available:
 
 `sheet`, `import`, `source`, `target`, `pipeline`, `rules`, `effects`, `derive`, `guards`, `interop`, and `profile`.
 
+Two first-class component-series blocks are also available:
+
+- `network` — the closed network object series (see [`SST.NETWORK.md`](SST.NETWORK.md)).
+- `finance` — the closed finance object series (see [`SST.FINANCE.md`](SST.FINANCE.md)).
+
 The 2.0 semantic extension adds subject-oriented sections for quantities,
 assumptions, relations, transformations, comparison, evidence, and work plans.
 
@@ -97,9 +102,10 @@ assumptions, relations, transformations, comparison, evidence, and work plans.
 ## Object compatibility list (SHEET.sheet)
 
 Nordshrift also carries every object from the repo-root `SHEET.sheet` catalog
-(129 objects, 16 role categories, the `System` root with depth 3024 /
-complexity degree 4) in an **object compatibility list**, and converts each
-object into a per-target relevance:
+(156 objects across 18 role categories — including the `network` and `finance`
+component series — with the `System` root at depth 3024 / complexity degree 4)
+in an **object compatibility list**, and converts each object into a per-target
+relevance:
 
 - **direct** — the object maps to a concrete target construct.
 - **model** — the object is realized as an abstract role/pattern.

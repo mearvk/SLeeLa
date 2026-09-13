@@ -1,9 +1,10 @@
 # `.sst` Network Support — NS-SST-NET-0001
 
-Nordshrift `.sst` sheets now have a first-class `network` declaration block.
-The network declaration is parsed into the SST sheet model before the normal
-NS-SST parser runs, so network metadata is available to the transpiler without
-changing the existing source/target grammar.
+Nordshrift `.sst` sheets have a first-class `network` declaration block. The
+network declaration is parsed by the same indentation-aware NS-SST parser as
+every other section (a `network:` case in the section dispatch), so network
+metadata is available to the transpiler without changing the existing
+source/target grammar.
 
 ## Network object enum set
 
@@ -89,6 +90,23 @@ syntax version `1.1` or newer; the current compiler supports `1.0` through
 
 Thus an SST sheet can declare the network object set while its `.sleela`
 source contains the executable network methods that the SST build drives.
+
+## Object structure
+
+Every network object is also carried on the repo-root `SHEET.sheet` catalog
+(section `network`, role `network`), so a declared network object has a home in
+the shared Nordshrift object-compatibility / relevance structure alongside the
+system and finance objects. Each converts to a **model** relevance for every
+target — it is realized as a modeled network shape rather than a single target
+keyword; executable behavior is lowered to the core socket ABI above.
+
+## Diagnostics summary
+
+| Code | Meaning |
+|---|---|
+| `NSS-E-NET-001` | unknown network object |
+| `NSS-E-NET-002` | unknown network transport |
+| `NSS-E-NET-003` | unknown network address-family |
 
 ## Current executable target
 

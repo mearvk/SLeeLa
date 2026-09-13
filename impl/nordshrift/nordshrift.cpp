@@ -101,6 +101,41 @@ static bool loadSheet(const std::string& path, Sheet& sheet, DiagnosticBag& diag
     return true;
 }
 
+static void reportComponentSeries(const Sheet& sheet) {
+    if (sheet.network.present) {
+        std::cout << "network: " << sheet.network.objects.size()
+                  << " object(s)";
+        if (!sheet.network.objects.empty()) {
+            std::cout << " [";
+            for (size_t k = 0; k < sheet.network.objects.size(); k++)
+                std::cout << (k ? ", " : "") << networkObjectName(sheet.network.objects[k]);
+            std::cout << "]";
+        }
+        std::cout << ", " << sheet.network.transports.size() << " transport(s)";
+        if (!sheet.network.transports.empty()) {
+            std::cout << " [";
+            for (size_t k = 0; k < sheet.network.transports.size(); k++)
+                std::cout << (k ? ", " : "") << networkTransportName(sheet.network.transports[k]);
+            std::cout << "]";
+        }
+        std::cout << ", address-family=" << networkAddressFamilyName(sheet.network.addressFamily)
+                  << ", tls=" << (sheet.network.tls ? "true" : "false") << "\n";
+    }
+    if (sheet.finance.present) {
+        std::cout << "finance: " << sheet.finance.objects.size() << " object(s)";
+        if (!sheet.finance.objects.empty()) {
+            std::cout << " [";
+            for (size_t k = 0; k < sheet.finance.objects.size(); k++)
+                std::cout << (k ? ", " : "") << financeObjectName(sheet.finance.objects[k]);
+            std::cout << "]";
+        }
+        std::cout << ", currency="
+                  << (sheet.finance.hasCurrency ? sheet.finance.currency : std::string("(unset)"))
+                  << ", period=" << financePeriodName(sheet.finance.period)
+                  << ", discounting=" << financeDiscountingName(sheet.finance.discounting) << "\n";
+    }
+}
+
 static int doCheck(const std::string& path) {
     Sheet sheet; DiagnosticBag diags;
     if (!loadSheet(path, sheet, diags)) return 1;
@@ -108,8 +143,10 @@ static int doCheck(const std::string& path) {
     std::cout << "sheet '" << sheet.meta.name << "' — "
               << diags.errorCount() << " error(s), "
               << diags.warningCount() << " warning(s)\n";
-    if (!diags.hasErrors())
+    if (!diags.hasErrors()) {
         std::cout << "OK: target-language = " << langName(sheet.target.language) << "\n";
+        reportComponentSeries(sheet);
+    }
     return diags.hasErrors() ? 1 : 0;
 }
 
