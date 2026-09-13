@@ -261,7 +261,7 @@ Suggested operations:
 
 The next data pass should populate all 391 individual records from SLeeLa's canonical registry and independently verify the values. No placeholder should be promoted to COMPLETE without provenance.
 
-# SLeeLa — BANKS3.md
+# SLeeLa — BANKS.md
 
 ## HTTP 3.0 National Banking, Economic & Historical Registry — Combined 391-Country Table
 
