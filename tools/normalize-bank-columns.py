@@ -1,17 +1,19 @@
 #!/usr/bin/env python3
 """
-Normalize and populate BANKS.md country-code columns.
+Normalize and populate BANKS.md country, currency-code columns.
 
 Canonical national-table columns:
     ISO Alpha-2
     ISO Alpha-3
     ISO Numeric Code
+    Currency Code
 
 The current BANKS table historically stored both alpha codes in one cell such as
-"US / USA". This script splits that value into separate columns and fills missing
-ISO 3166-1 codes from the public country-code reference dataset.
+"US / USA". This script splits that value into separate columns, fills missing
+ISO 3166-1 codes, and restores ISO 4217 currency codes from the same public
+country-code reference dataset.
 
-It intentionally does not change economic, banking, currency, or year values.
+It intentionally does not change GDP, banking, inflation, trade, or year values.
 
 Max Rupplin - MEARVK LLC - 2026
 """
@@ -67,9 +69,15 @@ def load_country_codes():
         alpha2 = (row.get("ISO3166-1-Alpha-2") or "").strip().upper()
         alpha3 = (row.get("ISO3166-1-Alpha-3") or "").strip().upper()
         numeric = (row.get("ISO3166-1-numeric") or "").strip()
+        currency = (row.get("ISO4217-currency_alphabetic_code") or "").strip().upper()
         if not name or not alpha2 or not alpha3:
             continue
-        records[normalize_name(name)] = (alpha2, alpha3, numeric.zfill(3))
+        records[normalize_name(name)] = (
+            alpha2,
+            alpha3,
+            numeric.zfill(3),
+            currency or "N/A",
+        )
     return records
 
 
@@ -86,6 +94,8 @@ def parse_existing_iso(value):
 
     parts = [part.strip().upper() for part in value.replace("|", "/").split("/")]
     parts = [part for part in parts if part]
+    if all(part in {"N", "A", "NA", "N/A", "NONE"} for part in parts):
+        return "N/A", "N/A"
     if len(parts) >= 2:
         return parts[0], parts[1]
     if len(parts) == 1:
@@ -153,19 +163,23 @@ def main():
         old_numeric_index = next(
             (i for i, h in enumerate(normalized_old) if h == "ISO Numeric Code"), None
         )
+        old_currency_index = next(
+            (i for i, h in enumerate(normalized_old) if h == "Currency Code"), None
+        )
 
         if old_iso2_index is None:
             old_iso2_index = country_index + 1
             normalized_old.insert(old_iso2_index, "ISO Alpha-2")
 
-        # Build the canonical header. If ISO-3/numeric were absent, insert them
-        # immediately after Alpha-2.
         canonical_headers = list(normalized_old)
         if old_iso3_index is None:
             canonical_headers.insert(old_iso2_index + 1, "ISO Alpha-3")
         if old_numeric_index is None:
             alpha3_pos = canonical_headers.index("ISO Alpha-3")
             canonical_headers.insert(alpha3_pos + 1, "ISO Numeric Code")
+        if old_currency_index is None:
+            numeric_pos = canonical_headers.index("ISO Numeric Code")
+            canonical_headers.insert(numeric_pos + 1, "Currency Code")
 
         lines[index] = make_table_row(canonical_headers)
         canonical_separator = ["---" for _ in canonical_headers]
@@ -185,15 +199,18 @@ def main():
             alpha2 = "N/A"
             alpha3 = "N/A"
             numeric = "N/A"
+            currency = "N/A"
 
             if old_iso3_index is None:
-                # Legacy combined cell, e.g. "AF / AFG".
                 alpha2, alpha3 = parse_existing_iso(cells[old_iso2_index])
             else:
                 alpha2 = cells[old_iso2_index].strip().upper() or "N/A"
                 alpha3 = cells[old_iso3_index].strip().upper() or "N/A"
                 if old_numeric_index is not None:
                     numeric = cells[old_numeric_index].strip() or "N/A"
+
+            if old_currency_index is not None:
+                currency = cells[old_currency_index].strip().upper() or "N/A"
 
             looked_up = lookup_codes(country_name, records)
             if looked_up:
@@ -203,9 +220,9 @@ def main():
                     alpha3 = looked_up[1]
                 if numeric == "N/A":
                     numeric = looked_up[2]
+                if currency == "N/A":
+                    currency = looked_up[3]
 
-            # Rebuild the row from the original cells. Replace the legacy ISO
-            # field with the three canonical fields, or update existing fields.
             new_cells = []
             for i, cell in enumerate(cells):
                 if i == old_iso2_index:
@@ -216,8 +233,16 @@ def main():
                     new_cells.append(alpha3)
                 elif old_numeric_index is not None and i == old_numeric_index:
                     new_cells.append(numeric)
+                elif old_currency_index is not None and i == old_currency_index:
+                    new_cells.append(currency)
                 else:
                     new_cells.append(cell)
+
+            if old_currency_index is None:
+                numeric_new_index = next(
+                    i for i, h in enumerate(canonical_headers) if h == "ISO Numeric Code"
+                )
+                new_cells.insert(numeric_new_index + 1, currency)
 
             lines[row_index] = make_table_row(new_cells)
             changed = True
@@ -230,9 +255,9 @@ def main():
 
     if changed:
         BANKS.write_text("\n".join(lines) + "\n", encoding="utf-8")
-        print("BANKS.md country-code columns normalized and populated.")
+        print("BANKS.md country, ISO, and currency-code columns normalized and populated.")
     else:
-        print("BANKS.md country-code columns already normalized.")
+        print("BANKS.md country, ISO, and currency-code columns already normalized.")
 
 
 if __name__ == "__main__":
