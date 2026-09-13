@@ -9,8 +9,9 @@ sheet demo:
   description  "Transpiles the demo Sleela sources; sleela target runs on the core."
 
 source:
-  root  "src"
-  glob  "**/*.sleela"
+  root     "src"
+  glob     "**/*.sleela"
+  exclude  [ "build/**", "**/build/**" ]
 
 network:
   objects: [Endpoint, NIC, Link, Packet, Queue, Switch, Router, Fabric, Listener, Connector, Gateway, LoadBalancer, Service, TLS, DNS]
