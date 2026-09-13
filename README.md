@@ -56,11 +56,11 @@ compiler, runtime, and Nordshrift stack.
 
 | Subject | Primary reference | Implementation / integration |
 |---|---|---|
-| **Math** | [`MATH.md`](MATH.md) | `impl/core/` and native math lowering |
-| **Physics** | [`PHYSICS.md`](PHYSICS.md) | native physics API and executable formula layer |
-| **Economics** | [`ECONOMICS.md`](ECONOMICS.md) | native economics API and executable formula layer |
-| **Chemistry** | [`CHEMISTRY.md`](CHEMISTRY.md) | [`impl/chemistry/`](impl/chemistry/) and frontend chemistry API |
-| **Financial** | [`FINANCIAL.md`](FINANCIAL.md) | [`impl/finance/`](impl/finance/) and frontend financial API |
+| **Math** | [`MATH.md`](MATH.md) | [`impl/subjects/math/`](impl/subjects/math/) native math lowering (shared dispatcher in [`impl/subjects/native/`](impl/subjects/native/)) |
+| **Physics** | [`PHYSICS.md`](PHYSICS.md) | [`impl/subjects/physics/`](impl/subjects/physics/) native physics API and executable formula layer |
+| **Economics** | [`ECONOMICS.md`](ECONOMICS.md) | [`impl/subjects/economics/`](impl/subjects/economics/) native economics API and executable formula layer |
+| **Chemistry** | [`CHEMISTRY.md`](CHEMISTRY.md) | [`impl/subjects/chemistry/`](impl/subjects/chemistry/) (library + frontend chemistry API) |
+| **Financial** | [`FINANCIAL.md`](FINANCIAL.md) | [`impl/subjects/finance/`](impl/subjects/finance/) (library + frontend financial API) |
 
 ### Nordshrift 2.0 semantic layer
 

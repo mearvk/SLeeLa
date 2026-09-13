@@ -17,7 +17,7 @@ Quantitative-finance concepts
         ↓
 SLeeLa original formulas and algebraic kernels
         ↓
-impl/finance/financial.cpp
+impl/subjects/finance/financial.cpp
         ↓
 Sleela frontend lowering
         ↓

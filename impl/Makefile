@@ -1,10 +1,23 @@
 # =============================================================================
 # Makefile for Sleela (C/C++ core + front end) and Nordshrift (.sst -> triple).
+#
+# Subject libraries live under subjects/ (one folder per subject):
+#   subjects/math       -> addMath          (native math lowering)
+#   subjects/physics    -> addPhysics        (native physics lowering)
+#   subjects/economics  -> addEconomics      (native economics lowering)
+#   subjects/native     -> shared dispatcher + builders (native_api, native_*)
+#   subjects/chemistry  -> chemistry library + frontend chemistry_api
+#   subjects/finance    -> financial library + frontend financial_api
 # =============================================================================
 CC ?= gcc
 CXX ?= g++
+# Subject headers are included by bare name (e.g. "native_api.h"), so expose
+# each subject include directory on the compiler search path.
+SUBJECT_INCLUDES := -Isubjects/native -Isubjects/math -Isubjects/physics \
+                    -Isubjects/economics -Isubjects/chemistry -Isubjects/finance
 CFLAGS ?= -std=c11 -O2 -Wall -Wextra -pthread
 CXXFLAGS ?= -std=c++17 -O2 -Wall -Wextra -pthread
+CPPFLAGS += -Ifrontend $(SUBJECT_INCLUDES)
 LDFLAGS ?= -pthread
 BUILD := build
 SLEELA_BIN := $(BUILD)/sleela
@@ -17,17 +30,21 @@ CORE_OBJ := $(BUILD)/sleela_core.o
 CHEMISTRY_OBJ := $(BUILD)/chemistry.o
 FINANCIAL_OBJ := $(BUILD)/financial.o
 CORE_SRC := core/sleela_artifact.c
+# Front end: lexer/parser/compiler/driver plus the subject frontend APIs.
 FE_SRC := frontend/lexer.cpp frontend/parser.cpp frontend/compiler.cpp \
-          frontend/version.cpp frontend/artifact.cpp frontend/native_api.cpp \
-          frontend/chemistry_api.cpp frontend/financial_api.cpp
-FE_OBJ := $(patsubst frontend/%.cpp,$(BUILD)/%.o,$(FE_SRC))
+          frontend/version.cpp frontend/artifact.cpp \
+          subjects/native/native_api.cpp \
+          subjects/math/math_native.cpp subjects/physics/physics_native.cpp \
+          subjects/economics/economics_native.cpp \
+          subjects/chemistry/chemistry_api.cpp subjects/finance/financial_api.cpp
+FE_OBJ := $(patsubst %.cpp,$(BUILD)/%.o,$(notdir $(FE_SRC)))
 DRIVER_OBJ := $(BUILD)/driver.o
 NS_SRC := nordshrift/sst_lexer.cpp nordshrift/sst_parser.cpp \
           nordshrift/source_resolve.cpp nordshrift/sleela_emit.cpp \
           nordshrift/object_compat.cpp nordshrift/subject_model.cpp \
           nordshrift/nordshrift.cpp
 NS_OBJ := $(patsubst nordshrift/%.cpp,$(BUILD)/ns_%.o,$(NS_SRC))
-.PHONY: all clean test test-sleela test-version test-nordshrift test-threads test-network test-catalog test-chemistry test-financial
+.PHONY: all clean test test-sleela test-version test-nordshrift test-threads test-network test-catalog test-chemistry test-financial test-math test-physics test-economics
 all: $(SLEELA_BIN) $(NORDSHRIFT_BIN)
 $(SLEELA_BIN): $(CORE_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ)
 	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS)
@@ -39,23 +56,36 @@ $(SOCKET_SMOKE): core/socket_smoke.c $(CORE_OBJ)
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 $(CORE_OBJ): $(CORE_SRC) core/sleela_core.c core/sleela_core.h | $(BUILD)
 	$(CC) $(CFLAGS) -c $(CORE_SRC) -o $@
-$(CHEMISTRY_OBJ): chemistry/chemistry.cpp chemistry/chemistry.h | $(BUILD)
-	$(CXX) $(CXXFLAGS) -c chemistry/chemistry.cpp -o $@
-$(FINANCIAL_OBJ): finance/financial.cpp finance/financial.h | $(BUILD)
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+$(CHEMISTRY_OBJ): subjects/chemistry/chemistry.cpp subjects/chemistry/chemistry.h | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c subjects/chemistry/chemistry.cpp -o $@
+$(FINANCIAL_OBJ): subjects/finance/financial.cpp subjects/finance/financial.h | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c subjects/finance/financial.cpp -o $@
+# Front-end / subject-frontend translation units (compiled by basename into build/).
 $(BUILD)/%.o: frontend/%.cpp | $(BUILD)
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
+$(BUILD)/native_api.o: subjects/native/native_api.cpp | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
+$(BUILD)/math_native.o: subjects/math/math_native.cpp | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
+$(BUILD)/physics_native.o: subjects/physics/physics_native.cpp | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
+$(BUILD)/economics_native.o: subjects/economics/economics_native.cpp | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
+$(BUILD)/chemistry_api.o: subjects/chemistry/chemistry_api.cpp | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
+$(BUILD)/financial_api.o: subjects/finance/financial_api.cpp | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
 $(BUILD)/sheet_catalog.o: catalog/sheet_catalog.cpp catalog/sheet_catalog.h | $(BUILD)
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
 $(BUILD)/xclass_loader.o: xclass/xclass_loader.cpp xclass/xclass_loader.h | $(BUILD)
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
 $(BUILD)/ns_%.o: nordshrift/%.cpp | $(BUILD)
-	$(CXX) $(CXXFLAGS) -c $< -o $@
-$(BUILD)/driver.o: frontend/driver.cpp frontend/compiler.h frontend/artifact.h frontend/native_api.h frontend/chemistry_api.h frontend/financial_api.h | $(BUILD)
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
+$(BUILD)/driver.o: frontend/driver.cpp frontend/compiler.h frontend/artifact.h subjects/native/native_api.h subjects/chemistry/chemistry_api.h subjects/finance/financial_api.h | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
 $(BUILD):
 	mkdir -p $(BUILD)
-test: test-sleela test-version test-nordshrift test-threads test-network test-catalog test-chemistry test-financial
+test: test-sleela test-version test-nordshrift test-threads test-network test-catalog test-math test-physics test-economics test-chemistry test-financial
 test-threads: $(THREAD_SMOKE)
 	@echo "=== core threading smoke (128 threads) ==="; $(THREAD_SMOKE) 128
 test-sleela: $(SLEELA_BIN)
@@ -69,6 +99,12 @@ test-network: $(SOCKET_SMOKE)
 	@echo "=== core networking smoke (TCP loopback) ==="; $(SOCKET_SMOKE)
 test-catalog: $(NORDSHRIFT_BIN)
 	@export SLEELA_SHEET=$(CURDIR)/../SHEET.sheet; echo "=== nordshrift objects (summary) ==="; $(NORDSHRIFT_BIN) objects | head -4 || exit 1; echo "=== relevance --target=c Thread ==="; $(NORDSHRIFT_BIN) relevance --target=c Thread || exit 1; echo "=== relevance --target=java (tally) ==="; $(NORDSHRIFT_BIN) relevance --target=java | tail -1 || exit 1
+test-math: $(BUILD)/math_native.o
+	@echo "=== native math subject library ==="; echo "math object compiled: $(BUILD)/math_native.o"
+test-physics: $(BUILD)/physics_native.o
+	@echo "=== native physics subject library ==="; echo "physics object compiled: $(BUILD)/physics_native.o"
+test-economics: $(BUILD)/economics_native.o
+	@echo "=== native economics subject library ==="; echo "economics object compiled: $(BUILD)/economics_native.o"
 test-chemistry: $(CHEMISTRY_OBJ)
 	@echo "=== normed presumed chemistry library ==="; echo "chemistry object compiled: $(CHEMISTRY_OBJ)"
 test-financial: $(FINANCIAL_OBJ)
