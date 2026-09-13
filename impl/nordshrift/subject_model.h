@@ -107,6 +107,12 @@ bool isValidWorkStatus(WorkStatus status);
 bool hasDeclaredDependency(const Subject& subject, const std::string& dependency);
 bool isFoundationalDomain(const std::string& domain);
 
+// Enum <-> canonical name mappings (lowercase, as written in an .sst sheet).
+bool evidenceStatusFromName(const std::string& s, EvidenceStatus& out);
+bool workStatusFromName(const std::string& s, WorkStatus& out);
+const char* evidenceStatusName(EvidenceStatus status);
+const char* workStatusName(WorkStatus status);
+
 } // namespace nordshrift::semantic
 
 #endif

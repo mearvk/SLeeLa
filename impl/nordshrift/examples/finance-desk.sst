@@ -1,0 +1,41 @@
+#nordshrift 1.0
+#sleela     1.1
+
+/// A Finance- and Network-aware Nordshrift sheet.
+///
+/// Declares the closed finance object series (SST.FINANCIAL.md) alongside the
+/// network component series (NS-SST-NET-0001), so the same sheet drives a
+/// network-connected financial desk module. Both blocks are compile-time
+/// declarations; executable behavior is lowered by the Sleela front end.
+sheet finance-desk:
+  version      1.0.0
+  author       "Sleela Design Council"
+  description  "Network- and finance-aware component series for the trading desk module."
+
+source:
+  root  "src"
+  glob  "**/*.sleela"
+
+/// Network component series: a finance-aware service network.
+network:
+  objects: [ Endpoint, NIC, Link, Packet, Queue, Router, Fabric,
+             Listener, Connector, Gateway, LoadBalancer, Service, TLS, DNS ]
+  transports: [ tcp, tls, quic ]
+  address-family: dual
+  tls: true
+
+/// Finance component series: the closed financial object set.
+finance:
+  objects: [ FutureValue, PresentValue, AnnuityPresent, AnnuityFuture,
+             NetPresentValue, BondPrice, CAPM, WACC,
+             Determinant2x2, LinearSolve2x2, QuadraticEquation, Ratio ]
+  currency:    USD
+  period:      annual
+  discounting: discrete
+
+target:
+  root            "out"
+  layout          mirror-source
+  java-version    21
+  package-root    "com.example.desk"
+  target-language sleela
