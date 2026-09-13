@@ -11,12 +11,8 @@
 
 namespace nordshrift {
 
-Sheet parseSheet(const std::vector<Token>& toks, const std::string& file,
-                 DiagnosticBag& diags);
-
-#define parseSheet parseSheetBase
-
-// The implementation in sst_parser.cpp is renamed by the macro above.
+// Base spec-conformant parser, implemented in sst_parser.cpp. The public
+// entry point parseSheet() below wraps this with network-declaration support.
 Sheet parseSheetBase(const std::vector<Token>& toks, const std::string& file,
                      DiagnosticBag& diags);
 
@@ -173,8 +169,8 @@ inline Sheet parseWithNetwork(const std::vector<Token>& toks,
 
 } // namespace sst_network_detail
 
-#undef parseSheet
-
+// Public entry point: parse a .sst sheet with network-declaration support,
+// delegating the base grammar to parseSheetBase() above.
 inline Sheet parseSheet(const std::vector<Token>& toks, const std::string& file,
                         DiagnosticBag& diags) {
     return sst_network_detail::parseWithNetwork(toks, file, diags);
