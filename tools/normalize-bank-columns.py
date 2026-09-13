@@ -26,14 +26,10 @@ COUNTRY_CODES_URL = (
     "https://raw.githubusercontent.com/datasets/country-codes/main/data/country-codes.csv"
 )
 
-# Common names used in BANKS.md that differ from ISO/UN display names.
 NAME_ALIASES = {
-    "cabo verde": "Cabo Verde",
-    "congo": "Congo",
     "côte d'ivoire": "Cote d'Ivoire",
     "cote d'ivoire": "Cote d'Ivoire",
     "democratic republic of the congo": "Democratic Republic of the Congo",
-    "gambia": "Gambia",
     "iran": "Iran (Islamic Republic of)",
     "laos": "Lao People's Democratic Republic",
     "moldova": "Moldova, Republic of",
@@ -79,9 +75,7 @@ def load_country_codes():
 
 def lookup_codes(country_name, records):
     key = normalize_name(country_name)
-    alias = NAME_ALIASES.get(key)
-    if alias:
-        key = normalize_name(alias)
+    key = normalize_name(NAME_ALIASES.get(key, country_name))
     return records.get(key)
 
 
@@ -95,11 +89,10 @@ def parse_existing_iso(value):
     if len(parts) >= 2:
         return parts[0], parts[1]
     if len(parts) == 1:
-        code = parts[0]
-        if len(code) == 2:
-            return code, "N/A"
-        if len(code) == 3:
-            return "N/A", code
+        if len(parts[0]) == 2:
+            return parts[0], "N/A"
+        if len(parts[0]) == 3:
+            return "N/A", parts[0]
     return "N/A", "N/A"
 
 
@@ -119,26 +112,27 @@ def main():
             index += 1
             continue
 
-        headers = split_table_row(line)
+        old_headers = split_table_row(line)
         separator = lines[index + 1].strip()
         if not separator.startswith("|"):
             index += 1
             continue
 
         separator_cells = split_table_row(separator)
-        if len(headers) != len(separator_cells) or not any("-" in cell for cell in separator_cells):
+        if len(old_headers) != len(separator_cells) or not any("-" in cell for cell in separator_cells):
             index += 1
             continue
 
-        normalized = [cell.strip() for cell in headers]
-        is_national = any(h.casefold() == "country/jurisdiction" for h in normalized)
-        if not is_national:
+        country_index = next(
+            (i for i, h in enumerate(old_headers) if h.strip().casefold() == "country/jurisdiction"),
+            None,
+        )
+        if country_index is None:
             index += 1
             continue
 
         found_national_table = True
 
-        # Normalize legacy names first.
         renames = {
             "ISO": "ISO Alpha-2",
             "ISO2": "ISO Alpha-2",
@@ -148,57 +142,58 @@ def main():
             "Currency": "Currency Code",
             "Currency Code": "Currency Code",
         }
-        normalized = [renames.get(h, h) for h in normalized]
+        normalized_old = [renames.get(h.strip(), h.strip()) for h in old_headers]
 
-        iso2_index = next((i for i, h in enumerate(normalized) if h == "ISO Alpha-2"), None)
-        iso3_index = next((i for i, h in enumerate(normalized) if h == "ISO Alpha-3"), None)
-        numeric_index = next((i for i, h in enumerate(normalized) if h == "ISO Numeric Code"), None)
-        country_index = next(i for i, h in enumerate(normalized) if h == "Country/Jurisdiction")
+        old_iso2_index = next(
+            (i for i, h in enumerate(normalized_old) if h == "ISO Alpha-2"), None
+        )
+        old_iso3_index = next(
+            (i for i, h in enumerate(normalized_old) if h == "ISO Alpha-3"), None
+        )
+        old_numeric_index = next(
+            (i for i, h in enumerate(normalized_old) if h == "ISO Numeric Code"), None
+        )
 
-        if iso2_index is None:
-            iso2_index = country_index + 1
-            normalized.insert(iso2_index, "ISO Alpha-2")
-            iso3_index = None if iso3_index is None else iso3_index + 1
-            numeric_index = None if numeric_index is None else numeric_index + 1
+        if old_iso2_index is None:
+            old_iso2_index = country_index + 1
+            normalized_old.insert(old_iso2_index, "ISO Alpha-2")
 
-        # If the old combined ISO column exists, use it as the source and split it.
-        if iso3_index is None:
-            iso3_index = iso2_index + 1
-            normalized.insert(iso3_index, "ISO Alpha-3")
-            if numeric_index is not None and numeric_index >= iso3_index:
-                numeric_index += 1
+        # Build the canonical header. If ISO-3/numeric were absent, insert them
+        # immediately after Alpha-2.
+        canonical_headers = list(normalized_old)
+        if old_iso3_index is None:
+            canonical_headers.insert(old_iso2_index + 1, "ISO Alpha-3")
+        if old_numeric_index is None:
+            alpha3_pos = canonical_headers.index("ISO Alpha-3")
+            canonical_headers.insert(alpha3_pos + 1, "ISO Numeric Code")
 
-        if numeric_index is None:
-            numeric_index = iso3_index + 1
-            normalized.insert(numeric_index, "ISO Numeric Code")
-
-        # Update the header and separator to match the expanded table.
-        lines[index] = make_table_row(normalized)
-        separator_cells = ["---" for _ in normalized]
-        separator_cells[normalized.index("GDP")] = "---:"
-        separator_cells[normalized.index("GDP/Capita")] = "---:"
-        separator_cells[normalized.index("Inflation")] = "---:"
-        separator_cells[normalized.index("Trade/GDP")] = "---:"
-        lines[index + 1] = make_table_row(separator_cells)
+        lines[index] = make_table_row(canonical_headers)
+        canonical_separator = ["---" for _ in canonical_headers]
+        for right_aligned in ("GDP", "GDP/Capita", "Inflation", "Trade/GDP"):
+            if right_aligned in canonical_headers:
+                canonical_separator[canonical_headers.index(right_aligned)] = "---:"
+        lines[index + 1] = make_table_row(canonical_separator)
         changed = True
 
         row_index = index + 2
         while row_index < len(lines) and lines[row_index].lstrip().startswith("|"):
             cells = split_table_row(lines[row_index])
-            if len(cells) != len(headers):
-                # Already-expanded row or a malformed row; stop at the table boundary.
-                if len(cells) == len(normalized):
-                    row_index += 1
-                    continue
+            if len(cells) != len(old_headers):
                 break
 
             country_name = cells[country_index]
-            old_iso = cells[iso2_index] if iso2_index < len(cells) else "N/A"
-            alpha2, alpha3 = parse_existing_iso(old_iso)
+            alpha2 = "N/A"
+            alpha3 = "N/A"
+            numeric = "N/A"
 
-            # If the source cell was already separate, preserve it.
-            if iso3_index < len(cells) and cells[iso3_index].strip().upper() not in {"", "N/A"}:
-                alpha3 = cells[iso3_index].strip().upper()
+            if old_iso3_index is None:
+                # Legacy combined cell, e.g. "AF / AFG".
+                alpha2, alpha3 = parse_existing_iso(cells[old_iso2_index])
+            else:
+                alpha2 = cells[old_iso2_index].strip().upper() or "N/A"
+                alpha3 = cells[old_iso3_index].strip().upper() or "N/A"
+                if old_numeric_index is not None:
+                    numeric = cells[old_numeric_index].strip() or "N/A"
 
             looked_up = lookup_codes(country_name, records)
             if looked_up:
@@ -206,18 +201,21 @@ def main():
                     alpha2 = looked_up[0]
                 if alpha3 == "N/A":
                     alpha3 = looked_up[1]
-                numeric = looked_up[2]
-            else:
-                numeric = "N/A"
+                if numeric == "N/A":
+                    numeric = looked_up[2]
 
-            # Rebuild from the original row, removing the legacy combined ISO cell
-            # and inserting the three canonical code fields.
+            # Rebuild the row from the original cells. Replace the legacy ISO
+            # field with the three canonical fields, or update existing fields.
             new_cells = []
-            for original_index, cell in enumerate(cells):
-                if original_index == iso2_index:
-                    new_cells.extend([alpha2, alpha3, numeric])
-                elif original_index == iso3_index or original_index == numeric_index:
-                    continue
+            for i, cell in enumerate(cells):
+                if i == old_iso2_index:
+                    new_cells.append(alpha2)
+                    if old_iso3_index is None:
+                        new_cells.extend([alpha3, numeric])
+                elif old_iso3_index is not None and i == old_iso3_index:
+                    new_cells.append(alpha3)
+                elif old_numeric_index is not None and i == old_numeric_index:
+                    new_cells.append(numeric)
                 else:
                     new_cells.append(cell)
 
