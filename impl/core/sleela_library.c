@@ -2,6 +2,7 @@
 
 #include <errno.h>
 #include <stddef.h>
+#include <stdio.h>
 
 #ifdef _WIN32
 #include <windows.h>
