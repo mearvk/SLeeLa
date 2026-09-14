@@ -43,7 +43,8 @@ static wchar_t* utf8_to_wide(const char* text) {
 
 int slterminal_spawn(SLTerminalHandle* terminal, const char* command,
                      unsigned cols, unsigned rows) {
-    HANDLE in_read = NULL, out_write = NULL;
+    HANDLE child_in = NULL, parent_in = NULL;
+    HANDLE parent_out = NULL, child_out = NULL;
     SECURITY_ATTRIBUTES sa;
     COORD size;
     HPCON hpc = NULL;
@@ -53,61 +54,39 @@ int slterminal_spawn(SLTerminalHandle* terminal, const char* command,
     wchar_t* cmd = NULL;
     SLWinTerminal* t = NULL;
     HRESULT hr;
+    DWORD error_code;
 
     if (!terminal || cols == 0 || rows == 0) return EINVAL;
     *terminal = (SLTerminalHandle)0;
     memset(&sa, 0, sizeof(sa));
     sa.nLength = sizeof(sa);
     sa.bInheritHandle = TRUE;
-    if (!CreatePipe(&in_read, &t, &sa, 0)) return (int)GetLastError();
-    /* The temporary value above is only used to keep the declaration layout
-     * compact; replace it immediately with the real output pipe. */
-    CloseHandle((HANDLE)t);
-    t = NULL;
-    if (!CreatePipe(&in_read, &t, &sa, 0)) return (int)GetLastError();
-    CloseHandle((HANDLE)t);
-    t = NULL;
-    {
-        HANDLE out_read = NULL;
-        if (!CreatePipe(&out_read, &out_write, &sa, 0)) {
-            CloseHandle(in_read);
-            return (int)GetLastError();
-        }
-        if (!SetHandleInformation(in_read, HANDLE_FLAG_INHERIT, 0) ||
-            !SetHandleInformation(out_read, HANDLE_FLAG_INHERIT, 0)) {
-            CloseHandle(in_read); CloseHandle(out_read); CloseHandle(out_write);
-            return (int)GetLastError();
-        }
-        CloseHandle(out_read);
+
+    if (!CreatePipe(&child_in, &parent_in, &sa, 0) ||
+        !CreatePipe(&parent_out, &child_out, &sa, 0)) {
+        error_code = GetLastError();
+        if (child_in) CloseHandle(child_in);
+        if (parent_in) CloseHandle(parent_in);
+        if (parent_out) CloseHandle(parent_out);
+        if (child_out) CloseHandle(child_out);
+        return (int)error_code;
+    }
+    if (!SetHandleInformation(parent_in, HANDLE_FLAG_INHERIT, 0) ||
+        !SetHandleInformation(parent_out, HANDLE_FLAG_INHERIT, 0)) {
+        error_code = GetLastError();
+        CloseHandle(child_in); CloseHandle(parent_in);
+        CloseHandle(parent_out); CloseHandle(child_out);
+        return (int)error_code;
     }
 
-    /* Recreate the pipes with the required parent/ConPTY directions. */
-    CloseHandle(in_read);
-    CloseHandle(out_write);
-    {
-        HANDLE child_in = NULL, parent_in = NULL;
-        HANDLE parent_out = NULL, child_out = NULL;
-        if (!CreatePipe(&child_in, &parent_in, &sa, 0) ||
-            !CreatePipe(&parent_out, &child_out, &sa, 0)) {
-            if (child_in) CloseHandle(child_in); if (parent_in) CloseHandle(parent_in);
-            if (parent_out) CloseHandle(parent_out); if (child_out) CloseHandle(child_out);
-            return (int)GetLastError();
-        }
-        SetHandleInformation(parent_in, HANDLE_FLAG_INHERIT, 0);
-        SetHandleInformation(parent_out, HANDLE_FLAG_INHERIT, 0);
-        size.X = (SHORT)(cols > 32767 ? 32767 : cols);
-        size.Y = (SHORT)(rows > 32767 ? 32767 : rows);
-        hr = CreatePseudoConsole(size, child_in, child_out, 0, &hpc);
-        CloseHandle(child_in);
-        CloseHandle(child_out);
-        if (FAILED(hr)) {
-            CloseHandle(parent_in); CloseHandle(parent_out);
-            return (int)hr;
-        }
-        parent_in = parent_in;
-        parent_out = parent_out;
-        in_read = parent_in;
-        out_write = parent_out;
+    size.X = (SHORT)(cols > 32767 ? 32767 : cols);
+    size.Y = (SHORT)(rows > 32767 ? 32767 : rows);
+    hr = CreatePseudoConsole(size, child_in, child_out, 0, &hpc);
+    CloseHandle(child_in);
+    CloseHandle(child_out);
+    if (FAILED(hr)) {
+        CloseHandle(parent_in); CloseHandle(parent_out);
+        return (int)hr;
     }
 
     memset(&si, 0, sizeof(si));
@@ -115,31 +94,33 @@ int slterminal_spawn(SLTerminalHandle* terminal, const char* command,
     InitializeProcThreadAttributeList(NULL, 1, 0, &attr_size);
     si.lpAttributeList = (LPPROC_THREAD_ATTRIBUTE_LIST)HeapAlloc(
         GetProcessHeap(), 0, attr_size);
-    if (!si.lpAttributeList || !InitializeProcThreadAttributeList(
-            si.lpAttributeList, 1, 0, &attr_size) ||
+    if (!si.lpAttributeList ||
+        !InitializeProcThreadAttributeList(si.lpAttributeList, 1, 0, &attr_size) ||
         !UpdateProcThreadAttribute(si.lpAttributeList, 0,
             PROC_THREAD_ATTRIBUTE_PSEUDOCONSOLE, hpc, sizeof(hpc), NULL, NULL)) {
+        error_code = GetLastError();
         if (si.lpAttributeList) HeapFree(GetProcessHeap(), 0, si.lpAttributeList);
-        CloseHandle(in_read); CloseHandle(out_write); ClosePseudoConsole(hpc);
-        return (int)GetLastError();
+        CloseHandle(parent_in); CloseHandle(parent_out); ClosePseudoConsole(hpc);
+        return (int)error_code;
     }
 
     cmd = utf8_to_wide(command ? command : "cmd.exe");
     if (!cmd) {
         DeleteProcThreadAttributeList(si.lpAttributeList);
         HeapFree(GetProcessHeap(), 0, si.lpAttributeList);
-        CloseHandle(in_read); CloseHandle(out_write); ClosePseudoConsole(hpc);
+        CloseHandle(parent_in); CloseHandle(parent_out); ClosePseudoConsole(hpc);
         return ERROR_OUTOFMEMORY;
     }
     memset(&pi, 0, sizeof(pi));
     if (!CreateProcessW(NULL, cmd, NULL, NULL, FALSE,
                         EXTENDED_STARTUPINFO_PRESENT | CREATE_UNICODE_ENVIRONMENT,
                         NULL, NULL, &si.StartupInfo, &pi)) {
-        int e = (int)GetLastError();
-        free(cmd); DeleteProcThreadAttributeList(si.lpAttributeList);
+        error_code = GetLastError();
+        free(cmd);
+        DeleteProcThreadAttributeList(si.lpAttributeList);
         HeapFree(GetProcessHeap(), 0, si.lpAttributeList);
-        CloseHandle(in_read); CloseHandle(out_write); ClosePseudoConsole(hpc);
-        return e;
+        CloseHandle(parent_in); CloseHandle(parent_out); ClosePseudoConsole(hpc);
+        return (int)error_code;
     }
     CloseHandle(pi.hThread);
     free(cmd);
@@ -148,13 +129,14 @@ int slterminal_spawn(SLTerminalHandle* terminal, const char* command,
 
     t = (SLWinTerminal*)calloc(1, sizeof(*t));
     if (!t) {
-        TerminateProcess(pi.hProcess, 1); CloseHandle(pi.hProcess);
-        CloseHandle(in_read); CloseHandle(out_write); ClosePseudoConsole(hpc);
+        TerminateProcess(pi.hProcess, 1);
+        CloseHandle(pi.hProcess);
+        CloseHandle(parent_in); CloseHandle(parent_out); ClosePseudoConsole(hpc);
         return ERROR_OUTOFMEMORY;
     }
     t->console = hpc;
-    t->input_write = in_read;
-    t->output_read = out_write;
+    t->input_write = parent_in;
+    t->output_read = parent_out;
     t->process = pi.hProcess;
     *terminal = (SLTerminalHandle)(intptr_t)t;
     return 0;
@@ -179,10 +161,12 @@ SLTerminalCount slterminal_write(SLTerminalHandle terminal, const void* buffer, 
 int slterminal_resize(SLTerminalHandle terminal, unsigned cols, unsigned rows) {
     SLWinTerminal* t = as_terminal(terminal);
     COORD size;
+    HRESULT hr;
     if (!t || cols == 0 || rows == 0) return EINVAL;
     size.X = (SHORT)(cols > 32767 ? 32767 : cols);
     size.Y = (SHORT)(rows > 32767 ? 32767 : rows);
-    return SUCCEEDED(ResizePseudoConsole(t->console, size)) ? 0 : (int)GetLastError();
+    hr = ResizePseudoConsole(t->console, size);
+    return SUCCEEDED(hr) ? 0 : (int)hr;
 }
 
 int slterminal_close(SLTerminalHandle terminal) {
