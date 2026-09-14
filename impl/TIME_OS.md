@@ -43,3 +43,15 @@ For maximum integrity, consumers should retain the source, offset, uncertainty, 
 ## Security
 
 Remote NTP is an advisory measurement. It must not silently replace the trusted host clock for authentication, signatures, audit integrity, or other security-critical decisions. High-assurance deployments should compare independent time sources and preserve uncertainty.
+
+## Raw interoperability ping
+
+SLeeLa also provides a deliberately small raw-time interoperability primitive. The conceptual command is:
+
+    sleela ping $(timezone 1) 1
+
+where `$(timezone 1)` resolves to the selected standard time endpoint/timezone target and the final `1` is exactly one byte (`0x31`) used as an interoperability marker. The standard NTP request remains a normal 48-byte NTP client request; the marker is sent separately as a one-byte UDP datagram so an NTP server is not handed a malformed NTP packet.
+
+The native entry point is `sltime_send_raw_time(host, port, marker, timeout_ms, sample)`. It is intended for small, internationally interoperable probes and diagnostics. A remote host should only interpret the marker if an application-level convention explicitly says it should; the marker is not part of the NTP standard.
+
+This facility does not claim that every timezone name maps to a network endpoint. Timezone selection and network endpoint selection are separate concerns and should be resolved by the caller or an agreed registry.
