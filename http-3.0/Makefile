@@ -30,9 +30,22 @@ PROTO_SOURCES = \
 
 PROTO_OBJECTS = $(PROTO_SOURCES:.c=.o)
 
-.PHONY: all clean selftest kds cpp-check proto pipeline-demo demo test
+# Station signaling: the TCP-flag negotiation layer (spec J-STA-0001). Pure
+# logic; no OpenSSL. The userland side builds here; the kernel driver builds
+# separately under kernel/ (needs kernel headers).
+STATION_SOURCES = \
+	station/station_classifier.c \
+	station/station_session.c \
+	station/station_backend.c
 
-all: selftest kds proto
+STATION_OBJECTS = $(STATION_SOURCES:.c=.o)
+
+.PHONY: all clean selftest kds cpp-check proto pipeline-demo demo test \
+	station station-demo station-test kernel-check
+
+all: selftest kds proto station
+
+selftest: crypto_selftest
 
 selftest: crypto_selftest
 
@@ -51,6 +64,17 @@ pipeline-demo: http3_pipeline_demo
 http3_pipeline_demo: $(PROTO_OBJECTS) http3_pipeline_demo.o
 	$(CC) $(CFLAGS) -o $@ $^
 
+# Station userland build (simulation + device backends) and demo.
+station: station-demo
+
+station-demo: station/station_demo
+station/station_demo: $(STATION_OBJECTS) station/station_demo.o
+	$(CC) $(CFLAGS) -o $@ $^
+
+# Station sources live under station/ and must not pull in OpenSSL cflags.
+station/%.o: station/%.c
+	$(CC) -std=c11 -O2 -Wall -Wextra -Istation -c $< -o $@
+
 %.o: %.c
 	$(CC) $(CFLAGS) -I. -c $< -o $@
 
@@ -62,9 +86,21 @@ cpp-check: $(C_OBJECTS)
 demo: http3_pipeline_demo
 	./http3_pipeline_demo
 
-test: demo
+test: demo station-test
 	python3 test_http3_flow.py
 
+# Run the Station manualog demo and the Python parity tests.
+station-test: station/station_demo
+	./station/station_demo
+	python3 station/test_station.py
+
+# Confirm the kernel module at least has its build scaffold (compiles where
+# kernel headers exist; otherwise reports gracefully).
+kernel-check:
+	$(MAKE) -C kernel check-headers || true
+
 clean:
-	rm -f $(C_OBJECTS) $(PROTO_OBJECTS) crypto_selftest.o key_distribution_server_main.o \
-	      http3_pipeline_demo.o crypto_selftest key_distribution_server http3_pipeline_demo
+	rm -f $(C_OBJECTS) $(PROTO_OBJECTS) $(STATION_OBJECTS) crypto_selftest.o \
+	      key_distribution_server_main.o http3_pipeline_demo.o station/station_demo.o \
+	      crypto_selftest key_distribution_server http3_pipeline_demo station/station_demo
+	rm -rf station/__pycache__ __pycache__
