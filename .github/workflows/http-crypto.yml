@@ -27,3 +27,11 @@ jobs:
       - name: Check C++ interface
         working-directory: http-3.0
         run: make cpp-check
+
+      - name: Run HTTP 3.0 data-flow demo (envelope / naming / pipeline)
+        working-directory: http-3.0
+        run: ./http3_pipeline_demo
+
+      - name: Run HTTP 3.0 data-flow Python tests
+        working-directory: http-3.0
+        run: python3 test_http3_flow.py
