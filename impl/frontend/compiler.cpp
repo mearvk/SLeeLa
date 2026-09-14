@@ -141,6 +141,14 @@ private:
             emitExpr(c.args[0].get());emit(OP_FILEUNLINK);return true;
         }
 
+        if(n=="timeUtcMillis"){if(!c.args.empty())throw std::runtime_error("Semantic error: timeUtcMillis() takes no arguments");emit(OP_TIME_UTC_MS);return true;}
+        if(n=="timeMonotonicNanos"){if(!c.args.empty())throw std::runtime_error("Semantic error: timeMonotonicNanos() takes no arguments");emit(OP_TIME_MONO_NS);return true;}
+        if(n=="timePrecisionMillis"){if(!c.args.empty())throw std::runtime_error("Semantic error: timePrecisionMillis() takes no arguments");emit(OP_TIME_PRECISION_MS);return true;}
+        if(n=="timeLocation"){if(!c.args.empty())throw std::runtime_error("Semantic error: timeLocation() takes no arguments");emit(OP_TIME_LOCATION);return true;}
+        if(n=="timeHttpDate"){if(!c.args.empty())throw std::runtime_error("Semantic error: timeHttpDate() takes no arguments");emit(OP_TIME_HTTP_DATE);return true;}
+        if(n=="timeJson"){if(!c.args.empty())throw std::runtime_error("Semantic error: timeJson() takes no arguments");emit(OP_TIME_JSON);return true;}
+        if(n=="timeNtp"){if(c.args.size()!=1)throw std::runtime_error("Semantic error: timeNtp(host) takes one argument");emitExpr(c.args[0].get());emit(OP_TIME_NTP);return true;}
+
         auto litStr=[&](const Expr*e,const char*what)->std::string{auto sl=dynamic_cast<const StrLit*>(e);if(!sl)throw std::runtime_error("Semantic error: "+std::string(what)+" must be a string literal (an object name)");return sl->value;};
         auto emitStr=[&](const std::string&s){emit(OP_CONST,slvm_add_const_str(vm_,s.c_str()));};
         auto emitBool=[&](bool b){emit(OP_CONST,slvm_add_const_bool(vm_,b?1:0));};
