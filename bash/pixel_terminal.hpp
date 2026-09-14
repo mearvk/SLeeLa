@@ -1,5 +1,8 @@
 #pragma once
 
+// Phraign(TM) -- SLeeLa's frame-based, pixel-accurate terminal control system.
+// Native pixel-terminal layer. See PHRAIGN.md for the system overview.
+
 #include <cstddef>
 #include <cstdint>
 #include <string>
@@ -45,7 +48,7 @@ struct SizeEvent {
 
 struct Handshake {
     static constexpr unsigned int bash_protocol_major = 1;
-    static constexpr unsigned int pixel_terminal_version = 1;
+    static constexpr unsigned int phraign_version = 1;
     static constexpr const char* variant = "NATIVE";
 
     bool ready = false;
@@ -63,9 +66,9 @@ public:
     PixelTerminal(const PixelTerminal&) = delete;
     PixelTerminal& operator=(const PixelTerminal&) = delete;
 
-    // Returns the capability contract SLeeLa expects from the Bash pixel
-    // endpoint. The bridge should complete its Bash HELLO/READY exchange
-    // before sending frame commands.
+    // Returns the capability contract SLeeLa expects from the Phraign(TM)
+    // Bash pixel endpoint. The bridge should complete its Bash HELLO/READY
+    // exchange before sending frame commands.
     static Handshake handshake() noexcept;
 
     bool querySize();

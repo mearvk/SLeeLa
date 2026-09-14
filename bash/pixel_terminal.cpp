@@ -1,3 +1,6 @@
+// Phraign(TM) -- SLeeLa's frame-based, pixel-accurate terminal control system.
+// Native pixel-terminal layer implementation. See PHRAIGN.md.
+
 #include "pixel_terminal.hpp"
 
 #include <algorithm>

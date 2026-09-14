@@ -1,21 +1,23 @@
 #!/usr/bin/env bash
-# SLeeLa pixel-addressable terminal interface.
+# Phraign™ — SLeeLa's frame-based, pixel-accurate terminal control system.
+# This is the Phraign™ pixel-addressable terminal shell interface.
 # The functions emit a text protocol consumed by the SLeeLa terminal bridge.
+# See PHRAIGN.md for the system overview.
 
 : "${SLEELA_PIXEL_TERMINAL:=sleeLa-pixel-terminal}"
 : "${SLEELA_BASH_PROTOCOL:=1}"
-: "${SLEELA_PIXEL_TERMINAL_VERSION:=1}"
-: "${SLEELA_PIXEL_TERMINAL_VARIANT:=NATIVE}"
+: "${SLEELA_PHRAIGN_VERSION:=1}"
+: "${SLEELA_PHRAIGN_VARIANT:=NATIVE}"
 
-# Establish that this Bash session understands the versioned native pixel
+# Establish that this Bash session understands the versioned native Phraign™
 # terminal protocol. SLeeLa may use READY/CAPS before sending frame commands.
 pixel_terminal_handshake() {
-    printf '%s HELLO SLEELA-BASH/%s PIXEL_TERMINAL/%s VARIANT=%s\n' \
+    printf '%s HELLO SLEELA-BASH/%s PHRAIGN/%s VARIANT=%s\n' \
         "$SLEELA_PIXEL_TERMINAL" "$SLEELA_BASH_PROTOCOL" \
-        "$SLEELA_PIXEL_TERMINAL_VERSION" "$SLEELA_PIXEL_TERMINAL_VARIANT"
-    printf '%s READY SLEELA-BASH/%s PIXEL_TERMINAL/%s VARIANT=%s\n' \
+        "$SLEELA_PHRAIGN_VERSION" "$SLEELA_PHRAIGN_VARIANT"
+    printf '%s READY SLEELA-BASH/%s PHRAIGN/%s VARIANT=%s\n' \
         "$SLEELA_PIXEL_TERMINAL" "$SLEELA_BASH_PROTOCOL" \
-        "$SLEELA_PIXEL_TERMINAL_VERSION" "$SLEELA_PIXEL_TERMINAL_VARIANT"
+        "$SLEELA_PHRAIGN_VERSION" "$SLEELA_PHRAIGN_VARIANT"
     printf '%s CAPS PIXEL_GRANULARITY NATIVE_FRAME RESIZE_EVENTS\n' \
         "$SLEELA_PIXEL_TERMINAL"
 }

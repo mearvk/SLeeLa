@@ -14,7 +14,7 @@ enum class Variant : std::uint8_t {
 
 struct Capability {
     std::uint16_t bash_protocol_major = 0;
-    std::uint16_t pixel_terminal_version = 0;
+    std::uint16_t phraign_version = 0;
     Variant variant = Variant::None;
     bool ready = false;
     bool pixel_granularity = false;
