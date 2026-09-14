@@ -1,0 +1,12 @@
+#include "security_supervisor.h"
+#include <string.h>
+static SLSClassPolicy*fc(SecuritySupervisor*s,const char*n){for(size_t i=0;i<s->class_count;i++)if(!strncmp(s->classes[i].name,n,SLS_MAX_CLASS_NAME))return&s->classes[i];return NULL;}
+static const SLSClassPolicy*fcc(const SecuritySupervisor*s,const char*n){for(size_t i=0;i<s->class_count;i++)if(!strncmp(s->classes[i].name,n,SLS_MAX_CLASS_NAME))return&s->classes[i];return NULL;}
+static const SLSRolePolicy*fr(const SecuritySupervisor*s,SLSRole r){for(size_t i=0;i<s->role_count;i++)if(s->roles[i].role==r)return&s->roles[i];return NULL;}
+void security_supervisor_init(SecuritySupervisor*s,SLSRole r){memset(s,0,sizeof(*s));s->active_role=r;}
+int security_supervisor_set_class(SecuritySupervisor*s,const char*n,int a,size_t mi,size_t mb){if(!s||!n)return 0;SLSClassPolicy*p=fc(s,n);if(!p){if(s->class_count>=SLS_MAX_CLASSES)return 0;p=&s->classes[s->class_count++];memset(p,0,sizeof(*p));strncpy(p->name,n,SLS_MAX_CLASS_NAME-1);}p->allowed=a!=0;p->max_instances=mi;p->max_bytes=mb;return 1;}
+int security_supervisor_set_role_limit(SecuritySupervisor*s,SLSRole r,size_t mi,size_t mb){if(!s)return 0;for(size_t i=0;i<s->role_count;i++)if(s->roles[i].role==r){s->roles[i].max_total_instances=mi;s->roles[i].max_total_bytes=mb;return 1;}if(s->role_count>=SLS_MAX_ROLES)return 0;s->roles[s->role_count++]=(SLSRolePolicy){r,mi,mb};return 1;}
+int security_supervisor_authorize_class(const SecuritySupervisor*s,const char*n){const SLSClassPolicy*p=fcc(s,n);return p?p->allowed:0;}
+int security_supervisor_reserve(SecuritySupervisor*s,const char*n,size_t b){if(!s||!n)return 0;SLSClassPolicy*p=fc(s,n);const SLSRolePolicy*r=fr(s,s->active_role);if(!p||!p->allowed)return 0;if(p->max_instances&&p->instances+1>p->max_instances)return 0;if(p->max_bytes&&p->bytes+b>p->max_bytes)return 0;if(r&&r->max_total_instances&&s->total_instances+1>r->max_total_instances)return 0;if(r&&r->max_total_bytes&&s->total_bytes+b>r->max_total_bytes)return 0;p->instances++;p->bytes+=b;s->total_instances++;s->total_bytes+=b;return 1;}
+void security_supervisor_release(SecuritySupervisor*s,const char*n,size_t b){if(!s||!n)return;SLSClassPolicy*p=fc(s,n);if(!p)return;if(p->instances)--p->instances;p->bytes=p->bytes>b?p->bytes-b:0;if(s->total_instances)--s->total_instances;s->total_bytes=s->total_bytes>b?s->total_bytes-b:0;}
+int security_supervisor_set_active_role(SecuritySupervisor*s,SLSRole r){if(!s)return 0;s->active_role=r;return 1;}
