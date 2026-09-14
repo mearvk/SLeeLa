@@ -148,6 +148,7 @@ private:
         if(n=="timeHttpDate"){if(!c.args.empty())throw std::runtime_error("Semantic error: timeHttpDate() takes no arguments");emit(OP_TIME_HTTP_DATE);return true;}
         if(n=="timeJson"){if(!c.args.empty())throw std::runtime_error("Semantic error: timeJson() takes no arguments");emit(OP_TIME_JSON);return true;}
         if(n=="timeNtp"){if(c.args.size()!=1)throw std::runtime_error("Semantic error: timeNtp(host) takes one argument");emitExpr(c.args[0].get());emit(OP_TIME_NTP);return true;}
+        if(n=="timeSetLocation"){if(c.args.size()!=2)throw std::runtime_error("Semantic error: timeSetLocation(country, timezone) takes two arguments");emitExpr(c.args[0].get());emitExpr(c.args[1].get());emit(OP_TIME_SET_LOCATION);return true;}
 
         auto litStr=[&](const Expr*e,const char*what)->std::string{auto sl=dynamic_cast<const StrLit*>(e);if(!sl)throw std::runtime_error("Semantic error: "+std::string(what)+" must be a string literal (an object name)");return sl->value;};
         auto emitStr=[&](const std::string&s){emit(OP_CONST,slvm_add_const_str(vm_,s.c_str()));};
