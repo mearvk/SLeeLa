@@ -39,7 +39,7 @@ its supported range (`1.0 .. 1.2`). Minor increments are additive:
 - **1.2** added C/C++-style **structs** — `struct` declarations, `new`
   instantiation, `.` member access, reference semantics, and the
   `structPack`/`structUnpack` network-transport built-ins (see
-  [`STRUCT.md`](STRUCT.md)). Pre-1.2 programs are unaffected; the compiler
+  [`STRUCTS.md`](STRUCTS.md)). Pre-1.2 programs are unaffected; the compiler
   rejects `struct`/`new`/`structPack`/`structUnpack` below `#sleela 1.2`.
 
 ### Nordshrift — `2.0`

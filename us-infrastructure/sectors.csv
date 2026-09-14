@@ -1,0 +1,6 @@
+name,asset_base_bil_usd,annual_invest_bil_usd,depreciation_rate,condition_idx,bc_ratio,provenance
+Roads & Bridges,4200,190,0.05,0.62,2.4,ILLUSTRATIVE_PLACEHOLDER
+Water Systems,2200,90,0.045,0.58,2.9,ILLUSTRATIVE_PLACEHOLDER
+Energy Grid,3000,160,0.04,0.66,3.1,ILLUSTRATIVE_PLACEHOLDER
+Public Transit,1500,55,0.05,0.55,2.2,ILLUSTRATIVE_PLACEHOLDER
+Broadband,800,70,0.09,0.71,3.8,ILLUSTRATIVE_PLACEHOLDER

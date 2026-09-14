@@ -315,7 +315,7 @@
     },
     {
       "path": "impl/subjects/native/native_api.cpp",
-      "sha256": "e7b78ba7890ea86974174869d7d29c17b922ca06a0efd6fa38a2ac1c1c022a74"
+      "sha256": "323115ebde0d0686739db142a2509394ac20a728690845ab098d7bf10f067c5b"
     },
     {
       "path": "impl/subjects/native/native_api.h",
