@@ -36,7 +36,7 @@ int sltime_init(void){
 }
 int64_t sltime_utc_nanos(void){
 #ifdef _WIN32
- return filetime_ms()*1000000LL;
+ { FILETIME ft; ULARGE_INTEGER u; GetSystemTimeAsFileTime(&ft); u.LowPart=ft.dwLowDateTime; u.HighPart=ft.dwHighDateTime; return (int64_t)(u.QuadPart*100ULL-116444736000000000LL); }
 #else
  struct timespec ts;if(clock_gettime(CLOCK_REALTIME,&ts)!=0)return -1;return (int64_t)ts.tv_sec*1000000000LL+ts.tv_nsec;
 #endif
