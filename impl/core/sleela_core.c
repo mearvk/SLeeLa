@@ -7,6 +7,7 @@
  * ========================================================================== */
 #define _POSIX_C_SOURCE 200809L
 #include "sleela_core.h"
+#include "sleela_time.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -185,6 +186,7 @@ void slvm_set_entry(SLVM* vm, int fi) { vm->entry = fi; }
 SLValue slvm_result(SLVM* vm) { return vm->last_result; }
 
 SLVM* slvm_new(void) {
+    (void)sltime_init();
     SLVM* vm = (SLVM*)calloc(1, sizeof(SLVM));
     if (!vm) return NULL;
     vm->cur_func = -1;
@@ -531,6 +533,34 @@ static SLResult run_thread(SLThread* t) {
         } break;
         case OP_FILEUNLINK: {
             SLValue pv=POP(); if(pv.type!=SL_STR) TERR("unlinkFile(path) requires a String path"); PUSH(slval_int(unlink(slvm_str(vm,pv.as.s))==0?0:-1));
+        } break;
+        case OP_TIME_UTC_MS: {
+            PUSH(slval_int(sltime_utc_millis()));
+        } break;
+        case OP_TIME_MONO_NS: {
+            PUSH(slval_int((int64_t)sltime_monotonic_nanos()));
+        } break;
+        case OP_TIME_PRECISION_MS: {
+            SLTimeSample ts; if(sltime_sample(&ts)!=0){PUSH(slval_int(-1));break;}
+            PUSH(slval_int((int64_t)((ts.uncertainty_us+999ULL)/1000ULL)));
+        } break;
+        case OP_TIME_LOCATION: {
+            PUSH(slval_int(intern(vm,sltime_location_timezone())));
+        } break;
+        case OP_TIME_HTTP_DATE: {
+            char out[64]; if(sltime_http_date(sltime_utc_millis(),out,sizeof(out))!=0) out[0]=0;
+            PUSH(slval_int(intern(vm,out)));
+        } break;
+        case OP_TIME_JSON: {
+            char out[2048]; SLTimeSample ts;
+            if(sltime_sample(&ts)!=0 || sltime_json(&ts,out,sizeof(out))!=0) out[0]=0;
+            PUSH(slval_int(intern(vm,out)));
+        } break;
+        case OP_TIME_NTP: {
+            SLValue hv=POP(); if(hv.type!=SL_STR) TERR("timeNtp(host) requires a String host");
+            char out[2048]; SLTimeSample ts;
+            if(sltime_query_ntp(slvm_str(vm,hv.as.s),1500,&ts)!=0 || sltime_json(&ts,out,sizeof(out))!=0) out[0]=0;
+            PUSH(slval_int(intern(vm,out)));
         } break;
         default: TERR("illegal opcode");
         }
