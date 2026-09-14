@@ -75,7 +75,7 @@ verify-security:
 
 $(ALL_OBJECTS): verify-security
 
-$(SLEELA_BIN): $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ)
+$(SLEELA_BIN): $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(TIME_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ)
 	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS) $(LIBS)
 $(NORDSHRIFT_BIN): $(NS_OBJ) $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(CATALOG_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ)
 	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS) $(LIBS)
@@ -152,7 +152,7 @@ $(BUILD)/driver.o: frontend/driver.cpp frontend/compiler.h frontend/artifact.h s
 $(BUILD):
 	mkdir -p $(BUILD)
 
-test: verify-security test-sleela test-version test-nordshrift test-threads test-thread-platform test-network test-network-platform test-io-platform test-path-platform test-terminal-platform test-library-platform test-pixel-terminal test-catalog test-math test-physics test-economics test-chemistry test-financial
+test: verify-security test-sleela test-version test-nordshrift test-threads test-thread-platform test-network test-network-platform test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-math test-physics test-economics test-chemistry test-financial
 test-thread-platform: $(THREAD_PLATFORM_SMOKE)
 	@echo "=== OS-aware threading backend ==="; SLEELA_THREAD_PLATFORM=auto $(THREAD_PLATFORM_SMOKE)
 test-threads: $(THREAD_SMOKE)
