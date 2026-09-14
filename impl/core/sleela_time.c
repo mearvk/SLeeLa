@@ -34,6 +34,13 @@ int sltime_init(void){
  return 0;
 #endif
 }
+int64_t sltime_utc_nanos(void){
+#ifdef _WIN32
+ return filetime_ms()*1000000LL;
+#else
+ struct timespec ts;if(clock_gettime(CLOCK_REALTIME,&ts)!=0)return -1;return (int64_t)ts.tv_sec*1000000000LL+ts.tv_nsec;
+#endif
+}
 int64_t sltime_utc_millis(void){
 #ifdef _WIN32
  return filetime_ms();
