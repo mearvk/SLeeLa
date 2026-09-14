@@ -545,11 +545,11 @@ static SLResult run_thread(SLThread* t) {
             PUSH(slval_int((int64_t)((ts.uncertainty_us+999ULL)/1000ULL)));
         } break;
         case OP_TIME_LOCATION: {
-            PUSH(slval_int(intern(vm,sltime_location_timezone())));
+            { SLValue value; value.type=SL_STR; value.as.s=intern(vm,sltime_location_timezone()); PUSH(value); }
         } break;
         case OP_TIME_HTTP_DATE: {
             char out[64]; if(sltime_http_date(sltime_utc_millis(),out,sizeof(out))!=0) out[0]=0;
-            PUSH(slval_int(intern(vm,out)));
+            { SLValue value; value.type=SL_STR; value.as.s=intern(vm,out); PUSH(value); }
         } break;
         case OP_TIME_JSON: {
             char out[2048]; SLTimeSample ts;
