@@ -142,6 +142,7 @@ private:
         }
 
         if(n=="timeUtcMillis"){if(!c.args.empty())throw std::runtime_error("Semantic error: timeUtcMillis() takes no arguments");emit(OP_TIME_UTC_MS);return true;}
+        if(n=="timeUtcNanos"){if(!c.args.empty())throw std::runtime_error("Semantic error: timeUtcNanos() takes no arguments");emit(OP_TIME_UTC_NS);return true;}
         if(n=="timeMonotonicNanos"){if(!c.args.empty())throw std::runtime_error("Semantic error: timeMonotonicNanos() takes no arguments");emit(OP_TIME_MONO_NS);return true;}
         if(n=="timePrecisionMillis"){if(!c.args.empty())throw std::runtime_error("Semantic error: timePrecisionMillis() takes no arguments");emit(OP_TIME_PRECISION_MS);return true;}
         if(n=="timeLocation"){if(!c.args.empty())throw std::runtime_error("Semantic error: timeLocation() takes no arguments");emit(OP_TIME_LOCATION);return true;}
