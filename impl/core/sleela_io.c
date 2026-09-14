@@ -1,6 +1,13 @@
 /* ========================================================================
  * sleela_io.c -- portable SLeeLa file/pipe backend.
  * ======================================================================== */
+/* POSIX feature-test macro: strict -std=c11 hides O_CLOEXEC/O_NONBLOCK and
+ * other POSIX.1-2008 symbols on glibc unless requested explicitly. Must be
+ * defined before any system header is included. */
+#if !defined(_WIN32) && !defined(_WIN64) && !defined(_POSIX_C_SOURCE)
+#define _POSIX_C_SOURCE 200809L
+#endif
+
 #include "sleela_io.h"
 
 #include <stdlib.h>

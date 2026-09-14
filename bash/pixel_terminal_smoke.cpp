@@ -16,7 +16,7 @@ int main() {
     assert(handshake.resize_events);
 
     PixelTerminal terminal(Size{8, 4});
-    assert(terminal.pixelSize() == Size{8, 4});
+    assert((terminal.pixelSize() == Size{8, 4}));
     assert(terminal.center().x == 4);
     assert(terminal.center().y == 2);
 
@@ -30,7 +30,7 @@ int main() {
     terminal.clear();
     assert(terminal.frame().front().value == 0u);
 
-    assert(terminal.setSize(Size{2, 2}));
+    assert((terminal.setSize(Size{2, 2})));
     assert(terminal.frame().size() == 4);
     assert(terminal.events().size() >= 2);
 

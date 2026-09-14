@@ -1,3 +1,10 @@
+/* POSIX feature-test macro: strict -std=c11 hides getaddrinfo/struct addrinfo
+ * and related POSIX.1-2008 networking symbols on glibc unless requested
+ * explicitly. Must be defined before any system header is included. */
+#if !defined(_WIN32) && !defined(_WIN64) && !defined(_POSIX_C_SOURCE)
+#define _POSIX_C_SOURCE 200809L
+#endif
+
 #include "sleela_net.h"
 
 #include <errno.h>

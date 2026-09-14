@@ -23,6 +23,12 @@ Additional Make targets may be supplied, for example:
 ./tools/build-verified.sh test
 ```
 
-The manifest may be selected with `SLEELA_SHA256_MANIFEST`. The default location is `security/sha256-manifest.txt`.
+The manifest may be selected with `SLEELA_SHA256_MANIFEST`. The default location is `security/sha256-manifest.json` (JSON, matching `tools/verify-before-execution.py`).
+
+Regenerate the default manifest after changing any verified source file:
+
+```sh
+python3 tools/generate-sha256-manifest.py --root . --output security/sha256-manifest.json
+```
 
 The verification step establishes integrity relative to the trusted manifest. SHA-256 alone does not establish who authored or published the manifest; distribution of the manifest remains a trust decision.

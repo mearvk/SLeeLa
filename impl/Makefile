@@ -73,17 +73,20 @@ verify-security:
 	@command -v python3 >/dev/null 2>&1 || { echo "sleela: python3 is required for SHA-256 verification" >&2; exit 1; }
 	@python3 "$(VERIFY_TOOL)" $(VERIFY_ARGS)
 
-$(ALL_OBJECTS): verify-security
+# verify-security is an order-only prerequisite: it must run before any
+# artifact is produced, but must never appear in $^ (some smoke-test link
+# rules link with $^, and a phony target name would leak onto the link line).
+$(ALL_OBJECTS): | verify-security
 
 $(SLEELA_BIN): $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(TIME_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ)
 	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS) $(LIBS)
-$(NORDSHRIFT_BIN): $(NS_OBJ) $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(CATALOG_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ)
+$(NORDSHRIFT_BIN): $(NS_OBJ) $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(TIME_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(CATALOG_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ)
 	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS) $(LIBS)
 $(THREAD_PLATFORM_SMOKE): core/thread_platform_smoke.c $(THREAD_OBJ) | $(BUILD)
 	$(CC) $(CFLAGS) -Icore core/thread_platform_smoke.c $(THREAD_OBJ) -o $@ $(LDFLAGS) $(LIBS)
-$(THREAD_SMOKE): core/thread_smoke.c $(CORE_OBJ)
+$(THREAD_SMOKE): core/thread_smoke.c $(CORE_OBJ) $(TIME_OBJ)
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS) $(LIBS)
-$(SOCKET_SMOKE): core/socket_smoke.c $(CORE_OBJ)
+$(SOCKET_SMOKE): core/socket_smoke.c $(CORE_OBJ) $(TIME_OBJ)
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS) $(LIBS)
 $(IO_PLATFORM_SMOKE): core/io_platform_smoke.c $(IO_OBJ) | $(BUILD)
 	$(CC) $(CFLAGS) -Icore core/io_platform_smoke.c $(IO_OBJ) -o $@ $(LDFLAGS) $(LIBS)
@@ -119,8 +122,8 @@ $(GC_OBJ): ../runtime/garbage_collector.c ../runtime/garbage_collector.h | $(BUI
 	$(CC) $(CFLAGS) -c ../runtime/garbage_collector.c -o $@
 $(SECURITY_OBJ): ../runtime/security_supervisor.c ../runtime/security_supervisor.h | $(BUILD)
 	$(CC) $(CFLAGS) -c ../runtime/security_supervisor.c -o $@
-$(PARAMETERS_OBJ): ../Parameters.c | $(BUILD)
-	$(CC) $(CFLAGS) -c $< -o $@
+$(PARAMETERS_OBJ): ../runtime/Parameters.c ../runtime/Parameters.h | $(BUILD)
+	$(CC) $(CFLAGS) -c ../runtime/Parameters.c -o $@
 $(CORE_OBJ): $(CORE_SRC) core/sleela_core.c core/sleela_core.h core/sleela_thread.h core/pthread.h | $(BUILD)
 	$(CC) $(CFLAGS) -Icore -c $(CORE_SRC) -o $@
 $(CHEMISTRY_OBJ): subjects/chemistry/chemistry.cpp subjects/chemistry/chemistry.h | $(BUILD)
@@ -158,12 +161,12 @@ test-thread-platform: $(THREAD_PLATFORM_SMOKE)
 test-threads: $(THREAD_SMOKE)
 	@echo "=== core threading smoke (128 threads) ==="; $(THREAD_SMOKE) 128
 test-sleela: $(SLEELA_BIN)
-	@export SLEELA_SHEET=$(CURDIR)/../SHEET.sheet; for f in examples/*.sleela; do echo "=== $$f ==="; $(SLEELA_BIN) run $$f || exit 1; done
+	@export SLEELA_SHEET=$(CURDIR)/../SHEET.sheet; export SLEELA_SHA256_MANIFEST=$${SLEELA_SHA256_MANIFEST:-$(CURDIR)/../security/sha256-manifest.json}; cd $(CURDIR)/.. && for f in impl/examples/*.sleela; do echo "=== $$f ==="; $(CURDIR)/$(SLEELA_BIN) run $$f || exit 1; done
 test-version: $(SLEELA_BIN)
-	@export SLEELA_SHEET=$(CURDIR)/../SHEET.sheet; bash tests/version/run_version_tests.sh $(SLEELA_BIN)
+	@export SLEELA_SHEET=$(CURDIR)/../SHEET.sheet; export SLEELA_SHA256_MANIFEST=$${SLEELA_SHA256_MANIFEST:-$(CURDIR)/../security/sha256-manifest.json}; cd $(CURDIR)/.. && bash impl/tests/version/run_version_tests.sh $(CURDIR)/$(SLEELA_BIN)
 test-nordshrift: $(NORDSHRIFT_BIN)
-	@for f in nordshrift/examples/*.sst; do echo "=== check $$f ==="; $(NORDSHRIFT_BIN) check $$f || exit 1; done
-	@echo "=== build nordshrift/examples/demo/build.sst (target sleela -> runnable artifact) ==="; $(NORDSHRIFT_BIN) build nordshrift/examples/demo/build.sst || exit 1
+	@export SLEELA_SHA256_MANIFEST=$${SLEELA_SHA256_MANIFEST:-$(CURDIR)/../security/sha256-manifest.json}; cd $(CURDIR)/.. && for f in impl/nordshrift/examples/*.sst; do echo "=== check $$f ==="; $(CURDIR)/$(NORDSHRIFT_BIN) check $$f || exit 1; done
+	@export SLEELA_SHA256_MANIFEST=$${SLEELA_SHA256_MANIFEST:-$(CURDIR)/../security/sha256-manifest.json}; cd $(CURDIR)/.. && echo "=== build impl/nordshrift/examples/demo/build.sst (target sleela -> runnable artifact) ===" && $(CURDIR)/$(NORDSHRIFT_BIN) build impl/nordshrift/examples/demo/build.sst || exit 1
 test-network: $(SOCKET_SMOKE)
 	@echo "=== core networking smoke (TCP loopback) ==="; $(SOCKET_SMOKE)
 test-network-platform: $(NET_PLATFORM_SMOKE)

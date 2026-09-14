@@ -113,13 +113,18 @@ int slpath_absolute(char* out, size_t out_size, const char* path) {
 #else
     char buffer[PATH_MAX];
     if (!out || out_size == 0 || !path) return -1;
-    if (!realpath(path, buffer)) {
-        if (path[0] == '/') return -1;
-        if (slpath_current_directory(buffer, sizeof(buffer)) != 0) return -1;
-        if (slpath_join(out, out_size, buffer, path) != 0) return -1;
-        return slpath_normalize(out, out_size, out);
+    if (realpath(path, buffer)) {
+        return slpath_copy(out, out_size, buffer);
     }
-    return slpath_copy(out, out_size, buffer);
+    /* realpath() fails when the path does not (yet) exist. Making a path
+     * absolute is a lexical operation and must not require the file to exist:
+     * fall back to a lexical resolution against the current directory. */
+    if (path[0] == '/') {
+        return slpath_normalize(out, out_size, path);
+    }
+    if (slpath_current_directory(buffer, sizeof(buffer)) != 0) return -1;
+    if (slpath_join(out, out_size, buffer, path) != 0) return -1;
+    return slpath_normalize(out, out_size, out);
 #endif
 }
 

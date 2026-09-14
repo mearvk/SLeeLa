@@ -39,4 +39,14 @@ The native frontend invokes the verification gate before:
 
 The verification implementation is `tools/verify-before-execution.py` and the native integration is `impl/frontend/driver.cpp`.
 
+## Generating the manifest
+
+The committed default manifest is `security/sha256-manifest.json`. Regenerate it with the helper after any verified source file changes:
+
+```sh
+python3 tools/generate-sha256-manifest.py --root . --output security/sha256-manifest.json
+```
+
+The runtime gate resolves relative manifest paths and `tools/verify-before-execution.py` against the current directory, so run `sleela`/`make test` from the repository root (or pass an absolute `SLEELA_SHA256_MANIFEST`).
+
 This is an integrity gate, not publisher authentication. The manifest itself must come from a trusted source. A signed-manifest or other authenticated trust chain can be added separately.

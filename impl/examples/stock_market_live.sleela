@@ -36,7 +36,7 @@ class StockMarketLive {
         return ((price - previous) / previous) * 100.0;
     }
 
-    void quote(string ticker, double price, double previous, double volume) {
+    void quote(String ticker, double price, double previous, double volume) {
         print(ticker + "  $" + price
             + "  change $" + change(previous, price)
             + "  " + percent(previous, price) + "%"
