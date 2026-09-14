@@ -26,11 +26,13 @@ SLEELA_BIN := $(BUILD)/sleela
 NORDSHRIFT_BIN := $(BUILD)/nordshrift
 THREAD_SMOKE := $(BUILD)/thread_smoke
 SOCKET_SMOKE := $(BUILD)/socket_smoke
+IO_PLATFORM_SMOKE := $(BUILD)/io_platform_smoke
 PIXEL_TERMINAL_SMOKE := $(BUILD)/pixel_terminal_smoke
 PIXEL_TERMINAL_OBJ := $(BUILD)/pixel_terminal.o
 CATALOG_OBJ := $(BUILD)/sheet_catalog.o
 XCLASS_OBJ := $(BUILD)/xclass_loader.o
 CORE_OBJ := $(BUILD)/sleela_core.o
+IO_OBJ := $(BUILD)/sleela_io.o
 GC_OBJ := $(BUILD)/garbage_collector.o
 SECURITY_OBJ := $(BUILD)/security_supervisor.o
 PARAMETERS_OBJ := $(BUILD)/Parameters.o
@@ -53,18 +55,12 @@ NS_OBJ := $(patsubst nordshrift/%.cpp,$(BUILD)/ns_%.o,$(NS_SRC))
 VERIFY_TOOL := ../tools/verify-before-execution.py
 VERIFY_MANIFEST ?= $(SLEELA_SHA256_MANIFEST)
 VERIFY_ARGS = --manifest "$(VERIFY_MANIFEST)" --root "$(CURDIR)/.."
-ALL_OBJECTS := $(CORE_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(NS_OBJ) $(THREAD_SMOKE) $(SOCKET_SMOKE) $(PIXEL_TERMINAL_SMOKE)
+ALL_OBJECTS := $(CORE_OBJ) $(IO_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(NS_OBJ) $(THREAD_SMOKE) $(SOCKET_SMOKE) $(IO_PLATFORM_SMOKE) $(PIXEL_TERMINAL_SMOKE)
 
-.PHONY: all build-verified rebuild-verified clean test test-sleela test-version test-nordshrift test-threads test-network test-pixel-terminal test-catalog test-chemistry test-financial test-math test-physics test-economics verify-security build-runtime test-runtime
+.PHONY: all build-verified rebuild-verified clean test test-sleela test-version test-nordshrift test-threads test-network test-io-platform test-pixel-terminal test-catalog test-chemistry test-financial test-math test-physics test-economics verify-security build-runtime test-runtime
 
-# The normal build is verified first. No compiler or linker target is reachable
-# from `all` unless the trusted SHA-256 manifest passes.
 all: verify-security $(SLEELA_BIN) $(NORDSHRIFT_BIN)
-
-# Canonical explicit entry point for callers and automation.
 build-verified: verify-security $(SLEELA_BIN) $(NORDSHRIFT_BIN)
-
-# Force a clean, then perform the same fail-closed verified build.
 rebuild-verified:
 	$(MAKE) clean
 	$(MAKE) build-verified
@@ -76,18 +72,20 @@ verify-security:
 	@command -v python3 >/dev/null 2>&1 || { echo "sleela: python3 is required for SHA-256 verification" >&2; exit 1; }
 	@python3 "$(VERIFY_TOOL)" $(VERIFY_ARGS)
 
-# Every object also depends on the verification barrier so direct object/test
-# targets cannot silently bypass the security gate.
 $(ALL_OBJECTS): verify-security
 
-$(SLEELA_BIN): $(CORE_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ)
+$(SLEELA_BIN): $(CORE_OBJ) $(IO_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ)
 	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS)
-$(NORDSHRIFT_BIN): $(NS_OBJ) $(CORE_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(CATALOG_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ)
+$(NORDSHRIFT_BIN): $(NS_OBJ) $(CORE_OBJ) $(IO_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(CATALOG_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ)
 	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS)
 $(THREAD_SMOKE): core/thread_smoke.c $(CORE_OBJ)
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 $(SOCKET_SMOKE): core/socket_smoke.c $(CORE_OBJ)
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
+$(IO_PLATFORM_SMOKE): core/io_platform_smoke.c $(IO_OBJ) | $(BUILD)
+	$(CC) $(CFLAGS) -Icore core/io_platform_smoke.c $(IO_OBJ) -o $@ $(LDFLAGS)
+$(IO_OBJ): core/sleela_io.c core/sleela_io.h | $(BUILD)
+	$(CC) $(CFLAGS) -Icore -c core/sleela_io.c -o $@
 $(PIXEL_TERMINAL_OBJ): ../bash/pixel_terminal.cpp ../bash/pixel_terminal.hpp | $(BUILD)
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c ../bash/pixel_terminal.cpp -o $@
 $(PIXEL_TERMINAL_SMOKE): ../bash/pixel_terminal_smoke.cpp ../bash/pixel_terminal.hpp $(PIXEL_TERMINAL_OBJ) | $(BUILD)
@@ -116,7 +114,7 @@ $(BUILD)/economics_native.o: subjects/economics/economics_native.cpp | $(BUILD)
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
 $(BUILD)/chemistry_api.o: subjects/chemistry/chemistry_api.cpp | $(BUILD)
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
-$(BUILD)/financial_api.o: subjects/finance/financial_api.cpp | $(BUILD)
+$(BUILD)/financial_api.o: subjects/finance/financial.cpp | $(BUILD)
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
 $(BUILD)/sheet_catalog.o: catalog/sheet_catalog.cpp catalog/sheet_catalog.h | $(BUILD)
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
@@ -129,7 +127,7 @@ $(BUILD)/driver.o: frontend/driver.cpp frontend/compiler.h frontend/artifact.h s
 $(BUILD):
 	mkdir -p $(BUILD)
 
-test: verify-security test-sleela test-version test-nordshrift test-threads test-network test-pixel-terminal test-catalog test-math test-physics test-economics test-chemistry test-financial
+test: verify-security test-sleela test-version test-nordshrift test-threads test-network test-io-platform test-pixel-terminal test-catalog test-math test-physics test-economics test-chemistry test-financial
 test-threads: $(THREAD_SMOKE)
 	@echo "=== core threading smoke (128 threads) ==="; $(THREAD_SMOKE) 128
 test-sleela: $(SLEELA_BIN)
@@ -141,6 +139,8 @@ test-nordshrift: $(NORDSHRIFT_BIN)
 	@echo "=== build nordshrift/examples/demo/build.sst (target sleela -> runnable artifact) ==="; $(NORDSHRIFT_BIN) build nordshrift/examples/demo/build.sst || exit 1
 test-network: $(SOCKET_SMOKE)
 	@echo "=== core networking smoke (TCP loopback) ==="; $(SOCKET_SMOKE)
+test-io-platform: $(IO_PLATFORM_SMOKE)
+	@echo "=== OS-aware file I/O backend ==="; SLEELA_IO_PLATFORM=auto $(IO_PLATFORM_SMOKE)
 test-pixel-terminal: $(PIXEL_TERMINAL_SMOKE)
 	@echo "=== native pixel terminal smoke ==="; $(PIXEL_TERMINAL_SMOKE)
 test-catalog: $(NORDSHRIFT_BIN)
