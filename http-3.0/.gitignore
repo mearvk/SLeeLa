@@ -6,3 +6,15 @@ http3_pipeline_demo
 # Python
 __pycache__/
 *.pyc
+
+# Station userland demo binary
+station/station_demo
+# Kernel module build artifacts
+*.ko
+*.mod
+*.mod.c
+*.mod.o
+.*.cmd
+modules.order
+Module.symvers
+kernel/.tmp_versions/

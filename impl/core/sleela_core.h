@@ -1,5 +1,5 @@
 /* ==========================================================================
- * sleela_core.h  --  Sleela execution core: the Turing-complete C/C++ engine.
+ * sleela_core.h  -- Sleela execution core: the Turing-complete C/C++ engine.
  * ========================================================================== */
 #ifndef SLEELA_CORE_H
 #define SLEELA_CORE_H
@@ -17,11 +17,16 @@ typedef enum {
     OP_JMP, OP_JMPF, OP_CALL, OP_RET, OP_PRINT, OP_SPAWN, OP_JOINALL,
     OP_LOCK, OP_UNLOCK, OP_SEND, OP_RECV,
     OP_LISTEN, OP_ACCEPT, OP_CONNECT, OP_SOCKREAD, OP_SOCKWRITE, OP_SOCKCLOSE,
-    OP_HALT
+    OP_PIPE, OP_PIPEPEER, OP_FIFO_MK, OP_FILEOPEN, OP_FILEREAD, OP_FILEWRITE,
+    OP_FILECLOSE, OP_FILEUNLINK,
+    OP_HALT,
+    OP_TIME_UTC_MS, OP_TIME_UTC_NS, OP_TIME_MONO_NS, OP_TIME_PRECISION_MS, OP_TIME_LOCATION,
+    OP_TIME_HTTP_DATE, OP_TIME_JSON, OP_TIME_NTP, OP_TIME_SET_LOCATION
 } SLOp;
 #define SL_MAX_THREADS 128
 #define SL_MAX_LOCKS 32
 #define SL_MAX_SOCKETS 128
+#define SL_MAX_FILES 256
 typedef enum { SLR_OK = 0, SLR_ERROR, SLR_HALT } SLResult;
 typedef struct SLVM SLVM;
 typedef enum { SLX_RESET = 0, SLX_ADD_CONST, SLX_DECLARE_GLOBAL, SLX_BEGIN_FUNC, SLX_END_FUNC, SLX_EMIT, SLX_PATCH, SLX_HERE, SLX_SET_ENTRY, SLX_RUN, SLX_GET_RESULT } SLExchangeOp;
@@ -50,7 +55,6 @@ SLValue slval_double(double v);
 SLValue slval_bool(int v);
 const char* slvm_str(SLVM* vm, int32_t id);
 const char* slvm_error(SLVM* vm);
-/* Persistent runnable .sleela artifacts: Core bytecode, directly loadable by runtime. */
 int slvm_save_file(SLVM* vm, const char* path);
 SLVM* slvm_load_file(const char* path);
 int slvm_is_artifact_file(const char* path);

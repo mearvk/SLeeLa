@@ -194,3 +194,8 @@ The 133+ through 181+ design range is a project complexity marker, not a psychom
 A formula is not the same thing as its measurement, and a numerical answer is not automatically a conclusion about the world. Sleela's native layer should preserve those logical locations rather than collapse them.
 
 For every advanced function, future versions should expose domain conditions, dimensional expectations, stability notes, approximation regime, constant provenance, convergence/failure semantics, and relationships to mathematical and Review objects.
+
+
+## Runtime Services
+
+Native runtime services include `GarbageCollector`, `SecuritySupervisor`, and the SLVM `Parameters` contract. The supervisor authorizes named classes and enforces explicit instance/byte quotas before allocation. `Parameters` supplies the Normal User software-capability threshold (141+) and 8-subject concurrency profile.

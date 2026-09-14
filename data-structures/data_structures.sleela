@@ -1,0 +1,88 @@
+#sleela 1.0
+
+// Semantic counterpart of the native C/C++ data-structure layer.
+// The current Sleela surface deliberately keeps storage abstract.
+
+class DSValue {
+    int kind;
+    int intValue;
+    double doubleValue;
+    boolean boolValue;
+    String stringValue;
+
+    int kindOfInt() {
+        return 1;
+    }
+}
+
+class DSList {
+    int size;
+    int capacity;
+
+    int sizeOf() {
+        return size;
+    }
+
+    boolean empty() {
+        return size == 0;
+    }
+}
+
+class DSStack {
+    int size;
+
+    boolean empty() {
+        return size == 0;
+    }
+
+    int depth() {
+        return size;
+    }
+}
+
+class DSQueue {
+    int size;
+
+    boolean empty() {
+        return size == 0;
+    }
+
+    int length() {
+        return size;
+    }
+}
+
+class DSMap {
+    int size;
+
+    boolean empty() {
+        return size == 0;
+    }
+
+    int entries() {
+        return size;
+    }
+}
+
+class DSObject {
+    String name;
+    int fieldCount;
+
+    String typeName() {
+        return name;
+    }
+
+    int fields() {
+        return fieldCount;
+    }
+}
+
+class DataStructures {
+    void main() {
+        DSStack stack;
+        DSQueue queue;
+        DSMap map;
+        DSObject object;
+        print("Sleela data structures: value, list, stack, queue, map, object");
+    }
+}

@@ -43,6 +43,7 @@ triplet of targets (**Java**, **Sleela**, **C**).
 - [`SUMMARY.md`](SUMMARY.md) is a single-file accounting of the whole
   repository — every document, source tree, specification, method, and special
   function, in one place.
+- [`SLEELA_TIME_API.md`](SLEELA_TIME_API.md) defines the portable SLeeLa Time API, including precision clocks, NTP, HTTP/RMI/BODI timing records, and the raw international time-request marker.
 - [`LENS.md`](LENS.md) applies the Sleela *Lens* idea (a focused get/set view)
   to how the United States was created — who built it, who bought it, and the
   early reliefs of 1967 — as dated, sourced facts kept apart from framing.

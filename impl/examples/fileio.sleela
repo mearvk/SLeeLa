@@ -1,0 +1,20 @@
+#sleela 1.1
+
+class FileIO {
+    int readEnd;
+    int writeEnd;
+
+    void writer() {
+        write(writeEnd, "hello from Sleela pipe");
+        close(writeEnd);
+    }
+
+    void main() {
+        readEnd = pipe();
+        writeEnd = pipePeer(readEnd);
+        spawn(writer);
+        print(read(readEnd));
+        close(readEnd);
+        join();
+    }
+}

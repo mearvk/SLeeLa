@@ -1,0 +1,14 @@
+#sleela 1.1
+
+class FifoIO {
+    int channel;
+
+    void main() {
+        fifoCreate("/tmp/sleela-fifo-demo", 438);
+        channel = openFile("/tmp/sleela-fifo-demo", "rw");
+        write(channel, "hello from Sleela FIFO");
+        print(read(channel));
+        close(channel);
+        unlinkFile("/tmp/sleela-fifo-demo");
+    }
+}

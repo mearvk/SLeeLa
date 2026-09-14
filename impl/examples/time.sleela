@@ -1,0 +1,14 @@
+#sleela 1.1
+
+class TimePiece {
+    void main() {
+        timeSetLocation("DE", "Europe/Berlin");
+        print(timeUtcMillis());
+        print(timeUtcNanos());
+        print(timeMonotonicNanos());
+        print(timePrecisionMillis());
+        print(timeLocation());
+        print(timeHttpDate());
+        print(timeJson());
+    }
+}

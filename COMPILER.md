@@ -150,7 +150,13 @@ Query the live values:
 
 ---
 
-## 5. Using the compiler
+## 5. Runtime integration
+
+The executable targets are linked with the SLVM runtime service layer: GarbageCollector, SecuritySupervisor, and the explicit Parameters contract. Class admission and resource reservation precede managed allocation; garbage collection governs object lifetime.
+
+The Normal User profile specifies a software-capability threshold of **141+** and concurrent handling of **8** sociological subjects. These are runtime design parameters, not psychometric judgments.
+
+## 6. Using the compiler
 
 Build, then compile-and-run or validate a Wrapper™:
 
