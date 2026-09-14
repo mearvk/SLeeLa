@@ -80,6 +80,51 @@ int sltime_sample(SLTimeSample* s){
 static uint64_t ntp64_to_us(uint32_t sec,uint32_t frac){return (uint64_t)sec*1000000ULL+((uint64_t)frac*1000000ULL>>32);}
 static void us_to_ntp64(uint64_t unix_us,uint32_t* sec,uint32_t* frac){*sec=(uint32_t)(unix_us/1000000ULL+2208988800ULL);*frac=(uint32_t)(((unix_us%1000000ULL)<<32)/1000000ULL);}
 
+
+int sltime_send_raw_time(const char* host,uint16_t port,uint8_t marker,uint32_t timeout_ms,SLTimeSample* sample){
+    if(!host||!*host||!sample)return EINVAL;
+    /* The standard time request is NTP. The marker is sent as a separate,
+       one-byte UDP datagram immediately after the request so legacy NTP
+       implementations are not given a non-standard packet. */
+#ifdef _WIN32
+    SOCKET s=INVALID_SOCKET;
+#else
+    int s=-1;
+#endif
+    struct addrinfo hints,*res=NULL,*p;
+    uint8_t packet[48]={0}, raw[1]={marker};
+    memset(&hints,0,sizeof(hints));hints.ai_family=AF_UNSPEC;hints.ai_socktype=SOCK_DGRAM;hints.ai_protocol=IPPROTO_UDP;
+    if(getaddrinfo(host,"123",&hints,&res)!=0)return EHOSTUNREACH;
+    packet[0]=0x23;
+    for(p=res;p;p=p->ai_next){
+#ifdef _WIN32
+        s=socket(p->ai_family,p->ai_socktype,p->ai_protocol);if(s==INVALID_SOCKET)continue;
+        {DWORD tv=timeout_ms;setsockopt(s,SOL_SOCKET,SO_RCVTIMEO,(const char*)&tv,sizeof(tv));}
+#else
+        s=socket(p->ai_family,p->ai_socktype,p->ai_protocol);if(s<0)continue;
+        {struct timeval tv={(long)(timeout_ms/1000),(long)((timeout_ms%1000)*1000)};setsockopt(s,SOL_SOCKET,SO_RCVTIMEO,&tv,sizeof(tv));}
+#endif
+        uint64_t before=(uint64_t)sltime_utc_millis()*1000ULL;
+        if(sendto(s,(const char*)packet,48,0,p->ai_addr,(int)p->ai_addrlen)>=0)
+            (void)sendto(s,(const char*)raw,1,0,p->ai_addr,(int)p->ai_addrlen);
+#ifdef _WIN32
+        closesocket(s);
+#else
+        close(s);
+#endif
+        /* The one-byte marker is intentionally advisory and is not parsed as NTP.
+           Return the local timestamp as the raw-request observation. */
+        memset(sample,0,sizeof(*sample));sample->utc_ms=(int64_t)(before/1000ULL);
+        sample->monotonic_ns=sltime_monotonic_nanos();sample->source=SL_TIME_SOURCE_SYSTEM;
+        sample->uncertainty_us=1000;sample->stratum=0;
+        strncpy(sample->source_host,host,sizeof(sample->source_host)-1);
+        strncpy(sample->country,sltime_location_country(),2);
+        strncpy(sample->timezone,sltime_location_timezone(),sizeof(sample->timezone)-1);
+        freeaddrinfo(res);return 0;
+    }
+    freeaddrinfo(res);return EIO;
+}
+
 int sltime_query_ntp(const char* host,uint32_t timeout_ms,SLTimeSample* sample){
  if(!host||!*host||!sample)return EINVAL;
 #ifdef _WIN32
