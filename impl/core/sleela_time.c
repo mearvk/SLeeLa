@@ -94,9 +94,13 @@ int sltime_query_ntp(const char* host,uint32_t timeout_ms,SLTimeSample* sample){
 #endif
   if(sendto(s,(const char*)packet,48,0,p->ai_addr,(int)p->ai_addrlen)>=0){
    int n=recvfrom(s,(char*)packet,48,0,NULL,NULL);t4=(uint64_t)sltime_utc_millis()*1000ULL;
-   if(n>=48){sec=((uint32_t)packet[40]<<24)|((uint32_t)packet[41]<<16)|((uint32_t)packet[42]<<8)|packet[43];
-    frac=((uint32_t)packet[44]<<24)|((uint32_t)packet[45]<<16)|((uint32_t)packet[46]<<8)|packet[47];t3=ntp64_to_us(sec,frac);
-    {int64_t theta=(int64_t)t3-(int64_t)((t1+t4)/2ULL);int64_t delay=(int64_t)(t4-t1);memset(sample,0,sizeof(*sample));
+   if(n>=48){uint32_t sec2=((uint32_t)packet[32]<<24)|((uint32_t)packet[33]<<16)|((uint32_t)packet[34]<<8)|packet[35];
+    uint32_t frac2=((uint32_t)packet[36]<<24)|((uint32_t)packet[37]<<16)|((uint32_t)packet[38]<<8)|packet[39];
+    sec=((uint32_t)packet[40]<<24)|((uint32_t)packet[41]<<16)|((uint32_t)packet[42]<<8)|packet[43];
+    frac=((uint32_t)packet[44]<<24)|((uint32_t)packet[45]<<16)|((uint32_t)packet[46]<<8)|packet[47];
+    t3=ntp64_to_us(sec,frac);uint64_t t2=ntp64_to_us(sec2,frac2);
+    {int64_t theta=((int64_t)t2-(int64_t)t1+(int64_t)t3-(int64_t)t4)/2;
+     int64_t delay=(int64_t)(t4-t1)-((int64_t)t3-(int64_t)t2);memset(sample,0,sizeof(*sample));
      sample->utc_ms=(int64_t)(t4/1000ULL)+theta/1000;sample->monotonic_ns=sltime_monotonic_nanos();sample->utc_offset_ms=theta/1000;
      sample->uncertainty_us=(uint64_t)(delay>0?delay/2:0);sample->source=SL_TIME_SOURCE_NTP;sample->stratum=packet[1];
      strncpy(sample->source_host,host,sizeof(sample->source_host)-1);strncpy(sample->country,sltime_location_country(),2);
