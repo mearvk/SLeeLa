@@ -1,46 +1,77 @@
-# SLeeLa Stock Market Terminal
+# SLeeLa Stock Market — C++ Engine + SLeeLa Layer
 
-`stock-market.sh` is a clean Bash/ANSI terminal dashboard for the SLeeLa stock-market examples.
+This directory contains a two-layer stock-market analysis design.
 
-## Run
-
-From the repository root:
-
-```bash
-chmod +x tools/stock-market/stock-market.sh
-./tools/stock-market/stock-market.sh
+```text
+SLeeLa market session
+        |
+        v
+C++ analysis / graphing engine
+        |
+        v
+ANSI terminal dashboard
 ```
 
-Continuous display:
+## C++ Engine
+
+The native C++ layer provides:
+
+- quote structures;
+- mean, minimum, maximum, change percentage, and volatility calculations;
+- terminal sparkline generation;
+- ANSI dashboard rendering.
+
+Build the demonstration from this directory:
 
 ```bash
-./tools/stock-market/stock-market.sh --watch
+g++ -std=c++17 -O2 -Wall -Wextra \
+    market_engine.cpp market_engine_demo.cpp \
+    -o stock-market-cpp
+
+./stock-market-cpp
 ```
 
-Help:
+It is terminal-native and requires no graphical desktop library.
+
+## SLeeLa Layer
+
+The SLeeLa source is:
+
+```text
+../../impl/examples/stock_market_analysis.sleela
+```
+
+Build SLeeLa from the `impl` directory:
 
 ```bash
-./tools/stock-market/stock-market.sh --help
+cd ../../impl
+make
+./build/sleela check examples/stock_market_analysis.sleela
+./build/sleela run examples/stock_market_analysis.sleela
 ```
 
-## Display
+SLeeLa provides the higher-level market session, portfolio calculations, and interpretation while the C++ layer handles numerical analysis and terminal graphing.
 
-The dashboard provides:
+## Existing Bash Dashboard
 
-- AAPL, MSFT, NVDA, and TSLA watchlist
-- price and percentage movement
-- compact relative-movement bars
-- session date and operating mode
-- a clean ANSI terminal layout
+The original ANSI dashboard remains available:
 
-The renderer intentionally uses ordinary Bash plus standard terminal escape sequences. It does not require a graphical desktop.
+```bash
+chmod +x stock-market.sh
+./stock-market.sh
+./stock-market.sh --watch
+```
 
-## Market-data boundary
+## Data Boundary
 
-The checked-in display values are a snapshot, not a promise of live quotes. A future market-data adapter can replace the values while preserving the terminal renderer. Any live adapter should validate ticker, timestamp, price, volume, and market status before passing data to the display or paper portfolio.
+The checked-in demonstration values are observations/sample data. The C++ engine deliberately does not contain credentials, brokerage access, or real order execution. A future market-data adapter can feed fresh quotes into the same `Quote` and `Point` structures without changing the analysis model.
 
-The program is observational/paper-trading software. It does not submit brokerage orders.
+The architecture separates:
 
-## SLeeLa market program
+1. market-data acquisition;
+2. numerical analysis;
+3. terminal graphing;
+4. SLeeLa market/session logic;
+5. any future trading integration.
 
-The SLeeLa-side market checker is at [`impl/examples/stock_market_live.sleela`](../../impl/examples/stock_market_live.sleela). The original deterministic example remains at [`impl/examples/stock_market.sleela`](../../impl/examples/stock_market.sleela).
+No real trade is submitted by these examples.
