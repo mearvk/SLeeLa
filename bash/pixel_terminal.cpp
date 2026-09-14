@@ -1,11 +1,7 @@
 #include "pixel_terminal.hpp"
 
 #include <algorithm>
-#include <cerrno>
 #include <csignal>
-#include <cstdio>
-#include <cstdlib>
-#include <iostream>
 #include <sys/ioctl.h>
 #include <unistd.h>
 
@@ -62,23 +58,39 @@ bool PixelTerminal::queryCellSize() {
 }
 
 bool PixelTerminal::queryPixelSize() {
-    // The terminal escape query is asynchronous: a terminal may answer with
-    // CSI 4 ; height ; width t. We deliberately do not block waiting for it.
-    // The cell-size query remains the portable baseline.
-    return false;
+    winsize ws{};
+    if (::ioctl(STDOUT_FILENO, TIOCGWINSZ, &ws) != 0 ||
+        ws.ws_xpixel == 0 || ws.ws_ypixel == 0) {
+        return false;
+    }
+
+    const Size next{ws.ws_xpixel, ws.ws_ypixel};
+    if (next != pixel_size_) {
+        pixel_size_ = next;
+        updateCenter();
+        rebuildFrame();
+        recordEvent(SizeEventType::PixelSizeChanged);
+    }
+    return true;
 }
 
 bool PixelTerminal::querySize() {
     const Size previous = pixel_size_;
     const bool cells = queryCellSize();
+    const bool pixels = queryPixelSize();
 
-    if (!cells) return false;
+    if (!cells && !pixels) return false;
 
-    // Native terminals commonly expose cells, not addressable physical pixels.
-    // Until a pixel-capable bridge supplies a physical raster size, use the
-    // logical cell dimensions as the frame dimensions.
-    if (pixel_size_ == Size{} || pixel_size_ == previous) {
-        pixel_size_ = cell_size_;
+    // Prefer physical pixel dimensions when the terminal exposes them.
+    // Otherwise retain the logical cell dimensions as the safe fallback.
+    if (!pixels) {
+        const Size fallback = cell_size_;
+        if (fallback.width == 0 || fallback.height == 0) return false;
+        if (pixel_size_ != fallback) {
+            pixel_size_ = fallback;
+            updateCenter();
+            rebuildFrame();
+        }
     }
 
     if (pixel_size_ != previous) {
