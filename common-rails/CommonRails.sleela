@@ -1,0 +1,182 @@
+#sleela 1.1
+//
+// CommonRails.sleela — Sleela (Wrapper™) edition of CommonRails.
+// ================================================================
+// Professional printing component for the Sleela toolchain, ported from the
+// Java Tiamat CommonRails. It renders two things:
+//
+//   1. A professional component line:
+//        -- : [Object ID: 0000001234] [Date: <n>] [Current: @ClassName ] . message .
+//   2. A 21x21 progress square (441 cells) that fills bottom-right -> left,
+//      then up one row at a time — the SST/Sleela "professional printing" square.
+//
+// Written against the accepted Sleela surface (impl/README.md): classes,
+// int/String/boolean, if/else, while/for, arithmetic + comparisons, string
+// concatenation with '+', print(...), recursion, and class fields. The core
+// value model has no arrays or char indexing, so the square is produced purely
+// with nested integer loops and block glyphs concatenated into a String, and
+// field widths are measured arithmetically rather than by string indexing.
+// (The Sleela lexer decodes only \n \t \r \\ \" escapes, so the block glyphs
+// below are embedded as raw UTF-8 characters rather than \u escapes.)
+//
+// Run:   ./impl/build/sleela run common-rails/CommonRails.sleela
+// Check: ./impl/build/sleela check common-rails/CommonRails.sleela
+//
+class CommonRails {
+
+    // ---- Square configuration (21x21 == 441 cells) ----------------------
+    int SQUARE_SIZE = 21;
+
+    // ---- Professional-line layout (mirrors print-method.xml) ------------
+    // Object-ID field is zero-padded to 10 digits; the Current field is
+    // padded to a fixed inner width for column alignment.
+    int OID_WIDTH     = 10;
+    int CURRENT_WIDTH = 39;
+
+    // Block glyphs. FULL is the filled cell, LIGHT the empty cell — the same
+    // roles as the orange/white blocks in the Java edition (ANSI color escapes
+    // are not part of the core value model, so the glyphs carry the meaning).
+    String FULL  = "█";   // full block  — filled cell
+    String LIGHT = "░";   // light shade — empty cell
+
+    // repeat(s, n) — the core String has no repeat; build it by concatenation.
+    String repeat(String s, int n) {
+        String out = "";
+        int i = 0;
+        while (i < n) {
+            out = out + s;
+            i = i + 1;
+        }
+        return out;
+    }
+
+    // digitCount(v) — number of decimal digits in a non-negative int.
+    // Used to size the zero-padding without any string indexing.
+    int digitCount(int v) {
+        int n = v;
+        if (n < 0) {
+            n = -n;
+        }
+        int count = 1;
+        while (n >= 10) {
+            n = n / 10;
+            count = count + 1;
+        }
+        return count;
+    }
+
+    // padZeros(value, width) — left-pad a non-negative int with '0' to width.
+    String padZeros(int value, int width) {
+        int need = width - digitCount(value);
+        if (need <= 0) {
+            return "" + value;
+        }
+        return repeat("0", need) + value;
+    }
+
+    // padCurrent(name, nameChars) — "[Current: @Name" + spaces to width + "]".
+    // nameChars is the character count of `name` (the core has no length
+    // primitive on the surface; the caller supplies it — names are literals).
+    String padCurrent(String name, int nameChars) {
+        String inner = "Current: @" + name;
+        // inner length = len("Current: @") + nameChars = 10 + nameChars.
+        int pad = CURRENT_WIDTH - (10 + nameChars);
+        if (pad < 0) {
+            pad = 0;
+        }
+        return "[" + inner + repeat(" ", pad) + "]";
+    }
+
+    // ---- Professional component line ------------------------------------
+    // -- : [Object ID: 0000001234] [Date: <seq>] [Current: @Name ] . msg .
+    void printComponent(String name, int nameChars, int oid, int dateSeq, String message) {
+        String line = "-- : "
+            + "[Object ID: " + padZeros(oid, OID_WIDTH) + "] "
+            + "[Date: " + dateSeq + "] "
+            + padCurrent(name, nameChars) + " "
+            + ". " + message + " .";
+        print(line);
+    }
+
+    // ---- 21x21 progress square ------------------------------------------
+    // `filled` cells are filled in order bottom-right -> left, then up.
+    // Cell (fillRow, fillCol) has fill index fillRow*SIZE + fillCol, where
+    // fillRow/fillCol count up from the bottom-right corner. A display cell at
+    // (displayRow, displayCol) maps to fillRow = (SIZE-1)-displayRow and
+    // fillCol = (SIZE-1)-displayCol — identical to the Java edition.
+    void printSquare(int filledCells) {
+        int total = SQUARE_SIZE * SQUARE_SIZE;
+        int filled = filledCells;
+        if (filled < 0) {
+            filled = 0;
+        }
+        if (filled > total) {
+            filled = total;
+        }
+
+        int displayRow = 0;
+        while (displayRow < SQUARE_SIZE) {
+            String row = "";
+            int displayCol = 0;
+            while (displayCol < SQUARE_SIZE) {
+                int fillRow = (SQUARE_SIZE - 1) - displayRow;
+                int fillCol = (SQUARE_SIZE - 1) - displayCol;
+                int fillIndex = fillRow * SQUARE_SIZE + fillCol;
+                if (fillIndex < filled) {
+                    row = row + FULL;
+                } else {
+                    row = row + LIGHT;
+                }
+                displayCol = displayCol + 1;
+            }
+            print(row);
+            displayRow = displayRow + 1;
+        }
+    }
+
+    // Convert a 0..100 percent into a filled-cell count over 441 cells.
+    int percentToCells(int percent) {
+        int p = percent;
+        if (p < 0) {
+            p = 0;
+        }
+        if (p > 100) {
+            p = 100;
+        }
+        int total = SQUARE_SIZE * SQUARE_SIZE;
+        return (p * total) / 100;
+    }
+
+    void printSquarePercent(int percent) {
+        print("  progress " + percent + "%  (" + percentToCells(percent)
+            + "/" + (SQUARE_SIZE * SQUARE_SIZE) + " cells)");
+        printSquare(percentToCells(percent));
+    }
+
+    void main() {
+        print("=== CommonRails — Sleela edition (professional printing) ===");
+        print("");
+
+        // Professional component lines (nameChars is the class-name length).
+        printComponent("SearchEngineClient", 18, 1234, 1, "category images now crawling");
+        printComponent("AIModule", 8, 5, 2, "processing incoming files");
+        printComponent("CommonRails", 11, 441, 3, "square progress ready");
+        print("");
+
+        // The 21x21 square at the corner-cell stage (exactly one filled cell,
+        // bottom-right) — matching the requested diagram.
+        print("  progress: single cell (bottom-right corner)");
+        printSquare(1);
+        print("");
+
+        // A partial fill: a full bottom row plus one cell of the row above.
+        print("  progress: bottom row plus one");
+        printSquare(22);
+        print("");
+
+        // Percentage-driven fill, all the way to 100%.
+        printSquarePercent(100);
+        print("");
+        print("done");
+    }
+}
