@@ -27,6 +27,9 @@ SOCKET_SMOKE := $(BUILD)/socket_smoke
 CATALOG_OBJ := $(BUILD)/sheet_catalog.o
 XCLASS_OBJ := $(BUILD)/xclass_loader.o
 CORE_OBJ := $(BUILD)/sleela_core.o
+GC_OBJ := $(BUILD)/garbage_collector.o
+SECURITY_OBJ := $(BUILD)/security_supervisor.o
+PARAMETERS_OBJ := $(BUILD)/Parameters.o
 CHEMISTRY_OBJ := $(BUILD)/chemistry.o
 FINANCIAL_OBJ := $(BUILD)/financial.o
 CORE_SRC := core/sleela_artifact.c
@@ -47,14 +50,20 @@ NS_SRC := nordshrift/sst_lexer.cpp nordshrift/sst_parser.cpp \
 NS_OBJ := $(patsubst nordshrift/%.cpp,$(BUILD)/ns_%.o,$(NS_SRC))
 .PHONY: all clean test test-sleela test-version test-nordshrift test-threads test-network test-catalog test-chemistry test-financial test-math test-physics test-economics
 all: $(SLEELA_BIN) $(NORDSHRIFT_BIN)
-$(SLEELA_BIN): $(CORE_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ)
+$(SLEELA_BIN): $(CORE_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ)
 	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS)
-$(NORDSHRIFT_BIN): $(NS_OBJ) $(CORE_OBJ) $(FE_OBJ) $(CATALOG_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ)
+$(NORDSHRIFT_BIN): $(NS_OBJ) $(CORE_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(CATALOG_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ)
 	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS)
 $(THREAD_SMOKE): core/thread_smoke.c $(CORE_OBJ)
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 $(SOCKET_SMOKE): core/socket_smoke.c $(CORE_OBJ)
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
+$(GC_OBJ): ../runtime/garbage_collector.c ../runtime/garbage_collector.h | $(BUILD)
+	$(CC) $(CFLAGS) -c ../runtime/garbage_collector.c -o $@
+$(SECURITY_OBJ): ../runtime/security_supervisor.c ../runtime/security_supervisor.h | $(BUILD)
+	$(CC) $(CFLAGS) -c ../runtime/security_supervisor.c -o $@
+$(PARAMETERS_OBJ): ../Parameters.c | $(BUILD)
+	$(CC) $(CFLAGS) -c ../Parameters.c -o $@
 $(CORE_OBJ): $(CORE_SRC) core/sleela_core.c core/sleela_core.h | $(BUILD)
 	$(CC) $(CFLAGS) -c $(CORE_SRC) -o $@
 $(CHEMISTRY_OBJ): subjects/chemistry/chemistry.cpp subjects/chemistry/chemistry.h | $(BUILD)
@@ -112,3 +121,9 @@ test-financial: $(FINANCIAL_OBJ)
 	@echo "=== financial math/algebra reference library ==="; echo "financial object compiled: $(FINANCIAL_OBJ)"
 clean:
 	rm -rf $(BUILD)
+
+.PHONY: build-runtime test-runtime
+build-runtime: $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ)
+	@echo "=== SLVM runtime services built: GC + Security Supervisor + Parameters ==="
+test-runtime: build-runtime
+	@echo "=== runtime integration objects present ==="
