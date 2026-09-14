@@ -15,6 +15,7 @@ typedef enum {
 } SLNetPlatform;
 
 typedef intptr_t SLNetHandle;
+typedef ptrdiff_t SLNetCount;
 #define SL_NET_INVALID ((SLNetHandle)-1)
 
 SLNetPlatform slnet_platform(void);
@@ -27,8 +28,8 @@ void slnet_shutdown(void);
 SLNetHandle slnet_listen(uint16_t port, int backlog);
 SLNetHandle slnet_accept(SLNetHandle listener);
 SLNetHandle slnet_connect(const char* host, uint16_t port);
-ssize_t slnet_read(SLNetHandle handle, char* buffer, size_t capacity);
-ssize_t slnet_write(SLNetHandle handle, const char* data, size_t length);
+SLNetCount slnet_read(SLNetHandle handle, char* buffer, size_t capacity);
+SLNetCount slnet_write(SLNetHandle handle, const char* data, size_t length);
 int slnet_close(SLNetHandle handle);
 
 /* Socket-handle validity and error normalization. */
