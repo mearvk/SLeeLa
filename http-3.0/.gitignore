@@ -1,0 +1,8 @@
+# Build artifacts
+*.o
+crypto_selftest
+key_distribution_server
+http3_pipeline_demo
+# Python
+__pycache__/
+*.pyc
