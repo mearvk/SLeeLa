@@ -554,13 +554,19 @@ static SLResult run_thread(SLThread* t) {
         case OP_TIME_JSON: {
             char out[2048]; SLTimeSample ts;
             if(sltime_sample(&ts)!=0 || sltime_json(&ts,out,sizeof(out))!=0) out[0]=0;
-            PUSH(slval_int(intern(vm,out)));
+            { SLValue value; value.type=SL_STR; value.as.s=intern(vm,out); PUSH(value); }
         } break;
         case OP_TIME_NTP: {
             SLValue hv=POP(); if(hv.type!=SL_STR) TERR("timeNtp(host) requires a String host");
             char out[2048]; SLTimeSample ts;
             if(sltime_query_ntp(slvm_str(vm,hv.as.s),1500,&ts)!=0 || sltime_json(&ts,out,sizeof(out))!=0) out[0]=0;
-            PUSH(slval_int(intern(vm,out)));
+            { SLValue value; value.type=SL_STR; value.as.s=intern(vm,out); PUSH(value); }
+        } break;
+        case OP_TIME_SET_LOCATION: {
+            SLValue zv=POP(), cv=POP();
+            if(cv.type!=SL_STR || zv.type!=SL_STR) TERR("timeSetLocation(country, timezone) requires two Strings");
+            if(sltime_set_location(SL_TIME_LOCATION_COUNTRY,slvm_str(vm,cv.as.s),slvm_str(vm,zv.as.s))!=0) TERR("timeSetLocation failed");
+            PUSH(slval_null());
         } break;
         default: TERR("illegal opcode");
         }
