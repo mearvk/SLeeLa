@@ -537,6 +537,9 @@ static SLResult run_thread(SLThread* t) {
         case OP_TIME_UTC_MS: {
             PUSH(slval_int(sltime_utc_millis()));
         } break;
+        case OP_TIME_UTC_NS: {
+            PUSH(slval_int(sltime_utc_nanos()));
+        } break;
         case OP_TIME_MONO_NS: {
             PUSH(slval_int((int64_t)sltime_monotonic_nanos()));
         } break;
