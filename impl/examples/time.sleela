@@ -4,6 +4,7 @@ class TimePiece {
     void main() {
         timeSetLocation("DE", "Europe/Berlin");
         print(timeUtcMillis());
+        print(timeUtcNanos());
         print(timeMonotonicNanos());
         print(timePrecisionMillis());
         print(timeLocation());
