@@ -24,6 +24,15 @@ std::size_t safe_area(std::size_t width, std::size_t height) {
 
 namespace sleela::terminal {
 
+Handshake PixelTerminal::handshake() noexcept {
+    Handshake result;
+    result.ready = true;
+    result.pixel_granularity = true;
+    result.native_frame = true;
+    result.resize_events = true;
+    return result;
+}
+
 PixelTerminal::PixelTerminal() {
     querySize();
 }
