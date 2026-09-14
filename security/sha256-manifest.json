@@ -3,11 +3,11 @@
   "files": [
     {
       "path": "bash/pixel_terminal.cpp",
-      "sha256": "2a01eb4ce2c3d8664f6b17675f8363631d02a7e2527c823c93fc321acb2bc051"
+      "sha256": "d52b2cf31816f5f6a2d6860148996364208006e656e4de30eb4e3fb956893653"
     },
     {
       "path": "bash/pixel_terminal.hpp",
-      "sha256": "ed57011a8cf50724c75a5d28a2de309a564f8beeeffbfe45da29198dda9ef294"
+      "sha256": "c640365e954b9682cfb7357d183fc89a2ec74338b055fe8450bf2363d154d989"
     },
     {
       "path": "impl/catalog/sheet_catalog.cpp",
