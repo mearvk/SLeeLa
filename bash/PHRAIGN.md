@@ -15,6 +15,7 @@ Phraign™ is the umbrella name for the pixel-terminal work living in `bash/`:
 | Shell interface | `pixel-terminal.sh` | Bash text-protocol functions (`pixel_terminal_*`). |
 | Native layer | `pixel_terminal.hpp` / `pixel_terminal.cpp` | C++ `sleela::terminal::PixelTerminal` owning frame + geometry. |
 | Smoke test | `pixel_terminal_smoke.cpp` | Native layer assertions. |
+| Application | `model-3D/` | Phraign™ City 3D — a ~4000-block city rendered onto the Phraign frame per pixel (see `model-3D/README.md`). |
 
 ## Why "Phraign™"
 
