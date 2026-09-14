@@ -2,12 +2,16 @@
 # Makefile for Sleela (C/C++ core + front end) and Nordshrift (.sst -> triple).
 #
 # Subject libraries live under subjects/ (one folder per subject):
-#   subjects/math       -> addMath          (native math lowering)
-#   subjects/physics    -> addPhysics        (native physics lowering)
-#   subjects/economics  -> addEconomics      (native economics lowering)
-#   subjects/native     -> shared dispatcher + builders (native_api, native_*)
+#   subjects/math       -> addMath
+#   subjects/physics    -> addPhysics
+#   subjects/economics  -> addEconomics
+#   subjects/native     -> shared dispatcher + builders
 #   subjects/chemistry  -> chemistry library + frontend chemistry_api
 #   subjects/finance    -> financial library + frontend financial_api
+#
+# Security build order:
+#   trusted update/source -> SHA-256 verification -> compilation -> linking
+#   -> diagnostics/tests -> execution/install
 # =============================================================================
 CC ?= gcc
 CXX ?= g++
@@ -50,13 +54,32 @@ VERIFY_TOOL := ../tools/verify-before-execution.py
 VERIFY_MANIFEST ?= $(SLEELA_SHA256_MANIFEST)
 VERIFY_ARGS = --manifest "$(VERIFY_MANIFEST)" --root "$(CURDIR)/.."
 ALL_OBJECTS := $(CORE_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(NS_OBJ) $(THREAD_SMOKE) $(SOCKET_SMOKE) $(PIXEL_TERMINAL_SMOKE)
-.PHONY: all clean test test-sleela test-version test-nordshrift test-threads test-network test-pixel-terminal test-catalog test-chemistry test-financial test-math test-physics test-economics verify-security
-all: $(SLEELA_BIN) $(NORDSHRIFT_BIN)
+
+.PHONY: all build-verified rebuild-verified clean test test-sleela test-version test-nordshrift test-threads test-network test-pixel-terminal test-catalog test-chemistry test-financial test-math test-physics test-economics verify-security build-runtime test-runtime
+
+# The normal build is verified first. No compiler or linker target is reachable
+# from `all` unless the trusted SHA-256 manifest passes.
+all: verify-security $(SLEELA_BIN) $(NORDSHRIFT_BIN)
+
+# Canonical explicit entry point for callers and automation.
+build-verified: verify-security $(SLEELA_BIN) $(NORDSHRIFT_BIN)
+
+# Force a clean, then perform the same fail-closed verified build.
+rebuild-verified:
+	$(MAKE) clean
+	$(MAKE) build-verified
+
 verify-security:
 	@if [ -z "$(VERIFY_MANIFEST)" ]; then echo "sleela: SHA-256 verification is required before build; set SLEELA_SHA256_MANIFEST or VERIFY_MANIFEST to a trusted JSON manifest" >&2; exit 1; fi
 	@if [ ! -f "$(VERIFY_MANIFEST)" ]; then echo "sleela: trusted SHA-256 manifest not found: $(VERIFY_MANIFEST)" >&2; exit 1; fi
+	@if [ ! -r "$(VERIFY_TOOL)" ]; then echo "sleela: verification tool not readable: $(VERIFY_TOOL)" >&2; exit 1; fi
+	@command -v python3 >/dev/null 2>&1 || { echo "sleela: python3 is required for SHA-256 verification" >&2; exit 1; }
 	@python3 "$(VERIFY_TOOL)" $(VERIFY_ARGS)
+
+# Every object also depends on the verification barrier so direct object/test
+# targets cannot silently bypass the security gate.
 $(ALL_OBJECTS): verify-security
+
 $(SLEELA_BIN): $(CORE_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ)
 	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS)
 $(NORDSHRIFT_BIN): $(NS_OBJ) $(CORE_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(CATALOG_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ)
@@ -105,6 +128,7 @@ $(BUILD)/driver.o: frontend/driver.cpp frontend/compiler.h frontend/artifact.h s
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
 $(BUILD):
 	mkdir -p $(BUILD)
+
 test: verify-security test-sleela test-version test-nordshrift test-threads test-network test-pixel-terminal test-catalog test-math test-physics test-economics test-chemistry test-financial
 test-threads: $(THREAD_SMOKE)
 	@echo "=== core threading smoke (128 threads) ==="; $(THREAD_SMOKE) 128
@@ -134,7 +158,6 @@ test-financial: $(FINANCIAL_OBJ)
 clean:
 	rm -rf $(BUILD)
 
-.PHONY: build-runtime test-runtime
 build-runtime: verify-security $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ)
 	@echo "=== SLVM runtime services built: GC + Security Supervisor + Parameters ==="
 test-runtime: build-runtime
