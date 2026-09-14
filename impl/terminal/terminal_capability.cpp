@@ -11,7 +11,7 @@ Capability Capability::fromNativePixel() noexcept {
 
     Capability result;
     result.bash_protocol_major = static_cast<std::uint16_t>(native.bash_protocol_major);
-    result.pixel_terminal_version = static_cast<std::uint16_t>(native.pixel_terminal_version);
+    result.phraign_version = static_cast<std::uint16_t>(native.phraign_version);
     result.variant = Variant::NativePixel;
     result.ready = native.ready;
     result.pixel_granularity = native.pixel_granularity;

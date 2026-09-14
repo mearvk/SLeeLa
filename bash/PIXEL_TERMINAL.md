@@ -1,8 +1,13 @@
-# Bash Pixel Terminal
+# Phraign™ — Bash Pixel Terminal Interface
+
+> Phraign™ is SLeeLa's frame-based, pixel-accurate terminal control system.
+> See `PHRAIGN.md` for the system overview. This document is the Phraign™
+> pixel-terminal interface specification.
 
 ## Purpose
 
-SLeeLa may execute selected programs through Bash. This document defines the pixel-granularity terminal interface available to those programs.
+SLeeLa may execute selected programs through Bash. This document defines the
+Phraign™ pixel-granularity terminal interface available to those programs.
 
 The terminal is treated as a **frame of pixels**, rather than only a character grid. A program may address a pixel by integer coordinates and construct a frame for presentation by the terminal.
 
@@ -148,7 +153,7 @@ A program may build a frame incrementally and submit it repeatedly for animation
 
 ## SLeeLa relationship
 
-Bash is an execution target for selected SLeeLa programs. The intended architecture is:
+Bash is an execution target for selected SLeeLa programs. The intended Phraign™ architecture is:
 
 ```text
 SLeeLa program

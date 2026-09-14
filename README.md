@@ -60,6 +60,22 @@ triplet of targets (**Java**, **Sleela**, **C**).
   CAGR, z-score, forecast, and classification codes). The runnable
   [`inference-model/`](inference-model/) evaluates national/economic series and
   emits both a mathematical summary and a plain-language paragraph.
+- [`bash/PHRAIGN.md`](bash/PHRAIGN.md) documents **Phraign™**, SLeeLa's
+  frame-based, pixel-accurate terminal control system: the terminal output
+  surface is a **planar map of pixels** addressed by integer `(x, y)`
+  coordinates (origin upper-left), with terminal-following geometry and
+  `SIGWINCH` resize awareness. The interface spec is
+  [`bash/PIXEL_TERMINAL.md`](bash/PIXEL_TERMINAL.md), the versioned
+  capability negotiation (`SLEELA-BASH/1 PHRAIGN/1 VARIANT=NATIVE`) is
+  [`bash/SLEELA_BASH_HANDSHAKE.md`](bash/SLEELA_BASH_HANDSHAKE.md), the Bash
+  text-protocol interface is [`bash/pixel-terminal.sh`](bash/pixel-terminal.sh),
+  and the native C++ frame/geometry layer is
+  [`bash/pixel_terminal.hpp`](bash/pixel_terminal.hpp) /
+  [`bash/pixel_terminal.cpp`](bash/pixel_terminal.cpp). The
+  [`bash/model-3D/`](bash/model-3D/) application (**Phraign™ City 3D**) renders a
+  sprawling ~4000-block city onto the Phraign frame per pixel, viewed from the
+  top at a slight side angle, with a config-driven viewpoint, `green`/`white`/
+  `blue` themes, and per-user models that save to GitHub or a public server.
 
 ## Subject Libraries — primary references
 
