@@ -1,0 +1,156 @@
+#sleela 1.2
+// national_series.sleela
+// An inferencing model over a national / economic time series.
+//
+// The model ingests a series of yearly observations (each an Obs struct), runs
+// one pass to accumulate the ordinary-least-squares running sums, and then uses
+// the native `inference` library to produce an evaluation of the series in TWO
+// forms:
+//   1. a mathematical summary (mean, stdev, trend slope/intercept, r, r^2,
+//      CAGR, and a next-period forecast), and
+//   2. a plain-language paragraph that interprets those numbers (direction,
+//      strength, confidence) with an explicit assumptions caveat.
+//
+// X is the period index (1..n), Y is the observed quantity. Numbers here are
+// ILLUSTRATIVE. A result is a descriptive statistic over the supplied data, not
+// a causal claim or an official forecast.
+import math;
+import inference;
+
+struct Obs {
+    int    period;   // 1..n  (X)
+    double value;    // observed national/economic quantity (Y)
+}
+
+struct Series {
+    String name;     // what the series measures
+    String units;    // units of `value`
+    // running sums, filled by ingest()
+    double n;
+    double sumX;
+    double sumY;
+    double sumXX;
+    double sumYY;
+    double sumXY;
+    double first;    // first value in the series (for CAGR)
+    double last;     // last value in the series
+}
+
+class NationalInference {
+
+    // Fold one observation into the series' running sums.
+    void ingest(Series s, Obs o) {
+        double x = o.period;
+        double y = o.value;
+        s.n = s.n + 1.0;
+        s.sumX = s.sumX + x;
+        s.sumY = s.sumY + y;
+        s.sumXX = s.sumXX + x * x;
+        s.sumYY = s.sumYY + y * y;
+        s.sumXY = s.sumXY + x * y;
+        if (s.n == 1.0) { s.first = y; }
+        s.last = y;
+    }
+
+    // Map trend_code (-1/0/1) to a word.
+    String trendWord(int code) {
+        if (code > 0) { return "rising"; }
+        if (code < 0) { return "declining"; }
+        return "flat";
+    }
+
+    // Map strength_code (0..3) to a word.
+    String strengthWord(int code) {
+        if (code == 0) { return "no"; }
+        if (code == 1) { return "a weak"; }
+        if (code == 2) { return "a moderate"; }
+        return "a strong";
+    }
+
+    // Map significance_code (0..3) to a confidence phrase.
+    String confidenceWord(int code) {
+        if (code == 0) { return "low"; }
+        if (code == 1) { return "modest"; }
+        if (code == 2) { return "substantial"; }
+        return "high";
+    }
+
+    // Produce the full mathematical + paragraph evaluation for a series.
+    void evaluate(Series s) {
+        double mean = inference.mean(s.sumY, s.n);
+        double stdev = inference.stdev(s.sumYY, s.sumY, s.n);
+        double slope = inference.slope(s.n, s.sumX, s.sumY, s.sumXX, s.sumXY);
+        double intercept = inference.intercept(s.n, s.sumX, s.sumY, slope);
+        double r = inference.correlation(s.n, s.sumX, s.sumY, s.sumXX, s.sumYY, s.sumXY);
+        double r2 = inference.r_squared(r);
+        double cagr = inference.cagr(s.first, s.last, s.n - 1.0);
+        double nextX = s.n + 1.0;
+        double forecast = inference.forecast(intercept, slope, nextX);
+        double lastZ = inference.zscore(s.last, mean, stdev);
+
+        // classification codes
+        int tCode = inference.trend_code(slope, mean, 0.01);
+        int sCode = inference.strength_code(math.abs(r));
+        int cCode = inference.significance_code(r2);
+
+        // --- 1. mathematical summary ---
+        print("=== Inference over: " + s.name + " (" + s.units + ") ===");
+        print("[mathematical]");
+        print("  observations n:   " + s.n);
+        print("  mean:             " + mean);
+        print("  std deviation:    " + stdev);
+        print("  trend slope:      " + slope + " per period");
+        print("  trend intercept:  " + intercept);
+        print("  correlation r:    " + r);
+        print("  r^2:              " + r2);
+        print("  CAGR:             " + (cagr * 100.0) + " %/period");
+        print("  forecast(t=" + nextX + "):  " + forecast);
+        print("  last-point z:     " + lastZ);
+
+        // --- 2. paragraph evaluation ---
+        print("[evaluation]");
+        print("  Over " + s.n + " periods, " + s.name + " shows "
+            + strengthWord(sCode) + " " + trendWord(tCode)
+            + " trend (slope " + slope + " " + s.units + " per period, r^2 "
+            + r2 + "), with " + confidenceWord(cCode)
+            + " statistical fit to a straight line.");
+        print("  It averaged " + mean + " " + s.units + " (std dev " + stdev
+            + "), compounding at " + (cagr * 100.0)
+            + "% per period; the most recent reading sits " + lastZ
+            + " standard deviations from the mean.");
+        print("  If the linear trend holds, the next period projects to about "
+            + forecast + " " + s.units + ".");
+        print("  Caveat: this is a descriptive fit to the supplied series, not a");
+        print("  causal finding or an official forecast; sourcing and assumptions");
+        print("  govern its meaning.");
+        print("");
+    }
+
+    void main() {
+        print("SLeeLa National / Economic Inference Model");
+        print("(illustrative data -- descriptive statistics, not forecasts)");
+        print("");
+
+        // --- Series A: real GDP index (illustrative, gently rising, tight fit) ---
+        Series gdp = new Series();
+        gdp.name = "Real GDP index"; gdp.units = "index";
+        Obs a1 = new Obs(); a1.period = 1; a1.value = 100.0; ingest(gdp, a1);
+        Obs a2 = new Obs(); a2.period = 2; a2.value = 102.1; ingest(gdp, a2);
+        Obs a3 = new Obs(); a3.period = 3; a3.value = 104.5; ingest(gdp, a3);
+        Obs a4 = new Obs(); a4.period = 4; a4.value = 105.9; ingest(gdp, a4);
+        Obs a5 = new Obs(); a5.period = 5; a5.value = 108.4; ingest(gdp, a5);
+        Obs a6 = new Obs(); a6.period = 6; a6.value = 110.7; ingest(gdp, a6);
+        evaluate(gdp);
+
+        // --- Series B: unemployment rate (illustrative, declining, noisier) ---
+        Series unemp = new Series();
+        unemp.name = "Unemployment rate"; unemp.units = "percent";
+        Obs b1 = new Obs(); b1.period = 1; b1.value = 6.1; ingest(unemp, b1);
+        Obs b2 = new Obs(); b2.period = 2; b2.value = 5.4; ingest(unemp, b2);
+        Obs b3 = new Obs(); b3.period = 3; b3.value = 5.6; ingest(unemp, b3);
+        Obs b4 = new Obs(); b4.period = 4; b4.value = 4.8; ingest(unemp, b4);
+        Obs b5 = new Obs(); b5.period = 5; b5.value = 4.3; ingest(unemp, b5);
+        Obs b6 = new Obs(); b6.period = 6; b6.value = 4.1; ingest(unemp, b6);
+        evaluate(unemp);
+    }
+}

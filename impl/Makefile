@@ -4,7 +4,8 @@
 CC ?= gcc
 CXX ?= g++
 SUBJECT_INCLUDES := -Isubjects/native -Isubjects/math -Isubjects/physics \
-                    -Isubjects/economics -Isubjects/chemistry -Isubjects/finance
+                    -Isubjects/economics -Isubjects/inference \
+                    -Isubjects/chemistry -Isubjects/finance
 CFLAGS ?= -std=c11 -O2 -Wall -Wextra -pthread
 CXXFLAGS ?= -std=c++17 -O2 -Wall -Wextra -pthread
 CPPFLAGS += -Ifrontend $(SUBJECT_INCLUDES) -I../bash
@@ -45,6 +46,7 @@ FE_SRC := frontend/lexer.cpp frontend/parser.cpp frontend/compiler.cpp \
           subjects/native/native_api.cpp \
           subjects/math/math_native.cpp subjects/physics/physics_native.cpp \
           subjects/economics/economics_native.cpp \
+          subjects/inference/inference_native.cpp \
           subjects/chemistry/chemistry_api.cpp subjects/finance/financial_api.cpp
 FE_OBJ := $(patsubst %.cpp,$(BUILD)/%.o,$(notdir $(FE_SRC)))
 DRIVER_OBJ := $(BUILD)/driver.o
@@ -58,7 +60,7 @@ VERIFY_MANIFEST ?= $(SLEELA_SHA256_MANIFEST)
 VERIFY_ARGS = --manifest "$(VERIFY_MANIFEST)" --root "$(CURDIR)/.."
 ALL_OBJECTS := $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(TIME_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(NS_OBJ) $(THREAD_SMOKE) $(SOCKET_SMOKE) $(IO_PLATFORM_SMOKE) $(NET_PLATFORM_SMOKE) $(PATH_PLATFORM_SMOKE) $(TERMINAL_PLATFORM_SMOKE) $(LIBRARY_PLATFORM_SMOKE) $(PIXEL_TERMINAL_SMOKE) $(THREAD_PLATFORM_SMOKE)
 
-.PHONY: all build-verified rebuild-verified clean test test-sleela test-version test-nordshrift test-threads test-thread-platform test-network test-network-platform test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-chemistry test-financial test-math test-physics test-economics verify-security build-runtime test-runtime
+.PHONY: all build-verified rebuild-verified clean test test-sleela test-version test-nordshrift test-threads test-thread-platform test-network test-network-platform test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-chemistry test-financial test-math test-physics test-economics test-inference verify-security build-runtime test-runtime
 
 all: verify-security $(SLEELA_BIN) $(NORDSHRIFT_BIN)
 build-verified: verify-security $(SLEELA_BIN) $(NORDSHRIFT_BIN)
@@ -140,6 +142,8 @@ $(BUILD)/physics_native.o: subjects/physics/physics_native.cpp | $(BUILD)
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
 $(BUILD)/economics_native.o: subjects/economics/economics_native.cpp | $(BUILD)
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
+$(BUILD)/inference_native.o: subjects/inference/inference_native.cpp | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
 $(BUILD)/chemistry_api.o: subjects/chemistry/chemistry_api.cpp | $(BUILD)
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
 $(BUILD)/financial_api.o: subjects/finance/financial_api.cpp | $(BUILD)
@@ -155,7 +159,7 @@ $(BUILD)/driver.o: frontend/driver.cpp frontend/compiler.h frontend/artifact.h s
 $(BUILD):
 	mkdir -p $(BUILD)
 
-test: verify-security test-sleela test-version test-nordshrift test-threads test-thread-platform test-network test-network-platform test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-math test-physics test-economics test-chemistry test-financial
+test: verify-security test-sleela test-version test-nordshrift test-threads test-thread-platform test-network test-network-platform test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-math test-physics test-economics test-inference test-chemistry test-financial
 test-thread-platform: $(THREAD_PLATFORM_SMOKE)
 	@echo "=== OS-aware threading backend ==="; SLEELA_THREAD_PLATFORM=auto $(THREAD_PLATFORM_SMOKE)
 test-threads: $(THREAD_SMOKE)
@@ -191,6 +195,8 @@ test-physics: $(BUILD)/physics_native.o
 	@echo "=== native physics subject library ==="; echo "physics object compiled: $(BUILD)/physics_native.o"
 test-economics: $(BUILD)/economics_native.o
 	@echo "=== native economics subject library ==="; echo "economics object compiled: $(BUILD)/economics_native.o"
+test-inference: $(BUILD)/inference_native.o
+	@echo "=== native inference subject library ==="; echo "inference object compiled: $(BUILD)/inference_native.o"
 test-chemistry: $(CHEMISTRY_OBJ)
 	@echo "=== normed presumed chemistry library ==="; echo "chemistry object compiled: $(CHEMISTRY_OBJ)"
 test-financial: $(FINANCIAL_OBJ)

@@ -24,6 +24,7 @@ inline ExprP Bn(const char*o,ExprP a,ExprP b){return std::make_unique<Binary>(o,
 inline std::unique_ptr<Call> C0(const std::string&n){return std::make_unique<Call>(n);}
 inline ExprP C1(const std::string&n,ExprP a){auto c=C0(n);c->args.push_back(std::move(a));return c;}
 inline ExprP C2(const std::string&n,ExprP a,ExprP b){auto c=C0(n);c->args.push_back(std::move(a));c->args.push_back(std::move(b));return c;}
+inline ExprP C3(const std::string&n,ExprP a,ExprP b,ExprP c_){auto c=C0(n);c->args.push_back(std::move(a));c->args.push_back(std::move(b));c->args.push_back(std::move(c_));return c;}
 inline ExprP Neg(ExprP a){return std::make_unique<Unary>("-",std::move(a));}
 inline StmtP Ret(ExprP e){auto s=std::make_unique<ReturnStmt>();s->value=std::move(e);return s;}
 inline StmtP Decl(const char*t,const char*n,ExprP e){auto s=std::make_unique<VarDecl>();s->type=t;s->name=n;s->init=std::move(e);return s;}
@@ -34,6 +35,8 @@ inline Method M1(const char*r,const char*n,const char*t,const char*p){Method m=M
 inline Method M2(const char*r,const char*n,const char*t1,const char*p1,const char*t2,const char*p2){Method m=M1(r,n,t1,p1);m.params.push_back({t2,p2});return m;}
 inline Method M3(const char*r,const char*n,const char*t1,const char*p1,const char*t2,const char*p2,const char*t3,const char*p3){Method m=M2(r,n,t1,p1,t2,p2);m.params.push_back({t3,p3});return m;}
 inline Method M4(const char*r,const char*n,const char*t1,const char*p1,const char*t2,const char*p2,const char*t3,const char*p3,const char*t4,const char*p4){Method m=M3(r,n,t1,p1,t2,p2,t3,p3);m.params.push_back({t4,p4});return m;}
+inline Method M5(const char*r,const char*n,const char*t1,const char*p1,const char*t2,const char*p2,const char*t3,const char*p3,const char*t4,const char*p4,const char*t5,const char*p5){Method m=M4(r,n,t1,p1,t2,p2,t3,p3,t4,p4);m.params.push_back({t5,p5});return m;}
+inline Method M6(const char*r,const char*n,const char*t1,const char*p1,const char*t2,const char*p2,const char*t3,const char*p3,const char*t4,const char*p4,const char*t5,const char*p5,const char*t6,const char*p6){Method m=M5(r,n,t1,p1,t2,p2,t3,p3,t4,p4,t5,p5);m.params.push_back({t6,p6});return m;}
 
 }}} // namespace sleela::native::builders
 

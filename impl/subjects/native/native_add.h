@@ -18,6 +18,7 @@ namespace sleela { namespace native {
 void addMath(Program& p);
 void addPhysics(Program& p);
 void addEconomics(Program& p);
+void addInference(Program& p);
 
 }} // namespace sleela::native
 

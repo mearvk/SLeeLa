@@ -55,6 +55,11 @@ triplet of targets (**Java**, **Sleela**, **C**).
   economics identities (`Y = C + I + G`, present value) to relate sector
   investment, depreciation/renewal, backlog, and marginal NPV — with all inputs
   marked illustrative and kept apart from framing (see its `SOURCES.md`).
+- [`INFERENCE.md`](INFERENCE.md) documents the native **`inference`** subject
+  library (statistics over a data series: mean/stdev, OLS trend, correlation/R²,
+  CAGR, z-score, forecast, and classification codes). The runnable
+  [`inference-model/`](inference-model/) evaluates national/economic series and
+  emits both a mathematical summary and a plain-language paragraph.
 
 ## Subject Libraries — primary references
 
@@ -68,6 +73,7 @@ compiler, runtime, and Nordshrift stack.
 | **Math** | [`MATH.md`](MATH.md) | [`impl/subjects/math/`](impl/subjects/math/) native math lowering (shared dispatcher in [`impl/subjects/native/`](impl/subjects/native/)) |
 | **Physics** | [`PHYSICS.md`](PHYSICS.md) | [`impl/subjects/physics/`](impl/subjects/physics/) native physics API and executable formula layer |
 | **Economics** | [`ECONOMICS.md`](ECONOMICS.md) | [`impl/subjects/economics/`](impl/subjects/economics/) native economics API and executable formula layer |
+| **Inference** | [`INFERENCE.md`](INFERENCE.md) | [`impl/subjects/inference/`](impl/subjects/inference/) native statistics over data series (trend, correlation, forecast) |
 | **Chemistry** | [`CHEMISTRY.md`](CHEMISTRY.md) | [`impl/subjects/chemistry/`](impl/subjects/chemistry/) (library + frontend chemistry API) |
 | **Financial** | [`FINANCIAL.md`](FINANCIAL.md) | [`impl/subjects/finance/`](impl/subjects/finance/) (library + frontend financial API) |
 

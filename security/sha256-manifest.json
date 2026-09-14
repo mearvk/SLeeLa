@@ -306,16 +306,20 @@
       "sha256": "7893d9af88331c9348fbd3c8f5365bb8892fef6ea0f972b9ce719f1c9456536c"
     },
     {
+      "path": "impl/subjects/inference/inference_native.cpp",
+      "sha256": "58eedd0761f06576ecd924d5ce4d9e39c5f319049b2e1436ddbe2ed863185a8c"
+    },
+    {
       "path": "impl/subjects/math/math_native.cpp",
       "sha256": "d615ab1ebcb2b489ccaf132e11fe2e6d5df24be265f44e2a556c39e06a2585d3"
     },
     {
       "path": "impl/subjects/native/native_add.h",
-      "sha256": "fea0ea2241305d5ad0aaf6b1f34b13e60905a75938b6dabb1358ada20898bc3a"
+      "sha256": "dbd73460abf50e73dfd5e1b0366685129d948be7c2423a8a879cce2464b556a9"
     },
     {
       "path": "impl/subjects/native/native_api.cpp",
-      "sha256": "323115ebde0d0686739db142a2509394ac20a728690845ab098d7bf10f067c5b"
+      "sha256": "696935cbe721e0afa9964391adb65744f0c1c4a61a4fd14c264a0ef43d580b61"
     },
     {
       "path": "impl/subjects/native/native_api.h",
@@ -323,7 +327,7 @@
     },
     {
       "path": "impl/subjects/native/native_builders.h",
-      "sha256": "a7dce22278858d3bbac60ce1ce439376d19d518594174b1f06bda766aab79de5"
+      "sha256": "3a4a9c7097310d1afdab2f00717384262f306c62ef7c19163e82b83b300ba0d9"
     },
     {
       "path": "impl/subjects/physics/physics_native.cpp",
