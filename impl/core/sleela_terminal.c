@@ -1,3 +1,12 @@
+#ifndef _WIN32
+#define _XOPEN_SOURCE 600
+#endif
+#ifdef _WIN32
+#ifndef _WIN32_WINNT
+#define _WIN32_WINNT 0x0A00
+#endif
+#endif
+
 #include "sleela_terminal.h"
 
 #include <errno.h>
@@ -7,7 +16,6 @@
 #ifdef _WIN32
 #include <windows.h>
 #include <processthreadsapi.h>
-#include <consoleapi2.h>
 
 typedef struct {
     HPCON console;
