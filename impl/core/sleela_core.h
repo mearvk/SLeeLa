@@ -1,5 +1,5 @@
 /* ==========================================================================
- * sleela_core.h  --  Sleela execution core: the Turing-complete C/C++ engine.
+ * sleela_core.h  -- Sleela execution core: the Turing-complete C/C++ engine.
  * ========================================================================== */
 #ifndef SLEELA_CORE_H
 #define SLEELA_CORE_H
@@ -19,6 +19,8 @@ typedef enum {
     OP_LISTEN, OP_ACCEPT, OP_CONNECT, OP_SOCKREAD, OP_SOCKWRITE, OP_SOCKCLOSE,
     OP_PIPE, OP_PIPEPEER, OP_FIFO_MK, OP_FILEOPEN, OP_FILEREAD, OP_FILEWRITE,
     OP_FILECLOSE, OP_FILEUNLINK,
+    OP_TIME_UTC_MS, OP_TIME_MONO_NS, OP_TIME_PRECISION_MS, OP_TIME_LOCATION,
+    OP_TIME_HTTP_DATE, OP_TIME_JSON, OP_TIME_NTP,
     OP_HALT
 } SLOp;
 #define SL_MAX_THREADS 128
@@ -53,7 +55,6 @@ SLValue slval_double(double v);
 SLValue slval_bool(int v);
 const char* slvm_str(SLVM* vm, int32_t id);
 const char* slvm_error(SLVM* vm);
-/* Persistent runnable .sleela artifacts: Core bytecode, directly loadable by runtime. */
 int slvm_save_file(SLVM* vm, const char* path);
 SLVM* slvm_load_file(const char* path);
 int slvm_is_artifact_file(const char* path);
