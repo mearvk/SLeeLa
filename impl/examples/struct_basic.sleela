@@ -1,0 +1,57 @@
+#sleela 1.2
+// struct_basic.sleela -- C/C++-style structs in Sleela.
+//
+// A struct is a named aggregate of typed fields. `new Type()` builds a fresh
+// instance (zero/null-initialised) and returns a handle; fields are read and
+// written with the `.` operator. Structs are reference types: two variables
+// holding the same instance see each other's writes, and `==` compares by
+// identity. Nested struct fields compose the way C structs do.
+
+struct Point {
+    int x;
+    int y;
+}
+
+struct Rect {
+    Point origin;
+    int width;
+    int height;
+}
+
+class StructBasic {
+    // A method may take and return a struct type, and read its fields.
+    int area(Rect r) {
+        return r.width * r.height;
+    }
+
+    // Reference semantics: mutating through one alias is visible through another.
+    void moveRight(Point p, int dx) {
+        p.x = p.x + dx;
+    }
+
+    void main() {
+        Point p = new Point();
+        p.x = 3;
+        p.y = 4;
+        print("p = (" + p.x + ", " + p.y + ")");
+
+        // Aliasing: q and p are the same instance.
+        Point q = p;
+        moveRight(q, 10);
+        print("after moveRight(q,10): p.x = " + p.x);   // 13 -- shared instance
+        print("p == q ? " + (p == q));                  // true -- identity
+
+        // Nested structs compose like C aggregates.
+        Rect box = new Rect();
+        box.origin = new Point();
+        box.origin.x = 1;
+        box.origin.y = 2;
+        box.width = 20;
+        box.height = 5;
+        print("box origin = (" + box.origin.x + ", " + box.origin.y + ")");
+        print("box area = " + area(box));               // 100
+
+        Rect other = new Rect();
+        print("box == other ? " + (box == other));      // false -- distinct
+    }
+}

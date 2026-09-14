@@ -25,9 +25,27 @@ public:
         : prog_(prog), vm_(vm), cat_(cat), syntax_(syntax) {}
 
     int run() {
+        // Struct declarations: register each layout with the VM and record a
+        // compiler-side layout (type index + ordered field names -> offsets).
+        for(const auto& st:prog_.structs){
+            if(st.fields.size()>64) throw std::runtime_error("Semantic error: struct '"+st.name+"' exceeds 64 fields");
+            if(structLayout_.count(st.name)) throw std::runtime_error("Semantic error: duplicate struct '"+st.name+"'");
+            if(syntax_<SyntaxVersion{1,2}) throw std::runtime_error("Semantic error: struct declarations require #sleela 1.2");
+            StructLayout layout; layout.name=st.name;
+            std::vector<const char*> fieldNames;
+            for(size_t i=0;i<st.fields.size();++i){
+                const auto& f=st.fields[i];
+                if(layout.fieldOffset.count(f.name)) throw std::runtime_error("Semantic error: duplicate field '"+f.name+"' in struct '"+st.name+"'");
+                layout.fieldOffset[f.name]=(int)i; layout.fieldType.push_back(f.type); fieldNames.push_back(f.name.c_str());
+            }
+            layout.typeIndex=slvm_declare_struct(vm_,st.name.c_str(),fieldNames.empty()?nullptr:fieldNames.data(),(int)fieldNames.size());
+            if(layout.typeIndex<0) throw std::runtime_error("Semantic error: could not register struct '"+st.name+"' (too many struct types?)");
+            structLayout_[st.name]=layout;
+        }
         for(const auto& cls:prog_.classes) for(const auto& f:cls.fields){
             if(fieldGlobal_.count(f.name)) throw std::runtime_error("Semantic error: duplicate field '"+f.name+"'");
             fieldGlobal_[f.name]=slvm_declare_global(vm_,f.name.c_str()); fields_.push_back(&f);
+            if(structLayout_.count(f.type)) varType_[f.name]=f.type; // struct-typed global
         }
         for(const auto& cls:prog_.classes) for(const auto& m:cls.methods){
             MethodInfo mi; mi.method=&m; mi.nlocals=countLocals(m); funcIndex_[m.name]=(int)methods_.size(); methods_.push_back(mi);
@@ -38,9 +56,17 @@ public:
     }
 private:
     struct MethodInfo { const Method* method; int nlocals; };
+    // A struct's compile-time layout: its VM type index, and each field's
+    // position (offset) and declared type, in declaration order.
+    struct StructLayout { std::string name; int typeIndex=-1; std::map<std::string,int> fieldOffset; std::vector<std::string> fieldType; };
     const Program& prog_; SLVM* vm_; const catalog::Catalog* cat_; SyntaxVersion syntax_;
     std::map<std::string,int> funcIndex_; std::vector<MethodInfo> methods_;
     std::map<std::string,int> fieldGlobal_; std::vector<const Field*> fields_; MethodCtx* ctx_=nullptr;
+    std::map<std::string,StructLayout> structLayout_;
+    // Track the declared type of each in-scope local/global so member access
+    // can resolve `x.field` to the right struct layout. Names not present are
+    // untyped (dynamic); member access then defers field resolution to runtime.
+    std::map<std::string,std::string> varType_;
     int fieldSlot(const std::string& name) const { auto it=fieldGlobal_.find(name); return it==fieldGlobal_.end()?-1:it->second; }
     int countLocals(const Method& m){int n=(int)m.params.size();countInBlock(*m.body,n);return n;}
     void countInBlock(const Block& b,int& n){for(const auto& s:b.stmts)countInStmt(s.get(),n);}
@@ -54,9 +80,13 @@ private:
     int here(){return slvm_here(vm_);} int emit(SLOp op,int a=0){return slvm_emit(vm_,op,a);} void patch(int at,int target){slvm_patch(vm_,at,target);}
     void emitMethod(MethodInfo& mi){
         const Method& m=*mi.method; MethodCtx ctx; for(const auto& p:m.params)ctx.declare(p.name);
+        // Per-method type scope: seed parameter types, restore globals after.
+        std::map<std::string,std::string> savedTypes=varType_;
+        for(const auto& p:m.params) if(structLayout_.count(p.type)) varType_[p.name]=p.type;
         slvm_begin_func(vm_,m.name.c_str(),(int)m.params.size(),mi.nlocals); ctx_=&ctx;
         if(m.name=="main") for(const Field* f:fields_){if(f->init)emitExpr(f->init.get());else emit(OP_CONST,addNullConst());emit(OP_STOREG,fieldGlobal_[f->name]);}
         emitBlock(*m.body);ctx_=nullptr;emit(OP_CONST,addNullConst());emit(OP_RET);slvm_end_func(vm_);
+        varType_=savedTypes;
     }
     int addNullConst(){if(nullConst_<0){SLExchangeArg a{};a.value=slval_null();slcore_exchange(vm_,SLX_ADD_CONST,&a);nullConst_=a.out;}return nullConst_;}
     int nullConst_=-1;
@@ -65,12 +95,14 @@ private:
         if(auto a=dynamic_cast<const Assign*>(s)){emitAssign(*a);return;} if(auto e=dynamic_cast<const ExprStmt*>(s)){emitExpr(e->expr.get());emit(OP_POP);return;}
         if(auto p=dynamic_cast<const PrintStmt*>(s)){emitExpr(p->expr.get());emit(OP_PRINT);return;} if(auto r=dynamic_cast<const ReturnStmt*>(s)){emitReturn(*r);return;}
         if(auto i=dynamic_cast<const IfStmt*>(s)){emitIf(*i);return;} if(auto w=dynamic_cast<const WhileStmt*>(s)){emitWhile(*w);return;} if(auto f=dynamic_cast<const ForStmt*>(s)){emitFor(*f);return;}
+        if(auto fa=dynamic_cast<const FieldAssign*>(s)){emitFieldAssign(*fa);return;}
         throw std::runtime_error("Semantic error: unknown statement kind");
     }
     void emitBlock(const Block& b){for(const auto& s:b.stmts)emitStmt(s.get());}
-    void emitVarDecl(const VarDecl& d){int slot=ctx_->declare(d.name);if(d.init)emitExpr(d.init.get());else emit(OP_CONST,addNullConst());emit(OP_STOREL,slot);}
+    void emitVarDecl(const VarDecl& d){int slot=ctx_->declare(d.name);if(structLayout_.count(d.type))varType_[d.name]=d.type;if(d.init)emitExpr(d.init.get());else emit(OP_CONST,addNullConst());emit(OP_STOREL,slot);}
     void emitAssign(const Assign& a){int slot=ctx_->slotOf(a.name);if(slot>=0){emitExpr(a.value.get());emit(OP_STOREL,slot);return;}int g=fieldSlot(a.name);if(g>=0){emitExpr(a.value.get());emit(OP_STOREG,g);return;}throw std::runtime_error("Semantic error: assignment to undeclared variable '"+a.name+"'");}
     void emitReturn(const ReturnStmt& r){if(r.value)emitExpr(r.value.get());else emit(OP_CONST,addNullConst());emit(OP_RET);}
+    void emitFieldAssign(const FieldAssign& fa){int off=-1;memberLayout(fa.base.get(),fa.field,off);emitExpr(fa.base.get());emitExpr(fa.value.get());emit(OP_SETFIELD,off);emit(OP_POP);}
     void emitIf(const IfStmt& s){emitExpr(s.cond.get());int jf=emit(OP_JMPF,0);emitStmt(s.thenS.get());if(s.elseS){int jend=emit(OP_JMP,0);patch(jf,here());emitStmt(s.elseS.get());patch(jend,here());}else patch(jf,here());}
     void emitWhile(const WhileStmt& s){int top=here();emitExpr(s.cond.get());int jf=emit(OP_JMPF,0);emitStmt(s.body.get());emit(OP_JMP,top);patch(jf,here());}
     void emitFor(const ForStmt& s){if(s.init)emitStmt(s.init.get());int top=here();int jf=-1;if(s.cond){emitExpr(s.cond.get());jf=emit(OP_JMPF,0);}emitStmt(s.body.get());if(s.update)emitStmt(s.update.get());emit(OP_JMP,top);if(jf>=0)patch(jf,here());}
@@ -78,8 +110,31 @@ private:
         if(auto x=dynamic_cast<const IntLit*>(e)){emit(OP_CONST,slvm_add_const_int(vm_,x->value));return;} if(auto x=dynamic_cast<const DoubleLit*>(e)){emit(OP_CONST,slvm_add_const_double(vm_,x->value));return;}
         if(auto x=dynamic_cast<const BoolLit*>(e)){emit(OP_CONST,slvm_add_const_bool(vm_,x->value?1:0));return;} if(auto x=dynamic_cast<const StrLit*>(e)){emit(OP_CONST,slvm_add_const_str(vm_,x->value.c_str()));return;}
         if(dynamic_cast<const NullLit*>(e)){emit(OP_CONST,addNullConst());return;} if(auto x=dynamic_cast<const VarExpr*>(e)){emitVar(*x);return;} if(auto x=dynamic_cast<const Unary*>(e)){emitUnary(*x);return;}
-        if(auto x=dynamic_cast<const Binary*>(e)){emitBinary(*x);return;} if(auto x=dynamic_cast<const Call*>(e)){emitCall(*x);return;} throw std::runtime_error("Semantic error: unknown expression kind");
+        if(auto x=dynamic_cast<const Binary*>(e)){emitBinary(*x);return;} if(auto x=dynamic_cast<const Call*>(e)){emitCall(*x);return;}
+        if(auto x=dynamic_cast<const NewExpr*>(e)){emitNew(*x);return;} if(auto x=dynamic_cast<const MemberAccess*>(e)){emitMember(*x);return;}
+        throw std::runtime_error("Semantic error: unknown expression kind");
     }
+    // Determine the struct type name an expression evaluates to, or "" if it is
+    // not statically known to be a struct. Used to resolve field offsets.
+    std::string exprStructType(const Expr* e){
+        if(auto v=dynamic_cast<const VarExpr*>(e)){auto it=varType_.find(v->name);return it==varType_.end()?"":it->second;}
+        if(auto m=dynamic_cast<const MemberAccess*>(e)){std::string bt=exprStructType(m->base.get());if(bt.empty())return "";auto lit=structLayout_.find(bt);if(lit==structLayout_.end())return "";int idx=-1;auto oit=lit->second.fieldOffset.find(m->field);if(oit!=lit->second.fieldOffset.end())idx=oit->second;if(idx<0)return "";return lit->second.fieldType[idx];}
+        if(auto n=dynamic_cast<const NewExpr*>(e))return n->typeName;
+        return "";
+    }
+    // Resolve (layout, offset) for base.field; throws a clear semantic error if
+    // the base's struct type or the field cannot be determined at compile time.
+    const StructLayout& memberLayout(const Expr* base,const std::string& field,int& offset){
+        std::string tn=exprStructType(base);
+        if(tn.empty()) throw std::runtime_error("Semantic error: cannot access field '"+field+"' -- the value is not a known struct type (declare the variable with its struct type)");
+        auto lit=structLayout_.find(tn);
+        if(lit==structLayout_.end()) throw std::runtime_error("Semantic error: '"+tn+"' is not a struct type");
+        auto oit=lit->second.fieldOffset.find(field);
+        if(oit==lit->second.fieldOffset.end()) throw std::runtime_error("Semantic error: struct '"+tn+"' has no field '"+field+"'");
+        offset=oit->second; return lit->second;
+    }
+    void emitNew(const NewExpr& n){auto it=structLayout_.find(n.typeName);if(it==structLayout_.end())throw std::runtime_error("Semantic error: 'new' of unknown struct '"+n.typeName+"'");emit(OP_NEWSTRUCT,it->second.typeIndex);}
+    void emitMember(const MemberAccess& m){int off=-1;memberLayout(m.base.get(),m.field,off);emitExpr(m.base.get());emit(OP_GETFIELD,off);}
     void emitVar(const VarExpr& v){int slot=ctx_->slotOf(v.name);if(slot>=0){emit(OP_LOADL,slot);return;}int g=fieldSlot(v.name);if(g>=0){emit(OP_LOADG,g);return;}throw std::runtime_error("Semantic error: use of undeclared variable '"+v.name+"'");}
     void emitUnary(const Unary& u){emitExpr(u.operand.get());if(u.op=="-")emit(OP_NEG);else if(u.op=="!")emit(OP_NOT);else throw std::runtime_error("Semantic error: unknown unary operator '"+u.op+"'");}
     void emitBinary(const Binary& b){emitExpr(b.lhs.get());emitExpr(b.rhs.get());const std::string&o=b.op;if(o=="+")emit(OP_ADD);else if(o=="-")emit(OP_SUB);else if(o=="*")emit(OP_MUL);else if(o=="/")emit(OP_DIV);else if(o=="%")emit(OP_MOD);else if(o=="==")emit(OP_EQ);else if(o=="!=")emit(OP_NE);else if(o=="<")emit(OP_LT);else if(o=="<=")emit(OP_LE);else if(o==">")emit(OP_GT);else if(o==">=")emit(OP_GE);else if(o=="&&")emit(OP_AND);else if(o=="||")emit(OP_OR);else throw std::runtime_error("Semantic error: unknown binary operator '"+o+"'");}
@@ -92,6 +147,19 @@ private:
         if(n=="lock"||n=="unlock"){if(c.args.size()!=1)throw std::runtime_error("Semantic error: "+n+"(id) takes exactly one argument");int id=litInt(c.args[0].get(),(n+" id").c_str());emit(n=="lock"?OP_LOCK:OP_UNLOCK,id);emit(OP_CONST,addNullConst());return true;}
         if(n=="send"){if(c.args.size()!=2)throw std::runtime_error("Semantic error: send(slot, value) takes two arguments");int slot=litInt(c.args[0].get(),"send slot");emitExpr(c.args[1].get());emit(OP_SEND,slot);emit(OP_CONST,addNullConst());return true;}
         if(n=="recv"){if(c.args.size()!=1)throw std::runtime_error("Semantic error: recv(slot) takes exactly one argument");emit(OP_RECV,litInt(c.args[0].get(),"recv slot"));return true;}
+
+        if(n=="structPack"||n=="structUnpack"){
+            if(syntax_<SyntaxVersion{1,2})throw std::runtime_error("Semantic error: struct transport built-ins require #sleela 1.2");
+        }
+        if(n=="structPack"){if(c.args.size()!=1)throw std::runtime_error("Semantic error: structPack(instance) takes exactly one argument");emitExpr(c.args[0].get());emit(OP_STRUCTPACK);return true;}
+        if(n=="structUnpack"){
+            if(c.args.size()!=2)throw std::runtime_error("Semantic error: structUnpack(TypeName, json) takes exactly two arguments");
+            auto typeVar=dynamic_cast<const VarExpr*>(c.args[0].get());
+            if(!typeVar)throw std::runtime_error("Semantic error: structUnpack first argument must be a struct type name");
+            auto it=structLayout_.find(typeVar->name);
+            if(it==structLayout_.end())throw std::runtime_error("Semantic error: structUnpack of unknown struct type '"+typeVar->name+"'");
+            emitExpr(c.args[1].get());emit(OP_STRUCTUNPACK,it->second.typeIndex);return true;
+        }
 
         if(n=="listen"||n=="accept"||n=="connect"||n=="sockread"||n=="sockwrite"||n=="sockclose"){
             if(syntax_<SyntaxVersion{1,1})throw std::runtime_error("Semantic error: network built-ins require #sleela 1.1");

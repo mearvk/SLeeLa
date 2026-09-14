@@ -8,8 +8,11 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-typedef enum { SL_NULL = 0, SL_INT, SL_DOUBLE, SL_BOOL, SL_STR } SLType;
-typedef struct { SLType type; union { int64_t i; double d; int b; int32_t s; } as; } SLValue;
+typedef enum { SL_NULL = 0, SL_INT, SL_DOUBLE, SL_BOOL, SL_STR, SL_STRUCT } SLType;
+/* SL_STRUCT is a VM-local handle (index into the struct-instance store), the
+ * same bounded-handle discipline used for sockets/files/threads. Sleela code
+ * never sees a raw pointer; a struct value carries only its instance handle. */
+typedef struct { SLType type; union { int64_t i; double d; int b; int32_t s; int32_t h; } as; } SLValue;
 typedef enum {
     OP_NOP = 0, OP_CONST, OP_POP, OP_DUP, OP_LOADG, OP_STOREG, OP_LOADL, OP_STOREL,
     OP_ADD, OP_SUB, OP_MUL, OP_DIV, OP_MOD, OP_NEG,
@@ -21,16 +24,27 @@ typedef enum {
     OP_FILECLOSE, OP_FILEUNLINK,
     OP_HALT,
     OP_TIME_UTC_MS, OP_TIME_UTC_NS, OP_TIME_MONO_NS, OP_TIME_PRECISION_MS, OP_TIME_LOCATION,
-    OP_TIME_HTTP_DATE, OP_TIME_JSON, OP_TIME_NTP, OP_TIME_SET_LOCATION
+    OP_TIME_HTTP_DATE, OP_TIME_JSON, OP_TIME_NTP, OP_TIME_SET_LOCATION,
+    /* struct support: a=type index / field offset as noted per op */
+    OP_NEWSTRUCT,   /* a = struct-type index; pushes a fresh instance handle */
+    OP_GETFIELD,    /* a = field offset; pops instance, pushes field value    */
+    OP_SETFIELD,    /* a = field offset; pops value then instance             */
+    OP_STRUCTPACK,  /* pops instance, pushes a JSON String of its fields      */
+    OP_STRUCTUNPACK /* a = struct-type index; pops JSON String, pushes handle */
 } SLOp;
 #define SL_MAX_THREADS 128
 #define SL_MAX_LOCKS 32
 #define SL_MAX_SOCKETS 128
 #define SL_MAX_FILES 256
+#define SL_MAX_STRUCT_TYPES 256   /* distinct struct declarations per program  */
+#define SL_MAX_STRUCT_FIELDS 64   /* named fields per struct type              */
+#define SL_MAX_STRUCTS 4096       /* live struct instances per VM              */
 typedef enum { SLR_OK = 0, SLR_ERROR, SLR_HALT } SLResult;
 typedef struct SLVM SLVM;
-typedef enum { SLX_RESET = 0, SLX_ADD_CONST, SLX_DECLARE_GLOBAL, SLX_BEGIN_FUNC, SLX_END_FUNC, SLX_EMIT, SLX_PATCH, SLX_HERE, SLX_SET_ENTRY, SLX_RUN, SLX_GET_RESULT } SLExchangeOp;
-typedef struct { SLValue value; const char* name; int32_t op; int32_t a; int32_t i0; int32_t i1; int32_t i2; int32_t out; } SLExchangeArg;
+typedef enum { SLX_RESET = 0, SLX_ADD_CONST, SLX_DECLARE_GLOBAL, SLX_BEGIN_FUNC, SLX_END_FUNC, SLX_EMIT, SLX_PATCH, SLX_HERE, SLX_SET_ENTRY, SLX_RUN, SLX_GET_RESULT, SLX_DECLARE_STRUCT } SLExchangeOp;
+/* For SLX_DECLARE_STRUCT: name = struct type name, names = ordered field names,
+ * i0 = field count; out receives the type index. */
+typedef struct { SLValue value; const char* name; const char* const* names; int32_t op; int32_t a; int32_t i0; int32_t i1; int32_t i2; int32_t out; } SLExchangeArg;
 SLVM* slvm_new(void);
 void slvm_free(SLVM* vm);
 SLResult slcore_exchange(SLVM* vm, SLExchangeOp op, SLExchangeArg* arg);
@@ -39,6 +53,10 @@ int slvm_add_const_double(SLVM* vm, double v);
 int slvm_add_const_bool(SLVM* vm, int v);
 int slvm_add_const_str(SLVM* vm, const char* s);
 int slvm_declare_global(SLVM* vm, const char* name);
+/* Register a struct type and its ordered field names. Returns the type index
+ * used by OP_NEWSTRUCT / OP_STRUCTUNPACK, or -1 on error. Field order defines
+ * the offsets used by OP_GETFIELD / OP_SETFIELD. */
+int slvm_declare_struct(SLVM* vm, const char* name, const char* const* field_names, int nfields);
 int slvm_begin_func(SLVM* vm, const char* name, int nargs, int nlocals);
 void slvm_end_func(SLVM* vm);
 int slvm_emit(SLVM* vm, SLOp op, int32_t a);

@@ -15,7 +15,7 @@ enum class Tok {
     // keywords
     KwClass, KwStatic, KwVoid, KwIntT, KwDoubleT, KwBoolT, KwStringT,
     KwIf, KwElse, KwWhile, KwFor, KwReturn, KwTrue, KwFalse, KwPrint, KwNull,
-    KwImport,
+    KwImport, KwStruct, KwNew,
     // punctuation / operators
     LParen, RParen, LBrace, RBrace, Semicolon, Comma, Dot,
     Assign, Plus, Minus, Star, Slash, Percent,

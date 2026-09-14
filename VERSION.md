@@ -12,7 +12,7 @@ locations listed in each row.
 | Component | Version | Status | Source of truth |
 |-----------|---------|--------|-----------------|
 | **Sleela toolchain / implementation** (`sleela` CLI) | **0.1.2** | Working (pre-1.0) | `impl/frontend/driver.cpp` (`kVersion`) |
-| **Sleela language syntax** | **1.0** | Supported range `1.0 .. 1.0` | `impl/frontend/version.h` (`min`/`maxSupportedSyntax`) |
+| **Sleela language syntax** | **1.2** | Supported range `1.0 .. 1.2` | `impl/frontend/version.h` (`min`/`maxSupportedSyntax`) |
 | **Nordshrift** (`.sst` transpiler driver) | **2.0** | Semantic model layer added; legacy 1.0 sheets retained | `NORDSHRIFT.md`, `impl/nordshrift/subject_model.h` |
 | **NS-SST-0001** (`.sst` format specification) | **2.0.0** | Normative 2.0 semantic/control extension | `SST-2.0.model` |
 | **NS-SST-0001 legacy** | **1.0.0** | Compatibility / historical grammar | `SST.model` |
@@ -30,10 +30,17 @@ The version of the actual C/C++ implementation in `impl/` (the `sleela` CLI:
 lexer → parser → compiler → C core). This is a semantic `MAJOR.MINOR.PATCH`
 number and is what `./build/sleela version` reports. It is **pre-1.0**.
 
-### Sleela language syntax — `1.0`
+### Sleela language syntax — `1.2`
 The grammar version a `.sleela` file (a **Wrapper™**) declares with its
 `#sleela MAJOR.MINOR` pragma. The compiler is version aware and accepts only
-its supported range.
+its supported range (`1.0 .. 1.2`). Minor increments are additive:
+
+- **1.1** added the network and Linux file-I/O built-ins.
+- **1.2** added C/C++-style **structs** — `struct` declarations, `new`
+  instantiation, `.` member access, reference semantics, and the
+  `structPack`/`structUnpack` network-transport built-ins (see
+  [`STRUCT.md`](STRUCT.md)). Pre-1.2 programs are unaffected; the compiler
+  rejects `struct`/`new`/`structPack`/`structUnpack` below `#sleela 1.2`.
 
 ### Nordshrift — `2.0`
 Nordshrift remains the `.sst`-driven transpiler for Java / Sleela / C, and now
@@ -90,5 +97,6 @@ constitutional document governing the language's design and syntax versioning.
 
 | Date | Toolchain | Syntax | Nordshrift | NS-SST | Notes |
 |------|-----------|--------|------------|--------|-------|
+| 2026-09 | 0.1.2 | 1.2 | 2.0 | 2.0.0 | Added C/C++-style structs (declaration, `new` instantiation, `.` member access, reference semantics, `structPack`/`structUnpack` transport); artifact format v2 persists struct layouts. Syntax range now `1.0 .. 1.2`. |
 | 2026-09 | 0.1.2 | 1.0 | 2.0 | 2.0.0 | Added common Subject/Quantity/Unit/Assumption/Relation/Transformation/Evidence/Comparison/Explanation/WorkPlan semantic layer while retaining 1.0 compatibility. |
 | 2026-09 | 0.1.2 | 1.0 | 1.0 | 1.0.0 | Version-aware compiler; Nordshrift triplet; original NS-SST-0001 specification. |

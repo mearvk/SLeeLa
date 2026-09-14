@@ -6,6 +6,7 @@
 
 #include "ast.h"
 #include "lexer.h"
+#include <set>
 
 namespace sleela {
 
@@ -17,6 +18,11 @@ public:
 private:
     std::vector<Token> toks_;
     size_t i_ = 0;
+    // Struct type names, collected in a pre-pass so an identifier that names a
+    // declared struct is recognised as a type wherever a type is expected.
+    std::set<std::string> structNames_;
+
+    void collectStructNames();
 
     const Token& peek(int off = 0) const;
     const Token& cur() const { return toks_[i_]; }
@@ -26,10 +32,11 @@ private:
     [[noreturn]] void error(const std::string& msg) const;
 
     // declarations
+    StructDecl parseStruct();
     ClassDecl parseClass();
     Field     parseField();
     Method    parseMethod();
-    bool      isTypeTok(Tok k) const;
+    bool      isTypeStart() const;    // current token can begin a type
     std::string parseType();
 
     // statements

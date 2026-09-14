@@ -29,10 +29,10 @@ otherwise insignificant. Two comment forms:
 
 ### 1.2 Keywords (reserved)
 
-    class   static   void
-    int     double   boolean   String
-    if      else     while     for      return
-    true    false    null      print
+    class   static   void     struct   new
+    int     double   boolean  String
+    if      else     while    for      return
+    true    false    null     print
 
 `print` is a reserved statement keyword (§4.6). The seven conducted-method and
 six threading names (§6, §7) are **contextual built-ins**, not reserved words:
@@ -66,11 +66,14 @@ variables `camelCase` (convention, not enforced).
 --------------------------------------------------------------------------------
 ## 2. Program structure
 
-    program    ::= class-decl+
-    class-decl ::= "class" ident "{" member* "}"
-    member     ::= field-decl | method-decl
+    program     ::= top-decl+
+    top-decl    ::= struct-decl | class-decl
+    struct-decl ::= "struct" ident "{" struct-field* "}"   // §3.4 (syntax 1.2+)
+    class-decl  ::= "class" ident "{" member* "}"
+    member      ::= field-decl | method-decl
 
-A program is one or more classes. Execution begins at the method named `main`
+A program is one or more classes, optionally preceded or interleaved with
+`struct` declarations. Execution begins at the method named `main`
 (signature `void main()`); exactly one `main` is required across the program.
 
 --------------------------------------------------------------------------------
@@ -79,10 +82,14 @@ A program is one or more classes. Execution begins at the method named `main`
 ### 3.1 Types
 
     type       ::= "int" | "double" | "boolean" | "String" | "void"
+                 | struct-name                      // any declared struct (1.2+)
 
 `int` is 64-bit. `void` is a return type only. The core is dynamically typed
-underneath; v9.09.1 type annotations are surface-level (parsed, not enforced),
-so a declared type documents intent without constraining the runtime value.
+underneath; v9.09.1 scalar type annotations are surface-level (parsed, not
+enforced), so a declared type documents intent without constraining the runtime
+value. A **struct type name** (§3.4) is additionally used at compile time to
+resolve `.field` offsets, so struct-typed variables/parameters/fields must be
+declared with their struct type for member access to compile.
 
 ### 3.2 Fields (shared state)
 
@@ -102,6 +109,31 @@ that spawned threads (§7) read or write.
 `static` is accepted and optional; all methods behave as static (bound to the
 class, not an instance). Method **locals** are per-thread; **fields** are shared.
 
+### 3.4 Structs (syntax 1.2+)
+
+    struct-decl  ::= "struct" ident "{" struct-field* "}"
+    struct-field ::= type ident ";"
+
+A `struct` is a C/C++-style **named aggregate of typed fields**. A struct type
+name may be referenced before or after its definition (declaration order does
+not matter). A fresh instance is created with `new` (§5) and its fields are read
+and written with the `.` operator (§4.2, §5).
+
+Structs are **reference types**: a struct value is a VM-local instance handle
+(the same bounded-handle discipline the core uses for sockets, files, and
+threads — a Sleela program never sees a raw pointer). Consequences:
+
+  * Assigning a struct value or passing it to a method **shares** the instance
+    (aliases observe each other's field writes).
+  * `==` / `!=` compare struct values by **identity** (same instance), not by
+    field contents; a fresh `new` is never equal to another.
+  * Fields are **zero/null-initialised** by `new` (struct fields default to
+    `null` until assigned an instance).
+
+Limits: up to 256 struct types per program, 64 fields per struct, and 4096 live
+instances per VM. Struct types are persisted in a `.sleela` artifact; live
+instances are runtime-only (a struct-typed global reloads as `null`).
+
 --------------------------------------------------------------------------------
 ## 4. Statements
 
@@ -109,6 +141,7 @@ class, not an instance). Method **locals** are per-thread; **fields** are shared
     statement  ::= block
                  | var-decl
                  | assign
+                 | field-assign
                  | if-stmt
                  | while-stmt
                  | for-stmt
@@ -123,6 +156,11 @@ class, not an instance). Method **locals** are per-thread; **fields** are shared
     assign     ::= ident "=" expr ";"
 Resolves to a local if one is in scope, otherwise to a field (a local shadows a
 field of the same name).
+
+    field-assign ::= member "=" expr ";"           // struct field store (1.2+)
+    member       ::= primary ("." ident)+
+`box.width = 20;` and `box.origin.x = 1;` write through a struct handle. The
+base's struct type is resolved at compile time to compute the field offset.
 
 ### 4.3 If / else
     if-stmt    ::= "if" "(" expr ")" statement ["else" statement]
@@ -161,9 +199,17 @@ its effect).
     primary     ::= int-lit | double-lit | string-lit | bool-lit | null-lit
                   | ident
                   | call
+                  | new-expr                        // struct instantiation (1.2+)
+                  | member-access                   // struct field read (1.2+)
                   | "(" expr ")"
-    call        ::= ident "(" args? ")"
-    args        ::= expr ("," expr)*
+    call          ::= ident "(" args? ")"
+    new-expr      ::= "new" struct-name "(" ")"
+    member-access ::= primary ("." ident)+
+    args          ::= expr ("," expr)*
+
+`new Point()` builds a fresh instance; `p.x` reads a field. A dotted name that
+ends in `(` is still parsed as a qualified call (namespaced built-ins); a dotted
+name that does not is a struct member access.
 
 `+` is arithmetic on numbers and **concatenation** when either operand is a
 `String` (Java-style). Comparisons and logical operators yield `boolean`.
@@ -218,6 +264,21 @@ Sleela exposes it as contextual built-ins:
 Guidance: guard shared **field** access with `lock`/`unlock`; hand values
 between threads over the 2-tuple mailbox with `send`/`recv`; `join()` before
 reading final results. `print` output stays atomic per line.
+
+### 7.1 Struct transport (syntax 1.2+)
+
+A struct instance is a VM-local handle and therefore cannot cross a socket (or
+a `send`/`recv` mailbox meaningfully) as a handle. Two contextual built-ins give
+structs a portable wire form:
+
+    structPack(instance)          -> String   // self-describing JSON of its fields
+    structUnpack(TypeName, json)  -> instance // rebuild an instance of TypeName
+
+`structPack` serialises a struct to a compact JSON object
+(`{"__type":"Name","field":value,...}`); the peer rebuilds it with
+`structUnpack(TypeName, json)`. Send the packed String over `sockwrite`, or hand
+it between threads via `send`/`recv`. `structUnpack`'s first argument is the
+struct **type name** (a bare identifier, resolved at compile time), not a string.
 
 --------------------------------------------------------------------------------
 ## 8. The Constitution (invariants in force)
@@ -275,10 +336,11 @@ Expected output (order of the concurrent phase aside):
 --------------------------------------------------------------------------------
 ## 10. Reserved-word & built-in summary
 
-    keywords (14):  class static void int double boolean String
+    keywords (16):  class static void struct new int double boolean String
                     if else while for return true false null print
     conduct (7):    conduct role insight congruent route sysdepth degreemax
     threading (6):  spawn join lock unlock send recv
+    struct (2):     structPack structUnpack                 (syntax 1.2+)
 
 --------------------------------------------------------------------------------
 Sleela 9.09.1 — Java-like surface, addressing the full SHEET.sheet object space,

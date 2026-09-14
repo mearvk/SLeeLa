@@ -17,9 +17,15 @@ struct VarExpr:Expr{std::string name;explicit VarExpr(std::string n):name(std::m
 struct Unary:Expr{std::string op;ExprP operand;Unary(std::string o,ExprP e):op(std::move(o)),operand(std::move(e)){}};
 struct Binary:Expr{std::string op;ExprP lhs,rhs;Binary(std::string o,ExprP l,ExprP r):op(std::move(o)),lhs(std::move(l)),rhs(std::move(r)){}};
 struct Call:Expr{std::string callee;std::vector<ExprP> args;explicit Call(std::string c):callee(std::move(c)){}};
+// `new TypeName()` -- construct a fresh struct instance (a VM-local handle).
+struct NewExpr:Expr{std::string typeName;explicit NewExpr(std::string t):typeName(std::move(t)){}};
+// `base.field` -- read a struct field. `base` is any expression yielding a struct.
+struct MemberAccess:Expr{ExprP base;std::string field;MemberAccess(ExprP b,std::string f):base(std::move(b)),field(std::move(f)){}};
 struct Stmt{virtual ~Stmt()=default;};using StmtP=std::unique_ptr<Stmt>;
 struct VarDecl:Stmt{std::string type,name;ExprP init;};
 struct Assign:Stmt{std::string name;ExprP value;};
+// `base.field = value` -- write a struct field.
+struct FieldAssign:Stmt{ExprP base;std::string field;ExprP value;};
 struct ExprStmt:Stmt{ExprP expr;}; struct PrintStmt:Stmt{ExprP expr;};
 struct ReturnStmt:Stmt{ExprP value;}; struct Block:Stmt{std::vector<StmtP> stmts;};
 struct IfStmt:Stmt{ExprP cond;StmtP thenS,elseS;};
@@ -29,10 +35,15 @@ struct Param{std::string type,name;};
 struct Method{std::string retType,name;std::vector<Param> params;std::unique_ptr<Block> body;};
 struct Field{std::string type,name;ExprP init;};
 struct ClassDecl{std::string name;std::vector<Field> fields;std::vector<Method> methods;};
+// A C/C++-style struct: a named aggregate of typed fields. Field initializers
+// are not used (a `new` instance is zero/null-initialised); the compiler keeps
+// only the ordered field names/types as the layout.
+struct StructDecl{std::string name;std::vector<Field> fields;};
 struct Program {
     // Explicit module dependencies. The compiler validates these against the
     // native module registry before lowering the program.
     std::vector<std::string> imports;
+    std::vector<StructDecl> structs;
     std::vector<ClassDecl> classes;
 };
 } // namespace sleela

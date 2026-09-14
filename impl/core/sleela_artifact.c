@@ -18,7 +18,9 @@
 
 #define SLART_MAGIC "SLEELA-ART\x01"
 #define SLART_MAGIC_LEN 11
-#define SLART_VERSION 1u
+/* Artifact format version 2 adds the struct-type layout table after the
+ * function table. Version 1 artifacts (no structs) remain loadable. */
+#define SLART_VERSION 2u
 
 static int wr(FILE* f, const void* p, size_t n) { return fwrite(p, 1, n, f) == n; }
 static int rd(FILE* f, void* p, size_t n) { return fread(p, 1, n, f) == n; }
@@ -52,6 +54,9 @@ static int wr_value(FILE* f, SLValue v) {
         case SL_DOUBLE: return wr(f, &v.as.d, sizeof(v.as.d));
         case SL_BOOL:   return wr_i32(f, (int32_t)v.as.b);
         case SL_STR:    return wr_i32(f, v.as.s);
+        /* A live struct handle is VM-local runtime state (like a socket/file
+         * handle) and is not persisted; a global holding one saves as null. */
+        case SL_STRUCT: return 1;
         case SL_NULL:   return 1;
         default:        return 0;
     }
@@ -59,7 +64,7 @@ static int wr_value(FILE* f, SLValue v) {
 
 static int rd_value(FILE* f, SLValue* v) {
     int32_t t = 0;
-    if (!rd_i32(f, &t) || t < SL_NULL || t > SL_STR) return 0;
+    if (!rd_i32(f, &t) || t < SL_NULL || t > SL_STRUCT) return 0;
     memset(v, 0, sizeof(*v));
     v->type = (SLType)t;
     switch (v->type) {
@@ -77,6 +82,9 @@ static int rd_value(FILE* f, SLValue* v) {
             return 1;
         }
         case SL_STR: return rd_i32(f, &v->as.s);
+        /* A persisted struct-typed value is loaded as null: the handle it once
+         * named is not meaningful in a freshly loaded VM. */
+        case SL_STRUCT: v->type = SL_NULL; v->as.i = 0; return 1;
         case SL_NULL: return 1;
         default: return 0;
     }
@@ -108,6 +116,7 @@ int slvm_save_file(SLVM* vm, const char* path) {
     ok = ok && wr_u32(f, (uint32_t)vm->nstr);
     ok = ok && wr_u32(f, (uint32_t)vm->nglobal);
     ok = ok && wr_u32(f, (uint32_t)vm->nfunc);
+    ok = ok && wr_u32(f, (uint32_t)vm->nstruct_types);
     ok = ok && wr_i32(f, (int32_t)vm->entry);
 
     for (int i = 0; ok && i < vm->codelen; ++i) {
@@ -126,6 +135,12 @@ int slvm_save_file(SLVM* vm, const char* path) {
         ok = ok && wr_i32(f, vm->funcs[i].nargs);
         ok = ok && wr_i32(f, vm->funcs[i].nlocals);
     }
+    for (int i = 0; ok && i < vm->nstruct_types; ++i) {
+        ok = wr_string(f, vm->struct_types[i].name);
+        ok = ok && wr_i32(f, vm->struct_types[i].nfields);
+        for (int j = 0; ok && j < vm->struct_types[i].nfields; ++j)
+            ok = wr_string(f, vm->struct_types[i].fields[j]);
+    }
 
     if (fclose(f) != 0) ok = 0;
     if (!ok) remove(path);
@@ -139,17 +154,19 @@ SLVM* slvm_load_file(const char* path) {
 
     char magic[SLART_MAGIC_LEN];
     uint32_t version = 0, endian = 0, codelen = 0, nconst = 0, nstr = 0;
-    uint32_t nglobal = 0, nfunc = 0;
+    uint32_t nglobal = 0, nfunc = 0, nstruct = 0;
     int32_t entry = -1;
 
     if (!rd(f, magic, sizeof(magic)) || memcmp(magic, SLART_MAGIC, sizeof(magic)) != 0 ||
-        !rd_u32(f, &version) || !rd_u32(f, &endian) || version != SLART_VERSION ||
+        !rd_u32(f, &version) || !rd_u32(f, &endian) ||
+        (version != 1u && version != SLART_VERSION) ||
         endian != 0x01020304u || !rd_u32(f, &codelen) || !rd_u32(f, &nconst) ||
         !rd_u32(f, &nstr) || !rd_u32(f, &nglobal) || !rd_u32(f, &nfunc) ||
+        (version >= 2u && !rd_u32(f, &nstruct)) ||
         !rd_i32(f, &entry) ||
         !sane_count(codelen, 10000000u) || !sane_count(nconst, 1000000u) ||
         !sane_count(nstr, 1000000u) || !sane_count(nglobal, 100000u) ||
-        !sane_count(nfunc, 100000u)) {
+        !sane_count(nfunc, 100000u) || !sane_count(nstruct, SL_MAX_STRUCT_TYPES)) {
         fclose(f);
         return NULL;
     }
@@ -184,6 +201,22 @@ SLVM* slvm_load_file(const char* path) {
             if (ok) ok = rd_i32(f, &vm->funcs[i].nargs);
             if (ok) ok = rd_i32(f, &vm->funcs[i].nlocals);
         }
+        for (uint32_t i = 0; ok && i < nstruct; ++i) {
+            SLStructType* st = &vm->struct_types[i];
+            st->name = rd_string(f);
+            ok = st->name != NULL;
+            int32_t nf = 0;
+            if (ok) ok = rd_i32(f, &nf);
+            if (ok && (nf < 0 || nf > SL_MAX_STRUCT_FIELDS)) ok = 0;
+            if (ok) {
+                st->nfields = nf;
+                for (int32_t j = 0; ok && j < nf; ++j) {
+                    st->fields[j] = rd_string(f);
+                    ok = st->fields[j] != NULL;
+                }
+            }
+        }
+        if (ok) vm->nstruct_types = (int)nstruct;
     }
     fclose(f);
 

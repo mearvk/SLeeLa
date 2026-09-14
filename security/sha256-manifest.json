@@ -51,15 +51,15 @@
     },
     {
       "path": "impl/core/sleela_artifact.c",
-      "sha256": "87661b7dae96befe4cc08cb26a29cb846eb6568605a59b6ff5d895c347999576"
+      "sha256": "7016948a226b9be43145e6bd3efbac4120a2824539cd763880cdb470788ff6f8"
     },
     {
       "path": "impl/core/sleela_core.c",
-      "sha256": "aa3c6266cda845e807510022be55d44038bdc5d373ee1b04dea760be8400ab52"
+      "sha256": "5bc2a76c6acd8ce7d335ff6510a9aee500ce2111a86982af586c61e29bdba194"
     },
     {
       "path": "impl/core/sleela_core.h",
-      "sha256": "b5135103e85d9b5938e134b2d84a4720d310884c0f6bcdd5670f313f1fd7096f"
+      "sha256": "cb413c49f52a05eb7c2df0089becde6b6c844b4f6a212b023f171d56594248be"
     },
     {
       "path": "impl/core/sleela_events.c",
@@ -163,11 +163,11 @@
     },
     {
       "path": "impl/frontend/ast.h",
-      "sha256": "e767e7069a6b8c8233ea2ffc0ad94532f983153d26bff919cc33d00ee3ca6e00"
+      "sha256": "095da54f3209b2cb807e3cf23b4cba1b98f3c7f9c98ede0a888fbb542c532bf3"
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "a0d66b85c61d1860dc2d7dcb40e80a37640666979590ca71b8952f9ae6dbece3"
+      "sha256": "7e9d0ce30d2d8c099c5b16caf8e38f2b40cffae4f277c8608fa78fc4dda32213"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -179,19 +179,19 @@
     },
     {
       "path": "impl/frontend/lexer.cpp",
-      "sha256": "58999ae0810081ee428b1367ca0bb80703d575b772a1373c7bec8d419e7dc79f"
+      "sha256": "15083a113add8e859bff72ef177373e606c4690bdd2f0444fdeab6c18b256077"
     },
     {
       "path": "impl/frontend/lexer.h",
-      "sha256": "819a0941d6283cf9a83a39a6d654f8dc2c93c8e70a1199495e5e3f6caeb410f5"
+      "sha256": "2f34c222b56b293d94a823e12d81205df71e3c8b2f19133bc7c4f10dc4dec3d6"
     },
     {
       "path": "impl/frontend/parser.cpp",
-      "sha256": "f97b7f432d58238ba59ce2ff41e1dde5c66a0534c04e0282676ae9556006b59c"
+      "sha256": "a3be62e3668d1373e2101376c90378ac48a0582b1d7b9887331390b3ad8d2c10"
     },
     {
       "path": "impl/frontend/parser.h",
-      "sha256": "b90fec9a2984861434bbc57fc1278ec7177f0e2bc101406db31da314935c81c2"
+      "sha256": "eba2d573e3931f89da90c3130a9bcc294eb345dcf60f032b8d4b270ff33c07db"
     },
     {
       "path": "impl/frontend/version.cpp",
@@ -199,7 +199,7 @@
     },
     {
       "path": "impl/frontend/version.h",
-      "sha256": "c06f4fa0bd2e3ffe6f233e866a9d29454f8551b4785dece2bdb778b09e813734"
+      "sha256": "62d106c96eedbf8ad15f10cbbc1e0be149958ebfbbbbe9468a4b2c00c026186a"
     },
     {
       "path": "impl/nordshrift/component_manifest.cpp",

@@ -62,6 +62,21 @@ typedef struct {
     int peer;
 } SLFile;
 
+/* A registered struct type: a name and an ordered list of field names. Field
+ * order defines the offsets used by OP_GETFIELD / OP_SETFIELD. */
+typedef struct {
+    char* name;
+    int nfields;
+    char* fields[SL_MAX_STRUCT_FIELDS];
+} SLStructType;
+
+/* A live struct instance: its type index plus one SLValue per declared field. */
+typedef struct {
+    int active;
+    int type;
+    SLValue fields[SL_MAX_STRUCT_FIELDS];
+} SLStructInstance;
+
 struct SLVM {
     SLInstr* code; int codelen, codecap;
     SLValue* consts; int nconst, constcap;
@@ -78,8 +93,13 @@ struct SLVM {
     pthread_mutex_t print_mtx;
     pthread_mutex_t sock_mtx;
     pthread_mutex_t file_mtx;
+    pthread_mutex_t struct_mtx;
     SLSocket sockets[SL_MAX_SOCKETS];
     SLFile files[SL_MAX_FILES];
+    SLStructType struct_types[SL_MAX_STRUCT_TYPES];
+    int nstruct_types;
+    SLStructInstance* structs;   /* SL_MAX_STRUCTS instances, lazily allocated */
+    int nstruct_live;
 
     pthread_mutex_t locks[SL_MAX_LOCKS];
     SLMailbox mailbox[SL_MAX_LOCKS];
@@ -162,6 +182,19 @@ int slvm_declare_global(SLVM* vm, const char* name) {
     return vm->nglobal++;
 }
 
+int slvm_declare_struct(SLVM* vm, const char* name, const char* const* field_names, int nfields) {
+    if (!vm || !name || nfields < 0 || nfields > SL_MAX_STRUCT_FIELDS) return -1;
+    if (vm->nstruct_types >= SL_MAX_STRUCT_TYPES) return -1;
+    for (int i = 0; i < vm->nstruct_types; i++)
+        if (strcmp(vm->struct_types[i].name, name) == 0) return i; /* idempotent */
+    int idx = vm->nstruct_types++;
+    SLStructType* st = &vm->struct_types[idx];
+    st->name = strdup(name);
+    st->nfields = nfields;
+    for (int i = 0; i < nfields; i++) st->fields[i] = strdup(field_names[i] ? field_names[i] : "");
+    return idx;
+}
+
 int slvm_begin_func(SLVM* vm, const char* name, int nargs, int nlocals) {
     ENSURE(vm->funcs, vm->nfunc, vm->funccap, SLFunc);
     int idx = vm->nfunc++;
@@ -197,6 +230,7 @@ SLVM* slvm_new(void) {
     pthread_mutex_init(&vm->print_mtx, NULL);
     pthread_mutex_init(&vm->sock_mtx, NULL);
     pthread_mutex_init(&vm->file_mtx, NULL);
+    pthread_mutex_init(&vm->struct_mtx, NULL);
     pthread_mutex_init(&vm->thr_mtx, NULL);
     for (int i = 0; i < SL_MAX_SOCKETS; i++) {
         pthread_mutex_init(&vm->sockets[i].mtx, NULL);
@@ -237,6 +271,12 @@ void slvm_free(SLVM* vm) {
         pthread_mutex_destroy(&vm->files[i].mtx);
     }
     pthread_mutex_destroy(&vm->file_mtx);
+    for (int i = 0; i < vm->nstruct_types; i++) {
+        free(vm->struct_types[i].name);
+        for (int j = 0; j < vm->struct_types[i].nfields; j++) free(vm->struct_types[i].fields[j]);
+    }
+    free(vm->structs);
+    pthread_mutex_destroy(&vm->struct_mtx);
     for (int i = 0; i < SL_MAX_LOCKS; i++) {
         pthread_mutex_destroy(&vm->locks[i]);
         pthread_mutex_destroy(&vm->mailbox[i].mtx);
@@ -291,6 +331,36 @@ static int file_alloc(SLVM* vm, int fd) {
 }
 static int file_valid_handle(int h) { return h >= 0 && h < SL_MAX_FILES; }
 static int file_fd_locked(SLFile* f) { return f->active ? f->fd : -1; }
+
+/* ---- struct instances: the same bounded-handle discipline as sockets/files -- */
+static SLValue slval_struct(int32_t h) { SLValue v; v.type = SL_STRUCT; v.as.h = h; return v; }
+
+/* Allocate a zero-initialised instance of struct type `type`. Returns a VM-local
+ * handle, or -1 on exhaustion / bad type. The instance store is grown lazily. */
+static int struct_alloc(SLVM* vm, int type) {
+    if (type < 0 || type >= vm->nstruct_types) return -1;
+    pthread_mutex_lock(&vm->struct_mtx);
+    if (!vm->structs) {
+        vm->structs = (SLStructInstance*)calloc(SL_MAX_STRUCTS, sizeof(SLStructInstance));
+        if (!vm->structs) { pthread_mutex_unlock(&vm->struct_mtx); return -1; }
+    }
+    int nf = vm->struct_types[type].nfields;
+    for (int i = 0; i < SL_MAX_STRUCTS; i++) {
+        if (!vm->structs[i].active) {
+            vm->structs[i].active = 1;
+            vm->structs[i].type = type;
+            for (int j = 0; j < nf; j++) vm->structs[i].fields[j] = slval_null();
+            vm->nstruct_live++;
+            pthread_mutex_unlock(&vm->struct_mtx);
+            return i;
+        }
+    }
+    pthread_mutex_unlock(&vm->struct_mtx);
+    return -1;
+}
+static int struct_valid_handle(SLVM* vm, int h) {
+    return vm->structs && h >= 0 && h < SL_MAX_STRUCTS && vm->structs[h].active;
+}
 
 static int make_listener(int port) {
     if (port < 0 || port > 65535) return -1;
@@ -365,14 +435,108 @@ static int open_file_handle(SLVM* vm, const char* path, const char* mode) {
     return h;
 }
 
-static void print_value(SLVM* vm, SLValue v) {
+/* Render one scalar SLValue into buf (used by print, string concat, and JSON
+ * packing). Struct handles render as "TypeName#handle". */
+static void value_to_text(SLVM* vm, SLValue v, char* buf, size_t cap) {
     switch (v.type) {
-        case SL_NULL: printf("null"); break;
-        case SL_INT: printf("%lld", (long long)v.as.i); break;
-        case SL_DOUBLE: printf("%g", v.as.d); break;
-        case SL_BOOL: printf(v.as.b ? "true" : "false"); break;
-        case SL_STR: printf("%s", slvm_str(vm, v.as.s)); break;
+        case SL_NULL:   snprintf(buf, cap, "null"); break;
+        case SL_INT:    snprintf(buf, cap, "%lld", (long long)v.as.i); break;
+        case SL_DOUBLE: snprintf(buf, cap, "%g", v.as.d); break;
+        case SL_BOOL:   snprintf(buf, cap, "%s", v.as.b ? "true" : "false"); break;
+        case SL_STR:    snprintf(buf, cap, "%s", slvm_str(vm, v.as.s)); break;
+        case SL_STRUCT: {
+            const char* tn = (vm->structs && struct_valid_handle(vm, v.as.h))
+                ? vm->struct_types[vm->structs[v.as.h].type].name : "struct";
+            snprintf(buf, cap, "%s#%d", tn, v.as.h);
+        } break;
     }
+}
+
+static void print_value(SLVM* vm, SLValue v) {
+    char buf[1024];
+    value_to_text(vm, v, buf, sizeof(buf));
+    printf("%s", buf);
+}
+
+/* Append a JSON-escaped copy of `s` (without surrounding quotes) to out/cap. */
+static void json_escape_into(char* out, size_t cap, const char* s) {
+    size_t n = strlen(out);
+    for (; *s && n + 2 < cap; s++) {
+        char c = *s;
+        if (c == '"' || c == '\\') { out[n++] = '\\'; out[n++] = c; }
+        else if (c == '\n') { out[n++] = '\\'; if (n + 1 < cap) out[n++] = 'n'; }
+        else if (c == '\t') { out[n++] = '\\'; if (n + 1 < cap) out[n++] = 't'; }
+        else out[n++] = c;
+    }
+    out[n] = 0;
+}
+
+/* Serialize a struct instance to a compact JSON object:
+ * {"__type":"Name","field":<value>,...}. Scalar fields become JSON scalars;
+ * string fields are quoted+escaped; nested struct fields become their handle
+ * integer (transport of nested graphs is left to the caller). */
+static void struct_to_json(SLVM* vm, int h, char* out, size_t cap) {
+    out[0] = 0;
+    if (!struct_valid_handle(vm, h)) { snprintf(out, cap, "null"); return; }
+    SLStructInstance* si = &vm->structs[h];
+    SLStructType* st = &vm->struct_types[si->type];
+    strncat(out, "{\"__type\":\"", cap - strlen(out) - 1);
+    json_escape_into(out, cap, st->name);
+    strncat(out, "\"", cap - strlen(out) - 1);
+    for (int i = 0; i < st->nfields; i++) {
+        strncat(out, ",\"", cap - strlen(out) - 1);
+        json_escape_into(out, cap, st->fields[i]);
+        strncat(out, "\":", cap - strlen(out) - 1);
+        SLValue fv = si->fields[i];
+        if (fv.type == SL_STR) {
+            strncat(out, "\"", cap - strlen(out) - 1);
+            json_escape_into(out, cap, slvm_str(vm, fv.as.s));
+            strncat(out, "\"", cap - strlen(out) - 1);
+        } else {
+            char tmp[256]; value_to_text(vm, fv, tmp, sizeof(tmp));
+            strncat(out, tmp, cap - strlen(out) - 1);
+        }
+    }
+    strncat(out, "}", cap - strlen(out) - 1);
+}
+
+/* Minimal, forgiving JSON reader for struct_from_json: locate the value token
+ * for "key" in a flat object and store it into *out as int/double/bool/string.
+ * Returns 1 on success. Not a general JSON parser -- it matches the shape that
+ * struct_to_json emits (flat, ordered, no nested objects). */
+static int json_find_scalar(SLVM* vm, const char* json, const char* key, SLValue* out) {
+    char pat[SL_MAX_STRUCT_FIELDS + 8];
+    snprintf(pat, sizeof(pat), "\"%s\"", key);
+    const char* p = strstr(json, pat);
+    if (!p) return 0;
+    p = strchr(p + strlen(pat), ':');
+    if (!p) return 0;
+    p++;
+    while (*p == ' ' || *p == '\t') p++;
+    if (*p == '"') {
+        p++;
+        char buf[1024]; size_t n = 0;
+        while (*p && *p != '"' && n + 1 < sizeof(buf)) {
+            if (*p == '\\' && p[1]) {
+                p++;
+                char c = *p;
+                buf[n++] = (c == 'n') ? '\n' : (c == 't') ? '\t' : c;
+            } else buf[n++] = *p;
+            p++;
+        }
+        buf[n] = 0;
+        SLValue v; v.type = SL_STR; v.as.s = intern(vm, buf); *out = v; return 1;
+    }
+    if (strncmp(p, "true", 4) == 0) { *out = slval_bool(1); return 1; }
+    if (strncmp(p, "false", 5) == 0) { *out = slval_bool(0); return 1; }
+    if (strncmp(p, "null", 4) == 0) { *out = slval_null(); return 1; }
+    /* number: integer unless it contains '.', 'e', or 'E' */
+    int is_double = 0;
+    for (const char* q = p; *q && *q != ',' && *q != '}'; q++)
+        if (*q == '.' || *q == 'e' || *q == 'E') { is_double = 1; break; }
+    if (is_double) *out = slval_double(strtod(p, NULL));
+    else *out = slval_int((int64_t)strtoll(p, NULL, 10));
+    return 1;
 }
 
 static SLResult run_thread(SLThread* t);
@@ -441,8 +605,8 @@ static SLResult run_thread(SLThread* t) {
             SLValue b=POP(), a=POP();
             if (a.type==SL_STR || b.type==SL_STR) {
                 char buf[1024], sa[512], sb[512];
-                if(a.type==SL_STR) snprintf(sa,sizeof(sa),"%s",slvm_str(vm,a.as.s)); else if(a.type==SL_INT) snprintf(sa,sizeof(sa),"%lld",(long long)a.as.i); else if(a.type==SL_DOUBLE) snprintf(sa,sizeof(sa),"%g",a.as.d); else if(a.type==SL_BOOL) snprintf(sa,sizeof(sa),"%s",a.as.b?"true":"false"); else snprintf(sa,sizeof(sa),"null");
-                if(b.type==SL_STR) snprintf(sb,sizeof(sb),"%s",slvm_str(vm,b.as.s)); else if(b.type==SL_INT) snprintf(sb,sizeof(sb),"%lld",(long long)b.as.i); else if(b.type==SL_DOUBLE) snprintf(sb,sizeof(sb),"%g",b.as.d); else if(b.type==SL_BOOL) snprintf(sb,sizeof(sb),"%s",b.as.b?"true":"false"); else snprintf(sb,sizeof(sb),"null");
+                value_to_text(vm,a,sa,sizeof(sa));
+                value_to_text(vm,b,sb,sizeof(sb));
                 snprintf(buf,sizeof(buf),"%s%s",sa,sb); SLValue r; r.type=SL_STR; r.as.s=intern(vm,buf); PUSH(r);
             } else if (both_int(a,b)) PUSH(slval_int(a.as.i+b.as.i)); else PUSH(slval_double(as_num(a)+as_num(b)));
         } break;
@@ -451,8 +615,8 @@ static SLResult run_thread(SLThread* t) {
         case OP_DIV: { SLValue b=POP(),a=POP(); if(both_int(a,b)){if(!b.as.i) TERR("integer divide by zero"); PUSH(slval_int(a.as.i/b.as.i));} else PUSH(slval_double(as_num(a)/as_num(b))); } break;
         case OP_MOD: { SLValue b=POP(),a=POP(); if(!both_int(a,b)) TERR("modulo requires integers"); if(!b.as.i) TERR("integer modulo by zero"); PUSH(slval_int(a.as.i%b.as.i)); } break;
         case OP_NEG: { SLValue a=POP(); if(a.type==SL_INT) PUSH(slval_int(-a.as.i)); else PUSH(slval_double(-as_num(a))); } break;
-        case OP_EQ: { SLValue b=POP(),a=POP(); int e=(a.type==SL_STR&&b.type==SL_STR)?(a.as.s==b.as.s):(as_num(a)==as_num(b)); PUSH(slval_bool(e)); } break;
-        case OP_NE: { SLValue b=POP(),a=POP(); int e=(a.type==SL_STR&&b.type==SL_STR)?(a.as.s!=b.as.s):(as_num(a)!=as_num(b)); PUSH(slval_bool(e)); } break;
+        case OP_EQ: { SLValue b=POP(),a=POP(); int e; if(a.type==SL_STRUCT||b.type==SL_STRUCT) e=(a.type==SL_STRUCT&&b.type==SL_STRUCT&&a.as.h==b.as.h); else if(a.type==SL_STR&&b.type==SL_STR) e=(a.as.s==b.as.s); else e=(as_num(a)==as_num(b)); PUSH(slval_bool(e)); } break;
+        case OP_NE: { SLValue b=POP(),a=POP(); int e; if(a.type==SL_STRUCT||b.type==SL_STRUCT) e=!(a.type==SL_STRUCT&&b.type==SL_STRUCT&&a.as.h==b.as.h); else if(a.type==SL_STR&&b.type==SL_STR) e=(a.as.s!=b.as.s); else e=(as_num(a)!=as_num(b)); PUSH(slval_bool(e)); } break;
         case OP_LT: { SLValue b=POP(),a=POP(); PUSH(slval_bool(as_num(a)<as_num(b))); } break;
         case OP_LE: { SLValue b=POP(),a=POP(); PUSH(slval_bool(as_num(a)<=as_num(b))); } break;
         case OP_GT: { SLValue b=POP(),a=POP(); PUSH(slval_bool(as_num(a)>as_num(b))); } break;
@@ -571,6 +735,55 @@ static SLResult run_thread(SLThread* t) {
             if(sltime_set_location(SL_TIME_LOCATION_COUNTRY,slvm_str(vm,cv.as.s),slvm_str(vm,zv.as.s))!=0) TERR("timeSetLocation failed");
             PUSH(slval_null());
         } break;
+
+        /* ---- struct support ------------------------------------------- */
+        case OP_NEWSTRUCT: {
+            int h=struct_alloc(vm,in.a);
+            if(h<0) TERR("struct instantiation failed (unknown type or store exhausted)");
+            PUSH(slval_struct(h));
+        } break;
+        case OP_GETFIELD: {
+            SLValue iv=POP();
+            if(iv.type!=SL_STRUCT||!struct_valid_handle(vm,iv.as.h)) TERR("field access on a non-struct value");
+            pthread_mutex_lock(&vm->struct_mtx);
+            SLStructInstance* si=&vm->structs[iv.as.h];
+            if(in.a<0||in.a>=vm->struct_types[si->type].nfields){pthread_mutex_unlock(&vm->struct_mtx);TERR("field offset out of range");}
+            SLValue fv=si->fields[in.a];
+            pthread_mutex_unlock(&vm->struct_mtx);
+            PUSH(fv);
+        } break;
+        case OP_SETFIELD: {
+            SLValue val=POP(), iv=POP();
+            if(iv.type!=SL_STRUCT||!struct_valid_handle(vm,iv.as.h)) TERR("field assignment on a non-struct value");
+            pthread_mutex_lock(&vm->struct_mtx);
+            SLStructInstance* si=&vm->structs[iv.as.h];
+            if(in.a<0||in.a>=vm->struct_types[si->type].nfields){pthread_mutex_unlock(&vm->struct_mtx);TERR("field offset out of range");}
+            si->fields[in.a]=val;
+            pthread_mutex_unlock(&vm->struct_mtx);
+            PUSH(val);
+        } break;
+        case OP_STRUCTPACK: {
+            SLValue iv=POP();
+            if(iv.type!=SL_STRUCT||!struct_valid_handle(vm,iv.as.h)) TERR("structPack requires a struct value");
+            char out[4096];
+            pthread_mutex_lock(&vm->struct_mtx);
+            struct_to_json(vm,iv.as.h,out,sizeof(out));
+            pthread_mutex_unlock(&vm->struct_mtx);
+            SLValue s; s.type=SL_STR; s.as.s=intern(vm,out); PUSH(s);
+        } break;
+        case OP_STRUCTUNPACK: {
+            SLValue sv=POP();
+            if(sv.type!=SL_STR) TERR("structUnpack requires a JSON String");
+            int type=in.a;
+            int h=struct_alloc(vm,type);
+            if(h<0) TERR("structUnpack: instantiation failed");
+            const char* json=slvm_str(vm,sv.as.s);
+            pthread_mutex_lock(&vm->struct_mtx);
+            SLStructType* st=&vm->struct_types[type];
+            for(int i=0;i<st->nfields;i++){ SLValue fv; if(json_find_scalar(vm,json,st->fields[i],&fv)) vm->structs[h].fields[i]=fv; }
+            pthread_mutex_unlock(&vm->struct_mtx);
+            PUSH(slval_struct(h));
+        } break;
         default: TERR("illegal opcode");
         }
     }
@@ -588,6 +801,7 @@ SLResult slcore_exchange(SLVM* vm, SLExchangeOp op, SLExchangeArg* arg) {
     case SLX_RESET: vm->codelen=vm->nconst=vm->nglobal=vm->nfunc=0;vm->cur_func=-1;vm->entry=-1;vm->err[0]=0;return SLR_OK;
     case SLX_ADD_CONST: arg->out=add_const(vm,arg->value);return SLR_OK;
     case SLX_DECLARE_GLOBAL: arg->out=slvm_declare_global(vm,arg->name);return SLR_OK;
+    case SLX_DECLARE_STRUCT: arg->out=slvm_declare_struct(vm,arg->name,arg->names,arg->i0);return SLR_OK;
     case SLX_BEGIN_FUNC: arg->out=slvm_begin_func(vm,arg->name,arg->i0,arg->i1);return SLR_OK;
     case SLX_END_FUNC: slvm_end_func(vm);return SLR_OK;
     case SLX_EMIT: arg->out=slvm_emit(vm,(SLOp)arg->op,arg->a);return SLR_OK;

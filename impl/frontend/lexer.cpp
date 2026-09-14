@@ -22,6 +22,7 @@ const char* tokName(Tok t) {
         case Tok::KwTrue: return "true"; case Tok::KwFalse: return "false";
         case Tok::KwPrint: return "print"; case Tok::KwNull: return "null";
         case Tok::KwImport: return "import";
+        case Tok::KwStruct: return "struct"; case Tok::KwNew: return "new";
         case Tok::LParen: return "("; case Tok::RParen: return ")";
         case Tok::LBrace: return "{"; case Tok::RBrace: return "}";
         case Tok::Semicolon: return ";"; case Tok::Comma: return ",";
@@ -95,7 +96,8 @@ Token Lexer::makeIdentOrKeyword() {
         {"String",Tok::KwStringT},{"if",Tok::KwIf},{"else",Tok::KwElse},
         {"while",Tok::KwWhile},{"for",Tok::KwFor},{"return",Tok::KwReturn},
         {"true",Tok::KwTrue},{"false",Tok::KwFalse},{"print",Tok::KwPrint},
-        {"null",Tok::KwNull},{"import",Tok::KwImport}
+        {"null",Tok::KwNull},{"import",Tok::KwImport},
+        {"struct",Tok::KwStruct},{"new",Tok::KwNew}
     };
     int startLine = line_, startCol = col_; std::string s;
     while (std::isalnum((unsigned char)peek()) || peek() == '_') s += advance();
