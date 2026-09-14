@@ -9,6 +9,7 @@ CFLAGS ?= -std=c11 -O2 -Wall -Wextra -pthread
 CXXFLAGS ?= -std=c++17 -O2 -Wall -Wextra -pthread
 CPPFLAGS += -Ifrontend $(SUBJECT_INCLUDES) -I../bash
 LDFLAGS ?= -pthread
+LIBS ?= -ldl
 BUILD := build
 SLEELA_BIN := $(BUILD)/sleela
 NORDSHRIFT_BIN := $(BUILD)/nordshrift
@@ -19,6 +20,7 @@ IO_PLATFORM_SMOKE := $(BUILD)/io_platform_smoke
 NET_PLATFORM_SMOKE := $(BUILD)/net_platform_smoke
 PATH_PLATFORM_SMOKE := $(BUILD)/path_platform_smoke
 TERMINAL_PLATFORM_SMOKE := $(BUILD)/terminal_platform_smoke
+LIBRARY_PLATFORM_SMOKE := $(BUILD)/library_platform_smoke
 PIXEL_TERMINAL_SMOKE := $(BUILD)/pixel_terminal_smoke
 PIXEL_TERMINAL_OBJ := $(BUILD)/pixel_terminal.o
 CATALOG_OBJ := $(BUILD)/sheet_catalog.o
@@ -29,6 +31,7 @@ IO_OBJ := $(BUILD)/sleela_io.o
 NET_OBJ := $(BUILD)/sleela_net.o
 PATH_OBJ := $(BUILD)/sleela_path.o
 TERMINAL_OBJ := $(BUILD)/sleela_terminal.o
+LIBRARY_OBJ := $(BUILD)/sleela_library.o
 GC_OBJ := $(BUILD)/garbage_collector.o
 SECURITY_OBJ := $(BUILD)/security_supervisor.o
 PARAMETERS_OBJ := $(BUILD)/Parameters.o
@@ -51,9 +54,9 @@ NS_OBJ := $(patsubst nordshrift/%.cpp,$(BUILD)/ns_%.o,$(NS_SRC))
 VERIFY_TOOL := ../tools/verify-before-execution.py
 VERIFY_MANIFEST ?= $(SLEELA_SHA256_MANIFEST)
 VERIFY_ARGS = --manifest "$(VERIFY_MANIFEST)" --root "$(CURDIR)/.."
-ALL_OBJECTS := $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(NS_OBJ) $(THREAD_SMOKE) $(SOCKET_SMOKE) $(IO_PLATFORM_SMOKE) $(NET_PLATFORM_SMOKE) $(PATH_PLATFORM_SMOKE) $(TERMINAL_PLATFORM_SMOKE) $(PIXEL_TERMINAL_SMOKE) $(THREAD_PLATFORM_SMOKE)
+ALL_OBJECTS := $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(NS_OBJ) $(THREAD_SMOKE) $(SOCKET_SMOKE) $(IO_PLATFORM_SMOKE) $(NET_PLATFORM_SMOKE) $(PATH_PLATFORM_SMOKE) $(TERMINAL_PLATFORM_SMOKE) $(LIBRARY_PLATFORM_SMOKE) $(PIXEL_TERMINAL_SMOKE) $(THREAD_PLATFORM_SMOKE)
 
-.PHONY: all build-verified rebuild-verified clean test test-sleela test-version test-nordshrift test-threads test-thread-platform test-network test-network-platform test-io-platform test-path-platform test-terminal-platform test-pixel-terminal test-catalog test-chemistry test-financial test-math test-physics test-economics verify-security build-runtime test-runtime
+.PHONY: all build-verified rebuild-verified clean test test-sleela test-version test-nordshrift test-threads test-thread-platform test-network test-network-platform test-io-platform test-path-platform test-terminal-platform test-library-platform test-pixel-terminal test-catalog test-chemistry test-financial test-math test-physics test-economics verify-security build-runtime test-runtime
 
 all: verify-security $(SLEELA_BIN) $(NORDSHRIFT_BIN)
 build-verified: verify-security $(SLEELA_BIN) $(NORDSHRIFT_BIN)
@@ -70,24 +73,26 @@ verify-security:
 
 $(ALL_OBJECTS): verify-security
 
-$(SLEELA_BIN): $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ)
-	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS)
-$(NORDSHRIFT_BIN): $(NS_OBJ) $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(CATALOG_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ)
-	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS)
+$(SLEELA_BIN): $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS) $(LIBS)
+$(NORDSHRIFT_BIN): $(NS_OBJ) $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(CATALOG_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS) $(LIBS)
 $(THREAD_PLATFORM_SMOKE): core/thread_platform_smoke.c $(THREAD_OBJ) | $(BUILD)
-	$(CC) $(CFLAGS) -Icore core/thread_platform_smoke.c $(THREAD_OBJ) -o $@ $(LDFLAGS)
+	$(CC) $(CFLAGS) -Icore core/thread_platform_smoke.c $(THREAD_OBJ) -o $@ $(LDFLAGS) $(LIBS)
 $(THREAD_SMOKE): core/thread_smoke.c $(CORE_OBJ)
-	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
+	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS) $(LIBS)
 $(SOCKET_SMOKE): core/socket_smoke.c $(CORE_OBJ)
-	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
+	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS) $(LIBS)
 $(IO_PLATFORM_SMOKE): core/io_platform_smoke.c $(IO_OBJ) | $(BUILD)
-	$(CC) $(CFLAGS) -Icore core/io_platform_smoke.c $(IO_OBJ) -o $@ $(LDFLAGS)
+	$(CC) $(CFLAGS) -Icore core/io_platform_smoke.c $(IO_OBJ) -o $@ $(LDFLAGS) $(LIBS)
 $(NET_PLATFORM_SMOKE): core/net_platform_smoke.c $(NET_OBJ) | $(BUILD)
-	$(CC) $(CFLAGS) -Icore core/net_platform_smoke.c $(NET_OBJ) -o $@ $(LDFLAGS)
+	$(CC) $(CFLAGS) -Icore core/net_platform_smoke.c $(NET_OBJ) -o $@ $(LDFLAGS) $(LIBS)
 $(PATH_PLATFORM_SMOKE): core/path_platform_smoke.c $(PATH_OBJ) | $(BUILD)
-	$(CC) $(CFLAGS) -Icore core/path_platform_smoke.c $(PATH_OBJ) -o $@ $(LDFLAGS)
+	$(CC) $(CFLAGS) -Icore core/path_platform_smoke.c $(PATH_OBJ) -o $@ $(LDFLAGS) $(LIBS)
 $(TERMINAL_PLATFORM_SMOKE): core/terminal_platform_smoke.c $(TERMINAL_OBJ) | $(BUILD)
-	$(CC) $(CFLAGS) -Icore core/terminal_platform_smoke.c $(TERMINAL_OBJ) -o $@ $(LDFLAGS)
+	$(CC) $(CFLAGS) -Icore core/terminal_platform_smoke.c $(TERMINAL_OBJ) -o $@ $(LDFLAGS) $(LIBS)
+$(LIBRARY_PLATFORM_SMOKE): core/library_platform_smoke.c $(LIBRARY_OBJ) | $(BUILD)
+	$(CC) $(CFLAGS) -Icore core/library_platform_smoke.c $(LIBRARY_OBJ) -o $@ $(LDFLAGS) $(LIBS)
 $(THREAD_OBJ): core/sleela_thread.c core/sleela_thread.h | $(BUILD)
 	$(CC) $(CFLAGS) -Icore -c core/sleela_thread.c -o $@
 $(IO_OBJ): core/sleela_io.c core/sleela_io.h | $(BUILD)
@@ -98,10 +103,12 @@ $(PATH_OBJ): core/sleela_path.c core/sleela_path.h | $(BUILD)
 	$(CC) $(CFLAGS) -Icore -c core/sleela_path.c -o $@
 $(TERMINAL_OBJ): core/sleela_terminal.c core/sleela_terminal.h | $(BUILD)
 	$(CC) $(CFLAGS) -Icore -c core/sleela_terminal.c -o $@
+$(LIBRARY_OBJ): core/sleela_library.c core/sleela_library.h | $(BUILD)
+	$(CC) $(CFLAGS) -Icore -c core/sleela_library.c -o $@
 $(PIXEL_TERMINAL_OBJ): ../bash/pixel_terminal.cpp ../bash/pixel_terminal.hpp | $(BUILD)
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c ../bash/pixel_terminal.cpp -o $@
 $(PIXEL_TERMINAL_SMOKE): ../bash/pixel_terminal_smoke.cpp ../bash/pixel_terminal.hpp $(PIXEL_TERMINAL_OBJ) | $(BUILD)
-	$(CXX) $(CXXFLAGS) $(CPPFLAGS) ../bash/pixel_terminal_smoke.cpp $(PIXEL_TERMINAL_OBJ) -o $@ $(LDFLAGS)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) ../bash/pixel_terminal_smoke.cpp $(PIXEL_TERMINAL_OBJ) -o $@ $(LDFLAGS) $(LIBS)
 $(GC_OBJ): ../runtime/garbage_collector.c ../runtime/garbage_collector.h | $(BUILD)
 	$(CC) $(CFLAGS) -c ../runtime/garbage_collector.c -o $@
 $(SECURITY_OBJ): ../runtime/security_supervisor.c ../runtime/security_supervisor.h | $(BUILD)
@@ -139,7 +146,7 @@ $(BUILD)/driver.o: frontend/driver.cpp frontend/compiler.h frontend/artifact.h s
 $(BUILD):
 	mkdir -p $(BUILD)
 
-test: verify-security test-sleela test-version test-nordshrift test-threads test-thread-platform test-network test-network-platform test-io-platform test-path-platform test-terminal-platform test-pixel-terminal test-catalog test-math test-physics test-economics test-chemistry test-financial
+test: verify-security test-sleela test-version test-nordshrift test-threads test-thread-platform test-network test-network-platform test-io-platform test-path-platform test-terminal-platform test-library-platform test-pixel-terminal test-catalog test-math test-physics test-economics test-chemistry test-financial
 test-thread-platform: $(THREAD_PLATFORM_SMOKE)
 	@echo "=== OS-aware threading backend ==="; SLEELA_THREAD_PLATFORM=auto $(THREAD_PLATFORM_SMOKE)
 test-threads: $(THREAD_SMOKE)
@@ -160,7 +167,9 @@ test-io-platform: $(IO_PLATFORM_SMOKE)
 test-path-platform: $(PATH_PLATFORM_SMOKE)
 	@echo "=== OS-aware paths/filesystem backend ==="; $(PATH_PLATFORM_SMOKE)
 test-terminal-platform: $(TERMINAL_PLATFORM_SMOKE)
-	@echo "=== OS-aware terminal / PTY backend ==="; $(TERMINAL_PLATFORM_SMOKE)
+	@echo "=== OS-aware terminal/PTY backend ==="; SLEELA_TERMINAL_PLATFORM=auto $(TERMINAL_PLATFORM_SMOKE)
+test-library-platform: $(LIBRARY_PLATFORM_SMOKE)
+	@echo "=== OS-aware native library loader ==="; $(LIBRARY_PLATFORM_SMOKE)
 test-pixel-terminal: $(PIXEL_TERMINAL_SMOKE)
 	@echo "=== native pixel terminal smoke ==="; $(PIXEL_TERMINAL_SMOKE)
 test-catalog: $(NORDSHRIFT_BIN)
