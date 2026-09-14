@@ -49,15 +49,17 @@ NS_OBJ := $(patsubst nordshrift/%.cpp,$(BUILD)/ns_%.o,$(NS_SRC))
 VERIFY_TOOL := ../tools/verify-before-execution.py
 VERIFY_MANIFEST ?= $(SLEELA_SHA256_MANIFEST)
 VERIFY_ARGS = --manifest "$(VERIFY_MANIFEST)" --root "$(CURDIR)/.."
+ALL_OBJECTS := $(CORE_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(NS_OBJ) $(THREAD_SMOKE) $(SOCKET_SMOKE) $(PIXEL_TERMINAL_SMOKE)
 .PHONY: all clean test test-sleela test-version test-nordshrift test-threads test-network test-pixel-terminal test-catalog test-chemistry test-financial test-math test-physics test-economics verify-security
-all: verify-security $(SLEELA_BIN) $(NORDSHRIFT_BIN)
+all: $(SLEELA_BIN) $(NORDSHRIFT_BIN)
 verify-security:
 	@if [ -z "$(VERIFY_MANIFEST)" ]; then echo "sleela: SHA-256 verification is required before build; set SLEELA_SHA256_MANIFEST or VERIFY_MANIFEST to a trusted JSON manifest" >&2; exit 1; fi
 	@if [ ! -f "$(VERIFY_MANIFEST)" ]; then echo "sleela: trusted SHA-256 manifest not found: $(VERIFY_MANIFEST)" >&2; exit 1; fi
 	@python3 "$(VERIFY_TOOL)" $(VERIFY_ARGS)
-$(SLEELA_BIN): verify-security $(CORE_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ)
+$(ALL_OBJECTS): verify-security
+$(SLEELA_BIN): $(CORE_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ)
 	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS)
-$(NORDSHRIFT_BIN): verify-security $(NS_OBJ) $(CORE_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(CATALOG_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ)
+$(NORDSHRIFT_BIN): $(NS_OBJ) $(CORE_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(CATALOG_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ)
 	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS)
 $(THREAD_SMOKE): core/thread_smoke.c $(CORE_OBJ)
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
@@ -133,7 +135,7 @@ clean:
 	rm -rf $(BUILD)
 
 .PHONY: build-runtime test-runtime
-build-runtime: $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ)
+build-runtime: verify-security $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ)
 	@echo "=== SLVM runtime services built: GC + Security Supervisor + Parameters ==="
 test-runtime: build-runtime
 	@echo "=== runtime integration objects present ==="
