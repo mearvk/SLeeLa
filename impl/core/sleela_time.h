@@ -45,6 +45,8 @@ int sltime_query_ntp(const char* host, uint32_t timeout_ms, SLTimeSample* sample
 int sltime_json(const SLTimeSample* sample, char* out, size_t out_size);
 int sltime_rmi_record(const SLTimeSample* sample, char* out, size_t out_size);
 size_t sltime_bodi_record(const SLTimeSample* sample, uint8_t* out, size_t out_size);
+/* Send a standard NTP request and an optional one-byte interoperability marker. */
+int sltime_send_raw_time(const char* host, uint16_t port, uint8_t marker, uint32_t timeout_ms, SLTimeSample* sample);
 
 #ifdef __cplusplus
 }
