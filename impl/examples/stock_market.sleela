@@ -1,0 +1,101 @@
+#sleela 1.0
+// stock_market.sleela -- deterministic stock-market paper-trading simulation.
+//
+// This example demonstrates arithmetic, conditionals, methods, fields, and a
+// simple portfolio ledger. It intentionally uses fixed sample prices rather
+// than a live market feed, so it can run offline and produce repeatable output.
+
+class StockMarket {
+    double cash = 100000.0;
+
+    int appleShares = 100;
+    int microsoftShares = 50;
+    int nvidiaShares = 25;
+    int teslaShares = 40;
+
+    double apple = 225.00;
+    double microsoft = 510.00;
+    double nvidia = 178.00;
+    double tesla = 330.00;
+
+    double appleOpen = 220.00;
+    double microsoftOpen = 500.00;
+    double nvidiaOpen = 170.00;
+    double teslaOpen = 320.00;
+
+    double positionValue(int shares, double price) {
+        return shares * price;
+    }
+
+    double change(double open, double price) {
+        return price - open;
+    }
+
+    double percent(double open, double price) {
+        return ((price - open) / open) * 100.0;
+    }
+
+    void buyNvidia(int shares, double price) {
+        double cost = shares * price;
+        if (cost <= cash) {
+            nvidiaShares = nvidiaShares + shares;
+            cash = cash - cost;
+            print("BUY NVDA: " + shares + " shares @ $" + price);
+        } else {
+            print("BUY NVDA: rejected -- insufficient cash");
+        }
+    }
+
+    void sellTesla(int shares, double price) {
+        if (shares <= teslaShares) {
+            teslaShares = teslaShares - shares;
+            cash = cash + (shares * price);
+            print("SELL TSLA: " + shares + " shares @ $" + price);
+        } else {
+            print("SELL TSLA: rejected -- insufficient shares");
+        }
+    }
+
+    void main() {
+        print("=== SLeeLa Stock Market ===");
+        print("Paper-trading simulation; prices are sample data.");
+        print("");
+
+        print("MARKET");
+        print("AAPL  $" + apple + "  change $" + change(appleOpen, apple) + "  " + percent(appleOpen, apple) + "%");
+        print("MSFT  $" + microsoft + "  change $" + change(microsoftOpen, microsoft) + "  " + percent(microsoftOpen, microsoft) + "%");
+        print("NVDA  $" + nvidia + "  change $" + change(nvidiaOpen, nvidia) + "  " + percent(nvidiaOpen, nvidia) + "%");
+        print("TSLA  $" + tesla + "  change $" + change(teslaOpen, tesla) + "  " + percent(teslaOpen, tesla) + "%");
+        print("");
+
+        print("PORTFOLIO BEFORE TRADES");
+        double startingValue = cash
+            + positionValue(appleShares, apple)
+            + positionValue(microsoftShares, microsoft)
+            + positionValue(nvidiaShares, nvidia)
+            + positionValue(teslaShares, tesla);
+        print("Cash = $" + cash);
+        print("Portfolio value = $" + startingValue);
+        print("");
+
+        buyNvidia(50, nvidia);
+        sellTesla(10, tesla);
+        print("");
+
+        double endingValue = cash
+            + positionValue(appleShares, apple)
+            + positionValue(microsoftShares, microsoft)
+            + positionValue(nvidiaShares, nvidia)
+            + positionValue(teslaShares, tesla);
+
+        print("PORTFOLIO AFTER TRADES");
+        print("Cash = $" + cash);
+        print("AAPL shares = " + appleShares);
+        print("MSFT shares = " + microsoftShares);
+        print("NVDA shares = " + nvidiaShares);
+        print("TSLA shares = " + teslaShares);
+        print("Portfolio value = $" + endingValue);
+        print("Session P/L = $" + (endingValue - startingValue));
+        print("=== Market session complete ===");
+    }
+}
