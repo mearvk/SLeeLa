@@ -33,6 +33,7 @@ typedef struct {
 
 int sltime_init(void);
 int64_t sltime_utc_millis(void);
+int64_t sltime_utc_nanos(void);
 uint64_t sltime_monotonic_nanos(void);
 int sltime_sample(SLTimeSample* sample);
 int sltime_set_location(SLTimeLocationMode mode, const char* country_iso2, const char* iana_timezone);
