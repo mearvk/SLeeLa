@@ -3,6 +3,22 @@
 # The functions emit a text protocol consumed by the SLeeLa terminal bridge.
 
 : "${SLEELA_PIXEL_TERMINAL:=sleeLa-pixel-terminal}"
+: "${SLEELA_BASH_PROTOCOL:=1}"
+: "${SLEELA_PIXEL_TERMINAL_VERSION:=1}"
+: "${SLEELA_PIXEL_TERMINAL_VARIANT:=NATIVE}"
+
+# Establish that this Bash session understands the versioned native pixel
+# terminal protocol. SLeeLa may use READY/CAPS before sending frame commands.
+pixel_terminal_handshake() {
+    printf '%s HELLO SLEELA-BASH/%s PIXEL_TERMINAL/%s VARIANT=%s\n' \
+        "$SLEELA_PIXEL_TERMINAL" "$SLEELA_BASH_PROTOCOL" \
+        "$SLEELA_PIXEL_TERMINAL_VERSION" "$SLEELA_PIXEL_TERMINAL_VARIANT"
+    printf '%s READY SLEELA-BASH/%s PIXEL_TERMINAL/%s VARIANT=%s\n' \
+        "$SLEELA_PIXEL_TERMINAL" "$SLEELA_BASH_PROTOCOL" \
+        "$SLEELA_PIXEL_TERMINAL_VERSION" "$SLEELA_PIXEL_TERMINAL_VARIANT"
+    printf '%s CAPS PIXEL_GRANULARITY NATIVE_FRAME RESIZE_EVENTS\n' \
+        "$SLEELA_PIXEL_TERMINAL"
+}
 
 pixel_terminal_begin() {
     local width="$1" height="$2"
@@ -70,7 +86,7 @@ pixel_terminal_pixel_size() {
 # Pixel size is authoritative when supported; cell size remains available as
 # a fallback and is explicitly labeled so the bridge can distinguish them.
 pixel_terminal_size() {
-    local pixel_report center_x center_y
+    local pixel_report center_x center_y width height
     if pixel_report="$(pixel_terminal_pixel_size 2>/dev/null)"; then
         printf '%s\n' "$pixel_report"
         read -r _ _ width height <<< "$pixel_report"
