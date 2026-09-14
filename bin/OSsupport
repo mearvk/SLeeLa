@@ -1,0 +1,105 @@
+#!/usr/bin/env sh
+# OSsupport — SLVM native executable / OS Defender support command.
+# Runs the SLeeLa OS-aware Defender provisioning interface and reports results.
+
+set -u
+
+BIN_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+ROOT_DIR=$(CDPATH= cd -- "$BIN_DIR/.." && pwd)
+SLEELA="${SLEELA_BIN:-$BIN_DIR/sleela}"
+if [ ! -x "$SLEELA" ]; then
+    SLEELA="$ROOT_DIR/impl/build/sleela"
+fi
+
+usage() {
+    cat <<'EOF'
+OSsupport — SLVM native executable support
+
+Usage:
+  OSsupport                         Show choices / detect host OS
+  OSsupport detect                  Detect native OS support
+  OSsupport status                  Show detected support and repository
+  OSsupport fetch [directory]       Download the OS support source
+  OSsupport build [directory]       Download if needed, then compile
+  OSsupport install [directory]     Compile and install OS support
+  OSsupport provision [directory]   Fetch, compile, and install
+  OSsupport help                    Show this help
+
+Choices:
+  1  Detect OS
+  2  Fetch source
+  3  Build native support
+  4  Install native support
+  5  Provision (fetch + build + install)
+  6  Quit
+
+The selected implementation is OS-native:
+  Windows -> Windows.Admin.Defender
+  Linux   -> Linux.Admin.Defender
+
+Installation may require administrator privileges and platform-specific
+compiler, driver, signing, or package prerequisites. OSsupport does not
+bypass Secure Boot, UAC, Defender, driver signing, or other OS security
+controls.
+EOF
+}
+
+if [ ! -x "$SLEELA" ]; then
+    echo "OSsupport: SLeeLa executable not found." >&2
+    echo "Build SLeeLa first: make -C \"$ROOT_DIR/impl\"" >&2
+    exit 127
+fi
+
+run() {
+    action=$1
+    shift
+    echo ""
+    echo "=== OSsupport: $action ==="
+    "$SLEELA" defender "$action" "$@"
+    rc=$?
+    echo ""
+    if [ "$rc" -eq 0 ]; then
+        echo "OSsupport result: SUCCESS ($action)"
+    else
+        echo "OSsupport result: FAILED ($action, exit $rc)" >&2
+    fi
+    return "$rc"
+}
+
+if [ "$#" -gt 0 ]; then
+    case "$1" in
+        help|-h|--help)
+            usage
+            exit 0
+            ;;
+        detect|status)
+            run detect
+            exit $?
+            ;;
+        fetch|build|install|provision)
+            action=$1
+            shift
+            run "$action" "$@"
+            exit $?
+            ;;
+        *)
+            echo "OSsupport: unknown command '$1'" >&2
+            usage >&2
+            exit 2
+            ;;
+    esac
+fi
+
+# Interactive choices when invoked without arguments.
+usage
+printf '\nSelect an action [1-6]: '
+IFS= read -r choice || exit 1
+case "$choice" in
+    1) run detect ;;
+    2) run fetch ;;
+    3) run build ;;
+    4) run install ;;
+    5) run provision ;;
+    6) echo "OSsupport: cancelled"; exit 0 ;;
+    *) echo "OSsupport: invalid choice" >&2; exit 2 ;;
+esac
