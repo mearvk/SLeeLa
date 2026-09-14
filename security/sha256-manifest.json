@@ -311,7 +311,7 @@
     },
     {
       "path": "impl/subjects/math/math_native.cpp",
-      "sha256": "d615ab1ebcb2b489ccaf132e11fe2e6d5df24be265f44e2a556c39e06a2585d3"
+      "sha256": "9760be9c64c8a5d11c2515bea3fa4a1c8895fc621e090a11b0baedba4b383f24"
     },
     {
       "path": "impl/subjects/native/native_add.h",

@@ -1,0 +1,108 @@
+#sleela 1.2
+// 1/relevances.sleela  --  "Longs": relevances among US economic length series.
+//
+// Each `Long` is a length series (a magnitude that runs over 2019..2024). The
+// model computes, for every pair of lengths, the Pearson correlation r via the
+// native `inference` library and classifies the relevance the way Nordshrift
+// classifies object relevance -- Direct / Model / None -- by |r|:
+//     |r| >= 0.85  -> Direct   (co-occupy the same material extent)
+//     |r| >= 0.50  -> Model    (looser, modeled association)
+//     else         -> None     (no material co-relation over the window)
+// It prints a mathematical relevance matrix and a paragraph reading.
+//
+// Data are real, dated, sourced annual figures (see longs.csv / README.md).
+// A relevance is a measured association over the window; ASSOCIATION != CAUSATION.
+import math;
+import inference;
+
+struct Long {
+    String name;
+    String symbol;
+    // six yearly readings 2019..2024
+    double v1; double v2; double v3; double v4; double v5; double v6;
+}
+
+class Longs {
+
+    // Pearson r between two Longs, folding their six readings into the
+    // correlation running sums (X = long a, Y = long b).
+    double relevanceR(Long a, Long b) {
+        double n = 6.0;
+        double sx = a.v1 + a.v2 + a.v3 + a.v4 + a.v5 + a.v6;
+        double sy = b.v1 + b.v2 + b.v3 + b.v4 + b.v5 + b.v6;
+        double sxx = a.v1*a.v1 + a.v2*a.v2 + a.v3*a.v3 + a.v4*a.v4 + a.v5*a.v5 + a.v6*a.v6;
+        double syy = b.v1*b.v1 + b.v2*b.v2 + b.v3*b.v3 + b.v4*b.v4 + b.v5*b.v5 + b.v6*b.v6;
+        double sxy = a.v1*b.v1 + a.v2*b.v2 + a.v3*b.v3 + a.v4*b.v4 + a.v5*b.v5 + a.v6*b.v6;
+        return inference.correlation(n, sx, sy, sxx, syy, sxy);
+    }
+
+    // Class label from |r|, mirroring Nordshrift's Direct/Model/None relevance.
+    String relevanceClass(double r) {
+        double ar = math.abs(r);
+        if (ar >= 0.85) { return "Direct"; }
+        if (ar >= 0.5) { return "Model"; }
+        return "None";
+    }
+
+    // Direction word from the sign of r.
+    String direction(double r) {
+        if (r > 0.0) { return "co-extending"; }
+        if (r < 0.0) { return "opposing"; }
+        return "unrelated";
+    }
+
+    // One matrix row + one paragraph line for a pair.
+    void reportPair(Long a, Long b) {
+        double r = relevanceR(a, b);
+        String cls = relevanceClass(r);
+        print("  " + a.symbol + " ~ " + b.symbol + " : r=" + r + "  [" + cls + "]");
+    }
+
+    void sentence(Long a, Long b) {
+        double r = relevanceR(a, b);
+        String cls = relevanceClass(r);
+        print("  " + a.name + " and " + b.name + " hold a " + cls
+            + " relevance (r=" + r + ", " + direction(r)
+            + "): they occupy the same material extent "
+            + occupancy(cls) + ".");
+    }
+
+    String occupancy(String cls) {
+        if (cls == "Direct") { return "directly over 2019-2024"; }
+        if (cls == "Model") { return "only through a looser modeled association"; }
+        return "with no material co-relation evidenced";
+    }
+
+    void main() {
+        // --- the lengths (real sourced annual figures; see longs.csv) ---
+        Long gdp = new Long();
+        gdp.name = "Nominal GDP"; gdp.symbol = "GDP";
+        gdp.v1 = 21.5; gdp.v2 = 21.4; gdp.v3 = 23.7; gdp.v4 = 26.0; gdp.v5 = 27.7; gdp.v6 = 29.2;
+
+        Long debt = new Long();
+        debt.name = "Total federal debt"; debt.symbol = "DEBT";
+        debt.v1 = 22.7; debt.v2 = 26.9; debt.v3 = 28.4; debt.v4 = 30.9; debt.v5 = 33.2; debt.v6 = 35.5;
+
+        Long cpi = new Long();
+        cpi.name = "Consumer price level"; cpi.symbol = "CPI";
+        cpi.v1 = 255.7; cpi.v2 = 258.8; cpi.v3 = 271.0; cpi.v4 = 292.7; cpi.v5 = 304.7; cpi.v6 = 313.7;
+
+        print("=== /1 Longs -- relevances among US economic lengths (2019-2024) ===");
+        print("Relevance class by |r|: Direct >= 0.85, Model >= 0.50, else None.");
+        print("");
+
+        print("[mathematical] relevance matrix");
+        reportPair(gdp, debt);
+        reportPair(gdp, cpi);
+        reportPair(debt, cpi);
+        print("");
+
+        print("[evaluation] how the lengths co-relate and occupy materially");
+        sentence(gdp, debt);
+        sentence(gdp, cpi);
+        sentence(debt, cpi);
+        print("");
+        print("Note: real sourced data (BEA / US Treasury+GAO / BLS); a relevance");
+        print("is a measured association over 2019-2024, not a causal claim.");
+    }
+}
