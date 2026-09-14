@@ -43,6 +43,17 @@ struct SizeEvent {
     Point center{};
 };
 
+struct Handshake {
+    static constexpr unsigned int bash_protocol_major = 1;
+    static constexpr unsigned int pixel_terminal_version = 1;
+    static constexpr const char* variant = "NATIVE";
+
+    bool ready = false;
+    bool pixel_granularity = false;
+    bool native_frame = false;
+    bool resize_events = false;
+};
+
 class PixelTerminal {
 public:
     PixelTerminal();
@@ -51,6 +62,11 @@ public:
 
     PixelTerminal(const PixelTerminal&) = delete;
     PixelTerminal& operator=(const PixelTerminal&) = delete;
+
+    // Returns the capability contract SLeeLa expects from the Bash pixel
+    // endpoint. The bridge should complete its Bash HELLO/READY exchange
+    // before sending frame commands.
+    static Handshake handshake() noexcept;
 
     bool querySize();
     bool setSize(Size size);
