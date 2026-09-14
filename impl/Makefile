@@ -1,17 +1,5 @@
 # =============================================================================
 # Makefile for Sleela (C/C++ core + front end) and Nordshrift (.sst -> triple).
-#
-# Subject libraries live under subjects/ (one folder per subject):
-#   subjects/math       -> addMath
-#   subjects/physics    -> addPhysics
-#   subjects/economics  -> addEconomics
-#   subjects/native     -> shared dispatcher + builders
-#   subjects/chemistry  -> chemistry library + frontend chemistry_api
-#   subjects/finance    -> financial library + frontend financial_api
-#
-# Security build order:
-#   trusted update/source -> SHA-256 verification -> compilation -> linking
-#   -> diagnostics/tests -> execution/install
 # =============================================================================
 CC ?= gcc
 CXX ?= g++
@@ -114,7 +102,7 @@ $(BUILD)/economics_native.o: subjects/economics/economics_native.cpp | $(BUILD)
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
 $(BUILD)/chemistry_api.o: subjects/chemistry/chemistry_api.cpp | $(BUILD)
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
-$(BUILD)/financial_api.o: subjects/finance/financial.cpp | $(BUILD)
+$(BUILD)/financial_api.o: subjects/finance/financial_api.cpp | $(BUILD)
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
 $(BUILD)/sheet_catalog.o: catalog/sheet_catalog.cpp catalog/sheet_catalog.h | $(BUILD)
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
