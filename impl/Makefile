@@ -11,19 +11,19 @@
 # =============================================================================
 CC ?= gcc
 CXX ?= g++
-# Subject headers are included by bare name (e.g. "native_api.h"), so expose
-# each subject include directory on the compiler search path.
 SUBJECT_INCLUDES := -Isubjects/native -Isubjects/math -Isubjects/physics \
                     -Isubjects/economics -Isubjects/chemistry -Isubjects/finance
 CFLAGS ?= -std=c11 -O2 -Wall -Wextra -pthread
 CXXFLAGS ?= -std=c++17 -O2 -Wall -Wextra -pthread
-CPPFLAGS += -Ifrontend $(SUBJECT_INCLUDES)
+CPPFLAGS += -Ifrontend $(SUBJECT_INCLUDES) -I../bash
 LDFLAGS ?= -pthread
 BUILD := build
 SLEELA_BIN := $(BUILD)/sleela
 NORDSHRIFT_BIN := $(BUILD)/nordshrift
 THREAD_SMOKE := $(BUILD)/thread_smoke
 SOCKET_SMOKE := $(BUILD)/socket_smoke
+PIXEL_TERMINAL_SMOKE := $(BUILD)/pixel_terminal_smoke
+PIXEL_TERMINAL_OBJ := $(BUILD)/pixel_terminal.o
 CATALOG_OBJ := $(BUILD)/sheet_catalog.o
 XCLASS_OBJ := $(BUILD)/xclass_loader.o
 CORE_OBJ := $(BUILD)/sleela_core.o
@@ -33,7 +33,6 @@ PARAMETERS_OBJ := $(BUILD)/Parameters.o
 CHEMISTRY_OBJ := $(BUILD)/chemistry.o
 FINANCIAL_OBJ := $(BUILD)/financial.o
 CORE_SRC := core/sleela_artifact.c
-# Front end: lexer/parser/compiler/driver plus the subject frontend APIs.
 FE_SRC := frontend/lexer.cpp frontend/parser.cpp frontend/compiler.cpp \
           frontend/version.cpp frontend/artifact.cpp \
           subjects/native/native_api.cpp \
@@ -48,16 +47,20 @@ NS_SRC := nordshrift/sst_lexer.cpp nordshrift/sst_parser.cpp \
           nordshrift/component_manifest.cpp \
           nordshrift/nordshrift.cpp
 NS_OBJ := $(patsubst nordshrift/%.cpp,$(BUILD)/ns_%.o,$(NS_SRC))
-.PHONY: all clean test test-sleela test-version test-nordshrift test-threads test-network test-catalog test-chemistry test-financial test-math test-physics test-economics
+.PHONY: all clean test test-sleela test-version test-nordshrift test-threads test-network test-pixel-terminal test-catalog test-chemistry test-financial test-math test-physics test-economics
 all: $(SLEELA_BIN) $(NORDSHRIFT_BIN)
-$(SLEELA_BIN): $(CORE_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ)
+$(SLEELA_BIN): $(CORE_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ)
 	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS)
-$(NORDSHRIFT_BIN): $(NS_OBJ) $(CORE_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(CATALOG_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ)
+$(NORDSHRIFT_BIN): $(NS_OBJ) $(CORE_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(CATALOG_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ)
 	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS)
 $(THREAD_SMOKE): core/thread_smoke.c $(CORE_OBJ)
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 $(SOCKET_SMOKE): core/socket_smoke.c $(CORE_OBJ)
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
+$(PIXEL_TERMINAL_OBJ): ../bash/pixel_terminal.cpp ../bash/pixel_terminal.hpp | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c ../bash/pixel_terminal.cpp -o $@
+$(PIXEL_TERMINAL_SMOKE): ../bash/pixel_terminal_smoke.cpp ../bash/pixel_terminal.hpp $(PIXEL_TERMINAL_OBJ) | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) ../bash/pixel_terminal_smoke.cpp $(PIXEL_TERMINAL_OBJ) -o $@ $(LDFLAGS)
 $(GC_OBJ): ../runtime/garbage_collector.c ../runtime/garbage_collector.h | $(BUILD)
 	$(CC) $(CFLAGS) -c ../runtime/garbage_collector.c -o $@
 $(SECURITY_OBJ): ../runtime/security_supervisor.c ../runtime/security_supervisor.h | $(BUILD)
@@ -70,7 +73,6 @@ $(CHEMISTRY_OBJ): subjects/chemistry/chemistry.cpp subjects/chemistry/chemistry.
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c subjects/chemistry/chemistry.cpp -o $@
 $(FINANCIAL_OBJ): subjects/finance/financial.cpp subjects/finance/financial.h | $(BUILD)
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c subjects/finance/financial.cpp -o $@
-# Front-end / subject-frontend translation units (compiled by basename into build/).
 $(BUILD)/%.o: frontend/%.cpp | $(BUILD)
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
 $(BUILD)/native_api.o: subjects/native/native_api.cpp | $(BUILD)
@@ -95,7 +97,7 @@ $(BUILD)/driver.o: frontend/driver.cpp frontend/compiler.h frontend/artifact.h s
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
 $(BUILD):
 	mkdir -p $(BUILD)
-test: test-sleela test-version test-nordshrift test-threads test-network test-catalog test-math test-physics test-economics test-chemistry test-financial
+test: test-sleela test-version test-nordshrift test-threads test-network test-pixel-terminal test-catalog test-math test-physics test-economics test-chemistry test-financial
 test-threads: $(THREAD_SMOKE)
 	@echo "=== core threading smoke (128 threads) ==="; $(THREAD_SMOKE) 128
 test-sleela: $(SLEELA_BIN)
@@ -107,6 +109,8 @@ test-nordshrift: $(NORDSHRIFT_BIN)
 	@echo "=== build nordshrift/examples/demo/build.sst (target sleela -> runnable artifact) ==="; $(NORDSHRIFT_BIN) build nordshrift/examples/demo/build.sst || exit 1
 test-network: $(SOCKET_SMOKE)
 	@echo "=== core networking smoke (TCP loopback) ==="; $(SOCKET_SMOKE)
+test-pixel-terminal: $(PIXEL_TERMINAL_SMOKE)
+	@echo "=== native pixel terminal smoke ==="; $(PIXEL_TERMINAL_SMOKE)
 test-catalog: $(NORDSHRIFT_BIN)
 	@export SLEELA_SHEET=$(CURDIR)/../SHEET.sheet; echo "=== nordshrift objects (summary) ==="; $(NORDSHRIFT_BIN) objects | head -4 || exit 1; echo "=== relevance --target=c Thread ==="; $(NORDSHRIFT_BIN) relevance --target=c Thread || exit 1; echo "=== relevance --target=java (tally) ==="; $(NORDSHRIFT_BIN) relevance --target=java | tail -1 || exit 1
 test-math: $(BUILD)/math_native.o
