@@ -287,9 +287,6 @@ bool runM5(const std::string& source, Environment& env, const M5Runner& runner, 
         else { remainder += line; remainder.push_back('\n'); }
     }
 
-    std::string globbed;
-    if (rewriteMultiSegmentGlobs(remainder, globbed)) remainder = globbed;
-
     std::vector<pid_t> children; std::string rewritten;
     if (hasProcessSubstitution(remainder)) {
         if (!rewriteProcessSubstitution(remainder, rewritten, children, env, runner)) { status = 2; return true; }
