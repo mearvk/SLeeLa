@@ -2,6 +2,7 @@
 #include <vte/vte.h>
 
 #include <filesystem>
+#include <csignal>
 #include <string>
 #include <vector>
 
@@ -58,6 +59,23 @@ void child_exited(VteTerminal *, int, gpointer user_data) {
     gtk_window_set_title(window, kWindowTitle);
 }
 
+// Closing the GUI window must close the PTY-backed shell as well. Without an
+// explicit close handler GTK can destroy the window while the VTE child keeps
+// running, leaving slsh alive after the terminal window disappears.
+gboolean window_close_request(GtkWindow *window, gpointer user_data) {
+    auto *terminal = VTE_TERMINAL(user_data);
+    const GPid child_pid = vte_terminal_get_child_pid(terminal);
+    if (child_pid > 0) {
+        ::kill(static_cast<pid_t>(child_pid), SIGHUP);
+    }
+
+    // Explicitly quit the GtkApplication so closing the terminal window has
+    // the same lifecycle semantics as typing "exit" in slsh.
+    gtk_window_destroy(window);
+    g_application_quit(G_APPLICATION(gtk_window_get_application(window)));
+    return TRUE;
+}
+
 void activate(GtkApplication *application, gpointer user_data) {
     auto *state = static_cast<AppState *>(user_data);
 
@@ -86,6 +104,7 @@ void activate(GtkApplication *application, gpointer user_data) {
 
     gtk_window_set_child(GTK_WINDOW(window), terminal);
     g_signal_connect(terminal, "child-exited", G_CALLBACK(child_exited), window);
+    g_signal_connect(window, "close-request", G_CALLBACK(window_close_request), terminal);
 
     std::vector<char *> shell_argv;
     shell_argv.push_back(const_cast<char *>(state->shell_path.c_str()));
