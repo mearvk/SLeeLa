@@ -37,6 +37,54 @@ Modernity is `clamp((year - year_baseline) / year_span, 0..1)`. It scales the
 building form and feeds finality (below). For example `year = 2807` gives
 modernity `0.807`; `year = 2050` gives `0.05`.
 
+> **Three drivers shape the design:** the **Year** (modernity), the person's
+> **IQ** (design quality / order), and the person's native **Legislature** (the
+> regime that produces the city's lines and linear outcomes). All three are
+> config-driven and all three feed the model.
+
+### IQ — the person's IQ / the city's design quality
+
+The city is designed from the person's **IQ**. This is *both* a person-level
+input and, in the project's terms, a **system design-quality** metric — IQ means
+insight/quality, not a human psychometric rating. A higher IQ yields a
+better-planned city: more order and grid regularity, less random jitter, better
+connectivity (more bridges), and a higher baseline condition (finality).
+
+| Key | Type | Default | Meaning |
+|-----|------|---------|---------|
+| `iq` | int | `130` | The person's IQ (drives design quality) |
+| `iq_baseline` | int | `100` | IQ mapped to design quality `0` |
+| `iq_span` | float > 0 | `100` | IQ points above the baseline that reach design quality `1` |
+
+Design quality is `clamp((iq - iq_baseline) / iq_span, 0..1)`. For example
+`iq = 200` gives design quality `1.0`; `iq = 100` gives `0.0`; `iq = 150` gives
+`0.5`.
+
+### Legislature — the native regime that shapes the city's lines
+
+The person's **native legislature** is the defining characteristic of their
+nature and, in turn, their design; it selects a civic regime whose rules produce
+the city's **lines and linear outcomes** — how regular the grid is, how strongly
+corridors run in straight lines, which axis dominates, and how well they
+interconnect.
+
+| Key | Values | Default | Meaning |
+|-----|--------|---------|---------|
+| `legislature` | (see below) | `federal` | The civic regime shaping the layout |
+
+| Value | Lines / linear outcome |
+|-------|------------------------|
+| `federal` | strong balanced grid — two equal axes |
+| `parliamentary` | orderly grid with a dominant primary axis |
+| `municipal` | dense, very regular local blocks |
+| `bicameral` | two strong crossing axes — pronounced crossing lines |
+| `unicameral` | one dominant axis — banded, strongly linear city |
+| `direct` | looser, more organic lines (least regimented) |
+
+Each regime resolves to a profile (regularity, linearity, axis bias,
+connectivity, and road/bridge spacing adjustments) that, together with the IQ's
+order, determines the city's straight-line structure.
+
 ### Building quality targets
 
 Buildings vary around these targets; modernity scales them up as the city
@@ -67,13 +115,15 @@ that computed distance feeds finality through the weights below.
 
 Each building's **finality** is a score in `[0,1]`: how finished, modern, and
 well-conditioned it is. It is a normalized weighted mix of modernity (Year),
-floors, windows, and the computed proximity to the nearest road and bridge. The
-city-wide finality (mean over buildings) is reported by `city3d` and stored in
-the model. Higher finality renders brighter/cleaner; lower renders darker/duller.
+floors, windows, design quality (IQ), and the computed proximity to the nearest
+road and bridge. The city-wide finality (mean over buildings) is reported by
+`city3d` and stored in the model. Higher finality renders brighter/cleaner;
+lower renders darker/duller.
 
 | Key | Type | Default | Meaning |
 |-----|------|---------|---------|
 | `w_year` | float ≥ 0 | `1.0` | Weight of modernity (newer ⇒ higher finality) |
+| `w_iq` | float ≥ 0 | `0.7` | Weight of design quality (higher IQ ⇒ higher finality) |
 | `w_floors` | float ≥ 0 | `0.6` | Weight of floor count (more ⇒ more finished/dense) |
 | `w_windows` | float ≥ 0 | `0.6` | Weight of windows (more ⇒ more modern/glassy) |
 | `w_road_proximity` | float ≥ 0 | `0.8` | Weight of closeness to a road (better serviced) |
@@ -152,13 +202,16 @@ grid_rows = 64
 user      = ada
 seed      = 0
 
-# A modern, high-finality city.
+# A modern, high-finality, well-planned city with strongly linear lines.
 year          = 2807
+iq            = 165          # high design quality
+legislature   = unicameral   # one dominant axis -> banded, linear city
 avg_floors    = 16
 windows_per_floor = 8
 road_spacing  = 8
 bridge_count  = 6
-w_road_proximity = 0.8
+w_iq              = 0.7
+w_road_proximity  = 0.8
 
 theme        = blue
 draw_bridges = true

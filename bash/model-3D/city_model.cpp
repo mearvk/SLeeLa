@@ -73,6 +73,78 @@ double CityParams::modernity() const noexcept {
     return m < 0.0 ? 0.0 : (m > 1.0 ? 1.0 : m);
 }
 
+double CityParams::designQuality() const noexcept {
+    const double span = iq_span > 0.0 ? iq_span : 1.0;
+    const double q = (static_cast<double>(iq) -
+                      static_cast<double>(iq_baseline)) / span;
+    return q < 0.0 ? 0.0 : (q > 1.0 ? 1.0 : q);
+}
+
+LegislatureProfile CityParams::profile() const noexcept {
+    return LegislatureProfile::forLegislature(legislature);
+}
+
+// ---------------------------------------------------------------------------
+// Legislature (regime -> lines / linear outcomes)
+// ---------------------------------------------------------------------------
+
+const char* legislatureName(Legislature l) noexcept {
+    switch (l) {
+        case Legislature::Federal:       return "federal";
+        case Legislature::Parliamentary: return "parliamentary";
+        case Legislature::Municipal:     return "municipal";
+        case Legislature::Bicameral:     return "bicameral";
+        case Legislature::Unicameral:    return "unicameral";
+        case Legislature::Direct:        return "direct";
+    }
+    return "federal";
+}
+
+bool parseLegislature(const std::string& text, Legislature& out) noexcept {
+    std::string t;
+    t.reserve(text.size());
+    for (char c : text) t.push_back(static_cast<char>(std::tolower(
+        static_cast<unsigned char>(c))));
+    if (t == "federal")       { out = Legislature::Federal;       return true; }
+    if (t == "parliamentary") { out = Legislature::Parliamentary; return true; }
+    if (t == "municipal")     { out = Legislature::Municipal;     return true; }
+    if (t == "bicameral")     { out = Legislature::Bicameral;     return true; }
+    if (t == "unicameral")    { out = Legislature::Unicameral;    return true; }
+    if (t == "direct")        { out = Legislature::Direct;        return true; }
+    return false;
+}
+
+LegislatureProfile LegislatureProfile::forLegislature(Legislature l) noexcept {
+    LegislatureProfile p;
+    switch (l) {
+        case Legislature::Federal:  // strong balanced grid
+            p.regularity = 0.85; p.linearity = 0.75; p.axis_bias = 0.50;
+            p.connectivity = 0.80; p.road_spacing_delta = 0; p.bridge_count_delta = 0;
+            break;
+        case Legislature::Parliamentary:  // orderly, dominant primary axis
+            p.regularity = 0.80; p.linearity = 0.80; p.axis_bias = 0.30;
+            p.connectivity = 0.70; p.road_spacing_delta = 0; p.bridge_count_delta = 1;
+            break;
+        case Legislature::Municipal:  // dense, very regular local blocks
+            p.regularity = 0.95; p.linearity = 0.70; p.axis_bias = 0.50;
+            p.connectivity = 0.85; p.road_spacing_delta = -2; p.bridge_count_delta = 2;
+            break;
+        case Legislature::Bicameral:  // two strong crossing axes
+            p.regularity = 0.82; p.linearity = 0.90; p.axis_bias = 0.50;
+            p.connectivity = 0.75; p.road_spacing_delta = 0; p.bridge_count_delta = 2;
+            break;
+        case Legislature::Unicameral:  // one dominant axis -> banded, linear city
+            p.regularity = 0.78; p.linearity = 0.95; p.axis_bias = 0.15;
+            p.connectivity = 0.65; p.road_spacing_delta = 0; p.bridge_count_delta = 0;
+            break;
+        case Legislature::Direct:  // looser, more organic lines
+            p.regularity = 0.55; p.linearity = 0.45; p.axis_bias = 0.50;
+            p.connectivity = 0.55; p.road_spacing_delta = 1; p.bridge_count_delta = -1;
+            break;
+    }
+    return p;
+}
+
 // ---------------------------------------------------------------------------
 // Config parsing (simple `key = value`, `#` comments)
 // ---------------------------------------------------------------------------
@@ -194,6 +266,24 @@ Config Config::fromText(const std::string& text, std::string* error) {
             if (toDouble(val, d) && d > 0.0) cfg.params.year_span = d;
             else note("year_span invalid");
 
+        // ---- IQ (person + system design quality) ----
+        } else if (key == "iq") {
+            if (toU64(val, u)) cfg.params.iq = static_cast<std::uint32_t>(u);
+            else note("iq invalid");
+        } else if (key == "iq_baseline") {
+            if (toU64(val, u)) cfg.params.iq_baseline = static_cast<std::uint32_t>(u);
+            else note("iq_baseline invalid");
+        } else if (key == "iq_span") {
+            if (toDouble(val, d) && d > 0.0) cfg.params.iq_span = d;
+            else note("iq_span invalid");
+
+        // ---- Native legislature (regime -> lines / linear outcomes) ----
+        } else if (key == "legislature") {
+            Legislature lg;
+            if (parseLegislature(val, lg)) cfg.params.legislature = lg;
+            else note("legislature must be federal|parliamentary|municipal|"
+                      "bicameral|unicameral|direct");
+
         // ---- Building form / quality targets ----
         } else if (key == "avg_floors") {
             if (toDouble(val, d) && d >= 0.0) cfg.params.avg_floors = d;
@@ -216,6 +306,8 @@ Config Config::fromText(const std::string& text, std::string* error) {
         // ---- Finality weights ----
         } else if (key == "w_year") {
             if (toDouble(val, d) && d >= 0.0) cfg.params.w_year = d; else note("w_year invalid");
+        } else if (key == "w_iq") {
+            if (toDouble(val, d) && d >= 0.0) cfg.params.w_iq = d; else note("w_iq invalid");
         } else if (key == "w_floors") {
             if (toDouble(val, d) && d >= 0.0) cfg.params.w_floors = d; else note("w_floors invalid");
         } else if (key == "w_windows") {
@@ -303,8 +395,29 @@ void City::generate(std::uint64_t seed, const CityParams& params) {
     const double cx = (cols_ - 1) / 2.0;
     const double cy = (rows_ - 1) / 2.0;
     const double maxr = std::max(1.0, std::hypot(cx, cy));
-    const double modern = params_.modernity();  // 0 (old) .. 1 (new/modern)
-    const std::uint32_t spacing = std::max<std::uint32_t>(2, params_.road_spacing);
+    const double modern = params_.modernity();      // 0 (old) .. 1 (new/modern)
+    const double quality = params_.designQuality(); // 0 .. 1 from IQ
+    const LegislatureProfile reg = params_.profile();
+
+    // The legislature and IQ set the city's lines. Road spacing tightens with a
+    // regime's spacing delta; axis_bias decides which axis carries more lines
+    // (linear/banded regimes favor one axis). Higher IQ + regularity make the
+    // grid more orderly (less jitter).
+    long spacingL = static_cast<long>(params_.road_spacing) + reg.road_spacing_delta;
+    const std::uint32_t spacing = static_cast<std::uint32_t>(
+        std::max<long>(2, spacingL));
+    // With a strong axis bias, the minor axis's roads are spaced further apart,
+    // producing the banded/linear look. axis_bias 0.5 => both axes equal.
+    const double bias = reg.axis_bias;                 // 0..1
+    const std::uint32_t colSpacing = std::max<std::uint32_t>(2,
+        static_cast<std::uint32_t>(spacing * (1.0 + (0.5 - bias) * 2.0 * 0.8 * reg.linearity)));
+    const std::uint32_t rowSpacing = std::max<std::uint32_t>(2,
+        static_cast<std::uint32_t>(spacing * (1.0 + (bias - 0.5) * 2.0 * 0.8 * reg.linearity)));
+
+    // Order: high IQ and high regularity reduce random jitter, giving cleaner
+    // lines and heights. order in [0,1]; jitterScale shrinks as order rises.
+    const double order = std::min(1.0, 0.5 * quality + 0.5 * reg.regularity);
+    const double jitterScale = 1.0 - 0.8 * order;      // 1 (chaotic) .. 0.2 (crisp)
 
     // --- Pass 1: lay roads and place buildings -----------------------------
     for (std::uint32_t y = 0; y < rows_; ++y) {
@@ -312,7 +425,13 @@ void City::generate(std::uint64_t seed, const CityParams& params) {
             Block& b = at(x, y);
             b = Block{};  // reset
 
-            const bool road = (x % spacing == 0) || (y % spacing == 0);
+            // Roads run as straight lines on each axis; spacing per axis creates
+            // the legislature's linear outcome. A low-linearity (organic) regime
+            // occasionally drops a road cell so lines are less rigid.
+            bool road = (x % colSpacing == 0) || (y % rowSpacing == 0);
+            if (road && reg.linearity < 0.6 && rng.unit() > 0.5 + reg.linearity) {
+                road = false;  // break the line -> more organic
+            }
             if (road) {
                 b.cell = Cell::Road;
                 continue;
@@ -324,11 +443,13 @@ void City::generate(std::uint64_t seed, const CityParams& params) {
             const double dist = std::hypot(x - cx, y - cy) / maxr;  // 0..~1
             const double central = 1.0 - dist;                      // ~1 center
 
-            // Floors scale with the target and with modernity + centrality.
+            // Floors scale with the target, modernity, and centrality. Higher
+            // design quality lifts the baseline (better-planned density).
             const double floorBase =
                 params_.avg_floors * (0.4 + 0.9 * central * central) *
-                (0.7 + 0.6 * modern);
-            const double floorJitter = rng.unit() * (4.0 + 8.0 * modern) - 2.0;
+                (0.7 + 0.6 * modern) * (0.85 + 0.3 * quality);
+            const double floorJitter =
+                (rng.unit() * (4.0 + 8.0 * modern) - 2.0) * jitterScale;
             double floors = floorBase + floorJitter;
             // Occasional landmark tower (more common / taller in a modern city).
             if (rng.unit() < 0.008 + 0.02 * modern) {
@@ -339,9 +460,7 @@ void City::generate(std::uint64_t seed, const CityParams& params) {
 
             const double height = floors * params_.floor_height;
 
-            // Windows: per-floor target, richer (more glass) in a modern city,
-            // scaled by the building's footprint faces (approx one visible face
-            // column count times floors).
+            // Windows: per-floor target, richer (more glass) in a modern city.
             const double wpf = params_.windows_per_floor * (0.6 + 0.8 * modern);
             double windows = wpf * floors;
             if (windows < 0.0) windows = 0.0;
@@ -355,16 +474,21 @@ void City::generate(std::uint64_t seed, const CityParams& params) {
     }
 
     // --- Pass 2: place bridges (real features) -----------------------------
-    // A bridge is a straight span laid along a road corridor across a stretch
-    // of the city, marking those road cells as Bridge.
-    const std::uint32_t bridges = params_.bridge_count;
-    const std::uint32_t nLines = std::max<std::uint32_t>(1, cols_ / spacing);
+    // A bridge is a straight span laid along a road corridor. Connectivity
+    // (from IQ + the regime) adds bridges; the bridge_count delta adjusts too.
+    long bridgeL = static_cast<long>(params_.bridge_count) + reg.bridge_count_delta;
+    bridgeL += static_cast<long>(std::lround(reg.connectivity * 4.0 * (0.5 + quality)));
+    const std::uint32_t bridges = static_cast<std::uint32_t>(std::max<long>(0, bridgeL));
+    const std::uint32_t nColLines = std::max<std::uint32_t>(1, cols_ / colSpacing);
+    const std::uint32_t nRowLines = std::max<std::uint32_t>(1, rows_ / rowSpacing);
     for (std::uint32_t i = 0; i < bridges && cols_ > 4 && rows_ > 4; ++i) {
-        const bool horizontal = (rng.next() & 1u) != 0;
+        // Bias bridge orientation toward the regime's dominant axis so the
+        // linear outcome is reinforced. bias<0.5 favors horizontal lines.
+        const double roll = rng.unit();
+        const bool horizontal = roll > bias;
         if (horizontal) {
-            // Pick a road row, span a contiguous run of columns.
-            std::uint32_t line = (static_cast<std::uint32_t>(rng.next() % nLines)) * spacing;
-            if (line >= rows_) line = (rows_ - 1) / spacing * spacing;
+            std::uint32_t line = (static_cast<std::uint32_t>(rng.next() % nRowLines)) * rowSpacing;
+            if (line >= rows_) line = (rows_ - 1) / rowSpacing * rowSpacing;
             const std::uint32_t len = 4 + static_cast<std::uint32_t>(rng.next() % (cols_ / 2));
             std::uint32_t start = static_cast<std::uint32_t>(rng.next() % cols_);
             for (std::uint32_t k = 0; k < len && start + k < cols_; ++k) {
@@ -372,8 +496,8 @@ void City::generate(std::uint64_t seed, const CityParams& params) {
                 if (b.cell == Cell::Road) b.cell = Cell::Bridge;
             }
         } else {
-            std::uint32_t line = (static_cast<std::uint32_t>(rng.next() % nLines)) * spacing;
-            if (line >= cols_) line = (cols_ - 1) / spacing * spacing;
+            std::uint32_t line = (static_cast<std::uint32_t>(rng.next() % nColLines)) * colSpacing;
+            if (line >= cols_) line = (cols_ - 1) / colSpacing * colSpacing;
             const std::uint32_t len = 4 + static_cast<std::uint32_t>(rng.next() % (rows_ / 2));
             std::uint32_t start = static_cast<std::uint32_t>(rng.next() % rows_);
             for (std::uint32_t k = 0; k < len && start + k < rows_; ++k) {
@@ -457,13 +581,14 @@ void City::computeProximities() {
 void City::computeFinality() {
     const CityParams& p = params_;
     const double modern = p.modernity();
+    const double quality = p.designQuality();  // IQ -> design quality (0..1)
     const double falloff = p.proximity_falloff > 0.0 ? p.proximity_falloff : 1.0;
 
     // Normalization references for floors/windows (avoid divide-by-zero).
     const double floorRef = std::max(1.0, p.avg_floors * 2.0);
     const double windowRef = std::max(1.0, p.windows_per_floor * p.avg_floors * 2.0);
 
-    const double wSum = p.w_year + p.w_floors + p.w_windows +
+    const double wSum = p.w_year + p.w_iq + p.w_floors + p.w_windows +
                         p.w_road_proximity + p.w_bridge_proximity;
     const double inv = wSum > 0.0 ? 1.0 / wSum : 0.0;
 
@@ -478,6 +603,7 @@ void City::computeFinality() {
 
         const double score =
             (p.w_year * modern +
+             p.w_iq * quality +
              p.w_floors * fFloors +
              p.w_windows * fWindows +
              p.w_road_proximity * fRoad +
@@ -505,11 +631,14 @@ double City::cityFinality() const noexcept {
 // MODEL_FORMAT: a small, diff-friendly, GitHub/public-server-friendly text
 // format. Line-oriented ASCII.
 //
-// v2 (current):
-//   PHRAIGN-CITY 2
+// v3 (current):
+//   PHRAIGN-CITY 3
 //   user <name>
 //   seed <u64>
 //   year <u32>
+//   iq <u32>
+//   legislature <name>            (federal|parliamentary|municipal|
+//                                   bicameral|unicameral|direct)
 //   finality <city-finality 0..1>
 //   grid <cols> <rows>
 //   cell <y> <c0> <c1> ...        (0=building 1=road 2=bridge, per column)
@@ -519,19 +648,19 @@ double City::cityFinality() const noexcept {
 //   fin <y> <q0> <q1> ...         (per-building finality, 0..1000 integer)
 //   END
 //
-// v1 (legacy, still readable):
-//   PHRAIGN-CITY 1
-//   user/seed/grid + row <y> <heights...>
+// v2/v1 (legacy, still readable): v2 omits iq/legislature; v1 is height-only.
 //
 // A reader ignores unknown leading tokens for forward compatibility.
 // ---------------------------------------------------------------------------
 
 std::string City::serialize(const std::string& user, std::uint64_t seed) const {
     std::ostringstream out;
-    out << "PHRAIGN-CITY 2\n";
+    out << "PHRAIGN-CITY 3\n";
     out << "user " << user << "\n";
     out << "seed " << seed << "\n";
     out << "year " << params_.year << "\n";
+    out << "iq " << params_.iq << "\n";
+    out << "legislature " << legislatureName(params_.legislature) << "\n";
     out << "finality " << cityFinality() << "\n";
     out << "grid " << cols_ << " " << rows_ << "\n";
     for (std::uint32_t y = 0; y < rows_; ++y) {
@@ -571,6 +700,10 @@ bool City::deserialize(const std::string& text, City& out,
     std::string localUser;
     std::uint64_t localSeed = 0;
     std::uint32_t year = 0;
+    std::uint32_t iq = 0;
+    bool haveIq = false;
+    Legislature legislature = Legislature::Federal;
+    bool haveLeg = false;
     bool haveGrid = false;
 
     auto clampl = [](long v, long lo, long hi) -> long {
@@ -602,6 +735,11 @@ bool City::deserialize(const std::string& text, City& out,
             ls >> localSeed;
         } else if (key == "year") {
             ls >> year;
+        } else if (key == "iq") {
+            if (ls >> iq) haveIq = true;
+        } else if (key == "legislature") {
+            std::string name;
+            if (ls >> name && parseLegislature(name, legislature)) haveLeg = true;
         } else if (key == "finality") {
             // Informational; recomputed on generation. Ignored on read.
         } else if (key == "grid") {
@@ -637,6 +775,8 @@ bool City::deserialize(const std::string& text, City& out,
 
     if (!haveGrid) return false;
     if (year > 0) out.params_.year = year;
+    if (haveIq) out.params_.iq = iq;
+    if (haveLeg) out.params_.legislature = legislature;
     if (user) *user = localUser;
     if (seed) *seed = localSeed;
     return true;

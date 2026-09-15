@@ -100,14 +100,49 @@ struct RenderOptions {
 };
 
 // ---------------------------------------------------------------------------
-// Year / quality / finality parameters
+// Native legislature (the civic regime that shapes the city's lines)
 // ---------------------------------------------------------------------------
 
-// Generation parameters that describe the *kind* of city to build: the Year
-// (which drives how modern/new the city is) and the city-wide targets and
-// weights for building quality attributes. Buildings are generated around these
-// targets, then each building's finality (quality of condition) is computed
-// from its attributes and the Year, with the given weights.
+// A person's *native legislature* is the defining characteristic of their
+// nature and, in turn, their design. In City 3D it selects a civic regime whose
+// rules produce the city's lines and linear outcomes: how regular the grid is,
+// how strongly corridors run in straight lines, and how they are oriented and
+// connected. It is a named, enumerated regime (not a numeric knob).
+enum class Legislature {
+    Federal,        // strong straight grid, balanced two-axis layout
+    Parliamentary,  // orderly grid with a dominant primary axis
+    Municipal,      // dense, regular local blocks (very grid-like)
+    Bicameral,      // two strong axes -> pronounced crossing lines
+    Unicameral,     // one dominant axis -> strongly linear, banded city
+    Direct          // looser, more organic lines (least regimented)
+};
+
+const char* legislatureName(Legislature l) noexcept;
+bool parseLegislature(const std::string& text, Legislature& out) noexcept;
+
+// The linear "shape" a legislature imposes, resolved from the enum. These are
+// the lines/linear outcomes the regime produces.
+struct LegislatureProfile {
+    double regularity = 0.7;      // 0 organic .. 1 perfectly regular grid
+    double linearity = 0.6;       // how strongly corridors run in straight lines
+    double axis_bias = 0.5;       // 0 favor one axis .. 0.5 balanced .. 1 other
+    double connectivity = 0.6;    // how well corridors interconnect (bridges/roads)
+    std::int32_t road_spacing_delta = 0;  // adjust road_spacing (tighter/looser)
+    std::int32_t bridge_count_delta = 0;  // adjust bridge_count
+
+    static LegislatureProfile forLegislature(Legislature l) noexcept;
+};
+
+// ---------------------------------------------------------------------------
+// Year / IQ / legislature / quality / finality parameters
+// ---------------------------------------------------------------------------
+
+// Generation parameters that describe the *kind* of city to build. Three
+// drivers shape the design: the Year (modernity), the person's IQ (design
+// quality / order), and the person's native Legislature (the regime that
+// produces the city's lines and linear outcomes). Buildings are generated
+// around city-wide targets, then each building's finality (quality of
+// condition) is computed from its attributes and these drivers, with weights.
 struct CityParams {
     // The city's Year. A larger, more modern year makes the city newer: taller
     // buildings, more floors and windows, more glass, and better condition.
@@ -115,6 +150,18 @@ struct CityParams {
     std::uint32_t year = 2807;
     std::uint32_t year_baseline = 2000;  // year mapped to modernity 0
     double year_span = 1000.0;           // years above baseline for modernity 1
+
+    // The person's IQ. This is *both* a person-level input and, in the project's
+    // terms, a system design-quality metric (IQ = insight/quality, not a human
+    // psychometric rating). A higher IQ yields a better-planned city: more order
+    // and regularity, better connectivity, and higher baseline condition.
+    // designQuality = clamp((iq - iq_baseline) / iq_span, 0..1).
+    std::uint32_t iq = 130;
+    std::uint32_t iq_baseline = 100;   // iq mapped to design quality 0
+    double iq_span = 100.0;            // iq points above baseline for quality 1
+
+    // The person's native legislature: the regime that shapes the city's lines.
+    Legislature legislature = Legislature::Federal;
 
     // Building form targets (a building varies around these).
     double avg_floors = 14.0;         // target mean number of floors
@@ -129,6 +176,7 @@ struct CityParams {
     // quality-of-condition score (finality, 0..1). They are normalized, so only
     // their relative sizes matter.
     double w_year = 1.0;              // newer year -> higher finality
+    double w_iq = 0.7;               // higher IQ (design quality) -> higher finality
     double w_floors = 0.6;           // more floors -> more "finished"/dense
     double w_windows = 0.6;          // more windows -> more modern/glassy
     double w_road_proximity = 0.8;   // closer to a road -> better serviced
@@ -139,6 +187,10 @@ struct CityParams {
 
     // Modernity in [0,1] derived from the Year.
     double modernity() const noexcept;
+    // Design quality in [0,1] derived from the IQ.
+    double designQuality() const noexcept;
+    // The linear regime profile derived from the legislature.
+    LegislatureProfile profile() const noexcept;
 };
 
 // ---------------------------------------------------------------------------
