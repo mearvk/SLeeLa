@@ -5,8 +5,8 @@
 ║ Module:          AE6E66                                                     ║
 ║ Full Name:       UK Parliament Contact Module                               ║
 ║ Author:          Max Rupplin — MEARVK LLC                                  ║
-║ Version:         2.0 hardened baseline                                      ║
-║ Status:          Security-hardened; deployment verification required         ║
+║ Version:         2.1 hardened baseline                                      ║
+║ Status:          Security-hardened; implementation and deployment tests req.║
 ║ Path:            modules/AE6E66/                                            ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
 ║ PURPOSE                                                                      ║
@@ -22,10 +22,11 @@
 ║ Response limits:   Required                                                 ║
 ║ Concurrency:       Bounded                                                  ║
 ║ Rate limiting:     Required                                                 ║
-║ Source provenance: Required per record                                      ║
+║ Source provenance: Required for operational records                         ║
 ║ Identifier ranges: Not an authorization mechanism                            ║
 ║ Content trust:     Remote HTML/images treated as untrusted input            ║
 ║ Data minimization: Required                                                 ║
+║ Schema:            contact-schema.json                                      ║
 ║                                                                              ║
 ║ Collection must respect applicable access controls, terms, robots guidance, ║
 ║ and rate limits. Prefer authoritative indexes/APIs over brute-force ranges. ║
@@ -55,26 +56,27 @@
 ╠══════════════════════════════════════════════════════════════════════════════╣
 ║ Algorithm:          SHA-256                                                 ║
 ║ MD5:                Not used for security decisions                         ║
-║ Verification:       Mandatory before execution                              ║
+║ Verification:       Mandatory before execution, crawl, build, diagnostics   ║
 ║ Failure behavior:   FAIL CLOSED                                             ║
+║ Path safety:        Absolute, traversal, and symlink targets rejected       ║
 ║ Auto-restore:       Disabled                                                ║
 ║ Trust anchor:       Pinned approved commit/release                          ║
-║ Diagnostics:        Integrity verification precedes diagnostics              ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
 ║ PRIVILEGE                                                                     ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
 ║ Package install:    Not performed by module baseline                        ║
 ║ DNS changes:        Not performed                                           ║
 ║ Firewall changes:   Not performed                                           ║
-║ Network binding:   Not performed                                           ║
+║ Network binding:   Not performed                                            ║
 ║ Service enablement: Not performed                                           ║
 ║ Sudo:               Explicit administrator action only                      ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
 ║ DATA                                                                         ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
-║ contacts.csv:       Controlled public-source data                            ║
-║ Provenance:         Required                                                 ║
-║ Retention:          Configurable and documented                              ║
+║ contacts.csv:       Controlled public-source reference dataset              ║
+║ Schema:             contact-schema.json                                     ║
+║ Provenance:         Required for operational records                        ║
+║ Retention:          Configurable and documented                             ║
 ║ Private data:       Do not add merely because discoverable                  ║
 ║ Logs:               No credentials or unnecessary sensitive content          ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
@@ -83,10 +85,13 @@
 ║ README.md                         Human-readable module documentation         ║
 ║ SECURITY.md                       Security and data-protection standard       ║
 ║ DEPLOYMENT.md                     Safe deployment architecture               ║
+║ SOURCE-STATUS.md                  Implementation readiness status             ║
+║ TEST-PLAN.md                      Production security and test gate           ║
+║ contact-schema.json               Machine-readable contact schema             ║
 ║ configuration/ae6e66-config.example.xml  Secret-free configuration template ║
 ║ scripts/verify-integrity.sh       SHA-256 fail-closed verifier               ║
 ║ scripts/install-postfix-dovecot.sh MTA preflight only                       ║
-║ scripts/setup-dkim-lauradei.sh    DKIM/MTA preflight only                    ║
+║ scripts/setup-dkim.sh             DKIM/MTA preflight only                    ║
 ║ scripts/setup-mysql.sh            Database preflight only                    ║
 ║ contacts.csv                      Controlled public contact dataset            ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
