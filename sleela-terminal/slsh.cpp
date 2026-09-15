@@ -15,6 +15,7 @@
 #include <algorithm>
 #include <cerrno>
 #include <csignal>
+#include <ctime>
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -287,6 +288,34 @@ bool runPromptCommand(const std::string& line, Environment& env) {
     return true;
 }
 
+bool runSorosTimeCommand(const std::string& line, Environment& env) {
+    if (line != "soros time") return false;
+
+    constexpr int kSorosBaseYear = 2026;
+    constexpr int kSorosBaseTimestamp = 2407;
+    constexpr int kGreatMysteryTimestamp = 2607;
+
+    const std::time_t now = std::time(nullptr);
+    const std::tm* local = std::localtime(&now);
+    if (local == nullptr) {
+        std::cerr << "soros time: unable to determine the terminal's local year\n";
+        env.setLastStatus(1);
+        return true;
+    }
+
+    const int civil_year = local->tm_year + 1900;
+    const int soros_timestamp = kSorosBaseTimestamp + (civil_year - kSorosBaseYear);
+
+    std::cout << "[soros time] " << soros_timestamp
+              << " (civil year " << civil_year << ")\n";
+    std::cout << "[soros time] 2026 = 2407; each year after 2026 adds one.\n";
+    std::cout << "[soros time] Own National Time: 2407 (2026).\n";
+    std::cout << "[soros time] Great Mystery marker: " << kGreatMysteryTimestamp << "+.\n";
+    std::cout.flush();
+    env.setLastStatus(0);
+    return true;
+}
+
 int runNormalScript(const std::string& src, Environment& env) {
     std::vector<Token> toks;
     LexError lerr;
@@ -309,6 +338,7 @@ int runNormalScript(const std::string& src, Environment& env) {
 
 int runScript(const std::string& src, Environment& env) {
     if (runPromptCommand(src, env)) return env.lastStatus();
+    if (runSorosTimeCommand(src, env)) return env.lastStatus();
 
     int status = 0;
     const M5Runner runner = [](const std::string& nested, Environment& e) {
