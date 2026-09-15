@@ -16,7 +16,7 @@ HEADERS := core.hpp arith.hpp lexer.hpp parser.hpp expand.hpp executor.hpp m5.hp
 SLSH  := $(BUILD)/slsh
 SMOKE := $(BUILD)/smoke
 
-.PHONY: all smoke test m5-smoke clean
+.PHONY: all smoke test m5-smoke sanitize fuzz clean
 
 all: $(SLSH) $(SMOKE)
 
@@ -39,3 +39,16 @@ test: smoke m5-smoke
 
 clean:
 	rm -rf $(BUILD)
+
+# Security validation builds. These intentionally use debug-friendly flags.
+SANITIZE_FLAGS := -std=c++17 -O1 -g -Wall -Wextra -fno-omit-frame-pointer -fsanitize=address,undefined
+sanitize: | $(BUILD)
+	$(CXX) $(SANITIZE_FLAGS) $(CLI_SRC) -o $(BUILD)/slsh-sanitize
+	$(CXX) $(SANITIZE_FLAGS) $(SMOKE_SRC) -o $(BUILD)/smoke-sanitize
+	ASAN_OPTIONS=detect_leaks=1:halt_on_error=1 $(BUILD)/smoke-sanitize
+
+# Lightweight lexer/parser fuzz target. The harness is intentionally separate
+# from the production binary and is consumed by libFuzzer-capable toolchains.
+FUZZ_SRC := fuzz.cpp
+fuzz: | $(BUILD)
+	$(CXX) -std=c++17 -O1 -g -Wall -Wextra -fsanitize=fuzzer,address,undefined $(FUZZ_SRC) $(CORE_SRC) -o $(BUILD)/slsh-fuzz
