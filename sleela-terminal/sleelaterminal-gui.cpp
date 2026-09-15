@@ -48,12 +48,19 @@ void install_css() {
             font-weight: 700;
         }
         headerbar.sleela-titlebar button.titlebutton {
-            color: #f2eaff;
+            color: #ffffff;
+            background: transparent;
             -gtk-icon-style: symbolic;
+            opacity: 1;
         }
         headerbar.sleela-titlebar button.titlebutton:hover,
         headerbar.sleela-titlebar button.titlebutton:focus {
             color: #ffffff;
+            background: rgba(255, 255, 255, 0.10);
+        }
+        headerbar.sleela-titlebar button.titlebutton:active {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.18);
         }
     )CSS";
 
