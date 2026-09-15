@@ -84,6 +84,21 @@ std::vector<std::string> Environment::exportedEnviron() const {
     }
     return out;
 }
+}
+
+Environment Environment::scopedCopy() const {
+    Environment copy;
+    copy.vars_ = vars_;
+    copy.functions_ = functions_;
+    copy.positionals_ = positionals_;
+    copy.last_status_ = last_status_;
+    copy.should_exit_ = false;
+    copy.exit_code_ = 0;
+    copy.loop_break_ = 0;
+    copy.loop_continue_ = 0;
+    copy.jobs_.clear();
+    copy.next_job_id_ = 1;
+    return copy;
 
 void Environment::defineFunction(const std::string& name, std::shared_ptr<Node> body) {
     functions_[name] = std::move(body);
