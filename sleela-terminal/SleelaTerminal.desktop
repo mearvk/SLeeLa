@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=SleelaTerminal™
+GenericName=Terminal Emulator
+Comment=SLeeLa shell in a dedicated graphical terminal window
+Exec=SleelaTerminal
+Icon=utilities-terminal
+Terminal=false
+Categories=System;TerminalEmulator;Utility;
+StartupWMClass=com.mearvk.SleelaTerminal
