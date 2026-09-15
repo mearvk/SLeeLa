@@ -1,0 +1,178 @@
+#sleela 1.2
+// 1/assumptions/assumptions.sleela
+// A moral model over foundational human-nature / construction "lengths".
+//
+// Each Assumption is a count-as-length with a process speed and a flag saying
+// whether the behavior LENGTHENS base reality (builds/grows/continues) or merely
+// SUBSTITUTES (churns). The model derives, for each:
+//   duration    = length / speed          (years to lay the length down)
+//   habituality = clamp(speed / length)   (how repeated the act is vs its span)
+//   growth      = +1 if lengthening else -1
+//   moral score = moral_weight * growth * (0.5 + 0.5*habituality)
+// and classifies each assumption's bearing on base reality Direct/Model/None
+// (the /1 Nordshrift relevance vocabulary, on |moral score|). It prints a
+// mathematical summary, a paragraph moral evaluation, and a model-level
+// plan/growth reading.
+//
+// Every input is ASSUMED, not measured (see assumptions.csv / ASSUMPTIONS.md).
+// The scores are a transparent function of the assumptions, not a judgment of
+// any person.
+import math;
+
+struct Assumption {
+    String name;
+    double length;       // units that go into one whole
+    double speed;        // units per year (speed of the process)
+    int    lengthening;  // 1 = lengthens base reality, 0 = substitutes
+    double moralWeight;  // 0..1 importance to base reality
+}
+
+class MoralModel {
+
+    double duration(Assumption a) {
+        if (a.speed <= 0.0) { return 0.0; }
+        return a.length / a.speed;
+    }
+
+    // How habitual the act is relative to its span, clamped to [0,1].
+    double habituality(Assumption a) {
+        if (a.length <= 0.0) { return 0.0; }
+        return math.clamp(a.speed / a.length, 0.0, 1.0);
+    }
+
+    double growth(Assumption a) {
+        if (a.lengthening == 1) { return 1.0; }
+        return -1.0;
+    }
+
+    // Signed contribution to the moral aggregate.
+    double moralScore(Assumption a) {
+        return a.moralWeight * growth(a) * (0.5 + 0.5 * habituality(a));
+    }
+
+    // Direct / Model / None on the magnitude of the moral score.
+    String relevance(double score) {
+        double s = math.abs(score);
+        if (s >= 0.85) { return "Direct"; }
+        if (s >= 0.5) { return "Model"; }
+        return "None";
+    }
+
+    String posture(Assumption a) {
+        if (a.lengthening == 1) { return "lengthening"; }
+        return "substituting";
+    }
+
+    void reportMath(Assumption a) {
+        print("  " + a.name);
+        print("    length=" + a.length + "  speed=" + a.speed
+            + "/yr  duration=" + duration(a) + "y  habituality=" + habituality(a));
+        print("    posture=" + posture(a) + "  moralScore=" + moralScore(a)
+            + "  [" + relevance(moralScore(a)) + "]");
+    }
+
+    void sentence(Assumption a) {
+        double score = moralScore(a);
+        print("  " + a.name + " is " + posture(a)
+            + " at " + a.speed + "/yr over a length of " + a.length
+            + "; it bears a " + relevance(score)
+            + " moral relevance to base reality (score " + score + "), "
+            + verdict(score) + ".");
+    }
+
+    String verdict(double score) {
+        if (score >= 0.5) { return "it inhabits and grows base reality"; }
+        if (score > 0.0) { return "it adds modest real extent"; }
+        if (score > -0.5) { return "it mostly churns without added extent"; }
+        return "it substitutes against base reality";
+    }
+
+    void main() {
+        print("=== /1 Assumptions -- moral model over foundational lengths ===");
+        print("Relevance by |moral score|: Direct >= 0.85, Model >= 0.50, else None.");
+        print("All inputs ASSUMED (see assumptions.csv). Scores judge processes, not people.");
+        print("");
+
+        // --- seed assumptions (mirror of assumptions.csv) ---
+        Assumption hs = new Assumption();
+        hs.name = "Human lengths per high-school education";
+        hs.length = 4.0; hs.speed = 1.0; hs.lengthening = 1; hs.moralWeight = 0.9;
+
+        Assumption college = new Assumption();
+        college.name = "Life norms per college education";
+        college.length = 8.0; college.speed = 2.0; college.lengthening = 1; college.moralWeight = 0.9;
+
+        Assumption boards = new Assumption();
+        boards.name = "2x4s per family-man-year at Home Depot";
+        boards.length = 120.0; boards.speed = 120.0; boards.lengthening = 1; boards.moralWeight = 0.7;
+
+        Assumption dates = new Assumption();
+        dates.name = "Dates per pretty girl in a small town";
+        dates.length = 15.0; dates.speed = 5.0; dates.lengthening = 1; dates.moralWeight = 0.6;
+
+        Assumption children = new Assumption();
+        children.name = "Children raised per family";
+        children.length = 2.1; children.speed = 0.1; children.lengthening = 1; children.moralWeight = 1.0;
+
+        Assumption tests = new Assumption();
+        tests.name = "Tests written per feature (code about code)";
+        tests.length = 6.0; tests.speed = 6.0; tests.lengthening = 1; tests.moralWeight = 0.8;
+
+        Assumption rewrites = new Assumption();
+        rewrites.name = "Rewrites per module per year (code about code)";
+        rewrites.length = 3.0; rewrites.speed = 3.0; rewrites.lengthening = 0; rewrites.moralWeight = 0.4;
+
+        Assumption jobs = new Assumption();
+        jobs.name = "Job changes per working lifetime";
+        jobs.length = 7.0; jobs.speed = 0.17; jobs.lengthening = 0; jobs.moralWeight = 0.4;
+
+        print("[mathematical] per-assumption");
+        reportMath(hs);
+        reportMath(college);
+        reportMath(boards);
+        reportMath(dates);
+        reportMath(children);
+        reportMath(tests);
+        reportMath(rewrites);
+        reportMath(jobs);
+        print("");
+
+        print("[evaluation] moral reading");
+        sentence(hs);
+        sentence(college);
+        sentence(boards);
+        sentence(dates);
+        sentence(children);
+        sentence(tests);
+        sentence(rewrites);
+        sentence(jobs);
+        print("");
+
+        // --- model-level aggregate: plan / growth / habituality ---
+        double agg = moralScore(hs) + moralScore(college) + moralScore(boards)
+            + moralScore(dates) + moralScore(children) + moralScore(tests)
+            + moralScore(rewrites) + moralScore(jobs);
+        double n = 8.0;
+        double avg = agg / n;
+        double habAvg = (habituality(hs) + habituality(college) + habituality(boards)
+            + habituality(dates) + habituality(children) + habituality(tests)
+            + habituality(rewrites) + habituality(jobs)) / n;
+
+        print("[aggregate] plan / growth / habituality");
+        print("  aggregate moral score: " + agg);
+        print("  average per assumption: " + avg + "  [" + relevance(avg) + "]");
+        print("  average habituality:    " + habAvg);
+        print("  model posture: " + planPosture(avg)
+            + " (optimizing for lengthening at sustainable speed).");
+        print("");
+        print("Note: a moral model of code-about-code, ethics, and Longs.");
+        print("It prefers processes that lay down real length and habituate a good");
+        print("over ones that only substitute. Inputs are assumptions to argue with.");
+    }
+
+    String planPosture(double avg) {
+        if (avg >= 0.5) { return "growth-oriented"; }
+        if (avg > 0.0) { return "mildly growth-oriented"; }
+        return "churn-prone";
+    }
+}
