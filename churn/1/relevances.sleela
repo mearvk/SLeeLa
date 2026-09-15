@@ -1,5 +1,5 @@
 #sleela 1.2
-// 1/relevances.sleela  --  "Longs": relevances among US economic length series.
+// churn/1/relevances.sleela  --  "Longs": relevances among US economic length series.
 //
 // Each `Long` is a length series (a magnitude that runs over 2019..2024). The
 // model computes, for every pair of lengths, the Pearson correlation r via the
