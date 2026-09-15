@@ -215,7 +215,8 @@ bool rewriteProcessSubstitution(const std::string& src, std::string& rewritten,
             if (pid < 0) { ::unlink(tmpl); return false; }
             if (pid == 0) {
                 Environment childEnv = env;
-                int io = ::open(tmpl, mode == '<' ? O_WRONLY : O_RDONLY); if (io < 0) _exit(126);
+                // O_RDWR prevents a FIFO open deadlock while the parent is still starting the consumer.
+                int io = ::open(tmpl, O_RDWR | O_CLOEXEC); if (io < 0) _exit(126);
                 ::dup2(io, mode == '<' ? STDOUT_FILENO : STDIN_FILENO); ::close(io);
                 int rc = runner(cmd, childEnv); _exit(rc & 0xff);
             }
