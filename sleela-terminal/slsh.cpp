@@ -99,6 +99,8 @@ int runNormalScript(const std::string& src, Environment& env) {
 }
 
 int runScript(const std::string& src, Environment& env) {
+    if (runPromptCommand(src, env)) return env.lastStatus();
+
     int status = 0;
     const M5Runner runner = [](const std::string& nested, Environment& e) {
         return runScript(nested, e);
@@ -114,11 +116,6 @@ int repl(Environment& env) {
         std::cout << env.prompt() << std::flush;
         if (!std::getline(std::cin, line)) { std::cout << "\n"; break; }
         if (line.empty()) continue;
-
-        if (runPromptCommand(line, env)) {
-            if (env.shouldExit()) return env.exitCode();
-            continue;
-        }
 
         runScript(line, env);
         if (env.shouldExit()) return env.exitCode();
