@@ -13,6 +13,8 @@ constexpr const char *kWindowTitle = "SleelaTerminal™ — MEARVK LLC";
 
 struct AppState {
     std::string shell_path;
+    GtkWindow *window = nullptr;
+    GPid child_pid = 0;
 };
 
 std::string sibling_path(const char *argv0, const char *name) {
@@ -55,18 +57,33 @@ void install_css() {
 }
 
 void child_exited(VteTerminal *, int, gpointer user_data) {
-    GtkWindow *window = GTK_WINDOW(user_data);
-    gtk_window_set_title(window, kWindowTitle);
+    auto *state = static_cast<AppState *>(user_data);
+    state->child_pid = 0;
+    if (state->window != nullptr) {
+        gtk_window_set_title(state->window, kWindowTitle);
+    }
+}
+
+// VTE's GTK4 API does not expose vte_terminal_get_child_pid(). The spawn
+// completion callback supplies the child PID, so retain it in AppState and
+// use that PID when the window is closed.
+void shell_spawned(VteTerminal *, GPid child_pid, GError *error, gpointer user_data) {
+    auto *state = static_cast<AppState *>(user_data);
+    if (error != nullptr || child_pid <= 0) {
+        state->child_pid = 0;
+        return;
+    }
+    state->child_pid = child_pid;
 }
 
 // Closing the GUI window must close the PTY-backed shell as well. Without an
 // explicit close handler GTK can destroy the window while the VTE child keeps
 // running, leaving slsh alive after the terminal window disappears.
 gboolean window_close_request(GtkWindow *window, gpointer user_data) {
-    auto *terminal = VTE_TERMINAL(user_data);
-    const GPid child_pid = vte_terminal_get_child_pid(terminal);
-    if (child_pid > 0) {
-        ::kill(static_cast<pid_t>(child_pid), SIGHUP);
+    auto *state = static_cast<AppState *>(user_data);
+    if (state->child_pid > 0) {
+        ::kill(static_cast<pid_t>(state->child_pid), SIGHUP);
+        state->child_pid = 0;
     }
 
     // Explicitly quit the GtkApplication so closing the terminal window has
@@ -82,8 +99,9 @@ void activate(GtkApplication *application, gpointer user_data) {
     install_css();
 
     GtkWidget *window = gtk_application_window_new(application);
-    gtk_window_set_title(GTK_WINDOW(window), kWindowTitle);
-    gtk_window_set_default_size(GTK_WINDOW(window), 1100, 700);
+    state->window = GTK_WINDOW(window);
+    gtk_window_set_title(state->window, kWindowTitle);
+    gtk_window_set_default_size(state->window, 1100, 700);
 
     GtkWidget *header = gtk_header_bar_new();
     gtk_widget_add_css_class(header, "sleela-titlebar");
@@ -91,7 +109,7 @@ void activate(GtkApplication *application, gpointer user_data) {
 
     GtkWidget *title = gtk_label_new(kWindowTitle);
     gtk_header_bar_set_title_widget(GTK_HEADER_BAR(header), title);
-    gtk_window_set_titlebar(GTK_WINDOW(window), header);
+    gtk_window_set_titlebar(state->window, header);
 
     GtkWidget *terminal = vte_terminal_new();
     gtk_widget_set_hexpand(terminal, TRUE);
@@ -102,9 +120,9 @@ void activate(GtkApplication *application, gpointer user_data) {
     vte_terminal_set_font(VTE_TERMINAL(terminal), font);
     pango_font_description_free(font);
 
-    gtk_window_set_child(GTK_WINDOW(window), terminal);
-    g_signal_connect(terminal, "child-exited", G_CALLBACK(child_exited), window);
-    g_signal_connect(window, "close-request", G_CALLBACK(window_close_request), terminal);
+    gtk_window_set_child(state->window, terminal);
+    g_signal_connect(terminal, "child-exited", G_CALLBACK(child_exited), state);
+    g_signal_connect(state->window, "close-request", G_CALLBACK(window_close_request), state);
 
     std::vector<char *> shell_argv;
     shell_argv.push_back(const_cast<char *>(state->shell_path.c_str()));
@@ -122,10 +140,10 @@ void activate(GtkApplication *application, gpointer user_data) {
         nullptr,
         -1,
         nullptr,
-        nullptr,
-        nullptr);
+        shell_spawned,
+        state);
 
-    gtk_window_present(GTK_WINDOW(window));
+    gtk_window_present(state->window);
 }
 
 } // namespace
