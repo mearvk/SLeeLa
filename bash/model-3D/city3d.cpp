@@ -108,11 +108,15 @@ int doGenerate(int argc, char** argv) {
     const std::uint64_t seed = cfg.seed ? cfg.seed : seedForUser(cfg.user);
 
     City city(cfg.grid_cols, cfg.grid_rows);
-    city.generate(seed);
+    city.generate(seed, cfg.params);
 
     std::cout << "generated city: " << cfg.grid_cols << "x" << cfg.grid_rows
               << " = " << city.blockCount() << " blocks; user='" << cfg.user
               << "' seed=" << seed << " theme=" << themeName(cfg.theme) << "\n";
+    std::cout << "  year=" << cfg.params.year
+              << " modernity=" << cfg.params.modernity()
+              << " finality=" << city.cityFinality()
+              << " (city quality of condition, 0..1)\n";
 
     const std::string out = argValue(argc, argv, "--out");
     if (!out.empty()) {
@@ -154,6 +158,9 @@ int doRender(int argc, char** argv) {
     std::cout << "loaded model: " << city.cols() << "x" << city.rows()
               << " = " << city.blockCount() << " blocks; user='" << user
               << "' seed=" << seed << " theme=" << themeName(cfg.theme) << "\n";
+    std::cout << "  year=" << city.params().year
+              << " finality=" << city.cityFinality()
+              << " (city quality of condition, 0..1)\n";
 
     sleela::terminal::PixelTerminal term(
         sleela::terminal::Size{cfg.frame_width, cfg.frame_height});

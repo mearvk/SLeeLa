@@ -79,14 +79,14 @@ struct Viewpoint {
 
     // Pixels per world unit along X (east/west) and per unit of building height.
     double scale_x = 9.0;
-    double scale_height = 3.0;
+    double scale_height = 1.1;
 
     // Pixels between block centers on the ground grid.
     double block_pitch = 9.0;
 
     // Screen origin (pixels) where world (0,0) ground point lands.
     double origin_x = 150.0;
-    double origin_y = 210.0;
+    double origin_y = 380.0;
 };
 
 // Everything needed to render, resolved from a Config.
@@ -95,6 +95,50 @@ struct RenderOptions {
     Viewpoint viewpoint{};
     std::size_t frame_width = 1024;
     std::size_t frame_height = 768;
+    bool draw_bridges = true;
+    bool draw_windows = true;
+};
+
+// ---------------------------------------------------------------------------
+// Year / quality / finality parameters
+// ---------------------------------------------------------------------------
+
+// Generation parameters that describe the *kind* of city to build: the Year
+// (which drives how modern/new the city is) and the city-wide targets and
+// weights for building quality attributes. Buildings are generated around these
+// targets, then each building's finality (quality of condition) is computed
+// from its attributes and the Year, with the given weights.
+struct CityParams {
+    // The city's Year. A larger, more modern year makes the city newer: taller
+    // buildings, more floors and windows, more glass, and better condition.
+    // Concretely, modernity = clamp((year - year_baseline) / year_span, 0..1).
+    std::uint32_t year = 2807;
+    std::uint32_t year_baseline = 2000;  // year mapped to modernity 0
+    double year_span = 1000.0;           // years above baseline for modernity 1
+
+    // Building form targets (a building varies around these).
+    double avg_floors = 14.0;         // target mean number of floors
+    double floor_height = 3.0;        // world units per floor (height = floors*this)
+    double windows_per_floor = 6.0;   // target windows on a visible face per floor
+
+    // Street / bridge layout (real features).
+    std::uint32_t road_spacing = 8;   // every Nth row/col is a road corridor
+    std::uint32_t bridge_count = 6;   // number of bridges spanning the city
+
+    // Finality weights: how much each factor contributes to a building's
+    // quality-of-condition score (finality, 0..1). They are normalized, so only
+    // their relative sizes matter.
+    double w_year = 1.0;              // newer year -> higher finality
+    double w_floors = 0.6;           // more floors -> more "finished"/dense
+    double w_windows = 0.6;          // more windows -> more modern/glassy
+    double w_road_proximity = 0.8;   // closer to a road -> better serviced
+    double w_bridge_proximity = 0.5; // closer to a bridge -> better connected
+
+    // Distance (in blocks) at which road/bridge proximity benefit fades to 0.
+    double proximity_falloff = 6.0;
+
+    // Modernity in [0,1] derived from the Year.
+    double modernity() const noexcept;
 };
 
 // ---------------------------------------------------------------------------
@@ -110,11 +154,16 @@ struct Config {
     std::uint64_t seed = 0;         // 0 => derive from user name
     std::string user;               // per-user identity
 
+    // Year, quality targets, proximity/finality weights.
+    CityParams params{};
+
     // Appearance / view
     Theme theme = Theme::Green;
     Viewpoint viewpoint{};
     std::size_t frame_width = 1024;
     std::size_t frame_height = 768;
+    bool draw_bridges = true;
+    bool draw_windows = true;
 
     // Persistence: where a saved model is meant to live.
     //   save_target: "github" | "server" | "local"
@@ -133,8 +182,30 @@ struct Config {
 // City model
 // ---------------------------------------------------------------------------
 
+// What occupies a grid cell.
+enum class Cell : std::uint8_t {
+    Building = 0,  // a lot with a building (height may still be 0 for empty)
+    Road = 1,      // a street/road corridor
+    Bridge = 2     // a bridge span (an elevated road feature)
+};
+
+// One grid cell: a building with quality attributes, or a road/bridge feature.
+// The finality field is the building's quality-of-condition score in [0,1].
 struct Block {
-    std::uint16_t height = 0;  // building height in world units (0 = empty lot)
+    Cell cell = Cell::Building;
+    std::uint16_t height = 0;   // building height in world units (0 = empty lot)
+    std::uint16_t floors = 0;   // number of floors
+    std::uint16_t windows = 0;  // windows on a visible face (detailing cue)
+
+    // Computed proximities, in blocks, to the nearest road / bridge.
+    float road_distance = 0.0f;
+    float bridge_distance = 0.0f;
+
+    // Quality of condition ("finality") in [0,1]: how finished, modern, and
+    // well-conditioned this building is. Higher = newer/better.
+    float finality = 0.0f;
+
+    bool isBuilding() const noexcept { return cell == Cell::Building; }
 };
 
 class City {
@@ -151,19 +222,37 @@ public:
     const Block& at(std::uint32_t x, std::uint32_t y) const;
     Block& at(std::uint32_t x, std::uint32_t y);
 
-    // Procedurally fill the grid from a seed. Same seed => same city.
-    void generate(std::uint64_t seed);
+    // The generation parameters that produced (or should produce) this city.
+    const CityParams& params() const noexcept { return params_; }
+
+    // City-wide finality: the mean quality-of-condition over all buildings, in
+    // [0,1]. Represents the city's overall "model of finality".
+    double cityFinality() const noexcept;
+
+    // Procedurally build the city from a seed and parameters. Lays roads and
+    // bridges (real features), computes each building's proximity to the
+    // nearest road and bridge, derives floors/windows/height from the Year, and
+    // computes per-building finality. Same seed + params => same city.
+    void generate(std::uint64_t seed, const CityParams& params);
+    // Back-compat convenience: generate with default parameters.
+    void generate(std::uint64_t seed) { generate(seed, CityParams{}); }
 
     // Serialize / deserialize a portable text form (see MODEL_FORMAT in .cpp).
+    // Serialization writes format v2 (with attributes); deserialization reads
+    // both v2 and the older v1 (height-only) format.
     std::string serialize(const std::string& user, std::uint64_t seed) const;
     static bool deserialize(const std::string& text, City& out,
                             std::string* user = nullptr,
                             std::uint64_t* seed = nullptr);
 
 private:
+    void computeProximities();
+    void computeFinality();
+
     std::uint32_t cols_ = 0;
     std::uint32_t rows_ = 0;
     std::vector<Block> blocks_;
+    CityParams params_{};
 };
 
 // Derive a stable 64-bit seed from a user name (used when config seed == 0).
