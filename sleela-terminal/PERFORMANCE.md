@@ -236,3 +236,62 @@ The direction is strong. The next advancement toward **GREAT** should come from 
 
 This classification is an engineering review judgment, not a formal security certification.
 
+
+
+## 20. Next-step validation and hardening
+
+The review now advances from feature completion toward **validation depth**.
+
+### Improvements implemented
+
+1. **Redirection failure handling**
+   - `dup2()` failures are now checked rather than silently ignored.
+   - Heredoc descriptor setup also reports and propagates descriptor errors.
+
+2. **Sanitizer target**
+   - `make sanitize` builds the terminal and smoke test with AddressSanitizer and UndefinedBehaviorSanitizer.
+   - Leak detection is enabled for the smoke run.
+
+3. **Lexer/parser fuzz target**
+   - `fuzz.cpp` supplies a bounded libFuzzer harness.
+   - Inputs exercise lexing first and parsing when lexical analysis succeeds.
+   - A 64 KiB input ceiling prevents the harness from becoming an uncontrolled resource test.
+
+### Recommended validation sequence
+
+```
+make clean
+make
+make test
+make sanitize
+make fuzz
+```
+
+`make fuzz` requires a compiler/toolchain that supports `-fsanitize=fuzzer`. On toolchains without libFuzzer, the source remains suitable for an equivalent fuzzing harness.
+
+### What this closes
+
+This pass moves SLeeLa from primarily feature-oriented review toward repeatable memory-safety, undefined-behavior, parser robustness, and descriptor-error validation.
+
+### What remains before GREAT
+
+The following remain explicit gates:
+
+- Linux job-control/process-group integration tests;
+- Windows-native terminal/PTY implementation and tests where Windows support is targeted;
+- descriptor-leak tests across pipelines, substitutions, and redirections;
+- signal/trap stress tests;
+- command-substitution and pipeline exit-status conformance tests;
+- filesystem race/symlink test matrix;
+- long-running resource-limit tests;
+- repeatable performance benchmarks;
+- fuzz corpus retention and CI integration.
+
+### Updated grade
+
+**Current engineering grade: BETTER+**
+
+The plus indicates that the framework has moved beyond a basic development assessment through seeded hardening and validation infrastructure. It is still not **GREAT** because the remaining gates require demonstrated cross-platform and long-running behavioral evidence, not merely source-level design.
+
+**Target:** GREAT after the validation gates above pass consistently.
+
