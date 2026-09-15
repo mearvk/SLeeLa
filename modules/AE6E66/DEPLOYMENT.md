@@ -15,16 +15,17 @@ AE6E66 is deployed as an application module. Host-level services are configured 
 
 ## Deployment sequence
 
-1. Obtain a reviewed, pinned repository commit.
-2. Run `scripts/verify-integrity.sh` against the approved manifest.
+1. Obtain a reviewed, pinned repository commit or release.
+2. Verify the approved SHA-256 manifest before build, execution, crawl, diagnostics, and message preparation.
 3. Run the module preflight checks.
 4. Supply deployment-specific values using the example configuration as a template.
-5. Configure the database using an administrator-managed secret store.
-6. Configure an already-approved MTA independently of AE6E66.
+5. Configure the database using an administrator-managed secret store and verify local scope, minimum grants, and TLS requirements.
+6. Configure an already-approved MTA independently of AE6E66 and pass the MTA/DKIM preflights.
 7. Run collection in dry-run mode.
-8. Review the proposed records and message recipients.
-9. Enable delivery explicitly, with a documented rate limit.
-10. Monitor logs and verify the integrity manifest after changes.
+8. Validate records against `contact-schema.json` and review provenance/freshness.
+9. Review proposed recipients and message content.
+10. Enable delivery explicitly, with a documented rate limit.
+11. Monitor logs and verify the integrity manifest after changes.
 
 ## Mail architecture
 
@@ -56,4 +57,4 @@ This prevents accidental commits and makes backup/retention controls easier.
 
 The repository may contain platform-specific helpers, but platform-specific installation is not considered portable merely because a script exists. Each platform requires an actual tested implementation and documented prerequisite set.
 
-Until a platform is tested, it is documented as **unverified**, not production-ready.
+Until a platform is tested, it is documented as **unverified**, not production-ready. See `TEST-PLAN.md`.
