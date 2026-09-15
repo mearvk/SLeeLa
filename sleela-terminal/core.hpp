@@ -169,6 +169,9 @@ public:
     // The exported subset, as "name=value" strings (for execve/posix_spawn).
     std::vector<std::string> exportedEnviron() const;
 
+    // Create a child environment without changing the shell's own variables.
+    Environment scopedCopy() const;
+
     // Shell functions: name -> body (a List node). Bodies are shared so a
     // definition can outlive the AST that declared it during a call.
     void defineFunction(const std::string& name, std::shared_ptr<Node> body);
