@@ -19,6 +19,8 @@
 #include "render_group.hpp"
 #include "render_math.hpp"
 
+#include <algorithm>
+
 namespace sleela::city {
 
 namespace {
@@ -52,6 +54,16 @@ Quad worldQuad(const ObliqueCamera& cam,
     return Quad{{cam.project(a), cam.project(b), cam.project(c), cam.project(d)}};
 }
 
+// Map a building's finality (quality of condition, 0..1) to a brightness
+// factor. Well-conditioned/modern buildings render brighter and cleaner; poor
+// (unfinished/aged) ones render darker and duller. A finality of ~0.55 renders
+// at the palette's nominal tone (factor 1.0).
+double conditionFactor(double finality) {
+    // 0 -> 0.6 (dull), 0.55 -> 1.0 (nominal), 1 -> ~1.32 (bright/clean).
+    const double f = finality < 0.0 ? 0.0 : (finality > 1.0 ? 1.0 : finality);
+    return 0.6 + 0.72 * f;
+}
+
 } // namespace
 
 std::size_t Renderer::render(const City& city,
@@ -82,40 +94,104 @@ std::size_t Renderer::render(const City& city,
         group.addQuad(g, ground, -1.0e18);
     }
 
+    // Bridge decking: a distinct, slightly-raised road color.
+    const Rgba bridgeDeck = sleela::render::lerp(ground, roof, 0.45);
+    // Window colors: darker "glass" pattern on lit faces, brighter on shaded.
+    const Rgba glassLit = sleela::render::shade(lit, 0.72);
+    const Rgba glassShade = sleela::render::shade(shade, 0.72);
+
     // Each building contributes three quads. The painter depth key is the
     // screen-y of the building's near-base edge, so nearer buildings draw last.
     for (std::uint32_t by = 0; by < city.rows(); ++by) {
         for (std::uint32_t bx = 0; bx < city.cols(); ++bx) {
-            const double h = city.at(bx, by).height;
-            if (h <= 0.0) continue;
-
+            const Block& blk = city.at(bx, by);
             const double x0 = bx, x1 = bx + 1.0;
             const double y0 = by, y1 = by + 1.0;
 
-            // Depth: nearer (larger by) and taller draw later. Using the near
-            // base corner's projected y, nudged up by height, matches the old
-            // far-to-near, short-to-tall ordering.
-            const double depth =
-                cam.project(Vec3{x1, y1, 0}).y + h * 1.0e-3;
+            // Bridges: a raised deck spanning a road corridor (a real feature).
+            if (blk.cell == Cell::Bridge && options_.draw_bridges) {
+                const double bz = 1.2;  // slight elevation of the deck
+                const double depth = cam.project(Vec3{x1, y1, 0}).y;
+                // Deck top.
+                group.addQuad(
+                    worldQuad(cam, Vec3{x0, y0, bz}, Vec3{x1, y0, bz},
+                              Vec3{x1, y1, bz}, Vec3{x0, y1, bz}),
+                    bridgeDeck, depth + 0.4);
+                // Near edge (a thin side so the deck reads as elevated).
+                group.addQuad(
+                    worldQuad(cam, Vec3{x0, y1, 0}, Vec3{x1, y1, 0},
+                              Vec3{x1, y1, bz}, Vec3{x0, y1, bz}),
+                    sleela::render::shade(bridgeDeck, 0.7), depth);
+                continue;
+            }
+
+            if (blk.cell != Cell::Building) continue;
+            const double h = blk.height;
+            if (h <= 0.0) continue;
+
+            // Condition/finality drives brightness: cleaner when well finished.
+            const double cf = conditionFactor(blk.finality);
+            const Rgba litC = sleela::render::shade(lit, cf);
+            const Rgba shadeC = sleela::render::shade(shade, cf);
+            const Rgba roofC = sleela::render::shade(roof, cf);
+
+            // Depth: nearer (larger by) and taller draw later.
+            const double depth = cam.project(Vec3{x1, y1, 0}).y + h * 1.0e-3;
 
             // Lit side (the x1 face), ground -> roof.
             group.addQuad(
                 worldQuad(cam, Vec3{x1, y0, 0}, Vec3{x1, y1, 0},
                           Vec3{x1, y1, h}, Vec3{x1, y0, h}),
-                lit, depth);
+                litC, depth);
 
             // Shaded side (the y1 face), ground -> roof.
             group.addQuad(
                 worldQuad(cam, Vec3{x0, y1, 0}, Vec3{x1, y1, 0},
                           Vec3{x1, y1, h}, Vec3{x0, y1, h}),
-                shade, depth);
+                shadeC, depth);
+
+            // Window detailing: draw a grid of window bands on the two visible
+            // faces. The row count follows the building's floors; the column
+            // count follows windows-per-floor (derived from the windows total).
+            if (options_.draw_windows && blk.floors > 0 && blk.windows > 0) {
+                const int floors = blk.floors;
+                const int wpf = std::max(1, static_cast<int>(
+                    blk.windows / static_cast<unsigned>(floors)));
+                // Cap detailing so huge towers stay cheap to draw.
+                const int rowsN = std::min(floors, 20);
+                const int colsN = std::min(wpf, 6);
+                const Rgba gL = sleela::render::shade(glassLit, cf);
+                const Rgba gS = sleela::render::shade(glassShade, cf);
+
+                for (int r = 0; r < rowsN; ++r) {
+                    // Vertical band center at fraction fz of the height.
+                    const double fz0 = (r + 0.30) / rowsN * h;
+                    const double fz1 = (r + 0.70) / rowsN * h;
+                    for (int c = 0; c < colsN; ++c) {
+                        const double u0 = (c + 0.30) / colsN;
+                        const double u1 = (c + 0.70) / colsN;
+                        // Lit face (x1 plane), varying along y.
+                        group.addQuad(
+                            worldQuad(cam,
+                                Vec3{x1, y0 + u0, fz0}, Vec3{x1, y0 + u1, fz0},
+                                Vec3{x1, y0 + u1, fz1}, Vec3{x1, y0 + u0, fz1}),
+                            gL, depth + 0.25);
+                        // Shaded face (y1 plane), varying along x.
+                        group.addQuad(
+                            worldQuad(cam,
+                                Vec3{x0 + u0, y1, fz0}, Vec3{x0 + u1, y1, fz0},
+                                Vec3{x0 + u1, y1, fz1}, Vec3{x0 + u0, y1, fz1}),
+                            gS, depth + 0.25);
+                    }
+                }
+            }
 
             // Roof (top face at z = h). Slightly greater depth so it covers its
-            // own walls.
+            // own walls and windows.
             group.addQuad(
                 worldQuad(cam, Vec3{x0, y0, h}, Vec3{x1, y0, h},
                           Vec3{x1, y1, h}, Vec3{x0, y1, h}),
-                roof, depth + 0.5);
+                roofC, depth + 0.5);
         }
     }
 

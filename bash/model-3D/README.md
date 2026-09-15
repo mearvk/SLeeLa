@@ -1,9 +1,12 @@
 # model-3D — Phraign™ City 3D
 
-**Phraign™ City 3D** generates a sprawling city model of ~4000 square blocks and
-renders it — on a **per-pixel basis** — onto a [Phraign™](../PHRAIGN.md) frame.
-The city is viewed from the top and off to one side at a slight angle, and the
-whole viewpoint is modifiable from a config file. A model is generated per user
+**Phraign™ City 3D** generates a sprawling, modern city model of ~4000 square
+blocks and renders it — on a **per-pixel basis** — onto a
+[Phraign™](../PHRAIGN.md) frame. The city is a **model of finality** (quality of
+condition) driven by a configurable **Year**: a more modern year (e.g. `2807`,
+`2407`) yields a newer city with taller buildings, more floors and windows, and
+better condition. It is viewed from the top and off to one side at a slight
+angle, the whole viewpoint is config-driven, and a model is generated per user
 and can be saved to GitHub or a public server.
 
 ![Green (default)](samples/city-green.png)
@@ -11,22 +14,33 @@ and can be saved to GitHub or a public server.
 ## What it does
 
 - **Sprawling city.** A square grid of blocks — default **64 × 64 = 4096**
-  ("~4000 square blocks") — each with a procedurally generated building height,
-  with a taller downtown core, street corridors, and occasional landmark towers.
-- **Per-user, reproducible.** The city is generated from a seed. With `seed = 0`
-  the seed is derived from the `user` name, so every user gets their own city
-  and always regenerates the same one.
+  ("~4000 square blocks") — with a taller downtown core, real **road**
+  corridors, **bridge** spans, and occasional landmark towers.
+- **Year-driven modernity.** A config `year` sets the city's modernity
+  (`clamp((year - baseline) / span, 0..1)`). Newer ⇒ taller buildings, more
+  floors/windows/glass, and higher finality. `year = 2807` ⇒ modernity `0.81`;
+  `year = 2050` ⇒ `0.05`.
+- **Building quality attributes.** Each building has **floors**, **windows**, a
+  **height** (`floors × floor_height`), and computed **proximity** to the
+  nearest **road** and **bridge** — all config-tunable targets/weights.
+- **Finality (quality of condition).** Each building gets a finality score in
+  `[0,1]` — a normalized weighted mix of modernity, floors, windows, and the
+  *computed* road/bridge proximity. The city-wide finality is reported and
+  stored. Higher finality renders **brighter/cleaner**; lower renders
+  darker/duller.
+- **Per-user, reproducible.** Generated from a seed; with `seed = 0` the seed is
+  derived from the `user` name, so every user gets their own reproducible city.
 - **3D view, top + slight side angle.** An oblique projection draws each block as
-  a lit roof, a lit side, and a shaded side. The viewpoint (angle, scale,
-  position, frame size) is fully driven by [`city.config`](city.config) — see
-  [`CONFIG.md`](CONFIG.md).
-- **Rendered through Phraign™, per pixel.** A small rendering stack — geometry
-  and color math (`render_math`), an ordered **rendering group** drawn by a
-  painter depth key over a Phraign sink (`render_group`), and the city renderer
-  on top — writes directly into a `sleela::terminal::PixelTerminal` frame, one
-  pixel at a time via scanline polygon fill. See [`RENDER_MATH.md`](RENDER_MATH.md).
+  a lit roof, a lit side, a shaded side, plus **window** detailing and raised
+  **bridge** decks. The viewpoint is fully driven by [`city.config`](city.config)
+  — see [`CONFIG.md`](CONFIG.md).
+- **Rendered through Phraign™, per pixel.** A small rendering stack —
+  `render_math`, an ordered **rendering group** over a Phraign sink
+  (`render_group`), and the city renderer on top — writes directly into a
+  `sleela::terminal::PixelTerminal` frame via scanline polygon fill. See
+  [`RENDER_MATH.md`](RENDER_MATH.md).
 - **Color themes.** `green` (default), `white`, or `blue`, selected in the
-  config.
+  config; face brightness is modulated by each building's finality.
 - **Save anywhere.** Models serialize to the plain-text `PHRAIGN-CITY` format
   ([`MODEL_FORMAT.md`](MODEL_FORMAT.md)) that lives well on GitHub or a public
   server; `city3d save` prints the save plan for the chosen target.
