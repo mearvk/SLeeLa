@@ -1,5 +1,6 @@
 #include <gtk/gtk.h>
 #include <vte/vte.h>
+#include <gdk/gdkkeysyms.h>
 
 #include <filesystem>
 #include <csignal>
@@ -101,6 +102,27 @@ gboolean window_close_request(GtkWindow *window, gpointer user_data) {
     return TRUE;
 }
 
+// Ctrl+C and Ctrl+X are treated as GUI-level close shortcuts. Capture-phase
+// handling is intentional: VTE would normally consume Ctrl+C as SIGINT, so
+// the window must see the shortcut before it reaches the terminal PTY.
+gboolean key_pressed(GtkEventControllerKey *, guint keyval, guint, GdkModifierType modifiers,
+                     gpointer user_data) {
+    if ((modifiers & GDK_CONTROL_MASK) == 0) {
+        return FALSE;
+    }
+
+    if (keyval != GDK_KEY_c && keyval != GDK_KEY_C &&
+        keyval != GDK_KEY_x && keyval != GDK_KEY_X) {
+        return FALSE;
+    }
+
+    auto *state = static_cast<AppState *>(user_data);
+    if (state->window != nullptr) {
+        window_close_request(state->window, state);
+    }
+    return TRUE;
+}
+
 void activate(GtkApplication *application, gpointer user_data) {
     auto *state = static_cast<AppState *>(user_data);
 
@@ -110,6 +132,12 @@ void activate(GtkApplication *application, gpointer user_data) {
     state->window = GTK_WINDOW(window);
     gtk_window_set_title(state->window, kWindowTitle);
     gtk_window_set_default_size(state->window, 1100, 700);
+
+    GtkEventController *key_controller = gtk_event_controller_key_new();
+    gtk_event_controller_set_propagation_phase(
+        GTK_EVENT_CONTROLLER(key_controller), GTK_PHASE_CAPTURE);
+    g_signal_connect(key_controller, "key-pressed", G_CALLBACK(key_pressed), state);
+    gtk_widget_add_controller(window, key_controller);
 
     GtkWidget *header = gtk_header_bar_new();
     gtk_widget_add_css_class(header, "sleela-titlebar");
