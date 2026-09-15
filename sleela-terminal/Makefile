@@ -4,6 +4,7 @@
 # =============================================================================
 CXX      ?= g++
 CXXFLAGS ?= -std=c++17 -O2 -Wall -Wextra
+FUZZ_CXX ?= clang++
 BUILD    := build
 
 CORE_SRC := core.cpp arith.cpp lexer.cpp parser.cpp expand.cpp executor.cpp
@@ -47,8 +48,9 @@ sanitize: | $(BUILD)
 	$(CXX) $(SANITIZE_FLAGS) $(SMOKE_SRC) -o $(BUILD)/smoke-sanitize
 	ASAN_OPTIONS=detect_leaks=1:halt_on_error=1 $(BUILD)/smoke-sanitize
 
-# Lightweight lexer/parser fuzz target. The harness is intentionally separate
-# from the production binary and is consumed by libFuzzer-capable toolchains.
+# Lightweight lexer/parser fuzz target. Clang/libFuzzer is the reference
+# toolchain; the harness remains independent of the production binary.
 FUZZ_SRC := fuzz.cpp
+FUZZ_FLAGS := -std=c++17 -O1 -g -Wall -Wextra -fsanitize=fuzzer,address,undefined
 fuzz: | $(BUILD)
-	$(CXX) -std=c++17 -O1 -g -Wall -Wextra -fsanitize=fuzzer,address,undefined $(FUZZ_SRC) $(CORE_SRC) -o $(BUILD)/slsh-fuzz
+	$(FUZZ_CXX) $(FUZZ_FLAGS) $(FUZZ_SRC) $(CORE_SRC) -o $(BUILD)/slsh-fuzz
