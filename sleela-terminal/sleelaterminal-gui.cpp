@@ -1,6 +1,5 @@
 #include <gtk/gtk.h>
 #include <vte/vte.h>
-#include <gdk/gdkkeysyms.h>
 
 #include <filesystem>
 #include <csignal>
@@ -22,13 +21,9 @@ std::string sibling_path(const char *argv0, const char *name) {
     namespace fs = std::filesystem;
     std::error_code ec;
     fs::path executable = fs::absolute(argv0, ec);
-    if (ec) {
-        return name;
-    }
+    if (ec) return name;
     fs::path candidate = executable.parent_path() / name;
-    if (fs::exists(candidate, ec) && !ec) {
-        return candidate.string();
-    }
+    if (fs::exists(candidate, ec) && !ec) return candidate.string();
     return name;
 }
 
@@ -104,13 +99,10 @@ void child_exited(VteTerminal *, int, gpointer user_data) {
     state->child_pid = 0;
 
     if (state->window != nullptr) {
-        GtkApplication *application =
-            gtk_window_get_application(state->window);
+        GtkApplication *application = gtk_window_get_application(state->window);
         GtkWindow *window = state->window;
         state->window = nullptr;
-
         gtk_window_destroy(window);
-
         if (application != nullptr) {
             g_application_quit(G_APPLICATION(application));
         }
@@ -118,8 +110,7 @@ void child_exited(VteTerminal *, int, gpointer user_data) {
 }
 
 // VTE's GTK4 API does not expose vte_terminal_get_child_pid(). The spawn
-// completion callback supplies the child PID, so retain it in AppState and
-// use that PID when the window is closed.
+// completion callback supplies the child PID, so retain it in AppState.
 void shell_spawned(VteTerminal *, GPid child_pid, GError *error, gpointer user_data) {
     auto *state = static_cast<AppState *>(user_data);
     if (error != nullptr || child_pid <= 0) {
@@ -129,9 +120,7 @@ void shell_spawned(VteTerminal *, GPid child_pid, GError *error, gpointer user_d
     state->child_pid = child_pid;
 }
 
-// Closing the GUI window must close the PTY-backed shell as well. Without an
-// explicit close handler GTK can destroy the window while the VTE child keeps
-// running, leaving slsh alive after the terminal window disappears.
+// Closing the GUI window must close the PTY-backed shell as well.
 gboolean window_close_request(GtkWindow *window, gpointer user_data) {
     auto *state = static_cast<AppState *>(user_data);
     if (state->child_pid > 0) {
@@ -139,30 +128,8 @@ gboolean window_close_request(GtkWindow *window, gpointer user_data) {
         state->child_pid = 0;
     }
 
-    // Explicitly quit the GtkApplication so closing the terminal window has
-    // the same lifecycle semantics as typing "exit" in slsh.
     gtk_window_destroy(window);
     g_application_quit(G_APPLICATION(gtk_window_get_application(window)));
-    return TRUE;
-}
-
-// Ctrl+C belongs to the terminal PTY so VTE can deliver the normal SIGINT to
-// the foreground process group. This lets Ctrl+C interrupt a running program
-// without closing SleelaTerminal. Ctrl+X remains the GUI-level close shortcut.
-gboolean key_pressed(GtkEventControllerKey *, guint keyval, guint, GdkModifierType modifiers,
-                     gpointer user_data) {
-    if ((modifiers & GDK_CONTROL_MASK) == 0) {
-        return FALSE;
-    }
-
-    if (keyval != GDK_KEY_x && keyval != GDK_KEY_X) {
-        return FALSE;
-    }
-
-    auto *state = static_cast<AppState *>(user_data);
-    if (state->window != nullptr) {
-        window_close_request(state->window, state);
-    }
     return TRUE;
 }
 
@@ -175,12 +142,6 @@ void activate(GtkApplication *application, gpointer user_data) {
     state->window = GTK_WINDOW(window);
     gtk_window_set_title(state->window, kWindowTitle);
     gtk_window_set_default_size(state->window, 1100, 700);
-
-    GtkEventController *key_controller = gtk_event_controller_key_new();
-    gtk_event_controller_set_propagation_phase(
-        GTK_EVENT_CONTROLLER(key_controller), GTK_PHASE_CAPTURE);
-    g_signal_connect(key_controller, "key-pressed", G_CALLBACK(key_pressed), state);
-    gtk_widget_add_controller(window, key_controller);
 
     GtkWidget *header = gtk_header_bar_new();
     gtk_widget_add_css_class(header, "sleela-titlebar");
