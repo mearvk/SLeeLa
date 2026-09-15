@@ -11,7 +11,7 @@ on:
       - '.github/workflows/sleela-terminal-m5.yml'
 
 jobs:
-  build-and-smoke:
+  build-and-test:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -20,7 +20,11 @@ jobs:
       - uses: actions/checkout@v4
       - name: Build
         run: make clean all
-      - name: Existing M1-M4 smoke
-        run: make smoke
-      - name: M5 smoke
-        run: ./m5-smoke.sh ./build/slsh
+      - name: Full smoke suite
+        run: make test
+      - name: Sanitizer validation
+        run: make sanitize
+      - name: Install Clang
+        run: sudo apt-get update && sudo apt-get install -y clang
+      - name: Build fuzz target
+        run: make fuzz
