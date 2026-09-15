@@ -46,6 +46,14 @@ void install_css() {
             color: #ffffff;
             font-weight: 700;
         }
+        headerbar.sleela-titlebar button.titlebutton {
+            color: #f2eaff;
+            -gtk-icon-style: symbolic;
+        }
+        headerbar.sleela-titlebar button.titlebutton:hover,
+        headerbar.sleela-titlebar button.titlebutton:focus {
+            color: #ffffff;
+        }
     )CSS";
 
     GtkCssProvider *provider = gtk_css_provider_new();
