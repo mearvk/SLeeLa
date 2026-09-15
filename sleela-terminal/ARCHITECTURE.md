@@ -148,9 +148,24 @@ associativity, div-by-zero), the lexer (quoting/operators), the parser
 
 ## Milestones
 
-- **M1 (this milestone):** Core model + Arith engine + Lexer + Parser (simple
-  commands, pipelines, and-or lists, redirections, `if`, `while`, assignments) +
-  Executor with a starter builtin set + CLI + smoke test.
-- **M2+:** `for`/`case`, functions, more expansion (globbing, command
-  substitution), job control, and richer builtins — each an additive layer on
-  the same stack.
+- **M1:** Core model + Arith engine + Lexer + Parser (simple commands,
+  pipelines, and-or lists, redirections, `if`, `while`, assignments) + Executor
+  with a starter builtin set + CLI + smoke test.
+- **M2 (done):** `for … in`, `case … esac` (glob patterns, `|` alternation),
+  shell **functions** (`name() { … }`) with positional parameters (`$1`, `$@`,
+  `$#`), **command substitution** `$( … )`, and **pathname globbing**
+  (`*`, `?`, `[..]`, `[!..]`) with field splitting — each an additive layer on
+  the same stack. Brace groups `{ … }` are also parsed.
+- **M3+:** job control, more expansion (tilde, brace expansion, parameter
+  operators like `${x:-default}`), here-documents, richer builtins, and
+  functions inside pipelines.
+
+### M2 layer touch-points
+
+| Layer | M2 addition |
+|---|---|
+| L1 core | `NodeKind::{For,Case,FunctionDef}`, `CaseItem`, function table + positional params on `Environment` |
+| L2 lexer | `for/in/case/esac` keywords; `( ) { }` tokens; `$( … )` command-sub word spans; structural-keyword recognition |
+| L3 parser | `parseFor`, `parseCase`, `parseFunctionDef`, `parseBraceGroup` |
+| L4 expansion | command substitution (via a `CommandRunner` callback → no L4→L5 cycle), field splitting, `globPattern`/`globMatch`, `$1..`/`$@`/`$#` |
+| L5 executor | `execFor`, `execCase`, `execFunctionDef`, `callFunction` (scoped positionals), `captureCommand` for `$( … )`, multi-field argv |

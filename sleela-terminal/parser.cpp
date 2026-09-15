@@ -51,6 +51,7 @@ private:
         switch (peek().kind) {
             case Tok::Eof: case Tok::Then: case Tok::Elif: case Tok::Else:
             case Tok::Fi: case Tok::Do: case Tok::Done:
+            case Tok::Esac: case Tok::RBrace:
                 return true;
             default:
                 return false;
@@ -104,11 +105,123 @@ private:
         return node;
     }
 
-    // command := if_clause | while_clause | simple_command
+    // command := if | while | for | case | function_def | brace_group | simple
     NodePtr parseCommand() {
         if (at(Tok::If)) return parseIf();
         if (at(Tok::While)) return parseWhile();
+        if (at(Tok::For)) return parseFor();
+        if (at(Tok::Case)) return parseCase();
+        if (at(Tok::LBrace)) return parseBraceGroup();
+        // function definition: WORD '(' ')' '{' ... '}'
+        if (at(Tok::Word) && peek2().kind == Tok::LParen) return parseFunctionDef();
         return parseSimple();
+    }
+
+    // brace_group := '{' list '}'   (executed in the current shell)
+    NodePtr parseBraceGroup() {
+        expect(Tok::LBrace, "'{'");
+        while (at(Tok::Newline)) advance();
+        auto list = parseList();
+        while (at(Tok::Newline) || at(Tok::Semi)) advance();
+        expect(Tok::RBrace, "'}'");
+        return list;
+    }
+
+    // function_def := WORD '(' ')' brace_group
+    NodePtr parseFunctionDef() {
+        auto node = std::make_unique<Node>(NodeKind::FunctionDef);
+        node->func_name = peek().text;
+        advance();                     // name
+        expect(Tok::LParen, "'('");
+        expect(Tok::RParen, "')'");
+        while (at(Tok::Newline)) advance();
+        node->func_body = parseBraceGroup();
+        return node;
+    }
+
+    // for := 'for' NAME [ 'in' word* ] (';'|'\n') 'do' list 'done'
+    NodePtr parseFor() {
+        auto node = std::make_unique<Node>(NodeKind::For);
+        expect(Tok::For, "'for'");
+        if (!at(Tok::Word)) throw PErr{"expected a variable name after 'for'", peek().line, peek().col};
+        node->for_var = peek().text;
+        advance();
+        // optional word list after 'in'
+        if (at(Tok::In)) {
+            advance();
+            while (at(Tok::Word)) { node->for_words.push_back(peek().text); advance(); }
+        } else {
+            // no explicit list -> iterate the positional parameters ("$@")
+            node->for_words.push_back("$@");
+        }
+        // separator, then do..done
+        while (at(Tok::Semi) || at(Tok::Newline)) advance();
+        expect(Tok::Do, "'do'");
+        node->for_body = parseList();
+        expect(Tok::Done, "'done'");
+        return node;
+    }
+
+    // case := 'case' word 'in' ( [ '(' ] pattern ('|' pattern)* ')' list ';;' )* 'esac'
+    NodePtr parseCase() {
+        auto node = std::make_unique<Node>(NodeKind::Case);
+        expect(Tok::Case, "'case'");
+        if (!at(Tok::Word)) throw PErr{"expected a word after 'case'", peek().line, peek().col};
+        node->case_subject = peek().text;
+        advance();
+        expect(Tok::In, "'in'");
+        while (at(Tok::Newline) || at(Tok::Semi)) advance();
+
+        while (!at(Tok::Esac)) {
+            CaseItem item;
+            if (at(Tok::LParen)) advance();  // optional leading '('
+            // patterns separated by '|', terminated by ')'
+            for (;;) {
+                if (!at(Tok::Word)) throw PErr{"expected a case pattern", peek().line, peek().col};
+                item.patterns.push_back(peek().text);
+                advance();
+                if (at(Tok::Pipe)) { advance(); continue; }
+                break;
+            }
+            expect(Tok::RParen, "')'");
+            while (at(Tok::Newline)) advance();
+            // body: a list up to ';;' (represented as Semi Semi) or 'esac'
+            item.body = parseCaseBody();
+            node->case_items.push_back(std::move(item));
+            while (at(Tok::Newline) || at(Tok::Semi)) advance();
+        }
+        expect(Tok::Esac, "'esac'");
+        return node;
+    }
+
+    // Parse a case arm body: a list that ends at ';;' or 'esac'. We detect ';;'
+    // as two consecutive Semi tokens.
+    NodePtr parseCaseBody() {
+        auto list = std::make_unique<Node>(NodeKind::List);
+        // empty body (immediate ';;' or 'esac')
+        if (isCaseArmEnd()) return list;
+        list->children.push_back(parseAndOr());
+        for (;;) {
+            // ';;' ends the arm
+            if (at(Tok::Semi) && peek2().kind == Tok::Semi) { advance(); advance(); break; }
+            bool sawSep = false;
+            while (at(Tok::Semi) || at(Tok::Newline)) {
+                if (at(Tok::Semi) && peek2().kind == Tok::Semi) break;  // leave ';;'
+                advance(); sawSep = true;
+            }
+            if (at(Tok::Semi) && peek2().kind == Tok::Semi) { advance(); advance(); break; }
+            if (at(Tok::Esac)) break;
+            if (!sawSep) break;
+            if (at(Tok::Esac)) break;
+            list->children.push_back(parseAndOr());
+        }
+        return list;
+    }
+
+    bool isCaseArmEnd() const {
+        if (at(Tok::Esac)) return true;
+        if (at(Tok::Semi) && peek2().kind == Tok::Semi) return true;
+        return false;
     }
 
     // if := 'if' list 'then' list ('elif' list 'then' list)* ['else' list] 'fi'

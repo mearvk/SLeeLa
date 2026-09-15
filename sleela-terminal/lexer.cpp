@@ -19,6 +19,7 @@ bool atCommandStart(const std::vector<Token>& out) {
         case Tok::AndIf: case Tok::OrIf:
         case Tok::If: case Tok::Then: case Tok::Elif: case Tok::Else:
         case Tok::While: case Tok::Do:
+        case Tok::In: case Tok::LBrace: case Tok::RParen:
             return true;
         default:
             return false;
@@ -37,15 +38,27 @@ bool looksLikeAssignment(const std::string& w) {
     return true;
 }
 
-Tok keywordKind(const std::string& w) {
+// Compound-command openers: recognised only at command-start position.
+Tok openerKind(const std::string& w) {
     if (w == "if")    return Tok::If;
+    if (w == "while") return Tok::While;
+    if (w == "for")   return Tok::For;
+    if (w == "case")  return Tok::Case;
+    return Tok::Word;
+}
+
+// Structural keywords: recognised whenever an unquoted bareword matches, since
+// they only make sense inside a compound command (then/do/in/...). This lets
+// e.g. `for i in ...` see `in` even though it follows the word `i`.
+Tok structuralKind(const std::string& w) {
     if (w == "then")  return Tok::Then;
     if (w == "elif")  return Tok::Elif;
     if (w == "else")  return Tok::Else;
     if (w == "fi")    return Tok::Fi;
-    if (w == "while") return Tok::While;
     if (w == "do")    return Tok::Do;
     if (w == "done")  return Tok::Done;
+    if (w == "in")    return Tok::In;
+    if (w == "esac")  return Tok::Esac;
     return Tok::Word;
 }
 
@@ -99,6 +112,13 @@ bool lex(const std::string& src, std::vector<Token>& out, LexError& err) {
             else { push(Tok::Great, ">", line, col); adv(); }
             continue;
         }
+        // Grouping/definition punctuation. A leading '$' before '(' or '{' is
+        // handled inside the word loop as a substitution span, so a bare '(' or
+        // '{' here is structural.
+        if (c == '(') { push(Tok::LParen, "(", line, col); adv(); continue; }
+        if (c == ')') { push(Tok::RParen, ")", line, col); adv(); continue; }
+        if (c == '{') { push(Tok::LBrace, "{", line, col); adv(); continue; }
+        if (c == '}') { push(Tok::RBrace, "}", line, col); adv(); continue; }
 
         // a word (possibly with quoted spans), read until a delimiter
         const int wline = line, wcol = col;
@@ -108,7 +128,7 @@ bool lex(const std::string& src, std::vector<Token>& out, LexError& err) {
             const char d = src[i];
             if (d == ' ' || d == '\t' || d == '\r' || d == '\n' ||
                 d == '|' || d == '&' || d == ';' || d == '<' || d == '>' ||
-                d == '#') {
+                d == '#' || d == '(' || d == ')' || d == '{' || d == '}') {
                 break;
             }
             if (d == '\'') {
@@ -161,6 +181,21 @@ bool lex(const std::string& src, std::vector<Token>& out, LexError& err) {
                 if (depth != 0) { err = LexError{"unterminated $(( ))", wline, wcol}; return false; }
                 continue;
             }
+            // A $( ... ) command-substitution span is a single word span with
+            // balanced parentheses (checked after $(( above).
+            if (d == '$' && i + 1 < n && src[i + 1] == '(') {
+                word.append("$(");
+                adv(2);
+                int depth = 1;
+                while (i < n && depth > 0) {
+                    if (src[i] == '(') ++depth;
+                    else if (src[i] == ')') --depth;
+                    if (depth > 0) { word.push_back(src[i]); adv(); }
+                    else { word.push_back(')'); adv(); }  // closing ')'
+                }
+                if (depth != 0) { err = LexError{"unterminated $( )", wline, wcol}; return false; }
+                continue;
+            }
             if (d == '$' && i + 1 < n && src[i + 1] == '{') {
                 word.append("${");
                 adv(2);
@@ -175,10 +210,14 @@ bool lex(const std::string& src, std::vector<Token>& out, LexError& err) {
 
         // classify the word
         const bool cmdStart = atCommandStart(out);
+        Tok structural = sawQuote ? Tok::Word : structuralKind(word);
         if (!sawQuote && cmdStart && looksLikeAssignment(word)) {
             push(Tok::Assignment, word, wline, wcol);
+        } else if (structural != Tok::Word) {
+            // then/do/done/in/esac/... are keywords wherever they appear bare.
+            push(structural, word, wline, wcol);
         } else if (!sawQuote && cmdStart) {
-            push(keywordKind(word), word, wline, wcol);
+            push(openerKind(word), word, wline, wcol);
         } else {
             push(Tok::Word, word, wline, wcol);
         }

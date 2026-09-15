@@ -85,4 +85,27 @@ std::vector<std::string> Environment::exportedEnviron() const {
     return out;
 }
 
+void Environment::defineFunction(const std::string& name, std::shared_ptr<Node> body) {
+    functions_[name] = std::move(body);
+}
+
+std::shared_ptr<Node> Environment::lookupFunction(const std::string& name) const {
+    const auto it = functions_.find(name);
+    return it == functions_.end() ? nullptr : it->second;
+}
+
+bool Environment::hasFunction(const std::string& name) const {
+    return functions_.find(name) != functions_.end();
+}
+
+void Environment::setPositionals(std::vector<std::string> args) {
+    positionals_ = std::move(args);
+}
+
+std::string Environment::getPositional(std::size_t n) const {
+    // 1-based: $1 is positionals_[0].
+    if (n == 0 || n > positionals_.size()) return std::string();
+    return positionals_[n - 1];
+}
+
 } // namespace sleela::sh

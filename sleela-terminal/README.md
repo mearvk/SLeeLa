@@ -25,9 +25,9 @@ L2  Lexer               text -> tokens (quoting, operators, comments)
 L1  Core + Arith        Value/Token/AST model, precedence-climbing arithmetic
 ```
 
-## Milestone 1 (this milestone)
+## Features (M1 + M2)
 
-A runnable subset:
+**M1 — the core:**
 
 - **Core model** — `Value`, `Token`, AST nodes, `Environment`.
 - **Arithmetic engine** — an original precedence-climbing integer evaluator
@@ -42,6 +42,16 @@ A runnable subset:
 - **Builtins** — `cd`, `pwd`, `echo`, `export`, `unset`, `true`, `false`,
   `exit`, `set`, `:`.
 
+**M2 — control, functions, expansion:**
+
+- **`for … in … ; do … done`** loops (iterate a word list; falls back to `$@`).
+- **`case … in pat) … ;; esac`** with glob patterns and `|` alternation.
+- **Shell functions** `name() { … }` with positional parameters `$1`, `$2`, …,
+  `$@`, `$#` (scoped per call).
+- **Command substitution** `$( … )` — captures a command's stdout.
+- **Pathname globbing** — `*`, `?`, `[a-z]`, `[!..]`, with field splitting.
+- **Brace groups** `{ … }` run in the current shell.
+
 ## Build & run
 
 ```sh
@@ -51,6 +61,10 @@ make smoke                 # run the layered smoke test
 
 ./build/slsh -c 'echo hello | tr a-z A-Z'   # (external tr via PATH)
 ./build/slsh -c 'x=3; echo $(( x * x + 1 ))'
+./build/slsh -c 'for i in a b c; do echo $i; done'
+./build/slsh -c 'greet() { echo Hi, $1; }; greet Ada'
+./build/slsh -c 'case $(echo cat) in cat|dog) echo pet;; esac'
+./build/slsh -c 'for f in *.md; do echo $f; done'   # globbing
 ./build/slsh script.slsh                    # run a script file
 ./build/slsh                                # interactive REPL
 ```

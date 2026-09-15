@@ -103,15 +103,47 @@ int main() {
     // --- L4: expansion -----------------------------------------------------
     {
         Environment env;
+        CommandRunner none = nullptr;
+        auto single = [&](const std::string& w) { return expandWordSingle(w, env, none); };
         env.set("name", "world");
-        assert(expandWord("hello $name", env) == "hello world");
-        assert(expandWord("${name}!", env) == "world!");
+        assert(single("hello $name") == "hello world");
+        assert(single("${name}!") == "world!");
         env.set("x", "6");
-        assert(expandWord("$(( x * x + 1 ))", env) == "37");
+        assert(single("$(( x * x + 1 ))") == "37");
         env.setLastStatus(3);
-        assert(expandWord("status=$?", env) == "status=3");
-        assert(expandWord("no $undefined here", env) == "no  here");
+        assert(single("status=$?") == "status=3");
+        assert(single("no $undefined here") == "no  here");
+
+        // multi-field: field splitting from an expansion
+        env.set("list", "a b c");
+        auto fields = expandWord("$list", env, none);
+        assert(fields.size() == 3 && fields[0] == "a" && fields[2] == "c");
+
+        // positional parameters
+        env.setPositionals({"one", "two", "three"});
+        assert(single("$1-$2-$3") == "one-two-three");
+        assert(single("count=$#") == "count=3");
     }
+
+    // --- L4: glob matching -------------------------------------------------
+    assert(globMatch("*.txt", "notes.txt"));
+    assert(!globMatch("*.txt", "notes.md"));
+    assert(globMatch("a?c", "abc") && !globMatch("a?c", "ac"));
+    assert(globMatch("[a-c]x", "bx") && !globMatch("[a-c]x", "dx"));
+    assert(globMatch("[!0-9]", "z") && !globMatch("[!0-9]", "5"));
+    assert(globMatch("f*", "foobar"));
+
+    // --- L3/L2: parse M2 constructs ----------------------------------------
+    { auto n = parseOK("for i in a b c; do echo $i; done");
+      assert(n->children[0]->kind == NodeKind::For);
+      assert(n->children[0]->for_var == "i");
+      assert(n->children[0]->for_words.size() == 3); }
+    { auto n = parseOK("case $x in a) echo A;; b|c) echo BC;; *) echo other;; esac");
+      assert(n->children[0]->kind == NodeKind::Case);
+      assert(n->children[0]->case_items.size() == 3); }
+    { auto n = parseOK("greet() { echo hi; }");
+      assert(n->children[0]->kind == NodeKind::FunctionDef);
+      assert(n->children[0]->func_name == "greet"); }
 
     // --- L5: executor (end to end) -----------------------------------------
     auto run = [](const std::string& s, Environment& env) -> int {
@@ -139,6 +171,38 @@ int main() {
         assert(run("while false; do echo loop; done", env) == 0);
     }
 
-    std::cout << "sleela-terminal smoke: OK\n";
+    // --- L5: M2 execution (for / case / functions / command subst) ---------
+    {
+        Environment env;
+        // for-loop leaves the last iterated value in the loop var
+        run("for i in a b c; do last=$i; done", env);
+        assert(env.get("last") == "c");
+
+        // for-loop accumulation via arithmetic
+        run("sum=0", env);
+        run("for k in 1 2 3 4; do sum=$(( sum + k )); done", env);
+        assert(env.get("sum") == "10");
+
+        // case: matching arm runs, sets a variable
+        run("x=b", env);
+        run("case $x in a) r=A;; b|c) r=BC;; *) r=other;; esac", env);
+        assert(env.get("r") == "BC");
+        run("x=zzz", env);
+        run("case $x in a) r=A;; *) r=other;; esac", env);
+        assert(env.get("r") == "other");
+
+        // function definition + call with positional params
+        run("setname() { who=$1; }", env);
+        run("setname alice", env);
+        assert(env.get("who") == "alice");
+
+        // command substitution captures stdout
+        run("greeting=$(echo hello)", env);
+        assert(env.get("greeting") == "hello");
+        run("n=$(echo 6); sq=$(( n * n ))", env);
+        assert(env.get("sq") == "36");
+    }
+
+    std::cout << "sleela-terminal smoke: OK (M2)\n";
     return 0;
 }

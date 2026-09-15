@@ -3,6 +3,8 @@
 
 #include "executor.hpp"
 #include "expand.hpp"
+#include "lexer.hpp"
+#include "parser.hpp"
 
 #include <cerrno>
 #include <cstdio>
@@ -19,6 +21,9 @@
 
 namespace sleela::sh {
 
+// forward declaration (defined below): run source text, capture its stdout.
+static std::string captureCommand(const std::string& src, Environment& env);
+
 namespace {
 
 // A resolved simple command: argv + redirections, ready to run.
@@ -26,6 +31,13 @@ struct Resolved {
     std::vector<std::string> argv;
     std::vector<Redirection> redirs;  // targets already expanded
 };
+
+// Build a CommandRunner bound to this environment for command substitution.
+CommandRunner makeRunner(Environment& env) {
+    return [&env](const std::string& command) -> std::string {
+        return captureCommand(command, env);
+    };
+}
 
 // Apply the resolved redirections in the current process (used post-fork or in
 // a builtin's scoped context). Returns 0 on success, -1 on error.
@@ -132,13 +144,18 @@ bool isBuiltin(const std::string& name) {
     return builtins().find(name) != builtins().end();
 }
 
-// Resolve a Simple node into argv + expanded redirections.
+// Resolve a Simple node into argv + expanded redirections. Each word may
+// expand into several argv fields (field splitting + globbing).
 Resolved resolveSimple(const Node& node, Environment& env) {
     Resolved r;
-    for (const auto& w : node.words) r.argv.push_back(expandWord(w, env));
+    CommandRunner run = makeRunner(env);
+    for (const auto& w : node.words) {
+        auto fields = expandWord(w, env, run);
+        for (auto& f : fields) r.argv.push_back(std::move(f));
+    }
     for (const auto& rd : node.redirs) {
         Redirection e = rd;
-        e.target = expandWord(rd.target, env);
+        e.target = expandWordSingle(rd.target, env, run);
         r.redirs.push_back(std::move(e));
     }
     return r;
@@ -175,24 +192,35 @@ int runExternal(const std::vector<std::string>& argv,
     return WIFEXITED(status) ? WEXITSTATUS(status) : 128 + WTERMSIG(status);
 }
 
-// Forward declaration for recursion.
+// Forward declarations for recursion.
 int execNode(const Node& node, Environment& env);
+int callFunction(const std::string& name, const std::vector<std::string>& argv,
+                 Environment& env);
 
 int execSimple(const Node& node, Environment& env) {
     // Assignments with no command word: set variables and return 0.
     Resolved r = resolveSimple(node, env);
 
+    CommandRunner run = makeRunner(env);
     if (r.argv.empty()) {
-        for (const auto& as : node.assigns) env.set(as.name, expandWord(as.value, env));
+        for (const auto& as : node.assigns)
+            env.set(as.name, expandWordSingle(as.value, env, run));
         return 0;
     }
 
     // Assignments preceding a command apply to the environment for this
     // command. (This milestone applies them to the shell env, which is a
     // simplification; a later milestone can scope them to the child only.)
-    for (const auto& as : node.assigns) env.set(as.name, expandWord(as.value, env));
+    for (const auto& as : node.assigns)
+        env.set(as.name, expandWordSingle(as.value, env, run));
 
     const std::string& cmd = r.argv[0];
+
+    // A user-defined shell function takes precedence over an external command.
+    if (env.hasFunction(cmd)) {
+        return callFunction(cmd, r.argv, env);
+    }
+
     if (isBuiltin(cmd)) {
         // Run a builtin with redirections applied to dup'd fds, then restored.
         int saved_out = -1, saved_in = -1;
@@ -326,17 +354,82 @@ int execWhile(const Node& node, Environment& env) {
     return status;
 }
 
+// for NAME in words...; do body; done
+int execFor(const Node& node, Environment& env) {
+    CommandRunner run = makeRunner(env);
+    // Expand the iteration list into fields (splitting + globbing).
+    std::vector<std::string> items;
+    for (const auto& w : node.for_words) {
+        auto fields = expandWord(w, env, run);
+        for (auto& f : fields) items.push_back(std::move(f));
+    }
+    int status = 0;
+    for (const auto& item : items) {
+        env.set(node.for_var, item);
+        status = execNode(*node.for_body, env);
+        if (env.shouldExit()) break;
+    }
+    return status;
+}
+
+// case SUBJECT in pattern) body ;; ... esac  -- first matching arm runs.
+int execCase(const Node& node, Environment& env) {
+    CommandRunner run = makeRunner(env);
+    const std::string subject = expandWordSingle(node.case_subject, env, run);
+    for (const auto& item : node.case_items) {
+        for (const auto& pat : item.patterns) {
+            const std::string p = expandWordSingle(pat, env, run);
+            if (p == "*" || globMatch(p, subject)) {
+                return item.body ? execNode(*item.body, env) : 0;
+            }
+        }
+    }
+    return 0;  // no arm matched
+}
+
+// name() { body; } -- register the function; definition has status 0.
+int execFunctionDef(const Node& node, Environment& env) {
+    // Share the body so it survives the AST if needed during a call.
+    auto shared = std::make_shared<Node>(NodeKind::List);
+    // Move the parsed body's children into the shared node.
+    if (node.func_body) {
+        shared->children = std::move(const_cast<Node&>(node).func_body->children);
+    }
+    env.defineFunction(node.func_name, shared);
+    return 0;
+}
+
 int execNode(const Node& node, Environment& env) {
     int status = 0;
     switch (node.kind) {
-        case NodeKind::Simple:   status = execSimple(node, env); break;
-        case NodeKind::Pipeline: status = execPipeline(node, env); break;
-        case NodeKind::AndOr:    status = execAndOr(node, env); break;
-        case NodeKind::List:     status = execList(node, env); break;
-        case NodeKind::If:       status = execIf(node, env); break;
-        case NodeKind::While:    status = execWhile(node, env); break;
+        case NodeKind::Simple:      status = execSimple(node, env); break;
+        case NodeKind::Pipeline:    status = execPipeline(node, env); break;
+        case NodeKind::AndOr:       status = execAndOr(node, env); break;
+        case NodeKind::List:        status = execList(node, env); break;
+        case NodeKind::If:          status = execIf(node, env); break;
+        case NodeKind::While:       status = execWhile(node, env); break;
+        case NodeKind::For:         status = execFor(node, env); break;
+        case NodeKind::Case:        status = execCase(node, env); break;
+        case NodeKind::FunctionDef: status = execFunctionDef(node, env); break;
     }
     env.setLastStatus(status);
+    return status;
+}
+
+// Call a shell function: run its body with $1.. set from argv[1..], restoring
+// the previous positional parameters afterward.
+int callFunction(const std::string& name, const std::vector<std::string>& argv,
+                 Environment& env) {
+    auto body = env.lookupFunction(name);
+    if (!body) return 127;
+
+    std::vector<std::string> saved = env.positionals();
+    std::vector<std::string> params(argv.begin() + (argv.empty() ? 0 : 1), argv.end());
+    env.setPositionals(std::move(params));
+
+    int status = execNode(*body, env);
+
+    env.setPositionals(std::move(saved));
     return status;
 }
 
@@ -344,6 +437,43 @@ int execNode(const Node& node, Environment& env) {
 
 int execute(const Node& node, Environment& env) {
     return execNode(node, env);
+}
+
+// Run `src` (shell text) in a child process with stdout captured; return the
+// captured output. Defined outside the anonymous namespace so the runner
+// callback can reach it. Declared at the top of this file.
+std::string captureCommand(const std::string& src, Environment& env) {
+    int fds[2];
+    if (::pipe(fds) != 0) return {};
+
+    pid_t pid = ::fork();
+    if (pid < 0) { ::close(fds[0]); ::close(fds[1]); return {}; }
+    if (pid == 0) {
+        ::dup2(fds[1], 1);      // child stdout -> pipe write end
+        ::close(fds[0]);
+        ::close(fds[1]);
+        // Parse and run the substituted command in a copy of the environment.
+        std::vector<Token> toks; LexError le;
+        if (lex(src, toks, le)) {
+            ParseError pe;
+            NodePtr ast = parse(toks, pe);
+            if (ast) {
+                Environment child = env;
+                execute(*ast, child);
+            }
+        }
+        std::cout.flush();
+        _exit(0);
+    }
+    ::close(fds[1]);
+    std::string out;
+    char buf[4096];
+    ssize_t r;
+    while ((r = ::read(fds[0], buf, sizeof buf)) > 0) out.append(buf, static_cast<std::size_t>(r));
+    ::close(fds[0]);
+    int st = 0;
+    ::waitpid(pid, &st, 0);
+    return out;
 }
 
 } // namespace sleela::sh
