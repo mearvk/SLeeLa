@@ -89,7 +89,47 @@ and reports who is **over-** or **under-staffed** relative to the assumed normal
 i.e. *what the workers actually do* versus what the design assumes they should.
 The sum of |share deviations| is a single "allocation drift" number for the State.
 
-## 5. Files
+## 5. Advanced synthesis — the clarity index and why it matters
+
+Beyond the per-measure boundary/deviation formula, the model synthesizes a
+**second, higher formula** over the whole picture — a **clarity index** — and
+then a *reasoned account* of why thinking clearly about social models and norms
+matters, plus what is outstanding in the result for different readers.
+
+```
+clarity = 1 − ( staleFrac·0.60 + driftFrac·0.25 + allocDrift·0.50 )   (clamped 0..1)
+```
+
+- `staleFrac` / `driftFrac` — the share of measures that fell **Stale** / **Drifting**.
+- `allocDrift` — the State's summed `|share deviation|` from §4.
+- The weights price each kind of un-clarity; a Stale norm costs most.
+
+Clarity bands: **clear** (≥ 0.85) · **serviceable** (≥ 0.60) · **clouded** (≥ 0.35)
+· **opaque** (else). Clarity near 1 means the proposed norms still describe the
+world; low clarity means the model is governing by assumptions that no longer
+fit — the exact condition careful thinking is meant to catch early.
+
+The model prints:
+
+- **Why clarity matters** — a paragraph scaled to the finding: a social model
+  *governs by its assumptions*, and a stale assumption does not announce itself;
+  it keeps allocating people, money, and blame by a picture of normal the world
+  has left behind. Clarity is therefore not a decoration but the mechanism that
+  keeps the map matched to the territory.
+- **What is outstanding, per audience:**
+  - **Citizens** — it makes the invisible visible: where promised-normal and
+    lived reality have parted, so a citizen can ask a precise question rather
+    than voice a vague grievance.
+  - **Social workers** — it aims remedy at the measures that are *actually* Stale
+    and the functions that are *actually* mis-staffed, turning limited effort at
+    the largest real gap.
+  - **Thinking people & geniuses** — the outstanding thing is the *method*: a norm
+    rendered as a bounded, testable object, staleness as a measured distance, and
+    clarity itself as a number — an invitation to argue with the **assumptions**,
+    not the conclusions, and to improve the model by improving what we dare to
+    call normal.
+
+## 6. Files
 
 | File | What it is |
 |---|---|

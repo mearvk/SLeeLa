@@ -92,6 +92,27 @@ The ontological primitives over which all Sleela constructs exist.
 | **Idempotent** | The same input always yields the byte-for-byte identical output (the frame is unique to its input→output mapping). |
 | **HMAC-DRBG** | The keyed deterministic random bit generator (HMAC-SHA-256) producing the frame's reproducible "stochastic" field. |
 
+### A.7 Inference & social-model vocabulary (`INFERENCE.md`, `social-model/`)
+
+Terms used by the native `inference` library and the socialing model of social
+design. Inputs to these models are **assumptions/illustrative** unless sourced;
+an output is a computation over them, not a measurement (`ASSUMPTION ≠ FACT`,
+`ASSOCIATION ≠ CAUSATION`).
+
+| Term | Definition |
+|------|-----------|
+| **Long** | A *length series*: a magnitude that runs over time (GDP, debt, the price level). The unit of `/1`. |
+| **Relevance (measured)** | A classified relation between two lengths, graded **Direct / Model / None** by correlation strength — the `/1` reuse of Nordshrift's object-relevance classes. |
+| **Assumption (moral model)** | A foundational count-as-length carrying a *length*, a *speed*, and a *lengthening-vs-substituting* flag; scored for its bearing on base reality (`1/assumptions/`). |
+| **Lengthening / Substituting** | Whether an act *adds durable extent* to base reality (build, grow, continue) or merely *swaps parts* (churn). The moral model prefers lengthening. |
+| **Habituality** | How repeated an act is relative to its span (`clamp(speed/length)`); habitual goods compound. |
+| **Social system: Design / Remedy / Method** | *Design* proposes a normal (center + tolerance); *Method* reports the observed; *Remedy* is the response the deviation calls for. |
+| **Boundary (2D / 3D)** | The region a measure may occupy and still count as normal — a **box** (per-axis half-width) or **radial** (circle in 2D, sphere in 3D) around the proposed center. |
+| **Deviation (staleness)** | The standard-score distance between proposed-normal and observed (tolerance as the assumed spread), combined across axes; classified **In-band ≤ 1 / Drifting ≤ 2 / Stale > 2**. |
+| **Stale assumption** | A proposed normal that no longer describes the world (deviation > 2 tol-units): it keeps governing by a picture the world has left behind. |
+| **Allocation drift** | For a State's workforce, the summed `|observed − proposed|` share across functions — how far the actual "what workers do" has parted from the assumed normal. |
+| **Clarity index** | The social model's higher-order synthesis: `1 − (staleFrac·0.6 + driftFrac·0.25 + allocDrift·0.5)`, clamped `0..1`; banded **clear / serviceable / clouded / opaque**. It quantifies how well the proposed norms still fit — and is itself the argument for thinking clearly about norms. |
+
 ---
 
 ## Part B — United States (Evidentiary Method)

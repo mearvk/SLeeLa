@@ -115,6 +115,64 @@ class SocialModel {
             + "  (share dev " + dev + ", " + staffing(f) + ")");
     }
 
+    // ==== advanced synthesis =============================================
+    // Beyond the boundary/deviation formula, the model synthesizes a second,
+    // higher formula: a "clarity index" over the whole picture, and a reasoned
+    // account of WHY thinking clearly and carefully about social models and
+    // norms matters -- then what is outstanding in the result for different
+    // kinds of readers. The clarity index is:
+    //
+    //   clarity = 1  -  ( staleFrac*W_stale + driftFrac*W_drift + allocDrift*W_alloc )
+    //
+    // where staleFrac/driftFrac are the shares of measures that fell Stale /
+    // Drifting, allocDrift is the State's summed |share deviation|, and the
+    // weights say how much each kind of un-clarity costs. Clarity near 1 means
+    // the proposed norms still describe the world; low clarity means the model
+    // is governing by assumptions that no longer fit -- exactly the condition
+    // careful thinking is meant to catch early.
+    double clarityIndex(double staleFrac, double driftFrac, double allocDrift) {
+        double penalty = staleFrac * 0.6 + driftFrac * 0.25 + allocDrift * 0.5;
+        double c = 1.0 - penalty;
+        return math.clamp(c, 0.0, 1.0);
+    }
+    String clarityBand(double c) {
+        if (c >= 0.85) { return "clear"; }
+        if (c >= 0.6) { return "serviceable"; }
+        if (c >= 0.35) { return "clouded"; }
+        return "opaque";
+    }
+
+    // The advanced "why" -- the case for clarity, scaled to the finding.
+    void whyClarityMatters(double c, double staleFrac) {
+        print("[advanced synthesis] why clarity about social models & norms matters");
+        print("  A social model governs by its assumptions. When an assumption goes");
+        print("  stale it does not announce itself -- it keeps allocating people,");
+        print("  money and blame by a picture of normal that the world has left behind.");
+        print("  " + staleFrac + " of the measures here already read Stale, and the model's");
+        print("  overall clarity is " + c + " (" + clarityBand(c) + "). That number is the");
+        print("  argument: clear, careful thinking is not a virtue added after the fact,");
+        print("  it is the mechanism that keeps the map matched to the territory. To be");
+        print("  clear about a norm is to state what 'normal' means, bound it, and keep");
+        print("  measuring the gap -- so remedy is aimed by evidence, not by habit, and");
+        print("  so a proposed good is not quietly enforced long after it stopped fitting.");
+    }
+
+    // What is outstanding in the result, per audience.
+    void outstandingFor(double c, double allocDrift) {
+        print("[what is outstanding] for the reader");
+        print("  For CITIZENS: the model makes the invisible visible -- it names where");
+        print("  the State's promised normal and its lived reality have parted, so a");
+        print("  citizen can ask a precise question instead of a vague grievance.");
+        print("  For SOCIAL WORKERS: it points remedy at the measures that are actually");
+        print("  Stale and at the functions that are mis-staffed (allocation drift "
+            + allocDrift + "), turning limited effort toward the largest real gap.");
+        print("  For THINKING PEOPLE & GENIUSES: the outstanding thing is the method");
+        print("  itself -- a norm rendered as a bounded, testable object, its staleness");
+        print("  a measured distance, and clarity itself a number (" + c + "). It invites");
+        print("  the sharpest minds to argue with the assumptions, not the conclusions,");
+        print("  and to improve the model by improving what we dare to call normal.");
+    }
+
     void main() {
         print("=== Social Model -- Design / Remedy / Method ===");
         print("Boundary: box + radial. Staleness by deviation (tol-units):");
@@ -193,7 +251,29 @@ class SocialModel {
         print("assumes, while education, infrastructure and social services draw fewer");
         print("-- the base allocation assumption is aging where the drift concentrates.");
         print("");
+
+        // --- advanced synthesis over the whole picture ---
+        double nMeasures = 5.0;
+        double staleCount = 0.0; double driftCount = 0.0;
+        if (deviation(edu) > 2.0) { staleCount = staleCount + 1.0; } else { if (deviation(edu) > 1.0) { driftCount = driftCount + 1.0; } }
+        if (deviation(health) > 2.0) { staleCount = staleCount + 1.0; } else { if (deviation(health) > 1.0) { driftCount = driftCount + 1.0; } }
+        if (deviation(safety) > 2.0) { staleCount = staleCount + 1.0; } else { if (deviation(safety) > 1.0) { driftCount = driftCount + 1.0; } }
+        if (deviation(housing) > 2.0) { staleCount = staleCount + 1.0; } else { if (deviation(housing) > 1.0) { driftCount = driftCount + 1.0; } }
+        if (deviation(civic) > 2.0) { staleCount = staleCount + 1.0; } else { if (deviation(civic) > 1.0) { driftCount = driftCount + 1.0; } }
+        double staleFrac = staleCount / nMeasures;
+        double driftFrac = driftCount / nMeasures;
+        double clarity = clarityIndex(staleFrac, driftFrac, drift);
+
+        print("  measures Stale: " + staleCount + " of " + nMeasures
+            + "  Drifting: " + driftCount + "  |  clarity index: " + clarity
+            + " (" + clarityBand(clarity) + ")");
+        print("");
+        whyClarityMatters(clarity, staleFrac);
+        print("");
+        outstandingFor(clarity, drift);
+        print("");
         print("Note: a socialing model of design/remedy/method. Deviations locate stale");
         print("assumptions from stated norms and illustrative observations; not facts.");
+        print("The synthesis is a reasoned reading of those numbers, offered to be argued with.");
     }
 }
