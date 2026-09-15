@@ -13,6 +13,7 @@
 #include "m5.hpp"
 
 #include <algorithm>
+#include <cerrno>
 #include <csignal>
 #include <fstream>
 #include <iostream>
@@ -51,17 +52,15 @@ public:
     RawMode() {
         if (::tcgetattr(STDIN_FILENO, &saved_) != 0) return;
         termios raw = saved_;
-        raw.c_lflag &= static_cast<unsigned>(~(ICANON | ECHO));
-        raw.c_iflag &= static_cast<unsigned>(~(IXON | ICRNL));
+        raw.c_lflag &= static_cast<tcflag_t>(~(ICANON | ECHO));
+        raw.c_iflag &= static_cast<tcflag_t>(~(IXON | ICRNL));
         raw.c_oflag |= OPOST;
         raw.c_cc[VMIN] = 1;
         raw.c_cc[VTIME] = 0;
         active_ = (::tcsetattr(STDIN_FILENO, TCSANOW, &raw) == 0);
     }
 
-    ~RawMode() {
-        restore();
-    }
+    ~RawMode() { restore(); }
 
     void restore() {
         if (active_) {
@@ -222,8 +221,7 @@ std::string readInteractiveLine(const std::string& prompt,
                 continue;
             }
 
-            // Delete: ESC [ 3 ~
-            if (b == '3') {
+            if (b == '3') { // Delete: ESC [ 3 ~
                 char tilde = 0;
                 if (readByte(tilde) && tilde == '~' && cursor < line.size()) {
                     line.erase(cursor, 1);
@@ -249,8 +247,7 @@ std::string trimTrailingWhitespace(std::string value) {
 
 bool runPromptCommand(const std::string& line, Environment& env) {
     if (line == "prompt") {
-        // Deliberately print exactly what the REPL uses, including the prompt's
-        // trailing space, so the observed prompt is unambiguous.
+        // Print exactly what the REPL uses, including the trailing space.
         std::cout << "[prompt] " << env.prompt() << "\n";
         std::cout.flush();
         env.setLastStatus(0);
@@ -331,8 +328,6 @@ int repl(Environment& env) {
             g_interrupted = 0;
             continue;
         }
-
-        if (std::cin.eof()) return env.lastStatus();
         if (line.empty()) continue;
 
         if (history.empty() || history.back() != line) history.push_back(line);
