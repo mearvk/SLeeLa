@@ -10,6 +10,8 @@ Those files are therefore not claimed as implemented, tested, or production-read
 
 The module now contains a security-hardened specification, deployment configuration template, controlled legacy reference dataset, machine-readable contact schema, fail-closed integrity verifier, non-destructive MTA/DKIM/database preflights, and a production security test plan.
 
+The checked-in `contacts.csv` is a normalized historical/reference dataset. It is **not** asserted to be a current authoritative UK Parliament directory. Records without current source provenance and retrieval timestamps remain non-operational until revalidated.
+
 These components do not constitute a complete application.
 
 ## Required implementation before production use
@@ -20,14 +22,16 @@ A future application implementation must provide, at minimum:
 - rate limiting and bounded concurrency;
 - parser isolation for untrusted remote content;
 - schema validation and canonical normalization;
-- provenance and retrieval timestamps;
+- authoritative source provenance and retrieval timestamps;
 - explicit dry-run mode;
 - recipient validation and header-injection protection;
 - bounded message size and attachment handling;
 - administrator-controlled mail submission;
 - database access through prepared statements;
+- least-privilege database verification;
 - secret-store integration without repository credentials;
 - SHA-256 verification before execution;
+- authenticated release-manifest provenance;
 - unit tests, integration tests, and negative security tests;
 - platform-specific build/test evidence before a platform is called supported.
 
