@@ -9,22 +9,30 @@ BUILD    := build
 
 PREFIX   ?= /usr/local
 BINDIR   ?= $(PREFIX)/bin
+DESKTOPDIR ?= $(PREFIX)/share/applications
 DESTDIR  ?=
 INSTALL  ?= install
+PKG_CONFIG ?= pkg-config
+GTK4_VTE_PKGS ?= gtk4 vte-2.91-gtk4
 
 CORE_SRC := core.cpp arith.cpp lexer.cpp parser.cpp expand.cpp executor.cpp
 M5_SRC   := m5.cpp
 CLI_SRC  := slsh.cpp $(M5_SRC) $(CORE_SRC)
 SMOKE_SRC := smoke.cpp $(CORE_SRC)
+GUI_SRC := sleelaterminal-gui.cpp
 
 HEADERS := core.hpp arith.hpp lexer.hpp parser.hpp expand.hpp executor.hpp m5.hpp
 
 SLSH  := $(BUILD)/slsh
 SMOKE := $(BUILD)/smoke
+GUI   := $(BUILD)/SleelaTerminal
 
-.PHONY: all smoke test m5-smoke sanitize fuzz install install-strip uninstall clean
+GTK4_VTE_CFLAGS := $(shell $(PKG_CONFIG) --cflags $(GTK4_VTE_PKGS) 2>/dev/null)
+GTK4_VTE_LIBS   := $(shell $(PKG_CONFIG) --libs $(GTK4_VTE_PKGS) 2>/dev/null)
 
-all: $(SLSH) $(SMOKE)
+.PHONY: all smoke test m5-smoke gui sanitize fuzz install install-strip uninstall clean
+
+all: $(SLSH) $(SMOKE) $(GUI)
 
 $(SLSH): $(CLI_SRC) $(HEADERS) | $(BUILD)
 	$(CXX) $(CXXFLAGS) $(CLI_SRC) -o $@
@@ -32,26 +40,38 @@ $(SLSH): $(CLI_SRC) $(HEADERS) | $(BUILD)
 $(SMOKE): $(SMOKE_SRC) $(HEADERS) | $(BUILD)
 	$(CXX) $(CXXFLAGS) $(SMOKE_SRC) -o $@
 
+$(GUI): $(GUI_SRC) $(SLSH) | $(BUILD)
+	@test -n "$(GTK4_VTE_CFLAGS)" && test -n "$(GTK4_VTE_LIBS)" || { echo "Missing GTK4/VTE development packages. Install gtk4 and vte-2.91-gtk4 development packages." >&2; exit 1; }
+	$(CXX) $(CXXFLAGS) $(GTK4_VTE_CFLAGS) $(GUI_SRC) -o $@ $(GTK4_VTE_LIBS)
+
 $(BUILD):
 	mkdir -p $(BUILD)
 
 smoke: $(SMOKE)
 	$(SMOKE)
 
+gui: $(GUI)
+	@echo "SleelaTerminal GUI: $(GUI)"
+
 m5-smoke: $(SLSH)
 	sh ./m5-smoke.sh $(SLSH)
 
 test: smoke m5-smoke
 
-install: $(SLSH)
+install: $(SLSH) $(GUI)
 	$(INSTALL) -d $(DESTDIR)$(BINDIR)
+	$(INSTALL) -d $(DESTDIR)$(DESKTOPDIR)
 	$(INSTALL) -m 0755 $(SLSH) $(DESTDIR)$(BINDIR)/slsh
+	$(INSTALL) -m 0755 $(GUI) $(DESTDIR)$(BINDIR)/SleelaTerminal
+	$(INSTALL) -m 0644 SleelaTerminal.desktop $(DESTDIR)$(DESKTOPDIR)/SleelaTerminal.desktop
 
 install-strip: CXXFLAGS += -s
 install-strip: clean install
 
 uninstall:
 	rm -f $(DESTDIR)$(BINDIR)/slsh
+	rm -f $(DESTDIR)$(BINDIR)/SleelaTerminal
+	rm -f $(DESTDIR)$(DESKTOPDIR)/SleelaTerminal.desktop
 
 clean:
 	rm -rf $(BUILD)
