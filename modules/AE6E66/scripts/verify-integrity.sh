@@ -4,9 +4,8 @@ set -euo pipefail
 ROOT="$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)"
 MANIFEST="${1:-${ROOT}/integrity/SHA256SUMS}"
 
-if [[ ! -f "$MANIFEST" ]]; then
-  echo "ERROR: integrity manifest not found: $MANIFEST" >&2
-  echo "Create a reviewed manifest from a trusted checkout before execution." >&2
+if [[ ! -f "$MANIFEST" || -L "$MANIFEST" ]]; then
+  echo "ERROR: integrity manifest is missing or is a symlink: $MANIFEST" >&2
   exit 2
 fi
 
@@ -17,21 +16,29 @@ command -v sha256sum >/dev/null 2>&1 || {
 
 cd "$ROOT"
 
-# The manifest must contain relative paths only and may not escape the module.
 while IFS= read -r line || [[ -n "$line" ]]; do
   [[ -z "$line" ]] && continue
   [[ "$line" == \#* ]] && continue
+
   path="${line#*  }"
   if [[ "$path" == "$line" || -z "$path" ]]; then
     echo "ERROR: malformed manifest line." >&2
     exit 3
   fi
+
   case "$path" in
     /*|../*|*/../*|./../*)
       echo "ERROR: unsafe manifest path: $path" >&2
       exit 3
       ;;
   esac
+
+  target="$ROOT/$path"
+  if [[ ! -f "$target" || -L "$target" ]]; then
+    echo "ERROR: manifest target is missing or is a symlink: $path" >&2
+    exit 3
+  fi
+
 done < "$MANIFEST"
 
 sha256sum --check --strict "$MANIFEST"
