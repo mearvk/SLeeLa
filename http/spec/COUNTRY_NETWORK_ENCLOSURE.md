@@ -181,7 +181,7 @@ The document hierarchy is:
 <!-- BEGIN GENERATED COUNTRY NETWORK TABLE -->
 ## Generated Country Network & Geodata Table
 
-**Generated:** 2026-09-15 13:30 UTC  
+**Generated:** 2026-09-15 14:24 UTC  
 **Country source:** mledoze/countries (public country metadata)  
 **IP source:** ipverse country-ip-blocks (RIR-derived, daily-updated)  
 
