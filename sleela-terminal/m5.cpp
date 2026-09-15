@@ -8,6 +8,7 @@
 #include "m5.hpp"
 
 #include <cerrno>
+#include <cctype>
 #include <csignal>
 #include <cstdio>
 #include <cstdlib>
@@ -89,6 +90,7 @@ bool splitSelect(const std::string& source, std::string& var,
     while (p < source.size() && isSpace(source[p])) ++p;
     if (!startsWordAt(source, p, "in")) return false;
     p += 2;
+    const std::size_t listStart = p;
 
     std::size_t listEnd = std::string::npos;
     std::size_t scan = p;
@@ -111,7 +113,7 @@ bool splitSelect(const std::string& source, std::string& var,
     }
     if (listEnd == std::string::npos) return false;
 
-    std::string list = trim(source.substr(p, listEnd - p));
+    std::string list = trim(source.substr(listStart, listEnd - listStart));
     std::size_t i = 0;
     while (i < list.size()) {
         while (i < list.size() && isSpace(list[i])) ++i;
@@ -324,7 +326,49 @@ bool hasProcessSubstitution(const std::string& source) {
 
 bool runM5(const std::string& source, Environment& env,
            const M5Runner& runner, int& status) {
-    std::istringstream lines(source);
+    std::string prepared = source;
+    // M5 select commonly uses PS3=... immediately before the select block.
+    // Consume only a simple leading PS3 assignment here; all other assignments
+    // remain under the normal lexer/parser.
+    std::istringstream assignLines(prepared);
+    std::string firstLine;
+    std::string afterAssignments;
+    bool consumedAssignment = false;
+    while (std::getline(assignLines, firstLine)) {
+        std::string t = trim(firstLine);
+        const std::size_t eq = t.find('=');
+        bool simpleName = eq != std::string::npos && eq > 0;
+        if (simpleName) {
+            for (std::size_t k = 0; k < eq; ++k) {
+                char c = t[k];
+                if (!(std::isalnum(static_cast<unsigned char>(c)) || c == '_') ||
+                    (k == 0 && std::isdigit(static_cast<unsigned char>(c)))) {
+                    simpleName = false; break;
+                }
+            }
+        }
+        if (!consumedAssignment && simpleName && t.compare(0, eq, "PS3") == 0) {
+            std::string value = t.substr(eq + 1);
+            if (value.size() >= 2 &&
+                ((value.front() == '\'' && value.back() == '\'') ||
+                 (value.front() == '"' && value.back() == '"')))
+                value = value.substr(1, value.size() - 2);
+            env.set("PS3", value);
+            consumedAssignment = true;
+            continue;
+        }
+        afterAssignments += firstLine;
+        afterAssignments.push_back('\n');
+        std::string tail;
+        while (std::getline(assignLines, tail)) {
+            afterAssignments += tail;
+            afterAssignments.push_back('\n');
+        }
+        break;
+    }
+    if (consumedAssignment) prepared = afterAssignments;
+
+    std::istringstream lines(prepared);
     std::string line;
     std::string remainder;
     bool consumedTrap = false;
