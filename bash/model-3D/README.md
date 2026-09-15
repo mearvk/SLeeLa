@@ -15,6 +15,14 @@ generated per user and can be saved to GitHub or a public server.
 
 ## What it does
 
+- **A general model.** Everything below is unified under the **Cityscape Model**
+  ([`CITYSCAPE_MODEL.md`](CITYSCAPE_MODEL.md)) — a graph in the 3rd (vertical)
+  dimension grown from a **center of centricity**, with three tunable dimensions
+  and seeded variability: **radix** (branching base), **diameter** (radial reach
+  from the center), and **randomness** (`0..1`). Its main distribution is drawn
+  as **mating pairs of cylinders** (columns rising in Z) that **grace spheres of
+  known moral symmetry** — a fixed positive, benevolent orientation. Every node
+  **celebrates** itself then **notes** its neighbors (an explicit adjacency).
 - **Sprawling city.** A square grid of blocks — default **64 × 64 = 4096**
   ("~4000 square blocks") — with a taller downtown core, real **road**
   corridors, **bridge** spans, and occasional landmark towers.
@@ -75,10 +83,12 @@ model-3D/
 ├── city.config        default configuration
 ├── Makefile           self-contained build (pulls Phraign from ../)
 ├── RENDER_MATH.md     rendering math + rendering group reference
-├── city_model.hpp/.cpp     model, palette, config, generation, serialization
-├── render_math.hpp/.cpp    vectors, color math, oblique projection, quad fill
-├── render_group.hpp/.cpp   RenderSink over Phraign + ordered drawable group
-├── city_renderer.hpp/.cpp  builds a rendering group from a City and draws it
+├── CITYSCAPE_MODEL.md the general model (graph, radix/diameter/randomness)
+├── city_model.hpp/.cpp      model, palette, config, generation, serialization
+├── cityscape_model.hpp/.cpp the general graph: centricity, cylinders, spheres
+├── render_math.hpp/.cpp     vectors, color math, oblique projection, quad fill
+├── render_group.hpp/.cpp    RenderSink over Phraign + ordered drawable group
+├── city_renderer.hpp/.cpp   builds a rendering group from a City + graph
 ├── city3d.cpp              command-line driver (generate / render / save)
 ├── city3d_smoke.cpp        model/config/render smoke test
 ├── render_smoke.cpp        rendering math + group smoke test

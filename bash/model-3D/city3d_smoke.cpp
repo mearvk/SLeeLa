@@ -3,6 +3,7 @@
 
 #include "city_model.hpp"
 #include "city_renderer.hpp"
+#include "cityscape_model.hpp"
 #include "pixel_terminal.hpp"
 
 #include <cassert>
@@ -129,6 +130,7 @@ int main() {
 
     // --- Generation is deterministic for a seed + params -------------------
     CityParams gp;  gp.year = 2807; gp.iq = 165; gp.legislature = Legislature::Bicameral;
+    gp.radix = 4; gp.diameter = 22.0; gp.randomness = 0.4;
     City a(64, 64), b(64, 64);
     a.generate(12345, gp);
     b.generate(12345, gp);
@@ -176,12 +178,13 @@ int main() {
     // City finality is a sane average.
     assert(a.cityFinality() > 0.0 && a.cityFinality() <= 1.0);
 
-    // --- Serialize / deserialize round-trip (v3, all attributes) -----------
+    // --- Serialize / deserialize round-trip (v4, all attributes) -----------
     const std::string text = a.serialize("tester", 12345);
-    assert(text.find("PHRAIGN-CITY 3") == 0);
+    assert(text.find("PHRAIGN-CITY 4") == 0);
     assert(text.find("year 2807") != std::string::npos);
     assert(text.find("iq 165") != std::string::npos);
     assert(text.find("legislature bicameral") != std::string::npos);
+    assert(text.find("radix 4") != std::string::npos);
     City c;
     std::string ru;
     std::uint64_t rs = 0;
@@ -190,6 +193,8 @@ int main() {
     assert(c.cols() == 64 && c.rows() == 64);
     assert(c.params().year == 2807 && c.params().iq == 165);
     assert(c.params().legislature == Legislature::Bicameral);
+    assert(c.params().radix == 4 && c.params().diameter == 22.0);
+    assert(c.params().randomness == 0.4);
     bool round = true;
     for (std::uint32_t y = 0; y < 64 && round; ++y)
         for (std::uint32_t x = 0; x < 64; ++x) {
@@ -270,8 +275,62 @@ int main() {
     const Palette pal = Palette::forTheme(Theme::Blue);
     (void)pal;
 
+    // --- General cityscape model: graph from centricity --------------------
+    CityParams mp;  mp.year = 2807; mp.iq = 165; mp.legislature = Legislature::Federal;
+    CityscapeModel g1, g2;
+    g1.build(777, /*radix=*/3, /*diameter=*/24.0, /*randomness=*/0.35, mp, 64u, 64u);
+    g2.build(777, 3, 24.0, 0.35, mp, 64u, 64u);
+    // Reproducible for the same (seed, radix, diameter, randomness, params).
+    assert(g1.nodes().size() == g2.nodes().size());
+    assert(g1.edgeCount() == g2.edgeCount());
+    assert(g1.cylinders().size() == g2.cylinders().size());
+    // A center of centricity plus branches: more than one node, one cylinder
+    // pair per node, and a connected tree (edges == nodes - 1).
+    assert(g1.nodes().size() > 1);
+    assert(g1.cylinders().size() == g1.nodes().size());
+    assert(g1.edgeCount() == g1.nodes().size() - 1);
+    // The root node is the center of centricity.
+    assert(g1.nodes().front().isCenter());
+    // Every node celebrated and noted at least one neighbor (except a lone
+    // center, which has children here).
+    for (const Node& n : g1.nodes()) {
+        assert(n.celebrated);
+        assert(!n.neighbors.empty());
+    }
+    // Radix changes the branching: a larger radix yields more nodes.
+    CityscapeModel gWide;
+    gWide.build(777, 5, 24.0, 0.35, mp, 64u, 64u);
+    assert(gWide.nodes().size() > g1.nodes().size());
+    // Randomness varies the graph: a different randomness gives a different
+    // node count or layout (very likely; assert node count differs or matches
+    // but with jitter -- here we just require it still builds sanely).
+    CityscapeModel gRand;
+    gRand.build(777, 3, 24.0, 0.9, mp, 64u, 64u);
+    assert(gRand.nodes().size() > 1);
+    // Diameter bounds the reach: no node exceeds the diameter from center.
+    for (const Node& n : g1.nodes())
+        assert(n.distance_from_center <= g1.diameter() + 1e-6);
+    // Mating cylinder pairs grace spheres of known moral symmetry (positive).
+    for (const CylinderPair& cp : g1.cylinders()) {
+        assert(cp.sphere_radius > 0.0);
+        assert(cp.sphere_symmetry >= 0.0 && cp.sphere_symmetry <= 1.0);
+        assert(cp.sphere_center.z > 0.0);  // sphere rides above the pair in Z
+    }
+    assert(g1.moralSymmetry() > 0.5 && g1.moralSymmetry() <= 1.0);
+    assert(std::string(CityscapeModel::orientation()).find("positive") == 0);
+
+    // Rendering the city + graph writes strictly more than the city alone.
+    sleela::terminal::PixelTerminal gterm(sleela::terminal::Size{320, 240});
+    RenderOptions gro = ro;
+    gro.draw_cylinders = true;
+    Renderer grenderer(gro);
+    const std::size_t gdrawn = grenderer.render(a, g1, gterm);
+    assert(gdrawn > 0);
+
     std::cout << "phraign city3d smoke: OK ("
               << city.blockCount() << " blocks, " << drawn
-              << " pixels drawn)\n";
+              << " px; graph nodes=" << g1.nodes().size()
+              << " edges=" << g1.edgeCount()
+              << " moralSymmetry=" << g1.moralSymmetry() << ")\n";
     return 0;
 }

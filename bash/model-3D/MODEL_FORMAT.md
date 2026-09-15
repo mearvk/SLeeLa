@@ -4,19 +4,23 @@ City 3D serializes a city to a small, diff-friendly, line-oriented text format
 called **PHRAIGN-CITY**. It is deliberately plain ASCII so it lives well on
 GitHub or a public server and produces readable diffs.
 
-The current format is **version 3** (adds the design drivers: the person's IQ
-and native legislature, alongside the Year). Versions 2 (attributes + Year) and
-1 (height-only) are still read for back-compatibility.
+The current format is **version 4** (adds the general cityscape-graph
+dimensions: radix / diameter / randomness, alongside the Year / IQ /
+Legislature drivers). Versions 3, 2, and 1 are still read for
+back-compatibility.
 
-## Layout (v3, current)
+## Layout (v4, current)
 
 ```text
-PHRAIGN-CITY 3
+PHRAIGN-CITY 4
 user <name>
 seed <u64>
 year <u32>
 iq <u32>
 legislature <name>
+radix <u32>
+diameter <double>
+randomness <double 0..1>
 finality <city finality, 0..1>
 grid <cols> <rows>
 cell    0 <c0> <c1> ... <c(cols-1)>
@@ -28,15 +32,18 @@ fin     0 <q0> <q1> ... <q(cols-1)>
 END
 ```
 
-- **`PHRAIGN-CITY 3`** — magic + format version. A reader requires the magic and
+- **`PHRAIGN-CITY 4`** — magic + format version. A reader requires the magic and
   a version `>= 1`.
 - **`user`** — the per-user identity the model was generated for.
-- **`seed`** — the 64-bit seed. `(user, seed, year, iq, legislature, params)`
-  determines the city.
+- **`seed`** — the 64-bit seed. `(user, seed, year, iq, legislature, radix,
+  diameter, randomness)` determines the city and its cityscape graph.
 - **`year`** — the city's Year, which drives modernity.
 - **`iq`** — the person's IQ, which drives design quality.
 - **`legislature`** — the native regime shaping the lines: `federal`,
   `parliamentary`, `municipal`, `bicameral`, `unicameral`, or `direct`.
+- **`radix`** — the cityscape-graph branching base.
+- **`diameter`** — the radial reach from the center of centricity (blocks).
+- **`randomness`** — seeded graph/driver variability (`0..1`).
 - **`finality`** — the city-wide quality-of-condition mean, `0..1`
   (informational; recomputed on regeneration).
 - **`grid <cols> <rows>`** — grid dimensions. The default city is `64 64`
@@ -54,10 +61,15 @@ Then, for each grid row `y`, five lines:
 
 - **`END`** — terminates the model.
 
-## Layout (v2 / v1, legacy — still read)
+The cityscape graph (nodes, mating cylinder pairs, and the spheres they grace)
+is **not** dumped node-by-node: it is regenerated deterministically from the
+seed and the fields above.
 
-**v2** is identical to v3 without the `iq` and `legislature` header lines (Year +
-per-building attributes). **v1** is height-only:
+## Layout (v3 / v2 / v1, legacy — still read)
+
+**v3** omits the `radix`/`diameter`/`randomness` lines (graph dimensions fall
+back to defaults). **v2** further omits `iq` and `legislature`. **v1** is
+height-only:
 
 ```text
 PHRAIGN-CITY 1
@@ -79,15 +91,18 @@ so future additive fields do not break older readers. Writers keep the
 magic/version line first. Values are clamped on read (heights/floors/windows to
 `0..65535`, cell to `0..2`, `fin` to `0..1000`).
 
-## Example (v3)
+## Example (v4)
 
 ```text
-PHRAIGN-CITY 3
+PHRAIGN-CITY 4
 user demo
 seed 10862587209389482623
 year 2807
 iq 165
 legislature unicameral
+radix 3
+diameter 24
+randomness 0.35
 finality 0.601236
 grid 64 64
 cell    0 1 0 0 0 0 0 0 1 ...

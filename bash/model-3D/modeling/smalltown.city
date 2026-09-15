@@ -1,9 +1,12 @@
-PHRAIGN-CITY 3
+PHRAIGN-CITY 4
 user smalltown
 seed 16973494221321459432
 year 2407
 iq 150
 legislature bicameral
+radix 4
+diameter 14
+randomness 0.4
 finality 0.452876
 grid 32 32
 cell 0 2 2 2 2 2 2 2 2 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1

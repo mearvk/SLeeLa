@@ -20,6 +20,8 @@
 #include "render_math.hpp"
 
 #include <algorithm>
+#include <array>
+#include <cmath>
 
 namespace sleela::city {
 
@@ -64,26 +66,108 @@ double conditionFactor(double finality) {
     return 0.6 + 0.72 * f;
 }
 
-} // namespace
+// Append the mating cylinder pairs, the spheres of known moral symmetry they
+// grace, and the noted neighbor links to a render group. Cylinders are drawn as
+// octagonal prisms rising in the 3rd dimension; the sphere is an octagon cap.
+void addCityscapeGraph(const ObliqueCamera& cam,
+                       const CityscapeModel& model, const Palette& pal,
+                       sleela::render::RenderGroup& group) {
+    using sleela::render::shade;
+    const Rgba column = sleela::render::lerp(toRgba(pal.wall_lit),
+                                             toRgba(pal.roof), 0.35);
+    const Rgba columnShade = shade(column, 0.7);
+    const Rgba sphereC = sleela::render::lerp(toRgba(pal.roof),
+                                              Rgba{255, 255, 255, 255}, 0.35);
+    const Rgba linkC = shade(toRgba(pal.ground), 1.6);
 
-std::size_t Renderer::render(const City& city,
-                             sleela::terminal::PixelTerminal& terminal) const {
-    // Size the Phraign frame to the configured dimensions.
-    terminal.setSize(sleela::terminal::Size{options_.frame_width,
-                                            options_.frame_height});
-    terminal.begin();
+    auto centroidY = [&](double x, double y, double z) {
+        return cam.project(Vec3{x, y, z}).y;
+    };
 
-    const Palette pal = Palette::forTheme(options_.theme);
-    terminal.fill(sleela::terminal::Pixel{toRgba(pal.background).pack()});
+    // Neighbor links: a thin ground ribbon between noted neighbors (each edge
+    // once). Drawn low so columns rise above them.
+    for (const Node& n : model.nodes()) {
+        for (std::uint32_t m : n.neighbors) {
+            if (m <= n.id) continue;  // once per undirected edge
+            const Node& o = model.nodes()[m];
+            const double w = 0.18;
+            const double depth = centroidY((n.pos.x + o.pos.x) * 0.5,
+                                           (n.pos.y + o.pos.y) * 0.5, 0.0) - 0.2;
+            group.addQuad(
+                worldQuad(cam, Vec3{n.pos.x - w, n.pos.y - w, 0.1},
+                          Vec3{n.pos.x + w, n.pos.y + w, 0.1},
+                          Vec3{o.pos.x + w, o.pos.y + w, 0.1},
+                          Vec3{o.pos.x - w, o.pos.y - w, 0.1}),
+                linkC, depth);
+        }
+    }
 
-    const ObliqueCamera cam = cameraFor(options_.viewpoint);
+    // A single mated cylinder drawn as an octagonal prism at (cx,cy) rising to
+    // height h with radius r.
+    auto drawColumn = [&](double cx, double cy, double r, double h) {
+        const int seg = 8;
+        const double depth = centroidY(cx, cy, 0.0) + h * 1.0e-3;
+        for (int i = 0; i < seg; ++i) {
+            const double a0 = (2.0 * 3.14159265358979 * i) / seg;
+            const double a1 = (2.0 * 3.14159265358979 * (i + 1)) / seg;
+            const double x0 = cx + std::cos(a0) * r, y0 = cy + std::sin(a0) * r;
+            const double x1 = cx + std::cos(a1) * r, y1 = cy + std::sin(a1) * r;
+            // Facets facing +x/+y are lit; others shaded (cheap shading).
+            const bool litFace = (std::cos((a0 + a1) * 0.5) + std::sin((a0 + a1) * 0.5)) > 0;
+            group.addQuad(
+                worldQuad(cam, Vec3{x0, y0, 0}, Vec3{x1, y1, 0},
+                          Vec3{x1, y1, h}, Vec3{x0, y0, h}),
+                litFace ? column : columnShade, depth);
+        }
+        // Cap (fan of octagon triangles as quads).
+        for (int i = 0; i < seg; i += 2) {
+            const double a0 = (2.0 * 3.14159265358979 * i) / seg;
+            const double a1 = (2.0 * 3.14159265358979 * (i + 1)) / seg;
+            const double a2 = (2.0 * 3.14159265358979 * (i + 2)) / seg;
+            group.addQuad(
+                worldQuad(cam, Vec3{cx, cy, h},
+                          Vec3{cx + std::cos(a0) * r, cy + std::sin(a0) * r, h},
+                          Vec3{cx + std::cos(a1) * r, cy + std::sin(a1) * r, h},
+                          Vec3{cx + std::cos(a2) * r, cy + std::sin(a2) * r, h}),
+                column, depth + 0.5);
+        }
+    };
 
+    // A sphere of known moral symmetry, drawn as an octagon disc facing the
+    // camera, capping the mated pair.
+    auto drawSphere = [&](const Vec3d& c, double r, double symmetry) {
+        const int seg = 8;
+        const double depth = centroidY(c.x, c.y, c.z) + 0.8;
+        const Rgba s = shade(sphereC, 0.7 + 0.3 * symmetry);
+        for (int i = 0; i < seg; i += 2) {
+            const double a0 = (2.0 * 3.14159265358979 * i) / seg;
+            const double a1 = (2.0 * 3.14159265358979 * (i + 1)) / seg;
+            const double a2 = (2.0 * 3.14159265358979 * (i + 2)) / seg;
+            // Draw in the x-z plane (a vertical disc facing the viewer).
+            group.addQuad(
+                worldQuad(cam, Vec3{c.x, c.y, c.z},
+                          Vec3{c.x + std::cos(a0) * r, c.y, c.z + std::sin(a0) * r},
+                          Vec3{c.x + std::cos(a1) * r, c.y, c.z + std::sin(a1) * r},
+                          Vec3{c.x + std::cos(a2) * r, c.y, c.z + std::sin(a2) * r}),
+                s, depth);
+        }
+    };
+
+    for (const CylinderPair& cp : model.cylinders()) {
+        drawColumn(cp.a.x, cp.a.y, cp.radius, cp.height);
+        drawColumn(cp.b.x, cp.b.y, cp.radius, cp.height);
+        drawSphere(cp.sphere_center, cp.sphere_radius, cp.sphere_symmetry);
+    }
+}
+
+// Build the base city (ground + buildings + bridges + windows) into a group.
+void buildCityGroup(const ObliqueCamera& cam, const RenderOptions& options_,
+                    const City& city, const Palette& pal,
+                    sleela::render::RenderGroup& group) {
     const Rgba ground = toRgba(pal.ground);
     const Rgba roof = toRgba(pal.roof);
     const Rgba lit = toRgba(pal.wall_lit);
     const Rgba shade = toRgba(pal.wall_shade);
-
-    sleela::render::RenderGroup group;
 
     // Ground plane first (depth pushed to -inf so it is always behind).
     {
@@ -195,9 +279,47 @@ std::size_t Renderer::render(const City& city,
         }
     }
 
+}
+
+} // namespace
+
+std::size_t Renderer::render(const City& city,
+                             sleela::terminal::PixelTerminal& terminal) const {
+    terminal.setSize(sleela::terminal::Size{options_.frame_width,
+                                            options_.frame_height});
+    terminal.begin();
+
+    const Palette pal = Palette::forTheme(options_.theme);
+    terminal.fill(sleela::terminal::Pixel{toRgba(pal.background).pack()});
+
+    const ObliqueCamera cam = cameraFor(options_.viewpoint);
+    sleela::render::RenderGroup group;
+    buildCityGroup(cam, options_, city, pal, group);
+
     sleela::render::PhraignSink sink(terminal);
     const std::size_t drawn = group.draw(sink, /*sortByDepth=*/true);
+    terminal.show();
+    return drawn;
+}
 
+std::size_t Renderer::render(const City& city, const CityscapeModel& model,
+                             sleela::terminal::PixelTerminal& terminal) const {
+    terminal.setSize(sleela::terminal::Size{options_.frame_width,
+                                            options_.frame_height});
+    terminal.begin();
+
+    const Palette pal = Palette::forTheme(options_.theme);
+    terminal.fill(sleela::terminal::Pixel{toRgba(pal.background).pack()});
+
+    const ObliqueCamera cam = cameraFor(options_.viewpoint);
+    sleela::render::RenderGroup group;
+    buildCityGroup(cam, options_, city, pal, group);
+    if (options_.draw_cylinders) {
+        addCityscapeGraph(cam, model, pal, group);
+    }
+
+    sleela::render::PhraignSink sink(terminal);
+    const std::size_t drawn = group.draw(sink, /*sortByDepth=*/true);
     terminal.show();
     return drawn;
 }

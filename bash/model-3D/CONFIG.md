@@ -85,6 +85,25 @@ Each regime resolves to a profile (regularity, linearity, axis bias,
 connectivity, and road/bridge spacing adjustments) that, together with the IQ's
 order, determines the city's straight-line structure.
 
+### General cityscape graph — radix / diameter / randomness
+
+The **general model** ([`CITYSCAPE_MODEL.md`](CITYSCAPE_MODEL.md)) grows a graph
+from the center of centricity in the 3rd (vertical) dimension. Its main
+distribution is drawn as **mating pairs of cylinders** (columns) that grace
+**spheres of known moral symmetry** — a fixed positive, benevolent orientation.
+These three dimensions add seeded variability over the whole model:
+
+| Key | Type | Default | Meaning |
+|-----|------|---------|---------|
+| `radix` | int ≥ 1 | `3` | Branching base of the graph (more ⇒ denser distribution) |
+| `diameter` | float > 0 | `24` | Radial reach from the center of centricity (blocks) |
+| `randomness` | float 0..1 | `0.35` | Seeded variability over the graph + drivers |
+| `draw_cylinders` | bool | `true` | Render the mating cylinder pairs + neighbor links |
+
+The graph is reproducible for a given `(seed, radix, diameter, randomness)` plus
+the Year/IQ/Legislature drivers; higher `randomness` yields more organic
+variation while staying reproducible.
+
 ### Building quality targets
 
 Buildings vary around these targets; modernity scales them up as the city
@@ -206,6 +225,9 @@ seed      = 0
 year          = 2807
 iq            = 165          # high design quality
 legislature   = unicameral   # one dominant axis -> banded, linear city
+radix         = 3            # graph branching base
+diameter      = 24           # radial reach from the center of centricity
+randomness    = 0.35         # seeded variability
 avg_floors    = 16
 windows_per_floor = 8
 road_spacing  = 8

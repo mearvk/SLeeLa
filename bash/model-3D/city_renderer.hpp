@@ -8,6 +8,7 @@
 // derived from the chosen Theme.
 
 #include "city_model.hpp"
+#include "cityscape_model.hpp"
 
 // Phraign native pixel-terminal layer (sibling in bash/).
 #include "pixel_terminal.hpp"
@@ -22,6 +23,12 @@ public:
     // sized to the configured frame dimensions. Returns the number of pixels
     // written (roofs + walls + ground), useful for smoke checks.
     std::size_t render(const City& city,
+                       sleela::terminal::PixelTerminal& terminal) const;
+
+    // Render the city plus the general cityscape graph: the mating cylinder
+    // pairs (columns in the 3rd dimension), the spheres of moral symmetry they
+    // grace, and the noted neighbor links. Returns pixels written.
+    std::size_t render(const City& city, const CityscapeModel& model,
                        sleela::terminal::PixelTerminal& terminal) const;
 
     const RenderOptions& options() const noexcept { return options_; }

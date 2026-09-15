@@ -284,6 +284,20 @@ Config Config::fromText(const std::string& text, std::string* error) {
             else note("legislature must be federal|parliamentary|municipal|"
                       "bicameral|unicameral|direct");
 
+        // ---- General cityscape-graph dimensions ----
+        } else if (key == "radix") {
+            if (toU64(val, u) && u >= 1) cfg.params.radix = static_cast<std::uint32_t>(u);
+            else note("radix must be >= 1");
+        } else if (key == "diameter") {
+            if (toDouble(val, d) && d > 0.0) cfg.params.diameter = d;
+            else note("diameter must be > 0");
+        } else if (key == "randomness") {
+            if (toDouble(val, d) && d >= 0.0 && d <= 1.0) cfg.params.randomness = d;
+            else note("randomness must be in 0..1");
+        } else if (key == "draw_cylinders") {
+            bool bv; if (toBool(val, bv)) cfg.draw_cylinders = bv;
+            else note("draw_cylinders invalid");
+
         // ---- Building form / quality targets ----
         } else if (key == "avg_floors") {
             if (toDouble(val, d) && d >= 0.0) cfg.params.avg_floors = d;
@@ -348,6 +362,7 @@ RenderOptions Config::renderOptions() const noexcept {
     ro.frame_height = frame_height;
     ro.draw_bridges = draw_bridges;
     ro.draw_windows = draw_windows;
+    ro.draw_cylinders = draw_cylinders;
     return ro;
 }
 
@@ -631,16 +646,23 @@ double City::cityFinality() const noexcept {
 // MODEL_FORMAT: a small, diff-friendly, GitHub/public-server-friendly text
 // format. Line-oriented ASCII.
 //
-// v3 (current):
-//   PHRAIGN-CITY 3
+// v4 (current):
+//   PHRAIGN-CITY 4
 //   user <name>
 //   seed <u64>
 //   year <u32>
 //   iq <u32>
 //   legislature <name>            (federal|parliamentary|municipal|
 //                                   bicameral|unicameral|direct)
+//   radix <u32>                   (cityscape-graph branching base)
+//   diameter <double>             (radial reach from centricity)
+//   randomness <double 0..1>      (seeded graph/driver variability)
 //   finality <city-finality 0..1>
 //   grid <cols> <rows>
+//
+// The cityscape graph (nodes / mating cylinder pairs / spheres) is regenerated
+// deterministically from (seed, year, iq, legislature, radix, diameter,
+// randomness), so it is not dumped node-by-node.
 //   cell <y> <c0> <c1> ...        (0=building 1=road 2=bridge, per column)
 //   row  <y> <h0> <h1> ...        (heights)
 //   floors  <y> <f0> <f1> ...
@@ -655,12 +677,15 @@ double City::cityFinality() const noexcept {
 
 std::string City::serialize(const std::string& user, std::uint64_t seed) const {
     std::ostringstream out;
-    out << "PHRAIGN-CITY 3\n";
+    out << "PHRAIGN-CITY 4\n";
     out << "user " << user << "\n";
     out << "seed " << seed << "\n";
     out << "year " << params_.year << "\n";
     out << "iq " << params_.iq << "\n";
     out << "legislature " << legislatureName(params_.legislature) << "\n";
+    out << "radix " << params_.radix << "\n";
+    out << "diameter " << params_.diameter << "\n";
+    out << "randomness " << params_.randomness << "\n";
     out << "finality " << cityFinality() << "\n";
     out << "grid " << cols_ << " " << rows_ << "\n";
     for (std::uint32_t y = 0; y < rows_; ++y) {
@@ -704,6 +729,12 @@ bool City::deserialize(const std::string& text, City& out,
     bool haveIq = false;
     Legislature legislature = Legislature::Federal;
     bool haveLeg = false;
+    std::uint32_t radix = 0;
+    bool haveRadix = false;
+    double diameter = 0.0;
+    bool haveDiameter = false;
+    double randomness = -1.0;
+    bool haveRandomness = false;
     bool haveGrid = false;
 
     auto clampl = [](long v, long lo, long hi) -> long {
@@ -740,6 +771,12 @@ bool City::deserialize(const std::string& text, City& out,
         } else if (key == "legislature") {
             std::string name;
             if (ls >> name && parseLegislature(name, legislature)) haveLeg = true;
+        } else if (key == "radix") {
+            if (ls >> radix) haveRadix = true;
+        } else if (key == "diameter") {
+            if (ls >> diameter) haveDiameter = true;
+        } else if (key == "randomness") {
+            if (ls >> randomness) haveRandomness = true;
         } else if (key == "finality") {
             // Informational; recomputed on generation. Ignored on read.
         } else if (key == "grid") {
@@ -777,6 +814,10 @@ bool City::deserialize(const std::string& text, City& out,
     if (year > 0) out.params_.year = year;
     if (haveIq) out.params_.iq = iq;
     if (haveLeg) out.params_.legislature = legislature;
+    if (haveRadix && radix >= 1) out.params_.radix = radix;
+    if (haveDiameter && diameter > 0.0) out.params_.diameter = diameter;
+    if (haveRandomness && randomness >= 0.0 && randomness <= 1.0)
+        out.params_.randomness = randomness;
     if (user) *user = localUser;
     if (seed) *seed = localSeed;
     return true;

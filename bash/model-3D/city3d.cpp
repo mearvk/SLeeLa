@@ -15,6 +15,7 @@
 
 #include "city_model.hpp"
 #include "city_renderer.hpp"
+#include "cityscape_model.hpp"
 #include "pixel_terminal.hpp"
 
 #include <cstdint>
@@ -110,6 +111,12 @@ int doGenerate(int argc, char** argv) {
     City city(cfg.grid_cols, cfg.grid_rows);
     city.generate(seed, cfg.params);
 
+    // The general cityscape graph: radix/diameter/randomness, composed with the
+    // Year/IQ/Legislature drivers, from the center of centricity.
+    CityscapeModel model;
+    model.build(seed, cfg.radix(), cfg.diameter(), cfg.randomness(), cfg.params,
+                cfg.grid_cols, cfg.grid_rows);
+
     std::cout << "generated city: " << cfg.grid_cols << "x" << cfg.grid_rows
               << " = " << city.blockCount() << " blocks; user='" << cfg.user
               << "' seed=" << seed << " theme=" << themeName(cfg.theme) << "\n";
@@ -120,6 +127,14 @@ int doGenerate(int argc, char** argv) {
               << "  legislature=" << legislatureName(cfg.params.legislature)
               << "\n  finality=" << city.cityFinality()
               << " (city quality of condition, 0..1)\n";
+    std::cout << "  cityscape graph: radix=" << model.radix()
+              << " diameter=" << model.diameter()
+              << " randomness=" << model.randomness()
+              << " nodes=" << model.nodes().size()
+              << " edges=" << model.edgeCount()
+              << " cylinderPairs=" << model.cylinders().size()
+              << "\n  moralSymmetry=" << model.moralSymmetry()
+              << " (spheres graced by the cylinders; positive orientation)\n";
 
     const std::string out = argValue(argc, argv, "--out");
     if (!out.empty()) {
@@ -133,7 +148,7 @@ int doGenerate(int argc, char** argv) {
         sleela::terminal::PixelTerminal term(
             sleela::terminal::Size{cfg.frame_width, cfg.frame_height});
         Renderer renderer(cfg.renderOptions());
-        const std::size_t drawn = renderer.render(city, term);
+        const std::size_t drawn = renderer.render(city, model, term);
         if (writePPM(ppm, term))
             std::cout << "wrote preview: " << ppm << " (" << drawn
                       << " pixels drawn)\n";
@@ -167,13 +182,24 @@ int doRender(int argc, char** argv) {
               << " finality=" << city.cityFinality()
               << " (city quality of condition, 0..1)\n";
 
+    // Rebuild the general cityscape graph from the model's params + the config
+    // dimensions (radix/diameter/randomness), so the render includes the
+    // cylinder pairs and the spheres they grace.
+    // radix/diameter/randomness come from the loaded model's params (or config
+    // overrides if the model predates them / config is supplied).
+    CityscapeModel gmodel;
+    gmodel.build(seed, city.params().radix, city.params().diameter,
+                 city.params().randomness, city.params(),
+                 city.cols(), city.rows());
+
     sleela::terminal::PixelTerminal term(
         sleela::terminal::Size{cfg.frame_width, cfg.frame_height});
     Renderer renderer(cfg.renderOptions());
-    const std::size_t drawn = renderer.render(city, term);
+    const std::size_t drawn = renderer.render(city, gmodel, term);
     std::cout << "rendered " << drawn << " pixels into a "
               << term.pixelSize().width << "x" << term.pixelSize().height
-              << " Phraign frame\n";
+              << " Phraign frame (graph nodes=" << gmodel.nodes().size()
+              << " edges=" << gmodel.edgeCount() << ")\n";
 
     const std::string ppm = argValue(argc, argv, "--ppm");
     if (!ppm.empty()) {

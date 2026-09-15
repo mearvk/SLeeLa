@@ -97,6 +97,7 @@ struct RenderOptions {
     std::size_t frame_height = 768;
     bool draw_bridges = true;
     bool draw_windows = true;
+    bool draw_cylinders = true;  // render the cityscape-graph cylinder pairs
 };
 
 // ---------------------------------------------------------------------------
@@ -185,6 +186,12 @@ struct CityParams {
     // Distance (in blocks) at which road/bridge proximity benefit fades to 0.
     double proximity_falloff = 6.0;
 
+    // General cityscape-graph dimensions (see CityscapeModel). Kept here so a
+    // serialized city carries them and the graph is reproducible on reload.
+    std::uint32_t radix = 3;      // branching base of the distribution graph
+    double diameter = 24.0;       // radial reach from the center of centricity
+    double randomness = 0.35;     // 0..1 seeded variability
+
     // Modernity in [0,1] derived from the Year.
     double modernity() const noexcept;
     // Design quality in [0,1] derived from the IQ.
@@ -208,6 +215,13 @@ struct Config {
 
     // Year, quality targets, proximity/finality weights.
     CityParams params{};
+
+    // General cityscape-graph dimensions live on `params` (radix/diameter/
+    // randomness) so they serialize with the city. Convenience accessors:
+    std::uint32_t radix() const noexcept { return params.radix; }
+    double diameter() const noexcept { return params.diameter; }
+    double randomness() const noexcept { return params.randomness; }
+    bool draw_cylinders = true;   // render the mating cylinder pairs + links
 
     // Appearance / view
     Theme theme = Theme::Green;

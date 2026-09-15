@@ -1,9 +1,12 @@
-PHRAIGN-CITY 3
+PHRAIGN-CITY 4
 user demo
 seed 11953709441258804118
 year 2807
 iq 130
 legislature federal
+radix 3
+diameter 24
+randomness 0.35
 finality 0.532914
 grid 64 64
 cell 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2 2 2 2 2 1 1 1 1 1 1 1 1 1 1 1 1 1
