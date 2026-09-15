@@ -10,25 +10,32 @@ if [[ "$MODE" != "--check" ]]; then
   exit 2
 fi
 
-for cmd in postconf postconf; do
-  command -v "$cmd" >/dev/null 2>&1 || {
-    echo "MTA check: '$cmd' is not installed." >&2
-    exit 1
-  }
-done
+command -v postconf >/dev/null 2>&1 || {
+  echo "MTA check: 'postconf' is not installed." >&2
+  exit 1
+}
 
-# Fail closed if the local MTA is configured as an open relay or for broad binding.
 relay="$(postconf -h smtpd_relay_restrictions 2>/dev/null || true)"
-if [[ "$relay" != *reject_unauth_destination* ]]; then
+interfaces="$(postconf -h inet_interfaces 2>/dev/null || true)"
+helo="$(postconf -h smtpd_helo_required 2>/dev/null || true)"
+tls="$(postconf -h smtpd_tls_security_level 2>/dev/null || true)"
+
+[[ "$relay" == *reject_unauth_destination* ]] || {
   echo "ERROR: smtpd_relay_restrictions does not contain reject_unauth_destination." >&2
   exit 1
-fi
-
-interfaces="$(postconf -h inet_interfaces 2>/dev/null || true)"
-if [[ "$interfaces" == "all" ]]; then
+}
+[[ "$interfaces" != "all" ]] || {
   echo "ERROR: MTA is bound to all interfaces; AE6E66 requires an explicitly reviewed listener." >&2
   exit 1
-fi
+}
+[[ "$helo" == "yes" ]] || {
+  echo "ERROR: smtpd_helo_required is not enabled." >&2
+  exit 1
+}
+[[ -n "$tls" && "$tls" != "none" ]] || {
+  echo "ERROR: SMTP TLS security level is not configured." >&2
+  exit 1
+}
 
 echo "AE6E66 MTA preflight: PASS"
 echo "No package installation, service enablement, firewall change, DNS change, or network binding was performed."
