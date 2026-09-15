@@ -19,10 +19,64 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <termios.h>
+#include <unistd.h>
+#include <csignal>
 
 namespace {
 
 using namespace sleela::sh;
+
+// Ctrl+X is the SleelaTerminal sharp-quit key. The PTY is configured so Ctrl+X
+// is delivered as SIGQUIT to the foreground process group. slsh itself catches
+// SIGQUIT and survives; a foreground child inherits the handler but sees a
+// different PID and immediately receives SIGKILL. This returns control to the
+// slsh prompt without disposing of the terminal window.
+pid_t g_shell_pid = 0;
+
+void sharpQuitSignalHandler(int) {
+    if (g_shell_pid != 0 && ::getpid() != g_shell_pid) {
+        ::kill(::getpid(), SIGKILL);
+    }
+}
+
+void configureSharpQuitKey() {
+    struct termios tio;
+    if (::tcgetattr(STDIN_FILENO, &tio) != 0) return;
+    tio.c_cc[VQUIT] = 0x18; // Ctrl+X
+    ::tcsetattr(STDIN_FILENO, TCSANOW, &tio);
+}
+
+bool runPromptCommand(const std::string& line, Environment& env) {
+    std::istringstream in(line);
+    std::string command;
+    std::string subcommand;
+    std::string original;
+    if (!(in >> command >> subcommand >> original) ||
+        command != "prompt" || subcommand != "set") {
+        return false;
+    }
+
+    std::string replacement;
+    std::getline(in, replacement);
+    if (!replacement.empty() && replacement.front() == ' ') replacement.erase(0, 1);
+
+    if (replacement.empty()) {
+        std::cerr << "prompt: usage: prompt set originalprompt newprompt\n";
+        env.setLastStatus(2);
+        return true;
+    }
+
+    if (original != env.prompt()) {
+        std::cerr << "prompt: current prompt does not match '" << original << "'\n";
+        env.setLastStatus(1);
+        return true;
+    }
+
+    env.setPrompt(replacement);
+    env.setLastStatus(0);
+    return true;
+}
 
 int runNormalScript(const std::string& src, Environment& env) {
     std::vector<Token> toks;
@@ -57,9 +111,15 @@ int repl(Environment& env) {
     std::string line;
     std::cout << "SleelaTerminal(TM) slsh -- original SLeeLa shell. Type 'exit' to leave.\n";
     for (;;) {
-        std::cout << "slsh$ " << std::flush;
+        std::cout << env.prompt() << std::flush;
         if (!std::getline(std::cin, line)) { std::cout << "\n"; break; }
         if (line.empty()) continue;
+
+        if (runPromptCommand(line, env)) {
+            if (env.shouldExit()) return env.exitCode();
+            continue;
+        }
+
         runScript(line, env);
         if (env.shouldExit()) return env.exitCode();
     }
@@ -69,6 +129,10 @@ int repl(Environment& env) {
 } // namespace
 
 int main(int argc, char** argv) {
+    g_shell_pid = ::getpid();
+    ::signal(SIGQUIT, sharpQuitSignalHandler);
+    configureSharpQuitKey();
+
     sleela::sh::Environment env;
 
     if (argc >= 3 && std::string(argv[1]) == "-c") {
