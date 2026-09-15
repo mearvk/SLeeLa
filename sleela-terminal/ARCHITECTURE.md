@@ -154,11 +154,13 @@ associativity, div-by-zero), the lexer (quoting/operators), the parser
 - **M2 (done):** `for … in`, `case … esac` (glob patterns, `|` alternation),
   shell **functions** (`name() { … }`) with positional parameters (`$1`, `$@`,
   `$#`), **command substitution** `$( … )`, and **pathname globbing**
-  (`*`, `?`, `[..]`, `[!..]`) with field splitting — each an additive layer on
-  the same stack. Brace groups `{ … }` are also parsed.
-- **M3+:** job control, more expansion (tilde, brace expansion, parameter
-  operators like `${x:-default}`), here-documents, richer builtins, and
-  functions inside pipelines.
+  (`*`, `?`, `[..]`, `[!..]`) with field splitting. Brace groups `{ … }` too.
+- **M3 (done):** **parameter operators** `${x:-w}` `${x:=w}` `${x:?m}` `${x:+w}`
+  and `${#x}`; **brace expansion** `{a,b,c}` and numeric `{m..n}` (cartesian);
+  **tilde expansion** `~` / `~user`; **here-documents** `<<` and `<<-` (body
+  expanded unless the delimiter is quoted); and **functions inside pipelines**.
+- **M4+:** job control (`&`, `jobs`, `fg`/`bg`), `until` loops, `select`, richer
+  builtins (`read`, `test`/`[`, `getopts`), and multi-segment path globbing.
 
 ### M2 layer touch-points
 
@@ -169,3 +171,13 @@ associativity, div-by-zero), the lexer (quoting/operators), the parser
 | L3 parser | `parseFor`, `parseCase`, `parseFunctionDef`, `parseBraceGroup` |
 | L4 expansion | command substitution (via a `CommandRunner` callback → no L4→L5 cycle), field splitting, `globPattern`/`globMatch`, `$1..`/`$@`/`$#` |
 | L5 executor | `execFor`, `execCase`, `execFunctionDef`, `callFunction` (scoped positionals), `captureCommand` for `$( … )`, multi-field argv |
+
+### M3 layer touch-points
+
+| Layer | M3 addition |
+|---|---|
+| L1 core | `RedirOp::Heredoc` + `Redirection.body`/`expand_body`; `Tok::{DLess,DLessDash,HeredocBody}` |
+| L2 lexer | `<<` / `<<-` here-doc capture (delimiter + body lines, tab-stripping, quoted-delimiter flag); `{`/`}` only structural when standalone (so `x{1,2}` stays one word) |
+| L3 parser | here-doc redirection (delimiter + body token); strips the expand/literal flag |
+| L4 expansion | `braceExpand` ( `{a,b}` / `{m..n}`, cartesian ), `tildeExpand` (`~`/`~user` via `getpwnam`), parameter operators `${x:-/:=/:?/:+}` and `${#x}` (env is now mutable for `:=`) |
+| L5 executor | here-doc body piped to stdin (expanded per `expand_body`); functions/builtins run correctly as pipeline stages |

@@ -106,7 +106,56 @@ bool lex(const std::string& src, std::vector<Token>& out, LexError& err) {
             return false;
         }
         if (c == ';') { push(Tok::Semi, ";", line, col); adv(); continue; }
-        if (c == '<') { push(Tok::Less, "<", line, col); adv(); continue; }
+        if (c == '<') {
+            if (nx == '<') {
+                // here-document: << or <<-
+                const bool dash = (i + 2 < n && src[i + 2] == '-');
+                const int hline = line, hcol = col;
+                adv(dash ? 3 : 2);
+                push(dash ? Tok::DLessDash : Tok::DLess, dash ? "<<-" : "<<", hline, hcol);
+                // read the delimiter word (skip spaces)
+                while (i < n && (src[i] == ' ' || src[i] == '\t')) adv();
+                std::string delim;
+                bool quotedDelim = false;
+                while (i < n && src[i] != '\n' && src[i] != ' ' && src[i] != '\t' &&
+                       src[i] != ';' && src[i] != '|' && src[i] != '&') {
+                    if (src[i] == '\'' || src[i] == '"') { quotedDelim = true; adv(); continue; }
+                    delim.push_back(src[i]); adv();
+                }
+                if (delim.empty()) { err = LexError{"expected here-document delimiter after <<", hline, hcol}; return false; }
+                push(Tok::Word, delim, hline, hcol);
+                // consume the rest of the current line up to and including \n
+                while (i < n && src[i] != '\n') adv();
+                if (i < n) adv();  // the newline
+                // collect body lines until a line equal to the delimiter
+                std::string bodyText;
+                bool closed = false;
+                while (i < n) {
+                    // read one physical line
+                    std::string ln;
+                    while (i < n && src[i] != '\n') { ln.push_back(src[i]); adv(); }
+                    if (i < n) adv();  // consume newline
+                    // for <<- strip leading tabs from the line (and the delim compare)
+                    std::string cmp = ln;
+                    if (dash) {
+                        std::size_t t = 0; while (t < cmp.size() && cmp[t] == '\t') ++t;
+                        cmp = cmp.substr(t);
+                        std::size_t t2 = 0; while (t2 < ln.size() && ln[t2] == '\t') ++t2;
+                        ln = ln.substr(t2);
+                    }
+                    if (cmp == delim) { closed = true; break; }
+                    bodyText += ln;
+                    bodyText.push_back('\n');
+                }
+                if (!closed) { err = LexError{"unterminated here-document (missing " + delim + ")", hline, hcol}; return false; }
+                // A here-doc body is expandable unless the delimiter was quoted.
+                // Encode expandability as a leading flag char the parser strips:
+                //   'E' = expand $ in the body, 'L' = literal.
+                push(Tok::HeredocBody, (quotedDelim ? "L" : "E") + bodyText, hline, hcol);
+                continue;
+            }
+            push(Tok::Less, "<", line, col); adv(); continue;
+        }
         if (c == '>') {
             if (nx == '>') { push(Tok::DGreat, ">>", line, col); adv(2); }
             else { push(Tok::Great, ">", line, col); adv(); }
@@ -128,8 +177,21 @@ bool lex(const std::string& src, std::vector<Token>& out, LexError& err) {
             const char d = src[i];
             if (d == ' ' || d == '\t' || d == '\r' || d == '\n' ||
                 d == '|' || d == '&' || d == ';' || d == '<' || d == '>' ||
-                d == '#' || d == '(' || d == ')' || d == '{' || d == '}') {
+                d == '#' || d == '(' || d == ')') {
                 break;
+            }
+            // '{' and '}' are only structural (function body / brace group) when
+            // they stand alone; when adjacent to word characters they belong to
+            // the word (e.g. brace expansion item{1,2,3}, or ${...}). Break the
+            // word only for a standalone brace at the very start of a word.
+            if ((d == '{' || d == '}') && word.empty()) {
+                // standalone if followed by whitespace/eol/operator
+                const char after = (i + 1 < n) ? src[i + 1] : '\0';
+                if (after == '\0' || after == ' ' || after == '\t' ||
+                    after == '\n' || after == '\r' || after == ';' ||
+                    after == '|' || after == '&') {
+                    break;  // let the operator scanner emit LBrace/RBrace
+                }
             }
             if (d == '\'') {
                 // single quote: literal until the next single quote

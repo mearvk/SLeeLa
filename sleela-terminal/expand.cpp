@@ -6,7 +6,9 @@
 
 #include <algorithm>
 #include <cctype>
+#include <cstdio>
 #include <dirent.h>
+#include <pwd.h>
 #include <sys/stat.h>
 #include <unistd.h>
 
@@ -36,7 +38,65 @@ std::string lookupParam(const std::string& name, const Environment& env) {
 // Pass 1-3: expand $ sequences of a word into a single string. We do NOT split
 // or glob here; that happens after. Returns the expanded string.
 // ---------------------------------------------------------------------------
-std::string expandDollar(const std::string& word, const Environment& env,
+std::string expandDollar(const std::string& word, Environment& env,
+                         const CommandRunner& run);
+
+// Apply a ${name OP word} parameter operator. `content` is the text between the
+// braces (operators and the trailing word); `env`/`run` allow the operator's
+// word to itself be expanded, and := to assign back. Returns the resulting
+// string; sets `err` non-empty on ${x:?msg} when x is unset/empty.
+std::string applyParamBraces(const std::string& content, Environment& env,
+                             const CommandRunner& run, std::string& err) {
+    // ${#name} -> length of the value
+    if (!content.empty() && content[0] == '#' && content.size() > 1) {
+        const std::string name = content.substr(1);
+        return std::to_string(lookupParam(name, env).size());
+    }
+
+    // find an operator: :- := :? :+ (with the ':' meaning "unset or empty")
+    // or the bare forms - = ? + ("unset" only). We support the ':' forms and
+    // treat the bare forms the same for this milestone.
+    std::size_t op = std::string::npos;
+    char opc = 0;
+    bool colon = false;
+    for (std::size_t k = 0; k < content.size(); ++k) {
+        const char ch = content[k];
+        if (ch == '-' || ch == '=' || ch == '?' || ch == '+') {
+            op = k; opc = ch;
+            colon = (k > 0 && content[k - 1] == ':');
+            break;
+        }
+    }
+    if (op == std::string::npos) {
+        // plain ${name}
+        return lookupParam(content, env);
+    }
+
+    const std::size_t nameEnd = colon ? op - 1 : op;
+    const std::string name = content.substr(0, nameEnd);
+    const std::string argRaw = content.substr(op + 1);
+    const std::string arg = expandDollar(argRaw, env, run);  // recursive expand
+
+    const std::string cur = lookupParam(name, env);
+    const bool unsetOrEmpty = colon ? cur.empty() : !env.has(name);
+
+    switch (opc) {
+        case '-':  // use default if unset/empty
+            return unsetOrEmpty ? arg : cur;
+        case '=':  // assign default if unset/empty, then use it
+            if (unsetOrEmpty) { env.set(name, arg); return arg; }
+            return cur;
+        case '?':  // error if unset/empty
+            if (unsetOrEmpty) { err = name + ": " + (arg.empty() ? "parameter null or not set" : arg); return {}; }
+            return cur;
+        case '+':  // use alternate if set/non-empty
+            return unsetOrEmpty ? std::string() : arg;
+        default:
+            return cur;
+    }
+}
+
+std::string expandDollar(const std::string& word, Environment& env,
                          const CommandRunner& run) {
     std::string out;
     const std::size_t n = word.size();
@@ -96,14 +156,23 @@ std::string expandDollar(const std::string& word, const Environment& env,
             continue;
         }
 
-        // ${name}
+        // ${name} and ${name OP word} parameter expansion (nested { } allowed
+        // in the operator word).
         if (d == '{') {
             std::size_t j = i + 2;
-            std::string name;
-            while (j < n && word[j] != '}') { name.push_back(word[j]); ++j; }
-            if (j >= n) { out.append(word, i, std::string::npos); break; }
-            ++j;
-            out += lookupParam(name, env);
+            std::string content;
+            int depth = 1;
+            while (j < n && depth > 0) {
+                if (word[j] == '{') { ++depth; content.push_back(word[j]); ++j; }
+                else if (word[j] == '}') { --depth; if (depth > 0) content.push_back(word[j]); ++j; }
+                else { content.push_back(word[j]); ++j; }
+            }
+            if (depth != 0) { out.append(word, i, std::string::npos); break; }
+            std::string err;
+            out += applyParamBraces(content, env, run, err);
+            // (an ${x:?msg} error is reported by the caller path in a fuller
+            // shell; here we surface it via stderr and continue.)
+            if (!err.empty()) std::fprintf(stderr, "slsh: %s\n", err.c_str());
             i = j;
             continue;
         }
@@ -233,6 +302,106 @@ bool hasGlobMeta(const std::string& s) {
     return s.find_first_of("*?[") != std::string::npos;
 }
 
+// --- tilde expansion ---------------------------------------------------------
+// Expand a leading ~ or ~user in a word. Only the prefix up to the first '/'
+// (or end) is a tilde-prefix. ~ -> $HOME; ~user -> that user's home directory.
+std::string tildeExpand(const std::string& word, const Environment& env) {
+    if (word.empty() || word[0] != '~') return word;
+    const std::size_t slash = word.find('/');
+    const std::string prefix = (slash == std::string::npos) ? word : word.substr(0, slash);
+    const std::string rest = (slash == std::string::npos) ? std::string() : word.substr(slash);
+
+    std::string home;
+    if (prefix == "~") {
+        home = env.get("HOME");
+        if (home.empty()) {
+            if (const passwd* pw = ::getpwuid(::getuid())) home = pw->pw_dir;
+        }
+    } else {
+        const std::string user = prefix.substr(1);  // after '~'
+        if (const passwd* pw = ::getpwnam(user.c_str())) home = pw->pw_dir;
+        else return word;  // unknown user -> leave literal
+    }
+    if (home.empty()) return word;
+    return home + rest;
+}
+
+// --- brace expansion ---------------------------------------------------------
+// Expand the first {..} group in `word` into fields, recursing so multiple
+// groups combine. Supports comma lists {a,b,c} and numeric ranges {m..n}.
+// If no valid group, returns {word}.
+std::vector<std::string> braceExpand(const std::string& word) {
+    // find a top-level '{'
+    const std::size_t open = word.find('{');
+    if (open == std::string::npos) return {word};
+
+    // find its matching '}', tracking nesting
+    std::size_t close = std::string::npos;
+    int depth = 0;
+    for (std::size_t k = open; k < word.size(); ++k) {
+        if (word[k] == '{') ++depth;
+        else if (word[k] == '}') { --depth; if (depth == 0) { close = k; break; } }
+    }
+    if (close == std::string::npos) return {word};
+
+    const std::string pre = word.substr(0, open);
+    const std::string body = word.substr(open + 1, close - open - 1);
+    const std::string post = word.substr(close + 1);
+
+    // collect the alternatives from `body`
+    std::vector<std::string> alts;
+
+    // numeric range {m..n}
+    const std::size_t dots = body.find("..");
+    bool numericRange = false;
+    if (dots != std::string::npos && body.find(',') == std::string::npos) {
+        const std::string a = body.substr(0, dots);
+        const std::string b = body.substr(dots + 2);
+        auto isInt = [](const std::string& s) {
+            if (s.empty()) return false;
+            std::size_t i = (s[0] == '-' || s[0] == '+') ? 1 : 0;
+            if (i >= s.size()) return false;
+            for (; i < s.size(); ++i) if (!std::isdigit(static_cast<unsigned char>(s[i]))) return false;
+            return true;
+        };
+        if (isInt(a) && isInt(b)) {
+            numericRange = true;
+            long lo = std::stol(a), hi = std::stol(b);
+            if (lo <= hi) for (long v = lo; v <= hi; ++v) alts.push_back(std::to_string(v));
+            else          for (long v = lo; v >= hi; --v) alts.push_back(std::to_string(v));
+        }
+    }
+
+    if (!numericRange) {
+        // comma list (respecting nested braces); a single element (no comma)
+        // is NOT a brace expansion -> treat literally.
+        std::vector<std::string> parts;
+        int d = 0;
+        std::string cur;
+        for (char ch : body) {
+            if (ch == '{') { ++d; cur.push_back(ch); }
+            else if (ch == '}') { --d; cur.push_back(ch); }
+            else if (ch == ',' && d == 0) { parts.push_back(cur); cur.clear(); }
+            else cur.push_back(ch);
+        }
+        parts.push_back(cur);
+        if (parts.size() < 2) return {word};  // no real expansion
+        alts = std::move(parts);
+    }
+
+    // combine pre + each alt (recursively brace-expanded) + brace-expanded post
+    std::vector<std::string> out;
+    std::vector<std::string> posts = braceExpand(post);
+    for (const auto& alt : alts) {
+        for (const auto& altExpanded : braceExpand(alt)) {
+            for (const auto& p : posts) {
+                out.push_back(pre + altExpanded + p);
+            }
+        }
+    }
+    return out;
+}
+
 } // namespace
 
 bool globMatch(const std::string& pattern, const std::string& text) {
@@ -272,34 +441,36 @@ std::vector<std::string> globPattern(const std::string& pattern) {
 }
 
 std::vector<std::string> expandWord(const std::string& word,
-                                    const Environment& env,
+                                    Environment& env,
                                     const CommandRunner& run) {
-    const std::string expanded = expandDollar(word, env, run);
-    std::vector<std::string> fields = fieldSplit(expanded);
-
-    // If nothing produced a field (e.g. word expanded to empty), keep a single
-    // empty field only when the original word was itself non-empty and had no
-    // expansions that vanished -- otherwise drop. Simplest safe rule: if the
-    // original word had no whitespace-producing $ expansion, keep one field.
-    if (fields.empty()) {
-        if (!expanded.empty()) return {expanded};
-        return {};  // fully empty expansion contributes no field
-    }
-
-    // glob each field
     std::vector<std::string> out;
-    for (const auto& f : fields) {
-        auto g = globPattern(f);
-        out.insert(out.end(), g.begin(), g.end());
+    // Pass 1: brace expansion -> multiple raw words.
+    for (const std::string& braced : braceExpand(word)) {
+        // Pass 2: tilde expansion (word-start prefix).
+        const std::string tilded = tildeExpand(braced, env);
+        // Passes 3-5: command/arith/parameter expansion.
+        const std::string expanded = expandDollar(tilded, env, run);
+        // Pass 6: field splitting.
+        std::vector<std::string> fields = fieldSplit(expanded);
+        if (fields.empty()) {
+            if (!expanded.empty()) fields.push_back(expanded);
+            else continue;  // fully empty expansion contributes no field
+        }
+        // Pass 7: glob each field.
+        for (const auto& f : fields) {
+            auto g = globPattern(f);
+            out.insert(out.end(), g.begin(), g.end());
+        }
     }
     return out;
 }
 
 std::string expandWordSingle(const std::string& word,
-                             const Environment& env,
+                             Environment& env,
                              const CommandRunner& run) {
-    // No field splitting or globbing; join the raw $-expansion.
-    return expandDollar(word, env, run);
+    // One string: tilde then $-expansion; no brace/split/glob multiplication.
+    const std::string tilded = tildeExpand(word, env);
+    return expandDollar(tilded, env, run);
 }
 
 } // namespace sleela::sh

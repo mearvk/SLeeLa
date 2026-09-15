@@ -284,6 +284,26 @@ private:
                 r.target = peek().text;
                 advance();
                 node->redirs.push_back(std::move(r));
+            } else if (at(Tok::DLess) || at(Tok::DLessDash)) {
+                // here-document: << DELIM  followed by a HeredocBody token
+                Redirection r;
+                r.op = RedirOp::Heredoc;
+                advance();
+                if (!at(Tok::Word)) {
+                    throw PErr{"expected here-document delimiter", peek().line, peek().col};
+                }
+                r.target = peek().text;   // the delimiter (informational)
+                advance();
+                if (!at(Tok::HeredocBody)) {
+                    throw PErr{"missing here-document body", peek().line, peek().col};
+                }
+                {
+                    const std::string& bt = peek().text;
+                    r.expand_body = !bt.empty() && bt[0] == 'E';
+                    r.body = bt.empty() ? std::string() : bt.substr(1);
+                }
+                advance();
+                node->redirs.push_back(std::move(r));
             } else {
                 break;
             }

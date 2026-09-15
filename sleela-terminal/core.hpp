@@ -43,6 +43,8 @@ enum class Tok {
     Less,        // <
     Great,       // >
     DGreat,      // >>
+    DLess,       // << (here-document)
+    DLessDash,   // <<- (here-document, strip leading tabs)
     LParen,      // (
     RParen,      // )
     LBrace,      // {   (function/group body open, when in command position)
@@ -52,6 +54,7 @@ enum class Tok {
     While, Do, Done,
     For, In,
     Case, Esac,
+    HeredocBody,  // synthetic: carries a here-document body (follows delimiter)
     Eof
 };
 
@@ -67,11 +70,15 @@ struct Token {
 // ---------------------------------------------------------------------------
 
 // A redirection attached to a simple command.
-enum class RedirOp { In, Out, Append };  // <  >  >>
+enum class RedirOp { In, Out, Append, Heredoc };  // <  >  >>  <<
 struct Redirection {
     RedirOp op = RedirOp::Out;
     int fd = -1;         // explicit fd, or -1 to use the default for the op
     std::string target; // filename (a word, expanded at run time)
+    std::string body;    // here-document body text (Heredoc only), already
+                         // assembled; fed to the command's stdin at run time
+    bool expand_body = true;  // Heredoc: expand $ in the body unless the
+                              // delimiter was quoted (<<'EOF')
 };
 
 enum class NodeKind { Simple, Pipeline, AndOr, List, If, While,

@@ -44,6 +44,30 @@ CommandRunner makeRunner(Environment& env) {
 int applyRedirs(const std::vector<Redirection>& redirs) {
     for (const auto& r : redirs) {
         int fd = -1;
+        if (r.op == RedirOp::Heredoc) {
+            // Write the here-document body into a pipe and dup its read end onto
+            // stdin. The body is small (fits the pipe buffer for typical use);
+            // we write from a forked helper to avoid blocking on large bodies.
+            int hp[2];
+            if (::pipe(hp) != 0) { std::perror("heredoc pipe"); return -1; }
+            pid_t w = ::fork();
+            if (w == 0) {
+                ::close(hp[0]);
+                const std::string& b = r.body;
+                std::size_t off = 0;
+                while (off < b.size()) {
+                    ssize_t k = ::write(hp[1], b.data() + off, b.size() - off);
+                    if (k <= 0) break;
+                    off += static_cast<std::size_t>(k);
+                }
+                ::close(hp[1]);
+                _exit(0);
+            }
+            ::close(hp[1]);
+            ::dup2(hp[0], r.fd >= 0 ? r.fd : 0);
+            ::close(hp[0]);
+            continue;
+        }
         if (r.op == RedirOp::In) {
             fd = ::open(r.target.c_str(), O_RDONLY);
             if (fd < 0) { std::perror(r.target.c_str()); return -1; }
@@ -155,7 +179,13 @@ Resolved resolveSimple(const Node& node, Environment& env) {
     }
     for (const auto& rd : node.redirs) {
         Redirection e = rd;
-        e.target = expandWordSingle(rd.target, env, run);
+        if (rd.op == RedirOp::Heredoc) {
+            // Expand $ in the body unless the delimiter was quoted; the
+            // delimiter/target itself is not a filename here.
+            e.body = rd.expand_body ? expandWordSingle(rd.body, env, run) : rd.body;
+        } else {
+            e.target = expandWordSingle(rd.target, env, run);
+        }
         r.redirs.push_back(std::move(e));
     }
     return r;
@@ -263,9 +293,11 @@ int execPipeline(const Node& node, Environment& env) {
         // goes down the pipe).
         Resolved r;
         bool builtin = false;
+        bool function = false;
         if (cmds[i]->kind == NodeKind::Simple) {
             r = resolveSimple(*cmds[i], env);
-            builtin = !r.argv.empty() && isBuiltin(r.argv[0]);
+            function = !r.argv.empty() && env.hasFunction(r.argv[0]);
+            builtin = !function && !r.argv.empty() && isBuiltin(r.argv[0]);
         }
 
         pid_t pid = ::fork();
@@ -278,6 +310,10 @@ int execPipeline(const Node& node, Environment& env) {
 
             if (cmds[i]->kind == NodeKind::Simple) {
                 if (applyRedirs(r.redirs) != 0) _exit(1);
+                if (function) {
+                    Environment child = env;  // isolated copy for the stage
+                    _exit(callFunction(r.argv[0], r.argv, child) & 0xFF);
+                }
                 if (builtin) {
                     Environment child = env;  // isolated copy
                     _exit(builtins().at(r.argv[0])(r.argv, child) & 0xFF);

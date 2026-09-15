@@ -123,6 +123,42 @@ int main() {
         env.setPositionals({"one", "two", "three"});
         assert(single("$1-$2-$3") == "one-two-three");
         assert(single("count=$#") == "count=3");
+
+        // --- M3: parameter operators ---
+        // ${x:-default}: use default when unset/empty
+        assert(single("${missing:-fallback}") == "fallback");
+        env.set("set1", "val");
+        assert(single("${set1:-fallback}") == "val");
+        // ${x:+alt}: alternate only when set
+        assert(single("${set1:+yes}") == "yes");
+        assert(single("${missing:+yes}") == "");
+        // ${#x}: length
+        env.set("word", "hello");
+        assert(single("${#word}") == "5");
+        // ${x:=default}: assign back if unset, then use
+        assert(single("${assignme:=deflt}") == "deflt");
+        assert(env.get("assignme") == "deflt");
+        // nested $ inside the operator word
+        env.set("who", "ada");
+        assert(single("${nope:-$who}") == "ada");
+
+        // --- M3: brace expansion ---
+        {
+            auto b1 = expandWord("pre{a,b,c}post", env, none);
+            assert(b1.size() == 3 && b1[0] == "preapost" && b1[2] == "precpost");
+            auto b2 = expandWord("x{1..4}", env, none);
+            assert(b2.size() == 4 && b2[0] == "x1" && b2[3] == "x4");
+            auto b3 = expandWord("{a,b}{1,2}", env, none);   // cartesian
+            assert(b3.size() == 4 && b3[0] == "a1" && b3[3] == "b2");
+            auto b4 = expandWord("noalt{single}", env, none); // no comma -> literal
+            assert(b4.size() == 1 && b4[0] == "noalt{single}");
+        }
+
+        // --- M3: tilde expansion ---
+        env.set("HOME", "/home/tester");
+        assert(single("~") == "/home/tester");
+        assert(single("~/dir") == "/home/tester/dir");
+        assert(single("mid~notilde") == "mid~notilde");  // only at word start
     }
 
     // --- L4: glob matching -------------------------------------------------
@@ -203,6 +239,39 @@ int main() {
         assert(env.get("sq") == "36");
     }
 
-    std::cout << "sleela-terminal smoke: OK (M2)\n";
+    // --- L5: M3 execution --------------------------------------------------
+    {
+        Environment env;
+
+        // parameter operator used in a real command / assignment
+        run("greeting=${who:-nobody}", env);
+        assert(env.get("greeting") == "nobody");
+        run("who=sam; greeting=${who:-nobody}", env);
+        assert(env.get("greeting") == "sam");
+
+        // here-document fed to a command's stdin, captured via command subst
+        run("body=$(cat <<EOF\nline one\nline two\nEOF\n)", env);
+        assert(env.get("body") == "line one\nline two");
+
+        // here-document body is expanded when the delimiter is unquoted
+        run("nm=doc; exp=$(cat <<EOF\nname is $nm\nEOF\n)", env);
+        assert(env.get("exp") == "name is doc");
+
+        // <<- strips leading tabs from body and delimiter
+        run("t=$(cat <<-END\n\t\tindented\n\tEND\n)", env);
+        assert(env.get("t") == "indented");
+
+        // a function inside a pipeline (its stdout flows down the pipe)
+        run("emit() { echo alpha; echo beta; }", env);
+        run("count=$(emit | tr a-z A-Z)", env);
+        assert(env.get("count") == "ALPHA\nBETA");
+
+        // brace expansion produces multiple argv fields in a real for-loop
+        run("acc=", env);
+        run("for w in item{1,2,3}; do acc=$acc-$w; done", env);
+        assert(env.get("acc") == "-item1-item2-item3");
+    }
+
+    std::cout << "sleela-terminal smoke: OK (M3)\n";
     return 0;
 }

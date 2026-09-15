@@ -52,6 +52,17 @@ L1  Core + Arith        Value/Token/AST model, precedence-climbing arithmetic
 - **Pathname globbing** — `*`, `?`, `[a-z]`, `[!..]`, with field splitting.
 - **Brace groups** `{ … }` run in the current shell.
 
+**M3 — expansion depth, here-docs, pipeline functions:**
+
+- **Parameter operators** — `${x:-default}`, `${x:=default}` (assigns back),
+  `${x:?message}`, `${x:+alternate}`, and `${#x}` (length).
+- **Brace expansion** — `{a,b,c}` lists and numeric `{m..n}` ranges (cartesian
+  when combined, e.g. `{a,b}{1,2}`).
+- **Tilde expansion** — `~` → `$HOME`, `~user` → that user's home.
+- **Here-documents** — `<< DELIM` and `<<- DELIM` (tab-stripping); the body is
+  expanded unless the delimiter is quoted (`<<'DELIM'`).
+- **Functions in pipelines** — a shell function can be a pipeline stage.
+
 ## Build & run
 
 ```sh
@@ -65,6 +76,10 @@ make smoke                 # run the layered smoke test
 ./build/slsh -c 'greet() { echo Hi, $1; }; greet Ada'
 ./build/slsh -c 'case $(echo cat) in cat|dog) echo pet;; esac'
 ./build/slsh -c 'for f in *.md; do echo $f; done'   # globbing
+./build/slsh -c 'echo ${name:-anonymous}; echo ${#PATH}'
+./build/slsh -c 'echo report{1..3}.txt; echo {dev,prod}-{a,b}'
+./build/slsh -c 'up() { tr a-z A-Z; }; echo hi | up'   # function in a pipeline
+printf 'cat <<END\nyear $(( 2000 + 25 ))\nEND\n' | ./build/slsh /dev/stdin
 ./build/slsh script.slsh                    # run a script file
 ./build/slsh                                # interactive REPL
 ```
