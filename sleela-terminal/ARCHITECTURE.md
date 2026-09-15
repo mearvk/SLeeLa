@@ -23,7 +23,9 @@ through our own hierarchical, math-driven architecture.
 
 ```text
         ┌─────────────────────────────────────────────┐
-   L6   │  CLI / REPL driver         (main, -c, file)  │
+   L6   │  CLI / M5 orchestration                     │
+        │    · select menus, process substitution     │
+        │    · signal trap registration/dispatch      │
         ├─────────────────────────────────────────────┤
    L5   │  Executor                  run the AST       │
         │    · pipelines, redirections, exit status    │
@@ -34,6 +36,7 @@ through our own hierarchical, math-driven architecture.
    L4   │  Expansion                 words → strings   │
         │    · parameter/variable, quote removal        │
         │    · arithmetic $(( … )) via the Arith engine │
+        │    · pathname globbing across path segments  │
         ├─────────────────────────────────────────────┤
    L3   │  Parser                    tokens → AST      │
         │    · recursive descent, one grammar per node  │
@@ -48,9 +51,11 @@ through our own hierarchical, math-driven architecture.
         └─────────────────────────────────────────────┘
 ```
 
-Dependencies point **downward only**: the Executor uses Expansion, which uses
-the Arith engine and Core; the Parser uses the Lexer and Core; the Lexer uses
-Core. Nothing lower includes anything higher.
+Dependencies point **downward only** for the core shell layers. The M5 driver is
+an orchestration boundary at L6: it can allocate operating-system resources
+(FIFOs/processes) and register signal handlers before delegating ordinary shell
+text to the established L1–L5 runner. Nothing in the parser or expansion layer
+depends on M5.
 
 ## L1 — Core model
 
@@ -122,6 +127,11 @@ Turns parsed words into final argument strings: variable/parameter expansion
 engine), and quote removal — each as a distinct, ordered pass. Pure and
 testable: `(word, environment) → string`.
 
+Pathname globbing is implemented as a filesystem walk over path components.
+A pattern such as `src/*/include/*.hpp` is therefore resolved one component at
+a time rather than treating the entire path as one basename match. If no path
+matches, the original pattern is preserved (nullglob-off behaviour).
+
 ## L5 — Executor
 
 Evaluates the AST against an `Environment`:
@@ -135,17 +145,54 @@ Evaluates the AST against an `Environment`:
   exit status (0 = true), matching shell truth semantics.
 - **Exit status** is a first-class value threaded through everything (`$?`).
 
-## L6 — CLI / REPL
+## L6 — M5 orchestration
+
+`m5.cpp` is deliberately outside the normal grammar. It recognizes constructs
+that need operating-system resources or interactive state before ordinary
+lexing/parsing:
+
+### `select`
+
+`select name in item...; do body; done` is handled by a small quote-aware M5
+recognizer. The implementation prints a numbered menu to stderr, uses `PS3` as
+the prompt (default `#? `), stores the raw response in `REPLY`, assigns the
+selected item to `name`, and executes the body through the normal shell runner.
+`break` uses the existing M4 loop-control signal to leave the M5 loop.
+
+### Process substitution
+
+`<(command)` and `>(command)` are rewritten to private FIFOs in `/tmp` with
+mode `0600`. A child shell executes the substitution command with a private
+`Environment` copy. For `<(...)`, child stdout feeds the FIFO; for `>(...)`,
+child stdin reads the FIFO. The main command then sees an ordinary pathname,
+so the existing parser/executor can handle it without a new redirection AST
+node. Child processes are waited for after the containing command completes.
+
+### Signal traps
+
+Standalone `trap 'command' SIGNAL` declarations are consumed by M5 and mapped
+to a small signal-state table. The POSIX signal handler only records the signal
+number in `sig_atomic_t`; it never executes shell code from the asynchronous
+signal context. After the active shell command returns, M5 runs the registered
+trap action through the normal shell runner. Common signal names and numeric
+signals are accepted.
+
+M5 is intentionally conservative: it does not attempt to execute arbitrary
+shell code from a signal handler, and it does not replace the L1–L5 parser with
+a second general-purpose shell grammar.
+
+## CLI / REPL
 
 `slsh` entry point: `-c "<script>"`, a script file argument, or an interactive
-read-eval-print loop. Thin — it only wires stdin/args into the pipeline
-`lex → parse → execute`.
+read-eval-print loop. The driver enters M5 first and then delegates ordinary
+text to `lex → parse → execute`.
 
 ## Testing
 
-A `smoke` target exercises each layer: the arithmetic engine (precedence,
-associativity, div-by-zero), the lexer (quoting/operators), the parser
-(pipelines/redirs/if/while), expansion, and end-to-end execution with builtins.
+The existing `smoke` target exercises the M1–M4 layers. `m5-smoke.sh` adds
+integration checks for a `select` menu, `<(...)`, `>(...)`, and a `USR1` trap.
+The GitHub Actions workflow `.github/workflows/sleela-terminal-m5.yml` builds
+the shell and runs both smoke layers on changes to `sleela-terminal`.
 
 ## Milestones
 
@@ -166,8 +213,13 @@ associativity, div-by-zero), the lexer (quoting/operators), the parser
   **pipeline negation** `! pipeline`; and the builtins `test` / `[` (string,
   numeric, and file predicates with `!` negation), `read` (line → variables,
   or `REPLY`), and `getopts` (option parsing via `OPTIND` / `OPTARG`).
-- **M5+ (future):** `select`, multi-segment path globbing, process
-  substitution, and traps/signal handling.
+- **M5 (implemented baseline):** `select`, multi-segment pathname globbing,
+  process substitution, and signal traps. The M5 orchestration layer keeps
+  signal handlers async-safe and delegates ordinary command execution back to
+  the established runner.
+- **M6+ (future):** broader POSIX compatibility, richer job-control semantics,
+  process groups/terminals, traps integrated directly into the AST, and further
+  expansion/quoting fidelity.
 
 ### M2 layer touch-points
 
@@ -186,7 +238,7 @@ associativity, div-by-zero), the lexer (quoting/operators), the parser
 | L1 core | `RedirOp::Heredoc` + `Redirection.body`/`expand_body`; `Tok::{DLess,DLessDash,HeredocBody}` |
 | L2 lexer | `<<` / `<<-` here-doc capture (delimiter + body lines, tab-stripping, quoted-delimiter flag); `{`/`}` only structural when standalone (so `x{1,2}` stays one word) |
 | L3 parser | here-doc redirection (delimiter + body token); strips the expand/literal flag |
-| L4 expansion | `braceExpand` ( `{a,b}` / `{m..n}`, cartesian ), `tildeExpand` (`~`/`~user` via `getpwnam`), parameter operators `${x:-/:=/:?/:+}` and `${#x}` (env is now mutable for `:=`) |
+| L4 expansion | `braceExpand` ( `{a,b}` / `{m..n}`, cartesian ), `tildeExpand` (`~`/`~user` via `getpwnam`), parameter operators `${x:-/:=/:+/:?}` and `${#x}` (env is now mutable for `:=`) |
 | L5 executor | here-doc body piped to stdin (expanded per `expand_body`); functions/builtins run correctly as pipeline stages |
 
 ### M4 layer touch-points
@@ -198,3 +250,12 @@ associativity, div-by-zero), the lexer (quoting/operators), the parser
 | L3 parser | `parseUntil`; `parseList` treats `&` as an async separator; `parsePipeline` consumes a leading `!` (wrapping a lone command in a negated `Pipeline`); newline allowed after `do` |
 | L4 expansion | (unchanged — M4 adds no new word syntax) |
 | L5 executor | `execUntil`; async children in `execList` (fork + register job + `[id] pid`); pipeline negation; loop-signal consumption in `execWhile`/`execUntil`/`execFor`/`execList`; builtins `jobs`/`fg`/`bg`/`wait`, `test`/`[`, `read`, `getopts`, `break`/`continue` |
+
+### M5 layer touch-points
+
+| Layer | M5 addition |
+|---|---|
+| L6 orchestration | `m5.hpp` / `m5.cpp`; M5 callback boundary; select loop; FIFO process substitution; async-safe signal capture |
+| L4 expansion | Existing component-by-component filesystem globbing is treated as the M5 multi-segment pathname capability |
+| L5 execution boundary | M5 delegates nested commands back through the normal `lex → parse → execute` runner; no duplicate executor is introduced |
+| Tests | `m5-smoke.sh` and `.github/workflows/sleela-terminal-m5.yml` |
