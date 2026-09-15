@@ -193,3 +193,46 @@ SLeeLa Terminal should favor:
 **Reference rule:** a performance optimization that changes shell-visible semantics is a regression.
 
 **End of PERFORMANCE.md**
+
+
+## 19. M1–M5 Review Record — Improvement Closeout
+
+### Previous-state assessment
+
+The previous implementation was a **Good-to-Better development-grade shell framework**: the layered architecture was clear and functional, but several semantics and resource boundaries remained deliberately simplified. The principal concerns were duplicated M5 glob logic, source-text glob rewriting, command-prefix assignment leakage into the parent environment, limited job-control semantics, and incomplete production-level negative testing.
+
+### Improvements seeded in the closing review
+
+- M5 multi-component globbing remains in the expansion layer and returns pathname data directly.
+- The obsolete source-rewriting glob path has been removed from M5 execution.
+- Process-substitution FIFO startup uses a deadlock-resistant open strategy.
+- Quoted assignment values are covered by a lexer regression test.
+- External-command prefix assignments now use a scoped environment instead of mutating the parent shell.
+- The main smoke test includes regression coverage for filesystem metacharacters.
+- `make test` includes the M5 integration suite.
+- README and architecture documentation describe the hardened M5 boundary.
+
+### Ending-state assessment
+
+The resulting M1–M5 framework is best classified as **BETTER**, approaching **GREAT** in architecture and security discipline, but not yet **SUPER** or production-certified.
+
+**BETTER** means the software has a coherent layered design, meaningful shell functionality, explicit OS/resource boundaries, and seeded security regressions, while still requiring broader conformance testing, platform validation, and deeper job-control/process semantics before a higher classification is justified.
+
+### Classification scale
+
+| Grade | Meaning |
+|---|---|
+| Good | Functional prototype with basic organization and tests |
+| Average | Works in common cases but has material structural or correctness gaps |
+| Better | Strong development framework with meaningful security and regression discipline |
+| Great | Broadly validated, hardened, portable, and suitable for serious release qualification |
+| Super | Exceptional, extensively verified, production-grade implementation with strong conformance, security, portability, and performance evidence |
+
+### Review conclusion
+
+**SLeeLa Terminal M1–M5: BETTER.**
+
+The direction is strong. The next advancement toward **GREAT** should come from test depth and semantic completeness rather than adding features alone: POSIX/Linux behavior matrices, Windows-specific I/O/runtime behavior where supported, process-group job control, complete trap semantics, command-substitution status propagation, descriptor-leak testing, fuzzing, sanitizers, and repeatable performance benchmarks.
+
+This classification is an engineering review judgment, not a formal security certification.
+
