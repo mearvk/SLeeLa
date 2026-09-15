@@ -1,38 +1,36 @@
 # AE6E66 — UK Parliament Contact Module
 
-**Version:** 2.0 hardened baseline  
+**Version:** 2.1 hardened baseline  
 **Author:** Max Rupplin — MEARVK LLC  
-**Status:** Security-hardened design; production deployment requires host-specific verification.
+**Status:** Security-hardened design; production deployment requires implementation and host-specific verification.
 
 AE6E66 collects publicly available UK Parliament contact information for a declared operational purpose. It is designed around **least privilege, explicit operator control, provenance, and fail-closed integrity**.
 
 ## Security position
 
-The previous module design mixed application logic with host-level mail-server installation, embedded deployment identity, automatic service changes, and non-blocking integrity behavior. Those assumptions have been removed from the security baseline.
+AE6E66 does not install or expose a mail server, alter DNS, alter firewall rules, generate repository-tracked credentials, or auto-restore corrupted files.
 
-**AE6E66 does not install or expose a mail server, alter DNS, alter firewall rules, generate repository-tracked credentials, or auto-restore corrupted files.**
-
-See [`SECURITY.md`](SECURITY.md) and [`DEPLOYMENT.md`](DEPLOYMENT.md).
+See [`SECURITY.md`](SECURITY.md), [`DEPLOYMENT.md`](DEPLOYMENT.md), [`SOURCE-STATUS.md`](SOURCE-STATUS.md), and [`TEST-PLAN.md`](TEST-PLAN.md).
 
 ## Structure
 
 ```text
 modules/AE6E66/
 ├── configuration/
-│   └── ae6e66-config.example.xml   # Safe template; no secrets
+│   └── ae6e66-config.example.xml
 ├── scripts/
-│   ├── verify-integrity.sh          # SHA-256 fail-closed verifier
+│   ├── verify-integrity.sh
 │   ├── install-postfix-dovecot.sh   # MTA preflight only
-│   ├── setup-dkim-lauradei.sh       # DKIM/MTA preflight only
+│   ├── setup-dkim.sh                # DKIM/MTA preflight only
 │   └── setup-mysql.sh               # DB preflight only
-├── contacts.csv                     # Controlled public contact dataset
-├── SECURITY.md                      # Security and data-protection standard
-├── DEPLOYMENT.md                    # Deployment architecture and controls
-├── AE6E66.RDRS                      # Registry descriptor
+├── contacts.csv                     # Controlled public-source dataset
+├── SECURITY.md
+├── DEPLOYMENT.md
+├── SOURCE-STATUS.md
+├── TEST-PLAN.md
+├── AE6E66.RDRS
 └── README.md
 ```
-
-Empty runtime directories may exist for application state, but mutable state should normally live outside the Git checkout.
 
 ## Collection controls
 
@@ -43,17 +41,17 @@ Empty runtime directories may exist for application state, but mutable state sho
 - An authoritative index/API should be preferred over identifier brute force when available.
 - Collection must respect applicable terms, access controls, robots guidance, and rate limits.
 - HTML, redirects, images, and remote content are untrusted input.
-- Each stored record should retain source URL and retrieval timestamp.
+- Each operational record must retain source URL and retrieval timestamp.
 - Only fields necessary for the declared purpose should be retained.
 - Re-crawling is explicit and governed by a configurable freshness period.
 
-The old `0..999` member loop is not itself an authorization mechanism and is no longer presented as the preferred collection method.
+The old `0..999` member loop is not an authorization mechanism or preferred collection method.
 
 ## Contact-data controls
 
-`contacts.csv` is treated as controlled public-source data, not as a secret database.
+`contacts.csv` is a controlled public-source reference dataset, not a secret database or automatic delivery list. It uses a fixed schema and status field. Legacy records lacking verified provenance are marked `legacy-unverified` and must not be treated as current operational records until revalidated.
 
-Operational data should have provenance, normalization, freshness, retention, and correction controls. Do not add private information merely because it can be discovered elsewhere. Do not place authentication material in CSV files.
+Operational data must have provenance, normalization, freshness, retention, and correction controls. Do not add private information merely because it can be discovered elsewhere. Do not place authentication material in CSV files.
 
 ## Mail architecture
 
@@ -65,51 +63,23 @@ AE6E66 -> local submission interface -> administrator-managed MTA -> recipient M
 
 AE6E66 should not listen on a public SMTP port. The host MTA is configured independently.
 
-When an administrator operates an MTA, it must have:
+When an administrator operates an MTA, it must have authenticated/authorized submission or local-only submission, anti-open-relay protection, modern TLS, DKIM, SPF/DMARC alignment, explicit outbound rate limits, abuse monitoring, and controlled queue/bounce handling.
 
-- authenticated/authorized submission or local-only submission;
-- `reject_unauth_destination` or equivalent anti-open-relay protection;
-- modern TLS according to the current MTA/platform security policy;
-- DKIM signing with protected private keys;
-- SPF and DMARC aligned to the actual sending domain;
-- explicit outbound rate limits and abuse monitoring;
-- controlled queue and bounce handling.
-
-The historical values `mail.lauradei.us`, `lauradei.us`, `45.32.31.139`, and `contact@lauradei.us` are **not module defaults**. Deployment identity belongs in administrator-controlled configuration.
+Historical deployment identities such as `mail.lauradei.us`, `lauradei.us`, `45.32.31.139`, and `contact@lauradei.us` are not module defaults.
 
 ## Message safety
 
-Before any delivery action:
-
-1. verify module integrity;
-2. validate recipients;
-3. reject CR/LF header injection;
-4. enforce a message-size limit;
-5. use an explicit sender identity;
-6. run dry-run first;
-7. require explicit operator enablement for delivery;
-8. hash the exact message bytes with SHA-256;
-9. log delivery status without logging credentials or unnecessary sensitive content.
+Before any delivery action: verify integrity; validate recipients; reject CR/LF header injection; enforce message-size limits; use an explicit sender identity; run dry-run first; require explicit operator enablement; hash the exact message bytes with SHA-256; and log delivery status without credentials or unnecessary sensitive content.
 
 Bulk delivery must never be enabled merely by installing the module.
 
 ## Database
 
-Use a local-only database account with minimum application privileges. Database administration belongs to a separate administrator account.
-
-Credentials must come from an OS secret store or protected runtime file. The historical pattern of generating `.db-credentials` inside the repository is deprecated.
-
-Schema creation and migrations must be reviewed and run separately from application startup.
+Use a local-only database account with minimum application privileges. Database administration belongs to a separate administrator account. Credentials must come from an OS secret store or protected runtime file. Schema creation and migrations must be reviewed and run separately from application startup.
 
 ## Integrity
 
-SHA-256 is the required integrity mechanism.
-
-- Verification is mandatory before execution and diagnostics.
-- A mismatch stops the operation.
-- MD5 is not used for security decisions.
-- Remote auto-restore is disabled.
-- Trusted source identity must be a pinned, administrator-approved commit/release rather than a mutable branch.
+SHA-256 is the required integrity mechanism. Verification is mandatory before build, execution, crawl, message preparation, and diagnostics. A mismatch stops the operation. The verifier rejects unsafe paths and symlinked manifest/target files. MD5 is not used for security decisions. Remote auto-restore is disabled. Trusted source identity must be a pinned, administrator-approved commit/release rather than a mutable branch.
 
 Run:
 
@@ -117,12 +87,14 @@ Run:
 bash modules/AE6E66/scripts/verify-integrity.sh /path/to/approved/SHA256SUMS
 ```
 
-The manifest must itself come from a trusted release process.
+The manifest itself must come from a trusted release process.
 
 ## Platform status
 
 Scripts for Linux, macOS, and Windows are not evidence of equivalent production support. A platform is production-supported only after its implementation, prerequisites, security controls, and tests have been verified on that platform.
 
-## Operational rule
+## Production status
+
+AE6E66 remains a hardened module specification and controlled data/configuration component until the application implementation, test suite, and platform evidence described in `SOURCE-STATUS.md` and `TEST-PLAN.md` are completed.
 
 **If integrity, provenance, authorization, or security configuration cannot be established, AE6E66 stops rather than guessing.**
