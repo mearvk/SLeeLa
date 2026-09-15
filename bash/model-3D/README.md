@@ -3,11 +3,13 @@
 **Phraign™ City 3D** generates a sprawling, modern city model of ~4000 square
 blocks and renders it — on a **per-pixel basis** — onto a
 [Phraign™](../PHRAIGN.md) frame. The city is a **model of finality** (quality of
-condition) driven by a configurable **Year**: a more modern year (e.g. `2807`,
-`2407`) yields a newer city with taller buildings, more floors and windows, and
-better condition. It is viewed from the top and off to one side at a slight
-angle, the whole viewpoint is config-driven, and a model is generated per user
-and can be saved to GitHub or a public server.
+condition) designed from three drivers: the **Year** (modernity), the person's
+**IQ** (design quality / order), and the person's native **Legislature** (the
+regime that produces the city's lines and linear outcomes). A more modern year,
+higher IQ, and a given legislature together yield a newer, better-planned city
+with a distinct linear structure. It is viewed from the top and off to one side
+at a slight angle, the whole viewpoint is config-driven, and a model is
+generated per user and can be saved to GitHub or a public server.
 
 ![Green (default)](samples/city-green.png)
 
@@ -16,18 +18,30 @@ and can be saved to GitHub or a public server.
 - **Sprawling city.** A square grid of blocks — default **64 × 64 = 4096**
   ("~4000 square blocks") — with a taller downtown core, real **road**
   corridors, **bridge** spans, and occasional landmark towers.
-- **Year-driven modernity.** A config `year` sets the city's modernity
-  (`clamp((year - baseline) / span, 0..1)`). Newer ⇒ taller buildings, more
-  floors/windows/glass, and higher finality. `year = 2807` ⇒ modernity `0.81`;
-  `year = 2050` ⇒ `0.05`.
+- **Three design drivers.** The city is designed from a config `year`, the
+  person's `iq`, and the person's native `legislature`:
+  - **Year → modernity.** `clamp((year - baseline) / span, 0..1)`. Newer ⇒
+    taller buildings, more floors/windows/glass, higher finality. `year = 2807`
+    ⇒ modernity `0.81`; `year = 2050` ⇒ `0.05`.
+  - **IQ → design quality.** `clamp((iq - baseline) / span, 0..1)`. Both a
+    person's IQ and, in the project's terms, a **system design-quality** metric
+    (insight/quality, not a psychometric rating). Higher IQ ⇒ a better-planned
+    city: more order/regularity, less jitter, better connectivity, higher
+    finality. `iq = 200` ⇒ `1.0`; `iq = 100` ⇒ `0.0`.
+  - **Legislature → lines / linear outcomes.** The native regime
+    (`federal`, `parliamentary`, `municipal`, `bicameral`, `unicameral`,
+    `direct`) is the defining characteristic of a person's nature and design; it
+    sets the city's straight-line structure — grid regularity, corridor
+    directionality, dominant axis, and connectivity. e.g. `unicameral` ⇒ a
+    banded, strongly linear city; `federal` ⇒ a balanced grid.
 - **Building quality attributes.** Each building has **floors**, **windows**, a
   **height** (`floors × floor_height`), and computed **proximity** to the
   nearest **road** and **bridge** — all config-tunable targets/weights.
 - **Finality (quality of condition).** Each building gets a finality score in
-  `[0,1]` — a normalized weighted mix of modernity, floors, windows, and the
-  *computed* road/bridge proximity. The city-wide finality is reported and
-  stored. Higher finality renders **brighter/cleaner**; lower renders
-  darker/duller.
+  `[0,1]` — a normalized weighted mix of modernity, **design quality (IQ)**,
+  floors, windows, and the *computed* road/bridge proximity. The city-wide
+  finality is reported and stored. Higher finality renders **brighter/cleaner**;
+  lower renders darker/duller.
 - **Per-user, reproducible.** Generated from a seed; with `seed = 0` the seed is
   derived from the `user` name, so every user gets their own reproducible city.
 - **3D view, top + slight side angle.** An oblique projection draws each block as

@@ -115,7 +115,10 @@ int doGenerate(int argc, char** argv) {
               << "' seed=" << seed << " theme=" << themeName(cfg.theme) << "\n";
     std::cout << "  year=" << cfg.params.year
               << " modernity=" << cfg.params.modernity()
-              << " finality=" << city.cityFinality()
+              << "  iq=" << cfg.params.iq
+              << " designQuality=" << cfg.params.designQuality()
+              << "  legislature=" << legislatureName(cfg.params.legislature)
+              << "\n  finality=" << city.cityFinality()
               << " (city quality of condition, 0..1)\n";
 
     const std::string out = argValue(argc, argv, "--out");
@@ -159,6 +162,8 @@ int doRender(int argc, char** argv) {
               << " = " << city.blockCount() << " blocks; user='" << user
               << "' seed=" << seed << " theme=" << themeName(cfg.theme) << "\n";
     std::cout << "  year=" << city.params().year
+              << " iq=" << city.params().iq
+              << " legislature=" << legislatureName(city.params().legislature)
               << " finality=" << city.cityFinality()
               << " (city quality of condition, 0..1)\n";
 

@@ -56,6 +56,11 @@ int main() {
         "w_year = 1.0\n"
         "w_road_proximity = 0.8\n"
         "proximity_falloff = 6\n"
+        "iq = 150\n"
+        "iq_baseline = 100\n"
+        "iq_span = 100\n"
+        "w_iq = 0.7\n"
+        "legislature = unicameral\n"
         "draw_bridges = false\n"
         "draw_windows = off\n";
     Config pc = Config::fromText(p, &err);
@@ -64,10 +69,35 @@ int main() {
     assert(pc.params.floor_height == 1.5);
     assert(pc.params.windows_per_floor == 8.0);
     assert(pc.params.road_spacing == 8 && pc.params.bridge_count == 5);
+    assert(pc.params.iq == 150 && pc.params.iq_baseline == 100);
+    assert(pc.params.w_iq == 0.7);
+    assert(pc.params.legislature == Legislature::Unicameral);
     assert(pc.draw_bridges == false && pc.draw_windows == false);
     assert(err.empty());
     // modernity = (2807-2000)/1000 = 0.807.
     assert(pc.params.modernity() > 0.80 && pc.params.modernity() < 0.81);
+    // designQuality = (150-100)/100 = 0.5.
+    assert(pc.params.designQuality() > 0.49 && pc.params.designQuality() < 0.51);
+
+    // --- IQ -> designQuality mapping (clamped) ------------------------------
+    CityParams iqp;
+    iqp.iq = 100; assert(iqp.designQuality() == 0.0);
+    iqp.iq = 200; assert(iqp.designQuality() == 1.0);
+    iqp.iq = 300; assert(iqp.designQuality() == 1.0);   // clamps above 1
+    iqp.iq = 50;  assert(iqp.designQuality() == 0.0);   // clamps below 0
+
+    // --- Legislature parse / name round-trip + distinct profiles ------------
+    Legislature lg = Legislature::Federal;
+    assert(parseLegislature("unicameral", lg) && lg == Legislature::Unicameral);
+    assert(parseLegislature("BICAMERAL", lg) && lg == Legislature::Bicameral);
+    assert(parseLegislature("Municipal", lg) && lg == Legislature::Municipal);
+    assert(!parseLegislature("monarchy", lg));
+    assert(std::string(legislatureName(Legislature::Direct)) == "direct");
+    // Unicameral is more linear than federal; direct is less regular than municipal.
+    assert(LegislatureProfile::forLegislature(Legislature::Unicameral).linearity >
+           LegislatureProfile::forLegislature(Legislature::Federal).linearity);
+    assert(LegislatureProfile::forLegislature(Legislature::Municipal).regularity >
+           LegislatureProfile::forLegislature(Legislature::Direct).regularity);
 
     // --- Year drives modernity/finality: newer > older ----------------------
     CityParams oldP;  oldP.year = 2050;
@@ -78,6 +108,14 @@ int main() {
     assert(newC.params().modernity() > oldC.params().modernity());
     assert(newC.cityFinality() > oldC.cityFinality());
     assert(oldC.cityFinality() >= 0.0 && newC.cityFinality() <= 1.0);
+
+    // --- IQ drives finality: higher IQ -> higher finality -------------------
+    CityParams loIq;  loIq.year = 2807; loIq.iq = 100;
+    CityParams hiIq;  hiIq.year = 2807; hiIq.iq = 200;
+    City loC(48, 48), hiC(48, 48);
+    loC.generate(4242, loIq);
+    hiC.generate(4242, hiIq);
+    assert(hiC.cityFinality() > loC.cityFinality());
 
     // --- Per-user seed is stable and non-zero -------------------------------
     const std::uint64_t s1 = seedForUser("tester");
@@ -90,7 +128,7 @@ int main() {
     assert(city.blockCount() == 4096);
 
     // --- Generation is deterministic for a seed + params -------------------
-    CityParams gp;  gp.year = 2807;
+    CityParams gp;  gp.year = 2807; gp.iq = 165; gp.legislature = Legislature::Bicameral;
     City a(64, 64), b(64, 64);
     a.generate(12345, gp);
     b.generate(12345, gp);
@@ -138,17 +176,20 @@ int main() {
     // City finality is a sane average.
     assert(a.cityFinality() > 0.0 && a.cityFinality() <= 1.0);
 
-    // --- Serialize / deserialize round-trip (v2, all attributes) -----------
+    // --- Serialize / deserialize round-trip (v3, all attributes) -----------
     const std::string text = a.serialize("tester", 12345);
-    assert(text.find("PHRAIGN-CITY 2") == 0);
+    assert(text.find("PHRAIGN-CITY 3") == 0);
     assert(text.find("year 2807") != std::string::npos);
+    assert(text.find("iq 165") != std::string::npos);
+    assert(text.find("legislature bicameral") != std::string::npos);
     City c;
     std::string ru;
     std::uint64_t rs = 0;
     assert(City::deserialize(text, c, &ru, &rs));
     assert(ru == "tester" && rs == 12345);
     assert(c.cols() == 64 && c.rows() == 64);
-    assert(c.params().year == 2807);
+    assert(c.params().year == 2807 && c.params().iq == 165);
+    assert(c.params().legislature == Legislature::Bicameral);
     bool round = true;
     for (std::uint32_t y = 0; y < 64 && round; ++y)
         for (std::uint32_t x = 0; x < 64; ++x) {
@@ -160,6 +201,32 @@ int main() {
             }
         }
     assert(round);
+
+    // --- Back-compat: read a legacy v2 (no iq/legislature) model -----------
+    const std::string v2 =
+        "PHRAIGN-CITY 2\n"
+        "user v2user\n"
+        "seed 21\n"
+        "year 2400\n"
+        "finality 0.5\n"
+        "grid 2 2\n"
+        "cell 0 0 0\n"
+        "row 0 8 9\n"
+        "floors 0 4 5\n"
+        "windows 0 20 24\n"
+        "fin 0 500 520\n"
+        "cell 1 0 0\n"
+        "row 1 7 6\n"
+        "floors 1 3 2\n"
+        "windows 1 12 10\n"
+        "fin 1 480 470\n"
+        "END\n";
+    City v2c;
+    std::string v2u;
+    assert(City::deserialize(v2, v2c, &v2u));
+    assert(v2u == "v2user" && v2c.cols() == 2 && v2c.rows() == 2);
+    assert(v2c.params().year == 2400);
+    assert(v2c.at(0, 0).height == 8 && v2c.at(1, 0).floors == 5);
 
     // --- Back-compat: read a legacy v1 (height-only) model -----------------
     const std::string v1 =
