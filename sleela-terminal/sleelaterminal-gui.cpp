@@ -146,17 +146,16 @@ gboolean window_close_request(GtkWindow *window, gpointer user_data) {
     return TRUE;
 }
 
-// Ctrl+C and Ctrl+X are treated as GUI-level close shortcuts. Capture-phase
-// handling is intentional: VTE would normally consume Ctrl+C as SIGINT, so
-// the window must see the shortcut before it reaches the terminal PTY.
+// Ctrl+C belongs to the terminal PTY so VTE can deliver the normal SIGINT to
+// the foreground process group. This lets Ctrl+C interrupt a running program
+// without closing SleelaTerminal. Ctrl+X remains the GUI-level close shortcut.
 gboolean key_pressed(GtkEventControllerKey *, guint keyval, guint, GdkModifierType modifiers,
                      gpointer user_data) {
     if ((modifiers & GDK_CONTROL_MASK) == 0) {
         return FALSE;
     }
 
-    if (keyval != GDK_KEY_c && keyval != GDK_KEY_C &&
-        keyval != GDK_KEY_x && keyval != GDK_KEY_X) {
+    if (keyval != GDK_KEY_x && keyval != GDK_KEY_X) {
         return FALSE;
     }
 
