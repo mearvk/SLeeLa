@@ -51,9 +51,11 @@ enum class Tok {
     RBrace,      // }
     // keywords
     If, Then, Elif, Else, Fi,
-    While, Do, Done,
+    While, Until, Do, Done,
     For, In,
     Case, Esac,
+    Amp,          // &  (run the preceding and-or in the background)
+    Bang,         // !  (negate the exit status of the following pipeline)
     HeredocBody,  // synthetic: carries a here-document body (follows delimiter)
     Eof
 };
@@ -81,7 +83,7 @@ struct Redirection {
                               // delimiter was quoted (<<'EOF')
 };
 
-enum class NodeKind { Simple, Pipeline, AndOr, List, If, While,
+enum class NodeKind { Simple, Pipeline, AndOr, List, If, While, Until,
                       For, Case, FunctionDef };
 
 struct Node;
@@ -111,8 +113,14 @@ struct Node {
     std::vector<Redirection> redirs;
 
     // Pipeline: children joined by '|'.
-    // List: children separated by ';'/newline.
+    // List: children separated by ';'/newline (or '&' -> run in background).
     std::vector<NodePtr> children;
+    // List only: per-child "run asynchronously" flag (size == children.size()).
+    // A child is async when its and-or was terminated by '&'.
+    std::vector<bool> child_async;
+
+    // Pipeline: true when prefixed with '!' (negate the final exit status).
+    bool negated = false;
 
     // AndOr: left/right with an operator between (chained left-assoc as a
     // sequence of {op, node}).
@@ -183,14 +191,55 @@ public:
     int exitCode() const noexcept { return exit_code_; }
     void requestExit(int code) noexcept { should_exit_ = true; exit_code_ = code; }
 
+    // Loop control (break/continue). A builtin requests it; the nearest
+    // enclosing loop consumes one "level" and clears the flag when it reaches
+    // zero. `break` sets breaking; `continue` sets continuing.
+    void requestBreak(int levels) noexcept { loop_break_ = levels > 0 ? levels : 1; }
+    void requestContinue(int levels) noexcept { loop_continue_ = levels > 0 ? levels : 1; }
+    int  breakLevels() const noexcept { return loop_break_; }
+    int  continueLevels() const noexcept { return loop_continue_; }
+    bool loopSignal() const noexcept { return loop_break_ > 0 || loop_continue_ > 0; }
+    // A loop calls this on each iteration boundary. Returns:
+    //   'B' -> this loop should break, 'C' -> this loop should continue,
+    //   0   -> no signal for this loop. Decrements multi-level counts.
+    char consumeLoopSignal() noexcept {
+        if (loop_break_ > 0) {
+            if (--loop_break_ > 0) return 'B';   // propagate to outer loop
+            return 'B';
+        }
+        if (loop_continue_ > 0) {
+            if (--loop_continue_ > 0) return 'B'; // outer loops break through
+            return 'C';
+        }
+        return 0;
+    }
+
+    // ---- Background jobs (job control) ----
+    struct Job {
+        int id = 0;          // job number ([1], [2], ...)
+        long pid = 0;        // process id
+        std::string command; // the command line, for `jobs`
+        bool running = true; // false once reaped
+    };
+    // Register a new background job; returns its job number.
+    int addJob(long pid, const std::string& command);
+    std::vector<Job>& jobs() noexcept { return jobs_; }
+    const std::vector<Job>& jobs() const noexcept { return jobs_; }
+    Job* findJob(int id) noexcept;      // by job number; null if absent
+    void removeJob(int id) noexcept;
+
 private:
     struct Var { std::string value; bool exported = false; };
     std::map<std::string, Var> vars_;
     std::map<std::string, std::shared_ptr<Node>> functions_;
     std::vector<std::string> positionals_;   // $1.. (index 0 == $1)
+    std::vector<Job> jobs_;
+    int next_job_id_ = 1;
     int last_status_ = 0;
     bool should_exit_ = false;
     int exit_code_ = 0;
+    int loop_break_ = 0;
+    int loop_continue_ = 0;
 };
 
 } // namespace sleela::sh

@@ -25,7 +25,7 @@ L2  Lexer               text -> tokens (quoting, operators, comments)
 L1  Core + Arith        Value/Token/AST model, precedence-climbing arithmetic
 ```
 
-## Features (M1 + M2)
+## Features (M1 – M4)
 
 **M1 — the core:**
 
@@ -63,6 +63,24 @@ L1  Core + Arith        Value/Token/AST model, precedence-climbing arithmetic
   expanded unless the delimiter is quoted (`<<'DELIM'`).
 - **Functions in pipelines** — a shell function can be a pipeline stage.
 
+**M4 — loops, jobs, conditional builtins:**
+
+- **`until … ; do … done`** loops — run the body until the condition succeeds
+  (the inverse of `while`).
+- **Background jobs** — `command &` forks the command, records it in a job
+  table, and prints `[id] pid`; `jobs` lists them, `wait [id]` waits, and
+  `fg` / `bg` resume a job in the fore/background.
+- **Loop control** — `break [n]` and `continue [n]` (with an optional number of
+  enclosing loop levels).
+- **Pipeline negation** — `! pipeline` inverts the exit status.
+- **`test` / `[ … ]`** — string (`=`, `!=`, `-z`, `-n`), numeric
+  (`-eq -ne -lt -le -gt -ge`), and file (`-e -f -d`) predicates, with `!`
+  negation; `[` requires a closing `]`.
+- **`read [-r] name…`** — read one line from stdin, split on whitespace into
+  the named variables (remainder to the last), or into `REPLY`.
+- **`getopts optstring name [arg…]`** — parse options with `OPTIND` / `OPTARG`,
+  supporting bundled flags (`-abc`), `-oVALUE`, and `-o VALUE`.
+
 ## Build & run
 
 ```sh
@@ -80,6 +98,10 @@ make smoke                 # run the layered smoke test
 ./build/slsh -c 'echo report{1..3}.txt; echo {dev,prod}-{a,b}'
 ./build/slsh -c 'up() { tr a-z A-Z; }; echo hi | up'   # function in a pipeline
 printf 'cat <<END\nyear $(( 2000 + 25 ))\nEND\n' | ./build/slsh /dev/stdin
+./build/slsh -c 'n=0; until [ $n -ge 3 ]; do echo $n; n=$(( n + 1 )); done'
+./build/slsh -c 'if ! [ -f /no/such ]; then echo missing; fi'   # test + negation
+./build/slsh -c 'sleep 1 & jobs; wait; echo done'               # background job
+printf 'ada 42\n' | ./build/slsh -c 'read name age; echo "$name is $age"'
 ./build/slsh script.slsh                    # run a script file
 ./build/slsh                                # interactive REPL
 ```

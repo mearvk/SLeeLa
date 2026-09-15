@@ -16,9 +16,9 @@ bool atCommandStart(const std::vector<Token>& out) {
     if (out.empty()) return true;
     switch (out.back().kind) {
         case Tok::Pipe: case Tok::Semi: case Tok::Newline:
-        case Tok::AndIf: case Tok::OrIf:
+        case Tok::AndIf: case Tok::OrIf: case Tok::Amp: case Tok::Bang:
         case Tok::If: case Tok::Then: case Tok::Elif: case Tok::Else:
-        case Tok::While: case Tok::Do:
+        case Tok::While: case Tok::Until: case Tok::Do:
         case Tok::In: case Tok::LBrace: case Tok::RParen:
             return true;
         default:
@@ -42,6 +42,7 @@ bool looksLikeAssignment(const std::string& w) {
 Tok openerKind(const std::string& w) {
     if (w == "if")    return Tok::If;
     if (w == "while") return Tok::While;
+    if (w == "until") return Tok::Until;
     if (w == "for")   return Tok::For;
     if (w == "case")  return Tok::Case;
     return Tok::Word;
@@ -102,8 +103,7 @@ bool lex(const std::string& src, std::vector<Token>& out, LexError& err) {
         }
         if (c == '&') {
             if (nx == '&') { push(Tok::AndIf, "&&", line, col); adv(2); continue; }
-            err = LexError{"unsupported '&' (background/async not in this milestone)", line, col};
-            return false;
+            push(Tok::Amp, "&", line, col); adv(); continue;   // background
         }
         if (c == ';') { push(Tok::Semi, ";", line, col); adv(); continue; }
         if (c == '<') {
@@ -278,6 +278,9 @@ bool lex(const std::string& src, std::vector<Token>& out, LexError& err) {
         } else if (structural != Tok::Word) {
             // then/do/done/in/esac/... are keywords wherever they appear bare.
             push(structural, word, wline, wcol);
+        } else if (!sawQuote && cmdStart && word == "!") {
+            // '!' at command-start negates the pipeline that follows.
+            push(Tok::Bang, "!", wline, wcol);
         } else if (!sawQuote && cmdStart) {
             push(openerKind(word), word, wline, wcol);
         } else {

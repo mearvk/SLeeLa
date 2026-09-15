@@ -27,7 +27,8 @@ through our own hierarchical, math-driven architecture.
         ├─────────────────────────────────────────────┤
    L5   │  Executor                  run the AST       │
         │    · pipelines, redirections, exit status    │
-        │    · control flow (if / while / for / case)  │
+        │    · control flow (if/while/until/for/case)  │
+        │    · background jobs (&) + job-control        │
         │    · builtins registry                       │
         ├─────────────────────────────────────────────┤
    L4   │  Expansion                 words → strings   │
@@ -159,8 +160,14 @@ associativity, div-by-zero), the lexer (quoting/operators), the parser
   and `${#x}`; **brace expansion** `{a,b,c}` and numeric `{m..n}` (cartesian);
   **tilde expansion** `~` / `~user`; **here-documents** `<<` and `<<-` (body
   expanded unless the delimiter is quoted); and **functions inside pipelines**.
-- **M4+:** job control (`&`, `jobs`, `fg`/`bg`), `until` loops, `select`, richer
-  builtins (`read`, `test`/`[`, `getopts`), and multi-segment path globbing.
+- **M4 (done):** **`until` loops** (the inverse of `while`); **background jobs**
+  (`&`) with an `Environment` job table and the `jobs` / `fg` / `bg` / `wait`
+  builtins; **loop control** `break` / `continue` (with optional level count);
+  **pipeline negation** `! pipeline`; and the builtins `test` / `[` (string,
+  numeric, and file predicates with `!` negation), `read` (line → variables,
+  or `REPLY`), and `getopts` (option parsing via `OPTIND` / `OPTARG`).
+- **M5+ (future):** `select`, multi-segment path globbing, process
+  substitution, and traps/signal handling.
 
 ### M2 layer touch-points
 
@@ -181,3 +188,13 @@ associativity, div-by-zero), the lexer (quoting/operators), the parser
 | L3 parser | here-doc redirection (delimiter + body token); strips the expand/literal flag |
 | L4 expansion | `braceExpand` ( `{a,b}` / `{m..n}`, cartesian ), `tildeExpand` (`~`/`~user` via `getpwnam`), parameter operators `${x:-/:=/:?/:+}` and `${#x}` (env is now mutable for `:=`) |
 | L5 executor | here-doc body piped to stdin (expanded per `expand_body`); functions/builtins run correctly as pipeline stages |
+
+### M4 layer touch-points
+
+| Layer | M4 addition |
+|---|---|
+| L1 core | `NodeKind::Until`; `Tok::{Amp,Bang}`; `Node.child_async` (per-list-child `&` flag) and `Node.negated` (pipeline `!`); `Environment::Job` + job table (`addJob`/`jobs`/`findJob`/`removeJob`); loop-control signal (`requestBreak`/`requestContinue`/`consumeLoopSignal`) |
+| L2 lexer | `until` opener; `&` → `Tok::Amp` (background); bare `!` at command-start → `Tok::Bang`; both are command-start positions |
+| L3 parser | `parseUntil`; `parseList` treats `&` as an async separator; `parsePipeline` consumes a leading `!` (wrapping a lone command in a negated `Pipeline`); newline allowed after `do` |
+| L4 expansion | (unchanged — M4 adds no new word syntax) |
+| L5 executor | `execUntil`; async children in `execList` (fork + register job + `[id] pid`); pipeline negation; loop-signal consumption in `execWhile`/`execUntil`/`execFor`/`execList`; builtins `jobs`/`fg`/`bg`/`wait`, `test`/`[`, `read`, `getopts`, `break`/`continue` |

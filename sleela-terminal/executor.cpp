@@ -6,7 +6,9 @@
 #include "lexer.hpp"
 #include "parser.hpp"
 
+#include <cctype>
 #include <cerrno>
+#include <csignal>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
@@ -15,6 +17,7 @@
 #include <iostream>
 #include <map>
 #include <string>
+#include <sys/stat.h>
 #include <sys/wait.h>
 #include <unistd.h>
 #include <vector>
@@ -140,6 +143,18 @@ int biTrue(const std::vector<std::string>&, Environment&) { return 0; }
 int biFalse(const std::vector<std::string>&, Environment&) { return 1; }
 int biColon(const std::vector<std::string>&, Environment&) { return 0; }
 
+int biBreak(const std::vector<std::string>& a, Environment& env) {
+    int levels = (a.size() > 1) ? static_cast<int>(Value(a[1]).asInt()) : 1;
+    env.requestBreak(levels);
+    return 0;
+}
+
+int biContinue(const std::vector<std::string>& a, Environment& env) {
+    int levels = (a.size() > 1) ? static_cast<int>(Value(a[1]).asInt()) : 1;
+    env.requestContinue(levels);
+    return 0;
+}
+
 int biExit(const std::vector<std::string>& a, Environment& env) {
     int code = env.lastStatus();
     if (a.size() > 1) code = static_cast<int>(Value(a[1]).asInt());
@@ -154,12 +169,288 @@ int biSet(const std::vector<std::string>&, Environment& env) {
     return 0;
 }
 
+// ---- job-control builtins (M4) ----
+
+// Reap any jobs that have already terminated, marking them not-running.
+// Non-blocking: uses WNOHANG so `jobs` reflects reality without stalling.
+void reapFinishedJobs(Environment& env) {
+    for (auto& j : env.jobs()) {
+        if (!j.running) continue;
+        int st = 0;
+        pid_t r = ::waitpid(static_cast<pid_t>(j.pid), &st, WNOHANG);
+        if (r == static_cast<pid_t>(j.pid)) j.running = false;
+    }
+}
+
+// jobs -- list background jobs and their state.
+int biJobs(const std::vector<std::string>&, Environment& env) {
+    reapFinishedJobs(env);
+    for (const auto& j : env.jobs()) {
+        std::cout << "[" << j.id << "] " << (j.running ? "Running" : "Done")
+                  << "  " << j.command << "  (" << j.pid << ")\n";
+    }
+    std::cout.flush();
+    return 0;
+}
+
+// Parse a job spec: "%3" or "3" -> job id 3; empty -> the last job (0 if none).
+int jobIdFromSpec(const std::string& s, Environment& env) {
+    if (s.empty()) {
+        return env.jobs().empty() ? 0 : env.jobs().back().id;
+    }
+    std::string t = (s[0] == '%') ? s.substr(1) : s;
+    return static_cast<int>(Value(t).asInt());
+}
+
+// wait [id] -- wait for a background job (or all jobs) to finish.
+int biWait(const std::vector<std::string>& a, Environment& env) {
+    if (a.size() > 1) {
+        int id = jobIdFromSpec(a[1], env);
+        Environment::Job* j = env.findJob(id);
+        if (!j) return 127;
+        int st = 0;
+        if (j->running) ::waitpid(static_cast<pid_t>(j->pid), &st, 0);
+        j->running = false;
+        int rc = WIFEXITED(st) ? WEXITSTATUS(st) : 128 + WTERMSIG(st);
+        env.removeJob(id);
+        return rc;
+    }
+    // No arg: wait for every job.
+    int rc = 0;
+    for (auto& j : env.jobs()) {
+        if (j.running) {
+            int st = 0;
+            ::waitpid(static_cast<pid_t>(j.pid), &st, 0);
+            j.running = false;
+            rc = WIFEXITED(st) ? WEXITSTATUS(st) : 128 + WTERMSIG(st);
+        }
+    }
+    // Clear all reaped jobs.
+    while (!env.jobs().empty()) env.removeJob(env.jobs().front().id);
+    return rc;
+}
+
+// fg [id] -- bring a background job to the foreground (wait for it here).
+int biFg(const std::vector<std::string>& a, Environment& env) {
+    int id = jobIdFromSpec(a.size() > 1 ? a[1] : "", env);
+    Environment::Job* j = env.findJob(id);
+    if (!j) { std::fprintf(stderr, "fg: no such job\n"); return 1; }
+    std::cout << j->command << "\n";
+    std::cout.flush();
+    // Continue in case it was stopped, then wait for completion.
+    ::kill(static_cast<pid_t>(j->pid), SIGCONT);
+    int st = 0;
+    ::waitpid(static_cast<pid_t>(j->pid), &st, 0);
+    env.removeJob(id);
+    return WIFEXITED(st) ? WEXITSTATUS(st) : 128 + WTERMSIG(st);
+}
+
+// bg [id] -- resume a stopped job in the background.
+int biBg(const std::vector<std::string>& a, Environment& env) {
+    int id = jobIdFromSpec(a.size() > 1 ? a[1] : "", env);
+    Environment::Job* j = env.findJob(id);
+    if (!j) { std::fprintf(stderr, "bg: no such job\n"); return 1; }
+    ::kill(static_cast<pid_t>(j->pid), SIGCONT);
+    j->running = true;
+    std::cout << "[" << j->id << "] " << j->command << " &\n";
+    std::cout.flush();
+    return 0;
+}
+
+// ---- test / [ (M4) ----
+// Evaluate a single test expression given the operands (without the leading
+// "test" / "[" and without a trailing "]"). Supports unary file/string ops,
+// binary string comparisons, binary numeric comparisons, and `!` negation.
+bool evalTest(const std::vector<std::string>& t);
+
+bool evalTestPrimary(const std::vector<std::string>& t) {
+    if (t.empty()) return false;                       // `test` -> false
+    if (t.size() == 1) return !t[0].empty();           // `test STR` -> nonempty
+    if (t.size() == 2) {
+        const std::string& op = t[0];
+        const std::string& x = t[1];
+        if (op == "-z") return x.empty();
+        if (op == "-n") return !x.empty();
+        if (op == "-e") { struct stat st; return ::stat(x.c_str(), &st) == 0; }
+        if (op == "-f") { struct stat st; return ::stat(x.c_str(), &st) == 0 && S_ISREG(st.st_mode); }
+        if (op == "-d") { struct stat st; return ::stat(x.c_str(), &st) == 0 && S_ISDIR(st.st_mode); }
+        return false;
+    }
+    if (t.size() == 3) {
+        const std::string& l = t[0];
+        const std::string& op = t[1];
+        const std::string& r = t[2];
+        if (op == "=" || op == "==") return l == r;
+        if (op == "!=") return l != r;
+        long a = Value(l).asInt(), b = Value(r).asInt();
+        if (op == "-eq") return a == b;
+        if (op == "-ne") return a != b;
+        if (op == "-lt") return a < b;
+        if (op == "-le") return a <= b;
+        if (op == "-gt") return a > b;
+        if (op == "-ge") return a >= b;
+        return false;
+    }
+    return false;
+}
+
+bool evalTest(const std::vector<std::string>& t) {
+    if (!t.empty() && t[0] == "!") {
+        return !evalTest(std::vector<std::string>(t.begin() + 1, t.end()));
+    }
+    return evalTestPrimary(t);
+}
+
+int biTest(const std::vector<std::string>& a, Environment&) {
+    // a[0] is "test" or "[". For "[", require a closing "]" and drop it.
+    std::vector<std::string> operands(a.begin() + 1, a.end());
+    if (!a.empty() && a[0] == "[") {
+        if (operands.empty() || operands.back() != "]") {
+            std::fprintf(stderr, "[: missing ']'\n");
+            return 2;
+        }
+        operands.pop_back();
+    }
+    return evalTest(operands) ? 0 : 1;
+}
+
+// ---- read (M4) ----
+// read [-r] NAME... -- read one line from stdin, split on whitespace into the
+// named variables (the last variable gets the remainder). With no names, set
+// REPLY. Returns 1 at end-of-file.
+int biRead(const std::vector<std::string>& a, Environment& env) {
+    std::size_t start = 1;
+    // (-r is accepted for compatibility; this reader does not process
+    // backslash escapes, so -r is effectively always on.)
+    if (a.size() > 1 && a[1] == "-r") start = 2;
+
+    std::string line;
+    int c;
+    bool got = false;
+    while ((c = std::fgetc(stdin)) != EOF) {
+        got = true;
+        if (c == '\n') break;
+        line.push_back(static_cast<char>(c));
+    }
+    if (!got && line.empty()) return 1;  // EOF, nothing read
+
+    std::vector<std::string> names(a.begin() + start, a.end());
+    if (names.empty()) { env.set("REPLY", line); return 0; }
+
+    // Split on whitespace; assign one field per name, remainder to the last.
+    std::vector<std::string> fields;
+    std::size_t i = 0;
+    for (std::size_t n = 0; n + 1 < names.size(); ++n) {
+        while (i < line.size() && std::isspace((unsigned char)line[i])) ++i;
+        std::size_t j = i;
+        while (j < line.size() && !std::isspace((unsigned char)line[j])) ++j;
+        fields.push_back(line.substr(i, j - i));
+        i = j;
+    }
+    // Remainder (trimmed of leading whitespace) to the final name.
+    while (i < line.size() && std::isspace((unsigned char)line[i])) ++i;
+    fields.push_back(line.substr(i));
+    for (std::size_t n = 0; n < names.size(); ++n)
+        env.set(names[n], n < fields.size() ? fields[n] : std::string());
+    return 0;
+}
+
+// ---- getopts (M4) ----
+// getopts OPTSTRING NAME [ARG...] -- parse the next option from the positional
+// parameters (or the supplied ARGs) using OPTIND to track position. Sets NAME
+// to the option letter (or "?"), OPTARG for options that take a value, and
+// returns 1 when the options are exhausted.
+int biGetopts(const std::vector<std::string>& a, Environment& env) {
+    if (a.size() < 3) { std::fprintf(stderr, "getopts: usage: getopts optstring name [arg...]\n"); return 2; }
+    const std::string optstring = a[1];
+    const std::string name = a[2];
+
+    // The words to scan: explicit ARGs after NAME, else the positionals.
+    std::vector<std::string> args;
+    if (a.size() > 3) args.assign(a.begin() + 3, a.end());
+    else args = env.positionals();
+
+    long optind = env.has("OPTIND") ? Value(env.get("OPTIND")).asInt() : 1;
+    if (optind < 1) optind = 1;
+
+    // OPTIND is 1-based over the arg list.
+    std::size_t idx = static_cast<std::size_t>(optind - 1);
+    if (idx >= args.size()) { env.set(name, "?"); return 1; }
+
+    const std::string& cur = args[idx];
+    if (cur.size() < 2 || cur[0] != '-' || cur == "--") {
+        // Not an option (or explicit end): stop.
+        if (cur == "--") env.set("OPTIND", std::to_string(optind + 1));
+        env.set(name, "?");
+        return 1;
+    }
+
+    // Track sub-index within a bundled option group via OPTSUB (SLeeLa ext).
+    long sub = env.has("OPTSUB") ? Value(env.get("OPTSUB")).asInt() : 1;
+    if (sub < 1) sub = 1;
+    if (static_cast<std::size_t>(sub) >= cur.size()) {
+        // Exhausted this group; advance and retry from the next word.
+        env.set("OPTIND", std::to_string(optind + 1));
+        env.set("OPTSUB", "1");
+        return biGetopts(a, env);
+    }
+
+    char opt = cur[static_cast<std::size_t>(sub)];
+    std::size_t pos = optstring.find(opt);
+    if (pos == std::string::npos) {
+        env.set(name, "?");
+        env.set("OPTARG", std::string(1, opt));
+        // advance sub-index
+        env.set("OPTSUB", std::to_string(sub + 1));
+        if (static_cast<std::size_t>(sub + 1) >= cur.size()) {
+            env.set("OPTIND", std::to_string(optind + 1));
+            env.set("OPTSUB", "1");
+        }
+        return 0;
+    }
+
+    bool takesArg = (pos + 1 < optstring.size() && optstring[pos + 1] == ':');
+    if (takesArg) {
+        std::string arg;
+        if (static_cast<std::size_t>(sub) + 1 < cur.size()) {
+            arg = cur.substr(static_cast<std::size_t>(sub) + 1);  // -oVALUE
+            env.set("OPTIND", std::to_string(optind + 1));
+        } else if (idx + 1 < args.size()) {
+            arg = args[idx + 1];                                  // -o VALUE
+            env.set("OPTIND", std::to_string(optind + 2));
+        } else {
+            env.set(name, "?");
+            env.set("OPTARG", std::string(1, opt));
+            env.set("OPTIND", std::to_string(optind + 1));
+            return 0;
+        }
+        env.set("OPTSUB", "1");
+        env.set(name, std::string(1, opt));
+        env.set("OPTARG", arg);
+        return 0;
+    }
+
+    // A flag with no argument: consume just this letter.
+    env.set(name, std::string(1, opt));
+    env.set("OPTARG", "");
+    env.set("OPTSUB", std::to_string(sub + 1));
+    if (static_cast<std::size_t>(sub + 1) >= cur.size()) {
+        env.set("OPTIND", std::to_string(optind + 1));
+        env.set("OPTSUB", "1");
+    }
+    return 0;
+}
+
 const std::map<std::string, Builtin>& builtins() {
     static const std::map<std::string, Builtin> table = {
         {"echo", biEcho}, {"pwd", biPwd}, {"cd", biCd},
         {"export", biExport}, {"unset", biUnset},
         {"true", biTrue}, {"false", biFalse}, {":", biColon},
         {"exit", biExit}, {"set", biSet},
+        {"break", biBreak}, {"continue", biContinue},
+        {"jobs", biJobs}, {"wait", biWait}, {"fg", biFg}, {"bg", biBg},
+        {"test", biTest}, {"[", biTest},
+        {"read", biRead}, {"getopts", biGetopts},
     };
     return table;
 }
@@ -277,7 +568,10 @@ int execSimple(const Node& node, Environment& env) {
 
 int execPipeline(const Node& node, Environment& env) {
     const auto& cmds = node.children;
-    if (cmds.size() == 1) return execNode(*cmds[0], env);
+    if (cmds.size() == 1) {
+        int rc = execNode(*cmds[0], env);
+        return node.negated ? (rc == 0 ? 1 : 0) : rc;
+    }
 
     // Build pipes between the N children.
     const std::size_t n = cmds.size();
@@ -346,7 +640,7 @@ int execPipeline(const Node& node, Environment& env) {
         int rc = WIFEXITED(status) ? WEXITSTATUS(status) : 128 + WTERMSIG(status);
         if (i == n - 1) last = rc;
     }
-    return last;
+    return node.negated ? (last == 0 ? 1 : 0) : last;
 }
 
 int execAndOr(const Node& node, Environment& env) {
@@ -363,9 +657,29 @@ int execAndOr(const Node& node, Environment& env) {
 
 int execList(const Node& node, Environment& env) {
     int status = 0;
-    for (const auto& child : node.children) {
-        status = execNode(*child, env);
-        if (env.shouldExit()) break;
+    for (std::size_t i = 0; i < node.children.size(); ++i) {
+        const bool async = i < node.child_async.size() && node.child_async[i];
+        if (async) {
+            // Run this and-or in the background: fork a child that executes it,
+            // register the job, and report "[id] pid". Do not wait.
+            const Node& child = *node.children[i];
+            pid_t pid = ::fork();
+            if (pid < 0) { std::perror("fork"); status = 1; continue; }
+            if (pid == 0) {
+                Environment bg = env;      // isolated copy for the job
+                int rc = execNode(child, bg);
+                std::cout.flush();
+                _exit(rc & 0xFF);
+            }
+            int id = env.addJob(static_cast<long>(pid), "background job");
+            std::cout << "[" << id << "] " << pid << "\n";
+            std::cout.flush();
+            status = 0;  // async command returns success immediately
+        } else {
+            status = execNode(*node.children[i], env);
+            if (env.shouldExit()) break;
+            if (env.loopSignal()) break;  // break/continue: stop this list
+        }
     }
     return status;
 }
@@ -386,6 +700,28 @@ int execWhile(const Node& node, Environment& env) {
         if (execNode(*node.while_cond, env) != 0) break;
         status = execNode(*node.while_body, env);
         if (env.shouldExit()) break;
+        if (env.loopSignal()) {
+            char sig = env.consumeLoopSignal();
+            if (sig == 'B') break;      // break: leave this loop
+            /* sig == 'C' -> continue: fall through to next iteration */
+        }
+    }
+    return status;
+}
+
+// until: run the body WHILE the condition is non-zero (i.e. false), i.e. loop
+// until the condition succeeds -- the inverse of while.
+int execUntil(const Node& node, Environment& env) {
+    int status = 0;
+    const int kGuard = 1000000;
+    for (int iter = 0; iter < kGuard; ++iter) {
+        if (execNode(*node.while_cond, env) == 0) break;  // stop when cond true
+        status = execNode(*node.while_body, env);
+        if (env.shouldExit()) break;
+        if (env.loopSignal()) {
+            char sig = env.consumeLoopSignal();
+            if (sig == 'B') break;
+        }
     }
     return status;
 }
@@ -404,6 +740,10 @@ int execFor(const Node& node, Environment& env) {
         env.set(node.for_var, item);
         status = execNode(*node.for_body, env);
         if (env.shouldExit()) break;
+        if (env.loopSignal()) {
+            char sig = env.consumeLoopSignal();
+            if (sig == 'B') break;
+        }
     }
     return status;
 }
@@ -444,6 +784,7 @@ int execNode(const Node& node, Environment& env) {
         case NodeKind::List:        status = execList(node, env); break;
         case NodeKind::If:          status = execIf(node, env); break;
         case NodeKind::While:       status = execWhile(node, env); break;
+        case NodeKind::Until:       status = execUntil(node, env); break;
         case NodeKind::For:         status = execFor(node, env); break;
         case NodeKind::Case:        status = execCase(node, env); break;
         case NodeKind::FunctionDef: status = execFunctionDef(node, env); break;

@@ -272,6 +272,69 @@ int main() {
         assert(env.get("acc") == "-item1-item2-item3");
     }
 
-    std::cout << "sleela-terminal smoke: OK (M3)\n";
+    // --- L3: parse M4 constructs -------------------------------------------
+    { auto n = parseOK("until false; do echo x; done");
+      assert(n->children[0]->kind == NodeKind::Until); }
+    { auto n = parseOK("sleep 1 &");
+      // '&' marks the (single) child async
+      assert(n->children[0] != nullptr && n->child_async.size() == 1);
+      assert(n->child_async[0] == true); }
+    { auto n = parseOK("! false");
+      // '!' wraps the command in a negated Pipeline node
+      assert(n->children[0]->kind == NodeKind::Pipeline);
+      assert(n->children[0]->negated == true); }
+
+    // --- L5: M4 execution --------------------------------------------------
+    {
+        Environment env;
+
+        // until: loops while the condition is FALSE (inverse of while)
+        run("i=0", env);
+        run("until test $i -ge 3; do i=$(( i + 1 )); done", env);
+        assert(env.get("i") == "3");
+
+        // test / [ : string, numeric, file, negation
+        assert(run("test abc = abc", env) == 0);
+        assert(run("test abc = xyz", env) == 1);
+        assert(run("test -z \"\"", env) == 0);
+        assert(run("test -n nonempty", env) == 0);
+        assert(run("test 5 -gt 3", env) == 0);
+        assert(run("test 5 -lt 3", env) == 1);
+        assert(run("[ 2 -eq 2 ]", env) == 0);
+        assert(run("[ 2 -ne 2 ]", env) == 1);
+        assert(run("test -d /", env) == 0);
+        assert(run("test -f /", env) == 1);
+
+        // '!' pipeline negation
+        assert(run("! false", env) == 0);
+        assert(run("! true", env) == 1);
+        assert(run("if ! test 1 -eq 2; then r=neg; fi", env) == 0);
+        assert(env.get("r") == "neg");
+
+        // break: leaves the loop early
+        run("c=0", env);
+        run("while true; do c=$(( c + 1 )); if test $c -ge 2; then break; fi; done", env);
+        assert(env.get("c") == "2");
+
+        // continue: skips the rest of one iteration
+        run("acc=", env);
+        run("for x in 1 2 3 4; do if test $x -eq 2; then continue; fi; acc=$acc$x; done", env);
+        assert(env.get("acc") == "134");
+
+        // getopts: parse flags and an option-argument from explicit args
+        run("getopts \"ab:c\" o -a", env);
+        assert(env.get("o") == "a");
+        run("OPTIND=1; getopts \"ab:c\" o -b value", env);
+        assert(env.get("o") == "b" && env.get("OPTARG") == "value");
+
+        // background job registers on the environment's job table
+        run("true &", env);
+        assert(env.jobs().size() == 1 && env.jobs()[0].id == 1);
+        // wait reaps all jobs
+        assert(run("wait", env) == 0);
+        assert(env.jobs().empty());
+    }
+
+    std::cout << "sleela-terminal smoke: OK (M4)\n";
     return 0;
 }

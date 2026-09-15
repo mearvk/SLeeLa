@@ -62,13 +62,20 @@ private:
     NodePtr parseList() {
         auto list = std::make_unique<Node>(NodeKind::List);
         list->children.push_back(parseAndOr());
+        list->child_async.push_back(false);
         for (;;) {
-            // consume one-or-more separators
+            // A separator is ';', newline, or '&' (which marks the *previous*
+            // and-or as asynchronous / background).
             bool sawSep = false;
-            while (at(Tok::Semi) || at(Tok::Newline)) { advance(); sawSep = true; }
+            while (at(Tok::Semi) || at(Tok::Newline) || at(Tok::Amp)) {
+                if (at(Tok::Amp)) list->child_async.back() = true;
+                advance();
+                sawSep = true;
+            }
             if (!sawSep) break;
             if (isListTerminator()) break;
             list->children.push_back(parseAndOr());
+            list->child_async.push_back(false);
         }
         return list;
     }
@@ -90,12 +97,25 @@ private:
         return node;
     }
 
-    // pipeline := command ( '|' command )*
+    // pipeline := [ '!' ] command ( '|' command )*
     NodePtr parsePipeline() {
+        bool negated = false;
+        while (at(Tok::Bang)) { negated = !negated; advance(); }
+
         auto first = parseCommand();
-        if (!at(Tok::Pipe)) return first;
+        if (!at(Tok::Pipe)) {
+            if (negated) {
+                // Wrap a single command in a Pipeline node to carry the flag.
+                auto node = std::make_unique<Node>(NodeKind::Pipeline);
+                node->negated = true;
+                node->children.push_back(std::move(first));
+                return node;
+            }
+            return first;
+        }
 
         auto node = std::make_unique<Node>(NodeKind::Pipeline);
+        node->negated = negated;
         node->children.push_back(std::move(first));
         while (at(Tok::Pipe)) {
             advance();
@@ -109,6 +129,7 @@ private:
     NodePtr parseCommand() {
         if (at(Tok::If)) return parseIf();
         if (at(Tok::While)) return parseWhile();
+        if (at(Tok::Until)) return parseUntil();
         if (at(Tok::For)) return parseFor();
         if (at(Tok::Case)) return parseCase();
         if (at(Tok::LBrace)) return parseBraceGroup();
@@ -157,6 +178,7 @@ private:
         // separator, then do..done
         while (at(Tok::Semi) || at(Tok::Newline)) advance();
         expect(Tok::Do, "'do'");
+        while (at(Tok::Newline)) advance();
         node->for_body = parseList();
         expect(Tok::Done, "'done'");
         return node;
@@ -251,6 +273,19 @@ private:
         expect(Tok::While, "'while'");
         node->while_cond = parseList();
         expect(Tok::Do, "'do'");
+        while (at(Tok::Newline)) advance();
+        node->while_body = parseList();
+        expect(Tok::Done, "'done'");
+        return node;
+    }
+
+    // until := 'until' list 'do' list 'done'  (runs body while cond is FALSE)
+    NodePtr parseUntil() {
+        auto node = std::make_unique<Node>(NodeKind::Until);
+        expect(Tok::Until, "'until'");
+        node->while_cond = parseList();
+        expect(Tok::Do, "'do'");
+        while (at(Tok::Newline)) advance();
         node->while_body = parseList();
         expect(Tok::Done, "'done'");
         return node;

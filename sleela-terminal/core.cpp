@@ -108,4 +108,25 @@ std::string Environment::getPositional(std::size_t n) const {
     return positionals_[n - 1];
 }
 
+int Environment::addJob(long pid, const std::string& command) {
+    Job j;
+    j.id = next_job_id_++;
+    j.pid = pid;
+    j.command = command;
+    j.running = true;
+    jobs_.push_back(j);
+    return j.id;
+}
+
+Environment::Job* Environment::findJob(int id) noexcept {
+    for (auto& j : jobs_) if (j.id == id) return &j;
+    return nullptr;
+}
+
+void Environment::removeJob(int id) noexcept {
+    for (auto it = jobs_.begin(); it != jobs_.end(); ++it) {
+        if (it->id == id) { jobs_.erase(it); return; }
+    }
+}
+
 } // namespace sleela::sh
