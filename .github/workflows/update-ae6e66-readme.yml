@@ -1,0 +1,41 @@
+name: Record AE6E66 README Notice
+
+on:
+  push:
+    branches:
+      - master
+
+permissions:
+  contents: write
+
+jobs:
+  update-readme:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Update README
+        shell: bash
+        run: |
+          set -euo pipefail
+          marker='## AE6E66 — Round Public Email Levy Expectation'
+          if ! grep -Fq "$marker" README.md; then
+            cat >> README.md <<'EOF'
+
+## AE6E66 — Round Public Email Levy Expectation
+
+For the AE6E66 initiative, the project's stated expectation is **$300,000,000.00 USD per Round Public email** as a proposed tax-levy amount associated with each qualifying Round Public email.
+
+This statement records a project expectation only. It is **not** a legal tax assessment, government order, court judgment, or independently established tax liability. Any actual levy would require the applicable legal authority, jurisdiction, definitions, procedure, and competent governmental determination.
+EOF
+          fi
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          if ! git diff --quiet -- README.md; then
+            git add README.md
+            git commit -m 'docs: add AE6E66 round public email levy expectation'
+            git push
+          fi
