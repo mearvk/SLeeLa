@@ -1,7 +1,6 @@
 #include <gtk/gtk.h>
 #include <vte/vte.h>
 
-#include <cstdlib>
 #include <filesystem>
 #include <string>
 #include <vector>
@@ -62,6 +61,8 @@ void child_exited(VteTerminal *, int, gpointer user_data) {
 void activate(GtkApplication *application, gpointer user_data) {
     auto *state = static_cast<AppState *>(user_data);
 
+    install_css();
+
     GtkWidget *window = gtk_application_window_new(application);
     gtk_window_set_title(GTK_WINDOW(window), kWindowTitle);
     gtk_window_set_default_size(GTK_WINDOW(window), 1100, 700);
@@ -84,16 +85,17 @@ void activate(GtkApplication *application, gpointer user_data) {
     pango_font_description_free(font);
 
     gtk_window_set_child(GTK_WINDOW(window), terminal);
+    g_signal_connect(terminal, "child-exited", G_CALLBACK(child_exited), window);
 
-    std::vector<char *> argv;
-    argv.push_back(const_cast<char *>(state->shell_path.c_str()));
-    argv.push_back(nullptr);
+    std::vector<char *> shell_argv;
+    shell_argv.push_back(const_cast<char *>(state->shell_path.c_str()));
+    shell_argv.push_back(nullptr);
 
     vte_terminal_spawn_async(
         VTE_TERMINAL(terminal),
         VTE_PTY_DEFAULT,
         nullptr,
-        argv.data(),
+        shell_argv.data(),
         nullptr,
         G_SPAWN_DEFAULT,
         nullptr,
@@ -104,7 +106,6 @@ void activate(GtkApplication *application, gpointer user_data) {
         nullptr,
         nullptr);
 
-    g_signal_connect(terminal, "child-exited", G_CALLBACK(child_exited), window);
     gtk_window_present(GTK_WINDOW(window));
 }
 
@@ -117,8 +118,6 @@ int main(int argc, char **argv) {
     } else {
         state.shell_path = sibling_path(argv[0], "slsh");
     }
-
-    install_css();
 
     GtkApplication *application = gtk_application_new(
         kApplicationId, G_APPLICATION_DEFAULT_FLAGS);
