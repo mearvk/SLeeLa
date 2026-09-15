@@ -78,6 +78,7 @@ ethics layer sitting over Longs.
 |---|---|
 | [`assumptions.csv`](assumptions.csv) | The seed assumptions (all ASSUMED), with length, speed, category, lengthening flag, moral weight, and a note. |
 | [`assumptions.sleela`](assumptions.sleela) | The moral model over the assumptions (math summary + paragraph evaluation). |
+| [`OUTPUT.md`](OUTPUT.md) | The synthesized **opinion** the model informs — an overall reading of the health of the human condition (as a product). |
 
 Run it from the repository root:
 
