@@ -16,7 +16,7 @@ HEADERS := core.hpp arith.hpp lexer.hpp parser.hpp expand.hpp executor.hpp m5.hp
 SLSH  := $(BUILD)/slsh
 SMOKE := $(BUILD)/smoke
 
-.PHONY: all smoke test clean
+.PHONY: all smoke test m5-smoke clean
 
 all: $(SLSH) $(SMOKE)
 
@@ -29,8 +29,13 @@ $(SMOKE): $(SMOKE_SRC) $(HEADERS) | $(BUILD)
 $(BUILD):
 	mkdir -p $(BUILD)
 
-smoke test: $(SMOKE)
+smoke: $(SMOKE)
 	$(SMOKE)
+
+m5-smoke: $(SLSH)
+	sh ./m5-smoke.sh $(SLSH)
+
+test: smoke m5-smoke
 
 clean:
 	rm -rf $(BUILD)
