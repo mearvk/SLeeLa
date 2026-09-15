@@ -10,6 +10,9 @@
 
 #include <cassert>
 #include <iostream>
+#include <fstream>
+#include <sys/stat.h>
+#include <unistd.h>
 #include <string>
 
 using namespace sleela::sh;
@@ -333,6 +336,26 @@ int main() {
         // wait reaps all jobs
         assert(run("wait", env) == 0);
         assert(env.jobs().empty());
+    }
+
+    // --- seeded M1-M5 regression checks ---------------------------------
+    {
+        // Quoted assignment values must remain assignments.
+        std::vector<Token> t; LexError le;
+        assert(lex("PS3=\"pick> \"", t, le));
+        assert(!t.empty() && t[0].kind == Tok::Assignment);
+        assert(t[0].text == "PS3=pick> ");
+
+        // Filesystem metacharacters remain data after glob expansion.
+        const std::string root = "/tmp/sleela-terminal-regression";
+        ::mkdir(root.c_str(), 0700);
+        const std::string evil = root + "/evil;echo-INJECTED.txt";
+        std::ofstream f(evil);
+        f << "x"; f.close();
+        auto g = globPattern(root + "/*.txt");
+        assert(g.size() == 1 && g[0] == evil);
+        ::unlink(evil.c_str());
+        ::rmdir(root.c_str());
     }
 
     std::cout << "sleela-terminal smoke: OK (M4)\n";
