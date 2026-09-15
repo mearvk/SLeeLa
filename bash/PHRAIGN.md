@@ -1,11 +1,18 @@
-# Phraign™ — Frame-Based Terminal Pixel Control System
+# SleelaTerminal™ — Phraign™ Frame-Based Terminal Pixel Control System
 
-**Phraign™** is SLeeLa's frame-based, pixel-accurate terminal control system.
-It lets a program treat the terminal output surface as an addressable **planar
-map of pixels** rather than only a character grid, and to specify control of
-that surface at pixel granularity.
+> **SleelaTerminal™** is SLeeLa's terminal product. It is **built on GNU Bash**
+> (GPL, © Free Software Foundation). SleelaTerminal™ branding applies only to
+> SLeeLa's own additions — the Phraign™ pixel-terminal work and the `model-3D/`
+> application — and never to the vendored GNU Bash sources, whose GPL headers,
+> copyright, and third-party GNU project names are left intact.
 
-Phraign™ is the umbrella name for the pixel-terminal work living in `bash/`:
+**Phraign™** is the SleelaTerminal™ frame-based, pixel-accurate terminal control
+system. It lets a program treat the terminal output surface as an addressable
+**planar map of pixels** rather than only a character grid, and to specify
+control of that surface at pixel granularity.
+
+Phraign™ is the umbrella name for the SleelaTerminal™ pixel-terminal work living
+in `bash/`:
 
 | Component | File | Role |
 |-----------|------|------|
@@ -17,12 +24,15 @@ Phraign™ is the umbrella name for the pixel-terminal work living in `bash/`:
 | Smoke test | `pixel_terminal_smoke.cpp` | Native layer assertions. |
 | Application | `model-3D/` | Phraign™ City 3D — a ~4000-block city rendered onto the Phraign frame per pixel (see `model-3D/README.md`). |
 
-## Why "Phraign™"
+## Why "SleelaTerminal™" and "Phraign™"
 
-Phraign™ is the product/system name; `pixel_terminal` remains the concrete
-module/API name. Naming the system separately lets SLeeLa refer to the whole
-frame-based terminal capability — spec, handshake, shell interface, and native
-layer — as one thing, while the code-level identifiers stay descriptive.
+**SleelaTerminal™** is the SLeeLa-facing product/distribution name for the whole
+terminal effort. **Phraign™** is the frame-based control system inside it, and
+`pixel_terminal` remains the concrete module/API name. Naming the product and
+the system separately lets SLeeLa refer to the whole frame-based terminal
+capability — spec, handshake, shell interface, and native layer — as one thing,
+while the code-level identifiers stay descriptive and the underlying execution
+engine (GNU Bash) keeps its own name.
 
 ## What Phraign™ gives the user
 
@@ -68,7 +78,16 @@ geometry abstraction; the SLeeLa bridge owns actual raster presentation.
 
 ## Compatibility
 
-Phraign™ is additive. Ordinary Bash commands, standard I/O, POSIX shell
-behavior, and normal terminal operation are unchanged. A terminal without the
-Phraign™ bridge may ignore the pixel commands without affecting ordinary Bash
-operation. See `PIXEL_TERMINAL.md` and `SLEELA_BASH_HANDSHAKE.md` for details.
+SleelaTerminal™ (via Phraign™) is additive. Ordinary Bash commands, standard
+I/O, POSIX shell behavior, and normal terminal operation are unchanged. A
+terminal without the Phraign™ bridge may ignore the pixel commands without
+affecting ordinary Bash operation. See `PIXEL_TERMINAL.md` and
+`SLEELA_BASH_HANDSHAKE.md` for details.
+
+## Attribution
+
+SleelaTerminal™ is built on **GNU Bash**, which is free software licensed under
+the **GNU General Public License** and copyright the **Free Software
+Foundation**. The vendored Bash sources in `bash/` retain their original GPL
+license text, copyright notices, and references to GNU projects unchanged;
+SleelaTerminal™ / Phraign™ branding covers only SLeeLa's own additive files.

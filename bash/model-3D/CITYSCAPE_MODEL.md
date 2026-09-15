@@ -1,5 +1,8 @@
 # The Cityscape Model — the general model
 
+> Part of **SleelaTerminal™** (Phraign™ City 3D), SLeeLa's terminal product,
+> built on GNU Bash (GPL, © Free Software Foundation).
+
 `CityscapeModel` (`cityscape_model.hpp/.cpp`) is the **general model Sleela works
 from**. It unifies everything City 3D knows — the **Year / IQ / Legislature**
 drivers, building quality, and finality — underneath a **graph in the 3rd

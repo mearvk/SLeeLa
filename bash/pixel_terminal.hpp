@@ -1,7 +1,11 @@
 #pragma once
 
-// Phraign(TM) -- SLeeLa's frame-based, pixel-accurate terminal control system.
-// Native pixel-terminal layer. See PHRAIGN.md for the system overview.
+// SleelaTerminal(TM) -- SLeeLa's terminal product, built on GNU Bash
+// (GPL, (C) Free Software Foundation). SLeeLa-authored addition; the vendored
+// GNU Bash sources keep their own GPL headers and copyright.
+//
+// Phraign(TM) -- SleelaTerminal(TM)'s frame-based, pixel-accurate terminal
+// control system. Native pixel-terminal layer. See PHRAIGN.md for the overview.
 
 #include <cstddef>
 #include <cstdint>

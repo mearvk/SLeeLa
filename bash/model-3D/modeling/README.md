@@ -1,4 +1,7 @@
-# modeling/ — Phraign™ City 3D model data
+# modeling/ — SleelaTerminal™ · Phraign™ City 3D model data
+
+> Part of **SleelaTerminal™** (Phraign™ City 3D), SLeeLa's terminal product,
+> built on GNU Bash (GPL, © Free Software Foundation).
 
 This subfolder holds **city model data**: serialized `.city` files in the
 `PHRAIGN-CITY` text format (see [`../MODEL_FORMAT.md`](../MODEL_FORMAT.md)).

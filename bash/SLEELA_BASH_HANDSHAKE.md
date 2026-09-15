@@ -1,7 +1,10 @@
-# SLeeLa ↔ Bash Phraign™ Native Pixel Handshake
+# SleelaTerminal™ ↔ Bash Phraign™ Native Pixel Handshake
 
-> Phraign™ is SLeeLa's frame-based, pixel-accurate terminal control system.
-> See `PHRAIGN.md` for the system overview.
+> Part of **SleelaTerminal™**, SLeeLa's terminal product, **built on GNU Bash**
+> (GPL, © Free Software Foundation). Phraign™ is SleelaTerminal™'s frame-based,
+> pixel-accurate terminal control system. See `PHRAIGN.md` for the system
+> overview. This branding covers SLeeLa's own additions only; the vendored GNU
+> Bash sources keep their GPL headers and copyright unchanged.
 
 ## Purpose
 

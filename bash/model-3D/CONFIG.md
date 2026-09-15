@@ -1,5 +1,8 @@
 # City 3D configuration
 
+> Part of **SleelaTerminal™** (Phraign™ City 3D), SLeeLa's terminal product,
+> built on GNU Bash (GPL, © Free Software Foundation).
+
 City 3D reads a simple text config file (`city.config` by default). The format
 is `key = value`, one per line; `#` begins a comment; blank lines are ignored.
 **Unknown keys are ignored** (forward-compatible) and **missing keys keep their

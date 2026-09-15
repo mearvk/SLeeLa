@@ -1,3 +1,6 @@
+// SleelaTerminal(TM) -- SLeeLa's terminal product, built on GNU Bash
+// (GPL, (C) Free Software Foundation). SLeeLa-authored addition; the
+// vendored GNU Bash sources keep their own GPL headers and copyright.
 // Phraign(TM) City 3D -- the general Cityscape Model implementation.
 
 #include "cityscape_model.hpp"

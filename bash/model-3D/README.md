@@ -1,8 +1,12 @@
-# model-3D — Phraign™ City 3D
+# model-3D — SleelaTerminal™ · Phraign™ City 3D
 
-**Phraign™ City 3D** generates a sprawling, modern city model of ~4000 square
-blocks and renders it — on a **per-pixel basis** — onto a
-[Phraign™](../PHRAIGN.md) frame. The city is a **model of finality** (quality of
+> Part of **SleelaTerminal™**, SLeeLa's terminal product, **built on GNU Bash**
+> (GPL, © Free Software Foundation). This directory is a SLeeLa-authored
+> application; the vendored GNU Bash sources are untouched.
+
+**Phraign™ City 3D** is the flagship SleelaTerminal™ application. It generates a
+sprawling, modern city model of ~4000 square blocks and renders it — on a
+**per-pixel basis** — onto a [Phraign™](../PHRAIGN.md) frame. The city is a **model of finality** (quality of
 condition) designed from three drivers: the **Year** (modernity), the person's
 **IQ** (design quality / order), and the person's native **Legislature** (the
 regime that produces the city's lines and linear outcomes). A more modern year,

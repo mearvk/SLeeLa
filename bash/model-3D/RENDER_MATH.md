@@ -1,5 +1,8 @@
 # Rendering math & the rendering group
 
+> Part of **SleelaTerminal™** (Phraign™ City 3D), SLeeLa's terminal product,
+> built on GNU Bash (GPL, © Free Software Foundation).
+
 Phraign™ City 3D's rendering is split into three small, layered pieces so the
 geometry/color math is reusable and testable on its own, separate from both
 Phraign and the city model:

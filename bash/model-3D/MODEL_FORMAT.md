@@ -1,5 +1,9 @@
 # PHRAIGN-CITY model format
 
+> Part of **SleelaTerminal™** (Phraign™ City 3D), SLeeLa's terminal product,
+> built on GNU Bash (GPL, © Free Software Foundation). The `PHRAIGN-CITY`
+> keyword is the on-disk model tag and is left unchanged for compatibility.
+
 City 3D serializes a city to a small, diff-friendly, line-oriented text format
 called **PHRAIGN-CITY**. It is deliberately plain ASCII so it lives well on
 GitHub or a public server and produces readable diffs.

@@ -1,8 +1,12 @@
 #!/usr/bin/env bash
-# Phraign™ — SLeeLa's frame-based, pixel-accurate terminal control system.
-# This is the Phraign™ pixel-addressable terminal shell interface.
-# The functions emit a text protocol consumed by the SLeeLa terminal bridge.
-# See PHRAIGN.md for the system overview.
+# SleelaTerminal(TM) -- SLeeLa's terminal product, built on GNU Bash
+# (GPL, (C) Free Software Foundation). This file is a SLeeLa-authored addition;
+# the vendored GNU Bash sources keep their own GPL headers and copyright.
+#
+# Phraign(TM) -- SleelaTerminal(TM)'s frame-based, pixel-accurate terminal
+# control system. This is the Phraign(TM) pixel-addressable terminal shell
+# interface. The functions emit a text protocol consumed by the SLeeLa terminal
+# bridge. See PHRAIGN.md for the system overview.
 
 : "${SLEELA_PIXEL_TERMINAL:=sleeLa-pixel-terminal}"
 : "${SLEELA_BASH_PROTOCOL:=1}"

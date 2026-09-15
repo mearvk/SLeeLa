@@ -1,8 +1,11 @@
-# Phraign™ — Bash Pixel Terminal Interface
+# SleelaTerminal™ (Phraign™) — Bash Pixel Terminal Interface
 
-> Phraign™ is SLeeLa's frame-based, pixel-accurate terminal control system.
-> See `PHRAIGN.md` for the system overview. This document is the Phraign™
-> pixel-terminal interface specification.
+> Part of **SleelaTerminal™**, SLeeLa's terminal product, **built on GNU Bash**
+> (GPL, © Free Software Foundation). Phraign™ is SleelaTerminal™'s frame-based,
+> pixel-accurate terminal control system. See `PHRAIGN.md` for the system
+> overview. This document is the Phraign™ pixel-terminal interface
+> specification. This branding covers SLeeLa's own additions only; the vendored
+> GNU Bash sources keep their GPL headers and copyright unchanged.
 
 ## Purpose
 
