@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AE6E66 Contact Record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "name", "source", "retrieved_at", "status"],
+  "properties": {
+    "id": {"type": "string", "pattern": "^[0-9]+$"},
+    "name": {"type": "string", "minLength": 1, "maxLength": 200},
+    "email": {"type": "string", "format": "email"},
+    "phone": {"type": "string", "maxLength": 64},
+    "ministry": {"type": "string", "maxLength": 200},
+    "gender": {"type": "string", "maxLength": 64},
+    "age": {"type": "string", "pattern": "^[0-9]{0,3}$"},
+    "source": {"type": "string", "format": "uri"},
+    "career": {"type": "string", "maxLength": 200},
+    "retrieved_at": {"type": "string", "format": "date-time"},
+    "status": {
+      "type": "string",
+      "enum": ["verified", "stale", "legacy-public", "legacy-unverified", "withdrawn"]
+    }
+  }
+}
