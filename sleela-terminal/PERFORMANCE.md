@@ -170,6 +170,8 @@ The current M5 baseline incorporates these architectural improvements:
 - filesystem matches remain structured argument data rather than generated shell source;
 - process-substitution FIFO startup uses a deadlock-resistant child open strategy;
 - the quoted-assignment lexer path recognizes quotes in assignment values without treating them as quoted assignment names;
+- external-command prefix assignments use a scoped environment;
+- redirection and heredoc `dup2()` failures are checked;
 - `make test` includes the M5 integration suite;
 - M5 smoke coverage includes a metacharacter-bearing filename regression.
 
@@ -192,10 +194,7 @@ SLeeLa Terminal should favor:
 
 **Reference rule:** a performance optimization that changes shell-visible semantics is a regression.
 
-**End of PERFORMANCE.md**
-
-
-## 19. M1–M5 Review Record — Improvement Closeout
+## 18. M1–M5 Review Record — Improvement Closeout
 
 ### Previous-state assessment
 
@@ -208,15 +207,16 @@ The previous implementation was a **Good-to-Better development-grade shell frame
 - Process-substitution FIFO startup uses a deadlock-resistant open strategy.
 - Quoted assignment values are covered by a lexer regression test.
 - External-command prefix assignments now use a scoped environment instead of mutating the parent shell.
+- Redirection descriptor failures are checked.
 - The main smoke test includes regression coverage for filesystem metacharacters.
 - `make test` includes the M5 integration suite.
 - README and architecture documentation describe the hardened M5 boundary.
 
 ### Ending-state assessment
 
-The resulting M1–M5 framework is best classified as **BETTER**, approaching **GREAT** in architecture and security discipline, but not yet **SUPER** or production-certified.
+The resulting M1–M5 framework is best classified as **BETTER+**, approaching **GREAT** in architecture and security discipline, but not yet **SUPER** or production-certified.
 
-**BETTER** means the software has a coherent layered design, meaningful shell functionality, explicit OS/resource boundaries, and seeded security regressions, while still requiring broader conformance testing, platform validation, and deeper job-control/process semantics before a higher classification is justified.
+**BETTER+** means the software has a coherent layered design, meaningful shell functionality, explicit OS/resource boundaries, seeded security regressions, and repeatable validation infrastructure, while still requiring broader conformance testing, platform validation, and deeper job-control/process semantics before a higher classification is justified.
 
 ### Classification scale
 
@@ -230,15 +230,13 @@ The resulting M1–M5 framework is best classified as **BETTER**, approaching **
 
 ### Review conclusion
 
-**SLeeLa Terminal M1–M5: BETTER.**
+**SLeeLa Terminal M1–M5: BETTER+.**
 
-The direction is strong. The next advancement toward **GREAT** should come from test depth and semantic completeness rather than adding features alone: POSIX/Linux behavior matrices, Windows-specific I/O/runtime behavior where supported, process-group job control, complete trap semantics, command-substitution status propagation, descriptor-leak testing, fuzzing, sanitizers, and repeatable performance benchmarks.
+The next advancement toward **GREAT** should come from test depth and semantic completeness rather than adding features alone: POSIX/Linux behavior matrices, Windows-specific I/O/runtime behavior where supported, process-group job control, complete trap semantics, command-substitution status propagation, descriptor-leak testing, fuzzing, sanitizers, and repeatable performance benchmarks.
 
 This classification is an engineering review judgment, not a formal security certification.
 
-
-
-## 20. Next-step validation and hardening
+## 19. Next-step validation and hardening
 
 The review now advances from feature completion toward **validation depth**.
 
@@ -256,22 +254,19 @@ The review now advances from feature completion toward **validation depth**.
    - `fuzz.cpp` supplies a bounded libFuzzer harness.
    - Inputs exercise lexing first and parsing when lexical analysis succeeds.
    - A 64 KiB input ceiling prevents the harness from becoming an uncontrolled resource test.
+   - Clang/libFuzzer is now the explicit reference toolchain for the fuzz target.
 
-### Recommended validation sequence
+### CI validation added
 
-```
-make clean
-make
-make test
-make sanitize
-make fuzz
-```
+The M5 workflow now performs:
 
-`make fuzz` requires a compiler/toolchain that supports `-fsanitize=fuzzer`. On toolchains without libFuzzer, the source remains suitable for an equivalent fuzzing harness.
+1. clean build;
+2. complete `make test` suite;
+3. sanitizer validation;
+4. Clang installation;
+5. fuzz-target compilation.
 
-### What this closes
-
-This pass moves SLeeLa from primarily feature-oriented review toward repeatable memory-safety, undefined-behavior, parser robustness, and descriptor-error validation.
+This is validation infrastructure, not a claim that the new workflow has already passed. The current GitHub status query has no reported status entries for the latest inspected commit.
 
 ### What remains before GREAT
 
@@ -285,13 +280,12 @@ The following remain explicit gates:
 - filesystem race/symlink test matrix;
 - long-running resource-limit tests;
 - repeatable performance benchmarks;
-- fuzz corpus retention and CI integration.
+- fuzz corpus retention and sustained fuzz execution in CI.
 
-### Updated grade
+### Current engineering grade
 
-**Current engineering grade: BETTER+**
+**BETTER+**
 
-The plus indicates that the framework has moved beyond a basic development assessment through seeded hardening and validation infrastructure. It is still not **GREAT** because the remaining gates require demonstrated cross-platform and long-running behavioral evidence, not merely source-level design.
+The framework has moved beyond a basic development assessment through seeded hardening and validation infrastructure. It is still not **GREAT** because the remaining gates require demonstrated cross-platform and long-running behavioral evidence, not merely source-level design.
 
 **Target:** GREAT after the validation gates above pass consistently.
-
