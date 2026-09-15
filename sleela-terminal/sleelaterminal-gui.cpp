@@ -48,20 +48,46 @@ void install_css() {
             font-weight: 700;
         }
         headerbar.sleela-titlebar button.titlebutton {
-            color: #d9d9d9;
-            background: transparent;
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.10);
             -gtk-icon-style: symbolic;
+            -gtk-icon-shadow: 0 0 2px rgba(255, 255, 255, 0.85);
+            min-width: 34px;
+            min-height: 30px;
             opacity: 1;
             transition: 150ms ease-in-out;
+        }
+        headerbar.sleela-titlebar button.titlebutton image {
+            color: #ffffff;
+            opacity: 1;
+            -gtk-icon-shadow: 0 0 2px rgba(255, 255, 255, 0.85);
         }
         headerbar.sleela-titlebar button.titlebutton:hover,
         headerbar.sleela-titlebar button.titlebutton:focus {
             color: #ffffff;
-            background: rgba(255, 255, 255, 0.16);
+            background: rgba(255, 255, 255, 0.28);
+            -gtk-icon-shadow: 0 0 5px rgba(255, 255, 255, 1);
+        }
+        headerbar.sleela-titlebar button.titlebutton:hover image,
+        headerbar.sleela-titlebar button.titlebutton:focus image {
+            color: #ffffff;
+            opacity: 1;
+            -gtk-icon-shadow: 0 0 5px rgba(255, 255, 255, 1);
         }
         headerbar.sleela-titlebar button.titlebutton:active {
             color: #ffffff;
-            background: rgba(255, 255, 255, 0.24);
+            background: rgba(255, 255, 255, 0.38);
+            -gtk-icon-shadow: 0 0 6px rgba(255, 255, 255, 1);
+        }
+        headerbar.sleela-titlebar button.titlebutton:active image {
+            color: #ffffff;
+            opacity: 1;
+            -gtk-icon-shadow: 0 0 6px rgba(255, 255, 255, 1);
+        }
+        headerbar.sleela-titlebar button.titlebutton:backdrop {
+            color: #eeeeee;
+            background: rgba(255, 255, 255, 0.06);
+            -gtk-icon-shadow: 0 0 2px rgba(255, 255, 255, 0.55);
         }
     )CSS";
 
