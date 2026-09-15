@@ -1,0 +1,123 @@
+#sleela 1.2
+// 3/facets.sleela  --  "Facets": the general model for relevance set /3.
+//
+// Where /1 (Longs) reads magnitudes that *run over time* and /2 (Structures)
+// reads magnitudes that *stand*, /3 reads *faces*. A Facet is one face of a
+// many-sided object shown from a chosen angle: a derived physical constant, a
+// special mathematical value, a turnover face of the labor market. Every Facet
+// names the OBJECT it is a face of, the facet itself, its value, and a kind.
+//
+// The model loads Facets from three domains and reports, for each, its value,
+// its order of magnitude, and whether it is EXACT (a definition/derivation),
+// MEASURED (carries uncertainty), or OBSERVED (a published figure).
+//
+// Data are real and sourced (see data/*.json|xml|txt and README.md):
+//   physics : CODATA 2022 derived constants (NIST)
+//   math    : special values / identity faces (public domain / DLMF / OEIS)
+//   social  : US labor-market faces -- JOLTS + CES (BLS)
+//
+// Discipline: EXACT facets are definitions/derivations; MEASURED/OBSERVED facets
+// are published. A relation drawn between facets is a MODEL, not a causal claim.
+// ASSOCIATION != CAUSATION; ASSUMPTION != FACT.
+import math;
+
+struct Facet {
+    String domain;   // "physics" | "math" | "social"
+    String object;   // the many-sided thing this is a face of
+    String name;     // the facet (the chosen face)
+    double value;    // the face's value (SI / natural units)
+    String unit;
+    String kind;     // "EXACT" | "MEASURED" | "OBSERVED"
+}
+
+class Facets {
+
+    // Order of magnitude = floor(log10(|value|)); 0 for a zero/undefined value.
+    double orderOfMagnitude(double v) {
+        double a = math.abs(v);
+        if (a <= 0.0) { return 0.0; }
+        return math.floor(math.log10(a));
+    }
+
+    // One report line for a Facet: the object, its face, value, om, and kind.
+    void report(Facet f) {
+        double om = orderOfMagnitude(f.value);
+        print("  [" + f.domain + "] " + f.object + " :: " + f.name
+            + " = " + f.value + " " + f.unit
+            + "  (10^" + om + ", " + f.kind + ")");
+    }
+
+    // A short reading of what the Facet's kind means for trust.
+    void reading(Facet f) {
+        print("  " + f.object + "'s " + f.name + " (" + f.domain + ") is "
+            + f.kind + ": " + trust(f.kind) + ".");
+    }
+
+    String trust(String kind) {
+        if (kind == "EXACT") { return "a definition or exact derivation -- no uncertainty"; }
+        if (kind == "MEASURED") { return "a measured value -- carries a standard uncertainty"; }
+        return "an observed published figure -- descriptive of a period";
+    }
+
+    void main() {
+        // --- physics Facets (CODATA 2022; data/physics-facets.json) ---
+        Facet alpha = new Facet();
+        alpha.domain = "physics"; alpha.object = "electromagnetism";
+        alpha.name = "fine-structure constant";
+        alpha.value = 7.2973525643e-3; alpha.unit = "1"; alpha.kind = "MEASURED";
+
+        Facet ryd = new Facet();
+        ryd.domain = "physics"; ryd.object = "hydrogen spectrum";
+        ryd.name = "Rydberg constant";
+        ryd.value = 10973731.568157; ryd.unit = "1/m"; ryd.kind = "MEASURED";
+
+        Facet rgas = new Facet();
+        rgas.domain = "physics"; rgas.object = "thermodynamics";
+        rgas.name = "molar gas constant";
+        rgas.value = 8.314462618; rgas.unit = "J/mol/K"; rgas.kind = "EXACT";
+
+        // --- math Facets (public domain; data/math-facets.json) ---
+        Facet basel = new Facet();
+        basel.domain = "math"; basel.object = "zeta function";
+        basel.name = "zeta(2) (Basel)";
+        basel.value = 1.64493406684822643647; basel.unit = "1"; basel.kind = "EXACT";
+
+        Facet apery = new Facet();
+        apery.domain = "math"; apery.object = "zeta function";
+        apery.name = "zeta(3) (Apery)";
+        apery.value = 1.20205690315959428540; apery.unit = "1"; apery.kind = "EXACT";
+
+        // --- social Facets (BLS JOLTS/CES; data/social-labor-facets.json) ---
+        Facet quits = new Facet();
+        quits.domain = "social"; quits.object = "labor market";
+        quits.name = "quits rate (US 2024)";
+        quits.value = 2.0; quits.unit = "percent"; quits.kind = "OBSERVED";
+
+        Facet hours = new Facet();
+        hours.domain = "social"; hours.object = "worker";
+        hours.name = "average weekly hours, private (US 2024)";
+        hours.value = 34.3; hours.unit = "hours"; hours.kind = "OBSERVED";
+
+        Facet pay = new Facet();
+        pay.domain = "social"; pay.object = "worker";
+        pay.name = "average hourly earnings, private (US 2024)";
+        pay.value = 35.0; pay.unit = "usd"; pay.kind = "OBSERVED";
+
+        print("=== /3 Facets -- one face of a many-sided object, per domain ===");
+        print("Kinds: EXACT (defined/derived), MEASURED (uncertainty), OBSERVED (published).");
+        print("");
+
+        print("[mathematical] facet values and orders of magnitude");
+        report(alpha); report(ryd); report(rgas);
+        report(basel); report(apery);
+        report(quits); report(hours); report(pay);
+        print("");
+
+        print("[evaluation] what each facet's kind means for trust");
+        reading(alpha); reading(rgas); reading(basel); reading(quits); reading(pay);
+        print("");
+        print("Note: real sourced data (CODATA 2022 / public-domain math / BLS).");
+        print("A Facet is one face of a many-sided object; a relation between");
+        print("facets is a MODEL, not a causal claim.");
+    }
+}

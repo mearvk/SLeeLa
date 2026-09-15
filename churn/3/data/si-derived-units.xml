@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Dataset: si-derived-units
+  Selected SI coherent derived units with special names (the 22 named derived
+  units of the SI). Each is a Facet of the seven base units: a face the base
+  quantities present when combined for a particular physical quantity.
+  Provenance: BIPM, The International System of Units (SI), 9th edition (2019);
+  cross-referenced with NIST. Public domain / official. Retrieved 2026-09.
+  Where /2 held the base units, /3 holds the derived faces they present.
+-->
+<dataset name="si-derived-units" system="SI" edition="9th (2019)">
+  <provenance>
+    <source>BIPM — SI Brochure, 9th edition (2019), coherent derived units with special names</source>
+    <crossReference>NIST — physics.nist.gov</crossReference>
+    <retrieved>2026-09</retrieved>
+    <note>Each derived unit is a product of powers of the seven SI base units.</note>
+  </provenance>
+  <units>
+    <unit name="hertz"   symbol="Hz"  quantity="frequency"            inBaseUnits="s^-1"/>
+    <unit name="newton"  symbol="N"   quantity="force"                inBaseUnits="kg m s^-2"/>
+    <unit name="pascal"  symbol="Pa"  quantity="pressure, stress"     inBaseUnits="kg m^-1 s^-2"      inOtherUnits="N/m^2"/>
+    <unit name="joule"   symbol="J"   quantity="energy, work, heat"   inBaseUnits="kg m^2 s^-2"       inOtherUnits="N m"/>
+    <unit name="watt"    symbol="W"   quantity="power, radiant flux"  inBaseUnits="kg m^2 s^-3"       inOtherUnits="J/s"/>
+    <unit name="coulomb" symbol="C"   quantity="electric charge"      inBaseUnits="A s"/>
+    <unit name="volt"    symbol="V"   quantity="electric potential"   inBaseUnits="kg m^2 s^-3 A^-1"  inOtherUnits="W/A"/>
+    <unit name="ohm"     symbol="Ohm" quantity="electric resistance"  inBaseUnits="kg m^2 s^-3 A^-2"  inOtherUnits="V/A"/>
+    <unit name="farad"   symbol="F"   quantity="capacitance"          inBaseUnits="kg^-1 m^-2 s^4 A^2" inOtherUnits="C/V"/>
+    <unit name="tesla"   symbol="T"   quantity="magnetic flux density" inBaseUnits="kg s^-2 A^-1"     inOtherUnits="Wb/m^2"/>
+    <unit name="weber"   symbol="Wb"  quantity="magnetic flux"        inBaseUnits="kg m^2 s^-2 A^-1"  inOtherUnits="V s"/>
+    <unit name="lumen"   symbol="lm"  quantity="luminous flux"        inBaseUnits="cd sr"             inOtherUnits="cd sr"/>
+  </units>
+</dataset>
