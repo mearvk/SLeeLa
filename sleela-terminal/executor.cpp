@@ -67,19 +67,34 @@ int applyRedirs(const std::vector<Redirection>& redirs) {
                 _exit(0);
             }
             ::close(hp[1]);
-            ::dup2(hp[0], r.fd >= 0 ? r.fd : 0);
+            const int target = r.fd >= 0 ? r.fd : 0;
+            if (::dup2(hp[0], target) < 0) {
+                std::perror("heredoc dup2");
+                ::close(hp[0]);
+                return -1;
+            }
             ::close(hp[0]);
             continue;
         }
         if (r.op == RedirOp::In) {
             fd = ::open(r.target.c_str(), O_RDONLY);
             if (fd < 0) { std::perror(r.target.c_str()); return -1; }
-            ::dup2(fd, r.fd >= 0 ? r.fd : 0);
+            const int target = r.fd >= 0 ? r.fd : 0;
+            if (::dup2(fd, target) < 0) {
+                std::perror("redirection dup2");
+                ::close(fd);
+                return -1;
+            }
         } else {
             const int flags = O_WRONLY | O_CREAT | (r.op == RedirOp::Append ? O_APPEND : O_TRUNC);
             fd = ::open(r.target.c_str(), flags, 0644);
             if (fd < 0) { std::perror(r.target.c_str()); return -1; }
-            ::dup2(fd, r.fd >= 0 ? r.fd : 1);
+            const int target = r.fd >= 0 ? r.fd : 1;
+            if (::dup2(fd, target) < 0) {
+                std::perror("redirection dup2");
+                ::close(fd);
+                return -1;
+            }
         }
         ::close(fd);
     }
