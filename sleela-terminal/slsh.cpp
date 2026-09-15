@@ -6,13 +6,14 @@
 //   slsh -c "script"     run the script string
 //   slsh FILE            run the script file
 //
-// The driver is thin: it only wires input into the pipeline lex -> parse ->
-// execute, printing structured diagnostics on lexer/parser errors.
+// The driver wires input through the M5 orchestration layer and then the
+// established lex -> parse -> execute pipeline.
 
 #include "core.hpp"
 #include "lexer.hpp"
 #include "parser.hpp"
 #include "executor.hpp"
+#include "m5.hpp"
 
 #include <fstream>
 #include <iostream>
@@ -23,9 +24,7 @@ namespace {
 
 using namespace sleela::sh;
 
-// Run one script (which may contain many lines/commands). Returns the exit
-// status of the last command (or the requested exit code).
-int runScript(const std::string& src, Environment& env) {
+int runNormalScript(const std::string& src, Environment& env) {
     std::vector<Token> toks;
     LexError lerr;
     if (!lex(src, toks, lerr)) {
@@ -43,6 +42,15 @@ int runScript(const std::string& src, Environment& env) {
     int status = execute(*ast, env);
     if (env.shouldExit()) return env.exitCode();
     return status;
+}
+
+int runScript(const std::string& src, Environment& env) {
+    int status = 0;
+    const M5Runner runner = [](const std::string& nested, Environment& e) {
+        return runScript(nested, e);
+    };
+    if (runM5(src, env, runner, status)) return status;
+    return runNormalScript(src, env);
 }
 
 int repl(Environment& env) {
