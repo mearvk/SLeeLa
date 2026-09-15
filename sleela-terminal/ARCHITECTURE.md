@@ -161,12 +161,12 @@ selected item to `name`, and executes the body through the normal shell runner.
 
 ### Process substitution
 
-`<(command)` and `>(command)` are rewritten to private FIFOs in `/tmp` with
+`<(command)` and `>(command)` are represented by private FIFOs in `/tmp` with
 mode `0600`. A child shell executes the substitution command with a private
-`Environment` copy. For `<(...)`, child stdout feeds the FIFO; for `>(...)`,
-child stdin reads the FIFO. The main command then sees an ordinary pathname,
-so the existing parser/executor can handle it without a new redirection AST
-node. Child processes are waited for after the containing command completes.
+`Environment` copy. FIFO startup uses a read/write descriptor in the child to
+avoid producer/consumer open deadlock. The resulting pathname is passed as
+ordinary command data; it is never reparsed as generated shell source. Child
+processes are waited for after the containing command completes.
 
 ### Signal traps
 
