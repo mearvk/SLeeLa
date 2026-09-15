@@ -52,15 +52,16 @@ void install_css() {
             background: transparent;
             -gtk-icon-style: symbolic;
             opacity: 1;
+            transition: 150ms ease-in-out;
         }
         headerbar.sleela-titlebar button.titlebutton:hover,
         headerbar.sleela-titlebar button.titlebutton:focus {
-            color: #eeeeee;
-            background: rgba(255, 255, 255, 0.10);
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.16);
         }
         headerbar.sleela-titlebar button.titlebutton:active {
-            color: #f5f5f5;
-            background: rgba(255, 255, 255, 0.18);
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.24);
         }
     )CSS";
 
