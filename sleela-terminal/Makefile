@@ -7,6 +7,11 @@ CXXFLAGS ?= -std=c++17 -O2 -Wall -Wextra
 FUZZ_CXX ?= clang++
 BUILD    := build
 
+PREFIX   ?= /usr/local
+BINDIR   ?= $(PREFIX)/bin
+DESTDIR  ?=
+INSTALL  ?= install
+
 CORE_SRC := core.cpp arith.cpp lexer.cpp parser.cpp expand.cpp executor.cpp
 M5_SRC   := m5.cpp
 CLI_SRC  := slsh.cpp $(M5_SRC) $(CORE_SRC)
@@ -17,7 +22,7 @@ HEADERS := core.hpp arith.hpp lexer.hpp parser.hpp expand.hpp executor.hpp m5.hp
 SLSH  := $(BUILD)/slsh
 SMOKE := $(BUILD)/smoke
 
-.PHONY: all smoke test m5-smoke sanitize fuzz clean
+.PHONY: all smoke test m5-smoke sanitize fuzz install install-strip uninstall clean
 
 all: $(SLSH) $(SMOKE)
 
@@ -37,6 +42,16 @@ m5-smoke: $(SLSH)
 	sh ./m5-smoke.sh $(SLSH)
 
 test: smoke m5-smoke
+
+install: $(SLSH)
+	$(INSTALL) -d $(DESTDIR)$(BINDIR)
+	$(INSTALL) -m 0755 $(SLSH) $(DESTDIR)$(BINDIR)/slsh
+
+install-strip: CXXFLAGS += -s
+install-strip: clean install
+
+uninstall:
+	rm -f $(DESTDIR)$(BINDIR)/slsh
 
 clean:
 	rm -rf $(BUILD)
