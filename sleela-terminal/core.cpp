@@ -84,7 +84,6 @@ std::vector<std::string> Environment::exportedEnviron() const {
     }
     return out;
 }
-}
 
 Environment Environment::scopedCopy() const {
     Environment copy;
@@ -99,6 +98,7 @@ Environment Environment::scopedCopy() const {
     copy.jobs_.clear();
     copy.next_job_id_ = 1;
     return copy;
+}
 
 void Environment::defineFunction(const std::string& name, std::shared_ptr<Node> body) {
     functions_[name] = std::move(body);
