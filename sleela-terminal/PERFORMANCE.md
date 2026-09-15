@@ -162,7 +162,20 @@ Measure simple commands, long pipelines, large glob candidate sets, nested subst
 
 A feature is not production-ready merely because its parser or executor path exists.
 
-## 16. Reference principles
+## 16. Seeded M5 improvements
+
+The current M5 baseline incorporates these architectural improvements:
+
+- multi-segment globbing is integrated into the normal L4 expansion path;
+- filesystem matches remain structured argument data rather than generated shell source;
+- process-substitution FIFO startup uses a deadlock-resistant child open strategy;
+- the quoted-assignment lexer path recognizes quotes in assignment values without treating them as quoted assignment names;
+- `make test` includes the M5 integration suite;
+- M5 smoke coverage includes a metacharacter-bearing filename regression.
+
+These improvements reduce semantic duplication and close the highest-risk M5 boundaries identified during review. They do not by themselves constitute a production security certification.
+
+## 17. Reference principles
 
 SLeeLa Terminal should favor:
 
