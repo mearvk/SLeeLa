@@ -112,7 +112,7 @@ make smoke                 # run the layered smoke test
 ./build/slsh -c 'for i in a b c; do echo $i; done'
 ./build/slsh -c 'greet() { echo Hi, $1; }; greet Ada'
 ./build/slsh -c 'case $(echo cat) in cat|dog) echo pet;; esac'
-./build/slsh -c 'for f in *.md; do echo $f; done'
+./build/slsh -c 'for f in */include/*.hpp; do echo "$f"; done'
 ./build/slsh -c 'echo report{1..3}.txt; echo {dev,prod}-{a,b}'
 ./build/slsh -c 'up() { tr a-z A-Z; }; echo hi | up'
 printf 'cat <<END\nyear $(( 2000 + 25 ))\nEND\n' | ./build/slsh /dev/stdin
@@ -140,7 +140,7 @@ printf '%s\n' 'cat <(printf hi)' | ./build/slsh
 | `m5.hpp` / `m5.cpp` | M5 | Select, process substitution, and signal-trap orchestration. |
 | `slsh.cpp` | L6 | CLI / REPL driver and M5 entry point. |
 | `smoke.cpp` | test | Existing layered smoke test. |
-| `m5-smoke.sh` | test | M5 integration smoke test. |
+| `m5-smoke.sh` | test | M5 integration and security regression smoke test. |
 | `Makefile` | — | Self-contained build. |
 | [`NOTICE`](NOTICE) | — | Original-authorship statement. |
 
