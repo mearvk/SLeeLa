@@ -1,6 +1,6 @@
 # AE6E66 — UK Parliament Contact Module
 
-**Version:** 2.1 hardened baseline  
+**Version:** 2.2 hardened baseline  
 **Author:** Max Rupplin — MEARVK LLC  
 **Status:** Security-hardened design; production deployment requires implementation and host-specific verification.
 
@@ -23,7 +23,8 @@ modules/AE6E66/
 │   ├── install-postfix-dovecot.sh   # MTA preflight only
 │   ├── setup-dkim.sh                # DKIM/MTA preflight only
 │   └── setup-mysql.sh               # DB preflight only
-├── contacts.csv                     # Controlled public-source dataset
+├── contacts.csv                     # Controlled legacy/public-source reference data
+├── contact-schema.json              # Machine-readable record schema
 ├── SECURITY.md
 ├── DEPLOYMENT.md
 ├── SOURCE-STATUS.md
@@ -49,7 +50,9 @@ The old `0..999` member loop is not an authorization mechanism or preferred coll
 
 ## Contact-data controls
 
-`contacts.csv` is a controlled public-source reference dataset, not a secret database or automatic delivery list. It uses a fixed schema and status field. Legacy records lacking verified provenance are marked `legacy-unverified` and must not be treated as current operational records until revalidated.
+`contacts.csv` is a controlled public-source reference dataset, not a secret database or automatic delivery list. It now uses a fixed CSV schema and explicit status classification. Legacy records lacking verified provenance or current retrieval timestamps are marked `legacy-unverified` or `legacy-public` and **must not be treated as current operational records until revalidated**.
+
+The schema requires provenance and retrieval metadata for operational records. The checked-in historical dataset is not asserted to be a current authoritative UK Parliament directory. Revalidation must occur against an authoritative source before operational use.
 
 Operational data must have provenance, normalization, freshness, retention, and correction controls. Do not add private information merely because it can be discovered elsewhere. Do not place authentication material in CSV files.
 
@@ -87,7 +90,7 @@ Run:
 bash modules/AE6E66/scripts/verify-integrity.sh /path/to/approved/SHA256SUMS
 ```
 
-The manifest itself must come from a trusted release process.
+The manifest itself must come from a trusted release process and must be cryptographically authenticated by that release process; SHA-256 verification alone does not prove manifest provenance.
 
 ## Platform status
 
