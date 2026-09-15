@@ -60,7 +60,7 @@ Run it from the repository root:
 ```sh
 export SLEELA_SHA256_MANIFEST=security/sha256-manifest.json
 export SLEELA_SHEET=SHEET.sheet
-impl/build/sleela run 1/relevances.sleela
+impl/build/sleela run churn/1/relevances.sleela
 ```
 
 ## Files

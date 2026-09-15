@@ -103,7 +103,7 @@ an output is a computation over them, not a measurement (`ASSUMPTION ≠ FACT`,
 |------|-----------|
 | **Long** | A *length series*: a magnitude that runs over time (GDP, debt, the price level). The unit of `/1`. |
 | **Relevance (measured)** | A classified relation between two lengths, graded **Direct / Model / None** by correlation strength — the `/1` reuse of Nordshrift's object-relevance classes. |
-| **Assumption (moral model)** | A foundational count-as-length carrying a *length*, a *speed*, and a *lengthening-vs-substituting* flag; scored for its bearing on base reality (`1/assumptions/`). |
+| **Assumption (moral model)** | A foundational count-as-length carrying a *length*, a *speed*, and a *lengthening-vs-substituting* flag; scored for its bearing on base reality (`churn/1/assumptions/`). |
 | **Lengthening / Substituting** | Whether an act *adds durable extent* to base reality (build, grow, continue) or merely *swaps parts* (churn). The moral model prefers lengthening. |
 | **Habituality** | How repeated an act is relative to its span (`clamp(speed/length)`); habitual goods compound. |
 | **Social system: Design / Remedy / Method** | *Design* proposes a normal (center + tolerance); *Method* reports the observed; *Remedy* is the response the deviation calls for. |
