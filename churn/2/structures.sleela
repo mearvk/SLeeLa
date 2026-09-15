@@ -1,0 +1,111 @@
+#sleela 1.2
+// 2/structures.sleela  --  "Structures": the general model for relevance set /2.
+//
+// Where /1 (Longs) reads magnitudes that *run over time* (lengths), /2 reads
+// magnitudes that *stand* -- Structures. A Structure is a named, standing
+// quantity in some domain (social, mathematical, physical) with a magnitude and
+// a kind. The model loads Structures from the three domains and reports, for
+// each, its magnitude, its order of magnitude, and whether it is EXACT (a
+// definition) or MEASURED/OBSERVED (carries uncertainty).
+//
+// Data are real and sourced (see data/*.json|xml|txt and README.md):
+//   physics : CODATA 2022 fundamental constants (NIST)
+//   math    : standard mathematical constants (public domain)
+//   social  : US labor & social figures (BLS / US Census)
+//
+// Discipline: EXACT structures are definitions; MEASURED/OBSERVED structures are
+// published values. Any relation drawn between structures is a MODEL, not a
+// causal claim. ASSOCIATION != CAUSATION; ASSUMPTION != FACT.
+import math;
+
+struct Structure {
+    String domain;    // "physics" | "math" | "social"
+    String name;
+    double magnitude; // the standing quantity's value (SI / natural units)
+    String unit;
+    String kind;      // "EXACT" (defined) | "MEASURED" | "OBSERVED"
+}
+
+class Structures {
+
+    // Order of magnitude = floor(log10(|value|)); 0 for a zero/undefined value.
+    double orderOfMagnitude(double v) {
+        double a = math.abs(v);
+        if (a <= 0.0) { return 0.0; }
+        return math.floor(math.log10(a));
+    }
+
+    // One report line for a Structure: value, order of magnitude, and kind.
+    void report(Structure s) {
+        double om = orderOfMagnitude(s.magnitude);
+        print("  [" + s.domain + "] " + s.name + " = " + s.magnitude
+            + " " + s.unit + "  (10^" + om + ", " + s.kind + ")");
+    }
+
+    // A short reading of what the Structure's kind means for trust.
+    void reading(Structure s) {
+        String t = trust(s.kind);
+        print("  " + s.name + " (" + s.domain + ") is " + s.kind
+            + ": " + t + ".");
+    }
+
+    String trust(String kind) {
+        if (kind == "EXACT") { return "a definition -- trusted without uncertainty"; }
+        if (kind == "MEASURED") { return "a measured value -- carries a standard uncertainty"; }
+        return "an observed published figure -- descriptive of a period";
+    }
+
+    void main() {
+        // --- physics Structures (CODATA 2022; data/physics-constants.json) ---
+        Structure c = new Structure();
+        c.domain = "physics"; c.name = "speed of light c";
+        c.magnitude = 299792458.0; c.unit = "m/s"; c.kind = "EXACT";
+
+        Structure h = new Structure();
+        h.domain = "physics"; h.name = "Planck constant h";
+        h.magnitude = 6.62607015e-34; h.unit = "J s"; h.kind = "EXACT";
+
+        Structure gg = new Structure();
+        gg.domain = "physics"; gg.name = "gravitational constant G";
+        gg.magnitude = 6.67430e-11; gg.unit = "m^3/kg/s^2"; gg.kind = "MEASURED";
+
+        // --- math Structures (public domain; data/math-constants.json) ---
+        Structure pi = new Structure();
+        pi.domain = "math"; pi.name = "pi";
+        pi.magnitude = 3.14159265358979323846; pi.unit = "1"; pi.kind = "EXACT";
+
+        Structure phi = new Structure();
+        phi.domain = "math"; phi.name = "golden ratio phi";
+        phi.magnitude = 1.61803398874989484820; phi.unit = "1"; phi.kind = "EXACT";
+
+        // --- social Structures (BLS / Census; data/social-labor-us.json) ---
+        Structure lfpr = new Structure();
+        lfpr.domain = "social"; lfpr.name = "labor force participation rate (US 2024)";
+        lfpr.magnitude = 62.5; lfpr.unit = "percent"; lfpr.kind = "OBSERVED";
+
+        Structure prod = new Structure();
+        prod.domain = "social"; prod.name = "labor productivity growth (US 2023-2024)";
+        prod.magnitude = 2.7; prod.unit = "percent"; prod.kind = "OBSERVED";
+
+        Structure inc = new Structure();
+        inc.domain = "social"; inc.name = "real median household income (US 2024)";
+        inc.magnitude = 83730.0; inc.unit = "usd"; inc.kind = "OBSERVED";
+
+        print("=== /2 Structures -- standing quantities across three domains ===");
+        print("Kinds: EXACT (defined), MEASURED (uncertainty), OBSERVED (published).");
+        print("");
+
+        print("[mathematical] structure magnitudes and orders of magnitude");
+        report(c); report(h); report(gg);
+        report(pi); report(phi);
+        report(lfpr); report(prod); report(inc);
+        print("");
+
+        print("[evaluation] what each structure's kind means for trust");
+        reading(c); reading(gg); reading(pi); reading(lfpr); reading(inc);
+        print("");
+        print("Note: real sourced data (CODATA 2022 / public-domain math / BLS+Census).");
+        print("Structures stand; they do not run over time like Longs. A relation");
+        print("between structures is a MODEL, not a causal claim.");
+    }
+}

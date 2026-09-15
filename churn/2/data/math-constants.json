@@ -1,0 +1,27 @@
+{
+  "dataset": "math-constants",
+  "title": "Mathematical constants and integer sequences (Structures)",
+  "description": "Well-known mathematical constants and the leading terms of canonical integer sequences, held as Structures. These are exact mathematical facts (public domain); constant values are rounded to 20 significant figures.",
+  "provenance": {
+    "primary_source": "Standard mathematical definitions (public domain)",
+    "cross_reference": "OEIS — The On-Line Encyclopedia of Integer Sequences (sequence A-numbers cited per entry)",
+    "retrieved": "2026-09",
+    "note": "Mathematical constants are definitional, not measured; digits shown are truncated decimal expansions."
+  },
+  "constants": [
+    { "name": "pi", "symbol": "\u03c0", "value": 3.14159265358979323846, "definition": "ratio of a circle's circumference to its diameter", "oeis": "A000796" },
+    { "name": "e", "symbol": "e", "value": 2.71828182845904523536, "definition": "base of the natural logarithm", "oeis": "A001113" },
+    { "name": "golden_ratio", "symbol": "\u03c6", "value": 1.61803398874989484820, "definition": "(1 + sqrt 5) / 2", "oeis": "A001622" },
+    { "name": "square_root_of_two", "symbol": "\u221a2", "value": 1.41421356237309504880, "definition": "the positive root of x^2 = 2", "oeis": "A002193" },
+    { "name": "natural_log_of_two", "symbol": "ln 2", "value": 0.69314718055994530942, "definition": "natural logarithm of 2", "oeis": "A002162" },
+    { "name": "euler_mascheroni", "symbol": "\u03b3", "value": 0.57721566490153286061, "definition": "limit of (harmonic sum - ln n)", "oeis": "A001620" }
+  ],
+  "sequences": [
+    { "name": "fibonacci", "oeis": "A000045", "rule": "F(n) = F(n-1) + F(n-2), F(0)=0, F(1)=1", "terms": [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377] },
+    { "name": "prime_numbers", "oeis": "A000040", "rule": "integers > 1 with no divisors other than 1 and themselves", "terms": [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47] },
+    { "name": "factorials", "oeis": "A000142", "rule": "n! = product of 1..n, 0! = 1", "terms": [1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880] },
+    { "name": "triangular_numbers", "oeis": "A000217", "rule": "T(n) = n(n+1)/2", "terms": [0, 1, 3, 6, 10, 15, 21, 28, 36, 45, 55] },
+    { "name": "catalan_numbers", "oeis": "A000108", "rule": "C(n) = (2n)! / ((n+1)! n!)", "terms": [1, 1, 2, 5, 14, 42, 132, 429, 1430, 4862] },
+    { "name": "powers_of_two", "oeis": "A000079", "rule": "a(n) = 2^n", "terms": [1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024] }
+  ]
+}

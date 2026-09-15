@@ -1,0 +1,24 @@
+{
+  "dataset": "physics-constants",
+  "title": "Fundamental physical constants (CODATA 2022)",
+  "description": "Selected fundamental physical constants as Structures. Post-2019-SI-revision, several constants have exact (defined) values; those are flagged exact=true. Measured constants carry a standard uncertainty.",
+  "units_system": "SI",
+  "provenance": {
+    "primary_source": "CODATA 2022 recommended values (Mohr, Newell, Taylor, Tiesinga)",
+    "publisher": "NIST — physics.nist.gov/constants",
+    "cross_reference": "Particle Data Group, Review of Particle Physics (rpp2022 physical-constants review)",
+    "retrieved": "2026-09",
+    "note": "Values transcribed from authoritative public sources; discipline: FACT vs MODEL kept distinct. Exact values are definitions of the SI; measured values include a standard uncertainty."
+  },
+  "structures": [
+    { "name": "speed_of_light_in_vacuum", "symbol": "c", "value": 299792458, "unit": "m s^-1", "exact": true },
+    { "name": "planck_constant", "symbol": "h", "value": 6.62607015e-34, "unit": "J s", "exact": true },
+    { "name": "reduced_planck_constant", "symbol": "hbar", "value": 1.054571817e-34, "unit": "J s", "exact": false, "note": "derived h/2pi; digits truncated" },
+    { "name": "elementary_charge", "symbol": "e", "value": 1.602176634e-19, "unit": "C", "exact": true },
+    { "name": "boltzmann_constant", "symbol": "k", "value": 1.380649e-23, "unit": "J K^-1", "exact": true },
+    { "name": "avogadro_constant", "symbol": "N_A", "value": 6.02214076e23, "unit": "mol^-1", "exact": true },
+    { "name": "newtonian_constant_of_gravitation", "symbol": "G", "value": 6.67430e-11, "unit": "m^3 kg^-1 s^-2", "exact": false, "std_uncertainty": 1.5e-15 },
+    { "name": "electron_mass", "symbol": "m_e", "value": 9.1093837139e-31, "unit": "kg", "exact": false, "std_uncertainty": 2.8e-40 },
+    { "name": "proton_mass", "symbol": "m_p", "value": 1.67262192595e-27, "unit": "kg", "exact": false, "std_uncertainty": 5.2e-37 }
+  ]
+}

@@ -1,0 +1,72 @@
+{
+  "dataset": "social-labor-us",
+  "title": "United States labor & social structures (recent official figures)",
+  "description": "Recent, dated, sourced social/labor statistics for the United States, held as Structures. These are real published figures, not placeholders. Discipline: these are OBSERVED published statistics; any relation drawn between them is a MODEL, not a causal claim.",
+  "region": "United States",
+  "provenance": {
+    "primary_sources": [
+      "U.S. Bureau of Labor Statistics (bls.gov)",
+      "U.S. Census Bureau (census.gov)"
+    ],
+    "retrieved": "2026-09",
+    "note": "Each structure carries its own source and period. ASSOCIATION != CAUSATION."
+  },
+  "structures": [
+    {
+      "name": "unemployment_rate",
+      "value": 4.2,
+      "unit": "percent",
+      "period": "2024 Q4",
+      "context": "up from 3.8 percent a year earlier",
+      "source": "BLS, Monthly Labor Review (2025) — unemployment/participation review of 2024"
+    },
+    {
+      "name": "labor_force_participation_rate",
+      "value": 62.5,
+      "unit": "percent",
+      "period": "2024",
+      "context": "little changed over the year",
+      "source": "BLS, Monthly Labor Review (2025)"
+    },
+    {
+      "name": "employment_population_ratio",
+      "value": 59.9,
+      "unit": "percent",
+      "period": "2024",
+      "context": "edged down over the year",
+      "source": "BLS, Monthly Labor Review (2025)"
+    },
+    {
+      "name": "labor_productivity_output_per_hour",
+      "value": 2.7,
+      "unit": "percent_change",
+      "period": "2023 to 2024",
+      "context": "nonfarm business sector, output per hour of all persons",
+      "source": "BLS, Productivity and Costs, Q4/annual 2024 (revised, 2025-03-06)"
+    },
+    {
+      "name": "real_median_household_income",
+      "value": 83730,
+      "unit": "usd_2024",
+      "period": "2024",
+      "context": "not statistically different from 82690 in 2023",
+      "source": "U.S. Census Bureau, Income in the United States: 2024 (P60-286)"
+    },
+    {
+      "name": "official_poverty_rate",
+      "value": 11.1,
+      "unit": "percent",
+      "period": "2023",
+      "context": "fell 0.4 percentage points from 2022",
+      "source": "U.S. Census Bureau, Income and Poverty 2023 press release"
+    },
+    {
+      "name": "resident_population_estimate",
+      "value": 341784857,
+      "unit": "persons",
+      "period": "2025-07-01",
+      "context": "population estimate; 2020 census base was 331,449,281",
+      "source": "U.S. Census Bureau QuickFacts (V2025)"
+    }
+  ]
+}
