@@ -529,16 +529,14 @@ int execSimple(const Node& node, Environment& env) {
         return 0;
     }
 
-    // Assignments preceding a command apply to the environment for this
-    // command. (This milestone applies them to the shell env, which is a
-    // simplification; a later milestone can scope them to the child only.)
-    for (const auto& as : node.assigns)
-        env.set(as.name, expandWordSingle(as.value, env, run));
-
     const std::string& cmd = r.argv[0];
 
-    // A user-defined shell function takes precedence over an external command.
+    // Shell functions execute in the current shell environment in this
+    // milestone. External commands receive a scoped environment so temporary
+    // assignments do not unexpectedly mutate the parent shell.
     if (env.hasFunction(cmd)) {
+        for (const auto& as : node.assigns)
+            env.set(as.name, expandWordSingle(as.value, env, run));
         return callFunction(cmd, r.argv, env);
     }
 
@@ -563,7 +561,10 @@ int execSimple(const Node& node, Environment& env) {
         return rc;
     }
 
-    return runExternal(r.argv, r.redirs, env);
+    Environment childEnv = env.scopedCopy();
+    for (const auto& as : node.assigns)
+        childEnv.set(as.name, expandWordSingle(as.value, env, run));
+    return runExternal(r.argv, r.redirs, childEnv);
 }
 
 int execPipeline(const Node& node, Environment& env) {
