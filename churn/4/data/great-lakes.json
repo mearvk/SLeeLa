@@ -1,0 +1,23 @@
+{
+  "dataset": "great-lakes",
+  "title": "The Great Lakes by surface area (freshwater Areas)",
+  "description": "Each entry is an Area: the surface extent a lake spans, in square kilometres. Together the five lakes are the largest surface of fresh water on Earth. A real, sourced geographic area model spanning the US-Canada border.",
+  "unit": "square_kilometre",
+  "provenance": {
+    "primary_source": "U.S. Environmental Protection Agency (EPA) — Great Lakes physical features",
+    "cross_reference": "Encyclopaedia Britannica (Areas and Volumes of the Great Lakes)",
+    "retrieved": "2026-09",
+    "note": "Surface areas rounded; the combined surface is about 244,106 km2. Values are OBSERVED."
+  },
+  "areas": [
+    { "name": "Lake Superior", "surface_area_km2": 82100, "kind": "OBSERVED" },
+    { "name": "Lake Huron",    "surface_area_km2": 59600, "kind": "OBSERVED" },
+    { "name": "Lake Michigan", "surface_area_km2": 57800, "kind": "OBSERVED" },
+    { "name": "Lake Erie",     "surface_area_km2": 25700, "kind": "OBSERVED" },
+    { "name": "Lake Ontario",  "surface_area_km2": 18960, "kind": "OBSERVED" }
+  ],
+  "reference": {
+    "combined_surface_area_km2": 244106,
+    "note": "largest surface of fresh water in the world"
+  }
+}

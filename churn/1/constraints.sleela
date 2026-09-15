@@ -1,0 +1,82 @@
+#sleela 1.2
+// 1/constraints.sleela  --  the Constitution's congrains/limits applied to Longs.
+//
+// This is the shared constraint/theory layer carried by every churn relevance
+// set (/1 Longs, /2 Structures, /3 Facets, /4 Areas). It encodes the governing
+// constraints from the repository's Constitution (see ../../README.md, "The
+// Constitution", and SHEET.sheet's `congrains` / `limits` / `system` sections)
+// and applies them to this set's magnitude -- here, a Long's length readings
+// and a relevance's Pearson r.
+//
+// Two system invariants are always in force (conducted methods sysdepth()/
+// degreemax() in the implementation):
+//     DepthLimit        : system depth <= 3024
+//     ComplexityDegree  : connection order <= 4
+//
+// A `Limit` (Bound / Threshold / Capacity) checks whether a length or a
+// relevance honors its bound. Failing a Limit records that a value falls
+// outside a stated constraint; it changes no data. A constraint is a modelling
+// condition to be checked and argued with, not a claim about reality.
+import math;
+
+class Constraints {
+
+    int depthLimit() { return 3024; }
+    int degreeMax() { return 4; }
+
+    boolean connectPermitted(int n, int degree) {
+        if (n < 0) { return false; }
+        if (n > depthLimit()) { return false; }
+        if (degree > degreeMax()) { return false; }
+        return true;
+    }
+
+    boolean withinBound(double value, double lo, double hi) {
+        if (value < lo) { return false; }
+        if (value > hi) { return false; }
+        return true;
+    }
+
+    boolean belowThreshold(double value, double threshold) {
+        return value < threshold;
+    }
+
+    boolean withinCapacity(double used, double capacity) {
+        if (capacity < 0.0) { return false; }
+        return used <= capacity;
+    }
+
+    // Report whether a Long's length honors a stated Bound [lo, hi].
+    void checkLong(String name, double value, double lo, double hi) {
+        String verdict = "HOLDS";
+        if (!withinBound(value, lo, hi)) { verdict = "VIOLATES"; }
+        print("  Bound[" + lo + ", " + hi + "] on " + name
+            + " (length=" + value + "): " + verdict);
+    }
+
+    void main() {
+        print("=== /1 constraints -- the Constitution applied to Longs ===");
+        print("System invariants: DepthLimit=" + depthLimit()
+            + ", ComplexityDegree<=" + degreeMax() + ".");
+        print("");
+
+        // A length reading is a positive magnitude; Pearson r is Bounded to
+        // [-1, 1] by construction -- a Correlation invariant.
+        print("[limits] length readings are positive magnitudes");
+        checkLong("Nominal GDP 2024 ($T)", 29.2, 0.0, 1000.0);
+        checkLong("Total federal debt 2024 ($T)", 35.5, 0.0, 1000.0);
+        print("");
+        print("[invariant] a relevance r must hold within [-1, 1] (Correlation bound)");
+        checkLong("relevance r (GDP~DEBT, illustrative)", 0.98, -1.0, 1.0);
+        checkLong("out-of-range r (illustrative violation)", 1.4, -1.0, 1.0);
+        print("");
+
+        print("[invariant] the connect rule (n<=3024, degree<=4)");
+        print("  connect(3024, 4) permitted : " + connectPermitted(3024, 4));
+        print("  connect(3025, 4) permitted : " + connectPermitted(3025, 4));
+        print("  connect(100, 5) permitted  : " + connectPermitted(100, 5));
+        print("");
+        print("Note: a constraint is a modelling condition to be checked and");
+        print("argued with, not a claim about reality. ASSOCIATION != CAUSATION.");
+    }
+}

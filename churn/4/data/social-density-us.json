@@ -1,0 +1,48 @@
+{
+  "dataset": "social-density-us",
+  "title": "United States land area & population density (social Areas)",
+  "description": "The social face of Area: how a working society spans and packs a real extent. Each entry is a real, dated, sourced figure combining area (the extent a society occupies) with population (how densely it fills it). These are the area-and-density structures the BASIS reasons about for a working medium.",
+  "region": "United States",
+  "provenance": {
+    "primary_sources": [
+      "U.S. Census Bureau (population estimate; land area)",
+      "United Nations Statistics Division / CIA World Factbook (total area, via Wikipedia list)"
+    ],
+    "retrieved": "2026-09",
+    "note": "Density = population / land area. Values are OBSERVED published figures; ASSOCIATION != CAUSATION."
+  },
+  "areas": [
+    {
+      "name": "total_area",
+      "value": 9833517,
+      "unit": "square_kilometre",
+      "kind": "OBSERVED",
+      "source": "UN Statistics Division / CIA World Factbook",
+      "note": "land + inland water within US boundaries"
+    },
+    {
+      "name": "land_area",
+      "value": 9147420,
+      "unit": "square_kilometre",
+      "kind": "OBSERVED",
+      "source": "CIA World Factbook (US land area)",
+      "note": "land only"
+    },
+    {
+      "name": "resident_population",
+      "value": 341784857,
+      "unit": "persons",
+      "period": "2025-07-01",
+      "kind": "OBSERVED",
+      "source": "U.S. Census Bureau QuickFacts (V2025)"
+    },
+    {
+      "name": "population_density",
+      "value": 37.4,
+      "unit": "persons_per_square_kilometre",
+      "kind": "OBSERVED",
+      "source": "derived: resident_population / land_area",
+      "note": "how densely the working society fills the land it spans"
+    }
+  ]
+}

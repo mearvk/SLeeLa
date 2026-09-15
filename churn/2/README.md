@@ -78,6 +78,7 @@ medium must satisfy — enough **workers**, laying down real **work**, done with
 |---|---|
 | [`BASIS.md`](BASIS.md) | the Medium requirement for Workers, Work and Excellence — Workers |
 | [`structures.sleela`](structures.sleela) | the Structures model over all three domains |
+| [`constraints.sleela`](constraints.sleela) / [`Constraints.java`](Constraints.java) | the Constitution congrains/limits applied to Structures (shared across `/1`–`/4`) |
 | [`models/`](models/) | the physics, math, and social model docs |
 | [`data/`](data/) | the sourced data models (JSON / XML / TXT) |
 

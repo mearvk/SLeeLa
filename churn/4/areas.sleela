@@ -1,0 +1,125 @@
+#sleela 1.2
+// 4/areas.sleela  --  "Areas": the general model for relevance set /4.
+//
+// The progression of the churn relevance sets:
+//   /1 Longs      -- magnitudes that RUN OVER TIME (length series)
+//   /2 Structures -- magnitudes that STAND (a standing quantity)
+//   /3 Facets     -- one FACE of a many-sided object
+//   /4 Areas      -- magnitudes that SPAN (a real 2D extent a model occupies)
+//
+// An Area is a named region with a two-dimensional extent (square units). The
+// model loads Areas from three domains -- geographic (physics/earth), planar
+// (math), and social (a society's land + density) -- and reports each Area's
+// extent, its order of magnitude, its share of a reference extent, and its kind.
+//
+// Data are real and sourced (see data/*.json|xml|txt and README.md):
+//   physics : country / earth-surface / continent / lake extents (UN/EPA/etc.)
+//   math    : planar & surface area formulas (public domain geometry)
+//   social  : US land area and population density (Census / UN)
+//
+// Discipline: EXACT areas are defined by formula; MEASURED/OBSERVED areas are
+// published extents. A relation drawn between areas is a MODEL, not a causal
+// claim. ASSOCIATION != CAUSATION; ASSUMPTION != FACT.
+import math;
+
+struct Area {
+    String domain;    // "physics" | "math" | "social"
+    String name;
+    double extent;    // the 2D extent (square units)
+    String unit;
+    String kind;      // "EXACT" (defined) | "MEASURED" | "OBSERVED"
+}
+
+class Areas {
+
+    // Order of magnitude = floor(log10(|extent|)); 0 for a zero/undefined area.
+    double orderOfMagnitude(double v) {
+        double a = math.abs(v);
+        if (a <= 0.0) { return 0.0; }
+        return math.floor(math.log10(a));
+    }
+
+    // Share of a reference extent, as a percent (clamped to >= 0).
+    double sharePercent(double extent, double reference) {
+        if (reference <= 0.0) { return 0.0; }
+        double s = (extent / reference) * 100.0;
+        if (s < 0.0) { return 0.0; }
+        return s;
+    }
+
+    // One report line for an Area: extent, order of magnitude, and kind.
+    void report(Area a) {
+        double om = orderOfMagnitude(a.extent);
+        print("  [" + a.domain + "] " + a.name + " = " + a.extent
+            + " " + a.unit + "  (10^" + om + ", " + a.kind + ")");
+    }
+
+    void reading(Area a) {
+        print("  " + a.name + " (" + a.domain + ") is " + a.kind
+            + ": " + trust(a.kind) + ".");
+    }
+
+    String trust(String kind) {
+        if (kind == "EXACT") { return "defined by an area formula -- no uncertainty"; }
+        if (kind == "MEASURED") { return "a measured extent -- carries an uncertainty"; }
+        return "an observed published extent -- as surveyed";
+    }
+
+    void main() {
+        double worldLand = 148940000.0; // km^2, reference world landmass
+
+        // --- geographic Areas (physics/earth; data/country-areas.json etc.) ---
+        Area russia = new Area();
+        russia.domain = "physics"; russia.name = "Russia (total area)";
+        russia.extent = 17098242.0; russia.unit = "km^2"; russia.kind = "OBSERVED";
+
+        Area usa = new Area();
+        usa.domain = "physics"; usa.name = "United States (total area)";
+        usa.extent = 9833517.0; usa.unit = "km^2"; usa.kind = "OBSERVED";
+
+        Area earthLand = new Area();
+        earthLand.domain = "physics"; earthLand.name = "Earth land surface";
+        earthLand.extent = 148940000.0; earthLand.unit = "km^2"; earthLand.kind = "OBSERVED";
+
+        Area superior = new Area();
+        superior.domain = "physics"; superior.name = "Lake Superior (surface)";
+        superior.extent = 82100.0; superior.unit = "km^2"; superior.kind = "OBSERVED";
+
+        // --- planar Areas (math; data/geometry-areas.json) ---
+        Area circle = new Area();
+        circle.domain = "math"; circle.name = "circle area (r=2)";
+        circle.extent = 12.566370614; circle.unit = "unit^2"; circle.kind = "EXACT";
+
+        Area hexagon = new Area();
+        hexagon.domain = "math"; hexagon.name = "regular hexagon area (s=2)";
+        hexagon.extent = 10.392304845; hexagon.unit = "unit^2"; hexagon.kind = "EXACT";
+
+        // --- social Areas (society; data/social-density-us.json) ---
+        Area usLand = new Area();
+        usLand.domain = "social"; usLand.name = "US land area";
+        usLand.extent = 9147420.0; usLand.unit = "km^2"; usLand.kind = "OBSERVED";
+
+        print("=== /4 Areas -- real 2D extents that a model spans, per domain ===");
+        print("Kinds: EXACT (defined by formula), MEASURED, OBSERVED (surveyed).");
+        print("");
+
+        print("[mathematical] area extents and orders of magnitude");
+        report(russia); report(usa); report(earthLand); report(superior);
+        report(circle); report(hexagon);
+        report(usLand);
+        print("");
+
+        print("[shares] geographic extent as a share of Earth's land (" + worldLand + " km^2)");
+        print("  Russia: " + sharePercent(russia.extent, worldLand) + " %");
+        print("  United States: " + sharePercent(usa.extent, worldLand) + " %");
+        print("  US land only: " + sharePercent(usLand.extent, worldLand) + " %");
+        print("");
+
+        print("[evaluation] what each area's kind means for trust");
+        reading(circle); reading(russia); reading(usLand);
+        print("");
+        print("Note: real sourced data (UN/CIA/EPA geography, public-domain");
+        print("geometry, US Census). An Area spans a region; a relation between");
+        print("areas is a MODEL, not a causal claim.");
+    }
+}

@@ -69,6 +69,7 @@ impl/build/sleela run churn/1/relevances.sleela
 |---|---|
 | [`longs.csv`](longs.csv) | The length series, with a per-series provenance column. |
 | [`relevances.sleela`](relevances.sleela) | The relevance model over the lengths. |
+| [`constraints.sleela`](constraints.sleela) / [`Constraints.java`](Constraints.java) | The Constitution congrains/limits applied to Longs (shared across `/1`–`/4`). |
 | [`assumptions/`](assumptions/) | The **assumptions** layer: a moral model over foundational human-nature / construction lengths (code-about-code + ethics + Longs). See [`assumptions/ASSUMPTIONS.md`](assumptions/ASSUMPTIONS.md) and its synthesized [`assumptions/OUTPUT.md`](assumptions/OUTPUT.md) opinion on the health of the human condition. |
 
 *The relevances reported are measured associations over 2019–2024. Direction and

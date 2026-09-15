@@ -81,6 +81,7 @@ with rising **excellence**.
 |---|---|
 | [`BASIS.md`](BASIS.md) | the Medium requirement for Workers, Work and Excellence — Workers |
 | [`facets.sleela`](facets.sleela) | the Facets model over all three domains |
+| [`constraints.sleela`](constraints.sleela) / [`Constraints.java`](Constraints.java) | the Constitution congrains/limits applied to Facets (shared across `/1`–`/4`) |
 | [`models/`](models/) | the physics, math, and social model docs |
 | [`data/`](data/) | the sourced data models (JSON / XML / TXT) |
 
