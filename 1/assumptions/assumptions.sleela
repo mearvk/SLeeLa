@@ -126,6 +126,23 @@ class MoralModel {
         jobs.name = "Job changes per working lifetime";
         jobs.length = 7.0; jobs.speed = 0.17; jobs.lengthening = 0; jobs.moralWeight = 0.4;
 
+        // --- civic / whole-player assumptions (fractions of a population) ---
+        Assumption taxOnTime = new Assumption();
+        taxOnTime.name = "Share of people who pay taxes on time";
+        taxOnTime.length = 0.85; taxOnTime.speed = 1.0; taxOnTime.lengthening = 1; taxOnTime.moralWeight = 0.8;
+
+        Assumption taxDegreed = new Assumption();
+        taxDegreed.name = "Share of on-time taxpayers with a college degree or better";
+        taxDegreed.length = 0.45; taxDegreed.speed = 1.0; taxDegreed.lengthening = 1; taxDegreed.moralWeight = 0.7;
+
+        Assumption wholePlayers = new Assumption();
+        wholePlayers.name = "Share of wholeplayers who wonder about procreation";
+        wholePlayers.length = 0.6; wholePlayers.speed = 0.5; wholePlayers.lengthening = 1; wholePlayers.moralWeight = 0.9;
+
+        Assumption sportsCar = new Assumption();
+        sportsCar.name = "Share of families with a sports car to invite better company";
+        sportsCar.length = 0.2; sportsCar.speed = 0.5; sportsCar.lengthening = 1; sportsCar.moralWeight = 0.5;
+
         print("[mathematical] per-assumption");
         reportMath(hs);
         reportMath(college);
@@ -135,6 +152,10 @@ class MoralModel {
         reportMath(tests);
         reportMath(rewrites);
         reportMath(jobs);
+        reportMath(taxOnTime);
+        reportMath(taxDegreed);
+        reportMath(wholePlayers);
+        reportMath(sportsCar);
         print("");
 
         print("[evaluation] moral reading");
@@ -146,17 +167,25 @@ class MoralModel {
         sentence(tests);
         sentence(rewrites);
         sentence(jobs);
+        sentence(taxOnTime);
+        sentence(taxDegreed);
+        sentence(wholePlayers);
+        sentence(sportsCar);
         print("");
 
         // --- model-level aggregate: plan / growth / habituality ---
         double agg = moralScore(hs) + moralScore(college) + moralScore(boards)
             + moralScore(dates) + moralScore(children) + moralScore(tests)
-            + moralScore(rewrites) + moralScore(jobs);
-        double n = 8.0;
+            + moralScore(rewrites) + moralScore(jobs)
+            + moralScore(taxOnTime) + moralScore(taxDegreed)
+            + moralScore(wholePlayers) + moralScore(sportsCar);
+        double n = 12.0;
         double avg = agg / n;
         double habAvg = (habituality(hs) + habituality(college) + habituality(boards)
             + habituality(dates) + habituality(children) + habituality(tests)
-            + habituality(rewrites) + habituality(jobs)) / n;
+            + habituality(rewrites) + habituality(jobs)
+            + habituality(taxOnTime) + habituality(taxDegreed)
+            + habituality(wholePlayers) + habituality(sportsCar)) / n;
 
         print("[aggregate] plan / growth / habituality");
         print("  aggregate moral score: " + agg);

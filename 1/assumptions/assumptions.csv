@@ -13,3 +13,7 @@ Children raised per family,2.1,children,0.1,human-nature,1,1.0,"ASSUMED: base-re
 Foundations poured per contractor-year,10.0,foundations,10.0,construction,1,0.6,"ASSUMED: new extent, not swap"
 Tests written per feature,6.0,tests,6.0,code-about-code,1,0.8,"ASSUMED: code that adds durable reach (lengthening)"
 Rewrites per module per year,3.0,rewrites,3.0,code-about-code,0,0.4,"ASSUMED: substitution/churn without added reach"
+Share of people who pay taxes on time,0.85,fraction,1.0,civic,1,0.8,"ASSUMED: on-time civic contribution lengthens the shared order"
+Share of on-time taxpayers with a college degree or better,0.45,fraction,1.0,civic,1,0.7,"ASSUMED: education co-occupies with on-time civic behavior"
+Share of wholeplayers who spend life wondering about procreation,0.6,fraction,0.5,human-nature,1,0.9,"ASSUMED: well, whole players who deliberate continuation"
+Share of families with a sports car to invite others (better company),0.2,fraction,0.5,human-nature,1,0.5,"ASSUMED: hospitality signal; company-keeping, mild lengthening"
