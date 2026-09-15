@@ -7,12 +7,14 @@
 
 #include "m5.hpp"
 
+#include <algorithm>
 #include <cerrno>
 #include <cctype>
 #include <csignal>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <dirent.h>
 #include <fcntl.h>
 #include <iostream>
 #include <sstream>
@@ -28,20 +30,12 @@ namespace {
 
 volatile std::sig_atomic_t pending_signal = 0;
 
-void m5SignalHandler(int sig) {
-    pending_signal = sig;
-}
+void m5SignalHandler(int sig) { pending_signal = sig; }
 
-struct Trap {
-    std::string action;
-    bool installed = false;
-};
-
+struct Trap { std::string action; bool installed = false; };
 Trap traps[NSIG];
 
-bool isSpace(char c) {
-    return c == ' ' || c == '\t' || c == '\r' || c == '\n';
-}
+bool isSpace(char c) { return c == ' ' || c == '\t' || c == '\r' || c == '\n'; }
 
 bool startsWordAt(const std::string& s, std::size_t p, const char* word) {
     const std::size_t n = std::strlen(word);
@@ -58,8 +52,7 @@ std::size_t skipWord(const std::string& s, std::size_t p) {
         if (quote) {
             if (c == '\\' && p + 1 < s.size()) { p += 2; continue; }
             if (c == quote) quote = 0;
-            ++p;
-            continue;
+            ++p; continue;
         }
         if (c == '\'' || c == '"') { quote = c; ++p; continue; }
         if (isSpace(c) || c == ';') break;
@@ -82,7 +75,6 @@ bool splitSelect(const std::string& source, std::string& var,
     if (!startsWordAt(source, p, "select")) return false;
     p += 6;
     while (p < source.size() && isSpace(source[p]) && source[p] != '\n') ++p;
-
     std::size_t varEnd = skipWord(source, p);
     if (varEnd == p) return false;
     var = source.substr(p, varEnd - p);
@@ -100,8 +92,7 @@ bool splitSelect(const std::string& source, std::string& var,
         if (quote) {
             if (c == '\\' && scan + 1 < source.size()) { scan += 2; continue; }
             if (c == quote) quote = 0;
-            ++scan;
-            continue;
+            ++scan; continue;
         }
         if (c == '\'' || c == '"') { quote = c; ++scan; continue; }
         if (c == ';' || c == '\n') {
@@ -136,27 +127,21 @@ bool splitSelect(const std::string& source, std::string& var,
 
     std::size_t bodyStart = p;
     int depth = 1;
-    scan = p;
-    quote = 0;
+    scan = p; quote = 0;
     while (scan < source.size()) {
         if (quote) {
             if (source[scan] == '\\' && scan + 1 < source.size()) { scan += 2; continue; }
             if (source[scan] == quote) quote = 0;
-            ++scan;
-            continue;
+            ++scan; continue;
         }
         if (source[scan] == '\'' || source[scan] == '"') { quote = source[scan]; ++scan; continue; }
-        if ((scan == 0 || isSpace(source[scan - 1]) || source[scan - 1] == ';') &&
-            startsWordAt(source, scan, "do")) { ++depth; scan += 2; continue; }
-        if ((scan == 0 || isSpace(source[scan - 1]) || source[scan - 1] == ';') &&
-            startsWordAt(source, scan, "done")) {
+        if ((scan == 0 || isSpace(source[scan - 1]) || source[scan - 1] == ';') && startsWordAt(source, scan, "do")) {
+            ++depth; scan += 2; continue;
+        }
+        if ((scan == 0 || isSpace(source[scan - 1]) || source[scan - 1] == ';') && startsWordAt(source, scan, "done")) {
             --depth;
-            if (depth == 0) {
-                body = trim(source.substr(bodyStart, scan - bodyStart));
-                return true;
-            }
-            scan += 4;
-            continue;
+            if (depth == 0) { body = trim(source.substr(bodyStart, scan - bodyStart)); return true; }
+            scan += 4; continue;
         }
         ++scan;
     }
@@ -177,12 +162,9 @@ int signalNumber(const std::string& name) {
 
 void installTrap(int sig, const std::string& action) {
     if (sig <= 0 || sig >= NSIG) return;
-    traps[sig].action = action;
-    traps[sig].installed = true;
+    traps[sig].action = action; traps[sig].installed = true;
     struct sigaction sa{};
-    sa.sa_handler = m5SignalHandler;
-    sigemptyset(&sa.sa_mask);
-    sa.sa_flags = 0;
+    sa.sa_handler = m5SignalHandler; sigemptyset(&sa.sa_mask); sa.sa_flags = 0;
     ::sigaction(sig, &sa, nullptr);
 }
 
@@ -192,118 +174,165 @@ bool parseTrap(const std::string& line, int& sig, std::string& action) {
     std::size_t p = 4;
     while (p < t.size() && isSpace(t[p])) ++p;
     if (p >= t.size()) return false;
-
     if (t[p] == '\'' || t[p] == '"') {
-        char q = t[p++];
-        std::string a;
+        char q = t[p++]; std::string a;
         while (p < t.size() && t[p] != q) {
             if (t[p] == '\\' && p + 1 < t.size()) { a.push_back(t[p + 1]); p += 2; }
             else { a.push_back(t[p]); ++p; }
         }
         if (p >= t.size()) return false;
-        action = a;
-        ++p;
+        action = a; ++p;
         while (p < t.size() && isSpace(t[p])) ++p;
-        sig = signalNumber(trim(t.substr(p)));
-        return sig > 0;
+        sig = signalNumber(trim(t.substr(p))); return sig > 0;
     }
-
     std::size_t q = p;
     while (q < t.size() && !isSpace(t[q])) ++q;
     action = t.substr(p, q - p);
     while (q < t.size() && isSpace(t[q])) ++q;
-    sig = signalNumber(trim(t.substr(q)));
-    return sig > 0;
+    sig = signalNumber(trim(t.substr(q))); return sig > 0;
+}
+
+bool m5GlobMatch(const std::string& pattern, const std::string& text) {
+    std::function<bool(std::size_t,std::size_t)> rec = [&](std::size_t p, std::size_t t) {
+        while (p < pattern.size()) {
+            if (pattern[p] == '*') {
+                while (p + 1 < pattern.size() && pattern[p + 1] == '*') ++p;
+                if (p + 1 == pattern.size()) return true;
+                for (std::size_t k = t; k <= text.size(); ++k) if (rec(p + 1, k)) return true;
+                return false;
+            }
+            if (t >= text.size()) return false;
+            if (pattern[p] == '?') { ++p; ++t; continue; }
+            if (pattern[p] == '[') {
+                std::size_t q = p + 1; bool neg = false;
+                if (q < pattern.size() && (pattern[q] == '!' || pattern[q] == '^')) { neg = true; ++q; }
+                bool hit = false;
+                while (q < pattern.size() && pattern[q] != ']') {
+                    if (q + 2 < pattern.size() && pattern[q + 1] == '-' && pattern[q + 2] != ']') {
+                        if (text[t] >= pattern[q] && text[t] <= pattern[q + 2]) hit = true; q += 3;
+                    } else { if (text[t] == pattern[q]) hit = true; ++q; }
+                }
+                if (q >= pattern.size() || (neg ? hit : !hit)) return false;
+                p = q + 1; ++t; continue;
+            }
+            if (pattern[p] != text[t]) return false;
+            ++p; ++t;
+        }
+        return t == text.size();
+    };
+    return rec(0, 0);
+}
+
+void m5WalkGlob(const std::string& base, const std::vector<std::string>& parts,
+                std::size_t index, std::vector<std::string>& out) {
+    if (index == parts.size()) { out.push_back(base.empty() ? "." : base); return; }
+    const std::string& part = parts[index];
+    const std::string dir = base.empty() ? "." : base;
+    if (!part.empty() && part.find_first_of("*?[") == std::string::npos) {
+        const std::string next = (base.empty() || base == ".") ? part : (base == "/" ? "/" + part : base + "/" + part);
+        struct stat st{};
+        if (::stat(next.c_str(), &st) == 0) m5WalkGlob(next, parts, index + 1, out);
+        return;
+    }
+    DIR* dp = ::opendir(dir.c_str()); if (!dp) return;
+    struct dirent* de;
+    while ((de = ::readdir(dp)) != nullptr) {
+        const std::string name = de->d_name;
+        if (name == "." || name == "..") continue;
+        if (!part.empty() && part[0] != '.' && name[0] == '.') continue;
+        if (!m5GlobMatch(part, name)) continue;
+        const std::string next = (base.empty() || base == ".") ? name : (base == "/" ? "/" + name : base + "/" + name);
+        m5WalkGlob(next, parts, index + 1, out);
+    }
+    ::closedir(dp);
+}
+
+bool rewriteMultiSegmentGlobs(const std::string& src, std::string& out) {
+    out.clear(); bool changed = false; std::size_t i = 0;
+    while (i < src.size()) {
+        if (src[i] == '\'' || src[i] == '"') {
+            const char q = src[i++]; out.push_back(q);
+            while (i < src.size()) { char c = src[i++]; out.push_back(c); if (c == q) break; if (c == '\\' && i < src.size()) out.push_back(src[i++]); }
+            continue;
+        }
+        std::size_t j = i;
+        while (j < src.size() && !isSpace(src[j]) && std::string("|;&<>#(){}").find(src[j]) == std::string::npos) ++j;
+        if (j == i) { out.push_back(src[i++]); continue; }
+        const std::string word = src.substr(i, j - i);
+        if (word.find('/') != std::string::npos && word.find_first_of("*?[") != std::string::npos) {
+            const bool absolute = !word.empty() && word[0] == '/';
+            const std::string work = absolute ? word.substr(1) : word;
+            std::vector<std::string> parts;
+            std::size_t b = 0;
+            while (b <= work.size()) {
+                const std::size_t e = work.find('/', b);
+                parts.push_back(work.substr(b, e == std::string::npos ? work.size() - b : e - b));
+                if (e == std::string::npos) break; b = e + 1;
+            }
+            std::vector<std::string> matches;
+            m5WalkGlob(absolute ? "/" : "", parts, 0, matches);
+            std::sort(matches.begin(), matches.end());
+            if (!matches.empty()) {
+                for (std::size_t k = 0; k < matches.size(); ++k) { if (k) out.push_back(' '); out += matches[k]; }
+                changed = true;
+            } else out += word;
+        } else out += word;
+        i = j;
+    }
+    return changed;
 }
 
 bool rewriteProcessSubstitution(const std::string& src, std::string& rewritten,
                                 std::vector<pid_t>& children,
                                 Environment& env, const M5Runner& runner) {
-    rewritten.clear();
-    bool found = false;
+    rewritten.clear(); bool found = false;
     for (std::size_t i = 0; i < src.size();) {
         if ((src[i] == '<' || src[i] == '>') && i + 1 < src.size() && src[i + 1] == '(') {
-            const char mode = src[i];
-            std::size_t j = i + 2;
-            int depth = 1;
-            char quote = 0;
-            std::string cmd;
+            const char mode = src[i]; std::size_t j = i + 2; int depth = 1; char quote = 0; std::string cmd;
             while (j < src.size() && depth > 0) {
                 char c = src[j];
-                if (quote) {
-                    cmd.push_back(c);
-                    if (c == '\\' && j + 1 < src.size()) cmd.push_back(src[++j]);
-                    else if (c == quote) quote = 0;
-                    ++j;
-                    continue;
-                }
+                if (quote) { cmd.push_back(c); if (c == '\\' && j + 1 < src.size()) cmd.push_back(src[++j]); else if (c == quote) quote = 0; ++j; continue; }
                 if (c == '\'' || c == '"') { quote = c; cmd.push_back(c); ++j; continue; }
                 if (c == '(') { ++depth; cmd.push_back(c); ++j; continue; }
                 if (c == ')') { --depth; if (depth) cmd.push_back(c); ++j; continue; }
                 cmd.push_back(c); ++j;
             }
             if (depth != 0) return false;
-
             char tmpl[] = "/tmp/slsh-m5-XXXXXX";
-            int fd = ::mkstemp(tmpl);
-            if (fd < 0) return false;
-            ::close(fd);
-            ::unlink(tmpl);
-            if (::mkfifo(tmpl, 0600) != 0) return false;
-
+            int fd = ::mkstemp(tmpl); if (fd < 0) return false;
+            ::close(fd); ::unlink(tmpl); if (::mkfifo(tmpl, 0600) != 0) return false;
             pid_t pid = ::fork();
             if (pid < 0) { ::unlink(tmpl); return false; }
             if (pid == 0) {
                 Environment childEnv = env;
-                int io = ::open(tmpl, mode == '<' ? O_WRONLY : O_RDONLY);
-                if (io < 0) _exit(126);
-                ::dup2(io, mode == '<' ? STDOUT_FILENO : STDIN_FILENO);
-                ::close(io);
-                int rc = runner(cmd, childEnv);
-                _exit(rc & 0xff);
+                int io = ::open(tmpl, mode == '<' ? O_WRONLY : O_RDONLY); if (io < 0) _exit(126);
+                ::dup2(io, mode == '<' ? STDOUT_FILENO : STDIN_FILENO); ::close(io);
+                int rc = runner(cmd, childEnv); _exit(rc & 0xff);
             }
-            children.push_back(pid);
-            rewritten += tmpl;
-            i = j;
-            found = true;
-            continue;
+            children.push_back(pid); rewritten += tmpl; i = j; found = true; continue;
         }
         rewritten.push_back(src[i++]);
     }
     return found;
 }
 
-int runSelect(const std::string& source, Environment& env,
-              const M5Runner& runner) {
-    std::string var, body;
-    std::vector<std::string> words;
+int runSelect(const std::string& source, Environment& env, const M5Runner& runner) {
+    std::string var, body; std::vector<std::string> words;
     if (!splitSelect(source, var, words, body)) return 2;
-
     const std::string ps3 = env.has("PS3") ? env.get("PS3") : "#? ";
     int status = 0;
     for (;;) {
-        for (std::size_t i = 0; i < words.size(); ++i)
-            std::cerr << (i + 1) << ") " << words[i] << '\n';
+        for (std::size_t i = 0; i < words.size(); ++i) std::cerr << (i + 1) << ") " << words[i] << '\n';
         std::cerr << ps3 << std::flush;
-
         std::string line;
         if (!std::getline(std::cin, line)) { std::cerr << '\n'; break; }
-        env.set("REPLY", line);
-        if (line.empty()) continue;
-        char* end = nullptr;
-        long choice = std::strtol(line.c_str(), &end, 10);
-        if (end == line.c_str() || *end != '\0' || choice < 1 ||
-            static_cast<std::size_t>(choice) > words.size()) {
-            env.set(var, "");
-        } else {
-            env.set(var, words[static_cast<std::size_t>(choice) - 1]);
-        }
+        env.set("REPLY", line); if (line.empty()) continue;
+        char* end = nullptr; long choice = std::strtol(line.c_str(), &end, 10);
+        if (end == line.c_str() || *end != '\0' || choice < 1 || static_cast<std::size_t>(choice) > words.size()) env.set(var, "");
+        else env.set(var, words[static_cast<std::size_t>(choice) - 1]);
         status = runner(body, env);
         if (env.shouldExit()) break;
-        if (env.loopSignal()) {
-            char sig = env.consumeLoopSignal();
-            if (sig == 'B') break;
-        }
+        if (env.loopSignal() && env.consumeLoopSignal() == 'B') break;
     }
     return status;
 }
@@ -313,110 +342,62 @@ int runSelect(const std::string& source, Environment& env,
 bool hasProcessSubstitution(const std::string& source) {
     char quote = 0;
     for (std::size_t i = 0; i + 1 < source.size(); ++i) {
-        if (quote) {
-            if (source[i] == '\\') ++i;
-            else if (source[i] == quote) quote = 0;
-            continue;
-        }
+        if (quote) { if (source[i] == '\\') ++i; else if (source[i] == quote) quote = 0; continue; }
         if (source[i] == '\'' || source[i] == '"') { quote = source[i]; continue; }
         if ((source[i] == '<' || source[i] == '>') && source[i + 1] == '(') return true;
     }
     return false;
 }
 
-bool runM5(const std::string& source, Environment& env,
-           const M5Runner& runner, int& status) {
+bool runM5(const std::string& source, Environment& env, const M5Runner& runner, int& status) {
     std::string prepared = source;
-    // M5 select commonly uses PS3=... immediately before the select block.
-    // Consume only a simple leading PS3 assignment here; all other assignments
-    // remain under the normal lexer/parser.
     std::istringstream assignLines(prepared);
-    std::string firstLine;
-    std::string afterAssignments;
-    bool consumedAssignment = false;
+    std::string firstLine, afterAssignments; bool consumedAssignment = false;
     while (std::getline(assignLines, firstLine)) {
-        std::string t = trim(firstLine);
-        const std::size_t eq = t.find('=');
-        bool simpleName = eq != std::string::npos && eq > 0;
-        if (simpleName) {
-            for (std::size_t k = 0; k < eq; ++k) {
-                char c = t[k];
-                if (!(std::isalnum(static_cast<unsigned char>(c)) || c == '_') ||
-                    (k == 0 && std::isdigit(static_cast<unsigned char>(c)))) {
-                    simpleName = false; break;
-                }
-            }
+        std::string t = trim(firstLine); const std::size_t eq = t.find('='); bool simpleName = eq != std::string::npos && eq > 0;
+        if (simpleName) for (std::size_t k = 0; k < eq; ++k) {
+            char c = t[k]; if (!(std::isalnum(static_cast<unsigned char>(c)) || c == '_') || (k == 0 && std::isdigit(static_cast<unsigned char>(c)))) { simpleName = false; break; }
         }
         if (!consumedAssignment && simpleName && t.compare(0, eq, "PS3") == 0) {
             std::string value = t.substr(eq + 1);
-            if (value.size() >= 2 &&
-                ((value.front() == '\'' && value.back() == '\'') ||
-                 (value.front() == '"' && value.back() == '"')))
-                value = value.substr(1, value.size() - 2);
-            env.set("PS3", value);
-            consumedAssignment = true;
-            continue;
+            if (value.size() >= 2 && ((value.front() == '\'' && value.back() == '\'') || (value.front() == '"' && value.back() == '"'))) value = value.substr(1, value.size() - 2);
+            env.set("PS3", value); consumedAssignment = true; continue;
         }
-        afterAssignments += firstLine;
-        afterAssignments.push_back('\n');
-        std::string tail;
-        while (std::getline(assignLines, tail)) {
-            afterAssignments += tail;
-            afterAssignments.push_back('\n');
-        }
+        afterAssignments += firstLine; afterAssignments.push_back('\n');
+        std::string tail; while (std::getline(assignLines, tail)) { afterAssignments += tail; afterAssignments.push_back('\n'); }
         break;
     }
     if (consumedAssignment) prepared = afterAssignments;
 
-    std::istringstream lines(prepared);
-    std::string line;
-    std::string remainder;
-    bool consumedTrap = false;
+    std::istringstream lines(prepared); std::string line, remainder; bool consumedTrap = false;
     while (std::getline(lines, line)) {
         int sig = 0; std::string action;
-        if (parseTrap(line, sig, action)) {
-            installTrap(sig, action);
-            consumedTrap = true;
-        } else {
-            remainder += line;
-            remainder.push_back('\n');
-        }
+        if (parseTrap(line, sig, action)) { installTrap(sig, action); consumedTrap = true; }
+        else { remainder += line; remainder.push_back('\n'); }
     }
 
-    std::vector<pid_t> children;
-    std::string rewritten;
+    std::string globbed;
+    if (rewriteMultiSegmentGlobs(remainder, globbed)) remainder = globbed;
+
+    std::vector<pid_t> children; std::string rewritten;
     if (hasProcessSubstitution(remainder)) {
-        if (!rewriteProcessSubstitution(remainder, rewritten, children, env, runner)) {
-            status = 2;
-            return true;
-        }
+        if (!rewriteProcessSubstitution(remainder, rewritten, children, env, runner)) { status = 2; return true; }
         status = runner(rewritten, env);
-        for (pid_t pid : children) {
-            int st = 0;
-            ::waitpid(pid, &st, 0);
-        }
+        for (pid_t pid : children) { int st = 0; ::waitpid(pid, &st, 0); }
         return true;
     }
 
-    std::string var, body;
-    std::vector<std::string> words;
-    if (splitSelect(remainder, var, words, body)) {
-        status = runSelect(remainder, env, runner);
-        return true;
-    }
+    std::string var, body; std::vector<std::string> words;
+    if (splitSelect(remainder, var, words, body)) { status = runSelect(remainder, env, runner); return true; }
 
     bool anyTrap = consumedTrap;
     for (int s = 1; s < NSIG && !anyTrap; ++s) anyTrap = traps[s].installed;
     if (anyTrap) {
         status = remainder.empty() ? 0 : runner(remainder, env);
         const int sig = pending_signal;
-        if (sig > 0 && sig < NSIG && traps[sig].installed && !traps[sig].action.empty()) {
-            pending_signal = 0;
-            status = runner(traps[sig].action, env);
-        }
+        if (sig > 0 && sig < NSIG && traps[sig].installed && !traps[sig].action.empty()) { pending_signal = 0; status = runner(traps[sig].action, env); }
         return true;
     }
-
     return false;
 }
 
