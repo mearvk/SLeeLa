@@ -102,8 +102,18 @@ void install_css() {
 void child_exited(VteTerminal *, int, gpointer user_data) {
     auto *state = static_cast<AppState *>(user_data);
     state->child_pid = 0;
+
     if (state->window != nullptr) {
-        gtk_window_set_title(state->window, kWindowTitle);
+        GtkApplication *application =
+            gtk_window_get_application(state->window);
+        GtkWindow *window = state->window;
+        state->window = nullptr;
+
+        gtk_window_destroy(window);
+
+        if (application != nullptr) {
+            g_application_quit(G_APPLICATION(application));
+        }
     }
 }
 
