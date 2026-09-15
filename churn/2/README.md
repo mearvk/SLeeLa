@@ -78,7 +78,7 @@ medium must satisfy — enough **workers**, laying down real **work**, done with
 |---|---|
 | [`BASIS.md`](BASIS.md) | the Medium requirement for Workers, Work and Excellence — Workers |
 | [`structures.sleela`](structures.sleela) | the Structures model over all three domains |
-| [`constraints.sleela`](constraints.sleela) / [`Constraints.java`](Constraints.java) | the Constitution congrains/limits applied to Structures (shared across `/1`–`/4`) |
+| [`constraints.sleela`](constraints.sleela) / [`Constraints.java`](Constraints.java) | the Constitution congrains/limits applied to Structures (shared across `/1`–`/4`). Running `Constraints.java` writes a well-formed `churn-2-structures.md` into a local `DD-MM-YYYY/` folder (git-ignored). |
 | [`models/`](models/) | the physics, math, and social model docs |
 | [`data/`](data/) | the sourced data models (JSON / XML / TXT) |
 

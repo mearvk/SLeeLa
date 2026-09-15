@@ -81,7 +81,7 @@ with rising **excellence**.
 |---|---|
 | [`BASIS.md`](BASIS.md) | the Medium requirement for Workers, Work and Excellence — Workers |
 | [`facets.sleela`](facets.sleela) | the Facets model over all three domains |
-| [`constraints.sleela`](constraints.sleela) / [`Constraints.java`](Constraints.java) | the Constitution congrains/limits applied to Facets (shared across `/1`–`/4`) |
+| [`constraints.sleela`](constraints.sleela) / [`Constraints.java`](Constraints.java) | the Constitution congrains/limits applied to Facets (shared across `/1`–`/4`). Running `Constraints.java` writes a well-formed `churn-3-facets.md` into a local `DD-MM-YYYY/` folder (git-ignored). |
 | [`models/`](models/) | the physics, math, and social model docs |
 | [`data/`](data/) | the sourced data models (JSON / XML / TXT) |
 

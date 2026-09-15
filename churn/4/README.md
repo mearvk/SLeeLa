@@ -83,6 +83,26 @@ constraints and limits the system honors. `/4` carries that theory in two forms:
 The sibling sets `/1`–`/3` carry the same layer, so all four share one constraint
 theory over their different magnitudes (Longs, Structures, Facets, Areas).
 
+### Running it — the dated Markdown report
+
+`Constraints.java` prints its report to stdout **and** writes a well-formed
+Markdown document into a local **`DD-MM-YYYY/`** folder (named for the run date),
+as `churn-4-areas.md`:
+
+```sh
+# from churn/4/
+javac -d out Constraints.java
+java -cp out com.mearvk.sleela.churn.Constraints
+# => writes ./15-09-2026/churn-4-areas.md (the run date)
+```
+
+The report has an H1 title, a generation stamp, and sections for the system
+invariants, the Bound checks, capacity, and the connect-rule invariant — each as
+a Markdown table. The `DD-MM-YYYY/` output folder is generated and is
+git-ignored (see [`../.gitignore`](../.gitignore)); it is a build artifact, not
+source. Sets `/1`–`/3` write the same report to the same dated folder under their
+own names (`churn-1-longs.md`, `churn-2-structures.md`, `churn-3-facets.md`).
+
 ## The basis
 
 [`BASIS.md`](BASIS.md) is the basis document this set rests on: the **Medium
