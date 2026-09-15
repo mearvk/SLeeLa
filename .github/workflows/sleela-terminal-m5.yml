@@ -1,0 +1,26 @@
+name: SLeeLa Terminal M5
+
+on:
+  push:
+    paths:
+      - 'sleela-terminal/**'
+      - '.github/workflows/sleela-terminal-m5.yml'
+  pull_request:
+    paths:
+      - 'sleela-terminal/**'
+      - '.github/workflows/sleela-terminal-m5.yml'
+
+jobs:
+  build-and-smoke:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: sleela-terminal
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build
+        run: make clean all
+      - name: Existing M1-M4 smoke
+        run: make smoke
+      - name: M5 smoke
+        run: ./m5-smoke.sh ./build/slsh
