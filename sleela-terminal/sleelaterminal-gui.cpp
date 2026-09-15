@@ -94,6 +94,31 @@ void install_css() {
     g_object_unref(provider);
 }
 
+// Ctrl+C is copy when VTE has a selection. Without a selection it is left to
+// the PTY so the shell/foreground program receives the normal interrupt key.
+// Ctrl+Shift+C always copies. Ctrl+V and Ctrl+Shift+V paste into the PTY.
+gboolean terminal_key_pressed(GtkEventControllerKey *, guint keyval, guint,
+                              GdkModifierType state, gpointer user_data) {
+    auto *terminal = VTE_TERMINAL(user_data);
+    const bool ctrl = (state & GDK_CONTROL_MASK) != 0;
+    const bool shift = (state & GDK_SHIFT_MASK) != 0;
+
+    if (ctrl && keyval == GDK_KEY_c) {
+        if (shift || vte_terminal_get_has_selection(terminal)) {
+            vte_terminal_copy_clipboard_format(terminal, VTE_FORMAT_TEXT);
+            return TRUE;
+        }
+        return FALSE;
+    }
+
+    if (ctrl && keyval == GDK_KEY_v) {
+        vte_terminal_paste_clipboard(terminal);
+        return TRUE;
+    }
+
+    return FALSE;
+}
+
 void child_exited(VteTerminal *, int, gpointer user_data) {
     auto *state = static_cast<AppState *>(user_data);
     state->child_pid = 0;
@@ -109,8 +134,6 @@ void child_exited(VteTerminal *, int, gpointer user_data) {
     }
 }
 
-// VTE's GTK4 API does not expose vte_terminal_get_child_pid(). The spawn
-// completion callback supplies the child PID, so retain it in AppState.
 void shell_spawned(VteTerminal *, GPid child_pid, GError *error, gpointer user_data) {
     auto *state = static_cast<AppState *>(user_data);
     if (error != nullptr || child_pid <= 0) {
@@ -120,7 +143,6 @@ void shell_spawned(VteTerminal *, GPid child_pid, GError *error, gpointer user_d
     state->child_pid = child_pid;
 }
 
-// Closing the GUI window must close the PTY-backed shell as well.
 gboolean window_close_request(GtkWindow *window, gpointer user_data) {
     auto *state = static_cast<AppState *>(user_data);
     if (state->child_pid > 0) {
@@ -159,6 +181,11 @@ void activate(GtkApplication *application, gpointer user_data) {
     PangoFontDescription *font = pango_font_description_from_string("Monospace 11");
     vte_terminal_set_font(VTE_TERMINAL(terminal), font);
     pango_font_description_free(font);
+
+    GtkEventController *keys = gtk_event_controller_key_new();
+    gtk_event_controller_set_propagation_phase(keys, GTK_PHASE_CAPTURE);
+    g_signal_connect(keys, "key-pressed", G_CALLBACK(terminal_key_pressed), terminal);
+    gtk_widget_add_controller(terminal, keys);
 
     gtk_window_set_child(state->window, terminal);
     g_signal_connect(terminal, "child-exited", G_CALLBACK(child_exited), state);
