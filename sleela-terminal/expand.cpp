@@ -411,31 +411,57 @@ bool globMatch(const std::string& pattern, const std::string& text) {
 std::vector<std::string> globPattern(const std::string& pattern) {
     if (!hasGlobMeta(pattern)) return {pattern};
 
-    // Split into directory prefix and the final segment; only glob a single
-    // path segment here (M2 scope). Deeper path globbing is a later milestone.
-    const auto slash = pattern.find_last_of('/');
-    std::string dir = (slash == std::string::npos) ? "." : pattern.substr(0, slash + 1);
-    std::string seg = (slash == std::string::npos) ? pattern : pattern.substr(slash + 1);
-    if (!hasGlobMeta(seg)) return {pattern};
-
-    const std::string scandir = dir.empty() ? "." : (slash == std::string::npos ? "." : dir);
-    DIR* dp = ::opendir(scandir.c_str());
-    if (!dp) return {pattern};
+    // M5: expand one pathname component at a time. Matches remain argv data;
+    // they are never rewritten into shell source and reparsed.
+    const bool absolute = !pattern.empty() && pattern.front() == '/';
+    const bool dotPrefix = !absolute && pattern.rfind("./", 0) == 0;
+    const std::size_t begin = absolute ? 1 : (dotPrefix ? 2 : 0);
+    std::vector<std::string> parts;
+    std::size_t p = begin;
+    while (p <= pattern.size()) {
+        const std::size_t slash = pattern.find('/', p);
+        parts.push_back(pattern.substr(p, slash == std::string::npos ? pattern.size() - p : slash - p));
+        if (slash == std::string::npos) break;
+        p = slash + 1;
+    }
 
     std::vector<std::string> matches;
-    struct dirent* de;
-    while ((de = ::readdir(dp)) != nullptr) {
-        const std::string name = de->d_name;
-        if (name == "." || name == "..") continue;
-        // a leading '.' is only matched by an explicit leading '.' in seg
-        if (!name.empty() && name[0] == '.' && !(seg.size() && seg[0] == '.')) continue;
-        if (globMatch(seg, name)) {
-            matches.push_back((slash == std::string::npos) ? name : dir + name);
-        }
-    }
-    ::closedir(dp);
+    std::function<void(const std::string&, std::size_t)> walk =
+        [&](const std::string& base, std::size_t index) {
+            if (index == parts.size()) {
+                matches.push_back(base.empty() ? (absolute ? "/" : (dotPrefix ? "./" : ".")) : base);
+                return;
+            }
+            const std::string& seg = parts[index];
+            const std::string dir = base.empty() ? (absolute ? "/" : ".") : base;
 
-    if (matches.empty()) return {pattern};   // nullglob off: literal pattern
+            if (!hasGlobMeta(seg)) {
+                const std::string next = base.empty()
+                    ? (absolute ? "/" + seg : (dotPrefix ? "./" + seg : seg))
+                    : (base == "/" ? "/" + seg : base + "/" + seg);
+                struct stat st{};
+                if (::stat(next.c_str(), &st) == 0) walk(next, index + 1);
+                return;
+            }
+
+            DIR* dp = ::opendir(dir.c_str());
+            if (!dp) return;
+            struct dirent* de;
+            while ((de = ::readdir(dp)) != nullptr) {
+                const std::string name = de->d_name;
+                if (name == "." || name == "..") continue;
+                if (!name.empty() && name[0] == '.' && (seg.empty() || seg[0] != '.')) continue;
+                if (!globMatch(seg, name)) continue;
+                const std::string next = (base.empty()
+                    ? (absolute ? "/" + name : (dotPrefix ? "./" + name : name))
+                    : (base == "/" ? "/" + name : base + "/" + name));
+                walk(next, index + 1);
+            }
+            ::closedir(dp);
+        };
+
+    walk("", 0);
+    if (matches.empty()) return {pattern};
     std::sort(matches.begin(), matches.end());
     return matches;
 }
