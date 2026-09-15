@@ -20,9 +20,11 @@ and can be saved to GitHub or a public server.
   a lit roof, a lit side, and a shaded side. The viewpoint (angle, scale,
   position, frame size) is fully driven by [`city.config`](city.config) — see
   [`CONFIG.md`](CONFIG.md).
-- **Rendered through Phraign™, per pixel.** The renderer writes directly into a
-  `sleela::terminal::PixelTerminal` frame (the Phraign native pixel layer),
-  one pixel at a time via scanline polygon fill.
+- **Rendered through Phraign™, per pixel.** A small rendering stack — geometry
+  and color math (`render_math`), an ordered **rendering group** drawn by a
+  painter depth key over a Phraign sink (`render_group`), and the city renderer
+  on top — writes directly into a `sleela::terminal::PixelTerminal` frame, one
+  pixel at a time via scanline polygon fill. See [`RENDER_MATH.md`](RENDER_MATH.md).
 - **Color themes.** `green` (default), `white`, or `blue`, selected in the
   config.
 - **Save anywhere.** Models serialize to the plain-text `PHRAIGN-CITY` format
@@ -44,10 +46,14 @@ model-3D/
 ├── MODEL_FORMAT.md    the PHRAIGN-CITY serialization format
 ├── city.config        default configuration
 ├── Makefile           self-contained build (pulls Phraign from ../)
+├── RENDER_MATH.md     rendering math + rendering group reference
 ├── city_model.hpp/.cpp     model, palette, config, generation, serialization
-├── city_renderer.hpp/.cpp  oblique projection + per-pixel raster onto Phraign
+├── render_math.hpp/.cpp    vectors, color math, oblique projection, quad fill
+├── render_group.hpp/.cpp   RenderSink over Phraign + ordered drawable group
+├── city_renderer.hpp/.cpp  builds a rendering group from a City and draws it
 ├── city3d.cpp              command-line driver (generate / render / save)
-├── city3d_smoke.cpp        smoke test
+├── city3d_smoke.cpp        model/config/render smoke test
+├── render_smoke.cpp        rendering math + group smoke test
 ├── samples/               rendered previews (green/white/blue)
 └── modeling/              city model data (.city files)
 ```
@@ -81,8 +87,11 @@ viewable in any image viewer (or convertible to PNG).
 city.config ──► Config ──► City.generate(seed)     (per-user, ~4000 blocks)
                               │
                               ▼
-                        Renderer (oblique top+side projection)
-                              │  per pixel
+                     city_renderer ── builds quads via ──► render_math
+                              │                            (ObliqueCamera, Quad)
+                              ▼
+                        render_group  (ordered quads, painter depth)
+                              │  draw() per pixel via PhraignSink
                               ▼
                  Phraign™ PixelTerminal frame  ──►  preview (PPM/PNG)
                               │
@@ -95,9 +104,9 @@ onto.
 
 ## Notes & possible next steps
 
-- The renderer uses a painter's algorithm (far rows first) with per-pixel
-  scanline fills, which is exact for the convex block quads; there is no
-  z-buffer, so it relies on draw order for occlusion.
+- The renderer builds a `render_group` of quads and draws them by a painter
+  depth key with per-pixel scanline fills, which is exact for the convex block
+  quads; there is no z-buffer, so it relies on draw order for occlusion.
 - The `save` command currently prints the plan/commands for GitHub and public
   server targets rather than performing the network operation itself, keeping
   the tool dependency-free. Wiring it to actually push/upload would be a natural
