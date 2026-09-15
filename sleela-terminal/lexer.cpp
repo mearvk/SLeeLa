@@ -173,6 +173,7 @@ bool lex(const std::string& src, std::vector<Token>& out, LexError& err) {
         const int wline = line, wcol = col;
         std::string word;
         bool sawQuote = false;
+        bool sawQuoteBeforeEq = false;
         while (i < n) {
             const char d = src[i];
             if (d == ' ' || d == '\t' || d == '\r' || d == '\n' ||
@@ -196,6 +197,7 @@ bool lex(const std::string& src, std::vector<Token>& out, LexError& err) {
             if (d == '\'') {
                 // single quote: literal until the next single quote
                 sawQuote = true;
+                if (word.find('=') == std::string::npos) sawQuoteBeforeEq = true;
                 adv();  // consume opening '
                 while (i < n && src[i] != '\'') { word.push_back(src[i]); adv(); }
                 if (i >= n) { err = LexError{"unterminated single quote", wline, wcol}; return false; }
@@ -206,6 +208,7 @@ bool lex(const std::string& src, std::vector<Token>& out, LexError& err) {
                 // double quote: keep contents; expansion handled later. We keep
                 // the raw characters (including $), and support \" and \\ escapes.
                 sawQuote = true;
+                if (word.find('=') == std::string::npos) sawQuoteBeforeEq = true;
                 adv();  // consume opening "
                 while (i < n && src[i] != '"') {
                     if (src[i] == '\\' && i + 1 < n &&
@@ -273,7 +276,7 @@ bool lex(const std::string& src, std::vector<Token>& out, LexError& err) {
         // classify the word
         const bool cmdStart = atCommandStart(out);
         Tok structural = sawQuote ? Tok::Word : structuralKind(word);
-        if (!sawQuote && cmdStart && looksLikeAssignment(word)) {
+        if (!sawQuoteBeforeEq && cmdStart && looksLikeAssignment(word)) {
             push(Tok::Assignment, word, wline, wcol);
         } else if (structural != Tok::Word) {
             // then/do/done/in/esac/... are keywords wherever they appear bare.
