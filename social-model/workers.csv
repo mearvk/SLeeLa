@@ -1,0 +1,8 @@
+function,proposed_share,observed_share,note
+Administration,0.18,0.24,"ASSUMED: over-staffed vs proposed normal"
+Education,0.22,0.20,"ASSUMED: slightly under"
+Health,0.20,0.19,"ASSUMED: near normal"
+Public safety,0.15,0.17,"ASSUMED: over"
+Infrastructure,0.13,0.10,"ASSUMED: under (lengthening deficit)"
+Social services,0.12,0.10,"ASSUMED: under"
+total_workers,3000000,3000000,"ASSUMED illustrative State headcount"

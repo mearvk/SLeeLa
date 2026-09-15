@@ -60,6 +60,11 @@ triplet of targets (**Java**, **Sleela**, **C**).
   CAGR, z-score, forecast, and classification codes). The runnable
   [`inference-model/`](inference-model/) evaluates national/economic series and
   emits both a mathematical summary and a plain-language paragraph.
+- [`social-model/`](social-model/) is a **socialing model** of Systems of Social
+  Design / Remedy / Method: it draws 2D and 3D boundaries around a proposed
+  "normal," measures the statistical deviation of the observed from it to flag
+  when base assumptions have gone **stale**, and answers "the State has so many
+  workers — what do they do?" via a workforce-allocation deviation report.
 - [`bash/PHRAIGN.md`](bash/PHRAIGN.md) documents **Phraign™**, SLeeLa's
   frame-based, pixel-accurate terminal control system: the terminal output
   surface is a **planar map of pixels** addressed by integer `(x, y)`

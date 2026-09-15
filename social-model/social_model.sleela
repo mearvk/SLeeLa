@@ -1,0 +1,199 @@
+#sleela 1.2
+// social-model/social_model.sleela
+// A socialing model over Systems of Social Design, Remedy, Method.
+//
+// Design proposes a normal center + tolerance for each social measure; Method
+// reports the observed reading; Remedy is the response the deviation calls for.
+// The model:
+//   1. tests whether an observed point sits inside the proposed boundary
+//      (2D box + circle, 3D box + sphere),
+//   2. computes the standard-score deviation between proposed-normal and
+//      observed (tolerance as the assumed spread) via inference.zscore, and
+//      combines per-axis z's into an overall distance,
+//   3. classifies each measure In-band / Drifting / Stale -- the test for
+//      whether a base assumption has gone stale or out of use, and
+//   4. answers "the State has so many workers -- what do they do?" by comparing
+//      observed vs. proposed workforce allocation per function.
+// It prints a mathematical summary and a paragraph reading.
+//
+// Proposed normals are ASSUMED; observed values are illustrative. The model
+// locates stale assumptions; it does not certify social facts.
+import math;
+import inference;
+
+struct Measure {
+    String name;
+    int    dims;      // 2 or 3
+    double nx; double ny; double nz;   // proposed-normal center
+    double tol;                        // tolerance (radius / half-width)
+    double ox; double oy; double oz;   // observed reading
+}
+
+struct WorkerFn {
+    String name;
+    double proposedShare;
+    double observedShare;
+}
+
+class SocialModel {
+
+    // ---- boundary membership -------------------------------------------
+    // Box: every axis within +/- tol of the center.
+    int inBox(Measure m) {
+        if (math.abs(m.ox - m.nx) > m.tol) { return 0; }
+        if (math.abs(m.oy - m.ny) > m.tol) { return 0; }
+        if (m.dims == 3) { if (math.abs(m.oz - m.nz) > m.tol) { return 0; } }
+        return 1;
+    }
+    // Radial (circle in 2D, sphere in 3D): Euclidean distance within tol.
+    double radius(Measure m) {
+        double dx = m.ox - m.nx; double dy = m.oy - m.ny;
+        double s = dx*dx + dy*dy;
+        if (m.dims == 3) { double dz = m.oz - m.nz; s = s + dz*dz; }
+        return math.sqrt(s);
+    }
+    int inRadial(Measure m) {
+        if (radius(m) <= m.tol) { return 1; }
+        return 0;
+    }
+
+    // ---- deviation (staleness) -----------------------------------------
+    // Per-axis standard score with tolerance as the assumed spread, combined
+    // Euclideanly into an overall distance in tolerance-units.
+    double deviation(Measure m) {
+        double zx = inference.zscore(m.ox, m.nx, m.tol);
+        double zy = inference.zscore(m.oy, m.ny, m.tol);
+        double s = zx*zx + zy*zy;
+        if (m.dims == 3) { double zz = inference.zscore(m.oz, m.nz, m.tol); s = s + zz*zz; }
+        return math.sqrt(s);
+    }
+    String staleness(double d) {
+        if (d <= 1.0) { return "In-band"; }
+        if (d <= 2.0) { return "Drifting"; }
+        return "Stale";
+    }
+    String remedy(String cls) {
+        if (cls == "In-band") { return "no remedy: the base assumption still holds"; }
+        if (cls == "Drifting") { return "remedy advisable: the assumption is aging"; }
+        return "remedy due: the assumption is stale / out of use";
+    }
+    String boundaryWord(int in) {
+        if (in == 1) { return "inside"; }
+        return "outside";
+    }
+
+    void reportMeasure(Measure m) {
+        double d = deviation(m);
+        String cls = staleness(d);
+        print("  " + m.name + " (" + m.dims + "D)");
+        print("    box=" + boundaryWord(inBox(m)) + "  radial=" + boundaryWord(inRadial(m))
+            + "  radius=" + radius(m) + " (tol=" + m.tol + ")");
+        print("    deviation=" + d + " tol-units  [" + cls + "]");
+    }
+
+    void sentence(Measure m) {
+        double d = deviation(m);
+        String cls = staleness(d);
+        print("  " + m.name + ": observed sits " + boundaryWord(inRadial(m))
+            + " the proposed boundary at deviation " + d + " tol-units -> " + cls
+            + "; " + remedy(cls) + ".");
+    }
+
+    // ---- State workers --------------------------------------------------
+    double headcount(double total, double share) { return total * share; }
+    String staffing(WorkerFn f) {
+        double d = f.observedShare - f.proposedShare;
+        if (d > 0.01) { return "over-staffed"; }
+        if (d < -0.01) { return "under-staffed"; }
+        return "near normal";
+    }
+
+    void reportWorker(WorkerFn f, double total) {
+        double dev = f.observedShare - f.proposedShare;
+        print("  " + f.name + ": proposed " + headcount(total, f.proposedShare)
+            + " vs observed " + headcount(total, f.observedShare)
+            + "  (share dev " + dev + ", " + staffing(f) + ")");
+    }
+
+    void main() {
+        print("=== Social Model -- Design / Remedy / Method ===");
+        print("Boundary: box + radial. Staleness by deviation (tol-units):");
+        print("  In-band <= 1, Drifting <= 2, else Stale.");
+        print("Proposed normals ASSUMED; observed illustrative. Locates stale assumptions.");
+        print("");
+
+        // --- measures (mirror of measures.csv) ---
+        Measure edu = new Measure();
+        edu.name = "Public education"; edu.dims = 2;
+        edu.nx = 0.80; edu.ny = 0.80; edu.nz = 0.0; edu.tol = 0.10;
+        edu.ox = 0.78; edu.oy = 0.72; edu.oz = 0.0;
+
+        Measure health = new Measure();
+        health.name = "Public health access"; health.dims = 3;
+        health.nx = 0.85; health.ny = 0.80; health.nz = 0.30; health.tol = 0.10;
+        health.ox = 0.70; health.oy = 0.68; health.oz = 0.55;
+
+        Measure safety = new Measure();
+        safety.name = "Public safety"; safety.dims = 2;
+        safety.nx = 0.75; safety.ny = 0.75; safety.nz = 0.0; safety.tol = 0.10;
+        safety.ox = 0.74; safety.oy = 0.77; safety.oz = 0.0;
+
+        Measure housing = new Measure();
+        housing.name = "Housing affordability"; housing.dims = 2;
+        housing.nx = 0.60; housing.ny = 0.60; housing.nz = 0.0; housing.tol = 0.10;
+        housing.ox = 0.40; housing.oy = 0.45; housing.oz = 0.0;
+
+        Measure civic = new Measure();
+        civic.name = "Civic participation"; civic.dims = 3;
+        civic.nx = 0.65; civic.ny = 0.60; civic.nz = 0.55; civic.tol = 0.12;
+        civic.ox = 0.58; civic.oy = 0.55; civic.oz = 0.50;
+
+        print("[mathematical] boundaries + deviation");
+        reportMeasure(edu);
+        reportMeasure(health);
+        reportMeasure(safety);
+        reportMeasure(housing);
+        reportMeasure(civic);
+        print("");
+
+        print("[evaluation] design / remedy / method reading");
+        sentence(edu);
+        sentence(health);
+        sentence(safety);
+        sentence(housing);
+        sentence(civic);
+        print("");
+
+        // --- The State has so many workers. What do they do? ---
+        double total = 3000000.0;
+        WorkerFn admin = new WorkerFn(); admin.name = "Administration"; admin.proposedShare = 0.18; admin.observedShare = 0.24;
+        WorkerFn edW = new WorkerFn(); edW.name = "Education"; edW.proposedShare = 0.22; edW.observedShare = 0.20;
+        WorkerFn hW = new WorkerFn(); hW.name = "Health"; hW.proposedShare = 0.20; hW.observedShare = 0.19;
+        WorkerFn safeW = new WorkerFn(); safeW.name = "Public safety"; safeW.proposedShare = 0.15; safeW.observedShare = 0.17;
+        WorkerFn infra = new WorkerFn(); infra.name = "Infrastructure"; infra.proposedShare = 0.13; infra.observedShare = 0.10;
+        WorkerFn soc = new WorkerFn(); soc.name = "Social services"; soc.proposedShare = 0.12; soc.observedShare = 0.10;
+
+        print("[the State has " + total + " workers -- what do they do?]");
+        reportWorker(admin, total);
+        reportWorker(edW, total);
+        reportWorker(hW, total);
+        reportWorker(safeW, total);
+        reportWorker(infra, total);
+        reportWorker(soc, total);
+
+        double drift = math.abs(admin.observedShare - admin.proposedShare)
+            + math.abs(edW.observedShare - edW.proposedShare)
+            + math.abs(hW.observedShare - hW.proposedShare)
+            + math.abs(safeW.observedShare - safeW.proposedShare)
+            + math.abs(infra.observedShare - infra.proposedShare)
+            + math.abs(soc.observedShare - soc.proposedShare);
+        print("  allocation drift (sum |share dev|): " + drift);
+        print("");
+        print("Reading: administration and safety draw more workers than the design");
+        print("assumes, while education, infrastructure and social services draw fewer");
+        print("-- the base allocation assumption is aging where the drift concentrates.");
+        print("");
+        print("Note: a socialing model of design/remedy/method. Deviations locate stale");
+        print("assumptions from stated norms and illustrative observations; not facts.");
+    }
+}
