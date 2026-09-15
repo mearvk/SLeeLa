@@ -1,158 +1,128 @@
-# AE6E66™ — House of Lords + House of Commons Contact Module
+# AE6E66 — UK Parliament Contact Module
 
-**Version:** 1.2  
+**Version:** 2.0 hardened baseline  
 **Author:** Max Rupplin — MEARVK LLC  
-**Trust:** 9.5/10  
-**Color:** Emerald Green (`\033[38;5;35m`) — Royals
+**Status:** Security-hardened design; production deployment requires host-specific verification.
+
+AE6E66 collects publicly available UK Parliament contact information for a declared operational purpose. It is designed around **least privilege, explicit operator control, provenance, and fail-closed integrity**.
+
+## Security position
+
+The previous module design mixed application logic with host-level mail-server installation, embedded deployment identity, automatic service changes, and non-blocking integrity behavior. Those assumptions have been removed from the security baseline.
+
+**AE6E66 does not install or expose a mail server, alter DNS, alter firewall rules, generate repository-tracked credentials, or auto-restore corrupted files.**
+
+See [`SECURITY.md`](SECURITY.md) and [`DEPLOYMENT.md`](DEPLOYMENT.md).
 
 ## Structure
 
-```
+```text
 modules/AE6E66/
 ├── configuration/
-│   ├── ae6e66-config.xml          # Module config (URLs, SMTP, domain, crawl state)
-│   ├── .last-crawl                # Date of last successful MPUK crawl
-│   └── .db-credentials           # MySQL credentials (chmod 600, gitignored)
-├── source/
-│   ├── AE6E66Main.java            # Main: crawl 0–999, portraits, contacts, distribute
-│   └── EmailDistributor.java      # SMTP distributor — validated, dot-stuffed, timeout-safe
+│   └── ae6e66-config.example.xml   # Safe template; no secrets
 ├── scripts/
-│   ├── install-postfix-dovecot.sh # Postfix install (TLS 1.2+, relay-restricted)
-│   ├── configure-local-server.sh  # Static IP config (HELO validation, header cleanup)
-│   ├── setup-dkim-lauradei.sh     # Full DKIM/SPF/DMARC (Unix socket, quarantine policy)
-│   └── setup-mysql.sh            # MySQL: nwe_ae6e66 DB, minimal-privilege user
-├── marrister/                     # Stationary — draft messages here (*.txt)
-├── personal/                      # Outlook/Exchange importable CSV for Lords/Ministers
-│   └── lords-ministers-outlook.csv
-├── portraits/                     # Portraits by ministry subfolder
-│   └── {MinistryName}/{memberId}.jpg
-├── sent/                          # Archived sent messages by date
-│   └── {YYYY-MM-DD}/
-│       ├── message.txt
-│       ├── message.txt.sha256
-│       ├── message.txt.success.log
-│       └── message.txt.failure.log
-├── contacts.csv                   # Full contacts (HOL + HOC sections)
-├── AE6E66.RDRS                    # Registry Descriptor Record Sheet
-└── README.md                      # This file
+│   ├── verify-integrity.sh          # SHA-256 fail-closed verifier
+│   ├── install-postfix-dovecot.sh   # MTA preflight only
+│   ├── setup-dkim-lauradei.sh       # DKIM/MTA preflight only
+│   └── setup-mysql.sh               # DB preflight only
+├── contacts.csv                     # Controlled public contact dataset
+├── SECURITY.md                      # Security and data-protection standard
+├── DEPLOYMENT.md                    # Deployment architecture and controls
+├── AE6E66.RDRS                      # Registry descriptor
+└── README.md
 ```
 
-## Security
+Empty runtime directories may exist for application state, but mutable state should normally live outside the Git checkout.
 
-| Layer | Control |
-|-------|---------|
-| TLS | Enforced TLS 1.2+ for all outbound SMTP |
-| DKIM | 2048-bit key, Unix socket milter (no inet exposure) |
-| SPF | `-all` policy (hard fail for unauthorized senders) |
-| DMARC | `p=quarantine` with aggregate reports |
-| Relay | `reject_unauth_destination` — no open relay |
-| HELO | Required, validated (reject invalid/non-FQDN) |
-| Headers | Internal IPs stripped via regexp header_checks |
-| Email Validation | RFC 5321 subset, 254-char max, header injection blocked |
-| Dot-stuffing | RFC 5321 compliant body encoding |
-| MySQL | Minimal-privilege user (SELECT/INSERT/UPDATE only) |
-| Credentials | `.db-credentials` chmod 600, gitignored |
-| Key Permissions | DKIM private key: 600, keys dir: 700 |
-| Socket Timeout | 30s on SMTP connections |
+## Collection controls
 
-## Crawl Behavior
+- HTTPS is required.
+- Request timeouts and response-size limits are required.
+- Concurrency is bounded.
+- A minimum inter-request delay is required.
+- An authoritative index/API should be preferred over identifier brute force when available.
+- Collection must respect applicable terms, access controls, robots guidance, and rate limits.
+- HTML, redirects, images, and remote content are untrusted input.
+- Each stored record should retain source URL and retrieval timestamp.
+- Only fields necessary for the declared purpose should be retained.
+- Re-crawling is explicit and governed by a configurable freshness period.
 
-- Scans member IDs 0–999 on `members.parliament.uk/member/XXX/contact`
-- Hits `/member/XXX/career` for career data
-- Downloads portraits to `portraits/{Ministry}/`
-- Auto-detects HOL vs HOC from page content keywords
-- Scrapes HOC Enquiries Service for `@parliament.uk` contacts
-- **Skip logic:** If `.last-crawl` < 30 days old, crawl skipped. Delete file to force re-crawl.
+The old `0..999` member loop is not itself an authorization mechanism and is no longer presented as the preferred collection method.
 
-## MySQL Database (nwe_ae6e66)
+## Contact-data controls
 
-| Table | Purpose |
-|-------|---------|
-| `contacts` | Crawled member data (indexed by source, ministry) |
-| `sent_log` | Email delivery audit trail (recipient, SHA-256, status) |
-| `crawl_history` | Crawl run metadata (counts, duration) |
+`contacts.csv` is treated as controlled public-source data, not as a secret database.
 
-**Setup:** `sudo bash modules/AE6E66/scripts/setup-mysql.sh`
+Operational data should have provenance, normalization, freshness, retention, and correction controls. Do not add private information merely because it can be discovered elsewhere. Do not place authentication material in CSV files.
 
-## Email Distribution
+## Mail architecture
 
-1. Draft a `.txt` message in `marrister/`
-2. Run the module
-3. Each recipient gets the message via local Postfix (DKIM-signed, TLS)
-4. Success/failure counts logged to `sent/{date}/` and `sent_log` table
+Preferred flow:
 
-### Mail Server
-
-| Property | Value |
-|----------|-------|
-| Server ID | `mail.lauradei.us` |
-| Static IP | `45.32.31.139` |
-| Domain | `lauradei.us` |
-| From | `contact@lauradei.us` |
-| DKIM Selector | `ae6e66` (2048-bit) |
-| Target | Japanese VPS |
-| Rate Limit | 2s/destination, 2 concurrent |
-
-### Setup Scripts
-
-| Script | OS | Purpose |
-|--------|----|---------|
-| `install-postfix-dovecot.sh` | Linux | Postfix install (TLS 1.2+, relay-restricted) |
-| `install-postfix-macos.sh` | macOS | Built-in Postfix config + Homebrew opendkim |
-| `install-mail-windows.ps1` | Windows | hMailServer + stunnel TLS + send-mail helper |
-| `configure-local-server.sh` | Linux | Static IP, HELO validation, header cleanup |
-| `configure-local-server-macos.sh` | macOS | Static IP via ipconfig, launchd Postfix |
-| `configure-local-server-windows.ps1` | Windows | Firewall rules, server config generation |
-| `setup-dkim-lauradei.sh` | Linux | Full DKIM/SPF/DMARC (Unix socket signing) |
-| `setup-mysql.sh` | Linux | Database + tables + minimal-privilege user |
-| `setup-mysql-macos.sh` | macOS | Homebrew MySQL, same schema |
-| `setup-mysql-windows.ps1` | Windows | MySQL 8.x, ACL-restricted credentials |
-
-## Usage
-
-### Linux
-```bash
-sudo bash modules/AE6E66/scripts/setup-dkim-lauradei.sh
-sudo bash modules/AE6E66/scripts/setup-mysql.sh
-javac modules/AE6E66/source/*.java
-java -cp modules/AE6E66/source source.AE6E66Main
+```text
+AE6E66 -> local submission interface -> administrator-managed MTA -> recipient MX
 ```
 
-### macOS
-```bash
-bash modules/AE6E66/scripts/install-postfix-macos.sh
-bash modules/AE6E66/scripts/setup-mysql-macos.sh
-javac modules/AE6E66/source/*.java
-java -cp modules/AE6E66/source source.AE6E66Main
-```
+AE6E66 should not listen on a public SMTP port. The host MTA is configured independently.
 
-### Windows (PowerShell as Administrator)
-```powershell
-.\modules\AE6E66\scripts\install-mail-windows.ps1
-.\modules\AE6E66\scripts\setup-mysql-windows.ps1
-javac modules\AE6E66\source\*.java
-java -cp modules\AE6E66\source source.AE6E66Main
-```
+When an administrator operates an MTA, it must have:
 
-### Force Re-crawl (all platforms)
-```bash
-rm modules/AE6E66/configuration/.last-crawl
-```
+- authenticated/authorized submission or local-only submission;
+- `reject_unauth_destination` or equivalent anti-open-relay protection;
+- modern TLS according to the current MTA/platform security policy;
+- DKIM signing with protected private keys;
+- SPF and DMARC aligned to the actual sending domain;
+- explicit outbound rate limits and abuse monitoring;
+- controlled queue and bounce handling.
 
-## Cron
+The historical values `mail.lauradei.us`, `lauradei.us`, `45.32.31.139`, and `contact@lauradei.us` are **not module defaults**. Deployment identity belongs in administrator-controlled configuration.
 
-- Job: `AE6E66-Crawl`
-- Schedule: `0 3 1 * *` (monthly, 1st, 03:00)
-- Noble Registry: registered
-- Integrity check: every 2 days
+## Message safety
+
+Before any delivery action:
+
+1. verify module integrity;
+2. validate recipients;
+3. reject CR/LF header injection;
+4. enforce a message-size limit;
+5. use an explicit sender identity;
+6. run dry-run first;
+7. require explicit operator enablement for delivery;
+8. hash the exact message bytes with SHA-256;
+9. log delivery status without logging credentials or unnecessary sensitive content.
+
+Bulk delivery must never be enabled merely by installing the module.
+
+## Database
+
+Use a local-only database account with minimum application privileges. Database administration belongs to a separate administrator account.
+
+Credentials must come from an OS secret store or protected runtime file. The historical pattern of generating `.db-credentials` inside the repository is deprecated.
+
+Schema creation and migrations must be reviewed and run separately from application startup.
 
 ## Integrity
 
-- SHA-256 digests in `integrity/digest.db` and MySQL `nwe_integrity`
-- Auto-restore from trusted GitHub commit on corruption
-- Originals preserved in `integrity/history/`
-- Tech ID: Gifted Install Tech ID (non-blocking)
+SHA-256 is the required integrity mechanism.
 
-## Print
+- Verification is mandatory before execution and diagnostics.
+- A mismatch stops the operation.
+- MD5 is not used for security decisions.
+- Remote auto-restore is disabled.
+- Trusted source identity must be a pinned, administrator-approved commit/release rather than a mutable branch.
 
-All output via CommonRails in Emerald Green — designates Royals.
+Run:
+
+```bash
+bash modules/AE6E66/scripts/verify-integrity.sh /path/to/approved/SHA256SUMS
+```
+
+The manifest must itself come from a trusted release process.
+
+## Platform status
+
+Scripts for Linux, macOS, and Windows are not evidence of equivalent production support. A platform is production-supported only after its implementation, prerequisites, security controls, and tests have been verified on that platform.
+
+## Operational rule
+
+**If integrity, provenance, authorization, or security configuration cannot be established, AE6E66 stops rather than guessing.**
