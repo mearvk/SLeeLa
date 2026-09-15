@@ -1,7 +1,7 @@
 # AE6E66 Security Standard
 
-**Status:** Hardened baseline
-**Scope:** `modules/AE6E66`
+**Status:** Hardened baseline  
+**Scope:** `modules/AE6E66`  
 **Principle:** fail closed, least privilege, explicit deployment, no embedded secrets.
 
 ## 1. Trust boundary
@@ -18,6 +18,8 @@ All privileged deployment work is external to the module and must be explicitly 
 - No automatic restoration from an unverified remote source is permitted.
 - Verification occurs before build, execution, crawl, message preparation, and diagnostics.
 - Trusted Git commits must be pinned to an administrator-approved commit or release; a mutable branch is not an integrity anchor.
+- The integrity manifest itself must have independently authenticated provenance.
+- The verifier rejects absolute paths, parent traversal, symlinked manifests, and symlinked target files.
 - Generated state is kept outside the source tree where practical.
 
 Use `scripts/verify-integrity.sh` before operational use.
@@ -66,18 +68,19 @@ A member identifier range such as `0..999` is not an authorization mechanism.
 
 ## 6. Contact data
 
-`contacts.csv` contains public-facing contact information and is treated as controlled data, not as a secret store.
+`contacts.csv` contains public-facing reference information and is treated as controlled data, not as a secret store or current authoritative directory.
 
 Operational copies must have:
 
-- provenance/source URL;
+- authoritative provenance/source URL;
 - retrieval timestamp;
 - normalization status;
+- freshness classification;
 - retention policy;
 - correction/deletion process;
 - access controls appropriate to the local deployment.
 
-Do not add private/personal information merely because it is discoverable elsewhere.
+Legacy records must not silently become operational recipients. Do not add private/personal information merely because it is discoverable elsewhere.
 
 ## 7. Message safety
 
