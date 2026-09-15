@@ -96,8 +96,14 @@ L1  Core + Arith       Value/Token/AST model, precedence-climbing arithmetic
   action after the active shell command returns. Numeric signals and common
   names (`HUP`, `INT`, `TERM`, `QUIT`, `USR1`, `USR2`, `PIPE`, `ALRM`) are
   accepted.
-- **M5 CI smoke coverage** — select, both process-substitution directions,
-  and a signal trap are exercised by `.github/workflows/sleela-terminal-m5.yml`.
+- **M5 hardening** — filesystem results stay data, external-command prefix
+  assignments use scoped environments, redirection failures are checked, and
+  the process-substitution startup path avoids the common FIFO open deadlock.
+- **M5 CI validation** — the workflow performs a clean build, full smoke suite,
+  sanitizer validation, Clang installation, and fuzz-target compilation.
+
+See [`M5-HARDENING.md`](M5-HARDENING.md) for the implementation closeout and
+remaining gates toward the **GREAT** engineering classification.
 
 ## Build & run
 
@@ -131,6 +137,8 @@ printf '%s\n' 'cat <(printf hi)' | ./build/slsh
 | File | Layer | What it is |
 |---|---|---|
 | [`ARCHITECTURE.md`](ARCHITECTURE.md) | — | Hierarchical, math-driven design. |
+| [`M5-HARDENING.md`](M5-HARDENING.md) | — | M5 hardening, validation, regression baseline, and release gates. |
+| [`PERFORMANCE.md`](PERFORMANCE.md) | — | Performance, security, validation, and engineering classification reference. |
 | `core.hpp` | L1 | Value, Token, AST, Environment. |
 | `arith.hpp` / `arith.cpp` | L1 | Precedence-climbing arithmetic engine. |
 | `lexer.hpp` / `lexer.cpp` | L2 | Text → tokens. |
@@ -141,7 +149,8 @@ printf '%s\n' 'cat <(printf hi)' | ./build/slsh
 | `slsh.cpp` | L6 | CLI / REPL driver and M5 entry point. |
 | `smoke.cpp` | test | Existing layered smoke test. |
 | `m5-smoke.sh` | test | M5 integration and security regression smoke test. |
-| `Makefile` | — | Self-contained build. |
+| `fuzz.cpp` | test | Bounded Clang/libFuzzer lexer/parser harness. |
+| `Makefile` | — | Self-contained build and validation targets. |
 | [`NOTICE`](NOTICE) | — | Original-authorship statement. |
 
 *Original SleelaTerminal™ work. Behaviour targets public POSIX-shell
