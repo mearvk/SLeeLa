@@ -7,10 +7,11 @@ CXXFLAGS ?= -std=c++17 -O2 -Wall -Wextra
 BUILD    := build
 
 CORE_SRC := core.cpp arith.cpp lexer.cpp parser.cpp expand.cpp executor.cpp
-CLI_SRC  := slsh.cpp $(CORE_SRC)
+M5_SRC   := m5.cpp
+CLI_SRC  := slsh.cpp $(M5_SRC) $(CORE_SRC)
 SMOKE_SRC := smoke.cpp $(CORE_SRC)
 
-HEADERS := core.hpp arith.hpp lexer.hpp parser.hpp expand.hpp executor.hpp
+HEADERS := core.hpp arith.hpp lexer.hpp parser.hpp expand.hpp executor.hpp m5.hpp
 
 SLSH  := $(BUILD)/slsh
 SMOKE := $(BUILD)/smoke
