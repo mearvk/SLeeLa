@@ -17,15 +17,15 @@ shell, expressed through our own **hierarchical, math-driven architecture** (see
 A strict downward-only dependency stack:
 
 ```text
-L6  CLI / REPL          slsh: -c "script" | file | interactive
-L5  Executor            pipelines, redirections, control flow, builtins
-L4  Expansion           variables, arithmetic $(( )), quote removal
-L3  Parser              tokens -> AST (recursive descent)
-L2  Lexer               text -> tokens (quoting, operators, comments)
-L1  Core + Arith        Value/Token/AST model, precedence-climbing arithmetic
+L6  CLI / M5          slsh + select/process-substitution/trap orchestration
+L5  Executor          pipelines, redirections, control flow, builtins
+L4  Expansion         variables, arithmetic $(( )), quote removal
+L3  Parser             tokens -> AST (recursive descent)
+L2  Lexer              text -> tokens (quoting, operators, comments)
+L1  Core + Arith       Value/Token/AST model, precedence-climbing arithmetic
 ```
 
-## Features (M1 – M4)
+## Features (M1 – M5)
 
 **M1 — the core:**
 
@@ -81,44 +81,66 @@ L1  Core + Arith        Value/Token/AST model, precedence-climbing arithmetic
 - **`getopts optstring name [arg…]`** — parse options with `OPTIND` / `OPTARG`,
   supporting bundled flags (`-abc`), `-oVALUE`, and `-o VALUE`.
 
+**M5 — shell interaction and process integration:**
+
+- **`select name in …; do … done`** — numbered menus, `PS3`, `REPLY`, choice
+  assignment, invalid-choice handling, and loop exit through `break`.
+- **Multi-segment pathname globbing** — the expansion layer's filesystem
+  walker supports path components rather than limiting `*`/`?`/`[..]` to one
+  directory level; M5 promotes this as a tested capability.
+- **Process substitution** — `<(command)` supplies a readable FIFO and
+  `>(command)` supplies a writable FIFO, with 0600 permissions and a private
+  child environment.
+- **Signal traps** — standalone `trap 'command' SIGNAL` declarations are
+  installed by the M5 layer; caught signals are dispatched to the registered
+  action after the active shell command returns. Numeric signals and common
+  names (`HUP`, `INT`, `TERM`, `QUIT`, `USR1`, `USR2`, `PIPE`, `ALRM`) are
+  accepted.
+- **M5 CI smoke coverage** — select, both process-substitution directions,
+  and a signal trap are exercised by `.github/workflows/sleela-terminal-m5.yml`.
+
 ## Build & run
 
 ```sh
 cd sleela-terminal
 make                       # builds ./build/slsh and the smoke test
 make smoke                 # run the layered smoke test
+./m5-smoke.sh              # run the M5 integration smoke tests after building
 
-./build/slsh -c 'echo hello | tr a-z A-Z'   # (external tr via PATH)
+./build/slsh -c 'echo hello | tr a-z A-Z'
 ./build/slsh -c 'x=3; echo $(( x * x + 1 ))'
 ./build/slsh -c 'for i in a b c; do echo $i; done'
 ./build/slsh -c 'greet() { echo Hi, $1; }; greet Ada'
 ./build/slsh -c 'case $(echo cat) in cat|dog) echo pet;; esac'
-./build/slsh -c 'for f in *.md; do echo $f; done'   # globbing
-./build/slsh -c 'echo ${name:-anonymous}; echo ${#PATH}'
+./build/slsh -c 'for f in *.md; do echo $f; done'
 ./build/slsh -c 'echo report{1..3}.txt; echo {dev,prod}-{a,b}'
-./build/slsh -c 'up() { tr a-z A-Z; }; echo hi | up'   # function in a pipeline
+./build/slsh -c 'up() { tr a-z A-Z; }; echo hi | up'
 printf 'cat <<END\nyear $(( 2000 + 25 ))\nEND\n' | ./build/slsh /dev/stdin
 ./build/slsh -c 'n=0; until [ $n -ge 3 ]; do echo $n; n=$(( n + 1 )); done'
-./build/slsh -c 'if ! [ -f /no/such ]; then echo missing; fi'   # test + negation
-./build/slsh -c 'sleep 1 & jobs; wait; echo done'               # background job
+./build/slsh -c 'if ! [ -f /no/such ]; then echo missing; fi'
+./build/slsh -c 'sleep 1 & jobs; wait; echo done'
 printf 'ada 42\n' | ./build/slsh -c 'read name age; echo "$name is $age"'
-./build/slsh script.slsh                    # run a script file
-./build/slsh                                # interactive REPL
+printf '1\n' | ./build/slsh -c 'PS3="pick> "; select x in alpha beta; do echo "$x:$REPLY"; break; done'
+printf '%s\n' 'cat <(printf hi)' | ./build/slsh
+./build/slsh script.slsh
+./build/slsh
 ```
 
 ## Files
 
 | File | Layer | What it is |
 |---|---|---|
-| [`ARCHITECTURE.md`](ARCHITECTURE.md) | — | The hierarchical, math-driven design. |
+| [`ARCHITECTURE.md`](ARCHITECTURE.md) | — | Hierarchical, math-driven design. |
 | `core.hpp` | L1 | Value, Token, AST, Environment. |
-| `arith.hpp` / `arith.cpp` | L1 | The precedence-climbing arithmetic engine. |
+| `arith.hpp` / `arith.cpp` | L1 | Precedence-climbing arithmetic engine. |
 | `lexer.hpp` / `lexer.cpp` | L2 | Text → tokens. |
 | `parser.hpp` / `parser.cpp` | L3 | Tokens → AST. |
-| `expand.hpp` / `expand.cpp` | L4 | Word expansion. |
+| `expand.hpp` / `expand.cpp` | L4 | Word expansion and pathname globbing. |
 | `executor.hpp` / `executor.cpp` | L5 | Run the AST + builtins. |
-| `slsh.cpp` | L6 | CLI / REPL driver. |
-| `smoke.cpp` | test | Layered smoke test. |
+| `m5.hpp` / `m5.cpp` | M5 | Select, process substitution, and signal-trap orchestration. |
+| `slsh.cpp` | L6 | CLI / REPL driver and M5 entry point. |
+| `smoke.cpp` | test | Existing layered smoke test. |
+| `m5-smoke.sh` | test | M5 integration smoke test. |
 | `Makefile` | — | Self-contained build. |
 | [`NOTICE`](NOTICE) | — | Original-authorship statement. |
 
