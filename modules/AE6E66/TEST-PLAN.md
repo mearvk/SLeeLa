@@ -5,6 +5,7 @@
 ## 1. Integrity gate
 
 - Verify a known-good pinned release manifest.
+- Verify the release/manifest provenance independently; SHA-256 alone does not authenticate the manifest.
 - Confirm SHA-256 mismatch causes a hard failure.
 - Confirm missing manifest causes a hard failure.
 - Confirm malformed manifest paths are rejected.
@@ -31,10 +32,11 @@
 - Validate email syntax.
 - Normalize phone values without inventing missing digits.
 - Decode HTML entities only where the source format requires it.
-- Require source URL and retrieval timestamp for operational records.
+- Require authoritative source URL and retrieval timestamp for operational records.
 - Reject records that do not conform to `contact-schema.json`.
-- Confirm stale and legacy records cannot silently become delivery targets.
+- Confirm `legacy-unverified` and `legacy-public` records cannot silently become delivery targets.
 - Verify retention and correction/deletion behavior.
+- Verify the checked-in historical dataset is not represented as a current authoritative directory.
 
 ## 4. Message safety
 
@@ -62,6 +64,7 @@
 ## 6. Database security
 
 - Verify the application account exists with minimum privileges.
+- Verify actual grants, not only intended configuration.
 - Verify database access is local-only where possible.
 - Verify TLS when a network connection is unavoidable.
 - Verify prepared statements are used by the application.
@@ -75,7 +78,7 @@ For each supported platform, record OS version, runtime version, prerequisites, 
 
 ## 8. Negative testing
 
-Every security control must have at least one negative test demonstrating that an unsafe condition stops execution. Examples include corrupted files, invalid recipients, malformed remote content, open relay configuration, wildcard listener, missing TLS, missing DKIM socket, excessive database privileges, and missing secrets.
+Every security control must have at least one negative test demonstrating that an unsafe condition stops execution. Examples include corrupted files, invalid recipients, malformed remote content, open relay configuration, wildcard listener, missing TLS, missing DKIM socket, excessive database privileges, missing secrets, unsafe manifest paths, and symlinked integrity targets.
 
 ## 9. Release gate
 
@@ -85,8 +88,9 @@ AE6E66 may be called **production-ready** only when:
 2. the application passes functional tests;
 3. all applicable negative security tests pass;
 4. the pinned release manifest verifies successfully;
-5. deployment-specific MTA/database controls pass;
-6. supported-platform evidence is recorded; and
-7. no unresolved high-severity security finding remains.
+5. the release/manifest provenance is independently authenticated;
+6. deployment-specific MTA/database controls pass;
+7. supported-platform evidence is recorded; and
+8. no unresolved high-severity security finding remains.
 
 Until then, the module remains a hardened specification/data component and must not be represented as a complete production application.
