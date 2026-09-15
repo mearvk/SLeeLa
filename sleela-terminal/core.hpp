@@ -15,72 +15,35 @@
 
 namespace sleela::sh {
 
-// ---------------------------------------------------------------------------
-// Value -- a shell value: a string with an integer view for arithmetic.
-// ---------------------------------------------------------------------------
 struct Value {
     std::string text;
-
     Value() = default;
     Value(std::string s) : text(std::move(s)) {}
-
-    // Integer view: leading sign + digits; empty/non-numeric reads as 0.
     long asInt() const noexcept;
     static Value fromInt(long v);
 };
 
-// ---------------------------------------------------------------------------
-// Token -- the lexer's output unit.
-// ---------------------------------------------------------------------------
 enum class Tok {
-    Word,        // a (possibly quoted) word
-    Assignment,  // name=value at command-word position
-    Pipe,        // |
-    Semi,        // ;
-    Newline,     // \n
-    AndIf,       // &&
-    OrIf,        // ||
-    Less,        // <
-    Great,       // >
-    DGreat,      // >>
-    DLess,       // << (here-document)
-    DLessDash,   // <<- (here-document, strip leading tabs)
-    LParen,      // (
-    RParen,      // )
-    LBrace,      // {   (function/group body open, when in command position)
-    RBrace,      // }
-    // keywords
-    If, Then, Elif, Else, Fi,
-    While, Until, Do, Done,
-    For, In,
-    Case, Esac,
-    Amp,          // &  (run the preceding and-or in the background)
-    Bang,         // !  (negate the exit status of the following pipeline)
-    HeredocBody,  // synthetic: carries a here-document body (follows delimiter)
-    Eof
+    Word, Assignment, Pipe, Semi, Newline, AndIf, OrIf, Less, Great, DGreat,
+    DLess, DLessDash, LParen, RParen, LBrace, RBrace,
+    If, Then, Elif, Else, Fi, While, Until, Do, Done, For, In, Case, Esac,
+    Amp, Bang, HeredocBody, Eof
 };
 
 struct Token {
     Tok kind = Tok::Eof;
-    std::string text;   // literal text (word content, assignment "n=v", etc.)
+    std::string text;
     int line = 0;
     int col = 0;
 };
 
-// ---------------------------------------------------------------------------
-// AST -- a small, closed set of node kinds.
-// ---------------------------------------------------------------------------
-
-// A redirection attached to a simple command.
-enum class RedirOp { In, Out, Append, Heredoc };  // <  >  >>  <<
+enum class RedirOp { In, Out, Append, Heredoc };
 struct Redirection {
     RedirOp op = RedirOp::Out;
-    int fd = -1;         // explicit fd, or -1 to use the default for the op
-    std::string target; // filename (a word, expanded at run time)
-    std::string body;    // here-document body text (Heredoc only), already
-                         // assembled; fed to the command's stdin at run time
-    bool expand_body = true;  // Heredoc: expand $ in the body unless the
-                              // delimiter was quoted (<<'EOF')
+    int fd = -1;
+    std::string target;
+    std::string body;
+    bool expand_body = true;
 };
 
 enum class NodeKind { Simple, Pipeline, AndOr, List, If, While, Until,
@@ -89,154 +52,110 @@ enum class NodeKind { Simple, Pipeline, AndOr, List, If, While, Until,
 struct Node;
 using NodePtr = std::unique_ptr<Node>;
 
-// One arm of a `case`: a set of glob patterns and the body run on a match.
 struct CaseItem {
-    std::vector<std::string> patterns;  // unexpanded pattern words
-    NodePtr body;                       // a List
+    std::vector<std::string> patterns;
+    NodePtr body;
 };
 
-// One assignment "name=word" carried by a simple command.
 struct Assignment {
     std::string name;
-    std::string value;  // unexpanded word text
+    std::string value;
 };
 
-// AndOr link operator.
-enum class AndOrOp { And, Or };  // && ||
+enum class AndOrOp { And, Or };
 
 struct Node {
     NodeKind kind;
-
-    // Simple:
     std::vector<Assignment> assigns;
-    std::vector<std::string> words;     // unexpanded word texts (argv template)
+    std::vector<std::string> words;
     std::vector<Redirection> redirs;
-
-    // Pipeline: children joined by '|'.
-    // List: children separated by ';'/newline (or '&' -> run in background).
     std::vector<NodePtr> children;
-    // List only: per-child "run asynchronously" flag (size == children.size()).
-    // A child is async when its and-or was terminated by '&'.
     std::vector<bool> child_async;
-
-    // Pipeline: true when prefixed with '!' (negate the final exit status).
     bool negated = false;
-
-    // AndOr: left/right with an operator between (chained left-assoc as a
-    // sequence of {op, node}).
-    std::vector<AndOrOp> andor_ops;     // size == children.size()-1 for AndOr
-
-    // If: cond/body pairs (if + elif...), plus optional else body.
-    std::vector<NodePtr> if_conds;      // condition Lists
-    std::vector<NodePtr> if_bodies;     // corresponding then-bodies
-    NodePtr else_body;                  // may be null
-
-    // While: cond + body.
+    std::vector<AndOrOp> andor_ops;
+    std::vector<NodePtr> if_conds;
+    std::vector<NodePtr> if_bodies;
+    NodePtr else_body;
     NodePtr while_cond;
     NodePtr while_body;
-
-    // For: variable name, the (unexpanded) word list to iterate, and a body.
     std::string for_var;
     std::vector<std::string> for_words;
     NodePtr for_body;
-
-    // Case: the (unexpanded) subject word and a set of pattern arms.
     std::string case_subject;
     std::vector<CaseItem> case_items;
-
-    // FunctionDef: the function name and its body (a List).
     std::string func_name;
     NodePtr func_body;
-
     explicit Node(NodeKind k) : kind(k) {}
 };
 
-// ---------------------------------------------------------------------------
-// Environment -- variables, exit status, working directory.
-// ---------------------------------------------------------------------------
 class Environment {
 public:
     Environment();
 
-    // Variable access. get() returns "" for an unset name.
     std::string get(const std::string& name) const;
     bool has(const std::string& name) const;
     void set(const std::string& name, const std::string& value);
     void unset(const std::string& name);
-    void exportVar(const std::string& name);   // mark for child environments
+    void exportVar(const std::string& name);
     bool isExported(const std::string& name) const;
-
-    // The exported subset, as "name=value" strings (for execve/posix_spawn).
     std::vector<std::string> exportedEnviron() const;
-
-    // Create a child environment without changing the shell's own variables.
     Environment scopedCopy() const;
 
-    // Shell functions: name -> body (a List node). Bodies are shared so a
-    // definition can outlive the AST that declared it during a call.
     void defineFunction(const std::string& name, std::shared_ptr<Node> body);
     std::shared_ptr<Node> lookupFunction(const std::string& name) const;
     bool hasFunction(const std::string& name) const;
 
-    // Positional parameters ($1, $2, ...) and $# / $@ for the current scope
-    // (set while a function is running). getPositional(0) is $0-like unused.
     void setPositionals(std::vector<std::string> args);
     std::vector<std::string> positionals() const { return positionals_; }
-    std::string getPositional(std::size_t n) const;   // 1-based; "" if absent
+    std::string getPositional(std::size_t n) const;
     std::size_t positionalCount() const { return positionals_.size(); }
 
-    // Exit status of the last command ($?).
     int lastStatus() const noexcept { return last_status_; }
     void setLastStatus(int s) noexcept { last_status_ = s; }
 
-    // Whether an interactive/`exit` request has been made, and its code.
     bool shouldExit() const noexcept { return should_exit_; }
     int exitCode() const noexcept { return exit_code_; }
     void requestExit(int code) noexcept { should_exit_ = true; exit_code_ = code; }
 
-    // Loop control (break/continue). A builtin requests it; the nearest
-    // enclosing loop consumes one "level" and clears the flag when it reaches
-    // zero. `break` sets breaking; `continue` sets continuing.
+    const std::string& prompt() const noexcept { return prompt_; }
+    void setPrompt(std::string prompt) { prompt_ = std::move(prompt); }
+
     void requestBreak(int levels) noexcept { loop_break_ = levels > 0 ? levels : 1; }
     void requestContinue(int levels) noexcept { loop_continue_ = levels > 0 ? levels : 1; }
-    int  breakLevels() const noexcept { return loop_break_; }
-    int  continueLevels() const noexcept { return loop_continue_; }
+    int breakLevels() const noexcept { return loop_break_; }
+    int continueLevels() const noexcept { return loop_continue_; }
     bool loopSignal() const noexcept { return loop_break_ > 0 || loop_continue_ > 0; }
-    // A loop calls this on each iteration boundary. Returns:
-    //   'B' -> this loop should break, 'C' -> this loop should continue,
-    //   0   -> no signal for this loop. Decrements multi-level counts.
     char consumeLoopSignal() noexcept {
         if (loop_break_ > 0) {
-            if (--loop_break_ > 0) return 'B';   // propagate to outer loop
+            if (--loop_break_ > 0) return 'B';
             return 'B';
         }
         if (loop_continue_ > 0) {
-            if (--loop_continue_ > 0) return 'B'; // outer loops break through
+            if (--loop_continue_ > 0) return 'B';
             return 'C';
         }
         return 0;
     }
 
-    // ---- Background jobs (job control) ----
     struct Job {
-        int id = 0;          // job number ([1], [2], ...)
-        long pid = 0;        // process id
-        std::string command; // the command line, for `jobs`
-        bool running = true; // false once reaped
+        int id = 0;
+        long pid = 0;
+        std::string command;
+        bool running = true;
     };
-    // Register a new background job; returns its job number.
     int addJob(long pid, const std::string& command);
     std::vector<Job>& jobs() noexcept { return jobs_; }
     const std::vector<Job>& jobs() const noexcept { return jobs_; }
-    Job* findJob(int id) noexcept;      // by job number; null if absent
+    Job* findJob(int id) noexcept;
     void removeJob(int id) noexcept;
 
 private:
     struct Var { std::string value; bool exported = false; };
     std::map<std::string, Var> vars_;
     std::map<std::string, std::shared_ptr<Node>> functions_;
-    std::vector<std::string> positionals_;   // $1.. (index 0 == $1)
+    std::vector<std::string> positionals_;
     std::vector<Job> jobs_;
+    std::string prompt_ = "slsh$ ";
     int next_job_id_ = 1;
     int last_status_ = 0;
     bool should_exit_ = false;
