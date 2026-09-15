@@ -334,6 +334,12 @@ The committed manifest remains:
 
 The native frontend's execution gate remains in `impl/frontend/driver.cpp` and uses the same SHA-256 verification tool.
 
+### 4. Added a conservative C/C++ formatting baseline
+
+A root `.clang-format` was added to establish a stable, reviewable formatting baseline for future C and C++ cleanup. The configuration intentionally avoids an aggressive whole-tree rewrite: it standardizes indentation, braces, spacing, include organization, comments, and line length while keeping short security-sensitive control-flow constructs expanded.
+
+The formatter configuration is a policy baseline, not permission to reformat the entire implementation in one commit. Source changes should still be made subsystem-by-subsystem and reviewed for semantic and security impact.
+
 ## C/C++ source review
 
 A focused review of the implementation source was performed after the structural cleanup, with particular attention to `impl/frontend/driver.cpp` and `impl/Makefile`.
@@ -355,6 +361,7 @@ A focused review of the implementation source was performed after the structural
 - The build already has an explicit `verify-security` target and makes `all` and `build-verified` depend on it.
 - Object targets use `verify-security` as an order-only prerequisite, which correctly keeps the phony verification target out of link command `$^` expansion.
 - The test aggregate explicitly starts with `verify-security`.
+- Direct requests for the named binary targets should also be checked against the verification invariant: a user should not be able to bypass verification merely by invoking an already-built executable target when its object prerequisites are already current.
 - Individual test targets and direct binary invocations should continue to be reviewed for the invariant that no executable or diagnostic is run without the applicable SHA-256 verification gate.
 - The Makefile is readable enough to retain as the authoritative build definition; a full rewrite is not warranted merely for stylistic reasons.
 
@@ -371,6 +378,8 @@ Recommended order for the next controlled source pass:
 5. `impl/subjects/` subject modules.
 6. `impl/catalog/`, `impl/xclass/`, and `impl/nordshrift/`.
 7. Smoke tests and remaining test sources.
+
+The first source pass should make the `driver.cpp` control flow auditable without changing command behavior, and should separately address the Defender network-acquisition ordering after a security review. The Makefile should then be hardened so direct binary targets retain the verification invariant even when their object files are already current.
 
 Each pass should preserve behavior, build successfully through the verified entry point, run applicable tests, and regenerate the SHA-256 manifest for changed verified files.
 
@@ -396,6 +405,8 @@ Before accepting future source or build changes:
 The following are intentionally deferred until they can be handled with complete source visibility and verification:
 
 - broad mechanical formatting of all C/C++ files;
+- immediate semantic changes to Defender acquisition ordering without a separate security review;
+- changes to direct Makefile binary-target verification without a complete current Makefile revision;
 - mass renaming of public documentation files;
 - relocation of root-level language specifications;
 - deletion of historical domain documents whose current consumers have not been identified;
@@ -421,7 +432,14 @@ The goal is a smaller, clearer, more portable repository without sacrificing the
 - reviewed the verification ordering and build/test structure in `impl/Makefile`;
 - identified compressed source formatting as an auditability issue rather than immediately applying a risky whole-tree reformat;
 - identified Defender fetch/verification ordering as a security-hardening point for a subsequent controlled code change;
+- identified direct binary-target verification as an additional Makefile hardening point;
 - documented a subsystem-by-subsystem C/C++ cleanup order;
 - preserved the existing compiler/runtime behavior while recording the source-quality and security findings.
+
+### 2026-09-15 — Formatting baseline pass
+
+- added root `.clang-format` with conservative C/C++ formatting rules;
+- established a common baseline for the upcoming `driver.cpp` and subsystem cleanup passes;
+- deliberately avoided mass formatting until complete source visibility and verified builds are available.
 
 The goal remains a smaller, clearer, more portable repository without sacrificing the existing implementation or security contracts.
