@@ -384,7 +384,6 @@ void open_settings(GtkButton *, gpointer user_data) {
     make_settings_menu(state, button);
 }
 
-
 void software_done(GObject *source, GAsyncResult *result, gpointer user_data) {
     auto *buffer = GTK_TEXT_BUFFER(user_data);
     GError *error = nullptr;
