@@ -100,7 +100,7 @@ std::string asset_path(const AppState *state, const char *name) {
     return name;
 }
 
-std::string installer_path(const AppState *state) {
+// CMD is the Java native launcher associated with SecureJDK 28.\n// The footer CMD image is a strict image control: no button outline or frame.\nstd::string installer_path(const AppState *state) {
     namespace fs = std::filesystem;
     fs::path executable = fs::absolute(state->executable_path);
     const std::vector<fs::path> candidates = {
@@ -679,10 +679,10 @@ void activate(GtkApplication *application, gpointer user_data) {
     gtk_label_set_ellipsize(state->footer_text, PANGO_ELLIPSIZE_END);
     gtk_box_append(GTK_BOX(footer), footer_text);
 
-    GtkWidget *java_button = gtk_button_new();
+    // CMD footer control: strict image only; the image itself is the clickable surface.\n    GtkWidget *java_button = gtk_button_new();
     gtk_widget_add_css_class(java_button, "sleela-footer-java");
-    gtk_widget_set_tooltip_text(java_button, "SecureJDK 28 / CMD — Scan GitHub and install or prepare latest software");
-    GtkWidget *java_image = gtk_image_new_from_file(asset_path(state, "securejdk28-cmd.svg").c_str());
+    gtk_widget_set_tooltip_text(java_button, "CMD — Java native launcher / SecureJDK 28 software center");
+    GtkWidget *java_image = gtk_image_new_from_file(asset_path(state, "cmd.svg").c_str());
     gtk_image_set_pixel_size(GTK_IMAGE(java_image), 30); gtk_button_set_child(GTK_BUTTON(java_button), java_image);
     g_object_set_data(G_OBJECT(java_button), "sleela-state", state); g_signal_connect(java_button, "clicked", G_CALLBACK(open_software_menu), java_button); gtk_box_append(GTK_BOX(footer), java_button);
 
