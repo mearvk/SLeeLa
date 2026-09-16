@@ -492,9 +492,11 @@ void show_install_prompt(AppState *state, GtkWidget *, const char *product, cons
 
     GtkWidget *buttons = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 8);
     gtk_widget_set_halign(buttons, GTK_ALIGN_END);
+    GtkWidget *other = gtk_button_new_with_label("Other Java Programs…");
     GtkWidget *no = gtk_button_new_with_label("No");
     GtkWidget *yes = gtk_button_new_with_label("Yes — Install");
     gtk_widget_add_css_class(yes, "suggested-action");
+    gtk_box_append(GTK_BOX(buttons), other);
     gtk_box_append(GTK_BOX(buttons), no);
     gtk_box_append(GTK_BOX(buttons), yes);
     gtk_box_append(GTK_BOX(box), buttons);
@@ -537,6 +539,11 @@ void show_install_prompt(AppState *state, GtkWidget *, const char *product, cons
     }, G_CONNECT_AFTER);
 
     g_signal_connect_swapped(no, "clicked", G_CALLBACK(gtk_window_destroy), dialog);
+    g_signal_connect(other, "clicked", G_CALLBACK(+[](GtkButton *, gpointer data) {
+        auto *p = static_cast<InstallPayload *>(data);
+        make_software_menu(p->state, GTK_WIDGET(p->dialog));
+        gtk_window_destroy(p->dialog);
+    }), payload);
     gtk_window_set_child(GTK_WINDOW(dialog), box);
     gtk_window_present(GTK_WINDOW(dialog));
 }
