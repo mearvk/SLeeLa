@@ -119,6 +119,87 @@ gboolean terminal_key_pressed(GtkEventControllerKey *, guint keyval, guint,
     return FALSE;
 }
 
+void terminal_copy(GtkWidget *, gpointer user_data) {
+    auto *terminal = VTE_TERMINAL(user_data);
+    if (vte_terminal_get_has_selection(terminal)) {
+        vte_terminal_copy_clipboard_format(terminal, VTE_FORMAT_TEXT);
+    }
+}
+
+void terminal_paste(GtkWidget *, gpointer user_data) {
+    vte_terminal_paste_clipboard(VTE_TERMINAL(user_data));
+}
+
+void terminal_select_all(GtkWidget *, gpointer user_data) {
+    vte_terminal_select_all(VTE_TERMINAL(user_data));
+}
+
+void terminal_clear_selection(GtkWidget *, gpointer user_data) {
+    vte_terminal_unselect_all(VTE_TERMINAL(user_data));
+}
+
+void terminal_mouse_menu(GtkGestureClick *gesture, int, double, double, gpointer user_data) {
+    auto *terminal = VTE_TERMINAL(user_data);
+    GtkWidget *popover = gtk_popover_new();
+    gtk_widget_set_parent(popover, GTK_WIDGET(terminal));
+    gtk_popover_set_has_arrow(popover, TRUE);
+
+    GtkWidget *box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+    gtk_widget_set_margin_start(box, 8);
+    gtk_widget_set_margin_end(box, 8);
+    gtk_widget_set_margin_top(box, 8);
+    gtk_widget_set_margin_bottom(box, 8);
+
+    GtkWidget *selection = gtk_label_new("Terminal Text Selection");
+    gtk_widget_add_css_class(selection, "heading");
+    gtk_widget_set_halign(selection, GTK_ALIGN_START);
+    gtk_box_append(GTK_BOX(box), selection);
+
+    GtkWidget *left = gtk_label_new("Left Mouse — Select Terminal Text");
+    gtk_widget_set_halign(left, GTK_ALIGN_START);
+    gtk_box_append(GTK_BOX(box), left);
+
+    GtkWidget *right = gtk_label_new("Right Mouse — Open Terminal Menu");
+    gtk_widget_set_halign(right, GTK_ALIGN_START);
+    gtk_box_append(GTK_BOX(box), right);
+
+    GtkWidget *separator = gtk_separator_new(GTK_ORIENTATION_HORIZONTAL);
+    gtk_box_append(GTK_BOX(box), separator);
+
+    GtkWidget *copy = gtk_button_new_with_label("Copy Selected Text");
+    g_signal_connect(copy, "clicked", G_CALLBACK(terminal_copy), terminal);
+    g_signal_connect_swapped(copy, "clicked", G_CALLBACK(gtk_widget_unparent), popover);
+    gtk_box_append(GTK_BOX(box), copy);
+
+    GtkWidget *paste = gtk_button_new_with_label("Paste Text");
+    g_signal_connect(paste, "clicked", G_CALLBACK(terminal_paste), terminal);
+    g_signal_connect_swapped(paste, "clicked", G_CALLBACK(gtk_widget_unparent), popover);
+    gtk_box_append(GTK_BOX(box), paste);
+
+    GtkWidget *select_all = gtk_button_new_with_label("Select All Terminal Text");
+    g_signal_connect(select_all, "clicked", G_CALLBACK(terminal_select_all), terminal);
+    g_signal_connect_swapped(select_all, "clicked", G_CALLBACK(gtk_widget_unparent), popover);
+    gtk_box_append(GTK_BOX(box), select_all);
+
+    GtkWidget *clear = gtk_button_new_with_label("Clear Selection");
+    g_signal_connect(clear, "clicked", G_CALLBACK(terminal_clear_selection), terminal);
+    g_signal_connect_swapped(clear, "clicked", G_CALLBACK(gtk_widget_unparent), popover);
+    gtk_box_append(GTK_BOX(box), clear);
+
+    gtk_popover_set_child(GTK_POPOVER(popover), box);
+
+    GdkRectangle rect;
+    double x = 0.0;
+    double y = 0.0;
+    gtk_gesture_get_point(GTK_GESTURE(gesture), nullptr, &x, &y);
+    rect.x = static_cast<int>(x);
+    rect.y = static_cast<int>(y);
+    rect.width = 1;
+    rect.height = 1;
+    gtk_popover_set_pointing_to(GTK_POPOVER(popover), &rect);
+    gtk_popover_popup(GTK_POPOVER(popover));
+}
+
 void child_exited(VteTerminal *, int, gpointer user_data) {
     auto *state = static_cast<AppState *>(user_data);
     state->child_pid = 0;
@@ -186,6 +267,11 @@ void activate(GtkApplication *application, gpointer user_data) {
     gtk_event_controller_set_propagation_phase(keys, GTK_PHASE_CAPTURE);
     g_signal_connect(keys, "key-pressed", G_CALLBACK(terminal_key_pressed), terminal);
     gtk_widget_add_controller(terminal, keys);
+
+    GtkGesture *right_click = gtk_gesture_click_new();
+    gtk_gesture_single_set_button(GTK_GESTURE_SINGLE(right_click), GDK_BUTTON_SECONDARY);
+    g_signal_connect(right_click, "pressed", G_CALLBACK(terminal_mouse_menu), terminal);
+    gtk_widget_add_controller(terminal, right_click);
 
     gtk_window_set_child(state->window, terminal);
     g_signal_connect(terminal, "child-exited", G_CALLBACK(child_exited), state);
