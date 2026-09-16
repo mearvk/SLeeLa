@@ -15,6 +15,9 @@ struct AppState {
     std::string shell_path;
     GtkWindow *window = nullptr;
     GPid child_pid = 0;
+    GtkLabel *footer_text = nullptr;
+    guint footer_tick = 0;
+    guint footer_position = 0;
 };
 
 std::string sibling_path(const char *argv0, const char *name) {
@@ -83,6 +86,31 @@ void install_css() {
             color: #ffffff;
             background: rgba(255, 255, 255, 0.12);
             -gtk-icon-shadow: 0 0 4px rgba(255, 255, 255, 0.85);
+        }
+        box.sleela-footer {
+            min-height: 38px;
+            background: linear-gradient(to bottom, #5b2f88, #3a1d5c 48%, #2a1644);
+            border-top: 1px solid #7f56aa;
+            border-bottom: 1px solid #160d24;
+            box-shadow: inset 0 1px rgba(255, 255, 255, 0.28), inset 0 -2px rgba(0, 0, 0, 0.42);
+        }
+        box.sleela-footer label {
+            color: #ffffff;
+            font-weight: 600;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+        }
+        label.sleela-footer-brand {
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+        label.sleela-footer-separator {
+            color: rgba(255, 255, 255, 0.42);
+            padding-left: 6px;
+            padding-right: 6px;
+        }
+        label.sleela-footer-ticker {
+            padding-left: 8px;
+            padding-right: 8px;
         }
     )CSS";
 
@@ -200,8 +228,35 @@ void terminal_mouse_menu(GtkGestureClick *gesture, int, double, double, gpointer
     gtk_popover_popup(popover);
 }
 
+const std::vector<std::string> &footer_messages() {
+    static const std::vector<std::string> messages = {
+        "SleelaTerminal™ 1.0.0  •  Terminal Ready",
+        "SLeeLa  •  Secure Shell Interface  •  MEARVK LLC",
+        "M1–M5 Shell Architecture  •  GTK 4  •  VTE",
+        "Status  •  Interactive terminal session active"
+    };
+    return messages;
+}
+
+gboolean footer_tick(gpointer user_data) {
+    auto *state = static_cast<AppState *>(user_data);
+    if (state->footer_text == nullptr) return G_SOURCE_CONTINUE;
+
+    const auto &messages = footer_messages();
+    if (messages.empty()) return G_SOURCE_CONTINUE;
+
+    const std::string &message = messages[state->footer_position % messages.size()];
+    gtk_label_set_text(state->footer_text, message.c_str());
+    state->footer_position = (state->footer_position + 1) % messages.size();
+    return G_SOURCE_CONTINUE;
+}
+
 void child_exited(VteTerminal *, int, gpointer user_data) {
     auto *state = static_cast<AppState *>(user_data);
+    if (state->footer_tick != 0) {
+        g_source_remove(state->footer_tick);
+        state->footer_tick = 0;
+    }
     state->child_pid = 0;
 
     if (state->window != nullptr) {
@@ -231,6 +286,11 @@ gboolean window_close_request(GtkWindow *window, gpointer user_data) {
         state->child_pid = 0;
     }
 
+    if (state->footer_tick != 0) {
+        g_source_remove(state->footer_tick);
+        state->footer_tick = 0;
+    }
+
     gtk_window_destroy(window);
     g_application_quit(G_APPLICATION(gtk_window_get_application(window)));
     return TRUE;
@@ -254,6 +314,7 @@ void activate(GtkApplication *application, gpointer user_data) {
     gtk_header_bar_set_title_widget(GTK_HEADER_BAR(header), title);
     gtk_window_set_titlebar(state->window, header);
 
+    GtkWidget *root = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
     GtkWidget *terminal = vte_terminal_new();
     gtk_widget_set_hexpand(terminal, TRUE);
     gtk_widget_set_vexpand(terminal, TRUE);
@@ -273,9 +334,51 @@ void activate(GtkApplication *application, gpointer user_data) {
     g_signal_connect(right_click, "pressed", G_CALLBACK(terminal_mouse_menu), terminal);
     gtk_widget_add_controller(terminal, GTK_EVENT_CONTROLLER(right_click));
 
-    gtk_window_set_child(state->window, terminal);
+    gtk_widget_set_vexpand(terminal, TRUE);
+    gtk_box_append(GTK_BOX(root), terminal);
+
+    GtkWidget *footer = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
+    gtk_widget_add_css_class(footer, "sleela-footer");
+    gtk_widget_set_hexpand(footer, TRUE);
+    gtk_widget_set_vexpand(footer, FALSE);
+    gtk_widget_set_margin_start(footer, 0);
+    gtk_widget_set_margin_end(footer, 0);
+
+    GtkWidget *brand = gtk_label_new("SLEE LA");
+    gtk_widget_add_css_class(brand, "sleela-footer-brand");
+    gtk_widget_set_margin_start(brand, 14);
+    gtk_widget_set_margin_end(brand, 4);
+    gtk_widget_set_valign(brand, GTK_ALIGN_CENTER);
+    gtk_box_append(GTK_BOX(footer), brand);
+
+    GtkWidget *separator = gtk_label_new("│");
+    gtk_widget_add_css_class(separator, "sleela-footer-separator");
+    gtk_widget_set_valign(separator, GTK_ALIGN_CENTER);
+    gtk_box_append(GTK_BOX(footer), separator);
+
+    GtkWidget *footer_text = gtk_label_new(footer_messages().front().c_str());
+    state->footer_text = GTK_LABEL(footer_text);
+    gtk_widget_add_css_class(footer_text, "sleela-footer-ticker");
+    gtk_widget_set_hexpand(footer_text, TRUE);
+    gtk_widget_set_halign(footer_text, GTK_ALIGN_START);
+    gtk_widget_set_valign(footer_text, GTK_ALIGN_CENTER);
+    gtk_label_set_ellipsize(state->footer_text, PANGO_ELLIPSIZE_END);
+    gtk_box_append(GTK_BOX(footer), footer_text);
+
+    GtkWidget *status = gtk_label_new("1.0.0");
+    gtk_widget_set_margin_start(status, 8);
+    gtk_widget_set_margin_end(status, 14);
+    gtk_widget_set_valign(status, GTK_ALIGN_CENTER);
+    gtk_box_append(GTK_BOX(footer), status);
+
+    gtk_box_append(GTK_BOX(root), footer);
+    gtk_window_set_child(state->window, root);
+
     g_signal_connect(terminal, "child-exited", G_CALLBACK(child_exited), state);
     g_signal_connect(state->window, "close-request", G_CALLBACK(window_close_request), state);
+
+    state->footer_position = 1;
+    state->footer_tick = g_timeout_add(5000, footer_tick, state);
 
     std::vector<char *> shell_argv;
     shell_argv.push_back(const_cast<char *>(state->shell_path.c_str()));
