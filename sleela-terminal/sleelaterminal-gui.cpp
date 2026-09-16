@@ -201,7 +201,7 @@ void install_css() {
         button.sleela-footer-java { min-width:34px; min-height:34px; padding:0; margin:0 5px; background:transparent; border:none; box-shadow:none; border-radius:0; outline:none; }
         button.sleela-footer-java:hover, button.sleela-footer-java:focus, button.sleela-footer-java:active { background:transparent; border:none; box-shadow:none; outline:none; }
         button.sleela-footer-java image { background:transparent; border:none; box-shadow:none; }
-        popover.sleela-software contents { background:linear-gradient(to bottom,#321a4d,#21112f); border:1px solid #7f56aa; }
+        window.sleela-installer { background: #21112f; color: #ffffff; }\n        window.sleela-installer label { color: #ffffff; }\n        popover.sleela-software contents { background:linear-gradient(to bottom,#321a4d,#21112f); border:1px solid #7f56aa; }
         popover.sleela-software label { color:#ffffff; }
         popover.sleela-software button { color:#ffffff; background:rgba(255,255,255,.08); min-width:260px; min-height:32px; text-align:left; }
         popover.sleela-software button:hover { background:rgba(255,255,255,.18); }
@@ -456,12 +456,96 @@ void make_software_menu(AppState *state, GtkWidget *anchor) {
     gtk_popover_set_child(popover, box); gtk_popover_set_has_arrow(popover, TRUE); gtk_popover_set_autohide(popover, FALSE); gtk_popover_popup(popover);
 }
 
+
+void show_install_prompt(AppState *state, GtkWidget *, const char *product, const char *display_name) {
+    GtkWidget *dialog = gtk_window_new();
+    gtk_window_set_title(GTK_WINDOW(dialog), "SleelaTerminal — Java Installer");
+    gtk_window_set_default_size(GTK_WINDOW(dialog), 520, 300);
+    gtk_window_set_modal(GTK_WINDOW(dialog), TRUE);
+    gtk_window_set_transient_for(GTK_WINDOW(dialog), state->window);
+
+    GtkWidget *box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
+    gtk_widget_set_margin_start(box, 22);
+    gtk_widget_set_margin_end(box, 22);
+    gtk_widget_set_margin_top(box, 20);
+    gtk_widget_set_margin_bottom(box, 20);
+
+    GtkWidget *title = gtk_label_new("CMD / Java Program Installer");
+    gtk_widget_add_css_class(title, "heading");
+    gtk_widget_set_halign(title, GTK_ALIGN_START);
+    gtk_box_append(GTK_BOX(box), title);
+
+    std::string prompt =
+        "SleelaTerminal is ready to install the latest appropriate release of " +
+        std::string(display_name) +
+        ".\n\n"
+        "The installer will inspect the configured source, distinguish FINAL from "
+        "ALPHA/PRE-RELEASE where available, and prepare the selected program locally.\n\n"
+        "Proceed with the installation?";
+
+    GtkWidget *message = gtk_label_new(prompt.c_str());
+    gtk_label_set_wrap(GTK_LABEL(message), TRUE);
+    gtk_widget_set_halign(message, GTK_ALIGN_START);
+    gtk_widget_set_valign(message, GTK_ALIGN_START);
+    gtk_widget_set_vexpand(message, TRUE);
+    gtk_box_append(GTK_BOX(box), message);
+
+    GtkWidget *buttons = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 8);
+    gtk_widget_set_halign(buttons, GTK_ALIGN_END);
+    GtkWidget *no = gtk_button_new_with_label("No");
+    GtkWidget *yes = gtk_button_new_with_label("Yes — Install");
+    gtk_widget_add_css_class(yes, "suggested-action");
+    gtk_box_append(GTK_BOX(buttons), no);
+    gtk_box_append(GTK_BOX(buttons), yes);
+    gtk_box_append(GTK_BOX(box), buttons);
+
+    struct InstallPayload { AppState *state; GtkWindow *dialog; std::string product; std::string display_name; };
+    auto *payload = new InstallPayload{state, GTK_WINDOW(dialog), product, display_name};
+
+    g_signal_connect_data(yes, "clicked", G_CALLBACK(+[](GtkButton *, gpointer data) {
+        auto *p = static_cast<InstallPayload *>(data);
+        GtkWidget *result_window = gtk_window_new();
+        gtk_window_set_title(GTK_WINDOW(result_window), "SleelaTerminal — Installer Output");
+        gtk_window_set_default_size(GTK_WINDOW(result_window), 620, 360);
+        gtk_window_set_modal(GTK_WINDOW(result_window), TRUE);
+        gtk_window_set_transient_for(GTK_WINDOW(result_window), p->state->window);
+
+        GtkWidget *box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 8);
+        gtk_widget_set_margin_start(box, 14);
+        gtk_widget_set_margin_end(box, 14);
+        gtk_widget_set_margin_top(box, 14);
+        gtk_widget_set_margin_bottom(box, 14);
+
+        GtkWidget *title = gtk_label_new(("Installing " + p->display_name).c_str());
+        gtk_widget_set_halign(title, GTK_ALIGN_START);
+        gtk_box_append(GTK_BOX(box), title);
+
+        GtkTextView *view = GTK_TEXT_VIEW(gtk_text_view_new());
+        gtk_text_view_set_editable(view, FALSE);
+        gtk_text_view_set_cursor_visible(view, FALSE);
+        gtk_widget_add_css_class(GTK_WIDGET(view), "sleela-scan-output");
+        gtk_widget_set_vexpand(GTK_WIDGET(view), TRUE);
+        gtk_box_append(GTK_BOX(box), GTK_WIDGET(view));
+
+        GtkTextBuffer *buffer = gtk_text_view_get_buffer(view);
+        run_software_action(p->state, "install", p->product.c_str(), buffer);
+        gtk_window_set_child(GTK_WINDOW(result_window), box);
+        gtk_window_present(GTK_WINDOW(result_window));
+        gtk_window_destroy(p->dialog);
+    }), payload, [](gpointer data, GClosure *) {
+        delete static_cast<InstallPayload *>(data);
+    }, G_CONNECT_AFTER);
+
+    g_signal_connect_swapped(no, "clicked", G_CALLBACK(gtk_window_destroy), dialog);
+    gtk_window_set_child(GTK_WINDOW(dialog), box);
+    gtk_window_present(GTK_WINDOW(dialog));
+}
+
 void open_software_menu(GtkButton *, gpointer user_data) {
     auto *button = static_cast<GtkWidget *>(user_data);
     auto *state = static_cast<AppState *>(g_object_get_data(G_OBJECT(button), "sleela-state"));
-    make_software_menu(state, button);
+    show_install_prompt(state, button, "cmd", "CMD");
 }
-
 // Ctrl+C is copy when VTE has a selection. Without a selection it is left to
 // the PTY so the shell/foreground program receives the normal interrupt key.
 gboolean terminal_key_pressed(GtkEventControllerKey *, guint keyval, guint,
