@@ -1,0 +1,121 @@
+name: Apply SecureJDK 28 footer integration
+
+on:
+  push:
+    branches: [master]
+
+permissions:
+  contents: write
+
+jobs:
+  integrate:
+    if: ${{ !contains(github.event.head_commit.message, '[skip ci]') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch SleelaTerminal and add software center
+        run: |
+          python3 <<'PY'
+          from pathlib import Path
+          path=Path('sleela-terminal/sleelaterminal-gui.cpp'); s=path.read_text()
+          if 'sleela-footer-java' not in s:
+              s=s.replace('constexpr const char *kConfigName = "sleela-terminal.conf";\n','constexpr const char *kConfigName = "sleela-terminal.conf";\nconstexpr const char *kVersion = "1.0.0";\n')
+              s=s.replace('GtkLabel *footer_text = nullptr;\n','GtkLabel *footer_text = nullptr;\n    std::string executable_path;\n')
+              marker='std::string sibling_path(const char *argv0, const char *name) {'
+              helpers=r'''std::string asset_path(const AppState *state, const char *name) {
+              namespace fs = std::filesystem;
+              fs::path executable = fs::absolute(state->executable_path);
+              const std::vector<fs::path> candidates = {executable.parent_path()/"assets"/name, executable.parent_path()/".."/"assets"/name, fs::path("sleela-terminal")/"assets"/name};
+              std::error_code ec; for (const auto &candidate : candidates) if (fs::exists(candidate,ec) && !ec) return candidate.lexically_normal().string(); return name;
+          }
+          std::string installer_path(const AppState *state) {
+              namespace fs = std::filesystem;
+              fs::path executable=fs::absolute(state->executable_path);
+              const std::vector<fs::path> candidates={executable.parent_path()/".."/"tools"/"install"/"sleela-software.sh",fs::path("sleela-terminal")/"tools"/"install"/"sleela-software.sh",fs::path("tools")/"install"/"sleela-software.sh"};
+              std::error_code ec; for(const auto &candidate:candidates) if(fs::exists(candidate,ec)&&!ec) return candidate.lexically_normal().string(); return candidates.front().lexically_normal().string();
+          }
+          '''
+              s=s.replace(marker,helpers+marker)
+              css='''        button.sleela-footer-java { min-width:34px; min-height:34px; padding:1px; margin:1px 5px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.28); border-radius:7px; }
+          button.sleela-footer-java:hover { background:rgba(255,255,255,.22); }
+          popover.sleela-software contents { background:linear-gradient(to bottom,#321a4d,#21112f); border:1px solid #7f56aa; }
+          popover.sleela-software label { color:#ffffff; }
+          popover.sleela-software button { color:#ffffff; background:rgba(255,255,255,.08); min-width:260px; min-height:32px; text-align:left; }
+          popover.sleela-software button:hover { background:rgba(255,255,255,.18); }
+          label.sleela-software-note { color:rgba(255,255,255,.72); font-size:.9em; }
+          textview.sleela-scan-output { color:#ffffff; background:#130d1c; }
+          '''
+              s=s.replace('        label.sleela-footer-ticker { padding-left: 8px; padding-right: 8px; }\n','        label.sleela-footer-ticker { padding-left: 8px; padding-right: 8px; }\n'+css)
+              funcs=r'''
+          void software_done(GObject *source,GAsyncResult *result,gpointer user_data){
+              auto *buffer=GTK_TEXT_BUFFER(user_data); GError *error=nullptr; gchar *out=nullptr,*err=nullptr;
+              if(!g_subprocess_communicate_utf8_finish(G_SUBPROCESS(source),result,&out,&err,&error)){gtk_text_buffer_set_text(buffer,error?error->message:"Software operation failed",-1);if(error)g_error_free(error);g_free(out);g_free(err);g_object_unref(source);return;}
+              std::string text=out?out:"";if(err&&*err){text+="\n";text+=err;}gtk_text_buffer_set_text(buffer,text.c_str(),-1);g_free(out);g_free(err);g_object_unref(source);
+          }
+          void run_software_action(AppState *state,const char *action,const char *product,GtkTextBuffer *buffer){
+              const std::string script=installer_path(state);const char *argv[]={"bash",script.c_str(),action,product,nullptr};GError *error=nullptr;GSubprocess *process=g_subprocess_newv(argv,G_SUBPROCESS_FLAGS_STDOUT_PIPE|G_SUBPROCESS_FLAGS_STDERR_PIPE,&error);
+              if(!process){gtk_text_buffer_set_text(buffer,error?error->message:"Unable to start software operation",-1);if(error)g_error_free(error);return;}gtk_text_buffer_set_text(buffer,"Working…",-1);g_subprocess_communicate_utf8_async(process,nullptr,nullptr,software_done,buffer);
+          }
+          void make_software_menu(AppState *state,GtkWidget *anchor){
+              GtkPopover *popover=GTK_POPOVER(gtk_popover_new());gtk_widget_add_css_class(GTK_WIDGET(popover),"sleela-software");gtk_widget_set_parent(GTK_WIDGET(popover),anchor);
+              GtkWidget *box=gtk_box_new(GTK_ORIENTATION_VERTICAL,6);gtk_widget_set_margin_start(box,12);gtk_widget_set_margin_end(box,12);gtk_widget_set_margin_top(box,10);gtk_widget_set_margin_bottom(box,10);
+              GtkWidget *title=gtk_label_new("SecureJDK 28 / CMD Software Center");gtk_widget_add_css_class(title,"heading");gtk_widget_set_halign(title,GTK_ALIGN_START);gtk_box_append(GTK_BOX(box),title);
+              GtkWidget *note=gtk_label_new("Scan the configured GitHub source for release state, then explicitly install or prepare the latest source. Alpha/pre-release and final states are reported separately.");gtk_widget_add_css_class(note,"sleela-software-note");gtk_label_set_wrap(GTK_LABEL(note),TRUE);gtk_widget_set_halign(note,GTK_ALIGN_START);gtk_box_append(GTK_BOX(box),note);
+              GtkTextView *view=GTK_TEXT_VIEW(gtk_text_view_new());gtk_text_view_set_editable(view,FALSE);gtk_text_view_set_cursor_visible(view,FALSE);gtk_widget_add_css_class(GTK_WIDGET(view),"sleela-scan-output");gtk_widget_set_size_request(GTK_WIDGET(view),390,130);gtk_box_append(GTK_BOX(box),GTK_WIDGET(view));GtkTextBuffer *buffer=gtk_text_view_get_buffer(view);
+              struct Payload{AppState *state;std::string action;std::string product;GtkTextBuffer *buffer;};
+              auto add=[&](const char *label,const char *action,const char *product){GtkWidget *button=gtk_button_new_with_label(label);auto *payload=new Payload{state,action,product,buffer};g_signal_connect_data(button,"clicked",G_CALLBACK(+[](GtkButton *,gpointer data){auto *p=static_cast<Payload*>(data);run_software_action(p->state,p->action.c_str(),p->product.c_str(),p->buffer);}),payload,[](gpointer data){delete static_cast<Payload*>(data);},G_CONNECT_AFTER);gtk_box_append(GTK_BOX(box),button);};
+              add("Scan GitHub Releases","scan","all");add("Install / Prepare SecureJDK 28","install","securejdk28");add("Install / Prepare CMD","install","cmd");add("Install / Prepare Asysma","install","asysma");add("Install / Prepare All","install","all");
+              GtkWidget *source=gtk_label_new("Source: github.com/mearvk/Ubuntu.Determinant.Beta.Restricted");gtk_widget_add_css_class(source,"sleela-software-note");gtk_label_set_wrap(GTK_LABEL(source),TRUE);gtk_widget_set_halign(source,GTK_ALIGN_START);gtk_box_append(GTK_BOX(box),source);
+              gtk_popover_set_child(popover,box);gtk_popover_set_has_arrow(popover,TRUE);gtk_popover_set_autohide(popover,FALSE);gtk_popover_popup(popover);
+          }
+          void open_software_menu(GtkButton *,gpointer user_data){auto *button=static_cast<GtkWidget*>(user_data);auto *state=static_cast<AppState*>(g_object_get_data(G_OBJECT(button),"sleela-state"));make_software_menu(state,button);}
+          '''
+              s=s.replace('// Ctrl+C is copy when VTE has a selection.',funcs+'\n// Ctrl+C is copy when VTE has a selection.')
+              footer='''    GtkWidget *java_button=gtk_button_new();
+              gtk_widget_add_css_class(java_button,"sleela-footer-java");
+              gtk_widget_set_tooltip_text(java_button,"SecureJDK 28 / CMD — Scan GitHub and install or prepare latest software");
+              GtkWidget *java_image=gtk_image_new_from_file(asset_path(state,"securejdk28-cmd.svg").c_str());gtk_image_set_pixel_size(GTK_IMAGE(java_image),30);gtk_button_set_child(GTK_BUTTON(java_button),java_image);
+              g_object_set_data(G_OBJECT(java_button),"sleela-state",state);g_signal_connect(java_button,"clicked",G_CALLBACK(open_software_menu),java_button);gtk_box_append(GTK_BOX(footer),java_button);
+
+          '''
+              s=s.replace('    GtkWidget *status = gtk_label_new("1.0.0");',footer+'    GtkWidget *status = gtk_label_new(kVersion);')
+              s=s.replace('    if (argc > 1) state.shell_path = argv[1];\n    else state.shell_path = sibling_path(argv[0], "slsh");','    if (argc > 1) state.shell_path = argv[1];\n    else state.shell_path = sibling_path(argv[0], "slsh");\n    state.executable_path = argv[0];')
+              path.write_text(s)
+          Path('sleela-terminal/assets').mkdir(parents=True,exist_ok=True)
+          Path('sleela-terminal/assets/securejdk28-cmd.svg').write_text('''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96"><defs><linearGradient id="o" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#e9c8ff"/><stop offset=".45" stop-color="#8a5bb7"/><stop offset="1" stop-color="#40205f"/></linearGradient><linearGradient id="r" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#ff6674"/><stop offset=".55" stop-color="#d9162d"/><stop offset="1" stop-color="#8f0b1e"/></linearGradient><linearGradient id="p" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffe9f0"/><stop offset="1" stop-color="#c98da1"/></linearGradient></defs><rect x="3" y="3" width="90" height="90" rx="20" fill="url(#o)"/><rect x="9" y="9" width="78" height="78" rx="17" fill="#fff"/><rect x="14" y="14" width="68" height="68" rx="14" fill="url(#r)"/><rect x="22" y="22" width="52" height="52" rx="11" fill="#702238" opacity=".55"/><rect x="25" y="25" width="46" height="46" rx="10" fill="url(#p)"/><g fill="none" stroke="#7b4353" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M48 33c5-4 7-7 5-11"/><path d="M47 42c-7-5-7-10-1-15"/><path d="M37 46c4 3 17 3 22 0"/><path d="M40 50c4 3 13 3 17 0"/><path d="M38 55c5 4 15 4 20 0"/><path d="M34 59c7 5 21 5 28 0"/><path d="M34 64c8 4 20 4 28 0"/><path d="M63 51c6-2 8 3 4 6"/></g></svg>''')
+          Path('sleela-terminal/tools/install').mkdir(parents=True,exist_ok=True)
+          Path('sleela-terminal/tools/install/sleela-software.sh').write_text('''#!/usr/bin/env bash
+set -euo pipefail
+REPO="${SLEELA_SOFTWARE_REPO:-mearvk/Ubuntu.Determinant.Beta.Restricted}"
+ROOT="${SLEELA_SOFTWARE_ROOT:-$HOME/.local/share/sleela/software}"
+API="https://api.github.com/repos/${REPO}/releases?per_page=20"
+usage(){ echo "Usage: $0 scan | install <securejdk28|cmd|asysma|all>"; }
+scan(){ echo "SleelaTerminal Software Scan"; echo "GitHub source: https://github.com/${REPO}"; echo; command -v curl >/dev/null 2>&1 || { echo "curl is required." >&2; exit 2; }; if command -v python3 >/dev/null 2>&1; then curl -fsSL "$API" | python3 -c 'import json,sys; d=json.load(sys.stdin); print("Release state:"); [print(f"  {r.get(\"tag_name\",\"untagged\")} — {\"ALPHA/PRE-RELEASE\" if r.get(\"prerelease\") else \"FINAL\"}{\" — DRAFT\" if r.get(\"draft\") else \"\"}") for r in d[:10]]; print("Latest published final: "+next((r.get("tag_name","") for r in d if not r.get("prerelease") and not r.get("draft")),"none"))'; else curl -fsSL "$API" | grep -E '"tag_name"|"prerelease"|"draft"' | head -30 || true; fi; echo; echo "Scan is read-only. Installation requires an explicit action."; }
+install_one(){ local product="$1"; local dest="$ROOT/$product"; mkdir -p "$ROOT"; if [ -e "$dest/.git" ]; then git -C "$dest" fetch --tags --prune origin; git -C "$dest" pull --ff-only origin HEAD || true; else rm -rf "$dest"; git clone "https://github.com/${REPO}.git" "$dest"; fi; if [ -f "$dest/install.sh" ]; then (cd "$dest" && bash ./install.sh); elif [ -f "$dest/scripts/install.sh" ]; then (cd "$dest" && bash ./scripts/install.sh); else echo "Prepared latest GitHub source for $product at: $dest"; echo "No repository-provided installer was found; no privileged system changes were made."; fi; }
+case "${1:-}" in scan) scan;; install) case "${2:-}" in securejdk28|cmd|asysma) install_one "$2";; all) for p in securejdk28 cmd asysma; do install_one "$p"; done;; *) usage; exit 2;; esac;; *) usage; exit 2;; esac
+''')
+          Path('sleela-terminal/SOFTWARE.md').write_text('''# SecureJDK 28 / CMD Software Center
+
+The SleelaTerminal footer now contains a compact Java/SecureJDK-style action icon based on the supplied visual reference. Clicking it opens a software center.
+
+## Scan
+
+**Scan GitHub Releases** queries the configured GitHub repository for published release metadata and distinguishes final releases from prereleases/alpha states. The scan is read-only.
+
+## Installation / Preparation
+
+The first implementation refreshes or clones source under `~/.local/share/sleela/software/` and runs a repository-provided `install.sh` or `scripts/install.sh` when one exists. If the source repository has no installer, the source is prepared locally without privileged system changes.
+
+This is deliberately not a `curl | sh` mechanism. A future product manifest can attach SecureJDK 28, CMD, Asysma, or other products to their own release assets and verified build/install commands.
+
+The canonical SecureJDK 28 design documentation is in `Ubuntu.Determinant.Beta.Restricted/markdown/SECUREJDK28.md`.
+
+**SleelaTerminal™ — MEARVK LLC**
+''')
+          PY
+          rm -f .github/workflows/apply-securejdk-footer.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add sleela-terminal .github/workflows/apply-securejdk-footer.yml
+          git diff --cached --quiet || git commit -m "Add SecureJDK 28 software center to SleelaTerminal [skip ci]"
+          git push
