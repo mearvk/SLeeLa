@@ -44,45 +44,45 @@ void install_css() {
         }
         headerbar.sleela-titlebar button.titlebutton {
             color: #ffffff;
-            background: rgba(255, 255, 255, 0.10);
+            background: rgba(255, 255, 255, 0.18);
             -gtk-icon-style: symbolic;
-            -gtk-icon-shadow: 0 0 2px rgba(255, 255, 255, 0.85);
-            min-width: 34px;
-            min-height: 30px;
+            -gtk-icon-shadow: 0 0 4px rgba(255, 255, 255, 1);
+            min-width: 36px;
+            min-height: 32px;
             opacity: 1;
             transition: 150ms ease-in-out;
         }
         headerbar.sleela-titlebar button.titlebutton image {
             color: #ffffff;
             opacity: 1;
-            -gtk-icon-shadow: 0 0 2px rgba(255, 255, 255, 0.85);
+            -gtk-icon-shadow: 0 0 4px rgba(255, 255, 255, 1);
         }
         headerbar.sleela-titlebar button.titlebutton:hover,
         headerbar.sleela-titlebar button.titlebutton:focus {
             color: #ffffff;
-            background: rgba(255, 255, 255, 0.28);
-            -gtk-icon-shadow: 0 0 5px rgba(255, 255, 255, 1);
+            background: rgba(255, 255, 255, 0.34);
+            -gtk-icon-shadow: 0 0 7px rgba(255, 255, 255, 1);
         }
         headerbar.sleela-titlebar button.titlebutton:hover image,
         headerbar.sleela-titlebar button.titlebutton:focus image {
             color: #ffffff;
             opacity: 1;
-            -gtk-icon-shadow: 0 0 5px rgba(255, 255, 255, 1);
+            -gtk-icon-shadow: 0 0 7px rgba(255, 255, 255, 1);
         }
         headerbar.sleela-titlebar button.titlebutton:active {
             color: #ffffff;
-            background: rgba(255, 255, 255, 0.38);
-            -gtk-icon-shadow: 0 0 6px rgba(255, 255, 255, 1);
+            background: rgba(255, 255, 255, 0.44);
+            -gtk-icon-shadow: 0 0 8px rgba(255, 255, 255, 1);
         }
         headerbar.sleela-titlebar button.titlebutton:active image {
             color: #ffffff;
             opacity: 1;
-            -gtk-icon-shadow: 0 0 6px rgba(255, 255, 255, 1);
+            -gtk-icon-shadow: 0 0 8px rgba(255, 255, 255, 1);
         }
         headerbar.sleela-titlebar button.titlebutton:backdrop {
-            color: #eeeeee;
-            background: rgba(255, 255, 255, 0.06);
-            -gtk-icon-shadow: 0 0 2px rgba(255, 255, 255, 0.55);
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.12);
+            -gtk-icon-shadow: 0 0 4px rgba(255, 255, 255, 0.85);
         }
     )CSS";
 
