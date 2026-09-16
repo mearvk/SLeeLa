@@ -219,12 +219,6 @@ void set_source(GtkCheckButton *button, bool &target, AppState *state) {
     save_config(state->config);
 }
 
-GtkWidget *settings_button(const char *text, GCallback callback, gpointer data) {
-    GtkWidget *button = gtk_button_new_with_label(text);
-    g_signal_connect(button, "clicked", callback, data);
-    return button;
-}
-
 void make_settings_menu(AppState *state, GtkWidget *settings_button_widget) {
     GtkPopover *popover = GTK_POPOVER(gtk_popover_new());
     gtk_widget_add_css_class(GTK_WIDGET(popover), "sleela-settings");
@@ -552,7 +546,7 @@ void activate(GtkApplication *application, gpointer user_data) {
     GtkWidget *brand = gtk_label_new("SLeeLa");
     gtk_widget_add_css_class(brand, "sleela-footer-brand");
     gtk_widget_set_margin_start(brand, 14);
-    gtk_widget_set_margin_end(4);
+    gtk_widget_set_margin_end(brand, 4);
     gtk_widget_set_valign(brand, GTK_ALIGN_CENTER);
     gtk_box_append(GTK_BOX(footer), brand);
 
