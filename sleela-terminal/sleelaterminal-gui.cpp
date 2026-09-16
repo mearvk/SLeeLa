@@ -405,10 +405,13 @@ void run_software_action(AppState *state, const char *action, const char *produc
     const std::string script = installer_path(state);
     const char *argv[] = {"bash", script.c_str(), action, product, nullptr};
     GError *error = nullptr;
-    GSubprocess *process = g_subprocess_newv(argv, G_SUBPROCESS_FLAGS_STDOUT_PIPE | G_SUBPROCESS_FLAGS_STDERR_PIPE, &error);
+    GSubprocess *process = g_subprocess_newv(argv, static_cast<GSubprocessFlags>(G_SUBPROCESS_FLAGS_STDOUT_PIPE | G_SUBPROCESS_FLAGS_STDERR_PIPE), &error);
     if (!process) {
         gtk_text_buffer_set_text(buffer, error ? error->message : "Unable to start software operation", -1);
-        if (error) g_error_free(error); return;
+        if (error) {
+            g_error_free(error);
+        }
+        return;
     }
     gtk_text_buffer_set_text(buffer, "Working…", -1);
     g_subprocess_communicate_utf8_async(process, nullptr, nullptr, software_done, buffer);
@@ -436,7 +439,9 @@ void make_software_menu(AppState *state, GtkWidget *anchor) {
         g_signal_connect_data(button, "clicked", G_CALLBACK(+[](GtkButton *, gpointer data) {
             auto *p = static_cast<Payload *>(data);
             run_software_action(p->state, p->action.c_str(), p->product.c_str(), p->buffer);
-        }), payload, [](gpointer data) { delete static_cast<Payload *>(data); }, G_CONNECT_AFTER);
+        }), payload, [](gpointer data, GClosure *) {
+            delete static_cast<Payload *>(data);
+        }, G_CONNECT_AFTER);
         gtk_box_append(GTK_BOX(box), button);
     };
     add("Scan GitHub Releases", "scan", "all");
