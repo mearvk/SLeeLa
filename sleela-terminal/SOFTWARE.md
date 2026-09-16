@@ -1,6 +1,6 @@
-# SecureJDK 28 / CMD Software Center
+# CMD — SecureJDK 28 Software Center
 
-The SleelaTerminal footer contains a compact Java/SecureJDK-style action icon based on the supplied visual reference. Clicking it opens a software center.
+The SleelaTerminal footer contains the **CMD** icon: a strict image control representing **CMD**, the Java native launcher associated with SecureJDK 28. The footer uses the image itself without a surrounding button outline or decorative frame. Clicking the CMD image opens the software center.
 
 ## Scan
 
