@@ -541,7 +541,7 @@ void show_install_prompt(AppState *state, GtkWidget *, const char *product, cons
     g_signal_connect_swapped(no, "clicked", G_CALLBACK(gtk_window_destroy), dialog);
     g_signal_connect(other, "clicked", G_CALLBACK(+[](GtkButton *, gpointer data) {
         auto *p = static_cast<InstallPayload *>(data);
-        make_software_menu(p->state, GTK_WIDGET(p->dialog));
+        make_software_menu(p->state, GTK_WIDGET(p->state->terminal));
         gtk_window_destroy(p->dialog);
     }), payload);
     gtk_window_set_child(GTK_WINDOW(dialog), box);
