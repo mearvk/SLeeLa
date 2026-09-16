@@ -100,7 +100,9 @@ std::string asset_path(const AppState *state, const char *name) {
     return name;
 }
 
-// CMD is the Java native launcher associated with SecureJDK 28.\n// The footer CMD image is a strict image control: no button outline or frame.\nstd::string installer_path(const AppState *state) {
+// CMD is the Java native launcher associated with SecureJDK 28.
+// The footer CMD image is a strict image control: no button outline or frame.
+std::string installer_path(const AppState *state) {
     namespace fs = std::filesystem;
     fs::path executable = fs::absolute(state->executable_path);
     const std::vector<fs::path> candidates = {
@@ -679,7 +681,8 @@ void activate(GtkApplication *application, gpointer user_data) {
     gtk_label_set_ellipsize(state->footer_text, PANGO_ELLIPSIZE_END);
     gtk_box_append(GTK_BOX(footer), footer_text);
 
-    // CMD footer control: strict image only; the image itself is the clickable surface.\n    GtkWidget *java_button = gtk_button_new();
+    // CMD footer control: strict image only; the image itself is the clickable surface.
+    GtkWidget *java_button = gtk_button_new();
     gtk_widget_add_css_class(java_button, "sleela-footer-java");
     gtk_widget_set_tooltip_text(java_button, "CMD — Java native launcher / SecureJDK 28 software center");
     GtkWidget *java_image = gtk_image_new_from_file(asset_path(state, "cmd.svg").c_str());
