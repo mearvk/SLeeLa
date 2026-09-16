@@ -140,8 +140,8 @@ void terminal_clear_selection(GtkWidget *, gpointer user_data) {
 
 void terminal_mouse_menu(GtkGestureClick *gesture, int, double, double, gpointer user_data) {
     auto *terminal = VTE_TERMINAL(user_data);
-    GtkWidget *popover = gtk_popover_new();
-    gtk_widget_set_parent(popover, GTK_WIDGET(terminal));
+    GtkPopover *popover = GTK_POPOVER(gtk_popover_new());
+    gtk_widget_set_parent(GTK_WIDGET(popover), GTK_WIDGET(terminal));
     gtk_popover_set_has_arrow(popover, TRUE);
 
     GtkWidget *box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
@@ -186,7 +186,7 @@ void terminal_mouse_menu(GtkGestureClick *gesture, int, double, double, gpointer
     g_signal_connect_swapped(clear, "clicked", G_CALLBACK(gtk_widget_unparent), popover);
     gtk_box_append(GTK_BOX(box), clear);
 
-    gtk_popover_set_child(GTK_POPOVER(popover), box);
+    gtk_popover_set_child(popover, box);
 
     GdkRectangle rect;
     double x = 0.0;
@@ -196,8 +196,8 @@ void terminal_mouse_menu(GtkGestureClick *gesture, int, double, double, gpointer
     rect.y = static_cast<int>(y);
     rect.width = 1;
     rect.height = 1;
-    gtk_popover_set_pointing_to(GTK_POPOVER(popover), &rect);
-    gtk_popover_popup(GTK_POPOVER(popover));
+    gtk_popover_set_pointing_to(popover, &rect);
+    gtk_popover_popup(popover);
 }
 
 void child_exited(VteTerminal *, int, gpointer user_data) {
@@ -271,7 +271,7 @@ void activate(GtkApplication *application, gpointer user_data) {
     GtkGesture *right_click = gtk_gesture_click_new();
     gtk_gesture_single_set_button(GTK_GESTURE_SINGLE(right_click), GDK_BUTTON_SECONDARY);
     g_signal_connect(right_click, "pressed", G_CALLBACK(terminal_mouse_menu), terminal);
-    gtk_widget_add_controller(terminal, right_click);
+    gtk_widget_add_controller(terminal, GTK_EVENT_CONTROLLER(right_click));
 
     gtk_window_set_child(state->window, terminal);
     g_signal_connect(terminal, "child-exited", G_CALLBACK(child_exited), state);
