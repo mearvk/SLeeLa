@@ -94,7 +94,7 @@ SleelaTerminal™ — MEARVK LLC
 
 The title bar and footer retain the dark rich-purple visual language, bright white controls/text, and three-dimensional highlight treatment. The settings popover uses the same purple family rather than introducing a separate theme.
 
-The current GUI displays version `1.0.0`, matching the project's initial SleelaTerminal version baseline.
+The current GUI displays version `1.0.0`, matching the project's initial SleelaTerminal version baseline.\n\nThe footer also contains the clickable **CMD** image, representing CMD as the Java native launcher associated with SecureJDK 28. It is rendered as a strict image with no additional footer-button outline.
 
 ## Desktop installation
 
