@@ -21,6 +21,34 @@ install_one(){
   local product="$1" mode="${SLEELA_RELEASE_MODE:-final}" tag=""
   command -v curl >/dev/null 2>&1 || { echo "curl is required." >&2; exit 2; }
   command -v python3 >/dev/null 2>&1 || { echo "python3 is required." >&2; exit 2; }
+  command -v git >/dev/null 2>&1 || { echo "git is required." >&2; exit 2; }
+
+  # CMD is currently sourced from tools/cmd in Ubuntu.Determinant.Beta.Restricted.
+  # It is a source-tree tool; main is authoritative until a CMD release channel exists.
+  if [ "$product" = "cmd" ]; then
+    local cmd_repo="mearvk/Ubuntu.Determinant.Beta.Restricted"
+    local cmd_path="tools/cmd"
+    local dest="$ROOT/cmd"
+    local source_root="$ROOT/.sources/Ubuntu.Determinant.Beta.Restricted"
+    mkdir -p "$ROOT/.sources"
+    if [ -d "$source_root/.git" ]; then
+      git -C "$source_root" fetch --prune origin
+      git -C "$source_root" checkout --detach origin/main
+    else
+      rm -rf "$source_root"
+      git clone --depth 1 "https://github.com/${cmd_repo}.git" "$source_root"
+    fi
+    rm -rf "$dest"
+    mkdir -p "$dest"
+    cp -a "$source_root/$cmd_path/." "$dest/"
+    echo "Prepared CMD from ${cmd_repo}/${cmd_path} at: $dest"
+    if [ -f "$dest/Makefile" ]; then
+      echo "Building CMD tools from source..."
+      (cd "$dest" && make)
+    fi
+    return
+  fi
+
   if [ "$mode" != "final" ] && [ "$mode" != "alpha" ]; then echo "SLEELA_RELEASE_MODE must be final or alpha." >&2; exit 2; fi
   tag="$(release_tag "$mode" || true)"
   if [ -z "$tag" ] && [ "$mode" = "final" ]; then
@@ -41,6 +69,7 @@ install_one(){
   elif [ -f "$dest/scripts/install.sh" ]; then (cd "$dest" && bash ./scripts/install.sh)
   else echo "No repository-provided installer was found; no privileged system changes were made."; fi
 }
+
 case "${1:-}" in
   scan) scan ;;
   install)
