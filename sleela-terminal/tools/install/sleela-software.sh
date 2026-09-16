@@ -5,15 +5,7 @@ ROOT="${SLEELA_SOFTWARE_ROOT:-$HOME/.local/share/sleela/software}"
 API="https://api.github.com/repos/${REPO}/releases?per_page=20"
 usage(){ echo "Usage: $0 scan | install <securejdk28|cmd|asysma|all>"; }
 release_tag(){
-  curl -fsSL "$API" | python3 - "$1" <<'PY'
-import json,sys
-releases=json.load(sys.stdin); mode=sys.argv[1]
-for r in releases:
-    if r.get("draft"): continue
-    if mode == "final" and r.get("prerelease"): continue
-    if mode == "alpha" and not r.get("prerelease"): continue
-    print(r.get("tag_name", "")); break
-PY
+  curl -fsSL "$API" | python3 -c 'import json,sys; d=json.load(sys.stdin); mode=sys.argv[1]; [print(r.get("tag_name","")) for r in d if not r.get("draft") and ((mode=="final" and not r.get("prerelease")) or (mode=="alpha" and r.get("prerelease")))][:1]' "$1"
 }
 scan(){
   echo "SleelaTerminal Software Scan"
