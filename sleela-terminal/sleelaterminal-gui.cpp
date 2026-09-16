@@ -198,8 +198,9 @@ void install_css() {
         label.sleela-footer-brand { font-weight: 800; letter-spacing: 0.5px; }
         label.sleela-footer-separator { color: rgba(255, 255, 255, 0.42); padding-left: 6px; padding-right: 6px; }
         label.sleela-footer-ticker { padding-left: 8px; padding-right: 8px; }
-        button.sleela-footer-java { min-width:34px; min-height:34px; padding:1px; margin:1px 5px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.28); border-radius:7px; }
-        button.sleela-footer-java:hover { background:rgba(255,255,255,.22); }
+        button.sleela-footer-java { min-width:34px; min-height:34px; padding:0; margin:0 5px; background:transparent; border:none; box-shadow:none; border-radius:0; outline:none; }
+        button.sleela-footer-java:hover, button.sleela-footer-java:focus, button.sleela-footer-java:active { background:transparent; border:none; box-shadow:none; outline:none; }
+        button.sleela-footer-java image { background:transparent; border:none; box-shadow:none; }
         popover.sleela-software contents { background:linear-gradient(to bottom,#321a4d,#21112f); border:1px solid #7f56aa; }
         popover.sleela-software label { color:#ffffff; }
         popover.sleela-software button { color:#ffffff; background:rgba(255,255,255,.08); min-width:260px; min-height:32px; text-align:left; }
