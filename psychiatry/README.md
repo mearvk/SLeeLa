@@ -19,3 +19,26 @@ cryptographic credential.
 - **Length:** 38,246 hexadecimal digits (exact)
 - **Encoding:** lowercase hex, single trailing newline
 - **Source:** cryptographically secure RNG (`secrets`/`os.urandom`)
+
+## `keysearch` — verify the key against GitHub
+
+From the SLeeLa terminal:
+
+```text
+$> SLeeLa keysearch
+SLeeLa keysearch: MATCH
+  sha256=<64-hex> (38246 hex digits)
+```
+
+`keysearch` ([`keysearch.py`](keysearch.py), dispatched by
+[`../bin/SLeeLa`](../bin/SLeeLa)) makes a **read-only HTTPS GET** of the repo's
+published `Secret.key` and compares it to the local copy. Results: `MATCH`,
+`MISMATCH`, `NOT FOUND` (remote missing / offline / HTTP error), or `ERROR`
+(local key unreadable). Exit codes: `0` / `1` / `2` / `3` respectively.
+
+**It never uploads the key.** Comparison is by **SHA-256 digest** computed on
+both sides, so the raw key material never leaves the machine and is never logged,
+and any network problem **fails closed** to `NOT FOUND` (never a false `MATCH`).
+
+Configuration: `SLEELA_KEY_URL` overrides the remote URL (default: the repo's
+`main`-branch raw URL); `SLEELA_KEY_PATH` overrides the local key path.
