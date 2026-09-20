@@ -119,6 +119,99 @@ countries" in any political or economic sense, and it deliberately carries no
 ranking, tier, or external-endorsement dimension — assigning one would violate
 the data-integrity rule below.
 
+### Historical register — a known socialist hand in government (last 82.5 years)
+
+This is a **separate, second indicator**, distinct from the constitutional-text
+indicator above. It records the observable, citable fact that a jurisdiction has
+had **a known socialist or communist hand in its government** at some point in
+the **last 82.5 years** (≈ 1944 → 2026): a ruling Marxist-Leninist party, a
+socialist state, or a governing socialist party/coalition, per cited sources.
+
+> **The question (historical):** In the window ≈1944–2026, did the jurisdiction
+> have a governing socialist/communist party or a self-declared socialist state?
+
+Values mirror the extent applied to the constitutional list — each entry carries
+the **period (years)**, the **nature of the socialist hand**, and a **source** —
+using the same three-value discipline adapted to governance history:
+
+| Value | Definition |
+|---|---|
+| `GOVERNED` | A socialist/communist party or state held government power in-window, per a cited source. |
+| `NONE` | No such governing period in-window, per a cited source. |
+| `UNASSESSED` | Not yet verified against a cited governance source (the default). |
+
+#### A. Marxist-Leninist one-party states (self-declared socialist, current)
+
+| Country/Jurisdiction | Period (in-window) | Socialist hand | Source |
+|---|---|---|---|
+| China | 1949–present | Communist Party of China, ruling party | List of communist states — Wikipedia |
+| Vietnam | 1945/1976–present | Communist Party of Vietnam | List of communist states — Wikipedia |
+| Laos | 1975–present | Lao People's Revolutionary Party | List of communist states — Wikipedia |
+| Cuba | 1959–present | Communist Party of Cuba | List of communist states — Wikipedia |
+| North Korea | 1948–present | Workers' Party of Korea | List of communist states — Wikipedia |
+
+#### B. Former Marxist-Leninist / Eastern Bloc states (in-window, now ended)
+
+| Country/Jurisdiction | Period (in-window) | Socialist hand | Source |
+|---|---|---|---|
+| Soviet Union (USSR) | 1944–1991 | CPSU one-party state | Communist state — Wikipedia |
+| East Germany (GDR) | 1949–1990 | Socialist Unity Party | Eastern Bloc — Wikipedia |
+| Poland (PRL) | 1944/1947–1989 | Polish United Workers' Party | Eastern Bloc — Wikipedia |
+| Czechoslovakia | 1948–1989 | Communist Party of Czechoslovakia | Eastern Bloc — Wikipedia |
+| Hungary | 1949–1989 | Hungarian Working People's / Socialist Workers' Party | Eastern Bloc — Wikipedia |
+| Romania | 1947–1989 | Romanian Communist Party | Eastern Bloc — Wikipedia |
+| Bulgaria | 1946–1990 | Bulgarian Communist Party | Eastern Bloc — Wikipedia |
+| Albania | 1946–1991 | Party of Labour of Albania | Communist state — Wikipedia |
+| Yugoslavia (SFRY) | 1945–1992 | League of Communists of Yugoslavia | Communist state — Wikipedia |
+| Mongolia | 1944–1990 | Mongolian People's Revolutionary Party | Communist state — Wikipedia |
+| Afghanistan (DRA) | 1978–1992 | People's Democratic Party of Afghanistan | List of communist states — Wikipedia |
+| Cambodia (Democratic Kampuchea / PRK) | 1975–1991 | Khmer Rouge / Kampuchean People's Revolutionary Party | List of communist states — Wikipedia |
+| South Yemen (PDRY) | 1967–1990 | Yemeni Socialist Party | List of communist states — Wikipedia |
+| Ethiopia (Derg / PDRE) | 1974–1991 | Derg / Workers' Party of Ethiopia | List of communist states — Wikipedia |
+| Angola (PRA) | 1975–1992 | MPLA (Marxist-Leninist period) | List of communist states — Wikipedia |
+| Mozambique | 1975–1990 | FRELIMO (Marxist-Leninist period) | List of communist states — Wikipedia |
+| Benin (PRB) | 1975–1990 | People's Revolutionary Party of Benin | List of communist states — Wikipedia |
+| Congo-Brazzaville (PRC) | 1969–1992 | Congolese Party of Labour | List of communist states — Wikipedia |
+| Somalia (SDR) | 1969–1991 | Somali Revolutionary Socialist Party | List of communist states — Wikipedia |
+
+#### C. Governing socialist party or self-declared socialism (in-window, various forms)
+
+| Country/Jurisdiction | Period (in-window) | Socialist hand | Source |
+|---|---|---|---|
+| India | 1976–present | "SOCIALIST" in the Preamble; socialist policy periods | Constitution of India (42nd Amdt) — Constitute Project |
+| Tanzania | 1967–1992 | Ujamaa (African socialism), CCM/TANU | Constitution of Tanzania — Constitute Project |
+| Guyana | 1970–1992 | Cooperative socialism (PNC) | Constitution of Guyana — Constitute Project |
+| Sri Lanka | 1972/1978–present | "Democratic Socialist Republic" | Constitution of Sri Lanka — Constitute Project |
+| Bangladesh | 1972–present | Socialism as a state principle (Art. 8) | Constitution of Bangladesh — Constitute Project |
+| Nepal | 2008/2015–present | Maoist/communist-led governments; "socialism-oriented" | Constitution of Nepal — Constitute Project |
+| Portugal | 1974–present | Post-Carnation socialism in the constitution; PS governments | Constitution of Portugal — Constitute Project |
+| Venezuela | 1999–present | "Socialism of the 21st century" (PSUV) | Britannica: Venezuela — political history |
+| Nicaragua | 1979–1990; 2007–present | Sandinista (FSLN) governments | Britannica: Nicaragua — Sandinista period |
+| Bolivia | 2006–2019; 2020–present | Movement for Socialism (MAS) | Britannica: Bolivia — MAS governments |
+| Chile | 1970–1973 | Allende / Popular Unity socialist government | Britannica: Chile — Allende |
+| Libya | 1969–2011 | Gaddafi "Jamahiriya"/Arab socialism | Britannica: Libya — Gaddafi era |
+| Syria | 1963–present | Ba'ath Party (Arab socialism) | Britannica: Syria — Ba'ath rule |
+| Iraq | 1968–2003 | Ba'ath Party (Arab socialism) | Britannica: Iraq — Ba'ath period |
+| Egypt | 1954–1970 | Nasser (Arab socialism) | Britannica: Egypt — Nasser era |
+| Algeria | 1962–1989 | FLN one-party socialism | Britannica: Algeria — FLN era |
+
+**Reading the historical register.** A `GOVERNED` value states only that a
+socialist/communist party or state held power in the window — a governance
+*fact*, cited to standard references. It is **not** a moral judgment, an economic
+rating, or a claim about the country today, and it does **not** change the
+neutral constitutional-text indicator above (a country can be `GOVERNED` here yet
+`NONE` in the constitutional list, e.g. because a later constitution dropped the
+reference). Entries not yet verified against a cited governance source remain
+`UNASSESSED` and are never guessed.
+
+**Coverage note.** The window is measured as the last 82.5 years from this
+document's date (≈ 1944–2026). The register above covers the well-documented
+governing cases; further jurisdictions stay `UNASSESSED` until each is backed by
+a cited governance source, per the data-integrity rule. Sources are standard
+references (Wikipedia's *List of communist states* / *Communist state* /
+*Eastern Bloc*, the Constitute Project for constitutions, and Encyclopædia
+Britannica country histories); verify against them before decision-grade use.
+
 ### Data integrity rule
 
 This is a constitutional-**text** indicator, not a judgment about a country's
