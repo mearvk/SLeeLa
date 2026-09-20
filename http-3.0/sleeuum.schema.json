@@ -49,6 +49,7 @@
       ],
       "properties": {
         "packets": { "type": "integer", "minimum": 0 },
+        "retained": { "type": "integer", "minimum": 0, "description": "Per-packet records currently retained (<= the ledger's rolling cap); may be less than 'packets'." },
         "sent": { "type": "integer", "minimum": 0 },
         "received": { "type": "integer", "minimum": 0 },
         "requests": { "type": "integer", "minimum": 0 },
