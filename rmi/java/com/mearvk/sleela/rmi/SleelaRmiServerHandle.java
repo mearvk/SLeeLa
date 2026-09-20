@@ -10,6 +10,9 @@ import java.util.Objects;
 
 /** Owns the complete server-side RMI lifecycle. */
 public final class SleelaRmiServerHandle implements AutoCloseable {
+    private static final System.Logger LOG =
+            System.getLogger(SleelaRmiServerHandle.class.getName());
+
     private final Registry registry;
     private final SleelaRmiService service;
     private final String serviceName;
@@ -61,13 +64,15 @@ public final class SleelaRmiServerHandle implements AutoCloseable {
         }
         try {
             registry.unbind(serviceName);
-        } catch (Exception ignored) {
-            // Shutdown is best-effort if the registry has already gone away.
+        } catch (Exception e) {
+            // Best-effort if the registry has already gone away, but log the
+            // reason so a genuine shutdown failure is not silently lost.
+            LOG.log(System.Logger.Level.DEBUG, "RMI unbind during close failed", e);
         }
         try {
             UnicastRemoteObject.unexportObject(service, true);
-        } catch (Exception ignored) {
-            // Already unexported.
+        } catch (Exception e) {
+            LOG.log(System.Logger.Level.DEBUG, "RMI unexport during close failed", e);
         }
         closed = true;
     }

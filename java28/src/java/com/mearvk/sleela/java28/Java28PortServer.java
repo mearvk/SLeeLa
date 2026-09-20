@@ -21,6 +21,9 @@ import java.nio.charset.StandardCharsets;
  */
 public final class Java28PortServer {
 
+    /** Idle read timeout per connection, so a stalled client cannot pin the server. */
+    private static final int READ_TIMEOUT_MS = 30_000;
+
     private final ServerSocket server;
 
     public Java28PortServer(int port) throws Exception {
@@ -39,10 +42,16 @@ public final class Java28PortServer {
 
     /** Serve a single connection, then return (demo-friendly, one client). */
     public void serveOne() throws Exception {
-        try (Socket s = server.accept()) {
+        // try-with-resources closes the socket AND both buffered streams, so no
+        // reader/writer is leaked if the loop throws.
+        try (Socket s = server.accept();
+             BufferedReader in = new BufferedReader(
+                     new InputStreamReader(s.getInputStream(), StandardCharsets.UTF_8));
+             BufferedWriter out = new BufferedWriter(
+                     new OutputStreamWriter(s.getOutputStream(), StandardCharsets.UTF_8))) {
+            // Bound how long a silent client can hold the (single-threaded) server.
+            s.setSoTimeout(READ_TIMEOUT_MS);
             SleelaMemoryServer host = newHost();
-            BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream(), StandardCharsets.UTF_8));
-            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(s.getOutputStream(), StandardCharsets.UTF_8));
             String line;
             while ((line = in.readLine()) != null) {
                 String reply = host.handleLine(line);
@@ -57,7 +66,19 @@ public final class Java28PortServer {
     public void close() throws Exception { server.close(); }
 
     public static void main(String[] args) throws Exception {
-        int requested = args.length > 0 ? Integer.parseInt(args[0]) : 0;
+        int requested = 0;
+        if (args.length > 0) {
+            try {
+                requested = Integer.parseInt(args[0]);
+            } catch (NumberFormatException e) {
+                System.err.println("Java28PortServer: invalid port '" + args[0] + "'; use an integer 0..65535");
+                System.exit(2);
+            }
+            if (requested < 0 || requested > 65535) {
+                System.err.println("Java28PortServer: port out of range: " + requested);
+                System.exit(2);
+            }
+        }
         Java28PortServer srv = new Java28PortServer(requested);
         System.out.println("PORT " + srv.port());
         System.out.flush();
