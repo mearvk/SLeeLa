@@ -1,0 +1,19 @@
+#sleela 1.2
+// D10_Ledger.sleela — companion to Lesson 10 (The .ledger class).
+// When built for the sleela target, Nordshrift emits this artifact PLUS a
+// <artifact>.ledger (QR insignia + SHA-256 chain + ISO-8601 timestamp) beside
+// it, which ledger.py / ledger_tool can verify.
+class D10_Ledger {
+
+    int checksumLike(int a, int b) {
+        // a tiny stand-in "digest" of two inputs (illustrative, not the real MAC)
+        return (a * 31 + b) % 1000;
+    }
+
+    void main() {
+        print("== Lesson 10: this file gets a .ledger ==");
+        print("illustrative digest(12,34) = " + checksumLike(12, 34));
+        print("verify with: python3 ledger/ledger.py verify <this>.ledger");
+        print("done");
+    }
+}

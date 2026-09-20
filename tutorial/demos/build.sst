@@ -1,0 +1,22 @@
+#nordshrift 1.0
+#sleela     1.2
+
+/// Drives the 12 tutorial demo Wrappers. Switch `target-language` between
+/// sleela | java | c to retarget (Lesson 06). The sleela target produces a
+/// runnable artifact per source, and a .ledger beside each (Lesson 10).
+sheet tutorial-demos:
+  version      1.0.0
+  author       "SLeeLa Tutorial"
+  description  "Companion demo sources for the 12-part tutorial series."
+
+source:
+  root     "src"
+  glob     "**/*.sleela"
+  exclude  [ "build/**", "**/build/**" ]
+
+target:
+  root            "out"
+  layout          mirror-source
+  java-version    21
+  package-root    "com.example.tutorial"
+  target-language sleela

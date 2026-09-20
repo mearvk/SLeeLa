@@ -1,0 +1,19 @@
+#sleela 1.2
+// D05_Build.sleela — companion to Lesson 05 (The .sst sheet & Nordshrift).
+// This Wrapper is driven by tutorial/demos/build.sst; running the sheet with
+// the sleela target produces a runnable artifact (and a .ledger beside it).
+class D05_Build {
+
+    int windowThroughput(int completed, int window) {
+        if (window <= 0) {
+            return 0;
+        }
+        return completed / window;
+    }
+
+    void main() {
+        print("== Lesson 05: driven by a sheet ==");
+        print("throughput = " + windowThroughput(120, 4) + " ops/second");
+        print("done");
+    }
+}

@@ -1,0 +1,37 @@
+#sleela 1.2
+// D04_Counter.sleela — companion to Lesson 04 (Control flow & expressions).
+// while, for, if, and arithmetic/comparison operators.
+class D04_Counter {
+
+    int sumTo(int n) {
+        int total = 0;
+        for (int i = 1; i <= n; i = i + 1) {
+            total = total + i;
+        }
+        return total;
+    }
+
+    int classify(int n) {
+        if (n < 0) {
+            return -1;
+        }
+        if (n == 0) {
+            return 0;
+        }
+        return 1;
+    }
+
+    void main() {
+        print("== Lesson 04: control flow ==");
+        int i = 1;
+        while (i <= 5) {
+            print("square(" + i + ") = " + (i * i));
+            i = i + 1;
+        }
+        print("sum 1..10 = " + sumTo(10));
+        print("classify(-3) = " + classify(-3));
+        print("classify(0)  = " + classify(0));
+        print("classify(7)  = " + classify(7));
+        print("done");
+    }
+}

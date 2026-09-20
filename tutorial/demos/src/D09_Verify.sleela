@@ -1,0 +1,18 @@
+#sleela 1.2
+// D09_Verify.sleela — companion to Lesson 09 (Verification & the SHA-256 gate).
+// The program itself is ordinary; the lesson is that building it required the
+// verified, fail-closed toolchain. This Wrapper just reports that it ran under
+// a gated build.
+class D09_Verify {
+
+    boolean built(boolean gatePassed) {
+        return gatePassed;
+    }
+
+    void main() {
+        print("== Lesson 09: fail-closed build ==");
+        print("this artifact exists only because the SHA-256 gate passed");
+        print("gate passed = " + built(true));
+        print("done");
+    }
+}

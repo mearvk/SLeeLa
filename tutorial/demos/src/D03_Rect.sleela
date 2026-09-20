@@ -1,0 +1,26 @@
+#sleela 1.2
+// D03_Rect.sleela — companion to Lesson 03 (Types, structs & classes).
+// A struct holds plain data (constructed with new + field assignment); a class
+// holds the behavior and main(). This mirrors the real struct/new pattern used
+// across the repo (e.g. churn/1/assumptions/assumptions.sleela).
+struct Rect {
+    int w;
+    int h;
+}
+
+class D03_Rect {
+
+    int area(Rect r) {
+        return r.w * r.h;
+    }
+
+    void main() {
+        print("== Lesson 03: struct + class ==");
+        Rect r = new Rect();
+        r.w = 4;
+        r.h = 5;
+        print("w=" + r.w + " h=" + r.h);
+        print("area = " + area(r));
+        print("done");
+    }
+}

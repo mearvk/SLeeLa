@@ -1,0 +1,16 @@
+#sleela 1.2
+// D02_Greeter.sleela — companion to Lesson 02 (Your first Wrapper).
+// A pure helper method plus a main() that uses it; string concatenation with +.
+class D02_Greeter {
+
+    String greet(String who) {
+        return "hello, " + who;
+    }
+
+    void main() {
+        print("== Lesson 02: greeter ==");
+        print(greet("SLeeLa"));
+        print(greet("world"));
+        print("done");
+    }
+}
