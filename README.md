@@ -71,6 +71,12 @@ host and adjusts link flags per platform.
 - [`STRUCTS.md`](STRUCTS.md) documents the C/C++-style **`struct`** feature
   (syntax 1.2+): named aggregates, `new` instantiation, `.` member access,
   reference semantics, and `structPack`/`structUnpack` network transport.
+- [`manifesto/`](manifesto/) is **A Manifesto to Thinking Kind** — a runnable
+  25-page Wrapper™ written in SLeeLa and documented in the **SleelaDoc** brand
+  ([`manifesto/SLEELADOC.md`](manifesto/SLEELADOC.md)). Every page is real,
+  compiling code; `main()` performs the argument on the core and prints a
+  verdict on itself (proof-of-work). It answers "146+ IQ" as system
+  Insight/Quality, not a psychometric score.
 - [`VERSION.md`](VERSION.md) is the single record of all versions.
 - [`COMPILER.md`](COMPILER.md) describes the Sleela compiler — its pipeline,
   version awareness (the `#sleela` pragma), and the versions it implements.
