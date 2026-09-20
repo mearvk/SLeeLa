@@ -5,7 +5,8 @@ documented in the **SleelaDoc** brand.
 
 | File | What it is |
 |------|------------|
-| [`manifesto.sleela`](manifesto.sleela) | The 25-page **Manifesto to Thinking Kind** — a runnable Wrapper™. Every page is real, compiling SLeeLa; `main()` performs the argument on the C/C++ core and prints a verdict on itself. |
+| [`manifesto.sleela`](manifesto.sleela) | The 25-page **Manifesto to Thinking Kind** — a runnable Wrapper™ and the source of record. Every page is real, compiling SLeeLa; `main()` performs the argument on the C/C++ core and prints a verdict on itself. |
+| [`MANIFESTO.md`](MANIFESTO.md) | The **rendered Markdown edition** of the manifesto — all 25 SleelaDoc pages as readable prose, plus a captured proof-of-work run. Faithful to the source, page for page. |
 | [`SLEELADOC.md`](SLEELADOC.md) | The SleelaDoc documentation-brand spec (block forms and tags) used throughout the manifesto. |
 
 ## What it argues
