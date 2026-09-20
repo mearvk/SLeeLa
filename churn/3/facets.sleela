@@ -64,7 +64,7 @@ class Facets {
         Facet alpha = new Facet();
         alpha.domain = "physics"; alpha.object = "electromagnetism";
         alpha.name = "fine-structure constant";
-        alpha.value = 7.2973525643e-3; alpha.unit = "1"; alpha.kind = "MEASURED";
+        alpha.value = 7.2973525643 * math.pow(10.0, -3.0); alpha.unit = "1"; alpha.kind = "MEASURED";
 
         Facet ryd = new Facet();
         ryd.domain = "physics"; ryd.object = "hydrogen spectrum";

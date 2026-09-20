@@ -45,6 +45,13 @@ DEFAULT_EXTRA_FILES = [
     "runtime/Parameters.h",
     "bash/pixel_terminal.cpp",
     "bash/pixel_terminal.hpp",
+    # SHEET.sheet is not compiled, but it is a TRUSTED INPUT the compiler reads
+    # at compile time to resolve conducted methods (conduct/role/insight/route)
+    # and the system invariants. Tampering with it silently changes program
+    # semantics, so it belongs inside the integrity boundary alongside the
+    # toolchain source. (User .sleela programs are deliberately NOT covered: the
+    # gate protects the interpreter, not the arbitrary programs it runs.)
+    "SHEET.sheet",
 ]
 SOURCE_SUFFIXES = {".c", ".h", ".cpp", ".hpp", ".cc", ".hh"}
 

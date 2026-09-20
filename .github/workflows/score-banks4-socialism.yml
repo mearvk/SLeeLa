@@ -23,6 +23,14 @@ jobs:
         with:
           fetch-depth: 1
 
+      - name: Build BANKS3 -> BANKS4 (inputs to the annotation)
+        # BANKS3.md and BANKS4.md are derived and not committed; regenerate the
+        # chain here so this workflow is self-sufficient and does not depend on
+        # a separate Generate-BANKS3 / Generate-BANKS4 run landing first.
+        run: |
+          python3 tools/banking/generate_banks3.py
+          python3 tools/banking/update_banks4.py
+
       - name: Apply neutral, sourced constitutional-reference indicator
         run: python3 tools/banking/update_banks4_socialism.py
 

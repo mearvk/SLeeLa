@@ -23,6 +23,13 @@ jobs:
         with:
           fetch-depth: 1
 
+      - name: Generate BANKS3 (input to BANKS4)
+        # BANKS3.md is a derived join of BANKS.md + BANKS2.md and is not
+        # committed, so regenerate it here before deriving BANKS4. This makes
+        # the workflow self-sufficient rather than depending on a separate
+        # Generate-BANKS3 run having landed first.
+        run: python3 tools/banking/generate_banks3.py
+
       - name: Generate BANKS4 from BANKS3
         run: python3 tools/banking/update_banks4.py
 

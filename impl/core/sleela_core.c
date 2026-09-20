@@ -578,7 +578,7 @@ static SLResult run_thread(SLThread* t) {
         case OP_HALT: return SLR_HALT;
         case OP_CONST: PUSH(vm->consts[in.a]); break;
         case OP_POP: (void)POP(); break;
-        case OP_DUP: PUSH(t->stack[t->sp-1]); break;
+        case OP_DUP: { SLValue dupv = t->stack[t->sp-1]; PUSH(dupv); } break;
         case OP_LOADG: { pthread_mutex_lock(&vm->global_mtx); SLValue v=vm->globals[in.a]; pthread_mutex_unlock(&vm->global_mtx); PUSH(v); } break;
         case OP_STOREG: { SLValue v=POP(); pthread_mutex_lock(&vm->global_mtx); vm->globals[in.a]=v; pthread_mutex_unlock(&vm->global_mtx); } break;
         case OP_LOADL: { SLFrame* f=&t->frames[t->fp-1]; PUSH(t->stack[f->base+in.a]); } break;
