@@ -9,8 +9,10 @@ lives in the C substrate (crypto_openssl.c et al.).
 
 Every packet also carries a NONCE (per-connection monotonic counter, covered by
 the MAC, for replay rejection), a per-packet DIGEST (a 64-bit KEYED MAC,
-SipHash-2-4, over the header + payload under a per-connection secret key), and an
-INTACTX id (64-bit system-specific host-integrity identity). The keyed DIGEST
+SipHash-2-4, over the header + basket + payload under a per-connection secret
+key), an INTACTX id (64-bit system-specific host-integrity identity), and the
+fixed BASKET of 14 goods & services (atomic-bound to the US capitalism system,
+ISO USD per gram) as a canonical block covered by the MAC. The keyed DIGEST
 resists deliberate forgery, not just accidental corruption. A receiver rejects a
 packet whose DIGEST does not verify under the shared key, RESETs the exchange
 when a packet's INTACTX variance exceeds the tamper threshold, and rejects a
@@ -18,7 +20,7 @@ packet whose NONCE is not ahead of its high-water mark (a replay).
 
 Textual wire forms (must match the C implementation byte-for-byte):
 
-    envelope:  H3 <ver> <flags> <service_id> <op_id> <request_id> <nonce> <digest> <intactx> <len>:<payload>\\n
+    envelope:  H3 <ver> <flags> <service_id> <op_id> <request_id> <nonce> <digest> <intactx> <basket-hex> <len>:<payload>\\n
     response:  H3R <status> <request_id> <len>:<result>\\n
 """
 from __future__ import annotations
@@ -99,6 +101,56 @@ def siphash24(key: bytes, data: bytes) -> int:
     for _ in range(4):
         v0, v1, v2, v3 = sipround(v0, v1, v2, v3)
     return (v0 ^ v1 ^ v2 ^ v3) & _U64
+
+
+# ---- Basket of goods & services (mirrors http3_basket.{h,c} and BASKET.docx) --
+# A fixed, carefully-selected set of 14 goods/services, atomic-bound to the US
+# capitalism system. Each item: (atomic_number, value_micro_usd_per_gram, name).
+# The name does NOT travel on the wire; only the number and per-gram value do.
+BASKET_ITEMS = 14
+BASKET_ISO_CURRENCY = "USD"
+BASKET_ISO_NUMERIC = 840
+BASKET_BLOCK_SIZE = 4 + BASKET_ITEMS * 12  # iso(2)+count(2) + per item number(4)+value(8)
+
+BASKET = (
+    (1, 56249759, "Bleached pulp paper"),
+    (2, 34243099, "Broadband gigabyte (svc)"),
+    (3, 69987683, "Cane sugar"),
+    (4, 43104945, "Cobalt metal"),
+    (5, 29864648, "Cured tobacco leaf"),
+    (6, 17981345, "Freight ton-mile (svc)"),
+    (7, 6610716, "Gold bullion"),
+    (8, 12259381, "Legal counsel hour (svc)"),
+    (9, 65041790, "Managed cloud-compute (svc)"),
+    (10, 31566795, "Natural rubber"),
+    (11, 24592204, "Portland cement"),
+    (12, 65211966, "Raw cotton"),
+    (13, 35009362, "Roasted coffee"),
+    (14, 35480545, "Structural steel"),
+)
+
+
+def basket_serialize() -> bytes:
+    """Canonical basket block: iso(2) + count(2), then per item number(4)+value(8).
+    Big-endian; matches http3_basket_serialize() in C byte-for-byte."""
+    out = struct.pack(">HH", BASKET_ISO_NUMERIC, BASKET_ITEMS)
+    for number, value, _name in BASKET:
+        out += struct.pack(">IQ", number & 0xFFFFFFFF, value & _U64)
+    return out
+
+
+def basket_parse(block: bytes):
+    """Parse a canonical basket block -> (iso_numeric, [(number, value), ...])."""
+    if len(block) < 4:
+        raise ValueError("short basket block")
+    iso, count = struct.unpack(">HH", block[:4])
+    if len(block) < 4 + count * 12:
+        raise ValueError("short basket block")
+    items = []
+    for i in range(count):
+        number, value = struct.unpack(">IQ", block[4 + i * 12:4 + i * 12 + 12])
+        items.append((number, value))
+    return iso, items
 
 
 class Flag(IntEnum):
@@ -237,15 +289,19 @@ class Envelope:
     nonce: int = 0
     intactx: int = 0
     digest: int = 0
+    basket: bytes = None  # canonical basket block; defaults to the fixed basket
+
+    def __post_init__(self) -> None:
+        if self.basket is None:
+            self.basket = basket_serialize()
 
     def compute_digest(self, key: bytes) -> int:
-        """Keyed MAC (SipHash-2-4) over canonical header serialization + payload.
+        """Keyed MAC (SipHash-2-4) over canonical header + basket + payload.
 
         Must match http3_envelope_compute_digest() in the C reference exactly.
         The transport-only BINARY flag is excluded so text and binary forms of
         the same logical envelope share a digest; `key` is the 16-byte
-        per-connection secret. The NONCE is inside the MAC so it cannot be
-        altered to slip a replay past the receiver's high-water-mark check.
+        per-connection secret. The NONCE and the BASKET are inside the MAC.
         """
         logical_flags = self.flags & ~int(Flag.BINARY)
         hdr = struct.pack(
@@ -259,7 +315,7 @@ class Envelope:
             self.intactx & _U64,
             len(self.payload) & 0xFFFFFFFF,
         )
-        return siphash24(key, hdr + self.payload)
+        return siphash24(key, hdr + self.basket + self.payload)
 
     def seal(self, key: bytes) -> "Envelope":
         """Stamp the keyed DIGEST over the current contents; returns self for chaining."""
@@ -274,9 +330,11 @@ class Envelope:
             raise ValueError("payload too large")
         if key is not None:
             self.seal(key)
+        basket_hex = self.basket.hex()
         head = (
             f"H3 {self.version} {self.flags} {self.service_id} {self.op_id} "
-            f"{self.request_id} {self.nonce} {self.digest} {self.intactx} {len(self.payload)}:"
+            f"{self.request_id} {self.nonce} {self.digest} {self.intactx} "
+            f"{basket_hex} {len(self.payload)}:"
         )
         return head.encode("utf-8") + self.payload + b"\n"
 
@@ -287,9 +345,9 @@ class Envelope:
         if not sep:
             raise ValueError("malformed envelope")
         parts = head.decode("utf-8").split(" ")
-        if len(parts) != 10 or parts[0] != "H3":
+        if len(parts) != 11 or parts[0] != "H3":
             raise ValueError("malformed envelope")
-        _, ver, flags, sid, oid, rid, nonce, digest, intactx, plen = parts
+        _, ver, flags, sid, oid, rid, nonce, digest, intactx, basket_hex, plen = parts
         n = int(plen)
         if n > MAX_PAYLOAD:
             raise ValueError("payload too large")
@@ -300,6 +358,7 @@ class Envelope:
             service_id=int(sid), op_id=int(oid), request_id=int(rid),
             payload=payload, flags=int(flags), version=int(ver),
             nonce=int(nonce), intactx=int(intactx), digest=int(digest),
+            basket=bytes.fromhex(basket_hex),
         )
 
 

@@ -11,6 +11,8 @@ from http3_flow import (
     Envelope, Flag, Intactx, Naming, Pipeline, Response, RetryClass, Status,
     INTACTX_VARIANCE_SHIFT, INTACTX_VARIANCE_MASK, INTACTX_TAMPER_THRESHOLD,
     MAC_KEY_BYTES, siphash24,
+    BASKET, BASKET_ITEMS, BASKET_BLOCK_SIZE, BASKET_ISO_NUMERIC,
+    basket_serialize, basket_parse,
 )
 
 # A fixed per-connection key for tests (0x00..0x0f).
@@ -26,11 +28,13 @@ def test_siphash24_reference_vector() -> None:
 def test_envelope_text_round_trip() -> None:
     env = Envelope(service_id=7, op_id=3, request_id=1001, payload=b"20,22", nonce=5)
     wire = env.pack_text(KEY)
-    # Wire carries NONCE, keyed DIGEST, and INTACTX between REQUEST-ID and length.
-    assert wire == f"H3 3 0 7 3 1001 5 {env.digest} 0 5:".encode() + b"20,22\n"
+    # Wire carries NONCE, keyed DIGEST, INTACTX, and the BASKET (hex) before length.
+    basket_hex = env.basket.hex()
+    assert wire == f"H3 3 0 7 3 1001 5 {env.digest} 0 {basket_hex} 5:".encode() + b"20,22\n"
     back = Envelope.unpack_text(wire)
     assert (back.service_id, back.op_id, back.request_id, back.payload) == (7, 3, 1001, b"20,22")
     assert back.nonce == 5 and back.digest == env.digest and back.intactx == 0
+    assert back.basket == env.basket
     assert back.verify_digest(KEY)
 
 
@@ -46,6 +50,31 @@ def test_digest_is_keyed_mac_detects_corruption_and_forgery() -> None:
     # which a plain hash could not detect. This is the keyed-MAC guarantee.
     forged = Envelope(service_id=1, op_id=1, request_id=5, payload=b"20,22").seal(bytes(range(16, 32)))
     assert not forged.verify_digest(KEY)
+
+
+def test_basket_serialize_round_trip_and_size() -> None:
+    block = basket_serialize()
+    assert len(block) == BASKET_BLOCK_SIZE == 4 + 14 * 12 == 172
+    iso, items = basket_parse(block)
+    assert iso == BASKET_ISO_NUMERIC == 840
+    assert len(items) == BASKET_ITEMS == 14
+    # Parsed (number, value) pairs match the fixed basket table.
+    assert items == [(n, v) for (n, v, _name) in BASKET]
+
+
+def test_basket_travels_and_is_mac_covered() -> None:
+    # The basket rides on every packet by default and is inside the MAC:
+    # altering it invalidates the DIGEST.
+    env = Envelope(service_id=1, op_id=1, request_id=9, payload=b"x", nonce=1).seal(KEY)
+    assert env.basket == basket_serialize()
+    assert env.verify_digest(KEY)
+    back = Envelope.unpack_text(env.pack_text(KEY))
+    assert back.basket == env.basket and back.verify_digest(KEY)
+    # Tamper one byte of the basket after sealing -> MAC no longer verifies.
+    tampered = bytearray(env.basket)
+    tampered[10] ^= 0x01
+    env.basket = bytes(tampered)
+    assert not env.verify_digest(KEY)
 
 
 def test_intactx_variance_layout_and_tamper() -> None:

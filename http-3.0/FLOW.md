@@ -15,6 +15,7 @@ one request end to end. Companion: [`STATUS.md`](STATUS.md).
 | ├ NONCE (replay guard) | §5 | `nonce` (MAC-covered; pipeline high-water mark) | `http3_envelope.h` / `http3_pipeline.c` |
 | ├ DIGEST (per-packet keyed MAC) | §5 | `digest` + `http3_envelope_compute_digest` (SipHash-2-4, `http3_mac.{h,c}`) | `http3_envelope.{h,c}` |
 | ├ INTACTX (host-integrity id) | §5 | `intactx` (`http3_intactx_t`) | `http3_intactx.{h,c}` |
+| ├ BASKET (goods & services) | §5 | `basket` (fixed 14-item block, ISO USD/g) | `http3_basket.{h,c}` |
 | └ PAYLOAD | §5 | `payload`, `payload_len` | `http3_envelope.h` |
 | Textual pack/unpack | §5 | `http3_envelope_pack_text` / `_unpack_text` | `http3_envelope.c` |
 | Binary pack/unpack | §5 | `http3_envelope_pack_binary` / `_unpack_binary` | `http3_envelope.c` |
@@ -46,10 +47,11 @@ one request end to end. Companion: [`STATUS.md`](STATUS.md).
    http3_envelope_init(env, service_id=1, op_id=1, request_id=1001,
                        flags=0, nonce=1, intactx, mac_key, payload="20,22")
         │
-        ▼  §5 pack to wire (textual OR binary). NONCE + DIGEST + INTACTX travel too.
-   textual:  H3 3 0 1 1 1001 <nonce> <digest> <intactx> 5:20,22
+        ▼  §5 pack to wire (textual OR binary). NONCE + DIGEST + INTACTX +
+           BASKET (fixed 14-item block) all travel too.
+   textual:  H3 3 0 1 1 1001 <nonce> <digest> <intactx> <basket-hex> 5:20,22
    binary :  03 01 00000001 00000001 00000000000003e9
-             <nonce:8> <digest:8> <intactx:8> 00000005 32302c3232
+             <nonce:8> <digest:8> <intactx:8> <basket:172> 00000005 32302c3232
         │
         ▼  §19 receive + minimal parse (auto-detect wire form)
    http3_pipeline_handle_wire(pipe, wire, len, out, ...)
@@ -100,6 +102,11 @@ Key invariants surfaced by the flow:
   a perfectly valid MAC — returns `REPLAYED` and never reaches a handler. Since
   the NONCE is MAC-covered, an attacker cannot bump it to slip a replay through
   without breaking the DIGEST.
+- **The basket rides every packet** (§5): a fixed 14-item basket of goods &
+  services (atomic number + ISO USD micro-value per gram, `http3_basket.{h,c}`)
+  is serialized into a 172-byte canonical block carried on every packet and
+  covered by the MAC, so it is authenticated end to end. The C block, the Python
+  block, and the human-readable `BASKET.docx` all agree byte-for-byte.
 
 ## Run it
 
