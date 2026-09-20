@@ -34,6 +34,14 @@
  *       SLeeLa HTTP gateway.</li>
  * </ul>
  *
+ * <h2>Loading raw compiled classes</h2>
+ * {@link com.mearvk.sleela.connector.SleelaClassLoader} is a hardened,
+ * allow-listed {@code Class.forName()} analogue: it resolves raw compiled
+ * classes (from the classpath or operator-supplied {@code .class} directories /
+ * {@code .jar} roots) under an explicit allow-list, cached and fail-closed, and
+ * without running static initializers unless the caller opts in. See
+ * {@code connector/CLASS_LOADER.md}.
+ *
  * <h2>Error model</h2>
  * {@code invoke(...)} returns a {@link com.mearvk.sleela.connector.SleelaResult}
  * rather than throwing: any transport or execution fault is folded into a
