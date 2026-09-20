@@ -10,7 +10,7 @@ CFLAGS ?= -std=c11 -O2 -Wall -Wextra -pthread
 CXXFLAGS ?= -std=c++17 -O2 -Wall -Wextra -pthread
 CPPFLAGS += -Ifrontend $(SUBJECT_INCLUDES) -I../bash
 LDFLAGS ?= -pthread
-LIBS ?= -ldl
+LIBS ?= -ldl -lm
 BUILD := build
 SLEELA_BIN := $(BUILD)/sleela
 NORDSHRIFT_BIN := $(BUILD)/nordshrift
@@ -60,7 +60,7 @@ VERIFY_MANIFEST ?= $(SLEELA_SHA256_MANIFEST)
 VERIFY_ARGS = --manifest "$(VERIFY_MANIFEST)" --root "$(CURDIR)/.."
 ALL_OBJECTS := $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(TIME_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(NS_OBJ) $(THREAD_SMOKE) $(SOCKET_SMOKE) $(IO_PLATFORM_SMOKE) $(NET_PLATFORM_SMOKE) $(PATH_PLATFORM_SMOKE) $(TERMINAL_PLATFORM_SMOKE) $(LIBRARY_PLATFORM_SMOKE) $(PIXEL_TERMINAL_SMOKE) $(THREAD_PLATFORM_SMOKE)
 
-.PHONY: all build-verified rebuild-verified clean test test-sleela test-version test-nordshrift test-threads test-thread-platform test-network test-network-platform test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-chemistry test-financial test-math test-physics test-economics test-inference verify-security build-runtime test-runtime
+.PHONY: all build-verified rebuild-verified clean test test-sleela test-version test-nordshrift test-threads test-thread-platform test-network test-network-platform test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-chemistry test-financial test-math test-physics test-economics test-inference test-subjects verify-security build-runtime test-runtime
 
 all: verify-security $(SLEELA_BIN) $(NORDSHRIFT_BIN)
 build-verified: verify-security $(SLEELA_BIN) $(NORDSHRIFT_BIN)
@@ -189,18 +189,39 @@ test-pixel-terminal: $(PIXEL_TERMINAL_SMOKE)
 	@echo "=== native pixel terminal smoke ==="; $(PIXEL_TERMINAL_SMOKE)
 test-catalog: $(NORDSHRIFT_BIN)
 	@export SLEELA_SHEET=$(CURDIR)/../SHEET.sheet; echo "=== nordshrift objects (summary) ==="; $(NORDSHRIFT_BIN) objects | head -4 || exit 1; echo "=== relevance --target=c Thread ==="; $(NORDSHRIFT_BIN) relevance --target=c Thread || exit 1; echo "=== relevance --target=java (tally) ==="; $(NORDSHRIFT_BIN) relevance --target=java | tail -1 || exit 1
-test-math: $(BUILD)/math_native.o
-	@echo "=== native math subject library ==="; echo "math object compiled: $(BUILD)/math_native.o"
-test-physics: $(BUILD)/physics_native.o
-	@echo "=== native physics subject library ==="; echo "physics object compiled: $(BUILD)/physics_native.o"
-test-economics: $(BUILD)/economics_native.o
-	@echo "=== native economics subject library ==="; echo "economics object compiled: $(BUILD)/economics_native.o"
-test-inference: $(BUILD)/inference_native.o
-	@echo "=== native inference subject library ==="; echo "inference object compiled: $(BUILD)/inference_native.o"
-test-chemistry: $(CHEMISTRY_OBJ)
-	@echo "=== normed presumed chemistry library ==="; echo "chemistry object compiled: $(CHEMISTRY_OBJ)"
-test-financial: $(FINANCIAL_OBJ)
-	@echo "=== financial math/algebra reference library ==="; echo "financial object compiled: $(FINANCIAL_OBJ)"
+# Shared runner for a single subject *_values.sleela program: builds the
+# binary, then asserts the program runs cleanly, emits no FAIL line, and
+# produces exactly its EXPECTED_PASS count. $(1) is the subject basename.
+SUBJECT_TEST_ENV = export SLEELA_SHEET=$(CURDIR)/../SHEET.sheet; export SLEELA_SHA256_MANIFEST=$${SLEELA_SHA256_MANIFEST:-$(CURDIR)/../security/sha256-manifest.json}
+define RUN_SUBJECT_VALUES
+	@$(SUBJECT_TEST_ENV); cd $(CURDIR)/.. && \
+	  f=impl/tests/subjects/$(1)_values.sleela; \
+	  echo "=== $(1) numeric assertions ($$f) ==="; \
+	  out="$$($(CURDIR)/$(SLEELA_BIN) run $$f 2>/dev/null)" || { echo "  FAIL ($$f did not run)"; exit 1; }; \
+	  printf '%s\n' "$$out" | grep -E '^(PASS|FAIL) '; \
+	  fails=$$(printf '%s\n' "$$out" | grep -c '^FAIL '); \
+	  passes=$$(printf '%s\n' "$$out" | grep -c '^PASS '); \
+	  expected=$$(grep -oE 'EXPECTED_PASS=[0-9]+' $$f | head -1 | cut -d= -f2); \
+	  if [ "$$fails" -ne 0 ]; then echo "  $(1): $$fails FAILED"; exit 1; fi; \
+	  if [ -n "$$expected" ] && [ "$$passes" -ne "$$expected" ]; then echo "  $(1): expected $$expected checks, got $$passes"; exit 1; fi; \
+	  echo "  $(1): $$passes checks passed"
+endef
+
+test-math: $(SLEELA_BIN) $(BUILD)/math_native.o
+	$(call RUN_SUBJECT_VALUES,math)
+test-physics: $(SLEELA_BIN) $(BUILD)/physics_native.o
+	$(call RUN_SUBJECT_VALUES,physics)
+test-economics: $(SLEELA_BIN) $(BUILD)/economics_native.o
+	$(call RUN_SUBJECT_VALUES,economics)
+test-inference: $(SLEELA_BIN) $(BUILD)/inference_native.o
+	$(call RUN_SUBJECT_VALUES,inference)
+test-chemistry: $(SLEELA_BIN) $(CHEMISTRY_OBJ)
+	$(call RUN_SUBJECT_VALUES,chemistry)
+test-financial: $(SLEELA_BIN) $(FINANCIAL_OBJ)
+	$(call RUN_SUBJECT_VALUES,financial)
+# Run all subject numeric assertions through the shared harness.
+test-subjects: $(SLEELA_BIN)
+	@$(SUBJECT_TEST_ENV); cd $(CURDIR)/.. && bash impl/tests/subjects/run_subject_tests.sh $(CURDIR)/$(SLEELA_BIN)
 clean:
 	rm -rf $(BUILD)
 

@@ -25,7 +25,7 @@ out = [
     "# SLeeLa — BANKS4.md", "",
     "## HTTP 3.0 National Banking, Economic & Historical Registry — Banking-Enriched 391-Country Table", "",
     "This is the 391-row BANKS3 registry with the Banking field explicitly retained for every canonical country/jurisdiction.", "",
-    "| ID | Country/Jurisdiction | ISO | Currency | GDP | GDP/Capita | Inflation | Trade/GDP | World Bank Income | Banking | Status |",
+    "| ID | Country/Jurisdiction | ISO | Currency | GDP | GDP/Capita | Inflation | Trade/GDP | World Bank Income | Banking | Constitutional Socialism Reference |",
     "|---:|---|---|---|---:|---:|---:|---:|---|---|---|",
 ]
 for r in rows:
