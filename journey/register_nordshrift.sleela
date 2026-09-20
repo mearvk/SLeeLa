@@ -1,0 +1,37 @@
+#sleela 1.2
+/**
+ * @title   Nordshrift Register (Tier 7)
+ * @intent  Roll-call of the .sst transpiler driver that sits above the whole
+ *          stack and drives the triplet of targets (Java, Sleela, C).
+ * @see     JOURNEY.md (Tier 7), impl/nordshrift/, SST.model, SST-2.0.model
+ * @evidence DERIVED
+ */
+class NordshriftRegister {
+
+    int total = 0;
+
+    void entry(String name, String definition) {
+        total = total + 1;
+        print("  " + total + ". " + name + " -- " + definition);
+    }
+
+    void main() {
+        print("=== Tier 7: Nordshrift -- the .sst transpiler driver ===");
+        print("");
+        entry("Nordshrift CLI", "check/build/objects/relevance/version");
+        entry("SST lexer/parser", "tokenize and parse .sst control sheets");
+        entry("Subject model", "Subject->Quantity->Unit->Assumption->Relation->"
+              + "Formula->Transformation->Result->Evidence->Explanation");
+        entry("Source resolver", "resolve source: globs to Wrapper inputs");
+        entry("Sleela emitter", "emit the triplet: Java / Sleela / C");
+        entry("Object compatibility", "the catalog-backed compatibility list");
+        entry("Component manifest", "Nordshrift's own component accounting");
+        entry("Diagnostics", "the NSS-* diagnostic codes (provenance/deps)");
+
+        print("");
+        print("  nordshrift components registered = " + total);
+        print("");
+        print("  the triplet targets: Java | Sleela | C");
+        print("  driven by control sheets specified in SST.model / SST-2.0.model");
+    }
+}

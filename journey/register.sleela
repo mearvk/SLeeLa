@@ -1,0 +1,121 @@
+#sleela 1.2
+/**
+ * ===========================================================================
+ *  register.sleela  --  THE JOURNEY REGISTER (master roll-call)
+ * ===========================================================================
+ *
+ * @title    The SLeeLa Component Register
+ * @intent   The runnable equivalent of JOURNEY.md: name every component of the
+ *           implementation, in the order a program travels through it, and
+ *           keep an honest count. Documented in the SleelaDoc brand.
+ * @thesis   A system that can enumerate its own parts -- and run that
+ *           enumeration -- is a system that knows itself. This file IS the
+ *           accounting it describes.
+ * @see      JOURNEY.md
+ * @evidence DERIVED
+ * ===========================================================================
+ */
+
+class Register {
+
+    int total = 0;
+
+    /// Print and count one component entry.
+    void entry(int tier, String name, String definition) {
+        total = total + 1;
+        print("  [" + tier + "] " + name + " -- " + definition);
+    }
+
+    /// A tier banner.
+    void tier(int n, String title) {
+        print("");
+        print("=== Tier " + n + ": " + title + " ===");
+    }
+
+    void main() {
+        print("=====================================================");
+        print(" THE SLEELA COMPONENT REGISTER");
+        print(" the runnable roll-call of JOURNEY.md");
+        print("=====================================================");
+
+        tier(0, "The program and its filetypes");
+        entry(0, "Wrapper (.sleela)", "the Sleela source file / program unit");
+        entry(0, "Artifact (.sleela compiled)", "persisted, reloadable opcodes+constants");
+        entry(0, "Control sheet (.sst)", "Nordshrift driver input naming Wrappers");
+        entry(0, "Object catalog (.sheet)", "the conducted-method / compatibility catalog");
+        entry(0, "Metadocument (.manifest)", "SL-META-0001, the language constitution");
+        entry(0, "Ingest input (.xclass)", "SecureJDK 28 class turned into a program");
+
+        tier(1, "Front end (C++): source becomes bytecode");
+        entry(1, "Version resolver", "resolves/enforces the #sleela pragma before parse");
+        entry(1, "Lexer", "text -> tokens (Java-like), strips comments");
+        entry(1, "Parser", "tokens -> AST (recursive descent)");
+        entry(1, "AST", "the abstract syntax tree node definitions");
+        entry(1, "Native lowering", "rewrites module.fn calls; validates imports");
+        entry(1, "Compiler", "AST -> core bytecode with version gating");
+        entry(1, "Driver (sleela CLI)", "compile/run/check/xclass/version/defender");
+
+        tier(2, "Execution core (C): the stack VM");
+        entry(2, "Stack VM", "operand stack, constant pool, frames, dispatch loop");
+        entry(2, "slcore_exchange (stable ABI)", "assemble+run without touching internals");
+        entry(2, "Value model (SLValue)", "null/int/double/boolean/string/struct");
+        entry(2, "Threading", "spawn/join/lock/unlock/send/recv");
+        entry(2, "Sockets", "listen/accept/connect/sockread/sockwrite/sockclose");
+        entry(2, "Files and pipes", "openFile/read/write/close/pipe/fifoCreate/unlinkFile");
+        entry(2, "Structs", "new, . access, references, structPack/structUnpack");
+        entry(2, "Artifact I/O", "save/load a runnable compiled program");
+
+        tier(3, "Runtime services (C)");
+        entry(3, "Garbage collector", "mark-sweep with roots, accounting, destructors");
+        entry(3, "Security supervisor", "role/class allocation quotas");
+        entry(3, "Parameters", "tunable runtime parameters");
+        entry(3, "SHA-256 execution gate", "fail-closed source verification");
+
+        tier(4, "OS-abstraction layer (C): one API, three backends");
+        entry(4, "Threads backend", "pthreads / Win32");
+        entry(4, "Network backend", "BSD sockets / Winsock2");
+        entry(4, "I/O backend", "POSIX / CreateFile+pipes");
+        entry(4, "Path backend", "realpath / GetFullPathName");
+        entry(4, "Terminal backend", "PTY / ConPTY");
+        entry(4, "Library backend", "dlopen / LoadLibrary");
+        entry(4, "Time backend", "clock_gettime / QueryPerformanceCounter");
+        entry(4, "Events backend", "signal/event queue");
+        entry(4, "Memory backend", "aligned alloc, page size, monotonic millis");
+        entry(4, "Pixel terminal (Phraign)", "frame-based pixel-addressed surface");
+
+        tier(5, "Catalog and conducted methods");
+        entry(5, "Catalog parser", "reads SHEET.sheet at compile time");
+        entry(5, "Conducted methods", "conduct/role/insight/congruent/route + invariants");
+
+        tier(6, "Subject libraries: the domain layer");
+        entry(6, "Native dispatcher", "validates imports; lowers module.fn calls");
+        entry(6, "Math", "sqrt/exp/log/trig/pow/constants -- the numeric base");
+        entry(6, "Physics", "constants + mechanics/gravitation/relativity/waves");
+        entry(6, "Economics", "time-value, elasticity, rates, GDP identity");
+        entry(6, "Inference", "mean/stdev, OLS trend, correlation, forecast, CAGR");
+        entry(6, "Chemistry", "weighted evidence, deterministic ranking, uncertainty");
+        entry(6, "Finance", "FV/PV, annuities, NPV, bonds, CAPM, WACC, quadratics");
+
+        tier(7, "Nordshrift: the .sst transpiler driver");
+        entry(7, "Nordshrift CLI", "check/build/objects/relevance/version");
+        entry(7, "SST lexer/parser", "tokenize and parse control sheets");
+        entry(7, "Subject model", "Subject->Quantity->...->Explanation chain");
+        entry(7, "Source resolver", "resolve source: globs to Wrappers");
+        entry(7, "Sleela emitter", "emit the Java/Sleela/C triplet");
+        entry(7, "Object compatibility", "catalog-backed compatibility list");
+        entry(7, "Component manifest", "Nordshrift's own component accounting");
+        entry(7, "Diagnostics", "the NSS-* diagnostic codes");
+
+        tier(8, "Ingest and provisioning (edges)");
+        entry(8, "xclass loader", "ingest .xclass into a runnable program");
+        entry(8, "Defender / OSsupport", "opt-in, verified OS-defender provisioning");
+
+        print("");
+        print("-----------------------------------------------------");
+        print(" components registered = " + total);
+        // The system invariants that bound the whole journey, from the catalog.
+        print(" system depth (max)    = " + sysdepth());
+        print(" max complexity degree = " + degreemax());
+        print("=====================================================");
+    }
+}
