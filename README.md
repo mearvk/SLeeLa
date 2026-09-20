@@ -485,3 +485,24 @@ individuals.
   SHA-256 chain + ISO-8601 timestamp), produced both standalone
   ([`ledger/`](ledger/)) and by the Nordshrift compiler next to each `.sleela`
   artifact. See [`ledger/LEDGER.md`](ledger/LEDGER.md).
+
+
+### Further references — consumer software, vital measurements, logistics
+
+Neutral external context for the goods/services basket and the delivery model.
+This project claims no affiliation with, or endorsement by, any external service.
+
+- **Consumer-grade software.** Built to ordinary consumer-software standards:
+  reproducible builds, C ↔ Python parity, honest scope. See
+  [`NUMERAL-INTENT.md`](NUMERAL-INTENT.md) and [`tutorial/`](tutorial/).
+- **Vital measurements.** Basket items are defined, aggregate measures (atomic
+  number + ISO USD value per gram) with stated provenance — never fabricated
+  per-person figures. See [`GOODS.AND.SERVICES.md`](GOODS.AND.SERVICES.md) and
+  [`STATS.md`](STATS.md).
+- **Logistics & delivery.** The packet-as-parcel analogy is developed in
+  [`QOS.md`](QOS.md). Real-world logistics/government context, for background:
+  **US Mail (USPS)** `https://www.usps.com`; **US government services**
+  `https://www.usa.gov`.
+
+The external references are illustrative context only; the basket values and
+protocol behavior are defined by this repository, not by any external service.
