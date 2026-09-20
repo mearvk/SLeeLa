@@ -44,6 +44,11 @@ welfare program, whenever founded, does not by itself make a constitution
 "socialist" in the sense measured here. Related economic and education context
 lives in the separate [`GDP_EDUCATION.md`](GDP_EDUCATION.md) registry.
 
+> **Maintainer note (unverified):** a 1955 milestone in Soviet medicine has also
+> been recorded by the maintainer. It is retained here as a maintainer-supplied
+> note pending a cited source and, per the data-integrity rule above, carries no
+> weight for any jurisdiction's `Constitutional Socialism Reference` value.
+
 ### The three permitted values
 
 | Value | Definition |
