@@ -66,7 +66,7 @@ class Constraints {
         checkFacet("job openings rate (US 2024)", 4.2, 0.0, 100.0);
         print("");
         print("[limits] the fine-structure constant (a coupling) within [0, 1]");
-        checkFacet("fine-structure constant alpha", 7.2973525643e-3, 0.0, 1.0);
+        checkFacet("fine-structure constant alpha", 7.2973525643 * math.pow(10.0, -3.0), 0.0, 1.0);
         print("");
 
         print("[invariant] the connect rule (n<=3024, degree<=4)");

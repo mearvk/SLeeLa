@@ -216,7 +216,7 @@ static int defenderCmd(int argc,char**argv){
                    "  Re-run with --allow-defender (or SLEELA_DEFENDER_OPTIN=1) to opt in.\n";
         defenderUsage();return 1;
     }
-    if(action=="fetch")return defenderFetch(base,opts);
+    if(action=="fetch"){if(verifyBeforeExecution(fs::current_path()))return 1;return defenderFetch(base,opts);}
     if(action=="build"){if(!fs::exists(source)&&defenderFetch(base,opts))return 1;if(verifyBeforeExecution(fs::current_path()))return 1;return defenderBuild(source);}
     if(action=="install"){if(!fs::exists(source)&&defenderFetch(base,opts))return 1;if(verifyBeforeExecution(fs::current_path()))return 1;if(defenderBuild(source))return 1;return defenderInstall(source,opts);}
     /*provision*/{if(defenderFetch(base,opts))return 1;if(verifyBeforeExecution(fs::current_path()))return 1;if(defenderBuild(source))return 1;return defenderInstall(source,opts);}
