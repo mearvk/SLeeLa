@@ -3,7 +3,7 @@
   "files": [
     {
       "path": "bash/pixel_terminal.cpp",
-      "sha256": "48f9c8fa88535c37cf75fe079ce19a78155ca7f4092e10f595f66bca3b399d81"
+      "sha256": "1f9f4da60bea309dd44a83e4828c60aae93b4acfb46ba609421ee557954f25d4"
     },
     {
       "path": "bash/pixel_terminal.hpp",
