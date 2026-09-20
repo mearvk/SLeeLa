@@ -1,7 +1,8 @@
 # /3 — Facets
 
-**Facets** is the third *relevance set* (a sibling of `/1` [Longs](../1/README.md)
-and `/2` [Structures](../2/README.md)). Where a **Long** is a magnitude that
+**Facets** is the third *relevance set* (a sibling of `/1` [Longs](../1/README.md),
+`/2` [Structures](../2/README.md), `/4` [Areas](../4/README.md), and `/5`
+[Lines](../5/README.md)). Where a **Long** is a magnitude that
 *runs over time* and a **Structure** is a magnitude that *stands*, a **Facet** is
 **one face of a many-sided object shown from a chosen angle**: a derived physical
 constant, a special mathematical value, a moving face of the labor market.
@@ -81,7 +82,7 @@ with rising **excellence**.
 |---|---|
 | [`BASIS.md`](BASIS.md) | the Medium requirement for Workers, Work and Excellence — Workers |
 | [`facets.sleela`](facets.sleela) | the Facets model over all three domains |
-| [`constraints.sleela`](constraints.sleela) / [`Constraints.java`](Constraints.java) | the Constitution congrains/limits applied to Facets (shared across `/1`–`/4`). Running `Constraints.java` writes a well-formed `churn-3-facets.md` into a local `DD-MM-YYYY/` folder (git-ignored). |
+| [`constraints.sleela`](constraints.sleela) / [`Constraints.java`](Constraints.java) | the Constitution congrains/limits applied to Facets (shared across `/1`–`/5`). Running `Constraints.java` writes a well-formed `churn-3-facets.md` into a local `DD-MM-YYYY/` folder (git-ignored). |
 | [`models/`](models/) | the physics, math, and social model docs |
 | [`data/`](data/) | the sourced data models (JSON / XML / TXT) |
 

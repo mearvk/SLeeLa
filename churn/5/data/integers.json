@@ -1,0 +1,25 @@
+{
+  "dataset": "integers",
+  "title": "Canonical integers and common counts (mathematical Lines)",
+  "description": "Each entry is a Line as a whole number: an integer count that reaches from 0 out along the number line. Where /1 (Longs) reads a magnitude as a length series over time, /5 (Lines) reads a magnitude as a plain count or extent. These are EXACT — an integer is defined, not measured.",
+  "provenance": {
+    "primary_source": "Standard mathematics (public domain); OEIS for sequence identifiers",
+    "cross_reference": "OEIS (oeis.org) sequence numbers cited where applicable",
+    "retrieved": "2026-09",
+    "note": "Values are definitional integers. A count is a Line laid out unit by unit; EXACT means no uncertainty and no date."
+  },
+  "integers": [
+    { "name": "dozen",                 "value": 12,   "kind": "EXACT", "note": "a common count: 12 units" },
+    { "name": "baker's dozen",         "value": 13,   "kind": "EXACT", "note": "a common count: 13 units" },
+    { "name": "score",                 "value": 20,   "kind": "EXACT", "note": "a common count: 20 units" },
+    { "name": "gross",                 "value": 144,  "kind": "EXACT", "note": "a common count: a dozen dozen" },
+    { "name": "great gross",           "value": 1728, "kind": "EXACT", "note": "a common count: a dozen gross (12^3)" },
+    { "name": "first perfect number",  "value": 6,    "kind": "EXACT", "note": "6 = 1+2+3; OEIS A000396" },
+    { "name": "second perfect number", "value": 28,   "kind": "EXACT", "note": "28 = 1+2+4+7+14; OEIS A000396" },
+    { "name": "largest 2-digit prime", "value": 97,   "kind": "EXACT", "note": "prime; OEIS A000040" },
+    { "name": "Mersenne prime 2^7-1",  "value": 127,  "kind": "EXACT", "note": "2^7 - 1 is prime; OEIS A000668" },
+    { "name": "byte range count",      "value": 256,  "kind": "EXACT", "note": "2^8 distinct values in one byte" },
+    { "name": "days in a common year", "value": 365,  "kind": "EXACT", "note": "a common count of days (non-leap year)" },
+    { "name": "degrees in a turn",     "value": 360,  "kind": "EXACT", "note": "a full circle, by convention" }
+  ]
+}
