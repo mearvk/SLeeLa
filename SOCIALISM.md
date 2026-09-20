@@ -44,6 +44,44 @@ rest):
 | `Source` | The jurisdiction's own constitution / basic law supporting the value. |
 | `Verification Date` | Date the constitutional text was checked. |
 
+### Sourced list — constitutions that reference socialism (`CONSTITUTIONAL`)
+
+The following jurisdictions carry a `CONSTITUTIONAL` value because their **own
+current constitution / basic law explicitly references socialism** (a socialist
+state, society, or economy). Each row cites the specific provision and the
+**year** that provision was adopted or introduced by amendment. These are the
+entries currently backed in
+[`tools/banking/update_banks4_socialism.py`](tools/banking/update_banks4_socialism.py);
+every other jurisdiction remains `UNASSESSED` until verified against a cited
+source. Verification date: 2026-09-20.
+
+| ID | Country/Jurisdiction | Constitutional Provision | Year | Source |
+|---|---|---|---|---|
+| CS-01 | China | Art. 1 — "socialist state under the people's democratic dictatorship" | 1982 | Constitution of the PRC (1982), Art. 1 — Constitute Project |
+| CS-02 | Cuba | Art. 1 — "socialist state of law and social justice" | 2019 | Constitution of Cuba (2019), Art. 1 — Constitute Project |
+| CS-03 | Lao People's Democratic Republic | Preamble / Art. 2 — people's democratic state advancing toward socialism | 1991 | Constitution of Laos (1991), Preamble/Art. 2 — Constitute Project |
+| CS-04 | Vietnam | Art. 2 — "socialist rule-of-law state" | 2013 | Constitution of Vietnam (2013), Art. 2 — Constitute Project |
+| CS-05 | North Korea | Art. 1 — "socialist state representing the interests of all the Korean people" | 1972 | DPRK Socialist Constitution (1972), Art. 1 — Constitute Project |
+| CS-06 | India | Preamble — "SOCIALIST" (inserted by the 42nd Amendment) | 1976 | Constitution of India, Preamble (42nd Amendment, 1976) — Constitute Project |
+| CS-07 | Bangladesh | Art. 8 — socialism as a fundamental principle of state policy | 1972 | Constitution of Bangladesh (1972), Art. 8 — Constitute Project |
+| CS-08 | Sri Lanka | Preamble / Art. 2 — "Democratic Socialist Republic of Sri Lanka" | 1978 | Constitution of Sri Lanka (1978), Preamble — Constitute Project |
+| CS-09 | Nepal | Preamble — commitment to "socialism based on democratic norms and values" | 2015 | Constitution of Nepal (2015), Preamble — Constitute Project |
+| CS-10 | Portugal | Preamble — opening "the way to a socialist society" | 1976 | Constitution of Portugal (1976), Preamble — Constitute Project |
+| CS-11 | Guyana | Preamble — "transition ... to socialism" | 1980 | Constitution of Guyana (1980), Preamble — Constitute Project |
+| CS-12 | Tanzania | Art. 3 / Art. 9 — socialism (*Ujamaa*) and self-reliance | 1977 | Constitution of Tanzania (1977, rev. 2005), Art. 3/9 — Constitute Project |
+
+**Reading the "Year" column.** The year is when the *socialism reference* entered
+the jurisdiction's current constitutional text — either the year that constitution
+was adopted (e.g., Portugal 1976, Cuba 2019) or the year an amendment introduced
+the reference (e.g., India's 42nd Amendment, 1976). It is not a ranking, a score,
+or a statement about the country's economy or governance today.
+
+**Scope note.** This list is intentionally limited to jurisdictions with an
+explicit, cited constitutional reference. It is *not* a list of "socialist
+countries" in any political or economic sense, and it deliberately carries no
+ranking, tier, or external-endorsement dimension — assigning one would violate
+the data-integrity rule below.
+
 ### Data integrity rule
 
 This is a constitutional-**text** indicator, not a judgment about a country's
