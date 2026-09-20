@@ -57,3 +57,43 @@ enforced continuously. A duty that cannot be measured cannot be kept; a duty
 expressed in these bounded rates can be. That is the Purpose: a stewardship of
 abstract accounts that is honest by construction, bounded by design, and
 accountable second by second.
+
+
+## Lifetime Bound & Bounding Insignia
+
+A natural ceiling on any account held for an individual is a **single
+lifetime**: an account-holder should not spend more, across their life, than the
+wealth available to them within that one lifetime. This is a generic
+personal-finance constraint — it applies to any holder, and says nothing about
+who a holder is. Let `L` be the lifespan and `W_life` the total wealth available
+over `[t_0, t_0 + L]`. The lifetime bound is simply that cumulative outflow stays
+within that lifetime wealth:
+
+```text
+    ∫[t_0 .. t_0 + L]  outflow(t) dt   ≤   W_life
+```
+
+Because spending is a component of `dW/dt`, the lifetime bound caps the
+*sustainable* per-second spend and its acceleration. Holding the average spend
+rate within `W_life / L` keeps the holder inside the bound for the whole life;
+exceeding it borrows against time the holder does not have. The second rate
+`d²W/dt²` matters too: a spend rate that is itself accelerating will breach the
+lifetime ceiling early even if today's rate looks affordable.
+
+The **bounding insignia** are the named markers that flag a holder's standing
+against these limits — an approximate, promised ceiling ("as of that
+approximate promise"), not a hard oracle. Each insignia is a badge the steward
+raises as the holder approaches or crosses a bound:
+
+| Insignia | Symbol | Bound it marks | Raised when |
+|---|:--:|---|---|
+| **Lifetime** | `W_life` | total spend over one lifetime | cumulative outflow nears `W_life` |
+| **Velocity** | `R_max` | per-second spend rate | `|dW/dt|` nears `R_max` |
+| **Acceleration** | `A_max` | per-second-per-second change | `|d²W/dt²|` nears `A_max` |
+| **Floor** | `W_min` | minimum retained wealth | `W(t)` nears `W_min` |
+| **Ceiling** | `W_max` | maximum admitted wealth | `W(t)` nears `W_max` |
+
+The duty is the same as elsewhere in this model: when an insignia would be
+crossed, the steward halts and reports rather than proceeding. The lifetime
+insignia is the outermost of these — a promise, kept approximately and honestly,
+that an account is not spent beyond the one lifetime it belongs to.
