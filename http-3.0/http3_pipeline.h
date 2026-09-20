@@ -67,11 +67,38 @@ typedef struct {
     http3_naming_t          naming;
     http3_service_binding_t services[HTTP3_MAX_SERVICES];
     size_t                  service_count;
-    uint64_t                requests_handled; /* observability (§17) */
+    uint64_t                requests_handled; /* observability (§17)          */
+    uint16_t                intactx_threshold;/* INTACTX variance tamper limit */
+    uint64_t                digest_rejects;   /* packets dropped: bad DIGEST   */
+    uint64_t                tamper_resets;    /* packets reset: INTACTX tamper */
+    uint64_t                replays_rejected; /* packets dropped: stale NONCE  */
+    uint8_t                 mac_key[HTTP3_MAC_KEY_BYTES]; /* per-conn MAC key   */
+    uint64_t                nonce_high_water; /* highest accepted NONCE so far */
 } http3_pipeline_t;
 
-/* Initialize an empty pipeline. */
+/* Initialize an empty pipeline. The INTACTX tamper threshold defaults to
+ * HTTP3_INTACTX_TAMPER_THRESHOLD. The per-connection MAC key starts all-zero;
+ * set the real key (from key agreement) with http3_pipeline_set_mac_key before
+ * handling wire packets, so the DIGEST is verified against a shared secret. */
 void http3_pipeline_init(http3_pipeline_t *pipe);
+
+/* Set the INTACTX variance threshold above which an inbound packet is treated
+ * as coming from a tampered host and RESET. Pass 0 to restore the default. */
+void http3_pipeline_set_intactx_threshold(http3_pipeline_t *pipe, uint16_t threshold);
+
+/* Install the 16-byte per-connection MAC key used to verify each packet's
+ * keyed-MAC DIGEST. In a deployment this is the secret from the crypto
+ * substrate's key agreement; peers that share it can authenticate each other's
+ * packets, and a forger without it cannot produce a valid DIGEST. */
+void http3_pipeline_set_mac_key(http3_pipeline_t *pipe,
+                                const uint8_t key[HTTP3_MAC_KEY_BYTES]);
+
+/* Reset the replay window (NONCE high-water mark) to `start`. The next packet
+ * accepted must carry a NONCE strictly greater than `start`. Use when a new
+ * connection/session begins; a real multi-sender deployment keys the window per
+ * sender identity, but the single-connection reference keeps one monotonic
+ * high-water mark. */
+void http3_pipeline_reset_replay_window(http3_pipeline_t *pipe, uint64_t start);
 
 /*
  * Register a service by name, returning its compact SERVICE-ID (§4). ctx is
@@ -107,8 +134,12 @@ int http3_pipeline_dispatch(http3_pipeline_t *pipe,
 
 /*
  * Full receive path (§19 from "HTTP receive"): takes a wire buffer (textual or
- * binary, auto-detected), performs minimal parse + unpack, then dispatch.
- * Writes a packed textual response into out/out_cap. Returns 0 on success.
+ * binary, auto-detected), performs minimal parse + unpack, then an integrity
+ * gate (per-packet DIGEST verify, then INTACTX tamper check), then dispatch.
+ * A packet whose DIGEST fails is rejected (BAD_DIGEST); a packet whose INTACTX
+ * variance exceeds the threshold is RESET (TAMPERED, response carries
+ * HTTP3_FLAG_RESET) and never dispatched. Writes a packed textual response into
+ * out/out_cap. Returns 0 on success.
  */
 int http3_pipeline_handle_wire(http3_pipeline_t *pipe,
                                const uint8_t *wire, size_t wire_len,

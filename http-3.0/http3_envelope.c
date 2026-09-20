@@ -3,19 +3,78 @@
  * and response model (§7). Pure data: no I/O, no crypto, no allocation.
  * ========================================================================== */
 #include "http3_envelope.h"
+#include "http3_mac.h"
 
 #include <stdio.h>
 #include <string.h>
+
+/* Canonical serialized header size the DIGEST is computed over (big-endian,
+ * fixed-width fields; excludes the DIGEST itself, includes the NONCE). */
+#define ENV_DIGEST_HDR 38u
+
+/* Big-endian field writers (defined fully in the binary-wire section below). */
+static void put_u32(uint8_t *b, uint32_t v);
+static void put_u64(uint8_t *b, uint64_t v);
+
+/* ---- Per-packet DIGEST (keyed MAC: SipHash-2-4 over header + payload) ------
+ * The DIGEST is a KEYED message authentication code, not a plain hash: it
+ * resists deliberate forgery, because an attacker who rewrites a packet cannot
+ * recompute a matching tag without the per-connection key. The MAC message is a
+ * canonical, endianness-independent serialization (each header field big-endian
+ * and fixed width, excluding the DIGEST) followed by the raw payload, so the
+ * textual and binary wire forms of the same logical envelope share a tag and
+ * the Python reference reproduces it byte-for-byte. */
+uint64_t http3_envelope_compute_digest(const http3_envelope_t *env,
+                                       const uint8_t key[HTTP3_MAC_KEY_BYTES])
+{
+    uint8_t msg[ENV_DIGEST_HDR + HTTP3_ENVELOPE_MAX_PAYLOAD];
+    uint8_t logical_flags;
+    if (env == NULL || key == NULL || env->payload_len > HTTP3_ENVELOPE_MAX_PAYLOAD) {
+        return 0;
+    }
+    /* HTTP3_FLAG_BINARY is a transport-form marker set only on the binary wire;
+     * exclude it so the tag is identical for the textual and binary forms. */
+    logical_flags = (uint8_t)(env->flags & ~(uint8_t)HTTP3_FLAG_BINARY);
+
+    msg[0] = env->version;
+    msg[1] = logical_flags;
+    put_u32(msg + 2, env->service_id);
+    put_u32(msg + 6, env->op_id);
+    put_u64(msg + 10, env->request_id);
+    /* NONCE is inside the MAC so it cannot be altered without detection; the
+     * receiver's high-water-mark check then defeats replay. */
+    put_u64(msg + 18, env->nonce);
+    put_u64(msg + 26, env->intactx);
+    /* payload length as a fixed 32-bit big-endian field (payloads are capped at
+     * HTTP3_ENVELOPE_MAX_PAYLOAD, well within 32 bits). */
+    put_u32(msg + 34, (uint32_t)env->payload_len);
+    if (env->payload_len > 0U) {
+        memcpy(msg + ENV_DIGEST_HDR, env->payload, env->payload_len);
+    }
+    return http3_mac_siphash24(key, msg, ENV_DIGEST_HDR + env->payload_len);
+}
+
+int http3_envelope_verify_digest(const http3_envelope_t *env,
+                                 const uint8_t key[HTTP3_MAC_KEY_BYTES])
+{
+    if (env == NULL || key == NULL) {
+        return 0;
+    }
+    return http3_envelope_compute_digest(env, key) == env->digest ? 1 : 0;
+}
 
 int http3_envelope_init(http3_envelope_t *env,
                         uint32_t service_id,
                         uint32_t op_id,
                         uint64_t request_id,
                         uint8_t flags,
+                        uint64_t nonce,
+                        uint64_t intactx,
+                        const uint8_t key[HTTP3_MAC_KEY_BYTES],
                         const uint8_t *payload,
                         size_t payload_len)
 {
-    if (env == NULL || payload_len > HTTP3_ENVELOPE_MAX_PAYLOAD) {
+    if (env == NULL || key == NULL || payload_len > HTTP3_ENVELOPE_MAX_PAYLOAD) {
         return -1;
     }
     memset(env, 0, sizeof(*env));
@@ -24,10 +83,14 @@ int http3_envelope_init(http3_envelope_t *env,
     env->service_id = service_id;
     env->op_id = op_id;
     env->request_id = request_id;
+    env->nonce = nonce;
+    env->intactx = intactx;
     if (payload != NULL && payload_len > 0U) {
         memcpy(env->payload, payload, payload_len);
     }
     env->payload_len = payload_len;
+    /* Seal the packet with its keyed MAC over the finished contents. */
+    env->digest = http3_envelope_compute_digest(env, key);
     return 0;
 }
 
@@ -40,10 +103,13 @@ int http3_envelope_pack_text(const http3_envelope_t *env, char *out, size_t out_
     if (env == NULL || out == NULL || env->payload_len > HTTP3_ENVELOPE_MAX_PAYLOAD) {
         return -1;
     }
-    n = snprintf(out, out_cap, "H3 %u %u %u %u %llu %zu:",
+    n = snprintf(out, out_cap, "H3 %u %u %u %u %llu %llu %llu %llu %zu:",
                  (unsigned)env->version, (unsigned)env->flags,
                  (unsigned)env->service_id, (unsigned)env->op_id,
-                 (unsigned long long)env->request_id, env->payload_len);
+                 (unsigned long long)env->request_id,
+                 (unsigned long long)env->nonce,
+                 (unsigned long long)env->digest,
+                 (unsigned long long)env->intactx, env->payload_len);
     if (n < 0 || (size_t)n >= out_cap) {
         return -1;
     }
@@ -63,7 +129,7 @@ int http3_envelope_pack_text(const http3_envelope_t *env, char *out, size_t out_
 int http3_envelope_unpack_text(const char *in, size_t in_len, http3_envelope_t *env)
 {
     unsigned version, flags, service_id, op_id;
-    unsigned long long request_id;
+    unsigned long long request_id, nonce, digest, intactx;
     unsigned long payload_len;
     int consumed = 0;
     const char *p;
@@ -73,9 +139,9 @@ int http3_envelope_unpack_text(const char *in, size_t in_len, http3_envelope_t *
         return -1;
     }
     /* Parse the fixed prefix up to and including the ':' after payload_len. */
-    if (sscanf(in, "H3 %u %u %u %u %llu %lu:%n",
+    if (sscanf(in, "H3 %u %u %u %u %llu %llu %llu %llu %lu:%n",
                &version, &flags, &service_id, &op_id, &request_id,
-               &payload_len, &consumed) != 6 || consumed <= 0) {
+               &nonce, &digest, &intactx, &payload_len, &consumed) != 9 || consumed <= 0) {
         return -1;
     }
     if (payload_len > HTTP3_ENVELOPE_MAX_PAYLOAD) {
@@ -88,6 +154,9 @@ int http3_envelope_unpack_text(const char *in, size_t in_len, http3_envelope_t *
     env->service_id = (uint32_t)service_id;
     env->op_id = (uint32_t)op_id;
     env->request_id = (uint64_t)request_id;
+    env->nonce = (uint64_t)nonce;
+    env->digest = (uint64_t)digest;
+    env->intactx = (uint64_t)intactx;
     env->payload_len = (size_t)payload_len;
     if (payload_len > 0U) {
         memcpy(env->payload, p, payload_len);
@@ -133,7 +202,10 @@ int http3_envelope_pack_binary(const http3_envelope_t *env, uint8_t *out, size_t
     put_u32(out + 2, env->service_id);
     put_u32(out + 6, env->op_id);
     put_u64(out + 10, env->request_id);
-    put_u32(out + 18, (uint32_t)env->payload_len);
+    put_u64(out + 18, env->nonce);
+    put_u64(out + 26, env->digest);
+    put_u64(out + 34, env->intactx);
+    put_u32(out + 42, (uint32_t)env->payload_len);
     memcpy(out + HTTP3_ENVELOPE_BIN_HEADER, env->payload, env->payload_len);
     if (written != NULL) {
         *written = HTTP3_ENVELOPE_BIN_HEADER + env->payload_len;
@@ -147,7 +219,7 @@ int http3_envelope_unpack_binary(const uint8_t *in, size_t in_len, http3_envelop
     if (in == NULL || env == NULL || in_len < HTTP3_ENVELOPE_BIN_HEADER) {
         return -1;
     }
-    payload_len = get_u32(in + 18);
+    payload_len = get_u32(in + 42);
     if (payload_len > HTTP3_ENVELOPE_MAX_PAYLOAD ||
         in_len < (size_t)HTTP3_ENVELOPE_BIN_HEADER + payload_len) {
         return -1;
@@ -158,6 +230,9 @@ int http3_envelope_unpack_binary(const uint8_t *in, size_t in_len, http3_envelop
     env->service_id = get_u32(in + 2);
     env->op_id = get_u32(in + 6);
     env->request_id = get_u64(in + 10);
+    env->nonce = get_u64(in + 18);
+    env->digest = get_u64(in + 26);
+    env->intactx = get_u64(in + 34);
     env->payload_len = payload_len;
     if (payload_len > 0U) {
         memcpy(env->payload, in + HTTP3_ENVELOPE_BIN_HEADER, payload_len);
@@ -226,6 +301,9 @@ const char *http3_status_name(http3_status_t status)
         case HTTP3_STATUS_BAD_ENVELOPE: return "BAD_ENVELOPE";
         case HTTP3_STATUS_TOO_LARGE:    return "TOO_LARGE";
         case HTTP3_STATUS_RETRY_DENIED: return "RETRY_DENIED";
+        case HTTP3_STATUS_BAD_DIGEST:   return "BAD_DIGEST";
+        case HTTP3_STATUS_TAMPERED:     return "TAMPERED";
+        case HTTP3_STATUS_REPLAYED:     return "REPLAYED";
         default:                        return "UNKNOWN";
     }
 }

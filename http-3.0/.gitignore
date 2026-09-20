@@ -7,6 +7,10 @@ http3_pipeline_demo
 __pycache__/
 *.pyc
 
+# INTACTX persisted host-integrity baselines (per-host, not source)
+.http3_intactx_baseline
+.http3_intactx_baseline.*
+
 # Station userland demo binary
 station/station_demo
 # Kernel module build artifacts

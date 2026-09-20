@@ -11,8 +11,10 @@
 #ifndef SLEELA_HTTP3_PROTOCOL_H
 #define SLEELA_HTTP3_PROTOCOL_H
 
+#include "http3_mac.h"
 #include "http3_envelope.h"
 #include "http3_naming.h"
+#include "http3_intactx.h"
 #include "http3_pipeline.h"
 
 #endif

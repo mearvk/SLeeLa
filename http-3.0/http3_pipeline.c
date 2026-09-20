@@ -4,6 +4,7 @@
  * short, traceable hot path with a service/op dispatch table.
  * ========================================================================== */
 #include "http3_pipeline.h"
+#include "http3_intactx.h"
 
 #include <string.h>
 
@@ -14,6 +15,33 @@ void http3_pipeline_init(http3_pipeline_t *pipe)
     }
     memset(pipe, 0, sizeof(*pipe));
     http3_naming_init(&pipe->naming);
+    pipe->intactx_threshold = HTTP3_INTACTX_TAMPER_THRESHOLD;
+}
+
+void http3_pipeline_set_intactx_threshold(http3_pipeline_t *pipe, uint16_t threshold)
+{
+    if (pipe == NULL) {
+        return;
+    }
+    pipe->intactx_threshold = (threshold == 0u) ? HTTP3_INTACTX_TAMPER_THRESHOLD
+                                                : threshold;
+}
+
+void http3_pipeline_set_mac_key(http3_pipeline_t *pipe,
+                                const uint8_t key[HTTP3_MAC_KEY_BYTES])
+{
+    if (pipe == NULL || key == NULL) {
+        return;
+    }
+    memcpy(pipe->mac_key, key, HTTP3_MAC_KEY_BYTES);
+}
+
+void http3_pipeline_reset_replay_window(http3_pipeline_t *pipe, uint64_t start)
+{
+    if (pipe == NULL) {
+        return;
+    }
+    pipe->nonce_high_water = start;
 }
 
 static http3_service_binding_t *find_binding(http3_pipeline_t *pipe, uint32_t service_id)
@@ -188,6 +216,45 @@ int http3_pipeline_handle_wire(http3_pipeline_t *pipe,
         resp.status = HTTP3_STATUS_BAD_ENVELOPE;
         return http3_response_pack_text(&resp, out, out_cap, written);
     }
+
+    /* §19 integrity gate, before any dispatch:
+     *   1. Per-packet DIGEST (keyed MAC) must verify under the per-connection
+     *      key -- else the packet was corrupted OR forged by a party without
+     *      the shared secret. */
+    if (!http3_envelope_verify_digest(&env, pipe->mac_key)) {
+        memset(&resp, 0, sizeof(resp));
+        resp.status = HTTP3_STATUS_BAD_DIGEST;
+        resp.request_id = env.request_id; /* best-effort correlation */
+        ++pipe->digest_rejects;
+        return http3_response_pack_text(&resp, out, out_cap, written);
+    }
+    /*   2. INTACTX variance must be below threshold -- else the emitting host
+     *      has been tampered with / changed materially: RESET the exchange and
+     *      do NOT dispatch. */
+    if (http3_intactx_is_tampered(env.intactx, pipe->intactx_threshold)) {
+        memset(&resp, 0, sizeof(resp));
+        resp.status = HTTP3_STATUS_TAMPERED;
+        resp.request_id = env.request_id;
+        /* RESET marker in the result body; the request-side flag is
+         * HTTP3_FLAG_RESET for a peer that echoes envelope flags. */
+        memcpy(resp.result, "RESET", 5);
+        resp.result_len = 5;
+        ++pipe->tamper_resets;
+        return http3_response_pack_text(&resp, out, out_cap, written);
+    }
+    /*   3. NONCE must be strictly ahead of the high-water mark -- else this is
+     *      a replay of a previously valid (and validly MAC'd) packet. Because
+     *      the NONCE is inside the MAC, an attacker cannot bump it to slip a
+     *      replay past this check without invalidating the DIGEST above. */
+    if (env.nonce <= pipe->nonce_high_water) {
+        memset(&resp, 0, sizeof(resp));
+        resp.status = HTTP3_STATUS_REPLAYED;
+        resp.request_id = env.request_id;
+        ++pipe->replays_rejected;
+        return http3_response_pack_text(&resp, out, out_cap, written);
+    }
+    pipe->nonce_high_water = env.nonce; /* advance the window */
+
     if (http3_pipeline_dispatch(pipe, &env, &resp) != 0) {
         return -1;
     }
