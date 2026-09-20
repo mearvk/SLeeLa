@@ -28,3 +28,15 @@ removed.
 22e0e7d8c34e0d9b0ac4d36cce923d7e274ba317463794979ecd54726cfc5160bf3981ae9d3a770b89e59c5ea53fe3eb1467ada59ac889a64f9fd0c4636d82f6
 032e4a60e86622a45e6af081747e17ded29355fa4d7bb14079d01e5077c992d6f51f66ef88e9d8d872756e481525571e5b86344aff7d5a70337ac458e82fbc4e
 ```
+
+
+## Related
+
+- [`CLASS.md`](CLASS.md) — the **syllabus key**: a CSPRNG-random hexadecimal key
+  of **38142 hex digits** (with the Moral Code and Class section). The same key
+  is mirrored byte-for-byte in [`http-3.0/Syllabus.md`](http-3.0/Syllabus.md) and
+  [`public/Syllabus.md`](public/Syllabus.md).
+
+The 1022-bit value above and the 38142-hex-digit syllabus key are distinct
+artifacts: this document's key is a fixed-width binary-derived value, while the
+syllabus key is the longer hexadecimal record referenced here.
