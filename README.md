@@ -587,11 +587,36 @@ before any dispatch (see [`http-3.0/FLOW.md`](http-3.0/FLOW.md) and
   block that travels in every packet and is covered by the MAC. See
   [`BASKET.docx`](BASKET.docx) for the human-readable table.
 
+Beyond the integrity gate, the pipeline adds two delivery-oriented layers:
+
+- **Timing / QoS (advisory).** A connection-level timing layer
+  ([`http-3.0/http3_timing.{h,c}`](http-3.0/)) observes each arrival for **max
+  speed** (min inter-arrival gap), **on time** (deadline + grace), and **balance**
+  (jitter band), and keeps a running **carrier certainty** in `[0,1]`. It is
+  advisory — nothing new on the wire, no rejects; it records counters and an
+  estimate. Mapped to standard TCP/HTTP Quality of Service in [`QOS.md`](QOS.md)
+  (a hint, not a guarantee), with careful SLeeLa- and Java-side code notes.
+- **Capability handshake.** Two peers advertise a neutral capability bitmask
+  (cumulative tiers **L1 baseline → L4 echo**); the handshake
+  ([`http-3.0/http3_handshake.{h,c}`](http-3.0/)) deterministically selects the
+  **highest common level**, with a baseline fallback so an older/not-yet-updated
+  router runs L1 until its software advertises more — then moves up automatically.
+  Offers are MAC-backed. The bitmask names protocol tiers only (no identity
+  meaning). See [`http-3.0/HANDSHAKE.md`](http-3.0/HANDSHAKE.md).
+
+A SLeeLa program can also select its HTTP behavior by **color** — a named bundle
+of wire form, flags, and integrity profile (`green`/`amber`/`red`/`black`),
+declared from source. See [`http-3.0/HTTP-COLORS.md`](http-3.0/HTTP-COLORS.md).
+
 Both a C reference and a dependency-free Python reference
-([`http-3.0/http3_flow.py`](http-3.0/http3_flow.py)) implement this; the keyed
-MAC is byte-for-byte identical across the two, and the SipHash implementation
+([`http-3.0/http3_flow.py`](http-3.0/http3_flow.py)) implement all of the above;
+the keyed MAC, the basket block, the timing readings, and the handshake offers
+are byte-for-byte identical across the two, and the SipHash implementation
 matches the published reference test vector. Build and exercise it with
 `cd http-3.0 && make demo` (C) and `make test` (C + Python).
+
+An earlier-generation **HTTP 2.1** sketch — the same core design goals without
+the 3.0-era integrity substrate — lives under [`http-2.0/`](http-2.0/).
 
 ### Key and specification documents
 
@@ -602,9 +627,30 @@ matches the published reference test vector. Build and exercise it with
 | [`BASKET.docx`](BASKET.docx) | Standard Office Open XML document listing the fixed **14-item basket** of goods & services (atomic number + ISO USD micro-value per gram) carried in every HTTP 3.0 packet. |
 | [`http-3.0/Syllabus.md`](http-3.0/Syllabus.md) | The syllabus key plus Moral Code and Class section. |
 | [`public/Syllabus.md`](public/Syllabus.md) | A byte-for-byte identical public copy of the syllabus. |
+| [`GOODS.AND.SERVICES.md`](GOODS.AND.SERVICES.md) | The 14-item basket published as grouped tables (goods / services / totals). |
+| [`NUMERAL.md`](NUMERAL.md) / [`STATS.md`](STATS.md) | The numerals (basket/account identifiers) and the statistics derived from them. |
+| [`NUMERAL-INTENT.md`](NUMERAL-INTENT.md) | Numeral intent, software sustainability, and the Celebrity term-care standard. |
+| [`FIDUCIARY.md`](FIDUCIARY.md) | A duty model over abstract accounts: bounded wealth, per-second and per-second² rates, lifetime bound & bounding insignia. |
+| [`BRITISH.md`](BRITISH.md) | An institutional fiduciary note (stylized), applying the duty model at the entity level. |
+| [`QOS.md`](QOS.md) | Quality of Service over standard TCP/HTTP, with careful SLeeLa + Java code notes. |
 
 The **Moral Code** records the standard of *substantial use of sequitur*, a
 *per-use* evaluation rule, *homognyny* (the asynchronous misuse of frame, or
 better), and the clause that the United States states as the American President
 of the United States. The **Class** section observes class against the social
-calendar of the United States, under which the Very Rich are counted.
+calendar of the United States, under which the Very Rich are counted. The term
+**Celebrity** is governed by a *standard degree of norm* (see
+[`GLOSSARY.md`](GLOSSARY.md) §B.2 and [`NUMERAL-INTENT.md`](NUMERAL-INTENT.md)):
+a defined, aggregate, role-level term — never a basis for profiling or tracking
+individuals.
+
+### Tutorial & verifiable artifacts
+
+- **Tutorial series** — a 12-part Markdown course, [`tutorial/`](tutorial/),
+  from your first Wrapper™ to an end-to-end build-and-ledger capstone, plus 12
+  runnable companion demos in [`tutorial/demos/`](tutorial/demos/) that compile
+  through Nordshrift.
+- **The `.ledger` class** — a tamper-evident per-file chain (QR insignia +
+  SHA-256 chain + ISO-8601 timestamp), produced both standalone
+  ([`ledger/`](ledger/)) and by the Nordshrift compiler next to each `.sleela`
+  artifact. See [`ledger/LEDGER.md`](ledger/LEDGER.md).
