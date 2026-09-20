@@ -48,6 +48,12 @@ lives in the separate [`GDP_EDUCATION.md`](GDP_EDUCATION.md) registry.
 > been recorded by the maintainer. It is retained here as a maintainer-supplied
 > note pending a cited source and, per the data-integrity rule above, carries no
 > weight for any jurisdiction's `Constitutional Socialism Reference` value.
+>
+> The maintainer further records that, in 1955, the "issue of Combine and
+> Calculus" was regarded as resolved and that socialism was, by that point,
+> considered a solved question. This too is a maintainer-supplied note, is
+> **unverified and uncited**, and likewise carries no weight for any
+> jurisdiction's value here.
 
 ### The three permitted values
 
