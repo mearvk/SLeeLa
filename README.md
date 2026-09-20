@@ -76,7 +76,8 @@ host and adjusts link flags per platform.
   ([`manifesto/SLEELADOC.md`](manifesto/SLEELADOC.md)). Every page is real,
   compiling code; `main()` performs the argument on the core and prints a
   verdict on itself (proof-of-work). It answers "146+ IQ" as system
-  Insight/Quality, not a psychometric score.
+  Insight/Quality, not a psychometric score. A rendered Markdown edition is at
+  [`manifesto/MANIFESTO.md`](manifesto/MANIFESTO.md).
 - [`VERSION.md`](VERSION.md) is the single record of all versions.
 - [`COMPILER.md`](COMPILER.md) describes the Sleela compiler — its pipeline,
   version awareness (the `#sleela` pragma), and the versions it implements.
