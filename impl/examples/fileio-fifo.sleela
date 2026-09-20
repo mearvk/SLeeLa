@@ -1,5 +1,13 @@
 #sleela 1.1
 
+// NOTE (platform): this demo is POSIX-specific. It relies on a filesystem FIFO
+// created with fifoCreate() at a /tmp path and then opened "rw" (O_RDWR) for a
+// single-handle round trip. That model maps to Linux/macOS FIFOs but not to
+// Windows named pipes, which use the \\.\pipe\ namespace and require a
+// persistent server instance for a client to connect. On Windows the SLeeLa
+// core builds and runs; use anonymous pipes (pipe()) or regular files for
+// portable I/O. The Windows CI skips this example for that reason.
+
 class FifoIO {
     int channel;
 

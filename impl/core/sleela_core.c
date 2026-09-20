@@ -1,27 +1,36 @@
 /* ==========================================================================
  * sleela_core.c -- Sleela execution core.
  *
- * Stack VM with threads, TCP sockets, Linux file descriptors, anonymous
- * pipes, and filesystem FIFOs. File descriptors are represented by VM-local
- * bounded handles so Sleela code never receives raw host descriptor numbers.
+ * Stack VM with threads, TCP sockets, files, anonymous pipes, and named
+ * pipes/FIFOs. All OS facilities go through the OS-aware abstraction layer
+ * (sleela_thread/pthread shim, sleela_net, sleela_io), so the core builds and
+ * runs on both Linux/POSIX and Windows 10+ without raw platform calls. Host
+ * resources are exposed only as VM-local bounded handles; Sleela code never
+ * receives a raw descriptor, SOCKET, or HANDLE.
  * ========================================================================== */
+#ifndef _WIN32
 #define _POSIX_C_SOURCE 200809L
+#endif
 #include "sleela_core.h"
+#include "sleela_net.h"
+#include "sleela_io.h"
 #include "sleela_time.h"
 
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+/* Threads come from the OS-aware layer: on Windows this shim remaps the
+ * pthread_* names to the Win32-backed slthread_* API; on POSIX it pulls in the
+ * native <pthread.h>. Sockets and files are handled entirely through
+ * sleela_net.h / sleela_io.h, so no raw BSD-socket or <unistd.h> includes are
+ * needed here anymore. The angle-bracket form resolves to core/pthread.h
+ * (the build compiles the core with -Icore); that shim then pulls in the
+ * native <pthread.h> on POSIX via #include_next. */
 #include <pthread.h>
-#include <errno.h>
-#include <fcntl.h>
+#ifndef _WIN32
 #include <signal.h>
-#include <sys/stat.h>
-#include <netdb.h>
-#include <arpa/inet.h>
-#include <netinet/in.h>
-#include <sys/socket.h>
-#include <unistd.h>
+#endif
 
 #define STACK_MAX 4096
 #define FRAMES_MAX 1024
@@ -52,13 +61,13 @@ typedef struct {
 typedef struct {
     pthread_mutex_t mtx;
     int active;
-    int fd;
+    SLNetHandle handle;
 } SLSocket;
 
 typedef struct {
     pthread_mutex_t mtx;
     int active;
-    int fd;
+    SLIOHandle fd;
     int peer;
 } SLFile;
 
@@ -234,11 +243,11 @@ SLVM* slvm_new(void) {
     pthread_mutex_init(&vm->thr_mtx, NULL);
     for (int i = 0; i < SL_MAX_SOCKETS; i++) {
         pthread_mutex_init(&vm->sockets[i].mtx, NULL);
-        vm->sockets[i].active = 0; vm->sockets[i].fd = -1;
+        vm->sockets[i].active = 0; vm->sockets[i].handle = SL_NET_INVALID;
     }
     for (int i = 0; i < SL_MAX_FILES; i++) {
         pthread_mutex_init(&vm->files[i].mtx, NULL);
-        vm->files[i].active = 0; vm->files[i].fd = -1; vm->files[i].peer = -1;
+        vm->files[i].active = 0; vm->files[i].fd = SLIO_INVALID_HANDLE; vm->files[i].peer = -1;
     }
     for (int i = 0; i < SL_MAX_LOCKS; i++) {
         pthread_mutex_init(&vm->locks[i], NULL);
@@ -246,12 +255,15 @@ SLVM* slvm_new(void) {
         pthread_cond_init(&vm->mailbox[i].cond, NULL);
     }
     /* A broken FIFO/pipe writer must return EPIPE rather than terminate the VM. */
+    if (slnet_startup() != 0) set_err(vm, "network backend startup failed");
+#ifndef _WIN32
     signal(SIGPIPE, SIG_IGN);
+#endif
     return vm;
 }
 
 static void close_file_slot(SLFile* f) {
-    if (f->active) { close(f->fd); f->fd = -1; f->active = 0; f->peer = -1; }
+    if (f->active) { slio_close(f->fd); f->fd = SLIO_INVALID_HANDLE; f->active = 0; f->peer = -1; }
 }
 
 void slvm_free(SLVM* vm) {
@@ -259,11 +271,12 @@ void slvm_free(SLVM* vm) {
     slvm_joinall(vm);
     for (int i = 0; i < SL_MAX_SOCKETS; i++) {
         pthread_mutex_lock(&vm->sockets[i].mtx);
-        if (vm->sockets[i].active) { close(vm->sockets[i].fd); vm->sockets[i].fd = -1; vm->sockets[i].active = 0; }
+        if (vm->sockets[i].active) { slnet_close(vm->sockets[i].handle); vm->sockets[i].handle = SL_NET_INVALID; vm->sockets[i].active = 0; }
         pthread_mutex_unlock(&vm->sockets[i].mtx);
         pthread_mutex_destroy(&vm->sockets[i].mtx);
     }
     pthread_mutex_destroy(&vm->sock_mtx);
+    slnet_shutdown();
     for (int i = 0; i < SL_MAX_FILES; i++) {
         pthread_mutex_lock(&vm->files[i].mtx);
         close_file_slot(&vm->files[i]);
@@ -310,18 +323,18 @@ static int is_truthy(SLValue v) {
 }
 static int both_int(SLValue a, SLValue b) { return a.type == SL_INT && b.type == SL_INT; }
 
-static int socket_alloc(SLVM* vm, int fd) {
+static int socket_alloc(SLVM* vm, SLNetHandle handle) {
     pthread_mutex_lock(&vm->sock_mtx);
     for (int i = 0; i < SL_MAX_SOCKETS; i++) if (!vm->sockets[i].active) {
-        pthread_mutex_lock(&vm->sockets[i].mtx); vm->sockets[i].fd = fd; vm->sockets[i].active = 1;
+        pthread_mutex_lock(&vm->sockets[i].mtx); vm->sockets[i].handle = handle; vm->sockets[i].active = 1;
         pthread_mutex_unlock(&vm->sockets[i].mtx); pthread_mutex_unlock(&vm->sock_mtx); return i;
     }
     pthread_mutex_unlock(&vm->sock_mtx); return -1;
 }
 static int socket_valid_handle(int h) { return h >= 0 && h < SL_MAX_SOCKETS; }
-static int socket_fd_locked(SLSocket* s) { return s->active ? s->fd : -1; }
+static SLNetHandle socket_handle_locked(SLSocket* s) { return s->active ? s->handle : SL_NET_INVALID; }
 
-static int file_alloc(SLVM* vm, int fd) {
+static int file_alloc(SLVM* vm, SLIOHandle fd) {
     pthread_mutex_lock(&vm->file_mtx);
     for (int i = 0; i < SL_MAX_FILES; i++) if (!vm->files[i].active) {
         pthread_mutex_lock(&vm->files[i].mtx); vm->files[i].fd = fd; vm->files[i].active = 1; vm->files[i].peer = -1;
@@ -330,7 +343,7 @@ static int file_alloc(SLVM* vm, int fd) {
     pthread_mutex_unlock(&vm->file_mtx); return -1;
 }
 static int file_valid_handle(int h) { return h >= 0 && h < SL_MAX_FILES; }
-static int file_fd_locked(SLFile* f) { return f->active ? f->fd : -1; }
+static SLIOHandle file_fd_locked(SLFile* f) { return f->active ? f->fd : SLIO_INVALID_HANDLE; }
 
 /* ---- struct instances: the same bounded-handle discipline as sockets/files -- */
 static SLValue slval_struct(int32_t h) { SLValue v; v.type = SL_STRUCT; v.as.h = h; return v; }
@@ -362,76 +375,45 @@ static int struct_valid_handle(SLVM* vm, int h) {
     return vm->structs && h >= 0 && h < SL_MAX_STRUCTS && vm->structs[h].active;
 }
 
-static int make_listener(int port) {
-    if (port < 0 || port > 65535) return -1;
-    int fd = socket(AF_INET, SOCK_STREAM, 0); if (fd < 0) return -1;
-    int yes = 1; (void)setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes));
-    struct sockaddr_in addr; memset(&addr, 0, sizeof(addr));
-    addr.sin_family = AF_INET; addr.sin_addr.s_addr = htonl(INADDR_ANY); addr.sin_port = htons((uint16_t)port);
-    if (bind(fd, (struct sockaddr*)&addr, sizeof(addr)) < 0 || listen(fd, 16) < 0) { close(fd); return -1; }
-    return fd;
+static SLNetHandle make_listener(int port) {
+    if (port < 0 || port > 65535) return SL_NET_INVALID;
+    return slnet_listen((uint16_t)port, 16);
 }
-static int make_connection(const char* host, int port) {
-    if (!host || port < 0 || port > 65535) return -1;
-    char service[16]; snprintf(service, sizeof(service), "%d", port);
-    struct addrinfo hints; memset(&hints, 0, sizeof(hints)); hints.ai_socktype = SOCK_STREAM; hints.ai_family = AF_UNSPEC;
-    struct addrinfo* list = NULL; if (getaddrinfo(host, service, &hints, &list) != 0) return -1;
-    int fd = -1;
-    for (struct addrinfo* p = list; p; p = p->ai_next) {
-        fd = socket(p->ai_family, p->ai_socktype, p->ai_protocol); if (fd < 0) continue;
-        if (connect(fd, p->ai_addr, p->ai_addrlen) == 0) break;
-        close(fd); fd = -1;
-    }
-    freeaddrinfo(list); return fd;
+static SLNetHandle make_connection(const char* host, int port) {
+    if (!host || port < 0 || port > 65535) return SL_NET_INVALID;
+    return slnet_connect(host, (uint16_t)port);
 }
 
 static int make_pipe_handles(SLVM* vm) {
-    int pfd[2];
-    if (pipe(pfd) < 0) return -1;
-    int rh = file_alloc(vm, pfd[0]);
-    if (rh < 0) { close(pfd[0]); close(pfd[1]); return -1; }
-    int wh = file_alloc(vm, pfd[1]);
+    SLIOHandle pr = SLIO_INVALID_HANDLE, pw = SLIO_INVALID_HANDLE;
+    if (slio_pipe(&pr, &pw) != 0) return -1;
+    int rh = file_alloc(vm, pr);
+    if (rh < 0) { slio_close(pr); slio_close(pw); return -1; }
+    int wh = file_alloc(vm, pw);
     if (wh < 0) {
         pthread_mutex_lock(&vm->files[rh].mtx); close_file_slot(&vm->files[rh]); pthread_mutex_unlock(&vm->files[rh].mtx);
-        close(pfd[1]); return -1;
+        slio_close(pw); return -1;
     }
     pthread_mutex_lock(&vm->files[rh].mtx); vm->files[rh].peer = wh; pthread_mutex_unlock(&vm->files[rh].mtx);
     pthread_mutex_lock(&vm->files[wh].mtx); vm->files[wh].peer = rh; pthread_mutex_unlock(&vm->files[wh].mtx);
     return rh;
 }
 
-static int make_fifo(const char* path, mode_t mode) {
+static int make_fifo(const char* path, unsigned mode) {
     if (!path || !*path) return -1;
-    if (mkfifo(path, mode) == 0) return 0;
-    if (errno == EEXIST) return 0;
-    return -1;
-}
-
-static int parse_open_mode(const char* mode, int* flags) {
-    if (!mode || !*mode || !flags) return -1;
-    int nonblock = strchr(mode, 'n') != NULL;
-    char base[4] = {0}; int j = 0;
-    for (const char* p = mode; *p && j < 3; ++p) if (*p != 'n' && *p != 'b') base[j++] = *p;
-    base[j] = 0;
-    if (strcmp(base, "r") == 0) *flags = O_RDONLY;
-    else if (strcmp(base, "w") == 0) *flags = O_WRONLY | O_CREAT | O_TRUNC;
-    else if (strcmp(base, "a") == 0) *flags = O_WRONLY | O_CREAT | O_APPEND;
-    else if (strcmp(base, "rw") == 0 || strcmp(base, "r+") == 0) *flags = O_RDWR;
-    else if (strcmp(base, "w+") == 0) *flags = O_RDWR | O_CREAT | O_TRUNC;
-    else if (strcmp(base, "a+") == 0) *flags = O_RDWR | O_CREAT | O_APPEND;
-    else return -1;
-    *flags |= O_CLOEXEC;
-    if (nonblock) *flags |= O_NONBLOCK;
-    return 0;
+    /* slio maps this to a Linux FIFO or a Windows named pipe; it treats an
+     * already-existing endpoint as success. */
+    return slio_named_pipe_create(path, mode) == 0 ? 0 : -1;
 }
 
 static int open_file_handle(SLVM* vm, const char* path, const char* mode) {
-    int flags = 0;
-    if (parse_open_mode(mode, &flags) < 0 || !path) return -1;
-    int fd = open(path, flags, (mode_t)0666);
-    if (fd < 0) return -1;
+    if (!path || !mode) return -1;
+    /* slio_open takes the same r/w/a/rw/r+/w+/a+ (+optional n) mode strings
+     * the language exposes, and returns an OS-neutral handle. */
+    SLIOHandle fd = slio_open(path, mode);
+    if (fd == SLIO_INVALID_HANDLE) return -1;
     int h = file_alloc(vm, fd);
-    if (h < 0) close(fd);
+    if (h < 0) slio_close(fd);
     return h;
 }
 
@@ -613,7 +595,7 @@ static SLResult run_thread(SLThread* t) {
         case OP_SUB: { SLValue b=POP(),a=POP(); if(both_int(a,b)) PUSH(slval_int(a.as.i-b.as.i)); else PUSH(slval_double(as_num(a)-as_num(b))); } break;
         case OP_MUL: { SLValue b=POP(),a=POP(); if(both_int(a,b)) PUSH(slval_int(a.as.i*b.as.i)); else PUSH(slval_double(as_num(a)*as_num(b))); } break;
         case OP_DIV: { SLValue b=POP(),a=POP(); if(both_int(a,b)){if(!b.as.i) TERR("integer divide by zero"); PUSH(slval_int(a.as.i/b.as.i));} else PUSH(slval_double(as_num(a)/as_num(b))); } break;
-        case OP_MOD: { SLValue b=POP(),a=POP(); if(!both_int(a,b)) TERR("modulo requires integers"); if(!b.as.i) TERR("integer modulo by zero"); PUSH(slval_int(a.as.i%b.as.i)); } break;
+        case OP_MOD: { SLValue b=POP(),a=POP(); if(both_int(a,b)){ if(!b.as.i) TERR("integer modulo by zero"); PUSH(slval_int(a.as.i%b.as.i)); } else { double db=as_num(b); if(db==0.0) TERR("modulo by zero"); PUSH(slval_double(fmod(as_num(a),db))); } } break;
         case OP_NEG: { SLValue a=POP(); if(a.type==SL_INT) PUSH(slval_int(-a.as.i)); else PUSH(slval_double(-as_num(a))); } break;
         case OP_EQ: { SLValue b=POP(),a=POP(); int e; if(a.type==SL_STRUCT||b.type==SL_STRUCT) e=(a.type==SL_STRUCT&&b.type==SL_STRUCT&&a.as.h==b.as.h); else if(a.type==SL_STR&&b.type==SL_STR) e=(a.as.s==b.as.s); else e=(as_num(a)==as_num(b)); PUSH(slval_bool(e)); } break;
         case OP_NE: { SLValue b=POP(),a=POP(); int e; if(a.type==SL_STRUCT||b.type==SL_STRUCT) e=!(a.type==SL_STRUCT&&b.type==SL_STRUCT&&a.as.h==b.as.h); else if(a.type==SL_STR&&b.type==SL_STR) e=(a.as.s!=b.as.s); else e=(as_num(a)!=as_num(b)); PUSH(slval_bool(e)); } break;
@@ -654,22 +636,22 @@ static SLResult run_thread(SLThread* t) {
         } break;
 
         case OP_LISTEN: {
-            SLValue pv=POP(); if(pv.type!=SL_INT) TERR("listen(port) requires an integer port"); int fd=make_listener((int)pv.as.i); if(fd<0){PUSH(slval_int(-1));break;} int h=socket_alloc(vm,fd); if(h<0){close(fd);PUSH(slval_int(-1));break;} PUSH(slval_int(h));
+            SLValue pv=POP(); if(pv.type!=SL_INT) TERR("listen(port) requires an integer port"); SLNetHandle handle=make_listener((int)pv.as.i); if(handle==SL_NET_INVALID){PUSH(slval_int(-1));break;} int h=socket_alloc(vm,handle); if(h<0){slnet_close(handle);PUSH(slval_int(-1));break;} PUSH(slval_int(h));
         } break;
         case OP_ACCEPT: {
-            SLValue hv=POP(); if(hv.type!=SL_INT||!socket_valid_handle((int)hv.as.i)) TERR("accept(socket) requires a valid socket handle"); SLSocket* s=&vm->sockets[(int)hv.as.i]; pthread_mutex_lock(&s->mtx); int fd=socket_fd_locked(s); if(fd<0){pthread_mutex_unlock(&s->mtx);PUSH(slval_int(-1));break;} int cfd=accept(fd,NULL,NULL); pthread_mutex_unlock(&s->mtx); if(cfd<0){PUSH(slval_int(-1));break;} int h=socket_alloc(vm,cfd); if(h<0){close(cfd);PUSH(slval_int(-1));break;} PUSH(slval_int(h));
+            SLValue hv=POP(); if(hv.type!=SL_INT||!socket_valid_handle((int)hv.as.i)) TERR("accept(socket) requires a valid socket handle"); SLSocket* s=&vm->sockets[(int)hv.as.i]; pthread_mutex_lock(&s->mtx); SLNetHandle handle=socket_handle_locked(s); if(handle==SL_NET_INVALID){pthread_mutex_unlock(&s->mtx);PUSH(slval_int(-1));break;} SLNetHandle child=slnet_accept(handle); pthread_mutex_unlock(&s->mtx); if(child==SL_NET_INVALID){PUSH(slval_int(-1));break;} int h=socket_alloc(vm,child); if(h<0){slnet_close(child);PUSH(slval_int(-1));break;} PUSH(slval_int(h));
         } break;
         case OP_CONNECT: {
-            SLValue portv=POP(),hostv=POP(); if(hostv.type!=SL_STR||portv.type!=SL_INT) TERR("connect(host, port) requires a String and integer port"); int fd=make_connection(slvm_str(vm,hostv.as.s),(int)portv.as.i); if(fd<0){PUSH(slval_int(-1));break;} int h=socket_alloc(vm,fd); if(h<0){close(fd);PUSH(slval_int(-1));break;} PUSH(slval_int(h));
+            SLValue portv=POP(),hostv=POP(); if(hostv.type!=SL_STR||portv.type!=SL_INT) TERR("connect(host, port) requires a String and integer port"); SLNetHandle handle=make_connection(slvm_str(vm,hostv.as.s),(int)portv.as.i); if(handle==SL_NET_INVALID){PUSH(slval_int(-1));break;} int h=socket_alloc(vm,handle); if(h<0){slnet_close(handle);PUSH(slval_int(-1));break;} PUSH(slval_int(h));
         } break;
         case OP_SOCKREAD: {
-            SLValue hv=POP(); if(hv.type!=SL_INT||!socket_valid_handle((int)hv.as.i)) TERR("sockread(socket) requires a valid socket handle"); SLSocket* s=&vm->sockets[(int)hv.as.i]; pthread_mutex_lock(&s->mtx); int fd=socket_fd_locked(s); if(fd<0){pthread_mutex_unlock(&s->mtx);PUSH(slval_int(-1));break;} char buf[4097]; ssize_t n=recv(fd,buf,sizeof(buf)-1,0); pthread_mutex_unlock(&s->mtx); if(n<=0){SLValue e; e.type=SL_STR;e.as.s=intern(vm,"");PUSH(e);break;} buf[n]=0; SLValue out;out.type=SL_STR;out.as.s=intern(vm,buf);PUSH(out);
+            SLValue hv=POP(); if(hv.type!=SL_INT||!socket_valid_handle((int)hv.as.i)) TERR("sockread(socket) requires a valid socket handle"); SLSocket* s=&vm->sockets[(int)hv.as.i]; pthread_mutex_lock(&s->mtx); SLNetHandle handle=socket_handle_locked(s); if(handle==SL_NET_INVALID){pthread_mutex_unlock(&s->mtx);PUSH(slval_int(-1));break;} char buf[4097]; SLNetCount n=slnet_read(handle,buf,sizeof(buf)-1); pthread_mutex_unlock(&s->mtx); if(n<=0){SLValue e; e.type=SL_STR;e.as.s=intern(vm,"");PUSH(e);break;} buf[n]=0; SLValue out;out.type=SL_STR;out.as.s=intern(vm,buf);PUSH(out);
         } break;
         case OP_SOCKWRITE: {
-            SLValue sv=POP(),hv=POP(); if(hv.type!=SL_INT||sv.type!=SL_STR||!socket_valid_handle((int)hv.as.i)) TERR("sockwrite(socket, string) requires a socket handle and String"); SLSocket* s=&vm->sockets[(int)hv.as.i]; pthread_mutex_lock(&s->mtx); int fd=socket_fd_locked(s); if(fd<0){pthread_mutex_unlock(&s->mtx);PUSH(slval_int(-1));break;} const char* data=slvm_str(vm,sv.as.s); ssize_t n=send(fd,data,strlen(data),0); pthread_mutex_unlock(&s->mtx); PUSH(slval_int(n<0?-1:(int64_t)n));
+            SLValue sv=POP(),hv=POP(); if(hv.type!=SL_INT||sv.type!=SL_STR||!socket_valid_handle((int)hv.as.i)) TERR("sockwrite(socket, string) requires a socket handle and String"); SLSocket* s=&vm->sockets[(int)hv.as.i]; pthread_mutex_lock(&s->mtx); SLNetHandle handle=socket_handle_locked(s); if(handle==SL_NET_INVALID){pthread_mutex_unlock(&s->mtx);PUSH(slval_int(-1));break;} const char* data=slvm_str(vm,sv.as.s); SLNetCount n=slnet_write(handle,data,strlen(data)); pthread_mutex_unlock(&s->mtx); PUSH(slval_int(n<0?-1:(int64_t)n));
         } break;
         case OP_SOCKCLOSE: {
-            SLValue hv=POP(); if(hv.type!=SL_INT||!socket_valid_handle((int)hv.as.i)) TERR("sockclose(socket) requires a valid socket handle"); SLSocket* s=&vm->sockets[(int)hv.as.i]; pthread_mutex_lock(&s->mtx); if(s->active){close(s->fd);s->fd=-1;s->active=0;} pthread_mutex_unlock(&s->mtx); PUSH(slval_null());
+            SLValue hv=POP(); if(hv.type!=SL_INT||!socket_valid_handle((int)hv.as.i)) TERR("sockclose(socket) requires a valid socket handle"); SLSocket* s=&vm->sockets[(int)hv.as.i]; pthread_mutex_lock(&s->mtx); if(s->active){slnet_close(s->handle);s->handle=SL_NET_INVALID;s->active=0;} pthread_mutex_unlock(&s->mtx); PUSH(slval_null());
         } break;
 
         /* ---- Linux file I/O ------------------------------------------- */
@@ -681,22 +663,22 @@ static SLResult run_thread(SLThread* t) {
             int h=(int)hv.as.i; pthread_mutex_lock(&vm->files[h].mtx); int p=vm->files[h].peer; pthread_mutex_unlock(&vm->files[h].mtx); PUSH(slval_int(p));
         } break;
         case OP_FIFO_MK: {
-            SLValue mv=POP(),pv=POP(); if(pv.type!=SL_STR||mv.type!=SL_INT) TERR("fifoCreate(path, mode) requires a String path and integer mode"); PUSH(slval_int(make_fifo(slvm_str(vm,pv.as.s),(mode_t)mv.as.i)==0?0:-1));
+            SLValue mv=POP(),pv=POP(); if(pv.type!=SL_STR||mv.type!=SL_INT) TERR("fifoCreate(path, mode) requires a String path and integer mode"); PUSH(slval_int(make_fifo(slvm_str(vm,pv.as.s),(unsigned)mv.as.i)==0?0:-1));
         } break;
         case OP_FILEOPEN: {
             SLValue mv=POP(),pv=POP(); if(pv.type!=SL_STR||mv.type!=SL_STR) TERR("openFile(path, mode) requires String arguments"); PUSH(slval_int(open_file_handle(vm,slvm_str(vm,pv.as.s),slvm_str(vm,mv.as.s))));
         } break;
         case OP_FILEREAD: {
-            SLValue hv=POP(); if(hv.type!=SL_INT||!file_valid_handle((int)hv.as.i)) TERR("read(handle) requires a valid file handle"); int h=(int)hv.as.i; SLFile* f=&vm->files[h]; pthread_mutex_lock(&f->mtx); int fd=file_fd_locked(f); if(fd<0){pthread_mutex_unlock(&f->mtx);SLValue e;e.type=SL_STR;e.as.s=intern(vm,"");PUSH(e);break;} char buf[4097]; ssize_t n=read(fd,buf,sizeof(buf)-1); pthread_mutex_unlock(&f->mtx); if(n<=0){SLValue e;e.type=SL_STR;e.as.s=intern(vm,"");PUSH(e);break;} buf[n]=0; SLValue out;out.type=SL_STR;out.as.s=intern(vm,buf);PUSH(out);
+            SLValue hv=POP(); if(hv.type!=SL_INT||!file_valid_handle((int)hv.as.i)) TERR("read(handle) requires a valid file handle"); int h=(int)hv.as.i; SLFile* f=&vm->files[h]; pthread_mutex_lock(&f->mtx); SLIOHandle fd=file_fd_locked(f); if(fd==SLIO_INVALID_HANDLE){pthread_mutex_unlock(&f->mtx);SLValue e;e.type=SL_STR;e.as.s=intern(vm,"");PUSH(e);break;} char buf[4097]; int n=slio_read(fd,buf,sizeof(buf)-1); pthread_mutex_unlock(&f->mtx); if(n<=0){SLValue e;e.type=SL_STR;e.as.s=intern(vm,"");PUSH(e);break;} buf[n]=0; SLValue out;out.type=SL_STR;out.as.s=intern(vm,buf);PUSH(out);
         } break;
         case OP_FILEWRITE: {
-            SLValue sv=POP(),hv=POP(); if(hv.type!=SL_INT||sv.type!=SL_STR||!file_valid_handle((int)hv.as.i)) TERR("write(handle, data) requires a file handle and String"); int h=(int)hv.as.i; SLFile* f=&vm->files[h]; pthread_mutex_lock(&f->mtx); int fd=file_fd_locked(f); if(fd<0){pthread_mutex_unlock(&f->mtx);PUSH(slval_int(-1));break;} const char* data=slvm_str(vm,sv.as.s); ssize_t n=write(fd,data,strlen(data)); pthread_mutex_unlock(&f->mtx); PUSH(slval_int(n<0?-1:(int64_t)n));
+            SLValue sv=POP(),hv=POP(); if(hv.type!=SL_INT||sv.type!=SL_STR||!file_valid_handle((int)hv.as.i)) TERR("write(handle, data) requires a file handle and String"); int h=(int)hv.as.i; SLFile* f=&vm->files[h]; pthread_mutex_lock(&f->mtx); SLIOHandle fd=file_fd_locked(f); if(fd==SLIO_INVALID_HANDLE){pthread_mutex_unlock(&f->mtx);PUSH(slval_int(-1));break;} const char* data=slvm_str(vm,sv.as.s); int n=slio_write(fd,data,strlen(data)); pthread_mutex_unlock(&f->mtx); PUSH(slval_int(n<0?-1:(int64_t)n));
         } break;
         case OP_FILECLOSE: {
             SLValue hv=POP(); if(hv.type!=SL_INT||!file_valid_handle((int)hv.as.i)) TERR("close(handle) requires a valid file handle"); int h=(int)hv.as.i; pthread_mutex_lock(&vm->files[h].mtx); close_file_slot(&vm->files[h]); pthread_mutex_unlock(&vm->files[h].mtx); PUSH(slval_null());
         } break;
         case OP_FILEUNLINK: {
-            SLValue pv=POP(); if(pv.type!=SL_STR) TERR("unlinkFile(path) requires a String path"); PUSH(slval_int(unlink(slvm_str(vm,pv.as.s))==0?0:-1));
+            SLValue pv=POP(); if(pv.type!=SL_STR) TERR("unlinkFile(path) requires a String path"); PUSH(slval_int(slio_unlink(slvm_str(vm,pv.as.s))==0?0:-1));
         } break;
         case OP_TIME_UTC_MS: {
             PUSH(slval_int(sltime_utc_millis()));

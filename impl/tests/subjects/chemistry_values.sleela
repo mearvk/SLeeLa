@@ -1,0 +1,35 @@
+#sleela 1.0
+// Numeric assertions for the executable `chemistry` inference kernels
+// (the deterministic .sleela-facing chemistry API; weights are
+// observation 0.24, bond 0.20, valence 0.22, similarity 0.13, signal 0.12,
+// symmetry 0.09, which sum to 1.0).
+import math;
+import chemistry;
+
+class ChemistryValues {
+    static void check(String name, double got, double expected, double tol) {
+        double d = got - expected;
+        if (d < 0.0) { d = 0.0 - d; }
+        if (d <= tol) { print("PASS " + name); }
+        else { print("FAIL " + name + " got=" + got + " expected=" + expected); }
+    }
+
+    void main() {
+        check("ratio", chemistry.ratio(3.0, 4.0), 0.75, 0.000001);
+        check("ratio_zero_denom", chemistry.ratio(1.0, 0.0), 0.0, 0.0);
+        check("similarity_equal", chemistry.similarity(5.0, 5.0), 1.0, 0.000001);
+        // similarity(0,10) = 1 - |0-10|/max(0,10,1) = 1 - 10/10 = 0
+        check("similarity_far", chemistry.similarity(0.0, 10.0), 0.0, 0.000001);
+        // confidence with all evidence = 1 -> clamp(sum of weights = 1.0) = 1.0
+        check("confidence_full", chemistry.confidence(1.0, 1.0, 1.0, 1.0, 1.0, 1.0), 1.0, 0.000001);
+        // confidence with all 0.5 -> 0.5
+        check("confidence_half", chemistry.confidence(0.5, 0.5, 0.5, 0.5, 0.5, 0.5), 0.5, 0.000001);
+        // inference_level = clamp(24 * evidenceSum, 0, 24)
+        check("inference_level_full", chemistry.inference_level(1.0, 1.0, 1.0, 1.0, 1.0, 1.0), 24.0, 0.000001);
+        check("inference_level_half", chemistry.inference_level(0.5, 0.5, 0.5, 0.5, 0.5, 0.5), 12.0, 0.000001);
+        // uncertainty = 1 - clamp(evidenceSum)
+        check("uncertainty_full", chemistry.uncertainty(1.0, 1.0, 1.0, 1.0, 1.0, 1.0), 0.0, 0.000001);
+        check("uncertainty_none", chemistry.uncertainty(0.0, 0.0, 0.0, 0.0, 0.0, 0.0), 1.0, 0.000001);
+        // EXPECTED_PASS=10
+    }
+}

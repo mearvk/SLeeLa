@@ -1,0 +1,43 @@
+# Normalize line endings across platforms.
+#
+# The SHA-256 verification gate (tools/verify-before-execution.py, the Makefile
+# verify-security target) hashes source files byte-for-byte. If Git checked
+# these out with CRLF on Windows, every hash would mismatch and the build would
+# fail closed. Force LF for all text so a Windows (MinGW) checkout is
+# byte-identical to a Linux one and the committed manifest stays valid.
+
+# Default: let Git detect text and normalize it to LF in the repo.
+* text=auto eol=lf
+
+# Source and build/config files that feed the verified build — always LF.
+*.c    text eol=lf
+*.h    text eol=lf
+*.cpp  text eol=lf
+*.hpp  text eol=lf
+*.cc   text eol=lf
+*.hh   text eol=lf
+*.py   text eol=lf
+*.sh   text eol=lf
+*.sleela text eol=lf
+*.sst  text eol=lf
+*.model text eol=lf
+*.sheet text eol=lf
+*.manifest text eol=lf
+*.md   text eol=lf
+*.json text eol=lf
+*.yml  text eol=lf
+*.yaml text eol=lf
+Makefile text eol=lf
+
+# Windows-native scripts are conventionally CRLF.
+*.ps1  text eol=crlf
+*.bat  text eol=crlf
+*.cmd  text eol=crlf
+
+# Binary assets — never touch.
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.gif  binary
+*.ico  binary
+*.zip  binary

@@ -151,10 +151,10 @@ physics.ideal_gas_pressure(n,R,T)
 physics.wave_frequency(v,wavelength)
 physics.angular_frequency(f)
 physics.wavenumber(wavelength)
-physics.neutrino_oscillation_probability(theta,delta_m2,L)
+physics.neutrino_oscillation_probability(theta,delta_m2,L,E)
 ```
 
-The physics constants are represented with SI-compatible values. Domain restrictions remain important: for example, Lorentz gamma requires `|v| < C` for a real result, and the neutrino expression is an explicitly unit- and approximation-dependent model.
+The physics constants are represented with SI-compatible values. Domain restrictions remain important: for example, Lorentz gamma requires `|v| < C` for a real result. The neutrino expression is the two-flavor vacuum oscillation model `P = sin^2(2*theta) * sin^2(1.267 * delta_m2 * L / E)` — an explicitly unit- and approximation-dependent model with `delta_m2` in eV^2, `L` in km, and `E` in GeV (the 1.267 factor carries those units).
 
 ## Executable Economics API
 

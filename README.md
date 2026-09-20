@@ -22,6 +22,11 @@ triplet of targets (**Java**, **Sleela**, **C**).
 - The working implementation lives under [`impl/`](impl/) — see
   [`impl/README.md`](impl/README.md) for the full guide, and
   [`impl/DESIGN.md`](impl/DESIGN.md) for the architecture.
+- **Two source trees:** [`impl/`](impl/) (C/C++) is the authoritative, buildable,
+  tested system; [`src/`](src/) is an earlier/parallel **Java** prototype
+  (`implementations/_001_`) that shares the naming but no code and is not part of
+  the build or CI. [`ARCHITECTURE.md`](ARCHITECTURE.md) delineates the two and
+  says which to use.
 - [`SHEET.sheet`](SHEET.sheet) is the catalog of common system objects (129
   objects across 16 role categories) that backs Sleela's *conducted methods*
   and Nordshrift's *object compatibility list*.
@@ -204,6 +209,12 @@ cd impl && make
 ./build/sleela run examples/hello.sleela
 ./build/nordshrift build nordshrift/examples/demo/build.sst
 ```
+
+SLeeLa's C/C++ core runs on **Linux/macOS (POSIX) and Windows 10+**. On Windows,
+build with MinGW-w64 via `build-windows.ps1` (the Makefile auto-links Winsock
+and produces `sleela.exe`/`nordshrift.exe`); see
+[`impl/README.md`](impl/README.md#building) and
+[`ARCHITECTURE.md`](ARCHITECTURE.md).
 
 ## The Constitution — ordained constraints, in order
 

@@ -1,0 +1,41 @@
+#sleela 1.0
+// Numeric assertions for the native `inference` subject library.
+// Reference series: X = {1,2,3,4,5}, Y = {2,4,6,8,10} (a perfect line y = 2x).
+//   n=5, sumX=15, sumY=30, sumXX=55, sumYY=220, sumXY=110
+import math;
+import inference;
+
+class InferenceValues {
+    static void check(String name, double got, double expected, double tol) {
+        double d = got - expected;
+        if (d < 0.0) { d = 0.0 - d; }
+        if (d <= tol) { print("PASS " + name); }
+        else { print("FAIL " + name + " got=" + got + " expected=" + expected); }
+    }
+    static void checkInt(String name, double got, double expected) {
+        if (got == expected) { print("PASS " + name); }
+        else { print("FAIL " + name + " got=" + got + " expected=" + expected); }
+    }
+
+    void main() {
+        check("mean", inference.mean(30.0, 5.0), 6.0, 0.000001);
+        // population variance of Y: 220/5 - 6^2 = 44 - 36 = 8
+        check("variance", inference.variance(220.0, 30.0, 5.0), 8.0, 0.000001);
+        check("stdev", inference.stdev(220.0, 30.0, 5.0), 2.8284271247461903, 0.00001);
+        check("slope", inference.slope(5.0, 15.0, 30.0, 55.0, 110.0), 2.0, 0.000001);
+        check("intercept", inference.intercept(5.0, 15.0, 30.0, 2.0), 0.0, 0.000001);
+        check("correlation", inference.correlation(5.0, 15.0, 30.0, 55.0, 220.0, 110.0), 1.0, 0.000001);
+        check("r_squared", inference.r_squared(0.9), 0.81, 0.000001);
+        check("zscore", inference.zscore(10.0, 6.0, 2.8284271247461903), 1.4142135623730951, 0.00001);
+        check("forecast", inference.forecast(0.0, 2.0, 6.0), 12.0, 0.000001);
+        // CAGR: (10/2)^(1/4) - 1 = 5^0.25 - 1 = 0.4953487812212205
+        check("cagr", inference.cagr(2.0, 10.0, 4.0), 0.4953487812212205, 0.0001);
+        // classification codes
+        checkInt("trend_rising", inference.trend_code(2.0, 6.0, 0.01), 1.0);
+        checkInt("trend_flat", inference.trend_code(0.0, 6.0, 0.01), 0.0);
+        checkInt("strength_strong", inference.strength_code(0.95), 3.0);
+        checkInt("strength_none", inference.strength_code(0.1), 0.0);
+        checkInt("significance_high", inference.significance_code(0.9), 3.0);
+        // EXPECTED_PASS=15
+    }
+}

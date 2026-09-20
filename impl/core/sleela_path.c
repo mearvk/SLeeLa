@@ -8,6 +8,7 @@
 #ifdef _WIN32
 #include <direct.h>
 #include <io.h>
+#include <sys/stat.h>   /* struct _stat64, _stat64(), _S_IFREG, _S_IFDIR */
 #include <windows.h>
 #define SL_PATH_NATIVE_SEPARATOR '\\'
 #else

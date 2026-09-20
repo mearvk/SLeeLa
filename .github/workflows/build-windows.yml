@@ -1,0 +1,98 @@
+name: Build SLeeLa on Windows
+
+# Proves the C/C++ core builds and runs on Windows 10+ using the MinGW-w64
+# toolchain (the OS-aware layer's Win32 backend + Winsock). Mirrors the Linux
+# expectations: build both binaries, then run the example programs and the
+# subject numeric assertions through the built sleela.exe.
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'impl/**'
+      - 'runtime/**'
+      - 'bash/pixel_terminal.cpp'
+      - 'bash/pixel_terminal.hpp'
+      - 'build-windows.ps1'
+      - 'security/sha256-manifest.json'
+      - '.github/workflows/build-windows.yml'
+  pull_request:
+    paths:
+      - 'impl/**'
+      - 'runtime/**'
+      - 'bash/pixel_terminal.cpp'
+      - 'bash/pixel_terminal.hpp'
+      - 'build-windows.ps1'
+      - 'security/sha256-manifest.json'
+      - '.github/workflows/build-windows.yml'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    timeout-minutes: 25
+    defaults:
+      run:
+        shell: pwsh
+    env:
+      SLEELA_SHA256_MANIFEST: ${{ github.workspace }}/security/sha256-manifest.json
+      SLEELA_SHEET: ${{ github.workspace }}/SHEET.sheet
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up MinGW-w64 (GCC/G++)
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: UCRT64
+          update: true
+          install: >-
+            mingw-w64-ucrt-x86_64-gcc
+            make
+            python
+
+      - name: Show toolchain versions
+        shell: msys2 {0}
+        run: |
+          gcc --version | head -1
+          g++ --version | head -1
+          make --version | head -1
+          python --version
+
+      - name: Build (MinGW, links ws2_32)
+        shell: msys2 {0}
+        run: |
+          export SLEELA_SHA256_MANIFEST="$(pwd)/security/sha256-manifest.json"
+          cd impl
+          make clean
+          make all
+          test -f build/sleela.exe
+          test -f build/nordshrift.exe
+          ./build/sleela.exe version
+
+      - name: Run example programs
+        shell: msys2 {0}
+        run: |
+          export SLEELA_SHA256_MANIFEST="$(pwd)/security/sha256-manifest.json"
+          export SLEELA_SHEET="$(pwd)/SHEET.sheet"
+          # fileio-fifo uses a POSIX FIFO round-trip on a single handle
+          # (mkfifo + open O_RDWR at a /tmp path). That pattern does not map to
+          # Windows named pipes, which need a persistent server instance and
+          # the \\.\pipe\ namespace. It is skipped here as a POSIX-only demo;
+          # every other example must pass on Windows.
+          for f in impl/examples/*.sleela; do
+            case "$f" in
+              *fileio-fifo.sleela) echo "=== skip (POSIX-only FIFO demo): $f ==="; continue;;
+            esac
+            echo "=== $f ==="
+            ./impl/build/sleela.exe run "$f" || exit 1
+          done
+
+      - name: Run subject numeric assertions
+        shell: msys2 {0}
+        run: |
+          export SLEELA_SHA256_MANIFEST="$(pwd)/security/sha256-manifest.json"
+          export SLEELA_SHEET="$(pwd)/SHEET.sheet"
+          bash impl/tests/subjects/run_subject_tests.sh impl/build/sleela.exe

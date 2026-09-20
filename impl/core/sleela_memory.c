@@ -5,6 +5,7 @@
 
 #ifdef _WIN32
 #include <windows.h>
+#include <malloc.h>   /* _aligned_malloc / _aligned_free */
 #else
 #include <unistd.h>
 #endif

@@ -272,9 +272,19 @@ def main():
     if len(rows) != EXPECTED:
         raise SystemExit(f"Expected {EXPECTED} table rows, found {len(rows)}")
 
+    # The final column in BANKS4 carries the neutral, sourced constitutional
+    # indicator (populated by update_banks4_socialism.py), so title it
+    # accordingly rather than inheriting BANKS3's generic "Status".
+    FINAL_COL = "Constitutional Socialism Reference"
+
     output_lines = []
     changed = 0
     for line in text.splitlines():
+        if line.startswith("| ID | Country/Jurisdiction |"):
+            cells = line.split("|")
+            cells[-2] = f" {FINAL_COL} "
+            output_lines.append("|".join(cells))
+            continue
         m = re.match(r"^\| (\d{3}) \| (.*?) \| (.*?) \| (.*?) \| (.*?) \| (.*?) \| (.*?) \| (.*?) \| (.*?) \| (.*?) \| (.*?) \|$", line)
         if not m:
             output_lines.append(line)

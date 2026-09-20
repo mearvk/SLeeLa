@@ -1,0 +1,38 @@
+#sleela 1.0
+// Numeric assertions for the native `math` subject library.
+// Each check compares a computed value against a known reference within a
+// tolerance and prints a stable PASS/FAIL token (independent of float
+// formatting). The harness (run_subject_tests.sh) fails if any FAIL appears
+// or if the expected number of PASS tokens is not produced.
+import math;
+
+class MathValues {
+    // absolute difference within tolerance -> stable token
+    static void check(String name, double got, double expected, double tol) {
+        double d = got - expected;
+        if (d < 0.0) { d = 0.0 - d; }
+        if (d <= tol) { print("PASS " + name); }
+        else { print("FAIL " + name + " got=" + got + " expected=" + expected); }
+    }
+
+    void main() {
+        check("sqrt2", math.sqrt(2.0), 1.4142135623730951, 0.000001);
+        check("sqrt_144", math.sqrt(144.0), 12.0, 0.000001);
+        check("pow_2_10", math.pow(2.0, 10.0), 1024.0, 0.00001);
+        check("exp_0", math.exp(0.0), 1.0, 0.000001);
+        check("exp_1", math.exp(1.0), 2.718281828459045, 0.00001);
+        check("log_e", math.log(2.718281828459045), 1.0, 0.00001);
+        check("sin_0", math.sin(0.0), 0.0, 0.000001);
+        check("sin_pi_half", math.sin(1.5707963267948966), 1.0, 0.00001);
+        check("cos_0", math.cos(0.0), 1.0, 0.000001);
+        check("abs_neg", math.abs(-7.25), 7.25, 0.0);
+        check("min", math.min(3.0, 8.0), 3.0, 0.0);
+        check("max", math.max(3.0, 8.0), 8.0, 0.0);
+        check("clamp_hi", math.clamp(15.0, 0.0, 10.0), 10.0, 0.0);
+        check("clamp_lo", math.clamp(-5.0, 0.0, 10.0), 0.0, 0.0);
+        check("hypot_3_4", math.hypot(3.0, 4.0), 5.0, 0.000001);
+        check("fmod", math.fmod(7.5, 2.0), 1.5, 0.000001);
+        check("pi", math.pi(), 3.141592653589793, 0.00001);
+        // EXPECTED_PASS=17
+    }
+}

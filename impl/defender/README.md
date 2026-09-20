@@ -13,13 +13,46 @@ The `sleela defender` command uses a fixed repository mapping; it does not accep
 
 ```text
 sleela defender detect
-sleela defender fetch [directory]
-sleela defender build [directory]
-sleela defender install [directory]
-sleela defender provision [directory]
+sleela defender fetch [directory]    --allow-defender --sha256 <hex>
+sleela defender build [directory]    --allow-defender --sha256 <hex>
+sleela defender install [directory]  --allow-defender --sha256 <hex> --allow-root
+sleela defender provision [directory] --allow-defender --sha256 <hex> --allow-root
 ```
 
 `provision` performs fetch, build, and install in sequence.
+
+## Opt-in and integrity gates (required)
+
+Because `fetch`/`build`/`install`/`provision` download a remote source tree and
+can install a privileged (kernel) driver, they are **disabled by default** and
+each guarded by an explicit gate. `detect` contacts nothing and needs no gate.
+
+| Gate | Flag | Environment variable | Applies to |
+|---|---|---|---|
+| Opt in to network/build/install | `--allow-defender` | `SLEELA_DEFENDER_OPTIN=1` | fetch, build, install, provision |
+| Expected archive SHA-256 | `--sha256 <hex>` | `SLEELA_DEFENDER_SHA256=<hex>` | fetch, build, install, provision |
+| Authorize privileged install | `--allow-root` | `SLEELA_DEFENDER_ALLOW_ROOT=1` | install, provision |
+
+Rules enforced by the compiler driver:
+
+- Without `--allow-defender` (or the env opt-in), any action other than
+  `detect` is refused before any network access.
+- The downloaded archive is hashed and compared against the value supplied via
+  `--sha256`/`SLEELA_DEFENDER_SHA256`. If the value is missing or does not
+  match, the archive is deleted and the command fails closed. There is **no
+  trust-on-first-use**.
+- The privileged install step (`sudo make install` on Linux, `pnputil` on
+  Windows) is **never** performed implicitly; it requires `--allow-root`
+  (or `SLEELA_DEFENDER_ALLOW_ROOT=1`).
+
+Example:
+
+```sh
+sleela defender provision \
+  --allow-defender \
+  --sha256 3f786850e387550fdab836ed7e6dc881de23001b... \
+  --allow-root
+```
 
 ## SLVM OSsupport command
 
@@ -73,3 +106,5 @@ OSsupport is a shell command wrapper, not itself a Windows PE or Linux ELF execu
 ## Safety
 
 This integration does not disable Secure Boot, Defender, UAC, driver signing, execution-policy protections, or other operating-system security controls. It downloads only the two fixed repositories above and leaves failures visible to the caller.
+
+All network, build, and install actions are additionally disabled by default and require the explicit opt-in, payload-integrity, and privilege-authorization gates described under "Opt-in and integrity gates" above. Downloaded payloads are verified against a caller-supplied SHA-256 before use, and privilege elevation never happens implicitly.
