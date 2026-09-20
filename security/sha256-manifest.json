@@ -87,7 +87,7 @@
     },
     {
       "path": "impl/core/sleela_memory.c",
-      "sha256": "757421285a8ad389b1b3b411da72a2ae4c52232c0a20784c808af032858b49fe"
+      "sha256": "43b7836e763b5ca73bdc5d2174dbe14e9300105963c32bc6f50e41c9503189c0"
     },
     {
       "path": "impl/core/sleela_memory.h",
@@ -103,7 +103,7 @@
     },
     {
       "path": "impl/core/sleela_path.c",
-      "sha256": "97ea1aaf4eb9ccba0e22d730c7370b3afd563f3a77a09cdb261d7cfe16636e78"
+      "sha256": "1b099aec934790ed38fe983f3be89ef72fc2975e3c9a4013aba7c3bd6e6e2a7d"
     },
     {
       "path": "impl/core/sleela_path.h",
