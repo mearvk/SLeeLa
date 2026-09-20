@@ -59,6 +59,7 @@ PIXEL_TERMINAL_SMOKE := $(BUILD)/pixel_terminal_smoke
 PIXEL_TERMINAL_OBJ := $(BUILD)/pixel_terminal.o
 CATALOG_OBJ := $(BUILD)/sheet_catalog.o
 XCLASS_OBJ := $(BUILD)/xclass_loader.o
+LANGIN_OBJ := $(BUILD)/langin.o
 CORE_OBJ := $(BUILD)/sleela_core.o
 THREAD_OBJ := $(BUILD)/sleela_thread.o
 IO_OBJ := $(BUILD)/sleela_io.o
@@ -96,7 +97,7 @@ NS_OBJ += $(LEDGER_CORE_OBJ)
 VERIFY_TOOL := ../tools/verify-before-execution.py
 VERIFY_MANIFEST ?= $(SLEELA_SHA256_MANIFEST)
 VERIFY_ARGS = --manifest "$(VERIFY_MANIFEST)" --root "$(CURDIR)/.."
-ALL_OBJECTS := $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(NS_OBJ) $(THREAD_SMOKE) $(SOCKET_SMOKE) $(IO_PLATFORM_SMOKE) $(NET_PLATFORM_SMOKE) $(PATH_PLATFORM_SMOKE) $(TERMINAL_PLATFORM_SMOKE) $(LIBRARY_PLATFORM_SMOKE) $(PIXEL_TERMINAL_SMOKE) $(THREAD_PLATFORM_SMOKE)
+ALL_OBJECTS := $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(LANGIN_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(NS_OBJ) $(THREAD_SMOKE) $(SOCKET_SMOKE) $(IO_PLATFORM_SMOKE) $(NET_PLATFORM_SMOKE) $(PATH_PLATFORM_SMOKE) $(TERMINAL_PLATFORM_SMOKE) $(LIBRARY_PLATFORM_SMOKE) $(PIXEL_TERMINAL_SMOKE) $(THREAD_PLATFORM_SMOKE)
 
 .PHONY: all build-verified rebuild-verified clean test test-sleela test-version test-nordshrift test-threads test-thread-platform test-network test-network-platform test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-chemistry test-financial test-math test-physics test-economics test-inference test-subjects verify-security build-runtime test-runtime test-memmgr
 
@@ -118,7 +119,7 @@ verify-security:
 # rules link with $^, and a phony target name would leak onto the link line).
 $(ALL_OBJECTS): | verify-security
 
-$(SLEELA_BIN): $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ)
+$(SLEELA_BIN): $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(LANGIN_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ)
 	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS) $(LIBS)
 $(NORDSHRIFT_BIN): $(NS_OBJ) $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(CATALOG_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ)
 	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS) $(LIBS)
@@ -197,6 +198,8 @@ $(BUILD)/sheet_catalog.o: catalog/sheet_catalog.cpp catalog/sheet_catalog.h | $(
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
 $(BUILD)/xclass_loader.o: xclass/xclass_loader.cpp xclass/xclass_loader.h | $(BUILD)
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
+$(BUILD)/langin.o: langin/langin.cpp langin/langin.h xclass/xclass_loader.h | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c langin/langin.cpp -o $@
 $(BUILD)/ns_%.o: nordshrift/%.cpp | $(BUILD)
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
 $(LEDGER_CORE_OBJ): ../ledger/ledger_core.cpp ../ledger/ledger_core.h | $(BUILD)
