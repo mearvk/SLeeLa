@@ -587,7 +587,7 @@ before any dispatch (see [`http-3.0/FLOW.md`](http-3.0/FLOW.md) and
   block that travels in every packet and is covered by the MAC. See
   [`BASKET.docx`](BASKET.docx) for the human-readable table.
 
-Beyond the integrity gate, the pipeline adds two delivery-oriented layers:
+Beyond the integrity gate, the pipeline adds three delivery-oriented layers:
 
 - **Timing / QoS (advisory).** A connection-level timing layer
   ([`http-3.0/http3_timing.{h,c}`](http-3.0/)) observes each arrival for **max
@@ -605,6 +605,18 @@ Beyond the integrity gate, the pipeline adds two delivery-oriented layers:
   router runs L1 until its software advertises more — then moves up automatically.
   Offers are MAC-backed. The bitmask names protocol tiers only (no identity
   meaning). See [`http-3.0/HANDSHAKE.md`](http-3.0/HANDSHAKE.md).
+- **Internet transport (standard HTTP carrier).** A custom packet builder
+  ([`http-3.0/http3_transport.py`](http-3.0/http3_transport.py)) makes the H3
+  envelope fit for the existing internet by embedding its exact bytes — MAC,
+  NONCE, INTACTX, and basket intact — inside standards-compliant **HTTP/1.1**
+  (text framing) and **HTTP/2** (binary HEADERS+DATA frames) messages, with
+  parse/extract on the far side. A Jakarta servlet
+  ([`connector/.../http/SleelaH3Servlet.java`](connector/java/com/mearvk/sleela/connector/http/SleelaH3Servlet.java))
+  lets Tomcat serve it over **HTTP/2+**, and sample Tomcat/Apache config plus a
+  Linux installer ([`scripts/install-linux-h3.sh`](scripts/install-linux-h3.sh))
+  deploy the stack. Because the envelope rides untouched in the HTTP body, any
+  byte flip in transit fails the H3 MAC closed. See
+  [`connector/deploy/README.md`](connector/deploy/README.md).
 
 A SLeeLa program can also select its HTTP behavior by **color** — a named bundle
 of wire form, flags, and integrity profile (`green`/`amber`/`red`/`black`),
@@ -635,6 +647,7 @@ the 3.0-era integrity substrate — lives under [`http-2.0/`](http-2.0/).
 | [`FIDUCIARY.md`](FIDUCIARY.md) | A duty model over abstract accounts: bounded wealth, per-second and per-second² rates, lifetime bound & bounding insignia. |
 | [`BRITISH.md`](BRITISH.md) | An institutional fiduciary note (stylized), applying the duty model at the entity level. |
 | [`QOS.md`](QOS.md) | Quality of Service for internet packets over standard TCP/HTTP — throughput, latency, jitter, reliability, and continuity (loss/reordering, `GAP`); includes a worked arrival-sequence example and careful SLeeLa + Java code notes. |
+| [`connector/deploy/README.md`](connector/deploy/README.md) | Carrying the HTTP 3.0 envelope over standard **HTTP/1.1 and HTTP/2** (custom packet builder, Tomcat/Apache HTTP module, and Linux installer). |
 
 The **Moral Code** records the standard of *substantial use of sequitur*, a
 *per-use* evaluation rule, *homognyny* (the asynchronous misuse of frame, or
