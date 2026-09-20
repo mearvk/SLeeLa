@@ -33,6 +33,18 @@ class MathValues {
         check("hypot_3_4", math.hypot(3.0, 4.0), 5.0, 0.000001);
         check("fmod", math.fmod(7.5, 2.0), 1.5, 0.000001);
         check("pi", math.pi(), 3.141592653589793, 0.00001);
-        // EXPECTED_PASS=17
+        // log with range reduction (accurate for large arguments)
+        check("log_1000", math.log(1000.0), 6.907755278982137, 0.0001);
+        check("log10_1000", math.log10(1000.0), 3.0, 0.00001);
+        check("log10_82100", math.log10(82100.0), 4.914343157, 0.0001);
+        // floor / ceil / trunc (positive and negative)
+        check("floor_pos", math.floor(3.7), 3.0, 0.0);
+        check("floor_neg", math.floor(-3.2), -4.0, 0.0);
+        check("floor_whole", math.floor(5.0), 5.0, 0.0);
+        check("ceil_pos", math.ceil(3.2), 4.0, 0.0);
+        check("ceil_neg", math.ceil(-3.7), -3.0, 0.0);
+        check("trunc_pos", math.trunc(3.7), 3.0, 0.0);
+        check("trunc_neg", math.trunc(-3.7), -3.0, 0.0);
+        // EXPECTED_PASS=27
     }
 }

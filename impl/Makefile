@@ -191,7 +191,7 @@ $(BUILD)/driver.o: frontend/driver.cpp frontend/compiler.h frontend/artifact.h s
 $(BUILD):
 	mkdir -p $(BUILD)
 
-test: verify-security test-sleela test-version test-nordshrift test-threads test-thread-platform test-network test-network-platform test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-math test-physics test-economics test-inference test-chemistry test-financial
+test: verify-security test-sleela test-version test-nordshrift test-threads test-thread-platform test-network test-network-platform test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-math test-physics test-economics test-inference test-chemistry test-financial test-runtime
 test-thread-platform: $(THREAD_PLATFORM_SMOKE)
 	@echo "=== OS-aware threading backend ==="; SLEELA_THREAD_PLATFORM=auto $(THREAD_PLATFORM_SMOKE)
 test-threads: $(THREAD_SMOKE)
@@ -259,5 +259,14 @@ clean:
 
 build-runtime: verify-security $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ)
 	@echo "=== SLVM runtime services built: GC + Security Supervisor + Parameters ==="
-test-runtime: build-runtime
-	@echo "=== runtime integration objects present ==="
+
+# Behavioral smoke test for the runtime services: links the test against the
+# GC and security-supervisor objects and asserts real behavior (mark-sweep
+# reclamation, byte accounting, destructor invocation, and class/role quota
+# enforcement) rather than merely compiling them.
+RUNTIME_SMOKE := $(BUILD)/runtime_smoke
+$(RUNTIME_SMOKE): tests/runtime/runtime_smoke.c $(GC_OBJ) $(SECURITY_OBJ) | verify-security $(BUILD)
+	$(CC) $(CFLAGS) -I../runtime tests/runtime/runtime_smoke.c $(GC_OBJ) $(SECURITY_OBJ) -o $@ $(LDFLAGS) $(LIBS)
+
+test-runtime: $(RUNTIME_SMOKE)
+	@echo "=== SLVM runtime services -- behavioral smoke ==="; $(RUNTIME_SMOKE)

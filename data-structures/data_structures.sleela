@@ -1,88 +1,83 @@
-#sleela 1.0
+#sleela 1.2
 
-// Semantic counterpart of the native C/C++ data-structure layer.
-// The current Sleela surface deliberately keeps storage abstract.
+// data_structures.sleela -- semantic counterpart of the native C/C++
+// data-structure layer. The current Sleela surface keeps storage abstract:
+// each structure is a small struct holding its state, and one DataStructures
+// class provides the operations. (Sleela methods share one flat namespace and
+// class fields are global, so the structures are modelled as structs -- each
+// with its own named state -- rather than as separate classes with a shared
+// `size` field.)
 
-class DSValue {
+// A tagged value: which kind, and the payload slots (only one is meaningful
+// per kind). kind: 1=int, 2=double, 3=boolean, 4=string.
+struct DSValue {
     int kind;
     int intValue;
     double doubleValue;
     boolean boolValue;
     String stringValue;
-
-    int kindOfInt() {
-        return 1;
-    }
 }
 
-class DSList {
-    int size;
-    int capacity;
-
-    int sizeOf() {
-        return size;
-    }
-
-    boolean empty() {
-        return size == 0;
-    }
-}
-
-class DSStack {
-    int size;
-
-    boolean empty() {
-        return size == 0;
-    }
-
-    int depth() {
-        return size;
-    }
-}
-
-class DSQueue {
-    int size;
-
-    boolean empty() {
-        return size == 0;
-    }
-
-    int length() {
-        return size;
-    }
-}
-
-class DSMap {
-    int size;
-
-    boolean empty() {
-        return size == 0;
-    }
-
-    int entries() {
-        return size;
-    }
-}
-
-class DSObject {
-    String name;
-    int fieldCount;
-
-    String typeName() {
-        return name;
-    }
-
-    int fields() {
-        return fieldCount;
-    }
-}
+struct DSList  { int size; int capacity; }
+struct DSStack { int size; }
+struct DSQueue { int size; }
+struct DSMap   { int size; }
+struct DSObject { String name; int fieldCount; }
 
 class DataStructures {
+
+    // ---- DSValue ----
+    DSValue intValue(int v) {
+        DSValue x = new DSValue();
+        x.kind = 1; x.intValue = v;
+        return x;
+    }
+    int valueKind(DSValue v) { return v.kind; }
+
+    // ---- DSList ----
+    boolean listEmpty(DSList l) { return l.size == 0; }
+    int listSize(DSList l) { return l.size; }
+
+    // ---- DSStack ----
+    boolean stackEmpty(DSStack s) { return s.size == 0; }
+    int stackDepth(DSStack s) { return s.size; }
+
+    // ---- DSQueue ----
+    boolean queueEmpty(DSQueue q) { return q.size == 0; }
+    int queueLength(DSQueue q) { return q.size; }
+
+    // ---- DSMap ----
+    boolean mapEmpty(DSMap m) { return m.size == 0; }
+    int mapEntries(DSMap m) { return m.size; }
+
+    // ---- DSObject ----
+    String objectType(DSObject o) { return o.name; }
+    int objectFields(DSObject o) { return o.fieldCount; }
+
     void main() {
-        DSStack stack;
-        DSQueue queue;
-        DSMap map;
-        DSObject object;
         print("Sleela data structures: value, list, stack, queue, map, object");
+
+        DSValue v = intValue(42);
+        print("  DSValue: kind=" + valueKind(v) + " intValue=" + v.intValue);
+
+        DSList list = new DSList();
+        list.size = 0;
+        print("  DSList:  empty=" + listEmpty(list) + " size=" + listSize(list));
+
+        DSStack stack = new DSStack();
+        stack.size = 3;
+        print("  DSStack: empty=" + stackEmpty(stack) + " depth=" + stackDepth(stack));
+
+        DSQueue queue = new DSQueue();
+        queue.size = 2;
+        print("  DSQueue: empty=" + queueEmpty(queue) + " length=" + queueLength(queue));
+
+        DSMap map = new DSMap();
+        map.size = 5;
+        print("  DSMap:   empty=" + mapEmpty(map) + " entries=" + mapEntries(map));
+
+        DSObject object = new DSObject();
+        object.name = "Point"; object.fieldCount = 2;
+        print("  DSObject: type=" + objectType(object) + " fields=" + objectFields(object));
     }
 }

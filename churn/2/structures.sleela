@@ -63,11 +63,11 @@ class Structures {
 
         Structure h = new Structure();
         h.domain = "physics"; h.name = "Planck constant h";
-        h.magnitude = 6.62607015e-34; h.unit = "J s"; h.kind = "EXACT";
+        h.magnitude = 6.62607015 * math.pow(10.0, -34.0); h.unit = "J s"; h.kind = "EXACT";
 
         Structure gg = new Structure();
         gg.domain = "physics"; gg.name = "gravitational constant G";
-        gg.magnitude = 6.67430e-11; gg.unit = "m^3/kg/s^2"; gg.kind = "MEASURED";
+        gg.magnitude = 6.67430 * math.pow(10.0, -11.0); gg.unit = "m^3/kg/s^2"; gg.kind = "MEASURED";
 
         // --- math Structures (public domain; data/math-constants.json) ---
         Structure pi = new Structure();
