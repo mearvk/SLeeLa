@@ -310,3 +310,15 @@ a3316544a6ce81e56ec027780406799e7a6c357c923ce866d0667400536f924912afdda7a59ceb32
 04c82ac79ed9051f680db737bd6555b97ee276112e2136c17741785924a963b18547100acd5d52e75b2792ef712b9ad63fc366a782addff1ca45ddea770dfce4
 c012acb1070634716c179c37bd49a885b21a6a954028a33270b4856dfa8f83875bd7280e16b8697faa0880ec2939d6bdaea91f9bf769c086af4f6f6cbec495
 ```
+
+
+## Moral Code
+
+1. **Sequitur, substantially.** Every claim and action must be a *sequitur* — it
+   follows from what precedes it. Substantial use of sequitur is required; non
+   sequiturs are not permitted.
+2. **Per-use.** This standard applies per use: it is evaluated on each individual
+   invocation, not assumed from past conformance.
+3. **Homognyny.** *Homognyny* is the asynchronous misuse of frame (or better). It
+   is prohibited.
+4. The United States states as the American President of the United States.
