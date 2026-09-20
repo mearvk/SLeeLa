@@ -6,14 +6,37 @@ CXX ?= g++
 SUBJECT_INCLUDES := -Isubjects/native -Isubjects/math -Isubjects/physics \
                     -Isubjects/economics -Isubjects/inference \
                     -Isubjects/chemistry -Isubjects/finance
-CFLAGS ?= -std=c11 -O2 -Wall -Wextra -pthread
-CXXFLAGS ?= -std=c++17 -O2 -Wall -Wextra -pthread
+
+# ---------------------------------------------------------------------------
+# Platform detection. The C/C++ core is OS-neutral (it goes through the
+# sleela_thread/net/io abstraction layer), so the only per-OS differences are
+# the thread flag, the link libraries, and the executable suffix.
+#   * Linux/macOS (POSIX): -pthread, link libdl (dlopen) + libm.
+#   * Windows 10+ (MinGW):  Win32 threads (no -pthread), link Winsock (ws2_32);
+#                           no libdl (LoadLibrary is used via sleela_library),
+#                           binaries get a .exe suffix.
+# GNU Make on Windows/MinGW sets OS=Windows_NT.
+# ---------------------------------------------------------------------------
+ifeq ($(OS),Windows_NT)
+  PLATFORM := windows
+  EXE := .exe
+  THREADFLAG :=
+  PLATFORM_LIBS := -lws2_32 -lm
+else
+  PLATFORM := posix
+  EXE :=
+  THREADFLAG := -pthread
+  PLATFORM_LIBS := -ldl -lm
+endif
+
+CFLAGS ?= -std=c11 -O2 -Wall -Wextra $(THREADFLAG)
+CXXFLAGS ?= -std=c++17 -O2 -Wall -Wextra $(THREADFLAG)
 CPPFLAGS += -Ifrontend $(SUBJECT_INCLUDES) -I../bash
-LDFLAGS ?= -pthread
-LIBS ?= -ldl -lm
+LDFLAGS ?= $(THREADFLAG)
+LIBS ?= $(PLATFORM_LIBS)
 BUILD := build
-SLEELA_BIN := $(BUILD)/sleela
-NORDSHRIFT_BIN := $(BUILD)/nordshrift
+SLEELA_BIN := $(BUILD)/sleela$(EXE)
+NORDSHRIFT_BIN := $(BUILD)/nordshrift$(EXE)
 THREAD_SMOKE := $(BUILD)/thread_smoke
 THREAD_PLATFORM_SMOKE := $(BUILD)/thread_platform_smoke
 SOCKET_SMOKE := $(BUILD)/socket_smoke

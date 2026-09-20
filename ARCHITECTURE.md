@@ -9,7 +9,8 @@ know which tree they are working in.
 |---|---|---|
 | **Language** | C (execution core) + C++17 (front end, Nordshrift, subjects) | Java |
 | **Status** | **Authoritative, buildable, tested.** This is "the working implementation." | Earlier / parallel prototype (`implementations/_001_`). Not built or exercised by the C/C++ build or CI. |
-| **Build** | [`impl/Makefile`](impl/Makefile) / [`build-linux.sh`](build-linux.sh) → `sleela`, `nordshrift` binaries | IntelliJ module ([`SLeeLa.iml`](SLeeLa.iml)); no Maven/Gradle/Ant build is committed |
+| **Build** | [`impl/Makefile`](impl/Makefile); [`build-linux.sh`](build-linux.sh) (Linux/macOS) and [`build-windows.ps1`](build-windows.ps1) (Windows 10+, MinGW) → `sleela`, `nordshrift` binaries | IntelliJ module ([`SLeeLa.iml`](SLeeLa.iml)); no Maven/Gradle/Ant build is committed |
+| **Platforms** | **Linux/macOS (POSIX) and Windows 10+ (MinGW).** OS facilities go through the `impl/core` abstraction layer (threads, sockets, files, paths, terminal, dynamic libs, time), each with POSIX and Win32 backends. | JVM |
 | **Entry points** | `sleela` and `nordshrift` CLIs ([`impl/frontend/driver.cpp`](impl/frontend/driver.cpp), [`impl/nordshrift/nordshrift.cpp`](impl/nordshrift/nordshrift.cpp)) | `main()` classes such as `drivers/Startup.java`, `nordshrift/NordshriftStartup.java`, `bodi/BodiNetworkBootstrap.java` |
 | **Tests / CI** | `make test` (examples, version awareness, subject numeric assertions, platform smokes); the SHA-256 verify gate | none in CI |
 

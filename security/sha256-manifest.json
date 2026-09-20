@@ -55,7 +55,7 @@
     },
     {
       "path": "impl/core/sleela_core.c",
-      "sha256": "82b3ddf74bfa6fac68abb0dc7cee0ddca62fdbc847bf8157978d1030fea26c27"
+      "sha256": "1bae73aec7c040fe29965c1cfcf88098b22538c1b8bed9cc447b9152da963e5b"
     },
     {
       "path": "impl/core/sleela_core.h",
@@ -71,7 +71,7 @@
     },
     {
       "path": "impl/core/sleela_io.c",
-      "sha256": "7bb2706a31fa08ca1b9fec317f732069b2cb2f07b496cf652f9ac6a093e9d198"
+      "sha256": "6c932e66460d391342e4a09835a4abdabe02174a589b5411dca13b9a673d34a1"
     },
     {
       "path": "impl/core/sleela_io.h",

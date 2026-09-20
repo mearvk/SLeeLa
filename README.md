@@ -210,6 +210,12 @@ cd impl && make
 ./build/nordshrift build nordshrift/examples/demo/build.sst
 ```
 
+SLeeLa's C/C++ core runs on **Linux/macOS (POSIX) and Windows 10+**. On Windows,
+build with MinGW-w64 via `build-windows.ps1` (the Makefile auto-links Winsock
+and produces `sleela.exe`/`nordshrift.exe`); see
+[`impl/README.md`](impl/README.md#building) and
+[`ARCHITECTURE.md`](ARCHITECTURE.md).
+
 ## The Constitution — ordained constraints, in order
 
 This is the ordered constitution of governing constraints ("congrains") the

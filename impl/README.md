@@ -46,12 +46,32 @@ Any language could target this core; Sleela is the first.
 
 ## Building
 
-Requires a C11 compiler and a C++17 compiler (gcc/clang).
+Requires a C11 compiler and a C++17 compiler.
+
+**Linux / macOS (POSIX):**
 
 ```sh
 cd impl
 make            # produces build/sleela
 ```
+
+**Windows 10+ (MinGW-w64):** the core is OS-neutral — threads, TCP sockets,
+files, pipes/named-pipes, paths, terminals, dynamic libraries and time all go
+through the OS-aware layer in `core/` (`sleela_thread`/`net`/`io`/`path`/
+`terminal`/`library`/`time`), which has a complete Win32 backend (Win32
+threads + `CONDITION_VARIABLE`, Winsock2, `CreateFile`/`CreatePipe`/named
+pipes, `LoadLibrary`, ConPTY, `QueryPerformanceCounter`). Build it with the
+MinGW toolchain via the helper script (from the repo root):
+
+```powershell
+powershell -ExecutionPolicy Bypass -File build-windows.ps1   # -> impl\build\sleela.exe
+```
+
+The GNU Makefile detects Windows (`OS=Windows_NT`) and automatically links
+Winsock (`-lws2_32`), drops `-ldl`/`-pthread`, and appends the `.exe` suffix.
+MSVC is not supported (the pthread compatibility shim uses GCC's
+`#include_next`); use MinGW-w64. Windows builds are exercised in CI by
+`.github/workflows/build-windows.yml`.
 
 ## Running
 
