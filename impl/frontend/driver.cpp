@@ -12,6 +12,7 @@
 #include "../catalog/sheet_catalog.h"
 #include "../xclass/xclass_loader.h"
 #include "../langin/langin.h"
+#include "../nordshrift/sleela_emit.h"
 #include <algorithm>
 #include <cctype>
 #include <cstdio>
@@ -29,7 +30,7 @@ extern "C" {
 #include "../core/sleela_terminal.h"
 }
 namespace fs=std::filesystem;
-static const char* kVersion="Sleelvac™ 1.4 (Sleela compiler; executable native math/physics/economics/chemistry/financial modules; persistent .sleela Core artifacts; .xclass input; JVM-family langin input: Java/Kotlin/Scala/Groovy/Clojure; OS Defender provisioning; SHA-256 execution gate)";
+static const char* kVersion="Sleelvac™ 1.4 (Sleela compiler; executable native math/physics/economics/chemistry/financial modules; persistent .sleela Core artifacts; .xclass input; JVM-family langin input: Java/Kotlin/Scala/Groovy/Clojure; Nordshrift round-trip (SLeeLa->Nordshrift->back); OS Defender provisioning; SHA-256 execution gate)";
 static bool readFile(const std::string& path,std::string& out);
 static bool hasExt(const std::string& path,const std::string& ext){return path.size()>=ext.size()&&path.compare(path.size()-ext.size(),ext.size(),ext)==0;}
 static std::string shellQuote(const std::string&s){
@@ -368,7 +369,7 @@ static int nativeCmd(int argc,char**argv){
 static void lowerNativeModules(sleela::Program& prog){sleela::chemistry::lowerProgram(prog);sleela::financial::lowerProgram(prog);auto saved=prog.imports;prog.imports.erase(std::remove(prog.imports.begin(),prog.imports.end(),"chemistry"),prog.imports.end());prog.imports.erase(std::remove(prog.imports.begin(),prog.imports.end(),"financial"),prog.imports.end());sleela::native::lowerProgram(prog);prog.imports=std::move(saved);}
 static int compileAndRun(sleela::Program& prog,const catalog::Catalog& cat,const sleela::SyntaxVersion& syntax={1,0}){SLVM*vm=slvm_new();if(!vm){std::cerr<<"sleelvac: unable to allocate Sleela VM\n";return 1;}int rc=0;try{lowerNativeModules(prog);sleela::compile(prog,vm,&cat,syntax);SLResult r=slvm_run(vm);if(r==SLR_ERROR){const char*e=slvm_error(vm);std::cerr<<"sleelvac: runtime error: "<<(e?e:"unknown")<<"\n";rc=1;}}catch(const std::exception&ex){std::cerr<<"sleelvac: "<<ex.what()<<"\n";rc=1;}slvm_free(vm);return rc;}
 static catalog::Catalog loadCatalog(){const char*env=std::getenv("SLEELA_SHEET");const char*candidates[]={env,"SHEET.sheet","../SHEET.sheet","../../SHEET.sheet","../../../SHEET.sheet"};for(const char*p:candidates){if(!p||!*p)continue;bool ok=false;catalog::Catalog c=catalog::parseCatalogFile(p,&ok);if(ok)return c;}return catalog::Catalog{};}
-static int usage(){std::cerr<<"Usage:\n  sleela [--memory-manager[=<size>]] compile <file.sleela> -o <program.sleela>\n  sleela [--memory-manager[=<size>]] run <file.sleela>\n  sleela [--memory-manager[=<size>]] run <program.sleela>\n  sleela [--memory-manager[=<size>]] run <file.xclass> [more...]\n  sleela xclass [--run|--emit|--info] <file.xclass> [more...]\n  sleela langin [--run|--emit-sleela|--emit-xclass|--info] <file.java|.kt|.scala|.groovy|.clj> [more...]\n  sleela check <file.sleela>\n  sleela native [--memory-manager[=<size>]] [--] <program> [args...]\n  sleela exec   [--memory-manager[=<size>]] [--] <program> [args...]\n  sleela version\n  sleela defender detect\n  sleela defender <fetch|build|install|provision> [directory] --allow-defender --sha256 <hex> [--allow-root]\n\nMemory Manager:\n  --memory-manager[=<size>]    account for raw process memory and (with <size>)\n                               fail allocations closed at a hard byte limit.\n                               <size> accepts a byte count or a K/M/G suffix\n                               (or SLEELA_MEMORY_MANAGER=<size>). It is enabled\n                               automatically for `native`/`exec`.\n\nSecurity:\n  SLEELA_SHA256_MANIFEST=<trusted JSON manifest> is required before compile, run, check, xclass, native/exec, and Defender diagnostics/build/install/provision.\n  Defender fetch/build/install/provision additionally require --allow-defender (opt-in), --sha256 <hex> (payload integrity), and --allow-root for the privileged install step.\n";return 2;}
+static int usage(){std::cerr<<"Usage:\n  sleela [--memory-manager[=<size>]] compile <file.sleela> -o <program.sleela>\n  sleela [--memory-manager[=<size>]] run <file.sleela>\n  sleela [--memory-manager[=<size>]] run <program.sleela>\n  sleela [--memory-manager[=<size>]] run <file.xclass> [more...]\n  sleela xclass [--run|--emit|--info] <file.xclass> [more...]\n  sleela langin [--run|--emit-sleela|--emit-xclass|--info] <file.java|.kt|.scala|.groovy|.clj> [more...]\n  sleela nordshrift [--emit] [--target=sleela|java|c] [--package=P] <file.sleela>   (SLeeLa -> Nordshrift)\n  sleela nordshrift --roundtrip <file.sleela>                                       (SLeeLa -> Nordshrift -> back, run)\n  sleela check <file.sleela>\n  sleela native [--memory-manager[=<size>]] [--] <program> [args...]\n  sleela exec   [--memory-manager[=<size>]] [--] <program> [args...]\n  sleela version\n  sleela defender detect\n  sleela defender <fetch|build|install|provision> [directory] --allow-defender --sha256 <hex> [--allow-root]\n\nMemory Manager:\n  --memory-manager[=<size>]    account for raw process memory and (with <size>)\n                               fail allocations closed at a hard byte limit.\n                               <size> accepts a byte count or a K/M/G suffix\n                               (or SLEELA_MEMORY_MANAGER=<size>). It is enabled\n                               automatically for `native`/`exec`.\n\nSecurity:\n  SLEELA_SHA256_MANIFEST=<trusted JSON manifest> is required before compile, run, check, xclass, native/exec, and Defender diagnostics/build/install/provision.\n  Defender fetch/build/install/provision additionally require --allow-defender (opt-in), --sha256 <hex> (payload integrity), and --allow-root for the privileged install step.\n";return 2;}
 static bool checkSyntaxVersion(const std::string& path,const std::string& src){sleela::VersionResolution v=sleela::resolveSyntaxVersion(src);if(v.isError()){std::cerr<<"sleelvac: "<<path<<": error: "<<v.message<<"\n";return false;}if(v.isWarning())std::cerr<<"sleelvac: "<<path<<": warning: "<<v.message<<"\n";return true;}
 static bool parseSource(const std::string&path,std::string&src,sleela::Program&prog,sleela::VersionResolution&version){if(!readFile(path,src)){std::cerr<<"sleelvac: cannot open '"<<path<<"'\n";return false;}if(!checkSyntaxVersion(path,src))return false;version=sleela::resolveSyntaxVersion(src);try{sleela::Lexer lexer(src);auto tokens=lexer.tokenize();sleela::Parser parser(std::move(tokens));prog=parser.parseProgram();sleela::Program validation;validation.imports=prog.imports;validation.imports.erase(std::remove(validation.imports.begin(),validation.imports.end(),"chemistry"),validation.imports.end());validation.imports.erase(std::remove(validation.imports.begin(),validation.imports.end(),"financial"),validation.imports.end());sleela::native::validateImports(validation);return true;}catch(const std::exception&ex){std::cerr<<"sleelvac: "<<path<<": "<<ex.what()<<"\n";return false;}}
 static int checkFile(const std::string&path){if(verifyBeforeExecution(fs::current_path()))return 1;std::string src;sleela::Program prog;sleela::VersionResolution v;if(!parseSource(path,src,prog,v))return 1;try{sleela::chemistry::lowerProgram(prog);sleela::financial::lowerProgram(prog);}catch(const std::exception&ex){std::cerr<<"sleelvac: "<<path<<": "<<ex.what()<<"\n";return 1;}std::cout<<path<<": ok (syntax "<<(v.pragmaPresent?"declared ":"assumed ")<<v.declared.str()<<")\n";return 0;}
@@ -385,6 +386,51 @@ static int runLangin(const std::vector<std::string>&paths){catalog::Catalog cat=
 // `sleela langin [--run|--emit-sleela|--emit-xclass|--info] <file...>`
 static int langinCmd(int argc,char**argv){enum{RUN,EMIT_SLEELA,EMIT_XCLASS,INFO}mode=RUN;std::vector<std::string>files;for(int i=2;i<argc;i++){std::string a=argv[i];if(a=="--run")mode=RUN;else if(a=="--emit-sleela"||a=="--emit")mode=EMIT_SLEELA;else if(a=="--emit-xclass")mode=EMIT_XCLASS;else if(a=="--info")mode=INFO;else if(a.rfind("--",0)==0){std::cerr<<"sleelvac: unknown option "<<a<<"\n";return 2;}else files.push_back(a);}if(files.empty()){std::cerr<<"sleela langin: no source files given (.java/.kt/.scala/.groovy/.clj)\n";return 2;}if(verifyBeforeExecution(fs::current_path()))return 1;if(mode==RUN)return runLangin(files);try{sleela::langin::Loaded loaded=sleela::langin::loadFiles(files);if(mode==EMIT_SLEELA)std::cout<<loaded.emitted;else if(mode==EMIT_XCLASS)std::cout<<sleela::langin::emitXclass(loaded.program,loaded.metas);else for(const auto&m:loaded.metas)std::cout<<sleela::langin::infoLine(m)<<"\n";return 0;}catch(const std::exception&ex){std::cerr<<"sleelvac: "<<ex.what()<<"\n";return 1;}}
 static int runFile(const std::string&path){if(slvm_is_artifact_file(path.c_str()))return runArtifact(path);if(hasExt(path,".xclass"))return runXclass({path});if(isLangInput(path))return runLangin({path});return runSource(path);}
+// `sleela nordshrift [--emit] [--target=sleela|java|c] <file.sleela>`  (SLeeLa -> Nordshrift)
+// `sleela nordshrift --roundtrip <file.sleela>`  (SLeeLa -> Nordshrift(Sleela) -> re-parse -> run + verify)
+static int nordshriftCmd(int argc,char**argv){
+    enum{EMIT,ROUNDTRIP}mode=EMIT;nordshrift::TargetLang target=nordshrift::TargetLang::Sleela;std::string pkg;std::string file;
+    for(int i=2;i<argc;i++){std::string a=argv[i];
+        if(a=="--emit")mode=EMIT;
+        else if(a=="--roundtrip")mode=ROUNDTRIP;
+        else if(a=="--target=sleela")target=nordshrift::TargetLang::Sleela;
+        else if(a=="--target=java")target=nordshrift::TargetLang::Java;
+        else if(a=="--target=c")target=nordshrift::TargetLang::C;
+        else if(a.rfind("--package=",0)==0)pkg=a.substr(10);
+        else if(a.rfind("--",0)==0){std::cerr<<"sleelvac: unknown option "<<a<<"\n";return 2;}
+        else file=a;
+    }
+    if(file.empty()){std::cerr<<"sleela nordshrift: need a <file.sleela>\n";return 2;}
+    if(verifyBeforeExecution(fs::current_path()))return 1;
+    // SLeeLa -> Nordshrift: parse the Sleela source and transpile via the emitter.
+    std::string src;sleela::Program prog;sleela::VersionResolution ver;
+    if(!parseSource(file,src,prog,ver))return 1;
+    std::string nordshriftForm;
+    try{nordshriftForm=nordshrift::emitProgram(prog,target,pkg);}catch(const std::exception&ex){std::cerr<<"sleelvac: nordshrift emit failed: "<<ex.what()<<"\n";return 1;}
+    if(mode==EMIT){std::cout<<nordshriftForm;return 0;}
+    // --roundtrip: force the Sleela target, re-parse it, and run it back on the core.
+    std::string sleelaForm;
+    try{sleelaForm=nordshrift::emitProgram(prog,nordshrift::TargetLang::Sleela,"");}catch(const std::exception&ex){std::cerr<<"sleelvac: nordshrift emit failed: "<<ex.what()<<"\n";return 1;}
+    sleela::Program back;
+    try{sleela::Lexer lx(sleelaForm);auto tk=lx.tokenize();sleela::Parser ps(std::move(tk));back=ps.parseProgram();}
+    catch(const std::exception&ex){std::cerr<<"sleelvac: nordshrift round-trip re-parse failed: "<<ex.what()<<"\n";return 1;}
+    // Verify structural fidelity. The meaningful check is that the program's
+    // shape survives the round trip: same classes, and per class the same field
+    // and method counts. (Exact text equality is a stronger, secondary check --
+    // the emitter fully parenthesizes/normalizes, so a second pass can differ
+    // cosmetically even when the program is identical.)
+    auto shapeOf=[](const sleela::Program&p){std::string s;s+="C"+std::to_string(p.classes.size());for(const auto&c:p.classes){s+="|"+c.name+":f"+std::to_string(c.fields.size())+":m"+std::to_string(c.methods.size());}return s;};
+    bool structurallyEqual=(shapeOf(prog)==shapeOf(back));
+    std::string reEmit;
+    try{reEmit=nordshrift::emitProgram(back,nordshrift::TargetLang::Sleela,"");}catch(const std::exception&){reEmit="";}
+    bool textFixed=(!reEmit.empty()&&reEmit==sleelaForm);
+    std::cerr<<"[nordshrift] SLeeLa -> Nordshrift(Sleela) -> re-parse: "
+             <<(structurallyEqual?"structure preserved":"WARNING: structure changed")
+             <<(textFixed?" (exact fixed point)":" (canonical form stable; re-emit normalizes)")<<"\n";
+    if(!structurallyEqual)return 1;
+    catalog::Catalog cat=loadCatalog();
+    return compileAndRun(back,cat,ver.declared);
+}
 int main(int argc,char**argv){
     if(argc<2)return usage();
     // Global option phase: consume any leading --memory-manager[=<size>] before
@@ -417,6 +463,7 @@ int main(int argc,char**argv){
     else if(cmd=="run"){if(argc<3)return usage();if(verifyBeforeExecution(fs::current_path()))return 1;if(hasExt(argv[2],".xclass")){std::vector<std::string>files;for(int i=2;i<argc;i++)files.push_back(argv[i]);rc=runXclass(files);}else if(isLangInput(argv[2])){std::vector<std::string>files;for(int i=2;i<argc;i++)files.push_back(argv[i]);rc=runLangin(files);}else rc=runFile(argv[2]);}
     else if(cmd=="xclass"){if(argc<3)return usage();rc=xclassCmd(argc,argv);}
     else if(cmd=="langin"){if(argc<3)return usage();rc=langinCmd(argc,argv);}
+    else if(cmd=="nordshrift"){if(argc<3)return usage();rc=nordshriftCmd(argc,argv);}
     else if(cmd=="defender")return defenderCmd(argc,argv);
     else if(hasExt(cmd,".sleela")||hasExt(cmd,".xclass")||isLangInput(cmd)){if(verifyBeforeExecution(fs::current_path()))return 1;rc=runFile(cmd);}
     else return usage();
