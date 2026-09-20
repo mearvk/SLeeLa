@@ -1,0 +1,13 @@
+#sleela 1.2
+// D07_Conducted.sleela — companion to Lesson 07 (Conducted methods).
+// Asks the model about the roles of objects it names. role(...) resolves against
+// the catalogued objects for the build; unknown names resolve to a default.
+class D07_Conducted {
+    void main() {
+        print("== Lesson 07: conducted methods ==");
+        print("role(\"Message\")  = " + role("Message"));
+        print("role(\"Request\")  = " + role("Request"));
+        print("role(\"Response\") = " + role("Response"));
+        print("done");
+    }
+}

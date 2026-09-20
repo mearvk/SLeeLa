@@ -1,0 +1,23 @@
+#sleela 1.2
+// D08_Subject.sleela — companion to Lesson 08 (Subjects & the sheet model).
+// Mirrors the "throughput = completed / window" relation the demo sheet declares
+// as an economics subject. The code computes what the subject block describes.
+class D08_Subject {
+
+    // throughput (ops/second) = completed / window   [derived]
+    int throughput(int completed, int window) {
+        if (window <= 0) {
+            return 0;
+        }
+        return completed / window;
+    }
+
+    void main() {
+        print("== Lesson 08: subject relation ==");
+        int completed = 240;
+        int window    = 8;
+        print("completed=" + completed + " window=" + window);
+        print("throughput = " + throughput(completed, window) + " ops/second");
+        print("done");
+    }
+}
