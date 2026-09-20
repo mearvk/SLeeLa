@@ -1,0 +1,48 @@
+#sleela 1.2
+/**
+ * @title   Catalog Register (Tier 5) -- conducted methods, resolved live
+ * @intent  Unlike the other registers (which name implementation components),
+ *          this one resolves each catalogued object against SHEET.sheet AT
+ *          COMPILE TIME via the conducted built-ins. If it prints a role and
+ *          an insight for a name, that name is really in the catalog.
+ * @thesis  A component register is strongest when it is not a list a human
+ *          typed but a query the compiler answered. conduct/role/insight/
+ *          congruent/route are exactly that query.
+ * @see     JOURNEY.md (Tier 5), conduct.sleela
+ * @evidence OBSERVED  (resolved against the real SHEET.sheet)
+ *
+ * Note: the conducted built-ins require STRING-LITERAL object names (they are
+ * resolved at compile time), so each entry below is spelled out explicitly --
+ * which is what makes this an auditable register rather than a loop.
+ */
+class CatalogRegister {
+
+    void main() {
+        print("=== Tier 5: Conducted methods, resolved against SHEET.sheet ===");
+        print("");
+        print("System invariants (from the sheet):");
+        print("  system depth (max reachability) = " + sysdepth());
+        print("  max complexity degree           = " + degreemax());
+
+        print("");
+        print("Catalogued objects (role + insight resolved at compile time):");
+        print("  System   : role=" + role("System")   + " :: " + insight("System"));
+        print("  Pipeline : role=" + role("Pipeline") + " :: " + insight("Pipeline"));
+        print("  Stream   : role=" + role("Stream")   + " :: " + insight("Stream"));
+        print("  Retry    : role=" + role("Retry")    + " :: " + insight("Retry"));
+        print("  Reward   : role=" + role("Reward")   + " :: " + insight("Reward"));
+
+        print("");
+        print("Conductedness (is this a catalogued method?):");
+        print("  conduct(Pipeline) = " + conduct("Pipeline"));
+        print("  conduct(System)   = " + conduct("System"));
+        print("  conduct(Nonesuch) = " + conduct("Nonesuch"));
+
+        print("");
+        print("Congruence and routing (structural sameness in the catalog):");
+        print("  congruent(Pipeline, Stream)        = " + congruent("Pipeline", "Stream"));
+        print("  route    (Pipeline, Stream)        = " + route("Pipeline", "Stream"));
+        print("  congruent(Retry, CircuitBreaker)   = " + congruent("Retry", "CircuitBreaker"));
+        print("  congruent(Pipeline, System)        = " + congruent("Pipeline", "System"));
+    }
+}

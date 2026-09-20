@@ -90,6 +90,12 @@ host and adjusts link flags per platform.
 - [`SUMMARY.md`](SUMMARY.md) is a single-file accounting of the whole
   repository — every document, source tree, specification, method, and special
   function, in one place.
+- [`JOURNEY.md`](JOURNEY.md) defines **every component** of the implementation
+  as the journey a program travels — source → front end → execution core →
+  runtime → OS-abstraction → catalog → subjects → Nordshrift → artifacts. Its
+  runnable equivalent is the set of `.sleela` **register** documents in
+  [`journey/`](journey/), which roll-call each component and resolve the
+  catalogued ones live against `SHEET.sheet`.
 - [`SLEELA_TIME_API.md`](SLEELA_TIME_API.md) defines the portable SLeeLa Time API, including precision clocks, NTP, HTTP/RMI/BODI timing records, and the raw international time-request marker.
 - [`LENS.md`](LENS.md) applies the Sleela *Lens* idea (a focused get/set view)
   to how the United States was created — who built it, who bought it, and the
