@@ -27,6 +27,15 @@ void http3_pipeline_set_intactx_threshold(http3_pipeline_t *pipe, uint16_t thres
                                                 : threshold;
 }
 
+void http3_pipeline_set_mac_key(http3_pipeline_t *pipe,
+                                const uint8_t key[HTTP3_MAC_KEY_BYTES])
+{
+    if (pipe == NULL || key == NULL) {
+        return;
+    }
+    memcpy(pipe->mac_key, key, HTTP3_MAC_KEY_BYTES);
+}
+
 static http3_service_binding_t *find_binding(http3_pipeline_t *pipe, uint32_t service_id)
 {
     size_t i;
@@ -201,8 +210,10 @@ int http3_pipeline_handle_wire(http3_pipeline_t *pipe,
     }
 
     /* §19 integrity gate, before any dispatch:
-     *   1. Per-packet DIGEST must verify -- else the packet arrived mangled. */
-    if (!http3_envelope_verify_digest(&env)) {
+     *   1. Per-packet DIGEST (keyed MAC) must verify under the per-connection
+     *      key -- else the packet was corrupted OR forged by a party without
+     *      the shared secret. */
+    if (!http3_envelope_verify_digest(&env, pipe->mac_key)) {
         memset(&resp, 0, sizeof(resp));
         resp.status = HTTP3_STATUS_BAD_DIGEST;
         resp.request_id = env.request_id; /* best-effort correlation */

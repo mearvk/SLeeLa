@@ -10,28 +10,42 @@ from __future__ import annotations
 from http3_flow import (
     Envelope, Flag, Intactx, Naming, Pipeline, Response, RetryClass, Status,
     INTACTX_VARIANCE_SHIFT, INTACTX_VARIANCE_MASK, INTACTX_TAMPER_THRESHOLD,
+    MAC_KEY_BYTES, siphash24,
 )
+
+# A fixed per-connection key for tests (0x00..0x0f).
+KEY = bytes(range(16))
+
+
+def test_siphash24_reference_vector() -> None:
+    # Reference vector from the SipHash paper: key 00..0f, msg 00..0e (15 bytes).
+    msg = bytes(range(15))
+    assert siphash24(KEY, msg) == 0xA129CA6149BE45E5
 
 
 def test_envelope_text_round_trip() -> None:
     env = Envelope(service_id=7, op_id=3, request_id=1001, payload=b"20,22")
-    wire = env.pack_text()
-    # Wire now carries DIGEST and INTACTX between REQUEST-ID and the length.
-    # digest is 0 here since intactx defaults to 0; assert the exact framing.
+    wire = env.pack_text(KEY)
+    # Wire carries the keyed DIGEST and INTACTX between REQUEST-ID and the length.
     assert wire == f"H3 3 0 7 3 1001 {env.digest} 0 5:".encode() + b"20,22\n"
     back = Envelope.unpack_text(wire)
     assert (back.service_id, back.op_id, back.request_id, back.payload) == (7, 3, 1001, b"20,22")
     assert back.digest == env.digest and back.intactx == 0
+    assert back.verify_digest(KEY)
 
 
-def test_digest_verifies_and_detects_corruption() -> None:
-    env = Envelope(service_id=1, op_id=1, request_id=5, payload=b"20,22").seal()
-    assert env.verify_digest()
-    back = Envelope.unpack_text(env.pack_text())
-    assert back.verify_digest()
-    # Corrupt the payload after sealing: digest must no longer verify.
+def test_digest_is_keyed_mac_detects_corruption_and_forgery() -> None:
+    env = Envelope(service_id=1, op_id=1, request_id=5, payload=b"20,22").seal(KEY)
+    assert env.verify_digest(KEY)
+    back = Envelope.unpack_text(env.pack_text(KEY))
+    assert back.verify_digest(KEY)
+    # Corruption: change the payload after sealing -> MAC no longer verifies.
     back.payload = b"90,22"
-    assert not back.verify_digest()
+    assert not back.verify_digest(KEY)
+    # Forgery: a packet sealed under a DIFFERENT key fails under the real key,
+    # which a plain hash could not detect. This is the keyed-MAC guarantee.
+    forged = Envelope(service_id=1, op_id=1, request_id=5, payload=b"20,22").seal(bytes(range(16, 32)))
+    assert not forged.verify_digest(KEY)
 
 
 def test_intactx_variance_layout_and_tamper() -> None:
@@ -44,23 +58,28 @@ def test_intactx_variance_layout_and_tamper() -> None:
     assert Intactx.is_tampered(high, INTACTX_TAMPER_THRESHOLD)
 
 
-def test_pipeline_rejects_bad_digest_and_resets_tampered() -> None:
-    pipe = Pipeline()
+def test_pipeline_rejects_bad_digest_forgery_and_resets_tampered() -> None:
+    pipe = Pipeline(mac_key=KEY)
 
     def echo(payload: bytes, ctx: object):
         return Status.OK, payload
 
     sid, oid = pipe.register("svc", "echo", RetryClass.READ, echo)
 
-    # A packet with a wrong digest is rejected before dispatch.
-    env = Envelope(sid, oid, 7001, b"hi").seal()
+    # A packet with a tampered digest field is rejected before dispatch.
+    env = Envelope(sid, oid, 7001, b"hi").seal(KEY)
     env.digest ^= 0xFF  # tamper the digest field
     assert Response.unpack_text(pipe.handle_wire(env.pack_text())).status == Status.BAD_DIGEST
     assert pipe.digest_rejects == 1
 
+    # A forged packet (sealed with the WRONG key) is rejected by the pipeline.
+    forged = Envelope(sid, oid, 7003, b"hi").seal(bytes(range(16, 32)))
+    assert Response.unpack_text(pipe.handle_wire(forged.pack_text())).status == Status.BAD_DIGEST
+    assert pipe.digest_rejects == 2
+
     # A packet from a tampered host (max variance) is RESET, not dispatched.
     tampered_intactx = (INTACTX_VARIANCE_MASK << INTACTX_VARIANCE_SHIFT) | 0x1234
-    env2 = Envelope(sid, oid, 7002, b"hi", flags=int(Flag.RESET), intactx=tampered_intactx).seal()
+    env2 = Envelope(sid, oid, 7002, b"hi", flags=int(Flag.RESET), intactx=tampered_intactx).seal(KEY)
     resp = Response.unpack_text(pipe.handle_wire(env2.pack_text()))
     assert resp.status == Status.TAMPERED and resp.result == b"RESET"
     assert pipe.tamper_resets == 1
@@ -70,8 +89,9 @@ def test_envelope_payload_is_length_prefixed_and_binary_safe() -> None:
     # A payload containing spaces and a newline must survive the round trip.
     payload = b"a b\nc:d"
     env = Envelope(service_id=1, op_id=1, request_id=5, payload=payload)
-    back = Envelope.unpack_text(env.pack_text())
+    back = Envelope.unpack_text(env.pack_text(KEY))
     assert back.payload == payload
+    assert back.verify_digest(KEY)
 
 
 def test_response_round_trip_echoes_request_id() -> None:
@@ -94,7 +114,7 @@ def test_fast_naming_caches_ids_on_first_use() -> None:
 
 
 def test_pipeline_dispatch_and_retry_classes() -> None:
-    pipe = Pipeline()
+    pipe = Pipeline(mac_key=KEY)
 
     def calculate(payload: bytes, ctx: object):
         a, b = (int(x) for x in payload.decode().split(","))
@@ -107,8 +127,8 @@ def test_pipeline_dispatch_and_retry_classes() -> None:
     sid, calc = pipe.register("orders", "calculate", RetryClass.READ, calculate)
     _, place_id = pipe.register("orders", "place", RetryClass.MUTATING, place, ctx={"n": 0})
 
-    # §19 over the wire, textual.
-    out = pipe.handle_wire(Envelope(sid, calc, 1001, b"20,22").pack_text())
+    # §19 over the wire, textual (packet sealed with the pipeline's shared key).
+    out = pipe.handle_wire(Envelope(sid, calc, 1001, b"20,22").pack_text(KEY))
     resp = Response.unpack_text(out)
     assert resp.status == Status.OK and resp.request_id == 1001 and resp.result == b"sum=42"
 

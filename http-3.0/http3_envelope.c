@@ -3,68 +3,61 @@
  * and response model (§7). Pure data: no I/O, no crypto, no allocation.
  * ========================================================================== */
 #include "http3_envelope.h"
+#include "http3_mac.h"
 
 #include <stdio.h>
 #include <string.h>
 
-/* ---- Per-packet DIGEST (64-bit FNV-1a over header + payload) --------------- */
-
-#define ENV_FNV64_OFFSET 14695981039346656037ULL
-#define ENV_FNV64_PRIME  1099511628211ULL
-
-static uint64_t env_fnv1a(uint64_t h, const void *data, size_t len)
-{
-    const unsigned char *p = (const unsigned char *)data;
-    size_t i;
-    for (i = 0; i < len; ++i) {
-        h ^= (uint64_t)p[i];
-        h *= ENV_FNV64_PRIME;
-    }
-    return h;
-}
+/* Canonical serialized header size the DIGEST is computed over (big-endian,
+ * fixed-width fields; excludes the DIGEST itself). */
+#define ENV_DIGEST_HDR 30u
 
 /* Big-endian field writers (defined fully in the binary-wire section below). */
 static void put_u32(uint8_t *b, uint32_t v);
 static void put_u64(uint8_t *b, uint64_t v);
 
-uint64_t http3_envelope_compute_digest(const http3_envelope_t *env)
+/* ---- Per-packet DIGEST (keyed MAC: SipHash-2-4 over header + payload) ------
+ * The DIGEST is a KEYED message authentication code, not a plain hash: it
+ * resists deliberate forgery, because an attacker who rewrites a packet cannot
+ * recompute a matching tag without the per-connection key. The MAC message is a
+ * canonical, endianness-independent serialization (each header field big-endian
+ * and fixed width, excluding the DIGEST) followed by the raw payload, so the
+ * textual and binary wire forms of the same logical envelope share a tag and
+ * the Python reference reproduces it byte-for-byte. */
+uint64_t http3_envelope_compute_digest(const http3_envelope_t *env,
+                                       const uint8_t key[HTTP3_MAC_KEY_BYTES])
 {
-    /* Canonical, endianness-independent serialization of the header fields
-     * (each big-endian, fixed width) followed by the raw payload. Defining the
-     * digest over a canonical byte layout -- rather than raw struct memory --
-     * lets the Python reference (http3_flow.py) reproduce it byte-for-byte. */
-    uint8_t hdr[30];
-    uint64_t h = ENV_FNV64_OFFSET;
-    /* HTTP3_FLAG_BINARY is a transport-form marker set only on the binary wire;
-     * exclude it so the digest is identical for the textual and binary forms of
-     * the same logical envelope. */
+    uint8_t msg[ENV_DIGEST_HDR + HTTP3_ENVELOPE_MAX_PAYLOAD];
     uint8_t logical_flags;
-    if (env == NULL) {
+    if (env == NULL || key == NULL || env->payload_len > HTTP3_ENVELOPE_MAX_PAYLOAD) {
         return 0;
     }
+    /* HTTP3_FLAG_BINARY is a transport-form marker set only on the binary wire;
+     * exclude it so the tag is identical for the textual and binary forms. */
     logical_flags = (uint8_t)(env->flags & ~(uint8_t)HTTP3_FLAG_BINARY);
 
-    hdr[0] = env->version;
-    hdr[1] = logical_flags;
-    put_u32(hdr + 2, env->service_id);
-    put_u32(hdr + 6, env->op_id);
-    put_u64(hdr + 10, env->request_id);
-    put_u64(hdr + 18, env->intactx);
+    msg[0] = env->version;
+    msg[1] = logical_flags;
+    put_u32(msg + 2, env->service_id);
+    put_u32(msg + 6, env->op_id);
+    put_u64(msg + 10, env->request_id);
+    put_u64(msg + 18, env->intactx);
     /* payload length as a fixed 32-bit big-endian field (payloads are capped at
      * HTTP3_ENVELOPE_MAX_PAYLOAD, well within 32 bits). */
-    put_u32(hdr + 26, (uint32_t)env->payload_len);
-
-    h = env_fnv1a(h, hdr, sizeof(hdr));
-    h = env_fnv1a(h, env->payload, env->payload_len);
-    return h;
+    put_u32(msg + 26, (uint32_t)env->payload_len);
+    if (env->payload_len > 0U) {
+        memcpy(msg + ENV_DIGEST_HDR, env->payload, env->payload_len);
+    }
+    return http3_mac_siphash24(key, msg, ENV_DIGEST_HDR + env->payload_len);
 }
 
-int http3_envelope_verify_digest(const http3_envelope_t *env)
+int http3_envelope_verify_digest(const http3_envelope_t *env,
+                                 const uint8_t key[HTTP3_MAC_KEY_BYTES])
 {
-    if (env == NULL) {
+    if (env == NULL || key == NULL) {
         return 0;
     }
-    return http3_envelope_compute_digest(env) == env->digest ? 1 : 0;
+    return http3_envelope_compute_digest(env, key) == env->digest ? 1 : 0;
 }
 
 int http3_envelope_init(http3_envelope_t *env,
@@ -73,10 +66,11 @@ int http3_envelope_init(http3_envelope_t *env,
                         uint64_t request_id,
                         uint8_t flags,
                         uint64_t intactx,
+                        const uint8_t key[HTTP3_MAC_KEY_BYTES],
                         const uint8_t *payload,
                         size_t payload_len)
 {
-    if (env == NULL || payload_len > HTTP3_ENVELOPE_MAX_PAYLOAD) {
+    if (env == NULL || key == NULL || payload_len > HTTP3_ENVELOPE_MAX_PAYLOAD) {
         return -1;
     }
     memset(env, 0, sizeof(*env));
@@ -90,8 +84,8 @@ int http3_envelope_init(http3_envelope_t *env,
         memcpy(env->payload, payload, payload_len);
     }
     env->payload_len = payload_len;
-    /* Seal the packet with its integrity digest over the finished contents. */
-    env->digest = http3_envelope_compute_digest(env);
+    /* Seal the packet with its keyed MAC over the finished contents. */
+    env->digest = http3_envelope_compute_digest(env, key);
     return 0;
 }
 

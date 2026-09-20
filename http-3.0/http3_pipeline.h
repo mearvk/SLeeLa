@@ -71,15 +71,25 @@ typedef struct {
     uint16_t                intactx_threshold;/* INTACTX variance tamper limit */
     uint64_t                digest_rejects;   /* packets dropped: bad DIGEST   */
     uint64_t                tamper_resets;    /* packets reset: INTACTX tamper */
+    uint8_t                 mac_key[HTTP3_MAC_KEY_BYTES]; /* per-conn MAC key   */
 } http3_pipeline_t;
 
 /* Initialize an empty pipeline. The INTACTX tamper threshold defaults to
- * HTTP3_INTACTX_TAMPER_THRESHOLD; override it with http3_pipeline_set_intactx_threshold. */
+ * HTTP3_INTACTX_TAMPER_THRESHOLD. The per-connection MAC key starts all-zero;
+ * set the real key (from key agreement) with http3_pipeline_set_mac_key before
+ * handling wire packets, so the DIGEST is verified against a shared secret. */
 void http3_pipeline_init(http3_pipeline_t *pipe);
 
 /* Set the INTACTX variance threshold above which an inbound packet is treated
  * as coming from a tampered host and RESET. Pass 0 to restore the default. */
 void http3_pipeline_set_intactx_threshold(http3_pipeline_t *pipe, uint16_t threshold);
+
+/* Install the 16-byte per-connection MAC key used to verify each packet's
+ * keyed-MAC DIGEST. In a deployment this is the secret from the crypto
+ * substrate's key agreement; peers that share it can authenticate each other's
+ * packets, and a forger without it cannot produce a valid DIGEST. */
+void http3_pipeline_set_mac_key(http3_pipeline_t *pipe,
+                                const uint8_t key[HTTP3_MAC_KEY_BYTES]);
 
 /*
  * Register a service by name, returning its compact SERVICE-ID (§4). ctx is

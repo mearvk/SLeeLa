@@ -41,7 +41,7 @@ succeeds. New files: `http3_envelope.{h,c}`, `http3_naming.{h,c}`,
 | Spec section | Concept | State (2026-09-14) |
 |---|---|---|
 | §4 | Fast naming (name ↔ compact id, caching) | **Implemented** — `http3_naming` + `http3_flow.py` |
-| §5 | Compact envelope `VERSION\|FLAGS\|SERVICE-ID\|OP-ID\|REQUEST-ID\|DIGEST\|INTACTX\|PAYLOAD` | **Implemented** — textual **and** binary wire; per-packet DIGEST + INTACTX host id |
+| §5 | Compact envelope `VERSION\|FLAGS\|SERVICE-ID\|OP-ID\|REQUEST-ID\|DIGEST\|INTACTX\|PAYLOAD` | **Implemented** — textual **and** binary wire; per-packet keyed-MAC DIGEST (SipHash-2-4) + INTACTX host id |
 | §6 | Request IDs (correlation without ordering) | **Implemented** — carried and echoed |
 | §7 | Response model `STATUS\|REQUEST-ID\|RESULT` | **Implemented** — `http3_response_*` |
 | §9 | Retry classes (READ/IDEMPOTENT/MUTATING/STREAM) | **Implemented** — per-operation; mutating-retry decision point marked |
@@ -106,19 +106,26 @@ and key distribution beneath the application flow.
 response, retry classes, and pipeline in dependency-free Python, and its textual
 wire output is byte-identical to the C reference (envelope form now
 `H3 <ver> <flags> <svc> <op> <req> <digest> <intactx> <len>:<payload>`). The
-per-packet DIGEST is defined over a canonical big-endian field layout, so C and
-Python compute the same 64-bit value for the same logical packet (verified by
-direct cross-check). This is the branch that proves the spec's governing
-principle (§20): a C, C++, Java, or other client can implement the connector
-without becoming a SLeeLa runtime.
+per-packet DIGEST is a keyed MAC (SipHash-2-4) over a canonical big-endian field
+layout, so C and Python compute the same 64-bit tag for the same key + logical
+packet (verified by direct cross-check, and both against the SipHash reference
+vector). This is the branch that proves the spec's governing principle (§20): a
+C, C++, Java, or other client can implement the connector without becoming a
+SLeeLa runtime.
 
 **Per-packet integrity: DIGEST + INTACTX (added after 2026-09-14).** Every
 HTTP 3.0 packet now carries two integrity values ahead of its payload:
 
-- **DIGEST** — a 64-bit FNV-1a over the envelope header (excluding the transport
-  BINARY marker) plus payload, sealed by `http3_envelope_init`. It detects a
-  packet mangled or corrupted in transit. A packet that fails verification is
-  answered `BAD_DIGEST` and never dispatched.
+- **DIGEST** — a 64-bit **keyed MAC** (SipHash-2-4, `http3_mac.{c,h}`) over the
+  envelope header (excluding the transport BINARY marker) plus payload, under a
+  16-byte per-connection key, sealed by `http3_envelope_init`. Because it is
+  keyed, it detects not only accidental corruption but **deliberate forgery**: a
+  party without the shared secret cannot compute a valid tag for a rewritten
+  packet. The pipeline holds the key (`http3_pipeline_set_mac_key`, from the
+  crypto substrate's key agreement in a deployment); a packet that fails
+  verification is answered `BAD_DIGEST` and never dispatched. C and Python
+  compute identical tags, and the implementation matches the SipHash-2-4
+  reference test vector.
 - **INTACTX** — a system-specific 64-bit host-integrity identity
   (`http3_intactx.{h,c}`). It is derived from a stable OS/identity baseline
   (OS name/release/arch, hostname, user), **persisted** to a baseline file so it
@@ -132,10 +139,15 @@ HTTP 3.0 packet now carries two integrity values ahead of its payload:
   packets if the computer has been tampered with" requirement.
 
 The pipeline records both events for observability (§17): `digest_rejects` and
-`tamper_resets`. New files: `http3_intactx.{h,c}`. Updated:
+`tamper_resets`. New files: `http3_intactx.{h,c}`, `http3_mac.{h,c}`. Updated:
 `http3_envelope.{h,c}`, `http3_pipeline.{h,c}`, `http3_protocol.h`,
 `http3_pipeline_demo.c`, `http3_flow.py`, `test_http3_flow.py`, `Makefile`,
 `.gitignore`, `FLOW.md`.
+
+The DIGEST began as a fast non-cryptographic FNV-1a hash (corruption detection
+only) and was subsequently upgraded to the SipHash-2-4 keyed MAC described above
+so it also resists deliberate tampering — the per-packet integrity method is now
+authenticity, not just an error check.
 
 ---
 

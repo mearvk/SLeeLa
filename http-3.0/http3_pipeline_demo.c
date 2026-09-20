@@ -78,9 +78,18 @@ int main(void)
     size_t written = 0;
     http3_response_t resp;
 
+    /* Per-connection MAC key (in a deployment this comes from key agreement).
+     * Both the sender and the pipeline share it; a forger without it cannot
+     * produce a valid per-packet DIGEST. */
+    static const uint8_t mac_key[HTTP3_MAC_KEY_BYTES] = {
+        0x00,0x01,0x02,0x03,0x04,0x05,0x06,0x07,
+        0x08,0x09,0x0a,0x0b,0x0c,0x0d,0x0e,0x0f
+    };
+
     printf("== HTTP 3.0 data flow: request -> envelope -> pipeline -> response ==\n");
 
     http3_pipeline_init(&pipe);
+    http3_pipeline_set_mac_key(&pipe, mac_key);
 
     /* INTACTX: establish/load this host's integrity baseline (persisted). Every
      * packet we emit is stamped with a fresh INTACTX reading. */
@@ -107,10 +116,10 @@ int main(void)
     /* §5: build the compact envelope for orders.calculate("20,22"). The init
      * stamps the INTACTX host identity and seals the per-packet DIGEST. */
     CHECK(http3_envelope_init(&env, svc, op_calc, /*request_id*/ 1001u,
-                              HTTP3_FLAG_NONE, intactx,
+                              HTTP3_FLAG_NONE, intactx, mac_key,
                               (const uint8_t *)"20,22", 5u) == 0,
           "envelope initialized");
-    CHECK(http3_envelope_verify_digest(&env), "per-packet DIGEST verifies");
+    CHECK(http3_envelope_verify_digest(&env, mac_key), "per-packet keyed DIGEST verifies");
     printf("  DIGEST=%llu  INTACTX=%llu\n",
            (unsigned long long)env.digest, (unsigned long long)env.intactx);
 
@@ -151,19 +160,19 @@ int main(void)
 
     /* §19 posture: unknown service and unknown op return typed statuses. */
     printf("\n-- §7 posture: unknown service / operation --\n");
-    (void)http3_envelope_init(&env, 999u, 1u, 2002u, HTTP3_FLAG_NONE, intactx, NULL, 0u);
+    (void)http3_envelope_init(&env, 999u, 1u, 2002u, HTTP3_FLAG_NONE, intactx, mac_key, NULL, 0u);
     (void)http3_pipeline_dispatch(&pipe, &env, &resp);
     CHECK(resp.status == HTTP3_STATUS_UNKNOWN_SVC, "unknown service -> UNKNOWN_SERVICE");
-    (void)http3_envelope_init(&env, svc, 999u, 2003u, HTTP3_FLAG_NONE, intactx, NULL, 0u);
+    (void)http3_envelope_init(&env, svc, 999u, 2003u, HTTP3_FLAG_NONE, intactx, mac_key, NULL, 0u);
     (void)http3_pipeline_dispatch(&pipe, &env, &resp);
     CHECK(resp.status == HTTP3_STATUS_UNKNOWN_OP, "unknown op -> UNKNOWN_OPERATION");
 
-    /* Integrity gate: a mangled packet (bad DIGEST) is rejected before dispatch. */
+    /* Integrity gate: a mangled packet (bad MAC) is rejected before dispatch. */
     printf("\n-- integrity: corrupted packet -> BAD_DIGEST --\n");
     (void)http3_envelope_init(&env, svc, op_calc, 3001u, HTTP3_FLAG_NONE,
-                              intactx, (const uint8_t *)"20,22", 5u);
+                              intactx, mac_key, (const uint8_t *)"20,22", 5u);
     (void)http3_envelope_pack_text(&env, text, sizeof(text), &written);
-    /* Flip a payload byte AFTER the digest was sealed: 20,22 -> 90,22. */
+    /* Flip a payload byte AFTER the MAC was sealed: 20,22 -> 90,22. */
     {
         char *dig = strstr(text, ":20,22");
         if (dig != NULL) { dig[1] = '9'; }
@@ -174,6 +183,27 @@ int main(void)
     (void)http3_response_unpack_text(resp_buf, written, &resp);
     CHECK(resp.status == HTTP3_STATUS_BAD_DIGEST, "corrupted packet -> BAD_DIGEST");
 
+    /* Forgery: a well-formed packet whose MAC was computed with the WRONG key
+     * (an attacker who lacks the shared secret) is rejected. This is what a
+     * keyed MAC buys over a plain hash -- the attacker can recompute a hash but
+     * not a valid tag. */
+    printf("\n-- integrity: forged packet (wrong key) -> BAD_DIGEST --\n");
+    {
+        static const uint8_t wrong_key[HTTP3_MAC_KEY_BYTES] = {
+            0xff,0xee,0xdd,0xcc,0xbb,0xaa,0x99,0x88,
+            0x77,0x66,0x55,0x44,0x33,0x22,0x11,0x00
+        };
+        (void)http3_envelope_init(&env, svc, op_calc, 3003u, HTTP3_FLAG_NONE,
+                                  intactx, wrong_key, (const uint8_t *)"20,22", 5u);
+        (void)http3_envelope_pack_text(&env, text, sizeof(text), &written);
+        CHECK(http3_pipeline_handle_wire(&pipe, (const uint8_t *)text, strlen(text),
+                                         resp_buf, sizeof(resp_buf), &written) == 0,
+              "forged wire handled");
+        (void)http3_response_unpack_text(resp_buf, written, &resp);
+        CHECK(resp.status == HTTP3_STATUS_BAD_DIGEST,
+              "forged packet (wrong MAC key) -> BAD_DIGEST");
+    }
+
     /* Tamper reset: a packet whose INTACTX variance exceeds the threshold is
      * RESET and never dispatched. Simulate a tampered host by forcing a
      * max-variance INTACTX value on the packet. */
@@ -182,7 +212,7 @@ int main(void)
         uint64_t tampered = ((uint64_t)HTTP3_INTACTX_VARIANCE_MASK
                                  << HTTP3_INTACTX_VARIANCE_SHIFT) | 0x1234u;
         (void)http3_envelope_init(&env, svc, op_calc, 3002u, HTTP3_FLAG_RESET,
-                                  tampered, (const uint8_t *)"20,22", 5u);
+                                  tampered, mac_key, (const uint8_t *)"20,22", 5u);
         (void)http3_envelope_pack_text(&env, text, sizeof(text), &written);
         CHECK(http3_intactx_is_tampered(tampered, pipe.intactx_threshold),
               "high-variance INTACTX flagged as tampered");

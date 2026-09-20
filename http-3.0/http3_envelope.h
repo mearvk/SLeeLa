@@ -8,12 +8,14 @@
  *     VERSION | FLAGS | SERVICE-ID | OP-ID | REQUEST-ID
  *             | DIGEST | INTACTX | PAYLOAD                            (§5)
  *
- * DIGEST is a per-packet 64-bit integrity check over the header + payload: it
- * detects a mangled or corrupted packet on the wire. INTACTX is a system-
- * specific 64-bit host-integrity identity (see http3_intactx.h): it fingerprints
- * the emitting host and encodes how far that host has drifted from its baseline,
- * so a tampered/changed machine reports a statically larger value and the
- * receiver can RESET the exchange.
+ * DIGEST is a per-packet 64-bit KEYED MAC (SipHash-2-4, see http3_mac.h) over
+ * the header + payload under a per-connection secret key: it detects both
+ * accidental corruption and DELIBERATE tampering, because a packet cannot be
+ * rewritten with a matching tag without the key. INTACTX is a system-specific
+ * 64-bit host-integrity identity (see http3_intactx.h): it fingerprints the
+ * emitting host and encodes how far that host has drifted from its baseline, so
+ * a tampered/changed machine reports a statically larger value and the receiver
+ * can RESET the exchange.
  *
  * and a response carries:
  *
@@ -28,6 +30,8 @@
 
 #include <stddef.h>
 #include <stdint.h>
+
+#include "http3_mac.h" /* HTTP3_MAC_KEY_BYTES, keyed-MAC DIGEST */
 
 #ifdef __cplusplus
 extern "C" {
@@ -96,26 +100,31 @@ typedef struct {
 /* ---- Construction --------------------------------------------------------- */
 
 /* Initialize an envelope with ids, INTACTX host identity, and payload. The
- * per-packet DIGEST is computed and stored automatically over the finished
- * header + payload. Returns 0 on success, -1 if the payload is too large. */
+ * per-packet DIGEST (keyed MAC) is computed and stored automatically over the
+ * finished header + payload under `key` (a 16-byte per-connection secret).
+ * Returns 0 on success, -1 if the payload is too large or an argument is NULL. */
 int http3_envelope_init(http3_envelope_t *env,
                         uint32_t service_id,
                         uint32_t op_id,
                         uint64_t request_id,
                         uint8_t flags,
                         uint64_t intactx,
+                        const uint8_t key[HTTP3_MAC_KEY_BYTES],
                         const uint8_t *payload,
                         size_t payload_len);
 
-/* ---- Integrity: per-packet DIGEST ----------------------------------------- */
+/* ---- Integrity: per-packet DIGEST (keyed MAC) ----------------------------- */
 
-/* Compute the 64-bit DIGEST over an envelope's header fields (excluding the
- * digest itself) and payload. Deterministic and independent of wire form. */
-uint64_t http3_envelope_compute_digest(const http3_envelope_t *env);
+/* Compute the 64-bit keyed-MAC DIGEST over an envelope's header fields
+ * (excluding the digest itself) and payload, under the 16-byte `key`.
+ * Deterministic and independent of wire form. Returns 0 on a NULL argument. */
+uint64_t http3_envelope_compute_digest(const http3_envelope_t *env,
+                                       const uint8_t key[HTTP3_MAC_KEY_BYTES]);
 
-/* Recompute and verify env->digest. Returns 1 if the stored digest matches,
- * 0 otherwise. */
-int http3_envelope_verify_digest(const http3_envelope_t *env);
+/* Recompute the MAC under `key` and compare against env->digest. Returns 1 if
+ * the stored digest matches (packet authentic + intact), 0 otherwise. */
+int http3_envelope_verify_digest(const http3_envelope_t *env,
+                                 const uint8_t key[HTTP3_MAC_KEY_BYTES]);
 
 /* ---- Textual wire form (§5: textual for interoperability) -----------------
  * Line form (single line, newline-terminated):

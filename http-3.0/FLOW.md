@@ -12,7 +12,7 @@ one request end to end. Companion: [`STATUS.md`](STATUS.md).
 | ├ VERSION / FLAGS | §5 | `version`, `flags` (`http3_envelope_flag_t`) | `http3_envelope.h` |
 | ├ SERVICE-ID / OP-ID | §4/§5 | `service_id`, `op_id` | `http3_envelope.h` |
 | ├ REQUEST-ID | §6 | `request_id` | `http3_envelope.h` |
-| ├ DIGEST (per-packet integrity) | §5 | `digest` + `http3_envelope_compute_digest` | `http3_envelope.{h,c}` |
+| ├ DIGEST (per-packet keyed MAC) | §5 | `digest` + `http3_envelope_compute_digest` (SipHash-2-4, `http3_mac.{h,c}`) | `http3_envelope.{h,c}` |
 | ├ INTACTX (host-integrity id) | §5 | `intactx` (`http3_intactx_t`) | `http3_intactx.{h,c}` |
 | └ PAYLOAD | §5 | `payload`, `payload_len` | `http3_envelope.h` |
 | Textual pack/unpack | §5 | `http3_envelope_pack_text` / `_unpack_text` | `http3_envelope.c` |
@@ -39,10 +39,10 @@ one request end to end. Companion: [`STATUS.md`](STATUS.md).
    http3_naming_intern_service("orders") -> 1
    http3_naming_intern_op("orders","calculate") -> 1
         │
-        ▼  §5 build the compact envelope (stamps INTACTX, seals DIGEST)
+        ▼  §5 build the compact envelope (stamps INTACTX, seals keyed DIGEST)
    intactx = http3_intactx_compute(&ix)
    http3_envelope_init(env, service_id=1, op_id=1, request_id=1001,
-                       flags=0, intactx, payload="20,22")
+                       flags=0, intactx, mac_key, payload="20,22")
         │
         ▼  §5 pack to wire (textual OR binary). DIGEST + INTACTX now travel too.
    textual:  H3 3 0 1 1 1001 <digest> <intactx> 5:20,22
@@ -53,7 +53,7 @@ one request end to end. Companion: [`STATUS.md`](STATUS.md).
    http3_pipeline_handle_wire(pipe, wire, len, out, ...)
         │      └─ http3_envelope_unpack_text/_binary -> env
         ▼  §19 integrity gate (BEFORE dispatch)
-   verify DIGEST      -> mismatch => BAD_DIGEST (packet dropped)
+   verify keyed MAC   -> mismatch => BAD_DIGEST (corrupted OR forged; dropped)
    INTACTX variance   -> over threshold => TAMPERED + RESET (not dispatched)
         │
         ▼  §19 service-id lookup -> op-id lookup (dispatch table)
@@ -78,14 +78,15 @@ Key invariants surfaced by the flow:
   `service_id`/`op_id`, never on a re-parsed name.
 - **Same logical envelope, two wires** (§5): textual and binary unpack to an
   identical `http3_envelope_t`; the demo runs both and gets `sum=42` each time.
-  The per-packet DIGEST is computed over a canonical big-endian field layout, so
-  it is identical for both wire forms and reproduced byte-for-byte by the Python
-  reference.
+  The per-packet DIGEST is a keyed MAC (SipHash-2-4) computed over a canonical
+  big-endian field layout, so it is identical for both wire forms and reproduced
+  byte-for-byte by the Python reference under the same key.
 - **Integrity precedes dispatch** (§19): every received packet is checked before
-  any business logic runs. A corrupted packet fails its DIGEST and returns
-  `BAD_DIGEST`; a packet from a tampered/changed host carries an INTACTX whose
-  variance exceeds the threshold and is answered with `TAMPERED` + a `RESET`
-  body, never reaching a handler.
+  any business logic runs. Its DIGEST is a *keyed* MAC, so a corrupted **or
+  forged** packet (one rewritten by a party without the per-connection key)
+  fails verification and returns `BAD_DIGEST`; a packet from a tampered/changed
+  host carries an INTACTX whose variance exceeds the threshold and is answered
+  with `TAMPERED` + a `RESET` body, never reaching a handler.
 - **INTACTX magnitude tracks drift** (§5): INTACTX packs a 16-bit variance in
   its high bits over a 48-bit identity, so a larger environmental change from the
   persisted baseline produces a statically larger number. A healthy, unchanged
@@ -110,3 +111,11 @@ would carry — but neither layer depends on the other's build. This keeps the
 data-flow model and the security model separable, per the spec's boundary
 between application protocol (§1–§19) and transport/security infrastructure
 (§2, §12).
+
+The one place the two layers *touch by value* (not by build) is the per-packet
+DIGEST key: the keyed MAC (`http3_mac.{h,c}`, SipHash-2-4) is a dependency-free
+part of the protocol core, but its 16-byte key is a per-connection secret that a
+deployment supplies from the crypto substrate's key agreement
+(`crypto_key_agreement.*`). The protocol core never links OpenSSL; it just
+accepts the key bytes, so the separation of builds is preserved while packets
+gain authenticity end to end.

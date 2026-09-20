@@ -7,10 +7,12 @@ dependency-free so a Python connector can speak the protocol without
 becoming a SLeeLa runtime (spec §20). Crypto is out of scope here; that
 lives in the C substrate (crypto_openssl.c et al.).
 
-Every packet also carries a per-packet DIGEST (64-bit integrity check over the
-header + payload) and an INTACTX id (64-bit system-specific host-integrity
-identity). A receiver rejects a packet whose DIGEST does not verify and RESETs
-the exchange when a packet's INTACTX variance exceeds the tamper threshold.
+Every packet also carries a per-packet DIGEST (a 64-bit KEYED MAC, SipHash-2-4,
+over the header + payload under a per-connection secret key) and an INTACTX id
+(64-bit system-specific host-integrity identity). The keyed DIGEST resists
+deliberate forgery, not just accidental corruption. A receiver rejects a packet
+whose DIGEST does not verify under the shared key and RESETs the exchange when a
+packet's INTACTX variance exceeds the tamper threshold.
 
 Textual wire forms (must match the C implementation byte-for-byte):
 
@@ -40,6 +42,61 @@ def _fnv1a(data: bytes, h: int = _FNV64_OFFSET) -> int:
         h ^= byte
         h = (h * _FNV64_PRIME) & _U64
     return h
+
+
+# ---- SipHash-2-4 keyed MAC (matches http3_mac.c byte-for-byte) --------------
+MAC_KEY_BYTES = 16
+
+
+def _rotl64(x: int, b: int) -> int:
+    return ((x << b) | (x >> (64 - b))) & _U64
+
+
+def siphash24(key: bytes, data: bytes) -> int:
+    """64-bit SipHash-2-4 keyed MAC. `key` is 16 bytes; returns a 64-bit int.
+
+    Reference-conformant (Aumasson & Bernstein): 2 compression rounds per 8-byte
+    block, 4 finalization rounds; key and message read little-endian.
+    """
+    if len(key) != MAC_KEY_BYTES:
+        raise ValueError("SipHash key must be 16 bytes")
+    k0 = int.from_bytes(key[0:8], "little")
+    k1 = int.from_bytes(key[8:16], "little")
+    v0 = 0x736F6D6570736575 ^ k0
+    v1 = 0x646F72616E646F6D ^ k1
+    v2 = 0x6C7967656E657261 ^ k0
+    v3 = 0x7465646279746573 ^ k1
+
+    def sipround(v0: int, v1: int, v2: int, v3: int):
+        v0 = (v0 + v1) & _U64; v1 = _rotl64(v1, 13); v1 ^= v0; v0 = _rotl64(v0, 32)
+        v2 = (v2 + v3) & _U64; v3 = _rotl64(v3, 16); v3 ^= v2
+        v0 = (v0 + v3) & _U64; v3 = _rotl64(v3, 21); v3 ^= v0
+        v2 = (v2 + v1) & _U64; v1 = _rotl64(v1, 17); v1 ^= v2; v2 = _rotl64(v2, 32)
+        return v0, v1, v2, v3
+
+    n = len(data)
+    end = n - (n % 8)
+    for off in range(0, end, 8):
+        m = int.from_bytes(data[off:off + 8], "little")
+        v3 ^= m
+        v0, v1, v2, v3 = sipround(v0, v1, v2, v3)
+        v0, v1, v2, v3 = sipround(v0, v1, v2, v3)
+        v0 ^= m
+
+    b = (n & 0xFF) << 56
+    tail = data[end:]
+    for i, byte in enumerate(tail):
+        b |= byte << (8 * i)
+
+    v3 ^= b
+    v0, v1, v2, v3 = sipround(v0, v1, v2, v3)
+    v0, v1, v2, v3 = sipround(v0, v1, v2, v3)
+    v0 ^= b
+
+    v2 ^= 0xFF
+    for _ in range(4):
+        v0, v1, v2, v3 = sipround(v0, v1, v2, v3)
+    return (v0 ^ v1 ^ v2 ^ v3) & _U64
 
 
 class Flag(IntEnum):
@@ -177,12 +234,13 @@ class Envelope:
     intactx: int = 0
     digest: int = 0
 
-    def compute_digest(self) -> int:
-        """Canonical big-endian header serialization + payload, FNV-1a hashed.
+    def compute_digest(self, key: bytes) -> int:
+        """Keyed MAC (SipHash-2-4) over canonical header serialization + payload.
 
         Must match http3_envelope_compute_digest() in the C reference exactly.
         The transport-only BINARY flag is excluded so text and binary forms of
-        the same logical envelope share a digest.
+        the same logical envelope share a digest; `key` is the 16-byte
+        per-connection secret.
         """
         logical_flags = self.flags & ~int(Flag.BINARY)
         hdr = struct.pack(
@@ -195,21 +253,21 @@ class Envelope:
             self.intactx & _U64,
             len(self.payload) & 0xFFFFFFFF,
         )
-        return _fnv1a(self.payload, _fnv1a(hdr))
+        return siphash24(key, hdr + self.payload)
 
-    def seal(self) -> "Envelope":
-        """Stamp the DIGEST over the current contents; returns self for chaining."""
-        self.digest = self.compute_digest()
+    def seal(self, key: bytes) -> "Envelope":
+        """Stamp the keyed DIGEST over the current contents; returns self for chaining."""
+        self.digest = self.compute_digest(key)
         return self
 
-    def verify_digest(self) -> bool:
-        return self.compute_digest() == self.digest
+    def verify_digest(self, key: bytes) -> bool:
+        return self.compute_digest(key) == self.digest
 
-    def pack_text(self) -> bytes:
+    def pack_text(self, key: Optional[bytes] = None) -> bytes:
         if len(self.payload) > MAX_PAYLOAD:
             raise ValueError("payload too large")
-        if self.digest == 0:
-            self.seal()
+        if key is not None:
+            self.seal(key)
         head = (
             f"H3 {self.version} {self.flags} {self.service_id} {self.op_id} "
             f"{self.request_id} {self.digest} {self.intactx} {len(self.payload)}:"
@@ -296,7 +354,7 @@ Handler = Callable[[bytes, object], Tuple[Status, bytes]]
 class Pipeline:
     """§19 pipeline: register services/ops, then dispatch envelopes to handlers."""
 
-    def __init__(self, intactx_threshold: int = 0) -> None:
+    def __init__(self, intactx_threshold: int = 0, mac_key: bytes = b"\x00" * MAC_KEY_BYTES) -> None:
         self.naming = Naming()
         self._bindings: Dict[Tuple[int, int], Tuple[RetryClass, Handler]] = {}
         self._ctx: Dict[int, object] = {}
@@ -304,6 +362,14 @@ class Pipeline:
         self.intactx_threshold = intactx_threshold or INTACTX_TAMPER_THRESHOLD
         self.digest_rejects = 0
         self.tamper_resets = 0
+        self.set_mac_key(mac_key)
+
+    def set_mac_key(self, key: bytes) -> None:
+        """Install the 16-byte per-connection MAC key used to verify each
+        packet's keyed-MAC DIGEST (the shared secret from key agreement)."""
+        if len(key) != MAC_KEY_BYTES:
+            raise ValueError("MAC key must be 16 bytes")
+        self.mac_key = bytes(key)
 
     def register(self, service: str, op: str, retry: RetryClass, handler: Handler,
                  ctx: object = None) -> Tuple[int, int]:
@@ -336,8 +402,9 @@ class Pipeline:
             env = Envelope.unpack_text(wire)
         except ValueError:
             return Response(Status.BAD_ENVELOPE, 0).pack_text()
-        # 1. Per-packet DIGEST must verify -- else the packet arrived mangled.
-        if not env.verify_digest():
+        # 1. Per-packet DIGEST (keyed MAC) must verify under the shared key --
+        #    else the packet was corrupted OR forged without the secret.
+        if not env.verify_digest(self.mac_key):
             self.digest_rejects += 1
             return Response(Status.BAD_DIGEST, env.request_id).pack_text()
         # 2. INTACTX variance below threshold -- else the host is tampered: RESET.
