@@ -141,7 +141,9 @@ host and adjusts link flags per platform.
   text-protocol interface is [`bash/pixel-terminal.sh`](bash/pixel-terminal.sh),
   and the native C++ frame/geometry layer is
   [`bash/pixel_terminal.hpp`](bash/pixel_terminal.hpp) /
-  [`bash/pixel_terminal.cpp`](bash/pixel_terminal.cpp). The
+  [`bash/pixel_terminal.cpp`](bash/pixel_terminal.cpp); a pixel-precision header
+  supporting **60&nbsp;Hz refresh** is
+  [`terminal_pixel/pixel_terminal.h`](terminal_pixel/pixel_terminal.h). The
   [`bash/model-3D/`](bash/model-3D/) application (**Phraign™ City 3D**) renders a
   sprawling ~4000-block city onto the Phraign frame per pixel, viewed from the
   top at a slight side angle, with a config-driven viewpoint, `green`/`white`/
