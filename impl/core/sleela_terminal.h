@@ -14,7 +14,8 @@ typedef ptrdiff_t SLTerminalCount;
 typedef enum {
     SL_TERMINAL_AUTO = 0,
     SL_TERMINAL_LINUX = 1,
-    SL_TERMINAL_WINDOWS = 2
+    SL_TERMINAL_WINDOWS = 2,
+    SL_TERMINAL_MACOS = 3
 } SLTerminalPlatform;
 
 SLTerminalPlatform slterminal_platform(void);

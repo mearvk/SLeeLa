@@ -3,24 +3,26 @@
 #include <stdlib.h>
 
 SLThreadPlatform slthread_platform(void) {
-#ifdef _WIN32
+#if defined(_WIN32)
     return SL_THREAD_WINDOWS;
+#elif defined(__APPLE__)
+    return SL_THREAD_MACOS;
 #else
     return SL_THREAD_LINUX;
 #endif
 }
 
 const char* slthread_platform_name(void) {
-    return slthread_platform() == SL_THREAD_WINDOWS ? "windows" : "linux";
+    switch (slthread_platform()) {
+        case SL_THREAD_WINDOWS: return "windows";
+        case SL_THREAD_MACOS:   return "macos";
+        default:                return "linux";
+    }
 }
 
 int slthread_platform_is_available(SLThreadPlatform platform) {
     if (platform == SL_THREAD_AUTO) return 1;
-#ifdef _WIN32
-    return platform == SL_THREAD_WINDOWS;
-#else
-    return platform == SL_THREAD_LINUX;
-#endif
+    return platform == slthread_platform();
 }
 
 #ifdef _WIN32

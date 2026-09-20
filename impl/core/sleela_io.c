@@ -27,7 +27,10 @@
 static SLIOPlatform requested_platform(void) {
     const char* p = getenv("SLEELA_IO_PLATFORM");
     if (!p || !*p || strcmp(p, "auto") == 0) return SL_IO_AUTO;
-    if (strcmp(p, "linux") == 0 || strcmp(p, "posix") == 0) return SL_IO_LINUX;
+    /* "posix" means the native POSIX backend (Linux or macOS). */
+    if (strcmp(p, "posix") == 0) return SL_IO_AUTO;
+    if (strcmp(p, "linux") == 0) return SL_IO_LINUX;
+    if (strcmp(p, "macos") == 0 || strcmp(p, "darwin") == 0) return SL_IO_MACOS;
     if (strcmp(p, "windows") == 0 || strcmp(p, "win32") == 0) return SL_IO_WINDOWS;
     return SL_IO_AUTO;
 }
@@ -35,13 +38,19 @@ static SLIOPlatform requested_platform(void) {
 SLIOPlatform slio_platform(void) {
 #if SLEEELA_NATIVE_WINDOWS
     return SL_IO_WINDOWS;
+#elif defined(__APPLE__)
+    return SL_IO_MACOS;
 #else
     return SL_IO_LINUX;
 #endif
 }
 
 const char* slio_platform_name(void) {
-    return slio_platform() == SL_IO_WINDOWS ? "windows" : "linux";
+    switch (slio_platform()) {
+        case SL_IO_WINDOWS: return "windows";
+        case SL_IO_MACOS:   return "macos";
+        default:            return "linux";
+    }
 }
 
 int slio_platform_is_available(SLIOPlatform platform) {

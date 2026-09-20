@@ -7,8 +7,18 @@ int main(void) {
     const char* requested = getenv("SLEELA_IO_PLATFORM");
     SLIOPlatform host = slio_platform();
     if (requested && *requested && strcmp(requested, "auto") != 0) {
-        if ((strcmp(requested, "linux") == 0 || strcmp(requested, "posix") == 0) && host != SL_IO_LINUX) {
-            fprintf(stderr, "SLeeLa I/O platform mismatch: requested Linux on Windows\n");
+        int is_posix_host = (host == SL_IO_LINUX || host == SL_IO_MACOS);
+        /* "posix" accepts any native POSIX backend (Linux or macOS). */
+        if (strcmp(requested, "posix") == 0 && !is_posix_host) {
+            fprintf(stderr, "SLeeLa I/O platform mismatch: requested POSIX on Windows\n");
+            return 2;
+        }
+        if (strcmp(requested, "linux") == 0 && host != SL_IO_LINUX) {
+            fprintf(stderr, "SLeeLa I/O platform mismatch: requested Linux on a non-Linux host\n");
+            return 2;
+        }
+        if ((strcmp(requested, "macos") == 0 || strcmp(requested, "darwin") == 0) && host != SL_IO_MACOS) {
+            fprintf(stderr, "SLeeLa I/O platform mismatch: requested macOS on a non-macOS host\n");
             return 2;
         }
         if ((strcmp(requested, "windows") == 0 || strcmp(requested, "win32") == 0) && host != SL_IO_WINDOWS) {

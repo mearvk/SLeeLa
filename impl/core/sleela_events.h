@@ -11,7 +11,8 @@ extern "C" {
 typedef enum {
     SL_EVENT_AUTO = 0,
     SL_EVENT_LINUX = 1,
-    SL_EVENT_WINDOWS = 2
+    SL_EVENT_WINDOWS = 2,
+    SL_EVENT_MACOS = 3
 } SLEventPlatform;
 
 typedef intptr_t SLEventHandle;

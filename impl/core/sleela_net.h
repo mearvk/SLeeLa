@@ -11,7 +11,8 @@ extern "C" {
 typedef enum {
     SL_NET_AUTO = 0,
     SL_NET_LINUX = 1,
-    SL_NET_WINDOWS = 2
+    SL_NET_WINDOWS = 2,
+    SL_NET_MACOS = 3
 } SLNetPlatform;
 
 typedef intptr_t SLNetHandle;

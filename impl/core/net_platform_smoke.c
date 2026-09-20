@@ -9,7 +9,10 @@ int main(void) {
     SLNetPlatform native = slnet_platform();
     if (requested && *requested && strcmp(requested, "auto") != 0) {
         SLNetPlatform expected = SL_NET_AUTO;
-        if (strcmp(requested, "linux") == 0 || strcmp(requested, "posix") == 0) expected = SL_NET_LINUX;
+        /* "posix" accepts whichever native POSIX backend is present. */
+        if (strcmp(requested, "posix") == 0) expected = SL_NET_AUTO;
+        else if (strcmp(requested, "linux") == 0) expected = SL_NET_LINUX;
+        else if (strcmp(requested, "macos") == 0 || strcmp(requested, "darwin") == 0) expected = SL_NET_MACOS;
         else if (strcmp(requested, "windows") == 0 || strcmp(requested, "win32") == 0) expected = SL_NET_WINDOWS;
         if (expected != SL_NET_AUTO && expected != native) {
             fprintf(stderr, "requested network platform is not native: %s\n", requested);
