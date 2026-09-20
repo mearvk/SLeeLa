@@ -1,0 +1,125 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mearvk.github.io/SLeeLa/http-3.0/sleeuum.schema.json",
+  "title": "Sleeuum\u2122 ledger",
+  "description": "JSON ledger emitted by Sleeuum(TM) (http-3.0/sleeuum.py): the client packet ledger a SLeeLa executable uses to track HTTP 3.0 / HTTP 2.0+ packets, their dates, and their numbers.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["module", "trademark", "client", "generated", "stats", "packets"],
+  "properties": {
+    "module": {
+      "type": "string",
+      "const": "Sleeuum\u2122",
+      "description": "Module name, rendered with the trademark symbol."
+    },
+    "trademark": {
+      "type": "string",
+      "const": "Sleeuum\u2122",
+      "description": "The Sleeuum(TM) trademark rendering."
+    },
+    "client": {
+      "type": "string",
+      "description": "Name of the SLeeLa executable / client keeping this ledger."
+    },
+    "generated": { "$ref": "#/$defs/timestamp" },
+    "stats": { "$ref": "#/$defs/stats" },
+    "packets": {
+      "type": "array",
+      "description": "One record per observed HTTP 3.0 / HTTP 2.0+ packet.",
+      "items": { "$ref": "#/$defs/packet" }
+    }
+  },
+  "$defs": {
+    "timestamp": {
+      "type": "string",
+      "description": "ISO-8601 UTC instant with a trailing 'Z'.",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d+)?Z$"
+    },
+    "carrier": {
+      "type": "string",
+      "description": "HTTP carrier the H3 envelope traveled over.",
+      "enum": ["http/1.1", "http/2", "h3-raw"]
+    },
+    "stats": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "packets", "sent", "received", "requests", "responses",
+        "total_payload_bytes", "total_wire_bytes", "by_carrier", "by_status"
+      ],
+      "properties": {
+        "packets": { "type": "integer", "minimum": 0 },
+        "sent": { "type": "integer", "minimum": 0 },
+        "received": { "type": "integer", "minimum": 0 },
+        "requests": { "type": "integer", "minimum": 0 },
+        "responses": { "type": "integer", "minimum": 0 },
+        "total_payload_bytes": { "type": "integer", "minimum": 0 },
+        "total_wire_bytes": { "type": "integer", "minimum": 0 },
+        "by_carrier": {
+          "type": "object",
+          "description": "Count of packets per carrier.",
+          "additionalProperties": { "type": "integer", "minimum": 0 }
+        },
+        "by_status": {
+          "type": "object",
+          "description": "Count of response packets per H3 status name.",
+          "additionalProperties": { "type": "integer", "minimum": 0 }
+        },
+        "first_seen": { "anyOf": [{ "$ref": "#/$defs/timestamp" }, { "type": "null" }] },
+        "last_seen": { "anyOf": [{ "$ref": "#/$defs/timestamp" }, { "type": "null" }] },
+        "duration_seconds": { "type": "number", "minimum": 0 }
+      }
+    },
+    "packet": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "A single tracked packet: its dates and its numbers. Fields that are null in the record are omitted, so per-kind fields are optional here.",
+      "required": ["seq", "at", "direction", "carrier", "kind", "wire_form", "payload_bytes", "wire_bytes"],
+      "properties": {
+        "seq": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Monotonic Sleeuum sequence number (1-based)."
+        },
+        "at": { "$ref": "#/$defs/timestamp" },
+        "direction": { "type": "string", "enum": ["sent", "received"] },
+        "carrier": { "$ref": "#/$defs/carrier" },
+        "kind": { "type": "string", "enum": ["request", "response"] },
+        "wire_form": { "type": "string", "enum": ["text", "binary"] },
+        "service_id": { "type": "integer", "minimum": 0 },
+        "op_id": { "type": "integer", "minimum": 0 },
+        "request_id": { "type": "integer", "minimum": 0 },
+        "nonce": { "type": "integer", "minimum": 0, "description": "H3 NONCE (replay guard); MAC-covered." },
+        "digest": { "type": "integer", "minimum": 0, "description": "H3 DIGEST (64-bit keyed MAC)." },
+        "intactx": { "type": "integer", "minimum": 0, "description": "H3 INTACTX host-integrity fingerprint." },
+        "status": { "type": "integer", "minimum": 0, "description": "H3 execution status code (response packets)." },
+        "status_name": {
+          "type": "string",
+          "description": "H3 status name.",
+          "enum": [
+            "OK", "APP_ERROR", "UNKNOWN_SERVICE", "UNKNOWN_OPERATION",
+            "BAD_ENVELOPE", "TOO_LARGE", "RETRY_DENIED", "BAD_DIGEST",
+            "TAMPERED", "REPLAYED"
+          ]
+        },
+        "payload_bytes": { "type": "integer", "minimum": 0 },
+        "wire_bytes": { "type": "integer", "minimum": 0 },
+        "numerals": {
+          "type": "array",
+          "description": "Basket numerals (atomic-number item ids, per NUMERAL.md) carried in this packet.",
+          "items": { "type": "integer", "minimum": 1 }
+        }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "kind": { "const": "request" } } },
+          "then": { "required": ["service_id", "op_id", "request_id", "nonce", "digest"] }
+        },
+        {
+          "if": { "properties": { "kind": { "const": "response" } } },
+          "then": { "required": ["status", "status_name"] }
+        }
+      ]
+    }
+  }
+}

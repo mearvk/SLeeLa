@@ -37,6 +37,35 @@ print(led.report())         # one-line summary (renders the Sleeuum™ mark)
 open("ledger.json", "w").write(led.to_json())   # full dates + numbers + packets
 ```
 
+## JSON Schema
+
+The ledger JSON output has a formal schema:
+[`sleeuum.schema.json`](sleeuum.schema.json) (JSON Schema draft 2020-12). It
+pins the `Sleeuum™` trademark constants, the permitted carriers
+(`http/1.1`, `http/2`, `h3-raw`), the H3 status-name enum, and — via `if/then`
+rules — the fields required per packet `kind` (request packets carry
+service/op/request-id + NONCE + DIGEST; response packets carry status +
+status_name). Both the Python client ledger and the Java server ledger emit
+JSON that validates against it.
+
+## Server-side ledger (Java)
+
+The HTTP module keeps its own ledger too:
+[`SleeuumLedger.java`](../connector/java/com/mearvk/sleela/connector/http/SleeuumLedger.java),
+wired into [`SleelaH3Servlet`](../connector/java/com/mearvk/sleela/connector/http/SleelaH3Servlet.java).
+Every packet the servlet handles is recorded — the received request and the
+sent response — with the same dates and numbers as the client module, parsed
+directly from the H3 wire bytes (service/op ids, request-id, NONCE, DIGEST,
+INTACTX, status, and the basket numerals). Its JSON conforms to the same
+`sleeuum.schema.json`.
+
+Retrieve the server ledger over HTTP:
+
+```
+GET /sleela/h3/ledger      -> application/json  (the Sleeuum™ ledger)
+GET /sleela/h3             -> text/plain health probe (includes tracked count)
+```
+
 ## Notes
 
 - **Carriers:** HTTP 3.0 envelopes carried over HTTP/1.1 or HTTP/2 (2.0+), or
