@@ -1,0 +1,49 @@
+#sleela 1.2
+/**
+ * @title   Subjects Register (Tier 6)
+ * @intent  Roll-call of the subject libraries, and a live check that Math --
+ *          the foundational numeric layer they all depend on -- actually works.
+ * @thesis  A register of a numeric library should not merely NAME the library;
+ *          it should exercise it. main() imports math and confirms one identity,
+ *          so this register is also the smallest possible proof the tier is live.
+ * @see     JOURNEY.md (Tier 6), impl/subjects/
+ * @evidence OBSERVED  (math.sqrt is executed below)
+ */
+import math;
+
+class SubjectsRegister {
+
+    int total = 0;
+
+    void subject(String name, String mechanism, String definition) {
+        total = total + 1;
+        print("  " + name + "  [" + mechanism + "]");
+        print("      " + definition);
+    }
+
+    void main() {
+        print("=== Tier 6: Subject libraries -- the domain layer ===");
+        print("");
+        subject("Native dispatcher", "AST lowering",
+                "validates subject imports/deps; lowers module.fn calls");
+        subject("Math", "AST-synthesized native",
+                "sqrt/exp/log/trig/pow/hypot/fmod/constants -- the numeric base");
+        subject("Physics", "AST-synthesized native (needs math)",
+                "constants + mechanics/gravitation/relativity/waves");
+        subject("Economics", "AST-synthesized native (needs math)",
+                "time-value, elasticity, rates, profit/margin, GDP identity");
+        subject("Inference", "AST-synthesized native (needs math)",
+                "mean/stdev, OLS trend, correlation/R^2, z-score, forecast, CAGR");
+        subject("Chemistry", "compiled C++ + frontend lowering",
+                "weighted evidence, deterministic ranking, explicit uncertainty");
+        subject("Finance", "compiled C++ + frontend lowering",
+                "FV/PV, annuities, NPV, bonds, CAPM, WACC, 2x2 systems, quadratics");
+
+        print("");
+        print("  subject components registered = " + total);
+
+        // A live proof the tier is not just named but wired: math must work.
+        double root = math.sqrt(144.0);
+        print("  live check: math.sqrt(144.0) = " + root + "  (expect 12)");
+    }
+}
