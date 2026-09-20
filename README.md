@@ -448,6 +448,15 @@ Beyond the integrity gate, the pipeline adds three delivery-oriented layers:
   deploy the stack. Because the envelope rides untouched in the HTTP body, any
   byte flip in transit fails the H3 MAC closed. See
   [`connector/deploy/README.md`](connector/deploy/README.md).
+- **Client packet ledger — Sleeuum™.** A SLeeLa executable can keep track of
+  the HTTP 3.0 / HTTP 2.0+ packets it sends and receives — with their **dates**
+  and **numbers** — using **Sleeuum™**
+  ([`http-3.0/sleeuum.py`](http-3.0/sleeuum.py)). It records, per packet, the
+  carrier (HTTP/1.1, HTTP/2, or raw H3), direction, service/op ids, an ISO-8601
+  UTC timestamp, a monotonic sequence number, the H3 NONCE/DIGEST/request-id and
+  status, byte counts, and the basket **numerals** carried in each packet — as a
+  queryable JSON ledger. Observe-only: it never alters a packet or an integrity
+  field. See [`http-3.0/SLEEUUM.md`](http-3.0/SLEEUUM.md).
 
 A SLeeLa program can also select its HTTP behavior by **color** — a named bundle
 of wire form, flags, and integrity profile (`green`/`amber`/`red`/`black`),
@@ -479,6 +488,7 @@ the 3.0-era integrity substrate — lives under [`http-2.0/`](http-2.0/).
 | [`BRITISH.md`](BRITISH.md) | An institutional fiduciary note (stylized), applying the duty model at the entity level. |
 | [`QOS.md`](QOS.md) | Quality of Service over standard TCP/HTTP, with careful SLeeLa + Java code notes. |
 | [`connector/deploy/README.md`](connector/deploy/README.md) | Carrying the HTTP 3.0 envelope over standard **HTTP/1.1 and HTTP/2** (custom packet builder, Tomcat/Apache HTTP module, and Linux installer). |
+| [`http-3.0/SLEEUUM.md`](http-3.0/SLEEUUM.md) | **Sleeuum™** — the client packet ledger a SLeeLa executable uses to track HTTP 3.0 / HTTP 2.0+ packets, their dates, and their numbers. |
 
 The **Moral Code** records the standard of *substantial use of sequitur*, a
 *per-use* evaluation rule, *homognyny* (the asynchronous misuse of frame, or
