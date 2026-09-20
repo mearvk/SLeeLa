@@ -125,3 +125,30 @@ nordshrift relevance --target=c Thread
 
 The catalog is parsed by the shared `../catalog/` module so the compiler and
 Nordshrift remain aligned.
+
+
+## SLeeLa ↔ Nordshrift from the `sleela` compiler
+
+The `sleela` compiler can drive the Nordshrift emitter directly, so you can go
+**from SLeeLa to Nordshrift and back** without the standalone `nordshrift`
+binary or an `.sst` sheet:
+
+```sh
+# SLeeLa -> Nordshrift transpile (choose the triplet target)
+sleela nordshrift --emit --target=sleela  prog.sleela   # canonical Sleela
+sleela nordshrift --emit --target=java     prog.sleela   # Java
+sleela nordshrift --emit --target=c        prog.sleela   # C
+sleela nordshrift --emit --target=java --package=com.acme prog.sleela
+
+# SLeeLa -> Nordshrift(Sleela) -> re-parse -> run (round trip, on the core)
+sleela nordshrift --roundtrip prog.sleela
+```
+
+`--roundtrip` transpiles the program to the Nordshrift **Sleela** target,
+re-parses that output, verifies the program's **structure is preserved** (same
+classes, and per class the same field/method counts), and runs the re-parsed
+program on the C core. It reports whether the round trip is an *exact fixed
+point* or merely *canonical-form stable* (the emitter fully parenthesizes and
+normalizes blocks, so a second pass can differ cosmetically while remaining
+structurally identical). The `sleela` binary links only the Nordshrift **emitter**
+for this (not the standalone driver), so there is no second `main`.
