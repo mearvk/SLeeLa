@@ -29,6 +29,7 @@ PROTO_SOURCES = \
 	http3_intactx.c \
 	http3_mac.c \
 	http3_basket.c \
+	http3_profile.c \
 	http3_pipeline.c
 
 PROTO_OBJECTS = $(PROTO_SOURCES:.c=.o)

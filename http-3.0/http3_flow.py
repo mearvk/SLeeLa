@@ -490,3 +490,76 @@ class Pipeline:
             return Response(Status.REPLAYED, env.request_id).pack_text()
         self.nonce_high_water = env.nonce
         return self.dispatch(env).pack_text()
+
+
+
+# ---- HTTP "colors": named configuration profiles (mirrors http3_profile.{h,c})
+# A SLeeLa program names a COLOR from source; the color bundles wire form,
+# default flags, and the integrity profile (MAC / INTACTX / replay / basket).
+# Colors are advisory selectors over already-supported behavior; naming a color
+# never changes the on-the-wire envelope layout.
+COLOR_NAME_MAX = 24
+
+
+class WireForm(IntEnum):
+    TEXT = 0
+    BINARY = 1
+
+
+@dataclass
+class Profile:
+    """A resolved HTTP color (see http3_colors.conf / HTTP-COLORS.md)."""
+
+    name: str
+    wire: WireForm
+    flags: int
+    mac_required: bool
+    intactx_enabled: bool
+    intactx_threshold: int  # 0 => library default
+    replay_guard: bool
+    basket_required: bool
+
+
+# The shipped palette, kept in sync with http3_profile.c and http3_colors.conf.
+PALETTE = (
+    Profile("green", WireForm.TEXT,   Flag.NONE,                         False, False, 0, False, False),
+    Profile("amber", WireForm.TEXT,   Flag.NONE,                         True,  False, 0, True,  False),
+    Profile("red",   WireForm.BINARY, int(Flag.BINARY),                  True,  True,  0, True,  True),
+    Profile("black", WireForm.BINARY, int(Flag.BINARY) | int(Flag.COMPRESSED),
+                                                                          True,  True,  0, True,  True),
+)
+
+
+def profile_by_color(color: str) -> Profile:
+    """Resolve a shipped color by name. Raises KeyError if unknown."""
+    for p in PALETTE:
+        if p.name == color:
+            return p
+    raise KeyError(f"unknown HTTP color: {color!r}")
+
+
+def profile_load(path: str, color: str) -> Profile:
+    """Load a color from an http3_colors.conf-format file. Raises KeyError if
+    the color is not present, ValueError if a matching line is malformed."""
+    with open(path, "r", encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if not line or line.startswith("#"):
+                continue
+            parts = line.split()
+            if len(parts) != 8 or parts[0] != color:
+                continue
+            name, wire, flags, mac, intactx, threshold, replay, basket = parts
+            if wire not in ("text", "binary"):
+                raise ValueError(f"bad wire form: {wire!r}")
+            return Profile(
+                name=name,
+                wire=WireForm.TEXT if wire == "text" else WireForm.BINARY,
+                flags=int(flags),
+                mac_required=bool(int(mac)),
+                intactx_enabled=bool(int(intactx)),
+                intactx_threshold=int(threshold),
+                replay_guard=bool(int(replay)),
+                basket_required=bool(int(basket)),
+            )
+    raise KeyError(f"color {color!r} not found in {path}")
