@@ -553,3 +553,50 @@ tools/cmd/
 
 *Copyright (C) 2026 MEARVK LLC*  
 *Author: Maximilian Eric Alexander Rupplin von Keffikon*
+
+---
+
+## HTTP 3.0 packet integrity, syllabus key, and specification artifacts
+
+The HTTP 3.0 application protocol under [`http-3.0/`](http-3.0/) now gives every
+packet a per-packet input-integrity method, layered in three stages that all run
+before any dispatch (see [`http-3.0/FLOW.md`](http-3.0/FLOW.md) and
+[`http-3.0/STATUS.md`](http-3.0/STATUS.md)):
+
+- **DIGEST — authenticity.** A per-packet 64-bit **keyed MAC** (SipHash-2-4,
+  [`http-3.0/http3_mac.{h,c}`](http-3.0/)) computed over a canonical big-endian
+  header + payload under a 16-byte per-connection key. It detects accidental
+  corruption *and* deliberate forgery; a party without the key cannot forge a
+  valid tag. A failing packet is answered `BAD_DIGEST` and never dispatched.
+- **INTACTX — host integrity / tamper reset.** A system-specific 64-bit host
+  identity ([`http-3.0/http3_intactx.{h,c}`](http-3.0/)) derived from a stable
+  OS/identity baseline that is persisted across reboots, folded with a per-emit
+  "use-normality" sample. It packs a 16-bit variance in its high bits, so a
+  larger departure from baseline yields a statically larger number; a healthy
+  host reports variance 0. Over the tamper threshold, the exchange is **RESET**
+  (`TAMPERED`) and not dispatched.
+- **NONCE — replay rejection.** A per-connection monotonic counter, covered by
+  the MAC, checked against a pipeline high-water mark. A replay of a previously
+  valid packet is answered `REPLAYED`; since the NONCE is MAC-covered it cannot
+  be bumped to evade the check.
+
+Both a C reference and a dependency-free Python reference
+([`http-3.0/http3_flow.py`](http-3.0/http3_flow.py)) implement this; the keyed
+MAC is byte-for-byte identical across the two, and the SipHash implementation
+matches the published reference test vector. Build and exercise it with
+`cd http-3.0 && make demo` (C) and `make test` (C + Python).
+
+### Key and specification documents
+
+| Document | Contents |
+|---|---|
+| [`CLASS.md`](CLASS.md) | The syllabus key (38142-hex-digit CSPRNG value) with the **Moral Code** and the **Class** section, in one document. |
+| [`MIL.SPEC.md`](MIL.SPEC.md) | A CSPRNG-random **1022-bit** value as a 256-char hex string, dedicated to the Military, Endless Charity, and the Strength of the United States. |
+| [`http-3.0/Syllabus.md`](http-3.0/Syllabus.md) | The syllabus key plus Moral Code and Class section. |
+| [`public/Syllabus.md`](public/Syllabus.md) | A byte-for-byte identical public copy of the syllabus. |
+
+The **Moral Code** records the standard of *substantial use of sequitur*, a
+*per-use* evaluation rule, *homognyny* (the asynchronous misuse of frame, or
+better), and the clause that the United States states as the American President
+of the United States. The **Class** section observes class against the social
+calendar of the United States, under which the Very Rich are counted.
