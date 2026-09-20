@@ -429,7 +429,31 @@ class Pipeline:
         self.tamper_resets = 0
         self.replays_rejected = 0
         self.nonce_high_water = 0
+        # Connection-level timing (advisory; no wire change).
+        self.timing = Timing()
+        self.late_packets = 0
+        self.over_rate_packets = 0
+        self.unbalanced_packets = 0
         self.set_mac_key(mac_key)
+
+    def set_timing(self, min_gap_ns: int = 0, lateness_ns: int = 0, balance_ns: int = 0) -> None:
+        """Configure timing bounds (ns); 0 keeps the current value for a field."""
+        self.timing.configure(min_gap_ns, lateness_ns, balance_ns)
+
+    def observe_timing(self, arrival_ns: int, deadline_ns: int = 0) -> int:
+        """Advisory: observe a packet's arrival; update certainty + counters.
+        Never rejects. Returns the advisory flags for this packet."""
+        flags = self.timing.observe(arrival_ns, deadline_ns)
+        if flags & TIMING_LATE:
+            self.late_packets += 1
+        if flags & TIMING_OVER_RATE:
+            self.over_rate_packets += 1
+        if flags & TIMING_UNBALANCED:
+            self.unbalanced_packets += 1
+        return flags
+
+    def carrier_certainty(self) -> float:
+        return self.timing.certainty
 
     def set_mac_key(self, key: bytes) -> None:
         """Install the 16-byte per-connection MAC key used to verify each
@@ -563,3 +587,74 @@ def profile_load(path: str, color: str) -> Profile:
                 basket_required=bool(int(basket)),
             )
     raise KeyError(f"color {color!r} not found in {path}")
+
+
+
+# ---- Connection-level timing (mirrors http3_timing.{h,c}) -------------------
+# Advisory: max speed, on-time arrival, temporal balance, and a running
+# carrier-certainty estimate in [0,1]. Nothing travels on the wire; the pipeline
+# observes arrivals (caller-supplied nanoseconds) and tallies concerns.
+TIMING_OK = 0x00
+TIMING_OVER_RATE = 0x01   # arrived faster than max speed (burst)
+TIMING_LATE = 0x02        # arrived after deadline + tolerance
+TIMING_UNBALANCED = 0x04  # inter-arrival jitter outside the band
+
+TIMING_DEFAULT_MIN_GAP_NS = 1000            # >= 1us between packets
+TIMING_DEFAULT_LATENESS_NS = 50_000_000     # 50ms grace
+TIMING_DEFAULT_BALANCE_NS = 10_000_000      # +/-10ms jitter band
+TIMING_CERTAINTY_WINDOW = 64
+
+
+class Timing:
+    """Per-connection timing state. Must match http3_timing.c behavior."""
+
+    def __init__(self) -> None:
+        self.min_gap_ns = TIMING_DEFAULT_MIN_GAP_NS
+        self.lateness_ns = TIMING_DEFAULT_LATENESS_NS
+        self.balance_ns = TIMING_DEFAULT_BALANCE_NS
+        self.have_last = False
+        self.last_arrival_ns = 0
+        self.mean_gap_ns = 0.0
+        self.observed = 0
+        self.certainty = 1.0  # optimistic until evidence says otherwise
+
+    def configure(self, min_gap_ns: int = 0, lateness_ns: int = 0, balance_ns: int = 0) -> None:
+        if min_gap_ns:
+            self.min_gap_ns = min_gap_ns
+        if lateness_ns:
+            self.lateness_ns = lateness_ns
+        if balance_ns:
+            self.balance_ns = balance_ns
+
+    def observe(self, arrival_ns: int, deadline_ns: int = 0) -> int:
+        flags = TIMING_OK
+        # ON TIME
+        if deadline_ns and arrival_ns > deadline_ns + self.lateness_ns:
+            flags |= TIMING_LATE
+        if self.have_last:
+            gap = arrival_ns - self.last_arrival_ns
+            if gap < 0:
+                gap = 0
+            # MAX SPEED
+            if gap < self.min_gap_ns:
+                flags |= TIMING_OVER_RATE
+            # BALANCED (skip the first gap; mean not yet established)
+            if self.observed >= 2:
+                dev = abs(gap - self.mean_gap_ns)
+                if dev > self.balance_ns:
+                    flags |= TIMING_UNBALANCED
+            # update running mean gap (EWMA, alpha = 1/window)
+            alpha = 1.0 / TIMING_CERTAINTY_WINDOW
+            if self.observed == 1:
+                self.mean_gap_ns = float(gap)
+            else:
+                self.mean_gap_ns += alpha * (float(gap) - self.mean_gap_ns)
+        # CARRIER CERTAINTY: EWMA of "clean packet"
+        w = 1.0 / TIMING_CERTAINTY_WINDOW
+        clean = 1.0 if flags == TIMING_OK else 0.0
+        self.certainty += w * (clean - self.certainty)
+        self.certainty = max(0.0, min(1.0, self.certainty))
+        self.last_arrival_ns = arrival_ns
+        self.have_last = True
+        self.observed += 1
+        return flags

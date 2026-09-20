@@ -21,6 +21,7 @@
 
 #include "http3_envelope.h"
 #include "http3_naming.h"
+#include "http3_timing.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -74,6 +75,11 @@ typedef struct {
     uint64_t                replays_rejected; /* packets dropped: stale NONCE  */
     uint8_t                 mac_key[HTTP3_MAC_KEY_BYTES]; /* per-conn MAC key   */
     uint64_t                nonce_high_water; /* highest accepted NONCE so far */
+    /* Connection-level timing (advisory; no wire change). */
+    http3_timing_t          timing;           /* max-speed/on-time/balance state */
+    uint64_t                late_packets;     /* observed: missed deadline       */
+    uint64_t                over_rate_packets;/* observed: faster than max speed */
+    uint64_t                unbalanced_packets;/* observed: jitter out of band   */
 } http3_pipeline_t;
 
 /* Initialize an empty pipeline. The INTACTX tamper threshold defaults to
@@ -99,6 +105,28 @@ void http3_pipeline_set_mac_key(http3_pipeline_t *pipe,
  * sender identity, but the single-connection reference keeps one monotonic
  * high-water mark. */
 void http3_pipeline_reset_replay_window(http3_pipeline_t *pipe, uint64_t start);
+
+/* Configure connection-level timing bounds (max speed / on-time grace / balance
+ * band), in nanoseconds. Pass 0 for any field to keep its current value. */
+void http3_pipeline_set_timing(http3_pipeline_t *pipe,
+                               uint64_t min_gap_ns,
+                               uint64_t lateness_ns,
+                               uint64_t balance_ns);
+
+/*
+ * Observe a received packet's timing: `arrival_ns` is when it arrived and
+ * `deadline_ns` (0 if none) is when it was due. ADVISORY only -- it never
+ * rejects a packet; it updates the running carrier-certainty estimate and the
+ * late/over-rate/unbalanced counters. Returns the advisory flags for this
+ * packet (see http3_timing_flag_t). Call it alongside http3_pipeline_handle_wire
+ * for each packet whose arrival time you have.
+ */
+unsigned http3_pipeline_observe_timing(http3_pipeline_t *pipe,
+                                       uint64_t arrival_ns,
+                                       uint64_t deadline_ns);
+
+/* Current carrier-certainty estimate in [0,1] (how dependable the path looks). */
+double http3_pipeline_carrier_certainty(const http3_pipeline_t *pipe);
 
 /*
  * Register a service by name, returning its compact SERVICE-ID (§4). ctx is

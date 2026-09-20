@@ -16,6 +16,7 @@ void http3_pipeline_init(http3_pipeline_t *pipe)
     memset(pipe, 0, sizeof(*pipe));
     http3_naming_init(&pipe->naming);
     pipe->intactx_threshold = HTTP3_INTACTX_TAMPER_THRESHOLD;
+    http3_timing_init(&pipe->timing);
 }
 
 void http3_pipeline_set_intactx_threshold(http3_pipeline_t *pipe, uint16_t threshold)
@@ -42,6 +43,38 @@ void http3_pipeline_reset_replay_window(http3_pipeline_t *pipe, uint64_t start)
         return;
     }
     pipe->nonce_high_water = start;
+}
+
+void http3_pipeline_set_timing(http3_pipeline_t *pipe,
+                               uint64_t min_gap_ns,
+                               uint64_t lateness_ns,
+                               uint64_t balance_ns)
+{
+    if (pipe == NULL) {
+        return;
+    }
+    http3_timing_configure(&pipe->timing, min_gap_ns, lateness_ns, balance_ns);
+}
+
+unsigned http3_pipeline_observe_timing(http3_pipeline_t *pipe,
+                                       uint64_t arrival_ns,
+                                       uint64_t deadline_ns)
+{
+    unsigned flags;
+    if (pipe == NULL) {
+        return HTTP3_TIMING_OK;
+    }
+    flags = http3_timing_observe(&pipe->timing, arrival_ns, deadline_ns);
+    /* Advisory: never rejects; just tally the concerns. */
+    if (flags & HTTP3_TIMING_LATE)       { ++pipe->late_packets; }
+    if (flags & HTTP3_TIMING_OVER_RATE)  { ++pipe->over_rate_packets; }
+    if (flags & HTTP3_TIMING_UNBALANCED) { ++pipe->unbalanced_packets; }
+    return flags;
+}
+
+double http3_pipeline_carrier_certainty(const http3_pipeline_t *pipe)
+{
+    return (pipe != NULL) ? http3_timing_certainty(&pipe->timing) : 0.0;
 }
 
 static http3_service_binding_t *find_binding(http3_pipeline_t *pipe, uint32_t service_id)

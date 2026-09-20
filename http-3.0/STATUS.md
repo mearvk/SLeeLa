@@ -49,6 +49,7 @@ succeeds. New files: `http3_envelope.{h,c}`, `http3_naming.{h,c}`,
 | §14 | Capability negotiation (text/binary, dictionaries, compression) | **Partial** — text/binary present; negotiation handshake future |
 | §17 | Administration / observability | **Partial** — request counter; full admin surface future |
 | §19 | Reference processing pipeline | **Implemented** — receive→parse→svc-id→op-id→unpack→dispatch→logic→pack→response |
+| §19 | Connection-level timing (max speed / on time / balance / carrier certainty) | **Implemented (advisory)** — `http3_timing.{h,c}`; observes arrivals, tallies late/over-rate/unbalanced, tracks carrier certainty; no wire change, no rejects |
 | §10, §11 | Streaming, compression | **Not yet** — flag bits reserved, no engine |
 | §15, §16 | Java connector, RMI parity | **Not yet** — Python parity done as a proof of §20 |
 | crypto | Capsules, KDS, route grading | **Pre-existing** — unchanged, still self-tests |

@@ -25,6 +25,7 @@ one request end to end. Companion: [`STATUS.md`](STATUS.md).
 | Integrity gate (digest + tamper + replay) | §19 | `http3_pipeline_handle_wire` (verify + reset + replay) | `http3_pipeline.c` |
 | INTACTX variance / tamper check | §5 | `http3_intactx_variance` / `_is_tampered` | `http3_intactx.c` |
 | Replay window (NONCE high-water) | §19 | `nonce_high_water` + `http3_pipeline_reset_replay_window` | `http3_pipeline.c` |
+| Timing: max speed / on time / balance / carrier certainty | §19 | `http3_timing_t` + `http3_pipeline_observe_timing` | `http3_timing.{h,c}` / `http3_pipeline.c` |
 | Response model | §7 | `http3_response_t` (`status`, `request_id`, `result`) | `http3_envelope.h` |
 | Application status | §7 | `http3_status_t` (incl. `BAD_DIGEST`, `TAMPERED`, `REPLAYED`) | `http3_envelope.h` |
 | Retry classes | §9 | `http3_retry_class_t` | `http3_pipeline.h` |
@@ -107,6 +108,14 @@ Key invariants surfaced by the flow:
   is serialized into a 172-byte canonical block carried on every packet and
   covered by the MAC, so it is authenticated end to end. The C block, the Python
   block, and the human-readable `BASKET.docx` all agree byte-for-byte.
+- **Timing is measured, not enforced on the wire** (§19): a connection-level
+  timing layer (`http3_timing.{h,c}`) watches each arrival for **max speed** (a
+  minimum inter-arrival gap), **on time** (arrival within a deadline + grace),
+  and **temporal balance** (inter-arrival jitter within a band), and keeps a
+  running **carrier certainty** in [0,1] — the fraction of recent packets that
+  were clean. It is **advisory**: nothing new travels on the wire and no packet
+  is rejected by timing; the pipeline records `late_packets`, `over_rate_packets`,
+  and `unbalanced_packets`. C and Python compute identical flags and certainty.
 
 ## Run it
 
