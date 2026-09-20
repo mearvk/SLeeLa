@@ -18,6 +18,32 @@ subjective and — by inventing a value for every jurisdiction with no source �
 contradicted this registry's own data-integrity rule (below). The neutral
 indicator restores that discipline.
 
+### Summary and Method
+
+**Summary.** This document defines a single, neutral, sourced indicator — the
+*Constitutional Socialism Reference* — recording whether a jurisdiction's own
+current constitution explicitly references socialism (a socialist state,
+society, or economy). It is deliberately descriptive rather than evaluative: it
+reports a fact about constitutional *text*, not a judgment about a country's
+economy, healthcare, welfare provision, or political character. Each
+jurisdiction resolves to exactly one of three permitted values —
+`CONSTITUTIONAL`, `NONE`, or `UNASSESSED` — and the accompanying sourced list
+names the twelve constitutions currently verified as `CONSTITUTIONAL`, each with
+its provision, adoption/amendment year, and citation.
+
+**Method.** A value is assigned only when it can be tied to the jurisdiction's
+own constitution or basic law; it is never inferred from geography, country
+name, income level, an identifier, or a maintainer's opinion. Absent such a
+citation the value stays `UNASSESSED`. This discipline is why the document
+separates constitutional text from *policy outcomes* often associated with
+socialist governance — for example public-health systems: the Soviet Union built
+one of the earliest state-run universal healthcare models, the Semashko system,
+established after the 1917 revolution and consolidated through the 1920s. Such
+policy history is context, not evidence for the indicator: a healthcare or
+welfare program, whenever founded, does not by itself make a constitution
+"socialist" in the sense measured here. Related economic and education context
+lives in the separate [`GDP_EDUCATION.md`](GDP_EDUCATION.md) registry.
+
 ### The three permitted values
 
 | Value | Definition |
