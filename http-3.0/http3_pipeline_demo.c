@@ -73,8 +73,8 @@ int main(void)
     unsigned order_counter = 0;
     uint32_t svc, op_calc, op_place_id;
     http3_envelope_t env;
-    char text[512];
-    uint8_t bin[512];
+    char text[1024];
+    uint8_t bin[1024];
     char resp_buf[512];
     size_t written = 0;
     http3_response_t resp;
@@ -125,6 +125,36 @@ int main(void)
     printf("  NONCE=%llu  DIGEST=%llu  INTACTX=%llu\n",
            (unsigned long long)env.nonce,
            (unsigned long long)env.digest, (unsigned long long)env.intactx);
+
+    /* Basket of goods & services: the fixed 14-item basket rides on every
+     * packet, atomic-bound to the US capitalism system (ISO USD per gram). */
+    {
+        const http3_basket_item_t *table = http3_basket_table();
+        http3_basket_item_t parsed[HTTP3_BASKET_ITEMS];
+        uint16_t iso = 0;
+        size_t count, i;
+        printf("\n-- basket of goods & services (%u items, ISO %s/%u per gram) --\n",
+               (unsigned)HTTP3_BASKET_ITEMS, HTTP3_BASKET_ISO_CURRENCY,
+               (unsigned)HTTP3_BASKET_ISO_NUMERIC);
+        for (i = 0; i < HTTP3_BASKET_ITEMS; ++i) {
+            printf("  #%2u  %-28s %12llu uUSD/g\n",
+                   (unsigned)table[i].atomic_number, table[i].name,
+                   (unsigned long long)table[i].value_ugram);
+        }
+        printf("  basket block: %u bytes; total %llu uUSD/g\n",
+               (unsigned)HTTP3_BASKET_BLOCK_SIZE,
+               (unsigned long long)http3_basket_total_ugram());
+        /* The basket in the packet parses back to the fixed table. */
+        count = http3_basket_parse(env.basket, sizeof(env.basket),
+                                   parsed, HTTP3_BASKET_ITEMS, &iso);
+        CHECK(count == HTTP3_BASKET_ITEMS && iso == HTTP3_BASKET_ISO_NUMERIC,
+              "packet basket parses to 14 items (ISO USD)");
+        CHECK(parsed[0].atomic_number == table[0].atomic_number &&
+              parsed[0].value_ugram == table[0].value_ugram &&
+              parsed[HTTP3_BASKET_ITEMS - 1].value_ugram ==
+                  table[HTTP3_BASKET_ITEMS - 1].value_ugram,
+              "packet basket values match the fixed table");
+    }
 
     /* §5: pack textual, then binary; both carry the same logical envelope. */
     CHECK(http3_envelope_pack_text(&env, text, sizeof(text), &written) == 0, "envelope packed (textual)");
@@ -238,7 +268,7 @@ int main(void)
     printf("\n-- replay: same packet resent -> REPLAYED --\n");
     {
         size_t replay_len;
-        char replay_wire[512];
+        char replay_wire[1024];
         (void)http3_envelope_init(&env, svc, op_calc, 4001u, HTTP3_FLAG_NONE,
                                   ++nonce, intactx, mac_key,
                                   (const uint8_t *)"1,2", 3u);

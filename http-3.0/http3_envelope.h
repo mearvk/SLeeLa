@@ -6,7 +6,7 @@
  * protocol. It carries, in a fixed logical order:
  *
  *     VERSION | FLAGS | SERVICE-ID | OP-ID | REQUEST-ID
- *             | NONCE | DIGEST | INTACTX | PAYLOAD                    (§5)
+ *             | NONCE | DIGEST | INTACTX | BASKET | PAYLOAD           (§5)
  *
  * DIGEST is a per-packet 64-bit KEYED MAC (SipHash-2-4, see http3_mac.h) over
  * the header + payload under a per-connection secret key: it detects both
@@ -18,7 +18,10 @@
  * INTACTX is a system-specific 64-bit host-integrity identity (see
  * http3_intactx.h): it fingerprints the emitting host and encodes how far that
  * host has drifted from its baseline, so a tampered/changed machine reports a
- * statically larger value and the receiver can RESET the exchange.
+ * statically larger value and the receiver can RESET the exchange. BASKET is
+ * the fixed basket of goods & services (see http3_basket.h), atomic-bound to
+ * the US capitalism system, carried on every packet as a canonical block and
+ * covered by the MAC.
  *
  * and a response carries:
  *
@@ -34,7 +37,8 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#include "http3_mac.h" /* HTTP3_MAC_KEY_BYTES, keyed-MAC DIGEST */
+#include "http3_mac.h"    /* HTTP3_MAC_KEY_BYTES, keyed-MAC DIGEST */
+#include "http3_basket.h" /* HTTP3_BASKET_BLOCK_SIZE, the per-packet basket */
 
 #ifdef __cplusplus
 extern "C" {
@@ -75,6 +79,7 @@ typedef struct {
     uint64_t nonce;                                /* NONCE (replay guard) */
     uint64_t digest;                               /* DIGEST     */
     uint64_t intactx;                              /* INTACTX    */
+    uint8_t  basket[HTTP3_BASKET_BLOCK_SIZE];      /* BASKET (canonical block) */
     uint8_t  payload[HTTP3_ENVELOPE_MAX_PAYLOAD];  /* PAYLOAD    */
     size_t   payload_len;
 } http3_envelope_t;
@@ -105,8 +110,9 @@ typedef struct {
 /* ---- Construction --------------------------------------------------------- */
 
 /* Initialize an envelope with ids, INTACTX host identity, and payload. The
- * per-packet DIGEST (keyed MAC) is computed and stored automatically over the
- * finished header + payload under `key` (a 16-byte per-connection secret).
+ * fixed basket (http3_basket.h) is serialized into the packet automatically,
+ * and the per-packet DIGEST (keyed MAC) is computed and stored over the finished
+ * header + basket + payload under `key` (a 16-byte per-connection secret).
  * Returns 0 on success, -1 if the payload is too large or an argument is NULL. */
 int http3_envelope_init(http3_envelope_t *env,
                         uint32_t service_id,
@@ -134,17 +140,18 @@ int http3_envelope_verify_digest(const http3_envelope_t *env,
 
 /* ---- Textual wire form (§5: textual for interoperability) -----------------
  * Line form (single line, newline-terminated):
- *   H3 <version> <flags> <service_id> <op_id> <request_id> <nonce> <digest> <intactx> <payload_len>:<payload-bytes>
+ *   H3 <version> <flags> <service_id> <op_id> <request_id> <nonce> <digest> <intactx> <basket-hex> <payload_len>:<payload-bytes>
+ * BASKET travels as a lowercase-hex token (2*HTTP3_BASKET_BLOCK_SIZE chars).
  * The payload is length-prefixed so it is binary-safe and space-safe.
  */
 int http3_envelope_pack_text(const http3_envelope_t *env, char *out, size_t out_cap, size_t *written);
 int http3_envelope_unpack_text(const char *in, size_t in_len, http3_envelope_t *env);
 
 /* ---- Binary wire form (§5: binary for negotiated high performance) --------
- * Fixed header, big-endian, then raw payload:
- *   [ver:1][flags:1][service_id:4][op_id:4][request_id:8][nonce:8][digest:8][intactx:8][payload_len:4][payload:N]
+ * Fixed header, big-endian, then the basket block, then raw payload:
+ *   [ver:1][flags:1][service_id:4][op_id:4][request_id:8][nonce:8][digest:8][intactx:8][basket:HTTP3_BASKET_BLOCK_SIZE][payload_len:4][payload:N]
  */
-#define HTTP3_ENVELOPE_BIN_HEADER 46u
+#define HTTP3_ENVELOPE_BIN_HEADER (46u + HTTP3_BASKET_BLOCK_SIZE)
 int http3_envelope_pack_binary(const http3_envelope_t *env, uint8_t *out, size_t out_cap, size_t *written);
 int http3_envelope_unpack_binary(const uint8_t *in, size_t in_len, http3_envelope_t *env);
 

@@ -579,6 +579,13 @@ before any dispatch (see [`http-3.0/FLOW.md`](http-3.0/FLOW.md) and
   the MAC, checked against a pipeline high-water mark. A replay of a previously
   valid packet is answered `REPLAYED`; since the NONCE is MAC-covered it cannot
   be bumped to evade the check.
+- **BASKET — goods & services carried on every packet.** A fixed, carefully
+  selected basket of **14 goods and services** ([`http-3.0/http3_basket.{h,c}`](http-3.0/)),
+  atomic-bound to the US capitalism system: each item has an indivisible atomic
+  number and an ISO value **for a Gram** in USD (ISO 4217 USD / 840, integer
+  micro-USD per gram). The full basket is serialized into a 172-byte canonical
+  block that travels in every packet and is covered by the MAC. See
+  [`BASKET.docx`](BASKET.docx) for the human-readable table.
 
 Both a C reference and a dependency-free Python reference
 ([`http-3.0/http3_flow.py`](http-3.0/http3_flow.py)) implement this; the keyed
@@ -592,6 +599,7 @@ matches the published reference test vector. Build and exercise it with
 |---|---|
 | [`CLASS.md`](CLASS.md) | The syllabus key (38142-hex-digit CSPRNG value) with the **Moral Code** and the **Class** section, in one document. |
 | [`MIL.SPEC.md`](MIL.SPEC.md) | A CSPRNG-random **1022-bit** value as a 256-char hex string, dedicated to the Military, Endless Charity, and the Strength of the United States. |
+| [`BASKET.docx`](BASKET.docx) | Standard Office Open XML document listing the fixed **14-item basket** of goods & services (atomic number + ISO USD micro-value per gram) carried in every HTTP 3.0 packet. |
 | [`http-3.0/Syllabus.md`](http-3.0/Syllabus.md) | The syllabus key plus Moral Code and Class section. |
 | [`public/Syllabus.md`](public/Syllabus.md) | A byte-for-byte identical public copy of the syllabus. |
 

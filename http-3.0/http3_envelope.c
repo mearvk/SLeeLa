@@ -4,12 +4,14 @@
  * ========================================================================== */
 #include "http3_envelope.h"
 #include "http3_mac.h"
+#include "http3_basket.h"
 
 #include <stdio.h>
 #include <string.h>
 
 /* Canonical serialized header size the DIGEST is computed over (big-endian,
- * fixed-width fields; excludes the DIGEST itself, includes the NONCE). */
+ * fixed-width fields; excludes the DIGEST itself, includes the NONCE). The
+ * basket block and payload are appended after this header when MACing. */
 #define ENV_DIGEST_HDR 38u
 
 /* Big-endian field writers (defined fully in the binary-wire section below). */
@@ -27,8 +29,9 @@ static void put_u64(uint8_t *b, uint64_t v);
 uint64_t http3_envelope_compute_digest(const http3_envelope_t *env,
                                        const uint8_t key[HTTP3_MAC_KEY_BYTES])
 {
-    uint8_t msg[ENV_DIGEST_HDR + HTTP3_ENVELOPE_MAX_PAYLOAD];
+    uint8_t msg[ENV_DIGEST_HDR + HTTP3_BASKET_BLOCK_SIZE + HTTP3_ENVELOPE_MAX_PAYLOAD];
     uint8_t logical_flags;
+    size_t pos;
     if (env == NULL || key == NULL || env->payload_len > HTTP3_ENVELOPE_MAX_PAYLOAD) {
         return 0;
     }
@@ -48,10 +51,15 @@ uint64_t http3_envelope_compute_digest(const http3_envelope_t *env,
     /* payload length as a fixed 32-bit big-endian field (payloads are capped at
      * HTTP3_ENVELOPE_MAX_PAYLOAD, well within 32 bits). */
     put_u32(msg + 34, (uint32_t)env->payload_len);
+    pos = ENV_DIGEST_HDR;
+    /* BASKET travels on every packet and is covered by the MAC. */
+    memcpy(msg + pos, env->basket, HTTP3_BASKET_BLOCK_SIZE);
+    pos += HTTP3_BASKET_BLOCK_SIZE;
     if (env->payload_len > 0U) {
-        memcpy(msg + ENV_DIGEST_HDR, env->payload, env->payload_len);
+        memcpy(msg + pos, env->payload, env->payload_len);
     }
-    return http3_mac_siphash24(key, msg, ENV_DIGEST_HDR + env->payload_len);
+    pos += env->payload_len;
+    return http3_mac_siphash24(key, msg, pos);
 }
 
 int http3_envelope_verify_digest(const http3_envelope_t *env,
@@ -85,6 +93,8 @@ int http3_envelope_init(http3_envelope_t *env,
     env->request_id = request_id;
     env->nonce = nonce;
     env->intactx = intactx;
+    /* The fixed basket of goods & services rides on every packet. */
+    (void)http3_basket_serialize(env->basket, sizeof(env->basket));
     if (payload != NULL && payload_len > 0U) {
         memcpy(env->payload, payload, payload_len);
     }
@@ -96,20 +106,59 @@ int http3_envelope_init(http3_envelope_t *env,
 
 /* ---- Textual envelope ----------------------------------------------------- */
 
+static const char k_hex[] = "0123456789abcdef";
+
+static void hex_encode(const uint8_t *in, size_t len, char *out)
+{
+    size_t i;
+    for (i = 0; i < len; ++i) {
+        out[2 * i]     = k_hex[(in[i] >> 4) & 0xF];
+        out[2 * i + 1] = k_hex[in[i] & 0xF];
+    }
+}
+
+static int hex_val(char c)
+{
+    if (c >= '0' && c <= '9') return c - '0';
+    if (c >= 'a' && c <= 'f') return c - 'a' + 10;
+    if (c >= 'A' && c <= 'F') return c - 'A' + 10;
+    return -1;
+}
+
+static int hex_decode(const char *in, size_t hexlen, uint8_t *out, size_t out_cap)
+{
+    size_t i;
+    if (hexlen % 2u != 0u || hexlen / 2u > out_cap) {
+        return -1;
+    }
+    for (i = 0; i < hexlen / 2u; ++i) {
+        int hi = hex_val(in[2 * i]);
+        int lo = hex_val(in[2 * i + 1]);
+        if (hi < 0 || lo < 0) {
+            return -1;
+        }
+        out[i] = (uint8_t)((hi << 4) | lo);
+    }
+    return 0;
+}
+
 int http3_envelope_pack_text(const http3_envelope_t *env, char *out, size_t out_cap, size_t *written)
 {
     int n;
     size_t pos;
+    char basket_hex[2 * HTTP3_BASKET_BLOCK_SIZE + 1];
     if (env == NULL || out == NULL || env->payload_len > HTTP3_ENVELOPE_MAX_PAYLOAD) {
         return -1;
     }
-    n = snprintf(out, out_cap, "H3 %u %u %u %u %llu %llu %llu %llu %zu:",
+    hex_encode(env->basket, HTTP3_BASKET_BLOCK_SIZE, basket_hex);
+    basket_hex[2 * HTTP3_BASKET_BLOCK_SIZE] = '\0';
+    n = snprintf(out, out_cap, "H3 %u %u %u %u %llu %llu %llu %llu %s %zu:",
                  (unsigned)env->version, (unsigned)env->flags,
                  (unsigned)env->service_id, (unsigned)env->op_id,
                  (unsigned long long)env->request_id,
                  (unsigned long long)env->nonce,
                  (unsigned long long)env->digest,
-                 (unsigned long long)env->intactx, env->payload_len);
+                 (unsigned long long)env->intactx, basket_hex, env->payload_len);
     if (n < 0 || (size_t)n >= out_cap) {
         return -1;
     }
@@ -132,17 +181,25 @@ int http3_envelope_unpack_text(const char *in, size_t in_len, http3_envelope_t *
     unsigned long long request_id, nonce, digest, intactx;
     unsigned long payload_len;
     int consumed = 0;
+    char basket_hex[2 * HTTP3_BASKET_BLOCK_SIZE + 1];
     const char *p;
     (void)in_len;
 
     if (in == NULL || env == NULL) {
         return -1;
     }
-    /* Parse the fixed prefix up to and including the ':' after payload_len. */
-    if (sscanf(in, "H3 %u %u %u %u %llu %llu %llu %llu %lu:%n",
-               &version, &flags, &service_id, &op_id, &request_id,
-               &nonce, &digest, &intactx, &payload_len, &consumed) != 9 || consumed <= 0) {
-        return -1;
+    /* Parse the fixed prefix, the fixed-width basket-hex token, then the ':'
+     * after payload_len. The %Ns width guards the basket_hex buffer. */
+    {
+        char fmt[96];
+        (void)snprintf(fmt, sizeof(fmt),
+                       "H3 %%u %%u %%u %%u %%llu %%llu %%llu %%llu %%%us %%lu:%%n",
+                       (unsigned)(2 * HTTP3_BASKET_BLOCK_SIZE));
+        if (sscanf(in, fmt, &version, &flags, &service_id, &op_id, &request_id,
+                   &nonce, &digest, &intactx, basket_hex, &payload_len, &consumed) != 10 ||
+            consumed <= 0) {
+            return -1;
+        }
     }
     if (payload_len > HTTP3_ENVELOPE_MAX_PAYLOAD) {
         return -1;
@@ -157,6 +214,9 @@ int http3_envelope_unpack_text(const char *in, size_t in_len, http3_envelope_t *
     env->nonce = (uint64_t)nonce;
     env->digest = (uint64_t)digest;
     env->intactx = (uint64_t)intactx;
+    if (hex_decode(basket_hex, strlen(basket_hex), env->basket, sizeof(env->basket)) != 0) {
+        return -1;
+    }
     env->payload_len = (size_t)payload_len;
     if (payload_len > 0U) {
         memcpy(env->payload, p, payload_len);
@@ -205,7 +265,8 @@ int http3_envelope_pack_binary(const http3_envelope_t *env, uint8_t *out, size_t
     put_u64(out + 18, env->nonce);
     put_u64(out + 26, env->digest);
     put_u64(out + 34, env->intactx);
-    put_u32(out + 42, (uint32_t)env->payload_len);
+    memcpy(out + 42, env->basket, HTTP3_BASKET_BLOCK_SIZE);
+    put_u32(out + 42 + HTTP3_BASKET_BLOCK_SIZE, (uint32_t)env->payload_len);
     memcpy(out + HTTP3_ENVELOPE_BIN_HEADER, env->payload, env->payload_len);
     if (written != NULL) {
         *written = HTTP3_ENVELOPE_BIN_HEADER + env->payload_len;
@@ -219,7 +280,7 @@ int http3_envelope_unpack_binary(const uint8_t *in, size_t in_len, http3_envelop
     if (in == NULL || env == NULL || in_len < HTTP3_ENVELOPE_BIN_HEADER) {
         return -1;
     }
-    payload_len = get_u32(in + 42);
+    payload_len = get_u32(in + 42 + HTTP3_BASKET_BLOCK_SIZE);
     if (payload_len > HTTP3_ENVELOPE_MAX_PAYLOAD ||
         in_len < (size_t)HTTP3_ENVELOPE_BIN_HEADER + payload_len) {
         return -1;
@@ -233,6 +294,7 @@ int http3_envelope_unpack_binary(const uint8_t *in, size_t in_len, http3_envelop
     env->nonce = get_u64(in + 18);
     env->digest = get_u64(in + 26);
     env->intactx = get_u64(in + 34);
+    memcpy(env->basket, in + 42, HTTP3_BASKET_BLOCK_SIZE);
     env->payload_len = payload_len;
     if (payload_len > 0U) {
         memcpy(env->payload, in + HTTP3_ENVELOPE_BIN_HEADER, payload_len);

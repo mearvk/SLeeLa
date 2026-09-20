@@ -41,7 +41,7 @@ succeeds. New files: `http3_envelope.{h,c}`, `http3_naming.{h,c}`,
 | Spec section | Concept | State (2026-09-14) |
 |---|---|---|
 | §4 | Fast naming (name ↔ compact id, caching) | **Implemented** — `http3_naming` + `http3_flow.py` |
-| §5 | Compact envelope `VERSION\|FLAGS\|SERVICE-ID\|OP-ID\|REQUEST-ID\|NONCE\|DIGEST\|INTACTX\|PAYLOAD` | **Implemented** — textual **and** binary wire; per-packet keyed-MAC DIGEST (SipHash-2-4) + INTACTX host id + monotonic NONCE replay guard |
+| §5 | Compact envelope `VERSION\|FLAGS\|SERVICE-ID\|OP-ID\|REQUEST-ID\|NONCE\|DIGEST\|INTACTX\|BASKET\|PAYLOAD` | **Implemented** — textual **and** binary wire; per-packet keyed-MAC DIGEST (SipHash-2-4) + INTACTX host id + monotonic NONCE replay guard + fixed 14-item goods/services BASKET (ISO USD/g) |
 | §6 | Request IDs (correlation without ordering) | **Implemented** — carried and echoed |
 | §7 | Response model `STATUS\|REQUEST-ID\|RESULT` | **Implemented** — `http3_response_*` |
 | §9 | Retry classes (READ/IDEMPOTENT/MUTATING/STREAM) | **Implemented** — per-operation; mutating-retry decision point marked |
@@ -147,9 +147,21 @@ HTTP 3.0 packet now carries two integrity values ahead of its payload:
   single-connection reference keeps one high-water mark; a multi-sender
   deployment keys it per sender identity.)
 
-The pipeline records all three events for observability (§17): `digest_rejects`,
-`tamper_resets`, and `replays_rejected`. New files: `http3_intactx.{h,c}`,
-`http3_mac.{h,c}`. Updated: `http3_envelope.{h,c}`, `http3_pipeline.{h,c}`,
+- **BASKET** — a fixed, carefully-selected set of **14 goods and services**
+  (`http3_basket.{h,c}`), atomic-bound to the United States capitalism system.
+  Each item has an indivisible atomic number and an ISO value **for a Gram**,
+  denominated in USD (ISO 4217 USD / 840) as integer micro-USD per gram. The
+  full basket is serialized into a 172-byte canonical big-endian block that
+  **travels in every HTTP 3.0 packet** and is **covered by the MAC**, so it is
+  authenticated end to end and cannot be altered in transit without detection.
+  The same basket appears in the human-readable `BASKET.docx` (repo root, a
+  standard Office Open XML document) and in the Python reference; the C and
+  Python blocks are byte-identical.
+
+The pipeline records all three integrity events for observability (§17):
+`digest_rejects`, `tamper_resets`, and `replays_rejected`. New files:
+`http3_intactx.{h,c}`, `http3_mac.{h,c}`, `http3_basket.{h,c}`, and root
+`BASKET.docx`. Updated: `http3_envelope.{h,c}`, `http3_pipeline.{h,c}`,
 `http3_protocol.h`, `http3_pipeline_demo.c`, `http3_flow.py`,
 `test_http3_flow.py`, `Makefile`, `.gitignore`, `FLOW.md`.
 
