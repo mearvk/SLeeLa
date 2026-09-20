@@ -169,6 +169,16 @@ converted into fabricated per-person numbers.
 | **Attempted hand of science / proviso** | A relation to the premise **by technocratic attempt** — reaching toward the long run without a completed governing theory of it. | `GERALDINE.FERRARO.md` |
 | **Manner, not magnitude** | The rule that presidents are placed by the *manner* of their relation to the premise (knowing method / attempted hand / neither), never by a fabricated numeric "how much," because the premise supplies no computable quantity. | `GERALDINE.FERRARO.md` |
 
+### B.2 Term care
+
+Some words carry more weight than their casual use suggests. This section records
+the **care** a term requires so it is applied consistently, and never as a tool
+for profiling, ranking, locating, or otherwise treating real people as objects.
+
+| Term | Definition & care | Source |
+|------|-----------|--------|
+| **Celebrity (term care)** | "Celebrity" is a **defined term, not a loose label.** It should be applied only against a *standard degree of norm* — a stated, normalized threshold of public recognition — so its use is consistent and measurable rather than arbitrary. Where a degree is genuinely needed, express it as a **normalized measure** (e.g., a 0–1 recognition norm against a stated reference population), and attach it to the **public role or status**, in the aggregate. The term names that public role; it is **not** a basis for profiling, locating, scoring-for-harm, or treating individuals as property. Real individuals' privacy is preserved: the norm describes a threshold, not a person. | this glossary |
+
 ---
 
 ## See also
