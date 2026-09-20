@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  physical-lengths.xml  --  Physical Lines: real distances that reach across
+  space, in metres. Where the mathematical lengths are EXACT (defined by a
+  formula), these are MEASURED or OBSERVED physical extents. A Line here is a
+  distance a thing spans or a length light or a body travels.
+
+  provenance:
+    primary_source : SI Brochure (BIPM, 2019) for defined lengths; NIST/CODATA
+                     for measured lengths; NASA/IAU for astronomical distances
+    retrieved      : 2026-09
+    note           : Metres unless noted. EXACT lengths are definitional (the
+                     metre, the light-second); MEASURED/OBSERVED are physical.
+-->
+<lengths unit="metre">
+  <length name="metre (SI base unit)"        value="1.0"            kind="EXACT"    note="defined via the speed of light and the second"/>
+  <length name="light travels in 1 second"   value="299792458.0"    kind="EXACT"    note="c is exact by definition (m/s)"/>
+  <length name="Bohr radius"                 value="5.29177210903e-11" kind="MEASURED" note="CODATA 2018 atomic length scale"/>
+  <length name="human hair (typical width)"  value="7.5e-5"         kind="OBSERVED" note="approx 50-100 micrometres"/>
+  <length name="Earth mean radius"           value="6371000.0"      kind="OBSERVED" note="IUGG mean radius"/>
+  <length name="Earth equatorial circumference" value="40075017.0"  kind="OBSERVED" note="WGS-84 equatorial circumference"/>
+  <length name="Earth-Moon mean distance"    value="384400000.0"    kind="OBSERVED" note="NASA mean centre-to-centre"/>
+  <length name="astronomical unit"           value="149597870700.0" kind="EXACT"    note="IAU 2012 exact definition (Earth-Sun)"/>
+</lengths>

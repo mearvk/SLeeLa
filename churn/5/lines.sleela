@@ -1,0 +1,173 @@
+#sleela 1.2
+// 5/lines.sleela  --  "Lines": the general model for relevance set /5.
+//
+// The progression of the churn relevance sets:
+//   /1 Longs      -- magnitudes that RUN OVER TIME (a length series)
+//   /2 Structures -- magnitudes that STAND (a standing quantity)
+//   /3 Facets     -- one FACE of a many-sided object
+//   /4 Areas      -- magnitudes that SPAN (a real 2D extent)
+//   /5 Lines      -- magnitudes that REACH (a 1D count or length: integers,
+//                    lengths, common counts)
+//
+// A Line is the simplest magnitude: a whole count or a length that reaches from
+// 0 out along one dimension. This set loads Lines from three domains --
+// mathematical (integers + line/perimeter formulas), physical (real lengths),
+// and social (common counts + national lengths) -- and reports each Line's
+// value, its order of magnitude, and its kind. Every Line also carries a
+// guiding **Spark**: a short maxim that says what the Line teaches (see SPARKS.md).
+//
+// Data are real and sourced (see data/*.json|xml|txt and README.md):
+//   math    : canonical integers/common counts (OEIS) + line formulas (geometry)
+//   physics : defined and measured lengths in metres (BIPM/CODATA/NASA/IAU)
+//   social  : common counts and US national lengths (Census / CBP / USGS / NPS)
+//
+// Discipline: EXACT lines are defined (an integer, a formula); MEASURED/OBSERVED
+// lines are physical or published extents. A relation between lines is a MODEL,
+// not a causal claim. ASSOCIATION != CAUSATION; ASSUMPTION != FACT.
+import math;
+
+struct Line {
+    String domain;   // "math" | "physics" | "social"
+    String name;
+    double value;    // the 1D value: a count or a length
+    String unit;     // "count" | "unit" | "m" | "km" | ...
+    String kind;     // "EXACT" (defined) | "MEASURED" | "OBSERVED"
+    String spark;    // the guiding Spark this Line carries
+}
+
+class Lines {
+
+    // Order of magnitude = number of times we can divide |value| by 10 before
+    // it drops below 1. Computed with a loop (the math library exposes no log10),
+    // so it stays exact and dependency-light. Returns 0 for |value| < 1.
+    int orderOfMagnitude(double v) {
+        double a = math.abs(v);
+        int om = 0;
+        while (a >= 10.0) {
+            a = a / 10.0;
+            om = om + 1;
+        }
+        return om;
+    }
+
+    // A Line is WHOLE when it equals its own truncation to an integer count --
+    // i.e. it is a pure count, not a fractional length.
+    boolean whole(double v) {
+        double a = math.abs(v);
+        // a % 1 == 0 for a whole value (floating modulo is supported by the VM).
+        return (a % 1.0) == 0.0;
+    }
+
+    String trust(String kind) {
+        if (kind == "EXACT") { return "defined -- an integer or a formula, no uncertainty"; }
+        if (kind == "MEASURED") { return "a measured length -- carries an uncertainty"; }
+        return "an observed/published extent -- as counted or surveyed";
+    }
+
+    // One report line for a Line: value, order of magnitude, whole?, and kind.
+    void report(Line l) {
+        int om = orderOfMagnitude(l.value);
+        print("  [" + l.domain + "] " + l.name + " = " + l.value + " " + l.unit
+            + "  (10^" + om + ", whole=" + whole(l.value) + ", " + l.kind + ")");
+    }
+
+    // The guiding Spark for a Line -- what it teaches.
+    void spark(Line l) {
+        print("  * " + l.name + " -- " + l.spark);
+    }
+
+    void reading(Line l) {
+        print("  " + l.name + " (" + l.domain + ") is " + l.kind + ": " + trust(l.kind) + ".");
+    }
+
+    void main() {
+        print("=== /5 Lines -- 1D counts and lengths that reach, per domain ===");
+        print("A Line is the simplest magnitude: an integer count or a length.");
+        print("Kinds: EXACT (defined), MEASURED, OBSERVED. Each carries a Spark.");
+        print("");
+
+        // --- mathematical Lines: common counts (integers.json) ---
+        Line dozen = new Line();
+        dozen.domain = "math"; dozen.name = "dozen"; dozen.value = 12.0;
+        dozen.unit = "count"; dozen.kind = "EXACT";
+        dozen.spark = "a count is a line laid unit by unit; name it and it becomes a tool.";
+
+        Line gross = new Line();
+        gross.domain = "math"; gross.name = "gross"; gross.value = 144.0;
+        gross.unit = "count"; gross.kind = "EXACT";
+        gross.spark = "structure compounds: a dozen dozen is easier to hold than 144 loose.";
+
+        Line perfect = new Line();
+        perfect.domain = "math"; perfect.name = "first perfect number"; perfect.value = 6.0;
+        perfect.unit = "count"; perfect.kind = "EXACT";
+        perfect.spark = "6 = 1+2+3: a whole equal to the sum of its own parts is rare and worth noticing.";
+
+        Line byteRange = new Line();
+        byteRange.domain = "math"; byteRange.name = "byte range count"; byteRange.value = 256.0;
+        byteRange.unit = "count"; byteRange.kind = "EXACT";
+        byteRange.spark = "powers of two are where counting meets the machine.";
+
+        // --- mathematical Lines: line/perimeter formulas (geometry-lengths.json) ---
+        Line hypot = new Line();
+        hypot.domain = "math"; hypot.name = "3-4-5 hypotenuse"; hypot.value = 5.0;
+        hypot.unit = "unit"; hypot.kind = "EXACT";
+        hypot.spark = "the shortest line between two truths often runs through a right angle.";
+
+        Line circumference = new Line();
+        circumference.domain = "math"; circumference.name = "circle circumference (r=2)";
+        circumference.value = 12.566370614; circumference.unit = "unit"; circumference.kind = "EXACT";
+        circumference.spark = "a curved line still has an exact length; pi makes it knowable.";
+
+        // --- physical Lines (physical-lengths.xml) ---
+        Line metre = new Line();
+        metre.domain = "physics"; metre.name = "metre (SI base unit)"; metre.value = 1.0;
+        metre.unit = "m"; metre.kind = "EXACT";
+        metre.spark = "a unit is a line everyone agrees to share; agreement is what makes measurement possible.";
+
+        Line earthCirc = new Line();
+        earthCirc.domain = "physics"; earthCirc.name = "Earth equatorial circumference";
+        earthCirc.value = 40075017.0; earthCirc.unit = "m"; earthCirc.kind = "OBSERVED";
+        earthCirc.spark = "even the whole world is a line you can walk end to end, given time.";
+
+        // --- social Lines: common counts (common-counts.json) ---
+        Line states = new Line();
+        states.domain = "social"; states.name = "US states"; states.value = 50.0;
+        states.unit = "count"; states.kind = "OBSERVED";
+        states.spark = "a union is a count held together by a rule, not by proximity.";
+
+        Line senate = new Line();
+        senate.domain = "social"; senate.name = "US senators"; senate.value = 100.0;
+        senate.unit = "count"; senate.kind = "OBSERVED";
+        senate.spark = "two per state: a count can encode a principle (equal voice) as well as a quantity.";
+
+        // --- social Lines: national lengths (us-lengths.txt) ---
+        Line border = new Line();
+        border.domain = "social"; border.name = "US-Canada border"; border.value = 8891.0;
+        border.unit = "km"; border.kind = "OBSERVED";
+        border.spark = "the longest shared line in the world is a border no one guards in anger.";
+
+        print("[mathematical] value, order of magnitude, whole?, kind");
+        report(dozen); report(gross); report(perfect); report(byteRange);
+        report(hypot); report(circumference);
+        print("");
+        print("[physical] lengths that reach across space (metres)");
+        report(metre); report(earthCirc);
+        print("");
+        print("[social] common counts and national lengths");
+        report(states); report(senate); report(border);
+        print("");
+
+        print("[sparks] the guiding maxim each Line carries");
+        spark(dozen); spark(perfect); spark(byteRange);
+        spark(circumference); spark(metre); spark(states); spark(border);
+        print("");
+
+        print("[evaluation] what each Line's kind means for trust");
+        reading(dozen); reading(earthCirc); reading(states);
+        print("");
+        print("Note: real sourced data (OEIS integers, public-domain geometry,");
+        print("BIPM/CODATA/NASA/IAU lengths, US Census/CBP/USGS/NPS counts and");
+        print("lengths). A Line reaches in one dimension; a relation between");
+        print("lines is a MODEL, not a causal claim.");
+    }
+}
