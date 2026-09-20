@@ -17,6 +17,7 @@
 #include "http3_naming.h"
 #include "http3_intactx.h"
 #include "http3_timing.h"
+#include "http3_handshake.h"
 #include "http3_pipeline.h"
 #include "http3_profile.h"
 

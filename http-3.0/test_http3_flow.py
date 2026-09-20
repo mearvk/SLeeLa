@@ -139,6 +139,34 @@ def test_timing_advisory_flags_and_certainty() -> None:
     # Timing is advisory: it never rejects, so no packet turned into a response here.
 
 
+def test_handshake_highest_common_level_and_baseline_fallback() -> None:
+    from http3_flow import (
+        CapOffer, handshake_resolve, handshake_negotiate,
+        CAP_ALL, CAP_NONE, CAP_L1_BASE, CAP_L2_PERLEG, CAP_L3_PACING, CAP_L4_ECHO,
+    )
+    # A fully-updated peer and an older baseline-only router negotiate down to L1.
+    full = CapOffer.make(CAP_ALL, KEY)
+    old = CapOffer.make(CAP_L1_BASE, KEY)  # not yet updated
+    assert handshake_resolve(full, old, KEY) == CAP_L1_BASE
+    # Two current peers reach the top level.
+    assert handshake_resolve(full, full, KEY) == CAP_L4_ECHO
+    # Highest COMMON level: L3-capable peer vs full -> L3.
+    l3 = CapOffer.make(CAP_L1_BASE | CAP_L2_PERLEG | CAP_L3_PACING, KEY)
+    assert handshake_resolve(full, l3, KEY) == CAP_L3_PACING
+    # make() always folds in the baseline (even if omitted).
+    assert CapOffer.make(0, KEY).capabilities & CAP_L1_BASE
+    # A tampered offer fails verification.
+    forged = CapOffer.make(CAP_ALL, KEY)
+    forged.capabilities = CAP_L1_BASE  # change caps after MAC was stamped
+    try:
+        handshake_resolve(forged, full, KEY)
+        assert False, "expected MAC failure"
+    except ValueError:
+        pass
+    # A peer lacking the baseline (non-conforming) negotiates to NONE.
+    assert handshake_negotiate(CAP_L2_PERLEG, CAP_L2_PERLEG) == CAP_NONE
+
+
 def test_pipeline_rejects_replayed_nonce() -> None:
     pipe = Pipeline(mac_key=KEY)
 

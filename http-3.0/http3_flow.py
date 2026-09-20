@@ -658,3 +658,76 @@ class Timing:
         self.have_last = True
         self.observed += 1
         return flags
+
+
+
+# ---- Capability-negotiation handshake (mirrors http3_handshake.{h,c}) -------
+# Two peers advertise a capability bitmask (cumulative levels L1..L4); the
+# handshake deterministically selects the highest common level, with a baseline
+# (L1) fallback so an older/not-yet-updated router runs the modest baseline
+# until it advertises more. Offers are MAC-backed. The bitmask is neutral: it
+# names supported protocol tiers only (no national/geographic/identity meaning).
+CAP_NONE = 0x00
+CAP_L1_BASE = 0x01     # baseline: envelope + integrity gate
+CAP_L2_PERLEG = 0x02   # per-leg MSS / path-MTU sizing
+CAP_L3_PACING = 0x04   # timing-aware pacing (max-speed/balance)
+CAP_L4_ECHO = 0x08     # echo-acknowledged, deadline-aware delivery
+CAP_BASELINE = CAP_L1_BASE
+CAP_ALL = CAP_L1_BASE | CAP_L2_PERLEG | CAP_L3_PACING | CAP_L4_ECHO
+
+_CAP_LEVEL_NAMES = {
+    CAP_NONE: "NONE",
+    CAP_L1_BASE: "L1_BASELINE",
+    CAP_L2_PERLEG: "L2_PERLEG",
+    CAP_L3_PACING: "L3_PACING",
+    CAP_L4_ECHO: "L4_ECHO",
+}
+
+
+def cap_level_name(level: int) -> str:
+    return _CAP_LEVEL_NAMES.get(level, "MIXED")
+
+
+def _offer_mac(caps: int, key: bytes) -> int:
+    # Domain tag "H3CP" + caps big-endian (8 bytes); must match http3_handshake.c.
+    msg = b"H3CP" + struct.pack(">I", caps & 0xFFFFFFFF)
+    return siphash24(key, msg)
+
+
+@dataclass
+class CapOffer:
+    """A peer's capability offer: the advertised bitmask + a MAC over it."""
+
+    capabilities: int
+    mac: int = 0
+
+    @staticmethod
+    def make(capabilities: int, key: bytes) -> "CapOffer":
+        caps = (capabilities | CAP_BASELINE) & 0xFFFFFFFF
+        return CapOffer(capabilities=caps, mac=_offer_mac(caps, key))
+
+    def verify(self, key: bytes) -> bool:
+        return _offer_mac(self.capabilities, key) == self.mac
+
+
+def handshake_negotiate(local_caps: int, remote_caps: int) -> int:
+    """Highest single level present in both capability sets (baseline fallback).
+    Returns CAP_NONE only if a peer lacks the baseline (non-conforming)."""
+    common = local_caps & remote_caps
+    if not (common & CAP_BASELINE):
+        return CAP_NONE
+    if common & CAP_L4_ECHO:
+        return CAP_L4_ECHO
+    if common & CAP_L3_PACING:
+        return CAP_L3_PACING
+    if common & CAP_L2_PERLEG:
+        return CAP_L2_PERLEG
+    return CAP_L1_BASE
+
+
+def handshake_resolve(local: CapOffer, remote: CapOffer, key: bytes):
+    """Verify both offers' MACs under key, then negotiate. Returns the agreed
+    level, or raises ValueError if either MAC fails (as the C -1 return)."""
+    if not local.verify(key) or not remote.verify(key):
+        raise ValueError("capability offer MAC failed")
+    return handshake_negotiate(local.capabilities, remote.capabilities)

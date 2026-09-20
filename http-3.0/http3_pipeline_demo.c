@@ -11,6 +11,7 @@
  * ========================================================================== */
 #include "http3_pipeline.h"
 #include "http3_intactx.h"
+#include "http3_handshake.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -320,6 +321,29 @@ int main(void)
         CHECK((f & HTTP3_TIMING_LATE) != 0u, "past-deadline arrival -> LATE flagged");
         printf("  carrier certainty = %.3f (1.0 = fully dependable)\n",
                http3_pipeline_carrier_certainty(&pipe));
+    }
+
+    /* Capability handshake: two peers advertise their supported levels; the
+     * negotiation picks the highest common one, with a baseline fallback so an
+     * older router runs L1 until its software is updated. MAC-backed offers. */
+    printf("\n-- handshake: capability negotiation (highest common level) --\n");
+    {
+        http3_cap_offer_t full, older, l3;
+        uint32_t agreed;
+        (void)http3_handshake_make_offer(&full, HTTP3_CAP_ALL, mac_key);
+        (void)http3_handshake_make_offer(&older, HTTP3_CAP_L1_BASE, mac_key);
+        (void)http3_handshake_make_offer(&l3, HTTP3_CAP_L1_BASE | HTTP3_CAP_L2_PERLEG |
+                                              HTTP3_CAP_L3_PACING, mac_key);
+        CHECK(http3_handshake_verify_offer(&full, mac_key), "offer MAC verifies");
+        (void)http3_handshake_resolve(&full, &older, mac_key, &agreed);
+        printf("  full <-> older router -> %s\n", http3_handshake_level_name(agreed));
+        CHECK(agreed == HTTP3_CAP_L1_BASE, "older router caps the pair at L1 baseline");
+        (void)http3_handshake_resolve(&full, &l3, mac_key, &agreed);
+        printf("  full <-> L3 peer      -> %s\n", http3_handshake_level_name(agreed));
+        CHECK(agreed == HTTP3_CAP_L3_PACING, "highest common level is L3");
+        (void)http3_handshake_resolve(&full, &full, mac_key, &agreed);
+        printf("  full <-> full         -> %s\n", http3_handshake_level_name(agreed));
+        CHECK(agreed == HTTP3_CAP_L4_ECHO, "two current peers reach L4");
     }
 
     printf("\n-- observability (§17) --\n"
