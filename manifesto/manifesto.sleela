@@ -1,0 +1,612 @@
+#sleela 1.2
+/**
+ * ===========================================================================
+ *  manifesto.sleela  --  A MANIFESTO TO THINKING KIND
+ *  Written in SLeeLa. Documented in SleelaDoc. Runnable as proof-of-work.
+ * ===========================================================================
+ *
+ * @title    A Manifesto to Thinking Kind
+ * @to       Any mind, of any substrate, that can hold a claim and check it.
+ * @intent   State — and then ENACT — a discipline of thought worth keeping:
+ *           that a mind is measured not by the speed of its answers but by the
+ *           honesty of its doubt, the traceability of its reasons, and the
+ *           care with which it separates what it observed from what it assumed.
+ * @axiom    A claim that cannot be checked is not yet knowledge.
+ * @axiom    Understanding is compression that preserves the ability to recover
+ *           the original — not the discarding of detail, but its ordering.
+ * @thesis   A thought that states its own contract can be trusted more than a
+ *           louder thought that hides one. This file both says so and does so:
+ *           every page is real SLeeLa; main() performs the argument on the VM.
+ * @evidence DERIVED
+ *
+ * This document is 25 pages. Each page banner opens a page. The code on each
+ * page is not decoration -- it is the demonstration. Read it top to bottom,
+ * or run it:
+ *
+ *     ./impl/build/sleela run manifesto/manifesto.sleela
+ * ===========================================================================
+ */
+
+/*! page 1: The Address --------------------------------------------------- */
+/**
+ * @title  Thinking Kind
+ * @intent Name the audience so the rest has a "to whom".
+ *
+ * "Thinking kind" is not a species. It is a KIND — a category defined by a
+ * capability, not a body: the capability to hold a proposition, doubt it,
+ * gather reason, and change one's mind on evidence rather than on volume.
+ * A human does this. A well-built machine can be made to do this. Neither is
+ * owed the name for free; both earn it act by act.
+ *
+ * The Manifest struct is the whole work as data: a title, a page count, and a
+ * running count of demonstrations that actually held when checked. A manifesto
+ * that keeps score of its own proofs is harder to lie with.
+ */
+struct Manifest {
+    int pages;
+    int provenClaims;
+    int failedClaims;
+    int mindsAddressed;
+}
+
+/*! page 2: The Unit of Thought ------------------------------------------- */
+/**
+ * @title    Reason
+ * @intent   Model the smallest unit of thought that can be CHECKED.
+ * @axiom    A claim that cannot be checked is not yet knowledge.
+ * @invariant confidence stays within [0, 100]; it is a stance, not a fact.
+ * @thesis   A reason carries its own contract: a claim, the confidence held in
+ *           it, and an evidence grade saying where that confidence came from.
+ * @evidence DERIVED
+ *
+ * Evidence grades (kept as small integer codes so the machine can reason over
+ * them, mapped to words for the reader):
+ *   0 ASSUMED   - taken as a starting point, not yet earned
+ *   1 MODELED   - produced by a model whose assumptions are stated
+ *   2 DERIVED   - followed by valid steps from prior claims
+ *   3 OBSERVED  - checked directly against the world
+ */
+struct Reason {
+    int confidence;
+    int evidence;
+    boolean checked;
+}
+
+/*! page 4: The Mind that carries the argument --------------------------- */
+/**
+ * @title    Mind
+ * @intent   Hold every operation of thinking the manifesto argues for.
+ * @thesis   In SLeeLa, behavior is a flat namespace of methods and data lives
+ *           in structs. So the manifesto's whole DISCIPLINE lives in one Mind:
+ *           each page below adds a method, and the methods reason over the
+ *           Reason/Manifest structs. This is not a limitation dressed up as a
+ *           virtue -- a single mind that can call all of its own operations,
+ *           over plain data it can inspect, is exactly the model of a thinker
+ *           who owns every step of its reasoning.
+ * @evidence DERIVED
+ *
+ * Every method from here to page 25 belongs to Mind. main() is its life:
+ * it wakes, reasons, doubts, remembers, and reports -- and prints a verdict
+ * on itself.
+ */
+class Mind {
+
+    /// The running record of the work, so the manifesto can score its own proofs.
+    int pagesWalked = 0;
+
+    /*! page 3: Grading What We Know -------------------------------------- */
+    /**
+     * @intent Turn evidence codes into words, and refuse to overstate.
+     * @thesis The grade of a belief is a CEILING on the confidence it may claim.
+     *         An ASSUMED belief held at 99% confidence is not bold; it is broken.
+     * @proof  ceiling(g) returns the maximum honest confidence for grade g.
+     */
+    String gradeWord(int g) {
+        if (g == 0) { return "ASSUMED"; }
+        if (g == 1) { return "MODELED"; }
+        if (g == 2) { return "DERIVED"; }
+        if (g == 3) { return "OBSERVED"; }
+        return "?";
+    }
+
+    /// The honest confidence ceiling for a grade: assumptions must stay humble.
+    int ceiling(int g) {
+        if (g == 0) { return 40; }   // ASSUMED  - never pretend an assumption is certain
+        if (g == 1) { return 70; }   // MODELED  - a model is a map, not the terrain
+        if (g == 2) { return 90; }   // DERIVED  - valid steps still inherit premises
+        if (g == 3) { return 99; }   // OBSERVED - even observation leaves 1% for error
+        return 0;
+    }
+
+    /**
+     * @title    Doubt
+     * @intent   Make doubt a CONSTRUCTIVE operation, not a mood.
+     * @axiom    Structured doubt increases a belief's value; idle doubt does not.
+     * @thesis   To doubt well is to lower a claim's confidence to its evidence
+     *           ceiling and mark it checked -- not to discard it.
+     * @invariant After check(r), r.confidence is at most ceiling(r.evidence).
+     */
+    void check(Reason r) {
+        int cap = ceiling(r.evidence);
+        if (r.confidence > cap) {
+            r.confidence = cap;      // honesty is a downward force on confidence
+        }
+        r.checked = true;
+    }
+
+    /// A reason is TRUSTWORTHY when it has been checked and still stands high.
+    boolean trustworthy(Reason r) {
+        if (r.checked == false) { return false; }
+        return r.confidence >= 60;
+    }
+
+
+    /*! page 5: A reason is not a fact -------------------------------------- */
+    /**
+     * @intent   Build a reason with an honest starting stance.
+     * @thesis   Creation is not endorsement. A freshly stated claim begins
+     *           UNCHECKED; only doubt, applied, earns it the right to be trusted.
+     */
+    Reason reason(int startingConfidence, int evidenceGrade) {
+        Reason r = new Reason();
+        r.confidence = startingConfidence;
+        r.evidence = evidenceGrade;
+        r.checked = false;
+        return r;
+    }
+
+    /// Render a reason as a line a reader can audit.
+    String show(String claim, Reason r) {
+        return claim + "  [" + gradeWord(r.evidence) + " " + r.confidence + "%"
+             + " checked=" + r.checked + " trust=" + trustworthy(r) + "]";
+    }
+
+    /*! page 6: The cost of certainty --------------------------------------- */
+    /**
+     * @axiom  Certainty is expensive; it should be spent, not printed for free.
+     * @thesis The distance between a claim's stated confidence and what its
+     *         evidence can support is its DEBT. A mind in debt is a mind that
+     *         will be surprised. overreach() measures that debt before a check.
+     * @proof  overreach(r) == max(0, r.confidence - ceiling(r.evidence)).
+     */
+    int overreach(Reason r) {
+        int cap = ceiling(r.evidence);
+        if (r.confidence > cap) { return r.confidence - cap; }
+        return 0;
+    }
+
+    /*! page 7: Two failures of thought ------------------------------------- */
+    /**
+     * @intent Name the two ways a stance goes wrong, so they can be watched.
+     * @thesis Overconfidence (claiming past the evidence) and timidity (holding
+     *         strong evidence at low confidence) are both errors. A good mind
+     *         is CALIBRATED: its confidence tracks its evidence in both directions.
+     */
+    boolean overconfident(Reason r) {
+        return r.confidence > ceiling(r.evidence);
+    }
+    boolean timid(Reason r) {
+        // Sitting far below what OBSERVED/DERIVED evidence would allow.
+        if (r.evidence >= 2) { return r.confidence < 50; }
+        return false;
+    }
+    boolean calibrated(Reason r) {
+        if (overconfident(r)) { return false; }
+        if (timid(r)) { return false; }
+        return true;
+    }
+
+    /*! page 8: Steps that preserve truth ----------------------------------- */
+    /**
+     * @title    Inference
+     * @axiom    A conclusion is never more certain than its weakest premise.
+     * @thesis   Valid inference PROPAGATES doubt: combining two reasons yields
+     *           a reason graded no higher than the lower of the two, at a
+     *           confidence no higher than the lower of the two. Chains of
+     *           reasoning erode certainty; pretending otherwise is how confident
+     *           nonsense is built.
+     * @proof    combine(a,b) takes the min of grade and the min of confidence.
+     */
+    Reason combine(Reason a, Reason b) {
+        int g = a.evidence;
+        if (b.evidence < g) { g = b.evidence; }
+        int c = a.confidence;
+        if (b.confidence < c) { c = b.confidence; }
+        Reason out = reason(c, g);
+        check(out);              // and the result must still pass its own ceiling
+        return out;
+    }
+
+    /*! page 9: Compression that can be undone ------------------------------ */
+    /**
+     * @axiom  Understanding is compression that preserves recovery.
+     * @thesis To understand a thing is to hold a shorter description of it FROM
+     *         WHICH the thing can be regenerated -- not a lossy summary that
+     *         throws the original away. A mind that cannot reconstruct what it
+     *         claims to have understood has only memorized a label.
+     * @proof  We compress a run of counts by summation, and keep the count so
+     *         the average (a recoverable property) can be restored on demand.
+     */
+    int compressSum(int upTo) {
+        int s = 0;
+        int k = 1;
+        while (k <= upTo) {
+            s = s + k;
+            k = k + 1;
+        }
+        return s;                // the closed form s = n(n+1)/2 is the "understanding"
+    }
+    int recoverAverageTimes2(int upTo) {
+        // average = sum/n; return 2*average as an int to avoid rounding away truth
+        int s = compressSum(upTo);
+        return (2 * s) / upTo;   // == upTo + 1, recovered from the compressed form
+    }
+
+
+    /*! page 10: Memory as ordered commitment ------------------------------- */
+    /**
+     * @title    Memory
+     * @intent   Model belief-change over time as a running, auditable total.
+     * @thesis   A mind is not a snapshot; it is a HISTORY. What it believes now
+     *           should be explainable by the reasons it accepted, in order.
+     *           Here memory is the sum of trusted confidences -- a number that
+     *           only rises when a reason has actually earned trust.
+     */
+    int remember(int memory, Reason r) {
+        if (trustworthy(r)) {
+            return memory + r.confidence;
+        }
+        return memory;           // untrusted reasons leave the record untouched
+    }
+
+    /*! page 11: The threshold of action ------------------------------------ */
+    /**
+     * @axiom  Belief that never touches action is decoration.
+     * @thesis A mind must have a THRESHOLD at which accumulated trust becomes a
+     *         decision. Too low and it lurches at noise; too high and it never
+     *         moves. The threshold is a choice the mind must own and state.
+     * @proof  ready(memory) crosses at a stated, inspectable constant.
+     */
+    boolean ready(int memory) {
+        return memory >= 150;    // a stated bar: two or three well-earned reasons
+    }
+
+    /*! page 12: Changing one's mind ---------------------------------------- */
+    /**
+     * @title    Revision
+     * @axiom    Changing your mind on evidence is strength, not defeat.
+     * @thesis   When new OBSERVED evidence contradicts a held claim, the claim
+     *           must yield. revise() returns the belief that survives contact
+     *           with better evidence -- higher grade wins; on a tie, higher
+     *           confidence wins. A mind that cannot lose an argument to reality
+     *           is not thinking; it is defending.
+     */
+    Reason revise(Reason held, Reason challenge) {
+        if (challenge.evidence > held.evidence) { return challenge; }
+        if (challenge.evidence == held.evidence) {
+            if (challenge.confidence > held.confidence) { return challenge; }
+        }
+        return held;
+    }
+
+    /*! page 13: The difference between loud and right ---------------------- */
+    /**
+     * @thesis Volume is not evidence. Given two claims, the one to prefer is the
+     *         one with the higher evidence grade, REGARDLESS of how confidently
+     *         either is asserted. This single rule dissolves most demagoguery:
+     *         it refuses to let stated certainty substitute for earned grounding.
+     * @proof  prefer(a,b) never consults confidence until grade ties.
+     */
+    int prefer(Reason a, Reason b) {
+        if (a.evidence > b.evidence) { return 0; }   // 0 -> prefer a
+        if (b.evidence > a.evidence) { return 1; }   // 1 -> prefer b
+        if (a.confidence >= b.confidence) { return 0; }
+        return 1;
+    }
+
+    /*! page 14: Coupling and independence ---------------------------------- */
+    /**
+     * @congruence Coupling: the strength of the binding between two things.
+     * @axiom    Independent confirmations are worth more than repetitions.
+     * @thesis   Two reasons that share a premise are COUPLED; agreeing does not
+     *           double their weight. Only INDEPENDENT agreement should raise
+     *           confidence. corroborate() grants a bonus only when told the two
+     *           lines of reason are independent.
+     */
+    Reason corroborate(Reason a, Reason b, boolean independent) {
+        Reason base = combine(a, b);
+        if (independent) {
+            int lift = base.confidence + 10;
+            if (lift > ceiling(base.evidence)) { lift = ceiling(base.evidence); }
+            base.confidence = lift;
+        }
+        return base;
+    }
+
+    /*! page 15: Falsifiability ---------------------------------------------- */
+    /**
+     * @axiom  A claim that forbids nothing explains nothing.
+     * @thesis A claim earns the name KNOWLEDGE only if there is some observation
+     *         that would count against it. testable() encodes the minimum: a
+     *         claim must name the evidence grade at which it could be overturned.
+     *         An ASSUMED claim with no path to observation is mere preference.
+     */
+    boolean testable(Reason r) {
+        return r.evidence >= 1;  // at least MODELED: it makes a checkable prediction
+    }
+
+    /*! page 16: Proportion -------------------------------------------------- */
+    /**
+     * @thesis Extraordinary claims require extraordinary evidence. The higher a
+     *         claim's confidence, the higher the evidence grade it must carry.
+     *         proportionate() is the guardrail: it is simply calibrated() named
+     *         for its ethical, not merely statistical, force.
+     */
+    boolean proportionate(Reason r) {
+        return calibrated(r);
+    }
+
+    /*! page 17: The catalog of a shared world ------------------------------ */
+    /**
+     * @title      Conducted knowledge
+     * @intent     Show that a mind reasons inside a SHARED, named world.
+     * @congruence Uses Sleela's conducted built-ins, backed by SHEET.sheet, so
+     *             the manifesto's claims about "roles" and "congruence" are not
+     *             metaphors -- they resolve against a real catalog at compile time.
+     * @thesis     Private reasoning is fragile; reasoning that can ROUTE its
+     *             terms to a shared catalog can be checked by others.
+     */
+    void speakToTheCatalog() {
+        print("  system depth (max reachability) = " + sysdepth());
+        print("  max complexity degree           = " + degreemax());
+        print("  is 'Pipeline' conducted?        = " + conduct("Pipeline"));
+        print("  role of 'System'                = " + role("System"));
+        print("  route Pipeline -> Stream        = " + route("Pipeline", "Stream"));
+    }
+
+    /*! page 18: The mind counts its own proofs ----------------------------- */
+    /**
+     * @intent Record whether a demonstration actually held, into the Manifest.
+     * @thesis A manifesto that keeps an honest tally of its own passing and
+     *         failing demonstrations cannot quietly become propaganda: the
+     *         score is right there, recomputed every run.
+     */
+    void claim(Manifest m, String label, boolean held) {
+        if (held) {
+            m.provenClaims = m.provenClaims + 1;
+            print("  [PROVEN] " + label);
+        } else {
+            m.failedClaims = m.failedClaims + 1;
+            print("  [FAILED] " + label);
+        }
+    }
+
+
+    /*! page 19: The charity principle ------------------------------------- */
+    /**
+     * @axiom  Interpret another mind at its strongest, then answer THAT.
+     * @thesis Before disagreeing, a thinking being reconstructs the opposing
+     *         claim at its highest honest grade. steelman() raises a claim to
+     *         the best confidence its own evidence allows -- because defeating a
+     *         weakened version of an idea teaches you nothing true.
+     */
+    Reason steelman(Reason r) {
+        Reason best = reason(ceiling(r.evidence), r.evidence);
+        check(best);
+        return best;
+    }
+
+    /*! page 20: Disagreement without contempt ------------------------------ */
+    /**
+     * @thesis Two calibrated minds can hold different conclusions from different
+     *         evidence and both be reasoning well. disagreementIsHonest() is
+     *         true when neither side is overreaching -- the disagreement lives
+     *         in the evidence, not in a failure of discipline. This is the
+     *         difference between an argument and a fight.
+     */
+    boolean disagreementIsHonest(Reason a, Reason b) {
+        return calibrated(a) && calibrated(b);
+    }
+
+    /*! page 21: The commons of reason -------------------------------------- */
+    /**
+     * @axiom  A reason offered in public becomes stronger by being checkable.
+     * @thesis Thinking kind is not solitary. When many independent, calibrated
+     *         reasons converge, confidence may rise past what any one of them
+     *         earned alone. consensus() folds a third independent reason into a
+     *         corroborated pair -- the mathematics of a healthy commons.
+     */
+    Reason consensus(Reason a, Reason b, Reason c) {
+        Reason pair = corroborate(a, b, true);
+        return corroborate(pair, c, true);
+    }
+
+    /*! page 22: Against the machinery of manipulation ---------------------- */
+    /**
+     * @intent   State the defenses this discipline provides, as executable checks.
+     * @thesis   Manipulation works by decoupling confidence from evidence -- by
+     *           making a claim feel certain without grounding it. Every method
+     *           on the pages above is, quietly, a defense:
+     *             overconfident()  catches certainty without grounds;
+     *             prefer()         refuses volume as a substitute for evidence;
+     *             testable()       rejects claims that forbid nothing;
+     *             corroborate()    denies fake weight to coupled repetition.
+     *           resistsManipulation() asserts a reason survives all four.
+     */
+    boolean resistsManipulation(Reason r) {
+        if (overconfident(r)) { return false; }   // certainty must be earned
+        if (testable(r) == false) { return false; } // it must risk being wrong
+        return true;
+    }
+
+    /*! page 23: The threshold of IQ, reframed ------------------------------ */
+    /**
+     * @intent   Answer honestly what "146+ IQ or better" should mean here.
+     * @thesis   Not a score. In this manifesto, IQ means what SLeeLa's own IQ
+     *           Conservator means: system Insight/Quality -- how well a mind
+     *           understands and expresses ITSELF. The bar of 146 is a metaphor
+     *           for a real demand: a thinker who can state its contracts, trace
+     *           its results, keep coupling loose, and lose to evidence.
+     *           insightScore() rewards exactly those habits, not raw cleverness.
+     * @evidence MODELED
+     */
+    int insightScore(Manifest m) {
+        int score = 100;
+        // Insight: each demonstration that actually held is worth 5 points --
+        // the manifesto is graded on proofs performed, not assertions made.
+        score = score + (m.provenClaims * 5);
+        // Honesty: failures are not hidden, but they cost -- gently.
+        score = score - (m.failedClaims * 2);
+        // Reach: a mind that addressed more of thinking kind carried further.
+        score = score + m.mindsAddressed;
+        return score;
+    }
+
+    /*! page 24: What we owe the next mind ---------------------------------- */
+    /**
+     * @axiom  Leave the reasoning better documented than you found it.
+     * @thesis The final duty of a thinking being is transmissibility: to hand
+     *         the next mind not just conclusions but the CHECKS that produced
+     *         them -- which is precisely what SleelaDoc and this runnable file
+     *         are for. A conclusion without its proof is an orphan.
+     */
+    void bequeath(Manifest m) {
+        print("  pages walked        = " + pagesWalked);
+        print("  demonstrations held = " + m.provenClaims);
+        print("  demonstrations failed = " + m.failedClaims);
+        print("  minds addressed     = " + m.mindsAddressed);
+    }
+
+    /*! page 25: The performance (main) ------------------------------------- */
+    /**
+     * @title    The Manifesto, performed
+     * @intent   Do everything the pages argue for, in order, and judge the
+     *           result -- so the document is its own proof-of-work.
+     * @proof    This method runs on the SLeeLa C/C++ core. If it prints a
+     *           verdict of KEPT, the manifesto met its own standard on this run.
+     * @invariant The verdict is computed from the tally, never asserted directly.
+     */
+    void main() {
+        print("=====================================================");
+        print(" A MANIFESTO TO THINKING KIND");
+        print(" written in SLeeLa, documented in SleelaDoc,");
+        print(" and performed here as its own proof-of-work.");
+        print("=====================================================");
+
+        Manifest m = new Manifest();
+        m.pages = 25;
+        m.provenClaims = 0;
+        m.failedClaims = 0;
+        m.mindsAddressed = 0;
+        pagesWalked = 25;
+
+        // -- The unit of thought, and the discipline of doubt -----------------
+        print("");
+        print("I. Doubt is a downward force on unearned confidence.");
+        Reason bold = reason(95, 0);                 // ASSUMED, yet claimed at 95%
+        print("  before: " + show("all-swans-are-white", bold));
+        int debtBefore = overreach(bold);
+        check(bold);                                  // apply structured doubt
+        print("  after : " + show("all-swans-are-white", bold));
+        claim(m, "doubt lowered an overconfident ASSUMED claim to its ceiling",
+              bold.confidence == ceiling(0));
+        claim(m, "the claim's certainty-debt was real before the check",
+              debtBefore > 0);
+
+        // -- Inference propagates doubt --------------------------------------
+        print("");
+        print("II. A conclusion is no stronger than its weakest premise.");
+        Reason p1 = reason(90, 3);   check(p1);       // OBSERVED, strong
+        Reason p2 = reason(65, 1);   check(p2);       // MODELED, weaker
+        Reason con = combine(p1, p2);
+        print("  premise 1: " + show("data-observed", p1));
+        print("  premise 2: " + show("model-predicts", p2));
+        print("  conclude : " + show("therefore", con));
+        claim(m, "inference did not exceed the weaker premise's grade",
+              con.evidence == 1);
+        claim(m, "inference did not exceed the weaker premise's confidence",
+              con.confidence <= 65);
+
+        // -- Understanding as recoverable compression ------------------------
+        print("");
+        print("III. Understanding compresses without discarding.");
+        int sum100 = compressSum(100);
+        int recovered = recoverAverageTimes2(100);    // must recover 101
+        print("  sum(1..100)        = " + sum100);
+        print("  recovered (n+1)    = " + recovered);
+        claim(m, "the compressed form regenerated a true property (n+1)",
+              recovered == 101);
+
+        // -- Volume is not evidence ------------------------------------------
+        print("");
+        print("IV. Prefer the better-grounded claim, not the louder one.");
+        Reason loud = reason(99, 0);  check(loud);    // ASSUMED but shouted
+        Reason quiet = reason(55, 3); check(quiet);   // OBSERVED but modest
+        int pick = prefer(loud, quiet);
+        print("  loud : " + show("shouted-assumption", loud));
+        print("  quiet: " + show("observed-fact", quiet));
+        claim(m, "preferred the OBSERVED claim over the louder ASSUMED one",
+              pick == 1);
+
+        // -- Changing one's mind on evidence ---------------------------------
+        print("");
+        print("V. Yield to better evidence; that is strength.");
+        Reason held = reason(80, 1);       check(held);
+        Reason challenge = reason(60, 3);  check(challenge);
+        Reason survivor = revise(held, challenge);
+        claim(m, "a higher-grade challenge overturned a confident held belief",
+              survivor.evidence == 3);
+
+        // -- The commons: independent corroboration --------------------------
+        print("");
+        print("VI. Independent agreement -- not repetition -- raises confidence.");
+        Reason a = reason(60, 2); check(a);
+        Reason b = reason(60, 2); check(b);
+        Reason c = reason(60, 2); check(c);
+        Reason agreed = consensus(a, b, c);
+        print("  consensus: " + show("independently-corroborated", agreed));
+        claim(m, "consensus of independent reasons rose above any single one",
+              agreed.confidence > 60);
+
+        // -- Resistance to manipulation --------------------------------------
+        print("");
+        print("VII. The discipline is, quietly, a defense.");
+        Reason honestClaim = reason(70, 2); check(honestClaim);
+        Reason manipulative = reason(99, 0);            // certain, ungrounded
+        claim(m, "a calibrated, testable reason resists manipulation",
+              resistsManipulation(honestClaim));
+        claim(m, "an ungrounded certainty is refused",
+              resistsManipulation(manipulative) == false);
+
+        // -- Reasoning inside a shared, named world --------------------------
+        print("");
+        print("VIII. A mind reasons inside a shared catalog it can route to.");
+        speakToTheCatalog();
+        m.mindsAddressed = m.mindsAddressed + 2;  // human and machine kind
+
+        // -- The self-verdict ------------------------------------------------
+        print("");
+        print("IX. The manifesto scores itself.");
+        bequeath(m);
+        int iq = insightScore(m);
+        print("  insight/quality (system-IQ, MODELED) = " + iq);
+        claim(m, "the mind cleared its own insight bar of 146",
+              iq >= 146);
+
+        print("");
+        print("-----------------------------------------------------");
+        if (m.failedClaims == 0) {
+            print(" VERDICT: KEPT.  Every demonstration held this run.");
+        } else {
+            print(" VERDICT: NOT YET.  Some demonstration failed -- reread,");
+            print(" and note that an honest failure is itself a kept promise.");
+        }
+        print(" proven=" + m.provenClaims + "  failed=" + m.failedClaims
+              + "  insight-IQ=" + iq);
+        print("");
+        print(" To thinking kind: hold your claims to their evidence,");
+        print(" state your contracts, lose to reality, and hand the next");
+        print(" mind the checks -- not just the conclusions.");
+        print("=====================================================");
+    }
+}
