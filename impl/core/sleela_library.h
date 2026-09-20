@@ -14,7 +14,8 @@ typedef void* SLLibrarySymbol;
 typedef enum {
     SL_LIBRARY_AUTO = 0,
     SL_LIBRARY_LINUX = 1,
-    SL_LIBRARY_WINDOWS = 2
+    SL_LIBRARY_WINDOWS = 2,
+    SL_LIBRARY_MACOS = 3
 } SLLibraryPlatform;
 
 SLLibraryPlatform sllibrary_platform(void);

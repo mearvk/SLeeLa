@@ -11,16 +11,20 @@
 #endif
 
 SLMemoryPlatform slmemory_platform(void) {
-#ifdef _WIN32
+#if defined(_WIN32)
     return SL_MEMORY_WINDOWS;
+#elif defined(__APPLE__)
+    return SL_MEMORY_MACOS;
 #else
     return SL_MEMORY_LINUX;
 #endif
 }
 
 const char* slmemory_platform_name(void) {
-#ifdef _WIN32
+#if defined(_WIN32)
     return "windows-system";
+#elif defined(__APPLE__)
+    return "macos-posix";
 #else
     return "linux-posix";
 #endif
@@ -30,11 +34,7 @@ int slmemory_platform_is_available(SLMemoryPlatform platform) {
     if (platform == SL_MEMORY_AUTO) {
         return 1;
     }
-#ifdef _WIN32
-    return platform == SL_MEMORY_WINDOWS;
-#else
-    return platform == SL_MEMORY_LINUX;
-#endif
+    return platform == slmemory_platform();
 }
 
 void* slmemory_alloc(size_t size) {

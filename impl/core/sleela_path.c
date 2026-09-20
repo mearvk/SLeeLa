@@ -1,5 +1,16 @@
 #include "sleela_path.h"
 
+/* Expose realpath()/getcwd() and related POSIX declarations. On macOS also
+ * request the Darwin/BSD visibility so nothing is hidden by _XOPEN_SOURCE. */
+#ifndef _WIN32
+#ifndef _XOPEN_SOURCE
+#define _XOPEN_SOURCE 700
+#endif
+#if defined(__APPLE__) && !defined(_DARWIN_C_SOURCE)
+#define _DARWIN_C_SOURCE 1
+#endif
+#endif
+
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -28,24 +39,26 @@ static int slpath_copy(char* out, size_t out_size, const char* value) {
 }
 
 SLPathPlatform slpath_platform(void) {
-#ifdef _WIN32
+#if defined(_WIN32)
     return SL_PATH_WINDOWS;
+#elif defined(__APPLE__)
+    return SL_PATH_MACOS;
 #else
     return SL_PATH_LINUX;
 #endif
 }
 
 const char* slpath_platform_name(void) {
-    return slpath_platform() == SL_PATH_WINDOWS ? "windows" : "linux";
+    switch (slpath_platform()) {
+        case SL_PATH_WINDOWS: return "windows";
+        case SL_PATH_MACOS:   return "macos";
+        default:              return "linux";
+    }
 }
 
 int slpath_platform_is_available(SLPathPlatform platform) {
     if (platform == SL_PATH_AUTO) return 1;
-#ifdef _WIN32
-    return platform == SL_PATH_WINDOWS;
-#else
-    return platform == SL_PATH_LINUX;
-#endif
+    return platform == slpath_platform();
 }
 
 char slpath_separator(void) {

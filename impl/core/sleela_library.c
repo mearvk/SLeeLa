@@ -50,10 +50,22 @@ const char* sllibrary_last_error(void) {
 
 #include <dlfcn.h>
 
-SLLibraryPlatform sllibrary_platform(void) { return SL_LIBRARY_LINUX; }
-const char* sllibrary_platform_name(void) { return "linux-dlopen"; }
+SLLibraryPlatform sllibrary_platform(void) {
+#if defined(__APPLE__)
+    return SL_LIBRARY_MACOS;
+#else
+    return SL_LIBRARY_LINUX;
+#endif
+}
+const char* sllibrary_platform_name(void) {
+#if defined(__APPLE__)
+    return "macos-dlopen";
+#else
+    return "linux-dlopen";
+#endif
+}
 int sllibrary_platform_is_available(SLLibraryPlatform platform) {
-    return platform == SL_LIBRARY_AUTO || platform == SL_LIBRARY_LINUX;
+    return platform == SL_LIBRARY_AUTO || platform == sllibrary_platform();
 }
 
 int sllibrary_open(SLLibraryHandle* library, const char* path) {

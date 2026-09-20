@@ -17,7 +17,8 @@ extern "C" {
 typedef enum {
     SL_IO_AUTO = 0,
     SL_IO_LINUX = 1,
-    SL_IO_WINDOWS = 2
+    SL_IO_WINDOWS = 2,
+    SL_IO_MACOS = 3
 } SLIOPlatform;
 
 /* Host platform selected at compile time; may be overridden by

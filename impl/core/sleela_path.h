@@ -10,7 +10,8 @@ extern "C" {
 typedef enum {
     SL_PATH_AUTO = 0,
     SL_PATH_LINUX = 1,
-    SL_PATH_WINDOWS = 2
+    SL_PATH_WINDOWS = 2,
+    SL_PATH_MACOS = 3
 } SLPathPlatform;
 
 SLPathPlatform slpath_platform(void);

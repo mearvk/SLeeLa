@@ -22,7 +22,8 @@ typedef void* (*SLThreadStart)(void*);
 typedef enum {
     SL_THREAD_AUTO = 0,
     SL_THREAD_LINUX = 1,
-    SL_THREAD_WINDOWS = 2
+    SL_THREAD_WINDOWS = 2,
+    SL_THREAD_MACOS = 3
 } SLThreadPlatform;
 
 SLThreadPlatform slthread_platform(void);

@@ -48,12 +48,28 @@ Any language could target this core; Sleela is the first.
 
 Requires a C11 compiler and a C++17 compiler.
 
-**Linux / macOS (POSIX):**
+**Linux (POSIX):**
 
 ```sh
 cd impl
 make            # produces build/sleela
 ```
+
+**macOS (Darwin, Apple clang):** the same POSIX backend of the abstraction
+layer builds natively with clang. Use the helper script (from the repo root) or
+plain `make`:
+
+```sh
+./scripts/build-macos.sh              # clang; installs to /usr/local/bin
+# or, in-tree only:
+cd impl && make CC=clang CXX=clang++  # -> build/sleela
+```
+
+The Makefile detects Darwin via `uname -s` and drops `-ldl` (dlopen is in
+libSystem on macOS); `-pthread` and `clock_gettime` work as-is. The runtime
+reports its backend as `macos` (e.g. `path_platform_smoke` prints
+`paths/filesystem platform: macos`). macOS builds are exercised in CI by
+`.github/workflows/build-macos.yml`.
 
 **Windows 10+ (MinGW-w64):** the core is OS-neutral — threads, TCP sockets,
 files, pipes/named-pipes, paths, terminals, dynamic libraries and time all go

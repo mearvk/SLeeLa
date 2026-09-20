@@ -1,0 +1,88 @@
+name: Build SLeeLa on macOS
+
+# Proves the C/C++ core builds and runs on macOS (Darwin / Apple clang) using
+# the abstraction layer's POSIX backend. Mirrors the Linux/Windows expectations:
+# build both binaries, then run every example program and the subject numeric
+# assertions through the built sleela binary. Unlike Windows, macOS supports
+# filesystem FIFOs, so the fileio-fifo example is NOT skipped here.
+
+on:
+  push:
+    branches: [master, main]
+    paths:
+      - 'impl/**'
+      - 'runtime/**'
+      - 'bash/pixel_terminal.cpp'
+      - 'bash/pixel_terminal.hpp'
+      - 'scripts/build-macos.sh'
+      - 'security/sha256-manifest.json'
+      - '.github/workflows/build-macos.yml'
+  pull_request:
+    paths:
+      - 'impl/**'
+      - 'runtime/**'
+      - 'bash/pixel_terminal.cpp'
+      - 'bash/pixel_terminal.hpp'
+      - 'scripts/build-macos.sh'
+      - 'security/sha256-manifest.json'
+      - '.github/workflows/build-macos.yml'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+    timeout-minutes: 25
+    env:
+      CC: clang
+      CXX: clang++
+      SLEELA_SHA256_MANIFEST: ${{ github.workspace }}/security/sha256-manifest.json
+      SLEELA_SHEET: ${{ github.workspace }}/SHEET.sheet
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Show toolchain versions
+        run: |
+          clang --version | head -1
+          clang++ --version | head -1
+          make --version | head -1
+          python3 --version
+          uname -a
+
+      - name: Build (Apple clang, POSIX backend)
+        run: |
+          export SLEELA_SHA256_MANIFEST="$(pwd)/security/sha256-manifest.json"
+          cd impl
+          make clean
+          make all CC=clang CXX=clang++
+          test -f build/sleela
+          test -f build/nordshrift
+          ./build/sleela version
+
+      - name: Confirm the runtime reports the macOS backend
+        run: |
+          # The platform smoke test prints the detected native backend name;
+          # on macOS it must report "macos", not "linux".
+          export SLEELA_SHA256_MANIFEST="$(pwd)/security/sha256-manifest.json"
+          cd impl
+          make build/path_platform_smoke CC=clang CXX=clang++
+          ./build/path_platform_smoke
+          ./build/path_platform_smoke | grep -qi "platform: macos" || {
+            echo "ERROR: expected path platform to report macos"; exit 1; }
+
+      - name: Run example programs
+        run: |
+          export SLEELA_SHA256_MANIFEST="$(pwd)/security/sha256-manifest.json"
+          export SLEELA_SHEET="$(pwd)/SHEET.sheet"
+          for f in impl/examples/*.sleela; do
+            echo "=== $f ==="
+            ./impl/build/sleela run "$f" || exit 1
+          done
+
+      - name: Run subject numeric assertions
+        run: |
+          export SLEELA_SHA256_MANIFEST="$(pwd)/security/sha256-manifest.json"
+          export SLEELA_SHEET="$(pwd)/SHEET.sheet"
+          bash impl/tests/subjects/run_subject_tests.sh impl/build/sleela

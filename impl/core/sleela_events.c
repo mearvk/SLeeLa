@@ -43,16 +43,20 @@ static void sl_signal_handler(int signal_number) {
 }
 
 SLEventPlatform slevent_platform(void) {
-#ifdef _WIN32
+#if defined(_WIN32)
     return SL_EVENT_WINDOWS;
+#elif defined(__APPLE__)
+    return SL_EVENT_MACOS;
 #else
     return SL_EVENT_LINUX;
 #endif
 }
 
 const char* slevent_platform_name(void) {
-#ifdef _WIN32
+#if defined(_WIN32)
     return "windows-events";
+#elif defined(__APPLE__)
+    return "macos-signals-events";
 #else
     return "linux-signals-events";
 #endif

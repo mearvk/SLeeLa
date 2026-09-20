@@ -210,9 +210,12 @@ cd impl && make
 ./build/nordshrift build nordshrift/examples/demo/build.sst
 ```
 
-SLeeLa's C/C++ core runs on **Linux/macOS (POSIX) and Windows 10+**. On Windows,
-build with MinGW-w64 via `build-windows.ps1` (the Makefile auto-links Winsock
-and produces `sleela.exe`/`nordshrift.exe`); see
+SLeeLa's C/C++ core runs on **Linux, macOS (Darwin/clang), and Windows 10+**.
+On macOS, build with `./scripts/build-macos.sh` (Apple clang); on Windows, build
+with MinGW-w64 via `build-windows.ps1` (the Makefile auto-links Winsock and
+produces `sleela.exe`/`nordshrift.exe`). The Makefile auto-detects the host and
+adjusts link flags per platform. Each target is built in CI
+(`build-macos.yml`, `build-windows.yml`). See
 [`impl/README.md`](impl/README.md#building) and
 [`ARCHITECTURE.md`](ARCHITECTURE.md).
 
