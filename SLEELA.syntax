@@ -1,11 +1,20 @@
 # Sleela — Language Syntax Specification
 
     Language:        Sleela
-    Version:         9.09.1
+    Syntax version:  1.2   (the .sleela grammar version this document describes)
+    Compiler:        Sleelvac(TM) 1.4  (accepts .sleela syntax 1.0 .. 1.2)
     Surface:         Java-like
     Core:            Turing-complete, thread-friendly C/C++ execution core
     Companion:       SHEET.sheet (system-object catalog), SST.model (NS-SST-0001)
-    Status:          Normative for the v9.09.1 surface
+    Status:          Normative for the syntax 1.2 surface
+
+    Versioning note: two distinct version numbers apply and must not be
+    conflated. The **syntax version** (MAJOR.MINOR, declared per file with
+    `#sleela 1.2`) is the grammar version defined here and enforced by
+    `impl/frontend/version.{h,cpp}` (supported range 1.0 .. 1.2). The
+    **compiler/tool version** (Sleelvac 1.4, printed by `sleela version`) is the
+    implementation release and evolves independently. A file must declare a
+    syntax version within the supported range; the tool version is informational.
 
 Sleela is a **Java-like** programming language. Its programs are classes of
 fields and methods that compile to bytecode on the C/C++ core. Beyond ordinary
@@ -13,9 +22,9 @@ Java-like code, Sleela can **address every object type named in `SHEET.sheet`**
 through its *conducted methods*, and it honors the **Constitution** invariants
 (system depth 3024, complexity degree ≤ 4).
 
-This document is normative for the syntax the v9.09.1 front end accepts. Every
-production and built-in below is implemented in `impl/frontend` and executes on
-`impl/core`.
+This document is normative for the syntax 1.2 surface the front end accepts.
+Every production and built-in below is implemented in `impl/frontend` and
+executes on `impl/core`.
 
 --------------------------------------------------------------------------------
 ## 1. Lexical grammar
@@ -85,7 +94,7 @@ A program is one or more classes, optionally preceded or interleaved with
                  | struct-name                      // any declared struct (1.2+)
 
 `int` is 64-bit. `void` is a return type only. The core is dynamically typed
-underneath; v9.09.1 scalar type annotations are surface-level (parsed, not
+underneath; syntax 1.2 scalar type annotations are surface-level (parsed, not
 enforced), so a declared type documents intent without constraining the runtime
 value. A **struct type name** (§3.4) is additionally used at compile time to
 resolve `.field` offsets, so struct-typed variables/parameters/fields must be
@@ -217,7 +226,7 @@ name that does not is a struct member access.
 --------------------------------------------------------------------------------
 ## 6. Conducted methods — addressing `.sheet` object types
 
-Sleela's defining v9.09.1 feature: a program can **address every object type in
+Sleela's defining feature: a program can **address every object type in
 `SHEET.sheet`** — all 16 role categories (root, start, idiom, highlight, call,
 method, attention, gain, conversation, piping, transitive, completitive,
 inheritance, smart-move, congruence, limit) and every object within them — via
@@ -298,7 +307,7 @@ methods, so behavior can be gated on the system's own limits.
 --------------------------------------------------------------------------------
 ## 9. Complete example
 
-    // v9.09.1 — Java-like surface + conducted methods + threading.
+    // syntax 1.2 — Java-like surface + conducted methods + threading.
     class Atlas {
 
         int hits = 0;                        // shared field (thread-safe global)
@@ -343,5 +352,5 @@ Expected output (order of the concurrent phase aside):
     struct (2):     structPack structUnpack                 (syntax 1.2+)
 
 --------------------------------------------------------------------------------
-Sleela 9.09.1 — Java-like surface, addressing the full SHEET.sheet object space,
+Sleela (syntax 1.2) — Java-like surface, addressing the full SHEET.sheet object space,
 on the Turing-complete threaded C/C++ core.

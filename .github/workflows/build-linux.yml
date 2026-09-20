@@ -1,0 +1,98 @@
+name: Build SLeeLa on Linux
+
+# Proves the C/C++ core builds and runs on Linux (GNU/gcc) using the abstraction
+# layer's POSIX backend. Mirrors the macOS/Windows workflows: build both
+# binaries, confirm the runtime reports the linux backend, then run every
+# example program and the subject numeric assertions through the built sleela
+# binary. Linux supports filesystem FIFOs, so no example is skipped.
+
+on:
+  push:
+    branches: [master, main]
+    paths:
+      - 'impl/**'
+      - 'runtime/**'
+      - 'bash/pixel_terminal.cpp'
+      - 'bash/pixel_terminal.hpp'
+      - 'scripts/build-linux.sh'
+      - 'security/sha256-manifest.json'
+      - '.github/workflows/build-linux.yml'
+  pull_request:
+    paths:
+      - 'impl/**'
+      - 'runtime/**'
+      - 'bash/pixel_terminal.cpp'
+      - 'bash/pixel_terminal.hpp'
+      - 'scripts/build-linux.sh'
+      - 'security/sha256-manifest.json'
+      - '.github/workflows/build-linux.yml'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      CC: gcc
+      CXX: g++
+      SLEELA_SHA256_MANIFEST: ${{ github.workspace }}/security/sha256-manifest.json
+      SLEELA_SHEET: ${{ github.workspace }}/SHEET.sheet
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Show toolchain versions
+        run: |
+          gcc --version | head -1
+          g++ --version | head -1
+          make --version | head -1
+          python3 --version
+          uname -a
+
+      - name: Build (gcc, POSIX backend)
+        run: |
+          export SLEELA_SHA256_MANIFEST="$(pwd)/security/sha256-manifest.json"
+          cd impl
+          make clean
+          make all CC=gcc CXX=g++
+          test -f build/sleela
+          test -f build/nordshrift
+          ./build/sleela version
+
+      - name: Confirm the runtime reports the linux backend
+        run: |
+          # The platform smoke test prints the detected native backend name;
+          # on Linux it must report "linux".
+          export SLEELA_SHA256_MANIFEST="$(pwd)/security/sha256-manifest.json"
+          cd impl
+          make build/path_platform_smoke CC=gcc CXX=g++
+          ./build/path_platform_smoke
+          ./build/path_platform_smoke | grep -qi "platform: linux" || {
+            echo "ERROR: expected path platform to report linux"; exit 1; }
+
+      - name: Run example programs
+        run: |
+          export SLEELA_SHA256_MANIFEST="$(pwd)/security/sha256-manifest.json"
+          export SLEELA_SHEET="$(pwd)/SHEET.sheet"
+          for f in impl/examples/*.sleela; do
+            echo "=== $f ==="
+            ./impl/build/sleela run "$f" || exit 1
+          done
+
+      - name: Run subject numeric assertions
+        run: |
+          export SLEELA_SHA256_MANIFEST="$(pwd)/security/sha256-manifest.json"
+          export SLEELA_SHEET="$(pwd)/SHEET.sheet"
+          bash impl/tests/subjects/run_subject_tests.sh impl/build/sleela
+
+      - name: Run core, threading, network, runtime and memory-manager tests
+        run: |
+          export SLEELA_SHA256_MANIFEST="$(pwd)/security/sha256-manifest.json"
+          export SLEELA_SHEET="$(pwd)/SHEET.sheet"
+          cd impl
+          make test-threads CC=gcc CXX=g++
+          make test-network CC=gcc CXX=g++
+          make test-runtime CC=gcc CXX=g++
+          make test-memmgr CC=gcc CXX=g++

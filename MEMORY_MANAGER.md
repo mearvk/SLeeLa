@@ -29,6 +29,21 @@ supervisor. Those account for *managed objects* and *class/role* budgets; the
 Memory Manager accounts for *raw process memory* — the axis that matters when
 SLeeLa runs an arbitrary native executable.
 
+> **How the VM's own object lifecycle works (important).** All three facilities
+> above — the Memory Manager, the mark-sweep GC, and the quota supervisor — are
+> **opt-in peripheral services**. The SLeeLa interpreter core does **not**
+> GC-manage its own runtime values. `SLValue`s are plain tagged unions; strings
+> are interned and freed once at `slvm_free`; struct instances live in a fixed
+> `SL_MAX_STRUCTS` slot array reclaimed only at VM teardown. So a running SLeeLa
+> program is **not** garbage-collected by default — the GC in
+> [`runtime/garbage_collector.c`](runtime/garbage_collector.c) is a standalone
+> service (exercised by `make test-runtime`) that a host embeds deliberately, not
+> the engine's allocator. Do not assume the core is GC-backed.
+>
+> Only the C sources (`.c`/`.h`) in `runtime/` are part of the build; the former
+> `.cpp`/`.hpp` duplicates of the GC and quota supervisor have been removed to
+> avoid the impression of two live implementations.
+
 ### What it does
 
 The manager is **opt-in**. When disabled (the default) the wrappers forward
