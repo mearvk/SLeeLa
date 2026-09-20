@@ -291,6 +291,19 @@ formats is catalogued in [`SUPPORTED.LANGUAGES.md`](SUPPORTED.LANGUAGES.md).
 `SLeeLa run|check|compile|version` are also available. Put `bin/` on your `PATH`
 to use it anywhere. See [`bin/README.md`](bin/README.md).
 
+The compiler can also drive **Nordshrift from SLeeLa and back**, without the
+standalone `nordshrift` binary or an `.sst` sheet:
+
+```sh
+$> SLeeLa nordshrift --emit --target=sleela|java|c prog.sleela   # SLeeLa -> Nordshrift transpile
+$> SLeeLa nordshrift --roundtrip prog.sleela                     # SLeeLa -> Nordshrift(Sleela) -> re-parse -> run
+```
+
+`--roundtrip` transpiles to the Nordshrift **Sleela** target, re-parses it,
+verifies the program's structure is preserved (same classes + per-class
+field/method counts), and runs it on the core. See
+[`impl/nordshrift/README.md`](impl/nordshrift/README.md).
+
 It also runs a **native OS executable** from the terminal, and accepts a
 leading `--memory-manager[=<size>]` to enable the Memory Manager (see
 [`MEMORY_MANAGER.md`](MEMORY_MANAGER.md)):
