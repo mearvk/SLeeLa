@@ -135,7 +135,11 @@ public final class SleelaMemoryServer {
     private synchronized String doFree(List<String> t) {
         if (t.size() < 2) return err("free: need handle");
         long h = handleArg(t.get(1));
-        heap.remove(h);
+        // Validate the handle so a double-free / use-after-free / unknown handle
+        // is reported rather than silently succeeding.
+        if (heap.remove(h) == null) {
+            return err("free: unknown or already-freed handle " + h);
+        }
         return ok(SleelaValue.NULL);
     }
 
@@ -241,7 +245,17 @@ public final class SleelaMemoryServer {
             if (i + 1 < n && raw[i] == 's' && raw[i + 1] == ':') {
                 int p = i + 2, len = 0;
                 boolean haveDigits = false;
-                while (p < n && raw[p] >= '0' && raw[p] <= '9') { len = len * 10 + (raw[p] - '0'); p++; haveDigits = true; }
+                // Accumulate the declared length, but never let it overflow past
+                // the line size: a value beyond `n` is impossible to satisfy, so
+                // clamp to n+1 (still triggers the "overruns line" check below).
+                while (p < n && raw[p] >= '0' && raw[p] <= '9') {
+                    if (len <= n) {
+                        len = len * 10 + (raw[p] - '0');
+                        if (len > n) len = n + 1;
+                    }
+                    p++;
+                    haveDigits = true;
+                }
                 if (haveDigits && p < n && raw[p] == ':') {
                     int start = p + 1;
                     int end = start + len;

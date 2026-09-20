@@ -28,10 +28,16 @@ public final class SleeuumLedger {
     public static final String SLEEUUM_TM = "Sleeuum\u2122";
 
     private final String client;
-    private final AtomicLong seq = new AtomicLong(0);
-    private final List<Map<String, Object>> records = new ArrayList<>();
+    /** Cap on retained per-packet records; older ones are dropped (rolling window).
+     *  Rolled-up stats still count every packet ever seen. */
+    private static final int MAX_RECORDS = 10_000;
 
-    // Rolled-up numbers (guarded by `this`).
+    private final AtomicLong seq = new AtomicLong(0);
+    private final java.util.ArrayDeque<Map<String, Object>> records = new java.util.ArrayDeque<>();
+
+    // Rolled-up numbers (guarded by `this`). totalPackets counts ALL packets ever
+    // observed, independent of the retained-records window.
+    private long totalPackets;
     private long sent, received, requests, responses, totalPayload, totalWire;
     private final Map<String, Long> byCarrier = new LinkedHashMap<>();
     private final Map<String, Long> byStatus = new LinkedHashMap<>();
@@ -84,15 +90,21 @@ public final class SleeuumLedger {
         kv(sb, "generated", nowIso()).append(',');
         sb.append("\"stats\":").append(statsJson()).append(',');
         sb.append("\"packets\":[");
-        for (int i = 0; i < records.size(); i++) {
-            if (i > 0) sb.append(',');
-            sb.append(mapJson(records.get(i)));
+        boolean first = true;
+        for (Map<String, Object> rec : records) {
+            if (!first) sb.append(',');
+            sb.append(mapJson(rec));
+            first = false;
         }
         sb.append("]}");
         return sb.toString();
     }
 
-    public synchronized long count() { return records.size(); }
+    /** Total packets ever observed (not just those still retained in the window). */
+    public synchronized long count() { return totalPackets; }
+
+    /** Number of per-packet records currently retained (<= MAX_RECORDS). */
+    public synchronized long retained() { return records.size(); }
 
     // ------------------------------------------------------------------ internals
 
@@ -112,7 +124,13 @@ public final class SleeuumLedger {
     }
 
     private void commit(Map<String, Object> r) {
-        records.add(r);
+        records.addLast(r);
+        // Bound memory: keep only the most recent MAX_RECORDS packets. Stats
+        // below already counted this packet, so trimming never loses a count.
+        while (records.size() > MAX_RECORDS) {
+            records.pollFirst();
+        }
+        totalPackets++;
         String carrier = (String) r.get("carrier");
         byCarrier.merge(carrier, 1L, Long::sum);
         if ("sent".equals(r.get("direction"))) sent++; else received++;
@@ -126,7 +144,8 @@ public final class SleeuumLedger {
     private String statsJson() {
         StringBuilder sb = new StringBuilder(160);
         sb.append('{');
-        sb.append("\"packets\":").append(records.size()).append(',');
+        sb.append("\"packets\":").append(totalPackets).append(',');
+        sb.append("\"retained\":").append(records.size()).append(',');
         sb.append("\"sent\":").append(sent).append(',');
         sb.append("\"received\":").append(received).append(',');
         sb.append("\"requests\":").append(requests).append(',');

@@ -23,6 +23,9 @@ import java.util.Objects;
  * exposed over HTTP; SLeeLa remains authoritative for the operation itself.
  */
 public final class SleelaHttpGateway implements AutoCloseable {
+    /** Hard cap on an accepted request body, to bound memory on a POST. */
+    private static final int MAX_BODY_BYTES = 1 << 20; // 1 MiB
+
     private final HttpServer server;
     private final SleelaRuntime runtime;
     private final String allowOrigin;
@@ -79,15 +82,44 @@ public final class SleelaHttpGateway implements AutoCloseable {
 
         String arguments;
         try (InputStream input = exchange.getRequestBody()) {
-            arguments = new String(input.readAllBytes(), StandardCharsets.UTF_8);
+            byte[] body = readBounded(input, MAX_BODY_BYTES);
+            if (body == null) {
+                send(exchange, 413, "request body exceeds " + MAX_BODY_BYTES + " bytes");
+                return;
+            }
+            arguments = new String(body, StandardCharsets.UTF_8);
         }
 
         try {
             Object result = runtime.call(operation, arguments);
             send(exchange, 200, result == null ? "" : String.valueOf(result));
-        } catch (RuntimeException failure) {
-            send(exchange, 500, failure.getMessage() == null ? failure.toString() : failure.getMessage());
+        } catch (Throwable failure) {
+            // Never let a runtime fault (RuntimeException OR Error) escape the
+            // handler; a leaked throwable would drop the connection without a
+            // status. Report a 500 with a bounded message.
+            String msg = failure.getMessage();
+            send(exchange, 500, msg == null ? failure.toString() : msg);
         }
+    }
+
+    /**
+     * Reads at most {@code limit} bytes from {@code input}. Returns null if the
+     * stream would exceed the cap (so the caller can answer 413), guarding
+     * against an unbounded request body (DoS).
+     */
+    private static byte[] readBounded(InputStream input, int limit) throws IOException {
+        java.io.ByteArrayOutputStream acc = new java.io.ByteArrayOutputStream();
+        byte[] buf = new byte[8192];
+        int total = 0;
+        int n;
+        while ((n = input.read(buf)) != -1) {
+            total += n;
+            if (total > limit) {
+                return null;
+            }
+            acc.write(buf, 0, n);
+        }
+        return acc.toByteArray();
     }
 
     private void send(HttpExchange exchange, int status, String body) throws IOException {
