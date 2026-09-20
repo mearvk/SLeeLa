@@ -33,6 +33,16 @@ class PhysicsValues {
         check("gravitational_force", physics.gravitational_force(1.0, 1.0, 1.0), 0.0000000000667430, 0.000000000000001);
         // Relativity: gamma at v=0 is 1
         check("lorentz_gamma_rest", physics.lorentz_gamma(0.0), 1.0, 0.000001);
-        // EXPECTED_PASS=12
+        // Neutrino two-flavor vacuum oscillation:
+        //   P = sin^2(2*theta) * sin^2(1.267 * dm2 * L / E)
+        // Maximal mixing (theta=pi/4 -> sin^2(2theta)=1) at oscillation maximum
+        // (1.267 * dm2 * L / E = pi/2 -> sin^2 = 1) gives P = 1.
+        // dm2=1, L=1.2397769773, E=1 -> arg = 1.267*1.2397769773 = 1.5708...
+        check("neutrino_p_max", physics.neutrino_oscillation_probability(0.7853981633974483, 1.0, 1.2397769773, 1.0), 1.0, 0.0001);
+        // Zero baseline -> no oscillation -> P = 0.
+        check("neutrino_p_zero_L", physics.neutrino_oscillation_probability(0.7853981633974483, 1.0, 0.0, 1.0), 0.0, 0.000001);
+        // Zero mixing angle -> P = 0.
+        check("neutrino_p_zero_theta", physics.neutrino_oscillation_probability(0.0, 1.0, 1.2397769773, 1.0), 0.0, 0.000001);
+        // EXPECTED_PASS=15
     }
 }
