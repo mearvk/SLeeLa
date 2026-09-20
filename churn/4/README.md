@@ -1,11 +1,12 @@
 # /4 — Areas (Real Model Area)
 
 **Areas** is the fourth *relevance set* (a sibling of `/1` [Longs](../1/README.md),
-`/2` [Structures](../2/README.md), and `/3` [Facets](../3/README.md)). It is the
-**Real Model Area**: data modelled around **area** — a magnitude that **spans**,
-a real two-dimensional extent a model occupies.
+`/2` [Structures](../2/README.md), `/3` [Facets](../3/README.md), and `/5`
+[Lines](../5/README.md)). It is the **Real Model Area**: data modelled around
+**area** — a magnitude that **spans**, a real two-dimensional extent a model
+occupies.
 
-The churn relevance sets read a magnitude four ways:
+The churn relevance sets read a magnitude five ways:
 
 | Set | A magnitude that… | We ask… |
 |---|---|---|
@@ -13,6 +14,7 @@ The churn relevance sets read a magnitude four ways:
 | `/2` **Structures** | *stands* | its magnitude and kind |
 | `/3` **Facets** | shows *one face* | which face, of which object |
 | `/4` **Areas** | *spans* | how much ground it covers, and its kind |
+| `/5` **Lines** | *reaches* (1D) | its count/length, and the Spark it teaches |
 
 This folder is the data + models for one relevance set. It gathers **real,
 sourced** areas across three domains, holds them as JSON / XML / TXT, rests them

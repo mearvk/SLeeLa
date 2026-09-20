@@ -6,7 +6,9 @@ each a magnitude that runs over time (a "long") — together with the
 the lengths co-relate and occupy the same economic space.
 
 This folder is the data + model for one relevance set. Further sets live in
-sibling numbered folders (`/2`, `/3`, …).
+sibling numbered folders — `/2` [Structures](../2/README.md), `/3`
+[Facets](../3/README.md), `/4` [Areas](../4/README.md), `/5`
+[Lines](../5/README.md).
 
 > **What a "long" is here.** A *long* is a length series: a quantity with size
 > that extends period by period (GDP, federal debt, the price level). We read
@@ -69,7 +71,7 @@ impl/build/sleela run churn/1/relevances.sleela
 |---|---|
 | [`longs.csv`](longs.csv) | The length series, with a per-series provenance column. |
 | [`relevances.sleela`](relevances.sleela) | The relevance model over the lengths. |
-| [`constraints.sleela`](constraints.sleela) / [`Constraints.java`](Constraints.java) | The Constitution congrains/limits applied to Longs (shared across `/1`–`/4`). Running `Constraints.java` writes a well-formed `churn-1-longs.md` into a local `DD-MM-YYYY/` folder (git-ignored). |
+| [`constraints.sleela`](constraints.sleela) / [`Constraints.java`](Constraints.java) | The Constitution congrains/limits applied to Longs (shared across `/1`–`/5`). Running `Constraints.java` writes a well-formed `churn-1-longs.md` into a local `DD-MM-YYYY/` folder (git-ignored). |
 | [`assumptions/`](assumptions/) | The **assumptions** layer: a moral model over foundational human-nature / construction lengths (code-about-code + ethics + Longs). See [`assumptions/ASSUMPTIONS.md`](assumptions/ASSUMPTIONS.md) and its synthesized [`assumptions/OUTPUT.md`](assumptions/OUTPUT.md) opinion on the health of the human condition. |
 
 *The relevances reported are measured associations over 2019–2024. Direction and
