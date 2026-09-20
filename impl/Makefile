@@ -87,8 +87,12 @@ DRIVER_OBJ := $(BUILD)/driver.o
 NS_SRC := nordshrift/sst_lexer.cpp nordshrift/sst_parser.cpp \
           nordshrift/source_resolve.cpp nordshrift/sleela_emit.cpp \
           nordshrift/object_compat.cpp nordshrift/subject_model.cpp \
-          nordshrift/component_manifest.cpp nordshrift/nordshrift.cpp
+          nordshrift/component_manifest.cpp nordshrift/ledger_emit.cpp \
+          nordshrift/nordshrift.cpp
 NS_OBJ := $(patsubst nordshrift/%.cpp,$(BUILD)/ns_%.o,$(NS_SRC))
+# Shared ledger core (lives under ../ledger, reused by the standalone tool).
+LEDGER_CORE_OBJ := $(BUILD)/ledger_core.o
+NS_OBJ += $(LEDGER_CORE_OBJ)
 VERIFY_TOOL := ../tools/verify-before-execution.py
 VERIFY_MANIFEST ?= $(SLEELA_SHA256_MANIFEST)
 VERIFY_ARGS = --manifest "$(VERIFY_MANIFEST)" --root "$(CURDIR)/.."
@@ -194,6 +198,8 @@ $(BUILD)/sheet_catalog.o: catalog/sheet_catalog.cpp catalog/sheet_catalog.h | $(
 $(BUILD)/xclass_loader.o: xclass/xclass_loader.cpp xclass/xclass_loader.h | $(BUILD)
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
 $(BUILD)/ns_%.o: nordshrift/%.cpp | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
+$(LEDGER_CORE_OBJ): ../ledger/ledger_core.cpp ../ledger/ledger_core.h | $(BUILD)
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
 $(BUILD)/driver.o: frontend/driver.cpp frontend/compiler.h frontend/artifact.h subjects/native/native_api.h subjects/chemistry/chemistry_api.h subjects/finance/financial_api.h | $(BUILD)
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
