@@ -634,7 +634,7 @@ the 3.0-era integrity substrate — lives under [`http-2.0/`](http-2.0/).
 | [`NUMERAL-INTENT.md`](NUMERAL-INTENT.md) | Numeral intent, software sustainability, and the Celebrity term-care standard. |
 | [`FIDUCIARY.md`](FIDUCIARY.md) | A duty model over abstract accounts: bounded wealth, per-second and per-second² rates, lifetime bound & bounding insignia. |
 | [`BRITISH.md`](BRITISH.md) | An institutional fiduciary note (stylized), applying the duty model at the entity level. |
-| [`QOS.md`](QOS.md) | Quality of Service over standard TCP/HTTP, with careful SLeeLa + Java code notes. |
+| [`QOS.md`](QOS.md) | Quality of Service for internet packets over standard TCP/HTTP — throughput, latency, jitter, reliability, and continuity (loss/reordering, `GAP`); includes a worked arrival-sequence example and careful SLeeLa + Java code notes. |
 
 The **Moral Code** records the standard of *substantial use of sequitur*, a
 *per-use* evaluation rule, *homognyny* (the asynchronous misuse of frame, or
