@@ -33,7 +33,7 @@ CI on every push and pull request:
 
 | Platform | Toolchain | Build | CI |
 |---|---|---|---|
-| **Linux** | gcc/clang | `cd impl && make` | verified build gate |
+| **Linux** | gcc/clang | [`scripts/build-linux.sh`](scripts/build-linux.sh) (or `cd impl && make`) | [`build-linux.yml`](.github/workflows/build-linux.yml) |
 | **macOS** (Darwin) | Apple clang | [`scripts/build-macos.sh`](scripts/build-macos.sh) | [`build-macos.yml`](.github/workflows/build-macos.yml) |
 | **Windows 10+** | MinGW-w64 | [`build-windows.ps1`](build-windows.ps1) | [`build-windows.yml`](.github/workflows/build-windows.yml) |
 
@@ -619,8 +619,11 @@ Beyond the integrity gate, the pipeline adds three delivery-oriented layers:
   (text framing) and **HTTP/2** (binary HEADERS+DATA frames) messages, with
   parse/extract on the far side. A Jakarta servlet
   ([`connector/.../http/SleelaH3Servlet.java`](connector/java/com/mearvk/sleela/connector/http/SleelaH3Servlet.java))
-  lets Tomcat serve it over **HTTP/2+**, and sample Tomcat/Apache config plus a
-  Linux installer ([`scripts/install-linux-h3.sh`](scripts/install-linux-h3.sh))
+  lets Tomcat serve it over **HTTP/2+**, and sample Tomcat/Apache config plus
+  installers for all three OS —
+  [`scripts/install-linux-h3.sh`](scripts/install-linux-h3.sh),
+  [`scripts/install-macos-h3.sh`](scripts/install-macos-h3.sh), and
+  [`scripts/install-windows-h3.ps1`](scripts/install-windows-h3.ps1) —
   deploy the stack. Because the envelope rides untouched in the HTTP body, any
   byte flip in transit fails the H3 MAC closed. See
   [`connector/deploy/README.md`](connector/deploy/README.md).
@@ -663,7 +666,7 @@ the 3.0-era integrity substrate — lives under [`http-2.0/`](http-2.0/).
 | [`FIDUCIARY.md`](FIDUCIARY.md) | A duty model over abstract accounts: bounded wealth, per-second and per-second² rates, lifetime bound & bounding insignia. |
 | [`BRITISH.md`](BRITISH.md) | An institutional fiduciary note (stylized), applying the duty model at the entity level. |
 | [`QOS.md`](QOS.md) | Quality of Service for internet packets over standard TCP/HTTP — throughput, latency, jitter, reliability, and continuity (loss/reordering, `GAP`); includes a worked arrival-sequence example and careful SLeeLa + Java code notes. |
-| [`connector/deploy/README.md`](connector/deploy/README.md) | Carrying the HTTP 3.0 envelope over standard **HTTP/1.1 and HTTP/2** (custom packet builder, Tomcat/Apache HTTP module, and Linux installer). |
+| [`connector/deploy/README.md`](connector/deploy/README.md) | Carrying the HTTP 3.0 envelope over standard **HTTP/1.1 and HTTP/2** (custom packet builder, Tomcat/Apache HTTP module, and installers for **Linux/macOS/Windows**). |
 | [`http-3.0/SLEEUUM.md`](http-3.0/SLEEUUM.md) | **Sleeuum™** — the client packet ledger a SLeeLa executable uses to track HTTP 3.0 / HTTP 2.0+ packets, their dates, and their numbers. |
 
 The **Moral Code** records the standard of *substantial use of sequitur*, a
