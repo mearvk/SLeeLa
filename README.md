@@ -8,6 +8,13 @@ bc1qs6v4q9zsw70t0umk3m0quhvf9dr6cdeskl28dh
 
 US Democratic and US Policy.
 
+**Stance.** This project aligns with the principles upheld by the
+**International Criminal Court** (accountability under international law) and
+presents socialism **stereoscopically** — through two independent lenses: the
+neutral constitutional-text indicator and the historical governance register
+(see [`SOCIALISM.md`](SOCIALISM.md)). This is a stated position, not a claim of
+affiliation with or endorsement by the ICC.
+
 **Sleela** is a Java-like programming language running on a Turing-complete,
 thread-friendly **C/C++ execution core**, with **Nordshrift** — a `.sst`
 transpiler driver (spec `SST.model`, NS-SST-0001) — sitting on top to drive the
