@@ -322,3 +322,11 @@ c012acb1070634716c179c37bd49a885b21a6a954028a33270b4856dfa8f83875bd7280e16b8697f
 3. **Homognyny.** *Homognyny* is the asynchronous misuse of frame (or better). It
    is prohibited.
 4. The United States states as the American President of the United States.
+
+
+## Class
+
+Class is observed against the social calendar of the United States.
+
+- **The Very Rich: we count.** The Very Rich are counted — they are not exempt
+  from the reckoning.
