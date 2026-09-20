@@ -7,16 +7,18 @@ dependency-free so a Python connector can speak the protocol without
 becoming a SLeeLa runtime (spec §20). Crypto is out of scope here; that
 lives in the C substrate (crypto_openssl.c et al.).
 
-Every packet also carries a per-packet DIGEST (a 64-bit KEYED MAC, SipHash-2-4,
-over the header + payload under a per-connection secret key) and an INTACTX id
-(64-bit system-specific host-integrity identity). The keyed DIGEST resists
-deliberate forgery, not just accidental corruption. A receiver rejects a packet
-whose DIGEST does not verify under the shared key and RESETs the exchange when a
-packet's INTACTX variance exceeds the tamper threshold.
+Every packet also carries a NONCE (per-connection monotonic counter, covered by
+the MAC, for replay rejection), a per-packet DIGEST (a 64-bit KEYED MAC,
+SipHash-2-4, over the header + payload under a per-connection secret key), and an
+INTACTX id (64-bit system-specific host-integrity identity). The keyed DIGEST
+resists deliberate forgery, not just accidental corruption. A receiver rejects a
+packet whose DIGEST does not verify under the shared key, RESETs the exchange
+when a packet's INTACTX variance exceeds the tamper threshold, and rejects a
+packet whose NONCE is not ahead of its high-water mark (a replay).
 
 Textual wire forms (must match the C implementation byte-for-byte):
 
-    envelope:  H3 <ver> <flags> <service_id> <op_id> <request_id> <digest> <intactx> <len>:<payload>\\n
+    envelope:  H3 <ver> <flags> <service_id> <op_id> <request_id> <nonce> <digest> <intactx> <len>:<payload>\\n
     response:  H3R <status> <request_id> <len>:<result>\\n
 """
 from __future__ import annotations
@@ -118,6 +120,7 @@ class Status(IntEnum):
     RETRY_DENIED = 6
     BAD_DIGEST = 7  # per-packet DIGEST did not verify
     TAMPERED = 8    # INTACTX variance exceeded threshold
+    REPLAYED = 9    # NONCE not ahead of high-water: replay
 
 
 class RetryClass(IntEnum):
@@ -223,7 +226,7 @@ class Intactx:
 
 @dataclass
 class Envelope:
-    """The §5 compact application envelope, with per-packet DIGEST + INTACTX."""
+    """The §5 compact application envelope, with NONCE, DIGEST, and INTACTX."""
 
     service_id: int
     op_id: int
@@ -231,6 +234,7 @@ class Envelope:
     payload: bytes = b""
     flags: int = Flag.NONE
     version: int = ENVELOPE_VERSION
+    nonce: int = 0
     intactx: int = 0
     digest: int = 0
 
@@ -240,16 +244,18 @@ class Envelope:
         Must match http3_envelope_compute_digest() in the C reference exactly.
         The transport-only BINARY flag is excluded so text and binary forms of
         the same logical envelope share a digest; `key` is the 16-byte
-        per-connection secret.
+        per-connection secret. The NONCE is inside the MAC so it cannot be
+        altered to slip a replay past the receiver's high-water-mark check.
         """
         logical_flags = self.flags & ~int(Flag.BINARY)
         hdr = struct.pack(
-            ">BBIIQQI",
+            ">BBIIQQQI",
             self.version & 0xFF,
             logical_flags & 0xFF,
             self.service_id & 0xFFFFFFFF,
             self.op_id & 0xFFFFFFFF,
             self.request_id & _U64,
+            self.nonce & _U64,
             self.intactx & _U64,
             len(self.payload) & 0xFFFFFFFF,
         )
@@ -270,7 +276,7 @@ class Envelope:
             self.seal(key)
         head = (
             f"H3 {self.version} {self.flags} {self.service_id} {self.op_id} "
-            f"{self.request_id} {self.digest} {self.intactx} {len(self.payload)}:"
+            f"{self.request_id} {self.nonce} {self.digest} {self.intactx} {len(self.payload)}:"
         )
         return head.encode("utf-8") + self.payload + b"\n"
 
@@ -281,9 +287,9 @@ class Envelope:
         if not sep:
             raise ValueError("malformed envelope")
         parts = head.decode("utf-8").split(" ")
-        if len(parts) != 9 or parts[0] != "H3":
+        if len(parts) != 10 or parts[0] != "H3":
             raise ValueError("malformed envelope")
-        _, ver, flags, sid, oid, rid, digest, intactx, plen = parts
+        _, ver, flags, sid, oid, rid, nonce, digest, intactx, plen = parts
         n = int(plen)
         if n > MAX_PAYLOAD:
             raise ValueError("payload too large")
@@ -293,7 +299,7 @@ class Envelope:
         return Envelope(
             service_id=int(sid), op_id=int(oid), request_id=int(rid),
             payload=payload, flags=int(flags), version=int(ver),
-            intactx=int(intactx), digest=int(digest),
+            nonce=int(nonce), intactx=int(intactx), digest=int(digest),
         )
 
 
@@ -362,6 +368,8 @@ class Pipeline:
         self.intactx_threshold = intactx_threshold or INTACTX_TAMPER_THRESHOLD
         self.digest_rejects = 0
         self.tamper_resets = 0
+        self.replays_rejected = 0
+        self.nonce_high_water = 0
         self.set_mac_key(mac_key)
 
     def set_mac_key(self, key: bytes) -> None:
@@ -370,6 +378,11 @@ class Pipeline:
         if len(key) != MAC_KEY_BYTES:
             raise ValueError("MAC key must be 16 bytes")
         self.mac_key = bytes(key)
+
+    def reset_replay_window(self, start: int = 0) -> None:
+        """Reset the NONCE high-water mark; the next accepted packet must carry
+        a NONCE strictly greater than `start`."""
+        self.nonce_high_water = start
 
     def register(self, service: str, op: str, retry: RetryClass, handler: Handler,
                  ctx: object = None) -> Tuple[int, int]:
@@ -411,4 +424,10 @@ class Pipeline:
         if Intactx.is_tampered(env.intactx, self.intactx_threshold):
             self.tamper_resets += 1
             return Response(Status.TAMPERED, env.request_id, b"RESET").pack_text()
+        # 3. NONCE must be strictly ahead of the high-water mark -- else replay.
+        #    The NONCE is MAC'd, so it cannot be bumped to evade this check.
+        if env.nonce <= self.nonce_high_water:
+            self.replays_rejected += 1
+            return Response(Status.REPLAYED, env.request_id).pack_text()
+        self.nonce_high_water = env.nonce
         return self.dispatch(env).pack_text()

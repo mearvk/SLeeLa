@@ -36,6 +36,14 @@ void http3_pipeline_set_mac_key(http3_pipeline_t *pipe,
     memcpy(pipe->mac_key, key, HTTP3_MAC_KEY_BYTES);
 }
 
+void http3_pipeline_reset_replay_window(http3_pipeline_t *pipe, uint64_t start)
+{
+    if (pipe == NULL) {
+        return;
+    }
+    pipe->nonce_high_water = start;
+}
+
 static http3_service_binding_t *find_binding(http3_pipeline_t *pipe, uint32_t service_id)
 {
     size_t i;
@@ -234,6 +242,18 @@ int http3_pipeline_handle_wire(http3_pipeline_t *pipe,
         ++pipe->tamper_resets;
         return http3_response_pack_text(&resp, out, out_cap, written);
     }
+    /*   3. NONCE must be strictly ahead of the high-water mark -- else this is
+     *      a replay of a previously valid (and validly MAC'd) packet. Because
+     *      the NONCE is inside the MAC, an attacker cannot bump it to slip a
+     *      replay past this check without invalidating the DIGEST above. */
+    if (env.nonce <= pipe->nonce_high_water) {
+        memset(&resp, 0, sizeof(resp));
+        resp.status = HTTP3_STATUS_REPLAYED;
+        resp.request_id = env.request_id;
+        ++pipe->replays_rejected;
+        return http3_response_pack_text(&resp, out, out_cap, written);
+    }
+    pipe->nonce_high_water = env.nonce; /* advance the window */
 
     if (http3_pipeline_dispatch(pipe, &env, &resp) != 0) {
         return -1;

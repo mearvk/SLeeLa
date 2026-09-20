@@ -71,7 +71,9 @@ typedef struct {
     uint16_t                intactx_threshold;/* INTACTX variance tamper limit */
     uint64_t                digest_rejects;   /* packets dropped: bad DIGEST   */
     uint64_t                tamper_resets;    /* packets reset: INTACTX tamper */
+    uint64_t                replays_rejected; /* packets dropped: stale NONCE  */
     uint8_t                 mac_key[HTTP3_MAC_KEY_BYTES]; /* per-conn MAC key   */
+    uint64_t                nonce_high_water; /* highest accepted NONCE so far */
 } http3_pipeline_t;
 
 /* Initialize an empty pipeline. The INTACTX tamper threshold defaults to
@@ -90,6 +92,13 @@ void http3_pipeline_set_intactx_threshold(http3_pipeline_t *pipe, uint16_t thres
  * packets, and a forger without it cannot produce a valid DIGEST. */
 void http3_pipeline_set_mac_key(http3_pipeline_t *pipe,
                                 const uint8_t key[HTTP3_MAC_KEY_BYTES]);
+
+/* Reset the replay window (NONCE high-water mark) to `start`. The next packet
+ * accepted must carry a NONCE strictly greater than `start`. Use when a new
+ * connection/session begins; a real multi-sender deployment keys the window per
+ * sender identity, but the single-connection reference keeps one monotonic
+ * high-water mark. */
+void http3_pipeline_reset_replay_window(http3_pipeline_t *pipe, uint64_t start);
 
 /*
  * Register a service by name, returning its compact SERVICE-ID (§4). ctx is

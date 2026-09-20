@@ -41,7 +41,7 @@ succeeds. New files: `http3_envelope.{h,c}`, `http3_naming.{h,c}`,
 | Spec section | Concept | State (2026-09-14) |
 |---|---|---|
 | §4 | Fast naming (name ↔ compact id, caching) | **Implemented** — `http3_naming` + `http3_flow.py` |
-| §5 | Compact envelope `VERSION\|FLAGS\|SERVICE-ID\|OP-ID\|REQUEST-ID\|DIGEST\|INTACTX\|PAYLOAD` | **Implemented** — textual **and** binary wire; per-packet keyed-MAC DIGEST (SipHash-2-4) + INTACTX host id |
+| §5 | Compact envelope `VERSION\|FLAGS\|SERVICE-ID\|OP-ID\|REQUEST-ID\|NONCE\|DIGEST\|INTACTX\|PAYLOAD` | **Implemented** — textual **and** binary wire; per-packet keyed-MAC DIGEST (SipHash-2-4) + INTACTX host id + monotonic NONCE replay guard |
 | §6 | Request IDs (correlation without ordering) | **Implemented** — carried and echoed |
 | §7 | Response model `STATUS\|REQUEST-ID\|RESULT` | **Implemented** — `http3_response_*` |
 | §9 | Retry classes (READ/IDEMPOTENT/MUTATING/STREAM) | **Implemented** — per-operation; mutating-retry decision point marked |
@@ -137,17 +137,27 @@ HTTP 3.0 packet now carries two integrity values ahead of its payload:
   (`HTTP3_INTACTX_TAMPER_THRESHOLD`, tunable), the exchange is **RESET**
   (`TAMPERED` + a `RESET` body) and the packet is not dispatched — the "reset
   packets if the computer has been tampered with" requirement.
+- **NONCE** — a per-connection monotonically increasing counter carried in the
+  header and **covered by the MAC**. The pipeline keeps a high-water mark
+  (`nonce_high_water`, resettable via `http3_pipeline_reset_replay_window`) and
+  admits a packet only when its NONCE is strictly greater; otherwise it answers
+  `REPLAYED` and does not dispatch. This defeats replay of a previously valid,
+  validly MAC'd packet. Because the NONCE is inside the MAC, an attacker cannot
+  bump it to evade the check without invalidating the DIGEST. (The
+  single-connection reference keeps one high-water mark; a multi-sender
+  deployment keys it per sender identity.)
 
-The pipeline records both events for observability (§17): `digest_rejects` and
-`tamper_resets`. New files: `http3_intactx.{h,c}`, `http3_mac.{h,c}`. Updated:
-`http3_envelope.{h,c}`, `http3_pipeline.{h,c}`, `http3_protocol.h`,
-`http3_pipeline_demo.c`, `http3_flow.py`, `test_http3_flow.py`, `Makefile`,
-`.gitignore`, `FLOW.md`.
+The pipeline records all three events for observability (§17): `digest_rejects`,
+`tamper_resets`, and `replays_rejected`. New files: `http3_intactx.{h,c}`,
+`http3_mac.{h,c}`. Updated: `http3_envelope.{h,c}`, `http3_pipeline.{h,c}`,
+`http3_protocol.h`, `http3_pipeline_demo.c`, `http3_flow.py`,
+`test_http3_flow.py`, `Makefile`, `.gitignore`, `FLOW.md`.
 
 The DIGEST began as a fast non-cryptographic FNV-1a hash (corruption detection
-only) and was subsequently upgraded to the SipHash-2-4 keyed MAC described above
-so it also resists deliberate tampering — the per-packet integrity method is now
-authenticity, not just an error check.
+only), was upgraded to the SipHash-2-4 keyed MAC described above so it also
+resists deliberate tampering, and finally gained a MAC-covered NONCE so the
+receiver can reject replays — the per-packet integrity method is now
+authenticity **and** freshness, not just an error check.
 
 ---
 

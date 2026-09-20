@@ -69,6 +69,7 @@ int main(void)
     http3_pipeline_t pipe;
     http3_intactx_t ix;
     uint64_t intactx;
+    uint64_t nonce = 0; /* monotonic per-connection packet counter (replay guard) */
     unsigned order_counter = 0;
     uint32_t svc, op_calc, op_place_id;
     http3_envelope_t env;
@@ -114,13 +115,15 @@ int main(void)
     CHECK(http3_naming_lookup_service(&pipe.naming, "orders") == svc, "service name re-resolves to same id (cached)");
 
     /* §5: build the compact envelope for orders.calculate("20,22"). The init
-     * stamps the INTACTX host identity and seals the per-packet DIGEST. */
+     * stamps the INTACTX host identity + a monotonic NONCE and seals the keyed
+     * DIGEST. Each fresh packet uses the next NONCE (replay guard). */
     CHECK(http3_envelope_init(&env, svc, op_calc, /*request_id*/ 1001u,
-                              HTTP3_FLAG_NONE, intactx, mac_key,
+                              HTTP3_FLAG_NONE, /*nonce*/ ++nonce, intactx, mac_key,
                               (const uint8_t *)"20,22", 5u) == 0,
           "envelope initialized");
     CHECK(http3_envelope_verify_digest(&env, mac_key), "per-packet keyed DIGEST verifies");
-    printf("  DIGEST=%llu  INTACTX=%llu\n",
+    printf("  NONCE=%llu  DIGEST=%llu  INTACTX=%llu\n",
+           (unsigned long long)env.nonce,
            (unsigned long long)env.digest, (unsigned long long)env.intactx);
 
     /* §5: pack textual, then binary; both carry the same logical envelope. */
@@ -142,8 +145,12 @@ int main(void)
     CHECK(resp.request_id == 1001u, "REQUEST-ID echoed (§6/§7)");
     CHECK(resp.result_len == 6u && memcmp(resp.result, "sum=42", 6) == 0, "result sum=42");
 
-    /* §19: feed the BINARY wire through the pipeline -> identical result. */
+    /* §19: feed the BINARY wire through the pipeline -> identical result. Use a
+     * fresh NONCE so this is a new packet, not a replay of the textual one. */
     printf("\n-- §19 pipeline (binary in) --\n");
+    (void)http3_envelope_init(&env, svc, op_calc, 1002u, HTTP3_FLAG_NONE,
+                              /*nonce*/ ++nonce, intactx, mac_key,
+                              (const uint8_t *)"20,22", 5u);
     (void)http3_envelope_pack_binary(&env, bin, sizeof(bin), &written);
     CHECK(http3_pipeline_handle_wire(&pipe, bin, written,
                                      resp_buf, sizeof(resp_buf), &written) == 0,
@@ -160,17 +167,17 @@ int main(void)
 
     /* §19 posture: unknown service and unknown op return typed statuses. */
     printf("\n-- §7 posture: unknown service / operation --\n");
-    (void)http3_envelope_init(&env, 999u, 1u, 2002u, HTTP3_FLAG_NONE, intactx, mac_key, NULL, 0u);
+    (void)http3_envelope_init(&env, 999u, 1u, 2002u, HTTP3_FLAG_NONE, ++nonce, intactx, mac_key, NULL, 0u);
     (void)http3_pipeline_dispatch(&pipe, &env, &resp);
     CHECK(resp.status == HTTP3_STATUS_UNKNOWN_SVC, "unknown service -> UNKNOWN_SERVICE");
-    (void)http3_envelope_init(&env, svc, 999u, 2003u, HTTP3_FLAG_NONE, intactx, mac_key, NULL, 0u);
+    (void)http3_envelope_init(&env, svc, 999u, 2003u, HTTP3_FLAG_NONE, ++nonce, intactx, mac_key, NULL, 0u);
     (void)http3_pipeline_dispatch(&pipe, &env, &resp);
     CHECK(resp.status == HTTP3_STATUS_UNKNOWN_OP, "unknown op -> UNKNOWN_OPERATION");
 
     /* Integrity gate: a mangled packet (bad MAC) is rejected before dispatch. */
     printf("\n-- integrity: corrupted packet -> BAD_DIGEST --\n");
     (void)http3_envelope_init(&env, svc, op_calc, 3001u, HTTP3_FLAG_NONE,
-                              intactx, mac_key, (const uint8_t *)"20,22", 5u);
+                              ++nonce, intactx, mac_key, (const uint8_t *)"20,22", 5u);
     (void)http3_envelope_pack_text(&env, text, sizeof(text), &written);
     /* Flip a payload byte AFTER the MAC was sealed: 20,22 -> 90,22. */
     {
@@ -194,7 +201,7 @@ int main(void)
             0x77,0x66,0x55,0x44,0x33,0x22,0x11,0x00
         };
         (void)http3_envelope_init(&env, svc, op_calc, 3003u, HTTP3_FLAG_NONE,
-                                  intactx, wrong_key, (const uint8_t *)"20,22", 5u);
+                                  ++nonce, intactx, wrong_key, (const uint8_t *)"20,22", 5u);
         (void)http3_envelope_pack_text(&env, text, sizeof(text), &written);
         CHECK(http3_pipeline_handle_wire(&pipe, (const uint8_t *)text, strlen(text),
                                          resp_buf, sizeof(resp_buf), &written) == 0,
@@ -212,7 +219,7 @@ int main(void)
         uint64_t tampered = ((uint64_t)HTTP3_INTACTX_VARIANCE_MASK
                                  << HTTP3_INTACTX_VARIANCE_SHIFT) | 0x1234u;
         (void)http3_envelope_init(&env, svc, op_calc, 3002u, HTTP3_FLAG_RESET,
-                                  tampered, mac_key, (const uint8_t *)"20,22", 5u);
+                                  ++nonce, tampered, mac_key, (const uint8_t *)"20,22", 5u);
         (void)http3_envelope_pack_text(&env, text, sizeof(text), &written);
         CHECK(http3_intactx_is_tampered(tampered, pipe.intactx_threshold),
               "high-variance INTACTX flagged as tampered");
@@ -225,13 +232,41 @@ int main(void)
               "tampered packet -> TAMPERED + RESET");
     }
 
+    /* Replay guard: a fresh packet is accepted; re-sending the SAME wire bytes
+     * (same NONCE, valid MAC) is rejected as a replay. Because the NONCE is
+     * inside the MAC, an attacker cannot edit it to dodge the check. */
+    printf("\n-- replay: same packet resent -> REPLAYED --\n");
+    {
+        size_t replay_len;
+        char replay_wire[512];
+        (void)http3_envelope_init(&env, svc, op_calc, 4001u, HTTP3_FLAG_NONE,
+                                  ++nonce, intactx, mac_key,
+                                  (const uint8_t *)"1,2", 3u);
+        (void)http3_envelope_pack_text(&env, replay_wire, sizeof(replay_wire), &replay_len);
+        /* First delivery: accepted, advances the high-water mark. */
+        CHECK(http3_pipeline_handle_wire(&pipe, (const uint8_t *)replay_wire, replay_len,
+                                         resp_buf, sizeof(resp_buf), &written) == 0,
+              "fresh packet handled");
+        (void)http3_response_unpack_text(resp_buf, written, &resp);
+        CHECK(resp.status == HTTP3_STATUS_OK && resp.result_len == 5u &&
+              memcmp(resp.result, "sum=3", 5) == 0, "fresh packet accepted (sum=3)");
+        /* Replay: identical bytes resent -> rejected without dispatch. */
+        CHECK(http3_pipeline_handle_wire(&pipe, (const uint8_t *)replay_wire, replay_len,
+                                         resp_buf, sizeof(resp_buf), &written) == 0,
+              "replayed packet handled");
+        (void)http3_response_unpack_text(resp_buf, written, &resp);
+        CHECK(resp.status == HTTP3_STATUS_REPLAYED, "replayed packet -> REPLAYED");
+    }
+
     printf("\n-- observability (§17) --\n"
            "  requests handled: %llu\n"
            "  digest rejects:   %llu\n"
-           "  tamper resets:    %llu\n",
+           "  tamper resets:    %llu\n"
+           "  replays rejected: %llu\n",
            (unsigned long long)pipe.requests_handled,
            (unsigned long long)pipe.digest_rejects,
-           (unsigned long long)pipe.tamper_resets);
+           (unsigned long long)pipe.tamper_resets,
+           (unsigned long long)pipe.replays_rejected);
 
     if (failures == 0) {
         printf("\nHTTP 3.0 pipeline demo: PASS\n");

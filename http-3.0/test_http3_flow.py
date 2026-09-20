@@ -24,13 +24,13 @@ def test_siphash24_reference_vector() -> None:
 
 
 def test_envelope_text_round_trip() -> None:
-    env = Envelope(service_id=7, op_id=3, request_id=1001, payload=b"20,22")
+    env = Envelope(service_id=7, op_id=3, request_id=1001, payload=b"20,22", nonce=5)
     wire = env.pack_text(KEY)
-    # Wire carries the keyed DIGEST and INTACTX between REQUEST-ID and the length.
-    assert wire == f"H3 3 0 7 3 1001 {env.digest} 0 5:".encode() + b"20,22\n"
+    # Wire carries NONCE, keyed DIGEST, and INTACTX between REQUEST-ID and length.
+    assert wire == f"H3 3 0 7 3 1001 5 {env.digest} 0 5:".encode() + b"20,22\n"
     back = Envelope.unpack_text(wire)
     assert (back.service_id, back.op_id, back.request_id, back.payload) == (7, 3, 1001, b"20,22")
-    assert back.digest == env.digest and back.intactx == 0
+    assert back.nonce == 5 and back.digest == env.digest and back.intactx == 0
     assert back.verify_digest(KEY)
 
 
@@ -85,6 +85,29 @@ def test_pipeline_rejects_bad_digest_forgery_and_resets_tampered() -> None:
     assert pipe.tamper_resets == 1
 
 
+def test_pipeline_rejects_replayed_nonce() -> None:
+    pipe = Pipeline(mac_key=KEY)
+
+    def echo(payload: bytes, ctx: object):
+        return Status.OK, payload
+
+    sid, oid = pipe.register("svc", "echo", RetryClass.READ, echo)
+
+    # A fresh packet (nonce ahead of high-water) is accepted.
+    wire = Envelope(sid, oid, 8001, b"hi", nonce=1).pack_text(KEY)
+    assert Response.unpack_text(pipe.handle_wire(wire)).status == Status.OK
+    # The exact same wire bytes resent (same nonce) is rejected as a replay.
+    assert Response.unpack_text(pipe.handle_wire(wire)).status == Status.REPLAYED
+    assert pipe.replays_rejected == 1
+    # A stale nonce (<= high-water) is also rejected; a higher one is accepted.
+    assert Response.unpack_text(
+        pipe.handle_wire(Envelope(sid, oid, 8002, b"hi", nonce=1).pack_text(KEY))
+    ).status == Status.REPLAYED
+    assert Response.unpack_text(
+        pipe.handle_wire(Envelope(sid, oid, 8003, b"hi", nonce=2).pack_text(KEY))
+    ).status == Status.OK
+
+
 def test_envelope_payload_is_length_prefixed_and_binary_safe() -> None:
     # A payload containing spaces and a newline must survive the round trip.
     payload = b"a b\nc:d"
@@ -127,8 +150,9 @@ def test_pipeline_dispatch_and_retry_classes() -> None:
     sid, calc = pipe.register("orders", "calculate", RetryClass.READ, calculate)
     _, place_id = pipe.register("orders", "place", RetryClass.MUTATING, place, ctx={"n": 0})
 
-    # §19 over the wire, textual (packet sealed with the pipeline's shared key).
-    out = pipe.handle_wire(Envelope(sid, calc, 1001, b"20,22").pack_text(KEY))
+    # §19 over the wire, textual (packet sealed with the pipeline's shared key;
+    # NONCE must be ahead of the pipeline's high-water mark to be accepted).
+    out = pipe.handle_wire(Envelope(sid, calc, 1001, b"20,22", nonce=1).pack_text(KEY))
     resp = Response.unpack_text(out)
     assert resp.status == Status.OK and resp.request_id == 1001 and resp.result == b"sum=42"
 

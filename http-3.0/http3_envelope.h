@@ -6,16 +6,19 @@
  * protocol. It carries, in a fixed logical order:
  *
  *     VERSION | FLAGS | SERVICE-ID | OP-ID | REQUEST-ID
- *             | DIGEST | INTACTX | PAYLOAD                            (§5)
+ *             | NONCE | DIGEST | INTACTX | PAYLOAD                    (§5)
  *
  * DIGEST is a per-packet 64-bit KEYED MAC (SipHash-2-4, see http3_mac.h) over
  * the header + payload under a per-connection secret key: it detects both
  * accidental corruption and DELIBERATE tampering, because a packet cannot be
- * rewritten with a matching tag without the key. INTACTX is a system-specific
- * 64-bit host-integrity identity (see http3_intactx.h): it fingerprints the
- * emitting host and encodes how far that host has drifted from its baseline, so
- * a tampered/changed machine reports a statically larger value and the receiver
- * can RESET the exchange.
+ * rewritten with a matching tag without the key. NONCE is a per-connection
+ * monotonically increasing counter covered by the MAC; the receiver keeps a
+ * high-water mark and rejects any packet whose NONCE is not strictly greater,
+ * which defeats replay of a previously valid (and validly MAC'd) packet.
+ * INTACTX is a system-specific 64-bit host-integrity identity (see
+ * http3_intactx.h): it fingerprints the emitting host and encodes how far that
+ * host has drifted from its baseline, so a tampered/changed machine reports a
+ * statically larger value and the receiver can RESET the exchange.
  *
  * and a response carries:
  *
@@ -69,6 +72,7 @@ typedef struct {
     uint32_t service_id;                           /* SERVICE-ID */
     uint32_t op_id;                                /* OP-ID      */
     uint64_t request_id;                           /* REQUEST-ID */
+    uint64_t nonce;                                /* NONCE (replay guard) */
     uint64_t digest;                               /* DIGEST     */
     uint64_t intactx;                              /* INTACTX    */
     uint8_t  payload[HTTP3_ENVELOPE_MAX_PAYLOAD];  /* PAYLOAD    */
@@ -86,7 +90,8 @@ typedef enum {
     HTTP3_STATUS_TOO_LARGE     = 5, /* payload/envelope exceeded a limit (§13) */
     HTTP3_STATUS_RETRY_DENIED  = 6, /* unsafe retry refused (§9)               */
     HTTP3_STATUS_BAD_DIGEST    = 7, /* per-packet DIGEST did not verify        */
-    HTTP3_STATUS_TAMPERED      = 8  /* INTACTX variance exceeded threshold     */
+    HTTP3_STATUS_TAMPERED      = 8, /* INTACTX variance exceeded threshold     */
+    HTTP3_STATUS_REPLAYED      = 9  /* NONCE not ahead of high-water: replay   */
 } http3_status_t;
 
 /* The response model (§7): STATUS | REQUEST-ID | RESULT. */
@@ -108,6 +113,7 @@ int http3_envelope_init(http3_envelope_t *env,
                         uint32_t op_id,
                         uint64_t request_id,
                         uint8_t flags,
+                        uint64_t nonce,
                         uint64_t intactx,
                         const uint8_t key[HTTP3_MAC_KEY_BYTES],
                         const uint8_t *payload,
@@ -128,7 +134,7 @@ int http3_envelope_verify_digest(const http3_envelope_t *env,
 
 /* ---- Textual wire form (§5: textual for interoperability) -----------------
  * Line form (single line, newline-terminated):
- *   H3 <version> <flags> <service_id> <op_id> <request_id> <digest> <intactx> <payload_len>:<payload-bytes>
+ *   H3 <version> <flags> <service_id> <op_id> <request_id> <nonce> <digest> <intactx> <payload_len>:<payload-bytes>
  * The payload is length-prefixed so it is binary-safe and space-safe.
  */
 int http3_envelope_pack_text(const http3_envelope_t *env, char *out, size_t out_cap, size_t *written);
@@ -136,9 +142,9 @@ int http3_envelope_unpack_text(const char *in, size_t in_len, http3_envelope_t *
 
 /* ---- Binary wire form (§5: binary for negotiated high performance) --------
  * Fixed header, big-endian, then raw payload:
- *   [ver:1][flags:1][service_id:4][op_id:4][request_id:8][digest:8][intactx:8][payload_len:4][payload:N]
+ *   [ver:1][flags:1][service_id:4][op_id:4][request_id:8][nonce:8][digest:8][intactx:8][payload_len:4][payload:N]
  */
-#define HTTP3_ENVELOPE_BIN_HEADER 38u
+#define HTTP3_ENVELOPE_BIN_HEADER 46u
 int http3_envelope_pack_binary(const http3_envelope_t *env, uint8_t *out, size_t out_cap, size_t *written);
 int http3_envelope_unpack_binary(const uint8_t *in, size_t in_len, http3_envelope_t *env);
 
