@@ -58,6 +58,9 @@ Usage:
   SLeeLa native [--memory-manager[=<size>]] <prog> [args...]
                                                      Run a native OS executable
   SLeeLa exec   [--memory-manager[=<size>]] <prog> [args...]   Alias of native
+  SLeeLa keysearch                                   Check the local Secret.key
+                                                     against the repo's (HTTPS GET,
+                                                     SHA-256 compare; never uploads)
   SLeeLa version                                     Show version + syntax range
   SLeeLa help                                        Show this help
 
@@ -71,12 +74,25 @@ enabled automatically for `native`/`exec`.
 EOF
 }
 
-if [ ! -x "$SLEELA" ]; then
-    echo "SLeeLa: the sleela executable was not found." >&2
-    echo "  Build it first:  make -C \"$ROOT_DIR/impl\"" >&2
-    echo "  Or set SLEELA_BIN=/path/to/sleela" >&2
-    exit 127
-fi
+# `keysearch` and `help` do not run the VM, so they must work even when the
+# sleela binary has not been built. Only require the binary for VM subcommands.
+_first_arg=""
+for _a in "$@"; do
+    case "$_a" in
+        --memory-manager|--mm|--memory-manager=*|--mm=*) : ;;
+        *) _first_arg="$_a"; break ;;
+    esac
+done
+case "$_first_arg" in
+    keysearch|help|-h|--help) : ;;  # no VM binary needed
+    *)
+        if [ ! -x "$SLEELA" ]; then
+            echo "SLeeLa: the sleela executable was not found." >&2
+            echo "  Build it first:  make -C \"$ROOT_DIR/impl\"" >&2
+            echo "  Or set SLEELA_BIN=/path/to/sleela" >&2
+            exit 127
+        fi ;;
+esac
 
 # The runtime needs the object catalog and the SHA-256 execution-gate manifest.
 # Honor any values the caller already exported; otherwise default to the ones
@@ -138,6 +154,14 @@ case "$1" in
         # Run a native OS executable. The operand is a program name/path, NOT a
         # .sleela object, so it is passed through verbatim (no resolve_object).
         exec "$SLEELA" $MM_OPTS "$@" ;;
+    keysearch)
+        # Ping GitHub (read-only HTTPS GET) to check whether the local
+        # psychiatry/Secret.key matches the one published in the repo. The
+        # comparison is by SHA-256 digest, so the key itself is never uploaded.
+        shift
+        PY=$(command -v python3 2>/dev/null || command -v python 2>/dev/null) \
+            || { echo "SLeeLa: keysearch needs python3" >&2; exit 3; }
+        exec "$PY" "$ROOT_DIR/psychiatry/keysearch.py" "$@" ;;
     run)
         shift
         [ "$#" -ge 1 ] || { echo "SLeeLa: 'run' needs an object" >&2; exit 2; }
