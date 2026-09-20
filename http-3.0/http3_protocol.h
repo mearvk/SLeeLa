@@ -13,6 +13,7 @@
 
 #include "http3_envelope.h"
 #include "http3_naming.h"
+#include "http3_intactx.h"
 #include "http3_pipeline.h"
 
 #endif

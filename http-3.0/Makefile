@@ -26,6 +26,7 @@ C_OBJECTS = $(C_SOURCES:.c=.o)
 PROTO_SOURCES = \
 	http3_envelope.c \
 	http3_naming.c \
+	http3_intactx.c \
 	http3_pipeline.c
 
 PROTO_OBJECTS = $(PROTO_SOURCES:.c=.o)

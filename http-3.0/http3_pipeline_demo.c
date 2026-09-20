@@ -10,6 +10,7 @@
  *   - retry-class reporting (§9), and posture checks (unknown svc/op).
  * ========================================================================== */
 #include "http3_pipeline.h"
+#include "http3_intactx.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -66,6 +67,8 @@ static http3_status_t op_place(const uint8_t *payload, size_t payload_len,
 int main(void)
 {
     http3_pipeline_t pipe;
+    http3_intactx_t ix;
+    uint64_t intactx;
     unsigned order_counter = 0;
     uint32_t svc, op_calc, op_place_id;
     http3_envelope_t env;
@@ -78,6 +81,15 @@ int main(void)
     printf("== HTTP 3.0 data flow: request -> envelope -> pipeline -> response ==\n");
 
     http3_pipeline_init(&pipe);
+
+    /* INTACTX: establish/load this host's integrity baseline (persisted). Every
+     * packet we emit is stamped with a fresh INTACTX reading. */
+    http3_intactx_init(&ix, "./.http3_intactx_baseline.demo");
+    intactx = http3_intactx_compute(&ix);
+    printf("\n-- INTACTX host identity --\n");
+    printf("  baseline %s, intactx=%llu variance=%u\n",
+           ix.loaded ? "loaded" : "established",
+           (unsigned long long)intactx, (unsigned)http3_intactx_variance(intactx));
 
     /* §4: register by name; compact ids are assigned on first use. */
     svc = http3_pipeline_register_service(&pipe, "orders", &order_counter);
@@ -92,10 +104,15 @@ int main(void)
     CHECK(svc == 1u && op_calc == 1u && op_place_id == 2u, "compact ids assigned in first-use order");
     CHECK(http3_naming_lookup_service(&pipe.naming, "orders") == svc, "service name re-resolves to same id (cached)");
 
-    /* §5: build the compact envelope for orders.calculate("20,22"). */
+    /* §5: build the compact envelope for orders.calculate("20,22"). The init
+     * stamps the INTACTX host identity and seals the per-packet DIGEST. */
     CHECK(http3_envelope_init(&env, svc, op_calc, /*request_id*/ 1001u,
-                              HTTP3_FLAG_NONE, (const uint8_t *)"20,22", 5u) == 0,
+                              HTTP3_FLAG_NONE, intactx,
+                              (const uint8_t *)"20,22", 5u) == 0,
           "envelope initialized");
+    CHECK(http3_envelope_verify_digest(&env), "per-packet DIGEST verifies");
+    printf("  DIGEST=%llu  INTACTX=%llu\n",
+           (unsigned long long)env.digest, (unsigned long long)env.intactx);
 
     /* §5: pack textual, then binary; both carry the same logical envelope. */
     CHECK(http3_envelope_pack_text(&env, text, sizeof(text), &written) == 0, "envelope packed (textual)");
@@ -134,15 +151,57 @@ int main(void)
 
     /* §19 posture: unknown service and unknown op return typed statuses. */
     printf("\n-- §7 posture: unknown service / operation --\n");
-    (void)http3_envelope_init(&env, 999u, 1u, 2002u, HTTP3_FLAG_NONE, NULL, 0u);
+    (void)http3_envelope_init(&env, 999u, 1u, 2002u, HTTP3_FLAG_NONE, intactx, NULL, 0u);
     (void)http3_pipeline_dispatch(&pipe, &env, &resp);
     CHECK(resp.status == HTTP3_STATUS_UNKNOWN_SVC, "unknown service -> UNKNOWN_SERVICE");
-    (void)http3_envelope_init(&env, svc, 999u, 2003u, HTTP3_FLAG_NONE, NULL, 0u);
+    (void)http3_envelope_init(&env, svc, 999u, 2003u, HTTP3_FLAG_NONE, intactx, NULL, 0u);
     (void)http3_pipeline_dispatch(&pipe, &env, &resp);
     CHECK(resp.status == HTTP3_STATUS_UNKNOWN_OP, "unknown op -> UNKNOWN_OPERATION");
 
-    printf("\n-- observability (§17) --\n  requests handled: %llu\n",
-           (unsigned long long)pipe.requests_handled);
+    /* Integrity gate: a mangled packet (bad DIGEST) is rejected before dispatch. */
+    printf("\n-- integrity: corrupted packet -> BAD_DIGEST --\n");
+    (void)http3_envelope_init(&env, svc, op_calc, 3001u, HTTP3_FLAG_NONE,
+                              intactx, (const uint8_t *)"20,22", 5u);
+    (void)http3_envelope_pack_text(&env, text, sizeof(text), &written);
+    /* Flip a payload byte AFTER the digest was sealed: 20,22 -> 90,22. */
+    {
+        char *dig = strstr(text, ":20,22");
+        if (dig != NULL) { dig[1] = '9'; }
+    }
+    CHECK(http3_pipeline_handle_wire(&pipe, (const uint8_t *)text, strlen(text),
+                                     resp_buf, sizeof(resp_buf), &written) == 0,
+          "corrupted wire handled");
+    (void)http3_response_unpack_text(resp_buf, written, &resp);
+    CHECK(resp.status == HTTP3_STATUS_BAD_DIGEST, "corrupted packet -> BAD_DIGEST");
+
+    /* Tamper reset: a packet whose INTACTX variance exceeds the threshold is
+     * RESET and never dispatched. Simulate a tampered host by forcing a
+     * max-variance INTACTX value on the packet. */
+    printf("\n-- INTACTX: tampered host -> RESET --\n");
+    {
+        uint64_t tampered = ((uint64_t)HTTP3_INTACTX_VARIANCE_MASK
+                                 << HTTP3_INTACTX_VARIANCE_SHIFT) | 0x1234u;
+        (void)http3_envelope_init(&env, svc, op_calc, 3002u, HTTP3_FLAG_RESET,
+                                  tampered, (const uint8_t *)"20,22", 5u);
+        (void)http3_envelope_pack_text(&env, text, sizeof(text), &written);
+        CHECK(http3_intactx_is_tampered(tampered, pipe.intactx_threshold),
+              "high-variance INTACTX flagged as tampered");
+        CHECK(http3_pipeline_handle_wire(&pipe, (const uint8_t *)text, strlen(text),
+                                         resp_buf, sizeof(resp_buf), &written) == 0,
+              "tampered wire handled");
+        (void)http3_response_unpack_text(resp_buf, written, &resp);
+        CHECK(resp.status == HTTP3_STATUS_TAMPERED &&
+              resp.result_len == 5u && memcmp(resp.result, "RESET", 5) == 0,
+              "tampered packet -> TAMPERED + RESET");
+    }
+
+    printf("\n-- observability (§17) --\n"
+           "  requests handled: %llu\n"
+           "  digest rejects:   %llu\n"
+           "  tamper resets:    %llu\n",
+           (unsigned long long)pipe.requests_handled,
+           (unsigned long long)pipe.digest_rejects,
+           (unsigned long long)pipe.tamper_resets);
 
     if (failures == 0) {
         printf("\nHTTP 3.0 pipeline demo: PASS\n");

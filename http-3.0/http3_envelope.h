@@ -5,7 +5,15 @@
  * The envelope is the unit of data that DRIVES the HTTP 3.0 application
  * protocol. It carries, in a fixed logical order:
  *
- *     VERSION | FLAGS | SERVICE-ID | OP-ID | REQUEST-ID | PAYLOAD    (§5)
+ *     VERSION | FLAGS | SERVICE-ID | OP-ID | REQUEST-ID
+ *             | DIGEST | INTACTX | PAYLOAD                            (§5)
+ *
+ * DIGEST is a per-packet 64-bit integrity check over the header + payload: it
+ * detects a mangled or corrupted packet on the wire. INTACTX is a system-
+ * specific 64-bit host-integrity identity (see http3_intactx.h): it fingerprints
+ * the emitting host and encodes how far that host has drifted from its baseline,
+ * so a tampered/changed machine reports a statically larger value and the
+ * receiver can RESET the exchange.
  *
  * and a response carries:
  *
@@ -41,7 +49,8 @@ typedef enum {
     HTTP3_FLAG_BINARY      = 0x01, /* wire form is binary, not textual        */
     HTTP3_FLAG_COMPRESSED  = 0x02, /* payload is compressed (§11)             */
     HTTP3_FLAG_STREAM      = 0x04, /* part of a streaming exchange (§10)      */
-    HTTP3_FLAG_IDEMPOTENT  = 0x08  /* caller asserts idempotency (§9)         */
+    HTTP3_FLAG_IDEMPOTENT  = 0x08, /* caller asserts idempotency (§9)         */
+    HTTP3_FLAG_RESET       = 0x10  /* packet reset: host tampered/untrusted   */
 } http3_envelope_flag_t;
 
 /*
@@ -56,6 +65,8 @@ typedef struct {
     uint32_t service_id;                           /* SERVICE-ID */
     uint32_t op_id;                                /* OP-ID      */
     uint64_t request_id;                           /* REQUEST-ID */
+    uint64_t digest;                               /* DIGEST     */
+    uint64_t intactx;                              /* INTACTX    */
     uint8_t  payload[HTTP3_ENVELOPE_MAX_PAYLOAD];  /* PAYLOAD    */
     size_t   payload_len;
 } http3_envelope_t;
@@ -69,7 +80,9 @@ typedef enum {
     HTTP3_STATUS_UNKNOWN_OP    = 3, /* operation id not resolvable             */
     HTTP3_STATUS_BAD_ENVELOPE  = 4, /* envelope failed to parse/validate       */
     HTTP3_STATUS_TOO_LARGE     = 5, /* payload/envelope exceeded a limit (§13) */
-    HTTP3_STATUS_RETRY_DENIED  = 6  /* unsafe retry refused (§9)               */
+    HTTP3_STATUS_RETRY_DENIED  = 6, /* unsafe retry refused (§9)               */
+    HTTP3_STATUS_BAD_DIGEST    = 7, /* per-packet DIGEST did not verify        */
+    HTTP3_STATUS_TAMPERED      = 8  /* INTACTX variance exceeded threshold     */
 } http3_status_t;
 
 /* The response model (§7): STATUS | REQUEST-ID | RESULT. */
@@ -82,19 +95,31 @@ typedef struct {
 
 /* ---- Construction --------------------------------------------------------- */
 
-/* Initialize an envelope with ids and payload. Returns 0 on success, -1 if the
- * payload is too large. */
+/* Initialize an envelope with ids, INTACTX host identity, and payload. The
+ * per-packet DIGEST is computed and stored automatically over the finished
+ * header + payload. Returns 0 on success, -1 if the payload is too large. */
 int http3_envelope_init(http3_envelope_t *env,
                         uint32_t service_id,
                         uint32_t op_id,
                         uint64_t request_id,
                         uint8_t flags,
+                        uint64_t intactx,
                         const uint8_t *payload,
                         size_t payload_len);
 
+/* ---- Integrity: per-packet DIGEST ----------------------------------------- */
+
+/* Compute the 64-bit DIGEST over an envelope's header fields (excluding the
+ * digest itself) and payload. Deterministic and independent of wire form. */
+uint64_t http3_envelope_compute_digest(const http3_envelope_t *env);
+
+/* Recompute and verify env->digest. Returns 1 if the stored digest matches,
+ * 0 otherwise. */
+int http3_envelope_verify_digest(const http3_envelope_t *env);
+
 /* ---- Textual wire form (§5: textual for interoperability) -----------------
  * Line form (single line, newline-terminated):
- *   H3 <version> <flags> <service_id> <op_id> <request_id> <payload_len>:<payload-bytes>
+ *   H3 <version> <flags> <service_id> <op_id> <request_id> <digest> <intactx> <payload_len>:<payload-bytes>
  * The payload is length-prefixed so it is binary-safe and space-safe.
  */
 int http3_envelope_pack_text(const http3_envelope_t *env, char *out, size_t out_cap, size_t *written);
@@ -102,9 +127,9 @@ int http3_envelope_unpack_text(const char *in, size_t in_len, http3_envelope_t *
 
 /* ---- Binary wire form (§5: binary for negotiated high performance) --------
  * Fixed header, big-endian, then raw payload:
- *   [ver:1][flags:1][service_id:4][op_id:4][request_id:8][payload_len:4][payload:N]
+ *   [ver:1][flags:1][service_id:4][op_id:4][request_id:8][digest:8][intactx:8][payload_len:4][payload:N]
  */
-#define HTTP3_ENVELOPE_BIN_HEADER 22u
+#define HTTP3_ENVELOPE_BIN_HEADER 38u
 int http3_envelope_pack_binary(const http3_envelope_t *env, uint8_t *out, size_t out_cap, size_t *written);
 int http3_envelope_unpack_binary(const uint8_t *in, size_t in_len, http3_envelope_t *env);
 

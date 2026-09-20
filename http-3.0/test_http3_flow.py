@@ -8,16 +8,62 @@ here — it lives in the C substrate (crypto_openssl.c et al.).
 from __future__ import annotations
 
 from http3_flow import (
-    Envelope, Flag, Naming, Pipeline, Response, RetryClass, Status,
+    Envelope, Flag, Intactx, Naming, Pipeline, Response, RetryClass, Status,
+    INTACTX_VARIANCE_SHIFT, INTACTX_VARIANCE_MASK, INTACTX_TAMPER_THRESHOLD,
 )
 
 
 def test_envelope_text_round_trip() -> None:
     env = Envelope(service_id=7, op_id=3, request_id=1001, payload=b"20,22")
     wire = env.pack_text()
-    assert wire == b"H3 3 0 7 3 1001 5:20,22\n"
+    # Wire now carries DIGEST and INTACTX between REQUEST-ID and the length.
+    # digest is 0 here since intactx defaults to 0; assert the exact framing.
+    assert wire == f"H3 3 0 7 3 1001 {env.digest} 0 5:".encode() + b"20,22\n"
     back = Envelope.unpack_text(wire)
     assert (back.service_id, back.op_id, back.request_id, back.payload) == (7, 3, 1001, b"20,22")
+    assert back.digest == env.digest and back.intactx == 0
+
+
+def test_digest_verifies_and_detects_corruption() -> None:
+    env = Envelope(service_id=1, op_id=1, request_id=5, payload=b"20,22").seal()
+    assert env.verify_digest()
+    back = Envelope.unpack_text(env.pack_text())
+    assert back.verify_digest()
+    # Corrupt the payload after sealing: digest must no longer verify.
+    back.payload = b"90,22"
+    assert not back.verify_digest()
+
+
+def test_intactx_variance_layout_and_tamper() -> None:
+    # Variance sits in the high bits; a larger variance is a larger number.
+    low = (1 << INTACTX_VARIANCE_SHIFT) | 0xABC
+    high = (INTACTX_VARIANCE_MASK << INTACTX_VARIANCE_SHIFT) | 0xABC
+    assert high > low
+    assert Intactx.variance(high) == INTACTX_VARIANCE_MASK
+    assert not Intactx.is_tampered(low, INTACTX_TAMPER_THRESHOLD)
+    assert Intactx.is_tampered(high, INTACTX_TAMPER_THRESHOLD)
+
+
+def test_pipeline_rejects_bad_digest_and_resets_tampered() -> None:
+    pipe = Pipeline()
+
+    def echo(payload: bytes, ctx: object):
+        return Status.OK, payload
+
+    sid, oid = pipe.register("svc", "echo", RetryClass.READ, echo)
+
+    # A packet with a wrong digest is rejected before dispatch.
+    env = Envelope(sid, oid, 7001, b"hi").seal()
+    env.digest ^= 0xFF  # tamper the digest field
+    assert Response.unpack_text(pipe.handle_wire(env.pack_text())).status == Status.BAD_DIGEST
+    assert pipe.digest_rejects == 1
+
+    # A packet from a tampered host (max variance) is RESET, not dispatched.
+    tampered_intactx = (INTACTX_VARIANCE_MASK << INTACTX_VARIANCE_SHIFT) | 0x1234
+    env2 = Envelope(sid, oid, 7002, b"hi", flags=int(Flag.RESET), intactx=tampered_intactx).seal()
+    resp = Response.unpack_text(pipe.handle_wire(env2.pack_text()))
+    assert resp.status == Status.TAMPERED and resp.result == b"RESET"
+    assert pipe.tamper_resets == 1
 
 
 def test_envelope_payload_is_length_prefixed_and_binary_safe() -> None:

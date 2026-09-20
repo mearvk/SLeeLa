@@ -41,7 +41,7 @@ succeeds. New files: `http3_envelope.{h,c}`, `http3_naming.{h,c}`,
 | Spec section | Concept | State (2026-09-14) |
 |---|---|---|
 | §4 | Fast naming (name ↔ compact id, caching) | **Implemented** — `http3_naming` + `http3_flow.py` |
-| §5 | Compact envelope `VERSION\|FLAGS\|SERVICE-ID\|OP-ID\|REQUEST-ID\|PAYLOAD` | **Implemented** — textual **and** binary wire |
+| §5 | Compact envelope `VERSION\|FLAGS\|SERVICE-ID\|OP-ID\|REQUEST-ID\|DIGEST\|INTACTX\|PAYLOAD` | **Implemented** — textual **and** binary wire; per-packet DIGEST + INTACTX host id |
 | §6 | Request IDs (correlation without ordering) | **Implemented** — carried and echoed |
 | §7 | Response model `STATUS\|REQUEST-ID\|RESULT` | **Implemented** — `http3_response_*` |
 | §9 | Retry classes (READ/IDEMPOTENT/MUTATING/STREAM) | **Implemented** — per-operation; mutating-retry decision point marked |
@@ -104,10 +104,38 @@ and key distribution beneath the application flow.
 
 **C ↔ Python parity.** `http3_flow.py` re-implements the envelope, naming,
 response, retry classes, and pipeline in dependency-free Python, and its textual
-wire output is byte-identical to the C reference (verified:
-`H3 3 0 1 1 1001 5:20,22`). This is the branch that proves the spec's governing
+wire output is byte-identical to the C reference (envelope form now
+`H3 <ver> <flags> <svc> <op> <req> <digest> <intactx> <len>:<payload>`). The
+per-packet DIGEST is defined over a canonical big-endian field layout, so C and
+Python compute the same 64-bit value for the same logical packet (verified by
+direct cross-check). This is the branch that proves the spec's governing
 principle (§20): a C, C++, Java, or other client can implement the connector
 without becoming a SLeeLa runtime.
+
+**Per-packet integrity: DIGEST + INTACTX (added after 2026-09-14).** Every
+HTTP 3.0 packet now carries two integrity values ahead of its payload:
+
+- **DIGEST** — a 64-bit FNV-1a over the envelope header (excluding the transport
+  BINARY marker) plus payload, sealed by `http3_envelope_init`. It detects a
+  packet mangled or corrupted in transit. A packet that fails verification is
+  answered `BAD_DIGEST` and never dispatched.
+- **INTACTX** — a system-specific 64-bit host-integrity identity
+  (`http3_intactx.{h,c}`). It is derived from a stable OS/identity baseline
+  (OS name/release/arch, hostname, user), **persisted** to a baseline file so it
+  survives restarts and reboots, folded with a per-emit "use-normality" sample
+  (shell, cwd, term, locale). The value packs a 16-bit variance in its high bits
+  over a 48-bit identity, so a larger departure from the baseline yields a
+  statically larger number; a healthy, unchanged host reports variance 0. When a
+  received packet's variance exceeds the pipeline threshold
+  (`HTTP3_INTACTX_TAMPER_THRESHOLD`, tunable), the exchange is **RESET**
+  (`TAMPERED` + a `RESET` body) and the packet is not dispatched — the "reset
+  packets if the computer has been tampered with" requirement.
+
+The pipeline records both events for observability (§17): `digest_rejects` and
+`tamper_resets`. New files: `http3_intactx.{h,c}`. Updated:
+`http3_envelope.{h,c}`, `http3_pipeline.{h,c}`, `http3_protocol.h`,
+`http3_pipeline_demo.c`, `http3_flow.py`, `test_http3_flow.py`, `Makefile`,
+`.gitignore`, `FLOW.md`.
 
 ---
 

@@ -67,11 +67,19 @@ typedef struct {
     http3_naming_t          naming;
     http3_service_binding_t services[HTTP3_MAX_SERVICES];
     size_t                  service_count;
-    uint64_t                requests_handled; /* observability (§17) */
+    uint64_t                requests_handled; /* observability (§17)          */
+    uint16_t                intactx_threshold;/* INTACTX variance tamper limit */
+    uint64_t                digest_rejects;   /* packets dropped: bad DIGEST   */
+    uint64_t                tamper_resets;    /* packets reset: INTACTX tamper */
 } http3_pipeline_t;
 
-/* Initialize an empty pipeline. */
+/* Initialize an empty pipeline. The INTACTX tamper threshold defaults to
+ * HTTP3_INTACTX_TAMPER_THRESHOLD; override it with http3_pipeline_set_intactx_threshold. */
 void http3_pipeline_init(http3_pipeline_t *pipe);
+
+/* Set the INTACTX variance threshold above which an inbound packet is treated
+ * as coming from a tampered host and RESET. Pass 0 to restore the default. */
+void http3_pipeline_set_intactx_threshold(http3_pipeline_t *pipe, uint16_t threshold);
 
 /*
  * Register a service by name, returning its compact SERVICE-ID (§4). ctx is
@@ -107,8 +115,12 @@ int http3_pipeline_dispatch(http3_pipeline_t *pipe,
 
 /*
  * Full receive path (§19 from "HTTP receive"): takes a wire buffer (textual or
- * binary, auto-detected), performs minimal parse + unpack, then dispatch.
- * Writes a packed textual response into out/out_cap. Returns 0 on success.
+ * binary, auto-detected), performs minimal parse + unpack, then an integrity
+ * gate (per-packet DIGEST verify, then INTACTX tamper check), then dispatch.
+ * A packet whose DIGEST fails is rejected (BAD_DIGEST); a packet whose INTACTX
+ * variance exceeds the threshold is RESET (TAMPERED, response carries
+ * HTTP3_FLAG_RESET) and never dispatched. Writes a packed textual response into
+ * out/out_cap. Returns 0 on success.
  */
 int http3_pipeline_handle_wire(http3_pipeline_t *pipe,
                                const uint8_t *wire, size_t wire_len,
