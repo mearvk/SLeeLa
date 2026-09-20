@@ -108,6 +108,17 @@ registry. This document specifies only the neutral constitutional-reference
 indicator carried in the final `BANKS4.md` column, preserving all existing
 banking, currency, GDP, trade, supervision and other registry fields.
 
+### Related registries
+
+- [`GDP_EDUCATION.md`](GDP_EDUCATION.md) — a separate, sourced reference listing
+  the top 100 economies by nominal GDP (IMF) paired with the UN Education Index
+  (UNDP). It is an **economic and education** dataset and is deliberately kept
+  independent of this document: a jurisdiction's `Constitutional Socialism
+  Reference` value here must **not** be inferred from its GDP rank, education
+  score, or any figure in that file (see the data-integrity rule above). The two
+  registries are cross-referenced for navigation only, not for deriving one from
+  the other.
+
 ### Versioning
 
 Any country-level value change should preserve the reason for the change and its
