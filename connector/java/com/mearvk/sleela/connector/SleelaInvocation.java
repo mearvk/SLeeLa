@@ -11,4 +11,14 @@ public record SleelaInvocation(String operation, String arguments) {
         }
         arguments = arguments == null ? "" : arguments;
     }
+
+    /** An invocation of {@code operation} with no arguments. */
+    public static SleelaInvocation of(String operation) {
+        return new SleelaInvocation(operation, "");
+    }
+
+    /** An invocation of {@code operation} with a single argument string. */
+    public static SleelaInvocation of(String operation, String arguments) {
+        return new SleelaInvocation(operation, arguments);
+    }
 }
