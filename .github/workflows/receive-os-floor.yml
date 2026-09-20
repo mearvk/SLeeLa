@@ -1,0 +1,62 @@
+name: Receive SLeeLa OS-floor discovery
+
+# Receives the `sleela-os-floor` repository_dispatch event posted by
+# http-3.0/os_floor_report.py and appends/deduplicates the reported OS floors
+# into tools/os_floor/OS_FLOOR_CATALOG.json, then commits the update.
+#
+# The dispatch client_payload carries only non-identifying floor descriptors
+# (see OS_FLOOR_DISCOVERY.md); the merge script re-sanitizes to a whitelist.
+
+on:
+  repository_dispatch:
+    types: [sleela-os-floor]
+  workflow_dispatch:
+    inputs:
+      payload:
+        description: "Manual test: a client_payload JSON object with a floors[] array"
+        required: false
+        default: '{"kind":"sleela.os_floor.discovery","floors":[]}'
+
+permissions:
+  contents: write
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Write incoming payload
+        env:
+          # For repository_dispatch, the whole client_payload is available.
+          CLIENT_PAYLOAD: ${{ toJSON(github.event.client_payload) }}
+          MANUAL_PAYLOAD: ${{ github.event.inputs.payload }}
+        run: |
+          if [ "${{ github.event_name }}" = "repository_dispatch" ]; then
+            printf '%s' "$CLIENT_PAYLOAD" > /tmp/floor_payload.json
+          else
+            printf '%s' "$MANUAL_PAYLOAD" > /tmp/floor_payload.json
+          fi
+          echo "payload bytes: $(wc -c < /tmp/floor_payload.json)"
+
+      - name: Merge into the OS-floor catalog
+        run: |
+          python3 tools/os_floor/merge_floor_dispatch.py \
+            --payload /tmp/floor_payload.json \
+            --catalog tools/os_floor/OS_FLOOR_CATALOG.json
+
+      - name: Commit catalog update (if changed)
+        run: |
+          if git diff --quiet -- tools/os_floor/OS_FLOOR_CATALOG.json; then
+            echo "no catalog change"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add tools/os_floor/OS_FLOOR_CATALOG.json
+          git commit -m "os-floor: merge sleela-os-floor discovery into catalog"
+          git push
