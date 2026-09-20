@@ -1,0 +1,122 @@
+#!/usr/bin/env sh
+# =============================================================================
+# SLeeLa -- the OS-terminal launcher for the SLeeLa VM.
+#
+# Run a SLeeLa object (a .sleela Wrapper(TM) or a compiled .sleela artifact)
+# straight from the operating-system shell:
+#
+#     $> SLeeLa object
+#
+# where `object` may be:
+#   * a bare object name           ->  SLeeLa hello          (finds hello.sleela)
+#   * a .sleela source path        ->  SLeeLa examples/hello.sleela
+#   * a compiled .sleela artifact  ->  SLeeLa build/prog.sleela
+#   * an .xclass ingest input      ->  SLeeLa Foo.xclass
+#
+# It also forwards the toolchain subcommands:
+#   SLeeLa run <object>            explicit run
+#   SLeeLa check <file.sleela>     validate (incl. #sleela version), do not run
+#   SLeeLa compile <src> -o <out>  compile a Wrapper to a runnable artifact
+#   SLeeLa version                 version + supported syntax range
+#   SLeeLa help                    this help
+#
+# The launcher resolves the built `sleela` binary, sets the SHEET.sheet catalog
+# and the SHA-256 execution-gate manifest (both required by the runtime), then
+# hands off to the binary, preserving its exit status.
+# =============================================================================
+set -u
+
+BIN_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+ROOT_DIR=$(CDPATH= cd -- "$BIN_DIR/.." && pwd)
+
+# Resolve the sleela binary: an override, a copy alongside this script, or the
+# in-tree build. (Windows: allow the .exe suffix.)
+SLEELA="${SLEELA_BIN:-}"
+if [ -z "$SLEELA" ] || [ ! -x "$SLEELA" ]; then
+    for cand in \
+        "$BIN_DIR/sleela" "$BIN_DIR/sleela.exe" \
+        "$ROOT_DIR/impl/build/sleela" "$ROOT_DIR/impl/build/sleela.exe"; do
+        if [ -x "$cand" ]; then SLEELA="$cand"; break; fi
+    done
+fi
+
+usage() {
+    cat <<'EOF'
+SLeeLa -- run a SLeeLa object from the OS terminal.
+
+Usage:
+  SLeeLa <object>                Run a .sleela object (source or artifact)
+  SLeeLa run <object>            Run a .sleela object (explicit)
+  SLeeLa check <file.sleela>     Validate a Wrapper without running it
+  SLeeLa compile <src> -o <out>  Compile a Wrapper to a runnable artifact
+  SLeeLa version                 Show version and supported syntax range
+  SLeeLa help                    Show this help
+
+<object> may be a bare name (foo -> foo.sleela), a .sleela path, a compiled
+.sleela artifact, or an .xclass input. Bare names are resolved against the
+current directory, then $ROOT_DIR/examples, then $ROOT_DIR/impl/examples.
+EOF
+}
+
+if [ ! -x "$SLEELA" ]; then
+    echo "SLeeLa: the sleela executable was not found." >&2
+    echo "  Build it first:  make -C \"$ROOT_DIR/impl\"" >&2
+    echo "  Or set SLEELA_BIN=/path/to/sleela" >&2
+    exit 127
+fi
+
+# The runtime needs the object catalog and the SHA-256 execution-gate manifest.
+# Honor any values the caller already exported; otherwise default to the ones
+# shipped in the repository.
+if [ -z "${SLEELA_SHEET:-}" ] && [ -f "$ROOT_DIR/SHEET.sheet" ]; then
+    SLEELA_SHEET="$ROOT_DIR/SHEET.sheet"; export SLEELA_SHEET
+fi
+if [ -z "${SLEELA_SHA256_MANIFEST:-}" ] && [ -f "$ROOT_DIR/security/sha256-manifest.json" ]; then
+    SLEELA_SHA256_MANIFEST="$ROOT_DIR/security/sha256-manifest.json"; export SLEELA_SHA256_MANIFEST
+fi
+
+# Resolve a bare object name to a runnable file: an exact path wins; otherwise
+# try <name>.sleela in the cwd and the example directories.
+resolve_object() {
+    obj=$1
+    if [ -f "$obj" ]; then printf '%s' "$obj"; return 0; fi
+    case "$obj" in
+        *.sleela|*.xclass)
+            for d in "." "$ROOT_DIR" "$ROOT_DIR/examples" "$ROOT_DIR/impl/examples"; do
+                if [ -f "$d/$obj" ]; then printf '%s' "$d/$obj"; return 0; fi
+            done ;;
+        *)
+            for d in "." "$ROOT_DIR" "$ROOT_DIR/examples" "$ROOT_DIR/impl/examples"; do
+                if [ -f "$d/$obj.sleela" ]; then printf '%s' "$d/$obj.sleela"; return 0; fi
+            done ;;
+    esac
+    return 1
+}
+
+if [ "$#" -eq 0 ]; then
+    usage
+    exit 2
+fi
+
+case "$1" in
+    help|-h|--help)
+        usage; exit 0 ;;
+    version|--version|-v)
+        exec "$SLEELA" version ;;
+    check|compile|xclass|defender)
+        # Pass toolchain subcommands straight through.
+        exec "$SLEELA" "$@" ;;
+    run)
+        shift
+        [ "$#" -ge 1 ] || { echo "SLeeLa: 'run' needs an object" >&2; exit 2; }
+        target=$(resolve_object "$1") || { echo "SLeeLa: object not found: '$1'" >&2; exit 66; }
+        shift
+        exec "$SLEELA" run "$target" "$@" ;;
+    -*)
+        echo "SLeeLa: unknown option '$1'" >&2; usage >&2; exit 2 ;;
+    *)
+        # Bare object form:  SLeeLa object
+        target=$(resolve_object "$1") || { echo "SLeeLa: object not found: '$1'" >&2; exit 66; }
+        shift
+        exec "$SLEELA" run "$target" "$@" ;;
+esac
