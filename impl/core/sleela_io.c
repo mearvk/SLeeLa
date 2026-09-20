@@ -142,8 +142,13 @@ int slio_create_pipe_endpoint(const char* path, unsigned mode) {
 static int parse_mode(const char* mode) {
     if (!mode || !*mode) return -1;
     int flags = 0;
+    /* Read-write is spelled either "rw" or with a trailing '+', per the mode
+     * grammar documented in sleela_io.h ("r/w/a/rw/r+/w+/a+"). The Windows
+     * access_flags() branch already accepts "rw"; honor it here too so, e.g.,
+     * opening a FIFO "rw" does not degrade to a blocking O_RDONLY. */
     int plus = strchr(mode, '+') != NULL;
-    if (mode[0] == 'r') flags = plus ? O_RDWR : O_RDONLY;
+    int rw = plus || strstr(mode, "rw") != NULL;
+    if (mode[0] == 'r') flags = rw ? O_RDWR : O_RDONLY;
     else if (mode[0] == 'w') flags = (plus ? O_RDWR : O_WRONLY) | O_CREAT | O_TRUNC;
     else if (mode[0] == 'a') flags = (plus ? O_RDWR : O_WRONLY) | O_CREAT | O_APPEND;
     else return -1;

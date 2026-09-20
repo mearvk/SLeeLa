@@ -1,0 +1,15 @@
+# SleelaTerminal local presentation and data-orientation settings
+# Copy to the user's SleelaTerminal configuration directory if desired.
+# Runtime settings are stored at: ~/.config/sleela/sleela-terminal.conf
+#
+# Data source switches are declarations only. They do not fetch, transmit,
+# identify, authenticate, or establish legal status by themselves.
+
+font=Monospace 11
+foreground=#FFFFFF
+input_language=system
+output_language=system
+national_feeds=false
+persons_of_interest=false
+parametric_documents=false
+national_identifiers=false

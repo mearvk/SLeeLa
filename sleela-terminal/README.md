@@ -8,9 +8,9 @@ shell, expressed through our own **hierarchical, math-driven architecture** (see
 [`ARCHITECTURE.md`](ARCHITECTURE.md)).
 
 > **This is authored, so it is ours to brand.** The *ideas* (pipelines,
-> redirection, quoting, arithmetic) are common shell knowledge; the *code* is
-> new. The repository's vendored GNU Bash under `bash/` is a separate,
-> unmodified component and is not used here.
+> redirection, quoting, arithmetic) are common shell knowledge; the code is new.
+> The repository's vendored GNU Bash under `bash/` is a separate, unmodified
+> component and is not used here.
 
 ## Layers
 
@@ -69,7 +69,7 @@ L1  Core + Arith       Value/Token/AST model, precedence-climbing arithmetic
   (the inverse of `while`).
 - **Background jobs** — `command &` forks the command, records it in a job
   table, and prints `[id] pid`; `jobs` lists them, `wait [id]` waits, and
-  `fg` / `bg` resume a job in the fore/background.
+  `fg` / `bg` resume jobs in the fore/background.
 - **Loop control** — `break [n]` and `continue [n]` (with an optional number of
   enclosing loop levels).
 - **Pipeline negation** — `! pipeline` inverts the exit status.
@@ -101,6 +101,30 @@ L1  Core + Arith       Value/Token/AST model, precedence-climbing arithmetic
   the process-substitution startup path avoids the common FIFO open deadlock.
 - **M5 CI validation** — the workflow performs a clean build, full smoke suite,
   sanitizer validation, Clang installation, and fuzz-target compilation.
+
+### Soros relative time
+
+The base binary set includes the project-defined `soros time` command. It uses
+the terminal's local civil year as its input and applies this explicit relative
+time rule:
+
+- **2026 → 2407** — the project's **Own National Time** reference year.
+- **2026 + 1 → 2408**.
+- **2026 + 2 → 2409**.
+- In general: `2407 + (civil_year - 2026)`.
+- **2607+** is retained as the project's **Great Mystery** marker and is
+  displayed separately from the calculated relative timestamp; it is not
+  presented as a historical or externally recognized calendar.
+
+The command is available directly in the REPL and through `slsh -c` / script
+execution:
+
+```sh
+./build/slsh -c 'soros time'
+```
+
+The implementation deliberately uses the terminal's local civil year rather
+than claiming that this project-defined notation replaces a civil calendar.
 
 See [`M5-HARDENING.md`](M5-HARDENING.md) for the implementation closeout and
 remaining gates toward the **GREAT** engineering classification.

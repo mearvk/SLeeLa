@@ -5,14 +5,13 @@
 
 #include <cctype>
 #include <cstdlib>
-#include <unistd.h>   // environ
+#include <unistd.h>
 
 extern char** environ;
 
 namespace sleela::sh {
 
 long Value::asInt() const noexcept {
-    // Parse an optional sign and leading digits; ignore trailing junk.
     std::size_t i = 0;
     const std::size_t n = text.size();
     while (i < n && std::isspace(static_cast<unsigned char>(text[i]))) ++i;
@@ -31,13 +30,9 @@ long Value::asInt() const noexcept {
     return any ? sign * v : 0;
 }
 
-Value Value::fromInt(long v) {
-    return Value(std::to_string(v));
-}
+Value Value::fromInt(long v) { return Value(std::to_string(v)); }
 
 Environment::Environment() {
-    // Seed from the process environment so the shell starts with the caller's
-    // variables (PATH etc.), each marked exported.
     for (char** e = ::environ; e && *e; ++e) {
         std::string entry(*e);
         const auto eq = entry.find('=');
@@ -53,23 +48,15 @@ std::string Environment::get(const std::string& name) const {
     return it == vars_.end() ? std::string() : it->second.value;
 }
 
-bool Environment::has(const std::string& name) const {
-    return vars_.find(name) != vars_.end();
-}
+bool Environment::has(const std::string& name) const { return vars_.find(name) != vars_.end(); }
 
 void Environment::set(const std::string& name, const std::string& value) {
     auto& v = vars_[name];
     v.value = value;
-    // keep existing 'exported' flag if the var already existed
 }
 
-void Environment::unset(const std::string& name) {
-    vars_.erase(name);
-}
-
-void Environment::exportVar(const std::string& name) {
-    vars_[name].exported = true;
-}
+void Environment::unset(const std::string& name) { vars_.erase(name); }
+void Environment::exportVar(const std::string& name) { vars_[name].exported = true; }
 
 bool Environment::isExported(const std::string& name) const {
     const auto it = vars_.find(name);
@@ -90,6 +77,7 @@ Environment Environment::scopedCopy() const {
     copy.vars_ = vars_;
     copy.functions_ = functions_;
     copy.positionals_ = positionals_;
+    copy.prompt_ = prompt_;
     copy.last_status_ = last_status_;
     copy.should_exit_ = false;
     copy.exit_code_ = 0;
@@ -113,12 +101,9 @@ bool Environment::hasFunction(const std::string& name) const {
     return functions_.find(name) != functions_.end();
 }
 
-void Environment::setPositionals(std::vector<std::string> args) {
-    positionals_ = std::move(args);
-}
+void Environment::setPositionals(std::vector<std::string> args) { positionals_ = std::move(args); }
 
 std::string Environment::getPositional(std::size_t n) const {
-    // 1-based: $1 is positionals_[0].
     if (n == 0 || n > positionals_.size()) return std::string();
     return positionals_[n - 1];
 }

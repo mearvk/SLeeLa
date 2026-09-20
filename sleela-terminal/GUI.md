@@ -1,6 +1,6 @@
 # SleelaTerminal™ Graphical Terminal
 
-SLeeLa now provides a dedicated graphical terminal window for the SleelaTerminal™ shell.
+SLeeLa provides a dedicated graphical terminal window for the SleelaTerminal™ shell.
 
 ## Architecture
 
@@ -22,6 +22,40 @@ The GUI is a terminal emulator front end, not a second shell implementation. It 
 
 VTE supplies the virtual terminal widget and PTY integration used by GTK terminal applications.
 
+## Settings menu
+
+The title bar includes a three-horizontal-line settings/menu button. It opens a compact GTK popover so configuration does not require a permanent side panel or toolbar.
+
+The menu currently provides:
+
+- font family and size choices;
+- terminal font/foreground color choices;
+- input/output language orientation;
+- declared national/channel feed categories;
+- declared persons-of-interest categories;
+- declared parametric document/résumé categories; and
+- declared national-identifier categories.
+
+The terminal remains the centered primary workspace. Text selection and copy/paste remain available through the terminal's contextual right-click menu.
+
+## Parametric Ring of Trust / Orientation
+
+The settings model treats these source categories as local, human-readable declarations. They describe an orientation between a terminal, a parameter, and a possible information source. They do **not** independently establish identity, authority, truth, provenance, legal status, or trust.
+
+The current implementation deliberately keeps source switches off by default. Enabling a switch records the user's local configuration choice; it does not silently fetch, transmit, authenticate, identify, or ingest a source.
+
+This gives future feed, document, or identity-adapter work a clear extension point without making external data acquisition part of the terminal's presentation layer.
+
+## Configuration
+
+Settings are loaded and saved in a simple text configuration file:
+
+```text
+~/.config/sleela/sleela-terminal.conf
+```
+
+An example schema is provided in `sleela-terminal.conf.example`. The file uses straightforward `key=value` entries so it can be inspected or edited without a specialized configuration editor.
+
 ## Build
 
 From `sleela-terminal`:
@@ -36,7 +70,7 @@ The executable is:
 build/SleelaTerminal
 ```
 
-The default `make` target now builds the GUI in addition to `build/slsh` and the smoke-test executable.
+The default `make` target builds the GUI in addition to `build/slsh` and the smoke-test executable.
 
 ## Run
 
@@ -50,7 +84,7 @@ The GUI automatically looks for `slsh` beside itself, so the development build l
 ./build/SleelaTerminal ./build/slsh
 ```
 
-## Branding
+## Branding and visual frame
 
 The application window is branded:
 
@@ -58,9 +92,9 @@ The application window is branded:
 SleelaTerminal™ — MEARVK LLC
 ```
 
-The title bar uses a dark rich-purple presentation with white product text.
+The title bar and footer retain the dark rich-purple visual language, bright white controls/text, and three-dimensional highlight treatment. The settings popover uses the same purple family rather than introducing a separate theme.
 
-A version number is deliberately not hard-coded until the project establishes a canonical SLeeLa version source. This prevents the GUI from presenting an invented release number.
+The current GUI displays version `1.0.0`, matching the project's initial SleelaTerminal version baseline.\n\nThe footer also contains the clickable **CMD** image, representing CMD as the Java native launcher associated with SecureJDK 28. It is rendered as a strict image with no additional footer-button outline.
 
 ## Desktop installation
 

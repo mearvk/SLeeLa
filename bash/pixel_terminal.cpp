@@ -9,15 +9,21 @@
 
 #include <algorithm>
 #include <csignal>
+#ifdef _WIN32
+#include <windows.h>
+#else
 #include <sys/ioctl.h>
 #include <unistd.h>
+#endif
 
 namespace {
+#ifndef _WIN32
 volatile std::sig_atomic_t resize_pending = 0;
 
 void on_resize(int) noexcept {
     resize_pending = 1;
 }
+#endif
 
 std::size_t safe_area(std::size_t width, std::size_t height) {
     if (width == 0 || height == 0) return 0;
@@ -51,6 +57,25 @@ PixelTerminal::~PixelTerminal() {
 }
 
 bool PixelTerminal::queryCellSize() {
+#ifdef _WIN32
+    // Windows console reports size in character cells via the screen buffer's
+    // visible window rectangle. There is no pixel-granularity query, so
+    // queryPixelSize() returns false and the cell size is used as the fallback.
+    CONSOLE_SCREEN_BUFFER_INFO info{};
+    HANDLE out = GetStdHandle(STD_OUTPUT_HANDLE);
+    if (out == INVALID_HANDLE_VALUE || !GetConsoleScreenBufferInfo(out, &info)) {
+        return false;
+    }
+    const unsigned cols = (unsigned)(info.srWindow.Right - info.srWindow.Left + 1);
+    const unsigned rows = (unsigned)(info.srWindow.Bottom - info.srWindow.Top + 1);
+    if (cols == 0 || rows == 0) return false;
+    const Size next{cols, rows};
+    if (next != cell_size_) {
+        cell_size_ = next;
+        recordEvent(SizeEventType::CellSizeChanged);
+    }
+    return true;
+#else
     winsize ws{};
     if (::ioctl(STDOUT_FILENO, TIOCGWINSZ, &ws) != 0 || ws.ws_col == 0 || ws.ws_row == 0) {
         return false;
@@ -62,9 +87,15 @@ bool PixelTerminal::queryCellSize() {
         recordEvent(SizeEventType::CellSizeChanged);
     }
     return true;
+#endif
 }
 
 bool PixelTerminal::queryPixelSize() {
+#ifdef _WIN32
+    // The Windows console API does not expose a physical pixel size; report
+    // failure so querySize() falls back to the cell dimensions.
+    return false;
+#else
     winsize ws{};
     if (::ioctl(STDOUT_FILENO, TIOCGWINSZ, &ws) != 0 ||
         ws.ws_xpixel == 0 || ws.ws_ypixel == 0) {
@@ -79,6 +110,7 @@ bool PixelTerminal::queryPixelSize() {
         recordEvent(SizeEventType::PixelSizeChanged);
     }
     return true;
+#endif
 }
 
 bool PixelTerminal::querySize() {
@@ -168,6 +200,11 @@ void PixelTerminal::end() {
 
 void PixelTerminal::watchResize() {
     if (watching_resize_) return;
+#ifdef _WIN32
+    // Windows has no SIGWINCH. Resize is detected by polling querySize()
+    // (pollResize() below), so simply mark the watcher active.
+    watching_resize_ = true;
+#else
     struct sigaction action{};
     action.sa_handler = on_resize;
     sigemptyset(&action.sa_mask);
@@ -175,10 +212,14 @@ void PixelTerminal::watchResize() {
     if (::sigaction(SIGWINCH, &action, nullptr) == 0) {
         watching_resize_ = true;
     }
+#endif
 }
 
 void PixelTerminal::unwatchResize() {
     if (!watching_resize_) return;
+#ifdef _WIN32
+    watching_resize_ = false;
+#else
     struct sigaction action{};
     action.sa_handler = SIG_DFL;
     sigemptyset(&action.sa_mask);
@@ -186,12 +227,20 @@ void PixelTerminal::unwatchResize() {
     ::sigaction(SIGWINCH, &action, nullptr);
     watching_resize_ = false;
     resize_pending = 0;
+#endif
 }
 
 bool PixelTerminal::pollResize() {
+#ifdef _WIN32
+    // No signal-driven flag on Windows; re-query the console each poll and
+    // report whether the size changed.
+    if (!watching_resize_) return false;
+    return querySize();
+#else
     if (!resize_pending) return false;
     resize_pending = 0;
     return querySize();
+#endif
 }
 
 } // namespace sleela::terminal
