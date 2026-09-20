@@ -12,6 +12,7 @@ body, so the H3 integrity gate still verifies after transit.
 |---|---|
 | [`../../http-3.0/http3_transport.py`](../../http-3.0/http3_transport.py) | **Custom packet builder** — wraps an H3 envelope in HTTP/1.1 (text framing; "HTTP 2.1" style) or **HTTP/2** binary frames, and extracts it back out. |
 | [`../java/com/mearvk/sleela/connector/http/SleelaH3Servlet.java`](../java/com/mearvk/sleela/connector/http/SleelaH3Servlet.java) | **HTTP module** — a Jakarta `HttpServlet` that Tomcat serves over **HTTP/2+**, extracts the embedded H3 envelope from the request body, runs it through the pipeline, and returns the H3 response body. |
+| [`../java/com/mearvk/sleela/connector/http/SleeuumLedger.java`](../java/com/mearvk/sleela/connector/http/SleeuumLedger.java) | **Server-side Sleeuum™ ledger** — records every packet the servlet handles (dates + numbers), served as JSON at `GET /sleela/h3/ledger`. Conforms to [`../../http-3.0/sleeuum.schema.json`](../../http-3.0/sleeuum.schema.json). |
 | [`web.xml`](web.xml) | Servlet mapping at `/sleela/h3`. |
 | [`tomcat-server.xml.sample`](tomcat-server.xml.sample) | Tomcat connector config enabling **HTTP/2** (h2 over TLS, and h2c cleartext). |
 | [`apache-h3.conf`](apache-h3.conf) | Apache `httpd` front that terminates HTTP/2 (`mod_http2`) and reverse-proxies (`mod_proxy_http2`) to Tomcat's h2c connector. |
