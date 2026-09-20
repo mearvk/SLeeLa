@@ -1,5 +1,10 @@
 #ifndef _WIN32
 #define _XOPEN_SOURCE 600
+/* On macOS, _XOPEN_SOURCE alone hides BSD/Darwin symbols; _DARWIN_C_SOURCE
+ * re-exposes posix_openpt/grantpt/unlockpt/ptsname and TIOCSCTTY. */
+#if defined(__APPLE__)
+#define _DARWIN_C_SOURCE 1
+#endif
 #endif
 #ifdef _WIN32
 #ifndef _WIN32_WINNT
@@ -214,10 +219,22 @@ static SLLinuxTerminal* as_terminal(SLTerminalHandle h) {
     return (SLLinuxTerminal*)(intptr_t)h;
 }
 
-SLTerminalPlatform slterminal_platform(void) { return SL_TERMINAL_LINUX; }
-const char* slterminal_platform_name(void) { return "linux-pty"; }
+SLTerminalPlatform slterminal_platform(void) {
+#if defined(__APPLE__)
+    return SL_TERMINAL_MACOS;
+#else
+    return SL_TERMINAL_LINUX;
+#endif
+}
+const char* slterminal_platform_name(void) {
+#if defined(__APPLE__)
+    return "macos-pty";
+#else
+    return "linux-pty";
+#endif
+}
 int slterminal_platform_is_available(SLTerminalPlatform platform) {
-    return platform == SL_TERMINAL_AUTO || platform == SL_TERMINAL_LINUX;
+    return platform == SL_TERMINAL_AUTO || platform == slterminal_platform();
 }
 
 int slterminal_spawn(SLTerminalHandle* terminal, const char* command,

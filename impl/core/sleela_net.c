@@ -28,21 +28,31 @@
 static SLNetPlatform requested_platform(void) {
     const char* value = getenv("SLEELA_NET_PLATFORM");
     if (!value || !*value || strcmp(value, "auto") == 0) return SL_NET_AUTO;
-    if (strcmp(value, "linux") == 0 || strcmp(value, "posix") == 0) return SL_NET_LINUX;
+    /* "posix" means "the native POSIX backend, whichever it is" so it is
+     * accepted on both Linux and macOS. */
+    if (strcmp(value, "posix") == 0) return SL_NET_AUTO;
+    if (strcmp(value, "linux") == 0) return SL_NET_LINUX;
+    if (strcmp(value, "macos") == 0 || strcmp(value, "darwin") == 0) return SL_NET_MACOS;
     if (strcmp(value, "windows") == 0 || strcmp(value, "win32") == 0) return SL_NET_WINDOWS;
     return SL_NET_AUTO;
 }
 
 SLNetPlatform slnet_platform(void) {
-#ifdef _WIN32
+#if defined(_WIN32)
     return SL_NET_WINDOWS;
+#elif defined(__APPLE__)
+    return SL_NET_MACOS;
 #else
     return SL_NET_LINUX;
 #endif
 }
 
 const char* slnet_platform_name(void) {
-    return slnet_platform() == SL_NET_WINDOWS ? "windows" : "linux";
+    switch (slnet_platform()) {
+        case SL_NET_WINDOWS: return "windows";
+        case SL_NET_MACOS:   return "macos";
+        default:             return "linux";
+    }
 }
 
 int slnet_platform_is_available(SLNetPlatform platform) {

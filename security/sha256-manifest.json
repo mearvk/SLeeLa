@@ -27,7 +27,7 @@
     },
     {
       "path": "impl/core/io_platform_smoke.c",
-      "sha256": "89bc0e8656a2867ec6442cb0ab9986b929365ab506d6e0e5e9f0a7cea107f648"
+      "sha256": "41ce5330eb3766a687bccb9dd5c00acc13dcc425db5030f97c54db339d1f096e"
     },
     {
       "path": "impl/core/library_platform_smoke.c",
@@ -39,7 +39,7 @@
     },
     {
       "path": "impl/core/net_platform_smoke.c",
-      "sha256": "f8d7da7ff936a8861a383afa5d23acf0556b5dbd361c0def386fd32084b489b8"
+      "sha256": "8e672c36de31ad20790b1d3c6996a4cfe6b26b6561136799ab1ebdf26cffee1e"
     },
     {
       "path": "impl/core/path_platform_smoke.c",
@@ -63,67 +63,67 @@
     },
     {
       "path": "impl/core/sleela_events.c",
-      "sha256": "0753a4afbd6cdec527bfee5286f63897fc6b04d684f5f9f202519899f99e5fac"
+      "sha256": "ab0c13c4edfc1d33a25fd86ec262fa810c7af72ade42aef3dd16b70da3eff3f9"
     },
     {
       "path": "impl/core/sleela_events.h",
-      "sha256": "d42099ed1ee487a86e5382acd7746840888a7c5ed5580fb6198ce585cdc8c5bf"
+      "sha256": "25e69f5fc014b86d2213994db46fe1047c793d4047e1d874ada829ab351ff3c5"
     },
     {
       "path": "impl/core/sleela_io.c",
-      "sha256": "6c932e66460d391342e4a09835a4abdabe02174a589b5411dca13b9a673d34a1"
+      "sha256": "dfa9bbb20575e6166c3ab5a84496c53f155b7506ef8b269cb17b89e2547777ab"
     },
     {
       "path": "impl/core/sleela_io.h",
-      "sha256": "7c9e17f19f87868d7e367743204ff3005228bb1ce0ac14d249a26230642da011"
+      "sha256": "f45b91e67db62ff925db59915a1fd610c29338eb50b414de7e2d4491500e455e"
     },
     {
       "path": "impl/core/sleela_library.c",
-      "sha256": "158f3cd80d81a6df63c144fdd03a6c494bd290a59718d73544edf3ec7303ccd3"
+      "sha256": "9ae60c83483979e4369edb94637f9de2d50ab7db28888d0af9f95a34dcf7c882"
     },
     {
       "path": "impl/core/sleela_library.h",
-      "sha256": "dd17eec4b8c7cc0816f4b6cb81a47225f81d7b208ef72569429f7379756503c8"
+      "sha256": "4cf672239287f2f50d71e36d8d412985f53f4dc14d96eca836ec3b43a0c8e12c"
     },
     {
       "path": "impl/core/sleela_memory.c",
-      "sha256": "43b7836e763b5ca73bdc5d2174dbe14e9300105963c32bc6f50e41c9503189c0"
+      "sha256": "0068049724d1b7e135d410041ed04c65301f81e4fcde8bec1d2074ce60c146b1"
     },
     {
       "path": "impl/core/sleela_memory.h",
-      "sha256": "b0dc91e03c255da1f10b8d2473b2abce553bf531c944f9d7150b84a03404c6df"
+      "sha256": "a28254318cedc32da544e8e5a13698221ff3bc4fc33180e5d2a8b8b47e16b954"
     },
     {
       "path": "impl/core/sleela_net.c",
-      "sha256": "30fcf7dec25d361301ab9d2d716ddb8d176db3efe965c24612cd4891a4e2331b"
+      "sha256": "ac49a63055bcfe76dbea7600f5b81fe575419d0092319155cd02405289a23b4d"
     },
     {
       "path": "impl/core/sleela_net.h",
-      "sha256": "98c25a35cdb92254c73ff287b0a5b8d7aadebd80fe634ab50102fc80eca2c2cf"
+      "sha256": "2c1e8595cac2fb802fc741c3ec0f164b86510f7efd8be960e60818b107739960"
     },
     {
       "path": "impl/core/sleela_path.c",
-      "sha256": "1b099aec934790ed38fe983f3be89ef72fc2975e3c9a4013aba7c3bd6e6e2a7d"
+      "sha256": "1ff2dc13ef3b02e6754a88623043386206b64d9f612844ddaea3349c3e6f7c1a"
     },
     {
       "path": "impl/core/sleela_path.h",
-      "sha256": "dbfbeed5ba1eca96efbe63104b3eade9e959b1279deba629ab94ebd41adffa2d"
+      "sha256": "e44dba9461ee50a9cc9136755179d5ae6b8793a74baaeea04b15892fc17135af"
     },
     {
       "path": "impl/core/sleela_terminal.c",
-      "sha256": "8bef57334fe5a1aa492505c8501c014561e61b943044ee86c37a8e4af77bddba"
+      "sha256": "2d7ac4de40afcca18c18e022b5cb3e09dd5fde48e280e5bd777e2ba264890b27"
     },
     {
       "path": "impl/core/sleela_terminal.h",
-      "sha256": "245f71a96f4ab9f4424ef4460acd4697fadc471b65ef0973d877c11659b98bdf"
+      "sha256": "dd97a8f9d727069080233025f578c80a773397df5e31029d52b94fb81e9d631f"
     },
     {
       "path": "impl/core/sleela_thread.c",
-      "sha256": "7d05d2099c572e7d30d92bc2c3e90e048b9668eb09d256cc66733f685ca03786"
+      "sha256": "389763f60d0d9f046a53b09e20131f862534071ed575839d4703b143bfc4b131"
     },
     {
       "path": "impl/core/sleela_thread.h",
-      "sha256": "86802a3426cf237b0c43af3e6a91ead866803579ef43c73d7e51db3d2126408a"
+      "sha256": "62fd9bd7d88dfaecac495987219e3bc4a1f450716442724bba3cbaab2054cacd"
     },
     {
       "path": "impl/core/sleela_time.c",

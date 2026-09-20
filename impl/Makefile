@@ -23,10 +23,19 @@ ifeq ($(OS),Windows_NT)
   THREADFLAG :=
   PLATFORM_LIBS := -lws2_32 -lm
 else
-  PLATFORM := posix
   EXE :=
   THREADFLAG := -pthread
-  PLATFORM_LIBS := -ldl -lm
+  UNAME_S := $(shell uname -s)
+  ifeq ($(UNAME_S),Darwin)
+    # macOS (Darwin, Apple clang): dlopen lives in libSystem, so there is no
+    # separate -ldl to link (and passing it can error on some SDKs). clock_gettime
+    # is also in libSystem, so no -lrt. -pthread is accepted by clang.
+    PLATFORM := macos
+    PLATFORM_LIBS := -lm
+  else
+    PLATFORM := linux
+    PLATFORM_LIBS := -ldl -lm
+  endif
 endif
 
 CFLAGS ?= -std=c11 -O2 -Wall -Wextra $(THREADFLAG)

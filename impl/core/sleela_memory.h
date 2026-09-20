@@ -11,7 +11,8 @@ extern "C" {
 typedef enum {
     SL_MEMORY_AUTO = 0,
     SL_MEMORY_LINUX = 1,
-    SL_MEMORY_WINDOWS = 2
+    SL_MEMORY_WINDOWS = 2,
+    SL_MEMORY_MACOS = 3
 } SLMemoryPlatform;
 
 SLMemoryPlatform slmemory_platform(void);
