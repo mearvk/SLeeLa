@@ -16,7 +16,7 @@ body, so the H3 integrity gate still verifies after transit.
 | [`web.xml`](web.xml) | Servlet mapping at `/sleela/h3`. |
 | [`tomcat-server.xml.sample`](tomcat-server.xml.sample) | Tomcat connector config enabling **HTTP/2** (h2 over TLS, and h2c cleartext). |
 | [`apache-h3.conf`](apache-h3.conf) | Apache `httpd` front that terminates HTTP/2 (`mod_http2`) and reverse-proxies (`mod_proxy_http2`) to Tomcat's h2c connector. |
-| [`../../scripts/install-linux-h3.sh`](../../scripts/install-linux-h3.sh) | **Linux installer** for the whole stack. |
+| [`../../scripts/install-linux-h3.sh`](../../scripts/install-linux-h3.sh) · [`install-macos-h3.sh`](../../scripts/install-macos-h3.sh) · [`install-windows-h3.ps1`](../../scripts/install-windows-h3.ps1) | **Installers for all three OS** (Linux / macOS / Windows) for the whole stack. |
 
 ## Embedding scheme (wire contract)
 
@@ -35,7 +35,10 @@ makes the H3 MAC fail closed (`BAD_DIGEST`).
 
 ```bash
 # 1. Install the packet builder + deploy config (+ build the WAR if you have a
-#    Jakarta Servlet API jar and a JDK).
+#    Jakarta Servlet API jar and a JDK). Use the installer for your OS:
+#    Linux:   ./scripts/install-linux-h3.sh
+#    macOS:   ./scripts/install-macos-h3.sh
+#    Windows: powershell -File scripts\install-windows-h3.ps1
 SERVLET_API_JAR=/path/to/jakarta.servlet-api-6.0.0.jar \
 CATALINA_HOME=/opt/tomcat \
   ./scripts/install-linux-h3.sh
