@@ -88,17 +88,38 @@ static bool verifyArchiveHash(const fs::path&archive,const std::string&expected)
     if(actual!=expected){std::cerr<<"sleelvac: defender: downloaded archive SHA-256 mismatch.\n  expected: "<<expected<<"\n  actual:   "<<actual<<"\nAborting; the payload is not trusted.\n";return false;}
     std::cout<<"[defender] archive SHA-256 verified: "<<actual<<"\n";return true;
 }
-static int verifyBeforeExecution(const fs::path&root){
+// Locate the repository root by walking up from `start` until a directory
+// containing tools/verify-before-execution.py is found. This lets `sleela run`
+// (and every other gated subcommand) work from any current working directory --
+// e.g. from impl/ -- rather than only from the repo root. Returns an empty path
+// if no such ancestor exists.
+static fs::path findRepoRoot(const fs::path&start){
+    std::error_code ec;
+    fs::path dir=fs::absolute(start,ec);
+    if(ec)dir=start;
+    for(;;){
+        if(fs::exists(dir/"tools"/"verify-before-execution.py"))return dir;
+        fs::path parent=dir.parent_path();
+        if(parent.empty()||parent==dir)break;
+        dir=parent;
+    }
+    return fs::path();
+}
+static int verifyBeforeExecution(const fs::path&cwd){
     const char* env=std::getenv("SLEELA_SHA256_MANIFEST");
     if(!env||!*env){
         std::cerr<<"sleelvac: SHA-256 verification is required; set SLEELA_SHA256_MANIFEST to a trusted JSON manifest\n";
         return 1;
     }
+    // Resolve the repo root robustly (any CWD), falling back to the CWD itself.
+    fs::path root=findRepoRoot(cwd);
+    if(root.empty())root=cwd;
     fs::path manifest=fs::path(env);
     if(!manifest.is_absolute())manifest=root/manifest;
     fs::path tool=root/"tools"/"verify-before-execution.py";
     if(!fs::exists(tool)){
-        std::cerr<<"sleelvac: verification tool not found: "<<tool<<"\n";
+        std::cerr<<"sleelvac: verification tool not found: "<<tool
+                 <<"\n  (searched upward from "<<cwd<<" for tools/verify-before-execution.py)\n";
         return 1;
     }
 #ifdef _WIN32
