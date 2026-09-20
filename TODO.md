@@ -116,5 +116,56 @@ naming its limits as plainly as its features.
 
 ---
 
+## 11. Fold in the secure-transition client (`feat/secure-transition-stp`)
+
+**Ingredients:** the branch `feat/secure-transition-stp` (~1,809 lines: a new
+`impl/transition/` STP-0001 client — `stp_client`, `stp_wire`, `stp_crypto`,
+`mem_model`, portable SHA-256 — plus edits to `impl/Makefile`,
+`impl/core/sleela_core.{c,h}`, and `impl/frontend/driver.cpp`); a clean checkout;
+the SHA-256 build gate; the VM test targets.
+**Method:** merge it onto a working branch, regenerate the manifest, then
+**rebuild the whole VM** (`make all`) and run `test-version`, `test-threads`,
+`test-network`, `test-runtime`, `test-memmgr` before it touches `master`/`main`.
+It modifies the freshly-health-checked VM core, so it is **not** a clean add —
+resolve any drift against the current core deliberately.
+**Moral — Touch the engine only with proof in hand.** Core changes earn their
+place by rebuilding green, not by merging quietly.
+
+---
+
+## 12. Reconcile the metatag / seal metalayer (`feature/metatags-mt-meta-0001`)
+
+**Ingredients:** the branch `feature/metatags-mt-meta-0001` (~1,950 lines:
+`METATAGS.{md,index,sheet}`, `SEAL.md`, `impl/metatag/`, `impl/seal/seal.py`, an
+`mt-check` CI gate, `.mt/seals/`); note it also **modifies** `README.md`,
+`SHEET.sheet`, `SST.model`, and `impl/README.md`.
+**Method:** rebase or three-way merge so the shared-file edits layer on top of
+the current `README`/`SHEET`/`SST` (which have moved since the branch was cut);
+confirm the `mt-check` workflow is well-formed; then land on `master` and `main`
+with the READMEs reconciled, not clobbered.
+**Moral — Merge the change, keep the ground it stands on.** Shared files are
+reconciled, never overwritten.
+
+---
+
+## 13. Retire or supersede `add-common-rails-sst-sleela`
+
+**Ingredients:** the branch `add-common-rails-sst-sleela`; the **current**
+`common-rails/` on `master` (which already exists in a newer form).
+**Method:** diff the branch's older `CommonRails.sleela` and `README.md` against
+the live files; salvage anything still wanted, then **close the branch without
+merging** so the newer versions are not regressed. Record the decision.
+**Moral — Newer ground is not overwritten by older footprints.** A superseded
+branch is retired on purpose, not merged by reflex.
+
+> **Consolidation note (2026-09-20).** The low-risk branch
+> `feature/pixel-terminal-60hz` was already merged to `master` and `main`
+> (`terminal_pixel/pixel_terminal.h`). Courses 11–13 are the remaining
+> non-`main` branches, held back because each is risky or superseded rather than
+> a clean add. The `backup/main-before-library-sync-*` branch is a snapshot and
+> is intentionally left untouched.
+
+---
+
 *Serve in order for a full meal, or take any single course. No dish is done
 until its Moral is met.*
