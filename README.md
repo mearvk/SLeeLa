@@ -283,9 +283,13 @@ $> SLeeLa object          # e.g. SLeeLa hello  ->  runs hello.sleela
 
 It resolves the built `sleela` binary, sets the `SHEET.sheet` catalog and the
 SHA-256 execution-gate manifest the runtime requires, and accepts a bare object
-name, a `.sleela` path, a compiled artifact, or an `.xclass` input (also
-`SLeeLa run|check|compile|version`). Put `bin/` on your `PATH` to use it
-anywhere. See [`bin/README.md`](bin/README.md).
+name, a `.sleela` path, a compiled artifact, an `.xclass` input, or a
+**JVM-family source** — Java, Kotlin, Scala, Groovy, or Clojure — ingested by
+`langin` (`sleela langin [--run|--emit-sleela|--emit-xclass|--info] <file>`; see
+[`impl/langin/`](impl/langin)). The full set of accepted input languages and
+formats is catalogued in [`SUPPORTED.LANGUAGES.md`](SUPPORTED.LANGUAGES.md).
+`SLeeLa run|check|compile|version` are also available. Put `bin/` on your `PATH`
+to use it anywhere. See [`bin/README.md`](bin/README.md).
 
 It also runs a **native OS executable** from the terminal, and accepts a
 leading `--memory-manager[=<size>]` to enable the Memory Manager (see
