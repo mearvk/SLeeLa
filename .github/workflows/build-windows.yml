@@ -77,7 +77,15 @@ jobs:
         run: |
           export SLEELA_SHA256_MANIFEST="$(pwd)/security/sha256-manifest.json"
           export SLEELA_SHEET="$(pwd)/SHEET.sheet"
+          # fileio-fifo uses a POSIX FIFO round-trip on a single handle
+          # (mkfifo + open O_RDWR at a /tmp path). That pattern does not map to
+          # Windows named pipes, which need a persistent server instance and
+          # the \\.\pipe\ namespace. It is skipped here as a POSIX-only demo;
+          # every other example must pass on Windows.
           for f in impl/examples/*.sleela; do
+            case "$f" in
+              *fileio-fifo.sleela) echo "=== skip (POSIX-only FIFO demo): $f ==="; continue;;
+            esac
             echo "=== $f ==="
             ./impl/build/sleela.exe run "$f" || exit 1
           done
