@@ -255,6 +255,21 @@ cd impl && make
 ./build/nordshrift build nordshrift/examples/demo/build.sst
 ```
 
+### Run a SLeeLa object from the OS terminal
+
+Once the runtime is built, the [`bin/SLeeLa`](bin/SLeeLa) launcher runs a SLeeLa
+**object** (a `.sleela` Wrapper™ or a compiled artifact) straight from the shell:
+
+```sh
+$> SLeeLa object          # e.g. SLeeLa hello  ->  runs hello.sleela
+```
+
+It resolves the built `sleela` binary, sets the `SHEET.sheet` catalog and the
+SHA-256 execution-gate manifest the runtime requires, and accepts a bare object
+name, a `.sleela` path, a compiled artifact, or an `.xclass` input (also
+`SLeeLa run|check|compile|version`). Put `bin/` on your `PATH` to use it
+anywhere. See [`bin/README.md`](bin/README.md).
+
 SLeeLa's C/C++ core runs on **Linux, macOS (Darwin/clang), and Windows 10+**.
 On macOS, build with `./scripts/build-macos.sh` (Apple clang); on Windows, build
 with MinGW-w64 via `build-windows.ps1` (the Makefile auto-links Winsock and
