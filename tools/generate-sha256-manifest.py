@@ -45,6 +45,11 @@ DEFAULT_EXTRA_FILES = [
     "runtime/Parameters.h",
     "bash/pixel_terminal.cpp",
     "bash/pixel_terminal.hpp",
+    # Shared ledger core: compiled into the Nordshrift build (the compiler emits
+    # a .ledger next to each .sleela artifact) and reused by the standalone
+    # ledger tool. It lives outside the scanned impl/ dirs, so list it here.
+    "ledger/ledger_core.cpp",
+    "ledger/ledger_core.h",
     # SHEET.sheet is not compiled, but it is a TRUSTED INPUT the compiler reads
     # at compile time to resolve conducted methods (conduct/role/insight/route)
     # and the system invariants. Tampering with it silently changes program

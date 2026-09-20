@@ -28,6 +28,7 @@
 #include "component_manifest.h"
 #include "object_compat.h"
 #include "subject_model.h"
+#include "ledger_emit.h"
 #include "../catalog/sheet_catalog.h"
 #include "../frontend/lexer.h"
 #include "../frontend/parser.h"
@@ -271,6 +272,13 @@ static int doBuild(const std::string& path) {
                 sleela::compileToArtifact(prog, output, nullptr, vr.declared);
                 std::cout << "nordshrift: " << srcPath << " -> " << output
                           << " (runnable Sleela Core artifact)\n";
+                // Additionally emit a .ledger (QR insignia + SHA-256 chain +
+                // ISO-8601 UTC timestamp) next to the artifact, via the shared
+                // ledger core (matches the standalone ledger tool).
+                if (nordshrift::emitLedgerFor(output)) {
+                    std::cout << "nordshrift: " << output << " -> " << output
+                              << ".ledger (+ " << output << ".qr.svg)\n";
+                }
             } catch (const std::exception& ex) {
                 std::cerr << "NSS-E (error): " << srcPath << ": " << ex.what() << "\n";
                 rc = 1;

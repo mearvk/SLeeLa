@@ -226,8 +226,16 @@
       "sha256": "27a26dae4f4a775a4d29e9c22645c0c1c12ba11065af408581caa98d9e4ca7d0"
     },
     {
+      "path": "impl/nordshrift/ledger_emit.cpp",
+      "sha256": "0474f1bb602e2924517db5f19983a18951c7f41d68b2d95d82a792bbb1487438"
+    },
+    {
+      "path": "impl/nordshrift/ledger_emit.h",
+      "sha256": "6030c92d9657f4ca0e5157f9ffe5570b21e837cc6e42ad384668a783531d6b6b"
+    },
+    {
       "path": "impl/nordshrift/nordshrift.cpp",
-      "sha256": "5dcd00ac9978e537696c7565b7beaf607a9ad0830dd9def4f7d49d76756090ca"
+      "sha256": "50dca5688dfc2c76bb38af6c986913a1c5e14d001b06b03794057354d45c8b26"
     },
     {
       "path": "impl/nordshrift/object_compat.cpp",
@@ -352,6 +360,14 @@
     {
       "path": "impl/xclass/xclass_loader.h",
       "sha256": "9eec57cae00563fd2d9e9010a40e9958bad8afdc7c18dc971a319e2bd42faae8"
+    },
+    {
+      "path": "ledger/ledger_core.cpp",
+      "sha256": "b8f3897e19176a68e6bcba8c49a702084970c0d59cb77a80c7078613f334f21a"
+    },
+    {
+      "path": "ledger/ledger_core.h",
+      "sha256": "7e5f880e662f9167f49940b261f4584a49027523e96f7d15b6bf2c2ba690b5ae"
     },
     {
       "path": "runtime/Parameters.c",
