@@ -18,7 +18,19 @@ public final class SleelaRmiServer {
         String serviceName = args[0];
         Path executable = Path.of(args[1]);
         Path workingDirectory = Path.of(args[2]);
-        int registryPort = args.length == 4 ? Integer.parseInt(args[3]) : 1099;
+        int registryPort = 1099;
+        if (args.length == 4) {
+            try {
+                registryPort = Integer.parseInt(args[3]);
+            } catch (NumberFormatException e) {
+                System.err.println("SleelaRmiServer: invalid registry-port '" + args[3] + "'; use an integer 1..65535");
+                System.exit(2);
+            }
+            if (registryPort < 1 || registryPort > 65535) {
+                System.err.println("SleelaRmiServer: registry-port out of range: " + registryPort);
+                System.exit(2);
+            }
+        }
 
         ProcessSleelaRuntime runtime = new ProcessSleelaRuntime(executable, workingDirectory);
         SleelaRmiServerHandle server = SleelaRmiServerHandle.start(serviceName, registryPort, runtime);

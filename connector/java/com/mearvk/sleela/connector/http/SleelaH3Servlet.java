@@ -38,6 +38,11 @@ import java.util.Objects;
  */
 public final class SleelaH3Servlet extends HttpServlet {
 
+    /** HttpServlet is Serializable; pin the version to silence the warning.
+     *  Note: the transient pipeline/ledger are not restored on deserialization,
+     *  so a deserialized instance is not usable — construct via the ctor. */
+    private static final long serialVersionUID = 1L;
+
     /** Media type identifying an embedded H3 envelope body. */
     public static final String H3_MEDIA_TYPE =
             "application/vnd.sleela.h3+octet-stream; version=3";
