@@ -114,6 +114,31 @@ def test_pipeline_rejects_bad_digest_forgery_and_resets_tampered() -> None:
     assert pipe.tamper_resets == 1
 
 
+def test_timing_advisory_flags_and_certainty() -> None:
+    from http3_flow import TIMING_OVER_RATE, TIMING_LATE, TIMING_OK
+    pipe = Pipeline(mac_key=KEY)
+    pipe.set_timing(1000, 50_000_000, 10_000_000)  # 1us min gap, 50ms grace, 10ms band
+    base, step = 1_000_000_000, 10_000_000
+    last = base
+    # A well-paced, on-time stream raises no flags.
+    for k in range(6):
+        at = base + k * step
+        assert pipe.observe_timing(at, at) == TIMING_OK
+        last = at
+    assert pipe.late_packets == 0 and pipe.over_rate_packets == 0
+    # A burst (100ns after the previous packet) is flagged OVER_RATE (advisory).
+    last += 100
+    assert pipe.observe_timing(last, 0) & TIMING_OVER_RATE
+    assert pipe.over_rate_packets == 1
+    # A packet well past its deadline is flagged LATE.
+    assert pipe.observe_timing(last + 100 * step, last) & TIMING_LATE
+    assert pipe.late_packets == 1
+    # Certainty is a running estimate in [0,1], dented by the two bad packets.
+    c = pipe.carrier_certainty()
+    assert 0.0 <= c <= 1.0 and c < 1.0
+    # Timing is advisory: it never rejects, so no packet turned into a response here.
+
+
 def test_pipeline_rejects_replayed_nonce() -> None:
     pipe = Pipeline(mac_key=KEY)
 

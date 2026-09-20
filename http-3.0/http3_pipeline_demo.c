@@ -288,15 +288,57 @@ int main(void)
         CHECK(resp.status == HTTP3_STATUS_REPLAYED, "replayed packet -> REPLAYED");
     }
 
+    /* Connection-level timing (advisory): max speed, on time, balance, and a
+     * running carrier-certainty estimate. Times are nanoseconds from a caller
+     * clock; nothing here rejects a packet. */
+    printf("\n-- timing: max speed / on time / balance / carrier certainty --\n");
+    {
+        /* A well-paced stream: ~10ms apart, each within its deadline. */
+        uint64_t base = 1000000000ull; /* 1s */
+        uint64_t step = 10000000ull;   /* 10ms */
+        int k;
+        unsigned f;
+        http3_pipeline_set_timing(&pipe, 1000ull /*min gap 1us*/,
+                                  50000000ull /*50ms grace*/, 10000000ull /*10ms band*/);
+        uint64_t last_at = base; /* track the most recent arrival we fed in */
+        for (k = 0; k < 6; ++k) {
+            uint64_t at = base + (uint64_t)k * step;
+            uint64_t due = at; /* on time: arrives exactly when due */
+            (void)http3_pipeline_observe_timing(&pipe, at, due);
+            last_at = at;
+        }
+        CHECK(pipe.late_packets == 0u && pipe.over_rate_packets == 0u,
+              "well-paced stream: no late / over-rate flags");
+        /* A burst arriving only 100ns after the previous packet -> OVER_RATE
+         * (below the 1us minimum gap). */
+        last_at = last_at + 100ull;
+        f = http3_pipeline_observe_timing(&pipe, last_at, 0ull);
+        CHECK((f & HTTP3_TIMING_OVER_RATE) != 0u, "burst arrival -> OVER_RATE flagged");
+        /* A packet arriving well past its deadline -> LATE. */
+        f = http3_pipeline_observe_timing(&pipe, last_at + 100ull * step,
+                                          last_at /*due long ago*/);
+        CHECK((f & HTTP3_TIMING_LATE) != 0u, "past-deadline arrival -> LATE flagged");
+        printf("  carrier certainty = %.3f (1.0 = fully dependable)\n",
+               http3_pipeline_carrier_certainty(&pipe));
+    }
+
     printf("\n-- observability (§17) --\n"
            "  requests handled: %llu\n"
            "  digest rejects:   %llu\n"
            "  tamper resets:    %llu\n"
-           "  replays rejected: %llu\n",
+           "  replays rejected: %llu\n"
+           "  late packets:     %llu\n"
+           "  over-rate packets:%llu\n"
+           "  unbalanced pkts:  %llu\n"
+           "  carrier certainty:%.3f\n",
            (unsigned long long)pipe.requests_handled,
            (unsigned long long)pipe.digest_rejects,
            (unsigned long long)pipe.tamper_resets,
-           (unsigned long long)pipe.replays_rejected);
+           (unsigned long long)pipe.replays_rejected,
+           (unsigned long long)pipe.late_packets,
+           (unsigned long long)pipe.over_rate_packets,
+           (unsigned long long)pipe.unbalanced_packets,
+           http3_pipeline_carrier_certainty(&pipe));
 
     if (failures == 0) {
         printf("\nHTTP 3.0 pipeline demo: PASS\n");
