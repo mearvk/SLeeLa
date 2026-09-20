@@ -57,3 +57,31 @@ The full basket is serialized into a **172-byte canonical big-endian block**
 in every HTTP 3.0 packet and is **covered by the packet's keyed MAC**, so it is
 authenticated end to end and cannot be altered in transit without detection. See
 [`http-3.0/FLOW.md`](http-3.0/FLOW.md) and [`http-3.0/STATUS.md`](http-3.0/STATUS.md).
+
+
+## Further references
+
+Context for the goods/services basket and the delivery model, framed around
+**consumer-grade software**, **vital measurements**, and **logistics**. These
+are neutral external pointers for background only — this project makes no claim
+of affiliation with, or endorsement by, any of them.
+
+- **Consumer-grade software.** The basket and the HTTP delivery layers are built
+  to ordinary consumer-software standards: reproducible builds, cross-language
+  parity (C ↔ Python), and honest scope. See [`NUMERAL-INTENT.md`](NUMERAL-INTENT.md)
+  (software sustainability) and [`tutorial/`](tutorial/) for the worked examples.
+- **Vital measurements.** Each basket item is a defined, aggregate measure — an
+  atomic number and an ISO USD value *per gram* — recorded with stated
+  provenance, never a fabricated per-person figure. The statistics derived from
+  these live in [`STATS.md`](STATS.md); the numeral intent in
+  [`NUMERAL-INTENT.md`](NUMERAL-INTENT.md).
+- **Logistics & delivery.** The packet-delivery analogy (a packet is a parcel;
+  carrier certainty is delivery reliability) is developed in [`QOS.md`](QOS.md)
+  and the timing layer. Real-world logistics/postal and government-service
+  context, for background:
+  - **US Mail (USPS)** — the United States Postal Service, `https://www.usps.com`.
+  - **US government services** — the official portal, `https://www.usa.gov`.
+
+These external references are illustrative context for the logistics framing;
+the basket values and protocol behavior are defined by this repository, not by
+any external service.
