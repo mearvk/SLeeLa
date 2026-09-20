@@ -422,11 +422,13 @@ Beyond the integrity gate, the pipeline adds two delivery-oriented layers:
 
 - **Timing / QoS (advisory).** A connection-level timing layer
   ([`http-3.0/http3_timing.{h,c}`](http-3.0/)) observes each arrival for **max
-  speed** (min inter-arrival gap), **on time** (deadline + grace), and **balance**
-  (jitter band), and keeps a running **carrier certainty** in `[0,1]`. It is
-  advisory — nothing new on the wire, no rejects; it records counters and an
-  estimate. Mapped to standard TCP/HTTP Quality of Service in [`QOS.md`](QOS.md)
-  (a hint, not a guarantee), with careful SLeeLa- and Java-side code notes.
+  speed** (min inter-arrival gap), **on time** (deadline + grace), **balance**
+  (jitter band), and **continuity** (loss/reordering, `GAP`), and keeps a running
+  **carrier certainty** in `[0,1]`. It is advisory — nothing new on the wire, no
+  rejects; it records counters and an estimate. Mapped to standard TCP/HTTP
+  Quality of Service for internet packets in [`QOS.md`](QOS.md) (a hint, not a
+  guarantee), which now includes a worked arrival-sequence example and the
+  continuity/`GAP` metric, with careful SLeeLa- and Java-side code notes.
 - **Capability handshake.** Two peers advertise a neutral capability bitmask
   (cumulative tiers **L1 baseline → L4 echo**); the handshake
   ([`http-3.0/http3_handshake.{h,c}`](http-3.0/)) deterministically selects the

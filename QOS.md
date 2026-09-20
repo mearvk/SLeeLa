@@ -21,10 +21,29 @@ carries the packets (plain TCP, HTTP/1.1, HTTP/2, or the HTTP 3.0 envelope):
 | **Latency / deadline** | on time — arrival within `deadline + grace` | `LATE` |
 | **Jitter** | balance — inter-arrival deviation within a band | `UNBALANCED` |
 | **Reliability** | carrier certainty — running fraction of clean packets, in `[0,1]` | — |
+| **Loss / gaps** | continuity — missing or out-of-order arrivals in the sequence | `GAP` |
 
 These are **advisory**: the pipeline records `late_packets`,
 `over_rate_packets`, `unbalanced_packets`, and a `carrier_certainty()` estimate.
 Nothing new travels on the wire, and no packet is rejected by QoS.
+
+### Continuity (`GAP`) — loss and reordering
+
+Classic QoS also cares about *packet loss* and *reordering*. Over standard
+TCP the byte stream is delivered reliably and in order, so loss shows up as
+**added latency** (retransmission) rather than missing bytes — which the `LATE`
+flag already captures. Where the observer sees an explicit application-level
+sequence number (for example the HTTP 3.0 NONCE ordering, or an RMI call index),
+a break or backward step in that sequence is reported as `GAP`:
+
+- `GAP` is **advisory** like the others: it flags a discontinuity to log or act
+  on; it does not itself request retransmission (the transport already does that
+  for TCP) and it never drops or reorders packets.
+- On a datagram transport with no automatic retransmission (e.g. QUIC/UDP
+  paths), `GAP` is the primary loss signal and should be paired with the
+  reliability estimate below.
+- A `GAP` lowers `carrier_certainty()` the same way a `LATE`/`OVER_RATE`/
+  `UNBALANCED` packet does — a discontinuity is a not-clean packet.
 
 ## QoS is a hint, not a guarantee (standard TCP/HTTP)
 
@@ -115,10 +134,37 @@ for the same arrival sequence — so a QoS reading is reproducible regardless of
 which side observes it. See [`http-3.0/FLOW.md`](http-3.0/FLOW.md) and
 [`http-3.0/STATUS.md`](http-3.0/STATUS.md).
 
+## Worked example — reading a short arrival sequence
+
+The flags are per-packet; certainty is cumulative. For a stream with a 10 ms
+minimum gap and a per-packet deadline, a typical reading looks like:
+
+```text
+pkt  arrival(ms)  gap(ms)  vs deadline   flags          carrier_certainty
+ 1        0          —        on time     (clean)              1.00
+ 2        9          9        on time     OVER_RATE            0.50   # gap < 10 ms min
+ 3       21         12        on time     (clean)              0.67
+ 4       55         34        LATE + late  LATE                0.50   # missed deadline+grace
+ 5       65         10        on time     (clean)              0.60
+ 6       —          —        (missing)    GAP                  0.50   # seq 6 never arrived
+```
+
+Read it as *recent behavior*, not a promise: certainty rises as clean packets
+accumulate and dips on every flagged packet. Use the trend to prioritize or back
+off — never to decide whether a request was valid.
+
+## Changelog
+
+- **Continuity / `GAP` metric added.** Loss and reordering are now an explicit
+  advisory QoS metric alongside throughput, latency, jitter, and reliability,
+  with guidance for both reliable (TCP) and datagram (QUIC/UDP) transports.
+- **Worked arrival-sequence example added** to show how per-packet flags and the
+  cumulative `carrier_certainty()` estimate relate.
+
 ## Summary
 
-- QoS here = **observed** throughput, latency, jitter, and reliability over
-  standard TCP/HTTP.
+- QoS here = **observed** throughput, latency, jitter, reliability, and
+  continuity (loss/reordering) over standard TCP/HTTP.
 - It is **advisory** — a set of signals and a `[0,1]` certainty, never a
   guarantee and never a gate on correctness.
 - On the **SLeeLa** side: monotonic clocks, honest deadlines, bounded reactions.
