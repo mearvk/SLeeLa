@@ -19,6 +19,38 @@ triplet of targets (**Java**, **Sleela**, **C**).
 > this repository, "a `.sleela` file", "a Sleela source file", and "a Wrapper™"
 > all name the same file type.
 
+## Status & platform support
+
+The C/C++ implementation under [`impl/`](impl/) is cross-platform and covered by
+CI on every push and pull request:
+
+| Platform | Toolchain | Build | CI |
+|---|---|---|---|
+| **Linux** | gcc/clang | `cd impl && make` | verified build gate |
+| **macOS** (Darwin) | Apple clang | [`scripts/build-macos.sh`](scripts/build-macos.sh) | [`build-macos.yml`](.github/workflows/build-macos.yml) |
+| **Windows 10+** | MinGW-w64 | [`build-windows.ps1`](build-windows.ps1) | [`build-windows.yml`](.github/workflows/build-windows.yml) |
+
+All OS facilities (threads, TCP sockets, files, pipes/named-pipes, paths,
+terminal, dynamic libraries, time) go through the OS-aware abstraction layer in
+[`impl/core`](impl/core), with POSIX and Win32 backends; the runtime reports its
+native backend as `linux`, `macos`, or `windows`. The Makefile auto-detects the
+host and adjusts link flags per platform.
+
+**Recent hardening and correctness work** (see [`ARCHITECTURE.md`](ARCHITECTURE.md)):
+
+- **Security:** the `sleela defender` provisioning path now requires explicit
+  opt-in (`--allow-defender`), verifies the downloaded payload's SHA-256
+  (fail-closed, no trust-on-first-use), and never elevates privileges implicitly
+  (`--allow-root`). A CI workflow keeps the SHA-256 build-manifest in sync.
+- **Tests:** the subject libraries (math, physics, economics, inference,
+  finance, chemistry) now carry real numeric assertions wired into `make test`;
+  these caught and fixed genuine bugs (a `sin` series off-by-one, a broken
+  `fmod`, integer-only `%` in the VM, and the neutrino oscillation formula).
+- **Data integrity:** the auto-generated BANKS4 column was reworked from an
+  editorializing "Socialism Status" into a neutral, sourced **Constitutional
+  Socialism Reference** indicator (`CONSTITUTIONAL` / `NONE` / `UNASSESSED`,
+  nothing invented). See [`SOCIALISM.md`](SOCIALISM.md).
+
 - The working implementation lives under [`impl/`](impl/) — see
   [`impl/README.md`](impl/README.md) for the full guide, and
   [`impl/DESIGN.md`](impl/DESIGN.md) for the architecture.
