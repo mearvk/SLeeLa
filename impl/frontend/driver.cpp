@@ -24,6 +24,8 @@
 #include <vector>
 extern "C" {
 #include "../core/sleela_core.h"
+#include "../core/sleela_memmgr.h"
+#include "../core/sleela_terminal.h"
 }
 namespace fs=std::filesystem;
 static const char* kVersion="Sleelvac™ 1.4 (Sleela compiler; executable native math/physics/economics/chemistry/financial modules; persistent .sleela Core artifacts; .xclass input; OS Defender provisioning; SHA-256 execution gate)";
@@ -221,10 +223,130 @@ static int defenderCmd(int argc,char**argv){
     if(action=="install"){if(!fs::exists(source)&&defenderFetch(base,opts))return 1;if(verifyBeforeExecution(fs::current_path()))return 1;if(defenderBuild(source))return 1;return defenderInstall(source,opts);}
     /*provision*/{if(defenderFetch(base,opts))return 1;if(verifyBeforeExecution(fs::current_path()))return 1;if(defenderBuild(source))return 1;return defenderInstall(source,opts);}
 }
+// ---------------------------------------------------------------------------
+// Memory Manager wiring.
+//
+// The Memory Manager (impl/core/sleela_memmgr.*) accounts for raw process
+// memory and can fail allocations closed at a hard byte limit. It is opt-in:
+//   * `--memory-manager` (or SLEELA_MEMORY_MANAGER=1) enables it with no limit;
+//   * `--memory-manager=<size>` / `SLEELA_MEMORY_MANAGER=<size>` enables it with
+//     a hard limit; <size> accepts a plain byte count or a K/M/G suffix.
+// It is also turned on automatically ("on need") when running a native
+// executable, because that is the workload most likely to exhaust the host.
+// ---------------------------------------------------------------------------
+static bool parseByteSize(const std::string&in,size_t&out){
+    if(in.empty())return false;
+    // A bare on/off/true/false toggles the manager with no limit.
+    std::string low=toLowerHex(in);
+    if(low=="on"||low=="true"||low=="yes"||low=="1"){out=0;return true;}
+    size_t i=0;unsigned long long v=0;bool any=false;
+    for(;i<in.size()&&std::isdigit((unsigned char)in[i]);++i){v=v*10ull+(unsigned)(in[i]-'0');any=true;}
+    if(!any)return false;
+    unsigned long long mult=1;
+    if(i<in.size()){
+        char c=(char)std::tolower((unsigned char)in[i]);
+        if(c=='k')mult=1024ull;else if(c=='m')mult=1024ull*1024ull;else if(c=='g')mult=1024ull*1024ull*1024ull;
+        else return false;
+        ++i;
+        if(i<in.size()&&(in[i]=='b'||in[i]=='B'))++i; // allow KB/MB/GB
+    }
+    if(i!=in.size())return false;
+    out=(size_t)(v*mult);
+    return true;
+}
+// Interpret a --memory-manager[=value] argument or the SLEELA_MEMORY_MANAGER
+// env var. Returns true if the manager should be enabled and sets `limit`.
+static bool memoryManagerRequested(size_t&limit){
+    const char*env=std::getenv("SLEELA_MEMORY_MANAGER");
+    if(env&&*env){size_t l=0;if(parseByteSize(env,l)){limit=l;return true;}
+        // A non-parseable but present value like "0"/"off" disables it.
+        std::string e=toLowerHex(env);if(e=="0"||e=="off"||e=="false"||e=="no")return false;}
+    return false;
+}
+static void enableMemoryManager(size_t limit,bool announce){
+    slmm_enable(limit);
+    if(announce){
+        if(limit)std::cerr<<"[memory-manager] enabled (hard limit "<<limit<<" bytes)\n";
+        else std::cerr<<"[memory-manager] enabled (no hard limit)\n";
+    }
+}
+static void reportMemoryManager(){
+    if(!slmm_is_enabled())return;
+    char buf[512];slmm_format_report(buf,sizeof buf);std::cerr<<buf;
+}
+// ---------------------------------------------------------------------------
+// Native executable runner.
+//
+// `sleela native [--] <program> [args...]` runs a *native* OS executable from
+// the SLeeLa terminal, under a real pseudo-terminal (the same OS-aware PTY
+// primitive the runtime uses), relaying its output and preserving its exit
+// status. It honors the SHA-256 execution gate exactly like run/check/compile,
+// and it turns the Memory Manager on for the duration (on-need) so a runaway
+// native cannot silently exhaust host memory through the manager's allocations.
+// ---------------------------------------------------------------------------
+static void nativeUsage(){
+    std::cerr<<"Usage:\n"
+               "  sleela native [--memory-manager[=<size>]] [--] <program> [args...]\n"
+               "  sleela exec   [--memory-manager[=<size>]] [--] <program> [args...]\n"
+               "\n"
+               "Runs a native OS executable from the SLeeLa terminal under a real\n"
+               "pseudo-terminal, relaying its output and preserving its exit status.\n"
+               "The Memory Manager is enabled for the run; --memory-manager=<size> sets\n"
+               "a hard byte limit (accepts K/M/G suffixes).\n";
+}
+static int nativeCmd(int argc,char**argv){
+    size_t mmLimit=0;bool mmExplicit=false;
+    std::vector<std::string> cmdArgs;
+    bool endOpts=false;
+    for(int i=2;i<argc;i++){
+        std::string a=argv[i];
+        if(!endOpts&&a=="--"){endOpts=true;continue;}
+        if(!endOpts&&(a=="--memory-manager"||a=="--mm")){mmExplicit=true;mmLimit=0;}
+        else if(!endOpts&&(a.rfind("--memory-manager=",0)==0||a.rfind("--mm=",0)==0)){
+            std::string v=a.substr(a.find('=')+1);size_t l=0;
+            if(!parseByteSize(v,l)){std::cerr<<"sleela native: invalid --memory-manager size '"<<v<<"'\n";return 2;}
+            mmExplicit=true;mmLimit=l;
+        }
+        else if(!endOpts&&(a=="-h"||a=="--help")){nativeUsage();return 0;}
+        else if(!endOpts&&a.rfind("--",0)==0){std::cerr<<"sleela native: unknown option '"<<a<<"'\n";nativeUsage();return 2;}
+        else{endOpts=true;cmdArgs.push_back(a);}
+    }
+    if(cmdArgs.empty()){std::cerr<<"sleela native: no program given\n";nativeUsage();return 2;}
+    // Honor the same integrity gate as the other execution paths.
+    if(verifyBeforeExecution(fs::current_path()))return 1;
+    // On-need: run the native under the Memory Manager. An explicit
+    // --memory-manager=<size> sets the limit; otherwise it runs unlimited.
+    (void)mmExplicit;
+    enableMemoryManager(mmLimit,true);
+    // Build a single shell command line, safely quoting every argument.
+    std::string command;
+    for(size_t i=0;i<cmdArgs.size();++i){if(i)command+=' ';command+=shellQuote(cmdArgs[i]);}
+    std::cout<<"[native] launching: "<<command<<"\n";
+    unsigned cols=80,rows=24;
+    if(const char*c=std::getenv("COLUMNS")){int v=std::atoi(c);if(v>0)cols=(unsigned)v;}
+    if(const char*r=std::getenv("LINES")){int v=std::atoi(r);if(v>0)rows=(unsigned)v;}
+    SLTerminalHandle term=0;
+    int rc=slterminal_spawn(&term,command.c_str(),cols,rows);
+    if(rc!=0){std::cerr<<"sleela native: cannot start '"<<cmdArgs[0]<<"': terminal error "<<rc<<"\n";reportMemoryManager();return 1;}
+    // Relay the child's PTY output to our stdout until it closes.
+    char buf[4096];
+    for(;;){
+        SLTerminalCount n=slterminal_read(term,buf,sizeof buf);
+        if(n<=0)break;
+        std::cout.write(buf,(std::streamsize)n);
+        std::cout.flush();
+    }
+    int closeRc=slterminal_close(term);
+    reportMemoryManager();
+    // slterminal_close returns 0 when the child was reaped cleanly; a nonzero
+    // value is a wait/close error rather than the child's own status, so we
+    // surface it but do not conflate it with a specific exit code.
+    return closeRc==0?0:1;
+}
 static void lowerNativeModules(sleela::Program& prog){sleela::chemistry::lowerProgram(prog);sleela::financial::lowerProgram(prog);auto saved=prog.imports;prog.imports.erase(std::remove(prog.imports.begin(),prog.imports.end(),"chemistry"),prog.imports.end());prog.imports.erase(std::remove(prog.imports.begin(),prog.imports.end(),"financial"),prog.imports.end());sleela::native::lowerProgram(prog);prog.imports=std::move(saved);}
 static int compileAndRun(sleela::Program& prog,const catalog::Catalog& cat,const sleela::SyntaxVersion& syntax={1,0}){SLVM*vm=slvm_new();if(!vm){std::cerr<<"sleelvac: unable to allocate Sleela VM\n";return 1;}int rc=0;try{lowerNativeModules(prog);sleela::compile(prog,vm,&cat,syntax);SLResult r=slvm_run(vm);if(r==SLR_ERROR){const char*e=slvm_error(vm);std::cerr<<"sleelvac: runtime error: "<<(e?e:"unknown")<<"\n";rc=1;}}catch(const std::exception&ex){std::cerr<<"sleelvac: "<<ex.what()<<"\n";rc=1;}slvm_free(vm);return rc;}
 static catalog::Catalog loadCatalog(){const char*env=std::getenv("SLEELA_SHEET");const char*candidates[]={env,"SHEET.sheet","../SHEET.sheet","../../SHEET.sheet","../../../SHEET.sheet"};for(const char*p:candidates){if(!p||!*p)continue;bool ok=false;catalog::Catalog c=catalog::parseCatalogFile(p,&ok);if(ok)return c;}return catalog::Catalog{};}
-static int usage(){std::cerr<<"Usage:\n  sleela compile <file.sleela> -o <program.sleela>\n  sleela run <file.sleela>\n  sleela run <program.sleela>\n  sleela run <file.xclass> [more...]\n  sleela xclass [--run|--emit|--info] <file.xclass> [more...]\n  sleela check <file.sleela>\n  sleela version\n  sleela defender detect\n  sleela defender <fetch|build|install|provision> [directory] --allow-defender --sha256 <hex> [--allow-root]\n\nSecurity:\n  SLEELA_SHA256_MANIFEST=<trusted JSON manifest> is required before compile, run, check, xclass, and Defender diagnostics/build/install/provision.\n  Defender fetch/build/install/provision additionally require --allow-defender (opt-in), --sha256 <hex> (payload integrity), and --allow-root for the privileged install step.\n";return 2;}
+static int usage(){std::cerr<<"Usage:\n  sleela [--memory-manager[=<size>]] compile <file.sleela> -o <program.sleela>\n  sleela [--memory-manager[=<size>]] run <file.sleela>\n  sleela [--memory-manager[=<size>]] run <program.sleela>\n  sleela [--memory-manager[=<size>]] run <file.xclass> [more...]\n  sleela xclass [--run|--emit|--info] <file.xclass> [more...]\n  sleela check <file.sleela>\n  sleela native [--memory-manager[=<size>]] [--] <program> [args...]\n  sleela exec   [--memory-manager[=<size>]] [--] <program> [args...]\n  sleela version\n  sleela defender detect\n  sleela defender <fetch|build|install|provision> [directory] --allow-defender --sha256 <hex> [--allow-root]\n\nMemory Manager:\n  --memory-manager[=<size>]    account for raw process memory and (with <size>)\n                               fail allocations closed at a hard byte limit.\n                               <size> accepts a byte count or a K/M/G suffix\n                               (or SLEELA_MEMORY_MANAGER=<size>). It is enabled\n                               automatically for `native`/`exec`.\n\nSecurity:\n  SLEELA_SHA256_MANIFEST=<trusted JSON manifest> is required before compile, run, check, xclass, native/exec, and Defender diagnostics/build/install/provision.\n  Defender fetch/build/install/provision additionally require --allow-defender (opt-in), --sha256 <hex> (payload integrity), and --allow-root for the privileged install step.\n";return 2;}
 static bool checkSyntaxVersion(const std::string& path,const std::string& src){sleela::VersionResolution v=sleela::resolveSyntaxVersion(src);if(v.isError()){std::cerr<<"sleelvac: "<<path<<": error: "<<v.message<<"\n";return false;}if(v.isWarning())std::cerr<<"sleelvac: "<<path<<": warning: "<<v.message<<"\n";return true;}
 static bool parseSource(const std::string&path,std::string&src,sleela::Program&prog,sleela::VersionResolution&version){if(!readFile(path,src)){std::cerr<<"sleelvac: cannot open '"<<path<<"'\n";return false;}if(!checkSyntaxVersion(path,src))return false;version=sleela::resolveSyntaxVersion(src);try{sleela::Lexer lexer(src);auto tokens=lexer.tokenize();sleela::Parser parser(std::move(tokens));prog=parser.parseProgram();sleela::Program validation;validation.imports=prog.imports;validation.imports.erase(std::remove(validation.imports.begin(),validation.imports.end(),"chemistry"),validation.imports.end());validation.imports.erase(std::remove(validation.imports.begin(),validation.imports.end(),"financial"),validation.imports.end());sleela::native::validateImports(validation);return true;}catch(const std::exception&ex){std::cerr<<"sleelvac: "<<path<<": "<<ex.what()<<"\n";return false;}}
 static int checkFile(const std::string&path){if(verifyBeforeExecution(fs::current_path()))return 1;std::string src;sleela::Program prog;sleela::VersionResolution v;if(!parseSource(path,src,prog,v))return 1;try{sleela::chemistry::lowerProgram(prog);sleela::financial::lowerProgram(prog);}catch(const std::exception&ex){std::cerr<<"sleelvac: "<<path<<": "<<ex.what()<<"\n";return 1;}std::cout<<path<<": ok (syntax "<<(v.pragmaPresent?"declared ":"assumed ")<<v.declared.str()<<")\n";return 0;}
@@ -235,4 +357,40 @@ static int runXclass(const std::vector<std::string>&paths){catalog::Catalog cat=
 static int xclassCmd(int argc,char**argv){enum{RUN,EMIT,INFO}mode=RUN;std::vector<std::string>files;for(int i=2;i<argc;i++){std::string a=argv[i];if(a=="--emit")mode=EMIT;else if(a=="--info")mode=INFO;else if(a=="--run")mode=RUN;else if(a.rfind("--",0)==0){std::cerr<<"sleelvac: unknown option "<<a<<"\n";return 2;}else files.push_back(a);}if(files.empty()){std::cerr<<"sleela xclass: no .xclass files given\n";return 2;}if(verifyBeforeExecution(fs::current_path()))return 1;if(mode==RUN)return runXclass(files);try{sleela::xclass::Loaded loaded=sleela::xclass::loadFiles(files);if(mode==EMIT)std::cout<<loaded.emitted;else for(const auto&m:loaded.metas){std::cout<<sleela::xclass::infoLine(m)<<"\n";if(!m.sourceFile.empty())std::cout<<"  source    : "<<m.sourceFile<<"\n";if(!m.edition.empty())std::cout<<"  edition   : "<<m.edition<<"\n";if(!m.signatureHex.empty())std::cout<<"  signature : "<<m.signatureAlg<<":"<<m.signatureHex<<(m.signed_?" (signed)":"")<<"\n";}return 0;}catch(const std::exception&ex){std::cerr<<"sleelvac: "<<ex.what()<<"\n";return 1;}}
 static bool readFile(const std::string&path,std::string&out){std::ifstream f(path,std::ios::binary);if(!f)return false;std::ostringstream ss;ss<<f.rdbuf();out=ss.str();return true;}
 static int runFile(const std::string&path){if(slvm_is_artifact_file(path.c_str()))return runArtifact(path);if(hasExt(path,".xclass"))return runXclass({path});return runSource(path);}
-int main(int argc,char**argv){if(argc<2)return usage();std::string cmd=argv[1];if(cmd=="version"||cmd=="--version"||cmd=="-v"){std::cout<<kVersion<<"\n";std::cout<<"  supported .sleela syntax: "<<sleela::minSupportedSyntax().str()<<" .. "<<sleela::maxSupportedSyntax().str()<<"\n";return 0;}if(cmd=="compile"){if(argc!=5||std::string(argv[3])!="-o")return usage();return compileFile(argv[2],argv[4]);}if(cmd=="check"){if(argc<3)return usage();return checkFile(argv[2]);}if(cmd=="run"){if(argc<3)return usage();if(verifyBeforeExecution(fs::current_path()))return 1;if(hasExt(argv[2],".xclass")){std::vector<std::string>files;for(int i=2;i<argc;i++)files.push_back(argv[i]);return runXclass(files);}return runFile(argv[2]);}if(cmd=="xclass"){if(argc<3)return usage();return xclassCmd(argc,argv);}if(cmd=="defender")return defenderCmd(argc,argv);if(hasExt(cmd,".sleela")||hasExt(cmd,".xclass")){if(verifyBeforeExecution(fs::current_path()))return 1;return runFile(cmd);}return usage();}
+int main(int argc,char**argv){
+    if(argc<2)return usage();
+    // Global option phase: consume any leading --memory-manager[=<size>] before
+    // the subcommand. This may only precede the subcommand; per-subcommand flag
+    // parsing (defender/xclass/native) is left untouched.
+    bool mmEnabled=false;size_t mmLimit=0;
+    // Env default (an explicit CLI flag below overrides it).
+    {size_t l=0;if(memoryManagerRequested(l)){mmEnabled=true;mmLimit=l;}}
+    int start=1;
+    while(start<argc){
+        std::string a=argv[start];
+        if(a=="--memory-manager"||a=="--mm"){mmEnabled=true;mmLimit=0;start++;}
+        else if(a.rfind("--memory-manager=",0)==0||a.rfind("--mm=",0)==0){
+            std::string v=a.substr(a.find('=')+1);size_t l=0;
+            if(!parseByteSize(v,l)){std::cerr<<"sleela: invalid --memory-manager size '"<<v<<"'\n";return 2;}
+            mmEnabled=true;mmLimit=l;start++;
+        }else break;
+    }
+    if(mmEnabled)enableMemoryManager(mmLimit,true);
+    if(start>=argc)return usage();
+    std::string cmd=argv[start];
+    // Shift argv so the existing positional parsing (argv[2]==first operand)
+    // continues to work regardless of any consumed global options.
+    argc-=(start-1);argv+=(start-1);
+    if(cmd=="version"||cmd=="--version"||cmd=="-v"){std::cout<<kVersion<<"\n";std::cout<<"  supported .sleela syntax: "<<sleela::minSupportedSyntax().str()<<" .. "<<sleela::maxSupportedSyntax().str()<<"\n";return 0;}
+    if(cmd=="native"||cmd=="exec")return nativeCmd(argc,argv);
+    int rc;
+    if(cmd=="compile"){if(argc!=5||std::string(argv[3])!="-o")return usage();rc=compileFile(argv[2],argv[4]);}
+    else if(cmd=="check"){if(argc<3)return usage();rc=checkFile(argv[2]);}
+    else if(cmd=="run"){if(argc<3)return usage();if(verifyBeforeExecution(fs::current_path()))return 1;if(hasExt(argv[2],".xclass")){std::vector<std::string>files;for(int i=2;i<argc;i++)files.push_back(argv[i]);rc=runXclass(files);}else rc=runFile(argv[2]);}
+    else if(cmd=="xclass"){if(argc<3)return usage();rc=xclassCmd(argc,argv);}
+    else if(cmd=="defender")return defenderCmd(argc,argv);
+    else if(hasExt(cmd,".sleela")||hasExt(cmd,".xclass")){if(verifyBeforeExecution(fs::current_path()))return 1;rc=runFile(cmd);}
+    else return usage();
+    if(mmEnabled)reportMemoryManager();
+    return rc;
+}

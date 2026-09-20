@@ -97,6 +97,14 @@ host and adjusts link flags per platform.
   [`journey/`](journey/), which roll-call each component and resolve the
   catalogued ones live against `SHEET.sheet`.
 - [`SLEELA_TIME_API.md`](SLEELA_TIME_API.md) defines the portable SLeeLa Time API, including precision clocks, NTP, HTTP/RMI/BODI timing records, and the raw international time-request marker.
+- [`MEMORY_MANAGER.md`](MEMORY_MANAGER.md) documents the flag-enabled **Memory
+  Manager** (raw process-memory accounting with an optional fail-closed hard
+  byte limit, layered above the OS allocator in
+  [`impl/core/sleela_memmgr.c`](impl/core/sleela_memmgr.c)) and the **native
+  executable launcher** (`sleela native|exec <program>`), which runs an
+  arbitrary native OS executable from the SLeeLa terminal under a real
+  pseudo-terminal — honoring the SHA-256 gate and engaging the Memory Manager
+  on-need.
 - [`LENS.md`](LENS.md) applies the Sleela *Lens* idea (a focused get/set view)
   to how the United States was created — who built it, who bought it, and the
   early reliefs of 1967 — as dated, sourced facts kept apart from framing.
@@ -269,6 +277,16 @@ SHA-256 execution-gate manifest the runtime requires, and accepts a bare object
 name, a `.sleela` path, a compiled artifact, or an `.xclass` input (also
 `SLeeLa run|check|compile|version`). Put `bin/` on your `PATH` to use it
 anywhere. See [`bin/README.md`](bin/README.md).
+
+It also runs a **native OS executable** from the terminal, and accepts a
+leading `--memory-manager[=<size>]` to enable the Memory Manager (see
+[`MEMORY_MANAGER.md`](MEMORY_MANAGER.md)):
+
+```sh
+$> SLeeLa native /usr/bin/env            # run a native executable under a PTY
+$> SLeeLa exec ./my-tool --flag value    # `exec` is an alias of `native`
+$> SLeeLa --memory-manager=64M hello     # run hello.sleela with a 64 MiB cap
+```
 
 SLeeLa's C/C++ core runs on **Linux, macOS (Darwin/clang), and Windows 10+**.
 On macOS, build with `./scripts/build-macos.sh` (Apple clang); on Windows, build
