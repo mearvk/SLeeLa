@@ -60,14 +60,44 @@ public final class SleelaH3Servlet extends HttpServlet {
 
     private final transient H3Pipeline pipeline;
 
+    /**
+     * Server-side Sleeuum&trade; ledger: keeps track of every HTTP 3.0 /
+     * HTTP 2.0+ packet this servlet handles (dates + numbers), mirroring the
+     * client module {@code http-3.0/sleeuum.py}. Its JSON conforms to
+     * {@code http-3.0/sleeuum.schema.json}.
+     */
+    private final transient SleeuumLedger ledger;
+
     public SleelaH3Servlet(H3Pipeline pipeline) {
         this.pipeline = Objects.requireNonNull(pipeline, "pipeline");
+        this.ledger = new SleeuumLedger("sleela-h3-servlet");
     }
 
-    /** Health probe: GET returns a plain-text liveness string. */
+    /** Exposes the server-side ledger for tests/monitoring. */
+    public SleeuumLedger ledger() {
+        return ledger;
+    }
+
+    /**
+     * GET is dual-purpose:
+     *   /sleela/h3         -> plain-text health probe
+     *   /sleela/h3/ledger  -> the Sleeuum(TM) ledger JSON (dates + numbers + packets)
+     */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        byte[] body = ("SLeeLa H3 module healthy; protocol=" + req.getProtocol())
+        String path = req.getPathInfo();
+        if (path != null && path.endsWith("/ledger")) {
+            byte[] body = ledger.toJson().getBytes(StandardCharsets.UTF_8);
+            resp.setStatus(HttpServletResponse.SC_OK);
+            resp.setContentType("application/json; charset=utf-8");
+            resp.setContentLength(body.length);
+            try (OutputStream out = resp.getOutputStream()) {
+                out.write(body);
+            }
+            return;
+        }
+        byte[] body = ("SLeeLa H3 module healthy; protocol=" + req.getProtocol()
+                + "; " + SleeuumLedger.SLEEUUM_TM + " tracked=" + ledger.count())
                 .getBytes(StandardCharsets.UTF_8);
         resp.setStatus(HttpServletResponse.SC_OK);
         resp.setContentType("text/plain; charset=utf-8");
@@ -94,6 +124,10 @@ public final class SleelaH3Servlet extends HttpServlet {
             return;
         }
 
+        // Sleeuum(TM): record the received request packet (dates + numbers).
+        String carrier = carrierOf(req);
+        ledger.trackRequest(wire, carrier, wire.length);
+
         final byte[] responseWire;
         try {
             responseWire = pipeline.handleWire(wire);
@@ -105,6 +139,9 @@ public final class SleelaH3Servlet extends HttpServlet {
             return;
         }
 
+        // Sleeuum(TM): record the response packet (status parsed from the H3R body).
+        ledger.trackResponse(responseWire, carrier, responseWire.length);
+
         // HTTP transport accepted the packet; H3-level status (OK / BAD_DIGEST /
         // TAMPERED / REPLAYED / ...) is inside the H3R response body, per the
         // spec's "transport OK never implies business success" rule.
@@ -115,6 +152,21 @@ public final class SleelaH3Servlet extends HttpServlet {
         try (OutputStream out = resp.getOutputStream()) {
             out.write(responseWire);
         }
+    }
+
+    /** Maps the container's negotiated protocol to a Sleeuum carrier label. */
+    private static String carrierOf(HttpServletRequest req) {
+        String proto = req.getProtocol();
+        if (proto == null) {
+            return "h3-raw";
+        }
+        if (proto.contains("2")) {
+            return "http/2";
+        }
+        if (proto.contains("1.1") || proto.contains("1.0")) {
+            return "http/1.1";
+        }
+        return "h3-raw";
     }
 
     /** Reads the request body up to the cap; returns null if the cap is exceeded. */
