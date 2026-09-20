@@ -90,8 +90,16 @@
       "sha256": "4cf672239287f2f50d71e36d8d412985f53f4dc14d96eca836ec3b43a0c8e12c"
     },
     {
+      "path": "impl/core/sleela_memmgr.c",
+      "sha256": "73291759a13050b2c5f369dd7ba07d1bc1e1c0788ff2097555d6301645708e42"
+    },
+    {
+      "path": "impl/core/sleela_memmgr.h",
+      "sha256": "4dc39054b2a1ad4038e7d12fe63566d0a4dfb957e07ad0486e5fb5b93e454c74"
+    },
+    {
       "path": "impl/core/sleela_memory.c",
-      "sha256": "0068049724d1b7e135d410041ed04c65301f81e4fcde8bec1d2074ce60c146b1"
+      "sha256": "3a4020bdf350890ee71a5a3d0602b16790849bc3037dc6c9c74ba7fbe3e99eba"
     },
     {
       "path": "impl/core/sleela_memory.h",
@@ -179,7 +187,7 @@
     },
     {
       "path": "impl/frontend/driver.cpp",
-      "sha256": "dfa7be6840f33e84d3cdd0974cd1453d708ca4e2e777ceb7707843842b5b45ec"
+      "sha256": "f47ced31922d7ef96fbccd1ed95b0f0cce602ebb5f52d942542003e7a0f798a5"
     },
     {
       "path": "impl/frontend/lexer.cpp",

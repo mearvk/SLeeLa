@@ -22,6 +22,8 @@ SLeeLa examples/hello.sleela     # runs an explicit path
 SLeeLa run object                # explicit run form
 SLeeLa check file.sleela         # validate (incl. #sleela version), don't run
 SLeeLa compile src.sleela -o out.sleela   # compile a Wrapper to an artifact
+SLeeLa native /usr/bin/env       # run a native OS executable from the terminal
+SLeeLa exec ./tool --flag value  # `exec` is an alias of `native`
 SLeeLa version                   # version + supported syntax range
 SLeeLa help                      # usage
 ```
@@ -30,6 +32,22 @@ The launcher resolves the built `sleela` binary (an `SLEELA_BIN` override, a
 copy alongside the script, or `impl/build/sleela`), and sets the `SHEET.sheet`
 catalog and the SHA-256 execution-gate manifest that the runtime requires,
 before handing off to the binary and preserving its exit status.
+
+### Native executables and the Memory Manager
+
+`SLeeLa native <program> [args...]` (alias `exec`) runs a native OS executable
+from the terminal under a real pseudo-terminal, honoring the SHA-256 execution
+gate and relaying the child's output. A leading `--memory-manager[=<size>]`
+enables the SLeeLa Memory Manager (raw process-memory accounting with an
+optional fail-closed hard byte limit; `<size>` accepts `K`/`M`/`G` suffixes),
+which is enabled automatically for `native`/`exec`:
+
+```sh
+SLeeLa --memory-manager=64M hello        # run a Wrapper with a 64 MiB cap
+SLeeLa native --memory-manager ./tool    # run a native under the manager
+```
+
+See [`../MEMORY_MANAGER.md`](../MEMORY_MANAGER.md) for the full reference.
 
 Build the runtime first if needed:
 

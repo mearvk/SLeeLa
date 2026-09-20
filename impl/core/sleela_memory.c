@@ -1,3 +1,11 @@
+#ifndef _WIN32
+/* posix_memalign and clock_gettime(CLOCK_MONOTONIC) require the POSIX.1-2001
+ * feature set to be requested before any system header is included. */
+#ifndef _POSIX_C_SOURCE
+#define _POSIX_C_SOURCE 200112L
+#endif
+#endif
+
 #include "sleela_memory.h"
 
 #include <stdlib.h>

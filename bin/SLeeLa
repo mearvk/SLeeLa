@@ -17,8 +17,14 @@
 #   SLeeLa run <object>            explicit run
 #   SLeeLa check <file.sleela>     validate (incl. #sleela version), do not run
 #   SLeeLa compile <src> -o <out>  compile a Wrapper to a runnable artifact
+#   SLeeLa native <prog> [args]    run a native OS executable from the terminal
+#   SLeeLa exec   <prog> [args]    alias of `native`
 #   SLeeLa version                 version + supported syntax range
 #   SLeeLa help                    this help
+#
+# A leading --memory-manager[=<size>] enables the SLeeLa Memory Manager (raw
+# process-memory accounting, with an optional hard byte limit) for the run; it
+# is forwarded to the binary and is enabled automatically for native/exec.
 #
 # The launcher resolves the built `sleela` binary, sets the SHEET.sheet catalog
 # and the SHA-256 execution-gate manifest (both required by the runtime), then
@@ -45,16 +51,23 @@ usage() {
 SLeeLa -- run a SLeeLa object from the OS terminal.
 
 Usage:
-  SLeeLa <object>                Run a .sleela object (source or artifact)
-  SLeeLa run <object>            Run a .sleela object (explicit)
-  SLeeLa check <file.sleela>     Validate a Wrapper without running it
-  SLeeLa compile <src> -o <out>  Compile a Wrapper to a runnable artifact
-  SLeeLa version                 Show version and supported syntax range
-  SLeeLa help                    Show this help
+  SLeeLa [--memory-manager[=<size>]] <object>       Run a .sleela object
+  SLeeLa [--memory-manager[=<size>]] run <object>   Run a .sleela object (explicit)
+  SLeeLa check <file.sleela>                         Validate a Wrapper (no run)
+  SLeeLa compile <src> -o <out>                      Compile a Wrapper to artifact
+  SLeeLa native [--memory-manager[=<size>]] <prog> [args...]
+                                                     Run a native OS executable
+  SLeeLa exec   [--memory-manager[=<size>]] <prog> [args...]   Alias of native
+  SLeeLa version                                     Show version + syntax range
+  SLeeLa help                                        Show this help
 
 <object> may be a bare name (foo -> foo.sleela), a .sleela path, a compiled
 .sleela artifact, or an .xclass input. Bare names are resolved against the
 current directory, then $ROOT_DIR/examples, then $ROOT_DIR/impl/examples.
+
+--memory-manager[=<size>] enables the SLeeLa Memory Manager (raw process-memory
+accounting; <size> sets a hard byte limit, accepting K/M/G suffixes). It is
+enabled automatically for `native`/`exec`.
 EOF
 }
 
@@ -98,6 +111,21 @@ if [ "$#" -eq 0 ]; then
     exit 2
 fi
 
+# Consume any leading --memory-manager[=<size>] global options and forward them
+# to the binary ahead of the subcommand. They may only precede the subcommand.
+MM_OPTS=""
+while [ "$#" -ge 1 ]; do
+    case "$1" in
+        --memory-manager|--mm|--memory-manager=*|--mm=*)
+            MM_OPTS="$MM_OPTS $1"; shift ;;
+        *) break ;;
+    esac
+done
+
+if [ "$#" -eq 0 ]; then
+    usage; exit 2
+fi
+
 case "$1" in
     help|-h|--help)
         usage; exit 0 ;;
@@ -105,18 +133,22 @@ case "$1" in
         exec "$SLEELA" version ;;
     check|compile|xclass|defender)
         # Pass toolchain subcommands straight through.
-        exec "$SLEELA" "$@" ;;
+        exec "$SLEELA" $MM_OPTS "$@" ;;
+    native|exec)
+        # Run a native OS executable. The operand is a program name/path, NOT a
+        # .sleela object, so it is passed through verbatim (no resolve_object).
+        exec "$SLEELA" $MM_OPTS "$@" ;;
     run)
         shift
         [ "$#" -ge 1 ] || { echo "SLeeLa: 'run' needs an object" >&2; exit 2; }
         target=$(resolve_object "$1") || { echo "SLeeLa: object not found: '$1'" >&2; exit 66; }
         shift
-        exec "$SLEELA" run "$target" "$@" ;;
+        exec "$SLEELA" $MM_OPTS run "$target" "$@" ;;
     -*)
         echo "SLeeLa: unknown option '$1'" >&2; usage >&2; exit 2 ;;
     *)
         # Bare object form:  SLeeLa object
         target=$(resolve_object "$1") || { echo "SLeeLa: object not found: '$1'" >&2; exit 66; }
         shift
-        exec "$SLEELA" run "$target" "$@" ;;
+        exec "$SLEELA" $MM_OPTS run "$target" "$@" ;;
 esac
