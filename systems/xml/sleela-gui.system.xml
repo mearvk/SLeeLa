@@ -1,0 +1,470 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!--
+  ============================================================================
+  sleela-gui.system.xml — SLeeLa GUI System Definition (BODI™-witnessed)
+  ============================================================================
+
+  BODI™ DOCUMENT COMMENT
+  ======================
+  This document is a BODI™ (Bloq Object Directory Interface) system definition.
+  It is a *source artifact*: the SLeeLa toolchain lowers it into two congruent
+  outputs — a Java presentation host and a SLeeLa Wrapper™ (.sleela) that owns
+  GUI intent. The document does not itself execute; it declares the addressable
+  GUI system, its components, its events, and its comparison against the
+  Java 28 SecureJDK memory host, so that both emitted forms remain answerable to
+  the same witnessed contract.
+
+  Every <container> below sits inside the BODI™ mitigative circumference: each
+  addressed change carries system → reference → change → method → sequence →
+  starter → man, and every emit is a witnessed BODI™ operation drawn from the
+  closed middle-verb set (install/connect/push/enable/open/bind/expose/…).
+
+  BODI™ AUTHORS
+  =============
+  Author        : Max Rupplin — MEARVK LLC — 2026
+  Full name     : Maximilian Eric Alexander Rupplin von Keffikon
+  Witness (man) : operator
+  Starter       : gui
+  Trademarks    : BODI™ (Bloq Object Directory Interface); Wrapper™ (.sleela).
+  Governance    : SL-META-0001 (Sleela Language Metadocument); BODI.md;
+                  gui/README.md + gui/INTEGRATION.md; java28/spec/
+                  JAVA28-MEMORY-INTEGRATION.md (series J28-MEM-0001).
+
+  BODI™ SYSTEM PREFACE
+  ====================
+  The SLeeLa GUI system is intentionally asymmetric. SLeeLa owns the *meaning*
+  of the interface — windows requested, text set, named actions bound, events
+  interpreted — while Java owns *presentation* (Swing / JavaFX) and the desktop
+  lifecycle. Neither side is a copy of the other: Java is a native desktop host
+  for SLeeLa, not a second business-logic implementation.
+
+  This preface fixes the reading order for everything that follows:
+
+    1. A GUI is an ADDRESSED system. Its BODI™ address is
+       Bodi.system("sleela.gui"). Every component and event resolves under
+       that address; the registry reference is urn:sleela:bodi:1.
+    2. INTENT precedes MECHANISM. The SLeeLa surface states *what* the UI means;
+       the Java backend decides *how* it is realized (a JFrame or a Stage).
+    3. WITNESS precedes CHANGE. No component is created, shown, or bound without
+       a BODI™ witness recording the operation on the circumference.
+    4. The Java 28 SecureJDK is the MEMORY host, never the logic host. When the
+       GUI needs durable object state it drives Java-resident objects through
+       opaque handles over the J28-MEM-0001 value contract — the same contract
+       whether the link is JNI (local feedback) or a loopback port.
+    5. This document is the single source of truth for BOTH emitted forms. If a
+       detail is absent here it must not be invented in Java or in SLeeLa; the
+       emit stops at the boundary (BODI™ `contain`) rather than guess.
+
+  The body is organized as three BODI™ containers keyed by lifecycle mode:
+    mode="1" purpose="startup"   — declare + emit the GUI system (compile time)
+    mode="2" purpose="runtime"   — the live event / intent circumference
+    mode="3" purpose="shutdown"  — orderly teardown and witness close
+  ============================================================================
+-->
+
+<document
+    xmlns:bodi="urn:sleela:bodi:1"
+    system="sleela.gui"
+    version="1.0"
+    sleela-syntax="1.2"
+    conduct-frame="US">
+
+    <!-- ====================================================================
+         BODI™ system identity + author block (machine-readable mirror of the
+         document comment above). The <bodi:witness> address is the stable
+         semantic handle every emitted artifact resolves against.
+         ==================================================================== -->
+    <preface title="SLeeLa GUI System — BODI™ System Preface">
+        <trademark>BODI™ — Bloq Object Directory Interface</trademark>
+        <trademark>Wrapper™ — the .sleela source filetype</trademark>
+        <author role="attention">Max Rupplin — MEARVK LLC — 2026</author>
+        <author role="full-name">Maximilian Eric Alexander Rupplin von Keffikon</author>
+        <bodi:witness
+            system="sleela.gui"
+            reference="urn:sleela:bodi:1"
+            sequence="001"
+            starter="gui"
+            man="operator" />
+        <statement>
+            SLeeLa owns GUI intent and event meaning; Java owns Swing/JavaFX
+            presentation and the desktop lifecycle; the Java 28 SecureJDK owns
+            durable object memory reached by opaque handle. This XML is the one
+            source both emitted forms are answerable to.
+        </statement>
+    </preface>
+
+    <!-- ====================================================================
+         COMPILATION CONTRACT — how this XML becomes Java + SLeeLa.
+         The toolchain reads this system document and emits two congruent forms.
+         Each <emit> is a witnessed BODI™ operation (verb from the closed set).
+         ==================================================================== -->
+    <compilation model="1" purpose="xml-to-java-and-sleela">
+
+        <!-- Emit 1: the SLeeLa Wrapper™ that owns GUI intent (Path 2). -->
+        <emit target="sleela" verb="install" artifact="SleelaGui.sleela">
+            <bodi:change
+                system="sleela.gui" method="install" sequence="010"
+                starter="compiler" man="operator" />
+            <pragma>#sleela 1.2</pragma>
+            <role>
+                A Wrapper™ that expresses window/text/action intent and binds
+                named operations. Lowered to core bytecode by the Sleela front
+                end (COMPILER.md); it drives presentation through the runtime
+                boundary, never touching a toolkit widget directly.
+            </role>
+            <maps-to kind="sleela-class">com.mearvk.sleela.gui (intent surface)</maps-to>
+        </emit>
+
+        <!-- Emit 2: the Java presentation host + backends (Path 1 + Path 3). -->
+        <emit target="java" verb="bind" artifact="com.mearvk.sleela.gui">
+            <bodi:change
+                system="sleela.gui" method="bind" sequence="011"
+                starter="compiler" man="operator" />
+            <language-level>Java 28 SecureJDK (source/target; forward-compatible)</language-level>
+            <role>
+                The toolkit-neutral contract (SleelaGui) plus the Swing and
+                JavaFX backends, the host adapters, and the native bridge facade.
+                Java is the desktop host; it defers all business meaning to
+                SLeeLa through SleelaRuntime.
+            </role>
+            <maps-to kind="java-package">com.mearvk.sleela.gui</maps-to>
+        </emit>
+
+        <!-- The two emits MUST be congruent: same components, same events, same
+             action names. Divergence is a BODI™ boundary stop (contain). -->
+        <congruence verb="observe" rule="strict">
+            Component ids, event names, and action names are identical across
+            the Java and SLeeLa emits. A name present in one and absent in the
+            other is rejected at compile time (BODI™ `contain`), never bridged.
+        </congruence>
+    </compilation>
+
+    <!-- ====================================================================
+         MODE 1 — STARTUP: declare the GUI system and its components.
+         This is the compile-time surface: the shape both forms are emitted from.
+         ==================================================================== -->
+    <container mode="1" purpose="startup">
+
+        <guard>
+
+            <!-- The addressed GUI system. class= is the Java contract type;
+                 wrapper= is the SLeeLa intent surface. Both are emitted. -->
+            <container
+                class="com.mearvk.sleela.gui.SleelaGui"
+                wrapper="sleela.gui.SleelaGui"
+                interface="AutoCloseable">
+
+                <bodi:reference address="urn:sleela:bodi:1" system="sleela.gui" />
+
+                <!-- ============================================================
+                     TOOLKIT-NEUTRAL CONTRACT (SleelaGui)
+                     The single operation set both backends implement and both
+                     emitted forms speak. Each operation is a BODI™ verb.
+                     ============================================================ -->
+                <operations>
+                    <operation name="show" verb="open" returns="void">
+                        <param name="title"  type="String" sl-type="String" />
+                        <param name="width"  type="int"    sl-type="int" />
+                        <param name="height" type="int"    sl-type="int" />
+                        <intent>Open a top-level window of the requested size and title.</intent>
+                    </operation>
+                    <operation name="setText" verb="push" returns="void">
+                        <param name="text" type="String" sl-type="String" />
+                        <intent>Publish text into the window's primary label.</intent>
+                    </operation>
+                    <operation name="onAction" verb="bind" returns="void">
+                        <param name="action" type="Runnable" sl-type="action" />
+                        <intent>Bind a callback to the window's primary action control.</intent>
+                    </operation>
+                    <operation name="close" verb="close" returns="void">
+                        <intent>Dispose the window and release toolkit resources.</intent>
+                    </operation>
+                    <operation name="closeQuietly" verb="contain" returns="void" default="true">
+                        <intent>Deterministic host-shutdown close that swallows runtime faults.</intent>
+                    </operation>
+                    <operation name="create" verb="activate" returns="SleelaGui" static="true">
+                        <param name="backend" type="String" sl-type="String" />
+                        <intent>Factory: select the "swing" or "javafx"/"fx" backend.</intent>
+                    </operation>
+                </operations>
+
+                <!-- ============================================================
+                     COMPONENT MODEL — toolkit-neutral, with the concrete widget
+                     each backend realizes it as. This is the "all the details of
+                     GUI" surface: window, label, action button, layout, thread.
+                     ============================================================ -->
+                <components>
+                    <component id="window" role="top-level" verb="open">
+                        <swing widget="javax.swing.JFrame"
+                               close-op="DISPOSE_ON_CLOSE"
+                               placement="setLocationByPlatform(true)" />
+                        <javafx widget="javafx.stage.Stage" scene="javafx.scene.Scene" />
+                        <bodi:witness system="sleela.gui" sequence="101"
+                                      starter="gui" man="operator" />
+                    </component>
+
+                    <component id="content" role="container" verb="mount">
+                        <swing widget="javax.swing.JPanel" layout="java.awt.BorderLayout" />
+                        <javafx widget="javafx.scene.layout.VBox" spacing="10.0" />
+                    </component>
+
+                    <component id="label" role="display" verb="push" initial-text="SLeeLa">
+                        <swing widget="javax.swing.JLabel" align="JLabel.CENTER"
+                               region="BorderLayout.CENTER" />
+                        <javafx widget="javafx.scene.control.Label" region="VBox[0]" />
+                    </component>
+
+                    <component id="action" role="command" verb="bind" caption="Action">
+                        <swing widget="javax.swing.JButton" region="BorderLayout.SOUTH"
+                               listener="addActionListener" />
+                        <javafx widget="javafx.scene.control.Button" region="VBox[1]"
+                                listener="setOnAction" />
+                    </component>
+                </components>
+
+                <!-- ============================================================
+                     EVENT MODEL — how a toolkit event becomes a SLeeLa-witnessed
+                     named action. Thread-affinity is part of the contract.
+                     ============================================================ -->
+                <events>
+                    <event id="action-fired" source="action" verb="observe">
+                        <swing origin="java.awt.event.ActionEvent" />
+                        <javafx origin="javafx.event.ActionEvent" />
+                        <dispatch>Runnable.run() → SleelaGuiRuntime action name → SLeeLa</dispatch>
+                        <bodi:witness system="sleela.gui" sequence="201"
+                                      starter="gui" man="operator" />
+                    </event>
+                    <event id="window-closing" source="window" verb="close">
+                        <swing origin="WindowEvent (DISPOSE_ON_CLOSE)" />
+                        <javafx origin="Stage.close()" />
+                    </event>
+                </events>
+
+                <!-- ============================================================
+                     THREAD CONTRACT — every mutation runs on the toolkit thread.
+                     The emitted backends MUST honor this; SLeeLa intent is
+                     marshaled onto it. This is a hard part of "GUI detail."
+                     ============================================================ -->
+                <threading verb="enable">
+                    <swing thread="Event Dispatch Thread"
+                           guard="javax.swing.SwingUtilities.isEventDispatchThread()"
+                           marshal="SwingUtilities.invokeLater" />
+                    <javafx thread="JavaFX Application Thread"
+                            guard="javafx.application.Platform.isFxApplicationThread()"
+                            marshal="javafx.application.Platform.runLater" />
+                    <rule>
+                        No component field is read or written off the toolkit
+                        thread. A null component (pre-show / post-close) is a
+                        no-op, never a fault.
+                    </rule>
+                </threading>
+
+                <!-- ============================================================
+                     BACKENDS — the two concrete SleelaGui implementations.
+                     ============================================================ -->
+                <backends>
+                    <backend id="swing" class="com.mearvk.sleela.gui.SwingGui"
+                             selector="swing" verb="activate" />
+                    <backend id="javafx" class="com.mearvk.sleela.gui.FxGui"
+                             selector="javafx|fx" verb="activate" />
+                </backends>
+
+            </container>
+
+        </guard>
+
+        <!-- ====================================================================
+             INTEGRATION PATHS — the three ways SLeeLa and Java compose
+             (gui/INTEGRATION.md). Each is a BODI™ connect relationship.
+             ==================================================================== -->
+        <integration>
+
+            <path id="1" name="java-host-to-sleela-logic" verb="connect" deploy="today">
+                <flow>Java GUI → SleelaGuiHost → SleelaRuntime → SLeeLa → slcore_exchange()</flow>
+                <adapter class="com.mearvk.sleela.gui.SleelaGuiHost">
+                    <ctor>
+                        <param name="gui"     type="SleelaGui" />
+                        <param name="runtime" type="SleelaRuntime" />
+                    </ctor>
+                    <operation name="show" verb="open">
+                        <param name="title"  type="String" />
+                        <param name="width"  type="int" />
+                        <param name="height" type="int" />
+                        <param name="actionOperation" type="String" />
+                        <intent>Show a window and route its action to a SLeeLa operation.</intent>
+                    </operation>
+                    <operation name="close" verb="close" />
+                </adapter>
+                <adapter class="com.mearvk.sleela.gui.ProcessSleelaRuntime"
+                         role="invokes native SLeeLa executable" />
+                <runtime interface="com.mearvk.sleela.gui.SleelaRuntime">
+                    <operation name="call" verb="push" returns="Object">
+                        <param name="operation" type="String" />
+                        <param name="arguments" type="Object..." />
+                    </operation>
+                    <operation name="close" verb="close" />
+                    <operation name="unsupported" verb="reject" static="true"
+                               returns="SleelaRuntime"
+                               intent="Null binding that rejects every call." />
+                </runtime>
+                <use>Java is the launcher; SLeeLa remains the business-logic authority.</use>
+            </path>
+
+            <path id="2" name="sleela-intent-to-java-gui" verb="connect" deploy="wrapper-native">
+                <flow>SLeeLa program → GUI intent → SleelaGuiRuntime → Swing / JavaFX</flow>
+                <adapter class="com.mearvk.sleela.gui.SleelaGuiRuntime">
+                    <ctor><param name="gui" type="SleelaGui" /></ctor>
+                    <operation name="window" verb="open">
+                        <param name="title"  type="String" />
+                        <param name="width"  type="int" />
+                        <param name="height" type="int" />
+                    </operation>
+                    <operation name="text" verb="push">
+                        <param name="text" type="String" />
+                    </operation>
+                    <operation name="action" verb="bind">
+                        <param name="name"      type="String" />
+                        <param name="operation" type="Runnable" />
+                        <intent>Register a named action; dispatch resolves by name (LinkedHashMap order).</intent>
+                    </operation>
+                    <operation name="close" verb="close" />
+                </adapter>
+                <use>The Wrapper™ describes UI behavior; Java is a presentation substrate.</use>
+            </path>
+
+            <path id="3" name="shared-native-abi" verb="connect" deploy="high-performance">
+                <flow>SLeeLa → C/C++ runtime → slgui_bridge → JNI → Swing / JavaFX</flow>
+                <adapter native-header="gui/native/sleela_gui_bridge.h"
+                         native-source="gui/native/sleela_gui_bridge.cpp"
+                         boundary="C-compatible callback" />
+                <adapter class="com.mearvk.sleela.gui.JniSleelaRuntime"
+                         role="Java facade for direct native/JNI binding" />
+                <use>Preferred when a direct VM connection / low overhead is required.</use>
+            </path>
+
+        </integration>
+
+    </container>
+
+    <!-- ====================================================================
+         MODE 2 — RUNTIME: the live circumference. GUI events are witnessed
+         and, when durable object state is needed, driven against the
+         Java 28 SecureJDK memory host over the J28-MEM-0001 value contract.
+
+         THIS IS THE "GUI COMPARED TO JAVA 28" SURFACE: the GUI never holds a
+         Java object — it holds an opaque handle and drives it by value.
+         ==================================================================== -->
+    <container mode="2" purpose="runtime">
+
+        <!-- The Java 28 SecureJDK comparison / memory link (series J28-MEM-0001).
+             Model A: SLeeLa drives; Java 28 owns the object memory. -->
+        <java28 model="A" series="J28-MEM-0001" host="Java 28 SecureJDK" verb="connect">
+
+            <bodi:reference address="urn:sleela:bodi:1" system="sleela.gui.memory" />
+
+            <roles>
+                <role who="driver" owner="SLeeLa (C/C++ core)"
+                      holds="handles, never objects" />
+                <role who="memory-host" owner="Java 28 SecureJDK"
+                      owns="every object on its heap; assigns handles" />
+                <role who="link" owner="JNI or port"
+                      carries="operations and values" />
+            </roles>
+
+            <!-- Value contract: SLValue ↔ Java 28. GUI text/sizes/flags cross
+                 here as values; GUI-bound domain objects cross as handles. -->
+            <value-contract>
+                <value sl="SL_NULL"   wire="n" java="null" />
+                <value sl="SL_INT"    wire="i" java="long" />
+                <value sl="SL_DOUBLE" wire="d" java="double" />
+                <value sl="SL_BOOL"   wire="b" java="boolean" />
+                <value sl="SL_STR"    wire="s" java="String (UTF-8)" />
+                <value sl="handle"    wire="h" java="live object in the host handle table" />
+                <handle-rules>
+                    <rule>A handle is a positive int64; 0 is the null handle.</rule>
+                    <rule>Handles are opaque to SLeeLa — stored/passed/returned, never interpreted.</rule>
+                    <rule>A handle is valid only for its originating session; never persisted.</rule>
+                    <rule>The host owns object lifetime; SLeeLa releases interest with `free`.</rule>
+                </handle-rules>
+            </value-contract>
+
+            <!-- Operation set — identical over both channels. -->
+            <operation-set>
+                <op name="hello"    verb="open"     request="protocol/version handshake" reply="server identity + version" />
+                <op name="new"      verb="install"  request="class name, ctor args"       reply="object handle" />
+                <op name="call"     verb="push"     request="handle, method, args"        reply="value or handle" />
+                <op name="get"      verb="pull"     request="handle, field"               reply="value or handle" />
+                <op name="set"      verb="push"     request="handle, field, value"        reply="ok" />
+                <op name="free"     verb="uninstall" request="handle"                     reply="ok" />
+                <op name="describe" verb="observe"  request="handle"                      reply="class + field/method summary" />
+                <op name="stats"    verb="observe"  request="—"                           reply="live handle count, high-water mark" />
+                <op name="bye"      verb="close"    request="—"                           reply="closes the session" />
+            </operation-set>
+
+            <!-- The two interchangeable links. Same grammar; same dispatcher. -->
+            <channels dispatcher="SleelaMemoryServer.handleLine">
+                <channel id="jni" name="local feedback" verb="attach" latency="lowest"
+                         entry="const char *sl_java28_call(void *session, const char *request_line)"
+                         java-facade="com.mearvk.sleela.java28.Java28JniRuntime"
+                         native="java28/src/native/sleela_java28_bridge.c" />
+                <channel id="port" name="socket" verb="connect" isolation="process"
+                         endpoint="127.0.0.1:&lt;port&gt;"
+                         framing="UTF-8, newline-delimited, length-prefixed strings"
+                         java-server="com.mearvk.sleela.java28.Java28PortServer"
+                         native="java28/src/native/sleela_java28_port.c" />
+            </channels>
+
+            <!-- Security posture inherited by the GUI when it drives Java 28. -->
+            <security posture="SecureJDK" verb="approve">
+                <control>No arbitrary classes: `new`/`call` restricted to a host allow-list (registerClass).</control>
+                <control>Handle isolation: a session may only touch handles it was given; stale/forged → ERR.</control>
+                <control>No DTD / no code loading over the wire: values and names only, never bytecode.</control>
+                <control>Bounded memory: a maximum live-handle count; exceeding it fails `new`, not the heap.</control>
+            </security>
+
+            <!-- How the GUI event surface uses the memory host, end to end. -->
+            <gui-memory-bridge>
+                <step order="1">action-fired event witnessed on the toolkit thread (BODI™ observe).</step>
+                <step order="2">SleelaRuntime.call(operation) drives SLeeLa business logic.</step>
+                <step order="3">SLeeLa issues `call`/`get` against a Java 28 handle over JNI or port.</step>
+                <step order="4">Reply value (§2) returns; SleelaGui.setText publishes it to the label.</step>
+                <boundary verb="contain">
+                    A transport success never implies business success — the reply
+                    status is authoritative. On ERR the GUI shows the message and
+                    the operation stops at the circumference.
+                </boundary>
+            </gui-memory-bridge>
+
+        </java28>
+
+    </container>
+
+    <!-- ====================================================================
+         MODE 3 — SHUTDOWN: orderly teardown. Close the window on the toolkit
+         thread, release handles to the memory host, then close the witness.
+         ==================================================================== -->
+    <container mode="3" purpose="shutdown">
+        <sequence>
+            <stop order="1" verb="close"     target="window"
+                  detail="SleelaGui.close() on the toolkit thread (dispose / Stage.close)." />
+            <stop order="2" verb="uninstall" target="java28-handles"
+                  detail="`free` each live handle; `bye` closes the memory session." />
+            <stop order="3" verb="close"     target="runtime"
+                  detail="SleelaRuntime.close(); SleelaGuiHost.close() closes gui then runtime." />
+            <stop order="4" verb="commit"    target="bodi-witness"
+                  detail="Record the completed teardown on the mitigative circumference." />
+        </sequence>
+        <bodi:witness system="sleela.gui" sequence="901" starter="gui" man="operator" />
+    </container>
+
+    <!--
+      BODI™ CLOSING NOTE
+      ==================
+      This system definition remains inside the mitigative circumference: every
+      emit, event, and memory operation above declares its address, verb, datum,
+      sequence, witness, and boundary. Anything not declared here is contained,
+      not invented. — Max Rupplin — MEARVK LLC — 2026. BODI™, Wrapper™.
+    -->
+
+</document>
