@@ -275,7 +275,9 @@ private:
         if(n=="bestOfNew"||n=="bestOfWeight"||n=="bestOfMinVersion"||n=="bestOfCostBudget"||
            n=="bestOfCandidate"||n=="bestOfRecord"||n=="bestOfScore"||n=="bestOfBest"||
            n=="bestOfChoice"||n=="bestOfReport"||n=="bestOfClose"||
-           n=="bestOfMean"||n=="bestOfLoss"||n=="bestOfJitter"||n=="bestOfCertainty"){
+           n=="bestOfMean"||n=="bestOfLoss"||n=="bestOfJitter"||n=="bestOfCertainty"||
+           n=="bestOfCandidateArch"||n=="bestOfArchRealized"||
+           n=="bestOfArch"||n=="bestOfArchParam"||n=="bestOfArchState"){
             if(syntax_<SyntaxVersion{1,3})throw std::runtime_error("Semantic error: best-of built-ins require #sleela 1.3");
         }
         auto emitArgs=[&](const Call& call){ for(const auto& a:call.args) emitExpr(a.get()); };
@@ -289,10 +291,13 @@ private:
         if(n=="bestOfBest"){if(c.args.size()!=1)throw std::runtime_error("Semantic error: bestOfBest(handle) takes one argument");emitArgs(c);emit(OP_BEST_BEST);return true;}
         if(n=="bestOfChoice"){if(c.args.size()!=1)throw std::runtime_error("Semantic error: bestOfChoice(handle) takes one argument");emitArgs(c);emit(OP_BEST_CHOICE);return true;}
         if(n=="bestOfReport"){if(c.args.size()!=1)throw std::runtime_error("Semantic error: bestOfReport(handle) takes one argument");emitArgs(c);emit(OP_BEST_REPORT);return true;}
+        if(n=="bestOfCandidateArch"){if(c.args.size()!=5)throw std::runtime_error("Semantic error: bestOfCandidateArch(handle, idx, architecture, param, realized) takes five arguments");emitArgs(c);emit(OP_BEST_ARCH);return true;}
+        if(n=="bestOfArchRealized"){if(c.args.size()!=3)throw std::runtime_error("Semantic error: bestOfArchRealized(handle, idx, realized) takes three arguments");emitArgs(c);emit(OP_BEST_ARCH_STATE);return true;}
         if(n=="bestOfClose"){if(c.args.size()!=1)throw std::runtime_error("Semantic error: bestOfClose(handle) takes one argument");emitArgs(c);emit(OP_BEST_CLOSE);return true;}
         {
             struct { const char* name; int sel; } bestStats[] = {
-                {"bestOfMean",0},{"bestOfLoss",1},{"bestOfJitter",2},{"bestOfCertainty",3}
+                {"bestOfMean",0},{"bestOfLoss",1},{"bestOfJitter",2},{"bestOfCertainty",3},
+                {"bestOfArch",4},{"bestOfArchParam",5},{"bestOfArchState",6}
             };
             for(const auto& st:bestStats){ if(n==st.name){ if(c.args.size()!=2)throw std::runtime_error("Semantic error: "+n+"(handle, idx) takes two arguments");emitArgs(c);emit(OP_BEST_STAT,st.sel);return true; } }
         }

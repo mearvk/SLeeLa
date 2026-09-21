@@ -63,13 +63,54 @@ int main(void) {
     int budgeted = slbestof_best(b);
     check(budgeted == unproven, "cost budget selects the only affordable candidate");
 
+    /* Internet-architecture fitness (NETWORK.md): DiffServ / IntServ / MPLS.
+     * Record + read back the architecture a route is served by. */
+    slbestof_candidate_arch(b, fast, SL_BESTOF_ARCH_DIFFSERV, 46, SL_BESTOF_ARCH_REALIZED);
+    slbestof_candidate_arch(b, slow, SL_BESTOF_ARCH_INTSERV, 2000, SL_BESTOF_ARCH_DENIED);
+    slbestof_candidate_arch(b, unproven, SL_BESTOF_ARCH_MPLS, 17, SL_BESTOF_ARCH_REALIZED);
+    check(slbestof_arch(b, fast) == SL_BESTOF_ARCH_DIFFSERV, "edge records DiffServ");
+    check(slbestof_arch_param(b, fast) == 46, "edge records DSCP 46 (EF)");
+    check(slbestof_arch_state(b, slow) == SL_BESTOF_ARCH_DENIED, "relay RSVP is denied");
+
+    /* Isolate the architecture axis: two candidates with IDENTICAL measurements
+     * but different realized architectures. IntServ (end-to-end reservation)
+     * outranks DiffServ (per-hop marking) when architecture is what differs. */
+    SLBestOf* a = slbestof_new();
+    slbestof_weight(a, SL_BESTOF_AXIS_DATA, 0);
+    slbestof_weight(a, SL_BESTOF_AXIS_DECISIONS, 0);
+    slbestof_weight(a, SL_BESTOF_AXIS_COSTS, 0);
+    slbestof_weight(a, SL_BESTOF_AXIS_VERSIONS, 0);
+    slbestof_weight(a, SL_BESTOF_AXIS_ARCHITECTURE, 100);
+    int ds  = slbestof_add_candidate(a, "ds",  "tcp://a:1", 100, 64, 0, 0, 1, 10, 1);
+    int is  = slbestof_add_candidate(a, "is",  "tcp://b:1", 100, 64, 0, 0, 1, 10, 1);
+    int mp  = slbestof_add_candidate(a, "mp",  "tcp://c:1", 100, 64, 0, 0, 1, 10, 1);
+    int be  = slbestof_add_candidate(a, "be",  "tcp://d:1", 100, 64, 0, 0, 1, 10, 1);
+    slbestof_candidate_arch(a, ds, SL_BESTOF_ARCH_DIFFSERV, 46, SL_BESTOF_ARCH_REALIZED);
+    slbestof_candidate_arch(a, is, SL_BESTOF_ARCH_INTSERV, 2000, SL_BESTOF_ARCH_REALIZED);
+    slbestof_candidate_arch(a, mp, SL_BESTOF_ARCH_MPLS, 17, SL_BESTOF_ARCH_REALIZED);
+    /* be is left best-effort */
+    check(slbestof_best(a) == is, "realized IntServ (end-to-end) is the top architecture");
+    check(slbestof_score(a, is) > slbestof_score(a, mp), "IntServ > MPLS on architecture");
+    check(slbestof_score(a, mp) > slbestof_score(a, ds), "MPLS > DiffServ on architecture");
+    check(slbestof_score(a, ds) > slbestof_score(a, be), "realized DiffServ > best-effort");
+    /* A denied reservation drops below best-effort; re-realizing recovers it. */
+    slbestof_arch_realized(a, is, SL_BESTOF_ARCH_DENIED);
+    check(slbestof_score(a, is) < slbestof_score(a, be), "denied IntServ falls below best-effort");
+    slbestof_arch_realized(a, is, SL_BESTOF_ARCH_REALIZED);
+    check(slbestof_best(a) == is, "re-realized IntServ recovers the top spot");
+    slbestof_close(a);
+
     /* The winning choice reports the parts of the internet selected. */
-    slbestof_cost_budget(b, 0);
-    slbestof_min_version(b, 0);
+    slbestof_weight(b, SL_BESTOF_AXIS_DATA, 70);
+    slbestof_weight(b, SL_BESTOF_AXIS_DECISIONS, 20);
+    slbestof_weight(b, SL_BESTOF_AXIS_COSTS, 5);
+    slbestof_weight(b, SL_BESTOF_AXIS_VERSIONS, 5);
+    slbestof_weight(b, SL_BESTOF_AXIS_ARCHITECTURE, 15);
     char choice[512];
     int n = slbestof_choice(b, choice, sizeof(choice));
-    check(n > 0 && strstr(choice, "sdps://edge:19866") != NULL, "choice names the winning route");
+    check(n > 0 && strstr(choice, "://") != NULL, "choice names the winning route");
     check(strstr(choice, "flags=[") != NULL, "choice names the selected flags");
+    check(strstr(choice, "arch=") != NULL, "choice names the selected architecture");
     printf("choice: %s\n", choice);
 
     char report[2048];

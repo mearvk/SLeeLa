@@ -25,6 +25,15 @@ class BestOfRoute {
         int relay = bestOfCandidate(b, "relay", "tcp://relay:8080",    2000, 512, 0, 2, 1, 30, 1); // retry
         int spare = bestOfCandidate(b, "spare", "tcp://spare:9090",    1000, 128, 0, 0, 2,  5, 1);
 
+        // Internet QoS architecture per route (see NETWORK.md). Args:
+        //   (b, idx, architecture, param, realized)
+        // architecture: 0 best-effort, 1 DiffServ, 2 IntServ, 3 MPLS
+        // realized:     0 requested, 1 realized, 2 denied
+        bestOfWeight(b, 4, 15);   // architecture axis
+        bestOfCandidateArch(b, edge,  1, 46, 1);   // DiffServ, DSCP 46 (EF), realized
+        bestOfCandidateArch(b, relay, 2, 2000, 2); // IntServ, 2000 kbps RSVP, DENIED
+        bestOfCandidateArch(b, spare, 3, 17, 1);   // MPLS, label 17, realized
+
         // Probe each route with Synchro and fold the honest measurements in.
         // (Loopback discard is used here so the demo is deterministic; a real
         //  deployment would probe the actual route host.)

@@ -102,7 +102,7 @@ A real run's log lines look like:
 ```text
 request 1: reached; receipt{name=intake scheme=pipe ... verbs=7 sent=20 ack=20 recv=1 interims=[frame,record] latched=true coherent=true outcome=REACHED}
 server: best-of winner index 0
-server: chosen route -> local-sdps sdps://127.0.0.1:19866 timeout=200ms payload=64B gap=5ms flags=[crypto,pacing] version=2 replays=3 mean=-1us loss=1000permille certainty=0 score=12000
+server: chosen route -> local-sdps sdps://127.0.0.1:19866 arch=diffserv(dscp=46):realized timeout=200ms payload=64B gap=5ms flags=[crypto,pacing] version=2 replays=3 mean=-1us loss=1000permille certainty=0 score=21000
 server: processed requests=1 reaches=1 probes=1
 ```
 
@@ -124,8 +124,11 @@ bestOfWeight(selector, 2, 10);  // costs
 bestOfWeight(selector, 3, 5);   // versions
 bestOfMinVersion(selector, 1);
 bestOfCostBudget(selector, 100);
-bestOfCandidate(selector, "local-sdps", "sdps://127.0.0.1:19866", 200, 64, 5, 5, 2, 10, 3);
-bestOfCandidate(selector, "local-tcp",  "tcp://127.0.0.1:8080",   500, 128, 0, 2, 1, 20, 1);
+bestOfWeight(selector, 4, 15);   // architecture (DiffServ/IntServ/MPLS; NETWORK.md §13)
+int sdps = bestOfCandidate(selector, "local-sdps", "sdps://127.0.0.1:19866", 200, 64, 5, 5, 2, 10, 3);
+int tcp  = bestOfCandidate(selector, "local-tcp",  "tcp://127.0.0.1:8080",   500, 128, 0, 2, 1, 20, 1);
+bestOfCandidateArch(selector, sdps, 1, 46, 1);   // DiffServ, DSCP 46 (EF), realized
+bestOfCandidateArch(selector, tcp,  0, 0,  0);   // best-effort
 ```
 
 Change the weights, gates, or candidate routes and her routing decisions change

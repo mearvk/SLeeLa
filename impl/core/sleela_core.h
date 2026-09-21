@@ -62,6 +62,8 @@ typedef enum {
     OP_BEST_STAT,      /* a=selector; pops idx,handle; pushes measured int     */
     OP_BEST_CHOICE,    /* pops handle; pushes winning-choice String            */
     OP_BEST_REPORT,    /* pops handle; pushes multi-line report String         */
+    OP_BEST_ARCH,      /* pops realized,param,arch,idx,handle; pushes handle   */
+    OP_BEST_ARCH_STATE,/* pops realized,idx,handle; pushes handle              */
     OP_BEST_CLOSE      /* pops handle; releases the selector; pushes null      */
 } SLOp;
 /* Synchro stat selectors for OP_SYN_STAT (operand a). */
@@ -77,6 +79,9 @@ typedef enum {
 #define SL_BEST_STAT_LOSS      1
 #define SL_BEST_STAT_JITTER    2
 #define SL_BEST_STAT_CERTAINTY 3
+#define SL_BEST_STAT_ARCH      4  /* candidate architecture (SL_BESTOF_ARCH_*) */
+#define SL_BEST_STAT_ARCHPARAM 5  /* architecture parameter (DSCP/kbps/label)  */
+#define SL_BEST_STAT_ARCHSTATE 6  /* realization state (requested/realized/denied) */
 #define SL_MAX_THREADS 128
 #define SL_MAX_LOCKS 32
 #define SL_MAX_SOCKETS 128

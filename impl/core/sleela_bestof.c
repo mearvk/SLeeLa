@@ -35,6 +35,8 @@ typedef struct {
     char route[SL_BESTOF_ROUTE];
     int timeout_ms, payload_len, min_gap_ms;
     int flags, version, cost, replays;
+    /* internet QoS architecture (SL_BESTOF_ARCH_*) + its parameter + state */
+    int arch, arch_param, arch_state;
     /* measured accumulators */
     int64_t sent, received;
     int64_t sum_us;          /* sum of matched RTTs (us)          */
@@ -44,7 +46,7 @@ typedef struct {
 } SLBestCandidate;
 
 struct SLBestOf {
-    int w_data, w_decisions, w_costs, w_versions;
+    int w_data, w_decisions, w_costs, w_versions, w_architecture;
     int min_version;
     int cost_budget;   /* 0 == unbounded */
     SLBestCandidate c[SL_BESTOF_CANDIDATES];
@@ -54,10 +56,11 @@ struct SLBestOf {
 SLBestOf* slbestof_new(void) {
     SLBestOf* b = (SLBestOf*)calloc(1, sizeof(SLBestOf));
     if (!b) return NULL;
-    b->w_data = 50;
-    b->w_decisions = 30;
+    b->w_data = 45;
+    b->w_decisions = 25;
     b->w_costs = 10;
-    b->w_versions = 10;
+    b->w_versions = 5;
+    b->w_architecture = 15;
     b->min_version = 0;
     b->cost_budget = 0;
     return b;
@@ -68,10 +71,11 @@ int slbestof_weight(SLBestOf* b, int axis, int weight) {
     if (weight < 0) weight = 0;
     if (weight > 100) weight = 100;
     switch (axis) {
-        case SL_BESTOF_AXIS_DATA:      b->w_data = weight; return 0;
-        case SL_BESTOF_AXIS_DECISIONS: b->w_decisions = weight; return 0;
-        case SL_BESTOF_AXIS_COSTS:     b->w_costs = weight; return 0;
-        case SL_BESTOF_AXIS_VERSIONS:  b->w_versions = weight; return 0;
+        case SL_BESTOF_AXIS_DATA:         b->w_data = weight; return 0;
+        case SL_BESTOF_AXIS_DECISIONS:    b->w_decisions = weight; return 0;
+        case SL_BESTOF_AXIS_COSTS:        b->w_costs = weight; return 0;
+        case SL_BESTOF_AXIS_VERSIONS:     b->w_versions = weight; return 0;
+        case SL_BESTOF_AXIS_ARCHITECTURE: b->w_architecture = weight; return 0;
         default: return -1;
     }
 }
@@ -100,11 +104,67 @@ int slbestof_add_candidate(SLBestOf* b, const char* name, const char* route,
     cn->cost = cost < 0 ? 0 : cost;
     cn->replays = replays < 1 ? 1 : replays;
     cn->last_us = -1;
+    /* Default architecture: best-effort, requested (memset already zeroed). */
+    cn->arch = SL_BESTOF_ARCH_BESTEFFORT;
+    cn->arch_param = 0;
+    cn->arch_state = SL_BESTOF_ARCH_REQUESTED;
     return b->ncandidates++;
 }
 
 static int valid_idx(const SLBestOf* b, int idx) {
     return b && idx >= 0 && idx < b->ncandidates && b->c[idx].used;
+}
+
+int slbestof_candidate_arch(SLBestOf* b, int idx, int architecture,
+                            int arch_param, int realized) {
+    if (!valid_idx(b, idx)) return -1;
+    if (architecture < SL_BESTOF_ARCH_BESTEFFORT || architecture > SL_BESTOF_ARCH_MPLS)
+        return -1;
+    SLBestCandidate* cn = &b->c[idx];
+    cn->arch = architecture;
+    cn->arch_param = arch_param;
+    cn->arch_state = (realized < SL_BESTOF_ARCH_REQUESTED || realized > SL_BESTOF_ARCH_DENIED)
+                     ? SL_BESTOF_ARCH_REQUESTED : realized;
+    return 0;
+}
+
+int slbestof_arch_realized(SLBestOf* b, int idx, int realized) {
+    if (!valid_idx(b, idx)) return -1;
+    if (realized < SL_BESTOF_ARCH_REQUESTED || realized > SL_BESTOF_ARCH_DENIED) return -1;
+    b->c[idx].arch_state = realized;
+    return 0;
+}
+
+int slbestof_arch(const SLBestOf* b, int idx) {
+    return valid_idx(b, idx) ? b->c[idx].arch : -1;
+}
+int slbestof_arch_param(const SLBestOf* b, int idx) {
+    return valid_idx(b, idx) ? b->c[idx].arch_param : -1;
+}
+int slbestof_arch_state(const SLBestOf* b, int idx) {
+    return valid_idx(b, idx) ? b->c[idx].arch_state : -1;
+}
+
+/* The architecture-fitness term in [0..1000]: how much the candidate's QoS
+ * architecture, as actually realized, should raise its score. Best-effort is a
+ * neutral baseline; a REALIZED DiffServ/IntServ/MPLS path earns a bonus scaled
+ * by how strong that architecture's guarantee is; a merely REQUESTED path earns
+ * a small credit; a DENIED reservation is penalized below best-effort. Honest:
+ * the bonus is gated on realization, never on the mere request. */
+static int64_t arch_fitness(const SLBestCandidate* cn) {
+    int64_t base;
+    switch (cn->arch) {
+        case SL_BESTOF_ARCH_INTSERV: base = 1000; break; /* end-to-end reservation */
+        case SL_BESTOF_ARCH_MPLS:    base = 800;  break; /* traffic-engineered path */
+        case SL_BESTOF_ARCH_DIFFSERV:base = 600;  break; /* per-hop class marking   */
+        default:                     base = 400;  break; /* best-effort baseline    */
+    }
+    if (cn->arch == SL_BESTOF_ARCH_BESTEFFORT) return base; /* state N/A */
+    switch (cn->arch_state) {
+        case SL_BESTOF_ARCH_REALIZED:  return base;              /* full credit */
+        case SL_BESTOF_ARCH_DENIED:    return 200;               /* below best-effort */
+        default: /* REQUESTED */       return 400 + (base - 400) / 4; /* partial */
+    }
 }
 
 int slbestof_record(SLBestOf* b, int idx, int64_t rtt_us) {
@@ -200,10 +260,15 @@ int64_t slbestof_score(SLBestOf* b, int idx) {
         if (versions_term > 1000) versions_term = 1000;
     }
 
+    /* Architecture fitness: how the candidate's realized QoS architecture
+     * (DiffServ/IntServ/MPLS/best-effort) should raise its score. */
+    int64_t architecture_term = arch_fitness(cn);
+
     return (int64_t)b->w_data * data_term
          + (int64_t)b->w_decisions * decisions_term
          + (int64_t)b->w_costs * costs_term
-         + (int64_t)b->w_versions * versions_term;
+         + (int64_t)b->w_versions * versions_term
+         + (int64_t)b->w_architecture * architecture_term;
 }
 
 int slbestof_best(SLBestOf* b) {
@@ -239,18 +304,37 @@ static void flags_string(int flags, char* out, size_t cap) {
     if (n == 0) snprintf(out, cap, "none");
 }
 
+/* Render a candidate's architecture as "arch(param):state", e.g.
+ * "diffserv(46):realized", "intserv(2000):requested", "mpls(17):realized",
+ * or "best-effort". */
+static void arch_string(const SLBestCandidate* cn, char* out, size_t cap) {
+    const char* a;
+    const char* param_label;
+    switch (cn->arch) {
+        case SL_BESTOF_ARCH_DIFFSERV: a = "diffserv"; param_label = "dscp"; break;
+        case SL_BESTOF_ARCH_INTSERV:  a = "intserv";  param_label = "kbps"; break;
+        case SL_BESTOF_ARCH_MPLS:     a = "mpls";     param_label = "label"; break;
+        default:                      snprintf(out, cap, "best-effort"); return;
+    }
+    const char* st = cn->arch_state == SL_BESTOF_ARCH_REALIZED ? "realized"
+                   : cn->arch_state == SL_BESTOF_ARCH_DENIED   ? "denied"
+                   : "requested";
+    snprintf(out, cap, "%s(%s=%d):%s", a, param_label, cn->arch_param, st);
+}
+
 int slbestof_choice(SLBestOf* b, char* out, size_t cap) {
     if (!out || cap == 0) return 0;
     out[0] = 0;
     int idx = slbestof_best(b);
     if (idx < 0) { snprintf(out, cap, "(no qualifying candidate)"); return (int)strlen(out); }
     const SLBestCandidate* cn = &b->c[idx];
-    char fl[64];
+    char fl[64], ar[64];
     flags_string(cn->flags, fl, sizeof(fl));
+    arch_string(cn, ar, sizeof(ar));
     int w = snprintf(out, cap,
-        "%s %s timeout=%dms payload=%dB gap=%dms flags=[%s] version=%d replays=%d "
+        "%s %s arch=%s timeout=%dms payload=%dB gap=%dms flags=[%s] version=%d replays=%d "
         "mean=%lldus loss=%lldpermille certainty=%d score=%lld",
-        cn->name, cn->route, cn->timeout_ms, cn->payload_len, cn->min_gap_ms, fl,
+        cn->name, cn->route, ar, cn->timeout_ms, cn->payload_len, cn->min_gap_ms, fl,
         cn->version, cn->replays,
         (long long)slbestof_mean_us(b, idx),
         (long long)slbestof_loss_permille(b, idx),
@@ -265,10 +349,11 @@ int slbestof_report(SLBestOf* b, char* out, size_t cap) {
     out[0] = 0;
     size_t n = 0;
     int w = snprintf(out, cap,
-        "best-of weights[data=%d decisions=%d costs=%d versions=%d] "
+        "best-of weights[data=%d decisions=%d costs=%d versions=%d architecture=%d] "
         "min-version=%d cost-budget=%d candidates=%d\n",
         b ? b->w_data : 0, b ? b->w_decisions : 0, b ? b->w_costs : 0,
-        b ? b->w_versions : 0, b ? b->min_version : 0, b ? b->cost_budget : 0,
+        b ? b->w_versions : 0, b ? b->w_architecture : 0,
+        b ? b->min_version : 0, b ? b->cost_budget : 0,
         b ? b->ncandidates : 0);
     if (w > 0) n += (size_t)w;
     if (!b) return (int)n;
@@ -276,12 +361,13 @@ int slbestof_report(SLBestOf* b, char* out, size_t cap) {
     for (int i = 0; i < b->ncandidates && n < cap; i++) {
         const SLBestCandidate* cn = &b->c[i];
         if (!cn->used) continue;
-        char fl[64];
+        char fl[64], ar[64];
         flags_string(cn->flags, fl, sizeof(fl));
+        arch_string(cn, ar, sizeof(ar));
         w = snprintf(out + n, cap - n,
-            "  %c %s %s v%d cost=%d flags=[%s] mean=%lldus loss=%lldpermille "
+            "  %c %s %s arch=%s v%d cost=%d flags=[%s] mean=%lldus loss=%lldpermille "
             "certainty=%d score=%lld\n",
-            i == best ? '*' : ' ', cn->name, cn->route, cn->version, cn->cost, fl,
+            i == best ? '*' : ' ', cn->name, cn->route, ar, cn->version, cn->cost, fl,
             (long long)slbestof_mean_us(b, i),
             (long long)slbestof_loss_permille(b, i),
             slbestof_certainty_permille(b, i),

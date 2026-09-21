@@ -88,10 +88,10 @@ configure it, register candidate routes, fold in Synchro measurements, and ask
 for the winner. It answers: *given my data, decisions, costs, and version
 requirements, which route + settings + flags + replays should I use?*
 
-### 4.1 The four configurable axes
+### 4.1 The five configurable axes
 
 `bestOfWeight(handle, axis, weight)` sets each axis weight in `0..100`
-(defaults `data=50 decisions=30 costs=10 versions=10`):
+(defaults `data=45 decisions=25 costs=10 versions=5 architecture=15`):
 
 | Axis | id | What it rewards | Built from |
 |---|---|---|---|
@@ -99,9 +99,13 @@ requirements, which route + settings + flags + replays should I use?*
 | **decisions** | 1 | Higher carrier certainty | QOS.md advisory model |
 | **costs** | 2 | Lower cost (cheaper routes) | per-candidate `cost` vs. budget |
 | **versions** | 3 | Higher protocol/packet-version fitness | per-candidate `version` vs. `min-version` |
+| **architecture** | 4 | A stronger *realized* internet QoS architecture | per-candidate DiffServ/IntServ/MPLS + realization state |
 
-These are exactly the four things the task asks to configure: **data,
-decisions, costs, versions.**
+The first four are the axes the original brief asked to configure — **data,
+decisions, costs, versions**. The fifth, **architecture**, is the improvement
+this revision adds: it lets best-of prefer routes whose internet QoS
+architecture (DiffServ / IntServ / MPLS — see
+[`NETWORK.md`](NETWORK.md) §13) is actually realized.
 
 ### 4.2 A candidate = a slice of the internet
 
@@ -117,6 +121,7 @@ internet best-of can choose among:
 | `version` | **version** | protocol/packet version this route speaks |
 | `cost` | **cost** | relative expense (budget-gated) |
 | `replays` | **replays** | how many probe repeats to average for this route |
+| `architecture` | **architecture** | the internet QoS model serving the route (see §4.6) |
 
 ### 4.3 Feeding measurements
 
@@ -132,21 +137,22 @@ bestOfJitter/bestOfCertainty(handle, idx)`.
 
 ### 4.4 The transparent score
 
-`bestOfScore(handle, idx)` is a weighted sum of four normalized terms, each in
+`bestOfScore(handle, idx)` is a weighted sum of five normalized terms, each in
 `0..1000` (higher is better):
 
 ```
-score =  w_data      * data_term        // (rtt_goodness + delivered) / 2
-       + w_decisions * certainty         // 0..1000 carrier certainty
-       + w_costs     * (1000 - cost_norm)// cheaper -> higher
-       + w_versions  * version_fitness   // >= min_version -> 500 + 100*over, capped
+score =  w_data         * data_term          // (rtt_goodness + delivered) / 2
+       + w_decisions    * certainty           // 0..1000 carrier certainty
+       + w_costs        * (1000 - cost_norm)  // cheaper -> higher
+       + w_versions     * version_fitness     // >= min_version -> 500 + 100*over, capped
+       + w_architecture * arch_fitness        // realized DiffServ/IntServ/MPLS (§4.6)
 ```
 
 `rtt_goodness` maps a lower mean RTT to a higher number against a fixed
 reference ceiling (a *scaling constant*, not a limit or a promise). A candidate
 with **no measurements** contributes `data_term = 0` and `certainty = 0`, so it
-scores from its static cost/version fitness only — a measured-good route always
-beats an unproven one.
+scores from its static cost/version/architecture fitness only — a measured-good
+route always beats an unproven one on the measured axes.
 
 ### 4.5 Gates and the winner
 
@@ -159,11 +165,45 @@ beats an unproven one.
 selected parts of the internet, e.g.:
 
 ```
-edge sdps://edge:19866 timeout=200ms payload=64B gap=5ms flags=[crypto,pacing] version=2 replays=3 mean=845us loss=0permille certainty=1000 score=98450
+edge sdps://edge:19866 arch=diffserv(dscp=46):realized timeout=200ms payload=64B gap=5ms flags=[crypto,pacing] version=2 replays=3 mean=845us loss=0permille certainty=1000 score=104450
 ```
 
 `bestOfReport(handle)` prints every candidate with a `*` on the winner — the
 full, inspectable decision.
+
+### 4.6 The internet-architecture axis (DiffServ · IntServ · MPLS)
+
+Each candidate declares which internet QoS **architecture** serves its route
+(see [`NETWORK.md`](NETWORK.md) §13), with its parameter and current realization
+state:
+
+```
+bestOfCandidateArch(handle, idx, architecture, param, realized)
+```
+
+| `architecture` | id | `param` means | Guarantee strength |
+|---|---|---|---|
+| best-effort | 0 | *(ignored)* | neutral baseline |
+| **DiffServ** | 1 | **DSCP class** `0..63` (per-hop marking) | per-hop class of service |
+| **IntServ** | 2 | **reserved kbps** (RSVP request) | end-to-end reservation (strongest) |
+| **MPLS** | 3 | **MPLS label** (engineered LSP) | traffic-engineered path |
+
+| `realized` | id | Effect on `arch_fitness` |
+|---|---|---|
+| requested | 0 | partial credit — declared, not yet confirmed |
+| **realized** | 1 | full credit for the architecture's strength |
+| **denied** | 2 | penalty — scores *below* best-effort (e.g. RSVP reject) |
+
+`arch_fitness` is `0..1000`: realized IntServ `1000` > MPLS `800` > DiffServ
+`600` > best-effort `400` > any *denied* reservation `200`. **The bonus is
+gated on realization, never on the request** — honest, like every other axis.
+Update realization as the network confirms/denies it:
+
+```
+bestOfArchRealized(handle, idx, realized)   // e.g. after an RSVP confirm/reject
+```
+
+Read it back with `bestOfArch / bestOfArchParam / bestOfArchState(handle, idx)`.
 
 ---
 
@@ -219,10 +259,10 @@ Config `data=70 decisions=20 costs=5 versions=5`, `min-version=1`,
 `cost-budget=50`, three candidates measured over loopback:
 
 ```
-best-of weights[data=70 decisions=20 costs=5 versions=5] min-version=1 cost-budget=50 candidates=3
-  * edge  sdps://edge:19866 v2 cost=10 flags=[crypto,pacing] mean=845us  loss=0permille   certainty=1000 score=98450
-    relay tcp://relay:8080  v1 cost=30 flags=[retry]         mean=40000us loss=300permille certainty=700  score=79950
-    spare tcp://spare:9090  v2 cost=5  flags=[none]          mean=-1us    loss=0permille   certainty=0    score=8475
+best-of weights[data=70 decisions=20 costs=5 versions=5 architecture=15] min-version=1 cost-budget=50 candidates=3
+  * edge  sdps://edge:19866 arch=diffserv(dscp=46):realized v2 cost=10 flags=[crypto,pacing] mean=845us  loss=0permille   certainty=1000 score=104450
+    relay tcp://relay:8080  arch=intserv(kbps=2000):denied  v1 cost=30 flags=[retry]         mean=40000us loss=300permille certainty=700  score=79950
+    spare tcp://spare:9090  arch=mpls(label=17):realized    v2 cost=5  flags=[none]          mean=-1us    loss=0permille   certainty=0    score=20475
 ```
 
 Read it as *recent behavior*: `edge` wins because it is measured fast, clean,
@@ -254,14 +294,19 @@ bestOfWeight(h, axis, weight)           // axis: 0 data · 1 decisions · 2 cost
 bestOfMinVersion(h, minVersion)
 bestOfCostBudget(h, budget)             // 0 = unbounded
 bestOfCandidate(h, name, route, timeoutMs, payloadLen, gapMs, flags, version, cost, replays) -> idx
+bestOfCandidateArch(h, idx, architecture, param, realized)   // 0 be · 1 DiffServ · 2 IntServ · 3 MPLS
+bestOfArchRealized(h, idx, realized)                         // 0 requested · 1 realized · 2 denied
 bestOfRecord(h, idx, rttUs)             // rttUs from synchroDispatch, or -1 for loss
 bestOfMean(h, idx) · bestOfLoss(h, idx) · bestOfJitter(h, idx) · bestOfCertainty(h, idx)
+bestOfArch(h, idx) · bestOfArchParam(h, idx) · bestOfArchState(h, idx)
 bestOfScore(h, idx) · bestOfBest(h) -> idx (-1 none)
 bestOfChoice(h) -> String · bestOfReport(h) -> String
 bestOfClose(h)
 ```
 
 Flag bits combine by addition: `crypto=1 retry=2 pacing=4 dscp=8 replay=16`.
+Architecture ids: `best-effort=0 DiffServ=1 IntServ=2 MPLS=3`; realized states:
+`requested=0 realized=1 denied=2`.
 
 See [`impl/examples/bestof_route.sleela`](impl/examples/bestof_route.sleela) for
 a full Synchro → best-of → choice program, and `make test-bestof` for the C

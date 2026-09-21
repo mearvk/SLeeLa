@@ -34,9 +34,14 @@ class Server {
         bestOfWeight(selector, 3, 5);    // versions
         bestOfMinVersion(selector, 1);
         bestOfCostBudget(selector, 100);
+        bestOfWeight(selector, 4, 15);   // architecture (see NETWORK.md)
         // Her own candidate routes (the parts of the internet she may use).
-        bestOfCandidate(selector, "local-sdps", "sdps://127.0.0.1:19866", 200, 64, 5, 5, 2, 10, 3);
-        bestOfCandidate(selector, "local-tcp",  "tcp://127.0.0.1:8080",   500, 128, 0, 2, 1, 20, 1);
+        int sdps = bestOfCandidate(selector, "local-sdps", "sdps://127.0.0.1:19866", 200, 64, 5, 5, 2, 10, 3);
+        int tcp  = bestOfCandidate(selector, "local-tcp",  "tcp://127.0.0.1:8080",   500, 128, 0, 2, 1, 20, 1);
+        // Internet QoS architecture per route: (idx, arch, param, realized).
+        // arch: 0 best-effort 1 DiffServ 2 IntServ 3 MPLS; realized: 0 req 1 real 2 denied.
+        bestOfCandidateArch(selector, sdps, 1, 46, 1);   // DiffServ EF, realized
+        bestOfCandidateArch(selector, tcp,  0, 0, 0);    // best-effort
     }
 
     // Process one of her own input lines. She understands a few verbs and

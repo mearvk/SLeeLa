@@ -108,7 +108,9 @@ static const std::unordered_map<std::string, int> kContextualBuiltins13 = {
     {"bestOfNew",1},{"bestOfWeight",1},{"bestOfMinVersion",1},{"bestOfCostBudget",1},
     {"bestOfCandidate",1},{"bestOfRecord",1},{"bestOfScore",1},{"bestOfBest",1},
     {"bestOfChoice",1},{"bestOfReport",1},{"bestOfClose",1},
-    {"bestOfMean",1},{"bestOfLoss",1},{"bestOfJitter",1},{"bestOfCertainty",1}
+    {"bestOfMean",1},{"bestOfLoss",1},{"bestOfJitter",1},{"bestOfCertainty",1},
+    {"bestOfCandidateArch",1},{"bestOfArchRealized",1},
+    {"bestOfArch",1},{"bestOfArchParam",1},{"bestOfArchState",1}
 };
 
 bool isContextualBuiltin(const std::string& name) {

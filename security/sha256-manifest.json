@@ -59,11 +59,11 @@
     },
     {
       "path": "impl/core/sleela_core.c",
-      "sha256": "85c28563736cab363283234641996afe4cf74c5510c2541aa81730893cc2b07a"
+      "sha256": "ed50f4099a354728d9ff83efe713185be0c87ad6629ac1ed83951bc30aee30b2"
     },
     {
       "path": "impl/core/sleela_core.h",
-      "sha256": "3414f665ed38cd9c3a0c68dfe9a31fb8c303e126f1fcaddf6f837de1e7d9237e"
+      "sha256": "93a6343f5b4bb0c859122756509b3d3010889ad2e6cf97051cd4f571f8042612"
     },
     {
       "path": "impl/core/sleela_events.c",
@@ -179,7 +179,7 @@
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "3cc0746905b797583d9d1d9fc3ae2c429f3105fac87efabad4b0f05f7c474b16"
+      "sha256": "23bf3e12a1e81938a840464558c06e5038d14e5d42e62f01ecb88f7a4c47b8f7"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -191,7 +191,7 @@
     },
     {
       "path": "impl/frontend/lexer.cpp",
-      "sha256": "350e0d23b19db48e7883775c582d9a978f006c6227d1131edc5f910033c4b7f4"
+      "sha256": "4fe6087bea5beda43b135c7af72cc644ad2d85ed8e60da00c740d5348af5dbf5"
     },
     {
       "path": "impl/frontend/lexer.h",
@@ -455,7 +455,7 @@
     },
     {
       "path": "SLEELA.syntax",
-      "sha256": "f4de9fb86896e7bf928dfafee5d20794485f7a45aceba31a9a5f7e6f704351dd"
+      "sha256": "71e61a2a22b9ee5002d635ae18e44f87c99abea0d2cfe1fe9041c8a13b176e71"
     },
     {
       "path": "VERSION.md",
@@ -463,27 +463,27 @@
     },
     {
       "path": "impl/core/sleela_bestof.h",
-      "sha256": "cb5ebe3ee9a0217effd1cf5d14609fedbaa9197c4f9ca7233b3796db1565b38c"
+      "sha256": "70f97f6eb2356c5f63161b86d2f6b596a064032526645061e49dc2cdffac667c"
     },
     {
       "path": "impl/core/sleela_bestof.c",
-      "sha256": "c10e2a68307e873d3a0ab88c3bacc2bc00b7ab464cd3ac11fc7cd3ec25c86b2a"
+      "sha256": "e42d1aa5dcc61954a4404308da0097f45bd501c2a6d106c381f70a288f488269"
     },
     {
       "path": "impl/core/bestof_smoke.c",
-      "sha256": "e210109a244d75e918a225037d981c495a5b4c59f7cd198f2aac7f624afadf1c"
+      "sha256": "9c71fa3f3ba291f71a8ace6ffb622c647e2df622dd55b7ee89d0128f4f54b0dc"
     },
     {
       "path": "impl/examples/bestof_route.sleela",
-      "sha256": "e4288b0cd856d8e1b177cc8b7479cc912c9d9f4adc4f207a5de0957c366853a6"
+      "sha256": "ae4974a8b1568e39d248e516fff1d529d7b24c77756647628e837fb92ebb940f"
     },
     {
       "path": "TIMINGS.md",
-      "sha256": "b40cbc16d6f3dc7c41e08aef2abf770c60deec30f249767e1aec18d6b3f477a5"
+      "sha256": "eab61b1f8a95012ff3ead21ca4ef4fafaea1eab6271e4779101446933fafb9d0"
     },
     {
       "path": "SERVER.EDITION.md",
-      "sha256": "8228cd6146d49a95afea1dca5d34ac26494fe2792f4235d850cd27ed7bd28339"
+      "sha256": "9714c27aaf24c40aab100e4c94d63334ab057162e0ee81dca36e01c07bad9afe"
     },
     {
       "path": "server-edition/serverd",
@@ -491,7 +491,7 @@
     },
     {
       "path": "server-edition/src/Server.sleela",
-      "sha256": "1badfe6d39542e8f85e47422e9b11d2775d98d374aea30b10f571476f44ac936"
+      "sha256": "4caca8390328708ba3c93a35f095c7b9f6995db94d6beed8183c770bfcc82688"
     },
     {
       "path": "server-edition/.gitignore",

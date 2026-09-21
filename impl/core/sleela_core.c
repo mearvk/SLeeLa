@@ -877,8 +877,26 @@ static SLResult run_thread(SLThread* t) {
                 case SL_BEST_STAT_LOSS: r=slbestof_loss_permille(b,idx); break;
                 case SL_BEST_STAT_JITTER: r=slbestof_jitter_us(b,idx); break;
                 case SL_BEST_STAT_CERTAINTY: r=slbestof_certainty_permille(b,idx); break;
+                case SL_BEST_STAT_ARCH: r=slbestof_arch(b,idx); break;
+                case SL_BEST_STAT_ARCHPARAM: r=slbestof_arch_param(b,idx); break;
+                case SL_BEST_STAT_ARCHSTATE: r=slbestof_arch_state(b,idx); break;
                 default: r=-1; break; } }
             PUSH(slval_int(r));
+        } break;
+        case OP_BEST_ARCH: {
+            SLValue realv=POP(), paramv=POP(), archv=POP(), idxv=POP(), hv=POP();
+            if(hv.type!=SL_INT||idxv.type!=SL_INT||archv.type!=SL_INT||paramv.type!=SL_INT||realv.type!=SL_INT)
+                TERR("bestOfCandidateArch(handle, idx, architecture, param, realized) requires five integers");
+            SLBestOf* b=bestof_get(vm,(int)hv.as.i);
+            if(b) slbestof_candidate_arch(b,(int)idxv.as.i,(int)archv.as.i,(int)paramv.as.i,(int)realv.as.i);
+            PUSH(hv);
+        } break;
+        case OP_BEST_ARCH_STATE: {
+            SLValue realv=POP(), idxv=POP(), hv=POP();
+            if(hv.type!=SL_INT||idxv.type!=SL_INT||realv.type!=SL_INT) TERR("bestOfArchRealized(handle, idx, realized) requires three integers");
+            SLBestOf* b=bestof_get(vm,(int)hv.as.i);
+            if(b) slbestof_arch_realized(b,(int)idxv.as.i,(int)realv.as.i);
+            PUSH(hv);
         } break;
         case OP_BEST_CHOICE: {
             SLValue hv=POP(); if(hv.type!=SL_INT) TERR("bestOfChoice(handle) requires a handle");

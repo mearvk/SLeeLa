@@ -347,7 +347,41 @@ These boundaries are implementation constraints, not claims that the underlying 
 
 ---
 
-## 13. Future Extensions
+## 13. Internet Architectures (QoS models the best-of selector understands)
+
+The network layer moves bytes; **how the internet in between treats those
+bytes** is decided by the QoS *architecture* of the path. SLeeLa's best-of
+route selector (`impl/core/sleela_bestof.*`, see [`TIMINGS.md`](TIMINGS.md)) is
+architecture-aware: a candidate route declares which of these models serves it,
+and the selector scores the route by the architecture it can *actually realize*
+— never by the one it merely requests. The three models that matter:
+
+| Architecture | How it works | State it reserves | best-of parameter |
+|---|---|---|---|
+| **DiffServ** (Differentiated Services) | The most common internet model. **Hop-by-hop packet marking** via **DSCP**: each router independently decides how to handle a packet from its tag. No path setup, no reservation — a scalable per-hop *class of service*. | none (per-packet class only) | **DSCP class** `0..63` (e.g. `46` = EF) |
+| **IntServ** (Integrated Services) | **End-to-end resource reservation.** Uses **RSVP** (Resource Reservation Protocol) to reserve a dedicated path through *every* router between sender and receiver **before** data is sent. Strong guarantee, but per-flow state on every hop limits its scale. | per-flow reservation on every router | **reserved kbps** (the RSVP request) |
+| **MPLS** (Multiprotocol Label Switching) | Routes on **short path labels** rather than long network addresses. Highly integrated with **traffic engineering** to manage QoS across enterprise networks and ISP backbones: labels pin a chosen, engineered path (an LSP). | a label-switched path (LSP) | **MPLS label** |
+
+Two honesty rules follow the rest of the timing work
+([`QOS.md`](QOS.md)):
+
+1. **Realization, not request.** DiffServ marking can be stripped, an RSVP
+   reservation can be *denied*, an MPLS label can be absent. best-of gives the
+   architecture bonus only to a route whose architecture is confirmed
+   **realized**; a merely *requested* one earns partial credit and a **denied**
+   reservation scores *below* plain best-effort.
+2. **Relative strength.** Where architecture is the deciding axis, the ranking
+   reflects the strength of the guarantee: realized **IntServ** (end-to-end
+   reservation) > **MPLS** (engineered path) > **DiffServ** (per-hop class) >
+   **best-effort**. It is still one axis among five — measured data, QoS
+   certainty, cost, and version fitness all count too.
+
+The best-effort default (no QoS marking) is the neutral baseline SLeeLa assumes
+for any route that does not declare an architecture. See
+[`TIMINGS.md`](TIMINGS.md) §4 for the config surface (`bestOfCandidateArch`,
+`bestOfArchRealized`) and the scoring.
+
+## 14. Future Extensions
 
 The six primitives intentionally leave room for higher-level facilities without making the VM overly complicated.
 
@@ -368,7 +402,7 @@ Such extensions should preserve the central rule: **language-level networking re
 
 ---
 
-## 14. Implementation Map
+## 15. Implementation Map
 
 For maintainers, the principal source locations are:
 
@@ -389,7 +423,7 @@ The architecture intentionally requires no changes to `lexer.cpp`, `parser.cpp`,
 
 ---
 
-## 15. Status
+## 16. Status
 
 **Sleela 1.1 TCP Network Layer: implemented.**
 

@@ -356,10 +356,18 @@ Expected output (order of the concurrent phase aside):
     synchro (11):   synchroOpen synchroDispatch synchroReport synchroClose
                     synchroSent synchroReceived synchroMean synchroMin
                     synchroMax synchroP95 synchroLoss           (syntax 1.3+)
+    best-of (18):   bestOfNew bestOfWeight bestOfMinVersion bestOfCostBudget
+                    bestOfCandidate bestOfCandidateArch bestOfArchRealized
+                    bestOfRecord bestOfScore bestOfBest bestOfChoice bestOfReport
+                    bestOfClose bestOfMean bestOfLoss bestOfJitter bestOfCertainty
+                    bestOfArch bestOfArchParam bestOfArchState   (syntax 1.3+)
 
 Contextual built-ins are recognized in call position only (they are not reserved
 words). The Munction fluent chain is one sane reach sentence of 4..16 calls; see
-MUNCTION.md. The synchro* built-ins are honest measurement; see SYNCHRO.md.
+MUNCTION.md. The synchro* built-ins are honest measurement; see SYNCHRO.md. The
+best-of* built-ins select internet routes/settings/flags/architectures to tune
+Synchro/RMI accuracy across five axes (data, decisions, costs, versions,
+architecture — DiffServ/IntServ/MPLS); see TIMINGS.md and NETWORK.md §13.
 
 --------------------------------------------------------------------------------
 Sleela (syntax 1.2) — Java-like surface, addressing the full SHEET.sheet object space,
