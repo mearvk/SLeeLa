@@ -134,9 +134,10 @@
         <!-- The two emits MUST be congruent: same components, same events, same
              action names. Divergence is a BODI™ boundary stop (contain). -->
         <congruence verb="observe" rule="strict">
-            Component ids, event names, and action names are identical across
-            the Java and SLeeLa emits. A name present in one and absent in the
-            other is rejected at compile time (BODI™ `contain`), never bridged.
+            Component ids, event names, action names, and the document-change
+            listener option (including its 1..14 bound) are identical across the
+            Java and SLeeLa emits. A name present in one and absent in the other
+            is rejected at compile time (BODI™ `contain`), never bridged.
         </congruence>
     </compilation>
 
@@ -176,6 +177,11 @@
                     <operation name="onAction" verb="bind" returns="void">
                         <param name="action" type="Runnable" sl-type="action" />
                         <intent>Bind a callback to the window's primary action control.</intent>
+                    </operation>
+                    <operation name="refresh" verb="push" returns="void" default="true">
+                        <param name="documentId" type="String" sl-type="String" />
+                        <param name="revision"   type="String" sl-type="String" />
+                        <intent>Refresh the running GUI for a changed watched document; marshaled onto the toolkit thread by the backend.</intent>
                     </operation>
                     <operation name="close" verb="close" returns="void">
                         <intent>Dispose the window and release toolkit resources.</intent>
@@ -221,6 +227,20 @@
                         <javafx widget="javafx.scene.control.Button" region="VBox[1]"
                                 listener="setOnAction" />
                     </component>
+
+                    <!-- The watched-document surface. Not a widget: it is the set
+                         of 1..14 documents the listen option observes; a change
+                         drives the `refresh` operation on the live window. -->
+                    <component id="document" role="observed-source" verb="observe"
+                               min="1" max="14"
+                               model="com.mearvk.sleela.gui.SleelaDocument">
+                        <field name="id"       type="String" note="stable SLeeLa-facing name" />
+                        <field name="path"     type="java.nio.file.Path" note="resolved host path" />
+                        <field name="revision" type="String"
+                               note="OS-derived fingerprint: lastModifiedMillis:size ('absent' if gone)" />
+                        <bodi:witness system="sleela.gui" sequence="102"
+                                      starter="gui" man="operator" />
+                    </component>
                 </components>
 
                 <!-- ============================================================
@@ -238,6 +258,18 @@
                     <event id="window-closing" source="window" verb="close">
                         <swing origin="WindowEvent (DISPOSE_ON_CLOSE)" />
                         <javafx origin="Stage.close()" />
+                    </event>
+
+                    <!-- Document change: raised by the OS watch (or refreshNow),
+                         not by a toolkit control. It flows to SleelaGui.refresh()
+                         on the toolkit thread and updates the running window. -->
+                    <event id="document-changed" source="document" verb="observe">
+                        <origin os="linux"   facility="inotify" />
+                        <origin os="windows" facility="ReadDirectoryChangesW" />
+                        <origin os="macos"   facility="kqueue / FSEvents" />
+                        <dispatch>WatchService OS call → DocumentListener.Change → SleelaGui.refresh(id, revision)</dispatch>
+                        <bodi:witness system="sleela.gui" sequence="202"
+                                      starter="gui" man="operator" />
                     </event>
                 </events>
 
@@ -270,6 +302,77 @@
                              selector="javafx|fx" verb="activate" />
                 </backends>
 
+                <!-- ============================================================
+                     DOCUMENT-CHANGE LISTENER OPTION
+                     SLeeLa's option to listen to document changes over 1..14
+                     documents. When a watched document changes, the running GUI
+                     is updated; detection is driven by the OS (refresh on OS
+                     call), never by content polling. Both emitted forms speak
+                     the same option, so the SLeeLa Wrapper™ and the Java host
+                     enable it identically.
+                     ============================================================ -->
+                <document-listener class="com.mearvk.sleela.gui.DocumentListener"
+                                   verb="observe" default="off">
+
+                    <bodi:reference address="urn:sleela:bodi:1" system="sleela.gui.documents" />
+
+                    <!-- The hard 1..14 document-count contract. -->
+                    <bound min="1" max="14"
+                           enforced-at="construction and watch()"
+                           on-violation="IllegalArgumentException (BODI™ contain)" />
+
+                    <!-- Refresh on OS call(s): the watch blocks in an OS call and
+                         wakes only when the OS reports activity; each wake, plus
+                         any explicit refreshNow(), re-evaluates the documents. -->
+                    <os-refresh mechanism="java.nio.file.WatchService">
+                        <call os="linux"   facility="inotify"
+                              blocking-call="WatchService.poll" />
+                        <call os="windows" facility="ReadDirectoryChangesW"
+                              blocking-call="WatchService.poll" />
+                        <call os="macos"   facility="kqueue / FSEvents"
+                              blocking-call="WatchService.poll" />
+                        <coalesce note="OS events are a wake signal only; the real
+                                        change is confirmed by re-reading each
+                                        document's OS revision (lastModified:size)." />
+                        <explicit method="refreshNow"
+                                  note="A host may force a refresh from an explicit OS/lifecycle callback; returns the number of documents that changed." />
+                    </os-refresh>
+
+                    <!-- The listener's own operation surface. -->
+                    <operations>
+                        <operation name="watch" verb="start" returns="void">
+                            <intent>Register each document's parent dir with the OS WatchService and start the watch thread.</intent>
+                        </operation>
+                        <operation name="refreshNow" verb="observe" returns="int">
+                            <intent>Re-evaluate all watched documents now; emit a change per moved revision; return the count.</intent>
+                        </operation>
+                        <operation name="watchedIds" verb="observe" returns="List&lt;String&gt;">
+                            <intent>The watched document ids, in insertion order.</intent>
+                        </operation>
+                        <operation name="isRunning" verb="observe" returns="boolean" />
+                        <operation name="close" verb="stop" returns="void">
+                            <intent>Stop the watch thread and release the OS watch handle. Idempotent.</intent>
+                        </operation>
+                    </operations>
+
+                    <!-- The single change record delivered per detected change. -->
+                    <change model="com.mearvk.sleela.gui.DocumentListener.Change">
+                        <field name="previous" type="SleelaDocument" />
+                        <field name="current"  type="SleelaDocument" />
+                        <field name="id"       type="String" />
+                    </change>
+
+                    <!-- End to end: OS call → confirmed change → live GUI update. -->
+                    <flow>OS notification (WatchService.poll) → confirm revision → DocumentListener.Change → SleelaGui.refresh(id, revision) on the toolkit thread → running window updated</flow>
+
+                    <boundary verb="contain">
+                        Fewer than 1 or more than 14 documents is rejected. A
+                        watch event that does not move a document's OS revision is
+                        coalesced away (no GUI update). A faulty refresh callback
+                        never stops the listener; the document stays observable.
+                    </boundary>
+                </document-listener>
+
             </container>
 
         </guard>
@@ -294,6 +397,14 @@
                         <param name="actionOperation" type="String" />
                         <intent>Show a window and route its action to a SLeeLa operation.</intent>
                     </operation>
+                    <operation name="listen" verb="observe" returns="DocumentListener">
+                        <param name="idToPath"        type="Map&lt;String,Path&gt;" />
+                        <param name="changeOperation" type="String" />
+                        <intent>Listen to 1..14 documents; on each OS-detected change call the SLeeLa operation and refresh the running window with its result.</intent>
+                    </operation>
+                    <operation name="refreshNow" verb="observe" returns="int"
+                               intent="Force an explicit OS/lifecycle refresh of the watched documents." />
+                    <operation name="stopListening" verb="stop" returns="void" />
                     <operation name="close" verb="close" />
                 </adapter>
                 <adapter class="com.mearvk.sleela.gui.ProcessSleelaRuntime"
@@ -328,6 +439,14 @@
                         <param name="operation" type="Runnable" />
                         <intent>Register a named action; dispatch resolves by name (LinkedHashMap order).</intent>
                     </operation>
+                    <operation name="listen" verb="observe" returns="DocumentListener">
+                        <param name="idToPath" type="Map&lt;String,Path&gt;" />
+                        <intent>Listen to 1..14 documents; on each OS-detected change refresh the running window via SleelaGui.refresh(id, revision).</intent>
+                    </operation>
+                    <operation name="refreshNow" verb="observe" returns="int"
+                               intent="Force an explicit OS/lifecycle refresh; 0 when not listening." />
+                    <operation name="isListening" verb="observe" returns="boolean" />
+                    <operation name="stopListening" verb="stop" returns="void" />
                     <operation name="close" verb="close" />
                 </adapter>
                 <use>The Wrapper™ describes UI behavior; Java is a presentation substrate.</use>
@@ -337,7 +456,14 @@
                 <flow>SLeeLa → C/C++ runtime → slgui_bridge → JNI → Swing / JavaFX</flow>
                 <adapter native-header="gui/native/sleela_gui_bridge.h"
                          native-source="gui/native/sleela_gui_bridge.cpp"
-                         boundary="C-compatible callback" />
+                         boundary="C-compatible callback">
+                    <refresh-hook type="SLGuiRefreshFn"
+                                  install="slgui_bridge_on_document_change"
+                                  deliver="slgui_bridge_document_changed"
+                                  signature="void (*)(void *context, const char *document_id, const char *revision)"
+                                  bound-macros="SLGUI_MIN_DOCUMENTS=1 SLGUI_MAX_DOCUMENTS=14"
+                                  intent="Native counterpart of DocumentListener → SleelaGui.refresh(): the C/C++ side reports a watched-document change so the hosted GUI refreshes." />
+                </adapter>
                 <adapter class="com.mearvk.sleela.gui.JniSleelaRuntime"
                          role="Java facade for direct native/JNI binding" />
                 <use>Preferred when a direct VM connection / low overhead is required.</use>
@@ -446,13 +572,15 @@
          ==================================================================== -->
     <container mode="3" purpose="shutdown">
         <sequence>
-            <stop order="1" verb="close"     target="window"
+            <stop order="1" verb="stop"      target="document-listener"
+                  detail="DocumentListener.close(): stop the watch thread and release the OS watch handle (stopListening())." />
+            <stop order="2" verb="close"     target="window"
                   detail="SleelaGui.close() on the toolkit thread (dispose / Stage.close)." />
-            <stop order="2" verb="uninstall" target="java28-handles"
+            <stop order="3" verb="uninstall" target="java28-handles"
                   detail="`free` each live handle; `bye` closes the memory session." />
-            <stop order="3" verb="close"     target="runtime"
-                  detail="SleelaRuntime.close(); SleelaGuiHost.close() closes gui then runtime." />
-            <stop order="4" verb="commit"    target="bodi-witness"
+            <stop order="4" verb="close"     target="runtime"
+                  detail="SleelaRuntime.close(); SleelaGuiHost.close() stops the listener then closes gui + runtime." />
+            <stop order="5" verb="commit"    target="bodi-witness"
                   detail="Record the completed teardown on the mitigative circumference." />
         </sequence>
         <bodi:witness system="sleela.gui" sequence="901" starter="gui" man="operator" />

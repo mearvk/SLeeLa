@@ -10,6 +10,24 @@ public interface SleelaGui extends AutoCloseable {
 
     void onAction(Runnable action);
 
+    /**
+     * Refreshes the running GUI in response to a watched document change.
+     *
+     * <p>This is the sink the {@link DocumentListener} option drives when a
+     * document changes on an OS call. The default implementation publishes a
+     * short status line through {@link #setText(String)}; a backend or host may
+     * override it to re-render richer document state. Implementations must be
+     * safe to call from a non-toolkit thread — they are expected to marshal onto
+     * the toolkit thread themselves (the {@link SwingGui}/{@link FxGui} backends
+     * already do, and {@link SleelaGuiRuntime#listen} routes through this).
+     *
+     * @param documentId the id of the document that changed
+     * @param revision   the new OS-derived revision fingerprint
+     */
+    default void refresh(String documentId, String revision) {
+        setText("Document '" + documentId + "' changed (" + revision + ")");
+    }
+
     @Override
     void close();
 
