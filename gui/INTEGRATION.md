@@ -92,3 +92,40 @@ The production bridge should eventually define an explicit `SLValue` ↔ Java va
 ## JavaFX lifecycle
 
 `FxGui` currently assumes that the JavaFX toolkit has been initialized by its host. A production JavaFX launcher should extend `javafx.application.Application` (or otherwise initialize the toolkit) before constructing the GUI runtime. This keeps JavaFX lifecycle policy in the Java host rather than inside SLeeLa business logic.
+
+
+## Document-change listener (all three paths)
+
+Any of the three paths can enable the **document-change listener option**:
+SLeeLa listens to changes over **1–14 documents** and the running GUI is updated
+whenever any of them changes. Detection is driven by the operating system (a
+`java.nio.file.WatchService` over inotify / `ReadDirectoryChangesW` /
+`kqueue`/FSEvents), so the GUI **refreshes on OS call(s)** rather than by
+polling.
+
+```text
+Watched documents (1..14)
+        |
+        v
+OS notification (WatchService.poll  ← inotify / RDCW / kqueue)
+        |
+        v
+DocumentListener  --confirm revision-->  DocumentListener.Change
+        |
+        v
+SleelaGui.refresh(id, revision)   (marshaled onto the toolkit thread)
+        |
+        v
+Running window updated
+```
+
+- **Path 2** (`SleelaGuiRuntime.listen(idToPath)`) — SLeeLa intent owns the GUI;
+  a change refreshes the window directly.
+- **Path 1** (`SleelaGuiHost.listen(idToPath, changeOperation)`) — Java hosts;
+  each change invokes a SLeeLa operation and shows its result.
+- **Path 3** — the native bridge exposes `slgui_bridge_on_document_change` /
+  `slgui_bridge_document_changed` as the C-side refresh hook.
+
+The 1..14 bound is enforced (out-of-range is rejected), and an OS event that does
+not move a document's revision is coalesced away. See
+[`DOCUMENT_LISTENER.md`](DOCUMENT_LISTENER.md) for the full contract.

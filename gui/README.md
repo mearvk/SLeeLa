@@ -75,9 +75,12 @@ gui/
       SleelaGuiRuntime.java
       ProcessSleelaRuntime.java
       JniSleelaRuntime.java
+      SleelaDocument.java       # one watched document (id, path, OS revision)
+      DocumentListener.java     # the 1..14 document-change listener option
   native/
     sleela_gui_bridge.h
     sleela_gui_bridge.cpp
+  DOCUMENT_LISTENER.md          # the document-change listener option
 ```
 
 ## Runtime model
@@ -89,3 +92,44 @@ Swing remains available as the conservative desktop backend; JavaFX provides the
 ## JavaFX lifecycle
 
 `FxGui` expects the JavaFX toolkit to have been initialized by its Java host. A production launcher should initialize JavaFX before constructing `FxGui`; this keeps toolkit lifecycle concerns out of SLeeLa business logic.
+
+
+## Document-change listener option
+
+SLeeLa can **listen to document changes over 1–14 documents** and update the
+running GUI when any of them changes. Change detection is driven by the
+operating system (a `java.nio.file.WatchService` backed by inotify on Linux,
+`ReadDirectoryChangesW` on Windows, and `kqueue`/FSEvents on macOS), so the GUI
+**refreshes on OS call(s)** rather than by polling file contents.
+
+- `SleelaDocument` — an immutable snapshot of one watched document: its stable
+  `id`, resolved `path`, and an OS-derived `revision` fingerprint
+  (`lastModified:size`).
+- `DocumentListener` — watches **1..14** documents (the bound is enforced;
+  fewer than 1 or more than 14 is rejected). A watch thread blocks in an OS call
+  and wakes only on OS activity; each wake re-reads the affected documents and
+  emits a coalesced change. `refreshNow()` forces an explicit refresh from an
+  OS/lifecycle callback.
+- The change flows to `SleelaGui.refresh(id, revision)`, which the Swing/JavaFX
+  backends marshal onto their toolkit thread so the live window updates safely.
+
+Enable it through either integration path:
+
+```java
+// Path 2 — SLeeLa intent owns the GUI; Java presents it.
+SleelaGuiRuntime rt = new SleelaGuiRuntime(SleelaGui.create("swing"));
+rt.window("SLeeLa", 640, 400);
+rt.listen(DocumentListener.documents(
+    List.of("ledger", "config"),
+    List.of(Path.of("ledger.sst"), Path.of("config.sleela"))));   // 1..14 docs
+
+// Path 1 — Java hosts; a SLeeLa operation decides what a change means.
+SleelaGuiHost host = new SleelaGuiHost(gui, runtime);
+host.show("SLeeLa", 640, 400, "onOpen");
+host.listen(idToPath, "onDocumentChanged");   // calls SLeeLa on each change
+```
+
+See [`DOCUMENT_LISTENER.md`](DOCUMENT_LISTENER.md) for the full contract, and the
+`document-listener` block in
+[`../systems/xml/sleela-gui.system.xml`](../systems/xml/sleela-gui.system.xml)
+for the BODI™ system definition both emitted forms share.
