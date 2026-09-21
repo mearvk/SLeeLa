@@ -1,0 +1,24 @@
+Munction™ example programs — reference output.
+
+reach_xyx.sleela
+----------------
+reach xyx closed with receipt
+
+reach_all_methods.sleela
+------------------------
+all reaches closed with receipts
+
+Java reference surface (MunctionDemo) — receipts printed for the same sentences.
+Exact digests, addresses, and timestamps vary per run; the shape is:
+
+MunctionReceipt{name=audit,  scheme=file,   ..., outcome=REACHED,    sent=1, received=0, ...}
+MunctionReceipt{name=xyx,    scheme=sdps,   ..., outcome=REACHED,    sent=1, received=2, interims=[frame, checksum], latched=true, ...}
+MunctionReceipt{name=sealed, scheme=crypto, ..., outcome=REACHED,    sent=1, received=1, latched=true, ...}
+
+Notes:
+- Every reach closes with a receipt (receivability).
+- A file reach with no consume shows received=0; a receipt is still produced.
+- The sdps reach's second consume is truthfully absent (end of reach), so the
+  reception list records one present and one absent unit — never a fabricated one.
+- A reach whose call count falls outside 4..16 closes CONTAINED with a bump
+  recorded in the receipt rather than being silently truncated or extended.

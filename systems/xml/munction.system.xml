@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!--
+  ============================================================================
+  munction.system.xml — Munction™ Reach-Composition System (BODI™-witnessed)
+  ============================================================================
+
+  BODI™ DOCUMENT COMMENT
+  ======================
+  This document is a BODI™ (Bloq Object Directory Interface) system definition
+  for Munction™, SLeeLa's reach-composition fluent form. It is a source
+  artifact: the SLeeLa toolchain lowers it into two congruent forms — a Java
+  reference surface (com.mearvk.sleela.munction) and a SLeeLa Wrapper™ surface
+  (the Munction contextual built-in, syntax 1.3). The document does not execute;
+  it declares the addressable Munction™ system — its verb ladder, its
+  system-method channels, and its receivability/coherence/receipt contract — so
+  both emitted forms remain answerable to one witnessed definition.
+
+  A Munction™ is one sane sentence of reach. Every sentence sits inside the
+  BODI™ mitigative circumference: it carries system → reference → change →
+  method → sequence → starter → man, and every verb is drawn from the closed
+  BODI™ middle-verb ladder (register/bind → connect → open → enable → push →
+  attach → pull → observe → propagate → commit → contain → close/unregister).
+
+  BODI™ AUTHORS
+  =============
+  Author        : Max Rupplin — MEARVK LLC — 2026
+  Full name     : Maximilian Eric Alexander Rupplin von Keffikon
+  Witness (man) : operator
+  Starter       : munction
+  Trademarks    : Munction™ (reach-composition form); BODI™; Wrapper™ (.sleela).
+  Governance    : MUNCTION.md; BODI.md; NETWORK.md; CONNECTOR.md;
+                  SLEELA.syntax (§8 Constitution); munction/COMPILER_NOTE.md.
+
+  BODI™ SYSTEM PREFACE
+  ====================
+  The structure of Reach is what we protect here. A Munction™ may traverse
+  supposed network hatches or bumps and still continue to reach; what it must
+  never do is lose the shape of the reach or the truth of the receipt.
+
+  This preface fixes the reading order for everything below:
+
+    1. A Munction™ is an ADDRESSED reach. Its BODI™ address is
+       Bodi.system("munction"); the registry reference is urn:sleela:bodi:1.
+    2. One SENTENCE, one grammar, every system method. connect() resolves a
+       channel from the URI scheme (pipe, file, tcp/http, sdps, crypto); only
+       the scheme changes, never the sentence.
+    3. RECEIVABLE by construction. Every reach yields a receipt; no consume
+       fabricates a reception; no channel that cannot receipt is admitted.
+    4. COHERENT send by construction. Every send accounts offered vs.
+       acknowledged bytes; a bump that drops bytes is visible, never silent.
+    5. SANE and BOUNDED. Between 4 and 16 calls inclusive, a legal verb ladder,
+       one opener, one closer. Longer intent is two Munctions joined by a latch
+       and a receipt.
+    6. WITNESSED. A shape violation is a BODI™ boundary stop recorded in the
+       receipt, not meaning invented past the boundary.
+
+  The body is three BODI™ lifecycle containers keyed by mode:
+    mode="1" purpose="startup"   — declare + emit the Munction™ system
+    mode="2" purpose="runtime"   — the live reach circumference (a sentence)
+    mode="3" purpose="shutdown"  — orderly teardown and the receipt
+  ============================================================================
+-->
+
+<document
+    xmlns:bodi="urn:sleela:bodi:1"
+    system="munction"
+    version="1.0"
+    sleela-syntax="1.3"
+    conduct-frame="US">
+
+    <preface title="Munction™ Reach-Composition System — BODI™ System Preface">
+        <trademark>Munction™ — the reach-composition fluent form</trademark>
+        <trademark>BODI™ — Bloq Object Directory Interface</trademark>
+        <trademark>Wrapper™ — the .sleela source filetype</trademark>
+        <author role="attention">Max Rupplin — MEARVK LLC — 2026</author>
+        <author role="full-name">Maximilian Eric Alexander Rupplin von Keffikon</author>
+        <bodi:witness
+            system="munction"
+            reference="urn:sleela:bodi:1"
+            sequence="001"
+            starter="munction"
+            man="operator" />
+        <statement>
+            A Munction™ is one sane sentence of reach (4..16 calls) over any
+            system method. It protects the structure of Reach, is receivable by
+            construction, sends coherently, and always closes with a receipt.
+        </statement>
+    </preface>
+
+    <!-- ====================================================================
+         COMPILATION CONTRACT — how this XML becomes Java + SLeeLa.
+         Each <emit> is a witnessed BODI™ operation.
+         ==================================================================== -->
+    <compilation model="1" purpose="xml-to-java-and-sleela">
+
+        <emit target="sleela" verb="install" artifact="Munction (contextual built-in)">
+            <bodi:change system="munction" method="install" sequence="010"
+                         starter="compiler" man="operator" />
+            <pragma>#sleela 1.3</pragma>
+            <role>
+                A syntax-1.3 contextual built-in. Munction.start(...) is an
+                ordinary qualified call and the chain is ordinary fluent
+                member-call syntax; no new lexer/parser tokens. Recognized and
+                bound at the compiler built-in dispatch point (tryEmitBuiltin),
+                and version-gated like the network built-ins (NETWORK.md §10).
+            </role>
+            <maps-to kind="sleela-builtin">Munction</maps-to>
+        </emit>
+
+        <emit target="java" verb="bind" artifact="com.mearvk.sleela.munction">
+            <bodi:change system="munction" method="bind" sequence="011"
+                         starter="compiler" man="operator" />
+            <language-level>Java 25+ (reference surface; forward-compatible)</language-level>
+            <role>
+                The fluent Munction engine, the MunctionChannel receivability +
+                coherent-send contract, the scheme→channel registry, the
+                channel implementations, and the witnessed MunctionReceipt.
+            </role>
+            <maps-to kind="java-package">com.mearvk.sleela.munction</maps-to>
+        </emit>
+
+        <congruence verb="observe" rule="strict">
+            Verb names, the 4..16 call bound, the legal sequence, the channel
+            schemes, and the receipt shape are identical across the Java and
+            SLeeLa emits. A verb or scheme present in one and absent in the other
+            is rejected at compile time (BODI™ contain), never bridged.
+        </congruence>
+    </compilation>
+
+    <!-- ====================================================================
+         MODE 1 — STARTUP: declare the Munction™ system, its verb ladder,
+         its channels, and its receivability/coherence/receipt contract.
+         ==================================================================== -->
+    <container mode="1" purpose="startup">
+
+        <guard>
+
+            <container
+                class="com.mearvk.sleela.munction.Munction"
+                wrapper="Munction"
+                interface="fluent reach sentence">
+
+                <bodi:reference address="urn:sleela:bodi:1" system="munction" />
+
+                <!-- The sanity bound: a sane sentence is 4..16 calls. -->
+                <bound min="4" max="16"
+                       counts="opener + middles + closer"
+                       enforced-at="builder compose-time and compiler gate"
+                       on-violation="boundary stop; receipt CONTAINED with a bump" />
+
+                <!-- ============================================================
+                     THE VERB LADDER (mapped to BODI™). Positive verbs advance
+                     the reach; negative verbs retire it. (MUNCTION.md §3)
+                     ============================================================ -->
+                <verbs>
+                    <verb name="start"            bodi="register+bind" arity="1" role="opener"  once="true" first="true">
+                        <intent>Name and open an addressed reach.</intent>
+                    </verb>
+                    <verb name="connect"          bodi="connect"       arity="1" role="middle">
+                        <intent>Bind the reach to a channel resolved from the URI scheme.</intent>
+                    </verb>
+                    <verb name="open"             bodi="open"          arity="0" role="middle" optional="true">
+                        <intent>Explicitly open the resource (implied by connect).</intent>
+                    </verb>
+                    <verb name="enable"           bodi="enable"        arity="1" role="middle" repeatable="true">
+                        <intent>Permit an optional capability (retry, crypto:&lt;keyref&gt;, compress).</intent>
+                    </verb>
+                    <verb name="send"             bodi="push"          arity="1" role="middle" coherent="true">
+                        <intent>Coherently push a datum onto the channel.</intent>
+                    </verb>
+                    <verb name="thatch"           bodi="attach"        arity="1" role="middle">
+                        <intent>Weave interim stages over the covered path (before the consumes it covers).</intent>
+                    </verb>
+                    <verb name="consume"          bodi="pull"          arity="0" role="middle" repeatable="true">
+                        <intent>Pull one available unit of what the channel returns.</intent>
+                    </verb>
+                    <verb name="observe"          bodi="observe"       arity="0" role="middle">
+                        <intent>Record channel state into the witness without consuming.</intent>
+                    </verb>
+                    <verb name="propagate"        bodi="propagate"     arity="1" role="middle" bounded="degree&lt;=4, depth&lt;=3024">
+                        <intent>Carry the reach onward to a further endpoint (federated).</intent>
+                    </verb>
+                    <verb name="latch"            bodi="commit"        arity="0" role="middle" once="true">
+                        <intent>Hold/commit the reached state so it survives the close.</intent>
+                    </verb>
+                    <verb name="contain"          bodi="contain"       arity="0" role="middle">
+                        <intent>Stop propagation at the boundary (safe partial close).</intent>
+                    </verb>
+                    <verb name="closeWithReceipt" bodi="close+commit"  arity="0" role="closer" preferred="true" last="true">
+                        <intent>Orderly teardown that returns the witnessed receipt.</intent>
+                    </verb>
+                    <verb name="close"            bodi="close"         arity="0" role="closer" last="true">
+                        <intent>Plain closer; orderly teardown.</intent>
+                    </verb>
+                    <verb name="abort"            bodi="contain+rollback" arity="0" role="closer" last="true" negative="true">
+                        <intent>Negative closer: retire early; the receipt records the residual.</intent>
+                    </verb>
+                </verbs>
+
+                <!-- The legal sequence the builder and the compiler enforce. -->
+                <sequence-rule>
+                    start ( connect ( open? enable* ) )
+                    ( send | thatch | consume | observe | propagate | latch )+
+                    ( closeWithReceipt | close | abort )
+                </sequence-rule>
+
+                <!-- ============================================================
+                     SYSTEM-METHOD CHANNELS — one grammar reaches all of them.
+                     connect(uri) resolves the channel by scheme. (MUNCTION.md §4)
+                     ============================================================ -->
+                <channels registry="com.mearvk.sleela.munction.MunctionChannels" verb="connect">
+                    <channel scheme="pipe" class="com.mearvk.sleela.munction.channels.PipeChannel"
+                             method="OS pipe / FIFO / stdio" framing="block frames" />
+                    <channel scheme="file" class="com.mearvk.sleela.munction.channels.FileChannel"
+                             method="file I/O" note="send appends; consume reads back" />
+                    <channel scheme="tcp|net" class="com.mearvk.sleela.munction.channels.NetChannel"
+                             method="internet (TCP)" note="NETWORK.md six-primitive TCP layer; bounded read" />
+                    <channel scheme="http|https" class="com.mearvk.sleela.munction.channels.HttpChannel"
+                             method="internet (HTTP)" note="JDK HttpClient; connector HTTP path" />
+                    <channel scheme="sdps" class="com.mearvk.sleela.munction.channels.PacketChannel"
+                             method="private packets (Secure Datum Packet Stream)"
+                             framing="magic 'SDPS' + uint32 length + opaque datum + 32-byte MAC" />
+                    <channel scheme="crypto" class="com.mearvk.sleela.munction.channels.CryptoChannel"
+                             method="crypto envelope" note="wraps an inner channel; seals on send, opens on consume; keyref via enable('crypto:&lt;keyref&gt;'), never in the URI" />
+                    <extensible>A new system method is a channel registration (scheme → channel), not a grammar change.</extensible>
+                </channels>
+
+                <!-- ============================================================
+                     THE CHANNEL CONTRACT — receivability + coherent send.
+                     (MUNCTION.md §5) Every channel implements exactly this.
+                     ============================================================ -->
+                <channel-contract interface="com.mearvk.sleela.munction.MunctionChannel">
+                    <op name="scheme"  returns="String" />
+                    <op name="open"    returns="void"><param name="address" type="String" /></op>
+                    <op name="send"    returns="SendCoherence" coherent="true"><param name="datum" type="byte[]" /></op>
+                    <op name="thatch"  returns="void"><param name="interims" type="Interims" /></op>
+                    <op name="consume" returns="Reception" receivable="true" />
+                    <op name="observe" returns="String" />
+                    <op name="latch"   returns="void" />
+                    <op name="close"   returns="ChannelReceipt" />
+                </channel-contract>
+
+            </container>
+
+        </guard>
+
+    </container>
+
+    <!-- ====================================================================
+         MODE 2 — RUNTIME: the live reach circumference (one sentence). Reach
+         is protected across network hatches and bumps; sends are coherent,
+         receptions are truthful, and the receipt accumulates as the reach runs.
+         ==================================================================== -->
+    <container mode="2" purpose="runtime">
+
+        <reach system="munction" verb="observe">
+            <bodi:reference address="urn:sleela:bodi:1" system="munction.reach" />
+
+            <!-- Reach is the live, shaped path from opener to current verb. -->
+            <protected-structure>
+                Reach carries: address(name), bound channel, sequence position,
+                datum in flight, accumulated interims, and witness. Hatches (NAT,
+                proxies, gateways) and bumps (drops, retries, partial reads) may
+                perturb transport; the Reach structure is preserved or the chain
+                contains at its boundary and records the residual fact.
+            </protected-structure>
+
+            <!-- Receivability: every reach can answer "what was received?" and
+                 yields a receipt at the close. -->
+            <receivability verb="observe">
+                <reception model="com.mearvk.sleela.munction.Reception">
+                    <field name="present"  type="boolean" note="false at end-of-reach; never fabricated" />
+                    <field name="datum"    type="byte[]" />
+                    <field name="digest"   type="String" />
+                    <field name="sequence" type="long" />
+                </reception>
+            </receivability>
+
+            <!-- Coherent send: offered vs. acknowledged bytes are accounted. -->
+            <coherent-send verb="push">
+                <coherence model="com.mearvk.sleela.munction.SendCoherence">
+                    <field name="datumDigest"  type="String" />
+                    <field name="offered"      type="long" />
+                    <field name="acknowledged" type="long" />
+                    <field name="coherent"     type="boolean" note="offered == acknowledged, or framing proves full acceptance" />
+                </coherence>
+            </coherent-send>
+
+            <!-- The receipt accumulates verb by verb; it is the durable proof. -->
+            <receipt model="com.mearvk.sleela.munction.MunctionReceipt">
+                <field name="name" />       <field name="scheme" />   <field name="address" note="no secrets" />
+                <field name="sent" type="List&lt;SendCoherence&gt;" />
+                <field name="received" type="List&lt;Reception&gt;" />
+                <field name="interims" />   <field name="latched" type="boolean" />
+                <field name="outcome" type="REACHED|CONTAINED|ABORTED" />
+                <field name="bumps" note="residual facts: retries, partial reads, verify failures" />
+                <field name="witness" note="BODI™: system, sequence, verb, datum, boundary, man" />
+                <field name="startedAt" /> <field name="closedAt" />
+            </receipt>
+
+            <boundary verb="contain">
+                A transport success never implies business success; the reply
+                status is authoritative. A send that is not acknowledged is not
+                claimed; a reception that did not arrive is not fabricated. A
+                bump is recorded, and propagation stops at the boundary rather
+                than inventing meaning (BODI.md §5).
+            </boundary>
+        </reach>
+
+    </container>
+
+    <!-- ====================================================================
+         MODE 3 — SHUTDOWN: orderly teardown producing the receipt.
+         ==================================================================== -->
+    <container mode="3" purpose="shutdown">
+        <sequence>
+            <stop order="1" verb="contain" target="propagation"
+                  detail="Stop any onward propagation at the boundary (safe partial close)." />
+            <stop order="2" verb="commit"  target="latch"
+                  detail="If latched, the reached state is held so it survives the close." />
+            <stop order="3" verb="close"   target="channel"
+                  detail="MunctionChannel.close() releases the OS resource and yields a ChannelReceipt." />
+            <stop order="4" verb="commit"  target="receipt"
+                  detail="closeWithReceipt() folds channel receipt + sends + receptions + bumps into the witnessed MunctionReceipt (REACHED | CONTAINED | ABORTED)." />
+        </sequence>
+        <bodi:witness system="munction" sequence="901" starter="munction" man="operator" />
+    </container>
+
+    <!--
+      BODI™ CLOSING NOTE
+      ==================
+      Every verb, channel, send, and reception above declares its address, verb,
+      sequence, witness, and boundary. The structure of Reach is protected; the
+      receipt is the truth of what was reached. Anything not declared here is
+      contained, not invented. — Max Rupplin — MEARVK LLC — 2026. Munction™,
+      BODI™, Wrapper™.
+    -->
+
+</document>

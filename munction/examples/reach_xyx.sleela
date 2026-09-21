@@ -1,0 +1,27 @@
+#sleela 1.3
+// reach_xyx.sleela — the canonical Munction™ sentence (MUNCTION.md §8).
+//
+// One sane reach (8 calls, within the 4..16 bound): start a named reach,
+// connect over the private-packet channel (sdps://), coherently send the datum,
+// thatch the interim stages over the covered path, consume twice, latch the
+// reached state, and close with a receipt. Munction™ is a contextual built-in
+// (syntax 1.3): "Munction.start(...)" is an ordinary qualified call and the
+// rest is ordinary fluent member-call syntax — no new grammar tokens.
+class ReachXyx {
+
+    void main() {
+        String data = "payload";
+        String interims = "frame,checksum";
+
+        Munction.start("xyx")
+                .connect("sdps://tmcf:19866")
+                .send(data)
+                .thatch(interims)
+                .consume()
+                .consume()
+                .latch()
+                .closeWithReceipt();
+
+        print("reach xyx closed with receipt");
+    }
+}
