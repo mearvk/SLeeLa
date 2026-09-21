@@ -1,0 +1,51 @@
+#sleela 1.3
+// bestof_route.sleela -- the best-of method, first-class in Sleela source
+// (syntax 1.3). It configures data/decisions/costs/versions weights, registers
+// candidate internet routes (each with settings, flags, a version and a cost),
+// folds honest Synchro measurements into each, then picks the best-of route and
+// reports which parts of the internet were chosen to adjust packet accuracy.
+class BestOfRoute {
+
+    // Candidate flag bits (mirror SL_BESTOF_FLAG_*): crypto=1 retry=2 pacing=4
+    // dscp=8 replay=16. Combine by addition.
+    void main() {
+        int b = bestOfNew();
+
+        // Configuration: weight the four axes (0..100 each).
+        bestOfWeight(b, 0, 60);   // data      (measured latency/loss/jitter)
+        bestOfWeight(b, 1, 25);   // decisions (advisory QoS certainty)
+        bestOfWeight(b, 2, 10);   // costs
+        bestOfWeight(b, 3, 5);    // versions
+        bestOfMinVersion(b, 1);   // reject packet/protocol versions below 1
+        bestOfCostBudget(b, 50);  // reject candidates over this cost
+
+        // Candidate routes: (b, name, route, timeoutMs, payloadLen, gapMs,
+        //                    flags, version, cost, replays)
+        int edge  = bestOfCandidate(b, "edge",  "sdps://edge:19866",   200, 64,  5, 5, 2, 10, 3); // crypto+pacing
+        int relay = bestOfCandidate(b, "relay", "tcp://relay:8080",    2000, 512, 0, 2, 1, 30, 1); // retry
+        int spare = bestOfCandidate(b, "spare", "tcp://spare:9090",    1000, 128, 0, 0, 2,  5, 1);
+
+        // Probe each route with Synchro and fold the honest measurements in.
+        // (Loopback discard is used here so the demo is deterministic; a real
+        //  deployment would probe the actual route host.)
+        int p = synchroOpen("127.0.0.1", 9);
+        if (p >= 0) {
+            int i = 0;
+            while (i < 4) {
+                bestOfRecord(b, edge,  synchroDispatch(p, 64, 30));
+                bestOfRecord(b, relay, synchroDispatch(p, 512, 30));
+                bestOfRecord(b, spare, synchroDispatch(p, 128, 30));
+                i = i + 1;
+            }
+            synchroClose(p);
+        }
+
+        // Decide and report which parts of the internet to use.
+        int winner = bestOfBest(b);
+        print("best-of winner index: " + winner);
+        print("chosen: " + bestOfChoice(b));
+        print(bestOfReport(b));
+
+        bestOfClose(b);
+    }
+}

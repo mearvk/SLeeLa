@@ -271,6 +271,32 @@ private:
             for(const auto& st:synStats){ if(n==st.name){ if(c.args.size()!=1)throw std::runtime_error("Semantic error: "+n+"(handle) takes one argument");emitExpr(c.args[0].get());emit(OP_SYN_STAT,st.sel);return true; } }
         }
 
+        // ---- Best-of (syntax 1.3): configurable route/accuracy selection ----
+        if(n=="bestOfNew"||n=="bestOfWeight"||n=="bestOfMinVersion"||n=="bestOfCostBudget"||
+           n=="bestOfCandidate"||n=="bestOfRecord"||n=="bestOfScore"||n=="bestOfBest"||
+           n=="bestOfChoice"||n=="bestOfReport"||n=="bestOfClose"||
+           n=="bestOfMean"||n=="bestOfLoss"||n=="bestOfJitter"||n=="bestOfCertainty"){
+            if(syntax_<SyntaxVersion{1,3})throw std::runtime_error("Semantic error: best-of built-ins require #sleela 1.3");
+        }
+        auto emitArgs=[&](const Call& call){ for(const auto& a:call.args) emitExpr(a.get()); };
+        if(n=="bestOfNew"){if(!c.args.empty())throw std::runtime_error("Semantic error: bestOfNew() takes no arguments");emit(OP_BEST_NEW);return true;}
+        if(n=="bestOfWeight"){if(c.args.size()!=3)throw std::runtime_error("Semantic error: bestOfWeight(handle, axis, weight) takes three arguments");emitArgs(c);emit(OP_BEST_WEIGHT);return true;}
+        if(n=="bestOfMinVersion"){if(c.args.size()!=2)throw std::runtime_error("Semantic error: bestOfMinVersion(handle, minVersion) takes two arguments");emitArgs(c);emit(OP_BEST_MINVER);return true;}
+        if(n=="bestOfCostBudget"){if(c.args.size()!=2)throw std::runtime_error("Semantic error: bestOfCostBudget(handle, budget) takes two arguments");emitArgs(c);emit(OP_BEST_BUDGET);return true;}
+        if(n=="bestOfCandidate"){if(c.args.size()!=10)throw std::runtime_error("Semantic error: bestOfCandidate(handle, name, route, timeoutMs, payloadLen, gapMs, flags, version, cost, replays) takes ten arguments");emitArgs(c);emit(OP_BEST_CAND);return true;}
+        if(n=="bestOfRecord"){if(c.args.size()!=3)throw std::runtime_error("Semantic error: bestOfRecord(handle, idx, rttUs) takes three arguments");emitArgs(c);emit(OP_BEST_RECORD);return true;}
+        if(n=="bestOfScore"){if(c.args.size()!=2)throw std::runtime_error("Semantic error: bestOfScore(handle, idx) takes two arguments");emitArgs(c);emit(OP_BEST_SCORE);return true;}
+        if(n=="bestOfBest"){if(c.args.size()!=1)throw std::runtime_error("Semantic error: bestOfBest(handle) takes one argument");emitArgs(c);emit(OP_BEST_BEST);return true;}
+        if(n=="bestOfChoice"){if(c.args.size()!=1)throw std::runtime_error("Semantic error: bestOfChoice(handle) takes one argument");emitArgs(c);emit(OP_BEST_CHOICE);return true;}
+        if(n=="bestOfReport"){if(c.args.size()!=1)throw std::runtime_error("Semantic error: bestOfReport(handle) takes one argument");emitArgs(c);emit(OP_BEST_REPORT);return true;}
+        if(n=="bestOfClose"){if(c.args.size()!=1)throw std::runtime_error("Semantic error: bestOfClose(handle) takes one argument");emitArgs(c);emit(OP_BEST_CLOSE);return true;}
+        {
+            struct { const char* name; int sel; } bestStats[] = {
+                {"bestOfMean",0},{"bestOfLoss",1},{"bestOfJitter",2},{"bestOfCertainty",3}
+            };
+            for(const auto& st:bestStats){ if(n==st.name){ if(c.args.size()!=2)throw std::runtime_error("Semantic error: "+n+"(handle, idx) takes two arguments");emitArgs(c);emit(OP_BEST_STAT,st.sel);return true; } }
+        }
+
         auto litStr=[&](const Expr*e,const char*what)->std::string{auto sl=dynamic_cast<const StrLit*>(e);if(!sl)throw std::runtime_error("Semantic error: "+std::string(what)+" must be a string literal (an object name)");return sl->value;};
         auto emitStr=[&](const std::string&s){emit(OP_CONST,slvm_add_const_str(vm_,s.c_str()));};
         auto emitBool=[&](bool b){emit(OP_CONST,slvm_add_const_bool(vm_,b?1:0));};

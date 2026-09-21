@@ -59,11 +59,11 @@
     },
     {
       "path": "impl/core/sleela_core.c",
-      "sha256": "3b875b7f37399688f946c1792759694be0a8998e1e053e11d45f9efc35a79dcb"
+      "sha256": "85c28563736cab363283234641996afe4cf74c5510c2541aa81730893cc2b07a"
     },
     {
       "path": "impl/core/sleela_core.h",
-      "sha256": "ccebf2e9335a5698b13de110d2ab7f4ea664cfa107aff10cb25db6881ae66ed3"
+      "sha256": "3414f665ed38cd9c3a0c68dfe9a31fb8c303e126f1fcaddf6f837de1e7d9237e"
     },
     {
       "path": "impl/core/sleela_events.c",
@@ -179,7 +179,7 @@
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "d76f30666d91cff50929c05be5bf70b56efebd0e76631fef8afdbf925e8f5cb3"
+      "sha256": "3cc0746905b797583d9d1d9fc3ae2c429f3105fac87efabad4b0f05f7c474b16"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -191,7 +191,7 @@
     },
     {
       "path": "impl/frontend/lexer.cpp",
-      "sha256": "dde093167de75b3c0bd3c185226b5f837498b3854927d9c50c9049b7718f5edc"
+      "sha256": "350e0d23b19db48e7883775c582d9a978f006c6227d1131edc5f910033c4b7f4"
     },
     {
       "path": "impl/frontend/lexer.h",
@@ -460,6 +460,50 @@
     {
       "path": "VERSION.md",
       "sha256": "09791fe7a0206ca85a78c49091c9b30e3040a2ea840da0b4a73b6a532bcc9987"
+    },
+    {
+      "path": "impl/core/sleela_bestof.h",
+      "sha256": "cb5ebe3ee9a0217effd1cf5d14609fedbaa9197c4f9ca7233b3796db1565b38c"
+    },
+    {
+      "path": "impl/core/sleela_bestof.c",
+      "sha256": "c10e2a68307e873d3a0ab88c3bacc2bc00b7ab464cd3ac11fc7cd3ec25c86b2a"
+    },
+    {
+      "path": "impl/core/bestof_smoke.c",
+      "sha256": "e210109a244d75e918a225037d981c495a5b4c59f7cd198f2aac7f624afadf1c"
+    },
+    {
+      "path": "impl/examples/bestof_route.sleela",
+      "sha256": "e4288b0cd856d8e1b177cc8b7479cc912c9d9f4adc4f207a5de0957c366853a6"
+    },
+    {
+      "path": "TIMINGS.md",
+      "sha256": "b40cbc16d6f3dc7c41e08aef2abf770c60deec30f249767e1aec18d6b3f477a5"
+    },
+    {
+      "path": "SERVER.EDITION.md",
+      "sha256": "8228cd6146d49a95afea1dca5d34ac26494fe2792f4235d850cd27ed7bd28339"
+    },
+    {
+      "path": "server-edition/serverd",
+      "sha256": "d0b8367fdb44ee1be3f64ac0ad8f79b9bc6c2456a190505ec2d54bbed2c3871a"
+    },
+    {
+      "path": "server-edition/src/Server.sleela",
+      "sha256": "1badfe6d39542e8f85e47422e9b11d2775d98d374aea30b10f571476f44ac936"
+    },
+    {
+      "path": "server-edition/.gitignore",
+      "sha256": "a09aa93beb895da36e99486c112e2fbea12b748b696949c84055ee591d090fe7"
+    },
+    {
+      "path": "server-edition/inbox/.keep",
+      "sha256": "7d2df709b816164e2cfc4b165396ce45f8bb3b7ad1f1a65feae5c9eca643752f"
+    },
+    {
+      "path": "server-edition/state/.keep",
+      "sha256": "44c446cddd5dfdf608931fca1f30dd5ec107509fb08afbf47409fba69b8ae5ec"
     }
   ]
 }

@@ -17,6 +17,7 @@
 #include "sleela_time.h"
 #include "sleela_synchro.h"
 #include "sleela_munction.h"
+#include "sleela_bestof.h"
 
 #include <math.h>
 #include <stdio.h>
@@ -113,6 +114,8 @@ struct SLVM {
     SLSynchro* synchro[SL_SYNCHRO_MAX];
     pthread_mutex_t munction_mtx;
     SLMunction* munction[SL_MUNCTION_MAX];
+    pthread_mutex_t bestof_mtx;
+    SLBestOf* bestof[SL_BESTOF_MAX];
     SLStructType struct_types[SL_MAX_STRUCT_TYPES];
     int nstruct_types;
     SLStructInstance* structs;   /* SL_MAX_STRUCTS instances, lazily allocated */
@@ -251,6 +254,7 @@ SLVM* slvm_new(void) {
     pthread_mutex_init(&vm->thr_mtx, NULL);
     pthread_mutex_init(&vm->synchro_mtx, NULL);
     pthread_mutex_init(&vm->munction_mtx, NULL);
+    pthread_mutex_init(&vm->bestof_mtx, NULL);
     for (int i = 0; i < SL_MAX_SOCKETS; i++) {
         pthread_mutex_init(&vm->sockets[i].mtx, NULL);
         vm->sockets[i].active = 0; vm->sockets[i].handle = SL_NET_INVALID;
@@ -303,6 +307,10 @@ void slvm_free(SLVM* vm) {
         if (vm->munction[i]) { char sink[8]; slmunction_close(vm->munction[i], sink, sizeof(sink)); vm->munction[i] = NULL; }
     }
     pthread_mutex_destroy(&vm->munction_mtx);
+    for (int i = 0; i < SL_BESTOF_MAX; i++) {
+        if (vm->bestof[i]) { slbestof_close(vm->bestof[i]); vm->bestof[i] = NULL; }
+    }
+    pthread_mutex_destroy(&vm->bestof_mtx);
     for (int i = 0; i < vm->nstruct_types; i++) {
         free(vm->struct_types[i].name);
         for (int j = 0; j < vm->struct_types[i].nfields; j++) free(vm->struct_types[i].fields[j]);
@@ -386,6 +394,24 @@ static SLMunction* munction_get(SLVM* vm, int h) {
 static void munction_clear_slot(SLVM* vm, int h) {
     if (h < 0 || h >= SL_MUNCTION_MAX) return;
     pthread_mutex_lock(&vm->munction_mtx); vm->munction[h] = NULL; pthread_mutex_unlock(&vm->munction_mtx);
+}
+
+/* ---- Best-of selector table (VM-owned, bounded) -------------------------- */
+static int bestof_alloc(SLVM* vm, SLBestOf* b) {
+    pthread_mutex_lock(&vm->bestof_mtx);
+    for (int i = 0; i < SL_BESTOF_MAX; i++) if (!vm->bestof[i]) {
+        vm->bestof[i] = b; pthread_mutex_unlock(&vm->bestof_mtx); return i;
+    }
+    pthread_mutex_unlock(&vm->bestof_mtx); return -1;
+}
+static SLBestOf* bestof_get(SLVM* vm, int h) {
+    if (h < 0 || h >= SL_BESTOF_MAX) return NULL;
+    pthread_mutex_lock(&vm->bestof_mtx); SLBestOf* b = vm->bestof[h]; pthread_mutex_unlock(&vm->bestof_mtx); return b;
+}
+static void bestof_release(SLVM* vm, int h) {
+    if (h < 0 || h >= SL_BESTOF_MAX) return;
+    pthread_mutex_lock(&vm->bestof_mtx); SLBestOf* b = vm->bestof[h]; vm->bestof[h] = NULL; pthread_mutex_unlock(&vm->bestof_mtx);
+    if (b) slbestof_close(b);
 }
 
 static int file_alloc(SLVM* vm, SLIOHandle fd) {
@@ -795,6 +821,78 @@ static SLResult run_thread(SLThread* t) {
             if(m){ slmunction_close(m,receipt,sizeof(receipt)); munction_clear_slot(vm,h); }
             else receipt[0]=0;
             SLValue out; out.type=SL_STR; out.as.s=intern(vm,receipt); PUSH(out);
+        } break;
+
+        /* ---- Best-of: configurable route/accuracy selection ---------- */
+        case OP_BEST_NEW: {
+            SLBestOf* b=slbestof_new(); if(!b){PUSH(slval_int(-1));break;}
+            int h=bestof_alloc(vm,b); if(h<0){slbestof_close(b);PUSH(slval_int(-1));break;}
+            PUSH(slval_int(h));
+        } break;
+        case OP_BEST_WEIGHT: {
+            SLValue wv=POP(), av=POP(), hv=POP();
+            if(hv.type!=SL_INT||av.type!=SL_INT||wv.type!=SL_INT) TERR("bestOfWeight(handle, axis, weight) requires three integers");
+            SLBestOf* b=bestof_get(vm,(int)hv.as.i); if(b) slbestof_weight(b,(int)av.as.i,(int)wv.as.i); PUSH(hv);
+        } break;
+        case OP_BEST_MINVER: {
+            SLValue vv=POP(), hv=POP(); if(hv.type!=SL_INT||vv.type!=SL_INT) TERR("bestOfMinVersion(handle, minVersion) requires two integers");
+            SLBestOf* b=bestof_get(vm,(int)hv.as.i); if(b) slbestof_min_version(b,(int)vv.as.i); PUSH(hv);
+        } break;
+        case OP_BEST_BUDGET: {
+            SLValue cv=POP(), hv=POP(); if(hv.type!=SL_INT||cv.type!=SL_INT) TERR("bestOfCostBudget(handle, budget) requires two integers");
+            SLBestOf* b=bestof_get(vm,(int)hv.as.i); if(b) slbestof_cost_budget(b,(int)cv.as.i); PUSH(hv);
+        } break;
+        case OP_BEST_CAND: {
+            /* stack (top last): name, route, timeout, payload, gap, flags, version, cost, replays over handle */
+            SLValue replaysv=POP(), costv=POP(), versionv=POP(), flagsv=POP(), gapv=POP(),
+                    payloadv=POP(), timeoutv=POP(), routev=POP(), namev=POP(), hv=POP();
+            if(hv.type!=SL_INT||namev.type!=SL_STR||routev.type!=SL_STR||timeoutv.type!=SL_INT||
+               payloadv.type!=SL_INT||gapv.type!=SL_INT||flagsv.type!=SL_INT||versionv.type!=SL_INT||
+               costv.type!=SL_INT||replaysv.type!=SL_INT)
+                TERR("bestOfCandidate requires (handle, nameStr, routeStr, timeout, payload, gap, flags, version, cost, replays)");
+            SLBestOf* b=bestof_get(vm,(int)hv.as.i);
+            int idx=b? slbestof_add_candidate(b, slvm_str(vm,namev.as.s), slvm_str(vm,routev.as.s),
+                    (int)timeoutv.as.i,(int)payloadv.as.i,(int)gapv.as.i,(int)flagsv.as.i,
+                    (int)versionv.as.i,(int)costv.as.i,(int)replaysv.as.i) : -1;
+            PUSH(slval_int(idx));
+        } break;
+        case OP_BEST_RECORD: {
+            SLValue rttv=POP(), idxv=POP(), hv=POP();
+            if(hv.type!=SL_INT||idxv.type!=SL_INT||rttv.type!=SL_INT) TERR("bestOfRecord(handle, idx, rttUs) requires three integers");
+            SLBestOf* b=bestof_get(vm,(int)hv.as.i); if(b) slbestof_record(b,(int)idxv.as.i,rttv.as.i); PUSH(hv);
+        } break;
+        case OP_BEST_SCORE: {
+            SLValue idxv=POP(), hv=POP(); if(hv.type!=SL_INT||idxv.type!=SL_INT) TERR("bestOfScore(handle, idx) requires two integers");
+            SLBestOf* b=bestof_get(vm,(int)hv.as.i); PUSH(slval_int(b? slbestof_score(b,(int)idxv.as.i):0));
+        } break;
+        case OP_BEST_BEST: {
+            SLValue hv=POP(); if(hv.type!=SL_INT) TERR("bestOfBest(handle) requires a handle");
+            SLBestOf* b=bestof_get(vm,(int)hv.as.i); PUSH(slval_int(b? slbestof_best(b):-1));
+        } break;
+        case OP_BEST_STAT: {
+            SLValue idxv=POP(), hv=POP(); if(hv.type!=SL_INT||idxv.type!=SL_INT) TERR("best-of stat requires (handle, idx)");
+            SLBestOf* b=bestof_get(vm,(int)hv.as.i); int idx=(int)idxv.as.i; int64_t r=-1;
+            if(b){ switch(in.a){
+                case SL_BEST_STAT_MEAN: r=slbestof_mean_us(b,idx); break;
+                case SL_BEST_STAT_LOSS: r=slbestof_loss_permille(b,idx); break;
+                case SL_BEST_STAT_JITTER: r=slbestof_jitter_us(b,idx); break;
+                case SL_BEST_STAT_CERTAINTY: r=slbestof_certainty_permille(b,idx); break;
+                default: r=-1; break; } }
+            PUSH(slval_int(r));
+        } break;
+        case OP_BEST_CHOICE: {
+            SLValue hv=POP(); if(hv.type!=SL_INT) TERR("bestOfChoice(handle) requires a handle");
+            SLBestOf* b=bestof_get(vm,(int)hv.as.i); char buf[512]; if(b) slbestof_choice(b,buf,sizeof(buf)); else buf[0]=0;
+            SLValue out; out.type=SL_STR; out.as.s=intern(vm,buf); PUSH(out);
+        } break;
+        case OP_BEST_REPORT: {
+            SLValue hv=POP(); if(hv.type!=SL_INT) TERR("bestOfReport(handle) requires a handle");
+            SLBestOf* b=bestof_get(vm,(int)hv.as.i); char buf[4096]; if(b) slbestof_report(b,buf,sizeof(buf)); else buf[0]=0;
+            SLValue out; out.type=SL_STR; out.as.s=intern(vm,buf); PUSH(out);
+        } break;
+        case OP_BEST_CLOSE: {
+            SLValue hv=POP(); if(hv.type!=SL_INT) TERR("bestOfClose(handle) requires a handle");
+            bestof_release(vm,(int)hv.as.i); PUSH(slval_null());
         } break;
 
         /* ---- Linux file I/O ------------------------------------------- */

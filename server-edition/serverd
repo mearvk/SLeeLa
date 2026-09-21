@@ -1,0 +1,78 @@
+#!/usr/bin/env sh
+# serverd -- the SLeeLa Server Edition launcher.
+#
+# Runs the local Sleela server quietly: she takes and processes HER OWN INPUTS
+# (the request lines under inbox/) through the real engine (Munction reaches,
+# Synchro measurement, best-of route selection) and writes her honest results
+# to state/results.log. She opens no public port and waits on no network.
+#
+# Usage:
+#   server-edition/serverd            run once over the current inbox (quiet)
+#   server-edition/serverd --tick     append a fresh self-input, then run once
+#   server-edition/serverd --foreground   run once, echoing results to stdout too
+#   server-edition/serverd --help
+#
+# Environment:
+#   SLEELA_BIN               path to the sleela engine (else auto-resolved)
+#   SLEELA_SHA256_MANIFEST   path to the trusted SHA-256 manifest (else auto)
+set -u
+
+DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+ROOT=$(CDPATH= cd -- "$DIR/.." && pwd)
+
+# Resolve the engine: env override, installed bin, or the in-tree build.
+SLEELA="${SLEELA_BIN:-}"
+if [ -z "$SLEELA" ] || [ ! -x "$SLEELA" ]; then
+    if [ -x "$ROOT/bin/sleela" ]; then SLEELA="$ROOT/bin/sleela"
+    elif [ -x "$ROOT/impl/build/sleela" ]; then SLEELA="$ROOT/impl/build/sleela"
+    else echo "serverd: sleela engine not found (set SLEELA_BIN or build impl/)" >&2; exit 1
+    fi
+fi
+
+# Resolve the SHA-256 manifest (the engine's fail-closed execution gate).
+if [ -z "${SLEELA_SHA256_MANIFEST:-}" ]; then
+    if [ -f "$ROOT/security/sha256-manifest.json" ]; then
+        SLEELA_SHA256_MANIFEST="$ROOT/security/sha256-manifest.json"
+        export SLEELA_SHA256_MANIFEST
+    fi
+fi
+
+INBOX="$DIR/inbox/requests.txt"
+STATE_DIR="$DIR/state"
+LOG="$STATE_DIR/results.log"
+SERVER="$ROOT/server-edition/src/Server.sleela"
+
+mkdir -p "$DIR/inbox" "$STATE_DIR"
+[ -f "$INBOX" ] || printf 'hello\n' > "$INBOX"
+
+FOREGROUND=0
+for a in "$@"; do
+    case "$a" in
+        --help|-h)
+            sed -n '2,16p' "$0" | sed 's/^# \{0,1\}//'
+            exit 0 ;;
+        --tick)
+            # Feed the server one more of HER OWN inputs: a timestamped tick.
+            printf 'tick %s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || echo now)" >> "$INBOX" ;;
+        --foreground|-f)
+            FOREGROUND=1 ;;
+        *)
+            echo "serverd: unknown option '$a' (see --help)" >&2; exit 2 ;;
+    esac
+done
+
+# Run one quiet processing pass. The engine runs from the repo root so the
+# server's own relative paths (server-edition/inbox, server-edition/state)
+# resolve. Results are appended to the log; foreground also echoes them.
+{
+    echo "=== serverd run $(date -u +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || echo now) ==="
+    ( cd "$ROOT" && "$SLEELA" run "server-edition/src/Server.sleela" 2>&1 \
+        | grep -vE '^\[security\]|^\[defender\]|^verification: (PASS|)' )
+} >> "$LOG" 2>&1
+
+if [ "$FOREGROUND" -eq 1 ]; then
+    tail -n 8 "$LOG"
+fi
+
+# Quiet by default: a single terminal line so a supervisor can see she ran.
+echo "serverd: processed inbox -> $LOG (quiet)"

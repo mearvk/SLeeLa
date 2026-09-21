@@ -48,7 +48,21 @@ typedef enum {
     OP_MUN_CONSUME, /* pops handle; pushes handle (reception stored on reach)  */
     OP_MUN_LATCH,   /* pops handle; pushes handle                              */
     OP_MUN_RECEPTION,/* pops handle; pushes last reception String             */
-    OP_MUN_CLOSE    /* pops handle; pushes receipt String; releases the reach  */
+    OP_MUN_CLOSE,   /* pops handle; pushes receipt String; releases the reach  */
+    /* Best-of (syntax 1.3): configurable route/accuracy selection for Synchro
+     * and Munction/RMI packets. A selector is a VM-local handle. */
+    OP_BEST_NEW,       /* pushes best-of handle (-1 on failure)                */
+    OP_BEST_WEIGHT,    /* pops weight,axis,handle; pushes handle (passthrough) */
+    OP_BEST_MINVER,    /* pops minVersion,handle; pushes handle                */
+    OP_BEST_BUDGET,    /* pops costBudget,handle; pushes handle                */
+    OP_BEST_CAND,      /* pops replays,cost,version,flags,gap,payload,timeout,route,name,handle; pushes candidate index */
+    OP_BEST_RECORD,    /* pops rttUs,idx,handle; pushes handle                 */
+    OP_BEST_SCORE,     /* pops idx,handle; pushes score int                    */
+    OP_BEST_BEST,      /* pops handle; pushes best candidate index (-1 none)   */
+    OP_BEST_STAT,      /* a=selector; pops idx,handle; pushes measured int     */
+    OP_BEST_CHOICE,    /* pops handle; pushes winning-choice String            */
+    OP_BEST_REPORT,    /* pops handle; pushes multi-line report String         */
+    OP_BEST_CLOSE      /* pops handle; releases the selector; pushes null      */
 } SLOp;
 /* Synchro stat selectors for OP_SYN_STAT (operand a). */
 #define SL_SYN_STAT_SENT 0
@@ -58,6 +72,11 @@ typedef enum {
 #define SL_SYN_STAT_MAX  4
 #define SL_SYN_STAT_P95  5
 #define SL_SYN_STAT_LOSS 6
+/* Best-of per-candidate stat selectors for OP_BEST_STAT (operand a). */
+#define SL_BEST_STAT_MEAN      0
+#define SL_BEST_STAT_LOSS      1
+#define SL_BEST_STAT_JITTER    2
+#define SL_BEST_STAT_CERTAINTY 3
 #define SL_MAX_THREADS 128
 #define SL_MAX_LOCKS 32
 #define SL_MAX_SOCKETS 128

@@ -103,7 +103,12 @@ static const std::unordered_map<std::string, int> kContextualBuiltins13 = {
     // Synchro honest packet dispatch + measurement.
     {"synchroOpen",1},{"synchroDispatch",1},{"synchroReport",1},{"synchroClose",1},
     {"synchroSent",1},{"synchroReceived",1},{"synchroMean",1},{"synchroMin",1},
-    {"synchroMax",1},{"synchroP95",1},{"synchroLoss",1}
+    {"synchroMax",1},{"synchroP95",1},{"synchroLoss",1},
+    // Best-of configurable route/accuracy selection for Synchro + Munction/RMI.
+    {"bestOfNew",1},{"bestOfWeight",1},{"bestOfMinVersion",1},{"bestOfCostBudget",1},
+    {"bestOfCandidate",1},{"bestOfRecord",1},{"bestOfScore",1},{"bestOfBest",1},
+    {"bestOfChoice",1},{"bestOfReport",1},{"bestOfClose",1},
+    {"bestOfMean",1},{"bestOfLoss",1},{"bestOfJitter",1},{"bestOfCertainty",1}
 };
 
 bool isContextualBuiltin(const std::string& name) {

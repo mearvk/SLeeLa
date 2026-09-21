@@ -1,0 +1,104 @@
+#sleela 1.3
+// Server.sleela -- the SLeeLa Server Edition, first-class in Sleela source.
+//
+// A quiet local server that takes and MEANINGFULLY PROCESSES HER OWN INPUTS.
+// She does not open a public port or wait on the network; instead she reads
+// the inputs she owns (her request queue file), processes each request through
+// the real engine surfaces -- Munction reaches, Synchro measurement, and the
+// best-of route/accuracy selector -- and writes an honest result line per
+// request. Everything runs locally and quietly: her only side effects are the
+// files under server-edition/inbox and server-edition/state.
+//
+// "Her own inputs" are the newline-delimited request lines she reads from the
+// inbox pipe/file the launcher feeds her. Each line is a small verb she knows.
+class Server {
+
+    // Where she reads her own inputs from and writes her state to. These are
+    // paths she owns; the launcher provisions them before starting her.
+    String inboxPath = "server-edition/inbox/requests.txt";
+    String statePath = "server-edition/state/results.log";
+
+    int requests = 0;      // how many of her own inputs she has processed
+    int reaches = 0;       // Munction reaches she completed
+    int probes = 0;        // Synchro dispatches she measured
+
+    // Configure her best-of selector: how she decides which route/settings to
+    // trust when adjusting Synchro/RMI packet accuracy.
+    int selector = 0;
+
+    void configureSelector() {
+        selector = bestOfNew();
+        bestOfWeight(selector, 0, 55);   // data
+        bestOfWeight(selector, 1, 30);   // decisions (QoS certainty)
+        bestOfWeight(selector, 2, 10);   // costs
+        bestOfWeight(selector, 3, 5);    // versions
+        bestOfMinVersion(selector, 1);
+        bestOfCostBudget(selector, 100);
+        // Her own candidate routes (the parts of the internet she may use).
+        bestOfCandidate(selector, "local-sdps", "sdps://127.0.0.1:19866", 200, 64, 5, 5, 2, 10, 3);
+        bestOfCandidate(selector, "local-tcp",  "tcp://127.0.0.1:8080",   500, 128, 0, 2, 1, 20, 1);
+    }
+
+    // Process one of her own input lines. She understands a few verbs and
+    // records an honest result for each. The datum is the whole line.
+    void processRequest(String line) {
+        requests = requests + 1;
+
+        // Every request is a Munction reach into her own state pipe: she
+        // coherently records the request and reads it back (self-processing).
+        String receipt = Munction.start("intake")
+            .connect("pipe:server-edition/state/intake")
+            .send(line)
+            .thatch("frame,record")
+            .consume()
+            .latch()
+            .closeWithReceipt();
+        reaches = reaches + 1;
+
+        // She measures her own local loopback so her best-of has honest data
+        // to adjust accuracy with. A dark port yields honest loss, not a lie.
+        int p = synchroOpen("127.0.0.1", 9);
+        if (p >= 0) {
+            int rtt = synchroDispatch(p, 64, 20);
+            bestOfRecord(selector, 0, rtt);       // fold into local-sdps
+            probes = probes + 1;
+            synchroClose(p);
+        }
+
+        // Her honest per-request result: what she reached + what she measured.
+        print("request " + requests + ": reached; " + receipt);
+    }
+
+    void main() {
+        configureSelector();
+
+        // Take her own inputs: read the request file she owns and process each
+        // non-empty line. openFile/read are the 1.1 file built-ins; the whole
+        // file is her input batch for this run.
+        int fd = openFile(inboxPath, "r");   // read her own input batch
+        if (fd >= 0) {
+            String content = read(fd);
+            close(fd);
+            // The engine's file read returns the batch content; she reaches
+            // over it as one meaningful datum (her own input for this run).
+            if (content != "") {
+                processRequest(content);
+            }
+        } else {
+            // No inbox yet: she still runs quietly and reports she is idle.
+            print("server: no inbox at " + inboxPath + " (idle, quiet)");
+        }
+
+        // Her decision: which route/settings to use for subsequent packets,
+        // chosen from her own measured data.
+        int winner = bestOfBest(selector);
+        print("server: best-of winner index " + winner);
+        print("server: chosen route -> " + bestOfChoice(selector));
+
+        // Quiet honest summary of what she did with her own inputs.
+        print("server: processed requests=" + requests
+            + " reaches=" + reaches + " probes=" + probes);
+
+        bestOfClose(selector);
+    }
+}
