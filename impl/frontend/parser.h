@@ -54,6 +54,7 @@ private:
     ExprP parseMultiplicative();
     ExprP parseUnary();
     ExprP parsePrimary();
+    ExprP parsePostfix(ExprP base);  // fluent `.method(args)` chaining
 };
 
 } // namespace sleela

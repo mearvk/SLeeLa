@@ -4,6 +4,7 @@
 #include "sst_parser.h"
 
 #include <algorithm>
+#include <cstdlib>
 
 namespace nordshrift {
 namespace {
@@ -210,6 +211,8 @@ struct Parser {
         if (kw == "interop")  { parseInterop();  return true; }
         if (kw == "network")  { parseNetwork();  return true; }
         if (kw == "finance")  { parseFinance();  return true; }
+        if (kw == "reach")    { parseReach();    return true; }
+        if (kw == "measure")  { parseMeasure();  return true; }
         if (kw == "subject")  { parseSubject();  return true; }
         if (kw == "rule")     { parseRuleBlock(); return true; }
         if (kw == "profile")  { parseProfile();  return true; }
@@ -588,6 +591,103 @@ struct Parser {
                 sheet.network.tls = parseBool(readScalarText(), false);
             } else {
                 // unknown network directive: ignore the value
+                (void)readScalarText();
+            }
+            if (is(Tok::Newline)) i++;
+        }
+        exitBlock();
+    }
+
+    // ---- reach block (SST.MUNCTION.md, Munction 1.3) -------------------
+    void parseReach() {
+        sheet.reach.present = true;
+        sheet.reach.line = cur().line;
+        i++;                                   // 'reach'
+        if (!enterBlock()) { syncToNewline(); return; }
+        while (!atBlockEnd()) {
+            if (is(Tok::Newline)) { i++; continue; }
+            if (!is(Tok::Ident)) { syncToNewline(); continue; }
+            int ln = cur().line;
+            std::string key = cur().text; i++;
+            if (is(Tok::Colon)) i++;
+            if (key == "verbs" || key == "verb") {
+                for (const auto& name : readListOrScalar()) {
+                    ReachVerb v;
+                    if (!reachVerbFromName(name, v)) {
+                        errAt(ln, "NSS-E-MUN-001", "unknown Munction verb '" + name + "'",
+                              "SST-MUN-VERB", true);
+                    } else if (std::find(sheet.reach.verbs.begin(), sheet.reach.verbs.end(), v)
+                               == sheet.reach.verbs.end()) {
+                        sheet.reach.verbs.push_back(v);
+                    }
+                }
+            } else if (key == "channels" || key == "channel") {
+                for (const auto& name : readListOrScalar()) {
+                    ReachChannel c;
+                    if (!reachChannelFromName(name, c)) {
+                        errAt(ln, "NSS-E-MUN-002", "unknown Munction channel '" + name + "'",
+                              "SST-MUN-CHANNEL", true);
+                    } else if (std::find(sheet.reach.channels.begin(), sheet.reach.channels.end(), c)
+                               == sheet.reach.channels.end()) {
+                        sheet.reach.channels.push_back(c);
+                    }
+                }
+            } else if (key == "min-verbs") {
+                sheet.reach.minVerbs = (int)std::strtol(readScalarText().c_str(), nullptr, 10);
+            } else if (key == "max-verbs") {
+                sheet.reach.maxVerbs = (int)std::strtol(readScalarText().c_str(), nullptr, 10);
+            } else if (key == "receivable") {
+                sheet.reach.receivable = parseBool(readScalarText(), true);
+            } else if (key == "coherent") {
+                sheet.reach.coherent = parseBool(readScalarText(), true);
+            } else {
+                (void)readScalarText();
+            }
+            if (is(Tok::Newline)) i++;
+        }
+        // The sanity bound (4..16) is fixed by the language; a sheet may narrow
+        // but never widen it. Clamp and report if it tries to widen.
+        if (sheet.reach.minVerbs < 4) { errAt(sheet.reach.line, "NSS-E-MUN-003",
+              "reach min-verbs below the Munction floor of 4", "SST-MUN-BOUND", true); sheet.reach.minVerbs = 4; }
+        if (sheet.reach.maxVerbs > 16) { errAt(sheet.reach.line, "NSS-E-MUN-004",
+              "reach max-verbs above the Munction ceiling of 16", "SST-MUN-BOUND", true); sheet.reach.maxVerbs = 16; }
+        exitBlock();
+    }
+
+    // ---- measure block (SST.SYNCHRO.md, Synchro 1.3) -------------------
+    void parseMeasure() {
+        sheet.measure.present = true;
+        sheet.measure.line = cur().line;
+        i++;                                   // 'measure'
+        if (!enterBlock()) { syncToNewline(); return; }
+        while (!atBlockEnd()) {
+            if (is(Tok::Newline)) { i++; continue; }
+            if (!is(Tok::Ident)) { syncToNewline(); continue; }
+            int ln = cur().line;
+            std::string key = cur().text; i++;
+            if (is(Tok::Colon)) i++;
+            if (key == "metrics" || key == "metric") {
+                for (const auto& name : readListOrScalar()) {
+                    MeasureMetric mm;
+                    if (!measureMetricFromName(name, mm)) {
+                        errAt(ln, "NSS-E-SYN-001", "unknown Synchro metric '" + name + "'",
+                              "SST-SYN-METRIC", true);
+                    } else if (std::find(sheet.measure.metrics.begin(), sheet.measure.metrics.end(), mm)
+                               == sheet.measure.metrics.end()) {
+                        sheet.measure.metrics.push_back(mm);
+                    }
+                }
+            } else if (key == "timeout-ms" || key == "timeout") {
+                sheet.measure.timeoutMs = (int)std::strtol(readScalarText().c_str(), nullptr, 10);
+                sheet.measure.hasTimeout = true;
+            } else if (key == "honest") {
+                bool h = parseBool(readScalarText(), true);
+                // Synchro is honest by construction; a sheet cannot disable it.
+                if (!h) errAt(ln, "NSS-E-SYN-002",
+                              "Synchro is honest by construction; 'honest false' is not permitted",
+                              "SST-SYN-HONEST", true);
+                sheet.measure.honest = true;
+            } else {
                 (void)readScalarText();
             }
             if (is(Tok::Newline)) i++;
@@ -1109,6 +1209,76 @@ const char* financeDiscountingName(FinanceDiscounting d) {
     switch (d) {
         case FinanceDiscounting::Discrete:   return "discrete";
         case FinanceDiscounting::Continuous: return "continuous";
+    }
+    return "?";
+}
+
+// ---- Munction reach enum <-> name mappings (1.3) --------------------------
+bool reachVerbFromName(const std::string& s, ReachVerb& out) {
+    if (s == "start")            { out = ReachVerb::Start;            return true; }
+    if (s == "connect")          { out = ReachVerb::Connect;          return true; }
+    if (s == "open")             { out = ReachVerb::Open;             return true; }
+    if (s == "enable")           { out = ReachVerb::Enable;           return true; }
+    if (s == "send")             { out = ReachVerb::Send;             return true; }
+    if (s == "thatch")           { out = ReachVerb::Thatch;           return true; }
+    if (s == "consume")          { out = ReachVerb::Consume;          return true; }
+    if (s == "observe")          { out = ReachVerb::Observe;          return true; }
+    if (s == "propagate")        { out = ReachVerb::Propagate;        return true; }
+    if (s == "latch")            { out = ReachVerb::Latch;            return true; }
+    if (s == "contain")          { out = ReachVerb::Contain;          return true; }
+    if (s == "close")            { out = ReachVerb::Close;            return true; }
+    if (s == "closeWithReceipt") { out = ReachVerb::CloseWithReceipt; return true; }
+    if (s == "abort")            { out = ReachVerb::Abort;            return true; }
+    return false;
+}
+const char* reachVerbName(ReachVerb v) {
+    switch (v) {
+        case ReachVerb::Start: return "start"; case ReachVerb::Connect: return "connect";
+        case ReachVerb::Open: return "open"; case ReachVerb::Enable: return "enable";
+        case ReachVerb::Send: return "send"; case ReachVerb::Thatch: return "thatch";
+        case ReachVerb::Consume: return "consume"; case ReachVerb::Observe: return "observe";
+        case ReachVerb::Propagate: return "propagate"; case ReachVerb::Latch: return "latch";
+        case ReachVerb::Contain: return "contain"; case ReachVerb::Close: return "close";
+        case ReachVerb::CloseWithReceipt: return "closeWithReceipt"; case ReachVerb::Abort: return "abort";
+    }
+    return "?";
+}
+bool reachChannelFromName(const std::string& s, ReachChannel& out) {
+    if (s == "pipe")   { out = ReachChannel::Pipe;   return true; }
+    if (s == "file")   { out = ReachChannel::File;   return true; }
+    if (s == "tcp")    { out = ReachChannel::Tcp;    return true; }
+    if (s == "http")   { out = ReachChannel::Http;   return true; }
+    if (s == "sdps")   { out = ReachChannel::Sdps;   return true; }
+    if (s == "crypto") { out = ReachChannel::Crypto; return true; }
+    return false;
+}
+const char* reachChannelName(ReachChannel c) {
+    switch (c) {
+        case ReachChannel::Pipe: return "pipe"; case ReachChannel::File: return "file";
+        case ReachChannel::Tcp: return "tcp"; case ReachChannel::Http: return "http";
+        case ReachChannel::Sdps: return "sdps"; case ReachChannel::Crypto: return "crypto";
+    }
+    return "?";
+}
+
+// ---- Synchro measure enum <-> name mappings (1.3) -------------------------
+bool measureMetricFromName(const std::string& s, MeasureMetric& out) {
+    if (s == "sent")     { out = MeasureMetric::Sent;     return true; }
+    if (s == "received") { out = MeasureMetric::Received; return true; }
+    if (s == "loss")     { out = MeasureMetric::Loss;     return true; }
+    if (s == "mean")     { out = MeasureMetric::Mean;     return true; }
+    if (s == "min")      { out = MeasureMetric::Min;      return true; }
+    if (s == "max")      { out = MeasureMetric::Max;      return true; }
+    if (s == "p95")      { out = MeasureMetric::P95;      return true; }
+    if (s == "report")   { out = MeasureMetric::Report;   return true; }
+    return false;
+}
+const char* measureMetricName(MeasureMetric m) {
+    switch (m) {
+        case MeasureMetric::Sent: return "sent"; case MeasureMetric::Received: return "received";
+        case MeasureMetric::Loss: return "loss"; case MeasureMetric::Mean: return "mean";
+        case MeasureMetric::Min: return "min"; case MeasureMetric::Max: return "max";
+        case MeasureMetric::P95: return "p95"; case MeasureMetric::Report: return "report";
     }
     return "?";
 }

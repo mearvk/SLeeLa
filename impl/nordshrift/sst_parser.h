@@ -41,6 +41,14 @@ const char* financeObjectName(FinanceObject o);
 const char* financePeriodName(FinancePeriodConvention p);
 const char* financeDiscountingName(FinanceDiscounting d);
 
+// Munction reach (1.3) and Synchro measure (1.3) closed series mappings.
+bool reachVerbFromName(const std::string& s, ReachVerb& out);
+const char* reachVerbName(ReachVerb v);
+bool reachChannelFromName(const std::string& s, ReachChannel& out);
+const char* reachChannelName(ReachChannel c);
+bool measureMetricFromName(const std::string& s, MeasureMetric& out);
+const char* measureMetricName(MeasureMetric m);
+
 } // namespace nordshrift
 
 #endif // NORDSHRIFT_SST_PARSER_H

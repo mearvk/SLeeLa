@@ -136,6 +136,37 @@ static void reportComponentSeries(const Sheet& sheet) {
                   << ", period=" << financePeriodName(sheet.finance.period)
                   << ", discounting=" << financeDiscountingName(sheet.finance.discounting) << "\n";
     }
+    if (sheet.reach.present) {
+        std::cout << "reach: " << sheet.reach.verbs.size() << " verb(s)";
+        if (!sheet.reach.verbs.empty()) {
+            std::cout << " [";
+            for (size_t k = 0; k < sheet.reach.verbs.size(); k++)
+                std::cout << (k ? ", " : "") << reachVerbName(sheet.reach.verbs[k]);
+            std::cout << "]";
+        }
+        std::cout << ", " << sheet.reach.channels.size() << " channel(s)";
+        if (!sheet.reach.channels.empty()) {
+            std::cout << " [";
+            for (size_t k = 0; k < sheet.reach.channels.size(); k++)
+                std::cout << (k ? ", " : "") << reachChannelName(sheet.reach.channels[k]);
+            std::cout << "]";
+        }
+        std::cout << ", bound=" << sheet.reach.minVerbs << ".." << sheet.reach.maxVerbs
+                  << ", receivable=" << (sheet.reach.receivable ? "true" : "false")
+                  << ", coherent=" << (sheet.reach.coherent ? "true" : "false")
+                  << " [Munction]\n";
+    }
+    if (sheet.measure.present) {
+        std::cout << "measure: " << sheet.measure.metrics.size() << " metric(s)";
+        if (!sheet.measure.metrics.empty()) {
+            std::cout << " [";
+            for (size_t k = 0; k < sheet.measure.metrics.size(); k++)
+                std::cout << (k ? ", " : "") << measureMetricName(sheet.measure.metrics[k]);
+            std::cout << "]";
+        }
+        std::cout << ", timeout-ms=" << sheet.measure.timeoutMs
+                  << ", honest=true [Synchro]\n";
+    }
     for (const auto& s : sheet.subjects) {
         std::cout << "subject '" << s.identity << "'";
         if (!s.domain.empty()) std::cout << " (domain=" << s.domain << ")";

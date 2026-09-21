@@ -29,6 +29,21 @@ std::vector<std::string> financeObjectNames(const FinanceSpec& f) {
     for (auto o : f.objects) v.push_back(financeObjectName(o));
     return v;
 }
+std::vector<std::string> reachVerbNames(const ReachSpec& r) {
+    std::vector<std::string> v;
+    for (auto x : r.verbs) v.push_back(reachVerbName(x));
+    return v;
+}
+std::vector<std::string> reachChannelNames(const ReachSpec& r) {
+    std::vector<std::string> v;
+    for (auto x : r.channels) v.push_back(reachChannelName(x));
+    return v;
+}
+std::vector<std::string> measureMetricNames(const MeasureSpec& m) {
+    std::vector<std::string> v;
+    for (auto x : m.metrics) v.push_back(measureMetricName(x));
+    return v;
+}
 
 // ---- language-neutral join helpers ---------------------------------------
 std::string quotedList(const std::vector<std::string>& xs) {
@@ -64,6 +79,24 @@ std::string emitJava(const Sheet& sheet, const std::string& pkg) {
           << financePeriodName(sheet.finance.period) << "\";\n";
         o << "    public static final String FINANCE_DISCOUNTING = \""
           << financeDiscountingName(sheet.finance.discounting) << "\";\n\n";
+    }
+    if (sheet.reach.present) {
+        o << "    public static final String[] REACH_VERBS = { "
+          << quotedList(reachVerbNames(sheet.reach)) << " };\n";
+        o << "    public static final String[] REACH_CHANNELS = { "
+          << quotedList(reachChannelNames(sheet.reach)) << " };\n";
+        o << "    public static final int REACH_MIN_VERBS = " << sheet.reach.minVerbs << ";\n";
+        o << "    public static final int REACH_MAX_VERBS = " << sheet.reach.maxVerbs << ";\n";
+        o << "    public static final boolean REACH_RECEIVABLE = "
+          << (sheet.reach.receivable ? "true" : "false") << ";\n";
+        o << "    public static final boolean REACH_COHERENT = "
+          << (sheet.reach.coherent ? "true" : "false") << ";\n\n";
+    }
+    if (sheet.measure.present) {
+        o << "    public static final String[] MEASURE_METRICS = { "
+          << quotedList(measureMetricNames(sheet.measure)) << " };\n";
+        o << "    public static final int MEASURE_TIMEOUT_MS = " << sheet.measure.timeoutMs << ";\n";
+        o << "    public static final boolean MEASURE_HONEST = true;\n\n";
     }
     if (!sheet.subjects.empty()) {
         std::vector<std::string> ids;
@@ -103,6 +136,19 @@ std::string emitC(const Sheet& sheet) {
         o << "const char* const ns_finance_discounting = \""
           << financeDiscountingName(sheet.finance.discounting) << "\";\n\n";
     }
+    if (sheet.reach.present) {
+        emitCArray(o, "ns_reach_verbs", reachVerbNames(sheet.reach));
+        emitCArray(o, "ns_reach_channels", reachChannelNames(sheet.reach));
+        o << "const int ns_reach_min_verbs = " << sheet.reach.minVerbs << ";\n";
+        o << "const int ns_reach_max_verbs = " << sheet.reach.maxVerbs << ";\n";
+        o << "const int ns_reach_receivable = " << (sheet.reach.receivable ? 1 : 0) << ";\n";
+        o << "const int ns_reach_coherent = " << (sheet.reach.coherent ? 1 : 0) << ";\n\n";
+    }
+    if (sheet.measure.present) {
+        emitCArray(o, "ns_measure_metrics", measureMetricNames(sheet.measure));
+        o << "const int ns_measure_timeout_ms = " << sheet.measure.timeoutMs << ";\n";
+        o << "const int ns_measure_honest = 1;\n\n";
+    }
     if (!sheet.subjects.empty()) {
         std::vector<std::string> ids;
         for (const auto& s : sheet.subjects) ids.push_back(s.identity);
@@ -141,6 +187,19 @@ std::string emitSleela(const Sheet& sheet) {
         o << "    String financeDiscounting = \""
           << financeDiscountingName(sheet.finance.discounting) << "\";\n";
     }
+    if (sheet.reach.present) {
+        emitSleelaList(o, "reachVerbs", reachVerbNames(sheet.reach));
+        emitSleelaList(o, "reachChannels", reachChannelNames(sheet.reach));
+        o << "    int reachMinVerbs = " << sheet.reach.minVerbs << ";\n";
+        o << "    int reachMaxVerbs = " << sheet.reach.maxVerbs << ";\n";
+        o << "    boolean reachReceivable = " << (sheet.reach.receivable ? "true" : "false") << ";\n";
+        o << "    boolean reachCoherent = " << (sheet.reach.coherent ? "true" : "false") << ";\n";
+    }
+    if (sheet.measure.present) {
+        emitSleelaList(o, "measureMetrics", measureMetricNames(sheet.measure));
+        o << "    int measureTimeoutMs = " << sheet.measure.timeoutMs << ";\n";
+        o << "    boolean measureHonest = true;\n";
+    }
     if (!sheet.subjects.empty()) {
         std::vector<std::string> ids;
         for (const auto& s : sheet.subjects) ids.push_back(s.identity);
@@ -153,7 +212,8 @@ std::string emitSleela(const Sheet& sheet) {
 } // namespace
 
 bool hasComponentManifest(const Sheet& sheet) {
-    return sheet.network.present || sheet.finance.present || !sheet.subjects.empty();
+    return sheet.network.present || sheet.finance.present ||
+           sheet.reach.present || sheet.measure.present || !sheet.subjects.empty();
 }
 
 std::string emitComponentManifest(const Sheet& sheet, TargetLang lang,
@@ -173,6 +233,11 @@ std::string summarizeComponents(const Sheet& sheet) {
           << " object(s), " << sheet.network.transports.size() << " transport(s)\n";
     if (sheet.finance.present)
         o << "  manifest: finance " << sheet.finance.objects.size() << " object(s)\n";
+    if (sheet.reach.present)
+        o << "  manifest: reach " << sheet.reach.verbs.size() << " verb(s), "
+          << sheet.reach.channels.size() << " channel(s) [Munction]\n";
+    if (sheet.measure.present)
+        o << "  manifest: measure " << sheet.measure.metrics.size() << " metric(s) [Synchro]\n";
     if (!sheet.subjects.empty())
         o << "  manifest: " << sheet.subjects.size() << " subject(s)\n";
     return o.str();

@@ -56,6 +56,11 @@ private:
 
 const char* tokName(Tok t);
 
+// True when `name` is a syntax-1.3 contextual built-in (Munction reach verbs or
+// synchro* measurement built-ins). These are recognized in call position by the
+// compiler and are not reserved words.
+bool isContextualBuiltin(const std::string& name);
+
 } // namespace sleela
 
 #endif // SLEELA_LEXER_H

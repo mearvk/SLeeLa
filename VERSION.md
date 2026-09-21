@@ -12,7 +12,7 @@ locations listed in each row.
 | Component | Version | Status | Source of truth |
 |-----------|---------|--------|-----------------|
 | **Sleela toolchain / implementation** (`sleela` CLI) | **0.1.2** | Working (pre-1.0) | `impl/frontend/driver.cpp` (`kVersion`) |
-| **Sleela language syntax** | **1.2** | Supported range `1.0 .. 1.2` | `impl/frontend/version.h` (`min`/`maxSupportedSyntax`) |
+| **Sleela language syntax** | **1.3** | Supported range `1.0 .. 1.3` | `impl/frontend/version.h` (`min`/`maxSupportedSyntax`) |
 | **Nordshrift** (`.sst` transpiler driver) | **2.0** | Semantic model layer added; legacy 1.0 sheets retained | `NORDSHRIFT.md`, `impl/nordshrift/subject_model.h` |
 | **NS-SST-0001** (`.sst` format specification) | **2.0.0** | Normative 2.0 semantic/control extension | `SST-2.0.model` |
 | **NS-SST-0001 legacy** | **1.0.0** | Compatibility / historical grammar | `SST.model` |
@@ -33,7 +33,7 @@ number and is what `./build/sleela version` reports. It is **pre-1.0**.
 ### Sleela language syntax — `1.2`
 The grammar version a `.sleela` file (a **Wrapper™**) declares with its
 `#sleela MAJOR.MINOR` pragma. The compiler is version aware and accepts only
-its supported range (`1.0 .. 1.2`). Minor increments are additive:
+its supported range (`1.0 .. 1.3`). Minor increments are additive:
 
 - **1.1** added the network and Linux file-I/O built-ins.
 - **1.2** added C/C++-style **structs** — `struct` declarations, `new`
@@ -41,6 +41,13 @@ its supported range (`1.0 .. 1.2`). Minor increments are additive:
   `structPack`/`structUnpack` network-transport built-ins (see
   [`STRUCTS.md`](STRUCTS.md)). Pre-1.2 programs are unaffected; the compiler
   rejects `struct`/`new`/`structPack`/`structUnpack` below `#sleela 1.2`.
+- **1.3** added **Munction** — the reach-composition fluent sentence
+  (`Munction.start(...).connect(...).send(...)...closeWithReceipt()`, 4..16
+  verbs, receivable + coherent; see [`MUNCTION.md`](MUNCTION.md)) — and
+  **Synchro** honest packet-dispatch/measurement built-ins
+  (`synchroOpen`/`synchroDispatch`/`synchro*`; see [`SYNCHRO.md`](SYNCHRO.md)).
+  Pre-1.3 programs are unaffected; the compiler rejects the Munction fluent
+  verbs and the `synchro*` built-ins below `#sleela 1.3`.
 
 ### Nordshrift — `2.0`
 Nordshrift remains the `.sst`-driven transpiler for Java / Sleela / C, and now

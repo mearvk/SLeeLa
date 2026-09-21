@@ -50,6 +50,7 @@ ExprP Parser::parsePrimary(){const Token&t=cur();switch(t.kind){case Tok::Int:i_
 case Tok::KwNew:{i_++;const Token&tn=expect(Tok::Ident,"struct type name after 'new'");if(!structNames_.count(tn.text))error("'new' requires a declared struct type, got '"+tn.text+"'");expect(Tok::LParen,"'('");expect(Tok::RParen,"')'");return std::make_unique<NewExpr>(tn.text);}
 case Tok::Ident:{
     std::string name=t.text;i_++;
+    ExprP base;
     // A dotted chain that ends in '(' is a qualified call name (namespaced
     // builtins like Foo.bar()); we keep the flat-callee behaviour for those.
     // Otherwise the first identifier is a value and each '.field' is a member
@@ -58,14 +59,40 @@ case Tok::Ident:{
         // Look ahead: does this dotted chain terminate in a call?
         size_t save=i_;bool isCall=false;while(check(Tok::Dot)){i_++;if(!check(Tok::Ident))break;i_++;if(check(Tok::LParen)){isCall=true;break;}}
         i_=save;
-        if(isCall){while(accept(Tok::Dot)){name += "." + expect(Tok::Ident,"identifier after '.'").text;}expect(Tok::LParen,"'('");auto c=std::make_unique<Call>(name);if(!check(Tok::RParen)){do{c->args.push_back(parseExpr());}while(accept(Tok::Comma));}expect(Tok::RParen,"')'");return c;}
-        // Pure member-access chain: base.f1.f2 ...
-        ExprP e=std::make_unique<VarExpr>(name);
-        while(accept(Tok::Dot)){std::string field=expect(Tok::Ident,"field name after '.'").text;e=std::make_unique<MemberAccess>(std::move(e),field);}
-        return e;
+        if(isCall){while(accept(Tok::Dot)){name += "." + expect(Tok::Ident,"identifier after '.'").text;}expect(Tok::LParen,"'('");auto c=std::make_unique<Call>(name);if(!check(Tok::RParen)){do{c->args.push_back(parseExpr());}while(accept(Tok::Comma));}expect(Tok::RParen,"')'");base=std::move(c);}
+        else{
+            // Pure member-access chain: base.f1.f2 ...
+            ExprP e=std::make_unique<VarExpr>(name);
+            while(accept(Tok::Dot)){std::string field=expect(Tok::Ident,"field name after '.'").text;e=std::make_unique<MemberAccess>(std::move(e),field);}
+            base=std::move(e);
+        }
     }
-    if(accept(Tok::LParen)){auto c=std::make_unique<Call>(name);if(!check(Tok::RParen)){do{c->args.push_back(parseExpr());}while(accept(Tok::Comma));}expect(Tok::RParen,"')'");return c;}
-    return std::make_unique<VarExpr>(name);
+    else if(accept(Tok::LParen)){auto c=std::make_unique<Call>(name);if(!check(Tok::RParen)){do{c->args.push_back(parseExpr());}while(accept(Tok::Comma));}expect(Tok::RParen,"')'");base=std::move(c);}
+    else base=std::make_unique<VarExpr>(name);
+    // Fluent postfix: consume any `.method(args)` suffixes on the result. This
+    // makes chains like Munction.start(x).connect(y).send(z).closeWithReceipt()
+    // parse as nested MethodCall nodes. A trailing `.field` (no call) after a
+    // call is not valid here and falls through to the caller.
+    return parsePostfix(std::move(base));
 }
 default:error(std::string("unexpected token '")+(t.text.empty()?tokName(t.kind):t.text)+"' in expression");}}
+// Consume `.method(args)` suffixes on `base`, folding each into a MethodCall.
+// Only a dot immediately followed by `ident (` is a postfix call; a dot
+// followed by a plain field is left for the caller (member access is handled
+// in the Ident primary above). This is what enables the fluent chain form.
+ExprP Parser::parsePostfix(ExprP base){
+    for(;;){
+        if(!check(Tok::Dot)) break;
+        // Look ahead: is this `.ident(` (a method call) rather than `.field`?
+        if(peek(1).kind!=Tok::Ident || peek(2).kind!=Tok::LParen) break;
+        i_++; // consume '.'
+        std::string method=expect(Tok::Ident,"method name after '.'").text;
+        expect(Tok::LParen,"'('");
+        auto mc=std::make_unique<MethodCall>(std::move(base),method);
+        if(!check(Tok::RParen)){do{mc->args.push_back(parseExpr());}while(accept(Tok::Comma));}
+        expect(Tok::RParen,"')'");
+        base=std::move(mc);
+    }
+    return base;
+}
 } // namespace sleela

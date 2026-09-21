@@ -112,6 +112,7 @@ private:
         if(dynamic_cast<const NullLit*>(e)){emit(OP_CONST,addNullConst());return;} if(auto x=dynamic_cast<const VarExpr*>(e)){emitVar(*x);return;} if(auto x=dynamic_cast<const Unary*>(e)){emitUnary(*x);return;}
         if(auto x=dynamic_cast<const Binary*>(e)){emitBinary(*x);return;} if(auto x=dynamic_cast<const Call*>(e)){emitCall(*x);return;}
         if(auto x=dynamic_cast<const NewExpr*>(e)){emitNew(*x);return;} if(auto x=dynamic_cast<const MemberAccess*>(e)){emitMember(*x);return;}
+        if(auto x=dynamic_cast<const MethodCall*>(e)){emitMethodCall(*x);return;}
         throw std::runtime_error("Semantic error: unknown expression kind");
     }
     // Determine the struct type name an expression evaluates to, or "" if it is
@@ -135,6 +136,30 @@ private:
     }
     void emitNew(const NewExpr& n){auto it=structLayout_.find(n.typeName);if(it==structLayout_.end())throw std::runtime_error("Semantic error: 'new' of unknown struct '"+n.typeName+"'");emit(OP_NEWSTRUCT,it->second.typeIndex);}
     void emitMember(const MemberAccess& m){int off=-1;memberLayout(m.base.get(),m.field,off);emitExpr(m.base.get());emit(OP_GETFIELD,off);}
+    // Lower a fluent `.method(args)` call. Munction reach verbs consume the
+    // receiver's reach handle and push it back (so the chain keeps flowing);
+    // closeWithReceipt/reception push a String. This is the source surface for
+    // the reach-composition sentence (syntax 1.3).
+    void emitMethodCall(const MethodCall& mc){
+        const std::string& m=mc.method;
+        auto oneArgStr=[&](const char* verb){ if(mc.args.size()!=1) throw std::runtime_error("Semantic error: Munction "+std::string(verb)+"(...) takes exactly one argument"); };
+        auto noArg=[&](const char* verb){ if(!mc.args.empty()) throw std::runtime_error("Semantic error: Munction "+std::string(verb)+"() takes no arguments"); };
+        // The Munction reach verbs. Each expects the receiver to evaluate to a
+        // reach handle; the op leaves the handle (or a String) on the stack.
+        if(m=="connect"||m=="enable"||m=="send"||m=="thatch"||m=="consume"||m=="latch"||m=="closeWithReceipt"||m=="close"||m=="reception"){
+            if(syntax_<SyntaxVersion{1,3}) throw std::runtime_error("Semantic error: Munction requires #sleela 1.3");
+            emitExpr(mc.receiver.get());
+            if(m=="connect"){oneArgStr("connect");emitExpr(mc.args[0].get());emit(OP_MUN_CONNECT);return;}
+            if(m=="enable"){oneArgStr("enable");emitExpr(mc.args[0].get());emit(OP_MUN_ENABLE);return;}
+            if(m=="send"){oneArgStr("send");emitExpr(mc.args[0].get());emit(OP_MUN_SEND);return;}
+            if(m=="thatch"){oneArgStr("thatch");emitExpr(mc.args[0].get());emit(OP_MUN_THATCH);return;}
+            if(m=="consume"){noArg("consume");emit(OP_MUN_CONSUME);return;}
+            if(m=="latch"){noArg("latch");emit(OP_MUN_LATCH);return;}
+            if(m=="reception"){noArg("reception");emit(OP_MUN_RECEPTION);return;}
+            /* close / closeWithReceipt */ noArg(m.c_str());emit(OP_MUN_CLOSE);return;
+        }
+        throw std::runtime_error("Semantic error: unknown fluent method '."+m+"()' (Munction verbs: connect/enable/send/thatch/consume/latch/closeWithReceipt/reception)");
+    }
     void emitVar(const VarExpr& v){int slot=ctx_->slotOf(v.name);if(slot>=0){emit(OP_LOADL,slot);return;}int g=fieldSlot(v.name);if(g>=0){emit(OP_LOADG,g);return;}throw std::runtime_error("Semantic error: use of undeclared variable '"+v.name+"'");}
     void emitUnary(const Unary& u){emitExpr(u.operand.get());if(u.op=="-")emit(OP_NEG);else if(u.op=="!")emit(OP_NOT);else throw std::runtime_error("Semantic error: unknown unary operator '"+u.op+"'");}
     void emitBinary(const Binary& b){emitExpr(b.lhs.get());emitExpr(b.rhs.get());const std::string&o=b.op;if(o=="+")emit(OP_ADD);else if(o=="-")emit(OP_SUB);else if(o=="*")emit(OP_MUL);else if(o=="/")emit(OP_DIV);else if(o=="%")emit(OP_MOD);else if(o=="==")emit(OP_EQ);else if(o=="!=")emit(OP_NE);else if(o=="<")emit(OP_LT);else if(o=="<=")emit(OP_LE);else if(o==">")emit(OP_GT);else if(o==">=")emit(OP_GE);else if(o=="&&")emit(OP_AND);else if(o=="||")emit(OP_OR);else throw std::runtime_error("Semantic error: unknown binary operator '"+o+"'");}
@@ -218,6 +243,33 @@ private:
         if(n=="timeJson"){if(!c.args.empty())throw std::runtime_error("Semantic error: timeJson() takes no arguments");emit(OP_TIME_JSON);return true;}
         if(n=="timeNtp"){if(c.args.size()!=1)throw std::runtime_error("Semantic error: timeNtp(host) takes one argument");emitExpr(c.args[0].get());emit(OP_TIME_NTP);return true;}
         if(n=="timeSetLocation"){if(c.args.size()!=2)throw std::runtime_error("Semantic error: timeSetLocation(country, timezone) takes two arguments");emitExpr(c.args[0].get());emitExpr(c.args[1].get());emit(OP_TIME_SET_LOCATION);return true;}
+
+        // ---- Munction (syntax 1.3): the reach-composition opener. ----
+        // Munction.start(name) opens a reach and yields a reach handle; the
+        // fluent verbs (.connect/.send/...) are lowered by emitMethodCall.
+        if(n=="Munction.start"){
+            if(syntax_<SyntaxVersion{1,3})throw std::runtime_error("Semantic error: Munction requires #sleela 1.3");
+            if(c.args.size()!=1)throw std::runtime_error("Semantic error: Munction.start(name) takes exactly one argument");
+            emitExpr(c.args[0].get());emit(OP_MUN_START);return true;
+        }
+
+        // ---- Synchro (syntax 1.3): honest packet dispatch + measurement. ----
+        if(n=="synchroOpen"||n=="synchroDispatch"||n=="synchroReport"||n=="synchroClose"||
+           n=="synchroSent"||n=="synchroReceived"||n=="synchroMean"||n=="synchroMin"||
+           n=="synchroMax"||n=="synchroP95"||n=="synchroLoss"){
+            if(syntax_<SyntaxVersion{1,3})throw std::runtime_error("Semantic error: Synchro built-ins require #sleela 1.3");
+        }
+        if(n=="synchroOpen"){if(c.args.size()!=2)throw std::runtime_error("Semantic error: synchroOpen(host, port) takes two arguments");emitExpr(c.args[0].get());emitExpr(c.args[1].get());emit(OP_SYN_OPEN);return true;}
+        if(n=="synchroDispatch"){if(c.args.size()!=3)throw std::runtime_error("Semantic error: synchroDispatch(handle, len, timeoutMs) takes three arguments");emitExpr(c.args[0].get());emitExpr(c.args[1].get());emitExpr(c.args[2].get());emit(OP_SYN_DISPATCH);return true;}
+        if(n=="synchroReport"){if(c.args.size()!=1)throw std::runtime_error("Semantic error: synchroReport(handle) takes one argument");emitExpr(c.args[0].get());emit(OP_SYN_REPORT);return true;}
+        if(n=="synchroClose"){if(c.args.size()!=1)throw std::runtime_error("Semantic error: synchroClose(handle) takes one argument");emitExpr(c.args[0].get());emit(OP_SYN_CLOSE);return true;}
+        {
+            struct { const char* name; int sel; } synStats[] = {
+                {"synchroSent",0},{"synchroReceived",1},{"synchroMean",2},{"synchroMin",3},
+                {"synchroMax",4},{"synchroP95",5},{"synchroLoss",6}
+            };
+            for(const auto& st:synStats){ if(n==st.name){ if(c.args.size()!=1)throw std::runtime_error("Semantic error: "+n+"(handle) takes one argument");emitExpr(c.args[0].get());emit(OP_SYN_STAT,st.sel);return true; } }
+        }
 
         auto litStr=[&](const Expr*e,const char*what)->std::string{auto sl=dynamic_cast<const StrLit*>(e);if(!sl)throw std::runtime_error("Semantic error: "+std::string(what)+" must be a string literal (an object name)");return sl->value;};
         auto emitStr=[&](const std::string&s){emit(OP_CONST,slvm_add_const_str(vm_,s.c_str()));};

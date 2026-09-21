@@ -15,6 +15,8 @@
 #include "sleela_net.h"
 #include "sleela_io.h"
 #include "sleela_time.h"
+#include "sleela_synchro.h"
+#include "sleela_munction.h"
 
 #include <math.h>
 #include <stdio.h>
@@ -105,6 +107,12 @@ struct SLVM {
     pthread_mutex_t struct_mtx;
     SLSocket sockets[SL_MAX_SOCKETS];
     SLFile files[SL_MAX_FILES];
+    /* Synchro probes and Munction reaches: VM-owned bounded handle tables,
+     * guarded by their own mutex (allocated lazily; NULL = free slot). */
+    pthread_mutex_t synchro_mtx;
+    SLSynchro* synchro[SL_SYNCHRO_MAX];
+    pthread_mutex_t munction_mtx;
+    SLMunction* munction[SL_MUNCTION_MAX];
     SLStructType struct_types[SL_MAX_STRUCT_TYPES];
     int nstruct_types;
     SLStructInstance* structs;   /* SL_MAX_STRUCTS instances, lazily allocated */
@@ -241,6 +249,8 @@ SLVM* slvm_new(void) {
     pthread_mutex_init(&vm->file_mtx, NULL);
     pthread_mutex_init(&vm->struct_mtx, NULL);
     pthread_mutex_init(&vm->thr_mtx, NULL);
+    pthread_mutex_init(&vm->synchro_mtx, NULL);
+    pthread_mutex_init(&vm->munction_mtx, NULL);
     for (int i = 0; i < SL_MAX_SOCKETS; i++) {
         pthread_mutex_init(&vm->sockets[i].mtx, NULL);
         vm->sockets[i].active = 0; vm->sockets[i].handle = SL_NET_INVALID;
@@ -284,6 +294,15 @@ void slvm_free(SLVM* vm) {
         pthread_mutex_destroy(&vm->files[i].mtx);
     }
     pthread_mutex_destroy(&vm->file_mtx);
+    /* Release any live Synchro probes and Munction reaches. */
+    for (int i = 0; i < SL_SYNCHRO_MAX; i++) {
+        if (vm->synchro[i]) { slsynchro_close(vm->synchro[i]); vm->synchro[i] = NULL; }
+    }
+    pthread_mutex_destroy(&vm->synchro_mtx);
+    for (int i = 0; i < SL_MUNCTION_MAX; i++) {
+        if (vm->munction[i]) { char sink[8]; slmunction_close(vm->munction[i], sink, sizeof(sink)); vm->munction[i] = NULL; }
+    }
+    pthread_mutex_destroy(&vm->munction_mtx);
     for (int i = 0; i < vm->nstruct_types; i++) {
         free(vm->struct_types[i].name);
         for (int j = 0; j < vm->struct_types[i].nfields; j++) free(vm->struct_types[i].fields[j]);
@@ -333,6 +352,41 @@ static int socket_alloc(SLVM* vm, SLNetHandle handle) {
 }
 static int socket_valid_handle(int h) { return h >= 0 && h < SL_MAX_SOCKETS; }
 static SLNetHandle socket_handle_locked(SLSocket* s) { return s->active ? s->handle : SL_NET_INVALID; }
+
+/* ---- Synchro probe table (VM-owned, bounded) ----------------------------- */
+static int synchro_alloc(SLVM* vm, SLSynchro* s) {
+    pthread_mutex_lock(&vm->synchro_mtx);
+    for (int i = 0; i < SL_SYNCHRO_MAX; i++) if (!vm->synchro[i]) {
+        vm->synchro[i] = s; pthread_mutex_unlock(&vm->synchro_mtx); return i;
+    }
+    pthread_mutex_unlock(&vm->synchro_mtx); return -1;
+}
+static SLSynchro* synchro_get(SLVM* vm, int h) {
+    if (h < 0 || h >= SL_SYNCHRO_MAX) return NULL;
+    pthread_mutex_lock(&vm->synchro_mtx); SLSynchro* s = vm->synchro[h]; pthread_mutex_unlock(&vm->synchro_mtx); return s;
+}
+static void synchro_release(SLVM* vm, int h) {
+    if (h < 0 || h >= SL_SYNCHRO_MAX) return;
+    pthread_mutex_lock(&vm->synchro_mtx); SLSynchro* s = vm->synchro[h]; vm->synchro[h] = NULL; pthread_mutex_unlock(&vm->synchro_mtx);
+    if (s) slsynchro_close(s);
+}
+
+/* ---- Munction reach table (VM-owned, bounded) ---------------------------- */
+static int munction_alloc(SLVM* vm, SLMunction* m) {
+    pthread_mutex_lock(&vm->munction_mtx);
+    for (int i = 0; i < SL_MUNCTION_MAX; i++) if (!vm->munction[i]) {
+        vm->munction[i] = m; pthread_mutex_unlock(&vm->munction_mtx); return i;
+    }
+    pthread_mutex_unlock(&vm->munction_mtx); return -1;
+}
+static SLMunction* munction_get(SLVM* vm, int h) {
+    if (h < 0 || h >= SL_MUNCTION_MAX) return NULL;
+    pthread_mutex_lock(&vm->munction_mtx); SLMunction* m = vm->munction[h]; pthread_mutex_unlock(&vm->munction_mtx); return m;
+}
+static void munction_clear_slot(SLVM* vm, int h) {
+    if (h < 0 || h >= SL_MUNCTION_MAX) return;
+    pthread_mutex_lock(&vm->munction_mtx); vm->munction[h] = NULL; pthread_mutex_unlock(&vm->munction_mtx);
+}
 
 static int file_alloc(SLVM* vm, SLIOHandle fd) {
     pthread_mutex_lock(&vm->file_mtx);
@@ -652,6 +706,95 @@ static SLResult run_thread(SLThread* t) {
         } break;
         case OP_SOCKCLOSE: {
             SLValue hv=POP(); if(hv.type!=SL_INT||!socket_valid_handle((int)hv.as.i)) TERR("sockclose(socket) requires a valid socket handle"); SLSocket* s=&vm->sockets[(int)hv.as.i]; pthread_mutex_lock(&s->mtx); if(s->active){slnet_close(s->handle);s->handle=SL_NET_INVALID;s->active=0;} pthread_mutex_unlock(&s->mtx); PUSH(slval_null());
+        } break;
+
+        /* ---- Synchro: honest packet dispatch + latency measurement ---- */
+        case OP_SYN_OPEN: {
+            SLValue portv=POP(), hostv=POP();
+            if(hostv.type!=SL_STR||portv.type!=SL_INT) TERR("synchroOpen(host, port) requires a String and integer port");
+            SLSynchro* s=slsynchro_open(slvm_str(vm,hostv.as.s),(uint16_t)portv.as.i);
+            if(!s){PUSH(slval_int(-1));break;}
+            int h=synchro_alloc(vm,s); if(h<0){slsynchro_close(s);PUSH(slval_int(-1));break;}
+            PUSH(slval_int(h));
+        } break;
+        case OP_SYN_DISPATCH: {
+            SLValue tov=POP(), lenv=POP(), hv=POP();
+            if(hv.type!=SL_INT||lenv.type!=SL_INT||tov.type!=SL_INT) TERR("synchroDispatch(handle, len, timeoutMs) requires three integers");
+            SLSynchro* s=synchro_get(vm,(int)hv.as.i); if(!s){PUSH(slval_int(-1));break;}
+            PUSH(slval_int(slsynchro_dispatch(s,(size_t)(lenv.as.i<0?0:lenv.as.i),(int)tov.as.i)));
+        } break;
+        case OP_SYN_STAT: {
+            SLValue hv=POP(); if(hv.type!=SL_INT) TERR("synchro stat requires a handle");
+            SLSynchro* s=synchro_get(vm,(int)hv.as.i); if(!s){PUSH(slval_int(-1));break;}
+            int64_t r=-1;
+            switch(in.a){
+                case SL_SYN_STAT_SENT: r=slsynchro_sent(s); break;
+                case SL_SYN_STAT_RECV: r=slsynchro_received(s); break;
+                case SL_SYN_STAT_MEAN: r=slsynchro_mean_us(s); break;
+                case SL_SYN_STAT_MIN:  r=slsynchro_min_us(s); break;
+                case SL_SYN_STAT_MAX:  r=slsynchro_max_us(s); break;
+                case SL_SYN_STAT_P95:  r=slsynchro_percentile_us(s,95); break;
+                case SL_SYN_STAT_LOSS: r=slsynchro_loss_permille(s); break;
+                default: r=-1; break;
+            }
+            PUSH(slval_int(r));
+        } break;
+        case OP_SYN_REPORT: {
+            SLValue hv=POP(); if(hv.type!=SL_INT) TERR("synchroReport(handle) requires a handle");
+            SLSynchro* s=synchro_get(vm,(int)hv.as.i);
+            char buf[256]; if(s) slsynchro_report(s,buf,sizeof(buf)); else buf[0]=0;
+            SLValue out; out.type=SL_STR; out.as.s=intern(vm,buf); PUSH(out);
+        } break;
+        case OP_SYN_CLOSE: {
+            SLValue hv=POP(); if(hv.type!=SL_INT) TERR("synchroClose(handle) requires a handle");
+            synchro_release(vm,(int)hv.as.i); PUSH(slval_null());
+        } break;
+
+        /* ---- Munction: reach-composition sentence --------------------- */
+        case OP_MUN_START: {
+            SLValue nv=POP(); if(nv.type!=SL_STR) TERR("Munction.start(name) requires a String name");
+            SLMunction* m=slmunction_start(slvm_str(vm,nv.as.s));
+            if(!m){PUSH(slval_int(-1));break;}
+            int h=munction_alloc(vm,m); if(h<0){char sink[8];slmunction_close(m,sink,sizeof(sink));PUSH(slval_int(-1));break;}
+            PUSH(slval_int(h));
+        } break;
+        case OP_MUN_CONNECT: {
+            SLValue uv=POP(), hv=POP(); if(hv.type!=SL_INT||uv.type!=SL_STR) TERR("Munction connect(uri) requires a reach handle and a String URI");
+            SLMunction* m=munction_get(vm,(int)hv.as.i); if(m) slmunction_connect(m,slvm_str(vm,uv.as.s)); PUSH(hv);
+        } break;
+        case OP_MUN_ENABLE: {
+            SLValue pv=POP(), hv=POP(); if(hv.type!=SL_INT||pv.type!=SL_STR) TERR("Munction enable(policy) requires a reach handle and a String policy");
+            SLMunction* m=munction_get(vm,(int)hv.as.i); if(m) slmunction_enable(m,slvm_str(vm,pv.as.s)); PUSH(hv);
+        } break;
+        case OP_MUN_SEND: {
+            SLValue dv=POP(), hv=POP(); if(hv.type!=SL_INT||dv.type!=SL_STR) TERR("Munction send(datum) requires a reach handle and a String datum");
+            SLMunction* m=munction_get(vm,(int)hv.as.i); if(m){const char* d=slvm_str(vm,dv.as.s); slmunction_send(m,d,strlen(d));} PUSH(hv);
+        } break;
+        case OP_MUN_THATCH: {
+            SLValue sv=POP(), hv=POP(); if(hv.type!=SL_INT||sv.type!=SL_STR) TERR("Munction thatch(interims) requires a reach handle and a String spec");
+            SLMunction* m=munction_get(vm,(int)hv.as.i); if(m) slmunction_thatch(m,slvm_str(vm,sv.as.s)); PUSH(hv);
+        } break;
+        case OP_MUN_CONSUME: {
+            SLValue hv=POP(); if(hv.type!=SL_INT) TERR("Munction consume() requires a reach handle");
+            SLMunction* m=munction_get(vm,(int)hv.as.i); if(m) slmunction_consume(m); PUSH(hv);
+        } break;
+        case OP_MUN_LATCH: {
+            SLValue hv=POP(); if(hv.type!=SL_INT) TERR("Munction latch() requires a reach handle");
+            SLMunction* m=munction_get(vm,(int)hv.as.i); if(m) slmunction_latch(m); PUSH(hv);
+        } break;
+        case OP_MUN_RECEPTION: {
+            SLValue hv=POP(); if(hv.type!=SL_INT) TERR("Munction reception() requires a reach handle");
+            SLMunction* m=munction_get(vm,(int)hv.as.i);
+            char buf[2048]; if(m) slmunction_last_reception(m,buf,sizeof(buf)); else buf[0]=0;
+            SLValue out; out.type=SL_STR; out.as.s=intern(vm,buf); PUSH(out);
+        } break;
+        case OP_MUN_CLOSE: {
+            SLValue hv=POP(); if(hv.type!=SL_INT) TERR("Munction closeWithReceipt() requires a reach handle");
+            int h=(int)hv.as.i; SLMunction* m=munction_get(vm,h);
+            char receipt[512];
+            if(m){ slmunction_close(m,receipt,sizeof(receipt)); munction_clear_slot(vm,h); }
+            else receipt[0]=0;
+            SLValue out; out.type=SL_STR; out.as.s=intern(vm,receipt); PUSH(out);
         } break;
 
         /* ---- Linux file I/O ------------------------------------------- */

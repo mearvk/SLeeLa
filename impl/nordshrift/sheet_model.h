@@ -95,6 +95,45 @@ struct FinanceSpec {
     int line = 0;
 };
 
+// Munction reach-composition objects are first-class SST declarations, parallel
+// to the network object set. These names correspond to the Munction reach model
+// (MUNCTION.md / core/sleela_munction.*) and are deliberately closed so an SST
+// sheet cannot silently request an unsupported reach verb.
+enum class ReachVerb {
+    Start, Connect, Open, Enable, Send, Thatch, Consume, Observe,
+    Propagate, Latch, Contain, Close, CloseWithReceipt, Abort
+};
+
+// The system-method channels a reach may connect over (MUNCTION.md §4).
+enum class ReachChannel { Pipe, File, Tcp, Http, Sdps, Crypto };
+
+struct ReachSpec {
+    std::vector<ReachVerb> verbs;         // declared reach verb ladder
+    std::vector<ReachChannel> channels;   // declared system-method channels
+    int minVerbs = 4;                     // sanity bound floor (MUNCTION.md §1.2)
+    int maxVerbs = 16;                    // sanity bound ceiling
+    bool receivable = true;               // every reach yields a receipt
+    bool coherent = true;                 // every send is coherent
+    bool present = false;
+    int line = 0;
+};
+
+// Synchro measurement objects are first-class SST declarations. These names
+// correspond to the honest packet-dispatch/measurement model (SYNCHRO.md /
+// synchro/ / core/sleela_synchro.*) and are deliberately closed.
+enum class MeasureMetric {
+    Sent, Received, Loss, Mean, Min, Max, P95, Report
+};
+
+struct MeasureSpec {
+    std::vector<MeasureMetric> metrics;   // declared measured metrics
+    bool honest = true;                   // no delivery-time guarantee; measured only
+    int timeoutMs = 1000;                 // default per-dispatch timeout budget
+    bool present = false;
+    bool hasTimeout = false;
+    int line = 0;
+};
+
 struct Pragmas {
     std::string nordshrift;
     std::string sleela;
@@ -246,6 +285,8 @@ struct Sheet {
     Interop   interop;
     NetworkSpec network;
     FinanceSpec finance;
+    ReachSpec   reach;      // Munction reach-composition block (1.3)
+    MeasureSpec measure;    // Synchro measurement block (1.3)
     std::vector<semantic::Subject> subjects;   // 2.0 semantic subject blocks
     std::vector<RuleConfig> ruleBlocks;
     std::vector<Profile>    profiles;

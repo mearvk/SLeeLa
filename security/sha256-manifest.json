@@ -59,11 +59,11 @@
     },
     {
       "path": "impl/core/sleela_core.c",
-      "sha256": "6566dcc60d81afcd072a926f176d464491e7704dceb3eced0f71799d409533a6"
+      "sha256": "3b875b7f37399688f946c1792759694be0a8998e1e053e11d45f9efc35a79dcb"
     },
     {
       "path": "impl/core/sleela_core.h",
-      "sha256": "cb413c49f52a05eb7c2df0089becde6b6c844b4f6a212b023f171d56594248be"
+      "sha256": "ccebf2e9335a5698b13de110d2ab7f4ea664cfa107aff10cb25db6881ae66ed3"
     },
     {
       "path": "impl/core/sleela_events.c",
@@ -175,11 +175,11 @@
     },
     {
       "path": "impl/frontend/ast.h",
-      "sha256": "095da54f3209b2cb807e3cf23b4cba1b98f3c7f9c98ede0a888fbb542c532bf3"
+      "sha256": "8f5b1dbe1b8b6d538b4a4772ed821755f08a822131021ce794d1f096ec5e03a0"
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "7e9d0ce30d2d8c099c5b16caf8e38f2b40cffae4f277c8608fa78fc4dda32213"
+      "sha256": "d76f30666d91cff50929c05be5bf70b56efebd0e76631fef8afdbf925e8f5cb3"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -187,23 +187,23 @@
     },
     {
       "path": "impl/frontend/driver.cpp",
-      "sha256": "f47ced31922d7ef96fbccd1ed95b0f0cce602ebb5f52d942542003e7a0f798a5"
+      "sha256": "93a66c9bc7ca6898c902305d386d3edda8bed18a655f8cbe8b9bbbc0b005690f"
     },
     {
       "path": "impl/frontend/lexer.cpp",
-      "sha256": "15083a113add8e859bff72ef177373e606c4690bdd2f0444fdeab6c18b256077"
+      "sha256": "dde093167de75b3c0bd3c185226b5f837498b3854927d9c50c9049b7718f5edc"
     },
     {
       "path": "impl/frontend/lexer.h",
-      "sha256": "2f34c222b56b293d94a823e12d81205df71e3c8b2f19133bc7c4f10dc4dec3d6"
+      "sha256": "00807a44449d7676b8fa5b12d84fa0bebd369b817d6610a4ffcc5bf225ee5429"
     },
     {
       "path": "impl/frontend/parser.cpp",
-      "sha256": "a3be62e3668d1373e2101376c90378ac48a0582b1d7b9887331390b3ad8d2c10"
+      "sha256": "0cbb68ce57b9f58141cf7e049caaa5b5905cf0a360b9154f089d39dec8ccc094"
     },
     {
       "path": "impl/frontend/parser.h",
-      "sha256": "eba2d573e3931f89da90c3130a9bcc294eb345dcf60f032b8d4b270ff33c07db"
+      "sha256": "f685f5f3a3282d19d03079802d75db91cc0a1e94582943cee05a7a7206a5470d"
     },
     {
       "path": "impl/frontend/version.cpp",
@@ -211,11 +211,11 @@
     },
     {
       "path": "impl/frontend/version.h",
-      "sha256": "62d106c96eedbf8ad15f10cbbc1e0be149958ebfbbbbe9468a4b2c00c026186a"
+      "sha256": "deb6fb1677c5033ad815288aa4513cc3e092744d99ba52495b63e5d9b0d7de4f"
     },
     {
       "path": "impl/nordshrift/component_manifest.cpp",
-      "sha256": "232957041b717d73cebc55449db4035ac8c7fe729fe624455fcd997f3f6347df"
+      "sha256": "e9607bae1bafee88152b29f748f6a1dd05ae7b38710a009ba421a87f71e97416"
     },
     {
       "path": "impl/nordshrift/component_manifest.h",
@@ -235,7 +235,7 @@
     },
     {
       "path": "impl/nordshrift/nordshrift.cpp",
-      "sha256": "50dca5688dfc2c76bb38af6c986913a1c5e14d001b06b03794057354d45c8b26"
+      "sha256": "7d41157be7181766f0a6b83c209e3b020deef40407254b7ba02a175cd0b0727d"
     },
     {
       "path": "impl/nordshrift/object_compat.cpp",
@@ -247,7 +247,7 @@
     },
     {
       "path": "impl/nordshrift/sheet_model.h",
-      "sha256": "4f02daa537502f874a82a0ada2b353bfdebba4e8b9e8e3b5dbe133a294bbea85"
+      "sha256": "f7e3e80d39b3ee0d49a9d01ee601182ca1d1864987e1aae4391b514ae392c15d"
     },
     {
       "path": "impl/nordshrift/sleela_emit.cpp",
@@ -275,11 +275,11 @@
     },
     {
       "path": "impl/nordshrift/sst_parser.cpp",
-      "sha256": "d65c862c9a6eea334c53785d8f9d7930680527684c0cfae5e54c87ccc8595dba"
+      "sha256": "6ad0401768661f03d96460f4ed5f2a84df0f34ecb6cf711f287d15d6e87d648b"
     },
     {
       "path": "impl/nordshrift/sst_parser.h",
-      "sha256": "5e4351c37849f54cd7ec45a0552c78d857791a7b4316d5f9ad7869f464ceacc0"
+      "sha256": "43543d93d30d02e41ffc26d37e327603da664c3db107dcbc215d50a6c1ce9b2a"
     },
     {
       "path": "impl/nordshrift/subject_model.cpp",
@@ -392,6 +392,74 @@
     {
       "path": "runtime/security_supervisor.h",
       "sha256": "7512954269216c083e36eb3bdc7d68e6c343e3ef03d01e1957d471166ab01fa4"
+    },
+    {
+      "path": "impl/core/sleela_synchro.h",
+      "sha256": "147a95bb88e5d037c1e5f33f512d8e4e1cbe870e4bbed1187572ea930bd85ecc"
+    },
+    {
+      "path": "impl/core/sleela_synchro.c",
+      "sha256": "4ab4796be06d1cb5dacd4915e524a00d98a8df9241f67f3a92c0cc578ba9eb53"
+    },
+    {
+      "path": "impl/core/sleela_munction.h",
+      "sha256": "fbca9c0af71b4def3c98a375a7ec57a55b5fd7647b618711ee4a38bae05ceca6"
+    },
+    {
+      "path": "impl/core/sleela_munction.c",
+      "sha256": "9a909adbb88a2793133b618752bdc07857365f7baab1ebc51192d07d33adc233"
+    },
+    {
+      "path": "impl/core/synchro_smoke.c",
+      "sha256": "15ef76e832e24b3d12e2d0e31cd82fa0e8b08c81b55febf8e1ba283fe0c50d16"
+    },
+    {
+      "path": "impl/core/munction_smoke.c",
+      "sha256": "7ec3544337d4bd98c73b8e4a90262fd323293013ccfd9c5cc2ce7cb9729a7a68"
+    },
+    {
+      "path": "impl/examples/munction_reach.sleela",
+      "sha256": "d9539b5f4857be001ab0c464829c0bb87d3847f2a35e4809a0eabe0a9d86150f"
+    },
+    {
+      "path": "impl/examples/synchro_measure.sleela",
+      "sha256": "58b7cb08a819c4a32b462eb766875b9bc1b32cdfca22ee9a38c0a49292d1485a"
+    },
+    {
+      "path": "impl/nordshrift/examples/reach-measure.sst",
+      "sha256": "979451bbc78ef6c2663dc08dc3eb14c3ae51867cf817b40c83b6d18a548e322f"
+    },
+    {
+      "path": "impl/nordshrift/SST.MUNCTION.md",
+      "sha256": "6d663b9e15471de1bb8810251b4d8df21678e11f9b2064ae8260ea2bb364efd3"
+    },
+    {
+      "path": "impl/nordshrift/SST.SYNCHRO.md",
+      "sha256": "0da2dc41eaece27d0b0b653ae1aee3bd1266df76da50a44ae94a05e4d5876e9e"
+    },
+    {
+      "path": "impl/nordshrift/MUNCTION.model",
+      "sha256": "cc7e3cab828e20c8f99c4966164c8f0ac8a60fcb67eb84f603355a7ee50e68f7"
+    },
+    {
+      "path": "impl/nordshrift/SYNCHRO.model",
+      "sha256": "4fe9ce400ea8de9d15ab194fa001433e21ee05b5d4a17f4b5a991ed82bffa122"
+    },
+    {
+      "path": "SYNCHRO.md",
+      "sha256": "6ba54684bf859bbadc14e051559d32919be67f66a7b4d5db872f93c0ca66d126"
+    },
+    {
+      "path": "MUNCTION.md",
+      "sha256": "0cada69a89ab0532f7370c3925944a005fa3e66d1fa327f0050188ac68fb26ee"
+    },
+    {
+      "path": "SLEELA.syntax",
+      "sha256": "f4de9fb86896e7bf928dfafee5d20794485f7a45aceba31a9a5f7e6f704351dd"
+    },
+    {
+      "path": "VERSION.md",
+      "sha256": "09791fe7a0206ca85a78c49091c9b30e3040a2ea840da0b4a73b6a532bcc9987"
     }
   ]
 }

@@ -1,17 +1,17 @@
 # Sleela — Language Syntax Specification
 
     Language:        Sleela
-    Syntax version:  1.2   (the .sleela grammar version this document describes)
-    Compiler:        Sleelvac(TM) 1.4  (accepts .sleela syntax 1.0 .. 1.2)
+    Syntax version:  1.3   (the .sleela grammar version this document describes)
+    Compiler:        Sleelvac(TM) 1.4  (accepts .sleela syntax 1.0 .. 1.3)
     Surface:         Java-like
     Core:            Turing-complete, thread-friendly C/C++ execution core
     Companion:       SHEET.sheet (system-object catalog), SST.model (NS-SST-0001)
-    Status:          Normative for the syntax 1.2 surface
+    Status:          Normative for the syntax 1.3 surface
 
     Versioning note: two distinct version numbers apply and must not be
     conflated. The **syntax version** (MAJOR.MINOR, declared per file with
-    `#sleela 1.2`) is the grammar version defined here and enforced by
-    `impl/frontend/version.{h,cpp}` (supported range 1.0 .. 1.2). The
+    `#sleela 1.3`) is the grammar version defined here and enforced by
+    `impl/frontend/version.{h,cpp}` (supported range 1.0 .. 1.3). The
     **compiler/tool version** (Sleelvac 1.4, printed by `sleela version`) is the
     implementation release and evolves independently. A file must declare a
     syntax version within the supported range; the tool version is informational.
@@ -22,7 +22,7 @@ Java-like code, Sleela can **address every object type named in `SHEET.sheet`**
 through its *conducted methods*, and it honors the **Constitution** invariants
 (system depth 3024, complexity degree ≤ 4).
 
-This document is normative for the syntax 1.2 surface the front end accepts.
+This document is normative for the syntax 1.3 surface the front end accepts.
 Every production and built-in below is implemented in `impl/frontend` and
 executes on `impl/core`.
 
@@ -350,6 +350,16 @@ Expected output (order of the concurrent phase aside):
     conduct (7):    conduct role insight congruent route sysdepth degreemax
     threading (6):  spawn join lock unlock send recv
     struct (2):     structPack structUnpack                 (syntax 1.2+)
+    munction (1+10):Munction.start + fluent verbs .connect .enable .send
+                    .thatch .consume .observe .propagate .latch
+                    .closeWithReceipt .reception               (syntax 1.3+)
+    synchro (11):   synchroOpen synchroDispatch synchroReport synchroClose
+                    synchroSent synchroReceived synchroMean synchroMin
+                    synchroMax synchroP95 synchroLoss           (syntax 1.3+)
+
+Contextual built-ins are recognized in call position only (they are not reserved
+words). The Munction fluent chain is one sane reach sentence of 4..16 calls; see
+MUNCTION.md. The synchro* built-ins are honest measurement; see SYNCHRO.md.
 
 --------------------------------------------------------------------------------
 Sleela (syntax 1.2) — Java-like surface, addressing the full SHEET.sheet object space,

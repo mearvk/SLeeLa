@@ -17,6 +17,10 @@ struct VarExpr:Expr{std::string name;explicit VarExpr(std::string n):name(std::m
 struct Unary:Expr{std::string op;ExprP operand;Unary(std::string o,ExprP e):op(std::move(o)),operand(std::move(e)){}};
 struct Binary:Expr{std::string op;ExprP lhs,rhs;Binary(std::string o,ExprP l,ExprP r):op(std::move(o)),lhs(std::move(l)),rhs(std::move(r)){}};
 struct Call:Expr{std::string callee;std::vector<ExprP> args;explicit Call(std::string c):callee(std::move(c)){}};
+// `receiver.method(args)` -- a fluent postfix method call. Used by chained
+// forms such as Munction.start(x).connect(y).send(z)...closeWithReceipt().
+// The receiver is any expression (typically the prior link in the chain).
+struct MethodCall:Expr{ExprP receiver;std::string method;std::vector<ExprP> args;MethodCall(ExprP r,std::string m):receiver(std::move(r)),method(std::move(m)){}};
 // `new TypeName()` -- construct a fresh struct instance (a VM-local handle).
 struct NewExpr:Expr{std::string typeName;explicit NewExpr(std::string t):typeName(std::move(t)){}};
 // `base.field` -- read a struct field. `base` is any expression yielding a struct.

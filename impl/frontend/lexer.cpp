@@ -89,6 +89,27 @@ Token Lexer::makeString() {
     if (atEnd()) error("unterminated string literal");
     advance(); return Token{Tok::Str, out, startLine, startCol};
 }
+// Contextual built-in names introduced with #sleela 1.3. Like the conducted-
+// method and threading names, these are NOT reserved words: they are recognized
+// in call position by the compiler (Munction.start / the .sleela fluent reach
+// verbs, and the synchro* measurement built-ins) and may otherwise be used as
+// ordinary identifiers. They are listed here so the lexical surface documents
+// the vocabulary the front end understands. isContextualBuiltin() lets tools
+// query membership without changing tokenization.
+static const std::unordered_map<std::string, int> kContextualBuiltins13 = {
+    // Munction reach-composition (fluent): opener + verbs.
+    {"Munction",1},{"start",1},{"connect",1},{"enable",1},{"send",1},
+    {"thatch",1},{"consume",1},{"latch",1},{"closeWithReceipt",1},{"reception",1},
+    // Synchro honest packet dispatch + measurement.
+    {"synchroOpen",1},{"synchroDispatch",1},{"synchroReport",1},{"synchroClose",1},
+    {"synchroSent",1},{"synchroReceived",1},{"synchroMean",1},{"synchroMin",1},
+    {"synchroMax",1},{"synchroP95",1},{"synchroLoss",1}
+};
+
+bool isContextualBuiltin(const std::string& name) {
+    return kContextualBuiltins13.find(name) != kContextualBuiltins13.end();
+}
+
 Token Lexer::makeIdentOrKeyword() {
     static const std::unordered_map<std::string, Tok> kw = {
         {"class",Tok::KwClass},{"static",Tok::KwStatic},{"void",Tok::KwVoid},

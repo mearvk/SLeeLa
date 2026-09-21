@@ -1,0 +1,43 @@
+#nordshrift 1.0
+#sleela     1.3
+
+/// Sheet metadata. Declares the Munction reach series and the Synchro measure
+/// series as first-class NS-SST component blocks (syntax 1.3), parallel to the
+/// existing network/finance blocks.
+sheet reach-measure:
+  version      1.0.0
+  author       "Sleela Design Council"
+  description  """
+    Munction reach-composition (reach:) and Synchro honest-measurement (measure:)
+    component declarations. The reach series is bounded 4..16 verbs, receivable,
+    and coherent; the measure series is honest by construction (measured, never
+    promised). Emitted congruently to the java/sleela/c manifest targets.
+    """
+  tags  [ "munction", "synchro", "reach", "measure" ]
+
+/// Source: all .sleela files under the module tree.
+source:
+  root  "src"
+  glob  "**/*.sleela"
+
+/// Target: canonical Sleela source, mirror-source layout.
+target:
+  root             "out"
+  layout           mirror-source
+  target-language  sleela
+
+/// Munction reach series (MUNCTION.md / core/sleela_munction.*).
+reach:
+  verbs     [ start, connect, enable, send, thatch, consume, observe,
+              propagate, latch, contain, closeWithReceipt, abort ]
+  channels  [ pipe, file, tcp, http, sdps, crypto ]
+  min-verbs 4
+  max-verbs 16
+  receivable true
+  coherent   true
+
+/// Synchro measure series (SYNCHRO.md / core/sleela_synchro.*).
+measure:
+  metrics    [ sent, received, loss, mean, min, max, p95, report ]
+  timeout-ms 1000
+  honest     true

@@ -30,8 +30,34 @@ typedef enum {
     OP_GETFIELD,    /* a = field offset; pops instance, pushes field value    */
     OP_SETFIELD,    /* a = field offset; pops value then instance             */
     OP_STRUCTPACK,  /* pops instance, pushes a JSON String of its fields      */
-    OP_STRUCTUNPACK /* a = struct-type index; pops JSON String, pushes handle */
+    OP_STRUCTUNPACK,/* a = struct-type index; pops JSON String, pushes handle */
+    /* Synchro (syntax 1.3): honest packet dispatch + measurement. Handles are
+     * VM-local integers into a bounded probe table, like sockets. */
+    OP_SYN_OPEN,    /* pops port,host; pushes probe handle (-1 on failure)     */
+    OP_SYN_DISPATCH,/* pops timeout_ms,len,handle; pushes measured RTT us / -1 */
+    OP_SYN_STAT,    /* a = stat selector; pops handle; pushes int stat         */
+    OP_SYN_REPORT,  /* pops handle; pushes a String honest report             */
+    OP_SYN_CLOSE,   /* pops handle; releases the probe; pushes null            */
+    /* Munction (syntax 1.3): the reach-composition sentence. A reach is a
+     * VM-local handle into a bounded reach table. */
+    OP_MUN_START,   /* pops name String; pushes reach handle (-1 on failure)   */
+    OP_MUN_CONNECT, /* pops uri,handle; pushes handle (passthrough) / -1       */
+    OP_MUN_ENABLE,  /* pops policy,handle; pushes handle                       */
+    OP_MUN_SEND,    /* pops datum,handle; pushes handle                        */
+    OP_MUN_THATCH,  /* pops spec,handle; pushes handle                         */
+    OP_MUN_CONSUME, /* pops handle; pushes handle (reception stored on reach)  */
+    OP_MUN_LATCH,   /* pops handle; pushes handle                              */
+    OP_MUN_RECEPTION,/* pops handle; pushes last reception String             */
+    OP_MUN_CLOSE    /* pops handle; pushes receipt String; releases the reach  */
 } SLOp;
+/* Synchro stat selectors for OP_SYN_STAT (operand a). */
+#define SL_SYN_STAT_SENT 0
+#define SL_SYN_STAT_RECV 1
+#define SL_SYN_STAT_MEAN 2
+#define SL_SYN_STAT_MIN  3
+#define SL_SYN_STAT_MAX  4
+#define SL_SYN_STAT_P95  5
+#define SL_SYN_STAT_LOSS 6
 #define SL_MAX_THREADS 128
 #define SL_MAX_LOCKS 32
 #define SL_MAX_SOCKETS 128

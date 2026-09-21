@@ -1,0 +1,44 @@
+# Nordshrift Munction Component Model — NS-MUN-0001
+
+Status: implementation model
+Revision: 1.0.0
+Date: September 2026
+
+## Purpose
+
+Defines the Munction reach-composition components exposed to Nordshrift/Sleela
+builds. Munction is a fluent reach sentence (4..16 verbs) over the known
+system-method channels; the same reach series can be represented in Sleela
+source, emitted as C-backed execution, or represented as structural metadata.
+
+## Verbs (closed)
+
+start, connect, open, enable, send, thatch, consume, observe, propagate,
+latch, contain, close, closeWithReceipt, abort
+
+## Channels (closed)
+
+- `pipe`   — OS pipe / FIFO
+- `file`   — file I/O
+- `tcp`    — internet (TCP)
+- `http`   — internet (HTTP)
+- `sdps`   — private packets (Secure Datum Packet Stream: magic+length+MAC)
+- `crypto` — authenticated seal/open envelope wrapping an inner channel
+
+## Invariants
+
+- Sanity bound: 4 <= verbs <= 16 (fixed by the language).
+- Receivable: every reach yields a receipt.
+- Coherent send: offered vs. acknowledged bytes are accounted; a bump is
+  recorded, never hidden.
+
+## Execution ABI
+
+The core VM exposes Munction as VM opcodes with VM-local reach handles:
+`OP_MUN_START`, `OP_MUN_CONNECT`, `OP_MUN_ENABLE`, `OP_MUN_SEND`,
+`OP_MUN_THATCH`, `OP_MUN_CONSUME`, `OP_MUN_LATCH`, `OP_MUN_RECEPTION`,
+`OP_MUN_CLOSE`. These back the `Munction.start(...)` fluent source surface.
+
+## SST guidance
+
+See `SST.MUNCTION.md` for the `reach:` block grammar and `examples/reach-measure.sst`.

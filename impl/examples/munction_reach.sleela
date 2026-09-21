@@ -1,0 +1,37 @@
+#sleela 1.3
+// munction_reach.sleela -- the Munction reach-composition sentence, first-class
+// in the Sleela source language (syntax 1.3). A reach is one sane sentence:
+// start -> connect -> send -> thatch -> consume -> latch -> closeWithReceipt.
+// Every reach is receivable (it yields a receipt) and every send is coherent.
+class MunctionReach {
+    void main() {
+        // A file-channel reach (deterministic, no network needed). The receipt
+        // is a String the program can print or inspect.
+        String receipt = Munction.start("xyx")
+            .connect("file:/tmp/munction-example.log")
+            .send("payload")
+            .thatch("frame,checksum")
+            .consume()
+            .latch()
+            .closeWithReceipt();
+        print(receipt);
+
+        // A private-packet (sdps) reach: the payload round-trips through the
+        // SDPS magic+length+MAC framing.
+        String r2 = Munction.start("packet")
+            .connect("sdps://tmcf:19866")
+            .send("hello-packet")
+            .consume()
+            .latch()
+            .closeWithReceipt();
+        print(r2);
+
+        // A pipe reach whose reception we read back.
+        String echoed = Munction.start("echo")
+            .connect("pipe:/tmp/munction-echo")
+            .send("ping")
+            .consume()
+            .reception();
+        print("echoed: " + echoed);
+    }
+}
