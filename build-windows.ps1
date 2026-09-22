@@ -115,4 +115,10 @@ if ($BinDir -ne "") {
     Write-Host "Verify: $SleelaExe version"
 }
 Write-Host ""
+Write-Host ""
+Write-Host "Common configuration:"
+Write-Host "  sleela exec --config config/sleela.properties.example -- <program> <args...>"
+Write-Host "  The selected file is exported as SLEELA_CONFIG_FILE."
+Write-Host "  Windows target: 10+; runtime configuration is shared with Linux/macOS."
+Write-Host ""
 Write-Host "Build process finished."
