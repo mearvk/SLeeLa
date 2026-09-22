@@ -195,3 +195,10 @@ Source-level changes were committed to `main`. Native Windows/macOS server build
 - Documented that the higher viewpoint can represent both Degree 1 (`next`) and Degree 2 (`next.next`).
 - Required programmatic back-propagation when the higher viewpoint requests Degree-1 visibility.
 - Kept the entire model symbolic and VM-managed; it does not introduce native pointer arithmetic or unrestricted memory traversal.
+
+## 2026-09-22 — Linux and macOS native API references
+
+- Added API.LINUX.md as the Linux-native SLeeLa API catalog, covering system calls, libc/POSIX, processes, threads, memory, filesystem I/O, sockets, epoll/io_uring, IPC, security, dynamic libraries, terminals, devices, GUI backends, architecture/ABI boundaries, and exposed-call inventory rules.
+- Added API.MACOS.md as the macOS-native SLeeLa API catalog, covering Darwin/POSIX, libSystem, Foundation, AppKit, Objective-C Runtime, Core Foundation, Network, Security, IOKit, Metal, XPC, architecture/ABI boundaries, and exposed method/function/class inventory rules.
+- Updated api/index.html so the Linux and macOS native API references are directly discoverable from the SLeeLa API documentation entry point.
+- Kept native API documentation separate from implementation claims: documented APIs are not automatically exposed to SLeeLa until binding, validation, error handling, ownership, security, tests, examples, and platform behavior are defined.
