@@ -36,6 +36,10 @@
 extern "C" {
 #endif
 
+#define SLMM_MIN_MEMORY_BYTES (256ull * 1024ull * 1024ull) /* 256 MiB */
+#define SLMM_MAX_MEMORY_BYTES (2048ull * 1024ull * 1024ull) /* 2 GiB */
+#define SLMM_DEFAULT_MEMORY_BYTES SLMM_MAX_MEMORY_BYTES
+
 /* Why the manager refused an allocation (readable via slmm_last_status). */
 typedef enum {
     SLMM_OK = 0,          /* last allocation succeeded (or none yet)        */
@@ -57,8 +61,9 @@ typedef struct {
     SLMMStatus last_status;   /* result of the most recent alloc attempt     */
 } SLMMStats;
 
-/* Enable the process-wide manager with an optional hard limit on live bytes
- * (0 == unlimited). Safe to call again to raise/lower the limit; resetting
+/* Enable the process-wide manager with a hard limit on live bytes.
+ * The configured limit is constrained to 256 MiB..2 GiB. A zero value selects
+ * the default 2 GiB limit. Safe to call again to raise/lower the limit; resetting
  * counters is done by slmm_reset(). Returns 0 on success. */
 int  slmm_enable(size_t limit_bytes);
 
@@ -70,6 +75,7 @@ void slmm_disable(void);
 int    slmm_is_enabled(void);
 size_t slmm_limit(void);
 void   slmm_set_limit(size_t limit_bytes);
+int    slmm_valid_limit(size_t limit_bytes);
 
 /* Accounted allocation family. When the manager is disabled these still return
  * usable memory (so callers never branch), just without accounting. Every
