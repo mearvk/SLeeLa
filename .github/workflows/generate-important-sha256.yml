@@ -1,0 +1,67 @@
+name: Generate Important SHA-256 Manifest
+
+on:
+  push:
+    branches:
+      - main
+      - master
+    paths:
+      - 'impl/**'
+      - 'runtime/**'
+      - 'ledger/**'
+      - 'api/**'
+      - 'server-edition/**'
+      - 'international-criminal-court/**'
+      - 'security/**'
+      - '.github/workflows/**'
+      - '*.md'
+      - 'SLEELA.syntax'
+      - 'VERSION.md'
+      - 'tools/generate-important-sha256-manifest.py'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  manifest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Generate important-file SHA-256 manifest
+        run: |
+          python3 tools/generate-important-sha256-manifest.py \
+            --root . \
+            --output security/important-sha256-manifest.json
+
+      - name: Verify manifest is internally consistent
+        run: |
+          python3 - <<'PY'
+          import hashlib, json
+          from pathlib import Path
+          root=Path(".")
+          manifest=json.loads(Path("security/important-sha256-manifest.json").read_text())
+          for item in manifest["files"]:
+              p=root/item["path"]
+              h=hashlib.sha256(p.read_bytes()).hexdigest()
+              if h != item["sha256"]:
+                  raise SystemExit(f"SHA-256 mismatch: {item['path']}")
+          print(f"verified {len(manifest['files'])} SHA-256 entries")
+          PY
+
+      - name: Commit manifest when changed
+        run: |
+          if git diff --quiet -- security/important-sha256-manifest.json; then
+            echo "Important SHA-256 manifest is already current."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add security/important-sha256-manifest.json
+          git commit -m "Update important-file SHA-256 manifest"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
