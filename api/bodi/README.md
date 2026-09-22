@@ -3,7 +3,7 @@
 BODI XML adds a declarative XML representation to SLeeLa's existing BODI witness model.
 
 Executable project families:
-- Science: math, physics, and chemistry operations are currently executable through an allow-listed dispatcher.
+- Science: math, physics, chemistry, and data-analytics operations are currently executable through an allow-listed dispatcher.
 - Email / SMTP: the existing Email Facade can be configured from XML.
 - Post: an HTTP-style POST representation can be validated from XML.
 - Listener: an HTTP listener declaration can be validated from XML.
@@ -15,7 +15,7 @@ Build:
 
     make
 
-Run science projects:
+Run science projects, including the data-analytics shelf:
 
     ./bodi-xml-runner examples/science-math.xml
     ./bodi-xml-runner examples/science-physics.xml
