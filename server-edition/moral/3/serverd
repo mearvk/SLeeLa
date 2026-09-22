@@ -61,4 +61,4 @@ else
   exit "$rc"
 fi
 [ "$FOREGROUND" = true ] && tail -n 16 "$LOG"
-echo "serverd: Service 3 completed; results=$LOG"
+echo "Discord-3™ serverd: Service 3 completed; results=$LOG"
