@@ -28,6 +28,7 @@ extern "C" {
 #include "../core/sleela_core.h"
 #include "../core/sleela_memmgr.h"
 #include "../core/sleela_terminal.h"
+#include "../core/sleela_design_activity.h"
 }
 namespace fs=std::filesystem;
 static const char* kVersion="Sleelvac™ 1.4 (Sleela compiler; executable native math/physics/economics/chemistry/financial modules; persistent .sleela Core artifacts; .xclass input; JVM-family langin input: Java/Kotlin/Scala/Groovy/Clojure; Nordshrift round-trip (SLeeLa->Nordshrift->back); OS Defender provisioning; SHA-256 execution gate)";
@@ -334,7 +335,7 @@ static void reportMemoryManager(){
 // ---------------------------------------------------------------------------
 static void nativeUsage(){
     std::cerr<<"Usage:\n"
-               "  sleela native [--config <file>] [--memory-manager[=<size>]] [--] <program> [args...]\n"
+               "  sleela native [--config <file>] [--memory-manager[=<size>]] [--] <program> [args...]\n  sleela design-activity <science> <correctness> <reproducibility> <observability> <safety> <resource> <interoperability>\n"
                "  sleela exec   [--config <file>] [--memory-manager[=<size>]] [--] <program> [args...]\n"
                "\n"
                "Runs a native OS executable from the SLeeLa terminal under a real\n"
@@ -414,6 +415,19 @@ static int nativeCmd(int argc,char**argv){
 static void lowerNativeModules(sleela::Program& prog){sleela::chemistry::lowerProgram(prog);sleela::financial::lowerProgram(prog);auto saved=prog.imports;prog.imports.erase(std::remove(prog.imports.begin(),prog.imports.end(),"chemistry"),prog.imports.end());prog.imports.erase(std::remove(prog.imports.begin(),prog.imports.end(),"financial"),prog.imports.end());sleela::native::lowerProgram(prog);prog.imports=std::move(saved);}
 static int compileAndRun(sleela::Program& prog,const catalog::Catalog& cat,const sleela::SyntaxVersion& syntax={1,0}){SLVM*vm=slvm_new();if(!vm){std::cerr<<"sleelvac: unable to allocate Sleela VM\n";return 1;}int rc=0;try{lowerNativeModules(prog);sleela::compile(prog,vm,&cat,syntax);SLResult r=slvm_run(vm);if(r==SLR_ERROR){const char*e=slvm_error(vm);std::cerr<<"sleelvac: runtime error: "<<(e?e:"unknown")<<"\n";rc=1;}}catch(const std::exception&ex){std::cerr<<"sleelvac: "<<ex.what()<<"\n";rc=1;}slvm_free(vm);return rc;}
 static catalog::Catalog loadCatalog(){const char*env=std::getenv("SLEELA_SHEET");const char*candidates[]={env,"SHEET.sheet","../SHEET.sheet","../../SHEET.sheet","../../../SHEET.sheet"};for(const char*p:candidates){if(!p||!*p)continue;bool ok=false;catalog::Catalog c=catalog::parseCatalogFile(p,&ok);if(ok)return c;}return catalog::Catalog{};}
+static int designActivityCmd(int argc,char**argv){
+    if(argc<9){std::cerr<<"Usage: sleela design-activity <science> <correctness> <reproducibility> <observability> <safety> <resource> <interoperability>\n";return 2;}
+    std::string science=argv[2]; if(science.rfind("--science=",0)==0)science=science.substr(10);
+    SLDA_ScienceDomain domain;
+    if(slda_parse_domain(science.c_str(),&domain)!=0){std::cerr<<"sleela: unknown science domain '"<<science<<"'\n";return 2;}
+    double raw[SLDA_DIMENSIONS];
+    for(int i=0;i<SLDA_DIMENSIONS;i++){char*end=nullptr;raw[i]=std::strtod(argv[i+3],&end);if(!end||*end||!std::isfinite(raw[i])||raw[i]<0||raw[i]>100){std::cerr<<"sleela: design activity score "<<(i+1)<<" must be 0..100\n";return 2;}}
+    SLDA_Vector normalized,expected; SLDA_Result result{};
+    if(slda_normalize(raw,&normalized)!=0||slda_science_profile(domain,&expected)!=0||slda_compare(&normalized,&expected,&result)!=0){std::cerr<<"sleela: design activity calculation failed\n";return 1;}
+    result.domain=domain;
+    char json[1024];slda_format_json("sleela",&result,json,sizeof json);
+    std::cout<<json<<"\n"; return 0;
+}
 static int usage(){std::cerr<<"Usage:\n  sleela [--memory-manager[=<size>]] compile <file.sleela> -o <program.sleela>\n  sleela [--memory-manager[=<size>]] run <file.sleela>\n  sleela [--memory-manager[=<size>]] run <program.sleela>\n  sleela [--memory-manager[=<size>]] run <file.xclass> [more...]\n  sleela xclass [--run|--emit|--info] <file.xclass> [more...]\n  sleela langin [--run|--emit-sleela|--emit-xclass|--info] <file.java|.kt|.scala|.groovy|.clj> [more...]\n  sleela nordshrift [--emit] [--target=sleela|java|c] [--package=P] <file.sleela>   (SLeeLa -> Nordshrift)\n  sleela nordshrift --roundtrip <file.sleela>                                       (SLeeLa -> Nordshrift -> back, run)\n  sleela check <file.sleela>\n  sleela native [--config <file>] [--memory-manager[=<size>]] [--] <program> [args...]\n  sleela exec   [--config <file>] [--memory-manager[=<size>]] [--] <program> [args...]\n  sleela version\n  sleela defender detect\n  sleela defender <fetch|build|install|provision> [directory] --allow-defender --sha256 <hex> [--allow-root]\n\nMemory Manager:\n  --memory-manager[=<size>]    account for raw process memory and (with <size>)\n                               fail allocations closed at a hard byte limit.\n                               <size> accepts a byte count or a K/M/G suffix\n                               (or SLEELA_MEMORY_MANAGER=<size>). It is enabled\n                               automatically for `native`/`exec`.\n\nSecurity:\n  SLEELA_SHA256_MANIFEST=<trusted JSON manifest> is required before compile, run, check, xclass, native/exec, and Defender diagnostics/build/install/provision.\n  Defender fetch/build/install/provision additionally require --allow-defender (opt-in), --sha256 <hex> (payload integrity), and --allow-root for the privileged install step.\n";return 2;}
 static bool checkSyntaxVersion(const std::string& path,const std::string& src){sleela::VersionResolution v=sleela::resolveSyntaxVersion(src);if(v.isError()){std::cerr<<"sleelvac: "<<path<<": error: "<<v.message<<"\n";return false;}if(v.isWarning())std::cerr<<"sleelvac: "<<path<<": warning: "<<v.message<<"\n";return true;}
 static bool parseSource(const std::string&path,std::string&src,sleela::Program&prog,sleela::VersionResolution&version){if(!readFile(path,src)){std::cerr<<"sleelvac: cannot open '"<<path<<"'\n";return false;}if(!checkSyntaxVersion(path,src))return false;version=sleela::resolveSyntaxVersion(src);try{sleela::Lexer lexer(src);auto tokens=lexer.tokenize();sleela::Parser parser(std::move(tokens));prog=parser.parseProgram();sleela::Program validation;validation.imports=prog.imports;validation.imports.erase(std::remove(validation.imports.begin(),validation.imports.end(),"chemistry"),validation.imports.end());validation.imports.erase(std::remove(validation.imports.begin(),validation.imports.end(),"financial"),validation.imports.end());sleela::native::validateImports(validation);return true;}catch(const std::exception&ex){std::cerr<<"sleelvac: "<<path<<": "<<ex.what()<<"\n";return false;}}
@@ -512,7 +526,7 @@ Syntax().str()<<" .. "<<sleela::maxSupportedSyntax().str()<<"\n";return 0;}
     else if(cmd=="xclass"){if(argc<3)return usage();rc=xclassCmd(argc,argv);}
     else if(cmd=="langin"){if(argc<3)return usage();rc=langinCmd(argc,argv);}
     else if(cmd=="nordshrift"){if(argc<3)return usage();rc=nordshriftCmd(argc,argv);}
-    else if(cmd=="defender")return defenderCmd(argc,argv);
+    else if(cmd=="design-activity")return designActivityCmd(argc,argv);\n    else if(cmd=="defender")return defenderCmd(argc,argv);
     else if(hasExt(cmd,".sleela")||hasExt(cmd,".xclass")||isLangInput(cmd)){if(verifyBeforeExecution(fs::current_path()))return 1;rc=runFile(cmd);}
     else return usage();
     if(mmEnabled)reportMemoryManager();
