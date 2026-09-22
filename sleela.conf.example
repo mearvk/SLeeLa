@@ -1,0 +1,5 @@
+# SLeeLa runtime memory configuration
+# Allowed range: 256M through 2G.
+# Default: 2G.
+memory_limit=2G
+memory_manager=on
