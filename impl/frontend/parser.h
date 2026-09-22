@@ -34,8 +34,8 @@ private:
     // declarations
     StructDecl parseStruct();
     ClassDecl parseClass();
-    Field     parseField();
-    Method    parseMethod();
+    Field     parseField(bool isStatic, bool isProtected);
+    Method    parseMethod(bool isStatic, bool isProtected);
     bool      isTypeStart() const;    // current token can begin a type
     std::string parseType();
 
