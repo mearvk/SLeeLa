@@ -4,6 +4,8 @@ Nordshrift is the **transpiler driver and semantic coordination layer for Sleela
 
 ## Version 2.0 architecture
 
+The sheet now accepts a unified `object` input layer covering the SLeeLa source architecture: Core, IO, System, Network, Application, Data, Science, Security, and Deployment. Specialized sections retain stronger domain-specific contracts where applicable.
+
 ```text
 .sst control surface
        │
@@ -22,6 +24,12 @@ Nordshrift is the **transpiler driver and semantic coordination layer for Sleela
 ```
 
 The normative semantic extension is [`/SST-2.0.model`](../../SST-2.0.model). The legacy 1.0 grammar remains in [`/SST.model`](../../SST.model).
+
+## Generic input-object model
+
+`input_object.h` defines `InputObjectCategory` and `InputObject`. Each object has an identity and optional type, source, target, value, inputs, outputs, and named properties. The parser and validator enforce closed categories, known members, and bounded sizes.
+
+The object layer is a validated data boundary. It does not imply network transmission, process execution, filesystem mutation, database access, email submission, or deployment. See [`INPUT-OBJECTS.md`](INPUT-OBJECTS.md).
 
 ## Common subject model
 
@@ -115,13 +123,15 @@ The 1.0 control sections remain available and continue to describe the build pro
 nordshrift/
   NORDSHRIFT.md
   README.md
+  INPUT-OBJECTS.md
   diagnostics.h
   sst_lexer.{h,cpp}
   sheet_model.h
   sst_parser.{h,cpp}
   source_resolve.{h,cpp}
   sleela_emit.{h,cpp}
-  object_compat.cpp
+  object_compat.{h,cpp}
+  input_object.{h,cpp}
   subject_model.h
   subject_model.cpp
   nordshrift.cpp
