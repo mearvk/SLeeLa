@@ -186,3 +186,12 @@ Source-level changes were committed to `main`. Native Windows/macOS server build
 - Kept longer `.next` chains outside the protected two-degree contract.
 - Added the terms to `DEFINITIONS.md` and `GLOSSARY.md`.
 - Updated `impl/examples/static-protected.sleela` to exercise both forms.
+
+
+## 2026-09-22 — Static Degree-2 viewpoint extension
+
+- Extended the System Degree model so a static Degree-2 proposal gains another two degrees of viewpoint assumption.
+- Defined the resulting bounded Viewpoint Degree 4 as `next.next.next.next`.
+- Documented that the higher viewpoint can represent both Degree 1 (`next`) and Degree 2 (`next.next`).
+- Required programmatic back-propagation when the higher viewpoint requests Degree-1 visibility.
+- Kept the entire model symbolic and VM-managed; it does not introduce native pointer arithmetic or unrestricted memory traversal.
