@@ -150,3 +150,35 @@ The C/C++ execution core remains responsible for native memory, handles, threads
 ## Definition Status
 
 These definitions establish the current SLeeLa implementation contract for static protected source. They should remain synchronized with the lexer, parser, AST, compiler, and C/C++ execution core whenever the language memory or access model changes.
+
+
+## 11. Next and Next.Next
+
+### 11.1 Next
+
+**next** is the SLeeLa system-navigation idiom for **System Degree 1**. It denotes one bounded semantic relation from the current system node. It is not a native pointer, address, iterator into arbitrary memory, or dereference operation.
+
+### 11.2 Next.Next
+
+**next.next** is the SLeeLa system-navigation idiom for **System Degree 2**. It denotes two bounded relations. The compiler recognizes exactly this two-step form and lowers it to a managed degree marker. A third `.next` is not silently accepted as part of the protected two-degree boundary.
+
+### 11.3 Degree Navigation
+
+**Degree Navigation** is the notation for describing a bounded relationship through repeated `next` links:
+
+```
+next       = degree 1
+next.next  = degree 2
+```
+
+The notation is semantic rather than address-based and therefore does not expose native pointer arithmetic.
+
+### 11.4 Back-Propagated Degree Validation
+
+**Back-propagated degree validation** means that the compiler examines the terminal navigation request and propagates its safety requirement back to the originating expression before lowering it.
+
+For the protected boundary, `next.next` establishes the degree-2 requirement and the origin is validated as a SLeeLa system-navigation expression. This is compiler validation terminology; it is not a machine-learning back-propagation algorithm.
+
+### 11.5 System Degree Chain
+
+A **System Degree Chain** is the ordered sequence of bounded `next` relations used to describe system traversal. In the protected-memory model the chain terminates at the declared System Degree 2 boundary and must not be interpreted as two pointer dereferences.
