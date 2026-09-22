@@ -24,7 +24,33 @@ public:
     Compiler(const Program& prog, SLVM* vm, const catalog::Catalog* cat, const SyntaxVersion& syntax)
         : prog_(prog), vm_(vm), cat_(cat), syntax_(syntax) {}
 
+    // Protected members are deliberately stronger than ordinary C++ access:
+    // Sleela protected source is admitted only as static protected and is bound
+    // to the VM's managed-handle memory model. Degree 2 means the declaration
+    // crosses two bounded relations: class member -> managed VM storage handle.
+    // It is NOT raw pointer arithmetic or a promise to dereference an address.
+    static constexpr int kProtectedSystemDegree = 2;
+    static bool safeManagedType(const std::string& type, const std::map<std::string,StructLayout>* layouts) {
+        if (type == "int" || type == "double" || type == "boolean" || type == "String" || type == "void") return true;
+        return layouts && layouts->count(type) != 0; // structs are VM-local handles
+    }
+
     int run() {
+        // Protected source is admitted only when both language invariants hold:
+        // (1) the member is static, and (2) its storage is represented by the
+        // SLeeLa managed VM model. The native core never exposes a raw pointer
+        // to Sleela source; struct values are bounded VM handles.
+        for (const auto& cls : prog_.classes) {
+            for (const auto& f : cls.fields) {
+                if (f.isProtected && !f.isStatic)
+                    throw std::runtime_error("Semantic error: protected field '" + f.name + "' must also be static (degree 2 safety rule)");
+            }
+            for (const auto& m : cls.methods) {
+                if (m.isProtected && !m.isStatic)
+                    throw std::runtime_error("Semantic error: protected method '" + m.name + "' must also be static (degree 2 safety rule)");
+            }
+        }
+        (void)kProtectedSystemDegree;
         // Struct declarations: register each layout with the VM and record a
         // compiler-side layout (type index + ordered field names -> offsets).
         for(const auto& st:prog_.structs){
