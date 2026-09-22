@@ -32,9 +32,16 @@ public:
     static constexpr int kProtectedSystemDegree = 2;
     int run() {
         // Protected source is admitted only when both language invariants hold:
-        // (1) the member is static, and (2) its storage is represented by the
-        // SLeeLa managed VM model. The native core never exposes a raw pointer
-        // to Sleela source; struct values are bounded VM handles.
+        // (1) the member is static, and (2) the runtime reports the managed VM
+        // memory model. The native core never exposes a raw pointer to Sleela
+        // source; struct values are bounded VM handles.
+        bool hasProtected = false;
+        for (const auto& cls : prog_.classes) {
+            for (const auto& f : cls.fields) hasProtected = hasProtected || f.isProtected;
+            for (const auto& m : cls.methods) hasProtected = hasProtected || m.isProtected;
+        }
+        if (hasProtected && !slvm_memory_safe_mode(vm_))
+            throw std::runtime_error("Semantic error: protected source requires the SLeeLa managed memory safety scheme");
         for (const auto& cls : prog_.classes) {
             for (const auto& f : cls.fields) {
                 if (f.isProtected && !f.isStatic)
