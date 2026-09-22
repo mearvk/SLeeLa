@@ -78,6 +78,13 @@ if (-not $Py) { throw "Python 3 was not found on PATH (needed for the SHA-256 ve
 if (-not $env:SLEELA_SHA256_MANIFEST) {
     $env:SLEELA_SHA256_MANIFEST = Join-Path $RepoRoot "security\sha256-manifest.json"
 }
+$env:PYTHON = "$Py -3"
+if ($Py -eq "py") {
+    $env:PYTHON = "py -3"
+} elseif ($Py -eq "python" -or $Py -eq "python3") {
+    $env:PYTHON = $Py
+}
+Write-Host "Using Python launcher: $($env:PYTHON)"
 Write-Host "Using SHA-256 manifest: $($env:SLEELA_SHA256_MANIFEST)"
 Write-Host ""
 
@@ -119,6 +126,6 @@ Write-Host ""
 Write-Host "Common configuration:"
 Write-Host "  sleela exec --config config/sleela.properties.example -- <program> <args...>"
 Write-Host "  The selected file is exported as SLEELA_CONFIG_FILE."
-Write-Host "  Windows target: 10+; runtime configuration is shared with Linux/macOS."
+Write-Host "  Windows target: 10+; source backend uses Win32/ConPTY/Winsock."
 Write-Host ""
 Write-Host "Build process finished."
