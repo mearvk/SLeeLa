@@ -80,3 +80,14 @@ Source-level changes were committed to `main`. Native Windows/macOS server build
 - Extended the BODI XML runner with `post`, `listener`, and `router` project kinds.
 - Extended the BODI XSD and added XML examples 07–09.
 - Kept XML execution explicit: the new runner validates and witnesses these declarations without implicitly opening sockets or transmitting network traffic.
+
+
+## 2026-09-22 — Apache/Tomcat Web Server Monitor
+
+- Added `api/webserver/` as a cross-platform SLeeLa deployment and monitoring module for web-aware applications.
+- Added a portable C configuration API with bounded server, port, health-path, and module-path validation.
+- Added Linux and macOS shell adapters and a Windows 10+ PowerShell adapter.
+- Added install, status, health, upgrade, port-change, validation, and explicit local Tomcat WAR deployment operations.
+- Added backup-before-port-edit behavior on Unix adapters.
+- Kept administrator/root operations explicit and prevented silent selection of unsupported Apache distributions on Windows.
+- Added HTML API documentation and an example deployment environment profile.
