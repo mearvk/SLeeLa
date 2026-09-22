@@ -195,7 +195,7 @@ int main(int argc, char **argv) {
     if (!regular_file(inbox)) { std::ofstream out(inbox); out << "hello\n"; }
     if (tick) { std::ofstream out(inbox, std::ios::app); out << "tick " << utc_now() << "\n"; }
     if (!std::getenv("SLEELA_SHA256_MANIFEST")) {
-        fs::path manifest = root / "security/sha256-manifest.json";
+        fs::path manifest = root / "security/important-sha256-manifest.json";
 #if defined(_WIN32)
         if (regular_file(manifest)) _putenv_s("SLEELA_SHA256_MANIFEST", manifest.string().c_str());
 #else
