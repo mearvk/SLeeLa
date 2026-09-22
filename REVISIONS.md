@@ -163,3 +163,15 @@ Source-level changes were committed to `main`. Native Windows/macOS server build
 - Updated the HTML and Markdown server API documentation.
 - Added a Nordshrift deployment object, NatAwareServer, so NAT-aware transport can be declared as a bounded, non-executing SLeeLa input object.
 - Kept actual PCP, UPnP, STUN, TURN, TLS transport, and reverse-proxy networking as separate future transport adapters rather than silently embedding network side effects in Server.sleela.
+
+## 2026-09-22 — Static protected managed-memory source boundary
+
+- Added the protected keyword to the SLeeLa lexer and parser.
+- Added static/protected member metadata to the AST.
+- Enforced the rule that protected fields and methods must also be static.
+- Added declaring-class access enforcement for protected fields and methods.
+- Added slvm_memory_safe_mode() to make the managed-memory prerequisite explicit at the C/C++ core boundary.
+- Added the System Degree 2 definition: class member -> VM-managed storage/handle, not raw pointer arithmetic or pointer dereference count.
+- Added impl/examples/static-protected.sleela as a source example.
+- Added DEFINITIONS.md and expanded GLOSSARY.md with the static, protected, System Degree 2, managed-memory boundary, and protected-source gate terminology.
+- Preserved the existing VM handle model: Sleela source does not receive raw native pointers for runtime resources.
