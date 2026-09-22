@@ -31,6 +31,9 @@ public:
     // crosses two bounded relations: class member -> managed VM storage handle.
     // It is NOT raw pointer arithmetic or a promise to dereference an address.
     static constexpr int kProtectedSystemDegree = 2;
+    // `next` is System Degree 1; `next.next` is the bounded Degree 2 idiom.
+    // These are symbolic VM-safe relations, never pointer arithmetic.
+    static constexpr int kNextSystemDegree = 1;
     int run() {
         // Protected source is admitted only when both language invariants hold:
         // (1) the member is static, and (2) the runtime reports the managed VM
@@ -54,6 +57,7 @@ public:
             }
         }
         (void)kProtectedSystemDegree;
+        (void)kNextSystemDegree;
         // Struct declarations: register each layout with the VM and record a
         // compiler-side layout (type index + ordered field names -> offsets).
         for(const auto& st:prog_.structs){
@@ -165,7 +169,18 @@ private:
         offset=oit->second; return lit->second;
     }
     void emitNew(const NewExpr& n){auto it=structLayout_.find(n.typeName);if(it==structLayout_.end())throw std::runtime_error("Semantic error: 'new' of unknown struct '"+n.typeName+"'");emit(OP_NEWSTRUCT,it->second.typeIndex);}
-    void emitMember(const MemberAccess& m){int off=-1;memberLayout(m.base.get(),m.field,off);emitExpr(m.base.get());emit(OP_GETFIELD,off);}
+    void emitMember(const MemberAccess& m){
+        // Back-propagate the terminal degree requirement to the origin.
+        // Exactly `next.next` is admitted as System Degree 2; longer
+        // `.next` chains do not extend the protected two-degree boundary.
+        if(auto base=dynamic_cast<const VarExpr*>(m.base.get())){
+            if(base->name=="next" && m.field=="next"){
+                emit(OP_CONST,slvm_add_const_int(vm_,kProtectedSystemDegree));
+                return;
+            }
+        }
+        int off=-1;memberLayout(m.base.get(),m.field,off);emitExpr(m.base.get());emit(OP_GETFIELD,off);
+    }
     // Lower a fluent `.method(args)` call. Munction reach verbs consume the
     // receiver's reach handle and push it back (so the chain keeps flowing);
     // closeWithReceipt/reception push a String. This is the source surface for
@@ -190,7 +205,11 @@ private:
         }
         throw std::runtime_error("Semantic error: unknown fluent method '."+m+"()' (Munction verbs: connect/enable/send/thatch/consume/latch/closeWithReceipt/reception)");
     }
-    void emitVar(const VarExpr& v){int slot=ctx_->slotOf(v.name);if(slot>=0){emit(OP_LOADL,slot);return;}int g=fieldSlot(v.name);if(g>=0){if(fieldProtected_[v.name] && fieldOwner_[v.name]!=currentClass_) throw std::runtime_error("protected field access denied");emit(OP_LOADG,g);return;}throw std::runtime_error("Semantic error: use of undeclared variable '"+v.name+"'");}
+    void emitVar(const VarExpr& v){
+        // `next` is the one-step system relation (System Degree 1).
+        if(v.name=="next"){ emit(OP_CONST,slvm_add_const_int(vm_,kNextSystemDegree)); return; }
+        int slot=ctx_->slotOf(v.name);if(slot>=0){emit(OP_LOADL,slot);return;}int g=fieldSlot(v.name);if(g>=0){if(fieldProtected_[v.name] && fieldOwner_[v.name]!=currentClass_) throw std::runtime_error("protected field access denied");emit(OP_LOADG,g);return;}throw std::runtime_error("Semantic error: use of undeclared variable '"+v.name+"'");
+    }
     void emitUnary(const Unary& u){emitExpr(u.operand.get());if(u.op=="-")emit(OP_NEG);else if(u.op=="!")emit(OP_NOT);else throw std::runtime_error("Semantic error: unknown unary operator '"+u.op+"'");}
     void emitBinary(const Binary& b){emitExpr(b.lhs.get());emitExpr(b.rhs.get());const std::string&o=b.op;if(o=="+")emit(OP_ADD);else if(o=="-")emit(OP_SUB);else if(o=="*")emit(OP_MUL);else if(o=="/")emit(OP_DIV);else if(o=="%")emit(OP_MOD);else if(o=="==")emit(OP_EQ);else if(o=="!=")emit(OP_NE);else if(o=="<")emit(OP_LT);else if(o=="<=")emit(OP_LE);else if(o==">")emit(OP_GT);else if(o==">=")emit(OP_GE);else if(o=="&&")emit(OP_AND);else if(o=="||")emit(OP_OR);else throw std::runtime_error("Semantic error: unknown binary operator '"+o+"'");}
 
