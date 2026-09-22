@@ -13,7 +13,6 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.UUID;
 
 /** Java HTTP client for a SLeeLa HTTP gateway. */
 public final class SleelaHttpConnector implements SleelaJavaConnector {
@@ -35,6 +34,7 @@ public final class SleelaHttpConnector implements SleelaJavaConnector {
         this.baseUri = normalize(Objects.requireNonNull(baseUri, "baseUri"));
         this.client = Objects.requireNonNull(client, "client");
         this.timeout = Objects.requireNonNull(timeout, "timeout");
+        if (maxResponseBytes < 1024) throw new IllegalArgumentException("maxResponseBytes < 1024");
         if (maxResponseBytes < 1024) throw new IllegalArgumentException("maxResponseBytes < 1024");
         this.maxResponseBytes = maxResponseBytes;
     }
