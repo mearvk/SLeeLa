@@ -1,10 +1,12 @@
 #sleela 1.3
 // Demonstrates the SLeeLa static+protected memory boundary.
-// Degree 2 means: class member -> VM-managed storage handle.
-// It is not a raw native pointer and does not perform pointer arithmetic.
+// next is System Degree 1.
+// next.next is System Degree 2.
+// The compiler back-propagates the degree requirement to the origin and
+// admits only the bounded two-step form. Neither form is pointer arithmetic.
 
 class ProtectedSystem {
-    static protected int systemDegree = 2;
+    static protected int systemDegree = next.next;
     static protected int protectedState = 7;
 
     static protected int readState() {
@@ -12,6 +14,8 @@ class ProtectedSystem {
     }
 
     void main() {
+        print("next = " + next);
+        print("next.next = " + next.next);
         print("system degree = " + systemDegree);
         print("protected state = " + readState());
     }
