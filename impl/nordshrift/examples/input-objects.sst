@@ -1,0 +1,71 @@
+#nordshrift 1.0
+#sleela     1.1
+
+sheet input-objects:
+  version 1.0.0
+  author "SLeeLa"
+  description "Demonstrates the unified Nordshrift input-object vocabulary."
+
+object core Memory:
+  type allocator
+  inputs: [size]
+  outputs: [buffer]
+  property ownership owned
+
+object io FileStream:
+  type stream
+  source "filesystem"
+  inputs: [path, bytes]
+  outputs: [bytes]
+  property mode bounded
+
+object system Process:
+  type process
+  inputs: [program, arguments]
+  outputs: [exit-status]
+  property execution explicit
+
+object network HTTPS:
+  type tls-http
+  source "network"
+  target "/api"
+  inputs: [request]
+  outputs: [response]
+  property tls required
+
+object application Email:
+  type smtp
+  inputs: [message]
+  outputs: [delivery-status]
+  property credentials environment
+
+object data Analytics:
+  type dataset
+  inputs: [values]
+  outputs: [statistics]
+  property bounded true
+
+object science Physics:
+  type discipline
+  inputs: [quantities, units]
+  outputs: [result]
+  property provenance required
+
+object security Integrity:
+  type sha256
+  inputs: [artifact]
+  outputs: [digest]
+  property verification required
+
+object deployment WebApplication:
+  type deployment
+  source "artifact"
+  target "web-server"
+  inputs: [configuration, module]
+  outputs: [health]
+  property health-check required
+
+target:
+  root "out"
+  layout mirror-source
+  target-language sleela
