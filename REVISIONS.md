@@ -101,3 +101,13 @@ Source-level changes were committed to `main`. Native Windows/macOS server build
 - Added Linux, macOS, and Windows 8+ client/driver management adapters.
 - Added HTML API documentation and security guidance for credential handling and parameterized SQL.
 - Kept database server binaries and vendor drivers as explicit platform-managed dependencies rather than silently bundling or downloading arbitrary software.
+
+
+## 2026-09-22 — Data Analytics science shelf
+
+- Added `api/data-analytics/` with a native C data-set facade and bounded numeric analytics operations.
+- Added sum, mean, min, max, population variance, population standard deviation, and correlation operations.
+- Limited each data set to 1–1024 finite values and rejected invalid or non-finite input.
+- Extended the BODI science dispatcher with the allow-listed `data-analytics` discipline.
+- Kept analytics in-process with no file, SQL, or network side effects.
+- Added HTML API documentation describing the analytics contract.
