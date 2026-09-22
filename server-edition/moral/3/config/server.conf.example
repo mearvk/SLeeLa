@@ -1,0 +1,13 @@
+# SLeeLa Server Edition Service 3
+engine=../../../../impl/build/sleela
+inbox=../../../../server-edition/inbox/requests.txt
+state=../../../../server-edition/state
+server_source=../src/Server.sleela
+log=../../../../server-edition/state/results.log
+recovery_log=../../../../server-edition/state/recovery.log
+mode=service
+tick=false
+foreground=false
+preflight=true
+sha256_manifest=../../../../security/important-sha256-manifest.json
+allow_network=false

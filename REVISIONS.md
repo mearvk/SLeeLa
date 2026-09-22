@@ -222,3 +222,16 @@ Source-level changes were committed to `main`. Native Windows/macOS server build
 - Added platform service definitions and installation documentation.
 - Kept runtime state outside the source package and defaulted Service 2 to local-only operation.
 - Moved the authoritative Server Edition source into the Service 2 source boundary at `moral/2/src/Server.sleela`.
+
+
+## 2026-09-22 — Server and Service Service 3
+
+- Added `server-edition/moral/3/` as the next Server and Service implementation generation.
+- Added a remedial server model with explicit preflight, execution, recovery logging, and completion evidence.
+- Added declarative configuration for engine, source, inbox, state, log, recovery log, lifecycle mode, tick, foreground operation, preflight, integrity manifest, and network policy.
+- Added Linux/systemd, macOS/launchd, and Windows installation/removal artifacts.
+- Added Service 3 implementation and installation documentation.
+- Kept Service 2 independently available rather than silently replacing its source or behavior.
+- Added explicit `SLEELA_SERVER_LEVEL=3` selection to the native `sleelas` launcher.
+- Preserved the local-only default network posture.
+- Defined recovery records as operational evidence rather than cryptographic or independent verification.
