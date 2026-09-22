@@ -192,6 +192,95 @@ for profiling, ranking, locating, or otherwise treating real people as objects.
 - [`GERALDINE.FERRARO.md`](GERALDINE.FERRARO.md) — presidential governance analysis, the Golden premise, and the classic model of representation.
 - `src/Sleela.manifest` (SL-META-0001) and `SST.model` (NS-SST-0001) — the governing specifications.
 
+### A.8 Static / protected memory terms
+
+| Term | Definition | Source |
+|------|-----------|--------|
+| **Static class member** | A class member declared with `static`. In SLeeLa it is class-level state or behavior rather than per-instance state; the compiler lowers class fields to VM globals and methods to core functions. | `impl/frontend/parser.cpp`, `impl/frontend/compiler.cpp` |
+| **Protected member** | A class field or method declared with `protected`. Protected access is restricted to the declaring class in the current flattened SLeeLa class model and is not a public source interface. | `impl/frontend/parser.cpp`, `impl/frontend/compiler.cpp` |
+| **Static protected member** | The required SLeeLa protected form. A `protected` field or method must also be `static`; the compiler rejects a protected member without `static`. | `impl/frontend/compiler.cpp` |
+| **System Degree 2** | SLeeLa's safety designation for a static protected member: two bounded relations, class member → VM-managed storage/handle. It describes a controlled reference level, not a native pointer offset or arbitrary pointer arithmetic. | `impl/frontend/compiler.cpp`, `impl/examples/static-protected.sleela` |
+| **Managed-memory boundary** | The runtime rule that Sleela source operates on VM-owned values and bounded handles rather than raw native pointers. Struct instances, sockets, files, probes, reaches, and related resources are represented through VM-managed tables. | `impl/core/sleela_core.h`, `impl/core/sleela_core.c` |
+| **Protected-source gate** | The compiler requirement that protected source is accepted only when the member is static and the VM reports its managed-memory safety mode. | `impl/frontend/compiler.cpp`, `impl/core/sleela_core.c` |
+| **Degree-2 reference** | A SLeeLa semantic term for a controlled class-to-managed-storage relation. It must not be interpreted as two pointer dereferences. | `DEFINITIONS.md` |
+
+## Part B — United States (Evidentiary Method)
+
+The `politico/` documents define a **disciplined method for reasoning about
+public records** concerning United States figures and institutions. These terms
+are *methodological*: they describe how to weigh documentary evidence, not
+political conclusions. The governing rule throughout is that interpretation must
+not be turned into fact.
+
+| Term | Definition | Source |
+|------|-----------|--------|
+| **SAKE / SAKES** | The named method for evaluating a proposition about a person against the documentary record; SAKES extends it to size, root, disclosure, and meaning. | `politico/SAKES.md`, `politico/SAKES_SIZE.md` |
+| **Simple fact** | The factual anchor that survives comparison and testing — a demonstrable, not imagined, relation. | `politico/SAKES.md` |
+| **Stirred ratio** | A method of comparison: facts placed beside one another, questioned, and tested for relationship. | `politico/SAKES.md` |
+| **Close-circuit ratio** | An unreliable inference pattern in which association is repeatedly used to prove the proposition from which the association was itself inferred. | `politico/SAKES.md` |
+| **Evidentiary size** | The amount, density, continuity, and provenance of documentary detail legitimately attachable to a proposition about a person (not greatness or rank). | `politico/SAKES_SIZE.md` |
+| **Root node** | A primary, dated, attributable source that anchors an inquiry — e.g. the **1982** correspondence held by Emory University. | `politico/SAKES_SIZE.md`, `politico/1982.md` |
+| **Provenance chain** | The ordered test `PERSON → DOCUMENT → DATE → CONTENT → PROVENANCE → CONTEXT → LIMITED CONCLUSION`; it may be extended by evidence but never shortened by interpretation. | `politico/SAKES_SIZE.md` |
+| **Primary documentary node** | Direct evidence of what a contemporaneous document contains (e.g. a 1982 letter), distinct from a later interpretive node. | `politico/SAKES_SIZE.md` |
+| **Interpretive node** | Later commentary about an earlier record; it must not silently overwrite the primary document. | `politico/SAKES_SIZE.md` |
+| **Ordered continuance** | The rule that a search does **not** assume continuity: continuance from one record to the next must itself be established before the inquiry advances. | `politico/1982.md` |
+| **First whole bearing** | The starting node of an inquiry (here, **1982**) from which relevance may enter only upon an established continuation. | `politico/1982.md` |
+| **Universal binary rule** | The strict test where **EVERY = ALL** and **ALL = each occurrence**: the proposition passes only if every required occurrence holds; any unestablished or contradicted occurrence yields **NO**. | `politico/SAKES_BINARY_TIMELINE.md` |
+| **Limited conclusion** | The only kind of conclusion the method permits: one bounded strictly by what the documented chain supports. | `politico/SAKES_SIZE.md` |
+
+> **Method note.** In Part B, labels (e.g. political-economic labels) and
+> associations are treated as *claims to be tested against documented record*,
+> never as established fact. Race, office, ideology, or proximity do not
+> constitute evidence. This is the discipline the SAKE documents impose on
+> themselves, and the glossary preserves it.
+
+### B.1 Baseline model & representation terms (`GERALDINE.FERRARO.md`)
+
+These terms name a **stated interpretive model** used to assess presidencies, and
+the classic representation theory applied to it. Per the Part B method note, each
+model term is a *claim adopted as a measuring stick* — recorded "as itself" — and
+is **not** an empirical fact. Quantities in the premise are symbolic or
+stipulated; they are used qualitatively (manner, not magnitude) and are never
+converted into fabricated per-person numbers.
+
+| Term | Definition | Source |
+|------|-----------|--------|
+| **Golden premise** | The baseline model stated plainly and adopted "as itself" as a fixed measuring stick, not as fact: a long-run public interest (the 10,000-year horizon) against which a sustained economic levy is posited. | `GERALDINE.FERRARO.md` |
+| **10,000-year horizon** | A **symbol** of the long-run, generational public interest — the "average man" abstracted across generations. A qualitative horizon, **not** a measurable unit; no president is scored numerically against it. | `GERALDINE.FERRARO.md` |
+| **Sustained levy ($40,000,000,000/month)** | A **stipulated magnitude** standing for sustained, demand-supporting public expenditure the premise associates with the Democratic approach. **Not** a verified budget line for any administration and never assigned as a real dollar deviation. | `GERALDINE.FERRARO.md` |
+| **Republican caveat** | The premise's **boundary condition**: the conservative constraint of restraint, debt, and diminishing return beyond which the levy premise no longer holds. A proviso on the model, not a scoring axis. Its reference node is **1974** and its institutional bearers, within the model, are **U.S. Senators**. | `GERALDINE.FERRARO.md` |
+| **Careful, and careful again** | The double qualification on the $40B/month term: (1) it is a stipulated magnitude, not a real budget line; (2) when the premise is *pressed* (by a spokesperson and/or the Democratic side), the term resolves, in the model's own terms, to being about **oil and rights above the oils trading**. Stated as the model's meaning, not as asserted fact. | `GERALDINE.FERRARO.md` |
+| **Oil and rights above the oils trading** | The model's stated content of the levy term when pressed: a public interest in energy and, prior to and above the mere commerce in it, an interest in *rights*. An element of the stated premise; **not** an asserted economic or historical finding. | `GERALDINE.FERRARO.md` |
+| **Trustee** | (Classic representation, after Burke.) A representative who acts on his own judgment of the enduring long-run interest — the pole closest to the 10,000-year horizon. | `GERALDINE.FERRARO.md` |
+| **Delegate** | (Classic representation.) A representative who acts as the instructed agent of present, expressed will. | `GERALDINE.FERRARO.md` |
+| **Politico (representation)** | (Classic representation.) The hybrid who shifts between trustee and delegate as circumstance demands. Distinct from the `politico/` directory name. | `GERALDINE.FERRARO.md` |
+| **Knowing method** | A president's relation to the premise **by deliberate, theorized commitment** to the long-run/levy horizon. | `GERALDINE.FERRARO.md` |
+| **Attempted hand of science / proviso** | A relation to the premise **by technocratic attempt** — reaching toward the long run without a completed governing theory of it. | `GERALDINE.FERRARO.md` |
+| **Manner, not magnitude** | The rule that presidents are placed by the *manner* of their relation to the premise (knowing method / attempted hand / neither), never by a fabricated numeric "how much," because the premise supplies no computable quantity. | `GERALDINE.FERRARO.md` |
+
+### B.2 Term care
+
+Some words carry more weight than their casual use suggests. This section records
+the **care** a term requires so it is applied consistently, and never as a tool
+for profiling, ranking, locating, or otherwise treating real people as objects.
+
+| Term | Definition & care | Source |
+|------|-----------|--------|
+| **Celebrity (term care)** | "Celebrity" is a **defined term, not a loose label.** It should be applied only against a *standard degree of norm* — a stated, normalized threshold of public recognition — so its use is consistent and measurable rather than arbitrary. Where a degree is genuinely needed, express it as a **normalized measure** (e.g., a 0–1 recognition norm against a stated reference population), and attach it to the **public role or status**, in the aggregate. The term names that public role; it is **not** a basis for profiling, locating, scoring-for-harm, or treating individuals as property. Real individuals' privacy is preserved: the norm describes a threshold, not a person. | this glossary |
+
+---
+
+## See also
+
+- [`README.md`](README.md) — project overview and the Constitution of congrains.
+- [`SLEELA.md`](SLEELA.md) — the `.sleela` filetype (Wrapper™) and Sigil tooling.
+- [`SOURCE.md`](SOURCE.md) — source-file characteristics.
+- [`COMPILER.md`](COMPILER.md) — the compiler and its versions.
+- [`NORDSHRIFT.md`](NORDSHRIFT.md) — the `.sst` transpiler driver.
+- [`VERSION.md`](VERSION.md) — the single record of all versions.
+- [`GERALDINE.FERRARO.md`](GERALDINE.FERRARO.md) — presidential governance analysis, the Golden premise, and the classic model of representation.
+- `src/Sleela.manifest` (SL-META-0001) and `SST.model` (NS-SST-0001) — the governing specifications.
+
 
 ### A.8 Static / protected memory terms
 
