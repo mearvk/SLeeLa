@@ -9,13 +9,14 @@ The API tree contains native C/C++ facades and SLeeLa mappings. The documentatio
 - **Router** — `api/router/`: deterministic method/path route vocabulary and exact matching.
 - **Email** — `api/email/`: SMTP-aware submission using plain SMTP, STARTTLS, and implicit TLS.
 - **BODI XML** — `api/bodi/`: declarative XML projects and witnessed execution.
+- **Data Analytics** — `api/data-analytics/`: bounded numeric statistics and correlation operations for scientific data sets.
 - **HTTP 3.0** — protocol-specific packet and logical-port APIs.
 
 ## BODI project model
 
 BODI currently represents:
 
-1. Science projects for math, physics, and chemistry.
+1. Science projects for math, physics, chemistry, and data analytics.
 2. Email/SMTP projects.
 3. HTTP-style post projects.
 4. Listener declaration projects.
