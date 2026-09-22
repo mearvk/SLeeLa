@@ -1,12 +1,17 @@
 #sleela 1.3
-// Demonstrates the SLeeLa static+protected memory boundary.
-// next is System Degree 1.
-// next.next is System Degree 2.
-// The compiler back-propagates the degree requirement to the origin and
-// admits only the bounded two-step form. Neither form is pointer arithmetic.
+// System viewpoint model:
+// next       = Degree 1
+// next.next  = Degree 2 proposal
+// A static Degree-2 extension gains another two viewpoint degrees:
+// next.next.next.next = Viewpoint Degree 4.
+//
+// A Degree-2 viewpoint may observe both Degree 1 and Degree 2 values.
+// The compiler back-propagates the request for Degree 1 to the origin so
+// that visibility remains a programmatic, bounded operation.
 
 class ProtectedSystem {
     static protected int systemDegree = next.next;
+    static protected int viewpointDegree = next.next.next.next;
     static protected int protectedState = 7;
 
     static protected int readState() {
@@ -16,6 +21,7 @@ class ProtectedSystem {
     void main() {
         print("next = " + next);
         print("next.next = " + next.next);
+        print("static Degree-2 viewpoint = " + viewpointDegree);
         print("system degree = " + systemDegree);
         print("protected state = " + readState());
     }
