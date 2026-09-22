@@ -1,0 +1,2 @@
+BODI witness project=example-router-001 sequence=001 domain=router operation=route result=validated status=executed
+BODI witness project=example-router-001 sequence=002 domain=router operation=route result=validated status=executed
