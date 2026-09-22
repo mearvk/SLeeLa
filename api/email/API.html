@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>SLeeLa Email Facade API Reference</title></head>
+<body><h1>SLeeLa Email Facade API Reference</h1>
+<h2>sleela_email_message_t</h2>
+<p>Configures SMTP endpoint, local source address, TLS mode, optional AUTH PLAIN credentials, and RFC-style message fields.</p>
+<h3>Endpoint fields</h3>
+<ul><li>smtp_host: DNS name or IP of the SMTP server.</li><li>smtp_port: SMTP listener port.</li><li>helo_name: EHLO identity.</li><li>local_bind_host: optional local DNS name/IP used for socket binding.</li></ul>
+<h3>TLS</h3>
+<p>NONE, STARTTLS, and IMPLICIT are supported. TLS connections require certificate validation against the OpenSSL trust store and verify the SMTP DNS name or IP.</p>
+<h3>Submission</h3>
+<p>sleela_email_send performs SMTP greeting, EHLO, optional TLS, optional AUTH PLAIN, MAIL FROM, RCPT TO, DATA, and QUIT.</p>
+<h3>Result</h3>
+<p>The function returns nonzero on successful SMTP acceptance and zero on failure, with a bounded diagnostic written to error_text.</p>
+</body></html>
