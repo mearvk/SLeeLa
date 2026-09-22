@@ -9,7 +9,7 @@ This directory contains clear, runnable examples for the SLeeLa BODI XML project
 | 01 | Mathematics | BODI witness from the math dispatcher |
 | 02 | Physics | BODI witness from the physics dispatcher |
 | 03 | Chemistry | BODI witness from the chemistry dispatcher |
-| 04 | Mixed science | Witnesses from multiple science disciplines |
+| 04 | Mixed science | Witnesses from multiple science disciplines |\n| 11 | Data analytics | `11-data-analytics.expected.txt` |
 | 05 | SMTP email | Explicit network submission example |
 | 06 | SMTP dry run | Safe SMTP configuration validation |
 | 07 | HTTP-style POST | `07-post.expected.txt` |
@@ -32,7 +32,7 @@ Run the examples:
     ../api/bodi/bodi-xml-runner 06-email-dry-run.xml
     ../api/bodi/bodi-xml-runner 07-post.xml
     ../api/bodi/bodi-xml-runner 08-listener.xml
-    ../api/bodi/bodi-xml-runner 09-router.xml
+    ../api/bodi/bodi-xml-runner 09-router.xml\n    ../api/bodi/bodi-xml-runner 11-data-analytics.xml
 
 SMTP transmission is intentionally explicit:
 
@@ -46,7 +46,7 @@ Every project starts with `<bodi version="1">` and a `<project>` declaration.
 
 The current project kinds are:
 
-- `science` — executable math, physics, and chemistry operations.
+- `science` — executable math, physics, chemistry, and data-analytics operations.
 - `email` — SMTP configuration and message submission.
 - `post` — HTTP-style POST representation.
 - `listener` — listener bind/protocol/route declaration.
