@@ -57,3 +57,15 @@ Source-level changes were committed to `main`. Native Windows/macOS server build
 - Updated `api/index.html` to expose the exhaustive source inventory.
 - Updated `api/API.html` to reflect the current 1,090-file source inventory and link the exhaustive coverage document.
 - Kept semantic API claims separate from structural source coverage so the documentation does not invent interfaces that are not present in source.
+
+## 2026-09-22 — BODI XML projects
+
+- Added the `/api/bodi` BODI XML API.
+- Added a versioned XML schema for science and SMTP email projects.
+- Added the native C++ `bodi-xml-runner` with bounded XML parsing and an allow-listed operation dispatcher.
+- Added executable Math and Physics XML operations using the same formula families represented by SLeeLa native subject implementations.
+- Added SMTP XML project support using the existing `api/email/sleela_email.h` facade.
+- Kept SMTP submission dry-run by default; actual network submission requires `--send-email`.
+- Kept SMTP credentials outside XML through `username-env` and `password-env` references.
+- Added HTML API documentation and Math, Physics, and SMTP XML examples.
+- Unknown disciplines and operations are rejected and witnessed rather than interpreted as arbitrary native or shell commands.
