@@ -1,4 +1,4 @@
-# SLeeLa Server and Service — Service 3
+# Discord-3™ — SLeeLa Server and Service — Service 3
 
 Service 3 is the next Server Edition implementation layer after Service 2. It
 introduces a remedial server model: controlled preflight, execution, recovery
@@ -45,3 +45,14 @@ The native launcher supports an explicit implementation-level selection:
 `SLEELA_SERVER_LEVEL=3 sleelas`
 
 The supported level is explicit rather than discovered from arbitrary paths.
+
+
+## Programmatic theme
+
+**Discord-3™** is the programmatic name and implementation theme assigned to
+Service 3. It identifies the remedial implementation generation and does not
+indicate sponsorship, endorsement, ownership, or technical affiliation with
+Discord Inc.
+
+No Discord logo, trade dress, or proprietary Discord asset is included by the
+naming convention. Discord's published brand guidance governs use of its marks. citeturn0search3turn0search2
