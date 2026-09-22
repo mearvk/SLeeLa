@@ -76,7 +76,7 @@
     },
     {
       "path": "REVISIONS.md",
-      "sha256": "663bf8c356faecc939acd1ffbcabdec272f865e07f285dc4ba56f12f7952150c"
+      "sha256": "357c323accfbdfe4f5067b97c7732da66b2f620f7f83784fdae64e7425fbe2a7"
     },
     {
       "path": "SERVER.EDITION.md",
@@ -3795,8 +3795,48 @@
       "sha256": "4b65bc5323a07896abebb2c8267f94a60eb2a032d5c066e23340facb9fc45aa9"
     },
     {
+      "path": "server-edition/moral/3/IMPLEMENTATION.md",
+      "sha256": "98abd67a15aabf99189063d6d117b0a3f6ac89d579d86192c902cafe830376c4"
+    },
+    {
+      "path": "server-edition/moral/3/INSTALL.md",
+      "sha256": "36768a9cc82ed6837aff1e8aef783c9d2b378e3b64b416dcb92bc8707246f529"
+    },
+    {
+      "path": "server-edition/moral/3/README.md",
+      "sha256": "a2a8d05b1ac6968a45408a9500c70f4ca735ca7575b0c35037e4bde3b27b961f"
+    },
+    {
+      "path": "server-edition/moral/3/install/linux-install.sh",
+      "sha256": "1c8b46d859be00e26bba2d6a978842fd0ed051f7e60becafb641415ed7f89bef"
+    },
+    {
+      "path": "server-edition/moral/3/install/linux-uninstall.sh",
+      "sha256": "18857eefa529a1cd3d3f1825526ae21fad7d831d8ea30d0ad50c870988ac3aed"
+    },
+    {
+      "path": "server-edition/moral/3/install/macos-install.sh",
+      "sha256": "3c993b376a5efc4abc57ebd0cbb7422a31d51d90153ef301dd2ba4faa13983a5"
+    },
+    {
+      "path": "server-edition/moral/3/install/macos-uninstall.sh",
+      "sha256": "f9364399af9d113473c7bb6522a224d28b8730db7eb1ea95ae77b182dd9c9e82"
+    },
+    {
+      "path": "server-edition/moral/3/install/windows-install.ps1",
+      "sha256": "83b103d46a4fc261befdd84f8328d141f6fc47b87bdac80ff8d2632a386dc865"
+    },
+    {
+      "path": "server-edition/moral/3/install/windows-uninstall.ps1",
+      "sha256": "769b945906ac468e8a19d33711742c944fcb7846ccf6330760ec3aecf7c7f59a"
+    },
+    {
+      "path": "server-edition/moral/3/src/Server.sleela",
+      "sha256": "c8f2b35fac01f8217c2b953d3bca3546e2fa769bd1ca3e0827bc681ef8d4c848"
+    },
+    {
       "path": "server-edition/moral/README.md",
-      "sha256": "56dff083dd036b0259b18376a5f8721c1317acdcb05110c31a0066f317a21173"
+      "sha256": "08c680051ea51dac305eeca051de525a0927251597623853549e889b9df9c796"
     },
     {
       "path": "sleela-terminal/arith.cpp",
