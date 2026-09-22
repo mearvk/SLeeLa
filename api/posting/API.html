@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>SLeeLa Posting, Listener and Router API</title></head>
+<body><h1>SLeeLa Posting, Listener and Router API</h1>
+<p>This API gives the XML project system a concrete C vocabulary for basic HTTP-style posting, listener declarations, and route matching. Validation is bounded and does not execute network operations by itself.</p>
+<h2>Post</h2>
+<p><code>sleela_post_t</code> describes a POST method, an absolute target path, a content type, and a body. <code>sleela_post_validate()</code> checks the contract; <code>sleela_post_write()</code> emits a bounded HTTP/1.1-style request representation to a file descriptor.</p>
+<h2>Listener</h2>
+<p><code>sleela_listener_t</code> describes a bind host, port, protocol, and route. The current C facade validates the listener contract; socket lifecycle and platform adapters remain separate.</p>
+<h2>Router</h2>
+<p><code>sleela_route_t</code> describes method/path to target-path routing. <code>sleela_router_match()</code> performs exact matching, providing a deterministic base for a higher-level router.</p>
+<h2>Security boundary</h2>
+<p>These facades do not execute shell commands or interpret XML as native code. Network binding, external delivery, authentication, and authorization must be explicit higher-level operations.</p>
+</body></html>
