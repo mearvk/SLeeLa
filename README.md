@@ -763,3 +763,8 @@ Runnable XML examples and expected BODI witness evidence are published under [`e
 ## Apache/Tomcat Web Server Monitor
 
 SLeeLa now includes a cross-platform web-server operations module under [`api/webserver/`](api/webserver/). Web-aware applications can use the module as a deployment dependency for Apache HTTP Server and Apache Tomcat on Linux, Windows 10+, and macOS. The module provides installation/verification, status and HTTP health checks, package-manager upgrades where supported, controlled listener-port changes, configuration validation, and explicit local Tomcat WAR deployment. OS-specific adapters fail closed when a distribution-specific installation layout is unknown; they do not silently select an unofficial binary or elevate privileges.
+
+
+## Native Database Connector
+
+SLeeLa includes `api/database/` for web-aware and general applications needing a native database contract across Linux, Windows 8+, and macOS. Supported database families are PostgreSQL, MySQL, MariaDB, SQLite, Microsoft SQL Server, Oracle Database, and ODBC-compatible systems. The connector provides bounded configuration vocabulary while platform adapters manage native client/driver installation and upgrades.
