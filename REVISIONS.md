@@ -202,3 +202,13 @@ Source-level changes were committed to `main`. Native Windows/macOS server build
 - Added API.MACOS.md as the macOS-native SLeeLa API catalog, covering Darwin/POSIX, libSystem, Foundation, AppKit, Objective-C Runtime, Core Foundation, Network, Security, IOKit, Metal, XPC, architecture/ABI boundaries, and exposed method/function/class inventory rules.
 - Updated api/index.html so the Linux and macOS native API references are directly discoverable from the SLeeLa API documentation entry point.
 - Kept native API documentation separate from implementation claims: documented APIs are not automatically exposed to SLeeLa until binding, validation, error handling, ownership, security, tests, examples, and platform behavior are defined.
+
+## 2026-09-22 — Design Activity and Scientific Variance
+
+- Added `impl/core/sleela_design_activity.h/.c` as a shared C ABI for executable design-activity normalization and variance measurement.
+- Added six engineering dimensions: correctness, reproducibility, observability, safety, resource discipline, and interoperability.
+- Added reference activity profiles for General, Mathematics, Physics, Chemistry, Economics, Inference, Finance, and Data Analytics.
+- Added mean-squared variance, RMS deviation, and L2 distance calculations with finite/range validation and no dynamic allocation.
+- Added `sleela design-activity ...` and `nordshrift design-activity ...` so both principal executables expose the same Design Activity contract.
+- Updated the native build to link one shared implementation into both executables.
+- Added `impl/DESIGN-ACTIVITY.md` documenting the norming model and the distinction between software-design variance and scientific measurement uncertainty.
