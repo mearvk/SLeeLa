@@ -13,7 +13,7 @@ enum class Tok {
     // literals & names
     Int, Double, Str, Ident,
     // keywords
-    KwClass, KwStatic, KwVoid, KwIntT, KwDoubleT, KwBoolT, KwStringT,
+    KwClass, KwStatic, KwProtected, KwVoid, KwIntT, KwDoubleT, KwBoolT, KwStringT,
     KwIf, KwElse, KwWhile, KwFor, KwReturn, KwTrue, KwFalse, KwPrint, KwNull,
     KwImport, KwStruct, KwNew,
     // punctuation / operators
