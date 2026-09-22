@@ -1,4 +1,4 @@
-# SLeeLa Server and Service — Service 2
+# Discord-2™ — SLeeLa Server and Service — Service 2
 
 Service 2 is the expanded Server and Service package. It separates the
 authoritative SLeeLa server program from configuration and lifecycle control.
@@ -57,3 +57,16 @@ Example:
 
 server-edition/moral/2/serverd --help
 server-edition/moral/2/serverd --design-activity physics 98 95 100 95 85 85
+
+
+## Programmatic theme
+
+**Discord-2™** is the programmatic name and implementation theme assigned to
+Service 2 in the SLeeLa Server Edition series. It is an implementation name
+only and does not indicate sponsorship, endorsement, ownership, or technical
+affiliation with Discord Inc.
+
+Discord and related Discord marks are third-party trademarks. No Discord
+logo, trade dress, or proprietary Discord asset is included by this naming
+convention. Discord's published brand guidance states that permission is
+required for uses of its marks beyond permitted cases. citeturn0search3turn0search2
