@@ -131,3 +131,13 @@ Source-level changes were committed to `main`. Native Windows/macOS server build
 - Documented all unified SLeeLa input-object categories: Core, IO, System, Network, Application, Data, Science, Security, and Deployment.
 - Documented the `InputObject` data structure, syntax, bounds, validation, specialized Nordshrift inputs, semantic subject model, and execution boundary.
 - Added Nordshrift navigation to `api/index.html` and `api/README.md`.
+
+
+## 2026-09-22 — Compiled sleelas Server Launcher
+
+- Added `api/server/sleelas.cpp`, a native C++17 executable that starts the authoritative `server-edition/src/Server.sleela` through the compiled SLeeLa engine.
+- Added portable root/engine discovery, Server Edition state-directory setup, atomic single-run locking, `--tick`, `--foreground`, and `--help` handling.
+- Added native POSIX process startup for Linux/macOS and Win32 process startup for Windows 10+.
+- Added `api/server/Makefile`, `README.md`, and `API.html` documenting the compiled launcher contract.
+- Added `.github/workflows/build-sleelas.yml` to compile and upload native Linux x86_64, macOS, and Windows 10+ x86_64 binaries as workflow artifacts.
+- Kept server semantics in `Server.sleela`; `sleelas` is the compiled process boundary and does not duplicate or silently expose a public listener.
