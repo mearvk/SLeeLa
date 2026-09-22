@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 set -eu
 PREFIX=${SLEEELA_PREFIX:-/opt/sleela}
-ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/../../.." && pwd)
+ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/../../../.. && pwd)
 DEST="$PREFIX/server-edition/moral/2"
 install -d -m 0750 "$DEST" "$PREFIX/server-edition/inbox" "$PREFIX/server-edition/state"
 cp -R "$ROOT/server-edition/moral/2/." "$DEST/"
