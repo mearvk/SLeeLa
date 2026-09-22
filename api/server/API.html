@@ -12,6 +12,20 @@
 <li>Uses an atomic directory lock and owner-process check to prevent duplicate server instances.</li><li>Preserves <code>--tick</code>, <code>--foreground</code>, and <code>--help</code>.</li>
 <li>Passes the trusted SHA-256 manifest environment to the engine when the repository manifest is present.</li>
 <li>Does not open a public listening socket itself.</li></ul>
+<h2>NAT-aware deployment API</h2>
+<p>The compiled launcher includes <code>nat_aware.h</code> and <code>nat_aware.cpp</code>. The API defines five explicit deployment modes: <code>direct</code>, <code>port-forward</code>, <code>ipv6</code>, <code>outbound</code>, and <code>relay</code>.</p>
+<p>Configuration is validated from the <code>SLEELA_NAT_*</code> environment variables. Outbound and relay modes require a rendezvous endpoint and TLS. <code>--nat-plan</code> prints the deterministic plan without opening sockets or changing router state.</p>
+<table><tr><th>Variable</th><th>Purpose</th></tr>
+<tr><td><code>SLEELA_NAT_MODE</code></td><td>Deployment mode</td></tr>
+<tr><td><code>SLEELA_NAT_BIND_HOST</code></td><td>Local bind host</td></tr>
+<tr><td><code>SLEELA_NAT_BIND_PORT</code></td><td>Local port</td></tr>
+<tr><td><code>SLEELA_NAT_PUBLIC_HOST</code></td><td>Public endpoint host</td></tr>
+<tr><td><code>SLEELA_NAT_PUBLIC_PORT</code></td><td>Public endpoint port</td></tr>
+<tr><td><code>SLEELA_NAT_RENDEZVOUS</code></td><td>Trusted rendezvous/relay endpoint</td></tr>
+<tr><td><code>SLEELA_NAT_KEEPALIVE</code></td><td>Keepalive interval, 5–3600 seconds</td></tr>
+<tr><td><code>SLEELA_NAT_TLS_REQUIRED</code></td><td>TLS policy</td></tr>
+</table>
+<p>See <code>NAT.md</code> for CGN, double-NAT, firewall, security, reverse-channel, and relay guidance.</p>
 <h2>Build</h2><pre>cd api/server
 make</pre>
 <p>The repository CI workflow builds Linux, macOS, and Windows binaries as native workflow artifacts.</p>
