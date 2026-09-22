@@ -36,8 +36,8 @@ struct IfStmt:Stmt{ExprP cond;StmtP thenS,elseS;};
 struct WhileStmt:Stmt{ExprP cond;StmtP body;};
 struct ForStmt:Stmt{StmtP init;ExprP cond;StmtP update,body;};
 struct Param{std::string type,name;};
-struct Method{std::string retType,name;std::vector<Param> params;std::unique_ptr<Block> body;};
-struct Field{std::string type,name;ExprP init;};
+struct Method{std::string retType,name;std::vector<Param> params;std::unique_ptr<Block> body;bool isStatic=false;bool isProtected=false;};
+struct Field{std::string type,name;ExprP init;bool isStatic=false;bool isProtected=false;};
 struct ClassDecl{std::string name;std::vector<Field> fields;std::vector<Method> methods;};
 // A C/C++-style struct: a named aggregate of typed fields. Field initializers
 // are not used (a `new` instance is zero/null-initialised); the compiler keeps
