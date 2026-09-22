@@ -3768,7 +3768,7 @@
     },
     {
       "path": "server-edition/moral/2/install/linux-install.sh",
-      "sha256": "5369211fcab429dac8c136edb5aec32fa393bd4737400ba96171bcdfc9f74e07"
+      "sha256": "d6bea30120d4fb814d6e99b90c207562c6eef521fe602af1d707e35c3d84a6d9"
     },
     {
       "path": "server-edition/moral/2/install/linux-uninstall.sh",
@@ -3776,7 +3776,7 @@
     },
     {
       "path": "server-edition/moral/2/install/macos-install.sh",
-      "sha256": "adfe13051a105092d53d33cb57a50fcc444e9a13df866a85e9c193d9078482d8"
+      "sha256": "025e94237c5b566b59631b2c968ba25986afd4df36b439d83fc0b297fd72a5be"
     },
     {
       "path": "server-edition/moral/2/install/macos-uninstall.sh",
@@ -3784,7 +3784,7 @@
     },
     {
       "path": "server-edition/moral/2/install/windows-install.ps1",
-      "sha256": "0d291e0bbeb4c543da3148f41365e2fd074e0c15605b792a43ad097902125bbc"
+      "sha256": "e1c219efa2efc484d91ac4d8c7a1c246aadcfaf99e2ec64be06d5bf36ce1ffaf"
     },
     {
       "path": "server-edition/moral/2/install/windows-uninstall.ps1",
