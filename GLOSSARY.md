@@ -191,3 +191,16 @@ for profiling, ranking, locating, or otherwise treating real people as objects.
 - [`VERSION.md`](VERSION.md) — the single record of all versions.
 - [`GERALDINE.FERRARO.md`](GERALDINE.FERRARO.md) — presidential governance analysis, the Golden premise, and the classic model of representation.
 - `src/Sleela.manifest` (SL-META-0001) and `SST.model` (NS-SST-0001) — the governing specifications.
+
+
+### A.8 Static / protected memory terms
+
+| Term | Definition | Source |
+|------|-----------|--------|
+| **Static class member** | A class member declared with `static`. In SLeeLa it is class-level state or behavior rather than per-instance state; the compiler lowers class fields to VM globals and methods to core functions. | `impl/frontend/parser.cpp`, `impl/frontend/compiler.cpp` |
+| **Protected member** | A class field or method declared with `protected`. Protected access is restricted to the declaring class in the current flattened SLeeLa class model and is not a public source interface. | `impl/frontend/parser.cpp`, `impl/frontend/compiler.cpp` |
+| **Static protected member** | The required SLeeLa protected form. A `protected` field or method must also be `static`; the compiler rejects a protected member without `static`. | `impl/frontend/compiler.cpp` |
+| **System Degree 2** | SLeeLa's safety designation for a static protected member: two bounded relations, class member → VM-managed storage/handle. It describes a controlled reference level, not a native pointer offset or arbitrary pointer arithmetic. | `impl/frontend/compiler.cpp`, `impl/examples/static-protected.sleela` |
+| **Managed-memory boundary** | The runtime rule that Sleela source operates on VM-owned values and bounded handles rather than raw native pointers. Struct instances, sockets, files, probes, reaches, and related resources are represented through VM-managed tables. | `impl/core/sleela_core.h`, `impl/core/sleela_core.c` |
+| **Protected-source gate** | The compiler requirement that protected source is accepted only when the member is static and the VM reports its managed-memory safety mode. | `impl/frontend/compiler.cpp`, `impl/core/sleela_core.c` |
+| **Degree-2 reference** | A SLeeLa semantic term for a controlled class-to-managed-storage relation. It must not be interpreted as two pointer dereferences. | `DEFINITIONS.md` |
