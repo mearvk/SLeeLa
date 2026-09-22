@@ -71,6 +71,7 @@ int main(void)
     http3_intactx_t ix;
     uint64_t intactx;
     uint64_t nonce = 0; /* monotonic per-connection packet counter (replay guard) */
+    static const char *logical_port = "123456789012345678901234567890123456789012345678";
     unsigned order_counter = 0;
     uint32_t svc, op_calc, op_place_id;
     http3_envelope_t env;
@@ -122,6 +123,7 @@ int main(void)
                               HTTP3_FLAG_NONE, /*nonce*/ ++nonce, intactx, mac_key,
                               (const uint8_t *)"20,22", 5u) == 0,
           "envelope initialized");
+    CHECK(http3_envelope_set_port_decimal(&env, logical_port, mac_key) == 0, "extended logical port set and packet resealed");
     CHECK(http3_envelope_verify_digest(&env, mac_key), "per-packet keyed DIGEST verifies");
     printf("  NONCE=%llu  DIGEST=%llu  INTACTX=%llu\n",
            (unsigned long long)env.nonce,
@@ -161,6 +163,14 @@ int main(void)
     CHECK(http3_envelope_pack_text(&env, text, sizeof(text), &written) == 0, "envelope packed (textual)");
     printf("\n-- §5 compact envelope (textual wire) --\n  %.*s", (int)written, text);
     CHECK(http3_envelope_pack_binary(&env, bin, sizeof(bin), &written) == 0, "envelope packed (binary)");
+    {
+        http3_envelope_t decoded;
+        char decoded_port[49];
+        CHECK(http3_envelope_unpack_binary(bin, written, &decoded) == 0 &&
+              http3_port_to_decimal(&decoded.port, decoded_port, sizeof(decoded_port)) == 0 &&
+              strcmp(decoded_port, logical_port) == 0,
+              "binary packet preserves the actual extended PORT");
+    }
     printf("-- §5 compact envelope (binary wire) --\n  %zu bytes: ", written);
     for (size_t i = 0; i < written; ++i) printf("%02x", bin[i]);
     printf("\n");
