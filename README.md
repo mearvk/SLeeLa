@@ -531,6 +531,12 @@ desktop/macos/
 
 This keeps file association, icon registration, signing, quarantine, and desktop-cache policy out of the core linker. The application payload itself remains self-contained.
 
+## Cross-Platform CLI
+
+SLeeLa's native executable interface is available on Linux, Windows 10+, and macOS. Use `--config FILE` with `native` or `exec` to select the common properties file; executable arguments, including numeric flags, follow `--` unchanged.
+
+See `BUILD.md` for platform build instructions and `RAM_GUARD.md` for the common RAM Guard configuration profile.
+
 ## Build and Test
 
 ```bash
