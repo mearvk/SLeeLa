@@ -13,6 +13,9 @@
 #include <utility>
 #include <vector>
 #include "../email/sleela_email.h"
+#include "../posting/sleela_post.h"
+#include "../listener/sleela_listener.h"
+#include "../router/sleela_router.h"
 
 namespace {
 struct Node { std::string name; std::map<std::string,std::string> attr; std::vector<Node> child; std::string text; };
@@ -100,6 +103,29 @@ static sleela_email_tls_mode_t tlsmode(const std::string&s){
     if(s=="none")return SLEELA_EMAIL_TLS_NONE;if(s=="starttls")return SLEELA_EMAIL_TLS_STARTTLS;if(s=="implicit")return SLEELA_EMAIL_TLS_IMPLICIT;
     throw std::runtime_error("unknown SMTP TLS mode");
 }
+static void run_post(const Node&root,const Node&project){
+    const Node* p=child(root,"post"); if(!p) throw std::runtime_error("post project requires <post>");
+    std::string target=attr(*p,"target","/"),type=attr(*p,"content-type","text/plain"),body=attr(*p,"body");
+    sleela_post_t post{"POST",target.c_str(),type.c_str(),body.c_str()}; char err[512]={0};
+    int ok=sleela_post_validate(&post,err,sizeof(err));
+    witness(attr(project,"id"),"001","post","POST",ok==0?"validated":err,ok==0?"executed":"rejected");
+}
+static void run_listener(const Node&root,const Node&project){
+    const Node* l=child(root,"listener"); if(!l) throw std::runtime_error("listener project requires <listener>");
+    unsigned long pv=std::stoul(attr(*l,"port","0")); if(pv>65535) throw std::runtime_error("listener port out of range");
+    sleela_listener_t x{attr(*l,"bind","127.0.0.1").c_str(),(unsigned short)pv,attr(*l,"protocol","http").c_str(),attr(*l,"route","/").c_str()};
+    char err[512]={0}; int ok=sleela_listener_validate(&x,err,sizeof(err));
+    witness(attr(project,"id"),"001","listener","bind",ok==0?"validated":err,ok==0?"executed":"rejected");
+}
+static void run_router(const Node&root,const Node&project){
+    const Node* rr=child(root,"router"); if(!rr) throw std::runtime_error("router project requires <router>");
+    for(const Node* r:children(*rr,"route")){
+        sleela_route_t x{attr(*r,"method","POST").c_str(),attr(*r,"path","/").c_str(),attr(*r,"target","/").c_str()}; char err[512]={0};
+        int ok=sleela_router_validate(&x,err,sizeof(err));
+        std::string seq=attr(*r,"sequence","001"); witness(attr(project,"id"),seq,"router","route",ok==0?"validated":err,ok==0?"executed":"rejected");
+    }
+}
+
 static void run_email(const Node&root,const Node&project,bool send){
     const Node*e=child(root,"email");if(!e)throw std::runtime_error("email project requires <email>");const Node*s=child(*e,"smtp"),*m=child(*e,"message");
     if(!s||!m)throw std::runtime_error("email requires smtp and message");
@@ -120,7 +146,7 @@ int main(int argc,char**argv){
     std::string xml((std::istreambuf_iterator<char>(f)),{});if(xml.size()>4*1024*1024){std::cerr<<"XML project exceeds 4 MiB limit\\n";return 2;}
     try{Node root=parse(xml);if(root.name!="bodi"||attr(root,"version")!="1")throw std::runtime_error("root must be <bodi version=\"1\">");
         const Node*p=child(root,"project");if(!p)throw std::runtime_error("missing <project>");std::string kind=attr(*p,"kind");
-        if(kind=="science")run_science(root,*p);else if(kind=="email")run_email(root,*p,send);else throw std::runtime_error("unsupported project kind");
+        if(kind=="science")run_science(root,*p);else if(kind=="email")run_email(root,*p,send);else if(kind=="post")run_post(root,*p);else if(kind=="listener")run_listener(root,*p);else if(kind=="router")run_router(root,*p);else throw std::runtime_error("unsupported project kind");
         return 0;
     }catch(const std::exception&e){std::cerr<<"BODI XML error: "<<e.what()<<"\\n";return 1;}
 }
