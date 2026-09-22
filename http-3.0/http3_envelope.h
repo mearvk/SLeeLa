@@ -140,6 +140,14 @@ uint64_t http3_envelope_compute_digest(const http3_envelope_t *env,
 int http3_envelope_verify_digest(const http3_envelope_t *env,
                                  const uint8_t key[HTTP3_MAC_KEY_BYTES]);
 
+/* Set the actual extended logical port and reseal the packet DIGEST. */
+int http3_envelope_set_port_decimal(http3_envelope_t *env,
+                                    const char *decimal,
+                                    const uint8_t key[HTTP3_MAC_KEY_BYTES]);
+int http3_envelope_set_port_u64(http3_envelope_t *env,
+                                uint64_t port,
+                                const uint8_t key[HTTP3_MAC_KEY_BYTES]);
+
 /* ---- Textual wire form (§5: textual for interoperability) -----------------
  * Line form (single line, newline-terminated):
  *   H3 <version> <flags> <service_id> <op_id> <request_id> <port> <nonce> <digest> <intactx> <basket-hex> <payload_len>:<payload-bytes>
