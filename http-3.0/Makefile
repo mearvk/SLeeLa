@@ -64,7 +64,13 @@ kds: key_distribution_server
 key_distribution_server: $(C_OBJECTS) key_distribution_server_main.o
 	$(CC) $(CFLAGS) -o $@ $^ $(OPENSSL_LIBS) $(THREAD_LIBS)
 
-# Extended logical port namespace self-test.\nport-test: http3_port_test\n\nhttp3_port_test: http3_port.o http3_port_test.o\n\t$(CC) $(CFLAGS) -o $@ $^\n\n# Build the protocol-core objects and the end-to-end flow demo.
+# Extended logical port namespace self-test.
+port-test: http3_port_test
+
+http3_port_test: http3_port.o http3_port_test.o
+	$(CC) $(CFLAGS) -o $@ $^
+
+# Build the protocol-core objects and the end-to-end flow demo.
 proto: pipeline-demo
 
 pipeline-demo: http3_pipeline_demo
