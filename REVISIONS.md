@@ -51,3 +51,9 @@ Source-level changes were committed to `main`. Native Windows/macOS server build
 - Updated `README.md` with the HTTP 3.0 extended logical-port model and the current protocol build commands.
 - Updated `BUILD.md` with dedicated HTTP 3.0 verification targets for the logical-port boundary, native pipeline, and reference tests.
 - Documented the requirement that future any-order authenticated packet fields be canonicalized before integrity verification rather than authenticated according to raw wire ordering.
+## 2026-09-22 — Full HTML source coverage catalog
+
+- Added `api/SOURCE-COVERAGE.html`, generated from the `master` Git tree, covering all recognized source-code files with language, file size, repository-area role, and direct source links.
+- Updated `api/index.html` to expose the exhaustive source inventory.
+- Updated `api/API.html` to reflect the current 1,090-file source inventory and link the exhaustive coverage document.
+- Kept semantic API claims separate from structural source coverage so the documentation does not invent interfaces that are not present in source.
