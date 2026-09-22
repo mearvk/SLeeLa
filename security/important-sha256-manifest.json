@@ -16,7 +16,7 @@
     },
     {
       "path": "BUILD.md",
-      "sha256": "40920e504883a3f9897f0a8c9d0642bfee7a79e0a514a551f44cc3b92888d95b"
+      "sha256": "618403d79066899c33c030209eb56e9a6ece4038f21b966b14dc0dedf3b1f81c"
     },
     {
       "path": "CHANGES-MEMORY-NATIVE.md",
@@ -2268,7 +2268,7 @@
     },
     {
       "path": "build-windows.ps1",
-      "sha256": "7e4e6aadb8686c108feb5bcce19cc627beeb074f09f1ca71db1ab03b41e64bf6"
+      "sha256": "6700e12d4d9c6be4745f2a6009107acd904ff92d29921c3bf079c072c06cb94e"
     },
     {
       "path": "churn/1/assumptions/assumptions.sleela",
@@ -3720,7 +3720,7 @@
     },
     {
       "path": "scripts/build-macos.sh",
-      "sha256": "c3b9224dfdaf7f1789042a29f0018fd1fc64ae7ae32719e5f0ba23cf638d5aae"
+      "sha256": "17a3c2615c55a28f512ce97968365c34f8939e0f62639c251cdd4370979d2a3d"
     },
     {
       "path": "scripts/clean-build.sh",
