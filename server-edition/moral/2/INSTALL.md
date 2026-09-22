@@ -1,4 +1,4 @@
-# Service 2 Installation
+# Discord-2™ — Service 2 Installation
 
 Service 2 provides installation artifacts for Linux/systemd, macOS/launchd,
 and Windows 10+.
@@ -27,3 +27,10 @@ NIST server-security guidance recommends installing and configuring server
 software carefully before network exposure, while configuration-management
 guidance treats installation and configuration as controlled system changes.
 citeturn0search12turn0search13
+
+
+## Naming notice
+
+Discord-2™ is the programmatic theme/name used by this SLeeLa implementation.
+It is not presented as an official Discord product or service. Discord marks
+remain the property of their respective owner. citeturn0search3
