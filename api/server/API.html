@@ -1,0 +1,18 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>SLeeLa sleelas API</title>
+<style>body{font-family:Arial,sans-serif;max-width:1000px;margin:40px auto;padding:0 24px;line-height:1.55}code,pre{background:#f3f5f7;padding:2px 5px}table{border-collapse:collapse;width:100%}td,th{border:1px solid #ccc;padding:8px;text-align:left}</style>
+</head><body><h1>SLeeLa <code>sleelas</code> API</h1>
+<p><strong>sleelas</strong> is the compiled native launcher for the SLeeLa Server Edition reference program.</p>
+<h2>Reference</h2><p>The launcher starts <code>server-edition/src/Server.sleela</code> through the normal compiled <code>sleela</code> engine. Server semantics therefore remain in the authoritative SLeeLa source rather than being duplicated in the launcher.</p>
+<h2>Platform binaries</h2><table><tr><th>Target</th><th>Output</th><th>Native process API</th></tr>
+<tr><td>Linux x86_64</td><td><code>sleelas</code></td><td>fork/exec/waitpid</td></tr>
+<tr><td>macOS</td><td><code>sleelas</code></td><td>fork/exec/waitpid</td></tr>
+<tr><td>Windows 10+ x86_64</td><td><code>sleelas.exe</code></td><td>CreateProcess/WaitForSingleObject</td></tr></table>
+<h2>Runtime contract</h2><ul><li>Locates the installation root or honors <code>SLEELA_ROOT</code>.</li>
+<li>Locates the engine or honors <code>SLEELA_BIN</code>.</li><li>Creates <code>server-edition/inbox</code> and <code>server-edition/state</code>.</li>
+<li>Uses an atomic directory lock to prevent overlapping server passes.</li><li>Preserves <code>--tick</code>, <code>--foreground</code>, and <code>--help</code>.</li>
+<li>Passes the trusted SHA-256 manifest environment to the engine when the repository manifest is present.</li>
+<li>Does not open a public listening socket itself.</li></ul>
+<h2>Build</h2><pre>cd api/server
+make</pre>
+<p>The repository CI workflow builds Linux, macOS, and Windows binaries as native workflow artifacts.</p>
+</body></html>
