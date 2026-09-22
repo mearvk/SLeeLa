@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>SLeeLa Foundational API Reference</title>
+<style>
+body{font-family:system-ui,sans-serif;max-width:1250px;margin:auto;padding:2rem;line-height:1.5}
+nav,section{margin:1.5rem 0} table{border-collapse:collapse;width:100%}th,td{border:1px solid #ccc;padding:.55rem;text-align:left;vertical-align:top}code{background:#eee;padding:.1rem .3rem}.note{background:#f5f5f5;padding:1rem;border-left:4px solid #777}
+</style>
+</head>
+<body>
+<h1>SLeeLa Foundational API Reference</h1>
+<p>This reference defines the <strong>foundational API families</strong> that a general-purpose software system should expose through SLeeLa and documents where the corresponding SLeeLa source already exists in this repository.</p>
+<div class="note"><strong>Documentation rule:</strong> an entry is marked <em>implemented</em> only when this repository contains a corresponding source surface. A general software API family may also be listed as a target category when SLeeLa does not yet have a complete implementation. This page does not invent classes, functions, or guarantees.</div>
+
+<h2>API layers</h2>
+<table><thead><tr><th>Layer</th><th>Purpose</th><th>SLeeLa status / source</th></tr></thead><tbody>
+<tr><td>Core I/O</td><td>Standard input/output, streams, terminal interaction, buffering and basic data movement.</td><td>Implemented surfaces include <a href="https://github.com/mearvk/SLeeLa/blob/master/impl/core/sleela_terminal.c"><code>impl/core/sleela_terminal.c</code></a>, <a href="https://github.com/mearvk/SLeeLa/blob/master/impl/core/sleela_terminal.h"><code>impl/core/sleela_terminal.h</code></a> and the terminal subsystem.</td></tr>
+<tr><td>File I/O</td><td>Files, paths, directories, metadata, open/read/write/close and file-oriented streams.</td><td>Implemented file-I/O examples and native surfaces include <a href="https://github.com/mearvk/SLeeLa/blob/master/impl/fileio/README.md"><code>impl/fileio/README.md</code></a>, <a href="https://github.com/mearvk/SLeeLa/blob/master/impl/examples/fileio.sleela"><code>impl/examples/fileio.sleela</code></a> and <a href="https://github.com/mearvk/SLeeLa/blob/master/impl/examples/fileio-fifo.sleela"><code>impl/examples/fileio-fifo.sleela</code></a>.</td></tr>
+<tr><td>Networking</td><td>Addresses, sockets, connections, clients, servers and network channels.</td><td>Implemented native networking includes <a href="https://github.com/mearvk/SLeeLa/blob/master/impl/core/sleela_net.c"><code>impl/core/sleela_net.c</code></a>, <a href="https://github.com/mearvk/SLeeLa/blob/master/impl/core/sleela_net.h"><code>impl/core/sleela_net.h</code></a> and <a href="https://github.com/mearvk/SLeeLa/blob/master/impl/core/socket_smoke.c"><code>impl/core/socket_smoke.c</code></a>.</td></tr>
+<tr><td>HTTP</td><td>HTTP clients, servers, routing, request/response handling and protocol-specific transport.</td><td>Implemented across HTTP 2.0/3.0 and connector layers, including <a href="https://github.com/mearvk/SLeeLa/blob/master/connector/java/com/mearvk/sleela/connector/http/SleelaHttpConnector.java"><code>SleelaHttpConnector.java</code></a>, <a href="https://github.com/mearvk/SLeeLa/blob/master/connector/java/com/mearvk/sleela/connector/http/SleelaH3Servlet.java"><code>SleelaH3Servlet.java</code></a>, and <a href="https://github.com/mearvk/SLeeLa/blob/master/http-3.0/http3_protocol.h"><code>http3_protocol.h</code></a>.</td></tr>
+<tr><td>FTP / SSH / DNS</td><td>Common network service protocols and client/server abstractions.</td><td>Repository source includes FTP, SSH and DNS client/server examples under <code>examples/symmetry/src</code> and protocol input implementations under <code>inputs</code>.</td></tr>
+<tr><td>Email</td><td>Message composition/submission, SMTP transport, TLS and email client/server integration.</td><td>Implemented in <a href="https://github.com/mearvk/SLeeLa/tree/master/api/email"><code>api/email</code></a>, including C, C++, SLeeLa and HTML API documentation.</td></tr>
+<tr><td>GUI</td><td>Windows, documents, events, GUI runtime hosting, Swing/JavaFX integration and native bridging.</td><td>Implemented GUI surfaces include <a href="https://github.com/mearvk/SLeeLa/blob/master/gui/java/com/mearvk/sleela/gui/SleelaGui.java"><code>SleelaGui.java</code></a>, <a href="https://github.com/mearvk/SLeeLa/blob/master/gui/java/com/mearvk/sleela/gui/SleelaDocument.java"><code>SleelaDocument.java</code></a>, <a href="https://github.com/mearvk/SLeeLa/blob/master/gui/java/com/mearvk/sleela/gui/SwingGui.java"><code>SwingGui.java</code></a>, <a href="https://github.com/mearvk/SLeeLa/blob/master/gui/java/com/mearvk/sleela/gui/FxGui.java"><code>FxGui.java</code></a> and the native bridge.</td></tr>
+<tr><td>Process / execution</td><td>Process creation, execution, child-process handling and runtime integration.</td><td>Implemented connector/runtime surfaces include <a href="https://github.com/mearvk/SLeeLa/blob/master/connector/java/com/mearvk/sleela/connector/process/SleelaProcessConnector.java"><code>SleelaProcessConnector.java</code></a> and GUI process runtime integration.</td></tr>
+<tr><td>Memory</td><td>Allocation, memory lifecycle, native memory integration and memory services.</td><td>Implemented native memory surface: <a href="https://github.com/mearvk/SLeeLa/blob/master/impl/core/sleela_memory.c"><code>impl/core/sleela_memory.c</code></a> and <a href="https://github.com/mearvk/SLeeLa/blob/master/impl/core/sleela_memory.h"><code>impl/core/sleela_memory.h</code></a>.</td></tr>
+<tr><td>Threads / synchronization</td><td>Threads, synchronization primitives and platform threading.</td><td>Implemented native thread surface: <a href="https://github.com/mearvk/SLeeLa/blob/master/impl/core/sleela_thread.c"><code>impl/core/sleela_thread.c</code></a> and <a href="https://github.com/mearvk/SLeeLa/blob/master/impl/core/sleela_thread.h"><code>impl/core/sleela_thread.h</code></a>.</td></tr>
+<tr><td>Time</td><td>Clocks, timestamps, durations, timers and time conversion.</td><td>Implemented native time surface: <a href="https://github.com/mearvk/SLeeLa/blob/master/impl/core/sleela_time.c"><code>impl/core/sleela_time.c</code></a> and <a href="https://github.com/mearvk/SLeeLa/blob/master/impl/core/sleela_time.h"><code>impl/core/sleela_time.h</code></a>.</td></tr>
+<tr><td>Crypto / integrity</td><td>Cryptographic primitives, identity, key agreement, integrity and authenticated protocol data.</td><td>Implemented HTTP 3.0 crypto surfaces include <a href="https://github.com/mearvk/SLeeLa/blob/master/http-3.0/http3_crypto.h"><code>http3_crypto.h</code></a>, <a href="https://github.com/mearvk/SLeeLa/blob/master/http-3.0/crypto_key_agreement.h"><code>crypto_key_agreement.h</code></a> and related native sources.</td></tr>
+<tr><td>Serialization / structured data</td><td>JSON, XML and structured request/document representations.</td><td>Repository contains JSON/XML data and implementation surfaces, including <a href="https://github.com/mearvk/SLeeLa/blob/master/src/implementations/_001_/bodi/BodiXmlDocument.java"><code>BodiXmlDocument.java</code></a>.</td></tr>
+<tr><td>Database / persistence</td><td>Persistent records, registries, database connections and application storage.</td><td>Repository contains persistence/database integration material; a unified foundational SLeeLa database class layer should be documented separately from application-specific AE6E66 database tooling.</td></tr>
+<tr><td>RMI / distributed calls</td><td>Remote objects, endpoints, client/server invocation and service handles.</td><td>Implemented Java RMI family under <a href="https://github.com/mearvk/SLeeLa/tree/master/rmi/java"><code>rmi/java</code></a>, including client, server, endpoint, service and remote-object classes.</td></tr>
+<tr><td>Terminal / shell</td><td>Interactive terminal, command execution, parsing, expansion and terminal capabilities.</td><td>Implemented in <a href="https://github.com/mearvk/SLeeLa/tree/master/sleela-terminal"><code>sleela-terminal</code></a> and related native terminal sources.</td></tr>
+</tbody></table>
+
+<h2>Foundational class families</h2>
+<p>The class families below are the stable conceptual building blocks for the API documentation. Where SLeeLa already has concrete classes, the family points to those source declarations; where it does not, the family remains a documented target rather than an invented implementation.</p>
+<ul>
+<li><strong>Value and data:</strong> String, ByteBuffer/byte sequence, numeric values, Boolean, collections, maps, records and structured values.</li>
+<li><strong>I/O:</strong> InputStream, OutputStream, Reader, Writer, Buffer, Console and channel-style abstractions.</li>
+<li><strong>Files:</strong> Path, File, Directory, FileInfo/metadata, FileChannel and file-system service abstractions.</li>
+<li><strong>Networking:</strong> Address, Socket, ServerSocket/Listener, Connection, NetworkChannel, DNS resolver, HTTP request, HTTP response and Router.</li>
+<li><strong>Security:</strong> Digest, MAC, Key, KeyAgreement, Identity, Certificate/TLS configuration and integrity-verification services.</li>
+<li><strong>Email:</strong> EmailMessage, EmailAddress, SMTP client/transport, mail configuration and email server/client integration.</li>
+<li><strong>GUI:</strong> Application, Window, Document, Event, Widget, Layout, Menu, Dialog, Control and GUI runtime/host.</li>
+<li><strong>Processes:</strong> Process, ProcessBuilder/executor, Environment, ExitStatus and child-process streams.</li>
+<li><strong>Concurrency:</strong> Thread, Mutex/Lock, Condition, Future/Task and Executor-style services.</li>
+<li><strong>Time:</strong> Instant, Duration, Clock, Timer and scheduling services.</li>
+<li><strong>Persistence:</strong> Database, Connection, Transaction, Query, ResultSet/record set, Repository and serialization.</li>
+<li><strong>Distributed systems:</strong> Remote, Endpoint, Client, Server, Service, Session and invocation context.</li>
+</ul>
+
+<h2>Protocol and service families already represented</h2>
+<ul>
+<li><a href="https://github.com/mearvk/SLeeLa/tree/master/http-2.0">HTTP 2.0</a></li>
+<li><a href="https://github.com/mearvk/SLeeLa/tree/master/http-3.0">HTTP 3.0</a></li>
+<li><a href="https://github.com/mearvk/SLeeLa/tree/master/examples/symmetry/src/http">HTTP client/server examples</a></li>
+<li><a href="https://github.com/mearvk/SLeeLa/tree/master/examples/symmetry/src/ftp">FTP examples</a></li>
+<li><a href="https://github.com/mearvk/SLeeLa/tree/master/inputs/ssh">SSH input/server family</a></li>
+<li><a href="https://github.com/mearvk/SLeeLa/tree/master/examples/symmetry/src/dns">DNS examples</a></li>
+<li><a href="https://github.com/mearvk/SLeeLa/tree/master/api/email">Email / SMTP API</a></li>
+<li><a href="https://github.com/mearvk/SLeeLa/tree/master/rmi">RMI</a></li>
+</ul>
+
+<h2>Coverage relationship</h2>
+<p><a href="API.html">API.html</a> remains the repository-wide source-unit catalog. <a href="SOURCE-COVERAGE.html">SOURCE-COVERAGE.html</a> remains the exhaustive file inventory. This page is the foundational semantic map: it organizes the repository's source into the general-purpose API families a programmer expects from a software platform.</p>
+
+<footer><p>Source: <code>mearvk/SLeeLa</code>, branch <code>master</code>. Links are to the repository source as inspected for this reference.</p></footer>
+</body>
+</html>
