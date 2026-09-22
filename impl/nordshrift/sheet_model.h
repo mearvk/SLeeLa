@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "subject_model.h"   // nordshrift::semantic::Subject and friends
+#include "input_object.h"
 
 namespace nordshrift {
 
@@ -288,6 +289,7 @@ struct Sheet {
     ReachSpec   reach;      // Munction reach-composition block (1.3)
     MeasureSpec measure;    // Synchro measurement block (1.3)
     std::vector<semantic::Subject> subjects;   // 2.0 semantic subject blocks
+    std::vector<InputObject> inputObjects;       // SLeeLa architecture input objects
     std::vector<RuleConfig> ruleBlocks;
     std::vector<Profile>    profiles;
     std::string file;
