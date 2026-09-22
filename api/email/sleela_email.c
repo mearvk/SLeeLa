@@ -87,7 +87,7 @@ int sleela_email_send(const sleela_email_message_t*m,char*e,size_t en){
  SSL_CTX_set_min_proto_version(ctx,TLS1_2_VERSION);SSL_CTX_set_verify(ctx,SSL_VERIFY_PEER,NULL);
  if(SSL_CTX_set_default_verify_paths(ctx)!=1){fail(e,en,"TLS trust store unavailable");goto done;}
  ssl=SSL_new(ctx);if(!ssl){fail(e,en,"TLS session creation failed");goto done;}SSL_set_fd(ssl,fd);
- {X509_VERIFY_PARAM*v=SSL_get0_param(ssl);struct in_addr ia; if(inet_pton(AF_INET,m->smtp_host,&ia)==1)X509_VERIFY_PARAM_set1_ip_asc(v,m->smtp_host);else if(inet_pton(AF_INET6,m->smtp_host,&ia)==1)X509_VERIFY_PARAM_set1_ip_asc(v,m->smtp_host);else X509_VERIFY_PARAM_set1_host(v,m->smtp_host,0);}
+ {X509_VERIFY_PARAM*v=SSL_get0_param(ssl);struct in_addr ia4;struct in6_addr ia6; if(inet_pton(AF_INET,m->smtp_host,&ia4)==1)X509_VERIFY_PARAM_set1_ip_asc(v,m->smtp_host);else if(inet_pton(AF_INET6,m->smtp_host,&ia6)==1)X509_VERIFY_PARAM_set1_ip_asc(v,m->smtp_host);else X509_VERIFY_PARAM_set1_host(v,m->smtp_host,0);}
  if(SSL_connect(ssl)!=1){fail(e,en,"SMTP TLS certificate/handshake failed");goto done;}
  ok=message_tls(ssl,m,e,en);
 done:if(ssl){SSL_shutdown(ssl);SSL_free(ssl);}if(ctx)SSL_CTX_free(ctx);if(fd>=0)close(fd);return ok;
