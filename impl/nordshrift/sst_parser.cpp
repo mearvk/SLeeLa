@@ -213,10 +213,60 @@ struct Parser {
         if (kw == "finance")  { parseFinance();  return true; }
         if (kw == "reach")    { parseReach();    return true; }
         if (kw == "measure")  { parseMeasure();  return true; }
-        if (kw == "subject")  { parseSubject();  return true; }
+        if (kw == "subject")  { parseSubject();  return true; }\n        if (kw == "object")   { parseInputObject(); return true; }
         if (kw == "rule")     { parseRuleBlock(); return true; }
         if (kw == "profile")  { parseProfile();  return true; }
         return false;
+    }
+
+    // ---- generic SLeeLa input object -------------------------------
+    void parseInputObject() {
+        InputObject obj;
+        const int ln = cur().line;
+        i++; // object
+        std::string category = readScalarText();
+        if (!inputObjectCategoryFromName(category, obj.category)) {
+            errAt(ln, "NSS-E-OBJ-001", "unknown input-object category '" + category + "'", "SST-OBJECT-CATEGORY", true);
+        }
+        if (is(Tok::Ident) || is(Tok::String)) obj.identity = take().text;
+        if (!enterBlock()) {
+            errAt(ln, "NSS-E-OBJ-002", "input object requires a block", "SST-OBJECT-BLOCK", true);
+            if (!obj.identity.empty()) sheet.inputObjects.push_back(std::move(obj));
+            syncToNewline(); return;
+        }
+        obj.line = ln;
+        while (!atBlockEnd()) {
+            if (is(Tok::Newline)) { i++; continue; }
+            if (!is(Tok::Ident)) { syncToNewline(); continue; }
+            int keyLine = cur().line;
+            std::string key = cur().text; i++;
+            if (is(Tok::Colon)) i++;
+            if (key == "type") obj.type = readScalarText();
+            else if (key == "source") obj.source = readScalarText();
+            else if (key == "target") obj.target = readScalarText();
+            else if (key == "value") obj.value = readScalarText();
+            else if (key == "inputs") obj.inputs = readListOrScalar();
+            else if (key == "outputs") obj.outputs = readListOrScalar();
+            else if (key == "property") {
+                std::string name = readScalarText();
+                std::string value = readScalarText();
+                if (name.empty()) errAt(keyLine, "NSS-E-OBJ-003", "object property requires a name", "SST-OBJECT-PROPERTY", true);
+                else if (obj.properties.size() >= 64) errAt(keyLine, "NSS-E-OBJ-004", "input object property limit exceeded", "SST-OBJECT-BOUND", true);
+                else obj.properties[name] = value;
+            } else {
+                // Unknown object members are rejected rather than silently
+                // becoming a different API contract.
+                errAt(keyLine, "NSS-E-OBJ-005", "unknown input object member '" + key + "'", "SST-OBJECT-MEMBER", true);
+                (void)readScalarText();
+            }
+            if (is(Tok::Newline)) i++;
+        }
+        exitBlock();
+        std::string error;
+        if (!inputObjectValidate(obj, error))
+            errAt(ln, "NSS-E-OBJ-006", error, "SST-OBJECT-VALIDATE", true);
+        else
+            sheet.inputObjects.push_back(std::move(obj));
     }
 
     // ---- source ---------------------------------------------------------
