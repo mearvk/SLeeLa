@@ -147,4 +147,10 @@ else
 fi
 
 echo ""
+echo ""
+echo "Common configuration:"
+echo "  $BUILD_DIR/sleela exec --config config/sleela.properties.example -- <program> <args...>"
+echo "  The selected file is exported as SLEELA_CONFIG_FILE."
+echo "  macOS target: configured for supported modern macOS releases."
+echo ""
 echo "Build process finished."
