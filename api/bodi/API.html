@@ -7,8 +7,8 @@
   ...
 &lt;/bodi&gt;</pre>
 <h2>Science projects</h2>
-<p>A science project contains one or more <code>discipline</code> elements. Supported executable disciplines in this first API are <code>math</code> and <code>physics</code>. The schema also reserves descriptive discipline names such as chemistry, biology, astronomy, earth-science, computer-science, and engineering for future native handlers.</p>
-<p>Operations use named functions and numeric arguments. Examples include <code>math.sqrt</code>, <code>math.pow</code>, <code>math.sin</code>, <code>physics.velocity</code>, <code>physics.force</code>, <code>physics.kinetic_energy</code>, <code>physics.gravitational_force</code>, <code>physics.ohms_voltage</code>, and <code>physics.electric_power</code>.</p>
+<p>A science project contains one or more <code>discipline</code> elements. Supported executable disciplines in this first API are <code>math</code>, <code>physics</code>, and <code>chemistry</code>. The schema also reserves descriptive discipline names such as chemistry, biology, astronomy, earth-science, computer-science, and engineering for future native handlers.</p>
+<p>Operations use named functions and numeric arguments. Examples include <code>chemistry.ratio</code>, <code>chemistry.similarity</code>, <code>math.sqrt</code>, <code>math.pow</code>, <code>math.sin</code>, <code>physics.velocity</code>, <code>physics.force</code>, <code>physics.kinetic_energy</code>, <code>physics.gravitational_force</code>, <code>physics.ohms_voltage</code>, and <code>physics.electric_power</code>.</p>
 <h2>Email / SMTP projects</h2>
 <p>An email project declares an SMTP endpoint and a message. The password must be supplied by an environment variable through <code>password-env</code>; credentials are not intended to be stored in XML.</p>
 <p>Supported TLS modes map directly to the existing Email Facade: <code>none</code>, <code>starttls</code>, and <code>implicit</code>. The runner requires <code>--send-email</code> before it performs network submission.</p>
