@@ -119,7 +119,7 @@ bool isContextualBuiltin(const std::string& name) {
 
 Token Lexer::makeIdentOrKeyword() {
     static const std::unordered_map<std::string, Tok> kw = {
-        {"class",Tok::KwClass},{"static",Tok::KwStatic},{"void",Tok::KwVoid},
+        {"class",Tok::KwClass},{"static",Tok::KwStatic},{"protected",Tok::KwProtected},{"void",Tok::KwVoid},
         {"int",Tok::KwIntT},{"double",Tok::KwDoubleT},{"boolean",Tok::KwBoolT},
         {"String",Tok::KwStringT},{"if",Tok::KwIf},{"else",Tok::KwElse},
         {"while",Tok::KwWhile},{"for",Tok::KwFor},{"return",Tok::KwReturn},
