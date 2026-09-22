@@ -76,7 +76,7 @@
     },
     {
       "path": "REVISIONS.md",
-      "sha256": "357c323accfbdfe4f5067b97c7732da66b2f620f7f83784fdae64e7425fbe2a7"
+      "sha256": "25d54727b8d13301c3a43d1e947b08d2239d2ebb9a673c82011a6f47191ce091"
     },
     {
       "path": "SERVER.EDITION.md",
@@ -292,7 +292,7 @@
     },
     {
       "path": "api/server/API.html",
-      "sha256": "df0f69f7cc352a8a90d6b157eb692307008541e4ce32d9afcedcb6a245b7a3f4"
+      "sha256": "6bea01e11d93c58a26d9a9bf20e7d631025a388bab0728deabbc6cde5bab725e"
     },
     {
       "path": "api/server/NAT.md",
@@ -300,7 +300,7 @@
     },
     {
       "path": "api/server/README.md",
-      "sha256": "da82297d8d32d1970fcefc5841400adebeb5906a957fb682d6863bba54e87e61"
+      "sha256": "9762dd180ac9638c39bd2a65d19a5ba6a28da7191916a63648093eb9cccfac27"
     },
     {
       "path": "api/server/nat_aware.cpp",
