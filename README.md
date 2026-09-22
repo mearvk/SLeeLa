@@ -758,3 +758,8 @@ The standalone logical-port test is the smallest verification target; `demo` exe
 SLeeLa provides a source-backed BODI XML project layer under [`api/bodi/`](api/bodi/). XML projects can currently represent executable science operations, SMTP email, HTTP-style posts, listener declarations, and deterministic routers. The native C vocabulary for posts, listeners, and routers is under [`api/posting/`](api/posting/), [`api/listener/`](api/listener/), and [`api/router/`](api/router/).
 
 Runnable XML examples and expected BODI witness evidence are published under [`examples/`](examples/). Examples 07–09 demonstrate POST, listener, and router declarations without implicitly opening sockets or sending network traffic. The BODI runner uses an allow-listed dispatcher; XML cannot invoke arbitrary shell commands or arbitrary native functions.
+
+
+## Apache/Tomcat Web Server Monitor
+
+SLeeLa now includes a cross-platform web-server operations module under [`api/webserver/`](api/webserver/). Web-aware applications can use the module as a deployment dependency for Apache HTTP Server and Apache Tomcat on Linux, Windows 10+, and macOS. The module provides installation/verification, status and HTTP health checks, package-manager upgrades where supported, controlled listener-port changes, configuration validation, and explicit local Tomcat WAR deployment. OS-specific adapters fail closed when a distribution-specific installation layout is unknown; they do not silently select an unofficial binary or elevate privileges.
