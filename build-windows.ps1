@@ -106,6 +106,13 @@ $NordshriftExe = Join-Path $BuildDir "nordshrift.exe"
 if (-not (Test-Path $SleelaExe) -or -not (Test-Path $NordshriftExe)) {
     throw "Build did not produce sleela.exe and nordshrift.exe in $BuildDir."
 }
+$StageDir = Join-Path $BuildDir "SLeeLa"
+$StageConfig = Join-Path $StageDir "Config"
+$StageOptions = Join-Path $StageDir "Options"
+$StageConfigFile = Join-Path $StageConfig "sleela.conf"
+if (-not (Test-Path $StageConfigFile) -or -not (Test-Path $StageOptions)) {
+    throw "Build staging is incomplete: expected $StageConfigFile and $StageOptions."
+}
 
 Write-Host ""
 Write-Host "Build completed successfully!"
@@ -119,13 +126,15 @@ if ($BinDir -ne "") {
     Write-Host "Verify: $(Join-Path $BinDir 'sleela.exe') version"
 } else {
     Write-Host "Binaries remain in: $BuildDir"
+    Write-Host "Staged runtime: $StageDir"
+    Write-Host "Consolidated config: $StageConfigFile"
     Write-Host "Verify: $SleelaExe version"
 }
 Write-Host ""
 Write-Host ""
 Write-Host "Common configuration:"
-Write-Host "  sleela exec --config config/sleela.properties.example -- <program> <args...>"
-Write-Host "  The selected file is exported as SLEELA_CONFIG_FILE."
+Write-Host "  sleela.exe run with Config\\sleela.conf as the staged default runtime configuration"
+Write-Host "  SLEELA_CONFIG_FILE may override the selected configuration path."
 Write-Host "  Windows target: 10+; source backend uses Win32/ConPTY/Winsock."
 Write-Host ""
 Write-Host "Build process finished."
