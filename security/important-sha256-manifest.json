@@ -76,7 +76,7 @@
     },
     {
       "path": "REVISIONS.md",
-      "sha256": "92c0967e07b01a92579c0ea5259f06c1ca4215655eed3b5ec589c06e00be6399"
+      "sha256": "864e9d624e5df1095ba04f7575b3dc3064a8897e55b2f5f076cc2de444928882"
     },
     {
       "path": "SERVER.EDITION.md",
@@ -2835,6 +2835,14 @@
       "sha256": "c2c32fc69666e1cc5cfedc8bc8c9429981f68252ba29646ac0ab89e6bd8accb0"
     },
     {
+      "path": "impl/core/sleela_design_activity.c",
+      "sha256": "9aa284786e4d948dbd760ae734b4cfc314e4e9541f3999dccd2099f9eee6a49b"
+    },
+    {
+      "path": "impl/core/sleela_design_activity.h",
+      "sha256": "85ff5eb639418bce6b55ca46452b277adb9be2741366e258c5aa6cf82700c8eb"
+    },
+    {
       "path": "impl/core/sleela_events.c",
       "sha256": "ab0c13c4edfc1d33a25fd86ec262fa810c7af72ade42aef3dd16b70da3eff3f9"
     },
@@ -3064,7 +3072,7 @@
     },
     {
       "path": "impl/frontend/driver.cpp",
-      "sha256": "19c8b433235cac1081395293a1170c314c44df299a1078e889bf9543310b3d46"
+      "sha256": "c9b923b92e8abaff290f9056f6eba6c8062c9c47e173b1c953530393c184ae8e"
     },
     {
       "path": "impl/frontend/lexer.cpp",
@@ -3224,7 +3232,7 @@
     },
     {
       "path": "impl/nordshrift/nordshrift.cpp",
-      "sha256": "963f5285d09f07ed484dcbbdaadd3b1030264a7b384e1398c889337f79bcdfe1"
+      "sha256": "a65eb9856b20f530312ae07b5772ba6102d0a1243c0f87becdc08e2d00e29e06"
     },
     {
       "path": "impl/nordshrift/object_compat.cpp",
