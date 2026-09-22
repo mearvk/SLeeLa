@@ -9,7 +9,7 @@
 <tr><td>Windows 10+ x86_64</td><td><code>sleelas.exe</code></td><td>CreateProcess/WaitForSingleObject</td></tr></table>
 <h2>Runtime contract</h2><ul><li>Locates the installation root or honors <code>SLEELA_ROOT</code>.</li>
 <li>Locates the engine or honors <code>SLEELA_BIN</code>.</li><li>Creates <code>server-edition/inbox</code> and <code>server-edition/state</code>.</li>
-<li>Uses an atomic directory lock to prevent overlapping server passes.</li><li>Preserves <code>--tick</code>, <code>--foreground</code>, and <code>--help</code>.</li>
+<li>Uses an atomic directory lock and owner-process check to prevent duplicate server instances.</li><li>Preserves <code>--tick</code>, <code>--foreground</code>, and <code>--help</code>.</li>
 <li>Passes the trusted SHA-256 manifest environment to the engine when the repository manifest is present.</li>
 <li>Does not open a public listening socket itself.</li></ul>
 <h2>Build</h2><pre>cd api/server
