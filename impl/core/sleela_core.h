@@ -96,6 +96,8 @@ typedef enum { SLX_RESET = 0, SLX_ADD_CONST, SLX_DECLARE_GLOBAL, SLX_BEGIN_FUNC,
  * i0 = field count; out receives the type index. */
 typedef struct { SLValue value; const char* name; const char* const* names; int32_t op; int32_t a; int32_t i0; int32_t i1; int32_t i2; int32_t out; } SLExchangeArg;
 SLVM* slvm_new(void);
+/* True when Sleela source values use the bounded VM-owned memory/handle model. */
+int slvm_memory_safe_mode(const SLVM* vm);
 void slvm_free(SLVM* vm);
 SLResult slcore_exchange(SLVM* vm, SLExchangeOp op, SLExchangeArg* arg);
 int slvm_add_const_int(SLVM* vm, int64_t v);
