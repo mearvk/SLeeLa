@@ -123,7 +123,7 @@ else
 endif
 ALL_OBJECTS := $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(DESIGN_ACTIVITY_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(LANGIN_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(NS_OBJ) $(THREAD_SMOKE) $(SOCKET_SMOKE) $(SYNCHRO_SMOKE) $(MUNCTION_SMOKE) $(BESTOF_SMOKE) $(IO_PLATFORM_SMOKE) $(NET_PLATFORM_SMOKE) $(PATH_PLATFORM_SMOKE) $(TERMINAL_PLATFORM_SMOKE) $(LIBRARY_PLATFORM_SMOKE) $(PIXEL_TERMINAL_SMOKE) $(THREAD_PLATFORM_SMOKE)
 
-.PHONY: all test-platform stage package build-verified rebuild-verified clean test test-sleela test-version test-nordshrift test-threads test-thread-platform test-network test-network-platform test-synchro test-munction test-bestof test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-chemistry test-financial test-math test-physics test-economics test-inference test-subjects verify-security build-runtime test-runtime test-memmgr
+.PHONY: all test-platform stage package build-verified rebuild-verified clean test test-sleela test-version test-nordshrift test-threads test-thread-platform test-network test-network-platform test-synchro test-munction test-bestof test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-chemistry test-financial test-math test-physics test-economics test-inference test-subjects verify-security build-runtime test-runtime test-memmgr test-design-activity
 
 all: verify-security $(SLEELA_BIN) $(NORDSHRIFT_BIN) stage
 
@@ -215,6 +215,8 @@ $(TIME_OBJ): core/sleela_time.c core/sleela_time.h | $(BUILD)
 	$(CC) $(CFLAGS) -Icore -c core/sleela_time.c -o $@
 $(MEMORY_OBJ): core/sleela_memory.c core/sleela_memory.h | $(BUILD)
 	$(CC) $(CFLAGS) -Icore -c core/sleela_memory.c -o $@
+$(DESIGN_ACTIVITY_OBJ): core/sleela_design_activity.c core/sleela_design_activity.h | $(BUILD)
+	$(CC) $(CFLAGS) -Icore -c core/sleela_design_activity.c -o $@
 $(MEMMGR_OBJ): core/sleela_memmgr.c core/sleela_memmgr.h core/sleela_memory.h core/sleela_thread.h | $(BUILD)
 	$(CC) $(CFLAGS) -Icore -c core/sleela_memmgr.c -o $@
 $(PIXEL_TERMINAL_OBJ): ../bash/pixel_terminal.cpp ../bash/pixel_terminal.hpp | $(BUILD)
@@ -264,7 +266,7 @@ $(BUILD)/driver.o: frontend/driver.cpp frontend/compiler.h frontend/artifact.h s
 $(BUILD):
 	mkdir -p $(BUILD)
 
-test: verify-security test-sleela test-version test-nordshrift test-threads test-thread-platform test-network test-network-platform test-synchro test-munction test-bestof test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-math test-physics test-economics test-inference test-chemistry test-financial test-runtime test-memmgr
+test: verify-security test-sleela test-design-activity test-version test-nordshrift test-threads test-thread-platform test-network test-network-platform test-synchro test-munction test-bestof test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-math test-physics test-economics test-inference test-chemistry test-financial test-runtime test-memmgr
 test-thread-platform: $(THREAD_PLATFORM_SMOKE)
 	@echo "=== OS-aware threading backend ==="; SLEELA_THREAD_PLATFORM=auto $(THREAD_PLATFORM_SMOKE)
 test-threads: $(THREAD_SMOKE)
@@ -366,9 +368,16 @@ test-runtime: $(RUNTIME_SMOKE)
 # the OS allocator/thread objects and asserts real behavior (untracked-when-
 # disabled, exact byte/alloc accounting across alloc/calloc/realloc/free, and a
 # hard byte limit that fails allocation closed).
+DESIGN_ACTIVITY_SMOKE := $(BUILD)/design_activity_smoke
 MEMMGR_SMOKE := $(BUILD)/memmgr_smoke
+$(DESIGN_ACTIVITY_SMOKE): tests/core/design_activity_smoke.c $(DESIGN_ACTIVITY_OBJ) | verify-security $(BUILD)
+	$(CC) $(CFLAGS) -Icore tests/core/design_activity_smoke.c $(DESIGN_ACTIVITY_OBJ) -o $@ $(LDFLAGS) $(LIBS)
+
 $(MEMMGR_SMOKE): tests/core/memmgr_smoke.c $(MEMMGR_OBJ) $(MEMORY_OBJ) $(THREAD_OBJ) | verify-security $(BUILD)
 	$(CC) $(CFLAGS) -Icore tests/core/memmgr_smoke.c $(MEMMGR_OBJ) $(MEMORY_OBJ) $(THREAD_OBJ) -o $@ $(LDFLAGS) $(LIBS)
+
+test-design-activity: $(DESIGN_ACTIVITY_SMOKE)
+	@echo "=== SLeeLa Design Activity -- behavioral smoke ==="; $(DESIGN_ACTIVITY_SMOKE)
 
 test-memmgr: $(MEMMGR_SMOKE)
 	@echo "=== SLeeLa Memory Manager -- behavioral smoke ==="; $(MEMMGR_SMOKE)
