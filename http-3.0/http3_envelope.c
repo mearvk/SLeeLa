@@ -5,6 +5,7 @@
 #include "http3_envelope.h"
 #include "http3_mac.h"
 #include "http3_basket.h"
+#include "http3_port.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -12,7 +13,7 @@
 /* Canonical serialized header size the DIGEST is computed over (big-endian,
  * fixed-width fields; excludes the DIGEST itself, includes the NONCE). The
  * basket block and payload are appended after this header when MACing. */
-#define ENV_DIGEST_HDR 38u
+#define ENV_DIGEST_HDR 58u
 
 /* Big-endian field writers (defined fully in the binary-wire section below). */
 static void put_u32(uint8_t *b, uint32_t v);
@@ -46,11 +47,12 @@ uint64_t http3_envelope_compute_digest(const http3_envelope_t *env,
     put_u64(msg + 10, env->request_id);
     /* NONCE is inside the MAC so it cannot be altered without detection; the
      * receiver's high-water-mark check then defeats replay. */
-    put_u64(msg + 18, env->nonce);
-    put_u64(msg + 26, env->intactx);
+    memcpy(msg + 18, env->port.bytes, HTTP3_PORT_BYTES);
+    put_u64(msg + 38, env->nonce);
+    put_u64(msg + 46, env->intactx);
     /* payload length as a fixed 32-bit big-endian field (payloads are capped at
      * HTTP3_ENVELOPE_MAX_PAYLOAD, well within 32 bits). */
-    put_u32(msg + 34, (uint32_t)env->payload_len);
+    put_u32(msg + 54, (uint32_t)env->payload_len);
     pos = ENV_DIGEST_HDR;
     /* BASKET travels on every packet and is covered by the MAC. */
     memcpy(msg + pos, env->basket, HTTP3_BASKET_BLOCK_SIZE);
@@ -91,6 +93,7 @@ int http3_envelope_init(http3_envelope_t *env,
     env->service_id = service_id;
     env->op_id = op_id;
     env->request_id = request_id;
+    http3_port_zero(&env->port);
     env->nonce = nonce;
     env->intactx = intactx;
     /* The fixed basket of goods & services rides on every packet. */
@@ -152,13 +155,17 @@ int http3_envelope_pack_text(const http3_envelope_t *env, char *out, size_t out_
     }
     hex_encode(env->basket, HTTP3_BASKET_BLOCK_SIZE, basket_hex);
     basket_hex[2 * HTTP3_BASKET_BLOCK_SIZE] = '\0';
-    n = snprintf(out, out_cap, "H3 %u %u %u %u %llu %llu %llu %llu %s %zu:",
-                 (unsigned)env->version, (unsigned)env->flags,
-                 (unsigned)env->service_id, (unsigned)env->op_id,
-                 (unsigned long long)env->request_id,
-                 (unsigned long long)env->nonce,
-                 (unsigned long long)env->digest,
-                 (unsigned long long)env->intactx, basket_hex, env->payload_len);
+    {
+        char port_text[49];
+        if (http3_port_to_decimal(&env->port, port_text, sizeof(port_text)) != 0) return -1;
+        n = snprintf(out, out_cap, "H3 %u %u %u %u %llu %s %llu %llu %llu %s %zu:",
+                     (unsigned)env->version, (unsigned)env->flags,
+                     (unsigned)env->service_id, (unsigned)env->op_id,
+                     (unsigned long long)env->request_id, port_text,
+                     (unsigned long long)env->nonce,
+                     (unsigned long long)env->digest,
+                     (unsigned long long)env->intactx, basket_hex, env->payload_len);
+    }
     if (n < 0 || (size_t)n >= out_cap) {
         return -1;
     }
@@ -179,6 +186,7 @@ int http3_envelope_unpack_text(const char *in, size_t in_len, http3_envelope_t *
 {
     unsigned version, flags, service_id, op_id;
     unsigned long long request_id, nonce, digest, intactx;
+    char port_text[49];
     unsigned long payload_len;
     int consumed = 0;
     char basket_hex[2 * HTTP3_BASKET_BLOCK_SIZE + 1];
@@ -193,10 +201,10 @@ int http3_envelope_unpack_text(const char *in, size_t in_len, http3_envelope_t *
     {
         char fmt[96];
         (void)snprintf(fmt, sizeof(fmt),
-                       "H3 %%u %%u %%u %%u %%llu %%llu %%llu %%llu %%%us %%lu:%%n",
-                       (unsigned)(2 * HTTP3_BASKET_BLOCK_SIZE));
+                       "H3 %%u %%u %%u %%u %%llu %%%us %%llu %%llu %%llu %%%us %%lu:%%n",
+                       (unsigned)48u, (unsigned)(2 * HTTP3_BASKET_BLOCK_SIZE));
         if (sscanf(in, fmt, &version, &flags, &service_id, &op_id, &request_id,
-                   &nonce, &digest, &intactx, basket_hex, &payload_len, &consumed) != 10 ||
+                   port_text, &nonce, &digest, &intactx, basket_hex, &payload_len, &consumed) != 11 ||
             consumed <= 0) {
             return -1;
         }
@@ -211,6 +219,7 @@ int http3_envelope_unpack_text(const char *in, size_t in_len, http3_envelope_t *
     env->service_id = (uint32_t)service_id;
     env->op_id = (uint32_t)op_id;
     env->request_id = (uint64_t)request_id;
+    if (http3_port_from_decimal(&env->port, port_text) != 0) return -1;
     env->nonce = (uint64_t)nonce;
     env->digest = (uint64_t)digest;
     env->intactx = (uint64_t)intactx;
@@ -262,11 +271,12 @@ int http3_envelope_pack_binary(const http3_envelope_t *env, uint8_t *out, size_t
     put_u32(out + 2, env->service_id);
     put_u32(out + 6, env->op_id);
     put_u64(out + 10, env->request_id);
-    put_u64(out + 18, env->nonce);
-    put_u64(out + 26, env->digest);
-    put_u64(out + 34, env->intactx);
-    memcpy(out + 42, env->basket, HTTP3_BASKET_BLOCK_SIZE);
-    put_u32(out + 42 + HTTP3_BASKET_BLOCK_SIZE, (uint32_t)env->payload_len);
+    memcpy(out + 18, env->port.bytes, HTTP3_PORT_BYTES);
+    put_u64(out + 38, env->nonce);
+    put_u64(out + 46, env->digest);
+    put_u64(out + 54, env->intactx);
+    memcpy(out + 62, env->basket, HTTP3_BASKET_BLOCK_SIZE);
+    put_u32(out + 62 + HTTP3_BASKET_BLOCK_SIZE, (uint32_t)env->payload_len);
     memcpy(out + HTTP3_ENVELOPE_BIN_HEADER, env->payload, env->payload_len);
     if (written != NULL) {
         *written = HTTP3_ENVELOPE_BIN_HEADER + env->payload_len;
