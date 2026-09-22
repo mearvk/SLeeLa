@@ -18,6 +18,8 @@
 #include <chrono>
 #include <ctime>
 
+#include "nat_aware.h"
+
 #if defined(_WIN32)
 #include <windows.h>
 #else
@@ -142,13 +144,27 @@ static int run_engine(const fs::path &root, const fs::path &engine, const fs::pa
 #endif
 
 int main(int argc, char **argv) {
-    bool tick = false, foreground = false;
+    bool tick = false, foreground = false, natPlanOnly = false;
     for (int i = 1; i < argc; ++i) {
         std::string a = argv[i];
         if (a == "--help" || a == "-h") { help(); return 0; }
         if (a == "--tick") { tick = true; continue; }
         if (a == "--foreground" || a == "-f") { foreground = true; continue; }
+        if (a == "--nat-plan") { natPlanOnly = true; continue; }
         std::cerr << "sleelas: unknown option '" << a << "' (use --help)\n"; return 2;
+    }
+    sleela::server::NatConfig natConfig;
+    std::string natError;
+    if (!sleela::server::natConfigFromEnvironment(natConfig, natError)) {
+        std::cerr << "sleelas: invalid NAT configuration: " << natError << "\\n";
+        return 2;
+    }
+    if (natPlanOnly) {
+        const auto plan = sleela::server::makeNatPlan(natConfig);
+        std::cout << "sleelas: NAT mode = " << sleela::server::natModeName(plan.mode) << "\\n"
+                  << "sleelas: plan = " << plan.summary << "\\n"
+                  << "sleelas: next step = " << plan.nextStep << "\\n";
+        return 0;
     }
     const fs::path root = locate_root(executable_dir(argv[0]));
     if (root.empty()) { std::cerr << "sleelas: SLeeLa root not found; set SLEELA_ROOT\n"; return 1; }
