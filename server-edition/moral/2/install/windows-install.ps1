@@ -1,6 +1,6 @@
 param([string]$Prefix = "$env:ProgramFiles\SLeeLa")
 $ErrorActionPreference = "Stop"
-$Root = (Resolve-Path (Join-Path $PSScriptRoot "..\..\..")).Path
+$Root = (Resolve-Path (Join-Path $PSScriptRoot "..\..\..\..")).Path
 $Dest = Join-Path $Prefix "server-edition\moral\2"
 New-Item -ItemType Directory -Force -Path $Dest | Out-Null
 Copy-Item (Join-Path $Root "server-edition\moral\2\*") $Dest -Recurse -Force
