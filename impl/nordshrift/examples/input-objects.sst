@@ -65,6 +65,16 @@ object deployment WebApplication:
   outputs: [health]
   property health-check required
 
+object deployment NatAwareServer:
+  type nat-aware-server
+  source "server-edition"
+  target "rendezvous"
+  inputs: [bind, endpoint, keepalive, tls]
+  outputs: [reachability, health]
+  property transport outbound
+  property authorization required
+  property tls required
+
 target:
   root "out"
   layout mirror-source
