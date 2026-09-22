@@ -352,3 +352,111 @@ Future SLeeLa work should add concrete API bindings under `/api` only when the c
 
 **SLeeLa — Win32 API Reference**  
 **MEARVK LLC — 2026**
+
+
+## 14. Exposed Windows methods, functions, and class interfaces
+
+This reference can be expanded to document the exposed callable surface of Windows APIs. One terminology distinction is important: the native Win32 API is primarily a **function and data-type API**, rather than a single object-oriented Windows class hierarchy. Microsoft organizes the reference by feature and by header, and the API reference exposes the functions, structures, macros, interfaces, enumerations, and callbacks associated with those headers. Microsoft also maintains separate COM and Windows Runtime interface/class models. citeturn0search0turn0search1
+
+For SLeeLa, the intended documentation model is therefore:
+
+```text
+Windows Feature
+    |
+    +-- Header
+    |     |
+    |     +-- Functions
+    |     +-- Structures
+    |     +-- Enumerations
+    |     +-- Constants
+    |     +-- Callbacks
+    |     +-- Handles / opaque types
+    |
+    +-- COM interfaces/classes where applicable
+    |
+    +-- API-set contract
+    |
+    +-- Windows-version requirement
+    |
+    +-- x86/x64 availability
+    |
+    +-- SLeeLa binding
+```
+
+### Callable-method inventory
+
+For each Windows API surface incorporated into SLeeLa, the documentation should be capable of recording:
+
+| Field | Purpose |
+|---|---|
+| API name | Exact Microsoft API/function/interface method name |
+| Header | Windows SDK header declaring the API |
+| Library | Import/static library normally required |
+| API set | API-set contract when applicable |
+| Parameters | Native parameter types and direction |
+| Return value | Native return type and documented result |
+| Error behavior | Relevant Windows error/status mechanism |
+| Minimum Windows version | Documented availability |
+| Architecture | x86/x64 or architecture-neutral behavior |
+| Unicode/ANSI | Wide/ANSI variants where applicable |
+| SLeeLa binding | Corresponding SLeeLa API or class |
+| Security boundary | Privilege, handle, path, or trust considerations |
+| Status | Implemented, planned, unsupported, or deprecated |
+
+Microsoft's Win32 reference is already organized by feature and provides a complete header-oriented catalog, so this structure can be applied systematically rather than treating a small selection of calls as the entire API. citeturn0search0turn0search2
+
+### Example: Windows window-class surface
+
+Microsoft's Window Classes documentation demonstrates the model. A Windows window class has associated behavior and a window procedure, while the documented callable surface includes functions such as `GetClassInfoEx`, `GetClassLongPtr`, `GetClassName`, and `GetWindowLongPtr`. citeturn0search4
+
+SLeeLa's future API documentation can represent this as:
+
+```text
+Windows Window Classes
+    ├── Register / unregister
+    ├── Class information
+    ├── Class names
+    ├── Class properties
+    ├── Window creation
+    ├── Window procedures
+    ├── Messages
+    └── Window state
+```
+
+The same approach can be applied to files, processes, threads, memory, networking, GUI controls, services, security, registry, synchronization, HTTP, Winsock, and other Windows API families.
+
+### COM and interface methods
+
+Where Microsoft exposes an object/interface model, SLeeLa should preserve the interface boundary rather than converting every interface into a flat collection of unrelated functions. This is especially relevant to COM and Windows Runtime APIs.
+
+The Win32 reference includes COM among its system-service technologies, while Microsoft's API index separately distinguishes Win32, WinRT, and .NET API surfaces. citeturn0search1turn0search2
+
+### API-set recording
+
+Each callable API can also record its API-set contract when Microsoft documents one. An API-set name identifies a contract rather than necessarily identifying a physical DLL. Windows resolves the contract to the implementation appropriate for the current system. citeturn0search3
+
+### SLeeLa implementation rule
+
+SLeeLa should **document the exposed callable surface without automatically exposing every Windows function to the SLeeLa language**.
+
+A Windows function becomes an SLeeLa API only after the SLeeLa binding has:
+
+1. a defined SLeeLa signature;
+2. native parameter validation;
+3. return/error translation;
+4. handle and resource ownership rules;
+5. security-boundary rules;
+6. x86/x64 validation;
+7. Windows-version availability behavior;
+8. tests;
+9. an example;
+10. API documentation.
+
+This keeps the Microsoft Win32 catalog comprehensive while keeping the SLeeLa language/runtime boundary deliberate.
+
+### Reference coverage
+
+Microsoft's current Windows API index covers UI, Shell, input and messaging, storage, diagnostics, graphics/multimedia, devices, system services, security/identity, installation/servicing, administration/management, networking/internet, and deprecated/legacy APIs. citeturn0search2
+
+Accordingly, `API.WIN32.md` is intended to serve as the top-level SLeeLa Win32 catalog and integration policy. Detailed callable inventories can be added beneath this document or split into focused API documents by Windows header/technology as the SLeeLa bindings are implemented.
+
