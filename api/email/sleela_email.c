@@ -70,7 +70,8 @@ int sleela_email_send(const sleela_email_message_t*m,char*e,size_t en){
  int fd=-1,ok=0;SSL_CTX*ctx=NULL;SSL*ssl=NULL;char b[4096];
  if(!m||!field(m->smtp_host,253)||!header_field(m->helo_name,253)||!header_field(m->from,320)||!header_field(m->to,320)||
     !header_field(m->subject,998)||!m->body||strlen(m->body)>16*1024*1024||!m->smtp_port){fail(e,en,"invalid email configuration");return 0;}
- if(m->tls_mode==SLEELA_EMAIL_TLS_NONE && m->username&&*m->username){fail(e,en,"SMTP credentials require TLS");return 0;}\n if(!connect_to(m->smtp_host,m->smtp_port,m->local_bind_host,&fd)){fail(e,en,"SMTP connection failed");return 0;}
+ if(m->tls_mode==SLEELA_EMAIL_TLS_NONE && m->username&&*m->username){fail(e,en,"SMTP credentials require TLS");return 0;}
+ if(!connect_to(m->smtp_host,m->smtp_port,m->local_bind_host,&fd)){fail(e,en,"SMTP connection failed");return 0;}
  if(m->tls_mode==SLEELA_EMAIL_TLS_NONE){
   if(!pexpect(fd,220,e,en)||!psend(fd,"EHLO sleela\r\n")||!pexpect(fd,250,e,en))goto done;
   snprintf(b,sizeof(b),"MAIL FROM:<%s>\r\n",m->from);if(!psend(fd,b)||!pexpect(fd,250,e,en))goto done;
