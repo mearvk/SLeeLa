@@ -217,7 +217,12 @@ int main(int argc, char **argv) {
     }
     const fs::path root = locate_root(executable_dir(argv[0]));
     if (root.empty()) { std::cerr << "sleelas: SLeeLa root not found; set SLEELA_ROOT\n"; return 1; }
-    const fs::path server = root / "server-edition/moral/2/src/Server.sleela";
+    const char *level_env = std::getenv("SLEELA_SERVER_LEVEL");
+    const std::string level = level_env && *level_env ? level_env : "2";
+    fs::path server;
+    if (level == "2") server = root / "server-edition/moral/2/src/Server.sleela";
+    else if (level == "3") server = root / "server-edition/moral/3/src/Server.sleela";
+    else { std::cerr << "sleelas: unsupported SLEELA_SERVER_LEVEL '" << level << "' (supported: 2, 3)\n"; return 2; }
     const fs::path engine = locate_engine(root);
     if (engine.empty()) { std::cerr << "sleelas: SLeeLa engine not found; set SLEELA_BIN or build impl/\n"; return 1; }
     const fs::path inbox = root / "server-edition/inbox/requests.txt";
