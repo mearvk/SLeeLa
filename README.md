@@ -735,3 +735,20 @@ This project claims no affiliation with, or endorsement by, any external service
 
 The external references are illustrative context only; the basket values and
 protocol behavior are defined by this repository, not by any external service.
+
+
+## HTTP 3.0 build and packet-field compatibility
+
+The HTTP 3.0 implementation under [`http-3.0/`](http-3.0/) includes an explicit 160-bit logical PORT namespace supporting values from `0` through `10^48 - 1`. The extended port is carried in the packet and included in the integrity calculation; it does not claim that an operating system can create `10^48` native sockets. See [`http-3.0/PORTS.md`](http-3.0/PORTS.md).
+
+Packet fields are being treated as typed protocol data rather than as an assumption that semantic fields must arrive in one particular order. Any-order parsing must canonicalize the parsed fields before integrity verification, reject duplicate singleton fields, and enforce required-field rules. The repository should not accept reordered authenticated packets merely by hashing their raw wire order.
+
+For the HTTP 3.0 build and protocol checks:
+
+```sh
+make -C http-3.0 port-test
+make -C http-3.0 demo
+make -C http-3.0 test
+```
+
+The standalone logical-port test is the smallest verification target; `demo` exercises the native packet pipeline; `test` additionally runs the Python reference tests and Station tests.
