@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bodi version="1">
+  <project id="chemistry-demo-001" kind="science" title="SLeeLa Chemistry XML Project"/>
+  <science model="native-chemistry">
+    <discipline name="chemistry">
+      <operation name="ratio" sequence="001"><arg value="2"/><arg value="5"/></operation>
+      <operation name="similarity" sequence="002"><arg value="10"/><arg value="12"/></operation>
+    </discipline>
+  </science>
+</bodi>
