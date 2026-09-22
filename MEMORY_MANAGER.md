@@ -46,7 +46,7 @@ SLeeLa runs an arbitrary native executable.
 
 ### What it does
 
-The manager is **opt-in**. When disabled (the default) the wrappers forward
+The manager is **enabled by default** for SLeeLa execution with a hard **2 GiB** ceiling. The configured ceiling may be reduced to **256 MiB**. When disabled (the default) the wrappers forward
 straight through to the OS allocator with no accounting overhead, so linking it
 in costs nothing until it is enabled.
 
@@ -63,7 +63,7 @@ When enabled it:
 ### API (`impl/core/sleela_memmgr.h`)
 
 ```c
-int    slmm_enable(size_t limit_bytes);   /* 0 == unlimited        */
+int    slmm_enable(size_t limit_bytes);   /* 0 selects the default 2 GiB ceiling        */
 void   slmm_disable(void);
 int    slmm_is_enabled(void);
 size_t slmm_limit(void);
@@ -96,8 +96,8 @@ subcommand:
 
 ```sh
 sleela --memory-manager run examples/hello.sleela
-sleela --memory-manager=64M run program.sleela     # hard limit, K/M/G suffixes
-SLEELA_MEMORY_MANAGER=32M sleela run program.sleela # or via the environment
+sleela --memory-manager=512M run program.sleela     # hard limit, K/M/G suffixes
+SLEELA_MEMORY_MANAGER=512M sleela run program.sleela # or via the environment
 ```
 
 `<size>` accepts a plain byte count or a `K`/`M`/`G` suffix (optionally with a
