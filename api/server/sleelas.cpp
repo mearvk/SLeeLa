@@ -1,4 +1,5 @@
-// SLeeLa Server Launcher (sleelas)
+// Discord-1™ — SLeeLa Server Launcher (sleelas)
+// Programmatic server name: Discord-1™.
 // Max Rupplin - MEARVK LLC - 2026
 //
 // Native cross-platform launcher for the SLeeLa Server Edition.
@@ -100,7 +101,7 @@ static bool acquire_lock(const fs::path &lock) {
 }
 
 static void help() {
-    std::cout << "SLeeLa Server Launcher (sleelas)\n"
+    std::cout << "Discord-1™ — SLeeLa Server Launcher (sleelas)\n"
               << "Starts the SLeeLa Server Edition reference program.\n\n"
               << "Usage: sleelas [--tick] [--foreground] [--design-activity SCIENCE C R O S R I] [--help]\n\n"
               << "  --tick          add a timestamped self-input before the server pass\n"
@@ -258,6 +259,6 @@ int main(int argc, char **argv) {
     if (foreground) std::cout << "sleelas: starting Server.sleela using " << engine << "\n";
     const int rc = run_engine(root, engine, server);
     if (rc != 0) { std::cerr << "sleelas: server reference exited with status " << rc << "\n"; return rc; }
-    std::cout << "sleelas: processed server-edition/moral/2/src/Server.sleela -> " << log << "\n";
+    std::cout << "Discord-1™: processed Server Edition level " << level << " -> " << log << "\n";
     return 0;
 }
