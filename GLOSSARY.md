@@ -293,3 +293,14 @@ for profiling, ranking, locating, or otherwise treating real people as objects.
 | **Managed-memory boundary** | The runtime rule that Sleela source operates on VM-owned values and bounded handles rather than raw native pointers. Struct instances, sockets, files, probes, reaches, and related resources are represented through VM-managed tables. | `impl/core/sleela_core.h`, `impl/core/sleela_core.c` |
 | **Protected-source gate** | The compiler requirement that protected source is accepted only when the member is static and the VM reports its managed-memory safety mode. | `impl/frontend/compiler.cpp`, `impl/core/sleela_core.c` |
 | **Degree-2 reference** | A SLeeLa semantic term for a controlled class-to-managed-storage relation. It must not be interpreted as two pointer dereferences. | `DEFINITIONS.md` |
+
+
+### A.9 System navigation terms
+
+| Term | Definition | Source |
+|------|-----------|--------|
+| **Next** | The SLeeLa system-navigation idiom for System Degree 1: one bounded semantic relation from the current system node. It is not a pointer or address. | `impl/frontend/compiler.cpp`, `DEFINITIONS.md` |
+| **Next.Next** | The exact two-step SLeeLa idiom `next.next` for System Degree 2. It represents two bounded semantic relations and does not perform pointer arithmetic or dereference. | `impl/frontend/compiler.cpp`, `impl/examples/static-protected.sleela` |
+| **Degree Navigation** | Bounded navigation expressed as repeated `next` links. The current protected model permits the two-degree form `next.next`. | `DEFINITIONS.md` |
+| **Back-propagated degree validation** | Compiler validation that propagates the terminal degree requirement back to the originating expression before lowering the navigation. | `impl/frontend/compiler.cpp`, `DEFINITIONS.md` |
+| **System Degree Chain** | An ordered sequence of `next` relations used to describe bounded system traversal. The protected boundary terminates at degree 2. | `DEFINITIONS.md` |
