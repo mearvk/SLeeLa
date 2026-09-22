@@ -41,3 +41,8 @@ The XML layer does not turn an XML document into arbitrary network execution. PO
 ## Native Database Connector
 
 See `api/database/` for the cross-platform database API, HTML reference, C facade, and Linux/macOS/Windows 8+ driver-management adapters. Supported families include PostgreSQL, MySQL, MariaDB, SQLite, Microsoft SQL Server, Oracle, and ODBC.
+
+
+## Nordshrift
+
+See `api/nordshrift/API.html` for the complete Nordshrift API reference, including the `.sst` semantic model and the unified input-object vocabulary for Core, IO, System, Network, Application, Data, Science, Security, and Deployment. The generic object layer complements the specialized Nordshrift sections and remains declarative; it does not implicitly execute side effects.
