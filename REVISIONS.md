@@ -69,3 +69,14 @@ Source-level changes were committed to `main`. Native Windows/macOS server build
 - Kept SMTP credentials outside XML through `username-env` and `password-env` references.
 - Added HTML API documentation and Math, Physics, and SMTP XML examples.
 - Unknown disciplines and operations are rejected and witnessed rather than interpreted as arbitrary native or shell commands.
+
+
+## 2026-09-22 — XML posts, listeners, and routers
+
+- Added native C vocabulary for HTTP-style posts, listener declarations, and deterministic method/path routing.
+- Added bounded validation and POST request serialization in `api/posting/sleela_post.c`.
+- Added listener contract validation in `api/listener/sleela_listener.c`.
+- Added exact route validation and matching in `api/router/sleela_router.c`.
+- Extended the BODI XML runner with `post`, `listener`, and `router` project kinds.
+- Extended the BODI XSD and added XML examples 07–09.
+- Kept XML execution explicit: the new runner validates and witnesses these declarations without implicitly opening sockets or transmitting network traffic.
