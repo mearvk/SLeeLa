@@ -142,3 +142,20 @@ build omits the separate Linux `-ldl` requirement.
 The macOS Defender provisioning path is intentionally not presented as a Linux
 kernel-driver substitute. SLeeLa reports that no privileged Defender backend is
 implemented there rather than attempting to load a Linux kernel module.
+
+
+## HTTP 3.0 protocol build
+
+The HTTP 3.0 protocol sources are built independently from the main SLeeLa runtime:
+
+```sh
+make -C http-3.0 port-test
+make -C http-3.0 demo
+make -C http-3.0 test
+```
+
+- `port-test` verifies the 160-bit logical PORT boundary and decimal/binary conversions.
+- `demo` builds and runs the native HTTP 3.0 pipeline.
+- `test` runs the C demo, Station tests, and Python HTTP 3.0 reference tests.
+
+The HTTP 3.0 logical port namespace is protocol-level and must not be confused with the host OS's native TCP/UDP port range. Packet-field order is also a protocol parsing concern: authenticated any-order fields must be normalized to a canonical representation before MAC/DIGEST verification.
