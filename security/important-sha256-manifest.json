@@ -76,7 +76,7 @@
     },
     {
       "path": "REVISIONS.md",
-      "sha256": "99a47b66f7bc9951053c1ebf04e0391e1b4c639c6b7939d56f9ef1e7d2b7eb85"
+      "sha256": "92c0967e07b01a92579c0ea5259f06c1ca4215655eed3b5ec589c06e00be6399"
     },
     {
       "path": "SERVER.EDITION.md",
@@ -256,7 +256,7 @@
     },
     {
       "path": "api/index.html",
-      "sha256": "3001a8e623c8a188cc1f04ffbcdaed0e47e5a4a71246ddf54ba879b03378ca50"
+      "sha256": "7d4803b86ad90adb495dcd42eacdfea111f399a324b437b8437872173d2601c2"
     },
     {
       "path": "api/listener/sleela_listener.c",
