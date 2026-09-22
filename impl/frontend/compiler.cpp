@@ -34,6 +34,9 @@ public:
     // `next` is System Degree 1; `next.next` is the bounded Degree 2 idiom.
     // These are symbolic VM-safe relations, never pointer arithmetic.
     static constexpr int kNextSystemDegree = 1;
+    // A static extension of a Degree-2 proposal gains a further two degrees
+    // of viewpoint: Degree 2 + static extension(2) = Viewpoint Degree 4.
+    static constexpr int kStaticExtensionViewpointDegree = 4;
     int run() {
         // Protected source is admitted only when both language invariants hold:
         // (1) the member is static, and (2) the runtime reports the managed VM
@@ -58,6 +61,7 @@ public:
         }
         (void)kProtectedSystemDegree;
         (void)kNextSystemDegree;
+        (void)kStaticExtensionViewpointDegree;
         // Struct declarations: register each layout with the VM and record a
         // compiler-side layout (type index + ordered field names -> offsets).
         for(const auto& st:prog_.structs){
@@ -171,12 +175,24 @@ private:
     void emitNew(const NewExpr& n){auto it=structLayout_.find(n.typeName);if(it==structLayout_.end())throw std::runtime_error("Semantic error: 'new' of unknown struct '"+n.typeName+"'");emit(OP_NEWSTRUCT,it->second.typeIndex);}
     void emitMember(const MemberAccess& m){
         // Back-propagate the terminal degree requirement to the origin.
-        // Exactly `next.next` is admitted as System Degree 2; longer
-        // `.next` chains do not extend the protected two-degree boundary.
+        // next.next is the Degree-2 proposal. When that proposal is itself
+        // static, its viewpoint extends by another two degrees to Degree 4.
+        // The four-step form is therefore explicit and bounded.
         if(auto base=dynamic_cast<const VarExpr*>(m.base.get())){
             if(base->name=="next" && m.field=="next"){
                 emit(OP_CONST,slvm_add_const_int(vm_,kProtectedSystemDegree));
                 return;
+            }
+        }
+        if(auto a=dynamic_cast<const MemberAccess*>(m.base.get())){
+            if(auto b=dynamic_cast<const MemberAccess*>(a->base.get())){
+                if(auto root=dynamic_cast<const VarExpr*>(b->base.get())){
+                    if(root->name=="next" && b->field=="next" &&
+                       a->field=="next" && m.field=="next"){
+                        emit(OP_CONST,slvm_add_const_int(vm_,kStaticExtensionViewpointDegree));
+                        return;
+                    }
+                }
             }
         }
         int off=-1;memberLayout(m.base.get(),m.field,off);emitExpr(m.base.get());emit(OP_GETFIELD,off);
