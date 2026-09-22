@@ -69,3 +69,7 @@ server semantics.
 ## Single-instance behavior
 
 Before starting the engine, `sleelas` checks the Server Edition lock and its recorded owner process. If the owner is still alive, the launcher reports that the server is already running and exits successfully without starting another instance. A lock whose recorded process is no longer alive is treated as stale and may be replaced atomically.
+
+## Single-instance behavior
+
+Before starting the engine, `sleelas` checks the Server Edition lock and its recorded owner process. If the owner is still alive, the launcher reports that the server is already running and exits successfully without starting another instance. A lock whose recorded process is no longer alive is treated as stale and may be replaced atomically.
