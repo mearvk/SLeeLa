@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bodi version="1">
+  <project id="example-post-001" kind="post" title="Basic HTTP Post"/>
+  <post target="/api/example" content-type="application/json" body="{&quot;message&quot;:&quot;Hello from SLeeLa XML&quot;}"/>
+</bodi>
