@@ -22,6 +22,15 @@ This directory contains clear, runnable examples for the SLeeLa BODI XML project
 ### 06 — SMTP dry run
 ../api/bodi/bodi-xml-runner 06-email-dry-run.xml
 
+### 07 — HTTP-style post
+../api/bodi/bodi-xml-runner 07-post.xml
+
+### 08 — Listener declaration
+../api/bodi/bodi-xml-runner 08-listener.xml
+
+### 09 — Router declaration
+../api/bodi/bodi-xml-runner 09-router.xml
+
 For SMTP projects, credentials are referenced through environment variables rather than stored in XML. Actual transmission requires --send-email.
 
 ## XML model
