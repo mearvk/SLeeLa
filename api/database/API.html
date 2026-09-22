@@ -1,0 +1,9 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>SLeeLa Native Database Connector</title></head><body>
+<h1>SLeeLa Native Database Connector</h1>
+<p>Cross-platform database connectivity vocabulary for SLeeLa applications on Linux, Windows 8+, and macOS.</p>
+<h2>Database families</h2><p>PostgreSQL, MySQL, MariaDB, SQLite, Microsoft SQL Server, Oracle Database, and ODBC-compatible databases.</p>
+<h2>Operations</h2><p>validate, connect, ping, query, execute, begin, commit, rollback, close.</p>
+<h2>Native API</h2><p><code>sleela_database_validate()</code> performs bounded configuration validation. <code>sleela_database_kind_name()</code> returns the stable family name.</p>
+<h2>Platform adapters</h2><p>Linux: <code>linux/dbctl.sh</code>. macOS: <code>macos/dbctl.sh</code>. Windows 8+: <code>windows/DbCtl.ps1</code>.</p>
+<h2>Security</h2><p>Passwords are referenced through environment variables or an operating-system credential facility, not command-line arguments. Applications should use parameter binding for SQL values. Client/driver installation is explicit and platform-managed.</p>
+</body></html>
