@@ -29,9 +29,16 @@ static int write_key_file(const char *path, const uint8_t priv[32],
     if (fd < 0) return 0;
     memcpy(record, priv, 32);
     memcpy(record + 32, pub, 32);
-    n = write(fd, record, sizeof(record));
+    {
+        size_t written = 0;
+        while (written < sizeof(record)) {
+            n = write(fd, record + written, sizeof(record) - written);
+            if (n <= 0) { close(fd); secure_zero(record, sizeof(record)); return 0; }
+            written += (size_t)n;
+        }
+    }
     secure_zero(record, sizeof(record));
-    if (close(fd) != 0 || n != (ssize_t)sizeof(record)) return 0;
+    if (close(fd) != 0) return 0;
     return 1;
 }
 
@@ -40,7 +47,15 @@ static int read_key_file(const char *path, uint8_t priv[32], uint8_t pub[32]) {
     uint8_t record[64];
     ssize_t n;
     if (fd < 0) return 0;
-    n = read(fd, record, sizeof(record));
+    {
+        size_t read_total = 0;
+        while (read_total < sizeof(record)) {
+            n = read(fd, record + read_total, sizeof(record) - read_total);
+            if (n <= 0) break;
+            read_total += (size_t)n;
+        }
+        n = (ssize_t)read_total;
+    }
     close(fd);
     if (n != (ssize_t)sizeof(record)) {
         secure_zero(record, sizeof(record));
@@ -108,7 +123,7 @@ int http3_kds_allow_issue(http3_kds_server_t *server, uint64_t now) {
     if (!server || !server->lock) return 0;
     mutex = kds_mutex(server);
     pthread_mutex_lock(mutex);
-    if (server->rate.window_start == 0 || now - server->rate.window_start >= 60U) {
+    if (server->rate.window_start == 0 || now < server->rate.window_start || now - server->rate.window_start >= 60U) {
         server->rate.window_start = now;
         server->rate.issued = 0;
     }
@@ -157,7 +172,7 @@ int http3_kds_issue_contract(http3_kds_server_t *server,
     memset(contract, 0, sizeof(*contract));
     contract->version = HTTP3_KDS_CONTRACT_VERSION;
     contract->issued_at = now;
-    contract->expires_at = now + (ttl_seconds ? ttl_seconds : 3600U);
+    { uint64_t ttl = ttl_seconds ? ttl_seconds : 3600U; if (ttl > UINT64_MAX - now) return 0; contract->expires_at = now + ttl; }
     memcpy(contract->server_public, server->server_public, 32);
     memcpy(contract->client_public, client_public, 32);
     if (!http3_openssl_random(contract->key_id, sizeof(contract->key_id)) ||

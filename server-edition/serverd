@@ -16,6 +16,7 @@
 #   SLEELA_BIN               path to the sleela engine (else auto-resolved)
 #   SLEELA_SHA256_MANIFEST   path to the trusted SHA-256 manifest (else auto)
 set -u
+umask 077
 
 DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 ROOT=$(CDPATH= cd -- "$DIR/.." && pwd)
@@ -43,6 +44,9 @@ LOG="$STATE_DIR/results.log"
 SERVER="$ROOT/server-edition/src/Server.sleela"
 
 mkdir -p "$DIR/inbox" "$STATE_DIR"
+LOCKDIR="$STATE_DIR/.serverd.lock"
+if ! mkdir "$LOCKDIR" 2>/dev/null; then echo "serverd: another run is active" >&2; exit 3; fi
+trap 'rmdir "$LOCKDIR" 2>/dev/null || true' EXIT HUP INT TERM
 [ -f "$INBOX" ] || printf 'hello\n' > "$INBOX"
 
 FOREGROUND=0
@@ -66,8 +70,7 @@ done
 # resolve. Results are appended to the log; foreground also echoes them.
 {
     echo "=== serverd run $(date -u +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || echo now) ==="
-    ( cd "$ROOT" && "$SLEELA" run "server-edition/src/Server.sleela" 2>&1 \
-        | grep -vE '^\[security\]|^\[defender\]|^verification: (PASS|)' )
+    ( cd "$ROOT" && "$SLEELA" run "server-edition/src/Server.sleela" 2>&1         | sed -e '/^\[security\]/d' -e '/^\[defender\]/d' -e '/^verification: PASS$/d' )
 } >> "$LOG" 2>&1
 
 if [ "$FOREGROUND" -eq 1 ]; then
