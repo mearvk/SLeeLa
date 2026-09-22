@@ -304,3 +304,14 @@ for profiling, ranking, locating, or otherwise treating real people as objects.
 | **Degree Navigation** | Bounded navigation expressed as repeated `next` links. The current protected model permits the two-degree form `next.next`. | `DEFINITIONS.md` |
 | **Back-propagated degree validation** | Compiler validation that propagates the terminal degree requirement back to the originating expression before lowering the navigation. | `impl/frontend/compiler.cpp`, `DEFINITIONS.md` |
 | **System Degree Chain** | An ordered sequence of `next` relations used to describe bounded system traversal. The protected boundary terminates at degree 2. | `DEFINITIONS.md` |
+
+
+### A.10 Static viewpoint extension terms
+
+| Term | Definition | Source |
+|------|-----------|--------|
+| **Static Degree-2 Extension** | A static extension of a System Degree 2 proposal that adds two further viewpoint degrees, producing Viewpoint Degree 4. | `DEFINITIONS.md` |
+| **Viewpoint Degree 4** | The bounded viewpoint produced by extending a static Degree 2 proposal by two degrees. Its explicit navigation marker is `next.next.next.next`. | `impl/frontend/compiler.cpp`, `DEFINITIONS.md` |
+| **Degree Visibility** | The ability of a higher bounded viewpoint to name lower-degree relations such as Degree 1 and Degree 2 without exposing native memory addresses. | `DEFINITIONS.md` |
+| **Degree-1 Back-Propagation** | The compiler operation required when a higher viewpoint requests visibility of the Degree-1 `next` relation. | `DEFINITIONS.md`, `impl/frontend/compiler.cpp` |
+| **Viewpoint Extension** | A bounded semantic extension in which a static Degree-2 proposal gains two additional degrees of viewpoint assumption. | `DEFINITIONS.md` |
