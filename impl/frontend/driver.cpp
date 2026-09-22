@@ -262,20 +262,18 @@ static int defenderCmd(int argc,char**argv){
 }
 // ---------------------------------------------------------------------------
 // Memory Manager wiring.
-//
-// The Memory Manager (impl/core/sleela_memmgr.*) accounts for raw process
-// memory and can fail allocations closed at a hard byte limit. It is opt-in:
-//   * `--memory-manager` (or SLEELA_MEMORY_MANAGER=1) enables it with no limit;
-//   * `--memory-manager=<size>` / `SLEELA_MEMORY_MANAGER=<size>` enables it with
-//     a hard limit; <size> accepts a plain byte count or a K/M/G suffix.
-// It is also turned on automatically ("on need") when running a native
-// executable, because that is the workload most likely to exhaust the host.
-// ---------------------------------------------------------------------------
+// SLeeLa has a process-wide managed-memory ceiling of 2 GiB. The configured
+// value may be reduced to 256 MiB and is accepted from a config file, the
+// SLEELA_MEMORY_MANAGER environment input, or the command line.
+// Precedence: built-in default -> config file -> environment -> CLI.
+static constexpr size_t kDefaultMemoryLimit = 2048ull*1024ull*1024ull;
+static constexpr size_t kMinimumMemoryLimit = 256ull*1024ull*1024ull;
+static constexpr size_t kMaximumMemoryLimit = 2048ull*1024ull*1024ull;
+
 static bool parseByteSize(const std::string&in,size_t&out){
     if(in.empty())return false;
-    // A bare on/off/true/false toggles the manager with no limit.
     std::string low=toLowerHex(in);
-    if(low=="on"||low=="true"||low=="yes"||low=="1"){out=0;return true;}
+    if(low=="on"||low=="true"||low=="yes"||low=="1"){out=kDefaultMemoryLimit;return true;}
     size_t i=0;unsigned long long v=0;bool any=false;
     for(;i<in.size()&&std::isdigit((unsigned char)in[i]);++i){v=v*10ull+(unsigned)(in[i]-'0');any=true;}
     if(!any)return false;
@@ -284,28 +282,41 @@ static bool parseByteSize(const std::string&in,size_t&out){
         char c=(char)std::tolower((unsigned char)in[i]);
         if(c=='k')mult=1024ull;else if(c=='m')mult=1024ull*1024ull;else if(c=='g')mult=1024ull*1024ull*1024ull;
         else return false;
-        ++i;
-        if(i<in.size()&&(in[i]=='b'||in[i]=='B'))++i; // allow KB/MB/GB
+        ++i;if(i<in.size()&&(in[i]=='b'||in[i]=='B'))++i;
     }
     if(i!=in.size())return false;
-    out=(size_t)(v*mult);
+    unsigned long long bytes=v*mult;
+    if(bytes<kMinimumMemoryLimit||bytes>kMaximumMemoryLimit)return false;
+    out=(size_t)bytes; return true;
+}
+static bool loadMemoryConfig(const std::string&path,size_t&limit,bool&enabled){
+    std::ifstream f(path); if(!f)return false;
+    std::string line;
+    while(std::getline(f,line)){
+        auto hash=line.find('#'); if(hash!=std::string::npos)line.erase(hash);
+        auto eq=line.find('='); if(eq==std::string::npos)continue;
+        std::string key=line.substr(0,eq), value=line.substr(eq+1);
+        auto trim=[](std::string&s){while(!s.empty()&&std::isspace((unsigned char)s.front()))s.erase(s.begin());while(!s.empty()&&std::isspace((unsigned char)s.back()))s.pop_back();};
+        trim(key);trim(value);
+        if(key=="memory_manager"||key=="memory_limit"||key=="ram_limit"){
+            std::string low=toLowerHex(value);
+            if(low=="off"||low=="false"||low=="no"||low=="0"){enabled=false;continue;}
+            size_t parsed=0;if(!parseByteSize(value,parsed)){std::cerr<<"sleela: invalid memory setting in "<<path<<": "<<value<<" (allowed: 256M..2G)\n";return false;}
+            limit=parsed;enabled=true;
+        }
+    }
     return true;
 }
-// Interpret a --memory-manager[=value] argument or the SLEELA_MEMORY_MANAGER
-// env var. Returns true if the manager should be enabled and sets `limit`.
 static bool memoryManagerRequested(size_t&limit){
     const char*env=std::getenv("SLEELA_MEMORY_MANAGER");
     if(env&&*env){size_t l=0;if(parseByteSize(env,l)){limit=l;return true;}
-        // A non-parseable but present value like "0"/"off" disables it.
         std::string e=toLowerHex(env);if(e=="0"||e=="off"||e=="false"||e=="no")return false;}
     return false;
 }
-static void enableMemoryManager(size_t limit,bool announce){
-    slmm_enable(limit);
-    if(announce){
-        if(limit)std::cerr<<"[memory-manager] enabled (hard limit "<<limit<<" bytes)\n";
-        else std::cerr<<"[memory-manager] enabled (no hard limit)\n";
-    }
+static bool enableMemoryManager(size_t limit,bool announce){
+    if(slmm_enable(limit)!=0){std::cerr<<"sleela: memory limit must be between 256 MiB and 2 GiB.\n";return false;}
+    if(announce)std::cerr<<"[memory-manager] enabled (hard limit "<<slmm_limit()<<" bytes)\n";
+    return true;
 }
 static void reportMemoryManager(){
     if(!slmm_is_enabled())return;
@@ -335,7 +346,7 @@ static void nativeUsage(){
                "a hard byte limit (accepts K/M/G suffixes).\n";
 }
 static int nativeCmd(int argc,char**argv){
-    size_t mmLimit=0;bool mmExplicit=false;
+    size_t mmLimit=kDefaultMemoryLimit;bool mmExplicit=false;
     std::string configFile;
     std::vector<std::string> cmdArgs;
     bool endOpts=false;
@@ -371,7 +382,7 @@ static int nativeCmd(int argc,char**argv){
     }
     if(verifyBeforeExecution(fs::current_path()))return 1;
     (void)mmExplicit;
-    enableMemoryManager(mmLimit,true);
+    if(!enableMemoryManager(mmLimit,true))return 2;
     if(!configFile.empty()){
 #ifdef _WIN32
         _putenv_s("SLEELA_CONFIG_FILE",configFile.c_str());
@@ -470,26 +481,29 @@ int main(int argc,char**argv){
     // Global option phase: consume any leading --memory-manager[=<size>] before
     // the subcommand. This may only precede the subcommand; per-subcommand flag
     // parsing (defender/xclass/native) is left untouched.
-    bool mmEnabled=false;size_t mmLimit=0;
+    bool mmEnabled=true;size_t mmLimit=kDefaultMemoryLimit;
+    std::string memoryConfig;
+    if(const char*cfg=std::getenv("SLEELA_CONFIG_FILE")){memoryConfig=cfg;}
+    else if(fs::exists("sleela.conf"))memoryConfig="sleela.conf";
+    if(!memoryConfig.empty()){
+        bool cfgEnabled=mmEnabled;
+        if(!loadMemoryConfig(memoryConfig,mmLimit,cfgEnabled))return 2;
+        mmEnabled=cfgEnabled;
+    }
     // Env default (an explicit CLI flag below overrides it).
     {size_t l=0;if(memoryManagerRequested(l)){mmEnabled=true;mmLimit=l;}}
     int start=1;
     while(start<argc){
         std::string a=argv[start];
-        if(a=="--memory-manager"||a=="--mm"){mmEnabled=true;mmLimit=0;start++;}
+        if(a=="--memory-manager"||a=="--mm"){mmEnabled=true;mmLimit=kDefaultMemoryLimit;start++;}
         else if(a.rfind("--memory-manager=",0)==0||a.rfind("--mm=",0)==0){
             std::string v=a.substr(a.find('=')+1);size_t l=0;
             if(!parseByteSize(v,l)){std::cerr<<"sleela: invalid --memory-manager size '"<<v<<"'\n";return 2;}
             mmEnabled=true;mmLimit=l;start++;
         }else break;
     }
-    if(mmEnabled)enableMemoryManager(mmLimit,true);
-    if(start>=argc)return usage();
-    std::string cmd=argv[start];
-    // Shift argv so the existing positional parsing (argv[2]==first operand)
-    // continues to work regardless of any consumed global options.
-    argc-=(start-1);argv+=(start-1);
-    if(cmd=="version"||cmd=="--version"||cmd=="-v"){std::cout<<kVersion<<"\n";std::cout<<"  supported .sleela syntax: "<<sleela::minSupportedSyntax().str()<<" .. "<<sleela::maxSupportedSyntax().str()<<"\n";return 0;}
+    if(mmEnabled&&!enableMemoryManager(mmLimit,true))return 2;
+Syntax().str()<<" .. "<<sleela::maxSupportedSyntax().str()<<"\n";return 0;}
     if(cmd=="native"||cmd=="exec")return nativeCmd(argc,argv);
     int rc;
     if(cmd=="compile"){if(argc!=5||std::string(argv[3])!="-o")return usage();rc=compileFile(argv[2],argv[4]);}
