@@ -1,5 +1,6 @@
 #sleela 1.3
-// SLeeLa Server Edition Service 3.
+// Discord-3™ — SLeeLa Server Edition Service 3.
+// Programmatic server name: Discord-3™.
 // Remedial server: lifecycle controls are owned by serverd; processing
 // semantics remain in this authoritative SLeeLa source.
 class Server {
