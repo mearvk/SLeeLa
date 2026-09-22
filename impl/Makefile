@@ -93,7 +93,7 @@ FE_OBJ := $(patsubst %.cpp,$(BUILD)/%.o,$(notdir $(FE_SRC)))
 DRIVER_OBJ := $(BUILD)/driver.o
 NS_SRC := nordshrift/sst_lexer.cpp nordshrift/sst_parser.cpp \
           nordshrift/source_resolve.cpp nordshrift/sleela_emit.cpp \
-          nordshrift/object_compat.cpp nordshrift/subject_model.cpp \
+          nordshrift/object_compat.cpp nordshrift/subject_model.cpp nordshrift/input_object.cpp \
           nordshrift/component_manifest.cpp nordshrift/ledger_emit.cpp \
           nordshrift/nordshrift.cpp
 NS_OBJ := $(patsubst nordshrift/%.cpp,$(BUILD)/ns_%.o,$(NS_SRC))
