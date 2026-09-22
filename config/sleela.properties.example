@@ -1,0 +1,17 @@
+# SLeeLa common runtime configuration
+# Pass this file with:
+#   sleela exec --config config/sleela.properties.example -- ./program --flag 5
+#
+# SLeeLa exports the selected file path to the child as SLEELA_CONFIG_FILE.
+# Application-specific properties are intentionally left for the executable
+# to interpret; SLeeLa does not silently rewrite them.
+
+# RAM Guard planning/target profile.
+# One selected stick; target is 95% of that stick's detected/configured speed.
+ram.guard.enabled=true
+ram.guard.sticks=1
+ram.guard.policy=0.95
+ram.guard.direction=decrease
+
+# Safe default: configuration/target only. No firmware timing/voltage write.
+ram.guard.write=false
