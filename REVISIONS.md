@@ -141,3 +141,12 @@ Source-level changes were committed to `main`. Native Windows/macOS server build
 - Added `api/server/Makefile`, `README.md`, and `API.html` documenting the compiled launcher contract.
 - Added `.github/workflows/build-sleelas.yml` to compile and upload native Linux x86_64, macOS, and Windows 10+ x86_64 binaries as workflow artifacts.
 - Kept server semantics in `Server.sleela`; `sleelas` is the compiled process boundary and does not duplicate or silently expose a public listener.
+
+
+## 2026-09-22 — sleelas single-instance guard
+
+- Updated `sleelas` to detect an active Server Edition owner process before starting a new engine instance.
+- Added a PID owner record to the atomic server lock.
+- Existing active servers now cause `sleelas` to exit successfully without starting a duplicate instance.
+- Stale locks from terminated processes are eligible for replacement.
+- Documented the single-instance behavior in the server API documentation.
