@@ -1,6 +1,6 @@
 RUNNER ?= ../api/bodi/bodi-xml-runner
 
-.PHONY: help math physics chemistry mixed email dry-run
+.PHONY: help math physics chemistry mixed email dry-run post listener router
 
 help:
 	@echo "make math|physics|chemistry|mixed|email|dry-run"
@@ -22,3 +22,12 @@ email:
 
 dry-run:
 	$(RUNNER) 06-email-dry-run.xml
+
+post:
+	$(RUNNER) 07-post.xml
+
+listener:
+	$(RUNNER) 08-listener.xml
+
+router:
+	$(RUNNER) 09-router.xml
