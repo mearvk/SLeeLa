@@ -30,11 +30,6 @@ public:
     // crosses two bounded relations: class member -> managed VM storage handle.
     // It is NOT raw pointer arithmetic or a promise to dereference an address.
     static constexpr int kProtectedSystemDegree = 2;
-    static bool safeManagedType(const std::string& type, const std::map<std::string,StructLayout>* layouts) {
-        if (type == "int" || type == "double" || type == "boolean" || type == "String" || type == "void") return true;
-        return layouts && layouts->count(type) != 0; // structs are VM-local handles
-    }
-
     int run() {
         // Protected source is admitted only when both language invariants hold:
         // (1) the member is static, and (2) its storage is represented by the
