@@ -1,0 +1,4086 @@
+{
+  "algorithm": "sha256",
+  "scope": "important-files",
+  "files": [
+    {
+      "path": "ARCHITECTURE.md",
+      "sha256": "2fb384c7328236e286e1a4df9e02f217c00b034014bf28c883542a6c72ea2b50"
+    },
+    {
+      "path": "BODI.md",
+      "sha256": "7a787a284fbd76cb58b11f771194630300273bbdf571b9eac06dc7cf46994b13"
+    },
+    {
+      "path": "BODI_GARDULUS_II.md",
+      "sha256": "fd5e85b1cd1823af99c01e078e0ced98406746531c583edb244036c52d7462c5"
+    },
+    {
+      "path": "BUILD.md",
+      "sha256": "40920e504883a3f9897f0a8c9d0642bfee7a79e0a514a551f44cc3b92888d95b"
+    },
+    {
+      "path": "CHANGES-MEMORY-NATIVE.md",
+      "sha256": "40facf4499e64b34711449e606955396491bc43bf5360cbe24f05ee8bfbeb528"
+    },
+    {
+      "path": "CLASS.md",
+      "sha256": "76838130fced1b9f5bbc6377bec272e889616e3b87916f95b69f2260ce375def"
+    },
+    {
+      "path": "COMPILER.md",
+      "sha256": "0551e26b55b04b016cad4de158996593191a49a637b1433b03131eaf0dcb7b69"
+    },
+    {
+      "path": "CONNECTOR.md",
+      "sha256": "52a70fbc71dcef9aa911e91aaec45e05b8a9b53c38ff07b2f16472f5da2038e1"
+    },
+    {
+      "path": "DEFINITIONS.md",
+      "sha256": "7368f7eefce0ec5b2b9fe3b544cd5d33c51b16e436d181ede4e2145cc495ee4f"
+    },
+    {
+      "path": "FILE.SYSTEM.md",
+      "sha256": "b725c40e1aad43310e7e1f2cb22dd24c269a394a86f8f32a3f9ea790b89e3bce"
+    },
+    {
+      "path": "FILEIO.md",
+      "sha256": "72fdf2598af1499a3fec106ddfffd781a624bd77a7c7ee8e870cfbad44871e30"
+    },
+    {
+      "path": "GLOSSARY.md",
+      "sha256": "bb80e644316b2b37e15b7740d9bb7df709484ae33805b57588a9049afec3eae5"
+    },
+    {
+      "path": "IO.md",
+      "sha256": "dce2ea68febfd7ff8d6d4a6ac2c8a0a44a5923864efc5f2ddd6ae28499445ff3"
+    },
+    {
+      "path": "MEMORY_MANAGER.md",
+      "sha256": "c7c614e067c7782839f4188d2266bf4a876023cbf6670ddb81e6402a592d9ac1"
+    },
+    {
+      "path": "MUNCTION.md",
+      "sha256": "0cada69a89ab0532f7370c3925944a005fa3e66d1fa327f0050188ac68fb26ee"
+    },
+    {
+      "path": "NATIVE_API.md",
+      "sha256": "0f7069ae0784fb358cd6d60175cceb1834bb7322eee7e207c1af07eb43a57f30"
+    },
+    {
+      "path": "NETWORK.md",
+      "sha256": "7b88d183e81e214fb5be98a531c4f760a8d5a1e310127eb3a66bd495bf7bdd3b"
+    },
+    {
+      "path": "README.md",
+      "sha256": "d0365e895782e689eab0d7733ea58aaffd06616e3e2a8ba836783a69fa6f4c48"
+    },
+    {
+      "path": "REVISIONS.md",
+      "sha256": "99a47b66f7bc9951053c1ebf04e0391e1b4c639c6b7939d56f9ef1e7d2b7eb85"
+    },
+    {
+      "path": "SERVER.EDITION.md",
+      "sha256": "9714c27aaf24c40aab100e4c94d63334ab057162e0ee81dca36e01c07bad9afe"
+    },
+    {
+      "path": "SLEELA.syntax",
+      "sha256": "71e61a2a22b9ee5002d635ae18e44f87c99abea0d2cfe1fe9041c8a13b176e71"
+    },
+    {
+      "path": "SST-2.0.model",
+      "sha256": "87150332bf9918cbd54750d786a0e6f9dc2ebb3a97c1fc52dfdb571d07bc9529"
+    },
+    {
+      "path": "SST.model",
+      "sha256": "de042c6bc259c77243382deada44bcb266526f4fed0affb5d0f7eeb0c4a9982f"
+    },
+    {
+      "path": "SYNCHRO.md",
+      "sha256": "6ba54684bf859bbadc14e051559d32919be67f66a7b4d5db872f93c0ca66d126"
+    },
+    {
+      "path": "TIMINGS.md",
+      "sha256": "eab61b1f8a95012ff3ead21ca4ef4fafaea1eab6271e4779101446933fafb9d0"
+    },
+    {
+      "path": "VERSION.md",
+      "sha256": "09791fe7a0206ca85a78c49091c9b30e3040a2ea840da0b4a73b6a532bcc9987"
+    },
+    {
+      "path": "api/API.html",
+      "sha256": "9b454b5251692b133fac7d905093862521282f84847c8e68d7c4f5eacd4e99da"
+    },
+    {
+      "path": "api/FOUNDATIONAL-API.html",
+      "sha256": "692ec64af370d5f061c99e2b39c257dfaedc2453e644b488191ef4a041e0e379"
+    },
+    {
+      "path": "api/README.md",
+      "sha256": "c2d14ef94103c1d8ccb0d9f1241eba05383081adc435f1a6f1892cb335286fe5"
+    },
+    {
+      "path": "api/SOURCE-COVERAGE.html",
+      "sha256": "a73de153c33a124796b9ca4e6562c61f17cc76f9fef1e7d1b05d711e6e5ee143"
+    },
+    {
+      "path": "api/bodi/API.html",
+      "sha256": "063ddb6a3541e797c3369a94719c6008088d04a67026ec9dea5d9cbfeb60e77a"
+    },
+    {
+      "path": "api/bodi/README.md",
+      "sha256": "c49721f8f60aa39b787ec90ce02c95daa0217e351c69163608c653774ed53e59"
+    },
+    {
+      "path": "api/bodi/bodi-science.xsd",
+      "sha256": "3f9e4eda70c1638a149436bed5324505a97e7d9e1509a5e95cc93f265fed49a5"
+    },
+    {
+      "path": "api/bodi/bodi_xml_runner.cpp",
+      "sha256": "ccd202f604fc57d933e041e261a2aede2750a89b89ba55a796cf3722ff66164a"
+    },
+    {
+      "path": "api/bodi/examples/email-smtp.xml",
+      "sha256": "0d91b45afa34273bc97dfff2288402b33b2f53b5dc5a5f035e582d1d218cef7b"
+    },
+    {
+      "path": "api/bodi/examples/science-chemistry.xml",
+      "sha256": "50d8de2b4056c5c5eae1fa4f1e3cf1b70e98f8c348cc2978163816d0b48759bf"
+    },
+    {
+      "path": "api/bodi/examples/science-math.xml",
+      "sha256": "db194ed88818de4e3cd861a3b1aec8dbd95dfeb8abcd236c1965c685818e8ce9"
+    },
+    {
+      "path": "api/bodi/examples/science-physics.xml",
+      "sha256": "1a64e190798b006ed07e66d2feff8902f8e60963e6e5a720c7b017541f2639fb"
+    },
+    {
+      "path": "api/bodi/index.html",
+      "sha256": "aa2039d41e34325b9cc4c76e3b643a69639b95334ec4eaabadce7643810fc8c1"
+    },
+    {
+      "path": "api/data-analytics/API.html",
+      "sha256": "b8a47548e281fc59e723b0bf1c1c624868befaa563caaa8e8ac7432de385b46e"
+    },
+    {
+      "path": "api/data-analytics/README.md",
+      "sha256": "c9a0b68d783af2e9f38a774fd7b4832f9d4609a2667768b9c1ca95997cd44b57"
+    },
+    {
+      "path": "api/data-analytics/sleela_data_analytics.c",
+      "sha256": "b20696e0ff5026474ab7906273123e09107a8e5905858e1d8e3b9eadc954545a"
+    },
+    {
+      "path": "api/data-analytics/sleela_data_analytics.h",
+      "sha256": "e13e7486cc3a41ee868e0b169b40587e5dff451d4377cc9eaa231e0821912abd"
+    },
+    {
+      "path": "api/database/API.html",
+      "sha256": "0177e38f2d7dc30d7a4c5f18110cca39fa681e7731f7c0d6647b5340547d4780"
+    },
+    {
+      "path": "api/database/README.md",
+      "sha256": "1e95898c065619c2129ff45cce4f406c24d01c4d20962f43e3921244a7436404"
+    },
+    {
+      "path": "api/database/linux/dbctl.sh",
+      "sha256": "c56b4c4b3abc55611d01690755b6f6b54724fde81cfc27ccc8a382c1c50577e8"
+    },
+    {
+      "path": "api/database/macos/dbctl.sh",
+      "sha256": "dfed4573025ce3ef306a6e5ea63fb1da12118ad38489091f0a902d322564acbb"
+    },
+    {
+      "path": "api/database/sleela_database.c",
+      "sha256": "0d625d3d257324680893437e86b2823c5e711bd91e7a1b11b28ff4649ac68e99"
+    },
+    {
+      "path": "api/database/sleela_database.h",
+      "sha256": "f73f599c9e4b3b48f4a79e7d641ebd9758e0835b29dd8e3498ad70c54bd823fa"
+    },
+    {
+      "path": "api/database/windows/DbCtl.ps1",
+      "sha256": "273dc2e405441ca34cddc6aeec4d115ee6bd58d9ed39618b1e819000df7456d2"
+    },
+    {
+      "path": "api/email/API.html",
+      "sha256": "42aaa71b23684abc412e7a303a8f96f7ab6f74f8502a7ff60dddd4eca4804398"
+    },
+    {
+      "path": "api/email/README.md",
+      "sha256": "90f0859553239606897f0ebe706d7a897375a9a8eb7a889207426fd64da136a2"
+    },
+    {
+      "path": "api/email/SECURITY.md",
+      "sha256": "8d7e9347c091e97d82bfbb0176e5d604526f1b84bc5c05ad13c36e0890f9391b"
+    },
+    {
+      "path": "api/email/SleelaDoc.md",
+      "sha256": "41665bac6a4fb02eb23aadc1e5072f8d97eeae98eb1161611561174b86043bd7"
+    },
+    {
+      "path": "api/email/index.html",
+      "sha256": "616dd08fedf1c143afd5fb633d70a7c858591e78800cd103271b68485c3c08d9"
+    },
+    {
+      "path": "api/email/sleela_email.c",
+      "sha256": "604dbd46670751b40ac1626a774d3ea94fbf9eca8a5c2b1e045238884aa31cbe"
+    },
+    {
+      "path": "api/email/sleela_email.h",
+      "sha256": "60a6daf4b814ca06c45f73d2b349708f1f445f8bfe33764dd41a9b02de30c38c"
+    },
+    {
+      "path": "api/email/sleela_email.hpp",
+      "sha256": "be7a19c04b0c734de9098ec214a4c6f02a0bc7e1cc016bc3a9aa45cabd468f03"
+    },
+    {
+      "path": "api/email/sleela_email.sleela",
+      "sha256": "eef46382663393595f999a6cb4a0a86e0d28935f2e85ed4e3da93959f5c905da"
+    },
+    {
+      "path": "api/email/smtp.html",
+      "sha256": "d4a3625b36c27c4f59650ceecf40f9e26cda69e536fc364d787608afcae8266b"
+    },
+    {
+      "path": "api/examples/email/SleelaDoc.md",
+      "sha256": "fc6be244a8b0f90e9710ebb382517386b127523966de40204186212e62aeade2"
+    },
+    {
+      "path": "api/examples/email/email.sleela",
+      "sha256": "03b2c7943e4fa663e862e64f4bec8d2cf16c7f30244acc7f7060a08984cfeb4c"
+    },
+    {
+      "path": "api/http3-port.html",
+      "sha256": "3b275de2bb9b541a62dd2ac9bad8fc8cefae0be55276080c11a01fd68b893007"
+    },
+    {
+      "path": "api/index.html",
+      "sha256": "3001a8e623c8a188cc1f04ffbcdaed0e47e5a4a71246ddf54ba879b03378ca50"
+    },
+    {
+      "path": "api/listener/sleela_listener.c",
+      "sha256": "880f702106d64e51e673ed96d56e1a117ff8f7999607eebfdd1528902cb50388"
+    },
+    {
+      "path": "api/listener/sleela_listener.h",
+      "sha256": "3bfee7b859eb56c5f95603104b36be849b4817f0bc46dfb9d398906ccd8a062b"
+    },
+    {
+      "path": "api/nordshrift/API.html",
+      "sha256": "084f485557690e405a86d501ea28889d135e808a5e2e9249b5283656994b6bf8"
+    },
+    {
+      "path": "api/posting/API.html",
+      "sha256": "0ac16b5d2dfba4a58fbac255e9e68cc12eb3457badfb26c907f100b6650fd11a"
+    },
+    {
+      "path": "api/posting/sleela_post.c",
+      "sha256": "b6951454c3b39205a72b0b6ad35468be8fe7a9179b077f05f93a230bf7f70363"
+    },
+    {
+      "path": "api/posting/sleela_post.h",
+      "sha256": "76f0c657592d55a6f4f4d3142122adad6141513637530953a062df6c16318bac"
+    },
+    {
+      "path": "api/router/sleela_router.c",
+      "sha256": "9a240c176e5caca4a43a1aba5cb635cd47a073da5c7f98be7ab4a04a62878cce"
+    },
+    {
+      "path": "api/router/sleela_router.h",
+      "sha256": "cc434499eec9089d63cb0638e4cff02a1e58569c6cf9f715f5c95fef367a5856"
+    },
+    {
+      "path": "api/server/API.html",
+      "sha256": "df0f69f7cc352a8a90d6b157eb692307008541e4ce32d9afcedcb6a245b7a3f4"
+    },
+    {
+      "path": "api/server/NAT.md",
+      "sha256": "6de8875f1752c00fe637ed840f30cf6e4b13bfb8d638c7d5b0273ae989f73ec2"
+    },
+    {
+      "path": "api/server/README.md",
+      "sha256": "da82297d8d32d1970fcefc5841400adebeb5906a957fb682d6863bba54e87e61"
+    },
+    {
+      "path": "api/server/nat_aware.cpp",
+      "sha256": "40d21f1d5f938674d09d836a024177395a32e1e0433c39959a0d791e7e30d07f"
+    },
+    {
+      "path": "api/server/nat_aware.h",
+      "sha256": "496a3a4cca58ad1a201521cdd4cecd6ff7df02b2b3e5c172add429cc9d366edf"
+    },
+    {
+      "path": "api/server/sleelas.cpp",
+      "sha256": "469cc63ed059ad6ad1ec8d760a3cbbb2627d2651913a23642882a7435ad85666"
+    },
+    {
+      "path": "api/webserver/README.md",
+      "sha256": "09bfc2139ebca6eb2d1e1d79221a81a33deb2e2ae07bf449f0c394bec42ea3b2"
+    },
+    {
+      "path": "api/webserver/linux/webctl.sh",
+      "sha256": "4863d0dabe2240e28ca9616a4b87390f6d56ef910e0cc8ac00ce06f1032501df"
+    },
+    {
+      "path": "api/webserver/macos/webctl.sh",
+      "sha256": "98644b37e604860dd63b2325df2945ee45b53e55b1885ca76a3b1265c7451fdb"
+    },
+    {
+      "path": "api/webserver/sleela_webserver.c",
+      "sha256": "8d19f19972a817d5cbf958d397dcf64383f77b81d3a362ef855d370106d7d002"
+    },
+    {
+      "path": "api/webserver/sleela_webserver.h",
+      "sha256": "84f2a752351183420c9bdd41709f8a5203f9ab1b71aa769134f8a603b16a838b"
+    },
+    {
+      "path": "api/webserver/windows/WebCtl.ps1",
+      "sha256": "9c1ac130edaf18ab564b5011e38c9c54580f5e60885612aff43e8b0c995a1465"
+    },
+    {
+      "path": "bash/CWRU/misc/errlist.c",
+      "sha256": "79ca174cd6ea92d417c074287df7ed1ed0ef28a9d1281be3c014151175eb4743"
+    },
+    {
+      "path": "bash/CWRU/misc/hpux10-dlfcn.h",
+      "sha256": "7a560d16d7ce26c9ceb66a3972bad563d503c9bda4ed05cadd4754812fb4fae6"
+    },
+    {
+      "path": "bash/CWRU/misc/open-files.c",
+      "sha256": "53dca710aa433863fcd5fdfc0d9909a9cefeae00640ebf9ec1f3e1c001946ed8"
+    },
+    {
+      "path": "bash/CWRU/misc/sigs.c",
+      "sha256": "19a3e999a1c7ba0ca796ffdda536dac556dccf6e1bf8328eacb0e009ce43cb75"
+    },
+    {
+      "path": "bash/CWRU/misc/sigstat.c",
+      "sha256": "517ef007100ef4dd57d5a5d7be5ff002dfaf2dd9abd7e2d7b59e2ffd34afa957"
+    },
+    {
+      "path": "bash/alias.c",
+      "sha256": "71169f971c277568e755d0a5d39263a9bd1c1f40b662f826a0d989322fcf0665"
+    },
+    {
+      "path": "bash/alias.h",
+      "sha256": "d153a6a66012bde58676c3104d2abf31428d1f0a7fc75eef9ad3f87e26cf7a2b"
+    },
+    {
+      "path": "bash/array.c",
+      "sha256": "0f2ee790d9c4851b66fdff46ac9e289c30d88241e232ef062d10c06f344e7019"
+    },
+    {
+      "path": "bash/array.h",
+      "sha256": "9cb9af1ad5165cce13780a331d68dfadb6c6e5342815fd225793fc7036bfa53d"
+    },
+    {
+      "path": "bash/array2.c",
+      "sha256": "dc65fae8e06634c2fed0aed5721d62c7185b109b1b7c05cc5fbe5442b523fbab"
+    },
+    {
+      "path": "bash/arrayfunc.c",
+      "sha256": "cbc3a532fefae2bf199b0437d37581ce90ddda358d3c887e72be988971306280"
+    },
+    {
+      "path": "bash/arrayfunc.h",
+      "sha256": "35b7f91c82a807119b0dfa7a71ecdd204b7ced891581ba560e416fffc4c2baf8"
+    },
+    {
+      "path": "bash/assoc.c",
+      "sha256": "4d755b8f2216a154f75aa022ce4f903c724546ed6d18f029a6c2d38643aeb736"
+    },
+    {
+      "path": "bash/assoc.h",
+      "sha256": "8f0a58babbac4f9414059a24a662e735c31bdfbcd25c188cadd3eb8a66a9cf2c"
+    },
+    {
+      "path": "bash/bashansi.h",
+      "sha256": "4fa0b82d20a8cd87dd49ff793b38ce6f7bbe47105ff4bccde70a5ebfb1600970"
+    },
+    {
+      "path": "bash/bashhist.c",
+      "sha256": "dd802c441204d276aa460c4f868540c0285188ae21288ff7576a5ec74c8e50a0"
+    },
+    {
+      "path": "bash/bashhist.h",
+      "sha256": "696b02971dd6ea841c4e34b8e1d7cb40d86325e53db272d6ea6f68e367fbddf0"
+    },
+    {
+      "path": "bash/bashintl.h",
+      "sha256": "3cb31529865eb8ccf63215d3aaf44684bee30bf698f6b1d0e7b9f93ee7b43331"
+    },
+    {
+      "path": "bash/bashjmp.h",
+      "sha256": "1bbaa794c2cdd21466fd392ee3c6d4e03721da187ae0cf08c48710b4e3fd478b"
+    },
+    {
+      "path": "bash/bashline.c",
+      "sha256": "f1f4e91c3ebaa0dc8eb719a068534386cdc5118415d231fb133047eb6c21cd72"
+    },
+    {
+      "path": "bash/bashline.h",
+      "sha256": "d10f43b8f41c54bf5aedfe73e06263f45b2f216b609fe824bd4ff67def5ff9fe"
+    },
+    {
+      "path": "bash/bashtypes.h",
+      "sha256": "67e1259cae980dc67a9432716ed6aa846fca737f42c5ce7e34e982f6965512e2"
+    },
+    {
+      "path": "bash/bracecomp.c",
+      "sha256": "a446b28be580f7bd7c5b6cb3687ac42f90923407b870819c7984d0b7e37b6e7a"
+    },
+    {
+      "path": "bash/braces.c",
+      "sha256": "3af2be473259f1586da51b0e78b28c8402e4aca6617d3d675de693fbb7bd9c81"
+    },
+    {
+      "path": "bash/builtins/bashgetopt.c",
+      "sha256": "7c9a4d02bcde1977ebaa2038d38a50fff5cb72bd1fa8abbbaa325a57631f81ea"
+    },
+    {
+      "path": "bash/builtins/bashgetopt.h",
+      "sha256": "ca2f6fbd0eacefe138d1b814df0cbbab897c255e404847702ca93e254a750706"
+    },
+    {
+      "path": "bash/builtins/common.c",
+      "sha256": "979a0c3d1a77d4b33a9e27a68992f584d1b3ca6e6754c3d052ac30bec45e186d"
+    },
+    {
+      "path": "bash/builtins/common.h",
+      "sha256": "9a269a14937e7c4de487af5d2ebf991d00fefe3e8a2c801251cfd605533a98f0"
+    },
+    {
+      "path": "bash/builtins/evalfile.c",
+      "sha256": "e4a794fc29c1d1b5b27124cd16d181fb35f536e8b3c2de1e23ca3054f0e7b410"
+    },
+    {
+      "path": "bash/builtins/evalstring.c",
+      "sha256": "063da6502b5472c1a126f86fcdb4fc8c351ae1d3a1510cb2167ff0b6be3b066f"
+    },
+    {
+      "path": "bash/builtins/gen-helpfiles.c",
+      "sha256": "39078f03b53124e023fd5d8bc38030f95bfdc000ecd4216b70a87ea35d331972"
+    },
+    {
+      "path": "bash/builtins/getopt.c",
+      "sha256": "e6ac13cf8246c16a4a804143b7abb71b87c6929d989ae9505165f4f257c82225"
+    },
+    {
+      "path": "bash/builtins/getopt.h",
+      "sha256": "bda29e85c81dab70fc0469d2fc936adece74375d15a155275439a6ab99eefb27"
+    },
+    {
+      "path": "bash/builtins/mkbuiltins.c",
+      "sha256": "4b3d76dc197cb3797fb955b64b750f58da46e79f5b4c386ced57ed8dbe443cf8"
+    },
+    {
+      "path": "bash/builtins/psize.c",
+      "sha256": "59861775d0b03f7394cf5bda7abcfc1d60b454fcd5514c1e330b743998c6aaf8"
+    },
+    {
+      "path": "bash/builtins/psize.sh",
+      "sha256": "01d3e145e083777e5a94baf4e1cacb239509877de6709500014c468461b600ab"
+    },
+    {
+      "path": "bash/builtins.h",
+      "sha256": "cdaf2732769e11c85e61bfa75b4a2d1bc0700edb0f7df7e1b0ce3f96e6383119"
+    },
+    {
+      "path": "bash/command.h",
+      "sha256": "664ec6c559c6b139b7efbef30d795387ee8a5fe074efc1802a3f2cb8c0fddd28"
+    },
+    {
+      "path": "bash/config-bot.h",
+      "sha256": "b57ae6e38bbfc3fcb2a8c559671b46c32f3282b366605da64272eb2cb2b44171"
+    },
+    {
+      "path": "bash/config-top.h",
+      "sha256": "16142a6ae0e1732ba2090f2b4f522e4b9632d3d645724501336379c074b80e60"
+    },
+    {
+      "path": "bash/conftypes.h",
+      "sha256": "f92b0b3533b7a56190d5c31403a675ccb17d89cfd7710dca3966fc08c4ef7dac"
+    },
+    {
+      "path": "bash/copy_cmd.c",
+      "sha256": "1e8a999499e1e6c4b459a5bb97923b49a2af6790b3c3991cf5493d3434394971"
+    },
+    {
+      "path": "bash/dispose_cmd.c",
+      "sha256": "596e44281811314d8420e59b5e65f75a6a416d490e558c2b8e2d2cf0569ea7be"
+    },
+    {
+      "path": "bash/dispose_cmd.h",
+      "sha256": "ed49dcc2e7de7232f60472caf23c757edbc1995b968c1fbec890bf3867461393"
+    },
+    {
+      "path": "bash/doc/htmlpost.sh",
+      "sha256": "0f2b30fe1ed83861a53b117e82f8ee2f87b865b21a86afe192836cd811f312b3"
+    },
+    {
+      "path": "bash/error.c",
+      "sha256": "1437faf7b83170a35abb9381c2d169d66b6c6c925ad7fbec7329a3f02316f402"
+    },
+    {
+      "path": "bash/error.h",
+      "sha256": "3724eb2121eea35155f48e52832a7ec18e9021ff2d713aad175b36a149539981"
+    },
+    {
+      "path": "bash/eval.c",
+      "sha256": "21bfede320d640a219fc0ffa66d7b90d8f1fae87605847d4d06e6e058c4e7051"
+    },
+    {
+      "path": "bash/examples/loadables/accept.c",
+      "sha256": "7bb9dab1893fda7c50df3841328dd9716c888c3e60da6a1a980bd6e7c0ec6eaf"
+    },
+    {
+      "path": "bash/examples/loadables/asort.c",
+      "sha256": "4d0782af1d9faa1df2544cd649441620fb08d61a39e9e906ed817ea024de092c"
+    },
+    {
+      "path": "bash/examples/loadables/basename.c",
+      "sha256": "4975921efd55837e1638a52384a71b176956014047efdf4499c5bb1b28871ab5"
+    },
+    {
+      "path": "bash/examples/loadables/cat.c",
+      "sha256": "4aac3e58f47de0673242a41c6bc2206b9920b79e1ea4b25d7bc8bf99fcebffcf"
+    },
+    {
+      "path": "bash/examples/loadables/chmod.c",
+      "sha256": "90eb7f7b66af4b3f397016f7b8dbc8764cb75c64d0d1fb89f2ba52c6aea922ae"
+    },
+    {
+      "path": "bash/examples/loadables/csv.c",
+      "sha256": "4ec6f1bd7f7c9f46795d434ce6fef3f273dff64dc4d0de095425fe536d62502b"
+    },
+    {
+      "path": "bash/examples/loadables/cut.c",
+      "sha256": "c864e2477ad29c7819524ff5e71dd4318e66b5531fcb30003a0cfd726f54ab53"
+    },
+    {
+      "path": "bash/examples/loadables/dirname.c",
+      "sha256": "1a837f2c3c563dfe2954c1c53c52d85fcf9679349333b5c809e100bd4c66c9ca"
+    },
+    {
+      "path": "bash/examples/loadables/dsv.c",
+      "sha256": "a936fe06f769b7bc777f4c811ab859bee878852ce9bbb52ea92ca4abda4702bf"
+    },
+    {
+      "path": "bash/examples/loadables/fdflags.c",
+      "sha256": "369aa6a53f34dcf2a84ccc95203cd98f140b3f6cd9c7dd6ca93fb3e31070b127"
+    },
+    {
+      "path": "bash/examples/loadables/finfo.c",
+      "sha256": "ebc6947df0705155ee8bbf3653861e78bc426e0313ab6aa89023b5747774fb04"
+    },
+    {
+      "path": "bash/examples/loadables/fltexpr.c",
+      "sha256": "f66a781bb37da386e8e4e5a88b6540d8f0ac6a0c0dd0ca5bdc8e142e830f8065"
+    },
+    {
+      "path": "bash/examples/loadables/getconf.c",
+      "sha256": "ceb2bc7c11303622b1c4accfff87505bc2604093aae5d61f78897d4e5ca62abb"
+    },
+    {
+      "path": "bash/examples/loadables/getconf.h",
+      "sha256": "8afc5c1ff292999adbfe493b604445036fd72d4bda779ef4954ecccb201434b9"
+    },
+    {
+      "path": "bash/examples/loadables/head.c",
+      "sha256": "766a60e7e93ad1ff5004098ad80989e6a6ecb59eefc1877897ff7b00ae922a7d"
+    },
+    {
+      "path": "bash/examples/loadables/hello.c",
+      "sha256": "67f0842301d006d070e6d461294fa80d04d79e92304e75b9b0b96df35d41e360"
+    },
+    {
+      "path": "bash/examples/loadables/id.c",
+      "sha256": "853c3797b49ef05dfbe74497ea3a4be8f1263b5154e968b724436acff9e424e8"
+    },
+    {
+      "path": "bash/examples/loadables/kv.c",
+      "sha256": "696ee6be10eef7110b97af9f1ee2babe9f1753ee80c9c557a9dc2c9f066dea2c"
+    },
+    {
+      "path": "bash/examples/loadables/ln.c",
+      "sha256": "03a0ed8f9ff9a8e2936a04df4929fc910d6e7312de29987b8e909deedc52e679"
+    },
+    {
+      "path": "bash/examples/loadables/loadables.h",
+      "sha256": "6d6454465c603205106fb0c29766de51f31cdf989c93f2cbe68114fe9d990ba6"
+    },
+    {
+      "path": "bash/examples/loadables/logname.c",
+      "sha256": "53d89b047f12254e80e78970370d4eeb204aade04ece64e9d4e86e912f74eceb"
+    },
+    {
+      "path": "bash/examples/loadables/mkdir.c",
+      "sha256": "0107d04deaa81811ed2a3a71e401781487043280e8ef00b150db7b4ff2c46ea7"
+    },
+    {
+      "path": "bash/examples/loadables/mkfifo.c",
+      "sha256": "dd3ebd08df4142cb0a37611cec1b9a1328ec787c887a08f4395a0b77f09aa7cc"
+    },
+    {
+      "path": "bash/examples/loadables/mktemp.c",
+      "sha256": "1cdc1904d04cf5da9737b3f1522b1954f89163f05fe47fc03936e4d72cd3c592"
+    },
+    {
+      "path": "bash/examples/loadables/mypid.c",
+      "sha256": "785eb20f10a52d24bcadf0a616bd7fc0d2502b4fdc0b2276b3216fc3d3665f75"
+    },
+    {
+      "path": "bash/examples/loadables/necho.c",
+      "sha256": "c559fde91a8c2c0c24e499235ed2e41909dbf154bcf7a1f4f74fec116cd004b1"
+    },
+    {
+      "path": "bash/examples/loadables/ocut.c",
+      "sha256": "ad74edf6951423cbbbb55af8e8608db0a0baec263db8ad1f43ee13e594bf35a2"
+    },
+    {
+      "path": "bash/examples/loadables/pathchk.c",
+      "sha256": "9b1156c366a4e9f3705bbe63357c6fdaffdae83afb27462760cbf2686e97f782"
+    },
+    {
+      "path": "bash/examples/loadables/perl/bperl.c",
+      "sha256": "e24f9df1f697a169f3186a3ad1bd511390e8dd01ed4e9ccd17ca942cdfcb476e"
+    },
+    {
+      "path": "bash/examples/loadables/perl/iperl.c",
+      "sha256": "66d1cc7e48123c073daf480a6a6e0706b27c98a62d39b5486600d577fce9441a"
+    },
+    {
+      "path": "bash/examples/loadables/print.c",
+      "sha256": "93696e924374e03110e4b1de2b4dbfda24d316ed56c9ec80250959377294a1c8"
+    },
+    {
+      "path": "bash/examples/loadables/printenv.c",
+      "sha256": "a6a541ff2c1b56c3db6673743b6a37ee5810a8eaa3b2895be9be84ae60298d69"
+    },
+    {
+      "path": "bash/examples/loadables/push.c",
+      "sha256": "883f9c5b4d2655f3884cc68048fc73b0d4caa16189a4751022982e10cd381e23"
+    },
+    {
+      "path": "bash/examples/loadables/realpath.c",
+      "sha256": "a1128753858f44707546019c3f0814f76a8a23b34e77c508c99b9634174573a9"
+    },
+    {
+      "path": "bash/examples/loadables/rm.c",
+      "sha256": "05a0280786ec8f11900d0265b17b4cb49132deada39a81e5d1f5af6cfd9be70b"
+    },
+    {
+      "path": "bash/examples/loadables/rmdir.c",
+      "sha256": "ea95c824a19c1f54175507809264ef8cabb7b7d32526d331c3be69230cc95588"
+    },
+    {
+      "path": "bash/examples/loadables/seq.c",
+      "sha256": "0cad2491a40f61803429fc8efd3e8c648f2d28bfc84e825d6c98973e239178fe"
+    },
+    {
+      "path": "bash/examples/loadables/setpgid.c",
+      "sha256": "1e6a875d52fc530f1b69e5f120e2810b4f40c1b279637c5b3e17f28bfad9dc81"
+    },
+    {
+      "path": "bash/examples/loadables/sleep.c",
+      "sha256": "4276cba64ca50fd1a77cea91ad6a6a89e7db86e270cea878d769d27e1d423733"
+    },
+    {
+      "path": "bash/examples/loadables/stat.c",
+      "sha256": "2a8d8df3b7714a053f9715e9933b5658ca17eed01b1036834703a0b222cec194"
+    },
+    {
+      "path": "bash/examples/loadables/strftime.c",
+      "sha256": "782fbbec6f160313da8f0c0cbf0790b1473cbe0c24bf7f37f1377d4e344a0b10"
+    },
+    {
+      "path": "bash/examples/loadables/strptime.c",
+      "sha256": "bcf66bb6de163177ac00147980943d7232ed183632c4941ff7776bc3e5b295e7"
+    },
+    {
+      "path": "bash/examples/loadables/sync.c",
+      "sha256": "ab2ba6d6e8f19ba0aac809d3f97d7f00650223cb03a2f3fcacc2d697db551892"
+    },
+    {
+      "path": "bash/examples/loadables/tee.c",
+      "sha256": "83fd91ef83e478675eb2e674d21f134b9ca700f86143d930f446a71aeb0e59f2"
+    },
+    {
+      "path": "bash/examples/loadables/template.c",
+      "sha256": "dc597735cfbf67f84cf3c5fdc44d2e094fdf75092c2465dc580ac47b59a8c49c"
+    },
+    {
+      "path": "bash/examples/loadables/truefalse.c",
+      "sha256": "23ebb0d47f04545bd37dbc89a6e2e311c867071dcd11197e2f8604f80204b304"
+    },
+    {
+      "path": "bash/examples/loadables/tty.c",
+      "sha256": "9892082ad9d5ec6ca40153330e6ef73714a2da1b924d55d237c08c0832dbe976"
+    },
+    {
+      "path": "bash/examples/loadables/uname.c",
+      "sha256": "62b07756728053cb637bf66270d02118adc3f0c123c2fd2fdce9999f26ddd72e"
+    },
+    {
+      "path": "bash/examples/loadables/unlink.c",
+      "sha256": "f1bdec27b87532e5abe1b28497fa21688855aec189a9a258c029fdd2dcd0dd9d"
+    },
+    {
+      "path": "bash/examples/loadables/whoami.c",
+      "sha256": "f9500047deca82cf0520a590cb7eafcee5d65de2344f115f45e90e968207a6ea"
+    },
+    {
+      "path": "bash/examples/misc/aliasconv.sh",
+      "sha256": "9fd985dd0b65e2b358d4eb5a03fcdfd9d26a4a1bb916cec7b2f9a4b97e7ece0a"
+    },
+    {
+      "path": "bash/examples/scripts/cat.sh",
+      "sha256": "dbfa769a86f1a05b79daafd94bdbed1b61b6d25052f1d03c670c5a6babc770e0"
+    },
+    {
+      "path": "bash/examples/shellmath/assert.sh",
+      "sha256": "10c1ac1af35208b9fac88364bb8296d6119155ad9c0fa12675a9b36f3a9b42f5"
+    },
+    {
+      "path": "bash/examples/shellmath/faster_e_demo.sh",
+      "sha256": "e62b7abc74e6d450126b88987fe7831e87b39c5e08ba5048b44945321b117b82"
+    },
+    {
+      "path": "bash/examples/shellmath/runTests.sh",
+      "sha256": "3698fdcc26be496a980a7f4e05d395464212c7de4e7706d32ee37b0e320996d3"
+    },
+    {
+      "path": "bash/examples/shellmath/shellmath.sh",
+      "sha256": "91c804b140f158fdda3e62d75451946c421d2307bcd7305f59d3ce1127d958ab"
+    },
+    {
+      "path": "bash/examples/shellmath/slower_e_demo.sh",
+      "sha256": "61909404ee980458007bb1fa08604fc06d4a375d33b0c1d003265f82e78d4400"
+    },
+    {
+      "path": "bash/execute_cmd.c",
+      "sha256": "5b7da1b3c61225fdf726929ffbc4f89f7068cbe83d2060b6ad1509c2feb9a032"
+    },
+    {
+      "path": "bash/execute_cmd.h",
+      "sha256": "62d0cb7bcc63f78dd3cf8e5ddbe12f9bff4f627ff7541185d5296fda32acd976"
+    },
+    {
+      "path": "bash/expr.c",
+      "sha256": "014aabf3c591c496bfcb39851d38f3691eb56d14c1e99b69e2b7cd3134f6e05b"
+    },
+    {
+      "path": "bash/externs.h",
+      "sha256": "97cf8851450f6755f590b639b515b5ac23ab486d281e76a684595f7010e55762"
+    },
+    {
+      "path": "bash/findcmd.c",
+      "sha256": "b22ca53e45130293bc80a93f43a649db83d32f29979866ca2ab6adb9270a5eff"
+    },
+    {
+      "path": "bash/findcmd.h",
+      "sha256": "0780ab3a459fa66ab3db31b9bae6f7eede01cceae0c984c451a1fd25656671a1"
+    },
+    {
+      "path": "bash/flags.c",
+      "sha256": "5696d846e008e46ec754d55acd1d29d328e4966af4d8577245d2cddfcd50d468"
+    },
+    {
+      "path": "bash/flags.h",
+      "sha256": "08df6d3a8a8ba4a9f1fda6399d1e20099154b9f3358c5ffdfabdcfe3bdecb068"
+    },
+    {
+      "path": "bash/general.c",
+      "sha256": "669ef408f4bcc6b4ce424677d29532f28e903430c93b335fa1a292dd360bd165"
+    },
+    {
+      "path": "bash/general.h",
+      "sha256": "bf9251e3270c933d3387828a263a3d30e4f0de7ec02b802b1f0f99a60ad3f2f2"
+    },
+    {
+      "path": "bash/hashcmd.c",
+      "sha256": "9102d5f4860f0eaa36fe0213806d56e77980e7b6ab412feb1d47db6a0cc0b13a"
+    },
+    {
+      "path": "bash/hashcmd.h",
+      "sha256": "0da9b835e04fa416fcfe0e91300030d6c0f74ac21c144f2592ae019ca09ceb2d"
+    },
+    {
+      "path": "bash/hashlib.c",
+      "sha256": "ecfac08008645dc0917dc5c1985a2030d673240361b77f6ba3c56d2f61bdf33f"
+    },
+    {
+      "path": "bash/hashlib.h",
+      "sha256": "588dc97af2efa294279819bd7fce780c294d3ab03b1db89caf8acf8419fcb13d"
+    },
+    {
+      "path": "bash/include/ansi_stdlib.h",
+      "sha256": "d71ec4c8dbca7ec5f0adedd3ae9c527beacdae29e49fa9086ef7325e2aaf68ad"
+    },
+    {
+      "path": "bash/include/chartypes.h",
+      "sha256": "be8f90e477389434df67a053811d98795b2717e7c92545631e71533f29dc2f16"
+    },
+    {
+      "path": "bash/include/filecntl.h",
+      "sha256": "0fec9b4d255ba190b5d213ea7dc8e6e4084238fc99b9da7e720c4de3e63291b4"
+    },
+    {
+      "path": "bash/include/gettext.h",
+      "sha256": "75f6e21e0e5d8ec4130ed8a19a6418b0c0cb7a221efd9aa21d2e22d49eeb1f0c"
+    },
+    {
+      "path": "bash/include/intprops-internal.h",
+      "sha256": "e39d358088c702d3a970b8fe2964620f2a5bdd8879e5446d7ef3ab6bce3b4053"
+    },
+    {
+      "path": "bash/include/maxpath.h",
+      "sha256": "d4ad4091127abfb0b931fe07b1c3e33fb1092223094100f7e8a55ceaf82af24a"
+    },
+    {
+      "path": "bash/include/memalloc.h",
+      "sha256": "93953eeb2cca0cc479d721395f14e7a4f9c6ad559dfabfa35355efbac712c60d"
+    },
+    {
+      "path": "bash/include/ocache.h",
+      "sha256": "db53428385d35b476087a9a31de4422c09524cde39c33f6638dc1d26ab4e53bb"
+    },
+    {
+      "path": "bash/include/posixdir.h",
+      "sha256": "c4c12d8adb56129c3151976619f1a91eda1d47eed446deb1b728f251e85eec10"
+    },
+    {
+      "path": "bash/include/posixjmp.h",
+      "sha256": "4a79e5d83b9e87153cd057d76a5b2614922c04a5b58a9f5ae9ed23634dc70261"
+    },
+    {
+      "path": "bash/include/posixselect.h",
+      "sha256": "5330e1aaf639e393b2463a29d35d298e7a054ddb34727743e24d9a72c8fa3ad9"
+    },
+    {
+      "path": "bash/include/posixstat.h",
+      "sha256": "29de8968be3337d40918adbf6a943d2bda903ff4eace81c12d626da9234bf544"
+    },
+    {
+      "path": "bash/include/posixtime.h",
+      "sha256": "d28362696dddb64847b9642c437377b484bac0d2dc405137b0129fee749bb5ba"
+    },
+    {
+      "path": "bash/include/posixwait.h",
+      "sha256": "70539b19039ab4e0c0152d078ab79ad9918854ef8aaee7eafbb80cb30a5e85e2"
+    },
+    {
+      "path": "bash/include/shmbchar.h",
+      "sha256": "f330ce6b038ee88c4fb3280130799298063f6c5b3a45668fa138a38ffc24316d"
+    },
+    {
+      "path": "bash/include/shmbutil.h",
+      "sha256": "df45c27172b612e006fcefcc5c11ebe9710ef914cb8840e95d4e951aafe75061"
+    },
+    {
+      "path": "bash/include/shtty.h",
+      "sha256": "850fa663b352542c4e90adf7b95051c412945307ef1460cf771b6b7b05364fa9"
+    },
+    {
+      "path": "bash/include/stat-time.h",
+      "sha256": "b6b3bb0f986a7c542048d1a81c9b3ca383d9c6be361f9079d1e558164b1882a1"
+    },
+    {
+      "path": "bash/include/stdc.h",
+      "sha256": "169345595cffcc7d56861c3ac22e419b9cc4bc58852482dca711e63e715fe783"
+    },
+    {
+      "path": "bash/include/stdckdint.in.h",
+      "sha256": "5a94030116d1dbbaf906383b2c0c5f673cdb8c2f0d2c6a2efa2d0f3fcea3b760"
+    },
+    {
+      "path": "bash/include/systimes.h",
+      "sha256": "bba76478f54c72212ddf149fde8bc325da8397a08c46d0b95fa977517ad311d0"
+    },
+    {
+      "path": "bash/include/timer.h",
+      "sha256": "aaaacacf60008dd3a15a392db20d56eb180cc2ce0d71ff00b16d723e8a5fa3b8"
+    },
+    {
+      "path": "bash/include/typemax.h",
+      "sha256": "8e5d7aecc1a107ba7a339da22eda581337a90529f43a403e9d908f34129cabb7"
+    },
+    {
+      "path": "bash/include/unionwait.h",
+      "sha256": "5a5c8024ce1a640bc3b9db746cd0d3e48e207f43c13cfd21dfb6a00c841e4d88"
+    },
+    {
+      "path": "bash/include/unlocked-io.h",
+      "sha256": "76e919132cfaa1fbc5350a23ad51128cea29a06217081d5f939f89a51bd39e92"
+    },
+    {
+      "path": "bash/input.c",
+      "sha256": "d88d0583932086cce7dc4a4db18407c084991b1574383c833579ca9ce2f2a50b"
+    },
+    {
+      "path": "bash/input.h",
+      "sha256": "e5be76416b310ab4310ad6641e94911efb0e97ebe7b3d5944430501a8c98ce44"
+    },
+    {
+      "path": "bash/jobs.c",
+      "sha256": "ea8914be42b734addddb3a72e1bd8e39a607e3422eeb7eb98ce9ad4ee7886a12"
+    },
+    {
+      "path": "bash/jobs.h",
+      "sha256": "9d7fe9e1d7b45ca51870e6f171ca6e4a58fb74c9c07626117537ac5575dc8ce2"
+    },
+    {
+      "path": "bash/lib/glob/collsyms.h",
+      "sha256": "f0a7e25ca4b2cddabf17d41b720282073bb28afd6f259bff98fe7c22908620f1"
+    },
+    {
+      "path": "bash/lib/glob/glob.c",
+      "sha256": "7dc8442ded492441a6a642d8cf40175a64a99d6d469854b6befa7c126c0428d8"
+    },
+    {
+      "path": "bash/lib/glob/glob.h",
+      "sha256": "580c3207852ae55b466d5d003bd12c4767c0c959dd958ed8f4987fd4b5d25e18"
+    },
+    {
+      "path": "bash/lib/glob/glob_loop.c",
+      "sha256": "8d8a9d2ba9838e36da4da4726a427cfc0d4022b2292328383a3643ada63c53aa"
+    },
+    {
+      "path": "bash/lib/glob/gm_loop.c",
+      "sha256": "310d4d912bb26d678089915112e68a9faf55ca0d1028c2bd0597c6bdabc864be"
+    },
+    {
+      "path": "bash/lib/glob/gmisc.c",
+      "sha256": "9bad1886026e8857be9e72f0011a8d4a0b6185c187697d09544e5293dca1390e"
+    },
+    {
+      "path": "bash/lib/glob/sm_loop.c",
+      "sha256": "1e78398ae5088b6cee6fb5cf326692e65196bb530abccbb5e79ef318880f40d4"
+    },
+    {
+      "path": "bash/lib/glob/smatch.c",
+      "sha256": "8b0fdfd61aa053f5d0624986bac78df826f122bf47755d349d12f9c47e7bc0e5"
+    },
+    {
+      "path": "bash/lib/glob/strmatch.c",
+      "sha256": "8d3e0641e9f5e8bb329157d462977855ebce06a5df82b7f9f67ca9937b1c421f"
+    },
+    {
+      "path": "bash/lib/glob/strmatch.h",
+      "sha256": "faa0bcbad94c2faf5d42d2653880a346c8498bb0abf08aff5b339c2815f7e130"
+    },
+    {
+      "path": "bash/lib/glob/xmbsrtowcs.c",
+      "sha256": "ecc2666b3ba14c2e888c604237ff4c6c2c637afb8a669a5d103c2b0649f402cb"
+    },
+    {
+      "path": "bash/lib/intl/arg-nonnull.h",
+      "sha256": "b4c121a4a6ee43b25ab693c69a9b30720c7ba0ffdf7c327735fcd86589ebf725"
+    },
+    {
+      "path": "bash/lib/intl/attribute.h",
+      "sha256": "054ac08f3526b460a017bcd25658ca3d96b652c5e353b51ec0312cc82fa9ddcc"
+    },
+    {
+      "path": "bash/lib/intl/bindtextdom.c",
+      "sha256": "f7a0df2df6ab2f22a5b0ee0d42bce40093972569c41042a4dfa633799ebdda0e"
+    },
+    {
+      "path": "bash/lib/intl/dcgettext.c",
+      "sha256": "75cf5f57b14d83a992beb17b05fc762b0b7dc87c271ac1070edea77c9bb96c05"
+    },
+    {
+      "path": "bash/lib/intl/dcigettext.c",
+      "sha256": "f26bacbb33a0a6960ca5b446e9b0d9cdb87ee6ff4d19bfc02996f5e35efb6d40"
+    },
+    {
+      "path": "bash/lib/intl/dcngettext.c",
+      "sha256": "66a5e9bcc4ef4aaf0a820974030c2d2b6489a8aabb56acef07a1277cbe9d63d8"
+    },
+    {
+      "path": "bash/lib/intl/dgettext.c",
+      "sha256": "b3570c73b07320da8cba439e01a3f4a5d0c1070c1e83bc599d72dbe0f0bde154"
+    },
+    {
+      "path": "bash/lib/intl/dngettext.c",
+      "sha256": "f4771cf69ea3830226e8a226a264dcb9bc3d6c87f6bcec1ae71a5e383e7dfa00"
+    },
+    {
+      "path": "bash/lib/intl/eval-plural.h",
+      "sha256": "d49d4ce2fe37f2724a1f20d5ccb7225a2595d2e5b3dbb70fa4653a8f1fa50b1e"
+    },
+    {
+      "path": "bash/lib/intl/explodename.c",
+      "sha256": "2cca5dcb0bf1f997dfc615f017b13e0e62f205a73001045d8541e0925677bbdc"
+    },
+    {
+      "path": "bash/lib/intl/export.h",
+      "sha256": "5676270a9d04a47c26158cf8bc76909242dc32f5afae13d4117f7deffbc813e1"
+    },
+    {
+      "path": "bash/lib/intl/filename.h",
+      "sha256": "c07b17b36efb4c3d7fb95399a1812066e3921bc444d30293ea29ddc2729cdd47"
+    },
+    {
+      "path": "bash/lib/intl/finddomain.c",
+      "sha256": "39d69f8963e92f3fef05cb64781a688471ca772102cc441a97033d826c0d65ff"
+    },
+    {
+      "path": "bash/lib/intl/flexmember.h",
+      "sha256": "c18ee0180351386f2acd739653aa99614d288640cdeb753cb5f175b28a45f0ff"
+    },
+    {
+      "path": "bash/lib/intl/gettext.c",
+      "sha256": "0525bd632a5156617fe10c03417f1b11263a3d69969ba44923b8f3d5220a3e7a"
+    },
+    {
+      "path": "bash/lib/intl/gettextP.h",
+      "sha256": "1526ebe023c1c225c9706fee74e425cff90e55512e4fa13cb826f60a358854f1"
+    },
+    {
+      "path": "bash/lib/intl/gmo.h",
+      "sha256": "e3c421ef7604de30d22dd17581b09284ce0a5f8cc9f840492991f796366cf4eb"
+    },
+    {
+      "path": "bash/lib/intl/hash-string.c",
+      "sha256": "72bbd26b5e73bfa058e0955d2f506316c50d39c284005ac7455e0905ce35c433"
+    },
+    {
+      "path": "bash/lib/intl/hash-string.h",
+      "sha256": "663ab9939735411e49ff9d923f750443b1aa3e45caeb8076ca9d72cac0233cb8"
+    },
+    {
+      "path": "bash/lib/intl/intl-compat.c",
+      "sha256": "3d1057536d925b60e06c80591468c81ac0fce9dc644eb202cf897a59642551d3"
+    },
+    {
+      "path": "bash/lib/intl/intl-exports.c",
+      "sha256": "08bf305f5308a3f351665582c09203533aa99bd35446a14ad0d19045c8191176"
+    },
+    {
+      "path": "bash/lib/intl/l10nflist.c",
+      "sha256": "e2df2f0111b5ad2d54eaabfc9d7b57e0ea8ac9087c81e8debc75d4a80384cd3a"
+    },
+    {
+      "path": "bash/lib/intl/langprefs.c",
+      "sha256": "3adb281d42b7701465b8c4ad7f8f23bc220433ac1eef516e02ae710b40a0e393"
+    },
+    {
+      "path": "bash/lib/intl/libgnuintl.in.h",
+      "sha256": "c31ea8693189bffba02182bf51f4352313860128a295e38560c089064d86c683"
+    },
+    {
+      "path": "bash/lib/intl/loadinfo.h",
+      "sha256": "352efaf8058a3c76ff5016ffabf4ef6d93d47f2656f64e5908f76d54222def78"
+    },
+    {
+      "path": "bash/lib/intl/loadmsgcat.c",
+      "sha256": "ad56f453e3f383e598cc491fa2d70010d7930217ebcd6609563f41c285fdc6ce"
+    },
+    {
+      "path": "bash/lib/intl/localcharset.c",
+      "sha256": "282ebcbb14989187b41e7ba2ba4b64d65b59a2d754c94377a3e25623abba5083"
+    },
+    {
+      "path": "bash/lib/intl/localcharset.h",
+      "sha256": "2d62c93415536425c8900a3e9bf63ac4b51f67637e56977a230b20b19c0c6672"
+    },
+    {
+      "path": "bash/lib/intl/localealias.c",
+      "sha256": "9b8a74ceb57d68d1728ad9a2b359acc0f3218a83219df679954e85ea416954d2"
+    },
+    {
+      "path": "bash/lib/intl/localename-table.c",
+      "sha256": "d5717a45cdb7c33dc4c956d1c00bc86e7f061f8a698da02088b77dc3b6d5bd8d"
+    },
+    {
+      "path": "bash/lib/intl/localename-table.in.h",
+      "sha256": "6a55540b9e179d758aefa7dcb7c384b94a77d612fadefd389657f29098b40998"
+    },
+    {
+      "path": "bash/lib/intl/localename.c",
+      "sha256": "fd57699b9e18aee15e43a857ba2042d3037a33cb460001eed385d1fb8453425d"
+    },
+    {
+      "path": "bash/lib/intl/lock.c",
+      "sha256": "49d7815f0ac6d92eb5f43c1e7135672ab20bc7e2189d988abfda31be82e2e0f0"
+    },
+    {
+      "path": "bash/lib/intl/lock.h",
+      "sha256": "6640b0c5c48b96377217eca3bad032c92ef2c25c73645fcb3db5fe6c160ce9be"
+    },
+    {
+      "path": "bash/lib/intl/log.c",
+      "sha256": "c4874fb69527e1848bfdac37f83cc4a0cc25cea479732d1bd1fa05e097a79f1c"
+    },
+    {
+      "path": "bash/lib/intl/ngettext.c",
+      "sha256": "b4428dc18bbbc00984090eaa9861d0e9648fc8e1f165e538422d303b5477b945"
+    },
+    {
+      "path": "bash/lib/intl/os2compat.c",
+      "sha256": "36fdb3f899665ba52fa216c84388f4978119ddbcda9e99a72f7f0dcfda0cf55d"
+    },
+    {
+      "path": "bash/lib/intl/os2compat.h",
+      "sha256": "187852b13eebaf292c156146664d8c3ee745cbe074c5ee963e201b38c9ec7bcd"
+    },
+    {
+      "path": "bash/lib/intl/osdep.c",
+      "sha256": "2becc84e52a3b768f27d7e7137501247629e5208c68dae39113af70324849719"
+    },
+    {
+      "path": "bash/lib/intl/plural-exp.c",
+      "sha256": "682f2acf479766f04504ed492367cab5ae7f1823bf933bcbe6ecc4b7ef201dfb"
+    },
+    {
+      "path": "bash/lib/intl/plural-exp.h",
+      "sha256": "6b5e9b320c4f9f94b23441d241707eabd45a40584cb5ef89fede6b353320811f"
+    },
+    {
+      "path": "bash/lib/intl/plural.c",
+      "sha256": "c0b88d6e70123a014e754b08a65ece8e22d42a26569270d2e4657a07ecf705ae"
+    },
+    {
+      "path": "bash/lib/intl/plural.h",
+      "sha256": "7ab9da767e7cd628f4e89df23f4b51709a064e8acdc3752638a021a7923d80b0"
+    },
+    {
+      "path": "bash/lib/intl/printf-args.c",
+      "sha256": "272913c9d29deae0bf0328a778fdaf040abd29e36d3e0f51a261c4fddc2ea890"
+    },
+    {
+      "path": "bash/lib/intl/printf-args.h",
+      "sha256": "616e7d27df47470e572c08bde8e42b2349b536c1a2b6cbf36a908073a3d3e457"
+    },
+    {
+      "path": "bash/lib/intl/printf-parse.c",
+      "sha256": "6c22fa491910b1a29c0200a5326b09665bf78a56011b5e490af785895d70f3cc"
+    },
+    {
+      "path": "bash/lib/intl/printf-parse.h",
+      "sha256": "f89c9ce51f223c64a605ed1eeebbe691258d0eadc0ffa0c4ab670b8b74a94602"
+    },
+    {
+      "path": "bash/lib/intl/printf.c",
+      "sha256": "f82ecade52e5eaf86f34875a3aca91932c02efda733b448f849080af9e8f6d67"
+    },
+    {
+      "path": "bash/lib/intl/relocatable.c",
+      "sha256": "820a4dee4fcab6031aa6f9beae82d1e9ed42f00ac30e51c91de836a79e90a4d9"
+    },
+    {
+      "path": "bash/lib/intl/relocatable.h",
+      "sha256": "78be69b65e9c1245899fa57c95e244f516b3686f053b978084e70bad2a21966d"
+    },
+    {
+      "path": "bash/lib/intl/setlocale-lock.c",
+      "sha256": "ca98be6090bb70a7949d1a852cbf35f2c1eec669447ff947951f82ca759cf381"
+    },
+    {
+      "path": "bash/lib/intl/setlocale.c",
+      "sha256": "be11b257d81945248a20ad8fd3bd8498bb14ff1768179ccbd767f06de59ed226"
+    },
+    {
+      "path": "bash/lib/intl/setlocale_null.c",
+      "sha256": "759d3ef99732955d007a2cd15ca2fb364365c64b43efda6102b40f20d623646c"
+    },
+    {
+      "path": "bash/lib/intl/setlocale_null.h",
+      "sha256": "62762ce89f233b8f6446ad88db36546aec8d289653fec41e8b7ad9aed50c0dee"
+    },
+    {
+      "path": "bash/lib/intl/textdomain.c",
+      "sha256": "7982d45dcd9442e8d7096d5d848502f466141e26ed609e349e72ef5029e71073"
+    },
+    {
+      "path": "bash/lib/intl/thread-optim.h",
+      "sha256": "fbae8f1ebf43e2bc16c995e0c99637c7961493e022b8fc2e84d0cc107864f69d"
+    },
+    {
+      "path": "bash/lib/intl/threadlib.c",
+      "sha256": "2903d77b4ca12fbfd146ab44b062dedeb55f02a02d7f687d84eed71985d2f0d1"
+    },
+    {
+      "path": "bash/lib/intl/tsearch.c",
+      "sha256": "64f11e7fae4e6453b26cf2cb5cae2dc0c92b57fad2ebe97c10dc5c679e99255a"
+    },
+    {
+      "path": "bash/lib/intl/tsearch.h",
+      "sha256": "10e1f9feb670d5df0b0b5887acf000743b94d02adf3c27b1c5098aa37fbc5407"
+    },
+    {
+      "path": "bash/lib/intl/vasnprintf.c",
+      "sha256": "17abcfbceb1f5acee3602c8bede94f0796f4ce6551b7dd9c5fb980aeeaae06dc"
+    },
+    {
+      "path": "bash/lib/intl/vasnprintf.h",
+      "sha256": "5353f27d6505330494047145038f638a9f088730044e146dd4aefe953984e969"
+    },
+    {
+      "path": "bash/lib/intl/vasnwprintf.h",
+      "sha256": "3ad9a982499c24a4c3da0b47bf7f7b18dfd0202963a3dba41b577c039e6da3f9"
+    },
+    {
+      "path": "bash/lib/intl/verify.h",
+      "sha256": "2f0c52c90b77e1bbbff31e256fe58cfbbfff52008e48eee533da57dbbbeb2309"
+    },
+    {
+      "path": "bash/lib/intl/version.c",
+      "sha256": "5ed86e0d31f85a0606d6a1b72edb758914a1bf2e02022c0b0de5a8ef331802af"
+    },
+    {
+      "path": "bash/lib/intl/wprintf-parse.h",
+      "sha256": "7e8dbd6a7b4984b1cdddea638ae89ac797ad9d0f539e73e28c6efb83f964b154"
+    },
+    {
+      "path": "bash/lib/intl/xsize.c",
+      "sha256": "3d85581f02d664f61b713bb1f9d7b1df3a247a676190845162b7ee42e746e25a"
+    },
+    {
+      "path": "bash/lib/intl/xsize.h",
+      "sha256": "a2fb8bf7869872f377c4887123a21b1191e8926a48c59081eb978a52828d0099"
+    },
+    {
+      "path": "bash/lib/malloc/alloca.c",
+      "sha256": "ee1baa9d2145f683b35416a720c6a76763a08aff0ee0183a30483a94d17628c5"
+    },
+    {
+      "path": "bash/lib/malloc/getpagesize.h",
+      "sha256": "8b06d3975ab0d77dc97dc4780ef469413dc2ac2429831f52ecd62a7f5b89f7fd"
+    },
+    {
+      "path": "bash/lib/malloc/imalloc.h",
+      "sha256": "cff18d4b5c86f8183f68f8d1bb9612a55c92c4af27afb0bddbfcdd9f51cf521e"
+    },
+    {
+      "path": "bash/lib/malloc/malloc.c",
+      "sha256": "343a74b604568017301dc4a66bf040bfd0977b3bd4514a04126b912e1ebe5ea2"
+    },
+    {
+      "path": "bash/lib/malloc/mstats.h",
+      "sha256": "77e10e58e6f39fc432cb106e88eca8ce462e502959f24e9a8527cabe43e53c6f"
+    },
+    {
+      "path": "bash/lib/malloc/sbrk.c",
+      "sha256": "fea988bfc3cd16308cab1c8033b0434a77c29dcaaa99a0b800188417dc964702"
+    },
+    {
+      "path": "bash/lib/malloc/shmalloc.h",
+      "sha256": "afc16667f0a603c676f4095920c89eaa89de32c928b84cfa40b561a6fa433fc0"
+    },
+    {
+      "path": "bash/lib/malloc/stats.c",
+      "sha256": "3ca5cc14308857308d1b7ef85b05f7ccc427521e836f9163a4b061cb4a5cb84a"
+    },
+    {
+      "path": "bash/lib/malloc/stub.c",
+      "sha256": "7381e93c0975aceaa4ea1d96fe9a2655e53fad164c83df6e99e08cae5da34437"
+    },
+    {
+      "path": "bash/lib/malloc/table.c",
+      "sha256": "ccd3b6fb64e776149084952e7ab79d88df253a392142a2e33626f6e2d5b85d37"
+    },
+    {
+      "path": "bash/lib/malloc/table.h",
+      "sha256": "a90c96f4ab6cce26a8b81ae2a897350097eb74dfb9bc40b86d41b6e3a047697c"
+    },
+    {
+      "path": "bash/lib/malloc/trace.c",
+      "sha256": "effdb952faee6dac0d3986e42c8372e5fc79ead9c97d882ca974fdb24ff1c77b"
+    },
+    {
+      "path": "bash/lib/malloc/watch.c",
+      "sha256": "942f1f43f87d863baac9e71c782b7460e6811adc20cd37b8fba859279eba3fe9"
+    },
+    {
+      "path": "bash/lib/malloc/watch.h",
+      "sha256": "95997f361347cb948d3aa14e8d37936886c93cd93b264ffa4e98b1952fe5e011"
+    },
+    {
+      "path": "bash/lib/malloc/xmalloc.c",
+      "sha256": "32b0657fa626125f556c9dd10d265d429ba3f8520548f74c6590711341e785a3"
+    },
+    {
+      "path": "bash/lib/readline/ansi_stdlib.h",
+      "sha256": "d71ec4c8dbca7ec5f0adedd3ae9c527beacdae29e49fa9086ef7325e2aaf68ad"
+    },
+    {
+      "path": "bash/lib/readline/bind.c",
+      "sha256": "29ba334b17435beebe8df110fec88e6fde17f803b4fcdf5e1ba971a4492aa5ab"
+    },
+    {
+      "path": "bash/lib/readline/callback.c",
+      "sha256": "9423757413b71990cffbf83dd80dc8fe37c892d06d90442ec08eb081dc569e2f"
+    },
+    {
+      "path": "bash/lib/readline/chardefs.h",
+      "sha256": "9ba24bdf97311a56b49494aa17072965cae628390d648e207622f4068da960ff"
+    },
+    {
+      "path": "bash/lib/readline/colors.c",
+      "sha256": "32ed2dcb418d8a788af87d375f9748bee04a5c1c4c69fc9ceace3e80cd1263fe"
+    },
+    {
+      "path": "bash/lib/readline/colors.h",
+      "sha256": "74ea8d310d1b4a559ff9c42f96ee246c13675005d36f35e4652a3b2fc3600936"
+    },
+    {
+      "path": "bash/lib/readline/compat.c",
+      "sha256": "411767e69b3f1599ba632bb77a65278a5a6398d5e5f3ce3a5b9e653dc6d35eee"
+    },
+    {
+      "path": "bash/lib/readline/complete.c",
+      "sha256": "3fbc27ab518acda456764a00ba27cc1f66692b1525a5565c70b3cc81af400415"
+    },
+    {
+      "path": "bash/lib/readline/display.c",
+      "sha256": "cf775ea85f801f452551959b9158aa07d0617abc643b18a6ee64335438a16a2f"
+    },
+    {
+      "path": "bash/lib/readline/emacs_keymap.c",
+      "sha256": "63297150b652485d9c573c940e2469d496779895caed8b6d78605e679af0a106"
+    },
+    {
+      "path": "bash/lib/readline/examples/excallback.c",
+      "sha256": "583e40cbdf2990190776a59cdca9267a8eb46bb20719cfd46f9f9db2e88f4b7c"
+    },
+    {
+      "path": "bash/lib/readline/examples/fileman.c",
+      "sha256": "9f765983085f5b1a86bacf9a5ae2b954dbb3f834484395c593727b29998cb823"
+    },
+    {
+      "path": "bash/lib/readline/examples/histexamp.c",
+      "sha256": "074455ed23590fd0eb4dd0c7d058b96fb83391fdba8d00e4f091675a1311c1c8"
+    },
+    {
+      "path": "bash/lib/readline/examples/manexamp.c",
+      "sha256": "29e099b54928ab2cb42d50553d2e28cf2db9b3dc9cc91337960981e2d2e06367"
+    },
+    {
+      "path": "bash/lib/readline/examples/rl-callbacktest.c",
+      "sha256": "9a07023c8fdd7386042b4b3aa669b4a9e45f9423880a66d671707a75ece7a581"
+    },
+    {
+      "path": "bash/lib/readline/examples/rl.c",
+      "sha256": "aec244574a07e72bdbfdc5d5ef1a98f304497a7b68079a954607d3a019996cab"
+    },
+    {
+      "path": "bash/lib/readline/examples/rlcat.c",
+      "sha256": "7cb48e18f6b912aca1c978481f55fd5bd3b102ff64d8ee7d935b2fa4a737b469"
+    },
+    {
+      "path": "bash/lib/readline/examples/rltest.c",
+      "sha256": "0a35b0c9466f849f2d1dd03ea795936e81385b716bab30b4c0aa4642ccaac87e"
+    },
+    {
+      "path": "bash/lib/readline/funmap.c",
+      "sha256": "06825d59a6af086385b8c7894d04318d2b35de35e3387b9dbefb179e11ec152c"
+    },
+    {
+      "path": "bash/lib/readline/histexpand.c",
+      "sha256": "514c593c87b31a1def251d42aa80f19295472920af321854f192ed944a115798"
+    },
+    {
+      "path": "bash/lib/readline/histfile.c",
+      "sha256": "86321754a2b8ae12ebee9cf848339372a92ec4f0685ec0cbac0ac8c2f40d0b9b"
+    },
+    {
+      "path": "bash/lib/readline/histlib.h",
+      "sha256": "132211a75a43be7e189095e7566f21e93944d472de138a13625d592032ba08aa"
+    },
+    {
+      "path": "bash/lib/readline/history.c",
+      "sha256": "8931c3fa1d083a890d90abb922b5a8c551b913175c140ed54b7e7840696aa491"
+    },
+    {
+      "path": "bash/lib/readline/history.h",
+      "sha256": "5b8762c1086f62ed54567e258a72183b384534f57453d07f57085a03187a270a"
+    },
+    {
+      "path": "bash/lib/readline/histsearch.c",
+      "sha256": "23342c5bbe08683b7c71e3e5d2ca340f91a14855f7d88293c9906e0f93619e8f"
+    },
+    {
+      "path": "bash/lib/readline/input.c",
+      "sha256": "1682c0a628f521e7b8b04d162c4aec8ba28272fe3af2d0c036ece45859624f22"
+    },
+    {
+      "path": "bash/lib/readline/isearch.c",
+      "sha256": "8c749da6db509cf65a6a6633e6c4348c6f94556f7e35855d9a77280a4d869177"
+    },
+    {
+      "path": "bash/lib/readline/keymaps.c",
+      "sha256": "0d341e14cb6b2f5408de53c9aacf5f4a032d914260a084af6f375289288c3dff"
+    },
+    {
+      "path": "bash/lib/readline/keymaps.h",
+      "sha256": "4c42c3c5d2bb3aba10c7e7f27dd79841f30857fde61c6c85bf67f4f2ac1befc4"
+    },
+    {
+      "path": "bash/lib/readline/kill.c",
+      "sha256": "404368c6146d4e72f7b1877d79dae960734d4b8e1cba1a12e8912baa59e9b569"
+    },
+    {
+      "path": "bash/lib/readline/macro.c",
+      "sha256": "6b39729c12a12555e6b6bfd1c9d8d834928f4a0e604774d6af010db20ec03150"
+    },
+    {
+      "path": "bash/lib/readline/mbutil.c",
+      "sha256": "bb6e56ad90035aa19b19f256ae8e12d0923e680e5bab8ebf38d263bc8aa7bdae"
+    },
+    {
+      "path": "bash/lib/readline/misc.c",
+      "sha256": "0ecd59cc3b78a975dc73e8308d9d6c880de1fe05b223fa24e18e43f48dd8823c"
+    },
+    {
+      "path": "bash/lib/readline/nls.c",
+      "sha256": "243e1c31087f2d913d5d0957d07559a85e9838c1a6932c539246e3101b59a4fa"
+    },
+    {
+      "path": "bash/lib/readline/parens.c",
+      "sha256": "ca18d5e605157d8439232cf82b81f0f82e936de85f9657c37d5392bc347392b3"
+    },
+    {
+      "path": "bash/lib/readline/parse-colors.c",
+      "sha256": "00b8baf09cc619cdd38ea99d94da0a366c6e73d9c49a59292f3822efddd7918b"
+    },
+    {
+      "path": "bash/lib/readline/parse-colors.h",
+      "sha256": "f29572dfe001d479a4294bc7384f145d93236b2c30648222d21df9fbd36e13d1"
+    },
+    {
+      "path": "bash/lib/readline/posixdir.h",
+      "sha256": "c4c12d8adb56129c3151976619f1a91eda1d47eed446deb1b728f251e85eec10"
+    },
+    {
+      "path": "bash/lib/readline/posixjmp.h",
+      "sha256": "4a79e5d83b9e87153cd057d76a5b2614922c04a5b58a9f5ae9ed23634dc70261"
+    },
+    {
+      "path": "bash/lib/readline/posixselect.h",
+      "sha256": "5330e1aaf639e393b2463a29d35d298e7a054ddb34727743e24d9a72c8fa3ad9"
+    },
+    {
+      "path": "bash/lib/readline/posixstat.h",
+      "sha256": "29de8968be3337d40918adbf6a943d2bda903ff4eace81c12d626da9234bf544"
+    },
+    {
+      "path": "bash/lib/readline/posixtime.h",
+      "sha256": "d28362696dddb64847b9642c437377b484bac0d2dc405137b0129fee749bb5ba"
+    },
+    {
+      "path": "bash/lib/readline/readline.c",
+      "sha256": "55ec0a03753f231639e7f6630511b59009775c79393518908a86afad6e3a98bf"
+    },
+    {
+      "path": "bash/lib/readline/readline.h",
+      "sha256": "1934a225c54300308cbda341851b693ecdbba66623e5f84527d90be9de34f572"
+    },
+    {
+      "path": "bash/lib/readline/rlconf.h",
+      "sha256": "f140434f57cba8dbd83e87997c73608b51643b6dd89f292aa5eb83a68c816dd2"
+    },
+    {
+      "path": "bash/lib/readline/rldefs.h",
+      "sha256": "9ddfd4250234036964e11b1dd4648a1b77df24ca80ad5e3b0cdd670774cbfd8b"
+    },
+    {
+      "path": "bash/lib/readline/rlmbutil.h",
+      "sha256": "d51ffe32f4e53ee35dbd7bc25985b0cb639515e01cfec1e2a2218f588b573d1c"
+    },
+    {
+      "path": "bash/lib/readline/rlprivate.h",
+      "sha256": "6efcc8b7b23a32bec041ae83cc8d87087e0efe084be66a0b8e87e00a154f3470"
+    },
+    {
+      "path": "bash/lib/readline/rlshell.h",
+      "sha256": "62959accde8c92b2fc36d7e6b14a73185b282812bd1e17c6c397dfdb8a70230c"
+    },
+    {
+      "path": "bash/lib/readline/rlstdc.h",
+      "sha256": "5a66bb179f4a7ad32b9a0a04b0a60c20c0b3f5ee63b1b2eed41fc64fbd590e64"
+    },
+    {
+      "path": "bash/lib/readline/rltty.c",
+      "sha256": "479a5064f2fcfd08e8b703db0f12cb6de9e0c6a8a83fa24aab50762fd49ef668"
+    },
+    {
+      "path": "bash/lib/readline/rltty.h",
+      "sha256": "2255734ae3c7a0bfc24d7145b8ca267b1ea8ecc8ca5d7c5c1f98fa8c872f146a"
+    },
+    {
+      "path": "bash/lib/readline/rltypedefs.h",
+      "sha256": "9c756ee45536c3999c3d9b50c75343fe0338d7634ca96c3b375d13e30e9c582e"
+    },
+    {
+      "path": "bash/lib/readline/rlwinsize.h",
+      "sha256": "eabe5439bb5372be6694eaaeae3c91b36148beec68c4003958628b7910a68138"
+    },
+    {
+      "path": "bash/lib/readline/savestring.c",
+      "sha256": "2cf7d256fc3cbd2f2dd1fb6fd1b2a02cb278edbc14f9b0db1372346fc23a3de1"
+    },
+    {
+      "path": "bash/lib/readline/search.c",
+      "sha256": "5e33985cc078d24c623d08eb162c8b7a9b1fe435016533c7471a27ecfe2dd210"
+    },
+    {
+      "path": "bash/lib/readline/shell.c",
+      "sha256": "4f138c8a44bf27c13b613d79fafd447c463ee7791217efd02edc72c7603a14c8"
+    },
+    {
+      "path": "bash/lib/readline/signals.c",
+      "sha256": "eb14ca8717e32c3542acb2f681b0891870533b422f6bd608c67504e2fe6f0c91"
+    },
+    {
+      "path": "bash/lib/readline/tcap.h",
+      "sha256": "de2985c15c44b787097d007ab5a3d96935f1ca124980be106bd777cae5fba74b"
+    },
+    {
+      "path": "bash/lib/readline/terminal.c",
+      "sha256": "65ff1a8a3853775d2cc813a6312a4a064f3a439bc6f1ff7bed633e8cafafea0a"
+    },
+    {
+      "path": "bash/lib/readline/text.c",
+      "sha256": "858cd9c39e3baf33778b7137f338c22993c6e96abe361bd8ad3b0012e0fbb773"
+    },
+    {
+      "path": "bash/lib/readline/tilde.c",
+      "sha256": "14852bd1a56a0f67e4a9d059ebccf30cd804be3cd65fb530dad2d0d1693879f8"
+    },
+    {
+      "path": "bash/lib/readline/tilde.h",
+      "sha256": "76ea2566b9045468f1ae1a0a97e62d765edcd642a2d1f12a62a6af1b4dfe9729"
+    },
+    {
+      "path": "bash/lib/readline/undo.c",
+      "sha256": "6c68c1a7b0bd8887ee13371390cf55efb2a2477334e0deb4f3606c7f158936f9"
+    },
+    {
+      "path": "bash/lib/readline/util.c",
+      "sha256": "3638744e0ffb866bcd3e8e524ed56d096bfcfaca04456bb60e53023844d25ab1"
+    },
+    {
+      "path": "bash/lib/readline/vi_keymap.c",
+      "sha256": "d622732d0c82f6810c60c4cd97da80220bd8b949407e237996371b39050182a5"
+    },
+    {
+      "path": "bash/lib/readline/vi_mode.c",
+      "sha256": "3f92ee815ba81edbdee08abb481dceead6bf073ad53828874958559a35e65b0f"
+    },
+    {
+      "path": "bash/lib/readline/xfree.c",
+      "sha256": "1c5a5493c870bb1e12044713cbfff0fefc0a48e572d287072b6f55e3d17dc3a6"
+    },
+    {
+      "path": "bash/lib/readline/xmalloc.c",
+      "sha256": "fcab7a9bf239ca9aa211c8d6e831c5d391cdbfe8534d93a5e78b45bf67c1a10b"
+    },
+    {
+      "path": "bash/lib/readline/xmalloc.h",
+      "sha256": "bb1a1618cd56fdf4308026ba87adcdb7bb96e844228618ed8fe9ccbbd0466c6e"
+    },
+    {
+      "path": "bash/lib/sh/anonfile.c",
+      "sha256": "2de459480d425169c5a0017d29a634b5b226cef234e3818a11daa95c504af288"
+    },
+    {
+      "path": "bash/lib/sh/casemod.c",
+      "sha256": "c82c0d5bf52de930f22039291e20192b6c21729b67d67f735c698c0fea7f35f6"
+    },
+    {
+      "path": "bash/lib/sh/clktck.c",
+      "sha256": "fbff1ee1de083642c16eeedfaa02c6cc2c47d63fb056087617a81ea2e3bb5870"
+    },
+    {
+      "path": "bash/lib/sh/clock.c",
+      "sha256": "d60d118453dde2116e4f186a3c38823d41fe323383912e149921a316f7779656"
+    },
+    {
+      "path": "bash/lib/sh/compat.c",
+      "sha256": "102d2f0f0ed7a1c96d1d5a552d23d4c53ef0ed023e5b778393cc6c42e6b8b483"
+    },
+    {
+      "path": "bash/lib/sh/dprintf.c",
+      "sha256": "235a57e45049489b7046a78ac7aa039e977b1ce669c011b8b0c05d50fc2f47e6"
+    },
+    {
+      "path": "bash/lib/sh/eaccess.c",
+      "sha256": "e74417efcb72d73d5454e72652c68bc0d22c2268a46a1dfa0c6cc3734e770f5c"
+    },
+    {
+      "path": "bash/lib/sh/fmtullong.c",
+      "sha256": "90bf431346908827c49af019934613cba92e3ec0414f15d5aedf50a7290eb195"
+    },
+    {
+      "path": "bash/lib/sh/fmtulong.c",
+      "sha256": "870b8c706942d4bef3d2bbb8e8ea1ccebe599397113a90f8b4ecf67720a1b365"
+    },
+    {
+      "path": "bash/lib/sh/fmtumax.c",
+      "sha256": "f171de646dbafbc5c4da229e753dc1074c9c8a4685031a8bcaa0ffadc0c903d2"
+    },
+    {
+      "path": "bash/lib/sh/fnxform.c",
+      "sha256": "185c3a96732f72bce15fb6d5e5985662667fcc19d537cbc554f417f01cb14ecf"
+    },
+    {
+      "path": "bash/lib/sh/fpurge.c",
+      "sha256": "87b97266426a1739588a508cc3f319300850bfcbfca9e1e419c12c7273fe6cb0"
+    },
+    {
+      "path": "bash/lib/sh/getcwd.c",
+      "sha256": "185d7a5b7b728aa2fbf8e792da130b1ddc3b98814f88e381f359645d743671db"
+    },
+    {
+      "path": "bash/lib/sh/getenv.c",
+      "sha256": "1efec755c575a0ffdc49af1f313d10105ad79287e2ad5b64d719e654c582fa04"
+    },
+    {
+      "path": "bash/lib/sh/gettimeofday.c",
+      "sha256": "9892ef0d74653dd93b273464feb40b2add0faec2edbc798e2ac9ba8ad1a48628"
+    },
+    {
+      "path": "bash/lib/sh/inet_aton.c",
+      "sha256": "755f298cfc6a734447488a59b2affeed4fe605fdfc1b169f36bb4ac6115cdbe3"
+    },
+    {
+      "path": "bash/lib/sh/input_avail.c",
+      "sha256": "94447d9380a5599011a6face5b6b00e04db551add61b028c59321d71b8cd15fe"
+    },
+    {
+      "path": "bash/lib/sh/itos.c",
+      "sha256": "f05a6456b8e43a18dfb130a2b28fb52d75639af4e800d909fddeca8141a3bef9"
+    },
+    {
+      "path": "bash/lib/sh/mailstat.c",
+      "sha256": "1a9b3ac119b4118796b19954410480b71347234bed78b30caf81a380302ed849"
+    },
+    {
+      "path": "bash/lib/sh/makepath.c",
+      "sha256": "347048944ca16e15eed00bd18ea950838d36e547e17290fa1e3db1dcad24d88d"
+    },
+    {
+      "path": "bash/lib/sh/mbscasecmp.c",
+      "sha256": "47e3b8081ec79b6459b26bc175be21fd65eb02d363f4bce88556842ff037de72"
+    },
+    {
+      "path": "bash/lib/sh/mbschr.c",
+      "sha256": "78053520529389c1fda62f26cd2516c185ccb31f68edec762c026f743635fd7c"
+    },
+    {
+      "path": "bash/lib/sh/mbscmp.c",
+      "sha256": "de12efcbac07f99b17bcfdb3f2eef6217176a59749b54aafe0fd09a67a6ad702"
+    },
+    {
+      "path": "bash/lib/sh/mbsncmp.c",
+      "sha256": "8604a4d5a57084edde670ef70f01dd2ed18f9e6c1e944a44ab5f1cb11540af4b"
+    },
+    {
+      "path": "bash/lib/sh/memset.c",
+      "sha256": "7c02baf076ac9d04f6d952c14c4accb14fead62d08673d03434659545852ba6b"
+    },
+    {
+      "path": "bash/lib/sh/mktime.c",
+      "sha256": "658d8d85c46ae94b2515dd174788b32984e324630b53170d45c9861fa8f80a47"
+    },
+    {
+      "path": "bash/lib/sh/netconn.c",
+      "sha256": "9b3286ad9f7e33fab28c24c06aa64aeecc13779684ec4f086156b52c5635300b"
+    },
+    {
+      "path": "bash/lib/sh/netopen.c",
+      "sha256": "5ee7f92fef3e75c8d59929a9f21fb055e8c228443191d4bb211d077446c248aa"
+    },
+    {
+      "path": "bash/lib/sh/oslib.c",
+      "sha256": "6db024643080a17e5fd7bfaf7055ddab79b62ffd90028281b13f5039a12844b0"
+    },
+    {
+      "path": "bash/lib/sh/pathcanon.c",
+      "sha256": "28ece73a5fb3c24f9dcaa7833690d2a1b1e4b179393986a91413a9b9a3b2a6f4"
+    },
+    {
+      "path": "bash/lib/sh/pathphys.c",
+      "sha256": "29d4897452bbc9326e819374891188e3fa957cb34f95b60373be6b780a53aa29"
+    },
+    {
+      "path": "bash/lib/sh/random.c",
+      "sha256": "55f708e8ef3f2bd55bb919ae246d52fff5e8fcebb5b48d807052a90d3335a627"
+    },
+    {
+      "path": "bash/lib/sh/reallocarray.c",
+      "sha256": "8f3bf391b36eae75c0a99504470dfe26e4306b17a5bc1f261c8310b44b5ab205"
+    },
+    {
+      "path": "bash/lib/sh/rename.c",
+      "sha256": "8c15e9bf837979b45de79a785d4bcd50ef6276c18930372182e2d0153c51ca86"
+    },
+    {
+      "path": "bash/lib/sh/setlinebuf.c",
+      "sha256": "c57bf56b2eaa566f085503971f37e424015bd292f6b0daf707fd6b6ea4c5d227"
+    },
+    {
+      "path": "bash/lib/sh/shmatch.c",
+      "sha256": "c889cb70a2670e5f009e4b0f77e6b32ad0c6d55a6bfe36f6cfab14a58515d06c"
+    },
+    {
+      "path": "bash/lib/sh/shmbchar.c",
+      "sha256": "a79dcabaad909bfd8f230114973796d58b611f2553b6f8d0aa2ce183b0047b43"
+    },
+    {
+      "path": "bash/lib/sh/shquote.c",
+      "sha256": "f311976dc4c0569cdb46d835a8fdb0f7924528fc7659fa939786aaa37515ad39"
+    },
+    {
+      "path": "bash/lib/sh/shtty.c",
+      "sha256": "38b4b177ebf31f8ea9f5c41ed7ea9bd1e8dd8f20bebf4eb81ebfd91a8a2c23d8"
+    },
+    {
+      "path": "bash/lib/sh/snprintf.c",
+      "sha256": "0bc999ebe8fc9f307bfd918457a6f68ddced11f06fc88a5ec2547c53735f8d6a"
+    },
+    {
+      "path": "bash/lib/sh/spell.c",
+      "sha256": "0ec6ca153857261b6b2945d782fb6e4c405b72446d3f9aa33ed00afde5bd17ed"
+    },
+    {
+      "path": "bash/lib/sh/strcasecmp.c",
+      "sha256": "771eaabe5d13935ad78144bc275d36d403bac1c726190bb028568e5dca8ebeaa"
+    },
+    {
+      "path": "bash/lib/sh/strcasestr.c",
+      "sha256": "241908f490a490d0c8a89201908fb8671825c6b0461683bea2e1c5621f019874"
+    },
+    {
+      "path": "bash/lib/sh/strchrnul.c",
+      "sha256": "dfebe5d01dfef1c05eeb8a46f4344aa6dbf53c083c14c957df293e7522d0ac4b"
+    },
+    {
+      "path": "bash/lib/sh/strdup.c",
+      "sha256": "091eb627b3aac8bcb9e287360e71371417804f800e59f4ea10dedfb427fac264"
+    },
+    {
+      "path": "bash/lib/sh/strerror.c",
+      "sha256": "8a279b02b8e769dcda6a3179d6156f2ffa9c9a38951efbc7dc079092e30b3eea"
+    },
+    {
+      "path": "bash/lib/sh/strftime.c",
+      "sha256": "f28578442b2a437cb037780f5fb045a564465b51fe9d84f6f3fab37edca9f7c5"
+    },
+    {
+      "path": "bash/lib/sh/stringlist.c",
+      "sha256": "4f2922a007e554ff8fd2481938d0e214c2acd65a8b5a1eed8d1fa86b3b78f663"
+    },
+    {
+      "path": "bash/lib/sh/stringvec.c",
+      "sha256": "3dd0d757e38bd784262a055191baeee03316144b4b522a5f3a003adef6c82857"
+    },
+    {
+      "path": "bash/lib/sh/strlcpy.c",
+      "sha256": "64db255d1bae10ba1b219712a4c3721accbb3ab3caabb83db2baf2f8fc50fad6"
+    },
+    {
+      "path": "bash/lib/sh/strnlen.c",
+      "sha256": "66e6876fb2fc4a575572060b42d3c90fc1951922272f58fdc156b9eb0174d723"
+    },
+    {
+      "path": "bash/lib/sh/strpbrk.c",
+      "sha256": "44ddae6b67180e2a028813eb98c2e9e312920d1567209efad410e3d1958db7dd"
+    },
+    {
+      "path": "bash/lib/sh/strscpy.c",
+      "sha256": "720358e5a9ebd51c6a6fb89ba12cb61a85e38328b61af33d6db0b23734d24481"
+    },
+    {
+      "path": "bash/lib/sh/strstr.c",
+      "sha256": "521db65c5f0499121aec4a250e927a9359e78a89a902f50f34a558f6ab8baa5b"
+    },
+    {
+      "path": "bash/lib/sh/strtod.c",
+      "sha256": "79c8c01a11cbac34315797931415271b8b02f14b78b03f63b5061e18b0c0c252"
+    },
+    {
+      "path": "bash/lib/sh/strtoimax.c",
+      "sha256": "ce0386ed0c7a39ffedef2ee531575780d6210ce105835f6b8f1b37f5a0d0c72f"
+    },
+    {
+      "path": "bash/lib/sh/strtol.c",
+      "sha256": "6bc459a6e5a3979228dd7d4c212d18a875dde2810b74580ba82508dee6f4cfc6"
+    },
+    {
+      "path": "bash/lib/sh/strtoll.c",
+      "sha256": "3a9a7c2b4348b19b1811714317a0263bd00875950b10d5ed64794fe3a7263d63"
+    },
+    {
+      "path": "bash/lib/sh/strtoul.c",
+      "sha256": "3b159e4662ca08cd5f1b0d10ab2a5b5d66751d61b2dc5fa3081cadeb035af806"
+    },
+    {
+      "path": "bash/lib/sh/strtoull.c",
+      "sha256": "f051a54d70d98ad6ddd80f1d11105bd3a9a8ebdd312287ca7991eaf546b389ab"
+    },
+    {
+      "path": "bash/lib/sh/strtoumax.c",
+      "sha256": "b6b93928c1f24b0c41918515393a60fb0b323b01f2f31a4411c246ea4a901332"
+    },
+    {
+      "path": "bash/lib/sh/strtrans.c",
+      "sha256": "7021bee1aec2d04b40393d0fecca12d80f079176fc758da1995db80f4453df46"
+    },
+    {
+      "path": "bash/lib/sh/strvis.c",
+      "sha256": "38b90cb43427fdc013bebfba07497f6c169e2726f8a2a2bfc4504dc8187efa2f"
+    },
+    {
+      "path": "bash/lib/sh/timers.c",
+      "sha256": "3ba3fddac3c35d1dd639ec439ee6f2973eb606330fce21dbef53ac47d95db6cf"
+    },
+    {
+      "path": "bash/lib/sh/times.c",
+      "sha256": "b37e94e6c0d27aeb7b89b252663bc0e6e5494abed84c1e1af8c01e245f7585f5"
+    },
+    {
+      "path": "bash/lib/sh/timeval.c",
+      "sha256": "8d4d8adbff203fa78f7c9e6102825451f8a8d252a49f2c9e60b4fb6291c7260b"
+    },
+    {
+      "path": "bash/lib/sh/tmpfile.c",
+      "sha256": "79df50982abc561659dfffd3d9c4f317c128c2ea3edfe7a0bcd50b7308669396"
+    },
+    {
+      "path": "bash/lib/sh/uconvert.c",
+      "sha256": "f31bf87f40895f5918b2c054578d49b015ce2113f76e0ecc7b95739fdbfd4d4b"
+    },
+    {
+      "path": "bash/lib/sh/ufuncs.c",
+      "sha256": "a655eda48e9d67583b6a7c2820f7594d450a27a1bef5f43d6319731f16b70001"
+    },
+    {
+      "path": "bash/lib/sh/unicode.c",
+      "sha256": "04c7a21f814a8f6e33f489269c0679a62cab1840e9937f5162a38c5670ef894c"
+    },
+    {
+      "path": "bash/lib/sh/utf8.c",
+      "sha256": "159eb6f026a63d389b112adc955bc77c16464f76ce63b5c7f69bcd985b7e55b4"
+    },
+    {
+      "path": "bash/lib/sh/vprint.c",
+      "sha256": "539c24402b6c98fc1fb3b58fdef2c28d28aa1aa180a4001c0bc435f13147d54f"
+    },
+    {
+      "path": "bash/lib/sh/wcsdup.c",
+      "sha256": "7f9a0ee475445a046c707180485b1e978cf02b76e2bbe090d183ceecc8fb18b2"
+    },
+    {
+      "path": "bash/lib/sh/wcsnwidth.c",
+      "sha256": "e655307a5dda5c56b9ad2c08db97db1f49d26636cef2b3f3c107e77f7df67629"
+    },
+    {
+      "path": "bash/lib/sh/wcswidth.c",
+      "sha256": "c4cda6b555468ba710882a303f4f64708ae7cf6e9c99c1c0bafec6bbc150c266"
+    },
+    {
+      "path": "bash/lib/sh/winsize.c",
+      "sha256": "f8127690ea13e8c3aac4837ed498dac0adb6b6ae61684e7cf4b5f5aecd17ed28"
+    },
+    {
+      "path": "bash/lib/sh/zcatfd.c",
+      "sha256": "49bb7619484e462e7fda7ef96f170946d09ad38c08d2e39926bec6e4c563ddbc"
+    },
+    {
+      "path": "bash/lib/sh/zgetline.c",
+      "sha256": "8cb2d76997434ee59f9f37311b43556ae712d1d0aa97323052b343360b73be86"
+    },
+    {
+      "path": "bash/lib/sh/zmapfd.c",
+      "sha256": "d3ebf927a16c72fbb400b2dcfcd3c713efaabfc366e14ada60dd8f598a7e4e74"
+    },
+    {
+      "path": "bash/lib/sh/zread.c",
+      "sha256": "22caef22ad77ff33d834ee7c73540d394790f254cd021ae3b0936c9febc31d57"
+    },
+    {
+      "path": "bash/lib/sh/zwrite.c",
+      "sha256": "2cce2b617373ab95e3a6a277940fbb138146e4ba04bc9274224ba545c8eefe83"
+    },
+    {
+      "path": "bash/lib/termcap/ltcap.h",
+      "sha256": "3df2cab584eadb7b8b0e846757a2aa75fd0356160c3dd53af22288707016266b"
+    },
+    {
+      "path": "bash/lib/termcap/termcap.c",
+      "sha256": "9f9786c62c0b3d778f2f4e783eb482b10a4cf425c8a6b5ef07f24b92d905ac23"
+    },
+    {
+      "path": "bash/lib/termcap/termcap.h",
+      "sha256": "bb3dc67530c57aa4f11bc8f86deafcf4535babf3e1504870c2f8c0008fdc3978"
+    },
+    {
+      "path": "bash/lib/termcap/tparam.c",
+      "sha256": "bcb9df8fca5760aa5c7778e333dbb6b53c64be20ccce6a467e3ac738a7ea5fab"
+    },
+    {
+      "path": "bash/lib/termcap/version.c",
+      "sha256": "4c911a5b97f9f0ee993191e6a8e1bddddd521946957e34ea6c84ac4619ed0e5c"
+    },
+    {
+      "path": "bash/lib/tilde/shell.c",
+      "sha256": "15accb9e809dda062e6e3d9e2a1e95a139684faf8253c7311868bd0b8a93a703"
+    },
+    {
+      "path": "bash/lib/tilde/tilde.c",
+      "sha256": "14852bd1a56a0f67e4a9d059ebccf30cd804be3cd65fb530dad2d0d1693879f8"
+    },
+    {
+      "path": "bash/lib/tilde/tilde.h",
+      "sha256": "76ea2566b9045468f1ae1a0a97e62d765edcd642a2d1f12a62a6af1b4dfe9729"
+    },
+    {
+      "path": "bash/list.c",
+      "sha256": "084b1fcf383dfb33e0217d89642a5845a245994ed9eda59ec2c098ed9d4a7058"
+    },
+    {
+      "path": "bash/locale.c",
+      "sha256": "d9e9911b8b0e6cd3146349b69ec41488b76562169aee14bc36afef66ed0f1687"
+    },
+    {
+      "path": "bash/mailcheck.c",
+      "sha256": "f9cf802cd2b56399ee2cd186e1ef4c1af643e5b5d750e57888141a7f06eacf82"
+    },
+    {
+      "path": "bash/mailcheck.h",
+      "sha256": "3ca5edfcc19b37b9e0fa3257d88c2121b0e53b1c5029c528680be8c2eab3dbde"
+    },
+    {
+      "path": "bash/make_cmd.c",
+      "sha256": "28ac7f8ea09e23a80e316339845d398511555539e176c994a14e96cfa4dd5ff1"
+    },
+    {
+      "path": "bash/make_cmd.h",
+      "sha256": "e77d1268c92ea390b6684f40048c32c26680a217c5a87244e47fa462736c886d"
+    },
+    {
+      "path": "bash/mksyntax.c",
+      "sha256": "6e9043888da602744864086c34cc8203243847415e94deea503406f30df14fb1"
+    },
+    {
+      "path": "bash/model-3D/city3d.cpp",
+      "sha256": "e570239b2065bf03807ddac887606448069a27f2fcb46b76c0cff3f710e39ac7"
+    },
+    {
+      "path": "bash/model-3D/city3d_smoke.cpp",
+      "sha256": "9ad74ec6f84f1ae2ddf88beaeb4dacb2464de332aa60878d451a9ea1b8a74fe1"
+    },
+    {
+      "path": "bash/model-3D/city_model.cpp",
+      "sha256": "ea2c5aca907fb3a6259932d482713d1a47d5b1809d28dad084dc72aa842f0867"
+    },
+    {
+      "path": "bash/model-3D/city_model.hpp",
+      "sha256": "986bd24f1e5989dcb11c0062a18c4da33b7d8b9504c0c6fe1a4b913333004b5d"
+    },
+    {
+      "path": "bash/model-3D/city_renderer.cpp",
+      "sha256": "a05605b93a42ecd685441ab510384567254f0c930effce127b0ff5b3b667d2e4"
+    },
+    {
+      "path": "bash/model-3D/city_renderer.hpp",
+      "sha256": "1234f3c1dfa8453d8868dac7673b9ae98a0fc360a6a2a9d4402dfc4f8a1847af"
+    },
+    {
+      "path": "bash/model-3D/cityscape_model.cpp",
+      "sha256": "75f81b68790e3b55df39e55c67cec1d443bdbffb3336d27dccf2371f7e57122b"
+    },
+    {
+      "path": "bash/model-3D/cityscape_model.hpp",
+      "sha256": "fb667fbfc24ee102b7b05bde32df13f1a346c7ac3e04b76c50c601bb633bae24"
+    },
+    {
+      "path": "bash/model-3D/render_group.cpp",
+      "sha256": "d9b5bc265ca102064761c0c6ee0e721162eaad1fe2c2fa0f15770d1485794f4b"
+    },
+    {
+      "path": "bash/model-3D/render_group.hpp",
+      "sha256": "cb3a2c1358d71a6c6f7e14f7ed5c1a6682a5cb168142ba3bc4883d0a41d7345a"
+    },
+    {
+      "path": "bash/model-3D/render_math.cpp",
+      "sha256": "b495d3972fe5135167e95cd992cce66ee924013776b5d312f2357fa7e29ed6a0"
+    },
+    {
+      "path": "bash/model-3D/render_math.hpp",
+      "sha256": "b9963ebdbe2aa46660d0eabf817adcb05ad0b6aade513b54575284f2e0c504a9"
+    },
+    {
+      "path": "bash/model-3D/render_smoke.cpp",
+      "sha256": "f48688c8b264951cdc0438ef1859471e379473d5150d0e1809cea2e8b202d25a"
+    },
+    {
+      "path": "bash/nojobs.c",
+      "sha256": "969fc2b9f779cd45d2cc1ade347d408313634a88d7feddd1aad770d0ac79e754"
+    },
+    {
+      "path": "bash/parser.h",
+      "sha256": "087545c54dae1520dd95b5963398b35f6b55498c910d21ceefb632108465e9a8"
+    },
+    {
+      "path": "bash/patchlevel.h",
+      "sha256": "82d9cbb01fa48a72602cb2967d16abb63c925f8b42b63852c0bfaabbfbd1e4bf"
+    },
+    {
+      "path": "bash/pathexp.c",
+      "sha256": "35f069f1edc320fde65a212974e78ee6ef3c2e2aba56c1cb267f819e58149a5e"
+    },
+    {
+      "path": "bash/pathexp.h",
+      "sha256": "413dc1e1eee11b2ac1cb452b2a6db9becabb2531737542a51e0fd5d6aa342dca"
+    },
+    {
+      "path": "bash/pcomplete.c",
+      "sha256": "d6619d74b807fd9c19408b75f48509f191ee883603863cd57ce7cf699c6db0b8"
+    },
+    {
+      "path": "bash/pcomplete.h",
+      "sha256": "7e08fe4e956b8d4e5d68a7e8f9d5a88f92224cbcefceee44280cd153ba0ab3b9"
+    },
+    {
+      "path": "bash/pcomplib.c",
+      "sha256": "0bb97ffbef6ae23592cf1c7716e4a5b897a583d4d9730c85ac9c3bd71e3487e3"
+    },
+    {
+      "path": "bash/pixel-terminal.sh",
+      "sha256": "0172d8abfdec9f1826e9e4c0f2f6830f0f1c14ef2d7726f2be2e6223e073a5ec"
+    },
+    {
+      "path": "bash/pixel_terminal.cpp",
+      "sha256": "1f9f4da60bea309dd44a83e4828c60aae93b4acfb46ba609421ee557954f25d4"
+    },
+    {
+      "path": "bash/pixel_terminal.hpp",
+      "sha256": "52f63bf1a600b156d135f6fba201f1d9f0dd250868edb2a59b0e300925bc545c"
+    },
+    {
+      "path": "bash/pixel_terminal_smoke.cpp",
+      "sha256": "2e2c28f9dc1b978feaa4b915a547df8ef258e92e825993d9395623807a7c3324"
+    },
+    {
+      "path": "bash/print_cmd.c",
+      "sha256": "7773f595d4ad23a05d480a2424164b7b9eede90a69ff9bb049d7b103a67d9552"
+    },
+    {
+      "path": "bash/quit.h",
+      "sha256": "30d93da08af5a5bba698265dd57b1d584f0ca27bc0e318b71c5d9d04fef1f341"
+    },
+    {
+      "path": "bash/redir.c",
+      "sha256": "e67c09d0019b700e39f3636a8eb11094cdc688570fbffe43168d8cfac1823a3f"
+    },
+    {
+      "path": "bash/redir.h",
+      "sha256": "cca81a255cbfa0260159895371a6e6270635ff1f768234701d8632d7aebdb5be"
+    },
+    {
+      "path": "bash/shell.c",
+      "sha256": "5f3d539f15e19c032a09ece500efecc9c63d050d408e985b6f385c64329bf73d"
+    },
+    {
+      "path": "bash/shell.h",
+      "sha256": "231edc00d19a7ad30aa38154e6c9855577b0177bda407c1c95821628781715cb"
+    },
+    {
+      "path": "bash/sig.c",
+      "sha256": "1b8c7c1b4f04ddfcd190f19bfcab1d14a4c0e2aa73851c4a13a0c0a5b45bccb0"
+    },
+    {
+      "path": "bash/sig.h",
+      "sha256": "4319b8bf36fe526fff17d9359fd8d2a7ea44c5bcf2ddcfa9e70a609941b0f039"
+    },
+    {
+      "path": "bash/siglist.c",
+      "sha256": "79bd107f3dbc58ce09be9b0081023b6c8505e0cbbe079933b5b4be94e71daa8e"
+    },
+    {
+      "path": "bash/siglist.h",
+      "sha256": "50b8c6383287a8e1f1bb0b9a1d72a0990649195692f5f41b9136826086e3351c"
+    },
+    {
+      "path": "bash/sleelaterminal.h",
+      "sha256": "eaf419457d3e09abf0d990b54369c547493272515d18507b1db6a8f765cd0165"
+    },
+    {
+      "path": "bash/sleelaterminal.sh",
+      "sha256": "35777183d56039d4fe50929939550054d06848e6a453ff90b361de162e90a985"
+    },
+    {
+      "path": "bash/stringlib.c",
+      "sha256": "8301f756648053b310a7701930c8c6949a2eee4f70922218151db82ff3c182c5"
+    },
+    {
+      "path": "bash/subst.c",
+      "sha256": "501f0941105ce39281f3c60c8e5853d8e77f1558ca2383e1757b8c2cc0a3ba56"
+    },
+    {
+      "path": "bash/subst.h",
+      "sha256": "4c3284b23a1977c632c890836a2cd8049c74db65c74a32a565efa4c551026047"
+    },
+    {
+      "path": "bash/support/bashbug.sh",
+      "sha256": "ef0230a1c0e7e8fc24f94e6ac1503e352d52358eee122efce9a5d0884e735db3"
+    },
+    {
+      "path": "bash/support/bashversion.c",
+      "sha256": "dfc3c27fba579cff69e81b7ac7a0837d1d9c344a9316707db5f2bc7089679239"
+    },
+    {
+      "path": "bash/support/man2html.c",
+      "sha256": "c7055ce2fba2c9daa1bf23412c57bd567dffa8b8fe55908f720f9acc7060eac6"
+    },
+    {
+      "path": "bash/support/mksignames.c",
+      "sha256": "db57422243b6fc99ff880a6ed2a2691a8020b2fe39c2d99fc617b1da13e00c6e"
+    },
+    {
+      "path": "bash/support/mkversion.sh",
+      "sha256": "c81af1ccb3ce32b5cdd1d4eddc4ded0136b5c198716b0580da01dee1501ab666"
+    },
+    {
+      "path": "bash/support/printenv.c",
+      "sha256": "0e18e7c0c520b355f261e92a2ab0679512d792962daffca439cf5f73f6dc4c08"
+    },
+    {
+      "path": "bash/support/printenv.sh",
+      "sha256": "33cdfe2f3ab44f99c9729e1838958da4abeee8e1749ee24ed92d0429b872ee12"
+    },
+    {
+      "path": "bash/support/recho.c",
+      "sha256": "727c641a01c679e9a077a30f23019c7244d56b97100639709a2da0f355360805"
+    },
+    {
+      "path": "bash/support/rlvers.sh",
+      "sha256": "0bca7958182bd70d09367f475ab3a6ffe145f594d63f4bb42e9295ef8558a90f"
+    },
+    {
+      "path": "bash/support/siglen.c",
+      "sha256": "022425668ae4eefd0de396e9855793d1d4afe169721d7da740edc09e36f6f426"
+    },
+    {
+      "path": "bash/support/signames.c",
+      "sha256": "f6c9dd2a31ee6dce47dfd6b31eee8dcb6ad97d43bfac9bce176b034853ca60f4"
+    },
+    {
+      "path": "bash/support/xcase.c",
+      "sha256": "edde247d6331f8e968449dfafbefe21ef3b0a045c08af15aa0f35e6e548ff4ab"
+    },
+    {
+      "path": "bash/support/zecho.c",
+      "sha256": "722e2f857ab582c4b52d254c729c4cd5e7566e6a16f105fc106b5a3ec36ea73f"
+    },
+    {
+      "path": "bash/syntax.h",
+      "sha256": "f316e8df92cdc9fe996df1a930356eace03081d1c835f3902afce989af13dc09"
+    },
+    {
+      "path": "bash/test.c",
+      "sha256": "fa588387ffcf7347c95e9ea119f479cf3769a2fd7df84950eb605ee9cde645e1"
+    },
+    {
+      "path": "bash/test.h",
+      "sha256": "e6d94617869ec03e259a3854b176c19b6ab10706d56dcf972ab7fbd0b3df2d38"
+    },
+    {
+      "path": "bash/tests/input-line.sh",
+      "sha256": "47f2fb58ff18c3ffd1185e9d9508518b29c70f80bbba6802aea800b5c4c16c9b"
+    },
+    {
+      "path": "bash/tests/misc/redir-t2.sh",
+      "sha256": "068cecc56dd45871438c27b96950aa5bb9a4126af032731fd7711386c57ca876"
+    },
+    {
+      "path": "bash/tests/misc/run-r2.sh",
+      "sha256": "b9acd37aec3211e0495c0fe5fc53255f0c9bb15ed6dda0df42e8dbc642b725ff"
+    },
+    {
+      "path": "bash/tests/misc/sigint-1.sh",
+      "sha256": "1296c4f61fc26126860b788f185636e6e25d8cf8c59f82fdcd5ca1604841d76f"
+    },
+    {
+      "path": "bash/tests/misc/sigint-2.sh",
+      "sha256": "689cd507169aa2e2bbacb57d14bff9c22acfd2a3d142272b6cae29e7d15cd75f"
+    },
+    {
+      "path": "bash/tests/misc/sigint-3.sh",
+      "sha256": "f977911f88abd5cb10c7da3d0c01750888200c44937a3972a0116fb1d5d9a4ae"
+    },
+    {
+      "path": "bash/tests/misc/sigint-4.sh",
+      "sha256": "869878c9fb39f1b5b8a5ee5ac14c50086c0f5550cd02a606316c440f36ef8439"
+    },
+    {
+      "path": "bash/trap.c",
+      "sha256": "20bdceb8de0fe35dde24e4b77e05e54573dd3cab286309bee0ae68c46572387b"
+    },
+    {
+      "path": "bash/trap.h",
+      "sha256": "716f8cf993ef1cadf4494a1c7fbcae646f6407f25a46a4822c355fae39a33cf6"
+    },
+    {
+      "path": "bash/unwind_prot.c",
+      "sha256": "0c644125cbc0f0e7406045f6d3e7fafb7e9c1320d03b1f6afac14a22ad668ab4"
+    },
+    {
+      "path": "bash/unwind_prot.h",
+      "sha256": "e1a4fe78d9519c26cbbb9c313ae1dbd8afe550d39251a9d4a08309fb9db8214a"
+    },
+    {
+      "path": "bash/variables.c",
+      "sha256": "e5c8be22b2805b32edcc50d75bf36fc767e8f540b403c50c2e48b6783591bd2e"
+    },
+    {
+      "path": "bash/variables.h",
+      "sha256": "0f1f23f5e3968cc7427388a13c547940cc8690626cc91ae288c55283542cda26"
+    },
+    {
+      "path": "bash/version.c",
+      "sha256": "d7ce7e4d81b1479bd1957d50e84f8a9452993436a52f69df7de3b152f902215e"
+    },
+    {
+      "path": "bash/xmalloc.c",
+      "sha256": "55e01fff2a3d0a4375df0c2172543a087fcf5afcd1a73630ddd1c067f6c2bfdd"
+    },
+    {
+      "path": "bash/xmalloc.h",
+      "sha256": "8822321642dee6cf152575ca047b12542fbcf9888a17469d19d99ae6f40a6776"
+    },
+    {
+      "path": "bash/y.tab.c",
+      "sha256": "8c3fa4f8d439dc913391818300bbc1ffdcefc8f38fe36efb8e9b83a8874a2f76"
+    },
+    {
+      "path": "bash/y.tab.h",
+      "sha256": "5732e888d67e969601f4a1fe6f8c418d2754490936eeeaa4fbe7be44a598993b"
+    },
+    {
+      "path": "build-linux.sh",
+      "sha256": "2f6553d263e83c820ffbaecbc2f02d8aa4252352c223b61a0a65c6eb3e4031b5"
+    },
+    {
+      "path": "build-windows.ps1",
+      "sha256": "7e4e6aadb8686c108feb5bcce19cc627beeb074f09f1ca71db1ab03b41e64bf6"
+    },
+    {
+      "path": "churn/1/assumptions/assumptions.sleela",
+      "sha256": "7209ddb6f93236f337ed12178f40a8ae4442fc7209ab186711da49daa3b86550"
+    },
+    {
+      "path": "churn/1/constraints.sleela",
+      "sha256": "a2bc9adb8bce55c77c1dcc9682549e2d9074f4a6611b6c13ab164fd310204f5f"
+    },
+    {
+      "path": "churn/1/relevances.sleela",
+      "sha256": "f20f130c3e2f21a4f8a0a5d41d988d5e25f4a67f93399551423c24c3059ab9d3"
+    },
+    {
+      "path": "churn/2/constraints.sleela",
+      "sha256": "cb4eadccca0e40ec61316e10848dbf8a8b4b34fa3f0a5c7200c866991227c770"
+    },
+    {
+      "path": "churn/2/structures.sleela",
+      "sha256": "96033570633fcd232a3214584fb65c71b6c368d58676d9db789b93994bf89798"
+    },
+    {
+      "path": "churn/3/constraints.sleela",
+      "sha256": "04188704ec3ca044b9aa27cdc8bf37f9e2634df55fab83bf25ec504835c567cd"
+    },
+    {
+      "path": "churn/3/facets.sleela",
+      "sha256": "d45d25107faec576de59da480cfd44f248a2a27a138198f230c3d134ad4f7277"
+    },
+    {
+      "path": "churn/4/areas.sleela",
+      "sha256": "f58fc80a23ff1b62203e1a729bb54c4af78791bf8408e3963a4222d3cc6a1242"
+    },
+    {
+      "path": "churn/4/constraints.sleela",
+      "sha256": "311ef39fb5c7aaa8fe7bed1a95666f487c90d477668d3321a8e69ead7b825c7f"
+    },
+    {
+      "path": "churn/5/constraints.sleela",
+      "sha256": "e0b01a2dcb4206e87b95cb1bd1c040cc1f98f3084dc9e0fc0f24de1c3833b1e6"
+    },
+    {
+      "path": "churn/5/lines.sleela",
+      "sha256": "4653e6aa8bec8490ae372a052c38a946d24db251d5726a9667bc44ba52cf564a"
+    },
+    {
+      "path": "common-rails/CommonRails.sleela",
+      "sha256": "b5d5fedc6150418e6168c16cc2c10fcab8b266e15ebdc19a682b65d7d335e016"
+    },
+    {
+      "path": "common-rails/common-rails.sst",
+      "sha256": "b6833aebb2db45e910e9f520d3204168ca14fe743c6aaa0fff170d77f5416405"
+    },
+    {
+      "path": "data-structures/data_structures.c",
+      "sha256": "12364ee2a49d0fcdaedcd2cc9c293e5b830c1b17ad8998ba77aef44d6a1ae7ef"
+    },
+    {
+      "path": "data-structures/data_structures.cpp",
+      "sha256": "cd8599ecbacf69d37a1ab1359e7197c45b576657bb5b4df3f1561724259ae0a3"
+    },
+    {
+      "path": "data-structures/data_structures.h",
+      "sha256": "23bb227460e047448499e27649850bf7d17dda07090b7ab2a177cf6291b8c234"
+    },
+    {
+      "path": "data-structures/data_structures.hpp",
+      "sha256": "78fc173cdbfe23ec9a3be4bef3b1be5f2a480fd1b067730b5547c3107ac30884"
+    },
+    {
+      "path": "data-structures/data_structures.sleela",
+      "sha256": "a67f8814268ecb36c3ce66a79f757d06d9ff5ded2834aaf28a0ee87cebd09591"
+    },
+    {
+      "path": "data-structures/data_structures_test.c",
+      "sha256": "f5b6a8331e58ea3a40d4111dca35b223c600278351e37d11ceb85cb258369366"
+    },
+    {
+      "path": "examples/symmetry/build.sst",
+      "sha256": "8c330bd7adeb983de5ef7a1e4673745c5ba2e74459334840baf13cc76e4e5480"
+    },
+    {
+      "path": "examples/symmetry/src/System.sleela",
+      "sha256": "549fe50ebf64bb67c2c6c8c0b31d780c3b4022455b194a310ee80591aecb2055"
+    },
+    {
+      "path": "examples/symmetry/src/core/Channel.sleela",
+      "sha256": "975ea435e63ed44a5691c9f6ebd1e45387ab8b5ba0afa28840858d3affa4aa7f"
+    },
+    {
+      "path": "examples/symmetry/src/core/Message.sleela",
+      "sha256": "88c7851b7799b3a6c9cd05a92db147ee521ec6c83fea648cf20478c0907f9010"
+    },
+    {
+      "path": "examples/symmetry/src/core/Symmetry.sleela",
+      "sha256": "5cae4e6e9d4189f5fdffe36c183cc276d3151686d07173583a4956e3eec21b38"
+    },
+    {
+      "path": "examples/symmetry/src/dns/admin/System.sleela",
+      "sha256": "d897d7991fa71d16b4fcbe505c49164ca1d0ad85cb1fc3a8eb047d4345f510d7"
+    },
+    {
+      "path": "examples/symmetry/src/dns/admin/dns_admin_monitor.c",
+      "sha256": "fe638b22b6d2ba44a65c3660da8719f3956d657ebf3fa0b02dfac416ae9e99b5"
+    },
+    {
+      "path": "examples/symmetry/src/dns/client/System.sleela",
+      "sha256": "9e44b0ed346b62eaa1373096735d6f2a077d1a07564df3e6a080f7c3a5ce65aa"
+    },
+    {
+      "path": "examples/symmetry/src/dns/client/dns_client.c",
+      "sha256": "8f3616128d0467deabf66cfa8ddc7a1929c7a29ab3943fae0da26385bee3dac5"
+    },
+    {
+      "path": "examples/symmetry/src/dns/server/System.sleela",
+      "sha256": "82c430f3cd917449b4e90a5cb3368c12dd28f45cb3b6df707fbf7f3b1e3ec8c2"
+    },
+    {
+      "path": "examples/symmetry/src/dns/server/dns_server.c",
+      "sha256": "645bb03c4428f64c86175f742af1d8ca42d9d71fa7a6d0ee97e875c1b0ffaf93"
+    },
+    {
+      "path": "examples/symmetry/src/dns/server/dns_server.h",
+      "sha256": "763725ee54ff853f51714680cefce775e306989bf0c6a6884d5e460152688132"
+    },
+    {
+      "path": "examples/symmetry/src/email/admin/System.sleela",
+      "sha256": "15b676d8ff7d3048f0762cecfbb4149e87a620b07a8f068b0a546a9a3d847873"
+    },
+    {
+      "path": "examples/symmetry/src/email/admin/email_admin_monitor.c",
+      "sha256": "8684340a27130995d347ff8fc56b02563d6cb05d4ee720ba1d70e7787953cf15"
+    },
+    {
+      "path": "examples/symmetry/src/email/client/System.sleela",
+      "sha256": "11de3323fb47d363cac95fc8683c4e45d689bb0f06934bfae48213d8d8dbe2f0"
+    },
+    {
+      "path": "examples/symmetry/src/email/client/email_client.c",
+      "sha256": "52b7ce795fa5860fa8c3907ab1ff951041557be45589547a5204f9bc46ea6ea9"
+    },
+    {
+      "path": "examples/symmetry/src/email/server/System.sleela",
+      "sha256": "aa8deafc947e052c9d11e906bbf269c86785d9dc49b8d9f369e7cce766dd470e"
+    },
+    {
+      "path": "examples/symmetry/src/email/server/email_server.c",
+      "sha256": "767893751b13408044402c1241401897905326691c873b150db3fc3dd257d183"
+    },
+    {
+      "path": "examples/symmetry/src/ftp/FtpClient.sleela",
+      "sha256": "431c7076c8fb60347db610b0e60deebb92fccfcf2b83e95d2cc0ba6b2d706827"
+    },
+    {
+      "path": "examples/symmetry/src/ftp/FtpServer.sleela",
+      "sha256": "9f3ee7c8aebe9d751be168316f1628346182d4977267ebe8317767508a60eaf7"
+    },
+    {
+      "path": "examples/symmetry/src/ftp/Session.sleela",
+      "sha256": "58adf93bc0bc3c727695bc9cca2e0103ff838067106052a5d83cd5bb26323550"
+    },
+    {
+      "path": "examples/symmetry/src/http/HttpClient.sleela",
+      "sha256": "8d9c569a2c31b793b4a5370cf3cab6d8743b1131a31c0fbabaaac45d540fa282"
+    },
+    {
+      "path": "examples/symmetry/src/http/HttpServer.sleela",
+      "sha256": "529ef5c6c6647b314c7497b4785d5e8831a4afe6242742d7e239941e36f80df1"
+    },
+    {
+      "path": "examples/symmetry/src/http/Router.sleela",
+      "sha256": "192bb3b60a0b45f1c3655bdb186bf59521ae41733ad77cd5f9444fc9dd17af2d"
+    },
+    {
+      "path": "examples/symmetry/src/proxy/admin/System.sleela",
+      "sha256": "92bf3c54105b56decb4421cd5fc46ce455a7d00382cef5ecde8780990755b374"
+    },
+    {
+      "path": "examples/symmetry/src/proxy/admin/proxy_admin_monitor.c",
+      "sha256": "369b01b56ab7f60a48a62bfef44d515241d6b019a13ae263dec8427703b241e6"
+    },
+    {
+      "path": "examples/symmetry/src/proxy/client/System.sleela",
+      "sha256": "4ec10c83c5e4217bdd0030704b331730d7c3ec1d1fac0e84c36c73a65904c3e9"
+    },
+    {
+      "path": "examples/symmetry/src/proxy/client/proxy_client.c",
+      "sha256": "c9422d4a16ea368ca865d05bfdb40d9ca65208cf29433fbca280459980f58d5a"
+    },
+    {
+      "path": "examples/symmetry/src/proxy/server/System.sleela",
+      "sha256": "920cb17ddc2ab3af4f09c06c60c3f65007c5f1023ba5ceb57e14d35b2c7536e2"
+    },
+    {
+      "path": "examples/symmetry/src/proxy/server/proxy_server.c",
+      "sha256": "9056afdb4cd7d3882b10f226887856c1beb14a28be8e5ac526b64add940e20ce"
+    },
+    {
+      "path": "gui/native/sleela_gui_bridge.cpp",
+      "sha256": "6a8442f96089a771e851920d3d8a27d34ee88fee1c878d45db0b74ff48733c82"
+    },
+    {
+      "path": "gui/native/sleela_gui_bridge.h",
+      "sha256": "80110f92fc3105eb60f673de9add1f5e56e482342dd2206d4c070c35c16e75dd"
+    },
+    {
+      "path": "http-2.0/h21_envelope.c",
+      "sha256": "614877cea304365bc26fa89be58aa0a05d10cf95d947fdd12e5b148db14a4b96"
+    },
+    {
+      "path": "http-2.0/h21_envelope.h",
+      "sha256": "8b8f9117a0e6e60ad3c881663b38fe4633a83d25c09f2ad1391c697fb3828216"
+    },
+    {
+      "path": "http-2.0/h21_flow.py",
+      "sha256": "5d5da7f011cada163fd2c01d1f2081531da4d92c49b494f71b6f294366f20926"
+    },
+    {
+      "path": "http-2.0/h21_naming.c",
+      "sha256": "e0f1e5a64ee424d2fa2106d18208246ded37915faa4affa7e28265f21c7752f4"
+    },
+    {
+      "path": "http-2.0/h21_naming.h",
+      "sha256": "a5c39f09219ba760bac19de7ef95bded54715ab10fbdb1e7d6df6fbd67f38536"
+    },
+    {
+      "path": "http-2.0/h21_pipeline.c",
+      "sha256": "b531a20a55d4705697698da53b7e9d63f90162174701f83590ad5fca89feb11c"
+    },
+    {
+      "path": "http-2.0/h21_pipeline.h",
+      "sha256": "433809b7e16ef627a0ff6bda6ce42aeb718f8239d9e12de7fb64cf2c5509888b"
+    },
+    {
+      "path": "http-2.0/h21_protocol.h",
+      "sha256": "144a200d22a8099f99a823762f781819304127588e05d36c4747b7c4f702d213"
+    },
+    {
+      "path": "http-3.0/bonding_collar.py",
+      "sha256": "6bc000500ff19a99472adfc95732bb018ef9e9831006f885ed5cd137d13b0848"
+    },
+    {
+      "path": "http-3.0/crypto_identity_capsule.c",
+      "sha256": "c9be8f64bb3ea838a23ba73cfa94e98b00314cdee348655196aa9ad78ca0dee6"
+    },
+    {
+      "path": "http-3.0/crypto_identity_capsule.h",
+      "sha256": "322eeacf52b7d85e6a491866a80e1c7e3de20f7d06fbc5818dcafb34d2630b27"
+    },
+    {
+      "path": "http-3.0/crypto_key_agreement.c",
+      "sha256": "7a6effa49946c991ccb5ba55ad20b5ff7215a84cab81f3872c2dd13f32ab9c00"
+    },
+    {
+      "path": "http-3.0/crypto_key_agreement.h",
+      "sha256": "eb10bef61312b7c1de9476c1c068751506995f13984d83451c75f867b0373468"
+    },
+    {
+      "path": "http-3.0/crypto_openssl.c",
+      "sha256": "7913b591f0eb331c58e4fb09a4e4bf8ab4635931cbbb79dd16fc00b3fd2f6902"
+    },
+    {
+      "path": "http-3.0/crypto_openssl.h",
+      "sha256": "f21147b701ede3e06b360f468ee1316a413cec020450b1d0616a3f4d2eb6aec9"
+    },
+    {
+      "path": "http-3.0/crypto_route_map.c",
+      "sha256": "1be83e8c86d745da1441fe2d6dfc491a6d1c2fc0b11e541aaae1c5e48c758311"
+    },
+    {
+      "path": "http-3.0/crypto_route_map.h",
+      "sha256": "e9e5af6bec8d3edb7aae4bd91f4d203f7f51e2bcdec6e2bd20a8503fd00bd353"
+    },
+    {
+      "path": "http-3.0/crypto_route_session.c",
+      "sha256": "89e891271a8600886b2a645f873643b29c4b2a747c6816330397d2d114d7377a"
+    },
+    {
+      "path": "http-3.0/crypto_route_session.h",
+      "sha256": "87755d841915548a1a5654632aad70c9063092052d08ec7f46e12ccecdbab85f"
+    },
+    {
+      "path": "http-3.0/crypto_selftest.c",
+      "sha256": "f3e09c12669c7fb5ceca12c342ff4b7189b1092260a5d11b05531266ce069eb1"
+    },
+    {
+      "path": "http-3.0/cryptographic_capsule_set.c",
+      "sha256": "b3ea32fa8ad1d2889e9c9ea0c05b3c83ce42b77dfd3d0ac17e5934a9149f47eb"
+    },
+    {
+      "path": "http-3.0/cryptographic_capsule_set.h",
+      "sha256": "f04851843bbd99a2ca3c195e711f71ea12b56a462ac9f1397cc26b0cb02930d1"
+    },
+    {
+      "path": "http-3.0/http3_basket.c",
+      "sha256": "aaef3d2ab646bfe072166d9c2918c219d3865bf0c9ab11173331573ff78fc97e"
+    },
+    {
+      "path": "http-3.0/http3_basket.h",
+      "sha256": "ef5a332a49f80bcc8d7a5a5d1fc3864c55b58f24e84e10aa9732159968bcdcbf"
+    },
+    {
+      "path": "http-3.0/http3_crypto.h",
+      "sha256": "aba53b3f6781daf18fbd63b579b5a0d6c3c5fb3e0c544205b7a38ac2a5394b09"
+    },
+    {
+      "path": "http-3.0/http3_crypto.hpp",
+      "sha256": "b1e1c2846521e8a519b1f196bf8a4147a6f47ecb2405c3466f6fa3909a7cae64"
+    },
+    {
+      "path": "http-3.0/http3_envelope.c",
+      "sha256": "a1d8f07520786e1afa9617d74246de4eb1cb7c52cc187c73bee45158530c88fb"
+    },
+    {
+      "path": "http-3.0/http3_envelope.h",
+      "sha256": "da16b82ab28d4e71a65b922ec31bef7d8cfe782d1bb4312ae8d065380c3d8310"
+    },
+    {
+      "path": "http-3.0/http3_flow.py",
+      "sha256": "ea0aadc539065500f5bbdeb1e3bb952d164f4da7d5c0470396f76442a4e8d876"
+    },
+    {
+      "path": "http-3.0/http3_handshake.c",
+      "sha256": "7e6e4dce22f5245c27bf35fd198fdbd20b09077eddd9cc10cce36623409d45fc"
+    },
+    {
+      "path": "http-3.0/http3_handshake.h",
+      "sha256": "6d1947ad298a3ad1cf0110d2b54cb9a9e4ee6c8d50420986ce3369cce70f92bb"
+    },
+    {
+      "path": "http-3.0/http3_intactx.c",
+      "sha256": "76be3590d05d1632b80d815ce6dd210f29ab54897a38fb8fcf56c33efcebe31d"
+    },
+    {
+      "path": "http-3.0/http3_intactx.h",
+      "sha256": "c7456d70fb0146d4bd03d61c821a5c677017dcc2b6dc9db5a91bd8712e5c6928"
+    },
+    {
+      "path": "http-3.0/http3_mac.c",
+      "sha256": "95c38b8fcd18d1855bdc5f9c5f54afd8c9c12f3d90b03d5520ccc0f4ceeb125a"
+    },
+    {
+      "path": "http-3.0/http3_mac.h",
+      "sha256": "f060d7244683d2a0f5f344d4ee46e42372679acf2b6def1c5a48752229e06bf5"
+    },
+    {
+      "path": "http-3.0/http3_naming.c",
+      "sha256": "91a9416e8495a112d8639fe5507fc35c77366fb444cb80bcb5bb26fb2f363080"
+    },
+    {
+      "path": "http-3.0/http3_naming.h",
+      "sha256": "18054e73d8051a3b538113219f5654c4efb2c326fe1823d1a8b838775376be0c"
+    },
+    {
+      "path": "http-3.0/http3_pipeline.c",
+      "sha256": "1d9ea7d6f635135d4432f2d6fc8c1359b3ff5af2db2dfd980455f5a19c866888"
+    },
+    {
+      "path": "http-3.0/http3_pipeline.h",
+      "sha256": "48aedd92626a002f0c960d30eda4871ccc7a923e582e4194bd4e43dc8422bda2"
+    },
+    {
+      "path": "http-3.0/http3_pipeline_demo.c",
+      "sha256": "85c1afdd59397b7b3d8854409887ee554d149b65108dc4fc3a3767513751cfae"
+    },
+    {
+      "path": "http-3.0/http3_port.c",
+      "sha256": "35865e06fd55d4ca68840a81f3efe204aa69156c73d9c0ac24ec0186d6cb2158"
+    },
+    {
+      "path": "http-3.0/http3_port.h",
+      "sha256": "80f0d59cef4b67da51b03494c7ff322cdfb0ae600bc3535512e3aa723c050e1b"
+    },
+    {
+      "path": "http-3.0/http3_port_test.c",
+      "sha256": "3abc61025463163637d25835dc299e8d17b504fef8d16b348d8f20fa56fdd7c3"
+    },
+    {
+      "path": "http-3.0/http3_profile.c",
+      "sha256": "e13f149bc725184b5842a3a8e649633e07710125e2795a6b1ea022ca6306a937"
+    },
+    {
+      "path": "http-3.0/http3_profile.h",
+      "sha256": "af0ff5f8d41ae07c47dcd0a30929ec9d39c27dca4bc1884c1b99e97b8e6a35af"
+    },
+    {
+      "path": "http-3.0/http3_protocol.h",
+      "sha256": "4fc656ac4ddce20791d28e08d5a7a15eff94f5989e83a96d858fc49de1ec0c69"
+    },
+    {
+      "path": "http-3.0/http3_timing.c",
+      "sha256": "c3bfea57649609072af63c14add1dbb183f88071ba4cab93434991b664add926"
+    },
+    {
+      "path": "http-3.0/http3_timing.h",
+      "sha256": "5718f99db49bba1e0f0f48d3389c9d58bdc96f5361c3ca4bd74282e889adf194"
+    },
+    {
+      "path": "http-3.0/http3_transport.py",
+      "sha256": "0182bf8aad0f82b33cc81180fe64533dbf533e5ff9914e2704a41dbd766b2e59"
+    },
+    {
+      "path": "http-3.0/http_colors.example.sleela",
+      "sha256": "166c5fbb81a7e362c4e32ca8f563a666dbfbfabdc8fe419d85ce5ac4ee78fda8"
+    },
+    {
+      "path": "http-3.0/kernel/sleela_station.c",
+      "sha256": "60262cce5b63fbda80d8b91e87705b5db78fe319b436801fa8f22f2181fda617"
+    },
+    {
+      "path": "http-3.0/key_distribution_client.hpp",
+      "sha256": "b850f59e2c72e509c76ce54b913d594b4386674ba98d8b732251505616afffbc"
+    },
+    {
+      "path": "http-3.0/key_distribution_server.c",
+      "sha256": "46cbffeed11ce7c0cdc41cdfd2068af1693592d390447ff451f6162f05cec760"
+    },
+    {
+      "path": "http-3.0/key_distribution_server.h",
+      "sha256": "7dec8d6cfa045508c30c8411fe06c7a8c2ebda7555c0984d21e0fdaf5358e8af"
+    },
+    {
+      "path": "http-3.0/key_distribution_server_main.c",
+      "sha256": "b2338ea1e3688ec2c9c80fede8f622178bb7e92e7a6fdaaa7b14085b4582c59c"
+    },
+    {
+      "path": "http-3.0/os_floor_registry.py",
+      "sha256": "f8537c4cf60842e431073e8f901f306359eff3b273b355e025879208014c545c"
+    },
+    {
+      "path": "http-3.0/os_floor_report.py",
+      "sha256": "8e0b756ece065299c78596b966717b3c095dcf9a9cef03c39487c9dbd6e0aae1"
+    },
+    {
+      "path": "http-3.0/pcc.c",
+      "sha256": "d6dfd7a02c93ff70d828325e8ca56637a9371fb7d19250733eaa4e7b3182c136"
+    },
+    {
+      "path": "http-3.0/pcc.h",
+      "sha256": "504219e049a8b0004baa09f259ae25a6442505b1ad82eade91d101a112da43e8"
+    },
+    {
+      "path": "http-3.0/route_navigation.c",
+      "sha256": "b81174c94b0511efde321fccbe2671859be70a63757ef37656414657ccd804fd"
+    },
+    {
+      "path": "http-3.0/route_navigation.h",
+      "sha256": "c6884885b794f80b7658e976b537c475d2264e4ddfc4a6292352e2ff0ed05a00"
+    },
+    {
+      "path": "http-3.0/sleeuum.py",
+      "sha256": "eeb5063387d524537ca38bdfc1da7fdbea4d5f552aac7c94eb3c2a7837128be7"
+    },
+    {
+      "path": "http-3.0/station/station_abi.h",
+      "sha256": "ff8393476eab6a66810be499f8040195e0ddac7638435685013c2d57df892694"
+    },
+    {
+      "path": "http-3.0/station/station_backend.c",
+      "sha256": "9e67cfc3b72c9294fda1dd8da6c2da1423bacadb8618679d21ebc24ebd6821cb"
+    },
+    {
+      "path": "http-3.0/station/station_backend.h",
+      "sha256": "5b443bca47bc5b6031cab6424671610d63fa53a57f3e20784a8c1e09dcaee57d"
+    },
+    {
+      "path": "http-3.0/station/station_classifier.c",
+      "sha256": "757f85c309e29f58478575c897e48f68082cbf635cbdd11cf55b31b2ee2b432b"
+    },
+    {
+      "path": "http-3.0/station/station_classifier.h",
+      "sha256": "f2a90f12be2f055229cf9fd7d9d5b475ce942df61bd97b773db5bb7fba4ff0ee"
+    },
+    {
+      "path": "http-3.0/station/station_demo.c",
+      "sha256": "024ef08126ed8a5fc2df8468c4fd1b7faf5704654b2e1b12929a4c8b4c7299c1"
+    },
+    {
+      "path": "http-3.0/station/station_session.c",
+      "sha256": "fecd371bc36bc2d9cf2cdad1ed08a6d15bbb14a3c8c07c1d9aecc8ea7c99f56d"
+    },
+    {
+      "path": "http-3.0/station/station_session.h",
+      "sha256": "829a235b3eb0089f79bb0c8fd3592344faa5af621ba5038652ca2240a31bf257"
+    },
+    {
+      "path": "http-3.0/station/test_station.py",
+      "sha256": "8b10862db8d2c0b5bab6d68d6c6947bca90c8535be406c13a6e7115156703833"
+    },
+    {
+      "path": "http-3.0/test_crypto_http3.py",
+      "sha256": "892f8af166080aca7b729dd3c83a476aba77fa2890fafc49bf70ddce49987478"
+    },
+    {
+      "path": "http-3.0/test_http3_flow.py",
+      "sha256": "3b13c38e3e9017e77405c759fef69343e3a21d122e097b034b67c1ab33801d68"
+    },
+    {
+      "path": "impl/catalog/sheet_catalog.cpp",
+      "sha256": "edc44715753f2fb15b1a436978d501c14e41d49956b0f459a0aae1ffaf21525f"
+    },
+    {
+      "path": "impl/catalog/sheet_catalog.h",
+      "sha256": "686e224870c1e3f810fdb3539baa3385e3c36e3eb5c3402a806dbf8978e73de1"
+    },
+    {
+      "path": "impl/core/bestof_smoke.c",
+      "sha256": "9c71fa3f3ba291f71a8ace6ffb622c647e2df622dd55b7ee89d0128f4f54b0dc"
+    },
+    {
+      "path": "impl/core/events_platform_smoke.c",
+      "sha256": "b5c55707a1e3033b507bb0a274cb1ce7c2f628a8c5991fa2e0feb64b702d33c5"
+    },
+    {
+      "path": "impl/core/exchange_smoke.c",
+      "sha256": "ffb225270c44d7371419af708d35f35242797f129055ae930b7980cfd7c0fc52"
+    },
+    {
+      "path": "impl/core/io_platform_smoke.c",
+      "sha256": "41ce5330eb3766a687bccb9dd5c00acc13dcc425db5030f97c54db339d1f096e"
+    },
+    {
+      "path": "impl/core/library_platform_smoke.c",
+      "sha256": "9587217b42d114b13f67cb9aa5d322dcb6d036537e02ef3d95644ab31301052b"
+    },
+    {
+      "path": "impl/core/memory_platform_smoke.c",
+      "sha256": "21ef98bf3205a4990b15a2b38b97e74b507711471ce2dd14fc69e40b5966aebe"
+    },
+    {
+      "path": "impl/core/munction_smoke.c",
+      "sha256": "7ec3544337d4bd98c73b8e4a90262fd323293013ccfd9c5cc2ce7cb9729a7a68"
+    },
+    {
+      "path": "impl/core/net_platform_smoke.c",
+      "sha256": "8e672c36de31ad20790b1d3c6996a4cfe6b26b6561136799ab1ebdf26cffee1e"
+    },
+    {
+      "path": "impl/core/path_platform_smoke.c",
+      "sha256": "f2071e4f810a4e54e8d79782328a04929dcf6f2ced6844397a3027ef9882c304"
+    },
+    {
+      "path": "impl/core/pthread.h",
+      "sha256": "a7c286a2083bb9cea3bfab0519e71ecfd1f8d6f226e64ef803588c89a26b1a33"
+    },
+    {
+      "path": "impl/core/sleela_artifact.c",
+      "sha256": "7016948a226b9be43145e6bd3efbac4120a2824539cd763880cdb470788ff6f8"
+    },
+    {
+      "path": "impl/core/sleela_bestof.c",
+      "sha256": "e42d1aa5dcc61954a4404308da0097f45bd501c2a6d106c381f70a288f488269"
+    },
+    {
+      "path": "impl/core/sleela_bestof.h",
+      "sha256": "70f97f6eb2356c5f63161b86d2f6b596a064032526645061e49dc2cdffac667c"
+    },
+    {
+      "path": "impl/core/sleela_core.c",
+      "sha256": "992d9a7c5fc48416c91841aee5cd47e9426bcf31105433d9205da8adbf22f160"
+    },
+    {
+      "path": "impl/core/sleela_core.h",
+      "sha256": "c2c32fc69666e1cc5cfedc8bc8c9429981f68252ba29646ac0ab89e6bd8accb0"
+    },
+    {
+      "path": "impl/core/sleela_events.c",
+      "sha256": "ab0c13c4edfc1d33a25fd86ec262fa810c7af72ade42aef3dd16b70da3eff3f9"
+    },
+    {
+      "path": "impl/core/sleela_events.h",
+      "sha256": "25e69f5fc014b86d2213994db46fe1047c793d4047e1d874ada829ab351ff3c5"
+    },
+    {
+      "path": "impl/core/sleela_io.c",
+      "sha256": "dfa9bbb20575e6166c3ab5a84496c53f155b7506ef8b269cb17b89e2547777ab"
+    },
+    {
+      "path": "impl/core/sleela_io.h",
+      "sha256": "f45b91e67db62ff925db59915a1fd610c29338eb50b414de7e2d4491500e455e"
+    },
+    {
+      "path": "impl/core/sleela_library.c",
+      "sha256": "9ae60c83483979e4369edb94637f9de2d50ab7db28888d0af9f95a34dcf7c882"
+    },
+    {
+      "path": "impl/core/sleela_library.h",
+      "sha256": "4cf672239287f2f50d71e36d8d412985f53f4dc14d96eca836ec3b43a0c8e12c"
+    },
+    {
+      "path": "impl/core/sleela_memmgr.c",
+      "sha256": "73291759a13050b2c5f369dd7ba07d1bc1e1c0788ff2097555d6301645708e42"
+    },
+    {
+      "path": "impl/core/sleela_memmgr.h",
+      "sha256": "4dc39054b2a1ad4038e7d12fe63566d0a4dfb957e07ad0486e5fb5b93e454c74"
+    },
+    {
+      "path": "impl/core/sleela_memory.c",
+      "sha256": "3a4020bdf350890ee71a5a3d0602b16790849bc3037dc6c9c74ba7fbe3e99eba"
+    },
+    {
+      "path": "impl/core/sleela_memory.h",
+      "sha256": "a28254318cedc32da544e8e5a13698221ff3bc4fc33180e5d2a8b8b47e16b954"
+    },
+    {
+      "path": "impl/core/sleela_munction.c",
+      "sha256": "9a909adbb88a2793133b618752bdc07857365f7baab1ebc51192d07d33adc233"
+    },
+    {
+      "path": "impl/core/sleela_munction.h",
+      "sha256": "fbca9c0af71b4def3c98a375a7ec57a55b5fd7647b618711ee4a38bae05ceca6"
+    },
+    {
+      "path": "impl/core/sleela_net.c",
+      "sha256": "ac49a63055bcfe76dbea7600f5b81fe575419d0092319155cd02405289a23b4d"
+    },
+    {
+      "path": "impl/core/sleela_net.h",
+      "sha256": "2c1e8595cac2fb802fc741c3ec0f164b86510f7efd8be960e60818b107739960"
+    },
+    {
+      "path": "impl/core/sleela_path.c",
+      "sha256": "1ff2dc13ef3b02e6754a88623043386206b64d9f612844ddaea3349c3e6f7c1a"
+    },
+    {
+      "path": "impl/core/sleela_path.h",
+      "sha256": "e44dba9461ee50a9cc9136755179d5ae6b8793a74baaeea04b15892fc17135af"
+    },
+    {
+      "path": "impl/core/sleela_synchro.c",
+      "sha256": "4ab4796be06d1cb5dacd4915e524a00d98a8df9241f67f3a92c0cc578ba9eb53"
+    },
+    {
+      "path": "impl/core/sleela_synchro.h",
+      "sha256": "147a95bb88e5d037c1e5f33f512d8e4e1cbe870e4bbed1187572ea930bd85ecc"
+    },
+    {
+      "path": "impl/core/sleela_terminal.c",
+      "sha256": "2d7ac4de40afcca18c18e022b5cb3e09dd5fde48e280e5bd777e2ba264890b27"
+    },
+    {
+      "path": "impl/core/sleela_terminal.h",
+      "sha256": "dd97a8f9d727069080233025f578c80a773397df5e31029d52b94fb81e9d631f"
+    },
+    {
+      "path": "impl/core/sleela_thread.c",
+      "sha256": "389763f60d0d9f046a53b09e20131f862534071ed575839d4703b143bfc4b131"
+    },
+    {
+      "path": "impl/core/sleela_thread.h",
+      "sha256": "62fd9bd7d88dfaecac495987219e3bc4a1f450716442724bba3cbaab2054cacd"
+    },
+    {
+      "path": "impl/core/sleela_time.c",
+      "sha256": "aee2122b12e5d3506930525dac0d0e76c92cfc299f2c4ed7ba00a5077bf39232"
+    },
+    {
+      "path": "impl/core/sleela_time.h",
+      "sha256": "6c3de19a70be690219d635b9090d27894a0478e77eb12e682b3708391381d1b3"
+    },
+    {
+      "path": "impl/core/socket_smoke.c",
+      "sha256": "59f21fb3c444ac6d4b191ec3d6c29880adf1633246a7223e45862c435eb66946"
+    },
+    {
+      "path": "impl/core/synchro_smoke.c",
+      "sha256": "15ef76e832e24b3d12e2d0e31cd82fa0e8b08c81b55febf8e1ba283fe0c50d16"
+    },
+    {
+      "path": "impl/core/terminal_platform_smoke.c",
+      "sha256": "6845c9c1bd67a874f7d965fba82b52c3f4bbb43ac08b854ca75d9bf58154dcf9"
+    },
+    {
+      "path": "impl/core/thread_platform_smoke.c",
+      "sha256": "add5f73538be955c69b560152727d6ab7a87c01cab099a0f82202c89ca898841"
+    },
+    {
+      "path": "impl/core/thread_smoke.c",
+      "sha256": "069f2b58104b3d320f4e9083f56f37398889aecec1ed7217a93e6b37eb446df0"
+    },
+    {
+      "path": "impl/core/time_platform_smoke.c",
+      "sha256": "00d054049b0923daab047d801f31a555a8e64ef5a643af1b1323ad837d5516b9"
+    },
+    {
+      "path": "impl/examples/bestof_route.sleela",
+      "sha256": "ae4974a8b1568e39d248e516fff1d529d7b24c77756647628e837fb92ebb940f"
+    },
+    {
+      "path": "impl/examples/chemistry_presumed.sleela",
+      "sha256": "0971507ca030cbafc9b0ea8d1ab8d118170bbe8329e218a672ed0a0058278dc0"
+    },
+    {
+      "path": "impl/examples/conduct.sleela",
+      "sha256": "b2a137539b9b54b1a2c919f0e4dcbe6e7ba5a962e963a1b0eb9693084c5b2e18"
+    },
+    {
+      "path": "impl/examples/factorial.sleela",
+      "sha256": "36473e8be7cbfb5df5fdd4eb2aee563f5c96b9595564fa81c3f996aa954f83f1"
+    },
+    {
+      "path": "impl/examples/fibonacci.sleela",
+      "sha256": "2c0b126cd77874de05100b2b2312536579331228b2b1bb7f35a06634cb2b9557"
+    },
+    {
+      "path": "impl/examples/fileio-fifo.sleela",
+      "sha256": "d32e37f426196d18b47b6dad4ab042bb15268a3b8327c602650db8e588c8ddca"
+    },
+    {
+      "path": "impl/examples/fileio.sleela",
+      "sha256": "ba3b9a2fac74bbb09af5630d7394eb6a5bf60141b24e16acc80463c1f5332394"
+    },
+    {
+      "path": "impl/examples/financial.sleela",
+      "sha256": "780f994f74db73e08a4d8103d66bf12f0fd8f30852ad840902553c0b71fc53ec"
+    },
+    {
+      "path": "impl/examples/fizzbuzz.sleela",
+      "sha256": "f7578c651945975364975477f8ad4a4f9bcf73087fc079b2162037aa905c44df"
+    },
+    {
+      "path": "impl/examples/hello.sleela",
+      "sha256": "38bd44716557b55b222df08a28865175718b6d686e0e53d54fd7b49d208071f8"
+    },
+    {
+      "path": "impl/examples/munction_reach.sleela",
+      "sha256": "d9539b5f4857be001ab0c464829c0bb87d3847f2a35e4809a0eabe0a9d86150f"
+    },
+    {
+      "path": "impl/examples/network_echo.sleela",
+      "sha256": "d3b151521c3a6705e3f3a192f6d0e7e1e6ee5538479308475b008823f8fbad41"
+    },
+    {
+      "path": "impl/examples/static-protected.sleela",
+      "sha256": "a2b535260344bbd58984f762a21d821a946f256d2c6d48bdf0c8e364f439626f"
+    },
+    {
+      "path": "impl/examples/stock_market.sleela",
+      "sha256": "c0d28e7e0c804bce6948cf401bbe085f4b9e0b6bb0d18baf845acf0562d4440e"
+    },
+    {
+      "path": "impl/examples/stock_market_analysis.sleela",
+      "sha256": "45fffa75c26cd2cf973492a692ae41f1b5cb637c397404232205d939d9bd3807"
+    },
+    {
+      "path": "impl/examples/stock_market_live.sleela",
+      "sha256": "e87993221edcc376ea93a0f416bcb9ae1dedc701bb38ebab251397ea9058521e"
+    },
+    {
+      "path": "impl/examples/struct_basic.sleela",
+      "sha256": "0bf472b06cc5e164abe24ad000e62f022f52ce806d388f80ef8fb6fc9e915b63"
+    },
+    {
+      "path": "impl/examples/struct_network.sleela",
+      "sha256": "9bb702452954f204b142940ea61064b85cb33249e274b53d739630c5c5e6380e"
+    },
+    {
+      "path": "impl/examples/synchro_measure.sleela",
+      "sha256": "58b7cb08a819c4a32b462eb766875b9bc1b32cdfca22ee9a38c0a49292d1485a"
+    },
+    {
+      "path": "impl/examples/threads.sleela",
+      "sha256": "f62384d639702369fc469dab3cd7ee630b1a65d33118678f87947ef7ec65d156"
+    },
+    {
+      "path": "impl/examples/time.sleela",
+      "sha256": "a487e11d24160f96299285b38401f0a6afa81233d08bbf184a757ddec1959366"
+    },
+    {
+      "path": "impl/examples/versioned.sleela",
+      "sha256": "20961251f8776663948948feb78987f7d011eb77fd3dd6f2e1ae1966887b4a77"
+    },
+    {
+      "path": "impl/frontend/artifact.cpp",
+      "sha256": "17cea6ba565013bbefa38d50ffced1d74aa21f767f98f357420bc442112c5540"
+    },
+    {
+      "path": "impl/frontend/artifact.h",
+      "sha256": "05a53be564d6463a65b47a8a5ea44d1e2205be3c79522a66bc94a0f628d2b650"
+    },
+    {
+      "path": "impl/frontend/ast.h",
+      "sha256": "2abd6e37b17d640956da4e9d96503c69745dbab3a6afcdc739a5aea4ae12eec5"
+    },
+    {
+      "path": "impl/frontend/compiler.cpp",
+      "sha256": "3c5dbc7073f951e49e68d6714478fea869aff0268845292dc70122bb52195aed"
+    },
+    {
+      "path": "impl/frontend/compiler.h",
+      "sha256": "c14eba0aa3fb6655c9ccc085e73d18b68e8953044250cd7dd7fef0d1124b5265"
+    },
+    {
+      "path": "impl/frontend/driver.cpp",
+      "sha256": "3a212a1808f6848fd4c8aa16787541311523ce6b6d8ac70646d7dc1a97798ba7"
+    },
+    {
+      "path": "impl/frontend/lexer.cpp",
+      "sha256": "97de21403d7116b5b8a11c2655f6058acb21770cc8a8b58e20102de5db5e7795"
+    },
+    {
+      "path": "impl/frontend/lexer.h",
+      "sha256": "a29eb60e96963c697892e7f454a08020fb0a7b57b84f99a662f4e524c346aec2"
+    },
+    {
+      "path": "impl/frontend/parser.cpp",
+      "sha256": "6f45542143a7187e9542a3c5b7da8e2bb4c8e9914f29a1bcfcc76c67d49d9a78"
+    },
+    {
+      "path": "impl/frontend/parser.h",
+      "sha256": "b0979c2cd7073d240444fb2c6cc41393a1a8b1e0d80660d84d059c442070be9f"
+    },
+    {
+      "path": "impl/frontend/version.cpp",
+      "sha256": "b82f4c8c588550481347989d37c97e68211c70aec26cf368151e1a006867d2e0"
+    },
+    {
+      "path": "impl/frontend/version.h",
+      "sha256": "deb6fb1677c5033ad815288aa4513cc3e092744d99ba52495b63e5d9b0d7de4f"
+    },
+    {
+      "path": "impl/langin/LANGIN.model",
+      "sha256": "ae70ed9f2bda11d8c9b9049013e9df06b61fb37702db94b9f96a641bd4259e49"
+    },
+    {
+      "path": "impl/langin/langin.cpp",
+      "sha256": "1a8a2b02b0f32d58a1be35e9e5bb488cdad081350e83b132458d99e4b4bf2e15"
+    },
+    {
+      "path": "impl/langin/langin.h",
+      "sha256": "1fd818c41be3382d6f15411d90097c819a6b43468f00431bfe22a410f1f84ce6"
+    },
+    {
+      "path": "impl/nordshrift/FINANCIAL_INTEGRATION.model",
+      "sha256": "2763becf614e0ec0bd80c8896f0c6ef9bb565fe17140ab08077e41bcc9ec4d9c"
+    },
+    {
+      "path": "impl/nordshrift/IQ_CONSERVATORS.FINANCIAL.model",
+      "sha256": "1389768c21bdd99376f57eec62b0c9f40a68d41357552c8248d04e30dd8f638e"
+    },
+    {
+      "path": "impl/nordshrift/MUNCTION.model",
+      "sha256": "cc7e3cab828e20c8f99c4966164c8f0ac8a60fcb67eb84f603355a7ee50e68f7"
+    },
+    {
+      "path": "impl/nordshrift/NETWORK.model",
+      "sha256": "7bf53a5de4f67c1c840d72bedccd3b9fbe83c26d2864e584400570db6358dbd7"
+    },
+    {
+      "path": "impl/nordshrift/SYNCHRO.model",
+      "sha256": "4fe9ce400ea8de9d15ab194fa001433e21ee05b5d4a17f4b5a991ed82bffa122"
+    },
+    {
+      "path": "impl/nordshrift/component_manifest.cpp",
+      "sha256": "e9607bae1bafee88152b29f748f6a1dd05ae7b38710a009ba421a87f71e97416"
+    },
+    {
+      "path": "impl/nordshrift/component_manifest.h",
+      "sha256": "1cd99db3315fc21a1bed2829d4a2a953995bf228ed8a74cab556f4e15c653e40"
+    },
+    {
+      "path": "impl/nordshrift/diagnostics.h",
+      "sha256": "27a26dae4f4a775a4d29e9c22645c0c1c12ba11065af408581caa98d9e4ca7d0"
+    },
+    {
+      "path": "impl/nordshrift/examples/commerce-engine.sst",
+      "sha256": "8140d8a4bf40907f4a457e004d5bf1f6690149fc4363535734ddbdeddfc7ed4d"
+    },
+    {
+      "path": "impl/nordshrift/examples/demo/build.sst",
+      "sha256": "294c097d74ab86d6179f7dd4b5591248ab671e4ed0408e7b483f88244d3076e7"
+    },
+    {
+      "path": "impl/nordshrift/examples/demo/src/Demo.sleela",
+      "sha256": "b2d336602851d27bfa3625c9d77c5a24db3d89056de1a839b12c4fbc508eaef2"
+    },
+    {
+      "path": "impl/nordshrift/examples/finance-desk.sst",
+      "sha256": "e2837575371e7a6821507293b2ad66a17122533227edec00b2b18ec5383f6716"
+    },
+    {
+      "path": "impl/nordshrift/examples/input-objects.sst",
+      "sha256": "0a09b4e0ac7930b768413a1b779c6f30d0fae1f768818247235c66f6544a9bc6"
+    },
+    {
+      "path": "impl/nordshrift/examples/kinematics-subject.sst",
+      "sha256": "8d515cdc1d573a36c8f08d26d43adc476fecf961ed1d6c7b3025354e6dc394f9"
+    },
+    {
+      "path": "impl/nordshrift/examples/reach-measure.sst",
+      "sha256": "979451bbc78ef6c2663dc08dc3eb14c3ae51867cf817b40c83b6d18a548e322f"
+    },
+    {
+      "path": "impl/nordshrift/examples/symmetry/build.sst",
+      "sha256": "d0c283089ce6a2ee69f5b7cdff754d7c38096898cbbe095c4c3623b12ec2c8f7"
+    },
+    {
+      "path": "impl/nordshrift/examples/symmetry/src/System.sleela",
+      "sha256": "549fe50ebf64bb67c2c6c8c0b31d780c3b4022455b194a310ee80591aecb2055"
+    },
+    {
+      "path": "impl/nordshrift/examples/symmetry/src/core/Channel.sleela",
+      "sha256": "975ea435e63ed44a5691c9f6ebd1e45387ab8b5ba0afa28840858d3affa4aa7f"
+    },
+    {
+      "path": "impl/nordshrift/examples/symmetry/src/core/Message.sleela",
+      "sha256": "88c7851b7799b3a6c9cd05a92db147ee521ec6c83fea648cf20478c0907f9010"
+    },
+    {
+      "path": "impl/nordshrift/examples/symmetry/src/core/Symmetry.sleela",
+      "sha256": "5cae4e6e9d4189f5fdffe36c183cc276d3151686d07173583a4956e3eec21b38"
+    },
+    {
+      "path": "impl/nordshrift/examples/symmetry/src/ftp/FtpClient.sleela",
+      "sha256": "431c7076c8fb60347db610b0e60deebb92fccfcf2b83e95d2cc0ba6b2d706827"
+    },
+    {
+      "path": "impl/nordshrift/examples/symmetry/src/ftp/FtpServer.sleela",
+      "sha256": "9f3ee7c8aebe9d751be168316f1628346182d4977267ebe8317767508a60eaf7"
+    },
+    {
+      "path": "impl/nordshrift/examples/symmetry/src/ftp/Session.sleela",
+      "sha256": "58adf93bc0bc3c727695bc9cca2e0103ff838067106052a5d83cd5bb26323550"
+    },
+    {
+      "path": "impl/nordshrift/examples/symmetry/src/http/HttpClient.sleela",
+      "sha256": "8d9c569a2c31b793b4a5370cf3cab6d8743b1131a31c0fbabaaac45d540fa282"
+    },
+    {
+      "path": "impl/nordshrift/examples/symmetry/src/http/HttpServer.sleela",
+      "sha256": "529ef5c6c6647b314c7497b4785d5e8831a4afe6242742d7e239941e36f80df1"
+    },
+    {
+      "path": "impl/nordshrift/examples/symmetry/src/http/Router.sleela",
+      "sha256": "192bb3b60a0b45f1c3655bdb186bf59521ae41733ad77cd5f9444fc9dd17af2d"
+    },
+    {
+      "path": "impl/nordshrift/input_object.cpp",
+      "sha256": "68362d31adeb5aa8e1e1dd8d66678b07df1da44b0ca13d584d03fb674cba3697"
+    },
+    {
+      "path": "impl/nordshrift/input_object.h",
+      "sha256": "8f6cacf359478142ce7ca7844af6402468fd1962c642a6464fdf5a8eed5b1913"
+    },
+    {
+      "path": "impl/nordshrift/ledger_emit.cpp",
+      "sha256": "0474f1bb602e2924517db5f19983a18951c7f41d68b2d95d82a792bbb1487438"
+    },
+    {
+      "path": "impl/nordshrift/ledger_emit.h",
+      "sha256": "6030c92d9657f4ca0e5157f9ffe5570b21e837cc6e42ad384668a783531d6b6b"
+    },
+    {
+      "path": "impl/nordshrift/nordshrift.cpp",
+      "sha256": "963f5285d09f07ed484dcbbdaadd3b1030264a7b384e1398c889337f79bcdfe1"
+    },
+    {
+      "path": "impl/nordshrift/object_compat.cpp",
+      "sha256": "4216354b388cd97726e12e236abfcdff1571b6a6f4424600e89661b1dcdadb91"
+    },
+    {
+      "path": "impl/nordshrift/object_compat.h",
+      "sha256": "35ded67a25b6daec7a1827902f7cfb8285158a938284363131d19eaef70811ce"
+    },
+    {
+      "path": "impl/nordshrift/sheet_model.h",
+      "sha256": "1e0726b7886eb8ef8a14f00a717e298a441fa55624bcaec4f5120aedf679453f"
+    },
+    {
+      "path": "impl/nordshrift/sleela_emit.cpp",
+      "sha256": "d8f88eb85c6e5ef45eecf51870d91b24801dc0ca2be5f13f70b974bf6bd22d48"
+    },
+    {
+      "path": "impl/nordshrift/sleela_emit.h",
+      "sha256": "2da4db53cd771f8afa933461f91d2fa35baabf775e344ab035aecd623c6642f7"
+    },
+    {
+      "path": "impl/nordshrift/source_resolve.cpp",
+      "sha256": "d653c7e827c64f789268a505841144bbbd86a957e65dfc504780a1df8d277302"
+    },
+    {
+      "path": "impl/nordshrift/source_resolve.h",
+      "sha256": "4f540887e62587b701c58e9d4177c85678f4e6168a1c9c39632fb2b7918d740b"
+    },
+    {
+      "path": "impl/nordshrift/sst_lexer.cpp",
+      "sha256": "7973e55925b998ced27239d2d3097447a517f5c3b101a31a535d574d2c8e5369"
+    },
+    {
+      "path": "impl/nordshrift/sst_lexer.h",
+      "sha256": "add431d315ece1e621ae94a286b3e9e89bc5aa2fe14df780e30a4dbb506eb483"
+    },
+    {
+      "path": "impl/nordshrift/sst_parser.cpp",
+      "sha256": "9170792988fca7171321a047c4f3ac17ada6197bbadbc8276a1e36aeade04f08"
+    },
+    {
+      "path": "impl/nordshrift/sst_parser.h",
+      "sha256": "43543d93d30d02e41ffc26d37e327603da664c3db107dcbc215d50a6c1ce9b2a"
+    },
+    {
+      "path": "impl/nordshrift/subject_model.cpp",
+      "sha256": "4d09583784993a28782d482d0994faef97958f436a21dfbf4aa332b79c164260"
+    },
+    {
+      "path": "impl/nordshrift/subject_model.h",
+      "sha256": "1def88ff918d302615650e26be73b332b0b751df391c38d6c22bc910f623b83b"
+    },
+    {
+      "path": "impl/subjects/chemistry/chemistry.cpp",
+      "sha256": "97635e53e9b22cc6b2da8426fed7932c49d670cf65fe9f06d21156e70f5713b2"
+    },
+    {
+      "path": "impl/subjects/chemistry/chemistry.h",
+      "sha256": "be5e2dedf8d4dc2d5b9398be0428afdb8e5c95a73d7eab2ded3a0471a0ee47b7"
+    },
+    {
+      "path": "impl/subjects/chemistry/chemistry_api.cpp",
+      "sha256": "e083c31156886707d16110f4baad769d235c5f7b4d3aa18b616466d06c903298"
+    },
+    {
+      "path": "impl/subjects/chemistry/chemistry_api.h",
+      "sha256": "85c3389e5f0ed6ef55f5bf7637f6efe38a95fa45f5d9f4efb2c39528f8946af9"
+    },
+    {
+      "path": "impl/subjects/chemistry/periodic_table.model",
+      "sha256": "d760c5871ad19b1bc5b4c2d6ea5a146c45f529d1432a26a58b797280e7a46a1b"
+    },
+    {
+      "path": "impl/subjects/chemistry/presumed_chemistry.model",
+      "sha256": "422ea0513e3304bd2bc9eecc6eb2e22cbb8f1b1e3566c76988d0278e7b3ab08c"
+    },
+    {
+      "path": "impl/subjects/economics/economics_native.cpp",
+      "sha256": "aa3cb4fe097cf03e3672b453a0e8d54771510a8d91dff3681c53c0ac1e93b4e3"
+    },
+    {
+      "path": "impl/subjects/finance/FINANCIAL.model",
+      "sha256": "096ca9f00603311dd430c8efcb1fa475f910c43c413319d380338ca202a3aef8"
+    },
+    {
+      "path": "impl/subjects/finance/financial.cpp",
+      "sha256": "4d34443333a46d2becd976de4abcf04155f89852ce1fd95a23f696dabbb1671d"
+    },
+    {
+      "path": "impl/subjects/finance/financial.h",
+      "sha256": "a176a2e03a5756877947ef9df56f85dcb6c2568d129857e2389dede02f98f8e5"
+    },
+    {
+      "path": "impl/subjects/finance/financial_api.cpp",
+      "sha256": "b8dd9f13388514c85944135b015fbc72a472ee4933e338623576605efc1d2f07"
+    },
+    {
+      "path": "impl/subjects/finance/financial_api.h",
+      "sha256": "7893d9af88331c9348fbd3c8f5365bb8892fef6ea0f972b9ce719f1c9456536c"
+    },
+    {
+      "path": "impl/subjects/inference/inference_native.cpp",
+      "sha256": "58eedd0761f06576ecd924d5ce4d9e39c5f319049b2e1436ddbe2ed863185a8c"
+    },
+    {
+      "path": "impl/subjects/math/math_native.cpp",
+      "sha256": "046d373ea030baf6e006f061def5dbfd5b8aada876aa251ed03d9d93693461c1"
+    },
+    {
+      "path": "impl/subjects/native/native_add.h",
+      "sha256": "dbd73460abf50e73dfd5e1b0366685129d948be7c2423a8a879cce2464b556a9"
+    },
+    {
+      "path": "impl/subjects/native/native_api.cpp",
+      "sha256": "696935cbe721e0afa9964391adb65744f0c1c4a61a4fd14c264a0ef43d580b61"
+    },
+    {
+      "path": "impl/subjects/native/native_api.h",
+      "sha256": "27e8ec5a734136bbb72bde813abedf06a748572d57229b096e394c5b7ce413f6"
+    },
+    {
+      "path": "impl/subjects/native/native_builders.h",
+      "sha256": "3a4a9c7097310d1afdab2f00717384262f306c62ef7c19163e82b83b300ba0d9"
+    },
+    {
+      "path": "impl/subjects/physics/physics_native.cpp",
+      "sha256": "b23c82c437213ba4f2636764e8ffe00b23571ae0ee56088f78f77c1bac1eb95c"
+    },
+    {
+      "path": "impl/terminal/terminal_capability.cpp",
+      "sha256": "d1dfbbdb394a250c4c876ef5c0fe70a8658446dc1d623e49b80fdc0b9cb5afb8"
+    },
+    {
+      "path": "impl/terminal/terminal_capability.hpp",
+      "sha256": "5cac25a5d038932dab1e6163f5c6bde9055c5366934ea666d5d40eed90573b0d"
+    },
+    {
+      "path": "impl/tests/core/memmgr_smoke.c",
+      "sha256": "d4547d3d317eecdf1441bc3b82b40b8c85ee35ea253565d58fe869e186f51cd2"
+    },
+    {
+      "path": "impl/tests/runtime/runtime_smoke.c",
+      "sha256": "0ae3160d907245ee4122acb6ef4e9155f227143f1f06b7fd74ba3aa36e8b6656"
+    },
+    {
+      "path": "impl/tests/subjects/chemistry_values.sleela",
+      "sha256": "2c284c80419d18c7602d8713fd5426e6624835dd69e8f9dd0e51c6250e550547"
+    },
+    {
+      "path": "impl/tests/subjects/economics_values.sleela",
+      "sha256": "83ba2d22d249d65ed83a9cc4addc41e87cebc29e98f48d71cb7a0757ab401923"
+    },
+    {
+      "path": "impl/tests/subjects/financial_values.sleela",
+      "sha256": "089ae5862941e930b0979cedf22ae85d68d6957594e032d61c27b4a993c41428"
+    },
+    {
+      "path": "impl/tests/subjects/inference_values.sleela",
+      "sha256": "15d8dde6e8d0ce85bc7c85bc0eb049b417a7525cce0d347675525378b893421e"
+    },
+    {
+      "path": "impl/tests/subjects/math_values.sleela",
+      "sha256": "20b3e2056bcccf022553ff706689ef2f48e0c660cd6a88575a73fd8612a0a67b"
+    },
+    {
+      "path": "impl/tests/subjects/physics_values.sleela",
+      "sha256": "9215a7ee18bff781daaf2e98ca4115dd3f21933383fe32c1de589fab4ec967a8"
+    },
+    {
+      "path": "impl/tests/subjects/run_subject_tests.sh",
+      "sha256": "f14e4dc81b988158db1bc0b5b51a4b958881db2f3de52c3541b701d5c42e76f1"
+    },
+    {
+      "path": "impl/tests/version/malformed.sleela",
+      "sha256": "aa05b8f829f783186868e0233c56ac50ebd4bb8cbb86e915e871f32b6bc6bb9a"
+    },
+    {
+      "path": "impl/tests/version/minor_ahead.sleela",
+      "sha256": "d65d6d1477944783894a4288de533bfe3187b31ed46feb6980fe1e0955cd8396"
+    },
+    {
+      "path": "impl/tests/version/network_1_1.sleela",
+      "sha256": "790fbe61f82c194ca38563bb8ff57c6e682f9d5c1e9cc95f88dc2cf2f9bde4b6"
+    },
+    {
+      "path": "impl/tests/version/network_too_early.sleela",
+      "sha256": "df4ae820d548aee39d2fad1bdb2367503867bc349fb2f94fd500449abac51739"
+    },
+    {
+      "path": "impl/tests/version/run_version_tests.sh",
+      "sha256": "b86c5a9182cc8a1c0329ca329ef0647b67bd8df67c24283a8d1f34c105981471"
+    },
+    {
+      "path": "impl/tests/version/too_new.sleela",
+      "sha256": "c03c18947acb2a5800168b688b3d2534b1b82b80b0ec0ad5722741e51a3dd8fe"
+    },
+    {
+      "path": "impl/xclass/XCLASS.model",
+      "sha256": "11cc522e8ae69e1cea46f28266d19e71cb4b8f9f1956248cf4fb5830902ef4d2"
+    },
+    {
+      "path": "impl/xclass/xclass_loader.cpp",
+      "sha256": "513821a4e6015e254d5f93c3b67da1baefe606f6eaf50a097fb5b763285019c7"
+    },
+    {
+      "path": "impl/xclass/xclass_loader.h",
+      "sha256": "9eec57cae00563fd2d9e9010a40e9958bad8afdc7c18dc971a319e2bd42faae8"
+    },
+    {
+      "path": "inference-model/national_series.sleela",
+      "sha256": "2bc181a7eb16f05151dc9ca68c808965a400ff121435e7432613ac3e67762412"
+    },
+    {
+      "path": "inputs/ftp/FtpServer.sleela",
+      "sha256": "24ce2f32d20bb8cda5ee61473b7db7bf94cd6f033fb50202e1e203fcff67989a"
+    },
+    {
+      "path": "inputs/ftp/ftp_server.c",
+      "sha256": "7602aa6712cf56eb25dce6869606dc8f43218cd8fb514c12748fbe12d5eea13d"
+    },
+    {
+      "path": "inputs/http/HttpServer.sleela",
+      "sha256": "bc611388777974662b51c3c2ae86ac790dbd0d530fd138f9b56af6feb7f9a147"
+    },
+    {
+      "path": "inputs/http/http_server.c",
+      "sha256": "cff1dae12242d146aefd0b8ec429d98d24efc7f3a8266f7a6adf499c19bf1bf6"
+    },
+    {
+      "path": "inputs/ssh/SshServer.sleela",
+      "sha256": "74a623173c9f567e89892d108d8ec1fe8bd47746dfbbcc64f2c3610723a32ffb"
+    },
+    {
+      "path": "inputs/ssh/ssh_server.c",
+      "sha256": "4c48172c1ec16b6657ede014f77dce243c2e470797a10442b0cbd5e1a3ea3ba0"
+    },
+    {
+      "path": "international-criminal-court/ABOUT-THE-COURT.md",
+      "sha256": "fcfe1aaef631c5db0f65976bfe92e4e42a19de8e6765d4a89cb7da2525394f41"
+    },
+    {
+      "path": "international-criminal-court/CERTIFICATION-ICC-DISNEY.md",
+      "sha256": "781e6b434e406188f8aaa3eaee457a451121e0632e2df52a0e52cade79ff7904"
+    },
+    {
+      "path": "international-criminal-court/INTEGRITY.md",
+      "sha256": "96477aa3faebbc6ee982b06a254812811bbe1dadb8619175afee51ad84e592f9"
+    },
+    {
+      "path": "international-criminal-court/README.md",
+      "sha256": "5c02f4d546cb46d5d23e9d5278c090a003d5f6245f36397b9e23dd4c3f2e8861"
+    },
+    {
+      "path": "international-criminal-court/SHA256SUMS",
+      "sha256": "116634ab4a7d0f4e07440a9aa6a58187eea5233c62f11a677cf198c8762fbf03"
+    },
+    {
+      "path": "international-criminal-court/SIGNING.md",
+      "sha256": "6dca9690b2f27e4b814523f6b9107531fe34932cc261f2b6862474d297191cc3"
+    },
+    {
+      "path": "international-criminal-court/SignatorySeries.md",
+      "sha256": "44505dd4484e5c6cb0b35404f7b476719285ba9f3c8148f6d46f0e12c631c602"
+    },
+    {
+      "path": "java28/examples/run_demo.sh",
+      "sha256": "af8f3cd96317e43fa3c0e8e2f5ab55839f2af42c4c848958fa78361ad2ac40ae"
+    },
+    {
+      "path": "java28/src/native/sleela_java28.h",
+      "sha256": "01353a58a6f6244aed51d22593941b90787d376cfc9d3823315a53582ade600c"
+    },
+    {
+      "path": "java28/src/native/sleela_java28_bridge.c",
+      "sha256": "ff458364a931e902c3eb0d114cd81ffe0922fc8b280c970d5b0b824044d633bd"
+    },
+    {
+      "path": "java28/src/native/sleela_java28_demo.c",
+      "sha256": "0667c220ea9467cfc4fa67a9d57d7ccfb9d5561caaf277fc81562deed558a3cd"
+    },
+    {
+      "path": "java28/src/native/sleela_java28_port.c",
+      "sha256": "38233a205fb5cadae9bc835a4775bd9d2da06800290634cba44a0332ba6e3569"
+    },
+    {
+      "path": "journey/register.sleela",
+      "sha256": "36f070213ef6ee9d16ec3d1b0bce75a7e12d21363b1de1edda31b427f3fd39f6"
+    },
+    {
+      "path": "journey/register_catalog.sleela",
+      "sha256": "dd58dacd61b1180280dafb4658af809d94d1201be572671664672781afa6a9a6"
+    },
+    {
+      "path": "journey/register_core.sleela",
+      "sha256": "8a8b7fce0d2b99ad1b382e047211c4d626ba7119bc33f791bb44d96293e4bfe1"
+    },
+    {
+      "path": "journey/register_frontend.sleela",
+      "sha256": "ea1248fc8fd4ef633c47e81e66d19502f515a24d7f0da80b624c204386bcf5cb"
+    },
+    {
+      "path": "journey/register_nordshrift.sleela",
+      "sha256": "6443683e765daad4146c04a4f34e62a740365486879d5d0dc8ce9caeda59ce35"
+    },
+    {
+      "path": "journey/register_subjects.sleela",
+      "sha256": "13c56395c57b655010817d1a84a142bd132c136b48d5491efea360e74571bb07"
+    },
+    {
+      "path": "ledger/ledger.py",
+      "sha256": "16a25f23a0ec6918804bf971878213872940d1f54e1f2243889abef4b30815dc"
+    },
+    {
+      "path": "ledger/ledger_core.cpp",
+      "sha256": "b8f3897e19176a68e6bcba8c49a702084970c0d59cb77a80c7078613f334f21a"
+    },
+    {
+      "path": "ledger/ledger_core.h",
+      "sha256": "7e5f880e662f9167f49940b261f4584a49027523e96f7d15b6bf2c2ba690b5ae"
+    },
+    {
+      "path": "ledger/ledger_tool.cpp",
+      "sha256": "745e0b48aa471641cea47f57ce22a5822e776e9ed8930c2f2213acc41ea14449"
+    },
+    {
+      "path": "ledger/qr.py",
+      "sha256": "789d84e9fa8043189fc40ed7b0b292245bd22999d01030fa0e30c4be6663f696"
+    },
+    {
+      "path": "manifesto/manifesto.sleela",
+      "sha256": "d563a3b1badd2675e432c7144d4e67b27a04c66da74c9fdc03a3e5cfc81744b3"
+    },
+    {
+      "path": "modules/AE6E66/install/check-db.sh",
+      "sha256": "79f1e0f7a2847d62eaa72609b601b818fe339be563f413123e8683df4ac89d6a"
+    },
+    {
+      "path": "modules/AE6E66/install/install.sh",
+      "sha256": "c3d5276ee09c1c0b74aa2825c1d7c0f40f64844bfb128ec67fa995b5974da849"
+    },
+    {
+      "path": "modules/AE6E66/install/macos/check-db.sh",
+      "sha256": "15e127c64d6aa2d53c099a22548fed98799f2bee10d31eae9b3039abcb3b054d"
+    },
+    {
+      "path": "modules/AE6E66/install/macos/deploy-local.sh",
+      "sha256": "6a73b6506e6cb0f3ca1d0c9e00a895b50a5894843566b0ad829c5377c0dab19e"
+    },
+    {
+      "path": "modules/AE6E66/install/macos/test-jdbc.sh",
+      "sha256": "28164aef65f50af892397c23597be9d84d8a5219c45fcd8f80c9bc8f9c9c4cde"
+    },
+    {
+      "path": "modules/AE6E66/install/macos/test-local.sh",
+      "sha256": "07593b38c9ffcd9dfc06fac2a6bcdfc44109e200b8c047262b73c1b30409d9d0"
+    },
+    {
+      "path": "modules/AE6E66/install/test-jdbc.sh",
+      "sha256": "e9a3a44c6b256da0e1fe7962c4736b971dc6298590ea79f4ef1070e29dfafd12"
+    },
+    {
+      "path": "modules/AE6E66/install/test-local.sh",
+      "sha256": "4705c5c8b1ea74d8c40bc49527cc0397bd459d1ea80187dfa9c40659ba966daa"
+    },
+    {
+      "path": "modules/AE6E66/scripts/configure-local-server-macos.sh",
+      "sha256": "48873849cda2e90b2f8827208a41727f43e343d41678aa851de9dc5c897f7e2d"
+    },
+    {
+      "path": "modules/AE6E66/scripts/configure-local-server-windows.ps1",
+      "sha256": "49979c0926a322066551ad3a480706c220cbe9470dc2ffedb9f822a0ea67a960"
+    },
+    {
+      "path": "modules/AE6E66/scripts/configure-local-server.sh",
+      "sha256": "5fed63a50a2e7386e5038ffa683917c9556f7baa41f6d596ee952115efadca5a"
+    },
+    {
+      "path": "modules/AE6E66/scripts/install-mail-windows.ps1",
+      "sha256": "7e68d614d146a7b1f56be8010f614a85e8864429921d64d669a912194e362aee"
+    },
+    {
+      "path": "modules/AE6E66/scripts/install-postfix-dovecot.sh",
+      "sha256": "d2beff1dd6d0a6fd0d666ab7d9d2839452218492991f61a9b819b84ecfa35261"
+    },
+    {
+      "path": "modules/AE6E66/scripts/install-postfix-macos.sh",
+      "sha256": "756dbb6d324a9e9d7e7c009e9fab27fc4d21114b8fc3a1e670089826e3124a35"
+    },
+    {
+      "path": "modules/AE6E66/scripts/setup-dkim.sh",
+      "sha256": "869216060d58f9366bc6f829e2302590071abf6b254cddadaf48de75c30ee15a"
+    },
+    {
+      "path": "modules/AE6E66/scripts/setup-mysql-macos.sh",
+      "sha256": "494990be50b9ed3fa59e3cd1757e46dbc379c75870d841720d64360cfd1c94b8"
+    },
+    {
+      "path": "modules/AE6E66/scripts/setup-mysql-windows.ps1",
+      "sha256": "509d93d56df30f2917798339ad4fea9c964634b08859fd20e43f64b5d4c42335"
+    },
+    {
+      "path": "modules/AE6E66/scripts/setup-mysql.sh",
+      "sha256": "acef788b22ab76c0b6e6d8b9dee905f713acc0757ec478f2682b6c92fbaac3bd"
+    },
+    {
+      "path": "modules/AE6E66/scripts/verify-integrity.sh",
+      "sha256": "11f5114789271ca0eadd65c712ad0e36d47af3973b3f7976e406ad182868e6f4"
+    },
+    {
+      "path": "modules/AE6E66/servlets/deploy-local.sh",
+      "sha256": "57194e2783dda9c37b024860d3273c8f6e2a13775c2fdd27d3af30469d3f8749"
+    },
+    {
+      "path": "modules/AE6E66/servlets/setup-db.sh",
+      "sha256": "52fafae0d0a9d6fcc555d25247da4372c9858470457ff0c1ab4fd1f246d68ad1"
+    },
+    {
+      "path": "modules/AE6E66/shutdown-backend.sh",
+      "sha256": "288e8563482595ba98288d90ced1a0efe331dea0d7b4c65f684566f311884142"
+    },
+    {
+      "path": "modules/AE6E66/shutdown-frontend.sh",
+      "sha256": "b6836a7e0b802ca79a987dd1f9e9e8974c6b5b7672435bf946bb57cbe4c2c3de"
+    },
+    {
+      "path": "modules/AE6E66/shutdown.sh",
+      "sha256": "0cb69da4db243f689539659059c9d69956c8e203baea322f17f4617a2d8856d2"
+    },
+    {
+      "path": "modules/AE6E66/start-backend.sh",
+      "sha256": "439cdfde2fb5666fb51bd4a49a132e384bdeeccffcf5d4ccfb3b3009f615a3cc"
+    },
+    {
+      "path": "modules/AE6E66/start-frontend.sh",
+      "sha256": "8a6b8428db2bddd049a414fd25f581be986955f09cce84a9fc25c69795be6b40"
+    },
+    {
+      "path": "modules/AE6E66/start.sh",
+      "sha256": "236c6e2000e7036ca336419fc3f8ee44bcf86d266493edda78db85b44b5bf4bb"
+    },
+    {
+      "path": "munction/examples/reach_all_methods.sleela",
+      "sha256": "88a17bd02ba3f7093c8d802cdc3ea5a6c584b5092fe34b162d0cd1dc95e657cd"
+    },
+    {
+      "path": "munction/examples/reach_xyx.sleela",
+      "sha256": "974899a4321f04ff2ab7f4c386cb50a2ab449f96ea45c66171d34128541ad345"
+    },
+    {
+      "path": "psychiatry/keysearch.py",
+      "sha256": "f1aeb714584a303d55488de989ba554ea51b4ea4f8d55cf9e6097bbb4b7e126e"
+    },
+    {
+      "path": "rmi/examples/client/RmiClient.sleela",
+      "sha256": "c77dc7da8b405ecdb27a92420b2eb17d9365bb47ab5eaf1054f8f9b06a057eb5"
+    },
+    {
+      "path": "rmi/examples/server/RmiServer.sleela",
+      "sha256": "d5f7c61e4f0102bc9ac179621c1f712c8a02e1ce3c4ee104df9cb6ad6b105266"
+    },
+    {
+      "path": "runtime/Parameters.c",
+      "sha256": "2ddbcf30462309685c3288955689ddde4386d1266b7eb547db8c5cf5fa1dc032"
+    },
+    {
+      "path": "runtime/Parameters.h",
+      "sha256": "9fb58afb79bc6810452a31549d0e23f97d15ab8342db69634e03dd670299f693"
+    },
+    {
+      "path": "runtime/garbage_collector.c",
+      "sha256": "c46df4051227cfb1ebc9c2929b43e77127c4393f23793768d2b849de6d4f301e"
+    },
+    {
+      "path": "runtime/garbage_collector.h",
+      "sha256": "54abf07048bb00b4c36cd6b0365509f6adb31b7872fbad0d2625018423e320ce"
+    },
+    {
+      "path": "runtime/runtime_security.sleela",
+      "sha256": "e876e630d680cd6334687aa2fec3620e5147e22e22d6a35e0cff023ed263ed1f"
+    },
+    {
+      "path": "runtime/security_supervisor.c",
+      "sha256": "9edfa3ab07079020a12260690d83f1b15876f358e71d14fbab1d69dda4f7689d"
+    },
+    {
+      "path": "runtime/security_supervisor.h",
+      "sha256": "7512954269216c083e36eb3bdc7d68e6c343e3ef03d01e1957d471166ab01fa4"
+    },
+    {
+      "path": "scripts/build-linux.sh",
+      "sha256": "6b7ca951521779b6e8b2138921aebcc6c1a8f99f24d6fb80d38aa3f9dc11180f"
+    },
+    {
+      "path": "scripts/build-macos.sh",
+      "sha256": "c3b9224dfdaf7f1789042a29f0018fd1fc64ae7ae32719e5f0ba23cf638d5aae"
+    },
+    {
+      "path": "scripts/clean-build.sh",
+      "sha256": "ddef050f7edc1f5a859605d0bf6b0d22130e1c1005a346adfe1ee3efd9637486"
+    },
+    {
+      "path": "scripts/install-linux-h3.sh",
+      "sha256": "9126b61c6b42a943d21f93f30f92c74fc9d29db156846d48b3f0a2e5e0079102"
+    },
+    {
+      "path": "scripts/install-macos-h3.sh",
+      "sha256": "ab58f3e04c7f82d6cfdd22e2407bb548b2f2e9f5a47290ff36663c1b38fe7569"
+    },
+    {
+      "path": "scripts/install-windows-h3.ps1",
+      "sha256": "b30c014deb41cd78840467760510a418560181e2fc93bbcd71a8ffe835da2258"
+    },
+    {
+      "path": "security/BUILD-VERIFICATION.md",
+      "sha256": "f39e670249ceef447d356184646b7a4831d2d020b0e9bb1a2071ad9f0ca5069d"
+    },
+    {
+      "path": "security/IMPORTANT-SHA256.md",
+      "sha256": "efb0164ea88ae0c466cb9ac73f393c4f2f5eb280226a185065743a2f0fcb81fe"
+    },
+    {
+      "path": "server-edition/src/Server.sleela",
+      "sha256": "4caca8390328708ba3c93a35f095c7b9f6995db94d6beed8183c770bfcc82688"
+    },
+    {
+      "path": "sleela-terminal/arith.cpp",
+      "sha256": "d041b5ae99b5d1721f0984158aab72e808855b8e922572a52fbbf8826ec63abb"
+    },
+    {
+      "path": "sleela-terminal/arith.hpp",
+      "sha256": "ad89daf65b7eb86b4aaa64a7c6f53c3ce44718a3b31b625826f4a1731c20c4d3"
+    },
+    {
+      "path": "sleela-terminal/core.cpp",
+      "sha256": "c1b7c4439e1b674b80f2772165e1c8cdbead8e3355273852f0536ca59a342bd3"
+    },
+    {
+      "path": "sleela-terminal/core.hpp",
+      "sha256": "47b4bc8121826811e43fe386cfbcbe9090ba6335e9c63baac77eeaac7239a2aa"
+    },
+    {
+      "path": "sleela-terminal/executor.cpp",
+      "sha256": "15bbc50dc32fba41ad8c745a28ba282dc747dc97c29a617b2efb24383f3e803f"
+    },
+    {
+      "path": "sleela-terminal/executor.hpp",
+      "sha256": "d749952b4ca547fbeaf2d30f79cc87aab0582446118ee0027716d6a3c579dcb3"
+    },
+    {
+      "path": "sleela-terminal/expand.cpp",
+      "sha256": "b749e029aa3f563b14ae010479879f5a2cdbf1fc56e86ecab32ca8277bf79447"
+    },
+    {
+      "path": "sleela-terminal/expand.hpp",
+      "sha256": "05ff4d80267c7c9aaad8db0641879ee014ab112de10e50be8a92d7ca57fe5cf4"
+    },
+    {
+      "path": "sleela-terminal/fuzz.cpp",
+      "sha256": "4aab631d157255f14ccf30952ac938246901757c4661283dce30d3831b105545"
+    },
+    {
+      "path": "sleela-terminal/lexer.cpp",
+      "sha256": "d392189bbe349735f5f6b5b955a6c50d7bfd9977fd2ccaa94791995991b98e10"
+    },
+    {
+      "path": "sleela-terminal/lexer.hpp",
+      "sha256": "d74a0bb8c5573923076bdd414eccdf8c062555b8ee1a702f6dd295c1431cdd6b"
+    },
+    {
+      "path": "sleela-terminal/m5-smoke.sh",
+      "sha256": "ae9cb2b67d9b1baf76969dcc616be606f4cc398334da5f8e632a5aae016ed7b8"
+    },
+    {
+      "path": "sleela-terminal/m5.cpp",
+      "sha256": "0ee46c774fedf1c3ece12a0044b556e8425fdc21824dd3eac465f680c74b76d8"
+    },
+    {
+      "path": "sleela-terminal/m5.hpp",
+      "sha256": "38c69f0ad1e2c3b5da72b639b08e03a0ee64ed9c053d4d34532fdbe06299b497"
+    },
+    {
+      "path": "sleela-terminal/parser.cpp",
+      "sha256": "e8c679392c306a8f02d8cb27aad6604fec9f2b41c39d53f71fcac60868cf2c1f"
+    },
+    {
+      "path": "sleela-terminal/parser.hpp",
+      "sha256": "9072d0a8908d9312db123b2519fc3a567e2f8388392c50d3cfdd55b805becd6a"
+    },
+    {
+      "path": "sleela-terminal/sleelaterminal-gui.cpp",
+      "sha256": "cdbe117769ebae1d8c97732e6e24afcc8783a1751d3db5cda3e8bc092d42f47f"
+    },
+    {
+      "path": "sleela-terminal/slsh.cpp",
+      "sha256": "7cfcbf21a51dd6694428d1f5d1e863e1b1823a4142f50b492738dccdc8afb9c5"
+    },
+    {
+      "path": "sleela-terminal/smoke.cpp",
+      "sha256": "c85c8c329343a047034b5c94d8e750901c68df400e0feeee8ef401b0b996b17f"
+    },
+    {
+      "path": "sleela-terminal/tools/install/sleela-software.sh",
+      "sha256": "bea983eabb9f19f4c76e988753d527937c8d58c9dc1ce634c081692db2fdf45a"
+    },
+    {
+      "path": "social-model/social_model.sleela",
+      "sha256": "e37b4b9112824a4c28cf0724bee9c8c7f7fea82c517ba51e0723cfff14fa8d49"
+    },
+    {
+      "path": "synchro/synchro/__init__.py",
+      "sha256": "a0e423e7ffd655026abee6d5ce76139d1e4c786739e2f48a4859bb662a6c235b"
+    },
+    {
+      "path": "synchro/synchro/backend.py",
+      "sha256": "8388fc4f5b6ada78ae032f216b9f9f9eebacac9894c9d071bd95dc133ba85f04"
+    },
+    {
+      "path": "synchro/synchro/cli.py",
+      "sha256": "4bcb2be9be1cab7067b0fbadd14feacd0ece80cfd0f1b15bd5de4a937b27a715"
+    },
+    {
+      "path": "synchro/synchro/dispatcher.py",
+      "sha256": "dde693b6110ef7f79055776971be85bd841d5d1c4c0d47fb3c8f9953f0b34e25"
+    },
+    {
+      "path": "synchro/synchro/http2.py",
+      "sha256": "281ebd16bec692618167a832a86e05d6f0596f0aad44cf4438af4988d0a6e53c"
+    },
+    {
+      "path": "synchro/synchro/sla.py",
+      "sha256": "bde3b6fed9f558539d1fc372e1e47f60503caee8303d3aed6fc26eecfade1ad4"
+    },
+    {
+      "path": "synchro/synchro/stats.py",
+      "sha256": "2ec04b6af4cde10e02bf1386b29f4f26e476c63429f7f97f6dc48f4a394cf0ba"
+    },
+    {
+      "path": "synchro/tests/test_synchro.py",
+      "sha256": "77d79a21d1972688c3fa85c3e473f076a75be44158a2eec3a9887edfeb1d527c"
+    },
+    {
+      "path": "terminal_pixel/pixel_terminal.h",
+      "sha256": "d0ed0aa09d2e398afce86bb9b1c1b0910703066fa45bc8736a2e28740aff97c8"
+    },
+    {
+      "path": "tools/add-country-existence-dates.py",
+      "sha256": "f2872136bfb4644e1f66dde00bac4d8014045642a2bc4193b27aaee617fd0cb1"
+    },
+    {
+      "path": "tools/banking/generate_banks3.py",
+      "sha256": "523e41ea0e8c9595af69d49055df054980116f3ccb3c492abd811a6909455a6a"
+    },
+    {
+      "path": "tools/banking/generate_banks4.py",
+      "sha256": "d97446c373e42bcaf6f112e5dc70ecc8ab5b9564a44bce8386d299b284e78871"
+    },
+    {
+      "path": "tools/banking/generate_registry.py",
+      "sha256": "c1ae706a7acfa682ff5ab7a3cdadd49f4ae8fe2becc710aa315723ed3c6044b9"
+    },
+    {
+      "path": "tools/banking/merge_bank_currency_to_banks2.py",
+      "sha256": "d69e4016a6a202ada2768cf4873c963b18bc3d278757f3e55d3b65c62c3f53e4"
+    },
+    {
+      "path": "tools/banking/merge_banks.py",
+      "sha256": "287371177e6dee0e6757c65cb459a11fb515700aa1bec07d2625c105a1964b17"
+    },
+    {
+      "path": "tools/banking/populate_banks.py",
+      "sha256": "851daa61733b4b11a724514378f006ca673c9b6137c54a4562ea9f803e8f5a5a"
+    },
+    {
+      "path": "tools/banking/restore_bank_currencies.py",
+      "sha256": "a5d9b7f5baf0f8591b19959e9171608fa58d31169cbe0f0117ea388c9b685122"
+    },
+    {
+      "path": "tools/banking/update_banks4.py",
+      "sha256": "d9e4bb1bbbf4a29f96fd688aa5db3af02556a0fa400d50a00137a9110b8ff014"
+    },
+    {
+      "path": "tools/banking/update_banks4_socialism.py",
+      "sha256": "9c40256a69528fba2a94f23d77ebbc777160c942a7c54eece7becda40366d566"
+    },
+    {
+      "path": "tools/bodi/bodisysctl.c",
+      "sha256": "709ff856c3540094cdd345f0e4c771909d88ec89621416f6d2f2711d7c1c12fe"
+    },
+    {
+      "path": "tools/bodi/bodisysctl.cpp",
+      "sha256": "350c23eb7089cf8dfd724fe9dc15764599b93058a0a7dfb3e4663c5287677316"
+    },
+    {
+      "path": "tools/bodi/gardulus_ii.c",
+      "sha256": "4f8b0de53e0b8dee78f81fb4089d36edb409797b826b54c8c05fb35cd1f6d560"
+    },
+    {
+      "path": "tools/bodi/gardulus_ii.h",
+      "sha256": "c620e9add00ce25400a1752e2757640bde5db88c5b951b9549b2a22cc0430262"
+    },
+    {
+      "path": "tools/bodi/install-bodi.sh",
+      "sha256": "d6a3b399bb9369857f041d798946c7291fad7a212ad678593eaa9981a9e355ae"
+    },
+    {
+      "path": "tools/build-verified.sh",
+      "sha256": "2cb37004a85cddc6843f048b204b44a3407f7f0163c2746f418902a7d4e79dde"
+    },
+    {
+      "path": "tools/check-math-accuracy.py",
+      "sha256": "13f969a1047b10bdd01531454a6578a42d89ad1b943f7db1e0e6ffab253f32db"
+    },
+    {
+      "path": "tools/country-network-enclosure.py",
+      "sha256": "672dd5184d384e69c9eaaf93dd98f7232eb8728b0493f0127e8dd314b28f1c87"
+    },
+    {
+      "path": "tools/generate-enclosure-data.py",
+      "sha256": "fbe47ec4052b4a5de38ceb80ef0da6882621e329a9bff2f18e8f54eff86366e3"
+    },
+    {
+      "path": "tools/generate-important-sha256-manifest.py",
+      "sha256": "ddf791c4f8dfbbf353d9368d9da963abc398153f3757ad4480963327ee4e1940"
+    },
+    {
+      "path": "tools/generate-sha256-manifest.py",
+      "sha256": "6f870421c1fa092f0d7ce32c82ee58d2591ab9d8aa7600c7b768013b6d61a190"
+    },
+    {
+      "path": "tools/generate_bypass_holidays.py",
+      "sha256": "7a3f94b9142b52ae85629c16cbc5a51fe61e3794a7a59598107800409f99cd30"
+    },
+    {
+      "path": "tools/migrate-network-opcodes.py",
+      "sha256": "a9a72636153e8bef06a5fd3593159d63ec6ef16d257cb26147dde36cbb09aa71"
+    },
+    {
+      "path": "tools/normalize-bank-columns.py",
+      "sha256": "87e265cbe87eadbc8064a7ff0d20220078745defe2667d78859c3ca9a50443bc"
+    },
+    {
+      "path": "tools/os_floor/merge_floor_dispatch.py",
+      "sha256": "3228a9b34b63b065df0e2d7d18a05b671419f9c082a0e032af634c4421d9c0d4"
+    },
+    {
+      "path": "tools/populate-bank-country-years.py",
+      "sha256": "def9610ee02a5339d1837c731796322a06cb58da8545564241a854724d761fe9"
+    },
+    {
+      "path": "tools/populate-teeltails.py",
+      "sha256": "01c6aae36cbb8a09a13bc422e9c8c7c16d8e94ed0ab4d83bbe4007857d44de91"
+    },
+    {
+      "path": "tools/repair-bank-country-years.py",
+      "sha256": "bc5f00cb2063866c3c697877a0430b6f713c9cee38db55ffe265e40882eee052"
+    },
+    {
+      "path": "tools/sigil/png.py",
+      "sha256": "678f3a5325f57982565f23b4b180dadbcd2b24176200c8558c6ea472a398b18b"
+    },
+    {
+      "path": "tools/sigil/qr.py",
+      "sha256": "0fe971fce7b8495ab28f4a9ff3d7fc89d6e6aa3f40ddfdb090ad25ffd125b1ae"
+    },
+    {
+      "path": "tools/sigil/qr_decode_check.py",
+      "sha256": "41286898d725aaab83fd1466219af181d13602c3ace879cfa10895b4e78ace06"
+    },
+    {
+      "path": "tools/sigil/sigil.py",
+      "sha256": "03daa1f48b493eb5d733dbb60b55f7c6e63288f455a3bb78fca677aa05087b26"
+    },
+    {
+      "path": "tools/sigil/stego.py",
+      "sha256": "cacd4c5463dfc3ca06ee7685c83a1f9cc7791aaa98edcb976476300447253ed3"
+    },
+    {
+      "path": "tools/stock-market/market_engine.cpp",
+      "sha256": "d9a18a9b39fb29a5d672bb05e3ff1be9fac2aaeb92f98a1c19d49b0481c391b2"
+    },
+    {
+      "path": "tools/stock-market/market_engine.hpp",
+      "sha256": "7586699578d2394a8d47e945b754eb21d589370037124e47cf62e07d3a62e5a8"
+    },
+    {
+      "path": "tools/stock-market/market_engine_demo.cpp",
+      "sha256": "2d53dbaba52428039b4c5b393804006978638c7d94c8044b306d856ab1fdaba7"
+    },
+    {
+      "path": "tools/stock-market/stock-market.sh",
+      "sha256": "39f22fa5bacc2d10f9c9fa5561736b991c123a49b12720f737654175f1e7996a"
+    },
+    {
+      "path": "tools/verify-before-execution.py",
+      "sha256": "5ab3ec8051ec308680c5c684193985066cca1df30beaa63c8b6a173fe0becc2f"
+    },
+    {
+      "path": "tools/verify-update.sh",
+      "sha256": "e971b6e51e5b4987432fdcdc0e694752c0ca8b3a3b5738961573659e5647097c"
+    },
+    {
+      "path": "tutorial/demos/build.sst",
+      "sha256": "0db60e88a5afe5d5a62f9865cf76917e6c4db51e2f26a571d070a4f61a5a4ee0"
+    },
+    {
+      "path": "tutorial/demos/src/D01_Hello.sleela",
+      "sha256": "005891ef711d108052546820195e84f949ed3f74bb2a1eaed35c094b460717cb"
+    },
+    {
+      "path": "tutorial/demos/src/D02_Greeter.sleela",
+      "sha256": "3802888f186458e1e19c15b97de15f9b716356c6bb71df14ba72d465f6aeca9a"
+    },
+    {
+      "path": "tutorial/demos/src/D03_Rect.sleela",
+      "sha256": "9a0a0b23dcedf0447be0fd226f21e8fb958150e4c22c63b012d976bcfba95ae4"
+    },
+    {
+      "path": "tutorial/demos/src/D04_Counter.sleela",
+      "sha256": "93e84539280d7e75c4a18d5517dfbebb2f17fa09d9f7f7b9521b753cb36d31cf"
+    },
+    {
+      "path": "tutorial/demos/src/D05_Build.sleela",
+      "sha256": "b3ffe5b70ba3b43eb6193fe302f2c8ebfb30ea3009602aa7e3bafcf54d3cf49f"
+    },
+    {
+      "path": "tutorial/demos/src/D06_Triplet.sleela",
+      "sha256": "399d0196fc9f59ef2a48f099809a406650831bc548016963ada2de2e4693a048"
+    },
+    {
+      "path": "tutorial/demos/src/D07_Conducted.sleela",
+      "sha256": "6787821621b95b7bbe4930c14e62cdf438d07b7c1a397796ff953ac9c6719fee"
+    },
+    {
+      "path": "tutorial/demos/src/D08_Subject.sleela",
+      "sha256": "c202bd2af5c6ce717974201c47503c34a419c683018877d59cd489be152ab490"
+    },
+    {
+      "path": "tutorial/demos/src/D09_Verify.sleela",
+      "sha256": "ebaf39189e07a39f72e48332a3960bddb1c26b4cc6e1a6c2b986e45ee96e5049"
+    },
+    {
+      "path": "tutorial/demos/src/D10_Ledger.sleela",
+      "sha256": "96ac119ea6543b7f566b21477dddf8b544851faa257dc5587ae6f41ae4c3f159"
+    },
+    {
+      "path": "tutorial/demos/src/D11_Colors.sleela",
+      "sha256": "c1e7d28945f88ff4ae2770a8d66f60b705593bf8a62682dd2a678994ee1238f8"
+    },
+    {
+      "path": "tutorial/demos/src/D12_Capstone.sleela",
+      "sha256": "6526e472fac57648a4a9d30bd970b315ca13eea5abbe98b061a5ee0fde9188f4"
+    },
+    {
+      "path": "us-infrastructure/model.sleela",
+      "sha256": "b644a20a120d95b2ecc94c88b6525338350123fdc0b49b0904e413c21d13d96f"
+    }
+  ]
+}
