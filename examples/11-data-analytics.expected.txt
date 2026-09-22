@@ -1,0 +1,5 @@
+BODI witness project=example-data-analytics-001 sequence=001 domain=data-analytics operation=sum result=100 status=executed
+BODI witness project=example-data-analytics-001 sequence=002 domain=data-analytics operation=mean result=25 status=executed
+BODI witness project=example-data-analytics-001 sequence=003 domain=data-analytics operation=variance result=125 status=executed
+BODI witness project=example-data-analytics-001 sequence=004 domain=data-analytics operation=stddev result=11.180339887498949 status=executed
+BODI witness project=example-data-analytics-001 sequence=005 domain=data-analytics operation=correlation result=1 status=executed
