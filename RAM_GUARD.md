@@ -51,3 +51,39 @@ sleela exec   --config=FILE -- PROGRAM --number 5 --factor 0.95
 
 The existing SHA-256 execution gate remains in force before native execution.
 `--memory-manager` can be combined with `--config`.
+
+
+## Platform values
+
+The common configuration now declares the command-line targets:
+
+| Platform | Value |
+|---|---|
+| Linux | `platform.linux.enabled=true` |
+| Windows | `platform.windows.enabled=true` |
+| Windows minimum | `platform.windows.minimum=10` |
+| macOS | `platform.macos.enabled=true` |
+| macOS minimum | `platform.macos.minimum=12` |
+
+These values describe SLeeLa's supported command-line configuration targets.
+They do not claim that SLeeLa can directly program arbitrary DRAM timing or
+voltage registers.
+
+The same `config/sleela.properties.example` can be selected on Linux, Windows
+10+, and macOS. The executable receives its location through
+`SLEELA_CONFIG_FILE`, so platform-specific launchers do not need separate
+configuration syntax.
+
+### Windows
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\build-windows.ps1
+.\impl\build\sleela.exe exec --config config\sleela.properties.example -- .\program.exe --number 5 --factor 0.95
+```
+
+### macOS
+
+```bash
+./scripts/build-macos.sh
+./impl/build/sleela exec --config config/sleela.properties.example -- ./program --number 5 --factor 0.95
+```
