@@ -22,6 +22,48 @@ The source is C++17 and uses native process creation on each platform:
 `fork/exec/waitpid` on POSIX and `CreateProcess/WaitForSingleObject` on
 Windows.
 
+## NAT-aware operation
+
+The server can be deployed behind NAT without changing the authoritative
+Server.sleela program. Supported deployment paths are direct addressing,
+explicit port forwarding/PCP, native IPv6, persistent outbound TLS
+rendezvous/reverse connectivity, and authenticated relay operation.
+
+See NAT.md for the complete deployment model, CGN/double-NAT guidance,
+keepalive behavior, security requirements, firewall checklist, failure modes,
+and the roadmap for concrete transport adapters.
+
+The compiled launcher includes the nat_aware C++ configuration module.
+--nat-plan validates and prints the selected plan without making network
+connections or changing router state.
+
+For difficult NAT/CGN environments, the intended long-term path is an
+authenticated outbound TLS channel to a public rendezvous service. This keeps
+the local server behind the NAT while allowing the public service to associate
+remote requests with the established outbound connection.
+
+## NAT configuration
+
+    SLEELA_NAT_MODE
+    SLEELA_NAT_BIND_HOST
+    SLEELA_NAT_BIND_PORT
+    SLEELA_NAT_PUBLIC_HOST
+    SLEELA_NAT_PUBLIC_PORT
+    SLEELA_NAT_RENDEZVOUS
+    SLEELA_NAT_KEEPALIVE
+    SLEELA_NAT_TLS_REQUIRED
+
+Example:
+
+    export SLEELA_NAT_MODE=outbound
+    export SLEELA_NAT_RENDEZVOUS=relay.example:443
+    export SLEELA_NAT_KEEPALIVE=25
+    export SLEELA_NAT_TLS_REQUIRED=true
+    sleelas --nat-plan
+
+--nat-plan is deliberately a plan/validation command. It does not perform NAT
+traversal by itself.
+
 ## Engine resolution
 
 `SLEELA_BIN` may explicitly identify the engine. Otherwise the launcher looks
