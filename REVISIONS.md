@@ -34,3 +34,13 @@ Source-level changes were committed to `main`. Native Windows/macOS server build
 - Added `/api/API.html` as a repository-wide source API catalog covering native C/C++, C++, Java, and SLeeLa source units.
 - Included the Java connector class surfaces and existing Email Facade API documentation.
 - Kept the catalog source-derived and avoided inventing undocumented signatures.
+
+## 2026-09-22 — HTTP 3.0 extended logical ports
+
+- Added a 160-bit HTTP 3.0 logical port type supporting exactly (10^{48}) distinct values, from 0 through (10^{48}-1).
+- Added exact decimal conversion, validation, comparison, increment, and 20-byte network-order encoding in `http-3.0/http3_port.c`.
+- Added the actual logical PORT field to HTTP 3.0 textual and binary envelopes.
+- Included PORT in the canonical keyed-MAC input so a packet cannot silently change its destination/service port.
+- Added envelope APIs for setting a decimal or uint64 port and resealing the packet digest.
+- Added a boundary self-test and `http-3.0/PORTS.md`.
+- Documented the distinction between the protocol's logical port namespace and smaller native operating-system socket-port limits.
