@@ -312,7 +312,7 @@
     },
     {
       "path": "api/server/sleelas.cpp",
-      "sha256": "882ba30fa2cbf5ad7045dff5dab19207cd6a31edcb2735e3ea61d7e770f181d8"
+      "sha256": "c171613d3c5a496a7c947722f8974edf69e13c802f1c596166d9e994f1d72382"
     },
     {
       "path": "api/webserver/README.md",
@@ -3760,11 +3760,11 @@
     },
     {
       "path": "server-edition/moral/2/INSTALL.md",
-      "sha256": "0614b33753fdfd726d48babc5f5febffe2ea8baf2f70955cd3406e2f29bc6836"
+      "sha256": "28ed2dc50d6e8ae25e30aa351a097a494255a73920ce7b16b3f8c472ede2ff9d"
     },
     {
       "path": "server-edition/moral/2/README.md",
-      "sha256": "370cc69c6d94107d9b275abae9a44287670d90965c2f348516ad2b9671ebf5d5"
+      "sha256": "fd9b66734989cb83d3f2c0ff5cfbf3cc2bbe8aee783a8248ea031f1f8f96cca8"
     },
     {
       "path": "server-edition/moral/2/install/linux-install.sh",
@@ -3792,7 +3792,7 @@
     },
     {
       "path": "server-edition/moral/2/src/Server.sleela",
-      "sha256": "4b65bc5323a07896abebb2c8267f94a60eb2a032d5c066e23340facb9fc45aa9"
+      "sha256": "14961862280f3fbdd9d043d0c166e0226f0849c87ad753c6483af4c2e19983d8"
     },
     {
       "path": "server-edition/moral/3/IMPLEMENTATION.md",
@@ -3800,11 +3800,11 @@
     },
     {
       "path": "server-edition/moral/3/INSTALL.md",
-      "sha256": "36768a9cc82ed6837aff1e8aef783c9d2b378e3b64b416dcb92bc8707246f529"
+      "sha256": "04d740d88a76d4a1849dcd2e2fae0040f2355ae30a1bcf5424a2793654ad2714"
     },
     {
       "path": "server-edition/moral/3/README.md",
-      "sha256": "a2a8d05b1ac6968a45408a9500c70f4ca735ca7575b0c35037e4bde3b27b961f"
+      "sha256": "245fb877a5821eb1c532d8084cd8a259101cd7a329bd592fefce86c97558617f"
     },
     {
       "path": "server-edition/moral/3/install/linux-install.sh",
@@ -3832,11 +3832,11 @@
     },
     {
       "path": "server-edition/moral/3/src/Server.sleela",
-      "sha256": "c8f2b35fac01f8217c2b953d3bca3546e2fa769bd1ca3e0827bc681ef8d4c848"
+      "sha256": "fef23c4daada232e040c1b313700cf23d91fc64b44e885d579df333177ed292b"
     },
     {
       "path": "server-edition/moral/README.md",
-      "sha256": "08c680051ea51dac305eeca051de525a0927251597623853549e889b9df9c796"
+      "sha256": "81b74533f3f4e719471f3459981cebeee7290f69d34e8a06374a0addbdb1d213"
     },
     {
       "path": "sleela-terminal/arith.cpp",
