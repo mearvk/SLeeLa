@@ -45,9 +45,13 @@ public final class SleelaHttpConnector implements SleelaJavaConnector {
             URI uri = baseUri.resolve("invoke?operation=" +
                     URLEncoder.encode(invocation.operation(), StandardCharsets.UTF_8));
             String requestId = UUID.randomUUID().toString();
+            String requestId = UUID.randomUUID().toString();
             HttpRequest request = HttpRequest.newBuilder(uri)
                     .timeout(timeout)
                     .header("Content-Type", "text/plain; charset=utf-8")
+                    .header("Accept", "application/json, text/plain")
+                    .header("X-SLeeLa-Protocol-Version", "1")
+                    .header("X-SLeeLa-Request-ID", requestId)
                     .header("Accept", "application/json, text/plain")
                     .header("X-SLeeLa-Protocol-Version", "1")
                     .header("X-SLeeLa-Request-ID", requestId)
