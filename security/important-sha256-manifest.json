@@ -2836,7 +2836,7 @@
     },
     {
       "path": "impl/core/sleela_design_activity.c",
-      "sha256": "9aa284786e4d948dbd760ae734b4cfc314e4e9541f3999dccd2099f9eee6a49b"
+      "sha256": "6b87eeabaf0c9e872afaf1194f6c267d3f7427f8278e4f6d03cea367f325ca99"
     },
     {
       "path": "impl/core/sleela_design_activity.h",
@@ -3369,6 +3369,10 @@
     {
       "path": "impl/terminal/terminal_capability.hpp",
       "sha256": "5cac25a5d038932dab1e6163f5c6bde9055c5366934ea666d5d40eed90573b0d"
+    },
+    {
+      "path": "impl/tests/core/design_activity_smoke.c",
+      "sha256": "8228f4137bb09c432c470b8de6071b4b40799d3516a24f914c7e8ea190e96d5d"
     },
     {
       "path": "impl/tests/core/memmgr_smoke.c",
