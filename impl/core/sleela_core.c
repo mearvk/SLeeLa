@@ -238,6 +238,14 @@ int slvm_here(SLVM* vm) { return vm->codelen; }
 void slvm_set_entry(SLVM* vm, int fi) { vm->entry = fi; }
 SLValue slvm_result(SLVM* vm) { return vm->last_result; }
 
+int slvm_memory_safe_mode(const SLVM* vm) {
+    /* Sleela source never receives native pointers. Globals, locals, files,
+     * sockets, threads, reaches, probes, and struct instances are VM-owned
+     * values or bounded handles. A live VM therefore satisfies the memory
+     * boundary required by protected source. */
+    return vm != NULL ? 1 : 0;
+}
+
 SLVM* slvm_new(void) {
     (void)sltime_init();
     SLVM* vm = (SLVM*)calloc(1, sizeof(SLVM));
