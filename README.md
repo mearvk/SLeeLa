@@ -755,7 +755,7 @@ The standalone logical-port test is the smallest verification target; `demo` exe
 
 ## XML API projects and examples
 
-SLeeLa provides a source-backed BODI XML project layer under [`api/bodi/`](api/bodi/). XML projects can currently represent executable science operations, SMTP email, HTTP-style posts, listener declarations, and deterministic routers. The native C vocabulary for posts, listeners, and routers is under [`api/posting/`](api/posting/), [`api/listener/`](api/listener/), and [`api/router/`](api/router/).
+SLeeLa provides a source-backed BODI XML project layer under [`api/bodi/`](api/bodi/). XML projects can currently represent executable science operations — including math, physics, chemistry, and data analytics — plus SMTP email, HTTP-style posts, listener declarations, and deterministic routers. The native data-analytics shelf is under [`api/data-analytics/`](api/data-analytics/). The native C vocabulary for posts, listeners, and routers is under [`api/posting/`](api/posting/), [`api/listener/`](api/listener/), and [`api/router/`](api/router/).
 
 Runnable XML examples and expected BODI witness evidence are published under [`examples/`](examples/). Examples 07–09 demonstrate POST, listener, and router declarations without implicitly opening sockets or sending network traffic. The BODI runner uses an allow-listed dispatcher; XML cannot invoke arbitrary shell commands or arbitrary native functions.
 
