@@ -39,6 +39,7 @@
 
 #include "http3_mac.h"    /* HTTP3_MAC_KEY_BYTES, keyed-MAC DIGEST */
 #include "http3_basket.h" /* HTTP3_BASKET_BLOCK_SIZE, the per-packet basket */
+#include "http3_port.h"   /* 160-bit logical port number */
 
 #ifdef __cplusplus
 extern "C" {
@@ -76,6 +77,7 @@ typedef struct {
     uint32_t service_id;                           /* SERVICE-ID */
     uint32_t op_id;                                /* OP-ID      */
     uint64_t request_id;                           /* REQUEST-ID */
+    http3_port_t port;                              /* PORT: 0..10^48-1 */
     uint64_t nonce;                                /* NONCE (replay guard) */
     uint64_t digest;                               /* DIGEST     */
     uint64_t intactx;                              /* INTACTX    */
@@ -140,7 +142,7 @@ int http3_envelope_verify_digest(const http3_envelope_t *env,
 
 /* ---- Textual wire form (§5: textual for interoperability) -----------------
  * Line form (single line, newline-terminated):
- *   H3 <version> <flags> <service_id> <op_id> <request_id> <nonce> <digest> <intactx> <basket-hex> <payload_len>:<payload-bytes>
+ *   H3 <version> <flags> <service_id> <op_id> <request_id> <port> <nonce> <digest> <intactx> <basket-hex> <payload_len>:<payload-bytes>
  * BASKET travels as a lowercase-hex token (2*HTTP3_BASKET_BLOCK_SIZE chars).
  * The payload is length-prefixed so it is binary-safe and space-safe.
  */
@@ -149,9 +151,9 @@ int http3_envelope_unpack_text(const char *in, size_t in_len, http3_envelope_t *
 
 /* ---- Binary wire form (§5: binary for negotiated high performance) --------
  * Fixed header, big-endian, then the basket block, then raw payload:
- *   [ver:1][flags:1][service_id:4][op_id:4][request_id:8][nonce:8][digest:8][intactx:8][basket:HTTP3_BASKET_BLOCK_SIZE][payload_len:4][payload:N]
+ *   [ver:1][flags:1][service_id:4][op_id:4][request_id:8][port:20][nonce:8][digest:8][intactx:8][basket:HTTP3_BASKET_BLOCK_SIZE][payload_len:4][payload:N]
  */
-#define HTTP3_ENVELOPE_BIN_HEADER (46u + HTTP3_BASKET_BLOCK_SIZE)
+#define HTTP3_ENVELOPE_BIN_HEADER (66u + HTTP3_BASKET_BLOCK_SIZE)
 int http3_envelope_pack_binary(const http3_envelope_t *env, uint8_t *out, size_t out_cap, size_t *written);
 int http3_envelope_unpack_binary(const uint8_t *in, size_t in_len, http3_envelope_t *env);
 
