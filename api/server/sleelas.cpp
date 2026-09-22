@@ -120,6 +120,40 @@ static std::string utc_now() {
     char buf[64]; std::strftime(buf, sizeof(buf), "%Y-%m-%dT%H:%M:%SZ", &tm); return buf;
 }
 
+static int run_design_activity(const fs::path &root, const fs::path &engine, const std::vector<std::string> &activity) {
+#if defined(_WIN32)
+    std::string cmd = "\"" + engine.string() + "\" design-activity";
+    for (const auto &arg : activity) cmd += " \"" + arg + "\"";
+    STARTUPINFOA si{}; PROCESS_INFORMATION pi{}; si.cb = sizeof(si);
+    std::string mutable_cmd = cmd;
+    if (!CreateProcessA(nullptr, mutable_cmd.data(), nullptr, nullptr, FALSE, 0,
+                        nullptr, root.string().c_str(), &si, &pi)) {
+        std::cerr << "sleelas: CreateProcess failed: " << GetLastError() << "\n";
+        return 1;
+    }
+    WaitForSingleObject(pi.hProcess, INFINITE);
+    DWORD code = 1; GetExitCodeProcess(pi.hProcess, &code);
+    CloseHandle(pi.hThread); CloseHandle(pi.hProcess);
+    return static_cast<int>(code);
+#else
+    pid_t pid = fork();
+    if (pid < 0) { std::perror("sleelas: fork"); return 1; }
+    if (pid == 0) {
+        if (chdir(root.c_str()) != 0) std::exit(126);
+        std::vector<std::string> args = {engine.string(), "design-activity"};
+        args.insert(args.end(), activity.begin(), activity.end());
+        std::vector<char*> av;
+        for (auto &arg : args) av.push_back(arg.data());
+        av.push_back(nullptr);
+        execv(engine.c_str(), av.data());
+        std::perror("sleelas: exec"); std::exit(127);
+    }
+    int status = 0;
+    if (waitpid(pid, &status, 0) < 0) { std::perror("sleelas: waitpid"); return 1; }
+    return WIFEXITED(status) ? WEXITSTATUS(status) : 1;
+#endif
+}
+
 #if defined(_WIN32)
 static int run_engine(const fs::path &root, const fs::path &engine, const fs::path &server) {
     std::string cmd = "\"" + engine.string() + "\" run \"" + server.string() + "\"";
@@ -145,13 +179,20 @@ static int run_engine(const fs::path &root, const fs::path &engine, const fs::pa
 #endif
 
 int main(int argc, char **argv) {
-    bool tick = false, foreground = false, natPlanOnly = false, designActivity = false;\n    std::vector<std::string> activityArgs;
+    bool tick = false, foreground = false, natPlanOnly = false, designActivity = false;
+    std::vector<std::string> activityArgs;
     for (int i = 1; i < argc; ++i) {
         std::string a = argv[i];
         if (a == "--help" || a == "-h") { help(); return 0; }
         if (a == "--tick") { tick = true; continue; }
         if (a == "--foreground" || a == "-f") { foreground = true; continue; }
-        if (a == "--nat-plan") { natPlanOnly = true; continue; }\n        if (a == "--design-activity") {\n            if (i + 7 >= argc) { std::cerr << "sleelas: --design-activity requires science plus six 0-100 scores\\n"; return 2; }\n            designActivity = true;\n            for (int j = 1; j <= 7; ++j) activityArgs.push_back(argv[i + j]);\n            i += 7;\n            continue;\n        }
+        if (a == "--nat-plan") { natPlanOnly = true; continue; }
+        if (a == "--design-activity") {
+            if (i + 7 >= argc) { std::cerr << "sleelas: --design-activity requires science plus six 0-100 scores\\n"; return 2; }
+            designActivity = true;
+            for (int j = 1; j <= 7; ++j) activityArgs.push_back(argv[i + j]);
+            i += 7;
+            continue;\n        }
         std::cerr << "sleelas: unknown option '" << a << "' (use --help)\n"; return 2;
     }
     sleela::server::NatConfig natConfig;
@@ -160,7 +201,14 @@ int main(int argc, char **argv) {
         std::cerr << "sleelas: invalid NAT configuration: " << natError << "\\n";
         return 2;
     }
-    if (designActivity) {\n        const fs::path root = locate_root(executable_dir(argv[0]));\n        if (root.empty()) { std::cerr << "sleelas: SLeeLa root not found; set SLEELA_ROOT\\n"; return 1; }\n        const fs::path engine = locate_engine(root);\n        if (engine.empty()) { std::cerr << "sleelas: SLeeLa engine not found; set SLEELA_BIN or build impl/\\n"; return 1; }\n        return run_design_activity(root, engine, activityArgs);\n    }\n    if (natPlanOnly) {
+    if (designActivity) {
+        const fs::path root = locate_root(executable_dir(argv[0]));
+        if (root.empty()) { std::cerr << "sleelas: SLeeLa root not found; set SLEELA_ROOT\\n"; return 1; }
+        const fs::path engine = locate_engine(root);
+        if (engine.empty()) { std::cerr << "sleelas: SLeeLa engine not found; set SLEELA_BIN or build impl/\\n"; return 1; }
+        return run_design_activity(root, engine, activityArgs);
+    }
+    if (natPlanOnly) {
         const auto plan = sleela::server::makeNatPlan(natConfig);
         std::cout << "sleelas: NAT mode = " << sleela::server::natModeName(plan.mode) << "\\n"
                   << "sleelas: plan = " << plan.summary << "\\n"
