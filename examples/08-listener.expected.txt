@@ -1,0 +1,1 @@
+BODI witness project=example-listener-001 sequence=001 domain=listener operation=bind result=validated status=executed
