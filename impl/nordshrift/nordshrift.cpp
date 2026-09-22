@@ -103,6 +103,22 @@ static bool loadSheet(const std::string& path, Sheet& sheet, DiagnosticBag& diag
     return true;
 }
 
+static void reportInputObjects(const Sheet& sheet) {
+    if (sheet.inputObjects.empty()) return;
+    std::cout << "input-objects: " << sheet.inputObjects.size() << " object(s)\n";
+    for (const auto& o : sheet.inputObjects) {
+        std::cout << "  - " << inputObjectCategoryName(o.category)
+                  << ":" << o.identity;
+        if (!o.type.empty()) std::cout << " type=" << o.type;
+        if (!o.source.empty()) std::cout << " source=" << o.source;
+        if (!o.target.empty()) std::cout << " target=" << o.target;
+        if (!o.inputs.empty()) std::cout << " inputs=" << o.inputs.size();
+        if (!o.outputs.empty()) std::cout << " outputs=" << o.outputs.size();
+        if (!o.properties.empty()) std::cout << " properties=" << o.properties.size();
+        std::cout << "\n";
+    }
+}
+
 static void reportComponentSeries(const Sheet& sheet) {
     if (sheet.network.present) {
         std::cout << "network: " << sheet.network.objects.size()
@@ -239,7 +255,7 @@ static int doCheck(const std::string& path) {
               << diags.warningCount() << " warning(s)\n";
     if (!diags.hasErrors()) {
         std::cout << "OK: target-language = " << langName(sheet.target.language) << "\n";
-        reportComponentSeries(sheet);
+        reportComponentSeries(sheet);\n        reportInputObjects(sheet);
     }
     return diags.hasErrors() ? 1 : 0;
 }
