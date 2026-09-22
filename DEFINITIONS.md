@@ -182,3 +182,61 @@ For the protected boundary, `next.next` establishes the degree-2 requirement and
 ### 11.5 System Degree Chain
 
 A **System Degree Chain** is the ordered sequence of bounded `next` relations used to describe system traversal. In the protected-memory model the chain terminates at the declared System Degree 2 boundary and must not be interpreted as two pointer dereferences.
+
+
+## 12. Static Extension Viewpoint
+
+A **static extension of a System Degree 2 proposal** adds another two degrees of viewpoint assumption.
+
+The model is:
+
+```
+Degree 2 proposal:       next.next
+Static extension:        + 2
+Resulting viewpoint:    Degree 4
+```
+
+The explicit four-step idiom is:
+
+```
+next.next.next.next
+```
+
+This is a viewpoint marker, not four pointer dereferences.
+
+### 12.1 Visibility of Degrees 1 and 2
+
+A Degree-4 static viewpoint can name both of the lower bounded viewpoints:
+
+```
+next       -> Degree 1
+next.next  -> Degree 2
+```
+
+The ability to **see Degree 1** is not implicit pointer visibility. The compiler must programmatically back-propagate the Degree-1 request to its originating system node and validate that the request remains within the managed-memory boundary.
+
+### 12.2 Recursive Extension Rule
+
+For the current proposal model, a static extension of a Degree-2 proposal contributes exactly two additional viewpoint degrees:
+
+```
+2 + 2 = 4
+```
+
+The rule is intentionally bounded. It does not create arbitrary native pointer chains or unlimited memory traversal.
+
+### 12.3 Back-Propagation Requirement
+
+When a higher viewpoint requests a lower degree, the compiler traces the symbolic `next` relation back toward its origin before lowering the expression.
+
+Thus a Degree-4 viewpoint may expose:
+
+```
+Degree 4 viewpoint
+      |
+      +--> Degree 2: next.next
+      |
+      +--> Degree 1: next
+```
+
+The Degree-1 observation requires explicit compiler processing; it is not granted merely because the source expression has a higher viewpoint degree.
