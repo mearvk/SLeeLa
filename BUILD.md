@@ -59,6 +59,8 @@ The resulting executable is:
 impl/build/sleela
 ```
 
+The build also stages the complete macOS runtime layout under `impl/build/SLeeLa/`, including `Config/sleela.conf` and `Options/OPTIONS.md`. The macOS-specific descriptive defaults are available at `config/macos.properties.example`; the actual Darwin/POSIX implementation remains in `impl/core`.
+
 Run a configured executable:
 
 ```bash
