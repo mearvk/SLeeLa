@@ -3,8 +3,8 @@ set -eu
 umask 077
 DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 ROOT=$(CDPATH= cd -- "$DIR/../../.." && pwd)
-CONFIG="$DIR/config/server.conf"
-if [ -n "$SLEELA_SERVER_CONFIG" ] 2>/dev/null; then CONFIG="$SLEELA_SERVER_CONFIG"; fi
+CONFIG=$(printenv SLEELA_SERVER_CONFIG 2>/dev/null || true)
+[ -n "$CONFIG" ] || CONFIG="$DIR/config/server.conf"
 [ -f "$CONFIG" ] || { echo "serverd: configuration not found: $CONFIG" >&2; exit 1; }
 ENGINE=""; INBOX=""; STATE=""; SOURCE=""; LOG=""; RECOVERY=""; MODE="service"; TICK="false"; FOREGROUND="false"; PREFLIGHT="true"; MANIFEST=""; NETWORK="false"
 while IFS= read -r line || [ -n "$line" ]; do
