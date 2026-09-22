@@ -437,7 +437,87 @@ where practical.
 
 ---
 
-## 6. The Complete SLeeLa Journey
+
+---
+
+## 6. Technology Map — Both Three-Tuples
+
+The two three-tuples are also a map of the technologies used by SLeeLa.
+The technology is listed at the lifecycle stage and capability depth where it
+is principally used.
+
+### 6.1 START → MIDDLE → END Technologies
+
+| Technology | START | MIDDLE | END |
+|---|---|---|---|
+| **SLeeLa Language** | Source syntax, declarations, types | Lexer, parser, AST, semantic analysis, compiler | Executable program behavior |
+| **C / C++** | Native API declarations and source boundaries | Execution core, compiler/runtime, native bindings | Native binaries and operational results |
+| **Java-like Class System** | Classes, fields, methods, access modifiers | Static/protected semantics and managed execution | Class-based application behavior |
+| **Managed Memory** | Memory-safe source model | Runtime memory management and safety checks | Controlled resource lifetime |
+| **Compiler / AST** | Source acceptance and validation | Lexer → parser → AST → semantic validation → code generation | Valid executable representation |
+| **I/O** | CLI, stdin/stdout, configuration | Stream, buffer, console, and file implementations | Files, records, terminal output |
+| **File Systems** | File/path declarations | File and path services | Persistent artifacts |
+| **Networking** | Network declarations, posts, listeners, routers | Sockets, TCP/UDP, HTTP, TLS and routing boundaries | Network responses and server operation |
+| **HTTP** | HTTP/API declarations | HTTP service and transport implementations | HTTP responses and web services |
+| **Email / SMTP** | Email declarations | SMTP facade, TLS modes, credentials boundary | Email operation/result |
+| **Databases** | Database configuration | Database family/driver management and API contracts | Database operations/results |
+| **GUI / Application APIs** | Application input definitions | GUI/application facilities | User-facing application behavior |
+| **XML / XSD** | Structured input definitions | XML parsing and schema validation | Structured XML results |
+| **BODI XML** | Project/science/post/listener/router input | Bounded XML runner and dispatch | Witnessed, validated operations |
+| **Data Analytics** | Dataset input | Statistical computation APIs | Analytical results |
+| **Nordshrift** | Input objects, subjects, quantities, relations | Semantic coordination and transformation | Explanations, evidence, results and work plans |
+| **Security** | Capability and credential boundaries | SHA-256 verification, privilege/resource controls | Integrity and audit evidence |
+| **SHA-256** | Source/artifact identity | Build/runtime integrity verification | Verified artifact identity |
+| **Server / sleelas** | Server configuration | Launcher, process control, single-instance and NAT planning | Long-running server state |
+| **NAT / Network Adapters** | Network mode/configuration | Direct, port-forward, IPv6, outbound and relay planning | Operational connectivity plan |
+| **Cross-Platform Backends** | Platform declaration | Linux, macOS and Windows adapters | Platform-specific operational result |
+| **Testing / CI** | Testable source contract | Unit, integration, platform and failure testing | Verified build/release state |
+| **HTML / API Documentation** | Human-readable API entry point | Interface-to-implementation documentation | Inspectable software reference |
+
+### 6.2 NOVICE → INTERMEDIATE → ADVANCE Technologies
+
+| Technology | Novice | Intermediate | Advance |
+|---|---|---|---|
+| **SLeeLa Language** | Read and write basic programs | Build multi-file programs | Extend language semantics |
+| **C / C++** | Understand native boundary | Use native APIs and bindings | Extend compiler/runtime/native core |
+| **Classes / Types** | Classes, methods, values | Structured application models | Define language and type behavior |
+| **Compiler / AST** | Compile examples | Diagnose compiler stages | Modify lexer, parser, AST, semantics and code generation |
+| **I/O and Files** | Console and basic files | Structured file I/O and persistence | Design native I/O interfaces and platform backends |
+| **Networking / HTTP** | Use documented network examples | Build clients, routes and services | Design transport/server architecture |
+| **Email / SMTP** | Use documented email operations | Configure SMTP and TLS modes | Extend mail abstractions and security boundaries |
+| **Databases** | Understand database API concepts | Configure supported database clients | Extend database adapters and query architecture |
+| **GUI / Application APIs** | Use documented GUI facilities | Build application interfaces | Extend cross-platform GUI/application APIs |
+| **XML / BODI** | Read and run examples | Build structured BODI projects | Extend schemas, operations and dispatch |
+| **Data Analytics** | Run basic calculations | Analyze datasets and validate results | Extend analytical primitives and validation |
+| **Nordshrift** | Read input objects | Build semantic workflows | Extend semantic models, transformations and evidence |
+| **Security / SHA-256** | Understand integrity checks | Apply verification and credential boundaries | Design trust, integrity and execution boundaries |
+| **Server / sleelas** | Start and inspect a server | Configure, diagnose and operate services | Extend server architecture and lifecycle |
+| **NAT / Networking** | Understand network modes | Configure operational plans | Implement future discovery/relay adapters |
+| **Cross-Platform Support** | Run on a supported platform | Diagnose platform differences | Implement platform backends |
+| **Testing / CI** | Run tests | Write unit/integration tests | Design complete validation pipelines |
+| **API Documentation** | Navigate the API catalog | Connect interfaces to implementations | Design API contracts and documentation standards |
+
+### 6.3 Technology Relationship
+
+The technology model can therefore be read in both directions:
+
+**START → MIDDLE → END**
+
+defines **where a technology participates in the software lifecycle**,
+
+while:
+
+**NOVICE → INTERMEDIATE → ADVANCE**
+
+defines **how deeply that technology can be understood, used, tested, and
+extended**.
+
+A technology should move through both tuples without losing its contract:
+
+**DEFINE → IMPLEMENT → TEST → OPERATE → VALIDATE → DOCUMENT → EXTEND**
+
+
+## 7. The Complete SLeeLa Journey
 
 The lifecycle and capability tuples combine as follows:
 
@@ -484,7 +564,7 @@ three disconnected subsystems.
 
 ---
 
-## 7. Design Goals for the Software Already in the Repository
+## 8. Design Goals for the Software Already in the Repository
 
 The current repository contains substantially more than the compiler itself.
 That breadth should be organized around the Start/Middle/End model.
@@ -537,7 +617,7 @@ is missing when a feature is incomplete.
 
 ---
 
-## 8. What Must Be Addressed as SLeeLa Grows
+## 9. What Must Be Addressed as SLeeLa Grows
 
 The current repository demonstrates substantial implementation breadth. The
 next design work should concentrate on consistency rather than simply adding
@@ -594,7 +674,7 @@ native subject libraries continue to expand.
 
 ---
 
-## 9. End-State Vision
+## 10. End-State Vision
 
 The long-term SLeeLa design goal is a software system in which a developer can
 begin with a defined program, move through a controlled compiler/runtime and
@@ -639,7 +719,7 @@ That is the central purpose of SLeeLa:
 
 ---
 
-## 10. Guiding Rule
+## 11. Guiding Rule
 
 When deciding whether a new SLeeLa feature belongs in the project, ask:
 
