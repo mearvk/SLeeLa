@@ -18,6 +18,7 @@
 #include <string>
 #include <vector>
 #include <cstdlib>
+#include <cmath>
 
 #include "sst_lexer.h"
 #include "sst_parser.h"
