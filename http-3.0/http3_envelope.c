@@ -73,6 +73,25 @@ int http3_envelope_verify_digest(const http3_envelope_t *env,
     return http3_envelope_compute_digest(env, key) == env->digest ? 1 : 0;
 }
 
+int http3_envelope_set_port_decimal(http3_envelope_t *env,
+                                    const char *decimal,
+                                    const uint8_t key[HTTP3_MAC_KEY_BYTES])
+{
+    if (!env || !key || http3_port_from_decimal(&env->port, decimal) != 0) return -1;
+    env->digest = http3_envelope_compute_digest(env, key);
+    return 0;
+}
+
+int http3_envelope_set_port_u64(http3_envelope_t *env,
+                                uint64_t port,
+                                const uint8_t key[HTTP3_MAC_KEY_BYTES])
+{
+    if (!env || !key) return -1;
+    http3_port_from_u64(&env->port, port);
+    env->digest = http3_envelope_compute_digest(env, key);
+    return 0;
+}
+
 int http3_envelope_init(http3_envelope_t *env,
                         uint32_t service_id,
                         uint32_t op_id,
@@ -290,7 +309,7 @@ int http3_envelope_unpack_binary(const uint8_t *in, size_t in_len, http3_envelop
     if (in == NULL || env == NULL || in_len < HTTP3_ENVELOPE_BIN_HEADER) {
         return -1;
     }
-    payload_len = get_u32(in + 42 + HTTP3_BASKET_BLOCK_SIZE);
+    payload_len = get_u32(in + 62 + HTTP3_BASKET_BLOCK_SIZE);
     if (payload_len > HTTP3_ENVELOPE_MAX_PAYLOAD ||
         in_len < (size_t)HTTP3_ENVELOPE_BIN_HEADER + payload_len) {
         return -1;
@@ -301,10 +320,12 @@ int http3_envelope_unpack_binary(const uint8_t *in, size_t in_len, http3_envelop
     env->service_id = get_u32(in + 2);
     env->op_id = get_u32(in + 6);
     env->request_id = get_u64(in + 10);
-    env->nonce = get_u64(in + 18);
-    env->digest = get_u64(in + 26);
-    env->intactx = get_u64(in + 34);
-    memcpy(env->basket, in + 42, HTTP3_BASKET_BLOCK_SIZE);
+    memcpy(env->port.bytes, in + 18, HTTP3_PORT_BYTES);
+    if (!http3_port_is_valid(&env->port)) return -1;
+    env->nonce = get_u64(in + 38);
+    env->digest = get_u64(in + 46);
+    env->intactx = get_u64(in + 54);
+    memcpy(env->basket, in + 62, HTTP3_BASKET_BLOCK_SIZE);
     env->payload_len = payload_len;
     if (payload_len > 0U) {
         memcpy(env->payload, in + HTTP3_ENVELOPE_BIN_HEADER, payload_len);
