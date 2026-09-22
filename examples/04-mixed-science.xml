@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bodi version="1">
+  <project id="example-mixed-science-001" kind="science" title="Multiple Science Disciplines"/>
+  <science model="native">
+    <discipline name="math"><operation name="sqrt" sequence="001"><arg value="81"/></operation></discipline>
+    <discipline name="physics"><operation name="force" sequence="002"><arg value="5"/><arg value="9.8"/></operation></discipline>
+    <discipline name="chemistry"><operation name="ratio" sequence="003"><arg value="3"/><arg value="10"/></operation></discipline>
+  </science>
+</bodi>
