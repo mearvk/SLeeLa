@@ -17,7 +17,7 @@ static void fail(char *e,size_t n,const char *s){if(e&&n)snprintf(e,n,"%s",s?s:"
 static int field(const char*s,size_t n){return s&&*s&&strlen(s)<=n;}
 static int header_field(const char*s,size_t n){
  if(!field(s,n))return 0;
- return !strchr(s,'\\r')&&!strchr(s,'\\n');
+ return !strchr(s,'\r')&&!strchr(s,'\n');
 }
 const char *sleela_email_tls_mode_name(sleela_email_tls_mode_t m){return m==SLEELA_EMAIL_TLS_NONE?"none":m==SLEELA_EMAIL_TLS_STARTTLS?"starttls":m==SLEELA_EMAIL_TLS_IMPLICIT?"implicit":"unknown";}
 
