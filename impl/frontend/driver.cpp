@@ -135,6 +135,8 @@ static int verifyBeforeExecution(const fs::path&cwd){
 static const char* defenderRepo(){
 #ifdef _WIN32
     return "https://github.com/mearvk/Windows.Admin.Defender";
+#elif defined(__APPLE__)
+    return "unsupported-on-macos";
 #else
     return "https://github.com/mearvk/Linux.Admin.Defender";
 #endif
@@ -142,8 +144,17 @@ static const char* defenderRepo(){
 static const char* defenderName(){
 #ifdef _WIN32
     return "Windows.Admin.Defender";
+#elif defined(__APPLE__)
+    return "MacOS.Admin.Defender";
 #else
     return "Linux.Admin.Defender";
+#endif
+}
+static bool defenderPlatformSupported(){
+#if defined(_WIN32) || defined(__linux__)
+    return true;
+#else
+    return false;
 #endif
 }
 static bool findDownloader(std::string&tool){
@@ -157,6 +168,7 @@ static bool findDownloader(std::string&tool){
     return false;
 }
 static int defenderFetch(const fs::path&base,const DefenderOpts&opts){
+    if(!defenderPlatformSupported()){std::cerr<<"sleelvac: defender: no privileged Defender backend is implemented for macOS.\n";return 1;}
     std::string dl;if(!findDownloader(dl)){std::cerr<<"sleelvac: defender: neither curl nor wget is installed\n";return 1;}
     fs::create_directories(base);fs::path archive=base/(std::string(defenderName())+".zip");fs::path source=base/defenderName();
     if(fs::exists(source)){std::cout<<"[defender] source already exists: "<<source<<"\n";return 0;}
@@ -177,6 +189,7 @@ static int defenderFetch(const fs::path&base,const DefenderOpts&opts){
     std::cout<<"[defender] fetched "<<defenderRepo()<<" -> "<<source<<"\n";return 0;
 }
 static int defenderBuild(const fs::path&source){
+    if(!defenderPlatformSupported()){std::cerr<<"sleelvac: defender: no privileged Defender backend is implemented for macOS.\n";return 1;}
     if(!fs::exists(source)){std::cerr<<"sleelvac: defender: source not found: "<<source<<"\n";return 1;}
 #ifdef _WIN32
     fs::path script=source/"build"/"build.ps1";if(!fs::exists(script)){std::cerr<<"sleelvac: defender: missing build/build.ps1\n";return 1;}
@@ -187,6 +200,7 @@ static int defenderBuild(const fs::path&source){
 #endif
 }
 static int defenderInstall(const fs::path&source,const DefenderOpts&opts){
+    if(!defenderPlatformSupported()){std::cerr<<"sleelvac: defender: no privileged Defender backend is implemented for macOS.\n";return 1;}
     if(!opts.allowRoot){
         std::cerr<<"sleelvac: defender: installation requires elevated privileges and is refused by default.\n"
                    "  This step would install a privileged/kernel driver on this machine.\n"

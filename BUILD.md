@@ -9,6 +9,15 @@ SLeeLa's native command-line runner is configured for:
 - macOS
 
 The common runtime properties are stored in `config/sleela.properties.example`.
+
+The source itself contains native platform backends in `impl/core` for:
+- Windows: Win32 threads, Winsock, Win32 file I/O, LoadLibrary, ConPTY, and Windows timing.
+- macOS: POSIX threads, sockets, filesystem APIs, `dlopen`, POSIX PTY, and Darwin timing.
+- Linux: POSIX equivalents.
+
+The front end uses `std::filesystem` and the platform backend rather than embedding
+Linux-only process, path, terminal, or dynamic-library calls in the common C++
+path.
 The selected file is passed to native executables through the
 `SLEELA_CONFIG_FILE` environment variable.
 
@@ -113,3 +122,23 @@ The existing SHA-256 execution gate remains part of the build/runtime design.
 Before releasing a modified build, regenerate and verify the trusted manifest
 on the trusted build host rather than treating a source-only change as a
 verified binary release.
+
+
+## Source-level platform verification
+
+From the repository's `impl` directory, run:
+
+```text
+make test-platform
+```
+
+This exercises the native threading, networking, file-I/O, path, terminal/PTY,
+dynamic-library, and time abstraction smoke tests for the detected platform.
+
+On Windows 10+, the build selects the Win32 backend automatically when GNU Make
+sets `OS=Windows_NT`. On macOS, Darwin is detected from `uname -s` and the
+build omits the separate Linux `-ldl` requirement.
+
+The macOS Defender provisioning path is intentionally not presented as a Linux
+kernel-driver substitute. SLeeLa reports that no privileged Defender backend is
+implemented there rather than attempting to load a Linux kernel module.
