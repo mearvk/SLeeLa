@@ -91,3 +91,13 @@ Source-level changes were committed to `main`. Native Windows/macOS server build
 - Added backup-before-port-edit behavior on Unix adapters.
 - Kept administrator/root operations explicit and prevented silent selection of unsupported Apache distributions on Windows.
 - Added HTML API documentation and an example deployment environment profile.
+
+
+## 2026-09-22 — Native Database Connector
+
+- Added `api/database/` as a native database connectivity contract for web-aware and general SLeeLa applications.
+- Added PostgreSQL, MySQL, MariaDB, SQLite, Microsoft SQL Server, Oracle Database, and ODBC database-family vocabulary.
+- Added bounded C configuration validation and stable database-family names.
+- Added Linux, macOS, and Windows 8+ client/driver management adapters.
+- Added HTML API documentation and security guidance for credential handling and parameterized SQL.
+- Kept database server binaries and vendor drivers as explicit platform-managed dependencies rather than silently bundling or downloading arbitrary software.
