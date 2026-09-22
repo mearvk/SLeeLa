@@ -3759,7 +3759,11 @@
       "sha256": "efb0164ea88ae0c466cb9ac73f393c4f2f5eb280226a185065743a2f0fcb81fe"
     },
     {
-      "path": "server-edition/src/Server.sleela",
+      "path": "server-edition/moral/README.md",
+      "sha256": "30e20b732bfc87bf7df47cbf3368534f526c42ec0f265806ff14004c9f0a5623"
+    },
+    {
+      "path": "server-edition/moral/src/Server.sleela",
       "sha256": "4caca8390328708ba3c93a35f095c7b9f6995db94d6beed8183c770bfcc82688"
     },
     {
