@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# SLeeLa Server Edition Service 2
+# Discord-2™ — SLeeLa Server Edition Service 2
 set -eu
 umask 077
 DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
@@ -48,4 +48,4 @@ trap 'rmdir "$LOCK" 2>/dev/null || true' EXIT HUP INT TERM
 [ "$TICK" = true ] && printf "tick %s\n" "$(date -u +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || echo now)" >> "$INBOX"
 { echo "=== SLeeLa Server Edition Service 2 ==="; cd "$ROOT"; "$ENGINE" run "$SOURCE"; } >> "$LOG" 2>&1
 [ "$FOREGROUND" = true ] && tail -n 12 "$LOG"
-echo "serverd: completed; results=$LOG"
+echo "Discord-2™ serverd: completed; results=$LOG"
