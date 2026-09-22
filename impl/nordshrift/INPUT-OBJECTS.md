@@ -84,6 +84,22 @@ The categories correspond to the SLeeLa source architecture:
     security
     deployment
 
+NAT-aware deployment belongs to the deployment/network boundary. A server can
+declare a NAT-aware transport plan without making the declaration itself
+perform network activity.
+
+Example:
+
+    object deployment NatAwareServer:
+      type nat-aware-server
+      source "server-edition"
+      target "rendezvous"
+      inputs: [bind, endpoint, keepalive, tls]
+      outputs: [reachability, health]
+      property transport outbound
+      property authorization required
+      property tls required
+
 This permits a single sheet to describe a complete application boundary while retaining explicit validation and execution boundaries.
 
 ## Example
