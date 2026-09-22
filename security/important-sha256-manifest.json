@@ -76,7 +76,7 @@
     },
     {
       "path": "REVISIONS.md",
-      "sha256": "864e9d624e5df1095ba04f7575b3dc3064a8897e55b2f5f076cc2de444928882"
+      "sha256": "663bf8c356faecc939acd1ffbcabdec272f865e07f285dc4ba56f12f7952150c"
     },
     {
       "path": "SERVER.EDITION.md",
@@ -312,7 +312,7 @@
     },
     {
       "path": "api/server/sleelas.cpp",
-      "sha256": "9dc1c9ebc909aa268bc3f444226b870d04e6d22c8ba61d4a05219ae06723717a"
+      "sha256": "be9a6b6dc8357d795ca2bd89534497b0a15198c6dd9995c516c9a7a98206d6a1"
     },
     {
       "path": "api/webserver/README.md",
@@ -3759,8 +3759,44 @@
       "sha256": "efb0164ea88ae0c466cb9ac73f393c4f2f5eb280226a185065743a2f0fcb81fe"
     },
     {
+      "path": "server-edition/moral/2/INSTALL.md",
+      "sha256": "0614b33753fdfd726d48babc5f5febffe2ea8baf2f70955cd3406e2f29bc6836"
+    },
+    {
+      "path": "server-edition/moral/2/README.md",
+      "sha256": "370cc69c6d94107d9b275abae9a44287670d90965c2f348516ad2b9671ebf5d5"
+    },
+    {
+      "path": "server-edition/moral/2/install/linux-install.sh",
+      "sha256": "5369211fcab429dac8c136edb5aec32fa393bd4737400ba96171bcdfc9f74e07"
+    },
+    {
+      "path": "server-edition/moral/2/install/linux-uninstall.sh",
+      "sha256": "11e669481f3f052cf5d127ce7914698368cb5505ef1e696636dbcb2bfe7e1855"
+    },
+    {
+      "path": "server-edition/moral/2/install/macos-install.sh",
+      "sha256": "adfe13051a105092d53d33cb57a50fcc444e9a13df866a85e9c193d9078482d8"
+    },
+    {
+      "path": "server-edition/moral/2/install/macos-uninstall.sh",
+      "sha256": "0116a6602164e8f7eea74e6862bc1a4cd81472585a9f66f7f572240f16ad48c8"
+    },
+    {
+      "path": "server-edition/moral/2/install/windows-install.ps1",
+      "sha256": "0d291e0bbeb4c543da3148f41365e2fd074e0c15605b792a43ad097902125bbc"
+    },
+    {
+      "path": "server-edition/moral/2/install/windows-uninstall.ps1",
+      "sha256": "95e7c15bac272615fc79100c2a3cd73b49e2ebc04e979d92b5e46d90a9632bb3"
+    },
+    {
+      "path": "server-edition/moral/2/src/Server.sleela",
+      "sha256": "4b65bc5323a07896abebb2c8267f94a60eb2a032d5c066e23340facb9fc45aa9"
+    },
+    {
       "path": "server-edition/moral/README.md",
-      "sha256": "30e20b732bfc87bf7df47cbf3368534f526c42ec0f265806ff14004c9f0a5623"
+      "sha256": "56dff083dd036b0259b18376a5f8721c1317acdcb05110c31a0066f317a21173"
     },
     {
       "path": "server-edition/moral/src/Server.sleela",
