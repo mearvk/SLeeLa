@@ -44,6 +44,12 @@ CPPFLAGS += -Ifrontend $(SUBJECT_INCLUDES) -I../bash
 LDFLAGS ?= $(THREADFLAG)
 LIBS ?= $(PLATFORM_LIBS)
 BUILD := build
+STAGE := $(BUILD)/SLeeLa
+STAGE_BIN := $(STAGE)/bin
+STAGE_CONFIG := $(STAGE)/Config
+STAGE_OPTIONS := $(STAGE)/Options
+STAGE_LIB := $(STAGE)/lib
+STAGE_DOCS := $(STAGE)/docs
 SLEELA_BIN := $(BUILD)/sleela$(EXE)
 NORDSHRIFT_BIN := $(BUILD)/nordshrift$(EXE)
 THREAD_SMOKE := $(BUILD)/thread_smoke
@@ -116,10 +122,29 @@ else
 endif
 ALL_OBJECTS := $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(LANGIN_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(NS_OBJ) $(THREAD_SMOKE) $(SOCKET_SMOKE) $(SYNCHRO_SMOKE) $(MUNCTION_SMOKE) $(BESTOF_SMOKE) $(IO_PLATFORM_SMOKE) $(NET_PLATFORM_SMOKE) $(PATH_PLATFORM_SMOKE) $(TERMINAL_PLATFORM_SMOKE) $(LIBRARY_PLATFORM_SMOKE) $(PIXEL_TERMINAL_SMOKE) $(THREAD_PLATFORM_SMOKE)
 
-.PHONY: all test-platform build-verified rebuild-verified clean test test-sleela test-version test-nordshrift test-threads test-thread-platform test-network test-network-platform test-synchro test-munction test-bestof test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-chemistry test-financial test-math test-physics test-economics test-inference test-subjects verify-security build-runtime test-runtime test-memmgr
+.PHONY: all test-platform stage package build-verified rebuild-verified clean test test-sleela test-version test-nordshrift test-threads test-thread-platform test-network test-network-platform test-synchro test-munction test-bestof test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-chemistry test-financial test-math test-physics test-economics test-inference test-subjects verify-security build-runtime test-runtime test-memmgr
 
-all: verify-security $(SLEELA_BIN) $(NORDSHRIFT_BIN)
-build-verified: verify-security $(SLEELA_BIN) $(NORDSHRIFT_BIN)
+all: verify-security $(SLEELA_BIN) $(NORDSHRIFT_BIN) stage
+
+# Build a stable, self-describing runtime layout. Build objects remain in build/;
+# the staged result contains only runtime-facing files and the default Config
+# and Options sets. Config is intentionally consolidated so a fresh build has
+# one authoritative default configuration set.
+stage: verify-security $(SLEELA_BIN) $(NORDSHRIFT_BIN)
+	@rm -rf $(STAGE)
+	@mkdir -p $(STAGE_BIN) $(STAGE_CONFIG) $(STAGE_OPTIONS) $(STAGE_LIB) $(STAGE_DOCS)
+	@cp $(SLEELA_BIN) $(STAGE_BIN)/
+	@cp $(NORDSHRIFT_BIN) $(STAGE_BIN)/
+	@cp ../sleela.conf.example $(STAGE_CONFIG)/sleela.conf
+	@cp ../MEMORY_MANAGER.md $(STAGE_DOCS)/MEMORY_MANAGER.md
+	@cp ../PURPOSE.md $(STAGE_DOCS)/PURPOSE.md 2>/dev/null || true
+	@printf '%s\n' '# SLeeLa Build Options' '' 'The staged runtime uses the defaults in Config/sleela.conf.' '' 'Available command-line memory options:' '' '  --memory-manager       Use the default 2 GiB ceiling' '  --memory-manager=SIZE  Set 256M through 2G' '  --mm=SIZE              Short form of --memory-manager=SIZE' > $(STAGE_OPTIONS)/OPTIONS.md
+	@printf '%s\n' '# SLeeLa Runtime Layout' '' 'bin/       Executables' 'Config/    Consolidated default configuration' 'Options/   Runtime/build option reference' 'lib/       Reserved for runtime libraries' 'docs/      Runtime documentation' > $(STAGE)/README.md
+	@echo "=== staged SLeeLa runtime: $(STAGE) ==="
+
+package: stage
+	@echo "=== SLeeLa package layout ready: $(STAGE) ==="
+build-verified: verify-security $(SLEELA_BIN) $(NORDSHRIFT_BIN) stage
 rebuild-verified:
 	$(MAKE) clean
 	$(MAKE) build-verified
