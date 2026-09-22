@@ -40,7 +40,7 @@ static SLThreadMutex g_lock;
 static int  g_lock_ready = 0;
 
 static int      g_enabled = 0;
-static size_t   g_limit = 0;         /* 0 == unlimited                        */
+static size_t   g_limit = SLMM_DEFAULT_MEMORY_BYTES;
 static size_t   g_live_bytes = 0;
 static size_t   g_peak_bytes = 0;
 static size_t   g_live_allocs = 0;
@@ -77,10 +77,20 @@ static void* payload_of(SLMMHeader* h) {
 
 /* ---- public API ----------------------------------------------------------- */
 
+int slmm_valid_limit(size_t limit_bytes) {
+    return limit_bytes >= SLMM_MIN_MEMORY_BYTES && limit_bytes <= SLMM_MAX_MEMORY_BYTES;
+}
+
+static size_t normalize_limit(size_t limit_bytes) {
+    return limit_bytes == 0 ? SLMM_DEFAULT_MEMORY_BYTES : limit_bytes;
+}
+
 int slmm_enable(size_t limit_bytes) {
+    size_t normalized = normalize_limit(limit_bytes);
+    if (!slmm_valid_limit(normalized)) return -1;
     lock();
     g_enabled = 1;
-    g_limit = limit_bytes;
+    g_limit = normalized;
     g_last_status = SLMM_OK;
     unlock();
     return 0;
@@ -105,7 +115,9 @@ size_t slmm_limit(void) {
 }
 
 void slmm_set_limit(size_t limit_bytes) {
-    lock(); g_limit = limit_bytes; unlock();
+    size_t normalized = normalize_limit(limit_bytes);
+    if (!slmm_valid_limit(normalized)) return;
+    lock(); g_limit = normalized; unlock();
 }
 
 /* Allocate size payload bytes plus the header. Assumes g_lock is held. */
