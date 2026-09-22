@@ -9,8 +9,8 @@ endif
 
 all: sleelas$(EXE)
 
-sleelas$(EXE): sleelas.cpp
-	$(CXX) $(CXXFLAGS) sleelas.cpp -o $@
+sleelas$(EXE): sleelas.cpp nat_aware.cpp nat_aware.h
+	$(CXX) $(CXXFLAGS) sleelas.cpp nat_aware.cpp -o $@
 
 clean:
 	rm -f sleelas sleelas.exe
