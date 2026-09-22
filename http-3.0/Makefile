@@ -32,7 +32,8 @@ PROTO_SOURCES = \
 	http3_profile.c \
 	http3_timing.c \
 	http3_handshake.c \
-	http3_pipeline.c
+	http3_pipeline.c \
+	http3_port.c
 
 PROTO_OBJECTS = $(PROTO_SOURCES:.c=.o)
 
@@ -47,7 +48,7 @@ STATION_SOURCES = \
 STATION_OBJECTS = $(STATION_SOURCES:.c=.o)
 
 .PHONY: all clean selftest kds cpp-check proto pipeline-demo demo test \
-	station station-demo station-test kernel-check
+	station station-demo station-test kernel-check port-test
 
 all: selftest kds proto station
 
@@ -63,7 +64,7 @@ kds: key_distribution_server
 key_distribution_server: $(C_OBJECTS) key_distribution_server_main.o
 	$(CC) $(CFLAGS) -o $@ $^ $(OPENSSL_LIBS) $(THREAD_LIBS)
 
-# Build the protocol-core objects and the end-to-end flow demo.
+# Extended logical port namespace self-test.\nport-test: http3_port_test\n\nhttp3_port_test: http3_port.o http3_port_test.o\n\t$(CC) $(CFLAGS) -o $@ $^\n\n# Build the protocol-core objects and the end-to-end flow demo.
 proto: pipeline-demo
 
 pipeline-demo: http3_pipeline_demo
@@ -106,7 +107,7 @@ kernel-check:
 	$(MAKE) -C kernel check-headers || true
 
 clean:
-	rm -f $(C_OBJECTS) $(PROTO_OBJECTS) $(STATION_OBJECTS) crypto_selftest.o \
+	rm -f $(C_OBJECTS) $(PROTO_OBJECTS) $(STATION_OBJECTS) http3_port_test.o crypto_selftest.o \
 	      key_distribution_server_main.o http3_pipeline_demo.o station/station_demo.o \
-	      crypto_selftest key_distribution_server http3_pipeline_demo station/station_demo
+	      crypto_selftest key_distribution_server http3_pipeline_demo http3_port_test station/station_demo
 	rm -rf station/__pycache__ __pycache__
