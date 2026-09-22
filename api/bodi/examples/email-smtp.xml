@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bodi version="1">
+  <project id="smtp-demo-001" kind="email" title="SLeeLa SMTP XML Project"/>
+  <email>
+    <smtp host="smtp.example.invalid" port="587" tls="starttls" helo="sleela" username-env="SLEELA_SMTP_USER" password-env="SLEELA_SMTP_PASSWORD"/>
+    <message from="sender@example.invalid" to="recipient@example.invalid" subject="SLeeLa BODI XML test" body="This is a BODI XML SMTP project."/>
+  </email>
+</bodi>
