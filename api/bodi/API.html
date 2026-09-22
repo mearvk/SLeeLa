@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>SLeeLa BODI XML API Reference</title></head>
+<body><h1>SLeeLa BODI XML API Reference</h1>
+<p>The BODI XML runtime reads a bounded XML project and turns its declared operations into witnessed, deterministic SLeeLa API calls. XML is a project representation; it is not arbitrary native-code execution.</p>
+<h2>Envelope</h2><pre>&lt;bodi version="1"&gt;
+  &lt;project id="..." kind="science|email"/&gt;
+  ...
+&lt;/bodi&gt;</pre>
+<h2>Science projects</h2>
+<p>A science project contains one or more <code>discipline</code> elements. Supported executable disciplines in this first API are <code>math</code> and <code>physics</code>. The schema also reserves descriptive discipline names such as chemistry, biology, astronomy, earth-science, computer-science, and engineering for future native handlers.</p>
+<p>Operations use named functions and numeric arguments. Examples include <code>math.sqrt</code>, <code>math.pow</code>, <code>math.sin</code>, <code>physics.velocity</code>, <code>physics.force</code>, <code>physics.kinetic_energy</code>, <code>physics.gravitational_force</code>, <code>physics.ohms_voltage</code>, and <code>physics.electric_power</code>.</p>
+<h2>Email / SMTP projects</h2>
+<p>An email project declares an SMTP endpoint and a message. The password must be supplied by an environment variable through <code>password-env</code>; credentials are not intended to be stored in XML.</p>
+<p>Supported TLS modes map directly to the existing Email Facade: <code>none</code>, <code>starttls</code>, and <code>implicit</code>. The runner requires <code>--send-email</code> before it performs network submission.</p>
+<h2>BODI witness</h2><p>Every executed project operation produces a witness record containing project identity, sequence, discipline, operation, result, and status.</p>
+<h2>Execution boundary</h2><p>The runtime performs an allow-listed operation dispatch. Unknown elements, disciplines, operations, malformed numbers, and excessive input are rejected. XML cannot invoke shell commands or arbitrary native functions.</p>
+</body></html>
