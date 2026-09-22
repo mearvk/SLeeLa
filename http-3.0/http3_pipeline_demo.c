@@ -125,7 +125,7 @@ int main(void)
           "envelope initialized");
     CHECK(http3_envelope_set_port_decimal(&env, logical_port, mac_key) == 0, "extended logical port set and packet resealed");
     CHECK(http3_envelope_verify_digest(&env, mac_key), "per-packet keyed DIGEST verifies");
-    printf("  NONCE=%llu  DIGEST=%llu  INTACTX=%llu\n",
+    printf("  PORT=%s  NONCE=%llu  DIGEST=%llu  INTACTX=%llu\n", logical_port,
            (unsigned long long)env.nonce,
            (unsigned long long)env.digest, (unsigned long long)env.intactx);
 
