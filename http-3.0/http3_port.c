@@ -52,10 +52,7 @@ int http3_port_compare(const http3_port_t *a, const http3_port_t *b) {
 }
 
 int http3_port_is_valid(const http3_port_t *port) {
-    return port != NULL && http3_port_compare(port, (const http3_port_t *)&(http3_port_t){ { 
-        0xaf,0x29,0x8d,0x05,0x0e,0x43,0x95,0xd6,0x96,0x70,
-        0xb1,0x2b,0x7f,0x40,0xff,0xff,0xff,0xff,0xff,0xff
-    } }) <= 0;
+    return port != NULL && memcmp(port->bytes, k_max, HTTP3_PORT_BYTES) <= 0;
 }
 
 int http3_port_from_decimal(http3_port_t *port, const char *decimal) {
@@ -66,10 +63,7 @@ int http3_port_from_decimal(http3_port_t *port, const char *decimal) {
     memset(&value, 0, sizeof(value));
     for (; decimal[i] != '\0'; ++i)
         if (!mul10_add(&value, (unsigned)(decimal[i] - '0'))) return -1;
-    if (http3_port_compare(&value, (const http3_port_t *)&(http3_port_t){ { 
-        0xaf,0x29,0x8d,0x05,0x0e,0x43,0x95,0xd6,0x96,0x70,
-        0xb1,0x2b,0x7f,0x40,0xff,0xff,0xff,0xff,0xff,0xff
-    } }) > 0) return -1;
+    if (memcmp(value.bytes, k_max, HTTP3_PORT_BYTES) > 0) return -1;
     *port = value;
     return 0;
 }
@@ -103,10 +97,7 @@ int http3_port_to_decimal(const http3_port_t *port, char *out, size_t out_size) 
 int http3_port_increment(http3_port_t *port) {
     int i;
     if (!port || !http3_port_is_valid(port)) return -1;
-    if (http3_port_compare(port, (const http3_port_t *)&(http3_port_t){ { 
-        0xaf,0x29,0x8d,0x05,0x0e,0x43,0x95,0xd6,0x96,0x70,
-        0xb1,0x2b,0x7f,0x40,0xff,0xff,0xff,0xff,0xff,0xff
-    } }) == 0) return -1;
+    if (memcmp(port->bytes, k_max, HTTP3_PORT_BYTES) == 0) return -1;
     for (i = (int)HTTP3_PORT_BYTES - 1; i >= 0; --i) {
         if (++port->bytes[i] != 0u) return 0;
     }
