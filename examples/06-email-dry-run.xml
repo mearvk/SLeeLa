@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bodi version="1">
+  <project id="example-email-dry-run-001" kind="email" title="Safe SMTP Dry Run"/>
+  <email>
+    <smtp host="smtp.example.invalid" port="587" tls="starttls" username-env="SLEELA_SMTP_USER" password-env="SLEELA_SMTP_PASSWORD"/>
+    <message from="sender@example.invalid" to="recipient@example.invalid" subject="Dry Run" body="This XML project demonstrates the safe dry-run path."/>
+  </email>
+</bodi>
