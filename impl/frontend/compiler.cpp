@@ -7,6 +7,7 @@
 #include <stdexcept>
 #include <string>
 #include <vector>
+#include <set>
 
 namespace sleela {
 
@@ -72,11 +73,11 @@ public:
         }
         for(const auto& cls:prog_.classes) for(const auto& f:cls.fields){
             if(fieldGlobal_.count(f.name)) throw std::runtime_error("Semantic error: duplicate field '"+f.name+"'");
-            fieldGlobal_[f.name]=slvm_declare_global(vm_,f.name.c_str()); fields_.push_back(&f);
+            fieldGlobal_[f.name]=slvm_declare_global(vm_,f.name.c_str()); fieldProtected_[f.name]=f.isProtected; fieldOwner_[f.name]=cls.name; fields_.push_back(&f);
             if(structLayout_.count(f.type)) varType_[f.name]=f.type; // struct-typed global
         }
         for(const auto& cls:prog_.classes) for(const auto& m:cls.methods){
-            MethodInfo mi; mi.method=&m; mi.nlocals=countLocals(m); funcIndex_[m.name]=(int)methods_.size(); methods_.push_back(mi);
+            MethodInfo mi; mi.method=&m; mi.nlocals=countLocals(m); if (m.isProtected) protectedMethods_.insert(m.name); methodOwner_[m.name]=cls.name; funcIndex_[m.name]=(int)methods_.size(); methods_.push_back(mi);
         }
         if(funcIndex_.find("main")==funcIndex_.end()) throw std::runtime_error("Semantic error: no 'main' method found");
         for(auto& mi:methods_) emitMethod(mi);
@@ -88,8 +89,9 @@ private:
     // position (offset) and declared type, in declaration order.
     struct StructLayout { std::string name; int typeIndex=-1; std::map<std::string,int> fieldOffset; std::vector<std::string> fieldType; };
     const Program& prog_; SLVM* vm_; const catalog::Catalog* cat_; SyntaxVersion syntax_;
-    std::map<std::string,int> funcIndex_; std::vector<MethodInfo> methods_;
-    std::map<std::string,int> fieldGlobal_; std::vector<const Field*> fields_; MethodCtx* ctx_=nullptr;
+    std::map<std::string,int> funcIndex_; std::map<std::string,std::string> methodOwner_; std::set<std::string> protectedMethods_; std::vector<MethodInfo> methods_;
+    std::map<std::string,int> fieldGlobal_; std::map<std::string,bool> fieldProtected_; std::map<std::string,std::string> fieldOwner_; std::vector<const Field*> fields_; MethodCtx* ctx_=nullptr;
+    std::string currentClass_;
     std::map<std::string,StructLayout> structLayout_;
     // Track the declared type of each in-scope local/global so member access
     // can resolve `x.field` to the right struct layout. Names not present are
@@ -107,7 +109,7 @@ private:
     }
     int here(){return slvm_here(vm_);} int emit(SLOp op,int a=0){return slvm_emit(vm_,op,a);} void patch(int at,int target){slvm_patch(vm_,at,target);}
     void emitMethod(MethodInfo& mi){
-        const Method& m=*mi.method; MethodCtx ctx; for(const auto& p:m.params)ctx.declare(p.name);
+        const Method& m=*mi.method; MethodCtx ctx; currentClass_=methodOwner_[m.name]; for(const auto& p:m.params)ctx.declare(p.name);
         // Per-method type scope: seed parameter types, restore globals after.
         std::map<std::string,std::string> savedTypes=varType_;
         for(const auto& p:m.params) if(structLayout_.count(p.type)) varType_[p.name]=p.type;
@@ -128,7 +130,7 @@ private:
     }
     void emitBlock(const Block& b){for(const auto& s:b.stmts)emitStmt(s.get());}
     void emitVarDecl(const VarDecl& d){int slot=ctx_->declare(d.name);if(structLayout_.count(d.type))varType_[d.name]=d.type;if(d.init)emitExpr(d.init.get());else emit(OP_CONST,addNullConst());emit(OP_STOREL,slot);}
-    void emitAssign(const Assign& a){int slot=ctx_->slotOf(a.name);if(slot>=0){emitExpr(a.value.get());emit(OP_STOREL,slot);return;}int g=fieldSlot(a.name);if(g>=0){emitExpr(a.value.get());emit(OP_STOREG,g);return;}throw std::runtime_error("Semantic error: assignment to undeclared variable '"+a.name+"'");}
+    void emitAssign(const Assign& a){int slot=ctx_->slotOf(a.name);if(slot>=0){emitExpr(a.value.get());emit(OP_STOREL,slot);return;}int g=fieldSlot(a.name);if(g>=0){if(fieldProtected_[a.name] && fieldOwner_[a.name]!=currentClass_) throw std::runtime_error("protected field access denied");emitExpr(a.value.get());emit(OP_STOREG,g);return;}throw std::runtime_error("Semantic error: assignment to undeclared variable '"+a.name+"'");}
     void emitReturn(const ReturnStmt& r){if(r.value)emitExpr(r.value.get());else emit(OP_CONST,addNullConst());emit(OP_RET);}
     void emitFieldAssign(const FieldAssign& fa){int off=-1;memberLayout(fa.base.get(),fa.field,off);emitExpr(fa.base.get());emitExpr(fa.value.get());emit(OP_SETFIELD,off);emit(OP_POP);}
     void emitIf(const IfStmt& s){emitExpr(s.cond.get());int jf=emit(OP_JMPF,0);emitStmt(s.thenS.get());if(s.elseS){int jend=emit(OP_JMP,0);patch(jf,here());emitStmt(s.elseS.get());patch(jend,here());}else patch(jf,here());}
@@ -188,7 +190,7 @@ private:
         }
         throw std::runtime_error("Semantic error: unknown fluent method '."+m+"()' (Munction verbs: connect/enable/send/thatch/consume/latch/closeWithReceipt/reception)");
     }
-    void emitVar(const VarExpr& v){int slot=ctx_->slotOf(v.name);if(slot>=0){emit(OP_LOADL,slot);return;}int g=fieldSlot(v.name);if(g>=0){emit(OP_LOADG,g);return;}throw std::runtime_error("Semantic error: use of undeclared variable '"+v.name+"'");}
+    void emitVar(const VarExpr& v){int slot=ctx_->slotOf(v.name);if(slot>=0){emit(OP_LOADL,slot);return;}int g=fieldSlot(v.name);if(g>=0){if(fieldProtected_[v.name] && fieldOwner_[v.name]!=currentClass_) throw std::runtime_error("protected field access denied");emit(OP_LOADG,g);return;}throw std::runtime_error("Semantic error: use of undeclared variable '"+v.name+"'");}
     void emitUnary(const Unary& u){emitExpr(u.operand.get());if(u.op=="-")emit(OP_NEG);else if(u.op=="!")emit(OP_NOT);else throw std::runtime_error("Semantic error: unknown unary operator '"+u.op+"'");}
     void emitBinary(const Binary& b){emitExpr(b.lhs.get());emitExpr(b.rhs.get());const std::string&o=b.op;if(o=="+")emit(OP_ADD);else if(o=="-")emit(OP_SUB);else if(o=="*")emit(OP_MUL);else if(o=="/")emit(OP_DIV);else if(o=="%")emit(OP_MOD);else if(o=="==")emit(OP_EQ);else if(o=="!=")emit(OP_NE);else if(o=="<")emit(OP_LT);else if(o=="<=")emit(OP_LE);else if(o==">")emit(OP_GT);else if(o==">=")emit(OP_GE);else if(o=="&&")emit(OP_AND);else if(o=="||")emit(OP_OR);else throw std::runtime_error("Semantic error: unknown binary operator '"+o+"'");}
 
@@ -342,7 +344,7 @@ private:
         if(n=="degreemax"){if(!c.args.empty())throw std::runtime_error("Semantic error: degreemax() takes no arguments");emit(OP_CONST,slvm_add_const_int(vm_,cat_?cat_->complexityDegreeMax:0));return true;}
         return false;
     }
-    void emitCall(const Call& c){
+    void emitCall(const Call& c){ if(protectedMethods_.count(c.callee) && methodOwner_[c.callee]!=currentClass_) throw std::runtime_error("protected method access denied");
         if(tryEmitBuiltin(c))return; auto it=funcIndex_.find(c.callee); if(it==funcIndex_.end())throw std::runtime_error("Semantic error: call to unknown method '"+c.callee+"'");
         const Method* target=methods_[it->second].method; if((int)c.args.size()!=(int)target->params.size())throw std::runtime_error("Semantic error: method '"+c.callee+"' expects "+std::to_string(target->params.size())+" argument(s), got "+std::to_string(c.args.size()));
         for(const auto&a:c.args)emitExpr(a.get());emit(OP_CALL,it->second);
