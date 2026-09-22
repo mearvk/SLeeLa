@@ -14,8 +14,17 @@ make
 ./build/nordshrift build <sheet.sst>
 ```
 
-The Nordshrift build now includes `subject_model.cpp`, providing the common
-semantic model implementation.
+The Nordshrift build includes `subject_model.cpp` and `input_object.cpp`, providing the common semantic model and cross-domain SLeeLa input-object model.
+
+## Unified SLeeLa input objects
+
+Nordshrift accepts a generic `object` declaration for SLeeLa architecture inputs. Supported categories are `core`, `io`, `system`, `network`, `application`, `data`, `science`, `security`, and `deployment`.
+
+An input object carries an identity plus optional `type`, `source`, `target`, `value`, `inputs`, `outputs`, and named properties. Categories, members, string sizes, and collection counts are validated. Unknown categories and members are rejected.
+
+Generic objects complement the specialized `network`, `finance`, `reach`, `measure`, and `subject` structures. They are descriptive input contracts and do not implicitly open sockets, execute processes, access files, send email, connect to databases, or deploy services.
+
+See [`INPUT-OBJECTS.md`](INPUT-OBJECTS.md) and [`examples/input-objects.sst`](examples/input-objects.sst).
 
 ## 2.0 specification
 
