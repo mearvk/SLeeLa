@@ -56,7 +56,7 @@ jobs:
 
       - name: Commit manifest when changed
         run: |
-          if git diff --quiet -- security/important-sha256-manifest.json; then
+          if git diff --quiet -- security/important-sha256-manifest.json && git ls-files --error-unmatch security/important-sha256-manifest.json >/dev/null 2>&1; then
             echo "Important SHA-256 manifest is already current."
             exit 0
           fi
