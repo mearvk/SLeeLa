@@ -4,18 +4,12 @@ The API tree contains native C/C++ facades and SLeeLa mappings.
 
 ## Email Facade
 
-The Email Facade is at api/email.
+The Email Facade is at api/email. It provides SMTP-aware submission using plain SMTP, STARTTLS, and implicit TLS, with OpenSSL certificate validation and optional AUTH PLAIN when TLS is active.
 
-It provides SMTP-aware submission using:
-- SMTP over a plain socket;
-- SMTP STARTTLS;
-- SMTP implicit TLS;
-- OpenSSL certificate validation for TLS endpoints;
-- DNS-name or IP endpoint addressing;
-- optional local source-IP binding;
-- optional SMTP AUTH PLAIN when TLS is active;
-- bounded message fields and diagnostics.
+## BODI XML Projects
 
-The SLeeLa layer maps the native transport as native.email.send.
+The BODI XML API is at api/bodi.
 
-See email/API.html, email/index.html, email/smtp.html, and examples/email/SleelaDoc.md.
+It provides a versioned XML project envelope, BODI witness records, executable Math and Physics discipline handlers, SMTP project configuration backed by the existing Email Facade, environment-variable references for SMTP credentials, XML schema documentation, deterministic examples, and dry-run-by-default SMTP execution.
+
+See api/bodi/index.html and api/bodi/API.html.
