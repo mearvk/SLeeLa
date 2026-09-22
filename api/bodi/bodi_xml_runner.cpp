@@ -16,6 +16,7 @@
 #include "../posting/sleela_post.h"
 #include "../listener/sleela_listener.h"
 #include "../router/sleela_router.h"
+#include "../data-analytics/sleela_data_analytics.h"
 
 namespace {
 struct Node { std::string name; std::map<std::string,std::string> attr; std::vector<Node> child; std::string text; };
@@ -90,11 +91,29 @@ static double physicsop(const std::string&o,const std::vector<double>&x){
     if(o=="neutrino_oscillation_probability"&&x.size()==4){double s1=std::sin(2*x[0]),s2=std::sin(1.267*x[1]*x[2]/x[3]);return s1*s1*s2*s2;}
     throw std::runtime_error("unsupported physics operation or arity");
 }
+static double analyticsop(const std::string&o,const std::vector<double>&x){
+    if(x.empty())throw std::runtime_error("analytics requires at least one value");
+    sleela_data_analytics_set_t a{x.data(),x.size()}; double r=0; char err[128]={0};
+    if(sleela_data_analytics_validate(&a,err,sizeof(err)))throw std::runtime_error(err);
+    int ok=0;
+    if(o=="sum")ok=sleela_data_analytics_sum(&a,&r);
+    else if(o=="mean")ok=sleela_data_analytics_mean(&a,&r);
+    else if(o=="min")ok=sleela_data_analytics_min(&a,&r);
+    else if(o=="max")ok=sleela_data_analytics_max(&a,&r);
+    else if(o=="variance")ok=sleela_data_analytics_variance(&a,&r);
+    else if(o=="stddev")ok=sleela_data_analytics_stddev(&a,&r);
+    else if(o=="correlation"){
+        if(x.size()<4||x.size()%2)throw std::runtime_error("correlation requires two equally sized data sets");
+        sleela_data_analytics_set_t b{x.data()+x.size()/2,x.size()/2};
+        a.count=x.size()/2; ok=sleela_data_analytics_correlation(&a,&b,&r);
+    } else throw std::runtime_error("unsupported data-analytics operation or arity");
+    if(ok)throw std::runtime_error("data-analytics operation failed"); return r;
+}
 static void run_science(const Node&root,const Node&project){
     const Node*s=child(root,"science");if(!s)throw std::runtime_error("science project requires <science>");
     for(const Node*d:children(*s,"discipline"))for(const Node*o:children(*d,"operation")){
         const std::string domain=attr(*d,"name"),op=attr(*o,"name"),seq=attr(*o,"sequence","001");
-        try{double r=domain=="math"?mathop(op,args(*o)):domain=="physics"?physicsop(op,args(*o)):domain=="chemistry"?chemistryop(op,args(*o)):throw std::runtime_error("no executable XML handler for discipline");
+        try{double r=domain=="math"?mathop(op,args(*o)):domain=="physics"?physicsop(op,args(*o)):domain=="chemistry"?chemistryop(op,args(*o)):domain=="data-analytics"?analyticsop(op,args(*o)):throw std::runtime_error("no executable XML handler for discipline");
             std::ostringstream q;q<<std::setprecision(17)<<r;witness(attr(project,"id"),seq,domain,op,q.str(),"executed");
         }catch(const std::exception&e){witness(attr(project,"id"),seq,domain,op,e.what(),"rejected");}
     }
