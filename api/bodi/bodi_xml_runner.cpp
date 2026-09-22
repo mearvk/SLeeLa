@@ -67,6 +67,11 @@ static double mathop(const std::string&o,const std::vector<double>&x){
     if(o=="max"&&x.size()==2)return std::max(x[0],x[1]);if(o=="clamp"&&x.size()==3)return std::min(std::max(x[0],x[1]),x[2]);
     throw std::runtime_error("unsupported math operation or arity");
 }
+static double chemistryop(const std::string&o,const std::vector<double>&x){
+    if(o=="ratio"&&x.size()==2)return x[1]==0?0:x[0]/x[1];
+    if(o=="similarity"&&x.size()==2){double d=std::fabs(x[0]-x[1]),m=std::max(std::fabs(x[0]),std::fabs(x[1]));return m==0?1.0:std::max(0.0,1.0-d/m);}
+    throw std::runtime_error("unsupported chemistry operation or arity");
+}
 static double physicsop(const std::string&o,const std::vector<double>&x){
     constexpr double C=299792458.0,G=6.67430e-11;
     if(o=="velocity"&&x.size()==2)return x[0]/x[1];if(o=="acceleration"&&x.size()==2)return x[0]/x[1];
@@ -86,7 +91,7 @@ static void run_science(const Node&root,const Node&project){
     const Node*s=child(root,"science");if(!s)throw std::runtime_error("science project requires <science>");
     for(const Node*d:children(*s,"discipline"))for(const Node*o:children(*d,"operation")){
         const std::string domain=attr(*d,"name"),op=attr(*o,"name"),seq=attr(*o,"sequence","001");
-        try{double r=domain=="math"?mathop(op,args(*o)):domain=="physics"?physicsop(op,args(*o)):throw std::runtime_error("no executable XML handler for discipline");
+        try{double r=domain=="math"?mathop(op,args(*o)):domain=="physics"?physicsop(op,args(*o)):domain=="chemistry"?chemistryop(op,args(*o)):throw std::runtime_error("no executable XML handler for discipline");
             std::ostringstream q;q<<std::setprecision(17)<<r;witness(attr(project,"id"),seq,domain,op,q.str(),"executed");
         }catch(const std::exception&e){witness(attr(project,"id"),seq,domain,op,e.what(),"rejected");}
     }
