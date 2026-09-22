@@ -3799,10 +3799,6 @@
       "sha256": "56dff083dd036b0259b18376a5f8721c1317acdcb05110c31a0066f317a21173"
     },
     {
-      "path": "server-edition/moral/src/Server.sleela",
-      "sha256": "4caca8390328708ba3c93a35f095c7b9f6995db94d6beed8183c770bfcc82688"
-    },
-    {
       "path": "sleela-terminal/arith.cpp",
       "sha256": "d041b5ae99b5d1721f0984158aab72e808855b8e922572a52fbbf8826ec63abb"
     },
