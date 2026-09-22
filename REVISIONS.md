@@ -175,3 +175,14 @@ Source-level changes were committed to `main`. Native Windows/macOS server build
 - Added impl/examples/static-protected.sleela as a source example.
 - Added DEFINITIONS.md and expanded GLOSSARY.md with the static, protected, System Degree 2, managed-memory boundary, and protected-source gate terminology.
 - Preserved the existing VM handle model: Sleela source does not receive raw native pointers for runtime resources.
+
+
+## 2026-09-22 — Next / Next.Next system-degree idiom
+
+- Added the SLeeLa system-navigation idiom `next` for System Degree 1.
+- Added the exact `next.next` form for System Degree 2.
+- Defined compiler-side back-propagated degree validation so the two-degree protected boundary is explicit and bounded.
+- Defined the idiom as VM-safe symbolic navigation rather than native pointers or pointer arithmetic.
+- Kept longer `.next` chains outside the protected two-degree contract.
+- Added the terms to `DEFINITIONS.md` and `GLOSSARY.md`.
+- Updated `impl/examples/static-protected.sleela` to exercise both forms.
