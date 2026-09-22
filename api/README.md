@@ -31,3 +31,7 @@ The XML layer does not turn an XML document into arbitrary network execution. PO
 
     cd api/bodi
     make
+
+## Web Server Monitor
+
+`api/webserver/` provides the SLeeLa Apache/Tomcat deployment and monitoring module. It includes Linux, Windows 10+, and macOS adapters for installation, status, health checks, upgrades, port changes, validation, and explicit local WAR deployment to Tomcat. See `api/webserver/API.html` and `api/webserver/README.md`.
