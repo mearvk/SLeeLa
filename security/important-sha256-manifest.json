@@ -56,7 +56,7 @@
     },
     {
       "path": "MEMORY_MANAGER.md",
-      "sha256": "c7c614e067c7782839f4188d2266bf4a876023cbf6670ddb81e6402a592d9ac1"
+      "sha256": "fe1ac70ef4d9259a2fa7f6d8cf8ca4e43a6cc2238872a5cc84e5235edc231a3c"
     },
     {
       "path": "MUNCTION.md",
@@ -2860,11 +2860,11 @@
     },
     {
       "path": "impl/core/sleela_memmgr.c",
-      "sha256": "73291759a13050b2c5f369dd7ba07d1bc1e1c0788ff2097555d6301645708e42"
+      "sha256": "07a4fe4a85d3a72a4f9f7bf3162d7e24018281e340404521dd0c4ee707ba4ac6"
     },
     {
       "path": "impl/core/sleela_memmgr.h",
-      "sha256": "4dc39054b2a1ad4038e7d12fe63566d0a4dfb957e07ad0486e5fb5b93e454c74"
+      "sha256": "e1f4abf798bb8190bdb78f41f15a7c07a06440e26afdbf699eb718b50039a85a"
     },
     {
       "path": "impl/core/sleela_memory.c",
@@ -3064,7 +3064,7 @@
     },
     {
       "path": "impl/frontend/driver.cpp",
-      "sha256": "3a212a1808f6848fd4c8aa16787541311523ce6b6d8ac70646d7dc1a97798ba7"
+      "sha256": "19c8b433235cac1081395293a1170c314c44df299a1078e889bf9543310b3d46"
     },
     {
       "path": "impl/frontend/lexer.cpp",
