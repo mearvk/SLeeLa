@@ -3,7 +3,7 @@
 //
 // Native cross-platform launcher for the SLeeLa Server Edition.
 // The executable starts the authoritative server reference:
-//   server-edition/src/Server.sleela
+//   server-edition/moral/src/Server.sleela
 //
 // It intentionally launches the existing SLeeLa engine rather than
 // reimplementing the Server.sleela program.
@@ -49,10 +49,10 @@ static bool regular_file(const fs::path &p) { std::error_code ec; return fs::is_
 
 static fs::path locate_root(const fs::path &exe_dir) {
     if (const char *env = std::getenv("SLEELA_ROOT"); env && *env) {
-        fs::path p(env); if (regular_file(p / "server-edition/src/Server.sleela")) return p;
+        fs::path p(env); if (regular_file(p / "server-edition/moral/src/Server.sleela")) return p;
     }
     std::vector<fs::path> candidates = {exe_dir, exe_dir.parent_path(), exe_dir.parent_path().parent_path(), fs::current_path()};
-    for (const auto &p : candidates) if (regular_file(p / "server-edition/src/Server.sleela")) return p;
+    for (const auto &p : candidates) if (regular_file(p / "server-edition/moral/src/Server.sleela")) return p;
     return {};
 }
 
@@ -102,9 +102,10 @@ static bool acquire_lock(const fs::path &lock) {
 static void help() {
     std::cout << "SLeeLa Server Launcher (sleelas)\n"
               << "Starts the SLeeLa Server Edition reference program.\n\n"
-              << "Usage: sleelas [--tick] [--foreground] [--help]\n\n"
+              << "Usage: sleelas [--tick] [--foreground] [--design-activity SCIENCE C R O S R I] [--help]\n\n"
               << "  --tick          add a timestamped self-input before the server pass\n"
               << "  --foreground    show launcher status\n"
+              << "  --design-activity SCIENCE C R O S R I  emit the common Design Activity record\n"
               << "  --help          show this help\n";
 }
 
@@ -144,13 +145,13 @@ static int run_engine(const fs::path &root, const fs::path &engine, const fs::pa
 #endif
 
 int main(int argc, char **argv) {
-    bool tick = false, foreground = false, natPlanOnly = false;
+    bool tick = false, foreground = false, natPlanOnly = false, designActivity = false;\n    std::vector<std::string> activityArgs;
     for (int i = 1; i < argc; ++i) {
         std::string a = argv[i];
         if (a == "--help" || a == "-h") { help(); return 0; }
         if (a == "--tick") { tick = true; continue; }
         if (a == "--foreground" || a == "-f") { foreground = true; continue; }
-        if (a == "--nat-plan") { natPlanOnly = true; continue; }
+        if (a == "--nat-plan") { natPlanOnly = true; continue; }\n        if (a == "--design-activity") {\n            if (i + 7 >= argc) { std::cerr << "sleelas: --design-activity requires science plus six 0-100 scores\\n"; return 2; }\n            designActivity = true;\n            for (int j = 1; j <= 7; ++j) activityArgs.push_back(argv[i + j]);\n            i += 7;\n            continue;\n        }
         std::cerr << "sleelas: unknown option '" << a << "' (use --help)\n"; return 2;
     }
     sleela::server::NatConfig natConfig;
@@ -159,7 +160,7 @@ int main(int argc, char **argv) {
         std::cerr << "sleelas: invalid NAT configuration: " << natError << "\\n";
         return 2;
     }
-    if (natPlanOnly) {
+    if (designActivity) {\n        const fs::path root = locate_root(executable_dir(argv[0]));\n        if (root.empty()) { std::cerr << "sleelas: SLeeLa root not found; set SLEELA_ROOT\\n"; return 1; }\n        const fs::path engine = locate_engine(root);\n        if (engine.empty()) { std::cerr << "sleelas: SLeeLa engine not found; set SLEELA_BIN or build impl/\\n"; return 1; }\n        return run_design_activity(root, engine, activityArgs);\n    }\n    if (natPlanOnly) {
         const auto plan = sleela::server::makeNatPlan(natConfig);
         std::cout << "sleelas: NAT mode = " << sleela::server::natModeName(plan.mode) << "\\n"
                   << "sleelas: plan = " << plan.summary << "\\n"
@@ -168,7 +169,7 @@ int main(int argc, char **argv) {
     }
     const fs::path root = locate_root(executable_dir(argv[0]));
     if (root.empty()) { std::cerr << "sleelas: SLeeLa root not found; set SLEELA_ROOT\n"; return 1; }
-    const fs::path server = root / "server-edition/src/Server.sleela";
+    const fs::path server = root / "server-edition/moral/src/Server.sleela";
     const fs::path engine = locate_engine(root);
     if (engine.empty()) { std::cerr << "sleelas: SLeeLa engine not found; set SLEELA_BIN or build impl/\n"; return 1; }
     const fs::path inbox = root / "server-edition/inbox/requests.txt";
@@ -204,6 +205,6 @@ int main(int argc, char **argv) {
     if (foreground) std::cout << "sleelas: starting Server.sleela using " << engine << "\n";
     const int rc = run_engine(root, engine, server);
     if (rc != 0) { std::cerr << "sleelas: server reference exited with status " << rc << "\n"; return rc; }
-    std::cout << "sleelas: processed server-edition/src/Server.sleela -> " << log << "\n";
+    std::cout << "sleelas: processed server-edition/moral/src/Server.sleela -> " << log << "\n";
     return 0;
 }
