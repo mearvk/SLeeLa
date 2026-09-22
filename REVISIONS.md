@@ -212,3 +212,13 @@ Source-level changes were committed to `main`. Native Windows/macOS server build
 - Added `sleela design-activity ...` and `nordshrift design-activity ...` so both principal executables expose the same Design Activity contract.
 - Updated the native build to link one shared implementation into both executables.
 - Added `impl/DESIGN-ACTIVITY.md` documenting the norming model and the distinction between software-design variance and scientific measurement uncertainty.
+
+
+## 2026-09-22 — Server and Service Service 2
+
+- Expanded `server-edition/moral/2/` into the configuration-driven Server and Service package.
+- Added declarative configuration for engine, source, inbox, state, logs, integrity manifest, lifecycle mode, tick, foreground operation, and network policy.
+- Added Linux/systemd, macOS/launchd, and Windows installation/removal artifacts.
+- Added platform service definitions and installation documentation.
+- Kept runtime state outside the source package and defaulted Service 2 to local-only operation.
+- Moved the authoritative Server Edition source into the Service 2 source boundary at `moral/2/src/Server.sleela`.

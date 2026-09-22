@@ -1,0 +1,11 @@
+# SLeeLa Server Edition Service 2 configuration
+engine=../../../../impl/build/sleela
+inbox=../../../../server-edition/inbox/requests.txt
+state=../../../../server-edition/state
+server_source=../src/Server.sleela
+log=../../../../server-edition/state/results.log
+mode=local
+tick=false
+foreground=false
+sha256_manifest=../../../../security/important-sha256-manifest.json
+allow_network=false

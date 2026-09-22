@@ -3,7 +3,7 @@
 //
 // Native cross-platform launcher for the SLeeLa Server Edition.
 // The executable starts the authoritative server reference:
-//   server-edition/moral/src/Server.sleela
+//   server-edition/moral/2/src/Server.sleela
 //
 // It intentionally launches the existing SLeeLa engine rather than
 // reimplementing the Server.sleela program.
@@ -49,10 +49,10 @@ static bool regular_file(const fs::path &p) { std::error_code ec; return fs::is_
 
 static fs::path locate_root(const fs::path &exe_dir) {
     if (const char *env = std::getenv("SLEELA_ROOT"); env && *env) {
-        fs::path p(env); if (regular_file(p / "server-edition/moral/src/Server.sleela")) return p;
+        fs::path p(env); if (regular_file(p / "server-edition/moral/2/src/Server.sleela")) return p;
     }
     std::vector<fs::path> candidates = {exe_dir, exe_dir.parent_path(), exe_dir.parent_path().parent_path(), fs::current_path()};
-    for (const auto &p : candidates) if (regular_file(p / "server-edition/moral/src/Server.sleela")) return p;
+    for (const auto &p : candidates) if (regular_file(p / "server-edition/moral/2/src/Server.sleela")) return p;
     return {};
 }
 
@@ -169,7 +169,7 @@ int main(int argc, char **argv) {
     }
     const fs::path root = locate_root(executable_dir(argv[0]));
     if (root.empty()) { std::cerr << "sleelas: SLeeLa root not found; set SLEELA_ROOT\n"; return 1; }
-    const fs::path server = root / "server-edition/moral/src/Server.sleela";
+    const fs::path server = root / "server-edition/moral/2/src/Server.sleela";
     const fs::path engine = locate_engine(root);
     if (engine.empty()) { std::cerr << "sleelas: SLeeLa engine not found; set SLEELA_BIN or build impl/\n"; return 1; }
     const fs::path inbox = root / "server-edition/inbox/requests.txt";
@@ -205,6 +205,6 @@ int main(int argc, char **argv) {
     if (foreground) std::cout << "sleelas: starting Server.sleela using " << engine << "\n";
     const int rc = run_engine(root, engine, server);
     if (rc != 0) { std::cerr << "sleelas: server reference exited with status " << rc << "\n"; return rc; }
-    std::cout << "sleelas: processed server-edition/moral/src/Server.sleela -> " << log << "\n";
+    std::cout << "sleelas: processed server-edition/moral/2/src/Server.sleela -> " << log << "\n";
     return 0;
 }

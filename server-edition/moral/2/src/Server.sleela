@@ -1,0 +1,55 @@
+#sleela 1.3
+// SLeeLa Server Edition Service 2.
+// The service owns configuration/lifecycle; this program owns processing.
+class Server {
+    String inboxPath = "server-edition/inbox/requests.txt";
+    String statePath = "server-edition/state/results.log";
+    int requests = 0;
+    int reaches = 0;
+    int probes = 0;
+    int selector = 0;
+    void configureSelector() {
+        selector = bestOfNew();
+        bestOfWeight(selector, 0, 55);
+        bestOfWeight(selector, 1, 30);
+        bestOfWeight(selector, 2, 10);
+        bestOfWeight(selector, 3, 5);
+        bestOfMinVersion(selector, 1);
+        bestOfCostBudget(selector, 100);
+        bestOfWeight(selector, 4, 15);
+        int sdps = bestOfCandidate(selector, "local-sdps", "sdps://127.0.0.1:19866", 200, 64, 5, 5, 2, 10, 3);
+        int tcp = bestOfCandidate(selector, "local-tcp", "tcp://127.0.0.1:8080", 500, 128, 0, 2, 1, 20, 1);
+        bestOfCandidateArch(selector, sdps, 1, 46, 1);
+        bestOfCandidateArch(selector, tcp, 0, 0, 0);
+    }
+    void processRequest(String line) {
+        if (line == "") return;
+        requests = requests + 1;
+        String receipt = Munction.start("intake").connect("pipe:server-edition/state/intake").send(line).thatch("frame,record").consume().latch().closeWithReceipt();
+        reaches = reaches + 1;
+        int p = synchroOpen("127.0.0.1", 9);
+        if (p >= 0) {
+            int rtt = synchroDispatch(p, 64, 20);
+            bestOfRecord(selector, 0, rtt);
+            probes = probes + 1;
+            synchroClose(p);
+        }
+        print("request " + requests + ": reached; " + receipt);
+    }
+    void main() {
+        configureSelector();
+        int fd = openFile(inboxPath, "r");
+        if (fd >= 0) {
+            String content = read(fd);
+            close(fd);
+            if (content != "") processRequest(content);
+        } else {
+            print("server: no inbox at " + inboxPath + " (idle, quiet)");
+        }
+        int winner = bestOfBest(selector);
+        print("server: best-of route index " + winner);
+        print("server: chosen route -> " + bestOfChoice(selector));
+        print("server: processed requests=" + requests + " reaches=" + reaches + " probes=" + probes);
+        bestOfClose(selector);
+    }
+}

@@ -1,0 +1,51 @@
+#!/usr/bin/env sh
+# SLeeLa Server Edition Service 2
+set -eu
+umask 077
+DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+ROOT=$(CDPATH= cd -- "$DIR/../../.." && pwd)
+CONFIG="${SLEELA_SERVER_CONFIG:-$DIR/config/server.conf}"
+[ -f "$CONFIG" ] || { echo "serverd: configuration not found: $CONFIG" >&2; exit 1; }
+ENGINE=""
+INBOX=""
+STATE=""
+SOURCE=""
+LOG=""
+MODE="local"
+TICK="false"
+FOREGROUND="false"
+MANIFEST=""
+NETWORK="false"
+while IFS= read -r line || [ -n "$line" ]; do
+  case "$line" in ""|#*) continue;; esac
+  case "$line" in *=*) key=${line%%=*}; value=${line#*=};; *) echo "serverd: invalid configuration line" >&2; exit 2;; esac
+  case "$key" in
+    engine) ENGINE=$value;; inbox) INBOX=$value;; state) STATE=$value;; server_source) SOURCE=$value;;
+    log) LOG=$value;; mode) MODE=$value;; tick) TICK=$value;; foreground) FOREGROUND=$value;;
+    sha256_manifest) MANIFEST=$value;; allow_network) NETWORK=$value;;
+    *) echo "serverd: unknown configuration key: $key" >&2; exit 2;;
+  esac
+done < "$CONFIG"
+[ -n "$ENGINE" ] || ENGINE="$ROOT/impl/build/sleela"
+[ -n "$INBOX" ] || INBOX="$ROOT/server-edition/inbox/requests.txt"
+[ -n "$STATE" ] || STATE="$ROOT/server-edition/state"
+[ -n "$SOURCE" ] || SOURCE="$DIR/src/Server.sleela"
+[ -n "$LOG" ] || LOG="$STATE/results.log"
+[ -n "$MANIFEST" ] || MANIFEST="$ROOT/security/important-sha256-manifest.json"
+case "$MODE" in local|service) ;; *) echo "serverd: mode must be local or service" >&2; exit 2;; esac
+case "$TICK" in true|false) ;; *) echo "serverd: tick must be true or false" >&2; exit 2;; esac
+case "$FOREGROUND" in true|false) ;; *) echo "serverd: foreground must be true or false" >&2; exit 2;; esac
+case "$NETWORK" in true|false) ;; *) echo "serverd: allow_network must be true or false" >&2; exit 2;; esac
+[ -x "$ENGINE" ] || { echo "serverd: engine not executable: $ENGINE" >&2; exit 1; }
+[ -f "$SOURCE" ] || { echo "serverd: source not found: $SOURCE" >&2; exit 1; }
+export SLEELA_BIN="$ENGINE" SLEELA_SHA256_MANIFEST="$MANIFEST" SLEELA_SERVER_CONFIG="$CONFIG"
+export SLEELA_SERVER_INBOX="$INBOX" SLEELA_SERVER_STATE="$STATE" SLEELA_SERVER_ALLOW_NETWORK="$NETWORK"
+mkdir -p "$STATE" "$(dirname "$INBOX")"
+LOCK="$STATE/.serverd.lock"
+mkdir "$LOCK" 2>/dev/null || { echo "serverd: another instance is active" >&2; exit 3; }
+trap 'rmdir "$LOCK" 2>/dev/null || true' EXIT HUP INT TERM
+[ -f "$INBOX" ] || printf "%s\n" "hello" > "$INBOX"
+[ "$TICK" = true ] && printf "tick %s\n" "$(date -u +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || echo now)" >> "$INBOX"
+{ echo "=== SLeeLa Server Edition Service 2 ==="; cd "$ROOT"; "$ENGINE" run "$SOURCE"; } >> "$LOG" 2>&1
+[ "$FOREGROUND" = true ] && tail -n 12 "$LOG"
+echo "serverd: completed; results=$LOG"
