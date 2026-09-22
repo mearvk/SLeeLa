@@ -1,4 +1,4 @@
-# Service 3 Installation
+# Discord-3™ — Service 3 Installation
 
 Service 3 provides preflight, execution, recovery logging, and platform
 lifecycle definitions.
@@ -35,3 +35,9 @@ Service 3 applies the same general pattern to its controlled baseline.
 
 Use the matching uninstall script. Runtime state is retained unless an
 operator explicitly removes it.
+
+
+## Naming notice
+
+Discord-3™ is the programmatic theme/name used by this SLeeLa implementation.
+It is not presented as an official Discord product or service. citeturn0search3
