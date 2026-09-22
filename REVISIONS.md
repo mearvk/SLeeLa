@@ -44,3 +44,10 @@ Source-level changes were committed to `main`. Native Windows/macOS server build
 - Added envelope APIs for setting a decimal or uint64 port and resealing the packet digest.
 - Added a boundary self-test and `http-3.0/PORTS.md`.
 - Documented the distinction between the protocol's logical port namespace and smaller native operating-system socket-port limits.
+
+
+## 2026-09-22 — README and build documentation refresh
+
+- Updated `README.md` with the HTTP 3.0 extended logical-port model and the current protocol build commands.
+- Updated `BUILD.md` with dedicated HTTP 3.0 verification targets for the logical-port boundary, native pipeline, and reference tests.
+- Documented the requirement that future any-order authenticated packet fields be canonicalized before integrity verification rather than authenticated according to raw wire ordering.
