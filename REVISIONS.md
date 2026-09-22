@@ -27,3 +27,10 @@
 ## Verification status
 
 Source-level changes were committed to `main`. Native Windows/macOS server builds were not represented as verified by this revision.
+
+## 2026-09-22 — Complete API documentation
+
+- Added `/api/index.html` as the API documentation entry point.
+- Added `/api/API.html` as a repository-wide source API catalog covering native C/C++, C++, Java, and SLeeLa source units.
+- Included the Java connector class surfaces and existing Email Facade API documentation.
+- Kept the catalog source-derived and avoided inventing undocumented signatures.
