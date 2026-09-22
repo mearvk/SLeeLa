@@ -59,3 +59,7 @@ The native C vocabulary is under:
 - `api/router/`
 
 XML is declarative and allow-listed. It cannot invoke arbitrary shell commands or arbitrary native functions. The post, listener, and router examples validate and witness their declarations without opening sockets or transmitting network traffic.
+
+## 10 — Apache/Tomcat Web Server Deployment
+
+`10-webserver-deployment.md` shows how a web-aware application can hand its deployment artifact and health endpoint to the cross-platform `api/webserver/` module.
