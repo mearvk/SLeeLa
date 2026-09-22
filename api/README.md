@@ -46,3 +46,7 @@ See `api/database/` for the cross-platform database API, HTML reference, C facad
 ## Nordshrift
 
 See `api/nordshrift/API.html` for the complete Nordshrift API reference, including the `.sst` semantic model and the unified input-object vocabulary for Core, IO, System, Network, Application, Data, Science, Security, and Deployment. The generic object layer complements the specialized Nordshrift sections and remains declarative; it does not implicitly execute side effects.
+
+## sleelas
+
+See `api/server/API.html` for the compiled `sleelas` server launcher. It starts `server-edition/src/Server.sleela` through the normal compiled `sleela` engine. Native binaries are produced for Linux x86_64, macOS, and Windows 10+ x86_64 by the repository CI workflow.
