@@ -91,6 +91,12 @@ if [ ! -f "$BUILD_DIR/sleela" ] || [ ! -f "$BUILD_DIR/nordshrift" ]; then
     echo "ERROR: Build failed. Binaries not found."
     exit 1
 fi
+STAGE_DIR="$BUILD_DIR/SLeeLa"
+STAGE_CONFIG_FILE="$STAGE_DIR/Config/sleela.conf"
+if [ ! -f "$STAGE_CONFIG_FILE" ] || [ ! -d "$STAGE_DIR/Options" ]; then
+    echo "ERROR: Build staging is incomplete: expected $STAGE_CONFIG_FILE and $STAGE_DIR/Options."
+    exit 1
+fi
 
 echo ""
 echo "Build completed successfully!"
@@ -137,6 +143,8 @@ else
     echo "Build Complete (no separate install)"
     echo "=========================================="
     echo "Binaries remain in: $BUILD_DIR"
+    echo "Staged runtime: $STAGE_DIR"
+    echo "Consolidated config: $STAGE_CONFIG_FILE"
     echo ""
     echo "To use globally, copy them to a directory in \$PATH:"
     echo "  sudo cp $BUILD_DIR/sleela /usr/local/bin/"
@@ -149,8 +157,8 @@ fi
 echo ""
 echo ""
 echo "Common configuration:"
-echo "  $BUILD_DIR/sleela exec --config config/sleela.properties.example -- <program> <args...>"
-echo "  The selected file is exported as SLEELA_CONFIG_FILE."
+echo "  Staged default configuration: $STAGE_CONFIG_FILE"
+echo "  SLEELA_CONFIG_FILE may override the selected configuration path."
 echo "  macOS target: configured for supported modern macOS releases."
 echo ""
 echo "Build process finished."
