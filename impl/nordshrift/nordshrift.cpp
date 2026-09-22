@@ -37,6 +37,7 @@
 #include "../frontend/version.h"
 extern "C" {
 #include "../core/sleela_core.h"
+#include "../core/sleela_design_activity.h"
 }
 
 using namespace nordshrift;
@@ -52,10 +53,20 @@ static int usage() {
         "  nordshrift objects                        list the SHEET.sheet object compatibility list\n"
         "  nordshrift relevance --target=java|sleela|c [Object]\n"
         "                                            show direct/model relevance conversions\n"
-        "  nordshrift version\n";
+        "  nordshrift version\n  nordshrift design-activity <science> <correctness> <reproducibility> <observability> <safety> <resource> <interoperability>\n";
     return 2;
 }
 
+static int designActivityCmd(int argc,char**argv){
+    if(argc<9){std::cerr<<"Usage: nordshrift design-activity <science> <correctness> <reproducibility> <observability> <safety> <resource> <interoperability>\n";return 2;}
+    SLDA_ScienceDomain domain;
+    if(slda_parse_domain(argv[2],&domain)!=0){std::cerr<<"nordshrift: unknown science domain '"<<argv[2]<<"'\n";return 2;}
+    double raw[SLDA_DIMENSIONS];
+    for(int i=0;i<SLDA_DIMENSIONS;i++){char*end=nullptr;raw[i]=std::strtod(argv[i+3],&end);if(!end||*end||!std::isfinite(raw[i])||raw[i]<0||raw[i]>100){std::cerr<<"nordshrift: design activity score "<<(i+1)<<" must be 0..100\n";return 2;}}
+    SLDA_Vector normalized,expected;SLDA_Result result{};
+    if(slda_normalize(raw,&normalized)!=0||slda_science_profile(domain,&expected)!=0||slda_compare(&normalized,&expected,&result)!=0){std::cerr<<"nordshrift: design activity calculation failed\n";return 1;}
+    result.domain=domain;char json[1024];slda_format_json("nordshrift",&result,json,sizeof json);std::cout<<json<<"\n";return 0;
+}
 static catalog::Catalog loadCatalog() {
     const char* env = std::getenv("SLEELA_SHEET");
     const char* candidates[] = { env, "SHEET.sheet", "../SHEET.sheet",
