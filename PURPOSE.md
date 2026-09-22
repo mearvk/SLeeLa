@@ -12,14 +12,17 @@ software result while keeping the language, runtime, operating-system
 interfaces, networking, data, security, and documentation connected by explicit
 contracts.
 
-The three governing stages are:
+The governing design dimensions are:
 
 **START → MIDDLE → END**
 
-Each stage has a distinct responsibility. A feature is not considered complete
-merely because documentation exists or because one implementation happens to
-work. The intended design is for source, interface, implementation,
-validation, and resulting behavior to agree.
+and:
+
+**NOVICE → INTERMEDIATE → ADVANCE**
+
+The first tuple describes the lifecycle of software. The second describes the
+progressive depth at which a person or subsystem can use and understand that
+lifecycle.
 
 ---
 
@@ -337,7 +340,112 @@ implementation does not actually provide.
 
 ---
 
-## 5. The Complete SLeeLa Journey
+## 5. NOVICE → INTERMEDIATE → ADVANCE
+
+The second three-tuple defines progressive software and user capability.
+These levels are not quality rankings. They describe increasing scope,
+responsibility, and depth.
+
+### 5.1 Novice
+
+Novice is the entry layer.
+
+A Novice user or component should be able to:
+
+- read basic SLeeLa source;
+- understand the Start → Middle → End model;
+- create simple source files;
+- use basic classes, methods, values, and control flow;
+- use documented basic I/O;
+- run documented examples;
+- understand basic errors;
+- use the foundational API catalog;
+- identify where source, compiler, runtime, and result fit in the system.
+
+**Novice goal:**
+
+> **Understand the path and successfully complete a basic, documented
+> operation.**
+
+### 5.2 Intermediate
+
+Intermediate is the application-building layer.
+
+An Intermediate user or component should be able to:
+
+- build multi-file SLeeLa programs;
+- use structured data;
+- use file I/O and networking;
+- use posts, listeners, and routers;
+- use XML/BODI;
+- use email and database APIs where implemented;
+- use data analytics;
+- work with Nordshrift input objects;
+- understand compiler/runtime boundaries;
+- diagnose common build and runtime failures;
+- write tests;
+- understand platform differences;
+- use security and integrity facilities correctly.
+
+**Intermediate goal:**
+
+> **Build, integrate, test, and diagnose a real application using multiple
+> SLeeLa subsystems.**
+
+### 5.3 Advance
+
+Advance is the system-engineering layer.
+
+An Advance user or component should be able to:
+
+- design new SLeeLa APIs;
+- extend the compiler and runtime;
+- implement native C/C++ bindings;
+- define language semantics;
+- create platform backends;
+- design networking and server components;
+- reason about managed memory and security boundaries;
+- extend BODI and Nordshrift;
+- build cross-platform integrations;
+- establish validation and integrity boundaries;
+- create unit, integration, platform, and failure tests;
+- document interfaces and implementation contracts;
+- determine whether a capability is implemented, contractual, experimental,
+  or incomplete.
+
+**Advance goal:**
+
+> **Extend SLeeLa itself while preserving its language, runtime, API,
+> security, platform, testing, and documentation contracts.**
+
+### 5.4 The Three-Tuple
+
+The progression is therefore:
+
+**NOVICE**
+→ understand and operate
+
+**INTERMEDIATE**
+→ build and integrate
+
+**ADVANCE**
+→ design and extend
+
+The levels are cumulative. Advance work should remain understandable through
+the Intermediate application layer and ultimately expose a usable Novice path
+where practical.
+
+---
+
+## 6. The Complete SLeeLa Journey
+
+The lifecycle and capability tuples combine as follows:
+
+| Lifecycle | Novice | Intermediate | Advance |
+|---|---|---|---|
+| **START** | Read and validate basic source | Define multi-component inputs and APIs | Define language/API semantics |
+| **MIDDLE** | Compile and run documented programs | Integrate runtime and system services | Extend compiler, runtime, and native core |
+| **END** | Inspect a basic result | Validate an application result | Design reproducible and auditable result systems |
 
 The three stages form one continuous design:
 
@@ -376,7 +484,7 @@ three disconnected subsystems.
 
 ---
 
-## 6. Design Goals for the Software Already in the Repository
+## 7. Design Goals for the Software Already in the Repository
 
 The current repository contains substantially more than the compiler itself.
 That breadth should be organized around the Start/Middle/End model.
@@ -429,13 +537,13 @@ is missing when a feature is incomplete.
 
 ---
 
-## 7. What Must Be Addressed as SLeeLa Grows
+## 8. What Must Be Addressed as SLeeLa Grows
 
 The current repository demonstrates substantial implementation breadth. The
 next design work should concentrate on consistency rather than simply adding
 more independent features.
 
-### 7.1 API-to-Implementation Coverage
+### 8.1 API-to-Implementation Coverage
 
 Every important API documented under api/ should have a clear answer to:
 
@@ -447,7 +555,7 @@ Every important API documented under api/ should have a clear answer to:
 - How is it tested?
 - What is the failure behavior?
 
-### 7.2 Compiler-to-Runtime Coverage
+### 8.2 Compiler-to-Runtime Coverage
 
 Every language feature should map to:
 
@@ -455,19 +563,19 @@ Every language feature should map to:
 
 A feature documented only at the syntax level is not complete.
 
-### 7.3 Platform Coverage
+### 8.3 Platform Coverage
 
 Linux, macOS, and Windows should share the same public SLeeLa contract where
 possible, while platform-specific behavior remains explicit.
 
-### 7.4 Security Coverage
+### 8.4 Security Coverage
 
 Security-sensitive operations should have:
 
 **authorization → validation → integrity check → execution boundary →
 failure behavior → audit/diagnostic path**
 
-### 7.5 Documentation Coverage
+### 8.5 Documentation Coverage
 
 Documentation should describe the implementation that actually exists.
 
@@ -475,7 +583,7 @@ Where an API is intentionally a contract, monitor, adapter, or future
 integration boundary, the documentation should say so explicitly instead of
 presenting it as a completed subsystem.
 
-### 7.6 Test Coverage
+### 8.6 Test Coverage
 
 The project should progressively close the gap between:
 
@@ -486,7 +594,7 @@ native subject libraries continue to expand.
 
 ---
 
-## 8. End-State Vision
+## 9. End-State Vision
 
 The long-term SLeeLa design goal is a software system in which a developer can
 begin with a defined program, move through a controlled compiler/runtime and
@@ -531,7 +639,7 @@ That is the central purpose of SLeeLa:
 
 ---
 
-## 9. Guiding Rule
+## 10. Guiding Rule
 
 When deciding whether a new SLeeLa feature belongs in the project, ask:
 
