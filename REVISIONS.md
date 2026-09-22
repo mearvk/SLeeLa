@@ -111,3 +111,15 @@ Source-level changes were committed to `main`. Native Windows/macOS server build
 - Extended the BODI science dispatcher with the allow-listed `data-analytics` discipline.
 - Kept analytics in-process with no file, SQL, or network side effects.
 - Added HTML API documentation describing the analytics contract.
+
+
+## 2026-09-22 — Nordshrift unified input objects
+
+- Added `impl/nordshrift/input_object.{h,cpp}` as a bounded generic SLeeLa input-object model.
+- Added closed architecture categories for Core, IO, System, Network, Application, Data, Science, Security, and Deployment.
+- Extended the `.sst` parser and sheet model with `object <category> <identity>:` declarations.
+- Added bounded `type`, `source`, `target`, `value`, `inputs`, `outputs`, and named-property members.
+- Rejected unknown object categories and members instead of silently accepting unsupported contracts.
+- Added a representative `examples/input-objects.sst` sheet and `INPUT-OBJECTS.md` specification.
+- Added the new source to the main `impl/Makefile` Nordshrift build.
+- Kept input objects declarative: declarations do not implicitly execute processes, perform network I/O, modify files, send email, access databases, or deploy services.
