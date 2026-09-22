@@ -1,5 +1,13 @@
 # REVISIONS
 
+## 2026-09-22 — Discord™ Server Naming Theme
+
+- Named the three SLeeLa Server Edition implementations Discord-1™, Discord-2™, and Discord-3™ in source and documentation.
+- Assigned Discord-1™ to the native `sleelas` launcher, Discord-2™ to Service 2, and Discord-3™ to Service 3.
+- Added explicit third-party trademark/non-affiliation notices to the Server Edition documentation.
+- Kept Discord logos, trade dress, and proprietary Discord Brand Assets out of the repository.
+
+
 ## 2026-09-22 — Server hardening
 
 ### Server Edition
