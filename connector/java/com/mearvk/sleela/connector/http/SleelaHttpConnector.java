@@ -13,12 +13,14 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.UUID;
 
 /** Java HTTP client for a SLeeLa HTTP gateway. */
 public final class SleelaHttpConnector implements SleelaJavaConnector {
     private final HttpClient client;
     private final URI baseUri;
     private final Duration timeout;
+    private final int maxResponseBytes;
     private final int maxResponseBytes;
 
     public SleelaHttpConnector(URI baseUri) {
