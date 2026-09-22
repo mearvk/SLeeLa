@@ -1,4 +1,8 @@
-# SLeeLa Server Launcher — sleelas
+# Discord-1™ — SLeeLa Server Launcher — sleelas
+
+**Discord-1™** is the programmatic name for the native SLeeLa Server Launcher.
+It is an SLeeLa implementation name only and is not an official Discord
+product name or indication of affiliation with Discord Inc.
 
 `SLeeLa` now has a native compiled server launcher named **`sleelas`**.
 
@@ -115,3 +119,14 @@ Before starting the engine, `sleelas` checks the Server Edition lock and its rec
 ## Single-instance behavior
 
 Before starting the engine, `sleelas` checks the Server Edition lock and its recorded owner process. If the owner is still alive, the launcher reports that the server is already running and exits successfully without starting another instance. A lock whose recorded process is no longer alive is treated as stale and may be replaced atomically.
+
+
+## Server Edition names
+
+- **Discord-1™** — native compiled launcher/process boundary.
+- **Discord-2™** — configured Service 2 server.
+- **Discord-3™** — remedial Service 3 server.
+
+Discord's marks and Brand Assets remain the property of Discord Inc.; this
+repository does not include Discord logos, trade dress, or proprietary brand
+assets. citeturn0search3turn0search2
