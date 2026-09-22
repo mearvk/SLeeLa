@@ -15,3 +15,15 @@ ram.guard.direction=decrease
 
 # Safe default: configuration/target only. No firmware timing/voltage write.
 ram.guard.write=false
+
+# Platform defaults. These describe supported command-line targets; they do not
+# perform hardware timing/voltage writes.
+platform.linux.enabled=true
+platform.windows.enabled=true
+platform.windows.minimum=10
+platform.macos.enabled=true
+platform.macos.minimum=12
+
+# Executable/config interface
+sleela.native.config.environment=SLEELA_CONFIG_FILE
+sleela.native.argument.separator=--
