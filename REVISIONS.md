@@ -150,3 +150,16 @@ Source-level changes were committed to `main`. Native Windows/macOS server build
 - Existing active servers now cause `sleelas` to exit successfully without starting a duplicate instance.
 - Stale locks from terminated processes are eligible for replacement.
 - Documented the single-instance behavior in the server API documentation.
+
+
+## 2026-09-22 — NAT-aware Server deployment
+
+- Added api/server/NAT.md with a complete NAT-aware deployment model for direct addressing, port forwarding/PCP, IPv6, outbound reverse connectivity, and relay fallback.
+- Documented CGN and double-NAT conditions, NAT mapping lifetime, keepalives, firewall configuration, reverse rendezvous requirements, failure behavior, and security boundaries.
+- Added api/server/nat_aware.h and nat_aware.cpp as a native C++17 configuration/planning boundary.
+- Added bounded NAT mode, bind/public endpoint, rendezvous, keepalive, and TLS configuration validation.
+- Added sleelas --nat-plan to validate and report the selected deployment path without opening sockets or changing router state.
+- Updated the server Makefile to compile the NAT-aware source with sleelas.
+- Updated the HTML and Markdown server API documentation.
+- Added a Nordshrift deployment object, NatAwareServer, so NAT-aware transport can be declared as a bounded, non-executing SLeeLa input object.
+- Kept actual PCP, UPnP, STUN, TURN, TLS transport, and reverse-proxy networking as separate future transport adapters rather than silently embedding network side effects in Server.sleela.
