@@ -7,7 +7,7 @@ name: Build SLeeLa on Windows
 
 on:
   push:
-    branches: [master]
+    branches: [master, main]
     paths:
       - 'impl/**'
       - 'runtime/**'
