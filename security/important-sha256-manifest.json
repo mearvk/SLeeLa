@@ -312,7 +312,7 @@
     },
     {
       "path": "api/server/sleelas.cpp",
-      "sha256": "df246562bf2d1f78bd72c422250b389f082e55ef804e73924d288496a983465b"
+      "sha256": "882ba30fa2cbf5ad7045dff5dab19207cd6a31edcb2735e3ea61d7e770f181d8"
     },
     {
       "path": "api/webserver/README.md",
