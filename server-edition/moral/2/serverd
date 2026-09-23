@@ -8,6 +8,7 @@ CONFIG="${SLEELA_SERVER_CONFIG:-$DIR/config/server.conf}"
 [ -f "$CONFIG" ] || { echo "serverd: configuration not found: $CONFIG" >&2; exit 1; }
 HTTPCTL="$ROOT/server-edition/http/httpctl"
 HTTP_VERSION="2.1"; LOGICAL_PORT="19866"; DOWNLOAD_SIZE="0"
+NATIONAL_ID_REF=""; CITIZEN_ID_REF=""; BANK_ID_REF=""; RELAY_PURPOSE=""
 ENGINE=""
 INBOX=""
 STATE=""
@@ -24,6 +25,7 @@ while IFS= read -r line || [ -n "$line" ]; do
   case "$line" in *=*) key=${line%%=*}; value=${line#*=};; *) echo "serverd: invalid configuration line" >&2; exit 2;; esac
   case "$key" in
     http_version) HTTP_VERSION=$value;; logical_port) LOGICAL_PORT=$value;; download_size_bytes) DOWNLOAD_SIZE=$value;; http_api) HTTPCTL=$value;;
+    national_id_ref) NATIONAL_ID_REF=$value;; citizen_id_ref) CITIZEN_ID_REF=$value;; bank_id_ref) BANK_ID_REF=$value;; relay_purpose) RELAY_PURPOSE=$value;;
     engine) ENGINE=$value;; inbox) INBOX=$value;; state) STATE=$value;; server_source) SOURCE=$value;;
     log) LOG=$value;; mode) MODE=$value;; tick) TICK=$value;; foreground) FOREGROUND=$value;;
     sha256_manifest) MANIFEST=$value;; allow_network) NETWORK=$value;;
@@ -49,6 +51,7 @@ case "$NETWORK" in true|false) ;; *) echo "serverd: allow_network must be true o
 [ -f "$SOURCE" ] || { echo "serverd: source not found: $SOURCE" >&2; exit 1; }
 PORTCTL="$ROOT/server-edition/port-awareness/portctl.sh"
 [ -f "$PORTCTL" ] || { echo "serverd: port controller missing: $PORTCTL" >&2; exit 1; }
+export SLEELA_RELAY_NATIONAL_ID_REF="$NATIONAL_ID_REF" SLEELA_RELAY_CITIZEN_ID_REF="$CITIZEN_ID_REF" SLEELA_RELAY_BANK_ID_REF="$BANK_ID_REF" SLEELA_RELAY_PURPOSE="$RELAY_PURPOSE"
 export SLEELA_BIN="$ENGINE" SLEELA_SHA256_MANIFEST="$MANIFEST" SLEELA_SERVER_CONFIG="$CONFIG"
 export SLEELA_SERVER_INBOX="$INBOX" SLEELA_SERVER_STATE="$STATE" SLEELA_SERVER_ALLOW_NETWORK="$NETWORK"
 mkdir -p "$STATE" "$(dirname "$INBOX")"
