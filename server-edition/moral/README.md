@@ -29,3 +29,23 @@ sponsorship, endorsement, ownership, or authorization by Discord Inc. No
 Discord logo or proprietary Discord Brand Asset is included. Discord's brand
 guidance states that use of Discord Marks in product or organization names
 requires permission except where otherwise permitted. citeturn0search3
+
+
+## Port awareness
+
+Discord-1™, Discord-2™, and Discord-3™ now share an explicit firewall-port
+lifecycle. Each edition declares a port and protocol and is aware of the host
+OS/version firewall controller.
+
+The lifecycle is:
+
+1. Remove a stale SLeeLa rule for that edition.
+2. Open the configured port before the Server enters its run phase.
+3. Keep the rule while the Server is active.
+4. Close the rule during shutdown or failure cleanup.
+
+Linux prefers UFW and then firewalld; macOS uses PF; Windows uses Windows
+Defender Firewall. See `server-edition/PORT-AWARENESS.md`.
+
+The firewall rule is deliberately separate from application socket binding,
+NAT, TLS, authentication, and the existing `allow_network` policy.
