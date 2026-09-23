@@ -72,7 +72,7 @@
     },
     {
       "path": "README.md",
-      "sha256": "312fd54f9fad34f3f30851e741d73e26174618669e464c4b7f3ca8a50b1a0d48"
+      "sha256": "25102eea3067b1826fcb95fad8ca44b78d93dd417771f30e0a76a3531cd1554f"
     },
     {
       "path": "REVISIONS.md",
@@ -2968,7 +2968,7 @@
     },
     {
       "path": "http-servers/common/http_server.cpp",
-      "sha256": "dd88170c06b9796753572dc2330c4f6b4e8c07c3a397a59aebdf44bc461acdc3"
+      "sha256": "3f413c8c905f0165d3aad08cd8c6f5b3d486deff51ab981f4798cafc2805b15e"
     },
     {
       "path": "http-servers/common/http_server.h",
