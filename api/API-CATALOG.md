@@ -237,8 +237,8 @@ Status: Implemented.
 
 ## 43. Simple Regex and pattern matching
 Concepts: four-level user-facing text matching; Find, Shape, Structure, and Expression; literal matching; named character classes; repetition; alternatives; groups; ranges; optional values; captures; Unicode properties; compiled patterns; bounded deterministic matching.
-Sources: api/regex/README.md, api/regex/API.html, api/regex/REGEX-DESIGN.md, api/regex/regex-patterns.sleela.
-Status: **Draft — vocabulary and teaching model defined; native compiler/runtime implementation not yet committed.**
+Sources: api/regex/README.md, api/regex/API.html, api/regex/REGEX-DESIGN.md, api/regex/regex-patterns.sleela, api/regex/LEVEL-1-FIND.sleela, api/regex/LEVEL-2-SHAPE.sleela, api/regex/LEVEL-3-STRUCTURE.sleela, api/regex/LEVEL-4-EXPRESSION.sleela, impl/core/sleela_regex.h, impl/core/sleela_regex.c, impl/tests/core/regex_smoke.c, impl/REGEX-NATIVE.md.
+Status: **Draft with native Level 1/2 foundation; Level 3/4 source contracts are defined but their native execution remains intentionally unsupported pending semantic review.**
 
 # API directory map
 
