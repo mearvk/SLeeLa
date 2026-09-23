@@ -19,5 +19,12 @@ int slmedia_video_analyze(const SLMediaFrame *f,SLVideoAnalysis *o){
  for(uint32_t y=0;y<f->height;y++){const unsigned char*r=p+(size_t)y*f->stride;for(uint32_t x=0;x<f->width;x++){unsigned char v=r[(size_t)x*bpp];sum+=v;if(x&&v>r[(size_t)(x-1)*bpp]+16)edges++;}}
  o->width=f->width;o->height=f->height;o->luminance=(float)sum/(255.0f*f->width*f->height);o->motion=0;o->edge_density=(float)edges/(float)(f->width*f->height);return SL_MEDIA_OK;
 }
+int slmedia_provider_matches(const SLMediaProviderInfo *p,SLMediaCodec c,SLMediaContainer k,SLMediaImageFormat i,int encode){
+ if(!p)return 0;if(encode&&!p->encode)return 0;if(!encode&&!p->decode)return 0;
+ if(c!=SL_MEDIA_CODEC_UNKNOWN&&p->codec!=c)return 0;
+ if(k!=SL_MEDIA_CONTAINER_UNKNOWN&&p->container!=k)return 0;
+ if(i!=SL_MEDIA_IMAGE_UNKNOWN&&p->image_format!=i)return 0;
+ return 1;
+}
 const char*slmedia_kind_name(SLMediaKind k){return k==SL_MEDIA_AUDIO?"audio":k==SL_MEDIA_VIDEO?"video":"unknown";}
 const char*slmedia_format_name(SLMediaFormat f){switch(f){case SL_MEDIA_PCM_F32:return "pcm-f32";case SL_MEDIA_GRAY8:return "gray8";case SL_MEDIA_RGB24:return "rgb24";case SL_MEDIA_RGBA32:return "rgba32";default:return "unknown";}}
