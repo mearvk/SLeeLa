@@ -314,6 +314,13 @@ int main(int argc, char **argv) {
     const fs::path log = state / "results.log";
     const std::string port = std::getenv("SLEELA_SERVER_PORT") ? std::getenv("SLEELA_SERVER_PORT") : "19866";
     const std::string portProtocol = std::getenv("SLEELA_SERVER_PORT_PROTOCOL") ? std::getenv("SLEELA_SERVER_PORT_PROTOCOL") : "tcp";
+    const std::string probePort = std::getenv("SLEELA_SERVER_PROBE_PORT") ? std::getenv("SLEELA_SERVER_PROBE_PORT") : "2222";
+    const std::string probeProtocol = std::getenv("SLEELA_SERVER_PROBE_PORT_PROTOCOL") ? std::getenv("SLEELA_SERVER_PROBE_PORT_PROTOCOL") : "tcp";
+    const std::string scanPort = std::getenv("SLEELA_SERVER_SCAN_PORT") ? std::getenv("SLEELA_SERVER_SCAN_PORT") : "22220";
+    const std::string scanProtocol = std::getenv("SLEELA_SERVER_SCAN_PORT_PROTOCOL") ? std::getenv("SLEELA_SERVER_SCAN_PORT_PROTOCOL") : "tcp";
+    if (!valid_port_value(probePort) || !valid_port_value(scanPort)) { std::cerr << "sleelas: invalid probe/scan port (1..65535 required)\n"; return 2; }
+    if (probeProtocol != "tcp" && probeProtocol != "udp") { std::cerr << "sleelas: invalid probe protocol\n"; return 2; }
+    if (scanProtocol != "tcp" && scanProtocol != "udp") { std::cerr << "sleelas: invalid scan protocol\n"; return 2; }
     if (!valid_port_value(port)) { std::cerr << "sleelas: invalid SLEELA_SERVER_PORT (1..65535 required)\\n"; return 2; }
     if (portProtocol != "tcp" && portProtocol != "udp") { std::cerr << "sleelas: invalid SLEELA_SERVER_PORT_PROTOCOL (tcp or udp required)\\n"; return 2; }
 #if defined(_WIN32)
@@ -345,7 +352,14 @@ int main(int argc, char **argv) {
     if (tick) { std::ofstream out(inbox, std::ios::app); out << "tick " << utc_now() << "\n"; }
     // Discord-1™ owns its firewall rule for the lifetime of this server process.
     // Remove a stale rule first, then require a successful open before execution.
-    (void)run_portctl(root, "close", "Discord-1", port, portProtocol);\n    if (run_portctl(root, "open", "Discord-1", port, portProtocol) != 0) {\n        std::cerr << "sleelas: firewall could not open " << port << "/" << portProtocol << "; refusing to start\n";\n        return 1;\n    }\n    struct PortGuard {\n        const fs::path &root; const std::string &port; const std::string &protocol;\n        ~PortGuard() { (void)run_portctl(root, "close", "Discord-1", port, protocol); }\n    } portGuard{root, port, portProtocol};\n    if (!std::getenv("SLEELA_SHA256_MANIFEST")) {
+    (void)run_portctl(root, "close", "basic-probe", probePort, probeProtocol);
+    (void)run_portctl(root, "close", "basic-scan", scanPort, scanProtocol);
+    (void)run_portctl(root, "close", "Discord-1", port, portProtocol);
+    if (run_portctl(root, "open", "basic-probe", probePort, probeProtocol) != 0 ||
+        run_portctl(root, "open", "basic-scan", scanPort, scanProtocol) != 0) {
+        std::cerr << "sleelas: firewall could not open probe/scan ports; refusing to start\n";
+        return 1;
+    }\n    if (run_portctl(root, "open", "Discord-1", port, portProtocol) != 0) {\n        std::cerr << "sleelas: firewall could not open " << port << "/" << portProtocol << "; refusing to start\n";\n        return 1;\n    }\n    struct PortGuard {\n        const fs::path &root; const std::string &port; const std::string &protocol;\n        ~PortGuard() { (void)run_portctl(root, "close", "Discord-1", port, protocol); }\n    } portGuard{root, port, portProtocol};\n    if (!std::getenv("SLEELA_SHA256_MANIFEST")) {
         fs::path manifest = root / "security/important-sha256-manifest.json";
 #if defined(_WIN32)
         if (regular_file(manifest)) _putenv_s("SLEELA_SHA256_MANIFEST", manifest.string().c_str());
