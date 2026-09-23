@@ -57,3 +57,7 @@ See `api/nordshrift/API.html` for the complete Nordshrift API reference, includi
 See `api/server/API.html` for the compiled `sleelas` server launcher. It starts `server-edition/src/Server.sleela` through the normal compiled `sleela` engine. Native binaries are produced for Linux x86_64, macOS, and Windows 10+ x86_64 by the repository CI workflow.
 
 - [AI API](ai/README.md) — data, file, audio, and video AI with native/VM connector support and XML model/data contracts.
+
+## Regex API
+
+See `api/regex/` for the **SLeeLa Regex API 1.0.0 draft**. It introduces a deliberately simple four-level pattern language: **Find**, **Shape**, **Structure**, and **Expression**. The design puts readable text questions ahead of punctuation-heavy regex syntax while preserving a documented Unicode-aware and deterministic implementation boundary.
