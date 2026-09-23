@@ -39,6 +39,15 @@ SLeeLa favors readable pattern words over punctuation-heavy expressions:
 
 The compiler/API may lower these forms to a conventional regex engine or a native deterministic matcher; the source author does not need to know which engine performs the work.
 
+## Exemplar programs
+
+- `LEVEL-1-FIND.sleela` — literal questions and boundaries.
+- `LEVEL-2-SHAPE.sleela` — named shapes and repetition.
+- `LEVEL-3-STRUCTURE.sleela` — choices, groups, ranges, optional pieces, and captures.
+- `LEVEL-4-EXPRESSION.sleela` — compiled patterns, anchors, Unicode properties, and advanced expression vocabulary.
+
+The four files are teaching exemplars and source contracts. The native C foundation currently executes the Level 1/2 subset documented in `impl/REGEX-NATIVE.md`; Level 3/4 remain explicit unsupported runtime levels until their semantics are finalized.
+
 ## Level 1 — Find
 
 Level 1 handles everyday cases without regular-expression punctuation.
