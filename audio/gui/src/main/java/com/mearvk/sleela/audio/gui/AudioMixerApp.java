@@ -13,7 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -74,13 +74,13 @@ public final class AudioMixerApp extends Application {
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
 
         TableColumn<AudioMixerModel.Track, String> role = new TableColumn<>("Role");
-        role.setCellValueFactory(new PropertyValueFactory<>("role"));
+        role.setCellValueFactory(cell -> new ReadOnlyObjectWrapper<>(cell.getValue().role()));
         TableColumn<AudioMixerModel.Track, String> source = new TableColumn<>("Source");
-        source.setCellValueFactory(new PropertyValueFactory<>("source"));
+        source.setCellValueFactory(cell -> new ReadOnlyObjectWrapper<>(cell.getValue().source()));
         TableColumn<AudioMixerModel.Track, Double> start = new TableColumn<>("Start (s)");
-        start.setCellValueFactory(new PropertyValueFactory<>("startSeconds"));
+        start.setCellValueFactory(cell -> new ReadOnlyObjectWrapper<>(cell.getValue().startSeconds()));
         TableColumn<AudioMixerModel.Track, Double> quality = new TableColumn<>("Quality");
-        quality.setCellValueFactory(new PropertyValueFactory<>("quality"));
+        quality.setCellValueFactory(cell -> new ReadOnlyObjectWrapper<>(cell.getValue().quality()));
         table.getColumns().addAll(role, source, start, quality);
         table.setPrefHeight(360);
 
