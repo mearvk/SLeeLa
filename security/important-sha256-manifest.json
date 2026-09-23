@@ -360,7 +360,7 @@
     },
     {
       "path": "api/national-relay/README.md",
-      "sha256": "d398c4bb5eb5e1889c6ca8fd5401293d2ea72faeb5c1cb0a5483f1cca57ef697"
+      "sha256": "1262a7dae69386b3a50a107cd7bbbbbd95c7db44b5c2304c77d0e6b978f986f6"
     },
     {
       "path": "api/national-relay/sleela_relay_identity.c",
@@ -4116,7 +4116,7 @@
     },
     {
       "path": "server-edition/moral/2/README.md",
-      "sha256": "b18f6cf61783fcabcf8624758ef2f03c14950d4c91c351c327c8c28e797ebe92"
+      "sha256": "43cd3206165c32798089d8576388f41221bf6b5491feec8534970eee0f1b3572"
     },
     {
       "path": "server-edition/moral/2/install/linux-install.sh",
@@ -4160,7 +4160,7 @@
     },
     {
       "path": "server-edition/moral/3/README.md",
-      "sha256": "066da1ac4553448cd476ebe8f624e0887027b8390a2f66cb236b55bc1b58e17f"
+      "sha256": "695b02b9f1e4bc21cf8bf014e77f49e6932b7e4eacef9db077c38c346ce220f8"
     },
     {
       "path": "server-edition/moral/3/install/linux-install.sh",
