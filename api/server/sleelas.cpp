@@ -359,7 +359,15 @@ int main(int argc, char **argv) {
         run_portctl(root, "open", "basic-scan", scanPort, scanProtocol) != 0) {
         std::cerr << "sleelas: firewall could not open probe/scan ports; refusing to start\n";
         return 1;
-    }\n    if (run_portctl(root, "open", "Discord-1", port, portProtocol) != 0) {\n        std::cerr << "sleelas: firewall could not open " << port << "/" << portProtocol << "; refusing to start\n";\n        return 1;\n    }\n    struct PortGuard {\n        const fs::path &root; const std::string &port; const std::string &protocol;\n        ~PortGuard() { (void)run_portctl(root, "close", "Discord-1", port, protocol); }\n    } portGuard{root, port, portProtocol};\n    if (!std::getenv("SLEELA_SHA256_MANIFEST")) {
+    }\n    if (run_portctl(root, "open", "Discord-1", port, portProtocol) != 0) {\n        std::cerr << "sleelas: firewall could not open " << port << "/" << portProtocol << "; refusing to start\n";\n        return 1;\n    }\n    struct PortGuard {\n        const fs::path &root; const std::string &port; const std::string &protocol;\n        ~PortGuard() { (void)run_portctl(root, "close", "Discord-1", port, protocol); }\n    } portGuard{root, port, portProtocol};\n    // Generate a privacy-preserving known-connections record. Active probing is disabled by default.
+    {
+        const fs::path kc = root / "server-edition/port-awareness/known-connections.sh";
+        if (regular_file(kc)) {
+            std::string cmd = "SLEELA_SERVER_STATE=\"" + state.string() + "\" sh \"" + kc.string() + "\"";
+            (void)std::system(cmd.c_str());
+        }
+    }
+    if (!std::getenv("SLEELA_SHA256_MANIFEST")) {
         fs::path manifest = root / "security/important-sha256-manifest.json";
 #if defined(_WIN32)
         if (regular_file(manifest)) _putenv_s("SLEELA_SHA256_MANIFEST", manifest.string().c_str());
@@ -373,3 +381,6 @@ int main(int argc, char **argv) {
     std::cout << "Discord-1™: processed Server Edition level " << level << " -> " << log << "\n";
     return 0;
 }
+
+// Server port lifecycle contract: native scan/discovery port defaults to 22220.
+// The firewall controller should open it for the server lifetime and close it on shutdown.
