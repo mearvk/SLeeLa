@@ -11,6 +11,7 @@ HTTP_VERSION="3.0"; LOGICAL_PORT="19866"; DOWNLOAD_SIZE="0"
 NATIONAL_ID_REF=""; CITIZEN_ID_REF=""; BANK_ID_REF=""; BANKER_ID_REF=""; CROMSMRUS_ID_REF=""; RELAY_PURPOSE=""
 ENGINE=""; INBOX=""; STATE=""; SOURCE=""; LOG=""; RECOVERY=""; MODE="service"; TICK="false"; FOREGROUND="false"; PREFLIGHT="true"; MANIFEST=""; NETWORK="false"
 PORT="19866"; PORT_PROTO="tcp"; FIREWALL="auto"; FIREWALL_REQUIRED="true"
+SCAN_PORT="22220"; SCAN_PORT_PROTO="tcp"; SCAN_PORT_FIREWALL="auto"
 while IFS= read -r line || [ -n "$line" ]; do
   case "$line" in ""|\#*) continue;; esac
   case "$line" in *=*) key=$(printf '%s' "$line" | cut -d= -f1); value=$(printf '%s' "$line" | cut -d= -f2-);; *) echo "serverd: invalid configuration line" >&2; exit 2;; esac
@@ -20,7 +21,7 @@ while IFS= read -r line || [ -n "$line" ]; do
     engine) ENGINE=$value;; inbox) INBOX=$value;; state) STATE=$value;; server_source) SOURCE=$value;;
     log) LOG=$value;; recovery_log) RECOVERY=$value;; mode) MODE=$value;; tick) TICK=$value;;
     foreground) FOREGROUND=$value;; preflight) PREFLIGHT=$value;; sha256_manifest) MANIFEST=$value;;
-    allow_network) NETWORK=$value;; port) PORT=$value;; port_protocol) PORT_PROTO=$value;; firewall) FIREWALL=$value;; firewall_required) FIREWALL_REQUIRED=$value;; *) echo "serverd: unknown configuration key: $key" >&2; exit 2;;
+    allow_network) NETWORK=$value;; port) PORT=$value;; port_protocol) PORT_PROTO=$value;; firewall) FIREWALL=$value;; firewall_required) FIREWALL_REQUIRED=$value;; scan_port) SCAN_PORT=$value;; scan_port_protocol) SCAN_PORT_PROTO=$value;; scan_port_firewall) SCAN_PORT_FIREWALL=$value;; *) echo "serverd: unknown configuration key: $key" >&2; exit 2;;
   esac
 done < "$CONFIG"
 [ -x "$HTTPCTL" ] || { echo "serverd: HTTP API controller not executable: $HTTPCTL" >&2; exit 1; }
@@ -69,6 +70,7 @@ LOCK="$STATE/.serverd3.lock"
 mkdir "$LOCK" 2>/dev/null || { echo "serverd: Service 3 is already active" >&2; exit 3; }
 cleanup() {
   rc=$?
+  sh "$PORTCTL" close "basic-scan" "$SCAN_PORT" "$SCAN_PORT_PROTO" >>"$LOG" 2>&1 || { echo "serverd: failed to close scan port $SCAN_PORT/$SCAN_PORT_PROTO" >&2; rc=1; }
   if ! sh "$ROOT/server-edition/port-awareness/portctl.sh" close "Discord-3" "$PORT" "$PORT_PROTO" >>"$LOG" 2>&1; then
     echo "serverd: failed to close firewall port $PORT/$PORT_PROTO" >&2
     record_recovery "FIREWALL_CLOSE_FAILED"
@@ -79,6 +81,7 @@ cleanup() {
 }
 trap cleanup EXIT HUP INT TERM
 sh "$ROOT/server-edition/port-awareness/portctl.sh" close "Discord-3" "$PORT" "$PORT_PROTO" >>"$LOG" 2>&1 || true
+sh "$PORTCTL" open "basic-scan" "$SCAN_PORT" "$SCAN_PORT_PROTO" >>"$LOG" 2>&1 || { echo "serverd: firewall could not open scan port $SCAN_PORT/$SCAN_PORT_PROTO; refusing to start" >&2; exit 1; }
 if [ "$FIREWALL_REQUIRED" = true ]; then
   sh "$ROOT/server-edition/port-awareness/portctl.sh" open "Discord-3" "$PORT" "$PORT_PROTO" >>"$LOG" 2>&1 || { record_recovery "FIREWALL_OPEN_FAILED"; echo "serverd: firewall could not open $PORT/$PORT_PROTO; refusing to start" >&2; exit 1; }
 else
@@ -98,7 +101,7 @@ echo "Discord-3™ serverd: Service 3 completed; results=$LOG"
 
 
 # Named basic scan/service-discovery port.
-: "${SLEELA_SCAN_PORT:=22220}"
-: "${SLEELA_SCAN_PORT_PROTOCOL:=tcp}"
+: "${SLEELA_SCAN_PORT:=$SCAN_PORT}"
+: "${SLEELA_SCAN_PORT_PROTOCOL:=$SCAN_PORT_PROTO}"
 : "${SLEELA_MATURE_SERVICES:=auto}"
 export SLEELA_SCAN_PORT SLEELA_SCAN_PORT_PROTOCOL SLEELA_MATURE_SERVICES
