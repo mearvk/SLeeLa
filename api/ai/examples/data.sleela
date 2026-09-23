@@ -1,0 +1,21 @@
+#sleela 1.3
+// data.sleela -- SLeeLa data-model source.
+// The field vocabulary corresponds to api/ai/data-model.xml.
+
+class DataModel {
+    void main() {
+        int data = dataModel("sleela-media-data", 1);
+
+        dataField(data, "id", "string", true);
+        dataField(data, "kind", "data|file|audio|video", true);
+        dataField(data, "source", "path|bytes|SLMediaFrame", true);
+        dataField(data, "timestamp_ns", "int64", false);
+        dataField(data, "duration_ns", "int64", false);
+        dataField(data, "label", "string", false);
+        dataField(data, "confidence", "double", false);
+
+        dataValidate(data);
+        print(dataDescribe(data));
+        dataClose(data);
+    }
+}
