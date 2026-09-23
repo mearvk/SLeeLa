@@ -25,10 +25,17 @@ int main(void) {
     const char data_xml[] = "<dataset id=\"demo\" revision=\"1\"><field name=\"kind\" type=\"string\" required=\"true\"/></dataset>";
     SLAIModelDescriptor descriptor;
     SLAIDataModel data_model;
+    SLAIXMLSource source;
     if (slai_model_from_xml(model_xml, sizeof(model_xml)-1, &descriptor)) return 1;
     if (!descriptor.trusted || strcmp(descriptor.model_id, "sleela.example")) return 2;
     if (slai_data_model_from_xml(data_xml, sizeof(data_xml)-1, &data_model)) return 3;
     if (data_model.field_count != 1 || strcmp(data_model.fields[0].name, "kind")) return 4;
+    {
+        const char source_xml[] = "<source kind=\"audio\" url=\"file:///media/input.xml\" args=\"model=audio-v1&flow=inspect\"/>";
+        if (slai_source_from_xml(source_xml, sizeof(source_xml)-1, &source)) return 5;
+        if (source.kind != SL_AI_SOURCE_AUDIO || strcmp(source.url, "file:///media/input.xml") ||
+            strcmp(source.args, "model=audio-v1&flow=inspect")) return 6;
+    }
     if (slai_engine_init(&engine, SL_AI_BACKEND_CONNECTOR)) return 5;
     if (slai_engine_bind_vm(&engine, vm_stub, NULL)) return 6;
     if (slai_invoke(&engine, &request, &input, &result)) return 7;
