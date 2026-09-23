@@ -68,6 +68,8 @@ SYSTEM_MONITOR_SMOKE := $(BUILD)/system_monitor_smoke
 MEDIA_OBJ := $(BUILD)/sleela_media.o
 MEDIA_FORMATS_OBJ := $(BUILD)/sleela_media_formats.o
 MEDIA_SMOKE := $(BUILD)/media_smoke
+AUDIO_MIXER_OBJ := $(BUILD)/sleela_audio_mixer.o
+AUDIO_MIXER_SMOKE := $(BUILD)/audio_mixer_smoke
 PIXEL_TERMINAL_SMOKE := $(BUILD)/pixel_terminal_smoke
 PIXEL_TERMINAL_OBJ := $(BUILD)/pixel_terminal.o
 CATALOG_OBJ := $(BUILD)/sheet_catalog.o
@@ -129,9 +131,9 @@ ifeq ($(OS),Windows_NT)
 else
   PYTHON ?= python3
 endif
-ALL_OBJECTS := $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(PLATFORM_OBJ) $(SYSTEM_MONITOR_OBJ) $(MEDIA_OBJ) $(MEDIA_FORMATS_OBJ) $(DESIGN_ACTIVITY_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(LANGIN_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(NS_OBJ) $(THREAD_SMOKE) $(SOCKET_SMOKE) $(SYNCHRO_SMOKE) $(MUNCTION_SMOKE) $(BESTOF_SMOKE) $(IO_PLATFORM_SMOKE) $(NET_PLATFORM_SMOKE) $(PATH_PLATFORM_SMOKE) $(TERMINAL_PLATFORM_SMOKE) $(LIBRARY_PLATFORM_SMOKE) $(PIXEL_TERMINAL_SMOKE) $(THREAD_PLATFORM_SMOKE)
+ALL_OBJECTS := $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(PLATFORM_OBJ) $(SYSTEM_MONITOR_OBJ) $(MEDIA_OBJ) $(MEDIA_FORMATS_OBJ) $(AUDIO_MIXER_OBJ) $(DESIGN_ACTIVITY_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(LANGIN_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(NS_OBJ) $(THREAD_SMOKE) $(SOCKET_SMOKE) $(SYNCHRO_SMOKE) $(MUNCTION_SMOKE) $(BESTOF_SMOKE) $(IO_PLATFORM_SMOKE) $(NET_PLATFORM_SMOKE) $(PATH_PLATFORM_SMOKE) $(TERMINAL_PLATFORM_SMOKE) $(LIBRARY_PLATFORM_SMOKE) $(PIXEL_TERMINAL_SMOKE) $(THREAD_PLATFORM_SMOKE)
 
-.PHONY: all test-platform stage package build-verified rebuild-verified clean test test-sleela test-version test-nordshrift test-threads test-thread-platform test-network test-network-platform test-synchro test-munction test-bestof test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-chemistry test-financial test-math test-physics test-economics test-inference test-subjects verify-security build-runtime test-runtime test-memmgr test-memmgr-grades test-system-monitor test-media test-design-activity
+.PHONY: all test-platform stage package build-verified rebuild-verified clean test test-sleela test-version test-nordshrift test-threads test-thread-platform test-network test-network-platform test-synchro test-munction test-bestof test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-chemistry test-financial test-math test-physics test-economics test-inference test-subjects verify-security build-runtime test-runtime test-memmgr test-memmgr-grades test-system-monitor test-media test-audio-mixer test-design-activity
 
 all: verify-security $(SLEELA_BIN) $(NORDSHRIFT_BIN) stage
 
@@ -242,8 +244,15 @@ $(MEDIA_OBJ): core/sleela_media.c core/sleela_media.h core/sleela_media_formats.
 	$(CC) $(CFLAGS) -Icore -c core/sleela_media.c -o $@
 $(MEDIA_FORMATS_OBJ): core/sleela_media_formats.c core/sleela_media_formats.h | $(BUILD)
 	$(CC) $(CFLAGS) -Icore -c core/sleela_media_formats.c -o $@
+$(AUDIO_MIXER_OBJ): core/sleela_audio_mixer.c core/sleela_audio_mixer.h core/sleela_media.h | $(BUILD)
+	$(CC) $(CFLAGS) -Icore -c core/sleela_audio_mixer.c -o $@
+$(AUDIO_MIXER_SMOKE): tests/core/audio_mixer_smoke.c $(AUDIO_MIXER_OBJ) | $(BUILD)
+	$(CC) $(CFLAGS) -Icore tests/core/audio_mixer_smoke.c $(AUDIO_MIXER_OBJ) -o $@ $(LDFLAGS) $(LIBS) -lm
+
 $(MEDIA_SMOKE): tests/core/media_smoke.c $(MEDIA_OBJ) $(MEDIA_FORMATS_OBJ) | $(BUILD)
 	$(CC) $(CFLAGS) -Icore tests/core/media_smoke.c $(MEDIA_OBJ) $(MEDIA_FORMATS_OBJ) -o $@ $(LDFLAGS) $(LIBS) -lm
+test-audio-mixer: $(AUDIO_MIXER_SMOKE)
+	@echo "=== SLeeLa Audio Mixer ==="; $(AUDIO_MIXER_SMOKE)
 test-media: $(MEDIA_SMOKE)
 	@echo "=== SLeeLa Audio/Video Media API ==="; $(MEDIA_SMOKE)
 test-system-monitor: $(SYSTEM_MONITOR_SMOKE)
