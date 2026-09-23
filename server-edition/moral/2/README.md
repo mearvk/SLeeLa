@@ -70,3 +70,18 @@ Discord and related Discord marks are third-party trademarks. No Discord
 logo, trade dress, or proprietary Discord asset is included by this naming
 convention. Discord's published brand guidance states that permission is
 required for uses of its marks beyond permitted cases. citeturn0search3turn0search2
+
+## Port awareness and firewall lifecycle
+
+Service 2 declares `port`, `port_protocol`, `firewall`, and
+`firewall_required`. The default is TCP port 19866 with automatic
+host-firewall selection.
+
+At startup Service 2 removes a stale Discord-2™ rule, opens the configured
+port, and only then starts Server.sleela. On normal completion or failure,
+the lifecycle cleanup closes that rule. The shared controller detects the
+host OS/version and uses UFW or firewalld on Linux, PF on macOS, or the
+Windows Defender Firewall PowerShell controller on Windows.
+
+The firewall rule is owned by the Server Edition lifecycle and is not a
+replacement for socket binding, NAT, TLS, or application authentication.
