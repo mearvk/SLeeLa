@@ -448,7 +448,7 @@
     },
     {
       "path": "api/server/sleelas.cpp",
-      "sha256": "8b0d41e96d2e0a1a2824204aefc89815d4a19cf54100caaf3c5a110c1666319b"
+      "sha256": "81e0b092e21b6fa250bb95b774d318ad30965a619b604107a37888a11c98beb6"
     },
     {
       "path": "api/subjects/README.md",
@@ -4116,7 +4116,7 @@
     },
     {
       "path": "server-edition/moral/2/README.md",
-      "sha256": "43cd3206165c32798089d8576388f41221bf6b5491feec8534970eee0f1b3572"
+      "sha256": "fe102798898c367a7ff01adeb5c9224244faa685a9ed4e1dfaf36c72e753f0fe"
     },
     {
       "path": "server-edition/moral/2/install/linux-install.sh",
@@ -4160,7 +4160,7 @@
     },
     {
       "path": "server-edition/moral/3/README.md",
-      "sha256": "695b02b9f1e4bc21cf8bf014e77f49e6932b7e4eacef9db077c38c346ce220f8"
+      "sha256": "d3a430687eda2cb3be64dc80a0e6f24430054544bfa5c265f844393daaa0bf0b"
     },
     {
       "path": "server-edition/moral/3/install/linux-install.sh",
@@ -4203,6 +4203,14 @@
       "sha256": "fa11e54ceab1c4ad29c61acd087b5daa0d2ef45f78e6081413cd72dd34c57d14"
     },
     {
+      "path": "server-edition/port-awareness/known-connections.sh",
+      "sha256": "c82e0766def288c620fa12ded55ad165c6acd71d588505e8ad858064141e2412"
+    },
+    {
+      "path": "server-edition/port-awareness/log-consumer.sh",
+      "sha256": "b0f2b82a4d69ac5fb7e5efc29c6eaa1bc13759a0251c498f2d888640caa080b3"
+    },
+    {
       "path": "server-edition/port-awareness/portctl.ps1",
       "sha256": "228baa66c2e46f4406eaa89465f9752cc4c53991d58b36d9a83fd0ec8ad3da5c"
     },
@@ -4212,7 +4220,7 @@
     },
     {
       "path": "server-edition/port-awareness/traffic-log.sh",
-      "sha256": "3f39fd099fd39ca706697976630e9bdcdc6aef0d349a6b7155caf0f8e7f0483d"
+      "sha256": "956327e0ea6f6fa9ecc9ca0cb90bbd6a9b77f0ad1a2464c5f115891d9f8c3c08"
     },
     {
       "path": "sleela-terminal/arith.cpp",
