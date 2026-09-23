@@ -86,3 +86,8 @@ HTTP 3.0 uses HTTP/3/QUIC stream multiplexing. The logical PORT namespace is
 exactly 10^48 values and is independent of the native firewall port. Files
 over 50,000,000 bytes select resumable DOWNLOAD mode with SESSION-ID,
 DATETIME, FILE-ID, FILE-NAME, INDEX, OFFSET, and TOTAL-SIZE resume state.
+
+
+## Named scan port and Mature Services
+
+The Server Edition exposes a named basic scanning/service-discovery port, default **TCP 22220**. It is opened in the host firewall while the server is running and closed during shutdown. Multiplex-capable services can negotiate service capabilities through this port. Mature Services are then opened on their own native ports only while those services are active. The native firewall port, the scan port, and SLeeLa's logical HTTP PORT are separate namespaces. Linux uses UFW/firewalld as available; other supported operating systems use their corresponding firewall controller.
