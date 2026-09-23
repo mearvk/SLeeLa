@@ -760,6 +760,46 @@ SLeeLa provides a source-backed BODI XML project layer under [`api/bodi/`](api/b
 Runnable XML examples and expected BODI witness evidence are published under [`examples/`](examples/). Examples 07–09 demonstrate POST, listener, and router declarations without implicitly opening sockets or sending network traffic. The BODI runner uses an allow-listed dispatcher; XML cannot invoke arbitrary shell commands or arbitrary native functions.
 
 
+## Regex API — four levels of text matching
+
+SLeeLa now provides a source-backed Regex API under api/regex/. The API is designed to make ordinary text matching readable first and technically precise second: the user asks a simple question about text without needing to learn a full regular-expression engine before getting useful work done.
+
+The API is organized as four progressive levels:
+
+| Level | Name | Core question | Documentation |
+|---|---|---|---|
+| **1** | **Find** | Is this literal text present, at the beginning, at the end, or exactly? | [LEVEL-1-FIND.sleela](api/regex/LEVEL-1-FIND.sleela) |
+| **2** | **Shape** | Does the text have a recognizable character shape and repetition? | [LEVEL-2-SHAPE.sleela](api/regex/LEVEL-2-SHAPE.sleela) |
+| **3** | **Structure** | Can readable pieces be combined into choices, groups, ranges, optionals, and captures? | [LEVEL-3-STRUCTURE.sleela](api/regex/LEVEL-3-STRUCTURE.sleela) |
+| **4** | **Expression** | Does the application need assertions, properties, named captures, and other advanced expression features? | [LEVEL-4-EXPRESSION.sleela](api/regex/LEVEL-4-EXPRESSION.sleela) |
+
+The central teaching progression is **Find → Shape → Repeat → Combine → Advanced**. A pattern should express the question being asked, while the implementation remains responsible for compilation, matching, limits, and validation.
+
+The formal API design is [api/regex/README.md](api/regex/README.md), with the complete HTML reference in [api/regex/API.html](api/regex/API.html) and the design contract in [api/regex/REGEX-DESIGN.md](api/regex/REGEX-DESIGN.md). The complete pattern vocabulary is also collected in [api/regex/regex-patterns.sleela](api/regex/regex-patterns.sleela).
+
+### Native implementation boundary
+
+The executable foundation is implemented in C under [impl/core/sleela_regex.h](impl/core/sleela_regex.h) and [impl/core/sleela_regex.c](impl/core/sleela_regex.c), with regression coverage in [impl/tests/core/regex_smoke.c](impl/tests/core/regex_smoke.c). The current native implementation executes the deterministic **Level 1 Find** and **Level 2 Shape** subset; Levels 3 and 4 report an explicit unsupported-level status until their semantics are fully implemented. This prevents documentation from implying runtime capabilities that the native engine does not yet provide.
+
+The native result records whether a match occurred, its byte range and length, and the API level used. The current Level 2 character classes are intentionally ASCII-oriented; Unicode semantics are documented as a separate contract rather than being silently inferred. See [impl/REGEX-NATIVE.md](impl/REGEX-NATIVE.md).
+
+A minimal example is:
+
+```sleela
+#sleela 1.3
+
+class RegexExample {
+    void main() {
+        print(match("hello, SLeeLa", "contains hello"));
+        print(match("12345", "exact digit+"));
+        print(match("report.txt", "ends .txt"));
+    }
+}
+```
+
+The Regex API is deliberately text-only: matching a pattern does not implicitly acquire network, filesystem, process-execution, or other unrelated side effects.
+
+
 ## Apache/Tomcat Web Server Monitor
 
 SLeeLa now includes a cross-platform web-server operations module under [`api/webserver/`](api/webserver/). Web-aware applications can use the module as a deployment dependency for Apache HTTP Server and Apache Tomcat on Linux, Windows 10+, and macOS. The module provides installation/verification, status and HTTP health checks, package-manager upgrades where supported, controlled listener-port changes, configuration validation, and explicit local Tomcat WAR deployment. OS-specific adapters fail closed when a distribution-specific installation layout is unknown; they do not silently select an unofficial binary or elevate privileges.
