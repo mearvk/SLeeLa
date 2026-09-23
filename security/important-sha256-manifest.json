@@ -424,7 +424,7 @@
     },
     {
       "path": "api/server/sleelas.cpp",
-      "sha256": "e4251446f4e41c73928df4de159beea8216f1be71cc98ccde6a6e5cfffb0a8c0"
+      "sha256": "de257b81380afa5b219d8e3e453ef8f76fa0e86e40ba5709fd21a317f069b5eb"
     },
     {
       "path": "api/subjects/README.md",
@@ -4080,15 +4080,15 @@
     },
     {
       "path": "server-edition/moral/2/INSTALL.md",
-      "sha256": "28ed2dc50d6e8ae25e30aa351a097a494255a73920ce7b16b3f8c472ede2ff9d"
+      "sha256": "46452deef2381d964397fccd4f5b6345197eca7b449ce5fcaf817faae47a5153"
     },
     {
       "path": "server-edition/moral/2/README.md",
-      "sha256": "fd9b66734989cb83d3f2c0ff5cfbf3cc2bbe8aee783a8248ea031f1f8f96cca8"
+      "sha256": "d47beb778d4c64b189fa75684e0e4dbec8ab015615b438aadce5179f9f89f21d"
     },
     {
       "path": "server-edition/moral/2/install/linux-install.sh",
-      "sha256": "d6bea30120d4fb814d6e99b90c207562c6eef521fe602af1d707e35c3d84a6d9"
+      "sha256": "914f011a3addbb922326a9155ab31778393030c830f629a837a76014a422b90c"
     },
     {
       "path": "server-edition/moral/2/install/linux-uninstall.sh",
@@ -4096,7 +4096,7 @@
     },
     {
       "path": "server-edition/moral/2/install/macos-install.sh",
-      "sha256": "025e94237c5b566b59631b2c968ba25986afd4df36b439d83fc0b297fd72a5be"
+      "sha256": "d5fc9b6042c13912b5e3816ff05e93399becbc6362c24fbceb67e9d16947c2d0"
     },
     {
       "path": "server-edition/moral/2/install/macos-uninstall.sh",
@@ -4104,7 +4104,7 @@
     },
     {
       "path": "server-edition/moral/2/install/windows-install.ps1",
-      "sha256": "e1c219efa2efc484d91ac4d8c7a1c246aadcfaf99e2ec64be06d5bf36ce1ffaf"
+      "sha256": "dddf8f012754125d2c0c7c3a0599988009b4a91ad66805f2431e6c1a6d2ebe7e"
     },
     {
       "path": "server-edition/moral/2/install/windows-uninstall.ps1",
@@ -4120,15 +4120,15 @@
     },
     {
       "path": "server-edition/moral/3/INSTALL.md",
-      "sha256": "04d740d88a76d4a1849dcd2e2fae0040f2355ae30a1bcf5424a2793654ad2714"
+      "sha256": "4fd13b94f6d0df8505a0589b64e11e99058ce41cfe3210011c839b0fae6c359a"
     },
     {
       "path": "server-edition/moral/3/README.md",
-      "sha256": "245fb877a5821eb1c532d8084cd8a259101cd7a329bd592fefce86c97558617f"
+      "sha256": "dfafe7d3771460f3a10171ae9e069bbdc822e138274a4432c874d29cf1e3dc84"
     },
     {
       "path": "server-edition/moral/3/install/linux-install.sh",
-      "sha256": "1c8b46d859be00e26bba2d6a978842fd0ed051f7e60becafb641415ed7f89bef"
+      "sha256": "4a45a610a5f9fcfc81d047ab5ed02cf41186191190ceb9c3674e1a1acbda801b"
     },
     {
       "path": "server-edition/moral/3/install/linux-uninstall.sh",
@@ -4136,7 +4136,7 @@
     },
     {
       "path": "server-edition/moral/3/install/macos-install.sh",
-      "sha256": "3c993b376a5efc4abc57ebd0cbb7422a31d51d90153ef301dd2ba4faa13983a5"
+      "sha256": "8cd9e120949cd03a82e34635fb0d58738f0bb796f7fde2bbfb0990d349259685"
     },
     {
       "path": "server-edition/moral/3/install/macos-uninstall.sh",
@@ -4144,7 +4144,7 @@
     },
     {
       "path": "server-edition/moral/3/install/windows-install.ps1",
-      "sha256": "83b103d46a4fc261befdd84f8328d141f6fc47b87bdac80ff8d2632a386dc865"
+      "sha256": "3db8811aef46e9640aabe297fcf1cd46917046a0ebde4161d36a2064848d1c7d"
     },
     {
       "path": "server-edition/moral/3/install/windows-uninstall.ps1",
