@@ -72,6 +72,8 @@ AUDIO_MIXER_OBJ := $(BUILD)/sleela_audio_mixer.o
 AUDIO_MIXER_SMOKE := $(BUILD)/audio_mixer_smoke
 AI_OBJ := $(BUILD)/sleela_ai.o
 AI_SMOKE := $(BUILD)/ai_smoke
+REGEX_OBJ := $(BUILD)/sleela_regex.o
+REGEX_SMOKE := $(BUILD)/regex_smoke
 PIXEL_TERMINAL_SMOKE := $(BUILD)/pixel_terminal_smoke
 PIXEL_TERMINAL_OBJ := $(BUILD)/pixel_terminal.o
 CATALOG_OBJ := $(BUILD)/sheet_catalog.o
@@ -252,6 +254,12 @@ $(AUDIO_MIXER_SMOKE): tests/core/audio_mixer_smoke.c $(AUDIO_MIXER_OBJ) | $(BUIL
 	$(CC) $(CFLAGS) -Icore tests/core/audio_mixer_smoke.c $(AUDIO_MIXER_OBJ) -o $@ $(LDFLAGS) $(LIBS) -lm
 $(AI_OBJ): core/sleela_ai.c core/sleela_ai.h core/sleela_media.h | $(BUILD)
 	$(CC) $(CFLAGS) -Icore -c core/sleela_ai.c -o $@
+$(REGEX_OBJ): core/sleela_regex.c core/sleela_regex.h | $(BUILD)
+	$(CC) $(CFLAGS) -Icore -c core/sleela_regex.c -o $@
+$(REGEX_SMOKE): tests/core/regex_smoke.c $(REGEX_OBJ) | $(BUILD)
+	$(CC) $(CFLAGS) -Icore tests/core/regex_smoke.c $(REGEX_OBJ) -o $@ $(LDFLAGS) $(LIBS)
+test-regex: $(REGEX_SMOKE)
+	@echo "=== SLeeLa Regex native foundation ==="; $(REGEX_SMOKE)
 $(AI_SMOKE): tests/core/ai_smoke.c $(AI_OBJ) | $(BUILD)
 	$(CC) $(CFLAGS) -Icore tests/core/ai_smoke.c $(AI_OBJ) -o $@ $(LDFLAGS) $(LIBS) -lm
 test-ai: $(AI_SMOKE)
@@ -319,7 +327,7 @@ $(BUILD)/driver.o: frontend/driver.cpp frontend/compiler.h frontend/artifact.h s
 $(BUILD):
 	mkdir -p $(BUILD)
 
-test: verify-security test-system-monitor test-sleela test-design-activity test-version test-nordshrift test-threads test-thread-platform test-network test-network-platform test-synchro test-munction test-bestof test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-math test-physics test-economics test-inference test-chemistry test-financial test-runtime test-memmgr
+test: verify-security test-system-monitor test-sleela test-design-activity test-regex test-version test-nordshrift test-threads test-thread-platform test-network test-network-platform test-synchro test-munction test-bestof test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-math test-physics test-economics test-inference test-chemistry test-financial test-runtime test-memmgr
 test-thread-platform: $(THREAD_PLATFORM_SMOKE)
 	@echo "=== OS-aware threading backend ==="; SLEELA_THREAD_PLATFORM=auto $(THREAD_PLATFORM_SMOKE)
 test-threads: $(THREAD_SMOKE)
