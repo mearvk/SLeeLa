@@ -300,7 +300,9 @@ int main(int argc, char **argv) {
     struct Unlock { fs::path p; ~Unlock() { std::error_code e; fs::remove_all(p, e); } } unlock{lock};
     if (!regular_file(inbox)) { std::ofstream out(inbox); out << "hello\n"; }
     if (tick) { std::ofstream out(inbox, std::ios::app); out << "tick " << utc_now() << "\n"; }
-    // Discord-1™ owns its firewall rule for the lifetime of this server process.\n    // Remove a stale rule first, then require a successful open before execution.\n    (void)run_portctl(root, "close", "Discord-1", port, portProtocol);\n    if (run_portctl(root, "open", "Discord-1", port, portProtocol) != 0) {\n        std::cerr << "sleelas: firewall could not open " << port << "/" << portProtocol << "; refusing to start\\n";\n        return 1;\n    }\n    struct PortGuard {\n        const fs::path &root; const std::string &port; const std::string &protocol;\n        ~PortGuard() { (void)run_portctl(root, "close", "Discord-1", port, protocol); }\n    } portGuard{root, port, portProtocol};\n    if (!std::getenv("SLEELA_SHA256_MANIFEST")) {
+    // Discord-1™ owns its firewall rule for the lifetime of this server process.
+    // Remove a stale rule first, then require a successful open before execution.
+    (void)run_portctl(root, "close", "Discord-1", port, portProtocol);\n    if (run_portctl(root, "open", "Discord-1", port, portProtocol) != 0) {\n        std::cerr << "sleelas: firewall could not open " << port << "/" << portProtocol << "; refusing to start\n";\n        return 1;\n    }\n    struct PortGuard {\n        const fs::path &root; const std::string &port; const std::string &protocol;\n        ~PortGuard() { (void)run_portctl(root, "close", "Discord-1", port, protocol); }\n    } portGuard{root, port, portProtocol};\n    if (!std::getenv("SLEELA_SHA256_MANIFEST")) {
         fs::path manifest = root / "security/important-sha256-manifest.json";
 #if defined(_WIN32)
         if (regular_file(manifest)) _putenv_s("SLEELA_SHA256_MANIFEST", manifest.string().c_str());
