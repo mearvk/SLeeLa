@@ -2,7 +2,7 @@
 
 **Nordshrift 2.0** is the transpiler driver and semantic coordination layer for Sleela. It reads a **`.sst` control sheet** and drives the transpilation of Sleela sources into the target selected by the sheet — the **triplet**: **Java**, **Sleela** (executed on the C core), or **C**.
 
-The `.sst` file remains the *control surface*, not the program. In 2.0 it can also carry explicit semantic models shared by the Math, Physics, Economics, Chemistry, and Financial libraries.
+The `.sst` file remains the *control surface*, not the program. In 2.0 it can also carry explicit semantic models shared by the Math, Physics, Economics, Chemistry, Financial, Astrophysics, and Sociology libraries.
 
 ## Build & run
 
@@ -161,3 +161,24 @@ point* or merely *canonical-form stable* (the emitter fully parenthesizes and
 normalizes blocks, so a second pass can differ cosmetically while remaining
 structurally identical). The `sleela` binary links only the Nordshrift **emitter**
 for this (not the standalone driver), so there is no second `main`.
+
+
+## Subject Library coverage
+
+The shared subject layer currently documents and carries:
+
+- Math — foundational numerical vocabulary.
+- Physics — mathematical physical relations.
+- Chemistry — domain-specific chemical models.
+- Economics — quantitative economic relations.
+- Finance — financial calculations.
+- Inference — evidence-sensitive inference structures.
+- Data Analytics — statistical/data operations.
+- Astrophysics — astronomical numerical relations plus observed-data/provenance XML.
+- Sociology — population, rate, distribution, transition, inequality and group-separation statistics.
+
+Astrophysics declares Math and Physics dependencies. Sociology declares Math. The .sst subject layer keeps these dependencies explicit and preserves evidence status.
+
+## Excellent standard
+
+A Subject Library reaches the repository's **Excellent** engineering standard when native mathematics, semantic declarations, XML model/procedure definitions, SLeeLa examples, provenance, evidence status, focused tests, and documented interpretation limits are all connected and inspectable.
