@@ -20,4 +20,6 @@ int sleela_relay_identity_init(sleela_relay_identity_t *i,const char *j,const ch
 int sleela_relay_identity_set_national_ref(sleela_relay_identity_t *i,const char *v){return i?copy_ref(i->national_id_ref,sizeof(i->national_id_ref),v):-1;}
 int sleela_relay_identity_set_citizen_ref(sleela_relay_identity_t *i,const char *v){return i?copy_ref(i->citizen_id_ref,sizeof(i->citizen_id_ref),v):-1;}
 int sleela_relay_identity_set_bank_ref(sleela_relay_identity_t *i,const char *v){return i?copy_ref(i->bank_id_ref,sizeof(i->bank_id_ref),v):-1;}
+int sleela_relay_identity_set_banker_ref(sleela_relay_identity_t *i,const char *v){return i?copy_ref(i->banker_id_ref,sizeof(i->banker_id_ref),v):-1;}
+int sleela_relay_identity_set_cromsmrus_ref(sleela_relay_identity_t *i,const char *v){return i?copy_ref(i->cromsmrus_id_ref,sizeof(i->cromsmrus_id_ref),v):-1;}
 int sleela_relay_identity_validate(const sleela_relay_identity_t *i){return (!i||!i->jurisdiction[0]||!i->relay_operator_ref[0]||!i->purpose[0])?-1:0;}
