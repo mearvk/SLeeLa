@@ -1,5 +1,9 @@
 # SLeeLa API
 
+## Full API Catalogue
+
+See [API-CATALOG.md](API-CATALOG.md) for the complete semantic catalogue of SLeeLa's general-purpose API families, source locations, and implementation status. The catalogue covers core I/O, files, memory, threads, processes, networking, HTTP, GUI, email, databases, security, Nordshrift, subject libraries, JVM interoperability, RMI, servers, and related services.
+
 The API tree contains native C/C++ facades and SLeeLa mappings. The documentation is intended to describe source-backed contracts rather than placeholder interfaces.
 
 ## General API families
