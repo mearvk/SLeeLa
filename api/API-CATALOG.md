@@ -81,7 +81,7 @@ Sources: api/email/, including sleela_email.c, sleela_email.h, sleela_email.hpp 
 Status: Implemented.
 
 ## 15. Audio and video media
-Concepts: timestamped audio/video frames, broad image-format recognition, audio/video codec recognition, container recognition, provider capability discovery, audio level/peak/RMS analysis, spectrum extension, video luminance/edge/motion analysis, frame listeners, transforms, visualization, recording/provider boundaries, and future AI input/output hooks.
+Concepts: timestamped audio/video frames, broad image-format recognition, audio/video codec recognition, container recognition, provider capability discovery, synchronized audio mixing, bass/mid/treble/channel control, live and file inputs, master/second track roles, relative quality, timeline offsets, streaming output, audio level/peak/RMS analysis, spectrum extension, video luminance/edge/motion analysis, frame listeners, transforms, visualization, recording/provider boundaries, and future AI input/output hooks.
 Sources: impl/core/sleela_media.h, impl/core/sleela_media.c, impl/core/sleela_media_formats.h, impl/core/sleela_media_formats.c, api/media/.
 Status: Native media foundation and broad format/codec registry implemented; actual device and codec decode/encode providers remain extensible.
 
