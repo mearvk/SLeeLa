@@ -92,6 +92,7 @@ else
 fi
 "$HTTPCTL" --logical-port "$LOGICAL_PORT" --size "$DOWNLOAD_SIZE" --version "$HTTP_VERSION" >>"$LOG" 2>&1 || { echo "serverd: HTTP capability validation failed" >&2; exit 1; }
 SLEELA_SERVER_STATE="$STATE" SLEELA_TRAFFIC_PORTS="$PROBE_PORT,$SCAN_PORT,$PORT,20000" sh "$TRAFFIC_LOGGER" start >>"$LOG" 2>&1 || true
+SLEELA_SERVER_STATE="$STATE" sh "$ROOT/server-edition/port-awareness/known-connections.sh" >>"$LOG" 2>&1 || true
 [ -f "$INBOX" ] || printf "%s\n" "hello" > "$INBOX"
 [ "$TICK" = true ] && printf "tick %s\n" "$(date -u +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || echo now)" >> "$INBOX"
 { echo "=== SLeeLa Server Edition Service 2 ==="; cd "$ROOT"; "$ENGINE" run "$SOURCE"; } >> "$LOG" 2>&1
