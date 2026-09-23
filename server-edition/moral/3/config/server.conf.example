@@ -11,3 +11,7 @@ foreground=false
 preflight=true
 sha256_manifest=../../../../security/important-sha256-manifest.json
 allow_network=false
+port=19866
+port_protocol=tcp
+firewall=auto
+firewall_required=true
