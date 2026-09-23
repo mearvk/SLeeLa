@@ -6,8 +6,9 @@ namespace sleela {
 namespace native {
 // Validate explicit imports and qualified module names before lowering.
 // Built-in module namespaces reserved by the native API contract:
-// math, physics, economics, chemistry, excel, json, crypto, net.
+// math, physics, economics, chemistry, inference, astrophysics, sociology, excel, json, crypto, net.
 void addAstrophysics(Program& program);
+void addSociology(Program& program);
 void validateImports(const Program& program);
 bool isModuleAvailable(const std::string& module);
 // Expand executable math/physics/economics calls into ordinary Sleela Core
