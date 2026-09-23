@@ -1,4 +1,4 @@
-# Discord-2™ — SLeeLa Server and Service — Service 2
+# Discord-2™ — SLeeLa Server and Service — Service 2 — v2.0.1
 
 Service 2 is the expanded Server and Service package. It separates the
 authoritative SLeeLa server program from configuration and lifecycle control.
@@ -70,6 +70,12 @@ Discord and related Discord marks are third-party trademarks. No Discord
 logo, trade dress, or proprietary Discord asset is included by this naming
 convention. Discord's published brand guidance states that permission is
 required for uses of its marks beyond permitted cases. citeturn0search3turn0search2
+
+## Module version
+
+**Service 2 module: 2.0.1**
+
+The port-awareness addition is a backward-compatible patch-level update to this implementation generation. Shared firewall lifecycle support is provided by port-awareness module **1.0.0**.
 
 ## Port awareness and firewall lifecycle
 
