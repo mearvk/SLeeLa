@@ -35,3 +35,12 @@ HTTP 1.0 implementations should keep the logical-port layer independent from nat
 ## Compatibility
 
 The HTTP 1.0 layer remains compatible with ordinary HTTP infrastructure. Proxies, TLS termination, routers, and conventional TCP port bindings remain transport concerns; SLeeLa logical ports remain application-routing concerns.
+
+
+## Large-File Download Mode
+
+SLeeLa HTTP 1.0+ defines an explicit **DOWNLOAD mode** for files larger than 50 MB. The download layer supplies persistent resume identity.
+
+`SESSION-ID | DATETIME | FILE-ID | FILE-NAME | INDEX | OFFSET | TOTAL-SIZE`
+
+FILE-ID identifies the file transfer, INDEX identifies its segment/chunk, and OFFSET identifies its byte position. The 50 MB threshold selects this mode; it is not a maximum file size.
