@@ -210,3 +210,12 @@ The 244 derivatives provide the evidence vocabulary. Sterile wisdom provides the
 - ROUTING-SECURITY-244.md — 244-artifact routing/security model.
 - INTERNATIONAL-ROUTING-INTEROPERABILITY.md — international routing, engineering, geographic, and legal interoperability.
 - HTTP-3.0-SPEC.md — SLeeLa HTTP 3.0 protocol specification.
+
+
+## Port-Multiplexing Principle
+
+SLeeLa separates **connection**, **stream**, and **application port**.
+
+A native socket or QUIC connection is a transport resource. An HTTP/2 or HTTP/3 stream is a multiplexed protocol channel. A SLeeLa logical port is an application-level route identifier.
+
+The implementation must not allocate a native socket merely because a new logical port is created. Logical ports are multiplexed over the available transport streams and bindings.
