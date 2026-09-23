@@ -108,7 +108,7 @@
     },
     {
       "path": "api/API-CATALOG.md",
-      "sha256": "19dcdca826971f32c2b8ad87ef454b780fbb71d92a5f8e7d545edaa6d927e189"
+      "sha256": "0994e49e2ac1c2fcce5970d098b77bc631b09121ed6c0bb04a2c497b3855fb78"
     },
     {
       "path": "api/API.html",
@@ -120,7 +120,7 @@
     },
     {
       "path": "api/README.md",
-      "sha256": "99d3f174ca92e28956f9946a8eaade6441e689c1bc565352ce1971256b0a6d7a"
+      "sha256": "dd8031b5afd6edd8a62266bcbd941f662cc9c782cc6551ae3bb5753cf353a569"
     },
     {
       "path": "api/SOURCE-COVERAGE.html",
@@ -361,6 +361,38 @@
     {
       "path": "api/posting/sleela_post.h",
       "sha256": "76f0c657592d55a6f4f4d3142122adad6141513637530953a062df6c16318bac"
+    },
+    {
+      "path": "api/regex/API.html",
+      "sha256": "9681d3e5d0840530c5039b5a49bd85961f781b9ade041d0ba2b87e4d93fb31ee"
+    },
+    {
+      "path": "api/regex/LEVEL-1-FIND.sleela",
+      "sha256": "7b19bb21a4ab32aee187d62bd56e82a38c575a122bc4183fa95c122370ae3941"
+    },
+    {
+      "path": "api/regex/LEVEL-2-SHAPE.sleela",
+      "sha256": "4cbe4b57b483ab1de7b65cf5c9dc67d986e3cd8a78891e1122092042106e0dba"
+    },
+    {
+      "path": "api/regex/LEVEL-3-STRUCTURE.sleela",
+      "sha256": "d6facdb13c4c7213c38a12ef3d82a5b37fed3df53be1c91ce404d1f6a11bdb37"
+    },
+    {
+      "path": "api/regex/LEVEL-4-EXPRESSION.sleela",
+      "sha256": "53893e8f6ebafbe940e23c5f3baf93427a57bfc04c2065e380ff8bedeb1e970d"
+    },
+    {
+      "path": "api/regex/README.md",
+      "sha256": "9bf83572f23de580ab55bf9369d7c7caf0fe95a718c44baba2cde67c4269b333"
+    },
+    {
+      "path": "api/regex/REGEX-DESIGN.md",
+      "sha256": "11f844b60c64faec2a11a5228551adf07be6fa09be250381942302c5b346eeab"
+    },
+    {
+      "path": "api/regex/regex-patterns.sleela",
+      "sha256": "c9f3a76e078be491f34f7d48d5b97e2139dc1d23c6b5ac24c9537f330c7bb8a9"
     },
     {
       "path": "api/router/sleela_router.c",
@@ -3043,6 +3075,14 @@
       "sha256": "1e62f4041882c21f2311509536978b8a0fabaa3743fbc0a2c0806b29dbe5e61c"
     },
     {
+      "path": "impl/core/sleela_regex.c",
+      "sha256": "7344c977e5ddd8650652662fd312c89f939621bc847c795a16f0892617f8ffc8"
+    },
+    {
+      "path": "impl/core/sleela_regex.h",
+      "sha256": "3f1bc2e8b7856983a7312b27a444afcfd6535db0cfe267a218da21cde35bc1dd"
+    },
+    {
       "path": "impl/core/sleela_synchro.c",
       "sha256": "4ab4796be06d1cb5dacd4915e524a00d98a8df9241f67f3a92c0cc578ba9eb53"
     },
@@ -3537,6 +3577,10 @@
     {
       "path": "impl/tests/core/memmgr_smoke.c",
       "sha256": "d4547d3d317eecdf1441bc3b82b40b8c85ee35ea253565d58fe869e186f51cd2"
+    },
+    {
+      "path": "impl/tests/core/regex_smoke.c",
+      "sha256": "d715ddc775301aae724b8ad656af48b8af582bd4af0d82fb2d040b5fd368811a"
     },
     {
       "path": "impl/tests/core/system_monitor_smoke.c",
