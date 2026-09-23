@@ -20,6 +20,7 @@ FOREGROUND="false"
 MANIFEST=""
 NETWORK="false"
 PORT="19866"; PORT_PROTO="tcp"; FIREWALL="auto"; FIREWALL_REQUIRED="true"
+SCAN_PORT="22220"; SCAN_PORT_PROTO="tcp"; SCAN_PORT_FIREWALL="auto"
 while IFS= read -r line || [ -n "$line" ]; do
   case "$line" in ""|#*) continue;; esac
   case "$line" in *=*) key=${line%%=*}; value=${line#*=};; *) echo "serverd: invalid configuration line" >&2; exit 2;; esac
@@ -29,7 +30,7 @@ while IFS= read -r line || [ -n "$line" ]; do
     engine) ENGINE=$value;; inbox) INBOX=$value;; state) STATE=$value;; server_source) SOURCE=$value;;
     log) LOG=$value;; mode) MODE=$value;; tick) TICK=$value;; foreground) FOREGROUND=$value;;
     sha256_manifest) MANIFEST=$value;; allow_network) NETWORK=$value;;
-    port) PORT=$value;; port_protocol) PORT_PROTO=$value;; firewall) FIREWALL=$value;; firewall_required) FIREWALL_REQUIRED=$value;;
+    port) PORT=$value;; port_protocol) PORT_PROTO=$value;; firewall) FIREWALL=$value;; firewall_required) FIREWALL_REQUIRED=$value;; scan_port) SCAN_PORT=$value;; scan_port_protocol) SCAN_PORT_PROTO=$value;; scan_port_firewall) SCAN_PORT_FIREWALL=$value;;
     *) echo "serverd: unknown configuration key: $key" >&2; exit 2;;
   esac
 done < "$CONFIG"
@@ -51,6 +52,9 @@ case "$NETWORK" in true|false) ;; *) echo "serverd: allow_network must be true o
 [ -f "$SOURCE" ] || { echo "serverd: source not found: $SOURCE" >&2; exit 1; }
 PORTCTL="$ROOT/server-edition/port-awareness/portctl.sh"
 [ -f "$PORTCTL" ] || { echo "serverd: port controller missing: $PORTCTL" >&2; exit 1; }
+case "$SCAN_PORT" in ""|*[!0-9]*) echo "serverd: scan_port must be numeric" >&2; exit 2;; esac
+[ "$SCAN_PORT" -ge 1 ] && [ "$SCAN_PORT" -le 65535 ] || { echo "serverd: scan_port must be 1..65535" >&2; exit 2; }
+case "$SCAN_PORT_PROTO" in tcp|udp) ;; *) echo "serverd: scan_port_protocol must be tcp or udp" >&2; exit 2;; esac
 export SLEELA_RELAY_NATIONAL_ID_REF="$NATIONAL_ID_REF" SLEELA_RELAY_CITIZEN_ID_REF="$CITIZEN_ID_REF" SLEELA_RELAY_BANK_ID_REF="$BANK_ID_REF" SLEELA_RELAY_BANKER_ID_REF="$BANKER_ID_REF" SLEELA_RELAY_CROMSMRUS_ID_REF="$CROMSMRUS_ID_REF" SLEELA_RELAY_PURPOSE="$RELAY_PURPOSE"
 export SLEELA_BIN="$ENGINE" SLEELA_SHA256_MANIFEST="$MANIFEST" SLEELA_SERVER_CONFIG="$CONFIG"
 export SLEELA_SERVER_INBOX="$INBOX" SLEELA_SERVER_STATE="$STATE" SLEELA_SERVER_ALLOW_NETWORK="$NETWORK"
@@ -59,6 +63,7 @@ LOCK="$STATE/.serverd.lock"
 mkdir "$LOCK" 2>/dev/null || { echo "serverd: another instance is active" >&2; exit 3; }
 cleanup() {
   rc=$?
+  sh "$PORTCTL" close "basic-scan" "$SCAN_PORT" "$SCAN_PORT_PROTO" >>"$LOG" 2>&1 || { echo "serverd: failed to close scan port $SCAN_PORT/$SCAN_PORT_PROTO" >&2; rc=1; }
   if ! sh "$PORTCTL" close "Discord-2" "$PORT" "$PORT_PROTO" >>"$LOG" 2>&1; then
     echo "serverd: failed to close firewall port $PORT/$PORT_PROTO" >&2
     rc=1
@@ -68,6 +73,8 @@ cleanup() {
 }
 trap cleanup EXIT HUP INT TERM
 sh "$PORTCTL" close "Discord-2" "$PORT" "$PORT_PROTO" >>"$LOG" 2>&1 || true
+sh "$PORTCTL" close "basic-scan" "$SCAN_PORT" "$SCAN_PORT_PROTO" >>"$LOG" 2>&1 || true
+sh "$PORTCTL" open "basic-scan" "$SCAN_PORT" "$SCAN_PORT_PROTO" >>"$LOG" 2>&1 || { echo "serverd: firewall could not open scan port $SCAN_PORT/$SCAN_PORT_PROTO; refusing to start" >&2; exit 1; }
 if [ "$FIREWALL_REQUIRED" = true ]; then
   sh "$PORTCTL" open "Discord-2" "$PORT" "$PORT_PROTO" >>"$LOG" 2>&1 || { echo "serverd: firewall could not open $PORT/$PORT_PROTO; refusing to start" >&2; exit 1; }
 else
@@ -81,7 +88,7 @@ fi
 echo "Discord-2™ serverd: completed; results=$LOG"
 
 # Named basic-scan/service-discovery port; firewall lifecycle is owned by the server controller.
-: "${SLEELA_SCAN_PORT:=22220}"
-: "${SLEELA_SCAN_PORT_PROTOCOL:=tcp}"
+: "${SLEELA_SCAN_PORT:=$SCAN_PORT}"
+: "${SLEELA_SCAN_PORT_PROTOCOL:=$SCAN_PORT_PROTO}"
 : "${SLEELA_MATURE_SERVICES:=auto}"
 export SLEELA_SCAN_PORT SLEELA_SCAN_PORT_PROTOCOL SLEELA_MATURE_SERVICES
