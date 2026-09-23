@@ -277,3 +277,26 @@ The target is a short, predictable hot path with reusable state and minimal copy
 ## 20. Governing Principle
 
 **SLeeLa HTTP 3.0 should be recognizable to ordinary Internet infrastructure, efficient for SLeeLa services, and simple enough that a Java, C, C++, or other client can implement the connector without becoming a SLeeLa runtime.**
+
+
+## Port and Stream Multiplexing
+
+The HTTP 3.0 specification treats the SLeeLa PORT as a **logical application port**, not as a replacement for the native transport port and not as an HTTP/3 stream identifier.
+
+The addressing hierarchy is:
+
+```text
+native transport endpoint
+        ↓
+HTTP/3 / QUIC stream
+        ↓
+SLeeLa logical PORT
+        ↓
+SERVICE-ID / OP-ID
+        ↓
+application operation
+```
+
+Multiple logical PORT values may therefore share one transport connection. Each HTTP/3 stream can independently carry a SLeeLa request, and the PORT identifies the application route within that request.
+
+This preserves interoperability with ordinary HTTP/3 infrastructure while giving SLeeLa a larger application routing namespace.
