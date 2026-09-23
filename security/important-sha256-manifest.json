@@ -360,15 +360,15 @@
     },
     {
       "path": "api/national-relay/README.md",
-      "sha256": "49a377e2ac4f7c046c308ff1d8dafe270fe3153bf8f97451e9958e40babfc104"
+      "sha256": "8ab31722e8b30ae026c7e33458155cc3ebaf458fb653e8f58a97cd20f81276cd"
     },
     {
       "path": "api/national-relay/sleela_relay_identity.c",
-      "sha256": "796fb67e008717c09a6af509f923241fdaf9388d6a18f2c663a3b8997b141291"
+      "sha256": "8f216799c6a671ed77a6acb36ceb4741cb56203acb3f07f16310b77e919198f5"
     },
     {
       "path": "api/national-relay/sleela_relay_identity.h",
-      "sha256": "76546ad83b83f591d9bfac3b8e67f6020f6bf27f353dd2ebc41d650733ffcc7e"
+      "sha256": "b39458bec530b9b0c5057f62b18d9da649fe180878cf572e115d0f1b18d691db"
     },
     {
       "path": "api/nordshrift/API.html",
