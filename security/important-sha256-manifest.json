@@ -424,7 +424,7 @@
     },
     {
       "path": "api/server/sleelas.cpp",
-      "sha256": "de257b81380afa5b219d8e3e453ef8f76fa0e86e40ba5709fd21a317f069b5eb"
+      "sha256": "6811ac663eb341c40b9785973e61ee6b5775e08a61b81626bdfd1ae7d77b6bf3"
     },
     {
       "path": "api/subjects/README.md",
@@ -4076,7 +4076,7 @@
     },
     {
       "path": "server-edition/PORT-AWARENESS.md",
-      "sha256": "dc23856e575aa1e9cdfc64b62b6aff110cbc91b9f320512fee809d361cadc65f"
+      "sha256": "9b46e700a1ea1fa5ecf040fa6faae2588ac8cff47e58ffe79d0ea02ac35d2748"
     },
     {
       "path": "server-edition/moral/2/INSTALL.md",
@@ -4084,7 +4084,7 @@
     },
     {
       "path": "server-edition/moral/2/README.md",
-      "sha256": "d47beb778d4c64b189fa75684e0e4dbec8ab015615b438aadce5179f9f89f21d"
+      "sha256": "a1cd6ec59d4bb49026f6d50f0cf66444cbe9adc9175b87ad653d9218749a7cc2"
     },
     {
       "path": "server-edition/moral/2/install/linux-install.sh",
@@ -4128,7 +4128,7 @@
     },
     {
       "path": "server-edition/moral/3/README.md",
-      "sha256": "dfafe7d3771460f3a10171ae9e069bbdc822e138274a4432c874d29cf1e3dc84"
+      "sha256": "5f5e1e1110fa0e2e7d2ea96fcc0c59e4cbb0376d8e09971d6c017051067e2adf"
     },
     {
       "path": "server-edition/moral/3/install/linux-install.sh",
@@ -4164,7 +4164,7 @@
     },
     {
       "path": "server-edition/moral/README.md",
-      "sha256": "1293f2ac723ab415f5e5efc5a666654a0f37a239e50813764a8a475b91badfb5"
+      "sha256": "2740d442addbe200bb0763fa3afe4249d33092ba9169f275abe44148ded1a2ac"
     },
     {
       "path": "server-edition/port-awareness/portctl.ps1",
