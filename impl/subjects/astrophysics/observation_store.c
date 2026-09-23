@@ -1,4 +1,24 @@
 #include "observation_store.h"
 #include <stdio.h>
-static void e(FILE*f,const char*s){for(;s&&*s;s++){if(*s=='&')fputs("&amp;",f);else if(*s=='<')fputs("&lt;",f);else if(*s=='>')fputs("&gt;",f);else if(*s=='"')fputs("&quot;",f);else if(*s=='\'')fputs("&apos;",f);else fputc(*s,f);}}
-int sleela_observation_append_xml(const char*p,const SleelaObservationRecord*r){if(!p||!r||!r->id||!r->subject||!r->target||!r->timestamp_utc||!r->quantity||!r->unit)return 0;FILE*f=fopen(p,"a");if(!f)return 0;fprintf(f,"<observation id="");e(f,r->id);fprintf(f,"" subject="");e(f,r->subject);fprintf(f,"" target="");e(f,r->target);fprintf(f,"" timestamp="");e(f,r->timestamp_utc);fprintf(f,"">\n  <measurement quantity="");e(f,r->quantity);fprintf(f,"" value="%.17g" unit="");e(f,r->unit);fprintf(f,""/>\n",r->value);if(r->instrument){fputs("  <instrument>",f);e(f,r->instrument);fputs("</instrument>\n",f);}if(r->source){fputs("  <source>",f);e(f,r->source);fputs("</source>\n",f);}if(r->provenance){fputs("  <provenance>",f);e(f,r->provenance);fputs("</provenance>\n",f);}fputs("</observation>\n",f);fclose(f);return 1;}
+static void e(FILE *f,const char *s){
+    for(;s&&*s;s++){
+        if(*s=='&')fputs("&amp;",f);
+        else if(*s=='<')fputs("&lt;",f);
+        else if(*s=='>')fputs("&gt;",f);
+        else if(*s=='"')fputs("&quot;",f);
+        else if(*s=='\'')fputs("&apos;",f);
+        else fputc(*s,f);
+    }
+}
+int sleela_observation_append_xml(const char *p,const SleelaObservationRecord *r){
+    if(!p||!r||!r->id||!r->subject||!r->target||!r->timestamp_utc||!r->quantity||!r->unit)return 0;
+    FILE *f=fopen(p,"a"); if(!f)return 0;
+    fprintf(f,"<observation id=\"");e(f,r->id);fprintf(f,"\" subject=\"");e(f,r->subject);
+    fprintf(f,"\" target=\"");e(f,r->target);fprintf(f,"\" timestamp=\"");e(f,r->timestamp_utc);
+    fprintf(f,"\">\\n  <measurement quantity=\"");e(f,r->quantity);
+    fprintf(f,"\" value=\"%.17g\" unit=\"");e(f,r->unit);fprintf(f,"\"/>\\n",r->value);
+    if(r->instrument){fputs("  <instrument>",f);e(f,r->instrument);fputs("</instrument>\\n",f);}
+    if(r->source){fputs("  <source>",f);e(f,r->source);fputs("</source>\\n",f);}
+    if(r->provenance){fputs("  <provenance>",f);e(f,r->provenance);fputs("</provenance>\\n",f);}
+    fputs("</observation>\\n",f);fclose(f);return 1;
+}
