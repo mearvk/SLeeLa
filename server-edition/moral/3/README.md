@@ -91,3 +91,10 @@ DATETIME, FILE-ID, FILE-NAME, INDEX, OFFSET, and TOTAL-SIZE resume state.
 ## Named scan port and Mature Services
 
 The Server Edition exposes a named basic scanning/service-discovery port, default **TCP 22220**. It is opened in the host firewall while the server is running and closed during shutdown. Multiplex-capable services can negotiate service capabilities through this port. Mature Services are then opened on their own native ports only while those services are active. The native firewall port, the scan port, and SLeeLa's logical HTTP PORT are separate namespaces. Linux uses UFW/firewalld as available; other supported operating systems use their corresponding firewall controller.
+
+
+## Traffic and packet logging
+
+The Server Edition maintains a traffic log for the named basic probe port (default TCP 2222), the basic scan/service-discovery port (default TCP 22220), the configured server port, and the International Strernary reference port 20000. When packet capture is available, the logger records timestamps, numeric source/destination IP addresses and ports, protocol information, and packet payload bytes in a diagnostic packet representation. HTTP traffic is therefore retained to the extent it is visible at the transport layer; encrypted HTTPS/HTTP/3 payloads remain encrypted rather than being decrypted by the logger. Packet capture is best-effort and requires the host's packet-capture privileges. Logging stops during server shutdown.
+
+The port-20000 reference comes from mearvk/Java.Web.Server.Telnet.Front.Java.21, whose repository identifies Strernary on port 20000 and includes a Strernary liveness check. See the cited repository evidence in the project history.
