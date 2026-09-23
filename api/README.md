@@ -55,3 +55,5 @@ See `api/nordshrift/API.html` for the complete Nordshrift API reference, includi
 ## sleelas
 
 See `api/server/API.html` for the compiled `sleelas` server launcher. It starts `server-edition/src/Server.sleela` through the normal compiled `sleela` engine. Native binaries are produced for Linux x86_64, macOS, and Windows 10+ x86_64 by the repository CI workflow.
+
+- [AI API](ai/README.md) — data, file, audio, and video AI with native/VM connector support and XML model/data contracts.

@@ -108,7 +108,7 @@
     },
     {
       "path": "api/API-CATALOG.md",
-      "sha256": "47dcfd1d72ae9d3c574583dacbbae4075a8bcc5b2bdf55485505f89d8ac38826"
+      "sha256": "629081bb60738a75d7f1fa6cf47d988b0882d9bc0708e881ea31af49d05153e0"
     },
     {
       "path": "api/API.html",
@@ -120,11 +120,27 @@
     },
     {
       "path": "api/README.md",
-      "sha256": "41a9a49a66ba6095129595402709e38d9a642d447c6b8bf3bfcd70a085cd895f"
+      "sha256": "99d3f174ca92e28956f9946a8eaade6441e689c1bc565352ce1971256b0a6d7a"
     },
     {
       "path": "api/SOURCE-COVERAGE.html",
       "sha256": "a73de153c33a124796b9ca4e6562c61f17cc76f9fef1e7d1b05d711e6e5ee143"
+    },
+    {
+      "path": "api/ai/API.html",
+      "sha256": "ea28316da89463ed78a8edbb51c848678ef278708d151a3cbc78f4d1afbf2e67"
+    },
+    {
+      "path": "api/ai/README.md",
+      "sha256": "143bc6edc023998c640c806bac9cf053f8e2593c4c66990fd65538e33d72cad0"
+    },
+    {
+      "path": "api/ai/data-model.xml",
+      "sha256": "f33f46ddb52b34772d82c75d9d5432fd55dc5db8495d66960a7a81e5e412895a"
+    },
+    {
+      "path": "api/ai/model.xml",
+      "sha256": "343c5e7c993cc7cb2e5b0f7e79b03bc2b320aaef1641483ba9b5f2542ef14d76"
     },
     {
       "path": "api/audio-mixer/README.md",
@@ -2855,6 +2871,14 @@
       "sha256": "a7c286a2083bb9cea3bfab0519e71ecfd1f8d6f226e64ef803588c89a26b1a33"
     },
     {
+      "path": "impl/core/sleela_ai.c",
+      "sha256": "c940fc37f5441c1e1ef810d66a0668efd5cec287feba9f682d375a775093dd37"
+    },
+    {
+      "path": "impl/core/sleela_ai.h",
+      "sha256": "b4644b52642c0790ebf0060de79d96c8024af14e5628ecbd7418ecf3b86c642b"
+    },
+    {
       "path": "impl/core/sleela_artifact.c",
       "sha256": "7016948a226b9be43145e6bd3efbac4120a2824539cd763880cdb470788ff6f8"
     },
@@ -3465,6 +3489,10 @@
     {
       "path": "impl/terminal/terminal_capability.hpp",
       "sha256": "5cac25a5d038932dab1e6163f5c6bde9055c5366934ea666d5d40eed90573b0d"
+    },
+    {
+      "path": "impl/tests/core/ai_smoke.c",
+      "sha256": "eaeffb408be57ca738e0652974c5b120d93f1abe6808a0a341410e56da1d494e"
     },
     {
       "path": "impl/tests/core/audio_mixer_smoke.c",
