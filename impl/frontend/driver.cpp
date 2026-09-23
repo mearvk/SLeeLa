@@ -32,7 +32,7 @@ extern "C" {
 #include "../core/sleela_design_activity.h"
 }
 namespace fs=std::filesystem;
-static const char* kVersion="Sleelvac™ 1.4 (Sleela compiler; executable native math/physics/economics/chemistry/financial modules; persistent .sleela Core artifacts; .xclass input; JVM-family langin input: Java/Kotlin/Scala/Groovy/Clojure; Nordshrift round-trip (SLeeLa->Nordshrift->back); OS Defender provisioning; SHA-256 execution gate)";
+static const char* kVersion="Sleelvac™ 1.5 (Sleela compiler; executable native math/physics/economics/chemistry/financial modules; persistent .sleela Core artifacts; .xclass input; JVM-family langin input: Java/Kotlin/Scala/Groovy/Clojure; Nordshrift round-trip (SLeeLa->Nordshrift->back); OS Defender provisioning; SHA-256 execution gate)";
 static bool readFile(const std::string& path,std::string& out);
 static bool hasExt(const std::string& path,const std::string& ext){return path.size()>=ext.size()&&path.compare(path.size()-ext.size(),ext.size(),ext)==0;}
 static std::string shellQuote(const std::string&s){
