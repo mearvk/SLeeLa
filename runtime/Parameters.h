@@ -20,6 +20,8 @@ extern "C" {
 #define SLVM_MEMORY_MANAGER_GRADE_II 2
 #define SLVM_MEMORY_MANAGER_GRADE_III 3
 #define SLVM_MEMORY_MANAGER_DEFAULT_GRADE SLVM_MEMORY_MANAGER_GRADE_I
+#define SLVM_SYSTEM_MONITOR_DEFAULT_ENABLED 1
+#define SLVM_SYSTEM_MONITOR_DEFAULT_STRICT 0
 
 /* Normal User profile constants (design parameters, not psychometric scores). */
 #define SLVM_NORMAL_USER_CAPABILITY_THRESHOLD 141
@@ -29,6 +31,8 @@ typedef struct {
     int capability_threshold;   /* minimum software-capability threshold (141+). */
     int subject_concurrency;    /* concurrent sociological subjects (8).        */
     int memory_manager_grade;   /* active Memory Manager grade; defaults to I.  */
+    int system_monitor_enabled; /* HSM enabled by default. */
+    int system_monitor_strict;  /* HSM advisory by default. */
 } SLVMParameters;
 
 /* Initialise a parameters record to the Normal User profile. */
@@ -37,6 +41,10 @@ void slvm_parameters_init(SLVMParameters *p);
 /* Memory Manager grade configuration. */
 int slvm_parameters_memory_manager_grade(const SLVMParameters *p);
 int slvm_parameters_set_memory_manager_grade(SLVMParameters *p, int grade);
+int slvm_parameters_system_monitor_enabled(const SLVMParameters *p);
+int slvm_parameters_set_system_monitor_enabled(SLVMParameters *p, int enabled);
+int slvm_parameters_system_monitor_strict(const SLVMParameters *p);
+int slvm_parameters_set_system_monitor_strict(SLVMParameters *p, int strict);
 
 /* Accessors for the active profile values. */
 int slvm_parameters_capability_threshold(const SLVMParameters *p);
