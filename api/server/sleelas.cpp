@@ -359,7 +359,15 @@ int main(int argc, char **argv) {
         run_portctl(root, "open", "basic-scan", scanPort, scanProtocol) != 0) {
         std::cerr << "sleelas: firewall could not open probe/scan ports; refusing to start\n";
         return 1;
-    }\n    if (run_portctl(root, "open", "Discord-1", port, portProtocol) != 0) {\n        std::cerr << "sleelas: firewall could not open " << port << "/" << portProtocol << "; refusing to start\n";\n        return 1;\n    }\n    struct PortGuard {\n        const fs::path &root; const std::string &port; const std::string &protocol;\n        ~PortGuard() { (void)run_portctl(root, "close", "Discord-1", port, protocol); }\n    } portGuard{root, port, portProtocol};\n    // Generate a privacy-preserving known-connections record. Active probing is disabled by default.
+    }\n    if (run_portctl(root, "open", "Discord-1", port, portProtocol) != 0) {\n        std::cerr << "sleelas: firewall could not open " << port << "/" << portProtocol << "; refusing to start\n";\n        return 1;\n    }\n    struct PortGuard {\n        const fs::path &root; const std::string &port; const std::string &protocol;\n        ~PortGuard() { (void)run_portctl(root, "close", "Discord-1", port, protocol); }\n    } portGuard{root, port, portProtocol};\n    // Server 1 uses the same packet logger/consumer lifecycle as Server Editions 2 and 3.
+    {
+        const fs::path tl = root / "server-edition/port-awareness/traffic-log.sh";
+        if (regular_file(tl)) {
+            std::string cmd = "SLEELA_SERVER_STATE=\"" + state.string() + "\" SLEELA_TRAFFIC_PORTS=\"" + probePort + "," + scanPort + "," + port + ",20000\" sh \"" + tl.string() + "\" start";
+            (void)std::system(cmd.c_str());
+        }
+    }
+    // Generate a privacy-preserving known-connections record. Active probing is disabled by default.
     {
         const fs::path kc = root / "server-edition/port-awareness/known-connections.sh";
         if (regular_file(kc)) {
@@ -377,6 +385,13 @@ int main(int argc, char **argv) {
     }
     if (foreground) std::cout << "sleelas: starting Server.sleela using " << engine << "\n";
     const int rc = run_engine(root, engine, server);
+    {
+        const fs::path tl = root / "server-edition/port-awareness/traffic-log.sh";
+        if (regular_file(tl)) {
+            std::string cmd = "SLEELA_SERVER_STATE=\"" + state.string() + "\" sh \"" + tl.string() + "\" stop";
+            (void)std::system(cmd.c_str());
+        }
+    }
     if (rc != 0) { std::cerr << "sleelas: server reference exited with status " << rc << "\n"; return rc; }
     std::cout << "Discord-1™: processed Server Edition level " << level << " -> " << log << "\n";
     return 0;
