@@ -71,3 +71,10 @@ QUIC connection
 The PORT value and HTTP/3 stream identifier are intentionally different. Stream identifiers control transport multiplexing; PORT values identify SLeeLa application routes.
 
 The same conceptual model is used by HTTP 2.1. HTTP 3.0 adds the larger authenticated PORT field to the envelope and includes it in the canonical keyed-MAC input.
+
+
+## Stream Multiplexing Boundary
+
+The 160-bit logical PORT is an application namespace layered over HTTP/3 stream multiplexing. A single QUIC connection may carry many streams, and each stream may carry a different SLeeLa PORT.
+
+The PORT value and HTTP/3 stream identifier are different namespaces: the stream controls transport multiplexing; PORT identifies the SLeeLa application route. HTTP 3.0 therefore does not require one native socket for every logical PORT.
