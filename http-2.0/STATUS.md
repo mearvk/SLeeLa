@@ -47,3 +47,18 @@ integrity substrate.
    HTTP 3.0 core minus the integrity substrate.
 
 *Companion: [`FLOW.md`](FLOW.md).*
+
+
+## Port-Multiplexing Status
+
+The HTTP 2.1 architecture explicitly defines three independent addressing layers:
+
+| Layer | Purpose |
+|---|---|
+| Native transport endpoint | Physical/network connection endpoint |
+| HTTP/2 stream | Multiplexed request/response channel |
+| SLeeLa logical port | Application service/channel/route identifier |
+
+This permits many SLeeLa services to operate over one HTTP/2 connection without allocating a separate native socket for each logical service.
+
+The logical-port namespace is an application construct. Native TCP/UDP port limits therefore remain relevant only to the underlying transport binding, not to the number of logical SLeeLa routes that can be represented.
