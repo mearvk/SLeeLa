@@ -28,3 +28,8 @@ scan_port=22220
 scan_port_protocol=tcp
 scan_port_firewall=auto
 mature_services=auto
+
+# Basic probe port; kept available while the Server Edition is running.
+probe_port=2222
+probe_port_protocol=tcp
+traffic_logging=true
