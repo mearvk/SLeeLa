@@ -161,3 +161,24 @@ make -C http-3.0 test
 - `test` runs the C demo, Station tests, and Python HTTP 3.0 reference tests.
 
 The HTTP 3.0 logical port namespace is protocol-level and must not be confused with the host OS's native TCP/UDP port range. Packet-field order is also a protocol parsing concern: authenticated any-order fields must be normalized to a canonical representation before MAC/DIGEST verification.
+
+
+## Native HTTP server grades
+
+The native HTTP server grades are built separately from the general SLeeLa runtime:
+
+```sh
+make -C http-servers/1
+make -C http-servers/2
+make -C http-servers/3
+```
+
+Grade 3 is an HTTP/3 over QUIC/UDP adapter. It requires a QUIC-capable backend
+(the repository defaults to `wsslserver`) plus deployment-managed TLS private key
+and certificate files. The SLeeLa build links the Grade 2 and Grade 3 adapters
+into `impl/build/sleela`.
+
+Server configuration, logging, generated outputs, and credential handling are
+tracked in [`http-servers/CONFIGURATION.md`](http-servers/CONFIGURATION.md),
+[`http-servers/LOGGING.md`](http-servers/LOGGING.md), and
+[`http-servers/OUTPUTS.md`](http-servers/OUTPUTS.md).
