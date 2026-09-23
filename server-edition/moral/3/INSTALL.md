@@ -31,6 +31,10 @@ secure configuration, verification, and detection of unauthorized changes.
 Service 3 applies the same general pattern to its controlled baseline.
 citeturn0search2turn0search3
 
+## Windows lifecycle
+
+On Windows 10+ the installed `run/windows-server.ps1` wrapper owns the same firewall lifecycle: it removes a stale edition rule, opens the configured port, runs the SLeeLa engine, and closes the rule in `finally` cleanup.
+
 ## Removal
 
 Use the matching uninstall script. Runtime state is retained unless an
