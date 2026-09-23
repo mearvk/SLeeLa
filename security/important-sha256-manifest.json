@@ -2955,6 +2955,26 @@
       "sha256": "3b13c38e3e9017e77405c759fef69343e3a21d122e097b034b67c1ab33801d68"
     },
     {
+      "path": "http-servers/1/main.cpp",
+      "sha256": "180a57d4acc5135417115518ac2de2e2db281a0f2b64b076836147f352226aae"
+    },
+    {
+      "path": "http-servers/2/main.cpp",
+      "sha256": "2dc1ab2a383cd6cb62bfee380006e302c5dd8e879194fefadf471c135bf0a5ef"
+    },
+    {
+      "path": "http-servers/3/main.cpp",
+      "sha256": "3c4e0ee044265decc94acf56ad0bc7ff1a07cc9a3f7fbbc163f98fc0767abdbc"
+    },
+    {
+      "path": "http-servers/common/http_server.cpp",
+      "sha256": "dd88170c06b9796753572dc2330c4f6b4e8c07c3a397a59aebdf44bc461acdc3"
+    },
+    {
+      "path": "http-servers/common/http_server.h",
+      "sha256": "f09e47ddcfa842ac0c9995261f94a614b8781eeb14404e5d94f4310cd6097098"
+    },
+    {
       "path": "impl/catalog/sheet_catalog.cpp",
       "sha256": "edc44715753f2fb15b1a436978d501c14e41d49956b0f459a0aae1ffaf21525f"
     },
@@ -3332,7 +3352,15 @@
     },
     {
       "path": "impl/frontend/driver.cpp",
-      "sha256": "dee43ad0744d744ab603da1fa13aa171f8afd58f2467a4fc8c04fa1d1286e618"
+      "sha256": "9fa16497991769d4b4b1ff64d9c4920eb9bc5139cf852486eaeb172cc83595c6"
+    },
+    {
+      "path": "impl/frontend/http_server_cli.cpp",
+      "sha256": "a3c3d6d535ca15c9e9d7d03459b8d9dbbd821f2accb3012a6de5fe68bd79c631"
+    },
+    {
+      "path": "impl/frontend/http_server_cli.h",
+      "sha256": "5ded6575dc15e7525c38fc09a7312339f950f195da5b33216729e88617f5a8b0"
     },
     {
       "path": "impl/frontend/lexer.cpp",
