@@ -1,6 +1,6 @@
 # Nordshrift — `.sst` transpiler driver and semantic layer
 
-Nordshrift is the **transpiler driver and semantic coordination layer for Sleela**. It reads a **`.sst` Scripting Sheet**, validates its control sections, resolves Sleela Wrapper™ sources, and drives the selected target. Version 2.0 also gives the sheet a common semantic vocabulary for the Math, Physics, Economics, Chemistry, and Financial libraries.
+Nordshrift is the **transpiler driver and semantic coordination layer for Sleela**. It reads a **`.sst` Scripting Sheet**, validates its control sections, resolves Sleela Wrapper™ sources, and drives the selected target. Version 2.0 also gives the sheet a common semantic vocabulary for the Math, Physics, Economics, Chemistry, Financial, Astrophysics, Sociology, and other Subject Libraries.
 
 ## Version 2.0 architecture
 
@@ -95,7 +95,7 @@ Completion should be tied to a validation record rather than merely setting the 
 
 ## Subject relationships
 
-Math is foundational. Physics, Economics, Chemistry, and Financial may declare Math as a dependency. Other dependencies must be declared when they are genuinely required; semantic declarations must not imply empirical causation.
+Math is foundational. Physics, Economics, Chemistry, Financial, Astrophysics, and Sociology may declare Math as a dependency. Domain dependencies must remain explicit. Other dependencies must be declared when they are genuinely required; semantic declarations must not imply empirical causation.
 
 ## Existing `.sst` pipeline
 
@@ -139,3 +139,39 @@ nordshrift/
 ```
 
 The build now compiles `subject_model.cpp` into the Nordshrift executable.
+
+
+## Subject Library coverage
+
+Nordshrift now treats the expanded Subject Library set as one semantic family rather than unrelated APIs:
+
+| Subject | Native/source layer | XML model/procedure | Nordshrift relationship |
+|---|---|---|---|
+| Math | C/C++ core | shared contract | foundational |
+| Physics | C/C++ subject layer | shared contract | depends on Math |
+| Chemistry | native subject layer | shared contract | domain model |
+| Economics | C/C++ subject layer | shared contract | depends on Math |
+| Finance | C/C++ subject layer | shared contract | quantitative domain |
+| Inference | native subject layer | shared contract | evidence-sensitive |
+| Data Analytics | native/API layer | shared contract | statistical/data layer |
+| Astrophysics | C/C++ numerical layer | model, procedure, observation | depends on Math and Physics |
+| Sociology | C/C++ statistical layer | model, procedure, observation | depends on Math |
+
+A Subject Library addition is complete only when its executable mathematics, semantic declaration, evidence discipline, XML representation, SLeeLa example, and focused validation can be traced together.
+
+## Excellent implementation standard
+
+For the Subject Library system, **Excellent** means:
+
+1. the subject has a stable identity and declared dependencies;
+2. quantities have units or explicit dimensions;
+3. formulas have named inputs and outputs;
+4. assumptions are separate from observations;
+5. modeled, inferred, derived, and observed values remain distinct;
+6. XML describes models and procedures without becoming arbitrary executable code;
+7. native C/C++ provides deterministic implementations where the semantics are mature;
+8. SLeeLa source demonstrates the subject vocabulary;
+9. Nordshrift can carry the subject through Subject → Quantity → Unit → Assumption → Relation → Formula → Transformation → Result → ComparativeNorm → Evidence → Explanation → Validation;
+10. validation and provenance are explicit.
+
+The standard is a software/source-quality target. It does not turn a computed statistic into a causal claim, nor a model into an observation.
