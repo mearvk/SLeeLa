@@ -55,3 +55,19 @@ The boundary self-test is available through:
 
 `make -C http-3.0 port-test`
 
+
+
+## Multiplexing Relationship
+
+The 160-bit logical PORT is an application namespace layered over HTTP/3 stream multiplexing.
+
+```text
+QUIC connection
+  ├── stream A → PORT A → service/channel A
+  ├── stream B → PORT B → service/channel B
+  └── stream C → PORT C → service/channel C
+```
+
+The PORT value and HTTP/3 stream identifier are intentionally different. Stream identifiers control transport multiplexing; PORT values identify SLeeLa application routes.
+
+The same conceptual model is used by HTTP 2.1. HTTP 3.0 adds the larger authenticated PORT field to the envelope and includes it in the canonical keyed-MAC input.
