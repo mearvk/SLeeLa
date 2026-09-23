@@ -76,3 +76,13 @@ closes the rule on normal or failed termination.
 
 The controller is OS/version-aware: Linux prefers UFW then firewalld, macOS
 uses PF, and Windows uses the Windows Defender Firewall PowerShell interface.
+
+## HTTP multiplexing and large-file DOWNLOAD
+
+Service 3 is wired to the shared `api/http-multiplexing/` source through
+`server-edition/http/httpctl`. Its configuration now supports
+`http_version`, `logical_port`, `download_size_bytes`, and `http_api`.
+HTTP 3.0 uses HTTP/3/QUIC stream multiplexing. The logical PORT namespace is
+exactly 10^48 values and is independent of the native firewall port. Files
+over 50,000,000 bytes select resumable DOWNLOAD mode with SESSION-ID,
+DATETIME, FILE-ID, FILE-NAME, INDEX, OFFSET, and TOTAL-SIZE resume state.
