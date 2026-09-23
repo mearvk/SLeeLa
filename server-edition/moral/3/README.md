@@ -56,3 +56,17 @@ Discord Inc.
 
 No Discord logo, trade dress, or proprietary Discord asset is included by the
 naming convention. Discord's published brand guidance governs use of its marks. citeturn0search3turn0search2
+
+## Port awareness and firewall lifecycle
+
+Service 3 declares `port`, `port_protocol`, `firewall`, and
+`firewall_required`. The default is TCP port 19866 with automatic
+host-firewall selection.
+
+Preflight requires the shared port controller. Service 3 removes a stale
+Discord-3™ rule, opens the configured port, records firewall failures in the
+recovery log, and starts Server.sleela only after the port is open. Cleanup
+closes the rule on normal or failed termination.
+
+The controller is OS/version-aware: Linux prefers UFW then firewalld, macOS
+uses PF, and Windows uses the Windows Defender Firewall PowerShell interface.
