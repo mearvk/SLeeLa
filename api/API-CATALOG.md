@@ -88,7 +88,7 @@ Status: Native media foundation, synchronized mixer, and broad format/codec regi
 ## 15A. Artificial intelligence and multimodal analysis
 Purpose: a native SLeeLa AI boundary for data, files, audio, and video with Standard SLeeLa VM integration.
 Concepts: typed AI inputs, inspection, classification, extraction, summarization, transformation, observations, model descriptors, declarative XML model definitions, declarative XML data models, XML source locators using source kind/url/args, data-flow and AI-flow documents, native providers, connector providers, and bounded VM invocation.
-Sources: impl/core/sleela_ai.h, impl/core/sleela_ai.c, impl/tests/core/ai_smoke.c, api/ai/, audio/gui/src/main/java/com/mearvk/sleela/audio/gui/SleelaAi.java.
+Sources: impl/core/sleela_ai.h, impl/core/sleela_ai.c, impl/tests/core/ai_smoke.c, api/ai/, api/ai/examples/, audio/gui/src/main/java/com/mearvk/sleela/audio/gui/SleelaAi.java.
 Status: Native/connector API implemented with XML model and data-model loading; provider-specific inference remains behind the explicit provider boundary.
 
 ## 15. GUI and desktop interfaces
