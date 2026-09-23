@@ -29,6 +29,13 @@ mature_services=auto
 # Basic probe port; kept available while the Server Edition is running.
 probe_port=2222
 probe_port_protocol=tcp
+
+# Fast server participation / regroup. One or a few rounds per day.
+mesh_port=22221
+mesh_interval_seconds=28800
+mesh_peers_file=../../../../server-edition/participation/known-servers.conf
+mesh_timeout_seconds=5
+mesh_max_peers=64
 traffic_logging=true
 
 # Privacy-preserving traffic consumption / known-connection verification.
