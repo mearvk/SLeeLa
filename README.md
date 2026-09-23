@@ -826,12 +826,31 @@ The source-addition rule is deliberately conservative: a new scientific operatio
 
 ## Native HTTP server grades
 
-SLeeLa now provides three native HTTP server grades under `http-servers/1`, `http-servers/2`, and `http-servers/3`. They are directly runnable from the SLeeLa command line:
+SLeeLa provides three native HTTP server grades under `http-servers/1`,
+`http-servers/2`, and `http-servers/3`:
+
+| Grade | Protocol | Default listener |
+|---|---|---|
+| 1 | HTTP/1.x over TCP | TCP 8080 |
+| 2 | HTTP/2 over TCP | TCP 8081 |
+| 3 | HTTP/3 over QUIC/UDP | UDP 8082 |
+
+They are directly runnable from the SLeeLa command line:
 
 ```sh
 sleela http-server 1
 sleela http-server 2
-sleela http-server 3
+sleela http-server 3 --key server.key --cert server.crt
 ```
 
-Grade 2 and Grade 3 retain HTTP/1.x compatibility while their future native HTTP/2 and HTTP/3 transport adapters remain separate from the HTTP/1 parser. This preserves the protocol boundary: HTTP/2 is binary framed and multiplexed over TCP, while HTTP/3 maps HTTP semantics over QUIC.
+Grade 2 uses native HTTP/2 framing and multiplexed streams. Grade 3 uses a
+QUIC-capable HTTP/3 backend with QUIC v1, TLS 1.3, ALPN `h3`, and QPACK.
+The dedicated Grade 2 and Grade 3 listeners do not currently claim automatic
+same-listener HTTP/1 fallback.
+
+Runtime configuration, logging, generated binaries, TLS credentials, and
+other outputs are documented in
+[`http-servers/CONFIGURATION.md`](http-servers/CONFIGURATION.md),
+[`http-servers/LOGGING.md`](http-servers/LOGGING.md), and
+[`http-servers/OUTPUTS.md`](http-servers/OUTPUTS.md).
+
