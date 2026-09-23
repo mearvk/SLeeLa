@@ -39,7 +39,7 @@ preflight() {
   [ -x "$ENGINE" ] || { echo "preflight: engine is not executable: $ENGINE" >&2; return 1; }
   [ -f "$SOURCE" ] || { echo "preflight: source missing: $SOURCE" >&2; return 1; }
   [ -f "$MANIFEST" ] || { echo "preflight: manifest missing: $MANIFEST" >&2; return 1; }
-  [ -x "$ROOT/server-edition/port-awareness/portctl.sh" ] || { echo "preflight: port controller missing" >&2; return 1; }
+  [ -f "$ROOT/server-edition/port-awareness/portctl.sh" ] || { echo "preflight: port controller missing" >&2; return 1; }
   mkdir -p "$STATE" "$(dirname "$INBOX")"
 }
 record_recovery() {
@@ -59,7 +59,7 @@ LOCK="$STATE/.serverd3.lock"
 mkdir "$LOCK" 2>/dev/null || { echo "serverd: Service 3 is already active" >&2; exit 3; }
 cleanup() {
   rc=$?
-  if ! "$ROOT/server-edition/port-awareness/portctl.sh" close "Discord-3" "$PORT" "$PORT_PROTO" >>"$LOG" 2>&1; then
+  if ! sh "$ROOT/server-edition/port-awareness/portctl.sh" close "Discord-3" "$PORT" "$PORT_PROTO" >>"$LOG" 2>&1; then
     echo "serverd: failed to close firewall port $PORT/$PORT_PROTO" >&2
     record_recovery "FIREWALL_CLOSE_FAILED"
     rc=1
@@ -68,11 +68,11 @@ cleanup() {
   exit "$rc"
 }
 trap cleanup EXIT HUP INT TERM
-"$ROOT/server-edition/port-awareness/portctl.sh" close "Discord-3" "$PORT" "$PORT_PROTO" >>"$LOG" 2>&1 || true
+sh "$ROOT/server-edition/port-awareness/portctl.sh" close "Discord-3" "$PORT" "$PORT_PROTO" >>"$LOG" 2>&1 || true
 if [ "$FIREWALL_REQUIRED" = true ]; then
-  "$ROOT/server-edition/port-awareness/portctl.sh" open "Discord-3" "$PORT" "$PORT_PROTO" >>"$LOG" 2>&1 || { record_recovery "FIREWALL_OPEN_FAILED"; echo "serverd: firewall could not open $PORT/$PORT_PROTO; refusing to start" >&2; exit 1; }
+  sh "$ROOT/server-edition/port-awareness/portctl.sh" open "Discord-3" "$PORT" "$PORT_PROTO" >>"$LOG" 2>&1 || { record_recovery "FIREWALL_OPEN_FAILED"; echo "serverd: firewall could not open $PORT/$PORT_PROTO; refusing to start" >&2; exit 1; }
 else
-  "$ROOT/server-edition/port-awareness/portctl.sh" open "Discord-3" "$PORT" "$PORT_PROTO" >>"$LOG" 2>&1 || echo "serverd: firewall open unavailable; continuing by configuration"
+  sh "$ROOT/server-edition/port-awareness/portctl.sh" open "Discord-3" "$PORT" "$PORT_PROTO" >>"$LOG" 2>&1 || echo "serverd: firewall open unavailable; continuing by configuration"
 fi
 record_recovery "STARTED"
 if { echo "=== SLeeLa Server Edition Service 3 ==="; cd "$ROOT"; "$ENGINE" run "$SOURCE"; } >> "$LOG" 2>&1; then
