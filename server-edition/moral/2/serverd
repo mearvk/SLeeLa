@@ -24,6 +24,7 @@ SCAN_PORT="22220"; SCAN_PORT_PROTO="tcp"; SCAN_PORT_FIREWALL="auto"
 PROBE_PORT="2222"; PROBE_PORT_PROTO="tcp"
 MESH_PORT="22221"; MESH_INTERVAL="28800"
 MESH="$ROOT/server-edition/participation/server-mesh.sh"
+STERNARY="$ROOT/server-edition/international-strernary/international-strernary-contact.sh"
 MESH_LISTENER="$ROOT/server-edition/participation/server-mesh-listener.sh"
 TRAFFIC_LOGGER="$ROOT/server-edition/port-awareness/traffic-log.sh"
 TRAFFIC_LOGGING="true"; LOG_CONSUME_MAX_BYTES="52428800"; ACTIVE_PROBING="false"; PROBE_ALLOWLIST=""; KNOWN_PORTS="2222,22220,19866,20000,22221"
@@ -81,6 +82,7 @@ cleanup() {
   sh "$TRAFFIC_LOGGER" stop >>"$LOG" 2>&1 || true
   sh "$MESH_LISTENER" stop >>"$LOG" 2>&1 || true
   sh "$MESH" stop >>"$LOG" 2>&1 || true
+  sh "$STERNARY" stop >>"$LOG" 2>&1 || true
   sh "$PORTCTL" close "basic-probe" "$PROBE_PORT" "$PROBE_PORT_PROTO" >>"$LOG" 2>&1 || { echo "serverd: failed to close probe port $PROBE_PORT/$PROBE_PORT_PROTO" >&2; rc=1; }
   sh "$PORTCTL" close "basic-scan" "$SCAN_PORT" "$SCAN_PORT_PROTO" >>"$LOG" 2>&1 || { echo "serverd: failed to close scan port $SCAN_PORT/$SCAN_PORT_PROTO" >&2; rc=1; }
   if ! sh "$PORTCTL" close "Discord-2" "$PORT" "$PORT_PROTO" >>"$LOG" 2>&1; then
@@ -107,6 +109,7 @@ fi
 SLEELA_SERVER_STATE="$STATE" SLEELA_TRAFFIC_LOG_DIR="$STATE/traffic" SLEELA_TRAFFIC_PORTS="$PROBE_PORT,$SCAN_PORT,$PORT,20000" sh "$TRAFFIC_LOGGER" start >>"$LOG" 2>&1 || true
 SLEELA_MESH_PORT="$MESH_PORT" SLEELA_MESH_INTERVAL_SECONDS="$MESH_INTERVAL" SLEELA_MESH_PEERS_FILE="${SLEELA_MESH_PEERS_FILE:-$ROOT/server-edition/participation/known-servers.conf}" SLEELA_SERVER_STATE="$STATE" SLEELA_ACTIVE_PROBING="$ACTIVE_PROBING" SLEELA_PROBE_ALLOWLIST="$PROBE_ALLOWLIST" SLEELA_KNOWN_PORTS="$KNOWN_PORTS" sh "$ROOT/server-edition/port-awareness/known-connections.sh" >>"$LOG" 2>&1 || true
 SLEELA_SERVER_STATE="$STATE" SLEELA_MESH_PORT="$MESH_PORT" sh "$MESH_LISTENER" start >>"$LOG" 2>&1 || true
+SLEELA_SERVER_STATE="$STATE" SLEELA_STERNARY_HOST="${SLEELA_STERNARY_HOST:-lauradei.us}" SLEELA_STERNARY_PORT="${SLEELA_STERNARY_PORT:-20000}" SLEELA_STERNARY_INTERVAL_SECONDS="${SLEELA_STERNARY_INTERVAL_SECONDS:-43200}" sh "$STERNARY" start >>"$LOG" 2>&1 || true
 SLEELA_SERVER_STATE="$STATE" SLEELA_MESH_PORT="$MESH_PORT" SLEELA_MESH_INTERVAL_SECONDS="$MESH_INTERVAL" SLEELA_MESH_PEERS_FILE="${SLEELA_MESH_PEERS_FILE:-$ROOT/server-edition/participation/known-servers.conf}" SLEELA_MESH_TIMEOUT_SECONDS="${SLEELA_MESH_TIMEOUT_SECONDS:-5}" SLEELA_MESH_MAX_PEERS="${SLEELA_MESH_MAX_PEERS:-64}" sh "$MESH" start >>"$LOG" 2>&1 || true
 [ -f "$INBOX" ] || printf "%s\n" "hello" > "$INBOX"
 [ "$TICK" = true ] && printf "tick %s\n" "$(date -u +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || echo now)" >> "$INBOX"
