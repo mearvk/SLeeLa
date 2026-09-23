@@ -1,8 +1,7 @@
-#define _POSIX_C_SOURCE 200112L
+#define _POSIX_C_SOURCE 200809L
 #include "sleela_email.h"
 #include <openssl/ssl.h>
 #include <openssl/err.h>
-#include <openssl/bio.h>
 #include <openssl/evp.h>
 #include <errno.h>
 #include <netdb.h>
@@ -34,7 +33,27 @@ static int connect_to(const char*h,unsigned short p,const char*b,int*out){
 static int psend(int f,const char*s){size_t n=strlen(s),p=0;while(p<n){ssize_t z=send(f,s+p,n-p,0);if(z<=0)return 0;p+=(size_t)z;}return 1;}
 static int pline(int f,char*b,size_t n){size_t p=0;while(p+1<n){char c;ssize_t z=recv(f,&c,1,0);if(z<=0)return 0;b[p++]=c;if(c=='\n')break;}b[p]=0;return p>0;}
 static int tline(SSL*s,char*b,size_t n){size_t p=0;while(p+1<n){char c;int z=SSL_read(s,&c,1);if(z<=0)return 0;b[p++]=c;if(c=='\n')break;}b[p]=0;return p>0;}
-static int code(const char*s){return s&&strlen(s)>=3?atoi(s):0;}
+static int code(const char*s){
+ if(!s||strlen(s)<3||s[0]<'0'||s[0]>'9'||s[1]<'0'||s[1]>'9'||s[2]<'0'||s[2]>'9')return 0;
+ return (s[0]-'0')*100+(s[1]-'0')*10+(s[2]-'0');
+}
+static int valid_tls_mode(sleela_email_tls_mode_t m){
+ return m==SLEELA_EMAIL_TLS_NONE||m==SLEELA_EMAIL_TLS_STARTTLS||m==SLEELA_EMAIL_TLS_IMPLICIT;
+}
+static int send_data_plain(int f,const char*s){
+ const char*p=s;
+ if(!s)return 0;
+ while(*p){
+  const char*e=strstr(p,"\r\n");
+  size_t n=e?(size_t)(e-p):strlen(p);
+  if(n&&p[0]=='.'&&!psend(f,"."))return 0;
+  if(n){char*line=malloc(n+1);if(!line)return 0;memcpy(line,p,n);line[n]='\0';if(!psend(f,line)){free(line);return 0;}free(line);}
+  if(!e)break;
+  if(!psend(f,"\r\n"))return 0;
+  p=e+2;
+ }
+ return 1;
+}
 
 static int pexpect(int f,int want,char*e,size_t en){
  char b[2048];int c,last=0;do{if(!pline(f,b,sizeof(b))){fail(e,en,"SMTP read failed");return 0;}c=code(b);last=c;if(c/100!=want/100){fail(e,en,b);return 0;}}while(strlen(b)>=4&&b[3]=='-');
@@ -68,7 +87,7 @@ static int message_tls(SSL*s,const sleela_email_message_t*m,char*e,size_t en){
 
 int sleela_email_send(const sleela_email_message_t*m,char*e,size_t en){
  int fd=-1,ok=0;SSL_CTX*ctx=NULL;SSL*ssl=NULL;char b[4096];
- if(!m||!field(m->smtp_host,253)||!header_field(m->helo_name,253)||!header_field(m->from,320)||!header_field(m->to,320)||
+ if(!m||!valid_tls_mode(m->tls_mode)||!field(m->smtp_host,253)||!header_field(m->helo_name,253)||!header_field(m->from,320)||!header_field(m->to,320)||
     !header_field(m->subject,998)||!m->body||strlen(m->body)>16*1024*1024||!m->smtp_port){fail(e,en,"invalid email configuration");return 0;}
  if(m->tls_mode==SLEELA_EMAIL_TLS_NONE && m->username&&*m->username){fail(e,en,"SMTP credentials require TLS");return 0;}
  if(!connect_to(m->smtp_host,m->smtp_port,m->local_bind_host,&fd)){fail(e,en,"SMTP connection failed");return 0;}
@@ -78,7 +97,7 @@ int sleela_email_send(const sleela_email_message_t*m,char*e,size_t en){
   snprintf(b,sizeof(b),"RCPT TO:<%s>\r\n",m->to);if(!psend(fd,b)||!pexpect(fd,250,e,en))goto done;
   if(!psend(fd,"DATA\r\n")||!pexpect(fd,354,e,en))goto done;
   snprintf(b,sizeof(b),"From: <%s>\r\nTo: <%s>\r\nSubject: %s\r\nContent-Type: text/plain; charset=utf-8\r\n\r\n",m->from,m->to,m->subject);
-  if(!psend(fd,b)||!psend(fd,m->body)||!psend(fd,"\r\n.\r\n")||!pexpect(fd,250,e,en))goto done;psend(fd,"QUIT\r\n");ok=1;goto done;
+  if(!psend(fd,b)||!send_data_plain(fd,m->body)||!psend(fd,"\r\n.\r\n")||!pexpect(fd,250,e,en))goto done;psend(fd,"QUIT\r\n");ok=1;goto done;
  }
  if(m->tls_mode==SLEELA_EMAIL_TLS_STARTTLS){
   if(!pexpect(fd,220,e,en)||!psend(fd,"EHLO sleela\r\n")||!pexpect(fd,250,e,en)||!psend(fd,"STARTTLS\r\n")||!pexpect(fd,220,e,en))goto done;
