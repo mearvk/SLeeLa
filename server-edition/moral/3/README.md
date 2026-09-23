@@ -111,3 +111,13 @@ A separate `known.connections` record is created under:
 `state/known-connections/DATE/TIME/known.connections`
 
 Active port verification is **disabled by default**. If an operator explicitly enables it with `SLEELA_ACTIVE_PROBING=true` and supplies `SLEELA_PROBE_ALLOWLIST`, the shared verifier checks only the configured known ports (default 2222, 22220, 19866, and the external Strernary reference 20000). Retained records do not contain the probed IP/hostname. This prevents the Server Edition from becoming an unrestricted Internet scanner.
+
+## International probe, traffic records, and privacy
+
+Service 3 treats activity arriving at the basic probe port (2222) and basic scan/service-discovery port (22220) as potentially international requests. This is an observation and routing classification; it does not itself grant legal, diplomatic, governmental, or network authority.
+
+Raw traffic is consumed at least daily and when it reaches 50 MiB. The retained digest removes IP addresses, MAC addresses, national/citizen/bank/banker/Cromsmrus identity data, contact data, and packet payloads. Records are stored under state/message-digest/DATE/TIME/message.digest. Known-connection records are stored under state/known-connections/DATE/TIME/known.connections.
+
+Active port verification is disabled by default. Explicit verification requires SLEELA_ACTIVE_PROBING=true and an operator-supplied SLEELA_PROBE_ALLOWLIST; retained records do not preserve the probed endpoint address.
+
+These controls support the SLeeLa Kind Sternary Port Assistor model and controlled safe-call path toward a designated Master Sternary service. They do not grant automatic international legal, diplomatic, governmental, citizenship, or banking authority.
