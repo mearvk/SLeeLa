@@ -213,7 +213,8 @@ struct Parser {
         if (kw == "finance")  { parseFinance();  return true; }
         if (kw == "reach")    { parseReach();    return true; }
         if (kw == "measure")  { parseMeasure();  return true; }
-        if (kw == "subject")  { parseSubject();  return true; }\n        if (kw == "object")   { parseInputObject(); return true; }
+        if (kw == "subject")  { parseSubject();  return true; }
+        if (kw == "object")   { parseInputObject(); return true; }
         if (kw == "rule")     { parseRuleBlock(); return true; }
         if (kw == "profile")  { parseProfile();  return true; }
         return false;
