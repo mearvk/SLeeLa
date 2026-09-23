@@ -20,3 +20,11 @@ http_version=3.0
 logical_port=19866
 download_size_bytes=0
 http_api=../../../../server-edition/http/httpctl
+
+
+# Named basic scan / service-discovery port.
+# Kept open while the Server Edition is running; closed on shutdown.
+scan_port=22220
+scan_port_protocol=tcp
+scan_port_firewall=auto
+mature_services=auto
