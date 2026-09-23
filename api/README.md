@@ -15,13 +15,14 @@ The API tree contains native C/C++ facades and SLeeLa mappings. The documentatio
 - **BODI XML** — `api/bodi/`: declarative XML projects and witnessed execution, including bounded media projects.
 - **Audio / Video** — `api/media/`: timestamped native frames, broad image/video/audio format and codec registry, signal analysis, listeners, transforms, and future AI provider hooks. **Audio Mixer** — `api/audio-mixer/`: synchronized live/file inputs, master/second tracks, bass/mid/treble/channel controls, relative quality, timeline offsets, and JSON/XML/text configurations.
 - **Data Analytics** — `api/data-analytics/`: bounded numeric statistics and correlation operations for scientific data sets.
+- **Subject Libraries** — `api/subjects/`: Mathematics, Physics, Chemistry, Economics, Finance, Inference, Data Analytics, and Astrophysics, with a shared XML model/procedure contract.
 - **HTTP 3.0** — protocol-specific packet and logical-port APIs.
 
 ## BODI project model
 
 BODI currently represents:
 
-1. Science projects for math, physics, chemistry, and data analytics.
+1. Science projects for math, physics, chemistry, data analytics, and the expanding Subject Library XML contract.
 2. Email/SMTP projects.
 3. HTTP-style post projects.
 4. Listener declaration projects.
