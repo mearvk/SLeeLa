@@ -8,7 +8,7 @@ CONFIG=$(printenv SLEELA_SERVER_CONFIG 2>/dev/null || true)
 [ -f "$CONFIG" ] || { echo "serverd: configuration not found: $CONFIG" >&2; exit 1; }
 HTTPCTL="$ROOT/server-edition/http/httpctl"
 HTTP_VERSION="3.0"; LOGICAL_PORT="19866"; DOWNLOAD_SIZE="0"
-NATIONAL_ID_REF=""; CITIZEN_ID_REF=""; BANK_ID_REF=""; RELAY_PURPOSE=""
+NATIONAL_ID_REF=""; CITIZEN_ID_REF=""; BANK_ID_REF=""; BANKER_ID_REF=""; CROMSMRUS_ID_REF=""; RELAY_PURPOSE=""
 ENGINE=""; INBOX=""; STATE=""; SOURCE=""; LOG=""; RECOVERY=""; MODE="service"; TICK="false"; FOREGROUND="false"; PREFLIGHT="true"; MANIFEST=""; NETWORK="false"
 PORT="19866"; PORT_PROTO="tcp"; FIREWALL="auto"; FIREWALL_REQUIRED="true"
 while IFS= read -r line || [ -n "$line" ]; do
@@ -16,7 +16,7 @@ while IFS= read -r line || [ -n "$line" ]; do
   case "$line" in *=*) key=$(printf '%s' "$line" | cut -d= -f1); value=$(printf '%s' "$line" | cut -d= -f2-);; *) echo "serverd: invalid configuration line" >&2; exit 2;; esac
   case "$key" in
     http_version) HTTP_VERSION=$value;; logical_port) LOGICAL_PORT=$value;; download_size_bytes) DOWNLOAD_SIZE=$value;; http_api) HTTPCTL=$value;;
-    national_id_ref) NATIONAL_ID_REF=$value;; citizen_id_ref) CITIZEN_ID_REF=$value;; bank_id_ref) BANK_ID_REF=$value;; relay_purpose) RELAY_PURPOSE=$value;;
+    national_id_ref) NATIONAL_ID_REF=$value;; citizen_id_ref) CITIZEN_ID_REF=$value;; bank_id_ref) BANK_ID_REF=$value;; banker_id_ref) BANKER_ID_REF=$value;; cromsmrus_id_ref) CROMSMRUS_ID_REF=$value;; relay_purpose) RELAY_PURPOSE=$value;;
     engine) ENGINE=$value;; inbox) INBOX=$value;; state) STATE=$value;; server_source) SOURCE=$value;;
     log) LOG=$value;; recovery_log) RECOVERY=$value;; mode) MODE=$value;; tick) TICK=$value;;
     foreground) FOREGROUND=$value;; preflight) PREFLIGHT=$value;; sha256_manifest) MANIFEST=$value;;
