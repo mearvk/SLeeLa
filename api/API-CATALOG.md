@@ -235,6 +235,11 @@ Status: Implemented / distributed.
 Sources: api/examples/, examples/, tutorial/demos/, impl/examples/, impl/nordshrift/examples/.
 Status: Implemented.
 
+## 43. Simple Regex and pattern matching
+Concepts: four-level user-facing text matching; Find, Shape, Structure, and Expression; literal matching; named character classes; repetition; alternatives; groups; ranges; optional values; captures; Unicode properties; compiled patterns; bounded deterministic matching.
+Sources: api/regex/README.md, api/regex/API.html, api/regex/REGEX-DESIGN.md, api/regex/regex-patterns.sleela.
+Status: **Draft — vocabulary and teaching model defined; native compiler/runtime implementation not yet committed.**
+
 # API directory map
 
 - api/API.html — generated repository-wide API/source catalogue.
@@ -248,6 +253,7 @@ Status: Implemented.
 - api/posting/ — POST API.
 - api/listener/ — listener API.
 - api/router/ — routing API.
+- api/regex/ — Simple Regex API: four-level text pattern matching and Unicode-aware design draft.
 - api/nordshrift/ — Nordshrift semantic API.
 - api/server/ — compiled server launcher.
 - api/webserver/ — Apache/Tomcat deployment and monitoring.
