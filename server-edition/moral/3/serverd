@@ -95,3 +95,10 @@ else
 fi
 [ "$FOREGROUND" = true ] && tail -n 16 "$LOG"
 echo "Discord-3™ serverd: Service 3 completed; results=$LOG"
+
+
+# Named basic scan/service-discovery port.
+: "${SLEELA_SCAN_PORT:=22220}"
+: "${SLEELA_SCAN_PORT_PROTOCOL:=tcp}"
+: "${SLEELA_MATURE_SERVICES:=auto}"
+export SLEELA_SCAN_PORT SLEELA_SCAN_PORT_PROTOCOL SLEELA_MATURE_SERVICES
