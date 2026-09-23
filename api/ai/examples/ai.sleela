@@ -1,4 +1,5 @@
 #sleela 1.3
+// Version: SLeeLa AI/Data/XML/Listener API 1.0.0 | Main program: Sleelvac 1.5
 // ai.sleela -- SLeeLa source-level AI model declaration.
 // The ai* calls are the program-facing contract for the native AI VM bridge.
 // Model execution remains under the Standard SLeeLa VM.
