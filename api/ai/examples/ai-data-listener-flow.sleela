@@ -1,0 +1,31 @@
+#sleela 1.3
+// ai-data-listener-flow.sleela -- combined XML -> data -> AI flow.
+// The source locator is equivalent to:
+// <source kind="audio" url="file:///models/audio-model.xml"
+//         args="model=audio-v1&flow=inspect"/>
+
+class AiDataListenerFlow {
+    void main() {
+        int listener = xmlListener("127.0.0.1", 45231, "http", "/ai/flow");
+
+        int source = xmlSource("audio",
+                               "file:///models/audio-model.xml",
+                               "model=audio-v1&flow=inspect");
+
+        int data = dataModel("sleela-media-data", 1);
+        dataField(data, "id", "string", true);
+        dataField(data, "kind", "data|file|audio|video", true);
+        dataField(data, "source", "path|bytes|SLMediaFrame", true);
+
+        int model = aiModel("sleela.example", 1, "sleela-ai-1", "native");
+        aiOperation(model, "inspect");
+        aiBindDataModel(model, data);
+        aiBindSource(model, source);
+
+        listenerPublish(listener, source);
+        aiExecute(model);
+
+        print(aiResult(model));
+        listenerClose(listener);
+    }
+}
