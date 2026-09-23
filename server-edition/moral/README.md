@@ -15,6 +15,22 @@ and `server-edition/state/`.
 The native `sleelas` launcher selects Service 2 by default and supports
 explicit Service 3 selection with `SLEELA_SERVER_LEVEL=3`.
 
+## Versioned Server Edition modules
+
+The Server Edition now carries explicit module versions:
+
+| Programmatic module | Path | Version |
+|---|---|---:|
+| **Discord-1™** | `api/server/` | **1.0.1** |
+| **Discord-2™** | `server-edition/moral/2/` | **2.0.1** |
+| **Discord-3™** | `server-edition/moral/3/` | **3.0.1** |
+| Shared port awareness | `server-edition/port-awareness/` | **1.0.0** |
+| Server Edition umbrella | `server-edition/` | **1.0.0** |
+
+The patch-level increments on Discord-1™, Discord-2™, and Discord-3™ identify
+the firewall-port lifecycle addition without changing their existing
+implementation generation. The shared port-awareness controller has its own
+major/minor/patch lifecycle.
 
 ## Discord™ server naming theme
 
@@ -29,7 +45,6 @@ sponsorship, endorsement, ownership, or authorization by Discord Inc. No
 Discord logo or proprietary Discord Brand Asset is included. Discord's brand
 guidance states that use of Discord Marks in product or organization names
 requires permission except where otherwise permitted. citeturn0search3
-
 
 ## Port awareness
 
