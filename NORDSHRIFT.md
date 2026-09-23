@@ -117,3 +117,12 @@ nordshrift version
 - [`SST.model`](SST.model) — NS-SST-0001 1.0 compatibility specification.
 - [`impl/nordshrift/NORDSHRIFT.md`](impl/nordshrift/NORDSHRIFT.md) — implementation guide.
 - [`MATH.md`](MATH.md), [`PHYSICS.md`](PHYSICS.md), [`ECONOMICS.md`](ECONOMICS.md), [`CHEMISTRY.md`](CHEMISTRY.md), [`FINANCIAL.md`](FINANCIAL.md) — subject-level references.
+
+
+## Subject Libraries
+
+The Nordshrift semantic layer now carries the expanded SLeeLa Subject Library family, including **Astrophysics** and **Sociology**. Subject definitions are represented through the common Subject/Quantity/Assumption/Relation/Transformation/Evidence vocabulary and can be traced to native C/C++ implementations and XML model/procedure definitions.
+
+Astrophysics declares Math and Physics dependencies. Sociology declares Math as its mathematical foundation and keeps descriptive statistics separate from causal or normative conclusions.
+
+The implementation target is **Excellent**: explicit dependencies, units/dimensions, provenance, evidence status, bounded procedures, native tests, SLeeLa examples, and XML declarations must remain connected rather than becoming parallel undocumented systems.
