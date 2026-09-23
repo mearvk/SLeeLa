@@ -13,6 +13,7 @@
 #include "../xclass/xclass_loader.h"
 #include "../langin/langin.h"
 #include "../nordshrift/sleela_emit.h"
+#include "http_server_cli.h"
 #include <algorithm>
 #include <cctype>
 #include <cstdio>
@@ -429,7 +430,7 @@ static int designActivityCmd(int argc,char**argv){
     char json[1024];slda_format_json("sleela",&result,json,sizeof json);
     std::cout<<json<<"\n"; return 0;
 }
-static int usage(){std::cerr<<"Usage:\n  sleela [--memory-manager[=<size>]] compile <file.sleela> -o <program.sleela>\n  sleela [--memory-manager[=<size>]] run <file.sleela>\n  sleela [--memory-manager[=<size>]] run <program.sleela>\n  sleela [--memory-manager[=<size>]] run <file.xclass> [more...]\n  sleela xclass [--run|--emit|--info] <file.xclass> [more...]\n  sleela langin [--run|--emit-sleela|--emit-xclass|--info] <file.java|.kt|.scala|.groovy|.clj> [more...]\n  sleela nordshrift [--emit] [--target=sleela|java|c] [--package=P] <file.sleela>   (SLeeLa -> Nordshrift)\n  sleela nordshrift --roundtrip <file.sleela>                                       (SLeeLa -> Nordshrift -> back, run)\n  sleela check <file.sleela>\n  sleela native [--config <file>] [--memory-manager[=<size>]] [--] <program> [args...]\n  sleela exec   [--config <file>] [--memory-manager[=<size>]] [--] <program> [args...]\n  sleela version\n  sleela defender detect\n  sleela defender <fetch|build|install|provision> [directory] --allow-defender --sha256 <hex> [--allow-root]\n\nMemory Manager:\n  --memory-manager[=<size>]    account for raw process memory and (with <size>)\n                               fail allocations closed at a hard byte limit.\n                               <size> accepts a byte count or a K/M/G suffix\n                               (or SLEELA_MEMORY_MANAGER=<size>). It is enabled\n                               automatically for `native`/`exec`.\n\nSecurity:\n  SLEELA_SHA256_MANIFEST=<trusted JSON manifest> is required before compile, run, check, xclass, native/exec, and Defender diagnostics/build/install/provision.\n  Defender fetch/build/install/provision additionally require --allow-defender (opt-in), --sha256 <hex> (payload integrity), and --allow-root for the privileged install step.\n";return 2;}
+static int usage(){std::cerr<<"Usage:\n  sleela [--memory-manager[=<size>]] compile <file.sleela> -o <program.sleela>\n  sleela run <file.sleela>\n  sleela check <file.sleela>\n  sleela http-server <1|2|3> [--port N] [--threads N] [--root DIR] [--log FILE] [--once]\n  sleela xclass [--run|--emit|--info] <file.xclass>\n  sleela langin [--run|--emit-sleela|--emit-xclass|--info] <file>\n  sleela nordshrift [--emit] [--target=sleela|java|c] <file.sleela>\n  sleela native [--config <file>] [--memory-manager[=<size>]] -- <program> [args...]\n  sleela exec [--config <file>] [--memory-manager[=<size>]] -- <program> [args...]\n  sleela version\n  sleela defender <detect|fetch|build|install|provision> ...\n";return 2;}
 static bool checkSyntaxVersion(const std::string& path,const std::string& src){sleela::VersionResolution v=sleela::resolveSyntaxVersion(src);if(v.isError()){std::cerr<<"sleelvac: "<<path<<": error: "<<v.message<<"\n";return false;}if(v.isWarning())std::cerr<<"sleelvac: "<<path<<": warning: "<<v.message<<"\n";return true;}
 static bool parseSource(const std::string&path,std::string&src,sleela::Program&prog,sleela::VersionResolution&version){if(!readFile(path,src)){std::cerr<<"sleelvac: cannot open '"<<path<<"'\n";return false;}if(!checkSyntaxVersion(path,src))return false;version=sleela::resolveSyntaxVersion(src);try{sleela::Lexer lexer(src);auto tokens=lexer.tokenize();sleela::Parser parser(std::move(tokens));prog=parser.parseProgram();sleela::Program validation;validation.imports=prog.imports;validation.imports.erase(std::remove(validation.imports.begin(),validation.imports.end(),"chemistry"),validation.imports.end());validation.imports.erase(std::remove(validation.imports.begin(),validation.imports.end(),"financial"),validation.imports.end());sleela::native::validateImports(validation);return true;}catch(const std::exception&ex){std::cerr<<"sleelvac: "<<path<<": "<<ex.what()<<"\n";return false;}}
 static int checkFile(const std::string&path){if(verifyBeforeExecution(fs::current_path()))return 1;std::string src;sleela::Program prog;sleela::VersionResolution v;if(!parseSource(path,src,prog,v))return 1;try{sleela::chemistry::lowerProgram(prog);sleela::financial::lowerProgram(prog);}catch(const std::exception&ex){std::cerr<<"sleelvac: "<<path<<": "<<ex.what()<<"\n";return 1;}std::cout<<path<<": ok (syntax "<<(v.pragmaPresent?"declared ":"assumed ")<<v.declared.str()<<")\n";return 0;}
@@ -493,43 +494,32 @@ static int nordshriftCmd(int argc,char**argv){
 }
 int main(int argc,char**argv){
     if(argc<2)return usage();
-    // Global option phase: consume any leading --memory-manager[=<size>] before
-    // the subcommand. This may only precede the subcommand; per-subcommand flag
-    // parsing (defender/xclass/native) is left untouched.
-    bool mmEnabled=true;size_t mmLimit=kDefaultMemoryLimit;
-    std::string memoryConfig;
-    if(const char*cfg=std::getenv("SLEELA_CONFIG_FILE")){memoryConfig=cfg;}
-    else if(fs::exists("sleela.conf"))memoryConfig="sleela.conf";
-    if(!memoryConfig.empty()){
-        bool cfgEnabled=mmEnabled;
-        if(!loadMemoryConfig(memoryConfig,mmLimit,cfgEnabled))return 2;
-        mmEnabled=cfgEnabled;
-    }
-    // Env default (an explicit CLI flag below overrides it).
+    bool mmEnabled=true; size_t mmLimit=kDefaultMemoryLimit; std::string memoryConfig;
+    if(const char*cfg=std::getenv("SLEELA_CONFIG_FILE"))memoryConfig=cfg; else if(fs::exists("sleela.conf"))memoryConfig="sleela.conf";
+    if(!memoryConfig.empty()){bool ce=mmEnabled;if(!loadMemoryConfig(memoryConfig,mmLimit,ce))return 2;mmEnabled=ce;}
     {size_t l=0;if(memoryManagerRequested(l)){mmEnabled=true;mmLimit=l;}}
-    int start=1;
-    while(start<argc){
-        std::string a=argv[start];
-        if(a=="--memory-manager"||a=="--mm"){mmEnabled=true;mmLimit=kDefaultMemoryLimit;start++;}
-        else if(a.rfind("--memory-manager=",0)==0||a.rfind("--mm=",0)==0){
-            std::string v=a.substr(a.find('=')+1);size_t l=0;
-            if(!parseByteSize(v,l)){std::cerr<<"sleela: invalid --memory-manager size '"<<v<<"'\n";return 2;}
-            mmEnabled=true;mmLimit=l;start++;
-        }else break;
+    int start=1; while(start<argc){std::string a=argv[start];
+      if(a=="--memory-manager"||a=="--mm"){mmEnabled=true;mmLimit=kDefaultMemoryLimit;++start;}
+      else if(a.rfind("--memory-manager=",0)==0||a.rfind("--mm=",0)==0){size_t l=0;if(!parseByteSize(a.substr(a.find('=')+1),l)){std::cerr<<"sleela: invalid memory-manager size\n";return 2;}mmEnabled=true;mmLimit=l;++start;}
+      else break;
     }
     if(mmEnabled&&!enableMemoryManager(mmLimit,true))return 2;
-Syntax().str()<<" .. "<<sleela::maxSupportedSyntax().str()<<"\n";return 0;}
+    if(start>=argc)return usage();
+    std::string cmd=argv[start];
+    if(start>1){int n=argc-start;std::vector<char*> av;av.reserve((size_t)n+1);for(int i=start;i<argc;++i)av.push_back(argv[i]);av.push_back(nullptr);argc=n;argv=av.data();}
+    if(cmd=="http-server")return sleelaHttpServerCommand(argc,argv);
     if(cmd=="native"||cmd=="exec")return nativeCmd(argc,argv);
-    int rc;
+    int rc=0;
     if(cmd=="compile"){if(argc!=5||std::string(argv[3])!="-o")return usage();rc=compileFile(argv[2],argv[4]);}
     else if(cmd=="check"){if(argc<3)return usage();rc=checkFile(argv[2]);}
-    else if(cmd=="run"){if(argc<3)return usage();if(verifyBeforeExecution(fs::current_path()))return 1;if(hasExt(argv[2],".xclass")){std::vector<std::string>files;for(int i=2;i<argc;i++)files.push_back(argv[i]);rc=runXclass(files);}else if(isLangInput(argv[2])){std::vector<std::string>files;for(int i=2;i<argc;i++)files.push_back(argv[i]);rc=runLangin(files);}else rc=runFile(argv[2]);}
+    else if(cmd=="run"){if(argc<3)return usage();if(verifyBeforeExecution(fs::current_path()))return 1;if(hasExt(argv[2],".xclass")){std::vector<std::string>files;for(int i=2;i<argc;++i)files.push_back(argv[i]);rc=runXclass(files);}else if(isLangInput(argv[2])){std::vector<std::string>files;for(int i=2;i<argc;++i)files.push_back(argv[i]);rc=runLangin(files);}else rc=runFile(argv[2]);}
     else if(cmd=="xclass"){if(argc<3)return usage();rc=xclassCmd(argc,argv);}
     else if(cmd=="langin"){if(argc<3)return usage();rc=langinCmd(argc,argv);}
     else if(cmd=="nordshrift"){if(argc<3)return usage();rc=nordshriftCmd(argc,argv);}
-    else if(cmd=="design-activity")return designActivityCmd(argc,argv);\n    else if(cmd=="defender")return defenderCmd(argc,argv);
+    else if(cmd=="design-activity")return designActivityCmd(argc,argv);
+    else if(cmd=="defender")return defenderCmd(argc,argv);
+    else if(cmd=="version"){std::cout<<kVersion<<"\n";return 0;}
     else if(hasExt(cmd,".sleela")||hasExt(cmd,".xclass")||isLangInput(cmd)){if(verifyBeforeExecution(fs::current_path()))return 1;rc=runFile(cmd);}
     else return usage();
-    if(mmEnabled)reportMemoryManager();
-    return rc;
+    if(mmEnabled)reportMemoryManager(); return rc;
 }
