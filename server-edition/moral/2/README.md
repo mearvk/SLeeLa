@@ -106,3 +106,10 @@ FILE-ID, FILE-NAME, INDEX, OFFSET, and TOTAL-SIZE resume state.
 ## Port lifecycle and service negotiation
 
 Each Server Edition has a named basic scanning/service-discovery port (`scan_port`, default `22220`). The port is opened by the firewall controller while the server is running and closed when the server stops. Multiplex-capable services may negotiate their logical service through this port; a Mature Service may then open its own native port only for the duration of that service. Logical SLeeLa HTTP ports remain distinct from native firewall ports. UFW, firewalld, PF, or Windows Defender Firewall is used according to the host OS. A shutdown cleanup path must remove both the scan-port rule and any service-specific rules.
+
+
+## Traffic and packet logging
+
+The Server Edition maintains a traffic log for the named basic probe port (default TCP 2222), the basic scan/service-discovery port (default TCP 22220), the configured server port, and the International Strernary reference port 20000. When packet capture is available, the logger records timestamps, numeric source/destination IP addresses and ports, protocol information, and packet payload bytes in a diagnostic packet representation. HTTP traffic is therefore retained to the extent it is visible at the transport layer; encrypted HTTPS/HTTP/3 payloads remain encrypted rather than being decrypted by the logger. Packet capture is best-effort and requires the host's packet-capture privileges. Logging stops during server shutdown.
+
+The port-20000 reference comes from mearvk/Java.Web.Server.Telnet.Front.Java.21, whose repository identifies Strernary on port 20000 and includes a Strernary liveness check. See the cited repository evidence in the project history.
