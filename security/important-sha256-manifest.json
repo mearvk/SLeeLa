@@ -4116,7 +4116,7 @@
     },
     {
       "path": "server-edition/moral/2/README.md",
-      "sha256": "fe102798898c367a7ff01adeb5c9224244faa685a9ed4e1dfaf36c72e753f0fe"
+      "sha256": "c596d34d30465461d528dff3d8d631b417cdd14c7f22e363814f5aab49d10ba1"
     },
     {
       "path": "server-edition/moral/2/install/linux-install.sh",
@@ -4160,7 +4160,7 @@
     },
     {
       "path": "server-edition/moral/3/README.md",
-      "sha256": "d3a430687eda2cb3be64dc80a0e6f24430054544bfa5c265f844393daaa0bf0b"
+      "sha256": "72daa95722b0e61c35fe8ba84b04d002c3445f03e114ebe4d349b427dc842743"
     },
     {
       "path": "server-edition/moral/3/install/linux-install.sh",
@@ -4200,7 +4200,7 @@
     },
     {
       "path": "server-edition/national-relay/README.md",
-      "sha256": "fa11e54ceab1c4ad29c61acd087b5daa0d2ef45f78e6081413cd72dd34c57d14"
+      "sha256": "3c721cc95098acc5a316b26ed3b30900417c0ecdd77ddb5160994e47d3bbd658"
     },
     {
       "path": "server-edition/port-awareness/known-connections.sh",
