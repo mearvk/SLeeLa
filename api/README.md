@@ -60,4 +60,4 @@ See `api/server/API.html` for the compiled `sleelas` server launcher. It starts 
 
 ## Regex API
 
-See `api/regex/` for the **SLeeLa Regex API 1.0.0 draft**. It introduces a deliberately simple four-level pattern language: **Find**, **Shape**, **Structure**, and **Expression**. The design puts readable text questions ahead of punctuation-heavy regex syntax while preserving a documented Unicode-aware and deterministic implementation boundary.
+See `api/regex/` for the **SLeeLa Regex API 1.0.0 draft**. It introduces a deliberately simple four-level pattern language: **Find**, **Shape**, **Structure**, and **Expression**. The design puts readable text questions ahead of punctuation-heavy regex syntax while preserving a documented Unicode-aware and deterministic implementation boundary. Level exemplars are `LEVEL-1-FIND.sleela` through `LEVEL-4-EXPRESSION.sleela`; the native C foundation lives in `impl/core/sleela_regex.c` and `impl/core/sleela_regex.h`.
