@@ -4204,11 +4204,11 @@
     },
     {
       "path": "server-edition/port-awareness/portctl.ps1",
-      "sha256": "9e5a435f877013f270b51a13098e202ae409fed3eae236e1bddf1bd43dc92e77"
+      "sha256": "228baa66c2e46f4406eaa89465f9752cc4c53991d58b36d9a83fd0ec8ad3da5c"
     },
     {
       "path": "server-edition/port-awareness/portctl.sh",
-      "sha256": "1694d0b91027cd09daad6fb422767d192fbe4f9eaa7cda504c81b24b0cfb3438"
+      "sha256": "7717d2f96d3c20513abc723a09469d6b0801af6b176ae6bf95adf51c916cf775"
     },
     {
       "path": "server-edition/port-awareness/traffic-log.sh",
