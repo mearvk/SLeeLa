@@ -107,8 +107,12 @@
       "sha256": "09791fe7a0206ca85a78c49091c9b30e3040a2ea840da0b4a73b6a532bcc9987"
     },
     {
+      "path": "api/API-CATALOG.md",
+      "sha256": "43d75a14a8113b1fbaf97344eed0f072ba9598c2fa1a96dc7342dec0e6f0a5a6"
+    },
+    {
       "path": "api/API.html",
-      "sha256": "9b454b5251692b133fac7d905093862521282f84847c8e68d7c4f5eacd4e99da"
+      "sha256": "b8efab52004533bbcbf753180a439153693a37c30c0ea17f6da7831983aecc8c"
     },
     {
       "path": "api/FOUNDATIONAL-API.html",
@@ -116,7 +120,7 @@
     },
     {
       "path": "api/README.md",
-      "sha256": "c2d14ef94103c1d8ccb0d9f1241eba05383081adc435f1a6f1892cb335286fe5"
+      "sha256": "2cb18965c2d9e3feba430e03f372b7604c3ea6be60183035d5c4db90ef8b8089"
     },
     {
       "path": "api/SOURCE-COVERAGE.html",
@@ -256,7 +260,7 @@
     },
     {
       "path": "api/index.html",
-      "sha256": "7d4803b86ad90adb495dcd42eacdfea111f399a324b437b8437872173d2601c2"
+      "sha256": "23df51a719ae9d71e62466e317b63204e508fca7ab4a107862382841d63688fb"
     },
     {
       "path": "api/listener/sleela_listener.c",
