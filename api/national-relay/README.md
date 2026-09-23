@@ -22,3 +22,7 @@ and do not create additional sockets.
 
 A declared UN-relay or international purpose does not itself grant diplomatic,
 governmental, United Nations, citizenship, or banking authority.
+
+## Additional identity domains
+
+The relay identity surface also supports **Banker ID** and **Cromsmrus ID** as opaque identity-provider references. `Banker ID` is distinct from `Bank ID`: Bank ID identifies the banking/financial identity domain, while Banker ID identifies an authorized banker/operator identity within that domain. `Cromsmrus ID` is retained as the exact user-defined identity-domain name and is represented only as an opaque reference until its authoritative specification is defined.
