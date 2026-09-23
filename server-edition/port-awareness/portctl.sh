@@ -7,7 +7,7 @@ PORT=${3:-}
 PROTO=${4:-tcp}
 
 case "$ACTION" in open|close|status) ;; *) echo "usage: portctl.sh {open|close|status} EDITION PORT [tcp|udp]" >&2; exit 2;; esac
-case "$EDITION" in Discord-1|Discord-2|Discord-3|basic-probe|basic-scan) ;; *) echo "invalid Server Edition" >&2; exit 2;; esac
+case "$EDITION" in Discord-1|Discord-2|Discord-3|basic-probe|basic-scan|participation) ;; *) echo "invalid Server Edition" >&2; exit 2;; esac
 case "$PORT" in ''|*[!0-9]*) echo "invalid port" >&2; exit 2;; esac
 [ "$PORT" -ge 1 ] && [ "$PORT" -le 65535 ] || { echo "port must be 1..65535" >&2; exit 2; }
 case "$PROTO" in tcp|udp) ;; *) echo "protocol must be tcp or udp" >&2; exit 2;; esac
