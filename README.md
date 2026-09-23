@@ -822,3 +822,16 @@ All Subject Library families now share a declarative XML model contract under [a
 Astrophysics is the first expanded implementation of this contract. Its model and procedure examples live under [api/subjects/astrophysics/](api/subjects/astrophysics/). The native C/C++ layer is under [impl/subjects/astrophysics/](impl/subjects/astrophysics/), including an append-only XML observation record writer.
 
 The source-addition rule is deliberately conservative: a new scientific operation enters native source only when its quantities, units, assumptions, valid domain, numerical method, persistence semantics, and tests are explicit. A model may be represented in XML before it becomes an executable native operation.
+
+
+## Native HTTP server grades
+
+SLeeLa now provides three native HTTP server grades under `http-servers/1`, `http-servers/2`, and `http-servers/3`. They are directly runnable from the SLeeLa command line:
+
+```sh
+sleela http-server 1
+sleela http-server 2
+sleela http-server 3
+```
+
+Grade 2 and Grade 3 retain HTTP/1.x compatibility while their future native HTTP/2 and HTTP/3 transport adapters remain separate from the HTTP/1 parser. This preserves the protocol boundary: HTTP/2 is binary framed and multiplexed over TCP, while HTTP/3 maps HTTP semantics over QUIC.
