@@ -85,6 +85,12 @@ Concepts: timestamped audio/video frames, broad image-format recognition, audio/
 Sources: impl/core/sleela_media.h, impl/core/sleela_media.c, impl/core/sleela_media_formats.h, impl/core/sleela_media_formats.c, impl/core/sleela_audio_mixer.h, impl/core/sleela_audio_mixer.c, audio/gui/src/main/java/com/mearvk/sleela/audio/gui/SleelaAudioVideo.java, api/media/.
 Status: Native media foundation, synchronized mixer, and broad format/codec registry implemented; Java/JavaFX interoperability signature added; actual device and codec decode/encode providers remain extensible.
 
+## 15A. Artificial intelligence and multimodal analysis
+Purpose: a native SLeeLa AI boundary for data, files, audio, and video with Standard SLeeLa VM integration.
+Concepts: typed AI inputs, inspection, classification, extraction, summarization, transformation, observations, model descriptors, declarative XML model definitions, declarative XML data models, native providers, connector providers, and bounded VM invocation.
+Sources: impl/core/sleela_ai.h, impl/core/sleela_ai.c, impl/tests/core/ai_smoke.c, api/ai/, audio/gui/src/main/java/com/mearvk/sleela/audio/gui/SleelaAi.java.
+Status: Native/connector API implemented with XML model and data-model loading; provider-specific inference remains behind the explicit provider boundary.
+
 ## 15. GUI and desktop interfaces
 Concepts: application, window, document, event, widget/control, layout, menu, dialog, Swing, JavaFX, native bridge.
 Sources: gui/java/com/mearvk/sleela/gui/SleelaGui.java, SleelaDocument.java, SwingGui.java, FxGui.java.
