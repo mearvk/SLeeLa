@@ -101,3 +101,8 @@ The logical PORT namespace is exactly 10^48 values and is independent of the
 native firewall port. HTTP 2.1 uses HTTP/2 stream multiplexing. Files over
 50,000,000 bytes select resumable DOWNLOAD mode with SESSION-ID, DATETIME,
 FILE-ID, FILE-NAME, INDEX, OFFSET, and TOTAL-SIZE resume state.
+
+
+## Port lifecycle and service negotiation
+
+Each Server Edition has a named basic scanning/service-discovery port (`scan_port`, default `22220`). The port is opened by the firewall controller while the server is running and closed when the server stops. Multiplex-capable services may negotiate their logical service through this port; a Mature Service may then open its own native port only for the duration of that service. Logical SLeeLa HTTP ports remain distinct from native firewall ports. UFW, firewalld, PF, or Windows Defender Firewall is used according to the host OS. A shutdown cleanup path must remove both the scan-port rule and any service-specific rules.
