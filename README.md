@@ -760,6 +760,10 @@ SLeeLa provides a source-backed BODI XML project layer under [`api/bodi/`](api/b
 Runnable XML examples and expected BODI witness evidence are published under [`examples/`](examples/). Examples 07–09 demonstrate POST, listener, and router declarations without implicitly opening sockets or sending network traffic. The BODI runner uses an allow-listed dispatcher; XML cannot invoke arbitrary shell commands or arbitrary native functions.
 
 
+## GUI and document color system
+
+SLeeLa uses **Yellow, Gray, and Black** as its base visual colors, with **White, Red, and Blue** as semantic support colors. Yellow identifies attention and active states; Gray provides structure; Black provides the foundation; White provides readable surfaces; Red marks errors or danger; and Blue marks information, navigation, or service context. See [GUI-COLORS.md](GUI-COLORS.md) and [DOCUMENT-COLORS.md](DOCUMENT-COLORS.md).
+
 ## Regex API — four levels of text matching
 
 SLeeLa now provides a source-backed Regex API under api/regex/. The API is designed to make ordinary text matching readable first and technically precise second: the user asks a simple question about text without needing to learn a full regular-expression engine before getting useful work done.
