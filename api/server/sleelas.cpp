@@ -211,7 +211,7 @@ static int run_portctl(const fs::path &root, const std::string &action,
     if (pid < 0) { std::perror("sleelas: firewall controller fork"); return 1; }
     if (pid == 0) {
         if (chdir(root.c_str()) != 0) std::exit(126);
-        execl(script.c_str(), script.c_str(), action.c_str(), edition.c_str(),
+        execl("/bin/sh", "sh", script.c_str(), action.c_str(), edition.c_str(),
               port.c_str(), protocol.c_str(), static_cast<char *>(nullptr));
         std::perror("sleelas: firewall controller exec");
         std::exit(127);
