@@ -9,6 +9,8 @@ typedef struct {
     char national_id_ref[SLEELA_RELAY_ID_MAX];
     char citizen_id_ref[SLEELA_RELAY_ID_MAX];
     char bank_id_ref[SLEELA_RELAY_ID_MAX];
+    char banker_id_ref[SLEELA_RELAY_ID_MAX];
+    char cromsmrus_id_ref[SLEELA_RELAY_ID_MAX];
     char jurisdiction[SLEELA_RELAY_ID_MAX];
     char relay_operator_ref[SLEELA_RELAY_ID_MAX];
     char purpose[SLEELA_RELAY_ID_MAX];
@@ -17,6 +19,8 @@ int sleela_relay_identity_init(sleela_relay_identity_t *, const char *, const ch
 int sleela_relay_identity_set_national_ref(sleela_relay_identity_t *, const char *);
 int sleela_relay_identity_set_citizen_ref(sleela_relay_identity_t *, const char *);
 int sleela_relay_identity_set_bank_ref(sleela_relay_identity_t *, const char *);
+int sleela_relay_identity_set_banker_ref(sleela_relay_identity_t *, const char *);
+int sleela_relay_identity_set_cromsmrus_ref(sleela_relay_identity_t *, const char *);
 int sleela_relay_identity_validate(const sleela_relay_identity_t *);
 #ifdef __cplusplus
 }
