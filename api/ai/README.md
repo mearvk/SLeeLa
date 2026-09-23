@@ -92,3 +92,16 @@ SLeeLa can describe an external XML document or XML flow source with a bounded s
 The same source vocabulary supports `data`, `file`, `audio`, `video`, `data-flow`, and `ai-flow`. The `url` identifies the XML resource and `args` carries declarative provider/model/flow parameters.
 
 This is a **locator and model-flow declaration**, not an implicit fetch or execution command. SLeeLa resolves and retrieves the resource only through an explicitly authorized file/network provider and then validates the XML under the normal VM/security boundary. Relative XML references can follow XML Base semantics where the selected XML vocabulary permits them. citeturn0search0
+
+
+## SLeeLa source examples
+
+Source-level examples now live in `api/ai/examples/`:
+
+- `ai.sleela` — AI model and operation flow.
+- `data.sleela` — declarative data-model construction.
+- `xml.sleela` — XML model/data loading and validation.
+- `listener.sleela` — XML source listener declaration.
+- `ai-data-listener-flow.sleela` — combined XML source → data model → AI → listener flow.
+
+These examples define the intended SLeeLa program-level vocabulary for the native bridge. They are source documents for the API contract; until corresponding language/runtime bindings are installed, the `ai*`, `data*`, `xml*`, and `listener*` calls should not be described as already implemented compiler intrinsics.
