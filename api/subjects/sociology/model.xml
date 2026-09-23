@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<subjectModel id="sociology-basic"><subject>sociology</subject><version>1.0</version>
+<quantities><quantity name="groupCount" unit="count" kind="input"/><quantity name="population" unit="count" kind="input"/><quantity name="proportion" unit="1" kind="result"/><quantity name="events" unit="count" kind="input"/><quantity name="rate" unit="per-population" kind="result"/><quantity name="growthRate" unit="1" kind="result"/></quantities>
+<relations><formula name="proportion" expression="groupCount/population" resultUnit="1"/><formula name="rate" expression="events/population*scale" resultUnit="per-population"/><formula name="growthRate" expression="(newValue-oldValue)/oldValue" resultUnit="1"/><formula name="transitionProbability" expression="transitions/origin" resultUnit="1"/></relations>
+</subjectModel>
