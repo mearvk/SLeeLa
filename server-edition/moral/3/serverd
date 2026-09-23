@@ -67,6 +67,7 @@ if [ "$#" -gt 0 ] && [ "$1" = "--preflight" ]; then echo "preflight: PASS"; exit
 if [ "$#" -gt 0 ] && [ "$1" = "--design-activity" ]; then shift; exec "$ENGINE" design-activity "$@"; fi
 "$HTTPCTL" --logical-port "$LOGICAL_PORT" --size "$DOWNLOAD_SIZE" --version "$HTTP_VERSION" >>"$LOG" 2>&1 || { echo "serverd: HTTP capability validation failed" >&2; exit 1; }
 SLEELA_SERVER_STATE="$STATE" SLEELA_TRAFFIC_PORTS="$PROBE_PORT,$SCAN_PORT,$PORT,20000" sh "$TRAFFIC_LOGGER" start >>"$LOG" 2>&1 || true
+SLEELA_SERVER_STATE="$STATE" sh "$ROOT/server-edition/port-awareness/known-connections.sh" >>"$LOG" 2>&1 || true
 [ -f "$INBOX" ] || printf '%s\n' "hello" > "$INBOX"
 [ "$TICK" = true ] && printf 'tick %s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || echo now)" >> "$INBOX"
 LOCK="$STATE/.serverd3.lock"
@@ -105,8 +106,7 @@ fi
 [ "$FOREGROUND" = true ] && tail -n 16 "$LOG"
 echo "Discord-3™ serverd: Service 3 completed; results=$LOG"
 
-
-# Named basic scan/service-discovery port.
+# Named basic-scan/service-discovery port; firewall lifecycle is owned by the server controller.
 : "${SLEELA_SCAN_PORT:=$SCAN_PORT}"
 : "${SLEELA_SCAN_PORT_PROTOCOL:=$SCAN_PORT_PROTO}"
 : "${SLEELA_MATURE_SERVICES:=auto}"
