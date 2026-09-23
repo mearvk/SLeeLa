@@ -39,3 +39,16 @@ All SLeeLa HTTP generations share a logical DOWNLOAD mode for files larger than 
 `SESSION-ID | DATETIME | FILE-ID | FILE-NAME | INDEX | OFFSET | TOTAL-SIZE`
 
 FILE-ID identifies the file transfer. INDEX identifies its segment/chunk and OFFSET identifies its byte position. This allows a new request or stream to resume an interrupted transfer.
+
+
+## Native HTTP server configuration, logging, and outputs
+
+The runnable server grades live under [`../http-servers/`](../http-servers/). Their current server-specific configuration interface is the command line; the general `config/sleela.properties.example` file is not implicitly consumed by these listeners. Grade 3 additionally requires a TLS private key, certificate, and QUIC-capable backend.
+
+Operational logging and generated artifacts are documented separately:
+
+- [`../http-servers/CONFIGURATION.md`](../http-servers/CONFIGURATION.md)
+- [`../http-servers/LOGGING.md`](../http-servers/LOGGING.md)
+- [`../http-servers/OUTPUTS.md`](../http-servers/OUTPUTS.md)
+
+HTTP/3 runtime diagnostics are emitted through the service's standard error stream and the selected QUIC backend; private keys, certificates, logs, and generated binaries are deployment/runtime artifacts rather than HTTP source data.
