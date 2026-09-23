@@ -15,3 +15,8 @@ port=19866
 port_protocol=tcp
 firewall=auto
 firewall_required=true
+
+http_version=3.0
+logical_port=19866
+download_size_bytes=0
+http_api=../../../../server-edition/http/httpctl
