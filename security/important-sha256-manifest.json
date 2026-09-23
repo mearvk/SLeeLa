@@ -3395,6 +3395,10 @@
       "sha256": "8228f4137bb09c432c470b8de6071b4b40799d3516a24f914c7e8ea190e96d5d"
     },
     {
+      "path": "impl/tests/core/memmgr_grades_smoke.c",
+      "sha256": "12ad3d5f8219aca146c4c7ee59724ee6d3ccf6d1bea56f173fcdeb53a13e8487"
+    },
+    {
       "path": "impl/tests/core/memmgr_smoke.c",
       "sha256": "d4547d3d317eecdf1441bc3b82b40b8c85ee35ea253565d58fe869e186f51cd2"
     },
