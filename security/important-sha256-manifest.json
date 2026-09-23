@@ -2972,11 +2972,23 @@
     },
     {
       "path": "http-servers/2/main.cpp",
-      "sha256": "2dc1ab2a383cd6cb62bfee380006e302c5dd8e879194fefadf471c135bf0a5ef"
+      "sha256": "392a242f9329dc06baad6d73e1eb83ffe7b4cf229aaa67bb2c4ebdcaa3f4de60"
+    },
+    {
+      "path": "http-servers/3/http3/http3_server.cpp",
+      "sha256": "59d44f01744ec665840244501a64ce428d75c9c585bb5e387cc1ace669125282"
+    },
+    {
+      "path": "http-servers/3/http3/http3_server.h",
+      "sha256": "4fb99204e6e7a02f5d87b387f5aba068ed195ac6430f0c0f875727871e0ddf12"
+    },
+    {
+      "path": "http-servers/3/http3/main.cpp",
+      "sha256": "bbe0722c82eae51be00effb8238e92d5eab25f4b85137b54c31af7cfe4ae32d8"
     },
     {
       "path": "http-servers/3/main.cpp",
-      "sha256": "3c4e0ee044265decc94acf56ad0bc7ff1a07cc9a3f7fbbc163f98fc0767abdbc"
+      "sha256": "12b6da6b7da1cf1aaaf641bd1b204bff1827ab33e29b2a8131ae8039842d14b1"
     },
     {
       "path": "http-servers/common/http_server.cpp",
@@ -3368,7 +3380,7 @@
     },
     {
       "path": "impl/frontend/http_server_cli.cpp",
-      "sha256": "9d3d3a60656316b14bc3e08ae602c52547e326aaa494da6055030d1f12060473"
+      "sha256": "ac5b130ead84f68337835107f3a8a15f085cc3a8630410d9ffd67359be698743"
     },
     {
       "path": "impl/frontend/http_server_cli.h",
