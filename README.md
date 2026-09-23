@@ -151,7 +151,7 @@ host and adjusts link flags per platform.
 
 ## Subject Libraries — primary references
 
-The subject libraries are first-class parts of the SLeeLa implementation. Each
+The subject libraries are first-class parts of the SLeeLa implementation. XML model/procedure declarations are the common declarative layer across subject families; native source remains the source of truth for executable mathematics and validation. Each
 subject has a dedicated reference document and a corresponding implementation
 layer where applicable. These documents are the README-level map to the
 compiler, runtime, and Nordshrift stack.
@@ -160,6 +160,7 @@ compiler, runtime, and Nordshrift stack.
 |---|---|---|
 | **Math** | [`MATH.md`](MATH.md) | [`impl/subjects/math/`](impl/subjects/math/) native math lowering (shared dispatcher in [`impl/subjects/native/`](impl/subjects/native/)) |
 | **Physics** | [`PHYSICS.md`](PHYSICS.md) | [`impl/subjects/physics/`](impl/subjects/physics/) native physics API and executable formula layer |
+| **Astrophysics** | [`api/subjects/astrophysics/README.md`](api/subjects/astrophysics/README.md) | [`impl/subjects/astrophysics/`](impl/subjects/astrophysics/) C numerical ABI, C++ facade, native frontend class, and XML observation store |
 | **Economics** | [`ECONOMICS.md`](ECONOMICS.md) | [`impl/subjects/economics/`](impl/subjects/economics/) native economics API and executable formula layer |
 | **Inference** | [`INFERENCE.md`](INFERENCE.md) | [`impl/subjects/inference/`](impl/subjects/inference/) native statistics over data series (trend, correlation, forecast) |
 | **Chemistry** | [`CHEMISTRY.md`](CHEMISTRY.md) | [`impl/subjects/chemistry/`](impl/subjects/chemistry/) (library + frontend chemistry API) |
@@ -812,3 +813,12 @@ SLeeLa now includes a cross-platform web-server operations module under [`api/we
 ## Native Database Connector
 
 SLeeLa includes `api/database/` for web-aware and general applications needing a native database contract across Linux, Windows 8+, and macOS. Supported database families are PostgreSQL, MySQL, MariaDB, SQLite, Microsoft SQL Server, Oracle Database, and ODBC-compatible systems. The connector provides bounded configuration vocabulary while platform adapters manage native client/driver installation and upgrades.
+
+
+## Subject Library XML
+
+All Subject Library families now share a declarative XML model contract under [api/subjects/](api/subjects/). The contract can describe a model, formulas, ordered procedures, observations, and provenance without granting XML arbitrary execution authority.
+
+Astrophysics is the first expanded implementation of this contract. Its model and procedure examples live under [api/subjects/astrophysics/](api/subjects/astrophysics/). The native C/C++ layer is under [impl/subjects/astrophysics/](impl/subjects/astrophysics/), including an append-only XML observation record writer.
+
+The source-addition rule is deliberately conservative: a new scientific operation enters native source only when its quantities, units, assumptions, valid domain, numerical method, persistence semantics, and tests are explicit. A model may be represented in XML before it becomes an executable native operation.
