@@ -1,6 +1,6 @@
 param(
   [Parameter(Mandatory=$true)][ValidateSet("open","close","status")][string]$Action,
-  [Parameter(Mandatory=$true)][ValidateSet("Discord-1","Discord-2","Discord-3")][string]$Edition,
+  [Parameter(Mandatory=$true)][ValidateSet("Discord-1","Discord-2","Discord-3","basic-probe","basic-scan")][string]$Edition,
   [Parameter(Mandatory=$true)][ValidateRange(1,65535)][int]$Port,
   [ValidateSet("tcp","udp")][string]$Protocol = "tcp"
 )
