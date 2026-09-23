@@ -187,6 +187,41 @@ static bool valid_port_value(const std::string &value) {
     catch (...) { return false; }
 }
 
+
+static int run_httpctl(const fs::path &root, const std::string &version,
+                       const std::string &logicalPort, const std::string &size) {
+    const fs::path tool = root / "server-edition/http/httpctl";
+    if (!regular_file(tool)) {
+        std::cerr << "sleelas: HTTP API controller missing: " << tool << "\\n";
+        return 1;
+    }
+#if defined(_WIN32)
+    std::string cmd = "\"" + tool.string() + "\" --logical-port " + logicalPort +
+                      " --size " + size + " --version " + version;
+    STARTUPINFOA si{}; PROCESS_INFORMATION pi{}; si.cb = sizeof(si);
+    std::string mutable_cmd = cmd;
+    if (!CreateProcessA(nullptr, mutable_cmd.data(), nullptr, nullptr, FALSE, 0,
+                        nullptr, root.string().c_str(), &si, &pi)) return 1;
+    WaitForSingleObject(pi.hProcess, INFINITE);
+    DWORD code = 1; GetExitCodeProcess(pi.hProcess, &code);
+    CloseHandle(pi.hThread); CloseHandle(pi.hProcess);
+    return static_cast<int>(code);
+#else
+    pid_t pid = fork();
+    if (pid < 0) return 1;
+    if (pid == 0) {
+        if (chdir(root.c_str()) != 0) std::exit(126);
+        execl(tool.c_str(), tool.c_str(), "--logical-port", logicalPort.c_str(),
+              "--size", size.c_str(), "--version", version.c_str(),
+              static_cast<char *>(nullptr));
+        std::exit(127);
+    }
+    int status = 0;
+    if (waitpid(pid, &status, 0) < 0) return 1;
+    return WIFEXITED(status) ? WEXITSTATUS(status) : 1;
+#endif
+}
+
 static int run_portctl(const fs::path &root, const std::string &action,
                        const std::string &edition, const std::string &port,
                        const std::string &protocol) {
@@ -264,6 +299,9 @@ int main(int argc, char **argv) {
     if (root.empty()) { std::cerr << "sleelas: SLeeLa root not found; set SLEELA_ROOT\n"; return 1; }
     const char *level_env = std::getenv("SLEELA_SERVER_LEVEL");
     const std::string level = level_env && *level_env ? level_env : "2";
+    const std::string httpVersion = (level == "3") ? "3.0" : "2.1";
+    const std::string httpLogicalPort = std::getenv("SLEELA_HTTP_LOGICAL_PORT") ? std::getenv("SLEELA_HTTP_LOGICAL_PORT") : "19866";
+    const std::string httpDownloadSize = std::getenv("SLEELA_HTTP_DOWNLOAD_SIZE") ? std::getenv("SLEELA_HTTP_DOWNLOAD_SIZE") : "0";
     fs::path server;
     if (level == "2") server = root / "server-edition/moral/2/src/Server.sleela";
     else if (level == "3") server = root / "server-edition/moral/3/src/Server.sleela";
@@ -279,6 +317,10 @@ int main(int argc, char **argv) {
     if (!valid_port_value(port)) { std::cerr << "sleelas: invalid SLEELA_SERVER_PORT (1..65535 required)\\n"; return 2; }
     if (portProtocol != "tcp" && portProtocol != "udp") { std::cerr << "sleelas: invalid SLEELA_SERVER_PORT_PROTOCOL (tcp or udp required)\\n"; return 2; }
 #if defined(_WIN32)
+    if (run_httpctl(root, httpVersion, httpLogicalPort, httpDownloadSize) != 0) {
+        std::cerr << "sleelas: HTTP multiplexing/download capability validation failed\\n";
+        return 1;
+    }
     if (!regular_file(root / "server-edition/port-awareness/portctl.ps1")) { std::cerr << "sleelas: Windows firewall controller missing\\n"; return 1; }
 #else
     if (!regular_file(root / "server-edition/port-awareness/portctl.sh")) { std::cerr << "sleelas: firewall controller missing\\n"; return 1; }
