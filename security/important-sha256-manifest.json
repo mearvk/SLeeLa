@@ -359,6 +359,18 @@
       "sha256": "43d3cdfe470abf9542f5dc51203d9246df2d0815d15a35c7ba088b4048da3d18"
     },
     {
+      "path": "api/national-relay/README.md",
+      "sha256": "49a377e2ac4f7c046c308ff1d8dafe270fe3153bf8f97451e9958e40babfc104"
+    },
+    {
+      "path": "api/national-relay/sleela_relay_identity.c",
+      "sha256": "796fb67e008717c09a6af509f923241fdaf9388d6a18f2c663a3b8997b141291"
+    },
+    {
+      "path": "api/national-relay/sleela_relay_identity.h",
+      "sha256": "76546ad83b83f591d9bfac3b8e67f6020f6bf27f353dd2ebc41d650733ffcc7e"
+    },
+    {
       "path": "api/nordshrift/API.html",
       "sha256": "084f485557690e405a86d501ea28889d135e808a5e2e9249b5283656994b6bf8"
     },
@@ -4185,6 +4197,10 @@
     {
       "path": "server-edition/moral/README.md",
       "sha256": "2740d442addbe200bb0763fa3afe4249d33092ba9169f275abe44148ded1a2ac"
+    },
+    {
+      "path": "server-edition/national-relay/README.md",
+      "sha256": "fa11e54ceab1c4ad29c61acd087b5daa0d2ef45f78e6081413cd72dd34c57d14"
     },
     {
       "path": "server-edition/port-awareness/portctl.ps1",
