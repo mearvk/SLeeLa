@@ -4491,6 +4491,10 @@
       "sha256": "672dd5184d384e69c9eaaf93dd98f7232eb8728b0493f0127e8dd314b28f1c87"
     },
     {
+      "path": "tools/generate-all-sha256-md.sh",
+      "sha256": "f45c0fe228bcb1fca0a4e32c2fe8dff97b90a8d2dc9b31985ba1a286517eeb03"
+    },
+    {
       "path": "tools/generate-enclosure-data.py",
       "sha256": "fbe47ec4052b4a5de38ceb80ef0da6882621e329a9bff2f18e8f54eff86366e3"
     },
