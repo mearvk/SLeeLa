@@ -427,6 +427,30 @@
       "sha256": "c171613d3c5a496a7c947722f8974edf69e13c802f1c596166d9e994f1d72382"
     },
     {
+      "path": "api/subjects/README.md",
+      "sha256": "bc5074c351fefddb33a6309a3c614c37e533d13f64b78ea2dfe4746f2c537559"
+    },
+    {
+      "path": "api/subjects/astrophysics/README.md",
+      "sha256": "489507a442dbd8dbe52d0974feca25eabfa945a2f6566f68b25847b76acee014"
+    },
+    {
+      "path": "api/subjects/astrophysics/model.xml",
+      "sha256": "047b745b0c7a9ac36d5382c647ff9f97baf31baeedba042c608b9d3ba723480c"
+    },
+    {
+      "path": "api/subjects/astrophysics/observation.xml",
+      "sha256": "125b5c5229454f49ac5f2855bf921a6c128184a80637292821f5b4daf820773b"
+    },
+    {
+      "path": "api/subjects/astrophysics/procedure.xml",
+      "sha256": "467cb8a1cb689c2fc011991806e67c64c9e745f66bbb6c82cfc64d8660bc7960"
+    },
+    {
+      "path": "api/subjects/subject-model.xsd",
+      "sha256": "9d07e313a3c91e0280166251a13e03370f66432be7a0eb7c44a253d42a7cd0a2"
+    },
+    {
       "path": "api/webserver/README.md",
       "sha256": "09bfc2139ebca6eb2d1e1d79221a81a33deb2e2ae07bf449f0c394bec42ea3b2"
     },
@@ -3471,6 +3495,34 @@
       "sha256": "1def88ff918d302615650e26be73b332b0b751df391c38d6c22bc910f623b83b"
     },
     {
+      "path": "impl/subjects/astrophysics/astrophysics.cpp",
+      "sha256": "c4e92bba80b8b90e27c872e126390c7b3ae3db712f26aef793f210f80308285d"
+    },
+    {
+      "path": "impl/subjects/astrophysics/astrophysics.hpp",
+      "sha256": "1627c77f568089c6dd1ebcba117c5ff08177f6aac40c233b11aa4f21438e6f68"
+    },
+    {
+      "path": "impl/subjects/astrophysics/astrophysics_math.c",
+      "sha256": "05311961d7b74b117bda91a0edfc5561fcea16bb47822207fa1823260502727d"
+    },
+    {
+      "path": "impl/subjects/astrophysics/astrophysics_math.h",
+      "sha256": "2f071b2b4d2d7178c2d665f8d67153e89aa6594f020e4bea40e6457950e2a90a"
+    },
+    {
+      "path": "impl/subjects/astrophysics/astrophysics_native.cpp",
+      "sha256": "7a8c2509b1c6cdc2f55f8acce131761b908aa87c40f520bcd8d6b83dcee45f16"
+    },
+    {
+      "path": "impl/subjects/astrophysics/observation_store.c",
+      "sha256": "681090028b1201fc6291dd32b865f826f4165d38b3765978af51ee1b97001fe9"
+    },
+    {
+      "path": "impl/subjects/astrophysics/observation_store.h",
+      "sha256": "5f7c69d0ffd0998fe2b65a39c0e6a17bb127606f97d5345c86977e6787caaed0"
+    },
+    {
       "path": "impl/subjects/chemistry/chemistry.cpp",
       "sha256": "97635e53e9b22cc6b2da8426fed7932c49d670cf65fe9f06d21156e70f5713b2"
     },
@@ -3532,11 +3584,11 @@
     },
     {
       "path": "impl/subjects/native/native_api.cpp",
-      "sha256": "696935cbe721e0afa9964391adb65744f0c1c4a61a4fd14c264a0ef43d580b61"
+      "sha256": "d829f6bbd546c8434263364038e3e4a5a3f938c16a2e81880e0346a1060e0c19"
     },
     {
       "path": "impl/subjects/native/native_api.h",
-      "sha256": "27e8ec5a734136bbb72bde813abedf06a748572d57229b096e394c5b7ce413f6"
+      "sha256": "78b73f538693de572e3c2c3da9f473a3dd754d51671a50239d6e095aa42643dc"
     },
     {
       "path": "impl/subjects/native/native_builders.h",
@@ -3589,6 +3641,10 @@
     {
       "path": "impl/tests/runtime/runtime_smoke.c",
       "sha256": "0ae3160d907245ee4122acb6ef4e9155f227143f1f06b7fd74ba3aa36e8b6656"
+    },
+    {
+      "path": "impl/tests/subjects/astrophysics_smoke.c",
+      "sha256": "a3b0eb8085be3f74aaca63f4b89f8435f2321a3a2c4f83c5097d818d8fe31259"
     },
     {
       "path": "impl/tests/subjects/chemistry_values.sleela",
