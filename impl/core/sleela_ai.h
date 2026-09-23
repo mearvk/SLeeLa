@@ -18,6 +18,8 @@ extern "C" {
 #define SL_AI_MAX_FIELDS 32
 #define SL_AI_MAX_FIELD_NAME 64
 #define SL_AI_MAX_FIELD_TYPE 64
+#define SL_AI_MAX_URL 2048
+#define SL_AI_MAX_ARGS 2048
 
 typedef enum {
     SL_AI_KIND_DATA = 1,
@@ -94,6 +96,21 @@ typedef struct {
     SLAIDataModelField fields[SL_AI_MAX_FIELDS];
 } SLAIDataModel;
 
+typedef enum {
+    SL_AI_SOURCE_DATA = 1,
+    SL_AI_SOURCE_FILE = 2,
+    SL_AI_SOURCE_AUDIO = 3,
+    SL_AI_SOURCE_VIDEO = 4,
+    SL_AI_SOURCE_AI_FLOW = 5,
+    SL_AI_SOURCE_DATA_FLOW = 6
+} SLAIXMLSourceKind;
+
+typedef struct {
+    SLAIXMLSourceKind kind;
+    char url[SL_AI_MAX_URL];
+    char args[SL_AI_MAX_ARGS];
+} SLAIXMLSource;
+
 typedef int (*SLAIVMInvokeFn)(const SLAIRequest *request,
                              const SLAIInput *input,
                              SLAIResult *result,
@@ -114,9 +131,11 @@ int slai_invoke(SLAIEngine *engine, const SLAIRequest *request,
                 const SLAIInput *input, SLAIResult *result);
 int slai_model_from_xml(const char *xml, size_t length, SLAIModelDescriptor *model);
 int slai_data_model_from_xml(const char *xml, size_t length, SLAIDataModel *model);
+int slai_source_from_xml(const char *xml, size_t length, SLAIXMLSource *source);
 const char *slai_input_kind_name(SLAIInputKind kind);
 const char *slai_operation_name(SLAIOperation operation);
 const char *slai_backend_name(SLAIBackend backend);
+const char *slai_source_kind_name(SLAIXMLSourceKind kind);
 
 #ifdef __cplusplus
 }

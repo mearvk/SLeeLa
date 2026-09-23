@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bodi version="1" kind="ai-source-map">
+  <source kind="data" url="file:///models/data-model.xml" args="schema=sleela-media-data"/>
+  <source kind="audio" url="file:///models/audio-model.xml" args="model=audio-v1&flow=inspect"/>
+  <source kind="video" url="file:///models/video-model.xml" args="model=video-v1&flow=classify"/>
+  <source kind="data-flow" url="file:///flows/data-flow.xml" args="mode=validate"/>
+  <source kind="ai-flow" url="file:///flows/ai-flow.xml" args="model=sleela.example&operation=extract"/>
+</bodi>

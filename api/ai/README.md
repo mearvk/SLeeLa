@@ -77,3 +77,18 @@ provider/model and its evaluation set.
 - XML model: `api/ai/model.xml`
 - API example: `api/ai/README.md`
 - Smoke test: `impl/tests/core/ai_smoke.c`
+
+
+## XML source locators
+
+SLeeLa can describe an external XML document or XML flow source with a bounded source locator:
+
+```xml
+<source kind="audio"
+        url="file:///media/input.xml"
+        args="model=audio-v1&flow=inspect"/>
+```
+
+The same source vocabulary supports `data`, `file`, `audio`, `video`, `data-flow`, and `ai-flow`. The `url` identifies the XML resource and `args` carries declarative provider/model/flow parameters.
+
+This is a **locator and model-flow declaration**, not an implicit fetch or execution command. SLeeLa resolves and retrieves the resource only through an explicitly authorized file/network provider and then validates the XML under the normal VM/security boundary. Relative XML references can follow XML Base semantics where the selected XML vocabulary permits them. citeturn0search0
