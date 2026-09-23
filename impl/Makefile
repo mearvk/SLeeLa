@@ -314,7 +314,7 @@ $(ASTRO_STORE_OBJ): subjects/astrophysics/observation_store.c subjects/astrophys
 	$(CC) $(CFLAGS) -Isubjects/astrophysics -c $< -o $@
 $(ASTRO_SMOKE): tests/subjects/astrophysics_smoke.c $(ASTRO_MATH_OBJ) $(ASTRO_STORE_OBJ) | $(BUILD)
 	$(CC) $(CFLAGS) -Isubjects/astrophysics $< $(ASTRO_MATH_OBJ) $(ASTRO_STORE_OBJ) -o $@ $(LDFLAGS) $(LIBS)
-test-astrophysics: $(ASTRO_SMOKE)
+test-astrophysics: $(ASTRO_SMOKE) $(ASTRO_OBJ)
 	@echo "=== SLeeLa Astrophysics subject library ==="; $(ASTRO_SMOKE)
 
 $(BUILD)/physics_native.o: subjects/physics/physics_native.cpp | $(BUILD)
