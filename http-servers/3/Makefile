@@ -1,8 +1,11 @@
 CXX ?= c++
-CXXFLAGS ?= -std=c++17 -O2 -Wall -Wextra -Wpedantic -pthread
+CXXFLAGS ?= -std=c++17 -O2 -Wall -Wextra -Wpedantic
 TARGET=http-server-3
+
 all: $(TARGET)
-$(TARGET): main.cpp ../common/http_server.cpp ../common/http_server.h
-	$(CXX) $(CXXFLAGS) main.cpp ../common/http_server.cpp -o $@
+
+$(TARGET): main.cpp http3/http3_server.cpp http3/http3_server.h
+	$(CXX) $(CXXFLAGS) main.cpp http3/http3_server.cpp -o $@
+
 clean:
 	rm -f $(TARGET)
