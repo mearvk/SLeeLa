@@ -16,6 +16,7 @@ TICK="false"
 FOREGROUND="false"
 MANIFEST=""
 NETWORK="false"
+PORT="19866"; PORT_PROTO="tcp"; FIREWALL="auto"; FIREWALL_REQUIRED="true"
 while IFS= read -r line || [ -n "$line" ]; do
   case "$line" in ""|#*) continue;; esac
   case "$line" in *=*) key=${line%%=*}; value=${line#*=};; *) echo "serverd: invalid configuration line" >&2; exit 2;; esac
@@ -23,6 +24,7 @@ while IFS= read -r line || [ -n "$line" ]; do
     engine) ENGINE=$value;; inbox) INBOX=$value;; state) STATE=$value;; server_source) SOURCE=$value;;
     log) LOG=$value;; mode) MODE=$value;; tick) TICK=$value;; foreground) FOREGROUND=$value;;
     sha256_manifest) MANIFEST=$value;; allow_network) NETWORK=$value;;
+    port) PORT=$value;; port_protocol) PORT_PROTO=$value;; firewall) FIREWALL=$value;; firewall_required) FIREWALL_REQUIRED=$value;;
     *) echo "serverd: unknown configuration key: $key" >&2; exit 2;;
   esac
 done < "$CONFIG"
@@ -38,12 +40,29 @@ case "$FOREGROUND" in true|false) ;; *) echo "serverd: foreground must be true o
 case "$NETWORK" in true|false) ;; *) echo "serverd: allow_network must be true or false" >&2; exit 2;; esac
 [ -x "$ENGINE" ] || { echo "serverd: engine not executable: $ENGINE" >&2; exit 1; }
 [ -f "$SOURCE" ] || { echo "serverd: source not found: $SOURCE" >&2; exit 1; }
+PORTCTL="$ROOT/server-edition/port-awareness/portctl.sh"
+[ -x "$PORTCTL" ] || { echo "serverd: port controller not executable: $PORTCTL" >&2; exit 1; }
 export SLEELA_BIN="$ENGINE" SLEELA_SHA256_MANIFEST="$MANIFEST" SLEELA_SERVER_CONFIG="$CONFIG"
 export SLEELA_SERVER_INBOX="$INBOX" SLEELA_SERVER_STATE="$STATE" SLEELA_SERVER_ALLOW_NETWORK="$NETWORK"
 mkdir -p "$STATE" "$(dirname "$INBOX")"
 LOCK="$STATE/.serverd.lock"
 mkdir "$LOCK" 2>/dev/null || { echo "serverd: another instance is active" >&2; exit 3; }
-trap 'rmdir "$LOCK" 2>/dev/null || true' EXIT HUP INT TERM
+cleanup() {
+  rc=$?
+  if ! "$PORTCTL" close "Discord-2" "$PORT" "$PORT_PROTO" >>"$LOG" 2>&1; then
+    echo "serverd: failed to close firewall port $PORT/$PORT_PROTO" >&2
+    rc=1
+  fi
+  rmdir "$LOCK" 2>/dev/null || true
+  exit "$rc"
+}
+trap cleanup EXIT HUP INT TERM
+"$PORTCTL" close "Discord-2" "$PORT" "$PORT_PROTO" >>"$LOG" 2>&1 || true
+if [ "$FIREWALL_REQUIRED" = true ]; then
+  "$PORTCTL" open "Discord-2" "$PORT" "$PORT_PROTO" >>"$LOG" 2>&1 || { echo "serverd: firewall could not open $PORT/$PORT_PROTO; refusing to start" >&2; exit 1; }
+else
+  "$PORTCTL" open "Discord-2" "$PORT" "$PORT_PROTO" >>"$LOG" 2>&1 || echo "serverd: firewall open unavailable; continuing by configuration"
+fi
 [ -f "$INBOX" ] || printf "%s\n" "hello" > "$INBOX"
 [ "$TICK" = true ] && printf "tick %s\n" "$(date -u +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || echo now)" >> "$INBOX"
 { echo "=== SLeeLa Server Edition Service 2 ==="; cd "$ROOT"; "$ENGINE" run "$SOURCE"; } >> "$LOG" 2>&1
