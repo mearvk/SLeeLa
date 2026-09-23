@@ -94,3 +94,12 @@ The important separation is:
 A logical port therefore does not require one operating-system socket per service. Multiple logical ports can share the same HTTP/2 connection and its stream pool.
 
 HTTP/2 stream identifiers and SLeeLa logical ports are different namespaces and must not be conflated. The stream provides transport multiplexing; the logical port provides application routing.
+
+
+## Download Mode for Files > 50 MB
+
+HTTP 2.0/2.1 uses HTTP/2 streams for transport multiplexing while SLeeLa DOWNLOAD mode provides resumable transfer for files larger than 50 MB. A stream carries FILE-ID and transfer index; resume state survives stream completion.
+
+`SESSION-ID | DATETIME | FILE-ID | FILE-NAME | INDEX | OFFSET | TOTAL-SIZE`
+
+The client resumes from FILE-ID + INDEX/OFFSET and does not depend on the original HTTP/2 stream remaining available.
