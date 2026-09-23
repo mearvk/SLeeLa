@@ -1,4 +1,5 @@
 #sleela 1.3
+// Version: SLeeLa AI/Data/XML/Listener API 1.0.0 | Main program: Sleelvac 1.5
 // listener.sleela -- XML model/data listener declaration.
 // The listener receives authorized source events; it does not grant
 // implicit filesystem, network, or execution authority.
