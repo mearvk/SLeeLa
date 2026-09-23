@@ -2872,7 +2872,7 @@
     },
     {
       "path": "impl/core/sleela_memmgr.c",
-      "sha256": "07a4fe4a85d3a72a4f9f7bf3162d7e24018281e340404521dd0c4ee707ba4ac6"
+      "sha256": "654a6129bc4ffc3ee4896ed4e31938735b149329fb28952547b01df51c2fd0ad"
     },
     {
       "path": "impl/core/sleela_memmgr.h",
@@ -2888,7 +2888,7 @@
     },
     {
       "path": "impl/core/sleela_memmgr_grade3.c",
-      "sha256": "f26b967b6cbb25deb7067a865630500fca662eaee97491abf7782dae4adcc65e"
+      "sha256": "6e17ea99cb475b263ef7db12a4016677b71bdf02238eaaca14ea621ee2953f5e"
     },
     {
       "path": "impl/core/sleela_memmgr_grade3.h",
@@ -2927,12 +2927,28 @@
       "sha256": "e44dba9461ee50a9cc9136755179d5ae6b8793a74baaeea04b15892fc17135af"
     },
     {
+      "path": "impl/core/sleela_platform.c",
+      "sha256": "0c583b51a365ebd74af38eee1532c3865a991667a8cd9c7c6be40a85214c95af"
+    },
+    {
+      "path": "impl/core/sleela_platform.h",
+      "sha256": "1e62f4041882c21f2311509536978b8a0fabaa3743fbc0a2c0806b29dbe5e61c"
+    },
+    {
       "path": "impl/core/sleela_synchro.c",
       "sha256": "4ab4796be06d1cb5dacd4915e524a00d98a8df9241f67f3a92c0cc578ba9eb53"
     },
     {
       "path": "impl/core/sleela_synchro.h",
       "sha256": "147a95bb88e5d037c1e5f33f512d8e4e1cbe870e4bbed1187572ea930bd85ecc"
+    },
+    {
+      "path": "impl/core/sleela_system_monitor.c",
+      "sha256": "5be19f5284b28462ca14ebee591bca35609b8c51bdf2c5ca98b15b9ab5a9fe92"
+    },
+    {
+      "path": "impl/core/sleela_system_monitor.h",
+      "sha256": "72a24a42564a20aaed731b840995e69c9e03c00d10de169f8b49d691a39e7735"
     },
     {
       "path": "impl/core/sleela_terminal.c",
@@ -3403,6 +3419,10 @@
       "sha256": "d4547d3d317eecdf1441bc3b82b40b8c85ee35ea253565d58fe869e186f51cd2"
     },
     {
+      "path": "impl/tests/core/system_monitor_smoke.c",
+      "sha256": "346ef722ed1cfa5e987af49ee5cc5501a0ed8ee15cca78aba3001aafc37064b3"
+    },
+    {
       "path": "impl/tests/runtime/runtime_smoke.c",
       "sha256": "0ae3160d907245ee4122acb6ef4e9155f227143f1f06b7fd74ba3aa36e8b6656"
     },
@@ -3724,11 +3744,11 @@
     },
     {
       "path": "runtime/Parameters.c",
-      "sha256": "694e6ebe0dd3d52f1894d7beca40956c3d625cfaa8208351037acce2b834786c"
+      "sha256": "6c2dad5b6e91b8efe1d9c8512636be31f584af5002ed253463c8fd9ea1c50247"
     },
     {
       "path": "runtime/Parameters.h",
-      "sha256": "69b81c269951e59d469c7b67888f8d978e991a8423d716797cd4d9beaa8f31ff"
+      "sha256": "6287cde4006af97014cba4e0bfcfbda3824d715040af12762e1e8aaa37286c73"
     },
     {
       "path": "runtime/garbage_collector.c",
