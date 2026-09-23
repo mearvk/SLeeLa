@@ -14,6 +14,7 @@ PORT="19866"; PORT_PROTO="tcp"; FIREWALL="auto"; FIREWALL_REQUIRED="true"
 SCAN_PORT="22220"; SCAN_PORT_PROTO="tcp"; SCAN_PORT_FIREWALL="auto"
 PROBE_PORT="2222"; PROBE_PORT_PROTO="tcp"
 TRAFFIC_LOGGER="$ROOT/server-edition/port-awareness/traffic-log.sh"
+TRAFFIC_LOGGING="true"; LOG_CONSUME_MAX_BYTES="52428800"; ACTIVE_PROBING="false"; PROBE_ALLOWLIST=""; KNOWN_PORTS="2222,22220,19866,20000"
 while IFS= read -r line || [ -n "$line" ]; do
   case "$line" in ""|\#*) continue;; esac
   case "$line" in *=*) key=$(printf '%s' "$line" | cut -d= -f1); value=$(printf '%s' "$line" | cut -d= -f2-);; *) echo "serverd: invalid configuration line" >&2; exit 2;; esac
@@ -23,7 +24,7 @@ while IFS= read -r line || [ -n "$line" ]; do
     engine) ENGINE=$value;; inbox) INBOX=$value;; state) STATE=$value;; server_source) SOURCE=$value;;
     log) LOG=$value;; recovery_log) RECOVERY=$value;; mode) MODE=$value;; tick) TICK=$value;;
     foreground) FOREGROUND=$value;; preflight) PREFLIGHT=$value;; sha256_manifest) MANIFEST=$value;;
-    allow_network) NETWORK=$value;; port) PORT=$value;; port_protocol) PORT_PROTO=$value;; firewall) FIREWALL=$value;; firewall_required) FIREWALL_REQUIRED=$value;; scan_port) SCAN_PORT=$value;; scan_port_protocol) SCAN_PORT_PROTO=$value;; scan_port_firewall) SCAN_PORT_FIREWALL=$value;; probe_port) PROBE_PORT=$value;; probe_port_protocol) PROBE_PORT_PROTO=$value;; *) echo "serverd: unknown configuration key: $key" >&2; exit 2;;
+    allow_network) NETWORK=$value;; port) PORT=$value;; port_protocol) PORT_PROTO=$value;; firewall) FIREWALL=$value;; firewall_required) FIREWALL_REQUIRED=$value;; scan_port) SCAN_PORT=$value;; scan_port_protocol) SCAN_PORT_PROTO=$value;; scan_port_firewall) SCAN_PORT_FIREWALL=$value;; probe_port) PROBE_PORT=$value;; probe_port_protocol) PROBE_PORT_PROTO=$value;; traffic_logging) TRAFFIC_LOGGING=$value;; log_consume_max_bytes) LOG_CONSUME_MAX_BYTES=$value;; active_probing) ACTIVE_PROBING=$value;; probe_allowlist) PROBE_ALLOWLIST=$value;; known_ports) KNOWN_PORTS=$value;; *) echo "serverd: unknown configuration key: $key" >&2; exit 2;;
   esac
 done < "$CONFIG"
 [ -x "$HTTPCTL" ] || { echo "serverd: HTTP API controller not executable: $HTTPCTL" >&2; exit 1; }
@@ -66,8 +67,8 @@ fi
 if [ "$#" -gt 0 ] && [ "$1" = "--preflight" ]; then echo "preflight: PASS"; exit 0; fi
 if [ "$#" -gt 0 ] && [ "$1" = "--design-activity" ]; then shift; exec "$ENGINE" design-activity "$@"; fi
 "$HTTPCTL" --logical-port "$LOGICAL_PORT" --size "$DOWNLOAD_SIZE" --version "$HTTP_VERSION" >>"$LOG" 2>&1 || { echo "serverd: HTTP capability validation failed" >&2; exit 1; }
-SLEELA_SERVER_STATE="$STATE" SLEELA_TRAFFIC_PORTS="$PROBE_PORT,$SCAN_PORT,$PORT,20000" sh "$TRAFFIC_LOGGER" start >>"$LOG" 2>&1 || true
-SLEELA_SERVER_STATE="$STATE" sh "$ROOT/server-edition/port-awareness/known-connections.sh" >>"$LOG" 2>&1 || true
+SLEELA_SERVER_STATE="$STATE" SLEELA_TRAFFIC_LOG_DIR="$STATE/traffic" SLEELA_TRAFFIC_PORTS="$PROBE_PORT,$SCAN_PORT,$PORT,20000" sh "$TRAFFIC_LOGGER" start >>"$LOG" 2>&1 || true
+SLEELA_SERVER_STATE="$STATE" SLEELA_ACTIVE_PROBING="$ACTIVE_PROBING" SLEELA_PROBE_ALLOWLIST="$PROBE_ALLOWLIST" SLEELA_KNOWN_PORTS="$KNOWN_PORTS" sh "$ROOT/server-edition/port-awareness/known-connections.sh" >>"$LOG" 2>&1 || true
 [ -f "$INBOX" ] || printf '%s\n' "hello" > "$INBOX"
 [ "$TICK" = true ] && printf 'tick %s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || echo now)" >> "$INBOX"
 LOCK="$STATE/.serverd3.lock"
