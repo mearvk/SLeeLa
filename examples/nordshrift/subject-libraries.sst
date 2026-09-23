@@ -1,0 +1,46 @@
+#nordshrift 1.0
+#sleela 1.3
+
+sheet subject-libraries
+  version 2.0
+  description "SLeeLa Subject Libraries: Math, Physics, Chemistry, Economics, Finance, Inference, Data Analytics, Astrophysics, Sociology"
+
+subject astrophysics
+  domain astrophysics
+  depends [math, physics]
+  quantity redshift
+    unit 1
+    dimension dimensionless
+    status derived
+  relation observed-redshift
+    formula observedWavelength/restWavelength-1
+    inputs [observedWavelength, restWavelength]
+    outputs [redshift]
+  evidence
+    status modeled
+    source "SLeeLa Astrophysics XML model"
+    note "Demonstration relation; observations require provenance."
+
+subject sociology
+  domain sociology
+  depends [math]
+  quantity proportion
+    unit 1
+    dimension dimensionless
+    status derived
+  quantity population
+    unit count
+    dimension count
+    status observed
+  relation group-proportion
+    formula groupCount/population
+    inputs [groupCount, population]
+    outputs [proportion]
+  assumption study-design
+    statement "Population, sampling frame, missingness, weighting and measurement definitions must be documented."
+    scope "descriptive population analysis"
+    status specified
+  evidence
+    status modeled
+    source "SLeeLa Sociology XML model"
+    note "A computed association or statistic does not by itself establish causation."
