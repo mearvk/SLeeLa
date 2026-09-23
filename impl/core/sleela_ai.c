@@ -35,6 +35,14 @@ int slai_engine_init(SLAIEngine *engine, SLAIBackend backend) {
     return 0;
 }
 
+int slai_engine_bind_native(SLAIEngine *engine, SLAIVMInvokeFn invoke, void *context) {
+    if (!engine || !invoke) return -1;
+    engine->invoke = invoke;
+    engine->context = context;
+    engine->backend = SL_AI_BACKEND_NATIVE;
+    return 0;
+}
+
 int slai_engine_bind_vm(SLAIEngine *engine, SLAIVMInvokeFn invoke, void *context) {
     if (!engine || !invoke) return -1;
     engine->invoke = invoke;
@@ -96,6 +104,42 @@ int slai_model_from_xml(const char *xml, size_t length, SLAIModelDescriptor *mod
         rc = copy_xml_attr(xml, length, "trusted", trusted, sizeof(trusted));
         if (rc != 0) return -6;
         model->trusted = strcmp(trusted, "true") == 0;
+    }
+    return 0;
+}
+
+int slai_data_model_from_xml(const char *xml, size_t length, SLAIDataModel *model) {
+    size_t pos = 0;
+    if (!xml || !model || length == 0) return -1;
+    memset(model, 0, sizeof(*model));
+    if (copy_xml_attr(xml, length, "id", model->id, sizeof(model->id)) != 0) return -2;
+    {
+        char revision[16];
+        if (copy_xml_attr(xml, length, "revision", revision, sizeof(revision)) != 0) return -3;
+        model->revision = (uint32_t)strtoul(revision, NULL, 10);
+    }
+    while (pos < length && model->field_count < SL_AI_MAX_FIELDS) {
+        size_t i;
+        const char *needle = "<field ";
+        size_t nlen = strlen(needle);
+        int found = 0;
+        for (i = pos; i + nlen <= length; ++i) {
+            if (memcmp(xml + i, needle, nlen) == 0) { pos = i + nlen; found = 1; break; }
+        }
+        if (!found) break;
+        {
+            SLAIDataModelField *field = &model->fields[model->field_count];
+            int a = copy_xml_attr(xml + pos, length - pos, "name",
+                                  field->name, sizeof(field->name));
+            int b = copy_xml_attr(xml + pos, length - pos, "type",
+                                  field->type, sizeof(field->type));
+            char required[8];
+            int q = copy_xml_attr(xml + pos, length - pos, "required",
+                                  required, sizeof(required));
+            if (a || b) return -4;
+            field->required = q == 0 && strcmp(required, "true") == 0;
+            model->field_count++;
+        }
     }
     return 0;
 }
