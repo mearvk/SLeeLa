@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<subjectModel id="astrophysics-observation-procedure">
+<subject>astrophysics</subject><version>1.0</version>
+<procedures>
+<procedure name="deriveFlux"><step op="read-observation" ref="luminosity"/><step op="read-observation" ref="distance"/><step op="apply-formula" ref="inverseSquareFlux"/><step op="record-result" ref="flux"/></procedure>
+<procedure name="deriveRedshift"><step op="read-observation" ref="observedWavelength"/><step op="read-observation" ref="restWavelength"/><step op="apply-formula" ref="redshift"/><step op="record-result" ref="redshift"/></procedure>
+</procedures>
+</subjectModel>
