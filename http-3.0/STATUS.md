@@ -178,3 +178,15 @@ authenticity **and** freshness, not just an error check.
 `http3_pipeline_demo` (C) and `test_http3_flow.py` (Python) on the "as of" date;
 the crypto substrate by `crypto_selftest`. See `FLOW.md` for the spec-section →
 code map.*
+
+
+## Port-Multiplexing Status
+
+The HTTP 3.0 source documents the complete multiplexing boundary:
+
+1. QUIC provides the transport connection and independent HTTP/3 streams.
+2. SLeeLa assigns a logical PORT to the application route carried on a stream.
+3. SERVICE-ID and OP-ID select the application operation.
+4. REQUEST-ID correlates the response independently of stream ordering.
+
+The logical PORT remains independent of native socket numbering. The host may therefore expose many logical application routes through a much smaller set of native transport bindings.
