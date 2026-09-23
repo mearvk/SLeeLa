@@ -319,6 +319,18 @@
       "sha256": "03b2c7943e4fa663e862e64f4bec8d2cf16c7f30244acc7f7060a08984cfeb4c"
     },
     {
+      "path": "api/http-multiplexing/README.md",
+      "sha256": "07ff1321e79d5cb0ea10f266b5aac53e32d85d60ed5b9039996234d647147203"
+    },
+    {
+      "path": "api/http-multiplexing/sleela_http_api.c",
+      "sha256": "84c54f8fc82b937f6d422b19472074c9acbd57fb58a93d362e5716452e291c0b"
+    },
+    {
+      "path": "api/http-multiplexing/sleela_http_api.h",
+      "sha256": "2f22b2e21b6389ed4957dc408265e0b804dda5335ff2aecf306207903bdeefb8"
+    },
+    {
       "path": "api/http3-port.html",
       "sha256": "3b275de2bb9b541a62dd2ac9bad8fc8cefae0be55276080c11a01fd68b893007"
     },
@@ -4077,6 +4089,14 @@
     {
       "path": "server-edition/PORT-AWARENESS.md",
       "sha256": "9b46e700a1ea1fa5ecf040fa6faae2588ac8cff47e58ffe79d0ea02ac35d2748"
+    },
+    {
+      "path": "server-edition/http/README.md",
+      "sha256": "0f61afd28aea99c7ac70a76489353380f0feb20eff1bcb93991a749480fa450c"
+    },
+    {
+      "path": "server-edition/http/httpctl.c",
+      "sha256": "ef92fb34dc5956d6325bdf1481db5614c40a2b883e8ec6f3811bc6a7c645dc03"
     },
     {
       "path": "server-edition/moral/2/INSTALL.md",
