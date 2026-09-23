@@ -163,3 +163,12 @@ The namespaces remain separate:
 `transport endpoint → HTTP/3 stream → SLeeLa logical PORT → SERVICE-ID / OP-ID`
 
 The 20-byte PORT field documented in [PORTS.md](PORTS.md) is therefore not a native TCP/UDP port field. It is a logical application identifier carried inside the SLeeLa envelope.
+
+
+## Download Mode for Files > 50 MB
+
+HTTP 3.0 uses QUIC/HTTP/3 streams for transport multiplexing and the same SLeeLa DOWNLOAD contract for large files. A transfer is divided into indexed segments so an interrupted download can resume without restarting the complete file.
+
+`SESSION-ID | DATETIME | FILE-ID | FILE-NAME | INDEX | OFFSET | TOTAL-SIZE`
+
+FILE-ID is the stable transfer identity; INDEX identifies the segment and OFFSET provides the exact byte continuation point. A new HTTP/3 stream may continue an existing download.
