@@ -2,7 +2,7 @@
 
 Three native server grades live under `http-servers/1`, `2`, and `3`, sharing `common/`.
 
-Grade 2 and Grade 3 understand lower HTTP/1.x message protocols. They do not falsely treat HTTP/2 or HTTP/3 as HTTP/1 text: HTTP/2 is a binary, multiplexed TCP protocol and HTTP/3 maps HTTP semantics over QUIC. Native H2/H3 transports therefore belong in dedicated adapters over this common request/response service layer.
+Grade 2 and Grade 3 are transport-specific implementations. Grade 2 uses native HTTP/2 framing over TCP; Grade 3 uses HTTP/3 over QUIC/UDP. They do not falsely treat either protocol as HTTP/1 text. Lower-protocol compatibility is a separate service/dispatch concern and is not claimed by the dedicated Grade 2/3 listeners yet.
 
 The HTTP/1.x parser follows the repository's HTTP specifications plus RFC 1945 for HTTP/1.0 and RFC 9112 for current HTTP/1.1 message framing.
 
