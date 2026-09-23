@@ -144,6 +144,23 @@ int slai_data_model_from_xml(const char *xml, size_t length, SLAIDataModel *mode
     return 0;
 }
 
+int slai_source_from_xml(const char *xml, size_t length, SLAIXMLSource *source) {
+    char kind[32];
+    if (!xml || !source || length == 0) return -1;
+    memset(source, 0, sizeof(*source));
+    if (copy_xml_attr(xml, length, "kind", kind, sizeof(kind)) != 0) return -2;
+    if (copy_xml_attr(xml, length, "url", source->url, sizeof(source->url)) != 0) return -3;
+    (void)copy_xml_attr(xml, length, "args", source->args, sizeof(source->args));
+    if (strcmp(kind, "data") == 0) source->kind = SL_AI_SOURCE_DATA;
+    else if (strcmp(kind, "file") == 0) source->kind = SL_AI_SOURCE_FILE;
+    else if (strcmp(kind, "audio") == 0) source->kind = SL_AI_SOURCE_AUDIO;
+    else if (strcmp(kind, "video") == 0) source->kind = SL_AI_SOURCE_VIDEO;
+    else if (strcmp(kind, "ai-flow") == 0) source->kind = SL_AI_SOURCE_AI_FLOW;
+    else if (strcmp(kind, "data-flow") == 0) source->kind = SL_AI_SOURCE_DATA_FLOW;
+    else return -4;
+    return 0;
+}
+
 const char *slai_input_kind_name(SLAIInputKind kind) {
     switch (kind) {
         case SL_AI_KIND_DATA: return "data";
@@ -168,4 +185,16 @@ const char *slai_operation_name(SLAIOperation operation) {
 const char *slai_backend_name(SLAIBackend backend) {
     return backend == SL_AI_BACKEND_NATIVE ? "native" :
            backend == SL_AI_BACKEND_CONNECTOR ? "connector" : "unknown";
+}
+
+const char *slai_source_kind_name(SLAIXMLSourceKind kind) {
+    switch (kind) {
+        case SL_AI_SOURCE_DATA: return "data";
+        case SL_AI_SOURCE_FILE: return "file";
+        case SL_AI_SOURCE_AUDIO: return "audio";
+        case SL_AI_SOURCE_VIDEO: return "video";
+        case SL_AI_SOURCE_AI_FLOW: return "ai-flow";
+        case SL_AI_SOURCE_DATA_FLOW: return "data-flow";
+        default: return "unknown";
+    }
 }
