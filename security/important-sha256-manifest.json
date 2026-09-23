@@ -72,7 +72,7 @@
     },
     {
       "path": "README.md",
-      "sha256": "f12fa2dc186cd7fe16177164042fd0402cfd44731df0108a6352e44f414e1938"
+      "sha256": "312fd54f9fad34f3f30851e741d73e26174618669e464c4b7f3ca8a50b1a0d48"
     },
     {
       "path": "REVISIONS.md",
@@ -108,7 +108,7 @@
     },
     {
       "path": "api/API-CATALOG.md",
-      "sha256": "c3cad7625620457fe7333d61e66c66bcbf94511bfffe190fc1443191807b28eb"
+      "sha256": "3248016484491820dcc76e26ffb63761730d1507335c2dd179f588341b2d8a2c"
     },
     {
       "path": "api/API.html",
@@ -428,7 +428,7 @@
     },
     {
       "path": "api/subjects/README.md",
-      "sha256": "bc5074c351fefddb33a6309a3c614c37e533d13f64b78ea2dfe4746f2c537559"
+      "sha256": "22b5b3b24725d2ce67d66e6b14f971f6e69d429bf72fa463e333db680da4b9af"
     },
     {
       "path": "api/subjects/astrophysics/README.md",
@@ -3508,7 +3508,7 @@
     },
     {
       "path": "impl/nordshrift/sst_parser.cpp",
-      "sha256": "9170792988fca7171321a047c4f3ac17ada6197bbadbc8276a1e36aeade04f08"
+      "sha256": "ba82e5519b611d82fa7b4a5f677d7f3d5ec3b4d3fa0aafc8aef766077fc3317e"
     },
     {
       "path": "impl/nordshrift/sst_parser.h",
