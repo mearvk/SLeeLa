@@ -2839,6 +2839,14 @@
       "sha256": "7016948a226b9be43145e6bd3efbac4120a2824539cd763880cdb470788ff6f8"
     },
     {
+      "path": "impl/core/sleela_audio_mixer.c",
+      "sha256": "42c285f7ca016baf05bd06598d73f170bcb32e0f3800e73151c2a57cc8578b0a"
+    },
+    {
+      "path": "impl/core/sleela_audio_mixer.h",
+      "sha256": "60cefe3702176b4c5c6b772e7a36e4071d54813a5f24f6657cd465d671049171"
+    },
+    {
       "path": "impl/core/sleela_bestof.c",
       "sha256": "e42d1aa5dcc61954a4404308da0097f45bd501c2a6d106c381f70a288f488269"
     },
@@ -3437,6 +3445,10 @@
     {
       "path": "impl/terminal/terminal_capability.hpp",
       "sha256": "5cac25a5d038932dab1e6163f5c6bde9055c5366934ea666d5d40eed90573b0d"
+    },
+    {
+      "path": "impl/tests/core/audio_mixer_smoke.c",
+      "sha256": "ab400019d9f1e1b84188e25998d373c4ba64d3f231aa0a92ed58c6f2828c64b5"
     },
     {
       "path": "impl/tests/core/design_activity_smoke.c",
