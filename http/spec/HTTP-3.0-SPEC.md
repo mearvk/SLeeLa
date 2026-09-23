@@ -300,3 +300,16 @@ application operation
 Multiple logical PORT values may therefore share one transport connection. Each HTTP/3 stream can independently carry a SLeeLa request, and the PORT identifies the application route within that request.
 
 This preserves interoperability with ordinary HTTP/3 infrastructure while giving SLeeLa a larger application routing namespace.
+
+
+## 21. Large-File Download Mode
+
+SLeeLa HTTP 3.0 defines a resumable DOWNLOAD application operation for files larger than 50 MB. The threshold selects download mode; it is not a maximum file size.
+
+The transfer resume value is:
+
+`SESSION-ID | DATETIME | FILE-ID | FILE-NAME | INDEX | OFFSET | TOTAL-SIZE`
+
+SESSION-ID identifies the logical session; DATETIME records the transfer/resume timestamp; FILE-ID is the stable transfer identity; FILE-NAME provides human-readable identity; INDEX identifies the segment/chunk; OFFSET identifies its byte position; TOTAL-SIZE records the expected complete file size.
+
+A resume request MUST be able to select the transfer by FILE-ID and INDEX, with OFFSET used for byte-accurate continuation. A new HTTP/3 stream MAY resume a transfer whose previous stream or connection has ended. The same logical DOWNLOAD contract is intended for SLeeLa HTTP 1.0+.
