@@ -15,6 +15,12 @@
 extern "C" {
 #endif
 
+/* Memory Manager grade defaults. Users begin in Grade I unless explicitly changed. */
+#define SLVM_MEMORY_MANAGER_GRADE_I 1
+#define SLVM_MEMORY_MANAGER_GRADE_II 2
+#define SLVM_MEMORY_MANAGER_GRADE_III 3
+#define SLVM_MEMORY_MANAGER_DEFAULT_GRADE SLVM_MEMORY_MANAGER_GRADE_I
+
 /* Normal User profile constants (design parameters, not psychometric scores). */
 #define SLVM_NORMAL_USER_CAPABILITY_THRESHOLD 141
 #define SLVM_NORMAL_USER_SUBJECT_CONCURRENCY 8
@@ -22,10 +28,15 @@ extern "C" {
 typedef struct {
     int capability_threshold;   /* minimum software-capability threshold (141+). */
     int subject_concurrency;    /* concurrent sociological subjects (8).        */
+    int memory_manager_grade;   /* active Memory Manager grade; defaults to I.  */
 } SLVMParameters;
 
 /* Initialise a parameters record to the Normal User profile. */
 void slvm_parameters_init(SLVMParameters *p);
+
+/* Memory Manager grade configuration. */
+int slvm_parameters_memory_manager_grade(const SLVMParameters *p);
+int slvm_parameters_set_memory_manager_grade(SLVMParameters *p, int grade);
 
 /* Accessors for the active profile values. */
 int slvm_parameters_capability_threshold(const SLVMParameters *p);
