@@ -11,21 +11,21 @@ locations listed in each row.
 
 | Component | Version | Status | Source of truth |
 |-----------|---------|--------|-----------------|
-| **Sleela toolchain / implementation** (`sleela` CLI) | **0.1.2** | Working (pre-1.0) | `impl/frontend/driver.cpp` (`kVersion`) |
+| **Sleela toolchain / implementation** (`sleela` CLI) | **0.1.3** | Working (pre-1.0) | `impl/frontend/driver.cpp` (`kVersion`) |
 | **Sleela language syntax** | **1.3** | Supported range `1.0 .. 1.3` | `impl/frontend/version.h` (`min`/`maxSupportedSyntax`) |
 | **Nordshrift** (`.sst` transpiler driver) | **2.0** | Semantic model layer added; legacy 1.0 sheets retained | `NORDSHRIFT.md`, `impl/nordshrift/subject_model.h` |
 | **NS-SST-0001** (`.sst` format specification) | **2.0.0** | Normative 2.0 semantic/control extension | `SST-2.0.model` |
 | **NS-SST-0001 legacy** | **1.0.0** | Compatibility / historical grammar | `SST.model` |
 | **SL-META-0001** (Sleela Language Metadocument) | **1.0.0** | Pre-Normative | `src/Sleela.manifest` (Revision) |
 
-> **Short answer:** the Sleela toolchain remains **0.1.2**, implementing
+> **Short answer:** the Sleela toolchain is now **0.1.3**, implementing
 > **Sleela syntax 1.0**, while **Nordshrift is now specified at 2.0** with a
 > common semantic layer for the Math, Physics, Economics, Chemistry, and
 > Financial libraries.
 
 ## What each version means
 
-### Sleela toolchain / implementation — `0.1.2`
+### Sleela toolchain / implementation — `0.1.3`
 The version of the actual C/C++ implementation in `impl/` (the `sleela` CLI:
 lexer → parser → compiler → C core). This is a semantic `MAJOR.MINOR.PATCH`
 number and is what `./build/sleela version` reports. It is **pre-1.0**.
