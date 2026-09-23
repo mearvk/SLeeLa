@@ -2508,7 +2508,7 @@
     },
     {
       "path": "examples/subjects/sociology.sleela",
-      "sha256": "21a656d17f81474cb3fba902ee1830154c1e3be99d6456a8e58f449e4bf366bd"
+      "sha256": "2a768e9081726f5e7d33afb03f0e88024112d77cff43c47e146f3c3cd2c39697"
     },
     {
       "path": "examples/symmetry/build.sst",
@@ -3612,7 +3612,7 @@
     },
     {
       "path": "impl/subjects/native/native_api.cpp",
-      "sha256": "4fc3072cbade39c6d454ffb12c56bfe2fe2ee986c6c8b39ff6fe5e09dd376695"
+      "sha256": "f05172052399dc7c1125eeb9131fef1153fbd64deaab22138507dc54b6cd9f09"
     },
     {
       "path": "impl/subjects/native/native_api.h",
