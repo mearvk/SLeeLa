@@ -70,3 +70,27 @@ cd http-2.0
 make proto     # compiles the protocol-core objects (compile check)
 make syntax    # syntax-only check of all C sources
 ```
+
+
+## Port and Stream Multiplexing
+
+HTTP 2.1 uses the SLeeLa logical-port model above the HTTP/2 stream layer.
+
+```text
+one transport connection
+        |
+        +-- HTTP/2 stream 1 -- logical port -- service/op -- payload
+        +-- HTTP/2 stream 2 -- logical port -- service/op -- payload
+        +-- HTTP/2 stream N -- logical port -- service/op -- payload
+```
+
+The important separation is:
+
+- **Transport endpoint:** the native TCP/TLS endpoint.
+- **HTTP/2 stream:** the independently multiplexed request/response stream.
+- **SLeeLa logical port:** the application-level service/channel/route identifier.
+- **SERVICE-ID / OP-ID:** the compact dispatch identity carried by the SLeeLa envelope.
+
+A logical port therefore does not require one operating-system socket per service. Multiple logical ports can share the same HTTP/2 connection and its stream pool.
+
+HTTP/2 stream identifiers and SLeeLa logical ports are different namespaces and must not be conflated. The stream provides transport multiplexing; the logical port provides application routing.
