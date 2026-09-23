@@ -3,3 +3,10 @@
 # Default: 2G.
 memory_limit=2G
 memory_manager=on
+
+# Memory Manager implementation grade: 1, 2, or 3.
+memory_manager_grade=1
+
+# Heuristic System Monitor: enabled by default; strict mode is optional.
+system_monitor=on
+system_monitor_strict=off

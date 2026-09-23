@@ -64,6 +64,12 @@ PATH_PLATFORM_SMOKE := $(BUILD)/path_platform_smoke
 TERMINAL_PLATFORM_SMOKE := $(BUILD)/terminal_platform_smoke
 LIBRARY_PLATFORM_SMOKE := $(BUILD)/library_platform_smoke
 TIME_PLATFORM_SMOKE := $(BUILD)/time_platform_smoke
+SYSTEM_MONITOR_SMOKE := $(BUILD)/system_monitor_smoke
+MEDIA_OBJ := $(BUILD)/sleela_media.o
+MEDIA_FORMATS_OBJ := $(BUILD)/sleela_media_formats.o
+MEDIA_SMOKE := $(BUILD)/media_smoke
+AUDIO_MIXER_OBJ := $(BUILD)/sleela_audio_mixer.o
+AUDIO_MIXER_SMOKE := $(BUILD)/audio_mixer_smoke
 PIXEL_TERMINAL_SMOKE := $(BUILD)/pixel_terminal_smoke
 PIXEL_TERMINAL_OBJ := $(BUILD)/pixel_terminal.o
 CATALOG_OBJ := $(BUILD)/sheet_catalog.o
@@ -82,6 +88,10 @@ LIBRARY_OBJ := $(BUILD)/sleela_library.o
 TIME_OBJ := $(BUILD)/sleela_time.o
 MEMORY_OBJ := $(BUILD)/sleela_memory.o
 MEMMGR_OBJ := $(BUILD)/sleela_memmgr.o
+MEMMGR_G2_OBJ := $(BUILD)/sleela_memmgr_grade2.o
+MEMMGR_G3_OBJ := $(BUILD)/sleela_memmgr_grade3.o
+PLATFORM_OBJ := $(BUILD)/sleela_platform.o
+SYSTEM_MONITOR_OBJ := $(BUILD)/sleela_system_monitor.o
 DESIGN_ACTIVITY_OBJ := $(BUILD)/sleela_design_activity.o
 GC_OBJ := $(BUILD)/garbage_collector.o
 SECURITY_OBJ := $(BUILD)/security_supervisor.o
@@ -121,9 +131,9 @@ ifeq ($(OS),Windows_NT)
 else
   PYTHON ?= python3
 endif
-ALL_OBJECTS := $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(DESIGN_ACTIVITY_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(LANGIN_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(NS_OBJ) $(THREAD_SMOKE) $(SOCKET_SMOKE) $(SYNCHRO_SMOKE) $(MUNCTION_SMOKE) $(BESTOF_SMOKE) $(IO_PLATFORM_SMOKE) $(NET_PLATFORM_SMOKE) $(PATH_PLATFORM_SMOKE) $(TERMINAL_PLATFORM_SMOKE) $(LIBRARY_PLATFORM_SMOKE) $(PIXEL_TERMINAL_SMOKE) $(THREAD_PLATFORM_SMOKE)
+ALL_OBJECTS := $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(PLATFORM_OBJ) $(SYSTEM_MONITOR_OBJ) $(MEDIA_OBJ) $(MEDIA_FORMATS_OBJ) $(AUDIO_MIXER_OBJ) $(DESIGN_ACTIVITY_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(LANGIN_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(NS_OBJ) $(THREAD_SMOKE) $(SOCKET_SMOKE) $(SYNCHRO_SMOKE) $(MUNCTION_SMOKE) $(BESTOF_SMOKE) $(IO_PLATFORM_SMOKE) $(NET_PLATFORM_SMOKE) $(PATH_PLATFORM_SMOKE) $(TERMINAL_PLATFORM_SMOKE) $(LIBRARY_PLATFORM_SMOKE) $(PIXEL_TERMINAL_SMOKE) $(THREAD_PLATFORM_SMOKE)
 
-.PHONY: all test-platform stage package build-verified rebuild-verified clean test test-sleela test-version test-nordshrift test-threads test-thread-platform test-network test-network-platform test-synchro test-munction test-bestof test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-chemistry test-financial test-math test-physics test-economics test-inference test-subjects verify-security build-runtime test-runtime test-memmgr test-design-activity
+.PHONY: all test-platform stage package build-verified rebuild-verified clean test test-sleela test-version test-nordshrift test-threads test-thread-platform test-network test-network-platform test-synchro test-munction test-bestof test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-chemistry test-financial test-math test-physics test-economics test-inference test-subjects verify-security build-runtime test-runtime test-memmgr test-memmgr-grades test-system-monitor test-media test-audio-mixer test-design-activity
 
 all: verify-security $(SLEELA_BIN) $(NORDSHRIFT_BIN) stage
 
@@ -162,9 +172,9 @@ verify-security:
 # rules link with $^, and a phony target name would leak onto the link line).
 $(ALL_OBJECTS): | verify-security
 
-$(SLEELA_BIN): $(DESIGN_ACTIVITY_OBJ) $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(LANGIN_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(NS_EMIT_OBJ)
+$(SLEELA_BIN): $(PLATFORM_OBJ) $(SYSTEM_MONITOR_OBJ) $(DESIGN_ACTIVITY_OBJ) $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(LANGIN_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(NS_EMIT_OBJ)
 	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS) $(LIBS)
-$(NORDSHRIFT_BIN): $(DESIGN_ACTIVITY_OBJ) $(NS_OBJ) $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(CATALOG_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ)
+$(NORDSHRIFT_BIN): $(PLATFORM_OBJ) $(SYSTEM_MONITOR_OBJ) $(DESIGN_ACTIVITY_OBJ) $(NS_OBJ) $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(CATALOG_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ)
 	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS) $(LIBS)
 $(THREAD_PLATFORM_SMOKE): core/thread_platform_smoke.c $(THREAD_OBJ) | $(BUILD)
 	$(CC) $(CFLAGS) -Icore core/thread_platform_smoke.c $(THREAD_OBJ) -o $@ $(LDFLAGS) $(LIBS)
@@ -219,6 +229,41 @@ $(DESIGN_ACTIVITY_OBJ): core/sleela_design_activity.c core/sleela_design_activit
 	$(CC) $(CFLAGS) -Icore -c core/sleela_design_activity.c -o $@
 $(MEMMGR_OBJ): core/sleela_memmgr.c core/sleela_memmgr.h core/sleela_memory.h core/sleela_thread.h | $(BUILD)
 	$(CC) $(CFLAGS) -Icore -c core/sleela_memmgr.c -o $@
+$(MEMMGR_G2_OBJ): core/sleela_memmgr_grade2.c core/sleela_memmgr_grade2.h | $(BUILD)
+	$(CC) $(CFLAGS) -Icore -c core/sleela_memmgr_grade2.c -o $@
+$(MEMMGR_G3_OBJ): core/sleela_memmgr_grade3.c core/sleela_memmgr_grade3.h | $(BUILD)
+	$(CC) $(CFLAGS) -Icore -c core/sleela_memmgr_grade3.c -o $@
+$(PLATFORM_OBJ): core/sleela_platform.c core/sleela_platform.h | $(BUILD)
+	$(CC) $(CFLAGS) -Icore -c core/sleela_platform.c -o $@
+$(SYSTEM_MONITOR_OBJ): core/sleela_system_monitor.c core/sleela_system_monitor.h core/sleela_platform.h | $(BUILD)
+	$(CC) $(CFLAGS) -Icore -c core/sleela_system_monitor.c -o $@
+
+$(SYSTEM_MONITOR_SMOKE): tests/core/system_monitor_smoke.c $(SYSTEM_MONITOR_OBJ) $(PLATFORM_OBJ) | $(BUILD)
+	$(CC) $(CFLAGS) -Icore tests/core/system_monitor_smoke.c $(SYSTEM_MONITOR_OBJ) $(PLATFORM_OBJ) -o $@ $(LDFLAGS) $(LIBS)
+$(MEDIA_OBJ): core/sleela_media.c core/sleela_media.h core/sleela_media_formats.h | $(BUILD)
+	$(CC) $(CFLAGS) -Icore -c core/sleela_media.c -o $@
+$(MEDIA_FORMATS_OBJ): core/sleela_media_formats.c core/sleela_media_formats.h | $(BUILD)
+	$(CC) $(CFLAGS) -Icore -c core/sleela_media_formats.c -o $@
+$(AUDIO_MIXER_OBJ): core/sleela_audio_mixer.c core/sleela_audio_mixer.h core/sleela_media.h | $(BUILD)
+	$(CC) $(CFLAGS) -Icore -c core/sleela_audio_mixer.c -o $@
+$(AUDIO_MIXER_SMOKE): tests/core/audio_mixer_smoke.c $(AUDIO_MIXER_OBJ) | $(BUILD)
+	$(CC) $(CFLAGS) -Icore tests/core/audio_mixer_smoke.c $(AUDIO_MIXER_OBJ) -o $@ $(LDFLAGS) $(LIBS) -lm
+
+$(MEDIA_SMOKE): tests/core/media_smoke.c $(MEDIA_OBJ) $(MEDIA_FORMATS_OBJ) | $(BUILD)
+	$(CC) $(CFLAGS) -Icore tests/core/media_smoke.c $(MEDIA_OBJ) $(MEDIA_FORMATS_OBJ) -o $@ $(LDFLAGS) $(LIBS) -lm
+test-audio-mixer: $(AUDIO_MIXER_SMOKE)
+	@echo "=== SLeeLa Audio Mixer ==="; $(AUDIO_MIXER_SMOKE)
+test-media: $(MEDIA_SMOKE)
+	@echo "=== SLeeLa Audio/Video Media API ==="; $(MEDIA_SMOKE)
+test-system-monitor: $(SYSTEM_MONITOR_SMOKE)
+	@echo "=== SLeeLa Heuristic System Monitor ==="; $(SYSTEM_MONITOR_SMOKE)
+
+MEMMGR_GRADES_SMOKE := $(BUILD)/memmgr_grades_smoke
+$(MEMMGR_GRADES_SMOKE): tests/core/memmgr_grades_smoke.c $(MEMMGR_G2_OBJ) $(MEMMGR_G3_OBJ) | verify-security $(BUILD)
+	$(CC) $(CFLAGS) -Icore tests/core/memmgr_grades_smoke.c $(MEMMGR_G2_OBJ) $(MEMMGR_G3_OBJ) -o $@ $(LDFLAGS) $(LIBS)
+test-memmgr-grades: $(MEMMGR_GRADES_SMOKE)
+	@echo "=== SLeeLa Memory Manager Grades II/III ==="; $(MEMMGR_GRADES_SMOKE)
+
 $(PIXEL_TERMINAL_OBJ): ../bash/pixel_terminal.cpp ../bash/pixel_terminal.hpp | $(BUILD)
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c ../bash/pixel_terminal.cpp -o $@
 $(PIXEL_TERMINAL_SMOKE): ../bash/pixel_terminal_smoke.cpp ../bash/pixel_terminal.hpp $(PIXEL_TERMINAL_OBJ) | $(BUILD)
@@ -266,7 +311,7 @@ $(BUILD)/driver.o: frontend/driver.cpp frontend/compiler.h frontend/artifact.h s
 $(BUILD):
 	mkdir -p $(BUILD)
 
-test: verify-security test-sleela test-design-activity test-version test-nordshrift test-threads test-thread-platform test-network test-network-platform test-synchro test-munction test-bestof test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-math test-physics test-economics test-inference test-chemistry test-financial test-runtime test-memmgr
+test: verify-security test-system-monitor test-sleela test-design-activity test-version test-nordshrift test-threads test-thread-platform test-network test-network-platform test-synchro test-munction test-bestof test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-math test-physics test-economics test-inference test-chemistry test-financial test-runtime test-memmgr
 test-thread-platform: $(THREAD_PLATFORM_SMOKE)
 	@echo "=== OS-aware threading backend ==="; SLEELA_THREAD_PLATFORM=auto $(THREAD_PLATFORM_SMOKE)
 test-threads: $(THREAD_SMOKE)

@@ -133,7 +133,7 @@ static void* alloc_locked(size_t size) {
     }
     total = span + size;
 
-    if (g_enabled && g_limit && g_live_bytes + size > g_limit) {
+    if (g_enabled && g_limit && (size > g_limit || g_live_bytes > g_limit - size)) {
         g_refused++;
         g_last_status = SLMM_LIMIT;
         return NULL;
@@ -257,6 +257,18 @@ const char* slmm_status_name(SLMMStatus status) {
 
 void slmm_reset(void) {
     lock();
+    /* Preserve live accounting when blocks are still outstanding. Resetting
+     * live_bytes/live_allocs while those headers remain alive would corrupt the
+     * manager's invariants. Counters are fully reset only for an empty manager. */
+    if (g_live_allocs != 0 || g_live_bytes != 0) {
+        g_peak_bytes = g_live_bytes;
+        g_total_allocs = 0;
+        g_total_frees = 0;
+        g_refused = 0;
+        g_last_status = SLMM_OK;
+        unlock();
+        return;
+    }
     g_live_bytes = 0;
     g_peak_bytes = 0;
     g_live_allocs = 0;
