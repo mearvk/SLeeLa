@@ -5,6 +5,9 @@
 // semantics remain in this authoritative SLeeLa source.
 class Server {
     String inboxPath = "server-edition/inbox/requests.txt";
+    String httpVersion = "3.0";
+    String logicalPort = "19866";
+    int downloadSizeBytes = 0;
     String statePath = "server-edition/state/results.log";
     int requests = 0;
     int reaches = 0;
@@ -56,6 +59,7 @@ class Server {
     }
 
     void main() {
+        print("server: HTTP " + httpVersion + " logical-port=" + logicalPort + " download-size=" + downloadSizeBytes);
         configureSelector();
         int fd = openFile(inboxPath, "r");
 
