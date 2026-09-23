@@ -168,8 +168,7 @@ compiler, runtime, and Nordshrift stack.
 
 ### Nordshrift 2.0 semantic layer
 
-Nordshrift now supplies a common semantic coordination model across all five
-subject libraries. The normative specification is [`SST-2.0.model`](SST-2.0.model),
+Nordshrift now supplies a common semantic coordination model across all subject libraries. The normative specification is [`SST-2.0.model`](SST-2.0.model),
 while the implementation model is [`impl/nordshrift/subject_model.h`](impl/nordshrift/subject_model.h).
 
 The common models are:
