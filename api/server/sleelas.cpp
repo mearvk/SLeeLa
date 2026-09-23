@@ -1,5 +1,6 @@
-// Discord-1™ — SLeeLa Server Launcher (sleelas)
+// Discord-1™ — SLeeLa Server Launcher (sleelas) v1.0.1
 // Programmatic server name: Discord-1™.
+// Module version: 1.0.1 (port-awareness lifecycle addition).
 // Max Rupplin - MEARVK LLC - 2026
 //
 // Native cross-platform launcher for the SLeeLa Server Edition.

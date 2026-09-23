@@ -1,4 +1,8 @@
-# SLeeLa Server Edition Port Awareness
+# SLeeLa Server Edition Port Awareness — v1.0.0
+
+The shared port-awareness module is versioned independently from the Server
+Edition implementations. The current module version is **1.0.0** and is
+recorded in `server-edition/port-awareness/VERSION`.
 
 All Server Editions use the same lifecycle rule for network exposure:
 
@@ -64,3 +68,15 @@ An abrupt power loss or SIGKILL can prevent in-process cleanup. Every later star
 Port awareness controls the host firewall only. It does not grant arbitrary network access to SLeeLa source code, shell commands, or XML procedures. allow_network=false remains the default policy until an operator explicitly enables network use.
 
 A firewall rule is not proof that an application is listening. Server socket binding, NAT, TLS, authentication, and application-level authorization remain separate controls.
+
+## Version compatibility
+
+**Port-awareness module:** 1.0.0
+
+This module is consumed by:
+
+- **Discord-1™ / server launcher:** 1.0.1
+- **Discord-2™ / Service 2:** 2.0.1
+- **Discord-3™ / Service 3:** 3.0.1
+
+The module uses a stable command contract for `open`, `close`, and `status`. A future incompatible command or configuration change should increment the module's major version rather than silently changing the existing contract.

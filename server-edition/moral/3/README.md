@@ -1,4 +1,4 @@
-# Discord-3™ — SLeeLa Server and Service — Service 3
+# Discord-3™ — SLeeLa Server and Service — Service 3 — v3.0.1
 
 Service 3 is the next Server Edition implementation layer after Service 2. It
 introduces a remedial server model: controlled preflight, execution, recovery
@@ -56,6 +56,12 @@ Discord Inc.
 
 No Discord logo, trade dress, or proprietary Discord asset is included by the
 naming convention. Discord's published brand guidance governs use of its marks. citeturn0search3turn0search2
+
+## Module version
+
+**Service 3 module: 3.0.1**
+
+The port-awareness addition is a backward-compatible patch-level update to this implementation generation. Shared firewall lifecycle support is provided by port-awareness module **1.0.0**.
 
 ## Port awareness and firewall lifecycle
 
