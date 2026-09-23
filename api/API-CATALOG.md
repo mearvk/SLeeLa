@@ -80,6 +80,11 @@ Concepts: address, message, sender/recipient, headers, body, SMTP, STARTTLS, imp
 Sources: api/email/, including sleela_email.c, sleela_email.h, sleela_email.hpp and sleela_email.sleela.
 Status: Implemented.
 
+## 15. Audio and video media
+Concepts: timestamped audio/video frames, audio level/peak/RMS analysis, spectrum extension, video luminance/edge/motion analysis, frame listeners, transforms, visualization, recording/provider boundaries, and future AI input/output hooks.
+Sources: impl/core/sleela_media.h, impl/core/sleela_media.c, api/media/.
+Status: Native media foundation implemented; device/codec providers remain extensible.
+
 ## 15. GUI and desktop interfaces
 Concepts: application, window, document, event, widget/control, layout, menu, dialog, Swing, JavaFX, native bridge.
 Sources: gui/java/com/mearvk/sleela/gui/SleelaGui.java, SleelaDocument.java, SwingGui.java, FxGui.java.
