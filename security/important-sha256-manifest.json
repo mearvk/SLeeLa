@@ -4075,6 +4075,10 @@
       "sha256": "efb0164ea88ae0c466cb9ac73f393c4f2f5eb280226a185065743a2f0fcb81fe"
     },
     {
+      "path": "server-edition/PORT-AWARENESS.md",
+      "sha256": "dc23856e575aa1e9cdfc64b62b6aff110cbc91b9f320512fee809d361cadc65f"
+    },
+    {
       "path": "server-edition/moral/2/INSTALL.md",
       "sha256": "28ed2dc50d6e8ae25e30aa351a097a494255a73920ce7b16b3f8c472ede2ff9d"
     },
@@ -4153,6 +4157,14 @@
     {
       "path": "server-edition/moral/README.md",
       "sha256": "81b74533f3f4e719471f3459981cebeee7290f69d34e8a06374a0addbdb1d213"
+    },
+    {
+      "path": "server-edition/port-awareness/portctl.ps1",
+      "sha256": "9e5a435f877013f270b51a13098e202ae409fed3eae236e1bddf1bd43dc92e77"
+    },
+    {
+      "path": "server-edition/port-awareness/portctl.sh",
+      "sha256": "2b2e86aa7e93cd64e7c5463b22987c4564df654a64140b5825c8ea81708c752f"
     },
     {
       "path": "sleela-terminal/arith.cpp",
