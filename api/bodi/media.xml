@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bodi version="1">
+  <project id="media-monitor" kind="media">
+    <audio monitor="true" analysis="level,rms,peak,spectrum"/>
+    <video monitor="true" analysis="luminance,edges,motion"/>
+    <listener folder="media-inbox" pattern="*.xml" mode="transform"/>
+  </project>
+</bodi>
