@@ -190,3 +190,12 @@ The HTTP 3.0 source documents the complete multiplexing boundary:
 4. REQUEST-ID correlates the response independently of stream ordering.
 
 The logical PORT remains independent of native socket numbering. The host may therefore expose many logical application routes through a much smaller set of native transport bindings.
+
+
+## Download Mode Status
+
+HTTP 3.0 documents the common SLeeLa DOWNLOAD mode for files larger than 50 MB. QUIC/HTTP/3 provides transport multiplexing; SLeeLa provides persistent file-transfer identity and resume state.
+
+`SESSION-ID | DATETIME | FILE-ID | FILE-NAME | INDEX | OFFSET | TOTAL-SIZE`
+
+A transfer resumes by FILE-ID and INDEX/OFFSET. The original HTTP/3 stream is not required to remain alive. The 50 MB boundary selects DOWNLOAD mode and does not cap file size.
