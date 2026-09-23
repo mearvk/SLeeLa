@@ -4,7 +4,7 @@
 CC ?= gcc
 CXX ?= g++
 SUBJECT_INCLUDES := -Isubjects/native -Isubjects/math -Isubjects/physics \
-                    -Isubjects/economics -Isubjects/inference -Isubjects/astrophysics \
+                    -Isubjects/economics -Isubjects/inference -Isubjects/astrophysics -Isubjects/sociology \
                     -Isubjects/chemistry -Isubjects/finance
 
 # ---------------------------------------------------------------------------
@@ -106,11 +106,14 @@ ASTRO_MATH_OBJ := $(BUILD)/astrophysics_math.o
 ASTRO_OBJ := $(BUILD)/astrophysics.o
 ASTRO_STORE_OBJ := $(BUILD)/observation_store.o
 ASTRO_SMOKE := $(BUILD)/astrophysics_smoke
+SOC_MATH_OBJ := $(BUILD)/sociology_math.o
+SOC_OBJ := $(BUILD)/sociology.o
+SOC_SMOKE := $(BUILD)/sociology_smoke
 CORE_SRC := core/sleela_artifact.c
 FE_SRC := frontend/lexer.cpp frontend/parser.cpp frontend/compiler.cpp \
           frontend/version.cpp frontend/artifact.cpp \
           subjects/native/native_api.cpp \
-          subjects/math/math_native.cpp subjects/physics/physics_native.cpp subjects/astrophysics/astrophysics_native.cpp \
+          subjects/math/math_native.cpp subjects/physics/physics_native.cpp subjects/astrophysics/astrophysics_native.cpp subjects/sociology/sociology_native.cpp \
           subjects/economics/economics_native.cpp \
           subjects/inference/inference_native.cpp \
           subjects/chemistry/chemistry_api.cpp subjects/finance/financial_api.cpp
@@ -141,7 +144,7 @@ else
 endif
 ALL_OBJECTS := $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(PLATFORM_OBJ) $(SYSTEM_MONITOR_OBJ) $(MEDIA_OBJ) $(MEDIA_FORMATS_OBJ) $(AUDIO_MIXER_OBJ) $(AI_OBJ) $(DESIGN_ACTIVITY_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(LANGIN_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(NS_OBJ) $(THREAD_SMOKE) $(SOCKET_SMOKE) $(SYNCHRO_SMOKE) $(MUNCTION_SMOKE) $(BESTOF_SMOKE) $(IO_PLATFORM_SMOKE) $(NET_PLATFORM_SMOKE) $(PATH_PLATFORM_SMOKE) $(TERMINAL_PLATFORM_SMOKE) $(LIBRARY_PLATFORM_SMOKE) $(PIXEL_TERMINAL_SMOKE) $(THREAD_PLATFORM_SMOKE)
 
-.PHONY: all test-platform stage package build-verified rebuild-verified clean test test-sleela test-version test-nordshrift test-threads test-thread-platform test-network test-network-platform test-synchro test-munction test-bestof test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-chemistry test-financial test-math test-physics test-economics test-inference test-subjects verify-security build-runtime test-runtime test-memmgr test-memmgr-grades test-system-monitor test-media test-audio-mixer test-ai test-regex test-astrophysics test-design-activity
+.PHONY: all test-platform stage package build-verified rebuild-verified clean test test-sleela test-version test-nordshrift test-threads test-thread-platform test-network test-network-platform test-synchro test-munction test-bestof test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-chemistry test-financial test-math test-physics test-economics test-inference test-subjects verify-security build-runtime test-runtime test-memmgr test-memmgr-grades test-system-monitor test-media test-audio-mixer test-ai test-regex test-astrophysics test-sociology test-design-activity
 
 all: verify-security $(SLEELA_BIN) $(NORDSHRIFT_BIN) stage
 
@@ -316,6 +319,15 @@ $(ASTRO_SMOKE): tests/subjects/astrophysics_smoke.c $(ASTRO_MATH_OBJ) $(ASTRO_ST
 	$(CC) $(CFLAGS) -Isubjects/astrophysics $< $(ASTRO_MATH_OBJ) $(ASTRO_STORE_OBJ) -o $@ $(LDFLAGS) $(LIBS)
 test-astrophysics: $(ASTRO_SMOKE) $(ASTRO_OBJ)
 	@echo "=== SLeeLa Astrophysics subject library ==="; $(ASTRO_SMOKE)
+$(SOC_MATH_OBJ): subjects/sociology/sociology_math.c subjects/sociology/sociology_math.h | $(BUILD)
+	$(CC) $(CFLAGS) -Isubjects/sociology -c $< -o $@
+$(SOC_OBJ): subjects/sociology/sociology.cpp subjects/sociology/sociology.hpp $(SOC_MATH_OBJ) | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -Isubjects/sociology -c $< -o $@
+$(SOC_SMOKE): tests/subjects/sociology_smoke.c $(SOC_MATH_OBJ) | $(BUILD)
+	$(CC) $(CFLAGS) -Isubjects/sociology $< $(SOC_MATH_OBJ) -o $@ $(LDFLAGS) $(LIBS)
+test-sociology: $(SOC_SMOKE) $(SOC_OBJ)
+	@echo "=== SLeeLa Sociology subject library ==="; $(SOC_SMOKE)
+
 
 $(BUILD)/physics_native.o: subjects/physics/physics_native.cpp | $(BUILD)
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
