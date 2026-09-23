@@ -13,6 +13,9 @@ ENGINE=""; INBOX=""; STATE=""; SOURCE=""; LOG=""; RECOVERY=""; MODE="service"; T
 PORT="19866"; PORT_PROTO="tcp"; FIREWALL="auto"; FIREWALL_REQUIRED="true"
 SCAN_PORT="22220"; SCAN_PORT_PROTO="tcp"; SCAN_PORT_FIREWALL="auto"
 PROBE_PORT="2222"; PROBE_PORT_PROTO="tcp"
+MESH_PORT="22221"; MESH_INTERVAL="28800"
+MESH="$ROOT/server-edition/participation/server-mesh.sh"
+MESH_LISTENER="$ROOT/server-edition/participation/server-mesh-listener.sh"
 TRAFFIC_LOGGER="$ROOT/server-edition/port-awareness/traffic-log.sh"
 TRAFFIC_LOGGING="true"; LOG_CONSUME_MAX_BYTES="52428800"; ACTIVE_PROBING="false"; PROBE_ALLOWLIST=""; KNOWN_PORTS="2222,22220,19866,20000"
 while IFS= read -r line || [ -n "$line" ]; do
@@ -68,7 +71,9 @@ if [ "$#" -gt 0 ] && [ "$1" = "--preflight" ]; then echo "preflight: PASS"; exit
 if [ "$#" -gt 0 ] && [ "$1" = "--design-activity" ]; then shift; exec "$ENGINE" design-activity "$@"; fi
 "$HTTPCTL" --logical-port "$LOGICAL_PORT" --size "$DOWNLOAD_SIZE" --version "$HTTP_VERSION" >>"$LOG" 2>&1 || { echo "serverd: HTTP capability validation failed" >&2; exit 1; }
 SLEELA_SERVER_STATE="$STATE" SLEELA_TRAFFIC_LOG_DIR="$STATE/traffic" SLEELA_TRAFFIC_PORTS="$PROBE_PORT,$SCAN_PORT,$PORT,20000" sh "$TRAFFIC_LOGGER" start >>"$LOG" 2>&1 || true
-SLEELA_SERVER_STATE="$STATE" SLEELA_ACTIVE_PROBING="$ACTIVE_PROBING" SLEELA_PROBE_ALLOWLIST="$PROBE_ALLOWLIST" SLEELA_KNOWN_PORTS="$KNOWN_PORTS" sh "$ROOT/server-edition/port-awareness/known-connections.sh" >>"$LOG" 2>&1 || true
+SLEELA_MESH_PORT="$MESH_PORT" SLEELA_MESH_INTERVAL_SECONDS="$MESH_INTERVAL" SLEELA_SERVER_STATE="$STATE" SLEELA_ACTIVE_PROBING="$ACTIVE_PROBING" SLEELA_PROBE_ALLOWLIST="$PROBE_ALLOWLIST" SLEELA_KNOWN_PORTS="$KNOWN_PORTS" sh "$ROOT/server-edition/port-awareness/known-connections.sh" >>"$LOG" 2>&1 || true
+SLEELA_SERVER_STATE="$STATE" SLEELA_MESH_PORT="$MESH_PORT" sh "$MESH_LISTENER" start >>"$LOG" 2>&1 || true
+SLEELA_SERVER_STATE="$STATE" SLEELA_MESH_PORT="$MESH_PORT" SLEELA_MESH_INTERVAL_SECONDS="$MESH_INTERVAL" sh "$MESH" start >>"$LOG" 2>&1 || true
 [ -f "$INBOX" ] || printf '%s\n' "hello" > "$INBOX"
 [ "$TICK" = true ] && printf 'tick %s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || echo now)" >> "$INBOX"
 LOCK="$STATE/.serverd3.lock"
@@ -76,6 +81,8 @@ mkdir "$LOCK" 2>/dev/null || { echo "serverd: Service 3 is already active" >&2; 
 cleanup() {
   rc=$?
   sh "$TRAFFIC_LOGGER" stop >>"$LOG" 2>&1 || true
+  sh "$MESH_LISTENER" stop >>"$LOG" 2>&1 || true
+  sh "$MESH" stop >>"$LOG" 2>&1 || true
   sh "$PORTCTL" close "basic-probe" "$PROBE_PORT" "$PROBE_PORT_PROTO" >>"$LOG" 2>&1 || { echo "serverd: failed to close probe port $PROBE_PORT/$PROBE_PORT_PROTO" >&2; rc=1; }
   sh "$PORTCTL" close "basic-scan" "$SCAN_PORT" "$SCAN_PORT_PROTO" >>"$LOG" 2>&1 || { echo "serverd: failed to close scan port $SCAN_PORT/$SCAN_PORT_PROTO" >&2; rc=1; }
   if ! sh "$ROOT/server-edition/port-awareness/portctl.sh" close "Discord-3" "$PORT" "$PORT_PROTO" >>"$LOG" 2>&1; then
@@ -89,6 +96,7 @@ cleanup() {
 trap cleanup EXIT HUP INT TERM
 sh "$ROOT/server-edition/port-awareness/portctl.sh" close "Discord-3" "$PORT" "$PORT_PROTO" >>"$LOG" 2>&1 || true
 sh "$PORTCTL" open "basic-probe" "$PROBE_PORT" "$PROBE_PORT_PROTO" >>"$LOG" 2>&1 || { echo "serverd: firewall could not open probe port $PROBE_PORT/$PROBE_PORT_PROTO; refusing to start" >&2; exit 1; }
+sh "$PORTCTL" open "participation" "$MESH_PORT" tcp >>"$LOG" 2>&1 || { echo "serverd: firewall could not open participation port $MESH_PORT/tcp; refusing to start" >&2; exit 1; }
 sh "$PORTCTL" open "basic-scan" "$SCAN_PORT" "$SCAN_PORT_PROTO" >>"$LOG" 2>&1 || { echo "serverd: firewall could not open scan port $SCAN_PORT/$SCAN_PORT_PROTO; refusing to start" >&2; exit 1; }
 if [ "$FIREWALL_REQUIRED" = true ]; then
   sh "$ROOT/server-edition/port-awareness/portctl.sh" open "Discord-3" "$PORT" "$PORT_PROTO" >>"$LOG" 2>&1 || { record_recovery "FIREWALL_OPEN_FAILED"; echo "serverd: firewall could not open $PORT/$PORT_PROTO; refusing to start" >&2; exit 1; }
