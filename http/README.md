@@ -30,3 +30,12 @@ The layers remain distinct:
 `native transport endpoint → HTTP stream → SLeeLa logical port → service/operation`
 
 A logical port identifies a service, channel, endpoint, virtual listener, or application route. It is not a promise that the host has opened a corresponding TCP/UDP socket for every logical value.
+
+
+## Common Large-File Download Mode
+
+All SLeeLa HTTP generations share a logical DOWNLOAD mode for files larger than 50 MB. HTTP 1.0 uses its request/connection model, HTTP 2.0/2.1 uses HTTP/2 streams, and HTTP 3.0 uses QUIC/HTTP/3 streams. The resume identity is independent of transport.
+
+`SESSION-ID | DATETIME | FILE-ID | FILE-NAME | INDEX | OFFSET | TOTAL-SIZE`
+
+FILE-ID identifies the file transfer. INDEX identifies its segment/chunk and OFFSET identifies its byte position. This allows a new request or stream to resume an interrupted transfer.
