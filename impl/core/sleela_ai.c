@@ -1,8 +1,30 @@
 #include "sleela_ai.h"
 #include <string.h>
-#include <stdio.h>
 
 static int has_text(const char *s) { return s && *s; }
+
+static int copy_xml_attr(const char *xml, size_t length, const char *key,
+                         char *out, size_t out_size) {
+    size_t key_len = strlen(key);
+    size_t i;
+    if (!xml || !key || !out || out_size == 0) return -1;
+    out[0] = '\0';
+    for (i = 0; i + key_len + 2 <= length; ++i) {
+        if (memcmp(xml + i, key, key_len) == 0 && xml[i + key_len] == '=' &&
+            xml[i + key_len + 1] == '"') {
+            size_t j = i + key_len + 2;
+            size_t n = 0;
+            while (j < length && xml[j] != '"') {
+                if (n + 1 >= out_size) return -2;
+                out[n++] = xml[j++];
+            }
+            if (j >= length) return -3;
+            out[n] = '\0';
+            return 0;
+        }
+    }
+    return 1;
+}
 
 int slai_engine_init(SLAIEngine *engine, SLAIBackend backend) {
     if (!engine || (backend != SL_AI_BACKEND_NATIVE && backend != SL_AI_BACKEND_CONNECTOR))
@@ -47,34 +69,33 @@ int slai_invoke(SLAIEngine *engine, const SLAIRequest *request,
     if (!engine || !result || slai_validate_request(request) || slai_validate_input(input))
         return -1;
     memset(result, 0, sizeof(*result));
-    if (!engine->invoke)
-        return -2;
-    if (request->backend != engine->backend && engine->backend != SL_AI_BACKEND_CONNECTOR)
-        return -3;
+    if (!engine->invoke) return -2;
+    if (request->backend != engine->backend) return -3;
     return engine->invoke(request, input, result, engine->context);
 }
 
 int slai_model_from_xml(const char *xml, size_t length, SLAIModelDescriptor *model) {
-    const char *p;
-    const char *end;
+    int rc;
     if (!xml || !model || length == 0) return -1;
     memset(model, 0, sizeof(*model));
-    end = xml + length;
-    p = strstr(xml, "model id="");
-    if (!p || p >= end) return -2;
-    p += 10;
+    rc = copy_xml_attr(xml, length, "id", model->model_id, sizeof(model->model_id));
+    if (rc != 0) return -2;
+    rc = copy_xml_attr(xml, length, "format", model->format, sizeof(model->format));
+    if (rc != 0) return -3;
+    rc = copy_xml_attr(xml, length, "source", model->source, sizeof(model->source));
+    if (rc != 0) return -4;
     {
-        const char *q = strchr(p, '"');
-        if (!q || q >= end) return -3;
-        model->model_id = p;
+        char revision[16];
+        rc = copy_xml_attr(xml, length, "revision", revision, sizeof(revision));
+        if (rc != 0) return -5;
+        model->revision = (uint32_t)strtoul(revision, NULL, 10);
     }
-    p = strstr(xml, "format="");
-    if (p && p < end) model->format = p + 8;
-    p = strstr(xml, "source="");
-    if (p && p < end) model->source = p + 8;
-    model->revision = 1;
-    p = strstr(xml, "trusted="true"");
-    model->trusted = (p && p < end) ? 1 : 0;
+    {
+        char trusted[16];
+        rc = copy_xml_attr(xml, length, "trusted", trusted, sizeof(trusted));
+        if (rc != 0) return -6;
+        model->trusted = strcmp(trusted, "true") == 0;
+    }
     return 0;
 }
 
