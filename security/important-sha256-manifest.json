@@ -4111,6 +4111,14 @@
       "sha256": "ef92fb34dc5956d6325bdf1481db5614c40a2b883e8ec6f3811bc6a7c645dc03"
     },
     {
+      "path": "server-edition/international-strernary/README.md",
+      "sha256": "5a2226a033a1fce852d3d211f947cc4e4e93be04f58f496d5cfe52b34d9f5149"
+    },
+    {
+      "path": "server-edition/international-strernary/international-strernary-contact.sh",
+      "sha256": "772ce7be4ec943050777c1e61bb1a1664191ec816353840a1a047799d17c16e0"
+    },
+    {
       "path": "server-edition/moral/2/INSTALL.md",
       "sha256": "46452deef2381d964397fccd4f5b6345197eca7b449ce5fcaf817faae47a5153"
     },
