@@ -13,7 +13,7 @@ The API tree contains native C/C++ facades and SLeeLa mappings. The documentatio
 - **Router** — `api/router/`: deterministic method/path route vocabulary and exact matching.
 - **Email** — `api/email/`: SMTP-aware submission using plain SMTP, STARTTLS, and implicit TLS.
 - **BODI XML** — `api/bodi/`: declarative XML projects and witnessed execution, including bounded media projects.
-- **Audio / Video** — `api/media/`: timestamped native frames, broad image/video/audio format and codec registry, signal analysis, listeners, transforms, and future AI provider hooks.
+- **Audio / Video** — `api/media/`: timestamped native frames, broad image/video/audio format and codec registry, signal analysis, listeners, transforms, and future AI provider hooks. **Audio Mixer** — `api/audio-mixer/`: synchronized live/file inputs, master/second tracks, bass/mid/treble/channel controls, relative quality, timeline offsets, and JSON/XML/text configurations.
 - **Data Analytics** — `api/data-analytics/`: bounded numeric statistics and correlation operations for scientific data sets.
 - **HTTP 3.0** — protocol-specific packet and logical-port APIs.
 
