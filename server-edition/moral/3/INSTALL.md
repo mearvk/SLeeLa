@@ -41,3 +41,19 @@ operator explicitly removes it.
 
 Discord-3™ is the programmatic theme/name used by this SLeeLa implementation.
 It is not presented as an official Discord product or service. citeturn0search3
+
+## Port awareness and firewall lifecycle
+
+Service 3 declares `port`, `port_protocol`, `firewall`, and
+`firewall_required`. The default is TCP port 19866 with automatic
+host-firewall selection.
+
+Preflight requires the shared port controller. Service 3 removes a stale
+Discord-3™ rule, opens the configured port, records firewall failures in the
+recovery log, and starts Server.sleela only after the port is open. Cleanup
+closes the rule on normal or failed termination.
+
+The controller is OS/version-aware: Linux prefers UFW then firewalld, macOS
+uses PF, and Windows uses the Windows Defender Firewall PowerShell interface.
+
+The installer also deploys `server-edition/port-awareness/`. See the repository-level `server-edition/PORT-AWARENESS.md` for the lifecycle contract.
