@@ -4212,7 +4212,7 @@
     },
     {
       "path": "server-edition/port-awareness/traffic-log.sh",
-      "sha256": "74564dcfbc15b733624f8b2fa9debbc6b9622dd8828619715d5aa61c0db9963d"
+      "sha256": "3f39fd099fd39ca706697976630e9bdcdc6aef0d349a6b7155caf0f8e7f0483d"
     },
     {
       "path": "sleela-terminal/arith.cpp",
