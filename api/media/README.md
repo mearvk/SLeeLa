@@ -67,3 +67,12 @@ The registry identifies formats and codecs; it does not claim that every encoder
 Decoded media enters the same timestamped SLMediaFrame path used by analysis, visualization, transforms, listeners and future AI hooks.
 
 This follows the practical distinction between containers and codecs: a container can carry multiple codec families, and codec availability is platform/provider dependent.
+
+## Java / JavaFX signature
+
+The clean Java interoperability signature is defined by
+`com.mearvk.sleela.audio.gui.SleelaAudioVideo` and documented in
+`JAVA-AV-SIGNATURE.md`. It represents file/live inputs, Master/Second/Input
+roles, relative quality, timeline loading/starting times, mixer controls,
+synchronized output, and audio/video analysis without duplicating the native
+media engine.
