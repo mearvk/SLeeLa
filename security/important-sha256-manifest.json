@@ -108,7 +108,7 @@
     },
     {
       "path": "api/API-CATALOG.md",
-      "sha256": "030a0574d739fced003600d26da687483d4c824beacceadd299ef51312adf7cd"
+      "sha256": "c6d1a2473f32ddcbc6dee53138717f6e5ce2b485809efd75caf9becee4efcd38"
     },
     {
       "path": "api/API.html",
@@ -120,7 +120,7 @@
     },
     {
       "path": "api/README.md",
-      "sha256": "1533c8c9bcdb2133e7a32e9630e400d62247e1643e06c29d9e9a2d7814b490a6"
+      "sha256": "3dec751c6756f7bbe1d0a088966149351cc5c9d6a31e5d7acd9c088b0ebf8ca1"
     },
     {
       "path": "api/SOURCE-COVERAGE.html",
@@ -128,11 +128,11 @@
     },
     {
       "path": "api/bodi/API.html",
-      "sha256": "796e6ac565f0050b8033751c92e31f3bd4da10baea85a1086a7c530aaf07c458"
+      "sha256": "4dba1abab6ce079a0a30eb53562214f8a7c308f987eaaa1a3ff8ba6431a6a679"
     },
     {
       "path": "api/bodi/BODI_MEDIA.md",
-      "sha256": "3c9f4262234fb8ef05e49735104456f20e7433e6ca63451d2b905d0cf0422b52"
+      "sha256": "6b9991d9a61f940a08b4aa549b1407731eb21ccd97fe7ffba9c82519420dbee8"
     },
     {
       "path": "api/bodi/README.md",
@@ -168,7 +168,7 @@
     },
     {
       "path": "api/bodi/media.xml",
-      "sha256": "729e9449da82b3a44917ffaa5132dd97893c6adb37f40b7025f06af06894f002"
+      "sha256": "82aeb87bfb12e793a0eadab862cdc5859da99bdba2249f95b5ac8dabfba867d4"
     },
     {
       "path": "api/data-analytics/API.html",
@@ -280,11 +280,11 @@
     },
     {
       "path": "api/media/API.html",
-      "sha256": "584e7b2b3692f7d13348670df58a85cd1b4f85c7b8680a247d9f96e5e0107ed2"
+      "sha256": "6b09b6ab0e588e318628c7cc2c4c60929a5744ca0f36ab5a3cdd88a4447959e4"
     },
     {
       "path": "api/media/README.md",
-      "sha256": "0824156ccd7d324184e194e4548b2e0e027bc3029fd52f43da0586de0e4ac0b9"
+      "sha256": "0da9ec325ed390a8c7a1d151131d0c8f817604bf93f9b49d8194c10bca945de2"
     },
     {
       "path": "api/nordshrift/API.html",
@@ -2888,11 +2888,19 @@
     },
     {
       "path": "impl/core/sleela_media.c",
-      "sha256": "1c344126fa927618bd3b1273cb832aa130984119a8d0cbe5bd1de25c44e36359"
+      "sha256": "eccc3cacf1f12573caf32a522bf8337c01d12232489ea9b27346e7c52db445f6"
     },
     {
       "path": "impl/core/sleela_media.h",
-      "sha256": "8f6dd5e55f9da6a66f8e0302128b098f5211988fe95423de616fb059a29719c1"
+      "sha256": "40e58d4b5d9afeb5a2ded9933a03859fc6e630c712f3c000d2c8907b16530153"
+    },
+    {
+      "path": "impl/core/sleela_media_formats.c",
+      "sha256": "ef4fbf0f821e03a1976db113facf3fa1df8f6ab2887605b4b325ee773bda545e"
+    },
+    {
+      "path": "impl/core/sleela_media_formats.h",
+      "sha256": "1273a71293a1cce06e7f719b4d93fb209d9c14d812e1ad2edc8612416c6738ed"
     },
     {
       "path": "impl/core/sleela_memmgr.c",
@@ -3436,7 +3444,7 @@
     },
     {
       "path": "impl/tests/core/media_smoke.c",
-      "sha256": "e63ac63ea9db2c54f8fcc683106ec464f207df97795cf3e93622d451ec102b95"
+      "sha256": "f8fa7b460331e80fdbe20be4de6c7d46b661ab8bdaaf8c88086a9ef4153e9349"
     },
     {
       "path": "impl/tests/core/memmgr_grades_smoke.c",
