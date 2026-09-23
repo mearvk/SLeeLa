@@ -360,7 +360,7 @@
     },
     {
       "path": "api/national-relay/README.md",
-      "sha256": "8ab31722e8b30ae026c7e33458155cc3ebaf458fb653e8f58a97cd20f81276cd"
+      "sha256": "d398c4bb5eb5e1889c6ca8fd5401293d2ea72faeb5c1cb0a5483f1cca57ef697"
     },
     {
       "path": "api/national-relay/sleela_relay_identity.c",
