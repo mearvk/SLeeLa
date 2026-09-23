@@ -15,6 +15,9 @@ extern "C" {
 #define SL_AI_MAX_MODEL_ID 128
 #define SL_AI_MAX_FORMAT 64
 #define SL_AI_MAX_SOURCE 128
+#define SL_AI_MAX_FIELDS 32
+#define SL_AI_MAX_FIELD_NAME 64
+#define SL_AI_MAX_FIELD_TYPE 64
 
 typedef enum {
     SL_AI_KIND_DATA = 1,
@@ -78,6 +81,19 @@ typedef struct {
     int trusted;
 } SLAIModelDescriptor;
 
+typedef struct {
+    char name[SL_AI_MAX_FIELD_NAME];
+    char type[SL_AI_MAX_FIELD_TYPE];
+    int required;
+} SLAIDataModelField;
+
+typedef struct {
+    char id[SL_AI_MAX_MODEL_ID];
+    uint32_t revision;
+    size_t field_count;
+    SLAIDataModelField fields[SL_AI_MAX_FIELDS];
+} SLAIDataModel;
+
 typedef int (*SLAIVMInvokeFn)(const SLAIRequest *request,
                              const SLAIInput *input,
                              SLAIResult *result,
@@ -91,11 +107,13 @@ typedef struct {
 
 int slai_engine_init(SLAIEngine *engine, SLAIBackend backend);
 int slai_engine_bind_vm(SLAIEngine *engine, SLAIVMInvokeFn invoke, void *context);
+int slai_engine_bind_native(SLAIEngine *engine, SLAIVMInvokeFn invoke, void *context);
 int slai_validate_input(const SLAIInput *input);
 int slai_validate_request(const SLAIRequest *request);
 int slai_invoke(SLAIEngine *engine, const SLAIRequest *request,
                 const SLAIInput *input, SLAIResult *result);
 int slai_model_from_xml(const char *xml, size_t length, SLAIModelDescriptor *model);
+int slai_data_model_from_xml(const char *xml, size_t length, SLAIDataModel *model);
 const char *slai_input_kind_name(SLAIInputKind kind);
 const char *slai_operation_name(SLAIOperation operation);
 const char *slai_backend_name(SLAIBackend backend);
