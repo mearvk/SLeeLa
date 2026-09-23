@@ -179,6 +179,49 @@ static int run_engine(const fs::path &root, const fs::path &engine, const fs::pa
 }
 #endif
 
+static bool valid_port_value(const std::string &value) {
+    if (value.empty()) return false;
+    for (char c : value) if (c < '0' || c > '9') return false;
+    try { const long long n = std::stoll(value); return n >= 1 && n <= 65535; }
+    catch (...) { return false; }
+}
+
+static int run_portctl(const fs::path &root, const std::string &action,
+                       const std::string &edition, const std::string &port,
+                       const std::string &protocol) {
+#if defined(_WIN32)
+    const fs::path script = root / "server-edition/port-awareness/portctl.ps1";
+    std::string cmd = "powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"" +
+                      script.string() + "\" -Action " + action + " -Edition " + edition +
+                      " -Port " + port + " -Protocol " + protocol;
+    STARTUPINFOA si{}; PROCESS_INFORMATION pi{}; si.cb = sizeof(si);
+    std::string mutable_cmd = cmd;
+    if (!CreateProcessA(nullptr, mutable_cmd.data(), nullptr, nullptr, FALSE, 0,
+                        nullptr, root.string().c_str(), &si, &pi)) {
+        std::cerr << "sleelas: firewall controller launch failed: " << GetLastError() << "\\n";
+        return 1;
+    }
+    WaitForSingleObject(pi.hProcess, INFINITE);
+    DWORD code = 1; GetExitCodeProcess(pi.hProcess, &code);
+    CloseHandle(pi.hThread); CloseHandle(pi.hProcess);
+    return static_cast<int>(code);
+#else
+    const fs::path script = root / "server-edition/port-awareness/portctl.sh";
+    pid_t pid = fork();
+    if (pid < 0) { std::perror("sleelas: firewall controller fork"); return 1; }
+    if (pid == 0) {
+        if (chdir(root.c_str()) != 0) std::exit(126);
+        execl(script.c_str(), script.c_str(), action.c_str(), edition.c_str(),
+              port.c_str(), protocol.c_str(), static_cast<char *>(nullptr));
+        std::perror("sleelas: firewall controller exec");
+        std::exit(127);
+    }
+    int status = 0;
+    if (waitpid(pid, &status, 0) < 0) { std::perror("sleelas: firewall controller wait"); return 1; }
+    return WIFEXITED(status) ? WEXITSTATUS(status) : 1;
+#endif
+}
+
 int main(int argc, char **argv) {
     bool tick = false, foreground = false, natPlanOnly = false, designActivity = false;
     std::vector<std::string> activityArgs;
@@ -230,6 +273,15 @@ int main(int argc, char **argv) {
     const fs::path state = root / "server-edition/state";
     const fs::path lock = state / ".sleelas.lock";
     const fs::path log = state / "results.log";
+    const std::string port = std::getenv("SLEELA_SERVER_PORT") ? std::getenv("SLEELA_SERVER_PORT") : "19866";
+    const std::string portProtocol = std::getenv("SLEELA_SERVER_PORT_PROTOCOL") ? std::getenv("SLEELA_SERVER_PORT_PROTOCOL") : "tcp";
+    if (!valid_port_value(port)) { std::cerr << "sleelas: invalid SLEELA_SERVER_PORT (1..65535 required)\\n"; return 2; }
+    if (portProtocol != "tcp" && portProtocol != "udp") { std::cerr << "sleelas: invalid SLEELA_SERVER_PORT_PROTOCOL (tcp or udp required)\\n"; return 2; }
+#if defined(_WIN32)
+    if (!regular_file(root / "server-edition/port-awareness/portctl.ps1")) { std::cerr << "sleelas: Windows firewall controller missing\\n"; return 1; }
+#else
+    if (!regular_file(root / "server-edition/port-awareness/portctl.sh")) { std::cerr << "sleelas: firewall controller missing\\n"; return 1; }
+#endif
     std::error_code ec; fs::create_directories(inbox.parent_path(), ec); fs::create_directories(state, ec);
     if (ec) { std::cerr << "sleelas: cannot create server state: " << ec.message() << "\n"; return 1; }
 
@@ -248,7 +300,7 @@ int main(int argc, char **argv) {
     struct Unlock { fs::path p; ~Unlock() { std::error_code e; fs::remove_all(p, e); } } unlock{lock};
     if (!regular_file(inbox)) { std::ofstream out(inbox); out << "hello\n"; }
     if (tick) { std::ofstream out(inbox, std::ios::app); out << "tick " << utc_now() << "\n"; }
-    if (!std::getenv("SLEELA_SHA256_MANIFEST")) {
+    // Discord-1™ owns its firewall rule for the lifetime of this server process.\n    // Remove a stale rule first, then require a successful open before execution.\n    (void)run_portctl(root, "close", "Discord-1", port, portProtocol);\n    if (run_portctl(root, "open", "Discord-1", port, portProtocol) != 0) {\n        std::cerr << "sleelas: firewall could not open " << port << "/" << portProtocol << "; refusing to start\\n";\n        return 1;\n    }\n    struct PortGuard {\n        const fs::path &root; const std::string &port; const std::string &protocol;\n        ~PortGuard() { (void)run_portctl(root, "close", "Discord-1", port, protocol); }\n    } portGuard{root, port, portProtocol};\n    if (!std::getenv("SLEELA_SHA256_MANIFEST")) {
         fs::path manifest = root / "security/important-sha256-manifest.json";
 #if defined(_WIN32)
         if (regular_file(manifest)) _putenv_s("SLEELA_SHA256_MANIFEST", manifest.string().c_str());
