@@ -4211,6 +4211,10 @@
       "sha256": "23bc878d9ffaf7b1656541041995ac2c83a92fd13edfa3f987694c6212c67ce2"
     },
     {
+      "path": "server-edition/participation/server-mesh-listener.sh",
+      "sha256": "e6fa5d45a2de452c6bbebdeaceb132bfd69735baa565ef40f6ee4389b94bcb53"
+    },
+    {
       "path": "server-edition/participation/server-mesh.sh",
       "sha256": "f1e7fec8f0fe7fdd06f95975018ce3a2839a790a2646e2360debbc764e0c08b5"
     },
