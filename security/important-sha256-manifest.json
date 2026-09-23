@@ -131,6 +131,10 @@
       "sha256": "063ddb6a3541e797c3369a94719c6008088d04a67026ec9dea5d9cbfeb60e77a"
     },
     {
+      "path": "api/bodi/BODI_MEDIA.md",
+      "sha256": "3c9f4262234fb8ef05e49735104456f20e7433e6ca63451d2b905d0cf0422b52"
+    },
+    {
       "path": "api/bodi/README.md",
       "sha256": "c49721f8f60aa39b787ec90ce02c95daa0217e351c69163608c653774ed53e59"
     },
@@ -161,6 +165,10 @@
     {
       "path": "api/bodi/index.html",
       "sha256": "aa2039d41e34325b9cc4c76e3b643a69639b95334ec4eaabadce7643810fc8c1"
+    },
+    {
+      "path": "api/bodi/media.xml",
+      "sha256": "729e9449da82b3a44917ffaa5132dd97893c6adb37f40b7025f06af06894f002"
     },
     {
       "path": "api/data-analytics/API.html",
@@ -269,6 +277,14 @@
     {
       "path": "api/listener/sleela_listener.h",
       "sha256": "3bfee7b859eb56c5f95603104b36be849b4817f0bc46dfb9d398906ccd8a062b"
+    },
+    {
+      "path": "api/media/API.html",
+      "sha256": "584e7b2b3692f7d13348670df58a85cd1b4f85c7b8680a247d9f96e5e0107ed2"
+    },
+    {
+      "path": "api/media/README.md",
+      "sha256": "0824156ccd7d324184e194e4548b2e0e027bc3029fd52f43da0586de0e4ac0b9"
     },
     {
       "path": "api/nordshrift/API.html",
@@ -2871,6 +2887,14 @@
       "sha256": "4cf672239287f2f50d71e36d8d412985f53f4dc14d96eca836ec3b43a0c8e12c"
     },
     {
+      "path": "impl/core/sleela_media.c",
+      "sha256": "1c344126fa927618bd3b1273cb832aa130984119a8d0cbe5bd1de25c44e36359"
+    },
+    {
+      "path": "impl/core/sleela_media.h",
+      "sha256": "8f6dd5e55f9da6a66f8e0302128b098f5211988fe95423de616fb059a29719c1"
+    },
+    {
       "path": "impl/core/sleela_memmgr.c",
       "sha256": "654a6129bc4ffc3ee4896ed4e31938735b149329fb28952547b01df51c2fd0ad"
     },
@@ -3409,6 +3433,10 @@
     {
       "path": "impl/tests/core/design_activity_smoke.c",
       "sha256": "8228f4137bb09c432c470b8de6071b4b40799d3516a24f914c7e8ea190e96d5d"
+    },
+    {
+      "path": "impl/tests/core/media_smoke.c",
+      "sha256": "e63ac63ea9db2c54f8fcc683106ec464f207df97795cf3e93622d451ec102b95"
     },
     {
       "path": "impl/tests/core/memmgr_grades_smoke.c",
