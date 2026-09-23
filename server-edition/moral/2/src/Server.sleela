@@ -4,6 +4,9 @@
 // The service owns configuration/lifecycle; this program owns processing.
 class Server {
     String inboxPath = "server-edition/inbox/requests.txt";
+    String httpVersion = "2.1";
+    String logicalPort = "19866";
+    int downloadSizeBytes = 0;
     String statePath = "server-edition/state/results.log";
     int requests = 0;
     int reaches = 0;
@@ -38,6 +41,7 @@ class Server {
         print("request " + requests + ": reached; " + receipt);
     }
     void main() {
+        print("server: HTTP " + httpVersion + " logical-port=" + logicalPort + " download-size=" + downloadSizeBytes);
         configureSelector();
         int fd = openFile(inboxPath, "r");
         if (fd >= 0) {
