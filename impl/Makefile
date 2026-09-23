@@ -82,6 +82,8 @@ LIBRARY_OBJ := $(BUILD)/sleela_library.o
 TIME_OBJ := $(BUILD)/sleela_time.o
 MEMORY_OBJ := $(BUILD)/sleela_memory.o
 MEMMGR_OBJ := $(BUILD)/sleela_memmgr.o
+MEMMGR_G2_OBJ := $(BUILD)/sleela_memmgr_grade2.o
+MEMMGR_G3_OBJ := $(BUILD)/sleela_memmgr_grade3.o
 DESIGN_ACTIVITY_OBJ := $(BUILD)/sleela_design_activity.o
 GC_OBJ := $(BUILD)/garbage_collector.o
 SECURITY_OBJ := $(BUILD)/security_supervisor.o
@@ -123,7 +125,7 @@ else
 endif
 ALL_OBJECTS := $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(DESIGN_ACTIVITY_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(LANGIN_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(NS_OBJ) $(THREAD_SMOKE) $(SOCKET_SMOKE) $(SYNCHRO_SMOKE) $(MUNCTION_SMOKE) $(BESTOF_SMOKE) $(IO_PLATFORM_SMOKE) $(NET_PLATFORM_SMOKE) $(PATH_PLATFORM_SMOKE) $(TERMINAL_PLATFORM_SMOKE) $(LIBRARY_PLATFORM_SMOKE) $(PIXEL_TERMINAL_SMOKE) $(THREAD_PLATFORM_SMOKE)
 
-.PHONY: all test-platform stage package build-verified rebuild-verified clean test test-sleela test-version test-nordshrift test-threads test-thread-platform test-network test-network-platform test-synchro test-munction test-bestof test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-chemistry test-financial test-math test-physics test-economics test-inference test-subjects verify-security build-runtime test-runtime test-memmgr test-design-activity
+.PHONY: all test-platform stage package build-verified rebuild-verified clean test test-sleela test-version test-nordshrift test-threads test-thread-platform test-network test-network-platform test-synchro test-munction test-bestof test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-chemistry test-financial test-math test-physics test-economics test-inference test-subjects verify-security build-runtime test-runtime test-memmgr test-memmgr-grades test-design-activity
 
 all: verify-security $(SLEELA_BIN) $(NORDSHRIFT_BIN) stage
 
@@ -219,6 +221,17 @@ $(DESIGN_ACTIVITY_OBJ): core/sleela_design_activity.c core/sleela_design_activit
 	$(CC) $(CFLAGS) -Icore -c core/sleela_design_activity.c -o $@
 $(MEMMGR_OBJ): core/sleela_memmgr.c core/sleela_memmgr.h core/sleela_memory.h core/sleela_thread.h | $(BUILD)
 	$(CC) $(CFLAGS) -Icore -c core/sleela_memmgr.c -o $@
+$(MEMMGR_G2_OBJ): core/sleela_memmgr_grade2.c core/sleela_memmgr_grade2.h | $(BUILD)
+	$(CC) $(CFLAGS) -Icore -c core/sleela_memmgr_grade2.c -o $@
+$(MEMMGR_G3_OBJ): core/sleela_memmgr_grade3.c core/sleela_memmgr_grade3.h | $(BUILD)
+	$(CC) $(CFLAGS) -Icore -c core/sleela_memmgr_grade3.c -o $@
+
+MEMMGR_GRADES_SMOKE := $(BUILD)/memmgr_grades_smoke
+$(MEMMGR_GRADES_SMOKE): tests/core/memmgr_grades_smoke.c $(MEMMGR_G2_OBJ) $(MEMMGR_G3_OBJ) | verify-security $(BUILD)
+	$(CC) $(CFLAGS) -Icore tests/core/memmgr_grades_smoke.c $(MEMMGR_G2_OBJ) $(MEMMGR_G3_OBJ) -o $@ $(LDFLAGS) $(LIBS)
+test-memmgr-grades: $(MEMMGR_GRADES_SMOKE)
+	@echo "=== SLeeLa Memory Manager Grades II/III ==="; $(MEMMGR_GRADES_SMOKE)
+
 $(PIXEL_TERMINAL_OBJ): ../bash/pixel_terminal.cpp ../bash/pixel_terminal.hpp | $(BUILD)
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c ../bash/pixel_terminal.cpp -o $@
 $(PIXEL_TERMINAL_SMOKE): ../bash/pixel_terminal_smoke.cpp ../bash/pixel_terminal.hpp $(PIXEL_TERMINAL_OBJ) | $(BUILD)
