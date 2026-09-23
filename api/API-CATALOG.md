@@ -143,104 +143,109 @@ Concepts: luminosity, flux, wavelength, redshift, Planck radiance, Wien displace
 Sources: api/subjects/astrophysics/, api/subjects/subject-model.xsd, impl/subjects/astrophysics/.
 Status: Native C numerical ABI, C++ facade, frontend subject class, XML model/procedure examples, and append-only XML observation persistence.
 
-## 25. Chemistry
+## 25. Sociology
+Concepts: population proportions, rates, means, variance, weighted summaries, growth, association measures, transition probability, inequality, group separation, observations and study-design evidence.
+Sources: api/subjects/sociology/, impl/subjects/sociology/.
+Status: Native C statistical mathematics, C++ facade, bounded native frontend vocabulary, XML model/procedure examples, focused smoke test.
+
+## 26. Chemistry
 Concepts: chemical values, quantities/units, relations/formulas, transformations and scientific validation.
 Sources: impl/subjects/chemistry/, impl/tests/subjects/chemistry_values.sleela.
 Status: Implemented subject-library surface.
 
-## 26. Economics and finance
+## 27. Economics and finance
 Concepts: economic quantities, financial quantities, currency/value representations, relations, formulas, transformations and comparative results.
 Sources: impl/subjects/economics/, impl/subjects/financial/, corresponding subject tests.
 Status: Implemented subject-library surfaces.
 
-## 27. Inference and evidence
+## 28. Inference and evidence
 Concepts: inference, evidence, explanation, assumption, relation, validation, comparative norm and result.
 Sources: impl/subjects/inference/, INFERENCE.md, Nordshrift model.
 Status: Implemented semantic model.
 
-## 28. Nordshrift semantic API
+## 29. Nordshrift semantic API
 Core chain: Subject -> Quantity -> Unit -> Assumption -> Relation -> Formula -> Transformation -> Result -> ComparativeNorm -> Evidence -> Explanation -> Validation.
 Additional concepts: Todo and WorkPlan.
 Sources: api/nordshrift/, impl/nordshrift/, SST.model, SST-2.0.model, NORDSHRIFT.md.
 Status: Implemented.
 
-## 29. Security, integrity and execution supervision
+## 30. Security, integrity and execution supervision
 Concepts: execution policy, security supervisor, integrity verification, SHA-256 verification, memory supervision, native execution gate, privilege boundary and diagnostics.
 Sources: runtime/security_supervisor.c, runtime/security_supervisor.h, runtime/runtime_security.sleela, runtime/SECURITY_SUPERVISOR.md, runtime/Parameters.c, runtime/Parameters.h.
 Status: Implemented runtime security surface.
 
-## 30. Cryptography and key agreement
+## 31. Cryptography and key agreement
 Concepts: digest/hash, cryptographic keys, key agreement, integrity checks, authenticated protocol data and TLS-related configuration where supplied by the platform.
 Sources: http-3.0/http3_crypto.h, http-3.0/crypto_key_agreement.h and related native sources.
 Status: Implemented protocol-facing cryptographic surfaces.
 
-## 31. Dynamic libraries and native interoperability
+## 32. Dynamic libraries and native interoperability
 Concepts: dynamic library load/unload, symbol lookup, native handles, C ABI integration, C++ implementation bridge and Java/native connector boundary.
 Sources: impl/core/, connector/, native C/C++ implementation.
 Status: Implemented / partially unified.
 
-## 32. Java/JVM interoperability
+## 33. Java/JVM interoperability
 Concepts: Java, Kotlin, Scala, Groovy and Clojure source ingestion, JVM connectors, Java class/object integration.
 Sources: langin/, connector/java/, src/implementations/.
 Status: Implemented ingestion/connector surfaces.
 
-## 33. Remote method invocation and distributed objects
+## 34. Remote method invocation and distributed objects
 Concepts: remote object, endpoint, client, server, service, session and invocation context.
 Sources: rmi/.
 Status: Implemented Java RMI family.
 
-## 34. Server and service runtime
+## 35. Server and service runtime
 Concepts: server launcher, service process, runtime initialization, configuration, lifecycle, service endpoint.
 Sources: server-edition/src/Server.sleela, api/server/.
 Status: Implemented.
 
-## 35. Web-server deployment and monitoring
+## 36. Web-server deployment and monitoring
 Concepts: installation, status, health checks, upgrades, ports, validation, local WAR deployment and platform adapters.
 Platforms represented: Linux, Windows 10+, macOS.
 Sources: api/webserver/.
 Status: Implemented.
 
-## 36. Posting, listeners and routers
+## 37. Posting, listeners and routers
 Posting: POST representation, validation and bounded serialization.
 Listener: bind, port, protocol, route vocabulary and validation.
 Router: method, path and deterministic matching.
 Sources: api/posting/, api/listener/, api/router/.
 Status: Implemented.
 
-## 37. HTTP-style service composition
+## 38. HTTP-style service composition
 Concepts: server, listener, router, request, response, handler and service lifecycle.
 Sources: api/server/, api/webserver/, api/posting/, api/listener/, api/router/.
 Status: Implemented across specialized modules.
 
-## 38. Phraign terminal/frame interface
+## 39. Phraign terminal/frame interface
 Concepts: frame, pixel/geometry representation, terminal frame control, Bash protocol boundary and C++ geometry/frame implementation.
 Status: repository-defined specialized surface; exact contracts remain in the corresponding Phraign source and documentation.
 
-## 39. Compiler and language tooling
+## 40. Compiler and language tooling
 Concepts: parse/check, compile, version, runtime invocation, native execution, language metadata and source ingestion.
 Sources: COMPILER.md, SLEELA.md, SOURCE.md, langin/, impl/.
 Status: Implemented.
 
-## 40. Runtime introspection and diagnostics
+## 41. Runtime introspection and diagnostics
 Concepts: runtime version, platform/backend identification, memory diagnostics, security diagnostics, execution status and errors.
 Sources: runtime/, impl/, Parameters.*.
 Status: Implemented / partially unified.
 
-## 41. Error and status handling
+## 42. Error and status handling
 Concepts: success/failure, error codes, diagnostics, validation results, transport errors, execution status and security rejection.
 Sources: impl/core/, runtime/ and specialized api modules.
 Status: Implemented as distributed source contracts.
 
-## 42. Application configuration
+## 43. Application configuration
 Concepts: parameters, runtime configuration, network configuration, server configuration, database configuration and security configuration.
 Sources: runtime/Parameters.c, runtime/Parameters.h and specialized API configuration sources.
 Status: Implemented / distributed.
 
-## 43. Examples and executable demonstrations
+## 44. Examples and executable demonstrations
 Sources: api/examples/, examples/, tutorial/demos/, impl/examples/, impl/nordshrift/examples/.
 Status: Implemented.
 
-## 44. Simple Regex and pattern matching
+## 45. Simple Regex and pattern matching
 Concepts: four-level user-facing text matching; Find, Shape, Structure, and Expression; literal matching; named character classes; repetition; alternatives; groups; ranges; optional values; captures; Unicode properties; compiled patterns; bounded deterministic matching.
 Sources: api/regex/README.md, api/regex/API.html, api/regex/REGEX-DESIGN.md, api/regex/regex-patterns.sleela, api/regex/LEVEL-1-FIND.sleela, api/regex/LEVEL-2-SHAPE.sleela, api/regex/LEVEL-3-STRUCTURE.sleela, api/regex/LEVEL-4-EXPRESSION.sleela, impl/core/sleela_regex.h, impl/core/sleela_regex.c, impl/tests/core/regex_smoke.c, impl/REGEX-NATIVE.md.
 Status: **Draft with native Level 1/2 foundation; Level 3/4 source contracts are defined but their native execution remains intentionally unsupported pending semantic review.**
