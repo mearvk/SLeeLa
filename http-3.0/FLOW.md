@@ -144,3 +144,22 @@ deployment supplies from the crypto substrate's key agreement
 (`crypto_key_agreement.*`). The protocol core never links OpenSSL; it just
 accepts the key bytes, so the separation of builds is preserved while packets
 gain authenticity end to end.
+
+
+## Port and Stream Multiplexing
+
+HTTP 3.0 extends the same architecture used by HTTP 2.1. QUIC/HTTP/3 supplies the transport-level stream multiplexing, while the SLeeLa envelope supplies the application-level logical port.
+
+```text
+QUIC connection
+      |
+      +-- HTTP/3 stream 1 -- PORT -- SERVICE/OP -- payload
+      +-- HTTP/3 stream 2 -- PORT -- SERVICE/OP -- payload
+      +-- HTTP/3 stream N -- PORT -- SERVICE/OP -- payload
+```
+
+The namespaces remain separate:
+
+`transport endpoint → HTTP/3 stream → SLeeLa logical PORT → SERVICE-ID / OP-ID`
+
+The 20-byte PORT field documented in [PORTS.md](PORTS.md) is therefore not a native TCP/UDP port field. It is a logical application identifier carried inside the SLeeLa envelope.
