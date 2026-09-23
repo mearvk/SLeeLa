@@ -4232,7 +4232,7 @@
     },
     {
       "path": "server-edition/port-awareness/portctl.sh",
-      "sha256": "7717d2f96d3c20513abc723a09469d6b0801af6b176ae6bf95adf51c916cf775"
+      "sha256": "b4d08df0fc608f33b2e75bf01271cf61c97f0b7fd57c9f9f4b5c9abae1cf8eeb"
     },
     {
       "path": "server-edition/port-awareness/traffic-log.sh",
