@@ -354,7 +354,7 @@ $(BUILD)/driver.o: frontend/driver.cpp frontend/compiler.h frontend/artifact.h s
 $(BUILD):
 	mkdir -p $(BUILD)
 
-test: verify-security test-system-monitor test-sleela test-design-activity test-regex test-version test-nordshrift test-threads test-thread-platform test-network test-network-platform test-synchro test-munction test-bestof test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-math test-physics test-economics test-inference test-chemistry test-financial test-astrophysics test-runtime test-memmgr
+test: verify-security test-system-monitor test-sleela test-design-activity test-regex test-version test-nordshrift test-threads test-thread-platform test-network test-network-platform test-synchro test-munction test-bestof test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-math test-physics test-economics test-inference test-chemistry test-financial test-astrophysics test-sociology test-runtime test-memmgr
 test-thread-platform: $(THREAD_PLATFORM_SMOKE)
 	@echo "=== OS-aware threading backend ==="; SLEELA_THREAD_PLATFORM=auto $(THREAD_PLATFORM_SMOKE)
 test-threads: $(THREAD_SMOKE)
@@ -364,6 +364,7 @@ test-sleela: $(SLEELA_BIN)
 test-version: $(SLEELA_BIN)
 	@export SLEELA_SHEET=$(CURDIR)/../SHEET.sheet; export SLEELA_SHA256_MANIFEST=$${SLEELA_SHA256_MANIFEST:-$(CURDIR)/../security/sha256-manifest.json}; cd $(CURDIR)/.. && bash impl/tests/version/run_version_tests.sh $(CURDIR)/$(SLEELA_BIN)
 test-nordshrift: $(NORDSHRIFT_BIN)
+	@export SLEELA_SHA256_MANIFEST=${SLEELA_SHA256_MANIFEST:-$(CURDIR)/../security/sha256-manifest.json}; cd $(CURDIR)/.. && echo "=== check examples/nordshrift/subject-libraries.sst ===" && $(CURDIR)/$(NORDSHRIFT_BIN) check examples/nordshrift/subject-libraries.sst
 	@export SLEELA_SHA256_MANIFEST=$${SLEELA_SHA256_MANIFEST:-$(CURDIR)/../security/sha256-manifest.json}; cd $(CURDIR)/.. && for f in impl/nordshrift/examples/*.sst; do echo "=== check $$f ==="; $(CURDIR)/$(NORDSHRIFT_BIN) check $$f || exit 1; done
 	@export SLEELA_SHA256_MANIFEST=$${SLEELA_SHA256_MANIFEST:-$(CURDIR)/../security/sha256-manifest.json}; cd $(CURDIR)/.. && echo "=== build impl/nordshrift/examples/demo/build.sst (target sleela -> runnable artifact) ===" && $(CURDIR)/$(NORDSHRIFT_BIN) build impl/nordshrift/examples/demo/build.sst || exit 1
 test-network: $(SOCKET_SMOKE)
