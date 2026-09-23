@@ -1,0 +1,21 @@
+#sleela 1.3
+// xml.sleela -- XML-backed model/data source.
+// XML is declarative input. Loading a document does not by itself execute it.
+
+class XmlModelSource {
+    void main() {
+        int xml = xmlOpen("file:///models/data-model.xml");
+        xmlRequireKind(xml, "ai-data-model");
+        xmlValidate(xml);
+
+        int model = xmlLoadDataModel(xml);
+        print(dataDescribe(model));
+        xmlClose(xml);
+
+        int source = xmlOpen("file:///models/audio-model.xml");
+        xmlRequireKind(source, "ai-model");
+        xmlValidate(source);
+        print(xmlDescribe(source));
+        xmlClose(source);
+    }
+}
