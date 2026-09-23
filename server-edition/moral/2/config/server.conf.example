@@ -44,4 +44,4 @@ log_consume_max_bytes=52428800
 active_probing=false
 # Comma-separated explicit hosts permitted for active port verification; empty by default.
 probe_allowlist=
-known_ports=2222,22220,19866,20000
+known_ports=2222,22220,19866,20000,22221
