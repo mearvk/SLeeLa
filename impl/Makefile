@@ -243,7 +243,7 @@ $(MEDIA_OBJ): core/sleela_media.c core/sleela_media.h core/sleela_media_formats.
 $(MEDIA_FORMATS_OBJ): core/sleela_media_formats.c core/sleela_media_formats.h | $(BUILD)
 	$(CC) $(CFLAGS) -Icore -c core/sleela_media_formats.c -o $@
 $(MEDIA_SMOKE): tests/core/media_smoke.c $(MEDIA_OBJ) $(MEDIA_FORMATS_OBJ) | $(BUILD)
-	$(CC) $(CFLAGS) -Icore tests/core/media_smoke.c $(MEDIA_OBJ) -o $@ $(LDFLAGS) $(LIBS) -lm
+	$(CC) $(CFLAGS) -Icore tests/core/media_smoke.c $(MEDIA_OBJ) $(MEDIA_FORMATS_OBJ) -o $@ $(LDFLAGS) $(LIBS) -lm
 test-media: $(MEDIA_SMOKE)
 	@echo "=== SLeeLa Audio/Video Media API ==="; $(MEDIA_SMOKE)
 test-system-monitor: $(SYSTEM_MONITOR_SMOKE)
