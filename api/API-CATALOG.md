@@ -81,9 +81,9 @@ Sources: api/email/, including sleela_email.c, sleela_email.h, sleela_email.hpp 
 Status: Implemented.
 
 ## 15. Audio and video media
-Concepts: timestamped audio/video frames, audio level/peak/RMS analysis, spectrum extension, video luminance/edge/motion analysis, frame listeners, transforms, visualization, recording/provider boundaries, and future AI input/output hooks.
-Sources: impl/core/sleela_media.h, impl/core/sleela_media.c, api/media/.
-Status: Native media foundation implemented; device/codec providers remain extensible.
+Concepts: timestamped audio/video frames, broad image-format recognition, audio/video codec recognition, container recognition, provider capability discovery, audio level/peak/RMS analysis, spectrum extension, video luminance/edge/motion analysis, frame listeners, transforms, visualization, recording/provider boundaries, and future AI input/output hooks.
+Sources: impl/core/sleela_media.h, impl/core/sleela_media.c, impl/core/sleela_media_formats.h, impl/core/sleela_media_formats.c, api/media/.
+Status: Native media foundation and broad format/codec registry implemented; actual device and codec decode/encode providers remain extensible.
 
 ## 15. GUI and desktop interfaces
 Concepts: application, window, document, event, widget/control, layout, menu, dialog, Swing, JavaFX, native bridge.
