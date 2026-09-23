@@ -76,7 +76,7 @@
     },
     {
       "path": "REVISIONS.md",
-      "sha256": "25d54727b8d13301c3a43d1e947b08d2239d2ebb9a673c82011a6f47191ce091"
+      "sha256": "83e0a5885a2fc784f2dea7593edc0452feea336a233108b4799cf509cefefa1f"
     },
     {
       "path": "SERVER.EDITION.md",
@@ -292,7 +292,7 @@
     },
     {
       "path": "api/email/sleela_email.c",
-      "sha256": "604dbd46670751b40ac1626a774d3ea94fbf9eca8a5c2b1e045238884aa31cbe"
+      "sha256": "0eb7cbc48e53bfdf3481e23411e6d9f30c3376ea75a76e7dcaaccd3b726be4d7"
     },
     {
       "path": "api/email/sleela_email.h",
@@ -2960,7 +2960,7 @@
     },
     {
       "path": "http-servers/2/http2/http2_server.cpp",
-      "sha256": "7c2fb895260164b942f1ec1bcd12c2792b7c1de10248d960be1698f1000df2c6"
+      "sha256": "20da4fb54b6a739cb13359e0d7317e34189e668bd557fb6e8b7f5f7a7cc60a4b"
     },
     {
       "path": "http-servers/2/http2/http2_server.h",
