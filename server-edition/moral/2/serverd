@@ -79,3 +79,9 @@ fi
 { echo "=== SLeeLa Server Edition Service 2 ==="; cd "$ROOT"; "$ENGINE" run "$SOURCE"; } >> "$LOG" 2>&1
 [ "$FOREGROUND" = true ] && tail -n 12 "$LOG"
 echo "Discord-2™ serverd: completed; results=$LOG"
+
+# Named basic-scan/service-discovery port; firewall lifecycle is owned by the server controller.
+: "${SLEELA_SCAN_PORT:=22220}"
+: "${SLEELA_SCAN_PORT_PROTOCOL:=tcp}"
+: "${SLEELA_MATURE_SERVICES:=auto}"
+export SLEELA_SCAN_PORT SLEELA_SCAN_PORT_PROTOCOL SLEELA_MATURE_SERVICES
