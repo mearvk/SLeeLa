@@ -17,7 +17,7 @@ case "${1:-}" in
     if [ -f "$PIDFILE" ] && kill -0 "$(cat "$PIDFILE")" 2>/dev/null; then exit 0; fi
     if command -v tcpdump >/dev/null 2>&1; then
       # -nn preserves numeric IP/port data; -s 0 retains full packets; -X records payload bytes.
-      nohup tcpdump -nn -tttt -i any -s 0 -X "$ports_expr" >>"$LOGFILE" 2>&1 &
+      nohup tcpdump -nn -tttt -vvv -i any -s 0 -X "$ports_expr" >>"$LOGFILE" 2>&1 &
       echo $! >"$PIDFILE"
       printf '%s traffic_logger=start ports=%s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || echo now)" "$PORTS" >>"$LOGFILE"
     else
