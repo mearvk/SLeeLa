@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bodi version="1">
+  <project id="synchronized-audio-mix" kind="audio-mix">
+    <timeline unit="ns" start="0" sample-rate="48000"/>
+    <input id="master" role="master" type="file" path="audio/master.wav" load-at-ns="0" start-at-ns="0" quality="1.0" gain-db="0"/>
+    <input id="second" role="second" type="file" path="audio/second.flac" load-at-ns="0" start-at-ns="125000000" quality="0.92" gain-db="-3"/>
+    <input id="live" role="input" type="live" device="default" load-at-ns="0" start-at-ns="500000000" quality="1.0" gain-db="-6"/>
+    <relative-quality mode="linear" reference="master" min="0" max="1"/>
+    <mixer bass-db="3" mid-db="-1" treble-db="2" gain-db="0" pan="0">
+      <channel index="1" gain="1.0"/><channel index="2" gain="1.0"/>
+    </mixer>
+    <synchronization mode="timeline" preserve-track-offsets="true" process-as-arriving="true" write-output-while-processing="true">
+      <output path="audio/mix-output.wav"/>
+    </synchronization>
+  </project>
+</bodi>
