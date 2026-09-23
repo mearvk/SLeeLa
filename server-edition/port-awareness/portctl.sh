@@ -39,19 +39,20 @@ as_root() {
 
 linux_remove() {
   if [ "$FIREWALL" = ufw ]; then
-    as_root ufw delete allow "${PORT}/${PROTO}" >/dev/null 2>&1 || true
-    as_root ufw delete allow "${PORT}" >/dev/null 2>&1 || true
+    as_root ufw delete allow in proto "$PROTO" from any to any port "$PORT" comment "$RULE" >/dev/null 2>&1 || true
   elif [ "$FIREWALL" = firewalld ]; then
-    as_root firewall-cmd --remove-port="${PORT}/${PROTO}" --permanent >/dev/null 2>&1 || true
+    as_root firewall-cmd --remove-rich-rule="rule family=\"ipv4\" priority=1000 port port=\"$PORT\" protocol=\"$PROTO\" accept" --permanent >/dev/null 2>&1 || true
+    as_root firewall-cmd --remove-rich-rule="rule family=\"ipv6\" priority=1000 port port=\"$PORT\" protocol=\"$PROTO\" accept" --permanent >/dev/null 2>&1 || true
     as_root firewall-cmd --reload >/dev/null 2>&1 || true
   fi
 }
 
 linux_open() {
   if [ "$FIREWALL" = ufw ]; then
-    as_root ufw allow "${PORT}/${PROTO}" comment "$RULE" >/dev/null
+    as_root ufw allow in proto "$PROTO" from any to any port "$PORT" comment "$RULE" >/dev/null
   elif [ "$FIREWALL" = firewalld ]; then
-    as_root firewall-cmd --add-port="${PORT}/${PROTO}" --permanent >/dev/null
+    as_root firewall-cmd --add-rich-rule="rule family=\"ipv4\" priority=1000 port port=\"$PORT\" protocol=\"$PROTO\" accept" --permanent >/dev/null
+    as_root firewall-cmd --add-rich-rule="rule family=\"ipv6\" priority=1000 port port=\"$PORT\" protocol=\"$PROTO\" accept" --permanent >/dev/null
     as_root firewall-cmd --reload >/dev/null
   else
     echo "No supported Linux firewall controller (UFW or firewalld) found" >&2
