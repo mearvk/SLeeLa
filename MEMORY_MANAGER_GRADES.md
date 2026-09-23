@@ -1,5 +1,18 @@
 # SLeeLa Memory Manager — Three Implementation Grades
 
+## Base Configuration
+
+The active Memory Manager grade is a base runtime configuration setting in `runtime/Parameters.h` / `runtime/Parameters.c`. **Grade I is the default.** Users therefore begin with the existing Grade I process memory manager unless they explicitly select Grade II or Grade III.
+
+```c
+#define SLVM_MEMORY_MANAGER_GRADE_I 1
+#define SLVM_MEMORY_MANAGER_GRADE_II 2
+#define SLVM_MEMORY_MANAGER_GRADE_III 3
+#define SLVM_MEMORY_MANAGER_DEFAULT_GRADE SLVM_MEMORY_MANAGER_GRADE_I
+```
+
+The configuration API is `slvm_parameters_memory_manager_grade()` and `slvm_parameters_set_memory_manager_grade()`. Only grades I–III are accepted.
+
 ## Grade I — Process Memory Manager
 
 This is the existing `slmm_*` implementation in `impl/core/sleela_memmgr.c/.h`.
