@@ -130,3 +130,11 @@ Before starting the engine, `sleelas` checks the Server Edition lock and its rec
 Discord's marks and Brand Assets remain the property of Discord Inc.; this
 repository does not include Discord logos, trade dress, or proprietary brand
 assets. citeturn0search3turn0search2
+
+## HTTP Server Edition capability
+
+Discord-1™ uses the shared `server-edition/http/httpctl` capability validator
+before launching Server.sleela. Set `SLEELA_HTTP_LOGICAL_PORT` and
+`SLEELA_HTTP_DOWNLOAD_SIZE` to validate the logical application PORT and
+transfer mode. HTTP 2.1 is used for Server Edition level 2 and HTTP 3.0 for
+level 3. The native firewall port remains separate from the logical PORT.
