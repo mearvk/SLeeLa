@@ -4211,6 +4211,10 @@
       "sha256": "1694d0b91027cd09daad6fb422767d192fbe4f9eaa7cda504c81b24b0cfb3438"
     },
     {
+      "path": "server-edition/port-awareness/traffic-log.sh",
+      "sha256": "74564dcfbc15b733624f8b2fa9debbc6b9622dd8828619715d5aa61c0db9963d"
+    },
+    {
       "path": "sleela-terminal/arith.cpp",
       "sha256": "d041b5ae99b5d1721f0984158aab72e808855b8e922572a52fbbf8826ec63abb"
     },
