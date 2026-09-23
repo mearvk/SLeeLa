@@ -138,104 +138,109 @@ Concepts: physical quantities, units, relations, formulas, transformations, meas
 Sources: impl/subjects/physics/, impl/tests/subjects/physics_values.sleela.
 Status: Implemented subject-library surface.
 
-## 24. Chemistry
+## 24. Astrophysics
+Concepts: luminosity, flux, wavelength, redshift, Planck radiance, Wien displacement, Kepler orbital period, gravitational parameter, escape velocity, angular size, distance modulus, observations, provenance, and bounded scientific procedures.
+Sources: api/subjects/astrophysics/, api/subjects/subject-model.xsd, impl/subjects/astrophysics/.
+Status: Native C numerical ABI, C++ facade, frontend subject class, XML model/procedure examples, and append-only XML observation persistence.
+
+## 25. Chemistry
 Concepts: chemical values, quantities/units, relations/formulas, transformations and scientific validation.
 Sources: impl/subjects/chemistry/, impl/tests/subjects/chemistry_values.sleela.
 Status: Implemented subject-library surface.
 
-## 25. Economics and finance
+## 26. Economics and finance
 Concepts: economic quantities, financial quantities, currency/value representations, relations, formulas, transformations and comparative results.
 Sources: impl/subjects/economics/, impl/subjects/financial/, corresponding subject tests.
 Status: Implemented subject-library surfaces.
 
-## 26. Inference and evidence
+## 27. Inference and evidence
 Concepts: inference, evidence, explanation, assumption, relation, validation, comparative norm and result.
 Sources: impl/subjects/inference/, INFERENCE.md, Nordshrift model.
 Status: Implemented semantic model.
 
-## 27. Nordshrift semantic API
+## 28. Nordshrift semantic API
 Core chain: Subject -> Quantity -> Unit -> Assumption -> Relation -> Formula -> Transformation -> Result -> ComparativeNorm -> Evidence -> Explanation -> Validation.
 Additional concepts: Todo and WorkPlan.
 Sources: api/nordshrift/, impl/nordshrift/, SST.model, SST-2.0.model, NORDSHRIFT.md.
 Status: Implemented.
 
-## 28. Security, integrity and execution supervision
+## 29. Security, integrity and execution supervision
 Concepts: execution policy, security supervisor, integrity verification, SHA-256 verification, memory supervision, native execution gate, privilege boundary and diagnostics.
 Sources: runtime/security_supervisor.c, runtime/security_supervisor.h, runtime/runtime_security.sleela, runtime/SECURITY_SUPERVISOR.md, runtime/Parameters.c, runtime/Parameters.h.
 Status: Implemented runtime security surface.
 
-## 29. Cryptography and key agreement
+## 30. Cryptography and key agreement
 Concepts: digest/hash, cryptographic keys, key agreement, integrity checks, authenticated protocol data and TLS-related configuration where supplied by the platform.
 Sources: http-3.0/http3_crypto.h, http-3.0/crypto_key_agreement.h and related native sources.
 Status: Implemented protocol-facing cryptographic surfaces.
 
-## 30. Dynamic libraries and native interoperability
+## 31. Dynamic libraries and native interoperability
 Concepts: dynamic library load/unload, symbol lookup, native handles, C ABI integration, C++ implementation bridge and Java/native connector boundary.
 Sources: impl/core/, connector/, native C/C++ implementation.
 Status: Implemented / partially unified.
 
-## 31. Java/JVM interoperability
+## 32. Java/JVM interoperability
 Concepts: Java, Kotlin, Scala, Groovy and Clojure source ingestion, JVM connectors, Java class/object integration.
 Sources: langin/, connector/java/, src/implementations/.
 Status: Implemented ingestion/connector surfaces.
 
-## 32. Remote method invocation and distributed objects
+## 33. Remote method invocation and distributed objects
 Concepts: remote object, endpoint, client, server, service, session and invocation context.
 Sources: rmi/.
 Status: Implemented Java RMI family.
 
-## 33. Server and service runtime
+## 34. Server and service runtime
 Concepts: server launcher, service process, runtime initialization, configuration, lifecycle, service endpoint.
 Sources: server-edition/src/Server.sleela, api/server/.
 Status: Implemented.
 
-## 34. Web-server deployment and monitoring
+## 35. Web-server deployment and monitoring
 Concepts: installation, status, health checks, upgrades, ports, validation, local WAR deployment and platform adapters.
 Platforms represented: Linux, Windows 10+, macOS.
 Sources: api/webserver/.
 Status: Implemented.
 
-## 35. Posting, listeners and routers
+## 36. Posting, listeners and routers
 Posting: POST representation, validation and bounded serialization.
 Listener: bind, port, protocol, route vocabulary and validation.
 Router: method, path and deterministic matching.
 Sources: api/posting/, api/listener/, api/router/.
 Status: Implemented.
 
-## 36. HTTP-style service composition
+## 37. HTTP-style service composition
 Concepts: server, listener, router, request, response, handler and service lifecycle.
 Sources: api/server/, api/webserver/, api/posting/, api/listener/, api/router/.
 Status: Implemented across specialized modules.
 
-## 37. Phraign terminal/frame interface
+## 38. Phraign terminal/frame interface
 Concepts: frame, pixel/geometry representation, terminal frame control, Bash protocol boundary and C++ geometry/frame implementation.
 Status: repository-defined specialized surface; exact contracts remain in the corresponding Phraign source and documentation.
 
-## 38. Compiler and language tooling
+## 39. Compiler and language tooling
 Concepts: parse/check, compile, version, runtime invocation, native execution, language metadata and source ingestion.
 Sources: COMPILER.md, SLEELA.md, SOURCE.md, langin/, impl/.
 Status: Implemented.
 
-## 39. Runtime introspection and diagnostics
+## 40. Runtime introspection and diagnostics
 Concepts: runtime version, platform/backend identification, memory diagnostics, security diagnostics, execution status and errors.
 Sources: runtime/, impl/, Parameters.*.
 Status: Implemented / partially unified.
 
-## 40. Error and status handling
+## 41. Error and status handling
 Concepts: success/failure, error codes, diagnostics, validation results, transport errors, execution status and security rejection.
 Sources: impl/core/, runtime/ and specialized api modules.
 Status: Implemented as distributed source contracts.
 
-## 41. Application configuration
+## 42. Application configuration
 Concepts: parameters, runtime configuration, network configuration, server configuration, database configuration and security configuration.
 Sources: runtime/Parameters.c, runtime/Parameters.h and specialized API configuration sources.
 Status: Implemented / distributed.
 
-## 42. Examples and executable demonstrations
+## 43. Examples and executable demonstrations
 Sources: api/examples/, examples/, tutorial/demos/, impl/examples/, impl/nordshrift/examples/.
 Status: Implemented.
 
-## 43. Simple Regex and pattern matching
+## 44. Simple Regex and pattern matching
 Concepts: four-level user-facing text matching; Find, Shape, Structure, and Expression; literal matching; named character classes; repetition; alternatives; groups; ranges; optional values; captures; Unicode properties; compiled patterns; bounded deterministic matching.
 Sources: api/regex/README.md, api/regex/API.html, api/regex/REGEX-DESIGN.md, api/regex/regex-patterns.sleela, api/regex/LEVEL-1-FIND.sleela, api/regex/LEVEL-2-SHAPE.sleela, api/regex/LEVEL-3-STRUCTURE.sleela, api/regex/LEVEL-4-EXPRESSION.sleela, impl/core/sleela_regex.h, impl/core/sleela_regex.c, impl/tests/core/regex_smoke.c, impl/REGEX-NATIVE.md.
 Status: **Draft with native Level 1/2 foundation; Level 3/4 source contracts are defined but their native execution remains intentionally unsupported pending semantic review.**
@@ -254,6 +259,7 @@ Status: **Draft with native Level 1/2 foundation; Level 3/4 source contracts are
 - api/listener/ — listener API.
 - api/router/ — routing API.
 - api/regex/ — Simple Regex API: four-level text pattern matching and Unicode-aware design draft.
+- api/subjects/ — common XML subject-model contract and Astrophysics subject library.
 - api/nordshrift/ — Nordshrift semantic API.
 - api/server/ — compiled server launcher.
 - api/webserver/ — Apache/Tomcat deployment and monitoring.
@@ -266,4 +272,4 @@ The catalogue does not make /api the implementation authority. Actual source dec
 
 # Maintenance
 
-When a public API is added: update its implementation, add a focused /api reference when appropriate, add it here, link declaration and implementation, add an example or test when practical, regenerate SOURCE-COVERAGE.html, and keep API.html, index.html and README.md as navigation surfaces.
+When a public API is added: update its implementation, add a focused /api reference when appropriate, add it here, link declaration and implementation, add an example or test when practical, regenerate SOURCE-COVERAGE.html, and keep API.html, index.html and README.md as navigation surfaces. For a subject-library addition, also record units, assumptions, model/procedure XML, observed-data persistence and explicit evidence status. update its implementation, add a focused /api reference when appropriate, add it here, link declaration and implementation, add an example or test when practical, regenerate SOURCE-COVERAGE.html, and keep API.html, index.html and README.md as navigation surfaces.
