@@ -108,7 +108,7 @@
     },
     {
       "path": "api/API-CATALOG.md",
-      "sha256": "47dcfd1d72ae9d3c574583dacbbae4075a8bcc5b2bdf55485505f89d8ac38826"
+      "sha256": "629081bb60738a75d7f1fa6cf47d988b0882d9bc0708e881ea31af49d05153e0"
     },
     {
       "path": "api/API.html",
@@ -120,7 +120,7 @@
     },
     {
       "path": "api/README.md",
-      "sha256": "41a9a49a66ba6095129595402709e38d9a642d447c6b8bf3bfcd70a085cd895f"
+      "sha256": "99d3f174ca92e28956f9946a8eaade6441e689c1bc565352ce1971256b0a6d7a"
     },
     {
       "path": "api/SOURCE-COVERAGE.html",
@@ -2872,11 +2872,11 @@
     },
     {
       "path": "impl/core/sleela_ai.c",
-      "sha256": "9e19518e721d493855f519d132b5f0165da7bf887c061def5af2b8a3d482d87c"
+      "sha256": "c940fc37f5441c1e1ef810d66a0668efd5cec287feba9f682d375a775093dd37"
     },
     {
       "path": "impl/core/sleela_ai.h",
-      "sha256": "ace2ac6b85f992338d839dd634f8c396e75a4508c74a13fb423cd18fa7bddff7"
+      "sha256": "b4644b52642c0790ebf0060de79d96c8024af14e5628ecbd7418ecf3b86c642b"
     },
     {
       "path": "impl/core/sleela_artifact.c",
@@ -3492,7 +3492,7 @@
     },
     {
       "path": "impl/tests/core/ai_smoke.c",
-      "sha256": "6a723f4c6721f19237e0de0b3e1574cd6518e45393deeb84e32a6ed2683c9271"
+      "sha256": "eaeffb408be57ca738e0652974c5b120d93f1abe6808a0a341410e56da1d494e"
     },
     {
       "path": "impl/tests/core/audio_mixer_smoke.c",
