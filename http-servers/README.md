@@ -2,9 +2,9 @@
 
 Three native server grades live under `http-servers/1`, `2`, and `3`, sharing `common/`.
 
-Grade 2 and Grade 3 understand lower HTTP/1.x message protocols. They do not falsely treat HTTP/2 or HTTP/3 as HTTP/1 text: HTTP/2 is a binary, multiplexed TCP protocol and HTTP/3 maps HTTP semantics over QUIC. Native H2/H3 transports therefore belong in dedicated adapters over this common request/response service layer. citeturn2search2turn2search0
+Grade 2 and Grade 3 understand lower HTTP/1.x message protocols. They do not falsely treat HTTP/2 or HTTP/3 as HTTP/1 text: HTTP/2 is a binary, multiplexed TCP protocol and HTTP/3 maps HTTP semantics over QUIC. Native H2/H3 transports therefore belong in dedicated adapters over this common request/response service layer.
 
-The HTTP/1.x parser follows the repository's HTTP specifications plus RFC 1945 for HTTP/1.0 and RFC 9112 for current HTTP/1.1 message framing. citeturn2search3turn2search1
+The HTTP/1.x parser follows the repository's HTTP specifications plus RFC 1945 for HTTP/1.0 and RFC 9112 for current HTTP/1.1 message framing.
 
 ## Command line
 ```text
@@ -31,7 +31,7 @@ Defaults are TCP 8080/8081/8082.
 - graceful shutdown;
 - explicit separation between HTTP semantics and transport framing.
 
-Apache's documented modular MPM model and Tomcat's connector/request-worker model were used as architectural references, not copied code. citeturn0search4turn0search0
+Apache's documented modular MPM model and Tomcat's connector/request-worker model were used as architectural references, not copied code.
 
 ## Native builds
 ```sh
