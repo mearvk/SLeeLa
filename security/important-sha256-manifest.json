@@ -4203,6 +4203,18 @@
       "sha256": "3c721cc95098acc5a316b26ed3b30900417c0ecdd77ddb5160994e47d3bbd658"
     },
     {
+      "path": "server-edition/participation/README.md",
+      "sha256": "ce251a0a089653a21e0d96c37b55089ac7978a402c21e179debd55de629d1f45"
+    },
+    {
+      "path": "server-edition/participation/known-servers.conf",
+      "sha256": "23bc878d9ffaf7b1656541041995ac2c83a92fd13edfa3f987694c6212c67ce2"
+    },
+    {
+      "path": "server-edition/participation/server-mesh.sh",
+      "sha256": "f1e7fec8f0fe7fdd06f95975018ce3a2839a790a2646e2360debbc764e0c08b5"
+    },
+    {
       "path": "server-edition/port-awareness/known-connections.sh",
       "sha256": "c82e0766def288c620fa12ded55ad165c6acd71d588505e8ad858064141e2412"
     },
