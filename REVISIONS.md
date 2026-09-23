@@ -243,3 +243,12 @@ Source-level changes were committed to `main`. Native Windows/macOS server build
 - Added explicit `SLEELA_SERVER_LEVEL=3` selection to the native `sleelas` launcher.
 - Preserved the local-only default network posture.
 - Defined recovery records as operational evidence rather than cryptographic or independent verification.
+## 2026-09-23 — Native Code Cleanup
+
+- Hardened SMTP email transport validation and response-code parsing.
+- Added SMTP DATA dot-stuffing for plaintext and TLS email paths.
+- Rejected incomplete SMTP username/password configuration.
+- Removed the unused OpenSSL BIO include from the email implementation.
+- Hardened HTTP/2 send-callback failure reporting.
+- Separated HTTP/2 header-count and header-byte limits.
+- Kept the existing C/C++ architecture and public API contracts intact.
