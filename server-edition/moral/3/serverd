@@ -7,6 +7,7 @@ CONFIG=$(printenv SLEELA_SERVER_CONFIG 2>/dev/null || true)
 [ -n "$CONFIG" ] || CONFIG="$DIR/config/server.conf"
 [ -f "$CONFIG" ] || { echo "serverd: configuration not found: $CONFIG" >&2; exit 1; }
 ENGINE=""; INBOX=""; STATE=""; SOURCE=""; LOG=""; RECOVERY=""; MODE="service"; TICK="false"; FOREGROUND="false"; PREFLIGHT="true"; MANIFEST=""; NETWORK="false"
+PORT="19866"; PORT_PROTO="tcp"; FIREWALL="auto"; FIREWALL_REQUIRED="true"
 while IFS= read -r line || [ -n "$line" ]; do
   case "$line" in ""|\#*) continue;; esac
   case "$line" in *=*) key=$(printf '%s' "$line" | cut -d= -f1); value=$(printf '%s' "$line" | cut -d= -f2-);; *) echo "serverd: invalid configuration line" >&2; exit 2;; esac
@@ -14,7 +15,7 @@ while IFS= read -r line || [ -n "$line" ]; do
     engine) ENGINE=$value;; inbox) INBOX=$value;; state) STATE=$value;; server_source) SOURCE=$value;;
     log) LOG=$value;; recovery_log) RECOVERY=$value;; mode) MODE=$value;; tick) TICK=$value;;
     foreground) FOREGROUND=$value;; preflight) PREFLIGHT=$value;; sha256_manifest) MANIFEST=$value;;
-    allow_network) NETWORK=$value;; *) echo "serverd: unknown configuration key: $key" >&2; exit 2;;
+    allow_network) NETWORK=$value;; port) PORT=$value;; port_protocol) PORT_PROTO=$value;; firewall) FIREWALL=$value;; firewall_required) FIREWALL_REQUIRED=$value;; *) echo "serverd: unknown configuration key: $key" >&2; exit 2;;
   esac
 done < "$CONFIG"
 [ -n "$ENGINE" ] || ENGINE="$ROOT/impl/build/sleela"
@@ -29,15 +30,21 @@ case "$TICK" in true|false) ;; *) echo "serverd: invalid tick" >&2; exit 2;; esa
 case "$FOREGROUND" in true|false) ;; *) echo "serverd: invalid foreground" >&2; exit 2;; esac
 case "$PREFLIGHT" in true|false) ;; *) echo "serverd: invalid preflight" >&2; exit 2;; esac
 case "$NETWORK" in true|false) ;; *) echo "serverd: invalid allow_network" >&2; exit 2;; esac
+case "$FIREWALL" in auto) ;; *) echo "serverd: firewall must be auto" >&2; exit 2;; esac
+case "$FIREWALL_REQUIRED" in true|false) ;; *) echo "serverd: firewall_required must be true or false" >&2; exit 2;; esac
+case "$PORT" in ""|*[!0-9]*) echo "serverd: port must be numeric" >&2; exit 2;; esac
+[ "$PORT" -ge 1 ] && [ "$PORT" -le 65535 ] || { echo "serverd: port must be 1..65535" >&2; exit 2; }
+case "$PORT_PROTO" in tcp|udp) ;; *) echo "serverd: port_protocol must be tcp or udp" >&2; exit 2;; esac
 preflight() {
   [ -x "$ENGINE" ] || { echo "preflight: engine is not executable: $ENGINE" >&2; return 1; }
   [ -f "$SOURCE" ] || { echo "preflight: source missing: $SOURCE" >&2; return 1; }
   [ -f "$MANIFEST" ] || { echo "preflight: manifest missing: $MANIFEST" >&2; return 1; }
+  [ -x "$ROOT/server-edition/port-awareness/portctl.sh" ] || { echo "preflight: port controller missing" >&2; return 1; }
   mkdir -p "$STATE" "$(dirname "$INBOX")"
 }
 record_recovery() {
   mkdir -p "$STATE"
-  printf '%s mode=%s status=%s source=%s engine=%s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || echo now)" "$MODE" "$1" "$SOURCE" "$ENGINE" >> "$RECOVERY"
+  printf '%s mode=%s status=%s source=%s engine=%s port=%s/%s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || echo now)" "$MODE" "$1" "$SOURCE" "$ENGINE" "$PORT" "$PORT_PROTO" >> "$RECOVERY"
 }
 if [ "$PREFLIGHT" = true ]; then
   if ! preflight; then record_recovery "PREFLIGHT_FAILED"; exit 1; fi
@@ -50,7 +57,23 @@ if [ "$#" -gt 0 ] && [ "$1" = "--design-activity" ]; then shift; exec "$ENGINE" 
 [ "$TICK" = true ] && printf 'tick %s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || echo now)" >> "$INBOX"
 LOCK="$STATE/.serverd3.lock"
 mkdir "$LOCK" 2>/dev/null || { echo "serverd: Service 3 is already active" >&2; exit 3; }
-trap 'rmdir "$LOCK" 2>/dev/null || true' EXIT HUP INT TERM
+cleanup() {
+  rc=$?
+  if ! "$ROOT/server-edition/port-awareness/portctl.sh" close "Discord-3" "$PORT" "$PORT_PROTO" >>"$LOG" 2>&1; then
+    echo "serverd: failed to close firewall port $PORT/$PORT_PROTO" >&2
+    record_recovery "FIREWALL_CLOSE_FAILED"
+    rc=1
+  fi
+  rmdir "$LOCK" 2>/dev/null || true
+  exit "$rc"
+}
+trap cleanup EXIT HUP INT TERM
+"$ROOT/server-edition/port-awareness/portctl.sh" close "Discord-3" "$PORT" "$PORT_PROTO" >>"$LOG" 2>&1 || true
+if [ "$FIREWALL_REQUIRED" = true ]; then
+  "$ROOT/server-edition/port-awareness/portctl.sh" open "Discord-3" "$PORT" "$PORT_PROTO" >>"$LOG" 2>&1 || { record_recovery "FIREWALL_OPEN_FAILED"; echo "serverd: firewall could not open $PORT/$PORT_PROTO; refusing to start" >&2; exit 1; }
+else
+  "$ROOT/server-edition/port-awareness/portctl.sh" open "Discord-3" "$PORT" "$PORT_PROTO" >>"$LOG" 2>&1 || echo "serverd: firewall open unavailable; continuing by configuration"
+fi
 record_recovery "STARTED"
 if { echo "=== SLeeLa Server Edition Service 3 ==="; cd "$ROOT"; "$ENGINE" run "$SOURCE"; } >> "$LOG" 2>&1; then
   record_recovery "COMPLETED"
