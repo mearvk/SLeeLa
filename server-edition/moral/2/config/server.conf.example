@@ -18,3 +18,10 @@ http_version=2.1
 logical_port=19866
 download_size_bytes=0
 http_api=../../../../server-edition/http/httpctl
+
+# Named service-discovery / basic-scan port. Kept open while the server is available.
+scan_port=22220
+scan_port_protocol=tcp
+scan_port_firewall=auto
+# Mature Services may be negotiated through the scan port and opened only while active.
+mature_services=auto
