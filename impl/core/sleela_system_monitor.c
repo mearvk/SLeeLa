@@ -7,9 +7,9 @@ static unsigned weight(SLHSMObservation o,unsigned cost) {
     switch(o) {
         case SL_HSM_OBS_UNSUPPORTED_CAPABILITY:return 8u+w;
         case SL_HSM_OBS_PLATFORM_MISMATCH:return 10u+w;
-        case SL_HSM_OBS_UNKNOWN_OPERATION:return 12u+w;
-        case SL_HSM_OBS_NATIVE_ESCAPE:return 16u+w;
-        case SL_HSM_OBS_PRIVILEGED_OPERATION:return 14u+w;
+        case SL_HSM_OBS_UNKNOWN_OPERATION:return 24u+w;
+        case SL_HSM_OBS_NATIVE_ESCAPE:return 29u+w;
+        case SL_HSM_OBS_PRIVILEGED_OPERATION:return 22u+w;
         case SL_HSM_OBS_RESOURCE_BURST:return 6u+w;
         case SL_HSM_OBS_RESOURCE_IMBALANCE:return 10u+w;
         default:return 0u;
