@@ -108,7 +108,7 @@
     },
     {
       "path": "api/API-CATALOG.md",
-      "sha256": "1d718a1802cd3157f071e96ccac1a4a0cbfaae6ddfd306f843a251ffbea8bf6f"
+      "sha256": "19dcdca826971f32c2b8ad87ef454b780fbb71d92a5f8e7d545edaa6d927e189"
     },
     {
       "path": "api/API.html",
@@ -132,11 +132,31 @@
     },
     {
       "path": "api/ai/README.md",
-      "sha256": "3abfea7f6077c37f5eec7e3393313f559d20cb92f2378a6faa2eb8896d288ae7"
+      "sha256": "dd1db51460894625831d0e09da818a022e87d690147377e8a3d21708b3531270"
     },
     {
       "path": "api/ai/data-model.xml",
       "sha256": "f33f46ddb52b34772d82c75d9d5432fd55dc5db8495d66960a7a81e5e412895a"
+    },
+    {
+      "path": "api/ai/examples/ai-data-listener-flow.sleela",
+      "sha256": "66b28e03c444a22deb8dc274b48e3c380b7d933f3a25afa31895e0a4dab7e33c"
+    },
+    {
+      "path": "api/ai/examples/ai.sleela",
+      "sha256": "d1728188fb116e3defa4378923f2fe29aa244de3a50f1edc834b844f269a3348"
+    },
+    {
+      "path": "api/ai/examples/data.sleela",
+      "sha256": "ef10288b568797c73f783bf2d31dc9b8597d46e5d9484f5231950d1540e2b4cf"
+    },
+    {
+      "path": "api/ai/examples/listener.sleela",
+      "sha256": "ba0fffce5060dcaaf3d5866289f5bfc1b66aa3e1c763f00449e28ca223a7d1b6"
+    },
+    {
+      "path": "api/ai/examples/xml.sleela",
+      "sha256": "4c9dac71fce3094c20e5f20903b1fca8b2db75d595d778f6bc42962a29930742"
     },
     {
       "path": "api/ai/model.xml",
