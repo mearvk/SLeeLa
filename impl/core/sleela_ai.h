@@ -12,6 +12,9 @@ extern "C" {
 #define SL_AI_MAX_LABEL 96
 #define SL_AI_MAX_PATH 1024
 #define SL_AI_MAX_TEXT 4096
+#define SL_AI_MAX_MODEL_ID 128
+#define SL_AI_MAX_FORMAT 64
+#define SL_AI_MAX_SOURCE 128
 
 typedef enum {
     SL_AI_KIND_DATA = 1,
@@ -68,9 +71,9 @@ typedef struct {
 } SLAIResult;
 
 typedef struct {
-    const char *model_id;
-    const char *format;
-    const char *source;
+    char model_id[SL_AI_MAX_MODEL_ID];
+    char format[SL_AI_MAX_FORMAT];
+    char source[SL_AI_MAX_SOURCE];
     uint32_t revision;
     int trusted;
 } SLAIModelDescriptor;
