@@ -62,3 +62,10 @@ The HTTP 2.1 architecture explicitly defines three independent addressing layers
 This permits many SLeeLa services to operate over one HTTP/2 connection without allocating a separate native socket for each logical service.
 
 The logical-port namespace is an application construct. Native TCP/UDP port limits therefore remain relevant only to the underlying transport binding, not to the number of logical SLeeLa routes that can be represented.
+
+
+## Download Mode Status
+
+HTTP 2.0/2.1 supports the common SLeeLa DOWNLOAD mode for files over 50 MB. HTTP/2 multiplexes transfer operations while SLeeLa transfer metadata provides durable resume semantics.
+
+`SESSION-ID | DATETIME | FILE-ID | FILE-NAME | INDEX | OFFSET | TOTAL-SIZE`
