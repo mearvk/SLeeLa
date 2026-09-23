@@ -108,7 +108,7 @@
     },
     {
       "path": "api/API-CATALOG.md",
-      "sha256": "c6d1a2473f32ddcbc6dee53138717f6e5ce2b485809efd75caf9becee4efcd38"
+      "sha256": "3b9dd62260584f2b7cb4eef6093fdfedc040dc12477835ae023266bbb3bf3982"
     },
     {
       "path": "api/API.html",
@@ -120,11 +120,27 @@
     },
     {
       "path": "api/README.md",
-      "sha256": "3dec751c6756f7bbe1d0a088966149351cc5c9d6a31e5d7acd9c088b0ebf8ca1"
+      "sha256": "41a9a49a66ba6095129595402709e38d9a642d447c6b8bf3bfcd70a085cd895f"
     },
     {
       "path": "api/SOURCE-COVERAGE.html",
       "sha256": "a73de153c33a124796b9ca4e6562c61f17cc76f9fef1e7d1b05d711e6e5ee143"
+    },
+    {
+      "path": "api/audio-mixer/README.md",
+      "sha256": "cccf4a6762f750354603eb63eed3a94ee7d28a0c3acd95c1a1f355c79804bfce"
+    },
+    {
+      "path": "api/audio-mixer/audio-mix.conf",
+      "sha256": "d6aaef10a1c2f2972a0d57abda4fbd4dcf704dbf187e2a0a657141e47de9363d"
+    },
+    {
+      "path": "api/audio-mixer/audio-mix.json",
+      "sha256": "93d37e433c78f74eeefbe20f1ba420b57de14a495ea57284727cc8fbc9c15855"
+    },
+    {
+      "path": "api/audio-mixer/audio-mix.xml",
+      "sha256": "d226f13b2cd27a2e03408e3431eb32cb704f2c5a81aad69328dea0905d3179b7"
     },
     {
       "path": "api/bodi/API.html",
