@@ -12,6 +12,7 @@ void slvm_parameters_init(SLVMParameters *p) {
     if (!p) return;
     p->capability_threshold = SLVM_NORMAL_USER_CAPABILITY_THRESHOLD;
     p->subject_concurrency = SLVM_NORMAL_USER_SUBJECT_CONCURRENCY;
+    p->memory_manager_grade = SLVM_MEMORY_MANAGER_DEFAULT_GRADE;
 }
 
 int slvm_parameters_capability_threshold(const SLVMParameters *p) {
@@ -30,4 +31,14 @@ int slvm_parameters_meets_threshold(const SLVMParameters *p, int capability) {
 int slvm_parameters_within_concurrency(const SLVMParameters *p, int subjects) {
     int limit = slvm_parameters_subject_concurrency(p);
     return subjects >= 0 && subjects <= limit;
+}
+
+int slvm_parameters_memory_manager_grade(const SLVMParameters *p) {
+    return p ? p->memory_manager_grade : SLVM_MEMORY_MANAGER_DEFAULT_GRADE;
+}
+
+int slvm_parameters_set_memory_manager_grade(SLVMParameters *p, int grade) {
+    if (!p || grade < SLVM_MEMORY_MANAGER_GRADE_I || grade > SLVM_MEMORY_MANAGER_GRADE_III) return 0;
+    p->memory_manager_grade = grade;
+    return 1;
 }
