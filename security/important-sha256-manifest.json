@@ -108,7 +108,7 @@
     },
     {
       "path": "api/API-CATALOG.md",
-      "sha256": "3b9dd62260584f2b7cb4eef6093fdfedc040dc12477835ae023266bbb3bf3982"
+      "sha256": "47dcfd1d72ae9d3c574583dacbbae4075a8bcc5b2bdf55485505f89d8ac38826"
     },
     {
       "path": "api/API.html",
@@ -299,8 +299,12 @@
       "sha256": "6b09b6ab0e588e318628c7cc2c4c60929a5744ca0f36ab5a3cdd88a4447959e4"
     },
     {
+      "path": "api/media/JAVA-AV-SIGNATURE.md",
+      "sha256": "b29482c6764adb50142848ddfe9e7c9ec28c6f3f5045a9855419227fc3859dc3"
+    },
+    {
       "path": "api/media/README.md",
-      "sha256": "0da9ec325ed390a8c7a1d151131d0c8f817604bf93f9b49d8194c10bca945de2"
+      "sha256": "43d3cdfe470abf9542f5dc51203d9246df2d0815d15a35c7ba088b4048da3d18"
     },
     {
       "path": "api/nordshrift/API.html",
