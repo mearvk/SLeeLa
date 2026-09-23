@@ -1,5 +1,6 @@
 #include "sleela_ai.h"
 #include <string.h>
+#include <stdlib.h>
 
 static int has_text(const char *s) { return s && *s; }
 
