@@ -1,7 +1,7 @@
 // native_api.cpp -- Unified native-module dispatcher for math/physics/economics.
 //
-// This is the shared entry point that ties the three arithmetic subject
-// libraries together. It validates imports, enforces the math dependency for
+// This is the shared entry point that ties the executable quantitative
+// Subject Libraries together. It validates imports, enforces the math dependency for
 // physics and economics, invokes the per-subject class builders
 // (addMath/addPhysics/addEconomics, each defined in its own subject file under
 // subjects/{math,physics,economics}/), and lowers qualified module calls
