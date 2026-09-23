@@ -104,7 +104,7 @@
     },
     {
       "path": "VERSION.md",
-      "sha256": "09791fe7a0206ca85a78c49091c9b30e3040a2ea840da0b4a73b6a532bcc9987"
+      "sha256": "4e9c240411aeaa5aff0b60e0014f62a52063a1e984ffc6bc740e59feadbef8dd"
     },
     {
       "path": "api/API-CATALOG.md",
@@ -140,23 +140,23 @@
     },
     {
       "path": "api/ai/examples/ai-data-listener-flow.sleela",
-      "sha256": "66b28e03c444a22deb8dc274b48e3c380b7d933f3a25afa31895e0a4dab7e33c"
+      "sha256": "caad9c29ca97249850c07335afb304a7f2c9c7e38fe8986467ad3213629960f1"
     },
     {
       "path": "api/ai/examples/ai.sleela",
-      "sha256": "d1728188fb116e3defa4378923f2fe29aa244de3a50f1edc834b844f269a3348"
+      "sha256": "ee1befe12d13eabb8795720169c05927c6b326f0b809618932c2a1c694a0f39f"
     },
     {
       "path": "api/ai/examples/data.sleela",
-      "sha256": "ef10288b568797c73f783bf2d31dc9b8597d46e5d9484f5231950d1540e2b4cf"
+      "sha256": "fbc1579a5e6236c85a5c889271a2405b604f05e716ef671045ca8f64d83a4330"
     },
     {
       "path": "api/ai/examples/listener.sleela",
-      "sha256": "ba0fffce5060dcaaf3d5866289f5bfc1b66aa3e1c763f00449e28ca223a7d1b6"
+      "sha256": "98de6588bd2f6790e67d9d9752dbbbee93688809fb6a8a05ee66cbbdbf1491fa"
     },
     {
       "path": "api/ai/examples/xml.sleela",
-      "sha256": "4c9dac71fce3094c20e5f20903b1fca8b2db75d595d778f6bc42962a29930742"
+      "sha256": "01f91e20d79c75e6691a7af33bc886eab30d9297df3987aa442eafec0a0455b2"
     },
     {
       "path": "api/ai/model.xml",
@@ -3216,7 +3216,7 @@
     },
     {
       "path": "impl/frontend/driver.cpp",
-      "sha256": "c9b923b92e8abaff290f9056f6eba6c8062c9c47e173b1c953530393c184ae8e"
+      "sha256": "dee43ad0744d744ab603da1fa13aa171f8afd58f2467a4fc8c04fa1d1286e618"
     },
     {
       "path": "impl/frontend/lexer.cpp",
