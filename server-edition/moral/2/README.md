@@ -91,3 +91,13 @@ Windows Defender Firewall PowerShell controller on Windows.
 
 The firewall rule is owned by the Server Edition lifecycle and is not a
 replacement for socket binding, NAT, TLS, or application authentication.
+ 
+## HTTP multiplexing and large-file DOWNLOAD
+
+Service 2 is wired to the shared `api/http-multiplexing/` source through
+`server-edition/http/httpctl`. Its configuration now supports
+`http_version`, `logical_port`, `download_size_bytes`, and `http_api`.
+The logical PORT namespace is exactly 10^48 values and is independent of the
+native firewall port. HTTP 2.1 uses HTTP/2 stream multiplexing. Files over
+50,000,000 bytes select resumable DOWNLOAD mode with SESSION-ID, DATETIME,
+FILE-ID, FILE-NAME, INDEX, OFFSET, and TOTAL-SIZE resume state.
