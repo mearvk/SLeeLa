@@ -161,6 +161,7 @@ compiler, runtime, and Nordshrift stack.
 | **Math** | [`MATH.md`](MATH.md) | [`impl/subjects/math/`](impl/subjects/math/) native math lowering (shared dispatcher in [`impl/subjects/native/`](impl/subjects/native/)) |
 | **Physics** | [`PHYSICS.md`](PHYSICS.md) | [`impl/subjects/physics/`](impl/subjects/physics/) native physics API and executable formula layer |
 | **Astrophysics** | [`api/subjects/astrophysics/README.md`](api/subjects/astrophysics/README.md) | [`impl/subjects/astrophysics/`](impl/subjects/astrophysics/) C numerical ABI, C++ facade, native frontend class, and XML observation store |
+| **Sociology** | [`api/subjects/sociology/README.md`](api/subjects/sociology/README.md) | [`impl/subjects/sociology/`](impl/subjects/sociology/) C statistical mathematics, C++ facade, native frontend vocabulary, and XML model/procedure examples |
 | **Economics** | [`ECONOMICS.md`](ECONOMICS.md) | [`impl/subjects/economics/`](impl/subjects/economics/) native economics API and executable formula layer |
 | **Inference** | [`INFERENCE.md`](INFERENCE.md) | [`impl/subjects/inference/`](impl/subjects/inference/) native statistics over data series (trend, correlation, forecast) |
 | **Chemistry** | [`CHEMISTRY.md`](CHEMISTRY.md) | [`impl/subjects/chemistry/`](impl/subjects/chemistry/) (library + frontend chemistry API) |
