@@ -1,0 +1,17 @@
+#sleela 1.3
+// SLeeLa Regex API 1.0.0 — source-level design draft.
+// Main program: Sleelvac 1.5.
+// These calls define the proposed source vocabulary; they are not yet compiler intrinsics.
+
+class RegexPatterns {
+    void main() {
+        print(match("hello world", "contains hello"));
+        print(match("2026", "exact digit{4}"));
+        print(match("report.txt", "ends .txt"));
+        print(match("alice@example.com", "contains @"));
+
+        int pattern = regex("digit{2,4}");
+        print(regexExact(pattern, "2026"));
+        regexClose(pattern);
+    }
+}
