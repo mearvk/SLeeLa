@@ -447,6 +447,26 @@
       "sha256": "467cb8a1cb689c2fc011991806e67c64c9e745f66bbb6c82cfc64d8660bc7960"
     },
     {
+      "path": "api/subjects/sociology/EXCELLENT.md",
+      "sha256": "3717979dc883d56ac02ad831b21e1e2948bbd15c6704ac5f84889e3208b8f668"
+    },
+    {
+      "path": "api/subjects/sociology/README.md",
+      "sha256": "83a66390e21e8e78c5cc1d8382ded13103645d9fae1425db136f15bc577c0877"
+    },
+    {
+      "path": "api/subjects/sociology/model.xml",
+      "sha256": "94151307cf7f53398bba64e7ac899d2fbe0ca19d77af96fc024e2d95bd579d03"
+    },
+    {
+      "path": "api/subjects/sociology/observation.xml",
+      "sha256": "24d6fde87c19fa01e16620c5b1e98b9c8a9f85fdf08139e679c68f1e2e05057b"
+    },
+    {
+      "path": "api/subjects/sociology/procedure.xml",
+      "sha256": "fa29f2fbf60bba71786add873aac77d0814e02357a083af536e2fec84858f837"
+    },
+    {
       "path": "api/subjects/subject-model.xsd",
       "sha256": "9d07e313a3c91e0280166251a13e03370f66432be7a0eb7c44a253d42a7cd0a2"
     },
@@ -2483,6 +2503,14 @@
       "sha256": "f5b6a8331e58ea3a40d4111dca35b223c600278351e37d11ceb85cb258369366"
     },
     {
+      "path": "examples/nordshrift/subject-libraries.sst",
+      "sha256": "e0f27ffe6c40773b6cfa5fb8badeeccc0a85ed692425f4275795538a9204eeac"
+    },
+    {
+      "path": "examples/subjects/sociology.sleela",
+      "sha256": "21a656d17f81474cb3fba902ee1830154c1e3be99d6456a8e58f449e4bf366bd"
+    },
+    {
       "path": "examples/symmetry/build.sst",
       "sha256": "8c330bd7adeb983de5ef7a1e4673745c5ba2e74459334840baf13cc76e4e5480"
     },
@@ -3580,15 +3608,15 @@
     },
     {
       "path": "impl/subjects/native/native_add.h",
-      "sha256": "dbd73460abf50e73dfd5e1b0366685129d948be7c2423a8a879cce2464b556a9"
+      "sha256": "9939c59302d75f8e99b0fdc9cc0fde6e5b07fc2d8e11556d2ce4db44dbdf6f16"
     },
     {
       "path": "impl/subjects/native/native_api.cpp",
-      "sha256": "d829f6bbd546c8434263364038e3e4a5a3f938c16a2e81880e0346a1060e0c19"
+      "sha256": "4fc3072cbade39c6d454ffb12c56bfe2fe2ee986c6c8b39ff6fe5e09dd376695"
     },
     {
       "path": "impl/subjects/native/native_api.h",
-      "sha256": "78b73f538693de572e3c2c3da9f473a3dd754d51671a50239d6e095aa42643dc"
+      "sha256": "2c7c6ffd01c37f2ddf9c78ca39d3985a9ace14dbd5022191f62abd01b65a1318"
     },
     {
       "path": "impl/subjects/native/native_builders.h",
@@ -3597,6 +3625,26 @@
     {
       "path": "impl/subjects/physics/physics_native.cpp",
       "sha256": "b23c82c437213ba4f2636764e8ffe00b23571ae0ee56088f78f77c1bac1eb95c"
+    },
+    {
+      "path": "impl/subjects/sociology/sociology.cpp",
+      "sha256": "cf6e3d34392a97b1ee2f5f5e2a89495914b25e301fa315d1668e37662b046d23"
+    },
+    {
+      "path": "impl/subjects/sociology/sociology.hpp",
+      "sha256": "71adfd69656b098a62106c36ec2b3ac9fcc77eb2e59c7ed9f85e5a72dedbf111"
+    },
+    {
+      "path": "impl/subjects/sociology/sociology_math.c",
+      "sha256": "585a234800b9f0f32224b72c56a57d9fc70e56baa7afe274a27a5abbfc50ff39"
+    },
+    {
+      "path": "impl/subjects/sociology/sociology_math.h",
+      "sha256": "62e90f656d1e81fbed67095ab64626ecb4c9c625d54e7e7e03f812cd2f570b3d"
+    },
+    {
+      "path": "impl/subjects/sociology/sociology_native.cpp",
+      "sha256": "90cab01419f11f35355d19f59c245323e74518e357b853a560a9540582cb7baa"
     },
     {
       "path": "impl/terminal/terminal_capability.cpp",
@@ -3673,6 +3721,10 @@
     {
       "path": "impl/tests/subjects/run_subject_tests.sh",
       "sha256": "f14e4dc81b988158db1bc0b5b51a4b958881db2f3de52c3541b701d5c42e76f1"
+    },
+    {
+      "path": "impl/tests/subjects/sociology_smoke.c",
+      "sha256": "4433bb6f9a2e95cc99aff6ec8d7a25eddb4b495c94d624623924dcbc6cbb5596"
     },
     {
       "path": "impl/tests/version/malformed.sleela",
