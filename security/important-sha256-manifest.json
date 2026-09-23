@@ -4111,6 +4111,10 @@
       "sha256": "95e7c15bac272615fc79100c2a3cd73b49e2ebc04e979d92b5e46d90a9632bb3"
     },
     {
+      "path": "server-edition/moral/2/run/windows-server.ps1",
+      "sha256": "84a04704563151501b33f018867fe14f8d09bb6f94a5267d1aa89dfd3d2c7723"
+    },
+    {
       "path": "server-edition/moral/2/src/Server.sleela",
       "sha256": "14961862280f3fbdd9d043d0c166e0226f0849c87ad753c6483af4c2e19983d8"
     },
@@ -4120,7 +4124,7 @@
     },
     {
       "path": "server-edition/moral/3/INSTALL.md",
-      "sha256": "4fd13b94f6d0df8505a0589b64e11e99058ce41cfe3210011c839b0fae6c359a"
+      "sha256": "31ba9f8a291d32dd8bb92fe7d99c1b2cdd0204bcb8fecec90974df99efec3825"
     },
     {
       "path": "server-edition/moral/3/README.md",
@@ -4151,12 +4155,16 @@
       "sha256": "769b945906ac468e8a19d33711742c944fcb7846ccf6330760ec3aecf7c7f59a"
     },
     {
+      "path": "server-edition/moral/3/run/windows-server.ps1",
+      "sha256": "fc06cfcc7edcd6953bafd1888ecc9c5f94bd92b96822a9cebf080d60260194bf"
+    },
+    {
       "path": "server-edition/moral/3/src/Server.sleela",
       "sha256": "fef23c4daada232e040c1b313700cf23d91fc64b44e885d579df333177ed292b"
     },
     {
       "path": "server-edition/moral/README.md",
-      "sha256": "81b74533f3f4e719471f3459981cebeee7290f69d34e8a06374a0addbdb1d213"
+      "sha256": "1293f2ac723ab415f5e5efc5a666654a0f37a239e50813764a8a475b91badfb5"
     },
     {
       "path": "server-edition/port-awareness/portctl.ps1",
@@ -4164,7 +4172,7 @@
     },
     {
       "path": "server-edition/port-awareness/portctl.sh",
-      "sha256": "2b2e86aa7e93cd64e7c5463b22987c4564df654a64140b5825c8ea81708c752f"
+      "sha256": "1694d0b91027cd09daad6fb422767d192fbe4f9eaa7cda504c81b24b0cfb3438"
     },
     {
       "path": "sleela-terminal/arith.cpp",
