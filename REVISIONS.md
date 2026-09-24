@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # REVISIONS
 
 ## 2026-09-22 — Discord™ Server Naming Theme
@@ -252,3 +253,130 @@ Source-level changes were committed to `main`. Native Windows/macOS server build
 - Hardened HTTP/2 send-callback failure reporting.
 - Separated HTTP/2 header-count and header-byte limits.
 - Kept the existing C/C++ architecture and public API contracts intact.
+=======
+# SLeeLa Revisions and Repository Cleanup
+
+**Status:** Structural cleanup and documentation consolidation  
+**Date:** 2026-09-15  
+**Branch:** `master`
+
+## Purpose
+
+This document records the repository-wide cleanup performed around the SLeeLa source tree, build system, security verification material, and retained documentation. The objective is to make the repository easier to maintain without introducing unreviewed semantic changes to the compiler or runtime.
+
+## Cleanup principles
+
+1. **Preserve behavior.** Cleanup should not silently change language semantics, runtime behavior, file formats, or public command names.
+2. **Keep source separate from generated output.** Build artifacts belong under ignored build directories and are not source material.
+3. **Keep tools executable.** `tools/` is for scripts and command-line utilities; explanatory security documentation belongs under `security/`.
+4. **Keep security gates explicit.** SHA-256 verification remains part of the build and execution contract.
+5. **Avoid accidental IDE state.** Editor/project metadata is not part of the portable source distribution.
+6. **Prefer small, reviewable revisions.** Large mechanical rewrites are deferred unless they can be verified without changing behavior.
+
+## Repository structure
+
+### Root
+
+The repository root retains public specifications, language references, examples, catalogs, and project-level documentation that are intentionally addressable from the README.
+
+### `impl/`
+
+The implementation tree contains the C/C++ execution core, frontend/compiler, Nordshrift implementation, catalog, xclass support, subject libraries, platform interfaces, tests, and the authoritative `Makefile`.
+
+### `tools/`
+
+`tools/` contains executable or operational utilities, including:
+
+- `build-verified.sh` — verification-first build entry point.
+- `verify-before-execution.py` — fail-closed SHA-256 verifier.
+- `generate-sha256-manifest.py` — manifest generator.
+- data-generation and migration utilities.
+
+Documentation that defines the security contract is retained under `security/` instead of being mixed with executable tools.
+
+### `security/`
+
+`security/` is the home for the build-verification contract, SHA-256 manifest, and related security documentation.
+
+### `.github/`
+
+GitHub Actions workflows remain under `.github/workflows/`. They are retained because they perform repository-specific generation, migration, testing, and maintenance work.
+
+### `.kiro/`
+
+The Kiro steering material is retained. It is project guidance rather than generated output and therefore is not treated as disposable IDE metadata.
+
+## Changes made in this cleanup
+
+### 1. Removed IDE-specific project state
+
+The committed `.idea/` project metadata was removed. This includes editor dictionaries, IntelliJ project configuration, UI designer state, module metadata, and VCS metadata. These files are local development state rather than portable SLeeLa source.
+
+A root `.gitignore` now excludes `.idea/`, `.vscode/`, IDE module files, common compiler artifacts, build directories, and temporary editor files.
+
+### 2. Consolidated security documentation
+
+`tools/SHA256-VERIFICATION.md` was moved to:
+
+`security/SHA256-VERIFICATION.md`
+
+The executable verification helpers remain in `tools/`, while the security contract and manifest remain together in `security/`.
+
+### 3. Preserved the verified-build architecture
+
+The existing verification-first build path is retained:
+
+`tools/build-verified.sh` → `impl/Makefile` → `verify-security` → compiler/link targets
+
+The committed manifest remains:
+
+`security/sha256-manifest.json`
+
+The native frontend's execution gate remains in `impl/frontend/driver.cpp` and uses the same SHA-256 verification tool.
+
+### 4. Source-code cleanup policy
+
+The compiler and runtime source tree is intentionally **not** subjected to a blind whole-tree reformatter in this revision. That kind of change can create large diffs, obscure functional changes, and require regeneration of the committed SHA-256 manifest. Future formatting work should be performed in small subsystem-scoped passes, followed by build/test verification and manifest regeneration where applicable.
+
+This is deliberate risk control, not a waiver of source-quality work.
+
+## Retained documentation
+
+The existing language, compiler, runtime, subject-library, filesystem, networking, terminal, catalog, and security documents remain available unless they are clearly generated, obsolete, or replaced. This cleanup does not delete technical references merely because they are old or unusually named; their relationships should be reviewed before removal.
+
+The repository README remains the high-level map. Implementation-specific documentation remains alongside `impl/`, while security/build documents remain under `security/`.
+
+## Verification requirements after future cleanup
+
+Before accepting future source or build changes:
+
+1. Regenerate `security/sha256-manifest.json` when a verified source file changes.
+2. Run the verification gate.
+3. Build through `tools/build-verified.sh`.
+4. Run the appropriate test targets.
+5. Review generated/build output to ensure it is not accidentally tracked.
+6. Update this document when the repository structure or retained-document policy changes.
+
+## Deferred cleanup
+
+The following are intentionally deferred until they can be handled with complete source visibility and verification:
+
+- broad mechanical formatting of all C/C++ files;
+- mass renaming of public documentation files;
+- relocation of root-level language specifications;
+- deletion of historical domain documents whose current consumers have not been identified;
+- changes to compiler/runtime behavior solely for stylistic reasons.
+
+## Revision record
+
+### 2026-09-15 — Repository hygiene pass
+
+- removed committed IntelliJ `.idea/` metadata;
+- added root repository hygiene `.gitignore`;
+- moved SHA-256 security documentation from `tools/` to `security/`;
+- retained the verification-first build architecture;
+- documented the source/folder ownership model;
+- established a conservative policy for future source formatting and document retirement.
+
+The goal is a smaller, clearer, more portable repository without sacrificing the existing implementation or security contracts.
+>>>>>>> 70eb1d2 (Repository cleanup and revision record)

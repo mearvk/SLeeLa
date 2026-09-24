@@ -1,6 +1,6 @@
 # SLeeLa SHA-256 Verification Gate
 
-SLeeLa now fails closed before compilation, execution, xclass diagnostics, and OS Defender diagnostics/build/install/provision unless a trusted SHA-256 manifest is supplied.
+SLeeLa fails closed before compilation, execution, xclass diagnostics, and OS Defender diagnostics/build/install/provision unless a trusted SHA-256 manifest is supplied.
 
 ## Configuration
 
@@ -39,14 +39,28 @@ The native frontend invokes the verification gate before:
 
 The verification implementation is `tools/verify-before-execution.py` and the native integration is `impl/frontend/driver.cpp`.
 
-## Generating the manifest
+## Verified build
 
-The committed default manifest is `security/sha256-manifest.json`. Regenerate it with the helper after any verified source file changes:
+The canonical build entry point is:
+
+```sh
+./tools/build-verified.sh
+```
+
+The wrapper resolves the trusted manifest and passes it to the `impl/Makefile`, whose `verify-security` target also enforces the gate before build artifacts are produced.
+
+## Manifest maintenance
+
+The committed manifest is:
+
+`security/sha256-manifest.json`
+
+Regenerate it after changing a verified source file:
 
 ```sh
 python3 tools/generate-sha256-manifest.py --root . --output security/sha256-manifest.json
 ```
 
-The runtime gate resolves relative manifest paths and `tools/verify-before-execution.py` against the current directory, so run `sleela`/`make test` from the repository root (or pass an absolute `SLEELA_SHA256_MANIFEST`).
+The manifest generator covers the C/C++ source directories and additional build inputs defined in `tools/generate-sha256-manifest.py`.
 
 This is an integrity gate, not publisher authentication. The manifest itself must come from a trusted source. A signed-manifest or other authenticated trust chain can be added separately.
