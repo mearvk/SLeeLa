@@ -22,6 +22,10 @@ The normal `SkyaClientApp` provides:
   - Save Config As
   - Delete Old Config
   - Exit
+- **Groups**
+  - Host Private Group
+  - Search Users, Groups, Hosts & Rooms
+  - Close Group Windows
 - **Settings**
   - Chat Settings
   - Audio Settings
@@ -67,3 +71,23 @@ The configuration layer currently provides the foundation for persistent host, p
 The GUI intentionally keeps the logo and application identity prominent without allowing the branding to consume the working area. Tabs remain dedicated to Chat, Video, Audio, and File Transfer in the normal Client, while administrative lifecycle controls remain in the separate Monitor.
 
 Guia™ remains the common GUI-to-SLeeLa client/listener protocol boundary; JavaFX is the presentation adapter.
+
+
+## Video Targets
+
+The Video tab accepts four target classes:
+
+- IP
+- Host
+- Group
+- Room
+
+The target is explicit in the GUI so the future native media layer can distinguish direct addressing from group and room routing.
+
+## Private Group Windows
+
+The client can host up to 100 locally managed private groups. Each hosted group opens its own window with controls for adding/removing connections, Video, Audio, and closing the group. These controls are currently a GUI/model foundation; they do not by themselves establish production network or media sessions.
+
+## Directory Search
+
+The Groups menu opens a directory search window covering Users, Groups, Hosts and Rooms. The current search is local to the client model and built-in room data. It is designed so an authenticated SLeeLa directory service can later provide remote discovery results.
