@@ -1,11 +1,14 @@
 # Skya Remote Connection GUI
 
-Both Skya JavaFX tasks now expose the same Admin UI lifecycle controls: Start, Pause, and Stop.
+The normal Skya Client and the administrative Client Monitor are separate JavaFX applications.
 
-- Local Client Monitor: Start runs or resumes the SLeeLa client circuit, Pause pauses monitor output while the SLeeLa process remains running, and Stop terminates the local circuit process.
-- Remote Connection: Start connects to the configured server, Pause pauses listener delivery while retaining the socket, and Stop closes the remote connection.
+- **Normal Client:** user-facing Chat, Video, Audio, and File Transfer experience.
+- **Client Monitor:** administrative local circuit/process monitoring with Start, Pause, and Stop controls.
+- **Remote Connection GUI:** remote server connection foundation and connection/session controls.
 
-The controls follow the Guia™ lifecycle vocabulary. The local task corresponds to CIRCUIT.START, CIRCUIT.PAUSE, and CIRCUIT.STOP. The remote task corresponds to CLIENT.CONNECT, LISTENER.PAUSE, LISTENER.STOP, CLIENT.DISCONNECT, and SESSION.CLOSED.
+The normal Client is the default user interface. Administrative controls are not part of the normal Client surface.
+
+The controls and client/listener lifecycle follow the Guia™ vocabulary. The administrative local task corresponds to CIRCUIT.START, CIRCUIT.PAUSE, and CIRCUIT.STOP. The remote task corresponds to CLIENT.CONNECT, LISTENER.PAUSE, LISTENER.STOP, CLIENT.DISCONNECT, and SESSION.CLOSED.
 
 The remote adapter remains a TCP foundation. Selecting HTTP/2 or HTTP/3 does not claim that a plain Java TCP socket implements those protocols. Production HTTP/2, HTTP/3/QUIC, TLS, NAT traversal, authentication, and media transport remain native implementation layers.
 
