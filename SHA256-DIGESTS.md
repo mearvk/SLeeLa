@@ -3302,9 +3302,10 @@ fb2496064b634a11356dd4f9c1d9862a77141d2267b1ba8a6739449730c947ad  telephony-skya
 d33dfbe918b7ffbc5ff865930ddb93a91fcc4d4cb504dba337261d24d7371d8c  telephony-skya/docs/REMOTE-CONNECTION-GUI.md
 7473b1c17af436ee110f5a5607fa97b85678653542485c92c7f144be94b20357  telephony-skya/docs/RUNNABLES.md
 2f496cbede393e83c2ee9269a7d0ea49bb8f3a21cc0ae910ab81de678e11a3a3  telephony-skya/docs/SLEELA-APPLICATION-MODEL.md
-6cc0500032561b70b990bc07ba86b2936b545b4b56faf51a2cd958685ca5c277  telephony-skya/javafx/pom.xml
-0eb9da6947df2fb61946c9bdb07622efbcd2bb9c45463b2fdc6b00d9e241823c  telephony-skya/javafx/src/main/java/com/mearvk/sleela/skya/SkyaApp.java
-ee93602a4a76a5e8a1a251844e69d947bf89dc9bfe9e1ecdd8e117137c1e85f8  telephony-skya/javafx/src/main/java/com/mearvk/sleela/skya/SkyaClientApp.java
+7a19d0e11de881ef3fb4c92a746754342063dc00e0b4f25ce351a58bd96509b6  telephony-skya/javafx/pom.xml
+a1bc16be6f3bbc372eb1ae36a0bdb1efb3ac75b1379abe7cb455385ba8c31a4d  telephony-skya/javafx/src/main/java/com/mearvk/sleela/skya/SkyaApp.java
+3353982f132a64c67dbc5c3a00340263c1c380814ef620d75f36204ea697af2a  telephony-skya/javafx/src/main/java/com/mearvk/sleela/skya/SkyaClientApp.java
+d50e5f7e77120b799c15d5e2641b8e7a6ef2bbc7eda948fd1b16a399b315e1cd  telephony-skya/javafx/src/main/java/com/mearvk/sleela/skya/SkyaConfigManager.java
 f9ff1b460a9776c94bb6f04d2385b13bb4a88cd27dcf00679644ad3528a87a3e  telephony-skya/javafx/src/main/java/com/mearvk/sleela/skya/SkyaConnectApp.java
 c7c03edeb986b969c6dbc0ce6eaeef9bd5a15d5f109c0ad2b13ce42b08a84f29  telephony-skya/javafx/src/main/resources/skya-monitoring.xml
 0905714c0cb24317fa03fa8b7186e0dfe7da80804b4dcb06ec926e7c8af7b67c  telephony-skya/javafx/src/main/resources/skya-remote-connect.xml
