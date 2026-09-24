@@ -3312,7 +3312,7 @@ a1bc16be6f3bbc372eb1ae36a0bdb1efb3ac75b1379abe7cb455385ba8c31a4d  telephony-skya
 3353982f132a64c67dbc5c3a00340263c1c380814ef620d75f36204ea697af2a  telephony-skya/javafx/src/main/java/com/mearvk/sleela/skya/SkyaClientApp.java
 d50e5f7e77120b799c15d5e2641b8e7a6ef2bbc7eda948fd1b16a399b315e1cd  telephony-skya/javafx/src/main/java/com/mearvk/sleela/skya/SkyaConfigManager.java
 dddb611d56d634ee29fdeb44b3c8005e3982c74d27d53071f2e272ec515758b1  telephony-skya/javafx/src/main/java/com/mearvk/sleela/skya/SkyaConnectApp.java
-ed385035b8d3f981cb1951964504e745caa85f117fb6f4fbece74a2026d0b7dd  telephony-skya/javafx/src/main/java/com/mearvk/sleela/skya/SkyaRoomListManager.java
+c2714a8ec9bdcd52f29e0d94dda04e67646368a490dd24526574360a5d57817b  telephony-skya/javafx/src/main/java/com/mearvk/sleela/skya/SkyaRoomListManager.java
 c7c03edeb986b969c6dbc0ce6eaeef9bd5a15d5f109c0ad2b13ce42b08a84f29  telephony-skya/javafx/src/main/resources/skya-monitoring.xml
 0905714c0cb24317fa03fa8b7186e0dfe7da80804b4dcb06ec926e7c8af7b67c  telephony-skya/javafx/src/main/resources/skya-remote-connect.xml
 1bebb1b63674fc16bf266fa00906fc0a4ec410261db8a68c7246a40f81f4319e  telephony-skya/javafx/src/main/resources/skya-ui.xml
