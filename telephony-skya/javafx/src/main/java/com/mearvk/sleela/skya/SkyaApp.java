@@ -24,6 +24,7 @@ public final class SkyaApp extends Application {
 
     @Override public void start(Stage stage) {
         stage.setTitle("Skya — SLeeLa Telephony — Admin");
+        protocolFooter.callback("GUI.CREATE");
         engineStatus = new Label("Client: stopped");
         circuitStatus = new Label("Monitoring circuit: ready");
         status = new Label("Admin: ready");
@@ -43,9 +44,9 @@ public final class SkyaApp extends Application {
         Button start = new Button("Start");
         Button pause = new Button("Pause");
         Button stop = new Button("Stop");
-        start.setOnAction(e -> startAdminTask());
-        pause.setOnAction(e -> pauseAdminTask());
-        stop.setOnAction(e -> stopAdminTask());
+        start.setOnAction(e -> { protocolFooter.callback("CIRCUIT.START"); startAdminTask(); });
+        pause.setOnAction(e -> { protocolFooter.callback("CIRCUIT.PAUSE"); pauseAdminTask(); });
+        stop.setOnAction(e -> { protocolFooter.callback("CIRCUIT.STOP"); stopAdminTask(); });
 
         VBox center = new VBox(10, new Label("Skya Client Monitor"), new Separator(),
             new Label("Connection / Peer Monitor"), peers, new Label("Engine"), engineStatus,
