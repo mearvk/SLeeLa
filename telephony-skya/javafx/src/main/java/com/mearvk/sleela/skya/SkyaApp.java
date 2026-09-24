@@ -206,8 +206,6 @@ public final class SkyaApp extends Application {
         engineStatus.setText("Client: stopped"); circuitStatus.setText("Monitoring circuit: stopped");
     }
 
-    @Override public void stop(){stopAdminTask();}
-
     private Path locateCircuit() {
         String configured=System.getenv("SKYA_SLEEELA_CIRCUIT");
         if(configured!=null&&!configured.isBlank()){Path p=Paths.get(configured);if(Files.isRegularFile(p))return p;}
