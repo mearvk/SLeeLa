@@ -43,7 +43,6 @@ static int snom_probe(const skya_driver_device *d) { return vendor_probe(d, "Sno
 static int cisco_probe(const skya_driver_device *d) { return vendor_probe(d, "Cisco"); }
 
 static const skya_phone_driver drivers[] = {
-    {"standard-audio", "Standard", standard_audio_probe, standard_audio_caps},
     {"yealink", "Yealink", yealink_probe, audio_phone_caps},
     {"poly", "Poly", poly_probe, audio_phone_caps},
     {"jabra", "Jabra", jabra_probe, audio_phone_caps},
@@ -52,7 +51,8 @@ static const skya_phone_driver drivers[] = {
     {"logitech", "Logitech", logitech_probe, audio_phone_caps},
     {"fanvil", "Fanvil", fanvil_probe, audio_phone_caps},
     {"snom", "Snom", snom_probe, audio_phone_caps},
-    {"cisco", "Cisco", cisco_probe, audio_phone_caps}
+    {"cisco", "Cisco", cisco_probe, audio_phone_caps},
+    {"standard-audio", "Standard", standard_audio_probe, standard_audio_caps}
 };
 
 extern "C" int skya_register_builtin_drivers(void) {
