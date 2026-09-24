@@ -3376,7 +3376,7 @@
     },
     {
       "path": "impl/frontend/driver.cpp",
-      "sha256": "31504d6d948b5b7e0d7a2f594664d3047115ebf12e50d1738ecb3e9fce6232a3"
+      "sha256": "9fa16497991769d4b4b1ff64d9c4920eb9bc5139cf852486eaeb172cc83595c6"
     },
     {
       "path": "impl/frontend/http_server_cli.cpp",
@@ -4413,50 +4413,6 @@
     {
       "path": "synchro/tests/test_synchro.py",
       "sha256": "77d79a21d1972688c3fa85c3e473f076a75be44158a2eec3a9887edfeb1d527c"
-    },
-    {
-      "path": "telephony-skya/native/main.cpp",
-      "sha256": "fc037ee5df4899cf0325e7ca6143aa20616e6650609a575e552af75b76120e74"
-    },
-    {
-      "path": "telephony-skya/native/skya_engine.cpp",
-      "sha256": "244e6146532bdde88d1401fa105654d9298bbdf68ad87952cec099bd58d1cd52"
-    },
-    {
-      "path": "telephony-skya/native/skya_engine.h",
-      "sha256": "b1660bbbebd5cb9b052b0b5faefbb5d20dc02b6d58a2680f50b0a456646c7e7d"
-    },
-    {
-      "path": "telephony-skya/native/skya_policy.cpp",
-      "sha256": "85b8f12af2dcee44f2819789ad1bec74080cf8ac51132ae4c2d2f6dbe135f829"
-    },
-    {
-      "path": "telephony-skya/native/skya_policy.h",
-      "sha256": "cbc20ffc414c98d970b7a4899e0cb6e5943d42f6efbeb4702930211d0e377b5e"
-    },
-    {
-      "path": "telephony-skya/native/skya_sleela_bridge.cpp",
-      "sha256": "7ae0fc332a68867c358adfe060ac7a5b3c0eedae8da091c58e679c20a509cf92"
-    },
-    {
-      "path": "telephony-skya/native/skya_sleela_bridge.h",
-      "sha256": "33d3011a3faec09e816e02fa7fd0a2e8df2eccd8026b60392a8b1c44a4cd005c"
-    },
-    {
-      "path": "telephony-skya/sleela/Skya.sleela",
-      "sha256": "94c5b0591b2001c1f98a834736017d14718a85f66a946c9421c45f5e4c69f391"
-    },
-    {
-      "path": "telephony-skya/sleela/SkyaClient.sleela",
-      "sha256": "278b8c1e40d98526a722ad5f157acef9a8264a054437b9c4fd097d866d77722c"
-    },
-    {
-      "path": "telephony-skya/sleela/SkyaRoom.sleela",
-      "sha256": "47e3ca92c8b397f90fb6476886f0efa26cf55e9b3c28dc69080e9cca460a39e0"
-    },
-    {
-      "path": "telephony-skya/sleela/SkyaServer.sleela",
-      "sha256": "5b17275aba437bd4e121bab5485c38088d65308ad09dc91ac76b655d850cb88e"
     },
     {
       "path": "terminal_pixel/pixel_terminal.h",

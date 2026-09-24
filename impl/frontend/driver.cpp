@@ -14,7 +14,6 @@
 #include "../langin/langin.h"
 #include "../nordshrift/sleela_emit.h"
 #include "http_server_cli.h"
-#include "../../telephony-skya/native/skya_sleela_bridge.h"
 #include <algorithm>
 #include <cctype>
 #include <cstdio>
@@ -519,7 +518,6 @@ int main(int argc,char**argv){
     else if(cmd=="nordshrift"){if(argc<3)return usage();rc=nordshriftCmd(argc,argv);}
     else if(cmd=="design-activity")return designActivityCmd(argc,argv);
     else if(cmd=="defender")return defenderCmd(argc,argv);
-    else if(cmd=="skya")return skya_sleela_command(argc,argv);
     else if(cmd=="version"){std::cout<<kVersion<<"\n";return 0;}
     else if(hasExt(cmd,".sleela")||hasExt(cmd,".xclass")||isLangInput(cmd)){if(verifyBeforeExecution(fs::current_path()))return 1;rc=runFile(cmd);}
     else return usage();

@@ -182,3 +182,24 @@ Server configuration, logging, generated outputs, and credential handling are
 tracked in [`http-servers/CONFIGURATION.md`](http-servers/CONFIGURATION.md),
 [`http-servers/LOGGING.md`](http-servers/LOGGING.md), and
 [`http-servers/OUTPUTS.md`](http-servers/OUTPUTS.md).
+
+
+## Skya telephony build
+
+Skya is integrated into the main SLeeLa C/C++ build. The telephony-skya/native engine, policy layer, and SLeeLa bridge are compiled into impl/build/sleela; Skya does not launch a second VM.
+
+Focused native build:
+
+    make -C telephony-skya/native
+    ./telephony-skya/native/skya plan
+
+Integrated runtime commands:
+
+    ./impl/build/sleela skya plan
+    ./impl/build/sleela skya --server --room lobby
+    ./impl/build/sleela skya --client --room lobby
+    ./impl/build/sleela skya --both --room lobby
+
+Basic, Intermediate, and Advanced initial NAT/firewall decisions are documented in telephony-skya/docs/NAT-FIREWALL-CONFIG.md. NAT uses the existing SLeeLa NAT-aware subsystem; firewall lifecycle remains with the existing OS-specific port-awareness controllers.
+
+The current Skya Server is an integrated native foundation, not yet a complete telephony server. Production HTTP/2/HTTP/3 wire transport, media capture and codec adapters, certificate-quality reporting, NAT traversal/relay transport, resumable file transfer, and complete firewall lifecycle still require adapter wiring to the existing SLeeLa subsystems.
