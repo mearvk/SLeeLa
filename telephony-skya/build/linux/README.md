@@ -1,11 +1,13 @@
 # Skya Linux Build
 
-This directory is the Linux-specific Skya build surface.
+This directory is the Linux Skya build surface.
 
 - `build.sh` builds `skya` and `skya-server`.
-- `client.sh` launches `SkyaClientApp`.
+- `client.sh` launches the full `SkyaClientApp`, including rooms, private groups, video targets, search, configuration, and file/audio/video UI surfaces.
 - `client_monitor.sh` launches `SkyaApp`.
 - `remote-client.sh` launches the remote connection GUI.
-- `assets/skya-logo-blue.jpeg` is staged automatically from the repository-owned logo.
+- `firewall-check.sh` performs a non-destructive UFW preflight at client startup when UFW is installed.
 
-The build is self-contained under `telephony-skya/build/linux`; source remains under `telephony-skya/native` and JavaFX remains under `telephony-skya/javafx`.
+The firewall check reports state but does not change firewall policy. Outbound client connections normally require no inbound rule; private-group/server hosting may require an inbound rule for the selected port.
+
+The build output and branding are kept together under `telephony-skya/build/linux`.
