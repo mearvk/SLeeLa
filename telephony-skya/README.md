@@ -11,6 +11,20 @@ Skya is the SLeeLa telephony application boundary for client, server, and combin
 
 The native layer remains authoritative for networking, media, security, NAT, and file transfer. The .sleela programs are application-level runnables and orchestration examples; they do not create a second native runtime.
 
+## User Client
+
+The default Skya GUI is the non-administrative user client, `SkyaClientApp`.
+
+It provides the primary user-facing surface for:
+
+- Chat
+- Video
+- Audio
+- File Transfer
+- connection and room selection
+
+Administrative lifecycle and local circuit monitoring remain separate in `SkyaApp`, launched through the Client Monitor.
+
 ## Build
 
 make -C telephony-skya/native
@@ -22,9 +36,8 @@ The C++ executable is the native bridge. The .sleela programs are compiled and r
 
 Skya supports TLS certificate verification, RSA-2048 compatibility, ephemeral Diffie-Hellman, NAT/relay awareness, resumable file-transfer contracts, and codec negotiation. Codec names describe adapter capabilities; deployment must provide the corresponding libraries and comply with applicable licensing.
 
-
 ## Guia™ GUI Protocol
 
-Document that the Skya JavaFX client uses Guia™ 1.0 as its standard GUI-to-SLeeLa client/listener protocol, with BODI providing declarative UI definitions and Guia™ providing runtime lifecycle, events, commands, data, monitoring, and listener transitions.
+The Skya JavaFX client uses Guia™ 1.0 as its standard GUI-to-SLeeLa client/listener protocol, with BODI providing declarative UI definitions and Guia™ providing runtime lifecycle, events, commands, data, monitoring, and listener transitions.
 
 See `docs/SLEELA_GUI_PROTOCOL.md`, `docs/GUIA_PROTOCOL_REFERENCE.md`, `docs/GUIA_OBJECTS.md`, and `docs/GUIA_TRANSITIONS.md` for the normative Guia™ references.
