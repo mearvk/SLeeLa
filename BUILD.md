@@ -203,3 +203,14 @@ Integrated runtime commands:
 Basic, Intermediate, and Advanced initial NAT/firewall decisions are documented in telephony-skya/docs/NAT-FIREWALL-CONFIG.md. NAT uses the existing SLeeLa NAT-aware subsystem; firewall lifecycle remains with the existing OS-specific port-awareness controllers.
 
 The current Skya Server is an integrated native foundation, not yet a complete telephony server. Production HTTP/2/HTTP/3 wire transport, media capture and codec adapters, certificate-quality reporting, NAT traversal/relay transport, resumable file transfer, and complete firewall lifecycle still require adapter wiring to the existing SLeeLa subsystems.
+
+
+## Skya platform-native binaries
+
+Direct Skya native build entry points are now provided under `build/`:
+
+- Linux: `./build/skya-linux.sh` -> `build/skya/linux/skya`
+- Windows 10+: `powershell -ExecutionPolicy Bypass -File .\\build\\skya-windows.ps1` -> `build\\skya\\windows\\skya.exe`
+- macOS: `./build/skya-macos.sh` -> `build/skya/macos/skya`
+
+These scripts compile the current `telephony-skya/native` engine directly. They complement, rather than replace, the integrated `impl/build/sleela skya ...` path. See `build/README.md` for platform prerequisites and runtime examples.
