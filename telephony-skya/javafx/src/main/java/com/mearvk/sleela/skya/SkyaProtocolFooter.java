@@ -9,6 +9,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 /**
  * Scrolling GUI-to-engine protocol status footer for Skya.
@@ -41,6 +42,7 @@ final class SkyaProtocolFooter {
     private final Label message = new Label();
     private final TranslateTransition scroll = new TranslateTransition();
     private int index;
+    private String bodiUiStatus = "BODI UI: unavailable";
 
     SkyaProtocolFooter() {
         footerTitle.setFont(Font.font("System", 11));
@@ -57,6 +59,7 @@ final class SkyaProtocolFooter {
         container.getChildren().add(message);
         root.getChildren().addAll(footerTitle, container);
         StackPane.setAlignment(message, Pos.CENTER_LEFT);
+        loadBodiUi();
         message.setText(MESSAGES[0]);
 
         scroll.setNode(message);
@@ -82,6 +85,43 @@ final class SkyaProtocolFooter {
     }
 
     void stop() { scroll.stop(); }
+
+    void callback(String event) {
+        int selected = switch (event) {
+            case "GUI.CREATE" -> 0;
+            case "CLIENT.CREATE" -> 1;
+            case "SESSION.CREATE" -> 2;
+            case "CLIENT.CONNECT" -> 3;
+            case "LISTENER.START" -> 4;
+            case "SESSION.OPEN" -> 5;
+            case "SESSION.AUTHENTICATE" -> 6;
+            case "CIRCUIT.LOAD" -> 7;
+            case "CIRCUIT.START", "CIRCUIT.PAUSE" -> 8;
+            case "EVENT.EMIT" -> 9;
+            case "COMMAND.INVOKE" -> 10;
+            case "DATA.UPDATE" -> 11;
+            case "LISTENER.RECEIVE" -> 12;
+            case "LISTENER.ACK" -> 13;
+            case "MONITOR.STATUS", "CIRCUIT.STOP" -> 14;
+            case "CONTROL.UPDATE" -> 15;
+            default -> index;
+        };
+        index = selected;
+        javafx.application.Platform.runLater(this::restart);
+    }
+
+    String bodiUiStatus() { return bodiUiStatus; }
+
+    private void loadBodiUi() {
+        try (var in = getClass().getResourceAsStream("/skya-ui.xml")) {
+            if (in == null) return;
+            var doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(in);
+            var root = doc.getDocumentElement();
+            if ("bodi-ui".equals(root.getTagName()) && "skya-ui".equals(root.getAttribute("id"))) {
+                bodiUiStatus = "BODI UI: loaded " + root.getAttribute("id");
+            }
+        } catch (Exception ignored) { }
+    }
 
     private void restart() {
         message.setText(MESSAGES[index]);
