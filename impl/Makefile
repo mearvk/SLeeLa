@@ -123,6 +123,9 @@ HTTP_SERVER_OBJ := $(BUILD)/http_server.o
 HTTP_SERVER_CLI_OBJ := $(BUILD)/http_server_cli.o
 HTTP2_SERVER_OBJ := $(BUILD)/http2_server.o
 HTTP3_SERVER_OBJ := $(BUILD)/http3_server.o
+SKYA_ENGINE_OBJ := $(BUILD)/skya_engine.o
+SKYA_POLICY_OBJ := $(BUILD)/skya_policy.o
+SKYA_BRIDGE_OBJ := $(BUILD)/skya_sleela_bridge.o
 NS_SRC := nordshrift/sst_lexer.cpp nordshrift/sst_parser.cpp \
           nordshrift/source_resolve.cpp nordshrift/sleela_emit.cpp \
           nordshrift/object_compat.cpp nordshrift/subject_model.cpp nordshrift/input_object.cpp \
@@ -187,7 +190,7 @@ verify-security:
 # rules link with $^, and a phony target name would leak onto the link line).
 $(ALL_OBJECTS): | verify-security
 
-$(SLEELA_BIN): $(HTTP_SERVER_OBJ) $(HTTP_SERVER_CLI_OBJ) $(HTTP2_SERVER_OBJ) $(HTTP3_SERVER_OBJ) $(PLATFORM_OBJ) $(SYSTEM_MONITOR_OBJ) $(DESIGN_ACTIVITY_OBJ) $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(LANGIN_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(NS_EMIT_OBJ)
+$(SLEELA_BIN): $(SKYA_ENGINE_OBJ) $(SKYA_POLICY_OBJ) $(SKYA_BRIDGE_OBJ) $(HTTP_SERVER_OBJ) $(HTTP_SERVER_CLI_OBJ) $(HTTP2_SERVER_OBJ) $(HTTP3_SERVER_OBJ) $(PLATFORM_OBJ) $(SYSTEM_MONITOR_OBJ) $(DESIGN_ACTIVITY_OBJ) $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(LANGIN_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(NS_EMIT_OBJ)
 	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS) $(LIBS) -lnghttp2
 $(NORDSHRIFT_BIN): $(PLATFORM_OBJ) $(SYSTEM_MONITOR_OBJ) $(DESIGN_ACTIVITY_OBJ) $(NS_OBJ) $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(CATALOG_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ)
 	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS) $(LIBS)
@@ -361,6 +364,14 @@ $(BUILD)/http2_server.o: ../http-servers/2/http2/http2_server.cpp ../http-server
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c ../http-servers/2/http2/http2_server.cpp -o $@
 $(BUILD)/http3_server.o: ../http-servers/3/http3/http3_server.cpp ../http-servers/3/http3/http3_server.h | $(BUILD)
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c ../http-servers/3/http3/http3_server.cpp -o $@
+
+$(SKYA_ENGINE_OBJ): ../telephony-skya/native/skya_engine.cpp ../telephony-skya/native/skya_engine.h | $(BUILD)
+	$(CXX) $(CXXFLAGS) -Icore -I.. -c $< -o $@
+$(SKYA_POLICY_OBJ): ../telephony-skya/native/skya_policy.cpp ../telephony-skya/native/skya_policy.h | $(BUILD)
+	$(CXX) $(CXXFLAGS) -Icore -I.. -c $< -o $@
+$(SKYA_BRIDGE_OBJ): ../telephony-skya/native/skya_sleela_bridge.cpp ../telephony-skya/native/skya_sleela_bridge.h | $(BUILD)
+	$(CXX) $(CXXFLAGS) -Icore -I.. -c $< -o $@
+
 $(BUILD)/driver.o: frontend/driver.cpp frontend/compiler.h frontend/artifact.h subjects/native/native_api.h subjects/chemistry/chemistry_api.h subjects/finance/financial_api.h frontend/http_server_cli.h | $(BUILD)
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
 $(BUILD):
