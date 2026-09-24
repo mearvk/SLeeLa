@@ -46,9 +46,12 @@ final class SkyaRoomListManager {
     }
     private static String j(String s){return s==null?"":s.replace("\\","\\\\").replace("\"","\\\"").replace("\n","\\n").replace("\r","\\r");}
     private static List<Room> readJson(Path f)throws IOException{
-        String s=Files.readString(f);var out=new ArrayList<Room>();
-        Pattern p=Pattern.compile("\\{\\s*\\\"name\\\"\\s*:\\s*\\\"((?:\\\\.|[^\\"])*)\\\"\\s*,\\s*\\\"host\\\"\\s*:\\s*\\\"((?:\\\\.|[^\\"])*)\\\"\\s*,\\s*\\\"port\\\"\\s*:\\s*(\\d+)\\s*,\\s*\\\"dns\\\"\\s*:\\s*\\\"((?:\\\\.|[^\\"])*)\\\"\\s*,\\s*\\\"description\\\"\\s*:\\s*\\\"((?:\\\\.|[^\\"])*)\\\"\\s*\\}");
-        Matcher m=p.matcher(s);while(m.find())out.add(new Room(un(m.group(1)),un(m.group(2)),Integer.parseInt(m.group(3)),un(m.group(4)),un(m.group(5))));return out;
+        String s=Files.readString(f);
+        var out=new ArrayList<Room>();
+        Pattern p=Pattern.compile("\"name\"\\s*:\\s*\"([^\"]*)\"\\s*,\\s*\"host\"\\s*:\\s*\"([^\"]*)\"\\s*,\\s*\"port\"\\s*:\\s*(\\d+)\\s*,\\s*\"dns\"\\s*:\\s*\"([^\"]*)\"\\s*,\\s*\"description\"\\s*:\\s*\"([^\"]*)\"");
+        Matcher m=p.matcher(s);
+        while(m.find()) out.add(new Room(un(m.group(1)),un(m.group(2)),Integer.parseInt(m.group(3)),un(m.group(4)),un(m.group(5))));
+        return out;
     }
     private static String un(String s){return s.replace("\\\"","\"").replace("\\\\","\\").replace("\\n","\n").replace("\\r","\r");}
     private static void writeText(Path f,List<Room> rs,boolean md)throws IOException{
