@@ -6,6 +6,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 
@@ -34,12 +35,16 @@ final class SkyaProtocolFooter {
         "16. GUIA™ CONTROL.UPDATE → JavaFX GUI"
     };
 
+    private final VBox root = new VBox(2);
     private final StackPane container = new StackPane();
+    private final Label footerTitle = new Label("Footer Message");
     private final Label message = new Label();
     private final TranslateTransition scroll = new TranslateTransition();
     private int index;
 
     SkyaProtocolFooter() {
+        footerTitle.setFont(Font.font("System", 11));
+        footerTitle.setStyle("-fx-font-weight: bold;");
         message.setFont(Font.font("System", 11));
         message.setStyle("-fx-font-weight: bold;");
         message.setAlignment(Pos.CENTER_LEFT);
@@ -50,6 +55,7 @@ final class SkyaProtocolFooter {
         container.setStyle("-fx-border-color: #b7cdb8; -fx-background-color: #f4faf4; -fx-padding: 3 8 3 8;");
         container.setClip(new javafx.scene.shape.Rectangle(0, 24));
         container.getChildren().add(message);
+        root.getChildren().addAll(footerTitle, container);
         StackPane.setAlignment(message, Pos.CENTER_LEFT);
         message.setText(MESSAGES[0]);
 
@@ -69,7 +75,7 @@ final class SkyaProtocolFooter {
         });
     }
 
-    Node node() { return container; }
+    Node node() { return root; }
 
     void start() {
         javafx.application.Platform.runLater(this::restart);
