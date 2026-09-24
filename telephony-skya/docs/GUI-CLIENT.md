@@ -14,3 +14,10 @@ Windows: powershell -ExecutionPolicy Bypass -File .\telephony-skya\build\windows
 SKYA_SLEEELA_CIRCUIT overrides the circuit path. SLEELA_COMMAND overrides the SLeeLa executable name/path.
 
 The JavaFX layer is a monitoring/control surface; native Skya remains authoritative for networking and session state.
+
+
+## Guia™ GUI Protocol
+
+Document that the JavaFX GUI uses the repository's Guia™ 1.0 protocol for all GUI-to-SLeeLa client/listener interaction. BODI describes the UI; Guia™ supplies the runtime contract; the JavaFX adapter implements that contract.
+
+See `docs/SLEELA_GUI_PROTOCOL.md`, `docs/GUIA_PROTOCOL_REFERENCE.md`, `docs/GUIA_OBJECTS.md`, and `docs/GUIA_TRANSITIONS.md` for the normative Guia™ references.
