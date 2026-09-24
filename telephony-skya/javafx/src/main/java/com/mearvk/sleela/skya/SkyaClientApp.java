@@ -14,6 +14,8 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class SkyaClientApp extends Application {
     private final Label status = new Label("Skya: ready");
@@ -24,6 +26,10 @@ public final class SkyaClientApp extends Application {
     private final TextField room = new TextField("lobby");
     private Properties config = new Properties();
     private String configName = "default";
+    private final SkyaGroupManager groupManager = new SkyaGroupManager();
+    private final List<Stage> groupWindows = new ArrayList<>();
+    private ComboBox<String> videoTargetType;
+    private TextField videoTarget;
 
     @Override
     public void start(Stage stage) {
@@ -92,6 +98,15 @@ public final class SkyaClientApp extends Application {
         file.getItems().addAll(load, save, saveAs, new SeparatorMenuItem(), delete,
                 new SeparatorMenuItem(), exit);
 
+        Menu groups = new Menu("Groups");
+        MenuItem hostGroup = new MenuItem("Host Private Group…");
+        MenuItem search = new MenuItem("Search Users, Groups, Hosts & Rooms…");
+        MenuItem closeGroups = new MenuItem("Close Group Windows");
+        hostGroup.setOnAction(e -> hostPrivateGroup(stage));
+        search.setOnAction(e -> searchDirectory(stage));
+        closeGroups.setOnAction(e -> closeGroupWindows());
+        groups.getItems().addAll(hostGroup, search, new SeparatorMenuItem(), closeGroups);
+
         Menu settings = new Menu("Settings");
         MenuItem chat = new MenuItem("Chat Settings…");
         MenuItem audio = new MenuItem("Audio Settings…");
@@ -127,7 +142,7 @@ public final class SkyaClientApp extends Application {
             a.showAndWait();
         });
         help.getItems().add(about);
-        return new MenuBar(file, settings, configMenu, help);
+        return new MenuBar(file, groups, settings, configMenu, help);
     }
 
     private void loadConfig(Stage stage) {
@@ -232,17 +247,155 @@ public final class SkyaClientApp extends Application {
     }
 
     private Tab videoTab() {
-        Button start = new Button("Start Video"), camera = new Button("Camera"), stop = new Button("Stop Video");
-        start.setOnAction(e -> status.setText("Video: call requested"));
+        videoTargetType = new ComboBox<>();
+        videoTargetType.getItems().addAll("IP", "Host", "Group", "Room");
+        videoTargetType.setValue("Room");
+        videoTarget = new TextField("lobby");
+        videoTarget.setPromptText("IP, host, group or room");
+        HBox.setHgrow(videoTarget, Priority.ALWAYS);
+
+        Button start = new Button("Start Video");
+        Button camera = new Button("Camera");
+        Button stop = new Button("Stop Video");
+        start.setOnAction(e -> status.setText("Video: call requested to " +
+                videoTargetType.getValue() + " " + videoTarget.getText().trim()));
         camera.setOnAction(e -> status.setText("Video: camera requested"));
         stop.setOnAction(e -> status.setText("Video: stopped"));
+
         VBox box = new VBox(12, new Label("Video"),
-                new Label("Video calling, camera and display controls."),
+                new Label("Video can target an IP, host, private group, or room."),
+                new HBox(8, new Label("Target type"), videoTargetType, videoTarget),
                 new HBox(8, start, camera, stop), new Separator(),
                 new Label("Codec: automatic"),
                 new Label("Peer media: ready for negotiated transport"));
         box.setPadding(new Insets(18));
         return new Tab("Video", box);
+    }
+
+    private void hostPrivateGroup(Stage owner) {
+        if (groupManager.all().size() >= SkyaGroupManager.MAX_GROUPS) {
+            status.setText("Private groups: limit of 100 reached");
+            return;
+        }
+        TextInputDialog nameDialog = new TextInputDialog("Private Group " + (groupManager.all().size() + 1));
+        nameDialog.setTitle("Host Private Group");
+        nameDialog.setHeaderText("Create a private Skya group");
+        nameDialog.setContentText("Group name:");
+        var name = nameDialog.showAndWait().map(String::trim).filter(x -> !x.isBlank());
+        if (name.isEmpty()) return;
+
+        TextInputDialog hostDialog = new TextInputDialog(host.getText());
+        hostDialog.setTitle("Host Private Group");
+        hostDialog.setHeaderText("Group endpoint");
+        hostDialog.setContentText("Host/IP:");
+        var h = hostDialog.showAndWait().map(String::trim).filter(x -> !x.isBlank()).orElse(null);
+        if (h == null) return;
+
+        TextInputDialog roomDialog = new TextInputDialog(room.getText());
+        roomDialog.setTitle("Host Private Group");
+        roomDialog.setHeaderText("Group room");
+        roomDialog.setContentText("Room:");
+        var r = roomDialog.showAndWait().map(String::trim).filter(x -> !x.isBlank()).orElse("private");
+
+        String groupName = name.get();
+        SkyaGroupManager.Group g = new SkyaGroupManager.Group(groupName, "local-user", h, h, r);
+        if (!groupManager.add(g)) {
+            status.setText("Private group already exists or group limit reached");
+            return;
+        }
+        openGroupWindow(owner, g);
+        status.setText("Private group hosted: " + groupName);
+    }
+
+    private void openGroupWindow(Stage owner, SkyaGroupManager.Group g) {
+        Stage s = new Stage();
+        s.initOwner(owner);
+        s.setTitle("Skya — Private Group — " + g.name());
+        s.setMinWidth(620);
+        s.setMinHeight(430);
+
+        Label state = new Label("Private group: hosted");
+        ListView<String> members = new ListView<>();
+        members.getItems().add("local-user — " + g.address());
+        TextField invite = new TextField();
+        invite.setPromptText("IP, host or user identifier");
+        Button inviteButton = new Button("Add Connection");
+        Button remove = new Button("Remove Selected");
+        Button video = new Button("Video");
+        Button audio = new Button("Audio");
+        Button close = new Button("Close Group");
+        inviteButton.setOnAction(e -> {
+            String value = invite.getText().trim();
+            if (!value.isEmpty()) {
+                members.getItems().add(value);
+                invite.clear();
+                state.setText("Private group: " + members.getItems().size() + " connection(s)");
+            }
+        });
+        remove.setOnAction(e -> {
+            String selected = members.getSelectionModel().getSelectedItem();
+            if (selected != null && !selected.startsWith("local-user")) members.getItems().remove(selected);
+        });
+        video.setOnAction(e -> state.setText("Video: group call requested for " + g.name()));
+        audio.setOnAction(e -> state.setText("Audio: group call requested for " + g.name()));
+        close.setOnAction(e -> { s.close(); groupManager.remove(g.name()); groupWindows.remove(s); status.setText("Private group closed: " + g.name()); });
+        HBox controls = new HBox(8, invite, inviteButton, remove, video, audio, close);
+        HBox.setHgrow(invite, Priority.ALWAYS);
+        VBox root = new VBox(10, new Label("Private Group: " + g.name()),
+                new Label("Host: " + g.host() + "   Room: " + g.room()),
+                state, new Separator(), new Label("Connections"), members, controls);
+        root.setPadding(new Insets(14));
+        VBox.setVgrow(members, Priority.ALWAYS);
+        s.setScene(new Scene(root, 760, 480));
+        s.setOnHidden(e -> groupWindows.remove(s));
+        groupWindows.add(s);
+        s.show();
+    }
+
+    private void closeGroupWindows() {
+        for (Stage s : new ArrayList<>(groupWindows)) s.close();
+        groupWindows.clear();
+        status.setText("Private group windows closed");
+    }
+
+    private void searchDirectory(Stage owner) {
+        Stage s = new Stage();
+        s.initOwner(owner);
+        s.setTitle("Skya Directory Search");
+        TextField query = new TextField();
+        query.setPromptText("Search users, groups, hosts or rooms");
+        ComboBox<String> type = new ComboBox<>();
+        type.getItems().addAll("All", "Users", "Groups", "Hosts", "Rooms");
+        type.setValue("All");
+        ListView<String> results = new ListView<>();
+        Runnable run = () -> {
+            String q = query.getText().trim().toLowerCase();
+            results.getItems().clear();
+            if ("All".equals(type.getValue()) || "Groups".equals(type.getValue()))
+                for (var g : groupManager.search(q))
+                    results.getItems().add("GROUP  " + g.name() + "  host=" + g.host() + " room=" + g.room());
+            if ("All".equals(type.getValue()) || "Rooms".equals(type.getValue()))
+                for (var r : SkyaRoomListManager.defaults()) {
+                    String line = r.name()+"  host="+r.host()+"  dns="+r.dns()+"  port="+r.port();
+                    if (q.isEmpty() || line.toLowerCase().contains(q)) results.getItems().add("ROOM   "+line);
+                }
+            if ("All".equals(type.getValue()) || "Users".equals(type.getValue()))
+                if (q.isEmpty() || "local-user".contains(q)) results.getItems().add("USER   local-user");
+            if ("All".equals(type.getValue()) || "Hosts".equals(type.getValue()))
+                if (q.isEmpty() || host.getText().toLowerCase().contains(q))
+                    results.getItems().add("HOST   "+host.getText()+":"+port.getText());
+            if (results.getItems().isEmpty()) results.getItems().add("No local directory matches");
+        };
+        query.textProperty().addListener((o,a,b) -> run.run());
+        type.setOnAction(e -> run.run());
+        VBox root = new VBox(10, new Label("Find Users, Groups, Hosts or Rooms"),
+                new HBox(8, query, type), results);
+        root.setPadding(new Insets(14));
+        HBox.setHgrow(query, Priority.ALWAYS);
+        VBox.setVgrow(results, Priority.ALWAYS);
+        s.setScene(new Scene(root, 760, 500));
+        run.run();
+        s.show();
     }
 
     private Tab audioTab() {
@@ -281,6 +434,8 @@ public final class SkyaClientApp extends Application {
         box.setPadding(new Insets(18));
         return new Tab("Files", box);
     }
+
+    @Override public void stop() { closeGroupWindows(); }
 
     public static void main(String[] args) { launch(args); }
 }
