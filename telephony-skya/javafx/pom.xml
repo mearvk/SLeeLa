@@ -18,6 +18,14 @@
     <dependency><groupId>org.openjfx</groupId><artifactId>javafx-controls</artifactId><version>${javafx.version}</version></dependency>
     <dependency><groupId>org.openjfx</groupId><artifactId>javafx-fxml</artifactId><version>${javafx.version}</version></dependency>
   </dependencies>
+  <resources>
+    <resource>
+      <directory>../../images</directory>
+      <includes>
+        <include>skya-logo-blue.jpeg</include>
+      </includes>
+    </resource>
+  </resources>
   <build>
     <plugins>
       <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-compiler-plugin</artifactId><version>${maven.compiler.plugin.version}</version><configuration><release>${maven.compiler.release}</release><source>${maven.compiler.source}</source><target>${maven.compiler.target}</target></configuration></plugin>
