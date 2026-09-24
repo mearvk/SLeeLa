@@ -19,6 +19,7 @@ import java.util.List;
 
 public final class SkyaClientApp extends Application {
     private final Label status = new Label("Skya: ready");
+    private final SkyaProtocolFooter protocolFooter = new SkyaProtocolFooter();
     private final Label connection = new Label("Connection: not connected");
     private final Label selectedFile = new Label("No file selected");
     private final TextField host = new TextField("localhost");
@@ -76,11 +77,12 @@ public final class SkyaClientApp extends Application {
         BorderPane root = new BorderPane(tabs);
         root.setPadding(new Insets(0, 12, 12, 12));
         root.setTop(top);
-        root.setBottom(new VBox(6, new Separator(), connection, status));
+        root.setBottom(new VBox(6, new Separator(), connection, status, protocolFooter.node()));
         BorderPane.setMargin(connection, new Insets(8, 0, 0, 0));
 
         stage.setScene(new Scene(root, 1100, 760));
         stage.show();
+        protocolFooter.start();
     }
 
     private MenuBar buildMenuBar(Stage stage) {
@@ -435,7 +437,7 @@ public final class SkyaClientApp extends Application {
         return new Tab("Files", box);
     }
 
-    @Override public void stop() { closeGroupWindows(); }
+    @Override public void stop() { protocolFooter.stop(); closeGroupWindows(); }
 
     public static void main(String[] args) { launch(args); }
 }
