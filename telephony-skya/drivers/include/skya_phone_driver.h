@@ -45,6 +45,12 @@ typedef struct {
     int dialpad;
     int display;
     int firmware_query;
+    int busylight;
+    int bluetooth;
+    int usb_hub;
+    int touchscreen;
+    int handset;
+    int headset_port;
 } skya_driver_capabilities;
 
 typedef struct {
