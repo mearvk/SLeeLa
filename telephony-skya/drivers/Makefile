@@ -2,7 +2,9 @@ CXX ?= c++
 CXXFLAGS ?= -std=c++17 -Wall -Wextra -O2
 TARGET := libskya-drivers.a
 OBJDIR := build
-OBJS := $(OBJDIR)/skya_driver_registry.o $(OBJDIR)/skya_builtin_drivers.o
+OBJS := $(OBJDIR)/skya_driver_registry.o \
+        $(OBJDIR)/skya_builtin_drivers.o \
+        $(OBJDIR)/skya_vendor_drivers.o
 
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Linux)
@@ -29,7 +31,10 @@ $(OBJDIR):
 $(OBJDIR)/skya_driver_registry.o: src/skya_driver_registry.cpp | $(OBJDIR)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-$(OBJDIR)/skya_builtin_drivers.o: src/skya_builtin_drivers.cpp | $(OBJDIR)
+$(OBJDIR)/skya_builtin_drivers.o: src/skya_builtin_drivers.cpp include/skya_vendor_drivers.h | $(OBJDIR)
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+$(OBJDIR)/skya_vendor_drivers.o: src/skya_vendor_drivers.cpp include/skya_vendor_drivers.h include/skya_phone_driver.h | $(OBJDIR)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 $(PLATFORM_OBJ): $(PLATFORM_SRC) | $(OBJDIR)
