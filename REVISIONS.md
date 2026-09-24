@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # REVISIONS
 
 ## 2026-09-22 — Discord™ Server Naming Theme
@@ -256,13 +255,13 @@ Source-level changes were committed to `main`. Native Windows/macOS server build
 =======
 # SLeeLa Revisions and Repository Cleanup
 
-**Status:** Structural cleanup and documentation consolidation  
+**Status:** Structural cleanup, C/C++ review, and documentation consolidation  
 **Date:** 2026-09-15  
 **Branch:** `master`
 
 ## Purpose
 
-This document records the repository-wide cleanup performed around the SLeeLa source tree, build system, security verification material, and retained documentation. The objective is to make the repository easier to maintain without introducing unreviewed semantic changes to the compiler or runtime.
+This document records the repository-wide cleanup and source review performed around the SLeeLa source tree, build system, security verification material, and retained documentation. The objective is to make the repository easier to maintain without introducing unreviewed semantic changes to the compiler or runtime.
 
 ## Cleanup principles
 
@@ -272,6 +271,7 @@ This document records the repository-wide cleanup performed around the SLeeLa so
 4. **Keep security gates explicit.** SHA-256 verification remains part of the build and execution contract.
 5. **Avoid accidental IDE state.** Editor/project metadata is not part of the portable source distribution.
 6. **Prefer small, reviewable revisions.** Large mechanical rewrites are deferred unless they can be verified without changing behavior.
+7. **Review security-sensitive C/C++ before stylistic rewriting.** Source formatting must not obscure changes to execution, process invocation, filesystem access, networking, or privilege boundaries.
 
 ## Repository structure
 
@@ -334,11 +334,45 @@ The committed manifest remains:
 
 The native frontend's execution gate remains in `impl/frontend/driver.cpp` and uses the same SHA-256 verification tool.
 
-### 4. Source-code cleanup policy
+## C/C++ source review
 
-The compiler and runtime source tree is intentionally **not** subjected to a blind whole-tree reformatter in this revision. That kind of change can create large diffs, obscure functional changes, and require regeneration of the committed SHA-256 manifest. Future formatting work should be performed in small subsystem-scoped passes, followed by build/test verification and manifest regeneration where applicable.
+A focused review of the implementation source was performed after the structural cleanup, with particular attention to `impl/frontend/driver.cpp` and `impl/Makefile`.
 
-This is deliberate risk control, not a waiver of source-quality work.
+### Findings in `impl/frontend/driver.cpp`
+
+- The file contains several heavily compressed one-line functions and statements. This makes security-sensitive control flow harder to audit than necessary.
+- Include ordering and spacing are inconsistent with conventional C++ style.
+- `namespace fs=std::filesystem;` and several compact declarations should be normalized during a controlled formatting pass.
+- Shell/process invocation is concentrated in `runCommand()` and the Defender helpers. These paths deserve especially clear formatting because they cross from native C++ into operating-system commands.
+- The SHA-256 gate is clearly present for compile, run, check, xclass, and Defender build/install/provision operations.
+- Defender `fetch` is currently a network acquisition operation and is not itself passed through the native SHA-256 gate. This should remain an explicit design decision; it should not be accidentally changed by a formatter or refactor.
+- `defender build`, `install`, and `provision` can fetch a missing Defender source tree before the verification gate is invoked. The next security-hardening pass should decide whether verification should occur before any network acquisition, rather than relying only on verification before the build/install step.
+- The current command execution helper uses `std::system()`. Any future refactor should preserve quoting and platform behavior while considering a more structured process-execution interface.
+- Error handling is generally fail-closed, but the command runner currently reduces process status to success/failure. A later portability pass could preserve signal/exit-status detail without changing command semantics.
+
+### Findings in `impl/Makefile`
+
+- The build already has an explicit `verify-security` target and makes `all` and `build-verified` depend on it.
+- Object targets use `verify-security` as an order-only prerequisite, which correctly keeps the phony verification target out of link command `$^` expansion.
+- The test aggregate explicitly starts with `verify-security`.
+- Individual test targets and direct binary invocations should continue to be reviewed for the invariant that no executable or diagnostic is run without the applicable SHA-256 verification gate.
+- The Makefile is readable enough to retain as the authoritative build definition; a full rewrite is not warranted merely for stylistic reasons.
+
+## C/C++ cleanup policy
+
+The C/C++ review does **not** authorize a blind whole-tree reformatter. The source contains compiler, runtime, filesystem, process, platform, and security-sensitive code. Formatting and simplification should therefore proceed in subsystem-scoped passes.
+
+Recommended order for the next controlled source pass:
+
+1. `impl/frontend/driver.cpp` — command dispatch, verification, filesystem and process boundaries.
+2. `impl/frontend/` lexer/parser/compiler/artifact sources.
+3. `impl/core/` C runtime and platform interfaces.
+4. `impl/runtime/` security and memory/runtime support.
+5. `impl/subjects/` subject modules.
+6. `impl/catalog/`, `impl/xclass/`, and `impl/nordshrift/`.
+7. Smoke tests and remaining test sources.
+
+Each pass should preserve behavior, build successfully through the verified entry point, run applicable tests, and regenerate the SHA-256 manifest for changed verified files.
 
 ## Retained documentation
 
@@ -365,7 +399,8 @@ The following are intentionally deferred until they can be handled with complete
 - mass renaming of public documentation files;
 - relocation of root-level language specifications;
 - deletion of historical domain documents whose current consumers have not been identified;
-- changes to compiler/runtime behavior solely for stylistic reasons.
+- changes to compiler/runtime behavior solely for stylistic reasons;
+- redesign of process execution or Defender acquisition without a separate security review.
 
 ## Revision record
 
@@ -379,4 +414,14 @@ The following are intentionally deferred until they can be handled with complete
 - established a conservative policy for future source formatting and document retirement.
 
 The goal is a smaller, clearer, more portable repository without sacrificing the existing implementation or security contracts.
->>>>>>> 70eb1d2 (Repository cleanup and revision record)
+=======
+### 2026-09-15 — C/C++ review pass
+
+- reviewed the native frontend command/security boundary in `impl/frontend/driver.cpp`;
+- reviewed the verification ordering and build/test structure in `impl/Makefile`;
+- identified compressed source formatting as an auditability issue rather than immediately applying a risky whole-tree reformat;
+- identified Defender fetch/verification ordering as a security-hardening point for a subsequent controlled code change;
+- documented a subsystem-by-subsystem C/C++ cleanup order;
+- preserved the existing compiler/runtime behavior while recording the source-quality and security findings.
+
+The goal remains a smaller, clearer, more portable repository without sacrificing the existing implementation or security contracts.
