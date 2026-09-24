@@ -37,6 +37,9 @@ $(OBJDIR)/skya_builtin_drivers.o: src/skya_builtin_drivers.cpp include/skya_vend
 $(OBJDIR)/skya_vendor_drivers.o: src/skya_vendor_drivers.cpp include/skya_vendor_drivers.h include/skya_phone_driver.h | $(OBJDIR)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
+$(OBJDIR)/skya_model_drivers.o: src/skya_model_drivers.cpp include/skya_model_drivers.h include/skya_phone_driver.h | $(OBJDIR)
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
 $(PLATFORM_OBJ): $(PLATFORM_SRC) | $(OBJDIR)
 	$(CXX) $(CXXFLAGS) $(PLATFORM_CXXFLAGS) -c $< -o $@
 
