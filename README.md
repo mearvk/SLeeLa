@@ -886,3 +886,10 @@ The initial policy layer is deliberately non-destructive: `plan` reports the sel
 Configuration levels are documented in [`telephony-skya/docs/NAT-FIREWALL-CONFIG.md`](telephony-skya/docs/NAT-FIREWALL-CONFIG.md), while the implementation and current completion boundary are documented in [`SKYA.md`](SKYA.md).
 
 **Completion status:** Skya is integrated into the SLeeLa C/C++ runtime, but it is not yet a complete production telephony server. HTTP/2 and HTTP/3 session transport, QUIC integration, media capture/playback and codec adapters, certificate-quality extraction, actual NAT traversal/relay transport, resumable file transfer, runtime firewall open/close lifecycle, and full multi-peer call/session management remain implementation work. Documentation distinguishes the current foundation from those future transport and media layers.
+
+
+## Guia™ GUI Protocol
+
+Add a clear GUI architecture section stating that Guia™ 1.0 is part of the SLeeLa source and is the standard GUI-to-client/listener protocol. JavaFX implementations MUST and DO use the Guia™ contract through their adapter; BODI remains declarative and SLeeLa remains authoritative.
+
+See `docs/SLEELA_GUI_PROTOCOL.md`, `docs/GUIA_PROTOCOL_REFERENCE.md`, `docs/GUIA_OBJECTS.md`, and `docs/GUIA_TRANSITIONS.md` for the normative Guia™ references.
