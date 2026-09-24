@@ -4,4 +4,4 @@ ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 "$ROOT/build/macos/build.sh"
 export SKYA_SLEEELA_CIRCUIT="$ROOT/sleela/SkyaClient.sleela"
 cd "$ROOT/javafx"
-exec mvn -q javafx:run
+exec mvn -q -Dskya.mainClass=com.mearvk.sleela.skya.SkyaApp javafx:run
