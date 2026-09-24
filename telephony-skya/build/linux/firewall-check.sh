@@ -5,7 +5,9 @@ if [ "${SKYA_FIREWALL_CHECK:-1}" = "0" ]; then
   exit 0
 fi
 echo "Skya firewall preflight (Linux)."
-if command -v ufw >/dev/null 2>&1; then
+if [ "$(id -u)" -ne 0 ]; then
+  echo "  Non-root preflight: UFW inspection may require elevated privileges; continuing without changing firewall rules."
+elif command -v ufw >/dev/null 2>&1; then
   ufw status verbose 2>&1 || true
 else
   echo "  UFW is not installed; checking other firewall services is outside this preflight."
