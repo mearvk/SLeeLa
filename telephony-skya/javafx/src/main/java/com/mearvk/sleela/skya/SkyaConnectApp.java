@@ -7,12 +7,16 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import javafx.stage.FileChooser;
+import java.util.*;
 import java.io.*;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
 
 public final class SkyaConnectApp extends Application {
-    private final TextField host=new TextField("127.0.0.1"), port=new TextField("8443"), room=new TextField("lobby");
+    private final TextField host=new TextField("127.0.0.1"), port=new TextField("8443");
+    private final ComboBox<String> room=new ComboBox<>();
+    private final List<SkyaRoomListManager.Room> rooms=new ArrayList<>();
     private final ComboBox<String> protocol=new ComboBox<>();
     private final TextField message=new TextField();
     private final TextArea log=new TextArea();
@@ -27,22 +31,53 @@ public final class SkyaConnectApp extends Application {
     @Override public void start(Stage stage) {
         stage.setTitle("Skya — SLeeLa Remote Connection");
         protocol.getItems().addAll("HTTP/3","HTTP/2","SLeeLa TCP"); protocol.setValue("HTTP/3");
+        rooms.addAll(SkyaRoomListManager.defaults()); for(var x:rooms)room.getItems().add(x.name()); room.setValue("Lobby"); room.setOnAction(e->selectRoom());
         log.setEditable(false); status=new Label("Disconnected");
         Button start=new Button("Start"), pause=new Button("Pause"), stop=new Button("Stop"), send=new Button("Send");
         start.setOnAction(e->connect()); pause.setOnAction(e->pauseConnection()); stop.setOnAction(e->disconnect()); send.setOnAction(e->sendMessage());
         GridPane endpoint=new GridPane(); endpoint.setHgap(8); endpoint.setVgap(8);
         endpoint.addRow(0,new Label("Remote server"),host); endpoint.addRow(1,new Label("Port"),port);
         endpoint.addRow(2,new Label("Room"),room); endpoint.addRow(3,new Label("Protocol"),protocol);
+        MenuBar menu=createMenu(stage);
         HBox messaging=new HBox(8,message,send); HBox.setHgrow(message,Priority.ALWAYS);
-        VBox root=new VBox(10,new Label("Skya Remote Server Connection"),endpoint,new HBox(8,start,pause,stop),
+        VBox root=new VBox(10,menu,new Label("Skya Remote Server Connection"),endpoint,new HBox(8,start,pause,stop),
             new Separator(),new Label("Connection status"),status,new Label("Remote communication"),messaging,log);
         root.setPadding(new Insets(14)); VBox.setVgrow(log,Priority.ALWAYS);
         stage.setScene(new Scene(root,760,560)); stage.show();
     }
 
+
+    private void selectRoom(){
+        String name=room.getValue(); if(name==null)return;
+        for(var x:rooms) if(x.name().equals(name)){host.setText(x.host());port.setText(Integer.toString(x.port()));append("ROOM.SELECTED "+x.name()+" host="+x.host()+" dns="+x.dns()+" port="+x.port());break;}
+    }
+    private MenuBar createMenu(Stage stage){
+        Menu m=new Menu("Rooms");
+        MenuItem add=new MenuItem("Add Room"), remove=new MenuItem("Remove Selected"), imp=new MenuItem("Import Room List"), exp=new MenuItem("Export Room List");
+        add.setOnAction(e->addRoom()); remove.setOnAction(e->removeRoom()); imp.setOnAction(e->importRooms(stage)); exp.setOnAction(e->exportRooms(stage));
+        m.getItems().addAll(add,remove,new SeparatorMenuItem(),imp,exp);
+        Menu help=new Menu("Help"); MenuItem about=new MenuItem("About Skya Rooms");
+        about.setOnAction(e->new Alert(Alert.AlertType.INFORMATION,"Skya room lists support XML, JSON, TXT and Markdown (MD). Entries carry room name, IP/host, port, DNS name and description.").showAndWait());
+        help.getItems().add(about); return new MenuBar(m,help);
+    }
+    private void addRoom(){
+        String n=prompt("Add Room","Room name","New Room"); if(n==null)return;
+        String h=prompt("Add Room","IP or host",host.getText()); if(h==null)return;
+        String ps=prompt("Add Room","Port",port.getText()); if(ps==null)return;
+        int p; try{p=Integer.parseInt(ps);if(p<1||p>65535)throw new Exception();}catch(Exception e){status.setText("Invalid room port");return;}
+        String d=prompt("Add Room","DNS name (optional)",h); if(d==null)return;
+        String desc=prompt("Add Room","Description (optional)",n+" room"); if(desc==null)return;
+        rooms.removeIf(x->x.name().equalsIgnoreCase(n)); rooms.add(new SkyaRoomListManager.Room(n,h,p,d,desc));
+        room.getItems().remove(n); room.getItems().add(n); room.setValue(n); selectRoom();
+    }
+    private String prompt(String title,String header,String initial){TextInputDialog d=new TextInputDialog(initial);d.setTitle(title);d.setHeaderText(header);return d.showAndWait().map(String::trim).filter(x->!x.isBlank()).orElse(null);}
+    private void removeRoom(){String n=room.getValue();if(n==null)return;if(rooms.size()<=1){status.setText("At least one room must remain");return;}rooms.removeIf(x->x.name().equals(n));room.getItems().remove(n);room.setValue(room.getItems().get(0));selectRoom();}
+    private void exportRooms(Stage stage){FileChooser fc=new FileChooser();fc.setTitle("Export Skya Room List");fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Skya Room List","*.xml","*.json","*.txt","*.md"));File f=fc.showSaveDialog(stage);if(f==null)return;try{SkyaRoomListManager.write(f,rooms);status.setText("Room list exported: "+f.getName());append("ROOM.LIST.EXPORTED "+f);}catch(Exception e){new Alert(Alert.AlertType.ERROR,"Export failed: "+e.getMessage()).showAndWait();}}
+    private void importRooms(Stage stage){FileChooser fc=new FileChooser();fc.setTitle("Import Skya Room List");fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Skya Room List","*.xml","*.json","*.txt","*.md"));File f=fc.showOpenDialog(stage);if(f==null)return;try{var loaded=SkyaRoomListManager.read(f);if(loaded.isEmpty())throw new IOException("No rooms found");rooms.clear();rooms.addAll(loaded);room.getItems().clear();for(var x:rooms)room.getItems().add(x.name());room.setValue(room.getItems().get(0));selectRoom();status.setText("Room list imported: "+f.getName());append("ROOM.LIST.IMPORTED "+f);}catch(Exception e){new Alert(Alert.AlertType.ERROR,"Import failed: "+e.getMessage()).showAndWait();}}
+
     private void connect() {
         disconnect();
-        final String h=host.getText().trim(), r=room.getText().trim(); final int p;
+        final String h=host.getText().trim(), r=room.getValue()==null?"":room.getValue().trim(); final int p;
         try{p=Integer.parseInt(port.getText().trim());if(p<1||p>65535)throw new NumberFormatException();}
         catch(NumberFormatException e){status.setText("Invalid port");return;}
         if(h.isEmpty()||r.isEmpty()){status.setText("Server and room are required");return;}
