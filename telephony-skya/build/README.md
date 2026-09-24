@@ -1,24 +1,24 @@
 # Skya Native Platform Builds
 
-The Skya-specific build directory lives here, inside `telephony-skya/build/`.
+Each platform build produces the general Skya executable and a dedicated Skya Server executable.
+The dedicated server entry point is `telephony-skya/native/skya_server_main.cpp`.
 
 ## Linux
+`./telephony-skya/build/linux/build.sh`
 
-    ./telephony-skya/build/linux/build.sh
-
-Output: `telephony-skya/build/linux/skya`
+Outputs: `skya` and `skya-server`.
 
 ## Windows 10+
+`powershell -ExecutionPolicy Bypass -File .\telephony-skya\build\windows\build.ps1`
 
-    powershell -ExecutionPolicy Bypass -File .\telephony-skya\build\windows\build.ps1
-
-Output: `telephony-skya/build/windows/skya.exe`
+Outputs: `skya.exe` and `skya-server.exe`.
 
 ## macOS
+`./telephony-skya/build/macos/build.sh`
 
-    ./telephony-skya/build/macos/build.sh
+Outputs: `skya` and `skya-server`.
 
-Output: `telephony-skya/build/macos/skya`
+## Server options
+`--room <name>` `--port <port>` `--max-peers <n>` `--http2` `--http3`.
 
-These are direct native builds of the current Skya engine. They complement,
-rather than replace, the integrated SLeeLa `sleela skya ...` build path.
+The dedicated executable starts the Skya engine with `SKYA_SERVER`. It is the native server entry point; the underlying production HTTP/2, HTTP/3/QUIC, media, NAT traversal, relay, and firewall lifecycle implementations remain separate work items.
