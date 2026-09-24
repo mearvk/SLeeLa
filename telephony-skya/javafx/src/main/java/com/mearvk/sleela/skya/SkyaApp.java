@@ -217,5 +217,7 @@ public final class SkyaApp extends Application {
         p=cwd.resolve("sleela/SkyaClient.sleela");
         return Files.isRegularFile(p)?p:null;
     }
-    @Override public void stop() { protocolFooter.stop(); stopAdminTask(); }\n\n    public static void main(String[] args){launch(args);}
+    @Override public void stop() { protocolFooter.stop(); stopAdminTask(); }
+
+    public static void main(String[] args){launch(args);}
 }
