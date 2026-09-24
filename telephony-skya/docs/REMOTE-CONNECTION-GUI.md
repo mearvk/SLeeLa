@@ -1,9 +1,12 @@
 # Skya Remote Connection GUI
 
-Skya provides a second JavaFX surface for communicating with remote servers. The existing Client Monitor remains for local engine/circuit monitoring; this GUI is the endpoint-oriented client.
+Both Skya JavaFX tasks now expose the same Admin UI lifecycle controls: Start, Pause, and Stop.
 
-The remote GUI provides server host/port, room and protocol selection, connect/disconnect controls, listener output, and client message submission. Its runtime events use Guia™ operations such as CLIENT.CONNECT, SESSION.OPEN, LISTENER.START, LISTENER.RECEIVE, COMMAND.INVOKE, CLIENT.DISCONNECTED, and SESSION.CLOSED.
+- Local Client Monitor: Start runs or resumes the SLeeLa client circuit, Pause pauses monitor output while the SLeeLa process remains running, and Stop terminates the local circuit process.
+- Remote Connection: Start connects to the configured server, Pause pauses listener delivery while retaining the socket, and Stop closes the remote connection.
 
-The current adapter uses a small TCP connection as the transport foundation. Selecting HTTP/2 or HTTP/3 records the intended protocol and sends the Skya connection declaration; it does not claim that a plain Java TCP socket implements HTTP/2 or HTTP/3. Production HTTP/2, HTTP/3/QUIC, TLS, NAT traversal, authentication and media transport remain native transport implementations.
+The controls follow the Guia™ lifecycle vocabulary. The local task corresponds to CIRCUIT.START, CIRCUIT.PAUSE, and CIRCUIT.STOP. The remote task corresponds to CLIENT.CONNECT, LISTENER.PAUSE, LISTENER.STOP, CLIENT.DISCONNECT, and SESSION.CLOSED.
 
-Guia™ is the common GUI-to-client/listener contract; JavaFX is the presentation adapter.
+The remote adapter remains a TCP foundation. Selecting HTTP/2 or HTTP/3 does not claim that a plain Java TCP socket implements those protocols. Production HTTP/2, HTTP/3/QUIC, TLS, NAT traversal, authentication, and media transport remain native implementation layers.
+
+Guia™ remains the common GUI-to-client/listener contract; JavaFX is the presentation adapter.
