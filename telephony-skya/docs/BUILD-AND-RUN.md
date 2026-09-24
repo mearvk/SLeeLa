@@ -15,3 +15,14 @@ SLeeLa runnables:
 For a two-process smoke test, start the server runnable first and then the client runnable. For a single-process test, use Skya.sleela.
 
 HTTP/2 and HTTP/3 transport, TLS/certificate inspection, media capture/codecs, NAT traversal, resumable file transfer, and explicit OS firewall integration remain adapter work against existing SLeeLa subsystems.
+
+
+## Platform-native binary entry points
+
+The repository now includes direct native Skya build scripts in the top-level `build/` directory:
+
+- Linux: `./build/skya-linux.sh`
+- Windows 10+: `powershell -ExecutionPolicy Bypass -File .\\build\\skya-windows.ps1`
+- macOS: `./build/skya-macos.sh`
+
+Outputs are staged under `build/skya/linux/`, `build/skya/windows/`, and `build/skya/macos/`. These are direct builds of the current native Skya engine and are separate from the integrated SLeeLa executable. The integrated command remains `sleela skya ...`.
