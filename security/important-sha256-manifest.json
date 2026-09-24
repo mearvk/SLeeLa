@@ -16,7 +16,7 @@
     },
     {
       "path": "BUILD.md",
-      "sha256": "57883f86387730233ad1470eb64d511711b5e40769d4c4477cd6f7047926137f"
+      "sha256": "d3877acf9f5e4baacff40ad3d19230bac86f4da9a3f8ccccebb547fc5d759dc7"
     },
     {
       "path": "CHANGES-MEMORY-NATIVE.md",
@@ -72,11 +72,11 @@
     },
     {
       "path": "README.md",
-      "sha256": "b2450887dde3b8e92edbfdfe93f333293dc4d2ae65304749bcd71e5fbc2c0173"
+      "sha256": "4e6db86e53f1ef004c5c84a2537d3a6b22de55b5c8016ec0962af21512beff1d"
     },
     {
       "path": "REVISIONS.md",
-      "sha256": "83e0a5885a2fc784f2dea7593edc0452feea336a233108b4799cf509cefefa1f"
+      "sha256": "a4f912667fb382cba77c9c29780b2edb15d8d59e2fc181beacda8c2152fbb08c"
     },
     {
       "path": "SERVER.EDITION.md",
@@ -2443,6 +2443,18 @@
       "sha256": "5732e888d67e969601f4a1fe6f8c418d2754490936eeeaa4fbe7be44a598993b"
     },
     {
+      "path": "build/skya-linux.sh",
+      "sha256": "99c408f73684d35d4eb6fa1edd431b3ba0fd4f456b2a58322ccad540fe485ab7"
+    },
+    {
+      "path": "build/skya-macos.sh",
+      "sha256": "c83ae58bc35d0fac8597607a79e3aa84bbd6ef2f907cae2a33ef0a647d017979"
+    },
+    {
+      "path": "build/skya-windows.ps1",
+      "sha256": "2b2338eb50567f046c0fbf344732d3f3bf5014b4bbf9dd05b59fb6676822db16"
+    },
+    {
       "path": "build-linux.sh",
       "sha256": "2f6553d263e83c820ffbaecbc2f02d8aa4252352c223b61a0a65c6eb3e4031b5"
     },
@@ -4151,6 +4163,10 @@
       "sha256": "efb0164ea88ae0c466cb9ac73f393c4f2f5eb280226a185065743a2f0fcb81fe"
     },
     {
+      "path": "security/SHA256-VERIFICATION.md",
+      "sha256": "573fdeea518533fbf85f116a633b39261092b0a11cd6d04ade18b76bdc8668c1"
+    },
+    {
       "path": "server-edition/PORT-AWARENESS.md",
       "sha256": "9b46e700a1ea1fa5ecf040fa6faae2588ac8cff47e58ffe79d0ea02ac35d2748"
     },
@@ -4415,6 +4431,54 @@
       "sha256": "77d79a21d1972688c3fa85c3e473f076a75be44158a2eec3a9887edfeb1d527c"
     },
     {
+      "path": "telephony-skya/build/linux/build.sh",
+      "sha256": "2dd894b7f872c1c68bfc8bfa10a12f3d8b20cff5366a4afa6adace41c85a2368"
+    },
+    {
+      "path": "telephony-skya/build/linux/client.sh",
+      "sha256": "19095aed851c7eb4532f231a06dc269530f790d7bdaeb8f26ece1c13f65e8e2e"
+    },
+    {
+      "path": "telephony-skya/build/linux/client_monitor.sh",
+      "sha256": "f2c47ff49c87790b13dcbdf8f81628d7fb24d9cfb0df66a8c97ad7392237285c"
+    },
+    {
+      "path": "telephony-skya/build/linux/remote-client.sh",
+      "sha256": "dfbcfb7fb432889a1cf01e9b4f5e7c48620c2d9cdcd2306760ef9aac82ca3ab0"
+    },
+    {
+      "path": "telephony-skya/build/macos/build.sh",
+      "sha256": "d3a70a697715f2c2b663f6af8e93f965c6c40cb2c902d6dc31945ed657eb54c4"
+    },
+    {
+      "path": "telephony-skya/build/macos/client.sh",
+      "sha256": "4fc63d8f9b541bd0d3e24cce23d70ac7eda7da284d1b78cdfb19a022cf331c96"
+    },
+    {
+      "path": "telephony-skya/build/macos/client_monitor.sh",
+      "sha256": "2a43ac36c8baad7670e3bf8462cdb9dbd72fbc677e7dd4bb3c12e7f21302d91e"
+    },
+    {
+      "path": "telephony-skya/build/macos/remote-client.sh",
+      "sha256": "dfbcfb7fb432889a1cf01e9b4f5e7c48620c2d9cdcd2306760ef9aac82ca3ab0"
+    },
+    {
+      "path": "telephony-skya/build/windows/build.ps1",
+      "sha256": "a60c10d9b2adf8d8048a4d770e32f19065acc6be05bc382a317790d66afee990"
+    },
+    {
+      "path": "telephony-skya/build/windows/client.ps1",
+      "sha256": "64214221a8eda75a79c1b97c769f682dd61b6575d6013cc45546ef830b8132a9"
+    },
+    {
+      "path": "telephony-skya/build/windows/client_monitor.ps1",
+      "sha256": "83b025d594e3b2d371932cf9da4ef7964892d23e979848cd7f3413da5635d25e"
+    },
+    {
+      "path": "telephony-skya/build/windows/remote-client.ps1",
+      "sha256": "5ca4eb570335e6b91f8badc163f1bab6712ea3dffa94a0b747dc2236b863e4db"
+    },
+    {
       "path": "telephony-skya/native/main.cpp",
       "sha256": "e779420113ad062d26d9a87f6e04aac2b004e75e01e85bd63334869a73d1373a"
     },
@@ -4425,6 +4489,10 @@
     {
       "path": "telephony-skya/native/skya_engine.h",
       "sha256": "b1660bbbebd5cb9b052b0b5faefbb5d20dc02b6d58a2680f50b0a456646c7e7d"
+    },
+    {
+      "path": "telephony-skya/native/skya_server_main.cpp",
+      "sha256": "6a98f640213b87a62c154a6662ac6b6e6cc33f5bef506b34de71acea9a4c293f"
     },
     {
       "path": "telephony-skya/sleela/Skya.sleela",
