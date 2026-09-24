@@ -18,6 +18,8 @@ int skya_message(skya_engine_t*, const char*, const char*);
 size_t skya_peer_count(const skya_engine_t*);
 int skya_peer_at(const skya_engine_t*, size_t, skya_peer_t*);
 const char *skya_status(const skya_engine_t*);
+int skya_port_bound(const skya_engine_t*);
+uint16_t skya_bound_port(const skya_engine_t*);
 #ifdef __cplusplus
 }
 #endif
