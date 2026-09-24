@@ -93,7 +93,7 @@ final class SkyaProtocolFooter {
             case "SESSION.CREATE" -> 2;
             case "CLIENT.CONNECT" -> 3;
             case "LISTENER.START" -> 4;
-            case "SESSION.OPEN" -> 5;
+            case "SESSION.OPEN", "SESSION.CLOSE" -> 5;
             case "SESSION.AUTHENTICATE" -> 6;
             case "CIRCUIT.LOAD" -> 7;
             case "CIRCUIT.START", "CIRCUIT.PAUSE" -> 8;
