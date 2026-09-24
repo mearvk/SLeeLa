@@ -1,75 +1,38 @@
 # Skya Platform Builds
 
-The `telephony-skya/build` tree separates the normal Skya Client GUI from the administrative Client Monitor.
+The `telephony-skya/build` tree is the platform-specific build surface for Skya. Each operating system keeps its compiler/build entry point, native outputs, GUI launchers, and runtime branding together.
 
-## Client vs Client Monitor
-
-The **Client** is the normal, non-administrative Skya user experience. It launches the JavaFX `SkyaClientApp` and provides the user-facing communications surface:
-
-- Chat
-- Video
-- Audio
-- File Transfer
-- connection and room controls
-
-The normal Client does **not** expose administrative Start, Pause, or Stop controls.
-
-The **Client Monitor** is the separate administrative JavaFX GUI. It uses `SkyaApp` and provides local SLeeLa circuit/process monitoring and administrative lifecycle controls.
-
-This distinction is intentional:
+## Platform layout
 
 ```text
-client.sh
-    ↓
-SkyaClientApp
-    ↓
-Chat / Video / Audio / File Transfer
-    ↓
-SLeeLa / Skya client runtime
-
-client_monitor.sh
-    ↓
-SkyaApp
-    ↓
-SLeeLa SkyaClient.sleela circuit / administrative monitoring
+build/
+├── linux/    Linux build + launch surface
+├── windows/  Windows 10+ build + launch surface
+└── macos/    macOS build + launch surface
 ```
 
-The normal Client is therefore the default user interface; the Monitor is an administrative interface.
+Each platform directory is an independent build entry point. The generated native executables remain inside that platform directory.
 
-## Linux
+## GUI separation
 
-`./telephony-skya/build/linux/build.sh` — builds native `skya` and `skya-server`.
+- **Skya Client** → `SkyaClientApp`: Chat, Audio, Video, File Transfer.
+- **Skya Admin** → `SkyaApp`: local SLeeLa circuit/process monitoring and administrative lifecycle controls.
+- **Remote Client** → `SkyaConnectApp`: remote connection surface.
 
-`./telephony-skya/build/linux/client.sh` — builds the native components and launches the normal JavaFX Skya Client.
+Guia™ remains the GUI-to-client/listener contract; JavaFX is the presentation adapter.
 
-`./telephony-skya/build/linux/client_monitor.sh` — builds the native components and launches the administrative JavaFX Client Monitor.
+## Branding and design philosophy
 
-`./telephony-skya/build/linux/remote-client.sh` — starts the Remote Server Connection GUI.
+The Skya logo is the single repository-owned asset at `images/skya-logo-blue.jpeg`. Platform builds do not recreate or substitute the logo. Each build stages the exact repository asset at:
 
-## Windows 10+
+```text
+build/<os>/assets/skya-logo-blue.jpeg
+```
 
-`powershell -ExecutionPolicy Bypass -File .\\telephony-skya\\build\\windows\\build.ps1` — builds native executables.
+The GUI uses a restrained left-aligned header: logo first, then application title and role. The intent is strong identity without consuming the primary workspace. Scaling preserves the source aspect ratio and avoids distortion.
 
-`powershell -ExecutionPolicy Bypass -File .\\telephony-skya\\build\\windows\\client.ps1` — launches the normal Skya Client GUI.
+The same logo and visual hierarchy are used by both the normal Skya Client and Skya Admin so the applications read as one product family while remaining operationally distinct.
 
-`powershell -ExecutionPolicy Bypass -File .\\telephony-skya\\build\\windows\\client_monitor.ps1` — launches the administrative Client Monitor.
+## Important scope
 
-`powershell -ExecutionPolicy Bypass -File .\\telephony-skya\\build\\windows\\remote-client.ps1` — starts the Remote Server Connection GUI.
-
-## macOS
-
-`./telephony-skya/build/macos/build.sh` — builds native `skya` and `skya-server`.
-
-`./telephony-skya/build/macos/client.sh` — launches the normal Skya Client GUI.
-
-`./telephony-skya/build/macos/client_monitor.sh` — launches the administrative Client Monitor.
-
-`./telephony-skya/build/macos/remote-client.sh` — starts the Remote Server Connection GUI.
-
-## GUI and runtime relationship
-
-`SkyaClientApp` is the normal user-facing JavaFX application. `SkyaApp` remains the administrative monitoring application.
-
-Both use Guia™ as the GUI-to-client/listener contract. JavaFX is the presentation adapter.
-
-The Chat, Audio, Video, and File Transfer controls are the user-facing application surface. Their current JavaFX implementations establish the UI and request/status boundary; production transport, media capture/playback, codec integration, authentication, NAT traversal, and file-transfer transport remain native implementation layers.
+The platform build folders provide real native compilation and JavaFX launch paths. The current Audio/Video/File controls remain a GUI/runtime boundary; production media codecs, capture/playback, NAT traversal, authentication, and transport implementation are separate native work.
