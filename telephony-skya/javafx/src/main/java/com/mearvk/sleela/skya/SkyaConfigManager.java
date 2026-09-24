@@ -22,6 +22,10 @@ final class SkyaConfigManager {
         return CONFIG_DIR;
     }
 
+    static String directorySafe() {
+        return CONFIG_DIR.toString();
+    }
+
     static List<String> names() throws IOException {
         if (!Files.isDirectory(CONFIG_DIR)) return List.of();
         try (var stream = Files.list(CONFIG_DIR)) {
