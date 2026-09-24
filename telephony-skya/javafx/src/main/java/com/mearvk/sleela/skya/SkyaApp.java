@@ -20,6 +20,7 @@ public final class SkyaApp extends Application {
     private volatile boolean monitoringPaused;
     private final Properties config = new Properties();
     private String configName = "default";
+    private final SkyaProtocolFooter protocolFooter = new SkyaProtocolFooter();
 
     @Override public void start(Stage stage) {
         stage.setTitle("Skya — SLeeLa Telephony — Admin");
@@ -53,9 +54,10 @@ public final class SkyaApp extends Application {
         root.setPadding(new Insets(0, 12, 12, 12));
         root.setTop(new VBox(menuBar, header, new HBox(8, start, pause, stop)));
         root.setCenter(center);
-        root.setBottom(new VBox(6, new Separator(), status));
+        root.setBottom(new VBox(6, new Separator(), status, protocolFooter.node()));
         stage.setScene(new Scene(root, 900, 620));
         stage.show();
+        protocolFooter.start();
     }
 
     private MenuBar buildMenuBar(Stage stage) {
