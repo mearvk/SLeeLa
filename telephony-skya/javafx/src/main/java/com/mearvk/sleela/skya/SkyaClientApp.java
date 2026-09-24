@@ -35,6 +35,7 @@ public final class SkyaClientApp extends Application {
     @Override
     public void start(Stage stage) {
         stage.setTitle("Skya — SLeeLa Telephony");
+        protocolFooter.callback("GUI.CREATE");
         stage.setMinWidth(980);
         stage.setMinHeight(700);
 
@@ -52,11 +53,13 @@ public final class SkyaClientApp extends Application {
         Button connect = new Button("Connect");
         Button disconnect = new Button("Disconnect");
         connect.setOnAction(e -> {
+            protocolFooter.callback("CLIENT.CONNECT");
             connection.setText("Connection: requested to " + host.getText() + ":" + port.getText()
                     + " / " + room.getText());
             status.setText("Skya: connection requested");
         });
         disconnect.setOnAction(e -> {
+            protocolFooter.callback("SESSION.CLOSE");
             connection.setText("Connection: disconnected");
             status.setText("Skya: disconnected");
         });
