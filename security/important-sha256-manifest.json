@@ -16,7 +16,7 @@
     },
     {
       "path": "BUILD.md",
-      "sha256": "3af0729e0c904f55553cd46184184c51d2e0bbc97a2edbc6f82023c2e90b14aa"
+      "sha256": "57883f86387730233ad1470eb64d511711b5e40769d4c4477cd6f7047926137f"
     },
     {
       "path": "CHANGES-MEMORY-NATIVE.md",
@@ -4413,6 +4413,34 @@
     {
       "path": "synchro/tests/test_synchro.py",
       "sha256": "77d79a21d1972688c3fa85c3e473f076a75be44158a2eec3a9887edfeb1d527c"
+    },
+    {
+      "path": "telephony-skya/native/main.cpp",
+      "sha256": "e779420113ad062d26d9a87f6e04aac2b004e75e01e85bd63334869a73d1373a"
+    },
+    {
+      "path": "telephony-skya/native/skya_engine.cpp",
+      "sha256": "244e6146532bdde88d1401fa105654d9298bbdf68ad87952cec099bd58d1cd52"
+    },
+    {
+      "path": "telephony-skya/native/skya_engine.h",
+      "sha256": "b1660bbbebd5cb9b052b0b5faefbb5d20dc02b6d58a2680f50b0a456646c7e7d"
+    },
+    {
+      "path": "telephony-skya/sleela/Skya.sleela",
+      "sha256": "94c5b0591b2001c1f98a834736017d14718a85f66a946c9421c45f5e4c69f391"
+    },
+    {
+      "path": "telephony-skya/sleela/SkyaClient.sleela",
+      "sha256": "278b8c1e40d98526a722ad5f157acef9a8264a054437b9c4fd097d866d77722c"
+    },
+    {
+      "path": "telephony-skya/sleela/SkyaRoom.sleela",
+      "sha256": "47e3ca92c8b397f90fb6476886f0efa26cf55e9b3c28dc69080e9cca460a39e0"
+    },
+    {
+      "path": "telephony-skya/sleela/SkyaServer.sleela",
+      "sha256": "5b17275aba437bd4e121bab5485c38088d65308ad09dc91ac76b655d850cb88e"
     },
     {
       "path": "terminal_pixel/pixel_terminal.h",
