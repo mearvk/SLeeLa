@@ -1,4 +1,4 @@
-Guia™ 1.0 — SLeeLa GUI Protocol™
+Guia™ 1.1 — SLeeLa GUI Protocol™
 
 This reference defines the complete GUI-to-client/listener vocabulary: objects, functions, events, state machines, message envelopes, acknowledgements, data bindings, errors, and lifecycle transitions. The normative specification is maintained in `docs/SLEELA_GUI_PROTOCOL.md`.
 
@@ -21,3 +21,8 @@ GUI implementations MUST treat Guia™ as the protocol boundary. JavaFX, native 
 ## Version
 
 Guia™ 1.0 is the initial reference version.
+
+
+## Visual vocabulary
+
+Standard BODI/XML visual components are `bevel`, `gradient`, `style`, and `style-ref`. `bevel` provides 2D dimensional edges; `gradient` provides linear, radial, or bilinear surface transitions; `style` groups reusable declarations; `style-ref` applies them. The base BODI/XML document is authoritative for each GUI setup.
