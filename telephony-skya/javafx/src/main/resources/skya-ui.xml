@@ -1,1 +1,28 @@
-<?xml version="1.0" encoding="UTF-8"?><bodi-ui id="skya-client" title="Skya — SLeeLa Telephony"><window width="760" height="520"/><toolbar actions="start-client stop-monitor"/><monitor circuit="skya-monitoring.xml"/></bodi-ui>
+<?xml version="1.0" encoding="UTF-8"?>
+<bodi-ui id="skya-ui" title="Skya — SLeeLa Telephony" protocol="Guia™">
+  <window id="main-window" width="1100" height="760" min-width="980" min-height="700"/>
+  <header id="skya-header" logo="/images/skya-logo-blue.jpeg"/>
+  <connection id="connection-bar">
+    <control id="host" type="text"/>
+    <control id="port" type="text"/>
+    <control id="room" type="select"/>
+    <command id="connect" action="CLIENT.CONNECT"/>
+    <command id="disconnect" action="SESSION.CLOSE"/>
+  </connection>
+  <content id="tabs">
+    <view id="chat" type="chat"/><view id="video" type="video"/><view id="audio" type="audio"/><view id="file-transfer" type="file"/>
+  </content>
+  <footer id="protocol-footer" title="Protocol Message Scroller" callback="Guia™" position="bottom">
+    <divider id="protocol-divider" orientation="horizontal" style="2d-bevel"/>
+    <message-bar id="guia-message-bar" mode="scroll" messages="1-16" position="lowest"/>
+  </footer>
+  <bindings>
+    <binding event="GUI.CREATE" target="guia-message-bar" message="1"/>
+    <binding event="CLIENT.CONNECT" target="guia-message-bar" message="4"/>
+    <binding event="SESSION.CLOSE" target="guia-message-bar" message="6"/>
+    <binding event="CIRCUIT.START" target="guia-message-bar" message="9"/>
+    <binding event="CIRCUIT.PAUSE" target="guia-message-bar" message="9"/>
+    <binding event="CIRCUIT.STOP" target="guia-message-bar" message="15"/>
+    <binding event="CONTROL.UPDATE" target="guia-message-bar" message="16"/>
+  </bindings>
+</bodi-ui>
