@@ -1,7 +1,7 @@
 # SLeeLa GUI Protocol™ — Guia™ 1.0
 
 **Protocol name:** Guia™  
-**Specification:** SLeeLa GUI Protocol™ 1.0  
+**Specification:** SLeeLa GUI Protocol™ 1.1  
 **Owner:** MEARVK LLC  
 **Purpose:** Language-neutral GUI-to-SLeeLa client/listener protocol.
 
@@ -173,7 +173,35 @@ Fields:
 - `async`
 - `state`
 
-## 4. GUI functions
+## 4. Visual vocabulary and components
+
+Guia™ defines presentation components as part of the BODI/XML GUI vocabulary. Visual styling is declarative in BODI/XML and is interpreted by the GUI adapter.
+
+### 4.1 Bevel
+
+The `bevel` component creates a dimensional 2D edge or separator.
+
+Attributes: `id`, `orientation`, `style`, `size`, `light`, `shadow`, and optional `base`.
+
+Supported styles include `raised`, `sunken`, `etched`, `flat`, and adapter-compatible `2d-bevel`.
+
+### 4.2 2D gradient
+
+The `gradient` component provides a two-dimensional visual surface transition.
+
+Supported types are `linear`, `radial`, and `bilinear`. Linear gradients use `direction`, `start`, and `end`; bilinear gradients may use `top-left`, `top-right`, `bottom-left`, and `bottom-right`; radial gradients may use `radius`.
+
+### 4.3 Style container
+
+The `style` component groups reusable presentation declarations. A `style-ref` may apply a declared style to a compatible GUI component or container.
+
+Visual styling MUST NOT change Guia™ object identity, lifecycle, security authority, or event semantics.
+
+### 4.4 BODI/XML authority
+
+For a named GUI setup, its base BODI/XML document is the authoritative declaration of GUI structure and visual styling. Adapter code SHOULD implement the declared structure rather than silently inventing a separate XML definition.
+
+## 6. GUI functions
 
 ### Lifecycle
 
@@ -425,7 +453,7 @@ MONITOR.LOG
 MONITOR.ERROR
 ```
 
-## 6. State machines
+## 7. State machines
 
 ### GUI
 
@@ -479,7 +507,7 @@ STARTING → FAILED
 RUNNING → FAILED
 ```
 
-## 7. GUI-to-client listener transition
+## 8. GUI-to-client listener transition
 
 The normative client/listener startup sequence is:
 
@@ -523,7 +551,7 @@ CONTROL.UPDATE
 GUI
 ```
 
-## 8. Listener message envelope
+## 9. Listener message envelope
 
 A Guia™ listener message SHOULD contain:
 
@@ -546,7 +574,7 @@ error
 
 `sequence` provides ordered delivery detection. `messageId` provides message identity. Implementations MAY provide transport-specific framing underneath this logical envelope.
 
-## 9. Acknowledgement
+## 10. Acknowledgement
 
 Listeners use:
 
@@ -557,7 +585,7 @@ LISTENER.NACK(messageId, sequence, reason)
 
 ACK confirms receipt and acceptance of the message. NACK identifies a message that could not be accepted. A transport MAY separately provide delivery guarantees; Guia™ does not assume that every transport is reliable.
 
-## 10. Binding model
+## 11. Binding model
 
 Bindings connect GUI properties to SLeeLa data:
 
@@ -573,7 +601,7 @@ MONITOR → DATA
 
 A binding MUST identify source, target, direction, conversion rules, and optional validation.
 
-## 11. Error model
+## 12. Error model
 
 Standard categories:
 
@@ -605,11 +633,11 @@ recoverable
 details
 ```
 
-## 12. Security boundary
+## 13. Security boundary
 
 Guia™ does not grant authority merely because a GUI requests an operation. The SLeeLa runtime remains authoritative for permissions, filesystem access, networking, process execution, and administrative operations.
 
-## 13. JavaFX mapping
+## 14. JavaFX mapping
 
 JavaFX is an adapter for Guia™, not the protocol itself.
 
@@ -632,7 +660,7 @@ WINDOW.CLOSE
     → JavaFX Stage close
 ```
 
-## 14. Skya integration
+## 15. Skya integration
 
 Skya's JavaFX client SHOULD use the sequence:
 
@@ -654,7 +682,7 @@ Skya client monitor
 
 The JavaFX monitor is therefore a Guia™ client rather than a second independent control system.
 
-## 15. Compatibility requirements
+## 16. Compatibility requirements
 
 A Guia™ implementation MUST:
 
@@ -669,10 +697,10 @@ A Guia™ implementation MUST:
 
 Future revisions MUST document incompatible changes and assign an appropriate protocol version.
 
-## 16. Reference status
+## 17. Reference status
 
 This document is the normative starting reference for **Guia™** within SLeeLa.
 
-**Guia™ 1.0 — SLeeLa GUI Protocol™**
+**Guia™ 1.1 — SLeeLa GUI Protocol™**
 
 — Max Rupplin - MEARVK LLC - 2026
