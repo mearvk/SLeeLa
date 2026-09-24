@@ -854,3 +854,35 @@ other outputs are documented in
 [`http-servers/LOGGING.md`](http-servers/LOGGING.md), and
 [`http-servers/OUTPUTS.md`](http-servers/OUTPUTS.md).
 
+
+
+## Skya™ Telephony — integrated SLeeLa subsystem
+
+Skya™ is the SLeeLa telephony subsystem under [`telephony-skya/`](telephony-skya/). It is implemented as part of the main SLeeLa C/C++ execution path rather than as an unrelated parallel runtime.
+
+The current integration provides:
+
+- native Skya engine lifecycle and peer/room state;
+- SLeeLa VM binding through [`telephony-skya/native/skya_sleela_bridge.*`](telephony-skya/native/);
+- the main `sleela skya` command family;
+- server, client, and combined roles;
+- Basic, Intermediate, and Advanced initial NAT/firewall configuration policy;
+- reuse of SLeeLa's existing NAT-aware and OS-specific port-awareness architecture;
+- HTTP/2 and HTTP/3 capability selection in the configuration model;
+- BODI-to-JavaFX UI assets and SLeeLa application-model documentation;
+- runnable `.sleela` server/client/room integration documents.
+
+Typical commands after building the main runtime are:
+
+```sh
+./impl/build/sleela skya plan
+./impl/build/sleela skya --server --room lobby
+./impl/build/sleela skya --client --room lobby
+./impl/build/sleela skya --both --room lobby
+```
+
+The initial policy layer is deliberately non-destructive: `plan` reports the selected configuration and detects supported firewall facilities without silently changing firewall rules. Firewall lifecycle remains owned by the existing SLeeLa port-awareness subsystem.
+
+Configuration levels are documented in [`telephony-skya/docs/NAT-FIREWALL-CONFIG.md`](telephony-skya/docs/NAT-FIREWALL-CONFIG.md), while the implementation and current completion boundary are documented in [`SKYA.md`](SKYA.md).
+
+**Completion status:** Skya is integrated into the SLeeLa C/C++ runtime, but it is not yet a complete production telephony server. HTTP/2 and HTTP/3 session transport, QUIC integration, media capture/playback and codec adapters, certificate-quality extraction, actual NAT traversal/relay transport, resumable file transfer, runtime firewall open/close lifecycle, and full multi-peer call/session management remain implementation work. Documentation distinguishes the current foundation from those future transport and media layers.
