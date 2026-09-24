@@ -1,0 +1,13 @@
+#sleela 1.1
+class SkyaRoom {
+    int connected = 0;
+    void addPeer() { connected = connected + 1; }
+    void main() {
+        print("Skya room: lobby");
+        addPeer();
+        addPeer();
+        addPeer();
+        print("connected peers = " + connected);
+        print("room lifecycle check complete");
+    }
+}

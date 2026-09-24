@@ -1,0 +1,20 @@
+#sleela 1.1
+class SkyaServer {
+    int listener;
+    void peer() {
+        int client = accept(listener);
+        String request = sockread(client);
+        print("Skya server received: " + request);
+        sockwrite(client, "SKYA/1 server-ready");
+        sockclose(client);
+    }
+    void main() {
+        print("Skya server starting");
+        listener = listen(8443);
+        spawn(peer);
+        print("Skya server listening on 8443");
+        join();
+        sockclose(listener);
+        print("Skya server stopped");
+    }
+}

@@ -1,0 +1,10 @@
+#sleela 1.1
+class SkyaClient {
+    void main() {
+        int socket = connect("127.0.0.1", 8443);
+        sockwrite(socket, "SKYA/1 client-hello");
+        String response = sockread(socket);
+        print("Skya client received: " + response);
+        sockclose(socket);
+    }
+}
