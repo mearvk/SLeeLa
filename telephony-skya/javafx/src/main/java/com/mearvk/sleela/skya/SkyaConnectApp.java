@@ -21,6 +21,8 @@ public final class SkyaConnectApp extends Application {
     private BufferedReader reader;
     private BufferedWriter writer;
     private volatile boolean listenerPaused;
+    private volatile long connectionAttempt;
+    private static final int CONNECT_TIMEOUT_MS=5000;
 
     @Override public void start(Stage stage) {
         stage.setTitle("Skya — SLeeLa Remote Connection");
@@ -44,18 +46,21 @@ public final class SkyaConnectApp extends Application {
         try{p=Integer.parseInt(port.getText().trim());if(p<1||p>65535)throw new NumberFormatException();}
         catch(NumberFormatException e){status.setText("Invalid port");return;}
         if(h.isEmpty()||r.isEmpty()){status.setText("Server and room are required");return;}
-        listenerPaused=false; status.setText("Connecting to "+h+":"+p);
+        listenerPaused=false; final long attempt=++connectionAttempt; status.setText("Connecting to "+h+":"+p+" (timeout 5s)");
         append("CLIENT.CONNECT "+h+":"+p+" room="+r+" protocol="+protocol.getValue());
         Thread worker=new Thread(()->{
             try{
-                Socket s=new Socket();s.connect(new InetSocketAddress(h,p),5000);
+                Socket s=new Socket();
+                s.connect(new InetSocketAddress(h,p),CONNECT_TIMEOUT_MS);
                 BufferedReader rd=new BufferedReader(new InputStreamReader(s.getInputStream(),StandardCharsets.UTF_8));
                 BufferedWriter wr=new BufferedWriter(new OutputStreamWriter(s.getOutputStream(),StandardCharsets.UTF_8));
                 synchronized(this){socket=s;reader=rd;writer=wr;}
                 wr.write("SKYA/1 client-hello room="+r+" protocol="+protocol.getValue());wr.newLine();wr.flush();
-                Platform.runLater(()->{status.setText("Connected: "+h+":"+p);append("CLIENT.CONNECTED");append("SESSION.OPEN room="+r);append("LISTENER.START");});
+                Platform.runLater(()->{if(attempt!=connectionAttempt)return;status.setText("Connected: "+h+":"+p);append("CLIENT.CONNECTED");append("SESSION.OPEN room="+r);append("LISTENER.START");});
                 String line;while((line=rd.readLine())!=null){final String x=line;if(!listenerPaused)Platform.runLater(()->append("LISTENER.RECEIVE "+x));}
-            }catch(IOException e){Platform.runLater(()->{status.setText("Connection failed: "+e.getMessage());append("CLIENT.ERROR "+e.getMessage());});}
+            }catch(SocketTimeoutException e){Platform.runLater(()->{if(attempt!=connectionAttempt)return;status.setText("Connection timeout after 5s");append("CLIENT.TIMEOUT after 5s");});
+            }catch(ConnectException e){Platform.runLater(()->{if(attempt!=connectionAttempt)return;status.setText("Connection failed: "+e.getMessage());append("CLIENT.ERROR "+e.getMessage());});
+            }catch(IOException e){Platform.runLater(()->{if(attempt!=connectionAttempt)return;status.setText("Connection failed: "+e.getMessage());append("CLIENT.ERROR "+e.getMessage());});}
         },"skya-remote-connection");
         worker.setDaemon(true);worker.start();
     }
@@ -71,6 +76,7 @@ public final class SkyaConnectApp extends Application {
         catch(IOException e){append("TRANSPORT.ERROR "+e.getMessage());disconnect();}
     }
     private synchronized void disconnect(){
+        connectionAttempt++;
         listenerPaused=false;close(reader);close(writer);close(socket);reader=null;writer=null;socket=null;
         if(status!=null){status.setText("Disconnected");append("LISTENER.STOP");append("CLIENT.DISCONNECTED");append("SESSION.CLOSED");}
     }
