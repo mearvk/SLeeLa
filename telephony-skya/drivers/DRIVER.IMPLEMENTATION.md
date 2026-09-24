@@ -1,119 +1,76 @@
-# Skya™ Driver Implementation Status
+# Skya Driver Implementation
 
-## Purpose
+## Model-specific driver layer
 
-This document records the first executable cross-platform driver layer for Skya™ Telephony.
+Skya now separates three levels of driver matching:
 
-The implementation is intentionally layered:
+1. **Exact model driver** — matches a specific vendor/model string.
+2. **Vendor-family driver** — matches the vendor when no exact model driver matches.
+3. **Standard-audio fallback** — matches standards-based USB/Bluetooth audio when no vendor match is available.
 
-    OS device enumeration
-        -> Skya platform adapter
-        -> common driver registry
-        -> vendor driver probe
-        -> standard audio fallback
-        -> runtime capability record
+Exact model drivers are registered first so that a known model receives its model-specific capability policy before falling back to the broader vendor adapter.
 
-## Implemented
+Current model adapters include:
 
-### Common C/C++ layer
+- Yealink MP45
+- Yealink MP50
+- Poly Blackwire 5220
+- Jabra Evolve2 40
+- Grandstream GUV3000
+- EPOS IMPACT SC 600
+- Logitech Zone Wired 2
+- Fanvil X4U-V2
+- Snom A330D
+- Cisco 321
 
-- `include/skya_phone_driver.h`
-- `include/skya_platform_driver.h`
-- `include/skya_builtin_drivers.h`
-- `src/skya_driver_registry.cpp`
-- `src/skya_builtin_drivers.cpp`
+The model implementation lives in:
 
-The registry now contains vendor adapters for:
+- `drivers/include/skya_model_drivers.h`
+- `drivers/src/skya_model_drivers.cpp`
 
-- Yealink
-- Poly
-- Jabra
-- Grandstream
-- EPOS
-- Logitech
-- Fanvil
-- Snom
-- Cisco
+The registry order is:
 
-A standard audio fallback is also present for USB Audio and Bluetooth transports.
+```
+exact model
+    -> vendor family
+    -> standard audio
+```
 
-### Linux
+## Capability policy
 
-`platform/linux/skya_linux_driver.cpp`
+Model identification is not certification.
 
-The Linux adapter enumerates ALSA-visible devices through `/proc/asound` as a first discovery layer and converts them into the common Skya platform-device structure.
+A model driver may establish the capability policy appropriate to the device class, but the platform layer must still determine the actual transport and available interfaces. USB HID call-control capabilities are only exposed when the discovered transport is `SKYA_TRANSPORT_USB_HID`. Fanvil X4U-V2 is treated as a SIP/network telephone and its telephone controls are exposed only for SIP/network transport.
 
-It then performs:
+## Evidence boundary
 
-    platform device
-      -> Skya logical device
-      -> registry probe
-      -> capabilities
+The initial model set is grounded in manufacturer product specifications. For example, Yealink documents MP45 and MP50 as USB phones with call controls, while HP Poly documents Blackwire 5220 USB call answer/end, mute, and volume controls, and Jabra documents Evolve2 40 USB-A/USB-C variants and Jabra Direct support.
 
-This is intentionally an initial user-space discovery implementation. It is not a replacement for the Linux kernel or ALSA driver.
+Manufacturer documentation:
 
-### Windows 10+
+- https://www.yealink.com/en/product-detail/microsoft-teams-phone-mp45
+- https://www.yealink.com/website-service/attachment/product_resource/documents/20220525/202205250648006524a5aea68480e91546caf0511b83f.pdf
+- https://support.hp.com/us-en/product/product-specs/blackwire-5200-series/model/2101719547
+- https://www.jabra.com/business/office-headsets/jabra-evolve/jabra-evolve2-40
 
-`platform/windows/skya_windows_driver.cpp`
+These sources establish documented device characteristics; they do not replace physical Skya compatibility testing.
 
-The Windows adapter uses the Windows audio endpoint architecture and WASAPI/MMDevice interfaces to enumerate active audio endpoints, capture endpoint identity/friendly-name information, and pass the result into the common Skya registry.
+## Next model-driver work
 
-Windows' Audio Endpoint Builder creates and manages application-facing endpoints; Skya consumes those endpoints rather than replacing the Windows audio stack.
+For each model, the next implementation layer should add:
 
-### macOS
+- exact USB VID/PID where documented and verified;
+- USB interface descriptors;
+- HID report discovery;
+- answer/end/mute/hold/volume mappings;
+- LED and busy-light controls;
+- firmware query;
+- hotplug/reconnect behavior;
+- unsupported-feature reporting;
+- Linux test record;
+- Windows 10+ test record;
+- macOS test record;
+- hardware revision and firmware matrix;
+- official vendor documentation/download links.
 
-`platform/macos/skya_macos_driver.cpp`
-
-The macOS adapter uses Core Audio's hardware-device enumeration to obtain active audio-device identities and feeds those devices into the common Skya registry.
-
-A DriverKit/AudioDriverKit system driver is deliberately not introduced for ordinary devices. That layer will be added only for hardware that genuinely requires a system-driver implementation.
-
-## Load Sequence
-
-    enumerate
-      -> identify
-      -> registry probe
-      -> capability query
-      -> runtime activation
-
-The platform adapter does not automatically claim a device is fully supported merely because it was enumerated.
-
-## Vendor Support Model
-
-Current vendor entries provide the common identity/probe/capability boundary. Hardware-specific HID reports, SIP control protocols, firmware operations, and proprietary feature APIs remain separate implementation work.
-
-Therefore:
-
-- cataloged does not mean hardware-certified;
-- discovered does not mean all capabilities work;
-- audio-working does not mean call-control-working;
-- vendor adapter presence does not mean every model in that vendor family is supported.
-
-## Next Driver Implementation Layer
-
-The next concrete layer should add, in order:
-
-1. exact device identity matching;
-2. USB VID/PID and OS device-instance capture;
-3. HID report/usage discovery;
-4. mute/answer/end/hold/volume operations;
-5. hotplug and reconnect callbacks;
-6. per-model capability declarations;
-7. vendor-specific controls;
-8. SIP/network phone adapters;
-9. hardware test records;
-10. platform-specific packaging/signing where required.
-
-## Platform Principles
-
-Linux: consume ALSA/HID/USB/Bluetooth facilities before considering kernel code.
-
-Windows 10+: consume PnP, class drivers, audio endpoints, WASAPI, and HID before considering a custom driver.
-
-macOS: consume Core Audio and standard device interfaces before introducing DriverKit/AudioDriverKit.
-
-These principles align the Skya driver layer with the operating systems rather than attempting to replace their established device stacks.
-
-## Important Status
-
-This is the first executable driver foundation, not a claim of universal hardware support. The implementation now provides a real structure into which tested device-specific behavior can be added.
+No model should be marked `TESTED` or `CERTIFIED` until the exact hardware and software combination has been exercised.
