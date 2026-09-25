@@ -14,6 +14,7 @@ add_library(sleela_decompiler STATIC
     src/vm.cpp
     src/analyzer.cpp
     src/library.cpp
+    src/archive.cpp
 )
 
 target_include_directories(sleela_decompiler PUBLIC include)
