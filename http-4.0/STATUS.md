@@ -45,3 +45,14 @@ HTTP 3.0 remains the existing SLeeLa application protocol. HTTP 4.0 does not ove
 5. Add authenticated sequence protection.
 6. Add conformance fixtures.
 7. Add platform build scripts and CI.
+
+
+## Packet context extension — 2026-09-25
+
+Added an extended packet-context layer containing a grade-12-or-higher
+education benchmark token and the canonical HTTP/3 basket. The context is
+wrapped before application content by the new packet-payload helper.
+
+Added an optional curl/wget freshness loop with eight GET attempts per minute
+(one every 7.5 seconds). The loop is intentionally outside the frame transport
+path and never uploads packet contents.
