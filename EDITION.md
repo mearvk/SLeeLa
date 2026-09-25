@@ -745,6 +745,41 @@ Primary technical references include:
 Where EDITION.md summarizes another document, that document remains the
 authoritative technical reference.
 
+
+## 32. Platform Completion Layer
+
+The repository now defines the engineering completion layer for turning the feature catalog into a complete application platform. New companion documents are:
+
+- LANGUAGE.md — practical language surface;
+- LANGUAGE.SPEC.md — compiler/type/semantic contract;
+- RUNTIME.md — VM/runtime contract;
+- STANDARD.LIBRARY.md — portable standard-library map;
+- BUILD.SYSTEM.md — source-to-application build lifecycle;
+- PACKAGE.MANAGER.md — dependency and artifact model;
+- ABI.md — language/core/native/platform/protocol ABI boundaries;
+- PLATFORM.md — Linux, macOS and Windows 10+ portability contract;
+- SECURITY.md — layered security model;
+- TESTING.md — positive, negative, fuzz, concurrency, ABI and platform testing;
+- IDE.md — editor and language-server direction;
+- APPLICATIONS.md — SLeeLa-native application lifecycle;
+- VOIP.md — telephony and VoIP architecture;
+- HTTP.md — HTTP generation and HTTP 4.0 profile;
+- DRIVERS.md — cross-platform driver contract;
+- API.INDEX.md — consolidated API navigation.
+
+These documents intentionally distinguish implemented facilities from architectural targets. They do not convert a documented contract into a claim of production maturity.
+
+### Application-completion chain
+
+SOURCE → CHECK → DEPENDENCIES → COMPILE → LINK/ASSEMBLE → TEST → PACKAGE → SIGN → INSTALL → RUN → VERIFY
+
+### Platform layers
+
+LANGUAGE → COMPILER → CORE ABI → RUNTIME → STANDARD LIBRARY → OS ABSTRACTION → NATIVE/DRIVER LAYER → APPLICATION
+
+The resulting architecture supports the explicit goal of building a complete application through SLeeLa tooling while keeping native and platform dependencies visible and controlled.
+
+
 ---
 
 **Max Rupplin — MEARVK LLC — 2026**
