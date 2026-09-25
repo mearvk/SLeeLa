@@ -107,3 +107,8 @@ constitutional document governing the language's design and syntax versioning.
 | 2026-09 | 0.1.2 | 1.2 | 2.0 | 2.0.0 | Added C/C++-style structs (declaration, `new` instantiation, `.` member access, reference semantics, `structPack`/`structUnpack` transport); artifact format v2 persists struct layouts. Syntax range now `1.0 .. 1.2`. |
 | 2026-09 | 0.1.2 | 1.0 | 2.0 | 2.0.0 | Added common Subject/Quantity/Unit/Assumption/Relation/Transformation/Evidence/Comparison/Explanation/WorkPlan semantic layer while retaining 1.0 compatibility. |
 | 2026-09 | 0.1.2 | 1.0 | 1.0 | 1.0.0 | Version-aware compiler; Nordshrift triplet; original NS-SST-0001 specification. |
+
+
+## 2026-09-25 — Platform Completion Layer
+
+Added the engineering contract set for the language, runtime, standard library, build system, package manager, ABI, platform support, security, testing, IDE tooling, applications, HTTP, VoIP, drivers and API navigation. These documents define target contracts and explicitly distinguish architectural scope from implementation maturity.
