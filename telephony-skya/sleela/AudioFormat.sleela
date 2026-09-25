@@ -1,0 +1,13 @@
+#sleela 1.1
+class AudioFormat {
+    int sampleRate;
+    int channels;
+    int sampleBits;
+    String encoding;
+    void set(int rate, int channelCount, int bits, String codec) {
+        sampleRate = rate;
+        channels = channelCount;
+        sampleBits = bits;
+        encoding = codec;
+    }
+}
