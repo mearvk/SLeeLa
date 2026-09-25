@@ -3279,6 +3279,10 @@
       "sha256": "1ed5f40f61ba56b49dd1be54f4fe36b66785eb025bcd4b35d0fb03315a76b633"
     },
     {
+      "path": "examples/nordshrift/complete-application.sst",
+      "sha256": "dc8bd108c17b754de5899f4531721a481cf4a4b984fa47bd450b59f409f0d54e"
+    },
+    {
       "path": "examples/nordshrift/subject-libraries.sst",
       "sha256": "e0f27ffe6c40773b6cfa5fb8badeeccc0a85ed692425f4275795538a9204eeac"
     },
@@ -5985,6 +5989,18 @@
     {
       "path": "terminal_pixel/pixel_terminal.h",
       "sha256": "d0ed0aa09d2e398afce86bb9b1c1b0910703066fa45bc8736a2e28740aff97c8"
+    },
+    {
+      "path": "tests/native_memory_smoke.cpp",
+      "sha256": "53d1721e69e55abe81f10c4cb5c8b429435d67320a7491f7d8f091f4714096a8"
+    },
+    {
+      "path": "tests/nordshrift_complete_smoke.cpp",
+      "sha256": "853dcd56ab21712760eada700d2ea006e9b63b637a33ee2b36e2499e13198cb4"
+    },
+    {
+      "path": "tests/reflection_smoke.cpp",
+      "sha256": "9dbb0b80a04bc2e7cc3958c92deb920271c58df7c1e9938074f72af867d1d707"
     },
     {
       "path": "tools/add-country-existence-dates.py",
