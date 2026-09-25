@@ -1,0 +1,7 @@
+#sleela 1.1
+class Stream { int openState; void open(){openState=1;} void close(){openState=0;} }
+class Thread { int running; void start(){running=1;} void stop(){running=0;} }
+class Timer { int active; int interval; void configure(int i){interval=i;} void start(){active=1;} void stop(){active=0;} }
+class Lock { int held; void acquire(){held=1;} void release(){held=0;} }
+class EventBus { int listeners; void subscribe(String e){listeners=listeners+1;} void publish(String e){} }
+class Result { int success; String message; void ok(String m){success=1;message=m;} void fail(String m){success=0;message=m;} }
