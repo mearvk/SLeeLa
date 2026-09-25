@@ -2463,6 +2463,18 @@
       "sha256": "2b2338eb50567f046c0fbf344732d3f3bf5014b4bbf9dd05b59fb6676822db16"
     },
     {
+      "path": "build/slecompiler-linux.sh",
+      "sha256": "afa132a3b1019718e0aa47785b8b6fd7ca1d6b2ce214142a752ac37b1037fa0a"
+    },
+    {
+      "path": "build/slecompiler-macos.sh",
+      "sha256": "b40c7045545285045614fb4308044b226fc0ca1a33d45c790ca87b2c237b4c5c"
+    },
+    {
+      "path": "build/slecompiler-windows.ps1",
+      "sha256": "4d865119d11ac533bfddf1ec5bdbcc118dc891159143caaf171b3015df3b74b8"
+    },
+    {
       "path": "build-linux.sh",
       "sha256": "2f6553d263e83c820ffbaecbc2f02d8aa4252352c223b61a0a65c6eb3e4031b5"
     },
@@ -2556,7 +2568,7 @@
     },
     {
       "path": "decompiler/include/sleela/decompiler/decompiler.hpp",
-      "sha256": "e3f51c761e69076c31d817c577ffe81c18733c9436d36dc705aa03ba1fda22dc"
+      "sha256": "b9f23442b0458160876e41632496a9985f84c471210bfcc495441fc2f7fba0de"
     },
     {
       "path": "decompiler/include/sleela/decompiler/elf.hpp",
@@ -2576,7 +2588,7 @@
     },
     {
       "path": "decompiler/src/analyzer.cpp",
-      "sha256": "f6be2144f9176bda1a2a627f56cab2f3c0e5115999b7380520a4052e776a5c81"
+      "sha256": "7e79d05cfd0c4496e9534137bc10c6004818d283c96d873bb027cf69857ddaa3"
     },
     {
       "path": "decompiler/src/archive.cpp",
@@ -2584,15 +2596,15 @@
     },
     {
       "path": "decompiler/src/artifact.cpp",
-      "sha256": "fdd30584e297851de52dd16d30095696a1d5bd70ca560aa5c2f28e7f6cdb9792"
+      "sha256": "45d4bc062e6e412edfa42bad5abdae1dc72e54d52958633f9248cd4ed36cd4c2"
     },
     {
       "path": "decompiler/src/decoder.cpp",
-      "sha256": "b5bc8c7eb81536ab8248d97c80a2b2ef5bcd925729b1f1df90d9acd9f94dc217"
+      "sha256": "25898318616cc1bc297b1526ae08086b796592a874fbe62ef241eb2928351994"
     },
     {
       "path": "decompiler/src/elf.cpp",
-      "sha256": "63709d1f935981369f8e995c314de9fc0068456204afb19d33a848cce5f1aaac"
+      "sha256": "54ba3f4c6a6bf4a8a17e5616a964da8ba03974a7d9318c3bb9668c7ffd89f0b6"
     },
     {
       "path": "decompiler/src/library.cpp",
@@ -2612,7 +2624,7 @@
     },
     {
       "path": "decompiler/tests/test_core.cpp",
-      "sha256": "c8abf8019c9fbb5efc3ea1a4d71da5344c81ab0c94e3aa460a9023cb4540d3e2"
+      "sha256": "8dec1aaa090241e6976a91e44ae17629705fb2d34b4612b4e5c5b016a1d1068e"
     },
     {
       "path": "drivers/cisco/321/1.0/driver.c",
@@ -2829,6 +2841,14 @@
     {
       "path": "drivers/grandstream/gxp21xx/1.0/driver.h",
       "sha256": "6cea4b5c4e0a2e128f3caf6b99891b16a4377a71984a111b435c6e1157eb9e0d"
+    },
+    {
+      "path": "drivers/include/skya_data_plane.h",
+      "sha256": "1d11bab013c72dceed142b623578cfb4f39ae453eb3d9b727bc92e71ed4f0c6f"
+    },
+    {
+      "path": "drivers/include/skya_hardware_profile.h",
+      "sha256": "6c1208a7847d5e8f3aad3ceeba9475ef2cbfa08a0949f001a136c93fe682b525"
     },
     {
       "path": "drivers/jabra/biz-1500/1.0/driver.c",
@@ -3057,6 +3077,14 @@
     {
       "path": "drivers/snom/a330m/1.0/driver.h",
       "sha256": "3d8baab57057c9d894a59322528bf9da5792a3f60226233a4765b2d506bf2485"
+    },
+    {
+      "path": "drivers/src/skya_data_plane.c",
+      "sha256": "ba0f45c39fe8f91a60b7223698ac9c249dcbb9bf36189d81085e08d72b39a538"
+    },
+    {
+      "path": "drivers/src/skya_hardware_profile.c",
+      "sha256": "a9b8570b63cf0b6d985df11b18a56930c9cb885afcfcfe046d5a63a7fec8309a"
     },
     {
       "path": "drivers/yealink/mp45/1.0/driver.c",
@@ -5120,15 +5148,15 @@
     },
     {
       "path": "telephony-skya/drivers/epos/impact-1000/1.0/driver.c",
-      "sha256": "f486821bf99da8361a9ecff7a20ff5b72a5d713dbb34ae2c78282032f4b6648f"
+      "sha256": "62d1dc8e081dce6204fbce016c67b83d82801bd1e1bc6e8b08d156b34c2d7d11"
     },
     {
       "path": "telephony-skya/drivers/epos/impact-1000/1.0/driver.cpp",
-      "sha256": "081c13cf313a91fa2c0efa7e10ab301b4ebbeef02ffdf8b442f22459e3ec6f90"
+      "sha256": "6670d2133a7564e0c3afe48cbd7c5067fb1fa085d6d9829c5fbed541a7c52d76"
     },
     {
       "path": "telephony-skya/drivers/epos/impact-1000/1.0/driver.h",
-      "sha256": "0aee78e1336a11a7d5d26d4f50ddafba9d0bb49e14b8aadf8d6e732784d2b4b6"
+      "sha256": "7da405482450aeb72802340004ffe2f8ac96d937b46dfd4569961ffe815ced90"
     },
     {
       "path": "telephony-skya/drivers/epos/impact-sc200/1.0/driver.c",
