@@ -284,3 +284,29 @@ weigh documentary evidence, and the governing rule throughout is that
 *Prepared as a descriptive accounting of the repository as of 2026. Versions
 (toolchain 0.1.2 · syntax 1.0 · Nordshrift 1.0) are current as of this writing;
 consult `VERSION.md` for the authoritative record.*
+
+
+## 10. Platform Completion Layer
+
+The repository now includes the following engineering-contract documents:
+
+| File | Purpose |
+|---|---|
+| LANGUAGE.md | User-facing language surface |
+| LANGUAGE.SPEC.md | Formal language/compiler contract |
+| RUNTIME.md | VM and runtime contract |
+| STANDARD.LIBRARY.md | Portable standard-library architecture |
+| BUILD.SYSTEM.md | Source-to-application build lifecycle |
+| PACKAGE.MANAGER.md | Dependency/package model |
+| ABI.md | ABI and native interoperability boundaries |
+| PLATFORM.md | Linux/macOS/Windows portability contract |
+| SECURITY.md | Layered security model |
+| TESTING.md | Verification and failure-testing model |
+| IDE.md | IDE/language-server direction |
+| APPLICATIONS.md | SLeeLa-native application lifecycle |
+| VOIP.md | Telephony/VoIP architecture |
+| HTTP.md | HTTP generation architecture |
+| DRIVERS.md | Cross-platform driver contract |
+| API.INDEX.md | Consolidated API map |
+
+These documents form the bridge from a feature inventory to a complete, testable application platform.
