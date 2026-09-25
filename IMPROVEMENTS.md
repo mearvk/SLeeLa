@@ -70,6 +70,14 @@ Each iteration should:
 
 ### Items 1–5: foundation started
 
+Implemented in this iteration:
+- **Item 24:** structured `DecompilerError` / `ErrorCode` taxonomy with stage, file offset and virtual address context.
+- **Item 34:** stricter CLI length parsing, explicit help/version handling, output-file write validation and stable error labels.
+- **Item 40:** analysis remains a read-only static boundary; this iteration adds no target execution path.
+- Added regression coverage for the error object and all four source-output extensions/emission paths.
+
+Still pending in this pass: full address-space translation, complete instruction semantics, CFG/function/data-flow improvements, and the remaining items below.
+
 The first implementation pass hardens the error boundary and CLI before deeper decoder/CFG/SLIR work. The next pass should introduce the explicit address-space model and checked address translation before expanding instruction coverage.
 
 **Known limitation:** local compilation/CTest execution is environment-dependent. Repository changes should not be described as build-verified unless CI or a real build result is available.
