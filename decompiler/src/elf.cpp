@@ -164,6 +164,13 @@ ElfAnalysis analyze_elf(std::span<const std::uint8_t> in,const std::string& name
             out.relocations.push_back({addr,reloc_name(machine,rt),sn,n});
         }
     }
+    // Relocation-backed imports now retain their relocation address, which is the key evidence
+    // needed later for PLT/GOT and external-call recovery.
+    for(const auto& r : out.relocations) {
+        if(r.symbol.empty()) continue;
+        for(auto& imp : out.imports)
+            if(imp.name==r.symbol && imp.address==0) imp.address=r.address;
+    }
     // Kernel module exports/imports are represented by ksymtab sections and ordinary undefined symbols.
     if(section_index.count("__ksymtab")||section_index.count("__ksymtab_gpl")) out.kernel_module.module_name=out.kernel_module.module_name.empty()?name:out.kernel_module.module_name;
     if(modinfo_off&&range(b.size(),modinfo_off,modinfo_size)) for(std::uint64_t p=modinfo_off;p<modinfo_off+modinfo_size;){auto q=p;while(q<modinfo_off+modinfo_size&&b[q])++q;std::string v(reinterpret_cast<const char*>(b.data()+p),q-p);auto eq=v.find('=');if(eq!=std::string::npos){auto k=v.substr(0,eq),val=v.substr(eq+1);if(k=="name")out.kernel_module.module_name=val;else if(k=="vermagic")out.kernel_module.vermagic=val;else if(k=="license")out.kernel_module.license=val;else if(k=="author")out.kernel_module.author=val;else if(k=="description")out.kernel_module.description=val;else if(k=="alias")out.kernel_module.aliases.push_back(val);else if(k=="depends"&&!val.empty()){std::size_t s=0;while(s<val.size()){auto e=val.find(',',s);out.kernel_module.dependencies.push_back(val.substr(s,e==std::string::npos?val.size()-s:e-s));if(e==std::string::npos)break;s=e+1;}}}p=q+1;}
