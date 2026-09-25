@@ -14,7 +14,7 @@ artifact
   -> control-flow analysis
   -> SLIR
   -> higher-level analysis
-  -> source-output projection
+  -> library relationships / report
 ```
 
 ## Product boundary
@@ -38,39 +38,29 @@ artifacts.
 | Library | Library/family model for related native artifacts |
 | Analyzer | Higher-level static analysis |
 | SLIR | Lifted intermediate representation |
-| SourceEmitter | Evidence-based projection into Java, Sleela, C, or C++ |
+| VM | Analysis-oriented representation/execution model; it does not execute the input artifact |
 
-The exact C++ declarations remain authoritative in `decompiler/include/`.
+The exact C++ declarations remain authoritative in `decompiler/include/`. This guide
+documents the contract without inventing declarations that are not yet stabilized.
 
-## Source output targets
+## API exemplars
 
-The CLI accepts an explicit output-language argument:
+With `SLEE_LA_BUILD_API_EXAMPLES=ON` (the current CMake default), the product builds:
 
-```
-sleela-decompiler decompile <file> --output <java|sleela|c|c++>
-```
+- `slecompiler-api-inspect`
+- `slecompiler-api-cfg`
+- `slecompiler-api-library`
+- `slecompiler-api-graph`
+- `slecompiler-api-slir-vm`
 
-Examples:
+Their sources are under `decompiler/examples/`.
 
-```
-sleela-decompiler decompile program --output java
-sleela-decompiler decompile program --output sleela --file decompiled.sleela
-sleela-decompiler decompile program --output c --file decompiled.c
-sleela-decompiler decompile program --output c++ --file decompiled.cpp
-```
-
-Aliases: `sl` selects Sleela and `cpp` selects C++.
-
-| Target | Extension | Output role |
-|---|---|---|
-| Java | `.java` | Java-oriented source reconstruction |
-| Sleela | `.sleela` | Native SLeeLa/Sleela source representation |
-| C | `.c` | C-oriented source reconstruction |
-| C++ | `.cpp` | C++20-oriented source reconstruction |
-
-The four targets share the recovered native evidence and analysis. Selecting an output
-language does **not** claim that the original program was written in that language.
-Unresolved semantics remain marked as evidence/unknowns rather than invented facts.
+They demonstrate:
+1. artifact identity and metadata inspection;
+2. decoding and control-flow analysis;
+3. library/archive metadata;
+4. library-family dependency relationships;
+5. SLIR and analysis-VM work.
 
 ## Recommended application sequence
 
@@ -82,8 +72,56 @@ Unresolved semantics remain marked as evidence/unknowns rather than invented fac
 6. Recover functions/control flow where supported.
 7. Lift supported material into SLIR.
 8. Run higher-level analysis.
-9. Select the requested source-output language.
-10. Emit an evidence-based source artifact or report.
+9. Emit an evidence-based report.
+10. Keep original input separate from generated analysis output.
 
-Reports and generated source should distinguish observed evidence, derived analysis, and
-unknown/unsupported properties.
+Reports should distinguish **observed evidence**, **derived analysis**, and
+**unknown/unsupported properties**. Never invent symbols, source lines, calling
+conventions, or hardware facts.
+
+## Normal analysis limitations
+
+Unknown formats, truncated files, malformed headers, unsupported architectures,
+stripped symbols, unresolved indirect control flow, unsupported instructions, missing
+dependencies, and undecodable archive members are normal analysis outcomes. An
+unrecovered fact should remain explicitly unknown.
+
+## Platform contract
+
+The product targets Linux, macOS, and Windows 10+. The native library is C++20.
+Platform-specific build mechanics belong in `build/`; the analysis contract remains
+in `decompiler/`.
+
+See `decompiler/TUTORIAL.md` for the developer walkthrough.
+
+
+## Source output targets
+
+Slecompiler supports explicit source-language selection for decompilation. The CLI
+argument is:
+
+    sleela-decompiler decompile <file> --output <java|sleela|c|c++>
+
+The output may be written to standard output or to a file:
+
+    sleela-decompiler decompile program --output java
+    sleela-decompiler decompile program --output sleela --file decompiled.sleela
+    sleela-decompiler decompile program --output c --file decompiled.c
+    sleela-decompiler decompile program --output c++ --file decompiled.cpp
+
+Accepted aliases are `sl` for Sleela and `cpp` for C++. The source emitter is
+language-selected after native decoding, CFG recovery, and function recovery.
+
+The four supported source targets are:
+
+| Target | Typical extension | Purpose |
+|---|---|---|
+| Java | `.java` | Object-oriented JVM-oriented source reconstruction |
+| Sleela | `.sleela` | Native SLeeLa/Sleela source representation |
+| C | `.c` | Procedural C-oriented reconstruction |
+| C++ | `.cpp` | C++20-oriented reconstruction |
+
+Generated source is evidence-derived. It must not be represented as the original
+source unless the evidence actually establishes that equivalence. Missing or
+ambiguous native semantics remain explicitly represented as comments/unknowns rather
+than invented source behavior.
