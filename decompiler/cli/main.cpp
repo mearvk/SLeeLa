@@ -1,6 +1,8 @@
 #include "sleela/decompiler/decompiler.hpp"
 #include "sleela/decompiler/output.hpp"
 #include <fstream>
+#include <cctype>
+#include <stdexcept>
 #include <iostream>
 #include <string>
 
