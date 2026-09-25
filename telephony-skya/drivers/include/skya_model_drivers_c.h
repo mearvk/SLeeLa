@@ -1,0 +1,50 @@
+#ifndef SKYA_MODEL_DRIVERS_C_H
+#define SKYA_MODEL_DRIVERS_C_H
+
+#include "skya_phone_driver.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#define SKYA_DECLARE_C_MODEL(name) const skya_phone_driver *skya_c_##name##_driver(void);
+
+SKYA_DECLARE_C_MODEL(yealink_uh42)
+SKYA_DECLARE_C_MODEL(yealink_uh44)
+SKYA_DECLARE_C_MODEL(yealink_wh64)
+SKYA_DECLARE_C_MODEL(yealink_wh68)
+SKYA_DECLARE_C_MODEL(yealink_uh46)
+SKYA_DECLARE_C_MODEL(poly_blackwire_3320)
+SKYA_DECLARE_C_MODEL(poly_savi_8200)
+SKYA_DECLARE_C_MODEL(poly_savi_8400)
+SKYA_DECLARE_C_MODEL(poly_voyager_4320)
+SKYA_DECLARE_C_MODEL(poly_voyager_5200)
+SKYA_DECLARE_C_MODEL(jabra_biz1500)
+SKYA_DECLARE_C_MODEL(jabra_evolve3_65)
+SKYA_DECLARE_C_MODEL(jabra_evolve3_75)
+SKYA_DECLARE_C_MODEL(jabra_speak2_55)
+SKYA_DECLARE_C_MODEL(jabra_speak2_75)
+SKYA_DECLARE_C_MODEL(grandstream_guv3005)
+SKYA_DECLARE_C_MODEL(grandstream_gxp21xx)
+SKYA_DECLARE_C_MODEL(grandstream_grp26xx)
+SKYA_DECLARE_C_MODEL(epos_impact_sc200)
+SKYA_DECLARE_C_MODEL(epos_impact_1000)
+SKYA_DECLARE_C_MODEL(epos_sdw5000)
+SKYA_DECLARE_C_MODEL(logitech_zone_wireless2)
+SKYA_DECLARE_C_MODEL(logitech_zone_vibe)
+SKYA_DECLARE_C_MODEL(logitech_h570e)
+SKYA_DECLARE_C_MODEL(logitech_zone305)
+SKYA_DECLARE_C_MODEL(fanvil_x5uv2)
+SKYA_DECLARE_C_MODEL(fanvil_x6uv2)
+SKYA_DECLARE_C_MODEL(fanvil_v63)
+SKYA_DECLARE_C_MODEL(fanvil_v64)
+SKYA_DECLARE_C_MODEL(fanvil_v65)
+SKYA_DECLARE_C_MODEL(fanvil_v66)
+SKYA_DECLARE_C_MODEL(fanvil_x210iv2)
+SKYA_DECLARE_C_MODEL(snom_a330m)
+SKYA_DECLARE_C_MODEL(cisco_322)
+
+#ifdef __cplusplus
+}
+#endif
+#endif
