@@ -893,3 +893,27 @@ Configuration levels are documented in [`telephony-skya/docs/NAT-FIREWALL-CONFIG
 Add a clear GUI architecture section stating that Guia™ 1.0 is part of the SLeeLa source and is the standard GUI-to-client/listener protocol. JavaFX implementations MUST and DO use the Guia™ contract through their adapter; BODI remains declarative and SLeeLa remains authoritative.
 
 See `docs/SLEELA_GUI_PROTOCOL.md`, `docs/GUIA_PROTOCOL_REFERENCE.md`, `docs/GUIA_OBJECTS.md`, and `docs/GUIA_TRANSITIONS.md` for the normative Guia™ references.
+
+
+## Platform Completion Documents
+
+The project now has a dedicated completion layer for the language, runtime and application platform:
+
+- [LANGUAGE.md](LANGUAGE.md) — language surface
+- [LANGUAGE.SPEC.md](LANGUAGE.SPEC.md) — formal engineering contract
+- [RUNTIME.md](RUNTIME.md) — execution/runtime model
+- [STANDARD.LIBRARY.md](STANDARD.LIBRARY.md) — standard library
+- [BUILD.SYSTEM.md](BUILD.SYSTEM.md) — application build lifecycle
+- [PACKAGE.MANAGER.md](PACKAGE.MANAGER.md) — packages and dependencies
+- [ABI.md](ABI.md) — ABI boundaries
+- [PLATFORM.md](PLATFORM.md) — Linux/macOS/Windows platform contract
+- [SECURITY.md](SECURITY.md) — security model
+- [TESTING.md](TESTING.md) — verification strategy
+- [IDE.md](IDE.md) — IDE/language-server direction
+- [APPLICATIONS.md](APPLICATIONS.md) — SLeeLa-native application model
+- [VOIP.md](VOIP.md) — telephony/VoIP model
+- [HTTP.md](HTTP.md) — HTTP architecture
+- [DRIVERS.md](DRIVERS.md) — driver model
+- [API.INDEX.md](API.INDEX.md) — API index
+
+The intended complete application lifecycle is **SOURCE → CHECK → BUILD → TEST → PACKAGE → INSTALL → RUN → VERIFY**.
