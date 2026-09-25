@@ -14,6 +14,8 @@
 | HTTP multiplexing / HTTP servers | HttpService, Server, Router, Listener, NetworkEndpoint |
 | Listener / posting / router | Listener, EventSpecification, Router, EndpointSpecification |
 | Media | MediaStream, Stream, EventBus |
+| Memory management | MemoryManager, MemoryBlock, MemoryStructure, StructMemory, Leech, MemoryFlow, MemoryCondition, MemoryPolicy, MemoryTelemetry, MemoryAllocator, MemoryArena, MemoryPool, MemoryGuard, MemoryValidation |
+| Reflection / runtime type metadata | ReflectionRegistry, TypeInfo, FieldInfo, MethodInfo, ParameterInfo, EnumInfo, BaseTypeInfo, AttributeInfo, ConstructorInfo, PropertyInfo, Invocation, Serializer |
 | Regex | Pattern |
 | Server | Server, Router, Listener, ServiceSpecification |
 | Subjects / science libraries | Subject, KnowledgeUnit, DataModelSpecification |
@@ -32,8 +34,18 @@
 
 A designer may start with ProjectSpecification and ModuleSpecification, define every class and contract with the specification classes, select platform/backend adapters, then define security, build, test, documentation and examples before native implementation is selected.
 
+For memory-aware applications, the designer can additionally specify ownership, structure, observation or Leech relationships, memory policy, telemetry and deterministic condition behavior.
+
+For reflection-aware applications, the designer can specify type metadata, fields, methods, parameters, properties, constructors, attributes, serialization and native interoperability requirements.
+
+## Native boundary
+
+The C/C++ packages under api/native/memory and api/native/reflection are native implementation substrates for these designer-facing contracts. Native availability does not by itself mean that a Sleela-facing class or every advanced production feature has been implemented.
+
 ## Completeness rule
 
 A module is not considered fully specified merely because a native implementation exists. The Sleela-facing specification must describe its public classes, contracts, data, events, lifecycle, dependencies, platform constraints, security boundary, build target and tests.
+
+For Memory Manager and Reflection specifically, completeness also requires that ownership and lifetime, metadata consistency, native ABI boundaries, error behavior and platform constraints are explicitly defined.
 
 Sleela-Complete therefore names the authoring state, not a claim that every native backend is already production-complete.
