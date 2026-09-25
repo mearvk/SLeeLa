@@ -1,0 +1,12 @@
+#sleela 1.1
+class AudioInput {
+    AudioDevice device;
+    AudioFormat format;
+    int running;
+    void open(AudioDevice selected, AudioFormat selectedFormat) { device = selected; format = selectedFormat; }
+    void start() { running = 1; }
+    void stop() { running = 0; }
+    void close() { running = 0; }
+    void setMute(int value) {}
+    void setVolume(int value) {}
+}
