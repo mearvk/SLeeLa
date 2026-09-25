@@ -1,30 +1,46 @@
-# Skya Telephony Drivers
+# Skya Drivers
 
-The `drivers/` tree is the hardware-driver boundary for Skya telephony.
+## Canonical model-driver layout
 
-It covers SIP/VoIP desk phones, USB-connected phones, USB/Bluetooth headsets, speakerphones, and call-control peripherals.
-
-## Architecture
+Every model-specific driver is stored individually under:
 
 ```
-Skya GUI / SLeeLa
-      |
-      v
-Skya Telephony Driver API
-      |
-      +-- discovery
-      +-- capabilities
-      +-- audio
-      +-- call-control HID
-      +-- mute / hook / volume
-      +-- firmware/version reporting
-      |
-      +-- vendor adapters
-      |
-      v
-OS audio / USB / HID / network stack
+drivers/<brand>/<model>/<version>/
 ```
 
-The first driver layer is capability-oriented. A catalog entry does not claim that every function is implemented. The runtime must detect the actual device, transport and firmware before enabling optional controls.
+Each version directory contains both language implementations:
 
-See `BRANDS.md` and `brands/versions/README.md` for the initial hardware matrix.
+```
+driver.h
+driver.c
+driver.cpp
+```
+
+Example:
+
+```
+drivers/yealink/mp45/1.0/
+├── driver.h
+├── driver.c
+└── driver.cpp
+```
+
+The version directory identifies the **Skya driver adapter version**. It is not a claim about the device firmware version.
+
+## Current model families
+
+The tree contains individual adapters for the current Yealink, Poly, Jabra, Grandstream, EPOS, Logitech, Fanvil, Snom and Cisco model catalog.
+
+## Language policy
+
+C and C++ implementations are maintained side-by-side for every model. The C API uses the `skya_c_<model>_driver()` symbol; the C++ API uses `skya_<model>_driver()`.
+
+The implementations share the same `skya_phone_driver` contract and capability semantics.
+
+## Hardware identity
+
+Model names alone do not establish hardware identity. Exact VID/PID, interface descriptors, HID reports and vendor-specific controls must be added only after verification.
+
+Windows exposes USB hardware identifiers derived from VID, PID and revision information, and composite devices may expose interface-specific identifiers. citeturn1search2turn1search7
+
+Skya therefore treats the model driver as a logical adapter above the operating-system USB/audio/HID stack. A custom OS driver is not automatically required for a supported USB class; Microsoft recommends using an inbox class driver when it satisfies the device requirements. citeturn1search4turn1search6
