@@ -1,114 +1,103 @@
-# Sleela — Version
+# SLeeLa Version
 
-This file is the single place of record for the versions of everything in this
-repository. Sleela versions several things independently (the metadocument
-distinguishes language syntax, language semantics, the implementation, and the
-tooling), so they do not share one number. Update this file whenever any of the
-versions below changes, and keep it consistent with the source-of-truth
-locations listed in each row.
+## Current Development Version
 
-## Current versions (at a glance)
+**Version:** 0.1.0-dev  
+**Edition:** SLeeLa Complete / Native Foundation  
+**Status:** Active Development  
+**Repository:** mearkv/SLeeLa
 
-| Component | Version | Status | Source of truth |
-|-----------|---------|--------|-----------------|
-| **Sleela toolchain / implementation** (`sleela` CLI) | **0.1.3** | Working (pre-1.0) | `impl/frontend/driver.cpp` (`kVersion`) |
-| **Sleela language syntax** | **1.3** | Supported range `1.0 .. 1.3` | `impl/frontend/version.h` (`min`/`maxSupportedSyntax`) |
-| **Nordshrift** (`.sst` transpiler driver) | **2.0** | Semantic model layer added; legacy 1.0 sheets retained | `NORDSHRIFT.md`, `impl/nordshrift/subject_model.h` |
-| **NS-SST-0001** (`.sst` format specification) | **2.0.0** | Normative 2.0 semantic/control extension | `SST-2.0.model` |
-| **NS-SST-0001 legacy** | **1.0.0** | Compatibility / historical grammar | `SST.model` |
-| **SL-META-0001** (Sleela Language Metadocument) | **1.0.0** | Pre-Normative | `src/Sleela.manifest` (Revision) |
+## Versioning Policy
 
-> **Short answer:** the Sleela toolchain is now **0.1.3**, implementing
-> **Sleela syntax 1.0**, while **Nordshrift is now specified at 2.0** with a
-> common semantic layer for the Math, Physics, Economics, Chemistry, and
-> Financial libraries.
+SLeeLa uses semantic versioning:
 
-## What each version means
+**MAJOR.MINOR.PATCH**
 
-### Sleela toolchain / implementation — `0.1.3`
-The version of the actual C/C++ implementation in `impl/` (the `sleela` CLI:
-lexer → parser → compiler → C core). This is a semantic `MAJOR.MINOR.PATCH`
-number and is what `./build/sleela version` reports. It is **pre-1.0**.
+- **MAJOR** — incompatible language, ABI, API, runtime, or artifact changes.
+- **MINOR** — backward-compatible capabilities, modules, APIs, classes, or platform support.
+- **PATCH** — backward-compatible fixes, corrections, hardening, documentation, and test improvements.
+- Development releases use the `-dev` suffix until the corresponding release gate is satisfied.
 
-### Sleela language syntax — `1.2`
-The grammar version a `.sleela` file (a **Wrapper™**) declares with its
-`#sleela MAJOR.MINOR` pragma. The compiler is version aware and accepts only
-its supported range (`1.0 .. 1.3`). Minor increments are additive:
+## Current 0.1 Development Scope
 
-- **1.1** added the network and Linux file-I/O built-ins.
-- **1.2** added C/C++-style **structs** — `struct` declarations, `new`
-  instantiation, `.` member access, reference semantics, and the
-  `structPack`/`structUnpack` network-transport built-ins (see
-  [`STRUCTS.md`](STRUCTS.md)). Pre-1.2 programs are unaffected; the compiler
-  rejects `struct`/`new`/`structPack`/`structUnpack` below `#sleela 1.2`.
-- **1.3** added **Munction** — the reach-composition fluent sentence
-  (`Munction.start(...).connect(...).send(...)...closeWithReceipt()`, 4..16
-  verbs, receivable + coherent; see [`MUNCTION.md`](MUNCTION.md)) — and
-  **Synchro** honest packet-dispatch/measurement built-ins
-  (`synchroOpen`/`synchroDispatch`/`synchro*`; see [`SYNCHRO.md`](SYNCHRO.md)).
-  Pre-1.3 programs are unaffected; the compiler rejects the Munction fluent
-  verbs and the `synchro*` built-ins below `#sleela 1.3`.
+The current development line contains foundations for:
 
-### Nordshrift — `2.0`
-Nordshrift remains the `.sst`-driven transpiler for Java / Sleela / C, and now
-adds a common semantic coordination model. The 2.0 model defines Subject,
-Quantity, Unit, Assumption, Relation, Formula, Transformation,
-ComparativeNorm, Evidence, Explanation, Validation, and Todo/WorkPlan concepts.
-The implementation vocabulary is in `impl/nordshrift/subject_model.h` and is
-compiled into the Nordshrift target.
+- SLeeLa-Complete application authoring
+- Nordshrift Complete
+- Native memory management
+- Native reflection
+- Native runtime primitives
+- Native networking
+- Native security primitives
+- HTTP and server foundations
+- Telephony/Skya and VoIP foundations
+- Cross-platform implementation contracts
+- C/C++ native integration
+- Build, test, packaging, and verification infrastructure
 
-### NS-SST-0001 — `2.0.0` (Normative)
-The normative 2.0 specification is `SST-2.0.model`. It extends the original
-`.sst` control surface with subject semantics, evidence status, comparative
-norms, explicit dependencies, explanations, validation, and declarative work
-plans. `SST.model` remains available as the 1.0 compatibility specification.
+## Native Foundation Status
 
-### SL-META-0001 — `1.0.0` (Pre-Normative)
-The Sleela Language Metadocument (`src/Sleela.manifest`) remains the
-constitutional document governing the language's design and syntax versioning.
+### Implemented Foundations
 
-## Nordshrift 2.0 semantic ideals
+- Memory manager with guarded allocation and accounting
+- Runtime EventLoop
+- Runtime WorkQueue
+- CancellationToken
+- FutureResult
+- TCP/UDP socket abstraction
+- DNS-backed endpoint resolution
+- IPv4/IPv6 family abstraction
+- SHA-256
+- Secure memory zeroization
+- Constant-time byte comparison
+- Credential secret cleanup
+- Native smoke-test integration
 
-1. Identity before calculation.
-2. Quantity before formula.
-3. Unit and dimension before interpretation.
-4. Assumption before extrapolation.
-5. Relation before conclusion.
-6. Transformation before result.
-7. Provenance before trust.
-8. Comparison before ranking.
-9. Uncertainty before certainty claims.
-10. Validation before completion.
-11. Explicit dependency before hidden coupling.
-12. Computation remains distinguishable from observation.
+### Deliberately Not Claimed Complete
 
-## Versioning policy
+The version number does **not** mean the entire SLeeLa platform is release-complete.
 
-- **Semantic versioning** (`MAJOR.MINOR.PATCH`) applies to the implementation
-  and normative specifications.
-- A specification minor version may add constructs while preserving existing
-  meanings. A major version may introduce breaking grammar changes.
-- A Nordshrift implementation must reject unsupported 2.0 directives rather
-  than silently ignoring them.
-- A change that affects `.sleela` acceptance still requires the corresponding
-  compiler version update and tests.
+The following remain development gates:
 
-## How to bump a version
+- TLS implementation and certificate validation
+- Secure random/key management
+- Windows socket backend
+- macOS socket backend
+- Full nonblocking network integration
+- Timeout/deadline and retry policies
+- Connection pooling
+- Production cryptographic backend policy
+- Full VoIP media/signaling implementation
+- Complete HTTP implementation and interoperability testing
+- Hardware-driver certification
+- Cross-platform release testing
+- Comprehensive integration and conformance suites
+- Reproducible release packaging and signing
+- Final production release audit
 
-1. Change the source-of-truth location for the component.
-2. Update the matching row and prose in this file.
-3. Update implementation version constants where applicable.
-4. Run `make test` and confirm the reported versions match this file.
+## Release Rule
 
-## History
+A version becomes a production release only after the corresponding source, build, runtime, platform, security, testing, packaging, and verification gates are evidenced.
 
-| Date | Toolchain | Syntax | Nordshrift | NS-SST | Notes |
-|------|-----------|--------|------------|--------|-------|
-| 2026-09 | 0.1.2 | 1.2 | 2.0 | 2.0.0 | Added C/C++-style structs (declaration, `new` instantiation, `.` member access, reference semantics, `structPack`/`structUnpack` transport); artifact format v2 persists struct layouts. Syntax range now `1.0 .. 1.2`. |
-| 2026-09 | 0.1.2 | 1.0 | 2.0 | 2.0.0 | Added common Subject/Quantity/Unit/Assumption/Relation/Transformation/Evidence/Comparison/Explanation/WorkPlan semantic layer while retaining 1.0 compatibility. |
-| 2026-09 | 0.1.2 | 1.0 | 1.0 | 1.0.0 | Version-aware compiler; Nordshrift triplet; original NS-SST-0001 specification. |
+Documentation describing a capability is not itself evidence that the capability is production-complete.
 
+## Branch Policy
 
-## 2026-09-25 — Platform Completion Layer
+The primary development branches are:
 
-Added the engineering contract set for the language, runtime, standard library, build system, package manager, ABI, platform support, security, testing, IDE tooling, applications, HTTP, VoIP, drivers and API navigation. These documents define target contracts and explicitly distinguish architectural scope from implementation maturity.
+- `main`
+- `master`
+
+For synchronized development milestones, version documentation and release-critical source should be kept consistent across both branches.
+
+## Version History
+
+### 0.1.0-dev
+
+Initial consolidated development version covering the SLeeLa-Complete architecture and native foundation work.
+
+The development line is intentionally pre-release and subject to API, ABI, source, build-system, and architectural changes.
+
+---
+
+**SLeeLa — MEARVK LLC — 2026**
