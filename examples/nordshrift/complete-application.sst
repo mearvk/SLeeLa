@@ -1,0 +1,16 @@
+# Nordshrift Complete application contract example
+application: CompleteExample
+edition: Nordshrift-Complete
+imports:
+  - api/sleela-complete
+modules:
+  - runtime
+  - network-security
+  - data-service
+  - server-ui-io
+  - telephony
+build:
+  lowering: shared-sleela-core
+  test: required
+  package: required
+  verify: required
