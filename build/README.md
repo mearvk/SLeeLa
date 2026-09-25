@@ -41,3 +41,31 @@ SLeeLa runtime remains the authoritative `sleela skya ...` path. The current
 engine is a lifecycle/room foundation; production transport, media, NAT,
 certificate, file-transfer, and firewall integrations remain documented in
 `SKYA.md`.
+
+
+## Slecompiler™ Product Build
+
+Slecompiler is built from the authoritative `decompiler/` source tree.
+
+Linux:
+```
+chmod +x build/slecompiler-linux.sh
+./build/slecompiler-linux.sh
+```
+
+macOS:
+```
+chmod +x build/slecompiler-macos.sh
+./build/slecompiler-macos.sh
+```
+
+Windows 10+:
+```
+powershell -ExecutionPolicy Bypass -File .\\build\\slecompiler-windows.ps1
+```
+
+Product outputs are isolated under `build/slecompiler/<platform>/`. The
+build scripts configure the existing CMake project and do not replace
+Slecompiler source.
+
+See `build/PRODUCTS.md` for the product-build boundary and planned expansion.
