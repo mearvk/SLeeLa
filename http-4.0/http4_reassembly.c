@@ -17,15 +17,11 @@ static void coverage_set(uint8_t *coverage, uint32_t index) {
     coverage[index / 8u] |= (uint8_t)(1u << (index % 8u));
 }
 
-int http4_reassembly_init(http4_reassembly_t *state,
-                          size_t total_length,
-                          uint32_t segment_count,
-                          uint64_t stream_id,
-                          uint64_t request_id,
-                          uint64_t segment_id) {
-    if (!state || total_length > HTTP4_MAX_PAYLOAD ||
-        total_length > UINT32_MAX || segment_count == 0 ||
-        segment_count > HTTP4_MAX_REASSEMBLY_SEGMENTS) return -1;
+int http4_reassembly_init(http4_reassembly_t *state, size_t total_length,
+                          uint32_t segment_count, uint64_t stream_id,
+                          uint64_t request_id, uint64_t segment_id) {
+    if (!state || total_length > HTTP4_MAX_PAYLOAD || total_length > UINT32_MAX ||
+        segment_count == 0 || segment_count > HTTP4_MAX_REASSEMBLY_SEGMENTS) return -1;
 
     const size_t bitmap_bytes = ((size_t)segment_count + 7u) / 8u;
     const size_t coverage_bytes = (total_length + 7u) / 8u;
@@ -40,7 +36,6 @@ int http4_reassembly_init(http4_reassembly_t *state,
         http4_reassembly_reset(state);
         return -3;
     }
-
     state->stream_id = stream_id;
     state->request_id = request_id;
     state->segment_id = segment_id;
@@ -60,7 +55,6 @@ void http4_reassembly_reset(http4_reassembly_t *state) {
 int http4_reassembly_add(http4_reassembly_t *state,
                          const http4_segment_view_t *segment) {
     if (!state || !segment || !state->buffer || !state->bitmap || !state->coverage) return -1;
-
     const http4_segment_header_t *h = &segment->header;
     if (h->magic != HTTP4_SEGMENT_MAGIC || h->version != HTTP4_SEGMENT_VERSION) return -2;
     if (segment->stream_id != state->stream_id ||
@@ -74,17 +68,14 @@ int http4_reassembly_add(http4_reassembly_t *state,
     if (h->data_length && !segment->data) return -6;
     if (bitmap_test(state->bitmap, h->segment_index)) return -7;
 
-    /* Reject any overlapping byte range before mutating the reassembly state. */
-    for (uint32_t i = 0; i < h->data_length; ++i) {
+    for (uint32_t i = 0; i < h->data_length; ++i)
         if (coverage_test(state->coverage, h->offset + i)) return -8;
-    }
 
     if (h->data_length) {
         memcpy(state->buffer + h->offset, segment->data, h->data_length);
         for (uint32_t i = 0; i < h->data_length; ++i)
             coverage_set(state->coverage, h->offset + i);
     }
-
     bitmap_set(state->bitmap, h->segment_index);
     state->received_segments++;
     state->received_bytes += h->data_length;
@@ -96,11 +87,9 @@ int http4_reassembly_complete(const http4_reassembly_t *state) {
            state->received_segments == state->segment_count &&
            state->received_bytes == state->total_length;
 }
-
 const uint8_t *http4_reassembly_data(const http4_reassembly_t *state) {
     return state && http4_reassembly_complete(state) ? state->buffer : NULL;
 }
-
 size_t http4_reassembly_size(const http4_reassembly_t *state) {
     return http4_reassembly_complete(state) ? state->total_length : 0;
 }
