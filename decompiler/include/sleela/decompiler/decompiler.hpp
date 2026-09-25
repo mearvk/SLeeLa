@@ -12,14 +12,29 @@ enum class ArtifactClass { Unknown, Executable, DynamicLibrary, StaticArchive, R
 
 struct Provenance { std::uint64_t file_offset{}; std::uint64_t virtual_address{}; std::string source; double confidence{1.0}; };
 struct Operand { enum class Kind { Invalid, Register, Immediate, Memory, Relative, Symbol }; Kind kind{Kind::Invalid}; std::string text; std::int64_t value{}; };
-struct Instruction { std::uint64_t address{}; std::vector<std::uint8_t> bytes; std::string mnemonic; std::vector<Operand> operands; Provenance provenance; bool is_branch{}; bool is_conditional{}; bool is_call{}; bool is_return{}; bool is_indirect{}; std::vector<std::uint64_t> branch_targets; };
+struct Instruction {
+    std::uint64_t address{};
+    std::vector<std::uint8_t> bytes;
+    std::string mnemonic;
+    std::vector<Operand> operands;
+    Provenance provenance;
+    bool is_branch{};
+    bool is_conditional{};
+    bool is_call{};
+    bool is_return{};
+    bool is_indirect{};
+    bool is_tail_call{};
+    bool is_relocated{};
+    std::string relocation_type;
+    std::string relocation_symbol;
+    std::vector<std::uint64_t> branch_targets;
+};
 struct Section { std::string name; std::uint64_t file_offset{}; std::uint64_t file_size{}; std::uint64_t virtual_address{}; std::uint64_t virtual_size{}; std::uint32_t flags{}; };
 struct ProgramSegment { std::uint32_t type{}; std::uint32_t flags{}; std::uint64_t file_offset{}; std::uint64_t virtual_address{}; std::uint64_t file_size{}; std::uint64_t memory_size{}; std::uint64_t alignment{}; };
-struct Relocation { std::uint64_t address{}; std::string type; std::string symbol; std::string section; };
+struct Relocation { std::uint64_t address{}; std::string type; std::string symbol; std::string section{}; };
 struct Symbol { std::string name; std::uint64_t address{}; bool external{}; Provenance provenance; };
 struct Import { std::string library; std::string name; std::uint64_t address{}; };
 struct Export { std::string name; std::uint64_t address{}; };
-
 
 struct LibraryMetadata {
     std::string soname;
@@ -87,13 +102,24 @@ private:
     NativeInterfaces interfaces_;
 };
 
-class Artifact;
-
 class Decoder {
 public:
     std::vector<Instruction> decode(const Artifact&, std::uint64_t address, std::size_t length) const;
 };
-class ControlFlowGraph { public: struct Edge { std::size_t from{}, to{}; }; struct Block { std::size_t id{}; std::vector<Instruction> instructions; }; std::vector<Block> blocks; std::vector<Edge> edges; };
-class Analyzer { public: ControlFlowGraph build_cfg(const std::vector<Instruction>&) const; std::vector<Symbol> recover_function_candidates(const ControlFlowGraph&) const; };
+
+class ControlFlowGraph {
+public:
+    struct Edge { std::size_t from{}, to{}; };
+    struct Block { std::size_t id{}; std::vector<Instruction> instructions; };
+    std::vector<Block> blocks;
+    std::vector<Edge> edges;
+};
+
+class Analyzer {
+public:
+    ControlFlowGraph build_cfg(const std::vector<Instruction>&) const;
+    std::vector<Symbol> recover_function_candidates(const ControlFlowGraph&) const;
+    std::vector<Symbol> recover_function_candidates(const Artifact&, const ControlFlowGraph&) const;
+};
 
 } // namespace sleela::decompiler
