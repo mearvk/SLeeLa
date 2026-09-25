@@ -1,46 +1,45 @@
-# SLeeLa Decompiler
+# Slecompiler™
 
 **Max Rupplin - MEARVK LLC - 2026**
 
-SLeeLa Decompiler is an analysis and refactoring subsystem for legally obtained software artifacts. It is designed to preserve evidence while producing normalized representations of native binaries for investigation, documentation, interoperability, maintenance, and technology recovery.
+Slecompiler™ is the SLeeLa native-binary analysis, decompilation, library inspection, driver investigation, and refactoring subsystem.
 
-## Scope
+## Linux-first native coverage
 
-The subsystem accepts native artifacts such as Windows PE files (including DLL and SYS/driver images), ELF executables/shared objects/modules, and raw binary images. It records:
+Slecompiler™ treats Linux native software as a first-class target, including:
 
-- container and architecture metadata;
-- sections, segments, imports, exports, relocations, symbols and strings;
-- instruction bytes and normalized instruction records;
-- control-flow graphs and basic blocks;
-- function candidates and call relationships;
-- data references and memory regions;
-- compiler/runtime fingerprints when evidence supports them;
-- a SLeeLa intermediate representation (SLIR);
-- deterministic JSON and text reports;
-- hashes and provenance for every input and generated artifact.
+- ELF executables and PIE programs;
+- ELF shared objects (.so and versioned .so.*);
+- GNU/Linux system libraries such as libc, libm, libdl, libpthread compatibility interfaces, libstdc++, and other ELF DSOs;
+- plugin and extension libraries loaded through dynamic-loader mechanisms;
+- static archives (.a) as collections of object files;
+- relocatable ELF objects (.o);
+- Linux kernel modules (.ko);
+- compressed or packaged kernel modules when safely identifiable and decompressed for analysis;
+- firmware and raw binary images;
+- PE/COFF and Mach-O libraries and drivers where applicable.
 
-The decompiler does **not** claim to reconstruct original source exactly. Names, types, comments, macros, templates, build flags and source layout are generally unavailable unless retained in symbols or metadata.
+The API models both individual artifacts and library families: dependencies, imported/exported symbols, relocation records, ABI clues, calling conventions, symbol versions, build identifiers, section permissions, and provenance can be represented as related records.
 
-## Layout
+## Native artifact classes
 
-- `include/sleela/decompiler/` — public C++ API and class definitions.
-- `src/` — implementation.
-- `cli/` — command-line entry point.
-- `tests/` — parser/IR/VM tests and fixtures.
-- `docs/` — descriptor and API documentation.
-- `output/` — optional analysis output; generated files should not be committed.
+1. **Executable** — a native program image.
+2. **DynamicLibrary** — an ELF DSO, PE DLL, Mach-O dylib, or equivalent loadable library.
+3. **StaticArchive** — an archive containing relocatable object members.
+4. **RelocatableObject** — an object intended for later linking.
+5. **KernelModule** — Linux .ko and comparable kernel-loadable ELF artifacts.
+6. **RawArtifact** — firmware, dumps, blobs, or other data whose container is unknown.
+
+For Linux .ko files, Slecompiler™ records kernel-module evidence such as module name, vermagic when present, exported/imported symbols, section layout, relocation information, module metadata strings, license/author/description fields when present, dependency metadata, and kernel-version/build identifiers. This is static evidence; Slecompiler™ does not load the module into a kernel.
+
+## Analysis pipeline
+
+artifact → container → symbols/metadata → decoder → instructions → CFG → functions → SLIR → analysis → C/C++/report
+
+For libraries, the pipeline additionally models dependency relationships and public interfaces so collections of .so, .a, .o, or .ko files can be analyzed as a software family rather than isolated byte streams.
 
 ## Safety and evidence
 
-Analysis is read-only by default. The engine never executes an analyzed artifact as part of parsing or lifting. Driver images are treated as untrusted input. Kernel-mode loading, device I/O, memory writes, or execution of recovered code are outside the decompiler's default operation.
+Analysis is read-only by default. Slecompiler™ never executes an analyzed artifact as part of parsing or lifting. Driver and kernel-module images are treated as untrusted input. Kernel-mode loading, device I/O, memory writes, and execution of recovered native code are outside the default operation.
 
 Use the subsystem only with software you are authorized to inspect.
-
-## Build
-
-```sh
-cmake -S decompiler -B decompiler/build
-cmake --build decompiler/build --parallel
-```
-
-The resulting `sleela-decompiler` command supports `inspect`, `disassemble`, `lift`, `cfg`, `functions`, and `report` operations.
