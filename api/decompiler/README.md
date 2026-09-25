@@ -39,3 +39,24 @@ A future LibraryGraph layer should connect executable imports to provider export
 ## Refactoring
 
 Consumers can walk the SLIR graph, attach type hints and provenance, emit C/C++, generate API descriptions, and preserve a sidecar mapping from recovered source back to binary addresses.
+
+
+## API exemplars
+
+Runnable C++ examples are maintained in `decompiler/examples/`:
+
+- `api_inspect.cpp` — artifact identity and native interface inspection.
+- `api_decode_cfg.cpp` — instruction decoding and CFG construction.
+- `api_library_metadata.cpp` — shared-library and kernel-module metadata.
+- `api_library_graph.cpp` — library-family graph construction.
+- `api_slir_vm.cpp` — SLIR construction and bounded VM validation.
+
+The examples are enabled by default by the `SLEE_LA_BUILD_API_EXAMPLES` CMake option.
+
+## Product tutorial
+
+See:
+
+`decompiler/docs/TUTORIAL.md`
+
+The tutorial covers installation/building on Linux, Windows 10+, and macOS, the C++ API layers, artifact inspection, native decoding, CFG analysis, library and kernel-module metadata, LibraryGraph, SLIR, the bounded VM, function recovery, identity digests, CLI use, and current product limitations.
