@@ -8,7 +8,7 @@ MODEL_CPP := $(shell find . -path './build' -prune -o -path './platform' -prune 
 MODEL_C := $(shell find . -path './build' -prune -o -path './platform' -prune -o -name driver.c -print)
 MODEL_CPP_OBJS := $(patsubst ./%.cpp,$(OBJDIR)/cpp/%.o,$(MODEL_CPP))
 MODEL_C_OBJS := $(patsubst ./%.c,$(OBJDIR)/c/%.o,$(MODEL_C))
-OBJS := $(OBJDIR)/skya_driver_registry.o $(OBJDIR)/skya_builtin_drivers.o $(OBJDIR)/skya_vendor_drivers.o $(OBJDIR)/c/skya_driver_runtime.o $(OBJDIR)/c/skya_hardware_io.o $(MODEL_CPP_OBJS) $(MODEL_C_OBJS)
+OBJS := $(OBJDIR)/skya_driver_registry.o $(OBJDIR)/skya_builtin_drivers.o $(OBJDIR)/skya_vendor_drivers.o $(OBJDIR)/c/skya_driver_runtime.o $(OBJDIR)/c/skya_hardware_io.o $(OBJDIR)/c/skya_hardware_profile.o $(OBJDIR)/c/skya_data_plane.o $(MODEL_CPP_OBJS) $(MODEL_C_OBJS)
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Linux)
 PLATFORM_OBJ := $(OBJDIR)/skya_linux_driver.o
@@ -44,8 +44,6 @@ $(TARGET): $(OBJS)
 clean:
 	rm -rf $(OBJDIR) $(TARGET)
 .PHONY: all clean
-
-OBJS += $(OBJDIR)/c/skya_hardware_profile.o $(OBJDIR)/c/skya_data_plane.o
 
 $(OBJDIR)/c/skya_hardware_profile.o: src/skya_hardware_profile.c | $(OBJDIR)
 	$(CC) $(CFLAGS) -Iinclude -c $< -o $@
