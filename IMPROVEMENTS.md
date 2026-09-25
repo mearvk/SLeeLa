@@ -316,3 +316,378 @@ Phase 1 has already established:
 The immediate Phase 2 implementation target is **the explicit address-space model**, followed by decoder expansion and CFG/function recovery. The existing source emitters remain output shells until SLIR and reconstruction provide semantic content.
 
 **Known limitation:** local compilation/CTest execution is environment-dependent. Repository changes should not be described as build-verified unless CI or a real build result is available.
+
+
+# Phase 3 — Binary Formats, ABI, and Native Evidence
+
+## Purpose
+
+Phase 3 takes the native-analysis core established by Phase 2 and makes it understand the major binary containers, linking models, debug information, unwind metadata, calling conventions, and runtime evidence needed for serious cross-platform decompilation.
+
+The governing architecture remains:
+
+**artifact → container/segment model → address map → native instructions → CFG/functions → ABI/runtime evidence → SLIR → data flow/types → source.**
+
+Phase 3 must not create isolated format-specific analyzers that bypass the shared semantic model. ELF, PE/COFF, Mach-O, archives, shared libraries, debug information, exception metadata, and ABI information all become evidence sources feeding the same analysis graph.
+
+## Phase 3A — ELF and Unix/Linux binary evidence
+
+Primary items: **12, 14, 15, 16, 17, 18, 19, 20**.
+
+Expand ELF-oriented analysis to include:
+
+- ELF32 and ELF64 headers;
+- program headers and section headers;
+- PT_LOAD segment mappings;
+- section/segment relationships;
+- symbol tables and string tables;
+- relocations;
+- dynamic sections;
+- DT_NEEDED dependencies;
+- PLT/GOT relationships;
+- symbol versioning;
+- IFUNC resolution evidence;
+- TLS;
+- constructors/destructors;
+- weak symbols;
+- GNU symbol/version extensions;
+- PIE/shared-object characteristics;
+- GNU build/runtime notes where relevant.
+
+The loader model must distinguish what is physically present in the file from what the runtime loader may construct or relocate.
+
+## Phase 3B — PE/COFF and Windows evidence
+
+Primary item: **12**, supported by **16–20 and 36**.
+
+Implement a complete PE/COFF evidence layer covering:
+
+- DOS/PE headers;
+- COFF headers;
+- optional headers;
+- section table;
+- RVA/file-offset translation;
+- imports and exports;
+- delay imports;
+- base relocations;
+- TLS;
+- resources;
+- load configuration;
+- exception/unwind information;
+- Windows CFG-related metadata;
+- SEH-related metadata;
+- debug-directory references;
+- PDB identity/reference information;
+- executable, DLL, and object-file distinctions.
+
+PE parsing must explicitly validate sizes, RVAs, section boundaries, alignment assumptions, and integer arithmetic before using metadata.
+
+## Phase 3C — Mach-O and Apple-platform evidence
+
+Primary item: **13**, supported by **16–20 and 36**.
+
+Implement:
+
+- 32-bit and 64-bit Mach-O headers;
+- load commands;
+- segments and sections;
+- symbol tables;
+- dynamic linking information;
+- dyld exports;
+- chained fixups where applicable;
+- relocations;
+- TLS;
+- Objective-C metadata;
+- Swift metadata;
+- code-signing metadata;
+- fat/universal binaries;
+- architecture slices;
+- slice selection and explicit architecture validation.
+
+Universal binaries must be represented as multiple artifacts/slices rather than silently treating one slice as the entire file.
+
+## Phase 3D — Static archives and object collections
+
+Primary item: **14**.
+
+Support GNU/Unix archive analysis as a container of independently analyzable members.
+
+Required behavior:
+
+- parse archive headers safely;
+- enumerate members deterministically;
+- recognize symbol indexes;
+- recursively analyze supported object members;
+- preserve member-to-symbol relationships;
+- represent weak/duplicate/COMDAT evidence;
+- identify cross-member call/data relationships;
+- prevent archive metadata from being mistaken for executable instructions.
+
+Archive analysis should produce a unified project-level evidence graph while retaining member provenance.
+
+## Phase 3E — Dynamic/shared libraries and linking
+
+Primary item: **15**, supported by **3, 4, 18, 19, 20**.
+
+Model the effects of dynamic linking without executing the loader:
+
+- imports/exports;
+- PLT/GOT;
+- symbol versions;
+- IFUNC;
+- weak/interposable symbols;
+- TLS;
+- constructors/destructors;
+- dependency graphs;
+- RPATH/RUNPATH;
+- platform-specific dynamic-loader metadata;
+- lazy versus non-lazy binding evidence where available.
+
+A dynamic symbol reference should be represented as a relationship with evidence, not automatically treated as the implementation of the target function.
+
+## Phase 3F — Debug information and provenance
+
+Primary item: **16**, supported by **30 and 39**.
+
+Create a common debug-evidence abstraction for:
+
+- DWARF;
+- CodeView/PDB;
+- dSYM;
+- source file names;
+- line tables;
+- lexical scopes;
+- variables;
+- types;
+- inline functions;
+- function boundaries;
+- declaration/definition relationships.
+
+Debug evidence must be preserved with provenance and confidence. Conflicting debug evidence must remain visible rather than being silently flattened.
+
+Source-to-instruction provenance should become bidirectional where possible:
+
+**source location ↔ recovered entity ↔ SLIR operation ↔ instruction ↔ binary location.**
+
+## Phase 3G — Exception and unwind metadata
+
+Primary item: **17**, supported by **3, 4, 5, 18, 30**.
+
+Implement evidence extraction for:
+
+- DWARF CFI;
+- .eh_frame;
+- .debug_frame;
+- Windows unwind metadata;
+- SEH structures;
+- language-specific exception tables;
+- cleanup/finally paths;
+- landing pads;
+- personality/runtime references.
+
+Unwind data must influence function and stack analysis without being treated as executable code.
+
+## Phase 3H — ABI and calling-convention model
+
+Primary item: **18**.
+
+Create a reusable ABI model for:
+
+- System V AMD64;
+- Microsoft x64;
+- x86 cdecl;
+- stdcall;
+- fastcall;
+- thiscall;
+- vectorcall;
+- AAPCS32;
+- AAPCS64;
+- relevant RISC-V conventions;
+- platform-specific return/register conventions.
+
+The model should describe:
+
+- argument locations;
+- return-value locations;
+- caller/callee-saved registers;
+- stack alignment;
+- shadow/home space;
+- aggregate passing;
+- floating/vector argument rules;
+- variadic behavior;
+- name decoration where relevant;
+- unwind/frame implications.
+
+ABI conclusions remain evidence-based and can be marked ambiguous when multiple conventions fit.
+
+## Phase 3I — Global/data/object-model recovery
+
+Primary item: **19**, supported by **5–7, 15–20**.
+
+Recover and classify:
+
+- strings;
+- scalar constants;
+- arrays;
+- relocation-backed objects;
+- global variables;
+- TLS variables;
+- jump tables;
+- vtables;
+- RTTI;
+- function-pointer tables;
+- dispatch tables;
+- read-only versus writable data;
+- probable object layouts.
+
+Data classification must not confuse arbitrary bytes with typed objects. Every classification should have an evidence path.
+
+## Phase 3J — Compiler and runtime fingerprints
+
+Primary item: **20**, supported by **21–23**.
+
+Build fingerprints for common compiler/runtime families including:
+
+- GCC;
+- Clang/LLVM;
+- MSVC;
+- ICC/ICX;
+- Rust;
+- Go;
+- Swift;
+- Delphi;
+- common language runtimes and standard libraries.
+
+Fingerprints may guide hypotheses, decoder choices, ABI selection, function recovery, and source reconstruction, but **a fingerprint is never proof of compiler, language, or source construct**.
+
+## Phase 3K — Cross-format evidence graph
+
+Phase 3 should introduce a common evidence graph connecting:
+
+- artifact;
+- slice/member;
+- segment/section;
+- symbol;
+- relocation;
+- instruction;
+- basic block;
+- function;
+- type;
+- global;
+- debug entity;
+- ABI fact;
+- runtime fingerprint;
+- exception/unwind entity;
+- source location.
+
+Every relationship should retain provenance and, where appropriate:
+
+- confidence;
+- source format;
+- file offset;
+- virtual address;
+- architecture;
+- evidence kind;
+- conflicting evidence.
+
+This graph becomes the bridge between binary formats and SLIR.
+
+## Phase 3L — Phase 3 reliability requirements
+
+Every new parser must include:
+
+- truncated-input tests;
+- malformed-header tests;
+- integer-overflow tests;
+- invalid-offset/RVA tests;
+- section/segment boundary tests;
+- duplicate/contradictory metadata tests;
+- deterministic enumeration tests;
+- unsupported-feature reporting;
+- resource-limit enforcement;
+- fuzzing targets where practical;
+- regression fixtures from multiple architectures/platforms.
+
+No parser should trust lengths, offsets, counts, or addresses merely because they occur in a binary header.
+
+## Phase 3 Definition of Done
+
+Phase 3 is complete only when reproducible tests or corpus evidence demonstrate:
+
+1. robust ELF evidence extraction;
+2. robust PE/COFF evidence extraction;
+3. robust Mach-O evidence extraction;
+4. recursive archive/member analysis;
+5. dynamic-linking evidence modeling;
+6. common debug-information abstraction;
+7. exception/unwind evidence extraction;
+8. reusable ABI/calling-convention modeling;
+9. global/data/object-model recovery;
+10. compiler/runtime fingerprints represented as evidence;
+11. all Phase 3 evidence connected to the common analysis graph;
+12. address/provenance preserved through format parsing;
+13. malformed metadata handled without unsafe memory access;
+14. deterministic analysis results;
+15. measured coverage for the Phase 3 corpus;
+16. no target execution.
+
+Phase 3 is not complete because a parser accepts a sample file. Completion requires cross-format regression evidence, malformed-input coverage, and integration with the shared native-analysis pipeline.
+
+## Phase 3 Work Sequence
+
+1. Common container/segment interfaces.
+2. ELF headers, sections, segments, symbols, and relocations.
+3. ELF dynamic linking and PLT/GOT evidence.
+4. PE/COFF headers, sections, imports/exports, relocations, and TLS.
+5. PE unwind/debug/load-config evidence.
+6. Mach-O headers, load commands, slices, symbols, and fixups.
+7. Archive/member/symbol-index analysis.
+8. Shared-library/dependency graph.
+9. DWARF/PDB/CodeView/dSYM evidence abstraction.
+10. Exception/unwind integration.
+11. ABI/calling-convention model.
+12. Global/data/vtable/RTTI recovery.
+13. Compiler/runtime fingerprint evidence.
+14. Cross-format evidence graph integration.
+15. Fuzzing, regression corpus, coverage measurement, and Phase 3 review.
+
+## Phase 3 Non-Goals
+
+Phase 3 does not claim:
+
+- perfect source reconstruction;
+- complete deobfuscation;
+- universal compiler identification;
+- perfect type recovery;
+- execution of analyzed programs;
+- automatic correctness of every inferred function boundary;
+- complete support for every historical binary-format extension.
+
+Those remain subject to measured evidence and later phases.
+
+## Phase 3 Relationship to the 1–40 Register
+
+Phase 3 primarily advances **Items 11–20**, while strengthening:
+
+- **Item 2:** address translation;
+- **Item 3:** control-flow evidence;
+- **Item 4:** function recovery;
+- **Item 5:** SLIR provenance;
+- **Items 6–7:** data-flow/type evidence;
+- **Item 22:** stripped-binary strategy;
+- **Item 28:** deterministic output;
+- **Item 30:** provenance;
+- **Item 33:** parser fuzzing;
+- **Items 35–36:** architecture/load-address correctness;
+- **Item 39:** measured coverage;
+- **Item 40:** non-executing security boundary.
+
+## Current Phase 3 Starting Point
+
+Phase 2 remains the prerequisite for Phase 3. Phase 3 should begin with the common container/segment/address interfaces rather than immediately adding independent format parsers.
+
+The implementation target is therefore:
+
+**Phase 2 native core → common binary-container model → ELF → PE/COFF → Mach-O → archives/dynamic linking → debug/unwind → ABI → global/data evidence → unified evidence graph.**
+
+As with Phase 2, Phase 3 completion must be documented from actual repository tests and corpus measurements, not from source-file count or an aspirational percentage.
