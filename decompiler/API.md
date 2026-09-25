@@ -93,3 +93,35 @@ Platform-specific build mechanics belong in `build/`; the analysis contract rema
 in `decompiler/`.
 
 See `decompiler/TUTORIAL.md` for the developer walkthrough.
+
+
+## Source output targets
+
+Slecompiler supports explicit source-language selection for decompilation. The CLI
+argument is:
+
+    sleela-decompiler decompile <file> --output <java|sleela|c|c++>
+
+The output may be written to standard output or to a file:
+
+    sleela-decompiler decompile program --output java
+    sleela-decompiler decompile program --output sleela --file decompiled.sleela
+    sleela-decompiler decompile program --output c --file decompiled.c
+    sleela-decompiler decompile program --output c++ --file decompiled.cpp
+
+Accepted aliases are `sl` for Sleela and `cpp` for C++. The source emitter is
+language-selected after native decoding, CFG recovery, and function recovery.
+
+The four supported source targets are:
+
+| Target | Typical extension | Purpose |
+|---|---|---|
+| Java | `.java` | Object-oriented JVM-oriented source reconstruction |
+| Sleela | `.sleela` | Native SLeeLa/Sleela source representation |
+| C | `.c` | Procedural C-oriented reconstruction |
+| C++ | `.cpp` | C++20-oriented reconstruction |
+
+Generated source is evidence-derived. It must not be represented as the original
+source unless the evidence actually establishes that equivalence. Missing or
+ambiguous native semantics remain explicitly represented as comments/unknowns rather
+than invented source behavior.
