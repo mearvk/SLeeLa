@@ -1,0 +1,7 @@
+#sleela 1.1
+class Model { String name; String version; int loaded; void configure(String n,String v){name=n;version=v;} void load(){loaded=1;} void unload(){loaded=0;} }
+class Inference { Model model; String output; void configure(Model m){model=m;} void run(String input){output=input;} }
+class XmlDocument { String root; void configure(String r){root=r;} void parse(String source){} String serialize(){return root;} }
+class XmlElement { String name; String value; void configure(String n,String v){name=n;value=v;} }
+class Subject { String name; String description; void configure(String n,String d){name=n;description=d;} }
+class KnowledgeUnit { String subject; String title; String content; void configure(String s,String t,String c){subject=s;title=t;content=c;} }
