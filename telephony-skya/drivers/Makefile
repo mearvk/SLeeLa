@@ -4,10 +4,11 @@ CXX ?= c++
 CXXFLAGS ?= -std=c++17 -Wall -Wextra -O2
 TARGET := libskya-drivers.a
 OBJDIR := build
-OBJS := $(OBJDIR)/skya_driver_registry.o \
-        $(OBJDIR)/skya_builtin_drivers.o \
-        $(OBJDIR)/skya_vendor_drivers.o
-
+MODEL_CPP := $(shell find . -path './build' -prune -o -path './platform' -prune -o -name driver.cpp -print)
+MODEL_C := $(shell find . -path './build' -prune -o -path './platform' -prune -o -name driver.c -print)
+MODEL_CPP_OBJS := $(patsubst ./%.cpp,$(OBJDIR)/%.o,$(MODEL_CPP))
+MODEL_C_OBJS := $(patsubst ./%.c,$(OBJDIR)/%.o,$(MODEL_C))
+OBJS := $(OBJDIR)/skya_driver_registry.o $(OBJDIR)/skya_builtin_drivers.o $(OBJDIR)/skya_vendor_drivers.o $(MODEL_CPP_OBJS) $(MODEL_C_OBJS)
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Linux)
 PLATFORM_OBJ := $(OBJDIR)/skya_linux_driver.o
@@ -22,39 +23,26 @@ PLATFORM_OBJ := $(OBJDIR)/skya_windows_driver.o
 PLATFORM_SRC := platform/windows/skya_windows_driver.cpp
 PLATFORM_CXXFLAGS :=
 endif
-
 OBJS += $(PLATFORM_OBJ)
-
 all: $(TARGET)
-
 $(OBJDIR):
 	mkdir -p $(OBJDIR)
-
+$(OBJDIR)/%.o: %.cpp | $(OBJDIR)
+	@mkdir -p $(dir $@)
+	$(CXX) $(CXXFLAGS) -Iinclude -c $< -o $@
+$(OBJDIR)/%.o: %.c | $(OBJDIR)
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -Iinclude -c $< -o $@
 $(OBJDIR)/skya_driver_registry.o: src/skya_driver_registry.cpp | $(OBJDIR)
-	$(CXX) $(CXXFLAGS) -c $< -o $@
-
-$(OBJDIR)/skya_builtin_drivers.o: src/skya_builtin_drivers.cpp include/skya_vendor_drivers.h | $(OBJDIR)
-	$(CXX) $(CXXFLAGS) -c $< -o $@
-
-$(OBJDIR)/skya_vendor_drivers.o: src/skya_vendor_drivers.cpp include/skya_vendor_drivers.h include/skya_phone_driver.h | $(OBJDIR)
-	$(CXX) $(CXXFLAGS) -c $< -o $@
-
-$(OBJDIR)/skya_model_drivers.o: src/skya_model_drivers.cpp include/skya_model_drivers.h include/skya_phone_driver.h | $(OBJDIR)
-	$(CXX) $(CXXFLAGS) -c $< -o $@
-
-$(OBJDIR)/skya_remaining_model_drivers.o: src/skya_remaining_model_drivers.cpp include/skya_remaining_model_drivers.h include/skya_phone_driver.h | $(OBJDIR)
-	$(CXX) $(CXXFLAGS) -c $< -o $@
-
-$(OBJDIR)/skya_model_drivers_c.o: src/skya_model_drivers_c.c include/skya_model_drivers_c.h include/skya_phone_driver.h | $(OBJDIR)
-	$(CC) $(CFLAGS) -c $< -o $@
-
+	$(CXX) $(CXXFLAGS) -Iinclude -c $< -o $@
+$(OBJDIR)/skya_builtin_drivers.o: src/skya_builtin_drivers.cpp | $(OBJDIR)
+	$(CXX) $(CXXFLAGS) -Iinclude -c $< -o $@
+$(OBJDIR)/skya_vendor_drivers.o: src/skya_vendor_drivers.cpp | $(OBJDIR)
+	$(CXX) $(CXXFLAGS) -Iinclude -c $< -o $@
 $(PLATFORM_OBJ): $(PLATFORM_SRC) | $(OBJDIR)
-	$(CXX) $(CXXFLAGS) $(PLATFORM_CXXFLAGS) -c $< -o $@
-
+	$(CXX) $(CXXFLAGS) $(PLATFORM_CXXFLAGS) -Iinclude -c $< -o $@
 $(TARGET): $(OBJS)
 	ar rcs $@ $(OBJS)
-
 clean:
 	rm -rf $(OBJDIR) $(TARGET)
-
 .PHONY: all clean

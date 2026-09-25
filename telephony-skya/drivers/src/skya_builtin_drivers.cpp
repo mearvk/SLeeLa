@@ -1,70 +1,49 @@
 #include "../include/skya_phone_driver.h"
-#include "../include/skya_model_drivers.h"
 #include "../include/skya_vendor_drivers.h"
-#include "../include/skya_remaining_model_drivers.h"
 #include "../src/skya_driver_registry.h"
-
-static int standard_audio_probe(const skya_driver_device *d) {
-    return d && (d->transport == SKYA_TRANSPORT_USB_AUDIO ||
-                 d->transport == SKYA_TRANSPORT_BLUETOOTH);
-}
-static int standard_audio_caps(const skya_driver_device *d, skya_driver_capabilities *c) {
-    if (!d || !c) return -1;
-    *c = {}; c->audio_input=1; c->audio_output=1; c->mute=1; c->volume=1;
-    return 0;
-}
-static const skya_phone_driver standard_audio_driver={
-    "standard-audio","Standard",standard_audio_probe,standard_audio_caps
-};
-
-extern "C" int skya_register_builtin_drivers(void) {
-    const skya_phone_driver *drivers[]={
-        skya_yealink_uh42_driver(),
-        skya_yealink_uh44_driver(),
-        skya_yealink_wh64_driver(),
-        skya_yealink_wh68_driver(),
-        skya_yealink_uh46_driver(),
-        skya_poly_blackwire_3320_driver(),
-        skya_poly_savi_8200_driver(),
-        skya_poly_savi_8400_driver(),
-        skya_poly_voyager_4320_driver(),
-        skya_poly_voyager_5200_driver(),
-        skya_jabra_biz1500_driver(),
-        skya_jabra_evolve3_65_driver(),
-        skya_jabra_evolve3_75_driver(),
-        skya_jabra_speak2_55_driver(),
-        skya_jabra_speak2_75_driver(),
-        skya_grandstream_guv3005_driver(),
-        skya_grandstream_gxp21xx_driver(),
-        skya_grandstream_grp26xx_driver(),
-        skya_epos_impact_sc200_driver(),
-        skya_epos_impact_1000_driver(),
-        skya_epos_sdw5000_driver(),
-        skya_logitech_zone_wireless2_driver(),
-        skya_logitech_zone_vibe_driver(),
-        skya_logitech_h570e_driver(),
-        skya_logitech_zone305_driver(),
-        skya_fanvil_x5uv2_driver(),
-        skya_fanvil_x6uv2_driver(),
-        skya_fanvil_v63_driver(),
-        skya_fanvil_v64_driver(),
-        skya_fanvil_v65_driver(),
-        skya_fanvil_v66_driver(),
-        skya_fanvil_x210iv2_driver(),
-        skya_snom_a330m_driver(),
-        skya_cisco_322_driver(),
-        skya_yealink_mp45_driver(), skya_yealink_mp50_driver(),
-        skya_poly_blackwire_5220_driver(), skya_jabra_evolve2_40_driver(),
-        skya_grandstream_guv3000_driver(), skya_epos_impact_sc600_driver(),
-        skya_logitech_zone_wired2_driver(), skya_fanvil_x4uv2_driver(),
-        skya_snom_a330d_driver(), skya_cisco_321_driver(),
-        skya_yealink_driver(), skya_poly_driver(), skya_jabra_driver(),
-        skya_grandstream_driver(), skya_epos_driver(), skya_logitech_driver(),
-        skya_fanvil_driver(), skya_snom_driver(), skya_cisco_driver(),
-        &standard_audio_driver
-    };
-    int registered=0;
-    for(const skya_phone_driver *driver:drivers)
-        if(driver&&skya_driver_register(driver)==0) ++registered;
-    return registered;
-}
+#include "../yealink/mp45/1.0/driver.h"
+#include "../yealink/mp50/1.0/driver.h"
+#include "../poly/blackwire-5220/1.0/driver.h"
+#include "../jabra/evolve2-40/1.0/driver.h"
+#include "../grandstream/guv3000/1.0/driver.h"
+#include "../epos/impact-sc600/1.0/driver.h"
+#include "../logitech/zone-wired-2/1.0/driver.h"
+#include "../fanvil/x4u-v2/1.0/driver.h"
+#include "../snom/a330d/1.0/driver.h"
+#include "../cisco/321/1.0/driver.h"
+#include "../yealink/uh42/1.0/driver.h"
+#include "../yealink/uh44/1.0/driver.h"
+#include "../yealink/uh46/1.0/driver.h"
+#include "../yealink/wh64/1.0/driver.h"
+#include "../yealink/wh68/1.0/driver.h"
+#include "../poly/blackwire-3320/1.0/driver.h"
+#include "../poly/savi-8200/1.0/driver.h"
+#include "../poly/savi-8400/1.0/driver.h"
+#include "../poly/voyager-4320/1.0/driver.h"
+#include "../poly/voyager-5200/1.0/driver.h"
+#include "../jabra/biz-1500/1.0/driver.h"
+#include "../jabra/evolve3-65/1.0/driver.h"
+#include "../jabra/evolve3-75/1.0/driver.h"
+#include "../jabra/speak2-55/1.0/driver.h"
+#include "../jabra/speak2-75/1.0/driver.h"
+#include "../grandstream/guv3005/1.0/driver.h"
+#include "../grandstream/gxp21xx/1.0/driver.h"
+#include "../grandstream/grp26xx/1.0/driver.h"
+#include "../epos/impact-sc200/1.0/driver.h"
+#include "../epos/impact-1000/1.0/driver.h"
+#include "../epos/sdw-5000/1.0/driver.h"
+#include "../logitech/zone-wireless-2/1.0/driver.h"
+#include "../logitech/zone-vibe/1.0/driver.h"
+#include "../logitech/h570e/1.0/driver.h"
+#include "../logitech/zone-305/1.0/driver.h"
+#include "../fanvil/x5u-v2/1.0/driver.h"
+#include "../fanvil/x6u-v2/1.0/driver.h"
+#include "../fanvil/v63/1.0/driver.h"
+#include "../fanvil/v64/1.0/driver.h"
+#include "../fanvil/v65/1.0/driver.h"
+#include "../fanvil/v66/1.0/driver.h"
+#include "../fanvil/x210i-v2/1.0/driver.h"
+#include "../snom/a330m/1.0/driver.h"
+#include "../cisco/322/1.0/driver.h"
+static int p(const skya_driver_device*d){return d&&(d->transport==SKYA_TRANSPORT_USB_AUDIO||d->transport==SKYA_TRANSPORT_BLUETOOTH);} static int c(const skya_driver_device*d,skya_driver_capabilities*o){if(!d||!o)return -1;*o={};o->audio_input=1;o->audio_output=1;o->mute=1;o->volume=1;return 0;} static const skya_phone_driver fallback={"standard-audio","Standard",p,c};
+extern "C" int skya_register_builtin_drivers(void){const skya_phone_driver*ds[]={skya_yealink_mp45_driver(),skya_yealink_mp50_driver(),skya_poly_blackwire_5220_driver(),skya_jabra_evolve2_40_driver(),skya_grandstream_guv3000_driver(),skya_epos_impact_sc600_driver(),skya_logitech_zone_wired_2_driver(),skya_fanvil_x4u_v2_driver(),skya_snom_a330d_driver(),skya_cisco_321_driver(),skya_yealink_uh42_driver(),skya_yealink_uh44_driver(),skya_yealink_uh46_driver(),skya_yealink_wh64_driver(),skya_yealink_wh68_driver(),skya_poly_blackwire_3320_driver(),skya_poly_savi_8200_driver(),skya_poly_savi_8400_driver(),skya_poly_voyager_4320_driver(),skya_poly_voyager_5200_driver(),skya_jabra_biz_1500_driver(),skya_jabra_evolve3_65_driver(),skya_jabra_evolve3_75_driver(),skya_jabra_speak2_55_driver(),skya_jabra_speak2_75_driver(),skya_grandstream_guv3005_driver(),skya_grandstream_gxp21xx_driver(),skya_grandstream_grp26xx_driver(),skya_epos_impact_sc200_driver(),skya_epos_impact_1000_driver(),skya_epos_sdw_5000_driver(),skya_logitech_zone_wireless_2_driver(),skya_logitech_zone_vibe_driver(),skya_logitech_h570e_driver(),skya_logitech_zone_305_driver(),skya_fanvil_x5u_v2_driver(),skya_fanvil_x6u_v2_driver(),skya_fanvil_v63_driver(),skya_fanvil_v64_driver(),skya_fanvil_v65_driver(),skya_fanvil_v66_driver(),skya_fanvil_x210i_v2_driver(),skya_snom_a330m_driver(),skya_cisco_322_driver(),skya_yealink_driver(),skya_poly_driver(),skya_jabra_driver(),skya_grandstream_driver(),skya_epos_driver(),skya_logitech_driver(),skya_fanvil_driver(),skya_snom_driver(),skya_cisco_driver(),&fallback};int n=0;for(const skya_phone_driver*d:ds)if(d&&skya_driver_register(d)==0)++n;return n;}
