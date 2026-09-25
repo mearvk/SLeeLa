@@ -20,13 +20,9 @@ typedef struct {
     uint8_t *coverage;
 } http4_reassembly_t;
 
-int http4_reassembly_init(http4_reassembly_t *state,
-                          size_t total_length,
-                          uint32_t segment_count,
-                          uint64_t stream_id,
-                          uint64_t request_id,
-                          uint64_t segment_id);
-
+int http4_reassembly_init(http4_reassembly_t *state, size_t total_length,
+                          uint32_t segment_count, uint64_t stream_id,
+                          uint64_t request_id, uint64_t segment_id);
 void http4_reassembly_reset(http4_reassembly_t *state);
 int http4_reassembly_add(http4_reassembly_t *state,
                          const http4_segment_view_t *segment);
