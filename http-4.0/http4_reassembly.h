@@ -5,6 +5,8 @@
 #include <stdint.h>
 #include "http4_segmentation.h"
 
+#define HTTP4_MAX_REASSEMBLY_SEGMENTS (1024u * 1024u)
+
 typedef struct {
     uint64_t stream_id;
     uint64_t request_id;
@@ -15,6 +17,7 @@ typedef struct {
     size_t received_bytes;
     uint8_t *buffer;
     uint8_t *bitmap;
+    uint8_t *coverage;
 } http4_reassembly_t;
 
 int http4_reassembly_init(http4_reassembly_t *state,
@@ -25,14 +28,10 @@ int http4_reassembly_init(http4_reassembly_t *state,
                           uint64_t segment_id);
 
 void http4_reassembly_reset(http4_reassembly_t *state);
-
 int http4_reassembly_add(http4_reassembly_t *state,
                          const http4_segment_view_t *segment);
-
 int http4_reassembly_complete(const http4_reassembly_t *state);
-
 const uint8_t *http4_reassembly_data(const http4_reassembly_t *state);
-
 size_t http4_reassembly_size(const http4_reassembly_t *state);
 
 #endif
