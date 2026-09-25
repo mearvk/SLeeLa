@@ -69,3 +69,24 @@ build scripts configure the existing CMake project and do not replace
 Slecompiler source.
 
 See `build/PRODUCTS.md` for the product-build boundary and planned expansion.
+
+
+### Windows 10+ toolchain notes
+
+The Slecompiler Windows entry point uses CMake and PowerShell and does not require a POSIX shell. Visual Studio 2022 can be selected explicitly:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\\build\\slecompiler-windows.ps1 -Generator "Visual Studio 17 2022" -Architecture x64
+```
+
+The script also accepts Win32 or ARM64 for Visual Studio generators. CMake-supported MinGW-w64 toolchains remain possible when selected through the CMake environment/generator.
+
+### macOS toolchain notes
+
+The Slecompiler macOS entry point requires Xcode Command Line Tools and CMake 3.20+. It defaults to the host architecture and a macOS 11.0 deployment target. Both are configurable:
+
+```sh
+CMAKE_OSX_ARCHITECTURES="x86_64;arm64" MACOSX_DEPLOYMENT_TARGET=11.0 ./build/slecompiler-macos.sh
+```
+
+This permits a universal macOS build when the installed SDK/toolchain supports both architectures.
