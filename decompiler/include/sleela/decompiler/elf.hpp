@@ -4,6 +4,7 @@
 namespace sleela::decompiler {
 struct ElfAnalysis {
     std::vector<Section> sections;
+    std::vector<ProgramSegment> segments;
     std::vector<Symbol> symbols;
     std::vector<Import> imports;
     std::vector<Export> exports;
