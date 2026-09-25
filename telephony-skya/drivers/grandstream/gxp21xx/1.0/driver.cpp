@@ -1,6 +1,2 @@
 #include "driver.h"
-#include <cstring>
-static int probe(const skya_driver_device*d){return d&&d->vendor&&d->model&&std::strcmp(d->vendor,"Grandstream")==0&&std::strstr(d->model,"GXP21xx")!=nullptr;}
-static int capabilities(const skya_driver_device*d,skya_driver_capabilities*out){if(!d||!out)return -1;*out={};if(d->transport!=SKYA_TRANSPORT_SIP&&d->transport!=SKYA_TRANSPORT_NETWORK)return 0;out->audio_input=1;out->audio_output=1;out->call_answer=1;out->call_end=1;out->call_hold=1;out->mute=1;out->volume=1;out->dialpad=1;out->display=1;out->firmware_query=1;return 0;}
-static const skya_phone_driver driver={"grandstream_gxp21xx","Grandstream",probe,capabilities};
-extern "C" const skya_phone_driver *skya_grandstream_gxp21xx_driver(void){return &driver;}
+extern "C" const skya_phone_driver *skya_grandstream_gxp21xx_driver(void){return skya_c_grandstream_gxp21xx_driver();}
