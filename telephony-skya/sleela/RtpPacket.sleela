@@ -1,0 +1,12 @@
+#sleela 1.1
+class RtpPacket {
+    int payloadType;
+    int sequence;
+    int timestamp;
+    int ssrc;
+    String payload;
+    void setHeader(int payload, int seq, int time, int source) {
+        payloadType = payload; sequence = seq; timestamp = time; ssrc = source;
+    }
+    void setPayload(String data) { payload = data; }
+}
