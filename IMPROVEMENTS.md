@@ -1264,3 +1264,17 @@ Every implementation iteration should:
 8. keep `main` and `master` synchronized for the changes made.
 
 This document is a roadmap and engineering contract, not a substitute for tests.
+
+
+## API Class Model Implementation
+
+The repository now contains the first shared C/C++ API class-definition layer under `/api`:
+
+- public C++20 header: `api/include/sleela/api.hpp`;
+- integration translation unit: `api/src/api.cpp`;
+- documentation: `api/README.md` and `decompiler/API_CLASS_MODEL.md`;
+- CMake integration into the Slecompiler static library.
+
+The model covers native-analysis context, reusable types and fields, function signatures and calling conventions, C structs/unions/enums, C++ classes/namespaces/methods, vtable/RTTI evidence, provenance, and a language-neutral `ReconstructionUnit`.
+
+This directly advances items 7, 8, 10, and 11 of the 1–40 register: type recovery, source reconstruction, Sleela output, and C/C++ backends. It is an implementation foundation, not evidence of universal recovery. The analysis pipeline must populate these definitions from actual SLIR/data-flow/ABI/debug/runtime evidence and retain Unknown, Unsupported, Hypothesized, and Conflicting states.
