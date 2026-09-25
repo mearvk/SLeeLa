@@ -395,6 +395,18 @@
       "sha256": "faba7418ff05aac63916c06a0fbc6c7ab372e0dba610f33ee4ddd3225cc66d55"
     },
     {
+      "path": "api/native/network/README.md",
+      "sha256": "f8c592780bc32f91bc292db55d4e6dbb1842a88a652f46eb5f2f01946c47b470"
+    },
+    {
+      "path": "api/native/network/sleela_network.cpp",
+      "sha256": "0035be905e2031a529d9d37b873ac9ff3eb466276dd9627f00c9ab173d834f87"
+    },
+    {
+      "path": "api/native/network/sleela_network.hpp",
+      "sha256": "f9468ff9aa98b1f0dca69a62064fd848f228e2d4af7111aee929aae0d320ef09"
+    },
+    {
       "path": "api/native/reflection/README.md",
       "sha256": "977fecb3a65ad96ab41057be1e712fdef8d4c97c0ee1c46fa19618b5b8338b41"
     },
@@ -421,6 +433,18 @@
     {
       "path": "api/native/runtime/sleela_runtime.hpp",
       "sha256": "d3d59ed3f6652dcc5c590daca2857d605d5862f069063d602ac6e51ca76f8ed3"
+    },
+    {
+      "path": "api/native/security/README.md",
+      "sha256": "7f0081c65b0fa8018755b54540010cd6a122f39739b584577368ed40bc385ba8"
+    },
+    {
+      "path": "api/native/security/sleela_security.cpp",
+      "sha256": "134701e7f59da83300d63ba342ef2512733d5fabf4cc159ab102304b31222b89"
+    },
+    {
+      "path": "api/native/security/sleela_security.hpp",
+      "sha256": "0e8a613323e6eb73ba59692106d17095fd8bf86da4a5d0fc822ca3199566dcf5"
     },
     {
       "path": "api/nordshrift/API.html",
@@ -6009,6 +6033,10 @@
     {
       "path": "tests/native_memory_smoke.cpp",
       "sha256": "53d1721e69e55abe81f10c4cb5c8b429435d67320a7491f7d8f091f4714096a8"
+    },
+    {
+      "path": "tests/network_security_smoke.cpp",
+      "sha256": "6d53600fba85ce009267c3fbdf189c8a2ce1be9cfd91b6bc734c0c77b204f2ec"
     },
     {
       "path": "tests/nordshrift_complete_smoke.cpp",
