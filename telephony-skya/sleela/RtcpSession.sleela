@@ -1,0 +1,9 @@
+#sleela 1.1
+class RtcpSession {
+    int running;
+    int packetsSent;
+    int packetsReceived;
+    void start() { running = 1; }
+    void stop() { running = 0; }
+    void report() {}
+}
