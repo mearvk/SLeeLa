@@ -1,0 +1,7 @@
+#sleela 1.1
+class PlatformSpecification { String os; String architecture; String minimumVersion; void configure(String o,String a,String v){os=o;architecture=a;minimumVersion=v;} }
+class BackendSpecification { String name; String language; String target; void configure(String n,String l,String t){name=n;language=l;target=t;} }
+class AdapterSpecification { String name; String platform; String backend; void configure(String n,String p,String b){name=n;platform=p;backend=b;} }
+class ConnectorSpecification { String name; String protocol; String target; void configure(String n,String p,String t){name=n;protocol=p;target=t;} }
+class BuildSpecification { String compiler; String target; String output; void configure(String c,String t,String o){compiler=c;target=t;output=o;} }
+class TestSpecification { String name; int cases; void configure(String n){name=n;} void addCase(String c){cases=cases+1;} }
