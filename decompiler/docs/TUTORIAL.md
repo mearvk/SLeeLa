@@ -340,3 +340,34 @@ The natural next API expansion is:
 10. signed release and provenance manifests.
 
 The API exemplars are intended to grow alongside those capabilities rather than becoming disconnected sample code.
+
+## 17. Development workflow for API consumers
+
+A practical integration sequence is:
+
+1. Open the artifact and record its SHA-256 identity.
+2. Inspect container metadata and native interfaces before decoding.
+3. Select executable regions and decode only bounded ranges.
+4. Build CFG/function candidates and retain provenance.
+5. Promote useful evidence into SLIR.
+6. Use the bounded VM only for supported SLIR validation.
+7. Emit reports or refactoring products as separate artifacts.
+
+Keep the original bytes immutable throughout this process. Treat inferred functions, provider matches, types, and reconstructed source as analytical products rather than replacements for the source artifact.
+
+## 18. Documentation maintenance rule
+
+When a public API changes, update the corresponding exemplar and these documentation surfaces in the same development pass:
+
+- `decompiler/API.md`;
+- `decompiler/docs/TUTORIAL.md`;
+- `decompiler/README.md`;
+- `api/decompiler/README.md`;
+- `api/decompiler/API.html` when the browser-facing API summary changes;
+- `decompiler/TERMINOLOGY.md` when a new product term is introduced.
+
+When a build interface changes, update the relevant platform script and `build/README.md` / `build/PRODUCTS.md` together.
+
+## 19. Current implementation boundary
+
+The current foundation is intentionally incremental. ELF and GNU archive analysis is substantially developed; PE support and raw-artifact handling are part of the common model; native decoding remains conservative; and SLIR/VM support provides an architecture-neutral analysis boundary. The next layers should extend evidence and recovery without weakening the read-only, provenance-preserving model.
