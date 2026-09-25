@@ -175,3 +175,29 @@ For the Subject Library system, **Excellent** means:
 10. validation and provenance are explicit.
 
 The standard is a software/source-quality target. It does not turn a computed statistic into a causal claim, nor a model into an observation.
+
+## Nordshrift Complete application/service edition
+
+Nordshrift Complete extends the 2.0 architecture from a semantic control language into a reusable application/service construction surface. Its canonical class catalog is [`NORDSHRIFT-COMPLETE.md`](NORDSHRIFT-COMPLETE.md).
+
+The Complete edition uses the existing SLeeLa-Complete classes as its designer-facing vocabulary:
+
+```text
+Project
+  -> Module
+      -> Classes / Interfaces / Types
+      -> Events / Dependencies / Capabilities
+      -> Platform / Backend / Adapter
+      -> Network / Security
+      -> Data / I/O / UI / Runtime
+      -> Memory / Reflection
+      -> Build / Test
+```
+
+This makes the same class model usable as the basis for applications **and** services. The `.sst` sheet remains the control surface and the Nordshrift triplet remains Java, Sleela, and C.
+
+### Complete module families
+
+Nordshrift Complete explicitly covers reusable application/service foundations for Core / Runtime; API / Type Contracts; Platform; Network; Security; Data; Database; HTTP / Web; Server / Service; I/O; Synchronization; UI / Application; XML; Email; Media; Telephony / VoIP; Memory Management; Reflection; AI / Inference; Analytics; Regex / Text; Domain / Science; Terminal; Decompiler / Tooling; and Native Implementation.
+
+The Complete edition is an authoring contract. A module becomes implementation-complete only after its native/platform implementation, tests, diagnostics, packaging, and deployment requirements are fulfilled.
