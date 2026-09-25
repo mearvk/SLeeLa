@@ -1,0 +1,10 @@
+#sleela 1.1
+class SipEndpoint {
+    String user;
+    String domain;
+    String registrar;
+    int port;
+    void configure(String username, String sipDomain, String server, int serverPort) {
+        user = username; domain = sipDomain; registrar = server; port = serverPort;
+    }
+}
