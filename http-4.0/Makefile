@@ -1,7 +1,7 @@
 CC ?= cc
 CFLAGS ?= -std=c11 -O2 -Wall -Wextra
 
-SOURCES = http4_protocol.c http4_packet_context.c
+SOURCES = http4_protocol.c http4_packet_context.c http4_packet_payload.c
 OBJECTS = $(SOURCES:.c=.o)
 
 .PHONY: all clean test
