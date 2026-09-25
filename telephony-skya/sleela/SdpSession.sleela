@@ -1,0 +1,11 @@
+#sleela 1.1
+class SdpSession {
+    SdpMedia audio;
+    String address;
+    void createAudio(int port, String host) {
+        audio.set("audio", port, "RTP");
+        address = host;
+    }
+    void offer() {}
+    void answer() {}
+}
