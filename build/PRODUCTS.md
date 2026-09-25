@@ -54,3 +54,28 @@ The build appropriation is intentionally extensible for:
 - Cross-platform installers and signed release bundles.
 
 Generated build trees are disposable. Product source remains authoritative in its product directory.
+
+## Windows 10+ and macOS portability
+
+Slecompiler's build boundary is explicitly cross-platform:
+
+### Windows 10+
+- CMake 3.20+ is the build-system baseline.
+- Visual Studio generators may select x64, Win32, or ARM64 explicitly.
+- MinGW-w64 or another CMake-supported compiler may be used when the selected generator supports it.
+- The Windows build script does not require POSIX shell tools.
+- PowerShell 5.1+ is sufficient for the build script on supported Windows installations.
+- The product is native C++20 and does not depend on Linux-only headers, ELF runtime libraries, or POSIX execution APIs for the core build.
+
+Example with Visual Studio 2022:
+
+    powershell -ExecutionPolicy Bypass -File .\\build\\slecompiler-windows.ps1 -Generator "Visual Studio 17 2022" -Architecture x64
+
+### macOS
+- Xcode Command Line Tools are required.
+- CMake 3.20+ is the build-system baseline.
+- The build script detects the host architecture and permits an explicit CMAKE_OSX_ARCHITECTURES override.
+- MACOSX_DEPLOYMENT_TARGET defaults to 11.0 and can be overridden for the supported deployment range.
+- Universal binaries can be requested through CMAKE_OSX_ARCHITECTURES="x86_64;arm64" when the local toolchain supports both architectures.
+
+The portability boundary applies to the build system as well as the product source: platform-specific build mechanics stay in build/, while Slecompiler source remains authoritative under decompiler/.
