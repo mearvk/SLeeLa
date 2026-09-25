@@ -1,10 +1,10 @@
 #include "../include/skya_phone_driver.h"
 
-static const skya_phone_driver *g_drivers[32];
+static const skya_phone_driver *g_drivers[64];
 static size_t g_driver_count = 0;
 
 extern "C" int skya_driver_register(const skya_phone_driver *driver) {
-    if (!driver || !driver->name || g_driver_count >= 32) return -1;
+    if (!driver || !driver->name || g_driver_count >= 64) return -1;
     g_drivers[g_driver_count++] = driver;
     return 0;
 }
