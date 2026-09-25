@@ -72,7 +72,7 @@
     },
     {
       "path": "README.md",
-      "sha256": "4e6db86e53f1ef004c5c84a2537d3a6b22de55b5c8016ec0962af21512beff1d"
+      "sha256": "1788bc5ccaa694d34ecf0d0e0e5ba8721298406d5358dcfd990bb827e1ce6c76"
     },
     {
       "path": "REVISIONS.md",
@@ -104,7 +104,7 @@
     },
     {
       "path": "VERSION.md",
-      "sha256": "4e9c240411aeaa5aff0b60e0014f62a52063a1e984ffc6bc740e59feadbef8dd"
+      "sha256": "385a2e424e74eaca4c6dcf55b3329479107636dfd2ec74245c44c6249fdeebb2"
     },
     {
       "path": "api/API-CATALOG.md",
