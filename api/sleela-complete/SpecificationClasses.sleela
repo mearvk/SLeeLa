@@ -1,0 +1,7 @@
+#sleela 1.1
+class ParameterSpecification { String name; String type; void configure(String n,String t){name=n;type=t;} }
+class TypeSpecification { String name; String kind; void configure(String n,String k){name=n;kind=k;} }
+class EnumSpecification { String name; int valueCount; void configure(String n){name=n;} void addValue(String v){valueCount=valueCount+1;} }
+class EventSpecification { String name; String payloadType; void configure(String n,String p){name=n;payloadType=p;} }
+class DependencySpecification { String name; String version; void configure(String n,String v){name=n;version=v;} }
+class CapabilitySpecification { String name; int required; void configure(String n){name=n;} void require(){required=1;} }
