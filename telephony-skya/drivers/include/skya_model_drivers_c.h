@@ -3,6 +3,17 @@
 
 #include "skya_phone_driver.h"
 
+SKYA_DECLARE_C_MODEL(yealink_mp45)
+SKYA_DECLARE_C_MODEL(yealink_mp50)
+SKYA_DECLARE_C_MODEL(poly_blackwire_5220)
+SKYA_DECLARE_C_MODEL(jabra_evolve2_40)
+SKYA_DECLARE_C_MODEL(grandstream_guv3000)
+SKYA_DECLARE_C_MODEL(epos_impact_sc600)
+SKYA_DECLARE_C_MODEL(logitech_zone_wired2)
+SKYA_DECLARE_C_MODEL(fanvil_x4uv2)
+SKYA_DECLARE_C_MODEL(snom_a330d)
+SKYA_DECLARE_C_MODEL(cisco_321)
+
 #ifdef __cplusplus
 extern "C" {
 #endif
