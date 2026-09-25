@@ -6,8 +6,8 @@ TARGET := libskya-drivers.a
 OBJDIR := build
 MODEL_CPP := $(shell find . -path './build' -prune -o -path './platform' -prune -o -name driver.cpp -print)
 MODEL_C := $(shell find . -path './build' -prune -o -path './platform' -prune -o -name driver.c -print)
-MODEL_CPP_OBJS := $(patsubst ./%.cpp,$(OBJDIR)/%.o,$(MODEL_CPP))
-MODEL_C_OBJS := $(patsubst ./%.c,$(OBJDIR)/%.o,$(MODEL_C))
+MODEL_CPP_OBJS := $(patsubst ./%.cpp,$(OBJDIR)/cpp/%.o,$(MODEL_CPP))
+MODEL_C_OBJS := $(patsubst ./%.c,$(OBJDIR)/c/%.o,$(MODEL_C))
 OBJS := $(OBJDIR)/skya_driver_registry.o $(OBJDIR)/skya_builtin_drivers.o $(OBJDIR)/skya_vendor_drivers.o $(MODEL_CPP_OBJS) $(MODEL_C_OBJS)
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Linux)
@@ -27,10 +27,10 @@ OBJS += $(PLATFORM_OBJ)
 all: $(TARGET)
 $(OBJDIR):
 	mkdir -p $(OBJDIR)
-$(OBJDIR)/%.o: %.cpp | $(OBJDIR)
+$(OBJDIR)/cpp/%.o: %.cpp | $(OBJDIR)
 	@mkdir -p $(dir $@)
 	$(CXX) $(CXXFLAGS) -Iinclude -c $< -o $@
-$(OBJDIR)/%.o: %.c | $(OBJDIR)
+$(OBJDIR)/c/%.o: %.c | $(OBJDIR)
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -Iinclude -c $< -o $@
 $(OBJDIR)/skya_driver_registry.o: src/skya_driver_registry.cpp | $(OBJDIR)
