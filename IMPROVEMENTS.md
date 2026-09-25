@@ -1,17 +1,17 @@
 # Slecompiler Improvements
 
-This document is the active engineering backlog and implementation order for Slecompiler™ in `/decompiler`.
+This document is the active engineering backlog and implementation plan for Slecompiler™ in `/decompiler`.
 
-The list below records the forty improvement areas identified during the current review. Items are ordered intentionally: parser and failure safety come before deeper semantic reconstruction, and semantic reconstruction comes before source-quality output.
+The forty improvement areas remain the authoritative engineering register. **Phase 2** now defines the next implementation cycle: move from foundation hardening into the address-space, native decoding, control-flow, function-recovery, and semantic-lifting core while preparing the later binary-format and source-reconstruction work.
 
 ## Implementation status
 
-- **Pass 1 — Foundation:** Items 1–5 are the first implementation iteration.
-- **Pass 2 — Native analysis:** Items 6–12.
-- **Pass 3 — Binary formats and ABI evidence:** Items 13–20.
-- **Pass 4 — Recovery and reconstruction:** Items 21–29.
-- **Pass 5 — Reliability, tooling, and security:** Items 30–40.
-- Status should describe measured implementation state, not aspirational percentage.
+- **Phase 1 — Foundation:** initial error handling, CLI hardening, static-analysis boundary, and regression scaffolding.
+- **Phase 2 — Native analysis core:** Items 1–10, with Items 24–30 and 34–40 providing the reliability/provenance controls required by the core.
+- **Phase 3 — Binary formats and ABI evidence:** Items 11–20.
+- **Phase 4 — Recovery, reconstruction, and difficult artifacts:** Items 21–30.
+- **Phase 5 — Production validation and security:** Items 31–40.
+- Percentages in this document are engineering targets unless backed by measured test/corpus evidence.
 
 ## 1–40 Improvement Register
 
@@ -56,28 +56,263 @@ The list below records the forty improvement areas identified during the current
 39. **Measured coverage** — Report measured format, instruction, CFG, function, symbol, type, semantic, source and unknown/unsupported/ambiguous coverage.
 40. **Security boundary** — Keep static analysis non-executing by default; never run target instructions, constructors, scripts or kernel modules. Any future emulation must be explicitly isolated.
 
-## Iteration policy
+# Phase 2 — Native Analysis Core
 
-Each iteration should:
+## Purpose
+
+Phase 2 moves Slecompiler™ from a hardened foundation into a real native-analysis pipeline. The central rule is:
+
+**Artifact bytes → address model → instruction decoder → CFG → function recovery → SLIR → data flow/types → source backends.**
+
+The four requested source targets—**Java, Sleela, C, and C++**—must ultimately consume the same recovered semantic representation. They should not each invent independent interpretations of the binary.
+
+## Phase 2A — Address-space foundation
+
+Primary items: **2, 35, 36, 24, 25, 26, 28, 30, 39, 40**.
+
+Implement explicit checked address types/concepts for:
+
+- file offset;
+- section-relative offset;
+- virtual address;
+- preferred image address;
+- actual load address;
+- runtime address;
+- instruction address;
+- relocation target address.
+
+Required behavior:
+
+- no implicit conversion between address domains;
+- checked file-offset ↔ virtual-address translation using section/segment mappings;
+- explicit PIE/load-base handling;
+- relocation calculations use the correct address domain;
+- invalid or unmapped translations produce structured errors;
+- every recovered instruction/function can retain both binary location and virtual-address provenance;
+- deterministic ordering of sections, functions, blocks, instructions, and emitted artifacts.
+
+**Phase 2 exit evidence:** address translation tests cover valid mappings, section boundaries, unmapped gaps, overflow, relocation targets, PIE/load-base cases, and malformed artifacts.
+
+## Phase 2B — Native decoder expansion
+
+Primary item: **1**, supported by **24–26, 33, 39**.
+
+The first production decoder target is x86/x86-64. It must move beyond the current limited branch/call/mov subset.
+
+Required decoder layers:
+
+1. prefix decoding;
+2. opcode-map decoding;
+3. ModR/M and SIB decoding;
+4. displacement/immediate decoding;
+5. operand-size/address-size handling;
+6. register and memory operand modeling;
+7. VEX/EVEX and SIMD coverage;
+8. floating-point/vector operations;
+9. atomic/lock semantics;
+10. system and control instructions;
+11. instruction-length and boundary validation;
+12. explicit unsupported/ambiguous decode states.
+
+Unknown bytes must not silently become proven instructions. Decoder results should carry status and evidence.
+
+ARM/ARM64 follows the x86/x86-64 foundation. RISC-V follows after the first cross-architecture semantic interface is stable.
+
+## Phase 2C — CFG and function recovery
+
+Primary items: **3 and 4**, supported by **17–20, 21–23, 30, 39**.
+
+Build a real control-flow graph with:
+
+- basic blocks;
+- fall-through edges;
+- direct branch edges;
+- conditional edges;
+- call edges;
+- return edges;
+- indirect branch candidates;
+- jump-table/switch recovery;
+- tail-call edges;
+- thunk detection;
+- PLT/GOT-aware edges when binary-format support is available;
+- exception/unwind edges when evidence is available;
+- ambiguous edges represented as hypotheses rather than forced facts.
+
+Function recovery should combine:
+
+- explicit symbols;
+- known entry points;
+- call targets;
+- relocation evidence;
+- prologue/epilogue patterns;
+- tail calls;
+- thunks;
+- runtime metadata;
+- exception handlers;
+- compiler/runtime fingerprints.
+
+Every function and edge should carry provenance and a confidence/evidence record.
+
+## Phase 2D — SLIR semantic model
+
+Primary item: **5**, supported by **6, 7, 18, 30**.
+
+Define a stable Slecompiler Low-level Intermediate Representation (**SLIR**) capable of representing:
+
+- registers;
+- flags;
+- constants;
+- memory reads/writes;
+- pointer arithmetic;
+- arithmetic and logical operations;
+- comparisons;
+- branches;
+- calls and returns;
+- stack/frame objects;
+- volatile operations;
+- atomic operations;
+- exceptions;
+- merge/PHI values;
+- SSA relationships;
+- instruction-to-SLIR provenance.
+
+The SLIR must preserve uncertainty. An unknown or partially understood instruction should produce an explicit unknown/evidence node rather than fabricated semantics.
+
+## Phase 2E — Data flow and type evidence
+
+Primary items: **6 and 7**, supported by **18, 19, 20, 21, 22, 30, 39**.
+
+Add:
+
+- def-use/use-def chains;
+- reaching definitions;
+- liveness;
+- constant and copy propagation;
+- value-set tracking;
+- stack-variable recovery;
+- register-variable recovery;
+- pointer/reference tracking;
+- conservative alias analysis;
+- integer width/signedness evidence;
+- pointer types;
+- arrays;
+- structs/unions/enums;
+- function-pointer evidence;
+- floating/vector types;
+- ABI-derived argument/return evidence.
+
+Types must remain evidence-based. When evidence is insufficient, emit an unknown/opaque type rather than inventing a specific type.
+
+## Phase 2F — Source reconstruction contract
+
+Primary items: **8, 9, 10, 11**, supported by **5–7 and 30**.
+
+Phase 2 does not claim that Java, Sleela, C, or C++ reconstruction is complete. Instead, it establishes the shared semantic contract required for those backends.
+
+The source reconstruction pipeline becomes:
+
+**binary → instructions → CFG/functions → SLIR → data flow/types → language-specific AST/IR → source.**
+
+The four backends must consume the same evidence and preserve unknowns where necessary.
+
+Target responsibilities:
+
+- **C:** procedural expressions, declarations, globals, structs/unions/enums, prototypes and function pointers.
+- **C++:** C reconstruction plus classes, methods, namespaces, templates/ABI evidence where recoverable, and C++-specific object-model evidence.
+- **Sleela:** compiler-valid modules, types, functions, control flow, native interop, and explicit unknown/evidence constructs.
+- **Java:** classes, methods, fields, arrays, references, exceptions, packages, and JVM-compatible type mappings where evidence supports them.
+
+## Phase 2G — Reliability requirements
+
+Phase 2 is not complete merely because the decoder produces more instructions.
+
+The phase must include:
+
+- regression tests for every newly supported instruction family;
+- malformed/truncated artifact tests;
+- decoder fuzz targets;
+- deterministic-output tests;
+- resource-limit tests;
+- cancellation-safe analysis boundaries where the API supports them;
+- address/provenance assertions;
+- coverage accounting for decoded, unsupported, ambiguous, and unknown regions;
+- security tests proving analyzed artifacts are never executed.
+
+## Phase 2 Definition of Done
+
+Phase 2 is complete only when the repository can demonstrate, with tests or corpus evidence:
+
+1. explicit address-domain separation;
+2. checked address translation;
+3. substantially expanded x86/x86-64 decoding;
+4. real basic-block CFG construction;
+5. evidence-based function recovery;
+6. a reusable SLIR semantic model;
+7. initial data-flow analysis;
+8. initial type recovery;
+9. source reconstruction driven by SLIR rather than function shells;
+10. shared semantics feeding Java, Sleela, C, and C++;
+11. structured errors for malformed/unsupported/ambiguous regions;
+12. deterministic output;
+13. measured coverage for the Phase 2 corpus;
+14. no target execution.
+
+Phase 2 should **not** be marked complete based on line count, number of files, or a claimed percentage. Completion requires reproducible technical evidence.
+
+## Phase 2 Work Sequence
+
+1. Address-domain types and translation.
+2. Load-base/PIE/relocation correctness.
+3. Decoder operand model.
+4. x86/x86-64 opcode and prefix expansion.
+5. Basic-block construction.
+6. Branch/call/return edge recovery.
+7. Function discovery and provenance.
+8. SLIR instruction semantics.
+9. Def-use and liveness.
+10. Initial type recovery.
+11. CFG/SLIR-driven source reconstruction.
+12. Java/Sleela/C/C++ backend integration.
+13. Regression corpus and fuzzing.
+14. Coverage measurement and deterministic-output verification.
+15. Phase 2 review and documented evidence.
+
+## Phase 2 Non-Goals
+
+The following remain outside the completion claim for Phase 2 unless separately demonstrated:
+
+- complete ARM/ARM64 decoding;
+- complete RISC-V support;
+- complete PE/Mach-O/DWARF/PDB support;
+- complete optimization-aware recovery;
+- reliable deobfuscation;
+- perfect type recovery;
+- perfect source reconstruction;
+- execution or emulation of target programs.
+
+## Iteration Policy
+
+Each implementation iteration should:
+
 1. inspect the current implementation;
 2. implement the next safe subset in order;
 3. add regression tests;
 4. update this document with what is actually implemented;
 5. avoid claiming support that is not measured;
-6. keep `main` and `master` synchronized.
+6. preserve the non-executing security boundary;
+7. keep `main` and `master` synchronized in the changes made.
 
-## Current iteration
+## Current Phase 2 Starting Point
 
-### Items 1–5: foundation started
+Phase 1 has already established:
 
-Implemented in this iteration:
-- **Item 24:** structured `DecompilerError` / `ErrorCode` taxonomy with stage, file offset and virtual address context.
-- **Item 34:** stricter CLI length parsing, explicit help/version handling, output-file write validation and stable error labels.
-- **Item 40:** analysis remains a read-only static boundary; this iteration adds no target execution path.
-- Added regression coverage for the error object and all four source-output extensions/emission paths.
+- structured `DecompilerError` / `ErrorCode` handling with stage, file-offset, and virtual-address context;
+- stricter CLI length parsing;
+- explicit help/version behavior;
+- output-file validation;
+- regression coverage for the error object and four source-output paths;
+- the non-executing static-analysis boundary.
 
-Still pending in this pass: full address-space translation, complete instruction semantics, CFG/function/data-flow improvements, and the remaining items below.
-
-The first implementation pass hardens the error boundary and CLI before deeper decoder/CFG/SLIR work. The next pass should introduce the explicit address-space model and checked address translation before expanding instruction coverage.
+The immediate Phase 2 implementation target is **the explicit address-space model**, followed by decoder expansion and CFG/function recovery. The existing source emitters remain output shells until SLIR and reconstruction provide semantic content.
 
 **Known limitation:** local compilation/CTest execution is environment-dependent. Repository changes should not be described as build-verified unless CI or a real build result is available.
