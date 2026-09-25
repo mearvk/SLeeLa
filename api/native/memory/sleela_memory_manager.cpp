@@ -28,7 +28,7 @@ struct sleela_mm {
 static void* raw_alloc(size_t bytes,size_t alignment){
   if(alignment<alignof(void*)) alignment=alignof(void*);
   if((alignment&(alignment-1))!=0) alignment=alignof(void*);
-  const size_t total=sizeof(Header)+bytes+sizeof(uint64_t)+alignment;
+  if(bytes>std::numeric_limits<size_t>::max()-sizeof(Header)-sizeof(uint64_t)-alignment)return nullptr; const size_t total=sizeof(Header)+bytes+sizeof(uint64_t)+alignment;
   void* raw=std::malloc(total);
   if(!raw)return nullptr;
   uintptr_t base=reinterpret_cast<uintptr_t>(raw)+sizeof(Header);
@@ -71,7 +71,7 @@ extern "C" sleela_mm_status sleela_mm_free(sleela_mm*x,void*p){
 }
 extern "C" sleela_mm_status sleela_mm_insert_struct(sleela_mm*x,const char*n,const void*s,size_t z,size_t alignment,uint64_t*out){
   if(!x||!s||!z||!out)return SLEELA_MM_INVALID;void*p=raw_alloc(z,alignment);if(!p)return SLEELA_MM_LIMIT;
-  {std::lock_guard<std::mutex>g(x->m);if(z>x->limits.hard_limit-x->resident){std::free(header(p));return SLEELA_MM_LIMIT;}
+  {std::lock_guard<std::mutex>g(x->m);if(z>x->limits.hard_limit-x->resident){return SLEELA_MM_LIMIT;}
   std::memcpy(p,s,z);x->blocks[p]={p,header(p),z,header(p)->alignment};x->resident+=z;x->allocated+=z;x->allocations++;x->peak=std::max(x->peak,x->resident);
   const uint64_t id=x->next++;x->objects[id]={id,reinterpret_cast<uint64_t>(p),false,n?n:"struct"};*out=id;}return SLEELA_MM_OK;
 }
