@@ -42,3 +42,17 @@ The Stage 3 parser is bounded and read-only. It does not load ELF objects, execu
 Stage 4 begins native recovery with architecture-aware x86/x86-64 control-transfer decoding and branch-aware CFG construction. The decoder currently recognizes common relative calls, unconditional jumps, conditional jumps, and returns. Unknown instructions remain represented conservatively rather than guessed.
 
 The analyzer now forms basic blocks at branch targets and control-transfer fallthrough points, then emits CFG edges for conditional and unconditional branches. This is the beginning of function-boundary recovery; it is not yet a complete x86 decoder or production-grade decompiler.
+
+
+## Stage 4 implementation note
+
+The Stage 4 native-recovery layer has been expanded with:
+
+- A contained x86/x86-64 decoder path for common register pushes/pops, returns, direct relative calls/jumps, conditional branches, immediate-register moves, and indirect FF /2 calls and FF /4 jumps.
+- Basic ModRM/SIB-aware operand descriptions for register and common memory forms.
+- Relocation evidence attached to decoded instructions when relocation addresses match the decoder address space.
+- CFG construction that keeps branch targets as edges and preserves fallthrough after calls and conditional branches.
+- Function-candidate recovery that incorporates non-external symbol and export evidence in addition to generic block starts.
+- A minimal x86-64 ELF fixture exercising direct call, conditional branch, indirect call and return decoding.
+
+The implementation intentionally remains conservative. Unsupported x86 instructions are emitted as db records rather than guessed, and ARM/ARM64 continue to use the non-decoding fallback until dedicated architecture decoders are added.
