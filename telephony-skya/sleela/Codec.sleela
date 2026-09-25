@@ -1,0 +1,12 @@
+#sleela 1.1
+class Codec {
+    String name;
+    int payloadType;
+    int sampleRate;
+    int channels;
+    int enabled;
+    void configure(String codecName, int payload, int rate, int channelCount) {
+        name = codecName; payloadType = payload; sampleRate = rate; channels = channelCount; enabled = 1;
+    }
+    void enable(int value) { enabled = value; }
+}
