@@ -33,3 +33,22 @@ enable_testing()
 add_executable(sleela-decompiler-test tests/test_core.cpp)
 target_link_libraries(sleela-decompiler-test PRIVATE sleela_decompiler)
 add_test(NAME sleela-decompiler-core COMMAND sleela-decompiler-test)
+
+option(SLEE_LA_BUILD_API_EXAMPLES "Build Slecompiler API exemplar programs" ON)
+
+if (SLEE_LA_BUILD_API_EXAMPLES)
+  add_executable(slecompiler-api-inspect examples/api_inspect.cpp)
+  target_link_libraries(slecompiler-api-inspect PRIVATE sleela_decompiler)
+
+  add_executable(slecompiler-api-cfg examples/api_decode_cfg.cpp)
+  target_link_libraries(slecompiler-api-cfg PRIVATE sleela_decompiler)
+
+  add_executable(slecompiler-api-library examples/api_library_metadata.cpp)
+  target_link_libraries(slecompiler-api-library PRIVATE sleela_decompiler)
+
+  add_executable(slecompiler-api-graph examples/api_library_graph.cpp)
+  target_link_libraries(slecompiler-api-graph PRIVATE sleela_decompiler)
+
+  add_executable(slecompiler-api-slir-vm examples/api_slir_vm.cpp)
+  target_link_libraries(slecompiler-api-slir-vm PRIVATE sleela_decompiler)
+endif()
