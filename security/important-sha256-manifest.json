@@ -475,6 +475,10 @@
       "sha256": "4bafb1959a39ba74a1cb88ffbd169ea07fe39a586865c442b42618ff2692412d"
     },
     {
+      "path": "api/sleela-complete/MODULE-MATRIX.md",
+      "sha256": "decff9edcbd7aa7ef07ac9dd9af2567030947e78b34187ab5ff435534b6cb744"
+    },
+    {
       "path": "api/sleela-complete/NetworkSecurityClasses.sleela",
       "sha256": "a9f2064292c0733bbd7004984a68d97a0e188614670b150c7edfdb7dd3d4e6b4"
     },
