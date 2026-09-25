@@ -120,3 +120,43 @@ to object ownership, error/result conventions, architecture selection, symbol an
 relocation records, CFG/function recovery, SLIR nodes, library graph queries, report
 serialization, and compatibility guarantees. Documentation should follow actual
 interfaces rather than inventing APIs ahead of implementation.
+
+
+## 11. Select a source language
+
+The decompiler can emit source-oriented output in Java, Sleela, C, or C++:
+
+    sleela-decompiler decompile ./program --output java
+    sleela-decompiler decompile ./program --output sleela
+    sleela-decompiler decompile ./program --output c
+    sleela-decompiler decompile ./program --output c++
+
+Use `--file` to save the generated source:
+
+    sleela-decompiler decompile ./program --output c++ --file program.cpp
+
+The language selection is an output transformation after artifact decoding,
+control-flow recovery, and function recovery. It does not claim that the selected
+language was the language originally used to compile the artifact.
+
+### Output model
+
+    native artifact
+         |
+         v
+    format / instruction analysis
+         |
+         v
+    CFG + recovered functions
+         |
+         v
+        SLIR
+         |
+         +----> Java
+         +----> Sleela
+         +----> C
+         +----> C++
+
+Java, Sleela, C, and C++ are therefore source-output targets, not input-language
+claims. Optimizations, stripped symbols, ABI conventions, compiler-generated code,
+and unavailable runtime behavior can prevent exact source reconstruction.
