@@ -1,693 +1,844 @@
 # Slecompiler Improvements
 
-This document is the active engineering backlog and implementation plan for Slecompiler™ in `/decompiler`.
+This document is the active engineering backlog, architecture plan, and evidence standard for Slecompiler™ in `/decompiler`.
 
-The forty improvement areas remain the authoritative engineering register. **Phase 2** now defines the next implementation cycle: move from foundation hardening into the address-space, native decoding, control-flow, function-recovery, and semantic-lifting core while preparing the later binary-format and source-reconstruction work.
+The **1–40 register is authoritative**. Phases are implementation groupings over that register; they do not replace it. A feature is not considered complete because a parser, emitter, or stub exists. Completion requires reproducible implementation evidence, regression coverage, and measured behavior.
 
-## Implementation status
+## Implementation Status
 
-- **Phase 1 — Foundation:** initial error handling, CLI hardening, static-analysis boundary, and regression scaffolding.
-- **Phase 2 — Native analysis core:** Items 1–10, with Items 24–30 and 34–40 providing the reliability/provenance controls required by the core.
-- **Phase 3 — Binary formats and ABI evidence:** Items 11–20.
-- **Phase 4 — Recovery, reconstruction, and difficult artifacts:** Items 21–30.
-- **Phase 5 — Production validation and security:** Items 31–40.
-- Percentages in this document are engineering targets unless backed by measured test/corpus evidence.
+- **Phase 1 — Foundation:** structured errors, CLI hardening, static-analysis boundary, initial regression scaffolding.
+- **Phase 2 — Native Analysis Core:** address domains, instruction decoding, CFG/function recovery, SLIR, data flow, type evidence, and shared source reconstruction.
+- **Phase 3 — Binary Formats, ABI, and Native Evidence:** ELF, PE/COFF, Mach-O, archives, dynamic linking, debug/unwind metadata, ABI, and evidence graph.
+- **Phase 4 — Recovery, Reconstruction, and Difficult Artifacts:** optimization-aware recovery, stripped binaries, packed/obfuscated artifacts, provenance-driven reconstruction, semantic reconciliation, and difficult native patterns.
+- **Phase 5 — Production Validation and Security:** regression corpus, sanitizers, fuzzing, CLI/API stability, concurrency, caching, measured coverage, and security boundary.
+- Percentages in documentation are **targets unless backed by measured corpus/test evidence**.
 
-## 1–40 Improvement Register
+---
 
-1. **Native instruction decoding** — Complete x86/x86-64 decoding first; add ARM/ARM64 and later RISC-V, including prefixes, VEX/EVEX, SIMD, floating point, atomics, system instructions, operand widths and memory operands.
-2. **Address-space model** — Explicitly distinguish file offsets, section offsets, virtual addresses and runtime/load addresses; provide checked translations between them.
-3. **Control-flow recovery** — Recover direct and indirect branches, calls, returns, jump tables, switches, tail calls, thunks, exception edges, PLT/GOT paths and multiple CFG hypotheses where ambiguity exists.
-4. **Function recovery** — Combine symbols, entry points, calls, prologues/epilogues, tail calls, thunks, exception handlers and compiler/runtime patterns; attach confidence and provenance.
-5. **Semantic lifting / SLIR** — Represent registers, flags, memory, constants, pointers, loads/stores, arithmetic, comparisons, calls, returns, branches, PHI/merge values, SSA, exceptions, volatile and atomic operations.
-6. **Data-flow analysis** — Add def-use/use-def, reaching definitions, liveness, constant/copy propagation, dead-code analysis, value sets, pointer tracking, stack/register variables and alias analysis.
-7. **Type recovery** — Recover widths, signedness, pointers, arrays, structs/unions/enums, function pointers, qualifiers, floating/vector types and ABI-derived parameter/return types.
-8. **Source reconstruction** — Turn CFG and SLIR into actual expressions, assignments, conditionals, loops, switches, calls and data structures instead of function shells.
-9. **Java backend** — Add evidence-based classes, methods, fields, packages, arrays, references, exceptions and JVM-compatible types.
-10. **Sleela backend** — Define a compiler-valid output grammar and emit modules, declarations, functions, types, control flow, native interop and explicit unknown/evidence constructs.
-11. **C/C++ backends** — Recover declarations, prototypes, globals, structs/unions/enums, typedefs, namespaces, classes, methods, function pointers and ABI attributes where evidence supports them.
-12. **PE/COFF analysis** — Implement headers, RVA mapping, sections, imports/exports, delay imports, relocations, TLS, unwind metadata, PDB references, resources, load-config and Windows CFG/SEH metadata.
-13. **Mach-O analysis** — Implement 32/64-bit headers, load commands, segments/sections, symbols, dyld exports/fixups, relocations, Obj-C/Swift metadata, code signatures and universal binaries.
-14. **GNU archive analysis** — Recursively analyze members, symbol indexes, duplicate/weak/COMDAT symbols and cross-member relationships.
-15. **Dynamic/shared library analysis** — Handle PLT/GOT, symbol versions, IFUNC, TLS, constructors/destructors, DT_NEEDED, RPATH/RUNPATH, interposition and weak symbols.
-16. **Debug information** — Preserve DWARF, PDB/CodeView, dSYM and other debug evidence including files, lines, scopes, inline functions, variables and types.
-17. **Exception/unwind analysis** — Parse DWARF CFI, .eh_frame/.debug_frame, Windows unwind/SEH and language-specific exception tables.
-18. **Calling conventions / ABI** — Model System V AMD64, Microsoft x64, cdecl/stdcall/fastcall/thiscall/vectorcall, AAPCS32/AAPCS64 and relevant RISC-V conventions.
-19. **Global/data analysis** — Recover strings, constants, arrays, jump tables, vtables, RTTI, globals, TLS, function-pointer tables and relocation-backed objects.
-20. **Compiler/runtime fingerprinting** — Identify common GCC, Clang/LLVM, MSVC, ICC/ICX, Rust, Go, Swift, Delphi and runtime patterns without treating fingerprints as proof.
-21. **Optimization-aware recovery** — Handle O0–O3/Os/Ofast, LTO, ThinLTO, PGO, inlining, vectorization and tail-call optimization.
-22. **Stripped-binary strategy** — Explicitly classify symbol/debug availability and adapt function/type recovery to stripped, partially stripped and debug-stripped artifacts.
-23. **Packed/obfuscated artifacts** — Detect and report packing, encryption, opaque predicates, control-flow flattening, indirect dispatch and self-modifying behavior without presenting guesses as facts.
-24. **Structured error/exception model** — Replace generic runtime errors with typed, stage-aware failures such as InvalidArtifact, TruncatedArtifact, UnsupportedFormat, InvalidAddress, DecodeFailure, AmbiguousDecode, AnalysisFailure, OutputFailure and ResourceLimit.
-25. **Fault tolerance** — Continue analysis around recoverable malformed or unsupported regions; record per-region status and coverage.
-26. **Resource limits** — Add limits for memory, instructions, functions, recursion/analysis depth, time, output size and CFG nodes.
-27. **Cancellation and progress** — Expose cancellation, phase, progress and percentage through library and CLI APIs.
-28. **Deterministic output** — Same artifact/configuration must produce stable analysis, source, JSON and hashes.
-29. **Machine-readable output** — Add text, JSON, SARIF and YAML representations with artifact, architecture, sections, functions, CFG, evidence, confidence, errors and coverage.
-30. **Source-to-instruction provenance** — Map generated source back through SLIR to instruction addresses and binary offsets.
-31. **Regression corpus** — Build a cross-language corpus covering optimized, stripped, exception-heavy, template, virtual, threaded, library and architecture-specific samples.
-32. **Sanitizer/UB testing** — Gate CI with ASan, UBSan, LeakSan and ThreadSan where supported.
-33. **Parser/decoder fuzzing** — Fuzz ELF, PE, Mach-O, AR, debug metadata, decoder, SLIR and CLI paths for crashes, hangs, OOB access and pathological allocation.
-34. **CLI correctness** — Stable help/version behavior, validated numeric arguments, explicit options, predictable output files and stable exit codes.
-35. **Architecture selection** — Permit explicit architecture selection and reject contradictions with detected artifact architecture.
-36. **Base/load address handling** — Model preferred image base, actual load base, PIE and ASLR without conflating file, virtual and runtime addresses.
-37. **Thread-safe API** — Permit independent artifact analyses in parallel without shared mutable global state.
-38. **Caching** — Add content-addressed caching for artifact, decoding, CFG, SLIR and generated source.
-39. **Measured coverage** — Report measured format, instruction, CFG, function, symbol, type, semantic, source and unknown/unsupported/ambiguous coverage.
-40. **Security boundary** — Keep static analysis non-executing by default; never run target instructions, constructors, scripts or kernel modules. Any future emulation must be explicitly isolated.
+# 1–40 Improvement Register
+
+## 1. Native instruction decoding
+
+Build a production-quality instruction decoder beginning with x86/x86-64 and then extending the same semantic interface to ARM/ARM64 and RISC-V.
+
+The decoder must cover prefixes, opcode maps, ModR/M, SIB, displacement and immediates, operand/address widths, register classes, memory operands, VEX/EVEX, SIMD, floating point, atomics, fences, system/control instructions, privileged instructions where representable, and instruction-length validation.
+
+Every decode result must identify whether it is **supported, unsupported, ambiguous, malformed, or unknown**. Unknown bytes must never silently become proven instructions.
+
+## 2. Address-space model
+
+Make file offset, section-relative offset, virtual address, preferred image address, actual load address, runtime address, instruction address, and relocation target address explicit concepts.
+
+Translations must be checked and preserve the mapping source. PIE/load-base, segment permissions, gaps, overflow, relocation domains, and architecture-specific address rules must be modeled without implicit conversions.
+
+## 3. Control-flow recovery
+
+Recover basic blocks and edges for fall-through, direct/conditional branches, calls, returns, indirect branches, jump tables, switches, tail calls, thunks, PLT/GOT paths, exception edges, and runtime-generated relationships.
+
+Ambiguous indirect targets must be represented as hypotheses with evidence instead of being forced into a single CFG.
+
+## 4. Function recovery
+
+Combine symbols, entry points, relocation evidence, call targets, prologue/epilogue patterns, tail calls, thunks, exception handlers, unwind data, runtime metadata, compiler fingerprints, and data-flow boundaries.
+
+Function identity, boundary, calling convention, and confidence must remain independently represented because each can have different evidence.
+
+## 5. Semantic lifting / SLIR
+
+Create a stable Slecompiler Low-level Intermediate Representation (SLIR) for registers, flags, constants, memory, pointers, arithmetic, logical operations, comparisons, loads/stores, branches, calls, returns, stack/frame state, atomics, volatile operations, exceptions, merges/PHI nodes, SSA relationships, and provenance.
+
+SLIR is the shared semantic contract for all later source backends.
+
+## 6. Data-flow analysis
+
+Implement def-use/use-def chains, reaching definitions, liveness, constant propagation, copy propagation, value sets, stack/register variable recovery, pointer/reference tracking, conservative alias analysis, memory-state reasoning, and dead-code evidence.
+
+Analysis must be path-aware where practical and must preserve uncertainty when multiple interpretations remain possible.
+
+## 7. Type recovery
+
+Recover type evidence from instruction widths, signedness, pointer arithmetic, memory access patterns, ABI rules, debug information, data structures, function signatures, RTTI/vtables, and cross-reference behavior.
+
+Support primitive types, pointers, arrays, structs/unions/enums, function pointers, qualifiers, floating/vector types, opaque types, and ABI-derived parameter/return types.
+
+## 8. Source reconstruction
+
+Replace function-shell output with structured reconstruction from CFG + SLIR + data flow + types.
+
+Recover expressions, assignments, declarations, conditionals, loops, switches, calls, returns, memory objects, data structures, and control-flow structure while preserving irreducible or unknown regions explicitly.
+
+## 9. Java backend
+
+Generate evidence-based Java classes, methods, fields, packages, arrays, references, exceptions, primitive/reference mappings, and method signatures.
+
+Do not claim Java semantics that are not supported by the recovered native evidence; native-specific behavior may require explicit annotations or reconstruction markers.
+
+## 10. Sleela backend
+
+Define and enforce a compiler-valid Sleela output grammar for modules, declarations, types, functions, control flow, native interop, unknown regions, and evidence annotations.
+
+The Sleela backend must consume the shared SLIR/reconstruction model rather than independently interpreting machine instructions.
+
+## 11. C/C++ backends
+
+Recover C declarations, prototypes, globals, structs/unions/enums, typedefs, expressions, control flow, and function pointers.
+
+Extend C++ reconstruction with namespaces, classes, methods, constructors/destructors where evidenced, inheritance/object-model information, templates where recoverable, RTTI/vtable evidence, and ABI attributes.
+
+## 12. PE/COFF analysis
+
+Implement DOS/PE/COFF headers, optional headers, sections, RVA/file-offset mapping, imports/exports, delay imports, relocations, TLS, resources, load configuration, CFG-related metadata, SEH/unwind metadata, debug-directory/PDB references, and executable/DLL/object distinctions.
+
+Validate every count, size, offset, RVA, alignment assumption, and arithmetic operation before using metadata.
+
+## 13. Mach-O analysis
+
+Implement 32/64-bit headers, load commands, segments/sections, symbols, dyld exports, chained fixups, relocations, TLS, Objective-C metadata, Swift metadata, code-signing metadata, and fat/universal binaries.
+
+Universal binaries must be represented as multiple architecture slices with explicit slice selection.
+
+## 14. GNU archive analysis
+
+Treat archives as containers of independently analyzable members.
+
+Safely parse archive headers, deterministic member order, symbol indexes, weak/duplicate/COMDAT relationships, member-to-symbol links, and cross-member references without mistaking archive metadata for executable code.
+
+## 15. Dynamic/shared-library analysis
+
+Model imports, exports, PLT/GOT, symbol versions, IFUNC, TLS, constructors/destructors, DT_NEEDED dependencies, RPATH/RUNPATH, weak/interposable symbols, and lazy/non-lazy binding evidence.
+
+A dynamic reference is a relationship and evidence record; it is not automatically the implementation of the referenced function.
+
+## 16. Debug information
+
+Build a common abstraction for DWARF, CodeView/PDB, dSYM, source files, line tables, scopes, variables, types, inline functions, declaration/definition relationships, and function boundaries.
+
+Conflicting or incomplete debug evidence must remain visible and provenance-preserving.
+
+## 17. Exception/unwind analysis
+
+Parse DWARF CFI, `.eh_frame`, `.debug_frame`, Windows unwind information, SEH structures, language-specific exception tables, landing pads, cleanup/finally paths, and personality/runtime references.
+
+Unwind metadata must improve function/stack recovery without being mistaken for executable instructions.
+
+## 18. Calling conventions / ABI
+
+Model System V AMD64, Microsoft x64, x86 cdecl/stdcall/fastcall/thiscall/vectorcall, AAPCS32/AAPCS64, and relevant RISC-V conventions.
+
+Represent argument locations, returns, caller/callee-saved registers, stack alignment, shadow/home space, aggregate passing, floating/vector arguments, variadic behavior, name decoration, and frame/unwind implications.
+
+## 19. Global/data analysis
+
+Recover strings, scalar constants, arrays, relocation-backed objects, globals, TLS variables, jump tables, vtables, RTTI, function-pointer tables, dispatch tables, and probable object layouts.
+
+Typed classifications require evidence; arbitrary bytes must not be presented as confirmed objects.
+
+## 20. Compiler/runtime fingerprinting
+
+Build evidence fingerprints for GCC, Clang/LLVM, MSVC, ICC/ICX, Rust, Go, Swift, Delphi, standard libraries, language runtimes, and common generated-code idioms.
+
+Fingerprints can guide hypotheses but are never proof of compiler, language, source construct, or function identity.
+
+## 21. Optimization-aware recovery
+
+Handle optimized artifacts rather than assuming source-like instruction structure.
+
+Account for O0–O3/Os/Ofast behavior, inlining, tail-call optimization, common subexpression elimination, register allocation, instruction scheduling, vectorization, constant folding, dead-code elimination, LTO, ThinLTO, PGO, outlining, identical-code folding, and linker optimization.
+
+The analysis must distinguish **optimized-away source concepts** from merely unrecovered concepts.
+
+## 22. Stripped-binary strategy
+
+Classify symbol/debug availability before analysis and adapt recovery for fully stripped, partially stripped, debug-stripped, symbol-only, and mixed artifacts.
+
+Use call targets, relocation evidence, ABI behavior, code/data boundaries, unwind information, runtime metadata, and cross-references as alternate evidence sources.
+
+## 23. Packed/obfuscated artifacts
+
+Detect and report evidence of packing, compression, encryption, opaque predicates, flattened control flow, indirect dispatch, anti-analysis structures, and possible self-modification.
+
+Do not silently unpack, execute, or assert a guessed original program. Static evidence, confidence, and limitations must remain explicit.
+
+## 24. Structured error/exception model
+
+Use typed, stage-aware errors including InvalidArtifact, TruncatedArtifact, UnsupportedFormat, UnsupportedArchitecture, MalformedHeader, InvalidSection, InvalidAddress, DecodeFailure, AmbiguousDecode, UnsupportedInstruction, AnalysisFailure, OutputFailure, and ResourceLimit.
+
+Errors should retain file offset, virtual address, analysis stage, and useful diagnostic context where available.
+
+## 25. Fault tolerance
+
+Continue through recoverable malformed, unsupported, or ambiguous regions.
+
+Record per-region status, skipped ranges, unknown instructions, unsupported features, partial functions, and coverage impact rather than failing the entire artifact unnecessarily.
+
+## 26. Resource limits
+
+Provide explicit limits for memory, input size, instruction count, function count, CFG nodes, recursion depth, analysis depth, wall-clock time, output size, cache size, and parallel work.
+
+Limits must fail predictably and report which limit was reached.
+
+## 27. Cancellation and progress
+
+Provide library and CLI cancellation boundaries and structured progress information.
+
+Progress should identify analysis phase, completed/total work where measurable, and whether the value is exact, estimated, or indeterminate.
+
+## 28. Deterministic output
+
+The same artifact, configuration, tool version, and deterministic mode must produce stable analysis ordering, source output, JSON, hashes, diagnostics, and cache keys.
+
+Non-deterministic operations must be isolated or explicitly labeled.
+
+## 29. Machine-readable output
+
+Provide stable machine-readable output for analysis results, including JSON first and additional formats such as SARIF/YAML where justified.
+
+Represent artifact identity, architecture, address maps, sections, functions, CFG, SLIR, evidence, confidence, errors, unknowns, unsupported regions, coverage, provenance, and tool/version metadata.
+
+## 30. Source-to-instruction provenance
+
+Maintain a trace from generated source to language AST/IR, SLIR, instruction addresses, file offsets, and originating binary artifacts.
+
+Where possible, maintain the reverse relationship so a user can navigate from an instruction or evidence item back to generated source.
+
+## 31. Regression corpus
+
+Build a permanent cross-platform corpus covering C, C++, Rust, Go, Swift, Java/native interfaces, templates, virtual dispatch, exceptions, threads, libraries, stripped binaries, debug binaries, optimized builds, multiple ABIs, and architecture-specific constructs.
+
+Corpus cases must have expected structural properties rather than relying only on exact source-text matching.
+
+## 32. Sanitizer/UB testing
+
+Use ASan, UBSan, LeakSan, ThreadSan, and other platform-appropriate instrumentation where supported.
+
+Sanitizer findings must be treated as release-blocking defects when they demonstrate unsafe behavior in the analyzer.
+
+## 33. Parser/decoder fuzzing
+
+Fuzz binary containers, headers, address translation, instruction decoding, debug metadata, archive parsing, SLIR construction, source reconstruction, CLI parsing, and machine-readable output.
+
+Track crashes, hangs, excessive memory use, integer overflow, OOB access, invalid state transitions, and pathological complexity.
+
+## 34. CLI correctness
+
+Maintain stable help/version behavior, strict argument validation, explicit output-language selection, predictable file handling, meaningful diagnostics, stable exit codes, and safe defaults.
+
+CLI behavior must agree with the library API and documented examples.
+
+## 35. Architecture selection
+
+Detect artifact architecture and permit explicit user selection only when compatible.
+
+Reject contradictions instead of silently decoding bytes under the wrong architecture. Multi-architecture artifacts must expose their architecture set and selected slice.
+
+## 36. Base/load address handling
+
+Model preferred image base, actual load base, PIE, ASLR, relocation-adjusted addresses, shared-library load bias, and runtime addresses without conflating them with file offsets.
+
+Every conversion must identify its address domain and mapping evidence.
+
+## 37. Thread-safe API
+
+Permit independent analyses to run concurrently without shared mutable global state.
+
+Caches, registries, diagnostics, configuration, and temporary analysis state must have explicit ownership and synchronization rules.
+
+## 38. Caching
+
+Add content-addressed caching for artifact parsing, instruction decoding, CFGs, function recovery, SLIR, data flow, type evidence, and generated source.
+
+Cache entries must include artifact identity, relevant configuration, architecture, tool/schema version, and invalidation information.
+
+## 39. Measured coverage
+
+Measure format, architecture, instruction, byte, basic-block, CFG-edge, function, symbol, type, semantic, source, provenance, and unknown/unsupported/ambiguous coverage.
+
+Coverage reports must distinguish **decoded** from **semantically understood**, and **reconstructed** from **proven equivalent to source**.
+
+## 40. Security boundary
+
+Slecompiler is a static-analysis/decompilation system and must not execute analyzed target code by default.
+
+Do not run target instructions, constructors, scripts, embedded interpreters, kernel modules, or untrusted build steps during analysis. Any future emulation/sandboxing must be an explicitly isolated subsystem with separate policy, resource limits, and auditability.
+
+---
 
 # Phase 2 — Native Analysis Core
 
 ## Purpose
 
-Phase 2 moves Slecompiler™ from a hardened foundation into a real native-analysis pipeline. The central rule is:
+Phase 2 establishes the native semantic pipeline:
 
-**Artifact bytes → address model → instruction decoder → CFG → function recovery → SLIR → data flow/types → source backends.**
+**artifact bytes → address model → instruction decoder → CFG → function recovery → SLIR → data flow/types → source backends.**
 
-The four requested source targets—**Java, Sleela, C, and C++**—must ultimately consume the same recovered semantic representation. They should not each invent independent interpretations of the binary.
+Java, Sleela, C, and C++ must consume the same recovered semantic representation.
 
 ## Phase 2A — Address-space foundation
 
-Primary items: **2, 35, 36, 24, 25, 26, 28, 30, 39, 40**.
+Primary items: **2, 24–26, 28, 30, 35–36, 39–40**.
 
-Implement explicit checked address types/concepts for:
-
-- file offset;
-- section-relative offset;
-- virtual address;
-- preferred image address;
-- actual load address;
-- runtime address;
-- instruction address;
-- relocation target address.
-
-Required behavior:
-
-- no implicit conversion between address domains;
-- checked file-offset ↔ virtual-address translation using section/segment mappings;
-- explicit PIE/load-base handling;
-- relocation calculations use the correct address domain;
-- invalid or unmapped translations produce structured errors;
-- every recovered instruction/function can retain both binary location and virtual-address provenance;
-- deterministic ordering of sections, functions, blocks, instructions, and emitted artifacts.
-
-**Phase 2 exit evidence:** address translation tests cover valid mappings, section boundaries, unmapped gaps, overflow, relocation targets, PIE/load-base cases, and malformed artifacts.
+Implement explicit address-domain types and checked translations. Required evidence includes valid mappings, boundaries, unmapped gaps, overflow, relocation targets, PIE/load-base behavior, and malformed artifacts.
 
 ## Phase 2B — Native decoder expansion
 
 Primary item: **1**, supported by **24–26, 33, 39**.
 
-The first production decoder target is x86/x86-64. It must move beyond the current limited branch/call/mov subset.
+Expand x86/x86-64 decoding through prefix/opcode/ModR/M/SIB/operand layers, SIMD/VEX/EVEX, floating/vector, atomic, system/control, instruction boundaries, and explicit unsupported/ambiguous states.
 
-Required decoder layers:
-
-1. prefix decoding;
-2. opcode-map decoding;
-3. ModR/M and SIB decoding;
-4. displacement/immediate decoding;
-5. operand-size/address-size handling;
-6. register and memory operand modeling;
-7. VEX/EVEX and SIMD coverage;
-8. floating-point/vector operations;
-9. atomic/lock semantics;
-10. system and control instructions;
-11. instruction-length and boundary validation;
-12. explicit unsupported/ambiguous decode states.
-
-Unknown bytes must not silently become proven instructions. Decoder results should carry status and evidence.
-
-ARM/ARM64 follows the x86/x86-64 foundation. RISC-V follows after the first cross-architecture semantic interface is stable.
+ARM/ARM64 and later RISC-V must use the same semantic interface.
 
 ## Phase 2C — CFG and function recovery
 
-Primary items: **3 and 4**, supported by **17–20, 21–23, 30, 39**.
+Primary items: **3–4**.
 
-Build a real control-flow graph with:
+Recover basic blocks, branches, calls, returns, indirect targets, jump tables, switches, tail calls, thunks, exception edges, and evidence-based function boundaries.
 
-- basic blocks;
-- fall-through edges;
-- direct branch edges;
-- conditional edges;
-- call edges;
-- return edges;
-- indirect branch candidates;
-- jump-table/switch recovery;
-- tail-call edges;
-- thunk detection;
-- PLT/GOT-aware edges when binary-format support is available;
-- exception/unwind edges when evidence is available;
-- ambiguous edges represented as hypotheses rather than forced facts.
+## Phase 2D — SLIR
 
-Function recovery should combine:
+Primary item: **5**, supported by **6–7, 18, 30**.
 
-- explicit symbols;
-- known entry points;
-- call targets;
-- relocation evidence;
-- prologue/epilogue patterns;
-- tail calls;
-- thunks;
-- runtime metadata;
-- exception handlers;
-- compiler/runtime fingerprints.
-
-Every function and edge should carry provenance and a confidence/evidence record.
-
-## Phase 2D — SLIR semantic model
-
-Primary item: **5**, supported by **6, 7, 18, 30**.
-
-Define a stable Slecompiler Low-level Intermediate Representation (**SLIR**) capable of representing:
-
-- registers;
-- flags;
-- constants;
-- memory reads/writes;
-- pointer arithmetic;
-- arithmetic and logical operations;
-- comparisons;
-- branches;
-- calls and returns;
-- stack/frame objects;
-- volatile operations;
-- atomic operations;
-- exceptions;
-- merge/PHI values;
-- SSA relationships;
-- instruction-to-SLIR provenance.
-
-The SLIR must preserve uncertainty. An unknown or partially understood instruction should produce an explicit unknown/evidence node rather than fabricated semantics.
+SLIR must represent machine semantics without inventing semantics for unknown instructions. Every SLIR operation should be traceable to instruction evidence where applicable.
 
 ## Phase 2E — Data flow and type evidence
 
-Primary items: **6 and 7**, supported by **18, 19, 20, 21, 22, 30, 39**.
+Primary items: **6–7**.
 
-Add:
+Implement def-use, liveness, propagation, pointer tracking, conservative alias analysis, stack/register variables, primitive types, aggregates, function pointers, and ABI-derived signatures.
 
-- def-use/use-def chains;
-- reaching definitions;
-- liveness;
-- constant and copy propagation;
-- value-set tracking;
-- stack-variable recovery;
-- register-variable recovery;
-- pointer/reference tracking;
-- conservative alias analysis;
-- integer width/signedness evidence;
-- pointer types;
-- arrays;
-- structs/unions/enums;
-- function-pointer evidence;
-- floating/vector types;
-- ABI-derived argument/return evidence.
+## Phase 2F — Shared source reconstruction
 
-Types must remain evidence-based. When evidence is insufficient, emit an unknown/opaque type rather than inventing a specific type.
+Primary items: **8–11**.
 
-## Phase 2F — Source reconstruction contract
+The pipeline is:
 
-Primary items: **8, 9, 10, 11**, supported by **5–7 and 30**.
+**binary → instructions → CFG/functions → SLIR → data flow/types → language AST/IR → source.**
 
-Phase 2 does not claim that Java, Sleela, C, or C++ reconstruction is complete. Instead, it establishes the shared semantic contract required for those backends.
+The four backends must share evidence and preserve unknown regions.
 
-The source reconstruction pipeline becomes:
+## Phase 2G — Reliability
 
-**binary → instructions → CFG/functions → SLIR → data flow/types → language-specific AST/IR → source.**
-
-The four backends must consume the same evidence and preserve unknowns where necessary.
-
-Target responsibilities:
-
-- **C:** procedural expressions, declarations, globals, structs/unions/enums, prototypes and function pointers.
-- **C++:** C reconstruction plus classes, methods, namespaces, templates/ABI evidence where recoverable, and C++-specific object-model evidence.
-- **Sleela:** compiler-valid modules, types, functions, control flow, native interop, and explicit unknown/evidence constructs.
-- **Java:** classes, methods, fields, arrays, references, exceptions, packages, and JVM-compatible type mappings where evidence supports them.
-
-## Phase 2G — Reliability requirements
-
-Phase 2 is not complete merely because the decoder produces more instructions.
-
-The phase must include:
-
-- regression tests for every newly supported instruction family;
-- malformed/truncated artifact tests;
-- decoder fuzz targets;
-- deterministic-output tests;
-- resource-limit tests;
-- cancellation-safe analysis boundaries where the API supports them;
-- address/provenance assertions;
-- coverage accounting for decoded, unsupported, ambiguous, and unknown regions;
-- security tests proving analyzed artifacts are never executed.
+Every new decoder/analysis family requires regression tests, malformed-input tests, fuzz coverage where practical, deterministic-output tests, resource-limit tests, provenance assertions, and proof that target execution does not occur.
 
 ## Phase 2 Definition of Done
 
-Phase 2 is complete only when the repository can demonstrate, with tests or corpus evidence:
+Phase 2 requires demonstrated address separation, expanded decoding, real CFGs, evidence-based functions, reusable SLIR, initial data flow/type recovery, SLIR-driven reconstruction, shared backends, structured errors, deterministic output, measured coverage, and no target execution.
 
-1. explicit address-domain separation;
-2. checked address translation;
-3. substantially expanded x86/x86-64 decoding;
-4. real basic-block CFG construction;
-5. evidence-based function recovery;
-6. a reusable SLIR semantic model;
-7. initial data-flow analysis;
-8. initial type recovery;
-9. source reconstruction driven by SLIR rather than function shells;
-10. shared semantics feeding Java, Sleela, C, and C++;
-11. structured errors for malformed/unsupported/ambiguous regions;
-12. deterministic output;
-13. measured coverage for the Phase 2 corpus;
-14. no target execution.
-
-Phase 2 should **not** be marked complete based on line count, number of files, or a claimed percentage. Completion requires reproducible technical evidence.
-
-## Phase 2 Work Sequence
-
-1. Address-domain types and translation.
-2. Load-base/PIE/relocation correctness.
-3. Decoder operand model.
-4. x86/x86-64 opcode and prefix expansion.
-5. Basic-block construction.
-6. Branch/call/return edge recovery.
-7. Function discovery and provenance.
-8. SLIR instruction semantics.
-9. Def-use and liveness.
-10. Initial type recovery.
-11. CFG/SLIR-driven source reconstruction.
-12. Java/Sleela/C/C++ backend integration.
-13. Regression corpus and fuzzing.
-14. Coverage measurement and deterministic-output verification.
-15. Phase 2 review and documented evidence.
-
-## Phase 2 Non-Goals
-
-The following remain outside the completion claim for Phase 2 unless separately demonstrated:
-
-- complete ARM/ARM64 decoding;
-- complete RISC-V support;
-- complete PE/Mach-O/DWARF/PDB support;
-- complete optimization-aware recovery;
-- reliable deobfuscation;
-- perfect type recovery;
-- perfect source reconstruction;
-- execution or emulation of target programs.
-
-## Iteration Policy
-
-Each implementation iteration should:
-
-1. inspect the current implementation;
-2. implement the next safe subset in order;
-3. add regression tests;
-4. update this document with what is actually implemented;
-5. avoid claiming support that is not measured;
-6. preserve the non-executing security boundary;
-7. keep `main` and `master` synchronized in the changes made.
-
-## Current Phase 2 Starting Point
-
-Phase 1 has already established:
-
-- structured `DecompilerError` / `ErrorCode` handling with stage, file-offset, and virtual-address context;
-- stricter CLI length parsing;
-- explicit help/version behavior;
-- output-file validation;
-- regression coverage for the error object and four source-output paths;
-- the non-executing static-analysis boundary.
-
-The immediate Phase 2 implementation target is **the explicit address-space model**, followed by decoder expansion and CFG/function recovery. The existing source emitters remain output shells until SLIR and reconstruction provide semantic content.
-
-**Known limitation:** local compilation/CTest execution is environment-dependent. Repository changes should not be described as build-verified unless CI or a real build result is available.
-
+---
 
 # Phase 3 — Binary Formats, ABI, and Native Evidence
 
 ## Purpose
 
-Phase 3 takes the native-analysis core established by Phase 2 and makes it understand the major binary containers, linking models, debug information, unwind metadata, calling conventions, and runtime evidence needed for serious cross-platform decompilation.
-
-The governing architecture remains:
-
-**artifact → container/segment model → address map → native instructions → CFG/functions → ABI/runtime evidence → SLIR → data flow/types → source.**
-
-Phase 3 must not create isolated format-specific analyzers that bypass the shared semantic model. ELF, PE/COFF, Mach-O, archives, shared libraries, debug information, exception metadata, and ABI information all become evidence sources feeding the same analysis graph.
+Phase 3 makes the native core understand major binary containers, link models, debug information, unwind metadata, ABI rules, and runtime evidence.
 
-## Phase 3A — ELF and Unix/Linux binary evidence
+The architecture is:
 
-Primary items: **12, 14, 15, 16, 17, 18, 19, 20**.
+**artifact → container/segment model → address map → instructions → CFG/functions → ABI/runtime evidence → SLIR → data flow/types → source.**
 
-Expand ELF-oriented analysis to include:
-
-- ELF32 and ELF64 headers;
-- program headers and section headers;
-- PT_LOAD segment mappings;
-- section/segment relationships;
-- symbol tables and string tables;
-- relocations;
-- dynamic sections;
-- DT_NEEDED dependencies;
-- PLT/GOT relationships;
-- symbol versioning;
-- IFUNC resolution evidence;
-- TLS;
-- constructors/destructors;
-- weak symbols;
-- GNU symbol/version extensions;
-- PIE/shared-object characteristics;
-- GNU build/runtime notes where relevant.
+Format-specific parsers must feed a common evidence model.
 
-The loader model must distinguish what is physically present in the file from what the runtime loader may construct or relocate.
-
-## Phase 3B — PE/COFF and Windows evidence
-
-Primary item: **12**, supported by **16–20 and 36**.
-
-Implement a complete PE/COFF evidence layer covering:
-
-- DOS/PE headers;
-- COFF headers;
-- optional headers;
-- section table;
-- RVA/file-offset translation;
-- imports and exports;
-- delay imports;
-- base relocations;
-- TLS;
-- resources;
-- load configuration;
-- exception/unwind information;
-- Windows CFG-related metadata;
-- SEH-related metadata;
-- debug-directory references;
-- PDB identity/reference information;
-- executable, DLL, and object-file distinctions.
+## Phase 3A — ELF
 
-PE parsing must explicitly validate sizes, RVAs, section boundaries, alignment assumptions, and integer arithmetic before using metadata.
+Support ELF32/64 headers, program/section headers, PT_LOAD mappings, symbols, strings, relocations, dynamic sections, DT_NEEDED, PLT/GOT, symbol versions, IFUNC, TLS, constructors/destructors, weak symbols, PIE/shared objects, and relevant GNU metadata.
 
-## Phase 3C — Mach-O and Apple-platform evidence
-
-Primary item: **13**, supported by **16–20 and 36**.
+## Phase 3B — PE/COFF
 
-Implement:
+Support DOS/PE/COFF headers, sections, RVA/file offsets, imports/exports, delay imports, relocations, TLS, resources, load configuration, CFG/SEH/unwind metadata, debug/PDB references, and object/executable/DLL distinctions.
 
-- 32-bit and 64-bit Mach-O headers;
-- load commands;
-- segments and sections;
-- symbol tables;
-- dynamic linking information;
-- dyld exports;
-- chained fixups where applicable;
-- relocations;
-- TLS;
-- Objective-C metadata;
-- Swift metadata;
-- code-signing metadata;
-- fat/universal binaries;
-- architecture slices;
-- slice selection and explicit architecture validation.
-
-Universal binaries must be represented as multiple artifacts/slices rather than silently treating one slice as the entire file.
+## Phase 3C — Mach-O
 
-## Phase 3D — Static archives and object collections
+Support headers, load commands, segments/sections, symbols, dyld exports, fixups, relocations, TLS, Objective-C/Swift metadata, code-signing metadata, and universal slices.
 
-Primary item: **14**.
+## Phase 3D — Archives
 
-Support GNU/Unix archive analysis as a container of independently analyzable members.
-
-Required behavior:
-
-- parse archive headers safely;
-- enumerate members deterministically;
-- recognize symbol indexes;
-- recursively analyze supported object members;
-- preserve member-to-symbol relationships;
-- represent weak/duplicate/COMDAT evidence;
-- identify cross-member call/data relationships;
-- prevent archive metadata from being mistaken for executable instructions.
+Safely enumerate members, symbol indexes, weak/duplicate/COMDAT relationships, and cross-member evidence while preserving member provenance.
 
-Archive analysis should produce a unified project-level evidence graph while retaining member provenance.
+## Phase 3E — Dynamic linking
 
-## Phase 3E — Dynamic/shared libraries and linking
+Model imports/exports, PLT/GOT, versions, IFUNC, TLS, constructors/destructors, dependencies, RPATH/RUNPATH, interposition, and binding evidence without executing the loader.
 
-Primary item: **15**, supported by **3, 4, 18, 19, 20**.
+## Phase 3F — Debug/provenance
 
-Model the effects of dynamic linking without executing the loader:
+Unify DWARF, PDB/CodeView, dSYM, source files, lines, scopes, variables, types, inline functions, and declarations/definitions into evidence-bearing entities.
 
-- imports/exports;
-- PLT/GOT;
-- symbol versions;
-- IFUNC;
-- weak/interposable symbols;
-- TLS;
-- constructors/destructors;
-- dependency graphs;
-- RPATH/RUNPATH;
-- platform-specific dynamic-loader metadata;
-- lazy versus non-lazy binding evidence where available.
+## Phase 3G — Exception/unwind
 
-A dynamic symbol reference should be represented as a relationship with evidence, not automatically treated as the implementation of the target function.
+Integrate CFI, .eh_frame/.debug_frame, Windows unwind/SEH, language exception tables, landing pads, cleanup paths, and personality/runtime references.
 
-## Phase 3F — Debug information and provenance
+## Phase 3H — ABI
 
-Primary item: **16**, supported by **30 and 39**.
+Provide reusable calling-convention models with argument/return locations, register preservation, stack rules, aggregate passing, floating/vector rules, variadic behavior, and frame/unwind implications.
 
-Create a common debug-evidence abstraction for:
+## Phase 3I — Global/data/object model
 
-- DWARF;
-- CodeView/PDB;
-- dSYM;
-- source file names;
-- line tables;
-- lexical scopes;
-- variables;
-- types;
-- inline functions;
-- function boundaries;
-- declaration/definition relationships.
+Recover strings, constants, arrays, globals, TLS, jump tables, vtables, RTTI, function-pointer tables, and probable object layouts with evidence.
 
-Debug evidence must be preserved with provenance and confidence. Conflicting debug evidence must remain visible rather than being silently flattened.
+## Phase 3J — Fingerprints
 
-Source-to-instruction provenance should become bidirectional where possible:
+Use compiler/runtime fingerprints as hypotheses only. Preserve the actual evidence supporting or contradicting each fingerprint.
 
-**source location ↔ recovered entity ↔ SLIR operation ↔ instruction ↔ binary location.**
+## Phase 3K — Common evidence graph
 
-## Phase 3G — Exception and unwind metadata
+Connect artifacts, slices/members, sections, symbols, relocations, instructions, blocks, functions, types, globals, debug entities, ABI facts, runtime fingerprints, unwind entities, and source locations.
 
-Primary item: **17**, supported by **3, 4, 5, 18, 30**.
+Each relationship should preserve provenance, architecture, address domain, evidence kind, and conflicts.
 
-Implement evidence extraction for:
+## Phase 3L — Reliability
 
-- DWARF CFI;
-- .eh_frame;
-- .debug_frame;
-- Windows unwind metadata;
-- SEH structures;
-- language-specific exception tables;
-- cleanup/finally paths;
-- landing pads;
-- personality/runtime references.
-
-Unwind data must influence function and stack analysis without being treated as executable code.
-
-## Phase 3H — ABI and calling-convention model
-
-Primary item: **18**.
-
-Create a reusable ABI model for:
-
-- System V AMD64;
-- Microsoft x64;
-- x86 cdecl;
-- stdcall;
-- fastcall;
-- thiscall;
-- vectorcall;
-- AAPCS32;
-- AAPCS64;
-- relevant RISC-V conventions;
-- platform-specific return/register conventions.
-
-The model should describe:
-
-- argument locations;
-- return-value locations;
-- caller/callee-saved registers;
-- stack alignment;
-- shadow/home space;
-- aggregate passing;
-- floating/vector argument rules;
-- variadic behavior;
-- name decoration where relevant;
-- unwind/frame implications.
-
-ABI conclusions remain evidence-based and can be marked ambiguous when multiple conventions fit.
-
-## Phase 3I — Global/data/object-model recovery
-
-Primary item: **19**, supported by **5–7, 15–20**.
-
-Recover and classify:
-
-- strings;
-- scalar constants;
-- arrays;
-- relocation-backed objects;
-- global variables;
-- TLS variables;
-- jump tables;
-- vtables;
-- RTTI;
-- function-pointer tables;
-- dispatch tables;
-- read-only versus writable data;
-- probable object layouts.
-
-Data classification must not confuse arbitrary bytes with typed objects. Every classification should have an evidence path.
-
-## Phase 3J — Compiler and runtime fingerprints
-
-Primary item: **20**, supported by **21–23**.
-
-Build fingerprints for common compiler/runtime families including:
-
-- GCC;
-- Clang/LLVM;
-- MSVC;
-- ICC/ICX;
-- Rust;
-- Go;
-- Swift;
-- Delphi;
-- common language runtimes and standard libraries.
-
-Fingerprints may guide hypotheses, decoder choices, ABI selection, function recovery, and source reconstruction, but **a fingerprint is never proof of compiler, language, or source construct**.
-
-## Phase 3K — Cross-format evidence graph
-
-Phase 3 should introduce a common evidence graph connecting:
-
-- artifact;
-- slice/member;
-- segment/section;
-- symbol;
-- relocation;
-- instruction;
-- basic block;
-- function;
-- type;
-- global;
-- debug entity;
-- ABI fact;
-- runtime fingerprint;
-- exception/unwind entity;
-- source location.
-
-Every relationship should retain provenance and, where appropriate:
-
-- confidence;
-- source format;
-- file offset;
-- virtual address;
-- architecture;
-- evidence kind;
-- conflicting evidence.
-
-This graph becomes the bridge between binary formats and SLIR.
-
-## Phase 3L — Phase 3 reliability requirements
-
-Every new parser must include:
-
-- truncated-input tests;
-- malformed-header tests;
-- integer-overflow tests;
-- invalid-offset/RVA tests;
-- section/segment boundary tests;
-- duplicate/contradictory metadata tests;
-- deterministic enumeration tests;
-- unsupported-feature reporting;
-- resource-limit enforcement;
-- fuzzing targets where practical;
-- regression fixtures from multiple architectures/platforms.
-
-No parser should trust lengths, offsets, counts, or addresses merely because they occur in a binary header.
+All parsers require malformed/truncated tests, integer-overflow tests, invalid offset/RVA tests, boundary tests, contradiction tests, deterministic enumeration, resource limits, fuzzing where practical, and multi-platform regression fixtures.
 
 ## Phase 3 Definition of Done
 
-Phase 3 is complete only when reproducible tests or corpus evidence demonstrate:
+Phase 3 requires demonstrated ELF, PE/COFF, Mach-O, archive, dynamic-linking, debug, unwind, ABI, global/data, fingerprint, and evidence-graph integration, plus safe malformed-input behavior, deterministic results, measured coverage, and no target execution.
 
-1. robust ELF evidence extraction;
-2. robust PE/COFF evidence extraction;
-3. robust Mach-O evidence extraction;
-4. recursive archive/member analysis;
-5. dynamic-linking evidence modeling;
-6. common debug-information abstraction;
-7. exception/unwind evidence extraction;
-8. reusable ABI/calling-convention modeling;
-9. global/data/object-model recovery;
-10. compiler/runtime fingerprints represented as evidence;
-11. all Phase 3 evidence connected to the common analysis graph;
-12. address/provenance preserved through format parsing;
-13. malformed metadata handled without unsafe memory access;
-14. deterministic analysis results;
-15. measured coverage for the Phase 3 corpus;
+---
+
+# Phase 4 — Recovery, Reconstruction, and Difficult Artifacts
+
+## Purpose
+
+Phase 4 takes the evidence-rich native analysis produced by Phases 2–3 and addresses the hardest part of decompilation: reconstructing useful higher-level program structure when compilation has destroyed, transformed, or obscured the original source structure.
+
+The governing pipeline becomes:
+
+**binary → format/address evidence → instructions → CFG/functions → ABI/runtime evidence → SLIR → SSA/data flow → memory/type model → structural recovery → language IR → source → provenance/validation.**
+
+Phase 4 is explicitly **not** a promise of perfect original-source recovery. A native binary often does not contain enough information to uniquely recover the original source. The objective is a reproducible, evidence-preserving reconstruction that distinguishes known facts, strong inferences, weak hypotheses, and unknowns.
+
+## Phase 4A — Optimization-aware normalization
+
+Primary items: **21, 3–8, 18, 20, 30**.
+
+Normalize optimized machine code into semantic forms that survive compiler transformations.
+
+Handle:
+
+- inlining;
+- tail calls;
+- register promotion;
+- stack-slot elimination;
+- constant folding;
+- common-subexpression elimination;
+- loop transformations;
+- vectorization;
+- instruction scheduling;
+- dead-code elimination;
+- function outlining;
+- identical-code folding;
+- LTO/ThinLTO;
+- PGO-driven layout;
+- linker relaxation and optimization.
+
+The analyzer must not mistake an optimized-away variable or branch for an analysis failure.
+
+## Phase 4B — SSA and value-set recovery
+
+Primary items: **5–8**.
+
+Build robust SSA/PHI relationships over recovered CFGs. Track scalar values, pointers, flags, memory state, stack slots, register lifetimes, and path-sensitive facts where practical.
+
+Value recovery should distinguish:
+
+- exact constants;
+- bounded value sets;
+- symbolic expressions;
+- unknown values;
+- conflicting path facts.
+
+## Phase 4C — Memory and alias model
+
+Primary items: **6–7, 19, 21–23**.
+
+Develop a conservative memory model for stack, global, TLS, heap-like references, mapped regions, and unknown memory.
+
+Track pointer arithmetic, object candidates, alias sets, escape behavior, loads/stores, volatile accesses, atomics, and possible overlapping objects.
+
+The analyzer must prefer an opaque memory object over an unjustified concrete structure.
+
+## Phase 4D — Structural control-flow recovery
+
+Primary items: **3, 8, 21, 23**.
+
+Recover high-level constructs from CFG/SLIR:
+
+- if/else;
+- nested conditionals;
+- loops;
+- do/while;
+- switch/case;
+- early exits;
+- break/continue;
+- irreducible regions;
+- state-machine dispatch;
+- tail-call structures;
+- exception cleanup.
+
+When a graph cannot be cleanly structured, preserve a lower-level representation rather than emitting misleading source.
+
+## Phase 4E — Function signature and call reconstruction
+
+Primary items: **4, 7, 18–20, 22**.
+
+Combine ABI, call-site, data-flow, debug, symbol, and return-use evidence to reconstruct:
+
+- parameter count;
+- parameter locations;
+- parameter types;
+- return types;
+- variadic behavior;
+- calling convention;
+- pointer/reference semantics;
+- likely ownership/lifetime relationships where evidence supports them.
+
+Signatures must record their evidence and unresolved alternatives.
+
+## Phase 4F — Object model reconstruction
+
+Primary items: **7, 11, 19–20**.
+
+Recover C/C++-style objects from:
+
+- vtables;
+- RTTI;
+- constructor/destructor patterns;
+- virtual calls;
+- field-offset access;
+- inheritance evidence;
+- object-size behavior;
+- type metadata;
+- cross-function field consistency.
+
+Separate **observed layout** from **inferred language-level class structure**.
+
+## Phase 4G — Template/generic and compiler-generated structures
+
+Primary items: **11, 20–22**.
+
+Recognize repeated/generated patterns associated with templates, generics, monomorphization, iterators, closures, lambdas, coroutine/state-machine code, compiler helper functions, thunks, and standard-library implementations.
+
+Generated-code identification must remain evidence-based and must not manufacture source-level template names.
+
+## Phase 4H — Exception and asynchronous control-flow reconstruction
+
+Primary items: **3, 4, 17, 18**.
+
+Integrate exception edges, landing pads, cleanup paths, personality routines, destructors, finally behavior, signal-like control transfers where statically visible, and asynchronous/thread-related evidence.
+
+The result must distinguish normal control flow from exceptional or externally transferred control flow.
+
+## Phase 4I — Stripped and partially stripped reconstruction
+
+Primary item: **22**.
+
+Create explicit analysis modes for:
+
+- fully symbolized;
+- symbols without debug;
+- debug-stripped;
+- partially stripped;
+- fully stripped;
+- dynamically linked;
+- statically linked.
+
+Recovery quality reports must identify which evidence sources remain available and how their absence affects reconstruction.
+
+## Phase 4J — Packed/obfuscated evidence model
+
+Primary item: **23**.
+
+Detect likely packers, compressed regions, encrypted regions, opaque predicates, flattened CFGs, indirect dispatch, anti-analysis structures, and possible runtime unpacking.
+
+Static analysis may identify and describe these structures but must not silently execute or bypass the security boundary.
+
+## Phase 4K — Semantic reconciliation
+
+Primary items: **5–8, 20–23, 28–30, 39**.
+
+Create a reconciliation layer that compares competing evidence:
+
+- debug type vs ABI type;
+- symbol name vs recovered function boundary;
+- CFG hypothesis A vs B;
+- compiler fingerprint vs instruction pattern;
+- object-layout hypotheses;
+- source reconstruction alternatives.
+
+Conflicts must be retained, explained, and resolved only when evidence supports the resolution.
+
+## Phase 4L — Language-neutral reconstruction IR
+
+Primary items: **5, 8–11, 29–30**.
+
+Before emitting Java, Sleela, C, or C++, create a language-neutral reconstruction representation containing:
+
+- declarations;
+- expressions;
+- statements;
+- control structures;
+- functions;
+- data objects;
+- types;
+- calls;
+- exceptions;
+- unknown/opaque regions;
+- provenance.
+
+This prevents four source backends from developing four incompatible decompilation engines.
+
+## Phase 4M — Source backend reconstruction
+
+Primary items: **8–11, 30**.
+
+The backends should translate the shared reconstruction IR:
+
+- **C:** prioritize faithful procedural reconstruction and explicit low-level constructs.
+- **C++:** add object model, methods, namespaces, templates/generic evidence, and ABI details where supported.
+- **Sleela:** produce compiler-valid Sleela while retaining native-specific constructs explicitly.
+- **Java:** produce JVM-compatible constructs only where the native evidence can support a meaningful mapping; preserve native operations that cannot be represented directly.
+
+Each emitted construct should be traceable to evidence.
+
+## Phase 4N — Reconstruction validation
+
+Primary items: **28–30, 39–40**.
+
+Validate reconstruction structurally rather than assuming source equality.
+
+Required checks include:
+
+- deterministic source;
+- AST/IR consistency;
+- balanced control structures;
+- valid references;
+- type consistency;
+- provenance completeness;
+- unknown-region accounting;
+- no invented addresses;
+- no invented symbols;
+- no silent loss of unsupported instructions.
+
+Where a generated backend can be compiled safely as a **generated artifact**, validation may compare compiler diagnostics or structural properties. This does not permit executing the analyzed target.
+
+## Phase 4O — Difficult-artifact laboratory
+
+Create a permanent test set for artifacts that commonly defeat simplistic decompilers:
+
+- heavily optimized functions;
+- recursive functions;
+- indirect calls;
+- jump-table dispatch;
+- virtual dispatch;
+- exception-heavy C++;
+- templates;
+- coroutines/state machines;
+- mixed C/C++;
+- static and dynamic libraries;
+- stripped binaries;
+- split/debug-linked artifacts;
+- unusual ABIs;
+- packed or partially obfuscated samples;
+- malformed-but-parseable files;
+- architecture-specific idioms.
+
+Each case must document expected evidence and known reconstruction limitations.
+
+## Phase 4P — Phase 4 reliability requirements
+
+Every reconstruction pass must support:
+
+- bounded resource use;
+- deterministic ordering;
+- explicit ambiguity;
+- partial recovery;
+- cancellation;
+- provenance;
+- stable machine-readable diagnostics;
+- regression fixtures;
+- fuzzable parser/IR boundaries;
+- no target execution.
+
+## Phase 4 Definition of Done
+
+Phase 4 is complete only when reproducible corpus evidence demonstrates:
+
+1. optimization-aware normalization on defined test classes;
+2. SSA/value recovery over real CFGs;
+3. conservative memory/alias analysis;
+4. structured control-flow recovery;
+5. evidence-based function signatures;
+6. object-model recovery where evidence exists;
+7. stripped-binary recovery modes;
+8. explicit packed/obfuscated evidence handling;
+9. semantic conflict/reconciliation support;
+10. a shared language-neutral reconstruction IR;
+11. Java/Sleela/C/C++ backends consuming that shared IR;
+12. source-to-instruction provenance;
+13. deterministic reconstruction;
+14. measured unknown/unsupported/ambiguous coverage;
+15. difficult-artifact regression fixtures;
 16. no target execution.
 
-Phase 3 is not complete because a parser accepts a sample file. Completion requires cross-format regression evidence, malformed-input coverage, and integration with the shared native-analysis pipeline.
+Phase 4 must not be declared complete because generated source “looks right.” Completion requires measurable corpus behavior and explicit accounting for uncertainty.
 
-## Phase 3 Work Sequence
+## Phase 4 Work Sequence
 
-1. Common container/segment interfaces.
-2. ELF headers, sections, segments, symbols, and relocations.
-3. ELF dynamic linking and PLT/GOT evidence.
-4. PE/COFF headers, sections, imports/exports, relocations, and TLS.
-5. PE unwind/debug/load-config evidence.
-6. Mach-O headers, load commands, slices, symbols, and fixups.
-7. Archive/member/symbol-index analysis.
-8. Shared-library/dependency graph.
-9. DWARF/PDB/CodeView/dSYM evidence abstraction.
-10. Exception/unwind integration.
-11. ABI/calling-convention model.
-12. Global/data/vtable/RTTI recovery.
-13. Compiler/runtime fingerprint evidence.
-14. Cross-format evidence graph integration.
-15. Fuzzing, regression corpus, coverage measurement, and Phase 3 review.
+1. Optimization normalization.
+2. SSA and value-set infrastructure.
+3. Memory/alias model.
+4. Structured CFG recovery.
+5. Signature/calling-convention reconciliation.
+6. Object-model recovery.
+7. Generated/template/runtime pattern handling.
+8. Exception/cleanup reconstruction.
+9. stripped-binary recovery modes.
+10. packed/obfuscated evidence handling.
+11. semantic conflict reconciliation.
+12. language-neutral reconstruction IR.
+13. Java/Sleela/C/C++ backend migration.
+14. provenance and deterministic-source validation.
+15. difficult-artifact corpus.
+16. fuzzing, regression, coverage, and Phase 4 review.
 
-## Phase 3 Non-Goals
+## Phase 4 Non-Goals
 
-Phase 3 does not claim:
+Phase 4 does not claim:
 
-- perfect source reconstruction;
-- complete deobfuscation;
-- universal compiler identification;
-- perfect type recovery;
-- execution of analyzed programs;
-- automatic correctness of every inferred function boundary;
-- complete support for every historical binary-format extension.
+- perfect original-source recovery;
+- recovery of source comments or names without evidence;
+- universal compiler/language identification;
+- automatic deobfuscation;
+- execution of target programs;
+- correctness of every inferred type or function;
+- exact recreation of proprietary build systems;
+- equivalence proof for arbitrary binaries.
 
-Those remain subject to measured evidence and later phases.
+---
 
-## Phase 3 Relationship to the 1–40 Register
+# Phase 5 — Production Validation and Security
 
-Phase 3 primarily advances **Items 11–20**, while strengthening:
+## Purpose
 
-- **Item 2:** address translation;
-- **Item 3:** control-flow evidence;
-- **Item 4:** function recovery;
-- **Item 5:** SLIR provenance;
-- **Items 6–7:** data-flow/type evidence;
-- **Item 22:** stripped-binary strategy;
-- **Item 28:** deterministic output;
-- **Item 30:** provenance;
-- **Item 33:** parser fuzzing;
-- **Items 35–36:** architecture/load-address correctness;
-- **Item 39:** measured coverage;
-- **Item 40:** non-executing security boundary.
+Phase 5 turns the preceding engineering work into a continuously testable production system.
 
-## Current Phase 3 Starting Point
+Primary items: **31–40**, while exercising all earlier items.
 
-Phase 2 remains the prerequisite for Phase 3. Phase 3 should begin with the common container/segment/address interfaces rather than immediately adding independent format parsers.
+## Phase 5A — Corpus and compatibility matrix
 
-The implementation target is therefore:
+Maintain a matrix across:
 
-**Phase 2 native core → common binary-container model → ELF → PE/COFF → Mach-O → archives/dynamic linking → debug/unwind → ABI → global/data evidence → unified evidence graph.**
+- Linux/ELF;
+- Windows/PE/COFF;
+- macOS/Mach-O;
+- x86/x86-64;
+- ARM/ARM64;
+- later RISC-V;
+- debug/stripped;
+- static/dynamic;
+- optimized/unoptimized;
+- C/C++/Rust/Go/Swift and other supported families.
 
-As with Phase 2, Phase 3 completion must be documented from actual repository tests and corpus measurements, not from source-file count or an aspirational percentage.
+## Phase 5B — Sanitizers and fuzzing
+
+Run sanitizer-instrumented builds and persistent fuzz targets against binary parsers, decoders, SLIR, reconstruction, CLI, and serialization.
+
+## Phase 5C — API/CLI stability
+
+Version library interfaces, output schemas, diagnostics, exit codes, and command-line behavior.
+
+Breaking changes must be documented rather than silently changing analysis meaning.
+
+## Phase 5D — Concurrency and cache correctness
+
+Run parallel analyses, verify no cross-artifact contamination, validate cache identity/invalidation, and test deterministic results under different scheduling.
+
+## Phase 5E — Measured coverage
+
+Publish coverage by artifact class and analysis layer. A single aggregate percentage must never hide unsupported architectures, unknown instructions, ambiguous CFG regions, or missing type/source evidence.
+
+## Phase 5F — Security review
+
+Verify that:
+
+- target code is never executed;
+- embedded scripts/interpreters are not invoked;
+- constructors are not run;
+- untrusted metadata cannot bypass bounds checks;
+- resource limits are enforced;
+- generated files are not automatically executed;
+- future emulation remains isolated.
+
+## Phase 5 Definition of Done
+
+Production readiness requires reproducible corpus results, sanitizer/fuzz evidence, stable interfaces, thread-safe operation, deterministic outputs, measurable coverage, documented limitations, and an auditable non-executing security boundary.
+
+---
+
+# Cross-Phase Architecture
+
+The intended long-term architecture is:
+
+**Artifact**
+→ **Container/Slice/Member**
+→ **Address Map**
+→ **Instruction Decoder**
+→ **CFG**
+→ **Function Recovery**
+→ **ABI/Runtime/Debug Evidence**
+→ **SLIR**
+→ **SSA/Data Flow**
+→ **Memory/Type Model**
+→ **Language-Neutral Reconstruction IR**
+→ **Java / Sleela / C / C++**
+→ **Provenance / Coverage / Validation**
+
+No later phase should bypass the shared semantic model merely to obtain faster support for one output language.
+
+## Evidence Classes
+
+Every important recovered fact should be classifiable as one or more of:
+
+- **Observed** — directly represented in artifact data.
+- **Decoded** — produced by a validated decoder.
+- **Derived** — mechanically derived from observed/decoded facts.
+- **Inferred** — a reasoned interpretation supported by multiple facts.
+- **Hypothesized** — a plausible alternative not sufficiently established.
+- **Unknown** — insufficient evidence.
+- **Unsupported** — the analyzer does not currently implement the needed capability.
+- **Conflicting** — available evidence disagrees.
+
+This vocabulary should appear in APIs, diagnostics, machine-readable output, and documentation.
+
+## Completion Rule
+
+The project should prefer:
+
+**measured partial correctness + explicit uncertainty**
+
+over:
+
+**unmeasured completeness claims + fabricated certainty.**
+
+The purpose of the 1–40 register and Phases 2–5 is to make that distinction operational in code, tests, documentation, and generated source.
+
+## Current Starting Point
+
+The existing repository has the Phase 1 foundation, including structured `DecompilerError` handling, stricter CLI parsing, help/version behavior, output-file validation, four source-output paths, and a non-executing analysis boundary.
+
+The next implementation work should proceed from the actual codebase rather than treating this document as proof of implementation. In particular, the existing source emitters remain limited until SLIR, reconstruction IR, and semantic analysis are implemented.
+
+**Known limitation:** local compilation/CTest execution is environment-dependent. Repository changes must not be described as build-verified unless CI or a real build result is available.
+
+## Iteration Policy
+
+Every implementation iteration should:
+
+1. inspect the current code and tests;
+2. implement a bounded, reviewable subset;
+3. add or update regression tests;
+4. measure the affected corpus;
+5. update this document to match actual implementation status;
+6. preserve evidence and uncertainty;
+7. preserve the non-executing security boundary;
+8. keep `main` and `master` synchronized for the changes made.
+
+This document is a roadmap and engineering contract, not a substitute for tests.
