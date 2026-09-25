@@ -1,0 +1,7 @@
+#sleela 1.1
+class CodecSet {
+    Codec primary;
+    Codec secondary;
+    void setPrimary(Codec codec) { primary = codec; }
+    void setSecondary(Codec codec) { secondary = codec; }
+}
