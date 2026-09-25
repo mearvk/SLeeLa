@@ -1,4 +1,5 @@
 #include "sleela/decompiler/decompiler.hpp"
+#include "sleela/decompiler/errors.hpp"
 #include "sleela/decompiler/elf.hpp"
 #include "sleela/decompiler/archive.hpp"
 #include <algorithm>
@@ -33,7 +34,7 @@ static std::string sha256_digest(const std::vector<std::uint8_t>& input){
 static std::uint16_t u16(const std::vector<std::uint8_t>&b,std::size_t p){return p+1<b.size()?std::uint16_t(b[p])|(std::uint16_t(b[p+1])<<8):0;}
 static std::uint32_t u32(const std::vector<std::uint8_t>&b,std::size_t p){return p+3<b.size()?std::uint32_t(b[p])|(std::uint32_t(b[p+1])<<8)|(std::uint32_t(b[p+2])<<16)|(std::uint32_t(b[p+3])<<24):0;}
 static bool suffix(const std::string& n,const std::string& s){return n.size()>=s.size()&&n.compare(n.size()-s.size(),s.size(),s)==0;}
-Artifact Artifact::open(const std::string&p){std::ifstream f(p,std::ios::binary);if(!f)throw std::runtime_error("unable to open artifact: "+p);std::vector<std::uint8_t>b((std::istreambuf_iterator<char>(f)),{});return from_bytes(b,p);}
+Artifact Artifact::open(const std::string&p){std::ifstream f(p,std::ios::binary);if(!f)throw DecompilerError(ErrorCode::InvalidArtifact,"unable to open artifact: "+p,0,0,"artifact-open");std::vector<std::uint8_t>b((std::istreambuf_iterator<char>(f)),{});return from_bytes(b,p);}
 Artifact Artifact::from_bytes(std::span<const std::uint8_t>b,std::string n){
     Artifact a;a.name_=std::move(n);a.bytes_.assign(b.begin(),b.end());a.sha256_=sha256_digest(a.bytes_);
     const bool named_ko=suffix(a.name_,".ko")||suffix(a.name_,".ko.xz")||suffix(a.name_,".ko.zst")||suffix(a.name_,".ko.gz");
