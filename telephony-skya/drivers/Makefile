@@ -1,3 +1,5 @@
+CC ?= cc
+CFLAGS ?= -std=c11 -Wall -Wextra -O2
 CXX ?= c++
 CXXFLAGS ?= -std=c++17 -Wall -Wextra -O2
 TARGET := libskya-drivers.a
@@ -42,6 +44,9 @@ $(OBJDIR)/skya_model_drivers.o: src/skya_model_drivers.cpp include/skya_model_dr
 
 $(OBJDIR)/skya_remaining_model_drivers.o: src/skya_remaining_model_drivers.cpp include/skya_remaining_model_drivers.h include/skya_phone_driver.h | $(OBJDIR)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+$(OBJDIR)/skya_model_drivers_c.o: src/skya_model_drivers_c.c include/skya_model_drivers_c.h include/skya_phone_driver.h | $(OBJDIR)
+	$(CC) $(CFLAGS) -c $< -o $@
 
 $(PLATFORM_OBJ): $(PLATFORM_SRC) | $(OBJDIR)
 	$(CXX) $(CXXFLAGS) $(PLATFORM_CXXFLAGS) -c $< -o $@
