@@ -2560,7 +2560,7 @@
     },
     {
       "path": "decompiler/cli/main.cpp",
-      "sha256": "75ea22c2eee4be74a147430faf3f4d42a52512dfb5b6458dfc2bba8f7d2c5689"
+      "sha256": "41046263ed95957814201d6c23806064b8716f3aea92fc067db80f080d26bc38"
     },
     {
       "path": "decompiler/examples/api_decode_cfg.cpp",
@@ -2599,6 +2599,10 @@
       "sha256": "3900b4ce6637077f6f2191f228dc396209a9fabe5f1507eaf8a11058ed3c7ec8"
     },
     {
+      "path": "decompiler/include/sleela/decompiler/output.hpp",
+      "sha256": "d50852aeb2700b7e03cef99a090de78715d69bb95cadd7fb8de8d0261223ae3e"
+    },
+    {
       "path": "decompiler/include/sleela/decompiler/slir.hpp",
       "sha256": "c1a66de85d5a92f38f82b6d366d10b8af3611f530c4a8c16ddf4f6976ab8025b"
     },
@@ -2629,6 +2633,10 @@
     {
       "path": "decompiler/src/library.cpp",
       "sha256": "e07d0d368df599f9f84049006f788b4eedd5c6440a55033317dc9309621fd471"
+    },
+    {
+      "path": "decompiler/src/output.cpp",
+      "sha256": "9741c801827b7d063111c5a9b554fdbcf5db6583584e5416ebadbb900e19228b"
     },
     {
       "path": "decompiler/src/pe.cpp",
