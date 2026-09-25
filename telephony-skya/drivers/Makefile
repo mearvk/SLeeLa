@@ -44,3 +44,10 @@ $(TARGET): $(OBJS)
 clean:
 	rm -rf $(OBJDIR) $(TARGET)
 .PHONY: all clean
+
+OBJS += $(OBJDIR)/c/skya_hardware_profile.o $(OBJDIR)/c/skya_data_plane.o
+
+$(OBJDIR)/c/skya_hardware_profile.o: src/skya_hardware_profile.c | $(OBJDIR)
+	$(CC) $(CFLAGS) -Iinclude -c $< -o $@
+$(OBJDIR)/c/skya_data_plane.o: src/skya_data_plane.c | $(OBJDIR)
+	$(CC) $(CFLAGS) -Iinclude -c $< -o $@
