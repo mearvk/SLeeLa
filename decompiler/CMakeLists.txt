@@ -13,6 +13,7 @@ add_library(sleela_decompiler STATIC
     src/slir.cpp
     src/vm.cpp
     src/analyzer.cpp
+    src/library.cpp
 )
 
 target_include_directories(sleela_decompiler PUBLIC include)
