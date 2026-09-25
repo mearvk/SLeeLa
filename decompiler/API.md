@@ -2,8 +2,8 @@
 
 **Max Rupplin - MEARVK LLC - 2026**
 
-Slecompiler™ exposes a C++ analysis library under `decompiler/`. The API is organized
-around a deliberately read-only analysis pipeline:
+Slecompiler™ exposes a C++ analysis library under `decompiler/`. The API follows a
+read-only static-analysis pipeline:
 
 ```
 artifact
@@ -17,46 +17,35 @@ artifact
   -> library relationships / report
 ```
 
-## 1. Product boundary
+## Product boundary
 
 Slecompiler is an analysis product, not an execution sandbox. Opening or decoding an
 artifact does not imply permission to execute it. The default product path does not
 load kernel modules, perform device I/O, write target memory, or invoke recovered code.
 
-The principal artifact families are:
+Supported artifact families include ELF, PE/COFF, Mach-O where implemented, GNU/static
+archives, relocatable objects, kernel modules as static evidence, and raw/firmware
+artifacts.
 
-- ELF executables and shared objects;
-- PE/COFF executables and libraries;
-- Mach-O artifacts where supported by the implementation;
-- GNU/static archives;
-- relocatable objects;
-- kernel modules as static ELF evidence;
-- raw or firmware artifacts.
-
-## 2. API concepts
-
-The implementation is divided into cooperating concepts rather than one monolithic
-decompiler call:
+## API concepts
 
 | Concept | Responsibility |
 |---|---|
-| Artifact | Represents an input native artifact and its identity/container information |
-| Decoder | Converts recognized native bytes into structured instruction/format evidence |
+| Artifact | Input native artifact and identity/container information |
+| Decoder | Native-byte decoding into structured evidence |
 | ELF / PE support | Format-specific headers, sections, symbols, and relocation metadata |
-| Archive | Represents static-library containers and their object members |
-| Library | Models a library or family of related native artifacts |
-| Analyzer | Performs higher-level static analysis over decoded information |
-| SLIR | Slecompiler's lifted intermediate representation used between decoding and later analysis |
-| VM | Provides the product's analysis-oriented representation/execution model without executing the input artifact itself |
+| Archive | Static-library container and object members |
+| Library | Library/family model for related native artifacts |
+| Analyzer | Higher-level static analysis |
+| SLIR | Lifted intermediate representation |
+| VM | Analysis-oriented representation/execution model; it does not execute the input artifact |
 
-The exact C++ declarations remain authoritative in the headers under
-`decompiler/include/`. This document intentionally describes the contract at the
-conceptual level so the public guide does not drift from implementation names.
+The exact C++ declarations remain authoritative in `decompiler/include/`. This guide
+documents the contract without inventing declarations that are not yet stabilized.
 
-## 3. API exemplars
+## API exemplars
 
-The CMake project builds these focused programs when
-`SLEE_LA_BUILD_API_EXAMPLES=ON` (the current default):
+With `SLEE_LA_BUILD_API_EXAMPLES=ON` (the current CMake default), the product builds:
 
 - `slecompiler-api-inspect`
 - `slecompiler-api-cfg`
@@ -64,63 +53,43 @@ The CMake project builds these focused programs when
 - `slecompiler-api-graph`
 - `slecompiler-api-slir-vm`
 
-Their source files are under `decompiler/examples/`.
+Their sources are under `decompiler/examples/`.
 
-The examples are intended to answer five common application questions:
+They demonstrate:
+1. artifact identity and metadata inspection;
+2. decoding and control-flow analysis;
+3. library/archive metadata;
+4. library-family dependency relationships;
+5. SLIR and analysis-VM work.
 
-1. **What is this artifact?**
-2. **What instructions and control-flow relationships can be recovered?**
-3. **What library/archive metadata can be extracted?**
-4. **How are native artifacts related as a software family?**
-5. **How does decoded material move into SLIR and the analysis VM?**
-
-## 4. Recommended application sequence
-
-An application integrating Slecompiler should keep the stages explicit:
+## Recommended application sequence
 
 1. Accept an input path under the caller's authorization policy.
 2. Open the artifact without executing it.
-3. Identify the container/format.
-4. Collect format metadata and provenance.
-5. Decode only the structures needed for the requested analysis.
-6. Build control-flow/function evidence where supported.
+3. Identify its container and format.
+4. Collect metadata and provenance.
+5. Decode the structures needed for the requested analysis.
+6. Recover functions/control flow where supported.
 7. Lift supported material into SLIR.
 8. Run higher-level analysis.
-9. Emit a report containing evidence and limitations.
-10. Preserve the original artifact separately from generated analysis output.
+9. Emit an evidence-based report.
+10. Keep original input separate from generated analysis output.
 
-A report should distinguish **observed evidence**, **derived analysis**, and
-**unknown/unsupported properties**. Do not manufacture symbols, source lines,
-calling conventions, or hardware facts when the artifact does not establish them.
+Reports should distinguish **observed evidence**, **derived analysis**, and
+**unknown/unsupported properties**. Never invent symbols, source lines, calling
+conventions, or hardware facts.
 
-## 5. Failure handling
+## Normal analysis limitations
 
-Applications should treat these conditions as normal analysis outcomes:
+Unknown formats, truncated files, malformed headers, unsupported architectures,
+stripped symbols, unresolved indirect control flow, unsupported instructions, missing
+dependencies, and undecodable archive members are normal analysis outcomes. An
+unrecovered fact should remain explicitly unknown.
 
-- unknown file format;
-- truncated artifact;
-- malformed header or section table;
-- unsupported machine architecture;
-- incomplete symbol information;
-- stripped symbols;
-- unresolved indirect control flow;
-- unsupported instruction;
-- missing dependency;
-- archive member that cannot be decoded.
+## Platform contract
 
-An inability to recover a fact is evidence of an analysis limitation, not permission
-to substitute a guessed value.
+The product targets Linux, macOS, and Windows 10+. The native library is C++20.
+Platform-specific build mechanics belong in `build/`; the analysis contract remains
+in `decompiler/`.
 
-## 6. Platform contract
-
-The Slecompiler product is designed for:
-
-- Linux;
-- macOS;
-- Windows 10+.
-
-The native library is C++20. Platform-specific build behavior belongs in `build/`;
-the analysis API remains a product-level interface.
-
-See `build/PRODUCTS.md` for the build contract and `decompiler/TUTORIAL.md` for
-a complete developer walkthrough.
+See `decompiler/TUTORIAL.md` for the developer walkthrough.
