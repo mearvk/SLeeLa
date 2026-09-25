@@ -70,6 +70,12 @@ Slecompiler source.
 
 See `build/PRODUCTS.md` for the product-build boundary and planned expansion.
 
+Slecompiler's CMake project is explicitly C++20. The API examples, CLI, tests, and static library are part of the same configured product build; there is no separate example-only toolchain.
+
+### Slecompiler verification path
+
+After configuration, the native test suite can be invoked from the generated build directory with CTest. The repository also contains five API exemplars, which provide compile-time coverage of the public usage path. Cross-platform CI and packaged release verification remain future build layers.
+
 
 ### Windows 10+ toolchain notes
 
