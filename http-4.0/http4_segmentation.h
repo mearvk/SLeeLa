@@ -21,11 +21,14 @@ typedef struct {
     uint32_t segment_count;
     uint32_t total_length;
     uint32_t offset;
-    uint32_t data_length;
+    uint32_t data_length; /* derived from the enclosing frame payload */
 } http4_segment_header_t;
 
 typedef struct {
     http4_segment_header_t header;
+    uint64_t stream_id;
+    uint64_t request_id;
+    uint64_t sequence;
     const uint8_t *data;
 } http4_segment_view_t;
 
