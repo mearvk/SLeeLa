@@ -383,6 +383,30 @@
       "sha256": "b39458bec530b9b0c5057f62b18d9da649fe180878cf572e115d0f1b18d691db"
     },
     {
+      "path": "api/native/memory/README.md",
+      "sha256": "25bf983771c6a336342c0ad1e30153103685771160c2406b86eebcac6f7266f6"
+    },
+    {
+      "path": "api/native/memory/sleela_memory_manager.cpp",
+      "sha256": "c3fae42a1504f81b260eb01473e020d5b5832cb2e1153500e8fe31313c89bd82"
+    },
+    {
+      "path": "api/native/memory/sleela_memory_manager.h",
+      "sha256": "2a64af709206228d239c2a974872b9dfea6b353fdf09da4d729b09ff525d127a"
+    },
+    {
+      "path": "api/native/reflection/README.md",
+      "sha256": "3bd83df718ca40c0f9353026d81d7de0d1aa626f34670913a5b259e2ea9eb370"
+    },
+    {
+      "path": "api/native/reflection/sleela_reflection.cpp",
+      "sha256": "ffd007673bdd05858dda6e8609bbfeb82fea9cbb6cc295d56778211c12a94fd7"
+    },
+    {
+      "path": "api/native/reflection/sleela_reflection.hpp",
+      "sha256": "a5709559cac49d38a427b17d9220eeb1090818f078d9a5f104fd700282430b18"
+    },
+    {
       "path": "api/nordshrift/API.html",
       "sha256": "084f485557690e405a86d501ea28889d135e808a5e2e9249b5283656994b6bf8"
     },
