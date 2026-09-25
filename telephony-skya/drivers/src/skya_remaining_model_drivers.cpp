@@ -5,40 +5,6 @@ bool match(const skya_driver_device*d,const char*v,const char*m){return d&&d->ve
 int usb_caps(const skya_driver_device*d,skya_driver_capabilities*o){if(!d||!o)return -1;*o={};o->audio_input=1;o->audio_output=1;o->mute=1;o->volume=1;o->firmware_query=1;o->headset_port=1; if(d->transport==SKYA_TRANSPORT_USB_HID){o->call_answer=1;o->call_end=1;}return 0;}
 int sip_caps(const skya_driver_device*d,skya_driver_capabilities*o){if(!d||!o)return -1;*o={};if(d->transport!=SKYA_TRANSPORT_SIP&&d->transport!=SKYA_TRANSPORT_NETWORK)return 0;o->audio_input=1;o->audio_output=1;o->call_answer=1;o->call_end=1;o->call_hold=1;o->mute=1;o->volume=1;o->dialpad=1;o->display=1;o->firmware_query=1;return 0;}
 #define D(S,N,V,M,C) static int S##_p(const skya_driver_device*d){return match(d,V,M)?1:0;} static int S##_c(const skya_driver_device*d,skya_driver_capabilities*o){return C(d,o);} static const skya_phone_driver S##_d={N,V,S##_p,S##_c};
-uh42_x
-uh44_x
-wh64_x
-wh68_x
-uh46_x
-blackwire_3320_x
-savi_8200_x
-savi_8400_x
-voyager_4320_x
-voyager_5200_x
-biz_1500_x
-evolve3_65_x
-evolve3_75_x
-speak2_55_x
-speak2_75_x
-guv3005_x
-gxp21_x
-grp26_x
-impact_sc_200_x
-impact_1000_x
-sdw_5000_x
-zone_wireless_2_x
-zone_vibe_x
-h570e_x
-zone_305_x
-x5u_v2_x
-x6u_v2_x
-v63_x
-v64_x
-v65_x
-v66_x
-x210i_v2_x
-a330m_x
-322_x
 int c0(const skya_driver_device*d,skya_driver_capabilities*o){return usb_caps(d,o);}
 int c1(const skya_driver_device*d,skya_driver_capabilities*o){return usb_caps(d,o);}
 int c2(const skya_driver_device*d,skya_driver_capabilities*o){return usb_caps(d,o);}
