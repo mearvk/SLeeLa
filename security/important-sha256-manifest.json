@@ -463,6 +463,46 @@
       "sha256": "a6df25b05ad6676615f4e5cfcc14c0e8ea41d641cddc047388862aa8adb9bf3e"
     },
     {
+      "path": "api/sleela-complete/DataServiceClasses.sleela",
+      "sha256": "da9b4ed26fa82ae10e1db239f743d8e25e08dfa5d0042490082cdaad34d16e3b"
+    },
+    {
+      "path": "api/sleela-complete/DesignerClasses.sleela",
+      "sha256": "cb56f8cc8b6b10912a5f5554fc889618c253a657af789f3952652a22136cf8ba"
+    },
+    {
+      "path": "api/sleela-complete/DomainClasses.sleela",
+      "sha256": "4bafb1959a39ba74a1cb88ffbd169ea07fe39a586865c442b42618ff2692412d"
+    },
+    {
+      "path": "api/sleela-complete/NetworkSecurityClasses.sleela",
+      "sha256": "a9f2064292c0733bbd7004984a68d97a0e188614670b150c7edfdb7dd3d4e6b4"
+    },
+    {
+      "path": "api/sleela-complete/PlatformClasses.sleela",
+      "sha256": "6de4a2527ef557524563c0bfa669a383d0a39b52299b6c83f3126feff08b26e4"
+    },
+    {
+      "path": "api/sleela-complete/README.md",
+      "sha256": "ea99fbd73204b6f4ef2a4879ce080b5eee4c19f52a046ff26934f9a0b94451e7"
+    },
+    {
+      "path": "api/sleela-complete/RuntimeClasses.sleela",
+      "sha256": "4958909ec0cf4a5162524616a071f61170cba4e6573c8ff99b5cb9d09b623fdb"
+    },
+    {
+      "path": "api/sleela-complete/ServerUIIOClasses.sleela",
+      "sha256": "06ac2807c2e94e50d1f7e5459fed495f60b52f378b2ea03750557c8a99d67945"
+    },
+    {
+      "path": "api/sleela-complete/SpecificationClasses.sleela",
+      "sha256": "87c0c14bf7c84a71bf160da1129fb15d5c73c6bd7ec987dda86a783f47a418c3"
+    },
+    {
+      "path": "api/sleela-complete/TelephonyClasses.sleela",
+      "sha256": "0e3e54593fa2b2d577ea804c271d4ed7248b2d240262c8650832345f1cedb6c9"
+    },
+    {
       "path": "api/src/api.cpp",
       "sha256": "031195773078f3170f52a7cd71aca7552fd04ccce1f5319d7026842d1f7dbad2"
     },
@@ -5867,6 +5907,18 @@
       "sha256": "29922b8a68b5010fd98246e4e09f1bcd6bf74994e262778469a34447c029d7be"
     },
     {
+      "path": "telephony-skya/sleela/AudioDeviceManager.sleela",
+      "sha256": "5015cf2373a44cfba7ff389f4081214b5eda5b68355fb23a5a6cbf6d35a26e96"
+    },
+    {
+      "path": "telephony-skya/sleela/CaptureStream.sleela",
+      "sha256": "084d1a12fec4e6e0db723edc5d809280cce947b21af21aa61d789dd5593bec39"
+    },
+    {
+      "path": "telephony-skya/sleela/PlaybackStream.sleela",
+      "sha256": "8f7fc0ca8e9975115bb19fa0fec3b51548589a752985d057af4bd62cdf21527a"
+    },
+    {
       "path": "telephony-skya/sleela/Skya.sleela",
       "sha256": "94c5b0591b2001c1f98a834736017d14718a85f66a946c9421c45f5e4c69f391"
     },
@@ -5881,6 +5933,18 @@
     {
       "path": "telephony-skya/sleela/SkyaServer.sleela",
       "sha256": "5b17275aba437bd4e121bab5485c38088d65308ad09dc91ac76b655d850cb88e"
+    },
+    {
+      "path": "telephony-skya/sleela/VoIPAccount.sleela",
+      "sha256": "880a17e731bc10686df2e13a1999aca73f56ba79fcfc253e9a7c5322233aa999"
+    },
+    {
+      "path": "telephony-skya/sleela/VoIPAppExample.sleela",
+      "sha256": "41b58a09a162b8efb52d15ee6b812ef3377fd0084fc518b37e88a93e5311cd94"
+    },
+    {
+      "path": "telephony-skya/sleela/VoIPApplication.sleela",
+      "sha256": "72e5bdef413b95aec2cfa90bb1604569b10afb2e3e6a0e6258bc9ebac902036e"
     },
     {
       "path": "terminal_pixel/pixel_terminal.h",
