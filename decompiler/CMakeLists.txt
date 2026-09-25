@@ -16,9 +16,10 @@ add_library(sleela_decompiler STATIC
     src/library.cpp
     src/archive.cpp
     src/output.cpp
+    ../api/src/api.cpp
 )
 
-target_include_directories(sleela_decompiler PUBLIC include)
+target_include_directories(sleela_decompiler PUBLIC include ../api/include)
 target_compile_features(sleela_decompiler PUBLIC cxx_std_20)
 
 if (MSVC)
