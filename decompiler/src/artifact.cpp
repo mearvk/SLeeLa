@@ -37,7 +37,7 @@ Artifact Artifact::from_bytes(std::span<const std::uint8_t>b,std::string n){
         a.format_=Format::GNUArchive;a.artifact_class_=ArtifactClass::StaticArchive;
     } else a.format_=Format::Raw;
     if(named_a)a.artifact_class_=ArtifactClass::StaticArchive;
-    if(a.format_==Format::ELF){ auto e=analyze_elf(a.bytes_,a.name_); a.interfaces_.sections=e.sections; a.interfaces_.symbols=e.symbols; a.interfaces_.imports=e.imports; a.interfaces_.exports=e.exports; a.interfaces_.relocations=e.relocations; a.library_metadata_=e.library; a.kernel_module_metadata_=e.kernel_module; }
+    if(a.format_==Format::ELF){ auto e=analyze_elf(a.bytes_,a.name_); a.interfaces_.segments=e.segments; a.interfaces_.sections=e.sections; a.interfaces_.symbols=e.symbols; a.interfaces_.imports=e.imports; a.interfaces_.exports=e.exports; a.interfaces_.relocations=e.relocations; a.library_metadata_=e.library; a.kernel_module_metadata_=e.kernel_module; }
     if(a.format_==Format::Raw&&named_ko)a.artifact_class_=ArtifactClass::KernelModule;
     return a;
 }
