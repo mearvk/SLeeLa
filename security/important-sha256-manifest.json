@@ -2560,7 +2560,7 @@
     },
     {
       "path": "decompiler/cli/main.cpp",
-      "sha256": "75ea22c2eee4be74a147430faf3f4d42a52512dfb5b6458dfc2bba8f7d2c5689"
+      "sha256": "1ff433e608bfd7f7cbd966fb92d041166d63a4b3fb25c5222962cd51fc61fa91"
     },
     {
       "path": "decompiler/examples/api_decode_cfg.cpp",
@@ -2595,8 +2595,16 @@
       "sha256": "2a4ada1995daeec1b9c4f7876af40402a179c444c0a4ea4259621cc9695c5917"
     },
     {
+      "path": "decompiler/include/sleela/decompiler/errors.hpp",
+      "sha256": "03407e28cfab08194e20d4243e679ab83b5cc4505aee01f4a5f3eeab6bb549c7"
+    },
+    {
       "path": "decompiler/include/sleela/decompiler/library.hpp",
       "sha256": "3900b4ce6637077f6f2191f228dc396209a9fabe5f1507eaf8a11058ed3c7ec8"
+    },
+    {
+      "path": "decompiler/include/sleela/decompiler/output.hpp",
+      "sha256": "d50852aeb2700b7e03cef99a090de78715d69bb95cadd7fb8de8d0261223ae3e"
     },
     {
       "path": "decompiler/include/sleela/decompiler/slir.hpp",
@@ -2616,7 +2624,7 @@
     },
     {
       "path": "decompiler/src/artifact.cpp",
-      "sha256": "45d4bc062e6e412edfa42bad5abdae1dc72e54d52958633f9248cd4ed36cd4c2"
+      "sha256": "8a649ff61d387bdb58bf5c993f0393f57927f55173befe3503bb091014df3c4d"
     },
     {
       "path": "decompiler/src/decoder.cpp",
@@ -2629,6 +2637,10 @@
     {
       "path": "decompiler/src/library.cpp",
       "sha256": "e07d0d368df599f9f84049006f788b4eedd5c6440a55033317dc9309621fd471"
+    },
+    {
+      "path": "decompiler/src/output.cpp",
+      "sha256": "e41d8cefe421ebeab7352e187499f38d755f74a208d3f47f02a3591d1c5e2637"
     },
     {
       "path": "decompiler/src/pe.cpp",
@@ -2644,7 +2656,7 @@
     },
     {
       "path": "decompiler/tests/test_core.cpp",
-      "sha256": "8dec1aaa090241e6976a91e44ae17629705fb2d34b4612b4e5c5b016a1d1068e"
+      "sha256": "d274be8ee7a590ef4819288422ad704922456947f146797a15d310a51e307a8d"
     },
     {
       "path": "drivers/cisco/321/1.0/driver.c",
