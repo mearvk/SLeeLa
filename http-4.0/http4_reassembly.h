@@ -25,10 +25,14 @@ int http4_reassembly_init(http4_reassembly_t *state,
                           uint64_t segment_id);
 
 void http4_reassembly_reset(http4_reassembly_t *state);
+
 int http4_reassembly_add(http4_reassembly_t *state,
                          const http4_segment_view_t *segment);
+
 int http4_reassembly_complete(const http4_reassembly_t *state);
+
 const uint8_t *http4_reassembly_data(const http4_reassembly_t *state);
+
 size_t http4_reassembly_size(const http4_reassembly_t *state);
 
 #endif
