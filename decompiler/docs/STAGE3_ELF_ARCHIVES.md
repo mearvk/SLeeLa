@@ -35,3 +35,10 @@ For kernel modules, the parser continues to read .modinfo and recognizes ksymtab
 ## Safety boundary
 
 The Stage 3 parser is bounded and read-only. It does not load ELF objects, execute instructions, insert kernel modules, open devices, or modify target memory.
+
+
+## Stage 4 started
+
+Stage 4 begins native recovery with architecture-aware x86/x86-64 control-transfer decoding and branch-aware CFG construction. The decoder currently recognizes common relative calls, unconditional jumps, conditional jumps, and returns. Unknown instructions remain represented conservatively rather than guessed.
+
+The analyzer now forms basic blocks at branch targets and control-transfer fallthrough points, then emits CFG edges for conditional and unconditional branches. This is the beginning of function-boundary recovery; it is not yet a complete x86 decoder or production-grade decompiler.
