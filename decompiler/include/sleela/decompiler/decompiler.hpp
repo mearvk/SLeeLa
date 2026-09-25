@@ -49,6 +49,8 @@ struct KernelModuleMetadata {
     std::vector<std::string> dependencies;
 };
 
+struct NativeInterfaces;
+
 class Artifact {
 public:
     static Artifact open(const std::string& path);
