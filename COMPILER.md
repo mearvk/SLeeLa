@@ -184,6 +184,16 @@ Version behavior is covered by `make test` (target `test-version`, harness
 `impl/tests/version/run_version_tests.sh`), which asserts that in-range versions
 run and out-of-range / malformed versions are rejected.
 
+## 7. Relationship to Slecompiler™
+
+Sleela and Slecompiler are distinct products. The Sleela compiler consumes `.sleela`
+Wrapper™ source and lowers it to the Sleela Core. Slecompiler consumes native artifacts
+for static inspection, decoding, control-flow recovery, library analysis, and SLIR-based
+analysis. Slecompiler does not become part of the Sleela execution path and does not
+execute an analyzed artifact merely because it can decode or lift it.
+
+See [`decompiler/API.md`](decompiler/API.md) and [`decompiler/TUTORIAL.md`](decompiler/TUTORIAL.md).
+
 ---
 
 *The Sleela compiler turns a Wrapper™ into core bytecode, and it is version
