@@ -238,3 +238,41 @@ The following distinctions are mandatory:
 - A completeness claim must identify its **Scope of Completeness** and supporting **Evidence Level**.
 
 A driver should not be described as hardware-complete until the applicable device-specific paths have been audited and the remaining assumptions, unsupported operations, implementation gaps, and hardware mappings are explicitly recorded.
+
+
+## Slecompiler™ Terms
+
+**Slecompiler™** — The SLeeLa native-artifact analysis product. It performs read-only
+static inspection, decoding, control-flow analysis, library analysis, and SLIR-oriented
+analysis without executing the analyzed artifact as part of the default pipeline.
+
+**Artifact** — A native input presented to Slecompiler for analysis, such as an
+executable, shared library, archive, relocatable object, kernel module, firmware image,
+or other binary data.
+
+**Observed Evidence** — A fact directly established by bytes, headers, symbols,
+descriptors, or other authoritative artifact metadata available to the analysis.
+
+**Derived Analysis** — A result computed from observed evidence by an analysis
+algorithm, such as a recovered control-flow relationship or dependency edge.
+
+**Unknown** — A property not established by the available artifact or implementation.
+Unknown is not a permission to substitute a guess.
+
+**SLIR** — Slecompiler's lifted intermediate representation between native decoding
+and higher-level analysis.
+
+**Analysis VM** — The Slecompiler representation/execution model used to operate on
+lifted analysis material; it is not a mechanism for executing the original analyzed
+artifact.
+
+**Control-Flow Graph (CFG)** — A graph representing recovered basic-block and branch
+relationships. CFG recovery can be incomplete when control flow is indirect,
+unsupported, malformed, or otherwise not statically recoverable.
+
+**Static Analysis** — Analysis performed from an artifact's available representation
+without executing that artifact.
+
+**API Exemplar** — A small buildable program demonstrating one defined analysis use
+case. Slecompiler currently provides inspection, CFG/decode, library, graph, and
+SLIR/VM exemplars.
