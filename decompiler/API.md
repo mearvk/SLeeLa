@@ -14,7 +14,7 @@ artifact
   -> control-flow analysis
   -> SLIR
   -> higher-level analysis
-  -> library relationships / report
+  -> source-output projection
 ```
 
 ## Product boundary
@@ -38,29 +38,39 @@ artifacts.
 | Library | Library/family model for related native artifacts |
 | Analyzer | Higher-level static analysis |
 | SLIR | Lifted intermediate representation |
-| VM | Analysis-oriented representation/execution model; it does not execute the input artifact |
+| SourceEmitter | Evidence-based projection into Java, Sleela, C, or C++ |
 
-The exact C++ declarations remain authoritative in `decompiler/include/`. This guide
-documents the contract without inventing declarations that are not yet stabilized.
+The exact C++ declarations remain authoritative in `decompiler/include/`.
 
-## API exemplars
+## Source output targets
 
-With `SLEE_LA_BUILD_API_EXAMPLES=ON` (the current CMake default), the product builds:
+The CLI accepts an explicit output-language argument:
 
-- `slecompiler-api-inspect`
-- `slecompiler-api-cfg`
-- `slecompiler-api-library`
-- `slecompiler-api-graph`
-- `slecompiler-api-slir-vm`
+```
+sleela-decompiler decompile <file> --output <java|sleela|c|c++>
+```
 
-Their sources are under `decompiler/examples/`.
+Examples:
 
-They demonstrate:
-1. artifact identity and metadata inspection;
-2. decoding and control-flow analysis;
-3. library/archive metadata;
-4. library-family dependency relationships;
-5. SLIR and analysis-VM work.
+```
+sleela-decompiler decompile program --output java
+sleela-decompiler decompile program --output sleela --file decompiled.sleela
+sleela-decompiler decompile program --output c --file decompiled.c
+sleela-decompiler decompile program --output c++ --file decompiled.cpp
+```
+
+Aliases: `sl` selects Sleela and `cpp` selects C++.
+
+| Target | Extension | Output role |
+|---|---|---|
+| Java | `.java` | Java-oriented source reconstruction |
+| Sleela | `.sleela` | Native SLeeLa/Sleela source representation |
+| C | `.c` | C-oriented source reconstruction |
+| C++ | `.cpp` | C++20-oriented source reconstruction |
+
+The four targets share the recovered native evidence and analysis. Selecting an output
+language does **not** claim that the original program was written in that language.
+Unresolved semantics remain marked as evidence/unknowns rather than invented facts.
 
 ## Recommended application sequence
 
@@ -72,24 +82,8 @@ They demonstrate:
 6. Recover functions/control flow where supported.
 7. Lift supported material into SLIR.
 8. Run higher-level analysis.
-9. Emit an evidence-based report.
-10. Keep original input separate from generated analysis output.
+9. Select the requested source-output language.
+10. Emit an evidence-based source artifact or report.
 
-Reports should distinguish **observed evidence**, **derived analysis**, and
-**unknown/unsupported properties**. Never invent symbols, source lines, calling
-conventions, or hardware facts.
-
-## Normal analysis limitations
-
-Unknown formats, truncated files, malformed headers, unsupported architectures,
-stripped symbols, unresolved indirect control flow, unsupported instructions, missing
-dependencies, and undecodable archive members are normal analysis outcomes. An
-unrecovered fact should remain explicitly unknown.
-
-## Platform contract
-
-The product targets Linux, macOS, and Windows 10+. The native library is C++20.
-Platform-specific build mechanics belong in `build/`; the analysis contract remains
-in `decompiler/`.
-
-See `decompiler/TUTORIAL.md` for the developer walkthrough.
+Reports and generated source should distinguish observed evidence, derived analysis, and
+unknown/unsupported properties.
