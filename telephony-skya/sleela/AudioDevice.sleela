@@ -1,0 +1,14 @@
+#sleela 1.1
+class AudioDevice {
+    String id;
+    String name;
+    String direction;
+    int input;
+    int output;
+    int available;
+    void open() {}
+    void close() {}
+    void select(String deviceId) { id = deviceId; }
+    void setMute(int value) {}
+    void setVolume(int value) {}
+}
