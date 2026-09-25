@@ -714,62 +714,484 @@ Phase 4 does not claim:
 
 ---
 
-# Phase 5 — Production Validation and Security
+# Phase 5 — Production Validation, Compatibility, and Security
 
 ## Purpose
 
-Phase 5 turns the preceding engineering work into a continuously testable production system.
+Phase 5 turns the analysis and reconstruction pipeline into a continuously validated production system.
 
-Primary items: **31–40**, while exercising all earlier items.
+Phase 5 primarily advances **Items 31–40**, while exercising every earlier item. It is not merely a test phase: it establishes the release discipline, compatibility matrix, reproducibility rules, performance/resource controls, API stability, and security evidence required for the project to make defensible production claims.
+
+The governing production loop is:
+
+**artifact → analysis → reconstruction → validation → measured result → regression corpus → release evidence.**
 
 ## Phase 5A — Corpus and compatibility matrix
 
-Maintain a matrix across:
+Primary item: **31**.
 
-- Linux/ELF;
-- Windows/PE/COFF;
-- macOS/Mach-O;
+Maintain a versioned corpus across:
+
+- ELF/Linux;
+- PE/COFF/Windows;
+- Mach-O/macOS;
 - x86/x86-64;
 - ARM/ARM64;
-- later RISC-V;
-- debug/stripped;
-- static/dynamic;
-- optimized/unoptimized;
-- C/C++/Rust/Go/Swift and other supported families.
+- RISC-V when supported;
+- debug and stripped artifacts;
+- static and dynamic linking;
+- optimized and unoptimized builds;
+- C and C++;
+- Rust, Go, Swift, and other supported language families;
+- libraries, executables, object files, and archives.
 
-## Phase 5B — Sanitizers and fuzzing
+Every corpus artifact should record:
 
-Run sanitizer-instrumented builds and persistent fuzz targets against binary parsers, decoders, SLIR, reconstruction, CLI, and serialization.
+- source language where known;
+- compiler/toolchain where known;
+- compiler version where known;
+- target architecture;
+- ABI;
+- optimization mode;
+- debug/symbol state;
+- static/dynamic linkage;
+- expected structural facts;
+- expected unsupported/ambiguous regions;
+- provenance of the fixture.
 
-## Phase 5C — API/CLI stability
+The corpus must test behavior, not merely file acceptance.
 
-Version library interfaces, output schemas, diagnostics, exit codes, and command-line behavior.
+## Phase 5B — Golden analysis and regression evidence
 
-Breaking changes must be documented rather than silently changing analysis meaning.
+Primary items: **28, 31, 39**.
 
-## Phase 5D — Concurrency and cache correctness
+Create stable golden expectations for:
 
-Run parallel analyses, verify no cross-artifact contamination, validate cache identity/invalidation, and test deterministic results under different scheduling.
+- container identification;
+- architecture;
+- address mappings;
+- decoded instruction families;
+- basic-block counts/ranges where deterministic;
+- function candidates;
+- call/branch relationships;
+- ABI facts;
+- recovered types;
+- evidence classes;
+- unknown/unsupported/ambiguous regions;
+- generated-source structure;
+- machine-readable schema.
 
-## Phase 5E — Measured coverage
+Golden tests should avoid requiring byte-for-byte identical generated source when multiple semantically equivalent reconstructions are valid.
 
-Publish coverage by artifact class and analysis layer. A single aggregate percentage must never hide unsupported architectures, unknown instructions, ambiguous CFG regions, or missing type/source evidence.
+Where exact output is required, canonicalize ordering and serialization first.
 
-## Phase 5F — Security review
+## Phase 5C — Sanitizers and undefined-behavior testing
 
-Verify that:
+Primary item: **32**.
 
-- target code is never executed;
-- embedded scripts/interpreters are not invoked;
-- constructors are not run;
-- untrusted metadata cannot bypass bounds checks;
-- resource limits are enforced;
-- generated files are not automatically executed;
-- future emulation remains isolated.
+Use platform-appropriate sanitizer configurations including:
 
-## Phase 5 Definition of Done
+- AddressSanitizer;
+- UndefinedBehaviorSanitizer;
+- LeakSanitizer where available;
+- ThreadSanitizer where compatible;
+- compiler warnings at strict production levels.
 
-Production readiness requires reproducible corpus results, sanitizer/fuzz evidence, stable interfaces, thread-safe operation, deterministic outputs, measurable coverage, documented limitations, and an auditable non-executing security boundary.
+Sanitizer failures must identify:
+
+- artifact/fixture;
+- analysis stage;
+- reproducible input;
+- stack trace;
+- relevant address/offset;
+- whether the defect is parser, decoder, IR, reconstruction, CLI, cache, or concurrency related.
+
+A sanitizer-discovered memory-safety defect must block a production-quality claim until resolved or explicitly isolated from the affected release surface.
+
+## Phase 5D — Persistent fuzzing
+
+Primary item: **33**.
+
+Maintain fuzz targets for:
+
+- ELF;
+- PE/COFF;
+- Mach-O;
+- archives;
+- address translation;
+- instruction decoding;
+- debug metadata;
+- unwind metadata;
+- SLIR construction;
+- reconstruction IR;
+- source serialization;
+- JSON/SARIF/YAML serialization;
+- CLI/configuration parsing.
+
+Fuzzing must monitor:
+
+- crashes;
+- hangs;
+- timeouts;
+- excessive memory;
+- integer overflow;
+- out-of-bounds access;
+- recursion exhaustion;
+- pathological CFG growth;
+- pathological allocation;
+- invalid internal-state transitions.
+
+Every fixed security/reliability bug should become a permanent regression fixture when practical.
+
+## Phase 5E — CLI and library compatibility
+
+Primary item: **34**, supported by **37**.
+
+Define compatibility guarantees for:
+
+- command names;
+- help text structure;
+- version reporting;
+- exit codes;
+- output-language selection;
+- input/output behavior;
+- diagnostics;
+- configuration;
+- library entry points;
+- machine-readable schemas.
+
+API and CLI changes must be classified as:
+
+- compatible;
+- additive;
+- deprecated;
+- breaking.
+
+Breaking changes require documentation and versioning rather than silent semantic changes.
+
+## Phase 5F — Architecture and platform matrix
+
+Primary item: **35**.
+
+The release matrix must explicitly identify:
+
+- host platform;
+- target platform;
+- target architecture;
+- binary format;
+- ABI;
+- supported decoder level;
+- supported semantic level;
+- source-backend availability.
+
+A successful host build must not imply that every target architecture is supported.
+
+Multi-architecture artifacts must expose their available slices and require deterministic selection rules.
+
+## Phase 5G — Resource, cancellation, and denial-of-service controls
+
+Primary items: **26–27, 33**.
+
+Production analysis must enforce configurable limits for:
+
+- input size;
+- decompression/expansion;
+- memory;
+- instruction count;
+- CFG nodes/edges;
+- functions;
+- analysis depth;
+- recursion;
+- output size;
+- cache consumption;
+- wall-clock time;
+- parallel workers.
+
+Cancellation must propagate through parser, decoder, CFG, SLIR, data-flow, reconstruction, and serialization layers.
+
+A resource-limited result must be distinguishable from a successful complete analysis.
+
+## Phase 5H — Determinism and reproducibility
+
+Primary item: **28**.
+
+For deterministic mode:
+
+- ordering must be stable;
+- hash inputs must be explicit;
+- parallel scheduling must not change semantic results;
+- serialization must be canonical;
+- diagnostics must have stable identifiers;
+- cache keys must be reproducible.
+
+Record enough environment/tool metadata to distinguish an analyzer change from an input change.
+
+## Phase 5I — Thread safety and parallel analysis
+
+Primary item: **37**.
+
+Permit independent artifacts to be analyzed concurrently.
+
+Shared services must have explicit ownership:
+
+- immutable configuration may be shared;
+- caches require synchronization;
+- diagnostics require per-analysis ownership or safe aggregation;
+- temporary state must never leak between artifacts;
+- architecture/ABI state must remain analysis-local.
+
+Concurrency tests must intentionally vary scheduling and compare deterministic outputs.
+
+## Phase 5J — Content-addressed caching
+
+Primary item: **38**.
+
+Cache stages independently where useful:
+
+1. artifact identity/container parse;
+2. address map;
+3. instruction decoding;
+4. CFG;
+5. function recovery;
+6. SLIR;
+7. data flow;
+8. type evidence;
+9. reconstruction IR;
+10. generated source.
+
+Cache identity must include all inputs that can alter semantics, including artifact bytes, selected architecture/slice, configuration, analysis schema, tool version, and relevant feature flags.
+
+Invalid or incompatible cache entries must be safely discarded rather than reused.
+
+## Phase 5K — Machine-readable release contract
+
+Primary item: **29**.
+
+Define a versioned machine-readable schema for:
+
+- artifact identity;
+- container/slice/member;
+- architecture;
+- address maps;
+- sections/segments;
+- instructions;
+- blocks;
+- functions;
+- symbols;
+- ABI facts;
+- types;
+- globals;
+- SLIR;
+- reconstruction IR;
+- provenance;
+- evidence class;
+- confidence;
+- conflicts;
+- unknown/unsupported regions;
+- diagnostics;
+- coverage;
+- resource limits;
+- analyzer version.
+
+Schema evolution must be backward-aware and documented.
+
+## Phase 5L — Measured coverage and release scorecard
+
+Primary item: **39**.
+
+Coverage reporting must separate at least:
+
+- bytes inspected;
+- bytes mapped;
+- instructions decoded;
+- instructions semantically modeled;
+- basic blocks recovered;
+- CFG edges recovered;
+- functions identified;
+- functions semantically lifted;
+- symbols resolved;
+- types recovered;
+- source constructs reconstructed;
+- provenance links established;
+- unknown regions;
+- unsupported regions;
+- ambiguous regions.
+
+Do not collapse these into one percentage.
+
+A release scorecard should report measurements by artifact class, architecture, format, optimization level, and debug/symbol state.
+
+## Phase 5M — Security boundary and hostile-input review
+
+Primary item: **40**, supported by **24–26 and 33**.
+
+The analyzer must remain non-executing by default.
+
+Security review must verify that Slecompiler does not:
+
+- execute target instructions;
+- invoke target constructors/destructors;
+- execute embedded scripts;
+- load target kernel modules;
+- invoke target interpreters;
+- automatically execute generated source;
+- follow attacker-controlled external commands merely because metadata references them;
+- treat binary metadata as trusted memory boundaries.
+
+Future emulation, if ever introduced, must be isolated behind an explicit subsystem boundary with its own resource limits, policy, audit trail, and test suite.
+
+## Phase 5N — Supply-chain and build integrity
+
+Production validation must also cover the analyzer itself.
+
+Record:
+
+- compiler/toolchain identity;
+- source revision;
+- dependency versions;
+- build configuration;
+- generated-code provenance;
+- release artifact hashes;
+- test corpus revision;
+- sanitizer/fuzz configuration.
+
+Release artifacts should be reproducible where practical and should never be represented as verified merely because they were successfully packaged.
+
+## Phase 5O — Performance and scalability
+
+Measure:
+
+- startup time;
+- parser throughput;
+- decode throughput;
+- CFG construction;
+- function recovery;
+- SLIR construction;
+- data-flow analysis;
+- type recovery;
+- reconstruction;
+- serialization;
+- cache effectiveness;
+- peak memory;
+- parallel scaling.
+
+Performance claims must identify corpus, hardware/environment, configuration, and measurement method.
+
+Correctness and safety take precedence over benchmark optimization.
+
+## Phase 5P — Release gates
+
+A production release should have explicit gates for:
+
+1. compilation;
+2. unit tests;
+3. integration tests;
+4. regression corpus;
+5. sanitizer runs;
+6. fuzz health;
+7. deterministic-output tests;
+8. concurrency tests;
+9. resource-limit tests;
+10. machine-readable schema validation;
+11. coverage measurement;
+12. security review;
+13. documentation synchronization.
+
+A release gate may be **not applicable** for a platform or feature, but it must not be silently omitted.
+
+## Phase 5Q — Defect classification and remediation
+
+Production defects should be classified as:
+
+- correctness;
+- memory safety;
+- parser robustness;
+- decoder correctness;
+- CFG/function recovery;
+- semantic/SLIR;
+- type recovery;
+- reconstruction;
+- output/schema;
+- determinism;
+- concurrency;
+- resource exhaustion;
+- security boundary;
+- documentation/contract.
+
+Each defect should preserve a minimal reproducer where possible and become a regression test before closure.
+
+## Phase 5R — Compatibility and deprecation policy
+
+Document the support level for each:
+
+- binary format;
+- architecture;
+- ABI;
+- compiler/runtime family;
+- debug format;
+- source backend;
+- machine-readable schema.
+
+Unsupported combinations must fail clearly and must not silently downgrade into an apparently successful but misleading analysis.
+
+## Phase 5S — Phase 5 Definition of Done
+
+Phase 5 is complete only when reproducible evidence demonstrates:
+
+1. a versioned cross-platform regression corpus;
+2. golden structural regression coverage;
+3. sanitizer-tested builds;
+4. persistent fuzz coverage for critical parser/decoder/IR paths;
+5. stable CLI/API and output-schema contracts;
+6. explicit architecture/platform compatibility reporting;
+7. enforced resource and cancellation controls;
+8. deterministic results;
+9. thread-safe parallel analysis;
+10. validated content-addressed caching;
+11. machine-readable release schema;
+12. multidimensional measured coverage;
+13. auditable non-executing security boundary;
+14. analyzer build/supply-chain provenance;
+15. performance measurements with stated methodology;
+16. explicit release gates;
+17. reproducible defect remediation;
+18. documented compatibility/deprecation policy.
+
+Phase 5 is not complete because tests are numerous. It is complete when the project can show reproducible evidence that the system behaves safely and consistently across the declared support matrix.
+
+## Phase 5 Work Sequence
+
+1. Version the corpus and compatibility matrix.
+2. Establish golden structural expectations.
+3. Enable sanitizer configurations.
+4. Establish persistent fuzz targets.
+5. Stabilize CLI/library contracts.
+6. Formalize architecture/platform reporting.
+7. Enforce resource and cancellation controls.
+8. Establish deterministic-mode verification.
+9. Validate concurrent analysis.
+10. Implement content-addressed caching.
+11. Version machine-readable schemas.
+12. Build multidimensional coverage reports.
+13. Perform hostile-input/security review.
+14. Record analyzer build/supply-chain provenance.
+15. Measure performance and scalability.
+16. Implement release gates.
+17. Formalize defect remediation.
+18. Document compatibility/deprecation.
+19. Perform Phase 5 review.
+
+## Phase 5 Non-Goals
+
+Phase 5 does not claim:
+
+- universal architecture support;
+- perfect decompilation;
+- exact original-source recovery;
+- safe execution of analyzed programs;
+- automatic correctness of inferred semantics;
+- that passing a test suite proves arbitrary binaries are handled correctly;
+- that an aggregate percentage represents overall decompiler quality.
 
 ---
 
