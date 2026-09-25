@@ -14,18 +14,29 @@ struct Provenance { std::uint64_t file_offset{}; std::uint64_t virtual_address{}
 struct Operand { enum class Kind { Invalid, Register, Immediate, Memory, Relative, Symbol }; Kind kind{Kind::Invalid}; std::string text; std::int64_t value{}; };
 struct Instruction { std::uint64_t address{}; std::vector<std::uint8_t> bytes; std::string mnemonic; std::vector<Operand> operands; Provenance provenance; };
 struct Section { std::string name; std::uint64_t file_offset{}; std::uint64_t file_size{}; std::uint64_t virtual_address{}; std::uint64_t virtual_size{}; std::uint32_t flags{}; };
+struct ProgramSegment { std::uint32_t type{}; std::uint32_t flags{}; std::uint64_t file_offset{}; std::uint64_t virtual_address{}; std::uint64_t file_size{}; std::uint64_t memory_size{}; std::uint64_t alignment{}; };
+struct Relocation { std::uint64_t address{}; std::string type; std::string symbol; std::string section; };
 struct Symbol { std::string name; std::uint64_t address{}; bool external{}; Provenance provenance; };
 struct Import { std::string library; std::string name; std::uint64_t address{}; };
 struct Export { std::string name; std::uint64_t address{}; };
-struct Relocation { std::uint64_t address{}; std::string type; };
+
 
 struct LibraryMetadata {
     std::string soname;
     std::vector<std::string> needed_libraries;
     std::vector<std::string> symbol_versions;
+    std::vector<std::string> required_symbol_versions;
     std::string build_id;
     bool position_independent{};
+    bool pie{};
     bool tls_present{};
+    bool relro_present{};
+    bool bind_now{};
+    bool nx_stack{};
+    std::vector<std::string> init_functions;
+    std::vector<std::string> fini_functions;
+    std::uint64_t plt_address{};
+    std::uint64_t got_address{};
 };
 
 struct KernelModuleMetadata {
@@ -50,7 +61,8 @@ public:
     const std::string& sha256() const noexcept;
     const std::string& name() const noexcept;
     const LibraryMetadata& library_metadata() const noexcept;
-    const KernelModuleMetadata& kernel_module_metadata() const noexcept;\n    const NativeInterfaces& interfaces() const noexcept;
+    const KernelModuleMetadata& kernel_module_metadata() const noexcept;
+    const NativeInterfaces& interfaces() const noexcept;
 private:
     std::string name_;
     std::vector<std::uint8_t> bytes_;
@@ -59,13 +71,15 @@ private:
     Architecture architecture_{Architecture::Unknown};
     ArtifactClass artifact_class_{ArtifactClass::Unknown};
     LibraryMetadata library_metadata_;
-    KernelModuleMetadata kernel_module_metadata_;\n    NativeInterfaces interfaces_;
+    KernelModuleMetadata kernel_module_metadata_;
+    NativeInterfaces interfaces_;
 };
 
 class Artifact;
 
 struct NativeInterfaces {
     std::vector<Section> sections;
+    std::vector<ProgramSegment> segments;
     std::vector<Symbol> symbols;
     std::vector<Import> imports;
     std::vector<Export> exports;
