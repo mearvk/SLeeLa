@@ -5,3 +5,7 @@ class Timer { int active; int interval; void configure(int i){interval=i;} void 
 class Lock { int held; void acquire(){held=1;} void release(){held=0;} }
 class EventBus { int listeners; void subscribe(String e){listeners=listeners+1;} void publish(String e){} }
 class Result { int success; String message; void ok(String m){success=1;message=m;} void fail(String m){success=0;message=m;} }
+class CancellationToken { int cancelled; void cancel(){cancelled=1;} }
+class EventLoop { int running; void start(){running=1;} void stop(){running=0;} void post(String task){} }
+class WorkQueue { int running; int workers; void start(){running=1;} void stop(){running=0;} void submit(String task){} }
+class Future { int ready; void cancel(){} }
