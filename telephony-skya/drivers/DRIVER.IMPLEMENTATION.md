@@ -1,76 +1,31 @@
-# Skya Driver Implementation
+# Skya Known-Product Driver Implementation
 
-## Model-specific driver layer
+This release promotes the known-product model files from capability-only adapters to a shared, concrete product-runtime architecture.
 
-Skya now separates three levels of driver matching:
+## Known product set
 
-1. **Exact model driver** — matches a specific vendor/model string.
-2. **Vendor-family driver** — matches the vendor when no exact model driver matches.
-3. **Standard-audio fallback** — matches standards-based USB/Bluetooth audio when no vendor match is available.
+Yealink: MP45, MP50, UH42, UH44, UH46, WH64, WH68.
+Poly: Blackwire 3320, Blackwire 5220, Savi 8200, Savi 8400, Voyager 4320, Voyager 5200.
+Jabra: Biz 1500, Evolve2 40, Evolve3 65, Evolve3 75, Speak2 55, Speak2 75.
+Grandstream: GRP26xx, GUV3000, GUV3005, GXP21xx.
+EPOS: IMPACT 1000, IMPACT SC 200, IMPACT SC 600, SDW 5000.
+Logitech: H570e, Zone 305, Zone Vibe, Zone Wired 2, Zone Wireless 2.
+Fanvil: V63, V64, V65, V66, X210i-V2, X4U-V2, X5U-V2, X6U-V2.
+Snom: A330D, A330M.
+Cisco: 321, 322.
 
-Exact model drivers are registered first so that a known model receives its model-specific capability policy before falling back to the broader vendor adapter.
+## Runtime implementation
 
-Current model adapters include:
+skya_product_runtime.h and skya_product_runtime.c provide validated model/vendor matching, per-device capability policy, answer/end/hold/mute/volume/dial/busy-light operation state, transport callback dispatch, firmware query and descriptor retrieval, hotplug state, reset state, operation accounting, Linux/Windows 10+/macOS host selection, and compatibility with the existing hardware profile and bounded data plane.
 
-- Yealink MP45
-- Yealink MP50
-- Poly Blackwire 5220
-- Jabra Evolve2 40
-- Grandstream GUV3000
-- EPOS IMPACT SC 600
-- Logitech Zone Wired 2
-- Fanvil X4U-V2
-- Snom A330D
-- Cisco 321
+The model files remain responsible for exact product identity. The runtime is responsible for the common operational state machine and the platform/vendor transport boundary.
 
-The model implementation lives in:
+## Hardware evidence boundary
 
-- `drivers/include/skya_model_drivers.h`
-- `drivers/src/skya_model_drivers.cpp`
+The runtime does not fabricate VID/PID values, HID report IDs, report byte offsets, register maps, firmware formats, or vendor-specific command packets. Those must be supplied by a verified transport backend or discovered from the device. A model being implemented does not mean that every hardware revision has been physically tested.
 
-The registry order is:
+## Platform coverage
 
-```
-exact model
-    -> vendor family
-    -> standard audio
-```
+Linux uses the existing ALSA/platform layer. Windows 10+ uses the existing Windows audio enumeration layer and is designed for WASAPI/MMDevice plus vendor HID/USB transport backends. macOS uses the existing Core Audio enumeration layer and is designed for Core Audio plus IOHID/USB transport backends.
 
-## Capability policy
-
-Model identification is not certification.
-
-A model driver may establish the capability policy appropriate to the device class, but the platform layer must still determine the actual transport and available interfaces. USB HID call-control capabilities are only exposed when the discovered transport is `SKYA_TRANSPORT_USB_HID`. Fanvil X4U-V2 is treated as a SIP/network telephone and its telephone controls are exposed only for SIP/network transport.
-
-## Evidence boundary
-
-The initial model set is grounded in manufacturer product specifications. For example, Yealink documents MP45 and MP50 as USB phones with call controls, while HP Poly documents Blackwire 5220 USB call answer/end, mute, and volume controls, and Jabra documents Evolve2 40 USB-A/USB-C variants and Jabra Direct support.
-
-Manufacturer documentation:
-
-- https://www.yealink.com/en/product-detail/microsoft-teams-phone-mp45
-- https://www.yealink.com/website-service/attachment/product_resource/documents/20220525/202205250648006524a5aea68480e91546caf0511b83f.pdf
-- https://support.hp.com/us-en/product/product-specs/blackwire-5200-series/model/2101719547
-- https://www.jabra.com/business/office-headsets/jabra-evolve/jabra-evolve2-40
-
-These sources establish documented device characteristics; they do not replace physical Skya compatibility testing.
-
-## Next model-driver work
-
-For each model, the next implementation layer should add:
-
-- exact USB VID/PID where documented and verified;
-- USB interface descriptors;
-- HID report discovery;
-- answer/end/mute/hold/volume mappings;
-- LED and busy-light controls;
-- firmware query;
-- hotplug/reconnect behavior;
-- unsupported-feature reporting;
-- Linux test record;
-- Windows 10+ test record;
-- macOS test record;
-- hardware revision and firmware matrix;
-- official vendor documentation/download links.
-
-No model should be marked `TESTED` or `CERTIFIED` until the exact hardware and software combination has been exercised.
+SKYA_HOST_WINDOWS_10 and SKYA_HOST_MACOS are explicit runtime targets so model drivers do not need duplicated product logic merely because the host operating system changes.
