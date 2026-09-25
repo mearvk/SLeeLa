@@ -1,0 +1,10 @@
+#sleela 1.1
+class Microphone {
+    AudioInput input;
+    void open(AudioDevice device, AudioFormat format) { input.open(device, format); }
+    void start() { input.start(); }
+    void stop() { input.stop(); }
+    void mute(int value) { input.setMute(value); }
+    void volume(int value) { input.setVolume(value); }
+    void close() { input.close(); }
+}
