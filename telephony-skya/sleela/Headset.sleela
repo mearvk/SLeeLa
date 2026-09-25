@@ -5,16 +5,9 @@ class Headset {
     Speaker speaker;
     int connected;
     void connect(AudioDevice selected, AudioFormat format) {
-        device = selected;
-        microphone.open(selected, format);
-        speaker.open(selected, format);
-        connected = 1;
+        device = selected; microphone.open(selected, format); speaker.open(selected, format); connected = 1;
     }
-    void disconnect() {
-        microphone.close();
-        speaker.close();
-        connected = 0;
-    }
+    void disconnect() { microphone.close(); speaker.close(); connected = 0; }
     void mute(int value) { microphone.mute(value); }
     void volume(int value) { speaker.volume(value); }
 }

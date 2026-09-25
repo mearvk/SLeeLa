@@ -5,9 +5,6 @@ class AudioFormat {
     int sampleBits;
     String encoding;
     void set(int rate, int channelCount, int bits, String codec) {
-        sampleRate = rate;
-        channels = channelCount;
-        sampleBits = bits;
-        encoding = codec;
+        sampleRate = rate; channels = channelCount; sampleBits = bits; encoding = codec;
     }
 }
