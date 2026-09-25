@@ -271,6 +271,14 @@
       "sha256": "273dc2e405441ca34cddc6aeec4d115ee6bd58d9ed39618b1e819000df7456d2"
     },
     {
+      "path": "api/decompiler/API.html",
+      "sha256": "c6e7df80a3cc0c245503b714bd9948ad1075a19de3f2d95b5aac4f535021c1fc"
+    },
+    {
+      "path": "api/decompiler/README.md",
+      "sha256": "fdc76997573ab883b88d8f7005c53be254685e9c33069da6fce6ea10f0dd26ce"
+    },
+    {
       "path": "api/email/API.html",
       "sha256": "42aaa71b23684abc412e7a303a8f96f7ab6f74f8502a7ff60dddd4eca4804398"
     },
@@ -2539,6 +2547,582 @@
       "sha256": "f5b6a8331e58ea3a40d4111dca35b223c600278351e37d11ceb85cb258369366"
     },
     {
+      "path": "decompiler/cli/main.cpp",
+      "sha256": "75ea22c2eee4be74a147430faf3f4d42a52512dfb5b6458dfc2bba8f7d2c5689"
+    },
+    {
+      "path": "decompiler/include/sleela/decompiler/decompiler.hpp",
+      "sha256": "0064f3fb33b2567830f04eac0100e5ad1b59872e355e7b4f1a9c7aec6d873cfa"
+    },
+    {
+      "path": "decompiler/include/sleela/decompiler/slir.hpp",
+      "sha256": "c31cdaf39a01836775605354617ab6e00d1ac709139a676d5b55235ec75b0b54"
+    },
+    {
+      "path": "decompiler/include/sleela/decompiler/vm.hpp",
+      "sha256": "5abba52b176a5ad2714a58b6b039f854de1e6de621afc91b0b884f46434cad8b"
+    },
+    {
+      "path": "decompiler/src/analyzer.cpp",
+      "sha256": "f6be2144f9176bda1a2a627f56cab2f3c0e5115999b7380520a4052e776a5c81"
+    },
+    {
+      "path": "decompiler/src/artifact.cpp",
+      "sha256": "2e12f6d147788411521baab8a364805a1c18e0d30289e50c3b522d9bcdaacaf9"
+    },
+    {
+      "path": "decompiler/src/decoder.cpp",
+      "sha256": "73ff892932cbf173e9d59758a8b9f8ccb4d98d0f5efb5229466c1908f79c9dd4"
+    },
+    {
+      "path": "decompiler/src/elf.cpp",
+      "sha256": "59d9c2abee26dd514ad17f4ea0420ec04bd5625db92c6235036da413bfa6e003"
+    },
+    {
+      "path": "decompiler/src/pe.cpp",
+      "sha256": "78ac310118757430577481513c65df4730f33eb828420d4421814688a4fa74d7"
+    },
+    {
+      "path": "decompiler/src/slir.cpp",
+      "sha256": "23868b80c22ba13b67bd9697f19233ccf4f1e0d326aceadafbff9bf706916c2f"
+    },
+    {
+      "path": "decompiler/src/vm.cpp",
+      "sha256": "ba94128bf46427cc871defb2fb6c9c28f2ee78622bcb288810840509d16c7f10"
+    },
+    {
+      "path": "decompiler/tests/test_core.cpp",
+      "sha256": "af9ee5f55fe7e297870b49def782c6110f686ce68783ec986606fa7e5ed64eea"
+    },
+    {
+      "path": "drivers/cisco/321/1.0/driver.c",
+      "sha256": "eca2257238490c9b1d9f94c20e254d99273eb0ee54a4ce655d35d53daf5d5ac4"
+    },
+    {
+      "path": "drivers/cisco/321/1.0/driver.cpp",
+      "sha256": "ce1b84f94bcd6b2bd9f1da6789000a7dc640df031a153017e08f3d2c250925f7"
+    },
+    {
+      "path": "drivers/cisco/321/1.0/driver.h",
+      "sha256": "89313a31e6af284584b642feccfc133c9c21b1796b8b9e2e49b2d0ce0b1c0e16"
+    },
+    {
+      "path": "drivers/cisco/322/1.0/driver.c",
+      "sha256": "4c57187264508d42a7a306b9b4b74378fc7852de169c4b216045608a1845524f"
+    },
+    {
+      "path": "drivers/cisco/322/1.0/driver.cpp",
+      "sha256": "2460be7de2cf65fe8a46dfd0a5a3fc6eb668251b60a2e42e8d422d486cdc1d57"
+    },
+    {
+      "path": "drivers/cisco/322/1.0/driver.h",
+      "sha256": "263ad9b0504c8332f14488389ae53407f254fe09335b3b63b23dbf7b5030d571"
+    },
+    {
+      "path": "drivers/epos/impact-1000/1.0/driver.c",
+      "sha256": "f486821bf99da8361a9ecff7a20ff5b72a5d713dbb34ae2c78282032f4b6648f"
+    },
+    {
+      "path": "drivers/epos/impact-1000/1.0/driver.cpp",
+      "sha256": "081c13cf313a91fa2c0efa7e10ab301b4ebbeef02ffdf8b442f22459e3ec6f90"
+    },
+    {
+      "path": "drivers/epos/impact-1000/1.0/driver.h",
+      "sha256": "0aee78e1336a11a7d5d26d4f50ddafba9d0bb49e14b8aadf8d6e732784d2b4b6"
+    },
+    {
+      "path": "drivers/epos/impact-sc200/1.0/driver.c",
+      "sha256": "7c777c530f7aae4be8188d6a584e862093a78791983afb4b928f252cdfdc3fbf"
+    },
+    {
+      "path": "drivers/epos/impact-sc200/1.0/driver.cpp",
+      "sha256": "1596847a86391ff6e30a3be3cb1c04d088a9e5e7c5283c91d86e1972728838d0"
+    },
+    {
+      "path": "drivers/epos/impact-sc200/1.0/driver.h",
+      "sha256": "74d5c9bf273f9e7d8b72f0bfdcaf0f0dc460326148224b2ed353b0b74d1488ff"
+    },
+    {
+      "path": "drivers/epos/impact-sc600/1.0/driver.c",
+      "sha256": "e6de47806f80467a2e9553a8447c145d5ac351f5512deaf8e7ecc320bc316c40"
+    },
+    {
+      "path": "drivers/epos/impact-sc600/1.0/driver.cpp",
+      "sha256": "507d8a3ee9da1c5c73f70837b8ac2d333bb7d7d7b6faf93c0c55b98358e1c6a2"
+    },
+    {
+      "path": "drivers/epos/impact-sc600/1.0/driver.h",
+      "sha256": "dc8c6c6ce5a3daf68067d0784738f65e660f8b684efea1072b3cdd641b97df3e"
+    },
+    {
+      "path": "drivers/epos/sdw-5000/1.0/driver.c",
+      "sha256": "04966e93d7fd9492499a7b5b336bca8501fa78920c1d31bb2986b02c432230e8"
+    },
+    {
+      "path": "drivers/epos/sdw-5000/1.0/driver.cpp",
+      "sha256": "575f1903c02bb308ef8be98da6851810009780d0675c4578aa40801a3429a391"
+    },
+    {
+      "path": "drivers/epos/sdw-5000/1.0/driver.h",
+      "sha256": "623058146778b1f8e6f8f71a080547d2b28a50561ecaa3c28cd1fa4f623068c2"
+    },
+    {
+      "path": "drivers/fanvil/v63/1.0/driver.c",
+      "sha256": "f50d16251b141b7e0b17ff4f3a92b7a6462cd9e8dbe14a4766bf48a70170a5c0"
+    },
+    {
+      "path": "drivers/fanvil/v63/1.0/driver.cpp",
+      "sha256": "52136f1987693fbe23fcd6d6f937fe21fce40f7c2b70921c8391ca155540c7eb"
+    },
+    {
+      "path": "drivers/fanvil/v63/1.0/driver.h",
+      "sha256": "afc7be775edf493053365d3241d8fa1b8fcc0e576f168c1dfc6b80e69ea0b45e"
+    },
+    {
+      "path": "drivers/fanvil/v64/1.0/driver.c",
+      "sha256": "57c6d9ef2729aa969915da5116b5dc94f7481d843e2714c5b1c0f68e81bc42c7"
+    },
+    {
+      "path": "drivers/fanvil/v64/1.0/driver.cpp",
+      "sha256": "2b351d08e72c78da2f133f182ff95d04378b73d5daf54c6c092322397847a2ac"
+    },
+    {
+      "path": "drivers/fanvil/v64/1.0/driver.h",
+      "sha256": "fcae78c18e3b87c0629240d91efc0f74bed9745168614496658c7570d427c400"
+    },
+    {
+      "path": "drivers/fanvil/v65/1.0/driver.c",
+      "sha256": "940e7ffb20711d28a85adb3ab94aab5e4d4f626630d4551f16a6f4551698dff2"
+    },
+    {
+      "path": "drivers/fanvil/v65/1.0/driver.cpp",
+      "sha256": "1561ab3ed94cb169ff4f20627f2a443bfa72936fa04a4698e50c66650922dcc4"
+    },
+    {
+      "path": "drivers/fanvil/v65/1.0/driver.h",
+      "sha256": "bae01a5a477e6e98f8386ab0449594f760e45b0da2e13bab264e7417cf3d8a7f"
+    },
+    {
+      "path": "drivers/fanvil/v66/1.0/driver.c",
+      "sha256": "9d49294f3da5c91017c49d40495a9e0144795b68fc30a53dd95bea38839d4e54"
+    },
+    {
+      "path": "drivers/fanvil/v66/1.0/driver.cpp",
+      "sha256": "f47991fbe4457131eb6a27ff18a9692b737384e1b263c42c4557b78a72cd3379"
+    },
+    {
+      "path": "drivers/fanvil/v66/1.0/driver.h",
+      "sha256": "a823efecf1c4b031396645ae025835df088d839d3ec9e30b794e5ac3aca42578"
+    },
+    {
+      "path": "drivers/fanvil/x210i-v2/1.0/driver.c",
+      "sha256": "cf3004cf3c5685396cf92f4606d88dd25dd78ffa34c3f98f9ee729b0644108cc"
+    },
+    {
+      "path": "drivers/fanvil/x210i-v2/1.0/driver.cpp",
+      "sha256": "37f4722a528b33301502cf0afb798e9f728f64143bd7f2cc550562e038da2325"
+    },
+    {
+      "path": "drivers/fanvil/x210i-v2/1.0/driver.h",
+      "sha256": "69ff5ea8ab0f6bab726b93f12c1a211397ad463589e63423f454f75750be2f39"
+    },
+    {
+      "path": "drivers/fanvil/x4u-v2/1.0/driver.c",
+      "sha256": "083e98598aa67c2ca6e40510021a9a24f7e8d1a79a8a04e61e01a4c84dd141cf"
+    },
+    {
+      "path": "drivers/fanvil/x4u-v2/1.0/driver.cpp",
+      "sha256": "2e3a93d85eac5326c0198351bc46ebd63816985b48419d970f1b8cff3d588496"
+    },
+    {
+      "path": "drivers/fanvil/x4u-v2/1.0/driver.h",
+      "sha256": "574170606134fdc99e29d372ebda4009fd88dc0ce7749601fe557fa1df3ca65e"
+    },
+    {
+      "path": "drivers/fanvil/x5u-v2/1.0/driver.c",
+      "sha256": "4a2adfdec4c06a56502cffd3b0deb521e3e186421ca919eb69a42ef3d7fc007e"
+    },
+    {
+      "path": "drivers/fanvil/x5u-v2/1.0/driver.cpp",
+      "sha256": "5af79c4d60882c9a1091d25aa88a8103462d5ee64d01be39fda6abc878b62162"
+    },
+    {
+      "path": "drivers/fanvil/x5u-v2/1.0/driver.h",
+      "sha256": "24885dea758933b8734c0fa4a437490ea74df75ab8769a846a37e2c82e09eb7c"
+    },
+    {
+      "path": "drivers/fanvil/x6u-v2/1.0/driver.c",
+      "sha256": "6abd5b80d06bc27802ac438a48e508b3652fbbbb17d0f0bd59754d05aa8a2888"
+    },
+    {
+      "path": "drivers/fanvil/x6u-v2/1.0/driver.cpp",
+      "sha256": "cdcb48d21bf2977af4f8475e13b4f0f0d874a436edb49e450ca5eecbb133d8a5"
+    },
+    {
+      "path": "drivers/fanvil/x6u-v2/1.0/driver.h",
+      "sha256": "683db155599664c8e0f623547e52b8309b75d0f9e29f5b2e569046c073278673"
+    },
+    {
+      "path": "drivers/grandstream/grp26xx/1.0/driver.c",
+      "sha256": "cf362a20a631f14220e6cce47d6d3baa6b83ba10f6bf9445891d6750053893cc"
+    },
+    {
+      "path": "drivers/grandstream/grp26xx/1.0/driver.cpp",
+      "sha256": "3c978dae3f39b64b5aaef9dec6dad29272ad19a7c54aab5ab621b50faab9e95a"
+    },
+    {
+      "path": "drivers/grandstream/grp26xx/1.0/driver.h",
+      "sha256": "e7d9f4b2ab95fe88fdb138523b6bbdb7286bbaa053088173b0121e098f481c55"
+    },
+    {
+      "path": "drivers/grandstream/guv3000/1.0/driver.c",
+      "sha256": "ead90d0097bece6dbf78b0f5a96fc902d093886c8d0d8f0f8ad763844b607ae0"
+    },
+    {
+      "path": "drivers/grandstream/guv3000/1.0/driver.cpp",
+      "sha256": "eba41153dc0e31a53a1f231a64566fe3fa1d2ee7fd0265339b845eb4eac17823"
+    },
+    {
+      "path": "drivers/grandstream/guv3000/1.0/driver.h",
+      "sha256": "7bb5096729b8e85c27222735aefd64b51f89332f7ff25028a8c1a5f764bf41a0"
+    },
+    {
+      "path": "drivers/grandstream/guv3005/1.0/driver.c",
+      "sha256": "8a0da63dbac0e35e76124adcfef84f479ec5405afdab6e7e86f8119edbb82a86"
+    },
+    {
+      "path": "drivers/grandstream/guv3005/1.0/driver.cpp",
+      "sha256": "41b593b11deccfaf77457c970757bc6257f188eca208dcafd7468b6d2d089f0e"
+    },
+    {
+      "path": "drivers/grandstream/guv3005/1.0/driver.h",
+      "sha256": "860ccae518b31386b7b3282820e9a1fe8550b9f72a8fd747f6820ab3e0cff593"
+    },
+    {
+      "path": "drivers/grandstream/gxp21xx/1.0/driver.c",
+      "sha256": "1805dd5c129cc35582536491b43505238115e6566ba7e684fb77d90dd45de7ec"
+    },
+    {
+      "path": "drivers/grandstream/gxp21xx/1.0/driver.cpp",
+      "sha256": "d5f5b41f4c39a2642d197f544591c556ee4c12df0d2c28b719ff7070ccd76351"
+    },
+    {
+      "path": "drivers/grandstream/gxp21xx/1.0/driver.h",
+      "sha256": "6cea4b5c4e0a2e128f3caf6b99891b16a4377a71984a111b435c6e1157eb9e0d"
+    },
+    {
+      "path": "drivers/jabra/biz-1500/1.0/driver.c",
+      "sha256": "989098f9cd226715bc7a640c33cca31e78c18f24eee6013f157e304b28f6b97e"
+    },
+    {
+      "path": "drivers/jabra/biz-1500/1.0/driver.cpp",
+      "sha256": "6695f8edb3d8394fe3b3dadb4d487b31c498b2485e15ddcf23d0df8307ef1529"
+    },
+    {
+      "path": "drivers/jabra/biz-1500/1.0/driver.h",
+      "sha256": "abf9d4440b95fb9b0921b99c128b8b262bcb7a33ec3bcea90f791bc763cd1b2b"
+    },
+    {
+      "path": "drivers/jabra/evolve2-40/1.0/driver.c",
+      "sha256": "8500b0067bb9d7f80ff15550f511f734061580c0110e3742d8091523c1f7d192"
+    },
+    {
+      "path": "drivers/jabra/evolve2-40/1.0/driver.cpp",
+      "sha256": "914c33b1b77023b4965ac5cb5609799d0d2f06cc8c4ae5fd1e39d90afc776b75"
+    },
+    {
+      "path": "drivers/jabra/evolve2-40/1.0/driver.h",
+      "sha256": "116f1ed752fd98374b6ffd1e619a41edb9d8dd25a553c60e1c525e872bdb6c9c"
+    },
+    {
+      "path": "drivers/jabra/evolve3-65/1.0/driver.c",
+      "sha256": "e2963b84012cdad7e0d453a263239b24c45b08c14c3cab03b956dc90baf6cd0a"
+    },
+    {
+      "path": "drivers/jabra/evolve3-65/1.0/driver.cpp",
+      "sha256": "b721cc39a121cb0316f0be7a0263489852d58a0c5ae0795ef9a588813831fd0c"
+    },
+    {
+      "path": "drivers/jabra/evolve3-65/1.0/driver.h",
+      "sha256": "2a7d2e4bcf7df7832ada117c29c8c1fbb0dd7094422b1274d1721436a1faad26"
+    },
+    {
+      "path": "drivers/jabra/evolve3-75/1.0/driver.c",
+      "sha256": "f0ffe0bc7764fc56e85fdea319f7f4929b53f372754f85bd28021197354d6078"
+    },
+    {
+      "path": "drivers/jabra/evolve3-75/1.0/driver.cpp",
+      "sha256": "f7c1f052aeed4daf57093f771fe810fea30827ae71961776212929624d6eefab"
+    },
+    {
+      "path": "drivers/jabra/evolve3-75/1.0/driver.h",
+      "sha256": "0e54b9670bd33810424f7cbeecfcdc2d892249ddc875a06046f6b9754843be3c"
+    },
+    {
+      "path": "drivers/jabra/speak2-55/1.0/driver.c",
+      "sha256": "fade92876afdf20b6a904c98b55d5d7f7a9e4623e99982f71f45d0ec9bb0ced5"
+    },
+    {
+      "path": "drivers/jabra/speak2-55/1.0/driver.cpp",
+      "sha256": "ef6bb0b2e1d268bacc279086151e0dffae594e4039169f498b4b367dc4cc6263"
+    },
+    {
+      "path": "drivers/jabra/speak2-55/1.0/driver.h",
+      "sha256": "2f5d38072c07bbece63d50902950f71884b719cef670148b96fe1648af9a6f32"
+    },
+    {
+      "path": "drivers/jabra/speak2-75/1.0/driver.c",
+      "sha256": "6161ff01950c5d61c7cb66844a66a7178363fb2c827fd177c4719f83d0f80111"
+    },
+    {
+      "path": "drivers/jabra/speak2-75/1.0/driver.cpp",
+      "sha256": "520ad3b37a307fe31f4bba5491216956cde4cb85c91785afdea23ec945e469cb"
+    },
+    {
+      "path": "drivers/jabra/speak2-75/1.0/driver.h",
+      "sha256": "3dc0c30a810a4cf41fe44ba3e8b4f3b8d2df159782762499c6decaa5eb25f7f0"
+    },
+    {
+      "path": "drivers/logitech/h570e/1.0/driver.c",
+      "sha256": "331ff9549326a4a8fcdd4ddccdfea895528654a97c4c81fc9d56b50a5d5a846b"
+    },
+    {
+      "path": "drivers/logitech/h570e/1.0/driver.cpp",
+      "sha256": "91daef22f0d452b4310e079fb180d691fa654bf59bff20e5fb3d628b39a432cc"
+    },
+    {
+      "path": "drivers/logitech/h570e/1.0/driver.h",
+      "sha256": "2ab8b86eefe3664de19cd76351f75fb9f7398b7f3661398e02c75cf9a21329e5"
+    },
+    {
+      "path": "drivers/logitech/zone-305/1.0/driver.c",
+      "sha256": "f04a2a818af5af9f3b0758092d6d55e1efce79b36339a6987b06323811f339f0"
+    },
+    {
+      "path": "drivers/logitech/zone-305/1.0/driver.cpp",
+      "sha256": "9919126dec04c4f8031740a916b7bd25bbca768283fb081cc66aea9ac66d8a71"
+    },
+    {
+      "path": "drivers/logitech/zone-305/1.0/driver.h",
+      "sha256": "8602f31f59f6bc5ef1939f3b416fa7de295528f19cbf9a98e9edaecf5995e3fa"
+    },
+    {
+      "path": "drivers/logitech/zone-vibe/1.0/driver.c",
+      "sha256": "4686a6fb2956c0611f3972ee90b51e5d2eb81216b60d06e482a4b6539314e4c1"
+    },
+    {
+      "path": "drivers/logitech/zone-vibe/1.0/driver.cpp",
+      "sha256": "edf613ed38b486c05364c2e1ac79060a0b1b3fb182c4093f516c5fc1dc5de2cf"
+    },
+    {
+      "path": "drivers/logitech/zone-vibe/1.0/driver.h",
+      "sha256": "53a663aff3d615ac2b4959cab6626547e6be7e9e8749b60786ee937a943ca205"
+    },
+    {
+      "path": "drivers/logitech/zone-wired-2/1.0/driver.c",
+      "sha256": "8d36097af9cb106741f5848b4f4e48fb4774fd1eefe7d6c296105360ca72020c"
+    },
+    {
+      "path": "drivers/logitech/zone-wired-2/1.0/driver.cpp",
+      "sha256": "6bf1a4a42335e97ed05409c582668167d95069cba89170492b21d70b62d5a075"
+    },
+    {
+      "path": "drivers/logitech/zone-wired-2/1.0/driver.h",
+      "sha256": "8d278937a6309406f2d9b135d2a6679cab8348214edead11f9279d9926b41fe4"
+    },
+    {
+      "path": "drivers/logitech/zone-wireless-2/1.0/driver.c",
+      "sha256": "dd93f1c405cc9fe7a1feb05a80beb9b5dd608d5534e68b410dc68cb4141c71e0"
+    },
+    {
+      "path": "drivers/logitech/zone-wireless-2/1.0/driver.cpp",
+      "sha256": "9902185e60ee65b5e87f6de0af0714a75225c075c4bd9019bdf89c4812c75994"
+    },
+    {
+      "path": "drivers/logitech/zone-wireless-2/1.0/driver.h",
+      "sha256": "2fe1bfe3108458c4f38baaac217c5a925b8ce04a4b93db961ccd2ca86f82a6dc"
+    },
+    {
+      "path": "drivers/poly/blackwire-3320/1.0/driver.c",
+      "sha256": "b377169fffbf46291454c9e6307e1cf2bc0189a5afeb90bcffbf4e8a768f7415"
+    },
+    {
+      "path": "drivers/poly/blackwire-3320/1.0/driver.cpp",
+      "sha256": "3bd025a405d5acfcabf53b976cf70413b95d00bdca2596f4bf6ea21e4cad4d11"
+    },
+    {
+      "path": "drivers/poly/blackwire-3320/1.0/driver.h",
+      "sha256": "53e13bb763dfb8209d1f3a2defcab77f901d46e9d6ea7f32781aa5f5dc477b0b"
+    },
+    {
+      "path": "drivers/poly/blackwire-5220/1.0/driver.c",
+      "sha256": "4c73b7a719a9b685bc596351a387042ad49d58824a46bf13350d8dcedbdcdb4f"
+    },
+    {
+      "path": "drivers/poly/blackwire-5220/1.0/driver.cpp",
+      "sha256": "518470453aa03917309d932a9f9429f1b3ea372e0f601884b6d0340536e52b6b"
+    },
+    {
+      "path": "drivers/poly/blackwire-5220/1.0/driver.h",
+      "sha256": "e6547eea19f90b9a8a7f09fc63242860d82337968f16ed75f3d19e21808a0f7e"
+    },
+    {
+      "path": "drivers/poly/savi-8200/1.0/driver.c",
+      "sha256": "f7f22047b79bc695cedcb883c755a0df62e5fb775dba53d3afa8687cbc74dd56"
+    },
+    {
+      "path": "drivers/poly/savi-8200/1.0/driver.cpp",
+      "sha256": "0cd61a6bc30cbdc6d67ff787fba73750b16b6aceb0165634539157f4625bc1f4"
+    },
+    {
+      "path": "drivers/poly/savi-8200/1.0/driver.h",
+      "sha256": "9d3b934f9819b11ea49483011e550760ca0185c30fe7832fe21677e3112ae34b"
+    },
+    {
+      "path": "drivers/poly/savi-8400/1.0/driver.c",
+      "sha256": "6ed84889709fadec544ba641496248949951f6546c1885d0089886d52db5fff7"
+    },
+    {
+      "path": "drivers/poly/savi-8400/1.0/driver.cpp",
+      "sha256": "db3ea676f445a721fdf8d699ad815cf31adc077cc80beac53e41ddeb515023ff"
+    },
+    {
+      "path": "drivers/poly/savi-8400/1.0/driver.h",
+      "sha256": "b31c055649179bbc92340ccada091dafb1fa0baa9ba53bdde5e4f1d2254c4474"
+    },
+    {
+      "path": "drivers/poly/voyager-4320/1.0/driver.c",
+      "sha256": "790048c0335e53507d9a0e7fcfb99f871c413a3638d2ff2bf705beb0741c9aea"
+    },
+    {
+      "path": "drivers/poly/voyager-4320/1.0/driver.cpp",
+      "sha256": "7bbf3fdae60c0590911fb8fe6ac24bdc44eda186e00d66d721f9edb30e9a78c6"
+    },
+    {
+      "path": "drivers/poly/voyager-4320/1.0/driver.h",
+      "sha256": "ceb27b80098bc5683611c5d2b72884012890a91064db2f8d9a52f0ffcce97d38"
+    },
+    {
+      "path": "drivers/poly/voyager-5200/1.0/driver.c",
+      "sha256": "87a2fd60545cd187bec4a7582cf231429e52fd87e3a4cea97ec84f27c023e7dd"
+    },
+    {
+      "path": "drivers/poly/voyager-5200/1.0/driver.cpp",
+      "sha256": "d3fd28ccc8b5ba053ec448684e1ccb9a0459fa3266289af4b599589789e1e6db"
+    },
+    {
+      "path": "drivers/poly/voyager-5200/1.0/driver.h",
+      "sha256": "92105d7172dfb07129c12d64c2914e9660d87c9f1a3fbd013fac3225055821af"
+    },
+    {
+      "path": "drivers/snom/a330d/1.0/driver.c",
+      "sha256": "0311836688f57ba603be094be5e4d409467d2dc26f1c1b164b2dbb5704ae9456"
+    },
+    {
+      "path": "drivers/snom/a330d/1.0/driver.cpp",
+      "sha256": "0b6c421acf5bbbfc7fb25cfeb7db984e49319d041a1b96d5c609b03ca8d1e39a"
+    },
+    {
+      "path": "drivers/snom/a330d/1.0/driver.h",
+      "sha256": "7e2b9ba6b4b8b1ef1401d2a8e5bf8c9cd5f7c60c2a0cc66e38a45da00338b512"
+    },
+    {
+      "path": "drivers/snom/a330m/1.0/driver.c",
+      "sha256": "835495b946f852d5be2166ee6ae35b6be7a67cec3538b82bd40549d40ae6e8a3"
+    },
+    {
+      "path": "drivers/snom/a330m/1.0/driver.cpp",
+      "sha256": "b5c4b8c815c653979da254119936e614f72edbd551f664c8177c9879aae8a8c1"
+    },
+    {
+      "path": "drivers/snom/a330m/1.0/driver.h",
+      "sha256": "3d8baab57057c9d894a59322528bf9da5792a3f60226233a4765b2d506bf2485"
+    },
+    {
+      "path": "drivers/yealink/mp45/1.0/driver.c",
+      "sha256": "a1103eab5cc7ef48e845cd46f34226aefd373b86386cf7d9bb089f01e355e23d"
+    },
+    {
+      "path": "drivers/yealink/mp45/1.0/driver.cpp",
+      "sha256": "023f4df32d6dbb6cb300f4fdc1de85c2662baead50ba58ad2d4be72bf2c9b0c9"
+    },
+    {
+      "path": "drivers/yealink/mp45/1.0/driver.h",
+      "sha256": "ee18c6aa260bf51af995c7674cd82f808a293414b972f0371d80246895c29c4f"
+    },
+    {
+      "path": "drivers/yealink/mp50/1.0/driver.c",
+      "sha256": "f22486b71ae020b9205bf5b57ca04883f003834830669be41ff193b5606882af"
+    },
+    {
+      "path": "drivers/yealink/mp50/1.0/driver.cpp",
+      "sha256": "3e67e96736ee5ce0aed6096ae83b445547a6cb92a0132bd1956c038b143dfaff"
+    },
+    {
+      "path": "drivers/yealink/mp50/1.0/driver.h",
+      "sha256": "d4c7303c3d2cc10aafd1d20ee0e60738cce08390391064aaefab31fca46346f6"
+    },
+    {
+      "path": "drivers/yealink/uh42/1.0/driver.c",
+      "sha256": "0b0881c292d670fcd07c6a48904e40b1c558b2970edac65adbba99ae48b8de65"
+    },
+    {
+      "path": "drivers/yealink/uh42/1.0/driver.cpp",
+      "sha256": "1eb806759480a493b25a3fccd6d0975ac8aa7669b799d0a7f06636b7604fe619"
+    },
+    {
+      "path": "drivers/yealink/uh42/1.0/driver.h",
+      "sha256": "ce16bd136f13d8c4b2930e421a2d22b0fedbb700db43e8ff2fc616582cce09cb"
+    },
+    {
+      "path": "drivers/yealink/uh44/1.0/driver.c",
+      "sha256": "8226dac50f34213f8910cea639cd419ded9c0cd6bcadc3d88fe3b0a4706ad719"
+    },
+    {
+      "path": "drivers/yealink/uh44/1.0/driver.cpp",
+      "sha256": "436b54f24949a030e17e1b14be0fc188f04c7cab85b4488c82ddde9fd9aace9f"
+    },
+    {
+      "path": "drivers/yealink/uh44/1.0/driver.h",
+      "sha256": "822da3fea3bd24b3990b5d08adee1e8005440fab6cb3c590784f73f170dc5769"
+    },
+    {
+      "path": "drivers/yealink/uh46/1.0/driver.c",
+      "sha256": "94e1797e176ad5409c988be0ee6e209e941c0d374bcaba5b2a49adf209c86df2"
+    },
+    {
+      "path": "drivers/yealink/uh46/1.0/driver.cpp",
+      "sha256": "f93dc7ea6198cf74a609d2da22b32b939387dc57bcbdd3f0ef86b20320b2b359"
+    },
+    {
+      "path": "drivers/yealink/uh46/1.0/driver.h",
+      "sha256": "60d44e9872691107d8ca9b0376095585560f73a2f2a8a6a988840c1abd252563"
+    },
+    {
+      "path": "drivers/yealink/wh64/1.0/driver.c",
+      "sha256": "6dd3fe2d1bb0c97464e938db592f65a148496734e4664b65f1668e93075b8e59"
+    },
+    {
+      "path": "drivers/yealink/wh64/1.0/driver.cpp",
+      "sha256": "a6c1845d322f3debb56ee7534c82957e3c4007bf3bd7b6e4003ae76abdddeec3"
+    },
+    {
+      "path": "drivers/yealink/wh64/1.0/driver.h",
+      "sha256": "7860aff2dcd70958449f6fe40764bf68ab8001d329725c99e050c0750db69d91"
+    },
+    {
+      "path": "drivers/yealink/wh68/1.0/driver.c",
+      "sha256": "a04b89e5aa0917745241c6db338a3c045a4597997e4c4a68f5f24c9d68d73863"
+    },
+    {
+      "path": "drivers/yealink/wh68/1.0/driver.cpp",
+      "sha256": "23f01face65f55e825688b46a6bb0641cd80cb5101ad9eb7df1892d0db1a167b"
+    },
+    {
+      "path": "drivers/yealink/wh68/1.0/driver.h",
+      "sha256": "1ed5f40f61ba56b49dd1be54f4fe36b66785eb025bcd4b35d0fb03315a76b633"
+    },
+    {
       "path": "examples/nordshrift/subject-libraries.sst",
       "sha256": "e0f27ffe6c40773b6cfa5fb8badeeccc0a85ed692425f4275795538a9204eeac"
     },
@@ -4432,51 +5016,683 @@
     },
     {
       "path": "telephony-skya/build/linux/build.sh",
-      "sha256": "2dd894b7f872c1c68bfc8bfa10a12f3d8b20cff5366a4afa6adace41c85a2368"
+      "sha256": "94e2cce124a5d592dcf9b4f823bd73355fb05b3dccc2dcf2f1a1b5693c1ebf36"
     },
     {
       "path": "telephony-skya/build/linux/client.sh",
-      "sha256": "19095aed851c7eb4532f231a06dc269530f790d7bdaeb8f26ece1c13f65e8e2e"
+      "sha256": "83d5d7361fb9013b9177636b02ec33f1b15568209abe1e466b921644c20b29af"
     },
     {
       "path": "telephony-skya/build/linux/client_monitor.sh",
       "sha256": "f2c47ff49c87790b13dcbdf8f81628d7fb24d9cfb0df66a8c97ad7392237285c"
     },
     {
+      "path": "telephony-skya/build/linux/firewall-check.sh",
+      "sha256": "a641c2d6b1b2b6ee81ec6d0b27557adff72dfab636d2f6d76c668745bc05b27f"
+    },
+    {
       "path": "telephony-skya/build/linux/remote-client.sh",
-      "sha256": "dfbcfb7fb432889a1cf01e9b4f5e7c48620c2d9cdcd2306760ef9aac82ca3ab0"
+      "sha256": "6cbb694c8684404d45c30556580f2b94929e8db2d43e7cb37c3d3f6d24018b26"
     },
     {
       "path": "telephony-skya/build/macos/build.sh",
-      "sha256": "d3a70a697715f2c2b663f6af8e93f965c6c40cb2c902d6dc31945ed657eb54c4"
+      "sha256": "2a28c6d58aa8310105f7fe7266f760ac46bfd4dedb0ed035c2975fcb74536d44"
     },
     {
       "path": "telephony-skya/build/macos/client.sh",
-      "sha256": "4fc63d8f9b541bd0d3e24cce23d70ac7eda7da284d1b78cdfb19a022cf331c96"
+      "sha256": "c8885c0a68564b2b594156e7165f1abdec36f0d026a10e8be30e75b8905c622a"
     },
     {
       "path": "telephony-skya/build/macos/client_monitor.sh",
       "sha256": "2a43ac36c8baad7670e3bf8462cdb9dbd72fbc677e7dd4bb3c12e7f21302d91e"
     },
     {
+      "path": "telephony-skya/build/macos/firewall-check.sh",
+      "sha256": "28dd09ac4539237c5e8fe2575b022b12243456a34522171c3f26c8fd1ff9afbf"
+    },
+    {
       "path": "telephony-skya/build/macos/remote-client.sh",
-      "sha256": "dfbcfb7fb432889a1cf01e9b4f5e7c48620c2d9cdcd2306760ef9aac82ca3ab0"
+      "sha256": "cf1ee15a56573dd79975ccce5cbc3704828c55c05b22f68566d9e7d34a189248"
     },
     {
       "path": "telephony-skya/build/windows/build.ps1",
-      "sha256": "a60c10d9b2adf8d8048a4d770e32f19065acc6be05bc382a317790d66afee990"
+      "sha256": "fec7ed050f58b6ceee717114b29597488f00524868c113963248e0846aea1c10"
     },
     {
       "path": "telephony-skya/build/windows/client.ps1",
-      "sha256": "64214221a8eda75a79c1b97c769f682dd61b6575d6013cc45546ef830b8132a9"
+      "sha256": "d58a32c59d89ba0bdeefc746869ac41e2a50dbde683e4bf3dd2a1f1aa99a67f0"
     },
     {
       "path": "telephony-skya/build/windows/client_monitor.ps1",
       "sha256": "83b025d594e3b2d371932cf9da4ef7964892d23e979848cd7f3413da5635d25e"
     },
     {
+      "path": "telephony-skya/build/windows/firewall-check.ps1",
+      "sha256": "a717b0c82885c1389d97c558ceb0b1003d14dce7f286b8a1ca0efcba0f6b505c"
+    },
+    {
       "path": "telephony-skya/build/windows/remote-client.ps1",
-      "sha256": "5ca4eb570335e6b91f8badc163f1bab6712ea3dffa94a0b747dc2236b863e4db"
+      "sha256": "410431e883ca348943a7d13015032fa0f7bf34ceab282f254547896de5623e05"
+    },
+    {
+      "path": "telephony-skya/drivers/cisco/321/1.0/driver.c",
+      "sha256": "eca2257238490c9b1d9f94c20e254d99273eb0ee54a4ce655d35d53daf5d5ac4"
+    },
+    {
+      "path": "telephony-skya/drivers/cisco/321/1.0/driver.cpp",
+      "sha256": "ce1b84f94bcd6b2bd9f1da6789000a7dc640df031a153017e08f3d2c250925f7"
+    },
+    {
+      "path": "telephony-skya/drivers/cisco/321/1.0/driver.h",
+      "sha256": "89313a31e6af284584b642feccfc133c9c21b1796b8b9e2e49b2d0ce0b1c0e16"
+    },
+    {
+      "path": "telephony-skya/drivers/cisco/322/1.0/driver.c",
+      "sha256": "4c57187264508d42a7a306b9b4b74378fc7852de169c4b216045608a1845524f"
+    },
+    {
+      "path": "telephony-skya/drivers/cisco/322/1.0/driver.cpp",
+      "sha256": "2460be7de2cf65fe8a46dfd0a5a3fc6eb668251b60a2e42e8d422d486cdc1d57"
+    },
+    {
+      "path": "telephony-skya/drivers/cisco/322/1.0/driver.h",
+      "sha256": "263ad9b0504c8332f14488389ae53407f254fe09335b3b63b23dbf7b5030d571"
+    },
+    {
+      "path": "telephony-skya/drivers/epos/impact-1000/1.0/driver.c",
+      "sha256": "f486821bf99da8361a9ecff7a20ff5b72a5d713dbb34ae2c78282032f4b6648f"
+    },
+    {
+      "path": "telephony-skya/drivers/epos/impact-1000/1.0/driver.cpp",
+      "sha256": "081c13cf313a91fa2c0efa7e10ab301b4ebbeef02ffdf8b442f22459e3ec6f90"
+    },
+    {
+      "path": "telephony-skya/drivers/epos/impact-1000/1.0/driver.h",
+      "sha256": "0aee78e1336a11a7d5d26d4f50ddafba9d0bb49e14b8aadf8d6e732784d2b4b6"
+    },
+    {
+      "path": "telephony-skya/drivers/epos/impact-sc200/1.0/driver.c",
+      "sha256": "7c777c530f7aae4be8188d6a584e862093a78791983afb4b928f252cdfdc3fbf"
+    },
+    {
+      "path": "telephony-skya/drivers/epos/impact-sc200/1.0/driver.cpp",
+      "sha256": "1596847a86391ff6e30a3be3cb1c04d088a9e5e7c5283c91d86e1972728838d0"
+    },
+    {
+      "path": "telephony-skya/drivers/epos/impact-sc200/1.0/driver.h",
+      "sha256": "74d5c9bf273f9e7d8b72f0bfdcaf0f0dc460326148224b2ed353b0b74d1488ff"
+    },
+    {
+      "path": "telephony-skya/drivers/epos/impact-sc600/1.0/driver.c",
+      "sha256": "e6de47806f80467a2e9553a8447c145d5ac351f5512deaf8e7ecc320bc316c40"
+    },
+    {
+      "path": "telephony-skya/drivers/epos/impact-sc600/1.0/driver.cpp",
+      "sha256": "507d8a3ee9da1c5c73f70837b8ac2d333bb7d7d7b6faf93c0c55b98358e1c6a2"
+    },
+    {
+      "path": "telephony-skya/drivers/epos/impact-sc600/1.0/driver.h",
+      "sha256": "dc8c6c6ce5a3daf68067d0784738f65e660f8b684efea1072b3cdd641b97df3e"
+    },
+    {
+      "path": "telephony-skya/drivers/epos/sdw-5000/1.0/driver.c",
+      "sha256": "04966e93d7fd9492499a7b5b336bca8501fa78920c1d31bb2986b02c432230e8"
+    },
+    {
+      "path": "telephony-skya/drivers/epos/sdw-5000/1.0/driver.cpp",
+      "sha256": "575f1903c02bb308ef8be98da6851810009780d0675c4578aa40801a3429a391"
+    },
+    {
+      "path": "telephony-skya/drivers/epos/sdw-5000/1.0/driver.h",
+      "sha256": "623058146778b1f8e6f8f71a080547d2b28a50561ecaa3c28cd1fa4f623068c2"
+    },
+    {
+      "path": "telephony-skya/drivers/fanvil/v63/1.0/driver.c",
+      "sha256": "f50d16251b141b7e0b17ff4f3a92b7a6462cd9e8dbe14a4766bf48a70170a5c0"
+    },
+    {
+      "path": "telephony-skya/drivers/fanvil/v63/1.0/driver.cpp",
+      "sha256": "52136f1987693fbe23fcd6d6f937fe21fce40f7c2b70921c8391ca155540c7eb"
+    },
+    {
+      "path": "telephony-skya/drivers/fanvil/v63/1.0/driver.h",
+      "sha256": "afc7be775edf493053365d3241d8fa1b8fcc0e576f168c1dfc6b80e69ea0b45e"
+    },
+    {
+      "path": "telephony-skya/drivers/fanvil/v64/1.0/driver.c",
+      "sha256": "57c6d9ef2729aa969915da5116b5dc94f7481d843e2714c5b1c0f68e81bc42c7"
+    },
+    {
+      "path": "telephony-skya/drivers/fanvil/v64/1.0/driver.cpp",
+      "sha256": "2b351d08e72c78da2f133f182ff95d04378b73d5daf54c6c092322397847a2ac"
+    },
+    {
+      "path": "telephony-skya/drivers/fanvil/v64/1.0/driver.h",
+      "sha256": "fcae78c18e3b87c0629240d91efc0f74bed9745168614496658c7570d427c400"
+    },
+    {
+      "path": "telephony-skya/drivers/fanvil/v65/1.0/driver.c",
+      "sha256": "940e7ffb20711d28a85adb3ab94aab5e4d4f626630d4551f16a6f4551698dff2"
+    },
+    {
+      "path": "telephony-skya/drivers/fanvil/v65/1.0/driver.cpp",
+      "sha256": "1561ab3ed94cb169ff4f20627f2a443bfa72936fa04a4698e50c66650922dcc4"
+    },
+    {
+      "path": "telephony-skya/drivers/fanvil/v65/1.0/driver.h",
+      "sha256": "bae01a5a477e6e98f8386ab0449594f760e45b0da2e13bab264e7417cf3d8a7f"
+    },
+    {
+      "path": "telephony-skya/drivers/fanvil/v66/1.0/driver.c",
+      "sha256": "9d49294f3da5c91017c49d40495a9e0144795b68fc30a53dd95bea38839d4e54"
+    },
+    {
+      "path": "telephony-skya/drivers/fanvil/v66/1.0/driver.cpp",
+      "sha256": "f47991fbe4457131eb6a27ff18a9692b737384e1b263c42c4557b78a72cd3379"
+    },
+    {
+      "path": "telephony-skya/drivers/fanvil/v66/1.0/driver.h",
+      "sha256": "a823efecf1c4b031396645ae025835df088d839d3ec9e30b794e5ac3aca42578"
+    },
+    {
+      "path": "telephony-skya/drivers/fanvil/x210i-v2/1.0/driver.c",
+      "sha256": "cf3004cf3c5685396cf92f4606d88dd25dd78ffa34c3f98f9ee729b0644108cc"
+    },
+    {
+      "path": "telephony-skya/drivers/fanvil/x210i-v2/1.0/driver.cpp",
+      "sha256": "37f4722a528b33301502cf0afb798e9f728f64143bd7f2cc550562e038da2325"
+    },
+    {
+      "path": "telephony-skya/drivers/fanvil/x210i-v2/1.0/driver.h",
+      "sha256": "69ff5ea8ab0f6bab726b93f12c1a211397ad463589e63423f454f75750be2f39"
+    },
+    {
+      "path": "telephony-skya/drivers/fanvil/x4u-v2/1.0/driver.c",
+      "sha256": "083e98598aa67c2ca6e40510021a9a24f7e8d1a79a8a04e61e01a4c84dd141cf"
+    },
+    {
+      "path": "telephony-skya/drivers/fanvil/x4u-v2/1.0/driver.cpp",
+      "sha256": "2e3a93d85eac5326c0198351bc46ebd63816985b48419d970f1b8cff3d588496"
+    },
+    {
+      "path": "telephony-skya/drivers/fanvil/x4u-v2/1.0/driver.h",
+      "sha256": "574170606134fdc99e29d372ebda4009fd88dc0ce7749601fe557fa1df3ca65e"
+    },
+    {
+      "path": "telephony-skya/drivers/fanvil/x5u-v2/1.0/driver.c",
+      "sha256": "4a2adfdec4c06a56502cffd3b0deb521e3e186421ca919eb69a42ef3d7fc007e"
+    },
+    {
+      "path": "telephony-skya/drivers/fanvil/x5u-v2/1.0/driver.cpp",
+      "sha256": "5af79c4d60882c9a1091d25aa88a8103462d5ee64d01be39fda6abc878b62162"
+    },
+    {
+      "path": "telephony-skya/drivers/fanvil/x5u-v2/1.0/driver.h",
+      "sha256": "24885dea758933b8734c0fa4a437490ea74df75ab8769a846a37e2c82e09eb7c"
+    },
+    {
+      "path": "telephony-skya/drivers/fanvil/x6u-v2/1.0/driver.c",
+      "sha256": "6abd5b80d06bc27802ac438a48e508b3652fbbbb17d0f0bd59754d05aa8a2888"
+    },
+    {
+      "path": "telephony-skya/drivers/fanvil/x6u-v2/1.0/driver.cpp",
+      "sha256": "cdcb48d21bf2977af4f8475e13b4f0f0d874a436edb49e450ca5eecbb133d8a5"
+    },
+    {
+      "path": "telephony-skya/drivers/fanvil/x6u-v2/1.0/driver.h",
+      "sha256": "683db155599664c8e0f623547e52b8309b75d0f9e29f5b2e569046c073278673"
+    },
+    {
+      "path": "telephony-skya/drivers/grandstream/grp26xx/1.0/driver.c",
+      "sha256": "cf362a20a631f14220e6cce47d6d3baa6b83ba10f6bf9445891d6750053893cc"
+    },
+    {
+      "path": "telephony-skya/drivers/grandstream/grp26xx/1.0/driver.cpp",
+      "sha256": "3c978dae3f39b64b5aaef9dec6dad29272ad19a7c54aab5ab621b50faab9e95a"
+    },
+    {
+      "path": "telephony-skya/drivers/grandstream/grp26xx/1.0/driver.h",
+      "sha256": "e7d9f4b2ab95fe88fdb138523b6bbdb7286bbaa053088173b0121e098f481c55"
+    },
+    {
+      "path": "telephony-skya/drivers/grandstream/guv3000/1.0/driver.c",
+      "sha256": "ead90d0097bece6dbf78b0f5a96fc902d093886c8d0d8f0f8ad763844b607ae0"
+    },
+    {
+      "path": "telephony-skya/drivers/grandstream/guv3000/1.0/driver.cpp",
+      "sha256": "eba41153dc0e31a53a1f231a64566fe3fa1d2ee7fd0265339b845eb4eac17823"
+    },
+    {
+      "path": "telephony-skya/drivers/grandstream/guv3000/1.0/driver.h",
+      "sha256": "7bb5096729b8e85c27222735aefd64b51f89332f7ff25028a8c1a5f764bf41a0"
+    },
+    {
+      "path": "telephony-skya/drivers/grandstream/guv3005/1.0/driver.c",
+      "sha256": "8a0da63dbac0e35e76124adcfef84f479ec5405afdab6e7e86f8119edbb82a86"
+    },
+    {
+      "path": "telephony-skya/drivers/grandstream/guv3005/1.0/driver.cpp",
+      "sha256": "41b593b11deccfaf77457c970757bc6257f188eca208dcafd7468b6d2d089f0e"
+    },
+    {
+      "path": "telephony-skya/drivers/grandstream/guv3005/1.0/driver.h",
+      "sha256": "860ccae518b31386b7b3282820e9a1fe8550b9f72a8fd747f6820ab3e0cff593"
+    },
+    {
+      "path": "telephony-skya/drivers/grandstream/gxp21xx/1.0/driver.c",
+      "sha256": "1805dd5c129cc35582536491b43505238115e6566ba7e684fb77d90dd45de7ec"
+    },
+    {
+      "path": "telephony-skya/drivers/grandstream/gxp21xx/1.0/driver.cpp",
+      "sha256": "d5f5b41f4c39a2642d197f544591c556ee4c12df0d2c28b719ff7070ccd76351"
+    },
+    {
+      "path": "telephony-skya/drivers/grandstream/gxp21xx/1.0/driver.h",
+      "sha256": "6cea4b5c4e0a2e128f3caf6b99891b16a4377a71984a111b435c6e1157eb9e0d"
+    },
+    {
+      "path": "telephony-skya/drivers/include/skya_builtin_drivers.h",
+      "sha256": "113dc1968639abda0dfae3ac774d42d0e31a3580853c2b0e356f8c32bd62848e"
+    },
+    {
+      "path": "telephony-skya/drivers/include/skya_data_plane.h",
+      "sha256": "1d11bab013c72dceed142b623578cfb4f39ae453eb3d9b727bc92e71ed4f0c6f"
+    },
+    {
+      "path": "telephony-skya/drivers/include/skya_driver_runtime.h",
+      "sha256": "5851f0c094228d643fcb840efe97c3c781a3035af808a22b03df625b3a2092e1"
+    },
+    {
+      "path": "telephony-skya/drivers/include/skya_driver_runtime.hpp",
+      "sha256": "b7be730657cb4b9c54a5a3171351bb8ef79b0db171188b9cd8fb8a445702ab24"
+    },
+    {
+      "path": "telephony-skya/drivers/include/skya_hardware_io.h",
+      "sha256": "377025b5c84538a98f1469ce59dceedb935a098abe6bf0457321cb3036a15bc2"
+    },
+    {
+      "path": "telephony-skya/drivers/include/skya_hardware_profile.h",
+      "sha256": "acc6d1fe761a536abdf50cb05a0c60ca93eb8deb680b6fac00d49d9cd95fab8a"
+    },
+    {
+      "path": "telephony-skya/drivers/include/skya_phone_driver.h",
+      "sha256": "9c12a4362509176725e4c77d4f22934dabf5bde6242e7fc4d59f08010ac7b7f7"
+    },
+    {
+      "path": "telephony-skya/drivers/include/skya_platform_driver.h",
+      "sha256": "6c392c66486a06017d9d54d00cf1b99ebcd6347bd4e7d23e6b1787ced9d889bf"
+    },
+    {
+      "path": "telephony-skya/drivers/include/skya_vendor_drivers.h",
+      "sha256": "9152faca153916b46316a85001cba4b35f456fd404254a5c05a72327517c554b"
+    },
+    {
+      "path": "telephony-skya/drivers/jabra/biz-1500/1.0/driver.c",
+      "sha256": "989098f9cd226715bc7a640c33cca31e78c18f24eee6013f157e304b28f6b97e"
+    },
+    {
+      "path": "telephony-skya/drivers/jabra/biz-1500/1.0/driver.cpp",
+      "sha256": "6695f8edb3d8394fe3b3dadb4d487b31c498b2485e15ddcf23d0df8307ef1529"
+    },
+    {
+      "path": "telephony-skya/drivers/jabra/biz-1500/1.0/driver.h",
+      "sha256": "abf9d4440b95fb9b0921b99c128b8b262bcb7a33ec3bcea90f791bc763cd1b2b"
+    },
+    {
+      "path": "telephony-skya/drivers/jabra/evolve2-40/1.0/driver.c",
+      "sha256": "8500b0067bb9d7f80ff15550f511f734061580c0110e3742d8091523c1f7d192"
+    },
+    {
+      "path": "telephony-skya/drivers/jabra/evolve2-40/1.0/driver.cpp",
+      "sha256": "914c33b1b77023b4965ac5cb5609799d0d2f06cc8c4ae5fd1e39d90afc776b75"
+    },
+    {
+      "path": "telephony-skya/drivers/jabra/evolve2-40/1.0/driver.h",
+      "sha256": "116f1ed752fd98374b6ffd1e619a41edb9d8dd25a553c60e1c525e872bdb6c9c"
+    },
+    {
+      "path": "telephony-skya/drivers/jabra/evolve3-65/1.0/driver.c",
+      "sha256": "e2963b84012cdad7e0d453a263239b24c45b08c14c3cab03b956dc90baf6cd0a"
+    },
+    {
+      "path": "telephony-skya/drivers/jabra/evolve3-65/1.0/driver.cpp",
+      "sha256": "b721cc39a121cb0316f0be7a0263489852d58a0c5ae0795ef9a588813831fd0c"
+    },
+    {
+      "path": "telephony-skya/drivers/jabra/evolve3-65/1.0/driver.h",
+      "sha256": "2a7d2e4bcf7df7832ada117c29c8c1fbb0dd7094422b1274d1721436a1faad26"
+    },
+    {
+      "path": "telephony-skya/drivers/jabra/evolve3-75/1.0/driver.c",
+      "sha256": "f0ffe0bc7764fc56e85fdea319f7f4929b53f372754f85bd28021197354d6078"
+    },
+    {
+      "path": "telephony-skya/drivers/jabra/evolve3-75/1.0/driver.cpp",
+      "sha256": "f7c1f052aeed4daf57093f771fe810fea30827ae71961776212929624d6eefab"
+    },
+    {
+      "path": "telephony-skya/drivers/jabra/evolve3-75/1.0/driver.h",
+      "sha256": "0e54b9670bd33810424f7cbeecfcdc2d892249ddc875a06046f6b9754843be3c"
+    },
+    {
+      "path": "telephony-skya/drivers/jabra/speak2-55/1.0/driver.c",
+      "sha256": "fade92876afdf20b6a904c98b55d5d7f7a9e4623e99982f71f45d0ec9bb0ced5"
+    },
+    {
+      "path": "telephony-skya/drivers/jabra/speak2-55/1.0/driver.cpp",
+      "sha256": "ef6bb0b2e1d268bacc279086151e0dffae594e4039169f498b4b367dc4cc6263"
+    },
+    {
+      "path": "telephony-skya/drivers/jabra/speak2-55/1.0/driver.h",
+      "sha256": "2f5d38072c07bbece63d50902950f71884b719cef670148b96fe1648af9a6f32"
+    },
+    {
+      "path": "telephony-skya/drivers/jabra/speak2-75/1.0/driver.c",
+      "sha256": "6161ff01950c5d61c7cb66844a66a7178363fb2c827fd177c4719f83d0f80111"
+    },
+    {
+      "path": "telephony-skya/drivers/jabra/speak2-75/1.0/driver.cpp",
+      "sha256": "520ad3b37a307fe31f4bba5491216956cde4cb85c91785afdea23ec945e469cb"
+    },
+    {
+      "path": "telephony-skya/drivers/jabra/speak2-75/1.0/driver.h",
+      "sha256": "3dc0c30a810a4cf41fe44ba3e8b4f3b8d2df159782762499c6decaa5eb25f7f0"
+    },
+    {
+      "path": "telephony-skya/drivers/logitech/h570e/1.0/driver.c",
+      "sha256": "331ff9549326a4a8fcdd4ddccdfea895528654a97c4c81fc9d56b50a5d5a846b"
+    },
+    {
+      "path": "telephony-skya/drivers/logitech/h570e/1.0/driver.cpp",
+      "sha256": "91daef22f0d452b4310e079fb180d691fa654bf59bff20e5fb3d628b39a432cc"
+    },
+    {
+      "path": "telephony-skya/drivers/logitech/h570e/1.0/driver.h",
+      "sha256": "2ab8b86eefe3664de19cd76351f75fb9f7398b7f3661398e02c75cf9a21329e5"
+    },
+    {
+      "path": "telephony-skya/drivers/logitech/zone-305/1.0/driver.c",
+      "sha256": "f04a2a818af5af9f3b0758092d6d55e1efce79b36339a6987b06323811f339f0"
+    },
+    {
+      "path": "telephony-skya/drivers/logitech/zone-305/1.0/driver.cpp",
+      "sha256": "9919126dec04c4f8031740a916b7bd25bbca768283fb081cc66aea9ac66d8a71"
+    },
+    {
+      "path": "telephony-skya/drivers/logitech/zone-305/1.0/driver.h",
+      "sha256": "8602f31f59f6bc5ef1939f3b416fa7de295528f19cbf9a98e9edaecf5995e3fa"
+    },
+    {
+      "path": "telephony-skya/drivers/logitech/zone-vibe/1.0/driver.c",
+      "sha256": "4686a6fb2956c0611f3972ee90b51e5d2eb81216b60d06e482a4b6539314e4c1"
+    },
+    {
+      "path": "telephony-skya/drivers/logitech/zone-vibe/1.0/driver.cpp",
+      "sha256": "edf613ed38b486c05364c2e1ac79060a0b1b3fb182c4093f516c5fc1dc5de2cf"
+    },
+    {
+      "path": "telephony-skya/drivers/logitech/zone-vibe/1.0/driver.h",
+      "sha256": "53a663aff3d615ac2b4959cab6626547e6be7e9e8749b60786ee937a943ca205"
+    },
+    {
+      "path": "telephony-skya/drivers/logitech/zone-wired-2/1.0/driver.c",
+      "sha256": "8d36097af9cb106741f5848b4f4e48fb4774fd1eefe7d6c296105360ca72020c"
+    },
+    {
+      "path": "telephony-skya/drivers/logitech/zone-wired-2/1.0/driver.cpp",
+      "sha256": "6bf1a4a42335e97ed05409c582668167d95069cba89170492b21d70b62d5a075"
+    },
+    {
+      "path": "telephony-skya/drivers/logitech/zone-wired-2/1.0/driver.h",
+      "sha256": "8d278937a6309406f2d9b135d2a6679cab8348214edead11f9279d9926b41fe4"
+    },
+    {
+      "path": "telephony-skya/drivers/logitech/zone-wireless-2/1.0/driver.c",
+      "sha256": "dd93f1c405cc9fe7a1feb05a80beb9b5dd608d5534e68b410dc68cb4141c71e0"
+    },
+    {
+      "path": "telephony-skya/drivers/logitech/zone-wireless-2/1.0/driver.cpp",
+      "sha256": "9902185e60ee65b5e87f6de0af0714a75225c075c4bd9019bdf89c4812c75994"
+    },
+    {
+      "path": "telephony-skya/drivers/logitech/zone-wireless-2/1.0/driver.h",
+      "sha256": "2fe1bfe3108458c4f38baaac217c5a925b8ce04a4b93db961ccd2ca86f82a6dc"
+    },
+    {
+      "path": "telephony-skya/drivers/platform/linux/skya_linux_driver.cpp",
+      "sha256": "b6cfb27a387bc544be923264ab04d9e8537090aebc355bc499fc4999bba4a4bd"
+    },
+    {
+      "path": "telephony-skya/drivers/platform/linux/skya_linux_driver.h",
+      "sha256": "f837a5d62805918ab4d953bbaa5e66dfdf3dc5d871f9324a1bdecee8aff2570e"
+    },
+    {
+      "path": "telephony-skya/drivers/platform/macos/skya_macos_driver.cpp",
+      "sha256": "b40116229e4659fc2aa63b706cda897d7d0b13e8f5e8debc74aad9b4246b7dbe"
+    },
+    {
+      "path": "telephony-skya/drivers/platform/macos/skya_macos_driver.h",
+      "sha256": "9cac15bfc8d3a430288ace07218f175f6a288cdf5cd24cccd139fdec5346e508"
+    },
+    {
+      "path": "telephony-skya/drivers/platform/windows/skya_windows_driver.cpp",
+      "sha256": "defa17d4e62ceb6a7d68ee31939d90e9401c3c8ec76341789ef1339e334f9b28"
+    },
+    {
+      "path": "telephony-skya/drivers/platform/windows/skya_windows_driver.h",
+      "sha256": "29bd82f73245f81c92d9a0b950d0e3160921e95dadf80a82c24e9eaa43098528"
+    },
+    {
+      "path": "telephony-skya/drivers/poly/blackwire-3320/1.0/driver.c",
+      "sha256": "b377169fffbf46291454c9e6307e1cf2bc0189a5afeb90bcffbf4e8a768f7415"
+    },
+    {
+      "path": "telephony-skya/drivers/poly/blackwire-3320/1.0/driver.cpp",
+      "sha256": "3bd025a405d5acfcabf53b976cf70413b95d00bdca2596f4bf6ea21e4cad4d11"
+    },
+    {
+      "path": "telephony-skya/drivers/poly/blackwire-3320/1.0/driver.h",
+      "sha256": "53e13bb763dfb8209d1f3a2defcab77f901d46e9d6ea7f32781aa5f5dc477b0b"
+    },
+    {
+      "path": "telephony-skya/drivers/poly/blackwire-5220/1.0/driver.c",
+      "sha256": "4c73b7a719a9b685bc596351a387042ad49d58824a46bf13350d8dcedbdcdb4f"
+    },
+    {
+      "path": "telephony-skya/drivers/poly/blackwire-5220/1.0/driver.cpp",
+      "sha256": "518470453aa03917309d932a9f9429f1b3ea372e0f601884b6d0340536e52b6b"
+    },
+    {
+      "path": "telephony-skya/drivers/poly/blackwire-5220/1.0/driver.h",
+      "sha256": "e6547eea19f90b9a8a7f09fc63242860d82337968f16ed75f3d19e21808a0f7e"
+    },
+    {
+      "path": "telephony-skya/drivers/poly/savi-8200/1.0/driver.c",
+      "sha256": "f7f22047b79bc695cedcb883c755a0df62e5fb775dba53d3afa8687cbc74dd56"
+    },
+    {
+      "path": "telephony-skya/drivers/poly/savi-8200/1.0/driver.cpp",
+      "sha256": "0cd61a6bc30cbdc6d67ff787fba73750b16b6aceb0165634539157f4625bc1f4"
+    },
+    {
+      "path": "telephony-skya/drivers/poly/savi-8200/1.0/driver.h",
+      "sha256": "9d3b934f9819b11ea49483011e550760ca0185c30fe7832fe21677e3112ae34b"
+    },
+    {
+      "path": "telephony-skya/drivers/poly/savi-8400/1.0/driver.c",
+      "sha256": "6ed84889709fadec544ba641496248949951f6546c1885d0089886d52db5fff7"
+    },
+    {
+      "path": "telephony-skya/drivers/poly/savi-8400/1.0/driver.cpp",
+      "sha256": "db3ea676f445a721fdf8d699ad815cf31adc077cc80beac53e41ddeb515023ff"
+    },
+    {
+      "path": "telephony-skya/drivers/poly/savi-8400/1.0/driver.h",
+      "sha256": "b31c055649179bbc92340ccada091dafb1fa0baa9ba53bdde5e4f1d2254c4474"
+    },
+    {
+      "path": "telephony-skya/drivers/poly/voyager-4320/1.0/driver.c",
+      "sha256": "790048c0335e53507d9a0e7fcfb99f871c413a3638d2ff2bf705beb0741c9aea"
+    },
+    {
+      "path": "telephony-skya/drivers/poly/voyager-4320/1.0/driver.cpp",
+      "sha256": "7bbf3fdae60c0590911fb8fe6ac24bdc44eda186e00d66d721f9edb30e9a78c6"
+    },
+    {
+      "path": "telephony-skya/drivers/poly/voyager-4320/1.0/driver.h",
+      "sha256": "ceb27b80098bc5683611c5d2b72884012890a91064db2f8d9a52f0ffcce97d38"
+    },
+    {
+      "path": "telephony-skya/drivers/poly/voyager-5200/1.0/driver.c",
+      "sha256": "87a2fd60545cd187bec4a7582cf231429e52fd87e3a4cea97ec84f27c023e7dd"
+    },
+    {
+      "path": "telephony-skya/drivers/poly/voyager-5200/1.0/driver.cpp",
+      "sha256": "d3fd28ccc8b5ba053ec448684e1ccb9a0459fa3266289af4b599589789e1e6db"
+    },
+    {
+      "path": "telephony-skya/drivers/poly/voyager-5200/1.0/driver.h",
+      "sha256": "92105d7172dfb07129c12d64c2914e9660d87c9f1a3fbd013fac3225055821af"
+    },
+    {
+      "path": "telephony-skya/drivers/snom/a330d/1.0/driver.c",
+      "sha256": "0311836688f57ba603be094be5e4d409467d2dc26f1c1b164b2dbb5704ae9456"
+    },
+    {
+      "path": "telephony-skya/drivers/snom/a330d/1.0/driver.cpp",
+      "sha256": "0b6c421acf5bbbfc7fb25cfeb7db984e49319d041a1b96d5c609b03ca8d1e39a"
+    },
+    {
+      "path": "telephony-skya/drivers/snom/a330d/1.0/driver.h",
+      "sha256": "7e2b9ba6b4b8b1ef1401d2a8e5bf8c9cd5f7c60c2a0cc66e38a45da00338b512"
+    },
+    {
+      "path": "telephony-skya/drivers/snom/a330m/1.0/driver.c",
+      "sha256": "835495b946f852d5be2166ee6ae35b6be7a67cec3538b82bd40549d40ae6e8a3"
+    },
+    {
+      "path": "telephony-skya/drivers/snom/a330m/1.0/driver.cpp",
+      "sha256": "b5c4b8c815c653979da254119936e614f72edbd551f664c8177c9879aae8a8c1"
+    },
+    {
+      "path": "telephony-skya/drivers/snom/a330m/1.0/driver.h",
+      "sha256": "3d8baab57057c9d894a59322528bf9da5792a3f60226233a4765b2d506bf2485"
+    },
+    {
+      "path": "telephony-skya/drivers/src/skya_builtin_drivers.cpp",
+      "sha256": "a2758e0f7c6fffe6b44dfa3753502850512340f85e2b78d8b12e39c6392a8e22"
+    },
+    {
+      "path": "telephony-skya/drivers/src/skya_data_plane.c",
+      "sha256": "ba0f45c39fe8f91a60b7223698ac9c249dcbb9bf36189d81085e08d72b39a538"
+    },
+    {
+      "path": "telephony-skya/drivers/src/skya_driver_registry.cpp",
+      "sha256": "541ac9f182c8d29c4eeac944686927de806150cf0328508f811235cf77304111"
+    },
+    {
+      "path": "telephony-skya/drivers/src/skya_driver_registry.h",
+      "sha256": "657e725c4fac4e586c0d7bdb105c5d57c91bb9b82becc4c44671fd89ecd4824e"
+    },
+    {
+      "path": "telephony-skya/drivers/src/skya_driver_runtime.c",
+      "sha256": "7853c5b9de3d5096e4ddaf72a11ff59b881a0fea3cd0b913c996b9c849d4c8f0"
+    },
+    {
+      "path": "telephony-skya/drivers/src/skya_hardware_io.c",
+      "sha256": "4c3c423b8bd436f7d0695c11eb179e0214d183557744fc5b5abd743fbac8d4f9"
+    },
+    {
+      "path": "telephony-skya/drivers/src/skya_hardware_profile.c",
+      "sha256": "7782abd9025888720f6b0b515a053e54f91c3db3335ca176643fc0dc592a3678"
+    },
+    {
+      "path": "telephony-skya/drivers/src/skya_vendor_drivers.cpp",
+      "sha256": "e36385b5d0ba0037de9f78ce192122be0db2def176b6cd5f4dd01f15655f0dc6"
+    },
+    {
+      "path": "telephony-skya/drivers/yealink/mp45/1.0/driver.c",
+      "sha256": "a1103eab5cc7ef48e845cd46f34226aefd373b86386cf7d9bb089f01e355e23d"
+    },
+    {
+      "path": "telephony-skya/drivers/yealink/mp45/1.0/driver.cpp",
+      "sha256": "023f4df32d6dbb6cb300f4fdc1de85c2662baead50ba58ad2d4be72bf2c9b0c9"
+    },
+    {
+      "path": "telephony-skya/drivers/yealink/mp45/1.0/driver.h",
+      "sha256": "ee18c6aa260bf51af995c7674cd82f808a293414b972f0371d80246895c29c4f"
+    },
+    {
+      "path": "telephony-skya/drivers/yealink/mp50/1.0/driver.c",
+      "sha256": "f22486b71ae020b9205bf5b57ca04883f003834830669be41ff193b5606882af"
+    },
+    {
+      "path": "telephony-skya/drivers/yealink/mp50/1.0/driver.cpp",
+      "sha256": "3e67e96736ee5ce0aed6096ae83b445547a6cb92a0132bd1956c038b143dfaff"
+    },
+    {
+      "path": "telephony-skya/drivers/yealink/mp50/1.0/driver.h",
+      "sha256": "d4c7303c3d2cc10aafd1d20ee0e60738cce08390391064aaefab31fca46346f6"
+    },
+    {
+      "path": "telephony-skya/drivers/yealink/uh42/1.0/driver.c",
+      "sha256": "0b0881c292d670fcd07c6a48904e40b1c558b2970edac65adbba99ae48b8de65"
+    },
+    {
+      "path": "telephony-skya/drivers/yealink/uh42/1.0/driver.cpp",
+      "sha256": "1eb806759480a493b25a3fccd6d0975ac8aa7669b799d0a7f06636b7604fe619"
+    },
+    {
+      "path": "telephony-skya/drivers/yealink/uh42/1.0/driver.h",
+      "sha256": "ce16bd136f13d8c4b2930e421a2d22b0fedbb700db43e8ff2fc616582cce09cb"
+    },
+    {
+      "path": "telephony-skya/drivers/yealink/uh44/1.0/driver.c",
+      "sha256": "8226dac50f34213f8910cea639cd419ded9c0cd6bcadc3d88fe3b0a4706ad719"
+    },
+    {
+      "path": "telephony-skya/drivers/yealink/uh44/1.0/driver.cpp",
+      "sha256": "436b54f24949a030e17e1b14be0fc188f04c7cab85b4488c82ddde9fd9aace9f"
+    },
+    {
+      "path": "telephony-skya/drivers/yealink/uh44/1.0/driver.h",
+      "sha256": "822da3fea3bd24b3990b5d08adee1e8005440fab6cb3c590784f73f170dc5769"
+    },
+    {
+      "path": "telephony-skya/drivers/yealink/uh46/1.0/driver.c",
+      "sha256": "94e1797e176ad5409c988be0ee6e209e941c0d374bcaba5b2a49adf209c86df2"
+    },
+    {
+      "path": "telephony-skya/drivers/yealink/uh46/1.0/driver.cpp",
+      "sha256": "f93dc7ea6198cf74a609d2da22b32b939387dc57bcbdd3f0ef86b20320b2b359"
+    },
+    {
+      "path": "telephony-skya/drivers/yealink/uh46/1.0/driver.h",
+      "sha256": "60d44e9872691107d8ca9b0376095585560f73a2f2a8a6a988840c1abd252563"
+    },
+    {
+      "path": "telephony-skya/drivers/yealink/wh64/1.0/driver.c",
+      "sha256": "6dd3fe2d1bb0c97464e938db592f65a148496734e4664b65f1668e93075b8e59"
+    },
+    {
+      "path": "telephony-skya/drivers/yealink/wh64/1.0/driver.cpp",
+      "sha256": "a6c1845d322f3debb56ee7534c82957e3c4007bf3bd7b6e4003ae76abdddeec3"
+    },
+    {
+      "path": "telephony-skya/drivers/yealink/wh64/1.0/driver.h",
+      "sha256": "7860aff2dcd70958449f6fe40764bf68ab8001d329725c99e050c0750db69d91"
+    },
+    {
+      "path": "telephony-skya/drivers/yealink/wh68/1.0/driver.c",
+      "sha256": "a04b89e5aa0917745241c6db338a3c045a4597997e4c4a68f5f24c9d68d73863"
+    },
+    {
+      "path": "telephony-skya/drivers/yealink/wh68/1.0/driver.cpp",
+      "sha256": "23f01face65f55e825688b46a6bb0641cd80cb5101ad9eb7df1892d0db1a167b"
+    },
+    {
+      "path": "telephony-skya/drivers/yealink/wh68/1.0/driver.h",
+      "sha256": "1ed5f40f61ba56b49dd1be54f4fe36b66785eb025bcd4b35d0fb03315a76b633"
     },
     {
       "path": "telephony-skya/native/main.cpp",
@@ -4484,15 +5700,15 @@
     },
     {
       "path": "telephony-skya/native/skya_engine.cpp",
-      "sha256": "244e6146532bdde88d1401fa105654d9298bbdf68ad87952cec099bd58d1cd52"
+      "sha256": "baedd6f8a66bdb45ae194c58d37d5ab741cb5573caeeac553b4053e4790d17c4"
     },
     {
       "path": "telephony-skya/native/skya_engine.h",
-      "sha256": "b1660bbbebd5cb9b052b0b5faefbb5d20dc02b6d58a2680f50b0a456646c7e7d"
+      "sha256": "d81eafcee628a8edadcb25154a66481dc86d11239d3c541382e38d0d4e093398"
     },
     {
       "path": "telephony-skya/native/skya_server_main.cpp",
-      "sha256": "6a98f640213b87a62c154a6662ac6b6e6cc33f5bef506b34de71acea9a4c293f"
+      "sha256": "29922b8a68b5010fd98246e4e09f1bcd6bf74994e262778469a34447c029d7be"
     },
     {
       "path": "telephony-skya/sleela/Skya.sleela",
