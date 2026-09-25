@@ -79,9 +79,12 @@ private:
 
 class Artifact;
 
+struct ArchiveMember { std::string name; std::uint64_t header_offset{}; std::uint64_t data_offset{}; std::uint64_t size{}; Format format{Format::Unknown}; };
+
 struct NativeInterfaces {
     std::vector<Section> sections;
     std::vector<ProgramSegment> segments;
+    std::vector<ArchiveMember> archive_members;
     std::vector<Symbol> symbols;
     std::vector<Import> imports;
     std::vector<Export> exports;
