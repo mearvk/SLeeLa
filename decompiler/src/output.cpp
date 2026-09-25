@@ -10,8 +10,6 @@ std::string sanitize(std::string s) {
     if (s.empty() || std::isdigit(static_cast<unsigned char>(s.front()))) s = "_" + s;
     return s;
 }
-std::string operand_text(const Operand& o) { return o.text.empty() ? "/* operand */" : o.text; }
-
 std::string emit_c_like(const Artifact& a, const std::vector<Instruction>& ins,
                         const std::vector<Symbol>& funcs, bool cpp) {
     std::ostringstream out;
