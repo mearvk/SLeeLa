@@ -32,6 +32,18 @@ The API models both individual artifacts and library families: dependencies, imp
 
 For Linux .ko files, Slecompiler™ records kernel-module evidence such as module name, vermagic when present, exported/imported symbols, section layout, relocation information, module metadata strings, license/author/description fields when present, dependency metadata, and kernel-version/build identifiers. This is static evidence; Slecompiler™ does not load the module into a kernel.
 
+## Documentation and examples
+
+The product documentation is divided into the API surface, architecture, terminology, format notes, and the product tutorial. Runnable API exemplars are maintained under `decompiler/examples/` and are built by default through `SLEE_LA_BUILD_API_EXAMPLES`.
+
+Start with:
+
+- `decompiler/docs/TUTORIAL.md` — build and API tutorial;
+- `decompiler/API.md` — C++ API layer map;
+- `decompiler/TERMINOLOGY.md` — Slecompiler terminology;
+- `decompiler/ARCHITECTURE.md` — analysis architecture;
+- `api/decompiler/API.html` — browser-oriented API summary.
+
 ## Analysis pipeline
 
 artifact → container → symbols/metadata → decoder → instructions → CFG → functions → SLIR → analysis → C/C++/report
