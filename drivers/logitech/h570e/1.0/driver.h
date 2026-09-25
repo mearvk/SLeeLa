@@ -1,0 +1,12 @@
+#ifndef SKYA_LOGITECH_H570E_DRIVER_H
+#define SKYA_LOGITECH_H570E_DRIVER_H
+#include "../../../include/skya_phone_driver.h"
+#ifdef __cplusplus
+extern "C" {
+#endif
+const skya_phone_driver *skya_logitech_h570e_driver(void);
+const skya_phone_driver *skya_c_logitech_h570e_driver(void);
+#ifdef __cplusplus
+}
+#endif
+#endif
