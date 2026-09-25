@@ -182,3 +182,15 @@ Astrophysics declares Math and Physics dependencies. Sociology declares Math. Th
 ## Excellent standard
 
 A Subject Library reaches the repository's **Excellent** engineering standard when native mathematics, semantic declarations, XML model/procedure definitions, SLeeLa examples, provenance, evidence status, focused tests, and documented interpretation limits are all connected and inspectable.
+
+## Nordshrift Complete
+
+**Nordshrift Complete** is the application/service authoring edition built on the existing Nordshrift 2.0 pipeline and the SLeeLa-Complete base-class library.
+
+It provides reusable designer surfaces for Core/Runtime, API contracts, Platform, Network, Security, Data, Database, HTTP/Web, Server/Service, I/O, Synchronization, UI, XML, Email, Media, Telephony/VoIP, Memory Management, Reflection, AI/Inference, Analytics, Regex, Science/Subject Libraries, Terminal, and developer tooling.
+
+See [`NORDSHRIFT-COMPLETE.md`](NORDSHRIFT-COMPLETE.md) for the complete application/service class catalog and authoring rules.
+
+The canonical base-class definitions remain in [`../../api/sleela-complete/`](../../api/sleela-complete/), with the module matrix in [`../../api/sleela-complete/MODULE-MATRIX.md`](../../api/sleela-complete/MODULE-MATRIX.md). Native Memory Manager and Reflection foundations are documented under [`../../api/native/memory/`](../../api/native/memory/) and [`../../api/native/reflection/`](../../api/native/reflection/).
+
+Nordshrift Complete is an **authoring-level completeness** designation. It does not claim that every native backend or platform implementation is production-complete.
