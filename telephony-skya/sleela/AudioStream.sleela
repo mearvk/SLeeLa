@@ -1,0 +1,10 @@
+#sleela 1.1
+class AudioStream {
+    AudioFormat format;
+    AudioBuffer buffer;
+    int running;
+    void configure(AudioFormat selected, int bufferSize) { format = selected; buffer.allocate(bufferSize); }
+    void start() { running = 1; }
+    void stop() { running = 0; }
+    void reset() { buffer.clear(); }
+}
