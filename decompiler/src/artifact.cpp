@@ -1,4 +1,5 @@
 #include "sleela/decompiler/decompiler.hpp"
+#include "sleela/decompiler/elf.hpp"
 #include <algorithm>
 #include <fstream>
 #include <iomanip>
@@ -36,6 +37,7 @@ Artifact Artifact::from_bytes(std::span<const std::uint8_t>b,std::string n){
         a.format_=Format::GNUArchive;a.artifact_class_=ArtifactClass::StaticArchive;
     } else a.format_=Format::Raw;
     if(named_a)a.artifact_class_=ArtifactClass::StaticArchive;
+    if(a.format_==Format::ELF){ auto e=analyze_elf(a.bytes_,a.name_); a.interfaces_.sections=e.sections; a.interfaces_.symbols=e.symbols; a.interfaces_.imports=e.imports; a.interfaces_.exports=e.exports; a.interfaces_.relocations=e.relocations; a.library_metadata_=e.library; a.kernel_module_metadata_=e.kernel_module; }
     if(a.format_==Format::Raw&&named_ko)a.artifact_class_=ArtifactClass::KernelModule;
     return a;
 }
@@ -48,4 +50,5 @@ const std::string& Artifact::sha256()const noexcept{return sha256_;}
 const std::string& Artifact::name()const noexcept{return name_;}
 const LibraryMetadata& Artifact::library_metadata()const noexcept{return library_metadata_;}
 const KernelModuleMetadata& Artifact::kernel_module_metadata()const noexcept{return kernel_module_metadata_;}
+const NativeInterfaces& Artifact::interfaces()const noexcept{return interfaces_;}
 }
