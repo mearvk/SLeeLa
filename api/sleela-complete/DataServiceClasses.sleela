@@ -1,0 +1,7 @@
+#sleela 1.1
+class DataSet { String name; int rows; void configure(String n){name=n;} void addRow(){rows=rows+1;} }
+class DatabaseConnection { String driver; String database; int connected; void configure(String d,String n){driver=d;database=n;} void connect(){connected=1;} void close(){connected=0;} }
+class Query { String text; void prepare(String q){text=q;} void execute(){} }
+class EmailService { String server; int active; void configure(String s){server=s;} void start(){active=1;} void stop(){active=0;} void send(String to,String subject){} }
+class HttpService { int version; int active; void configure(int v){version=v;} void start(){active=1;} void stop(){active=0;} }
+class ServiceSpecification { String name; String lifecycle; void configure(String n,String l){name=n;lifecycle=l;} }
