@@ -1,0 +1,13 @@
+#sleela 1.1
+class VoIPApplication {
+    VoIPAccount account;
+    Headset headset;
+    VoIPSession session;
+    int running;
+    void start() { running=1; }
+    void stop() { if (session.active==1) session.stop(); headset.disconnect(); running=0; }
+    void registerAccount() { account.register(); }
+    void unregisterAccount() { account.unregister(); }
+    void answer() { session.call.answer(); }
+    void hangup() { session.call.hangup(); session.stop(); }
+}
