@@ -31,6 +31,10 @@ SLIR
 Reports / JSON / API / Refactoring
 ```
 
+## Product boundaries
+
+The architecture separates acquisition and identity, container parsing, native decoding and recovery, architecture-neutral SLIR analysis, and presentation/refactoring. API exemplars are deliberately thin clients over these layers rather than alternate parsers.
+
 ## Design rules
 
 1. Parsing is deterministic and side-effect free.
@@ -40,6 +44,9 @@ Reports / JSON / API / Refactoring
 5. The public API uses opaque handles where ABI stability matters.
 6. The VM is a validation target for SLIR and never an execution path for input binaries.
 7. Output is suitable for archival storage and later re-analysis.
+8. Unsupported native instructions are represented conservatively rather than guessed.
+9. Product reports preserve provenance and distinguish observed evidence from inferred hypotheses.
+10. Platform-specific build mechanics remain under `build/`; Slecompiler source remains under `decompiler/`.
 
 ## Native VM
 
