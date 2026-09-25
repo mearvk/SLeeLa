@@ -1,0 +1,7 @@
+#sleela 1.1
+class Call { String peer; String state; void configure(String p){peer=p;state="new";} void answer(){state="active";} void hangup(){state="closed";} }
+class SipTransaction { String method; String state; void configure(String m){method=m;state="new";} void start(){state="trying";} void complete(){state="complete";} }
+class RtpStream { int payloadType; int sequence; int timestamp; void configure(int p){payloadType=p;sequence=0;timestamp=0;} void send(){sequence=sequence+1;timestamp=timestamp+1;} }
+class MediaStream { String kind; int active; void configure(String k){kind=k;} void start(){active=1;} void stop(){active=0;} }
+class SleelaCompleteModule { ModuleSpecification specification; int complete; void define(ModuleSpecification s){specification=s;complete=1;} }
+class ModuleSpecificationBuilder { ModuleSpecification specification; void begin(String n,String v,String p){specification.configure(n,v,p);} void addClass(ClassSpecification c){specification.addClass(c);} ModuleSpecification build(){return specification;} }
