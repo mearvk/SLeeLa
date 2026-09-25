@@ -1,5 +1,6 @@
 #include "sleela/decompiler/output.hpp"
 #include <sstream>
+#include <cctype>
 #include <stdexcept>
 
 namespace sleela::decompiler {
