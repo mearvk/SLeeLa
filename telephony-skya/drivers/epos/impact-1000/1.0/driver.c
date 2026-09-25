@@ -1,6 +1,11 @@
 #include "driver.h"
+#include <errno.h>
 #include <string.h>
 static int probe(const skya_driver_device*d){return d&&d->vendor&&d->model&&strcmp(d->vendor,"EPOS")==0&&strstr(d->model,"IMPACT 1000")!=0;}
-static int capabilities(const skya_driver_device*d,skya_driver_capabilities*out){if(!d||!out)return -1;memset(out,0,sizeof(*out));out->audio_input=1;out->audio_output=1;out->mute=1;out->volume=1;out->firmware_query=1;out->headset_port=1;if(d->transport==SKYA_TRANSPORT_USB_HID){out->call_answer=1;out->call_end=1;}return 0;}
-static const skya_phone_driver driver={"c-epos_impact_1000","EPOS",probe,capabilities};
-const skya_phone_driver *skya_c_epos_impact_1000_driver(void){return &driver;}
+static int capabilities(const skya_driver_device*d,skya_driver_capabilities*out){if(!d||!out)return -EINVAL;memset(out,0,sizeof(*out));out->audio_input=1;out->audio_output=1;out->mute=1;out->volume=1;out->firmware_query=1;out->headset_port=1;out->busylight=1;if(d->transport==SKYA_TRANSPORT_USB_HID){out->call_answer=1;out->call_end=1;out->call_hold=1;}return 0;}
+int skya_epos_impact_1000_init(skya_epos_impact_1000*d,const skya_driver_device*dev,const skya_epos_transport*t){if(!d||!dev||!probe(dev))return -EINVAL;memset(d,0,sizeof(*d));d->device=*dev;capabilities(dev,&d->capabilities);if(t)d->transport=*t;d->volume=50;return 0;}
+int skya_epos_impact_1000_set(skya_epos_impact_1000*d,skya_epos_control c,int32_t v){if(!d||!d->transport.send_control)return -ENOTCONN;switch(c){case SKYA_EPOS_CTL_MUTE:if(v!=0&&v!=1)return-EINVAL;d->muted=v;break;case SKYA_EPOS_CTL_VOLUME:if(v<0||v>100)return-ERANGE;d->volume=v;break;case SKYA_EPOS_CTL_ANSWER:d->call_active=1;break;case SKYA_EPOS_CTL_END:d->call_active=0;d->on_hold=0;break;case SKYA_EPOS_CTL_HOLD:if(!d->capabilities.call_hold)return-EOPNOTSUPP;d->on_hold=v?1:0;break;case SKYA_EPOS_CTL_BUSYLIGHT:d->busylight=v?1:0;break;default:return-EINVAL;}return d->transport.send_control(d->transport.ctx,c,v);}
+int skya_epos_impact_1000_firmware(skya_epos_impact_1000*d,char*out,size_t n){if(!d||!out||!n)return-EINVAL;if(!d->transport.query_firmware)return-ENOTSUP;return d->transport.query_firmware(d->transport.ctx,out,n);}
+int skya_epos_impact_1000_descriptor(skya_epos_impact_1000*d,uint8_t*out,size_t cap,size_t*len){if(!d||!out||!len)return-EINVAL;if(!d->transport.read_descriptor)return-ENOTSUP;return d->transport.read_descriptor(d->transport.ctx,out,cap,len);}
+static const skya_phone_driver driver={"epos_impact_1000","EPOS",probe,capabilities};
+const skya_phone_driver*skya_c_epos_impact_1000_driver(void){return&driver;}
