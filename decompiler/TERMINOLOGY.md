@@ -138,3 +138,14 @@ A cryptographic digest used to identify artifact bytes. Slecompiler now uses SHA
 
 ### Conservative Decode
 A decoding policy that emits an unknown or unsupported instruction as raw data rather than inventing semantics.
+
+
+## Source reconstruction terms
+
+- **Source Output Target** — A language selected for generated decompiler output; currently Java, Sleela, C, or C++.
+- **Source Emitter** — The component that converts recovered analysis evidence into source-oriented text for a selected output target.
+- **Output Language Selection** — The explicit CLI/API choice of Java, Sleela, C, or C++ for generated source.
+- **Source Reconstruction** — Evidence-based production of source-like code from recovered native structure; it is not automatically equivalent to the original source.
+- **Language Projection** — Mapping the common recovered representation into a particular source language.
+- **Evidence-Preserving Output** — Generated source that marks unresolved or ambiguous native behavior instead of presenting unsupported conclusions as facts.
+- **Original-Language Claim** — A claim that the binary was originally written in a particular source language. Slecompiler's output target does not by itself establish such a claim.
