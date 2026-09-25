@@ -388,11 +388,11 @@
     },
     {
       "path": "api/native/memory/sleela_memory_manager.cpp",
-      "sha256": "c3fae42a1504f81b260eb01473e020d5b5832cb2e1153500e8fe31313c89bd82"
+      "sha256": "0b0ca7368b41601ed4f525e1066a936d64a56e98e8197a25e2f99450518630d8"
     },
     {
       "path": "api/native/memory/sleela_memory_manager.h",
-      "sha256": "2a64af709206228d239c2a974872b9dfea6b353fdf09da4d729b09ff525d127a"
+      "sha256": "faba7418ff05aac63916c06a0fbc6c7ab372e0dba610f33ee4ddd3225cc66d55"
     },
     {
       "path": "api/native/reflection/README.md",
@@ -4253,6 +4253,14 @@
     {
       "path": "impl/nordshrift/SYNCHRO.model",
       "sha256": "4fe9ce400ea8de9d15ab194fa001433e21ee05b5d4a17f4b5a991ed82bffa122"
+    },
+    {
+      "path": "impl/nordshrift/complete/class_bindings.cpp",
+      "sha256": "c6df81ea6f1b74f7cd390d5d16d892a6a6a826be605ac9df8354d0a9ec4b6a56"
+    },
+    {
+      "path": "impl/nordshrift/complete/class_bindings.h",
+      "sha256": "a399676fe64b89e8f245e6dd83ee47b2dd16ec60271fca85d18e02fa4613a18f"
     },
     {
       "path": "impl/nordshrift/component_manifest.cpp",
