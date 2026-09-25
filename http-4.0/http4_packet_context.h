@@ -37,6 +37,7 @@ size_t http4_packet_context_serialize(const http4_packet_context_t *ctx,
                                       uint8_t *out, size_t out_cap);
 int http4_packet_context_parse(const uint8_t *in, size_t in_len,
                                http4_packet_context_t *ctx);
+void http4_packet_context_init_defaults(http4_packet_context_t *ctx);
 
 #ifdef __cplusplus
 }
