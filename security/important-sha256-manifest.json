@@ -384,7 +384,7 @@
     },
     {
       "path": "api/native/memory/README.md",
-      "sha256": "25bf983771c6a336342c0ad1e30153103685771160c2406b86eebcac6f7266f6"
+      "sha256": "f108bd1e1bf9b75e98377c6dc36de147bf2fd4f43a9bbf82dd71e9992aad2451"
     },
     {
       "path": "api/native/memory/sleela_memory_manager.cpp",
@@ -396,7 +396,7 @@
     },
     {
       "path": "api/native/reflection/README.md",
-      "sha256": "3bd83df718ca40c0f9353026d81d7de0d1aa626f34670913a5b259e2ea9eb370"
+      "sha256": "08f1a2b0a12e56713ddda3ca16de062379f8f5edd9f8b8adf6b6307dd891ed9e"
     },
     {
       "path": "api/native/reflection/sleela_reflection.cpp",
@@ -500,7 +500,7 @@
     },
     {
       "path": "api/sleela-complete/MODULE-MATRIX.md",
-      "sha256": "decff9edcbd7aa7ef07ac9dd9af2567030947e78b34187ab5ff435534b6cb744"
+      "sha256": "2ec883faa87a7e87937f582ff6b150dc8f223459bb074e930fbfa0662c5047fe"
     },
     {
       "path": "api/sleela-complete/NetworkSecurityClasses.sleela",
