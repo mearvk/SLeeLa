@@ -1,0 +1,10 @@
+#sleela 1.1
+class Speaker {
+    AudioOutput output;
+    void open(AudioDevice device, AudioFormat format) { output.open(device, format); }
+    void start() { output.start(); }
+    void stop() { output.stop(); }
+    void mute(int value) { output.setMute(value); }
+    void volume(int value) { output.setVolume(value); }
+    void close() { output.close(); }
+}
