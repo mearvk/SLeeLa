@@ -49,7 +49,17 @@ struct KernelModuleMetadata {
     std::vector<std::string> dependencies;
 };
 
-struct NativeInterfaces;
+struct ArchiveMember { std::string name; std::uint64_t header_offset{}; std::uint64_t data_offset{}; std::uint64_t size{}; Format format{Format::Unknown}; };
+
+struct NativeInterfaces {
+    std::vector<Section> sections;
+    std::vector<ProgramSegment> segments;
+    std::vector<ArchiveMember> archive_members;
+    std::vector<Symbol> symbols;
+    std::vector<Import> imports;
+    std::vector<Export> exports;
+    std::vector<Relocation> relocations;
+};
 
 class Artifact {
 public:
@@ -78,18 +88,6 @@ private:
 };
 
 class Artifact;
-
-struct ArchiveMember { std::string name; std::uint64_t header_offset{}; std::uint64_t data_offset{}; std::uint64_t size{}; Format format{Format::Unknown}; };
-
-struct NativeInterfaces {
-    std::vector<Section> sections;
-    std::vector<ProgramSegment> segments;
-    std::vector<ArchiveMember> archive_members;
-    std::vector<Symbol> symbols;
-    std::vector<Import> imports;
-    std::vector<Export> exports;
-    std::vector<Relocation> relocations;
-};
 
 class Decoder { public: std::vector<Instruction> decode(const Artifact&, std::uint64_t address, std::size_t length) const; };
 class ControlFlowGraph { public: struct Edge { std::size_t from{}, to{}; }; struct Block { std::size_t id{}; std::vector<Instruction> instructions; }; std::vector<Block> blocks; std::vector<Edge> edges; };
