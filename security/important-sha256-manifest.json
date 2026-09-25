@@ -396,11 +396,11 @@
     },
     {
       "path": "api/native/reflection/README.md",
-      "sha256": "08f1a2b0a12e56713ddda3ca16de062379f8f5edd9f8b8adf6b6307dd891ed9e"
+      "sha256": "977fecb3a65ad96ab41057be1e712fdef8d4c97c0ee1c46fa19618b5b8338b41"
     },
     {
       "path": "api/native/reflection/sleela_reflection.cpp",
-      "sha256": "ffd007673bdd05858dda6e8609bbfeb82fea9cbb6cc295d56778211c12a94fd7"
+      "sha256": "ffc83c1bea85abf35bc08a3b1c089b856ced214ae83318ee839ab7c3ff9d50d9"
     },
     {
       "path": "api/native/reflection/sleela_reflection.hpp",
