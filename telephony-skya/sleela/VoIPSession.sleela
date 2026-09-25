@@ -1,0 +1,24 @@
+#sleela 1.1
+class VoIPSession {
+    SipCall call;
+    RtpSession rtp;
+    RtcpSession rtcp;
+    AudioInput input;
+    AudioOutput output;
+    CodecSet codecs;
+    int active;
+    void start() {
+        input.start();
+        output.start();
+        rtp.start();
+        rtcp.start();
+        active = 1;
+    }
+    void stop() {
+        input.stop();
+        output.stop();
+        rtp.stop();
+        rtcp.stop();
+        active = 0;
+    }
+}
