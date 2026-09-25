@@ -1,0 +1,10 @@
+#sleela 1.1
+class AudioBuffer {
+    int capacity;
+    int samples;
+    int sequence;
+    void allocate(int size) { capacity = size; samples = 0; sequence = 0; }
+    void clear() { samples = 0; }
+    void push(int count) { samples = count; sequence = sequence + 1; }
+    int size() { return samples; }
+}
