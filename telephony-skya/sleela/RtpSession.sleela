@@ -1,0 +1,13 @@
+#sleela 1.1
+class RtpSession {
+    String remoteAddress;
+    int remotePort;
+    int localPort;
+    int running;
+    int secure;
+    void configure(String address, int port) { remoteAddress = address; remotePort = port; }
+    void bind(int port) { localPort = port; }
+    void start() { running = 1; }
+    void stop() { running = 0; }
+    void enableSecure(int value) { secure = value; }
+}
