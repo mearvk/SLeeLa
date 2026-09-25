@@ -1,0 +1,8 @@
+#sleela 1.1
+class SipMessage {
+    String method;
+    String requestUri;
+    String body;
+    void create(String sipMethod, String uri) { method = sipMethod; requestUri = uri; }
+    void setBody(String value) { body = value; }
+}
