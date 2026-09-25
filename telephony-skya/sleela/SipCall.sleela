@@ -1,0 +1,11 @@
+#sleela 1.1
+class SipCall {
+    String state;
+    String peer;
+    SipMessage message;
+    SdpSession localSdp;
+    SdpSession remoteSdp;
+    void invite(String target) { peer = target; state = "INVITE"; }
+    void answer() { state = "ANSWERED"; }
+    void hangup() { state = "BYE"; }
+}
