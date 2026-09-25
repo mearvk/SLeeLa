@@ -107,6 +107,26 @@
       "sha256": "385a2e424e74eaca4c6dcf55b3329479107636dfd2ec74245c44c6249fdeebb2"
     },
     {
+      "path": "antivirus/src/sleelavirin_heuristic.c",
+      "sha256": "2c1bea5d86c3b1b311ec145eeb9b688b0fa0c4f82b705f2b93ade304042af0a5"
+    },
+    {
+      "path": "antivirus/src/sleelavirin_heuristic.h",
+      "sha256": "d2732f812ee4e06282b863bbfd4ecc20e09efabcd61f5ad3fe72b943d7e6baa5"
+    },
+    {
+      "path": "antivirus/src/sleelavirin_scan.c",
+      "sha256": "9e73e530547ce68856fe8faf8c6b5d693ee784d9a037f00f59ca43a9a0271cf7"
+    },
+    {
+      "path": "antivirus/src/sleelavirin_scan.h",
+      "sha256": "0f6c75588c59a8ff10a8ff6cb2172b3b363e65734c8d07914cce9ca1cc1a0c3b"
+    },
+    {
+      "path": "antivirus/tests/test_scan.c",
+      "sha256": "b05d066a5035c07971d445a2352b6caa0466f4fccc1c200a1804d3e24d8d1e75"
+    },
+    {
       "path": "api/API-CATALOG.md",
       "sha256": "3248016484491820dcc76e26ffb63761730d1507335c2dd179f588341b2d8a2c"
     },
@@ -436,11 +456,11 @@
     },
     {
       "path": "api/native/security/README.md",
-      "sha256": "7f0081c65b0fa8018755b54540010cd6a122f39739b584577368ed40bc385ba8"
+      "sha256": "c09288d1bcb3265ba7ef9af2a841f94658284a4b9f367725d73fafc2720fa582"
     },
     {
       "path": "api/native/security/sleela_security.cpp",
-      "sha256": "134701e7f59da83300d63ba342ef2512733d5fabf4cc159ab102304b31222b89"
+      "sha256": "5dd53854e257bf8af80fe5df56c54c824e8ff95b9b9ef727bc08becc6fe6d670"
     },
     {
       "path": "api/native/security/sleela_security.hpp",
@@ -6036,7 +6056,7 @@
     },
     {
       "path": "tests/network_security_smoke.cpp",
-      "sha256": "6d53600fba85ce009267c3fbdf189c8a2ce1be9cfd91b6bc734c0c77b204f2ec"
+      "sha256": "978fc66e52586cc19228b92a54eb8e9d55b46bb09de32577f65f9ae0273a2bc8"
     },
     {
       "path": "tests/nordshrift_complete_smoke.cpp",
