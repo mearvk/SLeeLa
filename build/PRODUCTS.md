@@ -45,6 +45,19 @@ Each product receives:
 
 ## Future product build layers
 
+### Slecompiler documentation and verification
+
+The product-build boundary now includes the public API exemplars and native test target. The expected development loop is:
+
+1. configure through the platform entry point;
+2. build the `sleela_decompiler` library and product executables;
+3. run the native CTest suite;
+4. compile the API exemplars;
+5. inspect artifacts through the CLI or library API;
+6. retain reproducible identity/configuration information for reports.
+
+No step requires executing the analyzed input artifact.
+
 The build appropriation is intentionally extensible for:
 - SLeeLa core/server editions.
 - HTTP server editions.
