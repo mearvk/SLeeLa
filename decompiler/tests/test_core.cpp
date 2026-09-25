@@ -29,5 +29,12 @@ int main() {
         assert(a.interfaces().archive_members[0].name == "member.o");
         assert(a.interfaces().archive_members[0].format == sleela::decompiler::Format::ELF);
     }
+    {
+        const unsigned char code[] = {0xE8,0x01,0x00,0x00,0x00,0xC3};
+        auto a = sleela::decompiler::Artifact::from_bytes(code, "code.bin");
+        // Raw artifacts intentionally lack architecture information; use a minimal ELF-shaped
+        // path in future fixtures for architecture-specific decoding.
+        assert(a.format() == sleela::decompiler::Format::Raw);
+    }
     return 0;
 }
