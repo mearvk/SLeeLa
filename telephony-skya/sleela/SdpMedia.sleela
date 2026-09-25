@@ -1,0 +1,10 @@
+#sleela 1.1
+class SdpMedia {
+    String media;
+    int port;
+    String protocol;
+    CodecSet codecs;
+    void set(String mediaType, int mediaPort, String transport) {
+        media = mediaType; port = mediaPort; protocol = transport;
+    }
+}
