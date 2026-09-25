@@ -30,6 +30,8 @@ int main(void) {
         assert(http4_segment_frame_decode(wire, written, &frame, &segment,
                                           &consumed) == 0);
         assert(consumed == written);
+        assert(segment.stream_id == 7);
+        assert(segment.request_id == 42);
         assert(segment.header.segment_index == i);
         assert(segment.header.segment_count == count);
         assert(http4_reassembly_add(&reassembly, &segment) == 0);
@@ -38,8 +40,20 @@ int main(void) {
     assert(http4_reassembly_complete(&reassembly));
     assert(http4_reassembly_size(&reassembly) == source_len);
     assert(memcmp(http4_reassembly_data(&reassembly), source, source_len) == 0);
-    http4_reassembly_reset(&reassembly);
 
+    {
+        size_t written = 0, consumed = 0;
+        http4_frame_view_t frame;
+        http4_segment_view_t segment;
+        assert(http4_segment_frame_encode(7, 42, 100, 9001, 0,
+                                          source, source_len, mtu,
+                                          wire, sizeof(wire), &written) == 0);
+        assert(http4_segment_frame_decode(wire, written, &frame, &segment,
+                                          &consumed) == 0);
+        assert(http4_reassembly_add(&reassembly, &segment) != 0);
+    }
+
+    http4_reassembly_reset(&reassembly);
     puts("SLeeLa HTTP 4.0 segmentation/reassembly self-test: PASS");
     return 0;
 }
