@@ -34,7 +34,7 @@ For kernel modules, the API provides a place for vermagic, module identity, lice
 
 ## Library-family analysis
 
-A future LibraryGraph layer should connect executable imports to provider exports and connect shared objects to their DT_NEEDED dependencies, permitting whole-library-family analysis while preserving per-file provenance.
+`LibraryGraph` connects analyzed artifacts and currently provides conservative dependency/provider evidence. It should be treated as an evidence graph, not a complete dynamic-loader or ABI simulation.
 
 ## Refactoring
 
@@ -59,4 +59,4 @@ See:
 
 `decompiler/docs/TUTORIAL.md`
 
-The tutorial covers installation/building on Linux, Windows 10+, and macOS, the C++ API layers, artifact inspection, native decoding, CFG analysis, library and kernel-module metadata, LibraryGraph, SLIR, the bounded VM, function recovery, identity digests, CLI use, and current product limitations.
+The tutorial covers installation/building on Linux, Windows 10+, and macOS, the C++ API layers, artifact inspection, native decoding, CFG analysis, library and kernel-module metadata, LibraryGraph, SLIR, the bounded VM, function recovery, identity digests, CLI use, reproducible analysis records, and current product limitations.
