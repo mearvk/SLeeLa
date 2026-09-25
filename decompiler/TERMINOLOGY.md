@@ -108,3 +108,33 @@
 - **Architecture Lifter** — Architecture-specific component that converts decoded instructions into SLIR operations.
 - **CFG Recovery** — Construction of control-flow relationships from decoded instructions and recovered targets.
 - **Function Recovery** — Construction of function candidates and boundaries from multiple independent evidence sources.
+
+
+## Stage 4 implementation terms
+
+### ModRM
+The x86 instruction byte that encodes register operands and addressing-mode information for many instructions.
+
+### SIB
+The x86 Scale-Index-Base byte used to encode indexed memory operands.
+
+### Direct Control Transfer
+A call or branch whose destination is encoded directly by a relative displacement or immediate target.
+
+### Indirect Control Transfer
+A call or branch whose destination is supplied through a register or memory operand and therefore may require additional analysis.
+
+### Relocation-Backed Call
+A decoded call or jump whose instruction or target is associated with an ELF relocation record.
+
+### PLT/GOT Evidence
+Static evidence connecting Procedure Linkage Table stubs, Global Offset Table entries, dynamic relocations, and imported symbols.
+
+### Function Seed
+An address used as initial evidence for function-boundary recovery, such as an entry point, symbol, export, or direct call target.
+
+### Identity Digest
+A cryptographic digest used to identify artifact bytes. Slecompiler now uses SHA-256 for this field.
+
+### Conservative Decode
+A decoding policy that emits an unknown or unsupported instruction as raw data rather than inventing semantics.
