@@ -50,7 +50,7 @@ public:
     const std::string& sha256() const noexcept;
     const std::string& name() const noexcept;
     const LibraryMetadata& library_metadata() const noexcept;
-    const KernelModuleMetadata& kernel_module_metadata() const noexcept;
+    const KernelModuleMetadata& kernel_module_metadata() const noexcept;\n    const NativeInterfaces& interfaces() const noexcept;
 private:
     std::string name_;
     std::vector<std::uint8_t> bytes_;
@@ -59,7 +59,17 @@ private:
     Architecture architecture_{Architecture::Unknown};
     ArtifactClass artifact_class_{ArtifactClass::Unknown};
     LibraryMetadata library_metadata_;
-    KernelModuleMetadata kernel_module_metadata_;
+    KernelModuleMetadata kernel_module_metadata_;\n    NativeInterfaces interfaces_;
+};
+
+class Artifact;
+
+struct NativeInterfaces {
+    std::vector<Section> sections;
+    std::vector<Symbol> symbols;
+    std::vector<Import> imports;
+    std::vector<Export> exports;
+    std::vector<Relocation> relocations;
 };
 
 class Decoder { public: std::vector<Instruction> decode(const Artifact&, std::uint64_t address, std::size_t length) const; };
