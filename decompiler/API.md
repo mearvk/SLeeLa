@@ -125,3 +125,12 @@ Generated source is evidence-derived. It must not be represented as the original
 source unless the evidence actually establishes that equivalence. Missing or
 ambiguous native semantics remain explicitly represented as comments/unknowns rather
 than invented source behavior.
+
+
+## Shared C/C++ API class model
+
+The decompiler now has a public C++20 semantic class-model layer under api/include/sleela/api.hpp and api/src/api.cpp. It provides reusable Type, Field, Variable, FunctionSignature, CallingConvention, Method, CStruct, CUnion, CEnum, CppClass, CppNamespace, Artifact, Address, Instruction, BasicBlock, ControlFlowGraph, ReconstructionUnit, Provenance, and EvidenceKind definitions.
+
+CppClass explicitly supports evidence-backed base classes, fields, methods, virtual methods, vtable addresses, and RTTI information. CStruct/CUnion/CEnum support C reconstruction. The model is intended to be populated from SLIR, ABI, data-flow, debug, RTTI, vtable, and other native-analysis evidence and then consumed by C/C++/Sleela/Java source backends.
+
+This addition is an API foundation; it does not claim universal binary recovery. Unknown, unsupported, hypothesized, and conflicting evidence must remain explicit, and analyzed target artifacts are never executed.
