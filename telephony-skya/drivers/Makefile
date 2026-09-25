@@ -1,14 +1,14 @@
 CC ?= cc
-CFLAGS ?= -std=c11 -Wall -Wextra -O2
+CFLAGS ?= -std=c11 -Wall -Wextra -O2 -pthread
 CXX ?= c++
-CXXFLAGS ?= -std=c++17 -Wall -Wextra -O2
+CXXFLAGS ?= -std=c++17 -Wall -Wextra -O2 -pthread
 TARGET := libskya-drivers.a
 OBJDIR := build
 MODEL_CPP := $(shell find . -path './build' -prune -o -path './platform' -prune -o -name driver.cpp -print)
 MODEL_C := $(shell find . -path './build' -prune -o -path './platform' -prune -o -name driver.c -print)
 MODEL_CPP_OBJS := $(patsubst ./%.cpp,$(OBJDIR)/cpp/%.o,$(MODEL_CPP))
 MODEL_C_OBJS := $(patsubst ./%.c,$(OBJDIR)/c/%.o,$(MODEL_C))
-OBJS := $(OBJDIR)/skya_driver_registry.o $(OBJDIR)/skya_builtin_drivers.o $(OBJDIR)/skya_vendor_drivers.o $(MODEL_CPP_OBJS) $(MODEL_C_OBJS)
+OBJS := $(OBJDIR)/skya_driver_registry.o $(OBJDIR)/skya_builtin_drivers.o $(OBJDIR)/skya_vendor_drivers.o $(OBJDIR)/c/skya_driver_runtime.o $(OBJDIR)/c/skya_hardware_io.o $(MODEL_CPP_OBJS) $(MODEL_C_OBJS)
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Linux)
 PLATFORM_OBJ := $(OBJDIR)/skya_linux_driver.o
@@ -39,8 +39,6 @@ $(OBJDIR)/skya_builtin_drivers.o: src/skya_builtin_drivers.cpp | $(OBJDIR)
 	$(CXX) $(CXXFLAGS) -Iinclude -c $< -o $@
 $(OBJDIR)/skya_vendor_drivers.o: src/skya_vendor_drivers.cpp | $(OBJDIR)
 	$(CXX) $(CXXFLAGS) -Iinclude -c $< -o $@
-$(PLATFORM_OBJ): $(PLATFORM_SRC) | $(OBJDIR)
-	$(CXX) $(CXXFLAGS) $(PLATFORM_CXXFLAGS) -Iinclude -c $< -o $@
 $(TARGET): $(OBJS)
 	ar rcs $@ $(OBJS)
 clean:
