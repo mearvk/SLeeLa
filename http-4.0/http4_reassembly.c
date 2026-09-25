@@ -7,7 +7,6 @@
 static int bitmap_test(const uint8_t *bitmap, uint32_t index) {
     return (bitmap[index / 8u] & (uint8_t)(1u << (index % 8u))) != 0;
 }
-
 static void bitmap_set(uint8_t *bitmap, uint32_t index) {
     bitmap[index / 8u] |= (uint8_t)(1u << (index % 8u));
 }
@@ -21,7 +20,7 @@ int http4_reassembly_init(http4_reassembly_t *state,
     if (!state || total_length > HTTP4_MAX_PAYLOAD ||
         total_length > UINT32_MAX || segment_count == 0) return -1;
 
-    size_t bitmap_bytes = ((size_t)segment_count + 7u) / 8u;
+    const size_t bitmap_bytes = ((size_t)segment_count + 7u) / 8u;
     if (bitmap_bytes > SIZE_MAX - total_length) return -2;
 
     memset(state, 0, sizeof(*state));
@@ -53,8 +52,9 @@ int http4_reassembly_add(http4_reassembly_t *state,
 
     const http4_segment_header_t *h = &segment->header;
     if (h->magic != HTTP4_SEGMENT_MAGIC || h->version != HTTP4_SEGMENT_VERSION) return -2;
-    if (h->stream_id != 0) { /* reserved for future segment-level binding */ }
-    if (h->segment_id != state->segment_id ||
+    if (segment->stream_id != state->stream_id ||
+        segment->request_id != state->request_id ||
+        h->segment_id != state->segment_id ||
         h->segment_count != state->segment_count ||
         h->total_length != state->total_length) return -3;
     if (h->segment_index >= state->segment_count) return -4;
@@ -62,12 +62,7 @@ int http4_reassembly_add(http4_reassembly_t *state,
         (size_t)h->data_length > state->total_length - h->offset) return -5;
     if (h->data_length && !segment->data) return -6;
 
-    if (bitmap_test(state->bitmap, h->segment_index)) {
-        /* Exact duplicates are harmless only if they carry the same bytes.
-           The offset/length must also match the original range; because the
-           segment metadata is not stored, reject duplicates conservatively. */
-        return -7;
-    }
+    if (bitmap_test(state->bitmap, h->segment_index)) return -7;
 
     if (h->data_length) {
         memcpy(state->buffer + h->offset, segment->data, h->data_length);
