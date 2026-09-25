@@ -407,6 +407,22 @@
       "sha256": "7d419929f43b8fabc2b4a1a2eabc3bfb71e0a06fd938d37544ba5456b6c3b976"
     },
     {
+      "path": "api/native/runtime/BUILD.md",
+      "sha256": "c7d44fa4b74e813eaa2e62d652518639e6b4bfed9295223c8f474021f249e432"
+    },
+    {
+      "path": "api/native/runtime/README.md",
+      "sha256": "5a91e7da1b195ca3f856cec6b1d42a9447a0b1a64735c6bca824aa6278001086"
+    },
+    {
+      "path": "api/native/runtime/sleela_runtime.cpp",
+      "sha256": "7748fd3438fb899b0651252891ba574154403d6205f33caa500809676ab75a58"
+    },
+    {
+      "path": "api/native/runtime/sleela_runtime.hpp",
+      "sha256": "d3d59ed3f6652dcc5c590daca2857d605d5862f069063d602ac6e51ca76f8ed3"
+    },
+    {
       "path": "api/nordshrift/API.html",
       "sha256": "084f485557690e405a86d501ea28889d135e808a5e2e9249b5283656994b6bf8"
     },
@@ -516,7 +532,7 @@
     },
     {
       "path": "api/sleela-complete/RuntimeClasses.sleela",
-      "sha256": "4958909ec0cf4a5162524616a071f61170cba4e6573c8ff99b5cb9d09b623fdb"
+      "sha256": "70844084424c198f8be12bf492a0803c554ac475687b27f8511a507031a4c76b"
     },
     {
       "path": "api/sleela-complete/ServerUIIOClasses.sleela",
@@ -6001,6 +6017,10 @@
     {
       "path": "tests/reflection_smoke.cpp",
       "sha256": "9dbb0b80a04bc2e7cc3958c92deb920271c58df7c1e9938074f72af867d1d707"
+    },
+    {
+      "path": "tests/runtime_smoke.cpp",
+      "sha256": "d26c349aff6429421d6030d50f45e2597b73b9ecfac5555460bbf16e0312d318"
     },
     {
       "path": "tools/add-country-existence-dates.py",
