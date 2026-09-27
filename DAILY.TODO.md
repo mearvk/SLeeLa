@@ -65,6 +65,7 @@
 - [ ] Runtime loading.
 - [x] Version compatibility tests.
 - [x] Runtime artifact ABI compatibility validation.
+- [x] Nordshrift 2.6-dev version identity synchronized across implementation and documentation.
 - [ ] Negative compiler tests.
 - [x] Invalid-source diagnostics.
 - [x] Cross-version fixtures.
