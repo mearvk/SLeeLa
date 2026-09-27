@@ -130,13 +130,13 @@ the current values are:
 
 | Component | Version | Meaning | Source of truth |
 |-----------|---------|---------|-----------------|
-| **Sleela toolchain / implementation** (`sleela` CLI) | **0.1.2** | The C/C++ front end + core in `impl/`. Pre-1.0. | `impl/frontend/driver.cpp` |
+| **Sleela toolchain / implementation** (`sleela` CLI) | **0.2.0-dev** | The C/C++ front end + core in `impl/`. Pre-1.0. | `impl/frontend/driver.cpp` |
 | **Sleela language syntax** | **1.0** (range `1.0 .. 1.0`) | The grammar version a `.sleela` file declares via `#sleela`. | `impl/frontend/version.h` |
-| **Nordshrift** (`.sst` transpiler driver) | **1.0** | Reuses this front end; enforces the same syntax rules. | `impl/nordshrift/nordshrift.cpp` |
+| **Nordshrift** (`.sst` transpiler driver) | **2.2-dev** | Reuses this front end; enforces the same syntax rules. | `impl/nordshrift/nordshrift.cpp` |
 | **NS-SST-0001** (`.sst` format spec) | **1.0.0** (Normative) | The `.sst` control-sheet format. | `SST.model` |
 | **SL-META-0001** (metadocument) | **1.0.0** (Pre-Normative) | The governing language metadocument, incl. §4.4. | `src/Sleela.manifest` |
 
-> **In short:** the compiler here is the **0.1.2** toolchain, implementing
+> **In short:** the compiler here is the **0.2.0-dev** toolchain, implementing
 > **Sleela language syntax 1.0**. Syntax is versioned independently of the
 > implementation: the `0.1.2` toolchain implements syntax `1.0`.
 
@@ -144,7 +144,7 @@ Query the live values:
 
 ```sh
 ./build/sleela version
-#  Sleela 0.1.2 (C/C++ core; SHEET.sheet conducted methods; .xclass input)
+#  Sleela 0.2.0-dev (C/C++ core; SHEET.sheet conducted methods; .xclass input)
 #    supported .sleela syntax: 1.0 .. 1.0 (declare per-file with '#sleela 1.0')
 ```
 
