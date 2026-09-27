@@ -104,7 +104,7 @@
     },
     {
       "path": "VERSION.md",
-      "sha256": "3a38ee3a859cf8362c4f3039aae3bd9295e08f95c67d619a4a2dbb0eec6ce34a"
+      "sha256": "423582fbfc4be1aef6a1370a2d5f2f35d1ab256b0eef98dab2f20560f31fbeba"
     },
     {
       "path": "antivirus/src/sleelavirin_heuristic.c",
@@ -4252,7 +4252,7 @@
     },
     {
       "path": "impl/frontend/driver.cpp",
-      "sha256": "c402605d0a77ec03bba92894dd2e71651e46e0266f0d1c0df2a8c9f124b42010"
+      "sha256": "8e846046d946e2031cf9dbf1e903871142498223817b33dc5d164add8fe56abd"
     },
     {
       "path": "impl/frontend/http_server_cli.cpp",
