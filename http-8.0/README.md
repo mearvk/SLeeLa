@@ -4,6 +4,22 @@
 
 HTTP 8.0 adds an explicit cryptographic and session-security boundary to the SLeeLa HTTP lineage. Cryptographic configuration remains separate from ordinary application payloads, and implementations should fail closed when required security policy cannot be satisfied.
 
+## National Emblems, Signals, and Frequency
+
+HTTP 8.0 also establishes an application-level area of interest for the structured representation and exchange of **National Emblems, Signals, and Frequency**.
+
+This area is intended for descriptive, interoperable metadata such as:
+
+- national emblem names, identifiers, provenance, and display references;
+- public or authorized signal identifiers and their semantic descriptions;
+- frequency-related metadata, including units, bands, ranges, measurement context, and source references;
+- jurisdiction, organization, or service context where explicitly supplied by the application;
+- timestamps, versioning, and provenance needed to distinguish current data from historical or user-authored records.
+
+These records are **data models, not authority grants**. An emblem, signal, frequency, or jurisdictional label carried by HTTP 8.0 does not itself establish legal status, authenticity, ownership, authorization, or operational control.
+
+Frequency information should remain descriptive and bounded by the applicable configuration and authorization policy. HTTP 8.0 does not define instructions for unauthorized interception, interference, jamming, evasion, or disruption of communications.
+
 ## DarkPower
 
 HTTP 8.0 includes the project-level **DarkPower** C++ model:
@@ -46,5 +62,6 @@ Before deployment, the build and verification process should:
 
 1. Syntax-check the C and C++ sources.
 2. Validate cryptographic configuration.
-3. Validate negotiation behavior.
-4. Reject configurations that violate required security policy.
+3. Validate National Emblems, Signals, and Frequency metadata for schema, provenance, units, and bounded values.
+4. Validate negotiation behavior.
+5. Reject configurations that violate required security policy.
