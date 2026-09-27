@@ -72,7 +72,7 @@ This includes:
 - Nordshrift shared target-neutral lowering IR and emitter gate
 - Nordshrift 2.3-dev target-neutral type/semantic analysis and negative evidence
 - Nordshrift 2.4-dev end-to-end SST compilation and runnable artifact execution proof
-- Nordshrift 2.5-dev runtime artifact ABI validation gate
+- Nordshrift 2.5-dev runtime artifact ABI validation gate — executable validation and rejection test
 - Nordshrift 2.6-dev cross-version compiler compatibility gate
 - Nordshrift 2.7-dev compiler fuzzing and malformed-input gate
 - Nordshrift 2.8-dev deterministic compiler-output gate
