@@ -4,7 +4,7 @@
 
 **SLeeLa:** 0.2.0-dev  
 **Sleela-Complete:** 0.2.0-dev  
-**Nordshrift Complete:** 2.1-dev  
+**Nordshrift Complete:** 2.2-dev  
 **Native Foundation:** 0.2.0-dev  
 **Edition:** SLeeLa Complete / Native Foundation  
 **Status:** Active Development  
@@ -41,6 +41,7 @@ This includes:
 - dependency-lock/provenance foundation
 - numerical top-down completion tracking
 - Nordshrift source-validation gate and negative compiler evidence
+- Nordshrift shared target-neutral lowering IR and emitter gate
 
 ## Current Implemented Foundations
 
