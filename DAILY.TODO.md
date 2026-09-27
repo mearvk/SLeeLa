@@ -53,8 +53,11 @@
 - [ ] Add CI artifact retention.
 
 # 2. Compiler / Nordshrift
-- [ ] SST semantic validation.
+- [x] SST semantic validation at sheet/source-check boundary.
+- [ ] Full type/semantic analysis.
 - [ ] Shared lowering.
+- [x] SST source → shared Sleela lexer/parser validation during `nordshrift check`.
+- [x] Negative source-validation test.
 - [ ] End-to-end SST compilation.
 - [ ] Native linking.
 - [ ] Runtime loading.
