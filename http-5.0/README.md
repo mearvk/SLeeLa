@@ -1,106 +1,97 @@
-# SLeeLa HTTP 5.0 — Friends' Packs
+# SLeeLa HTTP 5.0
 
-Status: Experimental SLeeLa protocol generation; not an IETF HTTP/5 standard.
+**Status:** Experimental SLeeLa application-protocol generation; not an IETF HTTP/5 standard.
 
-## Galactic Audit Age 6
-
-SLeeLa HTTP 5.0 is documented here as operating within the project's **Galactic Audit Age 6** framing.
-
-Within this project framing, **law is law**: applicable law, lawful authority, due process, contractual boundaries, and ordinary security requirements remain controlling. “Certain One” is retained as project terminology for an already-established or explicitly identified condition; it is not a claim of legal, governmental, scientific, or institutional authority.
-
-Galactic Audit Age 6 does not override applicable law, transport security, authorization boundaries, or the rights and responsibilities of network operators and users. It is an architectural/documentary era marker for the project.
-
-### Motion, Property, and Glades
-
-The project principle is stated as:
-
-> **Motion is protected. Motion is property. These lead to Glades.**
-
-Here, **“too” is intentionally read as “to”** in the phrase “lead too Glades”: the intended sense is directional — **lead to Glades**.
-
-“Motion” in this project documentation means an application or protocol state transition, exchange, movement of information, or other explicitly modeled change. Protection means that such motion is subject to the applicable authorization, integrity, privacy, safety, and legal boundaries of the system in which it occurs.
-
-“Property” is used as a project-level architectural term for an owned, controlled, licensed, or otherwise explicitly attributable resource. It does not by itself establish a legal property right.
-
-“Glades” is retained as project terminology for the resulting destination/state/concept reached by the modeled motion. These terms do not authorize interference with another person's systems, network traffic, property, or communications.
+HTTP 5.0 extends the HTTP 4.0 frame/session model with an application-level **Friends' Packs** capability. A Friends' Pack is ordinary user-controlled application data containing a friends list, optional point values, document references, and optional bonus-offer references.
 
 ## Purpose
 
-HTTP 5.0 extends the repository's HTTP 1.0+ lineage and HTTP 4.0 frame/session architecture with an application-layer Friends' Packs (FP) capability. Friends' Packs carry ordinary application information plus references to optional, explicitly declared bonus offerings.
+Friends' Packs provide a structured way to package application relationships and optional offerings. They do not change the underlying HTTP transport semantics.
 
-FP is a quota/capability value, not a measure of trust, nationality, geography, or Internet access. When FP reaches 0, only optional bonus-pack allowances are exhausted; ordinary protocol operation continues under the negotiated session and carrier.
+An FP value is an application quota or accounting value. It is not an authentication credential, a measure of trust, or an authorization to control another system.
 
-## Simple Friends List and Point Payload
+## Friends List
 
-Users may maintain a simple application-level list of friends. Each entry contains:
+A friend entry may contain:
 
-- a **friend name**;
-- an optional **point amount** associated with that friend; and
-- an optional **assigned document reference**.
+- **friend name**;
+- optional **point amount**;
+- optional **assigned document reference**.
 
-The point amount is ordinary application data. It can represent a quota, score, allowance, accounting value, or other user-defined point system. It is not an instruction to harm, attack, disable, or interfere with another person or system.
+The initial payload form is:
 
-When the computer prepares the application payload for a selected friend, HTTP 5.0 formats the data as:
+```text
+friend-name|points|document-reference
+```
 
-    friend-name|points|document-reference
-
-The assigned document reference identifies the document or application resource associated with that entry. The implementation sends this as ordinary application data through the normal authorized HTTP 5.0 exchange; it does not convert the point amount into a network attack or infrastructure-control operation.
-
-In code, `FriendsPack::addFriend()` adds the entry and `FriendsPack::friendPayload()` produces the corresponding payload. An invalid friend index returns an empty payload.
+In the implementation, `FriendsPack::addFriend()` adds an entry and `FriendsPack::friendPayload()` serializes the corresponding payload. An invalid friend index returns an empty payload.
 
 ## Architecture
 
+```text
 Application
-  |
+    |
 SLeeLa HTTP 5.0 semantic API
-  |
-Friends' Packs / friend-list + point payload layer
-  |
+    |
+Friends' Packs
+    |
 HTTP 5.0 frame + session model
-  |
-Capability / flow-control / integrity
-  |
+    |
+Capability / flow control / integrity
+    |
 Authenticated carrier
-  +-- HTTP/3 / QUIC
-  +-- HTTP/4-compatible application carrier
-  +-- test/in-memory carrier
+    +-- HTTP/3 / QUIC
+    +-- HTTP/4-compatible application carrier
+    +-- Test / in-memory carrier
+```
 
-## Friends' Pack model
+## Friends' Pack Model
 
-A Friends' Pack contains an opaque pack identifier, an application relationship identifier, an FP balance, optional bonus-offer references, optional expiry, and negotiated policy. Bonus offerings are references, not forced downloads or redirects.
+A pack may contain:
 
-## Zero-FP behavior
+- opaque pack identifier;
+- application relationship identifier;
+- FP balance;
+- optional bonus-offer references;
+- optional expiration;
+- negotiated application policy.
 
-1. Normal HTTP 5.0 traffic continues.
+Bonus offers are references. They do not force downloads, redirects, or access.
+
+## Zero-FP Behavior
+
+When FP reaches zero:
+
+1. Normal HTTP 5.0 operation continues.
 2. New optional Friends' Pack bonuses are declined.
-3. Ordinary requests are unaffected.
-4. FP exhaustion does not authorize blocking, degrading, rerouting, or interfering with unrelated network traffic.
+3. Ordinary requests remain unaffected.
+4. FP exhaustion does not authorize blocking, degrading, rerouting, or interfering with unrelated traffic.
 5. Replenishment occurs only through explicit application policy.
 
-## Defensive Assault Kits
+## Defensive Audit Kits
 
-The requested Assault Kits are represented as defensive audit kits only. They are bounded conformance/test bundles for authorized lab validation of parser boundaries, replay handling, rate limits, capability negotiation, and router-facing interoperability.
+The repository's audit-kit concept is limited to authorized conformance and testing. Test bundles may validate parser boundaries, replay handling, rate limits, capability negotiation, and router-facing interoperability.
 
-They do not contain router-stinging, packet-flooding, credential attacks, route manipulation, denial-of-service logic, or instructions for attacking infrastructure in India, Pakistan, China, Korea, or elsewhere.
+They are not network-attack mechanisms and do not authorize interference with infrastructure or communications.
 
-## HTTP 1.0+ lineage
+## Extensions
 
-HTTP 5.0 retains the repository's layered principle: HTTP/1.x semantics remain the historical baseline; HTTP/2-style multiplexing informs concurrent exchanges; HTTP/3/QUIC supplies an authenticated carrier option; and SLeeLa HTTP 4.0 contributes explicit frames, stream/request identity, sequence handling, resumability, flow control, migration, and typed reset behavior.
+- `FRIENDS_PACK` — pack metadata and optional offer references.
+- `BONUS_OFFER` — optional offering reference.
+- `FP_UPDATE` — application-level balance update.
+- `AUDIT` — defensive conformance/audit event.
 
-HTTP 5.0 adds Friends' Packs as an application capability without changing the carrier security boundary.
+## Shared Download Contract
 
-## Security boundary
+Files larger than 50 MB use:
 
-TLS/QUIC and authenticated carriers remain responsible for transport security. FP is not an authentication or authorization credential. Offer references do not grant access by themselves.
-
-## Initial extensions
-
-- FRIENDS_PACK — pack metadata and optional offer references.
-- BONUS_OFFER — one optional offering reference.
-- FP_UPDATE — application-level FP balance change.
-- AUDIT — defensive conformance/audit event.
+```text
+SESSION-ID | DATETIME | FILE-ID | FILE-NAME | INDEX | OFFSET | TOTAL-SIZE
+```
 
 ## Build
 
-    make -C http-5.0
-    make -C http-5.0 test
+```sh
+make -C http-5.0
+make -C http-5.0 test
+```
