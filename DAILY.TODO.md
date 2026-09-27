@@ -360,6 +360,10 @@ The first seven version-and-toolchain work items are now closed. Future work mus
    - The compatibility gate now proves all three states: supported syntax 1.3 is accepted, below-floor 1.2 is rejected, and above-ceiling 1.4 is rejected.
 
 7. **Complete version registry / documentation closure — COMPLETE**
+   - Audited the complete registry against the independently versioned component VERSION files and synchronized the registry with the actual 0.3.0-dev / 2.6-dev state.
+   - Corrected the registry so Nordshrift 2.7-dev and 2.8-dev are explicitly roadmap gates rather than represented as completed milestones.
+   - Version history now records completed Nordshrift gates through 2.6-dev and identifies 2.7-dev/2.8-dev as the next planned verification work.
+
    - The complete component registry is maintained in VERSION.md, including independently versioned API/server, server-edition, moral, port-awareness, terminal, standard, and metadata components.
 
 **Ongoing rule:** Every subsequent implementation milestone updates its applicable version numbers, source identity, tests, and master documentation together. Independent component versions are changed only when that component itself changes.
