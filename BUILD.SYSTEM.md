@@ -2,11 +2,32 @@
 
 ## Goal
 
-A SLeeLa project should be able to move from source to a reproducible application artifact without requiring the user to manually assemble compiler, runtime, native libraries and resources.
+A SLeeLa project should move from source to a reproducible application artifact without requiring the user to manually assemble compiler, runtime, native libraries and resources.
 
 ## Build lifecycle
 
 SOURCE → CHECK → DEPENDENCIES → COMPILE → LINK/ASSEMBLE → PACKAGE → SIGN → TEST → INSTALL/RUN
+
+The repository now provides a thin lifecycle driver at `tools/sleela-build.py`. It drives the existing native `impl/Makefile`; it does not replace the native compiler/linker implementation.
+
+## Lifecycle commands
+
+From the repository root:
+
+```text
+python3 tools/sleela-build.py init
+python3 tools/sleela-build.py check
+python3 tools/sleela-build.py build
+python3 tools/sleela-build.py test
+python3 tools/sleela-build.py run -- --help
+python3 tools/sleela-build.py package
+python3 tools/sleela-build.py install /path/to/bin
+python3 tools/sleela-build.py clean
+python3 tools/sleela-build.py doctor
+python3 tools/sleela-build.py version
+```
+
+Windows may use the installed Python 3 launcher instead of `python3`.
 
 ## Project inputs
 
@@ -24,6 +45,14 @@ A project manifest should declare:
 - signing policy;
 - test suites.
 
+`init` creates `sleela.project.json` when it does not exist.
+
+## Dependency lock
+
+`init` also creates `sleela.lock.json`. The first lock format records build tools and their observed versions. It is deliberately a provenance/locking foundation, not a claim that all third-party dependency resolution is complete.
+
+Future dependency work must extend this file with resolved dependency identities, versions and integrity digests.
+
 ## Outputs
 
 Supported artifact classes are intended to include:
@@ -37,9 +66,29 @@ Supported artifact classes are intended to include:
 - debug bundle;
 - signed release bundle.
 
+The current `package` command produces a provenance bundle under `impl/build/package-provenance/`.
+
+## Provenance
+
+Successful builds write `.sleela/build-manifest.json`.
+
+The manifest records:
+
+- host operating system;
+- host release;
+- machine;
+- Python version;
+- C compiler and version;
+- C++ compiler and version;
+- Make version;
+- artifact sizes;
+- artifact SHA-256 digests.
+
 ## Reproducibility
 
-Builds should record compiler version, language version, dependency versions, target triple, build inputs and integrity digests.
+The current implementation records host/toolchain/artifact provenance. It does **not** yet prove byte-for-byte reproducibility.
+
+Remaining reproducibility work includes deterministic build inputs, target triples, source revision, environment capture, clean-build comparison and documented reproducibility evidence.
 
 ## Cross compilation
 
@@ -49,14 +98,15 @@ The build system must distinguish host, target OS and target architecture. A hos
 
 Dependencies and generated artifacts are verified before execution or packaging when integrity manifests are enabled. Privilege escalation is never implicit.
 
-## CLI direction
-
-The application builder should provide commands equivalent to:
-
-`sleela init`, `check`, `build`, `test`, `run`, `package`, `install`, `clean`, `doctor`, `version`.
-
 ## Current status
 
-The existing `impl/Makefile`, scripts and CI are the current build foundation. This document defines the larger application-build contract that future tooling should implement.
+The lifecycle driver establishes the first application-level build control surface. Remaining build gates are:
+
+- exact dependency locking;
+- incremental builds;
+- deterministic/reproducible builds;
+- compiler/linker diagnostic capture;
+- cross-platform CI integration;
+- production package/signing flow.
 
 **Max Rupplin — MEARVK LLC — 2026**
