@@ -5,7 +5,7 @@
 // (a .sleela source file) declares its syntax version via a pragma on the
 // first non-blank, non-comment line:
 //
-//     #sleela 1.0
+//     #sleela 1.3
 //
 // The pragma accepts MAJOR.MINOR version strings. Per the metadocument, "A
 // compiler must reject files whose declared version exceeds the compiler's
@@ -55,7 +55,7 @@ struct SyntaxVersion {
 //     MIN_SUPPORTED <= V <= MAX_SUPPORTED.
 // Bump MAX_SUPPORTED when the front end learns a newer MINOR/MAJOR grammar;
 // raise MIN_SUPPORTED when an old grammar is finally dropped.
-inline SyntaxVersion minSupportedSyntax() { return SyntaxVersion{1, 0}; }
+inline SyntaxVersion minSupportedSyntax() { return SyntaxVersion{1, 3}; }
 inline SyntaxVersion maxSupportedSyntax() { return SyntaxVersion{1, 3}; }
 
 // The version assumed when a file omits the pragma (Section 4.4 says a file
