@@ -377,7 +377,7 @@ $(BUILD)/driver.o: frontend/driver.cpp frontend/compiler.h frontend/artifact.h s
 $(BUILD):
 	mkdir -p $(BUILD)
 
-test: verify-security test-system-monitor test-sleela test-design-activity test-regex test-version test-nordshrift test-nordshrift-compiler test-threads test-thread-platform test-network test-network-platform test-synchro test-munction test-bestof test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-math test-physics test-economics test-inference test-chemistry test-financial test-astrophysics test-sociology test-runtime test-memmgr
+test: verify-security test-system-monitor test-sleela test-design-activity test-regex test-version test-nordshrift test-nordshrift-compiler test-nordshrift-semantic test-nordshrift-e2e test-threads test-thread-platform test-network test-network-platform test-synchro test-munction test-bestof test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-math test-physics test-economics test-inference test-chemistry test-financial test-astrophysics test-sociology test-runtime test-memmgr
 test-thread-platform: $(THREAD_PLATFORM_SMOKE)
 	@echo "=== OS-aware threading backend ==="; SLEELA_THREAD_PLATFORM=auto $(THREAD_PLATFORM_SMOKE)
 test-threads: $(THREAD_SMOKE)
