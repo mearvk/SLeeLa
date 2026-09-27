@@ -1,7 +1,7 @@
 # SLeeLa Daily Engineering TODO — Top-Down Numerical Drilldown
 
 **Project:** SLeeLa  
-**Version line:** 0.2.0-dev  
+**Version line:** 0.3.0-dev  
 **Method:** Top-down numerical engineering closure  
 **Rule:** A requirement advances only when implementation is followed by executable evidence.
 
@@ -63,11 +63,11 @@
 - [ ] End-to-end SST compilation.
 - [ ] Native linking.
 - [ ] Runtime loading.
-- [ ] Version compatibility tests.
-- [ ] ABI compatibility tests.
+- [x] Version compatibility tests.
+- [x] Runtime artifact ABI compatibility validation.
 - [ ] Negative compiler tests.
 - [x] Invalid-source diagnostics.
-- [ ] Cross-version fixtures.
+- [x] Cross-version fixtures.
 - [ ] SST → executable → execution proof.
 
 # 3. Runtime
