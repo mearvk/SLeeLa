@@ -52,6 +52,9 @@ The current development line contains foundations for:
 - Constant-time byte comparison
 - Credential secret cleanup
 - Native smoke-test integration
+- Application-level build lifecycle driver (`tools/sleela-build.py`) with check/build/test/run/package/install/clean/doctor/version commands
+- Build provenance recording and SHA-256 artifact recording
+- Initial build-tool lock/provenance format (`sleela.lock.json`)
 
 ### Deliberately Not Claimed Complete
 
@@ -73,6 +76,7 @@ The following remain development gates:
 - Cross-platform release testing
 - Comprehensive integration and conformance suites
 - Reproducible release packaging and signing
+- Exact third-party dependency resolution and locking
 - Final production release audit
 
 ## Release Rule
