@@ -32,6 +32,14 @@ The next compiler gate is now implemented at the SST check boundary.
    - A positive SST fixture is compiled through source resolution, parsing, semantic analysis, Sleelvac artifact generation, and persistent `.sleela` artifact creation.
    - The generated artifact is loaded by the native runtime and executed as a test, proving the complete SST → Sleela artifact → runtime path.
    - The test requires the expected runtime output `NORDSHRIFT-E2E-OK` and fails on missing artifacts or non-zero execution.
+### Resolved 2.5-dev gate
+
+9. **Runtime artifact ABI validation**
+   - `.sleela` artifacts are validated against the runtime VM ABI before execution.
+   - Validation rejects unknown opcodes, invalid jump/call targets, invalid constant/global/function/struct indexes, invalid synchronization selectors, malformed function frames, and out-of-range struct metadata.
+   - `sleela validate-artifact <file.sleela>` exposes the validation gate directly.
+   - The end-to-end SST test now validates the generated artifact before executing it.
+
 ### Versioned next compiler gates
 
 - **Nordshrift 2.5-dev — Native linker and runtime ABI validation**
