@@ -1,6 +1,6 @@
-# Compiler Resolution — Nordshrift 2.1-dev
+# Compiler Resolution — Nordshrift 2.2-dev
 
-## 2.0 → 2.1-dev resolution
+## 2.0 → 2.1-dev → 2.2-dev resolution
 
 The next compiler gate is now implemented at the SST check boundary.
 
@@ -20,11 +20,14 @@ The next compiler gate is now implemented at the SST check boundary.
    - The test requires diagnostic `NSS-E-SRC-003`.
 5. **Build integration**
    - `make test` now includes `test-nordshrift-compiler`.
+6. **Shared target-neutral lowering**
+   - Sleela AST is lowered into a deterministic Nordshrift IR before Java/Sleela/C emission.
+   - All current AST node families are represented by the common lowering pass.
+   - The emitter rejects lowering failures instead of allowing target-specific divergence.
 
 ### Remaining compiler gates
 
 - Full type/semantic analysis of Sleela source.
-- Shared lowering/IR rather than direct AST-to-target emission.
 - Native linker and runtime ABI validation.
 - Cross-version compiler fixtures.
 - Complete SST → Sleela artifact → runtime execution proof.
