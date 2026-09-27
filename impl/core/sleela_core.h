@@ -3,6 +3,11 @@
  * ========================================================================== */
 #ifndef SLEELA_CORE_H
 #define SLEELA_CORE_H
+
+/* Stable VM artifact/runtime ABI identifiers. */
+#define SLEELA_VM_ABI_MAJOR 1u
+#define SLEELA_VM_ABI_MINOR 0u
+#define SLEELA_ARTIFACT_FORMAT_VERSION 2u
 #include <stdint.h>
 #include <stddef.h>
 #ifdef __cplusplus
@@ -128,6 +133,10 @@ const char* slvm_error(SLVM* vm);
 int slvm_save_file(SLVM* vm, const char* path);
 SLVM* slvm_load_file(const char* path);
 int slvm_is_artifact_file(const char* path);
+/* Validate a serialized artifact against the runtime VM/ABI contract without executing it. */
+int slvm_validate_artifact_file(const char* path, char* error, size_t error_size);
+/* Returns the runtime artifact ABI version as major/minor packed in a uint32_t. */
+uint32_t slvm_artifact_abi_version(void);
 #ifdef __cplusplus
 }
 #endif
