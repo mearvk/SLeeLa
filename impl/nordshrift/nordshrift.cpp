@@ -44,7 +44,7 @@ extern "C" {
 using namespace nordshrift;
 
 static const char* kVersion =
-    "Nordshrift 2.0 (NS-SST-0001; semantic subject model; Sleelvac™ runnable .sleela target)";
+    "Nordshrift 2.1-dev (NS-SST-0001; source validation; semantic subject model; Sleelvac™ runnable .sleela target)";
 
 static int usage() {
     std::cerr <<
@@ -257,17 +257,50 @@ static void validateSubjects(const Sheet& sheet, DiagnosticBag& diags) {
     }
 }
 
+static void validateSourcePrograms(const Sheet& sheet, const std::string& sheetPath,
+                                     DiagnosticBag& diags) {
+    if (!sheet.source.present) return;
+    const std::string base = dirOf(sheetPath);
+    std::vector<std::string> sources = resolveSources(sheet.source, base, diags);
+    for (const auto& srcPath : sources) {
+        std::string code;
+        if (!readFile(srcPath, code)) {
+            diags.error("NSS-E-SRC-001", sheetPath, 0,
+                        "declared source cannot be read: '" + srcPath + "'",
+                        "SST-SOURCE-READ");
+            continue;
+        }
+        sleela::VersionResolution vr = sleela::resolveSyntaxVersion(code);
+        if (vr.isError()) {
+            diags.error("NSS-E-SRC-002", srcPath, 0, vr.message,
+                        "SST-SOURCE-VERSION");
+            continue;
+        }
+        try {
+            sleela::Lexer lexer(code);
+            sleela::Parser parser(lexer.tokenize());
+            (void)parser.parseProgram();
+        } catch (const std::exception& ex) {
+            diags.error("NSS-E-SRC-003", srcPath, 0,
+                        std::string("source program is not syntactically valid: ") + ex.what(),
+                        "SST-SOURCE-PARSE");
+        }
+    }
+}
+
 static int doCheck(const std::string& path) {
     Sheet sheet; DiagnosticBag diags;
     if (!loadSheet(path, sheet, diags)) return 1;
     validateSubjects(sheet, diags);
+    validateSourcePrograms(sheet, path, diags);
     std::cout << diags.render();
     std::cout << "sheet '" << sheet.meta.name << "' — "
               << diags.errorCount() << " error(s), "
               << diags.warningCount() << " warning(s)\n";
     if (!diags.hasErrors()) {
         std::cout << "OK: target-language = " << langName(sheet.target.language) << "\n";
-        reportComponentSeries(sheet);\n        reportInputObjects(sheet);
+        reportComponentSeries(sheet);
+        reportInputObjects(sheet);
     }
     return diags.hasErrors() ? 1 : 0;
 }
