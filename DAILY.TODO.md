@@ -54,7 +54,8 @@
 
 # 2. Compiler / Nordshrift
 - [x] SST semantic validation at sheet/source-check boundary.
-- [ ] Full type/semantic analysis.
+- [x] Target-neutral type/semantic analysis gate.
+- [x] Negative semantic-analysis test.
 - [x] Shared lowering / target-neutral IR gate.
 - [x] SST source → shared Sleela lexer/parser validation during `nordshrift check`.
 - [x] Negative source-validation test.
@@ -64,7 +65,7 @@
 - [ ] Version compatibility tests.
 - [ ] ABI compatibility tests.
 - [ ] Negative compiler tests.
-- [ ] Invalid-source diagnostics.
+- [x] Invalid-source diagnostics.
 - [ ] Cross-version fixtures.
 - [ ] SST → executable → execution proof.
 
