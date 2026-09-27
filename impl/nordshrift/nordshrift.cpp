@@ -7,7 +7,7 @@
 // persistent runnable .sleela Core artifact. That artifact is loadable by the
 // Sleela runtime without a second front-end compilation.
 //
-// Nordshrift 2.2-dev also links the common semantic subject model used by the
+// Nordshrift 2.3-dev also links the common semantic subject model used by the
 // Math, Physics, Economics, Chemistry, and Financial libraries.
 // ===========================================================================
 #include <cstdio>
@@ -33,6 +33,7 @@
 #include "../catalog/sheet_catalog.h"
 #include "../frontend/lexer.h"
 #include "../frontend/parser.h"
+#include "../frontend/semantic.h"
 #include "../frontend/compiler.h"
 #include "../frontend/artifact.h"
 #include "../frontend/version.h"
@@ -44,7 +45,7 @@ extern "C" {
 using namespace nordshrift;
 
 static const char* kVersion =
-    "Nordshrift 2.2-dev (NS-SST-0001; source validation; semantic subject model; Sleelvac™ runnable .sleela target)";
+    "Nordshrift 2.3-dev (NS-SST-0001; source validation; semantic analysis; semantic subject model; Sleelvac™ runnable .sleela target)";
 
 static int usage() {
     std::cerr <<
@@ -279,7 +280,12 @@ static void validateSourcePrograms(const Sheet& sheet, const std::string& sheetP
         try {
             sleela::Lexer lexer(code);
             sleela::Parser parser(lexer.tokenize());
-            (void)parser.parseProgram();
+            sleela::Program program = parser.parseProgram();
+            sleela::SemanticResult semantic = sleela::analyzeSemantics(program, vr.version);
+            for (const auto& err : semantic.errors)
+                diags.error("NSS-E-SEM-001", srcPath, 0, err, "SST-SOURCE-SEMANTIC");
+            for (const auto& warn : semantic.warnings)
+                diags.warning("NSS-W-SEM-001", srcPath, 0, warn, "SST-SOURCE-SEMANTIC");
         } catch (const std::exception& ex) {
             diags.error("NSS-E-SRC-003", srcPath, 0,
                         std::string("source program is not syntactically valid: ") + ex.what(),
