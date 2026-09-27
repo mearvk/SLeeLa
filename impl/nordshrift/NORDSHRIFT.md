@@ -202,6 +202,6 @@ Nordshrift Complete explicitly covers reusable application/service foundations f
 
 The Complete edition is an authoring contract. A module becomes implementation-complete only after its native/platform implementation, tests, diagnostics, packaging, and deployment requirements are fulfilled.
 
-## 2.1-dev compiler-resolution gate
+## 2.6-dev compiler compatibility gate
 
-Nordshrift 2.1-dev validates every declared Sleela source during `nordshrift check`: source readability, `#sleela` syntax-version compatibility, and shared Sleela lexer/parser validity. Negative compiler fixtures are integrated into `make test`. This gate does not yet claim full type analysis, shared lowering/IR, native linker/ABI validation, or deterministic production compiler completeness; see [`COMPILER.RESOLUTION.md`](../../COMPILER.RESOLUTION.md).
+Nordshrift 2.6-dev carries forward source readability, `#sleela` syntax-version compatibility, shared Sleela lexer/parser validation, shared target-neutral lowering, target-neutral semantic analysis, runtime artifact ABI validation, and cross-version compatibility fixtures. These gates are integrated into the test workflow. The 2.6-dev line does not claim native linking or deterministic production compiler completeness; see [`COMPILER.RESOLUTION.md`](../../COMPILER.RESOLUTION.md).
