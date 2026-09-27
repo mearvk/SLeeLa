@@ -10,6 +10,20 @@ Within this project framing, **law is law**: applicable law, lawful authority, d
 
 Galactic Audit Age 6 does not override applicable law, transport security, authorization boundaries, or the rights and responsibilities of network operators and users. It is an architectural/documentary era marker for the project.
 
+### Motion, Property, and Glades
+
+The project principle is stated as:
+
+> **Motion is protected. Motion is property. These lead to Glades.**
+
+Here, **“too” is intentionally read as “to”** in the phrase “lead too Glades”: the intended sense is directional — **lead to Glades**.
+
+“Motion” in this project documentation means an application or protocol state transition, exchange, movement of information, or other explicitly modeled change. Protection means that such motion is subject to the applicable authorization, integrity, privacy, safety, and legal boundaries of the system in which it occurs.
+
+“Property” is used as a project-level architectural term for an owned, controlled, licensed, or otherwise explicitly attributable resource. It does not by itself establish a legal property right.
+
+“Glades” is retained as project terminology for the resulting destination/state/concept reached by the modeled motion. These terms do not authorize interference with another person's systems, network traffic, property, or communications.
+
 ## Purpose
 
 HTTP 5.0 extends the repository's HTTP 1.0+ lineage and HTTP 4.0 frame/session architecture with an application-layer Friends' Packs (FP) capability. Friends' Packs carry ordinary application information plus references to optional, explicitly declared bonus offerings.
