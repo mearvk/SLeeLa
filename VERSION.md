@@ -12,6 +12,32 @@
 **Status:** Active Development  
 **Repository:** mearkv/SLeeLa
 
+## Complete Version Registry
+
+The repository contains multiple independently versioned layers. This registry distinguishes the active SLeeLa development line from stable specifications and separately released subprojects.
+
+| Component | Current version | Status / scope |
+|---|---|---|
+| SLeeLa | **0.3.0-dev** | Active platform development |
+| Sleela-Complete | **0.3.0-dev** | Active application/complete edition |
+| Native Foundation | **0.3.0-dev** | Active C/C++ runtime foundation |
+| Sleelvac compiler/toolchain | **0.3.0-dev** | Active compiler implementation |
+| Sleela language syntax | **1.3** | Supported range **1.3 .. 1.3** |
+| Nordshrift Complete | **2.6-dev** | Active SST compiler/transpiler development |
+| Compiler Compatibility Gate | **2.6-dev** | Cross-version compatibility milestone |
+| NS-SST-0001 | **1.0.0** | Normative SST specification |
+| SL-META-0001 | **1.0.0** | Pre-Normative language metadocument |
+| Sleela VM ABI | **1.0** | Runtime artifact ABI major/minor |
+| Sleela artifact format | **2** | Persistent .sleela artifact format |
+| SleelaTerminal | **1.0.0** | Independent released terminal component |
+| API Server | **1.0.1** | Independent server component |
+| Server Edition | **1.0.0** | Independent server-edition line |
+| Server Edition Moral/2 | **2.0.1** | Independent server edition |
+| Server Edition Moral/3 | **3.0.1** | Independent server edition |
+| Port Awareness | **1.0.0** | Independent server component |
+
+Independent component versions are not automatically bumped when the SLeeLa compiler or Nordshrift development line advances. Their own VERSION files or specification sources remain authoritative.
+
 ## Versioning Policy
 
 SLeeLa uses semantic versioning:
