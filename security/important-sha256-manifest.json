@@ -104,7 +104,7 @@
     },
     {
       "path": "VERSION.md",
-      "sha256": "b4ed49aa5f5dbbfd34efe97207b46360492af768a979a97bad5650d4a44c6d43"
+      "sha256": "fec0afc73e83d0f9a8e70d4b71892f61342282c4e9b8746ca738816c011de414"
     },
     {
       "path": "antivirus/src/sleelavirin_heuristic.c",
@@ -4244,7 +4244,7 @@
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "3c5dbc7073f951e49e68d6714478fea869aff0268845292dc70122bb52195aed"
+      "sha256": "b44ca371aafc67772f8303bd9ee9d2d48af65695b5f1225e1fb925e9db9f1c9b"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -4277,6 +4277,14 @@
     {
       "path": "impl/frontend/parser.h",
       "sha256": "b0979c2cd7073d240444fb2c6cc41393a1a8b1e0d80660d84d059c442070be9f"
+    },
+    {
+      "path": "impl/frontend/semantic.cpp",
+      "sha256": "98bb794228b29da6cf5eb6d27d561d9a2ae422172d0e695c3bb49036d44535b1"
+    },
+    {
+      "path": "impl/frontend/semantic.h",
+      "sha256": "d3aa0ef2b02b1f783e67f2f28e2e5a706c91d3779fc829ae47adf4d0c38e2bec"
     },
     {
       "path": "impl/frontend/version.cpp",
@@ -4436,7 +4444,7 @@
     },
     {
       "path": "impl/nordshrift/nordshrift.cpp",
-      "sha256": "bdffbd62bcb8663ad72e69af2b4f00c75febed245a68d89a3441fb87e71f8151"
+      "sha256": "00e54aa0beb7efe5a7410d571b983d8abb82df2a3bee9849b95a81f109afcd6f"
     },
     {
       "path": "impl/nordshrift/object_compat.cpp",
@@ -4663,8 +4671,20 @@
       "sha256": "4e9190dba159eab058758d4b92b74efb86a2f2ff9a35aaac54c76599321c82c7"
     },
     {
+      "path": "impl/tests/nordshrift/run_semantic_analysis_tests.sh",
+      "sha256": "810923d2e3581ffb316acbb846101bad8243309a3f3c103b52274e152c14d75a"
+    },
+    {
+      "path": "impl/tests/nordshrift/semantic-invalid.sst",
+      "sha256": "20566eaee30709002b6b97614da5da860d106c437d091f3c365982574fd093c0"
+    },
+    {
       "path": "impl/tests/nordshrift/src/broken.sleela",
       "sha256": "8dc88f5ec54eb8ca73fe21067561432cbc203af21e7d7bd765f875fdff301a3f"
+    },
+    {
+      "path": "impl/tests/nordshrift/src/semantic-broken.sleela",
+      "sha256": "e94ee43d9438bae852cfa71964963507d623ac66cde5ef5166a854ebd99faf52"
     },
     {
       "path": "impl/tests/runtime/runtime_smoke.c",
