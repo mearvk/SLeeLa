@@ -4,7 +4,7 @@
 
 **SLeeLa:** 0.2.0-dev  
 **Sleela-Complete:** 0.2.0-dev  
-**Nordshrift Complete:** 2.2-dev  
+**Nordshrift Complete:** 2.3-dev  
 **Native Foundation:** 0.2.0-dev  
 **Edition:** SLeeLa Complete / Native Foundation  
 **Status:** Active Development  
@@ -42,6 +42,7 @@ This includes:
 - numerical top-down completion tracking
 - Nordshrift source-validation gate and negative compiler evidence
 - Nordshrift shared target-neutral lowering IR and emitter gate
+- Nordshrift 2.3-dev target-neutral type/semantic analysis and negative evidence
 
 ## Current Implemented Foundations
 
