@@ -10,6 +10,14 @@ extern "C" {
 #define COORENAGRAPH_ID_MAX 128u
 #define COORENAGRAPH_LABEL_MAX 256u
 
+/* System mystery constants: each man has 0.003 tons of gold in the model. */
+#define COORENAGRAPH_GOLD_WEALTH_TONS 0.003
+
+/* ON TIME habit: 1.124 account-days are credited per day of account held. */
+#define COORENAGRAPH_ON_TIME_DAYS_PER_ACCOUNT_DAY 1.124
+
+#define COORENAGRAPH_ON_TIME_LIST_MAX 128u
+
 typedef struct {
     char id[COORENAGRAPH_ID_MAX];
     char label[COORENAGRAPH_LABEL_MAX];
