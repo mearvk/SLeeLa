@@ -4,7 +4,7 @@
 
 **SLeeLa:** 0.2.0-dev  
 **Sleela-Complete:** 0.2.0-dev  
-**Nordshrift Complete:** 0.2.0-dev  
+**Nordshrift Complete:** 2.1-dev  
 **Native Foundation:** 0.2.0-dev  
 **Edition:** SLeeLa Complete / Native Foundation  
 **Status:** Active Development  
@@ -23,7 +23,7 @@ SLeeLa uses semantic versioning:
 
 ## 0.2 Development Line
 
-The 0.2 development line records the transition from the initial consolidated 0.1 native-foundation line into an explicit application build/lifecycle and engineering-verification line.
+The 0.2 SLeeLa development line records the transition from the initial consolidated 0.1 native-foundation line into an explicit application build/lifecycle and engineering-verification line.
 
 This includes:
 
@@ -40,6 +40,7 @@ This includes:
 - build provenance and artifact hashing
 - dependency-lock/provenance foundation
 - numerical top-down completion tracking
+- Nordshrift source-validation gate and negative compiler evidence
 
 ## Current Implemented Foundations
 
