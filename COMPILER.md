@@ -91,18 +91,18 @@ range is `1.0 .. 1.0`:
 
 | Declared `#sleela` | Result | Rationale |
 |--------------------|--------|-----------|
-| `1.0`     | **accepted** | within the supported range |
-| `1.9`     | **rejected** (too new) | MINOR ahead of the supported max |
+| `1.3`     | **accepted** | within the supported range |
+| `1.4`     | **rejected** (too new) | MINOR ahead of the supported max |
 | `2.0`     | **rejected** (too new) | MAJOR ahead → breaking grammar unsupported |
-| `0.9`     | **rejected** (too old) | below the supported floor |
+| `1.2`     | **rejected** (too old) | below the supported floor |
 | `one.zero`| **rejected** (malformed) | not a numeric `MAJOR.MINOR` |
-| *(none)*  | **accepted, with warning** | assumed `1.0` for backward compatibility |
+| *(none)*  | **accepted, with warning** | assumed `1.3` for backward compatibility |
 
 A rejected source exits non-zero with a descriptive diagnostic, e.g.:
 
 ```
 sleela: prog.sleela: error: source declares Sleela syntax 2.0, which exceeds
-this compiler's supported range (1.0 .. 1.0). Upgrade the compiler or lower
+this compiler's supported range (1.3 .. 1.3). Upgrade the compiler or lower
 the #sleela pragma.
 ```
 
@@ -111,8 +111,8 @@ the #sleela pragma.
 The range is defined in [`impl/frontend/version.h`](impl/frontend/version.h):
 
 ```cpp
-inline SyntaxVersion minSupportedSyntax() { return SyntaxVersion{1, 0}; }
-inline SyntaxVersion maxSupportedSyntax() { return SyntaxVersion{1, 0}; }
+inline SyntaxVersion minSupportedSyntax() { return SyntaxVersion{1, 3}; }
+inline SyntaxVersion maxSupportedSyntax() { return SyntaxVersion{1, 3}; }
 inline SyntaxVersion defaultSyntaxVersion() { return minSupportedSyntax(); }
 ```
 
@@ -130,9 +130,9 @@ the current values are:
 
 | Component | Version | Meaning | Source of truth |
 |-----------|---------|---------|-----------------|
-| **Sleela toolchain / implementation** (`sleela` CLI) | **0.2.0-dev** | The C/C++ front end + core in `impl/`. Pre-1.0. | `impl/frontend/driver.cpp` |
+| **Sleela toolchain / implementation** (`sleela` CLI) | **0.3.0-dev** | The C/C++ front end + core in `impl/`. Pre-1.0. | `impl/frontend/driver.cpp` |
 | **Sleela language syntax** | **1.3** (range `1.3 .. 1.3`) | The grammar version a `.sleela` file declares via `#sleela`. | `impl/frontend/version.h` |
-| **Nordshrift** (`.sst` transpiler driver) | **2.3-dev** | Reuses this front end; enforces the same syntax rules. | `impl/nordshrift/nordshrift.cpp` |
+| **Nordshrift** (`.sst` transpiler driver) | **2.6-dev** | Reuses this front end; enforces the same syntax rules. | `impl/nordshrift/nordshrift.cpp` |
 | **NS-SST-0001** (`.sst` format spec) | **1.0.0** (Normative) | The `.sst` control-sheet format. | `SST.model` |
 | **SL-META-0001** (metadocument) | **1.0.0** (Pre-Normative) | The governing language metadocument, incl. §4.4. | `src/Sleela.manifest` |
 
@@ -144,7 +144,7 @@ Query the live values:
 
 ```sh
 ./build/sleela version
-#  Sleela 0.2.0-dev (C/C++ core; SHEET.sheet conducted methods; .xclass input)
+#  Sleela 0.3.0-dev (C/C++ core; SHEET.sheet conducted methods; .xclass input)
 #    supported .sleela syntax: 1.3 .. 1.3 (declare per-file with '#sleela 1.0')
 ```
 
