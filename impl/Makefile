@@ -127,7 +127,7 @@ SKYA_ENGINE_OBJ := $(BUILD)/skya_engine.o
 SKYA_POLICY_OBJ := $(BUILD)/skya_policy.o
 SKYA_BRIDGE_OBJ := $(BUILD)/skya_sleela_bridge.o
 NS_SRC := nordshrift/sst_lexer.cpp nordshrift/sst_parser.cpp \
-          nordshrift/source_resolve.cpp nordshrift/sleela_emit.cpp \
+          nordshrift/source_resolve.cpp nordshrift/lowering.cpp nordshrift/sleela_emit.cpp \
           nordshrift/object_compat.cpp nordshrift/subject_model.cpp nordshrift/input_object.cpp \
           nordshrift/component_manifest.cpp nordshrift/ledger_emit.cpp \
           nordshrift/nordshrift.cpp
