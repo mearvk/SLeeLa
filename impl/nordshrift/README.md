@@ -1,6 +1,6 @@
 # Nordshrift
 
-**Nordshrift 2.3-dev** is the transpiler driver and semantic coordination layer for Sleela. It reads a **`.sst` control sheet** and drives the transpilation of Sleela sources into the target selected by the sheet — the **triplet**: **Java**, **Sleela** (executed on the C core), or **C**.
+**Nordshrift 2.4-dev** is the transpiler driver and semantic coordination layer for Sleela. It reads a **`.sst` control sheet** and drives the transpilation of Sleela sources into the target selected by the sheet — the **triplet**: **Java**, **Sleela** (executed on the C core), or **C**.
 
 The `.sst` file remains the *control surface*, not the program. In 2.0 it can also carry explicit semantic models shared by the Math, Physics, Economics, Chemistry, Financial, Astrophysics, and Sociology libraries.
 
@@ -35,7 +35,7 @@ See [`INPUT-OBJECTS.md`](INPUT-OBJECTS.md) and [`examples/input-objects.sst`](ex
 
 ## Common semantic models
 
-Nordshrift 2.3-dev defines a shared vocabulary so each subject library can remain
+Nordshrift 2.4-dev defines a shared vocabulary so each subject library can remain
 domain-specific while participating in the same inspectable structure:
 
 | Model | Meaning |
@@ -185,7 +185,7 @@ A Subject Library reaches the repository's **Excellent** engineering standard wh
 
 ## Nordshrift Complete
 
-**Nordshrift Complete** is the application/service authoring edition built on the existing Nordshrift 2.3-dev pipeline and the SLeeLa-Complete base-class library.
+**Nordshrift Complete** is the application/service authoring edition built on the existing Nordshrift 2.4-dev pipeline and the SLeeLa-Complete base-class library.
 
 It provides reusable designer surfaces for Core/Runtime, API contracts, Platform, Network, Security, Data, Database, HTTP/Web, Server/Service, I/O, Synchronization, UI, XML, Email, Media, Telephony/VoIP, Memory Management, Reflection, AI/Inference, Analytics, Regex, Science/Subject Libraries, Terminal, and developer tooling.
 
