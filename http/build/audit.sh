@@ -26,12 +26,18 @@ for g in 7.0 8.0 9.0; do
     check_grade "http/$g" "HTTP/$g"
 done
 
-for d in http-2.0 http-3.0; do
+for d in http-1.0 http-2.0 http-3.0 http-4.0 http-5.0 http-6.0; do
     if [ -d "$ROOT/$d" ]; then
-        echo "OK: existing mature tree: $d"
-        if [ ! -f "$ROOT/$d/Makefile" ]; then
-            echo "FAIL: $d has no Makefile"
+        if [ ! -d "$ROOT/$d/build" ]; then
+            echo "FAIL: $d has no build/"
             fail=1
+        else
+            echo "OK: $d/build present"
+        fi
+        if [ -f "$ROOT/$d/Makefile" ]; then
+            echo "OK: $d has legacy/authoritative Makefile"
+        else
+            echo "INFO: $d uses its per-grade build wrapper"
         fi
     fi
 done
