@@ -28,7 +28,7 @@
     },
     {
       "path": "COMPILER.md",
-      "sha256": "dcbe3d26daf5e8ef557c6a20b8a5d419d1bba76791182dd1dea6222b8f0fa639"
+      "sha256": "da6a4dd84dadd9c58f68478219b32bf5c99e7ffb8061d57f01774608a1c3030b"
     },
     {
       "path": "CONNECTOR.md",
@@ -104,7 +104,7 @@
     },
     {
       "path": "VERSION.md",
-      "sha256": "fec0afc73e83d0f9a8e70d4b71892f61342282c4e9b8746ca738816c011de414"
+      "sha256": "1431bbc2312c3141abff336714fb7649e68f3254a36b1b2501abebc8ea3a2a4f"
     },
     {
       "path": "antivirus/src/sleelavirin_heuristic.c",
@@ -4252,7 +4252,7 @@
     },
     {
       "path": "impl/frontend/driver.cpp",
-      "sha256": "9fa16497991769d4b4b1ff64d9c4920eb9bc5139cf852486eaeb172cc83595c6"
+      "sha256": "06960a73eeff938fd689ed5f210f1c3c467dab0f8f979f689c1b54f2e31994b6"
     },
     {
       "path": "impl/frontend/http_server_cli.cpp",
@@ -4292,7 +4292,7 @@
     },
     {
       "path": "impl/frontend/version.h",
-      "sha256": "deb6fb1677c5033ad815288aa4513cc3e092744d99ba52495b63e5d9b0d7de4f"
+      "sha256": "7adfcf610bbdef4ccfbb4fe21d9706198aa766f75ea14197add75897f5d84c9a"
     },
     {
       "path": "impl/langin/LANGIN.model",
