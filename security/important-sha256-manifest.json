@@ -104,7 +104,7 @@
     },
     {
       "path": "VERSION.md",
-      "sha256": "1b1a10a75b7f53ac0f676c5a1154bd8779e1ef13a7827fab8d6ecc5819a9622a"
+      "sha256": "34ad05307d41aa8218ddd0d42c28684c2c2355cdccd2bfa4c812070762974196"
     },
     {
       "path": "antivirus/src/sleelavirin_heuristic.c",
@@ -4252,7 +4252,7 @@
     },
     {
       "path": "impl/frontend/driver.cpp",
-      "sha256": "06960a73eeff938fd689ed5f210f1c3c467dab0f8f979f689c1b54f2e31994b6"
+      "sha256": "233e589707ddccc9048297deaef3063992796a44434da5bf24657f5b20a4b8c6"
     },
     {
       "path": "impl/frontend/http_server_cli.cpp",
@@ -4676,7 +4676,7 @@
     },
     {
       "path": "impl/tests/nordshrift/run_end_to_end_tests.sh",
-      "sha256": "0e2b0327304cfcfca524ea220a35b26e2ab90c8b18c40bbf33e211ce1f9c4626"
+      "sha256": "be93dca062c79fc8d43ce4185df6700bd01529afa4ae7268bc15845a51e0057b"
     },
     {
       "path": "impl/tests/nordshrift/run_semantic_analysis_tests.sh",
