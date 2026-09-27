@@ -2,7 +2,7 @@
 
 **Status:** Experimental SLeeLa application/protocol generation; not an IETF HTTP/9 standard.
 
-HTTP 9.0 is the current SLeeLa identity and metadata generation represented by the `http90` implementation, specification, configuration, and negotiation files in this directory.
+HTTP 9.0 extends the HTTP 8.0 SLeeLa packet model. HTTP 9.0 retains the HTTP 8.0 packet metadata fields and adds structured **International Data for Security, Safety, and Police**.
 
 ## Core Files
 
@@ -11,6 +11,47 @@ HTTP 9.0 is the current SLeeLa identity and metadata generation represented by t
 - `HTTP.NEGOTIATION.md` — generation negotiation.
 - `http90.h` / `http90.hpp` — public C/C++ interfaces.
 - `http90.c` / `http90.cpp` — implementation.
+
+## Packet Model
+
+HTTP 9.0 retains the HTTP 8.0 application-level metadata model, including:
+
+- protocol grade;
+- prior packet metadata;
+- identity and international identifiers;
+- monitoring/frequency metadata;
+- national emblem, signal, and frequency metadata;
+- sequence number.
+
+HTTP 9.0 adds a structured international-data record containing:
+
+- security information;
+- safety information;
+- police information;
+- jurisdiction;
+- organization;
+- identifier;
+- classification;
+- source/provenance;
+- timestamp.
+
+These fields are descriptive application metadata. They do not by themselves establish legal authority, authenticity, jurisdiction, police powers, security clearance, operational control, or permission to act.
+
+## National Emblems, Signals, and Frequency
+
+HTTP 9.0 carries forward the HTTP 8.0 model for descriptive national emblem, signal, and frequency records. Frequency values are represented with units, bounded ranges, jurisdiction, source, and timestamp.
+
+Frequency and signal fields are intended for documented, authorized, or public metadata. The protocol does not provide instructions for unauthorized interception, interference, jamming, evasion, disruption, or bypass of communications controls.
+
+## International Data for Security, Safety, and Police
+
+HTTP 9.0 provides a common data container for international security, safety, and police information that an application is authorized to exchange or document.
+
+The model is deliberately provenance-oriented. Applications should identify the responsible jurisdiction or organization, preserve the source and timestamp, and distinguish descriptive records from claims of authority.
+
+The police field is a data category, not a command channel. HTTP 9.0 does not grant law-enforcement authority, provide covert surveillance capability, or authorize access to restricted systems or communications.
+
+Classification values should be handled according to the application's actual authorization and applicable law. A metadata label alone does not confer access.
 
 ## Negotiation
 
@@ -35,8 +76,10 @@ SESSION-ID | DATETIME | FILE-ID | FILE-NAME | INDEX | OFFSET | TOTAL-SIZE
 Conformance and deployment checks should cover:
 
 - C and C++ compilation;
+- packet-field compatibility with HTTP 8.0;
 - configuration parsing;
 - bounded metadata;
+- provenance and timestamp preservation;
 - malformed-input handling;
 - explicit generation fallback;
 - clean shutdown;
@@ -45,4 +88,4 @@ Conformance and deployment checks should cover:
 
 ## Relationship to Earlier Generations
 
-HTTP 9.0 is part of the repository's SLeeLa HTTP lineage. It should preserve the architectural distinction established by earlier generations: transport mechanisms carry the exchange, while SLeeLa defines its application-level identity, metadata, and protocol behavior.
+HTTP 9.0 is part of the repository's SLeeLa HTTP lineage. It preserves the architectural distinction established by earlier generations: transport mechanisms carry the exchange, while SLeeLa defines its application-level identity, metadata, and protocol behavior. HTTP 9.0 extends that model with structured international security, safety, and police metadata without turning descriptive records into operational authority.
