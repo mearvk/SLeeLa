@@ -351,6 +351,8 @@ The first seven version-and-toolchain work items are now closed. Future work mus
    - Sleela syntax support is **1.3 .. 1.3** and compiler defaults are synchronized to syntax 1.3.
 
 5. **Runtime artifact ABI identity — COMPLETE**
+   - Added an executable ABI gate: a generated `.sleela` artifact must validate successfully, while a truncated artifact must be rejected before execution.
+   - The gate is integrated into the aggregate `impl/Makefile` test target as `test-runtime-artifact-abi`.
    - VM ABI is **1.0** and artifact format is **2**; runtime artifact validation is documented and versioned.
 
 6. **Cross-version compatibility gate — COMPLETE**
