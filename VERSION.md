@@ -23,7 +23,7 @@ SLeeLa uses semantic versioning:
 - **PATCH** — backward-compatible fixes, corrections, hardening, documentation, and test improvements.
 - Development releases use the `-dev` suffix until the corresponding release gate is satisfied.
 
-## 0.2 Development Line
+## 0.3 Development Line
 
 The 0.3 SLeeLa development line records the transition from the initial consolidated 0.1 native-foundation line into an explicit application build/lifecycle and engineering-verification line.
 
