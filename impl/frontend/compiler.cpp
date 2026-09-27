@@ -2,6 +2,7 @@
 // compiler.cpp  --  AST -> Sleela Core bytecode.
 // ===========================================================================
 #include "compiler.h"
+#include "semantic.h"
 
 #include <map>
 #include <stdexcept>
@@ -388,6 +389,13 @@ private:
 
 } // anonymous namespace
 
-int compile(const Program& prog, SLVM* vm, const catalog::Catalog* cat, const SyntaxVersion& syntax){Compiler c(prog,vm,cat,syntax);return c.run();}
+int compile(const Program& prog, SLVM* vm, const catalog::Catalog* cat, const SyntaxVersion& syntax){
+    SemanticResult semantic = analyzeSemantics(prog, syntax);
+    if(!semantic.ok()){
+        throw std::runtime_error(semantic.errors.front());
+    }
+    Compiler c(prog,vm,cat,syntax);
+    return c.run();
+}
 
 } // namespace sleela
