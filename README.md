@@ -149,6 +149,30 @@ host and adjusts link flags per platform.
   top at a slight side angle, with a config-driven viewpoint, `green`/`white`/
   `blue` themes, and per-user models that save to GitHub or a public server.
 
+## COORENAGRAPH — Design and Protocol Foundation
+
+SLeeLa now has a dedicated [`coorenagraph/`](coorenagraph/) design and protocol foundation for the coordination-graph work that sits beneath transport and application delivery. This is the starting reference for defining **nodes, coordinates, identities, relationships, edges, metadata, graph records, validation, versioning, serialization boundaries, and interoperability** across the SLeeLa system.
+
+The canonical references are:
+
+- [`coorenagraph/README.md`](coorenagraph/README.md) — project purpose, scope, structure, and relationship to the SLeeLa architecture.
+- [`coorenagraph/COORENAGRAPH.SPEC.md`](coorenagraph/COORENAGRAPH.SPEC.md) — the transport-independent design and protocol specification.
+- [`coorenagraph/include/coorenagraph.h`](coorenagraph/include/coorenagraph.h) — the initial C API contract for nodes, edges, coordinates, labels, and validation.
+- [`coorenagraph/src/coorenagraph.c`](coorenagraph/src/coorenagraph.c) — the initial C11 implementation.
+- [`coorenagraph/build/Makefile`](coorenagraph/build/Makefile) — the focused syntax/build verification target.
+
+### Design principle
+
+**Coordinates describe data; relationships describe structure; transport describes delivery.**
+
+COORENAGRAPH is intentionally transport-independent. HTTP 1.0 through HTTP 9.0 may carry graph records through explicit adapters, but the graph model remains separate from any particular HTTP generation. The intended boundary is:
+
+**Create locally → Validate → Serialize → Transport → Validate independently → Consume**
+
+Coordinates are application data and do not acquire geographic meaning merely because fields are named `x`, `y`, or `z`; externally meaningful coordinate systems and units must be declared. Graph records are explicitly versioned, and unsupported versions are rejected rather than guessed. Authentication, authorization, encryption, access control, and transport integrity remain responsibilities of the appropriate surrounding security and protocol layers.
+
+COORENAGRAPH is an application/library foundation, not inherently a map service, GPS service, surveillance system, routing authority, geographic database, or Internet standard. Its purpose in SLeeLa is to establish a clear **Design and Protocol** starting point before higher-level transport, operating-system, and application concerns are applied.
+
 ## Subject Libraries — primary references
 
 The subject libraries are first-class parts of the SLeeLa implementation. XML model/procedure declarations are the common declarative layer across subject families; native source remains the source of truth for executable mathematics and validation. Each
