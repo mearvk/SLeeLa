@@ -2,7 +2,7 @@
 
 Nordshrift is the **transpiler driver and semantic coordination layer for Sleela**. It reads a **`.sst` Scripting Sheet**, validates its control sections, resolves Sleela Wrapper™ sources, and drives the selected target. Version 2.1-dev also gives the sheet a common semantic vocabulary for the Math, Physics, Economics, Chemistry, Financial, Astrophysics, Sociology, and other Subject Libraries.
 
-## Version 2.5-dev architecture
+## Version 2.6-dev architecture
 
 The sheet now accepts a unified `object` input layer covering the SLeeLa source architecture: Core, IO, System, Network, Application, Data, Science, Security, and Deployment. Specialized sections retain stronger domain-specific contracts where applicable.
 
