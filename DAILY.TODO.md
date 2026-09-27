@@ -56,6 +56,7 @@
 - [x] SST semantic validation at sheet/source-check boundary.
 - [x] Target-neutral type/semantic analysis gate.
 - [x] Negative semantic-analysis test.
+- [x] End-to-end SST → Sleela artifact → runtime execution proof.
 - [x] Shared lowering / target-neutral IR gate.
 - [x] SST source → shared Sleela lexer/parser validation during `nordshrift check`.
 - [x] Negative source-validation test.
