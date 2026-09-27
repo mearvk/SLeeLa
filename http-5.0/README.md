@@ -30,13 +30,31 @@ HTTP 5.0 extends the repository's HTTP 1.0+ lineage and HTTP 4.0 frame/session a
 
 FP is a quota/capability value, not a measure of trust, nationality, geography, or Internet access. When FP reaches 0, only optional bonus-pack allowances are exhausted; ordinary protocol operation continues under the negotiated session and carrier.
 
+## Simple Friends List and Point Payload
+
+Users may maintain a simple application-level list of friends. Each entry contains:
+
+- a **friend name**;
+- an optional **point amount** associated with that friend; and
+- an optional **assigned document reference**.
+
+The point amount is ordinary application data. It can represent a quota, score, allowance, accounting value, or other user-defined point system. It is not an instruction to harm, attack, disable, or interfere with another person or system.
+
+When the computer prepares the application payload for a selected friend, HTTP 5.0 formats the data as:
+
+    friend-name|points|document-reference
+
+The assigned document reference identifies the document or application resource associated with that entry. The implementation sends this as ordinary application data through the normal authorized HTTP 5.0 exchange; it does not convert the point amount into a network attack or infrastructure-control operation.
+
+In code, `FriendsPack::addFriend()` adds the entry and `FriendsPack::friendPayload()` produces the corresponding payload. An invalid friend index returns an empty payload.
+
 ## Architecture
 
 Application
   |
 SLeeLa HTTP 5.0 semantic API
   |
-Friends' Packs / bonus-offering layer
+Friends' Packs / friend-list + point payload layer
   |
 HTTP 5.0 frame + session model
   |
