@@ -26,9 +26,9 @@ Generic objects complement the specialized `network`, `finance`, `reach`, `measu
 
 See [`INPUT-OBJECTS.md`](INPUT-OBJECTS.md) and [`examples/input-objects.sst`](examples/input-objects.sst).
 
-## 2.3-dev specification
+## 2.6-dev specification
 
-- [`../../SST-2.0.model`](../../SST-2.0.model) — normative 2.3-dev specification.
+- [`../../SST-2.0.model`](../../SST-2.0.model) — normative 2.0 semantic/control-sheet specification.
 - [`../../SST.model`](../../SST.model) — 1.0 compatibility specification.
 - [`NORDSHRIFT.md`](NORDSHRIFT.md) — implementation architecture and semantics.
 - [`subject_model.h`](subject_model.h) — C++ semantic model vocabulary.
