@@ -1,6 +1,6 @@
-# Compiler Resolution — Nordshrift 2.4-dev
+# Compiler Resolution — Nordshrift 2.5-dev
 
-## 2.0 → 2.1-dev → 2.2-dev → 2.3-dev → 2.4-dev resolution
+## 2.0 → 2.1-dev → 2.2-dev → 2.3-dev → 2.4-dev → 2.5-dev resolution
 
 The next compiler gate is now implemented at the SST check boundary.
 
