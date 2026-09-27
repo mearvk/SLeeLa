@@ -4,7 +4,7 @@
 
 **SLeeLa:** 0.2.0-dev  
 **Sleela-Complete:** 0.2.0-dev  
-**Nordshrift Complete:** 2.3-dev  
+**Nordshrift Complete:** 2.4-dev  
 **Native Foundation:** 0.2.0-dev  
 **Sleela Language Syntax:** 1.3 (supported range 1.3 .. 1.3)  
 **Edition:** SLeeLa Complete / Native Foundation  
@@ -44,6 +44,7 @@ This includes:
 - Nordshrift source-validation gate and negative compiler evidence
 - Nordshrift shared target-neutral lowering IR and emitter gate
 - Nordshrift 2.3-dev target-neutral type/semantic analysis and negative evidence
+- Nordshrift 2.4-dev end-to-end SST compilation and runnable artifact execution proof
 - Sleela language syntax 1.3 support and compiler range synchronization
 
 ## Current Implemented Foundations
