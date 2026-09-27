@@ -2672,11 +2672,19 @@
     },
     {
       "path": "coorenagraph/include/coorenagraph.h",
-      "sha256": "49f02a81a9a83267cc38c505fdbd2c21a0d7758ee848969dfc966279034d43fe"
+      "sha256": "75046b472d003dfe7f5149441d266775b03cb469841dc383414245eee72c1728"
+    },
+    {
+      "path": "coorenagraph/include/coorenagraph.hpp",
+      "sha256": "1eb314d153442cf14695edfe78082e973e7e2358b5e106929564b16291a37554"
     },
     {
       "path": "coorenagraph/src/coorenagraph.c",
       "sha256": "a8eb288d82a33aa096a00e10be8a0f85fde0f3da57c31bbf6fad90a530713c0f"
+    },
+    {
+      "path": "coorenagraph/src/coorenagraph.cpp",
+      "sha256": "60b306901d2d5abeab635e424c6797e65ec86373b896e124f4686c585fc1df18"
     },
     {
       "path": "data-structures/data_structures.c",
