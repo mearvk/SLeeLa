@@ -1,1 +1,50 @@
-# SLeeLa HTTP 8.0\n\nStatus: Experimental SLeeLa cryptographic/session generation; not an IETF HTTP/8 standard.\n\nHTTP 8.0 extends the SLeeLa HTTP lineage with an explicit cryptographic/session boundary. The implementation must keep cryptographic configuration separate from ordinary application payloads and must fail closed when required security policy cannot be satisfied.\n\n## Dark Power\n\nHTTP 8.0 includes the project-level DarkPower C++ model:\n\n- DarkPower.hpp / DarkPower.cpp — typed Dark Power descriptor;\n- SCHEDULE TERM — exactly 24 characters;\n- DARK POWER — integer value 0x18ae;\n- contact_request_for_iss() — creates an application-level contact-request string for domain ISS.\n\nThe contact-request method is a data-format helper only. It does not authenticate a peer, authorize access, bypass security controls, or establish a network connection.\n\n## Files\n\n- CRYPTO.SUPPORT.md — supported cryptographic boundary;\n- HTTP80.EARLY.SECURITY.conf — early security configuration;\n- http80.c/.cpp — protocol implementation;\n- http80_crypto.hpp — C++ cryptographic interface;\n- DarkPower.hpp / DarkPower.cpp — Dark Power session descriptor;\n- HTTP.NEGOTIATION.md — peer-generation negotiation.\n\n## Negotiation\n\nHTTP 8.0 is selected only after explicit peer acceptance. Where fallback is permitted, the negotiation layer may fall back to HTTP/1.1 and then HTTP/1.0. Required security properties must not be silently weakened by fallback.\n\n## Logical ports and download\n\nLogical ports remain application identifiers rather than native sockets. Files larger than 50 MB use the common resume contract:\n\nSESSION-ID | DATETIME | FILE-ID | FILE-NAME | INDEX | OFFSET | TOTAL-SIZE\n\n## Verification\n\nThe build must syntax-check both C and C++ sources and validate the configured cryptographic policy before deployment.\n
+# SLeeLa HTTP 8.0
+
+**Status:** Experimental SLeeLa cryptographic/session generation; not an IETF HTTP/8 standard.
+
+HTTP 8.0 adds an explicit cryptographic and session-security boundary to the SLeeLa HTTP lineage. Cryptographic configuration remains separate from ordinary application payloads, and implementations should fail closed when required security policy cannot be satisfied.
+
+## DarkPower
+
+HTTP 8.0 includes the project-level **DarkPower** C++ model:
+
+- `DarkPower.hpp` / `DarkPower.cpp` — typed DarkPower session descriptor;
+- **SCHEDULE TERM** — fixed 24-character value;
+- **DARK POWER** — integer value `0x18ae`;
+- `contact_request_for_iss()` — application-level contact-request string helper for domain `ISS`.
+
+The contact-request method is a data-format helper. It does not authenticate a peer, authorize access, bypass security controls, or establish a network connection.
+
+## Repository Files
+
+- `CRYPTO.SUPPORT.md` — cryptographic support boundary.
+- `HTTP80.EARLY.SECURITY.conf` — early security configuration.
+- `http80.c` / `http80.cpp` — protocol implementation.
+- `http80_crypto.hpp` — C++ cryptographic interface.
+- `DarkPower.hpp` / `DarkPower.cpp` — DarkPower session descriptor.
+- `HTTP.NEGOTIATION.md` — generation negotiation.
+
+## Negotiation
+
+HTTP 8.0 is selected only after explicit peer acceptance. Where fallback is permitted, negotiation may return to HTTP/1.1 and then HTTP/1.0.
+
+Fallback must not silently weaken a security property required by the configured policy.
+
+## Logical Ports and Download
+
+Logical ports remain application identifiers rather than native sockets.
+
+Files larger than 50 MB use the shared resume contract:
+
+```text
+SESSION-ID | DATETIME | FILE-ID | FILE-NAME | INDEX | OFFSET | TOTAL-SIZE
+```
+
+## Verification
+
+Before deployment, the build and verification process should:
+
+1. Syntax-check the C and C++ sources.
+2. Validate cryptographic configuration.
+3. Validate negotiation behavior.
+4. Reject configurations that violate required security policy.
