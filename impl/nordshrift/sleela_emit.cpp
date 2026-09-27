@@ -2,8 +2,9 @@
 // sleela_emit.cpp  --  Transpile a Sleela Program into Java / Sleela / C.
 // ===========================================================================
 #include "sleela_emit.h"
+#include "lowering.h"
 
-#include <sstream>
+#include <sstream>\n#include <stdexcept>
 
 namespace nordshrift {
 namespace {
@@ -318,6 +319,10 @@ struct CGen {
 
 std::string emitProgram(const sleela::Program& prog, TargetLang lang,
                         const std::string& packageRoot) {
+    // All target backends share one target-neutral lowering gate. This keeps
+    // unsupported AST nodes from silently diverging between Java/Sleela/C.
+    LoweredProgram lowered = lowerProgram(prog);
+    if (!lowered.ok()) throw std::runtime_error("Nordshrift lowering failed: " + lowered.error);
     if (lang == TargetLang::Java) { JavaGen g; g.pkg = packageRoot; g.run(prog); return g.out.str(); }
     if (lang == TargetLang::C)    { CGen g; g.run(prog); return g.out.str(); }
     SleelaGen g; g.run(prog); return g.out.str();
