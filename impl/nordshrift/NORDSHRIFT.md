@@ -1,8 +1,8 @@
 # Nordshrift — `.sst` transpiler driver and semantic layer
 
-Nordshrift is the **transpiler driver and semantic coordination layer for Sleela**. It reads a **`.sst` Scripting Sheet**, validates its control sections, resolves Sleela Wrapper™ sources, and drives the selected target. Version 2.0 also gives the sheet a common semantic vocabulary for the Math, Physics, Economics, Chemistry, Financial, Astrophysics, Sociology, and other Subject Libraries.
+Nordshrift is the **transpiler driver and semantic coordination layer for Sleela**. It reads a **`.sst` Scripting Sheet**, validates its control sections, resolves Sleela Wrapper™ sources, and drives the selected target. Version 2.1-dev also gives the sheet a common semantic vocabulary for the Math, Physics, Economics, Chemistry, Financial, Astrophysics, Sociology, and other Subject Libraries.
 
-## Version 2.0 architecture
+## Version 2.1-dev architecture
 
 The sheet now accepts a unified `object` input layer covering the SLeeLa source architecture: Core, IO, System, Network, Application, Data, Science, Security, and Deployment. Specialized sections retain stronger domain-specific contracts where applicable.
 
@@ -115,7 +115,7 @@ The 1.0 control sections remain available and continue to describe the build pro
 | `interop` | language interoperability |
 | `profile` | named configuration variants |
 
-2.0 adds semantic sections without removing these build-control concepts.
+2.1-dev adds semantic sections without removing these build-control concepts.
 
 ## Files
 
@@ -178,7 +178,7 @@ The standard is a software/source-quality target. It does not turn a computed st
 
 ## Nordshrift Complete application/service edition
 
-Nordshrift Complete extends the 2.0 architecture from a semantic control language into a reusable application/service construction surface. Its canonical class catalog is [`NORDSHRIFT-COMPLETE.md`](NORDSHRIFT-COMPLETE.md).
+Nordshrift Complete extends the 2.1-dev architecture from a semantic control language into a reusable application/service construction surface. Its canonical class catalog is [`NORDSHRIFT-COMPLETE.md`](NORDSHRIFT-COMPLETE.md).
 
 The Complete edition uses the existing SLeeLa-Complete classes as its designer-facing vocabulary:
 
@@ -201,3 +201,7 @@ This makes the same class model usable as the basis for applications **and** ser
 Nordshrift Complete explicitly covers reusable application/service foundations for Core / Runtime; API / Type Contracts; Platform; Network; Security; Data; Database; HTTP / Web; Server / Service; I/O; Synchronization; UI / Application; XML; Email; Media; Telephony / VoIP; Memory Management; Reflection; AI / Inference; Analytics; Regex / Text; Domain / Science; Terminal; Decompiler / Tooling; and Native Implementation.
 
 The Complete edition is an authoring contract. A module becomes implementation-complete only after its native/platform implementation, tests, diagnostics, packaging, and deployment requirements are fulfilled.
+
+## 2.1-dev compiler-resolution gate
+
+Nordshrift 2.1-dev validates every declared Sleela source during `nordshrift check`: source readability, `#sleela` syntax-version compatibility, and shared Sleela lexer/parser validity. Negative compiler fixtures are integrated into `make test`. This gate does not yet claim full type analysis, shared lowering/IR, native linker/ABI validation, or deterministic production compiler completeness; see [`COMPILER.RESOLUTION.md`](../../COMPILER.RESOLUTION.md).
