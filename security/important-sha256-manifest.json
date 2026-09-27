@@ -104,7 +104,7 @@
     },
     {
       "path": "VERSION.md",
-      "sha256": "1431bbc2312c3141abff336714fb7649e68f3254a36b1b2501abebc8ea3a2a4f"
+      "sha256": "8d5a6ccdd7745d9e22cf13831383cc1e188fa5c612cc9db58ddfd870b9035763"
     },
     {
       "path": "antivirus/src/sleelavirin_heuristic.c",
@@ -4444,7 +4444,7 @@
     },
     {
       "path": "impl/nordshrift/nordshrift.cpp",
-      "sha256": "00e54aa0beb7efe5a7410d571b983d8abb82df2a3bee9849b95a81f109afcd6f"
+      "sha256": "91405a6494386a8cbf8bb5825126858ee07124252d22bd8fd47e3b4be2707436"
     },
     {
       "path": "impl/nordshrift/object_compat.cpp",
@@ -4663,12 +4663,20 @@
       "sha256": "346ef722ed1cfa5e987af49ee5cc5501a0ed8ee15cca78aba3001aafc37064b3"
     },
     {
+      "path": "impl/tests/nordshrift/e2e.sst",
+      "sha256": "bcd4af90f882e97c7feda7658221340d94f93fe342e9cbcc050f9d22753eb924"
+    },
+    {
       "path": "impl/tests/nordshrift/invalid-source.sst",
       "sha256": "27a5b3322dfb700f4e4f4c4ffa7655546504aa9484f87a9f9d535e193cd5ff1c"
     },
     {
       "path": "impl/tests/nordshrift/run_compiler_resolution_tests.sh",
       "sha256": "4e9190dba159eab058758d4b92b74efb86a2f2ff9a35aaac54c76599321c82c7"
+    },
+    {
+      "path": "impl/tests/nordshrift/run_end_to_end_tests.sh",
+      "sha256": "0e2b0327304cfcfca524ea220a35b26e2ab90c8b18c40bbf33e211ce1f9c4626"
     },
     {
       "path": "impl/tests/nordshrift/run_semantic_analysis_tests.sh",
@@ -4681,6 +4689,10 @@
     {
       "path": "impl/tests/nordshrift/src/broken.sleela",
       "sha256": "8dc88f5ec54eb8ca73fe21067561432cbc203af21e7d7bd765f875fdff301a3f"
+    },
+    {
+      "path": "impl/tests/nordshrift/src/e2e.sleela",
+      "sha256": "d8a7ed644710f6dc24fca316a162f2c1058a8e96402c97be253af4aaf0667a17"
     },
     {
       "path": "impl/tests/nordshrift/src/semantic-broken.sleela",
