@@ -41,7 +41,7 @@ helpers over `slcore_exchange`. The same front end is reused by **Nordshrift**
 | **Version resolution** | `version.{h,cpp}` | Resolve and enforce the `#sleela` syntax-version pragma (SL-META-0001 §4.4) *before* any parsing. |
 | **Lexing** | `lexer.{h,cpp}` | Tokenize the Java-like surface (keywords, identifiers, literals, operators); skip whitespace, `//` and `/* */` comments, and the leading `#…` pragma line. |
 | **Parsing** | `parser.{h,cpp}` | Recursive-descent parse of tokens into an AST (`ast.h`): classes, fields, methods, statements, and precedence-climbing expressions. |
-| **Compilation / codegen** | `compiler.{h,cpp}` | Lower the AST to core bytecode: declare a global per class field, flatten methods into the core function table, assign local slots, emit opcodes, and resolve built-ins. Throws on semantic errors (unknown variable/function, duplicate field, missing `main`). |
+| **Semantic analysis / compilation / codegen** | `compiler.{h,cpp}` | Lower the AST to core bytecode: declare a global per class field, flatten methods into the core function table, assign local slots, emit opcodes, and resolve built-ins. Throws on semantic errors (unknown variable/function, duplicate field, missing `main`). |
 | **Execution** | Sleela Core (`core/`) | Load the emitted program into an `SLVM` and run it via the exchange/run API. |
 
 ### Language surface the compiler accepts
@@ -68,7 +68,7 @@ A Wrapper™ declares its **syntax version** with a pragma on the first
 non-blank, non-comment line:
 
 ```java
-#sleela 1.0
+#sleela 1.3
 class Hello {
     void main() { print("Hello, Sleela!"); }
 }
@@ -131,21 +131,21 @@ the current values are:
 | Component | Version | Meaning | Source of truth |
 |-----------|---------|---------|-----------------|
 | **Sleela toolchain / implementation** (`sleela` CLI) | **0.2.0-dev** | The C/C++ front end + core in `impl/`. Pre-1.0. | `impl/frontend/driver.cpp` |
-| **Sleela language syntax** | **1.0** (range `1.0 .. 1.0`) | The grammar version a `.sleela` file declares via `#sleela`. | `impl/frontend/version.h` |
-| **Nordshrift** (`.sst` transpiler driver) | **2.2-dev** | Reuses this front end; enforces the same syntax rules. | `impl/nordshrift/nordshrift.cpp` |
+| **Sleela language syntax** | **1.3** (range `1.3 .. 1.3`) | The grammar version a `.sleela` file declares via `#sleela`. | `impl/frontend/version.h` |
+| **Nordshrift** (`.sst` transpiler driver) | **2.3-dev** | Reuses this front end; enforces the same syntax rules. | `impl/nordshrift/nordshrift.cpp` |
 | **NS-SST-0001** (`.sst` format spec) | **1.0.0** (Normative) | The `.sst` control-sheet format. | `SST.model` |
 | **SL-META-0001** (metadocument) | **1.0.0** (Pre-Normative) | The governing language metadocument, incl. §4.4. | `src/Sleela.manifest` |
 
 > **In short:** the compiler here is the **0.2.0-dev** toolchain, implementing
-> **Sleela language syntax 1.0**. Syntax is versioned independently of the
-> implementation: the `0.1.2` toolchain implements syntax `1.0`.
+> **Sleela language syntax 1.3**. Syntax is versioned independently of the
+> implementation: the `0.2.0-dev` toolchain implements syntax `1.3`.
 
 Query the live values:
 
 ```sh
 ./build/sleela version
 #  Sleela 0.2.0-dev (C/C++ core; SHEET.sheet conducted methods; .xclass input)
-#    supported .sleela syntax: 1.0 .. 1.0 (declare per-file with '#sleela 1.0')
+#    supported .sleela syntax: 1.3 .. 1.3 (declare per-file with '#sleela 1.0')
 ```
 
 ---
