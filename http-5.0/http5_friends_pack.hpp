@@ -34,9 +34,15 @@ public:
                    std::string document_reference={});
     const std::vector<FriendEntry>& friends() const noexcept;
 
-    // Builds a bounded, ordinary application payload. This is data delivery,
-    // not a network-control or interference mechanism.
+    // Builds a bounded, ordinary application payload.
     std::string friendPayload(std::size_t index) const;
+
+    // File I/O for the user-managed friends list.
+    // The file is application data and is never treated as an executable command.
+    bool saveFriends(const std::string& path) const;
+    bool loadFriends(const std::string& path);
+    static bool appendFriendToFile(const std::string& path,
+                                   const FriendEntry& entry);
 
 private:
     std::uint32_t fp_;
