@@ -9,7 +9,7 @@ syntax:
 	@set -e; for g in $(GRADES); do $(MAKE) -C ../$$g/build syntax; done
 
 audit:
-	@./audit.sh
+	@sh ./audit.sh
 
 clean:
 	@for g in $(GRADES); do $(MAKE) -C ../$$g/build clean || true; done
