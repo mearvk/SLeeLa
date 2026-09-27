@@ -2,10 +2,10 @@
 
 ## Current Development Version
 
-**SLeeLa:** 0.2.0-dev  
-**Sleela-Complete:** 0.2.0-dev  
+**SLeeLa:** 0.3.0-dev  
+**Sleela-Complete:** 0.3.0-dev  
 **Nordshrift Complete:** 2.4-dev  
-**Native Foundation:** 0.2.0-dev  
+**Native Foundation:** 0.3.0-dev  
 **Sleela Language Syntax:** 1.3 (supported range 1.3 .. 1.3)  
 **Edition:** SLeeLa Complete / Native Foundation  
 **Status:** Active Development  
@@ -24,7 +24,7 @@ SLeeLa uses semantic versioning:
 
 ## 0.2 Development Line
 
-The 0.2 SLeeLa development line records the transition from the initial consolidated 0.1 native-foundation line into an explicit application build/lifecycle and engineering-verification line.
+The 0.3 SLeeLa development line records the transition from the initial consolidated 0.1 native-foundation line into an explicit application build/lifecycle and engineering-verification line.
 
 This includes:
 
@@ -70,7 +70,7 @@ This includes:
 
 ## Deliberately Not Claimed Complete
 
-The 0.2.0-dev version does **not** mean the SLeeLa platform is release-complete.
+The 0.3.0-dev version does **not** mean the SLeeLa platform is release-complete.
 
 Remaining gates include:
 
@@ -105,9 +105,9 @@ Version documentation and release-critical source should remain consistent acros
 
 ## Version History
 
-### 0.2.0-dev
+### 0.3.0-dev
 
-Current development line. Establishes the build/lifecycle and verification phase following the initial 0.1 native-foundation consolidation.
+Current development line. Extends the build/lifecycle and verification phase with Nordshrift 2.4 end-to-end compilation and runtime execution, while retaining the remaining native ABI, cross-version, fuzzing, reproducibility, and release gates.
 
 ### 0.1.0-dev
 
