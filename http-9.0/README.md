@@ -1,27 +1,91 @@
 # SLeeLa HTTP 9.0
 
-Status: Experimental SLeeLa application/protocol generation; not an IETF HTTP/9 standard.
+**Status:** Experimental SLeeLa application/protocol generation; not an IETF HTTP/9 standard.
 
-HTTP 9.0 defines the current SLeeLa identity/metadata generation represented by `http90.c/.cpp/.h/.hpp`, its specification, configuration, and negotiation layer.
+HTTP 9.0 extends the HTTP 8.0 SLeeLa packet model. HTTP 9.0 retains the HTTP 8.0 packet metadata fields and adds structured **International Data for Security, Safety, and Police**.
 
-## Core documents
+## Core Files
 
-- `HTTP90.SPEC.md`
-- `HTTP90.conf`
-- `HTTP.NEGOTIATION.md`
-- `http90.h/.hpp`
-- `http90.c/.cpp`
+- `HTTP90.SPEC.md` — protocol specification.
+- `HTTP90.conf` — configuration.
+- `HTTP.NEGOTIATION.md` — generation negotiation.
+- `http90.h` / `http90.hpp` — public C/C++ interfaces.
+- `http90.c` / `http90.cpp` — implementation.
 
-## Compatibility
+## Packet Model
 
-A peer must explicitly accept HTTP 9.0 before the generation is selected. If fallback is allowed, negotiation can return to HTTP/1.1 and then HTTP/1.0. Security requirements must not be weakened merely to obtain connectivity.
+HTTP 9.0 retains the HTTP 8.0 application-level metadata model, including:
 
-## Logical ports and download
+- protocol grade;
+- prior packet metadata;
+- identity and international identifiers;
+- monitoring/frequency metadata;
+- national emblem, signal, and frequency metadata;
+- sequence number.
 
-Logical ports are application identifiers, not native sockets. Files larger than 50 MB use the common resume metadata:
+HTTP 9.0 adds a structured international-data record containing:
 
-`SESSION-ID | DATETIME | FILE-ID | FILE-NAME | INDEX | OFFSET | TOTAL-SIZE`
+- security information;
+- safety information;
+- police information;
+- jurisdiction;
+- organization;
+- identifier;
+- classification;
+- source/provenance;
+- timestamp.
+
+These fields are descriptive application metadata. They do not by themselves establish legal authority, authenticity, jurisdiction, police powers, security clearance, operational control, or permission to act.
+
+## National Emblems, Signals, and Frequency
+
+HTTP 9.0 carries forward the HTTP 8.0 model for descriptive national emblem, signal, and frequency records. Frequency values are represented with units, bounded ranges, jurisdiction, source, and timestamp.
+
+Frequency and signal fields are intended for documented, authorized, or public metadata. The protocol does not provide instructions for unauthorized interception, interference, jamming, evasion, disruption, or bypass of communications controls.
+
+## International Data for Security, Safety, and Police
+
+HTTP 9.0 provides a common data container for international security, safety, and police information that an application is authorized to exchange or document.
+
+The model is deliberately provenance-oriented. Applications should identify the responsible jurisdiction or organization, preserve the source and timestamp, and distinguish descriptive records from claims of authority.
+
+The police field is a data category, not a command channel. HTTP 9.0 does not grant law-enforcement authority, provide covert surveillance capability, or authorize access to restricted systems or communications.
+
+Classification values should be handled according to the application's actual authorization and applicable law. A metadata label alone does not confer access.
+
+## Negotiation
+
+A peer must explicitly accept HTTP 9.0 before the generation is selected.
+
+Where fallback is permitted, negotiation may return to HTTP/1.1 and then HTTP/1.0. Fallback must not weaken a security requirement merely to obtain connectivity.
+
+## Logical Ports
+
+Logical ports are SLeeLa application identifiers. They are independent of native TCP/UDP socket numbering.
+
+## Large-File Download Mode
+
+Files larger than 50 MB use the common SLeeLa resume metadata:
+
+```text
+SESSION-ID | DATETIME | FILE-ID | FILE-NAME | INDEX | OFFSET | TOTAL-SIZE
+```
 
 ## Verification
 
-The build checks the C/C++ implementation and the negotiation layer. Protocol conformance should additionally validate configuration parsing, bounded metadata, malformed inputs, explicit fallback, and clean shutdown.
+Conformance and deployment checks should cover:
+
+- C and C++ compilation;
+- packet-field compatibility with HTTP 8.0;
+- configuration parsing;
+- bounded metadata;
+- provenance and timestamp preservation;
+- malformed-input handling;
+- explicit generation fallback;
+- clean shutdown;
+- negotiation behavior;
+- required security-policy enforcement.
+
+## Relationship to Earlier Generations
+
+HTTP 9.0 is part of the repository's SLeeLa HTTP lineage. It preserves the architectural distinction established by earlier generations: transport mechanisms carry the exchange, while SLeeLa defines its application-level identity, metadata, and protocol behavior. HTTP 9.0 extends that model with structured international security, safety, and police metadata without turning descriptive records into operational authority.
