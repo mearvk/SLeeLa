@@ -104,7 +104,7 @@
     },
     {
       "path": "VERSION.md",
-      "sha256": "9748326c762b5ed43e3c49888860ef88e50dc4da15127a9d4c307f044a5bba42"
+      "sha256": "4a7571665a8dfa6f14a8a8df1941d403bf48efd49147fd4cdcd253dfa392de4b"
     },
     {
       "path": "antivirus/src/sleelavirin_heuristic.c",
@@ -4428,7 +4428,7 @@
     },
     {
       "path": "impl/nordshrift/nordshrift.cpp",
-      "sha256": "a65eb9856b20f530312ae07b5772ba6102d0a1243c0f87becdc08e2d00e29e06"
+      "sha256": "2f9e784e7edb34473fbca771095504a5e90fec82a76bb60ae04fa4ff9037dd04"
     },
     {
       "path": "impl/nordshrift/object_compat.cpp",
@@ -4645,6 +4645,18 @@
     {
       "path": "impl/tests/core/system_monitor_smoke.c",
       "sha256": "346ef722ed1cfa5e987af49ee5cc5501a0ed8ee15cca78aba3001aafc37064b3"
+    },
+    {
+      "path": "impl/tests/nordshrift/invalid-source.sst",
+      "sha256": "27a5b3322dfb700f4e4f4c4ffa7655546504aa9484f87a9f9d535e193cd5ff1c"
+    },
+    {
+      "path": "impl/tests/nordshrift/run_compiler_resolution_tests.sh",
+      "sha256": "4e9190dba159eab058758d4b92b74efb86a2f2ff9a35aaac54c76599321c82c7"
+    },
+    {
+      "path": "impl/tests/nordshrift/src/broken.sleela",
+      "sha256": "8dc88f5ec54eb8ca73fe21067561432cbc203af21e7d7bd765f875fdff301a3f"
     },
     {
       "path": "impl/tests/runtime/runtime_smoke.c",
