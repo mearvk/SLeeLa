@@ -28,7 +28,7 @@
     },
     {
       "path": "COMPILER.md",
-      "sha256": "da6a4dd84dadd9c58f68478219b32bf5c99e7ffb8061d57f01774608a1c3030b"
+      "sha256": "6fb8a612b8c69584542c445fcc14af0656637c5673efdf2b421c21048fd90500"
     },
     {
       "path": "CONNECTOR.md",
@@ -104,7 +104,7 @@
     },
     {
       "path": "VERSION.md",
-      "sha256": "d063d2052915dc749aa6158ea9d9fe0e0b7a2b4fcb71d448d47253806077d654"
+      "sha256": "880687667fe78d77577dd92383e45c7f97dde4211f13fc3446052170cf58c6bb"
     },
     {
       "path": "antivirus/src/sleelavirin_heuristic.c",
