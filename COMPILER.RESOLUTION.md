@@ -1,6 +1,6 @@
-# Compiler Resolution — Nordshrift 2.5-dev
+# Compiler Resolution — Nordshrift 2.6-dev
 
-## 2.0 → 2.1-dev → 2.2-dev → 2.3-dev → 2.4-dev → 2.5-dev resolution
+## 2.0 → 2.1-dev → 2.2-dev → 2.3-dev → 2.4-dev → 2.5-dev → 2.6-dev resolution
 
 The next compiler gate is now implemented at the SST check boundary.
 
@@ -40,16 +40,24 @@ The next compiler gate is now implemented at the SST check boundary.
    - `sleela validate-artifact <file.sleela>` exposes the validation gate directly.
    - The end-to-end SST test now validates the generated artifact before executing it.
 
+### Resolved 2.6-dev gate
+
+10. **Cross-version compiler compatibility fixtures**
+   - Added below-floor syntax fixture `#sleela 1.2` and above-ceiling syntax fixture `#sleela 1.4`.
+   - The supported compiler range remains `1.3 .. 1.3`.
+   - Nordshrift `check` must reject both out-of-range declarations with the source version diagnostic path.
+   - `make test-nordshrift-compat` records the compatibility evidence without weakening the supported syntax range.
+
 ### Versioned next compiler gates
 
-- **Nordshrift 2.5-dev — Native linker and runtime ABI validation**
+- **Nordshrift 2.5-dev — Runtime artifact ABI validation**
 - **Nordshrift 2.6-dev — Cross-version compiler fixtures and compatibility evidence**
 - **Nordshrift 2.7-dev — Compiler fuzzing and malformed-input corpus**
 - **Nordshrift 2.8-dev — Deterministic compiler output verification**
 
 ### Remaining compiler gates
 
-- Native linker and runtime ABI validation (2.5-dev).
+- Runtime artifact ABI validation (2.5-dev).
 - Cross-version compiler fixtures (2.6-dev).
 - Compiler fuzzing and malformed-input corpus (2.7-dev).
 - Deterministic compiler output verification (2.8-dev).
