@@ -7,7 +7,7 @@
 // persistent runnable .sleela Core artifact. That artifact is loadable by the
 // Sleela runtime without a second front-end compilation.
 //
-// Nordshrift 2.3-dev also links the common semantic subject model used by the
+// Nordshrift 2.4-dev also links the common semantic subject model used by the
 // Math, Physics, Economics, Chemistry, and Financial libraries.
 // ===========================================================================
 #include <cstdio>
