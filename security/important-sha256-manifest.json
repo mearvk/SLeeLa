@@ -4647,6 +4647,18 @@
       "sha256": "346ef722ed1cfa5e987af49ee5cc5501a0ed8ee15cca78aba3001aafc37064b3"
     },
     {
+      "path": "impl/tests/nordshrift/invalid-source.sst",
+      "sha256": "27a5b3322dfb700f4e4f4c4ffa7655546504aa9484f87a9f9d535e193cd5ff1c"
+    },
+    {
+      "path": "impl/tests/nordshrift/run_compiler_resolution_tests.sh",
+      "sha256": "4e9190dba159eab058758d4b92b74efb86a2f2ff9a35aaac54c76599321c82c7"
+    },
+    {
+      "path": "impl/tests/nordshrift/src/broken.sleela",
+      "sha256": "8dc88f5ec54eb8ca73fe21067561432cbc203af21e7d7bd765f875fdff301a3f"
+    },
+    {
       "path": "impl/tests/runtime/runtime_smoke.c",
       "sha256": "0ae3160d907245ee4122acb6ef4e9155f227143f1f06b7fd74ba3aa36e8b6656"
     },
