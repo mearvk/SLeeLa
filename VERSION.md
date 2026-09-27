@@ -74,8 +74,8 @@ This includes:
 - Nordshrift 2.4-dev end-to-end SST compilation and runnable artifact execution proof
 - Nordshrift 2.5-dev runtime artifact ABI validation gate — executable validation and rejection test
 - Nordshrift 2.6-dev cross-version compiler compatibility gate
-- Nordshrift 2.7-dev compiler fuzzing and malformed-input gate
-- Nordshrift 2.8-dev deterministic compiler-output gate
+- Planned next gate: Nordshrift 2.7-dev compiler fuzzing and malformed-input gate
+- Planned next gate: Nordshrift 2.8-dev deterministic compiler-output gate
 - Sleela language syntax 1.3 support and compiler range synchronization
 
 ## Current Implemented Foundations
@@ -138,7 +138,18 @@ Version documentation and release-critical source should remain consistent acros
 
 ### 0.3.0-dev
 
-Current development line. Extends the build/lifecycle and verification phase through Nordshrift 2.6 cross-version compiler compatibility evidence, while retaining the remaining native ABI, cross-version, fuzzing, reproducibility, and release gates.
+Current development line. Extends the build/lifecycle and verification phase through Nordshrift 2.6 cross-version compiler compatibility evidence.
+
+Completed Nordshrift verification milestones currently represented by executable/documented evidence:
+
+- 2.1-dev source validation
+- 2.2-dev target-neutral lowering
+- 2.3-dev semantic analysis
+- 2.4-dev end-to-end SST compilation and runnable artifact execution
+- 2.5-dev runtime artifact ABI validation
+- 2.6-dev cross-version compiler compatibility
+
+The next planned compiler verification milestones are 2.7-dev malformed-input/fuzzing coverage and 2.8-dev deterministic compiler-output verification. They are roadmap items, not completed release gates.
 
 ### 0.1.0-dev
 
