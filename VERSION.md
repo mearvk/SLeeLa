@@ -6,7 +6,8 @@
 **Sleela-Complete:** 0.3.0-dev  
 **Nordshrift Complete:** 2.6-dev  
 **Native Foundation:** 0.3.0-dev  
-**Sleela Language Syntax:** 1.3 (supported range 1.3 .. 1.3)  
+**Sleela Language Syntax:** 1.3 (supported range 1.3 .. 1.3)
+**Compiler Compatibility Gate:** 2.6-dev  
 **Edition:** SLeeLa Complete / Native Foundation  
 **Status:** Active Development  
 **Repository:** mearkv/SLeeLa
