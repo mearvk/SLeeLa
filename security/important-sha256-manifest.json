@@ -4428,7 +4428,7 @@
     },
     {
       "path": "impl/nordshrift/nordshrift.cpp",
-      "sha256": "5acc4d0ba0fffee528de9c4a1a23d97d8d4cf39619d871fa29ca15b9eaa0ce2f"
+      "sha256": "2f9e784e7edb34473fbca771095504a5e90fec82a76bb60ae04fa4ff9037dd04"
     },
     {
       "path": "impl/nordshrift/object_compat.cpp",
