@@ -1,0 +1,10 @@
+/* Module path mirror of http/9.0/http90.c; canonical source remains http/9.0/http90.c. */
+#include "http90.h"
+#include <string.h>
+static void copy_text(char *dst,size_t size,const char *src){if(!dst||size==0)return;if(!src){dst[0]='\0';return;}strncpy(dst,src,size-1);dst[size-1]='\0';}
+void http90_init(http90_packet_metadata *m){if(!m)return;memset(m,0,sizeof(*m));copy_text(m->protocol_grade,sizeof(m->protocol_grade),HTTP90_VERSION);copy_text(m->identity.police_id,sizeof(m->identity.police_id),"POLICE-ID-UNASSIGNED");copy_text(m->identity.international_id,sizeof(m->identity.international_id),"INTERNATIONAL-ID-UNASSIGNED");copy_text(m->monitoring.police_scanner_frequency.value,sizeof(m->monitoring.police_scanner_frequency.value),"DISABLED");copy_text(m->monitoring.international_police_monitoring_frequency.value,sizeof(m->monitoring.international_police_monitoring_frequency.value),"DISABLED");}
+int http90_set_identity(http90_packet_metadata *m,const char *p,const char *i){if(!m||!p||!i)return HTTP90_INVALID_ARGUMENT;copy_text(m->identity.police_id,sizeof(m->identity.police_id),p);copy_text(m->identity.international_id,sizeof(m->identity.international_id),i);return HTTP90_OK;}
+int http90_set_frequency(http90_frequency *f,const char *v,int e){if(!f||!v)return HTTP90_INVALID_ARGUMENT;copy_text(f->value,sizeof(f->value),v);f->enabled=e?1:0;return HTTP90_OK;}
+int http90_validate(const http90_packet_metadata *m){if(!m)return HTTP90_INVALID_ARGUMENT;if(!m->protocol_grade[0]||!m->identity.police_id[0]||!m->identity.international_id[0])return HTTP90_INVALID_METADATA;if(m->monitoring.police_scanner_frequency.enabled&&!strcmp(m->monitoring.police_scanner_frequency.value,"DISABLED"))return HTTP90_NOT_CONFIGURED;if(m->monitoring.international_police_monitoring_frequency.enabled&&!strcmp(m->monitoring.international_police_monitoring_frequency.value,"DISABLED"))return HTTP90_NOT_CONFIGURED;return HTTP90_OK;}
+int http90_can_transmit(const http90_packet_metadata *m){return http90_validate(m)==HTTP90_OK;}
+int http90_can_receive(const http90_packet_metadata *m){return http90_validate(m)==HTTP90_OK;}
