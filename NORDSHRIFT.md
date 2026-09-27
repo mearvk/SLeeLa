@@ -2,11 +2,11 @@
 
 **Nordshrift** is the **transpiler driver and semantic coordination layer for Sleela**. It reads a **`.sst` Scripting Sheet** — the human-authored control surface defined by the normative specification **NS-SST-0001** — and drives the transpilation of Sleela source files while preserving explicit subject semantics.
 
-A `.sst` file remains a build-control sheet, not a program. In Nordshrift 2.0 it may additionally declare semantic subjects, quantities, units, assumptions, relations, transformations, evidence status, comparative norms, dependencies, explanations, and work-plan items.
+A `.sst` file remains a build-control sheet, not a program. In Nordshrift 2.1-dev it may additionally declare semantic subjects, quantities, units, assumptions, relations, transformations, evidence status, comparative norms, dependencies, explanations, and work-plan items.
 
-## Version 2.0
+## Version 2.1-dev
 
-Nordshrift 2.0 introduces a common semantic layer shared by the first-class subject libraries:
+Nordshrift 2.1-dev introduces a common semantic layer shared by the first-class subject libraries:
 
 - **Math** — algebra, numerical transformation, approximation, and mathematical invariants.
 - **Physics** — quantities, units, constants, laws, domain conditions, and modeled physical relations.
@@ -57,7 +57,7 @@ A numerical result is therefore not silently promoted to an empirical fact, and 
 
 ## WorkPlan / TODO
 
-2.0 also gives Nordshrift a declarative work-plan vocabulary:
+2.1-dev also gives Nordshrift a declarative work-plan vocabulary:
 
 `PLANNED → READY → ACTIVE → BLOCKED → VALIDATING → COMPLETE` with `DEFERRED` available for intentionally postponed work.
 
@@ -126,3 +126,8 @@ The Nordshrift semantic layer now carries the expanded SLeeLa Subject Library fa
 Astrophysics declares Math and Physics dependencies. Sociology declares Math as its mathematical foundation and keeps descriptive statistics separate from causal or normative conclusions.
 
 The implementation target is **Excellent**: explicit dependencies, units/dimensions, provenance, evidence status, bounded procedures, native tests, SLeeLa examples, and XML declarations must remain connected rather than becoming parallel undocumented systems.
+
+
+## 2.1-dev compiler-resolution gate
+
+Nordshrift 2.1-dev validates every declared Sleela source during `nordshrift check`: source readability, `#sleela` syntax-version compatibility, and shared Sleela lexer/parser validity. Negative compiler fixtures are integrated into `make test`. This gate does not yet claim full type analysis, shared lowering/IR, native linker/ABI validation, or deterministic production compiler completeness; see [`COMPILER.RESOLUTION.md`](COMPILER.RESOLUTION.md).
