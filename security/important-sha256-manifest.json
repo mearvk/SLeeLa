@@ -4663,6 +4663,10 @@
       "sha256": "346ef722ed1cfa5e987af49ee5cc5501a0ed8ee15cca78aba3001aafc37064b3"
     },
     {
+      "path": "impl/tests/nordshrift/compat-current.sst",
+      "sha256": "c50f8673e3c8cb0ad3da989919ca237b5c7a06e27b4bc357790ea6ce02e54336"
+    },
+    {
       "path": "impl/tests/nordshrift/compat-new.sst",
       "sha256": "db803efa3f9b0c9572d98e788c233378a9140c67fcd5a0b8736807aee01885db"
     },
@@ -4701,6 +4705,10 @@
     {
       "path": "impl/tests/nordshrift/src/broken.sleela",
       "sha256": "8dc88f5ec54eb8ca73fe21067561432cbc203af21e7d7bd765f875fdff301a3f"
+    },
+    {
+      "path": "impl/tests/nordshrift/src/compat-current/main.sleela",
+      "sha256": "cf3f351b19f2c1ab2c9b555698de25ed8ddc6d7813379d6d4294233b766c4259"
     },
     {
       "path": "impl/tests/nordshrift/src/compat-new/main.sleela",
