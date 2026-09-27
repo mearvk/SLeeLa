@@ -91,7 +91,7 @@ range is `1.0 .. 1.0`:
 
 | Declared `#sleela` | Result | Rationale |
 |--------------------|--------|-----------|
-| `1.3`     | **accepted** | within the supported range |
+| `1.3`     | **accepted** | current supported syntax |
 | `1.4`     | **rejected** (too new) | MINOR ahead of the supported max |
 | `2.0`     | **rejected** (too new) | MAJOR ahead → breaking grammar unsupported |
 | `1.2`     | **rejected** (too old) | below the supported floor |
@@ -136,16 +136,16 @@ the current values are:
 | **NS-SST-0001** (`.sst` format spec) | **1.0.0** (Normative) | The `.sst` control-sheet format. | `SST.model` |
 | **SL-META-0001** (metadocument) | **1.0.0** (Pre-Normative) | The governing language metadocument, incl. §4.4. | `src/Sleela.manifest` |
 
-> **In short:** the compiler here is the **0.2.0-dev** toolchain, implementing
+> **In short:** the compiler here is the **0.3.0-dev** toolchain, implementing
 > **Sleela language syntax 1.3**. Syntax is versioned independently of the
-> implementation: the `0.2.0-dev` toolchain implements syntax `1.3`.
+> implementation: the `0.3.0-dev` toolchain implements syntax `1.3`.
 
 Query the live values:
 
 ```sh
 ./build/sleela version
 #  Sleela 0.3.0-dev (C/C++ core; SHEET.sheet conducted methods; .xclass input)
-#    supported .sleela syntax: 1.3 .. 1.3 (declare per-file with '#sleela 1.0')
+#    supported .sleela syntax: 1.3 .. 1.3 (declare per-file with '#sleela 1.3')
 ```
 
 ---
