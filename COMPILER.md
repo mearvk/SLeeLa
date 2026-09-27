@@ -27,7 +27,7 @@ Wrapper™ (.sleela source)
      ---- slcore_exchange(): the executable "exchange" API ----
 ```
 
-The compiler lives in [`impl/frontend/`](impl/frontend/) and owns **no execution
+The current compiler compatibility line is **2.6-dev**. The compiler lives in [`impl/frontend/`](impl/frontend/) and owns **no execution
 logic**: it walks the AST and drives the C core purely through the builder
 helpers over `slcore_exchange`. The same front end is reused by **Nordshrift**
 (the `.sst` transpiler driver) to parse the sources it transpiles.
