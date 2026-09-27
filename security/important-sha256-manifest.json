@@ -28,7 +28,7 @@
     },
     {
       "path": "COMPILER.md",
-      "sha256": "7d3de6243037d6f4279e78718d6256769a1386127b0af07853625fb2310898ad"
+      "sha256": "dcbe3d26daf5e8ef557c6a20b8a5d419d1bba76791182dd1dea6222b8f0fa639"
     },
     {
       "path": "CONNECTOR.md",
@@ -4436,7 +4436,7 @@
     },
     {
       "path": "impl/nordshrift/nordshrift.cpp",
-      "sha256": "a9cdd38902c88406ccab84c6a90323463abd2e38b7ac74bc8fefd2465b707b3e"
+      "sha256": "bdffbd62bcb8663ad72e69af2b4f00c75febed245a68d89a3441fb87e71f8151"
     },
     {
       "path": "impl/nordshrift/object_compat.cpp",
