@@ -44,7 +44,7 @@ extern "C" {
 using namespace nordshrift;
 
 static const char* kVersion =
-    "Nordshrift 2.1-dev (NS-SST-0001; source validation; semantic subject model; Sleelvac™ runnable .sleela target)";
+    "Nordshrift 2.2-dev (NS-SST-0001; source validation; semantic subject model; Sleelvac™ runnable .sleela target)";
 
 static int usage() {
     std::cerr <<
