@@ -2,7 +2,7 @@
 
 **Nordshrift** is the **transpiler driver and semantic coordination layer for Sleela**. It reads a **`.sst` Scripting Sheet** — the human-authored control surface defined by the normative specification **NS-SST-0001** — and drives the transpilation of Sleela source files while preserving explicit subject semantics.
 
-A `.sst` file remains a build-control sheet, not a program. In Nordshrift 2.5-dev it may additionally declare semantic subjects, quantities, units, assumptions, relations, transformations, evidence status, comparative norms, dependencies, explanations, and work-plan items.
+A `.sst` file remains a build-control sheet, not a program. In Nordshrift 2.6-dev it may additionally declare semantic subjects, quantities, units, assumptions, relations, transformations, evidence status, comparative norms, dependencies, explanations, and work-plan items.
 
 ## Version 2.6-dev
 
