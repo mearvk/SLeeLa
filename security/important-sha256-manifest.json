@@ -72,7 +72,7 @@
     },
     {
       "path": "README.md",
-      "sha256": "1788bc5ccaa694d34ecf0d0e0e5ba8721298406d5358dcfd990bb827e1ce6c76"
+      "sha256": "d2de0a09ab2f708f6ae9bbbc26e20cb71a2adaeb96bc2d3ca6df64388799b324"
     },
     {
       "path": "REVISIONS.md",
@@ -2669,6 +2669,14 @@
     {
       "path": "common-rails/common-rails.sst",
       "sha256": "b6833aebb2db45e910e9f520d3204168ca14fe743c6aaa0fff170d77f5416405"
+    },
+    {
+      "path": "coorenagraph/include/coorenagraph.h",
+      "sha256": "49f02a81a9a83267cc38c505fdbd2c21a0d7758ee848969dfc966279034d43fe"
+    },
+    {
+      "path": "coorenagraph/src/coorenagraph.c",
+      "sha256": "a8eb288d82a33aa096a00e10be8a0f85fde0f3da57c31bbf6fad90a530713c0f"
     },
     {
       "path": "data-structures/data_structures.c",
