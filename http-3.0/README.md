@@ -1,25 +1,51 @@
 # SLeeLa HTTP 3.0
 
-Status: SLeeLa application/protocol generation; not a claim that SLeeLa-specific behavior is the IETF HTTP/3 standard.
+**Status:** Experimental SLeeLa application-protocol generation; not a claim of IETF HTTP/3 semantics beyond the selected carrier.
 
-HTTP 3.0 combines a compact application envelope, fast service/operation naming, request correlation, retry classes, processing pipeline, and an integrity/security substrate. It can use HTTP/3/QUIC as a carrier while keeping SLeeLa logical routing separate from native transport endpoints.
+HTTP 3.0 extends the SLeeLa application model with request correlation, service/operation naming, retry classes, processing stages, and an application integrity/security layer. HTTP/3 and QUIC may provide the transport carrier.
 
-## Multiplexing
+## Architecture
 
-`QUIC connection → HTTP/3 stream → SLeeLa logical PORT → SERVICE-ID / OP-ID → REQUEST-ID`
+```text
+QUIC connection
+      |
+HTTP/3 stream
+      |
+SLeeLa logical PORT
+      |
+SERVICE-ID / OP-ID
+      |
+REQUEST-ID
+      |
+SLeeLa application envelope
+```
 
-Logical ports are application identifiers, not native sockets.
+Logical ports remain application identifiers rather than native sockets.
 
-## Download mode
+## Large-File Download Mode
 
-Files larger than 50 MB use the common SLeeLa DOWNLOAD mode:
+Files larger than 50 MB use the shared SLeeLa resume contract:
 
-`SESSION-ID | DATETIME | FILE-ID | FILE-NAME | INDEX | OFFSET | TOTAL-SIZE`
+```text
+SESSION-ID | DATETIME | FILE-ID | FILE-NAME | INDEX | OFFSET | TOTAL-SIZE
+```
 
-## Security boundary
+## Security Boundary
 
-The directory contains the SLeeLa application integrity substrate and its self-tests. Carrier security and application integrity remain distinct layers.
+Carrier security and SLeeLa application integrity are separate layers.
 
-## Build and verification
+- HTTP/3 / QUIC can provide authenticated transport and encryption according to the deployment.
+- The SLeeLa integrity layer validates application-level data and protocol conditions.
+- Application integrity does not replace TLS, QUIC security, or deployment authorization.
 
-See `STATUS.md`, `FLOW.md`, and the root `Makefile`. The build directory delegates to the protocol tree so the source implementation remains authoritative.
+## Verification
+
+The directory contains implementation and self-test material for the SLeeLa application layer.
+
+See:
+
+- `STATUS.md`
+- `FLOW.md`
+- the root `Makefile`
+
+The build system should delegate to the protocol source tree rather than replacing the repository's implementation with an unrelated framework.
