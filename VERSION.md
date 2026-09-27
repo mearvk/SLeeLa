@@ -4,7 +4,7 @@
 
 **SLeeLa:** 0.3.0-dev  
 **Sleela-Complete:** 0.3.0-dev  
-**Nordshrift Complete:** 2.5-dev  
+**Nordshrift Complete:** 2.6-dev  
 **Native Foundation:** 0.3.0-dev  
 **Sleela Language Syntax:** 1.3 (supported range 1.3 .. 1.3)  
 **Edition:** SLeeLa Complete / Native Foundation  
@@ -111,7 +111,7 @@ Version documentation and release-critical source should remain consistent acros
 
 ### 0.3.0-dev
 
-Current development line. Extends the build/lifecycle and verification phase through Nordshrift 2.5 runtime artifact ABI validation, while retaining the remaining native ABI, cross-version, fuzzing, reproducibility, and release gates.
+Current development line. Extends the build/lifecycle and verification phase through Nordshrift 2.6 cross-version compiler compatibility evidence, while retaining the remaining native ABI, cross-version, fuzzing, reproducibility, and release gates.
 
 ### 0.1.0-dev
 
