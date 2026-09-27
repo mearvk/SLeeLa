@@ -1,7 +1,7 @@
 # SLeeLa Daily Engineering TODO — Top-Down Numerical Drilldown
 
 **Project:** SLeeLa  
-**Version line:** 0.1.0-dev  
+**Version line:** 0.2.0-dev  
 **Method:** Top-down numerical engineering closure  
 **Rule:** A requirement advances only when implementation is followed by executable evidence.
 
@@ -55,7 +55,7 @@
 # 2. Compiler / Nordshrift
 - [x] SST semantic validation at sheet/source-check boundary.
 - [ ] Full type/semantic analysis.
-- [ ] Shared lowering.
+- [x] Shared lowering / target-neutral IR gate.
 - [x] SST source → shared Sleela lexer/parser validation during `nordshrift check`.
 - [x] Negative source-validation test.
 - [ ] End-to-end SST compilation.
