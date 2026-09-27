@@ -110,7 +110,7 @@ SOC_MATH_OBJ := $(BUILD)/sociology_math.o
 SOC_OBJ := $(BUILD)/sociology.o
 SOC_SMOKE := $(BUILD)/sociology_smoke
 CORE_SRC := core/sleela_artifact.c
-FE_SRC := frontend/lexer.cpp frontend/parser.cpp frontend/compiler.cpp \
+FE_SRC := frontend/lexer.cpp frontend/parser.cpp frontend/semantic.cpp frontend/compiler.cpp \
           frontend/version.cpp frontend/artifact.cpp \
           subjects/native/native_api.cpp \
           subjects/math/math_native.cpp subjects/physics/physics_native.cpp subjects/astrophysics/astrophysics_native.cpp subjects/sociology/sociology_native.cpp \
@@ -151,7 +151,7 @@ else
 endif
 ALL_OBJECTS := $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(PLATFORM_OBJ) $(SYSTEM_MONITOR_OBJ) $(MEDIA_OBJ) $(MEDIA_FORMATS_OBJ) $(AUDIO_MIXER_OBJ) $(AI_OBJ) $(DESIGN_ACTIVITY_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(LANGIN_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(HTTP_SERVER_OBJ) $(HTTP_SERVER_CLI_OBJ) $(HTTP2_SERVER_OBJ) $(HTTP3_SERVER_OBJ) $(NS_OBJ) $(THREAD_SMOKE) $(SOCKET_SMOKE) $(SYNCHRO_SMOKE) $(MUNCTION_SMOKE) $(BESTOF_SMOKE) $(IO_PLATFORM_SMOKE) $(NET_PLATFORM_SMOKE) $(PATH_PLATFORM_SMOKE) $(TERMINAL_PLATFORM_SMOKE) $(LIBRARY_PLATFORM_SMOKE) $(PIXEL_TERMINAL_SMOKE) $(THREAD_PLATFORM_SMOKE)
 
-.PHONY: all test-platform stage package build-verified rebuild-verified clean test test-sleela test-version test-nordshrift test-nordshrift-compiler test-threads test-thread-platform test-network test-network-platform test-synchro test-munction test-bestof test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-chemistry test-financial test-math test-physics test-economics test-inference test-subjects verify-security build-runtime test-runtime test-memmgr test-memmgr-grades test-system-monitor test-media test-audio-mixer test-ai test-regex test-astrophysics test-sociology test-design-activity
+.PHONY: all test-platform stage package build-verified rebuild-verified clean test test-sleela test-version test-nordshrift test-nordshrift-compiler test-nordshrift-semantic test-threads test-thread-platform test-network test-network-platform test-synchro test-munction test-bestof test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-chemistry test-financial test-math test-physics test-economics test-inference test-subjects verify-security build-runtime test-runtime test-memmgr test-memmgr-grades test-system-monitor test-media test-audio-mixer test-ai test-regex test-astrophysics test-sociology test-design-activity
 
 all: verify-security $(SLEELA_BIN) $(NORDSHRIFT_BIN) stage
 
@@ -392,6 +392,8 @@ test-nordshrift: $(NORDSHRIFT_BIN)
 	@export SLEELA_SHA256_MANIFEST=$${SLEELA_SHA256_MANIFEST:-$(CURDIR)/../security/sha256-manifest.json}; cd $(CURDIR)/.. && echo "=== build impl/nordshrift/examples/demo/build.sst (target sleela -> runnable artifact) ===" && $(CURDIR)/$(NORDSHRIFT_BIN) build impl/nordshrift/examples/demo/build.sst || exit 1
 test-nordshrift-compiler: $(NORDSHRIFT_BIN)
 	@cd $(CURDIR)/.. && bash impl/tests/nordshrift/run_compiler_resolution_tests.sh $(CURDIR)/$(NORDSHRIFT_BIN)
+test-nordshrift-semantic: $(NORDSHRIFT_BIN)
+	@cd $(CURDIR)/.. && bash impl/tests/nordshrift/run_semantic_analysis_tests.sh $(CURDIR)/$(NORDSHRIFT_BIN)
 
 test-network: $(SOCKET_SMOKE)
 	@echo "=== core networking smoke (TCP loopback) ==="; $(SOCKET_SMOKE)
