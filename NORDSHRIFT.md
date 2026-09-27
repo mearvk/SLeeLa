@@ -2,11 +2,11 @@
 
 **Nordshrift** is the **transpiler driver and semantic coordination layer for Sleela**. It reads a **`.sst` Scripting Sheet** — the human-authored control surface defined by the normative specification **NS-SST-0001** — and drives the transpilation of Sleela source files while preserving explicit subject semantics.
 
-A `.sst` file remains a build-control sheet, not a program. In Nordshrift 2.2-dev it may additionally declare semantic subjects, quantities, units, assumptions, relations, transformations, evidence status, comparative norms, dependencies, explanations, and work-plan items.
+A `.sst` file remains a build-control sheet, not a program. In Nordshrift 2.3-dev it may additionally declare semantic subjects, quantities, units, assumptions, relations, transformations, evidence status, comparative norms, dependencies, explanations, and work-plan items.
 
 ## Version 2.1-dev
 
-Nordshrift 2.1-dev introduces a common semantic layer shared by the first-class subject libraries:
+Nordshrift 2.3-dev introduces a common semantic layer shared by the first-class subject libraries:
 
 - **Math** — algebra, numerical transformation, approximation, and mathematical invariants.
 - **Physics** — quantities, units, constants, laws, domain conditions, and modeled physical relations.
@@ -130,4 +130,4 @@ The implementation target is **Excellent**: explicit dependencies, units/dimensi
 
 ## 2.2-dev compiler-resolution gate
 
-Nordshrift 2.2-dev validates every declared Sleela source during `nordshrift check`: source readability, `#sleela` syntax-version compatibility, and shared Sleela lexer/parser validity. Negative compiler fixtures are integrated into `make test`. This gate does not yet claim full type analysis, shared lowering/IR, native linker/ABI validation, or deterministic production compiler completeness; see [`COMPILER.RESOLUTION.md`](COMPILER.RESOLUTION.md).
+Nordshrift 2.3-dev validates every declared Sleela source during `nordshrift check`: source readability, `#sleela` syntax-version compatibility, and shared Sleela lexer/parser validity. Negative compiler fixtures are integrated into `make test`. This gate does not yet claim full type analysis, shared lowering/IR, native linker/ABI validation, or deterministic production compiler completeness; see [`COMPILER.RESOLUTION.md`](COMPILER.RESOLUTION.md).
