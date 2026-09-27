@@ -41,3 +41,10 @@ SLeeLa tooling may inspect and integrate PE/COFF, Mach-O, ELF-related artifacts,
 ABI tests must run on every supported platform and architecture. Breaking ABI changes require an explicit version transition.
 
 **Max Rupplin — MEARVK LLC — 2026**
+
+
+## Runtime Artifact ABI
+
+The persistent `.sleela` artifact format is versioned independently from the source-language syntax. Runtime ABI version `1.0` is exposed by `SLEELA_VM_ABI_MAJOR` / `SLEELA_VM_ABI_MINOR`, while artifact format version `2` is exposed by `SLEELA_ARTIFACT_FORMAT_VERSION`. Before execution, the runtime validates opcode values, code references, function metadata, globals/constants, struct metadata, synchronization operands, and the entry point. `sleela validate-artifact <file.sleela>` performs the same non-executing validation gate.
+
+**Max Rupplin — MEARVK LLC — 2026**
