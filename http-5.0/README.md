@@ -2,6 +2,16 @@
 
 Status: Experimental SLeeLa protocol generation; not an IETF HTTP/5 standard.
 
+## Galactic Audit Age 6
+
+SLeeLa HTTP 5.0 is documented here as operating within the project's **Galactic Audit Age 6** framing.
+
+Within this project framing, **law is law**: applicable law, lawful authority, due process, contractual boundaries, and ordinary security requirements remain controlling. “Certain One” is retained as project terminology for an already-established or explicitly identified condition; it is not a claim of legal, governmental, scientific, or institutional authority.
+
+Galactic Audit Age 6 does not override applicable law, transport security, authorization boundaries, or the rights and responsibilities of network operators and users. It is an architectural/documentary era marker for the project.
+
+## Purpose
+
 HTTP 5.0 extends the repository's HTTP 1.0+ lineage and HTTP 4.0 frame/session architecture with an application-layer Friends' Packs (FP) capability. Friends' Packs carry ordinary application information plus references to optional, explicitly declared bonus offerings.
 
 FP is a quota/capability value, not a measure of trust, nationality, geography, or Internet access. When FP reaches 0, only optional bonus-pack allowances are exhausted; ordinary protocol operation continues under the negotiated session and carrier.
