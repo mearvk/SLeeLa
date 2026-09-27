@@ -1,46 +1,50 @@
 # SLeeLa HTTP 1.0
 
-HTTP 1.0 is the baseline SLeeLa application generation. Its port model preserves compatibility with conventional HTTP/1.0 while introducing the same logical routing concept used by later HTTP generations.
+**Status:** Experimental SLeeLa application-protocol generation.
 
-## Port and Multiplexing Model
+SLeeLa HTTP 1.0 establishes the baseline application model used by the later HTTP generations in this repository. It keeps transport addressing separate from SLeeLa's logical service-routing identifiers.
 
-HTTP 1.0 does not have HTTP/2-style stream multiplexing. SLeeLa therefore performs logical multiplexing above the HTTP/1.0 request/connection boundary.
+## Architecture
 
 ```text
-native TCP connection
+Native transport endpoint
         |
-        +-- HTTP/1.0 request -- logical PORT -- SERVICE/OP -- payload
-        +-- HTTP/1.0 request -- logical PORT -- SERVICE/OP -- payload
-        +-- another connection/request as required
-```
-
-The logical port is an application identifier. It does **not** mean that every logical port receives its own TCP socket.
-
-## Addressing Layers
-
-```text
-native transport endpoint
-        ↓
-HTTP/1.0 request/connection
-        ↓
+HTTP/1.0 request / connection
+        |
 SLeeLa logical PORT
-        ↓
+        |
 SERVICE-ID / OP-ID
-        ↓
-application operation
+        |
+Application operation
 ```
 
-HTTP 1.0 implementations should keep the logical-port layer independent from native TCP/UDP port numbering. This allows the same service-routing model to continue into HTTP 2.0+.
+A SLeeLa **logical port** is an application-level identifier. It is not a replacement for, or necessarily a one-to-one mapping with, a native TCP or UDP port.
+
+## Multiplexing
+
+HTTP/1.0 does not provide HTTP/2-style stream multiplexing. SLeeLa therefore treats concurrent application exchanges as logical operations above the HTTP/1.0 request and connection boundary.
 
 ## Compatibility
 
-The HTTP 1.0 layer remains compatible with ordinary HTTP infrastructure. Proxies, TLS termination, routers, and conventional TCP port bindings remain transport concerns; SLeeLa logical ports remain application-routing concerns.
-
+The HTTP 1.0 layer is designed to coexist with conventional HTTP infrastructure. TCP sockets, TLS termination, proxies, routers, and native port bindings remain transport concerns; SLeeLa logical ports remain application-routing concerns.
 
 ## Large-File Download Mode
 
-SLeeLa HTTP 1.0+ defines an explicit **DOWNLOAD mode** for files larger than 50 MB. The download layer supplies persistent resume identity.
+SLeeLa HTTP 1.0 and later generations define a common **DOWNLOAD** mode for files larger than 50 MB.
 
-`SESSION-ID | DATETIME | FILE-ID | FILE-NAME | INDEX | OFFSET | TOTAL-SIZE`
+Resume metadata:
 
-FILE-ID identifies the file transfer, INDEX identifies its segment/chunk, and OFFSET identifies its byte position. The 50 MB threshold selects this mode; it is not a maximum file size.
+```text
+SESSION-ID | DATETIME | FILE-ID | FILE-NAME | INDEX | OFFSET | TOTAL-SIZE
+```
+
+- **FILE-ID** identifies the transfer.
+- **INDEX** identifies a segment or chunk.
+- **OFFSET** identifies the byte position.
+- **TOTAL-SIZE** records the complete transfer size.
+
+The 50 MB threshold selects the resume-oriented mode; it is not a maximum file size.
+
+## Scope
+
+HTTP 1.0 provides the foundational routing and transfer model. Later SLeeLa generations add additional framing, multiplexing, integrity, capability, and application features without changing the distinction between transport and application addressing.
