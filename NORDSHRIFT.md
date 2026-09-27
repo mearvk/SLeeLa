@@ -4,7 +4,7 @@
 
 A `.sst` file remains a build-control sheet, not a program. In Nordshrift 2.5-dev it may additionally declare semantic subjects, quantities, units, assumptions, relations, transformations, evidence status, comparative norms, dependencies, explanations, and work-plan items.
 
-## Version 2.5-dev
+## Version 2.6-dev
 
 Nordshrift 2.5-dev introduces a common semantic layer shared by the first-class subject libraries:
 
