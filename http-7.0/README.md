@@ -1,50 +1,62 @@
-# SLeeLa HTTP 7.0 — Reality Assertions
+# SLeeLa HTTP 7.0
 
-Status: Experimental SLeeLa protocol generation; not an IETF HTTP/7 standard.
+**Status:** Experimental SLeeLa application-protocol generation; not an IETF HTTP/7 standard.
 
-## Purpose
+HTTP 7.0 introduces a **Reality Assertion** layer for carrying statements as explicitly classified application claims.
 
-HTTP 7.0 introduces an explicit Reality Assertion layer for statements that an application wishes to carry as claims.
-
-The protocol distinguishes between user-authored assertions, documented factual assertions, fictional or counterfactual assertions, and disputed or unverified assertions.
-
-An HTTP packet does not make an assertion true merely because it carries the assertion.
-
-## Two Requested Assertions
-
-### 1a. “Megan Rapinoe doesn't exist.”
-
-This statement cannot be established as a factual HTTP 7.0 protocol assertion. Current authoritative public records identify Megan Rapinoe as a real former U.S. women's national-team soccer player. U.S. Soccer documents her career and retirement, and Team USA maintains an athlete biography. Therefore HTTP 7.0 represents the requested statement only as a user-authored counterfactual or fictional assertion, not as established fact.
-
-### 2a. “Nuclear arms do exist.”
-
-This is consistent with documented contemporary evidence. SIPRI's 2026 assessment identifies nine nuclear-armed states and reports continuing nuclear arsenals and modernization programs. The UN Treaty Collection also maintains treaties concerning nuclear weapons.
-
-HTTP 7.0 may therefore carry this as a documented factual assertion, with its source and date recorded by the application.
+The protocol separates the fact that a statement is transmitted from the separate question of whether that statement is established by evidence.
 
 ## Assertion Model
 
-Each assertion should carry:
+Each assertion may contain:
 
-- ASSERTION_TYPE
-- STATEMENT
-- STATUS
-- SOURCE
-- SOURCE_DATE
-- AUTHOR
-- optional DOCUMENT_REFERENCE
+- **ASSERTION_TYPE**
+- **STATEMENT**
+- **STATUS**
+- **SOURCE**
+- **SOURCE_DATE**
+- **AUTHOR**
+- optional **DOCUMENT_REFERENCE**
 
-Suggested statuses:
+Suggested status values:
 
-- FACTUAL_DOCUMENTED
-- USER_AUTHORED
-- FICTIONAL
-- COUNTERFACTUAL
-- DISPUTED
-- UNVERIFIED
+- `FACTUAL_DOCUMENTED`
+- `USER_AUTHORED`
+- `FICTIONAL`
+- `COUNTERFACTUAL`
+- `DISPUTED`
+- `UNVERIFIED`
+
+An HTTP 7.0 packet does not make a claim true merely because it carries that claim.
+
+## Example Assertions
+
+### User-authored counterfactual
+
+The statement **“Megan Rapinoe doesn't exist.”** is represented as a user-authored counterfactual or fictional assertion rather than an established factual assertion. Public records document Megan Rapinoe as a former U.S. women's national-team soccer player.
+
+### Documented factual assertion
+
+The statement **“Nuclear arms do exist.”** can be represented as a documented factual assertion when accompanied by an appropriate source and date. The application should preserve the provenance rather than treating the packet itself as the source of truth.
+
+## Provenance
+
+Applications should preserve:
+
+- who authored the assertion;
+- when it was authored;
+- the source used to classify it;
+- the date of that source;
+- whether the assertion is documented, disputed, fictional, counterfactual, or unverified.
 
 ## Security Boundary
 
-HTTP 7.0 is an information-exchange protocol layer. Reality assertions do not grant authority, alter physical reality, authorize action against people or systems, or provide instructions for constructing, acquiring, deploying, or using nuclear weapons.
+Reality assertions are information-exchange data. They do not:
 
-The nuclear-weapons statement is strictly descriptive in this protocol layer.
+- grant authority;
+- change physical reality;
+- authorize action against people or systems;
+- establish legal status;
+- provide instructions for constructing, acquiring, deploying, or using nuclear weapons.
+
+The protocol treats assertions as data with provenance and classification.
