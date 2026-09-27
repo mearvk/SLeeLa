@@ -13,6 +13,7 @@ rm -f "${ARTIFACT}" "${ARTIFACT}.ledger" "${ARTIFACT}.qr.svg"
 "${NS_BIN}" check "${SST}"
 "${NS_BIN}" build "${SST}"
 test -s "${ARTIFACT}"
+"${SLEELA_BIN}" validate-artifact "${ARTIFACT}"
 if ! "${SLEELA_BIN}" run "${ARTIFACT}" >"${LOG}" 2>&1; then
   cat "${LOG}"
   echo "FAIL: generated runnable artifact did not execute"
