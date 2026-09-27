@@ -4688,7 +4688,7 @@
     },
     {
       "path": "impl/tests/nordshrift/run_cross_version_tests.sh",
-      "sha256": "8f71a5ff0ac1412b9b1b30dbd932c6a992342406988e248d39d379f72c5eb233"
+      "sha256": "8319e75b31db7046c434d0faafc092db3e3496129d91267024c4bb649e204f52"
     },
     {
       "path": "impl/tests/nordshrift/run_end_to_end_tests.sh",
