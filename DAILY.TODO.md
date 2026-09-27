@@ -346,6 +346,8 @@ The first seven version-and-toolchain work items are now closed. Future work mus
    - Nordshrift is identified as **2.6-dev** across the active implementation and documentation.
 
 4. **Syntax compatibility identity — COMPLETE**
+   - The executable version gate now has explicit 1.3 accepted/default fixtures plus 1.2/1.4 rejection fixtures, and the compiler documentation no longer describes the obsolete 1.0 range.
+
    - Sleela syntax support is **1.3 .. 1.3** and compiler defaults are synchronized to syntax 1.3.
 
 5. **Runtime artifact ABI identity — COMPLETE**
