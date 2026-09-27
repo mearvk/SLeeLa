@@ -169,3 +169,35 @@ branch is retired on purpose, not merged by reflex.
 
 *Serve in order for a full meal, or take any single course. No dish is done
 until its Moral is met.*
+
+
+# Version / Compiler Work Closure — Items 1–7
+
+**Status:** COMPLETE — 2026-09-27  
+**Current development line:** SLeeLa 0.3.0-dev / Sleelvac 0.3.0-dev / Nordshrift 2.6-dev  
+
+The first seven version-and-toolchain work items are now closed. Future work must preserve the version identities established here and update version numbers as implementation milestones advance.
+
+1. **Sleelvac / compiler identity — COMPLETE**
+   - Sleelvac is identified as **0.3.0-dev**.
+   - Compiler documentation and implementation identity are synchronized.
+
+2. **Version-string cleanup — COMPLETE**
+   - Known stale 0.1/0.2/Sleelvac 1.5 and Nordshrift 2.1–2.5 development identifiers were audited; no remaining indexed matches were found.
+
+3. **Nordshrift milestone synchronization — COMPLETE**
+   - Nordshrift is identified as **2.6-dev** across the active implementation and documentation.
+
+4. **Syntax compatibility identity — COMPLETE**
+   - Sleela syntax support is **1.3 .. 1.3** and compiler defaults are synchronized to syntax 1.3.
+
+5. **Runtime artifact ABI identity — COMPLETE**
+   - VM ABI is **1.0** and artifact format is **2**; runtime artifact validation is documented and versioned.
+
+6. **Cross-version compatibility gate — COMPLETE**
+   - Nordshrift 2.6-dev compatibility fixtures and the compatibility test gate are recorded as complete.
+
+7. **Complete version registry / documentation closure — COMPLETE**
+   - The complete component registry is maintained in VERSION.md, including independently versioned API/server, server-edition, moral, port-awareness, terminal, standard, and metadata components.
+
+**Ongoing rule:** Every subsequent implementation milestone updates its applicable version numbers, source identity, tests, and master documentation together. Independent component versions are changed only when that component itself changes.
