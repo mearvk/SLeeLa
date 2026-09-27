@@ -4,7 +4,7 @@
 
 A `.sst` file remains a build-control sheet, not a program. In Nordshrift 2.3-dev it may additionally declare semantic subjects, quantities, units, assumptions, relations, transformations, evidence status, comparative norms, dependencies, explanations, and work-plan items.
 
-## Version 2.1-dev
+## Version 2.3-dev
 
 Nordshrift 2.3-dev introduces a common semantic layer shared by the first-class subject libraries:
 
@@ -128,6 +128,6 @@ Astrophysics declares Math and Physics dependencies. Sociology declares Math as 
 The implementation target is **Excellent**: explicit dependencies, units/dimensions, provenance, evidence status, bounded procedures, native tests, SLeeLa examples, and XML declarations must remain connected rather than becoming parallel undocumented systems.
 
 
-## 2.2-dev compiler-resolution gate
+## 2.3-dev compiler-resolution gate
 
-Nordshrift 2.3-dev validates every declared Sleela source during `nordshrift check`: source readability, `#sleela` syntax-version compatibility, and shared Sleela lexer/parser validity. Negative compiler fixtures are integrated into `make test`. This gate does not yet claim full type analysis, shared lowering/IR, native linker/ABI validation, or deterministic production compiler completeness; see [`COMPILER.RESOLUTION.md`](COMPILER.RESOLUTION.md).
+Nordshrift 2.3-dev validates every declared Sleela source during `nordshrift check`: source readability, `#sleela` syntax-version compatibility, and shared Sleela lexer/parser validity. Negative compiler fixtures are integrated into `make test`. This gate does not yet claim full type analysis, native linker/ABI validation, or deterministic production compiler completeness; see [`COMPILER.RESOLUTION.md`](COMPILER.RESOLUTION.md).
