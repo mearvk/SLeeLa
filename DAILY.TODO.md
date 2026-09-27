@@ -357,6 +357,7 @@ The first seven version-and-toolchain work items are now closed. Future work mus
 
 6. **Cross-version compatibility gate — COMPLETE**
    - Nordshrift 2.6-dev compatibility fixtures and the compatibility test gate are recorded as complete.
+   - The compatibility gate now proves all three states: supported syntax 1.3 is accepted, below-floor 1.2 is rejected, and above-ceiling 1.4 is rejected.
 
 7. **Complete version registry / documentation closure — COMPLETE**
    - The complete component registry is maintained in VERSION.md, including independently versioned API/server, server-edition, moral, port-awareness, terminal, standard, and metadata components.
