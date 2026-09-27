@@ -3932,7 +3932,7 @@
     },
     {
       "path": "impl/core/sleela_artifact.c",
-      "sha256": "7016948a226b9be43145e6bd3efbac4120a2824539cd763880cdb470788ff6f8"
+      "sha256": "5b2ce16e034a7eba5411d649fabf408723323b4dc849d9b994f9dc9d58fb2005"
     },
     {
       "path": "impl/core/sleela_audio_mixer.c",
