@@ -2,7 +2,7 @@
 
 ## Generations
 
-SLeeLa contains HTTP 1.x, HTTP 2.0/2.1, HTTP 3.0 and experimental HTTP 4.0 work.
+SLeeLa maintains HTTP 1.0/1.1 compatibility targets plus SLeeLa-specific HTTP 2.0/2.1 through 9.0 application/protocol generations. Generations 4.0 through 9.0 are explicitly experimental/project-specific and are not presented as official IETF HTTP versions.
 
 ## HTTP 4.0 status
 
