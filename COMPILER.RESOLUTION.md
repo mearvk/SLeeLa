@@ -25,20 +25,17 @@ The next compiler gate is now implemented at the SST check boundary.
    - `nordshrift check` now rejects semantically invalid declared Sleela source with `NSS-E-SEM-001`.
    - Sleelvac compilation runs the same semantic pass before bytecode lowering, preventing direct compiler and SST paths from diverging.
 7. **Shared target-neutral lowering**
+   - Sleela AST is lowered into a deterministic Nordshrift IR before Java/Sleela/C emission.
+   - All current AST node families are represented by the common lowering pass.
+   - The emitter rejects lowering failures instead of allowing target-specific divergence.
 8. **End-to-end SST compilation and runtime execution**
    - A positive SST fixture is compiled through source resolution, parsing, semantic analysis, Sleelvac artifact generation, and persistent `.sleela` artifact creation.
    - The generated artifact is loaded by the native runtime and executed as a test, proving the complete SST → Sleela artifact → runtime path.
    - The test requires the expected runtime output `NORDSHRIFT-E2E-OK` and fails on missing artifacts or non-zero execution.
-
-   - Sleela AST is lowered into a deterministic Nordshrift IR before Java/Sleela/C emission.
-   - All current AST node families are represented by the common lowering pass.
-   - The emitter rejects lowering failures instead of allowing target-specific divergence.
-
 ### Remaining compiler gates
 
 - Native linker and runtime ABI validation.
 - Cross-version compiler fixtures.
-- Complete SST → Sleela artifact → runtime execution proof.
 - Compiler fuzzing and malformed-input corpus.
 - Deterministic compiler output verification.
 
