@@ -2,15 +2,21 @@
 
 **Status:** Experimental SLeeLa application/protocol generation; not an IETF HTTP/9 standard.
 
-HTTP 9.0 extends the HTTP 8.0 SLeeLa packet model. HTTP 9.0 retains the HTTP 8.0 packet metadata fields and adds structured **International Data for Security, Safety, and Police**.
+HTTP 9.0 extends the HTTP 8.0 SLeeLa packet model. HTTP 9.0 retains the HTTP 8.0 packet metadata fields, adds structured **International Data for Security, Safety, and Police**, and adds the **Dark Band** metadata field.
 
-## Core Files
+## Dark Band
 
-- `HTTP90.SPEC.md` — protocol specification.
-- `HTTP90.conf` — configuration.
-- `HTTP.NEGOTIATION.md` — generation negotiation.
-- `http90.h` / `http90.hpp` — public C/C++ interfaces.
-- `http90.c` / `http90.cpp` — implementation.
+HTTP 9.0 defines **Dark Band** as an application metadata record with an explicit original-content hexadecimal representation.
+
+The default original-content value is:
+
+```text
+0x4441524B42414E44
+```
+
+This hexadecimal value is an identifier/content representation for the Dark Band record. It is not a cryptographic key, credential, authorization token, radio-control instruction, or hidden operational channel.
+
+C/C++ expose the value through `HTTP90_DARK_BAND_ORIGINAL_CONTENT_HEX` and the `http90_dark_band` structure. Applications may replace the metadata value when their documented application format requires another hexadecimal representation.
 
 ## Packet Model
 
@@ -23,17 +29,10 @@ HTTP 9.0 retains the HTTP 8.0 application-level metadata model, including:
 - national emblem, signal, and frequency metadata;
 - sequence number.
 
-HTTP 9.0 adds a structured international-data record containing:
+HTTP 9.0 additionally carries:
 
-- security information;
-- safety information;
-- police information;
-- jurisdiction;
-- organization;
-- identifier;
-- classification;
-- source/provenance;
-- timestamp.
+- Dark Band name and original-content hexadecimal value;
+- international security, safety, and police metadata.
 
 These fields are descriptive application metadata. They do not by themselves establish legal authority, authenticity, jurisdiction, police powers, security clearance, operational control, or permission to act.
 
@@ -47,7 +46,7 @@ Frequency and signal fields are intended for documented, authorized, or public m
 
 HTTP 9.0 provides a common data container for international security, safety, and police information that an application is authorized to exchange or document.
 
-The model is deliberately provenance-oriented. Applications should identify the responsible jurisdiction or organization, preserve the source and timestamp, and distinguish descriptive records from claims of authority.
+The model is provenance-oriented. Applications should identify the responsible jurisdiction or organization, preserve the source and timestamp, and distinguish descriptive records from claims of authority.
 
 The police field is a data category, not a command channel. HTTP 9.0 does not grant law-enforcement authority, provide covert surveillance capability, or authorize access to restricted systems or communications.
 
@@ -77,6 +76,7 @@ Conformance and deployment checks should cover:
 
 - C and C++ compilation;
 - packet-field compatibility with HTTP 8.0;
+- Dark Band default hexadecimal value preservation;
 - configuration parsing;
 - bounded metadata;
 - provenance and timestamp preservation;
@@ -88,4 +88,4 @@ Conformance and deployment checks should cover:
 
 ## Relationship to Earlier Generations
 
-HTTP 9.0 is part of the repository's SLeeLa HTTP lineage. It preserves the architectural distinction established by earlier generations: transport mechanisms carry the exchange, while SLeeLa defines its application-level identity, metadata, and protocol behavior. HTTP 9.0 extends that model with structured international security, safety, and police metadata without turning descriptive records into operational authority.
+HTTP 9.0 is part of the repository's SLeeLa HTTP lineage. It preserves the architectural distinction established by earlier generations: transport mechanisms carry the exchange, while SLeeLa defines its application-level identity, metadata, and protocol behavior. HTTP 9.0 extends that model with structured international security, safety, police, and Dark Band metadata without turning descriptive records into operational authority.
