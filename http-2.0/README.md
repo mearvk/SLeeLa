@@ -1,25 +1,60 @@
 # SLeeLa HTTP 2.0 / 2.1
 
-Status: SLeeLa application-protocol generation; HTTP/2 compatibility is a transport concern.
+**Status:** Experimental SLeeLa application-protocol generation; HTTP/2 compatibility is a transport concern.
 
-HTTP 2.0/2.1 provides compact application envelopes, service/operation identifiers, request correlation, retry classes, and logical-port routing over HTTP/2 streams. The logical-port namespace is independent of native TCP/UDP sockets.
+HTTP 2.0 / 2.1 extends the SLeeLa HTTP 1.0 model with compact application envelopes, service and operation identifiers, request correlation, retry classes, and logical-port routing over concurrent HTTP/2 exchanges.
 
-The 2.1 source is the current sketch/core in this directory; it deliberately precedes the additional integrity substrate introduced by HTTP 3.0.
+## Architecture
 
-## Multiplexing
+```text
+Native transport endpoint
+        |
+HTTP/2 stream
+        |
+SLeeLa logical PORT
+        |
+SERVICE-ID / OP-ID
+        |
+REQUEST-ID
+        |
+Application request
+```
 
-`native transport endpoint → HTTP/2 stream → SLeeLa logical PORT → service/operation → request`
+Logical ports are application identifiers and are independent of native TCP/UDP socket numbering.
 
-## Download mode
+## Core Capabilities
 
-Files larger than 50 MB use SLeeLa DOWNLOAD mode with resume metadata:
+- Compact application envelopes.
+- Service and operation identifiers.
+- Request correlation.
+- Retry classification.
+- Logical-port routing.
+- Concurrent stream-aware exchanges.
+- Compatibility with the repository's shared download/resume contract.
 
-`SESSION-ID | DATETIME | FILE-ID | FILE-NAME | INDEX | OFFSET | TOTAL-SIZE`
+## Large-File Download Mode
+
+Files larger than 50 MB use SLeeLa **DOWNLOAD** mode:
+
+```text
+SESSION-ID | DATETIME | FILE-ID | FILE-NAME | INDEX | OFFSET | TOTAL-SIZE
+```
+
+This metadata allows an interrupted transfer to be identified and resumed.
 
 ## Negotiation
 
-Use `HTTP.NEGOTIATION.md` and the negotiation C/C++ implementation. A SLeeLa generation is selected only after explicit peer acceptance; permitted fallback is HTTP/1.1, then HTTP/1.0. Fallback must not silently weaken required security.
+Generation selection is explicit. A peer must accept the proposed generation before it is selected. Where fallback is permitted, the negotiation layer may return to HTTP/1.1 and then HTTP/1.0.
+
+Fallback must not silently remove a security property required by the application or deployment policy.
+
+See `HTTP.NEGOTIATION.md` for the repository negotiation model.
 
 ## Build
 
-`make -C http-2.0` or `make -C http-2.0/build syntax`.
+```sh
+make -C http-2.0
+make -C http-2.0/build syntax
+```
+
+The 2.1 implementation in this directory is treated as the current core/sketch for this generation.
