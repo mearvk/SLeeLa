@@ -28,7 +28,7 @@
     },
     {
       "path": "COMPILER.md",
-      "sha256": "54a1c44f312b355b219bad4578a19f34cd3b2c5a6044de73cbf34e34d339c9da"
+      "sha256": "dfa6d52d9d0342d45f4af51da9fcaa0e6140dba5feb667df685ba57b4c9359f5"
     },
     {
       "path": "CONNECTOR.md",
@@ -4764,7 +4764,7 @@
     },
     {
       "path": "impl/tests/version/minor_ahead.sleela",
-      "sha256": "d65d6d1477944783894a4288de533bfe3187b31ed46feb6980fe1e0955cd8396"
+      "sha256": "27b3af7fd9ad647abd25cc5bb6d4cf42c581f65fb2193712ccf218105e5bda2d"
     },
     {
       "path": "impl/tests/version/network_1_1.sleela",
@@ -4775,12 +4775,32 @@
       "sha256": "df4ae820d548aee39d2fad1bdb2367503867bc349fb2f94fd500449abac51739"
     },
     {
+      "path": "impl/tests/version/run_artifact_abi_tests.sh",
+      "sha256": "07086a6a30bfbccbf3e560ae01855083677502d997900b73759fab1b0eafa897"
+    },
+    {
       "path": "impl/tests/version/run_version_tests.sh",
-      "sha256": "b86c5a9182cc8a1c0329ca329ef0647b67bd8df67c24283a8d1f34c105981471"
+      "sha256": "1f39db021a54276b9afc7d267f215389bf84207fea657b45b1436eb4fcc40cad"
+    },
+    {
+      "path": "impl/tests/version/syntax_1_2.sleela",
+      "sha256": "141545301d34579814e908a557288951289409ce8e82f6caae0e59092e74ebe3"
+    },
+    {
+      "path": "impl/tests/version/syntax_1_3.sleela",
+      "sha256": "a7fc1641f61a484c1b8c9ab397bf05cf319e6d8cfd754d01989343cf3b04ae6f"
+    },
+    {
+      "path": "impl/tests/version/syntax_1_4.sleela",
+      "sha256": "3dc70a4f5609c9104e97ba5b537c0c29ee478e3e82283703204d681b02d19b5f"
+    },
+    {
+      "path": "impl/tests/version/syntax_missing.sleela",
+      "sha256": "7ee20be0b4ae5e39db8bfc607349ef18f4f1e2a58ca382731e71dff94dd60fb4"
     },
     {
       "path": "impl/tests/version/too_new.sleela",
-      "sha256": "c03c18947acb2a5800168b688b3d2534b1b82b80b0ec0ad5722741e51a3dd8fe"
+      "sha256": "cb818bffacd29b0d837401d083d25828f1032c09238af81d754a4545c67d1db2"
     },
     {
       "path": "impl/xclass/XCLASS.model",
