@@ -1,6 +1,8 @@
 # SLeeLa HTTP
 
-This directory contains the HTTP transport and web-integration layer for SLeeLa.
+This directory contains the HTTP transport, negotiation, protocol specifications, and web-integration layer for SLeeLa.
+
+The complete generation family is organized as `http-1.0/` through `http-9.0`. HTTP 1.0/1.1 are compatibility targets; HTTP 2.0 through 9.0 are SLeeLa-specific application/protocol generations and are not presented as official Internet HTTP versions.
 
 The HTTP subsystem is intended to provide a conventional Internet-facing transport while keeping SLeeLa business logic behind a defined connector boundary.
 
