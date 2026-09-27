@@ -28,7 +28,7 @@
     },
     {
       "path": "COMPILER.md",
-      "sha256": "6fb8a612b8c69584542c445fcc14af0656637c5673efdf2b421c21048fd90500"
+      "sha256": "54a1c44f312b355b219bad4578a19f34cd3b2c5a6044de73cbf34e34d339c9da"
     },
     {
       "path": "CONNECTOR.md",
@@ -104,7 +104,7 @@
     },
     {
       "path": "VERSION.md",
-      "sha256": "880687667fe78d77577dd92383e45c7f97dde4211f13fc3446052170cf58c6bb"
+      "sha256": "3a38ee3a859cf8362c4f3039aae3bd9295e08f95c67d619a4a2dbb0eec6ce34a"
     },
     {
       "path": "antivirus/src/sleelavirin_heuristic.c",
@@ -4252,7 +4252,7 @@
     },
     {
       "path": "impl/frontend/driver.cpp",
-      "sha256": "233e589707ddccc9048297deaef3063992796a44434da5bf24657f5b20a4b8c6"
+      "sha256": "c402605d0a77ec03bba92894dd2e71651e46e0266f0d1c0df2a8c9f124b42010"
     },
     {
       "path": "impl/frontend/http_server_cli.cpp",
@@ -4444,7 +4444,7 @@
     },
     {
       "path": "impl/nordshrift/nordshrift.cpp",
-      "sha256": "0854171fedc8145bb9ae934d2885d3ed2f34b06ee545a2fc1558ba1a7beb9d76"
+      "sha256": "ef35b4df95b52ac0383787dcab5ac87c04317aee036a8b9a58d051d4cbbf21ed"
     },
     {
       "path": "impl/nordshrift/object_compat.cpp",
