@@ -2,7 +2,10 @@
 
 ## Current Development Version
 
-**Version:** 0.1.0-dev  
+**SLeeLa:** 0.2.0-dev  
+**Sleela-Complete:** 0.2.0-dev  
+**Nordshrift Complete:** 0.2.0-dev  
+**Native Foundation:** 0.2.0-dev  
 **Edition:** SLeeLa Complete / Native Foundation  
 **Status:** Active Development  
 **Repository:** mearkv/SLeeLa
@@ -18,26 +21,27 @@ SLeeLa uses semantic versioning:
 - **PATCH** — backward-compatible fixes, corrections, hardening, documentation, and test improvements.
 - Development releases use the `-dev` suffix until the corresponding release gate is satisfied.
 
-## Current 0.1 Development Scope
+## 0.2 Development Line
 
-The current development line contains foundations for:
+The 0.2 development line records the transition from the initial consolidated 0.1 native-foundation line into an explicit application build/lifecycle and engineering-verification line.
+
+This includes:
 
 - SLeeLa-Complete application authoring
 - Nordshrift Complete
-- Native memory management
-- Native reflection
-- Native runtime primitives
-- Native networking
-- Native security primitives
-- HTTP and server foundations
+- native runtime foundations
+- native memory and reflection foundations
+- networking and security foundations
+- HTTP/server foundations
 - Telephony/Skya and VoIP foundations
-- Cross-platform implementation contracts
+- cross-platform implementation contracts
 - C/C++ native integration
-- Build, test, packaging, and verification infrastructure
+- application-level build lifecycle tooling
+- build provenance and artifact hashing
+- dependency-lock/provenance foundation
+- numerical top-down completion tracking
 
-## Native Foundation Status
-
-### Implemented Foundations
+## Current Implemented Foundations
 
 - Memory manager with guarded allocation and accounting
 - Runtime EventLoop
@@ -52,32 +56,31 @@ The current development line contains foundations for:
 - Constant-time byte comparison
 - Credential secret cleanup
 - Native smoke-test integration
-- Application-level build lifecycle driver (`tools/sleela-build.py`) with check/build/test/run/package/install/clean/doctor/version commands
-- Build provenance recording and SHA-256 artifact recording
-- Initial build-tool lock/provenance format (`sleela.lock.json`)
+- Application-level build lifecycle driver (`tools/sleela-build.py`)
+- `init/check/build/test/run/package/install/clean/doctor/version` lifecycle commands
+- Build provenance recording
+- SHA-256 artifact recording
+- Initial build-tool lock/provenance format
 
-### Deliberately Not Claimed Complete
+## Deliberately Not Claimed Complete
 
-The version number does **not** mean the entire SLeeLa platform is release-complete.
+The 0.2.0-dev version does **not** mean the SLeeLa platform is release-complete.
 
-The following remain development gates:
+Remaining gates include:
 
-- TLS implementation and certificate validation
-- Secure random/key management
-- Windows socket backend
-- macOS socket backend
-- Full nonblocking network integration
-- Timeout/deadline and retry policies
-- Connection pooling
-- Production cryptographic backend policy
-- Full VoIP media/signaling implementation
-- Complete HTTP implementation and interoperability testing
-- Hardware-driver certification
-- Cross-platform release testing
-- Comprehensive integration and conformance suites
-- Reproducible release packaging and signing
-- Exact third-party dependency resolution and locking
-- Final production release audit
+- exact third-party dependency resolution and locking
+- deterministic and reproducible builds
+- complete SST → executable compiler path
+- full runtime lifecycle verification
+- TLS/certificate/key/random/security completion
+- complete HTTP interoperability
+- full VoIP media/signaling
+- hardware-driver certification
+- Windows 10+ and macOS production verification
+- comprehensive integration/conformance suites
+- fuzzing, sanitizers, stress and performance evidence
+- reproducible release packaging and signing
+- final production release audit
 
 ## Release Rule
 
@@ -92,15 +95,17 @@ The primary development branches are:
 - `main`
 - `master`
 
-For synchronized development milestones, version documentation and release-critical source should be kept consistent across both branches.
+Version documentation and release-critical source should remain consistent across both branches.
 
 ## Version History
+
+### 0.2.0-dev
+
+Current development line. Establishes the build/lifecycle and verification phase following the initial 0.1 native-foundation consolidation.
 
 ### 0.1.0-dev
 
 Initial consolidated development version covering the SLeeLa-Complete architecture and native foundation work.
-
-The development line is intentionally pre-release and subject to API, ABI, source, build-system, and architectural changes.
 
 ---
 
