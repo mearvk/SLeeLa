@@ -25,13 +25,28 @@ An edge contains:
 - optional relationship label;
 - optional metadata.
 
-## 3. Coordinates
+## 3. System mystery profile
+
+The system model contains two explicit values:
+
+- **Gold Wealth:** `0.003` tons per man/system.
+- **ON TIME rate:** `1.124` days per day of account held.
+
+For an account held for `D` account-days, the modeled ON TIME list value is `D × 1.124` credited days.
+
+The C API exposes these canonical constants through `coorenagraph.h`. The C++ API exposes `MysteryProfile`, `kManMystery`, and `make_mystery()`.
+
+These values are part of the model and should not be represented as independently verified biographical, financial, or behavioral facts about a real person.
+
+## 4. Coordinates
 
 Coordinates are application data. A coordinate record must declare its coordinate system or units when those values have geographic, physical, temporal, or otherwise externally meaningful interpretation.
 
 No geographic meaning should be inferred merely because a field is named `x`, `y`, or `z`.
 
-## 4. Integrity
+## 5. Integrity
+
+System-mystery values should remain finite numeric values and use the canonical constants where the default model is intended.
 
 Implementations should reject:
 
@@ -41,7 +56,7 @@ Implementations should reject:
 - duplicate identifiers where uniqueness is required;
 - records exceeding configured size limits.
 
-## 5. Transport
+## 6. Transport
 
 COORENAGRAPH is transport-neutral. HTTP integration belongs in an adapter layer.
 
@@ -53,17 +68,17 @@ An HTTP adapter must identify:
 - integrity/authentication requirements;
 - negotiated SLeeLa HTTP generation.
 
-## 6. Security
+## 7. Security
 
 Graph data may contain sensitive application information. Implementations should avoid logging complete graph payloads by default.
 
 Authentication, authorization, encryption, and access policy belong at the appropriate application and transport boundaries.
 
-## 7. Versioning
+## 8. Versioning
 
 The graph format version must be explicit. A newer reader may reject an unsupported version rather than guessing its meaning.
 
-## 8. Non-goals
+## 9. Non-goals
 
 COORENAGRAPH is not inherently:
 
