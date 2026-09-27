@@ -104,7 +104,7 @@
     },
     {
       "path": "VERSION.md",
-      "sha256": "369c296cde2cb733f6698bd0a6f1b88e3aabec8f3328abc1b16adb0ce3767138"
+      "sha256": "7ef84170e025ce2510898b27b5569801e127db01f5ce11b257a181eeffec9e3f"
     },
     {
       "path": "antivirus/src/sleelavirin_heuristic.c",
@@ -6205,6 +6205,10 @@
     {
       "path": "tools/sigil/stego.py",
       "sha256": "cacd4c5463dfc3ca06ee7685c83a1f9cc7791aaa98edcb976476300447253ed3"
+    },
+    {
+      "path": "tools/sleela-build.py",
+      "sha256": "e3d2ba25a10222a1df58bcd7c302500882c19ed48bae041dca88d9984050399d"
     },
     {
       "path": "tools/stock-market/market_engine.cpp",
