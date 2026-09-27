@@ -104,7 +104,7 @@
     },
     {
       "path": "VERSION.md",
-      "sha256": "9748326c762b5ed43e3c49888860ef88e50dc4da15127a9d4c307f044a5bba42"
+      "sha256": "4a7571665a8dfa6f14a8a8df1941d403bf48efd49147fd4cdcd253dfa392de4b"
     },
     {
       "path": "antivirus/src/sleelavirin_heuristic.c",
