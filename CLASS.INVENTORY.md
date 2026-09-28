@@ -1,11 +1,11 @@
 # SLeeLa Class Inventory
 
 **SLeeLa Version:** 0.3.0-dev  
-**Inventory Revision:** 1.3  
+**Inventory Revision:** 1.4  
 **Inventory Date:** 2026-09-28  
 **Known Source Files Explicitly Indexed: 83**
 **Repository-wide SLeeLa source files (verified): 229 on `master`; 238 on `main`**
-**Standard-library front-end objects in `/lib`: 69**
+**Standard-library front-end objects in `/lib`: 261**
 **Standard-library target: 2,048 objects**  
 **Unique Foundational C++ Class Files (contract-verified): 50**
 
@@ -246,3 +246,8 @@ The repository-wide declaration count should replace the foundational-only count
 ---
 
 **SLeeLa — MEARVK LLC — 2026**
+
+
+## Standard Library Expansion 0.2
+
+The `/lib` front-end has expanded from 69 to **261 SLeeLa object source files**. The 192-object expansion covers runtime, reflection, memory, process/threading, filesystem, cryptography, database, HTTP, compiler, debugger, and UI. The long-term target remains **2,048 objects**.

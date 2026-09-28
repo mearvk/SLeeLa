@@ -1,0 +1,6 @@
+#sleela 1.3
+// Unified SLeeLa SDK front-end object.
+// Family: compiler. Native implementation crosses an explicit VM/OS bridge.
+class SLAstBuilder {
+  String name; int state; int count; void configure(String n){name=n;} void start(){state=1;} void stop(){state=0;} void emit(){count=count+1;} boolean active(){return state==1;}
+}
