@@ -78,7 +78,12 @@ def load_backend(name: str, *args: Any, cache: bool = True, **kwargs: Any) -> An
     except (ImportError, AttributeError) as exc:
         raise SynchroError(f"could not load backend {spec!r}: {exc}") from exc
 
-    instance = factory(*args, **kwargs) if (args or kwargs) else factory
+    if not callable(factory):
+        raise SynchroError(f"backend factory {spec!r} is not callable")
+    try:
+        instance = factory(*args, **kwargs)
+    except Exception as exc:
+        raise SynchroError(f"could not construct backend {spec!r}: {exc}") from exc
     if cache:
         with _lock:
             _cache.setdefault(key, instance)
