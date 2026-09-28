@@ -1,131 +1,84 @@
 # SLeeLa Debugger — C/C++ Structural and Methodological Review
 
-Review version: 0.2.0
+Review version: 0.3.0
 Review date: 2026-09-27
-Scope: debugger C++ sources, debugger tests, build file, and documented architecture.
+Scope: debugger C/C++ sources, line-control layer, backend abstraction, tests, build files, and architecture documentation.
 
-## 1. Inventory
+## Current inventory
 
-The current debugger is a C++17 diagnostic core consisting of debugger.hpp, debugger.cpp, main.cpp, the debugger core regression test, the test runner, and the Makefile.
+The debugger now contains a C++17 diagnostic core, a C11+ ABI, C and C++ source-line control APIs, voice-command parsing, and a backend-neutral C++ interface.
 
-There are currently no C source files in /debugger. This review therefore evaluates the existing C++ implementation directly and records the methodology required for a future C ABI or C implementation. It does not represent a nonexistent C implementation as complete.
+The architecture separates logical debugger events from native process-control APIs.
 
-## 2. Structural review
+## Line control
 
-The public header contains the domain model: EventType, SourceLocation, Breakpoint, Watchpoint, StackFrame, DebugEvent, DiagnosticReport, and DebugSession.
+A source line may be represented by a logical control point:
 
-The implementation keeps platform-specific debugger APIs outside the public model. This is the correct architectural boundary for later GDB, LLDB, WinDbg, ptrace, Mach, and Windows-native adapters.
+- TRACE — record execution reaching the line.
+- STOP — request debugger suspension.
+- EXCEPTION — record an exception-class stop.
 
-Ownership is straightforward: STL value types own breakpoint, watchpoint, event, and string data. The core contains no raw owning pointers.
+This supports fine-grained source observability. It does not imply that every line receives a permanent hardware breakpoint. Native backends should use the most appropriate source mapping, single-step, instrumentation, or breakpoint mechanism.
 
-Breakpoint and watchpoint IDs share one monotonically increasing session-local counter. This provides unique identifiers across both categories during a session. The contract should remain explicitly session-local until persistent identifiers are required.
+## Voice control
 
-Events are appended to a vector, preserving emission order. Event fields use a map, giving stable key ordering during report generation.
+Voice is an input modality for debugger commands. Speech recognition should produce text; the debugger accepts only defined debugger commands. Voice input must not be interpreted as arbitrary shell input or target-program input.
 
-## 3. C++ implementation review
+Supported command concepts include continue, step, step over, stop here, and trace line.
 
-Strengths:
+## Backend architecture
 
-- C++17 is explicit.
-- The core is compact and readable.
-- Ownership is value-based.
-- Event chronology is preserved.
-- Platform debugger dependencies are not required to compile the core.
-- Removal operations report whether an object existed.
-- The report formatter is deterministic for equivalent input.
+The C++ backend interface now defines the boundary for:
 
-Corrections and hardening:
+- launch;
+- attach;
+- resume;
+- stepping;
+- source-line stop binding;
+- event polling;
+- capability reporting.
 
-1. Standard-library dependencies should be explicit. Any symbol such as move should have its direct standard header included rather than relying on transitive includes.
-2. Every EventType must have formatter test coverage whenever the enum changes.
-3. The diagnostic report format needs an explicit schema version before external automation depends on its exact text.
-4. The executable self-test currently uses an annotation-specific example. That is useful integration evidence but should not become the generic debugger core's only self-test.
-5. The Makefile should expose one canonical test target that runs both executable self-tests and debugger-core regression tests.
+The portable backend intentionally reports unsupported native operations instead of fabricating success.
 
-## 4. Methodological review
+Native adapters remain required for Linux, macOS, and Windows process control.
 
-The debugger is an evidence-producing diagnostic instrument, not a second test framework.
+## C ABI review
 
-Recommended lifecycle:
+The C layer uses opaque sessions, explicit result codes, caller-owned input/output contracts, and no C++ exceptions or STL types across the ABI.
 
-1. reproduce;
-2. record exact build identity;
-3. record target and arguments;
-4. establish backend capability;
-5. stop at a reproducible boundary;
-6. capture source and execution context;
-7. capture thread and stack state;
-8. correlate with tests and function coverage;
-9. produce a deterministic report;
-10. turn the failure into a regression test.
+C and C++ line-control APIs should remain behaviorally aligned.
 
-The system must distinguish:
+## Methodology
 
-- requested operation;
-- backend capability;
-- operation accepted;
-- operation actually observed;
-- diagnostic interpretation;
-- test result.
+The debugger must distinguish:
 
-This prevents unsupported debugger operations from being mistaken for successful diagnostics.
+1. requested operation;
+2. backend capability;
+3. operation accepted;
+4. operation actually observed;
+5. diagnostic interpretation;
+6. test result.
 
-## 5. C methodology
+This distinction is especially important when a line point is registered but a native backend cannot bind it.
 
-No C implementation currently exists.
+## Security
 
-If a C interface is added, it should expose an opaque-handle ABI rather than duplicate the C++ engine. Suitable concepts include sleela_debug_session_t, sleela_debug_event_t, and sleela_debug_breakpoint_t.
+Process attachment remains subject to operating-system authorization. Voice commands must not provide a privilege-escalation path. Target arguments, source data, and debugger observations should be treated as untrusted diagnostic data.
 
-The C ABI should use explicit create/destroy functions, explicit result codes, caller-owned output buffers, and no STL types or C++ exceptions across the ABI boundary.
+## Testing
 
-The C layer should call the same backend-neutral diagnostic core.
+Required layers now include:
 
-## 6. Backend methodology
+- C API unit tests;
+- C++ core tests;
+- line-point tests;
+- voice-command parser tests;
+- backend capability tests;
+- native backend integration tests;
+- Linux/macOS/Windows tests;
+- regression fixtures;
+- IDE/terminal protocol tests.
 
-The core should remain independent from GDB, LLDB, WinDbg, Linux ptrace, macOS Mach task APIs, and Windows debugging APIs.
+## Current state
 
-Backend adapters should translate native observations into the common event model.
-
-A backend must explicitly report unsupported capabilities. It must never fabricate a successful breakpoint, memory read, register read, watchpoint, or stack capture.
-
-## 7. Security and operational review
-
-Process attachment is privileged diagnostic activity.
-
-The debugger should rely on operating-system access controls, avoid privilege escalation, record attach/launch intent, avoid silently modifying target files, treat target arguments as untrusted input, and distinguish diagnostic output from executable input.
-
-## 8. Test methodology
-
-Current core coverage verifies breakpoint creation, watchpoint creation, event emission, report generation, field preservation, removal, and removal of an already-removed object.
-
-Next test layers:
-
-### Unit
-Every event formatter, defaults, duplicate/removal behavior, multiple sessions, large event streams, and report ordering.
-
-### Behavioral
-Breakpoint and watchpoint lifecycle, source locations, stack frames, exception/crash events, sanitizer events, and test/coverage correlation.
-
-### Backend
-GDB, LLDB, and WinDbg launch/attach behavior plus unavailable-backend behavior.
-
-### Cross-platform
-Linux, macOS, and Windows.
-
-### Regression
-Each debugger defect should become a deterministic regression fixture where practical.
-
-## 9. Current-state conclusion
-
-The current debugger is a coherent C++ diagnostic foundation, not yet a complete native debugger.
-
-Current state:
-
-- C++ core: implemented foundation.
-- C implementation: not present.
-- Native backend process control: architectural boundary established; native adapters remain.
-- Deterministic diagnostic reporting: foundation present.
-- Test integration: foundation present; expansion required.
-- Production debugger: not yet complete.
-
-The strongest architectural decision is separation of the diagnostic event/session model from platform debugging APIs.
+C and C++ logical debugger control is implemented. The native backend interface is implemented. Native OS process-control adapters and an IDE-facing protocol remain the next implementation stage.
