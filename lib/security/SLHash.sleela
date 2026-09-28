@@ -1,0 +1,6 @@
+#sleela 1.3
+// Unified SLeeLa standard-library front-end object.
+// Family: security. Native VM/OS work crosses an explicit bridge.
+class SLHash {
+  String name; int state; void configure(String n){name=n;} void enable(){state=1;} void disable(){state=0;} boolean active(){return state==1;}
+}

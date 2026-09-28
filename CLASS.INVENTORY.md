@@ -1,9 +1,12 @@
 # SLeeLa Class Inventory
 
 **SLeeLa Version:** 0.3.0-dev  
-**Inventory Revision:** 1.2  
+**Inventory Revision:** 1.3  
 **Inventory Date:** 2026-09-28  
-**Known Source Files Explicitly Indexed: 14**  
+**Known Source Files Explicitly Indexed: 83**
+**Repository-wide SLeeLa source files (verified): 229**
+**Standard-library front-end objects in `/lib`: 69**
+**Standard-library target: 2,048 objects**  
 **Unique Foundational C++ Class Files (contract-verified): 50**
 
 > This document is the authoritative starting inventory for the SLeeLa 0.3.0-dev development line. The **50 unique foundational C++ class files** are directly included and contract-checked by `test-suites/cpp/test_class_contracts.cpp`. This is a verified foundational class-file count, not a claim that no other repository source file contains a class, struct, interface, or class-like declaration.
@@ -148,7 +151,17 @@ The audio files are SLeeLa language source, not documentation: they begin with `
 
 **Known source files explicitly indexed in this inventory: 14** — 5 data-structures implementation/source files plus 9 audio SLeeLa source files. This is an inventory count, not a claim that the repository contains only 14 source files.
 
-## 4. Module Coverage
+## 4. Unified `/lib` SLeeLa Front End
+
+The new `/lib` tree establishes an object-per-source-file standard-library front end with **69 SLeeLa source files / object types** across core values, collections, text, I/O, VM, OS, networking, and security.
+
+The library targets **2,048 object types**. Only the initial 69 are implemented in this revision. VM/OS objects are semantic front-end contracts and cross into native C/C++ only through explicit binding layers.
+
+### Repository-wide SLeeLa source count
+
+The master tree was mechanically enumerated before this addition at **160 `.sleela` source files**. The 69 new `/lib` files bring the verified repository total to **229 `.sleela` source files**. This is a source-file count, not a declaration count.
+
+## 5. Module Coverage
 
 The current 0.3.0-dev tree includes these inventory roots:
 
@@ -186,7 +199,7 @@ The current 0.3.0-dev tree includes these inventory roots:
 
 A module is not excluded merely because its implementation is C, C++, Java, SLeeLa, generated code, a protocol implementation, driver, test harness, or supporting tooling.
 
-## 5. Inventory Classification
+## 6. Inventory Classification
 
 The complete inventory distinguishes:
 
@@ -203,7 +216,7 @@ The complete inventory distinguishes:
 11. **Debugger/decompiler/compiler classes.**
 12. **Test/diagnostic classes.**
 
-## 6. Source-of-Truth Rules
+## 7. Source-of-Truth Rules
 
 The version at the top of this document comes from `VERSION.md`.
 
@@ -213,7 +226,7 @@ The `data-structures/` entries are verified against the current repository sourc
 
 The repository source tree remains the ultimate source for determining whether a declaration exists. This document is an inventory/index and should be regenerated or checked whenever source declarations change.
 
-## 7. Next Inventory Gate
+## 8. Next Inventory Gate
 
 The next revision should mechanically scan every supported source file and record:
 

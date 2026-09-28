@@ -1,0 +1,6 @@
+#sleela 1.3
+// Unified SLeeLa standard-library front-end object.
+// Family: net. Native VM/OS work crosses an explicit bridge.
+class SLHttpResponse {
+  String endpoint; int state; void configure(String e){endpoint=e;} void open(){state=1;} void close(){state=0;} boolean active(){return state==1;}
+}

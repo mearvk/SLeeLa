@@ -1,0 +1,6 @@
+#sleela 1.3
+// Unified SLeeLa standard-library front-end object.
+// Family: text. Native VM/OS work crosses an explicit bridge.
+class SLStringBuilder {
+  String value; void set(String v){value=v;} String get(){return value;} void clear(){value="";}
+}

@@ -1,0 +1,6 @@
+#sleela 1.3
+// Unified SLeeLa standard-library front-end object.
+// Family: core. Native VM/OS work crosses an explicit bridge.
+class SLLong {
+  String name; int value; void configure(String n,int v){name=n;value=v;} String type(){return name;} int get(){return value;}
+}

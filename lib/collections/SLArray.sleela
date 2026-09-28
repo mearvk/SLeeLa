@@ -1,0 +1,6 @@
+#sleela 1.3
+// Unified SLeeLa standard-library front-end object.
+// Family: collections. Native VM/OS work crosses an explicit bridge.
+class SLArray {
+  int size; void add(){size=size+1;} void remove(){if(size>0)size=size-1;} int length(){return size;} boolean empty(){return size==0;}
+}
