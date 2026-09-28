@@ -9,6 +9,7 @@ class LineController {
 public:
     explicit LineController(DebugSession& session) : session_(session) {}
     uint64_t registerPoint(const LinePoint& point);
+    std::size_t pointCount() const noexcept { return next_id_ - 1; }
     bool hit(const LinePoint& point, const std::string& thread, const std::string& function);
 private:
     DebugSession& session_;
