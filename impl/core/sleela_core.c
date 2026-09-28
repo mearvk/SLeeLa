@@ -150,8 +150,19 @@ const char* slvm_str(SLVM* vm, int32_t id) {
 
 #define ENSURE(arr, len, cap, type) do { \
     if ((len) >= (cap)) { \
-        (cap) = (cap) ? (cap) * 2 : 8; \
-        (arr) = (type*)realloc((arr), (size_t)(cap) * sizeof(type)); \
+        size_t _old_cap = (size_t)(cap); \
+        size_t _new_cap = _old_cap ? _old_cap * 2u : 8u; \
+        if (_new_cap > SIZE_MAX / sizeof(type)) { \
+            fprintf(stderr, "SLeeLa: allocation size overflow\\n"); \
+            abort(); \
+        } \
+        void *_tmp = realloc((arr), _new_cap * sizeof(type)); \
+        if (!_tmp) { \
+            fprintf(stderr, "SLeeLa: out of memory while growing dynamic storage\\n"); \
+            abort(); \
+        } \
+        (arr) = (type*)_tmp; \
+        (cap) = (int)_new_cap; \
     } \
 } while (0)
 
