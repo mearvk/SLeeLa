@@ -6,6 +6,7 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include "../annotation/Annotation.hpp"
 namespace sleela {
 struct Expr { virtual ~Expr() = default; }; using ExprP = std::unique_ptr<Expr>;
 struct IntLit:Expr{long long value;explicit IntLit(long long v):value(v){}};
@@ -44,6 +45,7 @@ struct ClassDecl{std::string name;std::vector<Field> fields;std::vector<Method> 
 // only the ordered field names/types as the layout.
 struct StructDecl{std::string name;std::vector<Field> fields;};
 struct Program {
+    annotation::DocumentAnnotations annotations;
     // Explicit module dependencies. The compiler validates these against the
     // native module registry before lowering the program.
     std::vector<std::string> imports;
