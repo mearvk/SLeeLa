@@ -4203,6 +4203,38 @@
       "sha256": "f09e47ddcfa842ac0c9995261f94a614b8781eeb14404e5d94f4310cd6097098"
     },
     {
+      "path": "impl/annotation/Annotation.cpp",
+      "sha256": "43ca5418a9669ea2ebba093f90cad242d0195fa8cc946528251361afd6441f2f"
+    },
+    {
+      "path": "impl/annotation/Annotation.hpp",
+      "sha256": "eb58dbeb74ef865dfbaf82ce363fe69fc4e44d264cd833477ffad7fdd6def685"
+    },
+    {
+      "path": "impl/annotation/AnnotationForwarder.cpp",
+      "sha256": "67f09066805c5c8f2d7460ede1ed45cc77de75514ec10451d0a46d0291e44f9e"
+    },
+    {
+      "path": "impl/annotation/AnnotationForwarder.hpp",
+      "sha256": "c9053175d8b1858b0873c1f1e249f4a0a950a8c34ef28682c53ddcf78784cbac"
+    },
+    {
+      "path": "impl/annotation/AnnotationInterpreter.cpp",
+      "sha256": "1d13e75a96d8fcdb112c9ddcd04fb667d03fd233e8a13305a9a73a6f493382a3"
+    },
+    {
+      "path": "impl/annotation/AnnotationInterpreter.hpp",
+      "sha256": "52dde9fe3b3d84b28ecfe5e2cae3839b1adf25cbc7a866d379bd2d77b02de4b5"
+    },
+    {
+      "path": "impl/annotation/ForwardingAnnotation.cpp",
+      "sha256": "8328dff39d1aa2339b6ee3dedfa1ab30494d13004d3ee1489910ab128679136a"
+    },
+    {
+      "path": "impl/annotation/ForwardingAnnotation.hpp",
+      "sha256": "b78830969b11b0d3db6379e497f281cbb251b906f481ce50bed387e192e7b70c"
+    },
+    {
       "path": "impl/catalog/sheet_catalog.cpp",
       "sha256": "edc44715753f2fb15b1a436978d501c14e41d49956b0f459a0aae1ffaf21525f"
     },
@@ -6076,7 +6108,7 @@
     },
     {
       "path": "server-edition/README.md",
-      "sha256": "a45b35bc2d5d1367f4441dc3ba5f98807fc7cd3a069e66eb3897263944e53b98"
+      "sha256": "f0506622fe00723a23b831ed0b140937550609a2f3348c87b1e126d3d948c165"
     },
     {
       "path": "server-edition/WIRE-PROTOCOL.md",
