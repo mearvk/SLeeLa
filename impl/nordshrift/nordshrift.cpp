@@ -281,7 +281,7 @@ static void validateSourcePrograms(const Sheet& sheet, const std::string& sheetP
             sleela::Lexer lexer(code);
             sleela::Parser parser(lexer.tokenize());
             sleela::Program program = parser.parseProgram();
-            sleela::SemanticResult semantic = sleela::analyzeSemantics(program, vr.version);
+            sleela::SemanticResult semantic = sleela::analyzeSemantics(program, vr.declared);
             for (const auto& err : semantic.errors)
                 diags.error("NSS-E-SEM-001", srcPath, 0, err, "SST-SOURCE-SEMANTIC");
             for (const auto& warn : semantic.warnings)
