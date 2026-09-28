@@ -4203,6 +4203,206 @@
       "sha256": "686e224870c1e3f810fdb3539baa3385e3c36e3eb5c3402a806dbf8978e73de1"
     },
     {
+      "path": "impl/conversation/Attachment.cpp",
+      "sha256": "3f8739081f237da9b7585f95150dbfd10d548929e0e78d43581e8fc56cbdaf6a"
+    },
+    {
+      "path": "impl/conversation/Attachment.hpp",
+      "sha256": "745395c2125ba7296e38c8bf3927c2ed76b1ced36657cb26e0d5113e7d5d69df"
+    },
+    {
+      "path": "impl/conversation/Command.cpp",
+      "sha256": "f5cd0403cbdcddb7456c3ac1602e442c6a9e7d44fe752fad38aa29265aceae77"
+    },
+    {
+      "path": "impl/conversation/Command.hpp",
+      "sha256": "17c3214dae9e6304cbc8eb07ebcd0acd9aaaed3fce648442c0772ba9e04679c3"
+    },
+    {
+      "path": "impl/conversation/CommandArgument.cpp",
+      "sha256": "2b919dbd1b420c8092041beef17835921661c0175ea087d060b9567ff8221ca9"
+    },
+    {
+      "path": "impl/conversation/CommandArgument.hpp",
+      "sha256": "0c8b3dafc72352717018b6bbaa4cfb023920939fdb825e993618c229334ed273"
+    },
+    {
+      "path": "impl/conversation/CommandResult.cpp",
+      "sha256": "b24ec1ca05de9085dc89614788b44454288f090e8b4258d350e46e02ab574f18"
+    },
+    {
+      "path": "impl/conversation/CommandResult.hpp",
+      "sha256": "1ae4e3e43a09668f63cb7c3c361203109d42936cf6cbab931cd7c828cf7f514c"
+    },
+    {
+      "path": "impl/conversation/Content.cpp",
+      "sha256": "822cbf1682053925390c22319a350b62131cb5127050488ae238267e0f0fa2c9"
+    },
+    {
+      "path": "impl/conversation/Content.hpp",
+      "sha256": "12b34dc7bf8e1bf91d525795dd5428e248bc81998d2fc3d2802c843c29fbac4e"
+    },
+    {
+      "path": "impl/conversation/Context.cpp",
+      "sha256": "8d0fd6c6abfe7147f7f3ea58a6ab45ea684c9172d0e31fba13144d35db084083"
+    },
+    {
+      "path": "impl/conversation/Context.hpp",
+      "sha256": "acbd583914104baaa6778223402d5ee524577faa9373ad2bb59cdc5bcc7dab4f"
+    },
+    {
+      "path": "impl/conversation/ContextItem.cpp",
+      "sha256": "0ebb1ad86b5bf02d9115459aa173c35e1c4f6b014fb3f32f2bb3b73bdaad56f3"
+    },
+    {
+      "path": "impl/conversation/ContextItem.hpp",
+      "sha256": "d86c234675e84a560c9fa5368088063114e4baf054ae916c57d8143c91da0fe7"
+    },
+    {
+      "path": "impl/conversation/ContextWindow.cpp",
+      "sha256": "63fb1eadcdab78255dca268905e2fd474b07198b62a7878840f717e6a4003f9d"
+    },
+    {
+      "path": "impl/conversation/ContextWindow.hpp",
+      "sha256": "6ba394775acd3b42b2e08368fb3b224c606261e0ae6e686802dcd74ca0f387c3"
+    },
+    {
+      "path": "impl/conversation/Conversation.cpp",
+      "sha256": "9c5cfa0246819c09d4745c78697d908268513a53de2e3b93e570406db0474019"
+    },
+    {
+      "path": "impl/conversation/Conversation.hpp",
+      "sha256": "22b1ccd647c2764f1db85109da30c1da9001259a9fe38fc33c3c21d1b89a1a2f"
+    },
+    {
+      "path": "impl/conversation/ConversationId.cpp",
+      "sha256": "b8c5ff42c5ab3f2a3bdedc37a309abc1962818139edf99f26aef4b90f4f7b25f"
+    },
+    {
+      "path": "impl/conversation/ConversationId.hpp",
+      "sha256": "198e05b531d1e0d6dfade4d324cc5c17eb959455f394f512831537b4abbb3e39"
+    },
+    {
+      "path": "impl/conversation/Identity.cpp",
+      "sha256": "a0ed60596185d1f13361e9001faecec252cfe47fba60b4d832b0f7ee45f72c72"
+    },
+    {
+      "path": "impl/conversation/Identity.hpp",
+      "sha256": "2bf15d99e7ff695293fe256fa0657ecc883e2ef27e648f8205f441deede1ccd3"
+    },
+    {
+      "path": "impl/conversation/Intent.cpp",
+      "sha256": "59912a03d217418b3027de90c74cb2c8f02f23f8eaa57febeb38ddaf12d806e4"
+    },
+    {
+      "path": "impl/conversation/Intent.hpp",
+      "sha256": "75b97c8be2e04fc41aa05789073b0703c8239f03e556296fbc0a37b9ee34ae5e"
+    },
+    {
+      "path": "impl/conversation/Message.cpp",
+      "sha256": "4ae18541e680b7e8dc108c16a3edfdc41f8e8832c3f92284e658d5ad65db6b7e"
+    },
+    {
+      "path": "impl/conversation/Message.hpp",
+      "sha256": "8a520e0fcdf55ecbdbe158dfbd86b1f8dd6c88f2fdcc4d65e5c0ff73ff91eb57"
+    },
+    {
+      "path": "impl/conversation/MessageId.cpp",
+      "sha256": "e58f0c17e8422184a4a5ab645d1283579b161f6d3ca2f4d8f62dcf44eb01ea18"
+    },
+    {
+      "path": "impl/conversation/MessageId.hpp",
+      "sha256": "145b50a9c99865aa6beac80cc949e0d0ecb5a6d9a34a07b398c035edfcafe3cc"
+    },
+    {
+      "path": "impl/conversation/MessagePart.cpp",
+      "sha256": "56bc6b0cc1946c17bf32f3dc48803b652060a0cb0f0b1a714706206507d59f86"
+    },
+    {
+      "path": "impl/conversation/MessagePart.hpp",
+      "sha256": "12c7c677bf079710bad715bdca4963ff1d86167d84e931d20e06ffc36d6b252f"
+    },
+    {
+      "path": "impl/conversation/Participant.cpp",
+      "sha256": "30fa1aa44d567a4bbcd222796523633f94eaa6d43e4e12855242d75adeeefaa0"
+    },
+    {
+      "path": "impl/conversation/Participant.hpp",
+      "sha256": "63bed42f0346f8e67bb7923eea365832e28660a2cf5701c4289710bb1d9df700"
+    },
+    {
+      "path": "impl/conversation/Reference.cpp",
+      "sha256": "f601edfd0ef58f062df34fb5dbfa62435f9a98f52bc1b84c784af1bc0e92806d"
+    },
+    {
+      "path": "impl/conversation/Reference.hpp",
+      "sha256": "20e2f9a0c7f9664201fcfe212cc2900b41106efd91f0780c7a0f6a9a8a08f506"
+    },
+    {
+      "path": "impl/conversation/Reply.cpp",
+      "sha256": "916dfbdd7663a929dad4eac26672df407ccfae3f5fd4fce0d9fe5c7eafd5b195"
+    },
+    {
+      "path": "impl/conversation/Reply.hpp",
+      "sha256": "2cd6bc547c6905e2cc651c10e72a0bc90caccbe09d74ebd90884733b666a28ed"
+    },
+    {
+      "path": "impl/conversation/Response.cpp",
+      "sha256": "115965da5f6f351ca3ab4f64fe7f2f1aba6c86efc0edf75d1dde4d643a8586c2"
+    },
+    {
+      "path": "impl/conversation/Response.hpp",
+      "sha256": "7408ab8057517a8740ce2a8c96503be4aafd27f05a8a1be2ad28a10ec4b6d604"
+    },
+    {
+      "path": "impl/conversation/ResponsePart.cpp",
+      "sha256": "db442233f912d5fd1bcccb96af8e52a389dacbacccf1cf7e3b923771957334c2"
+    },
+    {
+      "path": "impl/conversation/ResponsePart.hpp",
+      "sha256": "d6153b2fc7281b743745310e3f8369b7610936d68c39c17d0316a3b93d4c00de"
+    },
+    {
+      "path": "impl/conversation/ResponseStatus.cpp",
+      "sha256": "8acbd93fcbc974b21362c405d7204303f846634c5a8240da31bffa5ddf639bfb"
+    },
+    {
+      "path": "impl/conversation/ResponseStatus.hpp",
+      "sha256": "00c7bc5bc12a6696bbe8a7ddc2110492c420473c65557fc7ebbc92d0af3fad50"
+    },
+    {
+      "path": "impl/conversation/Role.cpp",
+      "sha256": "5d20f65cfe7c31445fb8ee19c10b1fbfd9e01dac03a39ec5b49f26f02f8f06f0"
+    },
+    {
+      "path": "impl/conversation/Role.hpp",
+      "sha256": "49cea7b7b05176f6ddfb7cdccfa922daf0705755886777c498508efc82b263aa"
+    },
+    {
+      "path": "impl/conversation/Topic.cpp",
+      "sha256": "4717def6f8fa40916959fc0e2a34cce771e482da554cdbc51ca00b252dcf5330"
+    },
+    {
+      "path": "impl/conversation/Topic.hpp",
+      "sha256": "2a3ef7639b38fb56c5a44105731ade8b1d797d6cea72887f613d4dc6a01ad128"
+    },
+    {
+      "path": "impl/conversation/Transcript.cpp",
+      "sha256": "f756d0e7073c55eec9bbb8d0f067050816b61ebdb2bc4cb7bfb5e1b9d8e432a5"
+    },
+    {
+      "path": "impl/conversation/Transcript.hpp",
+      "sha256": "d61f5687b561584ae5acef6ac53d8d6e45acc50a5b39dbf5c9eea96711ad0ed7"
+    },
+    {
+      "path": "impl/conversation/Turn.cpp",
+      "sha256": "359d584b3a02a2859d9e98477dca6d64b53b498dd96239d7eb080d83e4249435"
+    },
+    {
+      "path": "impl/conversation/Turn.hpp",
+      "sha256": "0f5c64c607f67bd28e0916a9f8584d0da6f405aa0826b0797dd9d2eee1c4a592"
+    },
+    {
       "path": "impl/core/bestof_smoke.c",
       "sha256": "9c71fa3f3ba291f71a8ace6ffb622c647e2df622dd55b7ee89d0128f4f54b0dc"
     },
