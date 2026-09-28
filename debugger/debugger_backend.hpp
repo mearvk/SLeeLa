@@ -9,7 +9,6 @@
 namespace sleela::debugger {
 enum class BackendKind { Portable, LinuxPtrace, MacOSLLDB, WindowsDebug };
 struct BackendCapabilities { bool launch=false, attach=false, continue_execution=false, step=false; bool breakpoints=false, watchpoints=false, threads=false, stack=false; bool registers=false, memory=false, exceptions=false, source_mapping=false; };
-struct RegisterSnapshot { std::string architecture; std::uint64_t instruction_pointer{0}; std::uint64_t stack_pointer{0}; std::uint64_t frame_pointer{0}; };
 struct BackendRequest { std::string executable; std::vector<std::string> arguments; std::string process_id; };
 class DebugBackend {
 public:
@@ -26,6 +25,7 @@ public:
  virtual bool writeMemory(std::uint64_t, const void*, std::size_t, std::string& error) { error="memory write not implemented by backend"; return false; }
  virtual bool readRegisters(RegisterSnapshot&, std::string& error) { error="register access not implemented by backend"; return false; }
 };
+struct RegisterSnapshot;
 std::unique_ptr<DebugBackend> makePortableBackend();
 }
 #endif
