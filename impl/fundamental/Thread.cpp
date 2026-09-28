@@ -1,0 +1,9 @@
+#include "Thread.hpp"
+namespace sleela::fundamental {
+Thread::Thread() = default;
+Thread::Thread(std::string value) : value_(std::move(value)) {}
+const std::string& Thread::value() const noexcept { return value_; }
+void Thread::setValue(std::string value) { value_ = std::move(value); }
+bool Thread::empty() const noexcept { return value_.empty(); }
+const char* Thread::responsibility() const noexcept { return "execution-thread lifecycle"; }
+}
