@@ -1,75 +1,39 @@
 # SLeeLa Audio GUI
 
-This directory is the first clean Java/JavaFX presentation layer for the SLeeLa
-Audio/Video APIs.
+Java 21 / JavaFX 21 presentation layer for SLeeLa Audio/Video.
 
-## Purpose
+## Architecture
 
-The GUI deliberately sits above the native implementation:
+- JavaFX owns presentation, controls, tables, and preview surfaces.
+- AudioMixerModel owns observable presentation state.
+- SleelaAudioVideo defines the Java-facing integration contract.
+- SleelaAudioVideoSession validates configuration and forwards processing.
+- The native SLeeLa runtime owns acquisition, decoding, synchronization, mixing, analysis, and output.
 
-    JavaFX
-      |
-      +-- audio/gui
-      |     |
-      |     +-- AudioMixerApp
-      |     +-- AudioMixerModel
-      |
-      +-- future SLeeLa Java mapping
-            |
-            +-- native media
-            +-- synchronized audio mixer
-            +-- A/V providers
+The GUI does not decode media or silently replace the native mixer.
 
-The JavaFX application presents the same concepts already defined by the native
-SLeeLa mixer:
+## Current behavior
 
-- Master, Second, and Live Input tracks.
-- Relative quality.
-- Timeline start offsets.
-- Bass, Mid, Treble.
-- Master gain and pan.
-- Per-channel controls.
-- Synchronized output.
-- Audio waveform and video-frame preview surfaces.
+The application presents Master, Second, and Live Input tracks; per-track gain; bass, mid, treble, master gain, pan; synchronized-input state; waveform and video preview surfaces; and an explicit native integration boundary.
 
-The first GUI intentionally does not decode media itself and does not duplicate
-the native mixer. AudioMixerModel is a presentation model that can later be
-replaced or backed by a SLeeLa-to-Java mapping.
+The waveform is a presentation preview. Processing is rejected until a native processor is connected.
 
-## Java and JavaFX
+## Build
 
-SLeeLa already has a Java integration layer, including the Java connector and
-JavaFX host under gui/java/. The repository also contains a dedicated
-JavaFX.md integration document.
+Requirements: JDK 21, Maven 3.9+, and network access for Maven Central/OpenJFX dependencies.
 
-For this A/V GUI, Java 21 and JavaFX 21 are the baseline. OpenJFX documents
-JavaFX as a standalone component built on the JDK and supports Maven/Gradle
-dependency management. The JavaFX 21 API is modular and should be supplied on
-the module path.
+From audio/gui:
 
-## Run
+    mvn clean test
+    mvn clean package
+    mvn javafx:run
 
-From this directory:
+The JavaFX run target requires a graphical environment. CI runs the headless compile/test target.
 
-    mvn clean javafx:run
+## Native integration
 
-This downloads the platform-specific JavaFX artifacts through Maven and starts
-com.mearvk.sleela.audio.gui.AudioMixerApp.
+Construct SleelaAudioVideoSession with a native processor supplied by the SLeeLa runtime. The processor receives a complete validated MixConfiguration.
 
-The GUI is a presentation prototype. The Add File, Add Live Input, and Process
-actions mark the native integration boundary; they do not replace the native
-media provider or mixer.
+## Version
 
-## Future SLeeLa mapping
-
-The intended progression is:
-
-1. JavaFX controls and view model.
-2. Clean Java API representing SLeeLa A/V operations.
-3. SLeeLa language mapping to those Java operations.
-4. Native C/C++ execution behind the mapping.
-5. Optional direct SLeeLa GUI declarations once the language-level GUI mapping
-   is mature.
-
-That preserves a normal Java development experience while keeping SLeeLa as
-the execution authority.
+Audio GUI: 0.2.0
