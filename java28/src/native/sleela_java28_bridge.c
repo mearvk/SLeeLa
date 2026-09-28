@@ -1,11 +1,6 @@
 /* ==========================================================================
  * sleela_java28_bridge.c -- JNI (local feedback) channel for the Java 28
  * SecureJDK memory link (J28-MEM-0001 §5).
- *
- * In-process analogue of the port channel: the Sleela-side native driver
- * (runNativeDemo) issues request lines and calls back into the Java runtime's
- * dispatch(String), which funnels to the shared SleelaMemoryServer.handleLine.
- * Same grammar, same object memory model, no socket.
  * ========================================================================== */
 #define _POSIX_C_SOURCE 200809L
 #include <jni.h>
@@ -13,25 +8,33 @@
 #include <stdlib.h>
 #include <string.h>
 
-/* Cached method id for Java28JniRuntime.dispatch(String)String. */
 static jmethodID g_dispatch = 0;
 
-/* Call dispatch(line) on the runtime object; returns a malloc'd C string
- * (caller frees) or NULL. */
+static char *duplicate_utf(const char *src) {
+    if (!src) return NULL;
+    size_t n = strlen(src) + 1;
+    char *copy = (char *)malloc(n);
+    if (copy) memcpy(copy, src, n);
+    return copy;
+}
+
 static char *call_dispatch(JNIEnv *env, jobject self, const char *line) {
     if (!g_dispatch) {
         jclass cls = (*env)->GetObjectClass(env, self);
+        if (!cls) return NULL;
         g_dispatch = (*env)->GetMethodID(env, cls, "dispatch",
                                          "(Ljava/lang/String;)Ljava/lang/String;");
+        (*env)->DeleteLocalRef(env, cls);
         if (!g_dispatch) return NULL;
     }
     jstring jreq = (*env)->NewStringUTF(env, line);
+    if (!jreq) return NULL;
     jstring jresp = (jstring)(*env)->CallObjectMethod(env, self, g_dispatch, jreq);
     (*env)->DeleteLocalRef(env, jreq);
     if ((*env)->ExceptionCheck(env)) { (*env)->ExceptionClear(env); return NULL; }
     if (!jresp) return NULL;
     const char *utf = (*env)->GetStringUTFChars(env, jresp, NULL);
-    char *copy = utf ? strdup(utf) : NULL;
+    char *copy = duplicate_utf(utf);
     if (utf) (*env)->ReleaseStringUTFChars(env, jresp, utf);
     (*env)->DeleteLocalRef(env, jresp);
     return copy;
@@ -39,7 +42,6 @@ static char *call_dispatch(JNIEnv *env, jobject self, const char *line) {
 
 static int fail_count = 0;
 
-/* Issue one request via local feedback, print it, track OK/ERR. */
 static char *step(JNIEnv *env, jobject self, const char *label, const char *req) {
     char *r = call_dispatch(env, self, req);
     if (!r) { printf("  %-24s -> <dispatch error>\n", label); fail_count++; return NULL; }
@@ -88,7 +90,6 @@ Java_com_mearvk_sleela_java28_Java28JniRuntime_runNativeDemo(JNIEnv *env, jobjec
     snprintf(buf, sizeof buf, "get h:%ld value", cents);
     free(step(env, self, "cents.value", buf));
 
-    /* Security posture: disallowed class + freed handle both ERR (expected). */
     free(step(env, self, "new File (blocked)", "new File s:4:/tmp"));
     snprintf(buf, sizeof buf, "free h:%ld", counter);
     free(step(env, self, "free counter", buf));
@@ -97,7 +98,6 @@ Java_com_mearvk_sleela_java28_Java28JniRuntime_runNativeDemo(JNIEnv *env, jobjec
 
     free(step(env, self, "stats", "stats"));
 
-    /* Exactly two intentional ERR posture checks are expected. */
-    if (fail_count == 0 || fail_count == 2) return 0;
-    return 1;
+    if (fail_count != 2) return 1;
+    return 0;
 }
