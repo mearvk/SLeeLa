@@ -72,7 +72,7 @@
     },
     {
       "path": "README.md",
-      "sha256": "d2de0a09ab2f708f6ae9bbbc26e20cb71a2adaeb96bc2d3ca6df64388799b324"
+      "sha256": "200316f96514495677c0cbbf6ff14419abf527e10aafee080c09292c96efd977"
     },
     {
       "path": "REVISIONS.md",
@@ -681,6 +681,22 @@
     {
       "path": "api/webserver/windows/WebCtl.ps1",
       "sha256": "9c1ac130edaf18ab564b5011e38c9c54580f5e60885612aff43e8b0c995a1465"
+    },
+    {
+      "path": "audio/c/include/sleela_audio.h",
+      "sha256": "9f2931d2340b12ce6d38256fb86857680e73f2410904b1ab79d8c102b20c5ea0"
+    },
+    {
+      "path": "audio/c/src/sleela_audio.c",
+      "sha256": "b6cf842da4bf1d139b38d7525e14dd4c1bf49716169387d9a75f3a5aa48ec5ff"
+    },
+    {
+      "path": "audio/cpp/include/sleela_audio.hpp",
+      "sha256": "8c86440e41a0cd352679950b213147e46efc6f2877ea136078dc937ec9186c0d"
+    },
+    {
+      "path": "audio/cpp/src/sleela_audio.cpp",
+      "sha256": "ad4a4e86f525119ce00561c4ff024bd7633f275b13328d6110c60efee79b6c11"
     },
     {
       "path": "bash/CWRU/misc/errlist.c",
@@ -2683,6 +2699,18 @@
       "sha256": "4653e6aa8bec8490ae372a052c38a946d24db251d5726a9667bc44ba52cf564a"
     },
     {
+      "path": "codecs/include/sleela_codecs.h",
+      "sha256": "08412da3bdd0aacfa2b2f403e29c88a18acdb4a86cc16a193783b8ccdc76468d"
+    },
+    {
+      "path": "codecs/src/sleela_codecs.c",
+      "sha256": "e662f958882a5d1abe0248365e43d4f862a8a28d6b54ebdf80b1fcdd61b8bb66"
+    },
+    {
+      "path": "codecs/tests/test_registry.c",
+      "sha256": "14bbe31fd02f41a49d9e8d72d20a14c5837f1a307b154a4b5db137b2c5954991"
+    },
+    {
       "path": "common-rails/CommonRails.sleela",
       "sha256": "b5d5fedc6150418e6168c16cc2c10fcab8b266e15ebdc19a682b65d7d335e016"
     },
@@ -2729,6 +2757,54 @@
     {
       "path": "data-structures/data_structures_test.c",
       "sha256": "f5b6a8331e58ea3a40d4111dca35b223c600278351e37d11ceb85cb258369366"
+    },
+    {
+      "path": "debugger/debug_conformance.cpp",
+      "sha256": "a7d2059029bbfe4a5ce33908147e6bd37e3da87aca1adf95fddd0621cc0d3ae6"
+    },
+    {
+      "path": "debugger/debug_conformance.hpp",
+      "sha256": "d55f726c70a38d4369e0821aa4ca732f9d0cbba400fc21e634961b2171cdf4a3"
+    },
+    {
+      "path": "debugger/debug_conformance_test.cpp",
+      "sha256": "1011781606461a5765f7e0b7df11040f6fd824c3fe8877038485e977401d4e83"
+    },
+    {
+      "path": "debugger/debug_diagnostics.cpp",
+      "sha256": "01f41cec2e9cc1bcc01362b2fcef54c08f9ecf35bd551f468745c5fcf8b36988"
+    },
+    {
+      "path": "debugger/debug_diagnostics.hpp",
+      "sha256": "fac28421e4ca3afc48f210b654b4363928f72ab817512fdba59337e2ad88811d"
+    },
+    {
+      "path": "debugger/debug_diagnostics_test.cpp",
+      "sha256": "9497aa610fd8ae7b1973cfbbddc6cf6f48b66fbf6c01de5aa5492720bde7d82a"
+    },
+    {
+      "path": "debugger/debug_engine.cpp",
+      "sha256": "e65dd6d96f13d33721b66387965561c0aa720f851e333a5f5460e173b7966646"
+    },
+    {
+      "path": "debugger/debug_engine.hpp",
+      "sha256": "fd7de525224d5832904cc7a678f936381286c47060eeed799f7fe8d2bfd87eee"
+    },
+    {
+      "path": "debugger/debug_engine_c.cpp",
+      "sha256": "23b10d4f8a0210d2a27a36978e34d7165bcefb7b53069e33db589157222b1cfe"
+    },
+    {
+      "path": "debugger/debug_engine_c.h",
+      "sha256": "3a81698ae6fb08a9b15da7a588c7790d4dd6b7fe4ec1ba90af3d4a03334129f9"
+    },
+    {
+      "path": "debugger/debug_engine_c_test.c",
+      "sha256": "40872702e1162b4e6de12eb5988356bc6320807e8bbfee16d2d0823d231cbae9"
+    },
+    {
+      "path": "debugger/debug_engine_test.cpp",
+      "sha256": "940e67442221d3785d45d615820dc83bfb6ccd3b2dc1c25c72d26287d35b997f"
     },
     {
       "path": "debugger/debugger.cpp",
@@ -2840,7 +2916,7 @@
     },
     {
       "path": "debugger/tests/run-tests.sh",
-      "sha256": "9d981ab13c0518bd9c01e44c65bb6bdb80d7f9fad45631bc623c925617cdc62e"
+      "sha256": "3666b53cc50029bf25b21f3e33a4a247a0ba7dc8a5edfd5c01b7ca7e75ccd4e1"
     },
     {
       "path": "decompiler/cli/main.cpp",
@@ -6069,6 +6145,18 @@
     {
       "path": "munction/examples/reach_xyx.sleela",
       "sha256": "974899a4321f04ff2ab7f4c386cb50a2ab449f96ea45c66171d34128541ad345"
+    },
+    {
+      "path": "native/include/sleela_audio.h",
+      "sha256": "17f97fc70bc1b0ab6a8ecadb03ef6d897cb3f79ea37d218fd6f28cd4113a056e"
+    },
+    {
+      "path": "native/src/sleela_audio.cpp",
+      "sha256": "5b912aeabecd3b9660a47a01de5c09fca319d3c5d34f700bd3436df94099a266"
+    },
+    {
+      "path": "native/src/sleela_audio_cli.cpp",
+      "sha256": "7336de18a8cfbf409f11f40ab3bc59ef07c4ebfdb779a486ac595b312a1bb4f2"
     },
     {
       "path": "psychiatry/keysearch.py",
