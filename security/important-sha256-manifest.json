@@ -5628,7 +5628,7 @@
     },
     {
       "path": "server-edition/sleela_server.cpp",
-      "sha256": "fe5c41d49681c7ed672cbd86e1a88cd9c9e4e437b00f157f334482602d05327f"
+      "sha256": "eba225513a686c27c2ead801f60a469860887297a32431ada8a1146c2aa77fd4"
     },
     {
       "path": "server-edition/sleela_server.hpp",
