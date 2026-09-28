@@ -1,12 +1,22 @@
 # SLeeLa Debugger Version
 
-Version: 0.6.0
+Version: 0.7.0
 Date: 2026-09-27
 Language implementation: C++17
 C implementation: C11+
 Line-control API: C and C++
 Backend abstraction: C++
 Action model: C++
+
+## 0.7.0 — Four-Stage Debugger Contract
+
+- Model → Implement → Integrate → Verify lifecycle.
+- DebugEngine and DiagnosticsEngine expansion.
+- Execution recording/checkpoint metadata.
+- Crash, sanitizer, memory, profiling, coverage and synchronization diagnostics.
+- Persistent `.sleela-debug` artifact model.
+- Explicit debugger security authorization boundary.
+- Debugger glossary and completion contract.
 
 ## 0.6.0 — Native and Reproduction Roadmap
 
