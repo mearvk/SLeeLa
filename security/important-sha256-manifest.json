@@ -136,7 +136,11 @@
     },
     {
       "path": "api/COMMON_INCLUDED_FUNDAMENTAL.md",
-      "sha256": "b80f49d7b4d5404616901951d082a6a59a0f60a1e09d8851d81c80710a051cc1"
+      "sha256": "fa4d5c3d2920a54c61fd8996b156a3a284bc54e3f5ed58cf6bcc5fc7792bf7b2"
+    },
+    {
+      "path": "api/COMMON_INCLUDED_NEXT_25.md",
+      "sha256": "d2d827a1fa5ac1af54703568cc2e95189e522d874a24a500c7c6a51e08f3d013"
     },
     {
       "path": "api/FOUNDATIONAL-API.html",
