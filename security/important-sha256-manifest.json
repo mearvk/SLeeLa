@@ -2864,11 +2864,11 @@
     },
     {
       "path": "debugger/debugger.cpp",
-      "sha256": "d7b7421873595c4ae0abdc0ac4c6458c3bc43435c187a18442f89dae0bdd31ab"
+      "sha256": "0f5be9b60492e94b546f61430c114dea7ddb8b27ea9e2bdce8dd117b690f5c18"
     },
     {
       "path": "debugger/debugger.hpp",
-      "sha256": "9bfdd29a7cf5a0e94ce041d3f4184af82e825edf472bca7002067decbcfc4a0e"
+      "sha256": "5e8244e5332a51d442054f1cec9ceae14888b746bb0ad60d217e0cb3e4930aa0"
     },
     {
       "path": "debugger/debugger_actions.cpp",
@@ -4471,6 +4471,18 @@
       "sha256": "f09e47ddcfa842ac0c9995261f94a614b8781eeb14404e5d94f4310cd6097098"
     },
     {
+      "path": "ide/tests/samples/Hello.sleela",
+      "sha256": "a90c2b798243a905c9cf9a3ddafa5533d0ef710cc9ef4592adcff3e688d5aba3"
+    },
+    {
+      "path": "ide/tests/samples/hello.c",
+      "sha256": "021c845dc1edb014b9b1bb59e2e2156e71dd296a91429ff60a4d089a457aabe8"
+    },
+    {
+      "path": "ide/tests/samples/hello.cpp",
+      "sha256": "061f2255071531971392e168807151e5e4bc737afc116e22a1a3e9e3e3755bd2"
+    },
+    {
       "path": "impl/annotation/Annotation.cpp",
       "sha256": "a91dc1065dc947a64809d9b8be421f56195e82065468f9bc96ba8dc235da3139"
     },
@@ -4480,11 +4492,11 @@
     },
     {
       "path": "impl/annotation/AnnotationForwarder.cpp",
-      "sha256": "f24986a3c7184c2ed008a91b4fbd04ea5ae92ea97ffc4a248adc077fec2d24f7"
+      "sha256": "72736d8a1df919ba6af4bd7667a669c986d115612137fdb236d7ceb4d43f4acb"
     },
     {
       "path": "impl/annotation/AnnotationForwarder.hpp",
-      "sha256": "867d549cbfb62b4e319bd04e1cedd3b69f3e549b6a06231cff0186965392c8cf"
+      "sha256": "e55abd3084bcd185216b93397a808fc4378d81a4687687b8e0d9575f898a098a"
     },
     {
       "path": "impl/annotation/AnnotationInterpreter.cpp",
@@ -5380,7 +5392,7 @@
     },
     {
       "path": "impl/fundamental/TcpTransport.cpp",
-      "sha256": "613b0ee82a3d3479d46b036c123a82bd911766b136bc9dec56a1cd1a80710244"
+      "sha256": "183aa5d8c2bc7a389825c6b9c65dd064efa82cf8b6aeb8c45fe701db2d6a2f90"
     },
     {
       "path": "impl/fundamental/TcpTransport.hpp",
@@ -5420,7 +5432,7 @@
     },
     {
       "path": "impl/fundamental/UdpTransport.cpp",
-      "sha256": "e87755860fad1ff2d014e0d6b8db90a3d0b6f04fc7d67c426924f8f5b1d6b9be"
+      "sha256": "5d49a4b6df9f4e1168c06a10c2325cf76a1bb7ecf10ae50fbe8ea8436bfc761c"
     },
     {
       "path": "impl/fundamental/UdpTransport.hpp",
@@ -9287,6 +9299,94 @@
       "sha256": "4165c72aa1c9fa30f37a65ac00dc0675fc310357d471ad1338bb997c3af1b777"
     },
     {
+      "path": "lib/regex/Regex.sleela",
+      "sha256": "969b7bb641c77286a9267b2ab0d15e70a5bfe2836a427fd1c9f410d0a994c166"
+    },
+    {
+      "path": "lib/regex/RegexCapability.sleela",
+      "sha256": "77288c254be671c22b18b684e5c551e839bd0db8cdd7478bf6e4a3e98ceb547f"
+    },
+    {
+      "path": "lib/regex/RegexCapture.sleela",
+      "sha256": "32ca1e13252538c4987ba2521760a646ee56e77f41d1200aa734fe9f854e8530"
+    },
+    {
+      "path": "lib/regex/RegexCompiler.sleela",
+      "sha256": "2f4362a9056b25d7dc31bedb1e9776d97c5dd3bc2ea87615905ac8e855f50880"
+    },
+    {
+      "path": "lib/regex/RegexDialect.sleela",
+      "sha256": "e413f476f8e06e64cfb6b5c662a4e6c5e6ca633b33b5769d9b8c2c44eb50e8a5"
+    },
+    {
+      "path": "lib/regex/RegexEngine.sleela",
+      "sha256": "1b39cc3c0ed10628c0a1d2b4e09d108f61b6eda8c570e6b0a6aa44749aea06a0"
+    },
+    {
+      "path": "lib/regex/RegexError.sleela",
+      "sha256": "c469e1b6ac0d71343e37692b99a5c314807929dc72e3958a4f66797e3d6e08ff"
+    },
+    {
+      "path": "lib/regex/RegexFlags.sleela",
+      "sha256": "d025bfd168da88cb003fd737eb61d731c4b5e7c40f813f4f9f1f4d8ea61214fd"
+    },
+    {
+      "path": "lib/regex/RegexIterator.sleela",
+      "sha256": "cf77e0121ed6656b9070aad1664da19f036a299abaa6a5deb8b130f1ab60ebdc"
+    },
+    {
+      "path": "lib/regex/RegexLiteral.sleela",
+      "sha256": "7c8608c66a3b8f839088687a8e587c9b6d0d28ad59a9ddb3dd28c101998c22fd"
+    },
+    {
+      "path": "lib/regex/RegexMatch.sleela",
+      "sha256": "b424110bba5ea7a939811dab80e8cebbb8bdf60bbf40c621780420e9bd1992df"
+    },
+    {
+      "path": "lib/regex/RegexMatcher.sleela",
+      "sha256": "bfa8b14f0061782cb6ce13ffadd62aedb021b2878036b42e792a6203ade0012c"
+    },
+    {
+      "path": "lib/regex/RegexOptions.sleela",
+      "sha256": "d0434a5b413cf0232c1ccbe84db24fd9eb0850a2677e605bdd66c8f4a7f8e1c0"
+    },
+    {
+      "path": "lib/regex/RegexPattern.sleela",
+      "sha256": "dae52ab010a00da5c260175dab45cae759e8279c9267ca5610e387e8ed5a417a"
+    },
+    {
+      "path": "lib/regex/RegexReplacement.sleela",
+      "sha256": "94faa9eda5930a28185be2c81c0b1c715522d1479a073a4202c55539a0edda0f"
+    },
+    {
+      "path": "lib/regex/RegexReplacer.sleela",
+      "sha256": "0b4ee6bbda3c196a9665508553a75890bd2136cf65ae9406900606a4ad0b653f"
+    },
+    {
+      "path": "lib/regex/RegexResult.sleela",
+      "sha256": "ed5a39cc1843c8f07a09c6e98ce17a1a45a43cbf0854580a6134b324b0297007"
+    },
+    {
+      "path": "lib/regex/RegexScanner.sleela",
+      "sha256": "736367c3037adac1c9bfac953059ad6caaf84c44fafc79819cacae7f7d50dcd5"
+    },
+    {
+      "path": "lib/regex/RegexSplitter.sleela",
+      "sha256": "1d6ef447a843aa1bd1aecf439bd5105f16dc8484ef6c015e2b42ff588838adcb"
+    },
+    {
+      "path": "lib/regex/RegexSubject.sleela",
+      "sha256": "eb8d899245e3433a97bbb415441003b8795230a0d522044abdd01f4f88e550e3"
+    },
+    {
+      "path": "lib/regex/RegexSystem.sleela",
+      "sha256": "bc4cd5a7b0ad46eb8c4680319f54f51756839b8cb7a9a42adfddf4477ae34975"
+    },
+    {
+      "path": "lib/regex/RegexValidator.sleela",
+      "sha256": "d5bc0c3dad3505520435edb547a5b9fc5952143a2939438a69376485af0eaba2"
+    },
+    {
       "path": "lib/runtime/SLCallFrame.sleela",
       "sha256": "0fb59ac77479b6766bbdfab5b32e34e9dbe2f2e65e352721f04aaac4b16268ab"
     },
@@ -9521,6 +9621,30 @@
     {
       "path": "lib/vm/SLVMValue.sleela",
       "sha256": "2ba3fa47bbd7dc85a7bc6e699d75cd4c99152bfeac7a551c8e178ceafa6f2e05"
+    },
+    {
+      "path": "make/regex/include/sleela_regex.h",
+      "sha256": "b413d66bdf8731ea1a33e440f8421f2cb79d59a53bae9f2c66106120bda14b09"
+    },
+    {
+      "path": "make/regex/include/sleela_regex.hpp",
+      "sha256": "f1e45330c861f9946a320cfeac1d873e4e207e2f5a1a36bb87e867b721e4bb49"
+    },
+    {
+      "path": "make/regex/src/sleela_regex.c",
+      "sha256": "ea7ebebd09f41c6852aa68c191f0dd53717288bcf6a7c98b266e7418b3f899b8"
+    },
+    {
+      "path": "make/regex/src/sleela_regex.cpp",
+      "sha256": "04e557c13e92cac962e93b006d587d9d859885d837ab1b90636008264a1e8706"
+    },
+    {
+      "path": "make/regex/tests/test_regex.c",
+      "sha256": "a425eb17166045d4cecd7e13ee54851d5b39c7ab8f1d591ef2fc6d2c290bc38f"
+    },
+    {
+      "path": "make/regex/tests/test_regex.cpp",
+      "sha256": "2e154264c38804eea8b88b4996048eed623ef057a3df3623392a7fb1e9d79f4f"
     },
     {
       "path": "manifesto/manifesto.sleela",
@@ -10820,7 +10944,7 @@
     },
     {
       "path": "test-suites/cpp/test_annotations.cpp",
-      "sha256": "bc0e85d5c876cd85a8f925421a55b8e092b2ed5d9ec9c28331b16d8d81baf15c"
+      "sha256": "bb1c241c4baf806b6dccaeffc78827d7d5ee24fcdf3ff557b27e8e3a7360dabc"
     },
     {
       "path": "test-suites/cpp/test_class_contracts.cpp",
@@ -10833,6 +10957,10 @@
     {
       "path": "test-suites/cpp/test_frontend_annotations.cpp",
       "sha256": "5b1f163a1f7463754fca383e7090502d369b4296fa5be1c9267498e1911871ac"
+    },
+    {
+      "path": "test-suites/cpp/test_fundamental_transports.cpp",
+      "sha256": "dfd9020ce4a2c29fcbc20e42ba2fbfa341e9fce741a3777152357e55e2147083"
     },
     {
       "path": "test-suites/generate-behavior-skeletons.py",
@@ -10848,7 +10976,7 @@
     },
     {
       "path": "test-suites/run-all.sh",
-      "sha256": "c397eb04a98429b209a5a9d8077dcb67fed711b842d459ef46b7dc0f5c379b35"
+      "sha256": "2af76151e7b6cedd0f29e8c4a924c5e2343d8073e155dee7633416c0b21793ba"
     },
     {
       "path": "test-suites/runtime-coverage.sh",
@@ -10860,7 +10988,7 @@
     },
     {
       "path": "test-suites/sleela-source-behavior.sh",
-      "sha256": "94dc38cb31aa74a8b8164ac48132b5431b792231f1ded04e90ff1899709c108c"
+      "sha256": "46d34c65252148d45027e4be4768b0ef56e576f4eb0122055281c47769324a1f"
     },
     {
       "path": "tests/native_memory_smoke.cpp",
