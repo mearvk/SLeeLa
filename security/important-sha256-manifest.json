@@ -6511,6 +6511,10 @@
       "sha256": "c8a6dadbaf7f254436fa692c899957dfc77111bbc261b16ef5fafcedea9c15be"
     },
     {
+      "path": "synchro/cpp/synchro_integration_test.cpp",
+      "sha256": "4c9f718cab386d6394d5dc3fa69f3680046b7e59eabe8cbc0f30f3904bfea50d"
+    },
+    {
       "path": "synchro/synchro/__init__.py",
       "sha256": "a0e423e7ffd655026abee6d5ce76139d1e4c786739e2f48a4859bb662a6c235b"
     },
