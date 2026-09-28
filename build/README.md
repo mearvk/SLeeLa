@@ -1,4 +1,27 @@
-# Skya Platform Builds
+# SLeeLa Build
+
+The `build/` tree documents and hosts product-specific native build entry points.
+Product source remains authoritative in its product directory; generated output
+is disposable.
+
+## Regex subsystem
+
+The SLeeLa Regex native implementation is under `make/regex/`.
+
+From the repository root:
+
+    make -C make/regex test
+
+Focused targets:
+
+    make -C make/regex c
+    make -C make/regex cpp
+    make -C make/regex clean
+
+See `build/REGEX.md` for the build boundary, toolchain notes, output path,
+and CI conformance target.
+
+## Skya Platform Builds
 
 Direct native build entry points for Skya on Linux, Windows 10+, and macOS.
 
