@@ -1,9 +1,18 @@
-// SLeeLa Audio configuration boundary.
+#sleela 1.3
+// SLVM Audio configuration owns a VM-local native job handle.
 class AudioConfiguration {
-  property sampleRate: Int;
-  property outputPath: String;
-  property inputs: AudioInput[];
-  property controls: AudioControls;
-  method validate(): Bool;
-  method inputCount(): Int;
+  static int create(int sampleRate, String outputPath) {
+    return audioNew(sampleRate, outputPath);
+  }
+
+  static int addInput(int handle, String path, double startSeconds, double gainDb) {
+    return audioAdd(handle, path, startSeconds, gainDb);
+  }
+
+  static int setControls(int handle, double bassDb, double midDb, double trebleDb,
+                         double masterGainDb, double pan, double leftGain, double rightGain) {
+    return audioControls(handle, bassDb, midDb, trebleDb, masterGainDb, pan, leftGain, rightGain);
+  }
+
+  static bool validate(int handle) { return audioValidate(handle); }
 }
