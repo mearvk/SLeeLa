@@ -3,13 +3,20 @@ CXXFLAGS ?= -std=c++17 -Wall -Wextra -pedantic
 
 COMMON_CPP = debugger.cpp debugger_backend.cpp debugger_actions.cpp debugger_platform.cpp debugger_backend_linux.cpp debugger_backend_macos.cpp debugger_backend_windows.cpp
 
-all: sleela-debugger
+ENGINE_CPP = debug_engine.cpp
+ENGINE_HPP = debug_engine.hpp
+
+all: sleela-debugger debug-engine-test
 
 sleela-debugger: main.cpp $(COMMON_CPP) debugger.hpp debugger_backend.hpp debugger_actions.hpp debugger_platform.hpp
 	$(CXX) $(CXXFLAGS) main.cpp $(COMMON_CPP) -o $@
 
+debug-engine-test: debug_engine_test.cpp $(ENGINE_CPP) $(ENGINE_HPP) debugger.hpp debugger_backend.hpp
+	$(CXX) $(CXXFLAGS) debug_engine_test.cpp $(ENGINE_CPP) -o $@
+
 test:
 	./tests/run-tests.sh
+	./debug-engine-test
 
 clean:
-	rm -f sleela-debugger
+	rm -f sleela-debugger debug-engine-test
