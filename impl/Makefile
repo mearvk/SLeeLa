@@ -111,7 +111,9 @@ SOC_OBJ := $(BUILD)/sociology.o
 SOC_SMOKE := $(BUILD)/sociology_smoke
 CORE_SRC := core/sleela_artifact.c
 FE_SRC := frontend/lexer.cpp frontend/parser.cpp frontend/semantic.cpp frontend/compiler.cpp \
-          frontend/version.cpp frontend/artifact.cpp \
+          frontend/version.cpp frontend/artifact.cpp frontend/annotation_pipeline.cpp \
+          annotation/Annotation.cpp annotation/ForwardingAnnotation.cpp annotation/AnnotationForwarder.cpp \
+          annotation/AnnotationInterpreter.cpp annotation/AnnotationRuntime.cpp \
           subjects/native/native_api.cpp \
           subjects/math/math_native.cpp subjects/physics/physics_native.cpp subjects/astrophysics/astrophysics_native.cpp subjects/sociology/sociology_native.cpp \
           subjects/economics/economics_native.cpp \
