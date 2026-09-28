@@ -110,3 +110,18 @@ The lifecycle driver establishes the first application-level build control surfa
 - production package/signing flow.
 
 **Max Rupplin — MEARVK LLC — 2026**
+
+
+## Synchro native integration
+
+The repository-native build includes the language integration layer under `synchro/c` and the C++ compile boundary under `synchro/cpp`. The existing `impl/core/sleela_synchro.*` runtime probe remains the VM/native networking implementation; the new layer is a packet/statistics integration ABI and does not replace that runtime component.
+
+From `impl`:
+
+    make test-synchro
+    make test-synchro-integration
+    make test-synchro-cpp
+
+`make test-synchro-integration` compiles and runs the deterministic C integration smoke test. `make test-synchro-cpp` compiles the C++17 RAII integration boundary. These targets use the same compiler, platform flags, and security verification gate as the rest of the native build.
+
+The complete test suite includes both integration targets through the normal `make test` path.
