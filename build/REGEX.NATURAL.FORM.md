@@ -1,15 +1,15 @@
-# Regex Natural Form Build
+# Regex Natural Form Build and Test Contract
 
 Version: 1.1.0-dev
 
-Natural Form lives under `regex/natural` and has C, C++, Java, and SLeeLa representations. Native tests are available through:
+Canonical test entry point:
 
-```bash
-make -C regex natural
-make -C regex java
-make -C regex test
-```
+    make -C regex test
 
-The disposable build directory is `regex/build`. No generated binaries belong in source control.
+Dedicated suite:
 
-The language contract is defined by `regex/natural/SYMBOLS.md` and `regex/natural/GRAMMAR.md`. Backends may implement a subset, but must report unsupported constructs rather than silently accepting them.
+    make -C regex/test-suites test
+
+Strict native compilation uses C11 and C++17 with warnings treated as errors. Java is compiled and executed as a conformance smoke test. SLeeLa Natural Form library sources are checked for presence and non-empty source content.
+
+Generated artifacts remain under regex/build.
