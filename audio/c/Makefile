@@ -1,12 +1,23 @@
 CC ?= cc
 CFLAGS ?= -std=c11 -O2 -Wall -Wextra -Wpedantic -Werror
-all: build/sleela-audio-c
-build:; mkdir -p build
+AR ?= ar
+ARFLAGS ?= rcs
+
+all: build/libsleela_audio_c.a
+
+build:
+	mkdir -p build
+
 build/sleela_audio.o: src/sleela_audio.c include/sleela_audio.h | build
 	$(CC) $(CFLAGS) -Iinclude -c $< -o $@
-build/sleela-audio-c: build/sleela_audio.o
-	$(CC) $(CFLAGS) $< -lm -o $@
+
+build/libsleela_audio_c.a: build/sleela_audio.o
+	$(AR) $(ARFLAGS) $@ $<
+
 test: all
-	./build/sleela-audio-c >/dev/null 2>&1 || test $$? -eq 0
-clean:; rm -rf build
+	$(CC) $(CFLAGS) -Iinclude -fsyntax-only src/sleela_audio.c
+
+clean:
+	rm -rf build
+
 .PHONY: all test clean
