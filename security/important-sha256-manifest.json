@@ -143,6 +143,10 @@
       "sha256": "d2d827a1fa5ac1af54703568cc2e95189e522d874a24a500c7c6a51e08f3d013"
     },
     {
+      "path": "api/CONVERSATION_API.md",
+      "sha256": "78d81ffc2e2217c83b5ed821e278b8b1863d1fd537ea6d8fd7f29c4d244c053c"
+    },
+    {
       "path": "api/FOUNDATIONAL-API.html",
       "sha256": "692ec64af370d5f061c99e2b39c257dfaedc2453e644b488191ef4a041e0e379"
     },
