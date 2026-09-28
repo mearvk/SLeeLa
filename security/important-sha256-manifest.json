@@ -4627,6 +4627,14 @@
       "sha256": "ab679e0b7ad4d13a632598e229d2d138594e7b80b2e75868dd35333e79936ef8"
     },
     {
+      "path": "impl/fundamental/EnumDescriptor.cpp",
+      "sha256": "85ed50e33f802e0a4ef15445304c13bebc544634d8c678d5bf251fe077ac24cd"
+    },
+    {
+      "path": "impl/fundamental/EnumDescriptor.hpp",
+      "sha256": "6945c7f51f0a7b841ca56486b0f4933f5ce30517b48c3ee53124b6b9d91c015e"
+    },
+    {
       "path": "impl/fundamental/Error.cpp",
       "sha256": "7bb7f622e952e76f1b85794770f0f371a69252afe979213ea2f43b38b2f0fec5"
     },
@@ -4683,12 +4691,44 @@
       "sha256": "6c52d65af8a5caa3592dfb6d37bc6c241cda880ce916c206bbb3e64c808abe98"
     },
     {
+      "path": "impl/fundamental/Schema.cpp",
+      "sha256": "5ac0bec35e74569cea548cd67ece4029438acc8318e70f417d132f2cf781ed16"
+    },
+    {
+      "path": "impl/fundamental/Schema.hpp",
+      "sha256": "9dbfe7d833a069e4ebd441dfef3a9d3462777a53180ef441dfdc611ed3eb526f"
+    },
+    {
+      "path": "impl/fundamental/Serializer.cpp",
+      "sha256": "23b90a090ff61995f0428f161e4ac67d614bc71c00aa5303b76f619983e36744"
+    },
+    {
+      "path": "impl/fundamental/Serializer.hpp",
+      "sha256": "1462ab3a0e8297d21d1532b5c2be2520b3c7f0025b40a2eae2e469ff3ce50004"
+    },
+    {
       "path": "impl/fundamental/Status.cpp",
       "sha256": "abcd4bc07cd3b4db635ead2374b748d969474d296423efd2093bf26492404fb4"
     },
     {
       "path": "impl/fundamental/Status.hpp",
       "sha256": "9e858cd5248f263b0308aba9c01c8eb331f888aea11e9d5e1f62df9c1fe7c547"
+    },
+    {
+      "path": "impl/fundamental/TypeDescriptor.cpp",
+      "sha256": "04fc281a0b236fcf470865c063e2733754c0ebe99010c233ea94de6a60cbbf55"
+    },
+    {
+      "path": "impl/fundamental/TypeDescriptor.hpp",
+      "sha256": "59605f1f619dfc161f1121576ff60d1d8173880f124b41998bb2bb8ca8d98e22"
+    },
+    {
+      "path": "impl/fundamental/Validator.cpp",
+      "sha256": "c7871475d8e1bf6ea8db59e73c2d7d17cea150f72ef57533f8dd71aa8c21f284"
+    },
+    {
+      "path": "impl/fundamental/Validator.hpp",
+      "sha256": "b04675034a4b08f5a6c66c9a84a5bae52551b21e66191c1dc0fcb3bd76214e0d"
     },
     {
       "path": "impl/fundamental/Version.cpp",
