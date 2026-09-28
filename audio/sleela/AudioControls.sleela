@@ -1,0 +1,14 @@
+#sleela 1.3
+// Portable Audio control validation; rendering is delegated to the SLVM bridge.
+class AudioControls {
+  static bool validate(double bassDb, double midDb, double trebleDb,
+                       double masterGainDb, double pan, double leftGain, double rightGain) {
+    return pan >= -1.0 && pan <= 1.0 &&
+           leftGain >= 0.0 && rightGain >= 0.0;
+  }
+
+  static int apply(int handle, double bassDb, double midDb, double trebleDb,
+                   double masterGainDb, double pan, double leftGain, double rightGain) {
+    return audioControls(handle, bassDb, midDb, trebleDb, masterGainDb, pan, leftGain, rightGain);
+  }
+}
