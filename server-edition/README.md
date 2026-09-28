@@ -63,3 +63,11 @@ POLICE, SECURITY, SAFETY, CLASSIFICATION, DARK-BAND, frequency, and related fiel
 ## Production integration
 
 Before public deployment, add authenticated peer identity, TLS or another protected carrier, per-service authorization, persistent replay and sequence state, service-manager integration, metrics, and conformance vectors for every HTTP grade.
+
+
+## Core vocabulary
+Holding Document → Forwarding Annotation → Nexter Colony.
+
+Forwarding is never an implicit privilege grant and remains subject to security, capability, resource, release, and deployment controls.
+
+Max Rupplin — MEARVK LLC — 2026
