@@ -311,7 +311,87 @@ flowchart LR
 
 The Year 1,000 row is mathematical scenario analysis rather than a credible operational forecast.
 
-## 14. Status and Authority
+## 14. Cost-Value Analysis
+
+This section converts the planning baseline into decision-useful cost/value measures. It is an internal engineering economics analysis, not a forecast, procurement determination, or statement of realized commercial value.
+
+### Cost basis
+
+| Measure | Value |
+|---|---:|
+| Baseline engineering | **23,250 hours / $1,278,750** |
+| Planning reserve | **4,650 hours / $255,750** |
+| Total planning basis | **27,900 hours / $1,534,500** |
+| Baseline duration at 12 professionals | **~48.4 weeks** |
+| Total team capacity at 12 professionals | **480 hours/week** |
+
+### One-time planning cost translated to the illustrative Year 1 sales case
+
+Using the existing illustrative assumption of 7,000 Year 1 sales:
+
+| Value Measure | Calculation | Result |
+|---|---|---:|
+| Planning cost per illustrative sale | $1,534,500 ÷ 7,000 | **$219.21** |
+| Baseline cost per illustrative sale | $1,278,750 ÷ 7,000 | **$182.68** |
+| Reserve per illustrative sale | $255,750 ÷ 7,000 | **$36.54** |
+| Engineering hours per illustrative sale | 27,900 ÷ 7,000 | **3.99 hours** |
+| Illustrative gross-sales / planning-cost ratio | $7,000,000 ÷ $1,534,500 | **4.56×** |
+
+These are allocation metrics only. They do not establish that a sale will occur, that the sales assumptions are attainable, or that the planning cost is the complete cost of operating the product.
+
+### Planning-cost recovery threshold
+
+At the illustrative $1,000 price, the mathematical number of sales required to equal the $1,534,500 planning basis is:
+
+**$1,534,500 ÷ $1,000 = 1,534.5 sales**
+
+Therefore, the simplified planning-cost recovery threshold rounds to **1,535 sales**, before taxes, payment processing, sales costs, support, infrastructure, additional labor, and other operating expenses.
+
+At 30 qualified calls per completed sale, the corresponding mathematical call volume is approximately:
+
+**1,535 × 30 = 46,050 qualified calls**
+
+This is a sensitivity metric, not a sales forecast.
+
+### Value coverage by major engineering allocation
+
+| Workstream | Planning Cost | Share of Baseline |
+|---|---:|---:|
+| Debugger | **$200,750** | **15.69%** |
+| Synchro | **$49,500** | **3.87%** |
+| Debugger + Synchro | **$250,250** | **19.57%** |
+| All other baseline scope | **$1,028,500** | **80.43%** |
+
+The Debugger and Synchro values are already included in the $1,278,750 baseline and must not be added again.
+
+### Cost-value interpretation
+
+The planning model supports five useful controls:
+
+1. **Cost visibility:** every planned hour is assigned a common $55/hour planning basis.
+2. **Reserve visibility:** the 20% uncertainty reserve is separated from the engineering baseline.
+3. **Subsystem accountability:** Debugger and Synchro have explicit allocations without double counting.
+4. **Recovery analysis:** the illustrative $1,000 unit price can be compared with the one-time planning basis using a transparent mathematical threshold.
+5. **Change-control discipline:** newly introduced work, including future native subsystems not represented in the current baseline, should receive an explicit incremental estimate rather than being silently absorbed.
+
+### Munction accounting note
+
+The newly implemented native Munction C11/C++17 work is **not assigned a fabricated historical cost** in this document. The current baseline predates that explicit native Munction allocation. For formal cost control, Munction should therefore be treated as a separately identified scope item until engineering-hour evidence is collected.
+
+A future Munction allocation should record, at minimum:
+
+- C11 implementation hours
+- C++17 wrapper hours
+- test and CI hours
+- Java/native conformance work
+- VM adapter/integration work
+- documentation and release validation
+- any platform-specific implementation
+- associated uncertainty reserve
+
+This preserves the distinction between **actual recorded engineering effort**, **planning estimates**, and **commercial value scenarios**.
+
+## 15. Status and Authority
 
 This document is an internal SLeeLa planning artifact. It does **not** represent:
 
