@@ -696,7 +696,7 @@
     },
     {
       "path": "audio/c/src/sleela_audio.c",
-      "sha256": "b6cf842da4bf1d139b38d7525e14dd4c1bf49716169387d9a75f3a5aa48ec5ff"
+      "sha256": "52b2455f13aff088ab09b16e9914f651ce8c77c5ecc8918ca50dc3ffe132cc6e"
     },
     {
       "path": "audio/cpp/Audio.cpp",
