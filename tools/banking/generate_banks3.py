@@ -27,12 +27,14 @@ def read_banks_rows():
         raise RuntimeError("BANKS.md: 391-Country National Economic Table not found")
     section = text[start:]
     rows = {}
-    for line in section.splitlines():
+    for lineno, line in enumerate(section.splitlines(), 1):
         if not line.startswith("|") or line.startswith("|---"):
             continue
         parts = [p.strip() for p in line.strip().strip("|").split("|")]
-        if len(parts) != 11 or not parts[0].isdigit():
+        if not parts or not parts[0].isdigit():
             continue
+        if len(parts) != 11:
+            raise RuntimeError(f"BANKS.md: malformed row at section line {lineno}: expected 11 cells, found {len(parts)}")
         rid = parts[0].zfill(3)
         rows[rid] = parts
     if len(rows) != 391:
