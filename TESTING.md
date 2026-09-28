@@ -38,3 +38,15 @@ Release CI should rebuild from a clean environment and compare declared artifact
 A feature is not considered release-ready merely because a happy-path example works. It should have implementation, positive tests, negative tests, documentation and platform coverage appropriate to its scope.
 
 **Max Rupplin — MEARVK LLC — 2026**
+
+
+## Synchro integration tests
+
+Synchro has separate native runtime and language-integration coverage:
+
+- `make test-synchro` exercises the existing VM/native UDP measurement module.
+- `make test-synchro-integration` runs the C packet integration smoke test, including timestamp fallback, successful acknowledgement, statistics, and timeout/loss accounting.
+- `make test-synchro-cpp` compiles the C++17 RAII integration boundary.
+- `make test` includes the integration targets.
+
+The integration smoke test is deterministic and does not require a network peer.
