@@ -1,0 +1,38 @@
+name: Audio API CI
+
+on:
+  push:
+    paths:
+      - 'audio/**'
+      - '.github/workflows/audio-ci.yml'
+  pull_request:
+    paths:
+      - 'audio/**'
+      - '.github/workflows/audio-ci.yml'
+
+jobs:
+  build-audio:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+      - name: Build C audio
+        working-directory: audio/c
+        run: make clean all test
+      - name: Build C++ audio
+        working-directory: audio/cpp
+        run: make clean all test
+      - name: Build native audio adapter
+        working-directory: audio/native
+        run: make clean all test
+      - name: Compile Java audio API
+        working-directory: audio/java
+        run: mkdir -p build/classes && javac -d build/classes src/module-info.java src/com/mearvk/sleela/audio/*.java
+      - name: Compile JavaFX audio GUI
+        working-directory: audio/gui
+        run: mvn -B -DskipTests package
