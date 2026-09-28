@@ -49,6 +49,8 @@ class RateMeter:
     def __init__(self, rate_per_s: float, *, burst: Optional[float] = None) -> None:
         if rate_per_s <= 0:
             raise ValueError("rate_per_s must be positive")
+        if burst is not None and burst <= 0:
+            raise ValueError("burst must be positive")
         self.rate = float(rate_per_s)
         self.capacity = float(burst) if burst is not None else max(1.0, self.rate)
         self._tokens = self.capacity
@@ -63,6 +65,10 @@ class RateMeter:
 
     def acquire(self, tokens: float = 1.0) -> float:
         """Block until ``tokens`` are available. Returns seconds spent waiting."""
+        if tokens <= 0:
+            raise ValueError("tokens must be positive")
+        if tokens > self.capacity:
+            raise ValueError("tokens cannot exceed bucket capacity")
         waited = 0.0
         while True:
             with self._lock:
