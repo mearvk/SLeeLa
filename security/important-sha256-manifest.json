@@ -336,7 +336,7 @@
     },
     {
       "path": "api/email/sleela_email.c",
-      "sha256": "0eb7cbc48e53bfdf3481e23411e6d9f30c3376ea75a76e7dcaaccd3b726be4d7"
+      "sha256": "fbee5d493800fcb057b9473f964749552dda5141f994469eb43483f17e00d685"
     },
     {
       "path": "api/email/sleela_email.h",
@@ -560,7 +560,7 @@
     },
     {
       "path": "api/server/sleelas.cpp",
-      "sha256": "a6df25b05ad6676615f4e5cfcc14c0e8ea41d641cddc047388862aa8adb9bf3e"
+      "sha256": "fb0fefdd0b460049af39f47bb86bc9404d38ff160894f1aec45dcbbb0f8b1542"
     },
     {
       "path": "api/sleela-complete/DataServiceClasses.sleela",
@@ -2780,7 +2780,7 @@
     },
     {
       "path": "debugger/debugger.hpp",
-      "sha256": "9bfdd29a7cf5a0e94ce041d3f4184af82e825edf472bca7002067decbcfc4a0e"
+      "sha256": "daadd4b8cf8fbda826485a445d70c47a24eb2ebd923b999034d8a0a72f6e4a26"
     },
     {
       "path": "debugger/debugger_actions.cpp",
@@ -2796,7 +2796,7 @@
     },
     {
       "path": "debugger/debugger_backend.hpp",
-      "sha256": "0e560405b40f54087e4e72043b2cb1aea20cb5b849d46df6a03bf3029ef510ea"
+      "sha256": "6bd3eadf1f011d469349d89de26766d1e610d8d6374bb39a335bfec2d7f794b8"
     },
     {
       "path": "debugger/debugger_backend_linux.cpp",
@@ -3289,6 +3289,10 @@
     {
       "path": "drivers/include/skya_hardware_profile.h",
       "sha256": "6c1208a7847d5e8f3aad3ceeba9475ef2cbfa08a0949f001a136c93fe682b525"
+    },
+    {
+      "path": "drivers/include/skya_phone_driver.h",
+      "sha256": "076f3ad8d81ec218d9804c3048431c1189ba7d3f29ce72206904559772595975"
     },
     {
       "path": "drivers/jabra/biz-1500/1.0/driver.c",
@@ -5216,11 +5220,11 @@
     },
     {
       "path": "impl/fundamental/Environment.cpp",
-      "sha256": "344669355e607eaa1bcd9e2c1d0ff897dbd74708b789707099aec387dae305b7"
+      "sha256": "2452ce180350fbd98f7c06ebd6dd2d8d80c33fd6cef64704554758a9c0e4a3f1"
     },
     {
       "path": "impl/fundamental/Environment.hpp",
-      "sha256": "fd7c740605c485e25eaf0de0a7aeaa26fc390cd1edbe4432c87b2d2c166fc229"
+      "sha256": "865e240225a19347698759b4926b419136e747b84d5962eb2e387ff8bcb32bb4"
     },
     {
       "path": "impl/fundamental/Error.cpp",
@@ -5264,11 +5268,11 @@
     },
     {
       "path": "impl/fundamental/Handler.cpp",
-      "sha256": "9285f0f06e254a3e110b39be5de04b78fe3a29f872d873a1e2c0b0a83f1e1877"
+      "sha256": "b48319bf728d47bfb29822673a1c72aba314f05bbd773c2678c73dd3878020b7"
     },
     {
       "path": "impl/fundamental/Handler.hpp",
-      "sha256": "97bc47cd674bdc9ad21f0d74d1a7d5a9746be2e56f2500514921b405fa976ad4"
+      "sha256": "a60ce02e8723945ab9776962ddfec0987b87062733e10e20d969b6620e59bc6c"
     },
     {
       "path": "impl/fundamental/Identifier.cpp",
@@ -5448,11 +5452,11 @@
     },
     {
       "path": "impl/fundamental/Task.cpp",
-      "sha256": "7c354700b92a972321731084b088d27432d40983691f8b4d604960f1d3c5521c"
+      "sha256": "854d2d071a44b4bbd6be5a564064df2d895dcdaf2a4b17fc1f1aa44832a71fb8"
     },
     {
       "path": "impl/fundamental/Task.hpp",
-      "sha256": "e4c40804e1533bc2393da15e3fbb164154f7efad51c6f166ac655e5a797ec249"
+      "sha256": "3559c919666f0098d5c19c7b3cabe1f42a4885dfd5e20bb1942a5b00d138d383"
     },
     {
       "path": "impl/fundamental/TcpTransport.cpp",
@@ -7428,7 +7432,7 @@
     },
     {
       "path": "test-suites/cpp/test_annotations.cpp",
-      "sha256": "bc0e85d5c876cd85a8f925421a55b8e092b2ed5d9ec9c28331b16d8d81baf15c"
+      "sha256": "297f193fd84d2a7f2d3eba8c3fbb0f92c756829f5ead6ee00a90343ff7473bb9"
     },
     {
       "path": "test-suites/cpp/test_class_contracts.cpp",
@@ -7456,7 +7460,7 @@
     },
     {
       "path": "test-suites/run-all.sh",
-      "sha256": "c22d41eaed7ea54ed035f5d869dfed92d19baefe30add3d77bfd8d9ba28de071"
+      "sha256": "b61643b36a493137720f439ecf4245991a4c320deca56e97b4ae2c21dbccaa1d"
     },
     {
       "path": "test-suites/runtime-coverage.sh",
