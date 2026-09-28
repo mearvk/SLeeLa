@@ -4375,6 +4375,78 @@
       "sha256": "12b6da6b7da1cf1aaaf641bd1b204bff1827ab33e29b2a8131ae8039842d14b1"
     },
     {
+      "path": "http-servers/4/main.cpp",
+      "sha256": "ea99e7138fb4e8bf4fbb5fe1b152bc07eb03977c0a5c190a7c0fe76d97ff7bd5"
+    },
+    {
+      "path": "http-servers/4/server.cpp",
+      "sha256": "e5fbe07c5814e18d79f4fd758a736c8b81f706dc4346ea11cbd9edb0943f6ade"
+    },
+    {
+      "path": "http-servers/4/server.hpp",
+      "sha256": "bf8f91c225e4a311f38518eec9c94d8afbfccd867fb5eee9539d9f9659264670"
+    },
+    {
+      "path": "http-servers/5/main.cpp",
+      "sha256": "364bc3509012436430a6244546006fc9220fe348981cf598003d5eb1ade42d70"
+    },
+    {
+      "path": "http-servers/5/server.cpp",
+      "sha256": "4faed66852860073b131696a870ea4875dc418be1d0bac3afe2fde5334b6ecb5"
+    },
+    {
+      "path": "http-servers/5/server.hpp",
+      "sha256": "fa77bf9ebea3e526b4e74a5c7eecdb9e759e3712bc71d0d86dbbd16ee88f1c2d"
+    },
+    {
+      "path": "http-servers/6/main.cpp",
+      "sha256": "552fdf0a941664ea4b0a473785960c7b85a9854d8deb0da533a86dd509752e05"
+    },
+    {
+      "path": "http-servers/6/server.cpp",
+      "sha256": "37665bdbe907a4fd11b183fdbb3089f665d1dc1ad52ead326faed4fb8636be73"
+    },
+    {
+      "path": "http-servers/6/server.hpp",
+      "sha256": "0d014677eb839114894ead0ae60440e63bdf14bd7a8ef47c757906e2ef04d616"
+    },
+    {
+      "path": "http-servers/7/main.cpp",
+      "sha256": "59480c3eedc73ed4ee184f0f17aad9e152e5ef32039c4a78064f70b83ec1f3b7"
+    },
+    {
+      "path": "http-servers/7/server.cpp",
+      "sha256": "99e3764b0194047f62445369d4952d50f99854e3dd244aa6eb1dd7435f353748"
+    },
+    {
+      "path": "http-servers/7/server.hpp",
+      "sha256": "bf11f94015d4f3a551d625a0a6371c08aa3c6652451fd5b1f5cd09772e4a3a42"
+    },
+    {
+      "path": "http-servers/8/main.cpp",
+      "sha256": "5199591dc47f811736217f19c476d5d338ee95f4d739fded11a450a998ca1f9f"
+    },
+    {
+      "path": "http-servers/8/server.cpp",
+      "sha256": "fad572ae000c8d3f854bff72cdecaddb246e47e3b3bbc005bd8d741902d23fbc"
+    },
+    {
+      "path": "http-servers/8/server.hpp",
+      "sha256": "bb14e392eb5786d2abb65c9de2f084badf6a361627123141ec12c6621ee85e86"
+    },
+    {
+      "path": "http-servers/9/main.cpp",
+      "sha256": "e94456df3e23bda99caa0cafd1b366886fab2b365b1cadb30ef4e05204fd37ec"
+    },
+    {
+      "path": "http-servers/9/server.cpp",
+      "sha256": "23af5e7a385903cc404ab703ad4e8ceea95b338053ba638efa8db9cbf0e0ddcf"
+    },
+    {
+      "path": "http-servers/9/server.hpp",
+      "sha256": "2194216ce586cd071c8db1aebdd79ef678e95ee868fb79e965cee5454b55f3b8"
+    },
+    {
       "path": "http-servers/common/annotation_http_bridge.cpp",
       "sha256": "22414652fe161692df5969f0f0b9a506343b40e6d2255f9697c56a2a4124dee5"
     },
