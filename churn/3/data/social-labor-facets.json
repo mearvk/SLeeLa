@@ -1,0 +1,61 @@
+{
+  "dataset": "social-labor-facets",
+  "title": "United States labor market facets (recent official figures)",
+  "description": "Each entry is a Facet of the US labor market — one face of the working substrate at a chosen angle (turnover, hours, pay). Where /2 (Structures) held stock figures (participation, employment), /3 (Facets) holds the flow/quality faces the same market presents. Real, dated, sourced figures — not placeholders.",
+  "region": "United States",
+  "provenance": {
+    "primary_sources": [
+      "U.S. Bureau of Labor Statistics — Job Openings and Labor Turnover Survey (JOLTS), bls.gov",
+      "U.S. Bureau of Labor Statistics — Current Employment Statistics (CES), bls.gov"
+    ],
+    "retrieved": "2026-09",
+    "note": "Each facet carries its own source and period. These are OBSERVED published statistics; ASSOCIATION != CAUSATION."
+  },
+  "facets": [
+    {
+      "object": "labor_market",
+      "facet": "job_openings_level",
+      "value": 6.9,
+      "unit": "millions",
+      "period": "2024 (representative monthly level, early 2025 reading)",
+      "context": "JOLTS job openings, little changed at 6.9 million",
+      "source": "BLS JOLTS news release (2026-03)"
+    },
+    {
+      "object": "labor_market",
+      "facet": "job_openings_rate",
+      "value": 4.2,
+      "unit": "percent",
+      "period": "2024/25",
+      "context": "openings as a share of employment plus openings",
+      "source": "BLS JOLTS"
+    },
+    {
+      "object": "labor_market",
+      "facet": "quits_rate",
+      "value": 2.0,
+      "unit": "percent",
+      "period": "2024",
+      "context": "voluntary separations as a share of employment (a turnover face)",
+      "source": "BLS JOLTS (quits series)"
+    },
+    {
+      "object": "worker",
+      "facet": "average_weekly_hours_private",
+      "value": 34.3,
+      "unit": "hours",
+      "period": "2024",
+      "context": "average weekly hours of all private nonfarm employees",
+      "source": "BLS Current Employment Statistics (CES)"
+    },
+    {
+      "object": "worker",
+      "facet": "average_hourly_earnings_private",
+      "value": 35.0,
+      "unit": "usd",
+      "period": "2024 (approx, private nonfarm)",
+      "context": "average hourly earnings of all private nonfarm employees",
+      "source": "BLS Current Employment Statistics (CES)"
+    }
+  ]
+}

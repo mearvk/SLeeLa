@@ -1,0 +1,26 @@
+{
+  "dataset": "country-areas",
+  "title": "Largest countries by total area (Areas)",
+  "description": "Each entry is an Area: a real, two-dimensional extent a country spans, in square kilometres. Where /1 (Longs) runs over time, /2 (Structures) stands, and /3 (Facets) shows one face, /4 (Areas) spans a region. These are real, sourced figures — not placeholders.",
+  "unit": "square_kilometre",
+  "provenance": {
+    "primary_source": "United Nations Statistics Division (total area)",
+    "cross_reference": "FAO (land/water split) and CIA World Factbook (reconciliation), as compiled in Wikipedia 'List of countries and dependencies by area'",
+    "retrieved": "2026-09",
+    "note": "Total area = land + inland water within international boundaries. Values are OBSERVED published figures; ASSOCIATION != CAUSATION."
+  },
+  "areas": [
+    { "name": "Russia",        "total_area_km2": 17098242, "kind": "OBSERVED" },
+    { "name": "Canada",        "total_area_km2": 9984670,  "kind": "OBSERVED" },
+    { "name": "United States", "total_area_km2": 9833517,  "kind": "OBSERVED" },
+    { "name": "China",         "total_area_km2": 9596960,  "kind": "OBSERVED" },
+    { "name": "Brazil",        "total_area_km2": 8515767,  "kind": "OBSERVED" },
+    { "name": "Australia",     "total_area_km2": 7692024,  "kind": "OBSERVED" },
+    { "name": "India",         "total_area_km2": 3287263,  "kind": "OBSERVED" },
+    { "name": "Argentina",     "total_area_km2": 2780400,  "kind": "OBSERVED" }
+  ],
+  "reference": {
+    "world_land_area_km2": 148940000,
+    "note": "approximate total world landmass, for share computations"
+  }
+}

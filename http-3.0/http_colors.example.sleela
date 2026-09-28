@@ -1,0 +1,31 @@
+// http_colors.example.sleela -- specifying HTTP colors from SLeeLa source.
+//
+// This example shows the intended surface: a SLeeLa program names an HTTP
+// color per service, in source, and the connector resolves it against the
+// palette in http3_colors.conf (mirrored in http3_profile.{h,c} and
+// http3_flow.py). Colors bundle wire form, flags, and the integrity profile
+// (MAC / INTACTX / replay NONCE / basket) so source need not set each switch.
+//
+// A Wrapper (.sleela source file) declares its HTTP colors like so:
+
+http {
+    // Default color for any service that does not name its own.
+    default color green;
+
+    // Per-service colors. Each name must exist in http3_colors.conf.
+    service "orders"    color red;     // binary + full integrity + basket
+    service "billing"   color black;   // red, plus compressed payloads
+    service "catalog"   color green;   // textual, core only (lightest)
+    service "telemetry" color amber;   // textual, MAC + replay guard
+}
+
+// Equivalent imperative form (what the connector does under the hood):
+//
+//   http3_profile_t p;
+//   http3_profile_by_color("red", &p);        // resolve the color
+//   http3_profile_apply(&p, &pipe);           // configure the pipeline
+//   // ... then send/verify per p.wire, p.mac_required, p.replay_guard, etc.
+//
+// Colors are advisory selectors over already-supported behavior; naming a
+// color never changes the on-the-wire envelope layout, only which optional
+// protections a connection turns on.

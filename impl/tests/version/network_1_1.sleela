@@ -1,0 +1,7 @@
+#sleela 1.1
+class NetworkVersioned {
+    void main() {
+        int s = listen(0);
+        sockclose(s);
+    }
+}

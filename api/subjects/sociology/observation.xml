@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<subjectModel id="sociology-observation-example"><subject>sociology</subject><version>1.0</version>
+<observations><observation id="soc-example-001" target="ExamplePopulation" timestamp="2026-09-22T00:00:00Z" instrument="survey-demo"><measurement quantity="groupCount" value="250" unit="count"/><measurement quantity="population" value="1000" unit="count"/><provenance>synthetic demonstration data; replace with documented study provenance before use</provenance></observation></observations>
+</subjectModel>

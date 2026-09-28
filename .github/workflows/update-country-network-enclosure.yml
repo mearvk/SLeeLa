@@ -1,0 +1,48 @@
+name: Update Country Network Enclosure
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 3 * * 1'
+  push:
+    paths:
+      - 'http/spec/COUNTRY_NETWORK_ENCLOSURE.md'
+      - 'http/spec/country_network_overrides.json'
+      - 'tools/country-network-enclosure.py'
+      - '.github/workflows/update-country-network-enclosure.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  update-country-network-enclosure:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.x'
+
+      - name: Generate country network enclosure
+        run: python tools/country-network-enclosure.py
+
+      - name: Show generated summary
+        run: |
+          echo '--- Country Network Enclosure summary ---'
+          grep -E '^\| [^|]+ \| [A-Z]{2} \|' http/spec/COUNTRY_NETWORK_ENCLOSURE.md | tail -n 5 || true
+          echo '-----------------------------------------'
+
+      - name: Commit generated data
+        run: |
+          if git diff --quiet -- http/spec/COUNTRY_NETWORK_ENCLOSURE.md; then
+            echo 'No country-network changes detected.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add http/spec/COUNTRY_NETWORK_ENCLOSURE.md
+          git commit -m 'Update country network enclosure data'
+          git push

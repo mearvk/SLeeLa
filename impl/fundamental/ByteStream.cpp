@@ -1,0 +1,2 @@
+#include "ByteStream.hpp"
+namespace sleela::fundamental { ByteStream::ByteStream()=default; ByteStream::ByteStream(std::string value):value_(std::move(value)){} const std::string& ByteStream::value() const noexcept{return value_;} void ByteStream::setValue(std::string value){value_=std::move(value);} bool ByteStream::empty() const noexcept{return value_.empty();} const char* ByteStream::responsibility() const noexcept{return "sequential byte transport";} }

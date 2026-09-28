@@ -1,0 +1,48 @@
+#sleela 1.0
+// Numeric assertions for the native `physics` subject library.
+import math;
+import physics;
+
+class PhysicsValues {
+    static void check(String name, double got, double expected, double tol) {
+        double d = got - expected;
+        if (d < 0.0) { d = 0.0 - d; }
+        if (d <= tol) { print("PASS " + name); }
+        else { print("FAIL " + name + " got=" + got + " expected=" + expected); }
+    }
+
+    void main() {
+        // Mechanics
+        check("velocity", physics.velocity(100.0, 4.0), 25.0, 0.000001);
+        check("acceleration", physics.acceleration(30.0, 3.0), 10.0, 0.000001);
+        // x = x0 + v0 t + 0.5 a t^2 = 0 + 2*3 + 0.5*4*9 = 6 + 18 = 24
+        check("kinematic_position", physics.kinematic_position(0.0, 2.0, 4.0, 3.0), 24.0, 0.000001);
+        check("force", physics.force(5.0, 9.8), 49.0, 0.000001);
+        // KE = 0.5 m v^2 = 0.5 * 2 * 100 = 100
+        check("kinetic_energy", physics.kinetic_energy(2.0, 10.0), 100.0, 0.000001);
+        // Electricity
+        check("ohms_voltage", physics.ohms_voltage(2.0, 3.0), 6.0, 0.000001);
+        check("electric_power", physics.electric_power(120.0, 2.0), 240.0, 0.000001);
+        // Ideal gas P (unit volume): n R T = 2 * 8.314... * 300
+        check("ideal_gas_pressure", physics.ideal_gas_pressure(2.0, 8.31446261815324, 300.0), 4988.6775708919, 0.001);
+        // Waves
+        check("wave_frequency", physics.wave_frequency(340.0, 2.0), 170.0, 0.000001);
+        // angular frequency = tau * f = 2*pi*10
+        check("angular_frequency", physics.angular_frequency(10.0), 62.83185307179586, 0.0001);
+        // Gravitation: F = G m1 m2 / r^2, with unit masses and r, F = G
+        check("gravitational_force", physics.gravitational_force(1.0, 1.0, 1.0), 0.0000000000667430, 0.000000000000001);
+        // Relativity: gamma at v=0 is 1
+        check("lorentz_gamma_rest", physics.lorentz_gamma(0.0), 1.0, 0.000001);
+        // Neutrino two-flavor vacuum oscillation:
+        //   P = sin^2(2*theta) * sin^2(1.267 * dm2 * L / E)
+        // Maximal mixing (theta=pi/4 -> sin^2(2theta)=1) at oscillation maximum
+        // (1.267 * dm2 * L / E = pi/2 -> sin^2 = 1) gives P = 1.
+        // dm2=1, L=1.2397769773, E=1 -> arg = 1.267*1.2397769773 = 1.5708...
+        check("neutrino_p_max", physics.neutrino_oscillation_probability(0.7853981633974483, 1.0, 1.2397769773, 1.0), 1.0, 0.0001);
+        // Zero baseline -> no oscillation -> P = 0.
+        check("neutrino_p_zero_L", physics.neutrino_oscillation_probability(0.7853981633974483, 1.0, 0.0, 1.0), 0.0, 0.000001);
+        // Zero mixing angle -> P = 0.
+        check("neutrino_p_zero_theta", physics.neutrino_oscillation_probability(0.0, 1.0, 1.2397769773, 1.0), 0.0, 0.000001);
+        // EXPECTED_PASS=15
+    }
+}

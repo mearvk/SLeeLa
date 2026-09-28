@@ -1,0 +1,11 @@
+#sleela 1.1
+class AudioDeviceManager {
+    AudioDevice defaultInput;
+    AudioDevice defaultOutput;
+    int count;
+    void initialize() { count=0; }
+    void setDefaultInput(AudioDevice device) { defaultInput=device; }
+    void setDefaultOutput(AudioDevice device) { defaultOutput=device; }
+    AudioDevice input() { return defaultInput; }
+    AudioDevice output() { return defaultOutput; }
+}

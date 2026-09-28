@@ -1,0 +1,2 @@
+#include "TypeDescriptor.hpp"
+namespace sleela::fundamental { TypeDescriptor::TypeDescriptor()=default; TypeDescriptor::TypeDescriptor(std::string value):value_(std::move(value)){} const std::string& TypeDescriptor::value() const noexcept{return value_;} void TypeDescriptor::setValue(std::string value){value_=std::move(value);} bool TypeDescriptor::empty() const noexcept{return value_.empty();} const char* TypeDescriptor::responsibility() const noexcept{return "runtime type metadata";} }

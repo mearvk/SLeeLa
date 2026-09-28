@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<subjectModel id="astrophysics-observation-example">
+<subject>astrophysics</subject><version>1.0</version>
+<observations>
+<observation id="obs-example-001" target="ExampleStar" timestamp="2026-09-22T00:00:00Z" instrument="SLeeLa-Demo"><measurement quantity="observedWavelength" value="6.563e-7" unit="m"/><provenance>synthetic demonstration observation; replace with instrument provenance before scientific use</provenance></observation>
+</observations>
+</subjectModel>

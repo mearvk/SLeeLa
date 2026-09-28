@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<subjectModel id="sociology-descriptive-procedures"><subject>sociology</subject><version>1.0</version>
+<procedures><procedure name="populationProportion"><step op="read-observation" ref="groupCount"/><step op="read-observation" ref="population"/><step op="apply-formula" ref="proportion"/><step op="record-result" ref="proportion"/></procedure><procedure name="populationGrowth"><step op="read-observation" ref="oldValue"/><step op="read-observation" ref="newValue"/><step op="apply-formula" ref="growthRate"/><step op="record-result" ref="growthRate"/></procedure></procedures>
+</subjectModel>

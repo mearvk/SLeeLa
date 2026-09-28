@@ -1,0 +1,2 @@
+#include "EnumDescriptor.hpp"
+namespace sleela::fundamental { EnumDescriptor::EnumDescriptor()=default; EnumDescriptor::EnumDescriptor(std::string value):value_(std::move(value)){} const std::string& EnumDescriptor::value() const noexcept{return value_;} void EnumDescriptor::setValue(std::string value){value_=std::move(value);} bool EnumDescriptor::empty() const noexcept{return value_.empty();} const char* EnumDescriptor::responsibility() const noexcept{return "enumerated metadata";} }

@@ -1,0 +1,6 @@
+# Build output for the Java 28 memory integration
+build/
+*.class
+*.o
+*.so
+*.dylib

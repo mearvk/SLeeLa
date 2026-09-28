@@ -1,0 +1,24 @@
+{
+  "dataset": "math-facets",
+  "title": "Mathematical facets — special values and derived-relation faces",
+  "description": "Each entry is a Facet: one face a mathematical object presents at a chosen angle — a special function value, a ratio, or a limiting face — rather than a standalone constant. Where /2 (Structures) held the primary constants, /3 (Facets) holds the faces they show in identities and special cases.",
+  "provenance": {
+    "primary_source": "Standard mathematical definitions and identities (public domain)",
+    "cross_reference": "OEIS — On-Line Encyclopedia of Integer Sequences (A-numbers per entry); DLMF (NIST Digital Library of Mathematical Functions) for special values",
+    "retrieved": "2026-09",
+    "note": "Mathematical facets are definitional/derived, not measured; digits shown are truncated decimal expansions of exact objects."
+  },
+  "facets": [
+    { "object": "circle", "facet": "tau_two_pi", "symbol": "\u03c4", "value": 6.28318530717958647692, "definition": "2\u03c0, the radians in one full turn", "oeis": "A019692" },
+    { "object": "zeta_function", "facet": "zeta_of_2_basel", "symbol": "\u03b6(2)", "value": 1.64493406684822643647, "definition": "sum of 1/n^2 = \u03c0^2/6 (the Basel problem)", "oeis": "A013661" },
+    { "object": "zeta_function", "facet": "apery_constant_zeta_3", "symbol": "\u03b6(3)", "value": 1.20205690315959428540, "definition": "sum of 1/n^3 (Ap\u00e9ry's constant)", "oeis": "A002117" },
+    { "object": "exponential", "facet": "e_to_the_pi_gelfond", "symbol": "e^\u03c0", "value": 23.14069263277926900573, "definition": "Gelfond's constant", "oeis": "A039661" },
+    { "object": "golden_ratio", "facet": "reciprocal_phi", "symbol": "1/\u03c6", "value": 0.61803398874989484820, "definition": "\u03c6 - 1; the golden ratio's reciprocal face", "oeis": "A094214" },
+    { "object": "logarithm", "facet": "log10_of_e", "symbol": "log10(e)", "value": 0.43429448190325182765, "definition": "common-log face of e (the change-of-base factor)", "oeis": "A002285" }
+  ],
+  "relation_faces": [
+    { "name": "euler_identity", "statement": "e^(i\u03c0) + 1 = 0", "note": "the face linking e, i, \u03c0, 1, 0" },
+    { "name": "pythagorean_identity", "statement": "sin^2 x + cos^2 x = 1", "note": "the unit-circle face of trigonometry" },
+    { "name": "basel_face", "statement": "\u03b6(2) = \u03c0^2/6", "note": "the face relating the zeta value to \u03c0" }
+  ]
+}

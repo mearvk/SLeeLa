@@ -1,0 +1,38 @@
+SleelaTerminal(TM) — original shell
+===================================
+
+SleelaTerminal(TM) is an ORIGINAL command shell authored by the SLeeLa project.
+The code in this directory (sleela-terminal/) is clean-room work: it was written
+from scratch by SLeeLa, guided by public shell *specifications* and the *ideas*
+common to POSIX shells, not by copying any existing shell's source code.
+
+Authorship
+----------
+
+  SleelaTerminal(TM) shell
+  Copyright (C) The SLeeLa project.
+
+All source, headers, docs, and tests under sleela-terminal/ are SLeeLa's own
+work and carry the SleelaTerminal(TM) identity.
+
+Not derived from GNU Bash
+-------------------------
+
+SleelaTerminal(TM) is NOT a fork of, and does NOT incorporate source from, GNU
+Bash or any other GPL-licensed shell. Where SleelaTerminal(TM) behaves like a
+POSIX shell (pipelines, redirections, quoting, control flow, arithmetic), that
+is because it targets the same *observable behaviour* described by public
+specifications — behaviour and interfaces are not themselves copyrightable, but
+source code is, and none was taken.
+
+Relationship to the vendored Bash tree
+---------------------------------------
+
+The repository also vendors GNU Bash under bash/ as a separate, unmodified
+component (see bash/NOTICE). That tree remains the work of the Free Software
+Foundation under the GPL and is entirely distinct from this original shell.
+SleelaTerminal(TM)'s product branding (bash/SLEELATERMINAL.md) documents how the
+product may be *built on* GNU Bash; sleela-terminal/ is instead SLeeLa's own
+from-scratch shell implementation.
+
+In short: brand what you authored. This is authored.

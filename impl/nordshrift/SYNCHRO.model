@@ -1,0 +1,34 @@
+# Nordshrift Synchro Component Model — NS-SYN-0001
+
+Status: implementation model
+Revision: 1.0.0
+Date: September 2026
+
+## Purpose
+
+Defines the Synchro honest-measurement components exposed to Nordshrift/Sleela
+builds. Synchro sends timestamped probes, matches replies, and reports the
+MEASURED latency distribution. It makes no delivery-time guarantee.
+
+## Metrics (closed)
+
+sent, received, loss, mean, min, max, p95, report
+
+## Invariants
+
+- Honest by construction: measured, never promised. A lost probe is loss, never
+  a fabricated latency.
+- Bounded: a fixed probe table per VM; retained samples are bounded.
+- Percentiles/mean report -1 when no sample has been received.
+
+## Execution ABI
+
+The core VM exposes Synchro as VM opcodes with VM-local probe handles:
+`OP_SYN_OPEN`, `OP_SYN_DISPATCH`, `OP_SYN_STAT` (selector: sent/received/mean/
+min/max/p95/loss), `OP_SYN_REPORT`, `OP_SYN_CLOSE`. These back the
+`synchroOpen/synchroDispatch/synchro*/synchroReport/synchroClose` source
+built-ins.
+
+## SST guidance
+
+See `SST.SYNCHRO.md` for the `measure:` block grammar and `examples/reach-measure.sst`.

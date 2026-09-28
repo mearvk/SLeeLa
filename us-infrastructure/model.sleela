@@ -1,0 +1,158 @@
+#sleela 1.2
+// us-infrastructure/model.sleela
+// A transparent US infrastructure economic model.
+//
+// Each infrastructure sector is a `Sector` struct; shared macro assumptions live
+// in a `Scenario` struct. The model computes, per sector: the output
+// contribution of annual investment (spend x multiplier), the annual renewal
+// need (assetBase x depreciation), the backlog change and investment gap, and
+// the present value of net benefits of the marginal spend over a horizon. It
+// then rolls those up to national totals and frames them against the GDP
+// identity Y = C + I + G.
+//
+// NUMBERS ARE ILLUSTRATIVE PLACEHOLDERS. See README.md and SOURCES.md: a result
+// is a computation over assumptions, not a measurement or a forecast.
+import math;
+import economics;
+
+struct Sector {
+    String name;         // sector label
+    double assetBase;    // replacement value of in-service assets ($B)
+    double annualInvest; // actual annual investment ($B/yr)
+    double depreciation; // annual depreciation rate of the asset base (fraction)
+    double conditionIdx; // 0..1 condition proxy (1 = state of good repair)
+    double bcRatio;      // benefit-cost ratio of marginal investment
+}
+
+struct Scenario {
+    String label;
+    double multiplier;   // output multiplier on infrastructure spend
+    double discountRate; // real discount rate for NPV
+    int    horizonYears; // evaluation horizon
+}
+
+class USInfrastructure {
+
+    // ---- identities & relationships (all stated in README section 3) ------
+
+    // Output contribution of a year's spend under the assumed multiplier.
+    double contribution(Sector s, Scenario sc) {
+        return s.annualInvest * sc.multiplier;
+    }
+
+    // Annual reinvestment needed just to hold the asset base steady.
+    double renewalNeed(Sector s) {
+        return s.assetBase * s.depreciation;
+    }
+
+    // Positive => backlog grows this year; negative => it shrinks.
+    double backlogDelta(Sector s) {
+        return renewalNeed(s) - s.annualInvest;
+    }
+
+    // Annual shortfall against a state-of-good-repair path (never negative).
+    double investmentGap(Sector s) {
+        double d = backlogDelta(s);
+        if (d < 0.0) { return 0.0; }
+        return d;
+    }
+
+    // Present value of net benefits of the marginal spend over the horizon.
+    // netBenefit per year = annualInvest * (bcRatio - 1); discounted with the
+    // economics library's present_value at the scenario discount rate.
+    double marginalNpv(Sector s, Scenario sc) {
+        double netAnnual = s.annualInvest * (s.bcRatio - 1.0);
+        double npv = 0.0;
+        int t = 1;
+        while (t <= sc.horizonYears) {
+            npv = npv + economics.present_value(netAnnual, sc.discountRate, t);
+            t = t + 1;
+        }
+        return npv;
+    }
+
+    // ---- per-sector report -------------------------------------------------
+
+    void report(Sector s, Scenario sc) {
+        print("-- " + s.name + " --");
+        print("  asset base ($B):      " + s.assetBase);
+        print("  annual invest ($B):   " + s.annualInvest);
+        print("  contribution ($B):    " + contribution(s, sc));
+        print("  renewal need ($B):    " + renewalNeed(s));
+        print("  backlog delta ($B):   " + backlogDelta(s));
+        print("  investment gap ($B):  " + investmentGap(s));
+        print("  marginal NPV ($B):    " + marginalNpv(s, sc));
+    }
+
+    void main() {
+        Scenario base = new Scenario();
+        base.label = "Base (illustrative)";
+        base.multiplier = 1.5;      // assumed output multiplier
+        base.discountRate = 0.03;   // 3% real discount rate
+        base.horizonYears = 10;
+
+        print("=== US Infrastructure Economic Model ===");
+        print("Scenario: " + base.label
+            + " | multiplier=" + base.multiplier
+            + " | discount=" + base.discountRate
+            + " | horizon=" + base.horizonYears + "y");
+        print("(All figures illustrative placeholders -- see SOURCES.md)");
+        print("");
+
+        // --- sectors (illustrative placeholder inputs) ---
+        Sector roads = new Sector();
+        roads.name = "Roads & Bridges"; roads.assetBase = 4200.0; roads.annualInvest = 190.0;
+        roads.depreciation = 0.05; roads.conditionIdx = 0.62; roads.bcRatio = 2.4;
+
+        Sector water = new Sector();
+        water.name = "Water Systems"; water.assetBase = 2200.0; water.annualInvest = 90.0;
+        water.depreciation = 0.045; water.conditionIdx = 0.58; water.bcRatio = 2.9;
+
+        Sector grid = new Sector();
+        grid.name = "Energy Grid"; grid.assetBase = 3000.0; grid.annualInvest = 160.0;
+        grid.depreciation = 0.04; grid.conditionIdx = 0.66; grid.bcRatio = 3.1;
+
+        Sector transit = new Sector();
+        transit.name = "Public Transit"; transit.assetBase = 1500.0; transit.annualInvest = 55.0;
+        transit.depreciation = 0.05; transit.conditionIdx = 0.55; transit.bcRatio = 2.2;
+
+        Sector broadband = new Sector();
+        broadband.name = "Broadband"; broadband.assetBase = 800.0; broadband.annualInvest = 70.0;
+        broadband.depreciation = 0.09; broadband.conditionIdx = 0.71; broadband.bcRatio = 3.8;
+
+        report(roads, base);
+        report(water, base);
+        report(grid, base);
+        report(transit, base);
+        report(broadband, base);
+
+        // --- national rollup ---
+        double totalContribution = contribution(roads, base) + contribution(water, base)
+            + contribution(grid, base) + contribution(transit, base) + contribution(broadband, base);
+        double totalGap = investmentGap(roads) + investmentGap(water)
+            + investmentGap(grid) + investmentGap(transit) + investmentGap(broadband);
+        double totalNpv = marginalNpv(roads, base) + marginalNpv(water, base)
+            + marginalNpv(grid, base) + marginalNpv(transit, base) + marginalNpv(broadband, base);
+
+        print("");
+        print("=== National rollup (illustrative) ===");
+        print("  total output contribution ($B/yr): " + totalContribution);
+        print("  total annual investment gap ($B):  " + totalGap);
+        print("  total marginal NPV over horizon ($B): " + totalNpv);
+
+        // Frame against the GDP identity Y = C + I + G. Infrastructure investment
+        // is one component of I/G; here we show a stylised national accounting
+        // frame with the modelled infrastructure contribution as part of I.
+        double C = 19000.0;   // illustrative consumption ($B)
+        double I = 4800.0;    // illustrative gross investment ($B), incl. infra
+        double G = 4200.0;    // illustrative government ($B)
+        double Y = economics.gdp_identity(C, I, G);
+        print("");
+        print("GDP identity frame (illustrative): Y = C + I + G = " + Y + " ($B)");
+        print("  modelled infra output contribution as share of Y (%): "
+            + (totalContribution / Y * 100.0));
+        print("");
+        print("Reminder: identities are exact; multiplier and BCR are assumptions;");
+        print("asset/investment figures are placeholders until sourced (SOURCES.md).");
+    }
+}

@@ -1,0 +1,5 @@
+# SHA-256 manifest example for update inputs.
+# Format: SHA256  path
+# Replace the placeholder digest with the trusted digest for the exact staged bytes.
+#
+# 0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef  impl/example/update-input

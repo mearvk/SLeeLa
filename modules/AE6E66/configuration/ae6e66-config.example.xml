@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  AE6E66 deployment template.
+  Copy to an administrator-controlled runtime location before use.
+  Do not place passwords, private keys, or tokens in this file.
+-->
+<ae6e66>
+  <identity>
+    <module>AE6E66</module>
+    <environment>development</environment>
+    <deployment-id>CHANGE-ME</deployment-id>
+  </identity>
+
+  <sources>
+    <members-base-url>https://members.parliament.uk</members-base-url>
+    <enquiries-base-url>https://www.parliament.uk</enquiries-base-url>
+    <https-required>true</https-required>
+    <request-timeout-seconds>20</request-timeout-seconds>
+    <max-concurrency>2</max-concurrency>
+    <min-delay-milliseconds>1000</min-delay-milliseconds>
+    <max-response-bytes>10485760</max-response-bytes>
+  </sources>
+
+  <crawl>
+    <enabled>false</enabled>
+    <refresh-days>30</refresh-days>
+    <max-members>1000</max-members>
+    <store-portraits>false</store-portraits>
+    <dry-run>true</dry-run>
+  </crawl>
+
+  <database>
+    <host>127.0.0.1</host>
+    <port>3306</port>
+    <name>ae6e66</name>
+    <user>ae6e66_svc</user>
+    <password-source>os-secret-store</password-source>
+    <tls-required>true</tls-required>
+  </database>
+
+  <mail>
+    <enabled>false</enabled>
+    <submission-host>127.0.0.1</submission-host>
+    <submission-port>25</submission-port>
+    <starttls-required>true</starttls-required>
+    <from-address>CHANGE-ME@example.invalid</from-address>
+    <max-message-bytes>10485760</max-message-bytes>
+    <per-destination-delay-seconds>5</per-destination-delay-seconds>
+    <max-concurrency>1</max-concurrency>
+    <dry-run>true</dry-run>
+  </mail>
+
+  <integrity>
+    <algorithm>SHA-256</algorithm>
+    <fail-closed>true</fail-closed>
+    <auto-restore>false</auto-restore>
+    <trusted-ref>PIN-AN-APPROVED-COMMIT</trusted-ref>
+  </integrity>
+
+  <data>
+    <retention-days>365</retention-days>
+    <store-only-required-fields>true</store-only-required-fields>
+    <provenance-required>true</provenance-required>
+  </data>
+</ae6e66>

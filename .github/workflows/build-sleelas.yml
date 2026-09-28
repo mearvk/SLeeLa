@@ -1,0 +1,73 @@
+name: Build SLeeLa Server Launcher
+
+on:
+  push:
+    branches: [master, main]
+    paths:
+      - 'api/server/**'
+      - 'server-edition/src/Server.sleela'
+      - '.github/workflows/build-sleelas.yml'
+  pull_request:
+    paths:
+      - 'api/server/**'
+      - 'server-edition/src/Server.sleela'
+      - '.github/workflows/build-sleelas.yml'
+  workflow_dispatch:
+
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Linux
+        run: |
+          cd api/server
+          make CXX=g++
+          test -x sleelas
+          ./sleelas --help
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sleelas-linux-x86_64
+          path: api/server/sleelas
+
+  macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build macOS
+        run: |
+          cd api/server
+          make CXX=clang++
+          test -x sleelas
+          ./sleelas --help
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sleelas-macos
+          path: api/server/sleelas
+
+  windows:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v4
+      - uses: msys2/setup-msys2@v2
+        with:
+          msystem: UCRT64
+          update: true
+          install: >-
+            mingw-w64-ucrt-x86_64-gcc
+            mingw-w64-ucrt-x86_64-g++
+            make
+      - name: Build Windows
+        shell: msys2 {0}
+        run: |
+          cd api/server
+          make CXX=g++
+          test -x sleelas.exe
+          ./sleelas.exe --help
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sleelas-windows-x86_64
+          path: api/server/sleelas.exe

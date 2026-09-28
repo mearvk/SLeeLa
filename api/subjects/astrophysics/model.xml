@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<subjectModel id="astrophysics-basic">
+<subject>astrophysics</subject><version>1.0</version>
+<quantities>
+<quantity name="luminosity" unit="W" kind="input"/><quantity name="distance" unit="m" kind="input"/><quantity name="flux" unit="W/m2" kind="result"/>
+<quantity name="restWavelength" unit="m" kind="input"/><quantity name="observedWavelength" unit="m" kind="input"/><quantity name="redshift" unit="1" kind="result"/>
+<quantity name="temperature" unit="K" kind="input"/><quantity name="peakWavelength" unit="m" kind="result"/>
+</quantities>
+<constants><constant name="pi" value="3.141592653589793" unit="1"/><constant name="c" value="299792458" unit="m/s"/></constants>
+<relations>
+<formula name="inverseSquareFlux" expression="luminosity/(4*pi*distance^2)" resultUnit="W/m2"/>
+<formula name="redshift" expression="observedWavelength/restWavelength-1" resultUnit="1"/>
+<formula name="wienPeak" expression="0.002897771955/temperature" resultUnit="m"/>
+</relations>
+</subjectModel>

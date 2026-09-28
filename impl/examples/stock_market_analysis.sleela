@@ -1,0 +1,50 @@
+#sleela 1.0
+// SLeeLa layer over the native C++ stock-market analysis engine.
+//
+// The C++ layer owns numerical analysis and terminal rendering. This SLeeLa
+// layer provides the higher-level market session, portfolio checks, and
+// interpretation. Values are paper-market observations; no real orders occur.
+
+class StockMarketAnalysis {
+    double startingCash = 100000.0;
+    int appleShares = 100;
+    int microsoftShares = 50;
+    int nvidiaShares = 25;
+    int teslaShares = 40;
+
+    double apple = 332.27;
+    double microsoft = 495.63;
+    double nvidia = 218.29;
+    double tesla = 365.44;
+
+    double position(int shares, double price) {
+        return shares * price;
+    }
+
+    double portfolioValue() {
+        return startingCash
+            + position(appleShares, apple)
+            + position(microsoftShares, microsoft)
+            + position(nvidiaShares, nvidia)
+            + position(teslaShares, tesla);
+    }
+
+    void marketCheck() {
+        print("=== SLeeLa Market Analysis ===");
+        print("Native C++ engine: graphing + statistical analysis");
+        print("SLeeLa layer: market session + portfolio interpretation");
+        print("");
+        print("AAPL = $" + apple);
+        print("MSFT = $" + microsoft);
+        print("NVDA = $" + nvidia);
+        print("TSLA = $" + tesla);
+        print("");
+        print("Paper portfolio value = $" + portfolioValue());
+        print("Real orders: NONE");
+        print("=== Analysis complete ===");
+    }
+
+    void main() {
+        marketCheck();
+    }
+}

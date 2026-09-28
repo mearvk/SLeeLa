@@ -1,0 +1,16 @@
+# dataset: continents
+# The seven continents as Areas: the real 2D extent each landmass spans, in
+# square kilometres. Where a country-area is a bounded political extent, a
+# continent is the larger natural extent it sits within.
+# Provenance: standard geographic figures as compiled by Worldometers /
+#   ThoughtCo / Enchanted Learning; cross-referenced with atlas sources.
+#   Public domain / widely published. Retrieved 2026-09. Values approximate
+#   (continental boundaries, especially Europe/Asia, are conventional).
+# format: rank  continent            area_km2      kind
+1   Asia                 44579000   OBSERVED
+2   Africa               30370000   OBSERVED
+3   North_America        24709000   OBSERVED
+4   South_America        17840000   OBSERVED
+5   Antarctica           14000000   OBSERVED
+6   Europe               10180000   OBSERVED
+7   Australia_Oceania     8600000   OBSERVED

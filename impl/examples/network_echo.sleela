@@ -1,0 +1,31 @@
+#sleela 1.1
+// network_echo.sleela -- end-to-end Sleela TCP smoke example.
+// The server worker accepts a loopback client, reads "ping", and writes "pong".
+// The main thread runs the client and joins the worker before closing the listener.
+class NetworkEcho {
+    int listener;
+
+    void server() {
+        int client = accept(listener);
+        String request = sockread(client);
+        sockwrite(client, "pong");
+        sockclose(client);
+    }
+
+    String client() {
+        int socket = connect("127.0.0.1", 45218);
+        sockwrite(socket, "ping");
+        String response = sockread(socket);
+        sockclose(socket);
+        return response;
+    }
+
+    void main() {
+        listener = listen(45218);
+        spawn(server);
+        String response = client();
+        print(response);
+        join();
+        sockclose(listener);
+    }
+}

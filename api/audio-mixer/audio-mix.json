@@ -1,0 +1,73 @@
+{
+  "version": "1",
+  "project": "synchronized-audio-mix",
+  "timeline": {
+    "unit": "ns",
+    "start": 0,
+    "sample_rate": 48000
+  },
+  "inputs": [
+    {
+      "id": "master",
+      "role": "master",
+      "source": {
+        "type": "file",
+        "path": "audio/master.wav"
+      },
+      "load_at_ns": 0,
+      "start_at_ns": 0,
+      "quality": 1,
+      "gain_db": 0
+    },
+    {
+      "id": "second",
+      "role": "second",
+      "source": {
+        "type": "file",
+        "path": "audio/second.flac"
+      },
+      "load_at_ns": 0,
+      "start_at_ns": 125000000,
+      "quality": 0.92,
+      "gain_db": -3
+    },
+    {
+      "id": "live",
+      "role": "input",
+      "source": {
+        "type": "live",
+        "device": "default"
+      },
+      "load_at_ns": 0,
+      "start_at_ns": 500000000,
+      "quality": 1,
+      "gain_db": -6
+    }
+  ],
+  "relative_quality": {
+    "mode": "linear",
+    "reference": "master",
+    "range": [
+      0,
+      1
+    ]
+  },
+  "mixer": {
+    "bass_db": 3,
+    "mid_db": -1,
+    "treble_db": 2,
+    "gain_db": 0,
+    "pan": 0,
+    "channels": {
+      "1": 1,
+      "2": 1
+    }
+  },
+  "synchronization": {
+    "mode": "timeline",
+    "preserve_track_offsets": true,
+    "process_as_arriving": true,
+    "write_output_while_processing": true,
+    "output": "audio/mix-output.wav"
+  }
+}

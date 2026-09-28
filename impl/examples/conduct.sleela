@@ -1,0 +1,43 @@
+// conduct.sleela -- Sleela's conducted methods, backed by SHEET.sheet.
+//
+// The conduct built-ins read the system-object catalog at compile time and
+// give the program method control, routing, and insight:
+//
+//   conduct("Name")     -> true if Name is a conducted (catalogued) method
+//   role("Name")        -> the object's conduct role
+//   insight("Name")     -> the object's insight/note
+//   congruent("A","B")  -> true if A and B route to a known congruence
+//   route("A","B")      -> "A -> B" when congruent, else ""
+//   sysdepth()          -> the relevant system depth (3024)
+//   degreemax()         -> the max complexity degree (4)
+
+class Conduct {
+
+    void main() {
+        // System invariants baked in from the sheet.
+        print("system depth   = " + sysdepth());
+        print("degree max     = " + degreemax());
+
+        // Is Pipeline a conducted method? What is it, and what does it mean?
+        print("conduct Pipeline = " + conduct("Pipeline"));
+        print("role    Pipeline = " + role("Pipeline"));
+        print("insight Pipeline = " + insight("Pipeline"));
+
+        // Route to a known congruence (Pipeline and Stream are siblings).
+        print("congruent(Pipeline, Stream) = " + congruent("Pipeline", "Stream"));
+        print("route    (Pipeline, Stream) = " + route("Pipeline", "Stream"));
+
+        // Same conduct role congruence (both are smart-moves).
+        print("congruent(Retry, CircuitBreaker) = " + congruent("Retry", "CircuitBreaker"));
+
+        // A non-congruence: different roles, not siblings.
+        print("congruent(Pipeline, System) = " + congruent("Pipeline", "System"));
+
+        // An unknown object is not a conducted method.
+        print("conduct Nonesuch = " + conduct("Nonesuch"));
+
+        // The root object and one insight about gain.
+        print("role System    = " + role("System"));
+        print("insight Reward = " + insight("Reward"));
+    }
+}

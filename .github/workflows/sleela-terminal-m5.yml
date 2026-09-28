@@ -1,0 +1,32 @@
+name: SLeeLa Terminal M5
+
+on:
+  push:
+    paths:
+      - 'sleela-terminal/**'
+      - '.github/workflows/sleela-terminal-m5.yml'
+  pull_request:
+    paths:
+      - 'sleela-terminal/**'
+      - '.github/workflows/sleela-terminal-m5.yml'
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: sleela-terminal
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install GTK4 and VTE development packages
+        run: sudo apt-get update && sudo apt-get install -y libgtk-4-dev libvte-2.91-gtk4-dev
+      - name: Build
+        run: make clean all
+      - name: Full smoke suite
+        run: make test
+      - name: Sanitizer validation
+        run: make sanitize
+      - name: Install Clang
+        run: sudo apt-get update && sudo apt-get install -y clang
+      - name: Build fuzz target
+        run: make fuzz

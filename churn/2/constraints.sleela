@@ -1,0 +1,81 @@
+#sleela 1.2
+// 2/constraints.sleela  --  the Constitution's congrains/limits applied to Structures.
+//
+// This is the shared constraint/theory layer carried by every churn relevance
+// set (/1 Longs, /2 Structures, /3 Facets, /4 Areas). It encodes the governing
+// constraints from the repository's Constitution (see ../../README.md, "The
+// Constitution", and SHEET.sheet's `congrains` / `limits` / `system` sections)
+// and applies them to this set's magnitude -- here, a Structure's value.
+//
+// Two system invariants are always in force (conducted methods sysdepth()/
+// degreemax() in the implementation):
+//     DepthLimit        : system depth <= 3024
+//     ComplexityDegree  : connection order <= 4
+//
+// A `Limit` (Bound / Threshold / Capacity) checks whether a Structure's value
+// honors its bound. Failing a Limit records that a value falls outside a stated
+// constraint; it changes no data. A constraint is a modelling condition to be
+// checked and argued with, not a claim about reality.
+import math;
+
+class Constraints {
+
+    int depthLimit() { return 3024; }
+    int degreeMax() { return 4; }
+
+    boolean connectPermitted(int n, int degree) {
+        if (n < 0) { return false; }
+        if (n > depthLimit()) { return false; }
+        if (degree > degreeMax()) { return false; }
+        return true;
+    }
+
+    boolean withinBound(double value, double lo, double hi) {
+        if (value < lo) { return false; }
+        if (value > hi) { return false; }
+        return true;
+    }
+
+    boolean belowThreshold(double value, double threshold) {
+        return value < threshold;
+    }
+
+    boolean withinCapacity(double used, double capacity) {
+        if (capacity < 0.0) { return false; }
+        return used <= capacity;
+    }
+
+    // Report whether a Structure's value honors a stated Bound [lo, hi].
+    void checkStructure(String name, double value, double lo, double hi) {
+        String verdict = "HOLDS";
+        if (!withinBound(value, lo, hi)) { verdict = "VIOLATES"; }
+        print("  Bound[" + lo + ", " + hi + "] on " + name
+            + " (value=" + value + "): " + verdict);
+    }
+
+    void main() {
+        print("=== /2 constraints -- the Constitution applied to Structures ===");
+        print("System invariants: DepthLimit=" + depthLimit()
+            + ", ComplexityDegree<=" + degreeMax() + ".");
+        print("");
+
+        // A rate Structure (percent) is Bounded to [0, 100]; a physical
+        // constant like c is Bounded below by 0 (a positive magnitude).
+        print("[limits] social-rate Structures must hold within [0, 100] percent");
+        checkStructure("labor force participation rate (US 2024)", 62.5, 0.0, 100.0);
+        checkStructure("employment-population ratio (US 2024)", 59.9, 0.0, 100.0);
+        print("");
+        print("[limits] a physical-constant Structure must be a positive magnitude");
+        // upper Bound is the speed of light itself here (its own extent).
+        checkStructure("speed of light c", 299792458.0, 0.0, 299792458.0);
+        print("");
+
+        print("[invariant] the connect rule (n<=3024, degree<=4)");
+        print("  connect(3024, 4) permitted : " + connectPermitted(3024, 4));
+        print("  connect(3025, 4) permitted : " + connectPermitted(3025, 4));
+        print("  connect(100, 5) permitted  : " + connectPermitted(100, 5));
+        print("");
+        print("Note: a constraint is a modelling condition to be checked and");
+        print("argued with, not a claim about reality.");
+    }
+}

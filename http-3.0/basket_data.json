@@ -1,0 +1,105 @@
+{
+  "currency": "USD",
+  "currency_num": 840,
+  "seed": "0xcab17a115",
+  "items": [
+    {
+      "number": 1,
+      "name": "Bleached pulp paper",
+      "ugram": 56249759,
+      "iso": "USD",
+      "iso_num": 840
+    },
+    {
+      "number": 2,
+      "name": "Broadband gigabyte (svc)",
+      "ugram": 34243099,
+      "iso": "USD",
+      "iso_num": 840
+    },
+    {
+      "number": 3,
+      "name": "Cane sugar",
+      "ugram": 69987683,
+      "iso": "USD",
+      "iso_num": 840
+    },
+    {
+      "number": 4,
+      "name": "Cobalt metal",
+      "ugram": 43104945,
+      "iso": "USD",
+      "iso_num": 840
+    },
+    {
+      "number": 5,
+      "name": "Cured tobacco leaf",
+      "ugram": 29864648,
+      "iso": "USD",
+      "iso_num": 840
+    },
+    {
+      "number": 6,
+      "name": "Freight ton-mile (svc)",
+      "ugram": 17981345,
+      "iso": "USD",
+      "iso_num": 840
+    },
+    {
+      "number": 7,
+      "name": "Gold bullion",
+      "ugram": 6610716,
+      "iso": "USD",
+      "iso_num": 840
+    },
+    {
+      "number": 8,
+      "name": "Legal counsel hour (svc)",
+      "ugram": 12259381,
+      "iso": "USD",
+      "iso_num": 840
+    },
+    {
+      "number": 9,
+      "name": "Managed cloud-compute (svc)",
+      "ugram": 65041790,
+      "iso": "USD",
+      "iso_num": 840
+    },
+    {
+      "number": 10,
+      "name": "Natural rubber",
+      "ugram": 31566795,
+      "iso": "USD",
+      "iso_num": 840
+    },
+    {
+      "number": 11,
+      "name": "Portland cement",
+      "ugram": 24592204,
+      "iso": "USD",
+      "iso_num": 840
+    },
+    {
+      "number": 12,
+      "name": "Raw cotton",
+      "ugram": 65211966,
+      "iso": "USD",
+      "iso_num": 840
+    },
+    {
+      "number": 13,
+      "name": "Roasted coffee",
+      "ugram": 35009362,
+      "iso": "USD",
+      "iso_num": 840
+    },
+    {
+      "number": 14,
+      "name": "Structural steel",
+      "ugram": 35480545,
+      "iso": "USD",
+      "iso_num": 840
+    }
+  ]
+}

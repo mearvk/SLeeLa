@@ -1,0 +1,70 @@
+name: Verify SHA-256 Manifest
+
+# Fails if security/sha256-manifest.json has drifted from the source tree, or if
+# any listed file no longer matches its recorded digest. This keeps the verified
+# build gate honest: a clean `make all` must be able to pass verify-security.
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'impl/**'
+      - 'runtime/**'
+      - 'bash/pixel_terminal.cpp'
+      - 'bash/pixel_terminal.hpp'
+      - 'Parameters.c'
+      - 'security/sha256-manifest.json'
+      - 'tools/generate-sha256-manifest.py'
+      - 'tools/verify-before-execution.py'
+      - '.github/workflows/verify-sha256-manifest.yml'
+  pull_request:
+    paths:
+      - 'impl/**'
+      - 'runtime/**'
+      - 'bash/pixel_terminal.cpp'
+      - 'bash/pixel_terminal.hpp'
+      - 'Parameters.c'
+      - 'security/sha256-manifest.json'
+      - 'tools/generate-sha256-manifest.py'
+      - 'tools/verify-before-execution.py'
+      - '.github/workflows/verify-sha256-manifest.yml'
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Validate Python
+        run: python3 --version
+
+      - name: Verify committed manifest matches the source tree
+        # The verifier fails closed if any listed file's SHA-256 has changed.
+        run: |
+          python3 tools/verify-before-execution.py \
+            --manifest security/sha256-manifest.json \
+            --root .
+
+      - name: Detect manifest drift (regenerate and diff)
+        # Regenerating from the current tree must reproduce the committed
+        # manifest byte-for-byte. If it does not, the manifest is stale (a file
+        # was added/removed/changed without updating it) and CI fails with a
+        # helpful message.
+        run: |
+          python3 tools/generate-sha256-manifest.py \
+            --root . \
+            --output security/sha256-manifest.regenerated.json
+          if ! diff -u security/sha256-manifest.json security/sha256-manifest.regenerated.json; then
+            echo "::error::security/sha256-manifest.json is out of date."
+            echo "Regenerate it with: python3 tools/generate-sha256-manifest.py --root . --output security/sha256-manifest.json"
+            rm -f security/sha256-manifest.regenerated.json
+            exit 1
+          fi
+          rm -f security/sha256-manifest.regenerated.json
+          echo "Manifest is in sync with the source tree."

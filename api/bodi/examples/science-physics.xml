@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bodi version="1">
+  <project id="physics-demo-001" kind="science" title="SLeeLa Physics XML Project"/>
+  <science model="native-physics">
+    <discipline name="physics">
+      <operation name="velocity" sequence="001"><arg value="120"/><arg value="4"/></operation>
+      <operation name="force" sequence="002"><arg value="12"/><arg value="9.80665"/></operation>
+      <operation name="kinetic_energy" sequence="003"><arg value="4"/><arg value="10"/></operation>
+      <operation name="electric_power" sequence="004"><arg value="120"/><arg value="2"/></operation>
+    </discipline>
+    <discipline name="math"><operation name="sqrt" sequence="005"><arg value="2"/></operation></discipline>
+  </science>
+</bodi>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0"><dict>
+<key>Label</key><string>com.mearvk.sleela-server3</string>
+<key>ProgramArguments</key><array><string>/opt/sleela/server-edition/moral/3/serverd</string></array>
+<key>WorkingDirectory</key><string>/opt/sleela</string>
+<key>RunAtLoad</key><true/>
+<key>StandardOutPath</key><string>/opt/sleela/server-edition/state/server3.out</string>
+<key>StandardErrorPath</key><string>/opt/sleela/server-edition/state/server3.err</string>
+</dict></plist>

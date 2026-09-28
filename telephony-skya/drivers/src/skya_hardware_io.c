@@ -1,0 +1,3 @@
+#include "../include/skya_hardware_io.h"
+#include <errno.h>
+int skya_hardware_open(skya_hardware_io*i){return i&&i->open?i->open(i->ctx):-ENOSYS;} int skya_hardware_close(skya_hardware_io*i){return i&&i->close?i->close(i->ctx):-ENOSYS;} int skya_hardware_read(skya_hardware_io*i,skya_hardware_channel c,void*b,size_t n,size_t*out){if(!i||!i->read||!b||!out)return-EINVAL;return i->read(i->ctx,c,b,n,out);} int skya_hardware_write(skya_hardware_io*i,skya_hardware_channel c,const void*b,size_t n){if(!i||!i->write||(!b&&n))return-EINVAL;return i->write(i->ctx,c,b,n);} int skya_hardware_control(skya_hardware_io*i,uint32_t c,const void*in,size_t il,void*out,size_t oc,size_t*ol){if(!i||!i->control)return-ENOSYS;return i->control(i->ctx,c,in,il,out,oc,ol);}

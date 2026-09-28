@@ -1,0 +1,2 @@
+#include "Serializer.hpp"
+namespace sleela::fundamental { Serializer::Serializer()=default; Serializer::Serializer(std::string value):value_(std::move(value)){} const std::string& Serializer::value() const noexcept{return value_;} void Serializer::setValue(std::string value){value_=std::move(value);} bool Serializer::empty() const noexcept{return value_.empty();} const char* Serializer::responsibility() const noexcept{return "object encoding";} }

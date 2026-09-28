@@ -1,0 +1,2 @@
+#include "Task.hpp"
+namespace sleela::fundamental { Task::Task(std::function<void()>f):fn_(std::move(f)){} void Task::start(){if(fn_)future_=std::async(std::launch::async,fn_);} void Task::wait(){if(future_.valid())future_.wait();} bool Task::valid()const noexcept{return future_.valid();} }

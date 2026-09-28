@@ -1,0 +1,23 @@
+{
+  "dataset": "physics-facets",
+  "title": "Derived & related physical constants as Facets (CODATA 2022)",
+  "description": "Each entry is a Facet: one measurable face of physical law, derived from the defining constants of the SI. Where /2 (Structures) held the primary standing constants, /3 (Facets) holds the derived faces they present — coupling strengths, spectroscopic scales, and quantum-electrical ratios.",
+  "units_system": "SI",
+  "provenance": {
+    "primary_source": "CODATA 2022 recommended values (Mohr, Newell, Taylor, Tiesinga)",
+    "publisher": "NIST — physics.nist.gov/constants (SI wallet card, 2022)",
+    "retrieved": "2026-09",
+    "note": "Values transcribed from authoritative public sources. Exact/defined faces are flagged exact=true; measured faces carry a standard uncertainty. FACT vs MODEL kept distinct."
+  },
+  "facets": [
+    { "object": "electromagnetism", "facet": "fine_structure_constant", "symbol": "alpha", "value": 7.2973525643e-3, "unit": "1", "exact": false, "std_uncertainty": 1.1e-12, "note": "coupling strength of the electromagnetic interaction" },
+    { "object": "electromagnetism", "facet": "inverse_fine_structure_constant", "symbol": "1/alpha", "value": 137.035999177, "unit": "1", "exact": false, "std_uncertainty": 2.1e-8 },
+    { "object": "hydrogen_spectrum", "facet": "rydberg_constant", "symbol": "R_inf", "value": 10973731.568157, "unit": "m^-1", "exact": false, "std_uncertainty": 1.2e-5 },
+    { "object": "atom", "facet": "bohr_radius", "symbol": "a_0", "value": 5.29177210544e-11, "unit": "m", "exact": false, "std_uncertainty": 8.2e-21 },
+    { "object": "energy", "facet": "electron_volt", "symbol": "eV", "value": 1.602176634e-19, "unit": "J", "exact": true, "note": "exact via the defined elementary charge" },
+    { "object": "quantum_electrical", "facet": "josephson_constant", "symbol": "K_J", "value": 483597.8484e9, "unit": "Hz V^-1", "exact": true },
+    { "object": "quantum_electrical", "facet": "von_klitzing_constant", "symbol": "R_K", "value": 25812.80745, "unit": "ohm", "exact": true },
+    { "object": "thermodynamics", "facet": "molar_gas_constant", "symbol": "R", "value": 8.314462618, "unit": "J mol^-1 K^-1", "exact": true, "note": "N_A * k, both defined" },
+    { "object": "radiation", "facet": "stefan_boltzmann_constant", "symbol": "sigma", "value": 5.670374419e-8, "unit": "W m^-2 K^-4", "exact": true }
+  ]
+}

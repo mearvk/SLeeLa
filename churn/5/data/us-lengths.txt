@@ -1,0 +1,15 @@
+# us-lengths.txt  --  Social/geographic Lines of the United States (kilometres).
+#
+# Each row is a Line: a real distance the nation reaches across, in km. These
+# are OBSERVED published extents (a length is a Line the ground lays down).
+#
+# provenance : US primary sources (US Census Bureau, CBP, USGS, National Park
+#              Service, Interstate Highway System records); retrieved 2026-09.
+# format     : name | length_km | kind | note
+#
+US-Canada border | 8891 | OBSERVED | longest international land border in the world (incl. Alaska)
+US-Mexico border | 3145 | OBSERVED | US Customs and Border Protection figure
+US total coastline (detailed) | 133312 | OBSERVED | NOAA detailed shoreline (tidal), not the general 19924 km figure
+Mississippi River (length) | 3766 | OBSERVED | USGS main-stem length
+Interstate Highway System (total) | 78465 | OBSERVED | approx total route length of the Dwight D. Eisenhower system
+Appalachian Trail (length) | 3524 | OBSERVED | National Park Service, Georgia to Maine

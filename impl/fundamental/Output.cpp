@@ -1,0 +1,2 @@
+#include "Output.hpp"
+namespace sleela::fundamental { Output::Output()=default; Output::Output(std::string value):value_(std::move(value)){} const std::string& Output::value() const noexcept{return value_;} void Output::setValue(std::string value){value_=std::move(value);} bool Output::empty() const noexcept{return value_.empty();} const char* Output::responsibility() const noexcept{return "output abstraction";} }

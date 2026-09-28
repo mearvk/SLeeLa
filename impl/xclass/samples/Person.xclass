@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Person.xclass — SecureJDK 28 XML Class File
+  Compiled by: xmc 1.0.0 (Galactic Cherry Marvell 98)
+  Source: tools/xmc/sample.rs
+  Date: 2026-08-12
+  Frame: US Standard
+  Copyright (C) 2026 MEARVK LLC
+-->
+<xclass version="1" compiler="xmc" compiler-version="1.0.0"
+        edition="Galactic Cherry Marvell 98"
+        conduct-frame="US">
+
+  <!-- Identity: structural position in the loading hierarchy -->
+  <identity>
+    <name>Person</name>
+    <superclass>(none)</superclass>
+    <abstract>false</abstract>
+    <interface>false</interface>
+    <final>false</final>
+    <public>true</public>
+    <method-count>3</method-count>
+    <field-count>2</field-count>
+    <weight>470</weight>
+    <lateral-count>1</lateral-count>
+    <interfaces>
+      <implements>Greeter</implements>
+    </interfaces>
+  </identity>
+
+  <!-- Design: intellectual tier and wet structure -->
+  <design>
+    <int-tier>1</int-tier>
+    <int-tier-name>Module System</int-tier-name>
+    <int-complexity>1</int-complexity>
+    <intellect-color>Silver</intellect-color>
+    <wet-structure>
+      <module>71</module>
+      <demange>20</demange>
+      <demart>24</demart>
+      <artistry>70</artistry>
+    </wet-structure>
+  </design>
+
+  <!-- Quality Democracy: democratic structural principles -->
+  <quality-democracy>
+    <voice>76</voice>
+    <representation>55</representation>
+    <participation>80</participation>
+    <transparency>95</transparency>
+    <accountability>65</accountability>
+  </quality-democracy>
+
+  <!-- Quality Woman: feminine excellence in architecture -->
+  <quality-woman>
+    <care>90</care>
+    <integrity>95</integrity>
+    <nurture>55</nurture>
+    <resolve>60</resolve>
+    <grace>85</grace>
+  </quality-woman>
+
+  <!-- Security: trust and classload grades -->
+  <security>
+    <trust-grade>3</trust-grade>
+    <classload-grade>0</classload-grade>
+  </security>
+
+  <!-- Methods: structural members -->
+  <methods>
+    <method name="greet" return="String" params="0"
+            public="false" static="false" abstract="false"
+            lines="2" complexity="1"/>
+    <method name="new" return="Self" params="2"
+            public="true" static="true" abstract="false"
+            lines="0" complexity="1"/>
+    <method name="age" return="u32" params="0"
+            public="true" static="false" abstract="false"
+            lines="0" complexity="1"/>
+  </methods>
+
+  <!-- Fields: data members -->
+  <fields>
+    <field name="name" type="String" public="true" static="false"/>
+    <field name="age" type="u32" public="false" static="false"/>
+  </fields>
+
+  <!-- Conduct Frame: international law and conduct basis -->
+  <conduct-frame>
+    <code>US</code>
+    <name>US Standard</name>
+    <basis>US Constitution, Bill of Rights, Liberty</basis>
+  </conduct-frame>
+
+  <!-- Provenance: compiler identity and installer authority -->
+  <provenance>
+    <compiler>xmc</compiler>
+    <compiler-version>1.0.0</compiler-version>
+    <edition>Galactic Cherry Marvell 98</edition>
+    <source-file>tools/xmc/sample.rs</source-file>
+    <compiled-at>2026-08-12T04:13:02-0400</compiled-at>
+    <signer>Maximilian Eric Alexander Rupplin von Keffikon</signer>
+    <signer-techid>mearvk - Installer Tech 2</signer-techid>
+    <signature algorithm="sha256">66510ae71c5fe36f30efc3899155987e18ce5ecf1db056f79b0cf9f9689cea48</signature>
+    <signed>true</signed>
+  </provenance>
+
+</xclass>

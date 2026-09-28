@@ -1,0 +1,104 @@
+#nordshrift 1.0
+#sleela     1.1
+
+/// CommonRails — SST (Nordshrift) edition using the 2.0 semantic layer.
+/// ==========================================
+/// The SST companion to common-rails/CommonRails.sleela. This control sheet
+/// drives the CommonRails Wrapper™ through the triplet and, using the 2.0
+/// semantic layer (NS-SST-0001 Part XVII), declares CommonRails' professional
+/// printing as an explicit subject: the 21x21 progress square, its cell count,
+/// and its bottom-right -> left -> up fill relation, with provenance.
+///
+/// Check: ./impl/build/nordshrift check common-rails/common-rails.sst
+/// Build: ./impl/build/nordshrift build common-rails/common-rails.sst
+sheet common-rails:
+  version      1.0.0
+  author       "Sleela Design Council"
+  description  "Professional printing component: 21x21 progress square + component lines."
+
+source:
+  root  "."
+  glob  "*.sleela"
+
+/// The progress-square geometry as an explicit math subject, so the 441-cell
+/// count and the fill relation are declared and validated rather than implied.
+subject CommonRailsSquare:
+  domain: math
+  depends: [ math ]
+
+  quantity side:
+    value:     "21"
+    unit:      "cell"
+    dimension: length
+    status:    specified
+
+  quantity cells:
+    value:     "side * side"
+    unit:      "cell"
+    dimension: count
+    domain:    "side >= 1"
+    status:    derived
+
+  quantity perCell:
+    value:     "100 / cells"
+    unit:      "percent"
+    dimension: ratio
+    status:    derived
+
+  assumption integerPercent:
+    statement: "fill is driven by an integer percent mapped to floor(percent*cells/100) cells"
+    scope:     "printProgressBar / printSquarePercent"
+    source:    "modeling choice, matches the Java CommonRails"
+    status:    assumed
+
+  relation cellCount:
+    formula: "cells = side * side"
+    inputs:  [ side ]
+    outputs: [ cells ]
+
+  relation fillIndex:
+    formula: "fillIndex = ((side-1)-displayRow)*side + ((side-1)-displayCol)"
+    inputs:  [ side, displayRow, displayCol ]
+    outputs: [ fillIndex ]
+
+  transformation fillOrder:
+    source:      fillIndex
+    operation:   "fill cells with fillIndex < filled, in ascending fillIndex"
+    parameters:  "order = bottom-right -> left across a row, then up one row"
+    destination: cells
+    approximate: false
+
+  comparison:
+    prior:     CommonRailsSquare10
+    current:   CommonRailsSquare
+    reference: CommonRailsSquare10
+    norm:      "ratio of 21x21 (441) cells to the prior 10x10 (100) cells"
+
+  evidence:
+    status: specified
+    source: "CommonRails.sleela printSquare(); Java print-method.xml <square-progress><size>21</size>"
+    note:   "the 441-cell count is a specified geometry, not a measurement"
+
+  explanation:
+    subject: CommonRailsSquare
+    steps: [ "declare the square side (21 cells)",
+             "derive the cell count (side * side = 441)",
+             "map an integer percent to a filled-cell count",
+             "compute each display cell's fill index",
+             "fill in ascending fill index (bottom-right -> left -> up)" ]
+
+  todo colorizeTargets:
+    priority:    2
+    depends:     [ CommonRailsSquare ]
+    preconditions: "a target supports ANSI color escapes"
+    action:      "carry the filled/empty color distinction into the c and java targets"
+    expected:    "orange filled cells on white empty cells, matching the Java edition"
+    validation:  "visual diff of rendered squares across targets"
+    status:      planned
+
+target:
+  root            "out"
+  layout          mirror-source
+  java-version    21
+  package-root    "com.sleela.commonrails"
+  target-language sleela

@@ -1,0 +1,5 @@
+class SyntaxMissing {
+    void main() {
+        print("SLEELA-SYNTAX-DEFAULT-OK");
+    }
+}

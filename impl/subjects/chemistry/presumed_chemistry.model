@@ -1,0 +1,58 @@
+# Normed Presumed Chemistry (NPC)
+
+version: 1
+range: 0..24
+
+# Evidence classes
+observation: direct or explicitly supplied experimental observation
+measurement: quantified observation with units/provenance
+structure: candidate atom/molecule/material structure
+bond: bond existence or compatibility hypothesis
+valence: valence and charge-balance constraint
+geometry: spatial/structural compatibility
+electronic_state: electronic and polarity compatibility
+reaction_relationship: reaction/kinetic relationship
+compound_family_similarity: similarity to established chemical families
+thermodynamic_consequence: derived energy/equilibrium consequence
+astronomical_context: periodic, planetary, stellar, or cosmic context
+
+# Ratio norms
+ratio: numerator / denominator, with undefined ratios retained as uncertain
+similarity: bounded relational score, not identity
+signal: experimental or observational support for a candidate
+bond_ratio: relative compatibility among candidate bonds
+valence_ratio: relative compatibility with expected valence
+symmetry_ratio: agreement among independent structural relations
+
+# Causal symmetry ordering
+order:
+  1 observation
+  2 measurement
+  3 structure
+  4 bond
+  5 valence
+  6 geometry
+  7 electronic_state
+  8 reaction_relationship
+  9 compound_family_similarity
+  10 thermodynamic_consequence
+  11 astronomical_context
+
+# 0..24 inference interpretation
+level 0: raw subject; no useful evidence
+level 1..4: direct observations dominate
+level 5..8: elementary structural inference
+level 9..12: valence and bonding inference
+level 13..16: similarity and compound-family inference
+level 17..20: multi-property convergent inference
+level 21..23: strong convergent model support
+level 24: maximum model-supported inference; never experimental proof
+
+# Stochastic rule
+stochastic_evaluation: deterministic seeded perturbation may rank competing hypotheses
+stochastic_limit: perturbation cannot manufacture evidence or erase contradictory observation
+
+# Epistemic rule
+observed != derived != inferred
+inferred_property requires supporting ratios and explicit uncertainty
+high_score != scientific_certainty

@@ -1,0 +1,7 @@
+#sleela 1.1
+class Server { String name; int port; int running; void configure(String n,int p){name=n;port=p;} void start(){running=1;} void stop(){running=0;} }
+class Router { int routes; void addRoute(String path){routes=routes+1;} void removeRoute(String path){} }
+class Listener { String event; int active; void configure(String e){event=e;} void start(){active=1;} void stop(){active=0;} }
+class Window { String title; int visible; void configure(String t){title=t;} void show(){visible=1;} void hide(){visible=0;} }
+class Widget { String name; int enabled; void configure(String n){name=n;} void enable(){enabled=1;} void disable(){enabled=0;} }
+class File { String path; void open(String p){path=p;} void close(){} }

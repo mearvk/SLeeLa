@@ -1,0 +1,15 @@
+#nordshrift 1.0
+#sleela     1.3
+
+sheet semantic_invalid:
+  version 1.0.0
+  author "SLeeLa Test"
+  description "Negative semantic analysis fixture"
+
+source:
+  root "src"
+  glob "**/*.sleela"
+
+target:
+  root "out"
+  target-language sleela

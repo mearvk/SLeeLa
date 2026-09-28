@@ -1,0 +1,55 @@
+#sleela 1.2
+/**
+ * @title   Core Register (Tiers 2-4)
+ * @intent  Roll-call of the C execution core, the runtime services it stands
+ *          on, and the OS-abstraction layer beneath all of it.
+ * @see     JOURNEY.md (Tiers 2-4), impl/core/, runtime/
+ * @evidence DERIVED
+ */
+class CoreRegister {
+
+    int total = 0;
+
+    void entry(String group, String name, String definition) {
+        total = total + 1;
+        print("  [" + group + "] " + name + " -- " + definition);
+    }
+
+    void main() {
+        print("=== Tiers 2-4: Execution core, runtime, OS-abstraction ===");
+
+        print("");
+        print("Tier 2 -- Execution core (C): the stack VM");
+        entry("VM", "Stack VM", "operand stack, constant pool, frames, dispatch loop");
+        entry("VM", "slcore_exchange", "the stable C ABI: assemble+run a program");
+        entry("VM", "SLValue", "tagged value: null/int/double/boolean/string/struct");
+        entry("VM", "Threading", "spawn/join/lock/unlock/send/recv over OS threads");
+        entry("VM", "Sockets", "TCP as VM-local handles; never raw sockets");
+        entry("VM", "Files and pipes", "files, anon pipes, FIFOs as VM-local handles");
+        entry("VM", "Structs", "new, . access, references, structPack/structUnpack");
+        entry("VM", "Artifact I/O", "save/load a runnable compiled .sleela");
+
+        print("");
+        print("Tier 3 -- Runtime services (C)");
+        entry("RT", "Garbage collector", "mark-sweep: roots, accounting, destructors");
+        entry("RT", "Security supervisor", "role/class instance and byte quotas");
+        entry("RT", "Parameters", "tunable runtime parameters");
+        entry("RT", "SHA-256 gate", "fail-closed source verification before run");
+
+        print("");
+        print("Tier 4 -- OS-abstraction (one API, POSIX + Win32 backends)");
+        entry("OS", "Threads", "pthreads / Win32 CONDITION_VARIABLE");
+        entry("OS", "Network", "BSD sockets / Winsock2");
+        entry("OS", "I/O", "POSIX open+pipe / CreateFile+CreatePipe+named pipes");
+        entry("OS", "Path", "realpath / GetFullPathName");
+        entry("OS", "Terminal", "PTY / ConPTY");
+        entry("OS", "Library", "dlopen / LoadLibrary");
+        entry("OS", "Time", "clock_gettime / QueryPerformanceCounter");
+        entry("OS", "Events", "signal/event queue");
+        entry("OS", "Memory", "aligned alloc, page size, monotonic millis");
+        entry("OS", "Pixel terminal", "Phraign frame-based pixel surface");
+
+        print("");
+        print("  core-stack components registered = " + total);
+    }
+}

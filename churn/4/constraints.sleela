@@ -1,0 +1,103 @@
+#sleela 1.2
+// 4/constraints.sleela  --  the Constitution's congrains/limits applied to Areas.
+//
+// This is the shared constraint/theory layer carried by every churn relevance
+// set (/1 Longs, /2 Structures, /3 Facets, /4 Areas). It encodes the governing
+// constraints from the repository's Constitution (see ../../README.md, "The
+// Constitution", and SHEET.sheet's `congrains` / `limits` / `system` sections)
+// and applies them to this set's magnitude -- here, an Area's extent.
+//
+// Two system invariants are always in force (conducted methods sysdepth()/
+// degreemax() in the implementation):
+//     DepthLimit        : system depth <= 3024
+//     ComplexityDegree  : connection order <= 4
+//
+// A `Limit` is a bounding constraint from SHEET.sheet's `limits` section
+// (Bound / Threshold / Capacity ...). Here each Limit checks whether an Area's
+// extent honors its bound. Failing a Limit does not delete data; it records that
+// the value falls outside the stated constraint -- exactly as a congrain governs
+// an object without asserting a fact about the world.
+//
+// Discipline: constraints are stated so they can be checked and argued with.
+// A constraint is a modelling condition, not a claim about reality.
+import math;
+
+class Constraints {
+
+    // --- system invariants (Article I of the Constitution) ---
+    int depthLimit() { return 3024; }       // maximum system depth
+    int degreeMax() { return 4; }           // maximum complexity degree
+
+    // Article I -- the connect rule: connect(n) is permitted iff
+    //   n <= depthLimit() AND degree <= degreeMax().
+    boolean connectPermitted(int n, int degree) {
+        if (n < 0) { return false; }
+        if (n > depthLimit()) { return false; }
+        if (degree > degreeMax()) { return false; }
+        return true;
+    }
+
+    // --- Limit: Bound (an inclusive extent on a value) ---
+    boolean withinBound(double value, double lo, double hi) {
+        if (value < lo) { return false; }
+        if (value > hi) { return false; }
+        return true;
+    }
+
+    // --- Limit: Threshold (a boundary that changes behavior when crossed) ---
+    boolean belowThreshold(double value, double threshold) {
+        return value < threshold;
+    }
+
+    // --- Limit: Capacity (the maximum a container/resource may hold) ---
+    boolean withinCapacity(double used, double capacity) {
+        if (capacity < 0.0) { return false; }
+        return used <= capacity;
+    }
+
+    // Report whether an Area's extent honors a stated Bound [lo, hi].
+    void checkArea(String name, double extent, double lo, double hi) {
+        String verdict = "HOLDS";
+        if (!withinBound(extent, lo, hi)) { verdict = "VIOLATES"; }
+        print("  Bound[" + lo + ", " + hi + "] on " + name
+            + " (extent=" + extent + "): " + verdict);
+    }
+
+    void main() {
+        print("=== /4 constraints -- the Constitution applied to Areas ===");
+        print("System invariants: DepthLimit=" + depthLimit()
+            + ", ComplexityDegree<=" + degreeMax() + ".");
+        print("");
+
+        // The reference extent every geographic Area must fit within: Earth's
+        // land surface. This is the natural Capacity for a land Area.
+        double earthLand = 148940000.0; // km^2
+
+        print("[limits] geographic Areas must fit within Earth's land Capacity ("
+            + earthLand + " km^2)");
+        // Bound: every real land area is in [0, earthLand].
+        checkArea("Russia", 17098242.0, 0.0, earthLand);
+        checkArea("United States", 9833517.0, 0.0, earthLand);
+        checkArea("US land only", 9147420.0, 0.0, earthLand);
+        // A deliberately impossible extent, to show the Bound bites.
+        checkArea("hypothetical over-Earth region", 200000000.0, 0.0, earthLand);
+        print("");
+
+        print("[capacity] combined largest-country extents vs Earth land");
+        double combined = 17098242.0 + 9984670.0 + 9833517.0 + 9596960.0;
+        String cap = "WITHIN";
+        if (!withinCapacity(combined, earthLand)) { cap = "OVER" ; }
+        print("  top-4 countries combined = " + combined + " km^2 : " + cap
+            + " Earth land capacity");
+        print("");
+
+        print("[invariant] the connect rule (n<=3024, degree<=4)");
+        print("  connect(3024, 4) permitted : " + connectPermitted(3024, 4));
+        print("  connect(3025, 4) permitted : " + connectPermitted(3025, 4));
+        print("  connect(100, 5) permitted  : " + connectPermitted(100, 5));
+        print("");
+        print("Note: a constraint is a modelling condition to be checked and");
+        print("argued with, not a claim about reality. Failing a Limit records");
+        print("that a value falls outside a stated bound; it changes no data.");
+    }
+}

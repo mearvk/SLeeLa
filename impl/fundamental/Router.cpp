@@ -1,0 +1,2 @@
+#include "Router.hpp"
+namespace sleela::fundamental { void Router::route(std::string m,std::string p,std::function<std::string(const std::string&)>f){routes_[m+" "+p]=std::move(f);} std::string Router::dispatch(const std::string&m,const std::string&p,const std::string&b)const{auto i=routes_.find(m+" "+p);return i==routes_.end()?std::string{}:i->second(b);} }

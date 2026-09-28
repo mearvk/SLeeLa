@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>SLeeLa Nordshrift API</title>
+</head>
+<body>
+<h1>SLeeLa Nordshrift API</h1>
+<p><strong>Purpose:</strong> Nordshrift is the SLeeLa transpiler driver and semantic coordination layer. This API documents how a <code>.sst</code> sheet can carry the complete SLeeLa architectural input-object vocabulary.</p>
+
+<h2>Architecture Input Categories</h2>
+<ul>
+<li><code>core</code> — memory, errors, strings, types, time, logging, configuration.</li>
+<li><code>io</code> — streams, buffers, console, files, serialization.</li>
+<li><code>system</code> — processes, threads, environment, permissions, platform facilities.</li>
+<li><code>network</code> — sockets, DNS, TCP, UDP, TLS, HTTP.</li>
+<li><code>application</code> — GUI, web, email, database, application services.</li>
+<li><code>data</code> — analytics, XML, JSON, records, structured data.</li>
+<li><code>science</code> — mathematics, physics, chemistry, analytics, and future disciplines.</li>
+<li><code>security</code> — hashing, cryptography, certificates, credentials, integrity.</li>
+<li><code>deployment</code> — configuration, installation, service lifecycle, health, deployment coordination.</li>
+</ul>
+
+<h2>Generic Input Object</h2>
+<p>The public semantic model is represented by <code>input_object.h</code> and <code>input_object.cpp</code>.</p>
+<pre>
+object &lt;category&gt; &lt;identity&gt;:
+  type &lt;type&gt;
+  source &lt;source&gt;
+  target &lt;target&gt;
+  value &lt;value&gt;
+  inputs: [input, ...]
+  outputs: [output, ...]
+  property &lt;name&gt; &lt;value&gt;
+</pre>
+
+<h2>InputObject Model</h2>
+<pre>
+enum class InputObjectCategory {
+    Core, IO, System, Network, Application,
+    Data, Science, Security, Deployment
+};
+
+struct InputObject {
+    InputObjectCategory category;
+    std::string identity;
+    std::string type;
+    std::string source;
+    std::string target;
+    std::string value;
+    std::vector&lt;std::string&gt; inputs;
+    std::vector&lt;std::string&gt; outputs;
+    std::map&lt;std::string, std::string&gt; properties;
+    int line;
+};
+</pre>
+
+<h2>Validation Contract</h2>
+<ul>
+<li>Identity is required and limited to 256 characters.</li>
+<li>Type is limited to 128 characters.</li>
+<li>Source and target are limited to 4096 characters each.</li>
+<li>Inputs, outputs, and properties are each limited to 64 members.</li>
+<li>Unknown categories are rejected.</li>
+<li>Unknown object members are rejected.</li>
+<li>Malformed object declarations are rejected by the parser.</li>
+</ul>
+
+<h2>Relationship to SLeeLa APIs</h2>
+<p>The generic object layer provides a common input representation for the broader SLeeLa architecture. It complements specialized APIs rather than replacing them.</p>
+<ul>
+<li>Core → foundational runtime APIs.</li>
+<li>IO → file, stream, console, and serialization APIs.</li>
+<li>System → process, thread, environment, permission, and platform APIs.</li>
+<li>Network → socket, DNS, TLS, HTTP, POST, listener, and router APIs.</li>
+<li>Application → GUI, web-server, email, and database APIs.</li>
+<li>Data → data analytics, XML, JSON, and record APIs.</li>
+<li>Science → math, physics, chemistry, and data-analysis disciplines.</li>
+<li>Security → hashing, cryptography, certificates, credentials, and integrity APIs.</li>
+<li>Deployment → web/database/application deployment and health APIs.</li>
+</ul>
+
+<h2>Existing Specialized Nordshrift Input</h2>
+<p>The generic <code>object</code> model complements the existing <code>network</code>, <code>finance</code>, <code>reach</code>, <code>measure</code>, and <code>subject</code> structures. Specialized structures retain their stronger domain-specific validation.</p>
+
+<h2>Execution Boundary</h2>
+<p>An input object is a validated declaration. Declaring an object does not implicitly open a socket, execute a process, modify a file, send email, connect to a database, or deploy a service. Actual side effects remain explicit operations behind their corresponding SLeeLa APIs and platform adapters.</p>
+
+<h2>Semantic Subject Model</h2>
+<p>Nordshrift also exposes the shared semantic chain:</p>
+<p><strong>Subject → Quantity → Unit → Assumption → Relation → Formula → Transformation → Result → ComparativeNorm → Evidence → Explanation → Validation</strong></p>
+
+<h2>Build Integration</h2>
+<p>The Nordshrift build includes the generic input-object implementation. The source files are located under <code>impl/nordshrift/</code>.</p>
+<pre>
+input_object.h
+input_object.cpp
+INPUT-OBJECTS.md
+examples/input-objects.sst
+</pre>
+
+<h2>Example</h2>
+<p>See <a href="../impl/nordshrift/examples/input-objects.sst">the complete input-object example</a> and <a href="../impl/nordshrift/INPUT-OBJECTS.md">the input-object specification</a>.</p>
+
+<h2>Related API Documentation</h2>
+<ul>
+<li><a href="../FOUNDATIONAL-API.html">Foundational APIs</a></li>
+<li><a href="bodi/API.html">BODI XML API</a></li>
+<li><a href="data-analytics/API.html">Data Analytics API</a></li>
+<li><a href="email/API.html">Email API</a></li>
+<li><a href="posting/API.html">Posting API</a></li>
+<li><a href="webserver/API.html">Web Server API</a></li>
+<li><a href="database/API.html">Database API</a></li>
+</ul>
+</body>
+</html>

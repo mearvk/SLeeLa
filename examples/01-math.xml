@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bodi version="1">
+  <project id="example-math-001" kind="science" title="Basic Mathematics"/>
+  <science model="native-math">
+    <discipline name="math">
+      <operation name="sqrt" sequence="001"><arg value="144"/></operation>
+      <operation name="pow" sequence="002"><arg value="2"/><arg value="8"/></operation>
+      <operation name="hypot" sequence="003"><arg value="3"/><arg value="4"/></operation>
+    </discipline>
+  </science>
+</bodi>

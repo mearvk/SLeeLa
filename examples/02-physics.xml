@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bodi version="1">
+  <project id="example-physics-001" kind="science" title="Basic Physics"/>
+  <science model="native-physics">
+    <discipline name="physics">
+      <operation name="velocity" sequence="001"><arg value="100"/><arg value="5"/></operation>
+      <operation name="force" sequence="002"><arg value="10"/><arg value="9.80665"/></operation>
+      <operation name="kinetic_energy" sequence="003"><arg value="2"/><arg value="20"/></operation>
+      <operation name="electric_power" sequence="004"><arg value="120"/><arg value="2"/></operation>
+    </discipline>
+  </science>
+</bodi>

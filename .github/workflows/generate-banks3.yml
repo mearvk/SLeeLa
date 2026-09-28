@@ -1,0 +1,40 @@
+name: Generate BANKS3
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'BANKS.md'
+      - 'BANKS2.md'
+      - 'tools/banking/generate_banks3.py'
+      - '.github/workflows/generate-banks3.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Generate combined 391-row BANKS3
+        run: python3 tools/banking/generate_banks3.py
+
+      - name: Commit BANKS3
+        run: |
+          if git diff --quiet -- BANKS3.md; then
+            echo 'BANKS3.md is already current.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add BANKS3.md
+          git commit -m 'Generate combined 391-row BANKS3 table'
+          git push

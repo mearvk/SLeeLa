@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bodi version="1">
+  <project id="example-router-001" kind="router" title="Basic POST Router"/>
+  <router>
+    <route sequence="001" method="POST" path="/api/example" target="/handlers/example"/>
+    <route sequence="002" method="POST" path="/api/email" target="/handlers/email"/>
+  </router>
+</bodi>

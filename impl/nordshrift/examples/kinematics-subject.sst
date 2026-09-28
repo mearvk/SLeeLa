@@ -1,0 +1,89 @@
+#nordshrift 1.0
+#sleela     1.0
+
+/// A Nordshrift 2.0 semantic sheet.
+///
+/// Declares an explicit physics subject using the shared semantic layer:
+/// Subject -> Quantity -> Unit -> Assumption -> Relation -> Formula ->
+/// Transformation -> Result -> ComparativeNorm -> Evidence -> Explanation ->
+/// Validation. The subject records what is modeled, its assumptions, and how a
+/// result was derived, so a computed value is not silently promoted to an
+/// observation.
+sheet kinematics-subject:
+  version      1.0.0
+  author       "Sleela Design Council"
+  description  "Explicit projectile-range subject with provenance and a work plan."
+
+source:
+  root  "src"
+  glob  "**/*.sleela"
+
+subject ProjectileRange:
+  domain: physics
+  depends: [ math ]
+
+  quantity range:
+    value:     "v0^2 * sin(2*theta) / g"
+    unit:      meter
+    dimension: length
+    domain:    "0 <= theta <= pi/2"
+    status:    modeled
+
+  quantity g:
+    value:  "9.80665"
+    unit:   "meter/second^2"
+    status: specified
+
+  assumption noDrag:
+    statement: "air resistance is neglected"
+    scope:     "low-speed, short-range trajectories"
+    source:    "modeling choice"
+    status:    assumed
+
+  relation rangeFormula:
+    formula: "R = v0^2 * sin(2*theta) / g"
+    inputs:  [ v0, theta, g ]
+    outputs: [ range ]
+
+  transformation deriveRange:
+    source:      rangeFormula
+    operation:   "evaluate at theta = 45deg"
+    parameters:  "theta=pi/4"
+    destination: range
+    approximate: false
+
+  comparison:
+    prior:     ProjectileRangeVacuumBaseline
+    current:   ProjectileRange
+    reference: ProjectileRangeVacuumBaseline
+    norm:      "ratio of modeled range to ideal vacuum range"
+
+  evidence:
+    status: modeled
+    source: "closed-form kinematics under the noDrag assumption"
+    note:   "result is a model output, not a measurement"
+
+  explanation:
+    subject: ProjectileRange
+    steps: [ "identify subject and domain",
+             "state quantities and units",
+             "declare the noDrag assumption",
+             "apply the range relation",
+             "evaluate the transformation",
+             "record evidence status as modeled" ]
+
+  todo validateAgainstMeasurement:
+    priority:    1
+    depends:     [ ProjectileRange ]
+    preconditions: "a measured trajectory data set is available"
+    action:      "compare modeled range to observed range"
+    expected:    "relative error within stated tolerance"
+    validation:  "residual analysis over the data set"
+    status:      planned
+
+target:
+  root            "out"
+  layout          mirror-source
+  java-version    21
+  package-root    "com.example.kinematics"
+  target-language sleela

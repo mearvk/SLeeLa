@@ -1,0 +1,7 @@
+#sleela 1.1
+class NetworkEndpoint { String host; int port; String protocol; void configure(String h,int p,String pr){host=h;port=p;protocol=pr;} }
+class UdpTransport { NetworkEndpoint endpoint; int openState; void open(NetworkEndpoint e){endpoint=e;openState=1;} void close(){openState=0;} }
+class TcpTransport { NetworkEndpoint endpoint; int openState; void connect(NetworkEndpoint e){endpoint=e;openState=1;} void close(){openState=0;} }
+class DnsResolver { String name; String address; void resolve(String n){name=n;} }
+class SecureChannel { String protocol; int active; void configure(String p){protocol=p;} void open(){active=1;} void close(){active=0;} }
+class Credential { String identity; String kind; void configure(String i,String k){identity=i;kind=k;} }

@@ -1,0 +1,45 @@
+// threads.sleela -- demonstrates the Sleela threading built-ins.
+//
+// 8 worker threads each do some work, guard a shared global with lock 0, and
+// announce completion by sending a 2-tuple onto mailbox slot 1. main() spawns
+// them, drains the 8 completion tuples, joins, and prints the shared total.
+//
+// Built-ins: spawn(method), join(), lock(n), unlock(n), send(slot,val), recv(slot).
+
+class Threads {
+
+    // A shared counter lives in a global; the lock keeps increments race-free.
+    int total = 0;
+
+    void worker() {
+        // do a little arithmetic so the threads actually overlap
+        int s = 0;
+        int k = 0;
+        while (k < 1000) {
+            s = s + k;
+            k = k + 1;
+        }
+        lock(0);
+        total = total + 1;      // guarded increment
+        unlock(0);
+        send(1, s);             // announce completion on the burble line (slot 1)
+    }
+
+    void main() {
+        int spawned = 0;
+        while (spawned < 8) {
+            spawn(worker);      // start worker on a new thread (up to 128)
+            spawned = spawned + 1;
+        }
+
+        // Wait for all 8 to report in via the mailbox.
+        int got = 0;
+        while (got < 8) {
+            int v = recv(1);    // blocks until a worker sends
+            got = got + 1;
+        }
+
+        join();                 // make sure every thread has finished
+        print("workers done = " + total);
+    }
+}

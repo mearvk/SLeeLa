@@ -1,0 +1,9 @@
+# Kbuild for the SLeeLa HTTP 3.0 Station kernel module (J-STA-0001 §9).
+#
+# The module compiles the shared Station classifier/session logic directly in
+# (via #include in sleela_station.c), so only one object is listed here.
+obj-m += sleela_station.o
+
+# Allow the classifier/session headers in ../station to be found. The .c files
+# are #included, not compiled separately, so no extra objects are needed.
+ccflags-y += -I$(src)/../station

@@ -1,0 +1,40 @@
+#sleela 1.2
+/**
+ * @title   Front-end Register (Tier 1)
+ * @intent  Roll-call of the C++ front end: the components that turn a Wrapper
+ *          into core bytecode, in the order they run.
+ * @see     JOURNEY.md (Tier 1), impl/frontend/
+ * @evidence DERIVED
+ */
+class FrontEndRegister {
+
+    int total = 0;
+
+    /// Print and count one front-end stage in pipeline order.
+    void stage(String name, String consumes, String produces, String definition) {
+        total = total + 1;
+        print("  " + total + ". " + name + "  (" + consumes + " -> " + produces + ")");
+        print("        " + definition);
+    }
+
+    void main() {
+        print("=== Tier 1: Front end (C++) -- source becomes bytecode ===");
+        print("");
+        stage("Version resolver", "source", "syntax version",
+              "resolve/enforce the #sleela pragma BEFORE parsing; reject out-of-range");
+        stage("Lexer", "text", "tokens",
+              "the Java-like tokenizer; strips comments including SleelaDoc");
+        stage("Parser", "tokens", "AST",
+              "recursive-descent parse of classes/structs/methods/statements/expressions");
+        stage("AST", "-", "program",
+              "the abstract syntax tree node definitions -- the in-memory program");
+        stage("Native lowering", "AST", "AST+",
+              "rewrite module.fn calls (e.g. math.sqrt); validate imports/deps");
+        stage("Compiler", "AST", "opcodes",
+              "declare structs/globals, compute locals, emit methods, gate by version");
+        stage("Driver (sleela CLI)", "argv", "action",
+              "compile/run/check/xclass/version/defender; drives the SHA-256 gate");
+        print("");
+        print("  front-end components registered = " + total);
+    }
+}

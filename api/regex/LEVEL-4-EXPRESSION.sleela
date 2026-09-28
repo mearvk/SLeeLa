@@ -1,0 +1,30 @@
+#sleela 1.3
+// SLeeLa Regex API — Level 4: Expression
+// Regex API 1.0.0 draft.
+// Teaching rule: use advanced expression power only when the question needs it.
+
+class RegexLevel4Expression {
+    void main() {
+        // A compiled pattern can be reused.
+        int year = regex("exact digit{4}");
+        print(regexExact(year, "2026"));
+        regexClose(year);
+
+        // Anchors state that the expression must begin/end at the boundary.
+        print(match("2026", "start digit{4} end"));
+
+        // Unicode properties are explicit at the advanced level.
+        print(match("SLeeLa", "start property("Letter")+ end"));
+
+        // Named captures make structured text useful to a program.
+        print(match(
+            "user-2026",
+            "start group(capture("name", word+), "-", capture("year", digit{4})) end"
+        ));
+    }
+}
+
+// Level 4 is the formal expression layer.
+// It is not the recommended starting point for a new learner.
+// Advanced assertions, normalization modes, Unicode property profiles,
+// and resource limits remain part of the implementation contract.

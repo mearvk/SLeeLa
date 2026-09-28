@@ -1,0 +1,22 @@
+system Email.AdminMonitor {
+  role admin
+
+  observe Email.Server.queue
+  observe Email.Server.delivered_count
+  observe Email.Server.mailboxes
+
+  on inspect {
+    report queue
+    report delivered_count
+  }
+
+  on mailbox.audit(user) {
+    authorize admin
+    inspect Email.Server.mailboxes[user]
+  }
+
+  on pause_delivery {
+    authorize admin
+    set Email.Server.delivery_enabled = false
+  }
+}

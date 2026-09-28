@@ -1,0 +1,3 @@
+#include "Directory.hpp"
+#include <filesystem>
+namespace sleela::fundamental { Directory::Directory(std::string p):path_(std::move(p)){} bool Directory::exists()const{return std::filesystem::is_directory(path_);} bool Directory::create()const{std::error_code e;return std::filesystem::create_directories(path_,e)||!e;} std::vector<std::string> Directory::entries()const{std::vector<std::string>v;if(!exists())return v;for(auto&e:std::filesystem::directory_iterator(path_))v.push_back(e.path().string());return v;} }

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Jakarta Servlet descriptor for the SLeeLa HTTP 3.0 module.
+  Maps SleelaH3Servlet at /sleela/h3 so Tomcat serves it over HTTP/1.1 and
+  HTTP/2 (HTTP/2 negotiated by the container connector; see server.xml).
+-->
+<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee
+             https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
+         version="6.0">
+
+  <display-name>SLeeLa HTTP 3.0 module</display-name>
+
+  <!--
+    NOTE: SleelaH3Servlet has a constructor dependency (the H3Pipeline sink),
+    so it is normally registered programmatically from a ServletContextListener
+    that wires the pipeline to the SLeeLa runtime. This declarative mapping is
+    provided for containers that instantiate via a no-arg factory / CDI producer
+    that supplies the pipeline. Adjust to your wiring strategy.
+  -->
+  <servlet>
+    <servlet-name>sleela-h3</servlet-name>
+    <servlet-class>com.mearvk.sleela.connector.http.SleelaH3Servlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>sleela-h3</servlet-name>
+    <url-pattern>/sleela/h3</url-pattern>
+  </servlet-mapping>
+
+</web-app>

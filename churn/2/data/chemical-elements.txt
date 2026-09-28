@@ -1,0 +1,28 @@
+# dataset: chemical-elements
+# The first 20 chemical elements as Structures: atomic number, symbol, name,
+# standard atomic weight (u), and period.
+# Provenance: IUPAC standard atomic weights (2021) as published; periodic table
+#   is public-domain scientific fact. Cross-referenced with NIST. Retrieved 2026-09.
+# Standard atomic weights are conventional values; some elements (marked ~) have
+# interval/abridged values here rounded for a compact structure table.
+# format: Z  symbol  name        atomic_weight_u  period
+1   H   Hydrogen     1.008    1
+2   He  Helium       4.0026   1
+3   Li  Lithium      6.94     2
+4   Be  Beryllium    9.0122   2
+5   B   Boron       10.81     2
+6   C   Carbon      12.011    2
+7   N   Nitrogen    14.007    2
+8   O   Oxygen      15.999    2
+9   F   Fluorine    18.998    2
+10  Ne  Neon        20.180    2
+11  Na  Sodium      22.990    3
+12  Mg  Magnesium   24.305    3
+13  Al  Aluminium   26.982    3
+14  Si  Silicon     28.085    3
+15  P   Phosphorus  30.974    3
+16  S   Sulfur      32.06     3
+17  Cl  Chlorine    35.45     3
+18  Ar  Argon       39.95     3
+19  K   Potassium   39.098    4
+20  Ca  Calcium     40.078    4

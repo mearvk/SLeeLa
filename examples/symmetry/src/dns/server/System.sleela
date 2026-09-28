@@ -1,0 +1,22 @@
+system DNS.Server {
+  role server
+
+  state zone_data
+  state listening
+  state request_count
+
+  on start {
+    listening = true
+    request_count = 0
+  }
+
+  on dns.query(request) {
+    request_count = request_count + 1
+    resolve request.name using zone_data
+    reply dns.response
+  }
+
+  on stop {
+    listening = false
+  }
+}

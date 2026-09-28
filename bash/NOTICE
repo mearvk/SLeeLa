@@ -1,0 +1,51 @@
+SleelaTerminal(TM)
+==================
+
+SleelaTerminal(TM) is a SLeeLa product. The SleelaTerminal(TM) name, the
+SLeeLa-authored product layers, and their branding are the authorship of the
+SLeeLa project.
+
+SLeeLa-authored components in this directory
+--------------------------------------------
+
+The following files in bash/ are SLeeLa's own work and carry the
+SleelaTerminal(TM) / Phraign(TM) identity:
+
+  - PHRAIGN.md, PIXEL_TERMINAL.md, SLEELA_BASH_HANDSHAKE.md   (Phraign specs)
+  - pixel-terminal.sh, pixel_terminal.hpp, pixel_terminal.cpp,
+    pixel_terminal_smoke.cpp                                  (Phraign layer)
+  - model-3D/                                                 (Phraign City 3D)
+  - sleelaterminal.h, sleelaterminal.sh, SLEELATERMINAL.md    (product identity)
+  - NOTICE                                                    (this file)
+
+These are the parts SleelaTerminal(TM) authors and to which the product
+identity applies.
+
+Incorporated component: GNU Bash
+--------------------------------
+
+SleelaTerminal(TM) is BUILT ON GNU Bash. GNU Bash is free software:
+
+  GNU Bash
+  Copyright (C) The Free Software Foundation, Inc.
+  Licensed under the GNU General Public License (GPL).
+
+The vendored GNU Bash sources in this directory remain the work of the Free
+Software Foundation and the Bash contributors. Their license text (COPYING),
+copyright notices, AUTHORS, version strings, and startup banner are retained
+UNCHANGED. SleelaTerminal(TM) does not claim authorship of GNU Bash and does not
+alter, remove, or reattribute its license, copyright, or version identity.
+
+Boundary
+--------
+
+  - SleelaTerminal(TM) branding applies ONLY to the SLeeLa-authored components
+    listed above.
+  - The GNU Bash engine is credited to the Free Software Foundation under the
+    GPL, honestly and without modification.
+  - A product may be branded SleelaTerminal(TM) while its underlying shell
+    engine remains, and is acknowledged as, GNU Bash (free software, GPL,
+    (C) Free Software Foundation).
+
+This is the standard, license-compliant way to ship a branded product built on
+free software: brand what you authored; attribute what you incorporated.
