@@ -1,7 +1,0 @@
-// SLeeLa Audio mixing contract.
-class AudioMixer {
-  method add(input: AudioInput): Bool;
-  method setControls(controls: AudioControls): Bool;
-  method render(outputPath: String): Bool;
-  method reset(): Void;
-}
