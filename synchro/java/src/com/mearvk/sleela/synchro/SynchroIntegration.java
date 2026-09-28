@@ -30,7 +30,6 @@ public final class SynchroIntegration {
 
     public SlaReporter.Result evaluate(double thresholdMs, double percentile)
         throws IOException {
-        return SlaReporter.evaluate(dispatcher.run(0, 0),
-                                    thresholdMs, percentile);
+        return SlaReporter.evaluate(dispatcher.stats(), thresholdMs, percentile);
     }
 }
