@@ -1,0 +1,2 @@
+#include "Event.hpp"
+namespace sleela::fundamental { Event::Event(std::string n,std::string p):name_(std::move(n)),payload_(std::move(p)){} const std::string& Event::name()const noexcept{return name_;} const std::string& Event::payload()const noexcept{return payload_;} void Event::set(const std::string&k,const std::string&v){fields_[k]=v;} std::string Event::get(const std::string&k)const{auto i=fields_.find(k);return i==fields_.end()?std::string{}:i->second;} }

@@ -1,0 +1,2 @@
+#include "Session.hpp"
+namespace sleela::fundamental { Session::Session(std::string i):id_(std::move(i)){} const std::string& Session::id()const noexcept{return id_;} void Session::close()noexcept{open_=false;} bool Session::open()const noexcept{return open_;} }

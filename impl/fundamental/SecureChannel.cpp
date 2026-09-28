@@ -1,0 +1,2 @@
+#include "SecureChannel.hpp"
+namespace sleela::fundamental { void SecureChannel::set_peer_name(std::string p){peer_=std::move(p);} const std::string& SecureChannel::peer_name()const noexcept{return peer_;} bool SecureChannel::ready()const noexcept{return transport_&&transport_->connected()&&!peer_.empty();} }

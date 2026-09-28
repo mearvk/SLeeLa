@@ -1,0 +1,3 @@
+#pragma once
+#include "Transport.hpp"
+namespace sleela::fundamental { class UdpTransport final:public Transport { long long handle_{-1}; public: ~UdpTransport()override; bool connect(const NetworkEndpoint&)override; std::ptrdiff_t send(const std::uint8_t*,std::size_t)override; std::ptrdiff_t receive(std::uint8_t*,std::size_t)override; void close()noexcept override; bool connected()const noexcept override; }; }
