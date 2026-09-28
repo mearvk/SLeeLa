@@ -135,6 +135,10 @@
       "sha256": "b8efab52004533bbcbf753180a439153693a37c30c0ea17f6da7831983aecc8c"
     },
     {
+      "path": "api/COMMON_INCLUDED_FUNDAMENTAL.md",
+      "sha256": "b80f49d7b4d5404616901951d082a6a59a0f60a1e09d8851d81c80710a051cc1"
+    },
+    {
       "path": "api/FOUNDATIONAL-API.html",
       "sha256": "692ec64af370d5f061c99e2b39c257dfaedc2453e644b488191ef4a041e0e379"
     },
@@ -4635,6 +4639,22 @@
       "sha256": "e9b0b5790ed8acb12a8670f63a15dabbcc66876308badd4f11956a3e5ad42a12"
     },
     {
+      "path": "impl/fundamental/Clock.cpp",
+      "sha256": "cdda509ba6fed96459fa41860d28dce76d415fea6c4d227da7d00c498aeef19d"
+    },
+    {
+      "path": "impl/fundamental/Clock.hpp",
+      "sha256": "20b0bba5f37a057aac7ad39e8a1129cd2d826252baacf8555e882214f0096810"
+    },
+    {
+      "path": "impl/fundamental/Condition.cpp",
+      "sha256": "dab5d9b5538233bc175b880ea974d1fde95bd3bef73bc6e66773ce4cc8a4e1f0"
+    },
+    {
+      "path": "impl/fundamental/Condition.hpp",
+      "sha256": "dde9a5ec4c486503a45b890eb5409a5238555a722780eec7f7179d689373b946"
+    },
+    {
       "path": "impl/fundamental/Configuration.cpp",
       "sha256": "6735653f51502aca0a383a1613940a7a5b501be04f5f8705e37825eed977cbcb"
     },
@@ -4681,6 +4701,14 @@
     {
       "path": "impl/fundamental/Input.hpp",
       "sha256": "f790d79578f9c14203ed3023bd2bcb940ba9450e2322b478865de7b65a963123"
+    },
+    {
+      "path": "impl/fundamental/Mutex.cpp",
+      "sha256": "b9e6ef5a3372fb1b03ae7ab710fbec01c831e4c9e6d1578fd9dad77558a52351"
+    },
+    {
+      "path": "impl/fundamental/Mutex.hpp",
+      "sha256": "380ed86acf1645b5b638c753e1ee0bb989b7295a6e450eb6728f83f7288ca6ef"
     },
     {
       "path": "impl/fundamental/Name.cpp",
@@ -4753,6 +4781,22 @@
     {
       "path": "impl/fundamental/Status.hpp",
       "sha256": "9e858cd5248f263b0308aba9c01c8eb331f888aea11e9d5e1f62df9c1fe7c547"
+    },
+    {
+      "path": "impl/fundamental/Thread.cpp",
+      "sha256": "92b56fb772a573c30c7e9664e37f0c7950e12f8ff399587873970a7d2bd1e9b7"
+    },
+    {
+      "path": "impl/fundamental/Thread.hpp",
+      "sha256": "b4a055c95eeb11f3b03de099ec18c39f71fea7b771d869dcf28c64a978cc890c"
+    },
+    {
+      "path": "impl/fundamental/Timer.cpp",
+      "sha256": "19a06478dcef8e326f23417453497dfda80c90fdbb5f5dcbf98dacdc74d8cc3d"
+    },
+    {
+      "path": "impl/fundamental/Timer.hpp",
+      "sha256": "632db3fa8e06d5357247e3dc436cb5e3a4837454ad4ba0ba48563a468a2e536b"
     },
     {
       "path": "impl/fundamental/TypeDescriptor.cpp",
