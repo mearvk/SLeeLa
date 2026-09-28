@@ -3,30 +3,30 @@
 Version: 1.0.0-dev
 
 The regex subsystem is built from its authoritative native implementation in
-`make/regex/`. The SLeeLa library objects under `lib/regex/` are the language
+`regex/`. The SLeeLa library objects under `lib/regex/` are the language
 surface and object model; they are not a second native implementation.
 
 ## Local build
 
 From the repository root:
 
-    make -C make/regex test
+    make -C regex test
 
 C only:
 
-    make -C make/regex c
+    make -C regex c
 
 C++ only:
 
-    make -C make/regex cpp
+    make -C regex cpp
 
 Clean:
 
-    make -C make/regex clean
+    make -C regex clean
 
 The generated binaries are disposable and remain under:
 
-    make/regex/build/
+    regex/build/
 
 ## Toolchains
 
@@ -40,11 +40,11 @@ regex implementation.
 
 ## Build boundary
 
-- Native source of truth: `make/regex/src/`
-- Public native interfaces: `make/regex/include/`
-- Native tests: `make/regex/tests/`
+- Native source of truth: `regex/src/`
+- Public native interfaces: `regex/include/`
+- Native tests: `regex/tests/`
 - SLeeLa language objects: `lib/regex/`
-- Disposable output: `make/regex/build/`
+- Disposable output: `regex/build/`
 
 Do not copy the native implementation into `lib/regex/`; that directory
 remains the SLeeLa-language representation and integration surface.
@@ -53,7 +53,7 @@ remains the SLeeLa-language representation and integration surface.
 
 The regex build should be invoked as a focused native conformance target in CI:
 
-    make -C make/regex test
+    make -C regex test
 
 The test target covers compilation, full matching, searching, captures,
 replacement, splitting, escaping, and invalid-pattern diagnostics.

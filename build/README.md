@@ -6,17 +6,17 @@ is disposable.
 
 ## Regex subsystem
 
-The SLeeLa Regex native implementation is under `make/regex/`.
+The SLeeLa Regex native implementation is under `regex/`.
 
 From the repository root:
 
-    make -C make/regex test
+    make -C regex test
 
 Focused targets:
 
-    make -C make/regex c
-    make -C make/regex cpp
-    make -C make/regex clean
+    make -C regex c
+    make -C regex cpp
+    make -C regex clean
 
 See `build/REGEX.md` for the build boundary, toolchain notes, output path,
 and CI conformance target.
