@@ -1,0 +1,2 @@
+#include "Result.hpp"
+namespace sleela::fundamental { Result::Result()=default; Result::Result(std::string value):value_(std::move(value)){} const std::string& Result::value() const noexcept{return value_;} void Result::setValue(std::string value){value_=std::move(value);} bool Result::empty() const noexcept{return value_.empty();} const char* Result::responsibility() const noexcept{return "success/failure transport";} }

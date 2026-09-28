@@ -1,0 +1,2 @@
+#include "Option.hpp"
+namespace sleela::fundamental { Option::Option()=default; Option::Option(std::string value):value_(std::move(value)){} const std::string& Option::value() const noexcept{return value_;} void Option::setValue(std::string value){value_=std::move(value);} bool Option::empty() const noexcept{return value_.empty();} const char* Option::responsibility() const noexcept{return "optional value transport";} }
