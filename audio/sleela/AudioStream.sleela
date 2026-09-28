@@ -1,0 +1,11 @@
+#sleela 1.3
+// Stream contract. Device handles remain VM-safe values; OS stream backends are separate.
+class AudioStream {
+  static bool open(String platform, int sampleRate, int channels) {
+    return platform == audioPlatform() && sampleRate > 0 && channels > 0;
+  }
+
+  static bool start(bool opened) { return opened; }
+  static bool stop(bool running) { return running; }
+  static bool close() { return true; }
+}
