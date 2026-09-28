@@ -5451,8 +5451,20 @@
       "sha256": "573fdeea518533fbf85f116a633b39261092b0a11cd6d04ade18b76bdc8668c1"
     },
     {
+      "path": "server-edition/LOGGING-AND-HEURISTICS.md",
+      "sha256": "8c1c0e7f048b599f655f128886f7bf0e45835f2f30bddc37173b4af380aeabd1"
+    },
+    {
       "path": "server-edition/PORT-AWARENESS.md",
       "sha256": "9b46e700a1ea1fa5ecf040fa6faae2588ac8cff47e58ffe79d0ea02ac35d2748"
+    },
+    {
+      "path": "server-edition/README.md",
+      "sha256": "a45b35bc2d5d1367f4441dc3ba5f98807fc7cd3a069e66eb3897263944e53b98"
+    },
+    {
+      "path": "server-edition/WIRE-PROTOCOL.md",
+      "sha256": "dafbca81b7398434ef166fd3e147b0877d5ce0296ec267aa3798055c410bbd21"
     },
     {
       "path": "server-edition/http/README.md",
@@ -5597,6 +5609,18 @@
     {
       "path": "server-edition/port-awareness/traffic-log.sh",
       "sha256": "956327e0ea6f6fa9ecc9ca0cb90bbd6a9b77f0ad1a2464c5f115891d9f8c3c08"
+    },
+    {
+      "path": "server-edition/server.cpp",
+      "sha256": "8d94e34c5a9c658da1d1ae4d063998f10127afbbefa6d302f03cd6e924016458"
+    },
+    {
+      "path": "server-edition/sleela_server.cpp",
+      "sha256": "eba225513a686c27c2ead801f60a469860887297a32431ada8a1146c2aa77fd4"
+    },
+    {
+      "path": "server-edition/sleela_server.hpp",
+      "sha256": "a3d050d0d0ff13c6fbb86cfaf2383a2d847c97f88538c760de6197346ca99991"
     },
     {
       "path": "sleela-terminal/arith.cpp",
