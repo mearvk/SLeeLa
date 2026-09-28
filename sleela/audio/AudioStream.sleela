@@ -1,0 +1,10 @@
+// SLeeLa Audio stream/system boundary.
+class AudioStream {
+  property device: AudioDevice;
+  property sampleRate: Int;
+  property channels: Int;
+  method open(): Bool;
+  method start(): Bool;
+  method stop(): Void;
+  method close(): Void;
+}
