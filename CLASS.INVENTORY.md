@@ -5,7 +5,7 @@
 **Inventory Date:** 2026-09-28  
 **Known Source Files Explicitly Indexed: 83**
 **Repository-wide SLeeLa source files (verified): 229 on `master`; 238 on `main`**
-**Standard-library front-end objects in `/lib`: 261**
+**Standard-library front-end objects in `/lib`: 245**
 **Standard-library target: 2,048 objects**  
 **Unique Foundational C++ Class Files (contract-verified): 50**
 
@@ -250,4 +250,4 @@ The repository-wide declaration count should replace the foundational-only count
 
 ## Standard Library Expansion 0.2
 
-The `/lib` front-end has expanded from 69 to **261 SLeeLa object source files**. The 192-object expansion covers runtime, reflection, memory, process/threading, filesystem, cryptography, database, HTTP, compiler, debugger, and UI. The long-term target remains **2,048 objects**.
+The `/lib` front-end now contains **245 SLeeLa object source files**. The expansion introduced 192 requested object definitions, with 16 paths overlapping existing library source files; therefore the net repository addition is 176 unique `.sleela` files. covers runtime, reflection, memory, process/threading, filesystem, cryptography, database, HTTP, compiler, debugger, and UI. The long-term target remains **2,048 objects**.
