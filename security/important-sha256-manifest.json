@@ -4619,6 +4619,22 @@
       "sha256": "7adfcf610bbdef4ccfbb4fe21d9706198aa766f75ea14197add75897f5d84c9a"
     },
     {
+      "path": "impl/fundamental/Configuration.cpp",
+      "sha256": "6735653f51502aca0a383a1613940a7a5b501be04f5f8705e37825eed977cbcb"
+    },
+    {
+      "path": "impl/fundamental/Configuration.hpp",
+      "sha256": "ab679e0b7ad4d13a632598e229d2d138594e7b80b2e75868dd35333e79936ef8"
+    },
+    {
+      "path": "impl/fundamental/Error.cpp",
+      "sha256": "7bb7f622e952e76f1b85794770f0f371a69252afe979213ea2f43b38b2f0fec5"
+    },
+    {
+      "path": "impl/fundamental/Error.hpp",
+      "sha256": "4f1191fee136b05d7afaf056994e8f7f32777de1d7295c5d41e0d82f87448ab3"
+    },
+    {
       "path": "impl/fundamental/Identifier.cpp",
       "sha256": "0e5669cc228ff559bb5d842441cff0a60ebebefba19ccb72cb36d96f77d7bb1c"
     },
@@ -4635,12 +4651,36 @@
       "sha256": "ae7ec9a1d00453cf764e65480b0cf5350b73fda001d045af8fae8c8e5bb5c97d"
     },
     {
+      "path": "impl/fundamental/Option.cpp",
+      "sha256": "b1f821fbea0c82590a71bfea42511cf8120bfc796850c9209cd3ed73c9595b59"
+    },
+    {
+      "path": "impl/fundamental/Option.hpp",
+      "sha256": "3c65ef2906c2ddc7df2950b5145c670bc6cb7de169aa5d47f9b43140f2b661a1"
+    },
+    {
+      "path": "impl/fundamental/Parameter.cpp",
+      "sha256": "27cf898ff759c358d4588440a020171f6898730ca4cd75a93a01724dca5a1251"
+    },
+    {
+      "path": "impl/fundamental/Parameter.hpp",
+      "sha256": "9ebff40b2a99fbd644b59c53fab78d0a41a8f7105e20bc2277902e4ed56cd01b"
+    },
+    {
       "path": "impl/fundamental/Resource.cpp",
       "sha256": "3c0751b7f9953f00866ae58bf38cbf371cf86a99195c05f332af0511cde30d90"
     },
     {
       "path": "impl/fundamental/Resource.hpp",
       "sha256": "e3518d30f15635d9e1b729da729e19abc16610fa3d588cafa83b0cdc22d76e1b"
+    },
+    {
+      "path": "impl/fundamental/Result.cpp",
+      "sha256": "bff95a946d4a6265e192d91d75a1c22f14e60aa41dbae48b720ab1b75ad6a320"
+    },
+    {
+      "path": "impl/fundamental/Result.hpp",
+      "sha256": "6c52d65af8a5caa3592dfb6d37bc6c241cda880ce916c206bbb3e64c808abe98"
     },
     {
       "path": "impl/fundamental/Status.cpp",
