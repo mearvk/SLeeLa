@@ -10,15 +10,13 @@ Action model: C++
 
 ## 0.4.0
 
-- Added the typed DebugAction model.
-- Added continue, pause, step-in, step-over, step-out, break, conditional break, and one-shot break actions.
-- Added watch, exception, thread, stack, memory, register, inspect, trace, and history actions.
-- Added launch, attach, detach, restart, terminate, and report actions.
-- Added explicit action lifecycle states: requested, validated, supported, executed, completed, and failed.
-- Added action validation and bounded argument handling.
-- Added regression coverage for every action type and validation failure.
-- Added ACTION_MODEL.md defining the action-to-backend contract.
-- Established the contract for future native Linux, macOS, and Windows action execution.
+- Added the typed DebugAction model and explicit action lifecycle.
+- Added the Linux ptrace backend adapter with launch, attach, resume, single-step, wait/poll, and capability reporting.
+- Added macOS LLDB backend adapter architecture with explicit unsupported-operation diagnostics until native LLDB process integration is connected.
+- Added Windows Debug API backend adapter architecture with explicit unsupported-operation diagnostics until native process integration is connected.
+- Added platform backend selection for Linux, macOS, Windows, and portable fallback.
+- Integrated platform backend sources into the debugger build.
+- Preserved capability-aware behavior so an adapter never reports an unimplemented operation as successful.
 
 ## 0.3.0
 
@@ -43,10 +41,4 @@ Action model: C++
 
 ## Versioning policy
 
-Use semantic versioning:
-
-- MAJOR: incompatible public API or diagnostic-contract changes.
-- MINOR: backward-compatible capability or API additions.
-- PATCH: backward-compatible corrections, tests, and documentation.
-
-Native process-control implementations and externally consumed diagnostic schemas must document their capability and schema versions independently.
+Use semantic versioning. Native backend capabilities and externally consumed diagnostic schemas must document their capability and schema versions independently.
