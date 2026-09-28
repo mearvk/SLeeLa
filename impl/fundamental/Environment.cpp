@@ -1,5 +1,8 @@
 #include "Environment.hpp"
 #include <cstdlib>
+#if !defined(_WIN32)
+#include <unistd.h>
+#endif
 namespace sleela::fundamental { bool Environment::has(const std::string&k){return std::getenv(k.c_str())!=nullptr;} std::string Environment::get(const std::string&k,const std::string&f){auto*v=std::getenv(k.c_str());return v?v:f;} bool Environment::set(const std::string&k,const std::string&v){
 #if defined(_WIN32)
 return _putenv_s(k.c_str(),v.c_str())==0;
