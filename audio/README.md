@@ -15,7 +15,7 @@ The SLeeLa Audio API is a layered audio-processing package spanning C11, C++17, 
 | `audio/java/` | Java 21 orchestration and native-process boundary |
 | `audio/native/` | Native command-line media-processing adapter |
 | `audio/gui/` | JavaFX audio/video presentation and integration |
-| `sleela/audio/` | SLeeLa language-layer Audio classes | 
+| `audio/sleela/` | SLeeLa language-layer Audio classes | 
 | `audio/1-2-3-4.md` | Ordered implementation record, dates, completion state, and closure work |
 | `.github/workflows/audio-ci.yml` | Audio compile/build integration CI |
 
@@ -176,7 +176,7 @@ make clean all test
 
 ```bash
 cd audio/java
-javac -d build/classes src/module-info.java src/com/mearvk/sleela/audio/*.java
+javac -d build/classes src/module-info.java src/com/mearvk/audio/sleela/*.java
 ```
 
 ### JavaFX GUI
@@ -211,7 +211,7 @@ The package is therefore **implemented at its core with its current process cont
 
 ## SLeeLa language layer
 
-The Audio API now has a dedicated `sleela/audio/` contract layer with **9 standard .sleela classes**:
+The Audio API now has a dedicated `audio/sleela/` contract layer with **9 standard .sleela classes**:
 
 - Audio
 - AudioInput
@@ -223,6 +223,6 @@ The Audio API now has a dedicated `sleela/audio/` contract layer with **9 standa
 - AudioMixer
 - AudioSystem
 
-C counterparts are under `sleela/audio/c/` and C++ counterparts under `sleela/audio/cpp/`. AudioSystem establishes the operating-system boundary; Linux/macOS/Windows platform identification is present, while real hardware enumeration remains a driver/backend responsibility. This keeps the language classes portable and prevents the contract layer from falsely claiming device support that has not yet been implemented.
+C counterparts are under `audio/sleela/c/` and C++ counterparts under `audio/sleela/cpp/`. AudioSystem establishes the operating-system boundary; Linux/macOS/Windows platform identification is present, while real hardware enumeration remains a driver/backend responsibility. This keeps the language classes portable and prevents the contract layer from falsely claiming device support that has not yet been implemented.
 
-The existing `audio/` implementation remains the rendering implementation. The SLeeLa language layer is kept under `sleela/audio/` as the standard object model above it.
+The existing `audio/` implementation remains the rendering implementation. The SLeeLa language layer is kept under `audio/sleela/` as the standard object model above it.
