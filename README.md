@@ -848,6 +848,41 @@ Astrophysics is the first expanded implementation of this contract. Its model an
 The source-addition rule is deliberately conservative: a new scientific operation enters native source only when its quantities, units, assumptions, valid domain, numerical method, persistence semantics, and tests are explicit. A model may be represented in XML before it becomes an executable native operation.
 
 
+
+## Audio / Video GUI and Native Audio
+
+SLeeLa now has a defined Audio/Video application path:
+
+**JavaFX GUI → Java contract → native adapter → C++ audio engine → output**
+
+The presentation layer is under [audio/gui/](audio/gui/). The native audio foundation is under [audio/native/](audio/native/).
+
+The current native engine provides a deliberately bounded, testable PCM16 WAV path with:
+
+- mono/stereo WAV input;
+- explicit sample-rate validation;
+- synchronized start offsets;
+- per-input gain;
+- master gain and pan;
+- stereo PCM16 WAV output;
+- fail-closed validation and diagnostics.
+
+The Java GUI dispatches real native processing when the `sleela.audio.native` executable is configured. It does not simulate successful processing when the native backend is unavailable.
+
+The Audio/Video boundary is intentionally divided into completed and pending capabilities. Platform live-device capture, additional codecs, production DSP/analysis, RGB/RGBA video-frame transport, direct JNI integration, and signed cross-platform application packaging remain explicit adapter work rather than undocumented claims of completion.
+
+Build the two layers independently:
+
+    cd audio/native && make clean all test
+    cd audio/gui && mvn clean test
+
+For the GUI/native executable path:
+
+    cd audio/gui
+    mvn javafx:run -Dsleela.audio.native=/path/to/sleela-audio-native
+
+The dedicated [Audio GUI CI workflow](.github/workflows/audio-gui.yml) builds both the native and Java layers. See [audio/gui/README.md](audio/gui/README.md) and [audio/native/README.md](audio/native/README.md) for the detailed boundary and current capability matrix.
+
 ## Native HTTP server grades
 
 SLeeLa provides three native HTTP server grades under `http-servers/1`,
