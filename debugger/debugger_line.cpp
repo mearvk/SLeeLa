@@ -1,7 +1,8 @@
 #include "debugger_line.hpp"
+#include <utility>
 namespace sleela::debugger {
 uint64_t LineController::registerPoint(const LinePoint& point) {
-    return next_id_++;
+    if (point.location.file.empty() || point.location.line == 0) return 0;\n    return next_id_++;
 }
 bool LineController::hit(const LinePoint& point, const std::string& thread, const std::string& function) {
     DebugEvent event{};
