@@ -6544,15 +6544,15 @@
     },
     {
       "path": "synchro/tests/integration_smoke.c",
-      "sha256": "24385f09380f7acbafe21fe64b4b182059c692b1571949ffd8e4ef56e8a2ee08"
+      "sha256": "76bc695487eeb209b7cd6b9ba34e74199ba6e59d00d476f568a9363ce96faa8f"
     },
     {
       "path": "synchro/tests/protocol_negative.c",
-      "sha256": "a15b4356d9afd0be863ec05d0f436d618fc487c37f046f6f18e5761aeeee7009"
+      "sha256": "0b621a193d4dcfd6c0b3461e85aff88e04e431acf50e701595e5c17bfa710c69"
     },
     {
       "path": "synchro/tests/run_synchro_suite.sh",
-      "sha256": "87060b30f4db40d46da212ea4d1adf00a6699a3acd4e3ede36cc522155b5c6cb"
+      "sha256": "f5d534156e9e3a26b9d3d05705ea9f65e196abcc4c6bd9d6763c3f3b44014130"
     },
     {
       "path": "synchro/tests/test_synchro.py",
