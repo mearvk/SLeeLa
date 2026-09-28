@@ -560,7 +560,7 @@
     },
     {
       "path": "api/server/sleelas.cpp",
-      "sha256": "fb0fefdd0b460049af39f47bb86bc9404d38ff160894f1aec45dcbbb0f8b1542"
+      "sha256": "e6737de7bb64b1021ed2420186152a55840d09ce802c1b1b2cecc7c8e44b3384"
     },
     {
       "path": "api/sleela-complete/DataServiceClasses.sleela",
@@ -2796,7 +2796,7 @@
     },
     {
       "path": "debugger/debugger_backend.hpp",
-      "sha256": "e4f901ad59e3859d0ae15fc2eedce28b3e08fb3af7fd859349a658831ff0adf2"
+      "sha256": "0a9c35a5c6a40213f2b619c7092b7709d36b529d16f82d43f43e681e661a8121"
     },
     {
       "path": "debugger/debugger_backend_linux.cpp",
@@ -2828,7 +2828,7 @@
     },
     {
       "path": "debugger/debugger_c.h",
-      "sha256": "e5cc9908d70f40cca151fa5b98fcd097fdb4afbccd730e86d256ae8857442c5f"
+      "sha256": "aef551629081725f155d09492bc8c1c6e9a4f533401f3a13e35468940036267f"
     },
     {
       "path": "debugger/debugger_line.c",
@@ -2836,7 +2836,7 @@
     },
     {
       "path": "debugger/debugger_line.cpp",
-      "sha256": "6d28b4e6eca6307832adea7758b820e286137668cb680e308767f5c84627691a"
+      "sha256": "82f09141f099c75302d005447648f7e9cf29ce6d351fe99d7d48c997aabdf4d0"
     },
     {
       "path": "debugger/debugger_line.h",
@@ -4292,7 +4292,7 @@
     },
     {
       "path": "http-8.0/DarkPower.cpp",
-      "sha256": "8b8b942b6ada1f3029745124460da202704a9c047b98fc655465551801d63165"
+      "sha256": "f4f93dda2aaeee8c1c3d4b02b9486413f09c9fd1fd0fd5ccfefc37a2e0b2b898"
     },
     {
       "path": "http-8.0/DarkPower.hpp",
@@ -4912,7 +4912,7 @@
     },
     {
       "path": "impl/core/sleela_system_monitor.h",
-      "sha256": "72a24a42564a20aaed731b840995e69c9e03c00d10de169f8b49d691a39e7735"
+      "sha256": "d219612afdca2dcac31e4f0b9ac16f466b1cce27d7e08fab6f74602a954460e0"
     },
     {
       "path": "impl/core/sleela_terminal.c",
@@ -7460,7 +7460,7 @@
     },
     {
       "path": "test-suites/run-all.sh",
-      "sha256": "5654786549fcce21f6e72fd17fe963afe6d83a1239645ccb1cbaa3b6166a5734"
+      "sha256": "89dc98e210b70dc7e44ae16f23be08d2e42c11397b74d8ff854f3bb88c702564"
     },
     {
       "path": "test-suites/runtime-coverage.sh",
