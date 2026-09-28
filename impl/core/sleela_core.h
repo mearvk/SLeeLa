@@ -6,7 +6,7 @@
 
 /* Stable VM artifact/runtime ABI identifiers. */
 #define SLEELA_VM_ABI_MAJOR 1u
-#define SLEELA_VM_ABI_MINOR 0u
+#define SLEELA_VM_ABI_MINOR 1u
 #define SLEELA_ARTIFACT_FORMAT_VERSION 2u
 #include <stdint.h>
 #include <stddef.h>
