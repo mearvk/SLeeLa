@@ -60,3 +60,13 @@ Process, Environment, File, Directory, Path, Task, Scheduler, Event, EventBus, F
 Native contracts and implementations are maintained under impl/fundamental/. Set 1 is specified by api/COMMON_INCLUDED_FUNDAMENTAL.md; Set 2 is specified by api/COMMON_INCLUDED_NEXT_25.md.
 
 **Max Rupplin — MEARVK LLC — 2026**
+
+
+## Document Annotations
+Document-level annotations connect architecture documents with extensibility, source ownership, production traceability, and operational measurement without embedding executable routing logic.
+
+Defined annotations: @scope, @area, @next, @responsibility, @provider, @source, @requires, @capability, @group, @counter, @stage, @release, @runbook.
+
+See ANNOTATION.md and api/ANNOTATION_API.md.
+
+Max Rupplin — MEARVK LLC — 2026
