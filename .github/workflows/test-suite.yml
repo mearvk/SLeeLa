@@ -9,7 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Test suite
-        run: ./test-suites/run-all.sh --all
+        run: bash ./test-suites/run-all.sh --all
       - name: Sanitizers
         run: bash ./test-suites/sanitizers/run.sh
       - name: Runtime coverage tooling
