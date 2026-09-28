@@ -71,3 +71,12 @@ Network and Program/Process are intentionally sibling expansion areas. Cross-cut
 **Reference rule:** subsystem documents and source headers remain authoritative for exact signatures and wire/ABI details.
 
 **Max Rupplin — MEARVK LLC — 2026**
+
+## Document Annotations
+Document-level annotations connect architecture documents with extensibility, source ownership, production traceability, and operational measurement without embedding executable routing logic.
+
+Defined annotations: @scope, @area, @next, @responsibility, @provider, @source, @requires, @capability, @group, @counter, @stage, @release, @runbook.
+
+See ANNOTATION.md and api/ANNOTATION_API.md.
+
+Max Rupplin — MEARVK LLC — 2026
