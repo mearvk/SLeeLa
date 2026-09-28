@@ -24,17 +24,17 @@ audit(){ local f log std; while IFS= read -r f; do
     "$ROOT/http-3.0/kernel/"*) skip "kernel TU $f (validated by Kbuild/kernel workflow)"; continue;;
   esac
   case "$f" in
-    *_windows.cpp|*_windows.c|*/windows/*) [[ "$(uname -s)" != "MINGW"* && "$(uname -s)" != "MSYS"* && "$(uname -s)" != "CYGWIN"* ]] && { skip "Windows TU $f"; continue; };;
-    *_macos.cpp|*_macos.c|*/macos/*|*/darwin/*) [[ "$(uname -s)" != "Darwin" ]] && { skip "macOS TU $f"; continue; };;
+    *_windows.cpp|*_windows.c|*/windows/*|*_windows.hpp|*_windows.h) [[ "$(uname -s)" != "MINGW"* && "$(uname -s)" != "MSYS"* && "$(uname -s)" != "CYGWIN"* ]] && { skip "Windows TU $f"; continue; };;
+    *_macos.cpp|*_macos.c|*_macos.hpp|*_macos.h|*/macos/*|*/darwin/*) [[ "$(uname -s)" != "Darwin" ]] && { skip "macOS TU $f"; continue; };;
     *_linux.cpp|*_linux.c|*/linux/*) [[ "$(uname -s)" != "Linux" ]] && { skip "Linux TU $f"; continue; };;
   esac
   log="$LOG/audit-$(printf '%s' "$f" | sha256sum | cut -d' ' -f1).log"
   if [[ "$f" == *.c ]] && have "$CC"; then
-    if "$CC" -std=c11 -fsyntax-only -I"$ROOT" "$f" >"$log" 2>&1; then pass "TU $f"; else fail "TU $f"; sed -n '1,5p' "$log" >&2; fi
+    if "$CC" -std=c11 -D_POSIX_C_SOURCE=200809L -fsyntax-only -I"$ROOT" -I"$ROOT/api/include" -I"$ROOT/decompiler/include" -I"$ROOT/telephony-skya/drivers/include" -I"$ROOT/telephony-skya/drivers/src" -I"$ROOT/impl/core" -I"$ROOT/impl/frontend" -I"$ROOT/impl/subjects/native" -I"$ROOT/runtime" -I"$ROOT/terminal_pixel" -I"$ROOT/bash" "$f" >"$log" 2>&1; then pass "TU $f"; else fail "TU $f"; sed -n '1,5p' "$log" >&2; fi
   elif [[ "$f" == *.cpp ]] && have "$CXX"; then
     std=c++17
     case "$f" in "$ROOT/decompiler/"*) std=c++20;; esac
-    if "$CXX" -std="$std" -fsyntax-only -I"$ROOT" "$f" >"$log" 2>&1; then pass "TU $f"; else fail "TU $f"; sed -n '1,8p' "$log" >&2; fi
+    if "$CXX" -std="$std" -fsyntax-only -I"$ROOT" -I"$ROOT/api/include" -I"$ROOT/decompiler/include" -I"$ROOT/telephony-skya/drivers/include" -I"$ROOT/telephony-skya/drivers/src" -I"$ROOT/impl/core" -I"$ROOT/impl/frontend" -I"$ROOT/impl/subjects/native" -I"$ROOT/runtime" -I"$ROOT/terminal_pixel" -I"$ROOT/bash" "$f" >"$log" 2>&1; then pass "TU $f"; else fail "TU $f"; sed -n '1,8p' "$log" >&2; fi
   fi
  done < <(find "$ROOT" -type f \( -name '*.c' -o -name '*.cpp' \) -print); }
 headers(){ local f std; while IFS= read -r f; do
@@ -44,10 +44,10 @@ headers(){ local f std; while IFS= read -r f; do
       [[ "$f" == "$ROOT/decompiler/"* ]] || true;;
   esac
   if [[ "$f" == *.h ]] && have "$CC"; then
-    "$CC" -std=c11 -fsyntax-only -I"$ROOT" "$f" >/dev/null 2>&1 && pass "header $f" || fail "header $f"
+    "$CC" -std=c11 -D_POSIX_C_SOURCE=200809L -fsyntax-only -I"$ROOT" -I"$ROOT/api/include" -I"$ROOT/decompiler/include" -I"$ROOT/telephony-skya/drivers/include" -I"$ROOT/telephony-skya/drivers/src" -I"$ROOT/impl/core" -I"$ROOT/impl/frontend" -I"$ROOT/impl/subjects/native" -I"$ROOT/runtime" -I"$ROOT/terminal_pixel" -I"$ROOT/bash" "$f" >/dev/null 2>&1 && pass "header $f" || fail "header $f"
   elif [[ "$f" == *.hpp ]] && have "$CXX"; then
     std=c++17; case "$f" in "$ROOT/decompiler/"*) std=c++20;; esac
-    "$CXX" -std="$std" -fsyntax-only -I"$ROOT" "$f" >/dev/null 2>&1 && pass "header $f" || fail "header $f"
+    "$CXX" -std="$std" -fsyntax-only -I"$ROOT" -I"$ROOT/api/include" -I"$ROOT/decompiler/include" -I"$ROOT/telephony-skya/drivers/include" -I"$telephony-skya/drivers/src" -I"$ROOT/impl/core" -I"$ROOT/impl/frontend" -I"$ROOT/impl/subjects/native" -I"$ROOT/runtime" -I"$ROOT/terminal_pixel" -I"$ROOT/bash" "$f" >/dev/null 2>&1 && pass "header $f" || fail "header $f"
   fi
  done < <(find "$ROOT" -type f \( -name '*.h' -o -name '*.hpp' \) -print); }
 coverage(){ if ! have "$PYTHON"; then skip "Python unavailable"; return; fi; "$SUITE/generate-function-coverage.sh" >"$LOG/function-coverage.log" 2>&1 && pass "function inventory" || fail "function inventory"; "$PYTHON" "$SUITE/generate-behavior-skeletons.py" >"$LOG/behavior-skeletons.log" 2>&1 && pass "behavior skeletons" || fail "behavior skeletons"; }
