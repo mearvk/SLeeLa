@@ -1,21 +1,22 @@
-name: SLeeLa Audio GUI
+name: SLeeLa Audio Native and GUI
 on:
   push:
-    paths: ['audio/gui/**', '.github/workflows/audio-gui.yml']
+    paths: ['audio/native/**','audio/gui/**','.github/workflows/audio-gui.yml']
   pull_request:
-    paths: ['audio/gui/**', '.github/workflows/audio-gui.yml']
+    paths: ['audio/native/**','audio/gui/**','.github/workflows/audio-gui.yml']
   workflow_dispatch:
 jobs:
-  build-and-test:
+  native:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: audio/gui
+    defaults: { run: { working-directory: audio/native } }
+    steps:
+      - uses: actions/checkout@v4
+      - run: make clean all test
+  java:
+    runs-on: ubuntu-latest
+    defaults: { run: { working-directory: audio/gui } }
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: '21'
-          cache: maven
+        with: { distribution: temurin, java-version: '21', cache: maven }
       - run: mvn --batch-mode --no-transfer-progress clean test
