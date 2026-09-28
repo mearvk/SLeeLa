@@ -4,7 +4,7 @@
 **Initial front-end objects:** 69  
 **Target standard-library objects:** 2,048  
 **Verified `.sleela` source files before `/lib`:** 160  
-**Verified `.sleela` source files after `/lib`:** 229
+**Verified `.sleela` source files after `/lib`:** 229 on `master`; 238 on `main`
 
 | Family | Objects |
 |---|---:|
