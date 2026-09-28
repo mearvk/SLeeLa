@@ -18,8 +18,38 @@ run_c_with_cpp(){ local src="$1" impl="$2" out="$3"; if ! have "$CXX"; then skip
 run_debugger(){ local src="$SUITE/cpp/test_debugger.cpp"; if "$CXX" -std=c++17 -Wall -Wextra -I"$ROOT" "$src" "$ROOT/debugger/debugger.cpp" -o "$BUILD/test_debugger" >"$LOG/test_debugger.compile.log" 2>&1 && "$BUILD/test_debugger" >"$LOG/test_debugger.run.log" 2>&1; then pass "$src"; else fail "$src"; fi; }
 run_cpp(){ local src="$1" out="$2"; if ! have "$CXX"; then skip "C++ compiler unavailable"; return; fi; if "$CXX" -std=c++17 -Wall -Wextra -I"$ROOT" "$src" "$ROOT/impl/annotation/Annotation.cpp" "$ROOT/impl/annotation/AnnotationForwarder.cpp" "$ROOT/impl/annotation/AnnotationInterpreter.cpp" "$ROOT/impl/annotation/ForwardingAnnotation.cpp" -o "$out" >"$LOG/$(basename "$out").compile.log" 2>&1 && "$out" >"$LOG/$(basename "$out").run.log" 2>&1; then pass "$src"; else fail "$src"; fi; }
 smoke(){ [ -f "$SUITE/c/test_http_bridge.c" ] && run_c_with_cpp "$SUITE/c/test_http_bridge.c" "$ROOT/http-servers/common/annotation_http_bridge.cpp" "$BUILD/test_http_bridge"; [ -f "$SUITE/c/test_c_api_headers.c" ] && run_c "$SUITE/c/test_c_api_headers.c" "$BUILD/test_c_api_headers"; [ -f "$SUITE/cpp/test_annotations.cpp" ] && run_cpp "$SUITE/cpp/test_annotations.cpp" "$BUILD/test_annotations"; [ -f "$SUITE/cpp/test_class_contracts.cpp" ] && run_cpp "$SUITE/cpp/test_class_contracts.cpp" "$BUILD/test_class_contracts"; [ -f "$SUITE/cpp/test_debugger.cpp" ] && run_debugger; }
-audit(){ local f log; while IFS= read -r f; do case "$f" in "$ROOT/test-suites/"*|"$ROOT/bash/"*|"$ROOT/.git/"*) continue;; "$ROOT/http-3.0/kernel/"*) skip "kernel TU $f (validated by Kbuild/kernel workflow)"; continue;; "$ROOT/debugger/debugger_backend_windows.cpp"|"$ROOT/debugger/debugger_backend_macos.cpp") skip "platform TU $f (validated by native platform workflow)"; continue;; esac; log="$LOG/audit-$(printf '%s' "$f" | sha256sum | cut -d' ' -f1).log"; if [[ "$f" == *.c ]] && have "$CC"; then if "$CC" -std=c11 -fsyntax-only -I"$ROOT" "$f" >"$log" 2>&1; then pass "TU $f"; else fail "TU $f"; sed -n '1,5p' "$log" >&2; fi; elif [[ "$f" == *.cpp ]] && have "$CXX"; then if "$CXX" -std=c++17 -fsyntax-only -I"$ROOT" "$f" >"$log" 2>&1; then pass "TU $f"; else fail "TU $f"; sed -n '1,5p' "$log" >&2; fi; fi; done < <(find "$ROOT" -type f \( -name '*.c' -o -name '*.cpp' \) -print); }
-headers(){ local f; while IFS= read -r f; do case "$f" in "$ROOT/test-suites/"*|"$ROOT/bash/"*|"$ROOT/.git/"*) continue;; esac; if [[ "$f" == *.h ]] && have "$CC"; then "$CC" -std=c11 -fsyntax-only -I"$ROOT" "$f" >/dev/null 2>&1 && pass "header $f" || fail "header $f"; elif [[ "$f" == *.hpp ]] && have "$CXX"; then "$CXX" -std=c++17 -fsyntax-only -I"$ROOT" "$f" >/dev/null 2>&1 && pass "header $f" || fail "header $f"; fi; done < <(find "$ROOT" -type f \( -name '*.h' -o -name '*.hpp' \) -print); }
+audit(){ local f log std; while IFS= read -r f; do
+  case "$f" in
+    "$ROOT/test-suites/"*|"$ROOT/bash/"*|"$ROOT/.git/"*) continue;;
+    "$ROOT/http-3.0/kernel/"*) skip "kernel TU $f (validated by Kbuild/kernel workflow)"; continue;;
+  esac
+  case "$f" in
+    *_windows.cpp|*_windows.c|*/windows/*) [[ "$(uname -s)" != "MINGW"* && "$(uname -s)" != "MSYS"* && "$(uname -s)" != "CYGWIN"* ]] && { skip "Windows TU $f"; continue; };;
+    *_macos.cpp|*_macos.c|*/macos/*|*/darwin/*) [[ "$(uname -s)" != "Darwin" ]] && { skip "macOS TU $f"; continue; };;
+    *_linux.cpp|*_linux.c|*/linux/*) [[ "$(uname -s)" != "Linux" ]] && { skip "Linux TU $f"; continue; };;
+  esac
+  log="$LOG/audit-$(printf '%s' "$f" | sha256sum | cut -d' ' -f1).log"
+  if [[ "$f" == *.c ]] && have "$CC"; then
+    if "$CC" -std=c11 -fsyntax-only -I"$ROOT" "$f" >"$log" 2>&1; then pass "TU $f"; else fail "TU $f"; sed -n '1,5p' "$log" >&2; fi
+  elif [[ "$f" == *.cpp ]] && have "$CXX"; then
+    std=c++17
+    case "$f" in "$ROOT/decompiler/"*) std=c++20;; esac
+    if "$CXX" -std="$std" -fsyntax-only -I"$ROOT" "$f" >"$log" 2>&1; then pass "TU $f"; else fail "TU $f"; sed -n '1,8p' "$log" >&2; fi
+  fi
+ done < <(find "$ROOT" -type f \( -name '*.c' -o -name '*.cpp' \) -print); }
+headers(){ local f std; while IFS= read -r f; do
+  case "$f" in "$ROOT/test-suites/"*|"$ROOT/bash/"*|"$ROOT/.git/"*) continue;; esac
+  case "$f" in
+    *_windows.hpp|*_macos.hpp|*_linux.hpp|*/windows/*|*/macos/*|*/linux/*)
+      [[ "$f" == "$ROOT/decompiler/"* ]] || true;;
+  esac
+  if [[ "$f" == *.h ]] && have "$CC"; then
+    "$CC" -std=c11 -fsyntax-only -I"$ROOT" "$f" >/dev/null 2>&1 && pass "header $f" || fail "header $f"
+  elif [[ "$f" == *.hpp ]] && have "$CXX"; then
+    std=c++17; case "$f" in "$ROOT/decompiler/"*) std=c++20;; esac
+    "$CXX" -std="$std" -fsyntax-only -I"$ROOT" "$f" >/dev/null 2>&1 && pass "header $f" || fail "header $f"
+  fi
+ done < <(find "$ROOT" -type f \( -name '*.h' -o -name '*.hpp' \) -print); }
 coverage(){ if ! have "$PYTHON"; then skip "Python unavailable"; return; fi; "$SUITE/generate-function-coverage.sh" >"$LOG/function-coverage.log" 2>&1 && pass "function inventory" || fail "function inventory"; "$PYTHON" "$SUITE/generate-behavior-skeletons.py" >"$LOG/behavior-skeletons.log" 2>&1 && pass "behavior skeletons" || fail "behavior skeletons"; }
 negative(){ [ -d "$SUITE/negative" ] && pass "negative corpus" || fail "negative corpus"; }
 regression(){ [ -d "$SUITE/regression" ] && pass "regression corpus" || fail "regression corpus"; }

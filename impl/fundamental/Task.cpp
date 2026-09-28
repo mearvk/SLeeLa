@@ -1,4 +1,3 @@
-
 #include "Task.hpp"
 #include <utility>
 namespace sleela::fundamental {

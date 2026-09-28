@@ -1,4 +1,3 @@
-
 #include "Environment.hpp"
 #include <cstdlib>
 namespace sleela::fundamental {
