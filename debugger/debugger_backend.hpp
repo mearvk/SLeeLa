@@ -7,6 +7,7 @@
 #include <string>
 #include <vector>
 namespace sleela::debugger {
+struct RegisterSnapshot;
 enum class BackendKind { Portable, LinuxPtrace, MacOSLLDB, WindowsDebug };
 struct BackendCapabilities { bool launch=false, attach=false, continue_execution=false, step=false; bool breakpoints=false, watchpoints=false, threads=false, stack=false; bool registers=false, memory=false, exceptions=false, source_mapping=false; };
 struct BackendRequest { std::string executable; std::vector<std::string> arguments; std::string process_id; };
@@ -25,7 +26,6 @@ public:
  virtual bool writeMemory(std::uint64_t, const void*, std::size_t, std::string& error) { error="memory write not implemented by backend"; return false; }
  virtual bool readRegisters(RegisterSnapshot&, std::string& error) { error="register access not implemented by backend"; return false; }
 };
-struct RegisterSnapshot;
 std::unique_ptr<DebugBackend> makePortableBackend();
 }
 #endif
