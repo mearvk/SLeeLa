@@ -1,2 +1,0 @@
-#include "Scheduler.hpp"
-namespace sleela::fundamental { std::size_t Scheduler::schedule(std::function<void()>f,std::chrono::milliseconds d){auto i=next_++;entries_.push_back({i,std::chrono::steady_clock::now()+d,std::move(f)});return i;} void Scheduler::run_due(){auto n=std::chrono::steady_clock::now();for(std::size_t i=0;i<entries_.size();){if(entries_[i].due<=n){auto f=std::move(entries_[i].fn);entries_.erase(entries_.begin()+i);if(f)f();}else ++i;}} }

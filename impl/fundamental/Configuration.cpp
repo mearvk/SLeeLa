@@ -1,2 +1,0 @@
-#include "Configuration.hpp"
-namespace sleela::fundamental { Configuration::Configuration()=default; Configuration::Configuration(std::string value):value_(std::move(value)){} const std::string& Configuration::value() const noexcept{return value_;} void Configuration::setValue(std::string value){value_=std::move(value);} bool Configuration::empty() const noexcept{return value_.empty();} const char* Configuration::responsibility() const noexcept{return "typed runtime configuration";} }

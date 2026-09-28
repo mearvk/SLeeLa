@@ -1,2 +1,0 @@
-#include "Error.hpp"
-namespace sleela::fundamental { Error::Error()=default; Error::Error(std::string value):value_(std::move(value)){} const std::string& Error::value() const noexcept{return value_;} void Error::setValue(std::string value){value_=std::move(value);} bool Error::empty() const noexcept{return value_.empty();} const char* Error::responsibility() const noexcept{return "structured failure";} }

@@ -1,6 +1,0 @@
-#sleela 1.3
-class Syntax13 {
-    void main() {
-        print("SLEELA-SYNTAX-1.3-OK");
-    }
-}

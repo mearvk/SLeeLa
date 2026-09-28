@@ -1,6 +1,0 @@
-#sleela 1.4
-class Syntax14 {
-    void main() {
-        print("this must not run on syntax 1.3");
-    }
-}

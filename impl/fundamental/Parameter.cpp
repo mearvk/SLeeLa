@@ -1,2 +1,0 @@
-#include "Parameter.hpp"
-namespace sleela::fundamental { Parameter::Parameter()=default; Parameter::Parameter(std::string value):value_(std::move(value)){} const std::string& Parameter::value() const noexcept{return value_;} void Parameter::setValue(std::string value){value_=std::move(value);} bool Parameter::empty() const noexcept{return value_.empty();} const char* Parameter::responsibility() const noexcept{return "named operation input";} }

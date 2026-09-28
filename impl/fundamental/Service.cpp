@@ -1,2 +1,0 @@
-#include "Service.hpp"
-namespace sleela::fundamental { Service::Service(std::string n):name_(std::move(n)){} bool Service::start(){running_=true;return true;} void Service::stop()noexcept{running_=false;} bool Service::running()const noexcept{return running_;} const std::string& Service::name()const noexcept{return name_;} }

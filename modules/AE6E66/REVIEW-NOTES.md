@@ -1,1 +1,0 @@
-Review completed after hardening pass. See TEST-PLAN.md for the production gate and SOURCE-STATUS.md for implementation status.

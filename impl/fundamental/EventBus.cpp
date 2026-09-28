@@ -1,2 +1,0 @@
-#include "EventBus.hpp"
-namespace sleela::fundamental { void EventBus::subscribe(const std::string&n,std::function<void(const Event&)>f){if(f)h_[n].push_back(std::move(f));} void EventBus::publish(const Event&e)const{auto i=h_.find(e.name());if(i!=h_.end())for(auto&f:i->second)if(f)f(e);} }

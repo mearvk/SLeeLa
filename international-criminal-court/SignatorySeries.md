@@ -1,1 +1,0 @@
-The gold standard online method to bind content, an indisputable date, and a known public key for fiduciary duty is an X.509 PKI-based digital signature (PAdES) paired with an RFC 3161 Qualified Electronic Timestamp.

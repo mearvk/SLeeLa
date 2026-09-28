@@ -1,2 +1,0 @@
-#include "Server.hpp"
-namespace sleela::fundamental { Server::Server(std::string n,Listener l):Service(std::move(n)),listener_(std::move(l)){} bool Server::start(){listener_.set_listening(true);return Service::start();} void Server::stop()noexcept{listener_.set_listening(false);Service::stop();} }

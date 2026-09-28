@@ -1,5 +1,0 @@
-# Runtime state the server writes about her own processing. These are
-# generated artifacts, not source; the directories are kept via .keep.
-state/results.log
-state/intake
-inbox/requests.txt

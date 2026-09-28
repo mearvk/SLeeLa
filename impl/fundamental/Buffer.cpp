@@ -1,2 +1,0 @@
-#include "Buffer.hpp"
-namespace sleela::fundamental { Buffer::Buffer()=default; Buffer::Buffer(std::string value):value_(std::move(value)){} const std::string& Buffer::value() const noexcept{return value_;} void Buffer::setValue(std::string value){value_=std::move(value);} bool Buffer::empty() const noexcept{return value_.empty();} const char* Buffer::responsibility() const noexcept{return "bounded byte storage";} }
