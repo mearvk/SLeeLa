@@ -1,0 +1,7 @@
+#sleela 1.3
+
+class Hello {
+    static void main() {
+        print("Hello from SLeeLa IDE");
+    }
+}

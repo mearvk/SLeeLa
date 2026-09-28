@@ -1,0 +1,7 @@
+# C Integration Example
+
+C is the native ABI integration example.
+
+The host IDE/tooling remains authoritative for C syntax and semantics. SLeeLa integration recognizes .c/.h files, exposes native ABI declarations and maps C symbols referenced by SLeeLa native bridges.
+
+The native ABI remains authoritative in ABI.md and impl/core.

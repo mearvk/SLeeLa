@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<idea-plugin>
+    <id>com.mearvk.sleela.ide</id>
+    <name>SLeeLa IDE Integration</name>
+    <vendor>MEARVK LLC</vendor>
+    <description><![CDATA[SLeeLa language and mixed-language project integration for the IntelliJ Platform.]]></description>
+    <depends>com.intellij.modules.platform</depends>
+    <extensions defaultExtensionNs="com.intellij">
+        <fileType name="SLeeLa" language="SLeeLa" implementationClass="com.mearvk.sleela.ide.SleelaFileType"/>
+        <lang.parserDefinition language="SLeeLa" implementationClass="com.mearvk.sleela.ide.SleelaParserDefinition"/>
+    </extensions>
+</idea-plugin>
