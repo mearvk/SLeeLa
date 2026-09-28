@@ -75,3 +75,16 @@ Max Rupplin — MEARVK LLC — 2026
 
 ## HTTP generation support
 The Server Edition is prepared to dispatch the SLeeLa HTTP generation family from 1.0 through 9.0 through explicit generation adapters. HTTP 1.0/1.1 remain Internet compatibility targets; HTTP 2.0–9.0 are SLeeLa project generations where applicable. Annotation forwarding remains uniform: Holding Document → Forwarding Annotation → Nexter Colony.
+
+
+## First-class language annotation path
+
+The Server Edition consumes annotation metadata produced by the language front end:
+
+**Wrapper → Lexer → Parser → AST → Semantic Analysis → Compiler → Runtime → Server Edition**
+
+The concrete bridge is server-edition/annotation_language_bridge.hpp/.cpp. It installs the same AnnotationRuntime used by the direct SLeeLa runtime, so the Server Edition does not maintain a second annotation parser or forwarding engine.
+
+A single valid @next becomes the Nexter Colony candidate. Multiple @next declarations remain metadata but are rejected by the current runtime until an explicit multi-destination forwarding policy exists.
+
+See server-edition/ANNOTATION_LANGUAGE.md.
