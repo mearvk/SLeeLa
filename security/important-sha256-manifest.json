@@ -2671,6 +2671,22 @@
       "sha256": "b6833aebb2db45e910e9f520d3204168ca14fe743c6aaa0fff170d77f5416405"
     },
     {
+      "path": "coorenagraph/include/coorenagraph.h",
+      "sha256": "75046b472d003dfe7f5149441d266775b03cb469841dc383414245eee72c1728"
+    },
+    {
+      "path": "coorenagraph/include/coorenagraph.hpp",
+      "sha256": "1eb314d153442cf14695edfe78082e973e7e2358b5e106929564b16291a37554"
+    },
+    {
+      "path": "coorenagraph/src/coorenagraph.c",
+      "sha256": "a8eb288d82a33aa096a00e10be8a0f85fde0f3da57c31bbf6fad90a530713c0f"
+    },
+    {
+      "path": "coorenagraph/src/coorenagraph.cpp",
+      "sha256": "60b306901d2d5abeab635e424c6797e65ec86373b896e124f4686c585fc1df18"
+    },
+    {
       "path": "data-structures/data_structures.c",
       "sha256": "12364ee2a49d0fcdaedcd2cc9c293e5b830c1b17ad8998ba77aef44d6a1ae7ef"
     },
@@ -3488,11 +3504,11 @@
     },
     {
       "path": "http/8.0/http80.c",
-      "sha256": "2a7427fc6d46cf42ca3ced4b7987684b9be8beea86bc0858ebf7e3decb9d7036"
+      "sha256": "25f357daff244dce1d67d68c8c73a844ef03d7d2c88ee5041673246dae8c1bd7"
     },
     {
       "path": "http/8.0/http80.cpp",
-      "sha256": "f6a3c864b08affcb23d0796059c373dd908899819ec6d682cb07b6d1e97c2c4e"
+      "sha256": "0845f7e1f1c3e0fe72564609b9e5766ec21399efc30eb29d17988e3146825e77"
     },
     {
       "path": "http/8.0/http80_crypto.c",
@@ -3512,19 +3528,19 @@
     },
     {
       "path": "http/9.0/http90.c",
-      "sha256": "a43b3d3c0b45809e35f3c0079f232b2b9bcfc32b1042fcac06bbff91191668be"
+      "sha256": "f4812b96bcaa3d16315b3e23e36f350f7ec67c3e49094f938943df6ccae8bab4"
     },
     {
       "path": "http/9.0/http90.cpp",
-      "sha256": "cfec955b6266ae83f17efe6776f17383722bc35825bae551660f5a901f5c7655"
+      "sha256": "18921ab47b41488751b537be7726befbdcce953549db410985c2dab5beb8d95c"
     },
     {
       "path": "http/9.0/http90.h",
-      "sha256": "abd0e1e658d4f28ae70905460a7004080f34afb73f65eed8261483569f4151d8"
+      "sha256": "b01a41cc52e94736b0b37f1cefccceaaaf31dd8fef5ea17e8e1b7e41f008677c"
     },
     {
       "path": "http/9.0/http90.hpp",
-      "sha256": "64852cec16b98f353e54f9fbb8d7147b2eca7ae7c3890e348f0b092ada3f8603"
+      "sha256": "e2088e3c34a2067fd73e05af724260cd238f551d58d60c30daf0b8fa30281631"
     },
     {
       "path": "http/build/audit.sh",
@@ -4003,12 +4019,64 @@
       "sha256": "62aadd4eaafd35c3f8cb63f94021f9e2793a7448a0ed7793b83249d9f799686c"
     },
     {
+      "path": "http-8.0/AmericanCourtsCustodies.cpp",
+      "sha256": "afbc85d73b3e0d600299ee47b83f71ef8e4804f7637cd7f1b36425fe857d6226"
+    },
+    {
+      "path": "http-8.0/AmericanCourtsCustodies.hpp",
+      "sha256": "05ed2f842061f2dcdcd50a3b7be6dbd8c85e66bfcfb4b87b58ccbb795d54fb07"
+    },
+    {
+      "path": "http-8.0/AmericanCourtsCustodiesQR.hpp",
+      "sha256": "5bd17d2a9e5a4ced278bd69d44ccbe983a1605198972221936d361cf26000c59"
+    },
+    {
+      "path": "http-8.0/DarkPower.cpp",
+      "sha256": "8b8b942b6ada1f3029745124460da202704a9c047b98fc655465551801d63165"
+    },
+    {
+      "path": "http-8.0/DarkPower.hpp",
+      "sha256": "b92a8fafca5100056c38fa6de0a7d1c540bc872f893684eb0921f495be8d1e48"
+    },
+    {
+      "path": "http-8.0/ICC.c",
+      "sha256": "a8dda1cdaea01c0f99aedcd4128bd054b9a9a177c275799310c8e9b2d983eea3"
+    },
+    {
+      "path": "http-8.0/ICC.cpp",
+      "sha256": "f53bb190716b963e0daa82e12ab4b29f1c409aac031c2e2bb3a1ff2a808ba0b1"
+    },
+    {
+      "path": "http-8.0/ICC.h",
+      "sha256": "b6c1191c2befaabe34d9351977ad8cbb17dc98d8f30d1580145ee5c789af34a6"
+    },
+    {
+      "path": "http-8.0/ICC.hpp",
+      "sha256": "a299200045095c6cadffd06c0506cdfcbe459ad7fee39d89b5e0693e3482d088"
+    },
+    {
+      "path": "http-8.0/USTreasury.c",
+      "sha256": "04ab135b48843f2bddf6ee16f497c0050b94d8e1909297700df35fd18e93123d"
+    },
+    {
+      "path": "http-8.0/USTreasury.cpp",
+      "sha256": "d49faf188a418783589dc629c60d182f954be5ca0851cc7823b6171e81531c16"
+    },
+    {
+      "path": "http-8.0/USTreasury.h",
+      "sha256": "825d5a1f97290485067e676e8415480fcafde2935f6a7726c94a2743d4b4ef71"
+    },
+    {
+      "path": "http-8.0/USTreasury.hpp",
+      "sha256": "cd9dd8db928a457461ec0214cbe672e487289c0f370f2cd38f5d48b77d51e77b"
+    },
+    {
       "path": "http-8.0/http80.c",
-      "sha256": "cb08e3de1bb9c8fc4c3ecaa331e44918f4e39cec7d6d80d1a6fd5ede29811f6c"
+      "sha256": "25f357daff244dce1d67d68c8c73a844ef03d7d2c88ee5041673246dae8c1bd7"
     },
     {
       "path": "http-8.0/http80.cpp",
-      "sha256": "21dab539680b87583db8cab53c9f419f6bf0a52f2c2bb5210bc52137550e47f3"
+      "sha256": "0845f7e1f1c3e0fe72564609b9e5766ec21399efc30eb29d17988e3146825e77"
     },
     {
       "path": "http-8.0/http80_crypto.c",
@@ -4044,19 +4112,19 @@
     },
     {
       "path": "http-9.0/http90.c",
-      "sha256": "ee066a70f6951071d8f474b85eb33bc03fb5274fe6b0e1eb635a58c9db853331"
+      "sha256": "f4812b96bcaa3d16315b3e23e36f350f7ec67c3e49094f938943df6ccae8bab4"
     },
     {
       "path": "http-9.0/http90.cpp",
-      "sha256": "93e35ae69b025f81eb16b623b62469f24943bfd724a48c4e4b4ed7c751c431b5"
+      "sha256": "18921ab47b41488751b537be7726befbdcce953549db410985c2dab5beb8d95c"
     },
     {
       "path": "http-9.0/http90.h",
-      "sha256": "abd0e1e658d4f28ae70905460a7004080f34afb73f65eed8261483569f4151d8"
+      "sha256": "4f5f7e0fc8171f9c799049a14c816f385b79154731d77c06358c4e833a72efe8"
     },
     {
       "path": "http-9.0/http90.hpp",
-      "sha256": "64852cec16b98f353e54f9fbb8d7147b2eca7ae7c3890e348f0b092ada3f8603"
+      "sha256": "e2088e3c34a2067fd73e05af724260cd238f551d58d60c30daf0b8fa30281631"
     },
     {
       "path": "http-9.0/http_negotiation.c",
