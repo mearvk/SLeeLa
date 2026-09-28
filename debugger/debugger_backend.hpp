@@ -9,6 +9,7 @@
 #include <vector>
 
 namespace sleela::debugger {
+struct RegisterSnapshot;
 
 enum class BackendKind { Portable, LinuxPtrace, MacOSLLDB, WindowsDebug };
 
@@ -50,7 +51,6 @@ public:
     }
 };
 
-struct RegisterSnapshot;
 std::unique_ptr<DebugBackend> makePortableBackend();
 
 }
