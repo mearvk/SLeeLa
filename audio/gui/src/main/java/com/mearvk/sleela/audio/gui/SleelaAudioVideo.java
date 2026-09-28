@@ -15,7 +15,6 @@ public interface SleelaAudioVideo {
     record AudioLevel(double level, double peak, double rms, double dominantHz) {}
     record VideoLevel(int width, int height, double motion,
                       double luminance, double edgeDensity) {}
-
     boolean validate(MixConfiguration configuration);
     SleelaAudioVideo withInput(Input input);
     SleelaAudioVideo withControls(MixerControls controls);
