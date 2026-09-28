@@ -12,8 +12,10 @@ jobs:
       - name: Test suite
         run: bash ./test-suites/run-all.sh --all
       - name: Sanitizers
+        if: always()
         run: bash ./test-suites/sanitizers/run.sh
       - name: Runtime coverage tooling
+        if: always()
         run: bash ./test-suites/runtime-coverage.sh
       - name: Upload logs
         if: always()
