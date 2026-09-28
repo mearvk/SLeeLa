@@ -4,6 +4,7 @@
 #ifndef SLEELA_LEXER_H
 #define SLEELA_LEXER_H
 
+#include <cstddef>
 #include <string>
 #include <vector>
 
