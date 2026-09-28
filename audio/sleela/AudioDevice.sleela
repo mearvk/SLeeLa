@@ -1,10 +1,11 @@
-// SLeeLa Audio device abstraction.
+#sleela 1.3
+// Device identity remains a portable contract; actual hardware belongs to the OS backend.
 class AudioDevice {
-  property name: String;
-  property identifier: String;
-  property sampleRate: Int;
-  property channels: Int;
-  property input: Bool;
-  property output: Bool;
-  method available(): Bool;
+  static bool available(String identifier) {
+    return identifier != "";
+  }
+
+  static bool compatible(String identifier, int sampleRate, int channels) {
+    return identifier != "" && sampleRate > 0 && channels > 0;
+  }
 }
