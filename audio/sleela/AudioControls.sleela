@@ -1,0 +1,11 @@
+// SLeeLa Audio control surface.
+class AudioControls {
+  property bassDb: Double;
+  property midDb: Double;
+  property trebleDb: Double;
+  property masterGainDb: Double;
+  property pan: Double;
+  property leftGain: Double;
+  property rightGain: Double;
+  method validate(): Bool;
+}
