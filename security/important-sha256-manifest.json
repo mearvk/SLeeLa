@@ -72,7 +72,7 @@
     },
     {
       "path": "README.md",
-      "sha256": "200316f96514495677c0cbbf6ff14419abf527e10aafee080c09292c96efd977"
+      "sha256": "ff99dc9978a3aede7f56698d6222367b5824c93ed3755e5c9593b635847ea7a2"
     },
     {
       "path": "REVISIONS.md",
@@ -160,7 +160,7 @@
     },
     {
       "path": "api/README.md",
-      "sha256": "b1901ce46f38db6ddf8b14ab2d4127aaa473177da1bdfd6040b406dfc0df6d09"
+      "sha256": "bddb7f7412d1921e61a7b9600f32367a9408be8e41fa8b626bfbee3272fd7d93"
     },
     {
       "path": "api/SOURCE-COVERAGE.html",
@@ -172,7 +172,7 @@
     },
     {
       "path": "api/ai/README.md",
-      "sha256": "dd1db51460894625831d0e09da818a022e87d690147377e8a3d21708b3531270"
+      "sha256": "5cf55c434cade92733c22889da5117aaf6af22729df8c8351a624b759113588e"
     },
     {
       "path": "api/ai/data-model.xml",
@@ -208,7 +208,7 @@
     },
     {
       "path": "api/audio-mixer/README.md",
-      "sha256": "cccf4a6762f750354603eb63eed3a94ee7d28a0c3acd95c1a1f355c79804bfce"
+      "sha256": "3832ed062c82b89f5e0a6269458c9fa23d62cf8636994ebe4738260e9a652e53"
     },
     {
       "path": "api/audio-mixer/audio-mix.conf",
@@ -232,7 +232,7 @@
     },
     {
       "path": "api/bodi/README.md",
-      "sha256": "c49721f8f60aa39b787ec90ce02c95daa0217e351c69163608c653774ed53e59"
+      "sha256": "9ed50af697cf137eed1b1087d9354dd2a9faf457ced27abf8af88e111059e085"
     },
     {
       "path": "api/bodi/bodi-science.xsd",
@@ -272,7 +272,7 @@
     },
     {
       "path": "api/data-analytics/README.md",
-      "sha256": "c9a0b68d783af2e9f38a774fd7b4832f9d4609a2667768b9c1ca95997cd44b57"
+      "sha256": "f0e4c523402507ffb83892242ee7a01ccd42297e29681711f5f51b953ac3d1bc"
     },
     {
       "path": "api/data-analytics/sleela_data_analytics.c",
@@ -288,7 +288,7 @@
     },
     {
       "path": "api/database/README.md",
-      "sha256": "1e95898c065619c2129ff45cce4f406c24d01c4d20962f43e3921244a7436404"
+      "sha256": "c951a811a9183b86dd9eb2cefe4d0b53dc8e55d2f3fa5866c37e57c0c9ba8d82"
     },
     {
       "path": "api/database/linux/dbctl.sh",
@@ -316,7 +316,7 @@
     },
     {
       "path": "api/decompiler/README.md",
-      "sha256": "2dae7f75e61d0bd0547d39010b20562f5fc14292b4d0fe9c791bc7bff353ca17"
+      "sha256": "447e18e4c392a649e3ac3dcb819e25515b417ada5f52d102f492e510fc85858f"
     },
     {
       "path": "api/email/API.html",
@@ -324,7 +324,7 @@
     },
     {
       "path": "api/email/README.md",
-      "sha256": "90f0859553239606897f0ebe706d7a897375a9a8eb7a889207426fd64da136a2"
+      "sha256": "a3a10c4d09dba12bed4ab29aaf016f925629abc81f5741cd3656b9403e558776"
     },
     {
       "path": "api/email/SECURITY.md",
@@ -368,7 +368,7 @@
     },
     {
       "path": "api/http-multiplexing/README.md",
-      "sha256": "07ff1321e79d5cb0ea10f266b5aac53e32d85d60ed5b9039996234d647147203"
+      "sha256": "344aa23e3d4ea3ed51b30c5165268d9f7fd8be04d09bd4787b872c5110ce7bf2"
     },
     {
       "path": "api/http-multiplexing/sleela_http_api.c",
@@ -408,11 +408,11 @@
     },
     {
       "path": "api/media/README.md",
-      "sha256": "43d3cdfe470abf9542f5dc51203d9246df2d0815d15a35c7ba088b4048da3d18"
+      "sha256": "dcac7896fb2bf2990e8e68acfd38d46e82ea3133ba353e5b4bb480e1c9e9e3bf"
     },
     {
       "path": "api/national-relay/README.md",
-      "sha256": "1262a7dae69386b3a50a107cd7bbbbbd95c7db44b5c2304c77d0e6b978f986f6"
+      "sha256": "c02da2e84ca7f9cde2b74ed210dda715e422adca45370da979c2ab4a6db810dc"
     },
     {
       "path": "api/national-relay/sleela_relay_identity.c",
@@ -424,7 +424,7 @@
     },
     {
       "path": "api/native/memory/README.md",
-      "sha256": "f108bd1e1bf9b75e98377c6dc36de147bf2fd4f43a9bbf82dd71e9992aad2451"
+      "sha256": "6af28c2e7208292facb74550460440cbca8abbcaa3fab277ebf2562c20ee2fcd"
     },
     {
       "path": "api/native/memory/sleela_memory_manager.cpp",
@@ -436,7 +436,7 @@
     },
     {
       "path": "api/native/network/README.md",
-      "sha256": "f8c592780bc32f91bc292db55d4e6dbb1842a88a652f46eb5f2f01946c47b470"
+      "sha256": "0e0ecc14acd8b128b8801185284693a94498b1ea5d632f78a078ea464e32a531"
     },
     {
       "path": "api/native/network/sleela_network.cpp",
@@ -448,7 +448,7 @@
     },
     {
       "path": "api/native/reflection/README.md",
-      "sha256": "977fecb3a65ad96ab41057be1e712fdef8d4c97c0ee1c46fa19618b5b8338b41"
+      "sha256": "88dace05b1156db7dd5e1bfae8934ce858713a68df8666a3df4de5c977b71ad5"
     },
     {
       "path": "api/native/reflection/sleela_reflection.cpp",
@@ -464,7 +464,7 @@
     },
     {
       "path": "api/native/runtime/README.md",
-      "sha256": "5a91e7da1b195ca3f856cec6b1d42a9447a0b1a64735c6bca824aa6278001086"
+      "sha256": "ab7d3e317e6cfd695189fbc8708adbd707e19ed771702b3311772b645e27fc5b"
     },
     {
       "path": "api/native/runtime/sleela_runtime.cpp",
@@ -476,7 +476,7 @@
     },
     {
       "path": "api/native/security/README.md",
-      "sha256": "c09288d1bcb3265ba7ef9af2a841f94658284a4b9f367725d73fafc2720fa582"
+      "sha256": "e8eadc102a3a456a8cae492160f92145602896772fdd51c9a5966ff7f53982dd"
     },
     {
       "path": "api/native/security/sleela_security.cpp",
@@ -524,7 +524,7 @@
     },
     {
       "path": "api/regex/README.md",
-      "sha256": "9bf83572f23de580ab55bf9369d7c7caf0fe95a718c44baba2cde67c4269b333"
+      "sha256": "ee884a723250fe19e7c29bd577b63e3a4b0419f26eaff6e7aa576397b5fce8c0"
     },
     {
       "path": "api/regex/REGEX-DESIGN.md",
@@ -552,7 +552,7 @@
     },
     {
       "path": "api/server/README.md",
-      "sha256": "483a169a24eb8034cd08ecc536983f27888f9412ba858f2ecfe2dbdfc674586c"
+      "sha256": "8567803d0d8fe90e8abc59f72a335d49e55b31578b88cdd8611205d857fb1064"
     },
     {
       "path": "api/server/nat_aware.cpp",
@@ -592,7 +592,7 @@
     },
     {
       "path": "api/sleela-complete/README.md",
-      "sha256": "ea99fbd73204b6f4ef2a4879ce080b5eee4c19f52a046ff26934f9a0b94451e7"
+      "sha256": "667cab11d28ad457c5d8efcb49c7ec2f631e1ee66114edd7c6b7012ca992a7c4"
     },
     {
       "path": "api/sleela-complete/RuntimeClasses.sleela",
@@ -616,11 +616,11 @@
     },
     {
       "path": "api/subjects/README.md",
-      "sha256": "22b5b3b24725d2ce67d66e6b14f971f6e69d429bf72fa463e333db680da4b9af"
+      "sha256": "c308ec72ac994cb3d78b0ef243cce546f88eb4cc55395fcde07d38967903bedf"
     },
     {
       "path": "api/subjects/astrophysics/README.md",
-      "sha256": "489507a442dbd8dbe52d0974feca25eabfa945a2f6566f68b25847b76acee014"
+      "sha256": "b726d7f9ace64567a7137646de4014655de6a0ed95aaca8a10faa41a8ea3cff6"
     },
     {
       "path": "api/subjects/astrophysics/model.xml",
@@ -640,7 +640,7 @@
     },
     {
       "path": "api/subjects/sociology/README.md",
-      "sha256": "83a66390e21e8e78c5cc1d8382ded13103645d9fae1425db136f15bc577c0877"
+      "sha256": "7e27c2a6b7850ae5ede28b8a8cc560aca196c1fca142d3fc458d6273ae120cde"
     },
     {
       "path": "api/subjects/sociology/model.xml",
@@ -660,7 +660,7 @@
     },
     {
       "path": "api/webserver/README.md",
-      "sha256": "09bfc2139ebca6eb2d1e1d79221a81a33deb2e2ae07bf449f0c394bec42ea3b2"
+      "sha256": "76704cae2c9149e7043a1d6643fbbd05fa15da7f7cdc8dd2292a7795f8960c2d"
     },
     {
       "path": "api/webserver/linux/webctl.sh",
@@ -6024,7 +6024,7 @@
     },
     {
       "path": "international-criminal-court/README.md",
-      "sha256": "5c02f4d546cb46d5d23e9d5278c090a003d5f6245f36397b9e23dd4c3f2e8861"
+      "sha256": "9b59beb6ecb8992e82932f8d75183d0338f6919d701522dda08f80a46d4db3e4"
     },
     {
       "path": "international-criminal-court/SHA256SUMS",
@@ -9347,6 +9347,26 @@
       "sha256": "bfa8b14f0061782cb6ce13ffadd62aedb021b2878036b42e792a6203ade0012c"
     },
     {
+      "path": "lib/regex/RegexNatural.sleela",
+      "sha256": "77109caa2d68c048b4c4af6089a7fa24e451ffcea96435990eb03463a1159462"
+    },
+    {
+      "path": "lib/regex/RegexNaturalGrammar.sleela",
+      "sha256": "11204227e03d1c358e747f89cbd3aca88745a291f91d661c5bcb1012f31f2b53"
+    },
+    {
+      "path": "lib/regex/RegexNaturalGroup.sleela",
+      "sha256": "52f331886253a711de4fba2b165e716ef8832b9e71919e4ded8e61700132c89a"
+    },
+    {
+      "path": "lib/regex/RegexNaturalParser.sleela",
+      "sha256": "0435c73b39e22025f671b34c6f7fb1707279637249c057a9c85d57df90e748ae"
+    },
+    {
+      "path": "lib/regex/RegexNaturalSymbol.sleela",
+      "sha256": "cfb2b6fdef338575aa1a80712c4a28d36af4873f102fb696b9991d98be83b921"
+    },
+    {
       "path": "lib/regex/RegexOptions.sleela",
       "sha256": "d0434a5b413cf0232c1ccbe84db24fd9eb0850a2677e605bdd66c8f4a7f8e1c0"
     },
@@ -9623,30 +9643,6 @@
       "sha256": "2ba3fa47bbd7dc85a7bc6e699d75cd4c99152bfeac7a551c8e178ceafa6f2e05"
     },
     {
-      "path": "make/regex/include/sleela_regex.h",
-      "sha256": "b413d66bdf8731ea1a33e440f8421f2cb79d59a53bae9f2c66106120bda14b09"
-    },
-    {
-      "path": "make/regex/include/sleela_regex.hpp",
-      "sha256": "f1e45330c861f9946a320cfeac1d873e4e207e2f5a1a36bb87e867b721e4bb49"
-    },
-    {
-      "path": "make/regex/src/sleela_regex.c",
-      "sha256": "ea7ebebd09f41c6852aa68c191f0dd53717288bcf6a7c98b266e7418b3f899b8"
-    },
-    {
-      "path": "make/regex/src/sleela_regex.cpp",
-      "sha256": "04e557c13e92cac962e93b006d587d9d859885d837ab1b90636008264a1e8706"
-    },
-    {
-      "path": "make/regex/tests/test_regex.c",
-      "sha256": "a425eb17166045d4cecd7e13ee54851d5b39c7ab8f1d591ef2fc6d2c290bc38f"
-    },
-    {
-      "path": "make/regex/tests/test_regex.cpp",
-      "sha256": "2e154264c38804eea8b88b4996048eed623ef057a3df3623392a7fb1e9d79f4f"
-    },
-    {
       "path": "manifesto/manifesto.sleela",
       "sha256": "d563a3b1badd2675e432c7144d4e67b27a04c66da74c9fdc03a3e5cfc81744b3"
     },
@@ -9783,6 +9779,62 @@
       "sha256": "f1aeb714584a303d55488de989ba554ea51b4ea4f8d55cf9e6097bbb4b7e126e"
     },
     {
+      "path": "regex/include/sleela_regex.h",
+      "sha256": "b413d66bdf8731ea1a33e440f8421f2cb79d59a53bae9f2c66106120bda14b09"
+    },
+    {
+      "path": "regex/include/sleela_regex.hpp",
+      "sha256": "f1e45330c861f9946a320cfeac1d873e4e207e2f5a1a36bb87e867b721e4bb49"
+    },
+    {
+      "path": "regex/include/sleela_regex_natural.h",
+      "sha256": "cdf6c6de9d7e00840068790d0bd5fb13ad4530dea1f032643804d166f37cf4a8"
+    },
+    {
+      "path": "regex/include/sleela_regex_natural.hpp",
+      "sha256": "b3928762383db357128dab39d6cc64ca528b083ed87194550bb1b2cd0c6d9aa4"
+    },
+    {
+      "path": "regex/src/sleela_regex.c",
+      "sha256": "ea7ebebd09f41c6852aa68c191f0dd53717288bcf6a7c98b266e7418b3f899b8"
+    },
+    {
+      "path": "regex/src/sleela_regex.cpp",
+      "sha256": "04e557c13e92cac962e93b006d587d9d859885d837ab1b90636008264a1e8706"
+    },
+    {
+      "path": "regex/src/sleela_regex_natural.c",
+      "sha256": "b8cc5817897700cd94ffdc1e6c529e977d816e92f79e633d454f948737f89ba2"
+    },
+    {
+      "path": "regex/src/sleela_regex_natural.cpp",
+      "sha256": "f2d775026c8b9651becf8c7cf11f6b532e258efbe90c6cfdd546423c5223b0c6"
+    },
+    {
+      "path": "regex/test-suites/run-all.sh",
+      "sha256": "8d3b7c1828aa1507e7710b6b028fd0dfadd4abe257cd95ab438d8646f09e040d"
+    },
+    {
+      "path": "regex/test-suites/test_sleela_sources.sh",
+      "sha256": "f8f96ffe9ed2a8b6c145ace4d0fdae74e51ba39e754d7705228dbe17366fad85"
+    },
+    {
+      "path": "regex/tests/test_regex.c",
+      "sha256": "a425eb17166045d4cecd7e13ee54851d5b39c7ab8f1d591ef2fc6d2c290bc38f"
+    },
+    {
+      "path": "regex/tests/test_regex.cpp",
+      "sha256": "2e154264c38804eea8b88b4996048eed623ef057a3df3623392a7fb1e9d79f4f"
+    },
+    {
+      "path": "regex/tests/test_regex_natural.c",
+      "sha256": "01050c04a7519f5aec136344335116c9db4252200ff1492af65cf12c4150b778"
+    },
+    {
+      "path": "regex/tests/test_regex_natural.cpp",
+      "sha256": "78ccb48b9413143924f68cc1795bebcf5b8a82d63bb57786012df7c4b6b79953"
+    },
+    {
       "path": "rmi/examples/client/RmiClient.sleela",
       "sha256": "c77dc7da8b405ecdb27a92420b2eb17d9365bb47ab5eaf1054f8f9b06a057eb5"
     },
@@ -9880,7 +9932,7 @@
     },
     {
       "path": "server-edition/README.md",
-      "sha256": "2c8b7b7cf65265b78cb535e09a20c42f1261e0619de2567a40c354d309524ed7"
+      "sha256": "26fb2c1e0506278c4bc8bda61447d7bec77f56025fd637e9065f1d97d171564c"
     },
     {
       "path": "server-edition/WIRE-PROTOCOL.md",
@@ -9896,7 +9948,7 @@
     },
     {
       "path": "server-edition/http/README.md",
-      "sha256": "0f61afd28aea99c7ac70a76489353380f0feb20eff1bcb93991a749480fa450c"
+      "sha256": "63fb60ba63656234bc77ff5276f82d49d31f4c3c60adbf61282929cd0584a991"
     },
     {
       "path": "server-edition/http/httpctl.c",
@@ -9904,7 +9956,7 @@
     },
     {
       "path": "server-edition/international-strernary/README.md",
-      "sha256": "5a2226a033a1fce852d3d211f947cc4e4e93be04f58f496d5cfe52b34d9f5149"
+      "sha256": "b05f14d2cd5614bbb4049d6063550e29c5f267ba27b38c51d88e141de09de0df"
     },
     {
       "path": "server-edition/international-strernary/international-strernary-contact.sh",
@@ -9916,7 +9968,7 @@
     },
     {
       "path": "server-edition/moral/2/README.md",
-      "sha256": "c596d34d30465461d528dff3d8d631b417cdd14c7f22e363814f5aab49d10ba1"
+      "sha256": "effc1d601c7c794fcd750e41a211207e45624af43f9359ba969da5b67e8b416b"
     },
     {
       "path": "server-edition/moral/2/install/linux-install.sh",
@@ -9960,7 +10012,7 @@
     },
     {
       "path": "server-edition/moral/3/README.md",
-      "sha256": "72daa95722b0e61c35fe8ba84b04d002c3445f03e114ebe4d349b427dc842743"
+      "sha256": "07f047d0b56be453fb21007672f54a32aaf94fcd84e0c96ff89039e97fdf2dd2"
     },
     {
       "path": "server-edition/moral/3/install/linux-install.sh",
@@ -9996,15 +10048,15 @@
     },
     {
       "path": "server-edition/moral/README.md",
-      "sha256": "2740d442addbe200bb0763fa3afe4249d33092ba9169f275abe44148ded1a2ac"
+      "sha256": "ca7ae228f81a4953961a37ddc673493204c1c3700938ed9baf8a7058bd8ec811"
     },
     {
       "path": "server-edition/national-relay/README.md",
-      "sha256": "3c721cc95098acc5a316b26ed3b30900417c0ecdd77ddb5160994e47d3bbd658"
+      "sha256": "3b5f690bfddceac83d4c0aea1bc0f31d1548d354ae1eae06a6b98242942fa61b"
     },
     {
       "path": "server-edition/participation/README.md",
-      "sha256": "ce251a0a089653a21e0d96c37b55089ac7978a402c21e179debd55de629d1f45"
+      "sha256": "78555b0b7cf9bd2668923d444df6351134089e8fac1066daff3c11b61df8d3f1"
     },
     {
       "path": "server-edition/participation/known-servers.conf",
