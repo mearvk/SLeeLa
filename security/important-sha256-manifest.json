@@ -28,7 +28,7 @@
     },
     {
       "path": "COMPILER.md",
-      "sha256": "dfa6d52d9d0342d45f4af51da9fcaa0e6140dba5feb667df685ba57b4c9359f5"
+      "sha256": "bb6f8bfe8785e299f383c9d70bbdc1600e31073370b80d151fbd9af753997cc4"
     },
     {
       "path": "CONNECTOR.md",
@@ -2731,6 +2731,18 @@
       "sha256": "f5b6a8331e58ea3a40d4111dca35b223c600278351e37d11ceb85cb258369366"
     },
     {
+      "path": "debugger/debugger.cpp",
+      "sha256": "0159a63bb3ad14cae1d492da4209b15ce5ee0b5e38810b0aba5316f0c02be4c4"
+    },
+    {
+      "path": "debugger/debugger.hpp",
+      "sha256": "134b49b9913c26f59c59ced45e635a461197ef4dbafd3f85f5353451b0be6b32"
+    },
+    {
+      "path": "debugger/main.cpp",
+      "sha256": "05765b305583df538a54f2098e6cdf39d89c6f2290466d448c916fdfd5eb7487"
+    },
+    {
       "path": "decompiler/cli/main.cpp",
       "sha256": "1ff433e608bfd7f7cbd966fb92d041166d63a4b3fb25c5222962cd51fc61fa91"
     },
@@ -4212,7 +4224,7 @@
     },
     {
       "path": "http-servers/common/annotation_http_bridge.cpp",
-      "sha256": "8b3819cb27275b666e6014f10f268c45a18033894375fe85a0317f311a7a9c34"
+      "sha256": "22414652fe161692df5969f0f0b9a506343b40e6d2255f9697c56a2a4124dee5"
     },
     {
       "path": "http-servers/common/annotation_http_bridge.h",
@@ -4228,19 +4240,19 @@
     },
     {
       "path": "impl/annotation/Annotation.cpp",
-      "sha256": "43ca5418a9669ea2ebba093f90cad242d0195fa8cc946528251361afd6441f2f"
+      "sha256": "a91dc1065dc947a64809d9b8be421f56195e82065468f9bc96ba8dc235da3139"
     },
     {
       "path": "impl/annotation/Annotation.hpp",
-      "sha256": "eb58dbeb74ef865dfbaf82ce363fe69fc4e44d264cd833477ffad7fdd6def685"
+      "sha256": "52bee078938305f7f3148afa9e6da948222504d1c2203b6cc7c9803e37d6cdca"
     },
     {
       "path": "impl/annotation/AnnotationForwarder.cpp",
-      "sha256": "67f09066805c5c8f2d7460ede1ed45cc77de75514ec10451d0a46d0291e44f9e"
+      "sha256": "f24986a3c7184c2ed008a91b4fbd04ea5ae92ea97ffc4a248adc077fec2d24f7"
     },
     {
       "path": "impl/annotation/AnnotationForwarder.hpp",
-      "sha256": "c9053175d8b1858b0873c1f1e249f4a0a950a8c34ef28682c53ddcf78784cbac"
+      "sha256": "867d549cbfb62b4e319bd04e1cedd3b69f3e549b6a06231cff0186965392c8cf"
     },
     {
       "path": "impl/annotation/AnnotationInterpreter.cpp",
@@ -4251,12 +4263,20 @@
       "sha256": "52dde9fe3b3d84b28ecfe5e2cae3839b1adf25cbc7a866d379bd2d77b02de4b5"
     },
     {
+      "path": "impl/annotation/AnnotationRuntime.cpp",
+      "sha256": "a9b268c6c46c6903659fa3a70fd24f7045b680294a32f22ecfc27435dcee00ea"
+    },
+    {
+      "path": "impl/annotation/AnnotationRuntime.hpp",
+      "sha256": "ca51b9c4194f275cd5ce627159a931fba2da65ae1fc9c9261891fa4560a19560"
+    },
+    {
       "path": "impl/annotation/ForwardingAnnotation.cpp",
-      "sha256": "8328dff39d1aa2339b6ee3dedfa1ab30494d13004d3ee1489910ab128679136a"
+      "sha256": "0ce293fa64748461755bfbd51075bb7bebf5d0b66ff4f2948d2e24b6243768fa"
     },
     {
       "path": "impl/annotation/ForwardingAnnotation.hpp",
-      "sha256": "b78830969b11b0d3db6379e497f281cbb251b906f481ce50bed387e192e7b70c"
+      "sha256": "d2a857b2f8eb851b9530ca84f9288b2c367fccc04df02e06a10bcdd535d8f806"
     },
     {
       "path": "impl/catalog/sheet_catalog.cpp",
@@ -4711,8 +4731,16 @@
       "sha256": "b0976c5eec6b360b84e96b6987a1b66691c31f4b71969e2c039600b6c0f1420d"
     },
     {
+      "path": "impl/frontend/annotation_pipeline.cpp",
+      "sha256": "41526cc2f07f4b02d403029ab9bd8a957adfd54cc5a7c8a401acfc6d76248c9e"
+    },
+    {
+      "path": "impl/frontend/annotation_pipeline.h",
+      "sha256": "d45320bd4856e5ee3e815bd0142d42e914eb7bcb93b7665fb1bcde01546b7fc5"
+    },
+    {
       "path": "impl/frontend/artifact.cpp",
-      "sha256": "17cea6ba565013bbefa38d50ffced1d74aa21f767f98f357420bc442112c5540"
+      "sha256": "ca1138abb86c33f2840ebf4aa2e12285e1a3ff5f66b5fe245707baab227a6f6a"
     },
     {
       "path": "impl/frontend/artifact.h",
@@ -4720,7 +4748,7 @@
     },
     {
       "path": "impl/frontend/ast.h",
-      "sha256": "2abd6e37b17d640956da4e9d96503c69745dbab3a6afcdc739a5aea4ae12eec5"
+      "sha256": "5d62ea15a0b59ca675293403cb713ea430aa60fefb692126de3974fb7da342aa"
     },
     {
       "path": "impl/frontend/compiler.cpp",
@@ -4732,7 +4760,7 @@
     },
     {
       "path": "impl/frontend/driver.cpp",
-      "sha256": "8e846046d946e2031cf9dbf1e903871142498223817b33dc5d164add8fe56abd"
+      "sha256": "2bdde201cacb15addd0b7a3e983286752506136f78dbcf80b469c58e5de4223d"
     },
     {
       "path": "impl/frontend/http_server_cli.cpp",
@@ -4744,23 +4772,23 @@
     },
     {
       "path": "impl/frontend/lexer.cpp",
-      "sha256": "97de21403d7116b5b8a11c2655f6058acb21770cc8a8b58e20102de5db5e7795"
+      "sha256": "d93c03a4b0f217718e8f3c92d5028e9a47a6e8fdb59a80014f6b6de4fa60dd76"
     },
     {
       "path": "impl/frontend/lexer.h",
-      "sha256": "a29eb60e96963c697892e7f454a08020fb0a7b57b84f99a662f4e524c346aec2"
+      "sha256": "882526d1e7e229d204523fc6993e597540d32204957fa259708b99ad0807525f"
     },
     {
       "path": "impl/frontend/parser.cpp",
-      "sha256": "6f45542143a7187e9542a3c5b7da8e2bb4c8e9914f29a1bcfcc76c67d49d9a78"
+      "sha256": "22a92b86cf86661f105693361e8e22c21d600dcb861f91c56aca92e18f0e6720"
     },
     {
       "path": "impl/frontend/parser.h",
-      "sha256": "b0979c2cd7073d240444fb2c6cc41393a1a8b1e0d80660d84d059c442070be9f"
+      "sha256": "881b01bcf6280c2a76bc89ddb0c328dd909685bc458283458cccc1f100b413a0"
     },
     {
       "path": "impl/frontend/semantic.cpp",
-      "sha256": "98bb794228b29da6cf5eb6d27d561d9a2ae422172d0e695c3bb49036d44535b1"
+      "sha256": "ca020b58ec0f20805e5c24b8ac32f66b0b516a3d66bc67311a3973918abeb957"
     },
     {
       "path": "impl/frontend/semantic.h",
@@ -5340,7 +5368,7 @@
     },
     {
       "path": "impl/nordshrift/sleela_emit.cpp",
-      "sha256": "a94afc41cf9d5ab963f9cbc8d4a3f0f3203640089c5df272979cd81f042c24ed"
+      "sha256": "43d552869bfb166edb7b9761439d3fa037fe850cedfdc56049c98ec9ba253b38"
     },
     {
       "path": "impl/nordshrift/sleela_emit.h",
@@ -6023,6 +6051,10 @@
       "sha256": "5313dbe955838d67b1bd9a2dfeabc3642a65fbdc02e8ef15ba38df256e0346cf"
     },
     {
+      "path": "server-edition/ANNOTATION_LANGUAGE.md",
+      "sha256": "71b7dc30165d2efd6e7553a51218166d4b7b70bcdf56d397959f6c0fcb10dcbf"
+    },
+    {
       "path": "server-edition/HTTP-GENERATIONS.md",
       "sha256": "7986892bec05ee1d0c10e44e077358c7dcea9ff5a7782c31e64ce4948aa90447"
     },
@@ -6040,11 +6072,19 @@
     },
     {
       "path": "server-edition/README.md",
-      "sha256": "060747047acfbd2ef377f32a718fb613c222fee59328d1b9b6a856471fb9f649"
+      "sha256": "2c8b7b7cf65265b78cb535e09a20c42f1261e0619de2567a40c354d309524ed7"
     },
     {
       "path": "server-edition/WIRE-PROTOCOL.md",
       "sha256": "dafbca81b7398434ef166fd3e147b0877d5ce0296ec267aa3798055c410bbd21"
+    },
+    {
+      "path": "server-edition/annotation_language_bridge.cpp",
+      "sha256": "41c582cb0a2766ac816e2a2b5cd2529d5e7032340fc47ea972f9f4fe964aca2c"
+    },
+    {
+      "path": "server-edition/annotation_language_bridge.hpp",
+      "sha256": "5f96a2ee40cb3ccad2585870556f39faacc9b18a069df9a01a0a16e8c390875c"
     },
     {
       "path": "server-edition/http/README.md",
@@ -7065,6 +7105,58 @@
     {
       "path": "terminal_pixel/pixel_terminal.h",
       "sha256": "d0ed0aa09d2e398afce86bb9b1c1b0910703066fa45bc8736a2e28740aff97c8"
+    },
+    {
+      "path": "test-suites/c/test_assert.h",
+      "sha256": "b9ab7efa6a7163cf2b1efad007410ac2f3592dac7296ee930939f1240b2eb79c"
+    },
+    {
+      "path": "test-suites/c/test_c_api_headers.c",
+      "sha256": "bb0f85c2a0b314cbbdf8b47d8e53bf1810dfdcc2446f5dda406a8f2349e82b25"
+    },
+    {
+      "path": "test-suites/c/test_http_bridge.c",
+      "sha256": "ed903b876db9fefed5a01a18e247bef879af07891bd43262766537e4a6ab9302"
+    },
+    {
+      "path": "test-suites/cpp/test_annotations.cpp",
+      "sha256": "bc0e85d5c876cd85a8f925421a55b8e092b2ed5d9ec9c28331b16d8d81baf15c"
+    },
+    {
+      "path": "test-suites/cpp/test_class_contracts.cpp",
+      "sha256": "d08d5423563397eed9b24b06b53c4c42a84041676b684ed26f3718690d836328"
+    },
+    {
+      "path": "test-suites/cpp/test_debugger.cpp",
+      "sha256": "81bf1c1360d7185123d18d522b995ca99fbd6eebe5906f2f1bc581f0a68217d1"
+    },
+    {
+      "path": "test-suites/cpp/test_frontend_annotations.cpp",
+      "sha256": "5b1f163a1f7463754fca383e7090502d369b4296fa5be1c9267498e1911871ac"
+    },
+    {
+      "path": "test-suites/generate-behavior-skeletons.py",
+      "sha256": "d723a79098b5a964b4eef9fda77bfb73c4221b9fe8ff3f4d4f381d930c27301c"
+    },
+    {
+      "path": "test-suites/generate-function-coverage.py",
+      "sha256": "9930093ca127a09d69a838c7f48f28ff5af006c76445f0a28cfc942315786c75"
+    },
+    {
+      "path": "test-suites/generate-function-coverage.sh",
+      "sha256": "5091ee301f924f157b6cc7a64251b79d270300f28981d25fc04b50bde9fe0d9c"
+    },
+    {
+      "path": "test-suites/run-all.sh",
+      "sha256": "ffb358b7b55f33fe56bbc466759c258f269a009e2923fdac502bf50de1d597ce"
+    },
+    {
+      "path": "test-suites/runtime-coverage.sh",
+      "sha256": "9bc69f71feacdbf67e86d00a0dc6cea40e68684d43f7fde93c74d507e676cb7c"
+    },
+    {
+      "path": "test-suites/sanitizers/run.sh",
+      "sha256": "4f4c352edcaa27521018fc67a69e89e77e4c6de1afa6261c72a5df6263a29311"
     },
     {
       "path": "tests/native_memory_smoke.cpp",
