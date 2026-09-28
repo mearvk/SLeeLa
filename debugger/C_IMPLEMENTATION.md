@@ -1,37 +1,38 @@
 # SLeeLa Debugger C Implementation
 
-The C implementation provides a stable C ABI over the debugger's core diagnostic concepts.
+The C implementation provides a C11+ ABI over the debugger's diagnostic model.
 
-## Scope
-
-This layer provides:
+## Implemented scope
 
 - opaque debugger sessions;
 - breakpoints;
 - watchpoints;
 - diagnostic events;
-- deterministic text reports;
+- deterministic reports;
 - explicit result codes;
-- no C++ types or exceptions in the ABI.
+- source-line control points;
+- TRACE, STOP, and EXCEPTION line actions;
+- voice-command parsing;
+- no C++ types or exceptions across the ABI.
 
-It is intentionally backend-neutral.
+## Line-level control
 
-## IDE and terminal operation
+Compiler instrumentation or manually instrumented code can notify the debugger when execution reaches a source line. The event identifies file, line, column, thread, and function where available.
 
-The C ABI is the programmatic diagnostic layer. Interactive stopping in an IDE or terminal requires a native backend adapter.
+A logical STOP or EXCEPTION point is not by itself a native process suspension. Native backend confirmation is required before claiming that execution actually stopped.
 
-The intended architecture is:
+## Voice
 
-C/C++ target -> SLeeLa debugger session -> backend adapter -> native debugger/process-control facility -> IDE/terminal presentation.
+Voice recognition is intentionally outside this C library. The expected pipeline is:
 
-The next backend stage should provide launch/attach, continue, step, breakpoint binding, thread enumeration, stack capture, registers, memory access, exception/crash events, and capability reporting for Linux, macOS, and Windows.
+speech -> speech-to-text -> debugger command parser -> backend.
 
-## Safety contract
+Only debugger commands are accepted. Arbitrary shell execution is outside the interface.
 
-The C API does not claim to control a process merely because a breakpoint was registered in the session. Native backend success must be reported separately from request creation.
+## Backend integration
+
+The C ABI remains backend-neutral. Native backends should provide launch/attach, resume, stepping, breakpoint binding, thread and stack inspection, registers, memory, exceptions, source mapping, and capability reporting.
 
 ## Build
 
-Compile the C implementation as C11 or later. It uses only the C standard library.
-
-The test should be run through the debugger test target once integrated into the top-level build.
+Compile the C implementation as C11 or later using the standard C library. The C tests should be included in the debugger's canonical test target.
