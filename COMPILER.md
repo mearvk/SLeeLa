@@ -19,7 +19,7 @@ Wrapper™ (.sleela source)
         │
         ▼
   [ Sleela front end — C++ ]
-     version check → lexer → parser → AST → compiler (codegen)
+     version check → lexer → parser → AST + annotations → semantic analysis → compiler (codegen)
         │   emits opcodes and drives the core via the exchange API
         ▼
   [ Sleela Core — C, stable ABI ]
@@ -61,6 +61,12 @@ globals); a bounded **threading** model (`spawn`/`join`/`lock`/`unlock`/
 The Sleela compiler is **version aware**: it knows which syntax versions it can
 accept and enforces that on every source it compiles, through **both** entry
 points (`sleela` and Nordshrift).
+
+### First-class annotations
+
+A Wrapper may declare document annotations before its first import, struct, or class. The same annotation collection is carried through lexing, parsing, the Program AST, semantic validation, compilation, runtime installation, and Server Edition integration. `@next` is validated as a safe forwarding destination; annotation metadata never grants capability or bypasses SourceRouter policy.
+
+See [`impl/frontend/ANNOTATION_PIPELINE.md`](impl/frontend/ANNOTATION_PIPELINE.md).
 
 ### The `#sleela` pragma
 
