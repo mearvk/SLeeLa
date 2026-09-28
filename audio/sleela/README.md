@@ -2,35 +2,82 @@
 
 Updated 2026-09-28.
 
-This directory is the SLeeLa-language source-of-truth layer for the Audio API. It sits above the existing C/C++/Java/native implementation and defines the portable Audio object model and operating-system boundary.
+The audio/sleela/ directory is the SLeeLa source-of-truth contract layer for Audio. These files use SLeeLa syntax 1.3 and lower through the SLVM rather than bypassing it.
+
+## Execution model
+
+    .sleela source
+       -> SLeeLa lexer/parser/semantic analysis
+       -> SLeeLa compiler
+       -> SLVM bytecode
+       -> VM-owned Audio job handle
+       -> C SLVM Audio bridge
+       -> registered C ABI callback
+       -> C++ Audio renderer
+       -> operating-system facilities
+
+SLeeLa code never receives a C pointer, C++ object pointer, file descriptor, or OS device handle. The VM exposes only integer handles and typed scalar values.
 
 ## Standard .sleela classes
 
-There are **9 standard .sleela files** in the Audio API:
+1. Audio.sleela — top-level validate/mix/close facade.
+2. AudioConfiguration.sleela — creates and configures VM-owned jobs.
+3. AudioControls.sleela — validates and applies mixer controls.
+4. AudioDevice.sleela — portable device identity/compatibility boundary.
+5. AudioInput.sleela — input path/offset/gain validation.
+6. AudioMixer.sleela — handle-oriented mixer facade.
+7. AudioNative.sleela — native renderer boundary and platform reporting.
+8. AudioStream.sleela — portable stream contract.
+9. AudioSystem.sleela — operating-system platform boundary.
 
-1. Audio.sleela
-2. AudioInput.sleela
-3. AudioControls.sleela
-4. AudioConfiguration.sleela
-5. AudioNative.sleela
-6. AudioDevice.sleela
-7. AudioStream.sleela
-8. AudioMixer.sleela
-9. AudioSystem.sleela
+All nine contain a #sleela 1.3 declaration and executable method bodies. No file relies on unsupported array types, declaration-only methods, or cross-class type names that the current compiler cannot lower.
 
-The first five mirror the established Audio API contract. AudioDevice, AudioStream, AudioMixer, and AudioSystem establish the reusable system/device/mixing boundary without pretending that a platform backend exists where it does not.
+## Native bridge
 
-## Native counterparts
+The SLVM core provides bounded Audio job operations:
 
-- c/Audio.h and c/Audio.c provide the C ABI counterpart for the nine contracts.
-- cpp/Audio.hpp and cpp/Audio.cpp provide the C++ counterpart and object wrappers.
-- The native layer validates the existing 128-input limit and the established controls contract.
-- Platform identification is implemented for Linux, macOS, and Windows; actual hardware enumeration remains a driver/backend responsibility.
+- audioNew(sampleRate, outputPath)
+- audioAdd(handle, path, startSeconds, gainDb)
+- audioControls(handle, bassDb, midDb, trebleDb, masterGainDb, pan, leftGain, rightGain)
+- audioValidate(handle)
+- audioRender(handle)
+- audioClose(handle)
+- audioPlatform()
 
-## Relationship to /audio
+The VM stores up to 64 simultaneous jobs, with up to 128 inputs per job. Native paths are copied into VM-owned storage and are never exposed as raw pointers to SLeeLa source.
 
-The existing /audio implementation remains the rendering implementation. /audio/sleela is the language/API contract layer; it does not replace the native mixer or the Java/JavaFX API.
+Audio rendering dispatches through the registered SLAudioNativeRenderFn. The standard SLeeLa executable registers sleela_audio_native_render_bridge, which converts the VM job into the existing C++ sleela::audio::Config and invokes mix_wav().
 
-## Standard boundary
+## C and C++
 
-SLeeLa class -> C ABI / C++ object -> Java/native adapter or platform backend -> audio implementation
+The boundary is intentionally layered:
+
+- impl/core/sleela_core.c owns VM handles, validation, opcode dispatch, and lifecycle.
+- impl/core/sleela_audio_bridge.cpp is the controlled C++ bridge.
+- audio/cpp/src/sleela_audio.cpp performs WAV decoding, synchronized mixing, gain/pan processing, clipping, and RIFF output.
+- audio/c/ remains the stable C ABI counterpart.
+- impl/core/sleela_audio_mixer.c remains the in-VM float mixer for real-time/buffer-oriented use.
+
+This prevents the language layer from pretending that C++ implementation details are part of the SLeeLa source model.
+
+## Hardware and OS boundary
+
+AudioSystem.sleela reports the host platform through the SLVM. Hardware enumeration and device ownership remain driver/backend responsibilities. A platform name is not treated as proof that a physical device is available.
+
+## Conformance rule
+
+A green compile of the nine files is necessary but not sufficient. Runtime conformance must also verify:
+
+- 1 and 128 input jobs;
+- mono and stereo WAV;
+- synchronized offsets;
+- per-input gain;
+- master/left/right gain;
+- pan;
+- malformed/truncated WAV rejection;
+- sample-rate mismatch rejection;
+- output/RIFF overflow protection;
+- VM handle exhaustion and close/reuse;
+- C/C++ output equivalence where both paths are intentionally exercised.
+
+EQ fields remain part of the SLeeLa contract. The existing C++ WAV renderer currently transports bass/mid/treble values but does not apply its EQ effect; the in-VM float mixer has an explicit EQ processor. These are kept distinct rather than silently claiming identical semantics.
