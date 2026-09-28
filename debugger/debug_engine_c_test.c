@@ -1,0 +1,3 @@
+#include "debug_engine_c.h"
+#include <assert.h>
+int main(void){sleela_debug_engine_t*e=sleela_debug_engine_create();assert(e);uint64_t id=sleela_debug_engine_add_breakpoint(e,3,"x.cpp",4,1,"main",0);assert(id);assert(sleela_debug_engine_hit_breakpoint(e,id));assert(sleela_debug_engine_capability(e,"breakpoints"));assert(sleela_debug_engine_remove_breakpoint(e,id));sleela_debug_engine_destroy(e);return 0;}
