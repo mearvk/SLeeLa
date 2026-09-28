@@ -3,6 +3,7 @@
 // ===========================================================================
 #include "lexer.h"
 #include "parser.h"
+#include "semantic.h"
 #include "compiler.h"
 #include "artifact.h"
 #include "native_api.h"
@@ -451,7 +452,18 @@ static int designActivityCmd(int argc,char**argv){
 static int usage(){std::cerr<<"Usage:\n  sleela [--memory-manager[=<size>]] compile <file.sleela> -o <program.sleela>\n  sleela run <file.sleela>\n  sleela validate-artifact <file.sleela>\n  sleela check <file.sleela>\n  sleela http-server <1|2|3> [--port N] [--threads N] [--root DIR] [--log FILE] [--once]\n  sleela xclass [--run|--emit|--info] <file.xclass>\n  sleela langin [--run|--emit-sleela|--emit-xclass|--info] <file>\n  sleela nordshrift [--emit] [--target=sleela|java|c] <file.sleela>\n  sleela native [--config <file>] [--memory-manager[=<size>]] -- <program> [args...]\n  sleela exec [--config <file>] [--memory-manager[=<size>]] -- <program> [args...]\n  sleela version\n  sleela defender <detect|fetch|build|install|provision> ...\n";return 2;}
 static bool checkSyntaxVersion(const std::string& path,const std::string& src){sleela::VersionResolution v=sleela::resolveSyntaxVersion(src);if(v.isError()){std::cerr<<"sleelvac: "<<path<<": error: "<<v.message<<"\n";return false;}if(v.isWarning())std::cerr<<"sleelvac: "<<path<<": warning: "<<v.message<<"\n";return true;}
 static bool parseSource(const std::string&path,std::string&src,sleela::Program&prog,sleela::VersionResolution&version){if(!readFile(path,src)){std::cerr<<"sleelvac: cannot open '"<<path<<"'\n";return false;}if(!checkSyntaxVersion(path,src))return false;version=sleela::resolveSyntaxVersion(src);try{sleela::Lexer lexer(src);auto tokens=lexer.tokenize();sleela::Parser parser(std::move(tokens));prog=parser.parseProgram();sleela::Program validation;validation.imports=prog.imports;validation.imports.erase(std::remove(validation.imports.begin(),validation.imports.end(),"chemistry"),validation.imports.end());validation.imports.erase(std::remove(validation.imports.begin(),validation.imports.end(),"financial"),validation.imports.end());sleela::native::validateImports(validation);return true;}catch(const std::exception&ex){std::cerr<<"sleelvac: "<<path<<": "<<ex.what()<<"\n";return false;}}
-static int checkFile(const std::string&path){if(verifyBeforeExecution(fs::current_path()))return 1;std::string src;sleela::Program prog;sleela::VersionResolution v;if(!parseSource(path,src,prog,v))return 1;try{sleela::chemistry::lowerProgram(prog);sleela::financial::lowerProgram(prog);}catch(const std::exception&ex){std::cerr<<"sleelvac: "<<path<<": "<<ex.what()<<"\n";return 1;}std::cout<<path<<": ok (syntax "<<(v.pragmaPresent?"declared ":"assumed ")<<v.declared.str()<<")\n";return 0;}
+static int checkFile(const std::string&path){
+    if(verifyBeforeExecution(fs::current_path()))return 1;
+    std::string src;sleela::Program prog;sleela::VersionResolution v;
+    if(!parseSource(path,src,prog,v))return 1;
+    try{
+        sleela::SemanticResult sem=sleela::analyzeSemantics(prog,v.declared);
+        for(const auto&w:sem.warnings) std::cerr<<"sleelvac: "<<path<<": warning: "<<w<<"\n";
+        if(!sem.ok()){std::cerr<<"sleelvac: "<<path<<": error: "<<sem.errors.front()<<"\n";return 1;}
+        sleela::chemistry::lowerProgram(prog);sleela::financial::lowerProgram(prog);
+    }catch(const std::exception&ex){std::cerr<<"sleelvac: "<<path<<": "<<ex.what()<<"\n";return 1;}
+    std::cout<<path<<": ok (syntax "<<(v.pragmaPresent?"declared ":"assumed ")<<v.declared.str()<<")\n";return 0;
+}
 static int compileFile(const std::string&sourcePath,const std::string&outputPath){if(verifyBeforeExecution(fs::current_path()))return 1;std::string src;sleela::Program prog;sleela::VersionResolution syntax;if(!parseSource(sourcePath,src,prog,syntax))return 1;catalog::Catalog cat=loadCatalog();try{int rc=sleela::compileToArtifact(prog,outputPath,&cat,syntax.declared);if(rc!=0)return 1;std::cout<<"sleelvac: "<<sourcePath<<" -> "<<outputPath<<" (runnable Sleela Core artifact)\n";return 0;}catch(const std::exception&ex){std::cerr<<"sleelvac: "<<ex.what()<<"\n";return 1;}}
 static int validateArtifact(const std::string&path){
     char error[256]={0};
