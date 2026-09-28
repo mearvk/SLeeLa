@@ -6707,6 +6707,14 @@
       "sha256": "24385f09380f7acbafe21fe64b4b182059c692b1571949ffd8e4ef56e8a2ee08"
     },
     {
+      "path": "synchro/tests/protocol_negative.c",
+      "sha256": "a15b4356d9afd0be863ec05d0f436d618fc487c37f046f6f18e5761aeeee7009"
+    },
+    {
+      "path": "synchro/tests/run_synchro_suite.sh",
+      "sha256": "87060b30f4db40d46da212ea4d1adf00a6699a3acd4e3ede36cc522155b5c6cb"
+    },
+    {
       "path": "synchro/tests/test_synchro.py",
       "sha256": "26f61b9aa7ea8a62c68a70f39eb813bf3b7b615878ab41a173769a2280381033"
     },
