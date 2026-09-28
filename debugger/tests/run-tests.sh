@@ -7,7 +7,7 @@ CFLAGS=${CFLAGS:--std=c11 -Wall -Wextra -Wpedantic}
 CXXFLAGS=${CXXFLAGS:--std=c++17 -Wall -Wextra -Wpedantic}
 
 cleanup() {
-    rm -f debugger-core-test debugger-line-test debugger-backend-test debugger-actions-test debugger-c-test debugger-line-c-test debug-engine-c-test
+    rm -f debugger-core-test debugger-line-test debugger-backend-test debugger-actions-test debugger-c-test debugger-line-c-test debug-engine-c-test debug-diagnostics-test
 }
 trap cleanup EXIT INT TERM
 
@@ -31,5 +31,7 @@ trap cleanup EXIT INT TERM
 
 c++ $CXXFLAGS -I.. ../debug_engine.cpp ../debug_engine_c.cpp debug_engine_c_test.c ../debugger.cpp -o debug-engine-c-test
 ./debug-engine-c-test
+c++ $CXXFLAGS -I.. ../debug_diagnostics.cpp debug_diagnostics_test.cpp -o debug-diagnostics-test
+./debug-diagnostics-test
 
 echo "SLeeLa debugger test suite: PASS"
