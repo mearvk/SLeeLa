@@ -48,7 +48,11 @@ jobs:
           if ! git diff --cached --quiet; then
             git commit -m "docs: standardize README Debian logo to 75x75 upper-right"
             target="${GITHUB_HEAD_REF:-${GITHUB_REF_NAME}}"
-          git push origin "HEAD:refs/heads/$target"
+          if [ -n "${GITHUB_HEAD_REF}" ]; then
+            git push --force origin "HEAD:refs/heads/$target"
+          else
+            git push origin "HEAD:refs/heads/$target"
+          fi
           fi
       - name: Test suite
         run: bash ./test-suites/run-all.sh --all
