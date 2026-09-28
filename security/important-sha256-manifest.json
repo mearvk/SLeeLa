@@ -720,39 +720,39 @@
     },
     {
       "path": "audio/sleela/Audio.sleela",
-      "sha256": "aad17bf208f156f078fc821d7134c35d0e931ef4e4b844c357af16e0e5a80924"
+      "sha256": "02ef8de86eb08ee76d24e733fbe8718fc9a9386423af477040f9c48ac04fa52a"
     },
     {
       "path": "audio/sleela/AudioConfiguration.sleela",
-      "sha256": "be189a0926200b4ca643a28983385cca2271356247a15624af311b6e7d940296"
+      "sha256": "d1bcdd08df5198954c9d156306664c3505a0b13166a60407f38b700f813ee267"
     },
     {
       "path": "audio/sleela/AudioControls.sleela",
-      "sha256": "2141b43eea322719e718586ed64230282968bdec854c3bbdb114353c8aee9ff3"
+      "sha256": "249d9d8340e0e141e69c93e5ca9a4bc2a51769680ee1bf8e7bf1cb3b7fd8bd5e"
     },
     {
       "path": "audio/sleela/AudioDevice.sleela",
-      "sha256": "903e0993107efa8c7332daf8d076aa30b44499abd32f57d73ad7fcc56ecd3f35"
+      "sha256": "ba555982fe9251348a4cf9a9d57c5825a43f9cbb947dbf71a14e5775d636d7b5"
     },
     {
       "path": "audio/sleela/AudioInput.sleela",
-      "sha256": "8f2eb371ce188c2775443a651ab992bb4e2631a7f59ac59bffb583b98f36cf4d"
+      "sha256": "ccd5ea23e88d7bb8883637b76370df4ac539545791e78002349b05409677b46b"
     },
     {
       "path": "audio/sleela/AudioMixer.sleela",
-      "sha256": "4baf253dffc355827d566a898000a94a02c581aafa489791d342d9c0766dbda2"
+      "sha256": "2d907e3e2ab9a8287c1b3b53ded467807cd032e5a0f73221123ef49040156a27"
     },
     {
       "path": "audio/sleela/AudioNative.sleela",
-      "sha256": "28d0a2fcb78eb463ab995cd2f2ba8ee18e76b6e1b565b0ef0e0f17e1a0f35f2f"
+      "sha256": "9af1255c7b0294c9014c2b6abe13c72e7ec90c0a07484e37ab7e6b36fff1cf41"
     },
     {
       "path": "audio/sleela/AudioStream.sleela",
-      "sha256": "ba4fef4253ef494ac1de99453e0b9c8b651e4457bd46674765d21a8903d6651e"
+      "sha256": "13219786398e2567648e95c27caa3f9ad772933d1433a38a9d72b92aaf70e293"
     },
     {
       "path": "audio/sleela/AudioSystem.sleela",
-      "sha256": "5b1bebc8b0969c1c4eb3ada6bcbbe7554d7a137e4e25fd5c57e3d1fef0a5c0b7"
+      "sha256": "4a4faf5ece59a7b38eb4915b13f78103dbf2d9e6ff2849c4fa2aa37967890548"
     },
     {
       "path": "bash/CWRU/misc/errlist.c",
@@ -5000,7 +5000,7 @@
     },
     {
       "path": "impl/frontend/driver.cpp",
-      "sha256": "02dc654b8dae98ef7708f84ed1828a740d549e5a6c5de68287ef2ee1cd76774e"
+      "sha256": "1222aa040fc74b96bde9264f40802b4f2f4df7b137e01e43baf0ffa4dc3b2de5"
     },
     {
       "path": "impl/frontend/http_server_cli.cpp",
