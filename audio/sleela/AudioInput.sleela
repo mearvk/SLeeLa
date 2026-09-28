@@ -1,0 +1,7 @@
+#sleela 1.3
+// Input validation used before a path enters the VM-owned Audio job.
+class AudioInput {
+  static bool validate(String path, double startSeconds, double gainDb) {
+    return path != "" && startSeconds >= 0.0;
+  }
+}
