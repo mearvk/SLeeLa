@@ -11,9 +11,9 @@ jobs:
       - name: Test suite
         run: ./test-suites/run-all.sh --all
       - name: Sanitizers
-        run: ./test-suites/sanitizers/run.sh
+        run: bash ./test-suites/sanitizers/run.sh
       - name: Runtime coverage tooling
-        run: ./test-suites/runtime-coverage.sh
+        run: bash ./test-suites/runtime-coverage.sh
       - name: Upload logs
         if: always()
         uses: actions/upload-artifact@v4
