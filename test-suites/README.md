@@ -43,3 +43,23 @@ A test passes only when its executable returns 0. A translation unit passes the 
 The repository contains substantially more source than the foundational API classes. The testbed therefore uses a discover-and-audit model rather than pretending that a hand-maintained list is the complete universe of SLeeLa code.
 
 New C/C++ files automatically enter the audit. New public behavior should receive a focused runtime test in c/ or cpp/.
+
+
+## Function-by-function verification inventory
+
+`generate-function-coverage.py` scans repository C/C++ implementation files and produces `FUNCTION.COVERAGE.md`.
+
+The inventory distinguishes:
+
+- **tested** — a behavioral test maps to the function;
+- **integration-tested** — the function translation unit is exercised through an explicit integration path;
+- **compile-only** — the function is discovered and syntax-checked, but no behavioral mapping is present;
+- **untested** — reserved for functions without test or compile evidence.
+
+The generator is deliberately conservative. It is a verification inventory, not a replacement for runtime instrumentation such as gcov or LLVM source-based coverage.
+
+Run:
+
+    ./test-suites/generate-function-coverage.sh
+
+The generated inventory becomes the backlog for converting compile-only functions into behavioral tests.
