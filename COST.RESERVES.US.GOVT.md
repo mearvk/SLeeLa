@@ -456,7 +456,113 @@ A future Munction allocation should record, at minimum:
 
 This preserves the distinction between **actual recorded engineering effort**, **planning estimates**, and **commercial value scenarios**.
 
-## 15. Status and Authority
+## 15. HTTP 4–9 Cost vs. Profit Evaluation
+
+The HTTP 4–9 server family is now represented by six numbered native server programs under `http-servers/4` through `http-servers/9`. This section evaluates their engineering cost against the existing illustrative commercial model without treating sales assumptions as a forecast.
+
+### Scope and cost treatment
+
+The existing baseline already contains the following related planning categories:
+
+| Existing Workstream | Baseline Hours | Planning Cost |
+|---|---:|---:|
+| HTTP protocol family and packet processing | 1,600 | $88,000 |
+| HTTP server / server-edition infrastructure | 1,400 | $77,000 |
+| **Related HTTP baseline** | **3,000** | **$165,000** |
+
+The six new HTTP 4–9 programs are therefore treated as an extension of the existing HTTP/server scope rather than automatically added as another $165,000 charge. No historical hours are invented for the implementation just completed.
+
+For prospective budgeting, the appropriate incremental formula is:
+
+**HTTP 4–9 Incremental Labor Cost = Verified HTTP 4–9 Engineering Hours × $55/hour**
+
+If the same 20% planning reserve is authorized for that incremental work:
+
+**HTTP 4–9 Planning Cost = Incremental Labor Cost × 1.20**
+
+This preserves the existing $1,278,750 baseline until actual timekeeping or an approved change estimate establishes an incremental amount.
+
+### Engineering value represented by HTTP 4–9
+
+| Server | Current Engineering Scope | Value Evidence |
+|---|---|---|
+| HTTP 4 | Binary session/frame handling, sequence validation, flow-control and lifecycle frames | Native packet parser, handshake gate and packet logging |
+| HTTP 5 | HTTP 4 foundation plus Friends' Pack and audit-oriented extensions | Explicit extension frame types and logged packet identity |
+| HTTP 6 | HTTP 5 foundation plus consolidated application/debate fields | Explicit extension identifiers and bounded frame processing |
+| HTTP 7 | Semantic/assertion application protocol | Protocol-version gate and semantic response path |
+| HTTP 8 | Handshake/subscription/radio/checker/session exchange | Explicit handshake requirement and state response |
+| HTTP 9 | Identity/monitoring/international/Dark Band metadata | Explicit metadata exchange and configurable monitoring state |
+
+These are SLeeLa application protocols and are not being represented as Internet-standard HTTP/4–HTTP/9 specifications.
+
+### Cost-versus-value measures
+
+The useful economic comparison is not simply source-code count. The relevant value measures are:
+
+1. **Protocol coverage:** six additional executable server generations are now represented.
+2. **Packet visibility:** packet/frame identity, stream, request, sequence and payload-length information can be logged.
+3. **Handshake enforcement:** malformed or out-of-sequence initial exchanges can be rejected.
+4. **Reusable server structure:** each numbered server has a build target and executable entry point.
+5. **CI qualification:** the six server directories have a dedicated matrix build/smoke-test workflow.
+6. **Future integration value:** the numbered servers provide concrete targets for the existing `/http` protocol definitions, client implementations, test vectors and later transport work.
+
+### Illustrative commercial comparison
+
+The existing commercial scenario assumes a $1,000 sale price and 7,000 Year-1 sales, producing $7,000,000 of gross sales.
+
+| Measure | Calculation | Result |
+|---|---|---:|
+| Existing total planning basis | Baseline + 20% reserve | **$1,534,500** |
+| Illustrative Year-1 gross sales | 7,000 × $1,000 | **$7,000,000** |
+| Planning-cost allocation per Year-1 sale | $1,534,500 ÷ 7,000 | **$219.21/sale** |
+| Illustrative gross-sales / planning-cost ratio | $7,000,000 ÷ $1,534,500 | **4.56×** |
+| Existing planning-cost recovery threshold | $1,534,500 ÷ $1,000 | **1,535 sales** |
+
+Because the HTTP 4–9 effort has not been assigned fabricated historical hours, these figures do **not** claim a separate HTTP 4–9 profit margin.
+
+### Prospective incremental sensitivity
+
+For future budgeting, the following examples show how incremental HTTP 4–9 engineering effort would translate into planning cost. These are mathematical sensitivities, not recorded project costs.
+
+| Incremental Hours | Labor @ $55/hr | With 20% Reserve | Equivalent $1,000 Sales |
+|---:|---:|---:|---:|
+| 100 | $5,500 | $6,600 | 6.60 |
+| 250 | $13,750 | $16,500 | 16.50 |
+| 500 | $27,500 | $33,000 | 33.00 |
+| 1,000 | $55,000 | $66,000 | 66.00 |
+| 1,600 | $88,000 | $105,600 | 105.60 |
+
+The last row corresponds to the existing HTTP protocol-family planning allocation and is shown only as a sensitivity reference; it is **not** an assertion that HTTP 4–9 consumed 1,600 hours.
+
+### Gross contribution sensitivity
+
+If the $1,000 selling price is retained and an incremental HTTP 4–9 planning cost is treated as a one-time engineering investment, the mathematical gross-sales amount required to equal that cost is:
+
+**Required sales = Incremental HTTP 4–9 Planning Cost ÷ $1,000**
+
+For example, a hypothetical 500-hour incremental estimate would be:
+
+**500 × $55 × 1.20 = $33,000**
+
+and:
+
+**$33,000 ÷ $1,000 = 33 equivalent sales**
+
+This is a cost-recovery calculation only. It is not net profit because it excludes taxes, payment processing, sales and marketing, customer support, hosting, infrastructure, additional labor, maintenance, and other operating expenses.
+
+### Profit interpretation
+
+The appropriate conclusion from the current evidence is:
+
+- The HTTP 4–9 server family creates additional software capability and testable infrastructure.
+- Its historical engineering cost should be recorded from actual timekeeping rather than inferred from the existence of source files.
+- The existing $1,278,750 baseline and $1,534,500 planning total remain unchanged until an approved incremental estimate is made.
+- Under the existing illustrative $1,000-sales model, any future incremental HTTP 4–9 cost can be translated directly into an equivalent sales recovery threshold.
+- The resulting figures describe **gross-sales recovery and planning economics**, not realized net profit.
+
+This keeps the cost model auditable and prevents the same HTTP engineering effort from being counted once in the original HTTP allocations and again as a new charge for HTTP 4–9.
+
+## 16. Status and Authority
 
 This document is an internal SLeeLa planning artifact. It does **not** represent:
 
