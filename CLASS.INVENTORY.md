@@ -4,7 +4,7 @@
 **Inventory Revision:** 1.3  
 **Inventory Date:** 2026-09-28  
 **Known Source Files Explicitly Indexed: 83**
-**Repository-wide SLeeLa source files (verified): 229**
+**Repository-wide SLeeLa source files (verified): 229 on `master`; 238 on `main`**
 **Standard-library front-end objects in `/lib`: 69**
 **Standard-library target: 2,048 objects**  
 **Unique Foundational C++ Class Files (contract-verified): 50**
@@ -159,7 +159,7 @@ The library targets **2,048 object types**. Only the initial 69 are implemented 
 
 ### Repository-wide SLeeLa source count
 
-The master tree was mechanically enumerated before this addition at **160 `.sleela` source files**. The 69 new `/lib` files bring the verified repository total to **229 `.sleela` source files**. This is a source-file count, not a declaration count.
+The `master` tree was mechanically enumerated before this addition at **160 `.sleela` source files**. The 69 new `/lib` files bring `master` to **229 `.sleela` source files**. The corresponding `main` tree contains **238 `.sleela` source files**, reflecting nine additional branch-specific SLeeLa source files. These are source-file counts, not declaration counts.
 
 ## 5. Module Coverage
 
