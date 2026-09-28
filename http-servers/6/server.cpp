@@ -1,4 +1,5 @@
 #include "server.hpp"
+#include "../common/packet_spec.hpp"
 #include <arpa/inet.h>
 #include <cerrno>
 #include <cstring>
@@ -10,7 +11,7 @@
 #include <unistd.h>
 #include <vector>
 namespace sleela::http6{namespace{
-constexpr std::size_t H=32,MAX=16u*1024u*1024u;constexpr unsigned V=6,MAXTYPE=20;
+constexpr std::size_t H=sleela::packet::kHeaderSize; constexpr std::size_t MAX=sleela::packet::kMaxPayload;constexpr unsigned V=6,MAXTYPE=20;
 enum:std::uint8_t{OPEN=1,DATA,END,RESET,WINDOW,PING,PONG,RESUME,CAPSULE,FRIENDS_PACK=10,BONUS_OFFER=11,FP_UPDATE=12,AUDIT=13,CONSOLIDATED_FRIENDS_BET=14,TEAMSTER_DEBATE=15,CONSOLIDATE_IQ=16,TEAM_AREA=17,DEBATE_TOPIC=18,DEBATE_POSITION=19,RECIPIENT_LABEL=20};
 std::uint16_t g16(const std::uint8_t*p){return(std::uint16_t(p[0])<<8)|p[1];} std::uint32_t g32(const std::uint8_t*p){return(std::uint32_t(p[0])<<24)|(std::uint32_t(p[1])<<16)|(std::uint32_t(p[2])<<8)|p[3];} std::uint64_t g64(const std::uint8_t*p){std::uint64_t v=0;for(int i=0;i<8;i++)v=(v<<8)|p[i];return v;}
 void p16(std::vector<std::uint8_t>&b,std::size_t o,std::uint16_t v){b[o]=v>>8;b[o+1]=v;} void p32(std::vector<std::uint8_t>&b,std::size_t o,std::uint32_t v){b[o]=v>>24;b[o+1]=v>>16;b[o+2]=v>>8;b[o+3]=v;} void p64(std::vector<std::uint8_t>&b,std::size_t o,std::uint64_t v){for(int i=7;i>=0;i--){b[o+i]=std::uint8_t(v);v>>=8;}}
