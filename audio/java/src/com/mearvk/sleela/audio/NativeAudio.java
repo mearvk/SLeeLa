@@ -34,7 +34,7 @@ public final class NativeAudio implements Audio {
 
     /**
      * Executes a native adapter using the SLeeLa audio process contract:
-     * executable OUTPUT SAMPLE_RATE INPUT...
+     * --output OUTPUT --sample-rate SAMPLE_RATE --input PATH START_SECONDS GAIN_DB ...
      *
      * The executable must document and implement this argument contract.
      */
@@ -46,9 +46,23 @@ public final class NativeAudio implements Audio {
 
         final var command = new java.util.ArrayList<String>();
         command.add(executable.toString());
+        command.add("--output");
         command.add(c.output().toString());
+        command.add("--sample-rate");
         command.add(Integer.toString(c.sampleRate()));
-        c.inputs().forEach(i -> command.add(i.source()));
+        c.inputs().forEach(i -> {
+            command.add("--input");
+            command.add(i.source());
+            command.add(Double.toString(i.startSeconds()));
+            command.add(Double.toString(i.gainDb()));
+        });
+        command.add("--bass"); command.add(Double.toString(c.controls().bassDb()));
+        command.add("--mid"); command.add(Double.toString(c.controls().midDb()));
+        command.add("--treble"); command.add(Double.toString(c.controls().trebleDb()));
+        command.add("--master-gain"); command.add(Double.toString(c.controls().masterGainDb()));
+        command.add("--pan"); command.add(Double.toString(c.controls().pan()));
+        command.add("--left-gain"); command.add(Double.toString(c.controls().leftGain()));
+        command.add("--right-gain"); command.add(Double.toString(c.controls().rightGain()));
 
         try {
             final Process process = new ProcessBuilder(command).inheritIO().start();
