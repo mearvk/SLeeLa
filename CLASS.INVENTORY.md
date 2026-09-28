@@ -1,16 +1,15 @@
 # SLeeLa Class Inventory
 
 **SLeeLa Version:** 0.3.0-dev  
-**Inventory Revision:** 1.0  
-**Inventory Branch:** `main`  
+**Inventory Revision:** 1.1  
 **Inventory Date:** 2026-09-28  
-**Unique Class Files (contract-verified): 50**
+**Unique Foundational C++ Class Files (contract-verified): 50**
 
-> This document is the authoritative starting inventory for the SLeeLa 0.3.0-dev development line. The **47 unique class files** at the top of this document are the C++ foundational class headers directly included and contract-checked by `test-suites/cpp/test_class_contracts.cpp`. This is a verified class-file count, not a claim that no other repository source file contains a class, struct, interface, or class-like declaration.
+> This document is the authoritative starting inventory for the SLeeLa 0.3.0-dev development line. The **50 unique foundational C++ class files** are directly included and contract-checked by `test-suites/cpp/test_class_contracts.cpp`. This is a verified foundational class-file count, not a claim that no other repository source file contains a class, struct, interface, or class-like declaration.
 
 ## 1. Verified Foundational Class Files
 
-The following 47 unique class files are explicitly included by the current foundational class-contract test:
+The current contract suite verifies these 50 foundational class files:
 
 | # | Class | Source |
 |---:|---|---|
@@ -65,11 +64,70 @@ The following 47 unique class files are explicitly included by the current found
 | 49 | Validator | `impl/fundamental/Validator.hpp` |
 | 50 | Version | `impl/fundamental/Version.hpp` |
 
-**Important count correction:** the current contract file contains **50** `CHECK(...)` declarations, not 47. Therefore the authoritative verified count for this revision is **50 unique foundational class files**.
+**Foundational count: 50.**
 
-## 2. Module Coverage
+## 2. Data-Structures Module Inventory
 
-The repository-wide source tree contains implementation/support areas that must be represented in the eventual complete class inventory. The current 0.3.0-dev tree includes:
+The `data-structures/` module is explicitly included in the class/type inventory. These support-layer declarations are tracked separately from the 50 foundational C++ class-file count.
+
+### 2.1 C++ data-structure types
+
+| Type | Kind | Source |
+|---|---|---|
+| `Value` | type alias / tagged value | `data-structures/data_structures.hpp` |
+| `Vector<T>` | template type alias | `data-structures/data_structures.hpp` |
+| `Stack<T>` | template type alias | `data-structures/data_structures.hpp` |
+| `Queue<T>` | template type alias | `data-structures/data_structures.hpp` |
+| `Map` | type alias / string map | `data-structures/data_structures.hpp` |
+| `ObjectRecord` | C++ struct | `data-structures/data_structures.hpp` |
+| `ObjectRecord::set` | member function | `data-structures/data_structures.cpp` |
+| `ObjectRecord::get` | member function | `data-structures/data_structures.cpp` |
+
+The C++ layer uses `std::variant`, `std::vector`, `std::deque`, and `std::unordered_map` for concrete storage.
+
+### 2.2 C data-structure contracts
+
+| Type | Kind | Source |
+|---|---|---|
+| `SLDSKind` | enum | `data-structures/data_structures.h` |
+| `SLDSValue` | struct | `data-structures/data_structures.h` |
+| `SLDSVector` | struct | `data-structures/data_structures.h` |
+| `SLDSStack` | struct | `data-structures/data_structures.h` |
+| `SLDSQueue` | struct | `data-structures/data_structures.h` |
+| `SLDSMap` | struct | `data-structures/data_structures.h` |
+| `SLDSObject` | struct | `data-structures/data_structures.h` |
+
+The C implementation is provided by `data-structures/data_structures.c`, including vector, stack, queue, map, and object lifecycle/lookup operations.
+
+### 2.3 SLeeLa data-structure model
+
+| Type | Kind | Source |
+|---|---|---|
+| `DSValue` | SLeeLa struct | `data-structures/data_structures.sleela` |
+| `DSList` | SLeeLa struct | `data-structures/data_structures.sleela` |
+| `DSStack` | SLeeLa struct | `data-structures/data_structures.sleela` |
+| `DSQueue` | SLeeLa struct | `data-structures/data_structures.sleela` |
+| `DSMap` | SLeeLa struct | `data-structures/data_structures.sleela` |
+| `DSObject` | SLeeLa struct | `data-structures/data_structures.sleela` |
+| `DataStructures` | SLeeLa class | `data-structures/data_structures.sleela` |
+
+The SLeeLa layer is the semantic counterpart of the native C/C++ data-structure layer.
+
+### 2.4 Complete module source set
+
+- `data-structures/data_structures.h`
+- `data-structures/data_structures.c`
+- `data-structures/data_structures.hpp`
+- `data-structures/data_structures.cpp`
+- `data-structures/data_structures.sleela`
+- `data-structures/DATA_STRUCTURES.md`
+- `data-structures/README.md`
+
+These files are part of the repository-wide inventory scope and do not replace the foundational runtime structures under `impl/`.
+
+## 3. Module Coverage
+
+The current 0.3.0-dev tree includes these inventory roots:
 
 - `antivirus/`
 - `api/`
@@ -84,15 +142,7 @@ The repository-wide source tree contains implementation/support areas that must 
 - `examples/`
 - `gui/`
 - `http/`
-- `http-1.0/`
-- `http-2.0/`
-- `http-3.0/`
-- `http-4.0/`
-- `http-5.0/`
-- `http-6.0/`
-- `http-7.0/`
-- `http-8.0/`
-- `http-9.0/`
+- `http-1.0/` through `http-9.0/`
 - `http-servers/`
 - `impl/`
 - `java28/`
@@ -111,37 +161,41 @@ The repository-wide source tree contains implementation/support areas that must 
 - `tests/`
 - `tools/`
 
-These module roots are part of the inventory scope. A module is not excluded merely because its implementation is C, Java, generated code, a protocol implementation, a driver, a test harness, or supporting tooling.
+A module is not excluded merely because its implementation is C, C++, Java, SLeeLa, generated code, a protocol implementation, driver, test harness, or supporting tooling.
 
-## 3. Inventory Classification
+## 4. Inventory Classification
 
-The complete inventory is intended to distinguish:
+The complete inventory distinguishes:
 
-1. **C++ classes** — concrete classes and abstract/interface-style classes.
+1. **C++ classes** — concrete and abstract/interface-style classes.
 2. **C++ structs** — public data contracts and POD-like structures.
-3. **C++ nested classes/structs** — declarations contained within another type.
-4. **Java classes/interfaces** — including the Java 28/native bridge layer.
-5. **C opaque/object contracts** — C types that provide class-like module boundaries.
-6. **Protocol/module classes** — HTTP, server, transport, RMI, and connector implementations.
-7. **Driver classes/contracts** — device and platform support.
-8. **Audio/media classes** — audio, codec, and native media layers.
-9. **Debugger/decompiler/compiler classes** — development and language-toolchain support.
-10. **Test/diagnostic classes** — test-only contracts and verification infrastructure.
+3. **C++ type aliases/templates** — public data-structure contracts.
+4. **C++ nested classes/structs.**
+5. **Java classes/interfaces** — including the Java 28/native bridge layer.
+6. **C opaque/object contracts** — C types providing class-like module boundaries.
+7. **SLeeLa structs/classes** — language-level declarations and semantic counterparts.
+8. **Protocol/module classes** — HTTP, server, transport, RMI, and connector implementations.
+9. **Driver classes/contracts.**
+10. **Audio/media classes.**
+11. **Debugger/decompiler/compiler classes.**
+12. **Test/diagnostic classes.**
 
-## 4. Source-of-Truth Rules
+## 5. Source-of-Truth Rules
 
 The version at the top of this document comes from `VERSION.md`.
 
-The verified foundational class list comes from the current `test-suites/cpp/test_class_contracts.cpp` contract suite. Each listed type is required to be complete and destructible by that test.
+The verified foundational class list comes from `test-suites/cpp/test_class_contracts.cpp`.
 
-The repository source tree, rather than this document alone, remains the ultimate source for determining whether a declaration exists. This document is an inventory/index and should be regenerated or checked whenever source classes change.
+The `data-structures/` entries are verified against the current repository source files and are tracked as module-level data contracts. They are not added to the 50 foundational C++ class-file count because the C++ module currently exposes `ObjectRecord` as a struct and several type aliases rather than additional foundational class headers.
 
-## 5. Next Inventory Gate
+The repository source tree remains the ultimate source for determining whether a declaration exists. This document is an inventory/index and should be regenerated or checked whenever source declarations change.
 
-The next revision should mechanically scan every supported source file in the 0.3.0-dev tree and record:
+## 6. Next Inventory Gate
+
+The next revision should mechanically scan every supported source file and record:
 
 - declaration kind;
-- class/struct/interface name;
+- class/struct/interface/type-alias name;
 - namespace/package;
 - source file;
 - implementation file, where applicable;
@@ -151,7 +205,7 @@ The next revision should mechanically scan every supported source file in the 0.
 - duplicate declarations versus unique types;
 - test coverage linkage.
 
-The resulting repository-wide count should replace the foundational-only count above once the AST/source scan is integrated into CI.
+The repository-wide declaration count should replace the foundational-only count once the AST/source scan is integrated into CI.
 
 ---
 
