@@ -1,0 +1,7 @@
+.root { -fx-font-family: "System"; -fx-font-size: 13px; }
+.title { -fx-font-size: 26px; -fx-font-weight: bold; }
+.subtitle { -fx-text-fill: #666666; }
+.heading { -fx-font-size: 16px; -fx-font-weight: bold; }
+.panel { -fx-padding: 14px; -fx-background-color: white; -fx-border-color: #d7d7d7; -fx-border-radius: 6px; -fx-background-radius: 6px; }
+.video-surface { -fx-border-color: #bdbdbd; -fx-border-width: 1px; -fx-background-color: #f4f4f4; }
+.status { -fx-padding: 8px 10px; -fx-background-color: #f3f3f3; -fx-border-color: #d7d7d7; }
