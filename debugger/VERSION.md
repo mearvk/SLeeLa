@@ -1,6 +1,6 @@
 # SLeeLa Debugger Version
 
-Version: 0.5.0
+Version: 0.6.0
 Date: 2026-09-27
 Language implementation: C++17
 C implementation: C11+
@@ -8,34 +8,46 @@ Line-control API: C and C++
 Backend abstraction: C++
 Action model: C++
 
+## 0.6.0 — Native and Reproduction Roadmap
+
+The debugger documentation now defines the complete next-stage implementation program.
+
+- Native breakpoint and watchpoint engine.
+- Complete Linux ptrace capability roadmap.
+- Native macOS LLDB integration roadmap.
+- Native Windows Debug API integration roadmap.
+- DWARF/PDB symbol and source-mapping engine.
+- Safe expression/value evaluation.
+- Real thread, stack, register, and memory inspection.
+- Native exception and signal normalization.
+- Crash packaging and deterministic reproduction.
+- Record/checkpoint/replay architecture.
+- Source, binary, symbol, and build identity verification.
+- ASan, UBSan, TSan, and LSan integration.
+- Debugger-to-test-suite reproduction and regression fixtures.
+- HTTP/server-aware debugging and correlated timelines.
+- DAP and terminal debugger implementation roadmap.
+- Versioned .sldebug sessions and debugging profiles.
+- Stable plugin ABI.
+- Debugger security and trust boundaries.
+- Completion gates requiring implementation, truthful capability reporting, tests, diagnostics, and documentation.
+
+See REMAINING_WORK.md, NATIVE_BACKEND_PLAN.md, DEBUGGER.ARCHITECTURE.md, and HTTP_DEBUGGING.md.
+
 ## 0.5.0 — Second Arrangement
 
-This arrangement expands the debugger from process-control foundations into an integrated development and diagnostic instrument.
-
-- Defined a unified debugger event bus covering process, thread, breakpoint, watchpoint, exception, signal, source-line, function, assertion, sanitizer, memory-fault, crash, pause, and resume events.
-- Defined structured execution history and timeline concepts.
-- Added the "Why Did I Stop?" diagnostic concept for evidence-based stop explanations.
-- Defined automatic crash-evidence packages.
-- Defined deterministic debug-session files and reusable debugging profiles.
-- Defined source/build identity tracking using binary and source hashes, compiler/toolchain information, symbols, architecture, OS, and debugger version.
-- Defined debugger-to-test-suite failure handoff and regression-fixture generation.
-- Defined sanitizer integration for AddressSanitizer, UndefinedBehaviorSanitizer, ThreadSanitizer, and LeakSanitizer.
-- Defined IDE integration through the Debug Adapter Protocol (DAP).
-- Defined a dedicated terminal debugger UI.
-- Defined safe voice confirmation for potentially destructive actions.
-- Defined a debugger plugin architecture for domain-specific extensions.
-- Defined machine-readable Debug Evidence chains connecting observations, events, source, threads, stacks, registers/memory, actions, backend results, and diagnostics.
-- Established the 0.5 development target around native execution, evidence, timeline, and crash diagnostics.
-
-## 0.4.0
-
-- Added the typed DebugAction model and explicit action lifecycle.
-- Added the Linux ptrace backend adapter with launch, attach, resume, single-step, wait/poll, and capability reporting.
-- Added macOS LLDB backend adapter architecture.
-- Added Windows Debug API backend adapter architecture.
-- Added platform backend selection and portable fallback.
-- Integrated platform backend sources into the debugger build.
-- Preserved capability-aware behavior.
+- Unified event bus architecture.
+- Execution history and timeline.
+- Why Did I Stop? evidence model.
+- Crash evidence package design.
+- Deterministic debug sessions.
+- Build identity tracking.
+- Test-suite integration.
+- Sanitizer integration architecture.
+- DAP and terminal UI architecture.
+- Voice safety.
+- Plugin architecture.
+- Machine-readable Debug Evidence chain.
 
 ## Versioning policy
 
