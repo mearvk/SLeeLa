@@ -1,7 +1,0 @@
-// SLeeLa Audio input contract.
-class AudioInput {
-  property path: String;
-  property startSeconds: Double;
-  property gainDb: Double;
-  method validate(): Bool;
-}
