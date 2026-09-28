@@ -18,9 +18,6 @@ struct BackendCapabilities {
     bool registers=false, memory=false, exceptions=false, source_mapping=false;
 };
 
-struct RegisterSnapshot {
-    std::string architecture;
-    std::uint64_t instruction_pointer{0};
     std::uint64_t stack_pointer{0};
     std::uint64_t frame_pointer{0};
 };
@@ -53,6 +50,7 @@ public:
     }
 };
 
+struct RegisterSnapshot;
 std::unique_ptr<DebugBackend> makePortableBackend();
 
 }
