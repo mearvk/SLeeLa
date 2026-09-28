@@ -81,13 +81,13 @@ bool SleelaServer::start(){
  sockaddr_in a{};a.sin_family=AF_INET;a.sin_port=htons(config_.port);if(config_.bind_address=="0.0.0.0")a.sin_addr.s_addr=htonl(INADDR_ANY);else if(inet_pton(AF_INET,config_.bind_address.c_str(),&a.sin_addr)!=1){close_socket(listen_fd_);listen_fd_=-1;return false;}
  if(::bind(listen_fd_,(sockaddr*)&a,sizeof(a))!=0){close_socket(listen_fd_);listen_fd_=-1;return false;}if(::listen(listen_fd_,(int)config_.max_connections)!=0){close_socket(listen_fd_);listen_fd_=-1;return false;}running_=true;logger_.write(Severity::NOTICE,"server_started",nullptr,nullptr);return true;
 }
-void SleelaServer::run(){if(!running_&&!start())throw std::runtime_error("SLeeLa server start failed");while(running_){sockaddr_in p{};socket_len_t n=sizeof(p);int fd=(int)::accept(listen_fd_,(sockaddr*)&p,&n);if(fd<0){if(!running_)break;continue;}char h[INET_ADDRSTRLEN]{};inet_ntop(AF_INET,&p.sin_addr,h,sizeof(h));std::thread(&SleelaServer::client_loop,this,fd,std::string(h)).detach();}}
+void SleelaServer::run(){if(!running_&&!start())throw std::runtime_error("SLeeLa server start failed");while(running_.load(std::memory_order_acquire)){sockaddr_in p{};socket_len_t n=sizeof(p);int fd=(int)::accept(listen_fd_,(sockaddr*)&p,&n);if(fd<0){if(!running_)break;continue;}char h[INET_ADDRSTRLEN]{};inet_ntop(AF_INET,&p.sin_addr,h,sizeof(h));std::lock_guard<std::mutex> w(workers_mutex_);workers_.emplace_back(&SleelaServer::client_loop,this,fd,std::string(h));}}
 void SleelaServer::stop(){std::lock_guard<std::mutex>l(state_mutex_);if(!running_&&listen_fd_<0)return;running_=false;if(listen_fd_>=0){close_socket(listen_fd_);listen_fd_=-1;}
 #ifdef _WIN32
  WSACleanup();
 #endif
 }
-bool SleelaServer::running()const noexcept{return running_;}
+bool SleelaServer::running()const noexcept{return running_.load(std::memory_order_acquire);}
 bool SleelaServer::read_exact(int fd,void*dst,std::size_t bytes,std::uint32_t ms){auto*p=(std::uint8_t*)dst;std::size_t got=0;while(got<bytes){fd_set set;FD_ZERO(&set);FD_SET(fd,&set);timeval tv{(long)(ms/1000),(long)((ms%1000)*1000)};if(select(fd+1,&set,nullptr,nullptr,&tv)<=0)return false;
 #ifdef _WIN32
  int n=recv(fd,(char*)p+got,(int)(bytes-got),0);
@@ -105,7 +105,7 @@ bool SleelaServer::write_status(int fd,int status,const char*reason){std::string
 #endif
 }
 void SleelaServer::client_loop(int fd,std::string peer){std::uint64_t packets=0,failures=0;auto started=std::chrono::steady_clock::now();logger_.write(Severity::DEBUG,"client_connected",nullptr,nullptr,peer);
- while(running_){Packet p;std::size_t wire=0;std::string err;if(!read_packet(fd,p,wire,err)){++failures;logger_.write(Severity::WARN,"packet_rejected",nullptr,nullptr,peer+":"+err);write_status(fd,400,err.c_str());break;}++packets;auto sec=std::chrono::duration_cast<std::chrono::seconds>(std::chrono::steady_clock::now()-started).count();std::uint64_t rate=sec==0?packets:packets/(std::uint64_t)sec;Decision d=inspector_.inspect(p,wire,rate,failures);logger_.write(d.severity,d.accept?"packet_accepted":"packet_rejected",&p,&d,peer);if(!d.accept){write_status(fd,d.status,d.reason.c_str());break;}if(!write_status(fd,200,"accepted"))break;}
+ while(running_.load(std::memory_order_acquire)){Packet p;std::size_t wire=0;std::string err;if(!read_packet(fd,p,wire,err)){++failures;logger_.write(Severity::WARN,"packet_rejected",nullptr,nullptr,peer+":"+err);write_status(fd,400,err.c_str());break;}++packets;auto sec=std::chrono::duration_cast<std::chrono::seconds>(std::chrono::steady_clock::now()-started).count();std::uint64_t rate=sec==0?packets:packets/(std::uint64_t)sec;Decision d=inspector_.inspect(p,wire,rate,failures);logger_.write(d.severity,d.accept?"packet_accepted":"packet_rejected",&p,&d,peer);if(!d.accept){write_status(fd,d.status,d.reason.c_str());break;}if(!write_status(fd,200,"accepted"))break;}
  close_socket(fd);logger_.write(Severity::DEBUG,"client_disconnected",nullptr,nullptr,peer);}
 void SleelaServer::close_socket(int fd){if(fd<0)return;
 #ifdef _WIN32
