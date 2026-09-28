@@ -55,15 +55,15 @@
     },
     {
       "path": "impl/core/sleela_artifact.c",
-      "sha256": "7016948a226b9be43145e6bd3efbac4120a2824539cd763880cdb470788ff6f8"
+      "sha256": "5b2ce16e034a7eba5411d649fabf408723323b4dc849d9b994f9dc9d58fb2005"
     },
     {
       "path": "impl/core/sleela_core.c",
-      "sha256": "ed50f4099a354728d9ff83efe713185be0c87ad6629ac1ed83951bc30aee30b2"
+      "sha256": "992d9a7c5fc48416c91841aee5cd47e9426bcf31105433d9205da8adbf22f160"
     },
     {
       "path": "impl/core/sleela_core.h",
-      "sha256": "93a6343f5b4bb0c859122756509b3d3010889ad2e6cf97051cd4f571f8042612"
+      "sha256": "be36ff9b6c65e2a600339ba7e64a7f874015c235842b608293ced078785d53b3"
     },
     {
       "path": "impl/core/sleela_events.c",
@@ -91,11 +91,11 @@
     },
     {
       "path": "impl/core/sleela_memmgr.c",
-      "sha256": "73291759a13050b2c5f369dd7ba07d1bc1e1c0788ff2097555d6301645708e42"
+      "sha256": "654a6129bc4ffc3ee4896ed4e31938735b149329fb28952547b01df51c2fd0ad"
     },
     {
       "path": "impl/core/sleela_memmgr.h",
-      "sha256": "4dc39054b2a1ad4038e7d12fe63566d0a4dfb957e07ad0486e5fb5b93e454c74"
+      "sha256": "e1f4abf798bb8190bdb78f41f15a7c07a06440e26afdbf699eb718b50039a85a"
     },
     {
       "path": "impl/core/sleela_memory.c",
@@ -167,7 +167,7 @@
     },
     {
       "path": "impl/frontend/artifact.cpp",
-      "sha256": "17cea6ba565013bbefa38d50ffced1d74aa21f767f98f357420bc442112c5540"
+      "sha256": "ca1138abb86c33f2840ebf4aa2e12285e1a3ff5f66b5fe245707baab227a6f6a"
     },
     {
       "path": "impl/frontend/artifact.h",
@@ -175,11 +175,11 @@
     },
     {
       "path": "impl/frontend/ast.h",
-      "sha256": "8f5b1dbe1b8b6d538b4a4772ed821755f08a822131021ce794d1f096ec5e03a0"
+      "sha256": "5d62ea15a0b59ca675293403cb713ea430aa60fefb692126de3974fb7da342aa"
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "23bf3e12a1e81938a840464558c06e5038d14e5d42e62f01ecb88f7a4c47b8f7"
+      "sha256": "b44ca371aafc67772f8303bd9ee9d2d48af65695b5f1225e1fb925e9db9f1c9b"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -187,23 +187,23 @@
     },
     {
       "path": "impl/frontend/driver.cpp",
-      "sha256": "ad3db522d06fec2c8dc069a8e9658a835c8a6672ef5a32d499de3f52f62bdaff"
+      "sha256": "1222aa040fc74b96bde9264f40802b4f2f4df7b137e01e43baf0ffa4dc3b2de5"
     },
     {
       "path": "impl/frontend/lexer.cpp",
-      "sha256": "4fe6087bea5beda43b135c7af72cc644ad2d85ed8e60da00c740d5348af5dbf5"
+      "sha256": "d93c03a4b0f217718e8f3c92d5028e9a47a6e8fdb59a80014f6b6de4fa60dd76"
     },
     {
       "path": "impl/frontend/lexer.h",
-      "sha256": "00807a44449d7676b8fa5b12d84fa0bebd369b817d6610a4ffcc5bf225ee5429"
+      "sha256": "882526d1e7e229d204523fc6993e597540d32204957fa259708b99ad0807525f"
     },
     {
       "path": "impl/frontend/parser.cpp",
-      "sha256": "0cbb68ce57b9f58141cf7e049caaa5b5905cf0a360b9154f089d39dec8ccc094"
+      "sha256": "22a92b86cf86661f105693361e8e22c21d600dcb861f91c56aca92e18f0e6720"
     },
     {
       "path": "impl/frontend/parser.h",
-      "sha256": "f685f5f3a3282d19d03079802d75db91cc0a1e94582943cee05a7a7206a5470d"
+      "sha256": "881b01bcf6280c2a76bc89ddb0c328dd909685bc458283458cccc1f100b413a0"
     },
     {
       "path": "impl/frontend/version.cpp",
@@ -211,7 +211,7 @@
     },
     {
       "path": "impl/frontend/version.h",
-      "sha256": "deb6fb1677c5033ad815288aa4513cc3e092744d99ba52495b63e5d9b0d7de4f"
+      "sha256": "7adfcf610bbdef4ccfbb4fe21d9706198aa766f75ea14197add75897f5d84c9a"
     },
     {
       "path": "impl/nordshrift/component_manifest.cpp",
@@ -235,7 +235,7 @@
     },
     {
       "path": "impl/nordshrift/nordshrift.cpp",
-      "sha256": "7d41157be7181766f0a6b83c209e3b020deef40407254b7ba02a175cd0b0727d"
+      "sha256": "ef35b4df95b52ac0383787dcab5ac87c04317aee036a8b9a58d051d4cbbf21ed"
     },
     {
       "path": "impl/nordshrift/object_compat.cpp",
@@ -247,11 +247,11 @@
     },
     {
       "path": "impl/nordshrift/sheet_model.h",
-      "sha256": "f7e3e80d39b3ee0d49a9d01ee601182ca1d1864987e1aae4391b514ae392c15d"
+      "sha256": "1e0726b7886eb8ef8a14f00a717e298a441fa55624bcaec4f5120aedf679453f"
     },
     {
       "path": "impl/nordshrift/sleela_emit.cpp",
-      "sha256": "d8f88eb85c6e5ef45eecf51870d91b24801dc0ca2be5f13f70b974bf6bd22d48"
+      "sha256": "43d552869bfb166edb7b9761439d3fa037fe850cedfdc56049c98ec9ba253b38"
     },
     {
       "path": "impl/nordshrift/sleela_emit.h",
@@ -275,7 +275,7 @@
     },
     {
       "path": "impl/nordshrift/sst_parser.cpp",
-      "sha256": "6ad0401768661f03d96460f4ed5f2a84df0f34ecb6cf711f287d15d6e87d648b"
+      "sha256": "ba82e5519b611d82fa7b4a5f677d7f3d5ec3b4d3fa0aafc8aef766077fc3317e"
     },
     {
       "path": "impl/nordshrift/sst_parser.h",
@@ -335,15 +335,15 @@
     },
     {
       "path": "impl/subjects/native/native_add.h",
-      "sha256": "dbd73460abf50e73dfd5e1b0366685129d948be7c2423a8a879cce2464b556a9"
+      "sha256": "9939c59302d75f8e99b0fdc9cc0fde6e5b07fc2d8e11556d2ce4db44dbdf6f16"
     },
     {
       "path": "impl/subjects/native/native_api.cpp",
-      "sha256": "696935cbe721e0afa9964391adb65744f0c1c4a61a4fd14c264a0ef43d580b61"
+      "sha256": "f05172052399dc7c1125eeb9131fef1153fbd64deaab22138507dc54b6cd9f09"
     },
     {
       "path": "impl/subjects/native/native_api.h",
-      "sha256": "27e8ec5a734136bbb72bde813abedf06a748572d57229b096e394c5b7ce413f6"
+      "sha256": "2c7c6ffd01c37f2ddf9c78ca39d3985a9ace14dbd5022191f62abd01b65a1318"
     },
     {
       "path": "impl/subjects/native/native_builders.h",
@@ -371,11 +371,11 @@
     },
     {
       "path": "runtime/Parameters.c",
-      "sha256": "2ddbcf30462309685c3288955689ddde4386d1266b7eb547db8c5cf5fa1dc032"
+      "sha256": "6c2dad5b6e91b8efe1d9c8512636be31f584af5002ed253463c8fd9ea1c50247"
     },
     {
       "path": "runtime/Parameters.h",
-      "sha256": "9fb58afb79bc6810452a31549d0e23f97d15ab8342db69634e03dd670299f693"
+      "sha256": "6287cde4006af97014cba4e0bfcfbda3824d715040af12762e1e8aaa37286c73"
     },
     {
       "path": "runtime/garbage_collector.c",
@@ -459,7 +459,7 @@
     },
     {
       "path": "VERSION.md",
-      "sha256": "09791fe7a0206ca85a78c49091c9b30e3040a2ea840da0b4a73b6a532bcc9987"
+      "sha256": "48851af4baad6c46cff135d52f508b3a5684e6bc6b8aa0c0561158f10378c648"
     },
     {
       "path": "impl/core/sleela_bestof.h",
@@ -484,14 +484,6 @@
     {
       "path": "SERVER.EDITION.md",
       "sha256": "9714c27aaf24c40aab100e4c94d63334ab057162e0ee81dca36e01c07bad9afe"
-    },
-    {
-      "path": "server-edition/serverd",
-      "sha256": "d0b8367fdb44ee1be3f64ac0ad8f79b9bc6c2456a190505ec2d54bbed2c3871a"
-    },
-    {
-      "path": "server-edition/src/Server.sleela",
-      "sha256": "4caca8390328708ba3c93a35f095c7b9f6995db94d6beed8183c770bfcc82688"
     },
     {
       "path": "server-edition/.gitignore",
