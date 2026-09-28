@@ -102,3 +102,97 @@ def test_unknown_backend_raises():
 
     with pytest.raises(SynchroError):
         load_backend("does-not-exist")
+
+
+def test_empty_stats_and_invalid_percentiles():
+    s = LatencyStats("empty")
+    assert s.n == 0
+    assert s.mean is None
+    assert s.p99 is None
+    with pytest.raises(ValueError):
+        s.percentile(-1)
+    with pytest.raises(ValueError):
+        s.percentile(101)
+
+
+def test_stats_window_retains_only_recent_samples():
+    s = LatencyStats("d", window=2)
+    for i in (1.0, 2.0, 3.0):
+        s.record(Sample("d", i, 0.0, int(i)))
+    assert s.sent == s.acked == 3
+    assert s.n == 2
+    assert s.min == 2.0
+    assert s.max == 3.0
+    assert s.mean == 2.5
+
+
+def test_invalid_runtime_configuration_is_rejected():
+    with pytest.raises(ValueError):
+        LatencyStats("d", window=0)
+    with pytest.raises(ValueError):
+        UdpDispatcher([], timeout_s=0)
+    with pytest.raises(ValueError):
+        UdpDispatcher([], window=0)
+    with pytest.raises(ValueError):
+        UdpDispatcher([]).run(rounds=-1)
+    with pytest.raises(ValueError):
+        UdpDispatcher([]).run(interval_s=-1)
+    with pytest.raises(ValueError):
+        RateMeter(10, burst=0)
+    meter = RateMeter(10, burst=1)
+    with pytest.raises(ValueError):
+        meter.acquire(2)
+    with pytest.raises(ValueError):
+        meter.acquire(0)
+
+
+def test_backend_without_constructor_args_is_instantiated_and_cached():
+    from synchro import clear_backend_cache
+    clear_backend_cache()
+    first = load_backend("udp")
+    second = load_backend("udp")
+    assert isinstance(first, UdpDispatcher)
+    assert first is second
+
+
+def test_backend_constructor_and_factory_errors_are_normalized():
+    from synchro import SynchroError, register_backend
+    register_backend("bad-factory", "synchro.tests.test_synchro:no_such_symbol")
+    with pytest.raises(SynchroError):
+        load_backend("bad-factory", cache=False)
+    register_backend("not-callable", "synchro.tests.test_synchro:pytest")
+    with pytest.raises(SynchroError):
+        load_backend("not-callable", cache=False)
+
+
+def test_udp_ignores_malformed_packet():
+    port = _free_port()
+    ready = threading.Event()
+    def server():
+        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        sock.bind(("127.0.0.1", port))
+        ready.set()
+        try:
+            data, addr = sock.recvfrom(65535)
+            sock.sendto(b"not-synchro", addr)
+            sock.sendto(data, addr)
+        finally:
+            sock.close()
+    threading.Thread(target=server, daemon=True).start()
+    assert ready.wait(1.0)
+    result = UdpDispatcher([("127.0.0.1", port)], timeout_s=0.2).run(rounds=1)
+    stats = result.stats[f"127.0.0.1:{port}"]
+    assert stats.acked == 1
+    assert stats.lost == 0
+
+
+def test_sla_empty_destination_and_threshold_boundary():
+    s = LatencyStats("d")
+    s.record(Sample("d", 1.0, 0.0, 1))
+    rep = SlaReporter(1.0, percentile=99).evaluate({"d": s})
+    assert rep.dests_meeting == 1
+    assert rep.sample_compliance == 1.0
+    empty = SlaReporter(1.0).evaluate({})
+    assert empty.total_dests == 0
+    assert empty.dest_compliance == 0.0
+    assert empty.sample_compliance == 0.0
