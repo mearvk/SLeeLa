@@ -219,7 +219,57 @@ No reserve expenditure should be interpreted as automatically approved merely be
 | Total planning hours | **24,360** |
 | **Total planning amount** | **$1,339,800** |
 
-## 12. Status and Authority
+## 12. Illustrative Sales and Profit Scenario
+
+This is an illustrative SLeeLa commercial scenario, not a forecast, appropriation, procurement estimate, or guarantee. It assumes seven initial language/product families: Java, Perl, Python, C, C++, Rust, and a seventh "Other" family. The model assumes a strong start, a $1,000 sale price, and 30 qualified phone calls per completed sale.
+
+| Horizon | Copies / Family / Year | Seven-Family Copies / Year | Calls / Year | Gross Sales / Year |
+|---|---:|---:|---:|---:|
+| Year 1 — strong start | 1,000 | **7,000** | **210,000** | **$7,000,000** |
+| Year 10 — mature scale | 10,000 | **70,000** | **2,100,000** | **$70,000,000** |
+| Year 1,000 — illustrative scale | 1,000,000 | **7,000,000** | **210,000,000** | **$7,000,000,000** |
+
+### Unit Economics
+
+| Measure | Value |
+|---|---:|
+| Price per sale | **$1,000** |
+| Calls per sale | **30** |
+| Revenue per call | **$33.33** |
+| Product families | **7** |
+
+Using the expanded annual planning envelope of **$3,060,260** for this commercial scenario:
+
+| Horizon | Gross Sales | Planning Envelope | Surplus Before Taxes/Other Costs |
+|---|---:|---:|---:|
+| Year 1 | $7,000,000 | $3,060,260 | **$3,939,740** |
+| Year 10 | $70,000,000 | $3,060,260 | **$66,939,740** |
+| Year 1,000 | $7,000,000,000 | $3,060,260 | **$6,996,939,740** |
+
+The surplus is not net profit. Taxes, payment processing, sales expenses, delivery, support, additional staffing, capital expenditure, reserves, reinvestment, and other operating costs remain outside this simplified model.
+
+### Graphic Sales Model
+
+```mermaid
+xychart-beta
+    title "SLeeLa Illustrative Gross Sales"
+    x-axis ["Year 1","Year 10","Year 1,000"]
+    y-axis "USD millions" 0 --> 7000
+    bar [7,70,7000]
+```
+
+### Sales Funnel
+
+```mermaid
+flowchart LR
+    A["30 qualified calls"] --> B["1 sale"]
+    B --> C["$1,000"]
+    C --> D["7 product families"]
+```
+
+The Year 1,000 row is mathematical scenario analysis rather than a credible operational forecast.
+
+## 13. Status and Authority
 
 This document is an internal SLeeLa planning artifact. It does **not** represent:
 
