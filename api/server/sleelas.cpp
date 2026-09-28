@@ -361,7 +361,8 @@ int main(int argc, char **argv) {
         std::cerr << "sleelas: firewall could not open probe/scan ports; refusing to start\n";
         return 1;
     }
-    if (run_portctl(root, "open", "Discord-1", port, portProtocol) != 0) {\n        std::cerr << "sleelas: firewall could not open " << port << "/" << portProtocol << "; refusing to start\n";
+    if (run_portctl(root, "open", "Discord-1", port, portProtocol) != 0) {
+        std::cerr << "sleelas: firewall could not open " << port << "/" << portProtocol << "; refusing to start\n";
         return 1;
     }
     struct PortGuard {\n        const fs::path &root; const std::string &port; const std::string &protocol;\n        ~PortGuard() { (void)run_portctl(root, "close", "Discord-1", port, protocol); }
