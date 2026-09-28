@@ -1,0 +1,9 @@
+#sleela 1.3
+class RegexFlags {
+  int value;
+  void clear(){value=0;}
+  void ignoreCase(){value=value+1;}
+  void newline(){value=value+2;}
+  void noSubexpressions(){value=value+4;}
+  int get(){return value;}
+}

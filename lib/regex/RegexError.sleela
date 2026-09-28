@@ -1,0 +1,10 @@
+#sleela 1.3
+class RegexError {
+  int code;
+  int position;
+  string message;
+  void clear(){code=0;position=0;message="";}
+  void set(int c,int p,string m){code=c;position=p;message=m;}
+  int getCode(){return code;}
+  int getPosition(){return position;}
+}

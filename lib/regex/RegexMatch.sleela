@@ -1,0 +1,9 @@
+#sleela 1.3
+class RegexMatch {
+  int start;
+  int end;
+  boolean matched;
+  void clear(){start=0;end=0;matched=false;}
+  void setRange(int a,int b){start=a;end=b;matched=true;}
+  boolean found(){return matched;}
+}

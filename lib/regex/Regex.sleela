@@ -1,0 +1,9 @@
+#sleela 1.3
+class Regex {
+  int state;
+  int captures;
+  void reset(){state=0;captures=0;}
+  void compile(){state=1;}
+  boolean valid(){return state==1;}
+  int captureCount(){return captures;}
+}

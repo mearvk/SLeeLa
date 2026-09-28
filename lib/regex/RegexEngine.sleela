@@ -1,0 +1,9 @@
+#sleela 1.3
+class RegexEngine {
+  string name;
+  int capability;
+  void setName(string value){name=value;}
+  string getName(){return name;}
+  void setCapability(int value){capability=value;}
+  int getCapability(){return capability;}
+}

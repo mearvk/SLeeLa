@@ -1,0 +1,10 @@
+#sleela 1.3
+class RegexCapture {
+  int index;
+  int start;
+  int end;
+  string value;
+  void clear(){index=0;start=0;end=0;value="";}
+  int getIndex(){return index;}
+  string getValue(){return value;}
+}

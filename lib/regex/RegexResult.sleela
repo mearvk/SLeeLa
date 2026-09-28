@@ -1,0 +1,9 @@
+#sleela 1.3
+class RegexResult {
+  boolean success;
+  int code;
+  string message;
+  void clear(){success=false;code=0;message="";}
+  void ok(){success=true;code=0;}
+  boolean passed(){return success;}
+}

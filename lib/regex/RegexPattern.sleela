@@ -1,0 +1,9 @@
+#sleela 1.3
+class RegexPattern {
+  string pattern;
+  int flags;
+  void setPattern(string value){pattern=value;}
+  string getPattern(){return pattern;}
+  void setFlags(int value){flags=value;}
+  int getFlags(){return flags;}
+}
