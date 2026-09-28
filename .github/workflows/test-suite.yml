@@ -1,4 +1,5 @@
 name: SLeeLa Test Suite
+# README logo normalization is performed on branch pushes and PR branches.
 on:
   push:
     branches: [main, master]
