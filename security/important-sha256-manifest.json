@@ -683,12 +683,28 @@
       "sha256": "9c1ac130edaf18ab564b5011e38c9c54580f5e60885612aff43e8b0c995a1465"
     },
     {
+      "path": "audio/c/Audio.c",
+      "sha256": "2f2814f1110d40e65ebbb4f1a15e5f7f14b0a7d46b79c9641fbf1b2bee3940dd"
+    },
+    {
+      "path": "audio/c/Audio.h",
+      "sha256": "4219e8ef98be8366085e67495afa770255b9505788ef94409b45a8499ac82b84"
+    },
+    {
       "path": "audio/c/include/sleela_audio.h",
       "sha256": "9f2931d2340b12ce6d38256fb86857680e73f2410904b1ab79d8c102b20c5ea0"
     },
     {
       "path": "audio/c/src/sleela_audio.c",
-      "sha256": "b6cf842da4bf1d139b38d7525e14dd4c1bf49716169387d9a75f3a5aa48ec5ff"
+      "sha256": "52b2455f13aff088ab09b16e9914f651ce8c77c5ecc8918ca50dc3ffe132cc6e"
+    },
+    {
+      "path": "audio/cpp/Audio.cpp",
+      "sha256": "b9f51c6bbb8f70d8f1a63ad533bb36e8e82db1b03e31dae4b1b3b2b4267c248a"
+    },
+    {
+      "path": "audio/cpp/Audio.hpp",
+      "sha256": "40e27b9f8edacb768bd224864d319d7f9dc05710cc9497595494659bdbb6a4ca"
     },
     {
       "path": "audio/cpp/include/sleela_audio.hpp",
@@ -696,11 +712,47 @@
     },
     {
       "path": "audio/cpp/src/sleela_audio.cpp",
-      "sha256": "9749f1956baee640687bf620c3fe2a53dc648ef9f94294390454376c129d14a0"
+      "sha256": "1fb592dd1be3b8a5bc6493c51ccb945abf55896061e137f451a1ac2e54ee29fe"
     },
     {
       "path": "audio/native/src/sleela_audio_native.cpp",
       "sha256": "8f04e61d048b028be72af67c82cb6b1d90f7bb36240fa8932b4dc92a691679a1"
+    },
+    {
+      "path": "audio/sleela/Audio.sleela",
+      "sha256": "02ef8de86eb08ee76d24e733fbe8718fc9a9386423af477040f9c48ac04fa52a"
+    },
+    {
+      "path": "audio/sleela/AudioConfiguration.sleela",
+      "sha256": "d1bcdd08df5198954c9d156306664c3505a0b13166a60407f38b700f813ee267"
+    },
+    {
+      "path": "audio/sleela/AudioControls.sleela",
+      "sha256": "249d9d8340e0e141e69c93e5ca9a4bc2a51769680ee1bf8e7bf1cb3b7fd8bd5e"
+    },
+    {
+      "path": "audio/sleela/AudioDevice.sleela",
+      "sha256": "ba555982fe9251348a4cf9a9d57c5825a43f9cbb947dbf71a14e5775d636d7b5"
+    },
+    {
+      "path": "audio/sleela/AudioInput.sleela",
+      "sha256": "ccd5ea23e88d7bb8883637b76370df4ac539545791e78002349b05409677b46b"
+    },
+    {
+      "path": "audio/sleela/AudioMixer.sleela",
+      "sha256": "2d907e3e2ab9a8287c1b3b53ded467807cd032e5a0f73221123ef49040156a27"
+    },
+    {
+      "path": "audio/sleela/AudioNative.sleela",
+      "sha256": "9af1255c7b0294c9014c2b6abe13c72e7ec90c0a07484e37ab7e6b36fff1cf41"
+    },
+    {
+      "path": "audio/sleela/AudioStream.sleela",
+      "sha256": "13219786398e2567648e95c27caa3f9ad772933d1433a38a9d72b92aaf70e293"
+    },
+    {
+      "path": "audio/sleela/AudioSystem.sleela",
+      "sha256": "4a4faf5ece59a7b38eb4915b13f78103dbf2d9e6ff2849c4fa2aa37967890548"
     },
     {
       "path": "bash/CWRU/misc/errlist.c",
@@ -4519,6 +4571,14 @@
       "sha256": "5b2ce16e034a7eba5411d649fabf408723323b4dc849d9b994f9dc9d58fb2005"
     },
     {
+      "path": "impl/core/sleela_audio_bridge.cpp",
+      "sha256": "3018c8edbb76d7326847cd688842efcee8503c2c00fc1855f256886656b55f52"
+    },
+    {
+      "path": "impl/core/sleela_audio_bridge.h",
+      "sha256": "4bd9c32f14c4a6fb7f01ef7b316ed4f91019a867b9e4db79b6a41c122f765c6b"
+    },
+    {
       "path": "impl/core/sleela_audio_mixer.c",
       "sha256": "42c285f7ca016baf05bd06598d73f170bcb32e0f3800e73151c2a57cc8578b0a"
     },
@@ -4536,11 +4596,11 @@
     },
     {
       "path": "impl/core/sleela_core.c",
-      "sha256": "992d9a7c5fc48416c91841aee5cd47e9426bcf31105433d9205da8adbf22f160"
+      "sha256": "8a8cdb5cb0e91dfaa219a52c6dc9970a4bb0b12598b760300f160e2bfa46c84c"
     },
     {
       "path": "impl/core/sleela_core.h",
-      "sha256": "ebd8d2a865d63d6506129bf59720ca020e9d2a30802c43d21d8193a2c81412e1"
+      "sha256": "be36ff9b6c65e2a600339ba7e64a7f874015c235842b608293ced078785d53b3"
     },
     {
       "path": "impl/core/sleela_design_activity.c",
@@ -4932,7 +4992,7 @@
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "b44ca371aafc67772f8303bd9ee9d2d48af65695b5f1225e1fb925e9db9f1c9b"
+      "sha256": "2b8764130c758ca58b80a7e8ccfe9adbf98ea76c40c63356022d7ae948fcbc92"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -4940,7 +5000,7 @@
     },
     {
       "path": "impl/frontend/driver.cpp",
-      "sha256": "2bdde201cacb15addd0b7a3e983286752506136f78dbcf80b469c58e5de4223d"
+      "sha256": "1222aa040fc74b96bde9264f40802b4f2f4df7b137e01e43baf0ffa4dc3b2de5"
     },
     {
       "path": "impl/frontend/http_server_cli.cpp",
@@ -4968,7 +5028,7 @@
     },
     {
       "path": "impl/frontend/semantic.cpp",
-      "sha256": "ca020b58ec0f20805e5c24b8ac32f66b0b516a3d66bc67311a3973918abeb957"
+      "sha256": "695ea349e6362aa083d45207807a95d6cad0dfb8780b29bf0cd6bf90fe424241"
     },
     {
       "path": "impl/frontend/semantic.h",
@@ -6433,6 +6493,22 @@
     {
       "path": "server-edition/sleela_server.hpp",
       "sha256": "a3d050d0d0ff13c6fbb86cfaf2383a2d847c97f88538c760de6197346ca99991"
+    },
+    {
+      "path": "sleela/audio/c/Audio.c",
+      "sha256": "2f2814f1110d40e65ebbb4f1a15e5f7f14b0a7d46b79c9641fbf1b2bee3940dd"
+    },
+    {
+      "path": "sleela/audio/c/Audio.h",
+      "sha256": "4219e8ef98be8366085e67495afa770255b9505788ef94409b45a8499ac82b84"
+    },
+    {
+      "path": "sleela/audio/cpp/Audio.cpp",
+      "sha256": "b9f51c6bbb8f70d8f1a63ad533bb36e8e82db1b03e31dae4b1b3b2b4267c248a"
+    },
+    {
+      "path": "sleela/audio/cpp/Audio.hpp",
+      "sha256": "40e27b9f8edacb768bd224864d319d7f9dc05710cc9497595494659bdbb6a4ca"
     },
     {
       "path": "sleela-terminal/arith.cpp",
