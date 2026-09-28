@@ -24,8 +24,8 @@ closesocket(s);
 ::close(s);
 #endif
 }freeaddrinfo(r);return false;}
-std::ptrdiff_t UdpTransport::send(const std::uint8_t*b,std::size_t n){return handle_<0?-1:::send((sleela_socket_t)handle_,reinterpret_cast<const char*>(b),(int)n,0);}
-std::ptrdiff_t UdpTransport::receive(std::uint8_t*b,std::size_t n){return handle_<0?-1:::recv((sleela_socket_t)handle_,reinterpret_cast<char*>(b),(int)n,0);}
+std::ptrdiff_t UdpTransport::send(const std::uint8_t*b,std::size_t n){return handle_<0 ? -1 : ::send((sleela_socket_t)handle_,reinterpret_cast<const char*>(b),(int)n,0);}
+std::ptrdiff_t UdpTransport::receive(std::uint8_t*b,std::size_t n){return handle_<0 ? -1 : ::recv((sleela_socket_t)handle_,reinterpret_cast<char*>(b),(int)n,0);}
 void UdpTransport::close()noexcept{if(handle_<0)return;auto s=(sleela_socket_t)handle_;
 #if defined(_WIN32)
 closesocket(s);
