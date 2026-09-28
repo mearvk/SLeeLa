@@ -2731,6 +2731,54 @@
       "sha256": "f5b6a8331e58ea3a40d4111dca35b223c600278351e37d11ceb85cb258369366"
     },
     {
+      "path": "debugger/debug_conformance.cpp",
+      "sha256": "a7d2059029bbfe4a5ce33908147e6bd37e3da87aca1adf95fddd0621cc0d3ae6"
+    },
+    {
+      "path": "debugger/debug_conformance.hpp",
+      "sha256": "d55f726c70a38d4369e0821aa4ca732f9d0cbba400fc21e634961b2171cdf4a3"
+    },
+    {
+      "path": "debugger/debug_conformance_test.cpp",
+      "sha256": "1011781606461a5765f7e0b7df11040f6fd824c3fe8877038485e977401d4e83"
+    },
+    {
+      "path": "debugger/debug_diagnostics.cpp",
+      "sha256": "01f41cec2e9cc1bcc01362b2fcef54c08f9ecf35bd551f468745c5fcf8b36988"
+    },
+    {
+      "path": "debugger/debug_diagnostics.hpp",
+      "sha256": "fac28421e4ca3afc48f210b654b4363928f72ab817512fdba59337e2ad88811d"
+    },
+    {
+      "path": "debugger/debug_diagnostics_test.cpp",
+      "sha256": "9497aa610fd8ae7b1973cfbbddc6cf6f48b66fbf6c01de5aa5492720bde7d82a"
+    },
+    {
+      "path": "debugger/debug_engine.cpp",
+      "sha256": "e65dd6d96f13d33721b66387965561c0aa720f851e333a5f5460e173b7966646"
+    },
+    {
+      "path": "debugger/debug_engine.hpp",
+      "sha256": "fd7de525224d5832904cc7a678f936381286c47060eeed799f7fe8d2bfd87eee"
+    },
+    {
+      "path": "debugger/debug_engine_c.cpp",
+      "sha256": "23b10d4f8a0210d2a27a36978e34d7165bcefb7b53069e33db589157222b1cfe"
+    },
+    {
+      "path": "debugger/debug_engine_c.h",
+      "sha256": "3a81698ae6fb08a9b15da7a588c7790d4dd6b7fe4ec1ba90af3d4a03334129f9"
+    },
+    {
+      "path": "debugger/debug_engine_c_test.c",
+      "sha256": "40872702e1162b4e6de12eb5988356bc6320807e8bbfee16d2d0823d231cbae9"
+    },
+    {
+      "path": "debugger/debug_engine_test.cpp",
+      "sha256": "940e67442221d3785d45d615820dc83bfb6ccd3b2dc1c25c72d26287d35b997f"
+    },
+    {
       "path": "debugger/debugger.cpp",
       "sha256": "d7b7421873595c4ae0abdc0ac4c6458c3bc43435c187a18442f89dae0bdd31ab"
     },
@@ -2840,7 +2888,7 @@
     },
     {
       "path": "debugger/tests/run-tests.sh",
-      "sha256": "9d981ab13c0518bd9c01e44c65bb6bdb80d7f9fad45631bc623c925617cdc62e"
+      "sha256": "3666b53cc50029bf25b21f3e33a4a247a0ba7dc8a5edfd5c01b7ca7e75ccd4e1"
     },
     {
       "path": "decompiler/cli/main.cpp",
@@ -4456,7 +4504,7 @@
     },
     {
       "path": "impl/core/sleela_core.c",
-      "sha256": "992d9a7c5fc48416c91841aee5cd47e9426bcf31105433d9205da8adbf22f160"
+      "sha256": "adddfcf879c82247130157cb24376edc553a6400e5aef63392665bac52c7379c"
     },
     {
       "path": "impl/core/sleela_core.h",
@@ -6336,11 +6384,11 @@
     },
     {
       "path": "server-edition/sleela_server.cpp",
-      "sha256": "eba225513a686c27c2ead801f60a469860887297a32431ada8a1146c2aa77fd4"
+      "sha256": "1aeef071bb2effbf273726f5e0b58b05576149dd1c4c31198f6ba2b691048ea4"
     },
     {
       "path": "server-edition/sleela_server.hpp",
-      "sha256": "a3d050d0d0ff13c6fbb86cfaf2383a2d847c97f88538c760de6197346ca99991"
+      "sha256": "c2114bb885cb1f3da8b6b924033558aa90e19a9b6bb448e98230c64865a22f87"
     },
     {
       "path": "sleela-terminal/arith.cpp",
@@ -7248,7 +7296,7 @@
     },
     {
       "path": "test-suites/run-all.sh",
-      "sha256": "ffb358b7b55f33fe56bbc466759c258f269a009e2923fdac502bf50de1d597ce"
+      "sha256": "c22d41eaed7ea54ed035f5d869dfed92d19baefe30add3d77bfd8d9ba28de071"
     },
     {
       "path": "test-suites/runtime-coverage.sh",
@@ -7312,7 +7360,7 @@
     },
     {
       "path": "tools/banking/update_banks4.py",
-      "sha256": "d9e4bb1bbbf4a29f96fd688aa5db3af02556a0fa400d50a00137a9110b8ff014"
+      "sha256": "5cef664f96c61a0efe978c9f1b554b01b2107b8ec25b53392fc3efeb0b7b44bb"
     },
     {
       "path": "tools/banking/update_banks4_socialism.py",
