@@ -21,6 +21,7 @@
 #ifndef SLEELA_SHEET_CATALOG_H
 #define SLEELA_SHEET_CATALOG_H
 
+#include <cstddef>
 #include <map>
 #include <string>
 #include <vector>
