@@ -11,11 +11,8 @@ struct BackendCapabilities {
     bool breakpoints=false, watchpoints=false, threads=false, stack=false;
     bool registers=false, memory=false, exceptions=false, source_mapping=false;
 };
-struct BackendRequest {
-    std::string executable;
-    std::vector<std::string> arguments;
-    std::string process_id;
-};
+struct BackendRequest { std::string executable; std::vector<std::string> arguments; std::string process_id; };
+struct RegisterSnapshot { std::string architecture; std::uint64_t instruction_pointer{0}; std::uint64_t stack_pointer{0}; std::uint64_t frame_pointer{0}; };
 class DebugBackend {
 public:
     virtual ~DebugBackend() = default;
@@ -27,6 +24,16 @@ public:
     virtual bool step(bool over, std::string& error) = 0;
     virtual bool setLineStop(const SourceLocation&, std::string& error) = 0;
     virtual bool poll(DebugEvent& event, std::string& error) = 0;
+    virtual bool readMemory(std::uint64_t address, void* buffer, std::size_t size, std::string& error) {
+        (void)address; (void)buffer; (void)size; error="memory read not implemented by backend"; return false;
+    }
+    virtual bool writeMemory(std::uint64_t address, const void* buffer, std::size_t size, std::string& error) {
+        (void)address; (void)buffer; (void)size; error="memory write not implemented by backend"; return false;
+    }
+    virtual bool readRegisters(RegisterSnapshot&, std::string& error) {
+        error="register access not implemented by backend"; return false;
+    }
 };
+std::unique_ptr<DebugBackend> makePortableBackend();
 }
 #endif
