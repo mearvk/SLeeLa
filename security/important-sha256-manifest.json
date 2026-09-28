@@ -2727,6 +2727,18 @@
       "sha256": "f5b6a8331e58ea3a40d4111dca35b223c600278351e37d11ceb85cb258369366"
     },
     {
+      "path": "debugger/debugger.cpp",
+      "sha256": "0159a63bb3ad14cae1d492da4209b15ce5ee0b5e38810b0aba5316f0c02be4c4"
+    },
+    {
+      "path": "debugger/debugger.hpp",
+      "sha256": "134b49b9913c26f59c59ced45e635a461197ef4dbafd3f85f5353451b0be6b32"
+    },
+    {
+      "path": "debugger/main.cpp",
+      "sha256": "05765b305583df538a54f2098e6cdf39d89c6f2290466d448c916fdfd5eb7487"
+    },
+    {
       "path": "decompiler/cli/main.cpp",
       "sha256": "1ff433e608bfd7f7cbd966fb92d041166d63a4b3fb25c5222962cd51fc61fa91"
     },
@@ -7195,12 +7207,36 @@
       "sha256": "d08d5423563397eed9b24b06b53c4c42a84041676b684ed26f3718690d836328"
     },
     {
+      "path": "test-suites/cpp/test_debugger.cpp",
+      "sha256": "81bf1c1360d7185123d18d522b995ca99fbd6eebe5906f2f1bc581f0a68217d1"
+    },
+    {
       "path": "test-suites/cpp/test_frontend_annotations.cpp",
       "sha256": "5b1f163a1f7463754fca383e7090502d369b4296fa5be1c9267498e1911871ac"
     },
     {
+      "path": "test-suites/generate-behavior-skeletons.py",
+      "sha256": "d723a79098b5a964b4eef9fda77bfb73c4221b9fe8ff3f4d4f381d930c27301c"
+    },
+    {
+      "path": "test-suites/generate-function-coverage.py",
+      "sha256": "9930093ca127a09d69a838c7f48f28ff5af006c76445f0a28cfc942315786c75"
+    },
+    {
+      "path": "test-suites/generate-function-coverage.sh",
+      "sha256": "5091ee301f924f157b6cc7a64251b79d270300f28981d25fc04b50bde9fe0d9c"
+    },
+    {
       "path": "test-suites/run-all.sh",
-      "sha256": "324fffb2b5ddd350c862a43418fb672bd50bb21b64daddba6914c44d3bf3e125"
+      "sha256": "ffb358b7b55f33fe56bbc466759c258f269a009e2923fdac502bf50de1d597ce"
+    },
+    {
+      "path": "test-suites/runtime-coverage.sh",
+      "sha256": "9bc69f71feacdbf67e86d00a0dc6cea40e68684d43f7fde93c74d507e676cb7c"
+    },
+    {
+      "path": "test-suites/sanitizers/run.sh",
+      "sha256": "4f4c352edcaa27521018fc67a69e89e77e4c6de1afa6261c72a5df6263a29311"
     },
     {
       "path": "tests/native_memory_smoke.cpp",
