@@ -5,7 +5,7 @@ The `build/` tree is the native product-build boundary for SLeeLa. Product build
 ## Products
 
 ### SLeeLa Regex
-Source: `make/regex/`
+Source: `regex/`
 
 Purpose:
 - Portable C and C++ regular-expression implementation.
@@ -15,19 +15,19 @@ Purpose:
 
 Build entry point:
 
-    make -C make/regex test
+    make -C regex test
 
 Focused native targets:
 
-    make -C make/regex c
-    make -C make/regex cpp
-    make -C make/regex clean
+    make -C regex c
+    make -C regex cpp
+    make -C regex clean
 
 Build output is isolated under:
 
-    make/regex/build/
+    regex/build/
 
-The native implementation remains authoritative under `make/regex/src/`.
+The native implementation remains authoritative under `regex/src/`.
 The `lib/regex/` tree represents SLeeLa language objects and integration
 metadata; it does not duplicate the native implementation.
 
@@ -86,9 +86,9 @@ Each product receives:
 4. No execution of analyzed native artifacts as part of Slecompiler builds.
 5. A path for later packaging/signing without mixing package output into source.
 
-For Regex specifically, the native source-of-truth directory is `make/regex/`;
+For Regex specifically, the native source-of-truth directory is `regex/`;
 the language object surface is `lib/regex/`; and native build output is
-`make/regex/build/`.
+`regex/build/`.
 
 ## Documentation boundary
 
