@@ -4607,6 +4607,46 @@
       "sha256": "7adfcf610bbdef4ccfbb4fe21d9706198aa766f75ea14197add75897f5d84c9a"
     },
     {
+      "path": "impl/fundamental/Identifier.cpp",
+      "sha256": "3870944895314999a5e463425600d3a221ead199c8d4c53b7efee9a0fc6b9c50"
+    },
+    {
+      "path": "impl/fundamental/Identifier.hpp",
+      "sha256": "05606c3a46f1d2fb085397d3f8ffe53d4d1cc18b5cb97addbeb89296ae2f2433"
+    },
+    {
+      "path": "impl/fundamental/Name.cpp",
+      "sha256": "5a52dab010d80a7e3a58914b5e6d044fd25a67780a4e75d50f57a6481d2517f7"
+    },
+    {
+      "path": "impl/fundamental/Name.hpp",
+      "sha256": "1dfb200aa7276e52743fa62a3962c19da769bc7bb2e33c96a5c72dfc490b361c"
+    },
+    {
+      "path": "impl/fundamental/Resource.cpp",
+      "sha256": "38897bbb6b669c252ff5a4b801db316a3d50b4c3cc820e1728e29a8bd09a22e2"
+    },
+    {
+      "path": "impl/fundamental/Resource.hpp",
+      "sha256": "e11407bab410b548105e3e482f306da8cc9c2453b130f01380df3cd27166792b"
+    },
+    {
+      "path": "impl/fundamental/Status.cpp",
+      "sha256": "a1eccda5c1323881c8db80dad1f7849cd07ac890045e65c23bbef957d54d19ee"
+    },
+    {
+      "path": "impl/fundamental/Status.hpp",
+      "sha256": "01a131ee4b719bf5b4a7936c984c0ef058a3e2baa207211c91518432c52b9f5f"
+    },
+    {
+      "path": "impl/fundamental/Version.cpp",
+      "sha256": "287acca742162d6afb06495838f41d425b11b6f73ccfa7cad60f5fc48bb8a5e0"
+    },
+    {
+      "path": "impl/fundamental/Version.hpp",
+      "sha256": "ac92d7f97cae7268f54ebe8b2e54c1f6876b9aa7fcbec89a0517656ed4fe51b9"
+    },
+    {
       "path": "impl/langin/LANGIN.model",
       "sha256": "ae70ed9f2bda11d8c9b9049013e9df06b61fb37702db94b9f96a641bd4259e49"
     },
