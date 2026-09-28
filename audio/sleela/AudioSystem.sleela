@@ -1,8 +1,9 @@
-// SLeeLa Audio operating-system interaction boundary.
+#sleela 1.3
+// Operating-system boundary. The SLVM exposes platform identity; drivers own hardware enumeration.
 class AudioSystem {
-  method platform(): String;
-  method enumerateDevices(): AudioDevice[];
-  method defaultInput(): AudioDevice;
-  method defaultOutput(): AudioDevice;
-  method createStream(device: AudioDevice, sampleRate: Int, channels: Int): AudioStream;
+  static String platform() { return audioPlatform(); }
+
+  static bool supported(int sampleRate, int channels) {
+    return sampleRate > 0 && channels > 0;
+  }
 }
