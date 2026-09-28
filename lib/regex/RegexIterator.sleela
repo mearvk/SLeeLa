@@ -1,0 +1,7 @@
+#sleela 1.3
+class RegexIterator {
+  int index;
+  void reset(){index=0;}
+  void next(){index=index+1;}
+  int current(){return index;}
+}

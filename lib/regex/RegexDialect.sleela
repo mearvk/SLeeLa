@@ -1,0 +1,6 @@
+#sleela 1.3
+class RegexDialect {
+  string name;
+  void set(string value){name=value;}
+  string get(){return name;}
+}

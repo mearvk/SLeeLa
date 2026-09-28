@@ -1,0 +1,7 @@
+#sleela 1.3
+class RegexSplitter {
+  int parts;
+  void clear(){parts=0;}
+  void addPart(){parts=parts+1;}
+  int count(){return parts;}
+}

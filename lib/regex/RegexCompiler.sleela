@@ -1,0 +1,7 @@
+#sleela 1.3
+class RegexCompiler {
+  int state;
+  void reset(){state=0;}
+  void compile(){state=1;}
+  boolean compiled(){return state==1;}
+}

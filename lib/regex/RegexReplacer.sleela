@@ -1,0 +1,6 @@
+#sleela 1.3
+class RegexReplacer {
+  string replacement;
+  void set(string value){replacement=value;}
+  string get(){return replacement;}
+}

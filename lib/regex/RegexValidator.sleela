@@ -1,0 +1,7 @@
+#sleela 1.3
+class RegexValidator {
+  boolean valid;
+  void clear(){valid=false;}
+  void accept(){valid=true;}
+  boolean isValid(){return valid;}
+}

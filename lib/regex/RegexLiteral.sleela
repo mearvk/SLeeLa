@@ -1,0 +1,6 @@
+#sleela 1.3
+class RegexLiteral {
+  string value;
+  void set(string text){value=text;}
+  string escaped(){return value;}
+}
