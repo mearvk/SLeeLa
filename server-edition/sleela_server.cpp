@@ -74,6 +74,8 @@ bool PacketInspector::parse_headers(const std::string&block,Packet&p,std::string
 SleelaServer::SleelaServer(ServerConfig c):config_(std::move(c)),logger_(config_),inspector_(config_){}
 SleelaServer::~SleelaServer(){stop();}
 bool SleelaServer::start(){
+ std::lock_guard<std::mutex> l(state_mutex_);
+ if(running_) return true;
 #ifdef _WIN32
  WSADATA w{};if(WSAStartup(MAKEWORD(2,2),&w)!=0)return false;
 #endif
@@ -81,11 +83,18 @@ bool SleelaServer::start(){
  sockaddr_in a{};a.sin_family=AF_INET;a.sin_port=htons(config_.port);if(config_.bind_address=="0.0.0.0")a.sin_addr.s_addr=htonl(INADDR_ANY);else if(inet_pton(AF_INET,config_.bind_address.c_str(),&a.sin_addr)!=1){close_socket(listen_fd_);listen_fd_=-1;return false;}
  if(::bind(listen_fd_,(sockaddr*)&a,sizeof(a))!=0){close_socket(listen_fd_);listen_fd_=-1;return false;}if(::listen(listen_fd_,(int)config_.max_connections)!=0){close_socket(listen_fd_);listen_fd_=-1;return false;}running_=true;logger_.write(Severity::NOTICE,"server_started",nullptr,nullptr);return true;
 }
-void SleelaServer::run(){if(!running_&&!start())throw std::runtime_error("SLeeLa server start failed");while(running_){sockaddr_in p{};socket_len_t n=sizeof(p);int fd=(int)::accept(listen_fd_,(sockaddr*)&p,&n);if(fd<0){if(!running_)break;continue;}char h[INET_ADDRSTRLEN]{};inet_ntop(AF_INET,&p.sin_addr,h,sizeof(h));std::lock_guard<std::mutex> w(workers_mutex_);workers_.emplace_back(&SleelaServer::client_loop,this,fd,std::string(h));}join_workers();}
-void SleelaServer::stop(){std::lock_guard<std::mutex>l(state_mutex_);if(!running_&&listen_fd_<0)return;running_=false;if(listen_fd_>=0){close_socket(listen_fd_);listen_fd_=-1;}
+void SleelaServer::run(){if(!running_&&!start())throw std::runtime_error("SLeeLa server start failed");while(running_.load(std::memory_order_acquire)){sockaddr_in p{};socket_len_t n=sizeof(p);int fd=(int)::accept(listen_fd_,(sockaddr*)&p,&n);if(fd<0){if(!running_)break;continue;}char h[INET_ADDRSTRLEN]{};inet_ntop(AF_INET,&p.sin_addr,h,sizeof(h));{std::lock_guard<std::mutex> w(workers_mutex_);workers_.emplace_back(&SleelaServer::client_loop,this,fd,std::string(h));}}join_workers();}
+void SleelaServer::stop(){
+ {std::lock_guard<std::mutex> l(state_mutex_);if(!running_&&listen_fd_<0){join_workers();return;}running_=false;if(listen_fd_>=0){close_socket(listen_fd_);listen_fd_=-1;}}
+ join_workers();
 #ifdef _WIN32
  WSACleanup();
 #endif
+}
+void SleelaServer::join_workers(){
+ std::vector<std::thread> workers;
+ {std::lock_guard<std::mutex> l(workers_mutex_);workers.swap(workers_);}
+ for(auto& t:workers) if(t.joinable()) t.join();
 }
 bool SleelaServer::running()const noexcept{return running_.load(std::memory_order_acquire);}
 bool SleelaServer::read_exact(int fd,void*dst,std::size_t bytes,std::uint32_t ms){auto*p=(std::uint8_t*)dst;std::size_t got=0;while(got<bytes){fd_set set;FD_ZERO(&set);FD_SET(fd,&set);timeval tv{(long)(ms/1000),(long)((ms%1000)*1000)};if(select(fd+1,&set,nullptr,nullptr,&tv)<=0)return false;
