@@ -6115,12 +6115,40 @@
       "sha256": "236c6e2000e7036ca336419fc3f8ee44bcf86d266493edda78db85b44b5bf4bb"
     },
     {
+      "path": "munction/c/munction.c",
+      "sha256": "33a8ba416206e271f0adfdd3a452ec91f5f43caf782a8aed3a48c5123bc8b2c9"
+    },
+    {
+      "path": "munction/c/munction.h",
+      "sha256": "846653d435341b1841bfd9d21b524b62b1eef515801cb2ea4bd865bdde88e1a8"
+    },
+    {
+      "path": "munction/cpp/munction.cpp",
+      "sha256": "571c4bdf652dadea4ccb947a2ec4c6717ab05cca017e751b1d91d7e518bf4743"
+    },
+    {
+      "path": "munction/cpp/munction.hpp",
+      "sha256": "4698833bdd579ac6eba9f0ba19cba90a49ea53115fd6cb5884c5c7b01c315f07"
+    },
+    {
       "path": "munction/examples/reach_all_methods.sleela",
       "sha256": "88a17bd02ba3f7093c8d802cdc3ea5a6c584b5092fe34b162d0cd1dc95e657cd"
     },
     {
       "path": "munction/examples/reach_xyx.sleela",
       "sha256": "974899a4321f04ff2ab7f4c386cb50a2ab449f96ea45c66171d34128541ad345"
+    },
+    {
+      "path": "munction/tests/c_smoke.c",
+      "sha256": "11de8651ccd4110d459bd0febbb40e8c6a4d221c8eebc172dbcd64ff4bf2f5a8"
+    },
+    {
+      "path": "munction/tests/cpp_smoke.cpp",
+      "sha256": "a0ac60ab50cf9deb9195a6c79f93a5d34afc2684b298532c591ddabfe4032041"
+    },
+    {
+      "path": "munction/tests/run_native_suite.sh",
+      "sha256": "b67ae077832e30705ff1c897a793968eb74844995125417ef2333e99cb90bc79"
     },
     {
       "path": "psychiatry/keysearch.py",
