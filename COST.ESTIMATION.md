@@ -213,7 +213,57 @@ For the minimum 12-professional team:
 
 **Monthly planning cost = 12 × 160 × $55 = $105,600/month**
 
-## 13. Revision Control
+## 14. Sales and Profit Scenario Model
+
+This is an illustrative commercial scenario, not a forecast or guarantee. It assumes seven initial language/product families: Java, Perl, Python, C, C++, Rust, and a seventh "Other" family. The model assumes a strong launch, a constant $1,000 sale price, and 30 qualified phone calls per completed sale.
+
+| Horizon | Copies / Family / Year | Seven-Family Copies / Year | Calls / Year | Gross Sales / Year |
+|---|---:|---:|---:|---:|
+| Year 1 — strong start | 1,000 | **7,000** | **210,000** | **$7,000,000** |
+| Year 10 — mature scale | 10,000 | **70,000** | **2,100,000** | **$70,000,000** |
+| Year 1,000 — illustrative scale | 1,000,000 | **7,000,000** | **210,000,000** | **$7,000,000,000** |
+
+### Unit Economics
+
+| Measure | Value |
+|---|---:|
+| Price per sale | **$1,000** |
+| Calls per sale | **30** |
+| Revenue per call | **$33.33** |
+| Product families | **7** |
+
+Using the previously modeled **$3,060,260 annual planning cost envelope**:
+
+| Horizon | Gross Sales | Cost Envelope | Surplus Before Taxes/Other Costs |
+|---|---:|---:|---:|
+| Year 1 | $7,000,000 | $3,060,260 | **$3,939,740** |
+| Year 10 | $70,000,000 | $3,060,260 | **$66,939,740** |
+| Year 1,000 | $7,000,000,000 | $3,060,260 | **$6,996,939,740** |
+
+The surplus is not net profit; taxes, payment costs, sales expenses, delivery, support, additional staffing, capital expenditure, reserves, and reinvestment remain outside this simplified model.
+
+### Graphic Sales Model
+
+```mermaid
+xychart-beta
+    title "SLeeLa Illustrative Annual Gross Sales"
+    x-axis ["Year 1","Year 10","Year 1,000"]
+    y-axis "Gross revenue (USD millions)" 0 --> 7000
+    bar [7,70,7000]
+```
+
+### Sales Funnel
+
+```mermaid
+flowchart LR
+    A["30 qualified calls"] --> B["1 completed sale"]
+    B --> C["$1,000 gross sale"]
+    C --> D["7 product families"]
+```
+
+The Year 1,000 row is mathematical scenario analysis rather than a credible operational forecast.
+
+## 15. Revision Control
 
 This estimate should be revised whenever a major subsystem changes scope, including:
 
