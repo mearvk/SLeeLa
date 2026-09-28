@@ -6,7 +6,7 @@
 
 /* Stable VM artifact/runtime ABI identifiers. */
 #define SLEELA_VM_ABI_MAJOR 1u
-#define SLEELA_VM_ABI_MINOR 0u
+#define SLEELA_VM_ABI_MINOR 1u
 #define SLEELA_ARTIFACT_FORMAT_VERSION 2u
 #include <stdint.h>
 #include <stddef.h>
@@ -69,7 +69,14 @@ typedef enum {
     OP_BEST_REPORT,    /* pops handle; pushes multi-line report String         */
     OP_BEST_ARCH,      /* pops realized,param,arch,idx,handle; pushes handle   */
     OP_BEST_ARCH_STATE,/* pops realized,idx,handle; pushes handle              */
-    OP_BEST_CLOSE      /* pops handle; releases the selector; pushes null      */
+    OP_BEST_CLOSE,     /* pops handle; releases the selector; pushes null      */
+    OP_AUDIO_NEW,       /* pops sampleRate, outputPath; pushes job handle */
+    OP_AUDIO_ADD,       /* pops handle,path,startSeconds,gainDb; pushes handle */
+    OP_AUDIO_CONTROLS,  /* pops handle,bass,mid,treble,master,pan,left,right; pushes handle */
+    OP_AUDIO_VALIDATE,  /* pops handle; pushes bool */
+    OP_AUDIO_RENDER,    /* pops handle; invokes host renderer; pushes bool */
+    OP_AUDIO_CLOSE,     /* pops handle; releases job; pushes null */
+    OP_AUDIO_PLATFORM   /* pushes host platform name */
 } SLOp;
 /* Synchro stat selectors for OP_SYN_STAT (operand a). */
 #define SL_SYN_STAT_SENT 0
@@ -96,6 +103,13 @@ typedef enum {
 #define SL_MAX_STRUCTS 4096       /* live struct instances per VM              */
 typedef enum { SLR_OK = 0, SLR_ERROR, SLR_HALT } SLResult;
 typedef struct SLVM SLVM;
+typedef int (*SLAudioNativeRenderFn)(
+    const char* output_path, uint32_t sample_rate,
+    const char* const* input_paths, const double* start_seconds,
+    const double* gain_db, size_t input_count,
+    double bass_db, double mid_db, double treble_db,
+    double master_gain_db, double pan, double left_gain, double right_gain,
+    void* user);
 typedef enum { SLX_RESET = 0, SLX_ADD_CONST, SLX_DECLARE_GLOBAL, SLX_BEGIN_FUNC, SLX_END_FUNC, SLX_EMIT, SLX_PATCH, SLX_HERE, SLX_SET_ENTRY, SLX_RUN, SLX_GET_RESULT, SLX_DECLARE_STRUCT } SLExchangeOp;
 /* For SLX_DECLARE_STRUCT: name = struct type name, names = ordered field names,
  * i0 = field count; out receives the type index. */
@@ -103,6 +117,7 @@ typedef struct { SLValue value; const char* name; const char* const* names; int3
 SLVM* slvm_new(void);
 /* True when Sleela source values use the bounded VM-owned memory/handle model. */
 int slvm_memory_safe_mode(const SLVM* vm);
+void slvm_set_audio_native_renderer(SLVM* vm, SLAudioNativeRenderFn fn, void* user);
 void slvm_free(SLVM* vm);
 SLResult slcore_exchange(SLVM* vm, SLExchangeOp op, SLExchangeArg* arg);
 int slvm_add_const_int(SLVM* vm, int64_t v);
