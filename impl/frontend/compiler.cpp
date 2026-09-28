@@ -347,6 +347,23 @@ private:
             if(syntax_<SyntaxVersion{1,3})throw std::runtime_error("Semantic error: best-of built-ins require #sleela 1.3");
         }
         auto emitArgs=[&](const Call& call){ for(const auto& a:call.args) emitExpr(a.get()); };
+        if(n=="audioNew"){
+            if(c.args.size()!=2)throw std::runtime_error("Semantic error: audioNew(sampleRate, outputPath) takes two arguments");
+            emitExpr(c.args[0].get());emitExpr(c.args[1].get());emit(OP_AUDIO_NEW);return true;
+        }
+        if(n=="audioAdd"){
+            if(c.args.size()!=4)throw std::runtime_error("Semantic error: audioAdd(handle, path, startSeconds, gainDb) takes four arguments");
+            emitArgs(c);emit(OP_AUDIO_ADD);return true;
+        }
+        if(n=="audioControls"){
+            if(c.args.size()!=8)throw std::runtime_error("Semantic error: audioControls(handle, bass, mid, treble, masterGain, pan, leftGain, rightGain) takes eight arguments");
+            emitArgs(c);emit(OP_AUDIO_CONTROLS);return true;
+        }
+        if(n=="audioValidate"){if(c.args.size()!=1)throw std::runtime_error("Semantic error: audioValidate(handle) takes one argument");emitExpr(c.args[0].get());emit(OP_AUDIO_VALIDATE);return true;}
+        if(n=="audioRender"){if(c.args.size()!=1)throw std::runtime_error("Semantic error: audioRender(handle) takes one argument");emitExpr(c.args[0].get());emit(OP_AUDIO_RENDER);return true;}
+        if(n=="audioClose"){if(c.args.size()!=1)throw std::runtime_error("Semantic error: audioClose(handle) takes one argument");emitExpr(c.args[0].get());emit(OP_AUDIO_CLOSE);return true;}
+        if(n=="audioPlatform"){if(!c.args.empty())throw std::runtime_error("Semantic error: audioPlatform() takes no arguments");emit(OP_AUDIO_PLATFORM);return true;}
+
         if(n=="bestOfNew"){if(!c.args.empty())throw std::runtime_error("Semantic error: bestOfNew() takes no arguments");emit(OP_BEST_NEW);return true;}
         if(n=="bestOfWeight"){if(c.args.size()!=3)throw std::runtime_error("Semantic error: bestOfWeight(handle, axis, weight) takes three arguments");emitArgs(c);emit(OP_BEST_WEIGHT);return true;}
         if(n=="bestOfMinVersion"){if(c.args.size()!=2)throw std::runtime_error("Semantic error: bestOfMinVersion(handle, minVersion) takes two arguments");emitArgs(c);emit(OP_BEST_MINVER);return true;}
