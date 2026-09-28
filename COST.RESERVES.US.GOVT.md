@@ -364,6 +364,71 @@ This is a sensitivity metric, not a sales forecast.
 
 The Debugger and Synchro values are already included in the $1,278,750 baseline and must not be added again.
 
+### Munction Cost-Value Analysis
+
+Munction is now represented as a native C11/C++17 subsystem in addition to the existing Java implementation. The native implementation establishes a language-neutral semantic/channel contract, a C11 ABI, a C++17 RAII wrapper, native smoke tests, and dedicated CI. Its channel-callback design also allows existing pipe, file, TCP/network, HTTP, SDPS/private-packet, and cryptographic transport implementations to remain transport-specific rather than being duplicated inside the Munction core.
+
+Because the native Munction implementation was introduced after the historical planning baseline, this document does **not** assign a retroactive dollar value to the work. The appropriate cost-value treatment is to identify the engineering dimensions now and attach measured labor as evidence becomes available.
+
+| Munction Value / Cost Dimension | Current Analysis |
+|---|---|
+| Native semantic core | C11 provides a stable language-neutral contract for lifecycle, calls, movement, receipts, accounting, coherence, latching, closing and abort behavior. |
+| C++17 usability | C++17 supplies a typed RAII/fluent interface over the C11 contract, reducing direct ABI handling for C++ consumers. |
+| Cross-language consistency | The native layer creates a concrete conformance target alongside the existing Java implementation and SLeeLa VM. |
+| Transport reuse | Callback-based channels permit existing transport implementations to be adapted without recreating every transport inside Munction. |
+| Verification value | Native smoke tests and CI turn the C/C++ implementation into an independently buildable and repeatable qualification unit. |
+| Integration value | A common contract provides a defined point for future VM adapters and C/C++/Java behavioral-conformance testing. |
+| Cost treatment | No historical hours are invented. Actual labor should be recorded by implementation, wrapper, testing, integration, documentation and release-validation activity. |
+
+#### Munction incremental cost model
+
+Once actual engineering hours are recorded, the incremental Munction cost can be calculated transparently:
+
+**Munction Labor Cost = Munction Engineering Hours × $55/hour**
+
+A complete Munction accounting record should distinguish:
+
+1. C11 core implementation
+2. C++17 wrapper implementation
+3. Native test and CI implementation
+4. Java/native conformance testing
+5. VM adapter and runtime integration
+6. Transport/channel integration
+7. Documentation and release validation
+8. Platform-specific implementation and qualification
+9. Munction-specific uncertainty reserve, if authorized
+
+For example, if future timekeeping records **H** Munction engineering hours, then:
+
+**Incremental Munction cost = H × $55**
+
+and, if the project applies the same 20% planning-reserve convention:
+
+**Munction planning basis = (H × $55) × 1.20**
+
+These formulas are intentionally parameterized rather than populated with unsupported historical hours.
+
+#### Munction value measures
+
+Munction can also be evaluated through measurable engineering outcomes rather than an assumed commercial revenue allocation:
+
+| Measure | Evidence to Track |
+|---|---|
+| Contract coverage | Number of lifecycle and channel semantics covered by C/C++ tests |
+| Conformance | Matching behavior across C11, C++17, Java and VM implementations |
+| Transport coverage | Number of supported channel adapters passing the common contract |
+| Build reproducibility | Clean native builds and CI runs across supported toolchains |
+| Defect containment | Munction-specific failures detected before integration/release |
+| Integration reuse | Number of SLeeLa components consuming the common Munction contract |
+| Maintenance leverage | Duplicate transport/semantic code avoided by shared interfaces |
+| Release qualification | Native test, CI, documentation and integration evidence completed |
+
+The principal cost-value distinction is therefore:
+
+**Cost is measured in verified engineering hours; value is demonstrated through reusable semantics, interoperability, test evidence, defect containment, and integration leverage.**
+
+Munction should be added to the formal baseline only after its actual effort or an explicitly approved prospective estimate is recorded. Until then, the existing $1,278,750 baseline and $1,534,500 total planning basis remain unchanged.
+
 ### Cost-value interpretation
 
 The planning model supports five useful controls:
