@@ -1,7 +1,15 @@
-// SLeeLa Audio native-process boundary.
+#sleela 1.3
+// Native boundary: the VM owns the job; the host supplies the C++ renderer callback.
 class AudioNative {
-  property executable: String;
-  method validateExecutable(): Bool;
-  method render(configuration: AudioConfiguration): Bool;
-  method interrupt(): Void;
+  static bool validateExecutable(String executable) {
+    return executable != "";
+  }
+
+  static bool render(int handle) {
+    return audioRender(handle);
+  }
+
+  static String platform() {
+    return audioPlatform();
+  }
 }
