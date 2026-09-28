@@ -71,3 +71,7 @@ Holding Document → Forwarding Annotation → Nexter Colony.
 Forwarding is never an implicit privilege grant and remains subject to security, capability, resource, release, and deployment controls.
 
 Max Rupplin — MEARVK LLC — 2026
+
+
+## HTTP generation support
+The Server Edition is prepared to dispatch the SLeeLa HTTP generation family from 1.0 through 9.0 through explicit generation adapters. HTTP 1.0/1.1 remain Internet compatibility targets; HTTP 2.0–9.0 are SLeeLa project generations where applicable. Annotation forwarding remains uniform: Holding Document → Forwarding Annotation → Nexter Colony.
