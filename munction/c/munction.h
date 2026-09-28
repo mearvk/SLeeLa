@@ -13,7 +13,7 @@ extern "C" {
 #define SLEELA_MUNCTION_MAX_RECEIPT 2048
 typedef enum { SLEELA_MUNCTION_STARTED=0, SLEELA_MUNCTION_CONNECTED, SLEELA_MUNCTION_MOVING, SLEELA_MUNCTION_CLOSED } sleela_munction_phase;
 typedef enum { SLEELA_MUNCTION_REACHED=0, SLEELA_MUNCTION_CONTAINED, SLEELA_MUNCTION_ABORTED } sleela_munction_outcome;
-typedef struct { uint64_t offered, acknowledged, digest; int coherent; } sleela_munction_send;
+typedef struct { uint64_t offered, acknowledged, digest; int coherent; } sleela_munction_send_result;
 typedef struct { const uint8_t *data; size_t length; uint64_t digest, sequence; int present; } sleela_munction_reception;
 typedef struct {
     const char *scheme;
