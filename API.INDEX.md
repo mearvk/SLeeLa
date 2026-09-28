@@ -72,6 +72,10 @@ Network and Program/Process are intentionally sibling expansion areas. Cross-cut
 
 **Max Rupplin — MEARVK LLC — 2026**
 
+## Language Annotations
+
+Document annotations are first-class SLeeLa language metadata and travel through Lexer → Parser → AST → Semantic Analysis → Compiler → Runtime → Server Edition. See impl/frontend/ANNOTATION_PIPELINE.md and server-edition/ANNOTATION_LANGUAGE.md.
+
 ## Document Annotations
 Document-level annotations connect architecture documents with extensibility, source ownership, production traceability, and operational measurement without embedding executable routing logic.
 
