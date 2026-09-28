@@ -1,0 +1,9 @@
+#sleela 1.3
+// Operating-system boundary. The SLVM exposes platform identity; drivers own hardware enumeration.
+class AudioSystem {
+  static String platform() { return audioPlatform(); }
+
+  static bool supported(int sampleRate, int channels) {
+    return sampleRate > 0 && channels > 0;
+  }
+}
