@@ -43,3 +43,7 @@ make -C http-servers/3
 ```
 
 The common source is reusable by future HTTP/2 and HTTP/3 transport adapters.
+
+
+## Annotation forwarding and generations 1.0–9.0
+The HTTP server family now participates in SLeeLa's uniform annotation model: Holding Document → Forwarding Annotation → Nexter Colony → HTTP Generation → Transport Adapter. See http/ANNOTATION-FORWARDING.md. The common annotation bridge validates a declared Nexter Colony while leaving authorization and generation-specific protocol semantics to their authoritative layers.
