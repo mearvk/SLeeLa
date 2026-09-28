@@ -14,6 +14,7 @@ class Parser {
 public:
     explicit Parser(std::vector<Token> toks) : toks_(std::move(toks)) {}
     Program parseProgram();      // throws std::runtime_error on syntax error
+    annotation::Annotation parseAnnotation();
 
 private:
     std::vector<Token> toks_;
