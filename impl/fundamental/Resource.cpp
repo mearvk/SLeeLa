@@ -1,8 +1,2 @@
 #include "Resource.hpp"
-namespace sleela::fundamental {
-Resource::Resource()=default; Resource::Resource(std::string value):value_(std::move(value)){}
-const std::string& Resource::value() const noexcept{return value_;}
-void Resource::setValue(std::string value){value_=std::move(value);}
-bool Resource::empty() const noexcept{return value_.empty();}
-const char* Resource::responsibility() const noexcept{return "lifecycle ownership";}
-}
+namespace sleela::fundamental { Resource::Resource()=default; Resource::Resource(std::string value):value_(std::move(value)){} const std::string& Resource::value() const noexcept{return value_;} void Resource::setValue(std::string value){value_=std::move(value);} bool Resource::empty() const noexcept{return value_.empty();} const char* Resource::responsibility() const noexcept{return "lifecycle ownership";} }

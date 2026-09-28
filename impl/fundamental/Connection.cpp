@@ -1,0 +1,2 @@
+#include "Connection.hpp"
+namespace sleela::fundamental { bool Connection::open(){return t_&&t_->connect(endpoint_);} void Connection::close()noexcept{if(t_)t_->close();} bool Connection::active()const noexcept{return t_&&t_->connected();} }

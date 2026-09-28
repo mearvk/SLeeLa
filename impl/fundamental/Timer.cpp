@@ -1,9 +1,2 @@
 #include "Timer.hpp"
-namespace sleela::fundamental {
-Timer::Timer() = default;
-Timer::Timer(std::string value) : value_(std::move(value)) {}
-const std::string& Timer::value() const noexcept { return value_; }
-void Timer::setValue(std::string value) { value_ = std::move(value); }
-bool Timer::empty() const noexcept { return value_.empty(); }
-const char* Timer::responsibility() const noexcept { return "deadline and timer responsibility"; }
-}
+namespace sleela::fundamental { Timer::Timer()=default; Timer::Timer(std::string value):value_(std::move(value)){} const std::string& Timer::value() const noexcept{return value_;} void Timer::setValue(std::string value){value_=std::move(value);} bool Timer::empty() const noexcept{return value_.empty();} const char* Timer::responsibility() const noexcept{return "deadline and timer responsibility";} }

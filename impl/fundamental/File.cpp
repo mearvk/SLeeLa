@@ -1,0 +1,4 @@
+#include "File.hpp"
+#include <fstream>
+#include <filesystem>
+namespace sleela::fundamental { File::File(std::string p):path_(std::move(p)){} bool File::exists()const{return std::filesystem::is_regular_file(path_);} bool File::write(const std::string&d){std::ofstream f(path_,std::ios::binary|std::ios::trunc);return f&&bool(f.write(d.data(),d.size()));} std::string File::read()const{std::ifstream f(path_,std::ios::binary);return f?std::string((std::istreambuf_iterator<char>(f)),{}):std::string{};} std::uintmax_t File::size()const{return exists()?std::filesystem::file_size(path_):0;} const std::string& File::path()const noexcept{return path_;} }
