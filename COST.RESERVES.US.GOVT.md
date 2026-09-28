@@ -15,8 +15,11 @@
 | Planning Component | Hours | Rate | Labor Cost | Reserve / Basis |
 |---|---:|---:|---:|---|
 | Core SLeeLa engineering scope, including Debugger and Synchro | 23,250 | $55/hr | **$1,278,750** | Baseline |
+| Munction native C/C++ subsystem | — | $55/hr | **TBD (no historical hours recorded)** | Separately tracked; not added to baseline |
+| Synchro | 900 | $55/hr | **$49,500** | Included in baseline |
+| Decompiler and API tooling | 700 | $55/hr | **$38,500** | Included in baseline |
 | Planning uncertainty reserve | 4,650 | $55/hr | **$255,750** | 20% of baseline |
-| **Total planning requirement** | **27,900** | **$55/hr** | **$1,534,500** | Baseline + reserve |
+| **Total planning requirement** | **27,900** | **$55/hr** | **$1,534,500** | Baseline + reserve; subsystem rows included above |
 
 ## 2. Twelve-Professional Staffing Basis
 
