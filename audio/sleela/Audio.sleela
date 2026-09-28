@@ -1,9 +1,7 @@
-// SLeeLa Audio API standard class.
+#sleela 1.3
+// SLVM Audio facade. Native work crosses the bounded audio job handle.
 class Audio {
-  property sampleRate: Int;
-  property inputCount: Int;
-  property outputPath: String;
-  method validate(): Bool;
-  method mix(): Bool;
-  method close(): Void;
+  static bool validate(int handle) { return audioValidate(handle); }
+  static bool mix(int handle) { return audioRender(handle); }
+  static void close(int handle) { audioClose(handle); return; }
 }
