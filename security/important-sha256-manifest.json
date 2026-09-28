@@ -6091,6 +6091,282 @@
       "sha256": "789d84e9fa8043189fc40ed7b0b292245bd22999d01030fa0e30c4be6663f696"
     },
     {
+      "path": "lib/collections/SLArray.sleela",
+      "sha256": "0a0089a6825d6336153d896accca9f5b1d72a13cf07faa2fdd5447fabc43083b"
+    },
+    {
+      "path": "lib/collections/SLIterator.sleela",
+      "sha256": "42ff7b04e0ad838b033a78766307366a419f70f74d816146373284b9c86114fe"
+    },
+    {
+      "path": "lib/collections/SLList.sleela",
+      "sha256": "b47310a39630179a66549060af2a861aa00f1af85c12c3bb47880535094bb88e"
+    },
+    {
+      "path": "lib/collections/SLMap.sleela",
+      "sha256": "bdfdbe41d2348ab29833e6f07aeb695ec391bc9e4d8b6e1ec6ca62a05886790c"
+    },
+    {
+      "path": "lib/collections/SLQueue.sleela",
+      "sha256": "53a2d2763ea6562d446bd765fbf96ee0c762a992f677eb94b33a443c91c71dd6"
+    },
+    {
+      "path": "lib/collections/SLRange.sleela",
+      "sha256": "578ac86380e359fe403c91e524e72a547e6a860d1f7ce2073826a489b0a5aef5"
+    },
+    {
+      "path": "lib/collections/SLSet.sleela",
+      "sha256": "772ffd349d9d5f08dbdb0edbfad678f223ac3adc1f2ef5f0dd8fce77783a61ee"
+    },
+    {
+      "path": "lib/collections/SLStack.sleela",
+      "sha256": "fc7f3c21b7d33aa59022b6b97770d07ee3af59191d2b7a82459781af13465474"
+    },
+    {
+      "path": "lib/core/SLBoolean.sleela",
+      "sha256": "a4a1b68b1f8d41b6dff853d82d364ac949e54c930f8017d68547dbe057e355b9"
+    },
+    {
+      "path": "lib/core/SLByte.sleela",
+      "sha256": "d0219697d210c0fa9adac7df3d3e09a15a20509a8983f3ba9567a72d5dba6142"
+    },
+    {
+      "path": "lib/core/SLCharacter.sleela",
+      "sha256": "cce7d4b4b4d3afc2448c324183624bf04def9bd163ef89a025b0b3b67f0c8ccb"
+    },
+    {
+      "path": "lib/core/SLDouble.sleela",
+      "sha256": "a4146ece54576d1ffc8d8595811c04587195511a3a8f9763fb7e27095c94c779"
+    },
+    {
+      "path": "lib/core/SLFloat.sleela",
+      "sha256": "1e098cd6a4de0a2a71a2f9d4466b6e1a6c608fa0ae662e2fc8f5f77f3b4920e3"
+    },
+    {
+      "path": "lib/core/SLInteger.sleela",
+      "sha256": "13465de9f626e7a9c276e86a2636f0836f99df0eff19e36433ed09b1b159005d"
+    },
+    {
+      "path": "lib/core/SLLong.sleela",
+      "sha256": "5d50a3cceabd0876d0c49a334f2dded7ed69358be88198a708278b8f05446359"
+    },
+    {
+      "path": "lib/core/SLObject.sleela",
+      "sha256": "661bf4a57e8a570ac6ed5837ba5a80dff543b91304ca076016f9944d2d943872"
+    },
+    {
+      "path": "lib/io/SLBufferedInput.sleela",
+      "sha256": "e8759cf5f6c5e3f745be194757606baaca4ac51df3a9e475792f09dafe38d6e9"
+    },
+    {
+      "path": "lib/io/SLBufferedOutput.sleela",
+      "sha256": "67ff03a2d1ce61ebfc460e9688c69031c61e2de83e538df083c293ed78ad2533"
+    },
+    {
+      "path": "lib/io/SLByteStream.sleela",
+      "sha256": "01adf5df42795ce266cfb523e2ef2c4d9ec5368577bec6feb7544d455f1950f7"
+    },
+    {
+      "path": "lib/io/SLConsole.sleela",
+      "sha256": "7b87848a7013cfddd6e9dcd27c834fd8dc286b06036cdca70e6c022815497c3e"
+    },
+    {
+      "path": "lib/io/SLFileStream.sleela",
+      "sha256": "320d54c0114788b3bc75427a247e101176f3efb200d7a542e2161f39bf314095"
+    },
+    {
+      "path": "lib/io/SLInputStream.sleela",
+      "sha256": "6b86cf0ab1c6e94d9131abe53a4e3cd9ed88e30603532d8799f9c83c51082d0c"
+    },
+    {
+      "path": "lib/io/SLMemoryStream.sleela",
+      "sha256": "b9378af49e51a2b3e5c5e981c865976aa15c0ac9bb94dc1e29446258c70547e1"
+    },
+    {
+      "path": "lib/io/SLOutputStream.sleela",
+      "sha256": "37b732a852f87c18692834362d0612db4b93e1179f220cf79f382bf0f94588a6"
+    },
+    {
+      "path": "lib/net/SLDnsResolver.sleela",
+      "sha256": "2d17f531921e387d24a662b6078142d1b8360f504b8960c65387b9110ee3d733"
+    },
+    {
+      "path": "lib/net/SLEndpoint.sleela",
+      "sha256": "361350d8fc2f6858cb5f07500d85d08c0e28a10cf7e0b466864027275413c448"
+    },
+    {
+      "path": "lib/net/SLHttpRequest.sleela",
+      "sha256": "0f9c61e75e0ee9c8a809b6246942e2baf1340791bb2fbef588c1891d456feca5"
+    },
+    {
+      "path": "lib/net/SLHttpResponse.sleela",
+      "sha256": "0bea95446c59110f57710f2e2e5e79d6da6a632fd3fede86f6c2493410287dd6"
+    },
+    {
+      "path": "lib/net/SLSocket.sleela",
+      "sha256": "afd4e85bf924bfb51e667f6135545222dce54cc5331a86670de3f286848e9965"
+    },
+    {
+      "path": "lib/net/SLTcpConnection.sleela",
+      "sha256": "bc95d3545b1a865564dc697e6c2a87aaecd69689150d060562d98c044d5f7cec"
+    },
+    {
+      "path": "lib/net/SLUdpSocket.sleela",
+      "sha256": "7e96d054f83231645fa2c6fbe968543780cbe98731923650e1bee2cc0cbf0ee0"
+    },
+    {
+      "path": "lib/net/SLUri.sleela",
+      "sha256": "cf59679f114ff40e6f297d6ec4676cbfb691ab3183f3cef9858ac5c6689f5a3b"
+    },
+    {
+      "path": "lib/os/SLClock.sleela",
+      "sha256": "ce96cd149f6f4ce36cfc13aa9f0497d3b801420e109919aa905e66fc94c1b551"
+    },
+    {
+      "path": "lib/os/SLDirectory.sleela",
+      "sha256": "d886984a084aced45fdf9993f60377b0623de6dc467e52c142c5b4cfab8024fe"
+    },
+    {
+      "path": "lib/os/SLEnvironment.sleela",
+      "sha256": "315ee616b54d89e60936d666e985aef6adca88d24155df4eefdc1308e658f87a"
+    },
+    {
+      "path": "lib/os/SLEventSignal.sleela",
+      "sha256": "abcd5b51101baf5400fcf8c4c6f5d4a728fe65d69d0e0e4f46252617e9cdfaf1"
+    },
+    {
+      "path": "lib/os/SLFile.sleela",
+      "sha256": "e52ff5a29c72ef5cfe06bdb74b4348ffa86d881d6354ed7b151d4a0cfc4ce52a"
+    },
+    {
+      "path": "lib/os/SLFileSystem.sleela",
+      "sha256": "8a23a3b5d292a0ff999a06e60beb7ea51e0d3089f3976ed894296395297af53a"
+    },
+    {
+      "path": "lib/os/SLOperatingSystem.sleela",
+      "sha256": "e37cf5acf09b22588a3ed47f015057860d1dc4f2d62b4f6038dc7f15ca7ca3cc"
+    },
+    {
+      "path": "lib/os/SLPath.sleela",
+      "sha256": "64682e19654c2d69cca8add749d62600ad954abec7c8846d5b04743a6b14a7fd"
+    },
+    {
+      "path": "lib/os/SLPermissions.sleela",
+      "sha256": "bc3c26d8c2ff6a5d9cd26bc0ca86bc3ded669b3b521a12e45896032ec20cc327"
+    },
+    {
+      "path": "lib/os/SLProcess.sleela",
+      "sha256": "71ac0ee81727ffc272c7eb6def3219a4d5e6aaf5ff04f39a217bec35deeb09ec"
+    },
+    {
+      "path": "lib/security/SLCapability.sleela",
+      "sha256": "ec59b2cfbe8187d9254a5aa1c74148a60598488966d7c4a14b1011e53c2c5274"
+    },
+    {
+      "path": "lib/security/SLCredential.sleela",
+      "sha256": "95858105ae5b557bf7ffb17b8d40f11608ab7c3742b24fb652fdcee0529aa8cf"
+    },
+    {
+      "path": "lib/security/SLHash.sleela",
+      "sha256": "c748cb2528fc7251a4304b1616da81e10815c8d864ba2bdc93e8f833fc5ab7a2"
+    },
+    {
+      "path": "lib/security/SLPermission.sleela",
+      "sha256": "9b9eca411fb8655e69c7412196626048bd2d64a10737f04e02465bceea6d9caf"
+    },
+    {
+      "path": "lib/security/SLRandom.sleela",
+      "sha256": "cab9123d5cac86e253502cc2d3bf44f052157a30316f3d71e89ac5970ee0360f"
+    },
+    {
+      "path": "lib/security/SLSecureBuffer.sleela",
+      "sha256": "8595d6b4d60bc160f97e68f191d7c3833e6b6a8ae0e2dfeaf05d962d94775343"
+    },
+    {
+      "path": "lib/text/SLCharset.sleela",
+      "sha256": "bedc0fd72dd8cbed603f0d1c185c2ecf37b1e32b4b8b770e747fd2fce24f1983"
+    },
+    {
+      "path": "lib/text/SLFormatter.sleela",
+      "sha256": "7d63f8ee5294a33b8e725e01da65e1baebc5460dfc70c49f35530d7688a0e9d0"
+    },
+    {
+      "path": "lib/text/SLRegex.sleela",
+      "sha256": "f0974e4c49c553d6981bfc507844d2cfe14c516d94a59905fc635bb5895723cb"
+    },
+    {
+      "path": "lib/text/SLString.sleela",
+      "sha256": "40b016bf33a53740b825feb7337cd6a45453ba9bf28c166981fbabe8d5e138a9"
+    },
+    {
+      "path": "lib/text/SLStringBuffer.sleela",
+      "sha256": "9983d45b700f428d0a492b37e7ba5c054697b313c5b77962b7eed6e42ac07f3e"
+    },
+    {
+      "path": "lib/text/SLStringBuilder.sleela",
+      "sha256": "501dd66cf85bb48ac2470804bd8d4c86a1bc833cd351b5d144c1c9c4357c20c1"
+    },
+    {
+      "path": "lib/text/SLTextReader.sleela",
+      "sha256": "2f39f34495e6988e771a34eb289d8a027934bd55549e47f500931d083cc0e9e4"
+    },
+    {
+      "path": "lib/text/SLTextWriter.sleela",
+      "sha256": "8d0cbe6ee15a5720f4b7e4be2f16edafc784d10ee390dd718df6900cf9b66be1"
+    },
+    {
+      "path": "lib/vm/SLVM.sleela",
+      "sha256": "ce57aa3b45cd7e3fced1b4c43b6c849278cb98f7a97a5fb0019cf792320d7144"
+    },
+    {
+      "path": "lib/vm/SLVMClass.sleela",
+      "sha256": "bc09f2a68d2f0685cfe26f528a4e753f70cbea7c12dc6eb1ce37916df1bceeea"
+    },
+    {
+      "path": "lib/vm/SLVMField.sleela",
+      "sha256": "6d5c662426cb959240c8ec33a9e03be05ccbc926297e80835caa9d7bfc25c939"
+    },
+    {
+      "path": "lib/vm/SLVMFrame.sleela",
+      "sha256": "052a31e6d79c731fdfa2ab11280180678bfded4ebcee3993c2e27e838456c860"
+    },
+    {
+      "path": "lib/vm/SLVMHeap.sleela",
+      "sha256": "e66478e6295f2b662f489fa6310365523e885f732d63b298ef3d04edb425b586"
+    },
+    {
+      "path": "lib/vm/SLVMMemory.sleela",
+      "sha256": "21929f7e71b58a78fd169e505fa5744dd8574d5b5ffa86f445c3d741d29b46c2"
+    },
+    {
+      "path": "lib/vm/SLVMMethod.sleela",
+      "sha256": "af54b5dd70747ce0b3a5a16dd4a4cc733cb5725db7f907fb77ef3f97f1f3725e"
+    },
+    {
+      "path": "lib/vm/SLVMModule.sleela",
+      "sha256": "c2313712c1c601549f626a1510b2f3600d9f1a5bb92ff958df0e854c4fe490d0"
+    },
+    {
+      "path": "lib/vm/SLVMModuleLoader.sleela",
+      "sha256": "054bb52a67b3871d74ac1c54699dc56d1f98c61f4b41c2fa1864891a6be97ae7"
+    },
+    {
+      "path": "lib/vm/SLVMNativeBinding.sleela",
+      "sha256": "03078acc67947f5cad57b4b7a62be8f454c7145fb0d7cbdec0c6cdcb8a9a8dab"
+    },
+    {
+      "path": "lib/vm/SLVMObject.sleela",
+      "sha256": "dba363083a11ee341adf91da0db00dc8e748a4b1af537ca86aa0b95e802c06f0"
+    },
+    {
+      "path": "lib/vm/SLVMThread.sleela",
+      "sha256": "4f4b1814ec4076ffe5a6303baa9984ee3a93bd05d7769eaff6fb5ebb43ec1712"
+    },
+    {
+      "path": "lib/vm/SLVMValue.sleela",
+      "sha256": "2ba3fa47bbd7dc85a7bc6e699d75cd4c99152bfeac7a551c8e178ceafa6f2e05"
+    },
+    {
       "path": "manifesto/manifesto.sleela",
       "sha256": "d563a3b1badd2675e432c7144d4e67b27a04c66da74c9fdc03a3e5cfc81744b3"
     },
