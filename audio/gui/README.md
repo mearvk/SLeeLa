@@ -2,38 +2,36 @@
 
 Java 21 / JavaFX 21 presentation layer for SLeeLa Audio/Video.
 
-## Architecture
+Architecture:
 
-- JavaFX owns presentation, controls, tables, and preview surfaces.
-- AudioMixerModel owns observable presentation state.
-- SleelaAudioVideo defines the Java-facing integration contract.
-- SleelaAudioVideoSession validates configuration and forwards processing.
-- The native SLeeLa runtime owns acquisition, decoding, synchronization, mixing, analysis, and output.
+    JavaFX → Java contract → native adapter → SLeeLa native audio → output
 
-The GUI does not decode media or silently replace the native mixer.
+Implemented:
+- Observable mixer state and per-track gain.
+- Explicit synchronized-input contract.
+- Native PCM16 mono/stereo WAV mixer under audio/native.
+- Java native-process adapter with fail-closed diagnostics.
+- Sample-rate and input validation.
+- Dedicated Java and native CI.
 
-## Current behavior
+The GUI does not claim live-device capture, arbitrary codecs, DSP analysis, or video processing until those native adapters exist.
 
-The application presents Master, Second, and Live Input tracks; per-track gain; bass, mid, treble, master gain, pan; synchronized-input state; waveform and video preview surfaces; and an explicit native integration boundary.
+Build Java:
 
-The waveform is a presentation preview. Processing is rejected until a native processor is connected.
-
-## Build
-
-Requirements: JDK 21, Maven 3.9+, and network access for Maven Central/OpenJFX dependencies.
-
-From audio/gui:
-
+    cd audio/gui
     mvn clean test
-    mvn clean package
-    mvn javafx:run
 
-The JavaFX run target requires a graphical environment. CI runs the headless compile/test target.
+Build native:
 
-## Native integration
+    cd audio/native
+    make clean all test
 
-Construct SleelaAudioVideoSession with a native processor supplied by the SLeeLa runtime. The processor receives a complete validated MixConfiguration.
+Run with native processing:
 
-## Version
+    mvn javafx:run -Dsleela.audio.native=/path/to/sleela-audio-native
 
-Audio GUI: 0.2.0
+Current native scope is deliberately narrow and testable: PCM16 WAV input/output, synchronized start offsets, per-input gain, master gain, and pan.
+
+Next production adapters are platform device capture, broader codecs, real audio analysis/DSP, RGB/RGBA video frames, direct JNI where appropriate, and signed Linux/Windows/macOS packaging.
+
+Version: Audio GUI 0.3.0; Native Audio 0.1.0
