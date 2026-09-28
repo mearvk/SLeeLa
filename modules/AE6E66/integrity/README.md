@@ -1,4 +1,5 @@
-[![SLeeLa](https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png)](https://github.com/mearvk/SLeeLa)
+<img align="right" src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="75" height="75" alt="SLeeLa">
+
 # AE6E66 Integrity Manifest
 
 The production manifest is intentionally not generated from a mutable working tree by the module itself. A release process must generate a complete SHA-256 manifest from a reviewed checkout, review it, and bind it to the exact approved commit/release.
