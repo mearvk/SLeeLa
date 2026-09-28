@@ -22,6 +22,6 @@ headers(){ local f; while IFS= read -r f; do case "$f" in "$ROOT/test-suites/"*|
 coverage(){ if ! have "$PYTHON"; then skip "Python unavailable"; return; fi; "$SUITE/generate-function-coverage.sh" >"$LOG/function-coverage.log" 2>&1 && pass "function inventory" || fail "function inventory"; "$PYTHON" "$SUITE/generate-behavior-skeletons.py" >"$LOG/behavior-skeletons.log" 2>&1 && pass "behavior skeletons" || fail "behavior skeletons"; }
 negative(){ [ -d "$SUITE/negative" ] && pass "negative corpus" || fail "negative corpus"; }
 regression(){ [ -d "$SUITE/regression" ] && pass "regression corpus" || fail "regression corpus"; }
-sanitizers(){ "$SUITE/sanitizers/run.sh" >"$LOG/sanitizers.log" 2>&1 && pass "sanitizers" || fail "sanitizers"; }
+sanitizers(){ bash "$SUITE/sanitizers/run.sh" >"$LOG/sanitizers.log" 2>&1 && pass "sanitizers" || fail "sanitizers"; }
 case "$MODE" in smoke) smoke;; headers) headers;; audit) audit;; coverage) coverage;; negative) negative;; regression) regression;; sanitizers) sanitizers;; all) smoke; headers; audit; coverage; negative; regression; sanitizers;; esac
 echo "SLeeLa Testbed: PASS=$PASS FAIL=$FAIL SKIP=$SKIP"; [ "$FAIL" -eq 0 ]
