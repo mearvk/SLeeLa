@@ -1,0 +1,7 @@
+// SLeeLa Audio native-process boundary.
+class AudioNative {
+  property executable: String;
+  method validateExecutable(): Bool;
+  method render(configuration: AudioConfiguration): Bool;
+  method interrupt(): Void;
+}
