@@ -206,3 +206,22 @@ The Audio API work was developed in stages:
 **Remaining closure:** run and record the full cross-language behavioral conformance matrix and implement or explicitly finalize native EQ semantics.
 
 The package is therefore **implemented at its core with its current process contract documented and aligned**, while the remaining behavioral and EQ closure items are kept explicit rather than being described as complete prematurely.
+
+
+## SLeeLa language layer
+
+The Audio API now has a dedicated /sleela/audio contract layer with **9 standard .sleela classes**:
+
+- Audio
+- AudioInput
+- AudioControls
+- AudioConfiguration
+- AudioNative
+- AudioDevice
+- AudioStream
+- AudioMixer
+- AudioSystem
+
+C counterparts are under /sleela/audio/c and C++ counterparts under /sleela/audio/cpp. AudioSystem establishes the operating-system boundary; Linux/macOS/Windows platform identification is present, while real hardware enumeration remains a driver/backend responsibility. This keeps the language classes portable and prevents the contract layer from falsely claiming device support that has not yet been implemented.
+
+The existing /audio implementation remains the rendering implementation. The SLeeLa layer is the standard object model above it.
