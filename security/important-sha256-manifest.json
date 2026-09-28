@@ -147,6 +147,10 @@
       "sha256": "78d81ffc2e2217c83b5ed821e278b8b1863d1fd537ea6d8fd7f29c4d244c053c"
     },
     {
+      "path": "api/EXTENSIBILITY_API.md",
+      "sha256": "7d9d1fe7e6a16be07d06f1778b877e52643dbcddf7e3b0304ccbd7321032d6d1"
+    },
+    {
       "path": "api/FOUNDATIONAL-API.html",
       "sha256": "692ec64af370d5f061c99e2b39c257dfaedc2453e644b488191ef4a041e0e379"
     },
