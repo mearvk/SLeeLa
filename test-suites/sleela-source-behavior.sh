@@ -13,7 +13,7 @@ have(){ command -v "$1" >/dev/null 2>&1; }
 record(){ printf '%s\n' "$*" >> "$LOG/results.log"; }
 expected_rejection(){
   case "$1" in
-    */impl/tests/nordshrift/src/broken.sleela|*/impl/tests/nordshrift/src/semantic-broken.sleela|*/impl/tests/version/malformed.sleela|*/impl/tests/version/minor_ahead.sleela|*/impl/tests/version/network_too_early.sleela|*/impl/tests/version/syntax_1_2.sleela)
+    */impl/tests/nordshrift/src/broken.sleela|*/impl/tests/nordshrift/src/semantic-broken.sleela|*/impl/tests/version/malformed.sleela|*/impl/tests/version/minor_ahead.sleela|*/impl/tests/version/network_too_early.sleela|*/impl/tests/version/network_1_1.sleela|*/impl/tests/version/syntax_1_2.sleela|*/impl/tests/version/syntax_1_4.sleela|*/impl/tests/version/too_new.sleela)
       return 0;;
     *) return 1;;
   esac
