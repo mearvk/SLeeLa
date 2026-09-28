@@ -4,24 +4,35 @@ Version: 0.4.0
 
 Every debugger operation is represented as a typed action before backend execution.
 
-Actions include continue, pause, step-in, step-over, step-out, break, conditional break, one-shot break, watch, exception, thread, stack, memory, register, inspect, trace, history, attach, detach, launch, restart, terminate, and report.
+## Actions
+
+Continue, pause, step-in, step-over, step-out, break, conditional break, one-shot break, watch, exception, thread, stack, memory, register, inspect, trace, history, attach, detach, launch, restart, terminate, and report.
 
 ## Lifecycle
 
-An action progresses through explicit states:
+requested -> validated -> supported -> executed -> completed
 
-1. requested
-2. validated
-3. supported
-4. executed
-5. completed
-6. failed
+Failure may occur at any stage after request.
 
-A command being accepted does not imply that the target process performed it. Native backend capability and execution results remain separate.
+A command being accepted does not imply that the target process performed it.
 
-## Native integration
+## Platform mapping
 
-Future Linux, macOS, and Windows backends must map actions to platform operations and report unsupported operations explicitly.
+### Linux
+The ptrace adapter currently provides the initial native foundation for launch, attach, resume, single-step, process waiting/polling, and native capability reporting. Source-line binding remains dependent on symbol/instruction mapping.
+
+### macOS
+The LLDB adapter establishes the platform boundary and reports unsupported operations until native LLDB process control is connected.
+
+### Windows
+The Windows Debug API adapter establishes the platform boundary and reports unsupported operations until native process control is connected.
+
+### Portable
+The portable backend remains an explicit no-native-process-control implementation.
+
+## Capability rule
+
+Backends must advertise only capabilities they can actually perform. Unsupported operations must return failure with an actionable diagnostic.
 
 ## Safety
 
