@@ -3,6 +3,7 @@
 #include <sys/ptrace.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <sys/user.h>
 #include <unistd.h>
 #include <cerrno>
 #include <cstring>
@@ -35,6 +36,8 @@ public:
     }
     bool resume(std::string& e) override { if(!attached_){e="no traced process";return false;} if(ptrace(PTRACE_CONT,pid_,nullptr,nullptr)<0){e=std::strerror(errno);return false;} return true; }
     bool step(bool over,std::string& e) override { (void)over; if(!attached_){e="no traced process";return false;} if(ptrace(PTRACE_SINGLESTEP,pid_,nullptr,nullptr)<0){e=std::strerror(errno);return false;} return true; }
+    bool readMemory(std::uint64_t address, void* buffer, std::size_t size, std::string& e) override { if(!attached_||!buffer||!size){e="invalid memory read request";return false;} unsigned char*out=static_cast<unsigned char*>(buffer); for(std::size_t off=0;off<size;off+=sizeof(long)){errno=0;long word=ptrace(PTRACE_PEEKDATA,pid_,reinterpret_cast<void*>(address+off),nullptr);if(errno){e=std::strerror(errno);return false;}std::size_t n=sizeof(word);if(n>size-off)n=size-off;std::memcpy(out+off,&word,n);}return true; }
+    bool readRegisters(RegisterSnapshot& out,std::string& e) override { if(!attached_){e="no traced process";return false;} #if defined(__x86_64__) struct user_regs_struct r{}; if(ptrace(PTRACE_GETREGS,pid_,nullptr,&r)<0){e=std::strerror(errno);return false;} out.architecture="x86_64";out.instruction_pointer=r.rip;out.stack_pointer=r.rsp;out.frame_pointer=r.rbp;return true; #else e="register snapshot unsupported on this Linux architecture";return false; #endif }
     bool setLineStop(const SourceLocation&,std::string& e) override { e="source-line to instruction mapping requires debug symbols/native symbol layer"; return false; }
     bool readMemory(std::uint64_t address,void* buffer,std::size_t size,std::string& e) override {
         if(!attached_||!buffer||size==0){e="invalid memory read request";return false;}
