@@ -1,8 +1,9 @@
 # SLeeLa Class Inventory
 
 **SLeeLa Version:** 0.3.0-dev  
-**Inventory Revision:** 1.1  
+**Inventory Revision:** 1.2  
 **Inventory Date:** 2026-09-28  
+**Known Source Files Explicitly Indexed: 14**  
 **Unique Foundational C++ Class Files (contract-verified): 50**
 
 > This document is the authoritative starting inventory for the SLeeLa 0.3.0-dev development line. The **50 unique foundational C++ class files** are directly included and contract-checked by `test-suites/cpp/test_class_contracts.cpp`. This is a verified foundational class-file count, not a claim that no other repository source file contains a class, struct, interface, or class-like declaration.
@@ -125,7 +126,29 @@ The SLeeLa layer is the semantic counterpart of the native C/C++ data-structure 
 
 These files are part of the repository-wide inventory scope and do not replace the foundational runtime structures under `impl/`.
 
-## 3. Module Coverage
+## 3. Audio SLeeLa Source Inventory
+
+The `audio/sleela/` directory is confirmed to contain **9 SLeeLa source files**. Each file declares an SLeeLa class and is therefore included in the known source/class inventory.
+
+| # | SLeeLa Class | Source |
+|---:|---|---|
+| 1 | `Audio` | `audio/sleela/Audio.sleela` |
+| 2 | `AudioConfiguration` | `audio/sleela/AudioConfiguration.sleela` |
+| 3 | `AudioControls` | `audio/sleela/AudioControls.sleela` |
+| 4 | `AudioDevice` | `audio/sleela/AudioDevice.sleela` |
+| 5 | `AudioInput` | `audio/sleela/AudioInput.sleela` |
+| 6 | `AudioMixer` | `audio/sleela/AudioMixer.sleela` |
+| 7 | `AudioNative` | `audio/sleela/AudioNative.sleela` |
+| 8 | `AudioStream` | `audio/sleela/AudioStream.sleela` |
+| 9 | `AudioSystem` | `audio/sleela/AudioSystem.sleela` |
+
+**Audio SLeeLa source count: 9.**
+
+The audio files are SLeeLa language source, not documentation: they begin with `#sleela 1.3` and declare classes with SLeeLa methods. They are tracked separately from the 50 foundational C++ class-file count.
+
+**Known source files explicitly indexed in this inventory: 14** — 5 data-structures implementation/source files plus 9 audio SLeeLa source files. This is an inventory count, not a claim that the repository contains only 14 source files.
+
+## 4. Module Coverage
 
 The current 0.3.0-dev tree includes these inventory roots:
 
@@ -163,7 +186,7 @@ The current 0.3.0-dev tree includes these inventory roots:
 
 A module is not excluded merely because its implementation is C, C++, Java, SLeeLa, generated code, a protocol implementation, driver, test harness, or supporting tooling.
 
-## 4. Inventory Classification
+## 5. Inventory Classification
 
 The complete inventory distinguishes:
 
@@ -180,7 +203,7 @@ The complete inventory distinguishes:
 11. **Debugger/decompiler/compiler classes.**
 12. **Test/diagnostic classes.**
 
-## 5. Source-of-Truth Rules
+## 6. Source-of-Truth Rules
 
 The version at the top of this document comes from `VERSION.md`.
 
@@ -190,7 +213,7 @@ The `data-structures/` entries are verified against the current repository sourc
 
 The repository source tree remains the ultimate source for determining whether a declaration exists. This document is an inventory/index and should be regenerated or checked whenever source declarations change.
 
-## 6. Next Inventory Gate
+## 7. Next Inventory Gate
 
 The next revision should mechanically scan every supported source file and record:
 
