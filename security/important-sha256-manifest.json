@@ -4571,6 +4571,14 @@
       "sha256": "5b2ce16e034a7eba5411d649fabf408723323b4dc849d9b994f9dc9d58fb2005"
     },
     {
+      "path": "impl/core/sleela_audio_bridge.cpp",
+      "sha256": "3018c8edbb76d7326847cd688842efcee8503c2c00fc1855f256886656b55f52"
+    },
+    {
+      "path": "impl/core/sleela_audio_bridge.h",
+      "sha256": "4bd9c32f14c4a6fb7f01ef7b316ed4f91019a867b9e4db79b6a41c122f765c6b"
+    },
+    {
       "path": "impl/core/sleela_audio_mixer.c",
       "sha256": "42c285f7ca016baf05bd06598d73f170bcb32e0f3800e73151c2a57cc8578b0a"
     },
@@ -4588,11 +4596,11 @@
     },
     {
       "path": "impl/core/sleela_core.c",
-      "sha256": "992d9a7c5fc48416c91841aee5cd47e9426bcf31105433d9205da8adbf22f160"
+      "sha256": "8a8cdb5cb0e91dfaa219a52c6dc9970a4bb0b12598b760300f160e2bfa46c84c"
     },
     {
       "path": "impl/core/sleela_core.h",
-      "sha256": "ebd8d2a865d63d6506129bf59720ca020e9d2a30802c43d21d8193a2c81412e1"
+      "sha256": "e9c92cb3847d804eb09c477610e101bcf872e01956e46889b81439ce264b75d2"
     },
     {
       "path": "impl/core/sleela_design_activity.c",
