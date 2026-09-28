@@ -2,6 +2,9 @@
 
 #include <errno.h>
 #include <signal.h>
+#ifndef NSIG
+#define NSIG 64
+#endif
 #include <stdlib.h>
 #include <string.h>
 
