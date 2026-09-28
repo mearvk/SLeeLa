@@ -566,7 +566,8 @@ int main(int argc,char**argv){
     int rc=0;
     if(cmd=="compile"){if(argc!=5||std::string(argv[3])!="-o")return usage();rc=compileFile(argv[2],argv[4]);}
     else if(cmd=="check"){if(argc<3)return usage();rc=checkFile(argv[2]);}
-    else if(cmd=="validate-artifact"){if(argc!=3)return usage();rc=validateArtifact(argv[2]);}\n    else if(cmd=="run"){if(argc<3)return usage();if(verifyBeforeExecution(fs::current_path()))return 1;if(hasExt(argv[2],".xclass")){std::vector<std::string>files;for(int i=2;i<argc;++i)files.push_back(argv[i]);rc=runXclass(files);}else if(isLangInput(argv[2])){std::vector<std::string>files;for(int i=2;i<argc;++i)files.push_back(argv[i]);rc=runLangin(files);}else rc=runFile(argv[2]);}
+    else if(cmd=="validate-artifact"){if(argc!=3)return usage();rc=validateArtifact(argv[2]);}
+    else if(cmd=="run"){if(argc<3)return usage();if(verifyBeforeExecution(fs::current_path()))return 1;if(hasExt(argv[2],".xclass")){std::vector<std::string>files;for(int i=2;i<argc;++i)files.push_back(argv[i]);rc=runXclass(files);}else if(isLangInput(argv[2])){std::vector<std::string>files;for(int i=2;i<argc;++i)files.push_back(argv[i]);rc=runLangin(files);}else rc=runFile(argv[2]);}
     else if(cmd=="xclass"){if(argc<3)return usage();rc=xclassCmd(argc,argv);}
     else if(cmd=="langin"){if(argc<3)return usage();rc=langinCmd(argc,argv);}
     else if(cmd=="nordshrift"){if(argc<3)return usage();rc=nordshriftCmd(argc,argv);}
