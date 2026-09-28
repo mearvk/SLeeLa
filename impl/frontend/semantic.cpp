@@ -26,6 +26,7 @@ static bool builtin(const std::string&n){
  "Munction.start","synchroOpen","synchroDispatch","synchroReport","synchroClose","synchroSent","synchroReceived","synchroMean","synchroMin","synchroMax","synchroP95","synchroLoss",
  "bestOfNew","bestOfWeight","bestOfMinVersion","bestOfCostBudget","bestOfCandidate","bestOfRecord","bestOfScore","bestOfBest","bestOfChoice","bestOfReport","bestOfClose",
  "bestOfMean","bestOfLoss","bestOfJitter","bestOfCertainty","bestOfCandidateArch","bestOfArchRealized","bestOfArch","bestOfArchParam","bestOfArchState",
+ "audioNew","audioAdd","audioControls","audioValidate","audioRender","audioClose","audioPlatform",
  "conduct","role","insight","congruent","route","sysdepth","degreemax"};
  return s.count(n)!=0;
 }
