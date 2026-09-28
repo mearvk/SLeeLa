@@ -40,14 +40,15 @@ audit(){ local f log std; while IFS= read -r f; do
 headers(){ local f std; while IFS= read -r f; do
   case "$f" in "$ROOT/test-suites/"*|"$ROOT/bash/"*|"$ROOT/.git/"*) continue;; esac
   case "$f" in
-    *_windows.hpp|*_macos.hpp|*_linux.hpp|*/windows/*|*/macos/*|*/linux/*)
-      [[ "$f" == "$ROOT/decompiler/"* ]] || true;;
+    *_windows.hpp|*_windows.h|*/windows/*) [[ "$(uname -s)" != "MINGW"* && "$(uname -s)" != "MSYS"* && "$(uname -s)" != "CYGWIN"* ]] && { skip "Windows header $f"; continue; };;
+    *_macos.hpp|*_macos.h|*/macos/*|*/darwin/*) [[ "$(uname -s)" != "Darwin" ]] && { skip "macOS header $f"; continue; };;
+    *_linux.hpp|*_linux.h|*/linux/*) [[ "$(uname -s)" != "Linux" ]] && { skip "Linux header $f"; continue; };;
   esac
   if [[ "$f" == *.h ]] && have "$CC"; then
     "$CC" -std=c11 -D_POSIX_C_SOURCE=200809L -fsyntax-only -I"$ROOT" -I"$ROOT/api/include" -I"$ROOT/decompiler/include" -I"$ROOT/telephony-skya/drivers/include" -I"$ROOT/telephony-skya/drivers/src" -I"$ROOT/impl/core" -I"$ROOT/impl/frontend" -I"$ROOT/impl/subjects/native" -I"$ROOT/runtime" -I"$ROOT/terminal_pixel" -I"$ROOT/bash" "$f" >/dev/null 2>&1 && pass "header $f" || fail "header $f"
   elif [[ "$f" == *.hpp ]] && have "$CXX"; then
     std=c++17; case "$f" in "$ROOT/decompiler/"*) std=c++20;; esac
-    "$CXX" -std="$std" -fsyntax-only -I"$ROOT" -I"$ROOT/api/include" -I"$ROOT/decompiler/include" -I"$ROOT/telephony-skya/drivers/include" -I"$telephony-skya/drivers/src" -I"$ROOT/impl/core" -I"$ROOT/impl/frontend" -I"$ROOT/impl/subjects/native" -I"$ROOT/runtime" -I"$ROOT/terminal_pixel" -I"$ROOT/bash" "$f" >/dev/null 2>&1 && pass "header $f" || fail "header $f"
+    "$CXX" -std="$std" -fsyntax-only -I"$ROOT" -I"$ROOT/api/include" -I"$ROOT/decompiler/include" -I"$ROOT/telephony-skya/drivers/include" -I"$ROOT/telephony-skya/drivers/src" -I"$ROOT/impl/core" -I"$ROOT/impl/frontend" -I"$ROOT/impl/subjects/native" -I"$ROOT/runtime" -I"$ROOT/terminal_pixel" -I"$ROOT/bash" "$f" >/dev/null 2>&1 && pass "header $f" || fail "header $f"
   fi
  done < <(find "$ROOT" -type f \( -name '*.h' -o -name '*.hpp' \) -print); }
 coverage(){ if ! have "$PYTHON"; then skip "Python unavailable"; return; fi; "$SUITE/generate-function-coverage.sh" >"$LOG/function-coverage.log" 2>&1 && pass "function inventory" || fail "function inventory"; "$PYTHON" "$SUITE/generate-behavior-skeletons.py" >"$LOG/behavior-skeletons.log" 2>&1 && pass "behavior skeletons" || fail "behavior skeletons"; }
