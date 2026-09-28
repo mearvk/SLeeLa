@@ -6648,7 +6648,7 @@
     },
     {
       "path": "synchro/c/synchro_integration.c",
-      "sha256": "294b8a7f75df0706049400e02c73b3fe79a8d290915560068788186e19f71108"
+      "sha256": "cf57664d6557364eb492809895402e3d8bbaf864ccd72328ff560af840719f9e"
     },
     {
       "path": "synchro/c/synchro_integration.h",
@@ -6669,6 +6669,10 @@
     {
       "path": "synchro/cpp/synchro_integration.hpp",
       "sha256": "c8a6dadbaf7f254436fa692c899957dfc77111bbc261b16ef5fafcedea9c15be"
+    },
+    {
+      "path": "synchro/cpp/synchro_integration_test.cpp",
+      "sha256": "4c9f718cab386d6394d5dc3fa69f3680046b7e59eabe8cbc0f30f3904bfea50d"
     },
     {
       "path": "synchro/synchro/__init__.py",
