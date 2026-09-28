@@ -43,6 +43,19 @@ run_cpp(){
   else fail "$src compile"; fi
 }
 
+run_frontend_annotations(){
+  local src="$SUITE/cpp/test_frontend_annotations.cpp" out="$BUILD/test_frontend_annotations"
+  if ! have "$CXX"; then skip "C++ compiler $CXX unavailable"; return; fi
+  if "$CXX" -std=c++17 -Wall -Wextra -I"$ROOT" "$src" \
+      "$ROOT/impl/frontend/lexer.cpp" "$ROOT/impl/frontend/parser.cpp" \
+      "$ROOT/impl/frontend/semantic.cpp" "$ROOT/impl/frontend/annotation_pipeline.cpp" \
+      "$ROOT/impl/annotation/Annotation.cpp" "$ROOT/impl/annotation/ForwardingAnnotation.cpp" \
+      "$ROOT/impl/annotation/AnnotationForwarder.cpp" "$ROOT/impl/annotation/AnnotationRuntime.cpp" \
+      -o "$out" >"$LOG/test_frontend_annotations.compile.log" 2>&1; then
+    if "$out" >"$LOG/test_frontend_annotations.run.log" 2>&1; then pass "frontend annotation pipeline"; else fail "frontend annotation pipeline runtime"; fi
+  else fail "frontend annotation pipeline compile"; fi
+}
+
 smoke(){
   if [ -f "$SUITE/c/test_http_bridge.c" ]; then
     if have "$CC"; then
@@ -54,7 +67,7 @@ smoke(){
   [ -f "$SUITE/c/test_c_api_headers.c" ] && run_c "$SUITE/c/test_c_api_headers.c" "$BUILD/test_c_api_headers"
   [ -f "$SUITE/cpp/test_annotations.cpp" ] && run_cpp "$SUITE/cpp/test_annotations.cpp" "$BUILD/test_annotations"
   [ -f "$SUITE/cpp/test_class_contracts.cpp" ] && run_cpp "$SUITE/cpp/test_class_contracts.cpp" "$BUILD/test_class_contracts"
-  [ -f "$SUITE/cpp/test_frontend_annotations.cpp" ] && run_cpp "$SUITE/cpp/test_frontend_annotations.cpp" "$BUILD/test_frontend_annotations"
+  run_frontend_annotations
 }
 
 header_audit(){
