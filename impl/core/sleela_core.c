@@ -18,6 +18,7 @@
 #include "sleela_synchro.h"
 #include "sleela_munction.h"
 #include "sleela_bestof.h"
+#include "sleela_audio_mixer.h"
 
 #include <math.h>
 #include <stdio.h>
@@ -81,6 +82,17 @@ typedef struct {
     int nfields;
     char* fields[SL_MAX_STRUCT_FIELDS];
 } SLStructType;
+typedef struct {
+    int active;
+    uint32_t sample_rate;
+    char output_path[1024];
+    size_t input_count;
+    char input_paths[128][1024];
+    double start_seconds[128];
+    double gain_db[128];
+    double bass_db, mid_db, treble_db, master_gain_db, pan, left_gain, right_gain;
+} SLAudioJob;
+
 
 /* A live struct instance: its type index plus one SLValue per declared field. */
 typedef struct {
@@ -120,6 +132,11 @@ struct SLVM {
     int nstruct_types;
     SLStructInstance* structs;   /* SL_MAX_STRUCTS instances, lazily allocated */
     int nstruct_live;
+
+    pthread_mutex_t audio_mtx;
+    SLAudioJob audio_jobs[64];
+    SLAudioNativeRenderFn audio_renderer;
+    void* audio_renderer_user;
 
     pthread_mutex_t locks[SL_MAX_LOCKS];
     SLMailbox mailbox[SL_MAX_LOCKS];
@@ -238,6 +255,14 @@ int slvm_here(SLVM* vm) { return vm->codelen; }
 void slvm_set_entry(SLVM* vm, int fi) { vm->entry = fi; }
 SLValue slvm_result(SLVM* vm) { return vm->last_result; }
 
+void slvm_set_audio_native_renderer(SLVM* vm, SLAudioNativeRenderFn fn, void* user) {
+    if (!vm) return;
+    pthread_mutex_lock((pthread_mutex_t*)&vm->audio_mtx);
+    vm->audio_renderer = fn;
+    vm->audio_renderer_user = user;
+    pthread_mutex_unlock((pthread_mutex_t*)&vm->audio_mtx);
+}
+
 int slvm_memory_safe_mode(const SLVM* vm) {
     /* Sleela source never receives native pointers. Globals, locals, files,
      * sockets, threads, reaches, probes, and struct instances are VM-owned
@@ -263,6 +288,7 @@ SLVM* slvm_new(void) {
     pthread_mutex_init(&vm->synchro_mtx, NULL);
     pthread_mutex_init(&vm->munction_mtx, NULL);
     pthread_mutex_init(&vm->bestof_mtx, NULL);
+    pthread_mutex_init(&vm->audio_mtx, NULL);
     for (int i = 0; i < SL_MAX_SOCKETS; i++) {
         pthread_mutex_init(&vm->sockets[i].mtx, NULL);
         vm->sockets[i].active = 0; vm->sockets[i].handle = SL_NET_INVALID;
@@ -298,6 +324,7 @@ void slvm_free(SLVM* vm) {
         pthread_mutex_destroy(&vm->sockets[i].mtx);
     }
     pthread_mutex_destroy(&vm->sock_mtx);
+    pthread_mutex_destroy(&vm->audio_mtx);
     slnet_shutdown();
     for (int i = 0; i < SL_MAX_FILES; i++) {
         pthread_mutex_lock(&vm->files[i].mtx);
@@ -919,6 +946,73 @@ static SLResult run_thread(SLThread* t) {
         case OP_BEST_CLOSE: {
             SLValue hv=POP(); if(hv.type!=SL_INT) TERR("bestOfClose(handle) requires a handle");
             bestof_release(vm,(int)hv.as.i); PUSH(slval_null());
+        } break;
+
+        /* ---- SLVM Audio bridge --------------------------------------- */
+        case OP_AUDIO_NEW: {
+            SLValue outv=POP(), ratev=POP();
+            if(outv.type!=SL_STR||ratev.type!=SL_INT||ratev.as.i<=0) TERR("audioNew(sampleRate, outputPath) requires positive rate and String output path");
+            int h=-1;
+            pthread_mutex_lock(&vm->audio_mtx);
+            for(int i=0;i<64;i++) if(!vm->audio_jobs[i].active){ h=i; SLAudioJob *j=&vm->audio_jobs[i]; memset(j,0,sizeof(*j)); j->active=1; j->sample_rate=(uint32_t)ratev.as.i; strncpy(j->output_path,slvm_str(vm,outv.as.s),sizeof(j->output_path)-1); j->left_gain=1.0; j->right_gain=1.0; break; }
+            pthread_mutex_unlock(&vm->audio_mtx);
+            if(h<0) TERR("audioNew: audio job table exhausted");
+            PUSH(slval_int(h));
+        } break;
+        case OP_AUDIO_ADD: {
+            SLValue gainv=POP(), startv=POP(), pathv=POP(), hv=POP();
+            if(hv.type!=SL_INT||pathv.type!=SL_STR||(startv.type!=SL_DOUBLE&&startv.type!=SL_INT)||(gainv.type!=SL_DOUBLE&&gainv.type!=SL_INT)) TERR("audioAdd(handle, path, startSeconds, gainDb) has invalid arguments");
+            int h=(int)hv.as.i; if(h<0||h>=64||!vm->audio_jobs[h].active) TERR("audioAdd: invalid audio handle");
+            pthread_mutex_lock(&vm->audio_mtx); SLAudioJob *j=&vm->audio_jobs[h];
+            if(j->input_count>=128){pthread_mutex_unlock(&vm->audio_mtx);TERR("audioAdd: maximum 128 inputs exceeded");}
+            strncpy(j->input_paths[j->input_count],slvm_str(vm,pathv.as.s),sizeof(j->input_paths[0])-1);
+            j->start_seconds[j->input_count]=(startv.type==SL_DOUBLE)?startv.as.d:(double)startv.as.i;
+            j->gain_db[j->input_count]=(gainv.type==SL_DOUBLE)?gainv.as.d:(double)gainv.as.i;
+            j->input_count++; pthread_mutex_unlock(&vm->audio_mtx); PUSH(hv);
+        } break;
+        case OP_AUDIO_CONTROLS: {
+            SLValue rv=POP(), lv=POP(), pv=POP(), mgv=POP(), tv=POP(), mv=POP(), bv=POP(), hv=POP();
+            if(hv.type!=SL_INT) TERR("audioControls requires an audio handle");
+            SLValue vv[7]={bv,mv,tv,mgv,pv,lv,rv}; for(int i=0;i<7;i++) if(vv[i].type!=SL_DOUBLE&&vv[i].type!=SL_INT) TERR("audioControls requires numeric controls");
+            int h=(int)hv.as.i; if(h<0||h>=64||!vm->audio_jobs[h].active) TERR("audioControls: invalid audio handle");
+            pthread_mutex_lock(&vm->audio_mtx); SLAudioJob *j=&vm->audio_jobs[h];
+#define SL_AUDIO_NUM(v) ((v).type==SL_DOUBLE?(v).as.d:(double)(v).as.i)
+            j->bass_db=SL_AUDIO_NUM(bv); j->mid_db=SL_AUDIO_NUM(mv); j->treble_db=SL_AUDIO_NUM(tv); j->master_gain_db=SL_AUDIO_NUM(mgv); j->pan=SL_AUDIO_NUM(pv); j->left_gain=SL_AUDIO_NUM(lv); j->right_gain=SL_AUDIO_NUM(rv);
+#undef SL_AUDIO_NUM
+            pthread_mutex_unlock(&vm->audio_mtx); PUSH(hv);
+        } break;
+        case OP_AUDIO_VALIDATE: {
+            SLValue hv=POP(); if(hv.type!=SL_INT) TERR("audioValidate(handle) requires an audio handle");
+            int h=(int)hv.as.i; int ok=0; pthread_mutex_lock(&vm->audio_mtx);
+            if(h>=0&&h<64&&vm->audio_jobs[h].active){SLAudioJob*j=&vm->audio_jobs[h]; ok=j->sample_rate>0&&j->output_path[0]&&j->input_count>0&&j->input_count<=128&&isfinite(j->pan)&&j->pan>=-1.0&&j->pan<=1.0; for(size_t i=0;i<j->input_count&&ok;i++) ok=j->input_paths[i][0]&&j->start_seconds[i]>=0.0&&isfinite(j->start_seconds[i])&&isfinite(j->gain_db[i]);}
+            pthread_mutex_unlock(&vm->audio_mtx); PUSH(slval_bool(ok));
+        } break;
+        case OP_AUDIO_RENDER: {
+            SLValue hv=POP(); if(hv.type!=SL_INT) TERR("audioRender(handle) requires an audio handle");
+            int h=(int)hv.as.i; if(h<0||h>=64) TERR("audioRender: invalid audio handle");
+            pthread_mutex_lock(&vm->audio_mtx); SLAudioJob j=vm->audio_jobs[h]; SLAudioNativeRenderFn fn=vm->audio_renderer; void *user=vm->audio_renderer_user; pthread_mutex_unlock(&vm->audio_mtx);
+            if(!j.active||!fn) PUSH(slval_bool(0)); else {
+                const char* paths[128]; for(size_t i=0;i<j.input_count;i++) paths[i]=j.input_paths[i];
+                int rc=fn(j.output_path,j.sample_rate,paths,j.start_seconds,j.gain_db,j.input_count,j.bass_db,j.mid_db,j.treble_db,j.master_gain_db,j.pan,j.left_gain,j.right_gain,user);
+                PUSH(slval_bool(rc==0));
+            }
+        } break;
+        case OP_AUDIO_CLOSE: {
+            SLValue hv=POP(); if(hv.type!=SL_INT) TERR("audioClose(handle) requires an audio handle");
+            int h=(int)hv.as.i; if(h<0||h>=64) TERR("audioClose: invalid audio handle");
+            pthread_mutex_lock(&vm->audio_mtx); memset(&vm->audio_jobs[h],0,sizeof(vm->audio_jobs[h])); pthread_mutex_unlock(&vm->audio_mtx); PUSH(slval_null());
+        } break;
+        case OP_AUDIO_PLATFORM: {
+#if defined(_WIN32)
+            const char *p="windows";
+#elif defined(__APPLE__)
+            const char *p="macos";
+#elif defined(__linux__)
+            const char *p="linux";
+#else
+            const char *p="unknown";
+#endif
+            SLValue s; s.type=SL_STR; s.as.s=intern(vm,p); PUSH(s);
         } break;
 
         /* ---- Linux file I/O ------------------------------------------- */
