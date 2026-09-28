@@ -13,8 +13,9 @@ case "${1:-}" in
   --headers) MODE="headers" ;;
   --audit) MODE="audit" ;;
   --clean) rm -rf "$BUILD" "$LOG"; exit 0 ;;
+  --coverage) MODE="coverage" ;;
   --all|"") MODE="all" ;;
-  -h|--help) echo "Usage: $0 [--smoke|--headers|--audit|--clean|--all]"; exit 0 ;;
+  -h|--help) echo "Usage: $0 [--smoke|--headers|--audit|--coverage|--clean|--all]"; exit 0 ;;
   *) echo "Unknown option: $1" >&2; exit 2 ;;
 esac
 
@@ -98,11 +99,17 @@ source_audit(){
   done < <(find "$ROOT" -type f \( -name '*.c' -o -name '*.cpp' \) -print)
 }
 
+coverage(){
+  if ! have "${PYTHON:-python3}"; then skip "Python unavailable for function inventory"; return; fi
+  if "$SUITE/generate-function-coverage.sh" >"$LOG/function-coverage.log" 2>&1; then pass "function coverage inventory"; else fail "function coverage inventory"; fi
+}
+
 case "$MODE" in
   smoke) smoke ;;
   headers) header_audit ;;
   audit) source_audit ;;
-  all) smoke; header_audit; source_audit ;;
+  coverage) coverage ;;
+  all) smoke; header_audit; source_audit; coverage ;;
 esac
 
 echo
