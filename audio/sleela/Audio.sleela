@@ -1,0 +1,7 @@
+#sleela 1.3
+// SLVM Audio facade. Native work crosses the bounded audio job handle.
+class Audio {
+  static bool validate(int handle) { return audioValidate(handle); }
+  static bool mix(int handle) { return audioRender(handle); }
+  static void close(int handle) { audioClose(handle); return; }
+}

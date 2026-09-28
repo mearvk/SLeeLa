@@ -34,7 +34,11 @@ int sleela_audio_mix_wav(const sleela_audio_config*c){
   for(uint32_t i=0;i<c->input_count;i++){size_t p=12,ds=0,doff=0;while(p+8<=bytes[i]){unsigned long n=u32(data[i]+p+4);if(!memcmp(data[i]+p,"data",4)){ds=n;doff=p+8;break;}p+=8+n+(n&1);}size_t frames=ds/(channels[i]*2),start=(size_t)llround(c->inputs[i].start_seconds*c->sample_rate);double g=gain(c->inputs[i].gain_db);for(size_t f=0;f<frames;f++){const unsigned char*q=data[i]+doff+f*channels[i]*2;double l=(int16_t)u16(q)*g,r=channels[i]==2?(int16_t)u16(q+2)*g:l;size_t j=(start+f)*2;double a=out[j]+l*lg,b=out[j+1]+r*rg;out[j]=(int16_t)(a>32767?32767:a<-32768?-32768:a);out[j+1]=(int16_t)(b>32767?32767:b<-32768?-32768:b);}}
   FILE*f=fopen(c->output_path,"wb");if(!f){free(out);err("cannot open output");goto fail;}unsigned long data_bytes=(unsigned long)(out_samples*2);unsigned char h[44]={'R','I','F','F',(unsigned char)((36+data_bytes)&255),(unsigned char)((36+data_bytes)>>8),(unsigned char)((36+data_bytes)>>16),(unsigned char)((36+data_bytes)>>24),'W','A','V','E','f','m','t',' ',16,0,0,0,1,0,2,0,(unsigned char)(c->sample_rate),(unsigned char)(c->sample_rate>>8),(unsigned char)(c->sample_rate>>16),(unsigned char)(c->sample_rate>>24),(unsigned char)(c->sample_rate*4),(unsigned char)(c->sample_rate*4>>8),(unsigned char)(c->sample_rate*4>>16),(unsigned char)(c->sample_rate*4>>24),4,0,16,0,'d','a','t','a',(unsigned char)data_bytes,(unsigned char)(data_bytes>>8),(unsigned char)(data_bytes>>16),(unsigned char)(data_bytes>>24)};fwrite(h,1,44,f);fwrite(out,1,data_bytes,f);int ok=!fclose(f);free(out);if(!ok){err("write failure");goto fail;}
  }
- for(uint32_t i=0;i<c->input_count;i++)free(data[i]);free(data);free(bytes);free(channels);return 1;
+ for(uint32_t i=0;i<c->input_count;i++) free(data[i]);
+ free(data);
+ free(bytes);
+ free(channels);
+ return 1;
 fail: if(data){for(uint32_t i=0;i<c->input_count;i++)free(data[i]);}free(data);free(bytes);free(channels);return 0;
 }
 const char*sleela_audio_last_error(void){return error_text;}
