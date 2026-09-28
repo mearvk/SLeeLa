@@ -1,2 +1,0 @@
-#include "Mutex.hpp"
-namespace sleela::fundamental { Mutex::Mutex()=default; Mutex::Mutex(std::string value):value_(std::move(value)){} const std::string& Mutex::value() const noexcept{return value_;} void Mutex::setValue(std::string value){value_=std::move(value);} bool Mutex::empty() const noexcept{return value_.empty();} const char* Mutex::responsibility() const noexcept{return "mutual exclusion";} }

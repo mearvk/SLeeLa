@@ -1,3 +1,0 @@
-#include "Path.hpp"
-#include <filesystem>
-namespace sleela::fundamental { Path::Path(std::string v):value_(std::move(v)){} std::string Path::normalized()const{return std::filesystem::path(value_).lexically_normal().string();} std::string Path::filename()const{return std::filesystem::path(value_).filename().string();} std::string Path::parent()const{return std::filesystem::path(value_).parent_path().string();} std::string Path::extension()const{return std::filesystem::path(value_).extension().string();} }

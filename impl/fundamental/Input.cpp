@@ -1,2 +1,0 @@
-#include "Input.hpp"
-namespace sleela::fundamental { Input::Input()=default; Input::Input(std::string value):value_(std::move(value)){} const std::string& Input::value() const noexcept{return value_;} void Input::setValue(std::string value){value_=std::move(value);} bool Input::empty() const noexcept{return value_.empty();} const char* Input::responsibility() const noexcept{return "input abstraction";} }

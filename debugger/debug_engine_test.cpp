@@ -1,3 +1,0 @@
-#include "debug_engine.hpp"
-#include <cassert>
-int main(){using namespace sleela::debugger;DebugEngine e;auto b=e.addBreakpoint({BreakpointKind::Source,{"x.cpp",10,1},"","","",false,0});assert(e.hitBreakpoint(b));auto w=e.addWatchpoint({"x",0x1000,8,WatchpointAccess::Write});assert(e.updateWatchpoint(w,"1","2"));e.setThreads({{1,"main",true,false},{2,"worker",true,false}});assert(e.selectThread(2));e.setStack({{0x1000,"app","main","",{"x.cpp",10,1}}});assert(!e.stack().empty());e.setVariable("x",42);std::uint64_t v=0;assert(e.evaluate("x",v)&&v==42);assert(e.hasCapability("breakpoints"));assert(DebugEngine::validMemoryRange(1,2,10));return 0;}

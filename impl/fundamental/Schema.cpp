@@ -1,2 +1,0 @@
-#include "Schema.hpp"
-namespace sleela::fundamental { Schema::Schema()=default; Schema::Schema(std::string value):value_(std::move(value)){} const std::string& Schema::value() const noexcept{return value_;} void Schema::setValue(std::string value){value_=std::move(value);} bool Schema::empty() const noexcept{return value_.empty();} const char* Schema::responsibility() const noexcept{return "structural definition";} }

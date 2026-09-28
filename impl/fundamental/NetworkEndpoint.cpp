@@ -1,2 +1,0 @@
-#include "NetworkEndpoint.hpp"
-namespace sleela::fundamental { NetworkEndpoint::NetworkEndpoint(std::string h,std::uint16_t p):host_(std::move(h)),port_(p){} const std::string& NetworkEndpoint::host()const noexcept{return host_;} std::uint16_t NetworkEndpoint::port()const noexcept{return port_;} std::string NetworkEndpoint::authority()const{return host_+":"+std::to_string(port_);} }

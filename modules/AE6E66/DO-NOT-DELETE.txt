@@ -1,1 +1,0 @@
-AE6E66 hardened baseline. Production status is governed by SOURCE-STATUS.md and TEST-PLAN.md.

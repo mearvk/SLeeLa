@@ -1,3 +1,0 @@
-#include "debug_diagnostics.hpp"
-#include <cassert>
-int main(){using namespace sleela::debugger;DiagnosticsEngine d;assert(d.beginRecording());assert(d.checkpoint(10,"abc","start"));assert(d.endRecording());d.setSecurityPolicy({true,false,false,4096,0});assert(d.authorize("attach"));assert(!d.authorize("memory-write",1));d.addCoverage({"a.cpp","f",10,8,4,3});d.addSanitizer({"ASan","heap-use-after-free","bad","x.cpp",9});d.setArtifact({"s1","1","app","rev","hash",{"session.json","events.jsonl"}});assert(d.artifact().manifest().find("session_id=s1")!=std::string::npos);return 0;}

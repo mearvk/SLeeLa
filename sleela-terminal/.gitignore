@@ -1,3 +1,0 @@
-# Build artifacts (compiled shell + smoke test)
-build/
-*.o

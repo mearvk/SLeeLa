@@ -1,2 +1,0 @@
-#include "exceptions.hpp"
-namespace sleela::debugger::engine { const char* exceptionKindName(ExceptionKind k)noexcept{switch(k){case ExceptionKind::Signal:return"signal";case ExceptionKind::AccessViolation:return"access-violation";case ExceptionKind::IllegalInstruction:return"illegal-instruction";case ExceptionKind::DivideByZero:return"divide-by-zero";case ExceptionKind::Assertion:return"assertion";case ExceptionKind::Sanitizer:return"sanitizer";default:return"unknown";}}}

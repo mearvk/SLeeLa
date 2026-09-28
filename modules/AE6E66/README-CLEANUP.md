@@ -1,1 +1,0 @@
-The authoritative AE6E66 documentation is README.md, SECURITY.md, DEPLOYMENT.md, SOURCE-STATUS.md, TEST-PLAN.md, and AE6E66.RDRS.

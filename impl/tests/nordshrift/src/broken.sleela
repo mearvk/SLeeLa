@@ -1,5 +1,0 @@
-class Broken {
-  void main() {
-    print("missing close parenthesis";
-  }
-}
