@@ -1,9 +1,0 @@
-// SLeeLa Audio configuration boundary.
-class AudioConfiguration {
-  property sampleRate: Int;
-  property outputPath: String;
-  property inputs: AudioInput[];
-  property controls: AudioControls;
-  method validate(): Bool;
-  method inputCount(): Int;
-}
