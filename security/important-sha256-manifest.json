@@ -4195,6 +4195,14 @@
       "sha256": "12b6da6b7da1cf1aaaf641bd1b204bff1827ab33e29b2a8131ae8039842d14b1"
     },
     {
+      "path": "http-servers/common/annotation_http_bridge.cpp",
+      "sha256": "8b3819cb27275b666e6014f10f268c45a18033894375fe85a0317f311a7a9c34"
+    },
+    {
+      "path": "http-servers/common/annotation_http_bridge.h",
+      "sha256": "39a92f1bbfc729e6d1c6442f28a79d4b67fb16ce0aa1f666a114edbf7d3eff0d"
+    },
+    {
       "path": "http-servers/common/http_server.cpp",
       "sha256": "3f413c8c905f0165d3aad08cd8c6f5b3d486deff51ab981f4798cafc2805b15e"
     },
@@ -6099,6 +6107,10 @@
       "sha256": "573fdeea518533fbf85f116a633b39261092b0a11cd6d04ade18b76bdc8668c1"
     },
     {
+      "path": "server-edition/HTTP-GENERATIONS.md",
+      "sha256": "7986892bec05ee1d0c10e44e077358c7dcea9ff5a7782c31e64ce4948aa90447"
+    },
+    {
       "path": "server-edition/LOGGING-AND-HEURISTICS.md",
       "sha256": "8c1c0e7f048b599f655f128886f7bf0e45835f2f30bddc37173b4af380aeabd1"
     },
@@ -6108,7 +6120,7 @@
     },
     {
       "path": "server-edition/README.md",
-      "sha256": "f0506622fe00723a23b831ed0b140937550609a2f3348c87b1e126d3d948c165"
+      "sha256": "060747047acfbd2ef377f32a718fb613c222fee59328d1b9b6a856471fb9f649"
     },
     {
       "path": "server-edition/WIRE-PROTOCOL.md",
