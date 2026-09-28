@@ -143,6 +143,7 @@ std::vector<Token> Lexer::tokenize() {
         if (std::isalpha((unsigned char)c) || c == '_') { toks.push_back(makeIdentOrKeyword()); continue; }
         advance(); auto emit=[&](Tok k,const char* txt){ toks.push_back(Token{k,txt,L,C}); };
         switch(c) {
+            case '@': emit(Tok::At,"@"); break;
             case '(': emit(Tok::LParen,"("); break; case ')': emit(Tok::RParen,")"); break;
             case '{': emit(Tok::LBrace,"{"); break; case '}': emit(Tok::RBrace,"}"); break;
             case ';': emit(Tok::Semicolon,";"); break; case ',': emit(Tok::Comma,","); break;
