@@ -16,6 +16,7 @@
 #include "../langin/langin.h"
 #include "../nordshrift/sleela_emit.h"
 #include "http_server_cli.h"
+#include "../core/sleela_audio_bridge.h"
 #include <algorithm>
 #include <cctype>
 #include <cstdio>
@@ -419,6 +420,7 @@ static int nativeCmd(int argc,char**argv){
 static void lowerNativeModules(sleela::Program& prog){sleela::chemistry::lowerProgram(prog);sleela::financial::lowerProgram(prog);auto saved=prog.imports;prog.imports.erase(std::remove(prog.imports.begin(),prog.imports.end(),"chemistry"),prog.imports.end());prog.imports.erase(std::remove(prog.imports.begin(),prog.imports.end(),"financial"),prog.imports.end());sleela::native::lowerProgram(prog);prog.imports=std::move(saved);}
 static int compileAndRun(sleela::Program& prog,const catalog::Catalog& cat,const sleela::SyntaxVersion& syntax={1,3}){
     SLVM*vm=slvm_new();if(!vm){std::cerr<<"sleelvac: unable to allocate Sleela VM\n";return 1;}
+    slvm_set_audio_native_renderer(vm,sleela_audio_native_render_bridge,nullptr);
     int rc=0;
     try{
         lowerNativeModules(prog);
