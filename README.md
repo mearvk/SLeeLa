@@ -6,6 +6,8 @@
 
 SLeeLa is developed as an inspectable software project. Source, interfaces, implementation boundaries, build methods, tests, and engineering documentation are maintained openly so that the work can be examined, built, tested, and improved with care.
 
+## Audio and Codec Architecture
+
 The Audio work is organized by implementation language and responsibility:
 
 - `audio/c/` — C11 implementation and library interface.
@@ -13,7 +15,47 @@ The Audio work is organized by implementation language and responsibility:
 - `audio/java/` — Java 21 orchestration and native-process boundary.
 - `audio/native/` — native media-processing implementation.
 - `audio/gui/` — JavaFX presentation and integration.
+- `codecs/` — codec standards registry, handler API, capability metadata, and codec conformance work.
 
-The phrase **carefully Open** is intentional: openness includes clear interfaces, explicit implementation boundaries, reproducible build instructions, validation, tests, and documentation of unfinished areas. It does not imply that an implementation is complete merely because its source is visible.
+### Major Sound Standards
+
+The new `/codecs` registry provides explicit coverage for major audio standards and formats:
+
+- PCM/WAV
+- AIFF
+- FLAC
+- ALAC
+- MP3
+- AAC
+- HE-AAC
+- Vorbis
+- Opus
+- Speex
+- WMA
+- AC-3
+- E-AC-3
+- AMR-NB
+- AMR-WB
+- G.711 μ-law
+- G.711 A-law
+- MIDI
+- Matroska Audio
+- WebM Audio
+
+The codec registry distinguishes **Native**, **Backend**, **Recognized**, **Container**, and **Event** capabilities. Listing a codec does not by itself claim that an encoder or decoder is already implemented.
+
+The intended audio path is:
+
+`codec/container → handler → PCM boundary → Audio API`
+
+and, for encoding:
+
+`Audio PCM → handler → codec/container output`
+
+The codec layer remains separate from the Audio mixer so that validation, decoding, encoding, and media processing have clear boundaries.
+
+See `codecs/README.md` and `codecs/CODECS.md` for the detailed registry, capability definitions, implementation order, security requirements, and licensing considerations.
+
+The phrase **carefully Open** is intentional: openness includes clear interfaces, explicit implementation boundaries, reproducible builds, validation, tests, and documentation of unfinished areas. It does not imply that an implementation is complete merely because its source is visible.
 
 — Editor's Note, SLeeLa
