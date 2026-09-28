@@ -2,7 +2,7 @@
 
 **Package:** `audio/`  
 **Updated:** 2026-09-28  
-**Status:** Native PCM16 WAV foundation implemented; Java/native CLI contract aligned; CI build coverage added; final behavioral/EQ conformance remains.
+**Status:** Native PCM16 WAV foundation implemented; SLVM-to-C/C++ Audio bridge added; Java/native CLI contract aligned; CI build coverage added; final cross-path behavioral/EQ conformance remains.
 
 The SLeeLa Audio API is a layered audio-processing package spanning C11, C++17, Java 21, native processing, and JavaFX presentation.
 
@@ -211,18 +211,14 @@ The package is therefore **implemented at its core with its current process cont
 
 ## SLeeLa language layer
 
-The Audio API now has a dedicated `audio/sleela/` contract layer with **9 standard .sleela classes**:
+The Audio API now has a dedicated `audio/sleela/` contract layer with **9 standard .sleela classes**. All nine declare SLeeLa syntax 1.3 and contain executable method bodies compatible with the current compiler.
 
-- Audio
-- AudioInput
-- AudioControls
-- AudioConfiguration
-- AudioNative
-- AudioDevice
-- AudioStream
-- AudioMixer
-- AudioSystem
+The SLVM bridge is handle-based:
 
-C counterparts are under `audio/sleela/c/` and C++ counterparts under `audio/sleela/cpp/`. AudioSystem establishes the operating-system boundary; Linux/macOS/Windows platform identification is present, while real hardware enumeration remains a driver/backend responsibility. This keeps the language classes portable and prevents the contract layer from falsely claiming device support that has not yet been implemented.
+`audioNew -> audioAdd -> audioControls -> audioValidate -> audioRender -> audioClose`
 
-The existing `audio/` implementation remains the rendering implementation. The SLeeLa language layer is kept under `audio/sleela/` as the standard object model above it.
+The VM owns the bounded job state. `audioRender` crosses a stable C ABI callback into `impl/core/sleela_audio_bridge.cpp`, which invokes the existing C++ WAV renderer. Source-level SLeeLa never receives native pointers or OS handles.
+
+The existing `audio/c/` C ABI remains available, `impl/core/sleela_audio_mixer.c` remains the in-VM float mixer, and `audio/cpp/` remains the concrete WAV implementation.
+
+See `audio/sleela/README.md` and `audio/sleela/SLVM.md` for the complete boundary.
