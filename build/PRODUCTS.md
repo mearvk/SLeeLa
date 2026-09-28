@@ -4,6 +4,33 @@ The `build/` tree is the native product-build boundary for SLeeLa. Product build
 
 ## Products
 
+### SLeeLa Regex
+Source: `make/regex/`
+
+Purpose:
+- Portable C and C++ regular-expression implementation.
+- Stable C ABI and typed C++ API.
+- H/HPP public interfaces and native conformance tests.
+- SLeeLa language-object integration under `lib/regex/`.
+
+Build entry point:
+
+    make -C make/regex test
+
+Focused native targets:
+
+    make -C make/regex c
+    make -C make/regex cpp
+    make -C make/regex clean
+
+Build output is isolated under:
+
+    make/regex/build/
+
+The native implementation remains authoritative under `make/regex/src/`.
+The `lib/regex/` tree represents SLeeLa language objects and integration
+metadata; it does not duplicate the native implementation.
+
 ### Slecompiler™
 Source: `decompiler/`
 
@@ -59,6 +86,10 @@ Each product receives:
 4. No execution of analyzed native artifacts as part of Slecompiler builds.
 5. A path for later packaging/signing without mixing package output into source.
 
+For Regex specifically, the native source-of-truth directory is `make/regex/`;
+the language object surface is `lib/regex/`; and native build output is
+`make/regex/build/`.
+
 ## Documentation boundary
 
 Slecompiler documentation is split by purpose:
@@ -66,6 +97,7 @@ Slecompiler documentation is split by purpose:
 - `decompiler/API.md` — API concepts and exemplar map.
 - `decompiler/TUTORIAL.md` — developer tutorial from artifact input to analysis/report.
 - `build/PRODUCTS.md` — product build and platform boundary.
+- `build/REGEX.md` — Regex build, toolchain, output, and CI contract.
 - `TERMINOLOGY.md` — shared vocabulary and evidence semantics.
 
 The tutorial and exemplars are intentionally aligned with the CMake targets rather
