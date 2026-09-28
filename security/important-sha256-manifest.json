@@ -3036,11 +3036,11 @@
     },
     {
       "path": "decompiler/src/decoder.cpp",
-      "sha256": "25898318616cc1bc297b1526ae08086b796592a874fbe62ef241eb2928351994"
+      "sha256": "0311b88da38cd497126b73d6b6f26e9ac9e87a1836714698c1e9f827e1c9aa67"
     },
     {
       "path": "decompiler/src/elf.cpp",
-      "sha256": "54ba3f4c6a6bf4a8a17e5616a964da8ba03974a7d9318c3bb9668c7ffd89f0b6"
+      "sha256": "e93f5168ae0a72a03672a6b34f0eb7df487bc61745845afead622304e625d5ba"
     },
     {
       "path": "decompiler/src/library.cpp",
@@ -4500,7 +4500,7 @@
     },
     {
       "path": "impl/catalog/sheet_catalog.h",
-      "sha256": "686e224870c1e3f810fdb3539baa3385e3c36e3eb5c3402a806dbf8978e73de1"
+      "sha256": "a7fedefaf01da5c319b5a8e89222259789f570f1e510e446fa7c88b785530e89"
     },
     {
       "path": "impl/conversation/Attachment.cpp",
@@ -5096,7 +5096,7 @@
     },
     {
       "path": "impl/frontend/lexer.h",
-      "sha256": "882526d1e7e229d204523fc6993e597540d32204957fa259708b99ad0807525f"
+      "sha256": "2ac43a0c4e7829a788f54694caaf88cadb764b84b9dbf034fa6f3a2bb5c20ad8"
     },
     {
       "path": "impl/frontend/parser.cpp",
@@ -6639,12 +6639,44 @@
       "sha256": "e37b4b9112824a4c28cf0724bee9c8c7f7fea82c517ba51e0723cfff14fa8d49"
     },
     {
+      "path": "synchro/c/synchro.c",
+      "sha256": "d8cf411eda7a2c19456934f2db76990fb80bb682d7b8167d4c04c0b986b13288"
+    },
+    {
+      "path": "synchro/c/synchro.h",
+      "sha256": "b428799f799c12774d631c6fbe7aebd29163169fa33370f8d811cd15c62a78ba"
+    },
+    {
+      "path": "synchro/c/synchro_integration.c",
+      "sha256": "294b8a7f75df0706049400e02c73b3fe79a8d290915560068788186e19f71108"
+    },
+    {
+      "path": "synchro/c/synchro_integration.h",
+      "sha256": "39aca3cd0096e232814a3b57be7f9abfd49c2e778c3449aa49fad2896e7506e7"
+    },
+    {
+      "path": "synchro/cpp/synchro.cpp",
+      "sha256": "149fc87f075cc3bb3ec25f9bde45c6451c26828c1a2f283b67d9221eb2597c58"
+    },
+    {
+      "path": "synchro/cpp/synchro.hpp",
+      "sha256": "0ade92b7c536e569e102ad9fb55fa05b800795c8096247f5485a55cfbaf024e9"
+    },
+    {
+      "path": "synchro/cpp/synchro_integration.cpp",
+      "sha256": "94f22e2e8e20fba280a9c29be8083383d5d2ce164a8138cc32e5c5862202c6c8"
+    },
+    {
+      "path": "synchro/cpp/synchro_integration.hpp",
+      "sha256": "c8a6dadbaf7f254436fa692c899957dfc77111bbc261b16ef5fafcedea9c15be"
+    },
+    {
       "path": "synchro/synchro/__init__.py",
       "sha256": "a0e423e7ffd655026abee6d5ce76139d1e4c786739e2f48a4859bb662a6c235b"
     },
     {
       "path": "synchro/synchro/backend.py",
-      "sha256": "8388fc4f5b6ada78ae032f216b9f9f9eebacac9894c9d071bd95dc133ba85f04"
+      "sha256": "d1959f65102375cbd5700105639a1aa9b9f558f9b3712f792a891a35ef969214"
     },
     {
       "path": "synchro/synchro/cli.py",
@@ -6652,11 +6684,11 @@
     },
     {
       "path": "synchro/synchro/dispatcher.py",
-      "sha256": "dde693b6110ef7f79055776971be85bd841d5d1c4c0d47fb3c8f9953f0b34e25"
+      "sha256": "ac23983d87ee4685f28da21fffb1550a81974c12e3a13fc94624ff4f4902ef54"
     },
     {
       "path": "synchro/synchro/http2.py",
-      "sha256": "281ebd16bec692618167a832a86e05d6f0596f0aad44cf4438af4988d0a6e53c"
+      "sha256": "fe1208631d8622de82c9caac53e6dfac4c84dc99635b8be25a6af8bafa3547b1"
     },
     {
       "path": "synchro/synchro/sla.py",
@@ -6664,11 +6696,15 @@
     },
     {
       "path": "synchro/synchro/stats.py",
-      "sha256": "2ec04b6af4cde10e02bf1386b29f4f26e476c63429f7f97f6dc48f4a394cf0ba"
+      "sha256": "cc1d17414ab33b74705d6f8bdc96d3ce809f570cfacb1d00bb1fad8abebf8561"
+    },
+    {
+      "path": "synchro/tests/integration_smoke.c",
+      "sha256": "24385f09380f7acbafe21fe64b4b182059c692b1571949ffd8e4ef56e8a2ee08"
     },
     {
       "path": "synchro/tests/test_synchro.py",
-      "sha256": "77d79a21d1972688c3fa85c3e473f076a75be44158a2eec3a9887edfeb1d527c"
+      "sha256": "26f61b9aa7ea8a62c68a70f39eb813bf3b7b615878ab41a173769a2280381033"
     },
     {
       "path": "telephony-skya/build/linux/build.sh",
@@ -7460,7 +7496,7 @@
     },
     {
       "path": "test-suites/run-all.sh",
-      "sha256": "89dc98e210b70dc7e44ae16f23be08d2e42c11397b74d8ff854f3bb88c702564"
+      "sha256": "24d064898092d56c0ba97bfd8c6fcaef32d3745409ad6e982cc091dde0ef1956"
     },
     {
       "path": "test-suites/runtime-coverage.sh",
