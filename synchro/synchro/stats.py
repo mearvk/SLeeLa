@@ -41,6 +41,10 @@ class LatencyStats:
     _sum: float = 0.0
     _sumsq: float = 0.0
 
+    def __post_init__(self) -> None:
+        if self.window <= 0:
+            raise ValueError("window must be positive")
+
     def record(self, sample: Sample) -> None:
         self.sent += 1
         if sample.rtt_ms is None:
