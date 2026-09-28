@@ -2,6 +2,8 @@
 
 This is the first-class language integration.
 
+Version: 0.2.0-dev
+
 File type: .sleela
 
 Source version is declared by the SLeeLa version pragma and validated using the same rules as the compiler.
@@ -13,7 +15,7 @@ version -> lexer -> parser -> AST -> semantic analysis -> lowering -> runtime
 
 IDE path:
 ```
-file -> IntelliJ lexer/parser/PSI -> compiler semantic bridge
+file -> compiler-backed IntelliJ lexer/parser boundary -> PSI -> compiler semantic bridge
      -> diagnostics/indexing/completion/navigation
 ```
 
