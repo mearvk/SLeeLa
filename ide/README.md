@@ -1,6 +1,6 @@
 # SLeeLa IDE Integration
 
-Version: 0.1.0-dev
+Version: 0.2.0-dev
 
 The /ide tree is the SLeeLa integration layer for an IntelliJ Platform-based IDE. It keeps the SLeeLa language implementation authoritative in the existing compiler while defining a reusable IDE architecture for SLeeLa, C, C++, and Java.
 
@@ -42,10 +42,11 @@ The plugin project uses IntelliJ Platform Gradle Plugin 2.x. The SDK documentati
 ## First usable milestone
 1. Open a SLeeLa project.
 2. Recognize SLeeLa, C, C++, and Java files.
-3. Parse SLeeLa with the repository compiler grammar.
-4. Provide syntax highlighting and PSI-backed navigation.
-5. Surface compiler diagnostics.
-6. Invoke check, build, run, and test.
-7. Connect debugger actions to the existing /debugger subsystem.
+3. Load C/C++ toolchain metadata and compile_commands.json when present.
+4. Parse SLeeLa through the repository compiler bridge.
+5. Provide syntax highlighting and PSI-backed navigation.
+6. Surface compiler diagnostics.
+7. Invoke check, build, run, and test.
+8. Connect debugger actions to the existing /debugger subsystem.
 
 **Max Rupplin — MEARVK LLC — 2026**
