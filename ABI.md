@@ -48,3 +48,13 @@ ABI tests must run on every supported platform and architecture. Breaking ABI ch
 The persistent `.sleela` artifact format is versioned independently from the source-language syntax. Runtime ABI version `1.0` is exposed by `SLEELA_VM_ABI_MAJOR` / `SLEELA_VM_ABI_MINOR`, while artifact format version `2` is exposed by `SLEELA_ARTIFACT_FORMAT_VERSION`. Before execution, the runtime validates opcode values, code references, function metadata, globals/constants, struct metadata, synchronization operands, and the entry point. `sleela validate-artifact <file.sleela>` performs the same non-executing validation gate.
 
 **Max Rupplin — MEARVK LLC — 2026**
+
+
+## Synchro protocol ABI
+
+The repository-native Synchro integration ABI is a C11 boundary. Its packet contract is 16 bytes: ASCII `SYNC` magic at offset 0, a network-order uint32 sequence at offset 4, and a network-order uint64 monotonic send timestamp at offset 8. Invalid magic or packets shorter than 16 bytes are rejected.
+
+`synchro_integration_prepare()` allocates the next sequence and encodes a packet. `synchro_integration_ack()` validates the sequence and records measured RTT; when a local send timestamp is not supplied, it uses the validated packet timestamp. `synchro_integration_timeout()` records a loss. The C++17 wrapper owns the same C ABI and does not alter its wire representation.
+
+This integration ABI is distinct from the VM-facing `slsynchro_*` API in `impl/core/sleela_synchro.*`. The latter remains the native runtime probe implementation; the former provides a reusable packet/statistics boundary for language adapters.
+   
