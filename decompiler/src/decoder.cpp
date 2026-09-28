@@ -24,11 +24,11 @@ std::string reg_name(std::uint8_t r,bool wide64){
 struct ModRm { std::size_t length{1}; std::string operand; Operand::Kind kind{Operand::Kind::Register}; std::uint8_t reg{}; };
 bool parse_modrm(const std::vector<std::uint8_t>& b,std::size_t p,std::size_t end,bool wide64,ModRm& out){
     if(p>=end)return false;
-    const auto m=b[p],mod=m>>6,reg=(m>>3)&7,rm=m&7; out.reg=reg; std::size_t n=1; std::ostringstream t; 
+    const std::uint8_t m=b[p]; const std::uint8_t mod=m>>6,reg=(m>>3)&7,rm=m&7; out.reg=reg; std::size_t n=1; std::ostringstream t; 
     if(mod==3){out.kind=Operand::Kind::Register;out.operand=reg_name(rm,wide64);return true;}
     out.kind=Operand::Kind::Memory;t<<"[";
     if(rm==4){
-        if(p+1>=end)return false; const auto sib=b[p+1],scale=1u<<(sib>>6),index=(sib>>3)&7,base_r=sib&7; n++;
+        if(p+1>=end)return false; const std::uint8_t sib=b[p+1]; const unsigned scale=1u<<(sib>>6); const std::uint8_t index=(sib>>3)&7,base_r=sib&7; n++;
         if(index!=4)t<<reg_name(index,wide64)<<"*"<<unsigned(scale);
         if(index!=4&&base_r!=5)t<<"+";
         if(mod==0&&base_r==5){
