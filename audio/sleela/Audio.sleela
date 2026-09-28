@@ -1,0 +1,9 @@
+// SLeeLa Audio API standard class.
+class Audio {
+  property sampleRate: Int;
+  property inputCount: Int;
+  property outputPath: String;
+  method validate(): Bool;
+  method mix(): Bool;
+  method close(): Void;
+}
