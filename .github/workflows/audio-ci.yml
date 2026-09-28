@@ -13,6 +13,11 @@ on:
   pull_request:
     paths:
       - 'audio/**'
+      - 'impl/core/sleela_core.*'
+      - 'impl/core/sleela_audio_bridge.*'
+      - 'impl/frontend/compiler.cpp'
+      - 'impl/frontend/semantic.cpp'
+      - 'impl/frontend/driver.cpp'
       - '.github/workflows/audio-ci.yml'
 
 jobs:
@@ -40,12 +45,7 @@ jobs:
           set -eu
           test "$(find audio/sleela -maxdepth 1 -name '*.sleela' | wc -l)" -eq 9
           for f in audio/sleela/*.sleela; do
-            grep -q '^#sleela 1.3        working-directory: audio/java
-        run: mkdir -p build/classes && javac -d build/classes src/module-info.java src/com/mearvk/sleela/audio/*.java
-      - name: Compile JavaFX audio GUI
-        working-directory: audio/gui
-        run: mvn -B -DskipTests package
- "$f"
+            grep -q '^#sleela 1.3$' "$f"
             grep -q '^class ' "$f"
             grep -q 'static ' "$f"
           done
