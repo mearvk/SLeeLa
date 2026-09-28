@@ -19,3 +19,16 @@
 This chain is the common expansion language for SLeeLa.
 
 **Max Rupplin — MEARVK LLC — 2026**
+
+13. Documents may declare architectural continuation. Document-level annotations identify scope, area, responsibility, provider, source, dependencies, capabilities, and next destination.
+14. @next is metadata, not execution. It describes continuation and may be consumed by documentation, analysis, navigation, or explicitly defined tooling.
+15. Operational metadata is subordinate to authoritative controls. Group, counter, stage, release, and runbook annotations improve traceability but cannot override source contracts, security policy, capabilities, dependency rules, build controls, or deployment authorization.
+16. Production must be traceable. A production-facing responsibility should be traceable from document to source, responsible group, required capability, stage, release, operational counters, and runbook.
+
+## Annotation and production trace
+Architecture: Document → Annotation → Scope → Area → Responsibility → Route → Provider → Source → Execution
+Operations: Execution → Stage → Group → Counter → Runbook → Evidence
+
+See ANNOTATION.md and api/ANNOTATION_API.md.
+
+Max Rupplin — MEARVK LLC — 2026
