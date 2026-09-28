@@ -46,50 +46,17 @@ Nordshrift, XCLASS, Sigil, build/package tooling and future IDE/language-server 
 Integrity, permissions, resource limits, authenticated carriers and security diagnostics.
 
 ## Reference rule
-
 This index points to subsystem documents. Individual headers, models and specifications remain authoritative for exact signatures and wire/ABI details.
 
-**Max Rupplin — MEARVK LLC — 2026**
-
 ## Common, Included — Fundamental Responsibility Classes
+The Common, Included layer now contains 50 reusable responsibility classes, organized as two 25-class sets.
 
-The following 25 classes form the reusable fundamental responsibility layer. Each owns one coherent responsibility and is intended for reuse by higher-level SLeeLa subsystems.
+### Set 1 — Fundamental responsibilities
+Resource, Identifier, Name, Version, Status, Error, Result, Option, Configuration, Parameter, TypeDescriptor, EnumDescriptor, Schema, Validator, Serializer, Deserializer, Buffer, ByteStream, Input, Output, Clock, Timer, Mutex, Condition, Thread.
 
-### Identity and lifecycle
-- **Resource** — lifecycle ownership and release.
-- **Identifier** — stable identity.
-- **Name** — validated symbolic naming.
-- **Version** — version representation.
-- **Status** — operation state.
-- **Error** — structured failure.
+### Set 2 — Supported platform/runtime responsibilities
+Process, Environment, File, Directory, Path, Task, Scheduler, Event, EventBus, Future, CancellationToken, NetworkEndpoint, Transport, TcpTransport, UdpTransport, DnsResolver, SecureChannel, Service, Router, Listener, Server, Client, Session, Connection, Handler.
 
-### Values, configuration and contracts
-- **Result** — success/failure value transport.
-- **Option** — optional value transport.
-- **Configuration** — typed runtime configuration.
-- **Parameter** — named operation input.
-- **TypeDescriptor** — runtime type metadata.
-- **EnumDescriptor** — enumerated-value metadata.
-- **Schema** — structural data definition.
-- **Validator** — constraint validation.
+Native contracts and implementations are maintained under impl/fundamental/. Set 1 is specified by api/COMMON_INCLUDED_FUNDAMENTAL.md; Set 2 is specified by api/COMMON_INCLUDED_NEXT_25.md.
 
-### Data representation
-- **Serializer** — object/data encoding.
-- **Deserializer** — object/data decoding.
-- **Buffer** — bounded byte storage.
-- **ByteStream** — sequential byte transport.
-- **Input** — input-source abstraction.
-- **Output** — output-sink abstraction.
-
-### Time and concurrency
-- **Clock** — monotonic and wall-clock time source.
-- **Timer** — deadline and timer responsibility.
-- **Mutex** — mutual exclusion.
-- **Condition** — condition synchronization.
-- **Thread** — execution-thread lifecycle.
-
-### Source location
-Native contracts and implementations are maintained under `impl/fundamental/`. The detailed specification is maintained in `api/COMMON_INCLUDED_FUNDAMENTAL.md`.
-
-### Java responsibility correspondence
-These names describe responsibility correspondence, not identical implementation or ABI. Examples include `Thread` ↔ `java.lang.Thread`; `Clock`/`Timer` ↔ Java time and scheduling facilities; `Mutex`/`Condition` ↔ Java locking and condition facilities; `Buffer`/`ByteStream` ↔ Java byte-buffer and stream responsibilities; and `Serializer`/`Deserializer` ↔ Java data-encoding responsibilities.
+**Max Rupplin — MEARVK LLC — 2026**
