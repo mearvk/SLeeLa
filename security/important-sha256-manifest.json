@@ -6548,7 +6548,7 @@
     },
     {
       "path": "server-edition/sleela_server.hpp",
-      "sha256": "593c6bbe1f44b6334d19841c43b62c30e24542fac52016f3e6c130230d87d2db"
+      "sha256": "c2114bb885cb1f3da8b6b924033558aa90e19a9b6bb448e98230c64865a22f87"
     },
     {
       "path": "sleela-terminal/arith.cpp",
