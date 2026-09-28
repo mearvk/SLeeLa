@@ -6187,36 +6187,336 @@
       "sha256": "4d840a33346a9d824b50ce12278a565be6734f5bb32e011683b03b5b75189f25"
     },
     {
+      "path": "lib/core/SLAnnotation.sleela",
+      "sha256": "6922be170631d7ae2335d222066999b3df6a56b17f3ee20144d9a5da40ccd320"
+    },
+    {
+      "path": "lib/core/SLAny.sleela",
+      "sha256": "413e66639b3cb049c7b94db990c38f24afad2686690209a1beffc1bf052e4b05"
+    },
+    {
+      "path": "lib/core/SLArray.sleela",
+      "sha256": "c46b3f9534051f6d71cfa6bddf4dd2981e8252997988a0edcc18bbee7446b61c"
+    },
+    {
       "path": "lib/core/SLBoolean.sleela",
       "sha256": "a4a1b68b1f8d41b6dff853d82d364ac949e54c930f8017d68547dbe057e355b9"
+    },
+    {
+      "path": "lib/core/SLBuffer.sleela",
+      "sha256": "73845c7a499f1ed4e14ab4d9b62e7abf82bad06796de05e87aa2908d9a8b91cd"
     },
     {
       "path": "lib/core/SLByte.sleela",
       "sha256": "d0219697d210c0fa9adac7df3d3e09a15a20509a8983f3ba9567a72d5dba6142"
     },
     {
+      "path": "lib/core/SLByteStream.sleela",
+      "sha256": "f160fb3e39980adcc1f72ede1040ba010db482fed42036980254530e1c5cff0a"
+    },
+    {
+      "path": "lib/core/SLCallable.sleela",
+      "sha256": "719f68bdb875cdef7314be1112e0a6411aa5982caae2e4086e8a815160770933"
+    },
+    {
+      "path": "lib/core/SLCancellationToken.sleela",
+      "sha256": "1be398188a6e7cc7dd63bd4757e93764e46af16b9818beffd236a0b4eaee252e"
+    },
+    {
+      "path": "lib/core/SLCast.sleela",
+      "sha256": "4669c3f9fa0c85366ee35b7fda9484d2617f5c2a73b64f79aa020375ffbd537f"
+    },
+    {
       "path": "lib/core/SLCharacter.sleela",
       "sha256": "cce7d4b4b4d3afc2448c324183624bf04def9bd163ef89a025b0b3b67f0c8ccb"
+    },
+    {
+      "path": "lib/core/SLClient.sleela",
+      "sha256": "7dc723c7ab2d4d6d610e1c602cf49dcd22d9cf2371ed3f04e10250ab2afcf873"
+    },
+    {
+      "path": "lib/core/SLClock.sleela",
+      "sha256": "dca8c4ba29a106d1e3a3124fe96d5a9699c907abbc1d8dd8ce70c63cb43a53fd"
+    },
+    {
+      "path": "lib/core/SLCloneable.sleela",
+      "sha256": "a7e2d1506d37ddbd7cbe1aa3dd6e7b576341e2cb997d1c1780d61f1b2c5ecde7"
+    },
+    {
+      "path": "lib/core/SLComparable.sleela",
+      "sha256": "4f45909fd21ccc97999adcf2eb599d4be6d42b9a1465e0a89c805d5d8683e08c"
+    },
+    {
+      "path": "lib/core/SLConditionVariable.sleela",
+      "sha256": "ed2cbae0f841e22dbec1c624cf77b217b22e08e1801d9b91ece778cf949d7aa4"
+    },
+    {
+      "path": "lib/core/SLConfiguration.sleela",
+      "sha256": "fa20759454787b70342115297c33a3b5c4f3fe13058e22f309b68d00f37f71c9"
+    },
+    {
+      "path": "lib/core/SLConnection.sleela",
+      "sha256": "e0e74ab6ed62027900e377dde4f64532fcd393b46ca5c91ae91387e628377e8f"
+    },
+    {
+      "path": "lib/core/SLDeserializer.sleela",
+      "sha256": "3f4f0de7591e05d0b4438450086f7b738a2a23269ef8770b4579b1200e91ef0e"
+    },
+    {
+      "path": "lib/core/SLDirectory.sleela",
+      "sha256": "3bd396e3ddcd6fef8c8953678836390f33e9650755044b35644b38a88cf68892"
+    },
+    {
+      "path": "lib/core/SLDisposable.sleela",
+      "sha256": "ea3d521c809e64358fb1cd7a5dd1c80507de0d954d28714d01029f37f21941d6"
+    },
+    {
+      "path": "lib/core/SLDnsResolver.sleela",
+      "sha256": "135dcfa49ebef80b71dee04efb69b7f0466bb1f4b1b38bf3da9b0749f5d9d149"
     },
     {
       "path": "lib/core/SLDouble.sleela",
       "sha256": "a4146ece54576d1ffc8d8595811c04587195511a3a8f9763fb7e27095c94c779"
     },
     {
+      "path": "lib/core/SLEnumDescriptor.sleela",
+      "sha256": "d57fed99ebc4a1b493d12e0aaea3ccf7eb5feb54ae7c2d3e7c1792b908347998"
+    },
+    {
+      "path": "lib/core/SLEnvironment.sleela",
+      "sha256": "df21b8504b347a114ea067570bf1beae7b68fb8b9380a6fbc336e4e47a0afae3"
+    },
+    {
+      "path": "lib/core/SLEquality.sleela",
+      "sha256": "598452953f9af2d15b66d0ce760c9a85a31f66f0a2cdb2d968e9e5826d44a6eb"
+    },
+    {
+      "path": "lib/core/SLError.sleela",
+      "sha256": "b747a84b21eaa3dd3992e65bba04ace76ea39f12f9251a3cfee4e786ea13b30d"
+    },
+    {
+      "path": "lib/core/SLEvent.sleela",
+      "sha256": "0c3d0464e0686c8f08b1284f37c8f9b8b38a73b9ae5110d9228e59300dd42eea"
+    },
+    {
+      "path": "lib/core/SLEventBus.sleela",
+      "sha256": "66a76a8a2a524588fc01ed468ead39a010e42f7dabfaeacb06b5efbee365e49a"
+    },
+    {
+      "path": "lib/core/SLException.sleela",
+      "sha256": "eb636c6c9f2207e95d2512ddf99bd94b9184902f8cd18d58b09fb67982ef8cbe"
+    },
+    {
+      "path": "lib/core/SLFile.sleela",
+      "sha256": "10997f3daf76f345c2ce16e9f0658594b176737edc15689f4cbe4f67590b2bc7"
+    },
+    {
       "path": "lib/core/SLFloat.sleela",
       "sha256": "1e098cd6a4de0a2a71a2f9d4466b6e1a6c608fa0ae662e2fc8f5f77f3b4920e3"
+    },
+    {
+      "path": "lib/core/SLFunction.sleela",
+      "sha256": "20395d05a1e7027fd1f28f9489c9e8a5aa94e75f7a0d4d2e9d61b4509dcc814e"
+    },
+    {
+      "path": "lib/core/SLFuture.sleela",
+      "sha256": "c97ab545d372a680169f829858e71b273c3ccb7f93123e520f0e5c757e79c008"
+    },
+    {
+      "path": "lib/core/SLGenericType.sleela",
+      "sha256": "8dbe5fed153f9e1f083309d918ea4abb91432fdf72a6c41863da94118b1e5be2"
+    },
+    {
+      "path": "lib/core/SLHandler.sleela",
+      "sha256": "a05828459052e5bfdf1630c85695b95c1e0fce8ef241330413f7b6b29e00dd68"
+    },
+    {
+      "path": "lib/core/SLIdentifier.sleela",
+      "sha256": "063ad0a5a28844a08a6526c6da16da467971c7932ff3562f8f06ad22090b6417"
+    },
+    {
+      "path": "lib/core/SLInput.sleela",
+      "sha256": "451f35b62284d1d25e4926f060820cc99ddf2088ae951beb695a5ac74dbe1ae8"
     },
     {
       "path": "lib/core/SLInteger.sleela",
       "sha256": "13465de9f626e7a9c276e86a2636f0836f99df0eff19e36433ed09b1b159005d"
     },
     {
+      "path": "lib/core/SLIterable.sleela",
+      "sha256": "1682541bcd8252fc3252931064d6d31c2589cd75cefc34d4312403283c7bd18b"
+    },
+    {
+      "path": "lib/core/SLIterator.sleela",
+      "sha256": "b09e6b84fa698f1e96989251cace51dc64a2a13641e9b3ff030b5934f382e14e"
+    },
+    {
+      "path": "lib/core/SLListener.sleela",
+      "sha256": "3d70f6c59124309d3a21875b4508e12038e17de58c5fb6c322c679be164aac51"
+    },
+    {
       "path": "lib/core/SLLong.sleela",
       "sha256": "5d50a3cceabd0876d0c49a334f2dded7ed69358be88198a708278b8f05446359"
     },
     {
+      "path": "lib/core/SLMetadata.sleela",
+      "sha256": "be3a2e170f760b4beb6771265fa4b9362688ef2abe637d25ecee7664eea9487f"
+    },
+    {
+      "path": "lib/core/SLModule.sleela",
+      "sha256": "024c4019c1e07ab26ac8d3becb6c517fe090167d945d611847e4d1b1e734f601"
+    },
+    {
+      "path": "lib/core/SLMutex.sleela",
+      "sha256": "c74e4005877088e1c33d0726546460ce195737a9ae2f1cd19cf0599d775c0855"
+    },
+    {
+      "path": "lib/core/SLName.sleela",
+      "sha256": "44d34136aa19ee014f85c10adc979f7c2b9fe16d5f2121c643a54cc26f671b66"
+    },
+    {
+      "path": "lib/core/SLNamespace.sleela",
+      "sha256": "78897de7507a540bc3b4389b201a3dafd3579d1bd310c75d513a5483ed7c2a1e"
+    },
+    {
+      "path": "lib/core/SLNetworkEndpoint.sleela",
+      "sha256": "f82d749925d9ef94c3a608c448ce39ac238c11a20959ab424cd50bd4bda29444"
+    },
+    {
+      "path": "lib/core/SLNull.sleela",
+      "sha256": "9daa66aa311f072c61cd20662a29f5b8fe11c1798ec2b5a51051d01f929ed64d"
+    },
+    {
+      "path": "lib/core/SLNumber.sleela",
+      "sha256": "0b5f650b2f388c2cf935b905829184f07e34687c877394d9893d7d100234f756"
+    },
+    {
       "path": "lib/core/SLObject.sleela",
       "sha256": "661bf4a57e8a570ac6ed5837ba5a80dff543b91304ca076016f9944d2d943872"
+    },
+    {
+      "path": "lib/core/SLOption.sleela",
+      "sha256": "a308975d79d0bd7c2626511a70894f11dae45f87c4a3774c6576ac088a64fdde"
+    },
+    {
+      "path": "lib/core/SLOutput.sleela",
+      "sha256": "42b7e63cf2780351563e7c0977d849861a1c9bd779d91f48bd19c6f7cad2977d"
+    },
+    {
+      "path": "lib/core/SLPackage.sleela",
+      "sha256": "24550e09c6d53585dd778704005abba08c3073da97578be6d936ca3a9c07bac4"
+    },
+    {
+      "path": "lib/core/SLPair.sleela",
+      "sha256": "06262b28e166bd4a7867fb6f468b43eae5400bb6acb68d374d8730eb30047fdb"
+    },
+    {
+      "path": "lib/core/SLParameter.sleela",
+      "sha256": "edfc14f69f4e8bee049e525e80314b79e3dec37f84415e7630bcf7a5a0555f00"
+    },
+    {
+      "path": "lib/core/SLPath.sleela",
+      "sha256": "c44b72ab7bfa6319c1a8e3cd2f985cb0e2e4a3b5378cb61256272a06a63230dc"
+    },
+    {
+      "path": "lib/core/SLProcess.sleela",
+      "sha256": "9501002ff19ce1d2a070a82cfa4c59b37f8a861721e117b91af197ffd2acc38a"
+    },
+    {
+      "path": "lib/core/SLResource.sleela",
+      "sha256": "e121cd916ce05e644320c6914ca84da6ad435cbc4faeadb27e307fde6fc6546f"
+    },
+    {
+      "path": "lib/core/SLResult.sleela",
+      "sha256": "c055aec9bc62f380a3ce705d3eff391cd2d2624aeeaafc66be0b168015cf43d2"
+    },
+    {
+      "path": "lib/core/SLRouter.sleela",
+      "sha256": "cbdf51dcee29640cad4d5473ea6ec75b6a57611441def6e9b618ef21a3c978b1"
+    },
+    {
+      "path": "lib/core/SLScheduler.sleela",
+      "sha256": "4e2dc97fe6d3a8edc32d41d3230413cc479a2c4009dc89a01595da34b43007de"
+    },
+    {
+      "path": "lib/core/SLSchema.sleela",
+      "sha256": "5aef0eb227efcf3491340616276eb247e61180fe7a4a9d7b8d01389bb3b11344"
+    },
+    {
+      "path": "lib/core/SLSecureChannel.sleela",
+      "sha256": "4c4f18f612f950b026317a6470bc31071215cf3885d842bbef90ae53a039eb54"
+    },
+    {
+      "path": "lib/core/SLSerializer.sleela",
+      "sha256": "d1ea2e3aba210b8512a875cbe697faef0af522701a4bb4dca52395c921dda92f"
+    },
+    {
+      "path": "lib/core/SLServer.sleela",
+      "sha256": "6e05d3d0ca7e0465d2fed2d4afc1a2625230cf6637775044461d624aefa6d98b"
+    },
+    {
+      "path": "lib/core/SLService.sleela",
+      "sha256": "21695c1008a40f580d23886810ff88ace98c9eca1b951edee8e53052055d9890"
+    },
+    {
+      "path": "lib/core/SLSession.sleela",
+      "sha256": "ab9f06eb2d8a970a86c5282f903e2eb66c244e6c85a466173307e0f5eb151a2d"
+    },
+    {
+      "path": "lib/core/SLStatus.sleela",
+      "sha256": "4475cc2fb869d7b50cbe1beda24df1a94fcb9d4aee718d08e995ff0a64474387"
+    },
+    {
+      "path": "lib/core/SLString.sleela",
+      "sha256": "53269ab2991212ef809238a431a2c60d17d464ec189da4591bf27810c5e4f30c"
+    },
+    {
+      "path": "lib/core/SLSymbol.sleela",
+      "sha256": "b44d9f5df6fd40ae823815230d97a9c7a9e50091db5432eb31cd4aaa3bc0c34d"
+    },
+    {
+      "path": "lib/core/SLTask.sleela",
+      "sha256": "4089e88c35487e906d6f382df2bf9193ff66a8fe2c354b16b83720f46dac6166"
+    },
+    {
+      "path": "lib/core/SLTcpTransport.sleela",
+      "sha256": "c669df6dd38eab2b138ff12e286ed7da688cea4a5a8ccb3519da8c54497b612d"
+    },
+    {
+      "path": "lib/core/SLThread.sleela",
+      "sha256": "4d1d86cc0c63d7af36746bbb4b7d16b93da37c7d03df9cf93e74ca822f494290"
+    },
+    {
+      "path": "lib/core/SLThrowable.sleela",
+      "sha256": "608cb5a3f0419ce86c5d1294cc6815023953a63de5c5ffd6b1d9e15a0de33d96"
+    },
+    {
+      "path": "lib/core/SLTimer.sleela",
+      "sha256": "9a082fa4df8d03286463ae35993147018fdbca1b7ad8b02ea1636e3a8b447208"
+    },
+    {
+      "path": "lib/core/SLTransport.sleela",
+      "sha256": "9dadcaf3e6e3294ae6c85ec4c30e45fc146ff9dc7fe459e014fe7a97d8153511"
+    },
+    {
+      "path": "lib/core/SLTuple.sleela",
+      "sha256": "898739ef22fe66b991cbad7015e00ca0cd75ea10e02ef6b4ee81873e3d94ceae"
+    },
+    {
+      "path": "lib/core/SLType.sleela",
+      "sha256": "f2fe7be11398c3c0d6f937512b5c7db671092eaa5a0a2c54fdc689166892122b"
+    },
+    {
+      "path": "lib/core/SLTypeDescriptor.sleela",
+      "sha256": "e8dd4b85ab3cb51973687fcb42fa03cadd5c7c255b62724c1d2a48d88eb53854"
+    },
+    {
+      "path": "lib/core/SLUdpTransport.sleela",
+      "sha256": "d850647df13a459d701191136f949c74f6d9354bea275920941c2c37a6ab9183"
+    },
+    {
+      "path": "lib/core/SLValidator.sleela",
+      "sha256": "80f75c4d8bf6f85bc8d394d08b9a7f56bb2ee44193f3ae691eae8d04f2de4c33"
     },
     {
       "path": "lib/crypto/SLCertificate.sleela",
@@ -6411,6 +6711,1186 @@
       "sha256": "85390f0c29486b945204f52415a6fa4df682f106de3e1b0483dc9dc0726e61ed"
     },
     {
+      "path": "lib/deliberation/SLAStarSearch.sleela",
+      "sha256": "54d822e5e096e7435204c2c75cd0fb61982c6a267940b6dbed80e7c3682ce89c"
+    },
+    {
+      "path": "lib/deliberation/SLAbduction.sleela",
+      "sha256": "f47692f4545f53fb7a716acca7b190ec47b78841ba2ca3aa2ac8be1abded6e3d"
+    },
+    {
+      "path": "lib/deliberation/SLAction.sleela",
+      "sha256": "fa217dfb694921e0a6748e7d9ed30315583a80a973d4ac5ecb770a20aa751eb2"
+    },
+    {
+      "path": "lib/deliberation/SLActionModel.sleela",
+      "sha256": "fbe3e4872da19caa965b969d31c57d571eaafa2db981ac7890998ed73e1d990b"
+    },
+    {
+      "path": "lib/deliberation/SLAgentAction.sleela",
+      "sha256": "4468796afb7c0a89a2fa7f984fac356163dae3b52bf0ed4398b9848166359f97"
+    },
+    {
+      "path": "lib/deliberation/SLAgentModel.sleela",
+      "sha256": "245cbb3aad7c6375c12812d41882958f9a7701a98e2f80e9c3403ac58384e177"
+    },
+    {
+      "path": "lib/deliberation/SLAgentPolicy.sleela",
+      "sha256": "ce1477e813e2f5aa5d39da99f4236e6cbdcc305656b8c281eb6f5ec84a9b596a"
+    },
+    {
+      "path": "lib/deliberation/SLAgentState.sleela",
+      "sha256": "5959743442f24b5e5a02018326cea99cc9bdb8468b07ea9e8b871fd310e1c380"
+    },
+    {
+      "path": "lib/deliberation/SLAgentUtility.sleela",
+      "sha256": "39a696c31a3aeff5f485f9427f873f3fb2de2297ee325c3ded2c3fb2fcc51c80"
+    },
+    {
+      "path": "lib/deliberation/SLAgreement.sleela",
+      "sha256": "a4d811a4ce6d93985bb0aba09454ec10293c86d7de761746b4cf34ff6d9e9e72"
+    },
+    {
+      "path": "lib/deliberation/SLAllocationPlan.sleela",
+      "sha256": "96e43607a418ce1bedf8e9caed20f5712c742b7d869c3f76e9ebf73620f7002e"
+    },
+    {
+      "path": "lib/deliberation/SLAnalogy.sleela",
+      "sha256": "704aa1064d76b958c7e1764b51250fb42fba2f0cc060e5b29a49241341762ece"
+    },
+    {
+      "path": "lib/deliberation/SLAnd.sleela",
+      "sha256": "7a8b0909bc22962b165773ac2b0b04edbd2e95718d24068193d962feb3600948"
+    },
+    {
+      "path": "lib/deliberation/SLArgument.sleela",
+      "sha256": "8d6a362456d0a686d9941220a1d40ad6d9635a31ebb51b7f29155e740f49cc25"
+    },
+    {
+      "path": "lib/deliberation/SLArgumentBuilder.sleela",
+      "sha256": "30051fd9de1813b6f8c70c6b30ca5b8cb85696267df27cc7ce88dd2cf60c8c51"
+    },
+    {
+      "path": "lib/deliberation/SLArgumentEdge.sleela",
+      "sha256": "f1f335a6b71c05cd39f99514f04538d43eae8352a1a4c530cb31e6b53419c140"
+    },
+    {
+      "path": "lib/deliberation/SLArgumentMap.sleela",
+      "sha256": "3b5971a17af2435ad1fef05a3c54a9739beef191f3ac341f54cfd9b1e2929a38"
+    },
+    {
+      "path": "lib/deliberation/SLArgumentNode.sleela",
+      "sha256": "9ea3033ae26b6ba9daf2c135dc080a770a29ce3311e9c586dfd9da1f5a3e3ec9"
+    },
+    {
+      "path": "lib/deliberation/SLAssumption.sleela",
+      "sha256": "ad3169ee8737c2c667ff60653be6cc45969c93679257d2e8976c8d60f63e0459"
+    },
+    {
+      "path": "lib/deliberation/SLAssumptionSet.sleela",
+      "sha256": "228696ec5b1beb0a573b0d818a8b4c2913c9e94627faefd674c10b73abb61edc"
+    },
+    {
+      "path": "lib/deliberation/SLAxiom.sleela",
+      "sha256": "d360f538deb5f46f22cc57c6adc341adbe48908714779bf00a5db0392cb767b4"
+    },
+    {
+      "path": "lib/deliberation/SLBallot.sleela",
+      "sha256": "6cea982e1c13f5108bfae8b44c0a503311cf8feeb832accc8b03f4e36bd9b9d0"
+    },
+    {
+      "path": "lib/deliberation/SLBargaining.sleela",
+      "sha256": "aafd7b2a777e06dc95c11ea7b00bddb8f36c9d7cbaa5cb0142943f37fc8c6d4f"
+    },
+    {
+      "path": "lib/deliberation/SLBayesianNetwork.sleela",
+      "sha256": "36abc4b430f7a5929d3fced7f7dcae429637adcce39a5bc9655e48d9398cf7df"
+    },
+    {
+      "path": "lib/deliberation/SLBayesianReasoning.sleela",
+      "sha256": "1487868f52b385851c5d47d4014f902c3e1040c8bfcf21d101d57d99d020ca1e"
+    },
+    {
+      "path": "lib/deliberation/SLBelief.sleela",
+      "sha256": "20c1de5ac80dabf8da6609213bc9b3407196e8cfc012bb96b77f05b8e80ae26d"
+    },
+    {
+      "path": "lib/deliberation/SLBeliefState.sleela",
+      "sha256": "d55b5e3dbb4ff711d00932edfe3e4978e25a88ed6195d89db5dbef5231f04fa8"
+    },
+    {
+      "path": "lib/deliberation/SLBestFirstSearch.sleela",
+      "sha256": "347d9c12a63288ea064944acebba017eecb6fab0a2f9e8bad264a487d1595574"
+    },
+    {
+      "path": "lib/deliberation/SLBooleanAlgebra.sleela",
+      "sha256": "db8f41998011c8ceb33473d7cc40cf9fa043732ab65b20e3ad6364354969a68c"
+    },
+    {
+      "path": "lib/deliberation/SLBreadthFirstSearch.sleela",
+      "sha256": "781d448a294cc951cf3ec8211134bec62f204e2839ef42e0ce88cb8c629a6c0e"
+    },
+    {
+      "path": "lib/deliberation/SLCalibration.sleela",
+      "sha256": "e242d41ade3be130564f401397d046dd3e43efc84e0de7e541575b1e02c95efc"
+    },
+    {
+      "path": "lib/deliberation/SLCategorizer.sleela",
+      "sha256": "72ee0df7d670b2a54d265766216044c67e7db78802823a80b9d2a7b4ace2a7b9"
+    },
+    {
+      "path": "lib/deliberation/SLCausalReasoning.sleela",
+      "sha256": "e3a04078ea31ee0747346b5c70ea3c578ea7ae617681ec4846a0531aeb1e756a"
+    },
+    {
+      "path": "lib/deliberation/SLChoiceSet.sleela",
+      "sha256": "7f57ca15c6d380f3c4390b767fd9d0317395fe95a02c02832e0919cf31794e2f"
+    },
+    {
+      "path": "lib/deliberation/SLClaim.sleela",
+      "sha256": "9139a2505936ff3106829b388293eba2c9c24dc2d85fdf6adf76667d284a8be2"
+    },
+    {
+      "path": "lib/deliberation/SLClassification.sleela",
+      "sha256": "7a2b3fdb572eb8ff9a8d0324c252568e5a100445c1a012e1025365478be320f1"
+    },
+    {
+      "path": "lib/deliberation/SLClassificationModel.sleela",
+      "sha256": "484c7772f166491d983bb8ce36f2f986dcaca50b92b33b1af3b9df39d1da62b7"
+    },
+    {
+      "path": "lib/deliberation/SLCoalition.sleela",
+      "sha256": "24655f023a84fce424b1aa39e66ef8a0c1b8c954b05dde7c99131a258e9a1c2b"
+    },
+    {
+      "path": "lib/deliberation/SLConcept.sleela",
+      "sha256": "0bd9840d3c73675431ecad329045eb555d9e7b241f91c52afba6682a04f636f4"
+    },
+    {
+      "path": "lib/deliberation/SLConceptGraph.sleela",
+      "sha256": "513a219dfc2dafaaa75b99dc455a3c6e8c928b92e97bc03d47010b0a75385431"
+    },
+    {
+      "path": "lib/deliberation/SLConclusion.sleela",
+      "sha256": "75d1b30858b6d18455609925a6c4c4df9bfab8bcf24d626df279868a74f434d0"
+    },
+    {
+      "path": "lib/deliberation/SLConclusionSet.sleela",
+      "sha256": "f99cbff3ae5bd1e03d81419e5f990c3a14f0b68219d9a62a0fcae50e94a0fd36"
+    },
+    {
+      "path": "lib/deliberation/SLCondition.sleela",
+      "sha256": "2b83a2fc240972cbbff5eb829faf65151fc16b212e20df11ebbd7e5854249db9"
+    },
+    {
+      "path": "lib/deliberation/SLConfidence.sleela",
+      "sha256": "47e30c8946d5608b1715c21eb9e63f13baf827ebaf8ddeace719bb7e7371c30a"
+    },
+    {
+      "path": "lib/deliberation/SLConfidenceAssessment.sleela",
+      "sha256": "0dd5aafae44b8ef390e7c8a63d2a5ff30effe9d76f439353d60b1f1faf71d73d"
+    },
+    {
+      "path": "lib/deliberation/SLConflict.sleela",
+      "sha256": "2f357e7fe4f5b46ce679969d406236ee363c967acf1c1fe4037162986937e35b"
+    },
+    {
+      "path": "lib/deliberation/SLConflictResolution.sleela",
+      "sha256": "79da679b2ec0c7917a81ff380ebf49f09ad0a935be11a7a01fb2cdf7b9b64923"
+    },
+    {
+      "path": "lib/deliberation/SLConsensus.sleela",
+      "sha256": "44452f4a5316776b65fee3416311d2596a14f796f36065887fcc63b0e1d20071"
+    },
+    {
+      "path": "lib/deliberation/SLConsensusBuilder.sleela",
+      "sha256": "a5442868df82b8aa542c09351e11fc131fce2a5d7b585ce47d6cb4dac9b97340"
+    },
+    {
+      "path": "lib/deliberation/SLConsensusModel.sleela",
+      "sha256": "f28a927ec8c3c8ca855808315f8f21b404356da641b67bbfa933dacddd4eb770"
+    },
+    {
+      "path": "lib/deliberation/SLConsensusResult.sleela",
+      "sha256": "518cbd5ac604be8b87035e8a9a4c1ea7db4b6eeba82ca8c4c5e03fa234611320"
+    },
+    {
+      "path": "lib/deliberation/SLConsensusRule.sleela",
+      "sha256": "1d37af1c4d2a26dc585ca64c0fa6ad1b3f015d3338080f71b639cb12e1f3eac8"
+    },
+    {
+      "path": "lib/deliberation/SLConsensusState.sleela",
+      "sha256": "8ac57e0a08d6f7a56194ebb71062db41cc0c83ca6c1d0222483ec4c98799e8d0"
+    },
+    {
+      "path": "lib/deliberation/SLConsequence.sleela",
+      "sha256": "9c5baad30b5de971e71c5f77d6a74160dba2b547f34842b0e6b7e88b494dabac"
+    },
+    {
+      "path": "lib/deliberation/SLConsistency.sleela",
+      "sha256": "3e2cb134d1565fe75589e9958d82b91950ca21723ad88832897c66833f82ae63"
+    },
+    {
+      "path": "lib/deliberation/SLConstraintConflict.sleela",
+      "sha256": "45e8abd5e9b06cea1359cb97212e859cfb310c677eeb2654545847166bfd793f"
+    },
+    {
+      "path": "lib/deliberation/SLConstraintSet.sleela",
+      "sha256": "424834fcf7353eb97e3d63649827dceec86488357d2d976cfd4fbf2de90d6aaf"
+    },
+    {
+      "path": "lib/deliberation/SLConstraintSolver.sleela",
+      "sha256": "8d26d3ef23d42c606ad5e46946c77f70225deff98fd62390195fa52e340f3f2d"
+    },
+    {
+      "path": "lib/deliberation/SLContradiction.sleela",
+      "sha256": "594355b9e6ce120d5576923ce78c7eb22cfffc1251d54be0574aed5d645b8a7a"
+    },
+    {
+      "path": "lib/deliberation/SLCooperativeGame.sleela",
+      "sha256": "042ee8d3114c0e440d8c067e59cdc5e1042c4b393215c4924f2f9671e0b391c1"
+    },
+    {
+      "path": "lib/deliberation/SLCostBenefit.sleela",
+      "sha256": "c29ec6b72fde98d0831b971cffa2b57b12d182fec6f6961995839c445846d0b3"
+    },
+    {
+      "path": "lib/deliberation/SLCostEffectiveness.sleela",
+      "sha256": "7c451bf248935c3c8e0606ff202201eec989243318bd149b22111a8cab8b8efb"
+    },
+    {
+      "path": "lib/deliberation/SLCounterclaim.sleela",
+      "sha256": "69cae8b4cc0f31ecfdef782f8505ba84c6d14deb0219084148d6ae26caedc709"
+    },
+    {
+      "path": "lib/deliberation/SLCounterexample.sleela",
+      "sha256": "022bcc66861505619440fa3704f35fc21b0d9db2bb2d0035110d5c6b019579a8"
+    },
+    {
+      "path": "lib/deliberation/SLCounterfactual.sleela",
+      "sha256": "7a484625efacd7a0d79301933472a2eba63295a72ce0e795709bc4f2a5ffc968"
+    },
+    {
+      "path": "lib/deliberation/SLDecision.sleela",
+      "sha256": "2aba62bff557cea1f705cb3fa303915cee0f28691fb7c910a39a7f60efc3579f"
+    },
+    {
+      "path": "lib/deliberation/SLDecisionAudit.sleela",
+      "sha256": "3626830ff3dd0c8a0452e4c31b63543180fead813b814466a5a25c32f23dae3c"
+    },
+    {
+      "path": "lib/deliberation/SLDecisionBoundary.sleela",
+      "sha256": "770548b1564b3e07a40ba0da887981a78c82632f2232527ce25fbb8b8a4e182a"
+    },
+    {
+      "path": "lib/deliberation/SLDecisionContext.sleela",
+      "sha256": "d6a389f95a09409e5437137d9c1cfa835dd3a5a4f8595570d855a59b92ca846a"
+    },
+    {
+      "path": "lib/deliberation/SLDecisionCriterion.sleela",
+      "sha256": "4c8def2932eb3d912ad6269fbfe5ff8fd51d6f79e5ea6f125bf6958e8d2965c9"
+    },
+    {
+      "path": "lib/deliberation/SLDecisionEngine.sleela",
+      "sha256": "f0d78f6ea4507e640d64ba0e2f63f191e3916386c9c75204aed46465eea29a94"
+    },
+    {
+      "path": "lib/deliberation/SLDecisionHistory.sleela",
+      "sha256": "0bedea0956531430592c04800ba2be0d244a5e231c27e0adcedd0ccebd27a09d"
+    },
+    {
+      "path": "lib/deliberation/SLDecisionLog.sleela",
+      "sha256": "e1b83d67883c5cf5127ec9c663fd3e04c9779a9af5874162d03794b8354abe4b"
+    },
+    {
+      "path": "lib/deliberation/SLDecisionMatrix.sleela",
+      "sha256": "717ff56fce0648ed3dd883a7c6d1cba528d49b3cdb9a27f1253b012c1fa41aeb"
+    },
+    {
+      "path": "lib/deliberation/SLDecisionPipeline.sleela",
+      "sha256": "006cb400b1c2b84c0a0a8d7979b7a5fe179d6e2a4a945a29b45cf6cab5210e0b"
+    },
+    {
+      "path": "lib/deliberation/SLDecisionProcedure.sleela",
+      "sha256": "18835f2ab127cb28e8b45930e688edb65f04045b2cf3d2eb96d8180aee16bebd"
+    },
+    {
+      "path": "lib/deliberation/SLDecisionRecord.sleela",
+      "sha256": "c92653eeb82451dc696c2019689a3ac8958adb4fd53a4697696df2be295dba56"
+    },
+    {
+      "path": "lib/deliberation/SLDecisionReview.sleela",
+      "sha256": "181b8d713f840b398d7839bbd440345c197d6490828afdaa671a5d3e77e6cbd2"
+    },
+    {
+      "path": "lib/deliberation/SLDecisionRobustness.sleela",
+      "sha256": "2f131213c758b4e6ca7ad45cbbb0b144e3ae2832c673cecae18ea4a96a675c7c"
+    },
+    {
+      "path": "lib/deliberation/SLDecisionRule.sleela",
+      "sha256": "01670b350a769d749981a29cc5ded9ef9db6aa8da6ec4d4f042c368047df8601"
+    },
+    {
+      "path": "lib/deliberation/SLDecisionSensitivity.sleela",
+      "sha256": "bc7e4352db5ee04408672bd5d69755d03f95af4e9ae566d205c25e6c6b106cf1"
+    },
+    {
+      "path": "lib/deliberation/SLDecisionThreshold.sleela",
+      "sha256": "7902dac2e6aafd7971770168803919e2f021f573ab7b232ef071ceb2fd51f87d"
+    },
+    {
+      "path": "lib/deliberation/SLDecisionTree.sleela",
+      "sha256": "6b8bf2ca15ac049be8ccaa50f27d8ac46cf04e7b33f0f7e57aa29b45a3016448"
+    },
+    {
+      "path": "lib/deliberation/SLDeduction.sleela",
+      "sha256": "5bd1437a46f0544f6dd443ed13e0936164e3221541b0bad34c5ac484ddf3a8d5"
+    },
+    {
+      "path": "lib/deliberation/SLDeliberation.sleela",
+      "sha256": "c98c8bddf4d2bd529e5187dde8666dd64404b99ab4538e820c5166175cac6635"
+    },
+    {
+      "path": "lib/deliberation/SLDeliberationResult.sleela",
+      "sha256": "5a0278d842ffd34742ccb5cbbed17591ca9712f7bb26537c57cbc9f5dfa7f06f"
+    },
+    {
+      "path": "lib/deliberation/SLDeliberationSession.sleela",
+      "sha256": "a53ab3dd0c13fc577194c0c0473dc1bf45c78d13a23953357ce63eefa1bfdd97"
+    },
+    {
+      "path": "lib/deliberation/SLDeliberativeAgenda.sleela",
+      "sha256": "7e047ba40d1431eccb8f99f39b284590a3496b2a6394b49e11c3f688772e62fa"
+    },
+    {
+      "path": "lib/deliberation/SLDeliberativeArgument.sleela",
+      "sha256": "a60d85e22ce42a7685f6e5a247732dbab4436c1386a121cdaba47abe4cacd68b"
+    },
+    {
+      "path": "lib/deliberation/SLDeliberativeConclusion.sleela",
+      "sha256": "628fcd6b6fddc995b179c60197fb2c5cc3b73738477b754c1ea8d3193177eeea"
+    },
+    {
+      "path": "lib/deliberation/SLDeliberativeCriterion.sleela",
+      "sha256": "67f365e4388efdc3b94f9b3675bb0ec18db50fa22af5a1417072dedd5debb122"
+    },
+    {
+      "path": "lib/deliberation/SLDeliberativeEvidence.sleela",
+      "sha256": "4aee42f11cb4af61bed2ac6583b6abdb9e9e4b36fcd1e018d3fad9a704fc9ba9"
+    },
+    {
+      "path": "lib/deliberation/SLDeliberativeOption.sleela",
+      "sha256": "9e6c4a90d72ff9dca21bd5c59d5c3fb12ed1ce28717b7abcf6368c9b5b36dd8b"
+    },
+    {
+      "path": "lib/deliberation/SLDeliberativeProcess.sleela",
+      "sha256": "43342b82543bdc83d6be92b27e2d1b494a01225cb7e50ae64674723056df7b89"
+    },
+    {
+      "path": "lib/deliberation/SLDeliberativeQuestion.sleela",
+      "sha256": "f7e075c8405a912ea05575c9d00d737e8f06778d4d5f06f734750b1d982eebb2"
+    },
+    {
+      "path": "lib/deliberation/SLDeliberativeReport.sleela",
+      "sha256": "43840cbd0e8f40e8aa612e984a71cc12de5a72a467f4c38e66b4434a07c8d284"
+    },
+    {
+      "path": "lib/deliberation/SLDepthFirstSearch.sleela",
+      "sha256": "d49da9261874947a9fba5bb367f25dc7a9b2fb022426482c978baaf3c4c63092"
+    },
+    {
+      "path": "lib/deliberation/SLDerivation.sleela",
+      "sha256": "8554175b988a4ff1ba21e9bc292a04bda6c3d48bdd3cd83ce1df1e6af1dbb193"
+    },
+    {
+      "path": "lib/deliberation/SLDerivationGraph.sleela",
+      "sha256": "8822babb93baa711dc1ce4e658ededa60a311bc80cf06d0cc2f9732f0e1d5262"
+    },
+    {
+      "path": "lib/deliberation/SLDisagreement.sleela",
+      "sha256": "8938b65e3f4dedcda0484a067436baa5134ff0d694b5cad0f59283847c425165"
+    },
+    {
+      "path": "lib/deliberation/SLEquivalence.sleela",
+      "sha256": "ff50b0e9cf31963b9f8574b1b4328bda1afeb468c29f75ebabb7a2959d0f9e99"
+    },
+    {
+      "path": "lib/deliberation/SLEvidence.sleela",
+      "sha256": "d63a7e267a9b7de6853af921c62eeb203501de9a30c5ae60072e272ffac8a023"
+    },
+    {
+      "path": "lib/deliberation/SLEvidenceChain.sleela",
+      "sha256": "105f8b714fac39d07637af8f5a48ba5d4d7710be0b03f48ab38e27373e4e90f4"
+    },
+    {
+      "path": "lib/deliberation/SLEvidenceGraph.sleela",
+      "sha256": "2eab843a742b2b9211f5f76c4b26bb5c849b396f36b35c95edb3c0e399874801"
+    },
+    {
+      "path": "lib/deliberation/SLEvidenceWeight.sleela",
+      "sha256": "e67b6859642db8012d2f4f10762a9879e65330b6dfd2e8f80e2e0f87510d8fdb"
+    },
+    {
+      "path": "lib/deliberation/SLExistentialQuantifier.sleela",
+      "sha256": "805f01d9b56f463dcf7c45f0aabd68439c059ac083ff455693da793e44a57273"
+    },
+    {
+      "path": "lib/deliberation/SLExpectedUtility.sleela",
+      "sha256": "b2c1355a56e48c72edad84d121aabfb570172f150b5edf52df22a3941601119f"
+    },
+    {
+      "path": "lib/deliberation/SLExpectedValue.sleela",
+      "sha256": "58f5ee4721c5b38af33c1a4298d3c0e65d4040beef4e26bbee955f2bb4689608"
+    },
+    {
+      "path": "lib/deliberation/SLExplainability.sleela",
+      "sha256": "9b4bbb8c74c70dd6933981aeae5792a632344a96ce16a2c86ba357b94ab4a8c3"
+    },
+    {
+      "path": "lib/deliberation/SLExplanation.sleela",
+      "sha256": "46967baa1e424bfa0957ce929e7a9d7a3105850f1ea830b07ad245dddf9efa54"
+    },
+    {
+      "path": "lib/deliberation/SLFact.sleela",
+      "sha256": "a6aacee3db12c67de660e480e3b1ecbc0a50eedc76ed79aa12a0474f2b8697a5"
+    },
+    {
+      "path": "lib/deliberation/SLFactCheck.sleela",
+      "sha256": "498035bbcf93e0b715598f3667a322e1f0d5a99ba78a6390184a448a850514ac"
+    },
+    {
+      "path": "lib/deliberation/SLFalsification.sleela",
+      "sha256": "95e62fddd2f0394f6fe4d074a94c0eac84e5147e8cf16b8238f8e3143e147a71"
+    },
+    {
+      "path": "lib/deliberation/SLFirstOrderLogic.sleela",
+      "sha256": "be4c53a06a50f5298fe39dd7056e75696f33f5d9f91e4f000adf2ba59a59aefc"
+    },
+    {
+      "path": "lib/deliberation/SLForecast.sleela",
+      "sha256": "37f55f027d5699d014466ded49d1b8fbf491af967654c33d192425cedcd5230c"
+    },
+    {
+      "path": "lib/deliberation/SLForecastModel.sleela",
+      "sha256": "0351b1eb0f035014fda48d59900494966abffba2ff883aaf1f08f8b672f41f02"
+    },
+    {
+      "path": "lib/deliberation/SLFuzzyInference.sleela",
+      "sha256": "39247f8afa9f3926795321388c8217bc2e3232c261f4a6eef457ce1153fa8524"
+    },
+    {
+      "path": "lib/deliberation/SLFuzzyLogic.sleela",
+      "sha256": "1bf2cf76a3af455f64e3eef1437c438f3b8a14501264e88112b2b8322b84f47a"
+    },
+    {
+      "path": "lib/deliberation/SLFuzzyRule.sleela",
+      "sha256": "fc7a4ff70946323fdadee19fbe789ef456b6fcffdce670e92d167a595354eae4"
+    },
+    {
+      "path": "lib/deliberation/SLFuzzyValue.sleela",
+      "sha256": "476dd282a0c6f3a4372dfb6d30c2c73766e05377089e9b7ff5400afb1e987a2d"
+    },
+    {
+      "path": "lib/deliberation/SLGame.sleela",
+      "sha256": "8633f661cfdbbac99035849d40c66bcdfcac853dc8244b86eaf11c35e2951fbe"
+    },
+    {
+      "path": "lib/deliberation/SLGameTheory.sleela",
+      "sha256": "7b7720281398d53bda7a362688cfc0dcd8ea247b884d8967f7350ea191898386"
+    },
+    {
+      "path": "lib/deliberation/SLGoal.sleela",
+      "sha256": "5db212e45d03845ee33d6f14efc7181a11c54a81873636309e3534dd27e373d0"
+    },
+    {
+      "path": "lib/deliberation/SLGoalConflict.sleela",
+      "sha256": "6c0c18fd6306732877331d0d81973c32493e6eaad3021c292822259224bea14f"
+    },
+    {
+      "path": "lib/deliberation/SLGoalStack.sleela",
+      "sha256": "b2c2f1876b4671632d85953149546b20dd4da75b89b9ee469b87113148b73e77"
+    },
+    {
+      "path": "lib/deliberation/SLGoalState.sleela",
+      "sha256": "5d498b6ac22940660b6068b8a71fb91f6702cb576557cd211abf42396f1f349c"
+    },
+    {
+      "path": "lib/deliberation/SLGradientOptimizer.sleela",
+      "sha256": "906aa1d13f70877ea056567f7f1534298f8588877eee30c7315fd87b5aa56f28"
+    },
+    {
+      "path": "lib/deliberation/SLHeuristic.sleela",
+      "sha256": "92bdf5ca12a618ded00e842459a6167b16c8012b8fd85687474e5c1916ff1a86"
+    },
+    {
+      "path": "lib/deliberation/SLHeuristicSearch.sleela",
+      "sha256": "57ffa1294df4ce8b71d7214928e422894dede409594e059caebf932e609404e5"
+    },
+    {
+      "path": "lib/deliberation/SLHypothesis.sleela",
+      "sha256": "38130c1dac0ad8229d5de2b19f3369aeae40a085138e6842dc9c7ef7162ce5be"
+    },
+    {
+      "path": "lib/deliberation/SLHypothesisSpace.sleela",
+      "sha256": "d9b8a4de420bbb2f17e419288de47ed6ed0355e6e2d03b61f1380be8fe2126eb"
+    },
+    {
+      "path": "lib/deliberation/SLImplication.sleela",
+      "sha256": "1f367dc74eb99ae583ac825426a60003b2db417c6d45006670dcc6dc5adafc4f"
+    },
+    {
+      "path": "lib/deliberation/SLInduction.sleela",
+      "sha256": "0f2b2a66d70c0cc5189408672b3dfe98e87a7b93cf747d836a503027545f776e"
+    },
+    {
+      "path": "lib/deliberation/SLInference.sleela",
+      "sha256": "101844c7e5c1d38971b3c206f64cc566f66255b15058cce2b9cc02cd59dca591"
+    },
+    {
+      "path": "lib/deliberation/SLInferenceChain.sleela",
+      "sha256": "882ac4dbb07f75e779713fcfceaeb39e4ff53696149346d6f907a38026eee4bc"
+    },
+    {
+      "path": "lib/deliberation/SLInferenceEngine.sleela",
+      "sha256": "8a36f818cac1aabcf2afc433727ca59bca3cebbd61bf2b31af3d30b3278a3453"
+    },
+    {
+      "path": "lib/deliberation/SLInferenceRule.sleela",
+      "sha256": "6ed8ae980a25efb854032ebe5437cbff1db8d14dd007a92384fa682e090dd0ac"
+    },
+    {
+      "path": "lib/deliberation/SLInquiry.sleela",
+      "sha256": "71d63cc75fc02efc3e2834c676e2bf29aab1d8e90fefec00894e766e0e4fa316"
+    },
+    {
+      "path": "lib/deliberation/SLInquiryContext.sleela",
+      "sha256": "e25bf8f1a0e4f8750680010e9f1eb99a2bc88262499c84674a67eca124fda9a8"
+    },
+    {
+      "path": "lib/deliberation/SLInquiryEngine.sleela",
+      "sha256": "40d0810402ab190fa1ceb6240e16d16874ffc36545d01fd7476a0eb6b7ab3e03"
+    },
+    {
+      "path": "lib/deliberation/SLInquiryStep.sleela",
+      "sha256": "1c89a417b213f837309e37c71b2099581a5e80170390c383e8ed93732c7d87a2"
+    },
+    {
+      "path": "lib/deliberation/SLJustification.sleela",
+      "sha256": "e2be7a78b44cb0ac99b88b86ce243e8939c0ef8f3b966c52cee7d89df48e1da7"
+    },
+    {
+      "path": "lib/deliberation/SLKnowledge.sleela",
+      "sha256": "3cc45e273609cdc31966e0dcc7536a9ef3a2d057a54da9872629b6e7c9a062a6"
+    },
+    {
+      "path": "lib/deliberation/SLKnowledgeBase.sleela",
+      "sha256": "5e4dc48914821022b5d0ea6219b21d94295aae77e419caf006673ee5cefc71dc"
+    },
+    {
+      "path": "lib/deliberation/SLKnowledgeGraph.sleela",
+      "sha256": "215856dd45103820cd2b66a6d3ade8f94fbf61fa6e427f625b59d9be7e153866"
+    },
+    {
+      "path": "lib/deliberation/SLLemma.sleela",
+      "sha256": "39e4f0ab09f93b810a9524aaf9bc047862c7f251d62731668d704c2393db6a43"
+    },
+    {
+      "path": "lib/deliberation/SLLogicExpression.sleela",
+      "sha256": "9787c4e899c587d266feb85d3455637058f4205f771658fa1eb94e3e4a54ffb1"
+    },
+    {
+      "path": "lib/deliberation/SLLogicalConsistency.sleela",
+      "sha256": "88279bbecf8e54f288657c264e024ca4e78fb2ac2abb538e59527992521d98e6"
+    },
+    {
+      "path": "lib/deliberation/SLLogicalOperator.sleela",
+      "sha256": "03038839fb3bcfa16316c2195030e67b9637fff8fbe28775f9982fed4fd28085"
+    },
+    {
+      "path": "lib/deliberation/SLMaximin.sleela",
+      "sha256": "019f9c3e9585de348957bcedc1bcea32dfacc8e950cf90fcfe7f826b4da63b6d"
+    },
+    {
+      "path": "lib/deliberation/SLMechanism.sleela",
+      "sha256": "976c1981e2cc71fb5b2f64519cd220c10298c30964d0f65ee3ac6d996e744e17"
+    },
+    {
+      "path": "lib/deliberation/SLMechanismDesign.sleela",
+      "sha256": "85e48392fa4a3911ea992a36d474a72f01475ca936e9247ce13da1d3eff8fca2"
+    },
+    {
+      "path": "lib/deliberation/SLMediation.sleela",
+      "sha256": "3bf2968b017a3a520913934cf563aea4c05709e6604baeda901cb248642158a7"
+    },
+    {
+      "path": "lib/deliberation/SLMinimax.sleela",
+      "sha256": "4d20450bf4a85be85d5c910a26a32bc6aa285a6ebc7e8d4af988c8a0ceab3118"
+    },
+    {
+      "path": "lib/deliberation/SLMinimizeRegret.sleela",
+      "sha256": "f62f6b109aa909098b19310f67daa858eab47c7ea0f3115de2e327c2418e562a"
+    },
+    {
+      "path": "lib/deliberation/SLModalReasoning.sleela",
+      "sha256": "9baaa3d117514581f83bcc645949a06fdc78c5be8c43063d56ec23e4209f172b"
+    },
+    {
+      "path": "lib/deliberation/SLModel.sleela",
+      "sha256": "0828af70e9dcb84eaa218046d52865e639e017a9e0de6fa302154947648b8d97"
+    },
+    {
+      "path": "lib/deliberation/SLModelChecker.sleela",
+      "sha256": "ee8701017dfd052f08d79a1586d6489b108f1f583ba798205d27e7e527445014"
+    },
+    {
+      "path": "lib/deliberation/SLMultiAgentDecision.sleela",
+      "sha256": "2119fb38bbd7cd8e654fa24af0eaa3f48608dd64b25026567a5021177cd3a065"
+    },
+    {
+      "path": "lib/deliberation/SLMultiCriteriaDecision.sleela",
+      "sha256": "e669f68963eaf847678cdbe65dc9e3b8d68195afa1303f424d31bb7184430feb"
+    },
+    {
+      "path": "lib/deliberation/SLMultiObjectiveDecision.sleela",
+      "sha256": "6baf07059ec6e9cc404b3e3fd0d6f865604cec4f4e33be5e3d9a6aa1846a9719"
+    },
+    {
+      "path": "lib/deliberation/SLNashEquilibrium.sleela",
+      "sha256": "c3c3b5fab16f04c99605e1f83bc741ef21d519a340ce42e607b9ead2ea5e5af2"
+    },
+    {
+      "path": "lib/deliberation/SLNegotiation.sleela",
+      "sha256": "e8fad8e12e1e87361fb30e2ebdd3a3587d3f8074da46e08cb70e0fedbe7b82cb"
+    },
+    {
+      "path": "lib/deliberation/SLNot.sleela",
+      "sha256": "e9a5e9403c55d31f0b193c6aa2c7cd44425c9be3537efa19247013b0bd04621e"
+    },
+    {
+      "path": "lib/deliberation/SLObjection.sleela",
+      "sha256": "8493916e5b06801dad23f0a4d66766087c48d3520e5dea0a820b4e6e3bc98f69"
+    },
+    {
+      "path": "lib/deliberation/SLObjectiveFunction.sleela",
+      "sha256": "27b8804a0ec3ac4bc5f00fcf3f2451776d3ca1d02bdb7abe9d43b8ab10a87895"
+    },
+    {
+      "path": "lib/deliberation/SLObservation.sleela",
+      "sha256": "f4b3f4185c5b4db1f64bea846e3a98205460449abb8398581d0407ed60b55bcf"
+    },
+    {
+      "path": "lib/deliberation/SLOccamsRazor.sleela",
+      "sha256": "6774cc832dc97b00a4103749fdf151f3fb913125216ad4e02a9d2bfedacf1bc9"
+    },
+    {
+      "path": "lib/deliberation/SLOntology.sleela",
+      "sha256": "10481b91ed0263f3afa2106adc5733f41bff14fa33b5d77d8d2090b06360ee96"
+    },
+    {
+      "path": "lib/deliberation/SLOntologyClass.sleela",
+      "sha256": "d06a05890f508b2ea9c50c5f5ed20645e9ee709e6bd614de15fcf72346135d3d"
+    },
+    {
+      "path": "lib/deliberation/SLOntologyProperty.sleela",
+      "sha256": "91d14e0b79096cef324218874172f641fd950c5d6b19a519aea535f52822128b"
+    },
+    {
+      "path": "lib/deliberation/SLOptimizationProblem.sleela",
+      "sha256": "7adcf50cd68ce04bd4c8c0c59709c9673d07e8281c7d480717ed0c1c8106bfcc"
+    },
+    {
+      "path": "lib/deliberation/SLOptimizer.sleela",
+      "sha256": "c700b2bb767a845deab8879178e68d74de97fe590acd365bab3f194518cf0053"
+    },
+    {
+      "path": "lib/deliberation/SLOr.sleela",
+      "sha256": "1e17298575f9a16a636330c97880eed93cf24578fce85e067548edc78e2dc44a"
+    },
+    {
+      "path": "lib/deliberation/SLParaconsistentLogic.sleela",
+      "sha256": "136aeb60d7a888792c890184ce0935008e48e0c70f173c47c120834cf1cec173"
+    },
+    {
+      "path": "lib/deliberation/SLParetoFront.sleela",
+      "sha256": "228461caf06c8d8517a7550ab72e7f3396877e6be89c707a395c41b27f4b1834"
+    },
+    {
+      "path": "lib/deliberation/SLParetoOptimizer.sleela",
+      "sha256": "f0bc291454f8d32f963a58beeeb0faf4bffcb8da5b23c875d6cbc5030cddfeda"
+    },
+    {
+      "path": "lib/deliberation/SLParsimony.sleela",
+      "sha256": "d413c76d9cd1f10e792a449d47efaf44c1e118ecc20436394800a87e26daf22e"
+    },
+    {
+      "path": "lib/deliberation/SLPattern.sleela",
+      "sha256": "526d15961f2cfc22c077263d41076e55d2b7917092fa0d2e430e80543e24b628"
+    },
+    {
+      "path": "lib/deliberation/SLPatternMatcher.sleela",
+      "sha256": "d70ee75431573e51a01f908cdc440040d92b32d00abd9c851f076ce4e947a395"
+    },
+    {
+      "path": "lib/deliberation/SLPayoff.sleela",
+      "sha256": "a4eba0ccd5e386ef19a3e1b442e08cb8c1499bb7d01bae97a8836961f7600cd9"
+    },
+    {
+      "path": "lib/deliberation/SLPlan.sleela",
+      "sha256": "52b3ba50e4af3b61f3b6162cb9793217e5e1cf7c97197c1633de23c321b7be0c"
+    },
+    {
+      "path": "lib/deliberation/SLPlanStep.sleela",
+      "sha256": "db28d9971016e4db6e123d8af5bd75b9ed3360a5f8e143e969ea767fee8bf022"
+    },
+    {
+      "path": "lib/deliberation/SLPlanner.sleela",
+      "sha256": "01b03e17acdfdde7fd6e1a55e7dbb7584f91832b4ff6d3d3ef0547bc48ed9fe7"
+    },
+    {
+      "path": "lib/deliberation/SLPlayer.sleela",
+      "sha256": "bd8102df726d69c1f4b38bf07d705ba459735f3a0de7dcab4ef15c0bad5dfb7f"
+    },
+    {
+      "path": "lib/deliberation/SLPolicy.sleela",
+      "sha256": "58f12c61fdb37f05b8cc49a4ade411d03a7f06992718389cc923cf5048100f25"
+    },
+    {
+      "path": "lib/deliberation/SLPolicyEvaluator.sleela",
+      "sha256": "13a4091fe181f7b64f4379785207744666e79b1c9a0c99606829872bc297f5ac"
+    },
+    {
+      "path": "lib/deliberation/SLPostulate.sleela",
+      "sha256": "ba04425640096aaf76eeb7d2f8db388be664d401694cd49e99e5a3c9a271f86a"
+    },
+    {
+      "path": "lib/deliberation/SLPredicateLogic.sleela",
+      "sha256": "f67f909a4ca7bf453bb1161a9dd1b6bb840a44d1a908ca00fcff0e616defbcfd"
+    },
+    {
+      "path": "lib/deliberation/SLPreference.sleela",
+      "sha256": "8cc4870d6066f769d698aa5dcaf0a1ff3d694ca6a4e9c5d59c428dff98ee9612"
+    },
+    {
+      "path": "lib/deliberation/SLPreferenceAggregator.sleela",
+      "sha256": "dfdee0500421498ff81d1184f6fcf37831a0ac3198704c13ec18c551830a73cd"
+    },
+    {
+      "path": "lib/deliberation/SLPreferenceConflict.sleela",
+      "sha256": "6cdfaeb9c078d04cba8abcba7c581fd83090dc163dc6ec4174692c55f8d370e1"
+    },
+    {
+      "path": "lib/deliberation/SLPreferenceConstraint.sleela",
+      "sha256": "7f428b400068233ddae751bf35d24673f55f63627eb55b99e8bb417a016d0db3"
+    },
+    {
+      "path": "lib/deliberation/SLPreferenceGraph.sleela",
+      "sha256": "b7acf11e7e30208141acf588a208bb1e8805a17dc4fa99a5d3559ca5d3a90f09"
+    },
+    {
+      "path": "lib/deliberation/SLPreferenceModel.sleela",
+      "sha256": "b23a72083bdedb79616c9b0d7dcc7f79dd7142ce16547fdd6b7944f34f772864"
+    },
+    {
+      "path": "lib/deliberation/SLPreferenceOrder.sleela",
+      "sha256": "82090be6425cfb9cf6c214965e90d44f5b4a5ef1b6f250c2bea2f00ab28a47bd"
+    },
+    {
+      "path": "lib/deliberation/SLPremise.sleela",
+      "sha256": "271d337222a35a7de7078dece9bf6498dd2a88214fd5ee2a4060f38760d9ec87"
+    },
+    {
+      "path": "lib/deliberation/SLPremiseSet.sleela",
+      "sha256": "f33c17eb2daf80e803f6981578a909df12d316d5aab63f1a203175fbacfd2758"
+    },
+    {
+      "path": "lib/deliberation/SLPriorityQueue.sleela",
+      "sha256": "7233292f47e179470b1ecdf7ab54dd9a32ea1bfd7789fd3c0d9652268c2c8264"
+    },
+    {
+      "path": "lib/deliberation/SLProbabilisticReasoning.sleela",
+      "sha256": "b35126a0c604ad757ca89aaa9feaf0e335d191c58fe385775c0215cf4586cca5"
+    },
+    {
+      "path": "lib/deliberation/SLProcedureResult.sleela",
+      "sha256": "c1c98f9cf73e6644c0260bcde7416c1b667e28b781a1941cb5935940013cc0c7"
+    },
+    {
+      "path": "lib/deliberation/SLProcedureStep.sleela",
+      "sha256": "40d48385da70f88c1917b431e5c79a6d13c071ce3d88ed9b3dfd1d6395683200"
+    },
+    {
+      "path": "lib/deliberation/SLProof.sleela",
+      "sha256": "3ba7750e7c49c0e32d79742b0d51a23f6cc94567d56576077cac47e3e1540699"
+    },
+    {
+      "path": "lib/deliberation/SLProofChecker.sleela",
+      "sha256": "c848bc70ec15959df84329104c9f8df476cfd4b2d4f4aa30814afcc8bd8ea79b"
+    },
+    {
+      "path": "lib/deliberation/SLProofStep.sleela",
+      "sha256": "823645b7cfdb76052d02ed0ccc8dcc4058398cd12b3b32c74b0e5eec33f73f87"
+    },
+    {
+      "path": "lib/deliberation/SLProofTree.sleela",
+      "sha256": "ef78528c1309fd640eca207f45592ba8e29a011e0850a6642e6048bed0162df8"
+    },
+    {
+      "path": "lib/deliberation/SLProposition.sleela",
+      "sha256": "0dbb095bfb4f38b5a8c23b701e17ec370a8a4017a982348bc86633d2e53abfd8"
+    },
+    {
+      "path": "lib/deliberation/SLQuantifier.sleela",
+      "sha256": "a266e3d86104b0f131c8081a767c0eb9e827514d3f2fbd3f3f3db24469219532"
+    },
+    {
+      "path": "lib/deliberation/SLQuestion.sleela",
+      "sha256": "1fa8c981abc5680c469576e793739fb9e147858e6cce588b3351574019ffab31"
+    },
+    {
+      "path": "lib/deliberation/SLRandomForest.sleela",
+      "sha256": "77f13344ad00c7cffff67df0de559f4f7aa9fdc0592c0c09c92be0e104308241"
+    },
+    {
+      "path": "lib/deliberation/SLRankedChoice.sleela",
+      "sha256": "c90b011b96ed1055aadfb439f14f1e4cb3ccaf572b63e0df0bb9b81f772d10f6"
+    },
+    {
+      "path": "lib/deliberation/SLRanking.sleela",
+      "sha256": "1d28736328d251575662acbd7d8dc548abbee58dea332ea64017e722d614b8e7"
+    },
+    {
+      "path": "lib/deliberation/SLReasoning.sleela",
+      "sha256": "ebafbed438e43306c8455181a8d4f28c52b7ce51bd9468eac3c1dc76dc3b0a39"
+    },
+    {
+      "path": "lib/deliberation/SLReasoningAudit.sleela",
+      "sha256": "01198ad7f2059b4961526fad9761f45165e51f5d5f6c405d0a28ab5b8f72b9d5"
+    },
+    {
+      "path": "lib/deliberation/SLReasoningContext.sleela",
+      "sha256": "1bdfe2c0f8cb16c85852be8a4c4638bac34da54ce7edc4695069423a42719f53"
+    },
+    {
+      "path": "lib/deliberation/SLReasoningEngine.sleela",
+      "sha256": "26bce6a8ac8e9f94221176df366f4d9fed6a6af1d6af920f92642aefb8d54654"
+    },
+    {
+      "path": "lib/deliberation/SLReasoningMemory.sleela",
+      "sha256": "672f872495a06cdfdf61c90cf96491a097bb79de071dd2e59e54ce3caa6bdaa3"
+    },
+    {
+      "path": "lib/deliberation/SLReasoningPolicy.sleela",
+      "sha256": "3ec6c62a3765a58a77db4f35f21010c14fa2b8652508c46ca319cede15e849f8"
+    },
+    {
+      "path": "lib/deliberation/SLReasoningSession.sleela",
+      "sha256": "4802ba6537cb042f23899de4cfb7723d542a4006cad5acbd97b32df9ec4cf8f1"
+    },
+    {
+      "path": "lib/deliberation/SLReasoningState.sleela",
+      "sha256": "b86ffd609287a7c373feede152dbb8bc1e2c0a26bf498f1b9183303af797d84d"
+    },
+    {
+      "path": "lib/deliberation/SLReasoningStrategy.sleela",
+      "sha256": "1d8441f4ed34259b8f64f6abcaa4c1cf82ce87f0c11a231f5674b80f4ed03486"
+    },
+    {
+      "path": "lib/deliberation/SLReasoningTrace.sleela",
+      "sha256": "61efb4265df6a7a5916d7efce232eb508bc5d84cd5d113cdf51c7647b1314537"
+    },
+    {
+      "path": "lib/deliberation/SLRebuttal.sleela",
+      "sha256": "70851ac6ddef116ac559a955f3fc59391b1b25b468b81a8a355a21a9d75b5bf5"
+    },
+    {
+      "path": "lib/deliberation/SLRefutation.sleela",
+      "sha256": "28e63b8ca5b8767a38d79fbdde0fc41640a1342234345d76baffa9270bfaaf4e"
+    },
+    {
+      "path": "lib/deliberation/SLRegressionDecision.sleela",
+      "sha256": "2d2efeeeb1318bc131f23921f8b7b6657810a613274fc70b58253d1734045e7f"
+    },
+    {
+      "path": "lib/deliberation/SLRegretMatrix.sleela",
+      "sha256": "df626be647e5fd8a41e383c8b6d21a5589c71e53fad5d8abb27631e959944730"
+    },
+    {
+      "path": "lib/deliberation/SLResearchPlan.sleela",
+      "sha256": "8e44a4aadb9480b38c8412053141d4805ddd8fc524c6a22541197cb835200952"
+    },
+    {
+      "path": "lib/deliberation/SLResearchQuestion.sleela",
+      "sha256": "64a10bcf023ded9066d85a032777ef6c8a8a6192e089158182ace5de351e97b3"
+    },
+    {
+      "path": "lib/deliberation/SLResolution.sleela",
+      "sha256": "9f22191dd09d5fd5698368d536a0299d7dabfee1af69c5a6a7f483899afee65e"
+    },
+    {
+      "path": "lib/deliberation/SLResourceAllocation.sleela",
+      "sha256": "493164c8030d73c96d48601585fb50aff119cd812e96d3a0fb67dc6179fead41"
+    },
+    {
+      "path": "lib/deliberation/SLRisk.sleela",
+      "sha256": "58d9a2856f3fc65de6de4b45fe002821bd7ad347168bc78d889f0bbbdb181d64"
+    },
+    {
+      "path": "lib/deliberation/SLRiskAssessment.sleela",
+      "sha256": "afc06738f0885e3600fdeb551f49289358926ae90d4263fd4bf6d9204bc04f44"
+    },
+    {
+      "path": "lib/deliberation/SLRiskMitigation.sleela",
+      "sha256": "17a8877810788cb0d0e4be4faf22d3a0b1bce87badce716f5489a75a6a7138a6"
+    },
+    {
+      "path": "lib/deliberation/SLRiskModel.sleela",
+      "sha256": "e7d83fdac1427ed40181cbb4633d922ce13079cbb7c646934c5aca32a50b3196"
+    },
+    {
+      "path": "lib/deliberation/SLRiskRegister.sleela",
+      "sha256": "7383f09fb1b805402e7457469a9436e97cfbc8a786df499ddc1554ffb88b89eb"
+    },
+    {
+      "path": "lib/deliberation/SLRiskTolerance.sleela",
+      "sha256": "2eb23f4df752596a4664a53c14d77be11097cce9fc85a9d628a9e6b703eca7fd"
+    },
+    {
+      "path": "lib/deliberation/SLRobustDecision.sleela",
+      "sha256": "a7aef5e2298c513f8433bcdcfe383b3001ca16ba78a00236d6439ab9478e5cdd"
+    },
+    {
+      "path": "lib/deliberation/SLRule.sleela",
+      "sha256": "71de899169d8758e40f2a7738aa8d0cf62ac20ce9e4dedc95dee1f795ccfffa7"
+    },
+    {
+      "path": "lib/deliberation/SLRuleSet.sleela",
+      "sha256": "d5b5aa0143469ce30b58f4acfc1b8b88c48608ca31e40390cc6b62cddb082cbb"
+    },
+    {
+      "path": "lib/deliberation/SLSatisfiability.sleela",
+      "sha256": "60112cfa6e41f30eeea4849c1cf0ea4e7cfd089f9916ac0441a9d27e32b235bd"
+    },
+    {
+      "path": "lib/deliberation/SLScenario.sleela",
+      "sha256": "eaa761449dd1013c06252b97b62d2bf8ff9047a7aaa7a7d6b2fcb4ba73808fda"
+    },
+    {
+      "path": "lib/deliberation/SLScenarioAnalysis.sleela",
+      "sha256": "8aa922e4442b0ef0ce645595a3155f5fe85eab292942e54f96c766cdd43a5121"
+    },
+    {
+      "path": "lib/deliberation/SLScenarioComparison.sleela",
+      "sha256": "39060de65d5190019908ade30c0976ba51c62b5eccb3d7d2de28726cd0a5ac7b"
+    },
+    {
+      "path": "lib/deliberation/SLScenarioSet.sleela",
+      "sha256": "39da603ca71adc4fb483bf90dc5ad4d56ee023ed25add9fbc1b95c9d5808ee5e"
+    },
+    {
+      "path": "lib/deliberation/SLSchedulingDecision.sleela",
+      "sha256": "8930d4b723dc3ee9cbc30f1406bcc26a30387610956ea762d47cb8de27f62930"
+    },
+    {
+      "path": "lib/deliberation/SLScoring.sleela",
+      "sha256": "98074b6182aad90c61ac6e21b1b1d55700b49795cb03b395dfe08d51d0ad9f55"
+    },
+    {
+      "path": "lib/deliberation/SLSearchNode.sleela",
+      "sha256": "9732bedcc8095159e8e884a05cb5fb15349e7bb956c67dba389dd96b6a462250"
+    },
+    {
+      "path": "lib/deliberation/SLSearchOptimizer.sleela",
+      "sha256": "b499c136d873d528d2b8495d117f079c9328c2928c6b96853664ebe6ab38ea11"
+    },
+    {
+      "path": "lib/deliberation/SLSearchState.sleela",
+      "sha256": "da137e8709828b19f90ce1c67634c383d4f5a2a7ac0f9c03480e31acbe45d38b"
+    },
+    {
+      "path": "lib/deliberation/SLSearchTree.sleela",
+      "sha256": "6383555cde89ac81ebd72e88b7240f1644bc48e3ccada3f3954449ad007fe2e9"
+    },
+    {
+      "path": "lib/deliberation/SLSelection.sleela",
+      "sha256": "e0281d2e58d79e4926d4f9404876d0f40e9aaf659fcdc2c8a5364ecbaed3b3bd"
+    },
+    {
+      "path": "lib/deliberation/SLSemanticConsistency.sleela",
+      "sha256": "1db7356dba30ce2c55aaf5652ddd33f579eb872248300a16cd0a08d9634656f4"
+    },
+    {
+      "path": "lib/deliberation/SLSensitivity.sleela",
+      "sha256": "c1fe5ceba6e1b205e7a498e7e3b29c7508c1a1b697e6285e8aff650f55794a4c"
+    },
+    {
+      "path": "lib/deliberation/SLSensitivityAnalysis.sleela",
+      "sha256": "96b1317d4ac704b5ca489ee014673229a6552aa269dc165a766bacbf59a066fd"
+    },
+    {
+      "path": "lib/deliberation/SLSource.sleela",
+      "sha256": "1826b06e3db59571bafc2f8016a95764a6a0af6c883f7a9aae9cbae61a66a1ba"
+    },
+    {
+      "path": "lib/deliberation/SLSourceEvaluation.sleela",
+      "sha256": "db0ce0176aa5c939b21fc62be98cfa2acc5bc88cc9380f91ea19d326089efdee"
+    },
+    {
+      "path": "lib/deliberation/SLSourceWeight.sleela",
+      "sha256": "a0809615dea8184c1f46f0db7ac282fd7719e81786185bf337b00c0516cd417c"
+    },
+    {
+      "path": "lib/deliberation/SLStateSpace.sleela",
+      "sha256": "934e09aa38f1d5ac78960735bfd77a87a00b195f55a3fb6dad437da2b515f270"
+    },
+    {
+      "path": "lib/deliberation/SLStateTransition.sleela",
+      "sha256": "8ef9ad639c3abb5144d3a322fd52a0eea4c34cfedc71ee183dd7902680dc0cad"
+    },
+    {
+      "path": "lib/deliberation/SLStoppingRule.sleela",
+      "sha256": "1405ff4781afcfc5d0de81d8fa439aedba64886b5b09fa7e30b9667b4d1e3ed0"
+    },
+    {
+      "path": "lib/deliberation/SLStrategicPlanner.sleela",
+      "sha256": "512657fd9097523318a6dbf2b3e473b860bed1a57f04864cac42cb38c6da3621"
+    },
+    {
+      "path": "lib/deliberation/SLStrategy.sleela",
+      "sha256": "dfe6e0dedda7b59b12bf04dc177ced7c7875ef6bd5421e217f5b0b2f37d963aa"
+    },
+    {
+      "path": "lib/deliberation/SLStrategyProfile.sleela",
+      "sha256": "d3ec1c1ea56f9dcbe94efdb514993b20ac72397467589bb9ed066db85e58a8ca"
+    },
+    {
+      "path": "lib/deliberation/SLSubstitution.sleela",
+      "sha256": "8f66e7b696a0e282f96bd7f4bb00c1a854a9107c8e3805c0588982ff3815215a"
+    },
+    {
+      "path": "lib/deliberation/SLSupport.sleela",
+      "sha256": "eb0cf34fa2ca7b282ae4d0f5e7a1e0cf6b7908b1cfd4d90a56d96f44ce2fb42d"
+    },
+    {
+      "path": "lib/deliberation/SLSyntacticConsistency.sleela",
+      "sha256": "c32dacd923275b091ae48786798fdd9cc4569877c8f2dd5704e713d9303a3417"
+    },
+    {
+      "path": "lib/deliberation/SLTacticalPlanner.sleela",
+      "sha256": "40580a445d759ec83daea4c151fdf78d04b233e80c17dfed559fe89209c5f997"
+    },
+    {
+      "path": "lib/deliberation/SLTaxonomy.sleela",
+      "sha256": "72e6654591c6e03cfd00c4036054dcdd6b804103dc50b3762cf181f5182e2855"
+    },
+    {
+      "path": "lib/deliberation/SLTemporalReasoning.sleela",
+      "sha256": "7efef7296a691d5c6944112f37724ace41257ef6f18772d2d70dfdd7f9d5a190"
+    },
+    {
+      "path": "lib/deliberation/SLTerminationCondition.sleela",
+      "sha256": "63203db6c9860d170298a3bb1a656e0b68270f5f82f7ef221e7ee685166275dd"
+    },
+    {
+      "path": "lib/deliberation/SLTheorem.sleela",
+      "sha256": "df9ea6c63ca4c6029b1d8600cc142763e144afa384903dc6eb3bc632bab3379c"
+    },
+    {
+      "path": "lib/deliberation/SLTheoremProver.sleela",
+      "sha256": "54c531547c5155bdd8da9241cedd8fea7b3479af23ed8856139b6df2a035aeff"
+    },
+    {
+      "path": "lib/deliberation/SLTradeoff.sleela",
+      "sha256": "3db20442c4838a72e72304ef82560a86712a21e3e4941b93a97cdb6275521dfb"
+    },
+    {
+      "path": "lib/deliberation/SLTradeoffAnalysis.sleela",
+      "sha256": "957b705af4d385920dd05545c08ab8ab89257fe80f7503be66611c954f83a5c8"
+    },
+    {
+      "path": "lib/deliberation/SLTruthTable.sleela",
+      "sha256": "9fe7c4df2ba6dc58864f5307284db9dbbd95ef7674388b4134759f771b071c6c"
+    },
+    {
+      "path": "lib/deliberation/SLTruthValue.sleela",
+      "sha256": "a320729b50eccc22f274ef1c2e57bb41b73bc0d0512f6c3d19aa20b98c97b6d2"
+    },
+    {
+      "path": "lib/deliberation/SLUncertainty.sleela",
+      "sha256": "2123697bd2d0432650a97cedfa316a80fac713e0d195fc868a73056d2118189b"
+    },
+    {
+      "path": "lib/deliberation/SLUncertaintyModel.sleela",
+      "sha256": "d8baca1adf9057bd350773cf2f0e0f01e314a49269fa117e99fdeb02ed12206e"
+    },
+    {
+      "path": "lib/deliberation/SLUncertaintyPropagation.sleela",
+      "sha256": "da97435cc1f6e87a07257e69ecca714c581fed7b121c4851b397bf04e9a237eb"
+    },
+    {
+      "path": "lib/deliberation/SLUnification.sleela",
+      "sha256": "523f4b2b461bd3c304dbd2bba364e9181f209ea65f81bb045abc577bb9fb340e"
+    },
+    {
+      "path": "lib/deliberation/SLUniversalQuantifier.sleela",
+      "sha256": "3dd3c370aa4437e0455b0eb5ffbf540d9c052ec929c5027c4087bd80f0141265"
+    },
+    {
+      "path": "lib/deliberation/SLUtility.sleela",
+      "sha256": "9d11aff8618afd5f52de35d6469be7a15f2c7f462a4bf19de4b2c02910f6264f"
+    },
+    {
+      "path": "lib/deliberation/SLUtilityFunction.sleela",
+      "sha256": "c25da14dd90a6c2b6889db617b65dacb2fbc316e5c568fc22f799696eacb83d8"
+    },
+    {
+      "path": "lib/deliberation/SLUtilityMatrix.sleela",
+      "sha256": "52a924601b504b0cd3af7f527b8d4a86b7a2dac15eb67d0a155ba22657aa7124"
+    },
+    {
+      "path": "lib/deliberation/SLValidation.sleela",
+      "sha256": "9f958793c14d4d2a7ae0138af644d5e05bee65c0e3c92476f8e34c3f8e553313"
+    },
+    {
+      "path": "lib/deliberation/SLValueConflict.sleela",
+      "sha256": "700bed91f5e732bee92a0a82ab62cf612ee08317cd9887a5519cce9193f5e6d2"
+    },
+    {
+      "path": "lib/deliberation/SLVariableBinding.sleela",
+      "sha256": "ec82604be7a6f3e5718994f48f26144309fe28f0a32c8be65f10f00ba8745b58"
+    },
+    {
+      "path": "lib/deliberation/SLVerification.sleela",
+      "sha256": "610c706abfaeb04f4f919bc26e44babd95b69ee8212c0bbf01d74ac7632aad87"
+    },
+    {
+      "path": "lib/deliberation/SLVote.sleela",
+      "sha256": "8b778be5b0af9175efbb078bac456f90d72ef4e708005b913bdc6a813f82ecef"
+    },
+    {
+      "path": "lib/deliberation/SLVotingRule.sleela",
+      "sha256": "77791b04839ff41eae2259c7b964f3b84b9597e593bbef5e6cf466c5ee708954"
+    },
+    {
+      "path": "lib/deliberation/SLVotingSystem.sleela",
+      "sha256": "245d475adc9ddf781813b8f9d9a15dad7f986cdb0729566e6632d25f84a8ca43"
+    },
+    {
+      "path": "lib/deliberation/SLWhatIf.sleela",
+      "sha256": "baa2607e7cc3de5868cbf9f42ea191715aeb5276c795c4b2126b1762f8c2c288"
+    },
+    {
+      "path": "lib/deliberation/SLWorkflowDecision.sleela",
+      "sha256": "755ac36e84e559ba1e9bbca3eaa65527116ce475e95a34860a0b1e31e99c0b99"
+    },
+    {
+      "path": "lib/deliberation/SLXor.sleela",
+      "sha256": "46a0d113031df2953bab75e614a4c728bb0be266c9271204d881bfa6003f4d10"
+    },
+    {
+      "path": "lib/deliberation/SLZeroSumGame.sleela",
+      "sha256": "ec2c7cb297a3be5f02e720a018a14e6fde5fad61043d00cef87e9f6b620bdf66"
+    },
+    {
       "path": "lib/filesystem/SLArchive.sleela",
       "sha256": "229bbb86a9d8fdd88102dca35d6e7b2d9c0463a9edede5fd929a501a6e3a6acc"
     },
@@ -6569,6 +8049,978 @@
     {
       "path": "lib/io/SLOutputStream.sleela",
       "sha256": "37b732a852f87c18692834362d0612db4b93e1179f220cf79f382bf0f94588a6"
+    },
+    {
+      "path": "lib/math/SLANOVA.sleela",
+      "sha256": "76d4e72dab522674cd9581a82bdc74e3272ba802f4d9558471534b7078dc2f15"
+    },
+    {
+      "path": "lib/math/SLAbsoluteValue.sleela",
+      "sha256": "409b7d43d4cd871b2f86f64eeb1eab25e23c0f23036d80c83d3cc74aeab9bd11"
+    },
+    {
+      "path": "lib/math/SLAccumulation.sleela",
+      "sha256": "f0fe194fc6124fd5d81cfd0071830cc5d5b40030a5e05a793784cb6501679731"
+    },
+    {
+      "path": "lib/math/SLAdjacencyMatrix.sleela",
+      "sha256": "ea93e056d2909574ab472eb6d44f3255f0c87472f4cd09dcc56701fd74936ce8"
+    },
+    {
+      "path": "lib/math/SLAlgebra.sleela",
+      "sha256": "48e571ce9dd2462b0c9763f7786005338ea3b264c2cab5cab230b10a926a258e"
+    },
+    {
+      "path": "lib/math/SLAngle.sleela",
+      "sha256": "81701a4ce4e384edd34df0ee0726899516620a1e967302b8bcca71596de587e7"
+    },
+    {
+      "path": "lib/math/SLApproximation.sleela",
+      "sha256": "63aeb0b198cc154a85e679b5c3de51b70c4268d4d8816dd4c5f212877e330d0a"
+    },
+    {
+      "path": "lib/math/SLArithmetic.sleela",
+      "sha256": "c54cfc05ca46e277921d65460b41b076a62c92655fec5b8ccb9fbabc169644f4"
+    },
+    {
+      "path": "lib/math/SLAverage.sleela",
+      "sha256": "23612b934861f112139542abb166d640b7e620e140628c0e16265d1d4a8ab47b"
+    },
+    {
+      "path": "lib/math/SLBayes.sleela",
+      "sha256": "c411875229301435a9959b8c7fee673eea513c317778da48f6dab937a673e55a"
+    },
+    {
+      "path": "lib/math/SLBezier.sleela",
+      "sha256": "bfcbdd6b7936671f13a568efa2e13ac78a26600f294536ea1db7b595aad8eaf2"
+    },
+    {
+      "path": "lib/math/SLBigDecimal.sleela",
+      "sha256": "242e9723254f952943f4b4909e31210b3906ffb1056fab78ffb965e3feb3e339"
+    },
+    {
+      "path": "lib/math/SLBigInteger.sleela",
+      "sha256": "f17d0b3629209887909c01e0563ae0e69490ec9eec1cd43df20c8b7c0a4a5a94"
+    },
+    {
+      "path": "lib/math/SLBinomialCoefficient.sleela",
+      "sha256": "7396b803e5cca0f272c415b848cc347230074b9cc848615bcdc193a40bcb847f"
+    },
+    {
+      "path": "lib/math/SLBinomialDistribution.sleela",
+      "sha256": "2f561b3c95789a96981faac8710faad7f9373fafbdba66934447f1f46b89d507"
+    },
+    {
+      "path": "lib/math/SLBisectionSolver.sleela",
+      "sha256": "2ddd4950d682132b5368c24eaf828f93d693b676dce3c1eb24ae8a60acc1d006"
+    },
+    {
+      "path": "lib/math/SLCardinality.sleela",
+      "sha256": "3a384f9825475dd382803d3bd8d5b34c59f7ad6c5149c03081649cf1fb1c61e3"
+    },
+    {
+      "path": "lib/math/SLCartesianCoordinate.sleela",
+      "sha256": "272dfd6b2ab1f5364130d2428a9a9a243306daa1e9f96d26347a30d7866db3f7"
+    },
+    {
+      "path": "lib/math/SLChiSquareTest.sleela",
+      "sha256": "5d56354904720ed940714e62a13d18703bc6e8825894ddb2b3e1aaa5104ea1a5"
+    },
+    {
+      "path": "lib/math/SLClamp.sleela",
+      "sha256": "2850eeddaa156a9a97fb57994d12e6e6297ddce4c9dab09f3a17f878e4d9393a"
+    },
+    {
+      "path": "lib/math/SLCoefficient.sleela",
+      "sha256": "a990d5324d7bf5ab59544a27ed2a4f613f04ca228b310c4603eb738df3a6e8ef"
+    },
+    {
+      "path": "lib/math/SLCombination.sleela",
+      "sha256": "69f4c5452aa8bf16286069250ff4b14b6bdaf1c0da2f76930caf0eac692b2183"
+    },
+    {
+      "path": "lib/math/SLCombinationGenerator.sleela",
+      "sha256": "8ed0444a31b13187d2534a88762ba0a9986a1015bcb88c2fa65ebe1eeb0cd287"
+    },
+    {
+      "path": "lib/math/SLCombinatorics.sleela",
+      "sha256": "5f1062931c5b258715e7d81308142663547154918ee361acf66aac8a860b0c94"
+    },
+    {
+      "path": "lib/math/SLComparator.sleela",
+      "sha256": "bff32645f0283e23304c1cbb8a2742e976bb8ca210729c03d9cee73969a226ef"
+    },
+    {
+      "path": "lib/math/SLComplex.sleela",
+      "sha256": "fd7dbd3753cefb017f8c151d5074656e31e35faf365aaf21fa1fe634e9de7fde"
+    },
+    {
+      "path": "lib/math/SLConditionNumber.sleela",
+      "sha256": "f3c89236bd1b082498c883ef10f80183b7953f7a351d18af65e434a1ffc18df9"
+    },
+    {
+      "path": "lib/math/SLConfidenceInterval.sleela",
+      "sha256": "80c12f606631d8792a586b0c9acff698089b9dd4b7abb773b7065e27246846fb"
+    },
+    {
+      "path": "lib/math/SLConfidenceLevel.sleela",
+      "sha256": "b400127a28d6876da4c17764ec1953b4278e6e24088e8b3d7cc3f984aecc4c74"
+    },
+    {
+      "path": "lib/math/SLConstant.sleela",
+      "sha256": "412cbcd6711009f8b99e01ce7d3b647b0377c05d145043d9536c0b01d07c2255"
+    },
+    {
+      "path": "lib/math/SLConstraint.sleela",
+      "sha256": "fcf1b359ca8cb2fd7bfe6e84d53d9634cc231376e2749591f7dab2b183ef7136"
+    },
+    {
+      "path": "lib/math/SLConvergence.sleela",
+      "sha256": "2112ea76d1f321b50df8b4b59c77e6bfc1a167d03a0975cfc8f449127204d169"
+    },
+    {
+      "path": "lib/math/SLCoordinate.sleela",
+      "sha256": "3495113cb2d4ac1e62be07141ea52fe8e7cb3355aed9b85f74723b7fe0c70b3c"
+    },
+    {
+      "path": "lib/math/SLCoordinateDescent.sleela",
+      "sha256": "db9e5469678cc06f7da8ec8bbf50d42ceb93935bc39a186ecc7caf6a08ccff7c"
+    },
+    {
+      "path": "lib/math/SLCorrelation.sleela",
+      "sha256": "8cc93bde9852abfd506e2cca5159e87738610ff1c9d9d930e8e56a5a3909e6ce"
+    },
+    {
+      "path": "lib/math/SLCorrelationMatrix.sleela",
+      "sha256": "1a62808231355a3c26c5032562c33039a93749e051b25ac9a8a78945dcf699ef"
+    },
+    {
+      "path": "lib/math/SLCosine.sleela",
+      "sha256": "f6203e60dcadeb4f3d539770f0173e60dcbb15ce4256809db9bdf58298ea28c5"
+    },
+    {
+      "path": "lib/math/SLCovariance.sleela",
+      "sha256": "1a91d76dbe54cfbc0831acd84d4a784d2b25417b3054386146be3020c9fd3c48"
+    },
+    {
+      "path": "lib/math/SLCovarianceMatrix.sleela",
+      "sha256": "e4fce2e6e4362efb04fcc055e08337f24d1301e7ec4fe4baa3c2fbd0981e940c"
+    },
+    {
+      "path": "lib/math/SLCrossProduct.sleela",
+      "sha256": "ae72b012f03db6064253814f9d2d7c15757578913628c1b7e650a9ffa09bcb0e"
+    },
+    {
+      "path": "lib/math/SLCubicSpline.sleela",
+      "sha256": "3162e73b27828b2ef7237dec906ad0cf6a59071d4d75c838c85d3dba3cc86042"
+    },
+    {
+      "path": "lib/math/SLDataSummary.sleela",
+      "sha256": "f7e5674a252a17fb45588048092fc8a0d6431aede0de7dd58ad6ec6954a9bb40"
+    },
+    {
+      "path": "lib/math/SLDerivative.sleela",
+      "sha256": "be47a118d3761c8a9f3911c6666bf6f525298dd9dcf2a47107267b091000d31b"
+    },
+    {
+      "path": "lib/math/SLDeterminant.sleela",
+      "sha256": "683852905d043c4dafa9fe440d9d1bbfb359195364b90cfcac8804cee10408f7"
+    },
+    {
+      "path": "lib/math/SLDifference.sleela",
+      "sha256": "c5c56ef4c48d3595356f809a37c24e0c0b291b3b44fc1ece1bd5ef74a170a633"
+    },
+    {
+      "path": "lib/math/SLDimension.sleela",
+      "sha256": "208f6e9de5c02bfe443327b1710111f04656a1b4a9f77351e3881728f47d9edc"
+    },
+    {
+      "path": "lib/math/SLDiscreteFourier.sleela",
+      "sha256": "3baf5b85f81ed966e4a27e5a6911b6159e99625595e846837b29aa9d21c1cc30"
+    },
+    {
+      "path": "lib/math/SLDistance.sleela",
+      "sha256": "7f55882523767b50ea2cd954b7118c36d06dbf4da52dd039969d405877915dc2"
+    },
+    {
+      "path": "lib/math/SLDistribution.sleela",
+      "sha256": "ba1bccb10ac94ab71cd3b62cf8fb7879ef7001c98e2d8354e9c5b2a1f5025a87"
+    },
+    {
+      "path": "lib/math/SLDivisor.sleela",
+      "sha256": "0ab9f99eef445e8dad59b904eaca1d9809856f66fc0a1450a74e96d8abce5634"
+    },
+    {
+      "path": "lib/math/SLDotProduct.sleela",
+      "sha256": "b14b645e2dc51cfdcf6d6225698f8703eb42cfc3c839ec748b0eaaf871fc88b0"
+    },
+    {
+      "path": "lib/math/SLDoubleMath.sleela",
+      "sha256": "e786dba4850d9934ece849de0eb01dd92bface799b6f893b40b54f12a5a3e633"
+    },
+    {
+      "path": "lib/math/SLEigenvalue.sleela",
+      "sha256": "ce76673a9faf7160f628aea4db5cd57a98741706491694a587f894118c0ea38b"
+    },
+    {
+      "path": "lib/math/SLEigenvector.sleela",
+      "sha256": "5e860226b20d56f60ed335df26d7274519d0dfce42f88f3b63f1a32b742c5db7"
+    },
+    {
+      "path": "lib/math/SLEquation.sleela",
+      "sha256": "cb12b2eb5d215ad4643244621fdba6fc418a377433523f413bb4b5c9c1dd093f"
+    },
+    {
+      "path": "lib/math/SLErrorBound.sleela",
+      "sha256": "9ae4e1c390918a12fe0e180ba200a3d3a34f37584b53247633236b880c12cff3"
+    },
+    {
+      "path": "lib/math/SLExpectation.sleela",
+      "sha256": "ed1ed35ade70f3fda05f17d9d7a7c72ec4c56fbd515b1de98f312f6e4a155d3f"
+    },
+    {
+      "path": "lib/math/SLExponential.sleela",
+      "sha256": "dc792d0653046e2ec6313fc1946c5acd7498d1288dd6c1a51770a27eb4fe6659"
+    },
+    {
+      "path": "lib/math/SLExpression.sleela",
+      "sha256": "bc54e1149d78ff51c3d35c255ec4c0be91a5ca86dc284686ba8b1d75d442a6a1"
+    },
+    {
+      "path": "lib/math/SLExpressionEvaluator.sleela",
+      "sha256": "cfc9144efa6cd39297222076ad266be79f9ef454c90e765234d70cd1e25c5c5d"
+    },
+    {
+      "path": "lib/math/SLExpressionTree.sleela",
+      "sha256": "9fd8e3f82e3d1d30588a4adcaea35660365f2de5c05f6c0e50251263a4b37dd6"
+    },
+    {
+      "path": "lib/math/SLFactor.sleela",
+      "sha256": "8c8bd5097c36903ba4df2545d861384955616aa007f3696702bce07e74507691"
+    },
+    {
+      "path": "lib/math/SLFactorial.sleela",
+      "sha256": "00d09cb10aca036e98fe75d9bf6592fdf99053e1a2c129b7c3ca5d7ca8b05440"
+    },
+    {
+      "path": "lib/math/SLFastFourier.sleela",
+      "sha256": "96771481ab102cc63271b50734a93b462fd1e97aad9b1fc1fdda05019e09865a"
+    },
+    {
+      "path": "lib/math/SLFibonacci.sleela",
+      "sha256": "58695048a9ff0ee8563ee58a09d51df8e5e6f3717a444442528423909110f7b9"
+    },
+    {
+      "path": "lib/math/SLFiniteSet.sleela",
+      "sha256": "4aadd9fd21c36b4cb325fba64b7dfbd05dbda0f2ee6198890ea511a19c5f82b6"
+    },
+    {
+      "path": "lib/math/SLFixedPoint.sleela",
+      "sha256": "0894b6f2f69f6dcb3bd59fcc6eb58e3df65f8302e2a523c46ecdf7b75653efd2"
+    },
+    {
+      "path": "lib/math/SLFloatMath.sleela",
+      "sha256": "a945de2dbcf59b1e76ae75c8eb3c94c451c0e2668c15a4194df5736cd2e55aab"
+    },
+    {
+      "path": "lib/math/SLFormula.sleela",
+      "sha256": "179ed20f806e05076f7bfc9c296564739d326c090a6f8f40a8abe92a6de5cf59"
+    },
+    {
+      "path": "lib/math/SLFormulaParser.sleela",
+      "sha256": "a56f2be4c5904a731f5b4a08154b8384ec8a21fc9901de56c3da3e35d8e24029"
+    },
+    {
+      "path": "lib/math/SLFormulaSimplifier.sleela",
+      "sha256": "e75d63d28a065a629d310ba0a758929d128f420c1a1d79c100109083283bcef8"
+    },
+    {
+      "path": "lib/math/SLFourier.sleela",
+      "sha256": "be7240602b05dfd74b9c1ab7d040a37af76b95e826c5f1d7ce4114c3204a8663"
+    },
+    {
+      "path": "lib/math/SLFourierSeries.sleela",
+      "sha256": "2f66544d7d60033105ca04f87d1c80e0bfff1b59601c4ba12346a697735109b4"
+    },
+    {
+      "path": "lib/math/SLFunction.sleela",
+      "sha256": "63587c7beb84a6db551e84ae3ffa04ade7d1ad8a03c99501270016dd949b947e"
+    },
+    {
+      "path": "lib/math/SLGcd.sleela",
+      "sha256": "a765fb09ba936bed5fe8f38cbd4c9504104402b337f58b5ec87bf697f71afbc8"
+    },
+    {
+      "path": "lib/math/SLGeometry.sleela",
+      "sha256": "c4e966f8c6a8969b53b6dd4a728c34686cd343d1a84f81559cc9dd4d5998c0ad"
+    },
+    {
+      "path": "lib/math/SLGradient.sleela",
+      "sha256": "ce2caafd905e210311a9b41ff45c932fca666e16c9e226e60b10296054a389ea"
+    },
+    {
+      "path": "lib/math/SLGradientDescent.sleela",
+      "sha256": "87f9d3a6720bfd52ff4ed21995fb127dbeb18362154e8bc8d13cd06822149b16"
+    },
+    {
+      "path": "lib/math/SLGradientField.sleela",
+      "sha256": "9c21a1a68e51724ce498b7531edcf1a2d536fad3d600a2a7f04208c8f6db7cb3"
+    },
+    {
+      "path": "lib/math/SLGraph.sleela",
+      "sha256": "2f616f2989e6c1890f6b35727f6debe7e2baa3a3dcf7277e3cc77ab6b232fbb5"
+    },
+    {
+      "path": "lib/math/SLGraphEdge.sleela",
+      "sha256": "efb53b63a7c5191e26978d19a0f18e3f3a7fa777b03f7e853c0537a6bed27ff5"
+    },
+    {
+      "path": "lib/math/SLGraphNode.sleela",
+      "sha256": "a074128549e9d049ccc69fb4cf4c7d30ff8412b7e332dbf3fb7a6c5946b6dff0"
+    },
+    {
+      "path": "lib/math/SLHessian.sleela",
+      "sha256": "9dd0511f049cd95ef6684740d514a73c7d70f897e0ecc742ff154802d8158a4b"
+    },
+    {
+      "path": "lib/math/SLHistogram.sleela",
+      "sha256": "1f02ced5e9c5f853550d704d54b045ecfde1783b720b842eb8502000466a93a0"
+    },
+    {
+      "path": "lib/math/SLHypothesisTest.sleela",
+      "sha256": "1d9f95e5f106db61a98727f885bd453837ff8e4a148f88f486586db789bed383"
+    },
+    {
+      "path": "lib/math/SLInequality.sleela",
+      "sha256": "88a2ad37c3153ede0ef7d4cad17e98763ecb49f4c9cd50eee8d5c36646d6d208"
+    },
+    {
+      "path": "lib/math/SLInfiniteSet.sleela",
+      "sha256": "a95c1982e15f853cef9b8ebf631b86f89db34e0eba76807e34f95805cebec587"
+    },
+    {
+      "path": "lib/math/SLIntegerMath.sleela",
+      "sha256": "695910426b56cef5d9ffe6311df79fe9b9056beac6c420eab835313fcd221eff"
+    },
+    {
+      "path": "lib/math/SLIntegral.sleela",
+      "sha256": "5f36fe0e101328f5a6d82f114d19bc204f4e449dafc6e4d5eb8ac5b25d7d2001"
+    },
+    {
+      "path": "lib/math/SLInterpolation.sleela",
+      "sha256": "718b54b176b7c38bce8586436fb96a12b07fa6e68c1e6b89ee2c6fdaaaf51eb4"
+    },
+    {
+      "path": "lib/math/SLInterpolationTable.sleela",
+      "sha256": "2f4da4228d0b02b7f4028353038c6e87825127d682b8f762e6d535c49a03269c"
+    },
+    {
+      "path": "lib/math/SLIntersection.sleela",
+      "sha256": "622eaec858ef77fc3a3492688000d19ba66909353303968642520ca84b6d2260"
+    },
+    {
+      "path": "lib/math/SLInterval.sleela",
+      "sha256": "f242b9f1ad132158a449d1aebf3fe0929b3230ab5cfb0b66c17f3b1ae2f6beda"
+    },
+    {
+      "path": "lib/math/SLIntervalArithmetic.sleela",
+      "sha256": "78181ae40d01e785052ad8fde3079c808a43b326e4ac1569e247a52621353435"
+    },
+    {
+      "path": "lib/math/SLInverse.sleela",
+      "sha256": "7273ae959352654b03666775e446e0f3991586ac3353cb5b06461900117009d9"
+    },
+    {
+      "path": "lib/math/SLIteration.sleela",
+      "sha256": "aea94269da186b72d94971391112f6f881c0f8eec7fd67b64b91597adc3fbe2c"
+    },
+    {
+      "path": "lib/math/SLJacobian.sleela",
+      "sha256": "acbc4081845aca3931abf1f183e9ed3bc97cb3011e18ef1af1a6ff2b6746242d"
+    },
+    {
+      "path": "lib/math/SLKurtosis.sleela",
+      "sha256": "f815499cbf5174ac89b3d3ae76c80cb1f4c7c1ba4271b0ba9e6c6932d759ca14"
+    },
+    {
+      "path": "lib/math/SLLTangent.sleela",
+      "sha256": "b0b5b5e7d5c9c223e41cfd3520e8e936e6c7ffeebdbabd76f76017c4da11abd8"
+    },
+    {
+      "path": "lib/math/SLLagrangeInterpolation.sleela",
+      "sha256": "bb486baea6b96e7e67859af6da79b036946ce65e9c930a6c3c738c1916c6c1f7"
+    },
+    {
+      "path": "lib/math/SLLambda.sleela",
+      "sha256": "6c566182c3dce7938821aba5ef298d8c2b3c7694f3ec9673c4f5167c059ad2df"
+    },
+    {
+      "path": "lib/math/SLLaplace.sleela",
+      "sha256": "c1a9f2b69f78a708beeb7bcd481b92d4fe49e5450305c79a71d80d832cd19679"
+    },
+    {
+      "path": "lib/math/SLLcm.sleela",
+      "sha256": "110847af11f0f8b7772a9a6b22c2347381f225e050b1c1c4cfe01bf625c32c03"
+    },
+    {
+      "path": "lib/math/SLLeastSquares.sleela",
+      "sha256": "fdc0d6e27505bfaf2c48119ebaeca13b039bde4d36d709ed6198c4280c46305a"
+    },
+    {
+      "path": "lib/math/SLLimit.sleela",
+      "sha256": "0f535086a029cd20f3e267f3e35ffb01c0dec40ca01ab91d2872d12dc2df29c3"
+    },
+    {
+      "path": "lib/math/SLLine.sleela",
+      "sha256": "897fa86e7bc1d8f92a5a3d8351e06b4a4e66bd4ccf9eed0db60d598755753d84"
+    },
+    {
+      "path": "lib/math/SLLinearAlgebra.sleela",
+      "sha256": "54ad0f5e59f632c1efba49db7ae9493bba6dd85c73c95f588609eb3723470cb0"
+    },
+    {
+      "path": "lib/math/SLLinearProgram.sleela",
+      "sha256": "88282a16b8d7003e1afa9aa63d295e3d349dcb03b8718e96d83b8c4417a2a097"
+    },
+    {
+      "path": "lib/math/SLLinearRegression.sleela",
+      "sha256": "341ddff644cd24272ba76fb6d0b52b9e42ed5d73266a2bc35e141d5bbad1b353"
+    },
+    {
+      "path": "lib/math/SLLogarithm.sleela",
+      "sha256": "e243615370c55eda886c904ba37feb6912c19a22794709d47b10225356fa5657"
+    },
+    {
+      "path": "lib/math/SLLongMath.sleela",
+      "sha256": "64456627aa07e3472e7f760f5e939ba0323ef6fe5408f71cbac5374ee7fb8bf5"
+    },
+    {
+      "path": "lib/math/SLMachineEpsilon.sleela",
+      "sha256": "66e13eb623a140c54d3a2fa664b9c0652a5a1843801b2e5aea308cda58d01532"
+    },
+    {
+      "path": "lib/math/SLMarkovChain.sleela",
+      "sha256": "354a20e653d4a5148884007ef91350fa3234d335263775c21ccbd2a9d7c4ad64"
+    },
+    {
+      "path": "lib/math/SLMath.sleela",
+      "sha256": "130e9fe9a8668051dec287e1188ecc8825efa7ae28b988550ce2657499527cdb"
+    },
+    {
+      "path": "lib/math/SLMathContext.sleela",
+      "sha256": "2bc04b49e894a81e7fb498b1a5d1119ca50d62eba8d8b9ab1bd8b712da925231"
+    },
+    {
+      "path": "lib/math/SLMathEngine.sleela",
+      "sha256": "9c4f741a0ffbae1896ce49724715e86fb9089b6b0b4023f14576cf8d1cd79832"
+    },
+    {
+      "path": "lib/math/SLMathEvaluator.sleela",
+      "sha256": "29a3dba17331c8433f0c2514873b8137551643c9b6c4d33a160460fbedb79049"
+    },
+    {
+      "path": "lib/math/SLMatrix.sleela",
+      "sha256": "88deac5e7f9cd8e0ff09ba00db718de2ee16b82a85e8253573c279f48a4813d6"
+    },
+    {
+      "path": "lib/math/SLMatrixOperations.sleela",
+      "sha256": "d8ce8581e1d25f1e131c7f6f2c67ca13fa03f973b8a0c3f4d17a91b0a4330ac3"
+    },
+    {
+      "path": "lib/math/SLMax.sleela",
+      "sha256": "8c02f84904f272e6bef0a48d0777acb2cfdb5de0ebbb1897abd2bf2e8c50fbe9"
+    },
+    {
+      "path": "lib/math/SLMean.sleela",
+      "sha256": "02fe5959382dc2abb02744909e457d85a364e8ed94dbec2c446c31435afb854b"
+    },
+    {
+      "path": "lib/math/SLMedian.sleela",
+      "sha256": "bfc27a55a799352d27273f48b7108313d551ef64cfe27df4903971db45cbb204"
+    },
+    {
+      "path": "lib/math/SLMetric.sleela",
+      "sha256": "730bbd0984b3711fabeac205d1f6ead45b54609a07e249c01b1794ee8b770fd3"
+    },
+    {
+      "path": "lib/math/SLMin.sleela",
+      "sha256": "dd3357548e86178d609ee7187b9c709325370434fc71f74bcedf269e95d3780d"
+    },
+    {
+      "path": "lib/math/SLMode.sleela",
+      "sha256": "f609a88973d52c0c0d4cdcd649ce4188e27017e5695813ff47d995ae2c1eeb18"
+    },
+    {
+      "path": "lib/math/SLModulo.sleela",
+      "sha256": "b5f46043f9c59fc42f856a8608ac9acc2242cda936934ff49555b8eb02c18c57"
+    },
+    {
+      "path": "lib/math/SLMoment.sleela",
+      "sha256": "54c718858706b746ad9425ade692ed9157f8279a98e8faa19a9ecf0db7a073da"
+    },
+    {
+      "path": "lib/math/SLMonteCarlo.sleela",
+      "sha256": "dfa5b09b3fe362e90b10978ed3b2352f8db8bc73015c8bd4d50767988449d5a8"
+    },
+    {
+      "path": "lib/math/SLMonteCarloSampler.sleela",
+      "sha256": "87de58d972a4fe46c36aca9924509598a16ec5fb6298f0ae786b22e0de207d65"
+    },
+    {
+      "path": "lib/math/SLNewtonInterpolation.sleela",
+      "sha256": "942df2d16a35ffd09e7c5983c600570d078e52d25998e40cb8dac9a14d20cc60"
+    },
+    {
+      "path": "lib/math/SLNewtonMethod.sleela",
+      "sha256": "b721b789ff93e278760330cda03e3eed41547eeeb37a5f550b2ada5d3f17d36a"
+    },
+    {
+      "path": "lib/math/SLNewtonOptimization.sleela",
+      "sha256": "28be8b8f3ac6bfe0d26ebbba4936d0569ba9f951bdd0f177abe9bda3748d3794"
+    },
+    {
+      "path": "lib/math/SLNewtonSolver.sleela",
+      "sha256": "bd66bc8a12badecf589a03dd1943e97f2446b548f1a7096a9aa8743cd1dd1a33"
+    },
+    {
+      "path": "lib/math/SLNormalDistribution.sleela",
+      "sha256": "73b80f67cbc6eb4f0c6bb65e96bfeaa2faa18419977cf00ae745c9a01ed0b26b"
+    },
+    {
+      "path": "lib/math/SLNumber.sleela",
+      "sha256": "bdc6af172808ad5a2618a597c5ba3b020064643e883d579035f32773a356bf48"
+    },
+    {
+      "path": "lib/math/SLNumeric.sleela",
+      "sha256": "5627218e34fee8b262f3bed41e843a218df6db08bf9524c78f0a0c07b35bb402"
+    },
+    {
+      "path": "lib/math/SLNumericFormatter.sleela",
+      "sha256": "33f68543e984d161b75c96e27b6a0886df303660ac8467cc00af10b0d6b139ea"
+    },
+    {
+      "path": "lib/math/SLNumericParser.sleela",
+      "sha256": "cb9fb644b18cbf1482e262e3567071b2a431390e11314dae7d3a05a3010553bb"
+    },
+    {
+      "path": "lib/math/SLNumericalDerivative.sleela",
+      "sha256": "e547b25e0119b77ce18aa59a0997281ee2097a34209a36aa0d68680dcd9d35d9"
+    },
+    {
+      "path": "lib/math/SLNumericalIntegration.sleela",
+      "sha256": "414b5ff13da12776876d775343622325da86415a0687dee5b5e2d770e06ae01b"
+    },
+    {
+      "path": "lib/math/SLNumericalMath.sleela",
+      "sha256": "d9dfadebf68e0044176b7435b96441303c42f9cf00ed618e5895d5b44cf97b08"
+    },
+    {
+      "path": "lib/math/SLNumericalPrecision.sleela",
+      "sha256": "ef6e494e3b09ee79254efffebb832ba3ea8b87b2769979af558a98e32c16b18a"
+    },
+    {
+      "path": "lib/math/SLNumericalRoot.sleela",
+      "sha256": "9d6ebc7b60d6630b9e5d6c894d0ccecc2240467b43520b2fa1d64d34a4c781fe"
+    },
+    {
+      "path": "lib/math/SLNumericalSequence.sleela",
+      "sha256": "1110c32cd9202d1a392941bb193f47a110ea3c077577b0015b37a632e4e66d0b"
+    },
+    {
+      "path": "lib/math/SLNumericalSolver.sleela",
+      "sha256": "c44932bec3088d9379303ad8671b531071bb0a4d3618748db522de4f2e1718a2"
+    },
+    {
+      "path": "lib/math/SLODESolver.sleela",
+      "sha256": "13964a2acbdc2dafe1ea17b2f9a25cb0ade202deef4fa91ee8d82956072b22e8"
+    },
+    {
+      "path": "lib/math/SLObjective.sleela",
+      "sha256": "1b2d5f3d469f3832005799575768937172acfc7698a684f65d137f2e98203db4"
+    },
+    {
+      "path": "lib/math/SLOptimization.sleela",
+      "sha256": "b44ecb052115e8e4bcc48e82bf61c46deac7c8c761e94e2712e5354d7a0e762d"
+    },
+    {
+      "path": "lib/math/SLOptimizationProblem.sleela",
+      "sha256": "579414ad4203b9ccd1d82c82145efe1d848b9b2277f18985f379c4baced2b055"
+    },
+    {
+      "path": "lib/math/SLOrder.sleela",
+      "sha256": "b883f6d11c2c0e20826d65e40726685e458578ae9440f096f13b3c9b04630f06"
+    },
+    {
+      "path": "lib/math/SLOrdinaryDifferentialEquation.sleela",
+      "sha256": "fcac3b0075a6b66c85a248f08fdde87204e333a7d5684dca30ce846f0f328ea4"
+    },
+    {
+      "path": "lib/math/SLOverflow.sleela",
+      "sha256": "24a7a204322434b59020fe3fec273abe64329fbc2ae1b929cc680ac4de0724bb"
+    },
+    {
+      "path": "lib/math/SLPDE.sleela",
+      "sha256": "11fb56cb47b77cb4bd8807e890fe0a4f820bc59cb54441830535366b0f23f314"
+    },
+    {
+      "path": "lib/math/SLPartialDerivative.sleela",
+      "sha256": "10b570b96a2268ac4f76ab9a5324cd59b6fa5f861226d56cb06c83472e06a2df"
+    },
+    {
+      "path": "lib/math/SLPathLength.sleela",
+      "sha256": "c3db54d1f4872d77f8adcb875d19a985d99eebcf438959a6273b1cc0941213cd"
+    },
+    {
+      "path": "lib/math/SLPercentile.sleela",
+      "sha256": "2b15393c5cd45bdfeefd030d50294c210c317b8d0c607e5e574f42276f696cd0"
+    },
+    {
+      "path": "lib/math/SLPermutation.sleela",
+      "sha256": "572d31486d37de4df1ebdfe99478430dae22d616908fd8c17ed2f46467dd28d2"
+    },
+    {
+      "path": "lib/math/SLPermutationGenerator.sleela",
+      "sha256": "c2ec58de4eb2bf308a45814962c1e4fc87525300117212dd9f586089da99b0d9"
+    },
+    {
+      "path": "lib/math/SLPhysicalConstant.sleela",
+      "sha256": "55576fb7619e711b55ea5dfb443cdf2e23448e3f23cf2f9efc846f44ee1572a3"
+    },
+    {
+      "path": "lib/math/SLPlane.sleela",
+      "sha256": "837755f00400a25e2ae86d904edaac9916964fb901f91a790b46a65fb24b1ae1"
+    },
+    {
+      "path": "lib/math/SLPoint.sleela",
+      "sha256": "65ff90e8e924803655fa8360d2cf67cb463d2afca073554841caabf96c1b8ff5"
+    },
+    {
+      "path": "lib/math/SLPoissonDistribution.sleela",
+      "sha256": "179895661ffbdbc80be857380015002ec8c0eceb53cb488191540238570afadb"
+    },
+    {
+      "path": "lib/math/SLPolarCoordinate.sleela",
+      "sha256": "2f79986003d0f72382bba5a6d593edbc4dc337ed551abe216613af9c588b21de"
+    },
+    {
+      "path": "lib/math/SLPolynomial.sleela",
+      "sha256": "6f9003415317f7a1a5b80d510989add156655f4859918edf547265890cf6b732"
+    },
+    {
+      "path": "lib/math/SLPolynomialRegression.sleela",
+      "sha256": "e45813257fb10c948d0e9196a7641a888afa776b34bcfb9fd5fb83b735194d51"
+    },
+    {
+      "path": "lib/math/SLPower.sleela",
+      "sha256": "8e0638f663358bb5017c623399cc3c3d97ead3c128e36247d770e8deb5a720c0"
+    },
+    {
+      "path": "lib/math/SLPrecision.sleela",
+      "sha256": "fa95d3ce05d3d5d0e4470547242283e0a4fc130eebbcb3c81290ff9b33f4ba6a"
+    },
+    {
+      "path": "lib/math/SLPredicate.sleela",
+      "sha256": "41b7b22cb09f659ded96a1bd54b7198080e1f4f5a3d543f4eb558e9c01d16c42"
+    },
+    {
+      "path": "lib/math/SLPrime.sleela",
+      "sha256": "0faa3878b46c550c901a4b5c831a7cd2df0533ad695e78b3fb95c62452f5c657"
+    },
+    {
+      "path": "lib/math/SLPrimeFactorization.sleela",
+      "sha256": "8d11306ab085340c0089b9d207090d2517597531b1ce6b8c097976bc10686638"
+    },
+    {
+      "path": "lib/math/SLProbability.sleela",
+      "sha256": "59b4071f829a6537974b050827afbefd6b028bd57fe9d0d8e2dfa52eff708ee0"
+    },
+    {
+      "path": "lib/math/SLProbabilityDensity.sleela",
+      "sha256": "a8698c56f493b2e177a1bcbd4bd1817bef3a8c9392d26a8c4a1c0870c3c523dc"
+    },
+    {
+      "path": "lib/math/SLProbabilityMass.sleela",
+      "sha256": "601ba395c304eef3f13f1f2581348694db0ab45645293fc7bb75291345d2f443"
+    },
+    {
+      "path": "lib/math/SLProduct.sleela",
+      "sha256": "a5ffcb5076a1023ce19fcdaa53e2cdfe3c38d301abb4f2e2ccd7992192ac5b1c"
+    },
+    {
+      "path": "lib/math/SLProgression.sleela",
+      "sha256": "5d4f2a8f26ce9314e656634ab7fb236d9f641b5f0ff88809d27582a51717e5cb"
+    },
+    {
+      "path": "lib/math/SLQuadraticProgram.sleela",
+      "sha256": "69a61ada90c6e1a048ebbae9f546cef50468ce17ec85bc66cc596b13a0bf9f98"
+    },
+    {
+      "path": "lib/math/SLQuantity.sleela",
+      "sha256": "89d072c1a31b87e7dd83c02fdabeb636a59bfcf4b6cb4e1a1f0ce1d3d6913312"
+    },
+    {
+      "path": "lib/math/SLQuaternion.sleela",
+      "sha256": "e009e0d48ef8db5a06fb6050505d4a3663f8edbb5e2505ab282336d3974cfb4e"
+    },
+    {
+      "path": "lib/math/SLRandomDistribution.sleela",
+      "sha256": "19c2df39ac2123222e2af5aff39bb4888ecdedfaa5ce7cd38df50f7f5d073453"
+    },
+    {
+      "path": "lib/math/SLRandomGenerator.sleela",
+      "sha256": "6c5a09e2664e0b66b77b8b774d9054d80c24cfee00c08adb788ca90f5d0c7e46"
+    },
+    {
+      "path": "lib/math/SLRandomVariable.sleela",
+      "sha256": "d74b46a1a76647838a1cc9bdaf68a5f945f4ea65a745243a605886af664c23c1"
+    },
+    {
+      "path": "lib/math/SLRational.sleela",
+      "sha256": "a3de9e5ac7ac0deab8693bceee907d6a6973ae148fa33b9157169c3f992b1c94"
+    },
+    {
+      "path": "lib/math/SLRay.sleela",
+      "sha256": "9b31366a11c907da070f615543c415f990f12056c3f696807097c8df00ee9092"
+    },
+    {
+      "path": "lib/math/SLReciprocal.sleela",
+      "sha256": "ac72a8378bd3926fbbf10129078092477644c73a298edae3f5bafe0847986ea9"
+    },
+    {
+      "path": "lib/math/SLRecurrence.sleela",
+      "sha256": "1ffb9771781761b811556ce2fdf721327fe2cff4bd920292d519c78ef839bc7c"
+    },
+    {
+      "path": "lib/math/SLRecurrenceSolver.sleela",
+      "sha256": "7ef1dc605f38c8907a7c376feb0452c0d7b515b1a7873be94750edd70af3346e"
+    },
+    {
+      "path": "lib/math/SLRegression.sleela",
+      "sha256": "10d01d862b3066d1601b5b511085165b48eb96e901773af1efa64741e6dd6fb3"
+    },
+    {
+      "path": "lib/math/SLRegressionModel.sleela",
+      "sha256": "ce905ed704823339e84557a53a2a6f355b51153d9711369ea7ee167234108287"
+    },
+    {
+      "path": "lib/math/SLRegularization.sleela",
+      "sha256": "a307976ff5cbb7ebd454e9f64f1cb2b919f496ecbdbdaf60491849e5ddbc7b12"
+    },
+    {
+      "path": "lib/math/SLRelation.sleela",
+      "sha256": "67f7f55f31f923c05a6ea7eb93362d9f6dfa01813f22cbcfa73cbe618614a9e7"
+    },
+    {
+      "path": "lib/math/SLResidual.sleela",
+      "sha256": "47a80f6f74270d4342e668ca8489e288bc24497c54ded58796377b17e44ff2e8"
+    },
+    {
+      "path": "lib/math/SLRoot.sleela",
+      "sha256": "37e962408e0acf7f83f89ef1cf43c3d4c5606d365f5249d5be6668b4cec60222"
+    },
+    {
+      "path": "lib/math/SLRootFinder.sleela",
+      "sha256": "44a78502546f9ee261e2fe72bb9293dbe931126e85ba378fc63ea36a14a5470d"
+    },
+    {
+      "path": "lib/math/SLRotation.sleela",
+      "sha256": "271a7e508b65512c99803a1e2869d0a9cb49fb8485bce0d73b11c1e1f1034ca8"
+    },
+    {
+      "path": "lib/math/SLRounding.sleela",
+      "sha256": "be6d2885640f33ea58faf993ba863587f51d666cbf11caacd653dd1c7174b4e1"
+    },
+    {
+      "path": "lib/math/SLRungeKutta.sleela",
+      "sha256": "6829a4809079e8d1012a3428ed79935bdef66c610ac076b4703878f999ef4d6e"
+    },
+    {
+      "path": "lib/math/SLScalarField.sleela",
+      "sha256": "590b10a0027a941a91a8dee775ae780881e1b6b873abb47d889684be51c4ddc5"
+    },
+    {
+      "path": "lib/math/SLScale.sleela",
+      "sha256": "fc59f7cb1f009a1c33a2aa9e9d11830b944f17d193ceeac02e237ac8549f77db"
+    },
+    {
+      "path": "lib/math/SLSecantMethod.sleela",
+      "sha256": "80add3e8fdfe0c4459b21aff300e4af245e288681418c5bea4ca7a42035bf427"
+    },
+    {
+      "path": "lib/math/SLSeededRandom.sleela",
+      "sha256": "851e9a5415099d68b9bde2571ef8870720230fb4c0ba1811e229b04d2c3a6d05"
+    },
+    {
+      "path": "lib/math/SLSequence.sleela",
+      "sha256": "ea0b716d0e56fef35d62d50f3921e180416a0e764b4ef4f21b42c0d1893f66f1"
+    },
+    {
+      "path": "lib/math/SLSeries.sleela",
+      "sha256": "1795dfa5c9d9052d1daa85cab311f64d8600f05cb4d6e211634c105e676bfbc3"
+    },
+    {
+      "path": "lib/math/SLSeriesExpansion.sleela",
+      "sha256": "eeab9d60cad6dc5f7eb208448fb4112f13c3f17f138b64bd1fa4879abb3ffa5e"
+    },
+    {
+      "path": "lib/math/SLSetOperations.sleela",
+      "sha256": "d9b57586302378d60d94fb1259afb64604e8d93d08b289c68ffa6223c435812f"
+    },
+    {
+      "path": "lib/math/SLSetTheory.sleela",
+      "sha256": "d8f1967f14ee3056b01b8b4c6fe679ec9c02f2f7b678d2400995e88e07c891c1"
+    },
+    {
+      "path": "lib/math/SLSignal.sleela",
+      "sha256": "6f8ccf3a977a1632a69f4ebff3c0bd377d91fbcaff3d3971ace7b2c45d24771e"
+    },
+    {
+      "path": "lib/math/SLSignum.sleela",
+      "sha256": "fa04bc5eb824b6fd03fa16db695c3ad2402b72438aad33e9ab2d74e353969e11"
+    },
+    {
+      "path": "lib/math/SLSimpsonRule.sleela",
+      "sha256": "d6a160f198d06ff66f14172acda21b6939aa104e08a4309c3c1420a032d987ae"
+    },
+    {
+      "path": "lib/math/SLSine.sleela",
+      "sha256": "8ea3d4047ac088bfdd496d8698c37778406f3475078fb73b96c7daaefa9bb0a3"
+    },
+    {
+      "path": "lib/math/SLSkewness.sleela",
+      "sha256": "84589f10914decc918521a16103d55d5c40320f59a2198b9cd2be0c52560e20c"
+    },
+    {
+      "path": "lib/math/SLSpline.sleela",
+      "sha256": "16898791f1da0dd559e13e074449a18901d6ce8d947a7b8700570fa411513d4b"
+    },
+    {
+      "path": "lib/math/SLStandardDeviation.sleela",
+      "sha256": "bf67964975d0bac29ce95528b2c6efa862d082ed996a3a9e7b5001d34b5caa8b"
+    },
+    {
+      "path": "lib/math/SLStandardError.sleela",
+      "sha256": "55f1f498cd9174564cdc57c2b6353337a37bbc25ad07aca3182ef5928986f035"
+    },
+    {
+      "path": "lib/math/SLStatistics.sleela",
+      "sha256": "c88ced18dfb6e04faf72b89e50e8181bd47ad8596711410c315bb89bb88b0e30"
+    },
+    {
+      "path": "lib/math/SLSum.sleela",
+      "sha256": "1e7c1056e6439b2fc1adf65d2794fc7a5b745002aa4fa1f0ce2a232ef3954f37"
+    },
+    {
+      "path": "lib/math/SLSymbolicMath.sleela",
+      "sha256": "0a0eaf0898f84e798af71f02548399e312b8fb601f1c994dddca1664451cd7f2"
+    },
+    {
+      "path": "lib/math/SLSymmetricDifference.sleela",
+      "sha256": "293604d2cf0e5efe440512cc2711c837e7ce62258bf5e656fe40c2d095b37907"
+    },
+    {
+      "path": "lib/math/SLTTest.sleela",
+      "sha256": "698ac7ce15d624aa1189a7df0f3a5f2af5eed97a4b667b627e040e617c6693d8"
+    },
+    {
+      "path": "lib/math/SLTangent.sleela",
+      "sha256": "2b6ce2921e5decc757227904198e5296305ceb584472a8ae787afab05641e990"
+    },
+    {
+      "path": "lib/math/SLTensor.sleela",
+      "sha256": "55f44cd0599b5695925113c365827a24f9591d08d7feaee63035c9918a89c2e4"
+    },
+    {
+      "path": "lib/math/SLTerm.sleela",
+      "sha256": "32d013ca587b1bfe4bd52d72df8f07cf527bb07b5b7d193c7da49f3fd7e069f4"
+    },
+    {
+      "path": "lib/math/SLTopology.sleela",
+      "sha256": "a7288048b91174b7c6db1a833d0b44323bfe10b264f0e7572693f938b10bb655"
+    },
+    {
+      "path": "lib/math/SLTransform.sleela",
+      "sha256": "86373f465c91ae2faf52263ea331220254cafe2c3e6c5dd232c99140ffe698f4"
+    },
+    {
+      "path": "lib/math/SLTranslation.sleela",
+      "sha256": "d0282a4e86c7ea75b52df43d43cf9bc0ad5fa2a2f2b7b378b05cadc852950e51"
+    },
+    {
+      "path": "lib/math/SLTranspose.sleela",
+      "sha256": "2b0d076a81556e4a77fa5ac94a8443369f79c27243af7f4d27b296c077aa455a"
+    },
+    {
+      "path": "lib/math/SLTrapezoidRule.sleela",
+      "sha256": "73f06d99ae9dfcbfe0b321078907b2beebd453a5ef0ef0af06048c602159358e"
+    },
+    {
+      "path": "lib/math/SLTrigonometry.sleela",
+      "sha256": "a5ba2735de24308fa8caf5384928ea747b611ebd11d106abfef03b517f252707"
+    },
+    {
+      "path": "lib/math/SLUnderflow.sleela",
+      "sha256": "b62f2d5414dd7ffc291e9ff186e18634234b9a2656e50c0f6ce4270790f9499a"
+    },
+    {
+      "path": "lib/math/SLUniformDistribution.sleela",
+      "sha256": "7b97b50ad6f811a998e5ddb71199f941866280476ecdce1455c596d17e603cc6"
+    },
+    {
+      "path": "lib/math/SLUnion.sleela",
+      "sha256": "a11646f1167d5808b7110e352a0185112b4339d0ac1dfb9a08bb253fe95596a5"
+    },
+    {
+      "path": "lib/math/SLUnit.sleela",
+      "sha256": "deb74d58764a34d4130a85ca0ba9d931fc700dd0f44a6a8e009f6837bbc8f5ac"
+    },
+    {
+      "path": "lib/math/SLUnitConverter.sleela",
+      "sha256": "21a5566a04b2bc71750c5199ca03f1c58c0b406dea2ac45473da3a54aefbce5f"
+    },
+    {
+      "path": "lib/math/SLVariable.sleela",
+      "sha256": "68ad97097c48360fc2e3de9726e1f4f0b8b9e08aed45cb96d92f10654fd35230"
+    },
+    {
+      "path": "lib/math/SLVariance.sleela",
+      "sha256": "55641a8aa8d4fc18ae6d2b5d6ed978fe89a94878ed129746b62aecb11a92adad"
+    },
+    {
+      "path": "lib/math/SLVector.sleela",
+      "sha256": "a35f74bff363a2bc857e17f8ea61b2bf64b9c851ebebef4e121df7007b7a232a"
+    },
+    {
+      "path": "lib/math/SLVector2.sleela",
+      "sha256": "7b03826650ff45f17e8766a8146eb367ef5728cff7eb1076994b55c573e412d1"
+    },
+    {
+      "path": "lib/math/SLVector3.sleela",
+      "sha256": "482cd2e6526e91dcf81526eda21a4afab70808dda0a74263e55508500b20f026"
+    },
+    {
+      "path": "lib/math/SLVector4.sleela",
+      "sha256": "7b9d0ed4c6d99b128cf254a587a598b9879357bf49c6e706e1d3f34ddefb5f8e"
+    },
+    {
+      "path": "lib/math/SLVectorField.sleela",
+      "sha256": "fcbf6d6ba16061f897af83f80b32cfec41aad08491370cb4cab2471ebe0befb0"
+    },
+    {
+      "path": "lib/math/SLVectorNorm.sleela",
+      "sha256": "5f8c5e04700e5b7982628cd01f0fc13b288d6869be5bc2a897649602c4db91fb"
+    },
+    {
+      "path": "lib/math/SLVectorProjection.sleela",
+      "sha256": "fa297dc6abdd008ebce991c69812c3a888bf37e56791c46d9615887694805c9d"
+    },
+    {
+      "path": "lib/math/SLZScore.sleela",
+      "sha256": "2917a41b0da12c44ecb21b241a32a05dcee331d505b5f463f366bcf5c53604b4"
+    },
+    {
+      "path": "lib/math/SLZTransform.sleela",
+      "sha256": "1625738e14ac3bb26ba91861dd21605e83d6a27440d29031503cfae44dc8abaa"
     },
     {
       "path": "lib/memory/SLAddress.sleela",
@@ -8396,7 +10848,7 @@
     },
     {
       "path": "test-suites/run-all.sh",
-      "sha256": "ffb358b7b55f33fe56bbc466759c258f269a009e2923fdac502bf50de1d597ce"
+      "sha256": "d7e73f2c95b110d7c6fd1759793ec8032211bc1a977ea95b208b81ccc4b5839c"
     },
     {
       "path": "test-suites/runtime-coverage.sh",
@@ -8405,6 +10857,10 @@
     {
       "path": "test-suites/sanitizers/run.sh",
       "sha256": "4f4c352edcaa27521018fc67a69e89e77e4c6de1afa6261c72a5df6263a29311"
+    },
+    {
+      "path": "test-suites/sleela-source-behavior.sh",
+      "sha256": "94dc38cb31aa74a8b8164ac48132b5431b792231f1ded04e90ff1899709c108c"
     },
     {
       "path": "tests/native_memory_smoke.cpp",
