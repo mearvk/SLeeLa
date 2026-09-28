@@ -25,6 +25,7 @@ import java.util.Locale;
 
 public final class AudioMixerApp extends Application {
     private final AudioMixerModel model = new AudioMixerModel();
+    private final SleelaAudioVideoSession session = new SleelaAudioVideoSession();
     private final Label status = new Label();
 
     @Override
@@ -38,10 +39,12 @@ public final class AudioMixerApp extends Application {
         root.setBottom(statusBar());
 
         Scene scene = new Scene(root, 1120, 720);
+        var css = getClass().getResource("style.css");
+        if (css != null) scene.getStylesheets().add(css.toExternalForm());
         stage.setScene(scene);
         stage.show();
 
-        status.setText(model.summary() + " • synchronized output ready");
+        status.setText(model.summary() + " • native backend boundary ready");
     }
 
     private VBox header() {
@@ -92,8 +95,14 @@ public final class AudioMixerApp extends Application {
                 "Audio-file input requested • native provider admission is the next integration point."));
         addLive.setOnAction(e -> status.setText(
                 "Live input requested • native device provider admission is the next integration point."));
-        process.setOnAction(e -> status.setText(
-                "Processing synchronized blocks • output/audio/mix-output.wav"));
+        process.setOnAction(e -> {
+            try {
+                session.processTo(java.nio.file.Path.of("output/audio/mix-output.wav"));
+                status.setText("Synchronized output dispatched to the native SLeeLa backend.");
+            } catch (RuntimeException ex) {
+                status.setText("Native audio backend unavailable: " + ex.getMessage());
+            }
+        });
 
         HBox actions = new HBox(8, addFile, addLive);
         VBox box = new VBox(10, heading, table, actions, process);
