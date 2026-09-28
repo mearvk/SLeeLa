@@ -72,7 +72,7 @@
     },
     {
       "path": "README.md",
-      "sha256": "d2de0a09ab2f708f6ae9bbbc26e20cb71a2adaeb96bc2d3ca6df64388799b324"
+      "sha256": "6f4c8633b4d651db0610d084b4f74d75dc8c8935b7c2de25e7b7967314030a31"
     },
     {
       "path": "REVISIONS.md",
@@ -681,6 +681,18 @@
     {
       "path": "api/webserver/windows/WebCtl.ps1",
       "sha256": "9c1ac130edaf18ab564b5011e38c9c54580f5e60885612aff43e8b0c995a1465"
+    },
+    {
+      "path": "audio/native/include/sleela_audio.h",
+      "sha256": "17f97fc70bc1b0ab6a8ecadb03ef6d897cb3f79ea37d218fd6f28cd4113a056e"
+    },
+    {
+      "path": "audio/native/src/sleela_audio.cpp",
+      "sha256": "5b912aeabecd3b9660a47a01de5c09fca319d3c5d34f700bd3436df94099a266"
+    },
+    {
+      "path": "audio/native/src/sleela_audio_cli.cpp",
+      "sha256": "7336de18a8cfbf409f11f40ab3bc59ef07c4ebfdb779a486ac595b312a1bb4f2"
     },
     {
       "path": "bash/CWRU/misc/errlist.c",
