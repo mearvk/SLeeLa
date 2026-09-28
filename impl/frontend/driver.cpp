@@ -9,6 +9,7 @@
 #include "chemistry_api.h"
 #include "financial_api.h"
 #include "version.h"
+#include "../annotation/AnnotationRuntime.hpp"
 #include "../catalog/sheet_catalog.h"
 #include "../xclass/xclass_loader.h"
 #include "../langin/langin.h"
@@ -415,7 +416,24 @@ static int nativeCmd(int argc,char**argv){
     return closeRc==0?0:1;
 }
 static void lowerNativeModules(sleela::Program& prog){sleela::chemistry::lowerProgram(prog);sleela::financial::lowerProgram(prog);auto saved=prog.imports;prog.imports.erase(std::remove(prog.imports.begin(),prog.imports.end(),"chemistry"),prog.imports.end());prog.imports.erase(std::remove(prog.imports.begin(),prog.imports.end(),"financial"),prog.imports.end());sleela::native::lowerProgram(prog);prog.imports=std::move(saved);}
-static int compileAndRun(sleela::Program& prog,const catalog::Catalog& cat,const sleela::SyntaxVersion& syntax={1,3}){SLVM*vm=slvm_new();if(!vm){std::cerr<<"sleelvac: unable to allocate Sleela VM\n";return 1;}int rc=0;try{lowerNativeModules(prog);sleela::compile(prog,vm,&cat,syntax);SLResult r=slvm_run(vm);if(r==SLR_ERROR){const char*e=slvm_error(vm);std::cerr<<"sleelvac: runtime error: "<<(e?e:"unknown")<<"\n";rc=1;}}catch(const std::exception&ex){std::cerr<<"sleelvac: "<<ex.what()<<"\n";rc=1;}slvm_free(vm);return rc;}
+static int compileAndRun(sleela::Program& prog,const catalog::Catalog& cat,const sleela::SyntaxVersion& syntax={1,3}){
+    SLVM*vm=slvm_new();if(!vm){std::cerr<<"sleelvac: unable to allocate Sleela VM\n";return 1;}
+    int rc=0;
+    try{
+        lowerNativeModules(prog);
+        sleela::compile(prog,vm,&cat,syntax);
+        sleela::annotation::AnnotationRuntime annotations;
+        std::string annotationError;
+        if(!annotations.install(prog.annotations,annotationError)){
+            std::cerr<<"sleelvac: annotation runtime rejected program: "<<annotationError<<"\n";
+            slvm_free(vm);return 1;
+        }
+        if(annotations.hasForwarding()) std::cout<<"[annotation] Nexter Colony: "<<annotations.nexterColony()<<"\n";
+        SLResult r=slvm_run(vm);
+        if(r==SLR_ERROR){const char*e=slvm_error(vm);std::cerr<<"sleelvac: runtime error: "<<(e?e:"unknown")<<"\n";rc=1;}
+    }catch(const std::exception&ex){std::cerr<<"sleelvac: "<<ex.what()<<"\n";rc=1;}
+    slvm_free(vm);return rc;
+}
 static catalog::Catalog loadCatalog(){const char*env=std::getenv("SLEELA_SHEET");const char*candidates[]={env,"SHEET.sheet","../SHEET.sheet","../../SHEET.sheet","../../../SHEET.sheet"};for(const char*p:candidates){if(!p||!*p)continue;bool ok=false;catalog::Catalog c=catalog::parseCatalogFile(p,&ok);if(ok)return c;}return catalog::Catalog{};}
 static int designActivityCmd(int argc,char**argv){
     if(argc<9){std::cerr<<"Usage: sleela design-activity <science> <correctness> <reproducibility> <observability> <safety> <resource> <interoperability>\n";return 2;}
@@ -444,7 +462,19 @@ static int validateArtifact(const std::string&path){
     std::cout<<"artifact ABI ok: "<<path<<" (runtime "<<SLEELA_VM_ABI_MAJOR<<"."<<SLEELA_VM_ABI_MINOR<<", format "<<SLEELA_ARTIFACT_FORMAT_VERSION<<")\n";
     return 0;
 }
-static int runArtifact(const std::string&path){SLVM*vm=slvm_load_file(path.c_str());if(!vm){std::cerr<<"sleelvac: cannot load runnable .sleela artifact '"<<path<<"'\n";return 1;}SLResult r=slvm_run(vm);if(r==SLR_ERROR){const char*e=slvm_error(vm);std::cerr<<"sleelvac: runtime error: "<<(e?e:"unknown")<<"\n";slvm_free(vm);return 1;}slvm_free(vm);return 0;}
+static int runArtifact(const std::string&path){
+    SLVM*vm=slvm_load_file(path.c_str());
+    if(!vm){std::cerr<<"sleelvac: cannot load runnable .sleela artifact '"<<path<<"'\n";return 1;}
+    sleela::annotation::DocumentAnnotations data;
+    std::ifstream af(path+".annotations");std::string line;
+    while(std::getline(af,line)){auto eq=line.find('=');if(eq!=std::string::npos&&eq>0)data.add(line.substr(0,eq),line.substr(eq+1));}
+    sleela::annotation::AnnotationRuntime annotations;std::string annotationError;
+    if(!annotations.install(data,annotationError)){std::cerr<<"sleelvac: artifact annotation runtime rejected: "<<annotationError<<"\n";slvm_free(vm);return 1;}
+    if(annotations.hasForwarding())std::cout<<"[annotation] Nexter Colony: "<<annotations.nexterColony()<<"\n";
+    SLResult r=slvm_run(vm);
+    if(r==SLR_ERROR){const char*e=slvm_error(vm);std::cerr<<"sleelvac: runtime error: "<<(e?e:"unknown")<<"\n";slvm_free(vm);return 1;}
+    slvm_free(vm);return 0;
+}
 static int runSource(const std::string&path){std::string src;sleela::Program prog;sleela::VersionResolution syntax;if(!parseSource(path,src,prog,syntax))return 1;catalog::Catalog cat=loadCatalog();return compileAndRun(prog,cat,syntax.declared);}
 static int runXclass(const std::vector<std::string>&paths){catalog::Catalog cat=loadCatalog();try{sleela::xclass::Loaded loaded=sleela::xclass::loadFiles(paths);std::cout<<"[xclass] ingested "<<loaded.metas.size()<<" SecureJDK 28 class(es):\n";for(const auto&m:loaded.metas)std::cout<<"[xclass]   "<<sleela::xclass::infoLine(m)<<"\n";return compileAndRun(loaded.program,cat);}catch(const std::exception&ex){std::cerr<<"sleelvac: "<<ex.what()<<"\n";return 1;}}
 static int xclassCmd(int argc,char**argv){enum{RUN,EMIT,INFO}mode=RUN;std::vector<std::string>files;for(int i=2;i<argc;i++){std::string a=argv[i];if(a=="--emit")mode=EMIT;else if(a=="--info")mode=INFO;else if(a=="--run")mode=RUN;else if(a.rfind("--",0)==0){std::cerr<<"sleelvac: unknown option "<<a<<"\n";return 2;}else files.push_back(a);}if(files.empty()){std::cerr<<"sleela xclass: no .xclass files given\n";return 2;}if(verifyBeforeExecution(fs::current_path()))return 1;if(mode==RUN)return runXclass(files);try{sleela::xclass::Loaded loaded=sleela::xclass::loadFiles(files);if(mode==EMIT)std::cout<<loaded.emitted;else for(const auto&m:loaded.metas){std::cout<<sleela::xclass::infoLine(m)<<"\n";if(!m.sourceFile.empty())std::cout<<"  source    : "<<m.sourceFile<<"\n";if(!m.edition.empty())std::cout<<"  edition   : "<<m.edition<<"\n";if(!m.signatureHex.empty())std::cout<<"  signature : "<<m.signatureAlg<<":"<<m.signatureHex<<(m.signed_?" (signed)":"")<<"\n";}return 0;}catch(const std::exception&ex){std::cerr<<"sleelvac: "<<ex.what()<<"\n";return 1;}}
