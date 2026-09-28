@@ -4,7 +4,7 @@
 **Inventory Revision:** 1.0  
 **Inventory Branch:** `main`  
 **Inventory Date:** 2026-09-28  
-**Unique Class Files (contract-verified): 47**
+**Unique Class Files (contract-verified): 50**
 
 > This document is the authoritative starting inventory for the SLeeLa 0.3.0-dev development line. The **47 unique class files** at the top of this document are the C++ foundational class headers directly included and contract-checked by `test-suites/cpp/test_class_contracts.cpp`. This is a verified class-file count, not a claim that no other repository source file contains a class, struct, interface, or class-like declaration.
 
