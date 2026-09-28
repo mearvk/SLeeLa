@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 """Generate a conservative C/C++ function coverage inventory."""
+import json
 import pathlib
 import re
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 OUT = ROOT / "test-suites" / "FUNCTION.COVERAGE.md"
+JSON_OUT = ROOT / "test-suites" / "FUNCTION.COVERAGE.json"
 EXCLUDE = {".git", "test-suites", "bash"}
 
 FUNC = re.compile(
@@ -83,4 +85,5 @@ lines.extend(
     for path, line, name, status in rows
 )
 OUT.write_text("\n".join(lines) + "\n")
-print(f"Generated {OUT} with {len(rows)} functions")
+JSON_OUT.write_text(json.dumps({"version": 1, "functions": [{"source": p, "line": l, "function": n, "status": s} for p, l, n, s in rows], "counts": counts}, indent=2) + "\n")
+print(f"Generated {OUT} and {JSON_OUT} with {len(rows)} functions")
