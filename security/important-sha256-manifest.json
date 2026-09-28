@@ -9347,26 +9347,6 @@
       "sha256": "bfa8b14f0061782cb6ce13ffadd62aedb021b2878036b42e792a6203ade0012c"
     },
     {
-      "path": "lib/regex/RegexNatural.sleela",
-      "sha256": "77109caa2d68c048b4c4af6089a7fa24e451ffcea96435990eb03463a1159462"
-    },
-    {
-      "path": "lib/regex/RegexNaturalGrammar.sleela",
-      "sha256": "11204227e03d1c358e747f89cbd3aca88745a291f91d661c5bcb1012f31f2b53"
-    },
-    {
-      "path": "lib/regex/RegexNaturalGroup.sleela",
-      "sha256": "52f331886253a711de4fba2b165e716ef8832b9e71919e4ded8e61700132c89a"
-    },
-    {
-      "path": "lib/regex/RegexNaturalParser.sleela",
-      "sha256": "0435c73b39e22025f671b34c6f7fb1707279637249c057a9c85d57df90e748ae"
-    },
-    {
-      "path": "lib/regex/RegexNaturalSymbol.sleela",
-      "sha256": "cfb2b6fdef338575aa1a80712c4a28d36af4873f102fb696b9991d98be83b921"
-    },
-    {
       "path": "lib/regex/RegexOptions.sleela",
       "sha256": "d0434a5b413cf0232c1ccbe84db24fd9eb0850a2677e605bdd66c8f4a7f8e1c0"
     },
@@ -9643,6 +9623,30 @@
       "sha256": "2ba3fa47bbd7dc85a7bc6e699d75cd4c99152bfeac7a551c8e178ceafa6f2e05"
     },
     {
+      "path": "make/regex/include/sleela_regex.h",
+      "sha256": "b413d66bdf8731ea1a33e440f8421f2cb79d59a53bae9f2c66106120bda14b09"
+    },
+    {
+      "path": "make/regex/include/sleela_regex.hpp",
+      "sha256": "f1e45330c861f9946a320cfeac1d873e4e207e2f5a1a36bb87e867b721e4bb49"
+    },
+    {
+      "path": "make/regex/src/sleela_regex.c",
+      "sha256": "ea7ebebd09f41c6852aa68c191f0dd53717288bcf6a7c98b266e7418b3f899b8"
+    },
+    {
+      "path": "make/regex/src/sleela_regex.cpp",
+      "sha256": "04e557c13e92cac962e93b006d587d9d859885d837ab1b90636008264a1e8706"
+    },
+    {
+      "path": "make/regex/tests/test_regex.c",
+      "sha256": "a425eb17166045d4cecd7e13ee54851d5b39c7ab8f1d591ef2fc6d2c290bc38f"
+    },
+    {
+      "path": "make/regex/tests/test_regex.cpp",
+      "sha256": "2e154264c38804eea8b88b4996048eed623ef057a3df3623392a7fb1e9d79f4f"
+    },
+    {
       "path": "manifesto/manifesto.sleela",
       "sha256": "d563a3b1badd2675e432c7144d4e67b27a04c66da74c9fdc03a3e5cfc81744b3"
     },
@@ -9777,54 +9781,6 @@
     {
       "path": "psychiatry/keysearch.py",
       "sha256": "f1aeb714584a303d55488de989ba554ea51b4ea4f8d55cf9e6097bbb4b7e126e"
-    },
-    {
-      "path": "regex/include/sleela_regex.h",
-      "sha256": "b413d66bdf8731ea1a33e440f8421f2cb79d59a53bae9f2c66106120bda14b09"
-    },
-    {
-      "path": "regex/include/sleela_regex.hpp",
-      "sha256": "f1e45330c861f9946a320cfeac1d873e4e207e2f5a1a36bb87e867b721e4bb49"
-    },
-    {
-      "path": "regex/include/sleela_regex_natural.h",
-      "sha256": "cdf6c6de9d7e00840068790d0bd5fb13ad4530dea1f032643804d166f37cf4a8"
-    },
-    {
-      "path": "regex/include/sleela_regex_natural.hpp",
-      "sha256": "b3928762383db357128dab39d6cc64ca528b083ed87194550bb1b2cd0c6d9aa4"
-    },
-    {
-      "path": "regex/src/sleela_regex.c",
-      "sha256": "ea7ebebd09f41c6852aa68c191f0dd53717288bcf6a7c98b266e7418b3f899b8"
-    },
-    {
-      "path": "regex/src/sleela_regex.cpp",
-      "sha256": "04e557c13e92cac962e93b006d587d9d859885d837ab1b90636008264a1e8706"
-    },
-    {
-      "path": "regex/src/sleela_regex_natural.c",
-      "sha256": "b8cc5817897700cd94ffdc1e6c529e977d816e92f79e633d454f948737f89ba2"
-    },
-    {
-      "path": "regex/src/sleela_regex_natural.cpp",
-      "sha256": "f2d775026c8b9651becf8c7cf11f6b532e258efbe90c6cfdd546423c5223b0c6"
-    },
-    {
-      "path": "regex/tests/test_regex.c",
-      "sha256": "a425eb17166045d4cecd7e13ee54851d5b39c7ab8f1d591ef2fc6d2c290bc38f"
-    },
-    {
-      "path": "regex/tests/test_regex.cpp",
-      "sha256": "2e154264c38804eea8b88b4996048eed623ef057a3df3623392a7fb1e9d79f4f"
-    },
-    {
-      "path": "regex/tests/test_regex_natural.c",
-      "sha256": "01050c04a7519f5aec136344335116c9db4252200ff1492af65cf12c4150b778"
-    },
-    {
-      "path": "regex/tests/test_regex_natural.cpp",
-      "sha256": "78ccb48b9413143924f68cc1795bebcf5b8a82d63bb57786012df7c4b6b79953"
     },
     {
       "path": "rmi/examples/client/RmiClient.sleela",
