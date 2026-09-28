@@ -22,6 +22,7 @@ typedef struct sleela_debugger_line_point {
 } sleela_debugger_line_point_t;
 
 /* Register a source-line control point. A line may be registered more than once. */
+/* Returns zero when the point is invalid or cannot be registered. */
 uint64_t sleela_debugger_add_line_point(
     sleela_debugger_session_t *session,
     const sleela_debugger_line_point_t *point);
