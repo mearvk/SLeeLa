@@ -45,18 +45,29 @@ Nordshrift, XCLASS, Sigil, build/package tooling and future IDE/language-server 
 ## Security
 Integrity, permissions, resource limits, authenticated carriers and security diagnostics.
 
-## Reference rule
-This index points to subsystem documents. Individual headers, models and specifications remain authoritative for exact signatures and wire/ABI details.
+## Common, Included — Responsibility Classes
+The foundational API contains 75 responsibility classes across three sets: 50 Common, Included classes plus 25 conversational classes.
 
-## Common, Included — Fundamental Responsibility Classes
-The Common, Included layer now contains 50 reusable responsibility classes, organized as two 25-class sets.
-
-### Set 1 — Fundamental responsibilities
+### Set 1 — Fundamental
 Resource, Identifier, Name, Version, Status, Error, Result, Option, Configuration, Parameter, TypeDescriptor, EnumDescriptor, Schema, Validator, Serializer, Deserializer, Buffer, ByteStream, Input, Output, Clock, Timer, Mutex, Condition, Thread.
 
-### Set 2 — Supported platform/runtime responsibilities
+### Set 2 — Platform / Runtime
 Process, Environment, File, Directory, Path, Task, Scheduler, Event, EventBus, Future, CancellationToken, NetworkEndpoint, Transport, TcpTransport, UdpTransport, DnsResolver, SecureChannel, Service, Router, Listener, Server, Client, Session, Connection, Handler.
 
-Native contracts and implementations are maintained under impl/fundamental/. Set 1 is specified by api/COMMON_INCLUDED_FUNDAMENTAL.md; Set 2 is specified by api/COMMON_INCLUDED_NEXT_25.md.
+### Set 3 — Conversation
+Participant, Identity, Role, Message, MessageId, MessagePart, Content, Attachment, Conversation, ConversationId, Turn, Transcript, Context, ContextItem, ContextWindow, Topic, Reference, Command, CommandArgument, CommandResult, Intent, Response, ResponsePart, Reply, ResponseStatus.
+
+## Extensibility and Source Routing
+A generic hierarchy/chain mechanism routes explicit system context toward a source implementation. The core contract is Scope → Area → Chain → Node → Decision → Target → Source Binding → Implementation.
+
+See api/EXTENSIBILITY_API.md and SYSTEM.PRINCIPLES.md.
+
+### Current extensibility responsibilities
+RouteTarget, RouteNode, RouteContext, RouteDecision, RouteChain, SourceBinding, SourceResolver, ExtensionPoint, Extension, ExtensionDescriptor, ExtensionRegistry, HierarchyRouter, SourceRouter.
+
+### Next architectural sets
+Network and Program/Process are intentionally sibling expansion areas. Cross-cutting extension areas include configuration, capabilities, permissions, observability, persistence, plugins, scripting, generated code, diagnostics, testing and platform adapters.
+
+**Reference rule:** subsystem documents and source headers remain authoritative for exact signatures and wire/ABI details.
 
 **Max Rupplin — MEARVK LLC — 2026**
