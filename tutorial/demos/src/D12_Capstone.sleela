@@ -1,0 +1,30 @@
+#sleela 1.2
+// D12_Capstone.sleela — companion to Lesson 12 (Putting it together).
+// Combines the pieces: a typed helper (throughput), a guard, a loop, and a
+// print summary. Built via the sheet for the sleela target, it produces a
+// runnable artifact and a .ledger — the whole series in one small module.
+class D12_Capstone {
+
+    int throughput(int completed, int window) {
+        if (window <= 0) {
+            return 0;
+        }
+        return completed / window;
+    }
+
+    void main() {
+        print("== Lesson 12: capstone ==");
+        int completed = 360;
+        int window    = 6;
+        print("throughput = " + throughput(completed, window) + " ops/second");
+        int i = 1;
+        int acc = 0;
+        while (i <= window) {
+            acc = acc + throughput(completed, window);
+            i = i + 1;
+        }
+        print("accumulated over window = " + acc);
+        print("built + ledgered end to end");
+        print("done");
+    }
+}
