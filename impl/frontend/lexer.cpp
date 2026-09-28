@@ -11,7 +11,7 @@ namespace sleela {
 
 const char* tokName(Tok t) {
     switch (t) {
-        case Tok::Int: return "int-literal"; case Tok::Double: return "double-literal";
+        case Tok::Int: return "int-literal"; case Tok::At: return "@"; case Tok::Double: return "double-literal";
         case Tok::Str: return "string-literal"; case Tok::Ident: return "identifier";
         case Tok::KwClass: return "class"; case Tok::KwStatic: return "static";
         case Tok::KwVoid: return "void"; case Tok::KwIntT: return "int";
