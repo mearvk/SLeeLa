@@ -12,7 +12,38 @@ void Parser::error(const std::string& msg) const {const Token&t=cur();throw std:
 // name throughout parsing, regardless of declaration order (C/C++-like: a
 // struct type may be referenced before or after its definition here).
 void Parser::collectStructNames(){for(size_t k=0;k+1<toks_.size();++k){if(toks_[k].kind==Tok::KwStruct&&toks_[k+1].kind==Tok::Ident)structNames_.insert(toks_[k+1].text);}}
-Program Parser::parseProgram(){collectStructNames();Program p;while(!check(Tok::Eof)){if(accept(Tok::KwImport)){p.imports.push_back(expect(Tok::Ident,"module name").text);expect(Tok::Semicolon,"';'");}else if(check(Tok::KwStruct))p.structs.push_back(parseStruct());else if(check(Tok::KwClass))p.classes.push_back(parseClass());else error("expected 'import', 'struct', or 'class' at top level");}if(p.classes.empty())error("program contains no classes");return p;}
+annotation::Annotation Parser::parseAnnotation(){
+    const Token& at=expect(Tok::At,"'@'");
+    const Token& name=expect(Tok::Ident,"annotation name");
+    if(name.line!=at.line) error("annotation name must follow '@' on the same line");
+    std::string value;
+    while(!check(Tok::Eof)&&cur().line==at.line){
+        if(check(Tok::At)) error("annotation value cannot contain '@'");
+        value+=cur().text;
+        ++i_;
+    }
+    if(value.empty()) error("annotation '@"+name.text+"' requires a value");
+    return annotation::Annotation{name.text,value};
+}
+Program Parser::parseProgram(){
+    collectStructNames(); Program p; bool contentStarted=false;
+    while(!check(Tok::Eof)){
+        if(check(Tok::At)){
+            if(contentStarted) error("document annotations must precede imports, structs, and classes");
+            p.annotations.add(parseAnnotation());
+        } else if(accept(Tok::KwImport)){
+            contentStarted=true;
+            p.imports.push_back(expect(Tok::Ident,"module name").text);
+            expect(Tok::Semicolon,"';'");
+        } else if(check(Tok::KwStruct)){
+            contentStarted=true; p.structs.push_back(parseStruct());
+        } else if(check(Tok::KwClass)){
+            contentStarted=true; p.classes.push_back(parseClass());
+        } else error("expected annotation, 'import', 'struct', or 'class' at top level");
+    }
+    if(p.classes.empty()) error("program contains no classes");
+    return p;
+}
 StructDecl Parser::parseStruct(){expect(Tok::KwStruct,"'struct'");StructDecl s;s.name=expect(Tok::Ident,"struct name").text;expect(Tok::LBrace,"'{'");while(!check(Tok::RBrace)&&!check(Tok::Eof)){Field f;f.type=parseType();f.name=expect(Tok::Ident,"field name").text;expect(Tok::Semicolon,"';'");s.fields.push_back(std::move(f));}expect(Tok::RBrace,"'}'");return s;}
 ClassDecl Parser::parseClass(){expect(Tok::KwClass,"'class'");ClassDecl c;c.name=expect(Tok::Ident,"class name").text;expect(Tok::LBrace,"'{'");while(!check(Tok::RBrace)&&!check(Tok::Eof)){size_t save=i_;bool isStatic=accept(Tok::KwStatic);bool isProtected=accept(Tok::KwProtected);if(!isTypeStart())error("expected a type for a field or method");i_++;if(!check(Tok::Ident))error("expected a field or method name");Tok after=peek(1).kind;i_=save;if(after==Tok::LParen)c.methods.push_back(parseMethod(isStatic,isProtected));else c.fields.push_back(parseField(isStatic,isProtected));}expect(Tok::RBrace,"'}'");return c;}
 Field Parser::parseField(bool isStatic,bool isProtected){Field f;f.isStatic=isStatic;f.isProtected=isProtected;f.type=parseType();f.name=expect(Tok::Ident,"field name").text;if(accept(Tok::Assign))f.init=parseExpr();expect(Tok::Semicolon,"';'");return f;}
