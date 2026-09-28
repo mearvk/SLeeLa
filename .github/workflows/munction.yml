@@ -1,0 +1,17 @@
+name: Munction Native Suite
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch:
+jobs:
+  native:
+    name: Munction C/C++17
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          cc --version
+          c++ --version
+      - run: bash munction/tests/run_native_suite.sh
