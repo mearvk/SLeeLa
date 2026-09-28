@@ -1,4 +1,5 @@
-[![SLeeLa](https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png)](https://github.com/mearvk/SLeeLa)
+<img align="right" src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="75" height="75" alt="SLeeLa">
+
 # SLeeLa Web Server Monitor
 
 The SLeeLa Web Server Monitor is a deployment and operations module for web-aware applications that use Apache HTTP Server and/or Apache Tomcat.

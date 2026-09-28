@@ -1,3 +1,5 @@
+<img align="right" src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="75" height="75" alt="SLeeLa">
+
 # Shellmath
 Introducing decimal arithmetic libraries for the Bash shell, because
 they said it couldn't be done... and because:
