@@ -11,7 +11,7 @@ namespace sleela {
 
 enum class Tok {
     // literals & names
-    Int, Double, Str, Ident,
+    Int, Double, Str, Ident, At,
     // keywords
     KwClass, KwStatic, KwProtected, KwVoid, KwIntT, KwDoubleT, KwBoolT, KwStringT,
     KwIf, KwElse, KwWhile, KwFor, KwReturn, KwTrue, KwFalse, KwPrint, KwNull,
