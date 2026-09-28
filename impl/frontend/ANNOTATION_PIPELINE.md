@@ -11,7 +11,7 @@ because the compiler has lowered executable statements.
 
 ## Surface syntax
 
-Document annotations are placed before the first import, struct, or class:
+Document annotations are placed after the optional/required #sleela version pragma and before the first import, struct, or class:
 
     @scope system
     @area network
