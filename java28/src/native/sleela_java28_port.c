@@ -25,6 +25,8 @@ struct SLJava28Session {
     size_t rpos;
 };
 
+static int write_all(int fd, const void *buf, size_t len) { const char *p = (const char *)buf; while (len) { ssize_t n = write(fd, p, len); if (n <= 0) return -1; p += n; len -= (size_t)n; } return 0; }
+
 static void set_err(SLJava28Session *s, const char *m) {
     if (!s) return;
     snprintf(s->err, sizeof s->err, "%s", m ? m : "unknown");
@@ -71,8 +73,8 @@ const char *sl_java28_call(SLJava28Session *s, const char *request_line) {
     if (!s || s->fd < 0 || !request_line) return NULL;
     size_t len = strlen(request_line);
     /* write request + newline */
-    if (write(s->fd, request_line, len) != (ssize_t)len) { set_err(s, "write failed"); return NULL; }
-    if (write(s->fd, "\n", 1) != 1) { set_err(s, "write failed"); return NULL; }
+    if (write_all(s->fd, request_line, len) != 0) { set_err(s, "write failed"); return NULL; }
+    if (write_all(s->fd, "\n", 1) != 0) { set_err(s, "write failed"); return NULL; }
     if (read_line(s) != 0) return NULL;
     return s->resp;
 }
@@ -85,7 +87,7 @@ void sl_java28_close(SLJava28Session *s) {
     if (!s) return;
     if (s->fd >= 0) {
         /* best-effort graceful close */
-        (void)write(s->fd, "bye\n", 4);
+        (void)write_all(s->fd, "bye\n", 4);
         close(s->fd);
     }
     free(s);
