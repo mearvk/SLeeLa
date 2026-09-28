@@ -54,6 +54,7 @@ smoke(){
   [ -f "$SUITE/c/test_c_api_headers.c" ] && run_c "$SUITE/c/test_c_api_headers.c" "$BUILD/test_c_api_headers"
   [ -f "$SUITE/cpp/test_annotations.cpp" ] && run_cpp "$SUITE/cpp/test_annotations.cpp" "$BUILD/test_annotations"
   [ -f "$SUITE/cpp/test_class_contracts.cpp" ] && run_cpp "$SUITE/cpp/test_class_contracts.cpp" "$BUILD/test_class_contracts"
+  [ -f "$SUITE/cpp/test_frontend_annotations.cpp" ] && run_cpp "$SUITE/cpp/test_frontend_annotations.cpp" "$BUILD/test_frontend_annotations"
 }
 
 header_audit(){
@@ -67,7 +68,7 @@ header_audit(){
     elif [[ "$f" == *.hpp ]] && have "$CXX"; then
       if "$CXX" -std=c++17 -fsyntax-only -I"$ROOT" "$f" >"$LOG/header_$n.log" 2>&1; then pass "header $f"; else fail "header $f"; fi
     fi
-  done < <(find "$ROOT" -type f ( -name '*.h' -o -name '*.hpp' ) -print)
+  done < <(find "$ROOT" -type f \( -name '*.h' -o -name '*.hpp' \) -print)
 }
 
 source_audit(){
@@ -81,7 +82,7 @@ source_audit(){
     elif [[ "$f" == *.cpp ]] && have "$CXX"; then
       if "$CXX" -std=c++17 -fsyntax-only -I"$ROOT" "$f" >"$LOG/tu_$n.log" 2>&1; then pass "TU $f"; else fail "TU $f"; fi
     fi
-  done < <(find "$ROOT" -type f ( -name '*.c' -o -name '*.cpp' ) -print)
+  done < <(find "$ROOT" -type f \( -name '*.c' -o -name '*.cpp' \) -print)
 }
 
 case "$MODE" in
