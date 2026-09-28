@@ -696,7 +696,11 @@
     },
     {
       "path": "audio/cpp/src/sleela_audio.cpp",
-      "sha256": "ad4a4e86f525119ce00561c4ff024bd7633f275b13328d6110c60efee79b6c11"
+      "sha256": "9749f1956baee640687bf620c3fe2a53dc648ef9f94294390454376c129d14a0"
+    },
+    {
+      "path": "audio/native/src/sleela_audio_native.cpp",
+      "sha256": "8f04e61d048b028be72af67c82cb6b1d90f7bb36240fa8932b4dc92a691679a1"
     },
     {
       "path": "bash/CWRU/misc/errlist.c",
