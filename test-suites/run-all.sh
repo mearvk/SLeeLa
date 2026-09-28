@@ -3,7 +3,7 @@ set -u
 ROOT="$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)"
 SUITE="$ROOT/test-suites"; BUILD="$SUITE/.build"; LOG="$SUITE/logs"
 CC=cc; CXX=c++; PYTHON=python3; MODE=all
-case "$1" in
+case "${1:-}" in
   --smoke) MODE=smoke;; --headers) MODE=headers;; --audit) MODE=audit;;
   --coverage) MODE=coverage;; --negative) MODE=negative;; --sanitizers) MODE=sanitizers;;
   --regression) MODE=regression;; --all|"") MODE=all;;
