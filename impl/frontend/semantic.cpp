@@ -1,4 +1,5 @@
 #include "semantic.h"
+#include "annotation_pipeline.h"
 #include <map>
 #include <set>
 #include <string>
@@ -92,7 +93,16 @@ class Analyzer{
  Type fluent(const MethodCall&m){Type rcv=expr(*m.receiver);static const std::set<std::string>v={"connect","enable","send","thatch","consume","latch","closeWithReceipt","close","reception"};if(!v.count(m.method)){err("unknown fluent method '"+m.method+"'");return{Kind::Error,{}};}if(m.method=="consume"||m.method=="latch"||m.method=="close"||m.method=="reception"||m.method=="closeWithReceipt"){if(!m.args.empty())err("Munction "+m.method+"() takes no arguments");}else{if(m.args.size()!=1)err("Munction "+m.method+"() takes exactly one argument");if(!m.args.empty()){Type t=expr(*m.args[0]);if(t.kind!=Kind::String&&t.kind!=Kind::Unknown)err("Munction "+m.method+" argument must be string");}}return m.method=="closeWithReceipt"?Type{Kind::String,{}}:rcv;}
 public:
  Analyzer(const Program&x,const SyntaxVersion&s):p(x),syntax(s){}
- SemanticResult run(){collect();declarations();for(const auto&c:p.classes)for(const auto&m:c.methods)method(c,m);return r;}
+ SemanticResult run(){
+  collect();
+  declarations();
+  for(const auto&d:frontend::validateLanguageAnnotations(p.annotations)){
+    if(d.severity==frontend::AnnotationDiagnostic::Severity::Error) err(d.message);
+    else r.warnings.push_back("Semantic warning: "+d.message);
+  }
+  for(const auto&c:p.classes)for(const auto&m:c.methods)method(c,m);
+  return r;
+}
 };
 }
 SemanticResult analyzeSemantics(const Program&p,const SyntaxVersion&s){return Analyzer(p,s).run();}
