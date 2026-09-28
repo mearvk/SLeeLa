@@ -1,12 +1,43 @@
 # SLeeLa Debugger Version
 
-Version: 0.7.0
+Version: 0.8.0
 Date: 2026-09-27
 Language implementation: C++17
 C implementation: C11+
 Line-control API: C and C++
 Backend abstraction: C++
 Action model: C++
+
+## 0.8.0 — Debugger Conformance and Native Execution
+
+- Machine-checkable Model → Implement → Integrate → Verify conformance lifecycle.
+- Debugger Conformance Suite and release-readiness reporting.
+- Versioned .sleela-debug session/artifact contract.
+- Explicit debugger command-language boundary.
+- Security boundary for attach, memory writes, expression execution, plugins, paths, resources, and audit.
+- Native execution integration contract for Linux ptrace, macOS LLDB, and Windows Debug API.
+- Capability truth remains distinct from model-level availability.
+- Overall engineering quality assessment: **82/100**.
+
+### 0.8.0 Quality Assessment
+
+| Area | Assessment |
+|---|---:|
+| Architecture & separation of concerns | 90/100 |
+| API/data-model design | 87/100 |
+| Documentation | 91/100 |
+| Testing & conformance framework | 84/100 |
+| Diagnostics/evidence model | 86/100 |
+| Security model | 83/100 |
+| C/C++ integration | 82/100 |
+| Native debugging implementation | 63/100 |
+| Symbol/source integration | 60/100 |
+| Replay/reverse debugging | 55/100 |
+| DAP integration | 55/100 |
+| Production readiness | 70/100 |
+| **Overall quality** | **82/100** |
+
+The assessment is an engineering snapshot, not a certification or guarantee of production readiness. See DEBUGGER.QUALITY.md for interpretation and remaining gaps.
 
 ## 0.7.0 — Four-Stage Debugger Contract
 
