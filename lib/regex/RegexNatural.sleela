@@ -1,0 +1,5 @@
+subject RegexNatural
+version 1.1.0-dev
+symbols any digit letter space one optional some many begin end or
+operation validate(pattern)
+operation canonical(pattern)

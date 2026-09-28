@@ -1,0 +1,5 @@
+subject RegexNaturalGrammar
+version 1.1.0-dev
+atom literal any digit letter space charset group named anchor
+quantity one optional some many exact range
+logic sequence alternative

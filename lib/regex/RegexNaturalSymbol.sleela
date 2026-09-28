@@ -1,0 +1,5 @@
+subject RegexNaturalSymbol
+operation name()
+operation alias()
+operation canonical()
+operation isCore()

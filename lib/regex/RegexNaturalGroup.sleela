@@ -1,0 +1,4 @@
+subject RegexNaturalGroup
+operation capture(name, pattern)
+operation named(name, pattern)
+operation nonCapture(pattern)

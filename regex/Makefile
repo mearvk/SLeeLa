@@ -1,34 +1,27 @@
 CC ?= cc
 CXX ?= c++
-CFLAGS ?= -std=c11 -Wall -Wextra -pedantic
-CXXFLAGS ?= -std=c++17 -Wall -Wextra -pedantic
+CFLAGS ?= -std=c11 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Wformat=2 -Werror
+CXXFLAGS ?= -std=c++17 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Wformat=2 -Werror
 CPPFLAGS ?= -Iinclude
+BUILD ?= build
 
-BUILD_DIR ?= build
+.PHONY: all c cpp natural test java clean
+all: c cpp natural java
+c:
+	$(CC) $(CFLAGS) $(CPPFLAGS) src/sleela_regex.c tests/test_regex.c -o $(BUILD)/regex-c
+	$(BUILD)/regex-c
+cpp:
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) src/sleela_regex.cpp tests/test_regex.cpp -o $(BUILD)/regex-cpp
+	$(BUILD)/regex-cpp
+natural:
+	$(CC) $(CFLAGS) $(CPPFLAGS) src/sleela_regex_natural.c tests/test_regex_natural.c -o $(BUILD)/regex-natural-c
+	$(BUILD)/regex-natural-c
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) src/sleela_regex_natural.cpp tests/test_regex_natural.cpp -o $(BUILD)/regex-natural-cpp
+	$(BUILD)/regex-natural-cpp
+java:
+	javac -d $(BUILD)/java java/SleelaRegexNatural.java java/SleelaRegexNaturalParser.java java/SleelaRegexNaturalTest.java
+	java -cp $(BUILD)/java sleela.regex.SleelaRegexNaturalTest
 
-C_TEST := $(BUILD_DIR)/regex-c
-CPP_TEST := $(BUILD_DIR)/regex-cpp
-
-.PHONY: all c cpp test clean
-
-all: test
-
-c: $(C_TEST)
-	$(C_TEST)
-
-cpp: $(CPP_TEST)
-	$(CPP_TEST)
-
-test: c cpp
-
-$(BUILD_DIR):
-	mkdir -p $(BUILD_DIR)
-
-$(C_TEST): src/sleela_regex.c include/sleela_regex.h tests/test_regex.c | $(BUILD_DIR)
-	$(CC) $(CFLAGS) $(CPPFLAGS) src/sleela_regex.c tests/test_regex.c -o $@
-
-$(CPP_TEST): src/sleela_regex.cpp include/sleela_regex.hpp tests/test_regex.cpp | $(BUILD_DIR)
-	$(CXX) $(CXXFLAGS) $(CPPFLAGS) src/sleela_regex.cpp tests/test_regex.cpp -o $@
-
+test: all
 clean:
-	rm -rf $(BUILD_DIR)
+	rm -rf $(BUILD)

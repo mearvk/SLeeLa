@@ -1,0 +1,5 @@
+subject RegexNaturalParser
+uses RegexNatural
+operation parse(pattern)
+operation diagnose(pattern)
+operation rejectUnknownWords(pattern)
