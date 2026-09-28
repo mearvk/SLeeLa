@@ -40,8 +40,9 @@ audit(){ local f log std; while IFS= read -r f; do
 headers(){ local f std; while IFS= read -r f; do
   case "$f" in "$ROOT/test-suites/"*|"$ROOT/bash/"*|"$ROOT/.git/"*) continue;; esac
   case "$f" in
-    *_windows.hpp|*_macos.hpp|*_linux.hpp|*/windows/*|*/macos/*|*/linux/*)
-      [[ "$f" == "$ROOT/decompiler/"* ]] || true;;
+    *_windows.hpp|*_windows.h|*/windows/*) [[ "$(uname -s)" != "MINGW"* && "$(uname -s)" != "MSYS"* && "$(uname -s)" != "CYGWIN"* ]] && { skip "Windows header $f"; continue; };;
+    *_macos.hpp|*_macos.h|*/macos/*|*/darwin/*) [[ "$(uname -s)" != "Darwin" ]] && { skip "macOS header $f"; continue; };;
+    *_linux.hpp|*_linux.h|*/linux/*) [[ "$(uname -s)" != "Linux" ]] && { skip "Linux header $f"; continue; };;
   esac
   if [[ "$f" == *.h ]] && have "$CC"; then
     "$CC" -std=c11 -D_POSIX_C_SOURCE=200809L -fsyntax-only -I"$ROOT" -I"$ROOT/api/include" -I"$ROOT/decompiler/include" -I"$ROOT/telephony-skya/drivers/include" -I"$ROOT/telephony-skya/drivers/src" -I"$ROOT/impl/core" -I"$ROOT/impl/frontend" -I"$ROOT/impl/subjects/native" -I"$ROOT/runtime" -I"$ROOT/terminal_pixel" -I"$ROOT/bash" "$f" >/dev/null 2>&1 && pass "header $f" || fail "header $f"
