@@ -1,6 +1,9 @@
 #include "sleela_audio_mixer.h"
 #include <math.h>
 #include <string.h>
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
 
 static float db_gain(float db){ return powf(10.0f, db/20.0f); }
 static float clampf(float x,float lo,float hi){return x<lo?lo:(x>hi?hi:x);}
