@@ -9,7 +9,7 @@ int main(void) {
     uint8_t packet[16];
     uint32_t sequence = 0;
     const uint64_t sent_ns = 1000000000ULL;
-    const uint64_t now_ns = 1005000000ULL;
+    const uint64_t now_ns = 1000500000ULL;
 
     assert(synchro_integration_init(&integration, 8) == 0);
     assert(synchro_integration_prepare(&integration, packet, sent_ns, &sequence) == 16);
