@@ -10848,7 +10848,7 @@
     },
     {
       "path": "test-suites/run-all.sh",
-      "sha256": "d7e73f2c95b110d7c6fd1759793ec8032211bc1a977ea95b208b81ccc4b5839c"
+      "sha256": "c397eb04a98429b209a5a9d8077dcb67fed711b842d459ef46b7dc0f5c379b35"
     },
     {
       "path": "test-suites/runtime-coverage.sh",
