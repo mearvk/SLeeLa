@@ -69,7 +69,7 @@ typedef enum {
     OP_BEST_REPORT,    /* pops handle; pushes multi-line report String         */
     OP_BEST_ARCH,      /* pops realized,param,arch,idx,handle; pushes handle   */
     OP_BEST_ARCH_STATE,/* pops realized,idx,handle; pushes handle              */
-    OP_BEST_CLOSE      /* pops handle; releases the selector; pushes null      */
+    OP_BEST_CLOSE,     /* pops handle; releases the selector; pushes null      */
     OP_AUDIO_NEW,       /* pops sampleRate, outputPath; pushes job handle */
     OP_AUDIO_ADD,       /* pops handle,path,startSeconds,gainDb; pushes handle */
     OP_AUDIO_CONTROLS,  /* pops handle,bass,mid,treble,master,pan,left,right; pushes handle */
