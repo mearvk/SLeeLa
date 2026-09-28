@@ -1,4 +1,5 @@
-[![SLeeLa](https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png)](https://github.com/mearvk/SLeeLa)
+<img align="right" src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="75" height="75" alt="SLeeLa">
+
 # Skya Native C/C++ Layer
 
 This directory is the native execution boundary for Skya. Keep protocol and operating-system work here or in the existing SLeeLa native subsystems; do not duplicate the SLeeLa VM/runtime.

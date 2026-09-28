@@ -1,4 +1,5 @@
-[![SLeeLa](https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png)](https://github.com/mearvk/SLeeLa)
+<img align="right" src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="75" height="75" alt="SLeeLa">
+
 # Skya Platform Builds
 
 The `telephony-skya/build` tree is the platform-specific build surface for Skya. Each operating system keeps its compiler/build entry point, native outputs, GUI launchers, and runtime branding together.

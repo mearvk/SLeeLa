@@ -1,4 +1,5 @@
-[![SLeeLa](https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png)](https://github.com/mearvk/SLeeLa)
+<img align="right" src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="75" height="75" alt="SLeeLa">
+
 # AE6E66 — UK Parliament Contact Module
 
 **Version:** 2.2 hardened baseline  

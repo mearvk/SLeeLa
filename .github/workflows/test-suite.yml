@@ -1,4 +1,5 @@
 name: SLeeLa Test Suite
+# README logo normalization is performed on branch pushes and PR branches.
 on:
   push:
     branches: [main, master]
@@ -11,32 +12,44 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Add Debian logo to README files
+      - name: Set Debian logo to 75x75 upper-right in README files
         shell: bash
         run: |
           set -euo pipefail
           python3 - <<'PY'
           from pathlib import Path
           import re
-          logo = "[![SLeeLa](https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png)](https://github.com/mearvk/SLeeLa)\n"
+          image = "https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png"
+          html = f'<img align="right" src="{image}" width="75" height="75" alt="SLeeLa">'
           changed = 0
           for path in Path(".").rglob("README.md"):
               if ".git" in path.parts:
                   continue
               text = path.read_text(encoding="utf-8")
-              top = "\n".join(text.splitlines()[:15])
-              if re.search(r"!\[[^\]]*\]\([^)]+\)|<img\b[^>]*>|<picture\b[^>]*>", top, re.IGNORECASE):
-                  continue
-              path.write_text(logo + text, encoding="utf-8")
-              changed += 1
+              # Remove the Debian logo previously inserted by automation, wherever it
+              # occurs as a standalone Markdown/HTML image line, then place the
+              # canonical 75x75 image at the top-right of the document.
+              lines = text.splitlines()
+              kept = []
+              removed = False
+              for line in lines:
+                  if image in line and ("![SLeeLa]" in line or "<img" in line):
+                      removed = True
+                      continue
+                  kept.append(line)
+              new_text = html + "\n\n" + "\n".join(kept).lstrip("\n")
+              if new_text != text:
+                  path.write_text(new_text, encoding="utf-8")
+                  changed += 1
           print(f"README files updated: {changed}")
           PY
           git config user.name "SLeeLa Automation"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -- 'README.md' '**/README.md'
           if ! git diff --cached --quiet; then
-            git commit -m "docs: add Debian logo to README files"
-            git push
+            git commit -m "docs: standardize README Debian logo to 75x75 upper-right"
+            target="${GITHUB_HEAD_REF:-${GITHUB_REF_NAME}}"
+          git push origin "HEAD:refs/heads/$target"
           fi
       - name: Test suite
         run: bash ./test-suites/run-all.sh --all

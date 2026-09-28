@@ -1,4 +1,5 @@
-[![SLeeLa](https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png)](https://github.com/mearvk/SLeeLa)
+<img align="right" src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="75" height="75" alt="SLeeLa">
+
 # SLeeLa HTTP Servers
 
 Three native server grades live under `http-servers/1`, `2`, and `3`, sharing `common/`.

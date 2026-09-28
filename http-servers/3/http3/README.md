@@ -1,4 +1,5 @@
-[![SLeeLa](https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png)](https://github.com/mearvk/SLeeLa)
+<img align="right" src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="75" height="75" alt="SLeeLa">
+
 # SLeeLa HTTP/3 Transport
 
 Grade 3 uses HTTP/3 semantics over QUIC rather than treating HTTP/3 as

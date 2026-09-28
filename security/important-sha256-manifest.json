@@ -72,7 +72,7 @@
     },
     {
       "path": "README.md",
-      "sha256": "19c7b670f51820790c0ad78eccaf60a4fc0d649f37bf4795de8273103d0677d4"
+      "sha256": "ff99dc9978a3aede7f56698d6222367b5824c93ed3755e5c9593b635847ea7a2"
     },
     {
       "path": "REVISIONS.md",
@@ -160,7 +160,7 @@
     },
     {
       "path": "api/README.md",
-      "sha256": "579871f82c9fc5247c6750e0ffa9534853ffa8e0badfc9cea40301768bdf7b6b"
+      "sha256": "bddb7f7412d1921e61a7b9600f32367a9408be8e41fa8b626bfbee3272fd7d93"
     },
     {
       "path": "api/SOURCE-COVERAGE.html",
@@ -172,7 +172,7 @@
     },
     {
       "path": "api/ai/README.md",
-      "sha256": "48c52180b3bc3a37e6bdd23809f5c4d27bfa7b4c925c497544dd97fe6f88ec2e"
+      "sha256": "5cf55c434cade92733c22889da5117aaf6af22729df8c8351a624b759113588e"
     },
     {
       "path": "api/ai/data-model.xml",
@@ -208,7 +208,7 @@
     },
     {
       "path": "api/audio-mixer/README.md",
-      "sha256": "254142b8cedd147cf5c7706513180f6ca209b62033896fe9f8098d2d4bf58d3a"
+      "sha256": "3832ed062c82b89f5e0a6269458c9fa23d62cf8636994ebe4738260e9a652e53"
     },
     {
       "path": "api/audio-mixer/audio-mix.conf",
@@ -232,7 +232,7 @@
     },
     {
       "path": "api/bodi/README.md",
-      "sha256": "82e764d5e24d5e691bf3feea72a07a290341256ba92a392d786f42c1fb0aafd6"
+      "sha256": "9ed50af697cf137eed1b1087d9354dd2a9faf457ced27abf8af88e111059e085"
     },
     {
       "path": "api/bodi/bodi-science.xsd",
@@ -272,7 +272,7 @@
     },
     {
       "path": "api/data-analytics/README.md",
-      "sha256": "1c719a6669f7fb4cd6d5e14b1ea03fb736599d479357d380ce3ad465203e81d1"
+      "sha256": "f0e4c523402507ffb83892242ee7a01ccd42297e29681711f5f51b953ac3d1bc"
     },
     {
       "path": "api/data-analytics/sleela_data_analytics.c",
@@ -288,7 +288,7 @@
     },
     {
       "path": "api/database/README.md",
-      "sha256": "ebbf854bdf9296f072db3dea79116e0323ac3d9dede18a5e47f71986c8cf8b82"
+      "sha256": "c951a811a9183b86dd9eb2cefe4d0b53dc8e55d2f3fa5866c37e57c0c9ba8d82"
     },
     {
       "path": "api/database/linux/dbctl.sh",
@@ -316,7 +316,7 @@
     },
     {
       "path": "api/decompiler/README.md",
-      "sha256": "cf8e76b32379ca073e400ba5be311dfba169a646e965555154f94f460bfa1b3b"
+      "sha256": "447e18e4c392a649e3ac3dcb819e25515b417ada5f52d102f492e510fc85858f"
     },
     {
       "path": "api/email/API.html",
@@ -324,7 +324,7 @@
     },
     {
       "path": "api/email/README.md",
-      "sha256": "fda32a675accee33be4162e7a0c51a231ef99abff8927a40b829685dca439817"
+      "sha256": "a3a10c4d09dba12bed4ab29aaf016f925629abc81f5741cd3656b9403e558776"
     },
     {
       "path": "api/email/SECURITY.md",
@@ -368,7 +368,7 @@
     },
     {
       "path": "api/http-multiplexing/README.md",
-      "sha256": "07002d6f9a60c1f42e818bac199f14f22ea6c1c07fa331f1a46a823108374e75"
+      "sha256": "344aa23e3d4ea3ed51b30c5165268d9f7fd8be04d09bd4787b872c5110ce7bf2"
     },
     {
       "path": "api/http-multiplexing/sleela_http_api.c",
@@ -408,11 +408,11 @@
     },
     {
       "path": "api/media/README.md",
-      "sha256": "33d885775f34267398216d0fc3ecf35bce3e9ccc9a1a2ea3e4be5dde4d7bd896"
+      "sha256": "dcac7896fb2bf2990e8e68acfd38d46e82ea3133ba353e5b4bb480e1c9e9e3bf"
     },
     {
       "path": "api/national-relay/README.md",
-      "sha256": "918344df79cffd6f265e6043f4da69f568de8ca664e4e467d346b2668060623e"
+      "sha256": "c02da2e84ca7f9cde2b74ed210dda715e422adca45370da979c2ab4a6db810dc"
     },
     {
       "path": "api/national-relay/sleela_relay_identity.c",
@@ -424,7 +424,7 @@
     },
     {
       "path": "api/native/memory/README.md",
-      "sha256": "296496cd15e890282219ee513f2b40d056670f1c45a4c946e7cff50f30746ac0"
+      "sha256": "6af28c2e7208292facb74550460440cbca8abbcaa3fab277ebf2562c20ee2fcd"
     },
     {
       "path": "api/native/memory/sleela_memory_manager.cpp",
@@ -436,7 +436,7 @@
     },
     {
       "path": "api/native/network/README.md",
-      "sha256": "cc1f9abef8870002275c943076e18226d45299759a15b5d5ce5750b0473f1d71"
+      "sha256": "0e0ecc14acd8b128b8801185284693a94498b1ea5d632f78a078ea464e32a531"
     },
     {
       "path": "api/native/network/sleela_network.cpp",
@@ -448,7 +448,7 @@
     },
     {
       "path": "api/native/reflection/README.md",
-      "sha256": "60d7641bd7c3af1fbed46b165974226f5b6d6a798e06541606e716aa88f4217a"
+      "sha256": "88dace05b1156db7dd5e1bfae8934ce858713a68df8666a3df4de5c977b71ad5"
     },
     {
       "path": "api/native/reflection/sleela_reflection.cpp",
@@ -464,7 +464,7 @@
     },
     {
       "path": "api/native/runtime/README.md",
-      "sha256": "a953a1e0f2fcc0f34544d1e4de1eb72db7b80266de1c51d0b41c3d8dee158a90"
+      "sha256": "ab7d3e317e6cfd695189fbc8708adbd707e19ed771702b3311772b645e27fc5b"
     },
     {
       "path": "api/native/runtime/sleela_runtime.cpp",
@@ -476,7 +476,7 @@
     },
     {
       "path": "api/native/security/README.md",
-      "sha256": "a4db910a3aab97fbe3cd43859b4ed9ca84651122d80245cbb850969ea508d84e"
+      "sha256": "e8eadc102a3a456a8cae492160f92145602896772fdd51c9a5966ff7f53982dd"
     },
     {
       "path": "api/native/security/sleela_security.cpp",
@@ -524,7 +524,7 @@
     },
     {
       "path": "api/regex/README.md",
-      "sha256": "0cd8b4ccab31ef992f400d84ed688bdfb03f2535863791a4bcb86ba1faf6fa68"
+      "sha256": "ee884a723250fe19e7c29bd577b63e3a4b0419f26eaff6e7aa576397b5fce8c0"
     },
     {
       "path": "api/regex/REGEX-DESIGN.md",
@@ -552,7 +552,7 @@
     },
     {
       "path": "api/server/README.md",
-      "sha256": "e4eb12f87f313ff77244fdf3c50df9796cdb7c322440e2061c6e0fe3d6a0bf97"
+      "sha256": "8567803d0d8fe90e8abc59f72a335d49e55b31578b88cdd8611205d857fb1064"
     },
     {
       "path": "api/server/nat_aware.cpp",
@@ -592,7 +592,7 @@
     },
     {
       "path": "api/sleela-complete/README.md",
-      "sha256": "f783b959e34a7d37eacce0139de3c2f8c7bac61f4508dd98f37e4260edd9e258"
+      "sha256": "667cab11d28ad457c5d8efcb49c7ec2f631e1ee66114edd7c6b7012ca992a7c4"
     },
     {
       "path": "api/sleela-complete/RuntimeClasses.sleela",
@@ -616,11 +616,11 @@
     },
     {
       "path": "api/subjects/README.md",
-      "sha256": "c35b7fa0e8a2a254795e57b69aa15bc9afb3866e8b6f2af06a269bb5503a08d9"
+      "sha256": "c308ec72ac994cb3d78b0ef243cce546f88eb4cc55395fcde07d38967903bedf"
     },
     {
       "path": "api/subjects/astrophysics/README.md",
-      "sha256": "2e828a8300854947e9fc97efed07a0b8983e5321a71b94dc0d5bc14b1af0b609"
+      "sha256": "b726d7f9ace64567a7137646de4014655de6a0ed95aaca8a10faa41a8ea3cff6"
     },
     {
       "path": "api/subjects/astrophysics/model.xml",
@@ -640,7 +640,7 @@
     },
     {
       "path": "api/subjects/sociology/README.md",
-      "sha256": "b6947d34a51e91e238950bc00032a5afc3dfa18f9a75f645212e13d6e5ffcced"
+      "sha256": "7e27c2a6b7850ae5ede28b8a8cc560aca196c1fca142d3fc458d6273ae120cde"
     },
     {
       "path": "api/subjects/sociology/model.xml",
@@ -660,7 +660,7 @@
     },
     {
       "path": "api/webserver/README.md",
-      "sha256": "0088c90bb272f61bd29ca45f82fbbb534e5009517cc712e6d2a31f4b0b6b5c09"
+      "sha256": "76704cae2c9149e7043a1d6643fbbd05fa15da7f7cdc8dd2292a7795f8960c2d"
     },
     {
       "path": "api/webserver/linux/webctl.sh",
@@ -6024,7 +6024,7 @@
     },
     {
       "path": "international-criminal-court/README.md",
-      "sha256": "976d25109fb39ce01b2ca2d12a22c527e42fa1f32166fe30faef48b7245eb700"
+      "sha256": "9b59beb6ecb8992e82932f8d75183d0338f6919d701522dda08f80a46d4db3e4"
     },
     {
       "path": "international-criminal-court/SHA256SUMS",
@@ -9932,7 +9932,7 @@
     },
     {
       "path": "server-edition/README.md",
-      "sha256": "ba90ccbc22fde4ecff58be4364e2823ab6e0f84180124a547c2431d0a6627e10"
+      "sha256": "26fb2c1e0506278c4bc8bda61447d7bec77f56025fd637e9065f1d97d171564c"
     },
     {
       "path": "server-edition/WIRE-PROTOCOL.md",
@@ -9948,7 +9948,7 @@
     },
     {
       "path": "server-edition/http/README.md",
-      "sha256": "0bd3a125890bd6683d9d25ade730b6f6b4c7d1308700728ad0c680c42165338d"
+      "sha256": "63fb60ba63656234bc77ff5276f82d49d31f4c3c60adbf61282929cd0584a991"
     },
     {
       "path": "server-edition/http/httpctl.c",
@@ -9956,7 +9956,7 @@
     },
     {
       "path": "server-edition/international-strernary/README.md",
-      "sha256": "386cfb2f13890a2ab01141c004b0c786ac06cdffe675c2fd00713c9ec8145bb9"
+      "sha256": "b05f14d2cd5614bbb4049d6063550e29c5f267ba27b38c51d88e141de09de0df"
     },
     {
       "path": "server-edition/international-strernary/international-strernary-contact.sh",
@@ -9968,7 +9968,7 @@
     },
     {
       "path": "server-edition/moral/2/README.md",
-      "sha256": "07173acba2bb5139cddd08c9fb5c10dde42fa656f36e91fb5e8e649775bcdb4c"
+      "sha256": "effc1d601c7c794fcd750e41a211207e45624af43f9359ba969da5b67e8b416b"
     },
     {
       "path": "server-edition/moral/2/install/linux-install.sh",
@@ -10012,7 +10012,7 @@
     },
     {
       "path": "server-edition/moral/3/README.md",
-      "sha256": "860664ad938d12a8878b2a59a314928753232a0879f9ad9fd1763efe011c00fb"
+      "sha256": "07f047d0b56be453fb21007672f54a32aaf94fcd84e0c96ff89039e97fdf2dd2"
     },
     {
       "path": "server-edition/moral/3/install/linux-install.sh",
@@ -10048,15 +10048,15 @@
     },
     {
       "path": "server-edition/moral/README.md",
-      "sha256": "d225544f3f2922df9b5836240327992d91debba73d2903ac0abf6a6669b327b3"
+      "sha256": "ca7ae228f81a4953961a37ddc673493204c1c3700938ed9baf8a7058bd8ec811"
     },
     {
       "path": "server-edition/national-relay/README.md",
-      "sha256": "1d2c5ff622d1ff86362dcf63bfd6af797bd4f93d20022e48236f3df9e01bddd5"
+      "sha256": "3b5f690bfddceac83d4c0aea1bc0f31d1548d354ae1eae06a6b98242942fa61b"
     },
     {
       "path": "server-edition/participation/README.md",
-      "sha256": "352f4a233ff4ca295578696e12ea6474c4a27de04606d4348550d43b801359c9"
+      "sha256": "78555b0b7cf9bd2668923d444df6351134089e8fac1066daff3c11b61df8d3f1"
     },
     {
       "path": "server-edition/participation/known-servers.conf",
