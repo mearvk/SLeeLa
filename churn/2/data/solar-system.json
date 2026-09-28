@@ -1,0 +1,21 @@
+{
+  "dataset": "solar-system",
+  "title": "Solar System planetary structures",
+  "description": "The eight planets as Structures: mass, equatorial radius, mean orbital distance from the Sun, and orbital period. A data model of physical bodies for the physics/structure layer.",
+  "provenance": {
+    "primary_source": "NASA — NSSDCA Planetary Fact Sheet (nssdc.gsfc.nasa.gov)",
+    "cross_reference": "IAU (planet definition, 2006)",
+    "retrieved": "2026-09",
+    "note": "Public-domain NASA fact-sheet values, rounded for a compact structure table. Distances are mean (semi-major axis)."
+  },
+  "structures": [
+    { "name": "Mercury", "mass_kg": 3.30e23, "equatorial_radius_km": 2440.5, "mean_distance_au": 0.387, "orbital_period_days": 88.0 },
+    { "name": "Venus",   "mass_kg": 4.87e24, "equatorial_radius_km": 6051.8, "mean_distance_au": 0.723, "orbital_period_days": 224.7 },
+    { "name": "Earth",   "mass_kg": 5.97e24, "equatorial_radius_km": 6378.1, "mean_distance_au": 1.000, "orbital_period_days": 365.2 },
+    { "name": "Mars",    "mass_kg": 6.42e23, "equatorial_radius_km": 3396.2, "mean_distance_au": 1.524, "orbital_period_days": 687.0 },
+    { "name": "Jupiter", "mass_kg": 1.898e27, "equatorial_radius_km": 71492, "mean_distance_au": 5.204, "orbital_period_days": 4331 },
+    { "name": "Saturn",  "mass_kg": 5.68e26, "equatorial_radius_km": 60268, "mean_distance_au": 9.583, "orbital_period_days": 10747 },
+    { "name": "Uranus",  "mass_kg": 8.68e25, "equatorial_radius_km": 25559, "mean_distance_au": 19.191, "orbital_period_days": 30589 },
+    { "name": "Neptune", "mass_kg": 1.02e26, "equatorial_radius_km": 24764, "mean_distance_au": 30.07, "orbital_period_days": 59800 }
+  ]
+}

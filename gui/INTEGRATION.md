@@ -1,0 +1,131 @@
+# SLeeLa GUI Integration
+
+The GUI library supports three complementary integration paths. They are not mutually exclusive: the first provides the easiest Java host model, the second makes GUI intent visible to SLeeLa, and the third supplies a native ABI for a tighter runtime boundary.
+
+## 1. Java host → SLeeLa business logic
+
+Java owns the process and the desktop lifecycle. `SleelaGuiHost` connects a Swing or JavaFX implementation to a `SleelaRuntime`.
+
+```text
+Java application
+      |
+      v
+SleelaGuiHost
+      |
+      +---- Swing / JavaFX
+      |
+      v
+SleelaRuntime
+      |
+      v
+SLeeLa business logic
+      |
+      v
+slcore_exchange()
+```
+
+Use this path when Java is the natural application launcher but SLeeLa must remain the business-logic authority.
+
+## 2. SLeeLa intent → Java GUI
+
+`SleelaGuiRuntime` models the inverse direction. A SLeeLa-facing dispatcher can request a window, update text, and bind named actions while Java supplies the actual desktop controls.
+
+```text
+SLeeLa program
+      |
+      v
+GUI intent / named operation
+      |
+      v
+SleelaGuiRuntime
+      |
+      +---- Swing
+      |
+      +---- JavaFX
+```
+
+Use this path when the `.sleela` Wrapper™ should describe the application's UI behavior and Java should remain a presentation/runtime substrate.
+
+## 3. Shared native ABI
+
+`native/sleela_gui_bridge.h` and `native/sleela_gui_bridge.cpp` provide a small C-compatible callback boundary. It can later be attached directly to the existing SLeeLa native runtime and exposed to Java through JNI or another Java/native mechanism.
+
+```text
+SLeeLa
+  |
+  v
+C/C++ runtime
+  |
+  +---- slcore_exchange()
+  |
+  +---- slgui_bridge
+             |
+             v
+       Java native bridge
+          /        \
+       Swing      JavaFX
+```
+
+Use this path when low-overhead native calls, shared values, or direct VM integration matter.
+
+## Recommended combined architecture
+
+The preferred long-term architecture is to use all three layers:
+
+- **SLeeLa** owns business logic, state transitions, domain operations, and the meaning of events.
+- **Java** owns Swing/JavaFX presentation and desktop lifecycle.
+- **The native bridge** provides a stable low-level boundary to the C/C++ execution core.
+
+The result is intentionally asymmetric: Java is not a second business-logic implementation. It is a native Java desktop host for SLeeLa.
+
+## Value boundary
+
+The production bridge should eventually define an explicit `SLValue` ↔ Java value mapping rather than relying on arbitrary `Object` values. The existing VM's tagged value model is the natural source for that contract.
+
+> **Now implemented.** The explicit `SLValue` ↔ Java value-and-handle contract
+> — and a working link that lets Sleela run against the Java 28 SecureJDK
+> memory model over both a **port** (socket) channel and a **JNI** (local
+> feedback) channel — lives under [`java28/`](../java28/), specified by
+> `java28/spec/JAVA28-MEMORY-INTEGRATION.md` (J28-MEM-0001). Model A there is the
+> inverse of Path 1: Sleela drives and the Java 28 SecureJDK owns the objects.
+
+## JavaFX lifecycle
+
+`FxGui` currently assumes that the JavaFX toolkit has been initialized by its host. A production JavaFX launcher should extend `javafx.application.Application` (or otherwise initialize the toolkit) before constructing the GUI runtime. This keeps JavaFX lifecycle policy in the Java host rather than inside SLeeLa business logic.
+
+
+## Document-change listener (all three paths)
+
+Any of the three paths can enable the **document-change listener option**:
+SLeeLa listens to changes over **1–14 documents** and the running GUI is updated
+whenever any of them changes. Detection is driven by the operating system (a
+`java.nio.file.WatchService` over inotify / `ReadDirectoryChangesW` /
+`kqueue`/FSEvents), so the GUI **refreshes on OS call(s)** rather than by
+polling.
+
+```text
+Watched documents (1..14)
+        |
+        v
+OS notification (WatchService.poll  ← inotify / RDCW / kqueue)
+        |
+        v
+DocumentListener  --confirm revision-->  DocumentListener.Change
+        |
+        v
+SleelaGui.refresh(id, revision)   (marshaled onto the toolkit thread)
+        |
+        v
+Running window updated
+```
+
+- **Path 2** (`SleelaGuiRuntime.listen(idToPath)`) — SLeeLa intent owns the GUI;
+  a change refreshes the window directly.
+- **Path 1** (`SleelaGuiHost.listen(idToPath, changeOperation)`) — Java hosts;
+  each change invokes a SLeeLa operation and shows its result.
+- **Path 3** — the native bridge exposes `slgui_bridge_on_document_change` /
+  `slgui_bridge_document_changed` as the C-side refresh hook.
+
+The 1..14 bound is enforced (out-of-range is rejected), and an OS event that does
+not move a document's revision is coalesced away. See
+[`DOCUMENT_LISTENER.md`](DOCUMENT_LISTENER.md) for the full contract.

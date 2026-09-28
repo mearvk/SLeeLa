@@ -1,0 +1,37 @@
+module SLeeLa.EmailFacade
+
+type TLSMode = none | starttls | implicit
+
+record Email {
+  smtp_host
+  smtp_port
+  helo_name
+  local_bind_host
+  tls_mode
+  username
+  password
+  from
+  to
+  subject
+  body
+}
+
+function send(email) {
+  native.email.send(email)
+}
+
+function send_from(smtp_host, helo_name, from, to, subject, body) {
+  send Email {
+    smtp_host = smtp_host
+    smtp_port = 587
+    helo_name = helo_name
+    local_bind_host = ""
+    tls_mode = starttls
+    username = ""
+    password = ""
+    from = from
+    to = to
+    subject = subject
+    body = body
+  }
+}

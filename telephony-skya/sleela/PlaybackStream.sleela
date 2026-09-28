@@ -1,0 +1,11 @@
+#sleela 1.1
+class PlaybackStream {
+    AudioOutput output;
+    AudioFormat format;
+    AudioBuffer buffer;
+    int running;
+    void configure(AudioOutput sink, AudioFormat selected, int bufferSize) { output=sink; format=selected; buffer.allocate(bufferSize); }
+    void start() { output.start(); running=1; }
+    void stop() { output.stop(); running=0; }
+    void reset() { buffer.clear(); }
+}

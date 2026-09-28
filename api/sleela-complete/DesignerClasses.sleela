@@ -1,0 +1,7 @@
+#sleela 1.1
+class ProjectSpecification { String name; String version; String purpose; void configure(String n,String v,String p){name=n;version=v;purpose=p;} }
+class ModuleSpecification { String name; String version; String purpose; int classCount; void configure(String n,String v,String p){name=n;version=v;purpose=p;} void addClass(ClassSpecification c){classCount=classCount+1;} }
+class ClassSpecification { String name; String purpose; int methods; int fields; void configure(String n,String p){name=n;purpose=p;} void addMethod(MethodSpecification m){methods=methods+1;} void addField(FieldSpecification f){fields=fields+1;} }
+class InterfaceSpecification { String name; String purpose; void configure(String n,String p){name=n;purpose=p;} }
+class MethodSpecification { String name; String returnType; String purpose; void configure(String n,String r,String p){name=n;returnType=r;purpose=p;} }
+class FieldSpecification { String name; String type; String purpose; void configure(String n,String t,String p){name=n;type=t;purpose=p;} }

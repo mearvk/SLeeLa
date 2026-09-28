@@ -1,0 +1,32 @@
+name: Generate BYPASS holidays
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'http/spec/BYPASS.md'
+      - 'tools/generate_bypass_holidays.py'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Generate holiday document
+        run: python3 tools/generate_bypass_holidays.py
+      - name: Commit generated document
+        run: |
+          if git diff --quiet -- http/spec/BYPASS-HOLIDAYS.md; then
+            echo 'No holiday-document changes.'
+            exit 0
+          fi
+          git config user.name 'SLeeLa Bot'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add http/spec/BYPASS-HOLIDAYS.md
+          git commit -m 'Generate BYPASS holiday companion'
+          git push

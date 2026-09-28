@@ -1,0 +1,185 @@
+Sleela .xclass Ingestion Model — Reading SecureJDK 28 XML Class Files
+
+Document Series:    XCI-0001
+Revision:           1.0.0
+Date:               September 2026
+Status:             Normative for the v1 .xclass loader
+Direction:          SecureJDK 28 (.xclass)  ->  Sleela (Program)
+Companions:         SLEELA.syntax (Sleela surface), STP.model (transition bridge),
+                    userland/openjdk/jvm-config.xml (SecureJDK 28 config),
+                    tools/xmc/*.xclass (the reference .xclass files)
+
+================================================================================
+0. Purpose
+================================================================================
+
+SecureJDK 28 uses **.xclass** — an XML class file — as its primary class format
+(legacy 0xCAFEBABE `.class` is only a fallback; see jvm-config.xml
+`<primary-format>.xclass</primary-format>`). An `.xclass` is emitted by the
+`xmc` compiler and carries the *structure* of a class: identity, methods,
+fields, interfaces, security grades, conduct frame, and a signed provenance
+block.
+
+This document specifies how Sleela **ingests** an `.xclass` as input: it parses
+the XML, reconstructs an equivalent Sleela `Program` (classes, fields, method
+skeletons), and runs it on the existing C core. This closes the loop —
+
+    Sleela source --(xmc / SecureJDK 28)--> .xclass --(this loader)--> Sleela
+
+so a structure that SecureJDK 28 produced can be read back into Sleela.
+
+IMPORTANT — structure, not bodies. An `.xclass` describes a class's *shape*:
+each `<method>` records name/return/params/modifiers plus `lines` and
+`complexity` COUNTS, not an instruction stream. There is no executable bytecode
+in an `.xclass`. Therefore ingestion reconstructs each method as a well-typed
+**skeleton** whose body is synthesized (a default `return` of the mapped type),
+preserving the class's interface exactly while remaining runnable. The
+reconstruction is faithful at the level the format actually carries: the type
+structure and the security/provenance metadata.
+
+================================================================================
+1. The .xclass schema (as emitted by xmc 1.0.0)
+================================================================================
+
+Root: <xclass version="1" compiler="xmc" compiler-version="..."
+              edition="..." conduct-frame="US">
+
+  <identity>
+    <name>            class name (required)
+    <superclass>      "(none)" or a class name
+    <abstract>        true|false
+    <interface>       true|false
+    <final>           true|false
+    <public>          true|false
+    <method-count>    int (advisory; the loader trusts <methods>)
+    <field-count>     int (advisory; the loader trusts <fields>)
+    <weight>          int (structural weight; carried as metadata)
+    <lateral-count>   int
+    <interfaces>?     zero or more <implements>Name</implements>
+
+  <design> … <quality-democracy> … <quality-woman>
+      Structural / aesthetic scores. Carried as opaque metadata; they do not
+      affect the reconstructed Program's behavior.
+
+  <security>
+    <trust-grade>     int 0..N   (mirrors jvm-config trust-grade)
+    <classload-grade> int 0..N   (mirrors class-load-guard grade)
+
+  <methods>
+    <method name= return= params= public= static= abstract= lines= complexity=/>
+      name       method identifier
+      return     an xmc type token (§2)
+      params     parameter COUNT (names/types are not carried; synthesized)
+      static     true|false
+      abstract   true|false
+      lines      body line count (advisory)
+      complexity cyclomatic complexity (advisory)
+
+  <fields>
+    <field name= type= public= static= />
+      type       an xmc type token (§2)
+
+  <conduct-frame>
+    <code> <name> <basis>            international-law conduct basis (metadata)
+
+  <provenance>
+    <compiler> <compiler-version> <edition> <source-file> <compiled-at>
+    <signer> <signer-techid>
+    <signature algorithm="sha256">HEX</signature>
+    <signed> true|false
+
+================================================================================
+2. Type mapping  (xmc type token -> Sleela type)
+================================================================================
+
+Sleela's surface types are: int, double, boolean, String, void. The loader maps
+the xmc/Rust-flavored tokens seen in .xclass onto them:
+
+    xmc token                    Sleela type    notes
+    -----------------------------------------------------------------------
+    void, unit, ()               void
+    bool, boolean                boolean
+    String, str, &str, char      String
+    i8 i16 i32 i64 u8 u16 u32    int            all integers -> 64-bit int
+    u64 usize isize int long     int
+    f32 f64 float double         double
+    Self                         <class name>   the declaring class (a class type)
+    Variant, enum-like           int            represented as an int tag
+    <unknown / user type>        int            defaulted to int (a reference tag)
+
+Return type "Self" or a user class name maps, for execution purposes, to `int`
+(an object handle) since the core value model is int/double/bool/string; the
+original token is preserved in a comment on the emitted method.
+
+================================================================================
+3. Reconstruction rules  (.xclass -> sleela::Program)
+================================================================================
+
+3.1 One <xclass> file yields one ClassDecl. Multiple files may be loaded to form
+    a multi-class Program (e.g. Greeter + Person + Role).
+
+3.2 Fields. Each <field> becomes a Sleela field:
+        <mapped-type> <name>;
+    A `static` attribute is recorded as a leading comment (Sleela treats all
+    fields as class-level shared state already). A field whose type maps to a
+    class/Variant is initialized to 0 (its int handle default).
+
+3.3 Methods. Each <method> becomes a Sleela method skeleton:
+        <static?> <mapped-return> <name>( <param0>, <param1>, ... ) { <body> }
+    - Parameters: `params` count synthesized as `int p0, int p1, ...` (the
+      .xclass does not carry parameter names or types). A comment records that
+      the parameter types were synthesized.
+    - abstract methods: reconstructed as concrete skeletons (an executable
+      Program has no abstract methods); the original `abstract="true"` is noted
+      in a comment.
+    - Body (synthesized):
+          void      -> {}                       (implicit return)
+          boolean   -> { return false; }
+          int       -> { return 0; }
+          double    -> { return 0.0; }
+          String    -> { return ""; }
+      The synthesized body preserves the method's type contract exactly; the
+      `lines`/`complexity` counts are recorded as comments for traceability.
+
+3.4 The entry shim. An executable Sleela Program needs exactly one `main`. If no
+    ingested class already defines `void main()`, the loader synthesizes one in a
+    generated class `XClassMain`:
+        void main() {
+            print("xclass: <Name> loaded (methods=M, fields=F, trust=T)");
+            ...one line per loaded class...
+        }
+    so running an ingested `.xclass` prints a verifiable structural summary. If a
+    class DOES define `main`, it is used as the entry and no shim is generated.
+
+3.5 Security & provenance. trust-grade / classload-grade and the signature block
+    are surfaced to the caller (and printed by the shim) but do not alter
+    behavior. A future revision may gate ingestion on signature verification.
+
+================================================================================
+4. Signature awareness (advisory in v1)
+================================================================================
+
+`<provenance><signature algorithm="sha256">` is read and exposed. v1 does NOT
+recompute or enforce it (the signing input canonicalization is a SecureJDK 28
+concern). The loader reports whether the file claims `<signed>true</signed>` and
+carries the hex so a caller can decide policy. Under the STP secure-transition
+path (STP.model) an ingested class's structure can additionally be submitted to
+the supervisor as usual.
+
+================================================================================
+5. CLI surface
+================================================================================
+
+    sleela run <file.xclass>          ingest, reconstruct, and run
+    sleela run <a.xclass> <b.xclass>  ingest several into one Program, then run
+    sleela xclass --emit <file>       print the reconstructed Sleela source
+                                       (does not run) — the human-readable view
+    sleela xclass --info  <file>      print identity/security/provenance summary
+
+The `.xclass` extension is detected automatically by `sleela run`, so a mixed
+invocation is not required.
+
+--------------------------------------------------------------------------------
+XCI-0001 Revision 1.0.0 — Sleela ingests the SecureJDK 28 .xclass structural
+format, reconstructing a runnable, well-typed Sleela Program (classes, fields,
+typed method skeletons) plus surfaced security/provenance metadata.

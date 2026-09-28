@@ -1,0 +1,18 @@
+# SLeeLa Windows 10+ platform configuration
+# This file documents the native backend selected by the common C/C++ core.
+# It is descriptive configuration; it does not replace the compiled Win32 backend.
+
+platform.os=windows
+platform.minimum=10
+platform.backend=Win32
+platform.threads=Win32
+platform.network=Winsock2
+platform.files=Win32
+platform.dynamic_library=LoadLibrary
+platform.terminal=ConPTY
+platform.time=QueryPerformanceCounter
+platform.socket_library=ws2_32
+
+# Runtime memory ceiling: 256M through 2G; default 2G.
+memory_limit=2G
+memory_manager=on

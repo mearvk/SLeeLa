@@ -1,0 +1,11 @@
+#sleela 1.1
+class CaptureStream {
+    AudioInput input;
+    AudioFormat format;
+    AudioBuffer buffer;
+    int running;
+    void configure(AudioInput source, AudioFormat selected, int bufferSize) { input=source; format=selected; buffer.allocate(bufferSize); }
+    void start() { input.start(); running=1; }
+    void stop() { input.stop(); running=0; }
+    void reset() { buffer.clear(); }
+}

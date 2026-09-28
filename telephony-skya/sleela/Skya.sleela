@@ -1,0 +1,22 @@
+#sleela 1.1
+class Skya {
+    int listener;
+    void server() {
+        int client = accept(listener);
+        String request = sockread(client);
+        print("Skya combined server received: " + request);
+        sockwrite(client, "SKYA/1 combined-ready");
+        sockclose(client);
+    }
+    void main() {
+        listener = listen(8443);
+        spawn(server);
+        int socket = connect("127.0.0.1", 8443);
+        sockwrite(socket, "SKYA/1 combined-hello");
+        String response = sockread(socket);
+        print("Skya combined client received: " + response);
+        sockclose(socket);
+        join();
+        sockclose(listener);
+    }
+}

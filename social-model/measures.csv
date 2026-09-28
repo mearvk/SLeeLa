@@ -1,0 +1,6 @@
+measure,system,dims,norm_x,norm_y,norm_z,tolerance,obs_x,obs_y,obs_z,note
+Public education,Design,2,0.80,0.80,0.0,0.10,0.78,0.72,0.0,"ASSUMED normal (access x quality); illustrative observed"
+Public health access,Design,3,0.85,0.80,0.30,0.10,0.70,0.68,0.55,"ASSUMED normal (access x quality x cost); illustrative observed drift"
+Public safety,Design,2,0.75,0.75,0.0,0.10,0.74,0.77,0.0,"ASSUMED normal (coverage x trust); illustrative observed in-band"
+Housing affordability,Design,2,0.60,0.60,0.0,0.10,0.40,0.45,0.0,"ASSUMED normal (supply x affordability); illustrative observed stale"
+Civic participation,Design,3,0.65,0.60,0.55,0.12,0.58,0.55,0.50,"ASSUMED normal (vote x volunteer x trust); illustrative observed drifting"

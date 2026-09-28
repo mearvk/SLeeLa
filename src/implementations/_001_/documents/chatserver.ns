@@ -1,0 +1,173 @@
+instrument sleela.instruments.network.
+instrument sleela.instruments.ui.
+instrument sleela.instrument.app.
+instrument sleela.instrument.system.
+instrument sleela.instruments.extensions.
+
+::nordshrift:{$}
+
+$ language in/out java
+
+//
+
+$ submodule     system      @bodi               setting("strict")       ref("{auto}")       ver 1.0+        note("")
+$ submodule     system      @connector          setting("strict")       ref("{auto}")       ver 1.0+        note("")
+$ submodule     system      @crypto             setting("strict")       ref("{auto}")       ver 1.0+        note("")
+$ submodule     system      @factory            setting("strict")       ref("{auto}")       ver 1.0+        note("")
+$ submodule     system      @frame              setting("strict")       ref("{auto}")       ver 1.0+        note("")
+$ submodule     system      @http               setting("strict")       ref("{auto}")       ver 1.0+        note("")
+$ submodule     system      @monitors           setting("strict")       ref("{auto}")       ver 1.0+        note("")
+$ submodule     system      @servers            setting("strict")       ref("{auto}")       ver 1.0+        note("")
+
+//
+
+$ submodules    settings    @compiler           setting("strict")       ref("{auto}")
+$ submodules    settings    @viewers            setting("strict")       ref("{auto}")
+$ submodules    settings    @integrator         setting("strict")       ref("{auto}")
+$ submodules    settings    @signatures         setting("strict")       ref("{auto}")
+$ submodules    settings    @naming             setting("implied")      ref("{auto}")
+$ submodules    settings    @namespaces         setting("implied")      ref("{auto}")
+
+//
+
+$ module        load        @chatserver         ref("http://nordshrift.examples.chatserver/events/onload")     namespace("nordshrift.examples.chatserver")      name("@chatserver","@chatserver/@root")
+
+//
+
+@chatserver     settings    @submodules         ref("{auto}")
+@chatserver     settings    @encryption         ref("{auto}")
+@chatserver     settings    @signatures         ref("{auto}")
+@chatserver     settings    @settings           ref("{auto}")
+@chatserver     settings    @system             ref("{auto}")
+@chatserver     settings    @security           ref("{auto}")
+@chatserver     settings    @bodi               ref("{auto}")
+
+//
+
+@chatserver     monitor     @instantiation      ref("{auto}")
+@chatserver     monitor     @name               ref("{auto}")
+@chatserver     monitor     @structure          ref("{auto}")
+@chatserver     monitor     @function           ref("{auto}")
+@chatserver     monitor     @startup            ref("{auto}")
+@chatserver     monitor     @runtime            ref("{auto}")
+@chatserver     monitor     @shutdown           ref("{auto}")
+
+//
+
+@chatserver     monitor     @instantiation      submodule @degree @additive @transitive @extensible
+@chatserver     monitor     @startup            submodule @degree @additive @transitive @extensible
+@chatserver     monitor     @runtime            submodule @degree @additive @transitive @extensible
+@chatserver     monitor     @shutdown           submodule @degree @additive @transitive @extensible
+
+//
+
+@chatserver     loader      @network            ref("bodi://network/{auto}/chatserver")
+@chatserver     loader      @ui                 ref("bodi://network/{auto}/ui")
+@chatserver     loader      @app                ref("bodi://network/{auto}/app")
+@chatserver     loader      @system             ref("bodi://network/{auto}/system")
+
+//
+
+@chatserver     @network        name("{auto},network")
+
+: version       1.0+
+: package       netx
+: package       munction
+: socket        name("socket")  in/out                      88
+
+    : root      auto            name("@network/@root")      build
+
+    : facet     display         ref("@ui/serverbar")
+    : facet     persistence     file("socket.txt")          SYNCHRONOUS
+    : facet     persistence     table("{auto}/socket")      {DEFAULT_MYSQL_PORT}
+    : facet     persistence     bodi("{auto}/socket")       {DEFAULT_BODI_PORT}
+
+//
+
+@chatserver     @datastream     name("{auto},log")
+
+: version       1.0+
+: package       logx
+: package       munction
+: writer        name("log")
+
+    : root      auto            name("@log/@root")          build
+
+    : facet     display         ref("@ui/serverbar")
+    : facet     persistence     file("log.txt")             SYNCHRONOUS
+    : facet     persistence     table("{auto}/log")         {DEFAULT_MYSQL_PORT}
+    : facet     persistence     bodi("{auto}/log")          {DEFAULT_BODI_PORT}
+
+//
+
+@chatserver     @datastream     name("{auto},status")
+
+: version       1.0+
+: package       logx
+: package       munction
+: writer        name("status")
+
+    : root      auto            name("@status/@root")       build
+
+    : facet     display         ref("@ui/serverbar")
+    : facet     persistence     file("status.txt")          SYNCHRONOUS
+    : facet     persistence     table("{auto}/status")      {DEFAULT_MYSQL_PORT}
+    : facet     persistence     bodi("{auto}/status")       {DEFAULT_BODI_PORT}
+
+//
+
+@chatserver     @ui             name("{auto},ui")
+
+: version       1.0+
+: package       swingx
+: package       munction
+: build
+
+    : root      auto            name("@ui/@root")           build
+
+    : facet     struct          @serverbar                  name("{auto},serverbar")
+
+//
+
+@chatserver     @app            name("{auto},app")
+
+: version       1.0+
+: package       appx
+: package       munction
+: build
+
+    : root      auto            name("@app/@root")          build
+
+    : facet     @ui             name("ui")                  existing
+    : facet     @network        name("network")             existing
+    : facet     @system         name("system")              existing
+    : facet     @datastream     name("log")                 existing
+    : facet     @datastream     name("status")              existing
+
+    : facet     struct          @orderer                    options("QUEUE")
+    : facet     struct          @integrator                 options("SYSTEM_ALL")
+    : facet     struct          @extender                   options("SYSTEM_ALL")
+    : facet     struct          @password                   options("MANDATORY")
+
+    : require   monitor         @socket                     options("LOG_ALL")
+    : require   monitor         @onconnect                  options("IP_ADDRESS, TIME")
+    : require   monitor         @ondisconnect               options("IP_ADDRESS, TIME")
+    : require   monitor         @systemextension            options("ADD, REMOVE, ALTER")
+
+//
+
+@chatserver     @system         name("@system,system")
+: version 1.00
+: package systemx
+
+    : root      auto            name("@system/@root")       build
+
+    : facet     struct          @orderer                    options("QUEUE")
+    : facet     struct          @integrator                 options("SYSTEM_ALL")
+    : facet     struct          @extender                   options("SYSTEM_ALL")
+    : facet     struct          @password                   options("MANDATORY")
+
+    : require   monitor         @socket                     options("LOG_ALL")
+    : require   monitor         @onconnect                  options("IP_ADDRESS, TIME")
+    : require   monitor         @ondisconnect               options("IP_ADDRESS, TIME")
+    : require   monitor         @systemextension            options("ADD, REMOVE, ALTER")

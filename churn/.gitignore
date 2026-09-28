@@ -1,0 +1,7 @@
+# Generated constraint-report output: each churn/N/Constraints.java run writes a
+# well-formed Markdown report into a dated DD-MM-YYYY/ folder. These are build
+# artifacts, not source; do not commit them.
+[0-3][0-9]-[01][0-9]-[0-9][0-9][0-9][0-9]/
+
+# Compiled Java classes
+*.class

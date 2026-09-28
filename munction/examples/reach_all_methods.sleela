@@ -1,0 +1,62 @@
+#sleela 1.3
+// reach_all_methods.sleela — one Munction™ grammar over every system method
+// (MUNCTION.md §4). Each reach below is a separate sane sentence (4..16 calls);
+// only the connect() scheme changes to reach a pipe, a file, the internet, a
+// private packet, or a crypto envelope. Every reach is receivable and closes
+// with a receipt.
+class ReachAllMethods {
+
+    // File I/O — the minimum sane sentence (4 calls).
+    void toFile(String entry) {
+        Munction.start("audit").connect("file:./ledger.log").send(entry).closeWithReceipt();
+    }
+
+    // OS pipe / FIFO (5 calls).
+    void toPipe(String datum) {
+        Munction.start("tap").connect("pipe:/tmp/reach.fifo").send(datum).consume().closeWithReceipt();
+    }
+
+    // Internet over TCP (6 calls).
+    void toNet(String datum) {
+        Munction.start("wire").connect("tcp://127.0.0.1:19866").send(datum).consume().latch().closeWithReceipt();
+    }
+
+    // Private packets over SDPS (8 calls).
+    void toPackets(String data, String interims) {
+        Munction.start("xyx")
+                .connect("sdps://tmcf:19866")
+                .send(data)
+                .thatch(interims)
+                .consume()
+                .consume()
+                .latch()
+                .closeWithReceipt();
+    }
+
+    // Crypto envelope wrapping TCP, with a key reference and retry (13 calls,
+    // still one sane sentence). Keys are referenced, never literal in the URI.
+    void toCryptoOverNet(String order, String interims) {
+        Munction.start("settle")
+                .connect("crypto:tcp://clearing:8443")
+                .enable("crypto:kref-2026")
+                .enable("retry")
+                .open()
+                .send(order)
+                .thatch(interims)
+                .consume()
+                .observe()
+                .propagate("sdps://mirror:19866")
+                .consume()
+                .latch()
+                .closeWithReceipt();
+    }
+
+    void main() {
+        toFile("entry-1");
+        toPipe("tap-1");
+        toNet("wire-1");
+        toPackets("payload", "frame,checksum");
+        toCryptoOverNet("order-1", "frame,seal");
+        print("all reaches closed with receipts");
+    }
+}

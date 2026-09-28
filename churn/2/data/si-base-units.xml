@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Dataset: si-base-units
+  The seven SI base units and their defining constants (2019 SI redefinition).
+  Provenance: BIPM, The International System of Units (SI), 9th edition (2019);
+  cross-referenced with NIST. Public domain / official. Retrieved 2026-09.
+  These are definitional Structures (the base quantities of measurement).
+-->
+<dataset name="si-base-units" system="SI" edition="9th (2019)">
+  <provenance>
+    <source>BIPM — SI Brochure, 9th edition (2019)</source>
+    <crossReference>NIST — physics.nist.gov</crossReference>
+    <retrieved>2026-09</retrieved>
+    <note>Since the 2019 redefinition, each base unit is fixed via an exact constant of nature.</note>
+  </provenance>
+  <units>
+    <unit name="second"   symbol="s"   quantity="time"                 definingConstant="caesium-133 hyperfine transition frequency" definingValue="9192631770 Hz"/>
+    <unit name="metre"    symbol="m"   quantity="length"               definingConstant="speed of light c"                           definingValue="299792458 m s^-1"/>
+    <unit name="kilogram" symbol="kg"  quantity="mass"                 definingConstant="Planck constant h"                          definingValue="6.62607015e-34 J s"/>
+    <unit name="ampere"   symbol="A"   quantity="electric current"     definingConstant="elementary charge e"                        definingValue="1.602176634e-19 C"/>
+    <unit name="kelvin"   symbol="K"   quantity="thermodynamic temperature" definingConstant="Boltzmann constant k"                 definingValue="1.380649e-23 J K^-1"/>
+    <unit name="mole"     symbol="mol" quantity="amount of substance"  definingConstant="Avogadro constant N_A"                      definingValue="6.02214076e23 mol^-1"/>
+    <unit name="candela"  symbol="cd"  quantity="luminous intensity"   definingConstant="luminous efficacy K_cd"                     definingValue="683 lm W^-1"/>
+  </units>
+</dataset>

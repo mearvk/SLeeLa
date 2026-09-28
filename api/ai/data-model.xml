@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bodi version="1" kind="ai-data-model">
+  <dataset id="sleela-media-data" revision="1">
+    <field name="id" type="string" required="true"/>
+    <field name="kind" type="data|file|audio|video" required="true"/>
+    <field name="source" type="path|bytes|SLMediaFrame" required="true"/>
+    <field name="timestamp_ns" type="int64" required="false"/>
+    <field name="duration_ns" type="int64" required="false"/>
+    <field name="label" type="string" required="false"/>
+    <field name="confidence" type="double" required="false"/>
+  </dataset>
+</bodi>

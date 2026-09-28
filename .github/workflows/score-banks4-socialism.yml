@@ -1,0 +1,64 @@
+name: Annotate BANKS4 Constitutional Socialism Reference
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+
+permissions:
+  contents: write
+
+concurrency:
+  group: annotate-banks4-constitutional
+  cancel-in-progress: true
+
+jobs:
+  annotate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Build BANKS3 -> BANKS4 (inputs to the annotation)
+        # BANKS3.md and BANKS4.md are derived and not committed; regenerate the
+        # chain here so this workflow is self-sufficient and does not depend on
+        # a separate Generate-BANKS3 / Generate-BANKS4 run landing first.
+        run: |
+          python3 tools/banking/generate_banks3.py
+          python3 tools/banking/update_banks4.py
+
+      - name: Apply neutral, sourced constitutional-reference indicator
+        run: python3 tools/banking/update_banks4_socialism.py
+
+      - name: Validate 391 rows and the permitted indicator values
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          text = Path('BANKS4.md').read_text(encoding='utf-8')
+          rows = re.findall(r'^\| (\d{3}) \| (.*?) \| (.*?) \| (.*?) \| (.*?) \| (.*?) \| (.*?) \| (.*?) \| (.*?) \| (.*?) \| (.*?) \|$', text, re.M)
+          assert len(rows) == 391, len(rows)
+          assert [r[0] for r in rows] == [f'{i:03d}' for i in range(1, 392)]
+          # Only the neutral, sourced value set is permitted; nothing is invented,
+          # so unverified rows must remain UNASSESSED rather than guessed.
+          allowed = {'CONSTITUTIONAL', 'NONE', 'UNASSESSED'}
+          assert all(r[10] in allowed for r in rows), \
+              sorted({r[10] for r in rows} - allowed)
+          print('BANKS4 validation passed: 391 rows; values in', allowed)
+          PY
+
+      - name: Commit updated BANKS4
+        run: |
+          git config user.name "SLeeLa Data Workflow"
+          git config user.email "actions@users.noreply.github.com"
+          git add BANKS4.md
+          if git diff --cached --quiet; then
+            echo "BANKS4 constitutional-reference column already current."
+          else
+            git commit -m "Annotate BANKS4 Constitutional Socialism Reference (neutral, sourced)"
+            git push
+          fi

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bodi version="1">
+  <project id="example-listener-001" kind="listener" title="Basic HTTP Listener Declaration"/>
+  <listener bind="127.0.0.1" port="8080" protocol="http" route="/api/example"/>
+</bodi>

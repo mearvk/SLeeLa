@@ -1,0 +1,12 @@
+#sleela 1.1
+class VoIPAppExample {
+    VoIPApplication app;
+    AudioDeviceManager devices;
+    AudioFormat format;
+    void main() {
+        format.set(48000,2,16,"PCM");
+        devices.initialize();
+        app.start();
+        print("Sleela-Complete VoIP application ready");
+    }
+}

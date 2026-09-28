@@ -1,0 +1,22 @@
+name: Populate BANKS Country Years Only
+on:
+  workflow_dispatch:
+jobs:
+  country-years:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Populate country existence years only
+        run: python3 tools/populate-bank-country-years.py
+      - name: Commit years only
+        run: |
+          git config user.name "SLeeLa BANKS Country Years Generator"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add BANKS.md
+          git diff --cached --quiet || git commit -m "Populate BANKS country existence years"
+          git push origin HEAD:master

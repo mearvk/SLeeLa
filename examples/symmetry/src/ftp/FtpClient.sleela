@@ -1,0 +1,64 @@
+// ===========================================================================
+// FtpClient.sleela — the client face, mirror of FtpServer. The client walks the
+// login+transfer sequence and, for each command, predicts the reply code and
+// decides whether the exchange may continue. A reply in the 2xx/3xx class means
+// "proceed"; 5xx means "abort". The client's predicted codes mirror the
+// server's replyFor(...) table exactly — that agreement is the symmetry.
+//
+// Driven by: symmetry/build.sst. Catalogued objects: Gateway, Session, Retry.
+// ===========================================================================
+class FtpClient {
+
+    int proceeded = 0;            // shared: commands the client would continue past
+
+    // Mirror of FtpServer.replyFor.
+    int expectReply(int command) {
+        if (command == 1) {
+            return 220;
+        }
+        if (command == 2) {
+            return 331;
+        }
+        if (command == 3) {
+            return 230;
+        }
+        if (command == 4) {
+            return 226;
+        }
+        if (command == 5) {
+            return 550;
+        }
+        return 500;
+    }
+
+    // Positive completion / intermediate reply -> proceed. 4xx/5xx -> stop.
+    boolean mayProceed(int code) {
+        return code < 400;
+    }
+
+    void step(int command) {
+        int code = expectReply(command);
+        boolean go = mayProceed(code);
+        if (go) {
+            lock(0);
+            proceeded = proceeded + 1;
+            unlock(0);
+        }
+        print("ftp-client: cmd=" + command + " expect=" + code + " proceed=" + go);
+    }
+
+    void main() {
+        print("== FTP client ==");
+        print("Gateway role = " + role("Gateway"));
+        print("Session role = " + role("Session"));
+
+        step(1);     // CONNECT
+        step(2);     // USER
+        step(3);     // PASS
+        step(4);     // RETR ok
+        step(5);     // RETR missing (server would 550)
+
+        print("commands cleared to proceed = " + proceeded + " / 5");
+        print("done");
+    }
+}

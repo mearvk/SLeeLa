@@ -1,0 +1,103 @@
+LNG-0001 — SLeeLa JVM-family language ingest ("langin")
+=======================================================
+
+Status:    Normative for the langin ingest surface
+Component: impl/langin
+Compiler:  Sleelvac(TM) 1.4
+Copyright: MEARVK LLC 2026
+
+
+1. Purpose
+----------
+langin lets SLeeLa accept the **JVM language family** as modern compiled input
+types. These five "brother languages" all compile to JVM bytecode and share one
+runtime, so SLeeLa treats them as one ingest family:
+
+    Java     (.java)          the foundation of the ecosystem
+    Kotlin   (.kt, .kts)      pragmatic, null-safe, 100% Java-interop
+    Scala    (.scala, .sc)    object-oriented + advanced functional
+    Groovy   (.groovy, .gvy)  flexible/dynamic; drives the Gradle build system
+    Clojure  (.clj, .cljs,    a Lisp dialect; data-as-code, pure-functional
+             .cljc)
+
+langin ingests a source unit's **class skeleton** and reconstructs an equivalent,
+runnable `sleela::Program`, exactly the way the `.xclass` loader (XCI-0001)
+ingests SecureJDK 28 XML class files. From the reconstructed Program it can emit
+Sleela source (`.sleela`) and/or an `.xclass` structural descriptor.
+
+
+2. Scope: a STRUCTURAL transpile (skeleton only)
+------------------------------------------------
+langin is intentionally a **structural** front end, NOT a source-language
+compiler. It reconstructs:
+
+  * the package / namespace,
+  * the primary class / interface / object / trait / namespace name,
+  * fields (name + mapped type),
+  * method signatures (name, mapped return type, mapped parameter types).
+
+It does NOT translate executable logic. Method bodies are **synthesized
+skeletons** — a single default `return` for the mapped return type (mirroring the
+`.xclass` loader's `synthBody`). This keeps langin dependency-free: it needs no
+`javac`/`kotlinc`/`scalac`/`groovyc`/Clojure runtime, only a small hand-written
+scanner per language. It is native C++ and builds on all three OSes through the
+existing `impl/` toolchain.
+
+
+3. Type mapping
+---------------
+Source-language types map onto SLeeLa's surface types
+(`int`/`double`/`boolean`/`String`/`void`); every other reference type is carried
+as a struct handle (`int`), consistent with the `.xclass` model.
+
+    void, Unit, Nothing                         -> void
+    int, Integer, long, short, byte             -> int
+    double, float, BigDecimal                   -> double
+    boolean, Bool                               -> boolean
+    String, char, CharSequence                  -> String
+    <any other object/reference type>           -> int   (struct handle)
+
+Kotlin nullability (`T?`) and generic arguments (`List<T>`) are stripped to their
+base type before mapping.
+
+
+4. Per-language recognition (best-effort skeleton scan)
+-------------------------------------------------------
+Java / Groovy : `[modifiers] RetType name(params) {|;`  for methods;
+                `[modifiers] Type name ;|=`             for fields.
+Kotlin        : `fun name(params): RetType`             for methods;
+                `val|var name: Type`                    for fields.
+Scala         : `def name(params): RetType`             for methods;
+                `val|var name: Type`                    for fields.
+Clojure       : `(ns a.b.c)` -> namespace; `(defn f [args] ...)` -> methods;
+                `(def name ...)` -> fields. The namespace is sanitized into a
+                Sleela identifier for the reconstructed class name.
+
+Parameter lists accept both Java-style `Type name` and Kotlin/Scala-style
+`name: Type`; default values are dropped.
+
+
+5. CLI
+------
+    sleela langin [--run|--emit-sleela|--emit-xclass|--info] <file...>
+
+      --run          ingest + compile + run the reconstructed Program (default)
+      --emit-sleela  print the reconstructed Sleela source (alias: --emit)
+      --emit-xclass  print an .xclass structural descriptor (compiler="langin")
+      --info         print a one-line summary per ingested unit
+
+A JVM-family file also runs by extension via `sleela run <file>` or the bare
+`sleela <file>` form. As with every other execution path, the SHA-256 execution
+gate (`SLEELA_SHA256_MANIFEST`) applies.
+
+If no ingested unit defines `void main()`, langin synthesizes a `LangInMain`
+entry shim that prints the ingest summary, so the reconstructed Program always
+runs.
+
+
+6. Data-integrity note
+----------------------
+langin reports only what it can structurally recover from the source text. It is
+honest about being skeleton-only: an emitted `.sleela`/`.xclass` preserves the
+type contract and structure of the input, not its behavior. Anything it cannot
+recognize is omitted rather than guessed.

@@ -1,0 +1,16 @@
+system Proxy.Client {
+  role client
+
+  state proxy
+  state request_count
+
+  on start {
+    request_count = 0
+  }
+
+  on request(target, payload) {
+    request_count = request_count + 1
+    send proxy.request(target, payload) to proxy
+    await proxy.response
+  }
+}

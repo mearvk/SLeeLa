@@ -1,0 +1,317 @@
+Nordshrift .sst Scripting Sheet Format Specification
+
+Document Series: NS-SST-0001
+Revision: 2.0.0
+Status: Normative Extension / Successor Specification
+Date: September 2026
+Governing Tool: Nordshrift 2.0
+Supersedes: NS-SST-0001 Revision 1.0.0 for new 2.0 sheets
+
+# Part XVII — Subject Semantics and Common Models
+
+## 17.1 Purpose
+
+NS-SST-0001 2.0 extends the .sst control surface from transpilation configuration into a declarative semantic coordination layer. A 2.0 sheet may describe subject models, quantities, units, assumptions, relations, transformations, evidence status, comparative norms, validation work, and explicit dependencies between subject libraries.
+
+The extension does not replace Sleela Core execution. It specifies information that Nordshrift may preserve, validate, route, and expose to the compiler and subject libraries.
+
+The five first-class subject domains are:
+
+- Math
+- Physics
+- Economics
+- Chemistry
+- Financial
+
+These domains share a common semantic model while retaining domain-specific formulas, contracts, and interpretations.
+
+## 17.2 Common Subject Model
+
+A Subject is a named semantic object with the following conceptual fields:
+
+- identity
+- domain
+- quantities
+- units
+- assumptions
+- relations
+- formulas
+- transformations
+- results
+- comparative-norms
+- evidence
+- uncertainty
+- explanation
+- dependencies
+- validation
+
+A Subject must distinguish definition from computation and computation from interpretation.
+
+Canonical chain:
+
+subject → quantities → units → assumptions → relation → equation → transformation → numerical-result → interpretation
+
+## 17.3 Quantity Model
+
+A Quantity consists of:
+
+- identity
+- numerical value or expression
+- unit
+- dimension
+- domain
+- status
+
+A numerical value without a declared unit or dimension is incomplete whenever the domain requires dimensional meaning.
+
+## 17.4 Unit Model
+
+A Unit provides:
+
+- symbol
+- dimension
+- scale
+- offset where applicable
+- conversion relation
+
+Unit conversion must be explicit and must preserve the declared dimension.
+
+## 17.5 Assumption Model
+
+An Assumption records a condition under which a model is valid. It contains:
+
+- identity
+- statement
+- scope
+- strength
+- source
+- validation status
+
+Assumptions must not be silently promoted to observations.
+
+## 17.6 Relation and Formula Models
+
+A Relation connects quantities, subjects, or entities. A Formula is a named relation expressed algebraically or structurally.
+
+A Formula must identify:
+
+- inputs
+- outputs
+- domain conditions
+- units or dimensions where applicable
+- assumptions
+- transformation rules
+- error/invalid-domain conditions
+
+## 17.7 Transformation Model
+
+A Transformation records an operation applied to a subject or result. It contains:
+
+- source
+- operation
+- parameters
+- destination
+- approximation status
+- provenance
+
+Transformations should be inspectable as a chain rather than collapsed into an unexplained final value.
+
+## 17.8 Evidence Model
+
+Evidence carries epistemic status. The normative statuses are:
+
+OBSERVED
+SPECIFIED
+DERIVED
+MODELED
+INFERRED
+ASSUMED
+
+A computed result is not automatically an OBSERVED fact. INFERRED and MODELED results must retain their supporting relations and assumptions when available.
+
+## 17.9 Comparative Norm Model
+
+Comparative meaning is represented as:
+
+PriorSubject → CurrentSubject → ReferenceSubject → ComparativeNorm
+
+A ComparativeNorm identifies the reference population, reference quantity, relation, and interpretation used for comparison. Comparison must not be represented as proof of causation unless an appropriate causal model is explicitly supplied.
+
+## 17.10 Explanation Model
+
+An Explanation is a structured rendering of the semantic chain. It should be capable of answering:
+
+1. What is the subject?
+2. What quantities and units are involved?
+3. What assumptions apply?
+4. What relation or formula is used?
+5. What transformation occurs?
+6. What result is produced?
+7. What comparative norm applies?
+8. What is observed, specified, derived, modeled, inferred, or assumed?
+9. What remains uncertain?
+
+## 17.11 Health and IQ Conservators
+
+Health and IQ remain system metrics. They do not measure human health or human intelligence.
+
+Health Conservator concerns include execution continuity, capacity, timeout, exception containment, and resource condition.
+
+IQ Conservator concerns system insight and quality, including:
+
+- Insight
+- Congruence
+- Coupling
+- Contract completeness
+- Optimization objective
+- Result traceability
+- Explanation traceability
+
+## 17.12 TODO / WorkPlan Model
+
+Version 2.0 introduces a declarative WorkPlan model for future and active work. A Todo contains:
+
+- identity
+- subject
+- priority
+- dependency
+- preconditions
+- action
+- expected-result
+- validation
+- status
+
+A TODO is planning information, not evidence that the proposed result exists.
+
+Recommended statuses:
+
+PLANNED
+READY
+ACTIVE
+BLOCKED
+VALIDATING
+COMPLETE
+DEFERRED
+
+## 17.13 Subject Dependencies
+
+Subject libraries may declare explicit dependencies. The canonical foundational relationship is:
+
+Math → Physics
+Math → Economics
+Math → Chemistry
+Math → Financial
+
+Additional relationships may be declared when a subject genuinely consumes another subject's definitions or executable services. Dependency declarations must not imply empirical conclusions.
+
+## 17.14 Domain Ideals
+
+The 2.0 semantic layer is governed by these ideals:
+
+1. Identity before calculation.
+2. Quantity before formula.
+3. Unit and dimension before interpretation.
+4. Assumption before extrapolation.
+5. Relation before conclusion.
+6. Transformation before result.
+7. Provenance before trust.
+8. Comparison before ranking.
+9. Uncertainty before certainty claims.
+10. Validation before completion.
+11. Explicit dependency before hidden coupling.
+12. Computation must remain distinguishable from observation.
+
+## 17.15 Domain Profiles
+
+Math should emphasize algebraic validity, dimensions where applicable, numerical stability, and transformation correctness.
+
+Physics should emphasize units, constants, physical laws, domain conditions, conservation relations, and modeled versus observed quantities.
+
+Economics should emphasize accounting identities, agents, rates, equilibrium assumptions, comparative statics, scenarios, and the distinction between models and forecasts.
+
+Chemistry should emphasize composition, valence, bonds, symmetry, properties, reaction relations, comparative ratios, signals, conferrers, and qualified inference.
+
+Financial should emphasize cash flows, valuation, rates, discounting, instruments, portfolios, risk, scenarios, algebraic invariants, and model assumptions.
+
+## 17.16 2.0 Sheet Sections
+
+A 2.0 sheet may add these sections alongside the 1.0 sections:
+
+subject:
+  domain        math | physics | economics | chemistry | financial
+  identity      "..."
+  depends-on    [ math ]
+
+quantities:
+  amount:
+    value       10
+    unit        "USD"
+    dimension   currency
+
+assumptions:
+  rate-valid:
+    statement   "rate applies for the stated period"
+    status      specified
+
+relations:
+  valuation:
+    formula     "PV = FV / (1+r)^n"
+
+transformations:
+  discount:
+    operation   present-value
+
+comparison:
+  prior        "..."
+  current      "..."
+  reference    "..."
+  norm         "..."
+
+evidence:
+  status       derived
+  source       "..."
+
+workplan:
+  financial-007:
+    action         "add IRR"
+    status         planned
+    validation     "benchmark against known cases"
+
+## 17.17 Compatibility
+
+A 1.0 sheet remains valid under a Nordshrift implementation that supports the 1.0 grammar. A 2.0 sheet may use all compatible 1.0 sections plus the semantic sections defined here. A 2.0 implementation must reject unsupported 2.0 directives rather than silently ignoring them.
+
+The 2.0 pragma is:
+
+#nordshrift 2.0
+
+The legacy pragma remains:
+
+#nordshrift 1.0
+
+The semantic extension is additive in intent: existing source, target, pipeline, rule, effect, derive, guard, interop, and profile concepts remain available.
+
+## 17.18 Validation Principles
+
+Nordshrift 2.0 should validate:
+
+- subject identity uniqueness
+- declared dependency availability
+- quantity/unit compatibility
+- formula input/output compatibility
+- assumption references
+- transformation provenance
+- evidence-status validity
+- comparison references
+- TODO dependencies
+- completion claims against validation records
+
+A failed validation must not be converted into a successful result merely by lowering confidence.
+
+## 17.19 Canonical Cross-Domain Chain
+
+The common semantic architecture is:
+
+Subject → Quantity → Unit → Assumption → Relation → Formula → Transformation → Result → ComparativeNorm → Evidence → Explanation → Validation
+
+This chain is the principal semantic bridge between Nordshrift and the Math, Physics, Economics, Chemistry, and Financial libraries.

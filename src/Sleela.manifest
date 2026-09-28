@@ -1,0 +1,717 @@
+SLEELA LANGUAGE METADOCUMENT
+
+Foundational Conceptual Specification — Pre-Normative Edition
+
+Document Status:	Pre-Normative
+Document Series:	SL-META-0001
+Revision:	1.0.0
+Date:	September 2026
+Governing Authority:	Sleela Language Design Council (SLDC)
+Table of Contents
+Preamble
+
+Part I — Conceptual Foundations
+
+Chapter 1 — The Sleela Design Mandate
+
+1.1 Origin and Motivation  •  1.2 Core Philosophy  •  1.3 Non-Goals
+
+Chapter 2 — The Sleela Meta-Model
+
+2.1 Definition  •  2.2 Ontological Primitives  •  2.3 Relationships  •  2.4 Invariants
+
+Part II — Abstraction Layers Above Java
+
+Chapter 3 — The Sleela–Java Abstraction Stack
+
+3.1 Three-Layer Model  •  3.2 Semantic Core Mappings  •  3.3 Expressive Surface  •  3.4 Translation Principles
+
+Part III — Syntax Governance
+
+Chapter 4 — Governing Rules for Syntax
+
+4.1 Syntax Philosophy  •  4.2 Lexical Conventions  •  4.3 Structural Syntax Rules  •  4.4 Syntax Versioning
+
+Part IV — Semantic Governance
+
+Chapter 5 — Governing Rules for Semantics
+
+5.1 Semantic Model Overview  •  5.2 Type System Principles  •  5.3 Semantic Rules  •  5.4 Subtyping and Variance
+
+Part V — Compilation Governance
+
+Chapter 6 — Governing Rules for Compilation
+
+6.1 Pipeline Overview  •  6.2 Compilation Rules  •  6.3 Error Philosophy  •  6.4 Incremental Compilation
+
+Part VI — Runtime Governance
+
+Chapter 7 — Governing Rules for Runtime Behavior
+
+7.1 Runtime Model  •  7.2 Runtime Rules  •  7.3 Memory and Threading  •  7.4 Java Interoperability
+
+Part VII — Governance and Evolution
+
+Chapter 8 — Meta-Governance
+
+8.1 The SLDC  •  8.2 Document Hierarchy  •  8.3 Versioning Policy  •  8.4 Conformance
+
+Appendices: A (Glossary)  •  B (Design Principles)  •  C (Rule Index)  •  D (Comparative Analysis)
+
+Preamble
+
+Statement of Authority and Purpose
+This document — the Sleela Language Metadocument, designated SL-META-0001 — is the supreme governing specification of the Sleela programming language. It is a pre-normative document in the sense that it precedes and governs the formal language specification (SL-SPEC), which constitutes the normative grammar and formal semantics of Sleela. However, it is itself authoritative: all downstream specifications, compiler implementations, runtime libraries, and standard library definitions must be consistent with the principles, meta-model, rules, and decisions recorded herein.
+
+A metadocument of this kind differs fundamentally from a language specification. A formal specification answers the question: what is the precise meaning of this syntactic construct? This metadocument answers the prior and deeper question: why does this language exist, what concepts does it operate over, and what rules govern all decisions about its design and evolution? Where the specification is descriptive and formal, this metadocument is constitutive and conceptual. It defines the ontological universe within which all Sleela constructs exist before any grammar is written.
+
+Specifically, this metadocument:
+
+Establishes the design mandate and philosophical principles of Sleela, against which all proposed language features must be evaluated.
+Defines the Sleela Meta-Model: the complete set of ontological primitives and their relationships, which form the conceptual substrate of all Sleela constructs.
+Governs the abstraction relationship between Sleela and Java, including the layered translation model and the guarantees made at each layer.
+Establishes structural syntax rules, semantic rules, compilation rules, and runtime rules that are binding on all conforming implementations.
+Defines the governance process for language evolution, including the amendment procedure and document hierarchy.
+Intended Audience. This document is addressed to four primary audiences: (1) language designers who are extending or amending Sleela, who must evaluate proposals against the principles and rules here; (2) compiler engineers implementing the Sleela compilation pipeline, for whom the compilation governance rules in Part V are binding; (3) runtime implementors building or validating the Sleela Runtime Library, for whom Part VI is authoritative; and (4) advanced practitioners seeking to understand the deep design rationale behind Sleela's surface behavior.
+
+This document is written in a pre-normative state with revision 1.0.0. Upon ratification by the Sleela Language Design Council (SLDC), it will be elevated to normative status and supersede all prior design notes and informal specifications.
+
+Part I
+
+Conceptual Foundations
+Chapter 1 — The Sleela Design Mandate
+1.1 Origin and Motivation
+Sleela originates from a concrete and recurring problem encountered in large-scale enterprise software: the semantic impedance mismatch between high-abstraction domain models and Java's expression vocabulary. When a domain expert conceptualizes a business process as a set of entities bearing behavioral contracts, governed by declarative rules, and composed via deterministic flows, the realization of that concept in idiomatic Java requires the programmer to simultaneously manage class hierarchies, interface wiring, exception handling, null safety, threading concerns, and annotation processing — none of which is part of the original domain concept.
+
+The result is that Java programs at the high-abstraction layer accumulate mechanical noise: boilerplate that obscures intent without adding correctness guarantees. Getters, setters, builder patterns, optional unwrapping chains, checked exception declarations, and annotation stacks are all instances of this phenomenon. The program's meaning — what it is trying to compute or represent — is buried beneath an accumulation of expression mechanisms that Java requires but the domain does not.
+
+Sleela's position in the language ecosystem is precisely defined: it is one abstraction layer above Java, and its sole compilation target is idiomatic, human-readable Java source. Sleela does not aim to replace Java at every layer of the software stack. It aims to eliminate mechanical noise at the domain modeling and business logic layers, allowing programmers to write programs that express intent at the level of the domain while delegating the mechanical expression of that intent to the Sleela compiler.
+
+1.2 Core Philosophy
+The governing design principle of Sleela, from which all other design decisions derive, is:
+
+Primary Design Principle
+Express intent, not mechanism. A Sleela program should read as a direct statement of what a computation means, with the compiler responsible for determining how that meaning is mechanically realized in Java.
+From this primary principle, the following secondary principles are derived and are binding on all language design decisions:
+
+Declarative-First Orientation. Sleela provides declarative constructs as the primary vocabulary of programming. Procedural escape hatches exist and are necessary, but they are explicitly marked and semantically subordinate. A program that can be expressed declaratively must be expressible declaratively in Sleela.
+Readability as a First-Class Property. A Sleela program must be legible to a domain expert who is not a programming language theorist. Syntactic complexity is a cost, not a neutral design choice, and must be justified by semantic necessity.
+The Principle of Minimal Surprise. Borrowed from the design philosophy of well-regarded languages, this principle holds that a construct in Sleela should behave in the way that a reasonable, attentive programmer would expect from its appearance. Where surprise is unavoidable, it must be explicitly documented and a rationale provided.
+Explicit is Better than Implicit, Except Where Explicitness Creates Noise. Sleela favors explicit declarations — of effects, of contracts, of derivations — but recognizes that excessive explicitness defeats the goal of expressing intent. The boundary between required explicitness and permitted inference is governed by the semantic rules in Chapter 5.
+Correctness by Construction. The type system, effect system, and compile-time rules are designed so that a program that compiles is, to the maximum extent achievable statically, correct by the definition of correctness given in its own declarations and contracts.
+1.3 Non-Goals
+A precise statement of what a language does not attempt is as important as a statement of what it does. The following are explicit non-goals of Sleela, and proposals that seek to move the language toward these goals will be declined by the SLDC:
+
+Sleela does not aim to replace Java at the systems or performance layer. Low-level memory management, JNI interop, JVM tuning, and performance-critical hot paths are properly written in Java directly. Sleela is not suited for, and does not attempt to serve, these concerns.
+Sleela is not a general-purpose scripting language. It does not aim to be used for command-line tooling, shell script replacement, or rapid one-off automation. Its design assumes a modular, typed, structured programming context.
+Sleela does not attempt JVM bytecode generation directly. All compilation paths go through human-readable Java source. Sleela does not implement a bytecode emitter and does not claim any JVM-specific optimization guarantees.
+Sleela does not impose a specific runtime framework. The Sleela Runtime Library (SRL) is minimal and embeddable. Sleela does not require Spring, Quarkus, Jakarta EE, or any other framework, and language constructs must not be defined in terms of such frameworks.
+Sleela is not a research language. While it draws on type-theoretic and semantic research, its design is driven by engineering utility in commercial software development, not by theoretical novelty.
+Chapter 2 — The Sleela Meta-Model
+2.1 Definition of the Meta-Model
+A language meta-model is a formal ontological schema that defines the kinds of entities a language can name, the relationships between those kinds, and the rules that govern their interaction. It operates at a level above the grammar: the grammar specifies the surface syntax through which meta-model concepts are expressed, but the meta-model specifies what concepts exist and what properties they fundamentally possess.
+
+Sleela requires a meta-model prior to its formal grammar because the design principle of expressing intent rather than mechanism demands that the conceptual vocabulary of the language be defined independently of its syntactic realization. The grammar is, in effect, a notation for the meta-model, not the other way around.
+
+The Sleela Meta-Model defines ten ontological primitives, described in Section 2.2. All syntactic constructs in Sleela are instances, compositions, or transformations of these primitives. No syntactic construct may be introduced in the formal specification or in any amendment that cannot be defined in terms of these primitives without extending the meta-model itself through the amendment process defined in Chapter 8.
+
+2.2 Ontological Primitives
+Entity
+
+An Entity is the root concept of any named, typed, bounded construct in Sleela. An Entity has a declared name, a declared type (or an inferred type satisfying the type inference rules of Section 5.1), a lexical Scope in which it is defined, and zero or more Contracts to which it is bound. Entities are the fundamental units of program structure; all other primitives exist in relation to Entities or in service of their composition.
+
+Contract
+
+A Contract is a behavioral promise that an Entity makes, expressed independently of any particular implementation. A Contract specifies a set of named operations, each with a type signature and, optionally, a set of declared Effects. A Contract does not constrain the internal representation of conforming Entities; it constrains only their observable behavior. Contracts support default operation bodies, which may be overridden by conforming Entities.
+
+Scope
+
+A Scope is the lexical and semantic boundary within which an Entity, Binding, or Contract is visible and nameable. Scopes are hierarchically nested; an inner Scope may access Bindings from enclosing Scopes subject to shadowing rules. Every Scope has a unique lexical identifier assigned at compile time. The outermost Scope is the module Scope, and all Scopes in a program form a finite, acyclic containment tree rooted at the module Scope.
+
+Binding
+
+A Binding is the act and record of associating an identifier with an Entity within a given Scope. A Binding is final by default; once an identifier is bound to an Entity in a Scope, it may not be rebound to a different Entity within the same Scope. Rebinding is only possible through explicit mutable declaration. Every Binding must be resolvable within the finite Scope chain from its use site to the module Scope root.
+
+Flow
+
+A Flow is a directed sequence of operations that yields a value or produces an Effect. A Flow has a type signature comprising its input type, its output type, and its declared Effect set. Flows are first-class values in Sleela; they may be bound, passed as arguments, and composed. A Flow that declares no Effects is called a pure flow; a Flow that declares one or more Effects is called an effectful flow.
+
+Effect
+
+An Effect is a side-effecting operation that is explicitly declared as part of a Flow's type signature. Effects include, but are not limited to, I/O operations, mutable state modification, exception raising, and external service invocation. Every Effect that a Flow performs must appear in that Flow's declared Effect set; failure to declare a performed Effect is a compilation error. The Effect system constitutes a first-class type-level feature of Sleela, not merely a convention.
+
+Context
+
+A Context is an ambient carrier of typed values that are implicitly available within a given Scope without being passed explicitly as parameters. A Context is declared with a fixed set of typed keys and is propagated into enclosed Scopes according to the Context propagation rules of Section 2.3. Contexts model ambient capabilities — such as transaction handles, authentication tokens, or logging sinks — that are conceptually universal within a region of the program but that would constitute noise if passed explicitly at every call site.
+
+Lens
+
+A Lens is a composable accessor/mutator pair defined over a specific field or set of fields of an Entity. A Lens consists of a get component, which is a pure Flow from the Entity to the field's type, and a set component, which is a Flow from the Entity and a new field value to a modified Entity. Lenses satisfy algebraic laws governing the consistency between get and set operations. Lenses may be composed sequentially (to focus deeper into nested Entities) or in parallel (to focus on multiple fields simultaneously), as defined in Section 2.3.
+
+Rule
+
+A Rule is a declarative constraint or transformation applied at compile time to the Abstract Syntax Tree or intermediate representation of the program. Rules may be structural (constraining the shape of the AST) or semantic (constraining the type-theoretic properties of constructs). Rules are evaluated during Phase 7 of the compilation pipeline. Rules that fail produce diagnostic errors of the form SL-E-XXXX. Rules are themselves typed and must declare what AST node kinds they operate on.
+
+Projection
+
+A Projection is a read-only, derived view of an Entity that exposes a subset of the Entity's fields or derived computed values. A Projection is structurally distinct from its source Entity: it carries no identity, admits no mutation, and cannot be substituted for its source Entity in a type-safe context. Projections are the canonical mechanism for producing value objects, data transfer objects, and query results from Entities without coupling the consumer to the Entity's full representation.
+
+2.3 Meta-Model Relationships
+Entity-to-Contract Binding Rules. An Entity is bound to a Contract by explicit declaration. An Entity that is bound to a Contract must provide a conforming implementation of every operation declared in that Contract that does not have a default body. Contract binding is checked at compile time as part of Phase 5. An Entity may be bound to multiple Contracts provided no two Contracts declare an operation with the same name and incompatible type signatures.
+
+Scope Nesting and Shadowing. Scopes are strictly nested; no Scope may simultaneously contain two Bindings of the same identifier that are both directly declared (as opposed to inherited from an enclosing Scope). A Binding in an inner Scope shadows a Binding of the same identifier in an enclosing Scope; the shadowed Binding remains accessible via explicit qualification. Shadowing must be explicitly acknowledged by the programmer; implicit shadowing that occurs without an explicit declaration triggers a diagnostic notice.
+
+Context Propagation Rules. A Context declared in a Scope is propagated into all directly and transitively enclosed Scopes unless explicitly suppressed by a context barrier declaration. A Flow that accepts a Context value makes that Context available to all Flows it invokes transitively, subject to the same barrier rules. Context values are immutable within a propagation frame; a new frame is required to introduce modified Context values.
+
+Lens Composition Algebra. Let L1 be a Lens from Entity A to field B, and let L2 be a Lens from B to field C. The sequential composition L1 >> L2 is a Lens from A to C whose get is the composition of the gets and whose set reconstructs the intermediate B value before reconstructing A. Parallel composition of Lenses L1 and L2 over the same Entity produces a Lens that simultaneously focuses on both target fields, yielding a product type. Lens composition is associative and forms a category.
+
+Rule Priority and Conflict Resolution. When multiple Rules apply to the same AST node, they are evaluated in declaration order within a compilation unit and in topological dependency order across units. If two Rules produce conflicting constraints on the same node, a compilation error is raised citing both Rules. Rules may declare explicit priority values; a higher-priority Rule's constraint takes precedence over a lower-priority Rule's constraint in cases where the conflict is annotated as resolvable.
+
+2.4 Meta-Model Invariants
+The following invariants must hold across all well-formed Sleela programs. A program that violates any of these invariants is not a valid Sleela program, regardless of whether it parses without syntactic errors.
+
+Invariant Set — Meta-Model Integrity
+INV-01 Effect Declaration Completeness. Every Effect performed by a Flow must appear in that Flow's declared Effect set. No Effect may be performed implicitly or by omission.
+INV-02 Binding Finite Resolvability. Every Binding must be resolvable within a finite chain of Scope containment relationships terminating at the module Scope. Circular Scope references are not permitted.
+INV-03 Contract Realization. Every Contract declared in a compilation unit must have at least one Entity in that compilation unit that conforms to it, or must be explicitly marked abstract contract to indicate it is intended for cross-module conformance only.
+INV-04 Lens Get-Set Coherence. For any Lens L with get g and set s, it must hold that s(a, g(a)) = a for all Entities a in the domain of L. This coherence property is verified at compile time for structurally derived Lenses and asserted as a runtime invariant for manually implemented Lenses.
+INV-05 Projection Purity. Every Projection must be derivable from its source Entity through a pure (effect-free) computation. A Projection whose derivation requires Effects is not a well-formed Sleela Projection.
+INV-06 Scope Acyclicity. The containment relation on Scopes must form a finite, directed, acyclic graph. No Scope may transitively contain itself.
+INV-07 Context Immutability Within Frame. A Context value accessed within a propagation frame must be observationally equivalent across all accesses within that frame. Modification of a Context requires creating a new propagation frame.
+INV-08 Rule Non-Interference. The evaluation of a Rule over an AST node must not modify the AST in a way that invalidates the applicability conditions of any other Rule that has already been evaluated over that node in the current compilation phase.
+INV-09 Flow Type Soundness. The declared input type, output type, and Effect set of every Flow must be consistent with the actual operations performed in its body. Any deviation is a compile-time error, not a runtime condition.
+INV-10 Entity Identity Stability. An Entity's identity — its name, its declared type, and its Contract bindings — must be fully determined at the point of its declaration and must not change within the compilation unit in which it is declared. Identity is not subject to retroactive extension within the same module.
+Part II
+
+Abstraction Layers Above Java
+Chapter 3 — The Sleela–Java Abstraction Stack
+3.1 The Three-Layer Model
+Sleela's relationship to Java is organized as a three-layer abstraction stack. Each layer has a well-defined identity, and the rules governing the translation between layers are normatively fixed by this document and detailed mechanically in SL-SPEC.
+
+Layer	Name	Description	Written by Programmer?
+Layer 0	Java Substrate	The raw JVM and Java platform. Includes all Java standard library classes, the JVM memory model, and the Java type system as implemented by javac.	No — generated by the Sleela compiler or provided as existing Java libraries.
+Layer 1	Sleela Semantic Core	Sleela constructs that map one-to-one or one-to-N onto well-known Java idioms. The translation is direct and deterministic; a Java engineer reading the output will immediately recognize the pattern.	Yes — via Sleela syntax that directly corresponds to Java constructs.
+Layer 2	Sleela Expressive Surface	High-level constructs with no single Java equivalent. These require compositional multi-step translation strategies that the compiler orchestrates. These constructs are the principal source of expressiveness and also the principal site of compiler complexity.	Yes — via Sleela syntax that abstracts over patterns requiring multi-element Java generation.
+3.2 Semantic Core Mappings (Layer 1)
+Sleela Construct	Java Translation Target	Rationale
+entity	class or record	Entities with mutable fields translate to classes; entities with immutable, data-carrying semantics translate to records, preserving Java's structural identity guarantees.
+contract	interface with optional default methods	Contracts express behavioral promises without implementation coupling, which is precisely the semantic of Java interfaces. Default bodies translate to interface default methods.
+scope block	Method scope or try-with-resources block	Scope blocks that manage resources translate to try-with-resources; lexical scopes without resources translate to method bodies or anonymous block scopes.
+flow	Java method or lambda/method reference chain	Pure flows with no Effects translate to static methods or lambdas. Effectful flows translate to methods with appropriate exception declarations or return type wrappers.
+effect	Java method with effect-encoding annotations or checked exception declarations	Effects are made visible in the Java API surface through annotations, enabling Java callers to reason about effect boundaries without Sleela tooling.
+context	ThreadLocal or parameter-threaded context object	Single-threaded contexts translate to parameter threading for clarity. Ambient contexts used across thread boundaries translate to managed ThreadLocal carriers.
+lens	Accessor/mutator method pair, or Lombok-style builder pattern	Lenses translate to paired get/with methods on the Entity's Java class or record, preserving immutability semantics.
+rule	Java annotation processor constraint or static analysis annotation	Compile-time rules translate to annotation processor logic that runs during the Java compilation phase, enabling tooling integration without runtime overhead.
+projection	Java record with computed components	Projections are naturally expressed as Java records, which enforce immutability and provide structural equality, matching Projection semantics precisely.
+3.3 Expressive Surface Constructs (Layer 2)
+Pipelines. A Pipeline is a composable, lazy value transformation chain that elevates the map/filter/reduce idiom to a first-class syntactic construct. Pipelines are expressed linearly in Sleela — as a sequence of transformation stages separated by the pipeline operator — and are compiled to a Java Stream chain or equivalent lazy evaluation structure. The laziness guarantee ensures that no intermediate collection is materialized unless a terminal stage explicitly requires it.
+
+Pattern Blocks. A Pattern Block is an exhaustive structural pattern matching expression. It is compiled to Java's sealed class hierarchies and switch expressions (introduced in Java 17+), ensuring that the Java compiler statically verifies exhaustiveness. Pattern Blocks elevate ad hoc instanceof chains to a first-class, exhaustiveness-checked construct.
+
+Effect Regions. An Effect Region is a lexically scoped zone of effect isolation. Within an Effect Region, a declared set of Effects is permitted; Effects outside the declared set are compile errors. Effect Regions compile to Java try/finally blocks or context-restore wrappers that guarantee cleanup regardless of the evaluation outcome. They are the primary mechanism for enforcing structured effectfulness.
+
+Context Frames. A Context Frame is a structured ambient injection construct that introduces or shadows Context values for the duration of a lexical scope. Context Frames compile to Java patterns involving parameter threading or, for framework-integrated targets, scoped bean injection patterns. The compilation strategy for Context Frames is selected by the compiler based on the declared threading model of the enclosing module.
+
+Derive Blocks. A Derive Block is an explicit invocation of the compiler's automatic derivation capability. Given an Entity declaration, a Derive Block instructs the compiler to generate conforming Projections, Lenses, equality implementations, and hash functions. Derivation is always explicit (governed by SR-05); no derivation is performed silently.
+
+Guard Clauses. A Guard Clause is a precondition or postcondition declaration attached to a Flow. Guards compile to either static analysis annotations (when the property is statically verifiable) or to runtime assertion code. The compilation strategy is declared per module and cannot be mixed within a single module without explicit compartmentalization.
+
+3.4 Translation Principles
+The following principles govern all Layer 2 to Layer 0 translation and are binding on all compiler implementations:
+
+The Idiomatic Java Guarantee. Every Sleela program must compile to Java source that a senior Java engineer — one familiar with modern Java idioms including records, sealed classes, switch expressions, and Stream APIs — would consider natural and maintainable. Generated Java must not exploit obscure or deprecated Java features.
+Round-Trip Legibility. The generated Java source must be human-readable and debuggable without access to the Sleela source. Variable names, method names, and class names must be derived from Sleela identifiers in a deterministic, readable way. The compiler must not generate names like $generated_0x3f.
+No Hidden Allocations. Layer 2 constructs must not introduce heap allocations that are not implied by the Sleela source, unless the programmer has explicitly opted into an allocation-expanding transformation. The compiler must document all allocation-introducing translations in its diagnostic output when the --allocation-audit flag is active.
+Deterministic Output. Identical Sleela source compiled with identical compiler flags and dependencies must always produce byte-for-byte identical Java source output. Non-determinism in generated code (for example, from hash-map iteration order in code generation) is a compiler bug, not a permitted implementation choice.
+Part III
+
+Syntax Governance
+Chapter 4 — Governing Rules for Syntax
+4.1 Syntax Philosophy
+In Sleela, syntax is a semantic signal. Every syntactic distinction — between keywords, between delimiters, between indentation structures — must correspond to a semantic distinction. Syntactic choices that are purely aesthetic or that reduce typing without conveying meaning are not permitted in the Sleela grammar. This principle is enforced through the meta-model: before a syntactic construct can be added to the grammar, the SLDC must identify which meta-model primitive or relationship it expresses.
+
+Sleela practices keyword economy: it prefers context-sensitive keywords (identifiers that act as keywords only in specific syntactic positions) over globally reserved words. This reduces the burden on Sleela programs that use domain vocabulary that might otherwise conflict with keywords. The set of globally reserved words in Sleela is intentionally minimal.
+
+Sleela uses indentation as a scope delimiter. The rules are as follows: (a) a new Scope is introduced by a construct-level header line followed by an increase in indentation by exactly one indentation unit, defined as four space characters; (b) the Scope terminates when the indentation returns to the level of the header line; (c) tabs are not permitted as indentation characters — the compiler must reject them at the lexical analysis phase; (d) a blank line does not terminate a Scope unless the subsequent non-blank line has indentation at or below the Scope-opening level; (e) Scope nesting may be arbitrarily deep subject to platform stack constraints, but the compiler must issue a diagnostic notice for Scope nesting depths exceeding eight levels.
+
+4.2 Lexical Conventions
+Character Set. Sleela source files are encoded in UTF-8. Full Unicode identifier support is provided: an identifier may begin with any Unicode letter or underscore, and may contain Unicode letters, decimal digits, underscores, and Unicode combining marks. The compiler must normalize identifiers to NFC (Unicode Canonical Decomposition, followed by Canonical Composition) form before comparison.
+
+Identifier Conventions. Identifier conventions in Sleela encode semantic category and are enforced by the compiler as warnings (not errors) to permit foreign identifiers at Java interop boundaries. The conventions are: camelCase for value bindings and flows; PascalCase for entities and contracts; SCREAMING_SNAKE_CASE for compile-time constants. Violation of these conventions at non-interop boundaries triggers diagnostic SL-W-0010.
+
+Literal Conventions. Numeric literals support underscore separators (e.g., 1_000_000) for readability; separators may not appear at the leading or trailing positions of a literal. String literals support multiline syntax using triple double-quotes ("""), with the closing delimiter determining the indentation baseline for content lines. Byte and bit literals use the 0b prefix (e.g., 0b1010_1100). Floating-point literals require an explicit decimal point or exponent; bare integers are never implicitly promoted to floating-point.
+
+Comment Syntax. Line comments are introduced by // and extend to the end of the line. Block comments are delimited by /* and */ and may span multiple lines but may not be nested. Documentation comments are introduced by /// (three forward slashes) and are parsed by the compiler into the meta-model as structured documentation attached to the immediately following named declaration. Doc comments support a restricted subset of Markdown for formatting, and the compiler emits a warning for doc comments that are not attached to a named declaration.
+
+4.3 Structural Syntax Rules
+SR-01   Scope Delimitation Rule
+
+Every new Scope must be introduced by a precisely indented block at exactly one indentation unit deeper than the enclosing Scope; mixed or ambiguous indentation is a lexical error.
+
+Rationale: Indentation-as-scope eliminates braces as visual noise and enforces a uniform structural vocabulary. Precise enforcement prevents the class of bugs arising from misaligned block boundaries.
+
+SR-02   Declaration-Before-Use Rule
+
+Every identifier used in an expression must have a Binding that lexically precedes its use site within the same Scope chain, with the exception of mutually recursive entity declarations within the same module, which are exempted under the module-level forward declaration mechanism.
+
+Rationale: Declaration-before-use prevents a class of reference errors detectable only at runtime in more permissive languages and supports single-pass name resolution (CR-01).
+
+SR-03   Effect Annotation Mandatory Rule
+
+Any Flow body that performs an operation classified as an Effect must carry an explicit Effect annotation in its type signature; omission of a required Effect annotation is a compilation error, not a warning.
+
+Rationale: Silent Effects are the primary source of correctness violations in domain logic. Making Effect declaration mandatory ensures that the Effect system provides genuine static guarantees rather than advisory hints.
+
+SR-04   Contract Exhaustion Rule
+
+A Pattern Block that matches on a Contract-typed value must include cases for every Entity known to conform to that Contract within the compilation unit; missing cases are a compilation error unless an explicit wildcard case is provided.
+
+Rationale: Exhaustive pattern matching is the semantic contract of Pattern Blocks. Permitting inexhaustive matches would degrade Pattern Blocks to unsafe type-casing constructs equivalent to Java's instanceof chains.
+
+SR-05   Derive Explicit Invocation Rule
+
+No Projection, Lens, equality implementation, or hash function may be automatically generated from an Entity unless an explicit Derive Block naming the desired derivations is present in the Entity's declaration.
+
+Rationale: Silent derivation, as practiced in some languages, violates the principle of Explicit is Better than Implicit. Programmers must consciously declare what they wish the compiler to derive, preventing the accidental exposure of fields or the generation of incorrect equality implementations.
+
+SR-06   Pipeline Linearity Rule
+
+A Pipeline expression must be a linear sequence of stages; branching (the use of a stage's output as input to more than one subsequent stage) is not permitted within a single Pipeline expression and requires explicit binding to a named value.
+
+Rationale: Pipeline linearity ensures that the compiled Java stream chain is well-formed and that the programmer's intent — a directed left-to-right transformation — is unambiguous to both the compiler and the reader.
+
+SR-07   Context Immutability Rule
+
+A Context value accessed within a propagation frame must not be modified in place; all modifications to Context state require the creation of a new Context Frame via the context frame construct.
+
+Rationale: Mutable ambient state is the primary cause of action-at-a-distance bugs in enterprise software. Enforcing Context immutability within frames ensures that the ambient environment of a computation is predictable and auditable.
+
+SR-08   Guard Placement Rule
+
+Precondition guards must appear as the first executable statements in a Flow body; postcondition guards must appear as the last declarations before the return expression; guards placed elsewhere are a syntactic error.
+
+Rationale: Enforced guard placement allows the compiler and human reader to immediately identify the contract of a Flow without scanning its body. It also enables precise diagnostic generation for guard failures.
+
+SR-09   Lens Purity Rule
+
+The get component of every Lens must be a pure Flow (declaring no Effects); the set component may declare Effects only if the Lens is explicitly annotated as an effectful lens.
+
+Rationale: A Lens whose get has side effects violates the algebraic Lens laws, which depend on get being an observationally neutral read. Effectful gets make Lens composition non-deterministic and defeat the composability that is the primary value of the Lens abstraction.
+
+SR-10   Projection Isolation Rule
+
+A Projection type may not appear as a mutable parameter type in any Flow signature; Projections may only be passed as read-only values and may not be used in contexts that require an assignable target.
+
+Rationale: Projections are semantically read-only views. Permitting their use as mutable targets would allow the mutation of what is conceptually a derived, ephemeral view, creating aliasing hazards with the source Entity.
+
+SR-11   Module Boundary Visibility Rule
+
+An Entity, Contract, or Flow is not visible outside its declaring module unless it carries an explicit export modifier; all module-level declarations are module-private by default.
+
+Rationale: Default-private module boundaries invert the typical Java accessibility model (where public is the common case) and dramatically reduce unintended API surface exposure in large codebases.
+
+SR-12   Single-Expression Flow Rule
+
+A Flow whose body consists of a single expression (with no intermediate bindings, guards, or effect annotations) may be written in abbreviated single-line form; this abbreviation is syntactic sugar and is fully desugared to the standard Flow form during Phase 3 of compilation.
+
+Rationale: Single-expression Flows are extremely common in functional and declarative styles. Permitting abbreviated syntax reduces noise for these common cases while ensuring the desugared form is consistent with the general Flow semantics.
+
+4.4 Syntax Versioning
+Syntax is versioned independently of semantics. A Sleela source file must declare its syntax version via a pragma on the first non-blank, non-comment line of the file:
+
+Version Pragma Syntax
+#sleela 1.0 — declares that the file conforms to Sleela syntax version 1.0. The pragma accepts MAJOR.MINOR version strings. A compiler must reject files whose declared version exceeds the compiler's supported version range.
+The following backward-compatibility guarantees apply: (a) a PATCH version increment to the syntax specification introduces no changes to the grammar; (b) a MINOR version increment may add new constructs but may not remove or modify existing ones; (c) a MAJOR version increment may introduce breaking changes to the grammar with a minimum deprecation notice period of two MINOR versions. Deprecated syntax constructs trigger diagnostic SL-W-0001 and will not trigger errors until the MAJOR version in which removal is scheduled.
+
+Part IV
+
+Semantic Governance
+Chapter 5 — Governing Rules for Semantics
+5.1 Semantic Model Overview
+Sleela adopts a denotational semantic model: every syntactic construct in Sleela has a well-defined mathematical denotation that gives its meaning independently of any particular evaluation strategy or compilation target. The denotation of a Sleela program is specified in SL-SPEC using standard domain-theoretic notation. This metadocument governs the principles that constrain the denotational specification; the specification must be consistent with these principles.
+
+The type theory basis of Sleela is Hindley-Milner type inference, extended with: (a) row polymorphism for Contexts, permitting Contexts to be treated as extensible records whose type is the row type of their key-value pairs; (b) structural subtyping for Contracts, permitting an Entity to conform to a Contract without an explicit declaration, provided all of the Contract's operations are implemented; and (c) an effect system in which Effects are tracked as part of a Flow's type signature, forming an Effect row that is unified during type inference in a manner analogous to the Context row.
+
+5.2 Type System Principles
+Strong Static Typing with Local Type Inference. Every expression in Sleela has a statically determined type. Type inference is performed locally (within the scope of a Flow body), not globally. Programmers are required to provide type annotations at all module-exported declaration boundaries.
+Nominal Typing for Entities; Structural Typing for Contracts. Two Entities are type-equivalent only if they have the same declared name. An Entity conforms to a Contract if and only if it structurally implements all of the Contract's required operations, regardless of whether it explicitly declares conformance. Explicit conformance declarations are permitted and recommended for documentation purposes.
+Sealed Hierarchies by Default. Entity hierarchies (inheritance and conformance relationships) are sealed by default: no new conforming Entity may be added to a hierarchy outside the declaring module. An explicit open modifier permits cross-module extension. Sealing enables exhaustive pattern matching and supports compiler-level exhaustiveness checking.
+Nullability: No Implicit Null. Null is not a member of any type in Sleela. Absence of a value is modeled via the Sleela Maybe type (equivalent in structure to Haskell's Maybe or Java's Optional<T>). The compiler will not generate or accept Java null at any point in the Sleela semantic layer without explicit bridging through the Java interop boundary (Section 7.4).
+Declaration-Site Variance. Generic Entities declare variance at the site of the type parameter declaration using in (contravariant) and out (covariant) modifiers, following Kotlin's and Scala's approach. Java's use-site wildcard variance is not used in the Sleela type surface, though it may appear in generated Java code as a translation artifact.
+5.3 Semantic Rules
+SEM-01   Type Soundness Invariant
+
+If a Sleela program type-checks, then no type error can occur at runtime in the Sleela semantic layer; all type errors are compile-time errors.
+
+Rationale: Type soundness is the foundational guarantee of the Sleela type system. Without this invariant, the static type system provides no correctness guarantees and degrades to documentation.
+
+SEM-02   Effect Transparency Rule
+
+A caller of a Flow is entitled to know the complete Effect set of that Flow from its type signature alone, without inspecting its body; the declared Effect set must be a superset of all Effects transitively performed.
+
+Rationale: Effect transparency enables callers to reason about the consequences of invoking a Flow without access to its implementation, supporting encapsulation while maintaining behavioral predictability.
+
+SEM-03   Context Propagation Monotonicity Rule
+
+The Context available within an inner Scope must be a superset of the Context available in the enclosing Scope; a Context Frame may add or shadow keys but may not remove keys from the ambient Context.
+
+Rationale: Monotonic Context propagation ensures that code expecting a Context value can never find it absent due to a removal performed in an outer Scope, preventing a class of ambient-dependency errors.
+
+SEM-04   Lens Coherence Rule
+
+For any Lens L with get g and set s, the identities g(s(a, v)) = v (get after set returns the set value) and s(a, g(a)) = a (set with the current value is a no-op) must be provable or asserted at compile time for derived Lenses and enforced at runtime for manually implemented Lenses.
+
+Rationale: The Lens laws are the semantic foundation of Lens composition. Lenses that violate these laws produce incorrect behavior when composed and cannot be reasoned about algebraically.
+
+SEM-05   Contract Conformance Rule
+
+An Entity conforms to a Contract if and only if, for every operation O declared in the Contract, the Entity provides an implementation of O whose type is a subtype of O's declared type in the Contract, including Effect subsumption.
+
+Rationale: Contract conformance requires not just structural name matching but type-level subsumption, ensuring that an Entity's implementation is genuinely compatible with the Contract's behavioral promise.
+
+SEM-06   Projection Purity Guarantee
+
+The derivation of a Projection value from its source Entity must be referentially transparent: given the same Entity value, the same Projection value must always be produced, with no observable side effects.
+
+Rationale: Referential transparency of Projection derivation is required for Projections to be safely cached, memoized, or materialized lazily without changing program semantics.
+
+SEM-07   Guard Evaluation Order Rule
+
+Precondition guards are evaluated before any other expression in the Flow body; postcondition guards are evaluated after the return expression is computed but before it is returned to the caller; guard evaluation order within a guard list is left-to-right, short-circuiting on the first failure.
+
+Rationale: A defined guard evaluation order enables predictable failure behavior and allows programmers to write guards with knowledge of which earlier guards have passed.
+
+SEM-08   Binding Finality Rule
+
+A Binding established in a Scope is final for the duration of that Scope unless the binding site carries an explicit var modifier; reassignment to a final Binding is a compilation error.
+
+Rationale: Binding finality encourages a value-oriented programming style and eliminates a large class of aliasing and state-mutation bugs that arise from inadvertent reassignment.
+
+SEM-09   Effect Subsumption Rule
+
+A Flow type with Effect set E1 is a subtype of a Flow type with Effect set E2 if and only if E1 is a subset of E2; a Flow promising fewer Effects is always substitutable for one promising more Effects in covariant positions.
+
+Rationale: Effect subsumption correctly models the intuition that a purer implementation is always a valid substitute for a less-pure interface, without requiring the caller to handle Effects that never occur.
+
+SEM-10   Maybe Propagation Rule
+
+A Maybe-typed value may not be unwrapped without an explicit exhaustive case expression that handles both the present and absent cases; implicit unwrapping (analogous to calling Optional.get() without checking) is a compilation error.
+
+Rationale: The Maybe type models the entire domain of the null-safety problem. Requiring exhaustive handling at every unwrap site eliminates null pointer exceptions as a class of runtime error.
+
+5.4 Subtyping and Variance
+Entity Subtyping. Entities may extend at most one parent Entity (single inheritance of implementation), but may conform to any number of Contracts. The entity subtyping relation is nominal: an Entity is a subtype of another only through explicit extension or conformance declarations.
+
+Contract Subtyping. Contract subtyping is structural: a Contract C1 is a subtype of Contract C2 if C1 declares a superset of C2's operations with compatible (subsumptive) types. This enables duck-typing within declared contract hierarchies, supporting the flexible composition patterns that are the primary use case for Contracts.
+
+Covariance and Contravariance. Generic Entity type parameters declared with out are covariant: if A is a subtype of B, then Entity<out A> is a subtype of Entity<out B>. Type parameters declared with in are contravariant. Type parameters declared without variance modifiers are invariant.
+
+Effect Subtyping. The Effect type lattice has pure at the bottom (fewest Effects) and impure at the top (any Effect permitted). Read Effects are subtypes of Write Effects. This lattice governs the Effect subsumption rule (SEM-09).
+
+Part V
+
+Compilation Governance
+Chapter 6 — Governing Rules for Compilation
+6.1 Compilation Pipeline Overview
+The Sleela compilation pipeline consists of eleven ordered phases. Phases are executed sequentially; a phase that produces errors must prevent subsequent phases from executing on the erroneous portions of the program, though subsequent phases may proceed on portions of the program that are known to be error-free (guarded continuation, per CR-08).
+
+Phase	Name	Input	Output
+1	Lexical Analysis	UTF-8 source text	Token stream with position metadata
+2	Syntactic Analysis	Token stream	Concrete Syntax Tree (CST)
+3	Desugaring	CST	Abstract Syntax Tree (AST); all syntactic sugar expanded
+4	Name Resolution and Binding	AST	AST with all identifiers resolved to their Binding records
+5	Type Inference and Checking	Resolved AST	Typed AST; all expression types inferred and verified
+6	Effect Analysis	Typed AST	Effect-annotated AST; all Flow Effect sets inferred and verified against declarations
+7	Rule Evaluation	Effect-annotated AST	Rule-validated AST; all compile-time Rules evaluated
+8	IR Generation	Validated AST	Sleela Intermediate Representation (SL-IR)
+9	Java AST Generation	SL-IR	Java Abstract Syntax Tree (Java-AST)
+10	Java Source Emission	Java-AST	Formatted Java source files
+11	Diagnostics and Source Mapping	All phases	Diagnostic report; source map from Java to Sleela source positions
+6.2 Compilation Rules
+CR-01   Single-Pass Name Resolution Rule
+
+Name resolution (Phase 4) must be completable in a single forward pass over the AST, relying only on module-level forward declaration records for mutual recursion; no multi-pass name resolution is permitted.
+
+Rationale: Single-pass name resolution bounds compilation time and prevents the emergence of resolution order dependencies that make compiler behavior difficult to predict or reproduce.
+
+CR-02   Incremental Compilation Unit Rule
+
+Each module constitutes an independent incremental compilation unit; recompilation of a module must not require recompilation of modules that depend on it unless the module's exported interface has changed.
+
+Rationale: Incremental compilation at module granularity is essential for acceptable compile times in large-scale codebases. Interface stability is the key condition: internal changes to a module must not cascade to its dependents.
+
+CR-03   Deterministic IR Rule
+
+The SL-IR produced from a given typed AST must be identical across all executions of the compiler on the same input, regardless of platform, thread scheduling, or hash seed randomization.
+
+Rationale: Deterministic IR is a prerequisite for both the Deterministic Output translation principle (Section 3.4) and for content-hash-based IR caching (Section 6.4). Non-deterministic IR renders the caching strategy unreliable.
+
+CR-04   Source Map Fidelity Rule
+
+Every generated Java source statement must be traceable to a specific Sleela source location (file, line, column) via the source map emitted in Phase 11; no generated statement may be unmapped.
+
+Rationale: Source map fidelity is required for the Round-Trip Legibility guarantee (Section 3.4). Debuggers and diagnostic tools operating on the Java output must be able to navigate back to the Sleela source at every point.
+
+CR-05   Rule Evaluation Isolation Rule
+
+The evaluation of a compile-time Rule in Phase 7 must not modify the global compiler state, emit diagnostics outside of the designated diagnostic channel, or perform I/O operations other than reading from the content-hash cache.
+
+Rationale: Rule evaluation isolation ensures that Rules are deterministic and composable: their effect on the program is solely through the constraints they impose on the AST, not through side channels.
+
+CR-06   Effect Propagation in IR Rule
+
+The SL-IR must carry complete Effect set annotations on every IR-level flow node; Effect information must not be elided or compressed in the IR, even if it is not used in the current compilation's Phase 9.
+
+Rationale: Preserving Effect information in the IR enables future compilation phases — including potential bytecode-level optimization passes — to make Effect-aware decisions without re-performing Effect analysis.
+
+CR-07   No Orphan Declaration Rule
+
+Every declaration in a compilation unit must be reachable from at least one exported declaration or from the module's declared entry point; unreachable declarations are compilation errors, not warnings.
+
+Rationale: Orphan declarations represent dead code that complicates maintenance and increases compilation overhead. Treating them as errors, rather than warnings, ensures they are not silently accumulated in large codebases.
+
+CR-08   Diagnostic Completeness Rule
+
+After a phase failure, subsequent phases must continue processing the portions of the program not affected by the error, in order to produce the maximum number of independent diagnostics in a single compilation run; cascading false-positive diagnostics arising from a known prior error must be suppressed.
+
+Rationale: Programmers correcting errors in large programs benefit from seeing all independent errors simultaneously. Stopping at the first error wastes iteration time; emitting cascading false positives from a single root error wastes diagnostic attention.
+
+CR-09   Java Target Version Pinning Rule
+
+Each module must declare a minimum Java target version via a module-level pragma; the compiler must emit Java source that is compilable by the specified Java version and must not use Java features introduced in later versions without explicit opt-in.
+
+Rationale: Controlling the Java target version ensures that Sleela programs can be deployed to environments with specific Java version constraints, which is a common enterprise requirement.
+
+CR-10   Annotation Preservation Rule
+
+All Sleela-level annotations that have declared Java-side equivalents must be faithfully carried through all compilation phases and emitted on the corresponding Java AST nodes; annotations must not be dropped or merged without explicit programmer direction.
+
+Rationale: Java annotation processors, static analysis tools, and frameworks rely on the presence of annotations. Silently dropping Sleela annotations in translation would break integration with the broader Java ecosystem.
+
+6.3 Error Philosophy
+Sleela employs a strict three-tier diagnostic system. Errors (SL-E-XXXX) indicate conditions from which the compiler cannot produce valid output; compilation must not proceed past the current phase for the affected program unit. Warnings (SL-W-XXXX) indicate conditions that are valid Sleela but represent probable mistakes or deprecated practices; compilation proceeds. Notices (SL-N-XXXX) are informational: they indicate style deviations, optimization opportunities, or statistical observations about the program.
+
+Every Error must include: (a) the error code; (b) the source location; (c) a human-readable description of the violated rule; (d) a reference to the governing rule identifier (e.g., SR-03, SEM-01); and (e) at least one suggested remediation action, which may be a concrete code edit suggestion.
+
+6.4 Incremental and Modular Compilation
+The module is the fundamental compilation unit. A module is a named, versioned collection of Sleela declarations with a declared set of dependencies and an exported interface. Inter-module dependencies are tracked at the interface level: a module's cache entry is invalidated only when its exported interface changes, not when its internal implementation changes. The cache is keyed on the content hash of the module's exported interface IR, computed using SHA-256. Cache entries store the full Phase 9 Java-AST for the module, enabling the compiler to skip Phases 1–9 for unchanged modules.
+
+Part VI
+
+Runtime Governance
+Chapter 7 — Governing Rules for Runtime Behavior
+7.1 Runtime Model
+Sleela programs execute on the standard JVM. There is no Sleela-specific virtual machine, no Sleela runtime interpreter, and no Sleela-specific class loader. The Sleela Runtime Library (SRL) is the minimal support layer providing runtime implementations of the Sleela Expressive Surface constructs that cannot be fully inlined into the generated Java source. The SRL's responsibilities are strictly bounded:
+
+Providing the Maybe type implementation and its operations.
+Providing the runtime enforcement of Effect boundary assertions for manually implemented Lenses.
+Providing the Context Frame management infrastructure (push/pop of context frames on a thread-local stack).
+Providing the diagnostic retention mechanism for runtime-level Guard failures.
+Providing the Pipeline lazy evaluation infrastructure for cases where the target Java version predates native Stream support or where the Pipeline type is not directly expressible as a Java Stream.
+The SRL must be embeddable in any JVM application without requiring any application framework. The SRL has no transitive dependencies beyond the Java standard library (java.base module). The SRL is versioned independently of the Sleela language version, with its specification governed by SL-RLS.
+
+7.2 Runtime Rules
+RT-01   Effect Boundary Enforcement Rule
+
+At runtime, an Effect that is performed by a Flow not declared to permit that Effect constitutes a programming error that must be reported as an unchecked exception of type SleelaBoundaryViolationError; this condition must never be silently ignored.
+
+Rationale: Runtime boundary enforcement provides a safety net for Effect violations that escape static analysis, particularly at the Java interop boundary where the compiler's static guarantees are weaker.
+
+RT-02   Context Lifetime Rule
+
+A Context Frame must not be accessible after the lexical Scope that introduced it has exited; accessing a Context Frame value outside its lifetime is a runtime error reportable via SleelaScopeError.
+
+Rationale: Context Frame lifetime enforcement prevents a class of use-after-scope errors analogous to stack-allocated object escapes in systems languages, adapted to Sleela's ambient Context model.
+
+RT-03   Lens Atomicity Rule
+
+The get and set operations of a Lens must each execute atomically with respect to the entity value they operate on; no interleaving of concurrent get and set operations on the same entity instance is permitted without explicit synchronization.
+
+Rationale: Lens atomicity is required for the Lens coherence laws (SEM-04) to hold in a concurrent context. Without atomicity, a concurrent set could corrupt the intermediate state observed by a concurrent get, violating the algebraic Lens properties.
+
+RT-04   Guard Failure Behavior Rule
+
+A precondition guard failure must immediately terminate the Flow and propagate a SleelaPreconditionError to the caller; a postcondition guard failure must propagate a SleelaPreconditionError before the return value is delivered to the caller. In both cases, the failure is non-recoverable within the Flow's execution.
+
+Rationale: Guard failures represent violations of the declared contract of a Flow. They must not be catchable and suppressible within the Flow's own body, as that would allow a Flow to silently violate its own contract.
+
+RT-05   Pipeline Laziness Contract
+
+A Pipeline must not evaluate any stage beyond the stage required to produce the current output value; no stage's computation is performed until its output is demanded by a downstream stage or a terminal consumer.
+
+Rationale: The laziness contract enables Pipelines to operate over conceptually infinite or expensive-to-produce sequences without materializing the full sequence in memory, which is the principal performance motivation for the Pipeline construct.
+
+RT-06   Exception Transparency Rule
+
+Exceptions thrown by Java code invoked from within a Sleela Flow that are not declared as Effects must be wrapped in a SleelaBoundaryException before propagating into the Sleela semantic layer; unwrapped Java exceptions must not cross the Java interop boundary into Sleela-managed code.
+
+Rationale: Exception transparency at the Java boundary ensures that Sleela's Effect system is not circumvented by Java exceptions that carry undeclared side effects, maintaining the integrity of the Effect tracking model.
+
+RT-07   Context Isolation Between Threads Rule
+
+Context values established on one thread must not be implicitly visible on any other thread; cross-thread Context sharing requires explicit declaration of a shared context with the programmer accepting responsibility for thread safety.
+
+Rationale: Implicit thread-local semantics for Context are the safe default, preventing a large class of concurrency bugs arising from ambient state being inadvertently shared across thread boundaries.
+
+RT-08   Diagnostic Retention Rule
+
+Runtime diagnostic events (Guard failures, boundary violations, Context errors) must be retained in a structured diagnostic log accessible to the application developer; they must not be silently consumed or written only to standard error.
+
+Rationale: Structured diagnostic retention ensures that runtime violations of Sleela's semantic guarantees are observable and auditable in production environments, where standard error output may not be monitored.
+
+RT-09   Maybe Unwrap Failure Rule
+
+Attempting to access the value of an absent Maybe value through any mechanism other than an exhaustive case expression must throw SleelaMaybeViolationError; silent null returns are not permitted.
+
+Rationale: The Maybe type is the runtime carrier of the no-implicit-null guarantee. Permitting silent null returns from absent Maybe values would reintroduce the null-dereference class of bugs at runtime.
+
+RT-10   SRL Version Compatibility Rule
+
+At program startup, the Sleela program must verify that the SRL version present on the classpath is compatible with the SRL version the program was compiled against; a version mismatch must produce a descriptive SleelaSrlVersionError at startup, not a cryptic NoSuchMethodError at first use.
+
+Rationale: Proactive version compatibility checking provides a far superior diagnostic experience compared to the runtime failures that result from silent SRL version mismatches in complex classpaths.
+
+7.3 Memory and Threading Model
+Sleela's memory model is the Java Memory Model (JMM) without extensions. Sleela does not introduce additional memory ordering guarantees beyond those provided by the JMM, and it does not relax any JMM guarantees. Programmers who require specific memory ordering guarantees beyond what Sleela constructs provide should use Java-level synchronization constructs at the interop boundary.
+
+Context objects are thread-local by default: the SRL maintains a per-thread stack of Context Frames. Explicit shared context declarations opt specific Context keys into a shared, explicitly synchronized store. No implicit synchronization is introduced by any Sleela construct; synchronization is always the programmer's explicit responsibility. Pipeline evaluation is single-threaded unless the Pipeline is declared with the parallel modifier, in which case it is evaluated using the Java Fork/Join common pool and the programmer accepts responsibility for the thread safety of all stages.
+
+7.4 Interoperability with Java
+Calling Java from Sleela. Any Java class accessible on the classpath may be used as an Entity in Sleela. Contract conformance is checked structurally: if the Java class provides methods matching the Contract's operations in name and type (modulo the Effect boundary wrapping of RT-06), it is treated as conforming. The compiler inserts the appropriate Effect wrappers and Maybe-lifting at the call site automatically.
+
+Calling Sleela from Java. Every Sleela Entity compiles to a Java class with a stable, idiomatic public API. The generated API does not require Sleela tooling to use; any Java program can depend on compiled Sleela modules as ordinary Maven or Gradle dependencies. The SRL is the only Sleela-specific runtime dependency required by compiled Sleela modules.
+
+Effect system at the Java boundary. Java methods called from Sleela are assumed to carry the impure Effect unless they are annotated with the Sleela interop annotation @SleelaPure or @SleelaSideEffects(effects = {...}). This conservative assumption ensures that the Effect system is not silently circumvented at the boundary.
+
+Null safety at the Java boundary. All Java return types that enter the Sleela semantic layer are automatically wrapped in Maybe by the compiler-inserted bridge code. Java parameters to which Sleela passes values are null-checked at the bridge; a Maybe absent value is translated to a Java null, since the Java callee may legitimately expect it.
+
+Part VII
+
+Governance and Evolution
+Chapter 8 — Meta-Governance
+8.1 The Sleela Design Council (SLDC)
+The Sleela Language Design Council (SLDC) is the governing body responsible for all normative decisions about the Sleela language, its specifications, and its runtime. The SLDC holds exclusive authority to amend this Metadocument, ratify the Formal Language Specification, approve changes to the Standard Library Specification, and certify conformance of compiler implementations.
+
+Language evolution proposals are submitted as Requests for Conceptual Change (RCC), which are the Sleela equivalent of language RFCs. An RCC must specify: (a) the problem being addressed, with reference to specific existing rules or meta-model gaps; (b) the proposed change, stated in terms of the meta-model and in terms of the affected specification documents; (c) the affected rules and invariants, with justification for why existing rules would not be violated or, if they would, with a proposal to amend those rules; (d) a prototype implementation demonstrating the proposed change's feasibility; and (e) a backward compatibility analysis. RCCs are reviewed by the SLDC and require a supermajority vote for ratification.
+
+Rule amendment follows the same process, except that amendments to this Metadocument require a unanimous vote of the SLDC, given the constitutional role of the Metadocument in the language hierarchy.
+
+8.2 Document Hierarchy
+The Sleela specification ecosystem consists of the following documents, listed in order from most to least authoritative. In cases of conflict, the higher-authority document governs.
+
+Rank	Identifier	Title	Description
+1	SL-META	Sleela Language Metadocument	This document. Establishes the meta-model, design mandate, governing principles, and all named rules. Supreme authority.
+2	SL-SPEC	Formal Language Specification	Normative grammar, denotational semantic definitions, and formal type system specification. Must be consistent with SL-META.
+3	SL-STDLIB	Standard Library Specification	Specification of all modules included in the Sleela standard distribution. Must conform to SL-SPEC and SL-META.
+4	SL-CRIS	Compiler Reference Implementation Specification	Specifies the behavior of the reference compiler implementation in all areas where SL-SPEC allows implementation latitude.
+5	SL-RLS	Runtime Library Specification	Specifies the SRL API, behavior, and version compatibility guarantees.
+6	SL-RFC	Informational RFCs and Design Notes	Non-normative design rationale documents, exploratory proposals, and historical records. No binding authority.
+8.3 Versioning Policy
+Sleela adopts semantic versioning applied to the language as a whole: version strings take the form MAJOR.MINOR.PATCH.
+
+MAJOR increments signal breaking changes to syntax, semantics, or the meta-model. A valid Sleela 1.x program may not be a valid Sleela 2.x program without modification. MAJOR increments require a full SLDC ratification cycle and a published migration guide.
+MINOR increments signal backward-compatible additions to the language, including new constructs, new standard library modules, and new governance rules that do not invalidate existing programs.
+PATCH increments signal clarifications to existing specifications, errata corrections, and editorial changes that carry no semantic effect on conforming programs or implementations.
+The deprecation policy is as follows: a construct or rule may not be removed in fewer than two MINOR versions after it is marked deprecated. The deprecation marker triggers a SL-W-0001 diagnostic and must include the version at which removal is scheduled. The SLDC may grant deprecation extensions for constructs with demonstrated widespread use.
+
+8.4 Conformance
+A compiler implementation conforms to this Metadocument if and only if: (a) it implements all ten phases of the compilation pipeline as described in Section 6.1, with the behavior of each phase governed by the applicable compilation rules; (b) it enforces all Structural Syntax Rules (SR-01 through SR-12) and all Semantic Rules (SEM-01 through SEM-10) as errors or warnings as specified; (c) it generates Java source that satisfies the Translation Principles of Section 3.4; and (d) it produces source maps satisfying CR-04.
+
+Three conformance levels are defined:
+
+Full Conformance. The implementation implements all features of SL-META and SL-SPEC, including all Expressive Surface constructs, all Rules, and all runtime model requirements. A fully conformant implementation may carry the designation “Sleela Full Conformant.”
+Subset Conformance. The implementation implements a declared subset of Sleela features, with the subset explicitly documented. Subset conformant implementations must accurately report which features they do not support and must produce SL-E-9001 (Unsupported Feature) for programs using those features.
+Extended Conformance. The implementation implements all of Full Conformance and additionally provides extensions not defined in SL-META or SL-SPEC. Extensions must be clearly labeled, must be disabled by default, and must not alter the behavior of any standard Sleela program. Extended conformant implementations must pass the full conformance test suite with extensions disabled.
+The conformance test suite (SL-CTS) is maintained by the SLDC and constitutes the authoritative test of conformance claims. A conformance claim without test suite passage is informal and carries no official status.
+
+Appendices
+
+Supplementary Material
+Appendix A — Glossary of Meta-Model Terms
+Binding. The record associating an identifier with an Entity within a specific Scope. Bindings are final by default (see SEM-08). A Binding is established at the point of declaration and must be resolvable within the finite Scope chain to the module root (INV-02).
+Context. An ambient carrier of typed values available within a Scope without explicit parameter threading. Contexts are declared with a fixed set of typed keys, propagated monotonically into enclosed Scopes (SEM-03), and are immutable within a propagation frame (INV-07, SR-07).
+Contract. A behavioral promise made by an Entity, expressed as a named set of typed operations independent of implementation. Contracts support default operation bodies. Contract conformance is structural (SEM-05) and is checked at compile time during Phase 5.
+Derive Block. An explicit compiler directive instructing the compiler to automatically generate Projections, Lenses, equality, and hash implementations for an Entity. Derivation is never implicit; it requires an explicit Derive Block (SR-05).
+Effect. A side-effecting operation explicitly declared in a Flow's type signature. Effects include I/O, mutable state modification, exception raising, and external service calls. All Effects must be declared (SR-03, INV-01). The Effect type lattice enables Effect subsumption (SEM-09).
+Effect Region. A lexically scoped zone of Effect isolation, compiled to Java try/finally or context-restore patterns. Effect Regions are the primary construct for structuring effectful computations.
+Entity. The root meta-model primitive: any named, typed, bounded construct in Sleela. Entities have names, types, Scopes, and Contract bindings. Entity identity is nominal and stable within a compilation unit (INV-10).
+Flow. A directed sequence of operations yielding a value or producing an Effect. Flows have input type, output type, and Effect set as components of their type signature. Pure Flows have an empty Effect set. Flows are first-class values.
+Guard Clause. A precondition or postcondition declaration on a Flow, placed at the first or last position in the Flow body respectively (SR-08). Guard failures propagate as non-recoverable errors (RT-04).
+Lens. A composable accessor/mutator pair over an Entity's fields, satisfying the get-set coherence laws (SEM-04, INV-04). Lenses compose sequentially and in parallel, forming a category. The get component of every Lens must be pure (SR-09).
+Maybe. The Sleela type modeling optional presence of a value. Every potentially absent value in Sleela is typed as Maybe<T>. Absent Maybe values may not be silently unwrapped (SEM-10, RT-09). Java null values crossing the interop boundary are lifted into Maybe automatically.
+Module. The fundamental compilation and deployment unit of Sleela. A module is a named, versioned collection of declarations with explicit dependencies and an exported interface. Modules are the granularity of incremental compilation (CR-02) and of the conformance test suite.
+Pattern Block. An exhaustive structural pattern matching expression, compiled to Java sealed hierarchies and switch expressions. Pattern Blocks enforce exhaustiveness at compile time (SR-04).
+Pipeline. A composable, lazy value transformation chain elevating map/filter/reduce to first-class syntax. Pipelines are linear (SR-06) and lazy (RT-05). They compile to Java Stream chains or SRL-provided lazy evaluation infrastructure.
+Projection. A read-only, derived view of an Entity exposing a subset of its fields or computed values. Projections are structurally distinct from their source Entity, carry no identity, and must be derivable by pure computation (INV-05, SEM-06). Projections may not be used as mutable targets (SR-10).
+Rule. A declarative compile-time constraint or transformation applied to the AST during Phase 7. Rules are typed, declare their target node kinds, and must be deterministic and isolated (CR-05, INV-08).
+Scope. The lexical and semantic boundary within which an Entity or Binding is visible. Scopes are strictly nested (INV-06), form a finite acyclic containment tree, and delimit the propagation of Contexts. Scopes are the unit of indentation-delimited structure in Sleela.
+SRL (Sleela Runtime Library). The minimal JVM support layer for Sleela programs, providing Maybe, Context Frame management, Guard failure handling, Pipeline lazy evaluation, and SRL version compatibility checking. The SRL has no dependencies beyond java.base.
+Appendix B — Design Principle Index
+Principle Name	Statement Summary	Section
+Express Intent, Not Mechanism	Sleela programs express what computations mean; the compiler determines how they are realized in Java.	1.2
+Declarative-First Orientation	Declarative constructs are primary; procedural escape hatches exist but are explicitly marked and semantically subordinate.	1.2
+Readability as a First-Class Property	Syntactic complexity is a cost, not a neutral choice; it must be justified by semantic necessity.	1.2
+Principle of Minimal Surprise	A construct should behave as a reasonable, attentive programmer would expect from its appearance.	1.2
+Explicit is Better than Implicit	Sleela favors explicit declarations except where explicitness creates noise without conveying meaning.	1.2
+Correctness by Construction	The type, effect, and rule systems should make correctly typed programs correct by the definition of correctness in their own declarations.	1.2
+Idiomatic Java Guarantee	Every Sleela program compiles to Java that a senior Java engineer would consider natural and maintainable.	3.4
+Round-Trip Legibility	Generated Java source is human-readable and debuggable without access to the Sleela source.	3.4
+No Hidden Allocations	Expressive Surface constructs must not introduce heap allocations not implied by the Sleela source without explicit opt-in.	3.4
+Deterministic Output	Identical Sleela source must always produce byte-for-byte identical Java output.	3.4
+Syntax as Semantic Signal	Every syntactic distinction must correspond to a semantic distinction; aesthetic-only distinctions are not permitted.	4.1
+Keyword Economy	Context-sensitive keywords are preferred over globally reserved words to reduce vocabulary conflicts.	4.1
+Errors Must Be Actionable	Every compiler error must include a suggested remediation action or a reference to the governing rule.	6.3
+Appendix C — Rule Index
+Rule ID	Name	One-Sentence Statement	Section
+SR-01	Scope Delimitation Rule	New Scopes are introduced by blocks indented exactly one unit deeper than the enclosing Scope.	4.3
+SR-02	Declaration-Before-Use Rule	Every identifier must have a Binding lexically preceding its use site, except in mutual recursion.	4.3
+SR-03	Effect Annotation Mandatory Rule	Any Flow performing an Effect must declare that Effect in its type signature; omission is a compilation error.	4.3
+SR-04	Contract Exhaustion Rule	Pattern Blocks over Contract-typed values must cover all known conforming Entities or provide an explicit wildcard.	4.3
+SR-05	Derive Explicit Invocation Rule	No automatic derivation of any form may occur without an explicit Derive Block in the Entity's declaration.	4.3
+SR-06	Pipeline Linearity Rule	Pipeline expressions must be linear; branching within a single Pipeline requires explicit value binding.	4.3
+SR-07	Context Immutability Rule	Context values may not be modified in place; modification requires creating a new Context Frame.	4.3
+SR-08	Guard Placement Rule	Preconditions must be the first statements of a Flow body; postconditions must be the last declarations before the return.	4.3
+SR-09	Lens Purity Rule	The get component of every Lens must be a pure, effect-free Flow.	4.3
+SR-10	Projection Isolation Rule	Projections may not appear as mutable parameter types or as assignable targets in any context.	4.3
+SR-11	Module Boundary Visibility Rule	All module-level declarations are module-private by default; export is explicit.	4.3
+SR-12	Single-Expression Flow Rule	Single-expression Flows may use abbreviated syntax, which is desugared to standard form in Phase 3.	4.3
+SEM-01	Type Soundness Invariant	A type-checked Sleela program cannot incur type errors at runtime in the Sleela semantic layer.	5.3
+SEM-02	Effect Transparency Rule	The complete Effect set of a Flow is readable from its type signature without inspecting its body.	5.3
+SEM-03	Context Propagation Monotonicity Rule	The Context available in an inner Scope is a superset of that in the enclosing Scope.	5.3
+SEM-04	Lens Coherence Rule	For every Lens, get-after-set returns the set value, and set-with-current-value is a no-op.	5.3
+SEM-05	Contract Conformance Rule	Entity-to-Contract conformance requires type-subsumptive implementation of every Contract operation including Effect subsumption.	5.3
+SEM-06	Projection Purity Guarantee	Projection derivation from a source Entity must be referentially transparent.	5.3
+SEM-07	Guard Evaluation Order Rule	Guards are evaluated left-to-right with short-circuiting; preconditions before body, postconditions after return expression.	5.3
+SEM-08	Binding Finality Rule	A Binding is final unless declared with an explicit var modifier; reassignment to a final Binding is a compilation error.	5.3
+SEM-09	Effect Subsumption Rule	A Flow with Effect set E1 is a subtype of one with Effect set E2 if and only if E1 is a subset of E2.	5.3
+SEM-10	Maybe Propagation Rule	A Maybe-typed value may not be unwrapped without an exhaustive case expression covering both present and absent cases.	5.3
+CR-01	Single-Pass Name Resolution Rule	Name resolution must complete in a single forward pass with module-level forward declaration records for mutual recursion.	6.2
+CR-02	Incremental Compilation Unit Rule	A module's recompilation must not force recompilation of dependents unless the module's exported interface has changed.	6.2
+CR-03	Deterministic IR Rule	The SL-IR produced from a given typed AST must be identical across all executions on the same input.	6.2
+CR-04	Source Map Fidelity Rule	Every generated Java source statement must be traceable to a Sleela source location via the Phase 11 source map.	6.2
+CR-05	Rule Evaluation Isolation Rule	Compile-time Rule evaluation must not modify global compiler state or perform I/O beyond reading the content-hash cache.	6.2
+CR-06	Effect Propagation in IR Rule	The SL-IR must carry complete Effect set annotations on every IR-level flow node without elision.	6.2
+CR-07	No Orphan Declaration Rule	Every declaration in a compilation unit must be reachable from an exported declaration or module entry point.	6.2
+CR-08	Diagnostic Completeness Rule	After phase failure, compilation continues on unaffected program portions to maximize independent diagnostics per run.	6.2
+CR-09	Java Target Version Pinning Rule	Each module must declare a minimum Java target version and the compiler must not use later Java features without opt-in.	6.2
+CR-10	Annotation Preservation Rule	All Sleela annotations with declared Java-side equivalents must be faithfully preserved through all compilation phases.	6.2
+RT-01	Effect Boundary Enforcement Rule	An undeclared Effect performed at runtime produces a non-ignorable SleelaBoundaryViolationError.	7.2
+RT-02	Context Lifetime Rule	A Context Frame is inaccessible after its introducing Scope has exited; violations produce SleelaScopeError.	7.2
+RT-03	Lens Atomicity Rule	Lens get and set operations must each execute atomically with respect to concurrent access on the same entity.	7.2
+RT-04	Guard Failure Behavior Rule	Guard failures propagate as non-recoverable SleelaPreconditionError before the Flow's return value is delivered.	7.2
+RT-05	Pipeline Laziness Contract	A Pipeline stage is not evaluated until its output is demanded by a downstream stage or terminal consumer.	7.2
+RT-06	Exception Transparency Rule	Undeclared Java exceptions crossing the interop boundary must be wrapped in SleelaBoundaryException.	7.2
+RT-07	Context Isolation Between Threads Rule	Context values are thread-local by default; cross-thread sharing requires explicit shared context declaration.	7.2
+RT-08	Diagnostic Retention Rule	Runtime diagnostic events must be retained in a structured log, not silently consumed or written only to standard error.	7.2
+RT-09	Maybe Unwrap Failure Rule	Accessing an absent Maybe value other than through exhaustive case matching throws SleelaMaybeViolationError.	7.2
+RT-10	SRL Version Compatibility Rule	SRL version compatibility is verified at program startup with a descriptive error on mismatch.	7.2
+Appendix D — Relationship to Existing Languages
+Sleela Concept	Java	Kotlin	Scala	Haskell	Swift
+Entity	class/record. No meta-level distinction; identity is nominal. Records are immutable but not first-class meta-model primitives.	class/data class. Data classes provide structural equality and copy, similar to Sleela's Derive Block output.	class/case class. Case classes are closer to Sleela Entities with implicit derivation, which Sleela explicitly rejects (SR-05).	No direct equivalent; algebraic data types (data) are structurally typed, unlike Sleela's nominal Entities.	struct/class. Swift's value-type semantics for structs are more restrictive than Sleela's Entity model.
+Contract	interface. Java interfaces lack structural conformance checking; all conformance is explicit. Effect declarations are not part of Java's interface system.	interface. Kotlin interfaces are very close; Kotlin also provides default implementations. Kotlin lacks an Effect system at the interface level.	trait. Scala traits are more powerful than Sleela Contracts; they support mixin composition, which Sleela explicitly does not model.	typeclass. Haskell typeclasses are the closest analog and inspired Sleela's structural conformance model, but typeclasses use explicit instance declarations rather than structural conformance.	protocol. Swift protocols support structural conformance via extensions, closely aligned with Sleela's model. Swift also supports associated types, which Sleela does not.
+Effect System	Checked exceptions are the only Effect-like feature; they are widely avoided in practice and do not cover I/O, state mutation, or other effects.	No effect system; checked exceptions are removed entirely. Coroutine suspension is tracked via the compiler but is not a general effect system.	No built-in effect system in production Scala; Scala Effect libraries (ZIO, Cats Effect) exist but are library-level, not language-level.	The IO monad and algebraic effects provide the strongest analog: all effectful computations are typed, and effect handling is compositional. Sleela's effect system is inspired by but less powerful than Haskell's.	Swift's throws and async annotations are lightweight effect annotations. They are more limited than Sleela's general Effect system but follow the same principle of explicit Effect declaration.
+Context	ThreadLocal or explicit parameter threading. No first-class ambient context concept.	No built-in context; coroutine CoroutineContext is the closest analog, providing structured ambient data for coroutine scopes.	Implicit parameters (implicit/given) are a powerful analog, providing ambient typed values without explicit passing. Sleela's Context is more restricted and explicitly scoped.	Reader monad and implicit parameters via ReaderT provide the functional equivalent. Haskell's approach is more general but less syntactically lightweight than Sleela's Context Frame.	No direct built-in equivalent; environment values and dependency injection are handled via pattern or library convention.
+Lens	No language-level Lens; manually written getters/setters or Lombok-generated accessor pairs. No algebraic composition guarantees.	No language-level Lens; property delegation and data class copy provide partial overlap. Lenses exist as library constructs (Arrow library).	No language-level Lens; Monocle library provides a comprehensive Lens library built on Scala's type system, which influenced Sleela's Lens model. Sleela promotes Lenses to a language-level primitive.	The lens library provides the definitive algebraic Lens implementation, from which Sleela's algebraic laws are derived. Haskell's Lenses are more powerful (van Laarhoven encoding) but also more complex.	Key Paths provide a type-safe partial analog: they enable get operations but not the full get/set algebraic structure of Sleela Lenses.
+Maybe / Null Safety	Optional<T> is available but not enforced; null remains legal for any reference type. No compile-time guarantee of null safety.	Nullable types (T?) provide compile-time null safety with a clean syntax. Kotlin's model is the closest to Sleela's in terms of enforcement rigor.	Option[T] is idiomatic Scala and provides the same semantics as Sleela's Maybe. Scala 3 adds better null safety but does not fully eliminate null as Sleela does.	Maybe a is the canonical functional optional, from which Sleela's Maybe is directly named. Haskell eliminates null entirely, which is Sleela's same design choice.	Optional<T> and optional chaining provide null safety. Swift's model is strong but permits forced unwrapping (!), which Sleela explicitly forbids (SEM-10).
+Compilation Target	N/A — Java is a compilation target, not a language that compiles to another language at the same abstraction level.	Kotlin compiles to JVM bytecode, JS, or native. It does not target human-readable Java source. Sleela uniquely prioritizes human-readable Java source output.	Scala compiles to JVM bytecode. Like Kotlin, Scala does not target readable Java source; its generated bytecode is often difficult to read as Java.	GHC compiles to native code or LLVM IR; no JVM target in the standard toolchain. No Java readability concern.	Swift compiles to native code. No JVM target. Round-trip legibility to another language is not a design goal of Swift.
+End of Document — SL-META-0001 Revision 1.0.0 — Sleela Language Design Council — September 2026

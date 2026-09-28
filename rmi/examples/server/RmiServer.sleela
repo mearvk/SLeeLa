@@ -1,0 +1,13 @@
+#sleela 1.0
+// RMI server-side business logic.
+// Java provides the RMI/JRMP transport; this Wrapper owns the service meaning.
+class RmiServer {
+    int value(int input) {
+        return input * 2 + 1;
+    }
+
+    void main() {
+        print("SLeeLa RMI server business logic ready");
+        print("value(20) = " + value(20));
+    }
+}

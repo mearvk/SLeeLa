@@ -1,0 +1,17 @@
+system DNS.AdminMonitor {
+  role admin
+
+  observe DNS.Server.listening
+  observe DNS.Server.request_count
+  observe DNS.Server.zone_data
+
+  on inspect {
+    report listening
+    report request_count
+  }
+
+  on reload(zone) {
+    authorize admin
+    set DNS.Server.zone_data = zone
+  }
+}

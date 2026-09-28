@@ -1,0 +1,104 @@
+#nordshrift 1.0
+#sleela     1.0
+
+/// ===========================================================================
+/// system-symmetry — a Nordshrift control sheet driving a set of Sleela
+/// sources that model the SYMMETRY between servers and clients (HTTP and FTP)
+/// over a shared, protocol-neutral core.
+///
+/// The sheet is the *control surface*, not the program: it names the sources
+/// (source:), selects the target (target: target-language sleela -> runs on the
+/// C core), sequences the passes (pipeline:), and states the analysis posture
+/// (rules:/effects:/derive:/guards:/interop:). Flip `target-language` to
+/// `java` or `c` to retarget the very same sources.
+/// ===========================================================================
+sheet system-symmetry:
+  version      1.0.0
+  author       "Sleela Design Council"
+  description  """
+    Server/client system symmetry across two protocols (HTTP, FTP) on one
+    protocol-neutral core. Every source is transpiled by this sheet; the
+    sleela target executes the result on the Sleela C core.
+    """
+  tags  [ "symmetry", "http", "ftp", "server", "client", "demo" ]
+
+/// Source: every .sleela file in the module tree drives from this one glob.
+source:
+  root     "src"
+  glob     "**/*.sleela"
+  exclude  [ "**/*_stub.sleela", "**/legacy/**" ]
+  watch    false
+
+/// Target: run on the Sleela core (retarget by editing target-language).
+target:
+  root            "out"
+  layout          mirror-source
+  java-version    21
+  package-root    "com.example.symmetry"
+  target-language sleela
+  source-map      true
+  overwrite       true
+
+/// Pipeline: the full pass sequence, 4-file concurrency, cached.
+pipeline:
+  phases  [ lex, parse, desugar, bind, infer,
+            effect-check, rule-eval, ir, java-emit,
+            java-print, diagnostic ]
+  parallel-threshold  4
+  cache      true
+  cache-dir  ".nordshrift-cache"
+  verbosity  normal
+  fail-fast  false
+
+/// Rules: symmetry demands both sides honor the same contracts.
+rules:
+  activate   [ NullSafety, EffectBoundary, ContractExhaustion,
+               LensPurity, ProjectionIsolation ]
+  deactivate [ DeriveExplicit ]
+  severity:
+    NullSafety           error
+    EffectBoundary       error
+    ContractExhaustion   error
+    LensPurity           warning
+    ProjectionIsolation  warning
+
+/// Effects: the request/response cycle is an explicit effect surface.
+effects:
+  policy   strict
+  declare  [ SocketRead, SocketWrite, SessionOpen, SessionClose,
+             RequestEmit, ResponseEmit ]
+  aliases:
+    Transport   [ SocketRead, SocketWrite ]
+    Exchange    [ RequestEmit, ResponseEmit ]
+    Lifecycle   [ SessionOpen, SessionClose ]
+  default-effect  "Pure"
+
+/// Derivation: value-style artifacts for the request/response records.
+derive:
+  lens          on
+  projection    on
+  equality      on
+  hashcode      on
+  toString      on
+  copy          on
+  builder       off
+  target-style  record
+
+/// Guards: full enforcement of the symmetric contracts.
+guards:
+  mode        compile-and-runtime
+  on-failure  throw
+
+/// Interop: symmetric null wrapping across the transport boundary.
+interop:
+  assume-impure       true
+  null-wrapping       maybe
+  checked-exceptions  wrap
+  package-allow  [ "com.example.*" ]
+  package-deny   [ "sun.*", "com.sun.*" ]
+
+/// Development profile: chatty, single-stepped.
+profile dev:
+  pipeline:
+    verbosity           verbose
+    parallel-threshold  2

@@ -1,0 +1,26 @@
+# Repository hygiene
+.idea/
+.vscode/
+*.iml
+
+# Build outputs
+impl/build/
+**/build/
+*.o
+*.obj
+*.a
+*.so
+*.dll
+*.dylib
+*.exe
+*.out
+
+# Temporary/editor files
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Local generated/runtime state
+*.log

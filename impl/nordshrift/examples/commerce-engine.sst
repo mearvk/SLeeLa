@@ -1,0 +1,98 @@
+#nordshrift 1.0
+#sleela     1.0
+
+/// Sheet metadata — version, authorship, and purpose declaration.
+sheet commerce-engine:
+  version      1.2.0
+  author       "Platform Engineering Team"
+  description  """
+    Transpilation configuration for the commerce-engine Sleela module.
+    Produces Java 21 source under src/generated/java.
+    All effects must be declared; null safety enforced at all Java boundaries.
+    """
+  tags  [ "commerce", "backend", "production" ]
+
+/// Source: all .sleela files under the module tree.
+source:
+  root     "src/main/sleela"
+  glob     "**/*.sleela"
+  exclude  [ "**/*_stub.sleela", "**/legacy/**" ]
+  watch    false
+
+/// Target: Java 21, mirror-source layout, source maps enabled.
+target:
+  root          "src/generated/java"
+  layout        mirror-source
+  java-version  21
+  package-root  "com.example.commerce"
+  source-map    true
+  overwrite     true
+  clean         false
+
+/// Pipeline: all 11 phases, 4-file concurrency, normal verbosity.
+pipeline:
+  phases  [ lex, parse, desugar, bind, infer,
+            effect-check, rule-eval, ir, java-emit,
+            java-print, diagnostic ]
+  parallel-threshold  4
+  cache      true
+  cache-dir  ".nordshrift-cache"
+  verbosity  normal
+  fail-fast  false
+
+/// Rules: strict safety posture; DeriveExplicit notice suppressed.
+rules:
+  activate   [ NullSafety, EffectBoundary, ContractExhaustion,
+               LensPurity, ProjectionIsolation ]
+  deactivate [ DeriveExplicit ]
+  severity:
+    NullSafety           error
+    EffectBoundary       error
+    ContractExhaustion   error
+    LensPurity           warning
+    ProjectionIsolation  warning
+
+/// Effects: strict policy; commerce domain effects declared.
+effects:
+  policy   strict
+  declare  [ DatabaseRead, DatabaseWrite, CacheRead, CacheWrite,
+             PaymentGateway, EventEmit ]
+  aliases:
+    Persistence   [ DatabaseRead, DatabaseWrite, CacheRead, CacheWrite ]
+    ExternalCall  [ PaymentGateway, EventEmit ]
+  default-effect  "Pure"
+
+/// Derivation: all artifacts on; record style for Java 21 idiom.
+derive:
+  lens          on
+  projection    on
+  equality      on
+  hashcode      on
+  toString      on
+  copy          on
+  builder       off
+  target-style  record
+
+/// Guards: full compile-and-runtime enforcement.
+guards:
+  mode        compile-and-runtime
+  on-failure  throw
+
+/// Interop: strict null wrapping; all Java assumed impure.
+interop:
+  assume-impure       true
+  null-wrapping       maybe
+  checked-exceptions  wrap
+  type-mapping:
+    "java.util.List"      "sleela.core.Sequence"
+    "java.util.Map"       "sleela.core.Mapping"
+  package-allow  [ "com.example.*", "org.springframework.*" ]
+  package-deny   [ "sun.*", "com.sun.*" ]
+
+/// Development profile.
+profile dev:
+  pipeline:
+    verbosity           verbose
+    parallel-threshold  2
+  target:
+    clean  false

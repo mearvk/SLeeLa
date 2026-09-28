@@ -1,0 +1,1 @@
+BODI witness project=example-post-001 sequence=001 domain=post operation=POST result=validated status=executed

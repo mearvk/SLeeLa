@@ -1,0 +1,77 @@
+# FINANCIAL.model
+# Nordshrift integration model: financial mathematics, algebra, explanations.
+# Reference architecture is informed by the open-source QuantLib project and
+# standard time-value-of-money pedagogy. This file is an original SLeeLa model;
+# it does not copy QuantLib source.
+
+finance:
+  identity: FinancialSubject
+  mathematics: Algebra
+  time_value: TimeValueOfMoney
+  valuation: Valuation
+  fixed_income: FixedIncome
+  capital: CapitalPricing
+  ratios: FinancialRatio
+  explanation: ExplanationChain
+  conservator: IQConservator
+
+components:
+  - FutureValue
+  - PresentValue
+  - AnnuityPresent
+  - AnnuityFuture
+  - NetPresentValue
+  - BondPrice
+  - CAPM
+  - WACC
+  - Determinant2x2
+  - LinearSolve2x2
+  - QuadraticEquation
+  - Ratio
+
+norms:
+  causal_order:
+    - subject
+    - quantities
+    - units
+    - assumptions
+    - algebra
+    - equation
+    - transformation
+    - numerical_result
+    - interpretation
+  relative_meaning:
+    - PriorSubject
+    - CurrentSubject
+    - ReferenceSubject
+    - ComparativeNorm
+  epistemic_status:
+    - observed
+    - specified
+    - derived
+    - modeled
+    - inferred
+
+explanation_titles:
+  - Financial Subject
+  - Quantity and Unit
+  - Algebraic Relation
+  - Financial Formula
+  - Transformation
+  - Result
+  - Comparative Norm
+  - Interpretation
+
+# IQ Conservator items preserve useful prior meaning. They are semantic
+# conservation records, not a human intelligence score and not a prediction.
+iq_conservators:
+  - PriorSubject
+  - SubjectIdentity
+  - QuantityIdentity
+  - UnitIdentity
+  - FormulaIdentity
+  - AssumptionIdentity
+  - ComparativeRatio
+  - AlgebraicInvariant
+  - ResultTrace
+  - ExplanationTrace

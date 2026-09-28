@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bodi version="1">
+  <project id="math-demo-001" kind="science" title="SLeeLa Math XML Project"/>
+  <science model="native-math">
+    <discipline name="math">
+      <operation name="sqrt" sequence="001"><arg value="144"/></operation>
+      <operation name="pow" sequence="002"><arg value="2"/><arg value="10"/></operation>
+      <operation name="sin" sequence="003"><arg value="1.5707963267948966"/></operation>
+    </discipline>
+  </science>
+</bodi>

@@ -1,0 +1,2 @@
+#include "Deserializer.hpp"
+namespace sleela::fundamental { Deserializer::Deserializer()=default; Deserializer::Deserializer(std::string value):value_(std::move(value)){} const std::string& Deserializer::value() const noexcept{return value_;} void Deserializer::setValue(std::string value){value_=std::move(value);} bool Deserializer::empty() const noexcept{return value_.empty();} const char* Deserializer::responsibility() const noexcept{return "object decoding";} }

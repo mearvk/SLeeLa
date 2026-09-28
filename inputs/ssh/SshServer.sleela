@@ -1,0 +1,66 @@
+#sleela 1.0
+// SshServer.sleela -- a model SSH transport/auth handshake in Sleela.
+//
+// Toolchain INPUT (a Wrapper(TM)). Models the phases of an SSH connection at a
+// high level (RFC 4253/4252): version-string exchange, key-exchange banner,
+// then a userauth loop that accepts "publickey" and rejects "password" and
+// "none". No cryptography and no sockets -- only front-end-supported features.
+class SshServer {
+
+    // Model: how many auth attempts we allow before disconnecting.
+    int maxTries = 3;
+
+    boolean authMethodAccepted(String method) {
+        // This model accepts only publickey (as a hardened server would).
+        return method == "publickey";
+    }
+
+    // Returns true when authentication succeeds within the attempt budget.
+    boolean userauth(String method, int attempt) {
+        if (attempt > maxTries) {
+            print("SSH_MSG_DISCONNECT: too many auth failures");
+            return false;
+        }
+        if (authMethodAccepted(method)) {
+            print("SSH_MSG_USERAUTH_SUCCESS (method=" + method + ")");
+            return true;
+        }
+        print("SSH_MSG_USERAUTH_FAILURE (method=" + method + ", attempt=" + attempt + ")");
+        return false;
+    }
+
+    void main() {
+        print("== Sleela SSH server model: transport + auth handshake ==");
+
+        // 1) Protocol version exchange (RFC 4253 sec 4.2)
+        print("S: SSH-2.0-SleelaModel_0.1");
+
+        // 2) Key exchange banner (algorithms would be negotiated here)
+        print("S: SSH_MSG_KEXINIT (kex=curve25519, host-key=ed25519)");
+        print("S: SSH_MSG_NEWKEYS");
+
+        // 3) Authentication loop
+        boolean ok = false;
+        int attempt = 1;
+        // First the client offers "none", then "password", then "publickey".
+        ok = userauth("none", attempt);
+        attempt = attempt + 1;
+        if (!ok) {
+            ok = userauth("password", attempt);
+            attempt = attempt + 1;
+        }
+        if (!ok) {
+            ok = userauth("publickey", attempt);
+            attempt = attempt + 1;
+        }
+
+        // 4) Channel open (only if authenticated)
+        if (ok) {
+            print("S: SSH_MSG_CHANNEL_OPEN_CONFIRMATION (session)");
+            print("S: shell channel ready");
+        } else {
+            print("S: connection refused");
+        }
+        print("== handshake complete ==");
+    }
+}

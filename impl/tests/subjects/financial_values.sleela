@@ -1,0 +1,40 @@
+#sleela 1.0
+// Numeric assertions for the compiled `financial` subject library.
+import math;
+import financial;
+
+class FinancialValues {
+    static void check(String name, double got, double expected, double tol) {
+        double d = got - expected;
+        if (d < 0.0) { d = 0.0 - d; }
+        if (d <= tol) { print("PASS " + name); }
+        else { print("FAIL " + name + " got=" + got + " expected=" + expected); }
+    }
+
+    void main() {
+        // FV = 1000 * 1.05^10 = 1628.894626777442
+        check("future_value", financial.future_value(1000.0, 0.05, 10.0), 1628.894626777442, 0.01);
+        check("present_value", financial.present_value(1628.894626777442, 0.05, 10.0), 1000.0, 0.01);
+        check("annuity_present", financial.annuity_present(100.0, 0.05, 10.0), 772.1734929184818, 0.05);
+        check("annuity_future", financial.annuity_future(100.0, 0.05, 10.0), 1257.789253554883, 0.1);
+        // NPV of 100,100,100,100 at 10%: 100/1.1 + 100/1.21 + 100/1.331 + 100/1.4641 = 316.986...
+        check("npv4", financial.npv4(0.10, 100.0, 100.0, 100.0, 100.0), 316.9865446494798, 0.01);
+        // CAPM: rf + beta(rm-rf) = 0.04 + 1.2*(0.10-0.04) = 0.112
+        check("capm", financial.capm(0.04, 1.2, 0.10), 0.112, 0.000001);
+        // WACC: ew*ce + dw*cd*(1-tax) = 0.6*0.09 + 0.4*0.05*(1-0.21) = 0.054 + 0.0158 = 0.0698
+        check("wacc", financial.wacc(0.60, 0.40, 0.09, 0.05, 0.21), 0.0698, 0.000001);
+        // determinant2: a d - b c = 4*6 - 7*2 = 24-14 = 10
+        check("determinant2", financial.determinant2(4.0, 7.0, 2.0, 6.0), 10.0, 0.000001);
+        // Cramer solve for 2x + 3y = 8, 1x + 2y = 5 -> x = 1, y = 2
+        check("solve2x2_x", financial.solve2x2_x(2.0, 3.0, 1.0, 2.0, 8.0, 5.0), 1.0, 0.000001);
+        check("solve2x2_y", financial.solve2x2_y(2.0, 3.0, 1.0, 2.0, 8.0, 5.0), 2.0, 0.000001);
+        // quadratic x^2 - 3x + 2 = 0 -> roots 2 and 1
+        check("quadratic_root_plus", financial.quadratic_root_plus(1.0, -3.0, 2.0), 2.0, 0.000001);
+        check("quadratic_root_minus", financial.quadratic_root_minus(1.0, -3.0, 2.0), 1.0, 0.000001);
+        check("quadratic_discriminant", financial.quadratic_discriminant(1.0, -3.0, 2.0), 1.0, 0.000001);
+        // bond price: face 1000, coupon 5%, yield 5%, n=3 -> priced at par 1000
+        check("bond_price_par", financial.bond_price(1000.0, 0.05, 0.05, 3.0), 1000.0, 0.01);
+        check("ratio", financial.ratio(75.0, 100.0), 0.75, 0.000001);
+        // EXPECTED_PASS=15
+    }
+}

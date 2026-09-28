@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>SLeeLa BODI XML API Reference</title></head>
+<body><h1>SLeeLa BODI XML API Reference</h1>
+<p>The BODI XML runtime reads a bounded XML project and turns its declared operations into witnessed, deterministic SLeeLa API calls. XML is a project representation; it is not arbitrary native-code execution.</p>
+<h2>Envelope</h2><pre>&lt;bodi version="1"&gt;
+  &lt;project id="..." kind="science|email|media"/&gt;
+  ...
+&lt;/bodi&gt;</pre>
+<h2>Audio / Video / Image media projects</h2><p>BODI may declare kind="media" for bounded media analysis and provider selection. Audio and video codec families, containers, and image formats are named explicitly so a runtime can select an installed provider without changing the native frame ABI.</p><pre>&lt;audio codecs="pcm,aac,flac,mp3,opus,vorbis"/&gt;
+&lt;video codecs="h264,hevc,av1,vp8,vp9" containers="mp4,mkv,webm"/&gt;
+&lt;image formats="jpeg,png,gif,webp,avif,heif"/&gt;</pre><p>The base runtime recognizes these families. Actual decode/encode is provider-dependent and must be checked at runtime.</p>
+<h2>Science projects</h2><p>A science project contains one or more discipline elements. Supported executable disciplines are math, physics, chemistry, and data-analytics.</p>
+<h2>Media listener boundary</h2><p>Media XML files may be admitted from a configured folder through a listener. Each document is size-limited, parsed, validated against the supported media vocabulary, and then queued. XML does not itself acquire unrestricted device, shell, or native-call authority. Future AI providers attach through the native media-frame hook.</p>
+<h2>Execution boundary</h2><p>The runtime performs an allow-listed operation dispatch. Unknown elements, operations, malformed numbers, and excessive input are rejected. XML cannot invoke shell commands or arbitrary native functions.</p>
+</body></html>

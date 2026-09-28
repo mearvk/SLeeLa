@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>SLeeLa HTTP 3.0 Extended Port API</title>
+<style>body{font-family:system-ui,sans-serif;max-width:1000px;margin:auto;padding:2rem;line-height:1.5}code{background:#eee;padding:.1rem .3rem}</style>
+</head>
+<body>
+<h1>SLeeLa HTTP 3.0 Extended Port API</h1>
+<p>The HTTP 3.0 packet envelope carries a 160-bit logical port identifier supporting exactly <code>10^48</code> distinct values: <code>0</code> through <code>10^48-1</code>.</p>
+<h2>Native C API</h2>
+<ul>
+<li><code>http3_port_from_decimal()</code> — parse an exact decimal logical port.</li>
+<li><code>http3_port_to_decimal()</code> — return the exact decimal representation.</li>
+<li><code>http3_port_from_u64()</code> — initialize a logical port from a conventional integer.</li>
+<li><code>http3_port_is_valid()</code> — enforce the <code>10^48</code> namespace boundary.</li>
+<li><code>http3_port_increment()</code> — advance a logical port without overflow past the namespace.</li>
+<li><code>http3_port_encode()</code> / <code>http3_port_decode()</code> — 20-byte network-order representation.</li>
+</ul>
+<h2>Packet API</h2>
+<ul>
+<li><code>http3_envelope_set_port_decimal()</code> — set the actual logical port and reseal the packet MAC.</li>
+<li><code>http3_envelope_set_port_u64()</code> — set a conventional port value and reseal the packet MAC.</li>
+</ul>
+<h2>Wire format</h2>
+<p>Text packets carry the decimal PORT token. Binary packets carry a 20-byte PORT field immediately after REQUEST-ID. PORT is part of the canonical DIGEST input, so the protected packet cannot be changed to a different port without invalidating its authentication tag.</p>
+<p><a href="../http-3.0/PORTS.md">HTTP 3.0 Extended Ports specification</a></p>
+</body>
+</html>

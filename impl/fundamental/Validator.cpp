@@ -1,0 +1,2 @@
+#include "Validator.hpp"
+namespace sleela::fundamental { Validator::Validator()=default; Validator::Validator(std::string value):value_(std::move(value)){} const std::string& Validator::value() const noexcept{return value_;} void Validator::setValue(std::string value){value_=std::move(value);} bool Validator::empty() const noexcept{return value_.empty();} const char* Validator::responsibility() const noexcept{return "constraint checking";} }

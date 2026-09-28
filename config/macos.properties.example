@@ -1,0 +1,18 @@
+# SLeeLa macOS platform configuration
+# This file documents the native backend selected by the common C/C++ core.
+# It is descriptive configuration; it does not replace the compiled Darwin/POSIX backend.
+
+platform.os=macos
+platform.minimum=12
+platform.backend=Darwin-POSIX
+platform.threads=POSIX
+platform.network=POSIX-sockets
+platform.files=POSIX
+platform.dynamic_library=dlopen
+platform.terminal=POSIX-PTY
+platform.time=Darwin-libSystem
+platform.socket_library=libSystem
+
+# Runtime memory ceiling: 256M through 2G; default 2G.
+memory_limit=2G
+memory_manager=on

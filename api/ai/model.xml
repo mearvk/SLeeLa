@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bodi version="1" kind="ai-model">
+  <model id="sleela.example" revision="1" format="sleela-ai-1" source="native" trusted="true">
+    <purpose>Data, file, audio, and video inspection and transformation.</purpose>
+    <inputs>
+      <input kind="data" representation="bytes"/>
+      <input kind="file" representation="path"/>
+      <input kind="audio" representation="SLMediaFrame"/>
+      <input kind="video" representation="SLMediaFrame"/>
+    </inputs>
+    <operations>
+      <operation name="inspect"/>
+      <operation name="classify"/>
+      <operation name="extract"/>
+      <operation name="summarize"/>
+      <operation name="transform"/>
+    </operations>
+    <outputs>
+      <output name="observation" type="label-confidence-span"/>
+      <output name="summary" type="text"/>
+    </outputs>
+    <execution>
+      <backend name="native"/>
+      <backend name="connector"/>
+      <vm authority="SLeeLa"/>
+    </execution>
+  </model>
+</bodi>

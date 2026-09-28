@@ -1,0 +1,54 @@
+#sleela 1.2
+// struct_network.sleela -- structs across the network / control paths.
+//
+// A struct instance is a VM-local handle, so it cannot be sent over a socket
+// directly. structPack(instance) serialises it to a JSON String; the peer
+// rebuilds it with structUnpack(TypeName, json). This is the honest transport
+// story: the wire carries a self-describing value, not an in-process handle.
+
+struct Order {
+    String symbol;
+    int shares;
+    double limit;
+}
+
+class StructNetwork {
+    int listener;
+
+    // Server: accept one client, receive a packed Order, rebuild it, and
+    // acknowledge with a computed notional value.
+    void server() {
+        int client = accept(listener);
+        String json = sockread(client);
+        Order o = structUnpack(Order, json);
+        double notional = o.shares * o.limit;
+        sockwrite(client, "ACK " + o.symbol + " x" + o.shares + " notional=" + notional);
+        sockclose(client);
+    }
+
+    // Client: build an Order, pack it to JSON, send it, and read the ack.
+    String client() {
+        Order o = new Order();
+        o.symbol = "AAPL";
+        o.shares = 100;
+        o.limit = 332.27;
+
+        String wire = structPack(o);
+        print("wire = " + wire);
+
+        int socket = connect("127.0.0.1", 45231);
+        sockwrite(socket, wire);
+        String ack = sockread(socket);
+        sockclose(socket);
+        return ack;
+    }
+
+    void main() {
+        listener = listen(45231);
+        spawn(server);
+        String ack = client();
+        print(ack);
+        join();
+        sockclose(listener);
+    }
+}

@@ -1,0 +1,11 @@
+#include "../include/skya_hardware_profile.h"
+#include <errno.h>
+static int bounds(const skya_memory_region*r,uint64_t o,size_t n){return(!r||o>r->size||(uint64_t)n>r->size-o)?-ERANGE:0;}
+int skya_hardware_profile_validate(const skya_hardware_profile*p){if(!p||!p->vendor||!p->model)return-EINVAL;for(size_t i=0;i<p->pin_count;i++){const skya_pin_spec*x=&p->pins[i];if(x->voltage_min_mv>x->voltage_nominal_mv||x->voltage_nominal_mv>x->voltage_max_mv)return-ERANGE;if(x->role==SKYA_PIN_POWER_RAIL&&!x->voltage_max_mv)return-ERANGE;if(x->role==SKYA_PIN_POWER_RAIL&&x->direction==SKYA_PIN_INPUT_ONLY)return-EINVAL;}for(size_t i=0;i<p->memory_count;i++)if(!p->memory[i].size)return-ERANGE;return 0;}
+int skya_hardware_pin_set(skya_hardware_control*c,const skya_pin_spec*p,int v){if(!c||!c->set_pin||!p)return-EINVAL;if(p->value_status==SKYA_VALUE_DEFAULT_ASSUMPTION)return-EAGAIN;if(p->direction==SKYA_PIN_INPUT_ONLY)return-EPERM;return c->set_pin(c->ctx,p,v?1:0);}
+int skya_hardware_pin_read(skya_hardware_control*c,const skya_pin_spec*p,int*v){if(!c||!c->read_pin||!p||!v)return-EINVAL;if(p->direction==SKYA_PIN_OUTPUT_ONLY)return-EPERM;return c->read_pin(c->ctx,p,v);}
+int skya_hardware_voltage_set(skya_hardware_control*c,const skya_pin_spec*p,uint32_t mv){if(!c||!c->set_voltage||!p)return-EINVAL;if(p->value_status==SKYA_VALUE_DEFAULT_ASSUMPTION)return-EAGAIN;if(p->role!=SKYA_PIN_POWER_RAIL||!p->voltage_max_mv||mv<p->voltage_min_mv||mv>p->voltage_max_mv)return-ERANGE;return c->set_voltage(c->ctx,p,mv);}
+int skya_hardware_memory_read(skya_hardware_control*c,const skya_memory_region*r,uint64_t o,void*b,size_t n){if(!c||!c->read_memory||!r||(!b&&n)||!r->readable)return-EINVAL;int e=bounds(r,o,n);return e?e:c->read_memory(c->ctx,r,o,b,n);}
+int skya_hardware_memory_write(skya_hardware_control*c,const skya_memory_region*r,uint64_t o,const void*b,size_t n){if(!c||!c->write_memory||!r||(!b&&n)||!r->writable)return-EINVAL;if(r->value_status==SKYA_VALUE_DEFAULT_ASSUMPTION)return-EAGAIN;int e=bounds(r,o,n);return e?e:c->write_memory(c->ctx,r,o,b,n);}
+int skya_hardware_cache_flush(skya_hardware_control*c,const skya_memory_region*r){return(!c||!c->flush_cache||!r)?-EINVAL:c->flush_cache(c->ctx,r);}
+int skya_hardware_cache_invalidate(skya_hardware_control*c,const skya_memory_region*r){return(!c||!c->invalidate_cache||!r)?-EINVAL:c->invalidate_cache(c->ctx,r);}

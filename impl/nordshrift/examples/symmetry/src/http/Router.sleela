@@ -1,0 +1,62 @@
+// ===========================================================================
+// Router.sleela — the dispatch symmetry. A Router turns a path into a handler
+// id; the reverse map turns a handler id back into its canonical path. A
+// correct routing table is a bijection: reverse(route(path)) == path for every
+// known path. This file drives that round-trip check.
+//
+// Driven by: symmetry/build.sst. Catalogued objects: Router, Middleware,
+// Pipeline.
+// ===========================================================================
+class Router {
+
+    // Forward: path code (1=/, 2=/health, 3=/api) -> handler id.
+    int toHandler(int pathCode) {
+        if (pathCode == 1) {
+            return 10;
+        }
+        if (pathCode == 2) {
+            return 20;
+        }
+        if (pathCode == 3) {
+            return 30;
+        }
+        return 0;             // no route
+    }
+
+    // Reverse: handler id -> path code. The mirror of toHandler.
+    int toPath(int handler) {
+        if (handler == 10) {
+            return 1;
+        }
+        if (handler == 20) {
+            return 2;
+        }
+        if (handler == 30) {
+            return 3;
+        }
+        return 0;
+    }
+
+    void main() {
+        print("== Router (bijective dispatch) ==");
+        print("Router role     = " + role("Router"));
+        print("Middleware role = " + role("Middleware"));
+        print("Pipeline -> Stream route = " + route("Pipeline", "Stream"));
+
+        int p = 1;
+        int matched = 0;
+        while (p <= 3) {
+            int h = toHandler(p);
+            int back = toPath(h);
+            boolean bijective = back == p;
+            if (bijective) {
+                matched = matched + 1;
+            }
+            print("path=" + p + " -> handler=" + h + " -> path=" + back
+                  + " bijective=" + bijective);
+            p = p + 1;
+        }
+        print("bijective routes = " + matched + " / 3");
+        print("done");
+    }
+}

@@ -1,0 +1,29 @@
+#sleela 1.3
+// SLeeLa Regex API — Level 3: Structure
+// Regex API 1.0.0 draft.
+// Teaching rule: assemble a question from readable pieces.
+
+class RegexLevel3Structure {
+    void main() {
+        // One of several alternatives.
+        print(match("cat", "exact choice(cat, dog)"));
+        print(match("dog", "exact choice(cat, dog)"));
+
+        // A sequence of pieces.
+        print(match("http://example", "exact group("http://", word+)"));
+
+        // An optional piece.
+        print(match("https://example", "exact group("http", optional("s"), "://", word+)"));
+
+        // A character range followed by repetition.
+        print(match("ABC", "exact range(A-Z)+"));
+
+        // A named capture makes the useful part available to the program.
+        print(match("ID-2026", "exact group("ID-", capture("number", digit{4}))"));
+    }
+}
+
+// Source-contract note:
+// Level 3 vocabulary is intentionally written as readable construction.
+// Native compiler/runtime support is introduced only after its semantics,
+// captures, limits, and Unicode behavior are fixed.

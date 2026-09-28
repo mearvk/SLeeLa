@@ -1,0 +1,75 @@
+#sleela 1.0
+// stock_market_live.sleela -- market-data checker with paper portfolio support.
+//
+// This program is deliberately split into a market-data model and paper trading.
+// The current SLeeLa runtime remains deterministic: external data is represented
+// by the values supplied to the checker. A terminal adapter can populate these
+// values from a permitted market-data service without changing portfolio logic.
+
+class StockMarketLive {
+    double cash = 100000.0;
+
+    int appleShares = 100;
+    int microsoftShares = 50;
+    int nvidiaShares = 25;
+    int teslaShares = 40;
+
+    double apple = 332.27;
+    double microsoft = 495.63;
+    double nvidia = 218.29;
+    double tesla = 365.44;
+
+    double previousApple = 326.57;
+    double previousMicrosoft = 492.43;
+    double previousNvidia = 218.35;
+    double previousTesla = 363.55;
+
+    double positionValue(int shares, double price) {
+        return shares * price;
+    }
+
+    double change(double previous, double price) {
+        return price - previous;
+    }
+
+    double percent(double previous, double price) {
+        return ((price - previous) / previous) * 100.0;
+    }
+
+    void quote(String ticker, double price, double previous, double volume) {
+        print(ticker + "  $" + price
+            + "  change $" + change(previous, price)
+            + "  " + percent(previous, price) + "%"
+            + "  volume " + volume);
+    }
+
+    void main() {
+        print("=== SLeeLa MARKET CHECK ===");
+        print("Market data snapshot + paper portfolio");
+        print("");
+
+        print("WATCHLIST");
+        quote("AAPL", apple, previousApple, 50716865);
+        quote("MSFT", microsoft, previousMicrosoft, 28000000);
+        quote("NVDA", nvidia, previousNvidia, 150000000);
+        quote("TSLA", tesla, previousTesla, 32000000);
+        print("");
+
+        double portfolio = cash
+            + positionValue(appleShares, apple)
+            + positionValue(microsoftShares, microsoft)
+            + positionValue(nvidiaShares, nvidia)
+            + positionValue(teslaShares, tesla);
+
+        print("PAPER PORTFOLIO");
+        print("Cash = $" + cash);
+        print("AAPL = " + appleShares + " shares");
+        print("MSFT = " + microsoftShares + " shares");
+        print("NVDA = " + nvidiaShares + " shares");
+        print("TSLA = " + teslaShares + " shares");
+        print("Total value = $" + portfolio);
+        print("");
+        print("No live orders are submitted by this program.");
+        print("=== MARKET CHECK COMPLETE ===");
+    }
+}

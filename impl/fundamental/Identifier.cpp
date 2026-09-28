@@ -1,0 +1,2 @@
+#include "Identifier.hpp"
+namespace sleela::fundamental { Identifier::Identifier()=default; Identifier::Identifier(std::string value):value_(std::move(value)){} const std::string& Identifier::value() const noexcept{return value_;} void Identifier::setValue(std::string value){value_=std::move(value);} bool Identifier::empty() const noexcept{return value_.empty();} const char* Identifier::responsibility() const noexcept{return "stable identity";} }

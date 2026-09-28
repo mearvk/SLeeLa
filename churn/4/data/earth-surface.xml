@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Dataset: earth-surface
+  The Earth's surface as Areas: the total surface extent and its land/water
+  partition. Each entry is a real 2D extent (a region the planet spans).
+  Provenance: standard geophysical figures (Earth's mean radius ~6371 km gives
+  4*pi*r^2 ~= 5.10e8 km2); land/water split from Wikipedia "Earth" and the
+  Institute for Environmental Research & Education. Public domain / official.
+  Retrieved 2026-09. These are MEASURED/OBSERVED extents, not definitions.
+-->
+<dataset name="earth-surface" unit="square_kilometre">
+  <provenance>
+    <source>Standard geophysical values: total surface = 4*pi*R^2 with R ~= 6371 km</source>
+    <crossReference>Wikipedia "Earth"; Institute for Environmental Research and Education (land/water percentages)</crossReference>
+    <retrieved>2026-09</retrieved>
+    <note>Water covers 70.8% of the crust; land 29.2%. Figures rounded.</note>
+  </provenance>
+  <areas>
+    <area name="total_surface"  value="510072000" kind="MEASURED" note="4*pi*R^2, R ~= 6371 km"/>
+    <area name="ocean_water"    value="361132000" kind="OBSERVED" fraction="0.708"/>
+    <area name="land"           value="148940000" kind="OBSERVED" fraction="0.292"/>
+  </areas>
+</dataset>

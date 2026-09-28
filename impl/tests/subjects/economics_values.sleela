@@ -1,0 +1,39 @@
+#sleela 1.0
+// Numeric assertions for the native `economics` subject library.
+import math;
+import economics;
+
+class EconomicsValues {
+    static void check(String name, double got, double expected, double tol) {
+        double d = got - expected;
+        if (d < 0.0) { d = 0.0 - d; }
+        if (d <= tol) { print("PASS " + name); }
+        else { print("FAIL " + name + " got=" + got + " expected=" + expected); }
+    }
+
+    void main() {
+        // FV = P (1+r)^n = 1000 * 1.05^10 = 1628.894626777442
+        check("future_value", economics.future_value(1000.0, 0.05, 10.0), 1628.894626777442, 0.01);
+        // PV = F / (1+r)^n = 1628.894626777442 / 1.05^10 = 1000
+        check("present_value", economics.present_value(1628.894626777442, 0.05, 10.0), 1000.0, 0.01);
+        // Annuity present: 100 * (1 - 1.05^-10)/0.05 = 772.173...
+        check("annuity_present", economics.annuity_present(100.0, 0.05, 10.0), 772.1734929184818, 0.05);
+        // Annuity future: 100 * (1.05^10 - 1)/0.05 = 1257.789...
+        check("annuity_future", economics.annuity_future(100.0, 0.05, 10.0), 1257.789253554883, 0.1);
+        // Elasticity = %Q / %P
+        check("elasticity", economics.elasticity(-20.0, 10.0), -2.0, 0.000001);
+        // Real rate: (1+0.08)/(1+0.03) - 1 = 0.0485436...
+        check("real_rate", economics.real_rate(0.08, 0.03), 0.04854368932038833, 0.00001);
+        // Fisher nominal: (1+0.05)(1+0.03) - 1 = 0.0815
+        check("fisher_nominal", economics.fisher_nominal(0.05, 0.03), 0.0815, 0.000001);
+        // Doubling time: ln2 / ln(1.07) = 10.2448...
+        check("doubling_time", economics.doubling_time(0.07), 10.244768351058712, 0.01);
+        // Continuous value: P e^{rt} = 1000 * e^{0.05*10} = 1000*e^0.5 = 1648.7212707
+        check("continuous_value", economics.continuous_value(1000.0, 0.05, 10.0), 1648.7212707001282, 0.05);
+        check("profit", economics.profit(500.0, 300.0), 200.0, 0.000001);
+        check("margin", economics.margin(200.0, 500.0), 0.4, 0.000001);
+        // GDP identity C + I + G
+        check("gdp_identity", economics.gdp_identity(700.0, 200.0, 100.0), 1000.0, 0.000001);
+        // EXPECTED_PASS=12
+    }
+}

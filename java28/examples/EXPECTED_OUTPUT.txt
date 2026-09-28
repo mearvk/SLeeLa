@@ -1,0 +1,50 @@
+Reference output of `make demo` (both channels). Handle ids and values are
+deterministic; the two channels are byte-identical because they share
+SleelaMemoryServer.handleLine.
+
+=== Port channel demo (Sleela C driver -> Java 28 memory over TCP) ===
+== Sleela driving the Java 28 SecureJDK memory model (port channel) ==
+  hello                  -> OK s:32:Java 28 SecureJDK memory host v1
+  new Counter i:10       -> OK h:1
+  counter.add(5)         -> OK i:15
+  counter.add(100)       -> OK i:115
+  counter.value          -> OK i:115
+  counter.isPositive()   -> OK b:1
+  counter.label("count") -> OK s:9:count=115
+  new Ledger d:19.99     -> OK h:2
+  ledger.credit(5.01)    -> OK d:25.0
+  ledger.cents() -> handle -> OK h:3
+  cents.value            -> OK i:2500
+  new File (blocked)     -> ERR s:28:class not allow-listed: File
+  free counter           -> OK n
+  get freed (ERR)        -> ERR s:30:invalid or released handle h:1
+  stats                  -> OK s:27:live=2 highWater=3 max=4096
+Java 28 memory demo (port): PASS (2 expected ERR posture checks)
+
+=== JNI channel demo (in-process local feedback) ===
+== Sleela driving the Java 28 SecureJDK memory model (JNI local feedback) ==
+  hello                    -> OK s:32:Java 28 SecureJDK memory host v1
+  new Counter i:10         -> OK h:1
+  counter.add(5)           -> OK i:15
+  counter.add(100)         -> OK i:115
+  counter.value            -> OK i:115
+  counter.isPositive()     -> OK b:1
+  counter.label("count")   -> OK s:9:count=115
+  new Ledger d:19.99       -> OK h:2
+  ledger.credit(5.01)      -> OK d:25.0
+  ledger.cents() -> handle -> OK h:3
+  cents.value              -> OK i:2500
+  new File (blocked)       -> ERR s:28:class not allow-listed: File
+  free counter             -> OK n
+  get freed (ERR)          -> ERR s:30:invalid or released handle h:1
+  stats                    -> OK s:27:live=2 highWater=3 max=4096
+Java 28 memory demo (JNI): PASS
+
+Interpretation:
+- new Counter/Ledger create objects on the Java 28 heap; Sleela receives only
+  handles (h:1, h:2).
+- add/get/credit/label execute in Java; results flow back as typed values.
+- ledger.cents() returns ANOTHER heap object, exposed as a fresh handle (h:3);
+  its value is 2500 (balance 25.00 -> 2500 cents).
+- Security posture: a non-allow-listed class (File) and a released handle both
+  return ERR, never an escape hatch. stats shows the bounded live-handle model.

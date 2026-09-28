@@ -1,0 +1,10 @@
+#sleela 1.1
+class VoIPAccount {
+    SipEndpoint endpoint;
+    String username;
+    String displayName;
+    int registered;
+    void configure(String user, String name) { username=user; displayName=name; }
+    void register() { registered=1; }
+    void unregister() { registered=0; }
+}

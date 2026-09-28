@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bodi-ui id="skya-remote-connect" title="Skya Remote Server Connection">
+  <window width="760" height="560"/>
+  <connection>
+    <server host="127.0.0.1" port="8443"/>
+    <room name="lobby"/>
+    <protocol values="HTTP/3,HTTP/2,SLeeLa TCP"/>
+  </connection>
+  <guia>
+    <operation name="CLIENT.CONNECT"/>
+    <operation name="CLIENT.CONNECTED"/>
+    <operation name="SESSION.OPEN"/>
+    <operation name="LISTENER.START"/>
+    <operation name="LISTENER.RECEIVE"/>
+    <operation name="COMMAND.INVOKE"/>
+    <operation name="CLIENT.DISCONNECTED"/>
+    <operation name="SESSION.CLOSED"/>
+  </guia>
+</bodi-ui>

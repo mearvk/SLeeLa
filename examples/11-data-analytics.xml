@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bodi version="1">
+  <project id="example-data-analytics-001" kind="science" title="Basic Data Analytics"/>
+  <science model="native-data-analytics">
+    <discipline name="data-analytics">
+      <operation name="sum" sequence="001"><arg value="10"/><arg value="20"/><arg value="30"/><arg value="40"/></operation>
+      <operation name="mean" sequence="002"><arg value="10"/><arg value="20"/><arg value="30"/><arg value="40"/></operation>
+      <operation name="variance" sequence="003"><arg value="10"/><arg value="20"/><arg value="30"/><arg value="40"/></operation>
+      <operation name="stddev" sequence="004"><arg value="10"/><arg value="20"/><arg value="30"/><arg value="40"/></operation>
+      <operation name="correlation" sequence="005"><arg value="1"/><arg value="2"/><arg value="3"/><arg value="2"/><arg value="4"/><arg value="6"/></operation>
+    </discipline>
+  </science>
+</bodi>

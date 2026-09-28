@@ -1,0 +1,19 @@
+[Unit]
+Description=SLeeLa Server Edition Service 2
+After=local-fs.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/sleela
+ExecStart=/opt/sleela/server-edition/moral/2/serverd
+User=sleela
+Group=sleela
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/sleela/server-edition/inbox /opt/sleela/server-edition/state
+
+[Install]
+WantedBy=multi-user.target

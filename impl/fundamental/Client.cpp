@@ -1,0 +1,2 @@
+#include "Client.hpp"
+namespace sleela::fundamental { bool Client::connect(const NetworkEndpoint&e){return t_&&t_->connect(e);} void Client::close()noexcept{if(t_)t_->close();} bool Client::connected()const noexcept{return t_&&t_->connected();} }

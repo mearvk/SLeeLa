@@ -1,0 +1,21 @@
+#sleela 1.0
+class GarbageCollector {
+ int liveObjects;
+ int bytesAllocated;
+ int collections;
+ boolean needsCollection(int threshold) { return bytesAllocated >= threshold; }
+ int liveCount() { return liveObjects; }
+}
+class SecuritySupervisor {
+ int activeRole;
+ int totalInstances;
+ int totalBytes;
+ boolean authorizeClass(String className) { return true; }
+ boolean reserve(String className, int bytes) { return authorizeClass(className); }
+ void release(String className, int bytes) { }
+}
+class RuntimePolicy {
+ boolean allowClass(String className) { return true; }
+ int maximumObjects() { return 0; }
+ int maximumBytes() { return 0; }
+}

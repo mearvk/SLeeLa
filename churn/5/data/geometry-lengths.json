@@ -1,0 +1,20 @@
+{
+  "dataset": "geometry-lengths",
+  "title": "Line & perimeter formulas (mathematical Lines)",
+  "description": "Each entry is a Line as mathematics defines it: the exact rule by which a shape's edge reaches a 1D length. Where /4 (Areas) held the 2D formulas, /5 (Lines) holds the 1D ones — perimeters, circumferences, diagonals. These are EXACT — length is defined by the formula, with no uncertainty.",
+  "provenance": {
+    "primary_source": "Standard Euclidean geometry (public domain)",
+    "cross_reference": "any standard mathematics reference",
+    "retrieved": "2026-09",
+    "note": "Formulas are definitional. Worked values use the given parameters and pi = 3.14159265358979, sqrt(2) = 1.41421356237."
+  },
+  "formulas": [
+    { "shape": "segment",           "formula": "b - a",            "params": { "a": 0, "b": 5 },  "worked_value": 5.0,          "kind": "EXACT" },
+    { "shape": "square perimeter",  "formula": "4 * s",            "params": { "s": 3 },          "worked_value": 12.0,         "kind": "EXACT" },
+    { "shape": "rectangle perimeter","formula": "2 * (w + h)",     "params": { "w": 3, "h": 4 },  "worked_value": 14.0,         "kind": "EXACT" },
+    { "shape": "circle circumference","formula": "2 * pi * r",     "params": { "r": 2 },          "worked_value": 12.566370614, "kind": "EXACT" },
+    { "shape": "unit-square diagonal","formula": "sqrt(2) * s",    "params": { "s": 1 },          "worked_value": 1.41421356237,"kind": "EXACT" },
+    { "shape": "3-4-5 hypotenuse",  "formula": "sqrt(a^2 + b^2)",  "params": { "a": 3, "b": 4 },  "worked_value": 5.0,          "kind": "EXACT" },
+    { "shape": "regular hexagon perimeter","formula": "6 * s",     "params": { "s": 2 },          "worked_value": 12.0,         "kind": "EXACT" }
+  ]
+}

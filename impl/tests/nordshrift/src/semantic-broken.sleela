@@ -1,0 +1,9 @@
+#sleela 1.3
+class SemanticBroken {
+  void main() {
+    int count = "not an integer";
+    if (count) {
+      print(count);
+    }
+  }
+}

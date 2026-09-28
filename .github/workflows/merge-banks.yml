@@ -1,0 +1,33 @@
+name: Merge BANKS currency data
+
+on:
+  push:
+    paths:
+      - BANKS.md
+      - BANKS2.md
+      - tools/banking/merge_banks.py
+
+permissions:
+  contents: write
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Merge BANKS2 currency data into BANKS
+        run: python3 tools/banking/merge_banks.py
+      - name: Commit merged table
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add BANKS.md
+          if git diff --cached --quiet; then
+            echo 'BANKS.md already contains the merged currency data.'
+          else
+            git commit -m 'Merge BANKS2 currency data into BANKS'
+            git push
+          fi

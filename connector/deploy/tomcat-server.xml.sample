@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Sample Apache Tomcat connector configuration enabling HTTP/2 for the SLeeLa
+  HTTP 3.0 module. Merge the <Connector> elements below into your Tomcat
+  conf/server.xml. Tested shape for Tomcat 10.1+ (Jakarta Servlet 6.0).
+
+  Two ways to get HTTP/2:
+    (A) h2  - HTTP/2 over TLS (ALPN). The standard, browser-reachable form.
+    (B) h2c - HTTP/2 cleartext (upgrade), useful behind an Apache mod_http2
+              reverse proxy that terminates TLS (see apache-h3.conf).
+-->
+<Service name="Catalina">
+
+  <!-- (A) HTTP/2 over TLS with ALPN. Browsers negotiate h2 automatically. -->
+  <Connector port="8443"
+             protocol="org.apache.coyote.http11.Http11NioProtocol"
+             maxThreads="200"
+             SSLEnabled="true">
+    <UpgradeProtocol className="org.apache.coyote.http2.Http2Protocol"/>
+    <SSLHostConfig>
+      <Certificate certificateKeyFile="conf/localhost-key.pem"
+                   certificateFile="conf/localhost-cert.pem"
+                   type="RSA"/>
+    </SSLHostConfig>
+  </Connector>
+
+  <!-- (B) HTTP/2 cleartext (h2c) for a TLS-terminating Apache front proxy. -->
+  <Connector port="8080"
+             protocol="org.apache.coyote.http11.Http11NioProtocol"
+             maxThreads="200">
+    <UpgradeProtocol className="org.apache.coyote.http2.Http2Protocol"/>
+  </Connector>
+
+  <Engine name="Catalina" defaultHost="localhost">
+    <Host name="localhost" appBase="webapps" unpackWARs="true" autoDeploy="true"/>
+  </Engine>
+</Service>
