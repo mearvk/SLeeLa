@@ -76,10 +76,14 @@ class UdpDispatcher:
         window: int = 1024,
     ) -> None:
         self.destinations: List[Tuple[str, int]] = list(destinations)
+        if timeout_s <= 0:
+            raise ValueError("timeout_s must be positive")
+        if window <= 0:
+            raise ValueError("window must be positive")
         if payload_bytes < _HDR.size:
             payload_bytes = _HDR.size
-        self.payload_bytes = payload_bytes
-        self.timeout_s = timeout_s
+        self.payload_bytes = int(payload_bytes)
+        self.timeout_s = float(timeout_s)
         self.stats: Dict[str, LatencyStats] = {
             self._key(d): LatencyStats(self._key(d), window=window)
             for d in self.destinations
@@ -91,6 +95,10 @@ class UdpDispatcher:
         return f"{dest[0]}:{dest[1]}"
 
     def run(self, rounds: int = 1, *, interval_s: float = 0.0) -> DispatchResult:
+        if rounds < 0:
+            raise ValueError("rounds must be non-negative")
+        if interval_s < 0:
+            raise ValueError("interval_s must be non-negative")
         """Send ``rounds`` probes to every destination and collect RTTs.
 
         A UDP socket is opened per run. In each round every destination gets one
