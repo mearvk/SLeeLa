@@ -2800,7 +2800,7 @@
     },
     {
       "path": "debugger/debugger_backend.hpp",
-      "sha256": "93359a5bf589b6ea29824a118ca4d06eef0e77ed57f13e9112701722d26c84dc"
+      "sha256": "71ab897fa40b2d2ea490ec30da07fc45f03bef546f07568fadf76b6246220c4e"
     },
     {
       "path": "debugger/debugger_backend_linux.cpp",
@@ -2832,7 +2832,7 @@
     },
     {
       "path": "debugger/debugger_c.h",
-      "sha256": "3c69e3f124502f9ed908ecd3b0a2341be5bd6e211841da4946647321db3986f0"
+      "sha256": "aef551629081725f155d09492bc8c1c6e9a4f533401f3a13e35468940036267f"
     },
     {
       "path": "debugger/debugger_line.c",
@@ -2840,7 +2840,7 @@
     },
     {
       "path": "debugger/debugger_line.cpp",
-      "sha256": "6d28b4e6eca6307832adea7758b820e286137668cb680e308767f5c84627691a"
+      "sha256": "82f09141f099c75302d005447648f7e9cf29ce6d351fe99d7d48c997aabdf4d0"
     },
     {
       "path": "debugger/debugger_line.h",
@@ -4240,7 +4240,7 @@
     },
     {
       "path": "http-8.0/DarkPower.cpp",
-      "sha256": "225cdf469b62667a2bbca8323e5680804add293198bf6ae5b12167971b5e9603"
+      "sha256": "2353242ca9cd1e4bdbdc76d8faa5c5008589610183078385c01b0769d75e6fd5"
     },
     {
       "path": "http-8.0/DarkPower.hpp",
@@ -4384,7 +4384,7 @@
     },
     {
       "path": "http-servers/common/http_server.cpp",
-      "sha256": "3f413c8c905f0165d3aad08cd8c6f5b3d486deff51ab981f4798cafc2805b15e"
+      "sha256": "e8bc326939317ca143f9cda7247849194c18e515058db2cff66071620b277d58"
     },
     {
       "path": "http-servers/common/http_server.h",
@@ -4492,7 +4492,7 @@
     },
     {
       "path": "impl/core/sleela_audio_mixer.c",
-      "sha256": "42c285f7ca016baf05bd06598d73f170bcb32e0f3800e73151c2a57cc8578b0a"
+      "sha256": "19997c2a9efac2e10fe990aa5b0fb792302f5b213a70a781b37f461b495373fd"
     },
     {
       "path": "impl/core/sleela_audio_mixer.h",
@@ -4524,7 +4524,7 @@
     },
     {
       "path": "impl/core/sleela_events.c",
-      "sha256": "ab0c13c4edfc1d33a25fd86ec262fa810c7af72ade42aef3dd16b70da3eff3f9"
+      "sha256": "c8f37623b99b897362eb8d3bb9a2f4efa708db63cc6efdb366391ed3a4d5ba72"
     },
     {
       "path": "impl/core/sleela_events.h",
@@ -5292,7 +5292,7 @@
     },
     {
       "path": "impl/fundamental/TcpTransport.cpp",
-      "sha256": "31cb8aabadd59edd19a873f6a1097ad582895adb209f08221bd0a62ec7fe16db"
+      "sha256": "982a3d9105128f07755c58ede462ea4630b864b441526ea1fe8b40d5d6540789"
     },
     {
       "path": "impl/fundamental/TcpTransport.hpp",
@@ -5332,7 +5332,7 @@
     },
     {
       "path": "impl/fundamental/UdpTransport.cpp",
-      "sha256": "d0aee37ee09d63dd3ab04d9692652f2356458fd1ed1057e5e7d3f999c6fcd057"
+      "sha256": "b5a6d68276e592e9569dbc471199ea43c51ca8411a45b4ebae13b524e001642b"
     },
     {
       "path": "impl/fundamental/UdpTransport.hpp",
@@ -5504,7 +5504,7 @@
     },
     {
       "path": "impl/nordshrift/nordshrift.cpp",
-      "sha256": "ef35b4df95b52ac0383787dcab5ac87c04317aee036a8b9a58d051d4cbbf21ed"
+      "sha256": "d77520eb7c08edcd5c9a9056f5c4503578a647a9f4a8f0971c8b13fbaed81e77"
     },
     {
       "path": "impl/nordshrift/object_compat.cpp",
@@ -6479,6 +6479,38 @@
       "sha256": "e37b4b9112824a4c28cf0724bee9c8c7f7fea82c517ba51e0723cfff14fa8d49"
     },
     {
+      "path": "synchro/c/synchro.c",
+      "sha256": "d8cf411eda7a2c19456934f2db76990fb80bb682d7b8167d4c04c0b986b13288"
+    },
+    {
+      "path": "synchro/c/synchro.h",
+      "sha256": "b428799f799c12774d631c6fbe7aebd29163169fa33370f8d811cd15c62a78ba"
+    },
+    {
+      "path": "synchro/c/synchro_integration.c",
+      "sha256": "cf57664d6557364eb492809895402e3d8bbaf864ccd72328ff560af840719f9e"
+    },
+    {
+      "path": "synchro/c/synchro_integration.h",
+      "sha256": "39aca3cd0096e232814a3b57be7f9abfd49c2e778c3449aa49fad2896e7506e7"
+    },
+    {
+      "path": "synchro/cpp/synchro.cpp",
+      "sha256": "149fc87f075cc3bb3ec25f9bde45c6451c26828c1a2f283b67d9221eb2597c58"
+    },
+    {
+      "path": "synchro/cpp/synchro.hpp",
+      "sha256": "0ade92b7c536e569e102ad9fb55fa05b800795c8096247f5485a55cfbaf024e9"
+    },
+    {
+      "path": "synchro/cpp/synchro_integration.cpp",
+      "sha256": "94f22e2e8e20fba280a9c29be8083383d5d2ce164a8138cc32e5c5862202c6c8"
+    },
+    {
+      "path": "synchro/cpp/synchro_integration.hpp",
+      "sha256": "c8a6dadbaf7f254436fa692c899957dfc77111bbc261b16ef5fafcedea9c15be"
+    },
+    {
       "path": "synchro/synchro/__init__.py",
       "sha256": "a0e423e7ffd655026abee6d5ce76139d1e4c786739e2f48a4859bb662a6c235b"
     },
@@ -6492,11 +6524,11 @@
     },
     {
       "path": "synchro/synchro/dispatcher.py",
-      "sha256": "dde693b6110ef7f79055776971be85bd841d5d1c4c0d47fb3c8f9953f0b34e25"
+      "sha256": "ac23983d87ee4685f28da21fffb1550a81974c12e3a13fc94624ff4f4902ef54"
     },
     {
       "path": "synchro/synchro/http2.py",
-      "sha256": "281ebd16bec692618167a832a86e05d6f0596f0aad44cf4438af4988d0a6e53c"
+      "sha256": "fe1208631d8622de82c9caac53e6dfac4c84dc99635b8be25a6af8bafa3547b1"
     },
     {
       "path": "synchro/synchro/sla.py",
@@ -6504,11 +6536,15 @@
     },
     {
       "path": "synchro/synchro/stats.py",
-      "sha256": "2ec04b6af4cde10e02bf1386b29f4f26e476c63429f7f97f6dc48f4a394cf0ba"
+      "sha256": "cc1d17414ab33b74705d6f8bdc96d3ce809f570cfacb1d00bb1fad8abebf8561"
+    },
+    {
+      "path": "synchro/tests/integration_smoke.c",
+      "sha256": "24385f09380f7acbafe21fe64b4b182059c692b1571949ffd8e4ef56e8a2ee08"
     },
     {
       "path": "synchro/tests/test_synchro.py",
-      "sha256": "77d79a21d1972688c3fa85c3e473f076a75be44158a2eec3a9887edfeb1d527c"
+      "sha256": "72910cf255c7cf11871d34088c5563b327769b5805a2187ba228b9c2ae43756e"
     },
     {
       "path": "telephony-skya/build/linux/build.sh",
@@ -7300,7 +7336,7 @@
     },
     {
       "path": "test-suites/run-all.sh",
-      "sha256": "b61643b36a493137720f439ecf4245991a4c320deca56e97b4ae2c21dbccaa1d"
+      "sha256": "dc6ee26bd2b181a1ed8bffb345455097aac4d683fca939bc973893579e4042ba"
     },
     {
       "path": "test-suites/runtime-coverage.sh",
