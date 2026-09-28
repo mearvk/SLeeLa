@@ -7,7 +7,7 @@ CFLAGS=${CFLAGS:--std=c11 -Wall -Wextra -Wpedantic}
 CXXFLAGS=${CXXFLAGS:--std=c++17 -Wall -Wextra -Wpedantic}
 
 cleanup() {
-    rm -f debugger-core-test debugger-line-test debugger-backend-test debugger-c-test debugger-line-c-test
+    rm -f debugger-core-test debugger-line-test debugger-backend-test debugger-actions-test debugger-c-test debugger-line-c-test
 }
 trap cleanup EXIT INT TERM
 
@@ -19,6 +19,9 @@ trap cleanup EXIT INT TERM
 
 "$CXX" $CXXFLAGS -I.. debugger_backend_test.cpp ../debugger_backend.cpp -o debugger-backend-test
 ./debugger-backend-test
+
+"$CXX" $CXXFLAGS -I.. debugger_actions_test.cpp ../debugger.cpp ../debugger_actions.cpp -o debugger-actions-test
+./debugger-actions-test
 
 "$CC" $CFLAGS -I.. debugger_c_test.c ../debugger_c.c -o debugger-c-test
 ./debugger-c-test
