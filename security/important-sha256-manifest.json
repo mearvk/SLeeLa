@@ -2728,15 +2728,115 @@
     },
     {
       "path": "debugger/debugger.cpp",
-      "sha256": "0159a63bb3ad14cae1d492da4209b15ce5ee0b5e38810b0aba5316f0c02be4c4"
+      "sha256": "d7b7421873595c4ae0abdc0ac4c6458c3bc43435c187a18442f89dae0bdd31ab"
     },
     {
       "path": "debugger/debugger.hpp",
-      "sha256": "134b49b9913c26f59c59ced45e635a461197ef4dbafd3f85f5353451b0be6b32"
+      "sha256": "9bfdd29a7cf5a0e94ce041d3f4184af82e825edf472bca7002067decbcfc4a0e"
+    },
+    {
+      "path": "debugger/debugger_actions.cpp",
+      "sha256": "894796c25ae0f081975bf16ac05102ead1b3d6251f3e6eb40a9ae0372c9287a6"
+    },
+    {
+      "path": "debugger/debugger_actions.hpp",
+      "sha256": "823a2cbb4e3331bd4a532c32c04397cf8e9ab7a092bedcbd98d66991ecaca061"
+    },
+    {
+      "path": "debugger/debugger_backend.cpp",
+      "sha256": "af8e358d2e325a0e44826c355b21d16977763a13118f4b9c7095702ab2456922"
+    },
+    {
+      "path": "debugger/debugger_backend.hpp",
+      "sha256": "0e560405b40f54087e4e72043b2cb1aea20cb5b849d46df6a03bf3029ef510ea"
+    },
+    {
+      "path": "debugger/debugger_backend_linux.cpp",
+      "sha256": "8061ec0196dc2fa95bf76e3a7f4323f7f8e4320e40c7ef94f8dbb8005df9d2ad"
+    },
+    {
+      "path": "debugger/debugger_backend_linux.hpp",
+      "sha256": "15702981a0d87bd067da08d8f3222a79ee0b7f975df2ca573aa4f2d3c61c905e"
+    },
+    {
+      "path": "debugger/debugger_backend_macos.cpp",
+      "sha256": "8c37ad2938097dae9a973e377074a7b21e56b90ec87c633dd5cf2ae3718a2bdd"
+    },
+    {
+      "path": "debugger/debugger_backend_macos.hpp",
+      "sha256": "4983b14467108ea854b3dbcbea180e4ea2e7fbcd0a20c4c6d411f29703ae6cc1"
+    },
+    {
+      "path": "debugger/debugger_backend_windows.cpp",
+      "sha256": "7de08d2f167bccdff1139507ee1bb0853f878a5c2d3a761a51e2d4ce57c3fb80"
+    },
+    {
+      "path": "debugger/debugger_backend_windows.hpp",
+      "sha256": "6a1c787f0fdf6df4f9e6b5e17a6bdaa1106f8b94fa617f6c25e35231df88ca49"
+    },
+    {
+      "path": "debugger/debugger_c.c",
+      "sha256": "a8d75cdc054030d8906857f13d4c3193225ca861685ed90cafe826d750379771"
+    },
+    {
+      "path": "debugger/debugger_c.h",
+      "sha256": "3c69e3f124502f9ed908ecd3b0a2341be5bd6e211841da4946647321db3986f0"
+    },
+    {
+      "path": "debugger/debugger_line.c",
+      "sha256": "b749ebb5969c12b23a069827f20ee93a7c662f3f1cbd5d18dcf7875b113edf18"
+    },
+    {
+      "path": "debugger/debugger_line.cpp",
+      "sha256": "6d28b4e6eca6307832adea7758b820e286137668cb680e308767f5c84627691a"
+    },
+    {
+      "path": "debugger/debugger_line.h",
+      "sha256": "4d3324fe02612476a0ab255a46ec050b8c9be3b1c2dd639c6f7e48854f1012f7"
+    },
+    {
+      "path": "debugger/debugger_line.hpp",
+      "sha256": "7268c0cd542f15aa80e994ecb0200ce90eab34b4e5bfaf173854884658e64773"
+    },
+    {
+      "path": "debugger/debugger_platform.cpp",
+      "sha256": "3e65b9e965460ee8db4df1b1ae1214a5cc47fca24266af10b575012ba365e9c7"
+    },
+    {
+      "path": "debugger/debugger_platform.hpp",
+      "sha256": "776985a583888c49fc128e6deeb32debb73fc84939128ffbfbefdf8a350b0a4e"
     },
     {
       "path": "debugger/main.cpp",
       "sha256": "05765b305583df538a54f2098e6cdf39d89c6f2290466d448c916fdfd5eb7487"
+    },
+    {
+      "path": "debugger/tests/debugger_actions_test.cpp",
+      "sha256": "eeb515780a7dfce04e38bf0bf66d14435698877f16c7c8c0fffff9a1e963f2d3"
+    },
+    {
+      "path": "debugger/tests/debugger_backend_test.cpp",
+      "sha256": "b0f76e3772be247cdfdc299a2d86d99774795ffe7a153ee33fef40223222e711"
+    },
+    {
+      "path": "debugger/tests/debugger_c_test.c",
+      "sha256": "7c8c656c3bdf9e4bb1204a3b94d3abefeb3bca59706121fa6d7ca79c28733b40"
+    },
+    {
+      "path": "debugger/tests/debugger_core_test.cpp",
+      "sha256": "6df528fa2f6debf1be8e11402dd2fbb4d807a309659ce04fc5106fab2e8cb11b"
+    },
+    {
+      "path": "debugger/tests/debugger_line_c_test.c",
+      "sha256": "3c2788aef732f4b610893e1aa6ac1aa282da10efe796107ee59fdf0a005766a6"
+    },
+    {
+      "path": "debugger/tests/debugger_line_test.cpp",
+      "sha256": "c7376e27f104e36b42f8488b124624a27e9b7442781a91cf0c1b6bf988a587b8"
+    },
+    {
+      "path": "debugger/tests/run-tests.sh",
+      "sha256": "9d981ab13c0518bd9c01e44c65bb6bdb80d7f9fad45631bc623c925617cdc62e"
     },
     {
       "path": "decompiler/cli/main.cpp",
