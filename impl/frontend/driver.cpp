@@ -479,6 +479,7 @@ static int validateArtifact(const std::string&path){
 static int runArtifact(const std::string&path){
     SLVM*vm=slvm_load_file(path.c_str());
     if(!vm){std::cerr<<"sleelvac: cannot load runnable .sleela artifact '"<<path<<"'\n";return 1;}
+    slvm_set_audio_native_renderer(vm,sleela_audio_native_render_bridge,nullptr);
     sleela::annotation::DocumentAnnotations data;
     std::ifstream af(path+".annotations");std::string line;
     while(std::getline(af,line)){auto eq=line.find('=');if(eq!=std::string::npos&&eq>0)data.add(line.substr(0,eq),line.substr(eq+1));}
