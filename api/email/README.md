@@ -1,3 +1,4 @@
+[![SLeeLa](https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png)](https://github.com/mearvk/SLeeLa)
 # SLeeLa Email Facade
 
 SMTP-aware native C API with a SLeeLa mapping.

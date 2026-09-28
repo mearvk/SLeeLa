@@ -1,3 +1,4 @@
+[![SLeeLa](https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png)](https://github.com/mearvk/SLeeLa)
 # SLeeLa — A Tutorial Series
 
 A hands-on, twelve-part tour of **SLeeLa at her source best**: the language, the

@@ -1,3 +1,4 @@
+[![SLeeLa](https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png)](https://github.com/mearvk/SLeeLa)
 # SLeeLa Subject Libraries
 
 Subject libraries are source-backed, executable vocabularies for scientific and analytical domains.

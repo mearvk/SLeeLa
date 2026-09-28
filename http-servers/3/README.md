@@ -1,3 +1,4 @@
+[![SLeeLa](https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png)](https://github.com/mearvk/SLeeLa)
 # SLeeLa HTTP Server Grade 3
 
 Grade 3 is the SLeeLa HTTP/3 server entry point. It serves HTTP semantics

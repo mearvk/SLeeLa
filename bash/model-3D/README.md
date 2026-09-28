@@ -1,3 +1,4 @@
+[![SLeeLa](https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png)](https://github.com/mearvk/SLeeLa)
 # model-3D — SleelaTerminal™ · Phraign™ City 3D
 
 > Part of **SleelaTerminal™**, SLeeLa's terminal product, **built on GNU Bash**

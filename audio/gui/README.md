@@ -1,3 +1,4 @@
+[![SLeeLa](https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png)](https://github.com/mearvk/SLeeLa)
 # SLeeLa Audio GUI
 
 This directory is the first clean Java/JavaFX presentation layer for the SLeeLa

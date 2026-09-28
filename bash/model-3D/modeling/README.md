@@ -1,3 +1,4 @@
+[![SLeeLa](https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png)](https://github.com/mearvk/SLeeLa)
 # modeling/ — SleelaTerminal™ · Phraign™ City 3D model data
 
 > Part of **SleelaTerminal™** (Phraign™ City 3D), SLeeLa's terminal product,

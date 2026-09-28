@@ -1,3 +1,4 @@
+[![SLeeLa](https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png)](https://github.com/mearvk/SLeeLa)
 # SLeeLa HTTP
 
 This directory contains the HTTP transport, negotiation, protocol specifications, and web-integration layer for SLeeLa.

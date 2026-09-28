@@ -1,3 +1,4 @@
+[![SLeeLa](https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png)](https://github.com/mearvk/SLeeLa)
 # IDE Analysis
 
 Analysis connects PSI to the SLeeLa compiler semantic model.

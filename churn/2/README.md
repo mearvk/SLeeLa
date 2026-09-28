@@ -1,3 +1,4 @@
+[![SLeeLa](https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png)](https://github.com/mearvk/SLeeLa)
 # /2 — Structures
 
 **Structures** is the second *relevance set* (a sibling of `/1` [Longs](../1/README.md),

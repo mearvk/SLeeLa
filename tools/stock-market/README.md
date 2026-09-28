@@ -1,3 +1,4 @@
+[![SLeeLa](https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png)](https://github.com/mearvk/SLeeLa)
 # SLeeLa Stock Market — C++ Engine + SLeeLa Layer
 
 This directory contains a two-layer stock-market analysis design.

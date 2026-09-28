@@ -1,3 +1,4 @@
+[![SLeeLa](https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png)](https://github.com/mearvk/SLeeLa)
 # Native subject dispatcher (math / physics / economics)
 
 The arithmetic subject libraries — **Math**, **Physics**, and **Economics** —

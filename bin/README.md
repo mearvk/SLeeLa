@@ -1,3 +1,4 @@
+[![SLeeLa](https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png)](https://github.com/mearvk/SLeeLa)
 # SLVM `bin/`
 
 The `bin/` directory contains command-line entry points intended for use from the SLVM environment.

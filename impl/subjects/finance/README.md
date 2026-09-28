@@ -1,3 +1,4 @@
+[![SLeeLa](https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png)](https://github.com/mearvk/SLeeLa)
 # SLeeLa Financial Integration
 
 The financial library provides executable financial mathematics and algebraic explanation primitives for Sleela. It is conceptually informed by mature quantitative-finance practice, including the QuantLib tradition, but contains original SLeeLa source rather than copied QuantLib implementation.

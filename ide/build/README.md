@@ -1,3 +1,4 @@
+[![SLeeLa](https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png)](https://github.com/mearvk/SLeeLa)
 # IDE Build, Run, and Test
 
 The IDE exposes repository operations through a thin adapter.

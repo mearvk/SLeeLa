@@ -1,3 +1,4 @@
+[![SLeeLa](https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png)](https://github.com/mearvk/SLeeLa)
 # Skya Telephony
 
 Skya is the SLeeLa telephony application boundary for client, server, and combined operation.

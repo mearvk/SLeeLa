@@ -1,3 +1,4 @@
+[![SLeeLa](https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png)](https://github.com/mearvk/SLeeLa)
 # AE6E66 Operational Scripts
 
 - `verify-integrity.sh` — fail-closed SHA-256 verifier.

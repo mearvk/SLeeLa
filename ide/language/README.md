@@ -1,3 +1,4 @@
+[![SLeeLa](https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png)](https://github.com/mearvk/SLeeLa)
 # IDE Language Layer
 
 The language layer defines the IntelliJ-facing representation of SLeeLa.

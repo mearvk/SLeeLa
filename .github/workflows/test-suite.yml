@@ -3,12 +3,41 @@ on:
   push:
     branches: [main, master]
   pull_request:
+permissions:
+  contents: write
 jobs:
   linux:
     timeout-minutes: 30
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Add Debian logo to README files
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          logo = "[![SLeeLa](https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png)](https://github.com/mearvk/SLeeLa)\n"
+          changed = 0
+          for path in Path(".").rglob("README.md"):
+              if ".git" in path.parts:
+                  continue
+              text = path.read_text(encoding="utf-8")
+              top = "\n".join(text.splitlines()[:15])
+              if re.search(r"!\[[^\]]*\]\([^)]+\)|<img\b[^>]*>|<picture\b[^>]*>", top, re.IGNORECASE):
+                  continue
+              path.write_text(logo + text, encoding="utf-8")
+              changed += 1
+          print(f"README files updated: {changed}")
+          PY
+          git config user.name "SLeeLa Automation"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- 'README.md' '**/README.md'
+          if ! git diff --cached --quiet; then
+            git commit -m "docs: add Debian logo to README files"
+            git push
+          fi
       - name: Test suite
         run: bash ./test-suites/run-all.sh --all
       - name: All SLeeLa source inputs, outputs, and procedural operations

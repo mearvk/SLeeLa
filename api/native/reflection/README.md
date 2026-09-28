@@ -1,3 +1,4 @@
+[![SLeeLa](https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png)](https://github.com/mearvk/SLeeLa)
 # SLeeLa Native Reflection
 
 The reflection package is explicit metadata, not a claim of universal C++ runtime reflection. C++17 does not provide a complete portable reflection facility, so metadata is registered explicitly or generated.

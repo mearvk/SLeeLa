@@ -1,3 +1,4 @@
+[![SLeeLa](https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png)](https://github.com/mearvk/SLeeLa)
 # Sleela ← SecureJDK 28 `.xclass` input
 
 Sleela can take **SecureJDK 28 `.xclass`** files (XML class files, the SecureJDK

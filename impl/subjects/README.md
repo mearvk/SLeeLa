@@ -1,3 +1,4 @@
+[![SLeeLa](https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png)](https://github.com/mearvk/SLeeLa)
 # SLeeLa Subject Libraries
 
 This directory unifies the five SLeeLa subject libraries — **Math**, **Physics**,
