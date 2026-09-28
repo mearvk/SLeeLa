@@ -33,13 +33,17 @@ int synchro_integration_ack(synchro_integration *integration,
                             uint64_t sent_ns) {
     uint32_t sequence = 0;
     uint64_t wire_sent_ns = 0;
-    uint64_t origin_ns = sent_ns ? sent_ns : wire_sent_ns;
+    uint64_t origin_ns;
 
     if (!integration || !packet) return -1;
     if (synchro_packet_decode(packet, 16, &sequence, &wire_sent_ns) != 0)
         return -2;
     if (sequence != expected_sequence)
         return -3;
+
+    /* Prefer the caller's local send timestamp; otherwise use the timestamp
+     * carried by the validated wire packet. */
+    origin_ns = sent_ns ? sent_ns : wire_sent_ns;
     if (origin_ns == 0 || now_ns < origin_ns)
         return -4;
 
