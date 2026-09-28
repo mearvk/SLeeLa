@@ -1,0 +1,10 @@
+// SLeeLa Audio device abstraction.
+class AudioDevice {
+  property name: String;
+  property identifier: String;
+  property sampleRate: Int;
+  property channels: Int;
+  property input: Bool;
+  property output: Bool;
+  method available(): Bool;
+}
