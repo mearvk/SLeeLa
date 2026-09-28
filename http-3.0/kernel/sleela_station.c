@@ -114,13 +114,8 @@ static long sl_do_open(void __user *arg)
     sl_session_view(&node->session, &view);
     mutex_unlock(&sl_lock);
 
-    if (copy_to_user(arg, &view, sizeof(view))) {
-        mutex_lock(&sl_lock);
-        list_del(&node->list);
-        mutex_unlock(&sl_lock);
-        kfree(node);
+    if (copy_to_user(arg, &view, sizeof(view)))
         return -EFAULT;
-    }
     return 0;
 }
 
@@ -184,15 +179,10 @@ static long sl_do_close(void __user *arg)
 
     mutex_lock(&sl_lock);
     node = find_session_locked(id);
-    if (!node) {
-        mutex_unlock(&sl_lock);
-        return -ENOENT;
-    }
-    sl_session_close(&node->session, now_ns());
-    list_del(&node->list);
+    if (node)
+        sl_session_close(&node->session, now_ns());
     mutex_unlock(&sl_lock);
-    kfree(node);
-    return 0;
+    return node ? 0 : -ENOENT;
 }
 
 static long sl_dev_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
