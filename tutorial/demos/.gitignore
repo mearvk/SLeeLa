@@ -1,0 +1,4 @@
+# Generated build output (runnable artifacts, .ledger, .qr.svg, manifests)
+build/
+**/build/
+out/

@@ -1,0 +1,10 @@
+#sleela 1.2
+// D01_Hello.sleela — companion to Lesson 01 (What SLeeLa is).
+// The smallest complete Wrapper: a class with a main() that prints.
+class D01_Hello {
+    void main() {
+        print("== Lesson 01: hello ==");
+        print("hello from a Wrapper");
+        print("done");
+    }
+}
