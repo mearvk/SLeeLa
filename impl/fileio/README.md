@@ -1,3 +1,4 @@
+[![SLeeLa](https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png)](https://github.com/mearvk/SLeeLa)
 # SLeeLa File I/O Subsystem
 
 SLeeLa 1.1 provides a common file and pipe API with an OS-aware native

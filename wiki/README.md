@@ -1,3 +1,4 @@
+[![SLeeLa](https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png)](https://github.com/mearvk/SLeeLa)
 # wiki/
 
 Source for the SLeeLa GitHub wiki. These pages are kept in-repo so they are

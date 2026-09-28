@@ -1,3 +1,4 @@
+[![SLeeLa](https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png)](https://github.com/mearvk/SLeeLa)
 # IDE Debugger Integration
 
 The SLeeLa IDE debugger adapter connects IntelliJ debugger actions to the repository's /debugger implementation.

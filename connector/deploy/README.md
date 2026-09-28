@@ -1,3 +1,4 @@
+[![SLeeLa](https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png)](https://github.com/mearvk/SLeeLa)
 # SLeeLa HTTP 3.0 over standard HTTP — deployment
 
 This directory carries the SLeeLa **HTTP 3.0 envelope** across the existing

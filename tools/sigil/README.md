@@ -1,3 +1,4 @@
+[![SLeeLa](https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png)](https://github.com/mearvk/SLeeLa)
 # Sleela Sigil
 
 Dependency-free (pure Python standard library) generator for the two Sleela

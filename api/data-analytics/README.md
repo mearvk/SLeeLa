@@ -1,3 +1,4 @@
+[![SLeeLa](https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png)](https://github.com/mearvk/SLeeLa)
 # SLeeLa Data Analytics
 
 The data-analytics shelf adds bounded numeric data-analysis operations to the SLeeLa science API.

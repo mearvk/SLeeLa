@@ -1,3 +1,4 @@
+[![SLeeLa](https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png)](https://github.com/mearvk/SLeeLa)
 # SLeeLa HTTP Server Grade 2
 
 Native HTTP/2 server for the SLeeLa HTTP 2.0/2.1 grade. Default TCP port: 8081.

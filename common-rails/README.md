@@ -1,3 +1,4 @@
+[![SLeeLa](https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png)](https://github.com/mearvk/SLeeLa)
 # CommonRails — SST + Sleela edition
 
 Professional printing component for the SLeeLa toolchain, ported from the Java

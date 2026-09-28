@@ -1,3 +1,4 @@
+[![SLeeLa](https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png)](https://github.com/mearvk/SLeeLa)
 # Discord-2™ — SLeeLa Server and Service — Service 2 — v2.0.1
 
 Service 2 is the expanded Server and Service package. It separates the

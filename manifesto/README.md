@@ -1,3 +1,4 @@
+[![SLeeLa](https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png)](https://github.com/mearvk/SLeeLa)
 # manifesto/ — A Manifesto to Thinking Kind
 
 This directory holds a long-form work written *as* a runnable SLeeLa program and

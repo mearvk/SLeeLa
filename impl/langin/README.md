@@ -1,3 +1,4 @@
+[![SLeeLa](https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png)](https://github.com/mearvk/SLeeLa)
 # impl/langin — JVM language family as SLeeLa input
 
 `langin` makes SLeeLa accept the **JVM "brother languages"** as modern compiled

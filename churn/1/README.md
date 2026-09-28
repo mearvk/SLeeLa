@@ -1,3 +1,4 @@
+[![SLeeLa](https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png)](https://github.com/mearvk/SLeeLa)
 # /1 — Longs
 
 **Longs** is the first *relevance set*: the basic **lengths** of US economic data —

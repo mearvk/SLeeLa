@@ -1,3 +1,4 @@
+[![SLeeLa](https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png)](https://github.com/mearvk/SLeeLa)
 # system-symmetry — Sleela sources driven by a `.sst` style sheet
 
 This module demonstrates **server/client system symmetry** across two protocols
