@@ -1,8 +1,0 @@
-// SLeeLa Audio operating-system interaction boundary.
-class AudioSystem {
-  method platform(): String;
-  method enumerateDevices(): AudioDevice[];
-  method defaultInput(): AudioDevice;
-  method defaultOutput(): AudioDevice;
-  method createStream(device: AudioDevice, sampleRate: Int, channels: Int): AudioStream;
-}
