@@ -46,14 +46,17 @@ Nordshrift, XCLASS, Sigil, build/package tooling and future IDE/language-server 
 Integrity, permissions, resource limits, authenticated carriers and security diagnostics.
 
 ## Reference rule
-
 This index points to subsystem documents. Individual headers, models and specifications remain authoritative for exact signatures and wire/ABI details.
 
-**Max Rupplin — MEARVK LLC — 2026**
-
-
 ## Common, Included — Fundamental Responsibility Classes
+The Common, Included layer now contains 50 reusable responsibility classes, organized as two 25-class sets.
 
-The Common, Included fundamental layer consists of 25 reusable classes: Resource, Identifier, Name, Version, Status, Error, Result, Option, Configuration, Parameter, TypeDescriptor, EnumDescriptor, Schema, Validator, Serializer, Deserializer, Buffer, ByteStream, Input, Output, Clock, Timer, Mutex, Condition, and Thread.
+### Set 1 — Fundamental responsibilities
+Resource, Identifier, Name, Version, Status, Error, Result, Option, Configuration, Parameter, TypeDescriptor, EnumDescriptor, Schema, Validator, Serializer, Deserializer, Buffer, ByteStream, Input, Output, Clock, Timer, Mutex, Condition, Thread.
 
-These classes provide the common responsibility vocabulary for lifecycle, identity, values, configuration, contracts, data representation, time, and concurrency. Native contracts and implementations are maintained under `impl/fundamental/`; the detailed API specification is `api/COMMON_INCLUDED_FUNDAMENTAL.md`.
+### Set 2 — Supported platform/runtime responsibilities
+Process, Environment, File, Directory, Path, Task, Scheduler, Event, EventBus, Future, CancellationToken, NetworkEndpoint, Transport, TcpTransport, UdpTransport, DnsResolver, SecureChannel, Service, Router, Listener, Server, Client, Session, Connection, Handler.
+
+Native contracts and implementations are maintained under impl/fundamental/. Set 1 is specified by api/COMMON_INCLUDED_FUNDAMENTAL.md; Set 2 is specified by api/COMMON_INCLUDED_NEXT_25.md.
+
+**Max Rupplin — MEARVK LLC — 2026**
