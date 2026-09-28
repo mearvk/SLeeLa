@@ -4571,6 +4571,102 @@
       "sha256": "20961251f8776663948948feb78987f7d011eb77fd3dd6f2e1ae1966887b4a77"
     },
     {
+      "path": "impl/extensibility/Extension.cpp",
+      "sha256": "d70da4f5551bf6231e5e4759d08b376fc78bef84ad2140a9da2fdb05689eadfd"
+    },
+    {
+      "path": "impl/extensibility/Extension.hpp",
+      "sha256": "e1766e0c9177f85d6d94ed127746f67fb8fadf5c41c696289c99f6131411daae"
+    },
+    {
+      "path": "impl/extensibility/ExtensionDescriptor.cpp",
+      "sha256": "3658f5c1db53f98cbbe474f122fd94877bce1c0ab636ab510da705c9fedd3587"
+    },
+    {
+      "path": "impl/extensibility/ExtensionDescriptor.hpp",
+      "sha256": "38aa7e427cf26a6c8d5ad540faa015066f6ba2f69cc81f1c5e5fb7558a0c8794"
+    },
+    {
+      "path": "impl/extensibility/ExtensionPoint.cpp",
+      "sha256": "7ac6f87e31f667a29e2b6a9708a22bbae1ca02808df74d65264660ef5d54803d"
+    },
+    {
+      "path": "impl/extensibility/ExtensionPoint.hpp",
+      "sha256": "60a37ce1d26155844f2d5bb55115c9f99a595400a606f51e56f2cabf4c68e7ed"
+    },
+    {
+      "path": "impl/extensibility/ExtensionRegistry.cpp",
+      "sha256": "5992e71ed247c551504b77a0339fb54048c43e232d122333c0690871e3b163f6"
+    },
+    {
+      "path": "impl/extensibility/HierarchyRouter.cpp",
+      "sha256": "5c7cd49139edf01555eda27975f9537d22b3653cd55830521547afced332980f"
+    },
+    {
+      "path": "impl/extensibility/RouteChain.cpp",
+      "sha256": "b50ccb420955cf8b0b4310e9e2e75e3d37d17c61ee2be074a69e047b2c195c18"
+    },
+    {
+      "path": "impl/extensibility/RouteChain.hpp",
+      "sha256": "49a67fdd98f5117de1c528e19fa52970bf517a482611830d0bc9fa50a2dd82e2"
+    },
+    {
+      "path": "impl/extensibility/RouteContext.cpp",
+      "sha256": "f101316a21a6d53ad65e4dea29a43e12f5d3b415f7f4e585fdfa5c132e996a73"
+    },
+    {
+      "path": "impl/extensibility/RouteContext.hpp",
+      "sha256": "b8d2f9f5b340b219bd70593f7a9671d0dc43db1066610bda3b37f6086cde2c33"
+    },
+    {
+      "path": "impl/extensibility/RouteDecision.cpp",
+      "sha256": "8c81fece01d94596ec89469c6ce3f1e5bf2329f129fe702507571e8a5d2f7ff4"
+    },
+    {
+      "path": "impl/extensibility/RouteDecision.hpp",
+      "sha256": "94606c0c601c8c21cb8b224445d797722068a0969ed7f7e065b22eee5a6bfa04"
+    },
+    {
+      "path": "impl/extensibility/RouteNode.cpp",
+      "sha256": "985c2846d4d28e0cf4ecd725a7232b2506d7d01b800eb51152b60b19184153bb"
+    },
+    {
+      "path": "impl/extensibility/RouteNode.hpp",
+      "sha256": "1e7e4d73072dc342694a2d55882fdf76b023a623043bf9493cd52c7f18ddbf42"
+    },
+    {
+      "path": "impl/extensibility/RouteTarget.cpp",
+      "sha256": "09d444c0ee198d089df23c2ca08f143abd2018a8f3b083b882eaaeb1bbec7dc1"
+    },
+    {
+      "path": "impl/extensibility/RouteTarget.hpp",
+      "sha256": "c210fe24a8567154749bdb5f0006cec17ca5a408f925e6043a2992f22eaeaa96"
+    },
+    {
+      "path": "impl/extensibility/SourceBinding.cpp",
+      "sha256": "85e978414196a5cf56456d9274393fadacacc036803390061e10b5d77d84055e"
+    },
+    {
+      "path": "impl/extensibility/SourceBinding.hpp",
+      "sha256": "76779cee9f576009030b1abf645fefd86925aa855ac51fd85b51630956e40373"
+    },
+    {
+      "path": "impl/extensibility/SourceResolver.cpp",
+      "sha256": "0b4d487efd6dc913845229e58d23815d92990cfc681580a73e3458a9240dd14a"
+    },
+    {
+      "path": "impl/extensibility/SourceResolver.hpp",
+      "sha256": "4b4ac5d2ed9cb4c7221332f413d4edceb6d347b246579f9287bdb0d281a4ba6a"
+    },
+    {
+      "path": "impl/extensibility/SourceRouter.cpp",
+      "sha256": "ae555d85f92f982dc37b785836d032f52b3c2868271404098bea8e33ef910416"
+    },
+    {
+      "path": "impl/extensibility/SourceRouter.hpp",
+      "sha256": "b0976c5eec6b360b84e96b6987a1b66691c31f4b71969e2c039600b6c0f1420d"
+    },
+    {
       "path": "impl/frontend/artifact.cpp",
       "sha256": "17cea6ba565013bbefa38d50ffced1d74aa21f767f98f357420bc442112c5540"
     },
