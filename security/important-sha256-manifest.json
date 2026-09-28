@@ -4619,12 +4619,36 @@
       "sha256": "7adfcf610bbdef4ccfbb4fe21d9706198aa766f75ea14197add75897f5d84c9a"
     },
     {
+      "path": "impl/fundamental/Buffer.cpp",
+      "sha256": "6dadd75432971c489c5d071812a1d47e97511fc9cc0d972f5480b69c24a05e1b"
+    },
+    {
+      "path": "impl/fundamental/Buffer.hpp",
+      "sha256": "4a4c947f30e992d0b42cc729687edd40816e68003db3745ef009d79e8dd47d4a"
+    },
+    {
+      "path": "impl/fundamental/ByteStream.cpp",
+      "sha256": "f2bf95dd4b61d6c7903aab80abe9f80393fca64fb8851f2f5e415cb8679cc891"
+    },
+    {
+      "path": "impl/fundamental/ByteStream.hpp",
+      "sha256": "e9b0b5790ed8acb12a8670f63a15dabbcc66876308badd4f11956a3e5ad42a12"
+    },
+    {
       "path": "impl/fundamental/Configuration.cpp",
       "sha256": "6735653f51502aca0a383a1613940a7a5b501be04f5f8705e37825eed977cbcb"
     },
     {
       "path": "impl/fundamental/Configuration.hpp",
       "sha256": "ab679e0b7ad4d13a632598e229d2d138594e7b80b2e75868dd35333e79936ef8"
+    },
+    {
+      "path": "impl/fundamental/Deserializer.cpp",
+      "sha256": "19e3c35519e7dd5dcc0bef367e4aba32a26c0ec4ced3f9683ef87ae8c9777c71"
+    },
+    {
+      "path": "impl/fundamental/Deserializer.hpp",
+      "sha256": "4b7c48a07b9caadb3bba3752675b36f98f456b92bbe8f4a71428a92f04b35157"
     },
     {
       "path": "impl/fundamental/EnumDescriptor.cpp",
@@ -4651,6 +4675,14 @@
       "sha256": "b2e8ae845fa926ca67ad430f7bc0c0734f41e689156317f64b84dd35f979b7ac"
     },
     {
+      "path": "impl/fundamental/Input.cpp",
+      "sha256": "fb8b773753f93037487a56d05d5adc452fb94f66f40434645a704ccf63c18bbd"
+    },
+    {
+      "path": "impl/fundamental/Input.hpp",
+      "sha256": "f790d79578f9c14203ed3023bd2bcb940ba9450e2322b478865de7b65a963123"
+    },
+    {
       "path": "impl/fundamental/Name.cpp",
       "sha256": "84608554fd479fa0a02e776d8085d5d3398867c45704790126d0d197ec32e705"
     },
@@ -4665,6 +4697,14 @@
     {
       "path": "impl/fundamental/Option.hpp",
       "sha256": "3c65ef2906c2ddc7df2950b5145c670bc6cb7de169aa5d47f9b43140f2b661a1"
+    },
+    {
+      "path": "impl/fundamental/Output.cpp",
+      "sha256": "0cd8e0ecc3852bf5a3fc8b0c262440b8424f3f9ec9f18162aad76d3a9348ff4b"
+    },
+    {
+      "path": "impl/fundamental/Output.hpp",
+      "sha256": "5bc2fadda77add40a5f25102084b0d86049508aeb5bfc37bb2d31b130841c24d"
     },
     {
       "path": "impl/fundamental/Parameter.cpp",
