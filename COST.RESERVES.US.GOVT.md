@@ -14,9 +14,9 @@
 
 | Planning Component | Hours | Rate | Labor Cost | Reserve / Basis |
 |---|---:|---:|---:|---|
-| Core SLeeLa engineering scope | 20,300 | $55/hr | **$1,116,500** | Baseline |
-| Planning uncertainty reserve | 4,060 | $55/hr | **$223,300** | 20% of baseline |
-| **Total planning requirement** | **24,360** | **$55/hr** | **$1,339,800** | Baseline + reserve |
+| Core SLeeLa engineering scope, including Debugger and Synchro | 23,250 | $55/hr | **$1,278,750** | Baseline |
+| Planning uncertainty reserve | 4,650 | $55/hr | **$255,750** | 20% of baseline |
+| **Total planning requirement** | **27,900** | **$55/hr** | **$1,534,500** | Baseline + reserve |
 
 ## 2. Twelve-Professional Staffing Basis
 
@@ -28,9 +28,9 @@
 | Team daily rate | 12 × 8 × $55 | **$5,280/day** |
 | Team weekly rate | 12 × 40 × $55 | **$26,400/week** |
 | Team 160-hour month | 12 × 160 × $55 | **$105,600/month** |
-| Baseline duration | 20,300 ÷ 480 team-hours/week | **~42.3 weeks** |
+| Baseline duration | 23,250 ÷ 480 team-hours/week | **~48.4 weeks** |
 
-The 42.3-week figure is a mathematical capacity estimate, not a delivery guarantee. Dependencies, integration sequencing, reviews, procurement, security validation, and platform-specific work can extend calendar duration.
+The 48.4-week figure is a mathematical capacity estimate, not a delivery guarantee. Dependencies, integration sequencing, reviews, procurement, security validation, and platform-specific work can extend calendar duration.
 
 ## 3. SLeeLa Scope Reserve Table
 
@@ -42,7 +42,8 @@ The 42.3-week figure is a mathematical capacity estimate, not a delivery guarant
 | Networking, sockets, buffering, routing, message passing | 1,200 | $66,000 |
 | Drivers and platform interfaces | 1,800 | $99,000 |
 | Cross-platform Windows/Linux/macOS support | 1,200 | $66,000 |
-| Debugger and native-debugging roadmap | 1,600 | $88,000 |
+| Debugger and native-debugging roadmap | 3,650 | $200,750 |
+| Synchro packet dispatch, measurement, SLA and integration | 900 | $49,500 |
 | Test Suite, regression, coverage and test infrastructure | 1,200 | $66,000 |
 | Antivirus / heuristic / file-analysis subsystem | 900 | $49,500 |
 | Decompiler and API tooling | 700 | $38,500 |
@@ -54,7 +55,13 @@ The 42.3-week figure is a mathematical capacity estimate, not a delivery guarant
 | Performance, reliability and failure testing | 900 | $49,500 |
 | Documentation, examples and developer experience | 800 | $44,000 |
 | Integration, release engineering and final QA | 1,000 | $55,000 |
-| **Baseline Total** | **20,300** | **$1,116,500** |
+| **Baseline Total** | **23,250** | **$1,278,750** |
+
+### Scope accounting note
+
+The previous 1,600-hour debugger allocation has been replaced by the detailed **3,650-hour Debugger** planning allocation below. The **900-hour Synchro** allocation is newly identified. This prevents either subsystem from being omitted while avoiding double-counting the Debugger subtotal.
+
+The Synchro figure is a planning allocation, not a claim about historical labor actually spent. It covers the current packet contract, statistics, UDP measurement, SLA reporting, C/C++ integration, Java integration, test suite, CI integration, and remaining VM/multi-platform verification.
 
 ## 4. Debugger Reserve
 
@@ -80,15 +87,32 @@ The debugger is tracked separately for program-management visibility while remai
 | Documentation/release validation | 100 | $5,500 |
 | **Debugger Subtotal** | **3,650** | **$200,750** |
 
-**Important:** The $200,750 debugger subtotal is already contained within the $1,116,500 SLeeLa baseline. It must not be added again.
+**Important:** The $200,750 debugger subtotal is already contained within the $1,278,750 SLeeLa baseline. It must not be added again.
 
-## 5. Reserve Calculation
+## 5. Synchro Reserve
+
+Synchro is tracked as a distinct networking/measurement subsystem while remaining included in the project-wide baseline.
+
+| Synchro Work Area | Hours | Cost |
+|---|---:|---:|
+| Packet contract and timestamped dispatch | 150 | $8,250 |
+| C statistics and integration ABI | 175 | $9,625 |
+| C++17 integration and runtime testing | 125 | $6,875 |
+| Java dispatcher, statistics and SLA integration | 150 | $8,250 |
+| UDP loopback and protocol-negative testing | 100 | $5,500 |
+| CI/build integration and documentation | 100 | $5,500 |
+| VM adapter and multi-platform verification allowance | 100 | $5,500 |
+| **Synchro Subtotal** | **900** | **$49,500** |
+
+**Important:** The $49,500 Synchro subtotal is already contained within the $1,278,750 SLeeLa baseline. It must not be added again.
+
+## 6. Reserve Calculation
 
 | Reserve Stage | Formula | Amount |
 |---|---|---:|
-| Baseline engineering | 20,300 × $55 | **$1,116,500** |
-| 20% uncertainty reserve | $1,116,500 × 0.20 | **$223,300** |
-| **Planning total** | $1,116,500 + $223,300 | **$1,339,800** |
+| Baseline engineering | 23,250 × $55 | **$1,278,750** |
+| 20% uncertainty reserve | $1,278,750 × 0.20 | **$255,750** |
+| **Planning total** | $1,278,750 + $255,750 | **$1,534,500** |
 
 ### Reserve interpretation
 
@@ -97,6 +121,7 @@ The 20% reserve is intended to cover planning uncertainty such as:
 - Requirements clarification
 - Platform-specific implementation problems
 - Native debugger integration complexity
+- Synchro/transport integration and interoperability issues
 - Cross-platform compatibility issues
 - Test fixture expansion
 - Security remediation
@@ -108,13 +133,13 @@ The 20% reserve is intended to cover planning uncertainty such as:
 
 It is **not** an authorization to spend the reserve automatically.
 
-## 6. Proposed 12-Professional Planning Structure
+## 7. Proposed 12-Professional Planning Structure
 
 | Role | Primary Planning Responsibility |
 |---|---|
 | 1. Lead Systems Architect | System architecture and integration |
 | 2. C/C++ Systems Engineer | Core libraries and native implementation |
-| 3. Networking / HTTP Engineer | HTTP, packet, socket and routing systems |
+| 3. Networking / HTTP / Synchro Engineer | HTTP, packet, socket, routing and measurement systems |
 | 4. Native Debugger Engineer | Debugger architecture and native APIs |
 | 5. Linux Systems Engineer | Linux kernel/process/platform integration |
 | 6. Windows Systems Engineer | Windows platform and Debug API integration |
@@ -127,7 +152,7 @@ It is **not** an authorization to spend the reserve automatically.
 
 These are planning roles and do not establish an actual staffing commitment.
 
-## 7. Government-Style Cost Controls
+## 8. Government-Style Cost Controls
 
 For institutional or government planning, the following controls are recommended:
 
@@ -145,7 +170,7 @@ For institutional or government planning, the following controls are recommended
 | Configuration management | Preserves reproducible source/build state |
 | Audit trail | Records approvals, changes and expenditure decisions |
 
-## 8. Excluded Costs
+## 9. Excluded Costs
 
 Unless separately authorized, the planning figures do not include:
 
@@ -170,7 +195,7 @@ Unless separately authorized, the planning figures do not include:
 - Long-term maintenance
 - Independent government accounting or audit fees
 
-## 9. Cost Formula
+## 10. Cost Formula
 
 The complete planning model uses:
 
@@ -182,13 +207,21 @@ and:
 
 Therefore:
 
-**20,300 hours × $55 = $1,116,500**
+**23,250 hours × $55 = $1,278,750**
 
-**$1,116,500 × 20% = $223,300**
+**$1,278,750 × 20% = $255,750**
 
-**$1,116,500 + $223,300 = $1,339,800**
+**$1,278,750 + $255,750 = $1,534,500**
 
-## 10. Reserve Governance
+The principal subsystem allocations are:
+
+**Debugger: 3,650 hours × $55 = $200,750**
+
+**Synchro: 900 hours × $55 = $49,500**
+
+Both amounts are included in the baseline above and are not additive charges on top of the $1,534,500 planning total.
+
+## 11. Reserve Governance
 
 A reserve should remain separately identifiable from the baseline.
 
@@ -204,22 +237,24 @@ Recommended authorization sequence:
 
 No reserve expenditure should be interpreted as automatically approved merely because the reserve exists.
 
-## 11. Planning Status
+## 12. Planning Status
 
 | Measure | Current Planning Value |
 |---|---:|
 | Minimum professionals | **12** |
 | Hourly rate / professional | **$55.00** |
 | Team hourly rate | **$660.00** |
-| Baseline hours | **20,300** |
-| Baseline labor | **$1,116,500** |
+| Baseline hours | **23,250** |
+| Baseline labor | **$1,278,750** |
+| Debugger allocation | **3,650 hours / $200,750** |
+| Synchro allocation | **900 hours / $49,500** |
 | Reserve percentage | **20%** |
-| Reserve hours | **4,060** |
-| Reserve amount | **$223,300** |
-| Total planning hours | **24,360** |
-| **Total planning amount** | **$1,339,800** |
+| Reserve hours | **4,650** |
+| Reserve amount | **$255,750** |
+| Total planning hours | **27,900** |
+| **Total planning amount** | **$1,534,500** |
 
-## 12. Illustrative Sales and Profit Scenario
+## 13. Illustrative Sales and Profit Scenario
 
 This is an illustrative SLeeLa commercial scenario, not a forecast, appropriation, procurement estimate, or guarantee. It assumes seven initial language/product families: Java, Perl, Python, C, C++, Rust, and a seventh "Other" family. The model assumes a strong start, a $1,000 sale price, and 30 qualified phone calls per completed sale.
 
@@ -237,16 +272,23 @@ This is an illustrative SLeeLa commercial scenario, not a forecast, appropriatio
 | Calls per sale | **30** |
 | Revenue per call | **$33.33** |
 | Product families | **7** |
+| Debugger planning allocation | **$200,750** |
+| Synchro planning allocation | **$49,500** |
+| Total engineering planning requirement | **$1,534,500** |
 
-Using the expanded annual planning envelope of **$3,060,260** for this commercial scenario:
+### Cost and surplus analysis
 
-| Horizon | Gross Sales | Planning Envelope | Surplus Before Taxes/Other Costs |
+For a transparent cross-check, the **$1,534,500 total planning requirement** is used as the illustrative project-cost basis. It includes the 20% reserve and already includes both Debugger and Synchro.
+
+| Horizon | Gross Sales | Total Planning Cost Basis | Illustrative Surplus Before Taxes/Other Costs |
 |---|---:|---:|---:|
-| Year 1 | $7,000,000 | $3,060,260 | **$3,939,740** |
-| Year 10 | $70,000,000 | $3,060,260 | **$66,939,740** |
-| Year 1,000 | $7,000,000,000 | $3,060,260 | **$6,996,939,740** |
+| Year 1 | $7,000,000 | $1,534,500 | **$5,465,500** |
+| Year 10 | $70,000,000 | $1,534,500 | **$68,465,500** |
+| Year 1,000 | $7,000,000,000 | $1,534,500 | **$6,998,465,500** |
 
-The surplus is not net profit. Taxes, payment processing, sales expenses, delivery, support, additional staffing, capital expenditure, reserves, reinvestment, and other operating costs remain outside this simplified model.
+These surplus figures are **not net profit** and are not forecasts. Taxes, payment processing, sales expenses, delivery, support, additional staffing, capital expenditure, operating expenses, reserves, reinvestment, and other costs remain outside this simplified scenario.
+
+The commercial model therefore treats the Debugger and Synchro as real cost-bearing engineering components without counting either subsystem twice.
 
 ### Graphic Sales Model
 
@@ -269,7 +311,7 @@ flowchart LR
 
 The Year 1,000 row is mathematical scenario analysis rather than a credible operational forecast.
 
-## 13. Status and Authority
+## 14. Status and Authority
 
 This document is an internal SLeeLa planning artifact. It does **not** represent:
 
