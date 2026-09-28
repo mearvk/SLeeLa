@@ -1,0 +1,10 @@
+#sleela 1.3
+// Native foundational bridge contract for Identifier.
+// Role: language. Responsibility: stable identity.
+class SLIdentifier {
+  int state;
+  void reset(){state=0;}
+  void activate(){state=1;}
+  boolean active(){return state==1;}
+  int status(){return state;}
+}

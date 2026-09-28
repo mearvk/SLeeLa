@@ -1,0 +1,10 @@
+#sleela 1.3
+// Native foundational bridge contract for Handler.
+// Role: runtime. Responsibility: callback/event handler contract.
+class SLHandler {
+  int state;
+  void reset(){state=0;}
+  void activate(){state=1;}
+  boolean active(){return state==1;}
+  int status(){return state;}
+}

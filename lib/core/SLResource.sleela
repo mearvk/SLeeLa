@@ -1,0 +1,10 @@
+#sleela 1.3
+// Native foundational bridge contract for Resource.
+// Role: runtime. Responsibility: managed resource lifecycle.
+class SLResource {
+  int state;
+  void reset(){state=0;}
+  void activate(){state=1;}
+  boolean active(){return state==1;}
+  int status(){return state;}
+}
