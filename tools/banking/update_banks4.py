@@ -268,39 +268,46 @@ def banking_value(country, ident):
 
 def main():
     text = SOURCE.read_text(encoding="utf-8")
-    rows = re.findall(r"^\| (\d{3}) \| (.*?) \| (.*?) \| (.*?) \| (.*?) \| (.*?) \| (.*?) \| (.*?) \| (.*?) \| (.*?) \| (.*?) \|$", text, re.M)
-    if len(rows) != EXPECTED:
-        raise SystemExit(f"Expected {EXPECTED} table rows, found {len(rows)}")
-
-    # The final column in BANKS4 carries the neutral, sourced constitutional
-    # indicator (populated by update_banks4_socialism.py), so title it
-    # accordingly rather than inheriting BANKS3's generic "Status".
-    FINAL_COL = "Constitutional Socialism Reference"
-
+    table_rows = []
+    for lineno, line in enumerate(text.splitlines(), 1):
+        if not line.startswith("|") or line.startswith("|---"):
+            continue
+        cells = [cell.strip() for cell in line.strip().strip("|").split("|")]
+        if not cells or not cells[0].isdigit():
+            continue
+        if len(cells) != 11:
+            raise SystemExit(f"BANKS3 schema error at line {lineno}: expected 11 cells, found {len(cells)}")
+        table_rows.append((lineno, cells))
+    if len(table_rows) != EXPECTED:
+        raise SystemExit(f"Expected {EXPECTED} table rows, found {len(table_rows)}")
+    ids = [int(cells[0]) for _, cells in table_rows]
+    if ids != list(range(1, EXPECTED + 1)):
+        raise SystemExit("BANKS3 IDs are not the required contiguous 001..391 sequence")
     output_lines = []
     changed = 0
     for line in text.splitlines():
         if line.startswith("| ID | Country/Jurisdiction |"):
-            cells = line.split("|")
-            cells[-2] = f" {FINAL_COL} "
-            output_lines.append("|".join(cells))
+            cells = [cell.strip() for cell in line.strip().strip("|").split("|")]
+            if len(cells) != 11:
+                raise SystemExit("BANKS3 header does not contain exactly 11 columns")
+            cells[-1] = "Constitutional Socialism Reference"
+            output_lines.append("| " + " | ".join(cells) + " |")
             continue
-        m = re.match(r"^\| (\d{3}) \| (.*?) \| (.*?) \| (.*?) \| (.*?) \| (.*?) \| (.*?) \| (.*?) \| (.*?) \| (.*?) \| (.*?) \|$", line)
-        if not m:
+        if line.startswith("|---") or not line.startswith("|"):
             output_lines.append(line)
             continue
-        ident = int(m.group(1))
-        country = m.group(2)
-        banking = banking_value(country, ident)
-        fields = list(m.groups())
-        if fields[9] != banking:
-            changed += 1
-        fields[9] = banking
-        output_lines.append("| " + " | ".join(fields) + " |")
-
+        cells = [cell.strip() for cell in line.strip().strip("|").split("|")]
+        if not cells or not cells[0].isdigit():
+            output_lines.append(line)
+            continue
+        if len(cells) != 11:
+            raise SystemExit(f"BANKS3 schema error while rewriting: expected 11 cells, found {len(cells)}")
+        ident = int(cells[0]); country = cells[1]; banking = banking_value(country, ident)
+        if cells[9] != banking: changed += 1
+        cells[9] = banking; cells[10] = "UNASSESSED"
+        output_lines.append("| " + " | ".join(cells) + " |")
     OUTPUT.write_text("\n".join(output_lines) + "\n", encoding="utf-8")
-    print(f"BANKS4 generated from BANKS3: {EXPECTED} rows; Banking values updated: {changed}")
-
+    print(f"BANKS4 generated from BANKS3: {EXPECTED} rows; Banking values updated: {changed}; constitutional references initialized to UNASSESSED")
 
 if __name__ == "__main__":
     main()
