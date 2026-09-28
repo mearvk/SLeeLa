@@ -1,6 +1,6 @@
 # SLeeLa Debugger — Remaining Work
 
-Version: 0.6.0
+Version: 0.8.0
 Date: 2026-09-27
 
 This document is the implementation roadmap following the Second Arrangement. It separates debugger architecture from native capabilities that still require platform-specific engineering.
