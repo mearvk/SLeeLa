@@ -1,5 +1,6 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
+collection-revision: 0.7
 library-source-files: 953
 library-packages: 74
 module-facade-symbols: 88
