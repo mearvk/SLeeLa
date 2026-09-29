@@ -1,60 +1,56 @@
 # SLeeLa /lib Library Index
 
-**Library revision:** 0.1  
-**Initial front-end objects:** 69  
-**Target standard-library objects:** 2,048  
-**Verified `.sleela` source files before `/lib`:** 160  
-**Verified `.sleela` source files after `/lib`:** 229 on `master`; 238 on `main`
-
-| Family | Objects |
-|---|---:|
-| core | 8 |
-| collections | 8 |
-| text | 8 |
-| io | 8 |
-| vm | 13 |
-| os | 10 |
-| net | 8 |
-| security | 6 |
-| **Total** | **69** |
-
-The VM and OS families are language-facing contracts for facilities implemented below the SLeeLa layer. Native execution belongs behind an explicit bridge.
-
-**SLeeLa — MEARVK LLC — 2026**
-# SLeeLa /lib Library Index
-
-**Revision:** 0.3  
-**Packages:** 23  
+**Revision:** 0.4  
+**Packages:** 40  
 **SLeeLa source units:** 918  
-**Module-facade symbols:** 53  
+**Module-facade symbols:** 54  
+**Total symbol records:** 972  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
 
 | Family | Sources |
 |---|---:|
+| api | 1 |
+| audio | 1 |
+| churn | 1 |
 | collections | 8 |
+| common-rails | 1 |
 | compiler | 16 |
 | core | 83 |
 | crypto | 16 |
+| data-structures | 1 |
 | database | 16 |
 | debugger | 16 |
 | deliberation | 295 |
 | filesystem | 16 |
 | http | 16 |
+| http-3.0 | 1 |
+| ide | 1 |
+| inference-model | 1 |
+| inputs | 1 |
 | io | 8 |
+| journey | 1 |
+| manifesto | 1 |
 | math | 243 |
 | memory | 16 |
+| munction | 1 |
 | net | 8 |
 | os | 10 |
 | process | 16 |
 | reflection | 16 |
 | regex | 27 |
+| rmi | 1 |
 | runtime | 16 |
 | security | 6 |
+| server-edition | 1 |
+| social-model | 1 |
+| telephony-skya | 1 |
 | text | 8 |
 | ui | 16 |
+| us-infrastructure | 1 |
 | video | 16 |
 | vm | 13 |
+| **Total** | **918** |
 
-The compiler and Nordshrift loader recursively discover `/lib`. Module packages that previously existed only in their subsystem trees now have SLeeLa facade sources under `/lib` and remain traceable to their original source roots.
+The compiler and Nordshrift resolve this collection recursively from `/lib`. Every package family represented by the current SLeeLa module/package inventory has at least one SLeeLa source unit under `/lib`. The manifest records every source path plus the existing module-facade vocabulary.
 
 **Max Rupplin — MEARVK LLC — 2026**
