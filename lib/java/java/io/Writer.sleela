@@ -1,0 +1,14 @@
+/*
+ * lib/java/java/io/Writer.sleela
+ * SLeeLa JDK 28 Framework Binding.
+ * Definition: Represents a character output stream.
+ * Java type: java.io.Writer
+ */
+#sleela 1.3
+
+class Writer {
+  String javaType = "java.io.Writer";
+
+  String typeName() { return javaType; }
+  boolean available() { return javaType != ""; }
+}
