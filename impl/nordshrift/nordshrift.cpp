@@ -36,6 +36,7 @@
 #include "../frontend/semantic.h"
 #include "../frontend/compiler.h"
 #include "../frontend/artifact.h"
+#include "../frontend/library_index.h"
 #include "../frontend/version.h"
 extern "C" {
 #include "../core/sleela_core.h"
@@ -259,10 +260,14 @@ static void validateSubjects(const Sheet& sheet, DiagnosticBag& diags) {
 }
 
 static void validateSourcePrograms(const Sheet& sheet, const std::string& sheetPath,
-                                     DiagnosticBag& diags) {
+                                     DiagnosticBag& diags, const sleela::library::Index& libraryIndex) {
     if (!sheet.source.present) return;
     const std::string base = dirOf(sheetPath);
     std::vector<std::string> sources = resolveSources(sheet.source, base, diags);
+    std::cout << "library: " << libraryIndex.packageCount() << " package(s), "
+              << libraryIndex.symbolCount() << " SLeeLa source symbol(s)";
+    if (!libraryIndex.root().empty()) std::cout << " from " << libraryIndex.root();
+    std::cout << "\n";
     for (const auto& srcPath : sources) {
         std::string code;
         if (!readFile(srcPath, code)) {
@@ -281,6 +286,7 @@ static void validateSourcePrograms(const Sheet& sheet, const std::string& sheetP
             sleela::Lexer lexer(code);
             sleela::Parser parser(lexer.tokenize());
             sleela::Program program = parser.parseProgram();
+            sleela::library::validateImports(program.imports, libraryIndex);
             sleela::SemanticResult semantic = sleela::analyzeSemantics(program, vr.version);
             for (const auto& err : semantic.errors)
                 diags.error("NSS-E-SEM-001", srcPath, 0, err, "SST-SOURCE-SEMANTIC");
@@ -298,7 +304,8 @@ static int doCheck(const std::string& path) {
     Sheet sheet; DiagnosticBag diags;
     if (!loadSheet(path, sheet, diags)) return 1;
     validateSubjects(sheet, diags);
-    validateSourcePrograms(sheet, path, diags);
+    sleela::library::Index libraryIndex = sleela::library::Index::discover();
+    validateSourcePrograms(sheet, path, diags, libraryIndex);
     std::cout << diags.render();
     std::cout << "sheet '" << sheet.meta.name << "' — "
               << diags.errorCount() << " error(s), "
