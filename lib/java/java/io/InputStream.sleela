@@ -1,0 +1,14 @@
+/*
+ * lib/java/java/io/InputStream.sleela
+ * SLeeLa JDK 28 Framework Binding.
+ * Definition: Represents a byte input stream.
+ * Java type: java.io.InputStream
+ */
+#sleela 1.3
+
+class InputStream {
+  String javaType = "java.io.InputStream";
+
+  String typeName() { return javaType; }
+  boolean available() { return javaType != ""; }
+}
