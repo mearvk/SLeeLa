@@ -1,0 +1,14 @@
+#sleela 1.2
+
+// Named object record with a field-count contract.
+
+struct DSObject {
+    String name;
+    int fieldCount;
+}
+
+class DSObjectOperations {
+    String typeName(DSObject object) { return object.name; }
+    int fieldCount(DSObject object) { return object.fieldCount; }
+    boolean hasFields(DSObject object) { return object.fieldCount > 0; }
+}
