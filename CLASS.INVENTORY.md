@@ -1,7 +1,7 @@
 # SLeeLa Class Inventory
 
 **SLeeLa Version:** 0.3.0-dev  
-**Inventory Revision:** 1.8  
+**Inventory Revision:** 1.9  
 **Inventory Date:** 2026-09-29  
 **Known Source Files Explicitly Indexed: 138**
 **Repository-wide SLeeLa source files (verified): 301 on `master`; 310 on `main`**
@@ -355,9 +355,9 @@ The 44-file set consists of 9 Java/SLeeLa framework and conformance source class
 | 94 | `JavaConform` | `lib/java/JavaConform.sleela` |
 | 95 | `JDK28SourceSet` | `lib/java/JDK28SourceSet.sleela` |
 
-### Package-mapped Java class envelopes
+### Complete Java 28 package-mapped source set
 
-The remaining **35 SLeeLa files retain the Java class names exactly**.
+The complete JDK 28 source-envelope set now contains **4,236 package-mapped SLeeLa source files** under `/lib/java/java`, `/lib/java/javax`, and `/lib/java/jdk`. These are derived from the OpenJDK `jdk-28+17` source tree and retain the Java source-file class name and package path.
 
 | Package | SLeeLa source class set |
 |---|---|
@@ -370,7 +370,11 @@ The remaining **35 SLeeLa files retain the Java class names exactly**.
 | `java.time` | `Instant`, `LocalDateTime` |
 | `java.util` | `ArrayList`, `HashMap`, `HashSet`, `LinkedList`, `Optional` |
 
-**Java class-envelope count: 35.**
+**Java package-mapped source-envelope count: 4,236.**
+
+**Java framework/conformance source count: 9.**
+
+**Total `/lib/java` SLeeLa source count: 4,245.**
 
 ### Naming rule
 
@@ -385,10 +389,10 @@ Examples:
 - `java.io.File` → `lib/java/java/io/File.sleela`
 - `java.time.Instant` → `lib/java/java/time/Instant.sleela`
 
-The **`.sleela` file is the source**. The Java runtime is the behavior provider through the Java conformance boundary.
+The **`.sleela` file is the source**. The Java 28 source set is represented as SLeeLa source envelopes; the JDK supplies runtime behavior through the conformance boundary. The Java runtime is the behavior provider through the Java conformance boundary.
 
 ### Functional conformance boundary
 
 `JavaConform.sleela` and the existing Java bridge establish the behavioral boundary. The compiler/VM still needs direct Java invocation lowering and value marshalling for ordinary SLeeLa expressions to invoke these envelopes without a separate Java-side driver.
 
-**Inventory rule:** future Java-supported classes should be added under `/lib/java/java/...` using their exact Java class name and `.sleela` extension, and this count should be updated with the source set.
+**Inventory rule:** future Java-supported classes should be added under `/lib/java/java/...`, `/lib/java/javax/...`, or `/lib/java/jdk/...` using their exact Java source class name and `.sleela` extension. The inventory count must be updated with the source set.
