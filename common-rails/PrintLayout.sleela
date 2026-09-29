@@ -1,0 +1,8 @@
+#sleela 1.3
+class PrintLayout {
+  int printWidth=80;
+  int objectIdWidth=10;
+  int currentWidth=39;
+  int progressSide=21;
+  int progressCells(){return progressSide*progressSide;}
+}
