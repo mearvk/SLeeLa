@@ -1,0 +1,19 @@
+/*
+ * Pernicious.sleela
+ * COORENAGRAPH moral vocabulary.
+ * Part of speech: adjective
+ */
+
+class Pernicious {
+    String term() {
+        return "Pernicious";
+    }
+
+    String partOfSpeech() {
+        return "adjective";
+    }
+
+    String definition() {
+        return "Having a destructive, subtle, or harmful effect on morals or well-being.";
+    }
+}
