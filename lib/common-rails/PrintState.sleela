@@ -1,0 +1,9 @@
+#sleela 1.3
+class PrintState {
+  String START="START";
+  String WORKING="WORKING";
+  String PROGRESS="PROGRESS";
+  String COMPLETE="COMPLETE";
+  String WARN="WARN";
+  String ERROR="ERROR";
+}
