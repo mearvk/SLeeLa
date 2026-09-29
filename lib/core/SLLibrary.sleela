@@ -1,0 +1,16 @@
+#sleela 1.3
+// Canonical SLeeLa standard-library inventory facade.
+// The authoritative source collection is the repository /lib tree.
+// Max Rupplin - MEARVK LLC - 2026
+class SLLibrary {
+  String root;
+  int packages;
+  int sources;
+  int symbols;
+  void configure(String r,int p,int s,int z){root=r;packages=p;sources=s;symbols=z;}
+  boolean valid(){return root!=null && packages>0 && sources>0 && symbols>=sources;}
+  String getRoot(){return root;}
+  int packageCount(){return packages;}
+  int sourceCount(){return sources;}
+  int symbolCount(){return symbols;}
+}
