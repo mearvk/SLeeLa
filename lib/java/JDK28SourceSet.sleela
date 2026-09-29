@@ -1,0 +1,14 @@
+/*
+ * lib/java/JDK28SourceSet.sleela
+ * Definition: Registry contract for Java class names represented by native SLeeLa source envelopes.
+ */
+#sleela 1.3
+
+class JDK28SourceSet {
+  String root = "lib/java/java";
+  String extension = ".sleela";
+  String namingRule = "Java binary class name with package separators mapped to directories";
+  String pathFor(String javaType) { return root + "/" + javaType + extension; }
+  String fileNameFor(String javaType) { return javaType; }
+  boolean sourceFirst() { return true; }
+}
