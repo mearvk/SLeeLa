@@ -1,5 +1,6 @@
 #!/bin/sh
 set -eu
+SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
 BUILD="$ROOT/build/natural-tests"
 CC_BIN=${CC:-cc}
