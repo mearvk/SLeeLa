@@ -1,11 +1,11 @@
 # SLeeLa Class Inventory
 
 **SLeeLa Version:** 0.3.0-dev  
-**Inventory Revision:** 1.6  
+**Inventory Revision:** 1.7  
 **Inventory Date:** 2026-09-29  
-**Known Source Files Explicitly Indexed: 121**
-**Repository-wide SLeeLa source files (verified): 267 on `master`; 276 on `main`**
-**Standard-library front-end objects in `/lib`: 264**
+**Known Source Files Explicitly Indexed: 138**
+**Repository-wide SLeeLa source files (verified): 301 on `master`; 310 on `main`**
+**Standard-library front-end objects in `/lib`: 281**
 **Standard-library target: 2,048 objects**  
 **Unique Foundational C++ Class Files (contract-verified): 50**
 
@@ -212,7 +212,36 @@ The data-structures module now has an explicit per-source-file SLeeLa surface in
 
 The six SLeeLa structure types are tracked separately from class numbering, while the eight operation/facade/test classes are assigned class numbers 62–69. These sources are semantic counterparts to the native C/C++ data-structure contracts and are part of the Compiler/Loader source-discovery surface.
 
-## 7. Module Coverage
+## 7. COORENAGRAPH Moral Vocabulary SLeeLa Classes
+
+The COORENAGRAPH moral vocabulary is now represented as individual SLeeLa class source files in both `coorenagraph/moral/` and `lib/coorenagraph/moral/`. The `/lib` copies are the standard-library front-end definitions; the module copies retain the source-side organization.
+
+| Class # | SLeeLa Class | Part of Speech | `/lib` Source |
+|---:|---|---|---|
+| 70 | `Morals` | noun | `lib/coorenagraph/moral/Morals.sleela` |
+| 71 | `Deontology` | noun | `lib/coorenagraph/moral/Deontology.sleela` |
+| 72 | `Utilitarianism` | noun | `lib/coorenagraph/moral/Utilitarianism.sleela` |
+| 73 | `VirtueEthics` | noun | `lib/coorenagraph/moral/VirtueEthics.sleela` |
+| 74 | `MoralDeliberation` | noun | `lib/coorenagraph/moral/MoralDeliberation.sleela` |
+| 75 | `Probity` | noun | `lib/coorenagraph/moral/Probity.sleela` |
+| 76 | `Beneficence` | noun | `lib/coorenagraph/moral/Beneficence.sleela` |
+| 77 | `Principled` | adjective | `lib/coorenagraph/moral/Principled.sleela` |
+| 78 | `Upright` | adjective | `lib/coorenagraph/moral/Upright.sleela` |
+| 79 | `Magnanimous` | adjective | `lib/coorenagraph/moral/Magnanimous.sleela` |
+| 80 | `Unscrupulous` | adjective | `lib/coorenagraph/moral/Unscrupulous.sleela` |
+| 81 | `Pernicious` | adjective | `lib/coorenagraph/moral/Pernicious.sleela` |
+| 82 | `Amoral` | adjective | `lib/coorenagraph/moral/Amoral.sleela` |
+| 83 | `Reprobate` | noun | `lib/coorenagraph/moral/Reprobate.sleela` |
+| 84 | `Moral` | adjective | `lib/coorenagraph/moral/Moral.sleela` |
+| 85 | `Morale` | noun | `lib/coorenagraph/moral/Morale.sleela` |
+| 86 | `Ethics` | noun | `lib/coorenagraph/moral/Ethics.sleela` |
+
+**COORENAGRAPH individual moral class count: 17.**
+
+Each class contains its term, grammatical category, and source-level definition. The adjective/noun distinction is retained in the class structure through `partOfSpeech()`.
+
+
+## 8. Module Coverage
 
 The current 0.3.0-dev tree includes these inventory roots:
 
@@ -250,7 +279,7 @@ The current 0.3.0-dev tree includes these inventory roots:
 
 A module is not excluded merely because its implementation is C, C++, Java, SLeeLa, generated code, a protocol implementation, driver, test harness, or supporting tooling.
 
-## 8. Inventory Classification
+## 9. Inventory Classification
 
 The complete inventory distinguishes:
 
@@ -267,7 +296,7 @@ The complete inventory distinguishes:
 11. **Debugger/decompiler/compiler classes.**
 12. **Test/diagnostic classes.**
 
-## 9. Source-of-Truth Rules
+## 10. Source-of-Truth Rules
 
 The version at the top of this document comes from `VERSION.md`.
 
@@ -277,7 +306,7 @@ The `data-structures/` entries are verified against the current repository sourc
 
 The repository source tree remains the ultimate source for determining whether a declaration exists. This document is an inventory/index and should be regenerated or checked whenever source declarations change.
 
-## 10. Next Inventory Gate
+## 11. Next Inventory Gate
 
 The next revision should mechanically scan every supported source file and record:
 
