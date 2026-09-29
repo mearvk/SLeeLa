@@ -1,15 +1,12 @@
 #sleela 1.3
 // Unified SLeeLa standard-library module loader front-end.
-// The native compiler and Nordshrift share the same recursive /lib discovery
-// contract; this object models the loader-facing package lifecycle.
+// Native compiler/Nordshrift discovery is filesystem-driven; this object models
+// the loader-facing package lifecycle exposed above the native bridge.
 class SLVMModuleLoader {
-  String root;
-  String packageName;
-  int state;
-  int count;
-
+  String root; String packageName; int state; int count;
   void configure(String libraryRoot){root=libraryRoot;}
   void select(String name){packageName=name;}
+  void discover(String name){packageName=name;state=1;}
   void register(){count=count+1;}
   void load(){state=1;}
   void unload(){state=0;}

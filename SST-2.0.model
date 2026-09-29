@@ -336,3 +336,25 @@ Current collection:
 - 1,041 total symbol records
 
 Every language/runtime/package module family represented in the repository has a corresponding SLeeLa source unit under /lib. The complete collection is recorded in lib/LIBRARY.SYMBOLS.md. The VM-facing loader contract is represented by lib/vm/SLVMModuleLoader.sleela, while native loading remains behind the explicit C/C++ OS bridge.
+
+
+# Part XX — SLeeLa Library Symbol Collection
+
+## 20.1 Canonical collection
+
+The SLeeLa /lib tree is the authoritative language-facing library source collection. The September 2026 repository collection contains:
+
+- 74 package families.
+- 953 .sleela source units.
+- 88 module-facade symbols.
+- 1,041 total symbol records.
+
+The complete path-level manifest is lib/LIBRARY.SYMBOLS.md. These counts are repository inventory facts and are checked by the library inventory test.
+
+## 20.2 Compiler and Nordshrift visibility
+
+Compiler and Nordshrift library resolution use the shared recursive library index. Resolution searches $SLEELA_LIB, lib, ../lib, then ../../lib. A first-level directory under /lib is a package namespace and every .sleela file beneath it is a discoverable source symbol. No per-package compiler allow-list is required.
+
+## 20.3 SST relationship to the symbol manifest
+
+SST sheets may refer to library packages and symbols as dependencies, provenance, or validation inputs. The complete 1,041-record collection remains in the repository manifest rather than being duplicated into every sheet.
