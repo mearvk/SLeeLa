@@ -1,6 +1,6 @@
 # SLeeLa /lib Library Index
 
-**Revision:** 0.6  
+**Revision:** 0.7  
 **Packages:** 74  
 **SLeeLa source units:** 953  
 **Module-facade symbols:** 88  
@@ -36,3 +36,8 @@ The VM-facing `SLVMModuleLoader` source mirrors this contract: package names are
 The complete path-level and facade-level symbol collection is maintained in `LIBRARY.SYMBOLS.md`.
 
 **Max Rupplin — MEARVK LLC — 2026**
+
+
+## Compiler / Nordshrift / Loader Contract
+
+The shared `sleela::library::Index` recursively discovers the 74 package families and all 953 `.sleela` source units. It now exposes package counts, per-package symbol counts, symbol lookup, and source-path resolution. Compiler and Nordshrift use this index; `lib/vm/SLVMModuleLoader.sleela` represents the same discovered package/symbol state at the SLeeLa layer.
