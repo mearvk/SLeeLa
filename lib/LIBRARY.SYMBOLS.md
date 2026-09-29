@@ -1,6 +1,6 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
-library-source-files: 917
+library-source-files: 918
 library-packages: 23
 
 package	symbol	path	kind
@@ -975,3 +975,4 @@ server-edition	SLPackage	lib/server-edition/SLPackage.sleela	source
 social-model	SLPackage	lib/social-model/SLPackage.sleela	source
 telephony-skya	SLPackage	lib/telephony-skya/SLPackage.sleela	source
 us-infrastructure	SLPackage	lib/us-infrastructure/SLPackage.sleela	source
+api	ApiPackage	lib/api/SLPackage.sleela	module-facade
