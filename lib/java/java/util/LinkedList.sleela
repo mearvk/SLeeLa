@@ -1,0 +1,19 @@
+/*
+ * lib/java/java/util/LinkedList.sleela
+ * SLeeLa JDK 28 Framework Binding.
+ * Definition: Controlled SLeeLa binding for the JDK 28 type java.util.LinkedList.
+ * The binding describes the Java framework type without copying Java implementation code.
+ */
+#sleela 1.3
+
+class LinkedList {
+  String javaType = "java.util.LinkedList";
+
+  String typeName() {
+    return javaType;
+  }
+
+  boolean available() {
+    return javaType != "";
+  }
+}
