@@ -2,9 +2,9 @@
 
 **Nordshrift** is the **transpiler driver and semantic coordination layer for Sleela**. It reads a **`.sst` Scripting Sheet** — the human-authored control surface defined by the normative specification **NS-SST-0001** — and drives the transpilation of Sleela source files while preserving explicit subject semantics.
 
-A `.sst` file remains a build-control sheet, not a program. In Nordshrift 2.6-dev it may additionally declare semantic subjects, quantities, units, assumptions, relations, transformations, evidence status, comparative norms, dependencies, explanations, and work-plan items.
+A `.sst` file remains a build-control sheet, not a program. In Nordshrift 2.7-dev it may additionally declare semantic subjects, quantities, units, assumptions, relations, transformations, evidence status, comparative norms, dependencies, explanations, and work-plan items.
 
-## Version 2.6-dev
+## Version 2.7-dev
 
 Nordshrift 2.6-dev carries the common semantic layer shared by the first-class subject libraries:
 
@@ -160,3 +160,8 @@ Nordshrift and the SLeeLa compiler share the recursive /lib discovery implementa
 Nordshrift consumes the same canonical SLeeLa library index as the compiler. The current repository collection is **74 package families, 953 SLeeLa source units, 88 module-facade symbols, and 1,041 total symbol records**. The complete path-level collection is maintained in lib/LIBRARY.SYMBOLS.md.
 
 A package is discovered from its first-level directory under /lib; every .sleela file below that directory is a discoverable source symbol. The implementation does not depend on a hard-coded package list. New library packages and source units therefore enter compiler/Nordshrift discovery through the filesystem inventory itself.
+
+
+## Canonical `/lib` symbol collection
+
+Nordshrift 2.7-dev consumes the same recursive library index as the SLeeLa compiler. The current collection is **74 package families, 953 SLeeLa source units, 88 module-facade symbols, and 1,041 total symbol records**. The shared index now provides package counts, per-package symbol counts, symbol lookup, and resolved source paths; the VM-facing `SLVMModuleLoader` carries the corresponding language-level loader state.
