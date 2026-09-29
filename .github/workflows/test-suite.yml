@@ -65,7 +65,7 @@ jobs:
           git add contacts
           if ! git diff --cached --quiet; then
             git commit -m "Sync contacts from Ubuntu.Determinant.Beta.Restricted"
-            target="\${GITHUB_HEAD_REF:-\${GITHUB_REF_NAME}}"
+            target="${GITHUB_HEAD_REF:-${GITHUB_REF_NAME}}"
             git push origin "HEAD:refs/heads/$target"
           fi
       - name: Test suite
