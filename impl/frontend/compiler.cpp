@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 #include <set>
+#include "library_index.h"
 
 namespace sleela {
 
@@ -39,6 +40,8 @@ public:
     // of viewpoint: Degree 2 + static extension(2) = Viewpoint Degree 4.
     static constexpr int kStaticExtensionViewpointDegree = 4;
     int run() {
+        library::Index libraryIndex = library::Index::discover();
+        library::validateImports(prog_.imports, libraryIndex);
         // Protected source is admitted only when both language invariants hold:
         // (1) the member is static, and (2) the runtime reports the managed VM
         // memory model. The native core never exposes a raw pointer to Sleela

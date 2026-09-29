@@ -131,3 +131,12 @@ The implementation target is **Excellent**: explicit dependencies, units/dimensi
 ## 2.6-dev compiler compatibility gate
 
 Nordshrift 2.6-dev carries forward source readability, `#sleela` syntax-version compatibility, shared Sleela lexer/parser validation, target-neutral semantic analysis, runtime artifact ABI validation, and cross-version compatibility fixtures. These gates are integrated into the test workflow. The 2.6-dev line does not claim native linking or deterministic production compiler completeness; see [`COMPILER.RESOLUTION.md`](COMPILER.RESOLUTION.md).
+
+
+## /lib Library Resolution
+
+Nordshrift 2.6-dev uses the same SLeeLa library index as the compiler. The index recursively discovers /lib, records package names and .sleela source symbols, and validates imports before artifact emission.
+
+Current collection: **23 packages, 901 library source units, and 53 module-facade symbols**. The complete inventory is maintained in `lib/LIBRARY.SYMBOLS.md`.
+
+Resolution order is: `$SLEELA_LIB`, `lib`, `../lib`, then `../../lib`. Missing imported packages are compile errors rather than silently ignored dependencies.
