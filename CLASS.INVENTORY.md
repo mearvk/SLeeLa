@@ -210,7 +210,7 @@ The data-structures module now has an explicit per-source-file SLeeLa surface in
 | 68 | `DataStructures` | `data-structures/DataStructures.sleela` | `lib/data-structures/DataStructures.sleela` |
 | 69 | `DataStructuresTest` | `data-structures/DataStructuresTest.sleela` | `lib/data-structures/DataStructuresTest.sleela` |
 
-The six SLeeLa structure types are tracked separately from class numbering, while the seven operation/facade/test classes are assigned class numbers 62–69. These sources are semantic counterparts to the native C/C++ data-structure contracts and are part of the Compiler/Loader source-discovery surface.
+The six SLeeLa structure types are tracked separately from class numbering, while the eight operation/facade/test classes are assigned class numbers 62–69. These sources are semantic counterparts to the native C/C++ data-structure contracts and are part of the Compiler/Loader source-discovery surface.
 
 ## 7. Module Coverage
 
