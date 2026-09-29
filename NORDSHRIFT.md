@@ -140,3 +140,5 @@ Nordshrift 2.6-dev uses the same SLeeLa library index as the compiler. The index
 Current collection: **23 packages, 901 library source units, and 53 module-facade symbols**. The complete inventory is maintained in `lib/LIBRARY.SYMBOLS.md`.
 
 Resolution order is: `$SLEELA_LIB`, `lib`, `../lib`, then `../../lib`. Missing imported packages are compile errors rather than silently ignored dependencies.
+
+API is now represented in /lib as a package facade so compiler and loader package discovery includes the API module.
