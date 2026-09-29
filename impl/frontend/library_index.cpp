@@ -29,7 +29,11 @@ bool Index::empty()const{return symbols_.empty();}
 size_t Index::symbolCount()const{return symbols_.size();}
 bool Index::hasPackage(const std::string&p)const{for(const auto&s:symbols_)if(s.package==p)return true;return false;}
 size_t Index::packageCount()const{std::set<std::string> packages; for(const auto&s:symbols_) packages.insert(s.package); return packages.size();}
+size_t Index::packageSymbolCount(const std::string&p)const{size_t n=0;for(const auto&s:symbols_)if(s.package==p)++n;return n;}
+const Symbol* Index::findSymbol(const std::string&p,const std::string&n)const{for(const auto&s:symbols_)if(s.package==p&&s.name==n)return &s;return nullptr;}
+const std::vector<Symbol>& Index::symbols()const{return symbols_;}
 const std::string& Index::root()const{return root_;}
 std::string Index::resolveImport(const std::string&i)const{return hasPackage(i)?root_+"/"+i:"";}
+std::string Index::resolveSymbol(const std::string&p,const std::string&n)const{const Symbol*s=findSymbol(p,n);return s?root_+"/"+s->path:"";}
 void validateImports(const std::vector<std::string>&is,const Index&i){for(const auto&x:is)if(x!="chemistry"&&x!="financial"&&x!="native"&&!i.hasPackage(x))throw std::runtime_error("Library import '"+x+"' is not present under /lib");}
 }}
