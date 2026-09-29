@@ -1,0 +1,14 @@
+/*
+ * lib/java/java/nio/file/Path.sleela
+ * SLeeLa JDK 28 Framework Binding.
+ * Definition: Represents a file-system path.
+ * Java type: java.nio.file.Path
+ */
+#sleela 1.3
+
+class Path {
+  String javaType = "java.nio.file.Path";
+
+  String typeName() { return javaType; }
+  boolean available() { return javaType != ""; }
+}
