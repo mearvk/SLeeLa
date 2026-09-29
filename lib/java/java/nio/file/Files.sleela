@@ -1,0 +1,14 @@
+/*
+ * lib/java/java/nio/file/Files.sleela
+ * SLeeLa JDK 28 Framework Binding.
+ * Definition: Provides file-system operations.
+ * Java type: java.nio.file.Files
+ */
+#sleela 1.3
+
+class Files {
+  String javaType = "java.nio.file.Files";
+
+  String typeName() { return javaType; }
+  boolean available() { return javaType != ""; }
+}

@@ -1,0 +1,22 @@
+/*
+ * lib/java/JavaClass.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Represents a Java class reference within the SLeeLa Java interoperability library.
+ */
+#sleela 1.3
+
+class JavaClass {
+  String className = "";
+
+  void setName(String name) {
+    className = name;
+  }
+
+  String name() {
+    return className;
+  }
+
+  boolean valid() {
+    return className != "";
+  }
+}

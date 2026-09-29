@@ -1,0 +1,19 @@
+/*
+ * lib/java/java/lang/Number.sleela
+ * SLeeLa JDK 28 Framework Binding.
+ * Definition: Controlled SLeeLa binding for the JDK 28 type java.lang.Number.
+ * The binding describes the Java framework type without copying Java implementation code.
+ */
+#sleela 1.3
+
+class Number {
+  String javaType = "java.lang.Number";
+
+  String typeName() {
+    return javaType;
+  }
+
+  boolean available() {
+    return javaType != "";
+  }
+}

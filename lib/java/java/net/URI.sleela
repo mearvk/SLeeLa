@@ -1,0 +1,14 @@
+/*
+ * lib/java/java/net/URI.sleela
+ * SLeeLa JDK 28 Framework Binding.
+ * Definition: Represents a uniform resource identifier.
+ * Java type: java.net.URI
+ */
+#sleela 1.3
+
+class URI {
+  String javaType = "java.net.URI";
+
+  String typeName() { return javaType; }
+  boolean available() { return javaType != ""; }
+}

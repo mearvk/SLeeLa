@@ -1,0 +1,14 @@
+/*
+ * lib/java/java/net/Socket.sleela
+ * SLeeLa JDK 28 Framework Binding.
+ * Definition: Represents a client network socket.
+ * Java type: java.net.Socket
+ */
+#sleela 1.3
+
+class Socket {
+  String javaType = "java.net.Socket";
+
+  String typeName() { return javaType; }
+  boolean available() { return javaType != ""; }
+}

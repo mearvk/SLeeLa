@@ -1,0 +1,19 @@
+/*
+ * lib/java/java/util/HashMap.sleela
+ * SLeeLa JDK 28 Framework Binding.
+ * Definition: Controlled SLeeLa binding for the JDK 28 type java.util.HashMap.
+ * The binding describes the Java framework type without copying Java implementation code.
+ */
+#sleela 1.3
+
+class HashMap {
+  String javaType = "java.util.HashMap";
+
+  String typeName() {
+    return javaType;
+  }
+
+  boolean available() {
+    return javaType != "";
+  }
+}

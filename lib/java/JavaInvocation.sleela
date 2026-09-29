@@ -1,0 +1,14 @@
+/*
+ * lib/java/JavaInvocation.sleela
+ * SLeeLa JDK 28 Framework Binding.
+ * Definition: Controlled description of a Java constructor or method invocation.
+ */
+#sleela 1.3
+class JavaInvocation {
+  String typeName = "";
+  String operationName = "";
+  void set(String type, String operation) { typeName=type; operationName=operation; }
+  String type() { return typeName; }
+  String operation() { return operationName; }
+  boolean valid() { return typeName != "" && operationName != ""; }
+}

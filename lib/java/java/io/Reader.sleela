@@ -1,0 +1,14 @@
+/*
+ * lib/java/java/io/Reader.sleela
+ * SLeeLa JDK 28 Framework Binding.
+ * Definition: Represents a character input stream.
+ * Java type: java.io.Reader
+ */
+#sleela 1.3
+
+class Reader {
+  String javaType = "java.io.Reader";
+
+  String typeName() { return javaType; }
+  boolean available() { return javaType != ""; }
+}
