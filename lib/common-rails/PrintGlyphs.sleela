@@ -1,0 +1,5 @@
+#sleela 1.3
+class PrintGlyphs {
+  String FULL="█";
+  String LIGHT="░";
+}
