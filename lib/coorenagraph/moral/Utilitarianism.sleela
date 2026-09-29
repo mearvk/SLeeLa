@@ -2,6 +2,7 @@
  * Utilitarianism.sleela
  * COORENAGRAPH moral vocabulary.
  * Part of speech: noun
+ * Definition: An ethical framework that evaluates an action by its benefits or happiness for the greatest number.
  */
 
 class Utilitarianism {
