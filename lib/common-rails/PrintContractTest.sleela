@@ -1,0 +1,6 @@
+#sleela 1.3
+class PrintContractTest {
+  boolean fixedWidth(int width,int expected){return width==expected;}
+  boolean progressBoundary(int percent){return percent>=0&&percent<=100;}
+  boolean heritageReady(){return true;}
+}
