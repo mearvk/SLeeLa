@@ -1,0 +1,16 @@
+/*
+ * lib/java/javax/naming/LinkRef.sleela
+ * SLeeLa Java 28 source envelope.
+ * Definition: SLeeLa source declaration for the Java type javax.naming.LinkRef.
+ * Java behavior is supplied through the SLeeLa Java conformance boundary.
+ */
+#sleela 1.3
+
+class LinkRef {
+  String javaType = "javax.naming.LinkRef";
+  String typeName() { return javaType; }
+  boolean available() { return javaType != ""; }
+  String construct() { return "java.construct:" + javaType; }
+  String invoke(String operation) { return "java.invoke:" + javaType + ":" + operation; }
+  String invokeStatic(String operation) { return "java.static:" + javaType + ":" + operation; }
+}
