@@ -1,0 +1,14 @@
+/*
+ * lib/java/java/io/OutputStream.sleela
+ * SLeeLa JDK 28 Framework Binding.
+ * Definition: Represents a byte output stream.
+ * Java type: java.io.OutputStream
+ */
+#sleela 1.3
+
+class OutputStream {
+  String javaType = "java.io.OutputStream";
+
+  String typeName() { return javaType; }
+  boolean available() { return javaType != ""; }
+}
