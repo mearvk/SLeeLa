@@ -1,0 +1,14 @@
+/*
+ * lib/java/JavaBridge.sleela
+ * SLeeLa JDK 28 Framework Binding.
+ * Definition: Controlled execution boundary for compiled SLeeLa requests to the actual JDK implementation.
+ */
+#sleela 1.3
+class JavaBridge {
+  String typeName = "";
+  String operationName = "";
+  void bind(String type, String operation) { typeName=type; operationName=operation; }
+  String type() { return typeName; }
+  String operation() { return operationName; }
+  boolean bound() { return typeName != "" && operationName != ""; }
+}
