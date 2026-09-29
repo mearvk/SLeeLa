@@ -1,7 +1,7 @@
 # SLeeLa Class Inventory
 
 **SLeeLa Version:** 0.3.0-dev  
-**Inventory Revision:** 1.7  
+**Inventory Revision:** 1.8  
 **Inventory Date:** 2026-09-29  
 **Known Source Files Explicitly Indexed: 138**
 **Repository-wide SLeeLa source files (verified): 301 on `master`; 310 on `main`**
@@ -331,3 +331,64 @@ The repository-wide declaration count should replace the foundational-only count
 ## Standard Library Expansion 0.2
 
 The `/lib` front-end now contains **264 SLeeLa object source files**. The expansion introduced 192 requested object definitions, with 16 paths overlapping existing library source files; therefore the net repository addition is 176 unique `.sleela` files. covers runtime, reflection, memory, process/threading, filesystem, cryptography, database, HTTP, compiler, debugger, and UI. The long-term target remains **2,048 objects**.
+
+
+## 7A. Java / JDK 28 SLeeLa Source Class Set
+
+The `/lib/java/` tree is now an explicit part of the SLeeLa class-name inventory. Java classes are represented by **native SLeeLa source files using the Java class names and package paths**.
+
+**Current `/lib/java` SLeeLa source count: 44 `.sleela` files.**
+
+The 44-file set consists of 9 Java/SLeeLa framework and conformance source classes plus 35 package-mapped Java class envelopes.
+
+### Java framework/conformance source classes
+
+| # | SLeeLa Class | Source |
+|---:|---|---|
+| 87 | `SLPackage` | `lib/java/SLPackage.sleela` |
+| 88 | `JavaClass` | `lib/java/JavaClass.sleela` |
+| 89 | `JavaObject` | `lib/java/JavaObject.sleela` |
+| 90 | `JavaMethod` | `lib/java/JavaMethod.sleela` |
+| 91 | `JavaBridge` | `lib/java/JavaBridge.sleela` |
+| 92 | `JavaInvocation` | `lib/java/JavaInvocation.sleela` |
+| 93 | `JavaType` | `lib/java/JavaType.sleela` |
+| 94 | `JavaConform` | `lib/java/JavaConform.sleela` |
+| 95 | `JDK28SourceSet` | `lib/java/JDK28SourceSet.sleela` |
+
+### Package-mapped Java class envelopes
+
+The remaining **35 SLeeLa files retain the Java class names exactly**.
+
+| Package | SLeeLa source class set |
+|---|---|
+| `java.io` | `File`, `InputStream`, `OutputStream`, `Reader`, `Writer` |
+| `java.lang` | `Boolean`, `Class`, `Double`, `Exception`, `Integer`, `Long`, `Math`, `Number`, `Object`, `Runnable`, `RuntimeException`, `String`, `System`, `Thread`, `Throwable` |
+| `java.math` | `BigInteger` |
+| `java.net` | `InetAddress`, `ServerSocket`, `Socket`, `URI` |
+| `java.nio` | `ByteBuffer` |
+| `java.nio.file` | `Files`, `Path` |
+| `java.time` | `Instant`, `LocalDateTime` |
+| `java.util` | `ArrayList`, `HashMap`, `HashSet`, `LinkedList`, `Optional` |
+
+**Java class-envelope count: 35.**
+
+### Naming rule
+
+A Java binary type name maps directly to the SLeeLa source path:
+
+`java.package.Type` → `lib/java/java/package/Type.sleela`
+
+Examples:
+
+- `java.lang.String` → `lib/java/java/lang/String.sleela`
+- `java.util.ArrayList` → `lib/java/java/util/ArrayList.sleela`
+- `java.io.File` → `lib/java/java/io/File.sleela`
+- `java.time.Instant` → `lib/java/java/time/Instant.sleela`
+
+The **`.sleela` file is the source**. The Java runtime is the behavior provider through the Java conformance boundary.
+
+### Functional conformance boundary
+
+`JavaConform.sleela` and the existing Java bridge establish the behavioral boundary. The compiler/VM still needs direct Java invocation lowering and value marshalling for ordinary SLeeLa expressions to invoke these envelopes without a separate Java-side driver.
+
+**Inventory rule:** future Java-supported classes should be added under `/lib/java/java/...` using their exact Java class name and `.sleela` extension, and this count should be updated with the source set.
