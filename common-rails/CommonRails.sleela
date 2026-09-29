@@ -32,6 +32,7 @@ class CommonRails {
     // padded to a fixed inner width for column alignment.
     int OID_WIDTH     = 10;
     int CURRENT_WIDTH = 39;
+    int PRINT_WIDTH   = 80;
 
     // Block glyphs. FULL is the filled cell, LIGHT the empty cell — the same
     // roles as the orange/white blocks in the Java edition (ANSI color escapes
@@ -89,6 +90,28 @@ class CommonRails {
             pad = 0;
         }
         return "[" + inner + repeat(" ", pad) + "]";
+    }
+
+    // ---- Fixed-width printing --------------------------------------------
+    // Every organized content line occupies PRINT_WIDTH columns when the
+    // caller supplies the content character count. The core language does
+    // not expose string-length/indexing here, so the count is explicit.
+    // Content is padded; it is never silently truncated.
+    void printWidthLine(String content, int contentChars) {
+        int pad = PRINT_WIDTH - contentChars;
+        if (pad < 0) {
+            pad = 0;
+        }
+        print(content + repeat(" ", pad));
+    }
+
+    // A reusable fixed-width field for stable columns.
+    void printField(String content, int contentChars, int fieldWidth) {
+        int pad = fieldWidth - contentChars;
+        if (pad < 0) {
+            pad = 0;
+        }
+        print(content + repeat(" ", pad));
     }
 
     // ---- Professional component line ------------------------------------
@@ -189,6 +212,13 @@ class CommonRails {
         printComponent("SearchEngineClient", 18, 1234, 1, "category images now crawling");
         printComponent("AIModule", 8, 5, 2, "processing incoming files");
         printComponent("CommonRails", 11, 441, 3, "square progress ready");
+        print("");
+
+        // Fixed-width content lines: each print statement owns 80 columns.
+        print("  fixed-width printing (80 columns)");
+        printWidthLine("[START]   CommonRails printing initialized", 41);
+        printWidthLine("[WORKING] Content remains aligned inside the declared width", 59);
+        printWidthLine("[COMPLETE] Fixed-width output ready", 36);
         print("");
 
         // Single-pixel progress: the most compact rendering — one glyph.
