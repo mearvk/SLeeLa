@@ -2768,11 +2768,159 @@
     },
     {
       "path": "common-rails/CommonRails.sleela",
-      "sha256": "b5d5fedc6150418e6168c16cc2c10fcab8b266e15ebdc19a682b65d7d335e016"
+      "sha256": "9bbfbbfa169d3727148c571ebe3cdee673f0b1b752d55f56797ed46dbf05b728"
+    },
+    {
+      "path": "common-rails/PrintComponent.sleela",
+      "sha256": "06ebd7bc092b23eb4cf4644524adb5f55ed97fca06ac48c5aa3708ead31fe112"
+    },
+    {
+      "path": "common-rails/PrintContractTest.sleela",
+      "sha256": "38dceb0cab298b2e28e95b2e83d79b364f7ae55c2a27ff384f06ad99a27192ec"
+    },
+    {
+      "path": "common-rails/PrintField.sleela",
+      "sha256": "d1211cac8057ae7a2f11670fbc3f131144a7a70ca492632665159d63aaa1dfc5"
+    },
+    {
+      "path": "common-rails/PrintFormatter.sleela",
+      "sha256": "762362028dea033043a0851ee49db0a9a8d7ff23eec4c3bb2b23bd3d371d96eb"
+    },
+    {
+      "path": "common-rails/PrintGlyphs.sleela",
+      "sha256": "499cc9acdfa136f218dbd889aa93778fab34649a03f41110a94c8acc155b3741"
+    },
+    {
+      "path": "common-rails/PrintLayout.sleela",
+      "sha256": "cc645d409108c225351c6e60f3e250f38990caca1beb9aff023d69befb23bfe7"
+    },
+    {
+      "path": "common-rails/PrintLine.sleela",
+      "sha256": "37e3e370717c12cc033f2016bb4fcede48a9055646a30f16c1550d348d709004"
+    },
+    {
+      "path": "common-rails/PrintProgress.sleela",
+      "sha256": "94dc2ca23260f93bc4d1a463da6ede14ec2804e5c86f5e07e2875ab8ad6ed09d"
+    },
+    {
+      "path": "common-rails/PrintRenderer.sleela",
+      "sha256": "d6ef14050270b3244eec1ec57399ff19f17c1479691d21e9586c1bb161646305"
+    },
+    {
+      "path": "common-rails/PrintState.sleela",
+      "sha256": "b7668a30ac9d530a49f0d5f841765314b68e156630159d7efa7e105a13581fa3"
+    },
+    {
+      "path": "common-rails/PrintWriter.sleela",
+      "sha256": "9ed7abcce52eb7bf0c00a891dde183656dec61c8e9b099c144ed320ba5f3760a"
     },
     {
       "path": "common-rails/common-rails.sst",
-      "sha256": "b6833aebb2db45e910e9f520d3204168ca14fe743c6aaa0fff170d77f5416405"
+      "sha256": "4cfdb86c5aa99920333114369050a54ac09f5f339f43c4ce41f94cede1ee552e"
+    },
+    {
+      "path": "common-rails/heritage/HeritagePrint.c",
+      "sha256": "407ed88b69ae61f4892732fbc397df66d71aafbad2841596e176f432a71f2c1e"
+    },
+    {
+      "path": "common-rails/heritage/HeritagePrint.cpp",
+      "sha256": "38efbe45df33248f6e27c1d00d1b1271ac2d20bdfb47ab0a376e939cc5ba14d0"
+    },
+    {
+      "path": "common-rails/heritage/printing/c/PrintComponent.c",
+      "sha256": "746974b4e382d080891af8cb65f37451405456fb4685a4b35a98419d9e064b6b"
+    },
+    {
+      "path": "common-rails/heritage/printing/c/PrintComponent.h",
+      "sha256": "906fab41ba503595be898487434b247f26d110b71c96e8f618203dee90371566"
+    },
+    {
+      "path": "common-rails/heritage/printing/c/PrintContractTest.c",
+      "sha256": "b943a627e49c317bc7089e9283eddae42de75d5623ea9c8ad752cc5925c6398b"
+    },
+    {
+      "path": "common-rails/heritage/printing/c/PrintField.c",
+      "sha256": "f4c0c8dd7006d1849d78852241ed0f5ff66bf5a76b38e6355a2f6549b00182b0"
+    },
+    {
+      "path": "common-rails/heritage/printing/c/PrintField.h",
+      "sha256": "6dbfe22f6821c4c36444cd5551cb6b786ef6f65a6a15b45f2af76602b1ad1a2c"
+    },
+    {
+      "path": "common-rails/heritage/printing/c/PrintFormatter.c",
+      "sha256": "b180604d242e687dd3b5970f3681f161841f7ed0d197986e021d31802106d5a4"
+    },
+    {
+      "path": "common-rails/heritage/printing/c/PrintFormatter.h",
+      "sha256": "d77bab7edfe4d623d2f7e5a09bef576d04ef2740898e0be051945416c21c8b97"
+    },
+    {
+      "path": "common-rails/heritage/printing/c/PrintGlyphs.h",
+      "sha256": "f66a1394e103b8849789402dfe6bc87cdf572071c3b5a5b255b3424857791ebb"
+    },
+    {
+      "path": "common-rails/heritage/printing/c/PrintLayout.c",
+      "sha256": "49d1de13fc437c6644b07b03288e98dd3756928c18ebc40d9b60a50fac35dd48"
+    },
+    {
+      "path": "common-rails/heritage/printing/c/PrintLayout.h",
+      "sha256": "ddcba1f106b9210339926d65a0a0f33b41890df361fd052cd70f24ec69a2bcea"
+    },
+    {
+      "path": "common-rails/heritage/printing/c/PrintLine.c",
+      "sha256": "2281611f76d4752ca94e8e49ffd093970b8d40467586573d50f4e995a781db47"
+    },
+    {
+      "path": "common-rails/heritage/printing/c/PrintLine.h",
+      "sha256": "48b735558095358f9f5e7a2dd8108639c4d82dc957cb92bb0690b7e6b8c65148"
+    },
+    {
+      "path": "common-rails/heritage/printing/c/PrintProgress.c",
+      "sha256": "22d830375f486db50f1a138d1d77ae960a2cbd315b83444ec06a92b8a4540ae1"
+    },
+    {
+      "path": "common-rails/heritage/printing/c/PrintProgress.h",
+      "sha256": "23e2d9e4577e13ebde2ad0fbbbae975f0fb2eee2e288e526025fd7b72a2f7fd7"
+    },
+    {
+      "path": "common-rails/heritage/printing/c/PrintRenderer.c",
+      "sha256": "975a402ba34bfb06d90f724b4d7eec52bdf567d6d7c75bb41aed21d6f4bb8ead"
+    },
+    {
+      "path": "common-rails/heritage/printing/c/PrintRenderer.h",
+      "sha256": "74e1b1fe9b4860b4edca47ff68c324cf4298e000d667065fd3752b54c23ada61"
+    },
+    {
+      "path": "common-rails/heritage/printing/c/PrintState.c",
+      "sha256": "79f37cf6375584b438ef689e268e96e0ba50938fcdff217b63087e9e87671ad9"
+    },
+    {
+      "path": "common-rails/heritage/printing/c/PrintState.h",
+      "sha256": "68f704a71a2f1eb0489b76671fa86a261481a68e8f3ce66cbb0ddc34fb04592c"
+    },
+    {
+      "path": "common-rails/heritage/printing/c/PrintWriter.c",
+      "sha256": "235808d4c6312479a21c4c403de9f3e942b6f2046970d391382b0d1ad1da919d"
+    },
+    {
+      "path": "common-rails/heritage/printing/c/PrintWriter.h",
+      "sha256": "d5113334caf680f178aed22f96d4d8acb7a88076a89341870531806e99c22576"
+    },
+    {
+      "path": "common-rails/heritage/printing/cpp/CommonRailsPrinting.cpp",
+      "sha256": "cb6bdcfcd9ca7f6b682820afe24e015bc444d4f371eb255243ff3fc5bbd02460"
+    },
+    {
+      "path": "common-rails/heritage/printing/cpp/CommonRailsPrinting.hpp",
+      "sha256": "8523d4801d7e8b731023b4924c338201cc3fd9077a548d12a044d0663cf2a714"
+    },
+    {
+      "path": "common-rails/heritage/printing/cpp/PrintContractTest.cpp",
+      "sha256": "d7f1a52b1c5bf5ec79ed931ab8329a59a05ba3fecb1f1a5531e34423b84375ef"
+    },
+    {
+      "path": "coorenagraph/Coorenagraph.sleela",
+      "sha256": "348168aff2aedd9a07c6430a4d0306bb091f243271329acb0c12561effb3e1e7"
     },
     {
       "path": "coorenagraph/include/coorenagraph.h",
@@ -2783,12 +2931,76 @@
       "sha256": "1eb314d153442cf14695edfe78082e973e7e2358b5e106929564b16291a37554"
     },
     {
+      "path": "coorenagraph/moral/Amoral.sleela",
+      "sha256": "004d8b36a2431a6d49b5d4fdd31ef0e99860821717f87960da53d3cbf72df828"
+    },
+    {
+      "path": "coorenagraph/moral/Ethics.sleela",
+      "sha256": "671031540a3e88841fab65ab620d720b87bfa88c591a6af518e53b4c61428b5d"
+    },
+    {
+      "path": "coorenagraph/moral/Moral.sleela",
+      "sha256": "edb76c73e91df749a6ae42aced5b9f8a39e15eda1659ea1258f2357813a673ad"
+    },
+    {
+      "path": "coorenagraph/moral/MoralVocabulary.sleela",
+      "sha256": "caf9bc70405c200b217bd06b816b0a19fbc0d40b622729a3e500bd29dd9c75ca"
+    },
+    {
+      "path": "coorenagraph/moral/Morale.sleela",
+      "sha256": "7d2c804d89aae8d159eea90c9bef36206581741efec6161ec092032407918975"
+    },
+    {
+      "path": "coorenagraph/moral/Pernicious.sleela",
+      "sha256": "0b80d283efdc4cba266ddc277ef464fc85b5f496fce7b7dcaa978bbbdf883dc1"
+    },
+    {
+      "path": "coorenagraph/moral/Reprobate.sleela",
+      "sha256": "6362c52c28f026cc0d04e10975c353a421f2801a9efe167722fd61c339544b64"
+    },
+    {
+      "path": "coorenagraph/moral/Unscrupulous.sleela",
+      "sha256": "389ad8c06582c24d95116f2ea090714ea7ccded740b2d5743b0a8e414d81a742"
+    },
+    {
       "path": "coorenagraph/src/coorenagraph.c",
       "sha256": "a8eb288d82a33aa096a00e10be8a0f85fde0f3da57c31bbf6fad90a530713c0f"
     },
     {
       "path": "coorenagraph/src/coorenagraph.cpp",
       "sha256": "60b306901d2d5abeab635e424c6797e65ec86373b896e124f4686c585fc1df18"
+    },
+    {
+      "path": "data-structures/DSList.sleela",
+      "sha256": "5011d48a1552933da52595b729b54263b3c7780fcd9692bfc42b243a0dbeee70"
+    },
+    {
+      "path": "data-structures/DSMap.sleela",
+      "sha256": "b4ff70c267b7213842c11c1fbd9a638a762653b8d7962d65ec9d238e64005591"
+    },
+    {
+      "path": "data-structures/DSObject.sleela",
+      "sha256": "445763f5d6498fbc15ee2c369c2929ef3352025d5ed1f2142355b808806460c1"
+    },
+    {
+      "path": "data-structures/DSQueue.sleela",
+      "sha256": "39b83bdf728cd0a51a0a1d715f127dfe641970de52946b97f7f80a1768d7cb95"
+    },
+    {
+      "path": "data-structures/DSStack.sleela",
+      "sha256": "e5d84a9b178ec563bcd0c0d0b692fc712d58754946dba56fde4e48451d89e029"
+    },
+    {
+      "path": "data-structures/DSValue.sleela",
+      "sha256": "c73f904d930d345f62d5331648f68dbb7cb3938ba6f113584acb27c95d9a2ee0"
+    },
+    {
+      "path": "data-structures/DataStructures.sleela",
+      "sha256": "711b71790fd81e44e2a79dd9bea23b3d3bce479f8076024dde69b1e4963d1a26"
+    },
+    {
+      "path": "data-structures/DataStructuresTest.sleela",
+      "sha256": "abe48f34afd9441b1b146462e3ac4f502c415934eb59a4847827e4c3c072bc58"
     },
     {
       "path": "data-structures/data_structures.c",
@@ -6167,6 +6379,50 @@
       "sha256": "fc7f3c21b7d33aa59022b6b97770d07ee3af59191d2b7a82459781af13465474"
     },
     {
+      "path": "lib/common-rails/PrintComponent.sleela",
+      "sha256": "06ebd7bc092b23eb4cf4644524adb5f55ed97fca06ac48c5aa3708ead31fe112"
+    },
+    {
+      "path": "lib/common-rails/PrintContractTest.sleela",
+      "sha256": "9d05a64292f57876556b5a192e57699a5452a7a08e3a326de94f86640b14b1b7"
+    },
+    {
+      "path": "lib/common-rails/PrintField.sleela",
+      "sha256": "d1211cac8057ae7a2f11670fbc3f131144a7a70ca492632665159d63aaa1dfc5"
+    },
+    {
+      "path": "lib/common-rails/PrintFormatter.sleela",
+      "sha256": "762362028dea033043a0851ee49db0a9a8d7ff23eec4c3bb2b23bd3d371d96eb"
+    },
+    {
+      "path": "lib/common-rails/PrintGlyphs.sleela",
+      "sha256": "499cc9acdfa136f218dbd889aa93778fab34649a03f41110a94c8acc155b3741"
+    },
+    {
+      "path": "lib/common-rails/PrintLayout.sleela",
+      "sha256": "cc645d409108c225351c6e60f3e250f38990caca1beb9aff023d69befb23bfe7"
+    },
+    {
+      "path": "lib/common-rails/PrintLine.sleela",
+      "sha256": "37e3e370717c12cc033f2016bb4fcede48a9055646a30f16c1550d348d709004"
+    },
+    {
+      "path": "lib/common-rails/PrintProgress.sleela",
+      "sha256": "94dc2ca23260f93bc4d1a463da6ede14ec2804e5c86f5e07e2875ab8ad6ed09d"
+    },
+    {
+      "path": "lib/common-rails/PrintRenderer.sleela",
+      "sha256": "d6ef14050270b3244eec1ec57399ff19f17c1479691d21e9586c1bb161646305"
+    },
+    {
+      "path": "lib/common-rails/PrintState.sleela",
+      "sha256": "b7668a30ac9d530a49f0d5f841765314b68e156630159d7efa7e105a13581fa3"
+    },
+    {
+      "path": "lib/common-rails/PrintWriter.sleela",
+      "sha256": "4ed47e8e8925597994c0642af80470e7ba4d342fe28dbfc979230664cdbdd722"
+    },
+    {
       "path": "lib/common-rails/SLPackage.sleela",
       "sha256": "b29251f7332c709f120c36845a8cfab4191c79bcd41a155af3698061c5b7ca1e"
     },
@@ -6243,8 +6499,44 @@
       "sha256": "775a006843143c7580159f3f80ff1f4230b2af9f57a5b62f4064463aa55b6756"
     },
     {
+      "path": "lib/coorenagraph/Coorenagraph.sleela",
+      "sha256": "348168aff2aedd9a07c6430a4d0306bb091f243271329acb0c12561effb3e1e7"
+    },
+    {
       "path": "lib/coorenagraph/SLPackage.sleela",
       "sha256": "453d4754eb9c060fd193e0ef1d93f67685b8318246ce6b82a69774ed9ddb2c5a"
+    },
+    {
+      "path": "lib/coorenagraph/moral/Amoral.sleela",
+      "sha256": "004d8b36a2431a6d49b5d4fdd31ef0e99860821717f87960da53d3cbf72df828"
+    },
+    {
+      "path": "lib/coorenagraph/moral/Ethics.sleela",
+      "sha256": "671031540a3e88841fab65ab620d720b87bfa88c591a6af518e53b4c61428b5d"
+    },
+    {
+      "path": "lib/coorenagraph/moral/Moral.sleela",
+      "sha256": "edb76c73e91df749a6ae42aced5b9f8a39e15eda1659ea1258f2357813a673ad"
+    },
+    {
+      "path": "lib/coorenagraph/moral/MoralVocabulary.sleela",
+      "sha256": "caf9bc70405c200b217bd06b816b0a19fbc0d40b622729a3e500bd29dd9c75ca"
+    },
+    {
+      "path": "lib/coorenagraph/moral/Morale.sleela",
+      "sha256": "7d2c804d89aae8d159eea90c9bef36206581741efec6161ec092032407918975"
+    },
+    {
+      "path": "lib/coorenagraph/moral/Pernicious.sleela",
+      "sha256": "0b80d283efdc4cba266ddc277ef464fc85b5f496fce7b7dcaa978bbbdf883dc1"
+    },
+    {
+      "path": "lib/coorenagraph/moral/Reprobate.sleela",
+      "sha256": "6362c52c28f026cc0d04e10975c353a421f2801a9efe167722fd61c339544b64"
+    },
+    {
+      "path": "lib/coorenagraph/moral/Unscrupulous.sleela",
+      "sha256": "389ad8c06582c24d95116f2ea090714ea7ccded740b2d5743b0a8e414d81a742"
     },
     {
       "path": "lib/core/SLAnnotation.sleela",
@@ -6649,6 +6941,38 @@
     {
       "path": "lib/data/SLPackage.sleela",
       "sha256": "6a2eb8172118e84a85506a01ba8374fb56db1315c5598f523dbf6ddba5ff3f2d"
+    },
+    {
+      "path": "lib/data-structures/DSList.sleela",
+      "sha256": "5011d48a1552933da52595b729b54263b3c7780fcd9692bfc42b243a0dbeee70"
+    },
+    {
+      "path": "lib/data-structures/DSMap.sleela",
+      "sha256": "b4ff70c267b7213842c11c1fbd9a638a762653b8d7962d65ec9d238e64005591"
+    },
+    {
+      "path": "lib/data-structures/DSObject.sleela",
+      "sha256": "445763f5d6498fbc15ee2c369c2929ef3352025d5ed1f2142355b808806460c1"
+    },
+    {
+      "path": "lib/data-structures/DSQueue.sleela",
+      "sha256": "39b83bdf728cd0a51a0a1d715f127dfe641970de52946b97f7f80a1768d7cb95"
+    },
+    {
+      "path": "lib/data-structures/DSStack.sleela",
+      "sha256": "e5d84a9b178ec563bcd0c0d0b692fc712d58754946dba56fde4e48451d89e029"
+    },
+    {
+      "path": "lib/data-structures/DSValue.sleela",
+      "sha256": "c73f904d930d345f62d5331648f68dbb7cb3938ba6f113584acb27c95d9a2ee0"
+    },
+    {
+      "path": "lib/data-structures/DataStructures.sleela",
+      "sha256": "711b71790fd81e44e2a79dd9bea23b3d3bce479f8076024dde69b1e4963d1a26"
+    },
+    {
+      "path": "lib/data-structures/DataStructuresTest.sleela",
+      "sha256": "abe48f34afd9441b1b146462e3ac4f502c415934eb59a4847827e4c3c072bc58"
     },
     {
       "path": "lib/data-structures/SLPackage.sleela",
@@ -10092,11 +10416,15 @@
     },
     {
       "path": "regex/test-suites/run-all.sh",
-      "sha256": "8d3b7c1828aa1507e7710b6b028fd0dfadd4abe257cd95ab438d8646f09e040d"
+      "sha256": "c842ea3960220e06d2b23b4dfb0a30d60ca15172db2a7f118fb168216b331016"
     },
     {
       "path": "regex/test-suites/test_sleela_sources.sh",
-      "sha256": "f8f96ffe9ed2a8b6c145ace4d0fdae74e51ba39e754d7705228dbe17366fad85"
+      "sha256": "c9a3a7a5148c9aaee204d99bf8d2e061e4332132b69ee335768421bbcea29791"
+    },
+    {
+      "path": "regex/test-suites/test_symbol_exhaustiveness.sh",
+      "sha256": "bf107e02669e314605db971caa0870d2cdaaacd5a46900e2701959424803b5dd"
     },
     {
       "path": "regex/tests/test_regex.c",
