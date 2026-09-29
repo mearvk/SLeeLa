@@ -88,11 +88,11 @@
     },
     {
       "path": "SST-2.0.model",
-      "sha256": "4c986b3282d72c8a914adb02bfa0ec8fa958e606a1ad86e1a91da6321fa78518"
+      "sha256": "33ac3e24d25afd1a3685ec743b9b508ddbfd070df3b3ba9b55abd2a8de4ca344"
     },
     {
       "path": "SST.model",
-      "sha256": "44d0e57431c9dcc501a20b9fd30508153994d7549824352e6e4e2a45b5b986b3"
+      "sha256": "3bb4a4b0e6f3bfb35e095958c0ff31e2600d12ef5ee4431c229954340abd188a"
     },
     {
       "path": "SYNCHRO.md",
@@ -5032,7 +5032,7 @@
     },
     {
       "path": "impl/frontend/library_index.cpp",
-      "sha256": "31cbbeb1f6e5e1dbc2f89dada32204aed7bb03673355e3f51cf678d60eb2fd63"
+      "sha256": "4816e131e8659ae78201a263fcba147de060489c3a9d165bc3e0a06894405211"
     },
     {
       "path": "impl/frontend/library_index.h",
@@ -9904,7 +9904,7 @@
     },
     {
       "path": "lib/vm/SLVMModuleLoader.sleela",
-      "sha256": "90e0d13b6bb84f3150981c72e6c855df35ab029928a2b52a3ddb965adc9c44c2"
+      "sha256": "720e51636a7359dd0c3e5ccbd1d38a62de75e6b5526ddda6ac8be63185f630ad"
     },
     {
       "path": "lib/vm/SLVMNativeBinding.sleela",
@@ -11321,6 +11321,10 @@
     {
       "path": "test-suites/sleela-source-behavior.sh",
       "sha256": "46d34c65252148d45027e4be4768b0ef56e576f4eb0122055281c47769324a1f"
+    },
+    {
+      "path": "test-suites/test-library-inventory.sh",
+      "sha256": "18d4410c3097a114243b07e5f1de1f3c8576fa13833472ea1958d82dc1b1f762"
     },
     {
       "path": "tests/native_memory_smoke.cpp",
