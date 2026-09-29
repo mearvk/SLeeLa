@@ -1,0 +1,16 @@
+/*
+ * lib/java/JavaType.sleela
+ * SLeeLa Java framework source envelope.
+ * Definition: Common pure-SLeeLa declaration contract for a Java class source file.
+ */
+#sleela 1.3
+
+class JavaType {
+  String javaType = "";
+
+  String typeName() { return javaType; }
+  boolean available() { return javaType != ""; }
+  String construct() { return "java.construct:" + javaType; }
+  String invoke(String operation) { return "java.invoke:" + javaType + ":" + operation; }
+  String invokeStatic(String operation) { return "java.static:" + javaType + ":" + operation; }
+}
