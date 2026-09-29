@@ -2,6 +2,7 @@
  * Morale.sleela
  * COORENAGRAPH moral vocabulary.
  * Part of speech: noun
+ * Definition: The collective emotional state, confidence, or spirit of a group.
  */
 
 class Morale {
