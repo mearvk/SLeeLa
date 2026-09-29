@@ -72,7 +72,7 @@
     },
     {
       "path": "README.md",
-      "sha256": "ff99dc9978a3aede7f56698d6222367b5824c93ed3755e5c9593b635847ea7a2"
+      "sha256": "cd2ecb7ebeaf4d85d7a394d4894bf177424b31165869aef76db21084f95a8234"
     },
     {
       "path": "REVISIONS.md",
@@ -88,7 +88,7 @@
     },
     {
       "path": "SST-2.0.model",
-      "sha256": "33ac3e24d25afd1a3685ec743b9b508ddbfd070df3b3ba9b55abd2a8de4ca344"
+      "sha256": "c94e8598b18ca80b2528b5f2f57f4c53b6bb720ce824b2211977aab707b2f73c"
     },
     {
       "path": "SST.model",
@@ -104,7 +104,7 @@
     },
     {
       "path": "VERSION.md",
-      "sha256": "48851af4baad6c46cff135d52f508b3a5684e6bc6b8aa0c0561158f10378c648"
+      "sha256": "552afe7e68c9884168f96712489955c331dd7518267b76b418904816cec3fa12"
     },
     {
       "path": "antivirus/src/sleelavirin_heuristic.c",
@@ -5032,11 +5032,11 @@
     },
     {
       "path": "impl/frontend/library_index.cpp",
-      "sha256": "4816e131e8659ae78201a263fcba147de060489c3a9d165bc3e0a06894405211"
+      "sha256": "bbe6e82bc0bc149aefefd2f36f82d117635fac435e7d062f34376d8a0dbe504e"
     },
     {
       "path": "impl/frontend/library_index.h",
-      "sha256": "9c7bb8f141812813837196aad7631f976fa825a6c5b48d25779dbcb6938ea083"
+      "sha256": "f4cfa4712db9bf08b946875bd13d70626142809b8f6ad65633f57e1ec383d546"
     },
     {
       "path": "impl/frontend/parser.cpp",
@@ -9904,7 +9904,7 @@
     },
     {
       "path": "lib/vm/SLVMModuleLoader.sleela",
-      "sha256": "720e51636a7359dd0c3e5ccbd1d38a62de75e6b5526ddda6ac8be63185f630ad"
+      "sha256": "f770452fcab64bcf08d5534587aca1b3c84f0a836e636e0538a4e1caf74aab62"
     },
     {
       "path": "lib/vm/SLVMNativeBinding.sleela",
@@ -11324,7 +11324,7 @@
     },
     {
       "path": "test-suites/test-library-inventory.sh",
-      "sha256": "18d4410c3097a114243b07e5f1de1f3c8576fa13833472ea1958d82dc1b1f762"
+      "sha256": "80dfcfdcda52392cc5a0bc5b4167163e9dfd5c4220f17b409b435f87b666d5ac"
     },
     {
       "path": "tests/native_memory_smoke.cpp",
