@@ -1,0 +1,5 @@
+#sleela 1.3
+class PrintWriter {
+  void write(String value){print(value);}
+  void line(String value){print(value);}
+}
