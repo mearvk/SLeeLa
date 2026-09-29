@@ -72,7 +72,7 @@
     },
     {
       "path": "README.md",
-      "sha256": "ff99dc9978a3aede7f56698d6222367b5824c93ed3755e5c9593b635847ea7a2"
+      "sha256": "cd2ecb7ebeaf4d85d7a394d4894bf177424b31165869aef76db21084f95a8234"
     },
     {
       "path": "REVISIONS.md",
@@ -104,7 +104,7 @@
     },
     {
       "path": "VERSION.md",
-      "sha256": "552afe7e68c9884168f96712489955c331dd7518267b76b418904816cec3fa12"
+      "sha256": "2204e911b2988868bb1a8ea6490d4262d792b51b7fb97e243b60328fe5d1bdc3"
     },
     {
       "path": "antivirus/src/sleelavirin_heuristic.c",
