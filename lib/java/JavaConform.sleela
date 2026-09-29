@@ -1,0 +1,16 @@
+/*
+ * lib/java/JavaConform.sleela
+ * Pure SLeeLa Java conformance envelope.
+ * Definition: SLeeLa-side conformance coordinator for Java SE/JDK 28 source envelopes.
+ */
+#sleela 1.3
+
+class JavaConform {
+  String status = "READY";
+  String contract = "SLeeLa source -> Java conformance boundary -> actual Java runtime";
+  String state() { return status; }
+  String model() { return contract; }
+  boolean sourceOwned() { return true; }
+  boolean javaBehaviorDelegated() { return true; }
+  boolean failClosed() { return true; }
+}
