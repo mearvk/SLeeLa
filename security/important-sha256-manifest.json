@@ -11281,6 +11281,66 @@
     {
       "path": "us-infrastructure/model.sleela",
       "sha256": "b644a20a120d95b2ecc94c88b6525338350123fdc0b49b0904e413c21d13d96f"
+    },
+    {
+      "path": "video/Codec.sleela",
+      "sha256": "dbad3f1696abd24c4fb553ebf66fdfeffdf41bdcf84dceaf4f6f1ac9ef9ff16d"
+    },
+    {
+      "path": "video/Frame.sleela",
+      "sha256": "307df2416b7ab2835081742319ccd0b01f9be9a2633e5612c9aca84685ec3e53"
+    },
+    {
+      "path": "video/Timeline.sleela",
+      "sha256": "5577fb28b66722a0665faf6f27c520b9a59cb1599aeb547e6c67e63efc25815d"
+    },
+    {
+      "path": "video/VideoWork.sleela",
+      "sha256": "ca3610787327c93a31d4c9753ea75efb1822cc83b0b27f88735b3675c357666e"
+    },
+    {
+      "path": "video/codecs/CodecCatalog.sleela",
+      "sha256": "ca3fe8f3f34fbb7a2df736ceeef05a613ad70dda3ad567568be77edac06fd972"
+    },
+    {
+      "path": "video/codecs/include/sleela_video_codecs.h",
+      "sha256": "7b0e5d90fbe79cdee60a56375fac5706197f17e637e00efcf8d3c54090b3ab1a"
+    },
+    {
+      "path": "video/codecs/include/sleela_video_codecs.hpp",
+      "sha256": "d97211f22e644048ff0a4559a30c37f35e61a44d0c9a40361ed50b248bb6e71c"
+    },
+    {
+      "path": "video/codecs/src/sleela_video_codecs.c",
+      "sha256": "ce914102e86329482c430a4d8544aad4e95a0f438b5cb38b82e6d6190dcd3f20"
+    },
+    {
+      "path": "video/codecs/src/sleela_video_codecs.cpp",
+      "sha256": "ca1cc9cc76b84acc0b2864bf6279b60df3ff93c51ab832076e56089b86c4e052"
+    },
+    {
+      "path": "video/include/sleela_video.h",
+      "sha256": "0138f6e8cea4c8ad07645e060b5adcc2250be946a056ae060e72b07bd12d60a4"
+    },
+    {
+      "path": "video/include/sleela_video.hpp",
+      "sha256": "a2ebe4415b03db0f05696320254897791e2248119364f4fb4c19c489e69c8064"
+    },
+    {
+      "path": "video/src/sleela_video.c",
+      "sha256": "7c0f47f85735aca5971387e1f707175ba2844848ad73db902418e921d4e3ec16"
+    },
+    {
+      "path": "video/tests/test_sleela_sources.sh",
+      "sha256": "b260b23a93cee0bc136b0641ae6da3dbce5eb3d5e74d6955209085ad9e25df8f"
+    },
+    {
+      "path": "video/tests/test_video.c",
+      "sha256": "98b430678c9398f28f0a284eec14c15a15abf394b00bc1f02bed90871a6fc8dc"
+    },
+    {
+      "path": "video/tests/test_video.cpp",
+      "sha256": "cf57ff4c950c85644c1b2a23e2983f947de8e165c36385a8b10d4b090be9908d"
     }
   ]
 }
