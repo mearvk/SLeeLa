@@ -1,0 +1,157 @@
+/*
+ * Moral vocabulary definitions for COORENAGRAPH.
+ * These are software definitions for use by SLeeLa programs.
+ */
+
+class MoralDefinition {
+    String term;
+    String definition;
+    String category;
+
+    MoralDefinition(String termName, String meaning, String group) {
+        term = termName;
+        definition = meaning;
+        category = group;
+    }
+}
+
+class Morals {
+    String definition() {
+        return "A system of internal principles, rules of conduct, and values regarding right and wrong behavior.";
+    }
+}
+
+class Deontology {
+    String definition() {
+        return "An ethical theory in which actions are judged by duties or rules, regardless of consequences.";
+    }
+}
+
+class Utilitarianism {
+    String definition() {
+        return "An ethical framework that evaluates an action by its benefits or happiness for the greatest number.";
+    }
+}
+
+class VirtueEthics {
+    String definition() {
+        return "An ethical perspective that places moral character and virtuous conduct at the center of morality.";
+    }
+}
+
+class MoralDeliberation {
+    String definition() {
+        return "The process of applying ethical principles to facts to reach a responsible, consent-filled decision.";
+    }
+}
+
+class Probity {
+    String definition() {
+        return "Strict adherence to high moral principles, honesty, and integrity.";
+    }
+}
+
+class Beneficence {
+    String definition() {
+        return "The practice of doing good, showing kindness, and acting to benefit others.";
+    }
+}
+
+class Principled {
+    String definition() {
+        return "Acting firmly according to a clear and honorable system of moral beliefs.";
+    }
+}
+
+class Upright {
+    String definition() {
+        return "Being honest and honorable and conforming to principles of moral justice.";
+    }
+}
+
+class Magnanimous {
+    String definition() {
+        return "Showing noble generosity, forgiveness, and high-mindedness toward others.";
+    }
+}
+
+class Unscrupulous {
+    String definition() {
+        return "Lacking moral principles or ethical restraint in pursuit of a goal.";
+    }
+}
+
+class Pernicious {
+    String definition() {
+        return "Having a destructive, subtle, or harmful effect on morals or well-being.";
+    }
+}
+
+class Amoral {
+    String definition() {
+        return "Lacking moral sensibility or treating right and wrong as irrelevant.";
+    }
+}
+
+class Reprobate {
+    String definition() {
+        return "A person characterized in this vocabulary as rejecting moral constraints or acting without principle.";
+    }
+}
+
+class Moral {
+    String definition() {
+        return "Relating to principles of right and wrong behavior; also, a lesson conveyed by a story.";
+    }
+}
+
+class Morale {
+    String definition() {
+        return "The collective emotional state, confidence, or spirit of a group.";
+    }
+}
+
+class Ethics {
+    String definition() {
+        return "A systematic code or framework of conduct used to guide behavior, often in a profession or institution.";
+    }
+}
+
+class MoralVocabulary {
+    String purpose() {
+        return "A vocabulary for articulating ethical principles, virtues, violations, and distinctions in moral speech.";
+    }
+
+    boolean distinguishesMoralFromMorale() {
+        return true;
+    }
+
+    boolean distinguishesMoralFromEthics() {
+        return true;
+    }
+}
+
+class MoralVocabularyTest {
+    boolean definitionsExist() {
+        Morals morals;
+        Deontology deontology;
+        Utilitarianism utilitarianism;
+        VirtueEthics virtueEthics;
+        MoralDeliberation deliberation;
+        Probity probity;
+        Beneficence beneficence;
+        Principled principled;
+        Upright upright;
+        Magnanimous magnanimous;
+        Unscrupulous unscrupulous;
+        Pernicious pernicious;
+        Amoral amoral;
+        Reprobate reprobate;
+        Moral moral;
+        Morale morale;
+        Ethics ethics;
+        MoralVocabulary vocabulary;
+
+        return true;
+    }
+}
