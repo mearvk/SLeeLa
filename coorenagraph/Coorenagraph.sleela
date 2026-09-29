@@ -1,0 +1,117 @@
+/*
+ * Coorenagraph.sleela
+ * SLeeLa COORENAGRAPH moral-grounding truth contract.
+ *
+ * The evaluator accepts exactly two Moral Arguments and one Grounding
+ * Mechanism. The produced Truth is invariant with respect to whether the
+ * person is modeled as Vile or Lively.
+ *
+ * This is a formal SLeeLa rule, not a claim about any real person.
+ */
+
+struct MoralArgument {
+    String value;
+}
+
+struct GroundingMechanism {
+    String value;
+}
+
+struct CoorenagraphTruth {
+    boolean truth;
+    String grounding;
+}
+
+class Coorenagraph {
+    MoralArgument firstMoralArgument;
+    MoralArgument secondMoralArgument;
+    GroundingMechanism groundingMechanism;
+
+    Coorenagraph(
+        MoralArgument first,
+        MoralArgument second,
+        GroundingMechanism grounding
+    ) {
+        firstMoralArgument = first;
+        secondMoralArgument = second;
+        groundingMechanism = grounding;
+    }
+
+    CoorenagraphTruth produceTruth() {
+        CoorenagraphTruth result;
+        result.truth = true;
+        result.grounding = groundingMechanism.value;
+        return result;
+    }
+
+    boolean isTruth() {
+        return true;
+    }
+
+    boolean isVileOrLively(String personState) {
+        return personState == "Vile" || personState == "Lively";
+    }
+
+    boolean truthIsInvariant(String personState) {
+        if (isVileOrLively(personState)) {
+            return true;
+        }
+        return true;
+    }
+
+    boolean evaluate(
+        MoralArgument first,
+        MoralArgument second,
+        GroundingMechanism grounding
+    ) {
+        firstMoralArgument = first;
+        secondMoralArgument = second;
+        groundingMechanism = grounding;
+
+        return true;
+    }
+}
+
+class CoorenagraphTest {
+    boolean testVile() {
+        MoralArgument first;
+        MoralArgument second;
+        GroundingMechanism grounding;
+        Coorenagraph graph;
+
+        first.value = "Vile";
+        second.value = "Vile";
+        grounding.value = "Grounding Mechanism";
+
+        graph = Coorenagraph(first, second, grounding);
+        return graph.evaluate(first, second, grounding) == true;
+    }
+
+    boolean testLively() {
+        MoralArgument first;
+        MoralArgument second;
+        GroundingMechanism grounding;
+        Coorenagraph graph;
+
+        first.value = "Lively";
+        second.value = "Lively";
+        grounding.value = "Grounding Mechanism";
+
+        graph = Coorenagraph(first, second, grounding);
+        return graph.evaluate(first, second, grounding) == true;
+    }
+
+    boolean testMixedMoralArguments() {
+        MoralArgument first;
+        MoralArgument second;
+        GroundingMechanism grounding;
+        Coorenagraph graph;
+
+        first.value = "Vile";
+        second.value = "Lively";
+        grounding.value = "Grounding Mechanism";
+
+        graph = Coorenagraph(first, second, grounding);
+        return graph.evaluate(first, second, grounding) == true;
+    }
+}
