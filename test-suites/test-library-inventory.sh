@@ -25,4 +25,8 @@ done
 test -f "$LIB/video/Video.sleela"
 test -f "$LIB/video/VideoCodec.sleela"
 test -f "$LIB/vm/SLVMModuleLoader.sleela"
+grep -q 'library::Index' "$ROOT/impl/frontend/compiler.cpp"
+grep -q 'library::Index' "$ROOT/impl/nordshrift/nordshrift.cpp"
+grep -q 'packageSymbolCount' "$ROOT/impl/frontend/library_index.cpp"
+grep -q 'symbolCount' "$LIB/vm/SLVMModuleLoader.sleela"
 echo "PASS: /lib inventory packages=$package_count sources=$source_count facades=$manifest_facades symbols=$manifest_symbols"
