@@ -1,0 +1,14 @@
+/*
+ * lib/java/java/io/File.sleela
+ * SLeeLa JDK 28 Framework Binding.
+ * Definition: Represents a file-system path abstraction.
+ * Java type: java.io.File
+ */
+#sleela 1.3
+
+class File {
+  String javaType = "java.io.File";
+
+  String typeName() { return javaType; }
+  boolean available() { return javaType != ""; }
+}
