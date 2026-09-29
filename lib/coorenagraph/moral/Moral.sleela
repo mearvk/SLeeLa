@@ -2,6 +2,7 @@
  * Moral.sleela
  * COORENAGRAPH moral vocabulary.
  * Part of speech: adjective
+ * Definition: Relating to principles of right and wrong behavior.
  */
 
 class Moral {
