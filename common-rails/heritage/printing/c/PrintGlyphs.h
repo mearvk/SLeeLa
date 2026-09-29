@@ -1,0 +1,5 @@
+#ifndef COMMONRAILS_PRINT_GLYPHS_H
+#define COMMONRAILS_PRINT_GLYPHS_H
+#define CR_GLYPH_FULL "█"
+#define CR_GLYPH_EMPTY "░"
+#endif
