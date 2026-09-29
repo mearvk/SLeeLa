@@ -1,0 +1,20 @@
+# JDK 28 SLeeLa Source Set
+
+The Java support surface is treated as a native SLeeLa source set.
+
+Every supported Java class has its Java package name, Java class name, matching .sleela filename, SLeeLa declaration, Java binary name, and a path through the Java conformance boundary.
+
+Execution model:
+1. User writes SLeeLa.
+2. Loader resolves the matching lib/java/java/.../<Class>.sleela.
+3. Compiler retains the SLeeLa declaration and operation.
+4. Java operations are lowered to the conformance boundary.
+5. The actual Java class, method, or constructor executes on the configured JDK.
+6. The result or exception returns to SLeeLa.
+7. Unsupported access fails closed.
+
+This gives a source-level SLeeLa representation of the Java API without duplicating Java's implementation.
+
+The remaining implementation requirement is compiler/VM lowering and value marshaling so an ordinary SLeeLa expression can directly invoke the represented Java operation without a separate Java-side test program.
+
+Design law: The .sleela file is the source. Java is the behavior provider. SLeeLa controls the request.
