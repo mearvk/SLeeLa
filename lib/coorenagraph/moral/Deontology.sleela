@@ -2,6 +2,7 @@
  * Deontology.sleela
  * COORENAGRAPH moral vocabulary.
  * Part of speech: noun
+ * Definition: An ethical theory in which actions are judged by duties or rules, regardless of consequences.
  */
 
 class Deontology {
