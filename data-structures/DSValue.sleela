@@ -1,0 +1,44 @@
+#sleela 1.2
+
+// SLeeLa data-structure value contract.
+// A tagged value keeps the primitive payload representation explicit.
+
+struct DSValue {
+    int kind;
+    int intValue;
+    double doubleValue;
+    boolean boolValue;
+    String stringValue;
+}
+
+class DSValueOperations {
+    DSValue intValue(int v) {
+        DSValue x = new DSValue();
+        x.kind = 1;
+        x.intValue = v;
+        return x;
+    }
+
+    DSValue doubleValue(double v) {
+        DSValue x = new DSValue();
+        x.kind = 2;
+        x.doubleValue = v;
+        return x;
+    }
+
+    DSValue boolValue(boolean v) {
+        DSValue x = new DSValue();
+        x.kind = 3;
+        x.boolValue = v;
+        return x;
+    }
+
+    DSValue stringValue(String v) {
+        DSValue x = new DSValue();
+        x.kind = 4;
+        x.stringValue = v;
+        return x;
+    }
+
+    int kind(DSValue v) { return v.kind; }
+}
