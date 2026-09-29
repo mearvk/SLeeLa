@@ -321,7 +321,7 @@ This chain is the principal semantic bridge between Nordshrift and the Math, Phy
 
 The SLeeLa standard library is authoritative under /lib. The compiler and Nordshrift library loader recursively discover every .sleela source unit beneath /lib.
 
-Current inventory: 40 packages; 919 .sleela source units; 54 module-facade symbols; 973 total symbol records. Complete inventory: lib/LIBRARY.SYMBOLS.md.
+Current inventory: 74 packages; 953 .sleela source units; 88 module-facade symbols; 1,041 total symbol records. Complete inventory: lib/LIBRARY.SYMBOLS.md.
 
 Package imports resolve only when their package directory is present in the discovered /lib index. Native bridge imports such as chemistry and financial remain explicitly handled by native lowering.
 
