@@ -1,9 +1,9 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
-library-source-files: 918
+library-source-files: 919
 library-packages: 40
 module-facade-symbols: 54
-total-symbol-records: 972
+total-symbol-records: 973
 
 package	symbol	path	kind
 api	SLPackage.sleela	lib/api/SLPackage.sleela	source
@@ -75,6 +75,7 @@ core	SLInput.sleela	lib/core/SLInput.sleela	source
 core	SLInteger.sleela	lib/core/SLInteger.sleela	source
 core	SLIterable.sleela	lib/core/SLIterable.sleela	source
 core	SLIterator.sleela	lib/core/SLIterator.sleela	source
+core	SLLibrary.sleela	lib/core/SLLibrary.sleela	source
 core	SLListener.sleela	lib/core/SLListener.sleela	source
 core	SLLong.sleela	lib/core/SLLong.sleela	source
 core	SLMetadata.sleela	lib/core/SLMetadata.sleela	source
