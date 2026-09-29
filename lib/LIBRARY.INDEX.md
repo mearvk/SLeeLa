@@ -1,10 +1,10 @@
 # SLeeLa /lib Library Index
 
-**Revision:** 0.4  
+**Revision:** 0.5  
 **Packages:** 40  
-**SLeeLa source units:** 918  
+**SLeeLa source units:** 919  
 **Module-facade symbols:** 54  
-**Total symbol records:** 972  
+**Total symbol records:** 973  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
 
 | Family | Sources |
@@ -15,7 +15,7 @@
 | collections | 8 |
 | common-rails | 1 |
 | compiler | 16 |
-| core | 83 |
+| core | 84 |
 | crypto | 16 |
 | data-structures | 1 |
 | database | 16 |
@@ -49,7 +49,7 @@
 | us-infrastructure | 1 |
 | video | 16 |
 | vm | 13 |
-| **Total** | **918** |
+| **Total** | **919** |
 
 The compiler and Nordshrift resolve this collection recursively from `/lib`. Every package family represented by the current SLeeLa module/package inventory has at least one SLeeLa source unit under `/lib`. The manifest records every source path plus the existing module-facade vocabulary.
 
