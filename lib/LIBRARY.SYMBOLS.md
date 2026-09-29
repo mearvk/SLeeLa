@@ -1,14 +1,17 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
-library-source-files: 919
-library-packages: 40
-module-facade-symbols: 54
-total-symbol-records: 973
+library-source-files: 953
+library-packages: 74
+module-facade-symbols: 88
+total-symbol-records: 1041
 
 package	symbol	path	kind
+antivirus	SLPackage.sleela	lib/antivirus/SLPackage.sleela	source
 api	SLPackage.sleela	lib/api/SLPackage.sleela	source
 audio	SLPackage.sleela	lib/audio/SLPackage.sleela	source
+bash	SLPackage.sleela	lib/bash/SLPackage.sleela	source
 churn	SLPackage.sleela	lib/churn/SLPackage.sleela	source
+codecs	SLPackage.sleela	lib/codecs/SLPackage.sleela	source
 collections	SLArray.sleela	lib/collections/SLArray.sleela	source
 collections	SLIterator.sleela	lib/collections/SLIterator.sleela	source
 collections	SLList.sleela	lib/collections/SLList.sleela	source
@@ -34,6 +37,9 @@ compiler	SLSourceLocation.sleela	lib/compiler/SLSourceLocation.sleela	source
 compiler	SLToken.sleela	lib/compiler/SLToken.sleela	source
 compiler	SLTokenStream.sleela	lib/compiler/SLTokenStream.sleela	source
 compiler	SLTypeChecker.sleela	lib/compiler/SLTypeChecker.sleela	source
+config	SLPackage.sleela	lib/config/SLPackage.sleela	source
+connector	SLPackage.sleela	lib/connector/SLPackage.sleela	source
+coorenagraph	SLPackage.sleela	lib/coorenagraph/SLPackage.sleela	source
 core	SLAnnotation.sleela	lib/core/SLAnnotation.sleela	source
 core	SLAny.sleela	lib/core/SLAny.sleela	source
 core	SLArray.sleela	lib/core/SLArray.sleela	source
@@ -135,6 +141,7 @@ crypto	SLSignature.sleela	lib/crypto/SLSignature.sleela	source
 crypto	SLTrustStore.sleela	lib/crypto/SLTrustStore.sleela	source
 crypto	SLVerifier.sleela	lib/crypto/SLVerifier.sleela	source
 data-structures	SLPackage.sleela	lib/data-structures/SLPackage.sleela	source
+data	SLPackage.sleela	lib/data/SLPackage.sleela	source
 database	SLColumn.sleela	lib/database/SLColumn.sleela	source
 database	SLConnectionPool.sleela	lib/database/SLConnectionPool.sleela	source
 database	SLDataSource.sleela	lib/database/SLDataSource.sleela	source
@@ -167,6 +174,7 @@ debugger	SLStepController.sleela	lib/debugger/SLStepController.sleela	source
 debugger	SLTraceBuffer.sleela	lib/debugger/SLTraceBuffer.sleela	source
 debugger	SLTraceEvent.sleela	lib/debugger/SLTraceEvent.sleela	source
 debugger	SLWatchpoint.sleela	lib/debugger/SLWatchpoint.sleela	source
+decompiler	SLPackage.sleela	lib/decompiler/SLPackage.sleela	source
 deliberation	SLAStarSearch.sleela	lib/deliberation/SLAStarSearch.sleela	source
 deliberation	SLAbduction.sleela	lib/deliberation/SLAbduction.sleela	source
 deliberation	SLAction.sleela	lib/deliberation/SLAction.sleela	source
@@ -462,6 +470,7 @@ deliberation	SLWhatIf.sleela	lib/deliberation/SLWhatIf.sleela	source
 deliberation	SLWorkflowDecision.sleela	lib/deliberation/SLWorkflowDecision.sleela	source
 deliberation	SLXor.sleela	lib/deliberation/SLXor.sleela	source
 deliberation	SLZeroSumGame.sleela	lib/deliberation/SLZeroSumGame.sleela	source
+drivers	SLPackage.sleela	lib/drivers/SLPackage.sleela	source
 filesystem	SLArchive.sleela	lib/filesystem/SLArchive.sleela	source
 filesystem	SLDirectoryInfo.sleela	lib/filesystem/SLDirectoryInfo.sleela	source
 filesystem	SLDirectoryReader.sleela	lib/filesystem/SLDirectoryReader.sleela	source
@@ -478,7 +487,18 @@ filesystem	SLFileWatcher.sleela	lib/filesystem/SLFileWatcher.sleela	source
 filesystem	SLFileWriter.sleela	lib/filesystem/SLFileWriter.sleela	source
 filesystem	SLPathPattern.sleela	lib/filesystem/SLPathPattern.sleela	source
 filesystem	SLPathResolver.sleela	lib/filesystem/SLPathResolver.sleela	source
+gui	SLPackage.sleela	lib/gui/SLPackage.sleela	source
+html	SLPackage.sleela	lib/html/SLPackage.sleela	source
+http-1.0	SLPackage.sleela	lib/http-1.0/SLPackage.sleela	source
+http-2.0	SLPackage.sleela	lib/http-2.0/SLPackage.sleela	source
 http-3.0	SLPackage.sleela	lib/http-3.0/SLPackage.sleela	source
+http-4.0	SLPackage.sleela	lib/http-4.0/SLPackage.sleela	source
+http-5.0	SLPackage.sleela	lib/http-5.0/SLPackage.sleela	source
+http-6.0	SLPackage.sleela	lib/http-6.0/SLPackage.sleela	source
+http-7.0	SLPackage.sleela	lib/http-7.0/SLPackage.sleela	source
+http-8.0	SLPackage.sleela	lib/http-8.0/SLPackage.sleela	source
+http-9.0	SLPackage.sleela	lib/http-9.0/SLPackage.sleela	source
+http-servers	SLPackage.sleela	lib/http-servers/SLPackage.sleela	source
 http	SLHttpBody.sleela	lib/http/SLHttpBody.sleela	source
 http	SLHttpCache.sleela	lib/http/SLHttpCache.sleela	source
 http	SLHttpClient.sleela	lib/http/SLHttpClient.sleela	source
@@ -498,6 +518,7 @@ http	SLHttpVersion.sleela	lib/http/SLHttpVersion.sleela	source
 ide	SLPackage.sleela	lib/ide/SLPackage.sleela	source
 inference-model	SLPackage.sleela	lib/inference-model/SLPackage.sleela	source
 inputs	SLPackage.sleela	lib/inputs/SLPackage.sleela	source
+international-criminal-court	SLPackage.sleela	lib/international-criminal-court/SLPackage.sleela	source
 io	SLBufferedInput.sleela	lib/io/SLBufferedInput.sleela	source
 io	SLBufferedOutput.sleela	lib/io/SLBufferedOutput.sleela	source
 io	SLByteStream.sleela	lib/io/SLByteStream.sleela	source
@@ -506,7 +527,9 @@ io	SLFileStream.sleela	lib/io/SLFileStream.sleela	source
 io	SLInputStream.sleela	lib/io/SLInputStream.sleela	source
 io	SLMemoryStream.sleela	lib/io/SLMemoryStream.sleela	source
 io	SLOutputStream.sleela	lib/io/SLOutputStream.sleela	source
+java28	SLPackage.sleela	lib/java28/SLPackage.sleela	source
 journey	SLPackage.sleela	lib/journey/SLPackage.sleela	source
+ledger	SLPackage.sleela	lib/ledger/SLPackage.sleela	source
 manifesto	SLPackage.sleela	lib/manifesto/SLPackage.sleela	source
 math	SLANOVA.sleela	lib/math/SLANOVA.sleela	source
 math	SLAbsoluteValue.sleela	lib/math/SLAbsoluteValue.sleela	source
@@ -767,7 +790,9 @@ memory	SLPointer.sleela	lib/memory/SLPointer.sleela	source
 memory	SLPoolAllocator.sleela	lib/memory/SLPoolAllocator.sleela	source
 memory	SLReference.sleela	lib/memory/SLReference.sleela	source
 memory	SLWeakReference.sleela	lib/memory/SLWeakReference.sleela	source
+modules	SLPackage.sleela	lib/modules/SLPackage.sleela	source
 munction	SLPackage.sleela	lib/munction/SLPackage.sleela	source
+native	SLPackage.sleela	lib/native/SLPackage.sleela	source
 net	SLDnsResolver.sleela	lib/net/SLDnsResolver.sleela	source
 net	SLEndpoint.sleela	lib/net/SLEndpoint.sleela	source
 net	SLHttpRequest.sleela	lib/net/SLHttpRequest.sleela	source
@@ -786,6 +811,7 @@ os	SLOperatingSystem.sleela	lib/os/SLOperatingSystem.sleela	source
 os	SLPath.sleela	lib/os/SLPath.sleela	source
 os	SLPermissions.sleela	lib/os/SLPermissions.sleela	source
 os	SLProcess.sleela	lib/os/SLProcess.sleela	source
+politico	SLPackage.sleela	lib/politico/SLPackage.sleela	source
 process	SLAtomic.sleela	lib/process/SLAtomic.sleela	source
 process	SLBarrier.sleela	lib/process/SLBarrier.sleela	source
 process	SLCondition.sleela	lib/process/SLCondition.sleela	source
@@ -802,6 +828,8 @@ process	SLSemaphore.sleela	lib/process/SLSemaphore.sleela	source
 process	SLThreadGroup.sleela	lib/process/SLThreadGroup.sleela	source
 process	SLThreadLocal.sleela	lib/process/SLThreadLocal.sleela	source
 process	SLThreadState.sleela	lib/process/SLThreadState.sleela	source
+psychiatry	SLPackage.sleela	lib/psychiatry/SLPackage.sleela	source
+public	SLPackage.sleela	lib/public/SLPackage.sleela	source
 reflection	SLAnnotation.sleela	lib/reflection/SLAnnotation.sleela	source
 reflection	SLAnnotationValue.sleela	lib/reflection/SLAnnotationValue.sleela	source
 reflection	SLClassLoader.sleela	lib/reflection/SLClassLoader.sleela	source
@@ -869,8 +897,14 @@ security	SLPermission.sleela	lib/security/SLPermission.sleela	source
 security	SLRandom.sleela	lib/security/SLRandom.sleela	source
 security	SLSecureBuffer.sleela	lib/security/SLSecureBuffer.sleela	source
 server-edition	SLPackage.sleela	lib/server-edition/SLPackage.sleela	source
+sleela-terminal	SLPackage.sleela	lib/sleela-terminal/SLPackage.sleela	source
+sleela	SLPackage.sleela	lib/sleela/SLPackage.sleela	source
 social-model	SLPackage.sleela	lib/social-model/SLPackage.sleela	source
+synchro	SLPackage.sleela	lib/synchro/SLPackage.sleela	source
+systems	SLPackage.sleela	lib/systems/SLPackage.sleela	source
 telephony-skya	SLPackage.sleela	lib/telephony-skya/SLPackage.sleela	source
+terminal	SLPackage.sleela	lib/terminal/SLPackage.sleela	source
+terminal_pixel	SLPackage.sleela	lib/terminal_pixel/SLPackage.sleela	source
 text	SLCharset.sleela	lib/text/SLCharset.sleela	source
 text	SLFormatter.sleela	lib/text/SLFormatter.sleela	source
 text	SLRegex.sleela	lib/text/SLRegex.sleela	source
@@ -979,3 +1013,38 @@ telephony-skya	VoIPAccount	lib/telephony-skya/SLPackage.sleela	module-facade
 telephony-skya	VoIPAppExample	lib/telephony-skya/SLPackage.sleela	module-facade
 telephony-skya	VoIPApplication	lib/telephony-skya/SLPackage.sleela	module-facade
 us-infrastructure	model	lib/us-infrastructure/SLPackage.sleela	module-facade
+antivirus	SLPackage	lib/antivirus/SLPackage.sleela	module-facade
+bash	SLPackage	lib/bash/SLPackage.sleela	module-facade
+codecs	SLPackage	lib/codecs/SLPackage.sleela	module-facade
+config	SLPackage	lib/config/SLPackage.sleela	module-facade
+connector	SLPackage	lib/connector/SLPackage.sleela	module-facade
+coorenagraph	SLPackage	lib/coorenagraph/SLPackage.sleela	module-facade
+data	SLPackage	lib/data/SLPackage.sleela	module-facade
+decompiler	SLPackage	lib/decompiler/SLPackage.sleela	module-facade
+drivers	SLPackage	lib/drivers/SLPackage.sleela	module-facade
+gui	SLPackage	lib/gui/SLPackage.sleela	module-facade
+html	SLPackage	lib/html/SLPackage.sleela	module-facade
+http-1.0	SLPackage	lib/http-1.0/SLPackage.sleela	module-facade
+http-2.0	SLPackage	lib/http-2.0/SLPackage.sleela	module-facade
+http-4.0	SLPackage	lib/http-4.0/SLPackage.sleela	module-facade
+http-5.0	SLPackage	lib/http-5.0/SLPackage.sleela	module-facade
+http-6.0	SLPackage	lib/http-6.0/SLPackage.sleela	module-facade
+http-7.0	SLPackage	lib/http-7.0/SLPackage.sleela	module-facade
+http-8.0	SLPackage	lib/http-8.0/SLPackage.sleela	module-facade
+http-9.0	SLPackage	lib/http-9.0/SLPackage.sleela	module-facade
+http-servers	SLPackage	lib/http-servers/SLPackage.sleela	module-facade
+international-criminal-court	SLPackage	lib/international-criminal-court/SLPackage.sleela	module-facade
+java28	SLPackage	lib/java28/SLPackage.sleela	module-facade
+ledger	SLPackage	lib/ledger/SLPackage.sleela	module-facade
+modules	SLPackage	lib/modules/SLPackage.sleela	module-facade
+native	SLPackage	lib/native/SLPackage.sleela	module-facade
+politico	SLPackage	lib/politico/SLPackage.sleela	module-facade
+psychiatry	SLPackage	lib/psychiatry/SLPackage.sleela	module-facade
+public	SLPackage	lib/public/SLPackage.sleela	module-facade
+sleela	SLPackage	lib/sleela/SLPackage.sleela	module-facade
+sleela-terminal	SLPackage	lib/sleela-terminal/SLPackage.sleela	module-facade
+synchro	SLPackage	lib/synchro/SLPackage.sleela	module-facade
+systems	SLPackage	lib/systems/SLPackage.sleela	module-facade
+terminal	SLPackage	lib/terminal/SLPackage.sleela	module-facade
+terminal_pixel	SLPackage	lib/terminal_pixel/SLPackage.sleela	module-facade
+ 

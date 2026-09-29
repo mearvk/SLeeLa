@@ -142,3 +142,14 @@ Current collection: **40 packages, 919 library source units, 54 module-facade sy
 Resolution order is: `$SLEELA_LIB`, `lib`, `../lib`, then `../../lib`. Missing imported packages are compile errors rather than silently ignored dependencies. The same discovered index is now consulted during Nordshrift source validation, so new `/lib` packages and symbols are visible before target emission.
 
 API is now represented in /lib as a package facade so compiler and loader package discovery includes the API module.
+
+## /lib Library Collection — September 2026
+
+The canonical SLeeLa library collection has been expanded and reconciled with the repository module inventory:
+
+- **74 package families**
+- **953 SLeeLa source units**
+- **88 module-facade symbols**
+- **1,041 total symbol records**
+
+Nordshrift and the SLeeLa compiler share the recursive /lib discovery implementation. Resolution order remains $SLEELA_LIB, lib, ../lib, then ../../lib. Missing imports remain compilation errors. The complete inventory is maintained in lib/LIBRARY.SYMBOLS.md and summarized in lib/LIBRARY.INDEX.md.

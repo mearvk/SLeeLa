@@ -1,56 +1,38 @@
 # SLeeLa /lib Library Index
 
-**Revision:** 0.5  
-**Packages:** 40  
-**SLeeLa source units:** 919  
-**Module-facade symbols:** 54  
-**Total symbol records:** 973  
+**Revision:** 0.6  
+**Packages:** 74  
+**SLeeLa source units:** 953  
+**Module-facade symbols:** 88  
+**Total symbol records:** 1,041  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
 
-| Family | Sources |
-|---|---:|
-| api | 1 |
-| audio | 1 |
-| churn | 1 |
-| collections | 8 |
-| common-rails | 1 |
-| compiler | 16 |
-| core | 84 |
-| crypto | 16 |
-| data-structures | 1 |
-| database | 16 |
-| debugger | 16 |
-| deliberation | 295 |
-| filesystem | 16 |
-| http | 16 |
-| http-3.0 | 1 |
-| ide | 1 |
-| inference-model | 1 |
-| inputs | 1 |
-| io | 8 |
-| journey | 1 |
-| manifesto | 1 |
-| math | 243 |
-| memory | 16 |
-| munction | 1 |
-| net | 8 |
-| os | 10 |
-| process | 16 |
-| reflection | 16 |
-| regex | 27 |
-| rmi | 1 |
-| runtime | 16 |
-| security | 6 |
-| server-edition | 1 |
-| social-model | 1 |
-| telephony-skya | 1 |
-| text | 8 |
-| ui | 16 |
-| us-infrastructure | 1 |
-| video | 16 |
-| vm | 13 |
-| **Total** | **919** |
+The `/lib` tree is the canonical language-facing source collection. The compiler and Nordshrift use the same recursive library discovery implementation, so a package becomes importable when its directory contains SLeeLa source.
 
-The compiler and Nordshrift resolve this collection recursively from `/lib`. Every package family represented by the current SLeeLa module/package inventory has at least one SLeeLa source unit under `/lib`. The manifest records every source path plus the existing module-facade vocabulary.
+| Coverage | Count |
+|---|---:|
+| Repository module families represented under /lib | 74 |
+| SLeeLa source units | 953 |
+| Module-facade symbols | 88 |
+| Total symbol records | 1,041 |
+
+Every repository-level module family that is a language/runtime/package concern now has at least one SLeeLa source unit under `/lib`. Documentation, images, generated build output, tests, and CI-only directories remain non-library artifacts and are intentionally not presented as language packages.
+
+## Compiler and Loader Resolution
+
+Resolution is shared by the SLeeLa compiler and Nordshrift:
+
+1. `$SLEELA_LIB`
+2. `lib`
+3. `../lib`
+4. `../../lib`
+
+Discovery is recursive. Package presence is therefore derived from the actual `/lib` tree rather than a hand-maintained package allow-list. `validateImports()` rejects an imported package that is not present.
+
+The VM-facing `SLVMModuleLoader` source mirrors this contract: package names are discovered from the canonical library root, registered, and checked before use. Native loader facilities remain below the explicit C/C++ OS bridge.
+
+## Inventory
+
+The complete path-level and facade-level symbol collection is maintained in `LIBRARY.SYMBOLS.md`.
 
 **Max Rupplin — MEARVK LLC — 2026**

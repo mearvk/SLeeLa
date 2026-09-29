@@ -1,16 +1,20 @@
 #sleela 1.3
-// Unified SLeeLa standard-library module loader facade.
-// The native compiler/Nordshrift index resolves the actual /lib tree.
-// This object carries the resolved inventory into VM-facing code.
-// Max Rupplin - MEARVK LLC - 2026
+// Unified SLeeLa standard-library module loader front-end.
+// The native compiler and Nordshrift share the same recursive /lib discovery
+// contract; this object models the loader-facing package lifecycle.
 class SLVMModuleLoader {
-  String name; String root; int state; int packages; int symbols;
-  void configure(String n,String r){name=n;root=r;}
-  void bindInventory(int p,int s){packages=p;symbols=s;}
-  void start(){state=1;}
-  void stop(){state=0;}
+  String root;
+  String packageName;
+  int state;
+  int count;
+
+  void configure(String libraryRoot){root=libraryRoot;}
+  void select(String name){packageName=name;}
+  void register(){count=count+1;}
+  void load(){state=1;}
+  void unload(){state=0;}
   boolean active(){return state==1;}
-  boolean ready(){return root!=null && packages>0 && symbols>0;}
-  int packageCount(){return packages;}
-  int symbolCount(){return symbols;}
+  boolean selected(){return packageName!=null;}
+  String library(){return root;}
+  String package(){return packageName;}
 }
