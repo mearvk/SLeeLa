@@ -1,0 +1,19 @@
+/*
+ * Deontology.sleela
+ * COORENAGRAPH moral vocabulary.
+ * Part of speech: noun
+ */
+
+class Deontology {
+    String term() {
+        return "Deontology";
+    }
+
+    String partOfSpeech() {
+        return "noun";
+    }
+
+    String definition() {
+        return "An ethical theory in which actions are judged by duties or rules, regardless of consequences.";
+    }
+}
