@@ -1,0 +1,8 @@
+#sleela 1.3
+// Library facade for the API package. Original API sources remain authoritative.
+class ApiPackage {
+  String source;
+  void configure(String path){source=path;}
+  String path(){return source;}
+  boolean available(){return source!=null;}
+}
