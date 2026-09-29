@@ -1,11 +1,11 @@
 # SLeeLa Class Inventory
 
 **SLeeLa Version:** 0.3.0-dev  
-**Inventory Revision:** 1.4  
-**Inventory Date:** 2026-09-28  
-**Known Source Files Explicitly Indexed: 83**
-**Repository-wide SLeeLa source files (verified): 229 on `master`; 238 on `main`**
-**Standard-library front-end objects in `/lib`: 245**
+**Inventory Revision:** 1.5  
+**Inventory Date:** 2026-09-29  
+**Known Source Files Explicitly Indexed: 105**
+**Repository-wide SLeeLa source files (verified): 251 on `master`; 260 on `main`**
+**Standard-library front-end objects in `/lib`: 256**
 **Standard-library target: 2,048 objects**  
 **Unique Foundational C++ Class Files (contract-verified): 50**
 
@@ -161,7 +161,28 @@ The library targets **2,048 object types**. Only the initial 69 are implemented 
 
 The `master` tree was mechanically enumerated before this addition at **160 `.sleela` source files**. The 69 new `/lib` files bring `master` to **229 `.sleela` source files**. The corresponding `main` tree contains **238 `.sleela` source files**, reflecting nine additional branch-specific SLeeLa source files. These are source-file counts, not declaration counts.
 
-## 5. Module Coverage
+## 5. CommonRails Printing SLeeLa Classes
+
+The CommonRails printing system now has **11 native SLeeLa classes**. They are present in both the library front end (`lib/common-rails/`) and the CommonRails source package (`common-rails/`). The duplicate paths are intentional: `/lib` exposes the standard-library front end while `/common-rails` retains the module's source-side organization.
+
+| Class # | SLeeLa Class | `/lib` Source | `/common-rails` Source |
+|---:|---|---|---|
+| 51 | `PrintLayout` | `lib/common-rails/PrintLayout.sleela` | `common-rails/PrintLayout.sleela` |
+| 52 | `PrintField` | `lib/common-rails/PrintField.sleela` | `common-rails/PrintField.sleela` |
+| 53 | `PrintLine` | `lib/common-rails/PrintLine.sleela` | `common-rails/PrintLine.sleela` |
+| 54 | `PrintFormatter` | `lib/common-rails/PrintFormatter.sleela` | `common-rails/PrintFormatter.sleela` |
+| 55 | `PrintState` | `lib/common-rails/PrintState.sleela` | `common-rails/PrintState.sleela` |
+| 56 | `PrintProgress` | `lib/common-rails/PrintProgress.sleela` | `common-rails/PrintProgress.sleela` |
+| 57 | `PrintGlyphs` | `lib/common-rails/PrintGlyphs.sleela` | `common-rails/PrintGlyphs.sleela` |
+| 58 | `PrintComponent` | `lib/common-rails/PrintComponent.sleela` | `common-rails/PrintComponent.sleela` |
+| 59 | `PrintRenderer` | `lib/common-rails/PrintRenderer.sleela` | `common-rails/PrintRenderer.sleela` |
+| 60 | `PrintWriter` | `lib/common-rails/PrintWriter.sleela` | `common-rails/PrintWriter.sleela` |
+| 61 | `PrintContractTest` | `lib/common-rails/PrintContractTest.sleela` | `common-rails/PrintContractTest.sleela` |
+
+**CommonRails native printing class count: 11.**
+
+These classes cover layout, fields, lines, formatting, state, progress, glyphs, components, rendering, output, and the native SLeeLa contract test. They correspond to the Heritage C/C++/Java printing responsibilities and are part of the SLeeLa Compiler/Loader source-discovery surface.
+## 6. Module Coverage
 
 The current 0.3.0-dev tree includes these inventory roots:
 
@@ -199,7 +220,7 @@ The current 0.3.0-dev tree includes these inventory roots:
 
 A module is not excluded merely because its implementation is C, C++, Java, SLeeLa, generated code, a protocol implementation, driver, test harness, or supporting tooling.
 
-## 6. Inventory Classification
+## 7. Inventory Classification
 
 The complete inventory distinguishes:
 
@@ -216,7 +237,7 @@ The complete inventory distinguishes:
 11. **Debugger/decompiler/compiler classes.**
 12. **Test/diagnostic classes.**
 
-## 7. Source-of-Truth Rules
+## 8. Source-of-Truth Rules
 
 The version at the top of this document comes from `VERSION.md`.
 
@@ -226,7 +247,7 @@ The `data-structures/` entries are verified against the current repository sourc
 
 The repository source tree remains the ultimate source for determining whether a declaration exists. This document is an inventory/index and should be regenerated or checked whenever source declarations change.
 
-## 8. Next Inventory Gate
+## 9. Next Inventory Gate
 
 The next revision should mechanically scan every supported source file and record:
 
@@ -250,4 +271,4 @@ The repository-wide declaration count should replace the foundational-only count
 
 ## Standard Library Expansion 0.2
 
-The `/lib` front-end now contains **245 SLeeLa object source files**. The expansion introduced 192 requested object definitions, with 16 paths overlapping existing library source files; therefore the net repository addition is 176 unique `.sleela` files. covers runtime, reflection, memory, process/threading, filesystem, cryptography, database, HTTP, compiler, debugger, and UI. The long-term target remains **2,048 objects**.
+The `/lib` front-end now contains **256 SLeeLa object source files**. The expansion introduced 192 requested object definitions, with 16 paths overlapping existing library source files; therefore the net repository addition is 176 unique `.sleela` files. covers runtime, reflection, memory, process/threading, filesystem, cryptography, database, HTTP, compiler, debugger, and UI. The long-term target remains **2,048 objects**.
