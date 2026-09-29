@@ -1,0 +1,16 @@
+/*
+ * lib/java/java/lang/management/MonitorInfo.sleela
+ * SLeeLa Java 28 source envelope.
+ * Definition: SLeeLa source declaration for the Java type java.lang.management.MonitorInfo.
+ * Java behavior is supplied through the SLeeLa Java conformance boundary.
+ */
+#sleela 1.3
+
+class MonitorInfo {
+  String javaType = "java.lang.management.MonitorInfo";
+  String typeName() { return javaType; }
+  boolean available() { return javaType != ""; }
+  String construct() { return "java.construct:" + javaType; }
+  String invoke(String operation) { return "java.invoke:" + javaType + ":" + operation; }
+  String invokeStatic(String operation) { return "java.static:" + javaType + ":" + operation; }
+}

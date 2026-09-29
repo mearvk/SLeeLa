@@ -1,0 +1,16 @@
+/*
+ * lib/java/javax/management/modelmbean/RequiredModelMBean.sleela
+ * SLeeLa Java 28 source envelope.
+ * Definition: SLeeLa source declaration for the Java type javax.management.modelmbean.RequiredModelMBean.
+ * Java behavior is supplied through the SLeeLa Java conformance boundary.
+ */
+#sleela 1.3
+
+class RequiredModelMBean {
+  String javaType = "javax.management.modelmbean.RequiredModelMBean";
+  String typeName() { return javaType; }
+  boolean available() { return javaType != ""; }
+  String construct() { return "java.construct:" + javaType; }
+  String invoke(String operation) { return "java.invoke:" + javaType + ":" + operation; }
+  String invokeStatic(String operation) { return "java.static:" + javaType + ":" + operation; }
+}
