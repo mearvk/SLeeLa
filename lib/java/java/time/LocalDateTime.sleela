@@ -1,0 +1,14 @@
+/*
+ * lib/java/java/time/LocalDateTime.sleela
+ * SLeeLa JDK 28 Framework Binding.
+ * Definition: Represents a date-time without a time-zone.
+ * Java type: java.time.LocalDateTime
+ */
+#sleela 1.3
+
+class LocalDateTime {
+  String javaType = "java.time.LocalDateTime";
+
+  String typeName() { return javaType; }
+  boolean available() { return javaType != ""; }
+}
