@@ -1,0 +1,22 @@
+/*
+ * lib/java/JavaMethod.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Represents a Java method reference and its callable name within SLeeLa Java interoperability.
+ */
+#sleela 1.3
+
+class JavaMethod {
+  String methodName = "";
+
+  void setName(String name) {
+    methodName = name;
+  }
+
+  String name() {
+    return methodName;
+  }
+
+  boolean valid() {
+    return methodName != "";
+  }
+}
