@@ -2,14 +2,14 @@
 
 ## Current Development Version
 
-**SLeeLa:** 0.3.0-dev  
-**Sleela-Complete:** 0.3.0-dev  
-**Nordshrift Complete:** 2.7-dev  
-**Native Foundation:** 0.3.0-dev  
+**SLeeLa:** 0.3.1-dev  
+**Sleela-Complete:** 0.3.1-dev  
+**Nordshrift Complete:** 2.7.1-dev  
+**Native Foundation:** 0.3.1-dev  
 **Sleela Language Syntax:** 1.3 (supported range 1.3 .. 1.3)
-**Compiler Compatibility Gate:** 2.7-dev  
+**Compiler Compatibility Gate:** 2.7.1-dev  
 **Edition:** SLeeLa Complete / Native Foundation  
-**Standard Library Collection:** 0.7-dev — 74 packages / 953 source units / 1,041 symbol records  
+**Standard Library Collection:** 0.8-dev — 74 packages / 953 source units / 1,041 symbol records  
 **Status:** Active Development  
 **Repository:** mearkv/SLeeLa
 
@@ -19,13 +19,13 @@ The repository contains multiple independently versioned layers. This registry d
 
 | Component | Current version | Status / scope |
 |---|---|---|
-| SLeeLa | **0.3.0-dev** | Active platform development |
-| Sleela-Complete | **0.3.0-dev** | Active application/complete edition |
-| Native Foundation | **0.3.0-dev** | Active C/C++ runtime foundation |
-| Sleelvac compiler/toolchain | **0.3.0-dev** | Active compiler implementation |
+| SLeeLa | **0.3.1-dev** | Active platform development |
+| Sleela-Complete | **0.3.1-dev** | Active application/complete edition |
+| Native Foundation | **0.3.1-dev** | Active C/C++ runtime foundation |
+| Sleelvac compiler/toolchain | **0.3.1-dev** | Active compiler implementation |
 | Sleela language syntax | **1.3** | Supported range **1.3 .. 1.3** |
-| Nordshrift Complete | **2.7-dev** | Active SST compiler/transpiler development |
-| Compiler Compatibility Gate | **2.7-dev** | Library-aware compiler/loader inventory gate |
+| Nordshrift Complete | **2.7.1-dev** | Active SST compiler/transpiler development |
+| Compiler Compatibility Gate | **2.7.1-dev** | Library-aware compiler/loader inventory gate |
 | NS-SST-0001 | **1.0.0** | Normative SST specification |
 | SL-META-0001 | **1.0.0** | Pre-Normative language metadocument |
 | Sleela VM ABI | **1.0** | Runtime artifact ABI major/minor |
@@ -75,7 +75,7 @@ This includes:
 - Nordshrift 2.4-dev end-to-end SST compilation and runnable artifact execution proof
 - Nordshrift 2.5-dev runtime artifact ABI validation gate — executable validation and rejection test
 - Nordshrift 2.6-dev cross-version compiler compatibility gate
-- Planned next gate: Nordshrift 2.7-dev compiler fuzzing and malformed-input gate
+- Planned next gate: Nordshrift 2.7.1-dev compiler fuzzing and malformed-input gate
 - Planned next gate: Nordshrift 2.8-dev deterministic compiler-output gate
 - Sleela language syntax 1.3 support and compiler range synchronization
 
@@ -102,7 +102,7 @@ This includes:
 
 ## Deliberately Not Claimed Complete
 
-The 0.3.0-dev version does **not** mean the SLeeLa platform is release-complete.
+The 0.3.1-dev version does **not** mean the SLeeLa platform is release-complete.
 
 Remaining gates include:
 
@@ -137,9 +137,11 @@ Version documentation and release-critical source should remain consistent acros
 
 ## Version History
 
-### 0.3.0-dev
+### 0.3.1-dev
 
-Current development line. Extends the build/lifecycle and verification phase through Nordshrift 2.6 cross-version compiler compatibility evidence.
+Current development increment. Extends the compiler-facing standard-library surface and records the `/lib` inventory for compiler, loader, SST, and Nordshrift synchronization.
+
+Recorded work includes canonical `/lib` package/source inventory, symbol and module-facade inventory, compiler/loader library visibility, and SST/Nordshrift library-aware symbol collection. Extends the build/lifecycle and verification phase through Nordshrift 2.6 cross-version compiler compatibility evidence.
 
 Completed Nordshrift verification milestones currently represented by executable/documented evidence:
 
@@ -150,7 +152,7 @@ Completed Nordshrift verification milestones currently represented by executable
 - 2.5-dev runtime artifact ABI validation
 - 2.6-dev cross-version compiler compatibility
 
-The next planned compiler verification milestones are 2.7-dev malformed-input/fuzzing coverage and 2.8-dev deterministic compiler-output verification. They are roadmap items, not completed release gates.
+The next planned compiler verification milestones are 2.7.1-dev malformed-input/fuzzing coverage and 2.8-dev deterministic compiler-output verification. They are roadmap items, not completed release gates.
 
 ### 0.1.0-dev
 
@@ -163,4 +165,4 @@ Initial consolidated development version covering the SLeeLa-Complete architectu
 
 ## 2.7 Development Gate
 
-Nordshrift 2.7-dev adds the canonical `/lib` package and symbol inventory to the compiler/Nordshrift/loader verification surface. The current collection is 74 packages, 953 SLeeLa source units, 88 module-facade symbols, and 1,041 total symbol records. The shared library index now exposes per-package counts and symbol-to-source resolution.
+Nordshrift 2.7.1-dev adds the canonical `/lib` package and symbol inventory to the compiler/Nordshrift/loader verification surface. The current collection is 74 packages, 953 SLeeLa source units, 88 module-facade symbols, and 1,041 total symbol records. The shared library index now exposes per-package counts and symbol-to-source resolution.
