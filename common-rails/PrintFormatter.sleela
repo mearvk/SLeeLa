@@ -1,0 +1,6 @@
+#sleela 1.3
+class PrintFormatter {
+  String value="";
+  void set(String v){value=v;}
+  String get(){return value;}
+}
