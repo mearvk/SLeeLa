@@ -4,11 +4,12 @@
 
 **SLeeLa:** 0.3.0-dev  
 **Sleela-Complete:** 0.3.0-dev  
-**Nordshrift Complete:** 2.6-dev  
+**Nordshrift Complete:** 2.7-dev  
 **Native Foundation:** 0.3.0-dev  
 **Sleela Language Syntax:** 1.3 (supported range 1.3 .. 1.3)
-**Compiler Compatibility Gate:** 2.6-dev  
+**Compiler Compatibility Gate:** 2.7-dev  
 **Edition:** SLeeLa Complete / Native Foundation  
+**Standard Library Collection:** 0.7-dev — 74 packages / 953 source units / 1,041 symbol records  
 **Status:** Active Development  
 **Repository:** mearkv/SLeeLa
 
@@ -23,8 +24,8 @@ The repository contains multiple independently versioned layers. This registry d
 | Native Foundation | **0.3.0-dev** | Active C/C++ runtime foundation |
 | Sleelvac compiler/toolchain | **0.3.0-dev** | Active compiler implementation |
 | Sleela language syntax | **1.3** | Supported range **1.3 .. 1.3** |
-| Nordshrift Complete | **2.6-dev** | Active SST compiler/transpiler development |
-| Compiler Compatibility Gate | **2.6-dev** | Cross-version compatibility milestone |
+| Nordshrift Complete | **2.7-dev** | Active SST compiler/transpiler development |
+| Compiler Compatibility Gate | **2.7-dev** | Library-aware compiler/loader inventory gate |
 | NS-SST-0001 | **1.0.0** | Normative SST specification |
 | SL-META-0001 | **1.0.0** | Pre-Normative language metadocument |
 | Sleela VM ABI | **1.0** | Runtime artifact ABI major/minor |
@@ -158,3 +159,8 @@ Initial consolidated development version covering the SLeeLa-Complete architectu
 ---
 
 **SLeeLa — MEARVK LLC — 2026**
+
+
+## 2.7 Development Gate
+
+Nordshrift 2.7-dev adds the canonical `/lib` package and symbol inventory to the compiler/Nordshrift/loader verification surface. The current collection is 74 packages, 953 SLeeLa source units, 88 module-facade symbols, and 1,041 total symbol records. The shared library index now exposes per-package counts and symbol-to-source resolution.

@@ -3,15 +3,15 @@
 // Native compiler/Nordshrift discovery is filesystem-driven; this object models
 // the loader-facing package lifecycle exposed above the native bridge.
 class SLVMModuleLoader {
-  String root; String packageName; int state; int count;
+  String root; String packageName; int state; int packages; int symbols;
   void configure(String libraryRoot){root=libraryRoot;}
   void select(String name){packageName=name;}
   void discover(String name){packageName=name;state=1;}
-  void register(){count=count+1;}
+  void registerPackage(){packages=packages+1;} void registerSymbol(){symbols=symbols+1;}
   void load(){state=1;}
   void unload(){state=0;}
   boolean active(){return state==1;}
-  boolean selected(){return packageName!=null;}
+  boolean selected(){return packageName!=null;} int packageCount(){return packages;} int symbolCount(){return symbols;} boolean packageAvailable(String p){return p!=null && p!="";}
   String library(){return root;}
   String package(){return packageName;}
 }
