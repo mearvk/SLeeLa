@@ -2,143 +2,71 @@
 #sleela     1.1
 
 /// CommonRails — SST (Nordshrift) edition using the 2.0 semantic layer.
-/// ==========================================
-/// The SST companion to common-rails/CommonRails.sleela. This control sheet
-/// drives the CommonRails Wrapper™ through the triplet and, using the 2.0
-/// semantic layer (NS-SST-0001 Part XVII), declares CommonRails' professional
-/// printing as an explicit subject: the 21x21 progress square, its cell count,
-/// and its bottom-right -> left -> up fill relation, with provenance.
-///
-/// Check: ./impl/build/nordshrift check common-rails/common-rails.sst
-/// Build: ./impl/build/nordshrift build common-rails/common-rails.sst
 sheet common-rails:
-  version      1.2.0
+  version      1.3.0
   author       "Sleela Design Council"
-  description  "Professional printing component: fixed-width lines + 21x21 progress square + component lines."
+  description  "Professional printing component: fixed-width lines + 21x21 progress square + Heritage C/C++/Java printing utilities."
 
 source:
   root  "."
   glob  "*.sleela"
 
-/// The progress-square geometry as an explicit math subject, so the 441-cell
-/// count and the fill relation are declared and validated rather than implied.
 subject CommonRailsPrinting:
   domain: formatting
   depends: [ math ]
 
   quantity printWidth:
-    value:     "80"
-    unit:      "character"
-    dimension: width
-    domain:    "printWidth >= 1"
-    status:    specified
+    value: "80"
+    unit: "character"
+    status: specified
+
+  quantity objectIdWidth:
+    value: "10"
+    unit: "character"
+    status: specified
+
+  quantity currentWidth:
+    value: "39"
+    unit: "character"
+    status: specified
+
+  quantity progressSide:
+    value: "21"
+    unit: "cell"
+    status: specified
+
+  quantity progressCells:
+    value: "441"
+    unit: "cell"
+    status: derived
 
   assumption fixedWidth:
     statement: "organized content lines are padded to exactly printWidth characters when content fits"
-    scope:     "printWidthLine"
-    source:    "CommonRails.sleela implementation"
-    status:    specified
-
-  assumption explicitLength:
-    statement: "content character count is supplied explicitly because the core surface does not expose general string length/indexing"
-    scope:     "printWidthLine / printField"
-    source:    "CommonRails.sleela implementation"
-    status:    specified
-
-  relation availableWidth:
-    formula: "padding = printWidth - contentChars; padding is clamped to zero"
-    inputs:  [ printWidth, contentChars ]
-    outputs: [ padding ]
-
-  evidence:
     status: specified
-    source: "CommonRails.sleela PRINT_WIDTH, printWidthLine(), printField()"
 
-subject CommonRailsSquare:
-  domain: math
-  depends: [ math ]
-
-  quantity side:
-    value:     "21"
-    unit:      "cell"
-    dimension: length
-    status:    specified
-
-  quantity cells:
-    value:     "side * side"
-    unit:      "cell"
-    dimension: count
-    domain:    "side >= 1"
-    status:    derived
-
-  quantity perCell:
-    value:     "100 / cells"
-    unit:      "percent"
-    dimension: ratio
-    status:    derived
+  assumption wrapping:
+    statement: "content exceeding printWidth is emitted as word-boundary continuation lines"
+    status: specified
 
   assumption integerPercent:
-    statement: "percent is clamped to 0..100 and mapped with floor(percent*cells/100)"
-    scope:     "clampPercent / percentToCells / printSquarePercent"
-    source:    "CommonRails.sleela implementation"
-    status:    specified
+    statement: "percent is clamped to 0..100 and mapped with floor(percent*441/100)"
+    status: specified
 
-  relation cellCount:
-    formula: "cells = side * side"
-    inputs:  [ side ]
-    outputs: [ cells ]
-
-  relation fillIndex:
-    formula: "fillIndex = ((side-1)-displayRow)*side + ((side-1)-displayCol)"
-    inputs:  [ side, displayRow, displayCol ]
-    outputs: [ fillIndex ]
-
-  transformation fillOrder:
-    source:      fillIndex
-    operation:   "fill cells with fillIndex < filled, in ascending fillIndex"
-    parameters:  "order = bottom-right -> left across a row, then up one row"
-    destination: cells
-    approximate: false
-
-  comparison:
-    prior:     CommonRailsSquare10
-    current:   CommonRailsSquare
-    reference: CommonRailsSquare10
-    norm:      "ratio of 21x21 (441) cells to the prior 10x10 (100) cells"
-
-  boundaryCases:
-    values: [ 0, 1, 21, 22, 440, 441 ]
-    purpose: "zero, corner, full-row, row-transition, penultimate, and full-square states"
-
-  percentCases:
-    values: [ 0, 1, 50, 99, 100 ]
-    purpose: "explicit percent-to-cell boundary and midpoint coverage"
-
+subject CommonRailsPrintingHeritage:
+  domain: formatting
+  languages: [ C, C++, Java ]
+  responsibilities: [ PrintLayout, PrintField, PrintLine, PrintFormatter, PrintState, PrintProgress, PrintGlyphs, PrintComponent, PrintRenderer, PrintWriter, PrintContractTest ]
+  states: [ START, WORKING, PROGRESS, COMPLETE, WARN, ERROR ]
   evidence:
     status: specified
-    source: "CommonRails.sleela printSquare(), clampPercent(), percentToCells()"
-    note:   "441 is derived from the specified 21x21 geometry"
+    source: "common-rails/heritage/PRINTING.HERITAGE.md"
 
-  explanation:
-    subject: CommonRailsSquare
-    steps: [ "declare the square side (21 cells)",
-             "derive the cell count (side * side = 441)",
-             "map an integer percent to a filled-cell count",
-             "compute each display cell's fill index",
-             "fill in ascending fill index (bottom-right -> left -> up)" ]
-
-  todo colorizeTargets:
-    priority:    2
-    depends:     [ CommonRailsSquare ]
-    preconditions: "a target supports ANSI color escapes"
-    action:      "carry the filled/empty color distinction into the c and java targets"
-    expected:    "orange filled cells on white empty cells, matching the Java edition"
-    validation:  "visual diff of rendered squares across targets"
-    status:      planned
+  boundaryCases:
+    percent: [ -1, 0, 1, 50, 99, 100, 101 ]
+    cells: [ 0, 220, 441 ]
+    purpose: "normalization, midpoint, full-square, and out-of-range coverage"
 
 target:
-  root            "out"
-  layout          mirror-source
-  java-version    21
-  package-root    "com.sleela.commonrails"
-  target-language sleela
+  root "out"
+  java-version 21
+  package-root "com.sleela.commonrails"
