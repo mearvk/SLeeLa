@@ -25,7 +25,7 @@ The VM and OS families are language-facing contracts for facilities implemented 
 
 **Revision:** 0.3  
 **Packages:** 23  
-**SLeeLa source units:** 917  
+**SLeeLa source units:** 918  
 **Module-facade symbols:** 53  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
 
