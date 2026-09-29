@@ -12,7 +12,7 @@
 /// Check: ./impl/build/nordshrift check common-rails/common-rails.sst
 /// Build: ./impl/build/nordshrift build common-rails/common-rails.sst
 sheet common-rails:
-  version      1.0.0
+  version      1.1.0
   author       "Sleela Design Council"
   description  "Professional printing component: 21x21 progress square + component lines."
 
@@ -46,10 +46,10 @@ subject CommonRailsSquare:
     status:    derived
 
   assumption integerPercent:
-    statement: "fill is driven by an integer percent mapped to floor(percent*cells/100) cells"
-    scope:     "printProgressBar / printSquarePercent"
-    source:    "modeling choice, matches the Java CommonRails"
-    status:    assumed
+    statement: "percent is clamped to 0..100 and mapped with floor(percent*cells/100)"
+    scope:     "clampPercent / percentToCells / printSquarePercent"
+    source:    "CommonRails.sleela implementation"
+    status:    specified
 
   relation cellCount:
     formula: "cells = side * side"
@@ -74,10 +74,18 @@ subject CommonRailsSquare:
     reference: CommonRailsSquare10
     norm:      "ratio of 21x21 (441) cells to the prior 10x10 (100) cells"
 
+  boundaryCases:
+    values: [ 0, 1, 21, 22, 440, 441 ]
+    purpose: "zero, corner, full-row, row-transition, penultimate, and full-square states"
+
+  percentCases:
+    values: [ 0, 1, 50, 99, 100 ]
+    purpose: "explicit percent-to-cell boundary and midpoint coverage"
+
   evidence:
     status: specified
-    source: "CommonRails.sleela printSquare(); Java print-method.xml <square-progress><size>21</size>"
-    note:   "the 441-cell count is a specified geometry, not a measurement"
+    source: "CommonRails.sleela printSquare(), clampPercent(), percentToCells()"
+    note:   "441 is derived from the specified 21x21 geometry"
 
   explanation:
     subject: CommonRailsSquare
