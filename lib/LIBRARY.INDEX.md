@@ -23,9 +23,9 @@ The VM and OS families are language-facing contracts for facilities implemented 
 **SLeeLa — MEARVK LLC — 2026**
 # SLeeLa /lib Library Index
 
-**Revision:** 0.2  
+**Revision:** 0.3  
 **Packages:** 23  
-**SLeeLa source units:** 901  
+**SLeeLa source units:** 917  
 **Module-facade symbols:** 53  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
 

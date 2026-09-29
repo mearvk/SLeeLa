@@ -1,6 +1,6 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
-library-source-files: 901
+library-source-files: 917
 library-packages: 23
 
 package	symbol	path	kind
@@ -958,3 +958,20 @@ telephony-skya	VoIPAccount	lib/telephony-skya/SLPackage.sleela	module-facade
 telephony-skya	VoIPAppExample	lib/telephony-skya/SLPackage.sleela	module-facade
 telephony-skya	VoIPApplication	lib/telephony-skya/SLPackage.sleela	module-facade
 us-infrastructure	model	lib/us-infrastructure/SLPackage.sleela	module-facade
+
+audio	SLPackage	lib/audio/SLPackage.sleela	source
+churn	SLPackage	lib/churn/SLPackage.sleela	source
+common-rails	SLPackage	lib/common-rails/SLPackage.sleela	source
+data-structures	SLPackage	lib/data-structures/SLPackage.sleela	source
+http-3.0	SLPackage	lib/http-3.0/SLPackage.sleela	source
+ide	SLPackage	lib/ide/SLPackage.sleela	source
+inference-model	SLPackage	lib/inference-model/SLPackage.sleela	source
+inputs	SLPackage	lib/inputs/SLPackage.sleela	source
+journey	SLPackage	lib/journey/SLPackage.sleela	source
+manifesto	SLPackage	lib/manifesto/SLPackage.sleela	source
+munction	SLPackage	lib/munction/SLPackage.sleela	source
+rmi	SLPackage	lib/rmi/SLPackage.sleela	source
+server-edition	SLPackage	lib/server-edition/SLPackage.sleela	source
+social-model	SLPackage	lib/social-model/SLPackage.sleela	source
+telephony-skya	SLPackage	lib/telephony-skya/SLPackage.sleela	source
+us-infrastructure	SLPackage	lib/us-infrastructure/SLPackage.sleela	source

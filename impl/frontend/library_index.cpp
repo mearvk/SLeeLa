@@ -18,6 +18,6 @@ Index Index::discover(const std::string& preferredRoot){
 bool Index::empty()const{return symbols_.empty();}
 size_t Index::symbolCount()const{return symbols_.size();}
 bool Index::hasPackage(const std::string&p)const{for(const auto&s:symbols_)if(s.package==p)return true;return false;}
-std::string Index::resolveImport(const std::string&i)const{return hasPackage(i)?root_+"/"+i:"""";}
+std::string Index::resolveImport(const std::string&i)const{return hasPackage(i)?root_+"/"+i:"";}
 void validateImports(const std::vector<std::string>&is,const Index&i){for(const auto&x:is)if(x!="chemistry"&&x!="financial"&&x!="native"&&!i.hasPackage(x))throw std::runtime_error("Library import '"+x+"' is not present under /lib");}
 }}
