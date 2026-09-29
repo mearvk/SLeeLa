@@ -1,11 +1,11 @@
 # SLeeLa Class Inventory
 
 **SLeeLa Version:** 0.3.0-dev  
-**Inventory Revision:** 1.5  
+**Inventory Revision:** 1.6  
 **Inventory Date:** 2026-09-29  
-**Known Source Files Explicitly Indexed: 105**
-**Repository-wide SLeeLa source files (verified): 251 on `master`; 260 on `main`**
-**Standard-library front-end objects in `/lib`: 256**
+**Known Source Files Explicitly Indexed: 121**
+**Repository-wide SLeeLa source files (verified): 267 on `master`; 276 on `main`**
+**Standard-library front-end objects in `/lib`: 264**
 **Standard-library target: 2,048 objects**  
 **Unique Foundational C++ Class Files (contract-verified): 50**
 
@@ -182,7 +182,37 @@ The CommonRails printing system now has **11 native SLeeLa classes**. They are p
 **CommonRails native printing class count: 11.**
 
 These classes cover layout, fields, lines, formatting, state, progress, glyphs, components, rendering, output, and the native SLeeLa contract test. They correspond to the Heritage C/C++/Java printing responsibilities and are part of the SLeeLa Compiler/Loader source-discovery surface.
-## 6. Module Coverage
+## 6. SLeeLa Data-Structures Source Classes and Types
+
+The data-structures module now has an explicit per-source-file SLeeLa surface in both `/data-structures` and `/lib/data-structures`.
+
+### SLeeLa structure types
+
+| Type | Kind | Source |
+|---|---|---|
+| `DSValue` | SLeeLa struct | `data-structures/DSValue.sleela` |
+| `DSList` | SLeeLa struct | `data-structures/DSList.sleela` |
+| `DSStack` | SLeeLa struct | `data-structures/DSStack.sleela` |
+| `DSQueue` | SLeeLa struct | `data-structures/DSQueue.sleela` |
+| `DSMap` | SLeeLa struct | `data-structures/DSMap.sleela` |
+| `DSObject` | SLeeLa struct | `data-structures/DSObject.sleela` |
+
+### SLeeLa classes
+
+| Class # | SLeeLa Class | `/data-structures` Source | `/lib/data-structures` Source |
+|---:|---|---|---|
+| 62 | `DSValueOperations` | `data-structures/DSValue.sleela` | `lib/data-structures/DSValue.sleela` |
+| 63 | `DSListOperations` | `data-structures/DSList.sleela` | `lib/data-structures/DSList.sleela` |
+| 64 | `DSStackOperations` | `data-structures/DSStack.sleela` | `lib/data-structures/DSStack.sleela` |
+| 65 | `DSQueueOperations` | `data-structures/DSQueue.sleela` | `lib/data-structures/DSQueue.sleela` |
+| 66 | `DSMapOperations` | `data-structures/DSMap.sleela` | `lib/data-structures/DSMap.sleela` |
+| 67 | `DSObjectOperations` | `data-structures/DSObject.sleela` | `lib/data-structures/DSObject.sleela` |
+| 68 | `DataStructures` | `data-structures/DataStructures.sleela` | `lib/data-structures/DataStructures.sleela` |
+| 69 | `DataStructuresTest` | `data-structures/DataStructuresTest.sleela` | `lib/data-structures/DataStructuresTest.sleela` |
+
+The six SLeeLa structure types are tracked separately from class numbering, while the seven operation/facade/test classes are assigned class numbers 62–69. These sources are semantic counterparts to the native C/C++ data-structure contracts and are part of the Compiler/Loader source-discovery surface.
+
+## 7. Module Coverage
 
 The current 0.3.0-dev tree includes these inventory roots:
 
@@ -220,7 +250,7 @@ The current 0.3.0-dev tree includes these inventory roots:
 
 A module is not excluded merely because its implementation is C, C++, Java, SLeeLa, generated code, a protocol implementation, driver, test harness, or supporting tooling.
 
-## 7. Inventory Classification
+## 8. Inventory Classification
 
 The complete inventory distinguishes:
 
@@ -237,7 +267,7 @@ The complete inventory distinguishes:
 11. **Debugger/decompiler/compiler classes.**
 12. **Test/diagnostic classes.**
 
-## 8. Source-of-Truth Rules
+## 9. Source-of-Truth Rules
 
 The version at the top of this document comes from `VERSION.md`.
 
@@ -247,7 +277,7 @@ The `data-structures/` entries are verified against the current repository sourc
 
 The repository source tree remains the ultimate source for determining whether a declaration exists. This document is an inventory/index and should be regenerated or checked whenever source declarations change.
 
-## 9. Next Inventory Gate
+## 10. Next Inventory Gate
 
 The next revision should mechanically scan every supported source file and record:
 
@@ -271,4 +301,4 @@ The repository-wide declaration count should replace the foundational-only count
 
 ## Standard Library Expansion 0.2
 
-The `/lib` front-end now contains **256 SLeeLa object source files**. The expansion introduced 192 requested object definitions, with 16 paths overlapping existing library source files; therefore the net repository addition is 176 unique `.sleela` files. covers runtime, reflection, memory, process/threading, filesystem, cryptography, database, HTTP, compiler, debugger, and UI. The long-term target remains **2,048 objects**.
+The `/lib` front-end now contains **264 SLeeLa object source files**. The expansion introduced 192 requested object definitions, with 16 paths overlapping existing library source files; therefore the net repository addition is 176 unique `.sleela` files. covers runtime, reflection, memory, process/threading, filesystem, cryptography, database, HTTP, compiler, debugger, and UI. The long-term target remains **2,048 objects**.
