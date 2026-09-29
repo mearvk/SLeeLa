@@ -2,6 +2,7 @@
  * Amoral.sleela
  * COORENAGRAPH moral vocabulary.
  * Part of speech: adjective
+ * Definition: Lacking moral sensibility or treating right and wrong as irrelevant.
  */
 
 class Amoral {
