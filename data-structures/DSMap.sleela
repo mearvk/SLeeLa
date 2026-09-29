@@ -1,0 +1,11 @@
+#sleela 1.2
+
+struct DSMap {
+    int size;
+}
+
+class DSMapOperations {
+    boolean empty(DSMap map) { return map.size == 0; }
+    int size(DSMap map) { return map.size; }
+    boolean hasEntries(DSMap map) { return map.size > 0; }
+}
