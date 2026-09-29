@@ -1,0 +1,14 @@
+/*
+ * lib/java/java/time/Instant.sleela
+ * SLeeLa JDK 28 Framework Binding.
+ * Definition: Represents an instantaneous point on the time-line.
+ * Java type: java.time.Instant
+ */
+#sleela 1.3
+
+class Instant {
+  String javaType = "java.time.Instant";
+
+  String typeName() { return javaType; }
+  boolean available() { return javaType != ""; }
+}
