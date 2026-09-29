@@ -1,0 +1,11 @@
+#sleela 1.2
+
+struct DSQueue {
+    int size;
+}
+
+class DSQueueOperations {
+    boolean empty(DSQueue queue) { return queue.size == 0; }
+    int size(DSQueue queue) { return queue.size; }
+    boolean canDequeue(DSQueue queue) { return queue.size > 0; }
+}
