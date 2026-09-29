@@ -37,7 +37,47 @@ Beautiful Design printing presents information in this order:
 
 Decoration must not compete with state or message.
 
-## 3. Canonical progress square
+## 3. Fixed-width print contract
+
+Beautiful Design uses fixed-width print regions so separate print statements occupy
+the same organized space.
+
+The canonical default is:
+
+| Property | Contract |
+|---|---|
+| Print width | **80 characters** |
+| Content | Begins at the declared content position |
+| Short content | Right-padded with spaces |
+| Long content | Must be wrapped by the caller/rendering layer; it is never silently truncated |
+| Alignment | Repeated print statements use identical field geometry |
+| Color | Optional; it does not change width semantics |
+
+The SLeeLa implementation provides:
+
+```text
+PRINT_WIDTH = 80
+printWidthLine(content, contentChars)
+printField(content, contentChars, fieldWidth)
+```
+
+Because the current core surface does not provide general string-length or character
+indexing operations, the content character count is explicit in the primitive's
+contract. This keeps width calculation deterministic.
+
+Example:
+
+```text
+[START]   CommonRails printing initialized
+[WORKING] Content remains aligned inside the declared width
+[COMPLETE] Fixed-width output ready
+```
+
+Each logical line is padded to 80 columns. When content is too long for the available
+region, the rendering layer wraps it onto continuation lines rather than changing
+the declared geometry.
+
+## 4. Canonical progress square
 
 The CommonRails square is **21×21 = 441 cells**.
 
@@ -58,7 +98,7 @@ Required boundary states:
 - 440 — one cell remaining
 - 441 — complete
 
-## 4. Percentage pattern
+## 5. Percentage pattern
 
 Percentages are normalized before rendering:
 
@@ -77,7 +117,7 @@ Recommended form:
 progress 50% (220/441 cells)
 ```
 
-## 5. Single-pixel pattern
+## 6. Single-pixel pattern
 
 For compact status displays:
 
@@ -89,7 +129,7 @@ For compact status displays:
 This is a binary activity/state indicator, not a replacement for the measured
 441-cell progress state.
 
-## 6. Glyph and color rules
+## 7. Glyph and color rules
 
 Core meaning is carried by structure and glyphs:
 
@@ -99,7 +139,7 @@ Core meaning is carried by structure and glyphs:
 Color is optional presentation metadata. A target may use ANSI or another color
 system, but removing color must leave the same interpretation.
 
-## 7. Alignment rules
+## 8. Alignment rules
 
 - Keep component prefixes identical.
 - Keep Object ID width stable.
@@ -108,7 +148,7 @@ system, but removing color must leave the same interpretation.
 - Clamp padding at zero when content exceeds the declared width.
 - Keep messages concise and semantically complete.
 
-## 8. State vocabulary
+## 9. State vocabulary
 
 Beautiful Design should distinguish state without relying solely on color:
 
@@ -123,7 +163,7 @@ Beautiful Design should distinguish state without relying solely on color:
 
 These are conventions, not mandatory text on every line.
 
-## 9. Rendering architecture
+## 10. Rendering architecture
 
 Every visual element should have a deterministic semantic source:
 
@@ -140,7 +180,7 @@ target presentation
 Target-specific color, fonts, terminal features, or graphical treatment must not
 redefine the underlying state.
 
-## 10. Reusable operation pattern
+## 11. Reusable operation pattern
 
 ```text
 -- : [Object ID: 0000001234] [Date: 1] [Current: @ComponentName          ] . START message .
@@ -159,7 +199,7 @@ redefine the underlying state.
 The messages are application-specific. Geometry, alignment, state semantics, and
 progress mathematics are reusable.
 
-## 11. Design invariants
+## 12. Design invariants
 
 A conformant Beautiful Design implementation must preserve:
 
@@ -172,7 +212,7 @@ A conformant Beautiful Design implementation must preserve:
 - target-independent semantics;
 - identical logical output for identical source state.
 
-## 12. Relationship to SST
+## 13. Relationship to SST
 
 The CommonRails SST companion is the semantic authority for the square's
 mathematical contract. This document defines the broader presentation pattern
