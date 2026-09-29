@@ -1,14 +1,18 @@
 /*
  * lib/java/java/net/InetAddress.sleela
- * SLeeLa JDK 28 Framework Binding.
- * Definition: Represents an Internet Protocol address.
- * Java type: java.net.InetAddress
+ * SLeeLa Java SE/JDK 28 source envelope.
+ * Definition: Native SLeeLa source declaration for the Java type java.net.InetAddress.
+ *
+ * The Java class name is retained exactly. The SLeeLa declaration is the source
+ * contract; Java behavior is supplied only through the conformance boundary.
  */
 #sleela 1.3
 
 class InetAddress {
   String javaType = "java.net.InetAddress";
-
   String typeName() { return javaType; }
   boolean available() { return javaType != ""; }
+  String construct() { return "java.construct:" + javaType; }
+  String invoke(String operation) { return "java.invoke:" + javaType + ":" + operation; }
+  String invokeStatic(String operation) { return "java.static:" + javaType + ":" + operation; }
 }
