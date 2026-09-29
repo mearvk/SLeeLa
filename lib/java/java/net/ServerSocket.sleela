@@ -1,0 +1,14 @@
+/*
+ * lib/java/java/net/ServerSocket.sleela
+ * SLeeLa JDK 28 Framework Binding.
+ * Definition: Represents a server-side network socket.
+ * Java type: java.net.ServerSocket
+ */
+#sleela 1.3
+
+class ServerSocket {
+  String javaType = "java.net.ServerSocket";
+
+  String typeName() { return javaType; }
+  boolean available() { return javaType != ""; }
+}
