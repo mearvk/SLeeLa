@@ -1,0 +1,9 @@
+#sleela 1.3
+// Library facade for module package: inference-model
+// Original module sources remain authoritative in the package source tree.
+class nationalSeries {
+  String source;
+  void configure(String path){source=path;}
+  String path(){return source;}
+  boolean available(){return source!=null;}
+}

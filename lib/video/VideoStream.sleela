@@ -1,0 +1,9 @@
+#sleela 1.3
+class VideoStream {
+  string identifier;
+  VideoTrack track;
+  boolean active;
+  void open(string id,VideoTrack value){identifier=id;track=value;active=value!=null;}
+  boolean running(){return active;}
+  void close(){active=false;}
+}

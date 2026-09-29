@@ -1,0 +1,8 @@
+#sleela 1.3
+class VideoProfile {
+  string name;
+  int level;
+  int bitDepth;
+  void set(string value,int profileLevel,int depth){name=value;level=profileLevel;bitDepth=depth;}
+  boolean valid(){return name!="" && level>=0 && bitDepth>=8;}
+}

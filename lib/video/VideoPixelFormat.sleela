@@ -1,0 +1,7 @@
+#sleela 1.3
+class VideoPixelFormat {
+  string name;
+  int planes;
+  void set(string value,int count){name=value;planes=count;}
+  boolean valid(){return name!="" && planes>0 && planes<=4;}
+}

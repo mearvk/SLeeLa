@@ -1,0 +1,10 @@
+#sleela 1.3
+class VideoCodec {
+  string name;
+  string profile;
+  boolean decoder;
+  boolean encoder;
+  void identify(string codec,string codecProfile){name=codec;profile=codecProfile;}
+  void capabilities(boolean decode,boolean encode){decoder=decode;encoder=encode;}
+  boolean supported(){return name!="" && (decoder || encoder);}
+}

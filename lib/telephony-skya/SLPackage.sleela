@@ -1,0 +1,63 @@
+#sleela 1.3
+// Library facade for module package: telephony-skya
+// Original module sources remain authoritative in the package source tree.
+class AudioDeviceManager {
+  String source;
+  void configure(String path){source=path;}
+  String path(){return source;}
+  boolean available(){return source!=null;}
+}
+class CaptureStream {
+  String source;
+  void configure(String path){source=path;}
+  String path(){return source;}
+  boolean available(){return source!=null;}
+}
+class PlaybackStream {
+  String source;
+  void configure(String path){source=path;}
+  String path(){return source;}
+  boolean available(){return source!=null;}
+}
+class Skya {
+  String source;
+  void configure(String path){source=path;}
+  String path(){return source;}
+  boolean available(){return source!=null;}
+}
+class SkyaClient {
+  String source;
+  void configure(String path){source=path;}
+  String path(){return source;}
+  boolean available(){return source!=null;}
+}
+class SkyaRoom {
+  String source;
+  void configure(String path){source=path;}
+  String path(){return source;}
+  boolean available(){return source!=null;}
+}
+class SkyaServer {
+  String source;
+  void configure(String path){source=path;}
+  String path(){return source;}
+  boolean available(){return source!=null;}
+}
+class VoIPAccount {
+  String source;
+  void configure(String path){source=path;}
+  String path(){return source;}
+  boolean available(){return source!=null;}
+}
+class VoIPAppExample {
+  String source;
+  void configure(String path){source=path;}
+  String path(){return source;}
+  boolean available(){return source!=null;}
+}
+class VoIPApplication {
+  String source;
+  void configure(String path){source=path;}
+  String path(){return source;}
+  boolean available(){return source!=null;}
+}

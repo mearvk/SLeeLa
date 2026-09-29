@@ -1,0 +1,15 @@
+#sleela 1.3
+// Library facade for module package: server-edition
+// Original module sources remain authoritative in the package source tree.
+class ServerEdition2Server {
+  String source;
+  void configure(String path){source=path;}
+  String path(){return source;}
+  boolean available(){return source!=null;}
+}
+class ServerEdition3Server {
+  String source;
+  void configure(String path){source=path;}
+  String path(){return source;}
+  boolean available(){return source!=null;}
+}

@@ -1,0 +1,9 @@
+#sleela 1.3
+class Video {
+  string title;
+  VideoTimeline timeline;
+  VideoCodec codec;
+  void setTitle(string value){title=value;}
+  string getTitle(){return title;}
+  boolean ready(){return timeline!=null && codec!=null;}
+}

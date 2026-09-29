@@ -1,6 +1,17 @@
 #sleela 1.3
-// Unified SLeeLa standard-library front-end object.
-// Family: vm. Native VM/OS work crosses an explicit bridge.
+// Unified SLeeLa standard-library module loader front-end.
+// Native compiler/Nordshrift discovery is filesystem-driven; this object models
+// the loader-facing package lifecycle exposed above the native bridge.
 class SLVMModuleLoader {
-  String name; int state; int count; void configure(String n){name=n;} void start(){state=1;} void stop(){state=0;} void register(){count=count+1;} boolean active(){return state==1;}
+  String root; String packageName; int state; int count;
+  void configure(String libraryRoot){root=libraryRoot;}
+  void select(String name){packageName=name;}
+  void discover(String name){packageName=name;state=1;}
+  void register(){count=count+1;}
+  void load(){state=1;}
+  void unload(){state=0;}
+  boolean active(){return state==1;}
+  boolean selected(){return packageName!=null;}
+  String library(){return root;}
+  String package(){return packageName;}
 }

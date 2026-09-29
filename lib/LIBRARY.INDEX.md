@@ -1,23 +1,38 @@
 # SLeeLa /lib Library Index
 
-**Library revision:** 0.1  
-**Initial front-end objects:** 69  
-**Target standard-library objects:** 2,048  
-**Verified `.sleela` source files before `/lib`:** 160  
-**Verified `.sleela` source files after `/lib`:** 229 on `master`; 238 on `main`
+**Revision:** 0.6  
+**Packages:** 74  
+**SLeeLa source units:** 953  
+**Module-facade symbols:** 88  
+**Total symbol records:** 1,041  
+**Symbol manifest:** `LIBRARY.SYMBOLS.md`
 
-| Family | Objects |
+The `/lib` tree is the canonical language-facing source collection. The compiler and Nordshrift use the same recursive library discovery implementation, so a package becomes importable when its directory contains SLeeLa source.
+
+| Coverage | Count |
 |---|---:|
-| core | 8 |
-| collections | 8 |
-| text | 8 |
-| io | 8 |
-| vm | 13 |
-| os | 10 |
-| net | 8 |
-| security | 6 |
-| **Total** | **69** |
+| Repository module families represented under /lib | 74 |
+| SLeeLa source units | 953 |
+| Module-facade symbols | 88 |
+| Total symbol records | 1,041 |
 
-The VM and OS families are language-facing contracts for facilities implemented below the SLeeLa layer. Native execution belongs behind an explicit bridge.
+Every repository-level module family that is a language/runtime/package concern now has at least one SLeeLa source unit under `/lib`. Documentation, images, generated build output, tests, and CI-only directories remain non-library artifacts and are intentionally not presented as language packages.
 
-**SLeeLa — MEARVK LLC — 2026**
+## Compiler and Loader Resolution
+
+Resolution is shared by the SLeeLa compiler and Nordshrift:
+
+1. `$SLEELA_LIB`
+2. `lib`
+3. `../lib`
+4. `../../lib`
+
+Discovery is recursive. Package presence is therefore derived from the actual `/lib` tree rather than a hand-maintained package allow-list. `validateImports()` rejects an imported package that is not present.
+
+The VM-facing `SLVMModuleLoader` source mirrors this contract: package names are discovered from the canonical library root, registered, and checked before use. Native loader facilities remain below the explicit C/C++ OS bridge.
+
+## Inventory
+
+The complete path-level and facade-level symbol collection is maintained in `LIBRARY.SYMBOLS.md`.
+
+**Max Rupplin — MEARVK LLC — 2026**

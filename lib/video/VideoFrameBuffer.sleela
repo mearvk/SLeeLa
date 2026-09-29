@@ -1,0 +1,8 @@
+#sleela 1.3
+class VideoFrameBuffer {
+  int bytes;
+  int stride;
+  int planes;
+  void describe(int size,int row,int count){bytes=size;stride=row;planes=count;}
+  boolean valid(){return bytes>0 && stride>0 && planes>0 && planes<=4;}
+}
