@@ -8599,12 +8599,20 @@
       "sha256": "34ad0b2590374e9562245408722138fe0b012d85fcafbdda5054405cf9e68cc2"
     },
     {
+      "path": "lib/java/JDK28SourceSet.sleela",
+      "sha256": "d5d2d6281cf1c98f397933db20d1af5490d20ac56dc07607f53448c6a47a6664"
+    },
+    {
       "path": "lib/java/JavaBridge.sleela",
       "sha256": "4440200e297c6fb203cecd3bfdf70cc23eae3fb1f20a822bd549d7da58405c7f"
     },
     {
       "path": "lib/java/JavaClass.sleela",
       "sha256": "5fc1185f75828a96d9373b42e2821c6d651bc5b608d44d4955513110f6f99665"
+    },
+    {
+      "path": "lib/java/JavaConform.sleela",
+      "sha256": "affa6ccba38acd0b9b332824e6d084d7c1571878d04b8727cf9802dabb963911"
     },
     {
       "path": "lib/java/JavaInvocation.sleela",
@@ -8619,148 +8627,152 @@
       "sha256": "37a96ed3d09fb810b355ac6707f6cb1a55231e4eaab36054dd9fe22ada0d356a"
     },
     {
+      "path": "lib/java/JavaType.sleela",
+      "sha256": "3f4d89420fac29255fe392fa5f75720c44a345e3e9766c67b1498dc243cf0e61"
+    },
+    {
       "path": "lib/java/SLPackage.sleela",
       "sha256": "7bef91b0801156571f40b5e0eef17296232bbdb517377ad6431d005e1299230c"
     },
     {
       "path": "lib/java/java/io/File.sleela",
-      "sha256": "8a8ff0084cfd0725e05c39897529182a1fb51cbd72368c9fb722ed6210c091e5"
+      "sha256": "27b9e81355edaea847856b1986aed49069b4eae49fe7c33ae39d945d07f50886"
     },
     {
       "path": "lib/java/java/io/InputStream.sleela",
-      "sha256": "258e6791c488397244d943d676b97fa95d32644e26a9cd1f792bd4c309e49716"
+      "sha256": "0074855057420a9e505054d68003d003ecf11eea62cc1884a834b2b60642360d"
     },
     {
       "path": "lib/java/java/io/OutputStream.sleela",
-      "sha256": "0c836cc32f40a6f54ca7a34142cc89eeac26944c1b02f8487ec2b67c238544e2"
+      "sha256": "17b8d72677af994ad26ebe564e6522ddaca211e6f68b4b3ec82c516da1fef181"
     },
     {
       "path": "lib/java/java/io/Reader.sleela",
-      "sha256": "3ce3e72dc40f9110f47da9d7d48eece286437ac02ecee3fc73a681eb7d48d118"
+      "sha256": "38e70489709f0dc7485327099d376c56cb38a3112a1afbfb56dd245b6a5ddcab"
     },
     {
       "path": "lib/java/java/io/Writer.sleela",
-      "sha256": "a7cea55d6c80a762fe5448e143cdc5fad1dbc62f5d4656b9fe1939bd662f64d1"
+      "sha256": "bdaf55228c1eacdca5e2b6a7f3a78d64fe9de3ce43a82e03f60115a341bc3ba3"
     },
     {
       "path": "lib/java/java/lang/Boolean.sleela",
-      "sha256": "fcc17f720d688cc1f9baacdc899c244586ba7f98a192079989a5fb2eab5f44fe"
+      "sha256": "d0eb9693547b6c73db40854016af225eff71eb5cb5922c0988efce52090e36a8"
     },
     {
       "path": "lib/java/java/lang/Class.sleela",
-      "sha256": "ded8b567089a63e8e42d246148d9115a7f1bf00eaf13b40b6c83a1f3a077cf11"
+      "sha256": "78ebfd25f3c828828be475ffe32cf0e2cf2e4c510bcbf29d351346ae64b11896"
     },
     {
       "path": "lib/java/java/lang/Double.sleela",
-      "sha256": "a48b7754929c2c05ed47fb5820e0cd5259dfd5a192417c1a93707941cc3cef28"
+      "sha256": "12f601b4d01449620b5f30dbbf4d647956fb1e5179fcbd4eef6e558c262ea30d"
     },
     {
       "path": "lib/java/java/lang/Exception.sleela",
-      "sha256": "bd4fc1b8f2c6d9d7f1758ba48180d16a67d8470bb71295f6815a0484fbecc80a"
+      "sha256": "1fc204afe3fa7a1d6aa03f5b3a2b556aa8b9f5a13d5f6dc932be3d8c4dc2c419"
     },
     {
       "path": "lib/java/java/lang/Integer.sleela",
-      "sha256": "c9adc4ec2c71f4c8967d59d15ed4670468e74c64b06437942ac2682e935891e8"
+      "sha256": "46aefe693dff1bc06383d1bf29788cf69984e69953603f6c237df981a97975fd"
     },
     {
       "path": "lib/java/java/lang/Long.sleela",
-      "sha256": "8bbfe8d2583acdbf59f7e7ebe3cac91f57b0783cc464a3bb44138be8137bbdc6"
+      "sha256": "a55038f1840031fc55b2d51c74ed108954f1ed1dac9cceea60eca097290ce606"
     },
     {
       "path": "lib/java/java/lang/Math.sleela",
-      "sha256": "84336fc639471a237fa65e9e8a7bcdf754da476e3e62913768c38b9f0192cf08"
+      "sha256": "be552d5f127313c172d0faa1546c84c940888b17fac3d005a13052614e326400"
     },
     {
       "path": "lib/java/java/lang/Number.sleela",
-      "sha256": "f43bf4101135c5439e7e647af599ac27d37c61db0ee56fb549b9e66e8bf3a1da"
+      "sha256": "be05cab4c033a1e53f7cf321adef60907b69bf2576f418353e9f76a9f192b278"
     },
     {
       "path": "lib/java/java/lang/Object.sleela",
-      "sha256": "4bed834e746c5dab806ec2d01db5083f380838788c56314edeb852276d2e8d67"
+      "sha256": "33d48cca832e326c8c527a5074a46980249294a1663afb4a7b743a3e3f973aff"
     },
     {
       "path": "lib/java/java/lang/Runnable.sleela",
-      "sha256": "1aafc3af4a71c73185591385acae65cf17b426bbb9600499b7f3c5a147f23d26"
+      "sha256": "ea56f08f85c9fc9df3920ed6faf0034c9100ec56aaf99d485d3b70c59498fb59"
     },
     {
       "path": "lib/java/java/lang/RuntimeException.sleela",
-      "sha256": "6268649ababedc9327df192a9b0e9a8b23050a076354a137e34cb4072af934fa"
+      "sha256": "ed4ed0e9cf69fbf471ee5e89c88eecfbd70241502225ba2d7a90d85f67da30b5"
     },
     {
       "path": "lib/java/java/lang/String.sleela",
-      "sha256": "64dabb069be4eb5b46ce10a579ac9578b3908f7757df27c0ffa4e870c6d3aeee"
+      "sha256": "a1bdc71656bf51c1bd3a3d4c527e101fce415546a99dbb7fa2576f82effbb13c"
     },
     {
       "path": "lib/java/java/lang/System.sleela",
-      "sha256": "3c30d42b8a3fe5bd484fdfc57e44a7e90a001bbe58cf8b126b15f10d1f8a14b7"
+      "sha256": "2b4c0882b0605669b2a5ac91d1da36d427cfb576f9402aee6e35edbf97b0bcc8"
     },
     {
       "path": "lib/java/java/lang/Thread.sleela",
-      "sha256": "3155dc368049b94536e3b29f0a7c9d08fbb54fdf09d0c08c8a865bfc162584fe"
+      "sha256": "c3c5ff7d36649ad2dc498125b4f682a05ae06aa163277275561d04008a2c47ab"
     },
     {
       "path": "lib/java/java/lang/Throwable.sleela",
-      "sha256": "605a07bbd997e9b74b122c3851e4050450fecbd4bd4edf407e8c603f4508a036"
+      "sha256": "5cce85d8054dadfe026cb97cf3eabbdcf4265c47d3acf00b670cb9eb28363d9d"
     },
     {
       "path": "lib/java/java/math/BigInteger.sleela",
-      "sha256": "b0f3997ea1d33830bfde054577df3bc1ebe0c53b88b8bbe293191121dbb39e0e"
+      "sha256": "25fdf184251aa83866c39abc055291cb35ace7501451b83c47dee2607741862d"
     },
     {
       "path": "lib/java/java/net/InetAddress.sleela",
-      "sha256": "dde47549a765f48a25d995897ca1fdde2f1fd538d34d7ae0ab60d185dbb49868"
+      "sha256": "08a29190996c139e8a21a0333796292446434634fa575f526203cd3f952e1604"
     },
     {
       "path": "lib/java/java/net/ServerSocket.sleela",
-      "sha256": "90d116de3251f18b2dc9f74a37646e467c604d62070fd998d6d18b4d74317efd"
+      "sha256": "f64a197a5146c8658317851a5ecece211479e14da4e1ccf80cc52f1048d5e62d"
     },
     {
       "path": "lib/java/java/net/Socket.sleela",
-      "sha256": "d4c4c507f4d041b0bc2f77d971872a140469fa125f1b84628bfff01a768662ad"
+      "sha256": "4e1c5f869983f86a48bd3a7978f59ce5ae4a627689ecd9420760e3dcfcd97472"
     },
     {
       "path": "lib/java/java/net/URI.sleela",
-      "sha256": "ee3e74a8b44511456f9a4fe12bbb97155dd4aed31d8d147b08eed76011e54788"
+      "sha256": "0cd9ad7d6f93ee8f9e7851af17cd6ab720e36deb2fbc36fe41f5a8c0140ecd70"
     },
     {
       "path": "lib/java/java/nio/ByteBuffer.sleela",
-      "sha256": "189260c8bf91d99d1ea8df7e7d8527c50812d490c662391f0240beeb436e3c4c"
+      "sha256": "f5ef19f1e3091ee0caf0ccf2f1acc1c85f2e0374846f578d11e64358a9dd066b"
     },
     {
       "path": "lib/java/java/nio/file/Files.sleela",
-      "sha256": "933e82b87cac715d660aef9f40818fdd0b51d368ad1721dbd9dc7b7f57f8efec"
+      "sha256": "2ff4c4704eda0ac0a66316c0cb44c9c095cc40bf3c8eae9dbcf85fe48b836886"
     },
     {
       "path": "lib/java/java/nio/file/Path.sleela",
-      "sha256": "74b1b2d92878925964d5b93f322ecb1e5dae3676657c693a7402442cc73e3747"
+      "sha256": "b2d6f7a1f5903e4275ab7e55cf04874fc9762a3a87082d83f4a4b003499bc0c6"
     },
     {
       "path": "lib/java/java/time/Instant.sleela",
-      "sha256": "8e64dc2a81f010146f9b12e8e215b329845d927e630490aee5d23634bcb13c9a"
+      "sha256": "19779bcd55bfb41a70a6eb46444b6de2be5f00182db6c1345e6f60ceef79f973"
     },
     {
       "path": "lib/java/java/time/LocalDateTime.sleela",
-      "sha256": "2eba3541b1dc28ba6e3b1fa25c2d3cfdd918e31e636e77db4078672d5d0e07c5"
+      "sha256": "1a9cc567582afaa5c3f865ffcb3570c0dfdd6e17abbe1e8604a357b59de218fe"
     },
     {
       "path": "lib/java/java/util/ArrayList.sleela",
-      "sha256": "ada45864cf8b33277c99c6d2867afeb0b941d7e9fe5504cf529c2849a30ee1c6"
+      "sha256": "b2b5b890a21914469f682c19603f2a4a389d07aeb34211c39e67c63080c12c8a"
     },
     {
       "path": "lib/java/java/util/HashMap.sleela",
-      "sha256": "a344fff023bcada40b96cc70600ba921d28a5eb89125ca4360cd16ab593f1d5c"
+      "sha256": "d239c9af0077b66930b5c24e954a5759894a27377c0565fd5542593b9875bd0e"
     },
     {
       "path": "lib/java/java/util/HashSet.sleela",
-      "sha256": "89a3195eb0019415029b79c54252f75af9a50280481254535700fe0c4ca8d77b"
+      "sha256": "353af0f41c5915f38798931b2a24cc3521cf44f2a708e16f567099282cc23648"
     },
     {
       "path": "lib/java/java/util/LinkedList.sleela",
-      "sha256": "8695057f1b252001134240a68c5a7b8e588799eca84b31864c584b635032d310"
+      "sha256": "7c9f65b5e2d10c0b5225b7b6851d017e10acc843cd407e47ac85318fb805407e"
     },
     {
       "path": "lib/java/java/util/Optional.sleela",
-      "sha256": "6a8121064fd9610610e107c68d64b54a4d1313b8f1abfa9995acde1fc660cd80"
+      "sha256": "5b165fb029a2ebf91070a1a8cfb56f76f7f31d3dc27e6b613e04565584730d9a"
     },
     {
       "path": "lib/java28/SLPackage.sleela",
