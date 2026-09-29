@@ -88,11 +88,11 @@
     },
     {
       "path": "SST-2.0.model",
-      "sha256": "87150332bf9918cbd54750d786a0e6f9dc2ebb3a97c1fc52dfdb571d07bc9529"
+      "sha256": "9f26196354b3f0896c8c3e6587b3cb14a3af370db8618f8d5e440cd125f719b3"
     },
     {
       "path": "SST.model",
-      "sha256": "de042c6bc259c77243382deada44bcb266526f4fed0affb5d0f7eeb0c4a9982f"
+      "sha256": "44d0e57431c9dcc501a20b9fd30508153994d7549824352e6e4e2a45b5b986b3"
     },
     {
       "path": "SYNCHRO.md",
@@ -5004,7 +5004,7 @@
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "2b8764130c758ca58b80a7e8ccfe9adbf98ea76c40c63356022d7ae948fcbc92"
+      "sha256": "a8d08335e64c72af5ea6c32f8a5f9563c37ce9dd11b8e99d7135d618937d70bc"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -5029,6 +5029,14 @@
     {
       "path": "impl/frontend/lexer.h",
       "sha256": "882526d1e7e229d204523fc6993e597540d32204957fa259708b99ad0807525f"
+    },
+    {
+      "path": "impl/frontend/library_index.cpp",
+      "sha256": "31cbbeb1f6e5e1dbc2f89dada32204aed7bb03673355e3f51cf678d60eb2fd63"
+    },
+    {
+      "path": "impl/frontend/library_index.h",
+      "sha256": "9c7bb8f141812813837196aad7631f976fa825a6c5b48d25779dbcb6938ea083"
     },
     {
       "path": "impl/frontend/parser.cpp",
@@ -5604,7 +5612,7 @@
     },
     {
       "path": "impl/nordshrift/nordshrift.cpp",
-      "sha256": "ef35b4df95b52ac0383787dcab5ac87c04317aee036a8b9a58d051d4cbbf21ed"
+      "sha256": "2c740e809f5dd0cf69a91f54864fb3bdefbd849445a57386f4377211ffb4b805"
     },
     {
       "path": "impl/nordshrift/object_compat.cpp",
@@ -6103,6 +6111,30 @@
       "sha256": "789d84e9fa8043189fc40ed7b0b292245bd22999d01030fa0e30c4be6663f696"
     },
     {
+      "path": "lib/antivirus/SLPackage.sleela",
+      "sha256": "97e51adee068dfd505c2abb31a5193d2c6c74baec2c2970c98eab1ce03fe050e"
+    },
+    {
+      "path": "lib/api/SLPackage.sleela",
+      "sha256": "3a3cd934c04b2ddd9696ff7e08acb04502291d216e13955074f6beb46d46bd49"
+    },
+    {
+      "path": "lib/audio/SLPackage.sleela",
+      "sha256": "6fa86fe8cbf2db6535fbfb508fe02a720ea3b77a2f7a3d4ded0d60a8b286de49"
+    },
+    {
+      "path": "lib/bash/SLPackage.sleela",
+      "sha256": "d2f758e6d5368844e22442c1cf7380d864ad1f416316ee1a7abc28879b89d77c"
+    },
+    {
+      "path": "lib/churn/SLPackage.sleela",
+      "sha256": "a276be214edc83c0feb46cbc44885269606b994ae009837f900a8265e054d451"
+    },
+    {
+      "path": "lib/codecs/SLPackage.sleela",
+      "sha256": "8de328236a05b49606429956ec2c7c4e8bdab179be5998eea9a7813310da2521"
+    },
+    {
       "path": "lib/collections/SLArray.sleela",
       "sha256": "0a0089a6825d6336153d896accca9f5b1d72a13cf07faa2fdd5447fabc43083b"
     },
@@ -6133,6 +6165,10 @@
     {
       "path": "lib/collections/SLStack.sleela",
       "sha256": "fc7f3c21b7d33aa59022b6b97770d07ee3af59191d2b7a82459781af13465474"
+    },
+    {
+      "path": "lib/common-rails/SLPackage.sleela",
+      "sha256": "b29251f7332c709f120c36845a8cfab4191c79bcd41a155af3698061c5b7ca1e"
     },
     {
       "path": "lib/compiler/SLAstBuilder.sleela",
@@ -6197,6 +6233,18 @@
     {
       "path": "lib/compiler/SLTypeChecker.sleela",
       "sha256": "4d840a33346a9d824b50ce12278a565be6734f5bb32e011683b03b5b75189f25"
+    },
+    {
+      "path": "lib/config/SLPackage.sleela",
+      "sha256": "e8043f3af02c9f905f96433f9a441796ec25f47d732630ad12bd1ca46a7c43b1"
+    },
+    {
+      "path": "lib/connector/SLPackage.sleela",
+      "sha256": "775a006843143c7580159f3f80ff1f4230b2af9f57a5b62f4064463aa55b6756"
+    },
+    {
+      "path": "lib/coorenagraph/SLPackage.sleela",
+      "sha256": "453d4754eb9c060fd193e0ef1d93f67685b8318246ce6b82a69774ed9ddb2c5a"
     },
     {
       "path": "lib/core/SLAnnotation.sleela",
@@ -6361,6 +6409,10 @@
     {
       "path": "lib/core/SLIterator.sleela",
       "sha256": "b09e6b84fa698f1e96989251cace51dc64a2a13641e9b3ff030b5934f382e14e"
+    },
+    {
+      "path": "lib/core/SLLibrary.sleela",
+      "sha256": "ccc91daf3f7dbc31c3d047144666d24c74fc345c16347d933f945859c1ed78e9"
     },
     {
       "path": "lib/core/SLListener.sleela",
@@ -6595,6 +6647,14 @@
       "sha256": "55ba8784fa647985a0b0e3e76a39ceee00530ca474e88787f8d082d09f4f091c"
     },
     {
+      "path": "lib/data/SLPackage.sleela",
+      "sha256": "6a2eb8172118e84a85506a01ba8374fb56db1315c5598f523dbf6ddba5ff3f2d"
+    },
+    {
+      "path": "lib/data-structures/SLPackage.sleela",
+      "sha256": "01a1bc6998537b858e80019895c533ad863dbf5be8c4f82d26ce6a0a98a5ccb2"
+    },
+    {
       "path": "lib/database/SLColumn.sleela",
       "sha256": "ac0bf6b06986d7e4033ed9a9b2ee9a596839e0430811149eb20df23bb06d3eae"
     },
@@ -6721,6 +6781,10 @@
     {
       "path": "lib/debugger/SLWatchpoint.sleela",
       "sha256": "85390f0c29486b945204f52415a6fa4df682f106de3e1b0483dc9dc0726e61ed"
+    },
+    {
+      "path": "lib/decompiler/SLPackage.sleela",
+      "sha256": "346f8faebb9c93a27853256429e504cc1c451d6fbaa53c1ed4ed7ec4d4a599b3"
     },
     {
       "path": "lib/deliberation/SLAStarSearch.sleela",
@@ -7903,6 +7967,10 @@
       "sha256": "ec2c7cb297a3be5f02e720a018a14e6fde5fad61043d00cef87e9f6b620bdf66"
     },
     {
+      "path": "lib/drivers/SLPackage.sleela",
+      "sha256": "0c101f4e3d127f7c0c0c0328e878df44b4d8f51c6562c55cbc21f37713c8403b"
+    },
+    {
       "path": "lib/filesystem/SLArchive.sleela",
       "sha256": "229bbb86a9d8fdd88102dca35d6e7b2d9c0463a9edede5fd929a501a6e3a6acc"
     },
@@ -7965,6 +8033,10 @@
     {
       "path": "lib/filesystem/SLPathResolver.sleela",
       "sha256": "d5c5ad3931b530eaecc29af40bd66c16ce191f47090d3bf31af629bcef5b3888"
+    },
+    {
+      "path": "lib/gui/SLPackage.sleela",
+      "sha256": "2394ad2606866401b6198c1b93b0ea9dfb6c922a6b834dedcea217a9e2f72ea9"
     },
     {
       "path": "lib/http/SLHttpBody.sleela",
@@ -8031,6 +8103,62 @@
       "sha256": "c1f130b94abbdfaa33ab878bbfcc65da236cc3acd3fae869362be65bb3896270"
     },
     {
+      "path": "lib/http-1.0/SLPackage.sleela",
+      "sha256": "6f45c4906b9b6a058c44d82aa90433955ed55b5446a9d7bbf171bee980705fa2"
+    },
+    {
+      "path": "lib/http-2.0/SLPackage.sleela",
+      "sha256": "2caf2256b680a5ab800b8d5a79436d50acf0f111a5fa9465e66a38a1873d33a0"
+    },
+    {
+      "path": "lib/http-3.0/SLPackage.sleela",
+      "sha256": "347f0117162277775c8a7b9e88996ab2f6d9077dd521188ef80df0237144033c"
+    },
+    {
+      "path": "lib/http-4.0/SLPackage.sleela",
+      "sha256": "4185d21945754b11bd826f351029b4d1da7180f49153043156f951b84c949d02"
+    },
+    {
+      "path": "lib/http-5.0/SLPackage.sleela",
+      "sha256": "4767435d32d66b49f6a0a136e677228eb8b52643b5f9323554c84a4e4e6c2780"
+    },
+    {
+      "path": "lib/http-6.0/SLPackage.sleela",
+      "sha256": "c63abc540ffb52116f605b9e0d6f94b1cc176079b92304a1d20bdba7c1f9d9b2"
+    },
+    {
+      "path": "lib/http-7.0/SLPackage.sleela",
+      "sha256": "c7722f259ac7a37f7f5753471e14b48bff9621eedbf084757337645a918fbbd4"
+    },
+    {
+      "path": "lib/http-8.0/SLPackage.sleela",
+      "sha256": "593ff5bf06d6b04e691bda5c2a64a883c7f21c7575f3d9b3df87df47f2d44e56"
+    },
+    {
+      "path": "lib/http-9.0/SLPackage.sleela",
+      "sha256": "1723d0533e8574cb8b06e1404e8e21db3fe3d71e2286769d5fb5273bbd46851f"
+    },
+    {
+      "path": "lib/http-servers/SLPackage.sleela",
+      "sha256": "78100bc56263e83a9db86e20cae279e4a9957d1dbc02bb277c75e6c523164e3a"
+    },
+    {
+      "path": "lib/ide/SLPackage.sleela",
+      "sha256": "a3b642951c187a790aec33972edf4364e0db1a3d63fc70edbf1f011eba96b9d6"
+    },
+    {
+      "path": "lib/inference-model/SLPackage.sleela",
+      "sha256": "77028855011353cd6a653fdbdbaf393c42f2a0e44030e20377b5806ffa6c6242"
+    },
+    {
+      "path": "lib/inputs/SLPackage.sleela",
+      "sha256": "6d8b11b00b38b719b6b8cc1834886241aa5a3ba9f994eb8a08b9f31eeea914a3"
+    },
+    {
+      "path": "lib/international-criminal-court/SLPackage.sleela",
+      "sha256": "e40997586876ff49fcd01d106fa7b2fe8d7f50a2f375101137494db13eefceef"
+    },
+    {
       "path": "lib/io/SLBufferedInput.sleela",
       "sha256": "e8759cf5f6c5e3f745be194757606baaca4ac51df3a9e475792f09dafe38d6e9"
     },
@@ -8061,6 +8189,22 @@
     {
       "path": "lib/io/SLOutputStream.sleela",
       "sha256": "37b732a852f87c18692834362d0612db4b93e1179f220cf79f382bf0f94588a6"
+    },
+    {
+      "path": "lib/java28/SLPackage.sleela",
+      "sha256": "69d1410494202cf61d640f0fb1ef8fb234636f7b873b771875604411052db2a8"
+    },
+    {
+      "path": "lib/journey/SLPackage.sleela",
+      "sha256": "7ea9de565cf677a4144023749d81d353b08ac1c84483cb70eb05dfacb7b7916f"
+    },
+    {
+      "path": "lib/ledger/SLPackage.sleela",
+      "sha256": "458bd0a6fda0e5c0621178e9c7e02cebea09ecf67276b5a67a8d833839685125"
+    },
+    {
+      "path": "lib/manifesto/SLPackage.sleela",
+      "sha256": "1f5bbd7b65e7334a76a8d0a4f9500a9e2e7bab281528bef515adee67abbc2293"
     },
     {
       "path": "lib/math/SLANOVA.sleela",
@@ -9099,6 +9243,18 @@
       "sha256": "d184e1977f86625b5a075e4f9b6cbe1dd1cfb47cd2624496dcb7b18ce3e9a2f2"
     },
     {
+      "path": "lib/modules/SLPackage.sleela",
+      "sha256": "9d16614af7732ac4be28325b5298b9b8d517665ebe62825108cac4ec8be5950f"
+    },
+    {
+      "path": "lib/munction/SLPackage.sleela",
+      "sha256": "457d7bebd92779d1872ba7e9de7cc8f1d8d4bce006f2806daca19572949f422b"
+    },
+    {
+      "path": "lib/native/SLPackage.sleela",
+      "sha256": "54defc20c7f73feea4310c7fc8bb88cdf21dd705ce60a963ce87a80ed293ef16"
+    },
+    {
       "path": "lib/net/SLDnsResolver.sleela",
       "sha256": "2d17f531921e387d24a662b6078142d1b8360f504b8960c65387b9110ee3d733"
     },
@@ -9171,6 +9327,10 @@
       "sha256": "71ac0ee81727ffc272c7eb6def3219a4d5e6aaf5ff04f39a217bec35deeb09ec"
     },
     {
+      "path": "lib/politico/SLPackage.sleela",
+      "sha256": "32998de8c2e1112a5e295974f679eae1010515a4aa7e2e2eb8306f7535966371"
+    },
+    {
       "path": "lib/process/SLAtomic.sleela",
       "sha256": "9b9c5b84aa1f8ab0fdb0690ad29a3d484504460a3bce08da6197c7cad0d77d9c"
     },
@@ -9235,6 +9395,14 @@
       "sha256": "3ffedf237a4e7dac9f6ba16e7a428c3a0a026306304dded95d1cfdbf420c5c00"
     },
     {
+      "path": "lib/psychiatry/SLPackage.sleela",
+      "sha256": "eec7c8116e8efda0a3134092d02ce9fe29c9b6c2a66d6a6c6be230aeecf640d9"
+    },
+    {
+      "path": "lib/public/SLPackage.sleela",
+      "sha256": "469f1162a007f7bdac4fc629dd8c8a009ebf4b1a6354d16a2093b6bc36e2c6d9"
+    },
+    {
       "path": "lib/reflection/SLAnnotation.sleela",
       "sha256": "f6830d62a18bb9a04e64f661a29820378a6687faec067bfe20834857cb5dd569"
     },
@@ -9244,7 +9412,7 @@
     },
     {
       "path": "lib/reflection/SLClassLoader.sleela",
-      "sha256": "ff5c33c73586148bade3b078927ce74b4426874889dc73bef5b6a43d9043355b"
+      "sha256": "1c29fd99a94206aef7de9c960e2f769fdad382cf74ca4f477583fbb173eb9dbf"
     },
     {
       "path": "lib/reflection/SLClassRegistry.sleela",
@@ -9407,6 +9575,10 @@
       "sha256": "d5bc0c3dad3505520435edb547a5b9fc5952143a2939438a69376485af0eaba2"
     },
     {
+      "path": "lib/rmi/SLPackage.sleela",
+      "sha256": "217ebccd7de0492e78d7a549949b62da4955bd7947866101e0077e442a057c39"
+    },
+    {
       "path": "lib/runtime/SLCallFrame.sleela",
       "sha256": "0fb59ac77479b6766bbdfab5b32e34e9dbe2f2e65e352721f04aaac4b16268ab"
     },
@@ -9493,6 +9665,42 @@
     {
       "path": "lib/security/SLSecureBuffer.sleela",
       "sha256": "8595d6b4d60bc160f97e68f191d7c3833e6b6a8ae0e2dfeaf05d962d94775343"
+    },
+    {
+      "path": "lib/server-edition/SLPackage.sleela",
+      "sha256": "2aea202a30fae08564a2ae1d513b033be3b0c3a0468a253df25fff6b31ccb1dc"
+    },
+    {
+      "path": "lib/sleela/SLPackage.sleela",
+      "sha256": "558d5588c0a0b0a9acc42c326243d7f1697e5b909babb95aeecc4727fb99b58e"
+    },
+    {
+      "path": "lib/sleela-terminal/SLPackage.sleela",
+      "sha256": "365a336680536781de8a973aa4db11a41af271750c796c6539c77c9b55604d6c"
+    },
+    {
+      "path": "lib/social-model/SLPackage.sleela",
+      "sha256": "3d10a2062f97fa2e150342af684a3d8d46e63c3aac078b9a82a8bcb6e6b2de85"
+    },
+    {
+      "path": "lib/synchro/SLPackage.sleela",
+      "sha256": "028af10afd7729d34f84862d93326deed00b908363b5d93c42fd63569964e4d5"
+    },
+    {
+      "path": "lib/systems/SLPackage.sleela",
+      "sha256": "0eead961ca57d1a2f79479cc1bf50de188c8c9b3f769342e47b0d47a514120da"
+    },
+    {
+      "path": "lib/telephony-skya/SLPackage.sleela",
+      "sha256": "1a5c5bb7411a037fd23e3bb03a8e2f5692c5c7165afe280a0fb60a12d1f69a9c"
+    },
+    {
+      "path": "lib/terminal/SLPackage.sleela",
+      "sha256": "2de61f0c5f198646155b89d07b15221be8e85422f1d6592e0e34c695eb927d7d"
+    },
+    {
+      "path": "lib/terminal_pixel/SLPackage.sleela",
+      "sha256": "97a7ec3ed4e74038ab5224ed1b4a09acd5430bbebfa70f31f6563a3019ffa4b3"
     },
     {
       "path": "lib/text/SLCharset.sleela",
@@ -9591,6 +9799,74 @@
       "sha256": "97485e8ad60dc7e9e2d2ae583757f39289a5dc62c9506fcdffd87b4602806f93"
     },
     {
+      "path": "lib/us-infrastructure/SLPackage.sleela",
+      "sha256": "b076a4b514e664e2c0665890314e0478cb20759bf2042957cfdcd8150783648d"
+    },
+    {
+      "path": "lib/video/Video.sleela",
+      "sha256": "505fdb984944df2b1ea12eceda696060847a3f836fe626e96aa62bcefbd6f5c5"
+    },
+    {
+      "path": "lib/video/VideoCodec.sleela",
+      "sha256": "90d578a2ccdaf2202fcaacaa60f1eae84973c7ec2274b594a1756ece20ec0ac1"
+    },
+    {
+      "path": "lib/video/VideoCodecCatalog.sleela",
+      "sha256": "b40afb6ac58da4fc5d10578d9ce3b7883225194c1a374449a73180589c96473d"
+    },
+    {
+      "path": "lib/video/VideoDecoder.sleela",
+      "sha256": "96885e3efc5d0db6489406c1705fcfbf93d825dc02e6f96d6c433ab498cf1e8e"
+    },
+    {
+      "path": "lib/video/VideoEncoder.sleela",
+      "sha256": "23e4bfd15e522d7a86d7743b8b407827cb94bfe4d5c0a508d7ca1e35b8b12c9d"
+    },
+    {
+      "path": "lib/video/VideoFormat.sleela",
+      "sha256": "d3e96eb6e034ea956df5d7e22be6c2924e876dba479cd83fea34c2f89e9474b2"
+    },
+    {
+      "path": "lib/video/VideoFrame.sleela",
+      "sha256": "cf710ccfcffff214926fef86b63ce7fd5ff652134505d901203da9de568a7310"
+    },
+    {
+      "path": "lib/video/VideoFrameBuffer.sleela",
+      "sha256": "8e7652134de87d5185a8ddaf52f5372ef7d2c32fc56d70ee7103b0fbec76efe8"
+    },
+    {
+      "path": "lib/video/VideoPixelFormat.sleela",
+      "sha256": "990d745211ab362ef5d0c93370925ff059f1c61fb1f85abef507722a410ee7c8"
+    },
+    {
+      "path": "lib/video/VideoProfile.sleela",
+      "sha256": "8b525042a3ab2a796a1b05122fa539a58aa160b69395cc9168c4ac5b5c88dbd0"
+    },
+    {
+      "path": "lib/video/VideoRenderer.sleela",
+      "sha256": "e67c9d7b5c1d2e6a697e484f875ebe49b7eefe1a411c00f59c86d584f590b9ea"
+    },
+    {
+      "path": "lib/video/VideoStream.sleela",
+      "sha256": "a4fb3967f6370fa6b1e88c10a324ae9e83946d54ae213f6be776575096402c7b"
+    },
+    {
+      "path": "lib/video/VideoTimeline.sleela",
+      "sha256": "2280309e858fca4e9a79a25329b75bb875b7dc44c25319d3d0aff29c842b33c6"
+    },
+    {
+      "path": "lib/video/VideoTimestamp.sleela",
+      "sha256": "ce20852f91cc3f99e2950ab24d4e77c32a0d979ab9a5e5d5267424bbcd20171e"
+    },
+    {
+      "path": "lib/video/VideoTrack.sleela",
+      "sha256": "535581508a62c89578fb813953fdd89d886119ae71d33fb00395979a420872e0"
+    },
+    {
+      "path": "lib/video/VideoWork.sleela",
+      "sha256": "d471307353bf4ba3ef9d2cb4bb7eeee5a64feb7272472a317cbf3f0996320433"
+    },
+    {
       "path": "lib/vm/SLVM.sleela",
       "sha256": "ce57aa3b45cd7e3fced1b4c43b6c849278cb98f7a97a5fb0019cf792320d7144"
     },
@@ -9624,7 +9900,7 @@
     },
     {
       "path": "lib/vm/SLVMModuleLoader.sleela",
-      "sha256": "054bb52a67b3871d74ac1c54699dc56d1f98c61f4b41c2fa1864891a6be97ae7"
+      "sha256": "90e0d13b6bb84f3150981c72e6c855df35ab029928a2b52a3ddb965adc9c44c2"
     },
     {
       "path": "lib/vm/SLVMNativeBinding.sleela",
@@ -11281,6 +11557,66 @@
     {
       "path": "us-infrastructure/model.sleela",
       "sha256": "b644a20a120d95b2ecc94c88b6525338350123fdc0b49b0904e413c21d13d96f"
+    },
+    {
+      "path": "video/Codec.sleela",
+      "sha256": "dbad3f1696abd24c4fb553ebf66fdfeffdf41bdcf84dceaf4f6f1ac9ef9ff16d"
+    },
+    {
+      "path": "video/Frame.sleela",
+      "sha256": "307df2416b7ab2835081742319ccd0b01f9be9a2633e5612c9aca84685ec3e53"
+    },
+    {
+      "path": "video/Timeline.sleela",
+      "sha256": "5577fb28b66722a0665faf6f27c520b9a59cb1599aeb547e6c67e63efc25815d"
+    },
+    {
+      "path": "video/VideoWork.sleela",
+      "sha256": "ca3610787327c93a31d4c9753ea75efb1822cc83b0b27f88735b3675c357666e"
+    },
+    {
+      "path": "video/codecs/CodecCatalog.sleela",
+      "sha256": "ca3fe8f3f34fbb7a2df736ceeef05a613ad70dda3ad567568be77edac06fd972"
+    },
+    {
+      "path": "video/codecs/include/sleela_video_codecs.h",
+      "sha256": "7b0e5d90fbe79cdee60a56375fac5706197f17e637e00efcf8d3c54090b3ab1a"
+    },
+    {
+      "path": "video/codecs/include/sleela_video_codecs.hpp",
+      "sha256": "d97211f22e644048ff0a4559a30c37f35e61a44d0c9a40361ed50b248bb6e71c"
+    },
+    {
+      "path": "video/codecs/src/sleela_video_codecs.c",
+      "sha256": "ce914102e86329482c430a4d8544aad4e95a0f438b5cb38b82e6d6190dcd3f20"
+    },
+    {
+      "path": "video/codecs/src/sleela_video_codecs.cpp",
+      "sha256": "ca1cc9cc76b84acc0b2864bf6279b60df3ff93c51ab832076e56089b86c4e052"
+    },
+    {
+      "path": "video/include/sleela_video.h",
+      "sha256": "0138f6e8cea4c8ad07645e060b5adcc2250be946a056ae060e72b07bd12d60a4"
+    },
+    {
+      "path": "video/include/sleela_video.hpp",
+      "sha256": "a2ebe4415b03db0f05696320254897791e2248119364f4fb4c19c489e69c8064"
+    },
+    {
+      "path": "video/src/sleela_video.c",
+      "sha256": "7c0f47f85735aca5971387e1f707175ba2844848ad73db902418e921d4e3ec16"
+    },
+    {
+      "path": "video/tests/test_sleela_sources.sh",
+      "sha256": "b260b23a93cee0bc136b0641ae6da3dbce5eb3d5e74d6955209085ad9e25df8f"
+    },
+    {
+      "path": "video/tests/test_video.c",
+      "sha256": "98b430678c9398f28f0a284eec14c15a15abf394b00bc1f02bed90871a6fc8dc"
+    },
+    {
+      "path": "video/tests/test_video.cpp",
+      "sha256": "cf57ff4c950c85644c1b2a23e2983f947de8e165c36385a8b10d4b090be9908d"
     }
   ]
 }
