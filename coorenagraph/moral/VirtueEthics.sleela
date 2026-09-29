@@ -1,0 +1,19 @@
+/*
+ * VirtueEthics.sleela
+ * COORENAGRAPH moral vocabulary.
+ * Part of speech: noun
+ */
+
+class VirtueEthics {
+    String term() {
+        return "VirtueEthics";
+    }
+
+    String partOfSpeech() {
+        return "noun";
+    }
+
+    String definition() {
+        return "An ethical perspective that places moral character and virtuous conduct at the center of morality.";
+    }
+}
