@@ -16,3 +16,5 @@ The standard-library target is **2,048 object types**. This is an architectural 
 ## Library discovery
 
 The /lib tree is recursively indexed by the compiler and Nordshrift loader. Current inventory: **23 packages / 901 .sleela source units**, with **53 module-facade symbols** added for subsystem packages. See `LIBRARY.SYMBOLS.md` for the complete collection.
+
+API is now represented in /lib as a package facade so compiler and loader package discovery includes the API module.
