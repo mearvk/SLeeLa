@@ -1,0 +1,16 @@
+/*
+ * lib/java/jdk/jshell/execution/impl/RestartableInputStream.sleela
+ * SLeeLa Java 28 source envelope.
+ * Definition: SLeeLa source declaration for the Java type jdk.jshell.execution.impl.RestartableInputStream.
+ * Java behavior is supplied through the SLeeLa Java conformance boundary.
+ */
+#sleela 1.3
+
+class RestartableInputStream {
+  String javaType = "jdk.jshell.execution.impl.RestartableInputStream";
+  String typeName() { return javaType; }
+  boolean available() { return javaType != ""; }
+  String construct() { return "java.construct:" + javaType; }
+  String invoke(String operation) { return "java.invoke:" + javaType + ":" + operation; }
+  String invokeStatic(String operation) { return "java.static:" + javaType + ":" + operation; }
+}
