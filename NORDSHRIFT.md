@@ -137,8 +137,8 @@ Nordshrift 2.6-dev carries forward source readability, `#sleela` syntax-version 
 
 Nordshrift 2.6-dev uses the same SLeeLa library index as the compiler. The index recursively discovers /lib, records package names and .sleela source symbols, and validates imports before artifact emission.
 
-Current collection: **23 packages, 901 library source units, and 53 module-facade symbols**. The complete inventory is maintained in `lib/LIBRARY.SYMBOLS.md`.
+Current collection: **40 packages, 918 library source units, 54 module-facade symbols, and 972 total symbol records**. The complete inventory is maintained in `lib/LIBRARY.SYMBOLS.md`.
 
-Resolution order is: `$SLEELA_LIB`, `lib`, `../lib`, then `../../lib`. Missing imported packages are compile errors rather than silently ignored dependencies.
+Resolution order is: `$SLEELA_LIB`, `lib`, `../lib`, then `../../lib`. Missing imported packages are compile errors rather than silently ignored dependencies. The same discovered index is now consulted during Nordshrift source validation, so new `/lib` packages and symbols are visible before target emission.
 
 API is now represented in /lib as a package facade so compiler and loader package discovery includes the API module.
