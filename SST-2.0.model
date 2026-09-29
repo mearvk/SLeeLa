@@ -1,10 +1,10 @@
 Nordshrift .sst Scripting Sheet Format Specification
 
 Document Series: NS-SST-0001
-Revision: 2.0.0
+Revision: 2.0.1
 Status: Normative Extension / Successor Specification
 Date: September 2026
-Governing Tool: Nordshrift 2.0
+Governing Tool: Nordshrift 2.7-dev
 Supersedes: NS-SST-0001 Revision 1.0.0 for new 2.0 sheets
 
 # Part XVII — Subject Semantics and Common Models
@@ -358,3 +358,8 @@ Compiler and Nordshrift library resolution use the shared recursive library inde
 ## 20.3 SST relationship to the symbol manifest
 
 SST sheets may refer to library packages and symbols as dependencies, provenance, or validation inputs. The complete 1,041-record collection remains in the repository manifest rather than being duplicated into every sheet.
+
+
+# Part XX — Canonical SLeeLa Library Collection
+
+Revision 2.0.1 records the canonical `/lib` collection used by compiler, Nordshrift, and the VM-facing loader: **74 package families, 953 SLeeLa source units, 88 module-facade symbols, and 1,041 total symbol records**. Package discovery is recursive and filesystem-derived; implementations must not require a second hard-coded package allow-list. See `lib/LIBRARY.INDEX.md` and `lib/LIBRARY.SYMBOLS.md`.
