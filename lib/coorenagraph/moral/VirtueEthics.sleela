@@ -2,6 +2,7 @@
  * VirtueEthics.sleela
  * COORENAGRAPH moral vocabulary.
  * Part of speech: noun
+ * Definition: An ethical perspective that places moral character and virtuous conduct at the center of morality.
  */
 
 class VirtueEthics {
