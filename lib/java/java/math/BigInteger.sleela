@@ -1,0 +1,14 @@
+/*
+ * lib/java/java/math/BigInteger.sleela
+ * SLeeLa JDK 28 Framework Binding.
+ * Definition: Represents arbitrary-precision integers.
+ * Java type: java.math.BigInteger
+ */
+#sleela 1.3
+
+class BigInteger {
+  String javaType = "java.math.BigInteger";
+
+  String typeName() { return javaType; }
+  boolean available() { return javaType != ""; }
+}
