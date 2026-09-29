@@ -2,6 +2,7 @@
  * MoralDeliberation.sleela
  * COORENAGRAPH moral vocabulary.
  * Part of speech: noun
+ * Definition: The process of applying ethical principles to facts to reach a responsible, consent-filled decision.
  */
 
 class MoralDeliberation {
