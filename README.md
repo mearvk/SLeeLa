@@ -8,6 +8,42 @@
 
 SLeeLa is developed as an inspectable software project. Source, interfaces, implementation boundaries, build methods, tests, and engineering documentation are maintained openly so that the work can be examined, built, tested, and improved with care.
 
+
+
+## SLeeLa Standard Library
+
+The canonical SLeeLa-facing source collection is maintained under `/lib`. The library is the source-level package surface used by the SLeeLa compiler and loader rather than a documentation-only catalog.
+
+The current development inventory records:
+
+- **74 packages**
+- **953 SLeeLa source units**
+- **1,041 total symbol records**
+- **88 module-facade symbols**
+
+The library includes the current language/runtime foundations together with package families such as regex, video, VM, reflection, audio, networking, synchronization, media, and other repository subsystems. Package-specific C/C++/Java implementations remain native/backend layers where appropriate; the `/lib` sources provide the corresponding SLeeLa language objects and package-facing contracts.
+
+### Compiler and Loader
+
+The compiler and loader treat `/lib` as an explicit library-resolution surface. New SLeeLa library sources are expected to participate in:
+
+`source → package/library resolution → semantic analysis → compilation → artifact/loader resolution`
+
+Library inventory and symbol-resolution information is kept synchronized with the compiler compatibility gate so that newly added SLeeLa classes and package facades are visible to tooling rather than remaining isolated source files.
+
+### SST and Nordshrift
+
+SST and Nordshrift use the repository's library inventory as part of their compiler-facing symbol and package surface. The canonical collection is intended to provide:
+
+- package-to-source resolution;
+- symbol-to-source resolution;
+- module-facade discovery;
+- compiler compatibility checks;
+- loader visibility checks; and
+- a reproducible inventory of the SLeeLa standard-library surface.
+
+This keeps the SLeeLa source layer, compiler, loader, SST, and Nordshrift representations aligned as the library grows.
+
 ## Audio and Codec Architecture
 
 The Audio work is organized by implementation language and responsibility:
