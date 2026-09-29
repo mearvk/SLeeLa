@@ -1,0 +1,35 @@
+#sleela 1.2
+
+class DataStructuresTest {
+    void main() {
+        DSValue value = new DSValue();
+        value.kind = 1;
+        value.intValue = 42;
+
+        DSList list = new DSList();
+        list.size = 0;
+        list.capacity = 8;
+
+        DSStack stack = new DSStack();
+        stack.size = 2;
+
+        DSQueue queue = new DSQueue();
+        queue.size = 3;
+
+        DSMap map = new DSMap();
+        map.size = 4;
+
+        DSObject object = new DSObject();
+        object.name = "Record";
+        object.fieldCount = 2;
+
+        DataStructures operations = new DataStructures();
+        print("DSValue kind=" + value.kind);
+        print("DSList size=" + operations.listSize(list));
+        print("DSStack size=" + operations.stackSize(stack));
+        print("DSQueue size=" + operations.queueSize(queue));
+        print("DSMap size=" + operations.mapSize(map));
+        print("DSObject type=" + operations.objectType(object));
+        print("DSObject fields=" + operations.objectFields(object));
+    }
+}
