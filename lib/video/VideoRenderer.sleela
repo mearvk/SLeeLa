@@ -1,0 +1,9 @@
+#sleela 1.3
+class VideoRenderer {
+  VideoFrame frame;
+  boolean active;
+  void attach(VideoFrame value){frame=value;}
+  void start(){active=frame!=null && frame.valid();}
+  boolean renderable(){return active && frame!=null && frame.valid();}
+  void stop(){active=false;}
+}

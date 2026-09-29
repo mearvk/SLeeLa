@@ -1,0 +1,9 @@
+#sleela 1.3
+class VideoFormat {
+  int width;
+  int height;
+  int frameRateNumerator;
+  int frameRateDenominator;
+  VideoPixelFormat pixelFormat;
+  boolean valid(){return width>0 && height>0 && frameRateNumerator>0 && frameRateDenominator>0 && pixelFormat!=null;}
+}

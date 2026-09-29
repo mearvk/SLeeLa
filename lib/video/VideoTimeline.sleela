@@ -1,0 +1,9 @@
+#sleela 1.3
+class VideoTimeline {
+  long begin;
+  long end;
+  int frames;
+  void setRange(long start,long finish){begin=start;end=finish;}
+  void addFrame(){frames=frames+1;}
+  long duration(){return end-begin;}
+}

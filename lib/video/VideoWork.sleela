@@ -1,0 +1,11 @@
+#sleela 1.3
+class VideoWork {
+  Video video;
+  VideoRenderer renderer;
+  VideoEncoder encoder;
+  VideoDecoder decoder;
+  void compose(Video value){video=value;}
+  boolean ready(){return video!=null && video.ready();}
+  void prepare(){if(ready()){renderer=new VideoRenderer();encoder=new VideoEncoder();}}
+  boolean prepared(){return renderer!=null && encoder!=null;}
+}

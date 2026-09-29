@@ -1,0 +1,9 @@
+#sleela 1.3
+class VideoTrack {
+  string name;
+  int frameCount;
+  VideoFormat format;
+  void configure(string trackName,VideoFormat trackFormat){name=trackName;format=trackFormat;frameCount=0;}
+  void addFrame(){if(format!=null)frameCount=frameCount+1;}
+  int frames(){return frameCount;}
+}

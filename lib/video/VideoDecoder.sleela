@@ -1,0 +1,10 @@
+#sleela 1.3
+class VideoDecoder {
+  VideoCodec codec;
+  VideoProfile profile;
+  boolean open;
+  void configure(VideoCodec c,VideoProfile p){codec=c;profile=p;}
+  void start(){open=codec!=null && codec.decoder && profile!=null;}
+  boolean ready(){return open;}
+  void stop(){open=false;}
+}
