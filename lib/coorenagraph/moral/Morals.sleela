@@ -2,6 +2,7 @@
  * Morals.sleela
  * COORENAGRAPH moral vocabulary.
  * Part of speech: noun
+ * Definition: A system of internal principles, rules of conduct, and values regarding right and wrong behavior.
  */
 
 class Morals {
