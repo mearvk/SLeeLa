@@ -12,9 +12,9 @@
 /// Check: ./impl/build/nordshrift check common-rails/common-rails.sst
 /// Build: ./impl/build/nordshrift build common-rails/common-rails.sst
 sheet common-rails:
-  version      1.1.0
+  version      1.2.0
   author       "Sleela Design Council"
-  description  "Professional printing component: 21x21 progress square + component lines."
+  description  "Professional printing component: fixed-width lines + 21x21 progress square + component lines."
 
 source:
   root  "."
@@ -22,6 +22,38 @@ source:
 
 /// The progress-square geometry as an explicit math subject, so the 441-cell
 /// count and the fill relation are declared and validated rather than implied.
+subject CommonRailsPrinting:
+  domain: formatting
+  depends: [ math ]
+
+  quantity printWidth:
+    value:     "80"
+    unit:      "character"
+    dimension: width
+    domain:    "printWidth >= 1"
+    status:    specified
+
+  assumption fixedWidth:
+    statement: "organized content lines are padded to exactly printWidth characters when content fits"
+    scope:     "printWidthLine"
+    source:    "CommonRails.sleela implementation"
+    status:    specified
+
+  assumption explicitLength:
+    statement: "content character count is supplied explicitly because the core surface does not expose general string length/indexing"
+    scope:     "printWidthLine / printField"
+    source:    "CommonRails.sleela implementation"
+    status:    specified
+
+  relation availableWidth:
+    formula: "padding = printWidth - contentChars; padding is clamped to zero"
+    inputs:  [ printWidth, contentChars ]
+    outputs: [ padding ]
+
+  evidence:
+    status: specified
+    source: "CommonRails.sleela PRINT_WIDTH, printWidthLine(), printField()"
+
 subject CommonRailsSquare:
   domain: math
   depends: [ math ]
