@@ -1,0 +1,66 @@
+name: One-Time SLeeLa Library Definition Standardization
+
+on:
+  push:
+    branches:
+      - master
+
+permissions:
+  contents: write
+
+jobs:
+  standardize-lib:
+    if: ${{ !contains(github.event.head_commit.message, '[lib-definitions-complete]') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Add definitions and comments
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+
+          root = Path("lib")
+          changed = 0
+
+          for path in sorted(root.rglob("*.sleela")):
+              text = path.read_text(encoding="utf-8")
+              if "Definition:" in text:
+                  continue
+
+              name = path.stem
+              family = path.parent.name
+
+              if name == "SLPackage":
+                  definition = f"Defines the SLeeLa standard-library package for {family}."
+              else:
+                  definition = (
+                      f"Defines the SLeeLa standard-library type {name} "
+                      f"used within the {family} library family."
+                  )
+
+              header = (
+                  "/*\n"
+                  f" * {path.as_posix()}\n"
+                  " * SLeeLa Standard Library Definition.\n"
+                  f" * Definition: {definition}\n"
+                  " */\n"
+              )
+              path.write_text(header + text, encoding="utf-8")
+              changed += 1
+
+          print(f"Documented {changed} SLeeLa library files.")
+
+      - name: Commit definitions
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add lib
+          git rm .github/workflows/one-time-lib-definition-standardization.yml
+          git commit -m "Standardize definitions and comments across SLeeLa lib [lib-definitions-complete]"
+          git push
