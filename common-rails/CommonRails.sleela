@@ -67,11 +67,15 @@ class CommonRails {
 
     // padZeros(value, width) — left-pad a non-negative int with '0' to width.
     String padZeros(int value, int width) {
-        int need = width - digitCount(value);
-        if (need <= 0) {
-            return "" + value;
+        int v = value;
+        if (v < 0) {
+            v = -v;
         }
-        return repeat("0", need) + value;
+        int need = width - digitCount(v);
+        if (need <= 0) {
+            return "" + v;
+        }
+        return repeat("0", need) + v;
     }
 
     // padCurrent(name, nameChars) — "[Current: @Name" + spaces to width + "]".
@@ -135,7 +139,7 @@ class CommonRails {
     }
 
     // Convert a 0..100 percent into a filled-cell count over 441 cells.
-    int percentToCells(int percent) {
+    int clampPercent(int percent) {
         int p = percent;
         if (p < 0) {
             p = 0;
@@ -143,14 +147,21 @@ class CommonRails {
         if (p > 100) {
             p = 100;
         }
+        return p;
+    }
+
+    int percentToCells(int percent) {
+        int p = clampPercent(percent);
         int total = SQUARE_SIZE * SQUARE_SIZE;
         return (p * total) / 100;
     }
 
     void printSquarePercent(int percent) {
-        print("  progress " + percent + "%  (" + percentToCells(percent)
+        int p = clampPercent(percent);
+        int cells = percentToCells(p);
+        print("  progress " + p + "%  (" + cells
             + "/" + (SQUARE_SIZE * SQUARE_SIZE) + " cells)");
-        printSquare(percentToCells(percent));
+        printSquare(cells);
     }
 
     // ---- Single-pixel progress indicator --------------------------------
