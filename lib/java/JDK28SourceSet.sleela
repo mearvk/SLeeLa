@@ -7,6 +7,8 @@
 class JDK28SourceSet {
   String root = "lib/java/java";
   String extension = ".sleela";
+  integer sourceFileCount = 4245;
+  String sourceRevision = "OpenJDK jdk-28+17";
   String namingRule = "Java binary class name with package separators mapped to directories";
 
   String pathFor(String javaType) {
@@ -18,4 +20,6 @@ class JDK28SourceSet {
   }
 
   boolean sourceFirst() { return true; }
+  integer packageMappedCount() { return 4236; }
+  integer frameworkCount() { return 9; }
 }
