@@ -1,7 +1,56 @@
 #!/bin/sh
 set -eu
+
 ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/../.." && pwd)
-for f in "$ROOT"/lib/regex/RegexNatural*.sleela; do test -s "$f"; done
-count=$(find "$ROOT/lib/regex" -maxdepth 1 -name 'RegexNatural*.sleela' -type f | wc -l)
-test "$count" -ge 5
-printf 'SLeeLa Natural Form source inventory: PASS (%s files)\n' "$count"
+LIB="$ROOT/lib/regex"
+TMP="${TMPDIR:-/tmp}/sleela-regex-inventory.$$"
+trap 'rm -f "$TMP" "$TMP.expected" "$TMP.actual"' EXIT HUP INT TERM
+
+cat >"$TMP.expected" <<'EOF'
+Regex.sleela
+RegexCapability.sleela
+RegexCapture.sleela
+RegexCompiler.sleela
+RegexDialect.sleela
+RegexEngine.sleela
+RegexError.sleela
+RegexFlags.sleela
+RegexIterator.sleela
+RegexLiteral.sleela
+RegexMatch.sleela
+RegexMatcher.sleela
+RegexNatural.sleela
+RegexNaturalGrammar.sleela
+RegexNaturalGroup.sleela
+RegexNaturalParser.sleela
+RegexNaturalSymbol.sleela
+RegexOptions.sleela
+RegexPattern.sleela
+RegexReplacement.sleela
+RegexReplacer.sleela
+RegexResult.sleela
+RegexScanner.sleela
+RegexSplitter.sleela
+RegexSubject.sleela
+RegexSystem.sleela
+RegexValidator.sleela
+EOF
+
+find "$LIB" -maxdepth 1 -type f -name 'Regex*.sleela' -exec basename {} \; | sort >"$TMP.actual"
+
+while IFS= read -r file; do
+    test -s "$LIB/$file"
+done <"$TMP.expected"
+
+if ! cmp -s "$TMP.expected" "$TMP.actual"; then
+    echo "SLeeLa regex source inventory: FAIL" >&2
+    echo "Expected:" >&2
+    cat "$TMP.expected" >&2
+    echo "Actual:" >&2
+    cat "$TMP.actual" >&2
+    exit 1
+fi
+
+count=$(wc -l <"$TMP.actual" | tr -d ' ')
+test "$count" -eq 27
+printf 'SLeeLa regex source inventory: PASS (%s files)\n' "$count"
