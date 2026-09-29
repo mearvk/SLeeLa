@@ -1,0 +1,7 @@
+#sleela 1.3
+class PrintProgress {
+  int side=21;
+  int cells(){return side*side;}
+  int clamp(int percent){if(percent<0)return 0;if(percent>100)return 100;return percent;}
+  int percentToCells(int percent){return clamp(percent)*cells()/100;}
+}
