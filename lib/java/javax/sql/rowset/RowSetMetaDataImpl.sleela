@@ -1,0 +1,16 @@
+/*
+ * lib/java/javax/sql/rowset/RowSetMetaDataImpl.sleela
+ * SLeeLa Java 28 source envelope.
+ * Definition: SLeeLa source declaration for the Java type javax.sql.rowset.RowSetMetaDataImpl.
+ * Java behavior is supplied through the SLeeLa Java conformance boundary.
+ */
+#sleela 1.3
+
+class RowSetMetaDataImpl {
+  String javaType = "javax.sql.rowset.RowSetMetaDataImpl";
+  String typeName() { return javaType; }
+  boolean available() { return javaType != ""; }
+  String construct() { return "java.construct:" + javaType; }
+  String invoke(String operation) { return "java.invoke:" + javaType + ":" + operation; }
+  String invokeStatic(String operation) { return "java.static:" + javaType + ":" + operation; }
+}

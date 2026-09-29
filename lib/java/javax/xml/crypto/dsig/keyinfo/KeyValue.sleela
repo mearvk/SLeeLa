@@ -1,0 +1,16 @@
+/*
+ * lib/java/javax/xml/crypto/dsig/keyinfo/KeyValue.sleela
+ * SLeeLa Java 28 source envelope.
+ * Definition: SLeeLa source declaration for the Java type javax.xml.crypto.dsig.keyinfo.KeyValue.
+ * Java behavior is supplied through the SLeeLa Java conformance boundary.
+ */
+#sleela 1.3
+
+class KeyValue {
+  String javaType = "javax.xml.crypto.dsig.keyinfo.KeyValue";
+  String typeName() { return javaType; }
+  boolean available() { return javaType != ""; }
+  String construct() { return "java.construct:" + javaType; }
+  String invoke(String operation) { return "java.invoke:" + javaType + ":" + operation; }
+  String invokeStatic(String operation) { return "java.static:" + javaType + ":" + operation; }
+}

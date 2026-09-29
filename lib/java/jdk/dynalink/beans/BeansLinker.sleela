@@ -1,0 +1,16 @@
+/*
+ * lib/java/jdk/dynalink/beans/BeansLinker.sleela
+ * SLeeLa Java 28 source envelope.
+ * Definition: SLeeLa source declaration for the Java type jdk.dynalink.beans.BeansLinker.
+ * Java behavior is supplied through the SLeeLa Java conformance boundary.
+ */
+#sleela 1.3
+
+class BeansLinker {
+  String javaType = "jdk.dynalink.beans.BeansLinker";
+  String typeName() { return javaType; }
+  boolean available() { return javaType != ""; }
+  String construct() { return "java.construct:" + javaType; }
+  String invoke(String operation) { return "java.invoke:" + javaType + ":" + operation; }
+  String invokeStatic(String operation) { return "java.static:" + javaType + ":" + operation; }
+}
