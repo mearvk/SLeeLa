@@ -1,0 +1,22 @@
+/*
+ * lib/java/JavaObject.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Represents a Java object reference within the SLeeLa Java interoperability library.
+ */
+#sleela 1.3
+
+class JavaObject {
+  String typeName = "";
+
+  void setType(String name) {
+    typeName = name;
+  }
+
+  String type() {
+    return typeName;
+  }
+
+  boolean valid() {
+    return typeName != "";
+  }
+}
