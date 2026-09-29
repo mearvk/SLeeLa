@@ -1,0 +1,11 @@
+# SLeeLa Video Codec Catalog
+
+artist VideoCodecCatalog:
+    operation list:
+        output RAW, H264, HEVC, AV1, VP8, VP9, MPEG2, THEORA, MJPEG, FFV1, PRORES, DNX
+    operation find extension:
+        input extension: text
+        output matching codec
+    operation capability:
+        input codec: text
+        output decode, encode, state

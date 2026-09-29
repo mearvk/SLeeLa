@@ -1,0 +1,14 @@
+# SLeeLa Video Frame
+
+artist VideoFrame:
+    input width: number
+    input height: number
+    input format: PixelFormat
+    input timestamp: number
+    operation validate:
+        require width > 0
+        require height > 0
+        require format exists
+        output valid
+    operation describe:
+        output width, height, format, timestamp

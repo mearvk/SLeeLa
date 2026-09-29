@@ -1,0 +1,10 @@
+# SLeeLa Video Timeline
+
+artist VideoTimeline:
+    input frame: VideoFrame
+    input time: number
+    operation place:
+        require frame.valid
+        output frame at time
+    operation duration:
+        output end - begin

@@ -1,0 +1,14 @@
+#ifndef SLEELA_VIDEO_CODECS_H
+#define SLEELA_VIDEO_CODECS_H
+#include <stddef.h>
+#ifdef __cplusplus
+extern "C" {
+#endif
+typedef enum sleela_video_codec_id{SLEELA_VIDEO_CODEC_RAW=0,SLEELA_VIDEO_CODEC_H264,SLEELA_VIDEO_CODEC_HEVC,SLEELA_VIDEO_CODEC_AV1,SLEELA_VIDEO_CODEC_VP8,SLEELA_VIDEO_CODEC_VP9,SLEELA_VIDEO_CODEC_MPEG2,SLEELA_VIDEO_CODEC_THEORA,SLEELA_VIDEO_CODEC_MJPEG,SLEELA_VIDEO_CODEC_FFV1,SLEELA_VIDEO_CODEC_PRORES,SLEELA_VIDEO_CODEC_DNX,SLEELA_VIDEO_CODEC_COUNT}sleela_video_codec_id;
+typedef enum sleela_video_codec_state{SLEELA_VIDEO_CODEC_NATIVE=0,SLEELA_VIDEO_CODEC_BACKEND,SLEELA_VIDEO_CODEC_QUALIFIED_BACKEND,SLEELA_VIDEO_CODEC_RECOGNIZED}sleela_video_codec_state;
+typedef struct sleela_video_codec{sleela_video_codec_id id;const char*name;const char*mime;const char*extensions;sleela_video_codec_state state;int can_decode;int can_encode;}sleela_video_codec;
+size_t sleela_video_codec_count(void);const sleela_video_codec*sleela_video_codec_at(size_t);const sleela_video_codec*sleela_video_codec_by_id(sleela_video_codec_id);const sleela_video_codec*sleela_video_codec_by_extension(const char*);
+#ifdef __cplusplus
+}
+#endif
+#endif
