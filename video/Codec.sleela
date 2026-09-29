@@ -1,0 +1,15 @@
+# SLeeLa Video Codec
+
+artist VideoCodec:
+    input name: text
+    input profile: text
+    operation identify:
+        output name, profile
+    operation decode:
+        require codec is supported
+        input compressed data
+        output VideoFrame
+    operation encode:
+        require codec is supported
+        input VideoFrame
+        output compressed data

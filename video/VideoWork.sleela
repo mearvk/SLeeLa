@@ -1,0 +1,14 @@
+# SLeeLa Video Work
+
+artist VideoWork:
+    input timeline: VideoTimeline
+    input codec: VideoCodec
+    operation create:
+        require timeline exists
+        require codec exists
+        output video work
+    operation render:
+        require video work exists
+        output frames through codec
+    operation inspect:
+        output timeline, codec, frame count
