@@ -1,0 +1,19 @@
+/*
+ * lib/java/java/lang/Runnable.sleela
+ * SLeeLa JDK 28 Framework Binding.
+ * Definition: Controlled SLeeLa binding for the JDK 28 type java.lang.Runnable.
+ * The binding describes the Java framework type without copying Java implementation code.
+ */
+#sleela 1.3
+
+class Runnable {
+  String javaType = "java.lang.Runnable";
+
+  String typeName() {
+    return javaType;
+  }
+
+  boolean available() {
+    return javaType != "";
+  }
+}
