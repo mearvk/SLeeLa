@@ -1,0 +1,5 @@
+#sleela 1.3
+class PrintRenderer {
+  void render(String value){print(value);}
+  void renderLine(String value){print(value);}
+}
