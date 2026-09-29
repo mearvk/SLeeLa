@@ -1,0 +1,11 @@
+#sleela 1.2
+
+struct DSStack {
+    int size;
+}
+
+class DSStackOperations {
+    boolean empty(DSStack stack) { return stack.size == 0; }
+    int size(DSStack stack) { return stack.size; }
+    boolean canPop(DSStack stack) { return stack.size > 0; }
+}
