@@ -1,3 +1,8 @@
+/*
+ * lib/core/SLMetadata.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines the SLeeLa standard-library type SLMetadata used within the core library family.
+ */
 #sleela 1.3
 // SLeeLa core/base language contract.
 class SLMetadata {

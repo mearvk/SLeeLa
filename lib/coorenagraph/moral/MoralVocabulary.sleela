@@ -1,4 +1,9 @@
 /*
+ * lib/coorenagraph/moral/MoralVocabulary.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines the SLeeLa standard-library type MoralVocabulary used within the moral library family.
+ */
+/*
  * Moral vocabulary definitions for COORENAGRAPH.
  * These are software definitions for use by SLeeLa programs.
  */

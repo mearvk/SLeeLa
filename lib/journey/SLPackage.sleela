@@ -1,3 +1,8 @@
+/*
+ * lib/journey/SLPackage.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines the SLeeLa standard-library package for journey.
+ */
 #sleela 1.3
 // Library facade for module package: journey
 // Original module sources remain authoritative in the package source tree.

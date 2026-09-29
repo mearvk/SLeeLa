@@ -1,3 +1,8 @@
+/*
+ * lib/manifesto/SLPackage.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines the SLeeLa standard-library package for manifesto.
+ */
 #sleela 1.3
 // Library facade for module package: manifesto
 // Original module sources remain authoritative in the package source tree.

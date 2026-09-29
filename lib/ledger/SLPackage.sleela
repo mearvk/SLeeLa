@@ -1,3 +1,8 @@
+/*
+ * lib/ledger/SLPackage.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines the SLeeLa standard-library package for ledger.
+ */
 #sleela 1.3
 // Library facade for module package: ledger
 // Exposes the package to the SLeeLa compiler, Loader, and Nordshrift.

@@ -1,3 +1,8 @@
+/*
+ * lib/os/SLEventSignal.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines the SLeeLa standard-library type SLEventSignal used within the os library family.
+ */
 #sleela 1.3
 // Unified SLeeLa standard-library front-end object.
 // Family: os. Native VM/OS work crosses an explicit bridge.

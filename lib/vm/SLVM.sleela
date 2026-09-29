@@ -1,3 +1,8 @@
+/*
+ * lib/vm/SLVM.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines the SLeeLa standard-library type SLVM used within the vm library family.
+ */
 #sleela 1.3
 // Unified SLeeLa standard-library front-end object.
 // Family: vm. Native VM/OS work crosses an explicit bridge.

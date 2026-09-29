@@ -1,3 +1,8 @@
+/*
+ * lib/core/SLScheduler.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines the SLeeLa standard-library type SLScheduler used within the core library family.
+ */
 #sleela 1.3
 // Native foundational bridge contract for Scheduler.
 // Role: runtime. Responsibility: task scheduling.

@@ -1,3 +1,8 @@
+/*
+ * lib/data-structures/DSMap.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines the SLeeLa standard-library type DSMap used within the data-structures library family.
+ */
 #sleela 1.2
 
 // Key/value association contract.

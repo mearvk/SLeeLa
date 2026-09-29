@@ -1,3 +1,8 @@
+/*
+ * lib/regex/RegexNaturalSymbol.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines the SLeeLa standard-library type RegexNaturalSymbol used within the regex library family.
+ */
 subject RegexNaturalSymbol
 operation name()
 operation alias()

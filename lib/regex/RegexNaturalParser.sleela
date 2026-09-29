@@ -1,3 +1,8 @@
+/*
+ * lib/regex/RegexNaturalParser.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines the SLeeLa standard-library type RegexNaturalParser used within the regex library family.
+ */
 subject RegexNaturalParser
 uses RegexNatural
 operation parse(pattern)

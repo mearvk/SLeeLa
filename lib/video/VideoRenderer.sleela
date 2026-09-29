@@ -1,3 +1,8 @@
+/*
+ * lib/video/VideoRenderer.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines the SLeeLa standard-library type VideoRenderer used within the video library family.
+ */
 #sleela 1.3
 class VideoRenderer {
   VideoFrame frame;
