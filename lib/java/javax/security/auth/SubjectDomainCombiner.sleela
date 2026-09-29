@@ -1,0 +1,16 @@
+/*
+ * lib/java/javax/security/auth/SubjectDomainCombiner.sleela
+ * SLeeLa Java 28 source envelope.
+ * Definition: SLeeLa source declaration for the Java type javax.security.auth.SubjectDomainCombiner.
+ * Java behavior is supplied through the SLeeLa Java conformance boundary.
+ */
+#sleela 1.3
+
+class SubjectDomainCombiner {
+  String javaType = "javax.security.auth.SubjectDomainCombiner";
+  String typeName() { return javaType; }
+  boolean available() { return javaType != ""; }
+  String construct() { return "java.construct:" + javaType; }
+  String invoke(String operation) { return "java.invoke:" + javaType + ":" + operation; }
+  String invokeStatic(String operation) { return "java.static:" + javaType + ":" + operation; }
+}
