@@ -88,7 +88,7 @@
     },
     {
       "path": "SST-2.0.model",
-      "sha256": "9f26196354b3f0896c8c3e6587b3cb14a3af370db8618f8d5e440cd125f719b3"
+      "sha256": "4c986b3282d72c8a914adb02bfa0ec8fa958e606a1ad86e1a91da6321fa78518"
     },
     {
       "path": "SST.model",
@@ -8037,6 +8037,10 @@
     {
       "path": "lib/gui/SLPackage.sleela",
       "sha256": "2394ad2606866401b6198c1b93b0ea9dfb6c922a6b834dedcea217a9e2f72ea9"
+    },
+    {
+      "path": "lib/html/SLPackage.sleela",
+      "sha256": "51da005319e21af181fbac3260fb0659b09cb6901c740f68a9450f90788fc69d"
     },
     {
       "path": "lib/http/SLHttpBody.sleela",
