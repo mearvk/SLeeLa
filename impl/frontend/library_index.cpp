@@ -4,6 +4,7 @@
 #include <filesystem>
 #include <stdexcept>
 #include <algorithm>
+#include <set>
 namespace fs=std::filesystem;
 namespace sleela { namespace library {
 Index Index::discover(const std::string& preferredRoot){
@@ -18,6 +19,8 @@ Index Index::discover(const std::string& preferredRoot){
 bool Index::empty()const{return symbols_.empty();}
 size_t Index::symbolCount()const{return symbols_.size();}
 bool Index::hasPackage(const std::string&p)const{for(const auto&s:symbols_)if(s.package==p)return true;return false;}
+size_t Index::packageCount()const{std::set<std::string> packages; for(const auto&s:symbols_) packages.insert(s.package); return packages.size();}
+const std::string& Index::root()const{return root_;}
 std::string Index::resolveImport(const std::string&i)const{return hasPackage(i)?root_+"/"+i:"";}
 void validateImports(const std::vector<std::string>&is,const Index&i){for(const auto&x:is)if(x!="chemistry"&&x!="financial"&&x!="native"&&!i.hasPackage(x))throw std::runtime_error("Library import '"+x+"' is not present under /lib");}
 }}
