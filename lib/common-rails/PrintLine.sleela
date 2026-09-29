@@ -1,0 +1,7 @@
+#sleela 1.3
+class PrintLine {
+  String content;
+  PrintLine(){content="";}
+  void set(String value){content=value;}
+  String value(){return content;}
+}
