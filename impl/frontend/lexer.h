@@ -11,7 +11,7 @@ enum class Tok {
     KwClass, KwInterface, KwEnum, KwRecord,
     KwStatic, KwProtected, KwPublic, KwPrivate, KwFinal, KwAbstract, KwNative,
     KwSynchronized, KwVolatile, KwTransient, KwStrictfp, KwSealed, KwNonSealed,
-    KwDefault, KwExtends, KwImplements, KwThrows,
+    KwDefault, KwExtends, KwImplements, KwThrows, KwSuper,
     KwVoid, KwIntT, KwDoubleT, KwBoolT, KwStringT,
     KwIf, KwElse, KwWhile, KwFor, KwReturn, KwTrue, KwFalse, KwPrint, KwNull,
     KwImport, KwStruct, KwNew,
