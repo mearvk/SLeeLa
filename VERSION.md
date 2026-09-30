@@ -46,3 +46,10 @@ This remains a source-level Java congruence implementation; it is not a JVM or S
 This increment extends the Java overload/override foundation with maximally-specific selection, generic invocation-type inference, target-type compatibility, concrete/abstract/default tie handling, covariant return preference, and interface/default-method conflict detection.
 
 **Java Authorship Transition Gate:** 1.9-dev
+
+
+## 0.3.13 Development Increment
+
+Java checked-exception source semantics foundation added: exception hierarchy/subtyping, checked-vs-unchecked classification, catch-or-declare coverage, redundant catch detection, and overriding throws compatibility. Full Java exception propagation remains in qualification.
+
+**Java Authorship Transition Gate:** 1.11-dev
