@@ -94,3 +94,10 @@ Added the Java source-equivalence platform/reproducibility qualification system 
 Added the unified Java qualification manifest, which coordinates the existing source-equivalence, expression, normalized signature, constraint, flow, exception, API-dependency, and platform qualification layers. Each child result remains visible, while the aggregate record provides deterministic counts, environment metadata, and an overall status.
 
 **Java Authorship Transition Gate:** 1.17-dev
+
+
+## 0.3.20 Development Increment
+
+The next semantic qualification layer hardens Java control-flow and checked-exception analysis. The source-semantic work remains independent of JVM or SLVM execution and is being extended toward complete Java definite-assignment, abrupt-completion, and exception-flow joins.
+
+**Java Authorship Transition Gate:** 1.18-dev
