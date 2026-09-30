@@ -148,3 +148,12 @@ Java source/API qualification remains independent of JVM availability. Java SE 2
 The individual Java source/API qualification layers are now orchestrated by `tests/java_qualification_manifest.py`. The manifest executes source equivalence, expression equivalence, normalized declaration/signature comparison, negative constraints, flow analysis, checked exceptions, Java API dependency closure, and platform observation as one deterministic qualification run. It preserves each child result and output excerpts, records host evidence, and produces an aggregate PASS only when every configured layer passes.
 
 Added `tests/java_qualification_manifest_suite.py`, `tests/JAVA.QUALIFICATION.MANIFEST.md`, and the `java-qualification` Make target. The manifest is evidence orchestration, not a claim of runtime or JVM equivalence.
+
+
+## 0.3.21 Development Upgrade — Java Flow Qualification Closure
+
+This upgrade makes Java control-flow qualification a first-class closure task. Qualification now requires a source fixture, normalized representation, semantic rule, positive or negative result, and unified-manifest evidence.
+
+Required next coverage: boolean-path-sensitive `&&`, `||`, `!`, and `?:`; constant boolean expressions; break/continue joins and labels; while/do/for completion; switch completion; try/catch/finally abrupt paths; constructor and blank-final definite-unassignment; lambda capture boundaries; and checked-exception propagation.
+
+The work remains source/API qualification and does not imply JVM, bytecode, SLVM, or runtime equivalence.
