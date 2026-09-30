@@ -1,3 +1,5 @@
+<img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-logo-004.jpg" alt="SLeeLa">
+
 # General Assembly — state legislature contacts
 
 This folder holds contact lists for the **state legislatures** (the "General
