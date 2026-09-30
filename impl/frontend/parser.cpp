@@ -273,7 +273,6 @@ ExprP Parser::parsePrimary(){
         }
         return parsePostfix(std::move(base));
     }
-    case Tok::KwNew: error("unreachable new expression");
     default:error(std::string("unexpected token '")+(t.text.empty()?tokName(t.kind):t.text)+"' in expression");
     }
 }
