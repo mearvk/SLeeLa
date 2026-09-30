@@ -96,7 +96,7 @@ ClassDecl Parser::parseClass(unsigned classModifiers){
             expect(Tok::RParen,"')'"); parseThrows(m.java.thrownTypes); m.body=parseBlock(); c.methods.push_back(std::move(m)); continue;
         }
         if(!isTypeStart()) error("expected a field or method type");
-        size_t save=i_; i_++; if(!check(Tok::Ident)){i_=save; error("expected a field or method name");}
+        size_t save=i_; parseType(); if(!check(Tok::Ident)){i_=save; error("expected a field or method name");}
         Tok after=peek(1).kind; i_=save;
         bool stat=(mods&JavaStatic)!=0, prot=(mods&JavaProtected)!=0;
         if(after==Tok::LParen)c.methods.push_back(parseMethod(stat,prot,mods));
