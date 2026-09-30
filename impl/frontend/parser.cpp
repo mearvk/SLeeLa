@@ -44,6 +44,21 @@ std::vector<std::string> Parser::parseTypeList(Tok terminator){
     do { out.push_back(parseQualifiedName()); } while(accept(Tok::Comma));
     return out;
 }
+std::vector<std::string> Parser::parseTypeParameters(){
+    std::vector<std::string> out; if(!accept(Tok::Lt)) return out;
+    do { std::string p=expect(Tok::Ident,"type parameter name").text;
+        if(accept(Tok::KwExtends)){ p += " extends "; p += parseGenericType(); while(accept(Tok::AndAnd)) p += " & " + parseGenericType(); }
+        out.push_back(p);
+    } while(accept(Tok::Comma)); expect(Tok::Gt,"'>'"); return out;
+}
+std::string Parser::parseGenericType(){
+    std::string t=parseQualifiedName();
+    if(accept(Tok::Lt)){ t += "<"; do {
+        if(accept(Tok::Question)){ t += "?"; if(accept(Tok::KwExtends)) t += " extends " + parseGenericType(); else if(accept(Tok::KwSuper)) t += " super " + parseGenericType(); }
+        else t += parseGenericType();
+    } while(accept(Tok::Comma)); expect(Tok::Gt,"'>'"); t += ">"; }
+    return t;
+}
 void Parser::parseThrows(std::vector<std::string>& out){
     if(!accept(Tok::KwThrows)) return;
     do { out.push_back(parseQualifiedName()); } while(accept(Tok::Comma));
@@ -81,7 +96,7 @@ StructDecl Parser::parseStruct(){expect(Tok::KwStruct,"'struct'");StructDecl s;s
 ClassDecl Parser::parseClass(unsigned classModifiers){
     Tok kind=cur().kind; ClassDecl c; c.java.kind=tokenTypeKind(kind); c.java.modifiers=classModifiers;
     if(kind!=Tok::KwClass&&kind!=Tok::KwInterface&&kind!=Tok::KwEnum&&kind!=Tok::KwRecord) error("expected Java type declaration");
-    i_++; c.name=expect(Tok::Ident,"type name").text; c.java.qualifiedName=c.name;
+    i_++; c.name=expect(Tok::Ident,"type name").text; c.java.qualifiedName=c.name; c.java.typeParameters=parseTypeParameters();
     if(accept(Tok::KwExtends)) c.java.superclass=parseQualifiedName();
     if(accept(Tok::KwImplements)) c.java.interfaces=parseTypeList(Tok::LBrace);
     expect(Tok::LBrace,"'{'" );
@@ -110,14 +125,14 @@ bool Parser::isTypeStart()const{Tok k=cur().kind;if(k==Tok::KwVoid||k==Tok::KwIn
 std::string Parser::parseType(){
     if(!isTypeStart()) error("expected a type");
     std::string t;
-    if(check(Tok::Ident)) t=parseQualifiedName(); else { t=cur().text; i_++; }
+    if(check(Tok::Ident)) t=parseGenericType(); else { t=cur().text; i_++; }
     // Preserve array dimensions in the type identity instead of losing them.
     while(accept(Tok::LBracket)){expect(Tok::RBracket,"']'");t+="[]";}
     return t;
 }
 Method Parser::parseMethod(bool isStatic,bool isProtected,unsigned modifiers){
     Method m;m.isStatic=isStatic;m.isProtected=isProtected;m.java.modifiers=modifiers;
-    m.retType=parseType();m.name=expect(Tok::Ident,"method name").text;expect(Tok::LParen,"'('");
+    m.java.typeParameters=parseTypeParameters();m.retType=parseType();m.name=expect(Tok::Ident,"method name").text;expect(Tok::LParen,"'('");
     if(!check(Tok::RParen)){do{Param p;p.type=parseType();p.name=expect(Tok::Ident,"parameter name").text;m.params.push_back(p);}while(accept(Tok::Comma));}
     expect(Tok::RParen,"')'");parseThrows(m.java.thrownTypes);
     m.body=parseBlock();return m;
