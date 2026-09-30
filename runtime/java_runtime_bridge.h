@@ -18,7 +18,8 @@ typedef struct {
 typedef struct {
     int ready;
     char command[4096];
-    char sample_output[4096];
+    char sample_input[4096];
+    char sample_output_hint[4096];
 } SleelaJavaProgramPlan;
 
 int sleela_java_runtime_bridge_prepare(
