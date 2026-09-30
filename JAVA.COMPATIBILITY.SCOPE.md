@@ -104,3 +104,11 @@ The SLeeLa language remains independently defined by its native symbol set and n
 ---
 
 **SLeeLa — MEARVK LLC — 2026**
+
+## 0.3.21 Development Upgrade — Java Flow Qualification Closure
+
+This upgrade makes Java control-flow qualification a first-class closure task. Qualification now requires a source fixture, normalized representation, semantic rule, positive or negative result, and unified-manifest evidence.
+
+Required next coverage: boolean-path-sensitive `&&`, `||`, `!`, and `?:`; constant boolean expressions; break/continue joins and labels; while/do/for completion; switch completion; try/catch/finally abrupt paths; constructor and blank-final definite-unassignment; lambda capture boundaries; and checked-exception propagation.
+
+The work remains source/API qualification and does not imply JVM, bytecode, SLVM, or runtime equivalence.
