@@ -134,13 +134,15 @@ static void analyzeStmt(Context& c, const JavaFlowStmt& s) {
     case JavaFlowStmtKind::Expression:
         readExpr(c, s.expression); return;
     case JavaFlowStmtKind::Assignment:
+        // The right-hand side is evaluated before the assignment takes effect.
+        // This matters for cases such as: x = x + 1.
+        if (s.expression.kind != JavaFlowExprKind::Literal) readExpr(c, s.expression);
         if (s.finalVariable && c.assigned.find(s.variable) != c.assigned.end()) {
             diagnostic(c, JavaFlowDiagnosticKind::FinalReassignment, s.variable,
                        "final variable is assigned more than once");
         }
         c.assigned.insert(s.variable);
         c.unassigned.erase(s.variable);
-        if (s.expression.kind != JavaFlowExprKind::Literal) readExpr(c, s.expression);
         return;
     case JavaFlowStmtKind::If: {
         readExpr(c, s.condition);
