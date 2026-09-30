@@ -15,7 +15,7 @@ const char* tokName(Tok t) {
         case Tok::KwFinal:return "final"; case Tok::KwAbstract:return "abstract"; case Tok::KwNative:return "native";
         case Tok::KwSynchronized:return "synchronized"; case Tok::KwVolatile:return "volatile"; case Tok::KwTransient:return "transient";
         case Tok::KwStrictfp:return "strictfp"; case Tok::KwSealed:return "sealed"; case Tok::KwNonSealed:return "non-sealed"; case Tok::KwDefault:return "default";
-        case Tok::KwExtends:return "extends"; case Tok::KwImplements:return "implements"; case Tok::KwThrows:return "throws";
+        case Tok::KwExtends:return "extends"; case Tok::KwImplements:return "implements"; case Tok::KwThrows:return "throws"; case Tok::KwSuper:return "super";
         case Tok::KwVoid:return "void"; case Tok::KwIntT:return "int"; case Tok::KwDoubleT:return "double"; case Tok::KwBoolT:return "boolean"; case Tok::KwStringT:return "String";
         case Tok::KwIf:return "if"; case Tok::KwElse:return "else"; case Tok::KwWhile:return "while"; case Tok::KwFor:return "for"; case Tok::KwReturn:return "return";
         case Tok::KwTrue:return "true"; case Tok::KwFalse:return "false"; case Tok::KwPrint:return "print"; case Tok::KwNull:return "null";
@@ -48,7 +48,7 @@ Token Lexer::makeIdentOrKeyword(){
         {"static",Tok::KwStatic},{"protected",Tok::KwProtected},{"public",Tok::KwPublic},{"private",Tok::KwPrivate},
         {"final",Tok::KwFinal},{"abstract",Tok::KwAbstract},{"native",Tok::KwNative},{"synchronized",Tok::KwSynchronized},
         {"volatile",Tok::KwVolatile},{"transient",Tok::KwTransient},{"strictfp",Tok::KwStrictfp},{"sealed",Tok::KwSealed},{"non-sealed",Tok::KwNonSealed},
-        {"default",Tok::KwDefault},{"extends",Tok::KwExtends},{"implements",Tok::KwImplements},{"throws",Tok::KwThrows},
+        {"default",Tok::KwDefault},{"extends",Tok::KwExtends},{"implements",Tok::KwImplements},{"throws",Tok::KwThrows},{"super",Tok::KwSuper},
         {"void",Tok::KwVoid},{"int",Tok::KwIntT},{"double",Tok::KwDoubleT},{"boolean",Tok::KwBoolT},{"String",Tok::KwStringT},
         {"if",Tok::KwIf},{"else",Tok::KwElse},{"while",Tok::KwWhile},{"for",Tok::KwFor},{"return",Tok::KwReturn},{"true",Tok::KwTrue},{"false",Tok::KwFalse},
         {"print",Tok::KwPrint},{"null",Tok::KwNull},{"import",Tok::KwImport},{"struct",Tok::KwStruct},{"new",Tok::KwNew}
