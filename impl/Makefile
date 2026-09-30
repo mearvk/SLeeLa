@@ -531,3 +531,8 @@ JAVA_AUTHORSHIP_TEST := $(BUILD)/java_authorship_metadata.test
 test-java-authorship: $(SLEELA_BIN)
 	@echo "=== Java authorship transition metadata ==="
 	@export SLEELA_SHEET=$(CURDIR)/../SHEET.sheet; export SLEELA_SHA256_MANIFEST=$${SLEELA_SHA256_MANIFEST:-$(CURDIR)/../security/sha256-manifest.json}; cd $(CURDIR)/.. && $(CURDIR)/$(SLEELA_BIN) run impl/tests/java_transition/java_authorship_metadata.sleela
+
+
+test-java-generic: $(SLEELA_BIN)
+	@echo "=== Java generic signature transition ==="
+	@cd $(CURDIR)/.. && $(CURDIR)/$(SLEELA_BIN) run impl/tests/java_transition/generic_signatures.sleela
