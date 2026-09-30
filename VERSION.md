@@ -2,13 +2,13 @@
 
 ## Current Development Version
 
-**SLeeLa:** 0.3.11-dev  
+**SLeeLa:** 0.3.12-dev  
 **Sleela-Complete:** 0.3.2-dev  
 **Nordshrift Complete:** 2.7.1-dev  
 **Native Foundation:** 0.3.2-dev  
 **Sleela Language Syntax:** 1.6 (supported range 1.3 .. 1.6)  
 **Compiler Compatibility Gate:** 2.8-dev  
-**Java Authorship Transition Gate:** 1.9-dev  
+**Java Authorship Transition Gate:** 1.10-dev  
 **Edition:** SLeeLa Complete / Native Foundation  
 **Status:** Active Development  
 **Repository:** mearkv/SLeeLa
@@ -38,11 +38,18 @@ This increment refines Java overload and override semantics beyond the 0.3.9 fou
 
 This remains a source-level Java congruence implementation; it is not a JVM or SLVM implementation. Full Java overload and override qualification remains subject to the JLS rules for generic inference, functional target typing, subsignatures, interface/default inheritance, and related corner cases.
 
-**Java Authorship Transition Gate:** 1.9-dev
+**Java Authorship Transition Gate:** 1.10-dev
 
 
 ## 0.3.11 Development Increment
 
 This increment extends the Java overload/override foundation with maximally-specific selection, generic invocation-type inference, target-type compatibility, concrete/abstract/default tie handling, covariant return preference, and interface/default-method conflict detection.
 
-**Java Authorship Transition Gate:** 1.9-dev
+**Java Authorship Transition Gate:** 1.10-dev
+
+
+## 0.3.12 Development Increment
+
+This increment adds the Java source-level definite-assignment and reachability foundation: flow facts, use-before-assignment diagnostics, final reassignment checks, branch joins, abrupt completion, loop/switch/try-finally scaffolding, and a deterministic test suite. Full JLS Chapter 16 qualification remains in progress.
+
+**Java Authorship Transition Gate:** 1.10-dev
