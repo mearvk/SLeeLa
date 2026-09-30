@@ -17,6 +17,7 @@ static int check(int condition, const char *message) {
 }
 
 int main(void) {
+    SleelaJavaRuntimeProbeResult probe;
     SleelaJavaProgramRequest request = {
         "/opt/java/bin/java",
         "build/classes",
@@ -25,6 +26,18 @@ int main(void) {
         "hello\n"
     };
     SleelaJavaProgramPlan plan;
+
+    const char *source = "import javax.swing.JFrame; class Hello {}";
+    if (sleela_java_runtime_dispatch_source(source, strlen(source), "Hello.java",
+        &request, &probe, &plan) != 0) return 1;
+    if (check(probe.action == SLEELA_JAVA_ACTION_LOCAL_VM ||
+              probe.action == SLEELA_JAVA_ACTION_PROMPT_INSTALL,
+              "Java dispatch decision")) return 1;
+
+    if (probe.action == SLEELA_JAVA_ACTION_PROMPT_INSTALL) {
+        puts("PASS: SLeeLa Java runtime bridge prompt path");
+        return 0;
+    }
 
     if (sleela_java_runtime_bridge_prepare(&request, &plan) != 0) return 1;
     if (check(plan.ready, "bridge plan ready")) return 1;
