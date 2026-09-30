@@ -11,7 +11,7 @@ The repository has been audited on both main and master for tracked build direct
 | Surface | master | main |
 |---|---:|---:|
 | Tracked build directories | 18 | 18 |
-| Makefile / GNUmakefile / makefile / .mk files | 68 | 68 |
+| Makefile / GNUmakefile / makefile / .mk files | 69 | 69 |
 | Repository-level Makefile | added by this change | added by this change |
 
 ## Build directory inventory
@@ -31,7 +31,7 @@ The HTTP version build directories contain their own Makefiles and negotiation f
 
 ## Makefile inventory
 
-The 68 tracked build-control files cover:
+The 69 tracked build-control files cover:
 
 - API components under api/
 - Audio and codec implementations
@@ -47,7 +47,7 @@ The 68 tracked build-control files cover:
 - Skya drivers/native components
 - tests/ and video/
 
-.mk fragments such as the HTTP negotiation.mk files are included in the 68-file control inventory.
+.mk fragments such as the HTTP negotiation.mk files are included in the 69-file control inventory.
 
 ## Repository-level dispatcher
 
@@ -65,7 +65,7 @@ The dispatcher deliberately does not enumerate source files. Each subsystem Make
 
 ## Build-documentation findings
 
-Fourteen versioned/product build directories do not contain a local README.md or BUILD.md: the Coorenagraph build directory, HTTP version build directories, and the shared http/build directory. Their parent directories and/or the repository build documentation provide context, but these build surfaces would benefit from local build notes.
+All 18 tracked build directories now have a local README.md or BUILD.md. The repository build surface therefore has both local build notes and a cross-repository inventory.
 
 The existing build/README.md, ide/build/README.md, and telephony-skya/build/README.md document their respective build surfaces. The new root inventory is the cross-repository index.
 
