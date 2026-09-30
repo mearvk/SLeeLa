@@ -63,24 +63,42 @@ void Parser::parseThrows(std::vector<std::string>& out){
     if(!accept(Tok::KwThrows)) return;
     do { out.push_back(parseQualifiedName()); } while(accept(Tok::Comma));
 }
-annotation::Annotation Parser::parseAnnotation(){
-    const Token& at=expect(Tok::At,"'@'");
-    const Token& name=expect(Tok::Ident,"annotation name");
-    if(name.line!=at.line) error("annotation name must follow '@' on the same line");
+annotation::Annotation Parser::parseAnnotation(annotation::UseSite site){
+    expect(Tok::At,"'@'");
+    std::string name=parseQualifiedName();
     std::string value;
-    while(!check(Tok::Eof)&&cur().line==at.line){
-        if(check(Tok::At)) error("annotation value cannot contain '@'");
-        value+=cur().text;
-        ++i_;
+    bool marker=true;
+    if(accept(Tok::LParen)){
+        marker=false; int depth=1;
+        while(depth>0 && !check(Tok::Eof)){
+            if(check(Tok::LParen)){ value += "("; ++depth; ++i_; }
+            else if(check(Tok::RParen)){ --depth; ++i_; if(depth>0) value += ")"; }
+            else { if(!value.empty()) value += " "; value += cur().text; ++i_; }
+        }
+        if(depth!=0) error("unterminated annotation '"+name+"'");
     }
-    if(value.empty()) error("annotation '@"+name.text+"' requires a value");
-    return annotation::Annotation{name.text,value};
+    return annotation::Annotation{name,value,site,marker};
+}
+std::vector<annotation::Annotation> Parser::parseAnnotations(annotation::UseSite site){
+    std::vector<annotation::Annotation> out;
+    while(check(Tok::At)) out.push_back(parseAnnotation(site));
+    return out;
+}
+std::vector<annotation::Annotation> Parser::parseTypeAnnotations(){
+    return parseAnnotations(annotation::UseSite::TypeUse);
 }
 Program Parser::parseProgram(){
     collectStructNames(); Program p; bool contentStarted=false;
     while(!check(Tok::Eof)){
-        if(check(Tok::At)){ if(contentStarted) error("document annotations must precede imports, structs, and classes"); p.annotations.add(parseAnnotation()); }
-        else if(accept(Tok::KwImport)){ contentStarted=true; p.imports.push_back(expect(Tok::Ident,"module name").text); expect(Tok::Semicolon,"';'"); }
+        if(check(Tok::At)){
+            auto anns=parseAnnotations(annotation::UseSite::Declaration);
+            if(check(Tok::KwClass)||check(Tok::KwInterface)||check(Tok::KwEnum)||check(Tok::KwRecord)){
+                contentStarted=true; unsigned mods=parseJavaModifiers(); p.classes.push_back(parseClass(mods,std::move(anns)));
+            } else {
+                if(contentStarted) error("declaration annotations must precede their declaration");
+                for(auto &a:anns) p.annotations.add(std::move(a));
+            }
+        } else if(accept(Tok::KwImport)){ contentStarted=true; p.imports.push_back(expect(Tok::Ident,"module name").text); expect(Tok::Semicolon,"';'"); }
         else if(check(Tok::KwStruct)){ contentStarted=true; p.structs.push_back(parseStruct()); }
         else {
             unsigned mods=parseJavaModifiers();
@@ -93,47 +111,47 @@ Program Parser::parseProgram(){
     return p;
 }
 StructDecl Parser::parseStruct(){expect(Tok::KwStruct,"'struct'");StructDecl s;s.name=expect(Tok::Ident,"struct name").text;expect(Tok::LBrace,"'{'");while(!check(Tok::RBrace)&&!check(Tok::Eof)){Field f;f.type=parseType();f.name=expect(Tok::Ident,"field name").text;expect(Tok::Semicolon,"';'");s.fields.push_back(std::move(f));}expect(Tok::RBrace,"'}'");return s;}
-ClassDecl Parser::parseClass(unsigned classModifiers){
-    Tok kind=cur().kind; ClassDecl c; c.java.kind=tokenTypeKind(kind); c.java.modifiers=classModifiers;
+ClassDecl Parser::parseClass(unsigned classModifiers,std::vector<annotation::Annotation> annotations){
+    Tok kind=cur().kind; ClassDecl c; c.java.kind=tokenTypeKind(kind); c.java.modifiers=classModifiers; c.java.annotations=std::move(annotations);
     if(kind!=Tok::KwClass&&kind!=Tok::KwInterface&&kind!=Tok::KwEnum&&kind!=Tok::KwRecord) error("expected Java type declaration");
     i_++; c.name=expect(Tok::Ident,"type name").text; c.java.qualifiedName=c.name; c.java.typeParameters=parseTypeParameters();
     if(accept(Tok::KwExtends)) c.java.superclass=parseQualifiedName();
     if(accept(Tok::KwImplements)) c.java.interfaces=parseTypeList(Tok::LBrace);
-    expect(Tok::LBrace,"'{'" );
+    expect(Tok::LBrace,"'{'");
     while(!check(Tok::RBrace)&&!check(Tok::Eof)){
+        auto annotations=parseAnnotations(annotation::UseSite::Declaration);
         unsigned mods=parseJavaModifiers();
         if(!isTypeStart() && !(check(Tok::Ident)&&peek(1).kind==Tok::LParen)) error("expected a type/member declaration");
-        // A constructor has no return type in Java. Preserve that fact explicitly.
         if(check(Tok::Ident)&&peek(1).kind==Tok::LParen&&cur().text==c.name){
-            Method m; m.isStatic=false; m.isProtected=(mods&JavaProtected)!=0; m.java.modifiers=mods; m.java.constructor=true;
+            Method m; m.isStatic=false; m.isProtected=(mods&JavaProtected)!=0; m.java.modifiers=mods; m.java.constructor=true; m.java.annotations=std::move(annotations);
             m.retType=c.name; m.name=expect(Tok::Ident,"constructor name").text; expect(Tok::LParen,"'('");
-            if(!check(Tok::RParen)){do{Param p;p.type=parseType();p.name=expect(Tok::Ident,"parameter name").text;m.params.push_back(p);}while(accept(Tok::Comma));}
+            if(!check(Tok::RParen)){do{Param p; p.annotations=parseAnnotations(annotation::UseSite::Parameter); p.type=parseType(&p.typeAnnotations); p.name=expect(Tok::Ident,"parameter name").text; m.params.push_back(std::move(p));}while(accept(Tok::Comma));}
             expect(Tok::RParen,"')'"); parseThrows(m.java.thrownTypes); m.body=parseBlock(); c.methods.push_back(std::move(m)); continue;
         }
         if(!isTypeStart()) error("expected a field or method type");
         size_t save=i_; parseType(); if(!check(Tok::Ident)){i_=save; error("expected a field or method name");}
         Tok after=peek(1).kind; i_=save;
         bool stat=(mods&JavaStatic)!=0, prot=(mods&JavaProtected)!=0;
-        if(after==Tok::LParen)c.methods.push_back(parseMethod(stat,prot,mods));
-        else c.fields.push_back(parseField(stat,prot,mods));
+        if(after==Tok::LParen)c.methods.push_back(parseMethod(stat,prot,mods,std::move(annotations)));
+        else c.fields.push_back(parseField(stat,prot,mods,std::move(annotations)));
     }
     expect(Tok::RBrace,"'}'"); return c;
 }
-Field Parser::parseField(bool isStatic,bool isProtected,unsigned modifiers){Field f;f.isStatic=isStatic;f.isProtected=isProtected;f.java.modifiers=modifiers;f.type=parseType();f.name=expect(Tok::Ident,"field name").text;if(accept(Tok::Assign))f.init=parseExpr();expect(Tok::Semicolon,"';'");return f;}
+Field Parser::parseField(bool isStatic,bool isProtected,unsigned modifiers,std::vector<annotation::Annotation> annotations){Field f;f.isStatic=isStatic;f.isProtected=isProtected;f.java.modifiers=modifiers;f.annotations=std::move(annotations);f.type=parseType(&f.typeAnnotations);f.name=expect(Tok::Ident,"field name").text;if(accept(Tok::Assign))f.init=parseExpr();expect(Tok::Semicolon,"';'");return f;}
 // A type is one of the scalar keywords, or an identifier naming a declared struct.
 bool Parser::isTypeStart()const{Tok k=cur().kind;if(k==Tok::KwVoid||k==Tok::KwIntT||k==Tok::KwDoubleT||k==Tok::KwBoolT||k==Tok::KwStringT)return true;return k==Tok::Ident;}
-std::string Parser::parseType(){
+std::string Parser::parseType(std::vector<annotation::Annotation>* typeAnnotations){
+    if(typeAnnotations){auto a=parseTypeAnnotations(); typeAnnotations->insert(typeAnnotations->end(),a.begin(),a.end());}
     if(!isTypeStart()) error("expected a type");
     std::string t;
     if(check(Tok::Ident)) t=parseGenericType(); else { t=cur().text; i_++; }
-    // Preserve array dimensions in the type identity instead of losing them.
-    while(accept(Tok::LBracket)){expect(Tok::RBracket,"']'");t+="[]";}
+    while(accept(Tok::LBracket)){ if(typeAnnotations){auto a=parseTypeAnnotations(); typeAnnotations->insert(typeAnnotations->end(),a.begin(),a.end());} expect(Tok::RBracket,"']'");t+="[]"; }
     return t;
 }
-Method Parser::parseMethod(bool isStatic,bool isProtected,unsigned modifiers){
-    Method m;m.isStatic=isStatic;m.isProtected=isProtected;m.java.modifiers=modifiers;
-    m.java.typeParameters=parseTypeParameters();m.retType=parseType();m.name=expect(Tok::Ident,"method name").text;expect(Tok::LParen,"'('");
-    if(!check(Tok::RParen)){do{Param p;p.type=parseType();p.name=expect(Tok::Ident,"parameter name").text;m.params.push_back(p);}while(accept(Tok::Comma));}
+Method Parser::parseMethod(bool isStatic,bool isProtected,unsigned modifiers,std::vector<annotation::Annotation> annotations){
+    Method m;m.isStatic=isStatic;m.isProtected=isProtected;m.java.modifiers=modifiers;m.java.annotations=std::move(annotations);
+    m.java.typeParameters=parseTypeParameters();m.retType=parseType(&m.java.typeAnnotations);m.name=expect(Tok::Ident,"method name").text;expect(Tok::LParen,"'('");
+    if(!check(Tok::RParen)){do{Param p;p.annotations=parseAnnotations(annotation::UseSite::Parameter);p.type=parseType(&p.typeAnnotations);p.name=expect(Tok::Ident,"parameter name").text;m.params.push_back(std::move(p));}while(accept(Tok::Comma));}
     expect(Tok::RParen,"')'");parseThrows(m.java.thrownTypes);
     m.body=parseBlock();return m;
 }
