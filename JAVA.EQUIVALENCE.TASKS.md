@@ -34,7 +34,7 @@ The driver reports structural, semantic, and functional-source states separately
 2. Expand Java statement AST and parser. **Foundation completed in 0.3.7-dev:** blocks, if/while/do/for, switch, break/continue/return/throw/assert/yield, synchronized, and try/catch/finally. **Remaining:** enhanced-for, local-variable declarations, try-with-resources, switch rules/guards, and full statement semantic constraints.
 3. Implement Java type/conversion semantics. **Foundation completed in 0.3.8-dev:** conversion categories/contexts, identity, widening/narrowing primitive conversion, boxing/unboxing, reference conversion classification, and unary/binary numeric promotion.
 4. Implement overload and override resolution. **Foundation completed in 0.3.9-dev:** strict/loose/variable-arity phases, applicability classification, most-specific selection foundation, override-equivalence, and basic return compatibility.
-5. Implement definite-assignment and reachability rules.
+5. Implement definite-assignment and reachability rules. **Foundation added in 0.3.12-dev:** source-flow facts, use-before-assignment diagnostics, final reassignment checks, branch merging, loop/abrupt-completion reachability, switch/try/finally flow scaffolding, and deterministic C++/Python qualification suite.
 6. Implement checked-exception analysis.
 7. Implement dependency-driven Java API counterpart closure.
 8. Expand negative and constraint fixtures.
@@ -83,3 +83,8 @@ This remains a source-level semantic model rather than a JVM implementation.
 Do not add JVM execution requirements to this ledger. Java source congruence is the target; JVM/SLVM interoperability is a separate future project.
 
 **MEARVK LLC — 2026**
+
+
+### 0.3.12-dev — definite assignment and reachability foundation
+
+Added `impl/frontend/java_flow.h/.cpp`, `tests/java_flow_semantics.cpp`, and `tests/java_flow_suite.py`, plus the `java-flow` Makefile target. The model distinguishes definitely assigned and definitely unassigned facts, reports reads before assignment, checks repeated final assignment, merges conditional paths, tracks abrupt completion, and provides structured flow scaffolding for loops, switch, and try/finally. This is a source-semantic foundation; complete JLS Chapter 16 coverage remains a qualification task.
