@@ -140,12 +140,14 @@ static void analyzeStmt(Context& c,FlowState& s,const JavaFlowStmt& st){
         const std::size_t start=c.exits.size(); auto cond=boolExpr(s,st.condition);
         c.targets.push_back({st.label,true,true}); FlowState body=cond.whenTrue; analyzeList(c,body,st.children); c.targets.pop_back();
         std::vector<FlowState> exits{cond.whenFalse}; consumeExits(c,start,st.label,ExitKind::Break,exits);
+        std::vector<FlowState> continues; consumeExits(c,start,st.label,ExitKind::Continue,continues);
         s=joinNormal(exits); mergeDiagnostics(s,cond); mergeDiagnostics(s,body); return;
     }
     case JavaFlowStmtKind::Do:{
         const std::size_t start=c.exits.size(); c.targets.push_back({st.label,true,true});
         FlowState body=s; analyzeList(c,body,st.children); c.targets.pop_back();
         auto cond=boolExpr(body,st.condition); std::vector<FlowState> exits{cond.whenFalse}; consumeExits(c,start,st.label,ExitKind::Break,exits);
+        std::vector<FlowState> continues; consumeExits(c,start,st.label,ExitKind::Continue,continues);
         s=joinNormal(exits); mergeDiagnostics(s,body); mergeDiagnostics(s,cond); return;
     }
     case JavaFlowStmtKind::For:{
