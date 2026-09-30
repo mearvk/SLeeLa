@@ -2,20 +2,20 @@
 
 ## Current Development Version
 
-**SLeeLa:** 0.3.8-dev  
+**SLeeLa:** 0.3.9-dev  
 **Sleela-Complete:** 0.3.2-dev  
 **Nordshrift Complete:** 2.7.1-dev  
 **Native Foundation:** 0.3.2-dev  
 **Sleela Language Syntax:** 1.6 (supported range 1.3 .. 1.6)  
 **Compiler Compatibility Gate:** 2.8-dev  
-**Java Authorship Transition Gate:** 1.7-dev  
+**Java Authorship Transition Gate:** 1.8-dev  
 **Edition:** SLeeLa Complete / Native Foundation  
 **Status:** Active Development  
 **Repository:** mearkv/SLeeLa
 
-## 0.3.8 Development Increment
+## 0.3.9 Development Increment
 
-This increment advances Java source-equivalence semantics with explicit conversion categories and contexts, primitive widening/narrowing, boxing/unboxing classification, reference conversion classification, and unary/binary numeric promotion.
+This increment advances Java source-equivalence semantics with overload and override resolution foundations: applicability phases, conversion-aware candidate filtering, most-specific selection, override-equivalence, and basic return compatibility.
 
 ### Java compatibility boundary
 
