@@ -56,9 +56,10 @@ static int probe_path_command(const char *command, char *out, size_t out_cap) {
 
     char *cursor = copy;
     while (cursor) {
-        char *next = strchr(cursor, ':');
 #if defined(_WIN32)
-        if (!next) next = strchr(cursor, ';');
+        char *next = strchr(cursor, ';');
+#else
+        char *next = strchr(cursor, ':');
 #endif
         if (next) *next = '\0';
 
