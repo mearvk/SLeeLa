@@ -522,3 +522,360 @@ See `codecs/README.md` and `codecs/CODECS.md` for the detailed registry, capabil
 The phrase **carefully Open** is intentional: openness includes clear interfaces, explicit implementation boundaries, reproducible builds, validation, tests, and documentation of unfinished areas. It does not imply that an implementation is complete merely because its source is visible.
 
 — Editor's Note, SLeeLa
+
+## SLeeLa HTTP 1.0–9.0 — HTTP and Protocol Details
+
+The SLeeLa repository maintains nine experimental HTTP-generation directories, from `/http-1.0` through `/http-9.0`. These are **SLeeLa application-protocol generations**, not claims that HTTP/4 through HTTP/9 are published IETF HTTP standards. The generation directories define the SLeeLa application envelope, routing identifiers, protocol state, metadata, negotiation, integrity, and application behavior carried by an appropriate transport.
+
+### Common SLeeLa HTTP Architecture
+
+Across the generations, SLeeLa keeps **native transport addressing** separate from **SLeeLa application addressing**. A logical SLeeLa PORT is an application identifier and does not replace or necessarily map one-to-one with a native TCP/UDP socket.
+
+The general relationship is:
+
+```text
+Native transport
+      |
+HTTP carrier / connection / stream
+      |
+SLeeLa generation
+      |
+Logical PORT
+      |
+SERVICE-ID / OP-ID
+      |
+REQUEST-ID / protocol state
+      |
+Application payload
+```
+
+The shared large-file transfer contract applies to files larger than 50 MB:
+
+```text
+SESSION-ID | DATETIME | FILE-ID | FILE-NAME | INDEX | OFFSET | TOTAL-SIZE
+```
+
+The 50 MB threshold selects the resume-oriented mode; it is not a maximum file size.
+
+### HTTP 1.0 — Baseline Application Routing
+
+**Directory:** `/http-1.0`
+
+HTTP 1.0 establishes the baseline SLeeLa application model. It separates transport addressing from SLeeLa logical routing and places `SERVICE-ID` and `OP-ID` above the logical PORT.
+
+**Protocol details:**
+
+- HTTP/1.0 request and connection boundaries carry SLeeLa application exchanges.
+- Logical PORT identifies an application service boundary.
+- `SERVICE-ID` identifies the service.
+- `OP-ID` identifies the requested application operation.
+- SLeeLa does not treat HTTP/1.0 as providing HTTP/2-style stream multiplexing.
+- Concurrent application work is represented as logical operations above the HTTP/1.0 connection/request boundary.
+- TCP sockets, TLS termination, proxies, routers, and native port bindings remain transport concerns.
+- The shared DOWNLOAD/resume metadata supports interrupted transfers.
+
+```text
+Native transport endpoint
+        |
+HTTP/1.0 request / connection
+        |
+SLeeLa logical PORT
+        |
+SERVICE-ID / OP-ID
+        |
+Application operation
+```
+
+### HTTP 2.0 / 2.1 — Correlated Concurrent Exchanges
+
+**Directory:** `/http-2.0`
+
+HTTP 2.0 / 2.1 extends the baseline with compact application envelopes, request correlation, retry classes, and logical-port routing over concurrent HTTP/2 exchanges.
+
+**Protocol details:**
+
+- Compact application envelopes.
+- `SERVICE-ID` and `OP-ID`.
+- `REQUEST-ID` for request correlation.
+- Retry classification.
+- Logical-port routing independent of native socket numbering.
+- Stream-aware concurrent exchanges.
+- Shared DOWNLOAD/resume support.
+- Explicit generation negotiation.
+- Where fallback is permitted, negotiation may return to HTTP/1.1 and then HTTP/1.0.
+- A fallback must not silently remove a security property required by deployment policy.
+
+```text
+Native transport endpoint
+        |
+HTTP/2 stream
+        |
+SLeeLa logical PORT
+        |
+SERVICE-ID / OP-ID
+        |
+REQUEST-ID
+        |
+Application request
+```
+
+### HTTP 3.0 — QUIC/HTTP/3 Carrier and Application Integrity
+
+**Directory:** `/http-3.0`
+
+HTTP 3.0 extends the SLeeLa application model with request correlation, service/operation naming, retry classes, processing stages, and an application integrity/security layer. HTTP/3 and QUIC may provide the carrier.
+
+**Protocol details:**
+
+- QUIC connection may provide the authenticated/encrypted transport carrier.
+- HTTP/3 streams carry SLeeLa application exchanges.
+- Logical PORT remains an application identifier.
+- `SERVICE-ID`, `OP-ID`, and `REQUEST-ID` identify application work.
+- The SLeeLa application envelope remains distinct from carrier security.
+- Application integrity does not replace TLS, QUIC security, or deployment authorization.
+- The shared large-file resume contract remains available.
+- Implementation and self-test material are maintained with the generation.
+
+```text
+QUIC connection
+      |
+HTTP/3 stream
+      |
+SLeeLa logical PORT
+      |
+SERVICE-ID / OP-ID
+      |
+REQUEST-ID
+      |
+SLeeLa application envelope
+```
+
+### HTTP 4.0 — Message, Frame, Session, and Resume Protocol
+
+**Directory:** `/http-4.0`
+
+HTTP 4.0 is an experimental SLeeLa protocol layer rather than an IETF HTTP/4 standard. It can initially be carried as application data over HTTP/3 or another supported carrier.
+
+**Protocol details:**
+
+- Explicit stream and request identity.
+- Authenticated sequence handling.
+- Resumable delivery.
+- Flow control and backpressure.
+- Incremental delivery.
+- Capability negotiation.
+- Session migration.
+- Typed reset and retry behavior.
+- Observability.
+- Pluggable carrier abstraction.
+
+The initial frame representation is:
+
+```text
+VERSION | TYPE | FLAGS | STREAM-ID | REQUEST-ID | SEQUENCE | PAYLOAD-LENGTH | PAYLOAD
+```
+
+Defined frame types:
+
+- `OPEN` — establish a logical request or stream.
+- `DATA` — carry application payload.
+- `END` — complete a request or stream.
+- `RESET` — terminate a stream.
+- `WINDOW` — advertise receive capacity.
+- `PING` / `PONG` — liveness.
+- `RESUME` — continue an interrupted transfer.
+- `CAPSULE` — carry negotiated or session metadata.
+
+The protocol separates application framing from authenticated transport. HTTP 4.0 does not replace TLS or create a substitute for authenticated transport.
+
+### HTTP 5.0 — Friends' Packs Application Capability
+
+**Directory:** `/http-5.0`
+
+HTTP 5.0 extends the HTTP 4.0 frame/session model with the application-level **Friends' Packs** capability. A Friends' Pack is ordinary user-controlled application data.
+
+**Protocol details:**
+
+- Friends' list entries may contain a friend name, optional point amount, and optional document reference.
+- Initial friend payload form:
+
+```text
+friend-name|points|document-reference
+```
+
+- A pack may contain an opaque identifier, relationship identifier, FP balance, optional bonus-offer references, optional expiration, and negotiated application policy.
+- `FRIENDS_PACK` carries pack metadata.
+- `BONUS_OFFER` carries an optional offering reference.
+- `FP_UPDATE` carries an application-level balance update.
+- `AUDIT` carries a defensive conformance/audit event.
+- FP is application accounting data, not an authentication credential or authorization to control another system.
+- When FP reaches zero, ordinary HTTP 5.0 operation continues; optional pack bonuses are declined without authorizing interference with unrelated traffic.
+- Defensive audit kits are limited to authorized conformance and testing.
+
+HTTP 5.0 retains the HTTP 4.0 frame/session, capability, flow-control, integrity, and authenticated-carrier architecture.
+
+### HTTP 6.0 — Consolidated Friends' Bet and Teamster Debate
+
+**Directory:** `/http-6.0`
+
+HTTP 6.0 consolidates HTTP 5.0 application capabilities into a portable **Consolidated Friends' Bet** record. It is ordinary application data carried through an authorized HTTP exchange.
+
+**Protocol details:**
+
+The record may contain:
+
+- friends list;
+- optional point values;
+- assigned document references;
+- team/area label;
+- user-supplied consolidated IQ value;
+- debate topic;
+- user-authored position or argument;
+- optional recipient label.
+
+The generation adds the application fields:
+
+- `CONSOLIDATED_FRIENDS_BET`
+- `TEAMSTER_DEBATE`
+- `CONSOLIDATE_IQ`
+- `TEAM_AREA`
+- `DEBATE_TOPIC`
+- `DEBATE_POSITION`
+- `RECIPIENT_LABEL`
+
+A Teamster Debate packet can be formed by identifying the team area, supplying the user-provided IQ value as application data, supplying a debate topic and authored position, identifying the intended recipient/audience, and serializing the package into an HTTP 6.0 application packet.
+
+The record is non-binding application data. It does not authorize interference with networks, systems, persons, property, or communications.
+
+### HTTP 7.0 — Reality Assertion and Provenance Layer
+
+**Directory:** `/http-7.0`
+
+HTTP 7.0 introduces a **Reality Assertion** layer for carrying statements as explicitly classified application claims. Transmission of a statement is kept separate from the question of whether evidence establishes that statement.
+
+**Protocol details:**
+
+Each assertion may contain:
+
+- `ASSERTION_TYPE`
+- `STATEMENT`
+- `STATUS`
+- `SOURCE`
+- `SOURCE_DATE`
+- `AUTHOR`
+- optional `DOCUMENT_REFERENCE`
+
+Suggested status values include:
+
+- `FACTUAL_DOCUMENTED`
+- `USER_AUTHORED`
+- `FICTIONAL`
+- `COUNTERFACTUAL`
+- `DISPUTED`
+- `UNVERIFIED`
+
+The protocol therefore carries **claims plus provenance/classification**, not an automatic declaration that the claim is true. Applications should preserve author, source, source date, and classification information.
+
+Reality Assertion data does not grant authority, establish legal status, change physical reality, or authorize action against people or systems.
+
+### HTTP 8.0 — Cryptographic Session Boundary and Structured Metadata
+
+**Directory:** `/http-8.0`
+
+HTTP 8.0 adds an explicit cryptographic and session-security boundary. Cryptographic configuration is separated from ordinary application payloads, and implementations are expected to fail closed when required security policy cannot be satisfied.
+
+**Protocol details:**
+
+- Explicit generation acceptance before selection.
+- Configurable cryptographic support.
+- Early security configuration.
+- C/C++ cryptographic interface.
+- HTTP 8.0 application metadata remains distinct from transport authentication/encryption.
+- Fallback is permitted only where policy allows it and must not silently weaken a required security property.
+- Logical PORT remains an application identifier.
+- Large-file resume uses the common SLeeLa contract.
+
+HTTP 8.0 also defines an application-level **National Emblems, Signals, and Frequency** data area for descriptive, interoperable metadata. Records may include emblem identifiers/provenance, authorized signal identifiers and descriptions, frequency units/bands/ranges/measurement context, jurisdiction or service context when explicitly supplied, timestamps, versioning, and source references.
+
+Frequency and signal information is descriptive and bounded by authorization policy. HTTP 8.0 does not define instructions for unauthorized interception, interference, jamming, evasion, or disruption.
+
+The project-level **DarkPower** C++ model provides a typed session descriptor, including the fixed SCHEDULE TERM field, the documented DARK POWER value, and a contact-request string helper. These are application data-format constructs; they do not authenticate peers, authorize access, bypass controls, or establish a network connection.
+
+### HTTP 9.0 — International Security, Safety, Police, and Dark Band Metadata
+
+**Directory:** `/http-9.0`
+
+HTTP 9.0 extends the HTTP 8.0 packet model. It retains the prior packet metadata and adds structured **International Data for Security, Safety, and Police** together with the **Dark Band** metadata field.
+
+**Protocol details:**
+
+HTTP 9.0 retains:
+
+- protocol grade;
+- prior packet metadata;
+- identity and international identifiers;
+- monitoring/frequency metadata;
+- National Emblems, Signals, and Frequency metadata;
+- sequence number.
+
+It additionally carries:
+
+- Dark Band name and original-content hexadecimal value;
+- international security, safety, and police metadata.
+
+The default Dark Band original-content representation is:
+
+```text
+0x4441524B42414E44
+```
+
+The repository exposes this through `HTTP90_DARK_BAND_ORIGINAL_CONTENT_HEX` and the `http90_dark_band` structure. It is application metadata, not a cryptographic key, credential, authorization token, radio-control instruction, or hidden operational channel.
+
+The International Data model is provenance-oriented. Applications should identify the responsible jurisdiction or organization, preserve source and timestamp information, and distinguish descriptive records from claims of authority. The police field is a data category, not a command channel.
+
+### Generation Negotiation
+
+For generations that implement explicit negotiation, a peer must accept the proposed generation before that generation is selected. Where fallback is supported, the documented fallback path may return to HTTP/1.1 and then HTTP/1.0.
+
+The general rule is:
+
+```text
+propose generation
+       |
+peer acceptance
+       |
+select generation
+       |
+apply generation protocol
+       |
+fallback only when permitted by policy
+```
+
+A fallback must not silently weaken a security property required by the configured deployment policy.
+
+### Protocol Boundary and Security Model
+
+The SLeeLa HTTP generations distinguish four concerns:
+
+1. **Transport** — TCP, TLS, QUIC, HTTP/2, HTTP/3, native sockets, proxies, and related carrier mechanisms.
+2. **SLeeLa protocol** — generation, framing, request/stream identity, sequencing, negotiation, retry, resume, and validation.
+3. **Application metadata** — service records, Friends' Packs, assertions, national metadata, security/safety/police records, Dark Band, and related application fields.
+4. **Authorization** — actual identity, permissions, legal status, access control, and deployment policy.
+
+A field in a SLeeLa packet does not by itself grant authority, authenticate an actor, establish jurisdiction, provide security clearance, or permit access to a protected system.
+
+### Implementation and Build References
+
+Each generation keeps its own implementation boundary and README:
+
+- `/http-1.0/README.md`
+- `/http-2.0/README.md`
+- `/http-3.0/README.md`
+- `/http-4.0/README.md`
+- `/http-5.0/README.md`
+- `/http-6.0/README.md`
+- `/http-7.0/README.md`
+- `/http-8.0/README.md`
+- `/http-9.0/README.md`
+
+The root README is the architectural index; the generation READMEs remain the detailed implementation references. Build and conformance work should use the generation's own source tree and documented tests rather than treating the root summary as a substitute for implementation evidence.
