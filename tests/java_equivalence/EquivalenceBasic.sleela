@@ -1,0 +1,7 @@
+#sleela 1.6
+public class EquivalenceBasic {
+  private int value;
+  public EquivalenceBasic(int value) { this.value = value; }
+  public int getValue() { return value; }
+  public int add(int amount) { return value + amount; }
+}
