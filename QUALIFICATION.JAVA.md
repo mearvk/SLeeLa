@@ -172,3 +172,8 @@ SLeeLa has substantial lexical/declaration/generic/annotation infrastructure. Th
 Q10 now has an executable qualification-record system. `tests/java_platforms.json` defines Linux, Windows 10+, and macOS target records; `tests/java_platform_qualification.py` captures host evidence; and `tests/java_platform_qualification_suite.py` validates the complete matrix. `make -C tests java-platform-qualification` is the deterministic entry point.
 
 A platform record is not a remote test result. `READY` means the selected target matches the observed host; `NOT_EXECUTED` means the target was described and validated as a matrix entry but was not executed on that operating system. This distinction prevents an environment from being reported as passing merely because its build instructions exist.
+
+
+### Next semantic layer — control-flow and exception-flow closure
+
+The next qualification work targets the remaining source-semantic gap in Java flow analysis: path-sensitive boolean operators, loop break/continue joins, switch completion, try/catch/finally abrupt paths, and constructor/blank-final assignment rules. The checked-exception model also validates its catch-type hierarchy. These are source/API qualification rules, not JVM runtime behavior.
