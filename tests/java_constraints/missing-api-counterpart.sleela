@@ -1,0 +1,5 @@
+#sleela 1.6
+# EXPECT: MissingJavaApiCounterpart
+class MissingApiUse {
+  java.example.missing.Type value;
+}
