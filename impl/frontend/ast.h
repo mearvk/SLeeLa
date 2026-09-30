@@ -73,7 +73,7 @@ struct JavaMemberMetadata {
     std::vector<annotation::Annotation> typeAnnotations;
 };
 
-struct Block;
+struct Block; struct Stmt; using StmtP=std::unique_ptr<Stmt>;
 struct Expr { virtual ~Expr() = default; }; using ExprP = std::unique_ptr<Expr>;
 struct IntLit:Expr{long long value;explicit IntLit(long long v):value(v){}};
 struct DoubleLit:Expr{double value;explicit DoubleLit(double v):value(v){}};
