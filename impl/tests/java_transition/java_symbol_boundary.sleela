@@ -1,0 +1,19 @@
+#sleela 1.6
+
+# Java Compatibility Boundary Fixture
+# These declarations exercise the Java compatibility surface only.
+# They are NOT examples of the native or advanced SLeeLa symbol vocabulary.
+
+@java.lang.Deprecated
+public class JavaCompatibilityBoundary {
+  @java.lang.Deprecated
+  public java.lang.String value;
+
+  public JavaCompatibilityBoundary(java.lang.String value) {
+    this.value = value;
+  }
+
+  public java.lang.String getValue() {
+    return this.value;
+  }
+}
