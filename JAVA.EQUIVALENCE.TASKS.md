@@ -36,7 +36,7 @@ The driver reports structural, semantic, and functional-source states separately
 4. Implement overload and override resolution. **Foundation completed in 0.3.9-dev:** strict/loose/variable-arity phases, applicability classification, most-specific selection foundation, override-equivalence, and basic return compatibility.
 5. Implement definite-assignment and reachability rules. **Foundation added in 0.3.12-dev:** source-flow facts, use-before-assignment diagnostics, final reassignment checks, branch merging, loop/abrupt-completion reachability, switch/try/finally flow scaffolding, and deterministic C++/Python qualification suite. **Foundation added in 0.3.12-dev:** source-flow facts, use-before-assignment diagnostics, final reassignment checks, branch merging, loop/abrupt-completion reachability, switch/try/finally flow scaffolding, and deterministic C++/Python qualification suite.
 6. Implement checked-exception analysis. **Foundation added in 0.3.13-dev:** exception hierarchy/subtyping, checked-vs-unchecked classification, catch coverage, redundant catch detection, throws-clause coverage, and overriding throws compatibility.
-7. Implement dependency-driven Java API counterpart closure.
+7. Implement dependency-driven Java API counterpart closure. **Foundation added in 0.3.14-dev:** source-reference discovery, Java-qualified dependency-to-envelope mapping, missing-counterpart diagnostics, and deterministic isolated-fixture qualification.
 8. Expand negative and constraint fixtures.
 9. Add normalized AST/signature comparison beyond the inventory driver.
 10. Add Linux, Windows 10+, and macOS qualification records.
@@ -102,3 +102,12 @@ Added `impl/frontend/java_flow.h/.cpp`, `tests/java_flow_semantics.cpp`, and `te
 Added `impl/frontend/java_exceptions.h/.cpp`, `tests/java_exceptions.cpp`, and `tests/java_exceptions_suite.py`, with the `java-exceptions` Makefile target. The model is source-level: it tracks exception type hierarchy, identifies checked exceptions, verifies catch-or-declare coverage, detects shadowed/redundant catches, and checks that overriding methods do not introduce incompatible checked exceptions. Full JLS Chapter 11 propagation rules—including expression/statement-specific exception sets, try/catch/finally propagation, multi-catch, precise rethrow, resource initialization/close exceptions, and generic checked-exception inference—remain to be completed.
 
 Oracle's Java Language Specification defines checked-exception compile-time checking, catch-or-specify requirements, and restrictions on checked exceptions in overriding declarations. citeturn1search0turn1search13
+
+
+### 0.3.14-dev — Java API dependency closure foundation
+
+Added `lib/java/tools/java_api_dependency_closure.py` and `tests/java_api_dependency_suite.py`, with the `java-api-dependencies` Makefile target. The auditor scans SLeeLa source for Java-qualified API references and verifies that each referenced type maps to a corresponding `/lib/java` envelope without modifying generated or handwritten API sources.
+
+This closes the first dependency-driven layer of API qualification. Full closure still requires member-level dependency extraction, nested/inner types, generic bounds and annotations, inherited API members, module/package metadata, and a dependency graph suitable for complete transitive closure.
+
+The Java statement model also remains an active companion area: the JLS defines enhanced `for`, `try`-with-resources, switch rules/guards, and detailed reachability/normal-completion constraints. citeturn0search0turn0search2
