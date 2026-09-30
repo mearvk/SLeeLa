@@ -10,6 +10,26 @@ SLeeLa is developed as an inspectable software project. Source, interfaces, impl
 
 
 
+## Java Parallel Execution and Native Procedural Interoperation
+
+SLeeLa can now operate **in parallel with Java** as a language/runtime companion rather than requiring Java to replace or absorb the SLeeLa execution model.
+
+A SLeeLa program can participate alongside Java execution while retaining its own native source representation. Java procedural logic can also be represented and executed from the **SLeeLa Family** through its corresponding **pre-compiled SLeeLa source**. This establishes a direct path between Java procedural behavior and the SLeeLa source/runtime layer:
+
+`Java procedural → SLeeLa Family representation → pre-compiled SLeeLa source → SLeeLa execution`
+
+This capability preserves the procedural role of the Java-side operation while giving the SLeeLa environment a native source-level form that its compiler, loader, SST, and Nordshrift tooling can understand.
+
+### What This Means
+
+- **Parallel with Java:** SLeeLa can run as a parallel language/runtime alongside Java.
+- **Native SLeeLa source:** Java procedural operations can have a corresponding pre-compiled SLeeLa source representation.
+- **Family interoperability:** Java procedural work can be brought into the SLeeLa Family without making the SLeeLa source layer merely a Java wrapper.
+- **Compiler and Loader visibility:** The resulting SLeeLa source participates in the same source, package, symbol, compilation, and loader model described above.
+- **Preserved execution boundaries:** Java remains available for Java-native operations, while SLeeLa provides its own native procedural execution path.
+
+The architectural goal is a genuine **SLeeLa ↔ Java parallel relationship**: Java and SLeeLa can cooperate while SLeeLa source remains a first-class native representation and execution surface.
+
 ## SLeeLa Standard Library
 
 The canonical SLeeLa-facing source collection is maintained under `/lib`. The library is the source-level package surface used by the SLeeLa compiler and loader rather than a documentation-only catalog.
