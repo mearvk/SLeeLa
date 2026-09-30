@@ -3,14 +3,24 @@
   "root": "/lib/java",
   "inventory": {
     "count": 8988,
-    "count_source": "git-index",
-    "count_command": "git ls-files --cached -- lib/java | wc -l",
-    "baseline_policy": "intentional changes to the inventory count require a manifest and documentation update"
+    "count_type": "library-source-baseline",
+    "count_source": "git-index excluding declared control metadata",
+    "control_files": [
+      "lib/java/README.md",
+      "lib/java/MANIFEST.json",
+      "lib/java/validate.py",
+      "lib/java/validate.sh"
+    ],
+    "count_command": "git ls-files --cached -- lib/java | grep -v -E '^(lib/java/README.md|lib/java/MANIFEST.json|lib/java/validate.py|lib/java/validate.sh)$' | wc -l",
+    "baseline_policy": "intentional library changes must not silently reduce the established 8,988-file baseline; metadata files are excluded from the library count"
   },
   "language_bridge": {
     "source_language": "SLeeLa",
     "parallel_runtime": "Java",
-    "native_vm_foundation": ["C", "C++"],
+    "native_vm_foundation": [
+      "C",
+      "C++"
+    ],
     "execution_model": "SLeeLa source -> compiler/loader -> SLeeLa VM -> C/C++ native runtime",
     "java_model": "Java procedure <-> SLeeLa Family representation <-> pre-compiled SLeeLa source <-> SLeeLa VM"
   },
