@@ -323,6 +323,40 @@ The API documentation also describes source-selection for decompilation through 
 
 See the complete [`/decompiler` subsystem](https://github.com/mearvk/SLeeLa/tree/master/decompiler) and its documentation for implementation details, API contracts, analysis limitations, and build guidance.
 
+
+## SLeeLa Terminal — `/terminal`
+
+SLeeLa maintains its own terminal development surface under `/terminal`. This directory is a **regular tracked directory in the SLeeLa repository**, not a Git submodule. It is reserved for SLeeLa-specific terminal features, extensions, integrations, and derived work associated with the repository's terminal environment.
+
+### Terminal Architecture and Source Ownership
+
+The terminal layout deliberately separates SLeeLa development from the pristine vendored GNU Bash source tree:
+
+- `bash/` — the vendored upstream GNU Bash source tree. It should remain close to upstream and should not be edited directly for ordinary SLeeLa development.
+- `terminal/` — SLeeLa-specific, new, or derived terminal work. Changes intended to become part of SLeeLa's terminal behavior belong here.
+
+This boundary gives SLeeLa a clean ownership model: upstream Bash remains identifiable as upstream source, while SLeeLa's terminal language/runtime work remains reviewable as native repository code.
+
+### Terminal as a SLeeLa Language and Runtime Surface
+
+The terminal is an important systems-facing part of SLeeLa because command-line interaction connects the language to processes, input/output streams, environment state, command execution, scripting, diagnostics, build tooling, and interactive development. The intended architecture keeps those facilities explicit rather than hiding them inside an opaque external dependency.
+
+The terminal relationship can be represented as:
+
+`SLeeLa terminal source → compiler/loader → SLeeLa runtime → native process/terminal services`
+
+Where Bash compatibility or upstream shell behavior is required, the vendored Bash tree provides the reference implementation boundary while `/terminal` provides the place for SLeeLa-specific extensions and integration.
+
+### Repository History and Development Convention
+
+The `/terminal` directory was previously configured as a Git submodule pointing toward the upstream GNU Bash repository. It has been converted into a normal tracked directory so that SLeeLa terminal development is represented directly in the SLeeLa repository rather than as an upstream submodule reference.
+
+This convention improves source ownership, reviewability, reproducibility, and integration with the SLeeLa compiler, loader, native C/C++ VM foundation, build system, and CI. It also prevents SLeeLa-specific terminal work from being confused with modifications to upstream Bash.
+
+The terminal subsystem currently contains its own `README.md` and tracking placeholder, with the directory intentionally prepared for continued SLeeLa-specific terminal development.
+
+See the complete [`/terminal` subsystem](https://github.com/mearvk/SLeeLa/tree/master/terminal) for its current source-ownership convention and development notes.
+
 ## Audio and Codec Architecture
 
 The Audio work is organized by implementation language and responsibility:
