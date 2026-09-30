@@ -20,3 +20,4 @@ check: all
 	./network-security
 clean:
 	rm -f memory reflection nordshrift runtime network-security
+\n.PHONY: jdk28-conformance jdk28-functional\njdk28-conformance:\n\tpython3 jdk28_functional_equivalence.py\n\njdk28-functional:\n\tpython3 jdk28_functional_equivalence.py --functional\n
