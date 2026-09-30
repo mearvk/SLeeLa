@@ -1,0 +1,60 @@
+{
+  "schema": "sleela-java-library-manifest-v1",
+  "root": "/lib/java",
+  "inventory": {
+    "count": 8988,
+    "count_source": "git-index",
+    "count_command": "git ls-files --cached -- lib/java | wc -l",
+    "baseline_policy": "intentional changes to the inventory count require a manifest and documentation update"
+  },
+  "language_bridge": {
+    "source_language": "SLeeLa",
+    "parallel_runtime": "Java",
+    "native_vm_foundation": ["C", "C++"],
+    "execution_model": "SLeeLa source -> compiler/loader -> SLeeLa VM -> C/C++ native runtime",
+    "java_model": "Java procedure <-> SLeeLa Family representation <-> pre-compiled SLeeLa source <-> SLeeLa VM"
+  },
+  "mapping": {
+    "required_concepts": [
+      "java_owner",
+      "sleela_symbol",
+      "source_role",
+      "execution_boundary",
+      "loader_visibility",
+      "compatibility_surface"
+    ],
+    "path": "Java package/class/procedure -> SLeeLa Family symbol -> SLeeLa source -> compiler/loader -> runtime service"
+  },
+  "source_roles": [
+    "binding",
+    "facade",
+    "native-boundary",
+    "runtime-service",
+    "compatibility-definition",
+    "other-documented"
+  ],
+  "execution_boundaries": [
+    "sleela-native",
+    "c",
+    "cpp",
+    "java-jvm",
+    "platform-specific"
+  ],
+  "jdk": {
+    "documented_baseline": "JDK 28",
+    "initial_families": [
+      "java.lang",
+      "java.util",
+      "java.io",
+      "java.nio",
+      "java.nio.file",
+      "java.net",
+      "java.time",
+      "java.math"
+    ]
+  },
+  "validation": {
+    "validator": "lib/java/validate.py",
+    "ci_workflow": ".github/workflows/lib-java.yml"
+  }
+}
