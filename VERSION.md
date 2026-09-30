@@ -2,20 +2,20 @@
 
 ## Current Development Version
 
-**SLeeLa:** 0.3.6-dev  
+**SLeeLa:** 0.3.7-dev  
 **Sleela-Complete:** 0.3.2-dev  
 **Nordshrift Complete:** 2.7.1-dev  
 **Native Foundation:** 0.3.2-dev  
 **Sleela Language Syntax:** 1.6 (supported range 1.3 .. 1.6)  
 **Compiler Compatibility Gate:** 2.8-dev  
-**Java Authorship Transition Gate:** 1.5-dev  
+**Java Authorship Transition Gate:** 1.6-dev  
 **Edition:** SLeeLa Complete / Native Foundation  
 **Status:** Active Development  
 **Repository:** mearkv/SLeeLa
 
-## 0.3.6 Development Increment
+## 0.3.7 Development Increment
 
-This increment advances the Java source-equivalence frontend with a substantially expanded expression AST, operator lexer, precedence parser, postfix access, assignments, conditional expressions, casts, arrays, method references, and object construction.
+This increment advances the Java source-equivalence frontend with statement ASTs and parsing for blocks, if/while/do/for, switch, break/continue/return/throw/assert/yield, synchronized, and try/catch/finally.
 
 ### Java compatibility boundary
 
