@@ -2,13 +2,13 @@
 
 ## Current Development Version
 
-**SLeeLa:** 0.3.19-dev
+**SLeeLa:** 0.3.21-dev
 **Sleela-Complete:** 0.3.2-dev  
 **Nordshrift Complete:** 2.7.1-dev  
 **Native Foundation:** 0.3.2-dev  
 **Sleela Language Syntax:** 1.6 (supported range 1.3 .. 1.6)  
 **Compiler Compatibility Gate:** 2.8-dev  
-**Java Authorship Transition Gate:** 1.17-dev
+**Java Authorship Transition Gate:** 1.19-dev
 **Edition:** SLeeLa Complete / Native Foundation  
 **Status:** Active Development  
 **Repository:** mearkv/SLeeLa
@@ -101,3 +101,10 @@ Added the unified Java qualification manifest, which coordinates the existing so
 The next semantic qualification layer hardens Java control-flow and checked-exception analysis. The source-semantic work remains independent of JVM or SLVM execution and is being extended toward complete Java definite-assignment, abrupt-completion, and exception-flow joins.
 
 **Java Authorship Transition Gate:** 1.18-dev
+
+
+## 0.3.21 Development Design Increment
+
+Added the Java Flow 0.3.21 architecture design. The design establishes directional boolean facts, explicit abrupt-completion paths, structural control-target resolution, loop/switch completion joins, try/catch/finally path composition, constructor/blank-final state, lambda capture boundaries, and shared checked-exception traversal. The qualification boundary remains Java source/API congruence rather than JVM or SLVM execution.
+
+**Java Authorship Transition Gate:** 1.19-dev
