@@ -24,6 +24,8 @@ private:
     JavaTypeKind tokenTypeKind(Tok k) const;
     std::string parseQualifiedName();
     std::vector<std::string> parseTypeList(Tok terminator);
+    std::vector<std::string> parseTypeParameters();
+    std::string parseGenericType();
     void parseThrows(std::vector<std::string>& out);
     StructDecl parseStruct();
     ClassDecl parseClass(unsigned classModifiers=0);
