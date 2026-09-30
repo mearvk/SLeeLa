@@ -52,7 +52,6 @@ struct JavaTypeMetadata {
     std::string qualifiedName;
     std::string superclass;
     std::vector<std::string> interfaces;
-    std::vector<std::string> typeParameters;
     std::string sourceVersion = "28";
     std::string apiStatus = "standard";
     bool preview = false;
@@ -74,6 +73,7 @@ struct JavaMemberMetadata {
     std::vector<annotation::Annotation> typeAnnotations;
 };
 
+struct Block;
 struct Expr { virtual ~Expr() = default; }; using ExprP = std::unique_ptr<Expr>;
 struct IntLit:Expr{long long value;explicit IntLit(long long v):value(v){}};
 struct DoubleLit:Expr{double value;explicit DoubleLit(double v):value(v){}};
