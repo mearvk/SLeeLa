@@ -184,3 +184,13 @@ const char *sleela_java_runtime_action_name(SleelaJavaRuntimeAction action) {
         default: return "continue-sleela-vm";
     }
 }
+
+const char *sleela_java_runtime_kind_name(SleelaJavaRuntimeKind kind) {
+    switch (kind) {
+        case SLEELA_JAVA_FX: return "javafx";
+        case SLEELA_JAVA_SWING: return "swing";
+        case SLEELA_JAVA_AWT: return "awt";
+        case SLEELA_JAVA_SE: return "java-se";
+        default: return "native-sleela";
+    }
+}
