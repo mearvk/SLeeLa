@@ -429,6 +429,46 @@ Skya therefore serves as a concrete cross-platform application boundary where SL
 
 See the complete [`/telephony-skya` subsystem](https://github.com/mearvk/SLeeLa/tree/master/telephony-skya) and its subsystem README for the current implementation layout and protocol documentation.
 
+## SLeeLa Server Edition — `/server-edition`
+
+SLeeLa includes a dedicated **Server Edition** under `/server-edition`. It is the server-side network service boundary for the SLeeLa HTTP generation family, with explicit packet admission, routing, filtering, audit, annotation, and application-service boundaries.
+
+### Server Architecture
+
+The Server Edition provides a bounded transport and admission layer:
+
+`accept → fixed envelope → header parser → generation/routing policy → filters and heuristics → admission boundary → application service handler`
+
+The implementation is intentionally separated from application payload execution. Payloads are treated as bytes; the server does not execute programs, shell commands, scripts, XML procedures, or metadata.
+
+The current Server Edition documentation covers:
+
+- HTTP generations 1.0 through 9.0 through explicit generation adapters.
+- Fixed wire-envelope and packet-processing rules.
+- Annotation-language integration through the SLeeLa front end.
+- Holding Document → Forwarding Annotation → Nexter Colony forwarding vocabulary.
+- Port-awareness and host-firewall lifecycle boundaries.
+- Logging, heuristics, malformed-input rejection, bounded memory/frame sizes, timeouts, and deterministic shutdown.
+- Native C++17 server implementation for Linux/macOS, with a documented Winsock2 build path for Windows.
+
+### International Sternary
+
+The Server Edition also contains the **International Sternary** subsystem under `server-edition/international-strernary` (the repository currently uses the `strernary` spelling in the directory name).
+
+International Sternary is the repository's designated international administrative-services area. In the current project terminology, it is associated with the **Processor of Internal Affairs of the State**. This README documents that role as a project-defined subsystem/function, not as a claim about an external governmental institution or real-world authority.
+
+The directory is currently present as an explicit Server Edition boundary and can be expanded with its source, protocol, state, and administrative-service definitions as those components are implemented.
+
+### Relationship to SLeeLa
+
+The Server Edition connects the SLeeLa language/runtime to network service operation without turning network metadata into authority:
+
+`SLeeLa source → compiler/loader → runtime → Server Edition → validated transport/application boundary`
+
+Its documented classification, security, police, safety, frequency, Dark Band, and related fields remain application metadata. They do not by themselves grant identity, clearance, authority, network control, or access.
+
+See the complete [`/server-edition` subsystem](https://github.com/mearvk/SLeeLa/tree/master/server-edition) and its subsystem README for the current implementation and protocol documentation.
+
 ## Audio and Codec Architecture
 
 The Audio work is organized by implementation language and responsibility:
