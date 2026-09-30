@@ -1,0 +1,49 @@
+name: Java Flow 0.3.21 CI
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - 'impl/frontend/java_flow.*'
+      - 'tests/java_flow_021_semantics.cpp'
+      - 'tests/java_flow_021_suite.py'
+      - '.github/workflows/java-flow-021.yml'
+  pull_request:
+    paths:
+      - 'impl/frontend/java_flow.*'
+      - 'tests/java_flow_021_semantics.cpp'
+      - 'tests/java_flow_021_suite.py'
+      - '.github/workflows/java-flow-021.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  java-flow-021:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verify compiler
+        run: |
+          c++ --version
+          python3 --version
+
+      - name: Compile Java Flow semantics fixture
+        run: |
+          c++ -std=c++17 -O2 -Wall -Wextra -pedantic \
+            -Iimpl/frontend \
+            tests/java_flow_021_semantics.cpp \
+            impl/frontend/java_flow.cpp \
+            -o /tmp/java-flow-021
+
+      - name: Run Java Flow semantics fixture
+        run: /tmp/java-flow-021
+
+      - name: Run Java Flow qualification suite
+        run: python3 tests/java_flow_021_suite.py
+
+      - name: Run baseline Java Flow suite
+        run: python3 tests/java_flow_suite.py
