@@ -13,6 +13,7 @@ on:
     paths:
       - 'lib/java/**/*.sleela'
       - 'lib/java/tools/jdk28_sync.py'
+      - 'lib/java/tools/jdk28_signature_sync.py'
       - 'tests/jdk28_functional_equivalence.py'
       - '.github/workflows/jdk28-functional-equivalence.yml'
       - 'tests/Makefile'
