@@ -194,3 +194,11 @@ Affected SLeeLa frontend: `impl/frontend/java_flow.h/.cpp`, `impl/frontend/java_
 Required next coverage: boolean-path-sensitive `&&`, `||`, `!`, and `?:`; constant boolean expressions; break/continue joins and labels; while/do/for completion; switch completion; try/catch/finally abrupt paths; constructor and blank-final definite-unassignment; lambda capture boundaries; and checked-exception propagation.
 
 JLS definite-assignment rules analyze every possible execution path and give special treatment to conditional boolean operators and boolean constants. Abrupt completion also affects whether a flow fact is required after a construct. This work remains source/API qualification, not JVM, bytecode, SLVM, or runtime equivalence.
+
+### 0.3.21 executable phase — directional flow and control targets
+
+The first executable 0.3.21 layer is now represented by `impl/frontend/java_flow.cpp` and `tests/java_flow_021_semantics.cpp`. It qualifies directional true/false flow for boolean constants, `!`, `&&`, `||`, and `?:`, plus structural break/continue target validation, labeled-block break handling, and loop normal-completion joins. The deterministic entry point is `make -C tests java-flow-021`.
+
+The implementation deliberately remains partial. Full qualification still requires Java-specific for-update flow, complete traditional and rule-based switch semantics, try/catch/finally abrupt-path replacement, constructor and blank-final definite-unassignment, lambda/capture boundaries, and shared checked-exception propagation. A passing child suite would establish only the rules it directly exercises; it would not establish whole-Chapter-16 completion.
+
+Oracle's Java SE 27 specification is the current released Java specification baseline, and Chapter 16 defines directional boolean flow and normal-versus-abrupt completion semantics. citeturn0search0turn0search10
