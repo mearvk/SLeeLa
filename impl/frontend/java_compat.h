@@ -1,9 +1,11 @@
 // ===========================================================================
-// java_compat.h -- Java authorship -> SLeeLa runtime transition contract.
+// java_compat.h -- Java authorship -> SLeeLa compatibility-surface contract.
 // ===========================================================================
-// This layer records what the parser preserved from Java authorship and gives
-// the compiler a single compatibility gate. It does not pretend that a
-// declaration is behaviorally equivalent until a runtime binding exists.
+// IMPORTANT: Java compatibility tokens, keywords, modifiers, annotations, and
+// API symbols are intentionally separate from the native SLeeLa symbol set.
+// Recognition preserves Java authorship; it does not make Java vocabulary a
+// native or advanced SLeeLa vocabulary. This header contains compatibility
+// metadata and validation only; it is not a Java VM/SLVM interface.
 #ifndef SLEELA_JAVA_COMPAT_H
 #define SLEELA_JAVA_COMPAT_H
 #include "ast.h"
