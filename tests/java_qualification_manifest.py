@@ -21,12 +21,12 @@ def main():
  ap=argparse.ArgumentParser(); ap.add_argument("--json",type=Path); ap.add_argument("--stop-on-failure",action="store_true"); args=ap.parse_args()
  results=[]
  for name,cmd in SUITES:
-  r=run(name,cmd); results.append(r); print(f"[{r["status"]}] {name}")
+  r=run(name,cmd); results.append(r); print("[%s] %s"%(r["status"],name))
   if args.stop_on_failure and r["status"]=="FAIL": break
  passed=sum(r["status"]=="PASS" for r in results); failed=sum(r["status"]=="FAIL" for r in results)
  version=next((x.split(":",1)[1].strip() for x in VERSION.read_text().splitlines() if x.startswith("**SLeeLa:**")),"")
  record={"schemaVersion":1,"tool":"sleela-java-qualification-manifest","scope":"Java/SLeeLa source/API congruence; no JVM/SLVM requirement","sleeLaVersion":version,"syntaxVersion":"1.6","javaSpecification":"Java SE 27","host":{"os":platform.platform(),"system":platform.system(),"architecture":platform.machine(),"python":platform.python_version()},"results":results,"summary":{"total":len(SUITES),"executed":len(results),"passed":passed,"failed":failed,"status":"PASS" if failed==0 and len(results)==len(SUITES) else "FAIL"}}
  if args.json: args.json.write_text(json.dumps(record,indent=2,sort_keys=True)+"\n",encoding="utf-8")
- print(f"qualification: {record["summary"]["status"]} ({passed}/{len(results)} passed)")
+ print("qualification: %s (%d/%d passed)"%(record["summary"]["status"],passed,len(results)))
  return 0 if record["summary"]["status"]=="PASS" else 1
 if __name__=="__main__": raise SystemExit(main())
