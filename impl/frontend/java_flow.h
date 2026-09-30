@@ -1,12 +1,7 @@
 // ===========================================================================
 // java_flow.h -- Java source-level definite-assignment/reachability model.
 // ===========================================================================
-// This is a source-semantic analysis layer. It is not a JVM/SLVM runtime.
-//
-// The model follows the Java Language Specification Chapter 16: local values
-// must be definitely assigned before reads, blank-final values must remain
-// definitely unassigned until their permitted assignment, and reachability is
-// a control-flow property rather than a runtime prediction.
+// Source-semantic analysis only. No JVM/SLVM runtime is implied.
 #ifndef SLEELA_JAVA_FLOW_H
 #define SLEELA_JAVA_FLOW_H
 
