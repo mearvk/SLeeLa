@@ -225,3 +225,9 @@ The first executable 0.3.21 layer is now represented by `impl/frontend/java_flow
 The implementation deliberately remains partial. Full qualification still requires Java-specific for-update flow, complete traditional and rule-based switch semantics, try/catch/finally abrupt-path replacement, constructor and blank-final definite-unassignment, lambda/capture boundaries, and shared checked-exception propagation. A passing child suite would establish only the rules it directly exercises; it would not establish whole-Chapter-16 completion.
 
 Oracle's Java SE 27 specification is the current released Java specification baseline, and Chapter 16 defines directional boolean flow and normal-versus-abrupt completion semantics. citeturn0search0turn0search10
+
+### 0.3.21 loop fixed-point qualification layer
+
+The flow implementation now has a bounded convergence layer for while, do, and basic for loops. Normal body completion and matching continue paths contribute to the next loop-head state; matching break paths are retained as normal exits. The qualification corpus includes a statically false loop that must not leak body assignments and a guaranteed final assignment followed by break.
+
+This is source-level Java qualification only. The bounded iteration cap is an implementation guard and does not itself establish complete JLS Chapter 16 coverage.
