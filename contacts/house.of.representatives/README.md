@@ -1,3 +1,5 @@
+<img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-logo-004.jpg" alt="SLeeLa">
+
 # House of Representatives — state lower-chamber contacts
 
 Contact lists for the **lower chamber** (State House of Representatives /
