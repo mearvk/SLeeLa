@@ -118,6 +118,7 @@ static BoolFlow boolExpr(FlowState s,const JavaFlowExpr& e){
     }
     readExpr(out.whenTrue,e); out.whenFalse=out.whenTrue; return out;
 }
+static void analyzeList(Context&,FlowState&,const std::vector<JavaFlowStmt>&);
 static bool sameFacts(const FlowState& a,const FlowState& b){
     return a.reachable==b.reachable && a.assigned==b.assigned && a.unassigned==b.unassigned;
 }
