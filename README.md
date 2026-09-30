@@ -2,7 +2,61 @@
 
 # SLeeLa
 
-## Editor's Note
+## I. Audio and Codec Architecture
+
+The Audio work is organized by implementation language and responsibility:
+
+- `audio/c/` — C11 implementation and library interface.
+- `audio/cpp/` — C++17 implementation and typed API.
+- `audio/java/` — Java 21 orchestration and native-process boundary.
+- `audio/native/` — native media-processing implementation.
+- `audio/gui/` — JavaFX presentation and integration.
+- `codecs/` — codec standards registry, handler API, capability metadata, and codec conformance work.
+
+### Major Sound Standards
+
+The new `/codecs` registry provides explicit coverage for major audio standards and formats:
+
+- PCM/WAV
+- AIFF
+- FLAC
+- ALAC
+- MP3
+- AAC
+- HE-AAC
+- Vorbis
+- Opus
+- Speex
+- WMA
+- AC-3
+- E-AC-3
+- AMR-NB
+- AMR-WB
+- G.711 μ-law
+- G.711 A-law
+- MIDI
+- Matroska Audio
+- WebM Audio
+
+The codec registry distinguishes **Native**, **Backend**, **Recognized**, **Container**, and **Event** capabilities. Listing a codec does not by itself claim that an encoder or decoder is already implemented.
+
+The intended audio path is:
+
+`codec/container → handler → PCM boundary → Audio API`
+
+and, for encoding:
+
+`Audio PCM → handler → codec/container output`
+
+The codec layer remains separate from the Audio mixer so that validation, decoding, encoding, and media processing have clear boundaries.
+
+See `codecs/README.md` and `codecs/CODECS.md` for the detailed registry, capability definitions, implementation order, security requirements, and licensing considerations.
+
+The phrase **carefully Open** is intentional: openness includes clear interfaces, explicit implementation boundaries, reproducible builds, validation, tests, and documentation of unfinished areas. It does not imply that an implementation is complete merely because its source is visible.
+
+— Editor's Note, SLeeLa
+
+## II. Editor's Note
 
 **Source is now carefully Open.**
 
@@ -10,7 +64,7 @@ SLeeLa is developed as an inspectable software project. Source, interfaces, impl
 
 
 
-## Java Parallel Execution and Native Procedural Interoperation
+## III. Java Parallel Execution and Native Procedural Interoperation
 
 SLeeLa can now operate **in parallel with Java** as a language/runtime companion rather than requiring Java to replace or absorb the SLeeLa execution model.
 
@@ -30,7 +84,7 @@ This capability preserves the procedural role of the Java-side operation while g
 
 The architectural goal is a genuine **SLeeLa ↔ Java parallel relationship**: Java and SLeeLa can cooperate while SLeeLa source remains a first-class native representation and execution surface.
 
-## Native Library File Count and Language / VM Architecture
+## IV. Native Library File Count and Language / VM Architecture
 
 The current native Java-facing library inventory contains **8,988 files under `/lib/java`**. This is the repository's substantial native source representation of SLeeLa's relationship to Java: it gives SLeeLa a source-level vocabulary for Java packages, classes, procedures, interfaces, runtime concepts, and interoperability boundaries while preserving SLeeLa as its own language rather than reducing it to a Java wrapper.
 
@@ -71,195 +125,7 @@ The current SLeeLa language architecture emphasizes:
 
 The **8,988-file `/lib/java` collection** therefore represents more than a directory of Java-related files. It is a major part of the SLeeLa language bridge: a carefully organized native source surface through which SLeeLa can understand, represent, and work alongside Java while continuing to execute as its own language on a C/C++ virtual-machine foundation.
 
-## SLeeLa Standard Library
-
-The canonical SLeeLa-facing source collection is maintained under `/lib`. The library is the source-level package surface used by the SLeeLa compiler and loader rather than a documentation-only catalog.
-
-The current development inventory records:
-
-- **74 packages**
-- **953 SLeeLa source units**
-- **1,041 total symbol records**
-- **88 module-facade symbols**
-
-The library includes the current language/runtime foundations together with package families such as regex, video, VM, reflection, audio, networking, synchronization, media, and other repository subsystems. Package-specific C/C++/Java implementations remain native/backend layers where appropriate; the `/lib` sources provide the corresponding SLeeLa language objects and package-facing contracts.
-
-### Compiler and Loader
-
-The compiler and loader treat `/lib` as an explicit library-resolution surface. New SLeeLa library sources are expected to participate in:
-
-`source → package/library resolution → semantic analysis → compilation → artifact/loader resolution`
-
-Library inventory and symbol-resolution information is kept synchronized with the compiler compatibility gate so that newly added SLeeLa classes and package facades are visible to tooling rather than remaining isolated source files.
-
-### SST and Nordshrift
-
-SST and Nordshrift use the repository's library inventory as part of their compiler-facing symbol and package surface. The canonical collection is intended to provide:
-
-- package-to-source resolution;
-- symbol-to-source resolution;
-- module-facade discovery;
-- compiler compatibility checks;
-- loader visibility checks; and
-- a reproducible inventory of the SLeeLa standard-library surface.
-
-This keeps the SLeeLa source layer, compiler, loader, SST, and Nordshrift representations aligned as the library grows.
-
-## SLeeLa Regular Expression System — `/regex`
-
-The SLeeLa regular-expression subsystem is treated as a **first-class language and library capability**, not as an incidental helper. The `/regex` surface provides the source-level vocabulary for defining, compiling, validating, matching, searching, extracting, and transforming text with regular-expression patterns while keeping those operations visible to the SLeeLa Compiler, Loader, SST, Nordshrift, and native VM architecture.
-
-### Purpose
-
-Regular expressions give SLeeLa a formal pattern language for text processing. The subsystem is intended to support the complete procedural lifecycle:
-
-`pattern source → regex definition → compilation/validation → matching/search → capture/extraction → replacement/transformation`
-
-A regex therefore has two related identities:
-
-- **Pattern identity** — the expression and its syntax.
-- **Procedural identity** — the compiled or executable operation that SLeeLa code can invoke.
-
-This distinction allows SLeeLa source to describe a pattern independently from the runtime mechanism that executes it.
-
-### Core Regex Language Features
-
-The SLeeLa regex surface is organized around the conventional building blocks of regular-expression languages:
-
-- **Literal characters** — direct character and text matching.
-- **Character classes** — sets and ranges of characters.
-- **Character-class negation** — matching characters outside a defined set.
-- **Wildcards** — controlled matching of arbitrary characters.
-- **Anchors** — beginning/end and other positional assertions.
-- **Quantifiers** — repetition of expressions.
-- **Grouping** — logical and procedural grouping of pattern expressions.
-- **Alternation** — selecting among multiple pattern branches.
-- **Escaping** — representing metacharacters and special characters literally.
-- **Captures** — retaining matched portions of input for procedural use.
-- **Assertions** — expressing conditions about the surrounding input without necessarily consuming it.
-- **Flags/modes** — controlling matching behavior where the selected implementation provides those modes.
-
-The exact runtime behavior of a feature is determined by the SLeeLa regex implementation and its documented compatibility surface. A source definition should never imply support for a regex feature that its backend has not implemented and tested.
-
-### Regex as SLeeLa Source
-
-The important architectural point is that regex operations remain **SLeeLa-visible source objects**.
-
-A regex definition can participate in the normal SLeeLa language path:
-
-`SLeeLa regex source → package/library resolution → semantic analysis → regex compilation → SLeeLa VM execution`
-
-This keeps regular expressions connected to:
-
-- SLeeLa classes and symbols;
-- package and library resolution;
-- compiler and loader discovery;
-- procedural operations;
-- reflection and introspection;
-- native C/C++ runtime facilities where required; and
-- the broader SST and Nordshrift symbol inventory.
-
-Regex functionality therefore belongs to the language's executable source model rather than existing only as a foreign-library call.
-
-### Matching Operations
-
-The regex subsystem is designed to distinguish common procedural operations so callers can express intent clearly:
-
-1. **Validate** — determine whether a pattern is syntactically valid before execution.
-2. **Compile** — prepare a pattern for repeated execution.
-3. **Match** — determine whether input satisfies a pattern.
-4. **Search** — locate a matching region within larger input.
-5. **Capture** — retrieve portions identified by groups.
-6. **Replace** — transform matching regions into replacement text.
-7. **Iterate** — process multiple matches where the selected regex implementation supports repeated matching.
-8. **Inspect** — expose pattern and match information to SLeeLa runtime/reflection facilities.
-
-The intended separation between validation, compilation, and execution is important for long-running programs: a pattern can be checked once and then reused rather than repeatedly interpreted as untrusted or unvalidated source.
-
-### Text and Symbol Integration
-
-Regex is particularly useful because SLeeLa treats text, symbols, packages, and procedural definitions as inspectable language objects. Regex operations can therefore serve as a bridge between ordinary text and structured SLeeLa processing.
-
-Typical language-level uses include:
-
-- source-text inspection;
-- lexical filtering;
-- input validation;
-- token discovery;
-- symbol/name matching;
-- configuration parsing;
-- structured text extraction;
-- search-and-replace operations;
-- compiler and loader support;
-- documentation and source analysis; and
-- protocol and network message processing.
-
-Regex does not replace a parser. Where SLeeLa requires grammatical or structural understanding, the regex subsystem should be used for lexical/pattern-level work and the appropriate parser or semantic subsystem should perform structural analysis.
-
-### Native Runtime Boundary
-
-The regex API remains independent from its low-level execution mechanism. Where native acceleration or operating-system integration is appropriate, C and C++ can provide the implementation beneath the SLeeLa-facing API:
-
-`SLeeLa regex source → Compiler/Loader → Regex runtime interface → C/C++ implementation → SLeeLa VM`
-
-This preserves the same architectural separation used elsewhere in SLeeLa:
-
-- SLeeLa defines the language-facing operation.
-- The Compiler and Loader resolve the source and symbols.
-- The SLeeLa VM executes the procedural operation.
-- C/C++ may provide the native implementation and platform/runtime services.
-
-A Java implementation may also participate through the established Java parallel-runtime model when a Java-side regex facility is intentionally selected and documented.
-
-### Safety and Correctness
-
-Regex processing can become computationally expensive when patterns and inputs interact badly. SLeeLa's regex subsystem should therefore treat pattern validation, execution limits, input boundaries, and backend behavior as engineering concerns rather than assuming that every syntactically valid expression is computationally harmless.
-
-Implementations should document:
-
-- supported syntax;
-- unsupported syntax;
-- escaping rules;
-- character encoding behavior;
-- Unicode behavior;
-- capture semantics;
-- replacement semantics;
-- execution/resource limits;
-- error reporting; and
-- backend-specific compatibility.
-
-This allows the SLeeLa source definition to remain portable while making implementation-specific behavior explicit.
-
-### Compiler, Loader, SST, and Nordshrift
-
-Regex source belongs to the same discoverable library model as the rest of SLeeLa. New regex classes, symbols, or procedural definitions should be added to the canonical library inventory and made visible to the compiler and loader.
-
-The intended chain is:
-
-`/regex source → symbol inventory → SST/Nordshrift → compiler resolution → loader resolution → VM execution`
-
-This is especially important for regex because a pattern may be represented both as source syntax and as a runtime-compiled object. Both identities need stable symbols and predictable loading behavior.
-
-### Relationship to the SLeeLa Language
-
-Regex is one of the language capabilities that demonstrates the intended SLeeLa model: a high-level procedural feature can have a clear source representation, compiler-visible symbols, a VM execution path, and a native C/C++ foundation without losing its identity as a SLeeLa operation.
-
-In that model:
-
-`Regex source`
-→ `SLeeLa symbol`
-→ `Compiler/Loader`
-→ `SLeeLa VM`
-→ `native regex/runtime service`
-
-and, where Java interoperability is intentionally used:
-
-`Java regex facility ↔ SLeeLa Family representation ↔ pre-compiled SLeeLa source`
-
-The result is a regex subsystem that belongs to SLeeLa itself while remaining capable of using carefully defined native or Java runtime services underneath the language boundary.
-
-
-## SLeeLa Decompiler and Native Analysis — `/decompiler`
+## V. SLeeLa Decompiler and Native Analysis — `/decompiler`
 
 SLeeLa includes a dedicated **Slecompiler™** subsystem under `/decompiler` for native-binary analysis, decompilation, library inspection, driver investigation, and evidence-based source reconstruction. The subsystem is designed as a read-only static-analysis pipeline: it analyzes native artifacts without treating the analyzed artifact as executable input.
 
@@ -324,206 +190,7 @@ The API documentation also describes source-selection for decompilation through 
 See the complete [`/decompiler` subsystem](https://github.com/mearvk/SLeeLa/tree/master/decompiler) and its documentation for implementation details, API contracts, analysis limitations, and build guidance.
 
 
-## SLeeLa Terminal — `/terminal`
-
-SLeeLa maintains its own terminal development surface under `/terminal`. This directory is a **regular tracked directory in the SLeeLa repository**, not a Git submodule. It is reserved for SLeeLa-specific terminal features, extensions, integrations, and derived work associated with the repository's terminal environment.
-
-### Terminal Architecture and Source Ownership
-
-The terminal layout deliberately separates SLeeLa development from the pristine vendored GNU Bash source tree:
-
-- `bash/` — the vendored upstream GNU Bash source tree. It should remain close to upstream and should not be edited directly for ordinary SLeeLa development.
-- `terminal/` — SLeeLa-specific, new, or derived terminal work. Changes intended to become part of SLeeLa's terminal behavior belong here.
-
-This boundary gives SLeeLa a clean ownership model: upstream Bash remains identifiable as upstream source, while SLeeLa's terminal language/runtime work remains reviewable as native repository code.
-
-### Terminal as a SLeeLa Language and Runtime Surface
-
-The terminal is an important systems-facing part of SLeeLa because command-line interaction connects the language to processes, input/output streams, environment state, command execution, scripting, diagnostics, build tooling, and interactive development. The intended architecture keeps those facilities explicit rather than hiding them inside an opaque external dependency.
-
-The terminal relationship can be represented as:
-
-`SLeeLa terminal source → compiler/loader → SLeeLa runtime → native process/terminal services`
-
-Where Bash compatibility or upstream shell behavior is required, the vendored Bash tree provides the reference implementation boundary while `/terminal` provides the place for SLeeLa-specific extensions and integration.
-
-### Repository History and Development Convention
-
-The `/terminal` directory was previously configured as a Git submodule pointing toward the upstream GNU Bash repository. It has been converted into a normal tracked directory so that SLeeLa terminal development is represented directly in the SLeeLa repository rather than as an upstream submodule reference.
-
-This convention improves source ownership, reviewability, reproducibility, and integration with the SLeeLa compiler, loader, native C/C++ VM foundation, build system, and CI. It also prevents SLeeLa-specific terminal work from being confused with modifications to upstream Bash.
-
-The terminal subsystem currently contains its own `README.md` and tracking placeholder, with the directory intentionally prepared for continued SLeeLa-specific terminal development.
-
-See the complete [`/terminal` subsystem](https://github.com/mearvk/SLeeLa/tree/master/terminal) for its current source-ownership convention and development notes.
-
-## SLeeLa Telephony — `/telephony-skya`
-
-SLeeLa includes a dedicated **Skya™ telephony subsystem** under `/telephony-skya`. Skya defines the SLeeLa application boundary for client, server, and combined telephony operation, with native C/C++ services beneath SLeeLa-level runnable programs and a JavaFX/Guia™ presentation layer.
-
-### Skya Architecture
-
-The subsystem separates responsibilities across its repository layout:
-
-- `native/` — authoritative C/C++ engine boundary and native build files for networking, media, security, NAT, and file-transfer services.
-- `sleela/` — runnable `.sleela` wrapper programs for server, client, and combined room operation.
-- `javafx/` — JavaFX client presentation and integration.
-- `drivers/` — device and telephony-driver integration boundary.
-- `docs/` — protocol, runtime, security, media, NAT, GUI, and runnable-program documentation.
-- `config/` — deployment and runtime defaults.
-- `build/` — build/output boundary.
-
-The native layer remains authoritative for low-level networking, media, security, NAT, and file transfer. The SLeeLa programs provide application-level runnables and orchestration without creating a second native runtime.
-
-### User and Administrative Clients
-
-The default Skya GUI is the non-administrative user client, `SkyaClientApp`. Its primary user-facing capabilities include:
-
-- Chat
-- Video
-- Audio
-- File Transfer
-- connection and room selection
-
-Administrative lifecycle and local circuit monitoring are separated into `SkyaApp`, launched through the Client Monitor. This keeps ordinary user operation distinct from administrative controls.
-
-### Network, Security, and Media Boundary
-
-Skya is designed around HTTP/2 and HTTP/3-capable networking, NAT/relay awareness, certificate verification, RSA-2048 compatibility, ephemeral Diffie-Hellman, resumable file-transfer contracts, and codec negotiation. Codec names describe adapter capabilities; deployment must provide the corresponding libraries and comply with applicable licensing.
-
-The intended native/application relationship is:
-
-`Skya client/server → SLeeLa runnable layer → native C/C++ telephony engine`
-
-This keeps the language-level application surface inspectable while preserving native implementations for platform-sensitive services.
-
-### Guia™ and BODI GUI Protocol
-
-The Skya JavaFX client uses **Guia™ 1.0** as its GUI-to-SLeeLa client/listener protocol. **BODI** supplies declarative UI definitions while Guia™ provides runtime lifecycle, events, commands, data, monitoring, and listener transitions.
-
-This places the Skya GUI inside the broader SLeeLa Java parallel-runtime architecture rather than making JavaFX the telephony engine itself.
-
-### Build and Execution
-
-The documented native build boundary is:
-
-`make -C telephony-skya/native`
-
-with the native executable serving as the bridge for combined operation, including HTTP/3 and room selection where those options are enabled. The `.sleela` programs are compiled and run through the normal SLeeLa toolchain and use SLeeLa socket/thread primitives where a pure-SLeeLa runnable is appropriate.
-
-### Telephony Drivers
-
-Skya reserves `/drivers` for device and telephony hardware integration. This provides a defined place for headset, USB, audio, video, and other supported-device drivers while keeping device-specific implementation beneath the higher-level Skya room/client/server model.
-
-### Relationship to SLeeLa
-
-The Skya subsystem demonstrates the intended SLeeLa architecture across several layers:
-
-`SLeeLa source → compiler/loader → SLeeLa VM → Skya runnable → native C/C++ telephony services`
-
-and for the JavaFX presentation path:
-
-`Skya JavaFX → Guia™/BODI → SLeeLa client/runtime → native telephony services`
-
-Skya therefore serves as a concrete cross-platform application boundary where SLeeLa source, the C/C++ VM foundation, native services, Java interoperability, GUI protocols, and device drivers can operate as defined layers rather than as one undifferentiated runtime.
-
-See the complete [`/telephony-skya` subsystem](https://github.com/mearvk/SLeeLa/tree/master/telephony-skya) and its subsystem README for the current implementation layout and protocol documentation.
-
-## SLeeLa Server Edition — `/server-edition`
-
-SLeeLa includes a dedicated **Server Edition** under `/server-edition`. It is the server-side network service boundary for the SLeeLa HTTP generation family, with explicit packet admission, routing, filtering, audit, annotation, and application-service boundaries.
-
-### Server Architecture
-
-The Server Edition provides a bounded transport and admission layer:
-
-`accept → fixed envelope → header parser → generation/routing policy → filters and heuristics → admission boundary → application service handler`
-
-The implementation is intentionally separated from application payload execution. Payloads are treated as bytes; the server does not execute programs, shell commands, scripts, XML procedures, or metadata.
-
-The current Server Edition documentation covers:
-
-- HTTP generations 1.0 through 9.0 through explicit generation adapters.
-- Fixed wire-envelope and packet-processing rules.
-- Annotation-language integration through the SLeeLa front end.
-- Holding Document → Forwarding Annotation → Nexter Colony forwarding vocabulary.
-- Port-awareness and host-firewall lifecycle boundaries.
-- Logging, heuristics, malformed-input rejection, bounded memory/frame sizes, timeouts, and deterministic shutdown.
-- Native C++17 server implementation for Linux/macOS, with a documented Winsock2 build path for Windows.
-
-### International Sternary
-
-The Server Edition also contains the **International Sternary** subsystem under `server-edition/international-strernary` (the repository currently uses the `strernary` spelling in the directory name).
-
-International Sternary is the repository's designated international administrative-services area. In the current project terminology, it is associated with the **Processor of Internal Affairs of the State**. This README documents that role as a project-defined subsystem/function, not as a claim about an external governmental institution or real-world authority.
-
-The directory is currently present as an explicit Server Edition boundary and can be expanded with its source, protocol, state, and administrative-service definitions as those components are implemented.
-
-### Relationship to SLeeLa
-
-The Server Edition connects the SLeeLa language/runtime to network service operation without turning network metadata into authority:
-
-`SLeeLa source → compiler/loader → runtime → Server Edition → validated transport/application boundary`
-
-Its documented classification, security, police, safety, frequency, Dark Band, and related fields remain application metadata. They do not by themselves grant identity, clearance, authority, network control, or access.
-
-See the complete [`/server-edition` subsystem](https://github.com/mearvk/SLeeLa/tree/master/server-edition) and its subsystem README for the current implementation and protocol documentation.
-
-## Audio and Codec Architecture
-
-The Audio work is organized by implementation language and responsibility:
-
-- `audio/c/` — C11 implementation and library interface.
-- `audio/cpp/` — C++17 implementation and typed API.
-- `audio/java/` — Java 21 orchestration and native-process boundary.
-- `audio/native/` — native media-processing implementation.
-- `audio/gui/` — JavaFX presentation and integration.
-- `codecs/` — codec standards registry, handler API, capability metadata, and codec conformance work.
-
-### Major Sound Standards
-
-The new `/codecs` registry provides explicit coverage for major audio standards and formats:
-
-- PCM/WAV
-- AIFF
-- FLAC
-- ALAC
-- MP3
-- AAC
-- HE-AAC
-- Vorbis
-- Opus
-- Speex
-- WMA
-- AC-3
-- E-AC-3
-- AMR-NB
-- AMR-WB
-- G.711 μ-law
-- G.711 A-law
-- MIDI
-- Matroska Audio
-- WebM Audio
-
-The codec registry distinguishes **Native**, **Backend**, **Recognized**, **Container**, and **Event** capabilities. Listing a codec does not by itself claim that an encoder or decoder is already implemented.
-
-The intended audio path is:
-
-`codec/container → handler → PCM boundary → Audio API`
-
-and, for encoding:
-
-`Audio PCM → handler → codec/container output`
-
-The codec layer remains separate from the Audio mixer so that validation, decoding, encoding, and media processing have clear boundaries.
-
-See `codecs/README.md` and `codecs/CODECS.md` for the detailed registry, capability definitions, implementation order, security requirements, and licensing considerations.
-
-The phrase **carefully Open** is intentional: openness includes clear interfaces, explicit implementation boundaries, reproducible builds, validation, tests, and documentation of unfinished areas. It does not imply that an implementation is complete merely because its source is visible.
-
-— Editor's Note, SLeeLa
-
-## SLeeLa HTTP 1.0–9.0 — HTTP and Protocol Details
+## VI. SLeeLa HTTP 1.0–9.0 — HTTP and Protocol Details
 
 The SLeeLa repository maintains nine experimental HTTP-generation directories, from `/http-1.0` through `/http-9.0`. These are **SLeeLa application-protocol generations**, not claims that HTTP/4 through HTTP/9 are published IETF HTTP standards. The generation directories define the SLeeLa application envelope, routing identifiers, protocol state, metadata, negotiation, integrity, and application behavior carried by an appropriate transport.
 
@@ -879,3 +546,335 @@ Each generation keeps its own implementation boundary and README:
 - `/http-9.0/README.md`
 
 The root README is the architectural index; the generation READMEs remain the detailed implementation references. Build and conformance work should use the generation's own source tree and documented tests rather than treating the root summary as a substitute for implementation evidence.
+## VII. SLeeLa Regular Expression System — `/regex`
+
+The SLeeLa regular-expression subsystem is treated as a **first-class language and library capability**, not as an incidental helper. The `/regex` surface provides the source-level vocabulary for defining, compiling, validating, matching, searching, extracting, and transforming text with regular-expression patterns while keeping those operations visible to the SLeeLa Compiler, Loader, SST, Nordshrift, and native VM architecture.
+
+### Purpose
+
+Regular expressions give SLeeLa a formal pattern language for text processing. The subsystem is intended to support the complete procedural lifecycle:
+
+`pattern source → regex definition → compilation/validation → matching/search → capture/extraction → replacement/transformation`
+
+A regex therefore has two related identities:
+
+- **Pattern identity** — the expression and its syntax.
+- **Procedural identity** — the compiled or executable operation that SLeeLa code can invoke.
+
+This distinction allows SLeeLa source to describe a pattern independently from the runtime mechanism that executes it.
+
+### Core Regex Language Features
+
+The SLeeLa regex surface is organized around the conventional building blocks of regular-expression languages:
+
+- **Literal characters** — direct character and text matching.
+- **Character classes** — sets and ranges of characters.
+- **Character-class negation** — matching characters outside a defined set.
+- **Wildcards** — controlled matching of arbitrary characters.
+- **Anchors** — beginning/end and other positional assertions.
+- **Quantifiers** — repetition of expressions.
+- **Grouping** — logical and procedural grouping of pattern expressions.
+- **Alternation** — selecting among multiple pattern branches.
+- **Escaping** — representing metacharacters and special characters literally.
+- **Captures** — retaining matched portions of input for procedural use.
+- **Assertions** — expressing conditions about the surrounding input without necessarily consuming it.
+- **Flags/modes** — controlling matching behavior where the selected implementation provides those modes.
+
+The exact runtime behavior of a feature is determined by the SLeeLa regex implementation and its documented compatibility surface. A source definition should never imply support for a regex feature that its backend has not implemented and tested.
+
+### Regex as SLeeLa Source
+
+The important architectural point is that regex operations remain **SLeeLa-visible source objects**.
+
+A regex definition can participate in the normal SLeeLa language path:
+
+`SLeeLa regex source → package/library resolution → semantic analysis → regex compilation → SLeeLa VM execution`
+
+This keeps regular expressions connected to:
+
+- SLeeLa classes and symbols;
+- package and library resolution;
+- compiler and loader discovery;
+- procedural operations;
+- reflection and introspection;
+- native C/C++ runtime facilities where required; and
+- the broader SST and Nordshrift symbol inventory.
+
+Regex functionality therefore belongs to the language's executable source model rather than existing only as a foreign-library call.
+
+### Matching Operations
+
+The regex subsystem is designed to distinguish common procedural operations so callers can express intent clearly:
+
+1. **Validate** — determine whether a pattern is syntactically valid before execution.
+2. **Compile** — prepare a pattern for repeated execution.
+3. **Match** — determine whether input satisfies a pattern.
+4. **Search** — locate a matching region within larger input.
+5. **Capture** — retrieve portions identified by groups.
+6. **Replace** — transform matching regions into replacement text.
+7. **Iterate** — process multiple matches where the selected regex implementation supports repeated matching.
+8. **Inspect** — expose pattern and match information to SLeeLa runtime/reflection facilities.
+
+The intended separation between validation, compilation, and execution is important for long-running programs: a pattern can be checked once and then reused rather than repeatedly interpreted as untrusted or unvalidated source.
+
+### Text and Symbol Integration
+
+Regex is particularly useful because SLeeLa treats text, symbols, packages, and procedural definitions as inspectable language objects. Regex operations can therefore serve as a bridge between ordinary text and structured SLeeLa processing.
+
+Typical language-level uses include:
+
+- source-text inspection;
+- lexical filtering;
+- input validation;
+- token discovery;
+- symbol/name matching;
+- configuration parsing;
+- structured text extraction;
+- search-and-replace operations;
+- compiler and loader support;
+- documentation and source analysis; and
+- protocol and network message processing.
+
+Regex does not replace a parser. Where SLeeLa requires grammatical or structural understanding, the regex subsystem should be used for lexical/pattern-level work and the appropriate parser or semantic subsystem should perform structural analysis.
+
+### Native Runtime Boundary
+
+The regex API remains independent from its low-level execution mechanism. Where native acceleration or operating-system integration is appropriate, C and C++ can provide the implementation beneath the SLeeLa-facing API:
+
+`SLeeLa regex source → Compiler/Loader → Regex runtime interface → C/C++ implementation → SLeeLa VM`
+
+This preserves the same architectural separation used elsewhere in SLeeLa:
+
+- SLeeLa defines the language-facing operation.
+- The Compiler and Loader resolve the source and symbols.
+- The SLeeLa VM executes the procedural operation.
+- C/C++ may provide the native implementation and platform/runtime services.
+
+A Java implementation may also participate through the established Java parallel-runtime model when a Java-side regex facility is intentionally selected and documented.
+
+### Safety and Correctness
+
+Regex processing can become computationally expensive when patterns and inputs interact badly. SLeeLa's regex subsystem should therefore treat pattern validation, execution limits, input boundaries, and backend behavior as engineering concerns rather than assuming that every syntactically valid expression is computationally harmless.
+
+Implementations should document:
+
+- supported syntax;
+- unsupported syntax;
+- escaping rules;
+- character encoding behavior;
+- Unicode behavior;
+- capture semantics;
+- replacement semantics;
+- execution/resource limits;
+- error reporting; and
+- backend-specific compatibility.
+
+This allows the SLeeLa source definition to remain portable while making implementation-specific behavior explicit.
+
+### Compiler, Loader, SST, and Nordshrift
+
+Regex source belongs to the same discoverable library model as the rest of SLeeLa. New regex classes, symbols, or procedural definitions should be added to the canonical library inventory and made visible to the compiler and loader.
+
+The intended chain is:
+
+`/regex source → symbol inventory → SST/Nordshrift → compiler resolution → loader resolution → VM execution`
+
+This is especially important for regex because a pattern may be represented both as source syntax and as a runtime-compiled object. Both identities need stable symbols and predictable loading behavior.
+
+### Relationship to the SLeeLa Language
+
+Regex is one of the language capabilities that demonstrates the intended SLeeLa model: a high-level procedural feature can have a clear source representation, compiler-visible symbols, a VM execution path, and a native C/C++ foundation without losing its identity as a SLeeLa operation.
+
+In that model:
+
+`Regex source`
+→ `SLeeLa symbol`
+→ `Compiler/Loader`
+→ `SLeeLa VM`
+→ `native regex/runtime service`
+
+and, where Java interoperability is intentionally used:
+
+`Java regex facility ↔ SLeeLa Family representation ↔ pre-compiled SLeeLa source`
+
+The result is a regex subsystem that belongs to SLeeLa itself while remaining capable of using carefully defined native or Java runtime services underneath the language boundary.
+
+
+## VIII. SLeeLa Server Edition — `/server-edition`
+
+SLeeLa includes a dedicated **Server Edition** under `/server-edition`. It is the server-side network service boundary for the SLeeLa HTTP generation family, with explicit packet admission, routing, filtering, audit, annotation, and application-service boundaries.
+
+### Server Architecture
+
+The Server Edition provides a bounded transport and admission layer:
+
+`accept → fixed envelope → header parser → generation/routing policy → filters and heuristics → admission boundary → application service handler`
+
+The implementation is intentionally separated from application payload execution. Payloads are treated as bytes; the server does not execute programs, shell commands, scripts, XML procedures, or metadata.
+
+The current Server Edition documentation covers:
+
+- HTTP generations 1.0 through 9.0 through explicit generation adapters.
+- Fixed wire-envelope and packet-processing rules.
+- Annotation-language integration through the SLeeLa front end.
+- Holding Document → Forwarding Annotation → Nexter Colony forwarding vocabulary.
+- Port-awareness and host-firewall lifecycle boundaries.
+- Logging, heuristics, malformed-input rejection, bounded memory/frame sizes, timeouts, and deterministic shutdown.
+- Native C++17 server implementation for Linux/macOS, with a documented Winsock2 build path for Windows.
+
+### International Sternary
+
+The Server Edition also contains the **International Sternary** subsystem under `server-edition/international-strernary` (the repository currently uses the `strernary` spelling in the directory name).
+
+International Sternary is the repository's designated international administrative-services area. In the current project terminology, it is associated with the **Processor of Internal Affairs of the State**. This README documents that role as a project-defined subsystem/function, not as a claim about an external governmental institution or real-world authority.
+
+The directory is currently present as an explicit Server Edition boundary and can be expanded with its source, protocol, state, and administrative-service definitions as those components are implemented.
+
+### Relationship to SLeeLa
+
+The Server Edition connects the SLeeLa language/runtime to network service operation without turning network metadata into authority:
+
+`SLeeLa source → compiler/loader → runtime → Server Edition → validated transport/application boundary`
+
+Its documented classification, security, police, safety, frequency, Dark Band, and related fields remain application metadata. They do not by themselves grant identity, clearance, authority, network control, or access.
+
+See the complete [`/server-edition` subsystem](https://github.com/mearvk/SLeeLa/tree/master/server-edition) and its subsystem README for the current implementation and protocol documentation.
+
+## IX. SLeeLa Standard Library
+
+The canonical SLeeLa-facing source collection is maintained under `/lib`. The library is the source-level package surface used by the SLeeLa compiler and loader rather than a documentation-only catalog.
+
+The current development inventory records:
+
+- **74 packages**
+- **953 SLeeLa source units**
+- **1,041 total symbol records**
+- **88 module-facade symbols**
+
+The library includes the current language/runtime foundations together with package families such as regex, video, VM, reflection, audio, networking, synchronization, media, and other repository subsystems. Package-specific C/C++/Java implementations remain native/backend layers where appropriate; the `/lib` sources provide the corresponding SLeeLa language objects and package-facing contracts.
+
+### Compiler and Loader
+
+The compiler and loader treat `/lib` as an explicit library-resolution surface. New SLeeLa library sources are expected to participate in:
+
+`source → package/library resolution → semantic analysis → compilation → artifact/loader resolution`
+
+Library inventory and symbol-resolution information is kept synchronized with the compiler compatibility gate so that newly added SLeeLa classes and package facades are visible to tooling rather than remaining isolated source files.
+
+### SST and Nordshrift
+
+SST and Nordshrift use the repository's library inventory as part of their compiler-facing symbol and package surface. The canonical collection is intended to provide:
+
+- package-to-source resolution;
+- symbol-to-source resolution;
+- module-facade discovery;
+- compiler compatibility checks;
+- loader visibility checks; and
+- a reproducible inventory of the SLeeLa standard-library surface.
+
+This keeps the SLeeLa source layer, compiler, loader, SST, and Nordshrift representations aligned as the library grows.
+
+## X. SLeeLa Telephony — `/telephony-skya`
+
+SLeeLa includes a dedicated **Skya™ telephony subsystem** under `/telephony-skya`. Skya defines the SLeeLa application boundary for client, server, and combined telephony operation, with native C/C++ services beneath SLeeLa-level runnable programs and a JavaFX/Guia™ presentation layer.
+
+### Skya Architecture
+
+The subsystem separates responsibilities across its repository layout:
+
+- `native/` — authoritative C/C++ engine boundary and native build files for networking, media, security, NAT, and file-transfer services.
+- `sleela/` — runnable `.sleela` wrapper programs for server, client, and combined room operation.
+- `javafx/` — JavaFX client presentation and integration.
+- `drivers/` — device and telephony-driver integration boundary.
+- `docs/` — protocol, runtime, security, media, NAT, GUI, and runnable-program documentation.
+- `config/` — deployment and runtime defaults.
+- `build/` — build/output boundary.
+
+The native layer remains authoritative for low-level networking, media, security, NAT, and file transfer. The SLeeLa programs provide application-level runnables and orchestration without creating a second native runtime.
+
+### User and Administrative Clients
+
+The default Skya GUI is the non-administrative user client, `SkyaClientApp`. Its primary user-facing capabilities include:
+
+- Chat
+- Video
+- Audio
+- File Transfer
+- connection and room selection
+
+Administrative lifecycle and local circuit monitoring are separated into `SkyaApp`, launched through the Client Monitor. This keeps ordinary user operation distinct from administrative controls.
+
+### Network, Security, and Media Boundary
+
+Skya is designed around HTTP/2 and HTTP/3-capable networking, NAT/relay awareness, certificate verification, RSA-2048 compatibility, ephemeral Diffie-Hellman, resumable file-transfer contracts, and codec negotiation. Codec names describe adapter capabilities; deployment must provide the corresponding libraries and comply with applicable licensing.
+
+The intended native/application relationship is:
+
+`Skya client/server → SLeeLa runnable layer → native C/C++ telephony engine`
+
+This keeps the language-level application surface inspectable while preserving native implementations for platform-sensitive services.
+
+### Guia™ and BODI GUI Protocol
+
+The Skya JavaFX client uses **Guia™ 1.0** as its GUI-to-SLeeLa client/listener protocol. **BODI** supplies declarative UI definitions while Guia™ provides runtime lifecycle, events, commands, data, monitoring, and listener transitions.
+
+This places the Skya GUI inside the broader SLeeLa Java parallel-runtime architecture rather than making JavaFX the telephony engine itself.
+
+### Build and Execution
+
+The documented native build boundary is:
+
+`make -C telephony-skya/native`
+
+with the native executable serving as the bridge for combined operation, including HTTP/3 and room selection where those options are enabled. The `.sleela` programs are compiled and run through the normal SLeeLa toolchain and use SLeeLa socket/thread primitives where a pure-SLeeLa runnable is appropriate.
+
+### Telephony Drivers
+
+Skya reserves `/drivers` for device and telephony hardware integration. This provides a defined place for headset, USB, audio, video, and other supported-device drivers while keeping device-specific implementation beneath the higher-level Skya room/client/server model.
+
+### Relationship to SLeeLa
+
+The Skya subsystem demonstrates the intended SLeeLa architecture across several layers:
+
+`SLeeLa source → compiler/loader → SLeeLa VM → Skya runnable → native C/C++ telephony services`
+
+and for the JavaFX presentation path:
+
+`Skya JavaFX → Guia™/BODI → SLeeLa client/runtime → native telephony services`
+
+Skya therefore serves as a concrete cross-platform application boundary where SLeeLa source, the C/C++ VM foundation, native services, Java interoperability, GUI protocols, and device drivers can operate as defined layers rather than as one undifferentiated runtime.
+
+See the complete [`/telephony-skya` subsystem](https://github.com/mearvk/SLeeLa/tree/master/telephony-skya) and its subsystem README for the current implementation layout and protocol documentation.
+
+## XI. SLeeLa Terminal — `/terminal`
+
+SLeeLa maintains its own terminal development surface under `/terminal`. This directory is a **regular tracked directory in the SLeeLa repository**, not a Git submodule. It is reserved for SLeeLa-specific terminal features, extensions, integrations, and derived work associated with the repository's terminal environment.
+
+### Terminal Architecture and Source Ownership
+
+The terminal layout deliberately separates SLeeLa development from the pristine vendored GNU Bash source tree:
+
+- `bash/` — the vendored upstream GNU Bash source tree. It should remain close to upstream and should not be edited directly for ordinary SLeeLa development.
+- `terminal/` — SLeeLa-specific, new, or derived terminal work. Changes intended to become part of SLeeLa's terminal behavior belong here.
+
+This boundary gives SLeeLa a clean ownership model: upstream Bash remains identifiable as upstream source, while SLeeLa's terminal language/runtime work remains reviewable as native repository code.
+
+### Terminal as a SLeeLa Language and Runtime Surface
+
+The terminal is an important systems-facing part of SLeeLa because command-line interaction connects the language to processes, input/output streams, environment state, command execution, scripting, diagnostics, build tooling, and interactive development. The intended architecture keeps those facilities explicit rather than hiding them inside an opaque external dependency.
+
+The terminal relationship can be represented as:
+
+`SLeeLa terminal source → compiler/loader → SLeeLa runtime → native process/terminal services`
+
+Where Bash compatibility or upstream shell behavior is required, the vendored Bash tree provides the reference implementation boundary while `/terminal` provides the place for SLeeLa-specific extensions and integration.
+
+### Repository History and Development Convention
+
+The `/terminal` directory was previously configured as a Git submodule pointing toward the upstream GNU Bash repository. It has been converted into a normal tracked directory so that SLeeLa terminal development is represented directly in the SLeeLa repository rather than as an upstream submodule reference.
+
+This convention improves source ownership, reviewability, reproducibility, and integration with the SLeeLa compiler, loader, native C/C++ VM foundation, build system, and CI. It also prevents SLeeLa-specific terminal work from being confused with modifications to upstream Bash.
+
+The terminal subsystem currently contains its own `README.md` and tracking placeholder, with the directory intentionally prepared for continued SLeeLa-specific terminal development.
+
+See the complete [`/terminal` subsystem](https://github.com/mearvk/SLeeLa/tree/master/terminal) for its current source-ownership convention and development notes.
