@@ -114,6 +114,33 @@ enum class JavaSemanticRuleKind {
     SealedHierarchy, RecordConstraints, EnumConstraints, AnnotationConstraints
 };
 
+enum class JavaApplicabilityPhase { Strict, Loose, VariableArity };
+enum class JavaResolutionStatus { NotApplicable, Applicable, Ambiguous, Selected };
+
+struct JavaMethodCandidate {
+    JavaDeclarationDescriptor method;
+    bool isVarargs = false;
+    bool isStatic = false;
+    bool isGeneric = false;
+    std::string declaringType;
+};
+
+struct JavaMethodResolution {
+    JavaResolutionStatus status = JavaResolutionStatus::NotApplicable;
+    JavaApplicabilityPhase phase = JavaApplicabilityPhase::Strict;
+    int selectedIndex = -1;
+    std::vector<int> applicableIndices;
+    std::vector<std::string> diagnostics;
+};
+
+JavaMethodResolution resolveOverload(const std::vector<JavaMethodCandidate>& candidates,
+                                     const std::vector<JavaTypeDescriptor>& argumentTypes,
+                                     JavaApplicabilityPhase phase);
+bool isOverrideEquivalent(const JavaDeclarationDescriptor& base,
+                          const JavaDeclarationDescriptor& derived);
+bool isOverrideCompatible(const JavaDeclarationDescriptor& base,
+                          const JavaDeclarationDescriptor& derived);
+
 struct JavaApiMemberDescriptor {
     std::string owner;
     std::string qualifiedName;
