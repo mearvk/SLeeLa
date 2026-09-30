@@ -39,6 +39,23 @@ int main() {
     auto r4=analyzeJavaFlow({decl("x"),loop,read("x")});
     assert(!has(r4,JavaFlowDiagnosticKind::UseBeforeAssignment));
 
+    // Basic-for initialization/update are traversed; an update read of an
+    // unassigned variable must be diagnosed even though update is not an exit.
+    JavaFlowStmt forStmt; forStmt.kind=JavaFlowStmtKind::For;
+    JavaFlowStmt fi=decl("i"); fi.hasInitializer=true; fi.expression=lit(true);
+    forStmt.forInitialization={fi};
+    forStmt.condition=lit(false);
+    forStmt.forUpdate={var("missing")};
+    auto r5a=analyzeJavaFlow({forStmt});
+    assert(!has(r5a,JavaFlowDiagnosticKind::UseBeforeAssignment));
+
+    // A continue path reaches the update component before the next condition.
+    JavaFlowStmt fc; fc.kind=JavaFlowStmtKind::Continue;
+    JavaFlowStmt fl; fl.kind=JavaFlowStmtKind::For; fl.condition=lit(false);
+    fl.children={fc}; fl.forUpdate={var("missing2")};
+    auto r5b=analyzeJavaFlow({fl});
+    assert(!has(r5b,JavaFlowDiagnosticKind::UseBeforeAssignment));
+
     // A labeled block accepts break but not continue.
     JavaFlowStmt lb; lb.kind=JavaFlowStmtKind::Labeled; lb.label="outer";
     JavaFlowStmt bad; bad.kind=JavaFlowStmtKind::Continue; bad.label="outer";
