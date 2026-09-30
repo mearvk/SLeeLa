@@ -33,7 +33,7 @@ The driver reports structural, semantic, and functional-source states separately
 1. Expand Java expression AST and parser. **Completed in 0.3.6-dev: expression node taxonomy, operator lexing, precedence parsing, assignments, conditionals, casts, array access, postfix increment/decrement, method references, and constructor arguments.**
 2. Expand Java statement AST and parser. **Foundation completed in 0.3.7-dev:** blocks, if/while/do/for, switch, break/continue/return/throw/assert/yield, synchronized, and try/catch/finally. **Remaining:** enhanced-for, local-variable declarations, try-with-resources, switch rules/guards, and full statement semantic constraints.
 3. Implement Java type/conversion semantics. **Foundation completed in 0.3.8-dev:** conversion categories/contexts, identity, widening/narrowing primitive conversion, boxing/unboxing, reference conversion classification, and unary/binary numeric promotion.
-4. Implement overload and override resolution.
+4. Implement overload and override resolution. **Foundation completed in 0.3.9-dev:** strict/loose/variable-arity phases, applicability classification, most-specific selection foundation, override-equivalence, and basic return compatibility.
 5. Implement definite-assignment and reachability rules.
 6. Implement checked-exception analysis.
 7. Implement dependency-driven Java API counterpart closure.
