@@ -141,3 +141,10 @@ Q10 was converted from a documentation-only requirement into a deterministic qua
 The matrix explicitly records Linux, Windows 10+, and macOS target families, supported architecture families, native toolchain expectations, required Python tooling, and repeatable qualification commands. The runner records the actual host environment and distinguishes READY from NOT_EXECUTED; it never labels an unobserved remote operating system as passed.
 
 Java source/API qualification remains independent of JVM availability. Java SE 27 is the current released specification; Java 28 remains a forward compatibility target in this project.
+
+
+### 0.3.19-dev — unified Java qualification manifest
+
+The individual Java source/API qualification layers are now orchestrated by `tests/java_qualification_manifest.py`. The manifest executes source equivalence, expression equivalence, normalized declaration/signature comparison, negative constraints, flow analysis, checked exceptions, Java API dependency closure, and platform observation as one deterministic qualification run. It preserves each child result and output excerpts, records host evidence, and produces an aggregate PASS only when every configured layer passes.
+
+Added `tests/java_qualification_manifest_suite.py`, `tests/JAVA.QUALIFICATION.MANIFEST.md`, and the `java-qualification` Make target. The manifest is evidence orchestration, not a claim of runtime or JVM equivalence.
