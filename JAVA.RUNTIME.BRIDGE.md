@@ -27,13 +27,19 @@ The probe checks SLEELA_JAVA, JAVA_HOME/bin/java (java.exe on Windows), then jav
 
 ## Main dispatch boundary
 
-The main Java path is `sleela_java_runtime_dispatch_source()`. It first performs the dry probe. Native SLeeLa returns to the existing VM; Java-dependent code with a discoverable local Java VM receives a normal JVM handoff plan; Java-dependent code without a VM reports the installation-prompt action. No second interpreter is introduced.
+The main Java path is `sleela_java_runtime_dispatch_source()`. It first performs the probe. Native SLeeLa returns to the existing VM; Java-dependent code with a discoverable local Java VM receives a normal JVM handoff plan; Java-dependent code without a VM reports the installation-prompt action. The SLeeLa launcher now consumes this dispatch for Java source files using AWT, Swing, or JavaFX, routing those programs to the local Java VM through the existing OS-aware native launcher. No second interpreter is introduced.
 
 ## JVM handoff
 
 runtime/java_runtime_bridge.c prepares the normal JVM request:
 
+For compiled Java classes:
+
 java -cp <classpath> <main-class> [arguments]
+
+For Java source files:
+
+java <source-file> [arguments]
 
 The bridge records the sample input/output contract but does not invoke a shell or launch a process itself. Platform-native process creation remains the responsibility of the existing launcher/provider.
 
@@ -43,7 +49,7 @@ Example:
 - JVM request: java -cp build/classes example.Hello
 - Output: the Java program's normal stdout/result returned through the provider.
 
-The same handoff applies to Java AWT, Swing, and JavaFX programs. JavaFX still requires its JavaFX classes/modules to be present.
+The launcher applies the source-file handoff to Java AWT, Swing, and JavaFX programs. JavaFX still requires its JavaFX classes/modules and native platform components to be present.
 
 ## Installation prompt
 
