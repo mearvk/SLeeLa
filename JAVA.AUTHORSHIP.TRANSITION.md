@@ -1,37 +1,59 @@
 # Java Authorship Transition
 
-SLeeLa now preserves Java authorship metadata through the lexer, parser, AST, and compiler boundary instead of reducing Java declarations to a generic envelope.
+SLeeLa preserves Java authorship metadata through the lexer, parser, AST, compiler boundary, and Java compatibility library.
+
+## Important vocabulary boundary
+
+The Java compatibility surface is **not the native SLeeLa language**.
+
+Java keywords, Java modifiers, Java annotation syntax, Java annotation interfaces, and Java API names are recognized or represented so that Java-authored source can have a congruent SLeeLa counterpart.
+
+They must not be presented to SLeeLa developers as the base or advanced SLeeLa symbol set.
+
+See `JAVA.COMPATIBILITY.SCOPE.md` for the authoritative boundary.
 
 ## Current capabilities
 
-- class, interface, enum, and record type identity
+- class, interface, enum, record, and annotation-oriented type identity
 - Java access and implementation modifiers
 - sealed, non-sealed, strictfp, native, synchronized, volatile, transient, final, abstract, and default metadata
 - superclass and implemented/super interfaces
 - qualified reference types and array dimensions
 - explicit constructor identity
 - declared thrown exception types
-- JDK 28 source/API status metadata
+- generic type/signature metadata
+- declaration and type-use annotation metadata
+- JDK source/API status metadata
 - preview, incubator, and internal classification fields
 - Java compatibility manifest counters
 - compiler-time metadata validation
 
-## Transition boundary
+## Compatibility boundary
 
-The compiler validates Java metadata before ordinary SLeeLa lowering. Metadata preservation is not treated as behavioral equivalence. Runtime bindings must implement the observable semantics separately.
+The compiler validates Java compatibility metadata before ordinary SLeeLa lowering.
 
-The remaining runtime layers include object identity, class metadata, reflection, class loading/linking, exceptions, synchronization and memory visibility, modules, JNI, serialization, Java class-file parsing/verification/transformation, tooling/debug interfaces, and reference-vs-SLeeLa behavioral tests.
+Metadata preservation is not behavioral equivalence, and Java compatibility vocabulary is not native SLeeLa vocabulary.
 
-## Class-file boundary
+This project does **not** require an SLVM or JVM implementation merely to establish Java/SLeeLa source and API congruence.
 
-JDK 28 defines Java class-file major version 72, with the preview minor-version convention. SLeeLa therefore needs a dedicated class-file compatibility layer in addition to source parsing.
+## Qualification
+
+`QUALIFICATION.JAVA.md` defines the source/API qualification gates.
+
+The key evidence is:
+
+`Java source → SLeeLa counterpart → preserved metadata/signatures/constraints → qualification result`
+
+rather than:
+
+`Java source → JVM bytecode → SLeeLa virtual machine`
 
 ## Version
 
-SLeeLa: 0.3.2-dev
+SLeeLa: 0.3.4-dev
 
-SLeeLa syntax: 1.4
+SLeeLa syntax: 1.6
 
-Java Authorship Transition Gate: 1.0-dev
+Java Authorship Transition Gate: 1.3-dev
 
-These versions describe the implemented source/metadata capability, not completion of Java behavioral compatibility.
+These versions describe the implemented compatibility-surface capability, not JVM or Java-bytecode execution compatibility.
