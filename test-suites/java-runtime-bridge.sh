@@ -22,6 +22,7 @@ int main(void) {
         "/opt/java/bin/java",
         "build/classes",
         "example.Hello",
+        NULL,
         "one two",
         "hello\n"
     };
