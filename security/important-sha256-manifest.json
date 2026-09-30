@@ -25499,6 +25499,10 @@
       "sha256": "4cde4c76a67002f713bfed2f5b33b7534d745c6a54e246b0a25b23569c5f707e"
     },
     {
+      "path": "lib/java/tools/jdk28_sync.py",
+      "sha256": "3c0f88d062773e2def71f518c8502589dd68e50aada6e4d3c61b51db01f3cf20"
+    },
+    {
       "path": "lib/java28/SLPackage.sleela",
       "sha256": "69d1410494202cf61d640f0fb1ef8fb234636f7b873b771875604411052db2a8"
     },
