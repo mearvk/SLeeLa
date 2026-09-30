@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "scope": "Java/SLeeLa source/API qualification; no JVM or SLVM requirement",
+  "syntaxVersion": "1.6",
+  "javaSpecification": "Java SE 27",
+  "platforms": {
+    "linux": {
+      "displayName": "Linux",
+      "architectures": ["x86_64", "aarch64"],
+      "nativeToolchain": ["C++17 compiler", "make"],
+      "requiredTools": ["python3"],
+      "qualificationCommands": [
+        "python3 tests/java_source_equivalence.py",
+        "python3 tests/java_signature_comparison_suite.py",
+        "python3 tests/java_constraints_suite.py",
+        "python3 tests/java_platform_qualification.py --platform linux"
+      ]
+    },
+    "windows-10-plus": {
+      "displayName": "Windows 10+",
+      "architectures": ["x86_64", "aarch64"],
+      "nativeToolchain": ["C++17 compiler", "make-compatible build runner"],
+      "requiredTools": ["Python 3"],
+      "qualificationCommands": [
+        "python tests/java_source_equivalence.py",
+        "python tests/java_signature_comparison_suite.py",
+        "python tests/java_constraints_suite.py",
+        "python tests/java_platform_qualification.py --platform windows-10-plus"
+      ]
+    },
+    "macos": {
+      "displayName": "macOS",
+      "architectures": ["x86_64", "arm64"],
+      "nativeToolchain": ["C++17 compiler", "make"],
+      "requiredTools": ["python3"],
+      "qualificationCommands": [
+        "python3 tests/java_source_equivalence.py",
+        "python3 tests/java_signature_comparison_suite.py",
+        "python3 tests/java_constraints_suite.py",
+        "python3 tests/java_platform_qualification.py --platform macos"
+      ]
+    }
+  }
+}
