@@ -1,7 +1,7 @@
 CXX ?= c++
 CXXFLAGS ?= -std=c++17 -O2 -Wall -Wextra -pedantic
 
-.PHONY: all clean check jdk28-conformance jdk28-functional jdk28-signatures java-source-equivalence java-conversions java-flow java-exceptions java-api-dependencies
+.PHONY: all clean check jdk28-conformance jdk28-functional jdk28-signatures java-source-equivalence java-conversions java-flow java-exceptions java-api-dependencies java-constraints
 
 all: memory reflection nordshrift runtime network-security
 
@@ -59,3 +59,6 @@ java-exceptions:
 
 java-api-dependencies:
 	python3 java_api_dependency_suite.py
+
+java-constraints:
+	python3 java_constraints_suite.py
