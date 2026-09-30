@@ -1,3 +1,5 @@
+<img align="right" src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="75" height="75" alt="SLeeLa">
+
 # HTTP 2.0 Build
 
 This directory is a product/version-local build surface for SLeeLa.
