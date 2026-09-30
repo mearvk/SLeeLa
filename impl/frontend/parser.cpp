@@ -173,60 +173,123 @@ StmtP Parser::parseSimpleStatement(){
     }
     auto e=std::make_unique<ExprStmt>();e->expr=std::move(lhs);return e;
 }
-ExprP Parser::parseExpr(){return parseOr();}
-ExprP Parser::parseOr(){ExprP e=parseAnd();while(check(Tok::OrOr)){i_++;e=std::make_unique<Binary>("||",std::move(e),parseAnd());}return e;}
-ExprP Parser::parseAnd(){ExprP e=parseEquality();while(check(Tok::AndAnd)){i_++;e=std::make_unique<Binary>("&&",std::move(e),parseEquality());}return e;}
-ExprP Parser::parseEquality(){ExprP e=parseComparison();for(;;){if(check(Tok::EqEq)){i_++;e=std::make_unique<Binary>("==",std::move(e),parseComparison());}else if(check(Tok::NotEq)){i_++;e=std::make_unique<Binary>("!=",std::move(e),parseComparison());}else break;}return e;}
-ExprP Parser::parseComparison(){ExprP e=parseAdditive();for(;;){if(check(Tok::Lt)){i_++;e=std::make_unique<Binary>("<",std::move(e),parseAdditive());}else if(check(Tok::Le)){i_++;e=std::make_unique<Binary>("<=",std::move(e),parseAdditive());}else if(check(Tok::Gt)){i_++;e=std::make_unique<Binary>(">",std::move(e),parseAdditive());}else if(check(Tok::Ge)){i_++;e=std::make_unique<Binary>(">=",std::move(e),parseAdditive());}else break;}return e;}
-ExprP Parser::parseAdditive(){ExprP e=parseMultiplicative();for(;;){if(check(Tok::Plus)){i_++;e=std::make_unique<Binary>("+",std::move(e),parseMultiplicative());}else if(check(Tok::Minus)){i_++;e=std::make_unique<Binary>("-",std::move(e),parseMultiplicative());}else break;}return e;}
-ExprP Parser::parseMultiplicative(){ExprP e=parseUnary();for(;;){if(check(Tok::Star)){i_++;e=std::make_unique<Binary>("*",std::move(e),parseUnary());}else if(check(Tok::Slash)){i_++;e=std::make_unique<Binary>("/",std::move(e),parseUnary());}else if(check(Tok::Percent)){i_++;e=std::make_unique<Binary>("%",std::move(e),parseUnary());}else break;}return e;}
-ExprP Parser::parseUnary(){if(check(Tok::Minus)){i_++;return std::make_unique<Unary>("-",parseUnary());}if(check(Tok::Not)){i_++;return std::make_unique<Unary>("!",parseUnary());}return parsePrimary();}
-ExprP Parser::parsePrimary(){const Token&t=cur();switch(t.kind){case Tok::Int:i_++;return std::make_unique<IntLit>(std::stoll(t.text));case Tok::Double:i_++;return std::make_unique<DoubleLit>(std::stod(t.text));case Tok::Str:i_++;return std::make_unique<StrLit>(t.text);case Tok::KwTrue:i_++;return std::make_unique<BoolLit>(true);case Tok::KwFalse:i_++;return std::make_unique<BoolLit>(false);case Tok::KwNull:i_++;return std::make_unique<NullLit>();case Tok::LParen:{i_++;ExprP e=parseExpr();expect(Tok::RParen,"')'");return e;}
-case Tok::KwNew:{i_++;const Token&tn=expect(Tok::Ident,"struct type name after 'new'");if(!structNames_.count(tn.text))error("'new' requires a declared struct type, got '"+tn.text+"'");expect(Tok::LParen,"'('");expect(Tok::RParen,"')'");return std::make_unique<NewExpr>(tn.text);}
-case Tok::Ident:{
-    std::string name=t.text;i_++;
-    ExprP base;
-    // A dotted chain that ends in '(' is a qualified call name (namespaced
-    // builtins like Foo.bar()); we keep the flat-callee behaviour for those.
-    // Otherwise the first identifier is a value and each '.field' is a member
-    // access on a struct.
-    if(check(Tok::Dot)){
-        // Look ahead: does this dotted chain terminate in a call?
-        size_t save=i_;bool isCall=false;while(check(Tok::Dot)){i_++;if(!check(Tok::Ident))break;i_++;if(check(Tok::LParen)){isCall=true;break;}}
-        i_=save;
-        if(isCall){while(accept(Tok::Dot)){name += "." + expect(Tok::Ident,"identifier after '.'").text;}expect(Tok::LParen,"'('");auto c=std::make_unique<Call>(name);if(!check(Tok::RParen)){do{c->args.push_back(parseExpr());}while(accept(Tok::Comma));}expect(Tok::RParen,"')'");base=std::move(c);}
-        else{
-            // Pure member-access chain: base.f1.f2 ...
-            ExprP e=std::make_unique<VarExpr>(name);
-            while(accept(Tok::Dot)){std::string field=expect(Tok::Ident,"field name after '.'").text;e=std::make_unique<MemberAccess>(std::move(e),field);}
-            base=std::move(e);
-        }
+ExprP Parser::parseExpr(){return parseAssignment();}
+ExprP Parser::parseAssignment(){
+    ExprP e=parseConditional();
+    if(check(Tok::Assign)||check(Tok::PlusAssign)||check(Tok::MinusAssign)||check(Tok::StarAssign)||check(Tok::SlashAssign)||check(Tok::PercentAssign)){
+        std::string op=cur().text; i_++; return std::make_unique<AssignmentExpr>(op,std::move(e),parseAssignment());
     }
-    else if(accept(Tok::LParen)){auto c=std::make_unique<Call>(name);if(!check(Tok::RParen)){do{c->args.push_back(parseExpr());}while(accept(Tok::Comma));}expect(Tok::RParen,"')'");base=std::move(c);}
-    else base=std::make_unique<VarExpr>(name);
-    // Fluent postfix: consume any `.method(args)` suffixes on the result. This
-    // makes chains like Munction.start(x).connect(y).send(z).closeWithReceipt()
-    // parse as nested MethodCall nodes. A trailing `.field` (no call) after a
-    // call is not valid here and falls through to the caller.
-    return parsePostfix(std::move(base));
+    return e;
 }
-default:error(std::string("unexpected token '")+(t.text.empty()?tokName(t.kind):t.text)+"' in expression");}}
-// Consume `.method(args)` suffixes on `base`, folding each into a MethodCall.
-// Only a dot immediately followed by `ident (` is a postfix call; a dot
-// followed by a plain field is left for the caller (member access is handled
-// in the Ident primary above). This is what enables the fluent chain form.
+ExprP Parser::parseConditional(){
+    ExprP e=parseOr();
+    if(accept(Tok::Question)){ExprP t=parseExpr();expect(Tok::Colon,"':'");return std::make_unique<ConditionalExpr>(std::move(e),std::move(t),parseConditional());}
+    return e;
+}
+ExprP Parser::parseOr(){ExprP e=parseAnd();while(accept(Tok::OrOr))e=std::make_unique<Binary>("||",std::move(e),parseAnd());return e;}
+ExprP Parser::parseAnd(){ExprP e=parseBitOr();while(accept(Tok::AndAnd))e=std::make_unique<Binary>("&&",std::move(e),parseBitOr());return e;}
+ExprP Parser::parseBitOr(){ExprP e=parseBitXor();while(accept(Tok::BitOr))e=std::make_unique<Binary>("|",std::move(e),parseBitXor());return e;}
+ExprP Parser::parseBitXor(){ExprP e=parseBitAnd();while(accept(Tok::BitXor))e=std::make_unique<Binary>("^",std::move(e),parseBitAnd());return e;}
+ExprP Parser::parseBitAnd(){ExprP e=parseEquality();while(accept(Tok::BitAnd))e=std::make_unique<Binary>("&",std::move(e),parseEquality());return e;}
+ExprP Parser::parseEquality(){ExprP e=parseComparison();for(;;){if(accept(Tok::EqEq))e=std::make_unique<Binary>("==",std::move(e),parseComparison());else if(accept(Tok::NotEq))e=std::make_unique<Binary>("!=",std::move(e),parseComparison());else break;}return e;}
+ExprP Parser::parseComparison(){
+    ExprP e=parseShift();
+    for(;;){
+        if(accept(Tok::Lt))e=std::make_unique<Binary>("<",std::move(e),parseShift());
+        else if(accept(Tok::Le))e=std::make_unique<Binary>("<=",std::move(e),parseShift());
+        else if(accept(Tok::Gt))e=std::make_unique<Binary>(">",std::move(e),parseShift());
+        else if(accept(Tok::Ge))e=std::make_unique<Binary>(">=",std::move(e),parseShift());
+        else if(accept(Tok::KwNew)) error("'new' cannot appear as a comparison operand");
+        else break;
+    }
+    return e;
+}
+ExprP Parser::parseShift(){ExprP e=parseAdditive();for(;;){if(accept(Tok::ShiftLeft))e=std::make_unique<Binary>("<<",std::move(e),parseAdditive());else if(accept(Tok::ShiftRight))e=std::make_unique<Binary>(">>",std::move(e),parseAdditive());else if(accept(Tok::UnsignedShiftRight))e=std::make_unique<Binary>(">>>",std::move(e),parseAdditive());else break;}return e;}
+ExprP Parser::parseAdditive(){ExprP e=parseMultiplicative();for(;;){if(accept(Tok::Plus))e=std::make_unique<Binary>("+",std::move(e),parseMultiplicative());else if(accept(Tok::Minus))e=std::make_unique<Binary>("-",std::move(e),parseMultiplicative());else break;}return e;}
+ExprP Parser::parseMultiplicative(){ExprP e=parseUnary();for(;;){if(accept(Tok::Star))e=std::make_unique<Binary>("*",std::move(e),parseUnary());else if(accept(Tok::Slash))e=std::make_unique<Binary>("/",std::move(e),parseUnary());else if(accept(Tok::Percent))e=std::make_unique<Binary>("%",std::move(e),parseUnary());else break;}return e;}
+ExprP Parser::parseUnary(){
+    if(accept(Tok::Minus))return std::make_unique<Unary>("-",parseUnary());
+    if(accept(Tok::Plus))return std::make_unique<Unary>("+",parseUnary());
+    if(accept(Tok::Not))return std::make_unique<Unary>("!",parseUnary());
+    if(accept(Tok::BitNot))return std::make_unique<Unary>("~",parseUnary());
+    if(accept(Tok::Increment))return std::make_unique<Unary>("++",parseUnary());
+    if(accept(Tok::Decrement))return std::make_unique<Unary>("--",parseUnary());
+    return parsePrimary();
+}
+ExprP Parser::parsePrimary(){
+    const Token&t=cur();
+    switch(t.kind){
+    case Tok::Int:i_++;return parsePostfix(std::make_unique<IntLit>(std::stoll(t.text)));
+    case Tok::Double:i_++;return parsePostfix(std::make_unique<DoubleLit>(std::stod(t.text)));
+    case Tok::Str:i_++;return parsePostfix(std::make_unique<StrLit>(t.text));
+    case Tok::KwTrue:i_++;return parsePostfix(std::make_unique<BoolLit>(true));
+    case Tok::KwFalse:i_++;return parsePostfix(std::make_unique<BoolLit>(false));
+    case Tok::KwNull:i_++;return parsePostfix(std::make_unique<NullLit>());
+    case Tok::KwSuper:i_++;return parsePostfix(std::make_unique<SuperExpr>());
+    case Tok::LParen:{
+        i_++;
+        // Java cast disambiguation for a simple/qualified type: (Type) expression.
+        if(check(Tok::Ident)||check(Tok::KwIntT)||check(Tok::KwDoubleT)||check(Tok::KwBoolT)||check(Tok::KwStringT)){
+            size_t save=i_; std::string type;
+            try { type=parseType(); if(check(Tok::RParen)){i_++; return std::make_unique<CastExpr>(type,parseUnary());} }
+            catch(const std::exception&) {}
+            i_=save;
+        }
+        ExprP e=parseExpr();expect(Tok::RParen,"')'");return parsePostfix(std::move(e));
+    }
+    case Tok::KwNew:{
+        i_++;std::string type=parseGenericType();auto n=std::make_unique<NewExpr>(type);
+        if(accept(Tok::LBracket)){
+            n->typeName += "[]"; n->args.push_back(parseExpr()); expect(Tok::RBracket,"']'");
+            return parsePostfix(std::move(n));
+        }
+        expect(Tok::LParen,"'('");if(!check(Tok::RParen)){do{n->args.push_back(parseExpr());}while(accept(Tok::Comma));}expect(Tok::RParen,"')'");
+        return parsePostfix(std::move(n));
+    }
+    case Tok::Ident:{
+        std::string name=t.text;i_++;
+        ExprP base=std::make_unique<VarExpr>(name);
+        while(accept(Tok::Dot)){
+            std::string part=expect(Tok::Ident,"identifier after '.'").text;
+            if(check(Tok::DoubleColon)){i_++;base=std::make_unique<MethodReferenceExpr>(std::move(base),part);continue;}
+            if(check(Tok::LParen)){
+                i_++;auto c=std::make_unique<MethodCall>(std::move(base),part);
+                if(!check(Tok::RParen)){do{c->args.push_back(parseExpr());}while(accept(Tok::Comma));}
+                expect(Tok::RParen,"')'");base=std::move(c);
+            }else base=std::make_unique<MemberAccess>(std::move(base),part);
+        }
+        if(accept(Tok::LParen)){
+            auto c=std::make_unique<Call>(name);
+            if(!check(Tok::RParen)){do{c->args.push_back(parseExpr());}while(accept(Tok::Comma));}
+            expect(Tok::RParen,"')'");base=std::move(c);
+        }
+        if(accept(Tok::DoubleColon)){
+            std::string member=expect(Tok::Ident,"method name after '::'").text;
+            base=std::make_unique<MethodReferenceExpr>(std::move(base),member);
+        }
+        if(accept(Tok::Dot)&&check(Tok::Ident)&&peek(1).kind==Tok::Ident&&peek(2).kind==Tok::Dot){
+            // reserved for future qualified class literals; do not consume ambiguous forms.
+            i_--;
+        }
+        return parsePostfix(std::move(base));
+    }
+    default:error(std::string("unexpected token '")+(t.text.empty()?tokName(t.kind):t.text)+"' in expression");
+    }
+}
 ExprP Parser::parsePostfix(ExprP base){
     for(;;){
-        if(!check(Tok::Dot)) break;
-        // Look ahead: is this `.ident(` (a method call) rather than `.field`?
-        if(peek(1).kind!=Tok::Ident || peek(2).kind!=Tok::LParen) break;
-        i_++; // consume '.'
-        std::string method=expect(Tok::Ident,"method name after '.'").text;
-        expect(Tok::LParen,"'('");
-        auto mc=std::make_unique<MethodCall>(std::move(base),method);
-        if(!check(Tok::RParen)){do{mc->args.push_back(parseExpr());}while(accept(Tok::Comma));}
-        expect(Tok::RParen,"')'");
-        base=std::move(mc);
+        if(accept(Tok::LBracket)){ExprP idx=parseExpr();expect(Tok::RBracket,"']'");base=std::make_unique<ArrayAccess>(std::move(base),std::move(idx));continue;}
+        if(accept(Tok::Increment)){base=std::make_unique<Unary>("post++",std::move(base));continue;}
+        if(accept(Tok::Decrement)){base=std::make_unique<Unary>("post--",std::move(base));continue;}
+        if(!check(Tok::Dot)||peek(1).kind!=Tok::Ident)break;
+        i_++;std::string member=expect(Tok::Ident,"member name after '.'").text;
+        if(accept(Tok::LParen)){
+            auto mc=std::make_unique<MethodCall>(std::move(base),member);
+            if(!check(Tok::RParen)){do{mc->args.push_back(parseExpr());}while(accept(Tok::Comma));}
+            expect(Tok::RParen,"')'");base=std::move(mc);
+        }else if(accept(Tok::DoubleColon)){
+            base=std::make_unique<MethodReferenceExpr>(std::move(base),member);
+        }else base=std::make_unique<MemberAccess>(std::move(base),member);
     }
     return base;
 }
