@@ -11104,7 +11104,7 @@
     },
     {
       "path": "lib/java/java/lang/Object.sleela",
-      "sha256": "33d48cca832e326c8c527a5074a46980249294a1663afb4a7b743a3e3f973aff"
+      "sha256": "2b6fd853053f89084bfe63856686418ffff465c1aa45639c57c81c93311b45c1"
     },
     {
       "path": "lib/java/java/lang/OutOfMemoryError.sleela",
@@ -25499,6 +25499,10 @@
       "sha256": "4cde4c76a67002f713bfed2f5b33b7534d745c6a54e246b0a25b23569c5f707e"
     },
     {
+      "path": "lib/java/tools/jdk28_signature_sync.py",
+      "sha256": "35f3c6c752557cf8d1124d696f2a3dc53e00eef3210dc0e0eaa8f02ec352acbb"
+    },
+    {
       "path": "lib/java/tools/jdk28_sync.py",
       "sha256": "3c0f88d062773e2def71f518c8502589dd68e50aada6e4d3c61b51db01f3cf20"
     },
@@ -27451,6 +27455,22 @@
       "sha256": "54abf07048bb00b4c36cd6b0365509f6adb31b7872fbad0d2625018423e320ce"
     },
     {
+      "path": "runtime/java_runtime_bridge.c",
+      "sha256": "e522bc95dc55c1fc37e0d8d06a438ece3160ebf188b42cef2c990d20d071bc01"
+    },
+    {
+      "path": "runtime/java_runtime_bridge.h",
+      "sha256": "27d29e329b0880be3d4c2f8716ea31ead6d848f5ced8394087be1c443b7eaf10"
+    },
+    {
+      "path": "runtime/java_runtime_probe.c",
+      "sha256": "858cf773b8bc122766d8abe61d56061c5f8ed6c8037f6c6b18a384d18923131a"
+    },
+    {
+      "path": "runtime/java_runtime_probe.h",
+      "sha256": "8d6d313b07d3b4a8587ba651a73503636ec0fb87f17c684017ef58376ce23fe7"
+    },
+    {
       "path": "runtime/runtime_security.sleela",
       "sha256": "e876e630d680cd6334687aa2fec3620e5147e22e22d6a35e0cff023ed263ed1f"
     },
@@ -28619,6 +28639,14 @@
       "sha256": "5091ee301f924f157b6cc7a64251b79d270300f28981d25fc04b50bde9fe0d9c"
     },
     {
+      "path": "test-suites/java-runtime-bridge.sh",
+      "sha256": "d5e9cd4c58e14f46d7046f57bb80164f69b63304f9d1d796bce050b3d0b53859"
+    },
+    {
+      "path": "test-suites/java-runtime-probe.sh",
+      "sha256": "0335ad043728a4f836d70179550642292e22f130ada868de824f62fb7026087b"
+    },
+    {
       "path": "test-suites/run-all.sh",
       "sha256": "2af76151e7b6cedd0f29e8c4a924c5e2343d8073e155dee7633416c0b21793ba"
     },
@@ -28637,6 +28665,10 @@
     {
       "path": "test-suites/test-library-inventory.sh",
       "sha256": "80dfcfdcda52392cc5a0bc5b4167163e9dfd5c4220f17b409b435f87b666d5ac"
+    },
+    {
+      "path": "tests/jdk28_functional_equivalence.py",
+      "sha256": "9e44ce59e54f0bf89026dda1bf8b78440716db6ce6c8711bba218d306f358aae"
     },
     {
       "path": "tests/native_memory_smoke.cpp",
