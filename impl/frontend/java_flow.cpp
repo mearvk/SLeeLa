@@ -151,11 +151,54 @@ static void analyzeStmt(Context& c,FlowState& s,const JavaFlowStmt& st){
         s=joinNormal(exits); mergeDiagnostics(s,body); mergeDiagnostics(s,cond); return;
     }
     case JavaFlowStmtKind::For:{
-        const std::size_t start=c.exits.size(); if(!st.children.empty())analyzeStmt(c,s,st.children.front());
-        auto cond=boolExpr(s,st.condition); c.targets.push_back({st.label,true,true}); FlowState body=cond.whenTrue;
-        for(std::size_t i=1;i<st.children.size();++i)analyzeStmt(c,body,st.children[i]);
-        c.targets.pop_back(); std::vector<FlowState> exits{cond.whenFalse}; consumeExits(c,start,st.label,ExitKind::Break,exits);
-        s=joinNormal(exits); mergeDiagnostics(s,cond); mergeDiagnostics(s,body); return;
+        const std::size_t start=c.exits.size();
+
+        // JLS 16.2.12: initialization completes before the first condition;
+        // each normal body/continue path reaches the update part; the
+        // condition-false path and matching breaks are the normal exits.
+        FlowState init=s;
+        for(const auto& statement:st.forInitialization) analyzeStmt(c,init,statement);
+
+        const bool hasCondition =
+            st.condition.kind!=JavaFlowExprKind::Literal || !st.condition.op.empty();
+        auto cond=hasCondition ? boolExpr(init,st.condition)
+                               : BoolFlow{init,init};
+
+        c.targets.push_back({st.label,true,true});
+        FlowState body=cond.whenTrue;
+        analyzeList(c,body,st.children);
+
+        std::vector<FlowState> continuePaths;
+        consumeExits(c,start,st.label,ExitKind::Continue,continuePaths);
+        for(const auto& path:continuePaths){
+            FlowState updated=path;
+            for(const auto& expression:st.forUpdate) readExpr(updated,expression);
+            if(updated.reachable) {
+                auto next=boolExpr(updated,st.condition);
+                (void)next;
+            }
+        }
+
+        // A normal body completion also reaches the update part.
+        if(body.reachable){
+            FlowState updated=body;
+            for(const auto& expression:st.forUpdate) readExpr(updated,expression);
+            // The update establishes a possible subsequent iteration; it is
+            // not itself a normal exit from the for statement.
+            if(updated.reachable) {
+                auto next=boolExpr(updated,st.condition);
+                (void)next;
+            }
+        }
+        c.targets.pop_back();
+
+        std::vector<FlowState> exits;
+        if(hasCondition) exits.push_back(cond.whenFalse);
+        consumeExits(c,start,st.label,ExitKind::Break,exits);
+        // With no condition, only a matching break can complete the loop.
+        s=joinNormal(exits);
+        mergeDiagnostics(s,init); mergeDiagnostics(s,cond); mergeDiagnostics(s,body);
+        return;
     }
     case JavaFlowStmtKind::Switch:{
         readExpr(s,st.expression); std::vector<FlowState> exits;
