@@ -8,7 +8,7 @@
 **Native Foundation:** 0.3.2-dev  
 **Sleela Language Syntax:** 1.5 (supported range 1.3 .. 1.5)  
 **Compiler Compatibility Gate:** 2.8-dev  
-**Java Authorship Transition Gate:** 1.1-dev  
+**Java Authorship Transition Gate:** 1.2-dev  
 **Edition:** SLeeLa Complete / Native Foundation  
 **Status:** Active Development  
 **Repository:** mearkv/SLeeLa
@@ -36,7 +36,7 @@ The compiler now validates this Java transition metadata before lowering. This i
 
 - complete Java language semantics
 - generic type/signature preservation
-- annotations and annotation values at type/member/parameter level
+- annotations and annotation values at type/member/parameter/type-use level\n- complete exception semantics
 - complete exception semantics
 - object identity and class metadata
 - reflection and class loading
