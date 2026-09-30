@@ -8,6 +8,7 @@
 class JavaConform {
   String status = "READY";
   String contract = "SLeeLa source -> Java conformance boundary -> actual Java runtime";
+
   String state() { return status; }
   String model() { return contract; }
   boolean sourceOwned() { return true; }

@@ -1,5 +1,7 @@
 # JDK 28 Java Source Envelope for SLeeLa
 
+## Set
+
 The Java support set is represented as SLeeLa source files with the same class names and package paths as the Java types.
 
 Examples:
@@ -10,6 +12,8 @@ Examples:
 
 These are SLeeLa source files. Their declarations, names, loader visibility, and policy surface belong to SLeeLa.
 
+## Function
+
 The SLeeLa source envelope is the public source contract. When a supported operation requires Java behavior, the conformance boundary delegates that operation to the actual Java implementation.
 
 Model:
@@ -18,10 +22,22 @@ SLeeLa source -> SLeeLa compiler/loader -> Java conformance boundary -> actual J
 
 SLeeLa does not copy the JDK implementation into another language.
 
-A Java binary name maps deterministically to a SLeeLa source path:
+## Same-name rule
+
+A Java binary name maps to a SLeeLa source path:
 
 java.package.Type -> lib/java/java/package/Type.sleela
 
-Unsupported access must fail closed rather than silently substitute a SLeeLa approximation.
+The final filename is the Java class name.
 
-Pure SLeeLa means the Java class declarations and control surface are authored and loaded as SLeeLa source. Java remains an execution provider for Java-defined behavior.
+## Behavioral rule
+
+A SLeeLa Java envelope must fail closed when the requested Java type or operation is unavailable. It must not silently substitute a SLeeLa approximation.
+
+## Conformance
+
+JavaConform.sleela and the Java bridge define the conformance boundary. Existing Java-side differential tests remain the behavioral oracle until the compiler/VM has a native Java invocation opcode.
+
+## Pure SLeeLa meaning
+
+The Java class declarations and control surface are authored and loaded as SLeeLa source. Java remains an execution provider for Java-defined behavior.
