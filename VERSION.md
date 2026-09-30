@@ -2,13 +2,13 @@
 
 ## Current Development Version
 
-**SLeeLa:** 0.3.9-dev  
+**SLeeLa:** 0.3.10-dev  
 **Sleela-Complete:** 0.3.2-dev  
 **Nordshrift Complete:** 2.7.1-dev  
 **Native Foundation:** 0.3.2-dev  
 **Sleela Language Syntax:** 1.6 (supported range 1.3 .. 1.6)  
 **Compiler Compatibility Gate:** 2.8-dev  
-**Java Authorship Transition Gate:** 1.8-dev  
+**Java Authorship Transition Gate:** 1.9-dev  
 **Edition:** SLeeLa Complete / Native Foundation  
 **Status:** Active Development  
 **Repository:** mearkv/SLeeLa
@@ -31,3 +31,11 @@ This increment advances Java source-equivalence semantics with overload and over
 The Java Language Specification provides the source-level reference for Java lexical, type, declaration, class, interface, annotation, and related constructs. citeturn0search0
 
 **SLeeLa — MEARVK LLC — 2026**
+
+## 0.3.10 Development Increment
+
+This increment refines Java overload and override semantics beyond the 0.3.9 foundation. It adds generic-method inference foundations, lambda/method-reference pertinence, dedicated most-specific comparison, covariant reference return checks, checked-exception restrictions, access/static/final/private override restrictions, and variable-arity applicability.
+
+This remains a source-level Java congruence implementation; it is not a JVM or SLVM implementation. Full Java overload and override qualification remains subject to the JLS rules for generic inference, functional target typing, subsignatures, interface/default inheritance, and related corner cases.
+
+**Java Authorship Transition Gate:** 1.9-dev
