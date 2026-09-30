@@ -12,6 +12,7 @@ typedef struct {
     const char *java_executable;
     const char *classpath;
     const char *main_class;
+    const char *source_file;
     const char *program_arguments;
     const char *sample_input;
 } SleelaJavaProgramRequest;
