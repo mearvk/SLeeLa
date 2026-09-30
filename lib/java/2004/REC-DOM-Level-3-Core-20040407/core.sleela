@@ -1,0 +1,21 @@
+/*
+ * lib/java/2004/REC-DOM-Level-3-Core-20040407/core.sleela
+ * SLeeLa Java SE/JDK 28 source envelope.
+ * Definition: Native SLeeLa source declaration for the Java API type 2004.REC-DOM-Level-3-Core-20040407.core.
+ *
+ * Generated from the official JDK 28 API specification. The declaration is
+ * intentionally a source contract; Java behavior is supplied through the
+ * SLeeLa Java conformance boundary.
+ *
+ * This file is additive-only generated output. Existing files are preserved.
+ */
+#sleela 1.3
+
+class core {
+  String javaType = "2004.REC-DOM-Level-3-Core-20040407.core";
+  String typeName() { return javaType; }
+  boolean available() { return javaType != ""; }
+  String construct() { return "java.construct:" + javaType; }
+  String invoke(String operation) { return "java.invoke:" + javaType + ":" + operation; }
+  String invokeStatic(String operation) { return "java.static:" + javaType + ":" + operation; }
+}
