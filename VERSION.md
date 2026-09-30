@@ -115,3 +115,9 @@ This is an incremental semantic implementation, not completion of the entire Jav
 The Java Flow implementation now carries explicit basic-`for` initialization and incrementation components. The analyzer traverses initialization, recognizes the condition as an optional component, establishes the loop body as the condition-true path, validates `break`/`continue` targets, and traverses the update expressions on normal and continue paths. The normal result remains defined by the condition-false path and matching `break` exits, consistent with JLS Chapter 16.
 
 This step is intentionally incremental: the current public flow model does not yet expose a full fixed-point representation for repeated loop iterations, so update traversal currently establishes diagnostic coverage rather than claiming complete iterative definite-unassignment semantics.
+
+### 0.3.21 Loop Fixed-Point Execution
+
+The Java Flow analyzer now performs bounded convergence for while, do, and basic for loops. Loop-head facts are repeatedly recomputed from normal body completion and matching continue paths until the assigned/unassigned facts stabilize or the deterministic iteration cap is reached. Matching break paths remain separate normal exits. A loop whose condition is statically false therefore contributes no body facts to its post-loop state, while a guaranteed assignment followed by break can establish a definite assignment on the exit path.
+
+The iteration cap is an implementation safety bound, not a semantic claim of completeness. Full JLS Chapter 16 loop treatment still requires additional path-sensitive constant analysis and more precise abrupt-completion interactions.
