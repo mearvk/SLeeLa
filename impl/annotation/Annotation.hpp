@@ -3,7 +3,13 @@
 #include <vector>
 #include <utility>
 namespace sleela::annotation {
-struct Annotation { std::string name; std::string value; };
+enum class UseSite { Declaration, TypeUse, TypeParameter, Parameter, Field, Method, Constructor, RecordComponent, Module, Package, LocalVariable };
+struct Annotation {
+    std::string name;
+    std::string value;
+    UseSite useSite = UseSite::Declaration;
+    bool marker = false;
+};
 class DocumentAnnotations {
     std::vector<Annotation> items_;
 public:
@@ -14,4 +20,4 @@ public:
     std::size_t count(const std::string& n) const noexcept;
     const Annotation* first(const std::string& n) const noexcept;
 };
-}
+} // namespace sleela::annotation
