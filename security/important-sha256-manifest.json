@@ -72,7 +72,7 @@
     },
     {
       "path": "README.md",
-      "sha256": "b220b1a9bb7ef87b580b3f763b5ab8d188838e8a91afae7c4fa5319a1ba3686e"
+      "sha256": "3c109dbdc95125af37e33a8d614f60f52c8ee5df5d21b90935b89a3841918af9"
     },
     {
       "path": "REVISIONS.md",
@@ -44581,6 +44581,14 @@
     {
       "path": "lib/java/tools/jdk28_sync.py",
       "sha256": "3c0f88d062773e2def71f518c8502589dd68e50aada6e4d3c61b51db01f3cf20"
+    },
+    {
+      "path": "lib/java/validate.py",
+      "sha256": "ad59b11a9709cfc5c37bd9c2c61f3399eb2f8b2bf56f1632c2c0f2dcaa3c78f0"
+    },
+    {
+      "path": "lib/java/validate.sh",
+      "sha256": "58ac1b1d9cc121d0a32391d616721df4be30ac701e6958f2356913f8674ff415"
     },
     {
       "path": "lib/java28/SLPackage.sleela",
