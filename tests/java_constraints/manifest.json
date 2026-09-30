@@ -1,0 +1,15 @@
+{
+  "schema": "sleela-java-constraint-corpus-1",
+  "fixtures": [
+    ["use-before-assignment.java", "UseBeforeAssignment"],
+    ["final-reassignment.java", "FinalReassignment"],
+    ["unreachable.java", "UnreachableStatement"],
+    ["unhandled-checked-exception.java", "UnhandledCheckedException"],
+    ["redundant-catch.java", "RedundantCatch"],
+    ["incompatible-override-throws.java", "IncompatibleOverrideThrows"],
+    ["overload-ambiguity.java", "Ambiguous"],
+    ["interface-default-conflict.java", "InterfaceDefaultConflict"],
+    ["missing-api-counterpart.sleela", "MissingJavaApiCounterpart"],
+    ["forbidden-conversion.java", "ForbiddenConversion"]
+  ]
+}
