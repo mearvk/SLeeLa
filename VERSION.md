@@ -2,13 +2,13 @@
 
 ## Current Development Version
 
-**SLeeLa:** 0.3.14-dev  
+**SLeeLa:** 0.3.15-dev
 **Sleela-Complete:** 0.3.2-dev  
 **Nordshrift Complete:** 2.7.1-dev  
 **Native Foundation:** 0.3.2-dev  
 **Sleela Language Syntax:** 1.6 (supported range 1.3 .. 1.6)  
 **Compiler Compatibility Gate:** 2.8-dev  
-**Java Authorship Transition Gate:** 1.12-dev  
+**Java Authorship Transition Gate:** 1.13-dev
 **Edition:** SLeeLa Complete / Native Foundation  
 **Status:** Active Development  
 **Repository:** mearkv/SLeeLa
@@ -67,3 +67,10 @@ Java checked-exception source semantics foundation added: exception hierarchy/su
 Java API dependency-closure foundation added: Java-qualified source-reference discovery, counterpart path mapping, missing-type diagnostics, and deterministic isolated-fixture testing.
 
 **Java Authorship Transition Gate:** 1.12-dev
+
+
+## 0.3.15 Development Increment
+
+Java negative/constraint qualification corpus added: ten deterministic source fixtures with explicit expected diagnostic families, a manifest, a qualification runner, and a `java-constraints` Makefile target. The suite connects the corpus to the existing flow, checked-exception, overload/override, and Java API dependency-closure foundations.
+
+**Java Authorship Transition Gate:** 1.13-dev
