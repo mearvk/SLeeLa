@@ -1,0 +1,36 @@
+name: Sync JDK 28 SLeeLa API
+
+on:
+  push:
+    paths:
+      - ".github/workflows/jdk28-sync.yml"
+      - "lib/java/tools/jdk28_sync.py"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+
+      - name: Generate missing JDK 28 SLeeLa API envelopes
+        run: python3 lib/java/tools/jdk28_sync.py
+
+      - name: Commit additive API files
+        run: |
+          if git diff --quiet -- lib/java; then
+            echo "No missing JDK 28 SLeeLa API files."
+            exit 0
+          fi
+          git config user.name "SLeeLa JDK 28 API Synchronizer"
+          git config user.email "actions@github.com"
+          git add lib/java
+          git commit -m "Add missing JDK 28 Java API SLeeLa envelopes"
+          git push origin HEAD:${{ github.ref_name }}
