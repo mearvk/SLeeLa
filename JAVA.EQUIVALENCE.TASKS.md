@@ -61,6 +61,23 @@ These are source-semantic qualification foundations. Full JLS coverage remains a
 
 Oracle's JLS describes applicability phases, pertinence of implicitly typed lambdas/inexact method references, most-specific selection, and generic inference in the method-invocation rules. It separately defines subsignatures, overriding restrictions, return-type substitutability, and inherited/default-method conflicts. citeturn0search2turn0search8
 
+
+### 0.3.11-dev overload/override refinement
+
+The next program refinement extends overload and override semantics with:
+
+- maximally-specific candidate selection;
+- concrete-versus-abstract/default tie handling;
+- preferred covariant return handling for equivalent signatures;
+- invocation-type inference after generic method selection;
+- target-type compatibility checks for inferred invocation results;
+- explicit interface/default-method inheritance conflict detection;
+- richer method metadata for abstract/default/interface methods and erased signatures.
+
+This follows the Java SE 27 specification's separation of applicability, most-specific selection, invocation type inference, and interface inheritance rules. citeturn0search0turn0search12
+
+This remains a source-level semantic model rather than a JVM implementation.
+
 ### Non-goals for this qualification
 
 Do not add JVM execution requirements to this ledger. Java source congruence is the target; JVM/SLVM interoperability is a separate future project.
