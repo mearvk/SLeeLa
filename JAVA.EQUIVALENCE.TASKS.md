@@ -35,7 +35,7 @@ The driver reports structural, semantic, and functional-source states separately
 3. Implement Java type/conversion semantics. **Foundation completed in 0.3.8-dev:** conversion categories/contexts, identity, widening/narrowing primitive conversion, boxing/unboxing, reference conversion classification, and unary/binary numeric promotion.
 4. Implement overload and override resolution. **Foundation completed in 0.3.9-dev:** strict/loose/variable-arity phases, applicability classification, most-specific selection foundation, override-equivalence, and basic return compatibility.
 5. Implement definite-assignment and reachability rules. **Foundation added in 0.3.12-dev:** source-flow facts, use-before-assignment diagnostics, final reassignment checks, branch merging, loop/abrupt-completion reachability, switch/try/finally flow scaffolding, and deterministic C++/Python qualification suite.
-6. Implement checked-exception analysis.
+6. Implement checked-exception analysis. **Foundation added in 0.3.13-dev:** exception hierarchy/subtyping, checked-vs-unchecked classification, catch coverage, redundant catch detection, throws-clause coverage, and overriding throws compatibility.
 7. Implement dependency-driven Java API counterpart closure.
 8. Expand negative and constraint fixtures.
 9. Add normalized AST/signature comparison beyond the inventory driver.
@@ -88,3 +88,10 @@ Do not add JVM execution requirements to this ledger. Java source congruence is 
 ### 0.3.12-dev — definite assignment and reachability foundation
 
 Added `impl/frontend/java_flow.h/.cpp`, `tests/java_flow_semantics.cpp`, and `tests/java_flow_suite.py`, plus the `java-flow` Makefile target. The model distinguishes definitely assigned and definitely unassigned facts, reports reads before assignment, checks repeated final assignment, merges conditional paths, tracks abrupt completion, and provides structured flow scaffolding for loops, switch, and try/finally. This is a source-semantic foundation; complete JLS Chapter 16 coverage remains a qualification task.
+
+
+### 0.3.13-dev — checked-exception foundation
+
+Added `impl/frontend/java_exceptions.h/.cpp`, `tests/java_exceptions.cpp`, and `tests/java_exceptions_suite.py`, with the `java-exceptions` Makefile target. The model is source-level: it tracks exception type hierarchy, identifies checked exceptions, verifies catch-or-declare coverage, detects shadowed/redundant catches, and checks that overriding methods do not introduce incompatible checked exceptions. Full JLS Chapter 11 propagation rules—including expression/statement-specific exception sets, try/catch/finally propagation, multi-catch, precise rethrow, resource initialization/close exceptions, and generic checked-exception inference—remain to be completed.
+
+Oracle's Java Language Specification defines checked-exception compile-time checking, catch-or-specify requirements, and restrictions on checked exceptions in overriding declarations. citeturn1search0turn1search13
