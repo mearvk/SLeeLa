@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+TMP="/tmp/sleela-java-runtime-bridge.$$"
+mkdir -p "$TMP"
+trap 'rm -rf "$TMP"' EXIT
+
+cat > "$TMP/bridge.c" <<'EOF'
+#include <stdio.h>
+#include <string.h>
+#include "java_runtime_bridge.h"
+
+static int check(int condition, const char *message) {
+    if (!condition) { fprintf(stderr, "FAIL: %s\n", message); return 1; }
+    return 0;
+}
+
+int main(void) {
+    SleelaJavaProgramRequest request = {
+        "/opt/java/bin/java",
+        "build/classes",
+        "example.Hello",
+        "one two",
+        "hello\n"
+    };
+    SleelaJavaProgramPlan plan;
+
+    if (sleela_java_runtime_bridge_prepare(&request, &plan) != 0) return 1;
+    if (check(plan.ready, "bridge plan ready")) return 1;
+    if (check(strstr(plan.command,
+        "/opt/java/bin/java -cp build/classes example.Hello one two") != NULL,
+        "normal JVM invocation")) return 1;
+    if (check(strcmp(plan.sample_output, "hello\n") == 0,
+        "sample input/output contract")) return 1;
+
+    puts("PASS: SLeeLa Java runtime bridge plan");
+    return 0;
+}
+EOF
+
+cc -std=c11 -Wall -Wextra -Werror \
+  -I"$ROOT/runtime" \
+  "$ROOT/runtime/java_runtime_bridge.c" \
+  "$TMP/bridge.c" \
+  -o "$TMP/bridge"
+
+"$TMP/bridge"
