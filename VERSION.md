@@ -108,3 +108,11 @@ The next semantic qualification layer hardens Java control-flow and checked-exce
 Added the Java Flow 0.3.21 architecture design. The design establishes directional boolean facts, explicit abrupt-completion paths, structural control-target resolution, loop/switch completion joins, try/catch/finally path composition, constructor/blank-final state, lambda capture boundaries, and shared checked-exception traversal. The qualification boundary remains Java source/API congruence rather than JVM or SLVM execution.
 
 **Java Authorship Transition Gate:** 1.19-dev
+
+### 0.3.21 Development Execution Phase
+
+The first executable Java Flow 0.3.21 phase is now implemented in `impl/frontend/java_flow.cpp`. It introduces directional true/false expression states for boolean constants, `!`, `&&`, `||`, and `?:`; structural break/continue targets; labeled-block break handling; loop normal-completion joins; and scoped abrupt-exit consumption. A dedicated `java-flow-021` qualification suite and C++ fixture exercise these rules.
+
+This is an incremental semantic implementation, not completion of the entire Java Chapter 16 model. For-loop update semantics, full switch rules, try/finally abrupt replacement, constructor/blank-final context, lambda capture flow, and integrated checked-exception propagation remain subsequent phases.
+
+**Java Authorship Transition Gate:** 1.19-dev
