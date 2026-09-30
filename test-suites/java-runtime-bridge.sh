@@ -47,7 +47,7 @@ int main(void) {
         "normal JVM invocation")) return 1;
     if (check(strcmp(plan.sample_input, "hello\n") == 0,
         "sample input contract")) return 1;
-    if (check(plan.sample_output_hint[0] == '\\0',
+    if (check(plan.sample_output_hint[0] == '\0',
         "provider-supplied output contract")) return 1;
 
     SleelaJavaProgramRequest source_request = {
@@ -68,6 +68,7 @@ EOF
 
 cc -std=c11 -Wall -Wextra -Werror \
   -I"$ROOT/runtime" \
+  "$ROOT/runtime/java_runtime_probe.c" \
   "$ROOT/runtime/java_runtime_bridge.c" \
   "$TMP/bridge.c" \
   -o "$TMP/bridge"
