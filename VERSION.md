@@ -2,13 +2,13 @@
 
 ## Current Development Version
 
-**SLeeLa:** 0.3.17-dev
+**SLeeLa:** 0.3.18-dev
 **Sleela-Complete:** 0.3.2-dev  
 **Nordshrift Complete:** 2.7.1-dev  
 **Native Foundation:** 0.3.2-dev  
 **Sleela Language Syntax:** 1.6 (supported range 1.3 .. 1.6)  
 **Compiler Compatibility Gate:** 2.8-dev  
-**Java Authorship Transition Gate:** 1.15-dev
+**Java Authorship Transition Gate:** 1.16-dev
 **Edition:** SLeeLa Complete / Native Foundation  
 **Status:** Active Development  
 **Repository:** mearkv/SLeeLa
@@ -87,3 +87,10 @@ Normalized Java/SLeeLa declaration and signature comparison added. The qualifica
 Normalized Java/SLeeLa declaration comparison was deepened from the 0.3.16 foundation. The comparison normal form now distinguishes constructors from methods, records declaration ownership/path metadata, inheritance clauses (extends, implements, permits), annotations, parameter names/types/varargs metadata, and a versioned normalization schema. The qualification suite now includes a deliberate constructor-parameter mismatch to prove that mismatches are detected rather than merely accepting paired text.
 
 **Java Authorship Transition Gate:** 1.15-dev
+
+
+## 0.3.18 Development Increment
+
+Added the Java source-equivalence platform/reproducibility qualification system for Q10. Linux, Windows 10+, and macOS now have explicit qualification records covering architecture families, toolchain expectations, required Python tooling, and deterministic qualification commands. The runner records observed host evidence and distinguishes READY from NOT_EXECUTED rather than claiming untested remote platforms have passed.
+
+**Java Authorship Transition Gate:** 1.16-dev
