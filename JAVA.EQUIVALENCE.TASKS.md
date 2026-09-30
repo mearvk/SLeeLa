@@ -30,8 +30,8 @@ The driver reports structural, semantic, and functional-source states separately
 
 ### Remaining major implementation queue
 
-1. Expand Java expression AST and parser.
-2. Expand Java statement AST and parser.
+1. Expand Java expression AST and parser. **Completed in 0.3.6-dev: expression node taxonomy, operator lexing, precedence parsing, assignments, conditionals, casts, array access, postfix increment/decrement, method references, and constructor arguments.**
+2. Expand Java statement AST and parser. **Next major task.**
 3. Implement Java type/conversion semantics.
 4. Implement overload and override resolution.
 5. Implement definite-assignment and reachability rules.
