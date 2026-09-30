@@ -2,13 +2,13 @@
 
 ## Current Development Version
 
-**SLeeLa:** 0.3.18-dev
+**SLeeLa:** 0.3.19-dev
 **Sleela-Complete:** 0.3.2-dev  
 **Nordshrift Complete:** 2.7.1-dev  
 **Native Foundation:** 0.3.2-dev  
 **Sleela Language Syntax:** 1.6 (supported range 1.3 .. 1.6)  
 **Compiler Compatibility Gate:** 2.8-dev  
-**Java Authorship Transition Gate:** 1.16-dev
+**Java Authorship Transition Gate:** 1.17-dev
 **Edition:** SLeeLa Complete / Native Foundation  
 **Status:** Active Development  
 **Repository:** mearkv/SLeeLa
@@ -87,3 +87,10 @@ Normalized Java/SLeeLa declaration comparison was deepened from the 0.3.16 found
 Added the Java source-equivalence platform/reproducibility qualification system for Q10. Linux, Windows 10+, and macOS now have explicit qualification records covering architecture families, toolchain expectations, required Python tooling, and deterministic qualification commands. The runner records observed host evidence and distinguishes READY from NOT_EXECUTED rather than claiming untested remote platforms have passed.
 
 **Java Authorship Transition Gate:** 1.16-dev
+
+
+## 0.3.19 Development Increment
+
+Added the unified Java qualification manifest, which coordinates the existing source-equivalence, expression, normalized signature, constraint, flow, exception, API-dependency, and platform qualification layers. Each child result remains visible, while the aggregate record provides deterministic counts, environment metadata, and an overall status.
+
+**Java Authorship Transition Gate:** 1.17-dev
