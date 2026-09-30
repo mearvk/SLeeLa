@@ -1,0 +1,28 @@
+name: SLeeLa Java Library Validation
+
+on:
+  push:
+    paths:
+      - 'lib/java/**'
+      - '.github/workflows/lib-java.yml'
+  pull_request:
+    paths:
+      - 'lib/java/**'
+      - '.github/workflows/lib-java.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-lib-java:
+    name: Validate /lib/java inventory and bridge contract
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Validate native Java library
+        run: python3 lib/java/validate.py
