@@ -1,0 +1,14 @@
+import java.util.List;
+
+public class SignatureNormalization<T extends Number> {
+  private T value;
+
+  public SignatureNormalization(T value) {
+    this.value = value;
+  }
+
+  public <U extends CharSequence> U convert(
+      U input, List<? extends T> values) throws java.io.IOException {
+    return input;
+  }
+}
