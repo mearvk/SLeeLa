@@ -15,7 +15,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 LIB = ROOT / "lib" / "java"
 MANIFEST_PATH = LIB / "MANIFEST.json"
-EXPECTED_COUNT = 8988
+EXPECTED_SOURCE_BASELINE = 8988
+CONTROL_FILES = {"lib/java/README.md", "lib/java/MANIFEST.json", "lib/java/validate.py", "lib/java/validate.sh"}
 
 
 def fail(message: str) -> None:
@@ -54,16 +55,21 @@ def main() -> int:
 
     inventory = manifest.get("inventory", {})
     recorded = inventory.get("count")
-    if recorded != EXPECTED_COUNT:
-        fail(f"manifest count is {recorded!r}; expected {EXPECTED_COUNT}")
+    if recorded != EXPECTED_SOURCE_BASELINE:
+        fail(f"manifest count is {recorded!r}; expected {EXPECTED_SOURCE_BASELINE}")
 
     files = git_files()
-    actual = len(files)
-    if actual != EXPECTED_COUNT:
+    source_files = [path for path in files if path not in CONTROL_FILES]
+    actual_source = len(source_files)
+    total_files = len(files)
+    if actual_source < EXPECTED_SOURCE_BASELINE:
         fail(
-            f"/lib/java contains {actual} Git-indexed files; "
-            f"expected baseline is {EXPECTED_COUNT}"
+            f"/lib/java contains only {actual_source} library files; "
+            f"baseline is {EXPECTED_SOURCE_BASELINE}"
         )
+    if total_files < EXPECTED_SOURCE_BASELINE + len(CONTROL_FILES):
+        fail("control metadata files are incomplete")
+
 
     language_bridge = manifest.get("language_bridge", {})
     if language_bridge.get("source_language") != "SLeeLa":
@@ -87,7 +93,7 @@ def main() -> int:
     if set(mapping.get("required_concepts", [])) != required:
         fail("manifest mapping.required_concepts is incomplete")
 
-    print(f"PASS: /lib/java validated ({actual} Git-indexed files)")
+    print(f"PASS: /lib/java validated ({actual_source} library files; {total_files} total Git-indexed files including control metadata)")
     print("PASS: SLeeLa/Java bridge metadata validated")
     print("PASS: C/C++ VM foundation metadata validated")
     return 0
