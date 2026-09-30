@@ -1,0 +1,9 @@
+# Java Qualification Manifest
+
+The qualification manifest coordinates the Java/SLeeLa source/API congruence layers as one deterministic system.
+
+Layers: source equivalence; expression equivalence; normalized declaration/signature comparison; negative/constraint corpus; definite assignment/reachability; checked exceptions; Java API dependency closure; platform/reproducibility observation.
+
+PASS means the invoked child process returned zero. FAIL means non-zero. The aggregate result is PASS only when every configured layer passes. Platform observation does not assert that remote operating systems were executed. Java SE 27 is the released specification baseline; Java 28 remains a forward compatibility target. No JVM, bytecode, SLVM, or runtime equivalence is implied.
+
+Run: python3 tests/java_qualification_manifest.py --json qualification.json
