@@ -90,7 +90,10 @@ ClassDecl Parser::parseClass(unsigned classModifiers){
         if(!isTypeStart() && !(check(Tok::Ident)&&peek(1).kind==Tok::LParen)) error("expected a type/member declaration");
         // A constructor has no return type in Java. Preserve that fact explicitly.
         if(check(Tok::Ident)&&peek(1).kind==Tok::LParen&&cur().text==c.name){
-            Method m=parseMethod(false,false,mods); m.java.constructor=true; m.retType=c.name; c.methods.push_back(std::move(m)); continue;
+            Method m; m.isStatic=false; m.isProtected=(mods&JavaProtected)!=0; m.java.modifiers=mods; m.java.constructor=true;
+            m.retType=c.name; m.name=expect(Tok::Ident,"constructor name").text; expect(Tok::LParen,"'('");
+            if(!check(Tok::RParen)){do{Param p;p.type=parseType();p.name=expect(Tok::Ident,"parameter name").text;m.params.push_back(p);}while(accept(Tok::Comma));}
+            expect(Tok::RParen,"')'"); parseThrows(m.java.thrownTypes); m.body=parseBlock(); c.methods.push_back(std::move(m)); continue;
         }
         if(!isTypeStart()) error("expected a field or method type");
         size_t save=i_; i_++; if(!check(Tok::Ident)){i_=save; error("expected a field or method name");}
@@ -103,7 +106,7 @@ ClassDecl Parser::parseClass(unsigned classModifiers){
 }
 Field Parser::parseField(bool isStatic,bool isProtected,unsigned modifiers){Field f;f.isStatic=isStatic;f.isProtected=isProtected;f.java.modifiers=modifiers;f.type=parseType();f.name=expect(Tok::Ident,"field name").text;if(accept(Tok::Assign))f.init=parseExpr();expect(Tok::Semicolon,"';'");return f;}
 // A type is one of the scalar keywords, or an identifier naming a declared struct.
-bool Parser::isTypeStart()const{Tok k=cur().kind;if(k==Tok::KwVoid||k==Tok::KwIntT||k==Tok::KwDoubleT||k==Tok::KwBoolT||k==Tok::KwStringT)return true;return k==Tok::Ident&&structNames_.count(cur().text)>0;}
+bool Parser::isTypeStart()const{Tok k=cur().kind;if(k==Tok::KwVoid||k==Tok::KwIntT||k==Tok::KwDoubleT||k==Tok::KwBoolT||k==Tok::KwStringT)return true;return k==Tok::Ident;}
 std::string Parser::parseType(){
     if(!isTypeStart()) error("expected a type");
     std::string t;
