@@ -83,9 +83,13 @@ The JavaFX provider should therefore perform a framework-specific availability c
 
 ## JVM handoff
 
-The bridge prepares a normal JVM invocation:
+The bridge prepares a normal JVM invocation. For compiled classes it uses:
 
 `java -cp <classpath> <main-class> [arguments]`
+
+For Java source files it uses Java source-file mode:
+
+`java <source-file> [arguments]`
 
 The bridge itself does not invoke a shell. The platform launcher/provider is responsible for safe native process creation, argument handling, input delivery, and collection of the actual program output.
 
@@ -150,4 +154,4 @@ This keeps the Java facility lightweight while allowing SLeeLa to use the Java e
 
 The probe and bridge tests are intentionally self-contained. They verify detection and JVM handoff planning without requiring a Java installation on the test host.
 
-The eventual integration point is the existing SLeeLa loader/launcher boundary, where the dispatch function can select either the existing SLeeLa VM or the Java provider.
+The integration is now wired into the SLeeLa command-line loader/launcher for Java source files that require AWT, Swing, or JavaFX. Those framework inputs are dispatched through the Java runtime bridge; native SLeeLa and ordinary Java-family inputs retain their existing execution paths. The provider invokes Java source-file mode through the existing OS-aware native launcher.
