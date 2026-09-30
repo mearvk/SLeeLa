@@ -357,6 +357,78 @@ The terminal subsystem currently contains its own `README.md` and tracking place
 
 See the complete [`/terminal` subsystem](https://github.com/mearvk/SLeeLa/tree/master/terminal) for its current source-ownership convention and development notes.
 
+## SLeeLa Telephony — `/telephony-skya`
+
+SLeeLa includes a dedicated **Skya™ telephony subsystem** under `/telephony-skya`. Skya defines the SLeeLa application boundary for client, server, and combined telephony operation, with native C/C++ services beneath SLeeLa-level runnable programs and a JavaFX/Guia™ presentation layer.
+
+### Skya Architecture
+
+The subsystem separates responsibilities across its repository layout:
+
+- `native/` — authoritative C/C++ engine boundary and native build files for networking, media, security, NAT, and file-transfer services.
+- `sleela/` — runnable `.sleela` wrapper programs for server, client, and combined room operation.
+- `javafx/` — JavaFX client presentation and integration.
+- `drivers/` — device and telephony-driver integration boundary.
+- `docs/` — protocol, runtime, security, media, NAT, GUI, and runnable-program documentation.
+- `config/` — deployment and runtime defaults.
+- `build/` — build/output boundary.
+
+The native layer remains authoritative for low-level networking, media, security, NAT, and file transfer. The SLeeLa programs provide application-level runnables and orchestration without creating a second native runtime.
+
+### User and Administrative Clients
+
+The default Skya GUI is the non-administrative user client, `SkyaClientApp`. Its primary user-facing capabilities include:
+
+- Chat
+- Video
+- Audio
+- File Transfer
+- connection and room selection
+
+Administrative lifecycle and local circuit monitoring are separated into `SkyaApp`, launched through the Client Monitor. This keeps ordinary user operation distinct from administrative controls.
+
+### Network, Security, and Media Boundary
+
+Skya is designed around HTTP/2 and HTTP/3-capable networking, NAT/relay awareness, certificate verification, RSA-2048 compatibility, ephemeral Diffie-Hellman, resumable file-transfer contracts, and codec negotiation. Codec names describe adapter capabilities; deployment must provide the corresponding libraries and comply with applicable licensing.
+
+The intended native/application relationship is:
+
+`Skya client/server → SLeeLa runnable layer → native C/C++ telephony engine`
+
+This keeps the language-level application surface inspectable while preserving native implementations for platform-sensitive services.
+
+### Guia™ and BODI GUI Protocol
+
+The Skya JavaFX client uses **Guia™ 1.0** as its GUI-to-SLeeLa client/listener protocol. **BODI** supplies declarative UI definitions while Guia™ provides runtime lifecycle, events, commands, data, monitoring, and listener transitions.
+
+This places the Skya GUI inside the broader SLeeLa Java parallel-runtime architecture rather than making JavaFX the telephony engine itself.
+
+### Build and Execution
+
+The documented native build boundary is:
+
+`make -C telephony-skya/native`
+
+with the native executable serving as the bridge for combined operation, including HTTP/3 and room selection where those options are enabled. The `.sleela` programs are compiled and run through the normal SLeeLa toolchain and use SLeeLa socket/thread primitives where a pure-SLeeLa runnable is appropriate.
+
+### Telephony Drivers
+
+Skya reserves `/drivers` for device and telephony hardware integration. This provides a defined place for headset, USB, audio, video, and other supported-device drivers while keeping device-specific implementation beneath the higher-level Skya room/client/server model.
+
+### Relationship to SLeeLa
+
+The Skya subsystem demonstrates the intended SLeeLa architecture across several layers:
+
+`SLeeLa source → compiler/loader → SLeeLa VM → Skya runnable → native C/C++ telephony services`
+
+and for the JavaFX presentation path:
+
+`Skya JavaFX → Guia™/BODI → SLeeLa client/runtime → native telephony services`
+
+Skya therefore serves as a concrete cross-platform application boundary where SLeeLa source, the C/C++ VM foundation, native services, Java interoperability, GUI protocols, and device drivers can operate as defined layers rather than as one undifferentiated runtime.
+
+See the complete [`/telephony-skya` subsystem](https://github.com/mearvk/SLeeLa/tree/master/telephony-skya) and its subsystem README for the current implementation layout and protocol documentation.
+
 ## Audio and Codec Architecture
 
 The Audio work is organized by implementation language and responsibility:
