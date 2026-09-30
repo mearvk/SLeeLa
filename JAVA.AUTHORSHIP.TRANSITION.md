@@ -57,3 +57,11 @@ SLeeLa syntax: 1.6
 Java Authorship Transition Gate: 1.3-dev
 
 These versions describe the implemented compatibility-surface capability, not JVM or Java-bytecode execution compatibility.
+
+## 0.3.21 Development Upgrade — Java Flow Qualification Closure
+
+This upgrade makes Java control-flow qualification a first-class closure task. Qualification now requires a source fixture, normalized representation, semantic rule, positive or negative result, and unified-manifest evidence.
+
+Required next coverage: boolean-path-sensitive `&&`, `||`, `!`, and `?:`; constant boolean expressions; break/continue joins and labels; while/do/for completion; switch completion; try/catch/finally abrupt paths; constructor and blank-final definite-unassignment; lambda capture boundaries; and checked-exception propagation.
+
+The work remains source/API qualification and does not imply JVM, bytecode, SLVM, or runtime equivalence.
