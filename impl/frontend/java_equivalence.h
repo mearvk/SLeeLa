@@ -23,6 +23,19 @@ enum class JavaSymbolDomain { NativeSLeeLa, JavaCompatibility, JavaApiCounterpar
 enum class JavaPrimitiveType { Boolean, Byte, Short, Int, Long, Char, Float, Double, Void };
 enum class JavaReferenceKind { Class, Interface, Array, TypeVariable, Parameterized, Wildcard, Null };
 
+
+
+struct JavaTypeDescriptor {
+    bool primitive = false;
+    JavaPrimitiveType primitiveType = JavaPrimitiveType::Void;
+    JavaReferenceKind referenceKind = JavaReferenceKind::Class;
+    std::string qualifiedName;
+    std::vector<JavaTypeDescriptor> arguments;
+    std::vector<std::string> bounds;
+    int arrayDimensions = 0;
+    std::string normalized() const;
+};
+
 enum class JavaConversionKind {
     Identity, WideningPrimitive, NarrowingPrimitive, WideningAndNarrowingPrimitive,
     WideningReference, NarrowingReference, Boxing, Unboxing, Unchecked,
@@ -45,17 +58,6 @@ JavaConversionResult classifyJavaConversion(const JavaTypeDescriptor& source,
 JavaTypeDescriptor unaryNumericPromotion(const JavaTypeDescriptor& source);
 JavaTypeDescriptor binaryNumericPromotion(const JavaTypeDescriptor& left,
                                           const JavaTypeDescriptor& right);
-
-struct JavaTypeDescriptor {
-    bool primitive = false;
-    JavaPrimitiveType primitiveType = JavaPrimitiveType::Void;
-    JavaReferenceKind referenceKind = JavaReferenceKind::Class;
-    std::string qualifiedName;
-    std::vector<JavaTypeDescriptor> arguments;
-    std::vector<std::string> bounds;
-    int arrayDimensions = 0;
-    std::string normalized() const;
-};
 
 enum class JavaDeclarationKind {
     Package, Import, Class, Interface, Enum, Record, AnnotationInterface,
