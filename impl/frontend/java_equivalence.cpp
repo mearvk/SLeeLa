@@ -1,11 +1,198 @@
+// ===========================================================================
+// java_equivalence.cpp -- Names and normalization for Java equivalence model.
+// ===========================================================================
 #include "java_equivalence.h"
 #include <sstream>
 namespace sleela {
-std::string JavaTypeDescriptor::normalized() const { std::ostringstream out; if(primitive){switch(primitiveType){case JavaPrimitiveType::Boolean:out<<"boolean";break;case JavaPrimitiveType::Byte:out<<"byte";break;case JavaPrimitiveType::Short:out<<"short";break;case JavaPrimitiveType::Int:out<<"int";break;case JavaPrimitiveType::Long:out<<"long";break;case JavaPrimitiveType::Char:out<<"char";break;case JavaPrimitiveType::Float:out<<"float";break;case JavaPrimitiveType::Double:out<<"double";break;case JavaPrimitiveType::Void:out<<"void";break;}}else{if(referenceKind==JavaReferenceKind::Wildcard)out<<"?";else out<<qualifiedName;if(!arguments.empty()){out<<"<";for(std::size_t i=0;i<arguments.size();++i){if(i)out<<",";out<<arguments[i].normalized();}out<<">";}}for(int i=0;i<arrayDimensions;++i)out<<"[]";return out.str();}
-const char* javaEquivalenceLayerName(JavaEquivalenceLayer x){switch(x){case JavaEquivalenceLayer::Lexical:return"Q1-Lexical";case JavaEquivalenceLayer::TypeSystem:return"Q2-TypeSystem";case JavaEquivalenceLayer::Declarations:return"Q3-Declarations";case JavaEquivalenceLayer::Expressions:return"Q4-Expressions";case JavaEquivalenceLayer::Statements:return"Q5-Statements";case JavaEquivalenceLayer::SemanticConstraints:return"Q6-SemanticConstraints";case JavaEquivalenceLayer::ApiCounterparts:return"Q7-ApiCounterparts";case JavaEquivalenceLayer::SourceEquivalenceTesting:return"Q8-SourceEquivalenceTesting";}return"Unknown";}
-const char* javaSymbolDomainName(JavaSymbolDomain x){switch(x){case JavaSymbolDomain::NativeSLeeLa:return"native-sleela";case JavaSymbolDomain::JavaCompatibility:return"java-compatibility";case JavaSymbolDomain::JavaApiCounterpart:return"java-api-counterpart";}return"unknown";}
-const char* javaDeclarationKindName(JavaDeclarationKind x){switch(x){case JavaDeclarationKind::Package:return"package";case JavaDeclarationKind::Import:return"import";case JavaDeclarationKind::Class:return"class";case JavaDeclarationKind::Interface:return"interface";case JavaDeclarationKind::Enum:return"enum";case JavaDeclarationKind::Record:return"record";case JavaDeclarationKind::AnnotationInterface:return"annotation-interface";case JavaDeclarationKind::Field:return"field";case JavaDeclarationKind::Method:return"method";case JavaDeclarationKind::Constructor:return"constructor";case JavaDeclarationKind::Parameter:return"parameter";case JavaDeclarationKind::TypeParameter:return"type-parameter";case JavaDeclarationKind::RecordComponent:return"record-component";case JavaDeclarationKind::Initializer:return"initializer";case JavaDeclarationKind::NestedType:return"nested-type";case JavaDeclarationKind::LocalType:return"local-type";case JavaDeclarationKind::AnonymousType:return"anonymous-type";}return"unknown";}
-const char* javaExpressionKindName(JavaExpressionKind x){switch(x){case JavaExpressionKind::Literal:return"literal";case JavaExpressionKind::Name:return"name";case JavaExpressionKind::This:return"this";case JavaExpressionKind::Super:return"super";case JavaExpressionKind::MemberAccess:return"member-access";case JavaExpressionKind::MethodInvocation:return"method-invocation";case JavaExpressionKind::ConstructorInvocation:return"constructor-invocation";case JavaExpressionKind::ArrayCreation:return"array-creation";case JavaExpressionKind::ArrayAccess:return"array-access";case JavaExpressionKind::Assignment:return"assignment";case JavaExpressionKind::CompoundAssignment:return"compound-assignment";case JavaExpressionKind::Unary:return"unary";case JavaExpressionKind::Binary:return"binary";case JavaExpressionKind::Conditional:return"conditional";case JavaExpressionKind::Cast:return"cast";case JavaExpressionKind::InstanceOf:return"instanceof";case JavaExpressionKind::Lambda:return"lambda";case JavaExpressionKind::MethodReference:return"method-reference";case JavaExpressionKind::ClassLiteral:return"class-literal";case JavaExpressionKind::SwitchExpression:return"switch-expression";case JavaExpressionKind::Pattern:return"pattern";case JavaExpressionKind::Parenthesized:return"parenthesized";}return"unknown";}
-const char* javaStatementKindName(JavaStatementKind x){switch(x){case JavaStatementKind::Empty:return"empty";case JavaStatementKind::Block:return"block";case JavaStatementKind::LocalDeclaration:return"local-declaration";case JavaStatementKind::Expression:return"expression";case JavaStatementKind::If:return"if";case JavaStatementKind::Switch:return"switch";case JavaStatementKind::While:return"while";case JavaStatementKind::Do:return"do";case JavaStatementKind::For:return"for";case JavaStatementKind::EnhancedFor:return"enhanced-for";case JavaStatementKind::Break:return"break";case JavaStatementKind::Continue:return"continue";case JavaStatementKind::Return:return"return";case JavaStatementKind::Throw:return"throw";case JavaStatementKind::Assert:return"assert";case JavaStatementKind::Synchronized:return"synchronized";case JavaStatementKind::Try:return"try";case JavaStatementKind::Catch:return"catch";case JavaStatementKind::Finally:return"finally";case JavaStatementKind::TryWithResources:return"try-with-resources";case JavaStatementKind::Yield:return"yield";case JavaStatementKind::Labeled:return"labeled";case JavaStatementKind::ExplicitConstructorInvocation:return"explicit-constructor-invocation";}return"unknown";}
-const char* javaSemanticRuleName(JavaSemanticRuleKind x){switch(x){case JavaSemanticRuleKind::NameResolution:return"name-resolution";case JavaSemanticRuleKind::Scope:return"scope";case JavaSemanticRuleKind::AccessControl:return"access-control";case JavaSemanticRuleKind::TypeChecking:return"type-checking";case JavaSemanticRuleKind::Conversion:return"conversion";case JavaSemanticRuleKind::NumericPromotion:return"numeric-promotion";case JavaSemanticRuleKind::Boxing:return"boxing";case JavaSemanticRuleKind::Unboxing:return"unboxing";case JavaSemanticRuleKind::GenericInference:return"generic-inference";case JavaSemanticRuleKind::CaptureConversion:return"capture-conversion";case JavaSemanticRuleKind::OverloadResolution:return"overload-resolution";case JavaSemanticRuleKind::OverrideResolution:return"override-resolution";case JavaSemanticRuleKind::ConstructorInvocation:return"constructor-invocation";case JavaSemanticRuleKind::DefiniteAssignment:return"definite-assignment";case JavaSemanticRuleKind::Reachability:return"reachability";case JavaSemanticRuleKind::ExceptionChecking:return"exception-checking";case JavaSemanticRuleKind::Initialization:return"initialization";case JavaSemanticRuleKind::SealedHierarchy:return"sealed-hierarchy";case JavaSemanticRuleKind::RecordConstraints:return"record-constraints";case JavaSemanticRuleKind::EnumConstraints:return"enum-constraints";case JavaSemanticRuleKind::AnnotationConstraints:return"annotation-constraints";}return"unknown";}
+std::string JavaTypeDescriptor::normalized() const {
+    std::ostringstream out;
+    if (primitive) {
+        switch (primitiveType) {
+            case JavaPrimitiveType::Boolean: out<<"boolean"; break;
+            case JavaPrimitiveType::Byte: out<<"byte"; break;
+            case JavaPrimitiveType::Short: out<<"short"; break;
+            case JavaPrimitiveType::Int: out<<"int"; break;
+            case JavaPrimitiveType::Long: out<<"long"; break;
+            case JavaPrimitiveType::Char: out<<"char"; break;
+            case JavaPrimitiveType::Float: out<<"float"; break;
+            case JavaPrimitiveType::Double: out<<"double"; break;
+            case JavaPrimitiveType::Void: out<<"void"; break;
+        }
+    } else {
+        if (referenceKind==JavaReferenceKind::Wildcard) out<<"?";
+        else out<<qualifiedName;
+        if (!arguments.empty()) {
+            out<<"<";
+            for (std::size_t i=0;i<arguments.size();++i) { if(i) out<<","; out<<arguments[i].normalized(); }
+            out<<">";
+        }
+    }
+    for(int i=0;i<arrayDimensions;++i) out<<"[]";
+    return out.str();
 }
+
+static bool sameType(const JavaTypeDescriptor& a,const JavaTypeDescriptor& b){return a.normalized()==b.normalized();}
+static bool numericPrimitive(JavaPrimitiveType p){return p==JavaPrimitiveType::Byte||p==JavaPrimitiveType::Short||p==JavaPrimitiveType::Char||p==JavaPrimitiveType::Int||p==JavaPrimitiveType::Long||p==JavaPrimitiveType::Float||p==JavaPrimitiveType::Double;}
+static int numericRank(JavaPrimitiveType p){switch(p){case JavaPrimitiveType::Byte:return 1;case JavaPrimitiveType::Short:return 2;case JavaPrimitiveType::Char:return 2;case JavaPrimitiveType::Int:return 3;case JavaPrimitiveType::Long:return 4;case JavaPrimitiveType::Float:return 5;case JavaPrimitiveType::Double:return 6;default:return 0;}}
+static JavaTypeDescriptor primitive(JavaPrimitiveType p){JavaTypeDescriptor t;t.primitive=true;t.primitiveType=p;return t;}
+static JavaTypeDescriptor boxed(JavaPrimitiveType p){JavaTypeDescriptor t;t.primitive=false;t.referenceKind=JavaReferenceKind::Class;switch(p){case JavaPrimitiveType::Boolean:t.qualifiedName="java.lang.Boolean";break;case JavaPrimitiveType::Byte:t.qualifiedName="java.lang.Byte";break;case JavaPrimitiveType::Short:t.qualifiedName="java.lang.Short";break;case JavaPrimitiveType::Int:t.qualifiedName="java.lang.Integer";break;case JavaPrimitiveType::Long:t.qualifiedName="java.lang.Long";break;case JavaPrimitiveType::Char:t.qualifiedName="java.lang.Character";break;case JavaPrimitiveType::Float:t.qualifiedName="java.lang.Float";break;case JavaPrimitiveType::Double:t.qualifiedName="java.lang.Double";break;default:break;}return t;}
+static bool unboxName(const std::string& n,JavaPrimitiveType& p){if(n=="java.lang.Boolean"){p=JavaPrimitiveType::Boolean;return true;}if(n=="java.lang.Byte"){p=JavaPrimitiveType::Byte;return true;}if(n=="java.lang.Short"){p=JavaPrimitiveType::Short;return true;}if(n=="java.lang.Integer"){p=JavaPrimitiveType::Int;return true;}if(n=="java.lang.Long"){p=JavaPrimitiveType::Long;return true;}if(n=="java.lang.Character"){p=JavaPrimitiveType::Char;return true;}if(n=="java.lang.Float"){p=JavaPrimitiveType::Float;return true;}if(n=="java.lang.Double"){p=JavaPrimitiveType::Double;return true;}return false;}
+JavaConversionResult classifyJavaConversion(const JavaTypeDescriptor& s,const JavaTypeDescriptor& t,JavaConversionContext ctx){
+ JavaConversionResult r;r.target=t;
+ if(sameType(s,t)){r.kind=JavaConversionKind::Identity;r.permitted=true;r.reason="identity conversion";return r;}
+ if(s.primitive&&t.primitive&&numericPrimitive(s.primitiveType)&&numericPrimitive(t.primitiveType)){
+  int a=numericRank(s.primitiveType),b=numericRank(t.primitiveType);
+  if(a<b){r.kind=JavaConversionKind::WideningPrimitive;r.permitted=true;r.reason="widening primitive conversion";}
+  else if(ctx==JavaConversionContext::Casting){r.kind=JavaConversionKind::NarrowingPrimitive;r.permitted=true;r.reason="narrowing primitive conversion in cast context";}
+  else r.reason="narrowing primitive conversion is not generally permitted in this context";
+  return r;
+ }
+ if(s.primitive&&!t.primitive&&numericPrimitive(s.primitiveType)&&t.referenceKind==JavaReferenceKind::Class){
+  if(sameType(boxed(s.primitiveType),t)){r.kind=JavaConversionKind::Boxing;r.permitted=ctx!=JavaConversionContext::Numeric;r.reason="boxing conversion";return r;}
+  JavaTypeDescriptor b=boxed(s.primitiveType);
+  if(t.qualifiedName=="java.lang.Object"){r.kind=JavaConversionKind::Boxing;r.permitted=ctx==JavaConversionContext::Assignment||ctx==JavaConversionContext::LooseInvocation;r.reason="boxing followed by widening reference conversion";return r;}
+ }
+ if(!s.primitive&&t.primitive){JavaPrimitiveType p; if(unboxName(s.qualifiedName,p)){if(p==t.primitiveType){r.kind=JavaConversionKind::Unboxing;r.permitted=ctx==JavaConversionContext::Assignment||ctx==JavaConversionContext::LooseInvocation||ctx==JavaConversionContext::Casting;r.reason="unboxing conversion";return r;}if(numericPrimitive(p)&&numericPrimitive(t.primitiveType)&&numericRank(p)<numericRank(t.primitiveType)){r.kind=JavaConversionKind::Unboxing;r.permitted=ctx==JavaConversionContext::Assignment||ctx==JavaConversionContext::LooseInvocation||ctx==JavaConversionContext::Numeric;r.reason="unboxing followed by widening primitive conversion";return r;}}}
+ if(!s.primitive&&!t.primitive){
+  if(t.qualifiedName=="java.lang.Object"&&s.referenceKind!=JavaReferenceKind::Null){r.kind=JavaConversionKind::WideningReference;r.permitted=true;r.reason="widening reference conversion";return r;}
+  if(ctx==JavaConversionContext::Casting){r.kind=JavaConversionKind::NarrowingReference;r.permitted=true;r.compileTimeOnly=false;r.reason="narrowing reference conversion; runtime check may apply";return r;}
+  if(ctx==JavaConversionContext::StringContext){r.kind=JavaConversionKind::String;r.permitted=true;r.reason="string conversion";return r;}
+ }
+ r.reason="no permitted conversion classified";
+ return r;
+}
+JavaTypeDescriptor unaryNumericPromotion(const JavaTypeDescriptor& s){
+ if(!s.primitive)return s;
+ if(s.primitiveType==JavaPrimitiveType::Byte||s.primitiveType==JavaPrimitiveType::Short||s.primitiveType==JavaPrimitiveType::Char)return primitive(JavaPrimitiveType::Int);
+ return s;
+}
+JavaTypeDescriptor binaryNumericPromotion(const JavaTypeDescriptor& l,const JavaTypeDescriptor& rr){
+ JavaTypeDescriptor a=unaryNumericPromotion(l),b=unaryNumericPromotion(rr);
+ if(a.primitive&&b.primitive){int ar=numericRank(a.primitiveType),br=numericRank(b.primitiveType);return primitive(ar>=br?a.primitiveType:b.primitiveType);}
+ return a;
+}
+const char* javaEquivalenceLayerName(JavaEquivalenceLayer x) {
+    switch(x) {
+        case JavaEquivalenceLayer::Lexical:return "Q1-Lexical";
+        case JavaEquivalenceLayer::TypeSystem:return "Q2-TypeSystem";
+        case JavaEquivalenceLayer::Declarations:return "Q3-Declarations";
+        case JavaEquivalenceLayer::Expressions:return "Q4-Expressions";
+        case JavaEquivalenceLayer::Statements:return "Q5-Statements";
+        case JavaEquivalenceLayer::SemanticConstraints:return "Q6-SemanticConstraints";
+        case JavaEquivalenceLayer::ApiCounterparts:return "Q7-ApiCounterparts";
+        case JavaEquivalenceLayer::SourceEquivalenceTesting:return "Q8-SourceEquivalenceTesting";
+    }
+    return "Unknown";
+}
+const char* javaSymbolDomainName(JavaSymbolDomain x) {
+    switch(x) {
+        case JavaSymbolDomain::NativeSLeeLa:return "native-sleela";
+        case JavaSymbolDomain::JavaCompatibility:return "java-compatibility";
+        case JavaSymbolDomain::JavaApiCounterpart:return "java-api-counterpart";
+    }
+    return "unknown";
+}
+const char* javaDeclarationKindName(JavaDeclarationKind x) {
+    switch(x) {
+        case JavaDeclarationKind::Package:return "package";
+        case JavaDeclarationKind::Import:return "import";
+        case JavaDeclarationKind::Class:return "class";
+        case JavaDeclarationKind::Interface:return "interface";
+        case JavaDeclarationKind::Enum:return "enum";
+        case JavaDeclarationKind::Record:return "record";
+        case JavaDeclarationKind::AnnotationInterface:return "annotation-interface";
+        case JavaDeclarationKind::Field:return "field";
+        case JavaDeclarationKind::Method:return "method";
+        case JavaDeclarationKind::Constructor:return "constructor";
+        case JavaDeclarationKind::Parameter:return "parameter";
+        case JavaDeclarationKind::TypeParameter:return "type-parameter";
+        case JavaDeclarationKind::RecordComponent:return "record-component";
+        case JavaDeclarationKind::Initializer:return "initializer";
+        case JavaDeclarationKind::NestedType:return "nested-type";
+        case JavaDeclarationKind::LocalType:return "local-type";
+        case JavaDeclarationKind::AnonymousType:return "anonymous-type";
+    }
+    return "unknown";
+}
+const char* javaExpressionKindName(JavaExpressionKind x) {
+    switch(x) {
+        case JavaExpressionKind::Literal:return "literal";
+        case JavaExpressionKind::Name:return "name";
+        case JavaExpressionKind::This:return "this";
+        case JavaExpressionKind::Super:return "super";
+        case JavaExpressionKind::MemberAccess:return "member-access";
+        case JavaExpressionKind::MethodInvocation:return "method-invocation";
+        case JavaExpressionKind::ConstructorInvocation:return "constructor-invocation";
+        case JavaExpressionKind::ArrayCreation:return "array-creation";
+        case JavaExpressionKind::ArrayAccess:return "array-access";
+        case JavaExpressionKind::Assignment:return "assignment";
+        case JavaExpressionKind::CompoundAssignment:return "compound-assignment";
+        case JavaExpressionKind::Unary:return "unary";
+        case JavaExpressionKind::Binary:return "binary";
+        case JavaExpressionKind::Conditional:return "conditional";
+        case JavaExpressionKind::Cast:return "cast";
+        case JavaExpressionKind::InstanceOf:return "instanceof";
+        case JavaExpressionKind::Lambda:return "lambda";
+        case JavaExpressionKind::MethodReference:return "method-reference";
+        case JavaExpressionKind::ClassLiteral:return "class-literal";
+        case JavaExpressionKind::SwitchExpression:return "switch-expression";
+        case JavaExpressionKind::Pattern:return "pattern";
+        case JavaExpressionKind::Parenthesized:return "parenthesized";
+    }
+    return "unknown";
+}
+const char* javaStatementKindName(JavaStatementKind x) {
+    switch(x) {
+        case JavaStatementKind::Empty:return "empty";
+        case JavaStatementKind::Block:return "block";
+        case JavaStatementKind::LocalDeclaration:return "local-declaration";
+        case JavaStatementKind::Expression:return "expression";
+        case JavaStatementKind::If:return "if";
+        case JavaStatementKind::Switch:return "switch";
+        case JavaStatementKind::While:return "while";
+        case JavaStatementKind::Do:return "do";
+        case JavaStatementKind::For:return "for";
+        case JavaStatementKind::EnhancedFor:return "enhanced-for";
+        case JavaStatementKind::Break:return "break";
+        case JavaStatementKind::Continue:return "continue";
+        case JavaStatementKind::Return:return "return";
+        case JavaStatementKind::Throw:return "throw";
+        case JavaStatementKind::Assert:return "assert";
+        case JavaStatementKind::Synchronized:return "synchronized";
+        case JavaStatementKind::Try:return "try";
+        case JavaStatementKind::Catch:return "catch";
+        case JavaStatementKind::Finally:return "finally";
+        case JavaStatementKind::TryWithResources:return "try-with-resources";
+        case JavaStatementKind::Yield:return "yield";
+        case JavaStatementKind::Labeled:return "labeled";
+        case JavaStatementKind::ExplicitConstructorInvocation:return "explicit-constructor-invocation";
+    }
+    return "unknown";
+}
+const char* javaSemanticRuleName(JavaSemanticRuleKind x) {
+    switch(x) {
+        case JavaSemanticRuleKind::NameResolution:return "name-resolution";
+        case JavaSemanticRuleKind::Scope:return "scope";
+        case JavaSemanticRuleKind::AccessControl:return "access-control";
+        case JavaSemanticRuleKind::TypeChecking:return "type-checking";
+        case JavaSemanticRuleKind::Conversion:return "conversion";
+        case JavaSemanticRuleKind::NumericPromotion:return "numeric-promotion";
+        case JavaSemanticRuleKind::Boxing:return "boxing";
+        case JavaSemanticRuleKind::Unboxing:return "unboxing";
+        case JavaSemanticRuleKind::GenericInference:return "generic-inference";
+        case JavaSemanticRuleKind::CaptureConversion:return "capture-conversion";
+        case JavaSemanticRuleKind::OverloadResolution:return "overload-resolution";
+        case JavaSemanticRuleKind::OverrideResolution:return "override-resolution";
+        case JavaSemanticRuleKind::ConstructorInvocation:return "constructor-invocation";
+        case JavaSemanticRuleKind::DefiniteAssignment:return "definite-assignment";
+        case JavaSemanticRuleKind::Reachability:return "reachability";
+        case JavaSemanticRuleKind::ExceptionChecking:return "exception-checking";
+        case JavaSemanticRuleKind::Initialization:return "initialization";
+        case JavaSemanticRuleKind::SealedHierarchy:return "sealed-hierarchy";
+        case JavaSemanticRuleKind::RecordConstraints:return "record-constraints";
+        case JavaSemanticRuleKind::EnumConstraints:return "enum-constraints";
+        case JavaSemanticRuleKind::AnnotationConstraints:return "annotation-constraints";
+    }
+    return "unknown";
+}
+} // namespace sleela
