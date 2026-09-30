@@ -45,3 +45,34 @@ int sleela_java_runtime_bridge_prepare(
     plan->ready = 1;
     return 0;
 }
+
+
+int sleela_java_runtime_dispatch_source(
+    const char *source, size_t length, const char *path_hint,
+    const SleelaJavaProgramRequest *request,
+    SleelaJavaRuntimeProbeResult *probe,
+    SleelaJavaProgramPlan *plan) {
+
+    if (!probe || !plan) return -1;
+    if (sleela_java_runtime_probe_source(source, length, path_hint, probe) != 0)
+        return -1;
+
+    memset(plan, 0, sizeof(*plan));
+
+    if (probe->action == SLEELA_JAVA_ACTION_CONTINUE)
+        return 0;
+
+    if (probe->action == SLEELA_JAVA_ACTION_PROMPT_INSTALL)
+        return 1;
+
+    if (!request) return -1;
+
+    SleelaJavaProgramRequest handoff = *request;
+    if (!handoff.java_executable || !handoff.java_executable[0])
+        handoff.java_executable = probe->java_executable;
+
+    if (sleela_java_runtime_bridge_prepare(&handoff, plan) != 0)
+        return -1;
+
+    return 0;
+}
