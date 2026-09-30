@@ -130,3 +130,12 @@ Added `tests/java_signature_comparison.py` and a deterministic qualification sui
 This is the first comparison layer beyond the inventory driver's marker-based comparison. It remains source/API congruence tooling and does not claim JVM descriptor or runtime equivalence.
 
 Oracle's Java SE 27 specification defines Java source syntax and declaration/signature rules; generic signatures and type structure remain distinct from runtime behavior. citeturn0search0turn0search4
+
+
+### 0.3.17-dev — normalized declaration/signature model refinement
+
+The 0.3.16 comparison foundation was extended into normalization version 2. The comparator now has explicit constructor records rather than treating constructors as methods, declaration paths for ownership, inheritance metadata, declaration annotations, parameter metadata including varargs, and a deterministic schema version. The paired qualification suite includes a negative constructor mismatch case.
+
+This remains source/API congruence tooling. It does not introduce JVM descriptors, bytecode execution, SLVM execution, or runtime equivalence requirements.
+
+Oracle's Java specification distinguishes constructor declarations and signatures from method declarations and signatures, and defines class/interface inheritance clauses as part of source declarations. 
