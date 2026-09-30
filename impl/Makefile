@@ -536,3 +536,7 @@ test-java-authorship: $(SLEELA_BIN)
 test-java-generic: $(SLEELA_BIN)
 	@echo "=== Java generic signature transition ==="
 	@cd $(CURDIR)/.. && $(CURDIR)/$(SLEELA_BIN) run impl/tests/java_transition/generic_signatures.sleela
+
+test-java-declaration-metadata: $(SLEELA_BIN)
+	@echo "=== Java declaration annotation metadata ==="
+	@cd $(CURDIR)/.. && $(CURDIR)/$(SLEELA_BIN) run impl/tests/java_transition/declaration_metadata.sleela
