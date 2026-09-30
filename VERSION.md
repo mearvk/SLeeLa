@@ -80,3 +80,10 @@ Java negative/constraint qualification corpus added: ten deterministic source fi
 Normalized Java/SLeeLa declaration and signature comparison added. The qualification tool compares normalized declarations, methods, constructors, generic parameter shape, parameter/return types, throws types, modifiers, and fields using a deterministic paired-source fixture.
 
 **Java Authorship Transition Gate:** 1.14-dev
+
+
+## 0.3.17 Development Increment
+
+Normalized Java/SLeeLa declaration comparison was deepened from the 0.3.16 foundation. The comparison normal form now distinguishes constructors from methods, records declaration ownership/path metadata, inheritance clauses (extends, implements, permits), annotations, parameter names/types/varargs metadata, and a versioned normalization schema. The qualification suite now includes a deliberate constructor-parameter mismatch to prove that mismatches are detected rather than merely accepting paired text.
+
+**Java Authorship Transition Gate:** 1.15-dev
