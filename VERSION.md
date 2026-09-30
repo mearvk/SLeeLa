@@ -116,3 +116,9 @@ The first executable Java Flow 0.3.21 phase is now implemented in `impl/frontend
 This is an incremental semantic implementation, not completion of the entire Java Chapter 16 model. For-loop update semantics, full switch rules, try/finally abrupt replacement, constructor/blank-final context, lambda capture flow, and integrated checked-exception propagation remain subsequent phases.
 
 **Java Authorship Transition Gate:** 1.19-dev
+
+### 0.3.21 Next Execution Step — Basic `for` Flow
+
+The Java Flow implementation now carries explicit basic-`for` initialization and incrementation components. The analyzer traverses initialization, recognizes the condition as an optional component, establishes the loop body as the condition-true path, validates `break`/`continue` targets, and traverses the update expressions on normal and continue paths. The normal result remains defined by the condition-false path and matching `break` exits, consistent with JLS Chapter 16.
+
+This step is intentionally incremental: the current public flow model does not yet expose a full fixed-point representation for repeated loop iterations, so update traversal currently establishes diagnostic coverage rather than claiming complete iterative definite-unassignment semantics.
