@@ -37,6 +37,7 @@ int sleela_java_runtime_probe_source(
 int sleela_java_runtime_probe_local_vm(SleelaJavaRuntimeProbeResult *result);
 
 const char *sleela_java_runtime_action_name(SleelaJavaRuntimeAction action);
+const char *sleela_java_runtime_kind_name(SleelaJavaRuntimeKind kind);
 
 #ifdef __cplusplus
 }
