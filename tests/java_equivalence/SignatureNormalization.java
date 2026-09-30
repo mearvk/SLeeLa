@@ -1,8 +1,10 @@
 import java.util.List;
 
+@Deprecated
 public class SignatureNormalization<T extends Number> {
   private T value;
 
+  @Deprecated
   public SignatureNormalization(T value) {
     this.value = value;
   }
