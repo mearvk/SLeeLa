@@ -38,7 +38,7 @@ The driver reports structural, semantic, and functional-source states separately
 6. Implement checked-exception analysis. **Foundation added in 0.3.13-dev:** exception hierarchy/subtyping, checked-vs-unchecked classification, catch coverage, redundant catch detection, throws-clause coverage, and overriding throws compatibility.
 7. Implement dependency-driven Java API counterpart closure. **Foundation added in 0.3.14-dev:** source-reference discovery, Java-qualified dependency-to-envelope mapping, missing-counterpart diagnostics, and deterministic isolated-fixture qualification.
 8. **Completed in 0.3.15-dev:** expand negative and constraint fixtures with deterministic expected-diagnostic corpus and qualification runner.
-9. Add normalized AST/signature comparison beyond the inventory driver.
+9. **Foundation completed in 0.3.16-dev:** normalized declaration/signature comparison beyond the inventory driver.
 10. Add Linux, Windows 10+, and macOS qualification records.
 
 
@@ -115,3 +115,11 @@ Added `tests/java_constraints_suite.py` and the `java-constraints` Makefile targ
 The corpus is source-level qualification data. It does not add JVM or SLVM execution requirements.
 
 Oracle's Java SE 27 JLS defines compile-time constraint areas including definite assignment, exception checking, method overriding/inheritance, and related source-language rules. citeturn0search2turn0search8
+
+### 0.3.16-dev — normalized AST/signature comparison foundation
+
+Added `tests/java_signature_comparison.py` and a deterministic qualification suite with paired Java/SLeeLa fixtures. The comparator normalizes declaration kinds, names, modifiers, generic parameter shape, parameter types, return types, throws types, and fields, then reports missing/extra normalized structures.
+
+This is the first comparison layer beyond the inventory driver's marker-based comparison. It remains source/API congruence tooling and does not claim JVM descriptor or runtime equivalence.
+
+Oracle's Java SE 27 specification defines Java source syntax and declaration/signature rules; generic signatures and type structure remain distinct from runtime behavior. citeturn0search0turn0search4
