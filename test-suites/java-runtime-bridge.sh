@@ -44,8 +44,10 @@ int main(void) {
     if (check(strstr(plan.command,
         "/opt/java/bin/java -cp build/classes example.Hello one two") != NULL,
         "normal JVM invocation")) return 1;
-    if (check(strcmp(plan.sample_output, "hello\n") == 0,
-        "sample input/output contract")) return 1;
+    if (check(strcmp(plan.sample_input, "hello\n") == 0,
+        "sample input contract")) return 1;
+    if (check(plan.sample_output_hint[0] == '\\0',
+        "provider-supplied output contract")) return 1;
 
     puts("PASS: SLeeLa Java runtime bridge plan");
     return 0;
