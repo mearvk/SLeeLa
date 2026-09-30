@@ -52,4 +52,11 @@ This increment extends the Java overload/override foundation with maximally-spec
 
 Java checked-exception source semantics foundation added: exception hierarchy/subtyping, checked-vs-unchecked classification, catch-or-declare coverage, redundant catch detection, and overriding throws compatibility. Full Java exception propagation remains in qualification.
 
-**Java Authorship Transition Gate:** 1.11-dev
+**Java Authorship Transition Gate:** 1.12-dev
+
+
+## 0.3.14 Development Increment
+
+Java API dependency-closure foundation added: Java-qualified source-reference discovery, counterpart path mapping, missing-type diagnostics, and deterministic isolated-fixture testing.
+
+**Java Authorship Transition Gate:** 1.12-dev
