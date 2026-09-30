@@ -258,6 +258,71 @@ and, where Java interoperability is intentionally used:
 
 The result is a regex subsystem that belongs to SLeeLa itself while remaining capable of using carefully defined native or Java runtime services underneath the language boundary.
 
+
+## SLeeLa Decompiler and Native Analysis — `/decompiler`
+
+SLeeLa includes a dedicated **Slecompiler™** subsystem under `/decompiler` for native-binary analysis, decompilation, library inspection, driver investigation, and evidence-based source reconstruction. The subsystem is designed as a read-only static-analysis pipeline: it analyzes native artifacts without treating the analyzed artifact as executable input.
+
+The decompiler covers native artifact families including ELF executables and shared objects, PE/COFF programs and libraries, Mach-O artifacts where implemented, static archives, relocatable objects, Linux kernel modules as static evidence, firmware/raw artifacts, and related library families.
+
+### Analysis Architecture
+
+The decompiler follows a defined architecture:
+
+`Artifact → Container Reader → Architecture Decoder → Instruction Stream → Symbols/Imports/Exports/Relocations → Basic Blocks → CFG → Function Candidates → SLIR → Analysis → Reports/API/Refactoring`
+
+The central intermediate representation is **SLIR — SLeeLa Intermediate Representation**. SLIR provides an architecture-neutral layer between native decoding and higher-level analysis/reconstruction.
+
+The decompiler's documented design rules emphasize:
+
+- deterministic, side-effect-free parsing;
+- preservation and provenance of original bytes;
+- explicit evidence attached to inferred objects;
+- separation of architecture-specific decoding from SLIR;
+- stable public API boundaries;
+- conservative representation of unsupported instructions;
+- distinction between observed evidence and inferred hypotheses; and
+- archival, reproducible analysis output.
+
+### C/C++ and SLeeLa Reconstruction
+
+The decompiler provides a shared C/C++ semantic class model for native reconstruction, including types, fields, variables, function signatures, calling conventions, methods, C structures/unions/enums, C++ classes/namespaces, artifacts, addresses, instructions, basic blocks, control-flow graphs, reconstruction units, provenance, and evidence classifications.
+
+Its documented source-emission targets include:
+
+- **Java** — JVM-oriented source reconstruction;
+- **SLeeLa** — native SLeeLa source representation;
+- **C** — procedural C reconstruction;
+- **C++** — C++20-oriented reconstruction.
+
+The important relationship to the rest of SLeeLa is:
+
+`Native artifact → analysis → SLIR → reconstruction model → SLeeLa/Java/C/C++ source representation`
+
+Generated source is evidence-derived. The decompiler explicitly preserves uncertainty rather than presenting recovered code as original source when the binary evidence does not establish that equivalence.
+
+### Decompiler VM Boundary
+
+The SLeeLa VM used by the decompiler is an **analysis and validation environment for SLIR**, not an execution path for untrusted native binaries. Its purpose is deterministic testing of lifting and transformation passes using controlled representations.
+
+This maintains a clear boundary:
+
+`Native binary → static analysis → SLIR → controlled VM validation`
+
+rather than:
+
+`Native binary → execution`
+
+Driver and kernel-module analysis is likewise static. The decompiler does not load kernel modules, open devices, write target memory, or invoke recovered native code as part of normal analysis.
+
+### Documentation and Tooling
+
+The `/decompiler` subsystem contains API, architecture, class-model, definitions, terminology, tutorial, CMake, CLI, examples, source, include, documentation, and test areas. The principal documentation includes `decompiler/README.md`, `API.md`, `API_CLASS_MODEL.md`, `ARCHITECTURE.md`, `DEFINITIONS.md`, `TERMINOLOGY.md`, and `TUTORIAL.md`.
+
+The API documentation also describes source-selection for decompilation through Java, SLeeLa, C, and C++ output targets. This makes the decompiler an important bridge between compiled/native artifacts and the SLeeLa source ecosystem.
+
+See the complete [`/decompiler` subsystem](https://github.com/mearvk/SLeeLa/tree/master/decompiler) and its documentation for implementation details, API contracts, analysis limitations, and build guidance.
+
 ## Audio and Codec Architecture
 
 The Audio work is organized by implementation language and responsibility:
