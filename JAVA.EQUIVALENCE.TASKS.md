@@ -132,3 +132,12 @@ The 0.3.16 comparison foundation was extended into normalization version 2. The 
 This remains source/API congruence tooling. It does not introduce JVM descriptors, bytecode execution, SLVM execution, or runtime equivalence requirements.
 
 Oracle's Java specification distinguishes constructor declarations and signatures from method declarations and signatures, and defines class/interface inheritance clauses as part of source declarations. 
+
+
+### 0.3.18-dev — platform and reproducibility qualification system
+
+Q10 was converted from a documentation-only requirement into a deterministic qualification system. Added tests/java_platforms.json, tests/java_platform_qualification.py, and tests/java_platform_qualification_suite.py, plus the java-platform-qualification Make target.
+
+The matrix explicitly records Linux, Windows 10+, and macOS target families, supported architecture families, native toolchain expectations, required Python tooling, and repeatable qualification commands. The runner records the actual host environment and distinguishes READY from NOT_EXECUTED; it never labels an unobserved remote operating system as passed.
+
+Java source/API qualification remains independent of JVM availability. Java SE 27 is the current released specification; Java 28 remains a forward compatibility target in this project.
