@@ -38,6 +38,7 @@ jdk28-signatures:
 
 java-source-equivalence:
 	python3 java_source_equivalence.py --java java_equivalence/EquivalenceBasic.java --sleela java_equivalence/EquivalenceBasic.sleela --json java_equivalence/report.json
+	python3 java_source_equivalence.py --java java_equivalence/ExpressionSurface.java --sleela java_equivalence/ExpressionSurface.sleela --json java_equivalence/expression-report.json
 
 clean:
 	rm -f memory reflection nordshrift runtime network-security
