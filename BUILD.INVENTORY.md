@@ -82,3 +82,13 @@ main and master remain intentionally divergent. This audit does not merge or for
 java28/Makefile is the native/JVM integration build. The large Java 28 SLeeLa source-envelope expansion under /lib/java is a separate source-inventory task and is not treated as generated build output.
 
 — Max Rupplin - MEARVK LLC - 2026
+
+## Platform build surfaces
+
+The repository now exposes explicit per-OS build folders under `build/linux/`, `build/macos/`, and `build/windows/`. Each contains a README and Makefile dispatcher. The dispatchers call the existing platform-specific scripts rather than duplicating native source lists.
+
+- Linux: GCC/G++ or Clang/Clang++, POSIX/Linux C/C++ footing.
+- macOS: Apple Clang, Darwin/POSIX C/C++ footing.
+- Windows 10+: MinGW-w64/GCC/G++, Win32 C/C++ footing; PowerShell build entry point.
+
+The core runtime, debugger, Skya native layer, and Slecompiler now have explicit platform build entry points where their platform-specific implementation exists. Platform-specific API controllers are also present for database and webserver services where required.
