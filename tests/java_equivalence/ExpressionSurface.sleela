@@ -1,0 +1,11 @@
+#sleela 1.6
+public class ExpressionSurface {
+  public int compute(int a, int b) {
+    int x = (a + b) * 2;
+    x += 1;
+    return x > 10 ? x : 10;
+  }
+  public boolean test(Object value) {
+    return value instanceof String;
+  }
+}
