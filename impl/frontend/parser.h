@@ -34,9 +34,9 @@ private:
     bool isTypeStart() const;
     std::string parseType(std::vector<annotation::Annotation>* typeAnnotations=nullptr);
     StmtP parseStatement(); std::unique_ptr<Block> parseBlock(); StmtP parseSimpleStatement();
-    ExprP parseExpr(); ExprP parseOr(); ExprP parseAnd(); ExprP parseEquality();
-    ExprP parseComparison(); ExprP parseAdditive(); ExprP parseMultiplicative();
-    ExprP parseUnary(); ExprP parsePrimary(); ExprP parsePostfix(ExprP base);
+    ExprP parseExpr(); ExprP parseAssignment(); ExprP parseConditional(); ExprP parseOr(); ExprP parseAnd(); ExprP parseBitOr(); ExprP parseBitXor(); ExprP parseBitAnd(); ExprP parseEquality();
+    ExprP parseComparison(); ExprP parseShift(); ExprP parseAdditive(); ExprP parseMultiplicative();
+    ExprP parseUnary(); ExprP parsePostfix(ExprP base); ExprP parsePrimary();
 };
 } // namespace sleela
 #endif // SLEELA_PARSER_H
