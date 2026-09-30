@@ -37,7 +37,7 @@ The driver reports structural, semantic, and functional-source states separately
 5. Implement definite-assignment and reachability rules. **Foundation added in 0.3.12-dev:** source-flow facts, use-before-assignment diagnostics, final reassignment checks, branch merging, loop/abrupt-completion reachability, switch/try/finally flow scaffolding, and deterministic C++/Python qualification suite. **Foundation added in 0.3.12-dev:** source-flow facts, use-before-assignment diagnostics, final reassignment checks, branch merging, loop/abrupt-completion reachability, switch/try/finally flow scaffolding, and deterministic C++/Python qualification suite.
 6. Implement checked-exception analysis. **Foundation added in 0.3.13-dev:** exception hierarchy/subtyping, checked-vs-unchecked classification, catch coverage, redundant catch detection, throws-clause coverage, and overriding throws compatibility.
 7. Implement dependency-driven Java API counterpart closure. **Foundation added in 0.3.14-dev:** source-reference discovery, Java-qualified dependency-to-envelope mapping, missing-counterpart diagnostics, and deterministic isolated-fixture qualification.
-8. Expand negative and constraint fixtures.
+8. **Completed in 0.3.15-dev:** expand negative and constraint fixtures with deterministic expected-diagnostic corpus and qualification runner.
 9. Add normalized AST/signature comparison beyond the inventory driver.
 10. Add Linux, Windows 10+, and macOS qualification records.
 
@@ -111,3 +111,14 @@ Added `lib/java/tools/java_api_dependency_closure.py` and `tests/java_api_depend
 This closes the first dependency-driven layer of API qualification. Full closure still requires member-level dependency extraction, nested/inner types, generic bounds and annotations, inherited API members, module/package metadata, and a dependency graph suitable for complete transitive closure.
 
 The Java statement model also remains an active companion area: the JLS defines enhanced `for`, `try`-with-resources, switch rules/guards, and detailed reachability/normal-completion constraints. citeturn0search0turn0search2
+
+
+### 0.3.15-dev — negative and constraint corpus
+
+Added `tests/java_constraints/` with deterministic negative/constraint fixtures for definite assignment, final reassignment, unreachable statements, checked exceptions, redundant catches, override throws restrictions, overload ambiguity, interface default conflicts, missing Java API counterparts, and forbidden conversions.
+
+Added `tests/java_constraints_suite.py` and the `java-constraints` Makefile target. The suite validates the fixture-to-diagnostic contract, executes the existing flow/exception/overload qualification implementations, and verifies a deliberate missing Java API counterpart is rejected by the dependency-closure auditor.
+
+The corpus is source-level qualification data. It does not add JVM or SLVM execution requirements.
+
+Oracle's Java SE 27 JLS defines compile-time constraint areas including definite assignment, exception checking, method overriding/inheritance, and related source-language rules. citeturn0search2turn0search8
