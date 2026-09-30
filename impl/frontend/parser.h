@@ -11,9 +11,7 @@ class Parser {
 public:
     explicit Parser(std::vector<Token> toks) : toks_(std::move(toks)) {}
     Program parseProgram();
-    annotation::Annotation parseAnnotation(annotation::UseSite site=annotation::UseSite::Declaration);
-    std::vector<annotation::Annotation> parseAnnotations(annotation::UseSite site);
-    std::vector<annotation::Annotation> parseTypeAnnotations();
+    annotation::Annotation parseAnnotation(annotation::UseSite site=annotation::UseSite::Declaration);\n    std::vector<annotation::Annotation> parseAnnotations(annotation::UseSite site);\n    std::vector<annotation::Annotation> parseTypeAnnotations();
 private:
     std::vector<Token> toks_; size_t i_=0;
     std::set<std::string> structNames_;
@@ -36,9 +34,9 @@ private:
     bool isTypeStart() const;
     std::string parseType(std::vector<annotation::Annotation>* typeAnnotations=nullptr);
     StmtP parseStatement(); std::unique_ptr<Block> parseBlock(); StmtP parseSimpleStatement();
-    ExprP parseExpr(); ExprP parseOr(); ExprP parseAnd(); ExprP parseEquality();
-    ExprP parseComparison(); ExprP parseAdditive(); ExprP parseMultiplicative();
-    ExprP parseUnary(); ExprP parsePrimary(); ExprP parsePostfix(ExprP base);
+    ExprP parseExpr(); ExprP parseAssignment(); ExprP parseConditional(); ExprP parseOr(); ExprP parseAnd(); ExprP parseBitOr(); ExprP parseBitXor(); ExprP parseBitAnd(); ExprP parseEquality();
+    ExprP parseComparison(); ExprP parseShift(); ExprP parseAdditive(); ExprP parseMultiplicative();
+    ExprP parseUnary(); ExprP parsePostfix(ExprP base); ExprP parsePrimary();
 };
 } // namespace sleela
 #endif // SLEELA_PARSER_H
