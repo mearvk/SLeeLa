@@ -51,10 +51,10 @@ int main() {
 
     // A continue path reaches the update component before the next condition.
     JavaFlowStmt fc; fc.kind=JavaFlowStmtKind::Continue;
-    JavaFlowStmt fl; fl.kind=JavaFlowStmtKind::For; fl.condition=lit(false);
+    JavaFlowStmt fl; fl.kind=JavaFlowStmtKind::For; fl.condition=lit(true);
     fl.children={fc}; fl.forUpdate={var("missing2")};
     auto r5b=analyzeJavaFlow({fl});
-    assert(!has(r5b,JavaFlowDiagnosticKind::UseBeforeAssignment));
+    assert(has(r5b,JavaFlowDiagnosticKind::UseBeforeAssignment));
 
     // A labeled block accepts break but not continue.
     JavaFlowStmt lb; lb.kind=JavaFlowStmtKind::Labeled; lb.label="outer";
