@@ -14,9 +14,14 @@ on:
       - 'tests/java_flow_021_semantics.cpp'
       - 'tests/java_flow_021_suite.py'
       - '.github/workflows/java-flow-021.yml'
+  workflow_dispatch:
 
 permissions:
   contents: read
+
+concurrency:
+  group: java-flow-0.3.21-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   java-flow-021:
