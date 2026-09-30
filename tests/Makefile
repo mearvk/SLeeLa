@@ -68,3 +68,6 @@ java-signature-comparison:
 
 java-platform-qualification:
 	python3 java_platform_qualification_suite.py
+
+java-qualification:
+	python3 java_qualification_manifest.py
