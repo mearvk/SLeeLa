@@ -52,6 +52,7 @@ struct JavaTypeMetadata {
     std::string qualifiedName;
     std::string superclass;
     std::vector<std::string> interfaces;
+    std::vector<std::string> typeParameters;
     std::string sourceVersion = "28";
     std::string apiStatus = "standard";
     bool preview = false;
