@@ -50,6 +50,17 @@ int main(void) {
     if (check(plan.sample_output_hint[0] == '\\0',
         "provider-supplied output contract")) return 1;
 
+    SleelaJavaProgramRequest source_request = {
+        "/opt/java/bin/java",
+        ".",
+        NULL,
+        "Example.java",
+        ""
+    };
+    if (sleela_java_runtime_bridge_prepare(&source_request, &plan) != 0) return 1;
+    if (check(strstr(plan.command, "/opt/java/bin/java Example.java") != NULL,
+        "Java source-file invocation")) return 1;
+
     puts("PASS: SLeeLa Java runtime bridge plan");
     return 0;
 }
