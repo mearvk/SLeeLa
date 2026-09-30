@@ -31,7 +31,7 @@ namespace sleela {
 // persistent .sleela artifact path; there is no second semantic compiler in
 // the runtime artifact loader.
 int compile(const Program& prog, SLVM* vm, const catalog::Catalog* cat = nullptr,
-            const SyntaxVersion& syntax = SyntaxVersion{1, 0});
+            const SyntaxVersion& syntax = SyntaxVersion{1, 4});
 
 } // namespace sleela
 
