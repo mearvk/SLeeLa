@@ -1,7 +1,7 @@
 CXX ?= c++
 CXXFLAGS ?= -std=c++17 -O2 -Wall -Wextra -pedantic
 
-.PHONY: all clean check jdk28-conformance jdk28-functional jdk28-signatures
+.PHONY: all clean check jdk28-conformance jdk28-functional jdk28-signatures java-source-equivalence
 
 all: memory reflection nordshrift runtime network-security
 
@@ -35,6 +35,9 @@ jdk28-functional:
 
 jdk28-signatures:
 	python3 ../lib/java/tools/jdk28_signature_sync.py --check
+
+java-source-equivalence:
+	python3 java_source_equivalence.py --java java_equivalence/EquivalenceBasic.java --sleela java_equivalence/EquivalenceBasic.sleela --json java_equivalence/report.json
 
 clean:
 	rm -f memory reflection nordshrift runtime network-security
