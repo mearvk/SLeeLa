@@ -23,6 +23,29 @@ enum class JavaSymbolDomain { NativeSLeeLa, JavaCompatibility, JavaApiCounterpar
 enum class JavaPrimitiveType { Boolean, Byte, Short, Int, Long, Char, Float, Double, Void };
 enum class JavaReferenceKind { Class, Interface, Array, TypeVariable, Parameterized, Wildcard, Null };
 
+enum class JavaConversionKind {
+    Identity, WideningPrimitive, NarrowingPrimitive, WideningAndNarrowingPrimitive,
+    WideningReference, NarrowingReference, Boxing, Unboxing, Unchecked,
+    Capture, String, ValueSet, Forbidden
+};
+enum class JavaConversionContext {
+    Assignment, StrictInvocation, LooseInvocation, StringContext, Casting,
+    Numeric, Testing
+};
+struct JavaConversionResult {
+    JavaConversionKind kind = JavaConversionKind::Forbidden;
+    JavaTypeDescriptor target;
+    bool permitted = false;
+    bool compileTimeOnly = true;
+    std::string reason;
+};
+JavaConversionResult classifyJavaConversion(const JavaTypeDescriptor& source,
+                                           const JavaTypeDescriptor& target,
+                                           JavaConversionContext context);
+JavaTypeDescriptor unaryNumericPromotion(const JavaTypeDescriptor& source);
+JavaTypeDescriptor binaryNumericPromotion(const JavaTypeDescriptor& left,
+                                          const JavaTypeDescriptor& right);
+
 struct JavaTypeDescriptor {
     bool primitive = false;
     JavaPrimitiveType primitiveType = JavaPrimitiveType::Void;
