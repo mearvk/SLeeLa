@@ -1,0 +1,13 @@
+#sleela 1.5
+
+public class GenericTransition<T extends java.lang.Number> {
+  public T value;
+
+  public GenericTransition(T value) {
+    this.value = value;
+  }
+
+  public <R extends java.lang.Object> R convert(java.util.List<? extends T> input) throws java.lang.Exception {
+    return null;
+  }
+}
