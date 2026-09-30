@@ -16,8 +16,10 @@ enum class Tok {
     KwIf, KwElse, KwWhile, KwFor, KwReturn, KwTrue, KwFalse, KwPrint, KwNull,
     KwImport, KwStruct, KwNew,
     LParen, RParen, LBrace, RBrace, LBracket, RBracket, Semicolon, Comma, Dot,
-    Assign, Plus, Minus, Star, Slash, Percent,
-    EqEq, NotEq, Lt, Le, Gt, Ge, AndAnd, OrOr, Not,
+    Assign, Plus, Minus, Star, Slash, Percent, PlusAssign, MinusAssign, StarAssign, SlashAssign, PercentAssign,
+    Increment, Decrement, ShiftLeft, ShiftRight, UnsignedShiftRight,
+    EqEq, NotEq, Lt, Le, Gt, Ge, AndAnd, OrOr, BitAnd, BitOr, BitXor, Not, BitNot,
+    Question, Colon, DoubleColon, Arrow,
     Eof
 };
 struct Token { Tok kind; std::string text; int line; int col; };
