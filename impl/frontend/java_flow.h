@@ -60,6 +60,9 @@ struct JavaFlowStmt {
     bool conditionValue = false;
     JavaFlowExpr expression;
     JavaFlowExpr condition;
+    // Explicit basic-for components. Empty condition means no condition.
+    std::vector<JavaFlowStmt> forInitialization;
+    std::vector<JavaFlowExpr> forUpdate;
     std::vector<JavaFlowStmt> children;
     std::vector<JavaFlowStmt> elseChildren;
     std::vector<std::vector<JavaFlowStmt>> switchCases;
