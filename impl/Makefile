@@ -393,7 +393,7 @@ $(BUILD)/driver.o: frontend/driver.cpp frontend/compiler.h frontend/artifact.h s
 $(BUILD):
 	mkdir -p $(BUILD)
 
-test: verify-security test-java-runtime test-system-monitor test-sleela test-design-activity test-regex test-version test-nordshrift test-nordshrift-compiler test-nordshrift-semantic test-nordshrift-e2e test-nordshrift-compat test-runtime-artifact-abi test-threads test-thread-platform test-network test-network-platform test-synchro test-munction test-bestof test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-math test-physics test-economics test-inference test-chemistry test-financial test-astrophysics test-sociology test-runtime test-memmgr
+test: verify-security test-java-runtime test-java-authorship test-system-monitor test-sleela test-design-activity test-regex test-version test-nordshrift test-nordshrift-compiler test-nordshrift-semantic test-nordshrift-e2e test-nordshrift-compat test-runtime-artifact-abi test-threads test-thread-platform test-network test-network-platform test-synchro test-munction test-bestof test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-math test-physics test-economics test-inference test-chemistry test-financial test-astrophysics test-sociology test-runtime test-memmgr
 test-thread-platform: $(THREAD_PLATFORM_SMOKE)
 	@echo "=== OS-aware threading backend ==="; SLEELA_THREAD_PLATFORM=auto $(THREAD_PLATFORM_SMOKE)
 test-threads: $(THREAD_SMOKE)
@@ -526,3 +526,8 @@ test-design-activity: $(DESIGN_ACTIVITY_SMOKE)
 
 test-memmgr: $(MEMMGR_SMOKE)
 	@echo "=== SLeeLa Memory Manager -- behavioral smoke ==="; $(MEMMGR_SMOKE)
+
+JAVA_AUTHORSHIP_TEST := $(BUILD)/java_authorship_metadata.test
+test-java-authorship: $(SLEELA_BIN)
+	@echo "=== Java authorship transition metadata ==="
+	@export SLEELA_SHEET=$(CURDIR)/../SHEET.sheet; export SLEELA_SHA256_MANIFEST=$${SLEELA_SHA256_MANIFEST:-$(CURDIR)/../security/sha256-manifest.json}; cd $(CURDIR)/.. && $(CURDIR)/$(SLEELA_BIN) run impl/tests/java_transition/java_authorship_metadata.sleela
