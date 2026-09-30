@@ -107,6 +107,11 @@ Maintain invalid fixtures proving that claimed Java constraints are enforced, in
 - invalid overriding/signature combinations
 - unsupported constructs with explicit diagnostics
 
+### Q11 — Eight-layer source equivalence model
+- Q1 Lexical, Q2 Type System, Q3 Declarations, Q4 Expressions, Q5 Statements, Q6 Semantic Constraints, Q7 API Counterparts, and Q8 Source Equivalence Testing are represented by explicit frontend equivalence types in impl/frontend/java_equivalence.h.
+- The source-equivalence driver must report structural, semantic, and functional-source states separately.
+- Functional-source status must remain INCOMPLETE unless the corresponding source/API semantics have actually been implemented and checked.
+
 ### Q10 — Platform and reproducibility
 Frontend/API qualification should run independently of JVM availability.
 
@@ -154,6 +159,7 @@ A future Java interoperability project may address those independently.
 - [ ] Q8 Source-to-source congruence
 - [ ] Q9 Negative/constraint corpus
 - [ ] Q10 Platform/reproducibility
+- [ ] Q11 Eight-layer equivalence model
 - [ ] Native SLeeLa symbol inventory remains independent
 - [ ] Java compatibility inventory is separately reportable
 
