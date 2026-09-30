@@ -183,3 +183,14 @@ A platform record is not a remote test result. `READY` means the selected target
 ### Next semantic layer — control-flow and exception-flow closure
 
 The next qualification work targets the remaining source-semantic gap in Java flow analysis: path-sensitive boolean operators, loop break/continue joins, switch completion, try/catch/finally abrupt paths, and constructor/blank-final assignment rules. The checked-exception model also validates its catch-type hierarchy. These are source/API qualification rules, not JVM runtime behavior.
+
+
+## 0.3.21 Development Upgrade — Java Flow Qualification Closure
+
+This upgrade makes Java control-flow qualification a first-class closure task. A construct is qualified only when its source fixture, normalized representation, semantic rule, positive or negative result, and unified-manifest evidence are present.
+
+Affected SLeeLa frontend: `impl/frontend/java_flow.h/.cpp`, `impl/frontend/java_exceptions.h/.cpp`, and the Java equivalence frontend. Affected qualification documents: `QUALIFICATION.JAVA.md`, `JAVA.EQUIVALENCE.TASKS.md`, `JAVA.AUTHORSHIP.TRANSITION.md`, `JAVA.COMPATIBILITY.SCOPE.md`, and `tests/JAVA.QUALIFICATION.MANIFEST.md`.
+
+Required next coverage: boolean-path-sensitive `&&`, `||`, `!`, and `?:`; constant boolean expressions; break/continue joins and labels; while/do/for completion; switch completion; try/catch/finally abrupt paths; constructor and blank-final definite-unassignment; lambda capture boundaries; and checked-exception propagation.
+
+JLS definite-assignment rules analyze every possible execution path and give special treatment to conditional boolean operators and boolean constants. Abrupt completion also affects whether a flow fact is required after a construct. This work remains source/API qualification, not JVM, bytecode, SLVM, or runtime equivalence.
