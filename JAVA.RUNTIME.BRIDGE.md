@@ -25,6 +25,10 @@ Native SLeeLa programs continue through the existing SLeeLa VM.
 
 The probe checks SLEELA_JAVA, JAVA_HOME/bin/java (java.exe on Windows), then java on PATH. It does not silently install software.
 
+## Main dispatch boundary
+
+The main Java path is `sleela_java_runtime_dispatch_source()`. It first performs the dry probe. Native SLeeLa returns to the existing VM; Java-dependent code with a discoverable local Java VM receives a normal JVM handoff plan; Java-dependent code without a VM reports the installation-prompt action. No second interpreter is introduced.
+
 ## JVM handoff
 
 runtime/java_runtime_bridge.c prepares the normal JVM request:
