@@ -199,7 +199,7 @@ ExprP Parser::parseComparison(){
         else if(accept(Tok::Le))e=std::make_unique<Binary>("<=",std::move(e),parseShift());
         else if(accept(Tok::Gt))e=std::make_unique<Binary>(">",std::move(e),parseShift());
         else if(accept(Tok::Ge))e=std::make_unique<Binary>(">=",std::move(e),parseShift());
-        else if(accept(Tok::KwNew)) error("'new' cannot appear as a comparison operand");
+        else if(accept(Tok::KwInstanceof)){std::string type=parseType();e=std::make_unique<InstanceOfExpr>(std::move(e),type);}
         else break;
     }
     return e;
@@ -226,6 +226,7 @@ ExprP Parser::parsePrimary(){
     case Tok::KwFalse:i_++;return parsePostfix(std::make_unique<BoolLit>(false));
     case Tok::KwNull:i_++;return parsePostfix(std::make_unique<NullLit>());
     case Tok::KwSuper:i_++;return parsePostfix(std::make_unique<SuperExpr>());
+    case Tok::KwThis:i_++;return parsePostfix(std::make_unique<ThisExpr>());
     case Tok::LParen:{
         i_++;
         // Java cast disambiguation for a simple/qualified type: (Type) expression.
