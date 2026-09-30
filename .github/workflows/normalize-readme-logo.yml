@@ -1,4 +1,5 @@
 name: Normalize SLeeLa README Logo
+# Repository-wide SLeeLa README logo normalization.
 
 on:
   push:
