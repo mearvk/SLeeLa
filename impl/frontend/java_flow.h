@@ -38,6 +38,12 @@ struct JavaFlowFacts {
     bool reachable = true;
 };
 
+struct JavaFlowBranchFacts {
+    JavaFlowFacts whenTrue;
+    JavaFlowFacts whenFalse;
+    bool booleanExpression = false;
+};
+
 enum class JavaFlowExprKind {
     Literal, Variable, Assignment, CompoundAssignment, Unary,
     Binary, Conditional, Other
@@ -63,6 +69,7 @@ struct JavaFlowStmt {
     bool hasInitializer = false;
     bool conditionConstant = false;
     bool conditionValue = false;
+    bool hasBooleanConstant = false;
     JavaFlowExpr expression;
     JavaFlowExpr condition;
     std::vector<JavaFlowStmt> children;
@@ -71,6 +78,7 @@ struct JavaFlowStmt {
     std::vector<std::vector<JavaFlowStmt>> catchBlocks;
     std::vector<JavaFlowStmt> finallyBlock;
     std::string label;
+    bool labeledLoop = false;
 };
 
 struct JavaFlowResult {
