@@ -37,8 +37,11 @@ int sleela_java_runtime_bridge_prepare(
                  request->main_class);
     }
 
-    copy_text(plan->sample_output, sizeof(plan->sample_output),
+    copy_text(plan->sample_input, sizeof(plan->sample_input),
               request->sample_input ? request->sample_input : "");
+    /* This is a caller-provided expected/illustrative output, not a claimed
+       execution result. The provider fills real output after JVM execution. */
+    copy_text(plan->sample_output_hint, sizeof(plan->sample_output_hint), "");
     plan->ready = 1;
     return 0;
 }
