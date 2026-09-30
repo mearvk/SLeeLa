@@ -2,18 +2,18 @@
 
 @java.lang.Deprecated
 @java.lang.SuppressWarnings({"unchecked", "deprecation"})
-public class DeclarationMetadata<@TypeMarker T extends java.lang.Number> {
+public class DeclarationMetadata {
   @FieldMarker
   public @TypeUseMarker java.lang.String name;
 
   @ConstructorMarker
   public DeclarationMetadata(@ParameterMarker @TypeUseMarker java.lang.String value) {
-    this.name = value;
+    return;
   }
 
   @MethodMarker
-  public <R extends java.lang.Object> @TypeUseMarker R convert(
-      @ParameterMarker java.util.List<@TypeUseMarker ? extends T> input
+  public @TypeUseMarker java.lang.String convert(
+      @ParameterMarker java.lang.String input
   ) throws java.lang.Exception {
     return null;
   }
