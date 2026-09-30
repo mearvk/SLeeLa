@@ -104,7 +104,7 @@
     },
     {
       "path": "VERSION.md",
-      "sha256": "2204e911b2988868bb1a8ea6490d4262d792b51b7fb97e243b60328fe5d1bdc3"
+      "sha256": "07278873aa2837cd2f4fcf16f1107d1ab10734c8084970863b68ea2c10a7b90d"
     },
     {
       "path": "antivirus/src/sleelavirin_heuristic.c",
@@ -4700,7 +4700,7 @@
     },
     {
       "path": "impl/annotation/Annotation.hpp",
-      "sha256": "52bee078938305f7f3148afa9e6da948222504d1c2203b6cc7c9803e37d6cdca"
+      "sha256": "d9d73d85962fce88c7b5883e2207324fc76834b9ac6e3b0a2734f796443407b0"
     },
     {
       "path": "impl/annotation/AnnotationForwarder.cpp",
@@ -5212,19 +5212,19 @@
     },
     {
       "path": "impl/frontend/ast.h",
-      "sha256": "5d62ea15a0b59ca675293403cb713ea430aa60fefb692126de3974fb7da342aa"
+      "sha256": "3e02d379b248fc1688365ad56e3cc56a5ecab0612e8c4b56a6bd2fbb0c9832a1"
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "a8d08335e64c72af5ea6c32f8a5f9563c37ce9dd11b8e99d7135d618937d70bc"
+      "sha256": "f76008ca7b0146d602eaefcc6de9e964dfe57d8fa6f9fdab3d2cd72b3e3c4e87"
     },
     {
       "path": "impl/frontend/compiler.h",
-      "sha256": "c14eba0aa3fb6655c9ccc085e73d18b68e8953044250cd7dd7fef0d1124b5265"
+      "sha256": "facc6b104eaafa321696121592d62144ac00ee3ec527248b5ca871a9ce661e94"
     },
     {
       "path": "impl/frontend/driver.cpp",
-      "sha256": "9c82785a5123c26e4e4fe364348ae4558fa99c16b65fd4ffeff862ee3187565e"
+      "sha256": "c8b0cb4c7e02201c0ec2f010f64317a39f7b0fc63a3a92501f3895d7f9cd5190"
     },
     {
       "path": "impl/frontend/http_server_cli.cpp",
@@ -5235,12 +5235,40 @@
       "sha256": "5ded6575dc15e7525c38fc09a7312339f950f195da5b33216729e88617f5a8b0"
     },
     {
+      "path": "impl/frontend/java_compat.h",
+      "sha256": "ca3cdef8b291984b69691d9c952635568b080ca1960d9d66398a2cb401a701ad"
+    },
+    {
+      "path": "impl/frontend/java_equivalence.cpp",
+      "sha256": "008c155d90a828132cbe981321a93be951773f8c54b1e26d870f59d5d5d2e41b"
+    },
+    {
+      "path": "impl/frontend/java_equivalence.h",
+      "sha256": "eb7188591c07d0971ccb9ce87f34cc9ecc19db60ceefb919beab656917328bfb"
+    },
+    {
+      "path": "impl/frontend/java_exceptions.cpp",
+      "sha256": "68570c5654d323cd18a415b5d1fd70ac95856708fb8dd6a17cf4c69b8f2b910c"
+    },
+    {
+      "path": "impl/frontend/java_exceptions.h",
+      "sha256": "12458fe861bf228c59cccfcd97722320ef2dcbcd66d23044cf0353152d4e79e6"
+    },
+    {
+      "path": "impl/frontend/java_flow.cpp",
+      "sha256": "8d4830079306c0f824f2f9b8e35fc521af0cc9303e637d3393557a497133f174"
+    },
+    {
+      "path": "impl/frontend/java_flow.h",
+      "sha256": "f5c3091d8db9d1442e472e729a199a220ec3e4bec983adc4bfe922d0fcf65799"
+    },
+    {
       "path": "impl/frontend/lexer.cpp",
-      "sha256": "d93c03a4b0f217718e8f3c92d5028e9a47a6e8fdb59a80014f6b6de4fa60dd76"
+      "sha256": "794f9ecfda25a8b8d501080bf656bc092cab29ec220fada369cb039fb81d4be9"
     },
     {
       "path": "impl/frontend/lexer.h",
-      "sha256": "882526d1e7e229d204523fc6993e597540d32204957fa259708b99ad0807525f"
+      "sha256": "e5a03e63e2bc6c3b217a35f955bc46159eec45b870183b9cea5555f6c995cf7b"
     },
     {
       "path": "impl/frontend/library_index.cpp",
@@ -5252,11 +5280,11 @@
     },
     {
       "path": "impl/frontend/parser.cpp",
-      "sha256": "22a92b86cf86661f105693361e8e22c21d600dcb861f91c56aca92e18f0e6720"
+      "sha256": "8ebcb7d97d94b01b864cf2afc10dbae396296626ac0ddaee3a20966147cdaf93"
     },
     {
       "path": "impl/frontend/parser.h",
-      "sha256": "881b01bcf6280c2a76bc89ddb0c328dd909685bc458283458cccc1f100b413a0"
+      "sha256": "88c13c096d837a067a4ce62ad2d3c211fdb5cf79c1d4582f160602b8412b8500"
     },
     {
       "path": "impl/frontend/semantic.cpp",
@@ -5272,7 +5300,7 @@
     },
     {
       "path": "impl/frontend/version.h",
-      "sha256": "7adfcf610bbdef4ccfbb4fe21d9706198aa766f75ea14197add75897f5d84c9a"
+      "sha256": "5da5710f9fc5f1fccafc903f75e25a79532160e5e23e17a44b65253bf891a2a2"
     },
     {
       "path": "impl/fundamental/Buffer.cpp",
@@ -6041,6 +6069,22 @@
     {
       "path": "impl/tests/core/system_monitor_smoke.c",
       "sha256": "346ef722ed1cfa5e987af49ee5cc5501a0ed8ee15cca78aba3001aafc37064b3"
+    },
+    {
+      "path": "impl/tests/java_transition/declaration_metadata.sleela",
+      "sha256": "be001cdf345a3d253893110d7b2453c91ba53b3aebef295b82d0fdf8bddd61df"
+    },
+    {
+      "path": "impl/tests/java_transition/generic_signatures.sleela",
+      "sha256": "991899f67934d52a6621c41ed7fd095c1cdd9f5827aaddf8cf9f7e42ccabdf6f"
+    },
+    {
+      "path": "impl/tests/java_transition/java_authorship_metadata.sleela",
+      "sha256": "af710d8c59ba16cffdcd4450695e518a8fd9ab59e82ae4c37e7bcb0744b8575d"
+    },
+    {
+      "path": "impl/tests/java_transition/java_symbol_boundary.sleela",
+      "sha256": "93e1606f3723708ef6e2df894876321940f6dd56d93d714de58bf9437ecf88d8"
     },
     {
       "path": "impl/tests/nordshrift/compat-current.sst",
@@ -25499,6 +25543,10 @@
       "sha256": "4cde4c76a67002f713bfed2f5b33b7534d745c6a54e246b0a25b23569c5f707e"
     },
     {
+      "path": "lib/java/tools/java_api_dependency_closure.py",
+      "sha256": "8c2d46c409980ba8684008a1cbbce830dc3b8c281a782bf623dd516ceb184c40"
+    },
+    {
       "path": "lib/java/tools/jdk28_signature_sync.py",
       "sha256": "35f3c6c752557cf8d1124d696f2a3dc53e00eef3210dc0e0eaa8f02ec352acbb"
     },
@@ -27456,19 +27504,19 @@
     },
     {
       "path": "runtime/java_runtime_bridge.c",
-      "sha256": "e522bc95dc55c1fc37e0d8d06a438ece3160ebf188b42cef2c990d20d071bc01"
+      "sha256": "92d81de8d3d8833e6fea8275b9e44c87549301bab57ec86725adde6e70deb667"
     },
     {
       "path": "runtime/java_runtime_bridge.h",
-      "sha256": "27d29e329b0880be3d4c2f8716ea31ead6d848f5ced8394087be1c443b7eaf10"
+      "sha256": "e389a649fd4246bc2f2f411d67204b18e227fc2c88712859efacc27f6ceff4a0"
     },
     {
       "path": "runtime/java_runtime_probe.c",
-      "sha256": "858cf773b8bc122766d8abe61d56061c5f8ed6c8037f6c6b18a384d18923131a"
+      "sha256": "579f11c82c1af2f95de33e4263d093450c560752eae4c839c55e6627dacd019e"
     },
     {
       "path": "runtime/java_runtime_probe.h",
-      "sha256": "8d6d313b07d3b4a8587ba651a73503636ec0fb87f17c684017ef58376ce23fe7"
+      "sha256": "276eaf263c0064b1cb4ed8a262e483a2ea3f9bd86c66b34c66a3def8a480848a"
     },
     {
       "path": "runtime/runtime_security.sleela",
@@ -28640,7 +28688,7 @@
     },
     {
       "path": "test-suites/java-runtime-bridge.sh",
-      "sha256": "d5e9cd4c58e14f46d7046f57bb80164f69b63304f9d1d796bce050b3d0b53859"
+      "sha256": "bbefebb72d6e9ef6f7dab87cf0dd2f1e0d6f3595bec22abf3da4250e8f66b448"
     },
     {
       "path": "test-suites/java-runtime-probe.sh",
@@ -28665,6 +28713,90 @@
     {
       "path": "test-suites/test-library-inventory.sh",
       "sha256": "80dfcfdcda52392cc5a0bc5b4167163e9dfd5c4220f17b409b435f87b666d5ac"
+    },
+    {
+      "path": "tests/java_api_dependency_suite.py",
+      "sha256": "69847903064c51a5bc602e9fea50f104155d365b216dba0214c9ee518e635a4d"
+    },
+    {
+      "path": "tests/java_constraints/missing-api-counterpart.sleela",
+      "sha256": "dd197e61feced2865150e652005e97792324a179c903788750ae0708964f1c34"
+    },
+    {
+      "path": "tests/java_constraints_suite.py",
+      "sha256": "ce522010264ad89da91b98e5646298a9e673e2dbf1c9856bbd2e92a9dd0e2a16"
+    },
+    {
+      "path": "tests/java_conversion_semantics.cpp",
+      "sha256": "ada3410fde2f70839d417c3e74f43e274c0c0cfd9651c22a966ccbfc29a99de0"
+    },
+    {
+      "path": "tests/java_equivalence/EquivalenceBasic.sleela",
+      "sha256": "a6b47bf1420c02030e529d510535e2f184e612ed2dd489af80f132122f2946fc"
+    },
+    {
+      "path": "tests/java_equivalence/ExpressionSurface.sleela",
+      "sha256": "8f492dba7dee83d8943694073c90c063203fae10f5b0099778455d1945f7a835"
+    },
+    {
+      "path": "tests/java_equivalence/SignatureNormalization.sleela",
+      "sha256": "28cd0545688dcaa72f47565a9593679a6b9bfe90d3c7abc7a4d610cff2e3a0c3"
+    },
+    {
+      "path": "tests/java_exceptions.cpp",
+      "sha256": "55b36f15d662cdc8eb2a89a69b8e817b3a8de39660241e25255741ec0ec77df9"
+    },
+    {
+      "path": "tests/java_exceptions_suite.py",
+      "sha256": "3e15332d7c8a6c2a6e9949631e72f3e34ae5d63eb72024d5ac53745fd931655b"
+    },
+    {
+      "path": "tests/java_flow_021_semantics.cpp",
+      "sha256": "86488eb30142ed49eec869372f2210e115a75e573d55b10fc8e30d027569f8b4"
+    },
+    {
+      "path": "tests/java_flow_021_suite.py",
+      "sha256": "aaec40476fb4f0d687bfa2113bc7f34974e2a2cf09e11fa6b745c5ea15e04888"
+    },
+    {
+      "path": "tests/java_flow_semantics.cpp",
+      "sha256": "3c4fe8b7b0e2bc0d1492e24ce14fb0f2c732f3cb5514648cd5347dbe6f69a225"
+    },
+    {
+      "path": "tests/java_flow_suite.py",
+      "sha256": "d63ef77425c09c7088ce4b80dc2625b87d9b5059564cfa44654bf529016f25eb"
+    },
+    {
+      "path": "tests/java_overload_override.cpp",
+      "sha256": "5faf8f1825c0b088cc6a48a3db213fafe51e1f4ce67478b08ff7203ff7d59537"
+    },
+    {
+      "path": "tests/java_platform_qualification.py",
+      "sha256": "8f55d949cf07fca4d9ffc4c7bd451b4231bc6b3faaa379558e0ab47fdbc00345"
+    },
+    {
+      "path": "tests/java_platform_qualification_suite.py",
+      "sha256": "9ae8a74111bb9bead6dabd2c14f6b65d4a007e7dd494938be8fd044c6ba0f2d6"
+    },
+    {
+      "path": "tests/java_qualification_manifest.py",
+      "sha256": "0bbdcbf5462f8bf2397025329028bb56d106678a13c088a325744113909b7da8"
+    },
+    {
+      "path": "tests/java_qualification_manifest_suite.py",
+      "sha256": "32ed81e12de4d97017dbe3101bd58608468c90c1935d177fb4d67f308009f8c1"
+    },
+    {
+      "path": "tests/java_signature_comparison.py",
+      "sha256": "54d4f13c25ef58752007e927245212e1e5c8676fe9951a34c74dac9ac1a0c5e8"
+    },
+    {
+      "path": "tests/java_signature_comparison_suite.py",
+      "sha256": "ae6108e3ef642f0ae072d3158f85c85b3b80779ac4a812a20a69cff39e62e5ab"
+    },
+    {
+      "path": "tests/java_source_equivalence.py",
+      "sha256": "a98144c2490ec9d9f9663231a4ce83c25b576acf61ffb958d8969504cf393d2e"
     },
     {
       "path": "tests/jdk28_functional_equivalence.py",
