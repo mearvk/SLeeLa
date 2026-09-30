@@ -117,13 +117,51 @@ enum class JavaSemanticRuleKind {
 enum class JavaApplicabilityPhase { Strict, Loose, VariableArity };
 enum class JavaResolutionStatus { NotApplicable, Applicable, Ambiguous, Selected };
 
+
 struct JavaMethodCandidate {
     JavaDeclarationDescriptor method;
     bool isVarargs = false;
     bool isStatic = false;
     bool isGeneric = false;
+    bool isAbstract = false;
+    bool isDefault = false;
+    bool isInterfaceMethod = false;
     std::string declaringType;
+    std::string erasedSignature;
 };
+
+struct JavaMostSpecificSetResult {
+    std::vector<int> maximallySpecific;
+    int selectedIndex = -1;
+    bool ambiguous = false;
+    std::vector<std::string> diagnostics;
+};
+
+JavaMostSpecificSetResult chooseMostSpecific(
+    const std::vector<JavaMethodCandidate>& candidates,
+    const std::vector<int>& applicableIndices,
+    const std::vector<JavaTypeDescriptor>& argumentTypes);
+
+struct JavaInvocationTypeResult {
+    bool success = false;
+    JavaDeclarationDescriptor invocationType;
+    std::map<std::string, JavaTypeDescriptor> inferred;
+    std::vector<std::string> diagnostics;
+};
+
+JavaInvocationTypeResult inferInvocationType(
+    const JavaMethodCandidate& candidate,
+    const std::vector<JavaTypeDescriptor>& argumentTypes,
+    const JavaTypeDescriptor* targetType = nullptr);
+
+struct JavaInterfaceInheritanceResult {
+    std::vector<int> inherited;
+    std::vector<int> conflicts;
+    std::vector<std::string> diagnostics;
+};
+
+JavaInterfaceInheritanceResult resolveInterfaceDefaults(
+    const std::vector<JavaMethodCandidate>& methods);
 
 struct JavaMethodResolution {
     JavaResolutionStatus status = JavaResolutionStatus::NotApplicable;
