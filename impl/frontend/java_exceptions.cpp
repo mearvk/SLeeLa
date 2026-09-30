@@ -20,12 +20,12 @@ bool JavaExceptionModel::catches(const std::string& c,const std::string& e) cons
 JavaExceptionFlow JavaExceptionModel::check(const std::set<std::string>& thrown,const std::vector<std::string>& catches,const std::set<std::string>& declared) const {
  JavaExceptionFlow r; r.thrown=thrown;
  for(const auto& e:thrown) if(isChecked(e)){
-  bool handled=false; for(const auto& c:catches) if(catches && catches(c,e)){handled=true;break;}
+  bool handled=false; for(const auto& c:catchTypes) if(this->catches(c,e)){handled=true;break;}
   bool declaredHere=false; for(const auto& d:declared) if(isSubtype(e,d)){declaredHere=true;break;}
   if(!handled && !declaredHere) r.diagnostics.push_back({JavaExceptionDiagnosticKind::UnhandledCheckedException,e,"checked exception is neither caught nor declared"});
  }
- for(std::size_t i=0;i<catches.size();++i) for(std::size_t j=0;j<i;++j)
-  if(isSubtype(catches[i],catches[j])) r.diagnostics.push_back({JavaExceptionDiagnosticKind::RedundantCatch,catches[i],"catch clause is shadowed by a preceding catch clause"});
+ for(std::size_t i=0;i<catchTypes.size();++i) for(std::size_t j=0;j<i;++j)
+  if(isSubtype(catchTypes[i],catchTypes[j])) r.diagnostics.push_back({JavaExceptionDiagnosticKind::RedundantCatch,catchTypes[i],"catch clause is shadowed by a preceding catch clause"});
  return r;
 }
 bool JavaExceptionModel::overrideThrowsCompatible(const std::set<std::string>& overriding,const std::set<std::string>& overridden) const {
