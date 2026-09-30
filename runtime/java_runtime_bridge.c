@@ -13,8 +13,9 @@ int sleela_java_runtime_bridge_prepare(
     const SleelaJavaProgramRequest *request,
     SleelaJavaProgramPlan *plan) {
     if (!request || !plan || !request->java_executable ||
-        !request->java_executable[0] || !request->main_class ||
-        !request->main_class[0]) return -1;
+        !request->java_executable[0] ||
+        ((!request->main_class || !request->main_class[0]) &&
+         (!request->source_file || !request->source_file[0]))) return -1;
 
     memset(plan, 0, sizeof(*plan));
 
@@ -25,7 +26,17 @@ int sleela_java_runtime_bridge_prepare(
 
     /* Process creation and platform-specific argument escaping remain with
        the existing launcher/provider; this layer does not invoke a shell. */
-    if (args[0]) {
+    if (request->source_file && request->source_file[0]) {
+        if (args[0]) {
+            snprintf(plan->command, sizeof(plan->command),
+                     "%s %s %s",
+                     request->java_executable, request->source_file, args);
+        } else {
+            snprintf(plan->command, sizeof(plan->command),
+                     "%s %s",
+                     request->java_executable, request->source_file);
+        }
+    } else if (args[0]) {
         snprintf(plan->command, sizeof(plan->command),
                  "%s -cp %s %s %s",
                  request->java_executable, classpath,
