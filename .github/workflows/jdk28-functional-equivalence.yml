@@ -5,6 +5,7 @@ on:
     paths:
       - 'lib/java/**/*.sleela'
       - 'lib/java/tools/jdk28_sync.py'
+      - 'lib/java/tools/jdk28_signature_sync.py'
       - 'tests/jdk28_functional_equivalence.py'
       - '.github/workflows/jdk28-functional-equivalence.yml'
       - 'tests/Makefile'
@@ -24,5 +25,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: API identity and envelope contract
         run: python3 tests/jdk28_functional_equivalence.py
+      - name: JDK 28 source signature gate
+        run: python3 lib/java/tools/jdk28_signature_sync.py --check
       - name: Functional equivalence gate
         run: python3 tests/jdk28_functional_equivalence.py --functional
