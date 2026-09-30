@@ -11,7 +11,7 @@ class Parser {
 public:
     explicit Parser(std::vector<Token> toks) : toks_(std::move(toks)) {}
     Program parseProgram();
-    annotation::Annotation parseAnnotation();
+    annotation::Annotation parseAnnotation(annotation::UseSite site=annotation::UseSite::Declaration);\n    std::vector<annotation::Annotation> parseAnnotations(annotation::UseSite site);\n    std::vector<annotation::Annotation> parseTypeAnnotations();
 private:
     std::vector<Token> toks_; size_t i_=0;
     std::set<std::string> structNames_;
@@ -28,11 +28,11 @@ private:
     std::string parseGenericType();
     void parseThrows(std::vector<std::string>& out);
     StructDecl parseStruct();
-    ClassDecl parseClass(unsigned classModifiers=0);
-    Field parseField(bool isStatic,bool isProtected,unsigned modifiers=0);
-    Method parseMethod(bool isStatic,bool isProtected,unsigned modifiers=0);
+    ClassDecl parseClass(unsigned classModifiers=0, std::vector<annotation::Annotation> annotations={});
+    Field parseField(bool isStatic,bool isProtected,unsigned modifiers=0, std::vector<annotation::Annotation> annotations={});
+    Method parseMethod(bool isStatic,bool isProtected,unsigned modifiers=0, std::vector<annotation::Annotation> annotations={});
     bool isTypeStart() const;
-    std::string parseType();
+    std::string parseType(std::vector<annotation::Annotation>* typeAnnotations=nullptr);
     StmtP parseStatement(); std::unique_ptr<Block> parseBlock(); StmtP parseSimpleStatement();
     ExprP parseExpr(); ExprP parseOr(); ExprP parseAnd(); ExprP parseEquality();
     ExprP parseComparison(); ExprP parseAdditive(); ExprP parseMultiplicative();
