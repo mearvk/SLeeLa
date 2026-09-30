@@ -41,6 +41,26 @@ The driver reports structural, semantic, and functional-source states separately
 9. Add normalized AST/signature comparison beyond the inventory driver.
 10. Add Linux, Windows 10+, and macOS qualification records.
 
+
+### Overload and override refinement
+
+The 0.3.10-dev refinement expands the 0.3.9-dev foundation toward the Java source rules for method invocation and inheritance:
+
+- generic-method type inference foundation;
+- lambda and method-reference pertinence classification;
+- a dedicated most-specific comparison model;
+- generic type-variable inference constraints;
+- generic/subsignature-aware metadata hooks;
+- covariant reference return compatibility;
+- checked-exception restriction checks for overrides;
+- access-level, static, final, and private override restrictions;
+- variable-arity applicability;
+- a refinement test corpus.
+
+These are source-semantic qualification foundations. Full JLS coverage remains a continuing qualification task, especially for inference constraints, functional-interface target typing, intersection types, bridge/subsignature behavior, and complete interface method inheritance.
+
+Oracle's JLS describes applicability phases, pertinence of implicitly typed lambdas/inexact method references, most-specific selection, and generic inference in the method-invocation rules. It separately defines subsignatures, overriding restrictions, return-type substitutability, and inherited/default-method conflicts. citeturn0search2turn0search8
+
 ### Non-goals for this qualification
 
 Do not add JVM execution requirements to this ledger. Java source congruence is the target; JVM/SLVM interoperability is a separate future project.
