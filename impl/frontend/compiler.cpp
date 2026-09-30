@@ -3,6 +3,7 @@
 // ===========================================================================
 #include "compiler.h"
 #include "semantic.h"
+#include "java_compat.h"
 
 #include <map>
 #include <stdexcept>
@@ -40,6 +41,7 @@ public:
     // of viewpoint: Degree 2 + static extension(2) = Viewpoint Degree 4.
     static constexpr int kStaticExtensionViewpointDegree = 4;
     int run() {
+        validateJavaCompatibilityMetadata(prog_);
         library::Index libraryIndex = library::Index::discover();
         library::validateImports(prog_.imports, libraryIndex);
         // Protected source is admitted only when both language invariants hold:
