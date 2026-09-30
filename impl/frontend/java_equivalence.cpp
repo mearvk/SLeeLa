@@ -71,6 +71,35 @@ JavaTypeDescriptor binaryNumericPromotion(const JavaTypeDescriptor& l,const Java
  if(a.primitive&&b.primitive){int ar=numericRank(a.primitiveType),br=numericRank(b.primitiveType);return primitive(ar>=br?a.primitiveType:b.primitiveType);}
  return a;
 }
+
+static bool applicablePhase(const JavaMethodCandidate& m,const std::vector<JavaTypeDescriptor>& a,JavaApplicabilityPhase p){
+ if(m.method.parameterTypes.size()!=a.size() && !(m.isVarargs&&p==JavaApplicabilityPhase::VariableArity)) return false;
+ std::size_t n=m.method.parameterTypes.size();
+ for(std::size_t i=0;i<a.size();++i){
+  std::size_t pi=(m.isVarargs&&i>=n-1)?n-1:i;if(pi>=n)return false;
+  auto ctx=(p==JavaApplicabilityPhase::Strict)?JavaConversionContext::StrictInvocation:
+           (p==JavaApplicabilityPhase::Loose)?JavaConversionContext::LooseInvocation:JavaConversionContext::LooseInvocation;
+  if(!classifyJavaConversion(a[i],m.method.parameterTypes[pi],ctx).permitted)return false;
+ }
+ return true;
+}
+JavaMethodResolution resolveOverload(const std::vector<JavaMethodCandidate>& c,const std::vector<JavaTypeDescriptor>& a,JavaApplicabilityPhase p){
+ JavaMethodResolution r;r.phase=p;
+ for(std::size_t i=0;i<c.size();++i)if(applicablePhase(c[i],a,p))r.applicableIndices.push_back((int)i);
+ if(r.applicableIndices.empty()){r.status=JavaResolutionStatus::NotApplicable;return r;}
+ if(r.applicableIndices.size()==1){r.status=JavaResolutionStatus::Selected;r.selectedIndex=r.applicableIndices[0];return r;}
+ int best=r.applicableIndices[0];bool tie=false;
+ for(std::size_t k=1;k<r.applicableIndices.size();++k){int cur=r.applicableIndices[k];const auto& bm=c[best].method.parameterTypes;const auto& cm=c[cur].method.parameterTypes;if(bm.size()!=cm.size()){tie=true;continue;}bool curMore=true,bestMore=true;for(std::size_t i=0;i<bm.size();++i){curMore &= classifyJavaConversion(cm[i],bm[i],JavaConversionContext::StrictInvocation).permitted;bestMore &= classifyJavaConversion(bm[i],cm[i],JavaConversionContext::StrictInvocation).permitted;}if(curMore&&!bestMore){best=cur;tie=false;}else if(curMore==bestMore)tie=true;}
+ if(tie){r.status=JavaResolutionStatus::Ambiguous;r.diagnostics.push_back("multiple applicable methods are not uniquely most specific");}else{r.status=JavaResolutionStatus::Selected;r.selectedIndex=best;}return r;
+}
+bool isOverrideEquivalent(const JavaDeclarationDescriptor& a,const JavaDeclarationDescriptor& b){
+ return a.kind==JavaDeclarationKind::Method&&b.kind==JavaDeclarationKind::Method&&a.name==b.name&&a.parameterTypes.size()==b.parameterTypes.size()&&[&](){for(std::size_t i=0;i<a.parameterTypes.size();++i)if(a.parameterTypes[i].normalized()!=b.parameterTypes[i].normalized())return false;return true;}();
+}
+bool isOverrideCompatible(const JavaDeclarationDescriptor& base,const JavaDeclarationDescriptor& derived){
+ if(!isOverrideEquivalent(base,derived))return false;
+ if(base.returnType.empty()||derived.returnType.empty())return true;
+ return base.returnType==derived.returnType;
+}
 const char* javaEquivalenceLayerName(JavaEquivalenceLayer x) {
     switch(x) {
         case JavaEquivalenceLayer::Lexical:return "Q1-Lexical";
