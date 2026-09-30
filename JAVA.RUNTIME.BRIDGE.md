@@ -2,58 +2,59 @@
 
 Max Rupplin - MEARVK LLC - 2026
 
-## Purpose
+## Main execution route
 
-SLeeLa has a dry Java-runtime detection layer. It does not replace the SLeeLa VM, embed a JVM, download software, or alter the VM process model.
+Java-dependent SLeeLa programs use a thin runtime boundary instead of a second Java interpreter inside the SLeeLa VM.
 
-It answers whether a program materially depends on Java, AWT/Swing, or JavaFX and whether a local Java VM is available.
+SLeeLa source
+-> existing compiler / loader
+-> Java runtime probe
+-> Java provider
+-> local Java VM
+-> Java program
+-> program input / output
+-> SLeeLa provider boundary
 
-## Detection
-
-The probe recognizes Java source files, java.* references, the existing SLeeLa Java conformance envelope (javaType, java.construct, java.invoke, java.static), java.awt.*, javax.swing.*, and javafx.*.
-
-The strongest framework signal is reported as JavaFX, Swing, AWT, Java SE, or native SLeeLa.
+Native SLeeLa programs continue through the existing SLeeLa VM.
 
 ## Runtime decision
 
-The probe checks:
+- Native SLeeLa: continue in the SLeeLa VM.
+- Java-dependent + local VM present: hand off to the configured local Java VM.
+- Java-dependent + no VM present: prompt the user to install/configure an approved Java distribution, then retry the probe.
 
-1. SLEELA_JAVA
-2. JAVA_HOME/bin/java (java.exe on Windows)
-3. java on PATH
+The probe checks SLEELA_JAVA, JAVA_HOME/bin/java (java.exe on Windows), then java on PATH. It does not silently install software.
 
-It never starts Java itself.
+## JVM handoff
 
-The result is:
+runtime/java_runtime_bridge.c prepares the normal JVM request:
 
-- continue-sleela-vm
-- local-java-vm
-- prompt-install-java-vm
+java -cp <classpath> <main-class> [arguments]
 
-The existing VM or launcher can consume that result and branch only when Java is actually required.
+The bridge records the sample input/output contract but does not invoke a shell or launch a process itself. Platform-native process creation remains the responsibility of the existing launcher/provider.
 
-## Installation policy
+Example:
+- Program: example.Hello
+- Input: hello
+- JVM request: java -cp build/classes example.Hello
+- Output: the Java program's normal stdout/result returned through the provider.
 
-If no local Java VM exists, SLeeLa should prompt rather than silently install one.
+The same handoff applies to Java AWT, Swing, and JavaFX programs. JavaFX still requires its JavaFX classes/modules to be present.
 
-The prompt should direct the user to an official distribution source and allow SLEELA_JAVA or JAVA_HOME to be configured afterward. SLeeLa should not download an arbitrary executable.
+## Installation prompt
 
-Official Java distribution sources include Oracle Java, Microsoft Build of OpenJDK, and Eclipse Temurin. Vendor and version policy remains configurable.
+If no Java VM is available, the user-facing layer should present a clear choice to install/configure a Java distribution from an approved source. The probe remains non-interactive.
 
-## JavaFX
+Examples of established distribution sources are Oracle Java, Microsoft Build of OpenJDK, and Eclipse Temurin. Vendor/version policy remains configurable.
 
-A Java executable alone does not prove that JavaFX libraries are installed. This dry layer only detects the JavaFX dependency and Java VM availability. A later provider can perform module/classpath checks.
+## Separation of responsibilities
 
-## Integration boundary
-
-SLeeLa source
--> existing compiler/loader
--> Java runtime dry probe
--> existing SLeeLa VM for native programs
--> local Java VM/provider for Java-dependent programs
-
-This is a thin decision boundary, not a second interpreter.
+- Compiler/loader: determines the program.
+- Java runtime probe: determines whether Java is required and whether a VM is discoverable.
+- Java provider/launcher: performs the JVM process handoff and returns program I/O.
+- JavaFX/AWT/Swing provider: verifies framework-specific runtime requirements.
+- SLeeLa VM: owns native SLeeLa execution.
 
 ## Verification
 
-Run test-suites/java-runtime-probe.sh. The test does not require Java and verifies native SLeeLa, Java, Swing/AWT, JavaFX, and the existing Java conformance envelope.
+Run test-suites/java-runtime-probe.sh and test-suites/java-runtime-bridge.sh.
