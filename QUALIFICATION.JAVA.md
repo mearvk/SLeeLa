@@ -172,3 +172,9 @@ SLeeLa has substantial lexical/declaration/generic/annotation infrastructure. Th
 **Java compatibility vocabulary exists so SLeeLa can faithfully represent Java authorship. It does not redefine what SLeeLa is.**
 
 **A Java keyword is not automatically a SLeeLa-native keyword. A Java annotation is not automatically a native SLeeLa annotation. A Java API class is not automatically a native SLeeLa class.**
+
+### Q10 implementation — platform/reproducibility qualification
+
+Q10 now has an executable qualification-record system. `tests/java_platforms.json` defines Linux, Windows 10+, and macOS target records; `tests/java_platform_qualification.py` captures host evidence; and `tests/java_platform_qualification_suite.py` validates the complete matrix. `make -C tests java-platform-qualification` is the deterministic entry point.
+
+A platform record is not a remote test result. `READY` means the selected target matches the observed host; `NOT_EXECUTED` means the target was described and validated as a matrix entry but was not executed on that operating system. This distinction prevents an environment from being reported as passing merely because its build instructions exist.
