@@ -224,4 +224,78 @@ const char* javaSemanticRuleName(JavaSemanticRuleKind x) {
     }
     return "unknown";
 }
+
+JavaGenericInferenceResult inferGenericMethodTypes(const JavaMethodCandidate& c,const std::vector<JavaTypeDescriptor>& args){
+ JavaGenericInferenceResult r;
+ if(c.method.typeParameters.empty()){r.success=true;return r;}
+ if(c.method.parameterTypes.size()!=args.size() && !c.isVarargs){r.diagnostics.push_back("arity does not permit generic inference");return r;}
+ for(std::size_t i=0;i<args.size() && i<c.method.parameterTypes.size();++i){
+  const auto& p=c.method.parameterTypes[i];
+  if(!p.primitive && p.referenceKind==JavaReferenceKind::TypeVariable && !p.qualifiedName.empty()){
+   auto it=r.inferred.find(p.qualifiedName);
+   if(it==r.inferred.end()) r.inferred[p.qualifiedName]=args[i];
+   else if(it->second.normalized()!=args[i].normalized()) r.diagnostics.push_back("conflicting inferred type for "+p.qualifiedName);
+  }
+ }
+ r.success=r.diagnostics.empty();
+ if(r.success && r.inferred.size()<c.method.typeParameters.size()) r.diagnostics.push_back("insufficient constraints for all method type parameters");
+ r.success=r.diagnostics.empty();
+ return r;
+}
+JavaPertinenceResult assessArgumentPertinence(const JavaExpressionDescriptor& e,const JavaTypeDescriptor& formal){
+ JavaPertinenceResult r;r.potentiallyCompatible=true;
+ if(e.kind==JavaExpressionKind::Lambda || e.kind==JavaExpressionKind::MethodReference){
+  r.pertinent=false;
+  r.reason="implicitly typed lambda or inexact method reference is not pertinent until target typing";
+ }
+ if(formal.referenceKind==JavaReferenceKind::TypeVariable) r.potentiallyCompatible=true;
+ return r;
+}
+static bool refSubtype(const JavaTypeDescriptor& a,const JavaTypeDescriptor& b){
+ if(a.normalized()==b.normalized()) return true;
+ if(!a.primitive&&!b.primitive&&b.qualifiedName=="java.lang.Object") return true;
+ return false;
+}
+JavaMostSpecificResult compareMostSpecific(const JavaMethodCandidate& a,const JavaMethodCandidate& b,const std::vector<JavaTypeDescriptor>&){
+ JavaMostSpecificResult r;
+ if(a.method.parameterTypes.size()!=b.method.parameterTypes.size()){r.ambiguous=true;r.reason="different arity cannot establish specificity";return r;}
+ bool ab=true,ba=true;
+ for(std::size_t i=0;i<a.method.parameterTypes.size();++i){
+  ab &= refSubtype(a.method.parameterTypes[i],b.method.parameterTypes[i]) ||
+        classifyJavaConversion(a.method.parameterTypes[i],b.method.parameterTypes[i],JavaConversionContext::StrictInvocation).permitted;
+  ba &= refSubtype(b.method.parameterTypes[i],a.method.parameterTypes[i]) ||
+        classifyJavaConversion(b.method.parameterTypes[i],a.method.parameterTypes[i],JavaConversionContext::StrictInvocation).permitted;
+ }
+ r.firstMoreSpecific=ab&&!ba;r.secondMoreSpecific=ba&&!ab;r.ambiguous=!r.firstMoreSpecific&&!r.secondMoreSpecific;
+ r.reason=r.ambiguous?"neither candidate is uniquely more specific":"unique most-specific relation established";
+ return r;
+}
+bool checkedExceptionsCompatible(const JavaDeclarationDescriptor& base,const JavaDeclarationDescriptor& derived){
+ for(const auto& d:derived.thrownTypes){
+  bool covered=false;
+  for(const auto& b:base.thrownTypes) if(d==b){covered=true;break;}
+  if(!covered) return false;
+ }
+ return true;
+}
+bool isOverrideCompatible(const JavaDeclarationDescriptor& base,const JavaDeclarationDescriptor& derived,JavaAccessLevel baseAccess,JavaAccessLevel derivedAccess,bool baseStatic,bool derivedStatic,bool baseFinal,bool basePrivate){
+ if(!isOverrideEquivalent(base,derived)) return false;
+ if(baseStatic || derivedStatic || baseFinal || basePrivate) return false;
+ if(static_cast<int>(derivedAccess)>static_cast<int>(baseAccess)) return false;
+ if(!checkedExceptionsCompatible(base,derived)) return false;
+ if(base.returnType.empty()||derived.returnType.empty()) return true;
+ if(base.returnType==derived.returnType) return true;
+ JavaTypeDescriptor b; b.qualifiedName=base.returnType; b.referenceKind=JavaReferenceKind::Class;
+ JavaTypeDescriptor d; d.qualifiedName=derived.returnType; d.referenceKind=JavaReferenceKind::Class;
+ return refSubtype(d,b);
+}
+bool variableArityApplicable(const JavaMethodCandidate& c,const std::vector<JavaTypeDescriptor>& args){
+ if(!c.isVarargs||c.method.parameterTypes.empty()) return false;
+ const std::size_t fixed=c.method.parameterTypes.size()-1;
+ if(args.size()<fixed) return false;
+ for(std::size_t i=0;i<fixed;++i)
+  if(!classifyJavaConversion(args[i],c.method.parameterTypes[i],JavaConversionContext::LooseInvocation).permitted) return false;
+ return true;
+}
+
 } // namespace sleela
