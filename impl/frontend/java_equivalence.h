@@ -141,6 +141,57 @@ bool isOverrideEquivalent(const JavaDeclarationDescriptor& base,
 bool isOverrideCompatible(const JavaDeclarationDescriptor& base,
                           const JavaDeclarationDescriptor& derived);
 
+enum class JavaAccessLevel { Public, Protected, Package, Private };
+
+struct JavaGenericInferenceResult {
+    bool success = false;
+    std::map<std::string, JavaTypeDescriptor> inferred;
+    std::vector<std::string> diagnostics;
+};
+
+struct JavaPertinenceResult {
+    bool pertinent = true;
+    bool potentiallyCompatible = false;
+    std::string reason;
+};
+
+struct JavaMostSpecificResult {
+    bool firstMoreSpecific = false;
+    bool secondMoreSpecific = false;
+    bool ambiguous = false;
+    std::string reason;
+};
+
+JavaGenericInferenceResult inferGenericMethodTypes(
+    const JavaMethodCandidate& candidate,
+    const std::vector<JavaTypeDescriptor>& argumentTypes);
+
+JavaPertinenceResult assessArgumentPertinence(
+    const JavaExpressionDescriptor& argument,
+    const JavaTypeDescriptor& formalType);
+
+JavaMostSpecificResult compareMostSpecific(
+    const JavaMethodCandidate& first,
+    const JavaMethodCandidate& second,
+    const std::vector<JavaTypeDescriptor>& argumentTypes);
+
+bool isOverrideCompatible(const JavaDeclarationDescriptor& base,
+                          const JavaDeclarationDescriptor& derived,
+                          JavaAccessLevel baseAccess,
+                          JavaAccessLevel derivedAccess,
+                          bool baseStatic,
+                          bool derivedStatic,
+                          bool baseFinal,
+                          bool basePrivate);
+
+bool checkedExceptionsCompatible(
+    const JavaDeclarationDescriptor& base,
+    const JavaDeclarationDescriptor& derived);
+
+bool variableArityApplicable(
+    const JavaMethodCandidate& candidate,
+    const std::vector<JavaTypeDescriptor>& argumentTypes);
+
 struct JavaApiMemberDescriptor {
     std::string owner;
     std::string qualifiedName;
