@@ -17,7 +17,7 @@ bool JavaExceptionModel::isChecked(const std::string& t) const {
  auto it=types_.find(t); return it!=types_.end() && !it->second.unchecked;
 }
 bool JavaExceptionModel::catches(const std::string& c,const std::string& e) const { return isSubtype(e,c); }
-JavaExceptionFlow JavaExceptionModel::check(const std::set<std::string>& thrown,const std::vector<std::string>& catches,const std::set<std::string>& declared) const {
+JavaExceptionFlow JavaExceptionModel::check(const std::set<std::string>& thrown,const std::vector<std::string>& catchTypes,const std::set<std::string>& declared) const {
  JavaExceptionFlow r; r.thrown=thrown;
  for(const auto& e:thrown) if(isChecked(e)){
   bool handled=false; for(const auto& c:catchTypes) if(this->catches(c,e)){handled=true;break;}
