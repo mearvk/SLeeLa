@@ -169,10 +169,12 @@ def normalize(text):
                 "annotations": annotations(src[max(0, m.start()-300):m.start()]),
             })
 
+    constructor_spans = {(m.start(), m.end()) for m in CTOR_RE.finditer(src) if m.group("name") in type_names}
     methods = []
     for m in METHOD_RE.finditer(src):
-        if m.group("name") not in type_names or m.group("name") not in [c["name"] for c in constructors]:
-            methods.append({
+        if (m.start(), m.end()) in constructor_spans:
+            continue
+        methods.append({
                 "name": m.group("name"),
                 "modifiers": modifiers(m.group("mods")),
                 "typeParameters": generic_shape(m.group("generics")),
