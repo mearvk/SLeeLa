@@ -56,6 +56,21 @@ int main() {
     auto r8=analyzeJavaFlow({decl("x"),finBad});
     assert(has(r8,JavaFlowDiagnosticKind::UseBeforeAssignment));
 
+    JavaFlowExpr andExpr; andExpr.kind=JavaFlowExprKind::Binary; andExpr.op="&&"; andExpr.children={var("flag"),var("x")};
+    JavaFlowStmt andRead; andRead.kind=JavaFlowStmtKind::Expression; andRead.expression=andExpr;
+    auto r9=analyzeJavaFlow({decl("x"),andRead},{"flag"});
+    assert(has(r9,JavaFlowDiagnosticKind::UseBeforeAssignment));
+
+    JavaFlowStmt badBreak; badBreak.kind=JavaFlowStmtKind::Break; badBreak.label="missing";
+    auto r10=analyzeJavaFlow({badBreak});
+    assert(has(r10,JavaFlowDiagnosticKind::InvalidBreak));
+
+    JavaFlowStmt loop2; loop2.kind=JavaFlowStmtKind::While; loop2.condition=lit();
+    JavaFlowStmt goodBreak; goodBreak.kind=JavaFlowStmtKind::Break;
+    loop2.children={assign("x"),goodBreak};
+    auto r11=analyzeJavaFlow({decl("x"),loop2});
+    assert(!has(r11,JavaFlowDiagnosticKind::InvalidBreak));
+
     std::cout<<"java definite-assignment/reachability tests passed\n";
     return 0;
 }
