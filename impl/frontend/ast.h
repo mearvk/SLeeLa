@@ -58,6 +58,8 @@ struct JavaTypeMetadata {
     bool preview = false;
     bool incubator = false;
     bool internal = false;
+    std::vector<annotation::Annotation> annotations;
+    std::vector<annotation::Annotation> typeAnnotations;
 };
 
 struct JavaMemberMetadata {
@@ -68,6 +70,8 @@ struct JavaMemberMetadata {
     bool varargs = false;
     bool synthetic = false;
     bool bridge = false;
+    std::vector<annotation::Annotation> annotations;
+    std::vector<annotation::Annotation> typeAnnotations;
 };
 
 struct Expr { virtual ~Expr() = default; }; using ExprP = std::unique_ptr<Expr>;
@@ -93,7 +97,7 @@ struct ReturnStmt:Stmt{ExprP value;}; struct Block:Stmt{std::vector<StmtP> stmts
 struct IfStmt:Stmt{ExprP cond;StmtP thenS,elseS;};
 struct WhileStmt:Stmt{ExprP cond;StmtP body;}; struct ForStmt:Stmt{StmtP init;ExprP cond;StmtP update,body;};
 
-struct Param{std::string type,name;};
+struct Param{std::string type,name; std::vector<annotation::Annotation> annotations; std::vector<annotation::Annotation> typeAnnotations;};
 struct Method {
     std::string retType,name;
     std::vector<Param> params;
@@ -104,6 +108,8 @@ struct Method {
 };
 struct Field {
     std::string type,name;
+    std::vector<annotation::Annotation> annotations;
+    std::vector<annotation::Annotation> typeAnnotations;
     ExprP init;
     bool isStatic=false;
     bool isProtected=false;
