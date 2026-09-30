@@ -92,3 +92,15 @@ The repository now exposes explicit per-OS build folders under `build/linux/`, `
 - Windows 10+: MinGW-w64/GCC/G++, Win32 C/C++ footing; PowerShell build entry point.
 
 The core runtime, debugger, Skya native layer, and Slecompiler now have explicit platform build entry points where their platform-specific implementation exists. Platform-specific API controllers are also present for database and webserver services where required.
+
+## Three-platform build contract
+
+The top-level `build/` surface now has explicit Linux, macOS, and Windows 10+ entry points:
+
+| Platform | Build folder | Makefile | Primary scripts | Native footing |
+|---|---|---|---|---|
+| Linux | `build/linux/` | yes | `scripts/build-linux.sh`, Skya and Slecompiler Linux scripts | POSIX C/C++ |
+| macOS | `build/macos/` | yes | `scripts/build-macos.sh`, Skya and Slecompiler macOS scripts | Darwin/POSIX C/C++ with Apple Clang |
+| Windows 10+ | `build/windows/` | yes | `build-windows.ps1`, Skya and Slecompiler Windows PowerShell scripts | Win32 C/C++ with MinGW-w64 |
+
+These platform dispatchers are documentation/build entry points; subsystem Makefiles remain authoritative. The platform-specific native scripts produce their own documented outputs and do not replace the underlying C/C++ implementations.
