@@ -1,7 +1,7 @@
 CXX ?= c++
 CXXFLAGS ?= -std=c++17 -O2 -Wall -Wextra -pedantic
 
-.PHONY: all clean check jdk28-conformance jdk28-functional jdk28-signatures java-source-equivalence
+.PHONY: all clean check jdk28-conformance jdk28-functional jdk28-signatures java-source-equivalence java-conversions
 
 all: memory reflection nordshrift runtime network-security
 
@@ -42,3 +42,7 @@ java-source-equivalence:
 
 clean:
 	rm -f memory reflection nordshrift runtime network-security
+
+java-conversions:
+	$(CXX) $(CXXFLAGS) -I../impl/frontend java_conversion_semantics.cpp ../impl/frontend/java_equivalence.cpp -o java-conversions
+	./java-conversions
