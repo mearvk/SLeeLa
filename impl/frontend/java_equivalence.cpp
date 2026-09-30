@@ -30,6 +30,47 @@ std::string JavaTypeDescriptor::normalized() const {
     for(int i=0;i<arrayDimensions;++i) out<<"[]";
     return out.str();
 }
+
+static bool sameType(const JavaTypeDescriptor& a,const JavaTypeDescriptor& b){return a.normalized()==b.normalized();}
+static bool numericPrimitive(JavaPrimitiveType p){return p==JavaPrimitiveType::Byte||p==JavaPrimitiveType::Short||p==JavaPrimitiveType::Char||p==JavaPrimitiveType::Int||p==JavaPrimitiveType::Long||p==JavaPrimitiveType::Float||p==JavaPrimitiveType::Double;}
+static int numericRank(JavaPrimitiveType p){switch(p){case JavaPrimitiveType::Byte:return 1;case JavaPrimitiveType::Short:return 2;case JavaPrimitiveType::Char:return 2;case JavaPrimitiveType::Int:return 3;case JavaPrimitiveType::Long:return 4;case JavaPrimitiveType::Float:return 5;case JavaPrimitiveType::Double:return 6;default:return 0;}}
+static JavaTypeDescriptor primitive(JavaPrimitiveType p){JavaTypeDescriptor t;t.primitive=true;t.primitiveType=p;return t;}
+static JavaTypeDescriptor boxed(JavaPrimitiveType p){JavaTypeDescriptor t;t.primitive=false;t.referenceKind=JavaReferenceKind::Class;switch(p){case JavaPrimitiveType::Boolean:t.qualifiedName="java.lang.Boolean";break;case JavaPrimitiveType::Byte:t.qualifiedName="java.lang.Byte";break;case JavaPrimitiveType::Short:t.qualifiedName="java.lang.Short";break;case JavaPrimitiveType::Int:t.qualifiedName="java.lang.Integer";break;case JavaPrimitiveType::Long:t.qualifiedName="java.lang.Long";break;case JavaPrimitiveType::Char:t.qualifiedName="java.lang.Character";break;case JavaPrimitiveType::Float:t.qualifiedName="java.lang.Float";break;case JavaPrimitiveType::Double:t.qualifiedName="java.lang.Double";break;default:break;}return t;}
+static bool unboxName(const std::string& n,JavaPrimitiveType& p){if(n=="java.lang.Boolean"){p=JavaPrimitiveType::Boolean;return true;}if(n=="java.lang.Byte"){p=JavaPrimitiveType::Byte;return true;}if(n=="java.lang.Short"){p=JavaPrimitiveType::Short;return true;}if(n=="java.lang.Integer"){p=JavaPrimitiveType::Int;return true;}if(n=="java.lang.Long"){p=JavaPrimitiveType::Long;return true;}if(n=="java.lang.Character"){p=JavaPrimitiveType::Char;return true;}if(n=="java.lang.Float"){p=JavaPrimitiveType::Float;return true;}if(n=="java.lang.Double"){p=JavaPrimitiveType::Double;return true;}return false;}
+JavaConversionResult classifyJavaConversion(const JavaTypeDescriptor& s,const JavaTypeDescriptor& t,JavaConversionContext ctx){
+ JavaConversionResult r;r.target=t;
+ if(sameType(s,t)){r.kind=JavaConversionKind::Identity;r.permitted=true;r.reason="identity conversion";return r;}
+ if(s.primitive&&t.primitive&&numericPrimitive(s.primitiveType)&&numericPrimitive(t.primitiveType)){
+  int a=numericRank(s.primitiveType),b=numericRank(t.primitiveType);
+  if(a<b){r.kind=JavaConversionKind::WideningPrimitive;r.permitted=true;r.reason="widening primitive conversion";}
+  else if(ctx==JavaConversionContext::Casting){r.kind=JavaConversionKind::NarrowingPrimitive;r.permitted=true;r.reason="narrowing primitive conversion in cast context";}
+  else r.reason="narrowing primitive conversion is not generally permitted in this context";
+  return r;
+ }
+ if(s.primitive&&!t.primitive&&numericPrimitive(s.primitiveType)&&t.referenceKind==JavaReferenceKind::Class){
+  if(sameType(boxed(s.primitiveType),t)){r.kind=JavaConversionKind::Boxing;r.permitted=ctx!=JavaConversionContext::Numeric;r.reason="boxing conversion";return r;}
+  JavaTypeDescriptor b=boxed(s.primitiveType);
+  if(t.qualifiedName=="java.lang.Object"){r.kind=JavaConversionKind::Boxing;r.permitted=ctx==JavaConversionContext::Assignment||ctx==JavaConversionContext::LooseInvocation;r.reason="boxing followed by widening reference conversion";return r;}
+ }
+ if(!s.primitive&&t.primitive){JavaPrimitiveType p; if(unboxName(s.qualifiedName,p)){if(p==t.primitiveType){r.kind=JavaConversionKind::Unboxing;r.permitted=ctx==JavaConversionContext::Assignment||ctx==JavaConversionContext::LooseInvocation||ctx==JavaConversionContext::Casting;r.reason="unboxing conversion";return r;}if(numericPrimitive(p)&&numericPrimitive(t.primitiveType)&&numericRank(p)<numericRank(t.primitiveType)){r.kind=JavaConversionKind::Unboxing;r.permitted=ctx==JavaConversionContext::Assignment||ctx==JavaConversionContext::LooseInvocation||ctx==JavaConversionContext::Numeric;r.reason="unboxing followed by widening primitive conversion";return r;}}}
+ if(!s.primitive&&!t.primitive){
+  if(t.qualifiedName=="java.lang.Object"&&s.referenceKind!=JavaReferenceKind::Null){r.kind=JavaConversionKind::WideningReference;r.permitted=true;r.reason="widening reference conversion";return r;}
+  if(ctx==JavaConversionContext::Casting){r.kind=JavaConversionKind::NarrowingReference;r.permitted=true;r.compileTimeOnly=false;r.reason="narrowing reference conversion; runtime check may apply";return r;}
+  if(ctx==JavaConversionContext::StringContext){r.kind=JavaConversionKind::String;r.permitted=true;r.reason="string conversion";return r;}
+ }
+ r.reason="no permitted conversion classified";
+ return r;
+}
+JavaTypeDescriptor unaryNumericPromotion(const JavaTypeDescriptor& s){
+ if(!s.primitive)return s;
+ if(s.primitiveType==JavaPrimitiveType::Byte||s.primitiveType==JavaPrimitiveType::Short||s.primitiveType==JavaPrimitiveType::Char)return primitive(JavaPrimitiveType::Int);
+ return s;
+}
+JavaTypeDescriptor binaryNumericPromotion(const JavaTypeDescriptor& l,const JavaTypeDescriptor& rr){
+ JavaTypeDescriptor a=unaryNumericPromotion(l),b=unaryNumericPromotion(rr);
+ if(a.primitive&&b.primitive){int ar=numericRank(a.primitiveType),br=numericRank(b.primitiveType);return primitive(ar>=br?a.primitiveType:b.primitiveType);}
+ return a;
+}
 const char* javaEquivalenceLayerName(JavaEquivalenceLayer x) {
     switch(x) {
         case JavaEquivalenceLayer::Lexical:return "Q1-Lexical";
