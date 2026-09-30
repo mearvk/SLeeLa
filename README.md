@@ -105,6 +105,159 @@ SST and Nordshrift use the repository's library inventory as part of their compi
 
 This keeps the SLeeLa source layer, compiler, loader, SST, and Nordshrift representations aligned as the library grows.
 
+## SLeeLa Regular Expression System — `/regex`
+
+The SLeeLa regular-expression subsystem is treated as a **first-class language and library capability**, not as an incidental helper. The `/regex` surface provides the source-level vocabulary for defining, compiling, validating, matching, searching, extracting, and transforming text with regular-expression patterns while keeping those operations visible to the SLeeLa Compiler, Loader, SST, Nordshrift, and native VM architecture.
+
+### Purpose
+
+Regular expressions give SLeeLa a formal pattern language for text processing. The subsystem is intended to support the complete procedural lifecycle:
+
+`pattern source → regex definition → compilation/validation → matching/search → capture/extraction → replacement/transformation`
+
+A regex therefore has two related identities:
+
+- **Pattern identity** — the expression and its syntax.
+- **Procedural identity** — the compiled or executable operation that SLeeLa code can invoke.
+
+This distinction allows SLeeLa source to describe a pattern independently from the runtime mechanism that executes it.
+
+### Core Regex Language Features
+
+The SLeeLa regex surface is organized around the conventional building blocks of regular-expression languages:
+
+- **Literal characters** — direct character and text matching.
+- **Character classes** — sets and ranges of characters.
+- **Character-class negation** — matching characters outside a defined set.
+- **Wildcards** — controlled matching of arbitrary characters.
+- **Anchors** — beginning/end and other positional assertions.
+- **Quantifiers** — repetition of expressions.
+- **Grouping** — logical and procedural grouping of pattern expressions.
+- **Alternation** — selecting among multiple pattern branches.
+- **Escaping** — representing metacharacters and special characters literally.
+- **Captures** — retaining matched portions of input for procedural use.
+- **Assertions** — expressing conditions about the surrounding input without necessarily consuming it.
+- **Flags/modes** — controlling matching behavior where the selected implementation provides those modes.
+
+The exact runtime behavior of a feature is determined by the SLeeLa regex implementation and its documented compatibility surface. A source definition should never imply support for a regex feature that its backend has not implemented and tested.
+
+### Regex as SLeeLa Source
+
+The important architectural point is that regex operations remain **SLeeLa-visible source objects**.
+
+A regex definition can participate in the normal SLeeLa language path:
+
+`SLeeLa regex source → package/library resolution → semantic analysis → regex compilation → SLeeLa VM execution`
+
+This keeps regular expressions connected to:
+
+- SLeeLa classes and symbols;
+- package and library resolution;
+- compiler and loader discovery;
+- procedural operations;
+- reflection and introspection;
+- native C/C++ runtime facilities where required; and
+- the broader SST and Nordshrift symbol inventory.
+
+Regex functionality therefore belongs to the language's executable source model rather than existing only as a foreign-library call.
+
+### Matching Operations
+
+The regex subsystem is designed to distinguish common procedural operations so callers can express intent clearly:
+
+1. **Validate** — determine whether a pattern is syntactically valid before execution.
+2. **Compile** — prepare a pattern for repeated execution.
+3. **Match** — determine whether input satisfies a pattern.
+4. **Search** — locate a matching region within larger input.
+5. **Capture** — retrieve portions identified by groups.
+6. **Replace** — transform matching regions into replacement text.
+7. **Iterate** — process multiple matches where the selected regex implementation supports repeated matching.
+8. **Inspect** — expose pattern and match information to SLeeLa runtime/reflection facilities.
+
+The intended separation between validation, compilation, and execution is important for long-running programs: a pattern can be checked once and then reused rather than repeatedly interpreted as untrusted or unvalidated source.
+
+### Text and Symbol Integration
+
+Regex is particularly useful because SLeeLa treats text, symbols, packages, and procedural definitions as inspectable language objects. Regex operations can therefore serve as a bridge between ordinary text and structured SLeeLa processing.
+
+Typical language-level uses include:
+
+- source-text inspection;
+- lexical filtering;
+- input validation;
+- token discovery;
+- symbol/name matching;
+- configuration parsing;
+- structured text extraction;
+- search-and-replace operations;
+- compiler and loader support;
+- documentation and source analysis; and
+- protocol and network message processing.
+
+Regex does not replace a parser. Where SLeeLa requires grammatical or structural understanding, the regex subsystem should be used for lexical/pattern-level work and the appropriate parser or semantic subsystem should perform structural analysis.
+
+### Native Runtime Boundary
+
+The regex API remains independent from its low-level execution mechanism. Where native acceleration or operating-system integration is appropriate, C and C++ can provide the implementation beneath the SLeeLa-facing API:
+
+`SLeeLa regex source → Compiler/Loader → Regex runtime interface → C/C++ implementation → SLeeLa VM`
+
+This preserves the same architectural separation used elsewhere in SLeeLa:
+
+- SLeeLa defines the language-facing operation.
+- The Compiler and Loader resolve the source and symbols.
+- The SLeeLa VM executes the procedural operation.
+- C/C++ may provide the native implementation and platform/runtime services.
+
+A Java implementation may also participate through the established Java parallel-runtime model when a Java-side regex facility is intentionally selected and documented.
+
+### Safety and Correctness
+
+Regex processing can become computationally expensive when patterns and inputs interact badly. SLeeLa's regex subsystem should therefore treat pattern validation, execution limits, input boundaries, and backend behavior as engineering concerns rather than assuming that every syntactically valid expression is computationally harmless.
+
+Implementations should document:
+
+- supported syntax;
+- unsupported syntax;
+- escaping rules;
+- character encoding behavior;
+- Unicode behavior;
+- capture semantics;
+- replacement semantics;
+- execution/resource limits;
+- error reporting; and
+- backend-specific compatibility.
+
+This allows the SLeeLa source definition to remain portable while making implementation-specific behavior explicit.
+
+### Compiler, Loader, SST, and Nordshrift
+
+Regex source belongs to the same discoverable library model as the rest of SLeeLa. New regex classes, symbols, or procedural definitions should be added to the canonical library inventory and made visible to the compiler and loader.
+
+The intended chain is:
+
+`/regex source → symbol inventory → SST/Nordshrift → compiler resolution → loader resolution → VM execution`
+
+This is especially important for regex because a pattern may be represented both as source syntax and as a runtime-compiled object. Both identities need stable symbols and predictable loading behavior.
+
+### Relationship to the SLeeLa Language
+
+Regex is one of the language capabilities that demonstrates the intended SLeeLa model: a high-level procedural feature can have a clear source representation, compiler-visible symbols, a VM execution path, and a native C/C++ foundation without losing its identity as a SLeeLa operation.
+
+In that model:
+
+`Regex source`
+→ `SLeeLa symbol`
+→ `Compiler/Loader`
+→ `SLeeLa VM`
+→ `native regex/runtime service`
+
+and, where Java interoperability is intentionally used:
+
+`Java regex facility ↔ SLeeLa Family representation ↔ pre-compiled SLeeLa source`
+
+The result is a regex subsystem that belongs to SLeeLa itself while remaining capable of using carefully defined native or Java runtime services underneath the language boundary.
+
 ## Audio and Codec Architecture
 
 The Audio work is organized by implementation language and responsibility:
