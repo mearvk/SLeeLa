@@ -2,6 +2,7 @@
 #define SLEELA_JAVA_RUNTIME_BRIDGE_H
 
 #include <stddef.h>
+#include "java_runtime_probe.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -24,6 +25,18 @@ typedef struct {
 
 int sleela_java_runtime_bridge_prepare(
     const SleelaJavaProgramRequest *request,
+    SleelaJavaProgramPlan *plan);
+
+/*
+ * Main dispatch boundary: probe first, then prepare the normal local-JVM
+ * handoff when Java is required and a local VM is available.
+ * Returns 0 for native/ready decisions, 1 when installation is required,
+ * and -1 for invalid arguments.
+ */
+int sleela_java_runtime_dispatch_source(
+    const char *source, size_t length, const char *path_hint,
+    const SleelaJavaProgramRequest *request,
+    SleelaJavaRuntimeProbeResult *probe,
     SleelaJavaProgramPlan *plan);
 
 #ifdef __cplusplus
