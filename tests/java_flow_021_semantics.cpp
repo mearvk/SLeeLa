@@ -68,6 +68,21 @@ int main() {
     auto r6=analyzeJavaFlow({bad2});
     assert(has(r6,JavaFlowDiagnosticKind::InvalidContinue));
 
+
+    // Loop fixed-point: a condition-false path must not inherit assignments
+    // from a body that never executes.
+    JavaFlowStmt never; never.kind=JavaFlowStmtKind::While; never.condition=lit(false);
+    never.children={assign("neverAssigned")};
+    auto r7=analyzeJavaFlow({decl("neverAssigned"),never,read("neverAssigned")});
+    assert(has(r7,JavaFlowDiagnosticKind::UseBeforeAssignment));
+
+    // Definite-unassignment is preserved through a single guaranteed final
+    // assignment followed by a matching break.
+    JavaFlowStmt finalDecl=decl("finalValue"); finalDecl.finalVariable=true;
+    JavaFlowStmt finalLoop; finalLoop.kind=JavaFlowStmtKind::While; finalLoop.condition=lit(true);
+    finalLoop.children={assign("finalValue"),br};
+    auto r8=analyzeJavaFlow({finalDecl,finalLoop,read("finalValue")});
+    assert(!has(r8,JavaFlowDiagnosticKind::FinalReassignment));
     std::cout<<"java directional-flow/control-target tests passed\n";
     return 0;
 }
