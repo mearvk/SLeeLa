@@ -1,0 +1,28 @@
+name: JDK 28 SLeeLa Functional Equivalence
+
+on:
+  push:
+    paths:
+      - 'lib/java/**/*.sleela'
+      - 'lib/java/tools/jdk28_sync.py'
+      - 'tests/jdk28_functional_equivalence.py'
+      - '.github/workflows/jdk28-functional-equivalence.yml'
+      - 'tests/Makefile'
+  pull_request:
+    paths:
+      - 'lib/java/**/*.sleela'
+      - 'lib/java/tools/jdk28_sync.py'
+      - 'tests/jdk28_functional_equivalence.py'
+      - '.github/workflows/jdk28-functional-equivalence.yml'
+      - 'tests/Makefile'
+  workflow_dispatch:
+
+jobs:
+  conformance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: API identity and envelope contract
+        run: python3 tests/jdk28_functional_equivalence.py
+      - name: Functional equivalence gate
+        run: python3 tests/jdk28_functional_equivalence.py --functional
