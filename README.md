@@ -2,7 +2,7 @@
 
 # SLeeLa
 
-## I. Audio and Codec Architecture
+## <img src="https://github.com/mearvk/SLeeLa/raw/master/images/debian-logo.png" width="25" height="25" alt="Debian"> I. Audio and Codec Architecture
 
 The Audio work is organized by implementation language and responsibility:
 
@@ -56,7 +56,7 @@ The phrase **carefully Open** is intentional: openness includes clear interfaces
 
 — Editor's Note, SLeeLa
 
-## II. Editor's Note
+## <img src="https://github.com/mearvk/SLeeLa/raw/master/images/debian-logo.png" width="25" height="25" alt="Debian"> II. Editor's Note
 
 **Source is now carefully Open.**
 
@@ -64,7 +64,7 @@ SLeeLa is developed as an inspectable software project. Source, interfaces, impl
 
 
 
-## III. Java Parallel Execution and Native Procedural Interoperation
+## <img src="https://github.com/mearvk/SLeeLa/raw/master/images/debian-logo.png" width="25" height="25" alt="Debian"> III. Java Parallel Execution and Native Procedural Interoperation
 
 SLeeLa can now operate **in parallel with Java** as a language/runtime companion rather than requiring Java to replace or absorb the SLeeLa execution model.
 
@@ -84,7 +84,7 @@ This capability preserves the procedural role of the Java-side operation while g
 
 The architectural goal is a genuine **SLeeLa ↔ Java parallel relationship**: Java and SLeeLa can cooperate while SLeeLa source remains a first-class native representation and execution surface.
 
-## IV. Native Library File Count and Language / VM Architecture
+## <img src="https://github.com/mearvk/SLeeLa/raw/master/images/debian-logo.png" width="25" height="25" alt="Debian"> IV. Native Library File Count and Language / VM Architecture
 
 The current native Java-facing library inventory contains **8,988 files under `/lib/java`**. This is the repository's substantial native source representation of SLeeLa's relationship to Java: it gives SLeeLa a source-level vocabulary for Java packages, classes, procedures, interfaces, runtime concepts, and interoperability boundaries while preserving SLeeLa as its own language rather than reducing it to a Java wrapper.
 
@@ -125,7 +125,7 @@ The current SLeeLa language architecture emphasizes:
 
 The **8,988-file `/lib/java` collection** therefore represents more than a directory of Java-related files. It is a major part of the SLeeLa language bridge: a carefully organized native source surface through which SLeeLa can understand, represent, and work alongside Java while continuing to execute as its own language on a C/C++ virtual-machine foundation.
 
-## V. SLeeLa Decompiler and Native Analysis — `/decompiler`
+## <img src="https://github.com/mearvk/SLeeLa/raw/master/images/debian-logo.png" width="25" height="25" alt="Debian"> V. SLeeLa Decompiler and Native Analysis — `/decompiler`
 
 SLeeLa includes a dedicated **Slecompiler™** subsystem under `/decompiler` for native-binary analysis, decompilation, library inspection, driver investigation, and evidence-based source reconstruction. The subsystem is designed as a read-only static-analysis pipeline: it analyzes native artifacts without treating the analyzed artifact as executable input.
 
@@ -190,7 +190,7 @@ The API documentation also describes source-selection for decompilation through 
 See the complete [`/decompiler` subsystem](https://github.com/mearvk/SLeeLa/tree/master/decompiler) and its documentation for implementation details, API contracts, analysis limitations, and build guidance.
 
 
-## VI. SLeeLa HTTP 1.0–9.0 — HTTP and Protocol Details
+## <img src="https://github.com/mearvk/SLeeLa/raw/master/images/debian-logo.png" width="25" height="25" alt="Debian"> VI. SLeeLa HTTP 1.0–9.0 — HTTP and Protocol Details
 
 The SLeeLa repository maintains nine experimental HTTP-generation directories, from `/http-1.0` through `/http-9.0`. These are **SLeeLa application-protocol generations**, not claims that HTTP/4 through HTTP/9 are published IETF HTTP standards. The generation directories define the SLeeLa application envelope, routing identifiers, protocol state, metadata, negotiation, integrity, and application behavior carried by an appropriate transport.
 
@@ -546,7 +546,7 @@ Each generation keeps its own implementation boundary and README:
 - `/http-9.0/README.md`
 
 The root README is the architectural index; the generation READMEs remain the detailed implementation references. Build and conformance work should use the generation's own source tree and documented tests rather than treating the root summary as a substitute for implementation evidence.
-## VII. SLeeLa Regular Expression System — `/regex`
+## <img src="https://github.com/mearvk/SLeeLa/raw/master/images/debian-logo.png" width="25" height="25" alt="Debian"> VII. SLeeLa Regular Expression System — `/regex`
 
 The SLeeLa regular-expression subsystem is treated as a **first-class language and library capability**, not as an incidental helper. The `/regex` surface provides the source-level vocabulary for defining, compiling, validating, matching, searching, extracting, and transforming text with regular-expression patterns while keeping those operations visible to the SLeeLa Compiler, Loader, SST, Nordshrift, and native VM architecture.
 
@@ -700,7 +700,7 @@ and, where Java interoperability is intentionally used:
 The result is a regex subsystem that belongs to SLeeLa itself while remaining capable of using carefully defined native or Java runtime services underneath the language boundary.
 
 
-## VIII. SLeeLa Server Edition — `/server-edition`
+## <img src="https://github.com/mearvk/SLeeLa/raw/master/images/debian-logo.png" width="25" height="25" alt="Debian"> VIII. SLeeLa Server Edition — `/server-edition`
 
 SLeeLa includes a dedicated **Server Edition** under `/server-edition`. It is the server-side network service boundary for the SLeeLa HTTP generation family, with explicit packet admission, routing, filtering, audit, annotation, and application-service boundaries.
 
@@ -740,7 +740,7 @@ Its documented classification, security, police, safety, frequency, Dark Band, a
 
 See the complete [`/server-edition` subsystem](https://github.com/mearvk/SLeeLa/tree/master/server-edition) and its subsystem README for the current implementation and protocol documentation.
 
-## IX. SLeeLa Standard Library
+## <img src="https://github.com/mearvk/SLeeLa/raw/master/images/debian-logo.png" width="25" height="25" alt="Debian"> IX. SLeeLa Standard Library
 
 The canonical SLeeLa-facing source collection is maintained under `/lib`. The library is the source-level package surface used by the SLeeLa compiler and loader rather than a documentation-only catalog.
 
@@ -774,7 +774,7 @@ SST and Nordshrift use the repository's library inventory as part of their compi
 
 This keeps the SLeeLa source layer, compiler, loader, SST, and Nordshrift representations aligned as the library grows.
 
-## X. SLeeLa Telephony — `/telephony-skya`
+## <img src="https://github.com/mearvk/SLeeLa/raw/master/images/debian-logo.png" width="25" height="25" alt="Debian"> X. SLeeLa Telephony — `/telephony-skya`
 
 SLeeLa includes a dedicated **Skya™ telephony subsystem** under `/telephony-skya`. Skya defines the SLeeLa application boundary for client, server, and combined telephony operation, with native C/C++ services beneath SLeeLa-level runnable programs and a JavaFX/Guia™ presentation layer.
 
@@ -846,7 +846,7 @@ Skya therefore serves as a concrete cross-platform application boundary where SL
 
 See the complete [`/telephony-skya` subsystem](https://github.com/mearvk/SLeeLa/tree/master/telephony-skya) and its subsystem README for the current implementation layout and protocol documentation.
 
-## XI. SLeeLa Terminal — `/terminal`
+## <img src="https://github.com/mearvk/SLeeLa/raw/master/images/debian-logo.png" width="25" height="25" alt="Debian"> XI. SLeeLa Terminal — `/terminal`
 
 SLeeLa maintains its own terminal development surface under `/terminal`. This directory is a **regular tracked directory in the SLeeLa repository**, not a Git submodule. It is reserved for SLeeLa-specific terminal features, extensions, integrations, and derived work associated with the repository's terminal environment.
 
