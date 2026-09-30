@@ -1,3 +1,5 @@
+<img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-logo-004.jpg" alt="SLeeLa">
+
 # Senatorial — state upper-chamber contacts
 
 Contact lists for the **upper chamber** (State Senate) of the U.S. states.
