@@ -298,4 +298,82 @@ bool variableArityApplicable(const JavaMethodCandidate& c,const std::vector<Java
  return true;
 }
 
+
+static std::string eraseTypeVariables(const JavaTypeDescriptor& t){
+ if(t.referenceKind==JavaReferenceKind::TypeVariable) return "java.lang.Object";
+ if(t.referenceKind==JavaReferenceKind::Parameterized){
+  JavaTypeDescriptor e=t;e.arguments.clear();e.referenceKind=JavaReferenceKind::Class;return e.normalized();
+ }
+ return t.normalized();
+}
+JavaMostSpecificSetResult chooseMostSpecific(const std::vector<JavaMethodCandidate>& c,const std::vector<int>& applicable,const std::vector<JavaTypeDescriptor>& args){
+ JavaMostSpecificSetResult r;
+ for(int i:applicable){
+  bool maximal=true;
+  for(int j:applicable) if(i!=j){
+   auto cmp=compareMostSpecific(c[j],c[i],args);
+   if(cmp.firstMoreSpecific){maximal=false;break;}
+  }
+  if(maximal) r.maximallySpecific.push_back(i);
+ }
+ if(r.maximallySpecific.size()==1){r.selectedIndex=r.maximallySpecific[0];return r;}
+ if(r.maximallySpecific.empty()){r.ambiguous=true;r.diagnostics.push_back("no maximally specific method");return r;}
+ bool sameSig=true; for(std::size_t k=1;k<r.maximallySpecific.size();++k){
+  if(!isOverrideEquivalent(c[r.maximallySpecific[0]].method,c[r.maximallySpecific[k]].method)){sameSig=false;break;}
+ }
+ if(sameSig){
+  int concrete=-1;
+  for(int i:r.maximallySpecific) if(!c[i].isAbstract && !c[i].isDefault){if(concrete!=-1){concrete=-2;break;}concrete=i;}
+  if(concrete>=0){r.selectedIndex=concrete;return r;}
+  int preferred=-1;
+  for(int i:r.maximallySpecific){
+   bool preferredHere=true;
+   for(int j:r.maximallySpecific) if(i!=j && !c[i].method.returnType.empty() && c[i].method.returnType!=c[j].method.returnType){
+    JavaTypeDescriptor a;a.qualifiedName=c[i].method.returnType;
+    JavaTypeDescriptor b;b.qualifiedName=c[j].method.returnType;
+    if(!refSubtype(a,b)) preferredHere=false;
+   }
+   if(preferredHere){if(preferred!=-1){preferred=-2;break;}preferred=i;}
+  }
+  if(preferred>=0){r.selectedIndex=preferred;return r;}
+ }
+ r.ambiguous=true;r.diagnostics.push_back("multiple maximally specific methods remain");
+ return r;
+}
+JavaInvocationTypeResult inferInvocationType(const JavaMethodCandidate& c,const std::vector<JavaTypeDescriptor>& args,const JavaTypeDescriptor* target){
+ JavaInvocationTypeResult r;
+ auto inf=inferGenericMethodTypes(c,args); r.inferred=inf.inferred;
+ if(!inf.success){r.diagnostics=inf.diagnostics;return r;}
+ r.invocationType=c.method;
+ auto substitute=[&](const std::string& n){
+  auto it=r.inferred.find(n);return it==r.inferred.end()?std::string():it->second.normalized();
+ };
+ for(auto& p:r.invocationType.parameterTypes) if(p.referenceKind==JavaReferenceKind::TypeVariable){auto x=substitute(p.qualifiedName);if(!x.empty()){p.qualifiedName=x;p.referenceKind=JavaReferenceKind::Class;}}
+ if(r.invocationType.returnType.size() && r.inferred.count(r.invocationType.returnType)) r.invocationType.returnType=r.inferred[r.invocationType.returnType].normalized();
+ if(target && !r.invocationType.returnType.empty()){
+  JavaTypeDescriptor actual;actual.qualifiedName=r.invocationType.returnType;
+  auto conv=classifyJavaConversion(actual,*target,JavaConversionContext::Assignment);
+  if(!conv.permitted){r.diagnostics.push_back("inferred invocation type is incompatible with target type");return r;}
+ }
+ r.success=true;return r;
+}
+JavaInterfaceInheritanceResult resolveInterfaceDefaults(const std::vector<JavaMethodCandidate>& methods){
+ JavaInterfaceInheritanceResult r;
+ for(std::size_t i=0;i<methods.size();++i){
+  bool shadowed=false;
+  for(std::size_t j=0;j<methods.size();++j) if(i!=j && methods[j].isInterfaceMethod && methods[j].method.owner!=methods[i].method.owner){
+   if(isOverrideEquivalent(methods[j].method,methods[i].method) && methods[j].isDefault && !methods[i].isDefault){shadowed=true;break;}
+  }
+  if(!shadowed) r.inherited.push_back((int)i);
+ }
+ for(std::size_t a=0;a<r.inherited.size();++a) for(std::size_t b=a+1;b<r.inherited.size();++b){
+  int i=r.inherited[a],j=r.inherited[b];
+  if(methods[i].isDefault&&methods[j].isDefault&&isOverrideEquivalent(methods[i].method,methods[j].method)){
+   r.conflicts.push_back(i);r.conflicts.push_back(j);
+  }
+ }
+ if(!r.conflicts.empty()) r.diagnostics.push_back("conflicting inherited default methods require explicit resolution");
+ return r;
+}
+
 } // namespace sleela
