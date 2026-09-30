@@ -34,6 +34,7 @@ extern "C" {
 #include "../core/sleela_memmgr.h"
 #include "../core/sleela_terminal.h"
 #include "../core/sleela_design_activity.h"
+#include "../../runtime/java_runtime_bridge.h"
 }
 namespace fs=std::filesystem;
 static const char* kVersion="Sleelvac™ 0.3.0-dev (Sleela compiler; executable native math/physics/economics/chemistry/financial modules; persistent .sleela Core artifacts; .xclass input; JVM-family langin input: Java/Kotlin/Scala/Groovy/Clojure; Nordshrift round-trip (SLeeLa->Nordshrift->back); OS Defender provisioning; SHA-256 execution gate)";
@@ -490,6 +491,45 @@ static int runArtifact(const std::string&path){
     if(r==SLR_ERROR){const char*e=slvm_error(vm);std::cerr<<"sleelvac: runtime error: "<<(e?e:"unknown")<<"\n";slvm_free(vm);return 1;}
     slvm_free(vm);return 0;
 }
+static int runJavaFrameworkSource(const std::string&path){
+    std::string src;
+    if(!readFile(path,src)){
+        std::cerr<<"sleelvac: cannot open Java source '"<<path<<"'\n";
+        return 1;
+    }
+    SleelaJavaProgramRequest request{};
+    request.classpath=".";
+    request.source_file=path.c_str();
+    SleelaJavaRuntimeProbeResult probe{};
+    SleelaJavaProgramPlan plan{};
+    int dispatch=sleela_java_runtime_dispatch_source(src.data(),src.size(),path.c_str(),
+                                                      &request,&probe,&plan);
+    if(dispatch<0){
+        std::cerr<<"sleelvac: Java runtime dispatch failed for '"<<path<<"'\n";
+        return 1;
+    }
+    if(dispatch==1 || probe.action==SLEELA_JAVA_ACTION_PROMPT_INSTALL){
+        std::cerr<<"[java] Java VM required for "<<path<<" but no local VM was found.\n"
+                 <<"       Set SLEELA_JAVA or JAVA_HOME, or install/configure a Java distribution, then retry.\n";
+        return 2;
+    }
+    if(probe.kind<SLEELA_JAVA_AWT || probe.kind>SLEELA_JAVA_FX){
+        return runLangin({path});
+    }
+    if(!plan.ready || !probe.java_executable || !probe.java_executable[0]){
+        std::cerr<<"sleelvac: Java provider did not produce a runnable JVM handoff for '"<<path<<"'\n";
+        return 1;
+    }
+
+    std::vector<std::string> args={"sleela","native","--",probe.java_executable,path};
+    std::vector<char*> argv;
+    argv.reserve(args.size()+1);
+    for(auto&arg:args)argv.push_back(arg.data());
+    argv.push_back(nullptr);
+    std::cout<<"[java] secondary circuit: "<<sleela_java_runtime_kind_name(probe.kind)
+             <<" -> "<<probe.java_executable<<" -> "<<path<<"\n";
+    return nativeCmd(static_cast<int>(args.size()),argv.data());
+}
 static int runSource(const std::string&path){std::string src;sleela::Program prog;sleela::VersionResolution syntax;if(!parseSource(path,src,prog,syntax))return 1;catalog::Catalog cat=loadCatalog();return compileAndRun(prog,cat,syntax.declared);}
 static int runXclass(const std::vector<std::string>&paths){catalog::Catalog cat=loadCatalog();try{sleela::xclass::Loaded loaded=sleela::xclass::loadFiles(paths);std::cout<<"[xclass] ingested "<<loaded.metas.size()<<" SecureJDK 28 class(es):\n";for(const auto&m:loaded.metas)std::cout<<"[xclass]   "<<sleela::xclass::infoLine(m)<<"\n";return compileAndRun(loaded.program,cat);}catch(const std::exception&ex){std::cerr<<"sleelvac: "<<ex.what()<<"\n";return 1;}}
 static int xclassCmd(int argc,char**argv){enum{RUN,EMIT,INFO}mode=RUN;std::vector<std::string>files;for(int i=2;i<argc;i++){std::string a=argv[i];if(a=="--emit")mode=EMIT;else if(a=="--info")mode=INFO;else if(a=="--run")mode=RUN;else if(a.rfind("--",0)==0){std::cerr<<"sleelvac: unknown option "<<a<<"\n";return 2;}else files.push_back(a);}if(files.empty()){std::cerr<<"sleela xclass: no .xclass files given\n";return 2;}if(verifyBeforeExecution(fs::current_path()))return 1;if(mode==RUN)return runXclass(files);try{sleela::xclass::Loaded loaded=sleela::xclass::loadFiles(files);if(mode==EMIT)std::cout<<loaded.emitted;else for(const auto&m:loaded.metas){std::cout<<sleela::xclass::infoLine(m)<<"\n";if(!m.sourceFile.empty())std::cout<<"  source    : "<<m.sourceFile<<"\n";if(!m.edition.empty())std::cout<<"  edition   : "<<m.edition<<"\n";if(!m.signatureHex.empty())std::cout<<"  signature : "<<m.signatureAlg<<":"<<m.signatureHex<<(m.signed_?" (signed)":"")<<"\n";}return 0;}catch(const std::exception&ex){std::cerr<<"sleelvac: "<<ex.what()<<"\n";return 1;}}
@@ -500,7 +540,27 @@ static bool isLangInput(const std::string&path){return sleela::langin::languageF
 static int runLangin(const std::vector<std::string>&paths){catalog::Catalog cat=loadCatalog();try{sleela::langin::Loaded loaded=sleela::langin::loadFiles(paths);std::cout<<"[langin] ingested "<<loaded.metas.size()<<" JVM-family unit(s):\n";for(const auto&m:loaded.metas)std::cout<<"[langin]   "<<sleela::langin::infoLine(m)<<"\n";return compileAndRun(loaded.program,cat);}catch(const std::exception&ex){std::cerr<<"sleelvac: "<<ex.what()<<"\n";return 1;}}
 // `sleela langin [--run|--emit-sleela|--emit-xclass|--info] <file...>`
 static int langinCmd(int argc,char**argv){enum{RUN,EMIT_SLEELA,EMIT_XCLASS,INFO}mode=RUN;std::vector<std::string>files;for(int i=2;i<argc;i++){std::string a=argv[i];if(a=="--run")mode=RUN;else if(a=="--emit-sleela"||a=="--emit")mode=EMIT_SLEELA;else if(a=="--emit-xclass")mode=EMIT_XCLASS;else if(a=="--info")mode=INFO;else if(a.rfind("--",0)==0){std::cerr<<"sleelvac: unknown option "<<a<<"\n";return 2;}else files.push_back(a);}if(files.empty()){std::cerr<<"sleela langin: no source files given (.java/.kt/.scala/.groovy/.clj)\n";return 2;}if(verifyBeforeExecution(fs::current_path()))return 1;if(mode==RUN)return runLangin(files);try{sleela::langin::Loaded loaded=sleela::langin::loadFiles(files);if(mode==EMIT_SLEELA)std::cout<<loaded.emitted;else if(mode==EMIT_XCLASS)std::cout<<sleela::langin::emitXclass(loaded.program,loaded.metas);else for(const auto&m:loaded.metas)std::cout<<sleela::langin::infoLine(m)<<"\n";return 0;}catch(const std::exception&ex){std::cerr<<"sleelvac: "<<ex.what()<<"\n";return 1;}}
-static int runFile(const std::string&path){if(slvm_is_artifact_file(path.c_str()))return runArtifact(path);if(hasExt(path,".xclass"))return runXclass({path});if(isLangInput(path))return runLangin({path});return runSource(path);}
+static int runFile(const std::string&path){
+    if(slvm_is_artifact_file(path.c_str()))return runArtifact(path);
+    if(hasExt(path,".xclass"))return runXclass({path});
+    if(hasExt(path,".java")){
+        std::string src;
+        if(readFile(path,src)){
+            SleelaJavaRuntimeProbeResult probe{};
+            SleelaJavaProgramRequest request{};
+            request.classpath=".";
+            request.source_file=path.c_str();
+            SleelaJavaProgramPlan plan{};
+            int dispatch=sleela_java_runtime_dispatch_source(src.data(),src.size(),path.c_str(),
+                                                              &request,&probe,&plan);
+            if(dispatch<0)return 1;
+            if(probe.kind>=SLEELA_JAVA_AWT&&probe.kind<=SLEELA_JAVA_FX)
+                return runJavaFrameworkSource(path);
+        }
+    }
+    if(isLangInput(path))return runLangin({path});
+    return runSource(path);
+}
 // `sleela nordshrift [--emit] [--target=sleela|java|c] <file.sleela>`  (SLeeLa -> Nordshrift)
 // `sleela nordshrift --roundtrip <file.sleela>`  (SLeeLa -> Nordshrift(Sleela) -> re-parse -> run + verify)
 static int nordshriftCmd(int argc,char**argv){
@@ -567,7 +627,7 @@ int main(int argc,char**argv){
     if(cmd=="compile"){if(argc!=5||std::string(argv[3])!="-o")return usage();rc=compileFile(argv[2],argv[4]);}
     else if(cmd=="check"){if(argc<3)return usage();rc=checkFile(argv[2]);}
     else if(cmd=="validate-artifact"){if(argc!=3)return usage();rc=validateArtifact(argv[2]);}
-    else if(cmd=="run"){if(argc<3)return usage();if(verifyBeforeExecution(fs::current_path()))return 1;if(hasExt(argv[2],".xclass")){std::vector<std::string>files;for(int i=2;i<argc;++i)files.push_back(argv[i]);rc=runXclass(files);}else if(isLangInput(argv[2])){std::vector<std::string>files;for(int i=2;i<argc;++i)files.push_back(argv[i]);rc=runLangin(files);}else rc=runFile(argv[2]);}
+    else if(cmd=="run"){if(argc<3)return usage();if(verifyBeforeExecution(fs::current_path()))return 1;if(hasExt(argv[2],".xclass")){std::vector<std::string>files;for(int i=2;i<argc;++i)files.push_back(argv[i]);rc=runXclass(files);}else if(isLangInput(argv[2])){std::vector<std::string>files;for(int i=2;i<argc;++i)files.push_back(argv[i]);if(hasExt(argv[2],".java")){std::string src;if(readFile(argv[2],src)){SleelaJavaRuntimeProbeResult probe{};SleelaJavaProgramRequest request{};request.classpath=".";request.source_file=argv[2];SleelaJavaProgramPlan plan{};int dispatch=sleela_java_runtime_dispatch_source(src.data(),src.size(),argv[2],&request,&probe,&plan);if(dispatch<0)return 1;if(probe.kind>=SLEELA_JAVA_AWT&&probe.kind<=SLEELA_JAVA_FX){rc=runJavaFrameworkSource(argv[2]);}else rc=runLangin(files);}else rc=runLangin(files);}else rc=runLangin(files);}else rc=runFile(argv[2]);}
     else if(cmd=="xclass"){if(argc<3)return usage();rc=xclassCmd(argc,argv);}
     else if(cmd=="langin"){if(argc<3)return usage();rc=langinCmd(argc,argv);}
     else if(cmd=="nordshrift"){if(argc<3)return usage();rc=nordshriftCmd(argc,argv);}
