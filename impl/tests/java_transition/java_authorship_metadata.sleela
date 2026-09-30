@@ -1,0 +1,20 @@
+#sleela 1.4
+
+public interface Marker {
+  public void mark() {
+    return;
+  }
+}
+
+public final class JavaAuthorshipTransition extends java.lang.Object implements Marker {
+  public static void main() {
+    print(answer());
+  }
+
+  public int answer() throws java.lang.Exception {
+    return 42;
+  }
+
+  public JavaAuthorshipTransition() {
+  }
+}
