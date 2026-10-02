@@ -17,6 +17,7 @@ The following `.sleela` files are the source-level VM and architecture definitio
 - `SleelaVMArchitecture.sleela` — VM architecture definition.
 - `SleelaVMModule.sleela` — SLeeLa VM module contract.
 - `SleelaVMCompiler.sleela` — VM source compilation model.
+- `SleelaVMStartup.sleela` — Startup Module selection, C/C++ detection, System Harness bootstrap, and VM readiness transition.
 - `SleelaSLVM.sleela` — SLeeLa SLVM execution target.
 - `SleelaSLJVM.sleela` — SLeeLa SLJVM execution target.
 - `SLVM.sleela` — core SLVM definition.
