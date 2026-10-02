@@ -1,0 +1,6 @@
+class SleelaVMCpuOptions {
+ Integer architecture; Integer endian; Integer pointerBits; Integer addressBits; Integer cpuLimit;
+ Integer instructionSet; Integer vectorMode; Integer atomicMode; Integer floatingPointMode; Integer cryptoAcceleration;
+ Integer cachePolicy; Integer branchPolicy; Integer optimizationLevel; Integer codeModel; Integer callingConvention;
+ function detect(); function validate(); function selectInstructionSet(); function selectCallingConvention(); function fit(features);
+}
