@@ -13,8 +13,8 @@ C_OBJECTS := $(patsubst src/%.c,$(BUILD_DIR)/%.o,$(C_SOURCES))
 CPP_OBJECTS := $(patsubst src/%.cpp,$(BUILD_DIR)/%.o,$(CPP_SOURCES))
 
 .PHONY: all native sanity clean help
-all: native sanity
-native: $(C_OBJECTS) $(CPP_OBJECTS)
+all: native sanity tutorial-check
+native: $(C_OBJECTS) $(CPP_OBJECTS)\n\ntutorial-check:\n\t@printf '%s\\n' 'SLeeLa compiler tutorial check'\n\t@printf '%s\\n' '  lessons: 01-source-to-vm 02-compiler-manager-and-profiles 03-language-and-binary-format-reference'\n\t@printf '%s\\n' '  examples: tutorials/examples/*.sleela'
 sanity:
 	@printf '%s\n' 'SLeeLa compiler package sanity check'
 	@printf '%s\n' '  pipeline: source lexer parser symbols semantics IR lowering codegen VM-target'
@@ -33,5 +33,5 @@ help:
 	@printf '%s\n' 'SLeeLa compiler package build'
 	@printf '%s\n' '  make all       Build native compiler objects and sanity check'
 	@printf '%s\n' '  make native    Compile C and C++ compiler objects'
-	@printf '%s\n' '  make sanity    Print compiler contract'
+	@printf '%s\n' '  make sanity    Print compiler contract\n\t@printf '%s\\n' '  make tutorial-check  Print compiler tutorial and example inventory''
 	@printf '%s\n' '  make clean     Remove package build objects'
