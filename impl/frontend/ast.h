@@ -127,6 +127,7 @@ struct StructDecl{std::string name;std::vector<Field> fields;};
 struct Program {
     annotation::DocumentAnnotations annotations;
     std::vector<std::string> imports;
+    std::vector<std::string> dynamiteImports;
     std::vector<StructDecl> structs;
     std::vector<ClassDecl> classes;
 };
