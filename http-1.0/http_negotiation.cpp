@@ -1,3 +1,4 @@
+#include "../resolver/resolver.h"
 #include "http_negotiation.hpp"
 #include "http_negotiation.h"
 #include <string>
