@@ -1,4 +1,5 @@
 class SleelaVMOutput {
- String artifactKind; String artifactPath; String architecture; String abi; String hash; List sourcePieces; List headers; List libraries; List certificates;
- function validate(); function calculateHash(); function certify(); function package();
+ String artifactKind; String artifactPath; String architecture; String abi; String hash; String dynamicMemoryGuardMode; Integer dynamicMemoryInitialLimit;
+ Integer dynamicMemoryHardLimit; Integer dynamicMemoryMaximumLimit; List sourcePieces; List headers; List libraries; List certificates;
+ function validate(); function validateDynamicMemoryGuard(); function calculateHash(); function certify(); function package();
 }
