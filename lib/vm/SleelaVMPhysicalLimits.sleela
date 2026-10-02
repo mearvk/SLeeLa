@@ -1,0 +1,4 @@
+class SleelaVMPhysicalLimits {
+ Integer availableMemory; Integer availableProcessors; Integer maxAddressSpace; Integer maxStack; Integer maxFileDescriptors; Integer maxThreads; Integer maxNetworkBytes; Integer maxOpenObjects;
+ function detect(); function constrain(plan); function validate(plan);
+}
