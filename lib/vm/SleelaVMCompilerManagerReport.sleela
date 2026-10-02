@@ -1,0 +1,4 @@
+class SleelaVMCompilerManagerReport {
+ uint32 fineCode; uint32 missingCode; uint32 excessCode; uint32 dependencyCode; uint32 invalidCode;
+ function initialize(); function addFine(object); function addMissing(object); function addExcess(object); function addDependency(object, requirement); function emitText(); function emitC(); function emitCPP();
+}
