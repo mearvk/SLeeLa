@@ -1,0 +1,9 @@
+#sst 2.0
+sheet DynamiteBasic {
+  use sst.DynamiteConnector;
+  system "RuntimeDefaults" {
+    group "runtime";
+    name "ConfiguredRuntime";
+  }
+  target sleela;
+}
