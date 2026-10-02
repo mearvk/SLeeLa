@@ -1,0 +1,8 @@
+/* SLeeLa compiler program and artifact mapping reference. */
+#sleela 1.3
+class ProgramMapping {
+  String programName; String vendor; String language; String languageVersion;
+  String inputExtensions; String outputFormats; String objectFormats; String linker;
+  String operatingSystems; String architectures; Boolean trustedReference;
+  function validate(); function describe(); function matches(String languageName); function formats();
+}
