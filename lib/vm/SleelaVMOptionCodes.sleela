@@ -10,7 +10,7 @@ class SleelaVMOptionCodes {
  Integer SECURITY_NONE = 80; Integer SECURITY_CAPABILITY = 81; Integer SECURITY_SANDBOX = 82; Integer SECURITY_HARDENED = 83;
  Integer LINK_STATIC = 90; Integer LINK_SHARED = 91; Integer LINK_HYBRID = 92;
  Integer LINK_BASIC = 93; Integer LINK_MODERATE = 94; Integer LINK_ADVANCED = 95; Integer LINK_GOVERNMENT = 96; Integer LINK_MILITARY = 97;
- Integer CHALLENGE_BASIC = 110; Integer CHALLENGE_MODERATE = 111; Integer CHALLENGE_ADVANCED = 112; Integer REPORTS_STANDARD = 120;
+ Integer CHALLENGE_BASIC = 110; Integer CHALLENGE_MODERATE = 111; Integer CHALLENGE_ADVANCED = 112; Integer REPORTS_STANDARD = 120; Integer CM_BASIC_COMPLETE = 130; Integer CM_ADVANCED_TOTAL = 131;
  Integer PACKAGE_RAW = 100; Integer PACKAGE_ARCHIVE = 101; Integer PACKAGE_SIGNED = 102;
  function valid(code); function category(code); function compatible(left, right);
 }
