@@ -1,35 +1,26 @@
 # Dynamite Connectors
 
-A Dynamite Connector marks a primary SLeeLa source file whose class can be loaded by implication from known defaults, source properties, or a named configuration rather than requiring an explicit constructor/instance expression.
+Dynamite is an explicit SLeeLa import form. It identifies a source file whose construction is deferred to the compiler and VM loader because the class can use known defaults, a named configuration, or source properties.
 
-## Marker
+## Syntax
 
-~~~text
-// @dynamite class=Resolver
-// @dynamite.config=network-defaults
-// @dynamite.property family=dual
-~~~
+    import dynamite connector /lib/db/MySQL.sleela;
+    dynamite config database-defaults;
+    dynamite property host = "localhost";
+    dynamite property port = 3306;
 
-The marker is comment-based so existing SLeeLa grammar remains valid.
+The explicit import dynamite connector construct replaces the former comment-based @dynamite approach.
 
-## Lifecycle
+## Deferred construction
 
-source marker -> discovery -> /lib symbol resolution -> configuration resolution -> capability/security review -> VM/terminal loader
+No explicit constructor or new expression is required at the source call site. The compiler resolves the imported source, then resolves configuration in this order:
 
-The marker never bypasses normal compiler, capability, security, or VM checks.
+    source properties > named configuration > known package/default configuration > class defaults
 
-## Candidate classes
+The VM/terminal loader performs initialization after those values are resolved. Secrets and credentials remain runtime configuration concerns.
 
-Initial conservative candidates include runtime/configuration services, Resolver, Network, Terminal, HTTP services, SQL connectors, LibraryIndex, SystemMonitor, Logger, Metrics, SecuritySupervisor, CertificateManager, Path, Time, Runtime, and VM startup/compiler-management services.
+## Pipeline
 
-A class becomes Dynamite-loadable only when its primary source carries the marker and loader policy admits it.
+dynamite import -> source resolution -> /lib symbol resolution -> configuration/property resolution -> capability/security review -> deferred construction -> VM/terminal load
 
-## Configuration precedence
-
-source property > named configuration > known package/default configuration > class default
-
-Secrets must remain outside source.
-
-## No-constructor rule
-
-The marker removes the requirement for an explicit source-level constructor/instance expression for loader admission. Native bootstrap initialization may still occur using resolved configuration.
+Dynamite does not bypass normal parsing, semantic analysis, dependency checks, capability checks, or security policy.
