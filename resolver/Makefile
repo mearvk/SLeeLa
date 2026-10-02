@@ -12,8 +12,10 @@ $(BUILD):
 	mkdir -p $(BUILD)
 $(BUILD)/resolver.o: resolver.c resolver.h | $(BUILD)
 	$(CC) $(CFLAGS) -c resolver.c -o $@
-$(BUILD)/sleela-resolver: $(BUILD)/resolver.o
-	$(CC) $(CFLAGS) $< -o $@ $(LDLIBS)
+$(BUILD)/resolver_cli.o: resolver_cli.c resolver.h | $(BUILD)
+	$(CC) $(CFLAGS) -c resolver_cli.c -o $@
+$(BUILD)/sleela-resolver: $(BUILD)/resolver.o $(BUILD)/resolver_cli.o
+	$(CC) $(CFLAGS) $^ -o $@ $(LDLIBS)
 syntax:
 	$(CC) $(CFLAGS) -fsyntax-only resolver.c
 	$(CXX) $(CXXFLAGS) -fsyntax-only resolver.cpp
