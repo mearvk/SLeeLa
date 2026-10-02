@@ -1,0 +1,9 @@
+#sst 2.0
+sheet DynamiteNetwork {
+  use sst.DynamiteConnector;
+  system "NetworkDefaults" {
+    group "network";
+    name "ConfiguredNetwork";
+  }
+  target sleela;
+}
