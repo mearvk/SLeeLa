@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
-collection-revision: 0.9
-library-source-files: 967
-library-packages: 74
+collection-revision: 1.0
+library-source-files: 10033
+library-packages: 75
 module-facade-symbols: 88
-total-symbol-records: 1055
+total-symbol-records: 10121
 
 package	symbol	path	kind
 antivirus	SLPackage.sleela	lib/antivirus/SLPackage.sleela	source
