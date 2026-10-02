@@ -1,0 +1,10 @@
+#sst 2.0
+sheet NetworkSystem {
+  system "NetworkSystem" {
+    group "network";
+    name "EdgeRouter";
+    component "Resolver";
+    component "Transport";
+  }
+  target sleela;
+}
