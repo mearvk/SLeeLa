@@ -8,3 +8,8 @@ sheet DynamiteSQL {
   }
   target sleela;
 }
+
+# Target SLeeLa form:
+# import dynamite connector /lib/db/MySQL.sleela;
+# dynamite config database-defaults;
+# dynamite property port = 3306;
