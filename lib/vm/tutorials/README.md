@@ -1,3 +1,5 @@
+<img align="right" src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="75" height="75" alt="SLeeLa">
+
 # SLeeLa VM Tutorials
 
 Practical learning path for /lib/vm. SLeeLa source definitions are authoritative; native C/C++ is implementation support.

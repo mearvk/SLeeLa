@@ -1,3 +1,5 @@
+<img align="right" src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="75" height="75" alt="SLeeLa">
+
 # SLeeLa Decompiler Tutorials
 
 These tutorials teach the evidence-preserving path from executable/library/object input toward SLeeLa-oriented intermediate representations and source reconstruction.
