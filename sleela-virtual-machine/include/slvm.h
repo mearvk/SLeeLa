@@ -6,6 +6,8 @@
 #include "slvm_security.h"
 #include "slvm_io_heuristic.h"
 #include "slvm_memory_security.h"
+#include "slvm_observer.h"
+#include "slvm_broker.h"
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -32,6 +34,8 @@ typedef struct {
     slvm_security_t security;
     slvm_io_heuristic_t io_heuristic;
     slvm_memory_security_t memory_security;
+    slvm_observer_t observer;
+    slvm_broker_t broker;
     size_t memory_limit;
 } slvm_t;
 void slvm_init(slvm_t*, const uint8_t*, size_t, slvm_word_t*, size_t);
@@ -47,6 +51,9 @@ size_t slvm_gc_collect(slvm_t *vm);
 size_t slvm_gc_bytes(const slvm_t *vm);
 int slvm_security_allow_io(slvm_t *vm, slvm_io_kind_t kind, size_t bytes);
 void slvm_security_reset(slvm_t *vm);
+int slvm_observer_attach_vm(slvm_t *, slvm_observer_hook_fn, void *, int);
+void slvm_observer_detach_vm(slvm_t *);
+int slvm_observe(slvm_t *, const slvm_observer_record_t *);
 #ifdef __cplusplus
 }
 #endif
