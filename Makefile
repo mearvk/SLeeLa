@@ -3,9 +3,9 @@
 # Product-specific Makefiles remain authoritative. This root dispatcher only
 # enters those existing build systems; it does not duplicate their source lists.
 
-.PHONY: all core java28 regex tests server clean help
+.PHONY: all core java28 regex vm tests server clean help
 
-all: core java28 regex tests
+all: core java28 regex vm tests
 
 core:
 	$(MAKE) -C impl all
@@ -15,6 +15,12 @@ java28:
 
 regex:
 	$(MAKE) -C regex all
+
+vm:
+	$(MAKE) -C lib/vm all
+
+vm:
+	$(MAKE) -C lib/vm all
 
 tests:
 	$(MAKE) -C tests check
@@ -33,7 +39,8 @@ help:
 	@echo "  make all     Build core, Java 28, regex, and native test targets"
 	@echo "  make core    Build impl/"
 	@echo "  make java28  Build java28/"
-	@echo "  make regex   Build regex/ and its test suites"
+	@echo "  make regex   Build regex/ and its test suites
+	@echo "  make vm      Build and validate lib/vm native CM/MM/SM/linking/challenge/reports support""
 	@echo "  make tests   Build and run tests/"
 	@echo "  make server  Build api/server/"
 	@echo "  make clean   Remove outputs from the dispatched build systems"
