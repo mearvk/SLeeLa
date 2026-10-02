@@ -47,3 +47,7 @@ active_probing=false
 # Comma-separated explicit hosts permitted for active port verification; empty by default.
 probe_allowlist=
 known_ports=2222,22220,19866,20000,22221
+
+# Optional dynamic DNS/IP/path resolution for routing events.
+resolver_target=
+resolver_require_dynamic=false
