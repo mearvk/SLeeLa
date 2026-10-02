@@ -1,3 +1,5 @@
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-vm-creator-logo-001.jpg" alt="SLeeLa VM Creator" width="100%"></p>
+
 # Linking Manager Architecture
 
 The SLeeLa Linking Manager provides a controlled local-terminal observation link to a known SLVM version. It is an observation boundary, not an execution bypass: the terminal must identify the target VM version, pass linking-plan validation, and request only observations permitted by that plan.
