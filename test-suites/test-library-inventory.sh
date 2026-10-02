@@ -3,9 +3,9 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 LIB="$ROOT/lib"
 EXPECTED_PACKAGES=77
-EXPECTED_SOURCES=10039
+EXPECTED_SOURCES=10046
 EXPECTED_FACADES=90
-EXPECTED_SYMBOLS=10129
+EXPECTED_SYMBOLS=10136
 package_count=$(find "$LIB" -mindepth 1 -maxdepth 1 -type d | wc -l)
 source_count=$(find "$LIB" -type f -name '*.sleela' | wc -l)
 manifest_sources=$(awk -F': ' '/^library-source-files:/{print $2}' "$LIB/LIBRARY.SYMBOLS.md")
@@ -30,3 +30,7 @@ grep -q 'library::Index' "$ROOT/impl/nordshrift/nordshrift.cpp"
 grep -q 'packageSymbolCount' "$ROOT/impl/frontend/library_index.cpp"
 grep -q 'symbolCount' "$LIB/vm/SLVMModuleLoader.sleela"
 echo "PASS: /lib inventory packages=$package_count sources=$source_count facades=$manifest_facades symbols=$manifest_symbols"
+
+test -f "$ROOT/impl/nordshrift/sst_symbol.cpp"
+test -f "$ROOT/impl/nordshrift/SST.SYMBOLS.md"
+grep -q 'SSTSymbol' "$ROOT/impl/nordshrift/sst_symbol.h"
