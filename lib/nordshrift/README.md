@@ -21,3 +21,12 @@ Nordshrift remains the `.sst` semantic/transpilation layer. The SLeeLa compiler 
 ## Symbol resolution
 
 Nordshrift consumes SST declarations as symbols through `NordshriftSymbol`, `NordshriftSymbolResolver`, and `NordshriftSymbolTable`. Native resolution uses the shared `/lib` index; no duplicate package registry is introduced.
+
+## Tutorials and examples
+
+### Tutorials
+
+- `tutorials/01-basic-symbol-to-sleela.md`
+- `tutorials/02-symbol-resolution.md`
+- `tutorials/03-library-bridge.md`
+- `tutorials/04-invalid-symbols.md`
