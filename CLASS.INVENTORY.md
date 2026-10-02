@@ -1,11 +1,11 @@
 # SLeeLa Class Inventory
 
-**SLeeLa Version:** 0.3.0-dev  
-**Inventory Revision:** 1.9  
-**Inventory Date:** 2026-09-29  
+**SLeeLa Version:** 0.3.22-dev  
+**Inventory Revision:** 2.0  
+**Inventory Date:** 2026-10-02  
 **Known Source Files Explicitly Indexed: 138**
-**Repository-wide SLeeLa source files (verified): 301 on `master`; 310 on `main`**
-**Standard-library front-end objects in `/lib`: 281**
+**Repository-wide SLeeLa source files (verified): 10,235 on `main`**
+**Standard-library SLeeLa source units in `/lib`: 10,033**
 **Standard-library target: 2,048 objects**  
 **Unique Foundational C++ Class Files (contract-verified): 50**
 
@@ -13,7 +13,7 @@
 
 ## 1. Verified Foundational Class Files
 
-The current contract suite verifies these 50 foundational class files:
+The current contract suite verifies these 50 foundational class files. The repository-wide SLeeLa source inventory now records 10,235 `.sleela` files, including 10,033 under `/lib`; the library inventory is maintained separately in `lib/LIBRARY.SYMBOLS.md`.
 
 | # | Class | Source |
 |---:|---|---|
