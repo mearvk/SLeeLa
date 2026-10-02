@@ -477,3 +477,112 @@ Generation directories:
 - `/sleela-virtual-machine/6`
 
 **Max Rupplin - MEARVK LLC - 2026**
+
+---
+
+## XVII. The Present SLeeLa Source-to-VM Execution Model
+
+The VM architecture described above is also grounded in the repository's present source-to-execution workflow.
+
+### Full /lib SLeeLa Source
+
+The SLeeLa library tree under /lib is treated as SLeeLa source material rather than as documentation alone. The source files participate in the compiler/runtime model and are intended to be transformed into runnable SLeeLa artifacts.
+
+The present conceptual flow is:
+
+**full /lib SLeeLa source → SLeeLa compilation → .sleela runnable artifacts → Terminal SLeeLa or VM loading → VM execution**
+
+### .sleela as the Runnable Artifact
+
+A compiled .sleela file is not merely an intermediate text representation. It is the runnable SLeeLa artifact produced by the compilation process and consumed by the SLeeLa execution environment.
+
+The bytecode produced by compilation is consequently part of the VM contract. The VM is responsible for executing that compiled representation according to the SLeeLa language, API, runtime, and platform integration definitions.
+
+### Bytecode and the Modern Operating System
+
+The proposed SLeeLa bytecode model is explicitly intended to maintain a **1:1 execution correspondence** between what the SLeeLa program describes and what the supported operating system execution layer is instructed to perform, subject to the defined SLeeLa API, VM boundary, security/capability rules, and OS facilities.
+
+In this sense, “1:1” means that the VM does not intentionally introduce a second semantic interpretation of the program between the SLeeLa-defined operation and its supported OS-level realization. The VM translates and dispatches the compiled SLeeLa operation through its defined runtime, capability, broker, and platform layers while preserving the operation's SLeeLa meaning.
+
+This is an architectural contract for the proposed SLeeLa bytecode and execution model. Platform-specific details necessarily remain behind the supported OS adapters and runtime interfaces.
+
+### C/C++ VM Execution
+
+The C and C++ implementation of the SLeeLa VM is the execution machinery responsible for running the compiled bytecode.
+
+The intended relationship is:
+
+**SLeeLa source → compiler → .sleela / bytecode → C/C++ SLeeLa VM → SLeeLa API semantics → supported OS facilities**
+
+The C/C++ VM therefore does not define an independent meaning for the program. It executes the compiled bytecode in accordance with the SLeeLa API and the explicit description of the source language and its author-defined semantics.
+
+Where an operation is exposed by the SLeeLa API as an OS-facing capability, the VM's C/C++ runtime and platform layer provide the concrete implementation required to realize that operation on the modern operating system.
+
+### Source, Bytecode, and OS-Level Fidelity
+
+The intended fidelity chain is:
+
+    SLeeLa Source
+     |
+     | full /lib source and application source
+     v
+    SLeeLa Compiler
+     |
+     | compilation
+     v
+    .sleela Artifact / SLeeLa Bytecode
+     |
+     | VM loading or Terminal SLeeLa execution
+     v
+    C/C++ SLeeLa VM
+     |
+     | SLeeLa API + runtime semantics
+     v
+    Broker / Capabilities / Platform Adapters
+     |
+     | defined OS-facing operation
+     v
+    Modern Operating System
+
+The purpose of this chain is to preserve the source program's defined behavior through compilation and VM execution rather than treating bytecode as an unrelated instruction language.
+
+### Terminal and Direct VM Execution
+
+The same compiled .sleela artifact is intended to support two principal entry paths:
+
+1. **Terminal Command SLeeLa** — invoke the SLeeLa command-line execution environment with the compiled artifact.
+2. **Direct VM loading** — load the compiled artifact into the SLeeLa VM execution environment.
+
+Both paths converge on the same underlying SLeeLa execution semantics. The Terminal is therefore an execution front end, while the VM provides the underlying bytecode execution machinery.
+
+### Seven-Generation Context
+
+This present source-to-VM model sits beneath the seven-generation architecture described in this document. /impl provides the current operational execution substrate, while SLVM/1 through SLVM/6 describe increasingly strong VM contracts around that common executable representation.
+
+The important architectural distinction is therefore:
+
+**the SLeeLa program is compiled once into its executable SLeeLa representation; the VM generation determines the execution contract under which that representation runs.**
+
+This allows the repository to maintain a common SLeeLa language and bytecode model while progressively strengthening security, verification, distribution, reproducibility, lineage, and migration characteristics across VM generations.
+
+---
+
+## XVIII. Current Execution Contract
+
+For the purposes of this architectural document, the present SLeeLa VM contract can be summarized as follows:
+
+- /lib contains SLeeLa source that participates in the executable language/runtime ecosystem.
+- SLeeLa source is compiled into .sleela runnable artifacts.
+- The compiled artifact contains the bytecode/executable representation consumed by SLeeLa execution.
+- The Terminal Command version of SLeeLa can execute the compiled artifact.
+- The VM can load the same compiled artifact for execution.
+- The C/C++ VM executes the bytecode according to the SLeeLa API and language semantics.
+- The VM's runtime and platform layers connect those semantics to supported modern operating systems.
+- The proposed bytecode contract seeks 1:1 semantic fidelity from SLeeLa-defined operations through VM execution to their defined OS-level realization.
+- OS-specific mechanisms remain encapsulated by the VM's runtime, broker, capability, and platform-adapter boundaries.
+
+The resulting principle is:
+
+> **SLeeLa source defines the operation; compilation produces the executable SLeeLa representation; the C/C++ VM executes that representation; and the supported OS integration realizes the defined operation without intentionally changing its SLeeLa meaning.**
+
+This is the present foundation on which the seven VM generations can be understood.
