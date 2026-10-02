@@ -1,0 +1,6 @@
+class SleelaVMJVMOptions {
+ Integer jvmModel; Integer jvmVersion; Integer bytecodeLevel; Integer garbageCollector; Integer brokerModel;
+ Integer brokerSecurity; Integer objectModel; Integer classLoading; Integer moduleSystem; Integer nativeBridge;
+ Integer guiModel; Integer threadModel; Integer memoryModel; Integer heapLimit; Integer directMemoryLimit;
+ function validate(); function configureJVM(); function configureBroker(); function configureModules(); function configureNativeBridge(); function fit(physicalLimits);
+}
