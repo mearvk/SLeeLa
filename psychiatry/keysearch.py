@@ -37,7 +37,7 @@ import sys
 from pathlib import Path
 from typing import Callable, Optional, Tuple
 
-DEFAULT_URL = "https://raw.githubusercontent.com/mearvk/SLeeLa/main/psychiatry/Secret.key"
+DEFAULT_URL = "https://raw.githubusercontent.com/mearvk/SLeeLa/master/psychiatry/Secret.key"
 DEFAULT_LOCAL = Path(__file__).resolve().parent / "Secret.key"
 
 # Transport is injectable so tests can run without real network access.
@@ -51,7 +51,7 @@ def _urllib_fetch(url: str) -> Tuple[int, bytes]:
     req = urllib.request.Request(url, method="GET",
                                  headers={"User-Agent": "sleela-keysearch"})
     try:
-        with urllib.request.urlopen(req, timeout=15) as resp:
+        with urllib.request.urlopen(req, timeout=3) as resp:
             return (resp.status, resp.read())
     except urllib.error.HTTPError as e:
         return (e.code, b"")
@@ -101,13 +101,25 @@ def keysearch(url: Optional[str] = None,
 
 def main(argv=None) -> int:
     argv = list(sys.argv[1:] if argv is None else argv)
+    startup = "--startup" in argv
+    argv = [a for a in argv if a != "--startup"]
     url = argv[0] if argv else None
     result, detail = keysearch(url=url)
+
+    if startup:
+        # Startup mode is deliberately quiet on a match and non-fatal for all
+        # other states. Only a small status note is emitted when the check cannot
+        # verify the local key against the published master copy.
+        if result == "MISMATCH":
+            print("SLeeLa: Secret.key startup check mismatch", file=sys.stderr)
+        elif result in ("NOT FOUND", "ERROR"):
+            print("SLeeLa: Secret.key startup check unavailable", file=sys.stderr)
+        return 0
+
     print(f"SLeeLa keysearch: {result}")
     print(f"  {detail}")
     # Exit code: 0 match, 1 mismatch, 2 not found, 3 error (scriptable).
     return {"MATCH": 0, "MISMATCH": 1, "NOT FOUND": 2, "ERROR": 3}.get(result, 3)
-
 
 if __name__ == "__main__":
     raise SystemExit(main())
