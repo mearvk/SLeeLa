@@ -1,0 +1,11 @@
+class SleelaCompiler {
+ SleelaCompilerSource source; SleelaCompilerLexer lexer; SleelaCompilerParser parser;
+ SleelaCompilerSymbols symbols; SleelaCompilerSemantics semantics; SleelaCompilerIR ir;
+ SleelaCompilerLowering lowering; SleelaCompilerCodegen codegen; SleelaCompilerDiagnostics diagnostics;
+ SleelaCompilerVMTarget vmTarget; SleelaCompilerBasic basic; SleelaCompilerAdvanced advanced;
+ String profile; Integer sourceCount; Integer moduleCount; Integer symbolCount; Integer diagnosticCount;
+ function initialize(); function load(source); function lex(); function parse(); function resolveSymbols();
+ function analyze(); function buildIR(); function lowerVM(); function generate(); function verify();
+ function compileBasicComplete(); function compileAdvancedTotal(); function emitSLVM(); function emitSLJVM();
+ function report(); function validate();
+}
