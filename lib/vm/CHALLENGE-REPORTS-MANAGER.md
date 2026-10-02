@@ -21,3 +21,8 @@ Authorized records can be forwarded through a messaging API. Stream authorizatio
 ## Common flow
 
 System -> capability/security boundary -> challenge or report record -> named binary object -> IQ/output routing -> authorized listener or messaging API.
+
+
+## Build integration
+
+The package build is available with `make -C lib/vm` and from the repository root with `make vm`. The Compiler Manager contract is reviewed before VM package objects are considered ready for assembly; the build does not silently change the declared VM inventory.
