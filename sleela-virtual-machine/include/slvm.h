@@ -4,6 +4,8 @@
 #include <stddef.h>
 #include <stdint.h>
 #include "garbage_collector.h"
+#include "slvm_security.h"
+#include "slvm_io_heuristic.h"
 
 #ifdef __cplusplus
 extern "C" {
