@@ -1,4 +1,5 @@
 class SleelaVMCompiler {
+ SleelaCompiler compiler;
  SleelaVMSource source; SleelaVMArchitecture architecture; SleelaVMPhysicalLimits physicalLimits;
  SleelaVMOptions options; SleelaVMExecutionOptions execution; SleelaVMMemoryOptions memory;
  SleelaVMCpuOptions cpu; SleelaVMConcurrencyOptions concurrency; SleelaVMIOOptions io;
@@ -11,7 +12,7 @@ class SleelaVMCompiler {
  SleelaVMCompilerManager compilerManager; SleelaVMObjectCountDeclaration objectCountDeclaration;
  SleelaVMCompilerManagerBasic compilerManagerBasic; SleelaVMCompilerManagerAdvanced compilerManagerAdvanced; SleelaVMCompilerManagerReport compilerManagerReport;
  SleelaVMChallengeManager challenge; SleelaVMChallengeManagerBasic challengeBasic; SleelaVMChallengeManagerModerate challengeModerate; SleelaVMChallengeManagerAdvanced challengeAdvanced; SleelaVMReportsManager reports;
- function load(source); function analyze(); function resolveArchitecture(); function resolvePhysicalLimits();
+ function load(source); function resolveCompiler(); function analyze(); function resolveArchitecture(); function resolvePhysicalLimits();
  function resolveOptions(); function resolveExecution(); function resolveMemory(); function resolveCPU();
  function resolveConcurrency(); function resolveIO(); function resolveSecurity(); function resolveRuntime(); function resolveLinking();
  function resolveJVM(); function resolveBuild(); function resolveMemoryManagement(); function resolveSecurityManagement(); function resolveCompilerManager(); function resolveChallenge(); function resolveReports();
