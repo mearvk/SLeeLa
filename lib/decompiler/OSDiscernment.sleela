@@ -1,0 +1,10 @@
+class SleelaDecompilerOSDetector {
+ String candidateOS; String candidateABI; Integer confidence;
+ Integer headerWeight; Integer abiWeight; Integer importWeight; Integer relocationWeight;
+ Integer runtimeWeight; Integer conventionWeight; Integer sectionWeight; Integer metadataWeight;
+ Boolean conflictingEvidence; Boolean requireAgreement;
+ function initialize(); function inspectHeaders(); function inspectABI(); function inspectImports();
+ function inspectRelocations(); function inspectRuntime(); function inspectCallingConvention();
+ function inspectSections(); function inspectMetadata(); function score();
+ function preserveConflicts(); function selectCandidate(); function report();
+}
