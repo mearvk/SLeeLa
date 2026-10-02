@@ -1,12 +1,34 @@
 # SLeeLa Quick and Safe Install
 
-Cross-platform installer for Linux, macOS, and Windows 10+.
+The planned installer is a three-platform deployment layer for Linux, macOS, and Windows 10+.
 
-It prompts for SLeeLa System startup, SLeeLa Server, HTTP Servers 1-9, VM Edition, Port Authority startup, pause, and shutdown behavior. It builds first, stages the installation, backs up an existing user-local installation, copies files, writes startup configuration, and can update the user PATH.
+It should perform these stages in order:
 
-Normal installation is user-local and does not require administrator or root access.
+1. Detect the operating system and repository root.
+2. Check Git, the native compiler toolchain, and the SLeeLa build prerequisites.
+3. Prompt for initial SLeeLa System settings.
+4. Prompt for SLeeLa Server startup behavior.
+5. Prompt for HTTP Server 1 through 9 startup behavior.
+6. Prompt for VM Edition: Simple, Managed, or Advanced.
+7. Prompt for Port Authority startup, pause, and shutdown behavior.
+8. Build SLeeLa before deployment.
+9. Stage the result before copying it.
+10. Back up an existing user-local installation.
+11. Copy the staged runtime and library files.
+12. Write a user-local startup configuration.
+13. Offer a user-level PATH update.
+14. Report the installation and configuration paths.
 
-Linux/macOS: quick-safe-install.sh
-Windows 10+: quick-safe-install.ps1
+The normal destination should be user-local so the installer does not need administrator or root access. It must not silently enable network listeners or modify system-wide service configuration.
 
-The installer does not silently enable network listeners or change system-wide service configuration.
+## Platform entry points
+
+- Linux: `quick-safe-install.sh`
+- macOS: `quick-safe-install.sh`
+- Windows 10+: `quick-safe-install.ps1`
+
+The installer should keep build, copy, configuration, and PATH operations as separate stages so a failed build cannot produce a partial runtime installation.
+
+The JetBrains source package remains separate. JetBrains documents the open-source `intellij-community` tree and its current Bazel-based build process upstream. The SLeeLa installer should not download or build JetBrains source unless that step is explicitly selected.
+
+**SLeeLa — MEARVK LLC — 2026**
