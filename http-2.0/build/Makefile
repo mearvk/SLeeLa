@@ -1,7 +1,10 @@
 SHELL := /bin/sh
-.PHONY: all syntax clean
+.PHONY: all preferred syntax clean
 all:
 	$(MAKE) -C ..
+preferred:
+	@$(MAKE) -C ../../preferred-routers syntax
+
 syntax:
 	$(MAKE) -C .. syntax
 clean:
