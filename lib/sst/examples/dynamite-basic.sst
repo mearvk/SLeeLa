@@ -7,3 +7,7 @@ sheet DynamiteBasic {
   }
   target sleela;
 }
+
+# Target SLeeLa form:
+# import dynamite connector /lib/runtime/Runtime.sleela;
+# dynamite config runtime-defaults;
