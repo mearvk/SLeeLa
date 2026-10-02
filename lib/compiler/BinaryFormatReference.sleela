@@ -1,0 +1,8 @@
+/* Known binary/executable formats are references, never execution authority. */
+#sleela 1.3
+class BinaryFormatReference {
+  String name; String family; String magic; String architecture; String operatingSystem;
+  String objectKind; String executableKind; String loaderModel; Boolean executable;
+  Boolean nativeReference; Boolean safetyReviewed;
+  function validate(); function identify(); function describe(); function isExecutable();
+}
