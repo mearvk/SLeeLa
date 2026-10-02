@@ -1,0 +1,10 @@
+#sleela 1.3
+// SST source-level Dynamite Connector marker contract.
+class DynamiteConnector {
+ String className;
+ String configuration;
+ String status;
+ function initialize(){status="declared";}
+ function mark(){status="dynamite";return status;}
+ function resolve(){status="resolved";return status;}
+}
