@@ -10,9 +10,9 @@ C_SOURCES := src/sleela_decompiler.c
 CPP_SOURCES := src/sleela_decompiler.cpp
 C_OBJECTS := $(patsubst src/%.c,$(BUILD_DIR)/%.o,$(C_SOURCES))
 CPP_OBJECTS := $(patsubst src/%.cpp,$(BUILD_DIR)/%.o,$(CPP_SOURCES))
-.PHONY: all native sanity clean help
-all: native sanity
-native: $(C_OBJECTS) $(CPP_OBJECTS)
+.PHONY: all native sanity tutorial-check clean help
+all: native sanity tutorial-check
+native: $(C_OBJECTS) $(CPP_OBJECTS)\n\ntutorial-check:\n\t@printf '%s\\n' 'SLeeLa decompiler tutorial check'\n\t@printf '%s\\n' '  lessons: 01-artifact-to-slir 02-os-abi-and-format-discernment 03-fractional-input-and-source-reconstruction'\n\t@printf '%s\\n' '  examples: tutorials/examples/*.sleela'
 sanity:
 	@printf '%s\n' 'SLeeLa decompiler package sanity check'
 	@printf '%s\n' '  pipeline: artifact format/OS decoder CFG SLIR analysis reconstruction output VM'
@@ -32,5 +32,5 @@ help:
 	@printf '%s\n' 'SLeeLa decompiler package build'
 	@printf '%s\n' '  make all       Build native decompiler objects and sanity check'
 	@printf '%s\n' '  make native    Compile C and C++ decompiler objects'
-	@printf '%s\n' '  make sanity    Print decompiler contract'
+	@printf '%s\n' '  make sanity    Print decompiler contract\n\t@printf '%s\\n' '  make tutorial-check  Print decompiler tutorial and example inventory''
 	@printf '%s\n' '  make clean     Remove package build objects'
