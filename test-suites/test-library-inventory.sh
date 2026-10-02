@@ -2,10 +2,10 @@
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 LIB="$ROOT/lib"
-EXPECTED_PACKAGES=74
-EXPECTED_SOURCES=953
-EXPECTED_FACADES=88
-EXPECTED_SYMBOLS=1041
+EXPECTED_PACKAGES=77
+EXPECTED_SOURCES=10039
+EXPECTED_FACADES=90
+EXPECTED_SYMBOLS=10129
 package_count=$(find "$LIB" -mindepth 1 -maxdepth 1 -type d | wc -l)
 source_count=$(find "$LIB" -type f -name '*.sleela' | wc -l)
 manifest_sources=$(awk -F': ' '/^library-source-files:/{print $2}' "$LIB/LIBRARY.SYMBOLS.md")
