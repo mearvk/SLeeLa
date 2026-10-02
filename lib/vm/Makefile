@@ -7,15 +7,18 @@ CFLAGS ?= -std=c11 -Wall -Wextra -Wpedantic
 CXXFLAGS ?= -std=c++17 -Wall -Wextra -Wpedantic
 BUILD_DIR ?= build
 
-C_SOURCES := src/sleela_vm_compiler_manager.c src/sleela_vm_management.c src/sleela_vm_linking.c src/sleela_vm_challenge.c src/sleela_vm_reports.c
-CPP_SOURCES := src/sleela_vm_compiler_manager.cpp src/sleela_vm_management.cpp src/sleela_vm_linking.cpp src/sleela_vm_challenge.cpp src/sleela_vm_reports.cpp
+C_SOURCES := src/sleela_vm_compiler_manager.c src/sleela_vm_management.c src/sleela_vm_linking.c src/sleela_vm_challenge.c src/sleela_vm_reports.c src/sleela_vm_dynamic_memory_guard.c
+CPP_SOURCES := src/sleela_vm_compiler_manager.cpp src/sleela_vm_management.cpp src/sleela_vm_linking.cpp src/sleela_vm_challenge.cpp src/sleela_vm_reports.cpp src/sleela_vm_dynamic_memory_guard.cpp
 C_OBJECTS := $(patsubst src/%.c,$(BUILD_DIR)/%.o,$(C_SOURCES))
 CPP_OBJECTS := $(patsubst src/%.cpp,$(BUILD_DIR)/%.o,$(CPP_SOURCES))
 
-.PHONY: all native cm-check clean help
-all: native cm-check
+.PHONY: all native cm-check memory-guard-check clean help
+all: native cm-check memory-guard-check
 native: $(C_OBJECTS) $(CPP_OBJECTS)
 cm-check:
+memory-guard-check:
+	@printf '%s\n' 'Dynamic Memory Guard modes: HARD SLOW_CAREFUL AGGRESSIVE'
+	@printf '%s\n' '  policy: explicit developer configuration; physical limit remains authoritative'
 	@printf '%s\n' 'Compiler Manager package sanity check'
 	@printf '%s\n' '  profiles: BASIC_COMPLETE ADVANCED_TOTAL'
 	@printf '%s\n' '  categories: architecture execution memory security io runtime management linkage observability build'
