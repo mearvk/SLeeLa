@@ -1,4 +1,6 @@
-<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-decompiler-logo-001.jpeg" alt="SLeeLa Decompiler" width="100%"></p>\n\n# SLeeLa Decompiler Design
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-decompiler-logo-001.jpeg" alt="SLeeLa Decompiler" width="100%"></p>
+
+\n\n# SLeeLa Decompiler Design
 
 Max Rupplin - MEARVK LLC - 2026
 
