@@ -86,3 +86,15 @@ No new OS capability should be considered complete merely because one native cal
 A capability is complete when its contract, validation, error translation, lifetime behavior, portability boundary, tests, and documentation are defined.
 
 Copyright (c) Max Rupplin - MEARVK LLC - 2026
+
+
+## Command-line source/artifact quality boundary
+
+Both supported `.sleela` command-line forms must converge on the same validated execution contract:
+
+- textual source must pass the authoritative version, lexer, parser, semantic, and compiler stages before entering SLVM;
+- persistent artifacts must pass artifact/ABI validation before entering SLVM;
+- neither path may introduce a parallel SLeeLa grammar or interpreter;
+- security, memory, I/O heuristic, capability, and native OS boundaries remain below the common execution engine.
+
+This keeps direct/native SLeeLa execution and persistent SLVM execution behaviorally aligned while allowing source files and precompiled artifacts to be used as distinct command-line inputs.
