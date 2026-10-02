@@ -47,3 +47,8 @@ The compiler resolves five Linking Manager profiles: `SleelaVMLinkingManagerBasi
 ## Challenge and Reports Manager symbols
 
 Challenge symbols: `SleelaVMChallengeManager`, `SleelaVMChallengeManagerBasic`, `SleelaVMChallengeManagerModerate`, `SleelaVMChallengeManagerAdvanced`. Reports symbol: `SleelaVMReportsManager`. Challenge conditions lower to bounded `ConditionObserved` events and never imply arbitrary executable injection. Reports lower authorized input/output/message observations into named binary objects and IQ/output routing. Remote challenge delivery requires capability, resolver, authentication, and audit policy.
+
+
+## Compiler Manager symbols
+
+The compiler-visible completeness symbols are `SleelaVMCompilerManager`, `SleelaVMCompilerManagerBasic`, `SleelaVMCompilerManagerAdvanced`, `SleelaVMCompilerManagerReport`, and `SleelaVMObjectCountDeclaration`. CM performs compile-time object-count and category review and emits `FINE`, `MISSING`, `EXCESS`, `REQUIRES`, or `INVALID` findings. The CM never silently changes the declared object inventory to obtain a successful compile.
