@@ -33,3 +33,8 @@ The package build compiles the C stable ABI and C++ wrappers for the VM managers
 10. build
 
 `SleelaVMCompilerManagerBasic` validates a complete usable VM inventory. `SleelaVMCompilerManagerAdvanced` validates the total/deep inventory. Neither profile silently adds or removes VM objects.
+
+
+## Compiler Manager package build
+
+Run `make -C lib/vm` or `make vm` from the repository root. The package compiles the C stable ABI and C++ wrappers for the VM managers and checks the Compiler Manager declaration contract. The standard categories are architecture, execution, memory, security, I/O, runtime, management, linkage, observability, and build. Findings are `FINE`, `MISSING`, `EXCESS`, `REQUIRES`, or `INVALID`. The build never silently inserts or removes declared VM objects.
