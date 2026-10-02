@@ -1,0 +1,7 @@
+/* Decompiler safety policy for native language/program/format references. */
+#sleela 1.3
+class DecompilerSafetyReference {
+  String language; String program; String format; String platform; String evidence;
+  String trustRequirement; String analysisPolicy; Boolean inspectOnly; Boolean requireVerification;
+  function validate(); function describe(); function permitsExecution();
+}
