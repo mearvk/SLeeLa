@@ -42,3 +42,8 @@ Copyright (c) Max Rupplin - MEARVK LLC - 2026
 ## Linking Manager symbols
 
 The compiler resolves five Linking Manager profiles: `SleelaVMLinkingManagerBasic`, `SleelaVMLinkingManagerModerate`, `SleelaVMLinkingManagerAdvanced`, `SleelaVMLinkingManagerGovernment`, and `SleelaVMLinkingManagerMilitary`. Each links to a known SLVM major/minor version before observations are enabled. Memory, certificate, transaction, resolver, audit, attestation, capability, provenance, checkpoint, and higher-assurance observations are emitted only when permitted by the plan. Linking is observational and does not bypass VM capability or security controls.
+
+
+## Challenge and Reports Manager symbols
+
+Challenge symbols: `SleelaVMChallengeManager`, `SleelaVMChallengeManagerBasic`, `SleelaVMChallengeManagerModerate`, `SleelaVMChallengeManagerAdvanced`. Reports symbol: `SleelaVMReportsManager`. Challenge conditions lower to bounded `ConditionObserved` events and never imply arbitrary executable injection. Reports lower authorized input/output/message observations into named binary objects and IQ/output routing. Remote challenge delivery requires capability, resolver, authentication, and audit policy.
