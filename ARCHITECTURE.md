@@ -61,3 +61,10 @@ Both trees use the words **Sleela** and **Nordshrift**. When a document, issue,
 or commit says "Nordshrift," disambiguate by path: `impl/nordshrift/…` is the
 C++ transpiler driver that ships; `src/implementations/_001_/nordshrift/…` is
 the Java prototype. There is no code sharing between them.
+
+
+## SLeeLa command-line execution boundary
+
+The authoritative `sleela` CLI supports both textual `.sleela` source and persistent `.sleela` Core artifacts. Textual source is compiled in memory by the C++ frontend and executed by the native C Core SLVM. A persistent artifact is validated and loaded directly into that same SLVM. Thus native SLeeLa execution and SLVM execution are complementary stages of one toolchain, not separate interpreters.
+
+See `sleela-virtual-machine/docs/COMMAND-LINE-EXECUTION.md` for the command contract.
