@@ -52,3 +52,8 @@ The VM consumes the five common Linking Manager profiles from `/lib/vm`: Basic, 
 ## Challenge and Reports Managers
 
 All VM generations consume the common Challenge Manager and Reports Manager source symbols. Challenge Manager profiles are Basic, Moderate, and Advanced; matched declared conditions emit capability-authorized `ConditionObserved` events. Reports Manager observes authorized input, output, messages, and system records and routes typed named binary objects through IQ/system-output paths. Remote challenge operation remains bounded by capability, resolver, certificate, security, and audit policy.
+
+
+## Compiler Manager build integration
+
+The VM generation uses the common Compiler Manager contract. Package-native manager objects are compiled with `make -C lib/vm`; the root dispatcher exposes the same check as `make vm`. The CM verifies declared object counts, categories, and dependencies before assembly.
