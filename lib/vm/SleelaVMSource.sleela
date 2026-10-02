@@ -1,0 +1,4 @@
+class SleelaVMSource {
+ String sourceName; String targetKind; String architecture; String operatingSystem; Integer memoryLimit; Integer cpuLimit; Integer stackLimit; Integer objectLimit; List modules; List capabilities; List requiredSymbols;
+ function validate(); function analyzePhysicalLimits(); function selectTarget(); function planModules(); function emitC(); function emitCPP(); function buildSLVM(); function buildSLJVM();
+}
