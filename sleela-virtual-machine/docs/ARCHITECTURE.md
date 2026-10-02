@@ -53,3 +53,10 @@ persistent .sleela Core artifact
 `./impl/build/sleela run program.sleela` handles either representation. For textual source it compiles in memory; for a persistent artifact it loads the already-compiled Core representation. The word **native** refers to the C/C++ SLeeLa executable and native Core/runtime boundary, not to a separate interpreter that bypasses SLVM.
 
 See `COMMAND-LINE-EXECUTION.md` for the user-facing command contract.
+
+
+## Memory Manager Security
+
+Managed memory is a security boundary. The default 512 MiB ceiling is enforced before GC allocation, with policy states for normal use, pressure, restricted operation, and denial. Large or burst allocations are controlled independently of OS capabilities. Reclaimed bytes are returned to memory-security accounting so garbage collection and security policy remain synchronized.
+
+See MEMORY-SECURITY.md.
