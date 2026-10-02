@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
-collection-revision: 0.8
-library-source-files: 959
+collection-revision: 0.9
+library-source-files: 967
 library-packages: 74
 module-facade-symbols: 88
-total-symbol-records: 1047
+total-symbol-records: 1055
 
 package	symbol	path	kind
 antivirus	SLPackage.sleela	lib/antivirus/SLPackage.sleela	source
@@ -1055,3 +1055,12 @@ decompiler	FractionalInput.sleela	lib/decompiler/FractionalInput.sleela	source
 decompiler	OSDiscernment.sleela	lib/decompiler/OSDiscernment.sleela	source
 decompiler	DecompilerModule.sleela	lib/decompiler/DecompilerModule.sleela	source
 decompiler	OutputTarget.sleela	lib/decompiler/OutputTarget.sleela	source
+
+decompiler	LanguageReference.sleela	lib/decompiler/LanguageReference.sleela	source
+decompiler	ProgramMapping.sleela	lib/decompiler/ProgramMapping.sleela	source
+decompiler	BinaryFormatReference.sleela	lib/decompiler/BinaryFormatReference.sleela	source
+decompiler	SafetyReference.sleela	lib/decompiler/SafetyReference.sleela	source
+compiler	LanguageReference.sleela	lib/compiler/LanguageReference.sleela	source
+compiler	ProgramMapping.sleela	lib/compiler/ProgramMapping.sleela	source
+compiler	BinaryFormatReference.sleela	lib/compiler/BinaryFormatReference.sleela	source
+compiler	SafetyReference.sleela	lib/compiler/SafetyReference.sleela	source
