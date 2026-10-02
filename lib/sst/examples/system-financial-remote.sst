@@ -1,0 +1,12 @@
+#sst 2.0
+sheet RemoteFinancialSystem {
+  system "RemoteFinancialSystem" {
+    group "finance";
+    name "RemoteLedger";
+    component "AccountService";
+    component "TransactionService";
+    component "AuditService";
+    remote true;
+  }
+  target sleela;
+}
