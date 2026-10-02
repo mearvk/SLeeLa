@@ -1,0 +1,5 @@
+class SleelaVMMemoryManagementSimple {
+ uint64 heapLimit; uint64 stackLimit; uint32 objectLimit; uint32 alignment;
+ function initialize(); function allocate(size); function release(pointer); function zeroize(pointer,size);
+ function validate(); function plan(); function emitC(); function emitCPP();
+}
