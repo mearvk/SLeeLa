@@ -1,0 +1,7 @@
+class SleelaVMMemoryManagementManaged {
+ uint64 heapLimit; uint64 stackLimit; uint32 objectLimit; uint32 pageSize;
+ uint32 gcCode; uint32 quarantineCode; uint32 guardCode; uint32 scrubCode;
+ function initialize(); function allocate(size); function release(pointer); function collect();
+ function quarantine(pointer,size); function scrub(pointer,size); function validate();
+ function plan(); function emitC(); function emitCPP();
+}
