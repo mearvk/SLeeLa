@@ -1,6 +1,8 @@
 #include "slvm.h"
 #include <string.h>
 #include <stdint.h>
+#include "slvm_security.h"
+#include "slvm_io_heuristic.h"
 static int push(slvm_t*v,slvm_word_t x){if(v->stack_size>=v->stack_capacity)return 0;v->stack[v->stack_size++]=x;return 1;}
 static int pop(slvm_t*v,slvm_word_t*x){if(!v->stack_size)return 0;*x=v->stack[--v->stack_size];return 1;}
 static int u64(const slvm_t*v,slvm_pc_t p,slvm_word_t*x){if(p+8>v->code_size)return 0;memcpy(x,v->code+p,8);return 1;}
@@ -23,3 +25,18 @@ slvm_status_t slvm_step(slvm_t*v){
  default:return SLVM_INVALID_OPCODE;
  }}
 slvm_status_t slvm_run(slvm_t*v){if(!v)return SLVM_ERROR;for(;;){slvm_status_t s=slvm_step(v);if(s!=SLVM_OK)return s;}}
+
+int slvm_security_allow_io(slvm_t *vm, slvm_io_kind_t kind, size_t bytes) {
+    if (!vm) return 0;
+    if (!slvm_security_observe_io(&vm->security, kind, bytes)) return 0;
+    const slvm_io_decision_t decision = slvm_io_heuristic_observe(
+        &vm->io_heuristic, kind, bytes,
+        (uint32_t)vm->security.window_requests,
+        slvm_security_state(&vm->security));
+    return decision != SLVM_IO_HEURISTIC_BLOCK;
+}
+
+void slvm_security_reset(slvm_t *vm) {
+    if (!vm) return;
+    slvm_security_reset_window(&vm->security);
+}
