@@ -1,0 +1,13 @@
+#sst 2.0
+sheet DynamiteNetwork {
+  use sst.DynamiteConnector;
+  system "NetworkDefaults" {
+    group "network";
+    name "ConfiguredNetwork";
+  }
+  target sleela;
+}
+
+# Target SLeeLa form:
+# import dynamite connector /lib/net/Network.sleela;
+# dynamite config network-defaults;
