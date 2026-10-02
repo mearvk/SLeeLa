@@ -39,3 +39,9 @@ or make decompiler
 ## Language and format reference
 
 The package uses LANGUAGE.FORMAT.REFERENCE.md as the decompiler-side native reference for language names, producer programs, binary/object/executable formats, architecture and OS/ABI evidence, and safety considerations. The mapping is evidence, not proof, and does not authorize execution of an input artifact.
+
+## Reverse executable/library to source references
+
+The decompiler also maintains `EXECUTABLE.LIBRARY.SOURCE.REFERENCE.md`, which maps executables, shared/dynamic/static libraries, object files, managed artifacts, WebAssembly, LLVM bitcode, and raw images backward through format, architecture, OS/ABI, producer, language, version, and source references.
+
+The mapping is evidence-based rather than a claim of exact original source. Debug information, symbols, provenance, compiler fingerprints, runtime metadata, and object-member analysis are used to strengthen the reference.
