@@ -7,9 +7,16 @@ static int push(slvm_t*v,slvm_word_t x){if(v->stack_size>=v->stack_capacity)retu
 static int pop(slvm_t*v,slvm_word_t*x){if(!v->stack_size)return 0;*x=v->stack[--v->stack_size];return 1;}
 static int u64(const slvm_t*v,slvm_pc_t p,slvm_word_t*x){if(p+8>v->code_size)return 0;memcpy(x,v->code+p,8);return 1;}
 static int i32(const slvm_t*v,slvm_pc_t p,int32_t*x){if(p+4>v->code_size)return 0;memcpy(x,v->code+p,4);return 1;}
-void slvm_init(slvm_t*v,const uint8_t*c,size_t n,slvm_word_t*s,size_t cap){if(!v)return;v->code=c;v->code_size=n;v->stack=s;v->stack_capacity=cap;v->stack_size=0;v->pc=0;v->halted=0;}
+void slvm_init(slvm_t*v,const uint8_t*c,size_t n,slvm_word_t*s,size_t cap){if(!v)return;v->code=c;v->code_size=n;v->stack=s;v->stack_capacity=cap;v->stack_size=0;v->pc=0;v->halted=0;slvm_security_init(&v->security);slvm_io_heuristic_init(&v->io_heuristic);gc_init(&v->gc,1024ULL*1024ULL);v->memory_limit=SLVM_DEFAULT_MEMORY_LIMIT;}
+void slvm_set_memory_limit(slvm_t*v,size_t b){if(!v)return;v->memory_limit=b?b:SLVM_DEFAULT_MEMORY_LIMIT;}
+size_t slvm_get_memory_limit(const slvm_t*v){return v?v->memory_limit:0;}
+SLGCObject*slvm_gc_allocate(slvm_t*v,size_t b,SLGCMarkFn m,SLGCDestroyFn d,void*c){if(!v)return NULL;size_t u=gc_bytes(&v->gc);if(b>v->memory_limit||u>v->memory_limit-b)return NULL;if(!slvm_security_observe_resource(&v->security,1))return NULL;return gc_allocate(&v->gc,b,m,d,c);}
+size_t slvm_gc_collect(slvm_t*v){return v?gc_collect(&v->gc):0;}
+size_t slvm_gc_bytes(const slvm_t*v){return v?gc_bytes(&v->gc):0;}
+int slvm_security_allow_io(slvm_t*v,slvm_io_kind_t k,size_t b){if(!v)return 0;if(!slvm_security_observe_io(&v->security,k,b))return 0;slvm_io_decision_t d=slvm_io_heuristic_observe(&v->io_heuristic,k,b,(uint32_t)v->security.window_requests,slvm_security_state(&v->security));return d!=SLVM_IO_HEURISTIC_BLOCK;}
+void slvm_security_reset(slvm_t*v){if(v)slvm_security_reset_window(&v->security);}
 slvm_status_t slvm_step(slvm_t*v){
- if(!v||!v->code||v->pc>=v->code_size)return SLVM_ERROR;if(v->halted)return SLVM_HALTED;
+ if(!v||!v->code||v->pc>=v->code_size)return SLVM_ERROR;if(v->halted)return SLVM_HALTED;if(!slvm_security_observe_instruction(&v->security))return SLVM_ERROR;
  uint8_t op=v->code[v->pc++];
  switch((slvm_opcode_t)op){
  case SLVM_OP_NOP:return SLVM_OK;
