@@ -1,0 +1,13 @@
+#sleela 1.3
+// Formal resolver boundary between SST symbols and canonical /lib symbols.
+class NordshriftSymbolResolver {
+ String libraryRoot;
+ int resolved;
+ int unresolved;
+ int ambiguous;
+ function initialize(){resolved=0;unresolved=0;ambiguous=0;}
+ function resolve(){resolved=resolved+1;return resolved;}
+ function reject(){unresolved=unresolved+1;return unresolved;}
+ function conflict(){ambiguous=ambiguous+1;return ambiguous;}
+ function complete(){return unresolved==0 && ambiguous==0;}
+}
