@@ -69,3 +69,7 @@ SST remains declarative input. Nordshrift resolves and emits SLeeLa source. The 
 ## SST symbol intake
 
 SST declarations are not opaque metadata. Nordshrift resolves them as package-qualified compiler symbols against the canonical `/lib` index before emitting SLeeLa. The compiler then consumes the emitted SLeeLa symbols through its normal name-resolution pipeline.
+
+## SST symbol intake
+
+SST declarations are not opaque metadata. Nordshrift resolves them as package-qualified compiler symbols against the canonical `/lib` index before emitting SLeeLa. The compiler then consumes the emitted SLeeLa symbols through its normal name-resolution pipeline.
