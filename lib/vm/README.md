@@ -86,6 +86,37 @@ The following `.sleela` files are the source-level VM and architecture definitio
 
 This list is intentionally source-oriented: a VM component belongs to the SLeeLa VM architecture when its behavior and configuration are represented by these `.sleela` definitions and connected to the corresponding SLeeLa VM module path. The compilation and native-build layers turn those definitions into VM-ready artifacts; the SLeeLa VM configuration and authorized module graph govern their runtime use.
 
+## Output and Startup Module
+
+The expected output of the SLeeLa VM build is not merely a collection of compiled objects. The compiled `.sleela` VM definitions are expected to connect through the SLeeLa VM module system and provide a runnable VM configuration that may be selected by the SLeeLa System as a **Startup Module**.
+
+`SleelaVMStartup.sleela` defines the startup/bootstrap method. At system startup it:
+
+1. Reads the VM-designated Startup Module from SLeeLa System configuration.
+2. Connects the selected VM to the **System Harness**, which is the controlled boundary for startup system services.
+3. Detects whether the compiled SLeeLa System has both the required native **C ABI** and **C++ runtime/orchestration** path.
+4. If the compiled C/C++ path is available, binds the VM through the native SLeeLa VM interfaces.
+5. Otherwise, checks the SLeeLa VM Module Loader for a compatible `.sleela`-supported VM module and loads that module.
+6. Requests only the capability-scoped bootstrap services required to bring the VM up: memory, process/thread services, I/O, time, scheduler, resolver, cryptographic services, and system status.
+7. Executes bounded bootstrap calls through the System Harness while the VM is becoming ready.
+8. Defers calls that require a fully initialized VM rather than attempting to execute them prematurely.
+9. Declares the VM `READY` only after the VM core, memory, scheduler, module graph, dispatch path, and System Harness connection have reached the required state.
+10. Publishes VM readiness to the SLeeLa System and then releases queued calls through the normal authorized VM path.
+
+### Startup selection method
+
+`SleelaVMStartup.sleela` therefore establishes the startup decision as:
+
+`SLeeLa System Startup Module → System Harness → compiled C/C++ SLeeLa VM path OR compatible .sleela VM module → bounded bootstrap calls → VM READY → normal VM execution`
+
+The C/C++ check is an implementation-path check, not a change of source authority. The `.sleela` VM definitions remain the authoritative description of the VM component and its configuration. A native C/C++ implementation is used when the compiled SLeeLa System provides the required native interfaces; otherwise the same SLeeLa-defined VM can be hosted through its supported `.sleela` VM module path.
+
+### System Harness bootstrap boundary
+
+Before the VM is fully ready, System Harness calls are limited to the declared bootstrap capability set and the resources necessary to establish the VM itself. Memory establishment, scheduler/thread setup, basic I/O, time, resolver access, cryptographic initialization, module loading, and system-state inspection may be serviced during bootstrap when authorized by the selected configuration. Calls that depend on the complete VM remain queued until readiness.
+
+This makes startup a staged transition rather than an assumption that the complete VM already exists. The System Harness supplies the initial system connection; the SLeeLa VM modules establish the VM; and the completed VM then takes over normal SLeeLa-defined execution through its configured module graph.
+
 ## Option model
 
 VM construction is controlled by two complementary mechanisms:
