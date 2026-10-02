@@ -37,6 +37,7 @@
 #include "../frontend/compiler.h"
 #include "../frontend/artifact.h"
 #include "../frontend/library_index.h"
+#include "../frontend/dynamite.h"
 #include "../frontend/version.h"
 extern "C" {
 #include "../core/sleela_core.h"
@@ -286,7 +287,7 @@ static void validateSourcePrograms(const Sheet& sheet, const std::string& sheetP
             sleela::Lexer lexer(code);
             sleela::Parser parser(lexer.tokenize());
             sleela::Program program = parser.parseProgram();
-            sleela::library::validateImports(program.imports, libraryIndex);
+            sleela::library::validateImports(program.imports, libraryIndex);\n            auto dynamite = sleela::dynamite::discover(code, srcPath);\n            if (dynamite.present) {\n                std::cout << "dynamite: " << dynamite.className;\n                if (!dynamite.configName.empty()) std::cout << " config=" << dynamite.configName;\n                std::cout << " line=" << dynamite.line\n                          << " implicit-load=" << (sleela::dynamite::isImplicitLoadCandidate(dynamite) ? "candidate" : "incomplete") << "\\n";\n            }
             sleela::SemanticResult semantic = sleela::analyzeSemantics(program, vr.version);
             for (const auto& err : semantic.errors)
                 diags.error("NSS-E-SEM-001", srcPath, 0, err, "SST-SOURCE-SEMANTIC");
