@@ -1,0 +1,7 @@
+class SleelaVMBuildOptions {
+ Integer compilerMode; Integer optimization; Integer linkMode; Integer linkerModel; Integer staticLink;
+ Integer sharedLink; Integer ltoMode; Integer debugInfo; Integer stripMode; Integer reproducibleBuild;
+ Integer sourceGeneration; Integer headerGeneration; Integer cStandard; Integer cppStandard; Integer abi;
+ Integer packageFormat; Integer certificateFormat; Integer artifactCompression; Integer artifactHash;
+ function validate(); function configureCompiler(); function configureLinker(); function configureArtifacts(); function configureReproducibility(); function verify();
+}
