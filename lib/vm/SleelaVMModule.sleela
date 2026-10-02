@@ -1,0 +1,4 @@
+class SleelaVMModule {
+ String moduleId; String kind; String abi; String architecture; Integer memoryBytes; Integer stackBytes; Integer instructionBudget; List dependencies; List requiredCapabilities;
+ function validate(); function estimateResources(); function resolveDependencies(); function emitC(); function emitCPP();
+}
