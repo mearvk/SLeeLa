@@ -1,3 +1,13 @@
+## 2026-10-02 — SLeeLa Source Inventory and Version-Control Refresh
+
+- Advanced the active development line to **0.3.22-dev**.
+- Advanced the compiler compatibility gate to **2.9-dev**.
+- Recounted `/lib`: **10,033 `.sleela` source units across 75 package families**.
+- Preserved **88 module-facade symbols** and updated the manifest total to **10,121 symbol records**.
+- Recorded **10,235 repository-wide `.sleela` source files**.
+- Synchronized library manifest/index and inventory documentation with the current source tree.
+- These are structural source-tree counts and do not by themselves claim native build or runtime qualification.
+
 # REVISIONS
 
 ## 2026-09-22 — Discord™ Server Naming Theme
