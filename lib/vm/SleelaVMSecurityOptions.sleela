@@ -1,0 +1,7 @@
+class SleelaVMSecurityOptions {
+ Integer securityModel; Integer capabilityModel; Integer sandboxModel; Integer credentialModel; Integer privilegeModel;
+ Integer syscallPolicy; Integer dynamicLibraryPolicy; Integer filesystemPolicy; Integer networkPolicy; Integer devicePolicy;
+ Integer cryptoModel; Integer keyStorage; Integer certificateModel; Integer attestationModel; Integer auditModel;
+ Integer failClosed; Integer secretRedaction; Integer policySnapshot; Integer replayProtection;
+ function validate(); function configureCapabilities(); function configureSandbox(); function configureCrypto(); function configureCertificates(); function configureAudit();
+}
