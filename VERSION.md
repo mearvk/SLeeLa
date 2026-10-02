@@ -2,12 +2,12 @@
 
 ## Current Development Version
 
-**SLeeLa:** 0.3.19-dev
+**SLeeLa:** 0.3.22-dev
 **Sleela-Complete:** 0.3.2-dev  
 **Nordshrift Complete:** 2.7.1-dev  
 **Native Foundation:** 0.3.2-dev  
 **Sleela Language Syntax:** 1.6 (supported range 1.3 .. 1.6)  
-**Compiler Compatibility Gate:** 2.8-dev  
+**Compiler Compatibility Gate:** 2.9-dev  
 **Java Authorship Transition Gate:** 1.17-dev
 **Edition:** SLeeLa Complete / Native Foundation  
 **Status:** Active Development  
