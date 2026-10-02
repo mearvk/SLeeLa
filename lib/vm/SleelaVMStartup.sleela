@@ -1,0 +1,96 @@
+// SLeeLa VM Startup Definition
+// The SLeeLa source definition for bootstrapping a VM selected as a System Startup Module.
+
+class SleelaVMStartup {
+    StartupModuleSelection startup_module;
+    SystemHarnessConnection harness;
+    VMExecutionMode execution_mode;
+    VMReadinessState readiness;
+    VMBootstrapCapabilities bootstrap_capabilities;
+    VMCallQueue pending_calls;
+
+    method start() {
+        startup_module = System.startupModule();
+        require(startup_module.isVM());
+
+        harness = SystemHarness.connect(startup_module);
+        require(harness.connected());
+
+        if (System.hasCompiledSleelaCABI() && System.hasCompiledSleelaCPPRuntime()) {
+            execution_mode = VMExecutionMode.COMPILED_C_CPP;
+            bindNativeVM(SleelaVMNativeBinding.cABI(), SleelaVMNativeBinding.cppRuntime());
+        } else if (SLeeLaVMModuleLoader.supports(startup_module)) {
+            execution_mode = VMExecutionMode.SLEELA_VM_MODULE;
+            loadVMModule(startup_module);
+        } else {
+            return VMStartupResult.NO_SUPPORTED_VM_PATH;
+        }
+
+        bootstrap_capabilities = harness.requestBootstrapCapabilities(
+            BootstrapCapability.MEMORY,
+            BootstrapCapability.PROCESS_THREAD,
+            BootstrapCapability.IO,
+            BootstrapCapability.TIME,
+            BootstrapCapability.SCHEDULER,
+            BootstrapCapability.RESOLVER,
+            BootstrapCapability.CRYPTO,
+            BootstrapCapability.SYSTEM_STATUS
+        );
+
+        readiness = VMReadinessState.BOOTSTRAPPING;
+        executeBootstrapCallsUntilReady();
+
+        if (!coreVMReady()) {
+            return VMStartupResult.NOT_READY;
+        }
+
+        readiness = VMReadinessState.READY;
+        harness.publishVMReady(startup_module, execution_mode);
+        drainPendingCalls();
+        return VMStartupResult.READY;
+    }
+
+    method executeBootstrapCallsUntilReady() {
+        while (!coreVMReady() && harness.connected()) {
+            call = pending_calls.nextOrSystemBootstrapCall();
+            if (!bootstrap_capabilities.allows(call)) {
+                pending_calls.defer(call);
+                continue;
+            }
+            result = harness.execute(call);
+            if (result.requiresVMReady()) {
+                pending_calls.defer(call);
+            } else {
+                pending_calls.complete(call, result);
+            }
+        }
+    }
+
+    method coreVMReady() {
+        return readiness_core_loaded()
+            && memory_ready()
+            && scheduler_ready()
+            && module_graph_ready()
+            && harness.connected()
+            && execution_dispatch_ready();
+    }
+
+    method shutdown() {
+        harness.publishVMStopping(startup_module);
+        pending_calls.flushOrCancel();
+        unloadVMModule();
+        harness.disconnect();
+    }
+}
+
+// Bootstrap policy:
+// - The Startup Module is selected by the SLeeLa System configuration.
+// - Native C/C++ execution is selected only when both the compiled SLeeLa C ABI
+//   and required C++ runtime/orchestration path are present.
+// - Otherwise a compatible .sleela VM module is selected through the VM module loader.
+// - The System Harness is the controlled boundary for startup system calls.
+// - Bootstrap calls are capability-scoped and bounded; calls requiring a fully
+//   ready VM remain queued until readiness is published.
+// - The startup path does not grant unrestricted operating-system authority.
+// - A VM is READY only after its core, memory, scheduler, module graph, dispatch
+//   path, and System Harness connection have all reached the required state.
