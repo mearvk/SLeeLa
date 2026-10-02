@@ -21,7 +21,6 @@ The upstream project identifies this repository as the open-source part of the J
 - Linux / Unix: `download-source.sh`
 - macOS: `download-source-macos.sh`
 - Windows 10+: `download-source.ps1`
-- Windows command launcher: `download-source.cmd`
 
 JetBrains documents additional module acquisition and build procedures upstream; those are intentionally separate from this source-acquisition layer.
 
