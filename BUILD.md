@@ -271,3 +271,21 @@ make compiler
 ```
 
 The root `make all` target includes the compiler package before the VM package. The compiler does not silently add language features, VM objects, capabilities, or target permissions that are absent from the SLeeLa source declaration.
+
+
+## SLeeLa Decompiler library build
+
+The SLeeLa decompiler is a first-class library package under `lib/decompiler`. Its source-level contract is defined by the `.sleela` classes and its native implementation is provided behind the C/C++ boundary.
+
+From the repository root:
+
+```text
+make decompiler
+make -C lib/decompiler all
+make -C lib/decompiler sanity
+make -C lib/decompiler clean
+```
+
+The decompiler supports BASIC_COMPLETE and ADVANCED_TOTAL profiles, explicit source language/version selection, expected input, desired output, fractional-input policies, loadable language modules, architecture detection, weighted OS/ABI discernment, evidence preservation, reconstruction, and VM-readiness validation.
+
+The decompiler must remain source-driven: native C/C++ services implement the SLeeLa-defined contract rather than establishing an independent decompiler language model.
