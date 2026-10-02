@@ -23,6 +23,8 @@ The SLVM will provide:
 - function/method invocation and return
 - exception/error propagation
 - integration with the existing garbage collector
+- a lazy, configurable memory budget with a 512 MiB default
+- GC-backed managed content allocation without eagerly reserving 512 MiB
 - integration with the existing security supervisor
 - controlled native/OS boundaries
 - integration points for the SLeeLa compiler and loader
