@@ -37,3 +37,8 @@ SLVM/1 through SLVM/6 consume the same authoritative SLeeLa Core/Output Symbol r
 New VM source symbols therefore become part of the common VM construction contract for all six generations; unsupported generation-specific features are rejected or omitted according to the source's required/optional status.
 
 Copyright (c) Max Rupplin - MEARVK LLC - 2026
+
+
+## Linking Manager symbols
+
+The compiler resolves five Linking Manager profiles: `SleelaVMLinkingManagerBasic`, `SleelaVMLinkingManagerModerate`, `SleelaVMLinkingManagerAdvanced`, `SleelaVMLinkingManagerGovernment`, and `SleelaVMLinkingManagerMilitary`. Each links to a known SLVM major/minor version before observations are enabled. Memory, certificate, transaction, resolver, audit, attestation, capability, provenance, checkpoint, and higher-assurance observations are emitted only when permitted by the plan. Linking is observational and does not bypass VM capability or security controls.
