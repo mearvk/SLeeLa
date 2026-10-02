@@ -1,0 +1,28 @@
+#sleela 1.3
+// Source-facing Nordshrift contract.
+// .sst remains the authoring surface; this object records its resolved
+// SLeeLa source result before the normal compiler/VM pipeline.
+class NordshriftSource {
+ String sheetPath;
+ String libraryRoot;
+ String outputSource;
+ String target;
+ uint32 resolvedPackages;
+ uint32 resolvedSymbols;
+ uint32 resolved;
+ uint32 emitted;
+
+ function configure(sheet,root,targetName){
+  sheetPath=sheet;libraryRoot=root;target=targetName;
+ }
+ function resolveLibrary(){resolved=1;return 1;}
+ function recordResolution(packages,symbols){
+  resolvedPackages=packages;resolvedSymbols=symbols;
+ }
+ function emitSleela(sourcePath){
+  outputSource=sourcePath;emitted=1;return 1;
+ }
+ function validate(){
+  return resolved==1;
+ }
+}
