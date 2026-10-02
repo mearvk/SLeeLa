@@ -1,0 +1,5 @@
+class SleelaVMCompilerManagerAdvanced {
+ uint32 profileCode; uint32 objectCount; uint32 requiredCount; uint32 categoryCount; uint32 exactCount;
+ uint32 dependencyCode; uint32 capabilityCode; uint32 certificateCode; uint32 attestationCode; uint32 provenanceCode;
+ function initialize(); function requireTotalVM(); function reviewObjectCount(); function reviewCategories(); function reviewRequiredParts(); function reviewDependencies(); function reviewCapabilities(); function reviewCertificates(); function reviewAttestation(); function reviewProvenance(); function reportFine(); function reportMissing(); function reportExcess(); function reportDependencyChain(); function validate();
+}
