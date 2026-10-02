@@ -123,3 +123,13 @@ make decompiler
 The package Makefile at `lib/decompiler/Makefile` is authoritative for its native C/C++ compilation and sanity checks. The root dispatcher only enters that package build; it does not duplicate its source list.
 
 The decompiler's six source classes are included in the library symbol manifest. The current library inventory is 959 `.sleela` source units, 88 module-facade symbols, and 1,047 total symbol records.
+
+
+## Compiler and Decompiler Language/Format Reference Catalog
+
+The compiler and decompiler maintain synchronized native reference catalogs for language names, producer programs, versions, source forms, intermediate/object representations, binary/executable/package formats, architecture, OS/ABI evidence, and safety policy. Reference matches are evidence only and never authorize execution.
+
+- lib/compiler/LANGUAGE.FORMAT.REFERENCE.md
+- lib/decompiler/LANGUAGE.FORMAT.REFERENCE.md
+
+Current library inventory: 967 .sleela source units, 74 package families, 88 module-facade symbols, 1,055 total symbol records.
