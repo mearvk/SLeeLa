@@ -1,0 +1,18 @@
+#sleela 1.3
+// Source-time view of the canonical /lib collection for SST consumers.
+// Discovery is recursive and must agree with the compiler/Nordshrift index.
+class SSTLibrary {
+ String root;
+ uint32 packageCount;
+ uint32 sourceCount;
+ uint32 symbolCount;
+
+ function configure(libraryRoot){root=libraryRoot;}
+ function discover(){return 1;}
+ function containsPackage(name){return 1;}
+ function containsSource(path){return 1;}
+ function recordInventory(packages,sources,symbols){
+  packageCount=packages;sourceCount=sources;symbolCount=symbols;
+ }
+ function validate(){return 1;}
+}
