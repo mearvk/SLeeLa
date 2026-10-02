@@ -214,3 +214,21 @@ Direct Skya native build entry points are now provided under `build/`:
 - macOS: `./build/skya-macos.sh` -> `build/skya/macos/skya`
 
 These scripts compile the current `telephony-skya/native` engine directly. They complement, rather than replace, the integrated `impl/build/sleela skya ...` path. See `build/README.md` for platform prerequisites and runtime examples.
+
+
+## SLeeLa source and SLVM command-line modes
+
+The built `sleela` executable accepts `.sleela` in two forms:
+
+```text
+sleela run source.sleela
+    source → authoritative frontend → Core representation → SLVM
+
+sleela compile source.sleela -o program.sleela
+sleela run program.sleela
+    source → persistent Core artifact → validation/loader → SLVM
+```
+
+The first form is direct/native SLeeLa source execution: the C/C++ SLeeLa toolchain compiles the source in memory and the native C Core executes it through SLVM. The second form separates compilation from execution and loads the persistent Core artifact through the same SLVM. Neither path creates a parallel SLeeLa interpreter.
+
+See `sleela-virtual-machine/docs/COMMAND-LINE-EXECUTION.md`.
