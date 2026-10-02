@@ -1,11 +1,23 @@
 #include "resolver.h"
+#if defined(_WIN32)
+#include <winsock2.h>
+#include <ws2tcpip.h>
+#include <windows.h>
+#else
 #include <arpa/inet.h>
 #include <netdb.h>
+#endif
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#if !defined(_WIN32)
 #include <sys/stat.h>
 #include <unistd.h>
+#endif
+
+#if defined(_WIN32)
+static void resolver_windows_init(void) { static int ready = 0; if (!ready) { WSADATA w; if (WSAStartup(MAKEWORD(2,2), &w) == 0) ready = 1; } }
+#endif
 
 static int is_ip(const char *s, int *family) {
     struct in_addr v4; struct in6_addr v6;
@@ -16,6 +28,9 @@ static int is_ip(const char *s, int *family) {
 
 int sleela_resolver_forward(const char *hostname, char *address, size_t address_size, int family) {
     if (!hostname || !address || address_size == 0) return 0;
+#if defined(_WIN32)
+    resolver_windows_init();
+#endif
     struct addrinfo hints, *list = NULL;
     memset(&hints, 0, sizeof(hints));
     hints.ai_family = family ? family : AF_UNSPEC;
@@ -32,6 +47,9 @@ int sleela_resolver_forward(const char *hostname, char *address, size_t address_
 
 int sleela_resolver_reverse(const char *address, char *hostname, size_t hostname_size) {
     if (!address || !hostname || hostname_size == 0) return 0;
+#if defined(_WIN32)
+    resolver_windows_init();
+#endif
     struct sockaddr_storage ss; memset(&ss, 0, sizeof(ss));
     socklen_t len = 0;
     struct sockaddr_in *v4 = (struct sockaddr_in *)&ss;
@@ -47,6 +65,10 @@ int sleela_resolver_reverse(const char *address, char *hostname, size_t hostname
 
 int sleela_resolver_path(const char *path, char *canonical, size_t canonical_size) {
     if (!path || !canonical || canonical_size == 0) return 0;
+#if defined(_WIN32)
+    DWORD n = GetFullPathNameA(path, (DWORD)canonical_size, canonical, NULL);
+    return n > 0 && n < canonical_size;
+#else
     char *resolved = realpath(path, NULL);
     if (!resolved) return 0;
     size_t n = strlen(resolved);
@@ -54,6 +76,7 @@ int sleela_resolver_path(const char *path, char *canonical, size_t canonical_siz
     memcpy(canonical, resolved, n + 1);
     free(resolved);
     return 1;
+#endif
 }
 
 int sleela_resolver_resolve(const char *input, sleela_resolution *out) {
