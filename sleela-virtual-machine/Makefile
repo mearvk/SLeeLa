@@ -14,7 +14,10 @@ $(BUILD_DIR)/slvm: src/slvm.c src/slvm_security.c src/slvm_io_heuristic.c src/sl
 test: $(BUILD_DIR)/slvm
 	$(BUILD_DIR)/slvm
 
+lib-conformance:
+	bash tools/check-lib-slvm.sh
+
 clean:
 	rm -rf $(BUILD_DIR)
 
-.PHONY: all test clean
+.PHONY: all test lib-conformance clean
