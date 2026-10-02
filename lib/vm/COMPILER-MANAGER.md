@@ -1,3 +1,5 @@
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-vm-creator-logo-001.jpg" alt="SLeeLa VM Creator" width="100%"></p>
+
 # SLeeLa Compiler Manager
 
 The Compiler Manager (CM) is a compile-time completeness gate for an SLVM/SLJVM declaration. The SLeeLa VM source may declare a CM profile and an object-count/category declaration. The CM reviews the declaration before generation and reports exactly which modules are fine, missing, excessive, invalid, or dependent on another module.
