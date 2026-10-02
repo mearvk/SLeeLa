@@ -1,3 +1,5 @@
+<img align="right" src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="75" height="75" alt="SLeeLa">
+
 # JetBrains Source Acquisition
 
 This folder provides platform-specific scripts for acquiring the official open-source JetBrains IntelliJ IDEA / IntelliJ Platform source tree.

@@ -1,3 +1,5 @@
+<img align="right" src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="75" height="75" alt="SLeeLa">
+
 # SLeeLa Compiler Tutorials
 
 These tutorials teach /lib/compiler from authoritative .sleela source through semantic analysis, SLeeLa IR, VM lowering, and SLVM/SLJVM artifact planning.
