@@ -1,4 +1,4 @@
-# SLeeLa Decompiler Modules
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-decompiler-logo-001.jpeg" alt="SLeeLa Decompiler" width="100%"></p>\n\n# SLeeLa Decompiler Modules
 
 Modules extend decompilation beyond C, C++, and SLeeLa without modifying the core pipeline.
 
