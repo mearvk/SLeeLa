@@ -2,6 +2,8 @@
 
 #include <string.h>
 #include <stdint.h>
+#include "slvm_security.h"
+#include "slvm_io_heuristic.h"
 
 static int push(slvm_t *vm, slvm_word_t value) {
     if (vm->stack_size >= vm->stack_capacity) return 0;
@@ -37,6 +39,8 @@ void slvm_init(slvm_t *vm, const uint8_t *code, size_t code_size,
     vm->stack_size = 0;
     vm->pc = 0;
     vm->halted = 0;
+    slvm_security_init(&vm->security);
+    slvm_io_heuristic_init(&vm->io_heuristic);
     gc_init(&vm->gc, 1024ULL * 1024ULL);
     vm->memory_limit = SLVM_DEFAULT_MEMORY_LIMIT;
 }
@@ -57,6 +61,7 @@ SLGCObject *slvm_gc_allocate(slvm_t *vm, size_t bytes,
     if (!vm) return NULL;
     const size_t used = gc_bytes(&vm->gc);
     if (bytes > vm->memory_limit || used > vm->memory_limit - bytes) return NULL;
+    if (!slvm_security_observe_resource(&vm->security, 1)) return NULL;
     return gc_allocate(&vm->gc, bytes, mark_children, destroy, context);
 }
 
@@ -73,6 +78,7 @@ size_t slvm_gc_bytes(const slvm_t *vm) {
 slvm_status_t slvm_step(slvm_t *vm) {
     if (!vm || !vm->code || vm->pc >= vm->code_size) return SLVM_ERROR;
     if (vm->halted) return SLVM_HALTED;
+    if (!slvm_security_observe_instruction(&vm->security)) return SLVM_ERROR;
 
     const uint8_t opcode = vm->code[vm->pc++];
 
@@ -176,4 +182,19 @@ slvm_status_t slvm_run(slvm_t *vm) {
         const slvm_status_t status = slvm_step(vm);
         if (status != SLVM_OK) return status;
     }
+}
+
+int slvm_security_allow_io(slvm_t *vm, slvm_io_kind_t kind, size_t bytes) {
+    if (!vm) return 0;
+    if (!slvm_security_observe_io(&vm->security, kind, bytes)) return 0;
+    const slvm_io_decision_t decision = slvm_io_heuristic_observe(
+        &vm->io_heuristic, kind, bytes,
+        (uint32_t)vm->security.window_requests,
+        slvm_security_state(&vm->security));
+    return decision != SLVM_IO_HEURISTIC_BLOCK;
+}
+
+void slvm_security_reset(slvm_t *vm) {
+    if (!vm) return;
+    slvm_security_reset_window(&vm->security);
 }
