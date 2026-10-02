@@ -289,3 +289,15 @@ make -C lib/decompiler clean
 The decompiler supports BASIC_COMPLETE and ADVANCED_TOTAL profiles, explicit source language/version selection, expected input, desired output, fractional-input policies, loadable language modules, architecture detection, weighted OS/ABI discernment, evidence preservation, reconstruction, and VM-readiness validation.
 
 The decompiler must remain source-driven: native C/C++ services implement the SLeeLa-defined contract rather than establishing an independent decompiler language model.
+
+
+## Compiler and Decompiler Native Language/Format Reference
+
+Both packages use explicit native reference catalogs:
+
+- lib/compiler/LANGUAGE.FORMAT.REFERENCE.md
+- lib/decompiler/LANGUAGE.FORMAT.REFERENCE.md
+
+The catalogs map language names to common producer programs, versions, source forms, IR/object models, and known binary/executable/package formats such as ELF, PE/COFF, Mach-O, JVM class/JAR, .NET assemblies, BEAM, Lua bytecode, WebAssembly, LLVM bitcode, and raw/unknown binaries.
+
+These are safety-aware reference data. Extensions, magic values, compiler strings, and format matches are evidence rather than authorization. The compiler and decompiler must inspect untrusted artifacts without executing them, preserve conflicting evidence, distinguish managed artifacts from native machine code, and keep OS/ABI uncertainty explicit.
