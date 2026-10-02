@@ -58,3 +58,14 @@ The new VM must therefore preserve the existing Core VM/artifact ABI as its comp
 ## Completeness invariant
 
 A source construct is not complete until its lexer/tokenization, AST, semantic validation, compiler lowering, Core operation, artifact handling, security/capability boundary, and VM execution path are all mapped. This prevents accepted SLeeLa syntax from becoming an unmapped runtime operation.
+
+## Command-line source and artifact modes
+
+The command-line interpreter/driver has one authoritative source path and one persistent representation path:
+
+| CLI input | Processing | Execution |
+|---|---|---|
+| textual `.sleela` | Lexer → Parser → AST → semantic/compiler lowering → Core representation | native C Core SLVM |
+| persistent `.sleela` Core artifact | artifact/ABI validation → loader | native C Core SLVM |
+
+Therefore `sleela run source.sleela` is the direct/native source form, while `sleela compile source.sleela -o program.sleela` followed by `sleela run program.sleela` is the persistent SLVM form. Both use the same authoritative language frontend and the same Core execution boundary; there is no parallel grammar or second interpreter.
