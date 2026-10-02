@@ -1,0 +1,12 @@
+#sleela 1.3
+// Nordshrift semantic SQL connector boundary.
+class SQLConnector {
+ String provider;
+ String libraryRoot;
+ String status;
+ function initialize(){status="unresolved";}
+ function resolve(){status="resolved";return status;}
+ function connect(){status="connected";return status;}
+ function disconnect(){status="disconnected";return status;}
+ function install(){status="install-planned";return status;}
+}
