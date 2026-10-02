@@ -1,0 +1,6 @@
+class SleelaCompilerParser {
+ List tokens; List nodes; Integer nodeCount; Integer currentToken;
+ function initialize(); function parse(); function parseClass(); function parseFunction();
+ function parseField(); function parseList(); function parseExpression(); function parseStatement();
+ function synchronize(); function validateTree(); function declarationCount();
+}
