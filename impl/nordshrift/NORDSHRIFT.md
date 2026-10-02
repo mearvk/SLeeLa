@@ -208,7 +208,7 @@ Nordshrift 2.6-dev carries forward source readability, `#sleela` syntax-version 
 
 ## /lib Library Collection — September 2026
 
-The canonical SLeeLa library collection now covers the repository module inventory with **74 package families, 953 SLeeLa source units, 88 module-facade symbols, and 1,041 total symbol records**.
+The canonical SLeeLa library collection now covers the repository module inventory with **77 package families, 10039 SLeeLa source units, 90 module-facade symbols, and 10,129 total symbol records**.
 
 The compiler and Nordshrift use the same recursive /lib discovery path; the VM-facing loader contract is represented by lib/vm/SLVMModuleLoader.sleela. New package directories therefore enter compiler/Nordshrift visibility through the actual library tree rather than a second hard-coded registry.
 
