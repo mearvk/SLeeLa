@@ -29,3 +29,8 @@ The CM produces structured findings with these statuses:
 - `INVALID` — the declaration itself is inconsistent.
 
 A textual compile report can therefore read as a module-by-module checklist instead of merely returning a single pass/fail value.
+
+
+## Build integration
+
+The package build is available with `make -C lib/vm` and from the repository root with `make vm`. The Compiler Manager contract is reviewed before VM package objects are considered ready for assembly; the build does not silently change the declared VM inventory.
