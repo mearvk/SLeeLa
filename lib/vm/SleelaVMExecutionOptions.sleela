@@ -1,0 +1,6 @@
+class SleelaVMExecutionOptions {
+ Integer executionMode; Integer instructionWidth; Integer instructionBudget; Integer callDepth; Integer trapMode;
+ Integer exceptionModel; Integer signalModel; Integer syscallModel; Integer interpreterMode; Integer jitMode; Integer aotMode;
+ Integer deterministicMode; Integer replayMode; Integer sandboxMode;
+ function validate(); function estimateInstructionCost(); function configureTraps(); function configureExceptions(); function configureExecution();
+}
