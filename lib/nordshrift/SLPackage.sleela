@@ -1,0 +1,9 @@
+#sleela 1.3
+// SLeeLa Standard Library package facade for Nordshrift.
+class SLPackage {
+ String name;
+ String version;
+ function initialize(){name="nordshrift";version="2.6-dev";}
+ function packageName(){return name;}
+ function packageVersion(){return version;}
+}
