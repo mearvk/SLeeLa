@@ -1,0 +1,5 @@
+// SLeeLa Decompiler tutorial example.
+class FractionalReconstructionExample {
+    FractionalInput policy;
+    function preserve() { return policy; }
+}
