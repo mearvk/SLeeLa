@@ -1,0 +1,7 @@
+// SLeeLa Compiler tutorial example.
+class HelloVMExample {
+    function main() {
+        text message = "Hello from SLeeLa compiler";
+        return message;
+    }
+}
