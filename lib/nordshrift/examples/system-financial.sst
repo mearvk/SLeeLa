@@ -1,0 +1,12 @@
+#sst 2.0
+sheet NordshriftRemoteFinance {
+  system "RemoteFinancialSystem" {
+    group "finance.remote";
+    name "RemoteLedger";
+    component "AccountService";
+    component "TransactionService";
+    component "AuditService";
+    remote true;
+  }
+  target sleela;
+}
