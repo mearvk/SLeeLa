@@ -9,7 +9,7 @@ $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
 
 $(BUILD_DIR)/slvm: src/slvm.c src/slvm_security.c src/slvm_io_heuristic.c src/slvm_memory_security.c ../runtime/garbage_collector.c tests/test_slvm.c include/slvm.h | $(BUILD_DIR)
-	$(CC) $(CFLAGS) src/slvm.c ../runtime/garbage_collector.c tests/test_slvm.c -o $@
+	$(CC) $(CFLAGS) src/slvm.c src/slvm_security.c src/slvm_io_heuristic.c src/slvm_memory_security.c ../runtime/garbage_collector.c tests/test_slvm.c -o $@
 
 test: $(BUILD_DIR)/slvm
 	$(BUILD_DIR)/slvm
