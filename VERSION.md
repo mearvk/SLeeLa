@@ -2,12 +2,12 @@
 
 ## Current Development Version
 
-**SLeeLa:** 0.3.21-dev
+**SLeeLa:** 0.3.22-dev
 **Sleela-Complete:** 0.3.2-dev  
 **Nordshrift Complete:** 2.7.1-dev  
 **Native Foundation:** 0.3.2-dev  
 **Sleela Language Syntax:** 1.6 (supported range 1.3 .. 1.6)  
-**Compiler Compatibility Gate:** 2.8-dev  
+**Compiler Compatibility Gate:** 2.9-dev  
 **Java Authorship Transition Gate:** 1.19-dev
 **Edition:** SLeeLa Complete / Native Foundation  
 **Status:** Active Development  
@@ -102,6 +102,15 @@ The next semantic qualification layer hardens Java control-flow and checked-exce
 
 **Java Authorship Transition Gate:** 1.18-dev
 
+
+## 0.3.22 Development Increment
+
+The 0.3.22 development increment updates the canonical SLeeLa source inventory and versioned library-control records after the compiler/decompiler source expansion. `/lib` now contains 10,033 `.sleela` source units across 75 package families, with 88 module-facade symbols and 10,121 total symbol records. The repository-wide `.sleela` inventory is 10,235 files. Compiler and decompiler reference/source models are included in the canonical inventory, and the library manifest/index revisions are synchronized with the source tree.
+
+**Library Source Inventory:** 10,033 `/lib` `.sleela` units
+**Repository-wide SLeeLa Source Inventory:** 10,235 `.sleela` files
+**Library Packages:** 75
+**Library Symbol Records:** 10,121
 
 ## 0.3.21 Development Design Increment
 
