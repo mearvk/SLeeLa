@@ -5,7 +5,7 @@ CFLAGS ?= -std=c11 -O2 -Wall -Wextra -Wpedantic
 CXXFLAGS ?= -std=c++17 -O2 -Wall -Wextra -Wpedantic
 C_SOURCES := $(wildcard ../*.c)
 CPP_SOURCES := $(wildcard ../*.cpp)
- .PHONY: all preferred syntax clean
+.PHONY: all preferred syntax clean
 all: preferred syntax
 preferred:
 	@$(MAKE) -C ../../preferred-routers syntax
