@@ -98,7 +98,42 @@ Program Parser::parseProgram(){
                 if(contentStarted) error("declaration annotations must precede their declaration");
                 for(auto &a:anns) p.annotations.add(std::move(a));
             }
-        } else if(accept(Tok::KwImport)){ contentStarted=true; if(check(Tok::Ident)&&cur().text=="dynamite"&&peek(1).kind==Tok::Ident&&peek(1).text=="connector"){ i_+=2; std::string path; while(!check(Tok::Semicolon)&&!check(Tok::Eof)){ if(!path.empty()) path += cur().text=="."? "." : ""; path += cur().text; ++i_; } expect(Tok::Semicolon,"';'"); p.dynamiteImports.push_back(path); } else if(check(Tok::DoubleColon)){ size_t save=i_; ++i_; if(check(Tok::Ident)&&cur().text=="dynamite"){++i_; if(check(Tok::DoubleColon)){++i_; if(check(Tok::Ident)&&cur().text=="connector"){++i_; if(check(Tok::DoubleColon)){++i_; std::string path; while(!check(Tok::Semicolon)&&!check(Tok::Eof)){ path += cur().text; ++i_; } expect(Tok::Semicolon,"';'"); p.dynamiteImports.push_back(path); }}}}} if(p.dynamiteImports.empty() || save==i_) i_=save; } else { p.imports.push_back(expect(Tok::Ident,"module name").text); expect(Tok::Semicolon,"';'"); } }
+        } else if(accept(Tok::KwImport)){ contentStarted=true;
+            bool parsedDynamite=false;
+            if(check(Tok::Ident)&&cur().text=="dynamite"&&peek(1).kind==Tok::Ident&&peek(1).text=="connector"){
+                i_+=2; std::string first; std::string path; bool named=false;
+                if(check(Tok::Ident)&&peek(1).kind==Tok::Assign){ first=cur().text; i_+=2; named=true; }
+                while(!check(Tok::Semicolon)&&!check(Tok::Eof)){ path += cur().text; ++i_; }
+                expect(Tok::Semicolon,"';'");
+                if(path.empty()) error("Dynamite Connector import requires a source path");
+                p.dynamiteImports.push_back({named?first:"",path}); parsedDynamite=true;
+            } else if(check(Tok::DoubleColon)){
+                size_t save=i_; ++i_;
+                if(check(Tok::Ident)&&cur().text=="dynamite"){ ++i_;
+                    if(check(Tok::DoubleColon)){ ++i_;
+                        if(check(Tok::Ident)&&cur().text=="connector"){ ++i_;
+                            if(check(Tok::DoubleColon)){ ++i_;
+                                std::string reference;
+                                if(check(Tok::Ident)&&peek(1).kind==Tok::DoubleColon){ reference=cur().text; i_+=2; }
+                                std::string path;
+                                while(!check(Tok::Semicolon)&&!check(Tok::Eof)){ path += cur().text; ++i_; }
+                                expect(Tok::Semicolon,"';'");
+                                if(path.empty()) error("Dynamite Connector import requires a source path");
+                                p.dynamiteImports.push_back({reference,path}); parsedDynamite=true;
+                            }
+                        }
+                    }
+                }
+                if(!parsedDynamite) i_=save;
+            }
+            if(!parsedDynamite && p.dynamiteImports.size()>1) {
+                // No-op: ordinary imports remain independent of Dynamite references.
+            }
+            if(!parsedDynamite) {
+                p.imports.push_back(expect(Tok::Ident,"module name").text);
+                expect(Tok::Semicolon,"';'");
+            }
+        }
         else if(check(Tok::KwStruct)){ contentStarted=true; p.structs.push_back(parseStruct()); }
         else {
             unsigned mods=parseJavaModifiers();
