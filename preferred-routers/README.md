@@ -1,3 +1,5 @@
+<img align="right" src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="75" height="75" alt="SLeeLa">
+
 # Preferred Routers
 
 Configuration-driven preferred/well-known routing anchors for SLeeLa HTTP implementations.
