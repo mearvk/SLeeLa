@@ -1,18 +1,34 @@
 # SLeeLa VM Source Symbol Contract
 
-The VM source classes under `/lib/vm` are compiler-visible symbols. The authoritative compiler must accept these classes as input symbols and must be able to emit their resolved construction information as output metadata.
+The VM source classes under `/lib/vm` are compiler-visible symbols. The authoritative compiler must accept these classes as input symbols and emit resolved construction information as output metadata.
 
 ## Input symbols
 
+Core construction symbols:
+
 `SleelaVMSource`, `SleelaVMModule`, `SleelaVMArchitecture`, `SleelaVMPhysicalLimits`, `SleelaVMOptions`, `SleelaVMOptionCodes`, `SleelaVMFeatureBits`, `SleelaVMExecutionOptions`, `SleelaVMMemoryOptions`, `SleelaVMCpuOptions`, `SleelaVMConcurrencyOptions`, `SleelaVMIOOptions`, `SleelaVMSecurityOptions`, `SleelaVMRuntimeOptions`, `SleelaVMJVMOptions`, and `SleelaVMBuildOptions`.
 
-## Compiler planning symbols
+Memory Management symbols:
 
-The compiler resolves architecture, operating system, ABI, execution model, memory model, CPU features, concurrency, I/O, resolver, security, capabilities, runtime, JVM/broker, build, packaging, and physical limits.
+- `SleelaVMMemoryManagementSimple`
+- `SleelaVMMemoryManagementManaged`
+- `SleelaVMMemoryManagementAdvanced`
+
+Security Management symbols:
+
+- `SleelaVMSecurityManagementSimple`
+- `SleelaVMSecurityManagementManaged`
+- `SleelaVMSecurityManagementAdvanced`
+
+## Compiler planning
+
+The compiler resolves architecture, operating system, ABI, execution model, memory model, MM policy, CPU features, concurrency, I/O, resolver, SM policy, capabilities, runtime, JVM/broker, build, packaging, and physical limits.
+
+MM dependencies are ordered so that checkpointing requires integrity and migration requires checkpointing. SM dependencies are ordered so replay protection and certificates require cryptography; attestation requires certificate support; delegation/provenance require audit evidence.
 
 ## Output symbols
 
-The resolved plan must expose target kind, architecture, OS, ABI, selected option codes, feature masks, module set, generated C/C++ units, headers, libraries, capabilities, resource reservations, verification metadata, and final artifact information.
+The resolved plan must expose target kind, architecture, OS, ABI, selected option codes, feature masks, MM/SM policy, module set, generated C/C++ units, headers, libraries, capabilities, resource reservations, verification metadata, and final artifact information.
 
 ## VM generations 1–6
 
