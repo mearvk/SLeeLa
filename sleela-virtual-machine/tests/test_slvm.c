@@ -1,3 +1,14 @@
+
+
+static void test_memory_security(void) {
+    slvm_memory_security_t m;
+    slvm_memory_security_init(&m, 1024);
+    assert(slvm_memory_security_check(&m, 128, 1) == SLVM_MEMORY_ALLOW);
+    assert(slvm_memory_security_check(&m, 512, 1) != SLVM_MEMORY_DENY);
+    assert(slvm_memory_security_check(&m, 2048, 1) == SLVM_MEMORY_DENY);
+    slvm_memory_security_record_free(&m, 512);
+    assert(slvm_memory_security_state(&m) != SLVM_MEMORY_DENIED);
+}
 #include "slvm.h"
 
 #include <assert.h>
