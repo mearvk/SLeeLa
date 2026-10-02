@@ -1,0 +1,11 @@
+// SLeeLa VM tutorial example: Startup Module plus Dynamic Memory Guard.
+class StartupAndMemoryGuardTutorialExample {
+    SleelaVMSource source;
+    SleelaVMStartup startup;
+    function configure() {
+        source.configureDynamicMemoryGuard();
+        source.dynamicMemoryGuard.mode = VMDynamicMemoryGuardMode.SLOW_CAREFUL;
+        startup.start();
+    }
+    function stop() { startup.shutdown(); }
+}
