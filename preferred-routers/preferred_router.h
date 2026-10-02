@@ -13,6 +13,8 @@ typedef struct {
 int sleela_preferred_router_select(const char *config_path, const char *protocol,
                                    sleela_preferred_router *out);
 int sleela_preferred_router_startup(const char *config_path, const char *protocol);
+/* Packet-layer policy hook. Returns 1 when the configured preferred tier is usable. */
+int sleela_preferred_router_packet_policy(const char *protocol, int minimum_preference);
 #ifdef __cplusplus
 }
 #endif
