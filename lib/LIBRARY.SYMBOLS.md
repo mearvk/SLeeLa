@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 1.0
-library-source-files: 10039
+library-source-files: 10046
 library-packages: 77
 module-facade-symbols: 90
-total-symbol-records: 10129
+total-symbol-records: 10136
 
 package	symbol	path	kind
 antivirus	SLPackage.sleela	lib/antivirus/SLPackage.sleela	source
@@ -1071,3 +1071,11 @@ sst	SSTLibrary.sleela	lib/sst/SSTLibrary.sleela	source
 nordshrift	SLPackage	lib/nordshrift/SLPackage.sleela	module-facade
 nordshrift	NordshriftSource.sleela	lib/nordshrift/NordshriftSource.sleela	source
 nordshrift	NordshriftCompilerBridge.sleela	lib/nordshrift/NordshriftCompilerBridge.sleela	source
+
+sst	SSTSymbolKind.sleela	lib/sst/SSTSymbolKind.sleela	source
+sst	SSTSymbol.sleela	lib/sst/SSTSymbol.sleela	source
+sst	SSTSymbolReference.sleela	lib/sst/SSTSymbolReference.sleela	source
+sst	SSTSymbolTable.sleela	lib/sst/SSTSymbolTable.sleela	source
+nordshrift	NordshriftSymbol.sleela	lib/nordshrift/NordshriftSymbol.sleela	source
+nordshrift	NordshriftSymbolResolver.sleela	lib/nordshrift/NordshriftSymbolResolver.sleela	source
+nordshrift	NordshriftSymbolTable.sleela	lib/nordshrift/NordshriftSymbolTable.sleela	source
