@@ -1,0 +1,13 @@
+class SleelaVMOptions {
+ Integer target; Integer architecture; Integer operatingSystem; Integer abi; Integer executionMode; Integer optimization;
+ Integer memoryModel; Integer garbageCollection; Integer stackModel; Integer threadingModel; Integer scheduler;
+ Integer ioModel; Integer networkModel; Integer filesystemModel; Integer ipcModel; Integer deviceModel;
+ Integer securityModel; Integer capabilityModel; Integer cryptoModel; Integer resolverModel; Integer observabilityModel;
+ Integer debugModel; Integer profilingModel; Integer determinismModel; Integer checkpointModel; Integer migrationModel;
+ Integer linkerModel; Integer packagingModel; Integer certificateModel; Integer attestationModel;
+ Integer jvmModel; Integer brokerModel; Integer guiModel; Integer audioModel; Integer videoModel;
+ Integer moduleMaskLow; Integer moduleMaskHigh; Integer featureMaskLow; Integer featureMaskHigh;
+ function defaults(); function validate(); function enableFeature(bit); function disableFeature(bit); function hasFeature(bit);
+ function selectTarget(); function selectArchitecture(); function selectOperatingSystem(); function selectABI();
+ function selectSecurity(); function selectRuntime(); function selectIO(); function selectPackaging();
+}
