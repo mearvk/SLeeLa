@@ -1,0 +1,11 @@
+#sst 2.0
+sheet SQLConnectorSystems {
+  use sst.SQLConnector;
+  use sst.MySQLConnector;
+  use sst.PostgreSQLConnector;
+  system "DatabaseLayer" {
+    group "storage.sql";
+    name "DatabaseConnector";
+  }
+  target sleela;
+}
