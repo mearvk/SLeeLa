@@ -1,3 +1,4 @@
+#include "../preferred-routers/preferred_router.h"
 #include "route_navigation.h"
 
 #include <string.h>
@@ -5,6 +6,7 @@
 static int route_hop_equal(const http3_route_hop_t *a,
                            const http3_route_hop_t *b)
 {
+    if (!sleela_preferred_router_packet_policy("HTTP/3.0", 4)) return -1;
     return a->node_id == b->node_id &&
            a->geodata.country_id == b->geodata.country_id &&
            a->geodata.network_id == b->geodata.network_id &&
