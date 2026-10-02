@@ -1,6 +1,7 @@
 #sleela 1.3
 // SST source-level Dynamite Connector contract.
 class DynamiteConnector {
+ String referenceName;
  String importPath;
  String configuration;
  String properties;
