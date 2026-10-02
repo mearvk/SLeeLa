@@ -1,0 +1,4 @@
+#include "slvm_io_heuristic.h"
+#include <string.h>
+void slvm_io_heuristic_init(slvm_io_heuristic_t*h){if(!h)return;memset(h,0,sizeof(*h));h->burst_threshold=100;h->large_request_bytes=16U*1024U*1024U;}
+slvm_io_decision_t slvm_io_heuristic_observe(slvm_io_heuristic_t*h,slvm_io_kind_t k,size_t b,uint32_t w,slvm_security_state_t s){if(!h)return SLVM_IO_HEURISTIC_BLOCK;++h->total_requests;h->total_bytes+=b;if(w>h->burst_threshold)++h->burst_requests;if(b>=h->large_request_bytes)++h->large_requests;if(k==SLVM_IO_FILE_LOAD)++h->load_requests;if(k==SLVM_IO_DYNAMIC_INSTANTIATION)++h->dynamic_requests;if(w>h->burst_threshold)++h->sequential_requests;if(s==SLVM_SECURITY_DENIED)return SLVM_IO_HEURISTIC_BLOCK;if(s==SLVM_SECURITY_RESTRICTED||w>h->burst_threshold*2U)return SLVM_IO_HEURISTIC_THROTTLE;if(s==SLVM_SECURITY_ELEVATED||b>=h->large_request_bytes||k==SLVM_IO_DYNAMIC_INSTANTIATION)return SLVM_IO_HEURISTIC_MONITOR;return SLVM_IO_HEURISTIC_ALLOW;}
