@@ -7,8 +7,10 @@ ROOT=$(CDPATH= cd -- "$DIR/../../.." && pwd)
 CONFIG="${SLEELA_SERVER_CONFIG:-$DIR/config/server.conf}"
 [ -f "$CONFIG" ] || { echo "serverd: configuration not found: $CONFIG" >&2; exit 1; }
 HTTPCTL="$ROOT/server-edition/http/httpctl"
+RESOLVER="$ROOT/resolver/build/sleela-resolver"
 HTTP_VERSION="2.1"; LOGICAL_PORT="19866"; DOWNLOAD_SIZE="0"
 NATIONAL_ID_REF=""; CITIZEN_ID_REF=""; BANK_ID_REF=""; BANKER_ID_REF=""; CROMSMRUS_ID_REF=""; RELAY_PURPOSE=""
+RESOLVER_TARGET=""; RESOLVER_REQUIRE_DYNAMIC="false"
 ENGINE=""
 INBOX=""
 STATE=""
@@ -33,6 +35,7 @@ while IFS= read -r line || [ -n "$line" ]; do
   case "$line" in *=*) key=${line%%=*}; value=${line#*=};; *) echo "serverd: invalid configuration line" >&2; exit 2;; esac
   case "$key" in
     http_version) HTTP_VERSION=$value;; logical_port) LOGICAL_PORT=$value;; download_size_bytes) DOWNLOAD_SIZE=$value;; http_api) HTTPCTL=$value;;
+    resolver_target) RESOLVER_TARGET=$value;; resolver_require_dynamic) RESOLVER_REQUIRE_DYNAMIC=$value;;
     national_id_ref) NATIONAL_ID_REF=$value;; citizen_id_ref) CITIZEN_ID_REF=$value;; bank_id_ref) BANK_ID_REF=$value;; banker_id_ref) BANKER_ID_REF=$value;; cromsmrus_id_ref) CROMSMRUS_ID_REF=$value;; relay_purpose) RELAY_PURPOSE=$value;;
     engine) ENGINE=$value;; inbox) INBOX=$value;; state) STATE=$value;; server_source) SOURCE=$value;;
     log) LOG=$value;; mode) MODE=$value;; tick) TICK=$value;; foreground) FOREGROUND=$value;;
@@ -72,6 +75,7 @@ case "$MESH_PORT" in ""|*[!0-9]*) echo "serverd: mesh_port must be numeric" >&2;
 [ "$MESH_PORT" -ge 1 ] && [ "$MESH_PORT" -le 65535 ] || { echo "serverd: mesh_port must be 1..65535" >&2; exit 2; }
 [ -f "$TRAFFIC_LOGGER" ] || { echo "serverd: traffic logger missing: $TRAFFIC_LOGGER" >&2; exit 1; }
 export SLEELA_RELAY_NATIONAL_ID_REF="$NATIONAL_ID_REF" SLEELA_RELAY_CITIZEN_ID_REF="$CITIZEN_ID_REF" SLEELA_RELAY_BANK_ID_REF="$BANK_ID_REF" SLEELA_RELAY_BANKER_ID_REF="$BANKER_ID_REF" SLEELA_RELAY_CROMSMRUS_ID_REF="$CROMSMRUS_ID_REF" SLEELA_RELAY_PURPOSE="$RELAY_PURPOSE"
+export SLEELA_RESOLVER_TARGET="$RESOLVER_TARGET" SLEELA_RESOLVER_REQUIRE_DYNAMIC="$RESOLVER_REQUIRE_DYNAMIC"
 export SLEELA_BIN="$ENGINE" SLEELA_SHA256_MANIFEST="$MANIFEST" SLEELA_SERVER_CONFIG="$CONFIG"
 export SLEELA_SERVER_INBOX="$INBOX" SLEELA_SERVER_STATE="$STATE" SLEELA_SERVER_ALLOW_NETWORK="$NETWORK"
 mkdir -p "$STATE" "$(dirname "$INBOX")"
@@ -105,6 +109,8 @@ if [ "$FIREWALL_REQUIRED" = true ]; then
 else
   sh "$PORTCTL" open "Discord-2" "$PORT" "$PORT_PROTO" >>"$LOG" 2>&1 || echo "serverd: firewall open unavailable; continuing by configuration"
 fi
+if [ -x "$RESOLVER" ]; then "$RESOLVER" --self-test >>"$LOG" 2>&1 || { echo "serverd: resolver self-test failed" >&2; exit 1; }; fi
+if [ -n "$RESOLVER_TARGET" ] && [ -x "$RESOLVER" ]; then "$RESOLVER" --resolve "$RESOLVER_TARGET" >>"$LOG" 2>&1 || { echo "serverd: resolver target could not be resolved" >&2; exit 1; }; fi
 "$HTTPCTL" --logical-port "$LOGICAL_PORT" --size "$DOWNLOAD_SIZE" --version "$HTTP_VERSION" >>"$LOG" 2>&1 || { echo "serverd: HTTP capability validation failed" >&2; exit 1; }
 SLEELA_SERVER_STATE="$STATE" SLEELA_TRAFFIC_LOG_DIR="$STATE/traffic" SLEELA_TRAFFIC_PORTS="$PROBE_PORT,$SCAN_PORT,$PORT,20000" sh "$TRAFFIC_LOGGER" start >>"$LOG" 2>&1 || true
 SLEELA_MESH_PORT="$MESH_PORT" SLEELA_MESH_INTERVAL_SECONDS="$MESH_INTERVAL" SLEELA_MESH_PEERS_FILE="${SLEELA_MESH_PEERS_FILE:-$ROOT/server-edition/participation/known-servers.conf}" SLEELA_SERVER_STATE="$STATE" SLEELA_ACTIVE_PROBING="$ACTIVE_PROBING" SLEELA_PROBE_ALLOWLIST="$PROBE_ALLOWLIST" SLEELA_KNOWN_PORTS="$KNOWN_PORTS" sh "$ROOT/server-edition/port-awareness/known-connections.sh" >>"$LOG" 2>&1 || true
