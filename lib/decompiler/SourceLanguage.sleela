@@ -1,0 +1,5 @@
+class SleelaDecompilerSourceLanguage {
+ String name; String family; String version; String abi; String compiler;
+ Boolean enabled; Boolean exactVersionRequired;
+ function initialize(); function validate(); function describe();
+}
