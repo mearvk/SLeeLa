@@ -3,6 +3,8 @@
 #include <stddef.h>
 #include <stdint.h>
 #include "garbage_collector.h"
+#include "slvm_security.h"
+#include "slvm_io_heuristic.h"
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -26,6 +28,8 @@ typedef struct {
     slvm_pc_t pc;
     int halted;
     GarbageCollector gc;
+    slvm_security_t security;
+    slvm_io_heuristic_t io_heuristic;
     size_t memory_limit;
 } slvm_t;
 void slvm_init(slvm_t*, const uint8_t*, size_t, slvm_word_t*, size_t);
@@ -39,6 +43,8 @@ SLGCObject *slvm_gc_allocate(slvm_t *vm, size_t bytes,
                              void *context);
 size_t slvm_gc_collect(slvm_t *vm);
 size_t slvm_gc_bytes(const slvm_t *vm);
+int slvm_security_allow_io(slvm_t *vm, slvm_io_kind_t kind, size_t bytes);
+void slvm_security_reset(slvm_t *vm);
 #ifdef __cplusplus
 }
 #endif
