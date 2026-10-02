@@ -1,10 +1,10 @@
 # SLeeLa /lib Library Index
 
 **Revision:** 0.8  
-**Packages:** 75  
-**SLeeLa source units:** 10033  
-**Module-facade symbols:** 88  
-**Total symbol records:** 10121  
+**Packages:** 77  
+**SLeeLa source units:** 10046  
+**Module-facade symbols:** 90  
+**Total symbol records:** 10136  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
 
 The `/lib` tree is the canonical language-facing source collection. The compiler and Nordshrift use the same recursive library discovery implementation, so a package becomes importable when its directory contains SLeeLa source.
