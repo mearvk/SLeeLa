@@ -1,0 +1,8 @@
+class SleelaCompilerAdvanced {
+ Integer profileCode; Integer requiredStageCount; Integer completedStageCount; Integer exactStageCount;
+ Integer capabilityCode; Integer securityCode; Integer provenanceCode; Integer certificateCode;
+ function initialize(); function requireTotalPipeline(); function reviewSource(); function reviewFrontend();
+ function reviewSymbols(); function reviewSemantics(); function reviewIR(); function reviewLowering();
+ function reviewVMTarget(); function reviewCapabilities(); function reviewSecurity(); function reviewProvenance();
+ function reviewCertificates(); function reviewCodegen(); function validate(); function report();
+}
