@@ -41,3 +41,8 @@ These classes lower through the same compiler into C/C++ VM modules and then int
 ## Linking Manager
 
 The VM consumes the five common Linking Manager profiles from `/lib/vm`: Basic, Moderate, Advanced, Government, and Military. A link targets an exact known SLVM major/minor version and exposes only capability-authorized observations such as memory, certificates, transaction records, resolver state, audit evidence, attestation, provenance, and checkpoints. The link is observational and cannot be used to bypass VM execution, memory, certificate, or capability controls.
+
+
+## Challenge and Reports Managers
+
+The Challenge Manager supplies Basic, Moderate, and Advanced declared diagnostic challenge profiles. A matched condition emits `ConditionObserved` to an authorized listener or endpoint; remote operation remains capability- and security-scoped. The Reports Manager observes authorized input, output, messages, and system records and routes them through named binary objects and IQ/system-output paths to authorized messaging APIs.
