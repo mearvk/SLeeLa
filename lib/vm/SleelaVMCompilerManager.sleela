@@ -1,0 +1,5 @@
+class SleelaVMCompilerManager {
+ uint32 profileCode; uint32 requiredObjectCount; uint32 declaredObjectCount; uint32 categoryCount;
+ uint32 requiredCode; uint32 dependencyCode; uint32 missingCode; uint32 excessCode; uint32 fineCode;
+ function initialize(); function loadDeclaration(declaration); function countObjects(); function categorizeObjects(); function reviewRequired(); function reviewDependencies(); function reviewMissing(); function reviewExcess(); function emitCompileReport(); function validate(); function plan(); function emitC(); function emitCPP();
+}
