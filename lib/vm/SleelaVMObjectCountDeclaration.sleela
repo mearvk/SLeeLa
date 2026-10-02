@@ -1,0 +1,5 @@
+class SleelaVMObjectCountDeclaration {
+ String profile; Integer requiredTotal; Integer minimumTotal; Integer maximumTotal; Integer exactTotal;
+ Integer architectureCount; Integer executionCount; Integer memoryCount; Integer securityCount; Integer ioCount; Integer runtimeCount; Integer managementCount; Integer linkageCount; Integer observabilityCount; Integer buildCount;
+ function initialize(); function categoryExpected(category); function totalExpected(); function validate();
+}
