@@ -19,7 +19,7 @@ sanity:
 	@printf '%s\n' 'SLeeLa compiler package sanity check'
 	@printf '%s\n' '  pipeline: source lexer parser symbols semantics IR lowering codegen VM-target'
 	@printf '%s\n' '  profiles: BASIC_COMPLETE ADVANCED_TOTAL'
-	@printf '%s\n' '  source authority: .sleela'
+	@printf '%s\n' '  source authority: .sleela'\n\t@printf '%s\n' '  language/format reference: LANGUAGE.FORMAT.REFERENCE.md'\n\t@printf '%s\n' '  safety rule: references identify; they do not authorize execution'
 	@printf '%s\n' '  native boundary: C ABI + C++ orchestration'
 $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
