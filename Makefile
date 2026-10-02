@@ -3,9 +3,9 @@
 # Product-specific Makefiles remain authoritative. This root dispatcher only
 # enters those existing build systems; it does not duplicate their source lists.
 
-.PHONY: all core java28 regex compiler decompiler vm tutorial-check tests server clean help
+.PHONY: all core java28 regex compiler decompiler vm jetbrains tutorial-check tests server clean help
 
-all: core java28 regex compiler decompiler vm tutorial-check tests
+all: core java28 regex compiler decompiler vm jetbrains tutorial-check tests
 
 core:
 	$(MAKE) -C impl all
@@ -25,6 +25,9 @@ decompiler:
 vm:
 	$(MAKE) -C lib/vm all
 
+jetbrains:
+	$(MAKE) -C jetbrains all
+
 tests:
 	$(MAKE) -C tests check
 
@@ -42,13 +45,15 @@ clean:
 
 help:
 	@echo "SLeeLa repository build dispatcher"
-	@echo "  make all       Build core, Java 28, regex, compiler, decompiler, VM, and tests"
+	@echo "  make all       Build core, Java 28, regex, compiler, decompiler, VM, JetBrains helper, and tests"
 	@echo "  make core      Build impl/"
 	@echo "  make java28    Build java28/"
 	@echo "  make regex     Build regex/ and its test suites"
 	@echo "  make compiler  Build lib/compiler/"
 	@echo "  make decompiler Build lib/decompiler/"
-	@echo "  make vm        Build lib/vm/\n\t@echo "  make tutorial-check Verify tutorial/example inventories""
+	@echo "  make vm        Build lib/vm/"
+	@echo "  make jetbrains Show JetBrains source acquisition helpers"
+	@echo "  make tutorial-check Verify tutorial/example inventories"
 	@echo "  make tests     Build and run tests/"
 	@echo "  make server    Build api/server/"
 	@echo "  make clean     Remove outputs from dispatched build systems"
