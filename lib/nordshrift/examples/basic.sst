@@ -1,0 +1,5 @@
+#sst 2.0
+sheet NordshriftBasic {
+  use sst.SSTSymbol;
+  target sleela;
+}
