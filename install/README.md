@@ -1,3 +1,5 @@
+<img align="right" src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="75" height="75" alt="SLeeLa">
+
 # SLeeLa Quick and Safe Install
 
 The installer is a three-platform, user-local deployment layer for Linux, macOS, and Windows 10+.
