@@ -137,7 +137,7 @@ Nordshrift 2.6-dev carries forward source readability, `#sleela` syntax-version 
 
 Nordshrift 2.6-dev uses the same SLeeLa library index as the compiler. The index recursively discovers /lib, records package names and .sleela source symbols, and validates imports before artifact emission.
 
-Current collection: **74 packages, 953 library source units, 88 module-facade symbols, and 1,041 total symbol records**. The complete inventory is maintained in `lib/LIBRARY.SYMBOLS.md`.
+Current collection: **77 packages, 953 library source units, 90 module-facade symbols, and 10,129 total symbol records**. The complete inventory is maintained in `lib/LIBRARY.SYMBOLS.md`.
 
 Resolution order is: `$SLEELA_LIB`, `lib`, `../lib`, then `../../lib`. Missing imported packages are compile errors rather than silently ignored dependencies. The same discovered index is now consulted during Nordshrift source validation, so new `/lib` packages and symbols are visible before target emission.
 
@@ -147,21 +147,21 @@ API is now represented in /lib as a package facade so compiler and loader packag
 
 The canonical SLeeLa library collection has been expanded and reconciled with the repository module inventory:
 
-- **74 package families**
-- **953 SLeeLa source units**
-- **88 module-facade symbols**
-- **1,041 total symbol records**
+- **77 package families**
+- **10039 SLeeLa source units**
+- **90 module-facade symbols**
+- **10,129 total symbol records**
 
 Nordshrift and the SLeeLa compiler share the recursive /lib discovery implementation. Resolution order remains $SLEELA_LIB, lib, ../lib, then ../../lib. Missing imports remain compilation errors. The complete inventory is maintained in lib/LIBRARY.SYMBOLS.md and summarized in lib/LIBRARY.INDEX.md.
 
 
 ## Canonical /lib Symbol Collection — September 2026
 
-Nordshrift consumes the same canonical SLeeLa library index as the compiler. The current repository collection is **74 package families, 953 SLeeLa source units, 88 module-facade symbols, and 1,041 total symbol records**. The complete path-level collection is maintained in lib/LIBRARY.SYMBOLS.md.
+Nordshrift consumes the same canonical SLeeLa library index as the compiler. The current repository collection is **77 package families, 10039 SLeeLa source units, 90 module-facade symbols, and 10,129 total symbol records**. The complete path-level collection is maintained in lib/LIBRARY.SYMBOLS.md.
 
 A package is discovered from its first-level directory under /lib; every .sleela file below that directory is a discoverable source symbol. The implementation does not depend on a hard-coded package list. New library packages and source units therefore enter compiler/Nordshrift discovery through the filesystem inventory itself.
 
 
 ## Canonical `/lib` symbol collection
 
-Nordshrift 2.7-dev consumes the same recursive library index as the SLeeLa compiler. The current collection is **74 package families, 953 SLeeLa source units, 88 module-facade symbols, and 1,041 total symbol records**. The shared index now provides package counts, per-package symbol counts, symbol lookup, and resolved source paths; the VM-facing `SLVMModuleLoader` carries the corresponding language-level loader state.
+Nordshrift 2.7-dev consumes the same recursive library index as the SLeeLa compiler. The current collection is **77 package families, 10039 SLeeLa source units, 90 module-facade symbols, and 10,129 total symbol records**. The shared index now provides package counts, per-package symbol counts, symbol lookup, and resolved source paths; the VM-facing `SLVMModuleLoader` carries the corresponding language-level loader state.
