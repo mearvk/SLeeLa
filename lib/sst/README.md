@@ -1,3 +1,5 @@
+<img align="right" src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="75" height="75" alt="SLeeLa">
+
 # SLeeLa SST Library Package
 
 `/lib/sst` is the canonical SLeeLa source-facing representation of the SST (`.sst`) Scripting Sheet layer.
