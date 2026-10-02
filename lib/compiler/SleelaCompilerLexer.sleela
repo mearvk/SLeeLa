@@ -1,0 +1,5 @@
+class SleelaCompilerLexer {
+ List tokens; Integer tokenCount; Integer sourceOffset; Integer line; Integer column;
+ function initialize(); function scan(source); function tokenize(); function emitToken(kind, value);
+ function location(); function validateTokenStream(); function reset();
+}
