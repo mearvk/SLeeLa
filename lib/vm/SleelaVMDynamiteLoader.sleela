@@ -1,0 +1,13 @@
+#sleela 1.3
+// VM-facing loader contract for Dynamite-marked SLeeLa source.
+class SleelaVMDynamiteLoader {
+ String sourcePath;
+ String className;
+ String propertiesSource;
+ String status;
+ function initialize(){status="unresolved";}
+ function resolve(){status="resolved";return status;}
+ function load(){status="loaded";return status;}
+ function execute(){status="running";return status;}
+ function unload(){status="unloaded";return status;}
+}
