@@ -1,3 +1,5 @@
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-vm-creator-logo-001.jpg" alt="SLeeLa VM Creator" width="100%"></p>
+
 # SLeeLa VM Compiler Construction
 
 The compiler treats VM construction as a compilation target. It analyzes SLeeLa source requirements, target architecture, OS, ABI, physical limits, capabilities, and module dependencies before selecting SLVM or SLJVM pieces.
