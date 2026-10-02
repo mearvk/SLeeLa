@@ -1,0 +1,6 @@
+class SleelaDecompilerFractionalInput {
+ Integer policy; Integer preservedRegions; Integer unresolvedRegions; Integer discardedRegions;
+ Boolean allowGaps; Boolean preserveEvidence; Boolean emitPlaceholders;
+ function preserve(); function reconstructPartial(); function reportOnly(); function reject();
+ function validate(); function report();
+}
