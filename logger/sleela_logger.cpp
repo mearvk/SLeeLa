@@ -35,7 +35,10 @@ bool Logger::open() {
     segment_bytes_ = std::filesystem::file_size(segment_path(), sec);
     if (sec) segment_bytes_ = 0;
     if (segment_bytes_ >= kMaxSegmentBytes) {
-        std::fclose(file_); file_ = nullptr; ++segment_number_;
+        const std::string full_path = segment_path();
+        std::fclose(file_); file_ = nullptr;
+        if (!archive_segment(full_path)) return false;
+        ++segment_number_;
         file_ = std::fopen(segment_path().c_str(), "ab"); segment_bytes_ = 0;
     }
     return file_ != nullptr;
@@ -59,10 +62,39 @@ bool Logger::selected(const PacketRecord& r) const {
     if (r.heuristic_score < logic_.minimum_heuristic) return false;
     return true;
 }
+std::string Logger::archive_path_for(const std::string& path) const {
+    std::filesystem::path source(path);
+    std::filesystem::path archive(logic_.archive_directory);
+    archive /= source.filename();
+    std::error_code ec;
+    for (std::uint64_t copy = 1; std::filesystem::exists(archive, ec); ++copy) {
+        archive = std::filesystem::path(logic_.archive_directory) /
+                  (source.stem().string() + ".copy-" + std::to_string(copy) + source.extension().string());
+        ec.clear();
+    }
+    return archive.string();
+}
+bool Logger::archive_segment(const std::string& path) {
+    if (!logic_.move_completed_segments || logic_.archive_directory.empty()) return true;
+    std::error_code ec;
+    std::filesystem::create_directories(logic_.archive_directory, ec);
+    if (ec) return false;
+    const std::string destination = archive_path_for(path);
+    std::filesystem::copy_file(path, destination, std::filesystem::copy_options::none, ec);
+    if (ec) return false;
+    const auto source_size = std::filesystem::file_size(path, ec);
+    if (ec) return false;
+    const auto destination_size = std::filesystem::file_size(destination, ec);
+    if (ec || source_size != destination_size) return false;
+    return true;
+}
 bool Logger::rotate_if_needed(std::size_t n) {
     if (n > kMaxSegmentBytes) return false;
     if (segment_bytes_ && segment_bytes_ + n > kMaxSegmentBytes) {
-        std::fflush(file_); std::fclose(file_); file_ = nullptr; ++segment_number_;
+        const std::string full_path = segment_path();
+        std::fflush(file_); std::fclose(file_); file_ = nullptr;
+        if (!archive_segment(full_path)) return false;
+        ++segment_number_;
         file_ = std::fopen(segment_path().c_str(), "ab"); segment_bytes_ = 0;
         if (!file_) return false;
     }
