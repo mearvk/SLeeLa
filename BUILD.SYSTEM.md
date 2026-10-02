@@ -110,3 +110,16 @@ The lifecycle driver establishes the first application-level build control surfa
 - production package/signing flow.
 
 **Max Rupplin — MEARVK LLC — 2026**
+
+
+## Decompiler subsystem
+
+The root build dispatcher includes the SLeeLa decompiler:
+
+```text
+make decompiler
+```
+
+The package Makefile at `lib/decompiler/Makefile` is authoritative for its native C/C++ compilation and sanity checks. The root dispatcher only enters that package build; it does not duplicate its source list.
+
+The decompiler's six source classes are included in the library symbol manifest. The current library inventory is 959 `.sleela` source units, 88 module-facade symbols, and 1,047 total symbol records.
