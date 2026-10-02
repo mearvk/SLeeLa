@@ -889,3 +889,14 @@ This convention improves source ownership, reviewability, reproducibility, and i
 The terminal subsystem currently contains its own `README.md` and tracking placeholder, with the directory intentionally prepared for continued SLeeLa-specific terminal development.
 
 See the complete [`/terminal` subsystem](https://github.com/mearvk/SLeeLa/tree/master/terminal) for its current source-ownership convention and development notes.
+
+## SLeeLa Command-Line Source and SLVM Execution
+
+The `sleela` command-line program supports both textual `.sleela` source execution and persistent `.sleela` SLVM artifact execution. These are two input forms of the same authoritative toolchain, not two different languages or interpreters.
+
+- **Source mode:** `sleela run program.sleela` performs version resolution, lexing, parsing, semantic/compiler lowering, and executes the resulting Core representation in the native C Core SLVM.
+- **Artifact mode:** `sleela compile program.sleela -o program.sleela` creates a persistent Core execution artifact; `sleela run program.sleela` recognizes the artifact, validates it, loads it, and executes it through SLVM without reparsing the source.
+- **Direct/native SLeeLa execution:** native means the C/C++ SLeeLa toolchain and Core runtime are used directly; it does not mean that a separate non-VM interpreter is used.
+- **SLVM:** the SLVM is the execution engine for the compiled Core representation in both source-to-memory and persistent-artifact paths.
+
+See `sleela-virtual-machine/docs/COMMAND-LINE-EXECUTION.md` and `COMPILER.md` for the exact boundaries.
