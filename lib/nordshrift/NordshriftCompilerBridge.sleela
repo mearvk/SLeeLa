@@ -1,0 +1,20 @@
+#sleela 1.3
+// Compile-time bridge contract: Nordshrift output is ordinary SLeeLa source.
+// The SLeeLa compiler consumes it through the same /lib discovery/index path.
+class NordshriftCompilerBridge {
+ NordshriftSource source;
+ String compilerProfile;
+ uint32 libraryResolved;
+ uint32 compileReady;
+
+ function load(sourceObject){source=sourceObject;}
+ function resolveLibrary(){libraryResolved=source.resolveLibrary();return libraryResolved;}
+ function selectCompilerProfile(profile){compilerProfile=profile;}
+ function prepare(){
+  compileReady=(libraryResolved==1 && source.validate())?1:0;
+  return compileReady;
+ }
+ function compileToSleela(){
+  return compileReady;
+ }
+}
