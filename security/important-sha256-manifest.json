@@ -72,7 +72,7 @@
     },
     {
       "path": "README.md",
-      "sha256": "4efd981a7c4f82b9eb32e54e0b2e44c715e3493ea4306f423f95f4c1ef6df1ed"
+      "sha256": "159c1215383a1d4e357c05a7df405a8b908dd1c8e72928dc2802fbf717e6c2b1"
     },
     {
       "path": "REVISIONS.md",
@@ -88,11 +88,11 @@
     },
     {
       "path": "SST-2.0.model",
-      "sha256": "c94e8598b18ca80b2528b5f2f57f4c53b6bb720ce824b2211977aab707b2f73c"
+      "sha256": "29554cdfb236a05df0e10c9db9c06f2f2affb40cd80bf21b55c8770d7ba11e7b"
     },
     {
       "path": "SST.model",
-      "sha256": "3bb4a4b0e6f3bfb35e095958c0ff31e2600d12ef5ee4431c229954340abd188a"
+      "sha256": "ade1ea87dad894a1108f047c979e3b29398418500dde3585128356dd2c839a09"
     },
     {
       "path": "SYNCHRO.md",
@@ -5252,7 +5252,7 @@
     },
     {
       "path": "impl/frontend/ast.h",
-      "sha256": "3e02d379b248fc1688365ad56e3cc56a5ecab0612e8c4b56a6bd2fbb0c9832a1"
+      "sha256": "5a2e64b66483c3d9b32f0fa6c895d231738ba2263a654237c4e69b83b1b1483c"
     },
     {
       "path": "impl/frontend/compiler.cpp",
@@ -5265,6 +5265,14 @@
     {
       "path": "impl/frontend/driver.cpp",
       "sha256": "c8b0cb4c7e02201c0ec2f010f64317a39f7b0fc63a3a92501f3895d7f9cd5190"
+    },
+    {
+      "path": "impl/frontend/dynamite.cpp",
+      "sha256": "519dd882e338d2f2a48afe16c640c72878c602639e3bec53748e132909677354"
+    },
+    {
+      "path": "impl/frontend/dynamite.h",
+      "sha256": "7a2ff8d2c76ca1af09c5764f56ee7d94ba3c32344a79c25f75acd382ebb99fce"
     },
     {
       "path": "impl/frontend/http_server_cli.cpp",
@@ -5320,11 +5328,19 @@
     },
     {
       "path": "impl/frontend/parser.cpp",
-      "sha256": "8ebcb7d97d94b01b864cf2afc10dbae396296626ac0ddaee3a20966147cdaf93"
+      "sha256": "d3b89bda555bfb1a96c93b9de2a414e9c6a8ba5f7bff8c1d56fb642149e65736"
     },
     {
       "path": "impl/frontend/parser.h",
       "sha256": "88c13c096d837a067a4ce62ad2d3c211fdb5cf79c1d4582f160602b8412b8500"
+    },
+    {
+      "path": "impl/frontend/permissible.cpp",
+      "sha256": "19ea68a90e0488e68a21cd809010990f92d661c1cfa7df1e18c42ffbd8dfe0bc"
+    },
+    {
+      "path": "impl/frontend/permissible.h",
+      "sha256": "0e3f83396876e0d8e67074b3c9067ba4bb6eaa9ea20292b81a8b570fc5ecb9a8"
     },
     {
       "path": "impl/frontend/semantic.cpp",
@@ -5892,7 +5908,7 @@
     },
     {
       "path": "impl/nordshrift/nordshrift.cpp",
-      "sha256": "2c740e809f5dd0cf69a91f54864fb3bdefbd849445a57386f4377211ffb4b805"
+      "sha256": "1f207114816b15ccb98a532a5225aabbbc73e41652acbce5d7eb983727189ccc"
     },
     {
       "path": "impl/nordshrift/object_compat.cpp",
@@ -5923,6 +5939,14 @@
       "sha256": "4f540887e62587b701c58e9d4177c85678f4e6168a1c9c39632fb2b7918d740b"
     },
     {
+      "path": "impl/nordshrift/sql_connector.cpp",
+      "sha256": "3b05ee702ba02dc42d5aaf00ba89b1fbad1fbb1e51077a6c0d4ffbbdfaf6419e"
+    },
+    {
+      "path": "impl/nordshrift/sql_connector.h",
+      "sha256": "4f7b6335636f87307a7262da4e666652542dbd58837f4925e365fde4de938110"
+    },
+    {
       "path": "impl/nordshrift/sst_lexer.cpp",
       "sha256": "7973e55925b998ced27239d2d3097447a517f5c3b101a31a535d574d2c8e5369"
     },
@@ -5937,6 +5961,14 @@
     {
       "path": "impl/nordshrift/sst_parser.h",
       "sha256": "43543d93d30d02e41ffc26d37e327603da664c3db107dcbc215d50a6c1ce9b2a"
+    },
+    {
+      "path": "impl/nordshrift/sst_symbol.cpp",
+      "sha256": "458cc53b7f9d14edd3654dc386cc410bbf4f4f817dfc339045080ad97b865bcb"
+    },
+    {
+      "path": "impl/nordshrift/sst_symbol.h",
+      "sha256": "f111dea41754d376d913fd941754c18c35e9a5f57115c084ef3c9296be19f903"
     },
     {
       "path": "impl/nordshrift/subject_model.cpp",
@@ -6343,6 +6375,18 @@
       "sha256": "4c48172c1ec16b6657ede014f77dce243c2e470797a10442b0cbd5e1a3ea3ba0"
     },
     {
+      "path": "install/quick-safe-install-macos.sh",
+      "sha256": "eb56fe3869070a57a8ae0834d5f21b19584ff51d69582b1efc2f5d905aa420a2"
+    },
+    {
+      "path": "install/quick-safe-install.ps1",
+      "sha256": "2da458903d96f32a89476f60409168ec6a224cea9d212e501f4e5e4c6183746f"
+    },
+    {
+      "path": "install/quick-safe-install.sh",
+      "sha256": "6a91bccb23cf137da191b56f02023f337ddeb35192ff31f5f4aedbfdaf60c065"
+    },
+    {
       "path": "international-criminal-court/ABOUT-THE-COURT.md",
       "sha256": "fcfe1aaef631c5db0f65976bfe92e4e42a19de8e6765d4a89cb7da2525394f41"
     },
@@ -6389,6 +6433,18 @@
     {
       "path": "java28/src/native/sleela_java28_port.c",
       "sha256": "5ed27dbaa8ce54bc7abd25aa98a4dc895d3b326f3f75c5d9589a547a3ee6a48c"
+    },
+    {
+      "path": "jetbrains/download-source-macos.sh",
+      "sha256": "35affe1d7f466ac09caaf4078e25da5d691688051a0a2c48d9ed2512b554ae65"
+    },
+    {
+      "path": "jetbrains/download-source.ps1",
+      "sha256": "1fae780fb17826307cca97df0a0e65cf5a2b3f9f1957b45b31a26d5a75e87631"
+    },
+    {
+      "path": "jetbrains/download-source.sh",
+      "sha256": "b60b0ee2f7b3bffd000af259b558db87b1fb51ab8a1cccbdbb6da935ee0a8717"
     },
     {
       "path": "journey/register.sleela",
@@ -6543,8 +6599,16 @@
       "sha256": "6cbc1e80d1001aad8c4b0adf3d63a0df60cec842ac9476714908391daa863a0e"
     },
     {
+      "path": "lib/compiler/DynamiteConnector.sleela",
+      "sha256": "84b5c5e9e94369eef473a8ebb9d58e7c9d44bb2cfac7646dbf5a85d80ad83fca"
+    },
+    {
       "path": "lib/compiler/LanguageReference.sleela",
       "sha256": "3dc2deb21dc5b55793c41aae16270d122d9225b135bce2271206236026806016"
+    },
+    {
+      "path": "lib/compiler/PermissibleConnector.sleela",
+      "sha256": "4735ad00d40274c6811e4e6d902514365968e72dddc0f7e0aafc2a8f5fb30470"
     },
     {
       "path": "lib/compiler/ProgramMapping.sleela",
@@ -6685,6 +6749,14 @@
     {
       "path": "lib/compiler/src/sleela_compiler.cpp",
       "sha256": "6e82d3a2312329aad6261993e5acf5ea0fbddd495a8418ba03a5cf6297da4635"
+    },
+    {
+      "path": "lib/compiler/tutorials/examples/advanced-vm-target.sleela",
+      "sha256": "b0fdb4ce9f1393689596aabb5059684cf01fc216745fe93afff15d9fe60bfa7f"
+    },
+    {
+      "path": "lib/compiler/tutorials/examples/hello-vm.sleela",
+      "sha256": "e8825b3bd1ff42ca25372288b95eef61ed78877b7885fae37835178542392462"
     },
     {
       "path": "lib/config/SLPackage.sleela",
@@ -7397,6 +7469,14 @@
     {
       "path": "lib/decompiler/src/sleela_decompiler.cpp",
       "sha256": "6f888e77cfa7644b63702758e16fb53a46b84a699cdd2127cec21ffbe7d97901"
+    },
+    {
+      "path": "lib/decompiler/tutorials/examples/artifact-analysis.sleela",
+      "sha256": "41bac74d6ee6b93b5b3ecb1b1802f4b7a45f2347a6d75cbde6e70eaa71d4b4a4"
+    },
+    {
+      "path": "lib/decompiler/tutorials/examples/fractional-reconstruction.sleela",
+      "sha256": "bb621f85073f161dee8ac272eda943d708b18acc7d91248a4282f94ad815781e"
     },
     {
       "path": "lib/deliberation/SLAStarSearch.sleela",
@@ -45851,6 +45931,86 @@
       "sha256": "ebb642fc76595457e2f251d1588d8694c3be62c51d47b73ccb11d6f31fa0d609"
     },
     {
+      "path": "lib/nordshrift/DynamiteConnector.sleela",
+      "sha256": "3fd1ca31b17886ee6d937d121737bd1907e6370dddedfa2684d39a048b8831d1"
+    },
+    {
+      "path": "lib/nordshrift/MySQLConnector.sleela",
+      "sha256": "e57c65654fada58714ebbdb25718fec02548a599d0767f1a07a5f7b654e0c514"
+    },
+    {
+      "path": "lib/nordshrift/NordshriftCompilerBridge.sleela",
+      "sha256": "e4998595a2380e28bf952d324de84f7f41c01f1c5ef4a5cd222880f0d47d725c"
+    },
+    {
+      "path": "lib/nordshrift/NordshriftSource.sleela",
+      "sha256": "4a2fc504fe9924d0620c33213d31db42a614bc97128e4b0fd8d8d67ec31fe157"
+    },
+    {
+      "path": "lib/nordshrift/NordshriftSymbol.sleela",
+      "sha256": "5c83fc76f2a3e4af4bda5bb4d385cd534dcd7161828d264fc28fb54f8f3adaec"
+    },
+    {
+      "path": "lib/nordshrift/NordshriftSymbolResolver.sleela",
+      "sha256": "739804696bc05276cc6ae845d65379112b098508309d3b6e5eb979eec47945b2"
+    },
+    {
+      "path": "lib/nordshrift/NordshriftSymbolTable.sleela",
+      "sha256": "0096d062b9bf2d8ff4d177ec32dfd9f2aa9e3c2a0bfc13961e4a3dd228d8b936"
+    },
+    {
+      "path": "lib/nordshrift/PermissibleConnector.sleela",
+      "sha256": "115dd53f63b0c4d592756b1f05e4eb3010a0b0d7c750053b1e71f01e0a8b8b87"
+    },
+    {
+      "path": "lib/nordshrift/PostgreSQLConnector.sleela",
+      "sha256": "3ea36f98c983c3c9fba80cdd2e2dd3e271316d706b35f59d6ba22e358d740ba1"
+    },
+    {
+      "path": "lib/nordshrift/SLPackage.sleela",
+      "sha256": "9907444692f1e2aa9c85bc0138cb541d8e8d5d1e46e4d8322f12b56608588dbe"
+    },
+    {
+      "path": "lib/nordshrift/SQLConnector.sleela",
+      "sha256": "38c59fe76c70ff5173a3af398c140dcf1000f1727fe00897d9127d7649a971c7"
+    },
+    {
+      "path": "lib/nordshrift/examples/basic.sst",
+      "sha256": "0f833acb841eb112437e855178d25ee1749d30e37bb8a8c26bdede0f0fdbf28a"
+    },
+    {
+      "path": "lib/nordshrift/examples/cross-package.sst",
+      "sha256": "5d7568efcbd421a16efa53bf7b35a2da4be5263e0cf2854bd09751866d7228e2"
+    },
+    {
+      "path": "lib/nordshrift/examples/resolution.sst",
+      "sha256": "13f5fe91ec3ef6e27f5a6144699dbe66830b96001a687023e18df676e1d4bab5"
+    },
+    {
+      "path": "lib/nordshrift/examples/sql-connectors.sst",
+      "sha256": "feed528d43c204ba4d66a22b83f0db1d9bcd58bc601bcf1fb74bd623da4e1be0"
+    },
+    {
+      "path": "lib/nordshrift/examples/system-basic.sst",
+      "sha256": "ae995252c18e8e8007feb4b1cd44ff330f02db021b53bd67d63178b580eb3bfd"
+    },
+    {
+      "path": "lib/nordshrift/examples/system-distributed.sst",
+      "sha256": "169e28c8b80598fa4eca937ae41ef06edd46fa0541ddea1ca2711915420573cc"
+    },
+    {
+      "path": "lib/nordshrift/examples/system-financial.sst",
+      "sha256": "0e51b9c08d5f8ccf95767b122e0cddde39adbd911b642cdc1dcc80b73b2ab193"
+    },
+    {
+      "path": "lib/nordshrift/examples/system-naming.sst",
+      "sha256": "4e3fa4aad4244d3fdc0cdc378ae11e6fbe16357322c649e0531bf60cdbe07280"
+    },
+    {
+      "path": "lib/nordshrift/examples/system-network.sst",
+      "sha256": "45104e1298fe189873b92edccf985322c2352cd48bad6b61cf2575f044a773f3"
+    },
+    {
       "path": "lib/os/SLClock.sleela",
       "sha256": "90e539d9d7afdc062f3539b5a5580e0e8928ef2fcbfe60536ed641047bbc3d09"
     },
@@ -46247,6 +46407,110 @@
       "sha256": "f37f367a96b9733b23ae0446223ab4b555121db8c6382da48957bfb30ab671e4"
     },
     {
+      "path": "lib/sst/DynamiteConnector.sleela",
+      "sha256": "9b5315ceb8943571e99721ce1b92e8400d4b5f915d9e3afaf5a70298deff180e"
+    },
+    {
+      "path": "lib/sst/MySQLConnector.sleela",
+      "sha256": "b742b8180977461602b97f70278fe484fea760d7285e5df8f2e29ed4982cc931"
+    },
+    {
+      "path": "lib/sst/PostgreSQLConnector.sleela",
+      "sha256": "f1dd113652d742f3f523c94bed867c477b52540d6fc23c49fc11f27394a09008"
+    },
+    {
+      "path": "lib/sst/SLPackage.sleela",
+      "sha256": "d1f351d61a7f0c45ffd0b5a777d6823f1628c5ba274118157d1a1b2078944367"
+    },
+    {
+      "path": "lib/sst/SQLConnector.sleela",
+      "sha256": "cdeb4a93ff1c5ffe673cda1446d66717848668c17128db4e72ee68494c0e5ae3"
+    },
+    {
+      "path": "lib/sst/SSTLibrary.sleela",
+      "sha256": "4a2beed903d072559a5e4e4cfa11d4edda54fe743ebb0d22e9fd6524df8c69de"
+    },
+    {
+      "path": "lib/sst/SSTSource.sleela",
+      "sha256": "e6f3b1c406916e755ac537f78dc5bc768b093973cf81af2e72126ae613af7066"
+    },
+    {
+      "path": "lib/sst/SSTSymbol.sleela",
+      "sha256": "3fb59b7de3de555a91a2befd33f12cc25b62ea5e162b10138696e710fb525710"
+    },
+    {
+      "path": "lib/sst/SSTSymbolKind.sleela",
+      "sha256": "e844182fcef6394180739ddf44c6a349dd9a073d121e593a979d5dd0f3e799e5"
+    },
+    {
+      "path": "lib/sst/SSTSymbolReference.sleela",
+      "sha256": "60abe6d37c7f9d0e3e39b6b6aab49d006c8ab5540374809859712ca36392c5c6"
+    },
+    {
+      "path": "lib/sst/SSTSymbolTable.sleela",
+      "sha256": "ff80f6927ee8ce6c5328ab5b0aba8b4149ec59f209607fb28b57114fb30d593a"
+    },
+    {
+      "path": "lib/sst/examples/basic-symbols.sst",
+      "sha256": "ea9923395e99d1d502ff706690bbcc5279a3bdc1a2ccdf669dac8ed98f24a7a7"
+    },
+    {
+      "path": "lib/sst/examples/cross-package.sst",
+      "sha256": "f78ddd574639f530e1b7a599a49c77a2c851b01b60d7dfe9fad9f90f3474ada5"
+    },
+    {
+      "path": "lib/sst/examples/dynamite-basic.sst",
+      "sha256": "f61bc0e72b407d977fbba3bf68cfceaf7e457ac42c4e7ca7cec2273f030f10b1"
+    },
+    {
+      "path": "lib/sst/examples/dynamite-multiple.sst",
+      "sha256": "f02ade747e9325c6427a707291050b3231169abfa9f8ff0cf682347378f98ac1"
+    },
+    {
+      "path": "lib/sst/examples/dynamite-network.sst",
+      "sha256": "3232983438355e46ee0e2dc04dfead7d8774817643eaa6491271e3c7e0c0a35d"
+    },
+    {
+      "path": "lib/sst/examples/dynamite-sql.sst",
+      "sha256": "5139fb2aec9cad8623513c5dde5d3856c302f7c8f02144ae6cd73a7b4bcbd597"
+    },
+    {
+      "path": "lib/sst/examples/permissible-connector.sst",
+      "sha256": "c7f26d4668f392e4b2f2450e96672f5c2c0fca4143d30c74469ba954e529e5d8"
+    },
+    {
+      "path": "lib/sst/examples/sql-mysql.sst",
+      "sha256": "de50cc59b8fdadbc7ab1c2a16f8661358cf8e309ffe1bc237a134c5b363ab8fe"
+    },
+    {
+      "path": "lib/sst/examples/sql-postgresql.sst",
+      "sha256": "43a27c8773060afeaea1371505f49533198310c3fc5d5e2ae20c64b0c37c92f6"
+    },
+    {
+      "path": "lib/sst/examples/symbol-resolution.sst",
+      "sha256": "681bae213e371014aca44fea3287cd34f18ba9141148d6cfcd430993a59b85e3"
+    },
+    {
+      "path": "lib/sst/examples/system-basic.sst",
+      "sha256": "8d1ca384b48711a82414e093571d578114431c886ea8be550b9314372ef17021"
+    },
+    {
+      "path": "lib/sst/examples/system-complete.sst",
+      "sha256": "1582f6608d10a33dd02ee1148165766df875b199af4612939e0ebb7917f9d4b8"
+    },
+    {
+      "path": "lib/sst/examples/system-financial-remote.sst",
+      "sha256": "46cf303562d668a309b45630a861255915a7da5d8ba3b9928f74dd10ba4a4f9c"
+    },
+    {
+      "path": "lib/sst/examples/system-naming-groups.sst",
+      "sha256": "151b4baecb53ce84c881d336fd8c1203577ad010c08f6ca922deec58a229915f"
+    },
+    {
+      "path": "lib/sst/examples/system-network.sst",
+      "sha256": "0efe158b8fb3a40b98d6ecf361a65b8a2df5f2a73921a7e89acb0dc5c0744371"
+    },
+    {
       "path": "lib/synchro/SLPackage.sleela",
       "sha256": "2011094946606dd01ae6c4c31d59cce458308c15ca84934583b1d0ffd3bcef15"
     },
@@ -46524,7 +46788,7 @@
     },
     {
       "path": "lib/vm/SleelaVMCompilerManager.sleela",
-      "sha256": "7a99a4f26f171099fac57689c6a5b32dd23a37c8a0b46727d99d81f29047601f"
+      "sha256": "770c05944914bc49341f992081949501e8dfb190fb9c7f63ef486e6047fb4242"
     },
     {
       "path": "lib/vm/SleelaVMCompilerManagerAdvanced.sleela",
@@ -46545,6 +46809,14 @@
     {
       "path": "lib/vm/SleelaVMCpuOptions.sleela",
       "sha256": "c21b5d57041fdb5a45b6439161a4978732a95f6fa7be6a1727c736fc8fb72c94"
+    },
+    {
+      "path": "lib/vm/SleelaVMDynamicMemoryGuard.sleela",
+      "sha256": "c8def6e5593d5b393cb7a274097bf5f114608bdcea5180c6677564d5e760bbd0"
+    },
+    {
+      "path": "lib/vm/SleelaVMDynamiteLoader.sleela",
+      "sha256": "4cf4d25502e9baa545d264f0c0200d6b90b4c74c7cbda768a2cfc3001a214fbb"
     },
     {
       "path": "lib/vm/SleelaVMExecutionOptions.sleela",
@@ -46592,7 +46864,7 @@
     },
     {
       "path": "lib/vm/SleelaVMMemoryOptions.sleela",
-      "sha256": "dc86467b1c81d8f0dc39b69c1e8049250ab4649f619d8cc4baff62f4a856b630"
+      "sha256": "0a651fbff5846cb5fd79afe0ad186d680a65af3aa6fae9b24553587902aaac8b"
     },
     {
       "path": "lib/vm/SleelaVMModule.sleela",
@@ -46612,7 +46884,11 @@
     },
     {
       "path": "lib/vm/SleelaVMOutput.sleela",
-      "sha256": "c46ca39d34b02cf1439401e6d6b0658b981ba2fca1ae4c90e23cf07812442807"
+      "sha256": "2f41194978991752fa7b0fa6988604c889db35087f26caf8a3fa047c741d707c"
+    },
+    {
+      "path": "lib/vm/SleelaVMPermissibleLoader.sleela",
+      "sha256": "6b70181987d857ba78043bd8231ac49dc5c350271837246007608dbacfb17813"
     },
     {
       "path": "lib/vm/SleelaVMPhysicalLimits.sleela",
@@ -46648,7 +46924,11 @@
     },
     {
       "path": "lib/vm/SleelaVMSource.sleela",
-      "sha256": "7eb31a89db6eafdfd6067fd126f8b27e2642eea673f3f4e7b9571caf6285bccf"
+      "sha256": "74e51f5988a5705976460a7c34f5e41130fe4c9365cb457155364e43f6f978f1"
+    },
+    {
+      "path": "lib/vm/SleelaVMStartup.sleela",
+      "sha256": "c409240100b25ab8859d5bbed1e2ac4718dde1fdcfc97447af709c77b0d0162f"
     },
     {
       "path": "lib/vm/include/sleela_vm_builder.hpp",
@@ -46669,6 +46949,14 @@
     {
       "path": "lib/vm/include/sleela_vm_compiler_manager.hpp",
       "sha256": "6a6f8498a3d9deb53076e0433b77aaf21e2d641a76dc1e1fa2327e152803b4e4"
+    },
+    {
+      "path": "lib/vm/include/sleela_vm_dynamic_memory_guard.h",
+      "sha256": "eb07f48454123c173393cf1313b617bd4fe6a1e800f4a32817660b4b67e12c63"
+    },
+    {
+      "path": "lib/vm/include/sleela_vm_dynamic_memory_guard.hpp",
+      "sha256": "55bb3076f95be0ac40d481cc2dc2dbe39b4db1926871ac5ce7f38443efab420e"
     },
     {
       "path": "lib/vm/include/sleela_vm_linking.h",
@@ -46719,6 +47007,14 @@
       "sha256": "898635def7ab0f2eb79bfd816180052369f541d4c7378afdbd560f99927065f3"
     },
     {
+      "path": "lib/vm/src/sleela_vm_dynamic_memory_guard.c",
+      "sha256": "0ad9cda24a0224cb0590181076b13eb97b0b4335977859fb52583d1f0c3b0fb6"
+    },
+    {
+      "path": "lib/vm/src/sleela_vm_dynamic_memory_guard.cpp",
+      "sha256": "8622bfe23f49e9f3867df850c0a2ff11cafc2294e342571b6f84cc741302d2ff"
+    },
+    {
       "path": "lib/vm/src/sleela_vm_linking.c",
       "sha256": "631eee0f221210acee988b75110cb08d5549f83712bc71fb98b376c466dcd277"
     },
@@ -46745,6 +47041,14 @@
     {
       "path": "lib/vm/src/sleela_vm_source.c",
       "sha256": "12af90116033ad9bc47879df703ee20fe847baf501c85978216de4aa6de71ce9"
+    },
+    {
+      "path": "lib/vm/tutorials/examples/basic-vm.sleela",
+      "sha256": "5ea0acfd693e558d35cc08ef091c7e5c1c88fb0fd6724f616f0c17b3709799f6"
+    },
+    {
+      "path": "lib/vm/tutorials/examples/startup-and-memory-guard.sleela",
+      "sha256": "8d3dbe5f54607336991ccb6d6dfe72bfda0df6ff143e0319d6d0d0a42ccf1217"
     },
     {
       "path": "logger/logger_smoke.cpp",
@@ -46908,7 +47212,7 @@
     },
     {
       "path": "psychiatry/keysearch.py",
-      "sha256": "f1aeb714584a303d55488de989ba554ea51b4ea4f8d55cf9e6097bbb4b7e126e"
+      "sha256": "a25ebf3443eadd3902689a0ffbe0bce36365cfb6b54b753b9ff958538696fe7b"
     },
     {
       "path": "regex/include/sleela_regex.h",
@@ -48420,7 +48724,7 @@
     },
     {
       "path": "test-suites/test-library-inventory.sh",
-      "sha256": "80dfcfdcda52392cc5a0bc5b4167163e9dfd5c4220f17b409b435f87b666d5ac"
+      "sha256": "5788ddbc49cfd32d7552a97b9fb018d2725ae2db54d94ae18bf90a5947f9b07a"
     },
     {
       "path": "tests/java_api_dependency_suite.py",
