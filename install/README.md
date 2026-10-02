@@ -1,36 +1,69 @@
-<img align="right" src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="75" height="75" alt="SLeeLa">
-
 # SLeeLa Quick and Safe Install
 
-The planned installer is a three-platform deployment layer for Linux, macOS, and Windows 10+.
+The installer is a three-platform, user-local deployment layer for Linux, macOS, and Windows 10+.
 
-It should perform these stages in order:
+## Installation flow
 
-1. Detect the operating system and repository root.
-2. Check Git, the native compiler toolchain, and the SLeeLa build prerequisites.
-3. Prompt for initial SLeeLa System settings.
-4. Prompt for SLeeLa Server startup behavior.
-5. Prompt for HTTP Server 1 through 9 startup behavior.
-6. Prompt for VM Edition: Simple, Managed, or Advanced.
-7. Prompt for Port Authority startup, pause, and shutdown behavior.
+1. Detect the repository and platform.
+2. Prompt for SLeeLa System startup.
+3. Prompt for SLeeLa Server startup.
+4. Prompt independently for HTTP Servers 1–9.
+5. Prompt for VM Edition: `simple`, `managed`, or `advanced`.
+6. Prompt for Port Authority startup, pause, and shutdown.
+7. Prompt for user-level PATH configuration.
 8. Build SLeeLa before deployment.
-9. Stage the result before copying it.
+9. Stage the build before copying.
 10. Back up an existing user-local installation.
-11. Copy the staged runtime and library files.
-12. Write a user-local startup configuration.
-13. Offer a user-level PATH update.
-14. Report the installation and configuration paths.
-
-The normal destination should be user-local so the installer does not need administrator or root access. It must not silently enable network listeners or modify system-wide service configuration.
+11. Copy the staged `lib` and optional `bin` trees.
+12. Write `config/startup.conf`.
+13. Apply only user-level PATH configuration.
+14. Report the installation and configuration locations.
 
 ## Platform entry points
 
-- Linux: `quick-safe-install.sh`
-- macOS: `quick-safe-install.sh`
-- Windows 10+: `quick-safe-install.ps1`
+- Linux: `./install/quick-safe-install.sh`
+- macOS: `./install/quick-safe-install-macos.sh`
+- Windows 10+: `install\\quick-safe-install.cmd` or PowerShell directly.
 
-The installer should keep build, copy, configuration, and PATH operations as separate stages so a failed build cannot produce a partial runtime installation.
+Default destinations are:
 
-The JetBrains source package remains separate. JetBrains documents the open-source `intellij-community` tree and its current Bazel-based build process upstream. The SLeeLa installer should not download or build JetBrains source unless that step is explicitly selected.
+- Linux/macOS: `$HOME/.local/sleela`
+- Windows: `%LOCALAPPDATA%\\SLeeLa`
+
+Set `SLEELA_INSTALL_ROOT` on Linux/macOS to choose another user-local destination.
+
+## Safety model
+
+The installer is deliberately user-local. It does not require sudo/root for its normal path, silently enable network listeners, install system-wide services, or alter system service configuration.
+
+A build failure stops deployment before the staged result is copied. Existing installations are copied to a timestamped user-local backup before replacement.
+
+PATH changes are user-level only. On Linux/macOS the installer writes a small profile snippet; on Windows it updates the current user's PATH and never the machine-wide PATH.
+
+## Startup settings
+
+The generated `startup.conf` records:
+
+- SLeeLa System startup
+- SLeeLa Server startup
+- HTTP Server 1–9 startup
+- VM Edition
+- Port Authority startup
+- Port Authority pause
+- Port Authority shutdown
+
+These settings describe startup policy; they do not by themselves grant network or operating-system authority.
+
+## Commands
+
+```text
+make install-help
+make install-check
+./install/quick-safe-install.sh
+./install/quick-safe-install-macos.sh
+install\quick-safe-install.cmd
+```
+
+The JetBrains source acquisition helper remains separate and is not downloaded or built by this installer.
 
 **SLeeLa — MEARVK LLC — 2026**
