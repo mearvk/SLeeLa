@@ -1,0 +1,8 @@
+/* SLeeLa compiler native language reference. */
+#sleela 1.3
+class LanguageReference {
+  String name; String family; String version; String compilerProgram; String sourceExtensions;
+  String intermediateFormat; String executableFormats; String objectFormats; String runtime;
+  Boolean native; Boolean supported; Boolean safetyReferenceOnly;
+  function validate(); function describe(); function mapsTo(String format); function isNative();
+}
