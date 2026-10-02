@@ -4,6 +4,6 @@ LIBS ?= -lnghttp2
 TARGET=http-server-2
 all: $(TARGET)
 $(TARGET): main.cpp http2/http2_server.cpp http2/http2_server.h
-	$(CXX) $(CXXFLAGS) main.cpp http2/http2_server.cpp -o $@ $(LIBS)
+	$(CXX) $(CXXFLAGS) main.cpp http2/http2_server.cpp ../../preferred-routers/preferred_router.cpp -o $@ $(LIBS)
 clean:
 	rm -f $(TARGET)
