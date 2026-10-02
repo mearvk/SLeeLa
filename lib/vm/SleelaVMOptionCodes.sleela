@@ -1,0 +1,14 @@
+class SleelaVMOptionCodes {
+ Integer TARGET_SLVM = 1; Integer TARGET_SLJVM = 2;
+ Integer ARCH_X86_64 = 10; Integer ARCH_ARM64 = 11; Integer ARCH_RISCV64 = 12; Integer ARCH_WASM32 = 13;
+ Integer OS_LINUX = 20; Integer OS_WINDOWS = 21; Integer OS_MACOS = 22;
+ Integer ABI_C = 30; Integer ABI_CXX = 31; Integer ABI_JVM = 32;
+ Integer EXEC_INTERPRETED = 40; Integer EXEC_JIT = 41; Integer EXEC_AOT = 42; Integer EXEC_HYBRID = 43;
+ Integer GC_NONE = 50; Integer GC_MARK_SWEEP = 51; Integer GC_GENERATIONAL = 52; Integer GC_COMPACTING = 53;
+ Integer THREAD_SINGLE = 60; Integer THREAD_NATIVE = 61; Integer THREAD_POOL = 62; Integer THREAD_FIBER = 63;
+ Integer IO_SYNC = 70; Integer IO_ASYNC = 71; Integer IO_HYBRID = 72;
+ Integer SECURITY_NONE = 80; Integer SECURITY_CAPABILITY = 81; Integer SECURITY_SANDBOX = 82; Integer SECURITY_HARDENED = 83;
+ Integer LINK_STATIC = 90; Integer LINK_SHARED = 91; Integer LINK_HYBRID = 92;
+ Integer PACKAGE_RAW = 100; Integer PACKAGE_ARCHIVE = 101; Integer PACKAGE_SIGNED = 102;
+ function valid(code); function category(code); function compatible(left, right);
+}
