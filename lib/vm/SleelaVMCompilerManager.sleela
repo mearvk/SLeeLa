@@ -1,8 +1,8 @@
 class SleelaVMCompilerManager {
  uint32 profileCode; uint32 requiredObjectCount; uint32 declaredObjectCount; uint32 categoryCount;
  uint32 requiredCode; uint32 dependencyCode; uint32 missingCode; uint32 excessCode; uint32 fineCode;
- SSTSource sstSource; SSTLibrary sstLibrary; NordshriftSource nordshriftSource; NordshriftCompilerBridge nordshriftCompiler;
- function initialize(); function loadDeclaration(declaration); function loadSSTSource(source); function loadNordshriftSource(source);
+ SSTSource sstSource; SSTLibrary sstLibrary; NordshriftSource nordshriftSource; NordshriftCompilerBridge nordshriftCompiler; DynamiteConnector dynamiteConnector;
+ function initialize(); function loadDeclaration(declaration); function loadSSTSource(source); function loadNordshriftSource(source); function discoverDynamite(source); function resolveDynamite(); function admitDynamiteLoad();
  function resolveSSTLibrary(); function resolveNordshriftLibrary(); function prepareNordshriftCompile();
  function countObjects(); function categorizeObjects(); function reviewRequired(); function reviewDependencies(); function reviewMissing(); function reviewExcess(); function emitCompileReport(); function validate(); function plan(); function emitC(); function emitCPP();
 }
