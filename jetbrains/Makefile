@@ -13,7 +13,7 @@ download-macos:
 
 download-windows:
 	@echo "Use PowerShell on Windows:"
-	@echo "  powershell -ExecutionPolicy Bypass -File .\\download-source.ps1"
+	@echo "  powershell -NoLogo -NoProfile -File .\\download-source.ps1"
 
 help:
 	@printf '%s\n' 'SLeeLa JetBrains source acquisition'
