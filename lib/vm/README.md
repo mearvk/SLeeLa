@@ -36,3 +36,8 @@ These classes lower through the same compiler into C/C++ VM modules and then int
 5. MM checkpointing requires integrity; MM migration requires checkpointing.
 6. SM replay protection and certificates require cryptographic support; attestation requires certificates.
 7. The compiler records selected option codes, feature masks, MM/SM plans, resource plan, ABI, and module set in output metadata.
+
+
+## Linking Manager
+
+The VM consumes the five common Linking Manager profiles from `/lib/vm`: Basic, Moderate, Advanced, Government, and Military. A link targets an exact known SLVM major/minor version and exposes only capability-authorized observations such as memory, certificates, transaction records, resolver state, audit evidence, attestation, provenance, and checkpoints. The link is observational and cannot be used to bypass VM execution, memory, certificate, or capability controls.
