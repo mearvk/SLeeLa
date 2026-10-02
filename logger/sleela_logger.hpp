@@ -21,6 +21,8 @@ struct LoggerLogic {
     std::uint64_t maximum_packet_bytes = 0;
     double minimum_heuristic = 0.0;
     bool include_payload = false;
+    bool move_completed_segments = false;
+    std::string archive_directory;
 };
 struct PacketRecord {
     std::string timestamp_utc;
