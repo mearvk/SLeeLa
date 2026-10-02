@@ -1,3 +1,5 @@
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-vm-creator-logo-001.jpg" alt="SLeeLa VM Creator" width="100%"></p>
+
 # Challenge Manager and Reports Manager
 
 ## Challenge Manager
