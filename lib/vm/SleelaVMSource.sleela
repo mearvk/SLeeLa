@@ -1,7 +1,9 @@
 class SleelaVMSource {
  String sourceName; String targetKind; String architecture; String operatingSystem; String abi;
  Integer memoryLimit; Integer cpuLimit; Integer stackLimit; Integer objectLimit;
+ SleelaVMDynamicMemoryGuard dynamicMemoryGuard;
  List modules; List capabilities; List requiredSymbols; SleelaVMOptions options;
  function validate(); function analyzePhysicalLimits(); function selectTarget(); function planModules();
- function resolveOptions(); function resolveFitments(); function emitC(); function emitCPP(); function buildSLVM(); function buildSLJVM();
+ function resolveOptions(); function resolveFitments(); function configureDynamicMemoryGuard();
+ function emitC(); function emitCPP(); function buildSLVM(); function buildSLJVM();
 }
