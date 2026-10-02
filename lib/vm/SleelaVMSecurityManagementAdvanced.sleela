@@ -1,0 +1,9 @@
+class SleelaVMSecurityManagementAdvanced {
+ uint32 policyCode; uint32 capabilityCode; uint32 isolationCode; uint32 auditCode;
+ uint32 cryptoCode; uint32 certificateCode; uint32 resolverCode; uint32 replayCode;
+ uint32 attestationCode; uint32 delegationCode; uint32 provenanceCode; uint32 recoveryCode;
+ function initialize(); function authorize(operation); function deny(operation); function audit(event);
+ function attest(); function delegate(capability); function revoke(capability); function verifyProvenance();
+ function verifyCertificate(certificate); function checkReplay(token); function recover();
+ function validate(); function plan(); function emitC(); function emitCPP();
+}
