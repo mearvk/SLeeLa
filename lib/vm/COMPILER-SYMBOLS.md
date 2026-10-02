@@ -1,3 +1,5 @@
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-vm-creator-logo-001.jpg" alt="SLeeLa VM Creator" width="100%"></p>
+
 # SLeeLa VM Source Symbol Contract
 
 The VM source classes under `/lib/vm` are compiler-visible symbols. The authoritative compiler must accept these classes as input symbols and emit resolved construction information as output metadata.
