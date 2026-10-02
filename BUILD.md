@@ -236,37 +236,38 @@ See `sleela-virtual-machine/docs/COMMAND-LINE-EXECUTION.md`.
 
 ## VM Compiler Manager and native VM support
 
-The VM package now has a package-level build entry point:
+The VM package is built with:
 
 ```sh
 make -C lib/vm
-```
-
-The VM build compiles the stable C ABI and C++ orchestration for the Compiler Manager and the existing VM management subsystems, including Memory Management, Security Management, Linking Manager, Challenge Manager, and Reports Manager. It also performs a Compiler Manager declaration sanity check so the package can distinguish `FINE`, `MISSING`, `EXCESS`, `REQUIRES`, and `INVALID` findings before a VM artifact is assembled.
-
-For the repository-wide dispatcher use:
-
-```sh
 make vm
 ```
 
-The root `make all` target includes the VM package check. Product-specific VM source declarations remain authoritative; the Makefile does not invent VM objects or silently alter declared object counts.
+The package provides the stable C ABI and C++ orchestration for VM management and performs Compiler Manager declaration checks before VM assembly. Findings include `FINE`, `MISSING`, `EXCESS`, `REQUIRES`, and `INVALID`.
 
+## SLeeLa source-driven compiler package
 
-## VM Compiler Manager and native VM support
+The compiler implementation is under `/lib/compiler`. Its authoritative pipeline is:
 
-The VM package now has a package-level build entry point:
-
-```sh
-make -C lib/vm
+```text
+.sleela source
+  -> lexer/parser
+  -> symbol + semantic analysis
+  -> SLeeLa IR
+  -> VM lowering
+  -> SLVM/SLJVM code generation
 ```
 
-The package build compiles the stable C ABI and C++ orchestration for the VM management layer, including Memory Management, Security Management, Linking Manager, Challenge Manager, Reports Manager, and Compiler Manager support. It also performs the package Compiler Manager contract check before VM artifact assembly.
-
-From the repository root:
+Build it directly with:
 
 ```sh
-make vm
+make -C lib/compiler
 ```
 
-The root `make all` target includes the VM package. VM source declarations remain authoritative; the build system does not silently add or remove VM objects.
+or through the root dispatcher:
+
+```sh
+make compiler
+```
+
+The root `make all` target includes the compiler package before the VM package. The compiler does not silently add language features, VM objects, capabilities, or target permissions that are absent from the SLeeLa source declaration.
