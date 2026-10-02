@@ -1,4 +1,4 @@
-# SLeeLa Decompiler Profiles
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-decompiler-logo-001.jpeg" alt="SLeeLa Decompiler" width="100%"></p>\n\n# SLeeLa Decompiler Profiles
 
 ## BASIC_COMPLETE
 
