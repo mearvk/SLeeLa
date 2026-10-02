@@ -1,0 +1,5 @@
+class SleelaDecompilerOutput {
+ String format; String language; String version; String path; String profile;
+ Boolean vmReady; Boolean preserveEvidence; Boolean includeReport;
+ function initialize(); function validate(); function emit(); function verifyVM();
+}
