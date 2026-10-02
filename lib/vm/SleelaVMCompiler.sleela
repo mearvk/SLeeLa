@@ -4,9 +4,12 @@ class SleelaVMCompiler {
  SleelaVMCpuOptions cpu; SleelaVMConcurrencyOptions concurrency; SleelaVMIOOptions io;
  SleelaVMSecurityOptions security; SleelaVMRuntimeOptions runtime; SleelaVMJVMOptions jvm;
  SleelaVMBuildOptions build; SleelaVMResourcePlan resources; SleelaVMBuildPlan buildPlan;
+ SleelaVMMemoryManagementSimple memorySimple; SleelaVMMemoryManagementManaged memoryManaged; SleelaVMMemoryManagementAdvanced memoryAdvanced;
+ SleelaVMSecurityManagementSimple securitySimple; SleelaVMSecurityManagementManaged securityManaged; SleelaVMSecurityManagementAdvanced securityAdvanced;
  function load(source); function analyze(); function resolveArchitecture(); function resolvePhysicalLimits();
  function resolveOptions(); function resolveExecution(); function resolveMemory(); function resolveCPU();
  function resolveConcurrency(); function resolveIO(); function resolveSecurity(); function resolveRuntime();
- function resolveJVM(); function resolveBuild(); function resolveCapabilities(); function createModules();
- function generateC(); function generateCPP(); function generateSLVM(); function generateSLJVM(); function verify();
+ function resolveJVM(); function resolveBuild(); function resolveMemoryManagement(); function resolveSecurityManagement();
+ function resolveCapabilities(); function createModules(); function generateC(); function generateCPP();
+ function generateSLVM(); function generateSLJVM(); function verify();
 }
