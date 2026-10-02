@@ -1,10 +1,10 @@
 # SLeeLa /lib Library Index
 
-**Revision:** 0.7  
-**Packages:** 74  
-**SLeeLa source units:** 953  
+**Revision:** 0.8  
+**Packages:** 75  
+**SLeeLa source units:** 10033  
 **Module-facade symbols:** 88  
-**Total symbol records:** 1,041  
+**Total symbol records:** 10121  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
 
 The `/lib` tree is the canonical language-facing source collection. The compiler and Nordshrift use the same recursive library discovery implementation, so a package becomes importable when its directory contains SLeeLa source.
@@ -40,4 +40,4 @@ The complete path-level and facade-level symbol collection is maintained in `LIB
 
 ## Compiler / Nordshrift / Loader Contract
 
-The shared `sleela::library::Index` recursively discovers the 74 package families and all 953 `.sleela` source units. It now exposes package counts, per-package symbol counts, symbol lookup, and source-path resolution. Compiler and Nordshrift use this index; `lib/vm/SLVMModuleLoader.sleela` represents the same discovered package/symbol state at the SLeeLa layer.
+The shared `sleela::library::Index` recursively discovers the 75 package families and all 10,033 `.sleela` source units. It now exposes package counts, per-package symbol counts, symbol lookup, and source-path resolution. Compiler and Nordshrift use this index; `lib/vm/SLVMModuleLoader.sleela` represents the same discovered package/symbol state at the SLeeLa layer.
