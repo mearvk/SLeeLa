@@ -1,0 +1,6 @@
+class SleelaCompilerIR {
+ List modules; List values; List operations; List blocks; List functions; Integer operationCount;
+ function initialize(); function createModule(name); function createValue(type); function createOperation(op);
+ function createBlock(); function createFunction(name); function connectBlocks(); function validate();
+ function emitText(); function emitC(); function emitCPP();
+}
