@@ -43,11 +43,13 @@ void slvm_init(slvm_t *vm, const uint8_t *code, size_t code_size,
     slvm_io_heuristic_init(&vm->io_heuristic);
     gc_init(&vm->gc, 1024ULL * 1024ULL);
     vm->memory_limit = SLVM_DEFAULT_MEMORY_LIMIT;
+    slvm_memory_security_init(&vm->memory_security, vm->memory_limit);
 }
 
 void slvm_set_memory_limit(slvm_t *vm, size_t bytes) {
     if (!vm) return;
     vm->memory_limit = bytes ? bytes : SLVM_DEFAULT_MEMORY_LIMIT;
+    slvm_memory_security_set_ceiling(&vm->memory_security, vm->memory_limit);
 }
 
 size_t slvm_get_memory_limit(const slvm_t *vm) {
@@ -62,11 +64,18 @@ SLGCObject *slvm_gc_allocate(slvm_t *vm, size_t bytes,
     const size_t used = gc_bytes(&vm->gc);
     if (bytes > vm->memory_limit || used > vm->memory_limit - bytes) return NULL;
     if (!slvm_security_observe_resource(&vm->security, 1)) return NULL;
-    return gc_allocate(&vm->gc, bytes, mark_children, destroy, context);
+    slvm_memory_decision_t decision = slvm_memory_security_check(&vm->memory_security, bytes, 1);
+    if (decision == SLVM_MEMORY_DENY || decision == SLVM_MEMORY_THROTTLE) return NULL;
+    SLGCObject *object = gc_allocate(&vm->gc, bytes, mark_children, destroy, context);
+    if (!object) slvm_memory_security_record_free(&vm->memory_security, bytes);
+    return object;
 }
 
 size_t slvm_gc_collect(slvm_t *vm) {
-    return vm ? gc_collect(&vm->gc) : 0;
+    if (!vm) return 0;
+    size_t reclaimed = gc_collect(&vm->gc);
+    if (reclaimed) slvm_memory_security_record_free(&vm->memory_security, reclaimed);
+    return reclaimed;
 }
 
 size_t slvm_gc_bytes(const slvm_t *vm) {
