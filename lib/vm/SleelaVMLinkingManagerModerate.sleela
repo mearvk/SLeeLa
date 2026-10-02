@@ -1,0 +1,6 @@
+class SleelaVMLinkingManagerModerate {
+ uint32 vmMajor; uint32 vmMinor; uint32 linkCode; uint32 observeCode;
+ uint32 certificateCode; uint32 transactionCode; uint32 resolverCode; uint32 auditCode;
+ function initialize(); function connect(version); function disconnect(); function observeMemory(); function observeCertificates();
+ function observeTransactions(); function observeResolver(); function observeAudit(); function validate(); function plan(); function emitC(); function emitCPP();
+}
