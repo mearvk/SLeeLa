@@ -35,3 +35,7 @@ make -C lib/decompiler
 or make decompiler
 
 **SLeeLa — MEARVK LLC — 2026**
+
+## Language and format reference
+
+The package uses LANGUAGE.FORMAT.REFERENCE.md as the decompiler-side native reference for language names, producer programs, binary/object/executable formats, architecture and OS/ABI evidence, and safety considerations. The mapping is evidence, not proof, and does not authorize execution of an input artifact.
