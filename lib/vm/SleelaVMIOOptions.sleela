@@ -1,0 +1,7 @@
+class SleelaVMIOOptions {
+ Integer ioModel; Integer filesystemModel; Integer networkModel; Integer ipcModel; Integer deviceModel;
+ Integer bufferModel; Integer blockingModel; Integer asyncModel; Integer zeroCopyModel; Integer directIOModel;
+ Integer fileDescriptorLimit; Integer openObjectLimit; Integer readBudget; Integer writeBudget; Integer networkBudget;
+ Integer dnsMode; Integer resolverMode; Integer tlsMode;
+ function validate(); function configureFiles(); function configureNetwork(); function configureIPC(); function configureDevices(); function fit(limits);
+}
