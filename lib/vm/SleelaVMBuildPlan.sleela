@@ -1,4 +1,7 @@
 class SleelaVMBuildPlan {
- String targetKind; String architecture; String abi; String cCompiler; String cppCompiler; String linker; List modules; List generatedSources; List generatedHeaders; List libraries; List capabilities; SleelaVMResourcePlan resources;
- function configure(); function addModule(module); function addCapability(capability); function emitC(); function emitCPP(); function link(); function package(); function verify();
+ String targetKind; String architecture; String operatingSystem; String abi;
+ String cCompiler; String cppCompiler; String linker; List modules; List generatedSources; List generatedHeaders;
+ List libraries; List capabilities; SleelaVMOptions options; SleelaVMBuildOptions buildOptions; SleelaVMResourcePlan resources;
+ function configure(); function applyOptions(); function addModule(module); function addCapability(capability);
+ function emitC(); function emitCPP(); function link(); function package(); function verify();
 }
