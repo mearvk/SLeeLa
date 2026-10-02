@@ -1,0 +1,7 @@
+class SleelaCompilerDiagnostics {
+ List findings; List errors; List warnings; List notes; List dependencies;
+ Integer errorCount; Integer warningCount; Integer noteCount;
+ function addError(code, message); function addWarning(code, message); function addNote(code, message);
+ function addDependency(module, requirement); function hasErrors(); function emitText(); function emitC();
+ function emitCPP(); function validate();
+}
