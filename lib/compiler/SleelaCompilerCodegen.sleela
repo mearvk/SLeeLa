@@ -1,0 +1,5 @@
+class SleelaCompilerCodegen {
+ List vmOperations; List artifacts; String target; String artifactKind;
+ function initialize(); function emitSLVM(); function emitSLJVM(); function emitC(); function emitCPP();
+ function emitManifest(); function emitSymbols(); function emitDiagnostics(); function validate();
+}
