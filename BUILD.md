@@ -232,3 +232,41 @@ sleela run program.sleela
 The first form is direct/native SLeeLa source execution: the C/C++ SLeeLa toolchain compiles the source in memory and the native C Core executes it through SLVM. The second form separates compilation from execution and loads the persistent Core artifact through the same SLVM. Neither path creates a parallel SLeeLa interpreter.
 
 See `sleela-virtual-machine/docs/COMMAND-LINE-EXECUTION.md`.
+
+
+## VM Compiler Manager and native VM support
+
+The VM package now has a package-level build entry point:
+
+```sh
+make -C lib/vm
+```
+
+The VM build compiles the stable C ABI and C++ orchestration for the Compiler Manager and the existing VM management subsystems, including Memory Management, Security Management, Linking Manager, Challenge Manager, and Reports Manager. It also performs a Compiler Manager declaration sanity check so the package can distinguish `FINE`, `MISSING`, `EXCESS`, `REQUIRES`, and `INVALID` findings before a VM artifact is assembled.
+
+For the repository-wide dispatcher use:
+
+```sh
+make vm
+```
+
+The root `make all` target includes the VM package check. Product-specific VM source declarations remain authoritative; the Makefile does not invent VM objects or silently alter declared object counts.
+
+
+## VM Compiler Manager and native VM support
+
+The VM package now has a package-level build entry point:
+
+```sh
+make -C lib/vm
+```
+
+The package build compiles the stable C ABI and C++ orchestration for the VM management layer, including Memory Management, Security Management, Linking Manager, Challenge Manager, Reports Manager, and Compiler Manager support. It also performs the package Compiler Manager contract check before VM artifact assembly.
+
+From the repository root:
+
+```sh
+make vm
+```
+
+The root `make all` target includes the VM package. VM source declarations remain authoritative; the build system does not silently add or remove VM objects.
