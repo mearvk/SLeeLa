@@ -1,0 +1,7 @@
+class SleelaDecompilerModule {
+ String name; String languageFamily; String languageVersion; String format;
+ String architecture; String operatingSystem; String library; String entryPoint;
+ Boolean loaded; Boolean trusted; Boolean exactMatch;
+ function load(); function unload(); function matches(); function validate();
+ function describe(); function supports();
+}
