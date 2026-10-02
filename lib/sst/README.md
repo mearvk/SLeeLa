@@ -17,3 +17,7 @@ SST does not become a second implementation language and does not maintain a dup
 ## Authority
 
 The filesystem-backed `/lib` collection and its shared compiler/Nordshrift index are authoritative. These SLeeLa classes provide the source-level contract used to represent that relationship.
+
+## Symbol contract
+
+SST classes and declarations are compiler symbols. `/lib/sst` provides `SSTSymbol`, `SSTSymbolKind`, `SSTSymbolReference`, and `SSTSymbolTable` for package-qualified identity, lifecycle, and resolution state. See `impl/nordshrift/SST.SYMBOLS.md`.
