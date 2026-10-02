@@ -1,0 +1,4 @@
+class SleelaSLVM {
+ SleelaVMOutput output; String runtimeAbi; List nativeModules;
+ function initialize(); function load(); function run(); function stop(); function inspect();
+}
