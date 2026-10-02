@@ -42,3 +42,12 @@ Payload contents are not logged by default. The log-payload switch records paylo
 ## Example policy
 
 A deployment can permit only known service names, deny selected operations, cap packets and payloads, and retain all rejected events for audit review without treating the heuristic system as an automatic accusation engine.
+
+
+## Packet Logger Integration
+
+The common SLeeLa Logger in /logger is the storage implementation for this policy. It accepts both sent and received packet events and applies six selectors before storage: direction, severity, protocol, admission, endpoint, and size/heuristic threshold.
+
+Packet logs use SLeeLa-PacketLog-1 JSON Lines files. Each segment is capped at 240 MiB (251,658,240 bytes); rotation occurs before a complete record would cross the boundary. Payload storage is disabled by default.
+
+HTTP generations and server editions should submit records at packet admission/egress boundaries rather than implementing separate log formats.
