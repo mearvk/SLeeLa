@@ -24,3 +24,7 @@ The standard-library target is **2,048 object types**. This is an architectural 
 The /lib tree is recursively indexed by the compiler and Nordshrift loader. Current canonical collection: **74 package families / 953 .sleela source units / 88 module-facade symbols / 1,041 total symbol records**. See `LIBRARY.SYMBOLS.md` for the complete collection.
 
 The compiler and Nordshrift share recursive `/lib` discovery; new package directories and source units require no compiler allow-list update.
+
+## Decompiler
+
+The /lib/decompiler package provides the SLeeLa-sourced and SLeeLa-driven decompiler model. It supports explicit source language/version selection, expected input, desired output, fractional-input handling, loadable language modules, weighted OS/ABI discernment, evidence-preserving reconstruction, and VM-ready validation.
