@@ -1,3 +1,5 @@
+<img align="right" src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="75" height="75" alt="SLeeLa">
+
 # SLeeLa Virtual Machine 3
 
 SLVM/3 advances the SLVM/2 security architecture toward verified execution, stronger isolation, deterministic policy, and supply-chain integrity.

@@ -1,3 +1,5 @@
+<img align="right" src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="75" height="75" alt="SLeeLa">
+
 # SLeeLa Virtual Machine 4
 
 SLVM/4 advances SLVM/3 from verified isolated execution toward distributed execution, stronger identity, secure object transport, and controlled cross-runtime interoperability.

@@ -1,3 +1,5 @@
+<img align="right" src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="75" height="75" alt="SLeeLa">
+
 # SLeeLa Virtual Machine 2
 
 SLVM/2 is the second VM generation and the security-oriented evolution of SLVM/1.

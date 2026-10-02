@@ -1,3 +1,5 @@
+<img align="right" src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="75" height="75" alt="SLeeLa">
+
 # SLeeLa VM Source Classes
 
 The `/lib/vm` model defines SLeeLa source-level classes for constructing SLVM and SLJVM pieces.
