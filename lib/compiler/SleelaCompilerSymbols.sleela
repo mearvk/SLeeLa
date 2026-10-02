@@ -1,0 +1,6 @@
+class SleelaCompilerSymbols {
+ List symbols; List scopes; List imports; Integer symbolCount; Integer scopeCount;
+ function initialize(); function define(name, kind); function resolve(name); function enterScope();
+ function leaveScope(); function resolveImports(); function resolveDeclarations(); function detectDuplicates();
+ function validate();
+}
