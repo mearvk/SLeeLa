@@ -86,8 +86,7 @@ bool Logger::archive_segment(const std::string& path) {
     if (ec) return false;
     const auto destination_size = std::filesystem::file_size(destination, ec);
     if (ec || source_size != destination_size) return false;
-    std::filesystem::remove(path, ec);
-    return !ec;
+    return true;
 }
 bool Logger::rotate_if_needed(std::size_t n) {
     if (n > kMaxSegmentBytes) return false;
