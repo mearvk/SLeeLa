@@ -38,6 +38,7 @@
 #include "../frontend/artifact.h"
 #include "../frontend/library_index.h"
 #include "../frontend/dynamite.h"
+#include "../frontend/permissible.h"
 #include "../frontend/version.h"
 extern "C" {
 #include "../core/sleela_core.h"
@@ -294,6 +295,13 @@ static void validateSourcePrograms(const Sheet& sheet, const std::string& sheetP
                 if (!dynamite.configName.empty()) std::cout << " config=" << dynamite.configName;
                 std::cout << " line=" << dynamite.line
                           << " deferred-construction=" << (sleela::dynamite::isImplicitLoadCandidate(dynamite) ? "enabled" : "incomplete") << "\n";
+            }
+            auto permissible = sleela::permissible::discoverAll(code, srcPath);
+            for (const auto& connector : permissible) {
+                std::cout << "permissible-import: " << connector.sourcePath;
+                if (!connector.referenceName.empty()) std::cout << " reference=" << connector.referenceName;
+                std::cout << " line=" << connector.line
+                          << " admissible=" << (sleela::permissible::isAdmissible(connector) ? "candidate" : "incomplete") << "\n";
             }
             sleela::SemanticResult semantic = sleela::analyzeSemantics(program, vr.version);
             for (const auto& err : semantic.errors)
