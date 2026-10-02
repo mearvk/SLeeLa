@@ -1,0 +1,6 @@
+class SleelaCompilerSource {
+ String sourceName; String sourcePath; String sourceText; String sourceHash; String languageVersion;
+ List imports; List declarations; List modules; List requiredCapabilities; List requiredSymbols;
+ function load(path); function preserveIdentity(); function hash(); function discoverDeclarations();
+ function discoverModules(); function discoverRequirements(); function validate();
+}
