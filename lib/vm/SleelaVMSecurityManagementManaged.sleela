@@ -1,0 +1,7 @@
+class SleelaVMSecurityManagementManaged {
+ uint32 policyCode; uint32 capabilityCode; uint32 isolationCode; uint32 auditCode;
+ uint32 cryptoCode; uint32 certificateCode; uint32 resolverCode; uint32 replayCode;
+ function initialize(); function authorize(operation); function deny(operation); function audit(event);
+ function verifyIdentity(identity); function verifyCertificate(certificate); function checkReplay(token);
+ function validate(); function plan(); function emitC(); function emitCPP();
+}
