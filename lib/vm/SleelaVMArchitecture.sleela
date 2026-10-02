@@ -1,0 +1,4 @@
+class SleelaVMArchitecture {
+ String architecture; String endian; Integer pointerBits; Integer addressBits; Integer maxMemory; Integer maxThreads; List cpuFeatures; List osTargets;
+ function detect(); function validate(); function physicalLimits(); function compatibleWith(module);
+}
