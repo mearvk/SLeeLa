@@ -1,0 +1,11 @@
+#sleela 1.3
+// Nordshrift semantic Dynamite Connector boundary.
+class DynamiteConnector {
+ String className;
+ String sourcePath;
+ String configuration;
+ String status;
+ function initialize(){status="unresolved";}
+ function resolve(){status="resolved";return status;}
+ function imply(){status="implicit";return status;}
+}
