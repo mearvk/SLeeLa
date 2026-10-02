@@ -1,0 +1,25 @@
+#sleela 1.3
+// Canonical source-time representation of an SST (.sst) sheet.
+// SST remains declarative input; Nordshrift resolves it into SLeeLa source.
+class SSTSource {
+ String path;
+ String libraryRoot;
+ String target;
+ String profile;
+ String sourceSet;
+ uint32 sourcePackageCount;
+ uint32 sourceSymbolCount;
+ uint32 validated;
+
+ function configure(sourcePath,root,targetName,profileName){
+  path=sourcePath;libraryRoot=root;target=targetName;profile=profileName;
+ }
+ function attachSourceSet(name){sourceSet=name;}
+ function recordLibrary(packageCount,symbolCount){
+  sourcePackageCount=packageCount;sourceSymbolCount=symbolCount;
+ }
+ function validate(){
+  validated=1;
+  return 1;
+ }
+}
