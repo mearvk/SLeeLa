@@ -1,0 +1,7 @@
+/* Native references inform identification and safety; they do not authorize execution. */
+#sleela 1.3
+class SafetyReference {
+  String language; String program; String format; String platform; String evidence;
+  String trustRequirement; String executionPolicy; Boolean inspectOnly; Boolean requireVerification;
+  function validate(); function describe(); function requiresVerification(); function permitsExecution();
+}
