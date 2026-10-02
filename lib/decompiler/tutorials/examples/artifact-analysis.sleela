@@ -1,0 +1,7 @@
+// SLeeLa Decompiler tutorial example.
+class ArtifactAnalysisExample {
+    DecompilerModule module;
+    OutputTarget target;
+    OSDiscernment discernment;
+    function analyze() { return module; }
+}
