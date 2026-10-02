@@ -1,0 +1,13 @@
+#sleela 1.3
+// A reference from an SST declaration to a canonical library symbol.
+class SSTSymbolReference {
+ String qualifiedName;
+ String packageName;
+ String symbolName;
+ String status;
+ String source;
+ function initialize(){status="unresolved";}
+ function resolve(){status="resolved";return status;}
+ function unresolved(){return status=="unresolved";}
+ function valid(){return qualifiedName!=""; }
+}
