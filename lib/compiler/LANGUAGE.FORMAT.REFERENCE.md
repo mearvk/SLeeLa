@@ -1,3 +1,5 @@
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-compiler-logo-001.jpeg" alt="SLeeLa Compiler" width="100%"></p>
+
 # SLeeLa Compiler Language, Program, and Binary Format Reference
 
 Max Rupplin - MEARVK LLC - 2026
