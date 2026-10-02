@@ -1,0 +1,7 @@
+class SleelaVMReportsManager {
+ uint32 inputCode; uint32 outputCode; uint32 messageCode; uint32 systemCode; uint32 binaryObjectCode; uint32 iqCode; uint32 routingCode; uint32 messagingCode;
+ uint32 capabilityCode; uint32 auditCode;
+ function initialize(); function observeInput(system); function observeOutput(system); function observeMessages(system); function observeSystem(system);
+ function routeIQ(object); function routeNamedBinaryObject(object); function sendMessaging(object, destination); function authorize(observer); function audit(report);
+ function validate(); function plan(); function emitC(); function emitCPP();
+}
