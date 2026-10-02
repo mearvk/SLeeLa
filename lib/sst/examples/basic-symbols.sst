@@ -1,0 +1,6 @@
+#sst 2.0
+sheet BasicSymbols {
+  use sst.SSTSymbol;
+  use sst.SSTSymbolKind;
+  target sleela;
+}
