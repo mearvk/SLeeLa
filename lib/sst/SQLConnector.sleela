@@ -1,0 +1,16 @@
+#sleela 1.3
+// Source-level SQL connector contract for SST.
+class SQLConnector {
+ String provider;
+ String host;
+ int port;
+ String database;
+ String user;
+ String status;
+ function initialize(){provider="";host="";port=0;database="";user="";status="configured";}
+ function configure(){status="configured";return status;}
+ function connect(){status="connected";return status;}
+ function disconnect(){status="disconnected";return status;}
+ function install(){status="install-planned";return status;}
+ function installed(){return status=="installed";}
+}
