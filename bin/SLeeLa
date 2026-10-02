@@ -94,6 +94,15 @@ case "$_first_arg" in
         fi ;;
 esac
 
+# Quiet startup integrity probe. It reaches the published master-branch key over
+# HTTPS and compares it with the local psychiatry/Secret.key. A match is silent;
+# connectivity problems or a mismatch produce one small note and never prevent
+# SLeeLa from starting.
+startup_key_check() {
+    PY=$(command -v python3 2>/dev/null || command -v python 2>/dev/null) || return 0
+    "$PY" "$ROOT_DIR/psychiatry/keysearch.py" --startup 2>&1 || true
+}
+
 # The runtime needs the object catalog and the SHA-256 execution-gate manifest.
 # Honor any values the caller already exported; otherwise default to the ones
 # shipped in the repository.
@@ -126,6 +135,13 @@ if [ "$#" -eq 0 ]; then
     usage
     exit 2
 fi
+
+# Perform the quiet key check for normal SLeeLa startup. Explicit `keysearch`
+# remains the verbose/manual form; help remains network-free.
+case "$1" in
+    help|-h|--help|keysearch) : ;;
+    *) startup_key_check ;;
+esac
 
 # Consume any leading --memory-manager[=<size>] global options and forward them
 # to the binary ahead of the subcommand. They may only precede the subcommand.
