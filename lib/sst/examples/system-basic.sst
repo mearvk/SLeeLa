@@ -1,0 +1,9 @@
+#sst 2.0
+sheet BasicSystem {
+  system "StorageSystem" {
+    group "storage";
+    name "LocalStorage";
+    component "FileStore";
+  }
+  target sleela;
+}
