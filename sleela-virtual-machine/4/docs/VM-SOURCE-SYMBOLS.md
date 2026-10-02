@@ -47,3 +47,8 @@ They lower through the C stable ABI (`lib/vm/include/sleela_vm_management.h`) an
 ## Linking Manager
 
 The VM consumes the five common Linking Manager profiles from `/lib/vm`: Basic, Moderate, Advanced, Government, and Military. A link targets an exact known SLVM major/minor version and exposes only capability-authorized observations such as memory, certificates, transaction records, resolver state, audit evidence, attestation, provenance, and checkpoints. The link is observational and cannot be used to bypass VM execution, memory, certificate, or capability controls.
+
+
+## Challenge and Reports Managers
+
+All VM generations consume the common Challenge Manager and Reports Manager source symbols. Challenge Manager profiles are Basic, Moderate, and Advanced; matched declared conditions emit capability-authorized `ConditionObserved` events. Reports Manager observes authorized input, output, messages, and system records and routes typed named binary objects through IQ/system-output paths. Remote challenge operation remains bounded by capability, resolver, certificate, security, and audit policy.
