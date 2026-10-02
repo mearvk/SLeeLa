@@ -6,6 +6,7 @@
 #include "garbage_collector.h"
 #include "slvm_security.h"
 #include "slvm_io_heuristic.h"
+#include "slvm_memory_security.h"
 
 #ifdef __cplusplus
 extern "C" {
