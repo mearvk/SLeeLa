@@ -19,6 +19,9 @@ regex:
 vm:
 	$(MAKE) -C lib/vm all
 
+vm:
+	$(MAKE) -C lib/vm all
+
 tests:
 	$(MAKE) -C tests check
 
