@@ -3,9 +3,9 @@
 # Product-specific Makefiles remain authoritative. This root dispatcher only
 # enters those existing build systems; it does not duplicate their source lists.
 
-.PHONY: all core java28 regex vm tests server clean help
+.PHONY: all core java28 regex compiler vm tests server clean help
 
-all: core java28 regex vm tests
+all: core java28 regex compiler vm tests
 
 core:
 	$(MAKE) -C impl all
@@ -16,8 +16,8 @@ java28:
 regex:
 	$(MAKE) -C regex all
 
-vm:
-	$(MAKE) -C lib/vm all
+compiler:
+	$(MAKE) -C lib/compiler all
 
 vm:
 	$(MAKE) -C lib/vm all
@@ -32,17 +32,20 @@ clean:
 	$(MAKE) -C impl clean
 	$(MAKE) -C java28 clean
 	$(MAKE) -C regex clean
+	$(MAKE) -C lib/compiler clean
+	$(MAKE) -C lib/vm clean
 	$(MAKE) -C tests clean
 
 help:
 	@echo "SLeeLa repository build dispatcher"
-	@echo "  make all     Build core, Java 28, regex, and native test targets"
-	@echo "  make core    Build impl/"
-	@echo "  make java28  Build java28/"
-	@echo "  make regex   Build regex/ and its test suites
-	@echo "  make vm      Build and validate lib/vm native CM/MM/SM/linking/challenge/reports support""
-	@echo "  make tests   Build and run tests/"
-	@echo "  make server  Build api/server/"
-	@echo "  make clean   Remove outputs from the dispatched build systems"
+	@echo "  make all       Build core, Java 28, regex, compiler, VM, and tests"
+	@echo "  make core      Build impl/"
+	@echo "  make java28    Build java28/"
+	@echo "  make regex     Build regex/ and its test suites"
+	@echo "  make compiler  Build lib/compiler/"
+	@echo "  make vm        Build lib/vm/"
+	@echo "  make tests     Build and run tests/"
+	@echo "  make server    Build api/server/"
+	@echo "  make clean     Remove outputs from dispatched build systems"
 	@echo ""
 	@echo "Product-specific build folders and Makefiles remain authoritative."
