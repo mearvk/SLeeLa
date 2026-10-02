@@ -7,7 +7,7 @@
 
 
 
-# Discord-2™ — SLeeLa Server and Service — Service 2 — v2.0.1
+# Discord-2™ — SLeeLa Server and Service — Service 2 — v2.0.2
 
 Service 2 is the expanded Server and Service package. It separates the
 authoritative SLeeLa server program from configuration and lifecycle control.
@@ -82,7 +82,7 @@ required for uses of its marks beyond permitted cases. citeturn0search3
 
 ## Module version
 
-**Service 2 module: 2.0.1**
+**Service 2 module: 2.0.2**
 
 The port-awareness addition is a backward-compatible patch-level update to this implementation generation. Shared firewall lifecycle support is provided by port-awareness module **1.0.0**.
 
@@ -145,3 +145,7 @@ Raw traffic is consumed at least daily and when it reaches 50 MiB. The retained 
 Active port verification is disabled by default. Explicit verification requires SLEELA_ACTIVE_PROBING=true and an operator-supplied SLEELA_PROBE_ALLOWLIST; retained records do not preserve the probed endpoint address.
 
 These controls support the SLeeLa Kind Sternary Port Assistor model: controlled communications assistance toward a designated Master Sternary service without treating the relay itself as an international legal authority.
+
+## Dynamic resolver
+
+Server Edition 2 can use the shared `/resolver` subsystem for event-scoped hostname-to-IP, IP-to-hostname, and canonical path resolution. Configure `resolver_target` and, when required, `resolver_require_dynamic=true`. The resolver is advisory and does not install operating-system routes or alter firewall policy.
