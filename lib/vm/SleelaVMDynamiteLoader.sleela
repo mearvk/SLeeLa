@@ -1,6 +1,7 @@
 #sleela 1.3
 // VM-facing loader contract for an explicitly imported Dynamite Connector.
 class SleelaVMDynamiteLoader {
+ String referenceName;
  String sourcePath;
  String configuration;
  String propertiesSource;
