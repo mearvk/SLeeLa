@@ -1,0 +1,15 @@
+#sst 2.0
+sheet PermissibleConnectorExample {
+  use sst.PermissibleConnector;
+  system "PermissibleDefaults" {
+    group "permissible";
+    name "AdminJourneyBounded";
+  }
+  target sleela;
+}
+
+# Target SLeeLa:
+# import :: permissible :: connector :: mysql :: /lib/etc/Permissible.sleela;
+# permissible config mysql :: permissible-defaults;
+# permissible domain mysql :: travel;
+# permissible property mysql :: route = "declared";
