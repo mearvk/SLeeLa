@@ -6,6 +6,85 @@
 
 The `/lib/vm` model defines SLeeLa source-level classes for constructing SLVM and SLJVM pieces.
 
+## Related SLeeLa VM and Architecture Source Files
+
+The following `.sleela` files are the source-level VM and architecture definitions currently present in `/lib/vm`. They are the SLeeLa-side definitions that describe the VM components, configuration, managers, execution structures, and SLVM/SLJVM architecture. The native C/C++ implementation is support for these definitions; it is not a replacement for them.
+
+### VM foundation and execution model
+
+- `SleelaVMSource.sleela` — authoritative VM source request.
+- `SleelaVMArchitecture.sleela` — VM architecture definition.
+- `SleelaVMModule.sleela` — SLeeLa VM module contract.
+- `SleelaVMCompiler.sleela` — VM source compilation model.
+- `SleelaSLVM.sleela` — SLeeLa SLVM execution target.
+- `SleelaSLJVM.sleela` — SLeeLa SLJVM execution target.
+- `SLVM.sleela` — core SLVM definition.
+- `SLVMClass.sleela` — VM class model.
+- `SLVMField.sleela` — VM field model.
+- `SLVMMethod.sleela` — VM method model.
+- `SLVMObject.sleela` — VM object model.
+- `SLVMValue.sleela` — VM value model.
+- `SLVMFrame.sleela` — VM execution-frame model.
+- `SLVMThread.sleela` — VM thread model.
+- `SLVMModule.sleela` — VM module representation.
+- `SLVMModuleLoader.sleela` — VM module loading model.
+- `SLVMNativeBinding.sleela` — native binding model.
+- `SLVMMemory.sleela` — VM memory model.
+- `SLVMHeap.sleela` — VM heap model.
+
+### VM options, capabilities, and resource architecture
+
+- `SleelaVMOptions.sleela` — aggregate VM configuration options.
+- `SleelaVMOptionCodes.sleela` — mutually exclusive VM option codes.
+- `SleelaVMFeatureBits.sleela` — independent VM feature/capability bits.
+- `SleelaVMExecutionOptions.sleela` — execution configuration.
+- `SleelaVMRuntimeOptions.sleela` — runtime configuration.
+- `SleelaVMCpuOptions.sleela` — CPU configuration.
+- `SleelaVMConcurrencyOptions.sleela` — concurrency configuration.
+- `SleelaVMIOOptions.sleela` — I/O configuration.
+- `SleelaVMMemoryOptions.sleela` — memory configuration.
+- `SleelaVMSecurityOptions.sleela` — security configuration.
+- `SleelaVMPhysicalLimits.sleela` — physical/resource fitment limits.
+- `SleelaVMResourcePlan.sleela` — resolved resource plan.
+- `SleelaVMObjectCountDeclaration.sleela` — declared VM object inventory/count model.
+- `SleelaVMOutput.sleela` — VM build/output description.
+- `SleelaVMBuildOptions.sleela` — build configuration.
+- `SleelaVMBuildPlan.sleela` — resolved build plan.
+
+### Memory Management and Security Management
+
+- `SleelaVMMemoryManagementSimple.sleela` — simple/complete MM profile.
+- `SleelaVMMemoryManagementManaged.sleela` — managed/secure MM profile.
+- `SleelaVMMemoryManagementAdvanced.sleela` — advanced/enterprise MM profile.
+- `SleelaVMSecurityManagementSimple.sleela` — simple/complete SM profile.
+- `SleelaVMSecurityManagementManaged.sleela` — managed/secure SM profile.
+- `SleelaVMSecurityManagementAdvanced.sleela` — advanced/enterprise SM profile.
+
+### Compiler Manager and VM construction management
+
+- `SleelaVMCompilerManager.sleela` — VM Compiler Manager contract.
+- `SleelaVMCompilerManagerBasic.sleela` — Basic Compiler Manager profile.
+- `SleelaVMCompilerManagerAdvanced.sleela` — Advanced Compiler Manager profile.
+- `SleelaVMCompilerManagerReport.sleela` — Compiler Manager reporting model.
+
+### Linking Manager architecture
+
+- `SleelaVMLinkingManagerBasic.sleela` — Basic linking profile.
+- `SleelaVMLinkingManagerModerate.sleela` — Moderate linking profile.
+- `SleelaVMLinkingManagerAdvanced.sleela` — Advanced linking profile.
+- `SleelaVMLinkingManagerGovernment.sleela` — Government linking profile.
+- `SleelaVMLinkingManagerMilitary.sleela` — Military linking profile.
+
+### Challenge and Reports Managers
+
+- `SleelaVMChallengeManager.sleela` — Challenge Manager contract.
+- `SleelaVMChallengeManagerBasic.sleela` — Basic challenge profile.
+- `SleelaVMChallengeManagerModerate.sleela` — Moderate challenge profile.
+- `SleelaVMChallengeManagerAdvanced.sleela` — Advanced challenge profile.
+- `SleelaVMReportsManager.sleela` — Reports Manager contract.
+
+This list is intentionally source-oriented: a VM component belongs to the SLeeLa VM architecture when its behavior and configuration are represented by these `.sleela` definitions and connected to the corresponding SLeeLa VM module path. The compilation and native-build layers turn those definitions into VM-ready artifacts; the SLeeLa VM configuration and authorized module graph govern their runtime use.
+
 ## Option model
 
 VM construction is controlled by two complementary mechanisms:
