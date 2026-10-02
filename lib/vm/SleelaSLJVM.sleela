@@ -1,0 +1,4 @@
+class SleelaSLJVM {
+ SleelaVMOutput output; String jvmVersion; String brokerProtocol; List javaModules;
+ function initialize(); function load(); function run(); function stop(); function inspect(); function broker();
+}
