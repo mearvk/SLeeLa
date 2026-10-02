@@ -43,3 +43,7 @@ The VM consumes the common management symbols from `/lib/vm`:
 - `SleelaVMSecurityManagementAdvanced`
 
 They lower through the C stable ABI (`lib/vm/include/sleela_vm_management.h`) and C++ orchestration (`sleela_vm_management.hpp`). MM fitment enforces integrity -> checkpoint -> migration dependencies. SM fitment enforces cryptography -> certificates/replay -> attestation/delegation/provenance dependencies.
+
+## Linking Manager
+
+The VM consumes the five common Linking Manager profiles from `/lib/vm`: Basic, Moderate, Advanced, Government, and Military. A link targets an exact known SLVM major/minor version and exposes only capability-authorized observations such as memory, certificates, transaction records, resolver state, audit evidence, attestation, provenance, and checkpoints. The link is observational and cannot be used to bypass VM execution, memory, certificate, or capability controls.
