@@ -1,0 +1,8 @@
+class SleelaVMLinkingManagerAdvanced {
+ uint32 vmMajor; uint32 vmMinor; uint32 linkCode; uint32 observeCode;
+ uint32 certificateCode; uint32 transactionCode; uint32 resolverCode; uint32 auditCode;
+ uint32 attestationCode; uint32 capabilityCode; uint32 provenanceCode; uint32 checkpointCode;
+ function initialize(); function connect(version); function disconnect(); function observeMemory(); function observeCertificates();
+ function observeTransactions(); function observeResolver(); function observeAudit(); function observeAttestation(); function observeCapabilities();
+ function observeProvenance(); function observeCheckpoint(); function validate(); function plan(); function emitC(); function emitCPP();
+}
