@@ -1,0 +1,14 @@
+#sleela 1.3
+class PermissibleConnector {
+ String referenceName; String importPath; String domain; String configuration; String properties;
+ String seraphState; String memoryState; String balanceState; String status;
+ function sight(){domain="sight";status="observed";return status;}
+ function name(){domain="name";status="named";return status;}
+ function travel(){domain="travel";status="journey-scoped";return status;}
+ function process(){domain="process";status="process-scoped";return status;}
+ function memory(){domain="memory";status="memory-scoped";return status;}
+ function system(){domain="system";status="system-scoped";return status;}
+ function linearGraph(){domain="linear-graph";status="graph-scoped";return status;}
+ function preserveBalance(){balanceState="bounded";return balanceState;}
+ function secureFuture(){status="admitted";return status;}
+}
