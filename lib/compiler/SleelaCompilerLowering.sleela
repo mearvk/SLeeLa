@@ -1,0 +1,7 @@
+class SleelaCompilerLowering {
+ List sourceOperations; List vmOperations; List dependencies; List capabilities;
+ String target; Integer loweredCount;
+ function initialize(target); function lowerOperation(op); function lowerBlock(block); function lowerFunction(fn);
+ function lowerModule(module); function resolveCapability(op); function resolveMemory(op);
+ function resolveIO(op); function resolveResolver(op); function resolveConcurrency(op); function validate();
+}
