@@ -1,0 +1,2 @@
+#sleela 1.3
+class PermissibleConnector { String referenceName; String sourcePath; String domain; String seraphState; String memoryState; String balanceState; String status; function initialize(){status="imported";} function resolve(){status="resolved";return status;} function preserveBalance(){balanceState="bounded";return balanceState;} function admit(){status="admitted";return status;} }
