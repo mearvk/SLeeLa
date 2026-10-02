@@ -12,22 +12,30 @@ The checked-in rating is a **routing preference tier** from 1–5. Tier 5 is the
 
 ## Data
 
-- `preferred-routers.csv`: 996 entries, four routing-role anchors for each of 249 ISO 3166 country/territory records.
-- `preferred-routers.json`: same data plus schema and source references.
-- Current public interconnection references include PeeringDB and RIR-derived country resources. PeeringDB describes its database as a source for networks, IXPs and facilities; RIPE NCC exposes country ASN and resource data. citeturn0search0turn0search3turn0search14
-- The role-anchor rows intentionally avoid fabricating a named router where the checked-in source data has not been independently resolved. A deployment refresh can bind each role to current ASN/IXP/facility identities.
+- \`preferred-routers.csv\`: 996 entries, four routing-role anchors for each of 249 ISO 3166 country/territory records.
+- \`preferred-routers.json\`: same data plus schema and source references.
+- Public references used for the catalog design include PeeringDB and RIPE NCC country ASN/resource data.
+- The role-anchor rows intentionally avoid fabricating a named router where current provider identity has not been independently resolved. Run \`refresh_peeringdb.py\` to bind roles to current PeeringDB network, IXP, and facility identities.
 
 ## Configuration
 
-`preferred-routers.conf` is read by the native selector. Set `country`, `preferred_role`, `min_score`, and `international`.
+\`preferred-routers.conf\` is read by the native selector. Set \`country\`, \`preferred_role\`, \`min_score\`, and \`international\`. Set \`SLEELA_PREFERRED_ROUTER_CONFIG\` to override the configuration path.
 
 ## Build
 
-```sh
+\`\`\`sh
 make
-```
+\`\`\`
 
-The HTTP build also compiles this directory before checking HTTP 7/8/9 syntax. HTTP servers 1, 2 and 3 link the C selector into their native startup path.
+The HTTP build compiles this directory before checking HTTP 7/8/9 syntax. HTTP servers 1, 2 and 3 link the selector into their native startup path.
+
+## Data refresh
+
+\`\`\`sh
+python3 refresh_peeringdb.py
+\`\`\`
+
+Refresh is opt-in so normal builds remain deterministic and offline.
 
 ## Safety / scope
 
