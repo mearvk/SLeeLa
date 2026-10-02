@@ -1,0 +1,51 @@
+// SLeeLa Dynamic Memory Guard
+// Developer-selectable runtime memory growth policy for a SLeeLa VM.
+
+enum VMDynamicMemoryGuardMode {
+    HARD = 1;
+    SLOW_CAREFUL = 2;
+    AGGRESSIVE = 3;
+}
+
+enum VMDynamicMemoryGuardResult {
+    WITHIN_LIMIT = 1;
+    GROW_ALLOWED = 2;
+    GROW_DEFERRED = 3;
+    LIMIT_REACHED = 4;
+    INVALID_REQUEST = 5;
+}
+
+class SleelaVMDynamicMemoryGuard {
+    VMDynamicMemoryGuardMode mode;
+    Integer initialLimit;
+    Integer hardLimit;
+    Integer softLimit;
+    Integer maximumLimit;
+    Integer growthStep;
+    Integer growthDelay;
+    Integer gcPressurePercent;
+    Boolean developerConfigured;
+    Boolean allowGrowth;
+
+    function validate();
+    function request(requiredBytes);
+    function calculateNextLimit(requiredBytes);
+    function canGrow(requiredBytes);
+    function deferGrowth(requiredBytes);
+    function observeUsage(currentBytes, peakBytes);
+    function reset();
+
+    // HARD:
+    //   Never exceed hardLimit. A request beyond the limit is rejected.
+    //
+    // SLOW_CAREFUL:
+    //   Grow only in bounded steps, after pressure/GC checks and the configured
+    //   growth delay. The guard never exceeds maximumLimit.
+    //
+    // AGGRESSIVE:
+    //   Grow promptly when capacity is required, subject to maximumLimit and
+    //   physical VM limits. The guard still refuses an impossible request.
+    //
+    // The guard controls VM memory policy; it does not grant unrestricted host
+    // memory or OS authority. Physical/resource fitment remains authoritative.
+}
