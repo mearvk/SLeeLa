@@ -8,10 +8,11 @@ class SleelaVMCompiler {
  SleelaVMSecurityManagementSimple securitySimple; SleelaVMSecurityManagementManaged securityManaged; SleelaVMSecurityManagementAdvanced securityAdvanced;
  SleelaVMLinkingManagerBasic linkingBasic; SleelaVMLinkingManagerModerate linkingModerate; SleelaVMLinkingManagerAdvanced linkingAdvanced;
  SleelaVMLinkingManagerGovernment linkingGovernment; SleelaVMLinkingManagerMilitary linkingMilitary;
+ SleelaVMChallengeManager challenge; SleelaVMChallengeManagerBasic challengeBasic; SleelaVMChallengeManagerModerate challengeModerate; SleelaVMChallengeManagerAdvanced challengeAdvanced; SleelaVMReportsManager reports;
  function load(source); function analyze(); function resolveArchitecture(); function resolvePhysicalLimits();
  function resolveOptions(); function resolveExecution(); function resolveMemory(); function resolveCPU();
  function resolveConcurrency(); function resolveIO(); function resolveSecurity(); function resolveRuntime(); function resolveLinking();
- function resolveJVM(); function resolveBuild(); function resolveMemoryManagement(); function resolveSecurityManagement();
+ function resolveJVM(); function resolveBuild(); function resolveMemoryManagement(); function resolveSecurityManagement(); function resolveChallenge(); function resolveReports();
  function resolveCapabilities(); function createModules(); function generateC(); function generateCPP();
  function generateSLVM(); function generateSLJVM(); function verify();
 }
