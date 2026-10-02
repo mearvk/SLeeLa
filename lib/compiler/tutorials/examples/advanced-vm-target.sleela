@@ -1,0 +1,7 @@
+// SLeeLa Compiler tutorial example.
+class AdvancedVMTargetExample {
+    function compileTarget() {
+        CompilerProfile profile = CompilerProfile.ADVANCED_TOTAL;
+        return profile;
+    }
+}
