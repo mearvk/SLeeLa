@@ -1,0 +1,8 @@
+class SleelaCompilerVMTarget {
+ Integer targetCode; Integer architectureCode; Integer osCode; Integer abiCode; Integer executionCode;
+ Integer securityCode; Integer memoryProfile; Integer compilerProfile; Integer featureMask;
+ String targetName; List requiredCapabilities; List requiredModules;
+ function initialize(); function selectSLVM(); function selectSLJVM(); function validateArchitecture();
+ function validateSecurity(); function validateMemory(); function validateCapabilities();
+ function validateFeatures(); function isReady(); function emitManifest();
+}
