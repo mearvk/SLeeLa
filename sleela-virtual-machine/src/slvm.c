@@ -1,6 +1,7 @@
 #include "slvm.h"
 
 #include <string.h>
+#include <stdint.h>
 
 static int push(slvm_t *vm, slvm_word_t value) {
     if (vm->stack_size >= vm->stack_capacity) return 0;
@@ -36,7 +37,38 @@ void slvm_init(slvm_t *vm, const uint8_t *code, size_t code_size,
     vm->stack_size = 0;
     vm->pc = 0;
     vm->halted = 0;
+    gc_init(&vm->gc, 1024ULL * 1024ULL);
+    vm->memory_limit = SLVM_DEFAULT_MEMORY_LIMIT;
 }
+
+void slvm_set_memory_limit(slvm_t *vm, size_t bytes) {
+    if (!vm) return;
+    vm->memory_limit = bytes ? bytes : SLVM_DEFAULT_MEMORY_LIMIT;
+}
+
+size_t slvm_get_memory_limit(const slvm_t *vm) {
+    return vm ? vm->memory_limit : 0;
+}
+
+SLGCObject *slvm_gc_allocate(slvm_t *vm, size_t bytes,
+                             SLGCMarkFn mark_children,
+                             SLGCDestroyFn destroy,
+                             void *context) {
+    if (!vm) return NULL;
+    const size_t used = gc_bytes(&vm->gc);
+    if (bytes > vm->memory_limit || used > vm->memory_limit - bytes) return NULL;
+    return gc_allocate(&vm->gc, bytes, mark_children, destroy, context);
+}
+
+size_t slvm_gc_collect(slvm_t *vm) {
+    return vm ? gc_collect(&vm->gc) : 0;
+}
+
+size_t slvm_gc_bytes(const slvm_t *vm) {
+    return vm ? gc_bytes(&vm->gc) : 0;
+}
+
+
 
 slvm_status_t slvm_step(slvm_t *vm) {
     if (!vm || !vm->code || vm->pc >= vm->code_size) return SLVM_ERROR;
