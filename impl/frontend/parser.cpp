@@ -98,7 +98,7 @@ Program Parser::parseProgram(){
                 if(contentStarted) error("declaration annotations must precede their declaration");
                 for(auto &a:anns) p.annotations.add(std::move(a));
             }
-        } else if(accept(Tok::KwImport)){ contentStarted=true; p.imports.push_back(expect(Tok::Ident,"module name").text); expect(Tok::Semicolon,"';'"); }
+        } else if(accept(Tok::KwImport)){ contentStarted=true; if(check(Tok::Ident)&&cur().text=="dynamite"&&peek(1).kind==Tok::Ident&&peek(1).text=="connector"){ i_+=2; std::string path; while(!check(Tok::Semicolon)&&!check(Tok::Eof)){ if(!path.empty()) path += cur().text=="."? "." : ""; path += cur().text; ++i_; } expect(Tok::Semicolon,"';'"); p.dynamiteImports.push_back(path); } else { p.imports.push_back(expect(Tok::Ident,"module name").text); expect(Tok::Semicolon,"';'"); } }
         else if(check(Tok::KwStruct)){ contentStarted=true; p.structs.push_back(parseStruct()); }
         else {
             unsigned mods=parseJavaModifiers();
