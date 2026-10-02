@@ -1,3 +1,5 @@
+<img align="right" src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="75" height="75" alt="SLeeLa">
+
 # SLeeLa Virtual Machine 5
 
 SLVM/5 advances /4 from authenticated distributed execution toward reproducible, policy-verifiable, fault-tolerant execution.
