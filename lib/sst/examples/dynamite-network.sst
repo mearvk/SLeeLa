@@ -7,3 +7,7 @@ sheet DynamiteNetwork {
   }
   target sleela;
 }
+
+# Target SLeeLa form:
+# import dynamite connector /lib/net/Network.sleela;
+# dynamite config network-defaults;
