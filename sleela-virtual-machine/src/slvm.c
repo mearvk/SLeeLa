@@ -1,5 +1,6 @@
 #include "slvm.h"
 #include <string.h>
+#include <stdint.h>
 static int push(slvm_t*v,slvm_word_t x){if(v->stack_size>=v->stack_capacity)return 0;v->stack[v->stack_size++]=x;return 1;}
 static int pop(slvm_t*v,slvm_word_t*x){if(!v->stack_size)return 0;*x=v->stack[--v->stack_size];return 1;}
 static int u64(const slvm_t*v,slvm_pc_t p,slvm_word_t*x){if(p+8>v->code_size)return 0;memcpy(x,v->code+p,8);return 1;}
