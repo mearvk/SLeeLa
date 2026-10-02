@@ -98,3 +98,10 @@ Both supported `.sleela` command-line forms must converge on the same validated 
 - security, memory, I/O heuristic, capability, and native OS boundaries remain below the common execution engine.
 
 This keeps direct/native SLeeLa execution and persistent SLVM execution behaviorally aligned while allowing source files and precompiled artifacts to be used as distinct command-line inputs.
+
+
+## Memory security completion requirement
+
+Memory-manager work is not complete when allocation merely succeeds. Each managed allocation must pass the memory-security policy, respect the configured ceiling, account for failures, and remain synchronized with GC reclamation. Tests should cover normal allocation, pressure, large requests, burst behavior, ceiling denial, failed-allocation rollback, and post-GC accounting.
+
+See MEMORY-SECURITY.md.
