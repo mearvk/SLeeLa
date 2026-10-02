@@ -1,0 +1,4 @@
+class SleelaVMCompilerManagerBasic {
+ uint32 profileCode; uint32 objectCount; uint32 requiredCount; uint32 categoryCount;
+ function initialize(); function requireCompleteVM(); function reviewObjectCount(); function reviewCategories(); function reviewRequiredParts(); function reviewDependencies(); function reportFine(); function reportMissing(); function reportExcess(); function validate();
+}
