@@ -2,6 +2,7 @@ class SleelaVMMemoryOptions {
  Integer memoryLimit; Integer heapLimit; Integer stackLimit; Integer codeLimit; Integer objectLimit;
  Integer pageSize; Integer allocationUnit; Integer alignment; Integer pointerBits; Integer addressBits;
  Integer garbageCollector; Integer gcThreshold; Integer gcMode; Integer compactionMode; Integer arenaMode;
+ SleelaVMDynamicMemoryGuard dynamicMemoryGuard;
  Integer guardPages; Integer zeroFill; Integer quarantine; Integer largeObjectThreshold;
- function validate(); function calculateHeap(); function calculateStack(); function calculatePages(); function configureGC(); function fit(limit);
+ function validate(); function configureDynamicMemoryGuard(); function calculateHeap(); function calculateStack(); function calculatePages(); function configureGC(); function fit(limit);
 }
