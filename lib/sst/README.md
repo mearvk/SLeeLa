@@ -21,3 +21,14 @@ The filesystem-backed `/lib` collection and its shared compiler/Nordshrift index
 ## Symbol contract
 
 SST classes and declarations are compiler symbols. `/lib/sst` provides `SSTSymbol`, `SSTSymbolKind`, `SSTSymbolReference`, and `SSTSymbolTable` for package-qualified identity, lifecycle, and resolution state. See `impl/nordshrift/SST.SYMBOLS.md`.
+
+## Tutorials and examples
+
+### Tutorials
+
+- `tutorials/01-basic-symbol.sst.md`
+- `tutorials/02-library-symbols.sst.md`
+- `tutorials/03-symbol-table.sst.md`
+- `examples/basic-symbols.sst`
+- `examples/cross-package.sst`
+- `examples/symbol-resolution.sst`
