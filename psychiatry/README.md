@@ -28,6 +28,14 @@ cryptographic credential.
 - **Encoding:** lowercase hex, single trailing newline
 - **Source:** cryptographically secure RNG (`secrets`/`os.urandom`)
 
+## Quiet startup verification
+
+Every normal SLeeLa terminal launch performs a small read-only HTTPS check against
+the `master` branch `psychiatry/Secret.key` and compares the published value
+with the local `Secret.key`. A match is silent. If there is no connectivity,
+the remote file is unavailable, or the value differs, SLeeLa prints one minor
+startup note and continues; the check does not block startup.
+
 ## `keysearch` — verify the key against GitHub
 
 From the SLeeLa terminal:
@@ -49,4 +57,8 @@ both sides, so the raw key material never leaves the machine and is never logged
 and any network problem **fails closed** to `NOT FOUND` (never a false `MATCH`).
 
 Configuration: `SLEELA_KEY_URL` overrides the remote URL (default: the repo's
-`main`-branch raw URL); `SLEELA_KEY_PATH` overrides the local key path.
+`master`-branch raw URL); `SLEELA_KEY_PATH` overrides the local key path.
+
+The startup probe uses `--startup` internally: a matching key is silent, while
+mismatch/offline/unreadable states emit only the minor note described above and
+return success so normal SLeeLa startup is not interrupted.
