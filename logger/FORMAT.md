@@ -36,3 +36,18 @@ The logger never intentionally writes a segment beyond 240 MiB. Rotation occurs 
 ## Ordering
 
 Write order is preserved within a segment. Consumers may sort records by timestamp, direction, severity, protocol, size, or sequence.
+
+## Completed-Segment Copy / Remote Destination
+
+When `move_completed_segments` is enabled and `archive_directory` is set, each completed 240 MiB log segment is copied to the configured destination as part of rotation. The complete file is flushed, copied, and size-verified before rotation advances to the next local segment.
+
+Example configuration:
+
+```text
+move_completed_segments = true
+archive_directory = "/mnt/remote/sleela-logs"
+```
+
+The destination is a normal filesystem path. A remote drive or network share should be mounted by the operating system first. Existing destination names are preserved by selecting a `.copy-N` suffix rather than overwriting an earlier archive.
+
+The local segment is retained by this safety-oriented copy operation. This means a remote destination can receive a full historical segment without making the local logging path dependent on the remote drive remaining available. If the destination is unavailable, the local log continues to be retained and the archive operation reports failure.
