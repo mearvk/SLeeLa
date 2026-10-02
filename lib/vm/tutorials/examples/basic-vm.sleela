@@ -1,0 +1,12 @@
+// SLeeLa VM tutorial example: basic complete VM request.
+class BasicVMTutorialExample {
+    SleelaVMSource source;
+    SleelaVMOutput output;
+    function configure() {
+        source.options = SleelaVMOptions.basicComplete();
+        source.memory = SleelaVMMemoryOptions.complete();
+        source.runtime = SleelaVMRuntimeOptions.complete();
+        source.configureDynamicMemoryGuard();
+    }
+    function describe() { output.validate(); }
+}
