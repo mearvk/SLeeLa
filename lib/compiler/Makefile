@@ -12,7 +12,7 @@ CPP_SOURCES := src/sleela_compiler.cpp
 C_OBJECTS := $(patsubst src/%.c,$(BUILD_DIR)/%.o,$(C_SOURCES))
 CPP_OBJECTS := $(patsubst src/%.cpp,$(BUILD_DIR)/%.o,$(CPP_SOURCES))
 
-.PHONY: all native sanity clean help
+.PHONY: all native sanity tutorial-check clean help
 all: native sanity tutorial-check
 native: $(C_OBJECTS) $(CPP_OBJECTS)
 
@@ -24,7 +24,9 @@ sanity:
 	@printf '%s\n' 'SLeeLa compiler package sanity check'
 	@printf '%s\n' '  pipeline: source lexer parser symbols semantics IR lowering codegen VM-target'
 	@printf '%s\n' '  profiles: BASIC_COMPLETE ADVANCED_TOTAL'
-	@printf '%s\n' '  source authority: .sleela'\n\t@printf '%s\n' '  language/format reference: LANGUAGE.FORMAT.REFERENCE.md'\n\t@printf '%s\n' '  safety rule: references identify; they do not authorize execution'
+	@printf '%s\n' '  source authority: .sleela'
+	@printf '%s\n' '  language/format reference: LANGUAGE.FORMAT.REFERENCE.md'
+	@printf '%s\n' '  safety rule: references identify; they do not authorize execution'
 	@printf '%s\n' '  native boundary: C ABI + C++ orchestration'
 $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
@@ -39,5 +41,5 @@ help:
 	@printf '%s\n' '  make all       Build native compiler objects and sanity check'
 	@printf '%s\n' '  make native    Compile C and C++ compiler objects'
 	@printf '%s\n' '  make sanity    Print compiler contract'
-	@printf '%s\n' '  make tutorial-check  Print compiler tutorial and example inventory''
+	@printf '%s\n' '  make tutorial-check  Print compiler tutorial and example inventory'
 	@printf '%s\n' '  make clean     Remove package build objects'
