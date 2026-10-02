@@ -13,6 +13,9 @@ void slvm_observer_init(slvm_observer_t *);
 int slvm_observer_attach(slvm_observer_t *, slvm_observer_hook_fn, void *, int);
 void slvm_observer_detach(slvm_observer_t *);
 int slvm_observer_emit(slvm_observer_t *, const slvm_observer_record_t *);
+int slvm_observer_function_enter(slvm_observer_t *,uint64_t,uint64_t);
+int slvm_observer_parameter(slvm_observer_t *,uint64_t,uint64_t,uint32_t,const void *,size_t,uint8_t);
+int slvm_observer_function_return(slvm_observer_t *,uint64_t,uint64_t,int64_t);
 #ifdef __cplusplus
 }
 #endif
