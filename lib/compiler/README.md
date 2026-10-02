@@ -65,3 +65,7 @@ The path is:
 `.sst source -> Nordshrift -> /lib discovery -> .sleela source -> SLeeLa Compiler -> SLeeLa IR -> SLVM/SLJVM`
 
 SST remains declarative input. Nordshrift resolves and emits SLeeLa source. The compiler consumes that output through the normal library index; there is no second package allow-list.
+
+## SST symbol intake
+
+SST declarations are not opaque metadata. Nordshrift resolves them as package-qualified compiler symbols against the canonical `/lib` index before emitting SLeeLa. The compiler then consumes the emitted SLeeLa symbols through its normal name-resolution pipeline.
