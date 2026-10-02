@@ -1,0 +1,17 @@
+#sst 2.0
+sheet DynamiteMultiple {
+  use sst.DynamiteConnector;
+  system "DatabaseDefaults" {
+    group "database";
+    name "ConfiguredDatabase";
+  }
+  target sleela;
+}
+
+# Target SLeeLa form:
+# import :: dynamite :: connector :: mysql :: /lib/db/MySQL.sleela;
+# import :: dynamite :: connector :: postgres :: /lib/db/PostgreSQL.sleela;
+# dynamite config mysql :: database-defaults;
+# dynamite property mysql :: port = 3306;
+# dynamite config postgres :: database-defaults;
+# dynamite property postgres :: port = 5432;
