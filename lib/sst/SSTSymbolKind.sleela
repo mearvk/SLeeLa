@@ -1,0 +1,15 @@
+#sleela 1.3
+// Formal SST symbol kinds.
+class SSTSymbolKind {
+ String value;
+ function initialize(){value="class";}
+ function classKind(){return "class";}
+ function functionKind(){return "function";}
+ function fieldKind(){return "field";}
+ function constantKind(){return "constant";}
+ function variableKind(){return "variable";}
+ function moduleKind(){return "module";}
+ function packageKind(){return "package";}
+ function typeKind(){return "type";}
+ function interfaceKind(){return "interface";}
+}
