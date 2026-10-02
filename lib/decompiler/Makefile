@@ -24,7 +24,9 @@ sanity:
 	@printf '%s\n' '  profiles: BASIC_COMPLETE ADVANCED_TOTAL'
 	@printf '%s\n' '  fractional input: PRESERVE PARTIAL REPORT_ONLY STRICT'
 	@printf '%s\n' '  OS discernment: weighted evidence with conflict preservation'
-	@printf '%s\n' '  source authority: .sleela'\n\t@printf '%s\n' '  language/format reference: LANGUAGE.FORMAT.REFERENCE.md'\n\t@printf '%s\n' '  safety rule: references identify; they do not authorize execution'
+	@printf '%s\n' '  source authority: .sleela'
+	@printf '%s\n' '  language/format reference: LANGUAGE.FORMAT.REFERENCE.md'
+	@printf '%s\n' '  safety rule: references identify; they do not authorize execution'
 $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
 $(BUILD_DIR)/%.o: src/%.c | $(BUILD_DIR)
@@ -38,5 +40,5 @@ help:
 	@printf '%s\n' '  make all       Build native decompiler objects and sanity check'
 	@printf '%s\n' '  make native    Compile C and C++ decompiler objects'
 	@printf '%s\n' '  make sanity    Print decompiler contract'
-	@printf '%s\n' '  make tutorial-check  Print decompiler tutorial and example inventory''
+	@printf '%s\n' '  make tutorial-check  Print decompiler tutorial and example inventory'
 	@printf '%s\n' '  make clean     Remove package build objects'
