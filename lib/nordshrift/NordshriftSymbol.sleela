@@ -1,0 +1,13 @@
+#sleela 1.3
+// Nordshrift semantic symbol derived from an SST symbol.
+class NordshriftSymbol {
+ String qualifiedName;
+ String packageName;
+ String name;
+ String kind;
+ String sourcePath;
+ String status;
+ function initialize(){status="declared";}
+ function resolve(){status="resolved";return status;}
+ function emit(){status="emitted";return status;}
+}
