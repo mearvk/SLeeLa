@@ -1,0 +1,7 @@
+class SleelaCompilerSemantics {
+ List errors; List warnings; List dependencies; List capabilities; List types;
+ Integer errorCount; Integer warningCount;
+ function initialize(); function analyzeTypes(); function analyzeDeclarations(); function analyzeCapabilities();
+ function analyzeDependencies(); function analyzeSecurity(); function analyzeMemory(); function analyzeIO();
+ function validate(); function isVMReady();
+}
