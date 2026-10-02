@@ -1,0 +1,6 @@
+class SleelaVMConcurrencyOptions {
+ Integer threadingModel; Integer scheduler; Integer maxThreads; Integer workerThreads; Integer stackPerThread;
+ Integer lockModel; Integer atomicModel; Integer fiberModel; Integer asyncModel; Integer ioCompletionModel;
+ Integer affinityModel; Integer priorityModel; Integer preemptionModel; Integer isolationModel;
+ function validate(); function configureThreads(); function configureScheduler(); function configureAsync(); function fit(threadLimit);
+}
