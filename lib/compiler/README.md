@@ -46,3 +46,7 @@ or from the repository root:
 `make compiler`
 
 No object, module, capability, or VM feature is silently inserted or removed by the compiler.
+
+## Language and format reference
+
+The package uses LANGUAGE.FORMAT.REFERENCE.md as its native reference for language names, producer programs, source forms, IR/object models, binary/executable formats, OS/ABI associations, and safety considerations. These references are identification and planning data only; they never grant execution permission.
