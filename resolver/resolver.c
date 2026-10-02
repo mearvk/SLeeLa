@@ -1,3 +1,6 @@
+#if !defined(_WIN32)
+#define _POSIX_C_SOURCE 200809L
+#endif
 #include "resolver.h"
 #if defined(_WIN32)
 #include <winsock2.h>
