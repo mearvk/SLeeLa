@@ -9,7 +9,7 @@ preferred:
 	@$(MAKE) -C ../../preferred-routers syntax
 
 syntax:
-	@set -e; for g in $(GRADES); do $(MAKE) -C ../$g/build syntax; done
+	@set -e; for g in $(GRADES); do $(MAKE) -C ../$$g/build syntax; done
 
 audit:
 	@sh ./audit.sh
