@@ -1,0 +1,16 @@
+#sst 2.0
+sheet NamedSystemGroups {
+  system "Payments" {
+    group "finance.payments";
+    name "PaymentGateway";
+  }
+  system "Settlement" {
+    group "finance.settlement";
+    name "SettlementLedger";
+  }
+  system "Network" {
+    group "network.edge";
+    name "PaymentRouter";
+  }
+  target sleela;
+}
