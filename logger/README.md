@@ -1,3 +1,5 @@
+<img align="right" src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="75" height="75" alt="SLeeLa">
+
 # SLeeLa Logger
 
 The SLeeLa Logger is the common packet-storage layer for SLeeLa server editions and HTTP generations. It accepts sent and received packet records and applies deterministic logger logic before storage.
