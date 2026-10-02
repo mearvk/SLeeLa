@@ -1,0 +1,13 @@
+#sleela 1.3
+// Compile-time Nordshrift symbol table produced from SST declarations.
+class NordshriftSymbolTable {
+ String libraryRoot;
+ int symbols;
+ int resolved;
+ int emitted;
+ function initialize(){symbols=0;resolved=0;emitted=0;}
+ function add(){symbols=symbols+1;return symbols;}
+ function resolve(){resolved=resolved+1;return resolved;}
+ function emit(){emitted=emitted+1;return emitted;}
+ function complete(){return symbols==resolved && symbols==emitted;}
+}
