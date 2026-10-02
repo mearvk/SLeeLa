@@ -13,7 +13,7 @@ int sleela_preferred_router_select(const char *config_path,const char *protocol,
  int min_score=4,international=1;
  if(!out)return -1;
  memset(out,0,sizeof(*out));
- if(config_path&&*config_path){f=fopen(config_path,"r");if(!f)return -2;}else f=NULL;
+ const char *cfg=config_path;if(!cfg||!*cfg)cfg=getenv("SLEELA_PREFERRED_ROUTER_CONFIG");if(!cfg||!*cfg)cfg="preferred-routers/preferred-routers.conf";f=fopen(cfg,"r");if(!f)return -2;
  if(f){while(fgets(line,sizeof line,f)){char v[256];trim(line);if(!line[0]||line[0]=='#')continue;
    if(kv(line,"country",v,sizeof v))snprintf(country,sizeof country,"%s",v);
    else if(kv(line,"preferred_role",v,sizeof v))snprintf(role,sizeof role,"%s",v);
