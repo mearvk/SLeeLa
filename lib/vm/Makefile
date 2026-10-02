@@ -16,14 +16,14 @@ CPP_OBJECTS := $(patsubst src/%.cpp,$(BUILD_DIR)/%.o,$(CPP_SOURCES))
 all: native cm-check memory-guard-check
 native: $(C_OBJECTS) $(CPP_OBJECTS)
 cm-check:
-memory-guard-check:
-	@printf '%s\n' 'Dynamic Memory Guard modes: HARD SLOW_CAREFUL AGGRESSIVE'
-	@printf '%s\n' '  policy: explicit developer configuration; physical limit remains authoritative'
 	@printf '%s\n' 'Compiler Manager package sanity check'
 	@printf '%s\n' '  profiles: BASIC_COMPLETE ADVANCED_TOTAL'
 	@printf '%s\n' '  categories: architecture execution memory security io runtime management linkage observability build'
 	@printf '%s\n' '  findings: FINE MISSING EXCESS REQUIRES INVALID'
 	@printf '%s\n' '  declaration boundary: explicit; no implicit object insertion/removal'
+memory-guard-check:
+	@printf '%s\n' 'Dynamic Memory Guard modes: HARD SLOW_CAREFUL AGGRESSIVE'
+	@printf '%s\n' '  policy: explicit developer configuration; physical limit remains authoritative'
 $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
 $(BUILD_DIR)/%.o: src/%.c | $(BUILD_DIR)
@@ -37,4 +37,5 @@ help:
 	@printf '%s\n' '  make all       Build native VM manager objects and CM sanity check'
 	@printf '%s\n' '  make native    Compile C and C++ VM manager objects'
 	@printf '%s\n' '  make cm-check  Print the Compiler Manager declaration contract'
+	@printf '%s\n' '  make memory-guard-check  Print Dynamic Memory Guard policy modes'
 	@printf '%s\n' '  make clean     Remove package build objects'
