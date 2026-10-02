@@ -129,6 +129,28 @@ Program Parser::parseProgram(){
             if(!parsedDynamite && p.dynamiteImports.size()>1) {
                 // No-op: ordinary imports remain independent of Dynamite references.
             }
+            if(!parsedDynamite && check(Tok::Ident)&&cur().text=="permissible"&&peek(1).kind==Tok::Ident&&peek(1).text=="connector") {
+                i_+=2; std::string first; std::string path; bool named=false;
+                if(check(Tok::Ident)&&peek(1).kind==Tok::Assign){first=cur().text;i_+=2;named=true;}
+                while(!check(Tok::Semicolon)&&!check(Tok::Eof)){path+=cur().text;++i_;}
+                expect(Tok::Semicolon,"';'"); if(path.empty()) error("Permissible Connector import requires a source path");
+                p.permissibleImports.push_back({named?first:"",path}); parsedDynamite=true;
+            } else if(!parsedDynamite && check(Tok::DoubleColon)) {
+                size_t save=i_; ++i_;
+                if(check(Tok::Ident)&&cur().text=="permissible"){++i_;
+                    if(check(Tok::DoubleColon)){++i_;
+                        if(check(Tok::Ident)&&cur().text=="connector"){++i_;
+                            if(check(Tok::DoubleColon)){++i_; std::string reference;
+                                if(check(Tok::Ident)&&peek(1).kind==Tok::DoubleColon){reference=cur().text;i_+=2;}
+                                std::string path; while(!check(Tok::Semicolon)&&!check(Tok::Eof)){path+=cur().text;++i_;}
+                                expect(Tok::Semicolon,"';'"); if(path.empty()) error("Permissible Connector import requires a source path");
+                                p.permissibleImports.push_back({reference,path}); parsedDynamite=true;
+                            }
+                        }
+                    }
+                }
+                if(!parsedDynamite)i_=save;
+            }
             if(!parsedDynamite) {
                 p.imports.push_back(expect(Tok::Ident,"module name").text);
                 expect(Tok::Semicolon,"';'");
