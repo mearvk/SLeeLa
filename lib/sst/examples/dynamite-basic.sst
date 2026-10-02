@@ -1,0 +1,13 @@
+#sst 2.0
+sheet DynamiteBasic {
+  use sst.DynamiteConnector;
+  system "RuntimeDefaults" {
+    group "runtime";
+    name "ConfiguredRuntime";
+  }
+  target sleela;
+}
+
+# Target SLeeLa form:
+# import dynamite connector /lib/runtime/Runtime.sleela;
+# dynamite config runtime-defaults;
