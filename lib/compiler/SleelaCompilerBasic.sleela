@@ -1,0 +1,6 @@
+class SleelaCompilerBasic {
+ Integer profileCode; Integer requiredStageCount; Integer completedStageCount;
+ function initialize(); function requireCompletePipeline(); function reviewSource(); function reviewFrontend();
+ function reviewSemantics(); function reviewIR(); function reviewLowering(); function reviewCodegen();
+ function validate(); function report();
+}
