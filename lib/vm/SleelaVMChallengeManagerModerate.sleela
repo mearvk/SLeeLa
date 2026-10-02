@@ -1,0 +1,5 @@
+class SleelaVMChallengeManagerModerate {
+ uint32 conditionCode; uint32 listenerCode; uint32 localCode; uint32 remoteCode; uint32 binaryResultCode; uint32 auditCode; uint32 resolverCode;
+ function initialize(); function installLocalChallenge(challenge); function installRemoteChallenge(target, challenge); function observeResult(result); function fireConditionObserved(event);
+ function registerListener(listener); function audit(event); function validate(); function plan(); function emitC(); function emitCPP();
+}
