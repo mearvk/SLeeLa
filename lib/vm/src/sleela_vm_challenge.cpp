@@ -1,0 +1,2 @@
+#include "../include/sleela_vm_challenge.hpp"
+namespace sleela { namespace vm { bool ChallengeManager::validate()const{return sleela_vm_challenge_plan_validate(&plan_)!=0;} bool ChallengeManager::targetAllowed(unsigned t)const{return sleela_vm_challenge_target_allowed(&plan_,t)!=0;} bool ChallengeManager::conditionMatches(const sleela_vm_condition_observed_t& e,unsigned c)const{return sleela_vm_challenge_condition_matches(&e,c)!=0;} }}
