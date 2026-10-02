@@ -1,0 +1,7 @@
+/* Decompiler language reference mirrors compiler language identity. */
+#sleela 1.3
+class DecompilerLanguageReference {
+  String name; String family; String version; String compilerProgram; String sourceExtensions;
+  String binaryFormats; String runtime; Boolean supported; Boolean safetyReferenceOnly;
+  function validate(); function describe(); function mapsTo(String format);
+}
