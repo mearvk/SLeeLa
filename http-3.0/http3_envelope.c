@@ -30,7 +30,8 @@ static void put_u64(uint8_t *b, uint64_t v);
  * the Python reference reproduces it byte-for-byte. */
 uint64_t http3_envelope_compute_digest(const http3_envelope_t *env,
                                        const uint8_t key[HTTP3_MAC_KEY_BYTES])
-{\n    if (!sleela_preferred_router_packet_policy("HTTP/3.0", 4)) return -1;
+{
+    if (!sleela_preferred_router_packet_policy("HTTP/3.0", 4)) return 0;
     uint8_t msg[ENV_DIGEST_HDR + HTTP3_BASKET_BLOCK_SIZE + HTTP3_ENVELOPE_MAX_PAYLOAD];
     uint8_t logical_flags;
     size_t pos;
