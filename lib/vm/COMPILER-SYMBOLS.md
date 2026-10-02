@@ -52,3 +52,8 @@ Challenge symbols: `SleelaVMChallengeManager`, `SleelaVMChallengeManagerBasic`, 
 ## Compiler Manager symbols
 
 The compiler-visible completeness symbols are `SleelaVMCompilerManager`, `SleelaVMCompilerManagerBasic`, `SleelaVMCompilerManagerAdvanced`, `SleelaVMCompilerManagerReport`, and `SleelaVMObjectCountDeclaration`. CM performs compile-time object-count and category review and emits `FINE`, `MISSING`, `EXCESS`, `REQUIRES`, or `INVALID` findings. The CM never silently changes the declared object inventory to obtain a successful compile.
+
+
+## Build integration
+
+The package build is available with `make -C lib/vm` and from the repository root with `make vm`. The Compiler Manager contract is reviewed before VM package objects are considered ready for assembly; the build does not silently change the declared VM inventory.
