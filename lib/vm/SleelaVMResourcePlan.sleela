@@ -1,0 +1,4 @@
+class SleelaVMResourcePlan {
+ Integer memoryBytes; Integer stackBytes; Integer heapBytes; Integer codeBytes; Integer maxObjects; Integer maxThreads; Integer ioBudget; Integer networkBudget; List reservations;
+ function calculate(); function validate(); function fitPhysicalLimits(); function emitHeader();
+}
