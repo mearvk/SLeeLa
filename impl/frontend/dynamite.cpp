@@ -31,7 +31,7 @@ std::vector<Import> discoverAll(const std::string& source,const std::string& sou
             continue;
         }
         if(starts(t,"import :: dynamite :: connector :: ")){
-            std::string rest=trim(t.substr(36));
+            std::string rest=trim(t.substr(35));
             if(!rest.empty()&&rest.back()==';') rest.pop_back();
             rest=trim(rest);
             Import m; m.present=true; m.line=n;
