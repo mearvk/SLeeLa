@@ -1,0 +1,14 @@
+#sleela 1.3
+// Formal SST symbol table: local declarations plus canonical /lib references.
+class SSTSymbolTable {
+ String libraryRoot;
+ String packageName;
+ int symbolCount;
+ int resolvedCount;
+ int unresolvedCount;
+ function initialize(){symbolCount=0;resolvedCount=0;unresolvedCount=0;}
+ function declare(){symbolCount=symbolCount+1;return symbolCount;}
+ function resolve(){resolvedCount=resolvedCount+1;return resolvedCount;}
+ function reject(){unresolvedCount=unresolvedCount+1;return unresolvedCount;}
+ function complete(){return unresolvedCount==0;}
+}
