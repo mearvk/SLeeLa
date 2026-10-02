@@ -6,7 +6,7 @@
 
 
 
-# Discord-3™ — SLeeLa Server and Service — Service 3 — v3.0.1
+# Discord-3™ — SLeeLa Server and Service — Service 3 — v3.0.2
 
 Service 3 is the next Server Edition implementation layer after Service 2. It
 introduces a remedial server model: controlled preflight, execution, recovery
@@ -67,7 +67,7 @@ naming convention. Discord's published brand guidance governs use of its marks. 
 
 ## Module version
 
-**Service 3 module: 3.0.1**
+**Service 3 module: 3.0.2**
 
 The port-awareness addition is a backward-compatible patch-level update to this implementation generation. Shared firewall lifecycle support is provided by port-awareness module **1.0.0**.
 
@@ -129,3 +129,7 @@ Raw traffic is consumed at least daily and when it reaches 50 MiB. The retained 
 Active port verification is disabled by default. Explicit verification requires SLEELA_ACTIVE_PROBING=true and an operator-supplied SLEELA_PROBE_ALLOWLIST; retained records do not preserve the probed endpoint address.
 
 These controls support the SLeeLa Kind Sternary Port Assistor model and controlled safe-call path toward a designated Master Sternary service. They do not grant automatic international legal, diplomatic, governmental, citizenship, or banking authority.
+
+## Dynamic resolver
+
+Server Edition 3 can use the shared `/resolver` subsystem for event-scoped hostname-to-IP, IP-to-hostname, and canonical path resolution. Configure `resolver_target` and, when required, `resolver_require_dynamic=true`. The resolver is advisory and does not install operating-system routes or alter firewall policy.
