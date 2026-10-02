@@ -22,7 +22,7 @@ The standard-library target is **2,048 object types**. This is an architectural 
 **SLeeLa — MEARVK LLC — 2026**
 ## Library discovery
 
-The /lib tree is recursively indexed by the compiler and Nordshrift loader. Current canonical collection: **74 package families / 967 .sleela source units / 88 module-facade symbols / 1,055 total symbol records**. See `LIBRARY.SYMBOLS.md` for the complete collection.
+The /lib tree is recursively indexed by the compiler and Nordshrift loader. Current canonical collection: **75 package families / 10,033 .sleela source units / 88 module-facade symbols / 10,121 total symbol records**. See `LIBRARY.SYMBOLS.md` for the complete collection.
 
 The compiler and Nordshrift share recursive `/lib` discovery; new package directories and source units require no compiler allow-list update.
 
