@@ -1,0 +1,5 @@
+class SleelaVMSecurityManagementSimple {
+ uint32 policyCode; uint32 capabilityCode; uint32 isolationCode; uint32 auditCode;
+ function initialize(); function authorize(operation); function deny(operation);
+ function audit(event); function validate(); function plan(); function emitC(); function emitCPP();
+}
