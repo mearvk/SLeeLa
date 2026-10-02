@@ -1,0 +1,4 @@
+class SleelaVMCompiler {
+ SleelaVMSource source; SleelaVMArchitecture architecture; SleelaVMResourcePlan resources; SleelaVMBuildPlan buildPlan;
+ function load(source); function analyze(); function resolveArchitecture(); function resolvePhysicalLimits(); function resolveCapabilities(); function createModules(); function generateC(); function generateCPP(); function generateSLVM(); function generateSLJVM(); function verify();
+}
