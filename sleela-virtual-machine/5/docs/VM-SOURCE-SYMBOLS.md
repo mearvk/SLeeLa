@@ -29,3 +29,17 @@ The generation recognizes the complete VM source vocabulary:
 Generation-specific policy is applied after common symbol resolution. Required options that cannot be implemented by this VM generation are rejected; optional options may be omitted according to the source declaration.
 
 Copyright (c) Max Rupplin - MEARVK LLC - 2026
+
+
+## MM/SM management symbols
+
+The VM consumes the common management symbols from `/lib/vm`:
+
+- `SleelaVMMemoryManagementSimple`
+- `SleelaVMMemoryManagementManaged`
+- `SleelaVMMemoryManagementAdvanced`
+- `SleelaVMSecurityManagementSimple`
+- `SleelaVMSecurityManagementManaged`
+- `SleelaVMSecurityManagementAdvanced`
+
+They lower through the C stable ABI (`lib/vm/include/sleela_vm_management.h`) and C++ orchestration (`sleela_vm_management.hpp`). MM fitment enforces integrity -> checkpoint -> migration dependencies. SM fitment enforces cryptography -> certificates/replay -> attestation/delegation/provenance dependencies.
