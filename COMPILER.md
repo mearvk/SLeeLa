@@ -12,7 +12,7 @@ every version number in the project, see [`VERSION.md`](VERSION.md); for the
 Sleela is a **Java-like language** that runs on a small, Turing-complete
 **C/C++ execution core**. The compiler is the front end that turns a
 `.sleela` source file (a **Wrapper™**) into **core bytecode** and hands it to
-the core for execution. Sleela source is never interpreted directly.
+the core for execution. Sleela source is not interpreted by a separate parallel language interpreter. The `sleela` CLI can execute textual `.sleela` directly by compiling it in memory and handing the resulting Core representation to the native C SLVM; it can also compile source to a persistent Core artifact for later SLVM loading.
 
 ```
 Wrapper™ (.sleela source)
@@ -205,3 +205,29 @@ See [`decompiler/API.md`](decompiler/API.md) and [`decompiler/TUTORIAL.md`](deco
 *The Sleela compiler turns a Wrapper™ into core bytecode, and it is version
 aware: it enforces the `#sleela` syntax-version pragma so a program always
 states — and the compiler always checks — the grammar it was written against.*
+
+
+## Native source execution versus persistent SLVM artifacts
+
+The `sleela` command-line program supports both forms without creating two language implementations.
+
+### Textual `.sleela`
+
+```sh
+./build/sleela run program.sleela
+```
+
+This is the direct/native SLeeLa source path: the authoritative C++ frontend reads the source, resolves its syntax version, lexes, parses, performs semantic/compiler lowering, and executes the resulting Core program in the native C SLVM in the same process.
+
+### Persistent `.sleela` Core artifact
+
+```sh
+./build/sleela compile program.sleela -o program.sleela
+./build/sleela run program.sleela
+```
+
+The second invocation recognizes the persistent artifact representation, validates it, loads it through the Core artifact loader, and executes it in SLVM without reparsing source text.
+
+These are **source mode** and **artifact mode**, respectively. They are not a native interpreter and a separate VM interpreter. Both terminate at the same Core/SLVM execution boundary.
+
+See `sleela-virtual-machine/docs/COMMAND-LINE-EXECUTION.md` for the complete command contract.
