@@ -55,3 +55,13 @@ No object, module, capability, or VM feature is silently inserted or removed by 
 ## Language and format reference
 
 The package uses LANGUAGE.FORMAT.REFERENCE.md as its native reference for language names, producer programs, source forms, IR/object models, binary/executable formats, OS/ABI associations, and safety considerations. These references are identification and planning data only; they never grant execution permission.
+
+## SST and Nordshrift source/compile integration
+
+`/lib/sst` and `/lib/nordshrift` are canonical SLeeLa source-facing packages. They participate in the same recursive `/lib` discovery used by the compiler and loader.
+
+The path is:
+
+`.sst source -> Nordshrift -> /lib discovery -> .sleela source -> SLeeLa Compiler -> SLeeLa IR -> SLVM/SLJVM`
+
+SST remains declarative input. Nordshrift resolves and emits SLeeLa source. The compiler consumes that output through the normal library index; there is no second package allow-list.
