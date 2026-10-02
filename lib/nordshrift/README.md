@@ -17,3 +17,7 @@ The resulting `.sleela` source uses the same recursive `/lib` discovery as ordin
 ## Authority
 
 Nordshrift remains the `.sst` semantic/transpilation layer. The SLeeLa compiler remains the compiler for the resulting SLeeLa source. `/lib` remains the canonical source collection.
+
+## Symbol resolution
+
+Nordshrift consumes SST declarations as symbols through `NordshriftSymbol`, `NordshriftSymbolResolver`, and `NordshriftSymbolTable`. Native resolution uses the shared `/lib` index; no duplicate package registry is introduced.
