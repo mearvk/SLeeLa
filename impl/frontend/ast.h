@@ -124,15 +124,14 @@ struct ClassDecl {
 
 struct StructDecl{std::string name;std::vector<Field> fields;};
 
-struct DynamiteImport {
-    std::string referenceName;
-    std::string sourcePath;
-};
+struct DynamiteImport { std::string referenceName; std::string sourcePath; };
+struct PermissibleImport { std::string referenceName; std::string sourcePath; };
 
 struct Program {
     annotation::DocumentAnnotations annotations;
     std::vector<std::string> imports;
     std::vector<DynamiteImport> dynamiteImports;
+    std::vector<PermissibleImport> permissibleImports;
     std::vector<StructDecl> structs;
     std::vector<ClassDecl> classes;
 };
