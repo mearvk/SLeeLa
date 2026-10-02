@@ -1,0 +1,9 @@
+class SleelaVMMemoryManagementAdvanced {
+ uint64 heapLimit; uint64 stackLimit; uint64 reservedLimit; uint32 objectLimit; uint32 pageSize;
+ uint32 gcCode; uint32 allocatorCode; uint32 guardCode; uint32 quarantineCode;
+ uint32 checkpointCode; uint32 migrationCode; uint32 encryptionCode; uint32 integrityCode;
+ function initialize(); function allocate(size); function release(pointer); function collect();
+ function seal(region); function scrub(region); function checkpoint(); function restore();
+ function migrate(); function verifyIntegrity(); function validate(); function plan();
+ function emitC(); function emitCPP();
+}
