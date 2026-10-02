@@ -37,3 +37,13 @@ Compiler: lib/compiler/LANGUAGE.FORMAT.REFERENCE.md
 Decompiler: lib/decompiler/LANGUAGE.FORMAT.REFERENCE.md
 
 These catalogs provide language names, producer-program mappings, source/IR/object relationships, known binary and executable formats, OS/ABI associations, and safety-aware native reference data.
+
+## SST and Nordshrift source/compile integration
+
+`/lib/sst` and `/lib/nordshrift` are canonical SLeeLa source-facing packages. They participate in the same recursive `/lib` discovery used by the compiler and loader.
+
+The path is:
+
+`.sst source -> Nordshrift -> /lib discovery -> .sleela source -> SLeeLa Compiler -> SLeeLa IR -> SLVM/SLJVM`
+
+SST remains declarative input. Nordshrift resolves and emits SLeeLa source. The compiler consumes that output through the normal library index; there is no second package allow-list.
