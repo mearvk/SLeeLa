@@ -1,3 +1,5 @@
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-vm-creator-logo-001.jpg" alt="SLeeLa VM Creator" width="100%"></p>
+
 # Building VM Pieces
 
 A VM source object may produce independent C and C++ compilation units. C provides portable ABI-level construction; C++ provides optional orchestration. The final SLVM or SLJVM is assembled only after architecture/resource/security validation.
