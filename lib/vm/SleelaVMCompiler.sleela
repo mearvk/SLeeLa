@@ -6,9 +6,11 @@ class SleelaVMCompiler {
  SleelaVMBuildOptions build; SleelaVMResourcePlan resources; SleelaVMBuildPlan buildPlan;
  SleelaVMMemoryManagementSimple memorySimple; SleelaVMMemoryManagementManaged memoryManaged; SleelaVMMemoryManagementAdvanced memoryAdvanced;
  SleelaVMSecurityManagementSimple securitySimple; SleelaVMSecurityManagementManaged securityManaged; SleelaVMSecurityManagementAdvanced securityAdvanced;
+ SleelaVMLinkingManagerBasic linkingBasic; SleelaVMLinkingManagerModerate linkingModerate; SleelaVMLinkingManagerAdvanced linkingAdvanced;
+ SleelaVMLinkingManagerGovernment linkingGovernment; SleelaVMLinkingManagerMilitary linkingMilitary;
  function load(source); function analyze(); function resolveArchitecture(); function resolvePhysicalLimits();
  function resolveOptions(); function resolveExecution(); function resolveMemory(); function resolveCPU();
- function resolveConcurrency(); function resolveIO(); function resolveSecurity(); function resolveRuntime();
+ function resolveConcurrency(); function resolveIO(); function resolveSecurity(); function resolveRuntime(); function resolveLinking();
  function resolveJVM(); function resolveBuild(); function resolveMemoryManagement(); function resolveSecurityManagement();
  function resolveCapabilities(); function createModules(); function generateC(); function generateCPP();
  function generateSLVM(); function generateSLJVM(); function verify();
