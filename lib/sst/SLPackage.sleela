@@ -1,0 +1,9 @@
+#sleela 1.3
+// SLeeLa Standard Library package facade for SST.
+class SLPackage {
+ String name;
+ String version;
+ function initialize(){name="sst";version="1.0.0";}
+ function packageName(){return name;}
+ function packageVersion(){return version;}
+}
