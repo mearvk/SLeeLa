@@ -1,0 +1,7 @@
+#sst 2.0
+sheet SymbolResolution {
+  use sst.SSTSymbol;
+  use sst.SSTSymbolReference;
+  use sst.SSTSymbolTable;
+  target sleela;
+}
