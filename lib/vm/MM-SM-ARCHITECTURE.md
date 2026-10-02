@@ -1,3 +1,5 @@
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-vm-creator-logo-001.jpg" alt="SLeeLa VM Creator" width="100%"></p>
+
 # VM Memory Management and Security Management Architecture
 
 SLeeLa now models Memory Management (MM) and Security Management (SM) as explicit source classes. They are compiler inputs, not an alternate runtime language.
