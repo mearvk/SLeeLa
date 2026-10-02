@@ -1,0 +1,17 @@
+#sleela 1.3
+// Formal source/compile-time symbol contract for SST declarations.
+class SSTSymbol {
+ String packageName;
+ String name;
+ String qualifiedName;
+ String kind;
+ String path;
+ String visibility;
+ String signature;
+ String status;
+ function initialize(){status="declared";visibility="public";kind="class";}
+ function qualify(){qualifiedName=packageName+"."+name;return qualifiedName;}
+ function declare(){status="declared";return status;}
+ function resolve(){status="resolved";return status;}
+ function emit(){status="emitted";return status;}
+}
