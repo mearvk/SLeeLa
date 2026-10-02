@@ -46,3 +46,7 @@ The VM consumes the five common Linking Manager profiles from `/lib/vm`: Basic, 
 ## Challenge and Reports Managers
 
 The Challenge Manager supplies Basic, Moderate, and Advanced declared diagnostic challenge profiles. A matched condition emits `ConditionObserved` to an authorized listener or endpoint; remote operation remains capability- and security-scoped. The Reports Manager observes authorized input, output, messages, and system records and routes them through named binary objects and IQ/system-output paths to authorized messaging APIs.
+
+## Build integration
+
+The package build is available with `make -C lib/vm` and from the repository root with `make vm`. The Compiler Manager contract is reviewed before VM package objects are considered ready for assembly; the build does not silently change the declared VM inventory.
