@@ -45,6 +45,7 @@ The following `.sleela` files are the source-level VM and architecture definitio
 - `SleelaVMConcurrencyOptions.sleela` — concurrency configuration.
 - `SleelaVMIOOptions.sleela` — I/O configuration.
 - `SleelaVMMemoryOptions.sleela` — memory configuration.
+- `SleelaVMDynamicMemoryGuard.sleela` — developer-selectable dynamic memory growth guard.
 - `SleelaVMSecurityOptions.sleela` — security configuration.
 - `SleelaVMPhysicalLimits.sleela` — physical/resource fitment limits.
 - `SleelaVMResourcePlan.sleela` — resolved resource plan.
@@ -136,6 +137,28 @@ MM and SM are explicit source-level architectures with three progressive forms e
 | Security Management | policy, capabilities, isolation, audit | crypto identity, certificates, replay, resolver-aware decisions | attestation, delegation/revocation, provenance, recovery |
 
 These classes lower through the same compiler into C/C++ VM modules and then into SLVM/SLJVM executable parts. They do not create a second language or bypass the capability boundary.
+
+## Dynamic Memory Guard
+
+The VM exposes a source-level **Dynamic Memory Guard** so a developer can decide how the compiled SLeeLa VM responds when it needs more RAM. The guard is part of the VM memory plan and is carried into VM output metadata; it does not replace physical-resource fitment or grant unrestricted host memory.
+
+Three modes are available:
+
+| Mode | Runtime behavior |
+|---|---|
+| **Hard VM RAM limit** | The VM never grows beyond the configured hard limit. A request that cannot fit is rejected. |
+| **Slow Careful VM RAM limit** | The VM grows in bounded steps, allowing the memory manager to perform pressure/GC checks and defer growth before committing another step. The configured maximum remains authoritative. |
+| **Aggressive VM RAM limit** | The VM grows promptly when additional capacity is required, subject to the configured maximum and physical VM limits. |
+
+A developer can attach the guard to SleelaVMSource and SleelaVMMemoryOptions, then select the policy in the .sleela VM definition before compilation. SleelaVMOutput records the selected guard mode and relevant limits so the generated VM artifact describes the memory policy that was compiled into it.
+
+The native C ABI in sleela_vm_dynamic_memory_guard.h provides validation, growth requests, next-limit calculation, and usage observation. The C++ facade provides the same policy to native VM orchestration. The .sleela definition remains authoritative; C/C++ implements the support path.
+
+### Dynamic growth sequence
+
+VM allocation request → Dynamic Memory Guard → within current limit / deferred growth / bounded growth / limit reached → Memory Manager → allocation result
+
+The guard must remain below the physical limit established by SleelaVMPhysicalLimits. A hard limit is a true ceiling. Careful and aggressive modes may grow only when the developer has enabled growth and supplied a valid maximum limit. This keeps dynamic growth explicit, bounded, and visible in VM output rather than allowing an allocator to expand without a declared policy.
 
 ## Construction
 
