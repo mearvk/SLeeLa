@@ -5,6 +5,9 @@ GRADES := 7.0 8.0 9.0
 
 all: preferred syntax
 
+preferred:
+	@$(MAKE) -C ../../preferred-routers syntax
+
 syntax:
 	@set -e; for g in $(GRADES); do $(MAKE) -C ../$$g/build syntax; done
 
