@@ -31,5 +31,6 @@ int main(void) {
     assert(slvm_run(&vm) == SLVM_HALTED);
     assert(vm.stack_size == 1);
     assert(vm.stack[0] == 5);
+    test_memory_security();
     return 0;
 }
