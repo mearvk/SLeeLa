@@ -1,0 +1,6 @@
+class SleelaVMRuntimeOptions {
+ Integer runtimeMode; Integer runtimeAdapter; Integer runtimeAbi; Integer compatibilityMode; Integer startupMode;
+ Integer shutdownMode; Integer signalHandling; Integer errorModel; Integer loggingModel; Integer telemetryModel;
+ Integer resolverModel; Integer checkpointModel; Integer migrationModel; Integer recoveryModel; Integer hotReloadModel;
+ function validate(); function configure(); function negotiate(); function checkpoint(); function recover(); function migrate();
+}
