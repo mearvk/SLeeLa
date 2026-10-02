@@ -19,7 +19,7 @@ sanity:
 	@printf '%s\n' '  profiles: BASIC_COMPLETE ADVANCED_TOTAL'
 	@printf '%s\n' '  fractional input: PRESERVE PARTIAL REPORT_ONLY STRICT'
 	@printf '%s\n' '  OS discernment: weighted evidence with conflict preservation'
-	@printf '%s\n' '  source authority: .sleela'
+	@printf '%s\n' '  source authority: .sleela'\n\t@printf '%s\n' '  language/format reference: LANGUAGE.FORMAT.REFERENCE.md'\n\t@printf '%s\n' '  safety rule: references identify; they do not authorize execution'
 $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
 $(BUILD_DIR)/%.o: src/%.c | $(BUILD_DIR)
