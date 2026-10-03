@@ -4,7 +4,7 @@
 **Repository:** `mearvk/SLeeLa`  
 **Document:** `VM.SUMMARY.md`  
 **Status:** Architectural reference  
-**Scope:** The eight discrete SLeeLa virtual-machine generations currently represented by the repository
+**Scope:** The eight numbered SLeeLa virtual-machine generations currently represented by the repository, plus the authoritative `/impl` execution core
 
 ---
 
@@ -12,9 +12,9 @@
 
 This document establishes a single architectural view of the SLeeLa Virtual Machine (SLVM) family.
 
-The repository currently contains **nine discrete VM generations or execution architectures** when the authoritative operational VM in `/impl` is considered together with the six numbered generations under `/sleela-virtual-machine`.
+The repository currently contains **nine discrete VM generations or execution architectures** when the authoritative operational VM in `/impl` is considered together with the eight numbered generations under `/sleela-virtual-machine`.
 
-These seven are related, but they are not seven equivalent independent interpreters. The current architecture is better understood as:
+These generations are related, but they are not equivalent independent interpreters. The current architecture is better understood as:
 
 1. **`/impl` — the authoritative operational execution core**
 2. **SLVM/1 — dedicated VM, broker, capability, security, and OS boundary**
@@ -30,7 +30,7 @@ The numbered generations preserve the architectural development of SLVM. The `/i
 
 ---
 
-## II. The Seven VM Generations
+## II. The Eight Numbered VM Generations
 
 | Generation | Repository location | Present characterization | Primary architectural emphasis |
 |---|---|---|---|
@@ -235,7 +235,7 @@ The inclusion of migration and lineage is significant. The VM is no longer model
 
 ## X. The Family Relationship
 
-The seven generations should be treated as a **single VM family**.
+The eight numbered generations should be treated as a **single VM family**.
 
 They can be represented conceptually as:
 
@@ -434,7 +434,7 @@ A profile should not imply a new programming language.
 
 ## XIV. Long-Term Direction
 
-The eight-generation architecture provides a path toward a single coherent SLeeLa VM family without requiring eight permanently divergent runtimes.
+The nine-layer repository architecture provides a path toward a single coherent SLeeLa VM family without requiring eight permanently divergent runtimes.
 
 The intended progression is:
 
@@ -466,9 +466,9 @@ The goal is to make their relationship explicit.
 
 > **One SLeeLa language. One authoritative compiler model. One common Core representation. A family of VM generations defining progressively stronger execution contracts.**
 
-This principle permits the repository to retain the work represented by all nine VM generations while avoiding unnecessary duplication of language semantics and runtime machinery.
+This principle permits the repository to retain the work represented by all nine repository VM layers while avoiding unnecessary duplication of language semantics and runtime machinery.
 
-The eight VM generations are consequently best understood as **eight discrete points in the evolution of the SLeeLa execution architecture**, with `/impl` serving as the current operational foundation and SLVM/1–6 defining the successive VM-generation architecture.
+The repository's eight numbered VM generations are consequently best understood as **eight discrete points in the evolution of the SLeeLa execution architecture**, with `/impl` serving as the current operational foundation and SLVM/1–6 defining the successive VM-generation architecture.
 
 ---
 
@@ -606,7 +606,7 @@ The resulting principle is:
 
 > **SLeeLa source defines the operation; compilation produces the executable SLeeLa representation; the C/C++ VM executes that representation; and the supported OS integration realizes the defined operation without intentionally changing its SLeeLa meaning.**
 
-This is the present foundation on which the seven VM generations can be understood.
+This is the present foundation on which the eight numbered VM generations can be understood.
 
 
 ---
