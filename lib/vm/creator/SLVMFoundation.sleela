@@ -1,0 +1,7 @@
+package vm.creator;
+
+class SLVMFoundation {
+ String formalName = "Foundation"; Integer generation = 1; String vmPath = "/1";
+ function minimumCompleteSource(); function selectFoundationModules(); function validateFoundation();
+ function configure(SleelaVMOptions options); function build(SleelaVMSource source); function verify(SleelaVMBuildPlan plan);
+}
