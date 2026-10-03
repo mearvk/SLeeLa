@@ -1,0 +1,15 @@
+script "runtime-observer"
+timeout 10 minutes
+
+let sequence = object.get("VM11", "master.sequence.index")
+let sequence_id = object.get("VM11", "master.sequence.id")
+let heap = object.get("VM11", "heap.used")
+
+queue.push("runtime.observations", {
+    sequence: sequence,
+    sequence_id: sequence_id,
+    heap_used: heap
+})
+
+vm.condition("script.observation.complete", true)
+return sequence
