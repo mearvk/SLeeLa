@@ -13,11 +13,15 @@ Index Index::discover(const std::string& preferredRoot){
  roots.emplace_back("lib"); roots.emplace_back("../lib"); roots.emplace_back("../../lib");
  for(const auto&p:roots)if(fs::is_directory(p)){o.root_=fs::weakly_canonical(p).string();break;}
  if(o.root_.empty())return o;
- for(const auto&d:fs::directory_iterator(o.root_))if(d.is_directory()){
-  const std::string package=d.path().filename().string();
-  for(const auto&f:fs::recursive_directory_iterator(d.path()))
-    if(f.is_regular_file()&&f.path().extension()==".sleela")
-      o.symbols_.push_back({package,f.path().stem().string(),fs::relative(f.path(),o.root_).generic_string()});
+ for(const auto&f:fs::recursive_directory_iterator(o.root_)){
+  if(!f.is_regular_file() || f.path().extension()!=".sleela") continue;
+  fs::path rel=fs::relative(f.path(),o.root_);
+  std::string package="__root__";
+  if(rel.has_parent_path()){
+    auto it=rel.begin();
+    if(it!=rel.end()) package=it->string();
+  }
+  o.symbols_.push_back({package,f.path().stem().string(),rel.generic_string()});
  }
  std::sort(o.symbols_.begin(),o.symbols_.end(),[](const Symbol&a,const Symbol&b){
    if(a.package!=b.package)return a.package<b.package;
