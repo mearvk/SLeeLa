@@ -59,10 +59,15 @@ static void test_gc(void) {
     check("collections counter advanced", gc.collections == 1);
     check("reclaimed counter == 200", gc.reclaimed == 200);
 
-    /* A second collect with nothing rooted reclaims the rest. */
+    /* Persistent roots remain protected until explicitly removed. */
     reclaimed = gc_collect(&gc);
-    check("second collect reclaimed remaining 400", reclaimed == 400);
-    check("live objects == 0 after second collect", gc_live_objects(&gc) == 0);
+    check("second collect preserves registered roots", reclaimed == 0);
+    check("live objects == 2 while roots remain", gc_live_objects(&gc) == 2);
+    check("remove root a", gc_remove_root(&gc, a) == 1);
+    check("remove root c", gc_remove_root(&gc, c) == 1);
+    reclaimed = gc_collect(&gc);
+    check("final collect reclaims remaining 400", reclaimed == 400);
+    check("live objects == 0 after final collect", gc_live_objects(&gc) == 0);
     check("bytes == 0 after second collect", gc_bytes(&gc) == 0);
 
     gc_free(&gc);
