@@ -23,6 +23,8 @@ test: $(TEST) $(NATIVE_TEST)
 	$(NATIVE_TEST)
 check: test
 	test -f include/slvm9_native.h
-	echo "SLVM/9 filesystem/native adapter check: PASS"
+	test -f include/slvm9_filesystem_module.h
+	test -f file-system/modules/tac3/tac3.definition.json
+	echo "SLVM/9 filesystem/native/module check: PASS"
 clean:
 	rm -rf $(BUILD_DIR)
