@@ -99,6 +99,7 @@ typedef struct {
     int active;
     int type;
     SLValue fields[SL_MAX_STRUCT_FIELDS];
+    SLGCObject *gc_object;
 } SLStructInstance;
 
 struct SLVM {
@@ -134,6 +135,7 @@ struct SLVM {
     int nstruct_live;
 
     pthread_mutex_t audio_mtx;
+    GarbageCollector gc;
     SLAudioJob audio_jobs[64];
     SLAudioNativeRenderFn audio_renderer;
     void* audio_renderer_user;
@@ -289,6 +291,7 @@ SLVM* slvm_new(void) {
     pthread_mutex_init(&vm->munction_mtx, NULL);
     pthread_mutex_init(&vm->bestof_mtx, NULL);
     pthread_mutex_init(&vm->audio_mtx, NULL);
+    gc_init(&vm->gc, 1024u * 1024u);
     for (int i = 0; i < SL_MAX_SOCKETS; i++) {
         pthread_mutex_init(&vm->sockets[i].mtx, NULL);
         vm->sockets[i].active = 0; vm->sockets[i].handle = SL_NET_INVALID;
@@ -324,6 +327,8 @@ void slvm_free(SLVM* vm) {
         pthread_mutex_destroy(&vm->sockets[i].mtx);
     }
     pthread_mutex_destroy(&vm->sock_mtx);
+    gc_collect_with_roots(&vm->gc, NULL, NULL, 0);
+    gc_free(&vm->gc);
     pthread_mutex_destroy(&vm->audio_mtx);
     slnet_shutdown();
     for (int i = 0; i < SL_MAX_FILES; i++) {
@@ -460,6 +465,79 @@ static int file_alloc(SLVM* vm, SLIOHandle fd) {
 static int file_valid_handle(int h) { return h >= 0 && h < SL_MAX_FILES; }
 static SLIOHandle file_fd_locked(SLFile* f) { return f->active ? f->fd : SLIO_INVALID_HANDLE; }
 
+/* ---- GC integration --------------------------------------------------- */
+static void gc_mark_struct_children(SLGCObject *object, void *context) {
+    GarbageCollector *gc = (GarbageCollector *)context;
+    SLStructInstance *si = (SLStructInstance *)object->payload;
+    if (!si) return;
+    for (int i = 0; i < SL_MAX_STRUCT_FIELDS; ++i) {
+        SLValue v = si->fields[i];
+        if (v.type == SL_STRUCT && si->gc_object) {
+            SLVM *vm = NULL;
+            (void)vm;
+            /* Struct children are resolved by the VM root scanner below. */
+        }
+    }
+    /* Child handles are VM-local, so the actual graph walk is performed by
+     * slvm_gc_mark_value with access to the owning VM. */
+    (void)gc;
+}
+static SLGCObject *struct_gc_object(SLVM *vm, int h) {
+    if (!vm || !vm->structs || h < 0 || h >= SL_MAX_STRUCTS) return NULL;
+    return vm->structs[h].gc_object;
+}
+static void gc_mark_value(SLVM *vm, GarbageCollector *gc, SLValue v) {
+    if (!vm || !gc || v.type != SL_STRUCT || !struct_valid_handle(vm, v.as.h)) return;
+    SLGCObject *o = struct_gc_object(vm, v.as.h);
+    if (o) {
+        gc_mark(gc, o);
+        SLStructInstance *si = &vm->structs[v.as.h];
+        for (int i = 0; i < SL_MAX_STRUCT_FIELDS; ++i)
+            if (si->fields[i].type == SL_STRUCT)
+                gc_mark_value(vm, gc, si->fields[i]);
+    }
+}
+static void gc_mark_vm_roots(GarbageCollector *gc, void *context) {
+    SLVM *vm = (SLVM *)context;
+    if (!vm) return;
+    pthread_mutex_lock(&vm->global_mtx);
+    for (int i = 0; i < vm->nglobal; ++i) gc_mark_value(vm, gc, vm->globals[i]);
+    pthread_mutex_unlock(&vm->global_mtx);
+    gc_mark_value(vm, gc, vm->last_result);
+    for (int i = 0; i < SL_MAX_LOCKS; ++i) {
+        pthread_mutex_lock(&vm->mailbox[i].mtx);
+        if (vm->mailbox[i].has) gc_mark_value(vm, gc, vm->mailbox[i].value);
+        pthread_mutex_unlock(&vm->mailbox[i].mtx);
+    }
+    pthread_mutex_lock(&vm->thr_mtx);
+    for (int i = 0; i < vm->nthreads; ++i) {
+        SLThread *t = vm->threads[i];
+        if (!t) continue;
+        for (int j = 0; j < t->sp; ++j) gc_mark_value(vm, gc, t->stack[j]);
+    }
+    pthread_mutex_unlock(&vm->thr_mtx);
+}
+static void gc_struct_destroy(void *payload) {
+    SLStructInstance *si = (SLStructInstance *)payload;
+    if (si) { si->active = 0; si->gc_object = NULL; }
+}
+static void slvm_gc_safepoint(SLVM *vm, size_t budget) {
+    if (!vm) return;
+    pthread_mutex_lock(&vm->thr_mtx);
+    int workers = vm->nthreads;
+    pthread_mutex_unlock(&vm->thr_mtx);
+    /* Collection is a VM safepoint. With worker threads active, defer heap
+     * reclamation until the structured-concurrency join point so all stacks
+     * can be observed consistently. Incremental work may continue only after
+     * a collection has already started at a quiescent point. */
+    if (workers == 0) {
+        if (vm->gc.phase == SLGC_MARKING)
+            (void)gc_step(&vm->gc, budget);
+        else if (vm->gc.bytes_allocated >= vm->gc.bytes_threshold)
+            (void)gc_collect_with_roots(&vm->gc, gc_mark_vm_roots, vm, 1);
+    }
+}
+
 /* ---- struct instances: the same bounded-handle discipline as sockets/files -- */
 static SLValue slval_struct(int32_t h) { SLValue v; v.type = SL_STRUCT; v.as.h = h; return v; }
 
@@ -477,6 +555,8 @@ static int struct_alloc(SLVM* vm, int type) {
         if (!vm->structs[i].active) {
             vm->structs[i].active = 1;
             vm->structs[i].type = type;
+            vm->structs[i].gc_object = gc_allocate_external(&vm->gc, &vm->structs[i], sizeof(vm->structs[i]), NULL, gc_struct_destroy, NULL);
+            if (!vm->structs[i].gc_object) { vm->structs[i].active = 0; pthread_mutex_unlock(&vm->struct_mtx); return -1; }
             for (int j = 0; j < nf; j++) vm->structs[i].fields[j] = slval_null();
             vm->nstruct_live++;
             pthread_mutex_unlock(&vm->struct_mtx);
@@ -698,6 +778,7 @@ static SLResult run_thread(SLThread* t) {
     for (;;) {
         if (ip < 0 || ip >= vm->codelen) TERR("ip out of range");
         SLInstr in = vm->code[ip++];
+        slvm_gc_safepoint(vm, 4);
         switch (in.op) {
         case OP_NOP: break;
         case OP_HALT: return SLR_HALT;
@@ -1111,6 +1192,9 @@ static SLResult run_thread(SLThread* t) {
             pthread_mutex_lock(&vm->struct_mtx);
             SLStructInstance* si=&vm->structs[iv.as.h];
             if(in.a<0||in.a>=vm->struct_types[si->type].nfields){pthread_mutex_unlock(&vm->struct_mtx);TERR("field offset out of range");}
+            SLValue old = si->fields[in.a];
+            if (old.type == SL_STRUCT || val.type == SL_STRUCT)
+                gc_write_barrier(&vm->gc, si->gc_object, struct_gc_object(vm, old.as.h), struct_gc_object(vm, val.as.h));
             si->fields[in.a]=val;
             pthread_mutex_unlock(&vm->struct_mtx);
             PUSH(val);
