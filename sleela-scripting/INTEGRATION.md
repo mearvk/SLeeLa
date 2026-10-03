@@ -38,3 +38,10 @@ Scripts can produce calculated values, definitions, lookup records, derived scie
 ## Source integrity
 
 The script operates beside the source document. It does not silently rewrite the source file. Source generation, when enabled, produces a normal source artifact subject to the ordinary compiler and validation path.
+
+
+## Scientific registry integration
+
+Demesresmes™ constants are read-only registry data from the script's perspective. A script can resolve a constant, use it in calculations, and return the resulting value or provenance, but cannot mutate the registry.
+
+The JSON and XML registry forms are intended to be semantically equivalent. A host may pin a registry revision for a reproducible run. External updates must enter as a new revision rather than silently changing the constants used by an existing scientific job.
