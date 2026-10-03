@@ -120,3 +120,11 @@ GC, cancellation, ownership, deadlines, resource epochs, and teardown are delibe
 - **SLVM/11:** apply the same ownership and lifecycle rules to filesystem modules.
 
 All generations preserve the same SLeeLa source semantics. A generation may add stronger validation or more capable adapters, but it must not weaken resource lifetime, cancellation, safety, or teardown guarantees.
+
+## Standard GC implementation
+
+The previous runtime GC placeholder has been replaced by the common collector in runtime/garbage_collector.c. It is a stable-handle, generational incremental tracer with explicit roots, safepoints, SATB-style pre-write protection, remembered old-to-young references, promotion, and deterministic full collection. The Core VM now owns one collector and treats struct instances as managed objects.
+
+The C++ VM generations use lib/vm/include/sleela_vm_gc.hpp as an RAII facade over the same C collector. The source-side declarations are in lib/vm/GarbageCollector.sleela, GCObject.sleela, GCQuality.sleela, GCPermutation.sleela, GCRoot.sleela, and GCBarrier.sleela.
+
+Collection is deliberately non-moving because the current SLeeLa value model uses stable VM-local handles. This avoids relocation complexity while preserving the modern collector invariants. Native sockets, files, threads and other OS resources remain governed by the resource-ownership/teardown layer rather than by GC reachability.
