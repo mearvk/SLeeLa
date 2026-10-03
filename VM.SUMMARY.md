@@ -12,7 +12,7 @@
 
 This document establishes a single architectural view of the SLeeLa Virtual Machine (SLVM) family.
 
-The repository currently contains **twelve discrete VM generations or execution architectures** when the authoritative operational VM in `/impl` is considered together with the eleven numbered generations under `/sleela-virtual-machine`.
+The repository currently contains **12 VM entries in the architecture: `/impl` Core plus the eleven numbered generations `/1` through `/11`**.
 
 These generations are related, but they are not equivalent independent interpreters. The current architecture is better understood as:
 
@@ -25,12 +25,15 @@ These generations are related, but they are not equivalent independent interpret
 7. **SLVM/6 — continuous verification, lineage, attestation, leases, and migration**
 8. **SLVM/7 — hardened management, failure handling, recovery, and resource safety**
 9. **SLVM/8 — supervised execution, admission, capability leases, transactions, and audit orchestration**
+10. **SLVM/9 — filesystem and operating-system adaptation**
+11. **SLVM/10 — verified storage execution**
+12. **SLVM/11 — filesystem-module hosting and schema-driven extension**
 
 The numbered generations preserve the architectural development of SLVM. The `/impl` tree provides the present authoritative, buildable execution substrate.
 
 ---
 
-## II. The Eight Numbered VM Generations
+## II. The Eleven Numbered VM Generations
 
 | Generation | Repository location | Present characterization | Primary architectural emphasis |
 |---|---|---|---|
@@ -43,6 +46,9 @@ The numbered generations preserve the architectural development of SLVM. The `/i
 | **SLVM/6** | `/sleela-virtual-machine/6` | Advanced architectural generation | Continuous verification, execution lineage, multi-party attestation, leases, migration |
 | **SLVM/7** | `/sleela-virtual-machine/7` | Hardened management/recovery generation | Log and memory managers, watchdog health, manager dependency validation, bounded recovery, quarantine, resource pressure handling |
 | **SLVM/8** | `/sleela-virtual-machine/8` | Supervised execution generation | Admission gate, immutable policy, capability leases, transaction control, lifecycle supervisor, chained audit evidence |
+| **SLVM/9** | `/sleela-virtual-machine/9` | Filesystem and OS adaptation generation | Filesystem Abstraction Layer, native OS adapters, capability negotiation, TAC3 profile |
+| **SLVM/10** | `/sleela-virtual-machine/10` | Verified storage generation | Storage identity, filesystem generation verification, adapter qualification, quiesce/recovery |
+| **SLVM/11** | `/sleela-virtual-machine/11` | Filesystem-module host generation | Schema-driven filesystem modules, module discovery, validation, capability qualification |
 
 The distinction between **implementation** and **architecture** is intentional. A generation can define a VM contract, security model, execution boundary, or compatibility model before it has an execution implementation equivalent in size to `/impl`.
 
@@ -214,7 +220,7 @@ It therefore does not establish a second SLeeLa language runtime. Instead, it st
 
 ## IX. SLVM/6 — Continuous Verification and Migration
 
-SLVM/6 represents the most advanced VM generation presently documented in the repository.
+SLVM/11 represents the newest numbered VM generation presently documented in the repository.
 
 Its conceptual pipeline is:
 
@@ -307,9 +313,9 @@ SLVM/8
 
 ---
 
-## XI. What the Seven VMs Do Not Mean
+## XI. What the Eleven Numbered VMs Do Not Mean
 
-The existence of eleven generations does **not** mean that SLeeLa requires seven unrelated language interpreters.
+The existence of eleven numbered generations does **not** mean that SLeeLa requires eleven unrelated language interpreters.
 
 The architectural objective is the opposite.
 
@@ -434,7 +440,7 @@ A profile should not imply a new programming language.
 
 ## XIV. Long-Term Direction
 
-The eleven-generation VM architecture plus the Core provides a path toward a single coherent SLeeLa VM family without requiring eight permanently divergent runtimes.
+The eleven-generation VM architecture plus the Core provides a path toward a single coherent SLeeLa VM family without requiring eleven permanently divergent runtimes.
 
 The intended progression is:
 
@@ -468,7 +474,7 @@ The goal is to make their relationship explicit.
 
 This principle permits the repository to retain the work represented by all eleven numbered VM generations plus the Core while avoiding unnecessary duplication of language semantics and runtime machinery.
 
-The repository's eleven numbered VM generations are consequently best understood as **eight discrete points in the evolution of the SLeeLa execution architecture**, with `/impl` serving as the current operational foundation and SLVM/1–6 defining the successive VM-generation architecture.
+The repository's eleven numbered VM generations are consequently the complete current numbered SLVM family, `/1` through `/11`, with `/impl` serving as the separate authoritative Core implementation.
 
 ---
 
@@ -488,14 +494,17 @@ VM generation tree:
 
 Generation directories:
 
-- `/sleela-virtual-machine/1`
-- `/sleela-virtual-machine/2`
-- `/sleela-virtual-machine/3`
-- `/sleela-virtual-machine/4`
-- `/sleela-virtual-machine/5`
-- `/sleela-virtual-machine/6`
-- `/sleela-virtual-machine/7`
-- `/sleela-virtual-machine/8`
+- `/sleela-virtual-machine/1` — Foundation
+- `/sleela-virtual-machine/2` — Operator
+- `/sleela-virtual-machine/3` — Specialist
+- `/sleela-virtual-machine/4` — Supervisor
+- `/sleela-virtual-machine/5` — Manager
+- `/sleela-virtual-machine/6` — Director
+- `/sleela-virtual-machine/7` — Administrator
+- `/sleela-virtual-machine/8` — Executive
+- `/sleela-virtual-machine/9` — Authority
+- `/sleela-virtual-machine/10` — Principal
+- `/sleela-virtual-machine/11` — Sovereign
 
 **Max Rupplin - MEARVK LLC - 2026**
 
@@ -576,9 +585,9 @@ The same compiled .sleela artifact is intended to support two principal entry pa
 
 Both paths converge on the same underlying SLeeLa execution semantics. The Terminal is therefore an execution front end, while the VM provides the underlying bytecode execution machinery.
 
-### Seven-Generation Context
+### Eleven-Generation Context
 
-This present source-to-VM model sits beneath the eleven-generation architecture described in this document. /impl provides the current operational execution substrate, while SLVM/1 through SLVM/8 describe increasingly strong VM contracts around that common executable representation.
+This present source-to-VM model sits beneath the eleven-generation architecture described in this document. /impl provides the current operational execution substrate, while SLVM/1 through SLVM/11 describe the complete numbered VM family and its increasingly specialized execution contracts around that common executable representation.
 
 The important architectural distinction is therefore:
 
@@ -789,4 +798,25 @@ Sovereign hosts schema-driven filesystem modules under `/sleela-virtual-machine/
 
 ### Documentation consistency
 
-All references in this document to seven, eight, or nine VM generations are historical wording and should be interpreted as superseded by the current **SLVM/1–SLVM/11 + /impl Core** architecture. The current authoritative count is eleven numbered generations plus the standard Core implementation.
+All references in this document to seven, eight, or nine VM generations are historical wording and should be interpreted as superseded by the current **SLVM/1–SLVM/11 + /impl Core** architecture. The current authoritative architecture is **12 VM entries total: `/impl` Core plus `/1` through `/11`**. The numbered VM family is exactly eleven generations, and `/11` Sovereign is the newest numbered VM.
+
+## XXV. Complete 12-Entry VM Index
+
+The complete current VM architecture is explicitly enumerated here so the summary never ends at an older generation:
+
+| Entry | Formal Name | Role |
+|---|---|---|
+| /impl | **Core** | Authoritative operational execution implementation |
+| /1 | **Foundation** | VM foundation, broker, capabilities, security, OS boundary |
+| /2 | **Operator** | Cryptographic identity, secure linking, observation |
+| /3 | **Specialist** | Isolation, verification, observation, attestation |
+| /4 | **Supervisor** | Authenticated and distributed execution |
+| /5 | **Manager** | Reproducibility, policy, recovery, replay, quotas |
+| /6 | **Director** | Continuous verification, lineage, leases, migration |
+| /7 | **Administrator** | Hardened management, recovery, watchdogs, quarantine |
+| /8 | **Executive** | Admission, supervised execution, leases, transactions, audit |
+| /9 | **Authority** | Filesystem and operating-system adaptation |
+| /10 | **Principal** | Verified storage execution and storage identity |
+| /11 | **Sovereign** | Filesystem-module hosting and schema-driven extension |
+
+**There are no numbered generations after /11 in the current architecture. /11 is the newest numbered VM. /impl is Core, not /12.**
