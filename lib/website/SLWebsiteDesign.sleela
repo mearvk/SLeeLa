@@ -1,0 +1,44 @@
+/*
+ * lib/website/SLWebsiteDesign.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines the SLeeLa standard-library type SLWebsiteDesign used within the website library family.
+ */
+#sleela 1.3
+// Unified SLeeLa standard-library front-end object.
+// Family: website. The global look of a generated site: a named theme, a
+// palette (brand/base/accent), a corner-radius rhythm, the "energy" dial that
+// makes a site calm or exciting, and a layout grammar. The emitter reads these
+// to turn plain signs into a styled, dependency-free page. No new VM opcodes
+// are required: everything here is value assignment, arithmetic, and the
+// existing String concatenation on OP_ADD.
+//
+// Layout grammar: 0 stack, 1 split, 2 grid, 3 canvas.
+class SLWebsiteDesign {
+  String theme; String brand; String base; String accent; String font; int radius; int energy; int grammar;
+
+  void configure(String t, String b, String ba, String ac, String f, int r, int e, int g) {
+    theme = t; brand = b; base = ba; accent = ac; font = f;
+    radius = clamp(r, 0, 24); energy = clamp(e, 0, 100); grammar = clamp(g, 0, 3);
+  }
+
+  // Named presets. A front end can start from a preset then override.
+  void preset(String name) {
+    if (name == "neon") { configure("neon", "#7c3aed", "#0b0714", "#22d3ee", "'Space Grotesk', system-ui, sans-serif", 18, 95, 3); return; }
+    if (name == "brutalist") { configure("brutalist", "#111111", "#f5f5f5", "#ff3b30", "'Arial Black', system-ui, sans-serif", 0, 70, 0); return; }
+    if (name == "editorial") { configure("editorial", "#1f2937", "#fbfbf8", "#b45309", "Georgia, 'Times New Roman', serif", 4, 15, 1); return; }
+    configure("aurora", "#2563eb", "#0f172a", "#38bdf8", "'Inter', system-ui, sans-serif", 14, 60, 2);
+  }
+
+  // Energy drives flat color (0), soft gradient (1), or bold animated gradient (2).
+  int motionLevel() {
+    if (energy >= 75) { return 2; }
+    if (energy >= 35) { return 1; }
+    return 0;
+  }
+
+  int clamp(int v, int lo, int hi) {
+    if (v < lo) { return lo; }
+    if (v > hi) { return hi; }
+    return v;
+  }
+}

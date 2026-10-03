@@ -609,6 +609,12 @@ static void value_to_text(SLVM* vm, SLValue v, char* buf, size_t cap) {
 }
 
 static void print_value(SLVM* vm, SLValue v) {
+    /* A printed String may be a large generated document; size the buffer from
+     * SL_MAX_STRTEXT (heap-allocated) so output is not truncated. */
+    if (v.type == SL_STR) {
+        printf("%s", slvm_str(vm, v.as.s));
+        return;
+    }
     char buf[1024];
     value_to_text(vm, v, buf, sizeof(buf));
     printf("%s", buf);
@@ -771,10 +777,19 @@ static SLResult run_thread(SLThread* t) {
         case OP_ADD: {
             SLValue b=POP(), a=POP();
             if (a.type==SL_STR || b.type==SL_STR) {
-                char buf[1024], sa[512], sb[512];
-                value_to_text(vm,a,sa,sizeof(sa));
-                value_to_text(vm,b,sb,sizeof(sb));
-                snprintf(buf,sizeof(buf),"%s%s",sa,sb); SLValue r; r.type=SL_STR; r.as.s=intern(vm,buf); PUSH(r);
+                /* Strings may be built up incrementally into large documents
+                 * (generated HTML/CSS, DXF, JSON). Size the concat buffers from
+                 * SL_MAX_STRTEXT so string assembly is not silently truncated.
+                 * Heap-allocated to avoid a large VM stack frame. */
+                size_t cap = (size_t)SL_MAX_STRTEXT;
+                char* sa = (char*)malloc(cap);
+                char* sb = (char*)malloc(cap);
+                char* buf = (char*)malloc(cap*2);
+                if (!sa || !sb || !buf) { free(sa); free(sb); free(buf); TERR("out of memory building String"); }
+                value_to_text(vm,a,sa,cap);
+                value_to_text(vm,b,sb,cap);
+                snprintf(buf,cap*2,"%s%s",sa,sb); SLValue r; r.type=SL_STR; r.as.s=intern(vm,buf); PUSH(r);
+                free(sa); free(sb); free(buf);
             } else if (both_int(a,b)) PUSH(slval_int(a.as.i+b.as.i)); else PUSH(slval_double(as_num(a)+as_num(b)));
         } break;
         case OP_SUB: { SLValue b=POP(),a=POP(); if(both_int(a,b)) PUSH(slval_int(a.as.i-b.as.i)); else PUSH(slval_double(as_num(a)-as_num(b))); } break;

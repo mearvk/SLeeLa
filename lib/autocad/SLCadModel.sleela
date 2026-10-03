@@ -1,0 +1,85 @@
+/*
+ * lib/autocad/SLCadModel.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines the SLeeLa standard-library type SLCadModel used within the autocad library family.
+ */
+#sleela 1.3
+import math;
+// Unified SLeeLa standard-library front-end object.
+// Family: autocad. The geometry model the AutoCAD renderer builds from a plan.
+// The SLeeLa surface has no array storage, so the model accumulates the DXF
+// entity text directly as geometry is added (walls, dimensions, notes), and
+// tracks the drawing extents in scalar fields. The emitter wraps these entity
+// strings in the DXF sections. SLeeLa owns the geometry.
+//
+// Only existing opcodes are used: arithmetic, the native math `hypot` for the
+// dimension distance, and String concatenation on OP_ADD (buffer sized from
+// SL_MAX_STRTEXT so large drawings are not truncated). No new VM opcode needed.
+class SLCadModel {
+  String title; String units;
+  double curX; double curY;                      // insertion point for next room
+  double minX; double minY; double maxX; double maxY; // extents
+  String walls; String dims; String notes;       // accumulated DXF entity text
+  int noteCount;
+
+  void begin(String t, String u) {
+    title = t; units = u;
+    curX = 0.0; curY = 0.0;
+    minX = 0.0; minY = 0.0; maxX = 0.0; maxY = 0.0;
+    walls = ""; dims = ""; notes = ""; noteCount = 0;
+  }
+
+  void setAt(double x, double y) { curX = x; curY = y; }
+
+  void grow(double x, double y) {
+    if (x < minX) { minX = x; }
+    if (y < minY) { minY = y; }
+    if (x > maxX) { maxX = x; }
+    if (y > maxY) { maxY = y; }
+  }
+
+  String num(double v) { return "" + v; }
+
+  String lineEntity(String lyr, double x1, double y1, double x2, double y2) {
+    String s = "0\nLINE\n8\n" + lyr + "\n";
+    s = s + "10\n" + num(x1) + "\n20\n" + num(y1) + "\n30\n0.0\n";
+    s = s + "11\n" + num(x2) + "\n21\n" + num(y2) + "\n31\n0.0\n";
+    return s;
+  }
+
+  String textEntity(String lyr, double x, double y, double height, String value) {
+    String s = "0\nTEXT\n8\n" + lyr + "\n";
+    s = s + "10\n" + num(x) + "\n20\n" + num(y) + "\n30\n0.0\n";
+    s = s + "40\n" + num(height) + "\n1\n" + value + "\n";
+    return s;
+  }
+
+  void addWall(double x1, double y1, double x2, double y2) {
+    walls = walls + lineEntity("walls", x1, y1, x2, y2);
+    grow(x1, y1); grow(x2, y2);
+  }
+
+  // Expand a room into its four wall segments at the current insertion point.
+  void addRoom(double w, double h) {
+    double ox = curX; double oy = curY;
+    addWall(ox,     oy,     ox + w, oy);        // south
+    addWall(ox + w, oy,     ox + w, oy + h);    // east
+    addWall(ox + w, oy + h, ox,     oy + h);    // north
+    addWall(ox,     oy + h, ox,     oy);        // west
+  }
+
+  void addDim(double x1, double y1, double x2, double y2) {
+    dims = dims + lineEntity("dims", x1, y1, x2, y2);
+    dims = dims + textEntity("dims", (x1 + x2) / 2.0, (y1 + y2) / 2.0, 120.0, num(distance(x1, y1, x2, y2)));
+  }
+
+  void addNote(double x, double y, String text) {
+    notes = notes + textEntity("notes", x, y, 150.0, text);
+    noteCount = noteCount + 1;
+  }
+
+  // Straight-line distance -- used to compute dimension labels.
+  double distance(double x1, double y1, double x2, double y2) {
+    return math.hypot(x2 - x1, y2 - y1);
+  }
+}

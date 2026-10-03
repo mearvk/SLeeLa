@@ -1,0 +1,74 @@
+/*
+ * lib/website/SLWebsiteEmitter.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines the SLeeLa standard-library type SLWebsiteEmitter used within the website library family.
+ */
+#sleela 1.3
+// Unified SLeeLa standard-library front-end object.
+// Family: website. Assembles signs under a design into a complete,
+// self-contained HTML document (markup + an embedded style sheet). No external
+// CSS/JS is required to view the result. This is the authoritative renderer.
+//
+// The style sheet is derived entirely from the design: CSS custom properties
+// carry the palette and the energy dial selects flat color, soft gradients, or
+// a bold animated gradient. All of this is String concatenation on OP_ADD plus
+// integer-to-text; no new VM opcode is introduced.
+class SLWebsiteEmitter {
+
+  // Produce the <style> block from the design.
+  String styleFor(SLWebsiteDesign d) {
+    int motion = d.motionLevel();
+    String heroBg = "var(--brand)";
+    if (motion == 1) { heroBg = "linear-gradient(135deg, var(--brand), var(--accent))"; }
+    if (motion == 2) { heroBg = "linear-gradient(120deg, var(--brand), var(--accent), var(--brand))"; }
+
+    String css = "<style>\n";
+    css = css + ":root{--brand:" + d.brand + ";--base:" + d.base + ";--accent:" + d.accent
+              + ";--radius:" + intToStr(d.radius) + "px;--font:" + d.font + ";}\n";
+    css = css + "*{box-sizing:border-box;margin:0;padding:0}";
+    css = css + "body{font-family:var(--font);background:var(--base);color:#e5e7eb;line-height:1.55}";
+    css = css + "section{padding:72px 24px}.wrap{max-width:1080px;margin:0 auto}";
+    css = css + "nav{position:sticky;top:0;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;background:rgba(0,0,0,.35)}";
+    css = css + "nav .brand{font-weight:800;color:#fff}";
+    css = css + ".hero{background:" + heroBg + ";border-radius:var(--radius);padding:120px 32px;text-align:center;color:#fff}";
+    css = css + ".hero h1{font-size:clamp(2.2rem,6vw,4rem);letter-spacing:-.02em}";
+    css = css + ".hero p{opacity:.9;margin:16px auto 28px;max-width:46ch}";
+    css = css + ".btn{display:inline-block;background:var(--accent);color:#001;font-weight:700;padding:14px 26px;border-radius:var(--radius);text-decoration:none}";
+    css = css + ".grid{display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}";
+    css = css + ".card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);padding:24px}";
+    css = css + ".cta{background:var(--accent);color:#001;text-align:center;border-radius:var(--radius)}";
+    css = css + "blockquote{font-size:1.5rem;max-width:40ch;margin:0 auto;text-align:center;color:#fff}";
+    css = css + "footer{padding:48px 24px;background:rgba(0,0,0,.4)}";
+    if (motion == 2) {
+      css = css + ".hero{background-size:200% 200%;animation:flow 12s ease infinite}";
+      css = css + "@keyframes flow{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}";
+    }
+    css = css + "\n</style>";
+    return css;
+  }
+
+  // Render a single sign to HTML under the active design.
+  String renderSign(SLWebsiteSign s) {
+    if (s.kind == 0) { return "<nav><span class=\"brand\">" + s.a + "</span><span>" + s.b + "</span></nav>"; }
+    if (s.kind == 1) { return "<section class=\"hero\"><div class=\"wrap\"><h1>" + s.a + "</h1><p>" + s.b + "</p><a class=\"btn\" href=\"#\">" + s.c + "</a></div></section>"; }
+    if (s.kind == 2) { return "<section><div class=\"wrap\"><h2>" + s.a + "</h2><div class=\"grid\">" + s.b + "</div></div></section>"; }
+    if (s.kind == 3) { return "<section><div class=\"wrap\"><h2>" + s.a + "</h2><div class=\"grid\">" + s.b + "</div></div></section>"; }
+    if (s.kind == 4) { return "<section><div class=\"wrap\"><h2>" + s.a + "</h2><div class=\"grid\">" + s.b + "</div></div></section>"; }
+    if (s.kind == 5) { return "<section><blockquote>" + s.a + "<br><small>- " + s.b + "</small></blockquote></section>"; }
+    if (s.kind == 6) { return "<section class=\"cta\"><div class=\"wrap\"><h2>" + s.a + "</h2><a class=\"btn\" href=\"" + s.c + "\">" + s.b + "</a></div></section>"; }
+    if (s.kind == 7) { return "<section><div class=\"wrap\">" + s.a + "</div></section>"; }
+    return "<footer><div class=\"wrap\"><strong>" + s.a + "</strong><div>" + s.b + "</div></footer>";
+  }
+
+  // Wrap a design's style + a pre-rendered body into a full HTML document.
+  String document(String title, String style, String body) {
+    String html = "<!doctype html>\n<html lang=\"en\">\n<head>\n";
+    html = html + "<meta charset=\"utf-8\">\n";
+    html = html + "<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\n";
+    html = html + "<title>" + title + "</title>\n";
+    html = html + style + "\n</head>\n<body>\n" + body + "\n</body>\n</html>\n";
+    return html;
+  }
+
+  String intToStr(int v) { return "" + v; }
+}

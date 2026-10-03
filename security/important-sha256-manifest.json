@@ -4876,11 +4876,11 @@
     },
     {
       "path": "impl/core/sleela_core.c",
-      "sha256": "91fdc39090b1f9101516fc18ddb4c160bfca9ea7c65790575229bbf49d276b86"
+      "sha256": "627cdff044efe2dd4c1a3f3b751cd33920920dd3d1467b8acc17a47001508c07"
     },
     {
       "path": "impl/core/sleela_core.h",
-      "sha256": "3d89353e66df40924f3cc05bcf71fd2f0957fe6543b2bd96405367f7798f9da2"
+      "sha256": "c290ad9fee30b0770ced84a4d95373a679df755ff92de77038677db5f7dd93a2"
     },
     {
       "path": "impl/core/sleela_design_activity.c",
@@ -6529,6 +6529,26 @@
     {
       "path": "lib/audio/SLPackage.sleela",
       "sha256": "5479cec411884a0db2b569f69c8f1c218c10a4138504f5b05265d9c1f89bb2d4"
+    },
+    {
+      "path": "lib/autocad/SLCadDxf.sleela",
+      "sha256": "63bd91160be4c5def4b279057296a43136db6be95e02742b9de6c6115c560c3c"
+    },
+    {
+      "path": "lib/autocad/SLCadModel.sleela",
+      "sha256": "4629f427b51eaf0b9e1b7b837b84d29d3f18dfb993d6272c3c8e2d88a482ae80"
+    },
+    {
+      "path": "lib/autocad/SLCadPlan.sleela",
+      "sha256": "f2dd3016b6bd4d7940c6ed3bff2546c7514bcb26eca649bd4be1e849f3244c6a"
+    },
+    {
+      "path": "lib/autocad/SLCadRenderer.sleela",
+      "sha256": "2102dc83d2aed14ce786b02ab2a8922615e941b91ccce061d8362fc9d12e0489"
+    },
+    {
+      "path": "lib/autocad/autocad.sleela",
+      "sha256": "9109473722f94d6083320e216ab1a4e741425b26a8e2dc005d310845ea2d0d44"
     },
     {
       "path": "lib/bash/SLPackage.sleela",
@@ -47161,6 +47181,26 @@
     {
       "path": "lib/vm/tutorials/examples/startup-and-memory-guard.sleela",
       "sha256": "8d3dbe5f54607336991ccb6d6dfe72bfda0df6ff143e0319d6d0d0a42ccf1217"
+    },
+    {
+      "path": "lib/website/SLWebsiteDesign.sleela",
+      "sha256": "cf6aacb094766627326121c7f215d0b3ef223dbf19e86afd43f7b2be0d9fb9a4"
+    },
+    {
+      "path": "lib/website/SLWebsiteEmitter.sleela",
+      "sha256": "17049b0eba76fc10135f6af2211fbe2a800baa2013524c26baaa2da7bbfb09b7"
+    },
+    {
+      "path": "lib/website/SLWebsiteGenerator.sleela",
+      "sha256": "6fe95a8f56b03f7af44cbb5e561b5cb27efd5129144478b6f78a462733192d87"
+    },
+    {
+      "path": "lib/website/SLWebsiteSign.sleela",
+      "sha256": "8c9fcf0dc8e5e70e2a6f3745de3d3b3cf7a2614672533206fc1667cb3d3e0d62"
+    },
+    {
+      "path": "lib/website/website.sleela",
+      "sha256": "ab9d6c74d4e778c207604c3368d4132e121f0622dc571f22586b1c9a0fcdd57b"
     },
     {
       "path": "libs/download-all.sh",

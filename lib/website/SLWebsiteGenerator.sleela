@@ -1,0 +1,27 @@
+/*
+ * lib/website/SLWebsiteGenerator.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines the SLeeLa standard-library type SLWebsiteGenerator used within the website library family.
+ */
+#sleela 1.3
+// Unified SLeeLa standard-library front-end object.
+// Family: website. The library facade that names the one-call entry point a
+// front end (CLI or the JavaFX Website Studio) uses to compose a design + an
+// ordered list of signs into a finished, self-contained site.
+//
+// This file is part of the package "discovery surface": the SLeeLa compiler's
+// `run` compiles a single self-contained file, so the executable, all-classes-
+// in-one-file build of the generator lives in `lib/website/website.sleela`
+// (which inlines SLWebsiteDesign, SLWebsiteSign, SLWebsiteEmitter, and this
+// generator with a `main`). This definition documents the facade's shape and
+// the preset dial a caller chooses; SLeeLa decides the output. No new VM
+// opcode is required -- the generator is String concatenation plus arithmetic.
+class SLWebsiteGenerator {
+  String presetName;    // "neon" | "aurora" | "brutalist" | "editorial"
+  int signCount;        // number of signs composed into the current site
+
+  void choose(String preset) { presetName = preset; }
+  void addedSign() { signCount = signCount + 1; }
+  int signs() { return signCount; }
+  String preset() { return presetName; }
+}
