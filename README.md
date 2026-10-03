@@ -89,7 +89,8 @@ host and adjusts link flags per platform.
   [`manifesto/MANIFESTO.md`](manifesto/MANIFESTO.md).
 - [`VERSION.md`](VERSION.md) is the single record of all versions.
 - [`config/CONFIGURATION.md`](config/CONFIGURATION.md) defines the unified configuration root: one absolute runtime configuration location derived from the project name/root or an explicit administrator path, including VM 1–11 and GC configuration.
-- [`sleela-scripting/`](sleela-scripting/) provides **Sleela Script 1.0**, the SLeeLa scripting language for automation, configuration, VM/runtime orchestration, and controlled host integration. It uses `.sleela-script` sources and the same unified configuration root as the rest of SLeeLa.
+
+- [`sleela-scripting/`](sleela-scripting/) provides **Demesresmes™**, the SLeeLa scientific scripting language. Demesresmes™ uses `.sleela-script` sources and the unified configuration root, with a versioned mathematical/physics/chemistry/engineering constants registry in JSON and XML under [`sleela-scripting/constants/`](sleela-scripting/constants/). See [`sleela-scripting/CONSTANTS.md`](sleela-scripting/CONSTANTS.md) for canonical lookup names, provenance, exactness, units, and registry revision rules.
 - [`COMPILER.md`](COMPILER.md) describes the Sleela compiler — its pipeline,
   version awareness (the `#sleela` pragma), and the versions it implements.
 - [`SOURCE.md`](SOURCE.md) describes the Sleela source file (the `.sleela`
