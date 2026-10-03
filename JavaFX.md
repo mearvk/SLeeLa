@@ -4,7 +4,7 @@
 
 JavaFX is a strictly Java presentation layer while SLeeLa remains authoritative for business operations, computation, media processing, and synchronization.
 
-The common connector system allows JavaFX applications to call SLeeLa through a local process, Java RMI, or HTTP. The same architectural rule now applies to the Audio/Video GUI under audio/gui/.
+The common connector system allows JavaFX applications to call SLeeLa through a local process, Java RMI, or HTTP. The same architectural rule applies to every JavaFX surface in the repository: the Audio/Video GUI under `audio/gui/`, the Website Studio under `website-generator/gui/`, and the AutoCAD Studio under `autocad/gui/`.
 
 ## Architecture
 
@@ -58,6 +58,24 @@ mvn clean javafx:run
 ```
 
 The GUI intentionally stops at the integration boundary. The native SLeeLa media provider and synchronized mixer remain responsible for decoding, mixing, synchronization, and output.
+
+## JavaFX surfaces in this repository
+
+Each surface is a thin JavaFX presentation layer over an authoritative SLeeLa
+subsystem, wired to call it through the common connector. They all obey the same
+rule — *JavaFX presents; SLeeLa decides.*
+
+| Surface | Location | SLeeLa authority | Presents |
+|---|---|---|---|
+| Audio / Video Mixer | [`audio/gui/`](audio/gui/) | native media + synchronized mixer | tracks, EQ/gain/pan, A/V preview |
+| Website Studio | [`website-generator/gui/`](website-generator/gui/) | the Website Generator (`website-generator/website/*.sleela`) | design preset + "energy" dial + palette, a sign list editor, and a live site preview |
+| AutoCAD Studio | [`autocad/gui/`](autocad/gui/) | the AutoCAD Renderer (`autocad/cad/*.sleela`) | a plan editor (descriptions, dimensions, notes), an on-screen geometry preview, and DXF export |
+
+The Website and AutoCAD studios follow the audio GUI's module layout (a Maven
+`pom.xml`, a `module-info.java`, a presentation model, and the JavaFX
+application) and reach SLeeLa through `com.mearvk.sleela.connector`; the live
+connector transport is each one's next integration point and is marked in the
+model's `generate()` / `render()` method.
 
 ## Java Baseline
 

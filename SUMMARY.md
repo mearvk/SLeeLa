@@ -310,3 +310,19 @@ The repository now includes the following engineering-contract documents:
 | API.INDEX.md | Consolidated API map |
 
 These documents form the bridge from a feature inventory to a complete, testable application platform.
+
+## 11. Application subsystems with JavaFX surfaces
+
+Beyond the core toolchain, the repository ships standalone application
+subsystems in which SLeeLa is authoritative and a thin JavaFX layer presents the
+result (the rule *JavaFX presents; SLeeLa decides* — see `JavaFX.md`).
+
+| Subsystem | SLeeLa authority | JavaFX surface | Purpose |
+|---|---|---|---|
+| `audio/` | native media + synchronized mixer | `audio/gui/` | Audio/Video mixing and preview |
+| `website-generator/` | `website-generator/website/*.sleela` | `website-generator/gui/` | Build custom websites from a **design** + ordered **signs**; emit a self-contained HTML + CSS site |
+| `autocad/` | `autocad/cad/*.sleela` | `autocad/gui/` | Turn **descriptions, dimensions, plans, and notes** into an AutoCAD **DXF** drawing |
+
+Each JavaFX surface reaches SLeeLa through the common connector
+(`com.mearvk.sleela.connector`); the live transport is each subsystem's next
+integration point, with a faithful offline fallback until it is wired.

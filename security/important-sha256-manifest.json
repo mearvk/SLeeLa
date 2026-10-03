@@ -72,11 +72,11 @@
     },
     {
       "path": "README.md",
-      "sha256": "7e55dac1e7a29d2b206c5648f27fc69c2b8850ad9edaa95784ff0f56e6bcc7ca"
+      "sha256": "a357e9c9dd8cca334468b45382945512832c0bb123f79c1490084ce42235f4da"
     },
     {
       "path": "REVISIONS.md",
-      "sha256": "d706991fab838b05d156ce75c1789844631d6de4f3e5514e732373051034f0d8"
+      "sha256": "19d7234a3025d29ce4c79605008179bc033952b3bf8182535da084d8fbbf8091"
     },
     {
       "path": "SERVER.EDITION.md",
@@ -753,6 +753,22 @@
     {
       "path": "audio/sleela/AudioSystem.sleela",
       "sha256": "4a4faf5ece59a7b38eb4915b13f78103dbf2d9e6ff2849c4fa2aa37967890548"
+    },
+    {
+      "path": "autocad/cad/dxf.sleela",
+      "sha256": "66d4d4b9cd3580fcbe447db66a0ed2743379e2367b15ab7eede1a7d6fd675a44"
+    },
+    {
+      "path": "autocad/cad/model.sleela",
+      "sha256": "de812fd0fe5650d59f20103b98ad90d5b9ef5481cc3f09b365014c8b5ab0864e"
+    },
+    {
+      "path": "autocad/cad/plan.sleela",
+      "sha256": "72db13e553c019d120a4d658e9a686ffba1658815ee121cff5aa21163b987027"
+    },
+    {
+      "path": "autocad/cad/render.sleela",
+      "sha256": "5cce2939d9d1101e2a61094c46667fa07f17b36004d84a2d005c181308b6692f"
     },
     {
       "path": "bash/CWRU/misc/errlist.c",
@@ -49453,6 +49469,22 @@
     {
       "path": "video/tests/test_video.cpp",
       "sha256": "cf57ff4c950c85644c1b2a23e2983f947de8e165c36385a8b10d4b090be9908d"
+    },
+    {
+      "path": "website-generator/website/design.sleela",
+      "sha256": "52489dd25c205f806fa9e1267504536afcb8fd28e68458cca8811f2eaec75b8f"
+    },
+    {
+      "path": "website-generator/website/emitter.sleela",
+      "sha256": "9e1de507d2df7d5e98dfb399ec258020e1e5eda6b700e4693e6096cba4f3585e"
+    },
+    {
+      "path": "website-generator/website/signs.sleela",
+      "sha256": "5db912f5f0fcebb8b17dc8047d1d46f620a1096bacbee440345a40beeb49a20f"
+    },
+    {
+      "path": "website-generator/website/site.sleela",
+      "sha256": "997e9b645ae75304b8c384b151cce8a88d696af1d3c4a0efc7343ff97c06de19"
     }
   ]
 }

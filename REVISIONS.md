@@ -1,3 +1,45 @@
+## 2026-10-03 — New subsystems: Website Generator and AutoCAD Renderer
+
+Two new application subsystems were added, each following the repository rule
+*JavaFX presents; SLeeLa decides*: the SLeeLa source is authoritative and the
+JavaFX GUI is a thin authoring/preview surface that reaches SLeeLa through the
+common connector (`com.mearvk.sleela.connector`).
+
+### `website-generator/`
+
+Builds custom websites from a **design** (theme, palette, an `energy` dial, and
+a layout grammar) and an ordered list of semantic **signs** (hero, feature,
+gallery, pricing, testimonial, cta, nav, footer, richtext).
+
+- SLeeLa generator (authoritative): `website/design.sleela`, `website/signs.sleela`,
+  `website/emitter.sleela`, and the runnable `website/site.sleela`, which emit a
+  single self-contained HTML + CSS site.
+- JavaFX authoring surface: `website-generator/gui/` (`WebsiteStudioApp`) with a
+  design preset + energy dial + palette controls, a sign list editor, and a live
+  `WebView` preview.
+- Docs and sample: `README.md`, `DESIGN.md`, `samples/starter.site`, `Makefile`.
+
+### `autocad/`
+
+Takes **descriptions, dimensions, plans, and notes** and renders the output as
+an AutoCAD **DXF** drawing (R12 text — opens directly in AutoCAD / LibreCAD).
+
+- SLeeLa renderer (authoritative): `cad/model.sleela`, `cad/plan.sleela`,
+  `cad/dxf.sleela`, and the runnable `cad/render.sleela`, which parse a plan,
+  evaluate the geometry (room expansion, extents, dimension measurement, note
+  placement), and emit DXF.
+- JavaFX plan-entry surface: `autocad/gui/` (`CadStudioApp`) with a plan editor,
+  a `Canvas` geometry preview drawn from the renderer's entity list, and DXF
+  export.
+- Docs and sample: `README.md`, `FORMAT.md`, `samples/office.plan`, `Makefile`.
+
+Each GUI mirrors the `audio/gui/` module layout (Maven `pom.xml`,
+`module-info.java`, presentation model, JavaFX application). The live connector
+transport is each subsystem's next integration point and is marked in the
+model's `generate()` / `render()` method; a faithful offline fallback keeps the
+studios usable until it is wired. The additions do not affect the `impl/` build
+or the SHA-256 verification gate.
+
 ## 2026-10-03 — Corrections
 
 Build, source, and test corrections made while verifying that the C/C++
