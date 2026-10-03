@@ -6,6 +6,9 @@
 #include "slvm7_recovery.h"
 #include "slvm7_checkpoint.h"
 #include "slvm7_resources.h"
+#include "slvm7_attestation.h"
+#include "slvm7_lineage.h"
+#include "slvm7_migration.h"
 int slvm7_config_defaults(slvm7_config_t *c){if(!c)return SLVM7_INVALID;*c=(slvm7_config_t){0};c->instance=7;c->runtime_target=SLVM7_RUNTIME_AUTO;c->memory_limit=536870912ULL;c->policy_version=1;return SLVM7_OK;}
 int slvm7_config_load_file(slvm7_config_t *c,const char *p){if(!c||!p||!*p)return SLVM7_INVALID;return slvm7_config_defaults(c);}
 int slvm7_runtime_validate(const slvm7_config_t *c){return c&&c->instance==7&&c->memory_limit&&c->policy_hash?SLVM7_OK:SLVM7_INVALID;}
@@ -33,3 +36,7 @@ int slvm7_recovery_mark_quarantine(slvm7_recovery_state_t *s){if(!s)return SLVM7
 int slvm7_checkpoint_validate(const slvm7_checkpoint_t *c){return c&&c->checkpoint_id&&c->epoch&&c->artifact_hash&&c->policy_hash&&c->lineage_hash&&c->integrity_hash&&c->complete&&c->replay_safe?SLVM7_OK:SLVM7_INVALID;}
 int slvm7_resource_validate(const slvm7_resource_state_t *r){return r&&r->cpu_used<=r->cpu_budget&&r->io_used<=r->io_budget&&r->network_used<=r->network_budget&&r->memory_used<=r->memory_budget?SLVM7_OK:SLVM7_RESOURCE_PRESSURE;}
 int slvm7_resource_pressure(const slvm7_resource_state_t *r){return slvm7_resource_validate(r);}
+
+int slvm7_attestation_validate(const slvm7_attestation_t *a){return a&&a->vm_identity&&a->artifact_hash&&a->manifest_hash&&a->build_identity&&a->policy_hash&&a->runtime_identity&&a->manager_set_hash&&a->lineage_hash&&a->valid_signers>=a->required_signers?SLVM7_OK:SLVM7_INVALID;}
+int slvm7_lineage_validate(const slvm7_lineage_t *l){return l&&l->epoch&&l->artifact_hash&&l->manifest_hash&&l->policy_hash&&l->capability_hash&&l->runtime_identity&&l->resolver_evidence_hash&&l->certificate_evidence_hash&&l->manager_state_hash&&l->recovery_state_hash?SLVM7_OK:SLVM7_INVALID;}
+int slvm7_migration_validate(const slvm7_migration_t *m){return m&&m->migration_id&&m->checkpoint_id&&m->source_runtime&&m->target_runtime&&m->artifact_hash&&m->policy_hash&&m->manager_set_hash&&m->checkpoint_valid&&m->attestation_valid&&m->compatibility_valid&&m->post_transfer_valid?SLVM7_OK:SLVM7_INCOMPATIBLE;}
