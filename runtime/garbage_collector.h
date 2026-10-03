@@ -51,6 +51,7 @@ size_t gc_collect_full(GarbageCollector *);
 size_t gc_collect(GarbageCollector *);
 size_t gc_collect_with_roots(GarbageCollector *, SLGCMarkRootsFn, void *, int young_only);
 void gc_safepoint(GarbageCollector *, size_t budget);
+void gc_safepoint_with_roots(GarbageCollector *, SLGCMarkRootsFn, void *, int young_only, size_t budget);
 size_t gc_live_objects(const GarbageCollector *);
 size_t gc_bytes(const GarbageCollector *);
 size_t gc_collections(const GarbageCollector *);
