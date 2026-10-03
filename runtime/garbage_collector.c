@@ -62,7 +62,7 @@ size_t gc_step(GarbageCollector *g,size_t budget){
     while(g->mark_count&&work<budget){SLGCObject*o=g->mark_stack[--g->mark_count];o->queued=0;if(o->mark_children)o->mark_children(o,o->context);++work;++g->incremental_steps;}
     if(!g->mark_count)g->phase=SLGC_SWEEPING;return work;
 }
-static size_t sweep(GarbageCollector *g){
+static size_t sweep(GarbageCollector *g);\n\nstatic size_t sweep(GarbageCollector *g){
     size_t reclaimed=0,promoted=0,write=0;
     for(size_t i=0;i<g->count;i++){SLGCObject*o=g->objects[i];int collect=!o->marked&&(!g->collecting_young||o->generation==SLGC_GENERATION_YOUNG);
         if(collect){if(o->destroy)o->destroy(o->payload);if(!o->external)free(o->payload);reclaimed+=o->bytes;free(o);continue;}
