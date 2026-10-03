@@ -174,6 +174,66 @@ def cmd_check(_: argparse.Namespace) -> int:
     return 0
 
 
+def repo_lib_inventory() -> tuple[list[Path], dict[str, list[Path]]]:
+    lib = ROOT / "lib"
+    files = sorted(p for p in lib.rglob("*.sleela") if p.is_file())
+    symbols: dict[str, list[Path]] = {}
+    import re
+    for path in files:
+        try:
+            source = path.read_text(encoding="utf-8", errors="replace")
+        except OSError:
+            continue
+        for match in re.finditer(r"\\bclass\\s+([A-Za-z_][A-Za-z0-9_]*)", source):
+            symbols.setdefault(match.group(1), []).append(path)
+    return files, symbols
+
+
+def cmd_inventory_lib(_: argparse.Namespace) -> int:
+    files, symbols = repo_lib_inventory()
+    duplicates = {name: paths for name, paths in symbols.items() if len(paths) > 1}
+    verifier = TOOLS / "verify-vm-source-coverage.sh"
+    if not verifier.is_file():
+        print("LIBRARY INVENTORY: FAIL; ISA/source verifier is missing", file=sys.stderr)
+        return 1
+    result = run(["bash", str(verifier)], cwd=ROOT, check=False)
+    if result.returncode != 0:
+        print("LIBRARY INVENTORY: FAIL; ISA coverage gate failed")
+        return result.returncode
+    packages = {p.relative_to(ROOT / "lib").parts[0] for p in files if len(p.relative_to(ROOT / "lib").parts) > 1}
+    print("LIBRARY INVENTORY: PASS")
+    print("  source files:", len(files))
+    print("  packages:", len(packages))
+    print("  class symbols:", len(symbols))
+    print("  duplicate class symbols:", len(duplicates))
+    if duplicates:
+        for name, paths in sorted(duplicates.items()):
+            print("  DUPLICATE:", name, "=>", ", ".join(str(p.relative_to(ROOT)) for p in paths))
+    return 0
+
+
+def cmd_compile(args: argparse.Namespace) -> int:
+    source = Path(args.source).resolve()
+    output = Path(args.output).resolve()
+    if not source.is_file() or source.suffix != ".sleela":
+        print(f"COMPILE: source is not a readable .sleela file: {source}", file=sys.stderr)
+        return 2
+    inventory_rc = cmd_inventory_lib(argparse.Namespace())
+    if inventory_rc != 0:
+        return inventory_rc
+    exe = executable("sleela")
+    if exe is None:
+        print("COMPILE: no built native compiler; run 'python3 tools/sleela-build.py build' first", file=sys.stderr)
+        return 2
+    output.parent.mkdir(parents=True, exist_ok=True)
+    result = run([str(exe), "compile", str(source), "-o", str(output)], cwd=ROOT, check=False)
+    if result.returncode != 0:
+        print("COMPILE: FAIL")
+        return result.returncode
+    print(f"COMPILE: PASS -> {output}")
+    return 0
+
+
 def cmd_build(_: argparse.Namespace) -> int:
     result = run(["make", "all"], cwd=IMPL, check=False)
     if result.returncode != 0:
@@ -264,13 +324,16 @@ def parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="sleela-build", description="SLeeLa build lifecycle driver")
     sub = p.add_subparsers(dest="command", required=True)
     for name, func in [
-        ("init", cmd_init), ("check", cmd_check), ("build", cmd_build),
-        ("test", cmd_test), ("package", cmd_package), ("install", cmd_install),
+        ("init", cmd_init), ("check", cmd_check), ("inventory-lib", cmd_inventory_lib), ("build", cmd_build),
+        ("test", cmd_test), ("compile", cmd_compile), ("package", cmd_package), ("install", cmd_install),
         ("clean", cmd_clean), ("doctor", cmd_doctor), ("version", cmd_version),
     ]:
         sp = sub.add_parser(name)
         if name == "install":
             sp.add_argument("directory")
+        if name == "compile":
+            sp.add_argument("source")
+            sp.add_argument("output")
         sp.set_defaults(func=func)
     runp = sub.add_parser("run")
     runp.add_argument("args", nargs=argparse.REMAINDER)
