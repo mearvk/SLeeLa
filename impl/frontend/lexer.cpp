@@ -17,9 +17,8 @@ const char* tokName(Tok t) {
         case Tok::KwStrictfp:return "strictfp"; case Tok::KwSealed:return "sealed"; case Tok::KwNonSealed:return "non-sealed"; case Tok::KwDefault:return "default";
         case Tok::KwExtends:return "extends"; case Tok::KwImplements:return "implements"; case Tok::KwThrows:return "throws"; case Tok::KwSuper:return "super"; case Tok::KwThis:return "this"; case Tok::KwInstanceof:return "instanceof"; case Tok::KwIf:return "if"; case Tok::KwElse:return "else"; case Tok::KwWhile:return "while"; case Tok::KwDo:return "do"; case Tok::KwFor:return "for"; case Tok::KwSwitch:return "switch"; case Tok::KwCase:return "case"; case Tok::KwBreak:return "break"; case Tok::KwContinue:return "continue"; case Tok::KwReturn:return "return"; case Tok::KwThrow:return "throw"; case Tok::KwTry:return "try"; case Tok::KwCatch:return "catch"; case Tok::KwFinally:return "finally"; case Tok::KwAssert:return "assert"; case Tok::KwYield:return "yield"; case Tok::KwNew:return "new";
         case Tok::KwVoid:return "void"; case Tok::KwIntT:return "int"; case Tok::KwDoubleT:return "double"; case Tok::KwBoolT:return "boolean"; case Tok::KwStringT:return "String";
-        case Tok::KwIf:return "if"; case Tok::KwElse:return "else"; case Tok::KwWhile:return "while"; case Tok::KwFor:return "for"; case Tok::KwReturn:return "return";
         case Tok::KwTrue:return "true"; case Tok::KwFalse:return "false"; case Tok::KwPrint:return "print"; case Tok::KwNull:return "null";
-        case Tok::KwImport:return "import"; case Tok::KwStruct:return "struct"; case Tok::KwNew:return "new";
+        case Tok::KwImport:return "import"; case Tok::KwStruct:return "struct";
         case Tok::LParen:return "("; case Tok::RParen:return ")"; case Tok::LBrace:return "{"; case Tok::RBrace:return "}";
         case Tok::LBracket:return "["; case Tok::RBracket:return "]"; case Tok::Semicolon:return ";"; case Tok::Comma:return ","; case Tok::Dot:return ".";
         case Tok::Assign:return "="; case Tok::Plus:return "+"; case Tok::Minus:return "-"; case Tok::Star:return "*"; case Tok::Slash:return "/";
@@ -67,9 +66,8 @@ std::vector<Token> Lexer::tokenize(){
         switch(c){
             case'@':emit(Tok::At,"@");break;case'(':emit(Tok::LParen,"(");break;case')':emit(Tok::RParen,")");break;
             case'{':emit(Tok::LBrace,"{");break;case'}':emit(Tok::RBrace,"}");break;case'[':emit(Tok::LBracket,"[");break;case']':emit(Tok::RBracket,"]");break;
-            case';':emit(Tok::Semicolon,";");break;case',':emit(Tok::Comma,",");break;case'.':emit(Tok::Dot,".");break;case'+':emit(Tok::Plus,"+");break;
-            case'-':emit(Tok::Minus,"-");break;case'*':emit(Tok::Star,"*");break;case'/':emit(Tok::Slash,"/");break;case'%':emit(Tok::Percent,"%");break;
-            case'=':if(match('='))emit(Tok::EqEq,"==");else if(match('>'))emit(Tok::Arrow,"->");else emit(Tok::Assign,"=");break;
+            case';':emit(Tok::Semicolon,";");break;case',':emit(Tok::Comma,",");break;case'.':emit(Tok::Dot,".");break;
+            case'=':if(match('='))emit(Tok::EqEq,"==");else emit(Tok::Assign,"=");break;
             case'!':emit(match('=')?Tok::NotEq:Tok::Not,"!");break;
             case'+':if(match('+'))emit(Tok::Increment,"++");else if(match('='))emit(Tok::PlusAssign,"+=");else emit(Tok::Plus,"+");break;
             case'-':if(match('-'))emit(Tok::Decrement,"--");else if(match('='))emit(Tok::MinusAssign,"-=");else if(match('>'))emit(Tok::Arrow,"->");else emit(Tok::Minus,"-");break;

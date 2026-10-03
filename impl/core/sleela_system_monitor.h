@@ -9,7 +9,7 @@ extern "C" {
 typedef enum { SL_HSM_OK=0, SL_HSM_NOTICE=1, SL_HSM_REVIEW=2, SL_HSM_BLOCK=3 } SLHSMLevel;
 typedef enum { SL_HSM_OBS_NORMAL=0, SL_HSM_OBS_UNSUPPORTED_CAPABILITY, SL_HSM_OBS_PLATFORM_MISMATCH, SL_HSM_OBS_UNKNOWN_OPERATION, SL_HSM_OBS_NATIVE_ESCAPE, SL_HSM_OBS_PRIVILEGED_OPERATION, SL_HSM_OBS_RESOURCE_BURST, SL_HSM_OBS_RESOURCE_IMBALANCE } SLHSMObservation;
 typedef struct { int enabled, strict; unsigned review_threshold, block_threshold; uint64_t observations,reviews,blocks,unknown_operations,native_escapes,resource_imbalance; unsigned risk_score; SLHSMLevel level; SLHSMObservation last_observation; } SLHSMStats;
-typedef struct { int enabled, strict; unsigned review_threshold,block_threshold,risk_score; uint64_t observations,reviews,blocks,unknown_operations,native_escapes,resource_imbalance; SLHSMObservation last_observation; } SLSystemMonitor;
+typedef struct { int enabled, strict; unsigned review_threshold,block_threshold,risk_score; uint64_t observations,reviews,blocks,unknown_operations,native_escapes,resource_imbalance; SLHSMObservation last_observation; SLHSMLevel level; } SLSystemMonitor;
 void slhsm_init(SLSystemMonitor *m);
 void slhsm_set_enabled(SLSystemMonitor *m,int enabled);
 void slhsm_set_strict(SLSystemMonitor *m,int strict);

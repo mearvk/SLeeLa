@@ -129,9 +129,6 @@ HTTP_SERVER_OBJ := $(BUILD)/http_server.o
 HTTP_SERVER_CLI_OBJ := $(BUILD)/http_server_cli.o
 HTTP2_SERVER_OBJ := $(BUILD)/http2_server.o
 HTTP3_SERVER_OBJ := $(BUILD)/http3_server.o
-SKYA_ENGINE_OBJ := $(BUILD)/skya_engine.o
-SKYA_POLICY_OBJ := $(BUILD)/skya_policy.o
-SKYA_BRIDGE_OBJ := $(BUILD)/skya_sleela_bridge.o
 NS_SRC := nordshrift/sst_lexer.cpp nordshrift/sst_parser.cpp \
           nordshrift/source_resolve.cpp nordshrift/lowering.cpp nordshrift/sleela_emit.cpp \
           nordshrift/object_compat.cpp nordshrift/subject_model.cpp nordshrift/input_object.cpp \
@@ -199,7 +196,7 @@ verify-security:
 # rules link with $^, and a phony target name would leak onto the link line).
 $(ALL_OBJECTS): | verify-security
 
-$(SLEELA_BIN): $(JAVA_RUNTIME_PROBE_OBJ) $(JAVA_RUNTIME_BRIDGE_OBJ) $(AUDIO_NATIVE_OBJ) $(AUDIO_CPP_OBJ) $(SKYA_ENGINE_OBJ) $(SKYA_POLICY_OBJ) $(SKYA_BRIDGE_OBJ) $(HTTP_SERVER_OBJ) $(HTTP_SERVER_CLI_OBJ) $(HTTP2_SERVER_OBJ) $(HTTP3_SERVER_OBJ) $(PLATFORM_OBJ) $(SYSTEM_MONITOR_OBJ) $(DESIGN_ACTIVITY_OBJ) $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(LANGIN_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(NS_EMIT_OBJ)
+$(SLEELA_BIN): $(JAVA_RUNTIME_PROBE_OBJ) $(JAVA_RUNTIME_BRIDGE_OBJ) $(AUDIO_NATIVE_OBJ) $(AUDIO_CPP_OBJ) $(HTTP_SERVER_OBJ) $(HTTP_SERVER_CLI_OBJ) $(HTTP2_SERVER_OBJ) $(HTTP3_SERVER_OBJ) $(PLATFORM_OBJ) $(SYSTEM_MONITOR_OBJ) $(DESIGN_ACTIVITY_OBJ) $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(LANGIN_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(NS_EMIT_OBJ)
 	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS) $(LIBS) -lnghttp2
 $(AUDIO_NATIVE_OBJ): core/sleela_audio_bridge.cpp core/sleela_audio_bridge.h ../audio/cpp/include/sleela_audio.hpp | $(BUILD)
 	$(CXX) $(CXXFLAGS) -Icore -I.. -c $< -o $@
@@ -328,7 +325,7 @@ $(SECURITY_OBJ): ../runtime/security_supervisor.c ../runtime/security_supervisor
 	$(CC) $(CFLAGS) -c ../runtime/security_supervisor.c -o $@
 $(PARAMETERS_OBJ): ../runtime/Parameters.c ../runtime/Parameters.h | $(BUILD)
 	$(CC) $(CFLAGS) -c ../runtime/Parameters.c -o $@
-$(CORE_OBJ): $(CORE_SRC) core/sleela_core.c core/sleela_core.h ../../runtime/garbage_collector.h core/sleela_thread.h core/pthread.h core/sleela_synchro.h core/sleela_munction.h core/sleela_bestof.h | $(BUILD)
+$(CORE_OBJ): $(CORE_SRC) core/sleela_core.c core/sleela_core.h ../runtime/garbage_collector.h core/sleela_thread.h core/pthread.h core/sleela_synchro.h core/sleela_munction.h core/sleela_bestof.h | $(BUILD)
 	$(CC) $(CFLAGS) -Icore -c $(CORE_SRC) -o $@
 $(CHEMISTRY_OBJ): subjects/chemistry/chemistry.cpp subjects/chemistry/chemistry.h | $(BUILD)
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c subjects/chemistry/chemistry.cpp -o $@
@@ -388,13 +385,6 @@ $(BUILD)/http2_server.o: ../http-servers/2/http2/http2_server.cpp ../http-server
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c ../http-servers/2/http2/http2_server.cpp -o $@
 $(BUILD)/http3_server.o: ../http-servers/3/http3/http3_server.cpp ../http-servers/3/http3/http3_server.h | $(BUILD)
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c ../http-servers/3/http3/http3_server.cpp -o $@
-
-$(SKYA_ENGINE_OBJ): ../telephony-skya/native/skya_engine.cpp ../telephony-skya/native/skya_engine.h | $(BUILD)
-	$(CXX) $(CXXFLAGS) -Icore -I.. -c $< -o $@
-$(SKYA_POLICY_OBJ): ../telephony-skya/native/skya_policy.cpp ../telephony-skya/native/skya_policy.h | $(BUILD)
-	$(CXX) $(CXXFLAGS) -Icore -I.. -c $< -o $@
-$(SKYA_BRIDGE_OBJ): ../telephony-skya/native/skya_sleela_bridge.cpp ../telephony-skya/native/skya_sleela_bridge.h | $(BUILD)
-	$(CXX) $(CXXFLAGS) -Icore -I.. -c $< -o $@
 
 $(JAVA_RUNTIME_PROBE_OBJ): ../runtime/java_runtime_probe.c ../runtime/java_runtime_probe.h | $(BUILD)
 	$(CC) $(CFLAGS) -c $< -o $@
