@@ -20,6 +20,8 @@ test: $(TEST)
 check: test
 	test -f include/slvm10_storage.h
 	test -f include/slvm10_identity.h
-	echo "SLVM/10 verification check: PASS"
+	test -f include/slvm10_filesystem_module.h
+	test -f file-system/modules/tac3/tac3.definition.json
+	echo "SLVM/10 verification/module check: PASS"
 clean:
 	rm -rf $(BUILD_DIR)
