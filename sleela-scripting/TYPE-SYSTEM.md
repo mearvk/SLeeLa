@@ -17,3 +17,10 @@ Native SLeeLa objects are represented by opaque handles or immutable snapshots. 
 ## Errors
 
 Type mismatch, dimensional mismatch, unknown state name, permission violation, queue-schema violation and expired context are distinct errors.
+
+
+## Constant values
+
+A `constant.get()` result is a scientific value with a numeric value plus metadata such as unit, exactness, uncertainty, provenance, source, and registry revision. The runtime should preserve that metadata through mathematically meaningful operations.
+
+Canonical namespaces are required for ambiguous symbols. For example, `math.euler` and `physics.elementary_charge` may both have an alias involving `e`, but they are different typed quantities and must not be conflated.
