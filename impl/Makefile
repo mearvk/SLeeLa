@@ -312,11 +312,13 @@ $(PIXEL_TERMINAL_SMOKE): ../bash/pixel_terminal_smoke.cpp ../bash/pixel_terminal
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) ../bash/pixel_terminal_smoke.cpp $(PIXEL_TERMINAL_OBJ) -o $@ $(LDFLAGS) $(LIBS)
 $(GC_OBJ): ../runtime/garbage_collector.c ../runtime/garbage_collector.h | $(BUILD)
 	$(CC) $(CFLAGS) -c ../runtime/garbage_collector.c -o $@
+$(GC_MODERN_SMOKE): tests/runtime/gc_modern_smoke.c $(GC_OBJ) | verify-security $(BUILD)
+	$(CC) $(CFLAGS) -I../runtime tests/runtime/gc_modern_smoke.c $(GC_OBJ) -o $@ $(LDFLAGS) $(LIBS)
 $(SECURITY_OBJ): ../runtime/security_supervisor.c ../runtime/security_supervisor.h | $(BUILD)
 	$(CC) $(CFLAGS) -c ../runtime/security_supervisor.c -o $@
 $(PARAMETERS_OBJ): ../runtime/Parameters.c ../runtime/Parameters.h | $(BUILD)
 	$(CC) $(CFLAGS) -c ../runtime/Parameters.c -o $@
-$(CORE_OBJ): $(CORE_SRC) core/sleela_core.c core/sleela_core.h core/sleela_thread.h core/pthread.h core/sleela_synchro.h core/sleela_munction.h core/sleela_bestof.h | $(BUILD)
+$(CORE_OBJ): $(CORE_SRC) core/sleela_core.c core/sleela_core.h ../../runtime/garbage_collector.h core/sleela_thread.h core/pthread.h core/sleela_synchro.h core/sleela_munction.h core/sleela_bestof.h | $(BUILD)
 	$(CC) $(CFLAGS) -Icore -c $(CORE_SRC) -o $@
 $(CHEMISTRY_OBJ): subjects/chemistry/chemistry.cpp subjects/chemistry/chemistry.h | $(BUILD)
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c subjects/chemistry/chemistry.cpp -o $@
@@ -491,6 +493,7 @@ build-runtime: verify-security $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ)
 # reclamation, byte accounting, destructor invocation, and class/role quota
 # enforcement) rather than merely compiling them.
 RUNTIME_SMOKE := $(BUILD)/runtime_smoke
+GC_MODERN_SMOKE := $(BUILD)/gc_modern_smoke
 $(RUNTIME_SMOKE): tests/runtime/runtime_smoke.c $(GC_OBJ) $(SECURITY_OBJ) | verify-security $(BUILD)
 	$(CC) $(CFLAGS) -I../runtime tests/runtime/runtime_smoke.c $(GC_OBJ) $(SECURITY_OBJ) -o $@ $(LDFLAGS) $(LIBS)
 
@@ -506,8 +509,9 @@ test-platform: $(THREAD_PLATFORM_SMOKE) $(NET_PLATFORM_SMOKE) $(IO_PLATFORM_SMOK
 	@$(LIBRARY_PLATFORM_SMOKE)
 	@$(TIME_PLATFORM_SMOKE)
 
-test-runtime: $(RUNTIME_SMOKE)
+test-runtime: $(RUNTIME_SMOKE) $(GC_MODERN_SMOKE)
 	@echo "=== SLVM runtime services -- behavioral smoke ==="; $(RUNTIME_SMOKE)
+	@echo "=== SLeeLa modern generational/incremental GC smoke ==="; $(GC_MODERN_SMOKE)
 
 # Behavioral smoke test for the Memory Manager: links against the manager and
 # the OS allocator/thread objects and asserts real behavior (untracked-when-
