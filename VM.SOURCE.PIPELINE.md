@@ -51,3 +51,8 @@ An opcode is complete only when it has source/IR lowering, native dispatch, and 
 source inventory = dependency inventory = compiler coverage = ISA coverage = artifact validation = runtime dispatch coverage
 
 Missing coverage is a build failure, not a warning.
+
+
+## Native implementation status
+
+The source-to-VM pipeline is now backed by the existing native C++ frontend in `/impl/frontend` and persistent artifact emitter in `/impl/frontend/artifact.cpp`. `/lib/compiler/Makefile` builds that authoritative compiler executable through `/impl/Makefile`; `tools/sleela-build.py compile SOURCE OUTPUT` performs the library/ISA gate before invoking `sleela compile`. The recursive `/lib/**/*.sleela` inventory is therefore a real compiler input boundary, not documentation-only metadata.
