@@ -1,3 +1,5 @@
+<img align="right" src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="75" height="75" alt="SLeeLa">
+
 # SLeeLa Virtual Machine 8
 
 SLVM/8 is the supervised-execution successor to SLVM/7. It keeps SLVM/7's manager, logging, memory, health, recovery, checkpoint, resource, attestation, lineage, and migration controls, then adds an explicit execution supervisor and admission path.

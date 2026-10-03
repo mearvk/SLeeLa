@@ -1,3 +1,5 @@
+<img align="right" src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="75" height="75" alt="SLeeLa">
+
 # SLVM/9 Windows adapter build foundation
 
 Use MSVC or LLVM/Clang. The adapter must translate SLeeLa filesystem capabilities to native Windows volume/file-handle APIs without changing the common SLVM/9 contract.
