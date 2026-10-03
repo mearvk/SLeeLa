@@ -1,0 +1,111 @@
+#sleela 1.3
+// model.sleela -- the geometry model the AutoCAD renderer builds from a plan.
+//
+// A Model holds the drawing metadata plus flat lists of the primitives that
+// map directly to DXF entities: wall segments (LINE), dimensions (extension
+// lines + measured TEXT), and notes (TEXT). The plan parser fills this model;
+// the DXF emitter reads it. SLeeLa owns the geometry; a front end only supplies
+// the plan text.
+class Model {
+
+    struct Pt { double x; double y; }
+
+    // A wall/room edge: a straight segment on the "walls" layer.
+    struct Wall { double x1; double y1; double x2; double y2; }
+
+    // A linear dimension between two points; the renderer derives extension
+    // lines and the measured label from these at emit time.
+    struct Dim { double x1; double y1; double x2; double y2; }
+
+    // A text annotation placed at a point on the "notes" layer.
+    struct Note { double x; double y; string text; }
+
+    struct ModelData {
+        string title;
+        string units;
+        double curX;      // current insertion point for the next room
+        double curY;
+        double minX; double minY; double maxX; double maxY; // extents
+        // Flat primitive stores. Index-addressed to stay close to the native
+        // array model the runtime exposes.
+        Wall walls[256];
+        int wallCount;
+        Dim dims[128];
+        int dimCount;
+        Note notes[128];
+        int noteCount;
+    }
+
+    ModelData create(string title, string units) {
+        ModelData m;
+        m.title = title;
+        m.units = units;
+        m.curX = 0.0;
+        m.curY = 0.0;
+        m.minX = 0.0; m.minY = 0.0; m.maxX = 0.0; m.maxY = 0.0;
+        m.wallCount = 0;
+        m.dimCount = 0;
+        m.noteCount = 0;
+        return m;
+    }
+
+    // Set the insertion point applied to the next room.
+    void setAt(ModelData m, double x, double y) {
+        m.curX = x;
+        m.curY = y;
+    }
+
+    // Add one wall segment and grow the drawing extents to include it.
+    void addWall(ModelData m, double x1, double y1, double x2, double y2) {
+        if (m.wallCount >= 256) { return; }
+        m.walls[m.wallCount].x1 = x1;
+        m.walls[m.wallCount].y1 = y1;
+        m.walls[m.wallCount].x2 = x2;
+        m.walls[m.wallCount].y2 = y2;
+        m.wallCount = m.wallCount + 1;
+        grow(m, x1, y1);
+        grow(m, x2, y2);
+    }
+
+    // Expand a room into its four wall segments at the current insertion point.
+    // This is the core of the "equation": a named room + size becomes geometry.
+    void addRoom(ModelData m, double w, double h) {
+        double ox = m.curX;
+        double oy = m.curY;
+        addWall(m, ox,     oy,     ox + w, oy);        // south
+        addWall(m, ox + w, oy,     ox + w, oy + h);    // east
+        addWall(m, ox + w, oy + h, ox,     oy + h);    // north
+        addWall(m, ox,     oy + h, ox,     oy);        // west
+    }
+
+    void addDim(ModelData m, double x1, double y1, double x2, double y2) {
+        if (m.dimCount >= 128) { return; }
+        m.dims[m.dimCount].x1 = x1;
+        m.dims[m.dimCount].y1 = y1;
+        m.dims[m.dimCount].x2 = x2;
+        m.dims[m.dimCount].y2 = y2;
+        m.dimCount = m.dimCount + 1;
+    }
+
+    void addNote(ModelData m, double x, double y, string text) {
+        if (m.noteCount >= 128) { return; }
+        m.notes[m.noteCount].x = x;
+        m.notes[m.noteCount].y = y;
+        m.notes[m.noteCount].text = text;
+        m.noteCount = m.noteCount + 1;
+    }
+
+    // Straight-line distance -- used to compute dimension labels.
+    double distance(double x1, double y1, double x2, double y2) {
+        double dx = x2 - x1;
+        double dy = y2 - y1;
+        return sqrt(dx * dx + dy * dy);
+    }
+
+    void grow(ModelData m, double x, double y) {
+        if (x < m.minX) { m.minX = x; }
+        if (y < m.minY) { m.minY = y; }
+        if (x > m.maxX) { m.maxX = x; }
+        if (y > m.maxY) { m.maxY = y; }
+    }
+}
