@@ -184,7 +184,7 @@ def repo_lib_inventory() -> tuple[list[Path], dict[str, list[Path]]]:
             source = path.read_text(encoding="utf-8", errors="replace")
         except OSError:
             continue
-        for match in re.finditer(r"\\bclass\\s+([A-Za-z_][A-Za-z0-9_]*)", source):
+        for match in re.finditer(r"\bclass\s+([A-Za-z_][A-Za-z0-9_]*)", source):
             symbols.setdefault(match.group(1), []).append(path)
     return files, symbols
 
@@ -197,11 +197,11 @@ def isa_source_native_check() -> tuple[bool, str]:
         return False, "source-side ISA registry or native SLOp header is missing"
     source = source_path.read_text(encoding="utf-8", errors="replace")
     native = native_path.read_text(encoding="utf-8", errors="replace")
-    source_ops = re.findall(r"^// (OP_[A-Z0-9_]+)\\s*$", source, re.MULTILINE)
-    enum_match = re.search(r"typedef enum \\{(.*?)\\} SLOp;", native, re.DOTALL)
+    source_ops = re.findall(r"^// (OP_[A-Z0-9_]+)\s*$", source, re.MULTILINE)
+    enum_match = re.search(r"typedef enum \{(.*?)\} SLOp;", native, re.DOTALL)
     if not enum_match:
         return False, "native SLOp enum is missing"
-    native_ops = re.findall(r"\\b(OP_[A-Z0-9_]+)\\b", enum_match.group(1))
+    native_ops = re.findall(r"\b(OP_[A-Z0-9_]+)\b", enum_match.group(1))
     if source_ops != native_ops:
         first = next((i for i, pair in enumerate(zip(source_ops, native_ops)) if pair[0] != pair[1]), min(len(source_ops), len(native_ops)))
         return False, f"ISA order/count mismatch at index {first}: source={len(source_ops)} native={len(native_ops)}"
