@@ -34,3 +34,4 @@ int compileToArtifact(Program&prog,const std::string&outputPath,const catalog::C
         throw;
     }
 }
+} // namespace sleela

@@ -299,7 +299,7 @@
     },
     {
       "path": "impl/frontend/artifact.cpp",
-      "sha256": "ca1138abb86c33f2840ebf4aa2e12285e1a3ff5f66b5fe245707baab227a6f6a"
+      "sha256": "3bdad9c60ab2763354650302b55b0f5127d08f2acae7af10e94ef630f5a73c75"
     },
     {
       "path": "impl/frontend/artifact.h",
@@ -307,11 +307,11 @@
     },
     {
       "path": "impl/frontend/ast.h",
-      "sha256": "5a2e64b66483c3d9b32f0fa6c895d231738ba2263a654237c4e69b83b1b1483c"
+      "sha256": "dad9088d65b5b500de473a1a6806f567fc1832cf66e787dc7468cfbabe7b09b3"
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "f76008ca7b0146d602eaefcc6de9e964dfe57d8fa6f9fdab3d2cd72b3e3c4e87"
+      "sha256": "0de376a91cd1513e4ae796d6efae8dffd8fb389e8f4d0adc8446740d17f4682a"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -319,7 +319,7 @@
     },
     {
       "path": "impl/frontend/driver.cpp",
-      "sha256": "c8b0cb4c7e02201c0ec2f010f64317a39f7b0fc63a3a92501f3895d7f9cd5190"
+      "sha256": "4e297bba61d0d32596349a81fd01a2d214af5b8f573ccd593d1ad2c3e4880f32"
     },
     {
       "path": "impl/frontend/dynamite.cpp",
@@ -379,11 +379,11 @@
     },
     {
       "path": "impl/frontend/library_index.h",
-      "sha256": "a5208551e3b9c092f5dc76ef95ac4f55074f673ebe10c66549ae011e846d1990"
+      "sha256": "a2f5539b8f80c457bfa548a628fbce65401c61ab891dc3a9614a8a6a99ccf11b"
     },
     {
       "path": "impl/frontend/parser.cpp",
-      "sha256": "d3b89bda555bfb1a96c93b9de2a414e9c6a8ba5f7bff8c1d56fb642149e65736"
+      "sha256": "b121186c4639a8d788a7c00f7acca2916cf7ea90071b6f19cf086696557d1220"
     },
     {
       "path": "impl/frontend/parser.h",
@@ -399,7 +399,7 @@
     },
     {
       "path": "impl/frontend/semantic.cpp",
-      "sha256": "695ea349e6362aa083d45207807a95d6cad0dfb8780b29bf0cd6bf90fe424241"
+      "sha256": "0af531092dc922fc3d1c333b527dcbd5d4e1c856056fc778134dc54faa6a50a5"
     },
     {
       "path": "impl/frontend/semantic.h",
@@ -459,7 +459,7 @@
     },
     {
       "path": "impl/nordshrift/nordshrift.cpp",
-      "sha256": "1f207114816b15ccb98a532a5225aabbbc73e41652acbce5d7eb983727189ccc"
+      "sha256": "6f83ba75954403a7392a64d492860b7fd434764c0a61b810f5f6dee73687afd0"
     },
     {
       "path": "impl/nordshrift/object_compat.cpp",
@@ -607,7 +607,7 @@
     },
     {
       "path": "impl/subjects/native/native_api.cpp",
-      "sha256": "0df46ee52b3772421cf5184caebb4438e08df74e0726c16f49baa3375b967d37"
+      "sha256": "d5dae6eee7fbccf9f89b333c4e5a6ad0a83701bd3a4ffce876c7f7c4f85ffbe4"
     },
     {
       "path": "impl/subjects/native/native_api.h",

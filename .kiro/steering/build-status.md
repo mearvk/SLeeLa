@@ -2,14 +2,56 @@
 inclusion: always
 ---
 
-# SLeeLa build status (verified) — read before claiming "builds and is tested"
+# SLeeLa build status (verified)
 
-The `impl/` C/C++ tree is described in `README.md` / `ARCHITECTURE.md` as the
-"authoritative, buildable, tested system." As of this review that claim is **not
-yet true end to end**: the compiler front end does not compile against the
-committed AST. Do not restore README wording that asserts a passing build/CI
-until `cd impl && make` actually succeeds here. Keep documentation honest about
-the gap.
+The `impl/` C/C++ tree now **builds end to end**: `cd impl && make` produces the
+`sleela` and `nordshrift` binaries and stages the runtime. The `sleela` binary
+compiles and executes `.sleela` programs, including the Java-style control-flow
+statements (`if/else`, `while`, `do/while`, `for`, `switch/case/default`,
+`break`, `continue`, `return`, `throw`, `assert`, `yield`, `synchronized`,
+`try/catch/finally`) and expression forms (assignment/compound-assignment,
+ternary `?:`, `instanceof`, cast, `this`/`super`, array access, method
+reference) — verified by compiling and running a program that exercises them.
+
+## Build command
+
+The build is gated by a fail-closed SHA-256 manifest. After editing any verified
+source file, regenerate the manifest, then build with it set:
+
+```sh
+python3 tools/generate-sha256-manifest.py --root . --output security/sha256-manifest.json
+cd impl && SLEELA_SHA256_MANIFEST="$(pwd)/../security/sha256-manifest.json" make
+```
+
+## Known remaining issues (pre-existing, NOT frontend-build blockers)
+
+These are independent of the compiler front end and were latent while the tree
+never built. `make test` still fails on them:
+
+- **Version floor vs. test corpus.** `minSupportedSyntax()` is `{1,3}` (per
+  `VERSION.md`, range 1.3..1.6), but `impl/examples/*.sleela` and
+  `impl/tests/subjects/*_values.sleela` declare `#sleela 1.0`, so they are
+  rejected as "too old." The `tests/version/run_version_tests.sh` harness also
+  disagrees with `VERSION.md` (it expects 1.4 to be rejected as "too new").
+- **Type-name convention.** Subject test sources use Java `String`, but the
+  semantic analyzer's known-type set uses lowercase `string`.
+- **`test-java-runtime`.** A generated harness C file trips
+  `-Werror=missing-field-initializers`.
+- **Nordshrift `.sst` examples.** `test-nordshrift` reports stale example
+  content / `source.root` path issues.
+
+Reconcile the corpus (and the version-test contract) with `VERSION.md` before
+claiming `make test` is green.
+
+## History note — the front end never compiled before
+
+Before this work, `impl/frontend/parser.cpp` targeted ~16 Java statement/
+expression AST nodes that were never added to `ast.h` and never handled by
+`semantic.cpp`/`compiler.cpp`. Those nodes were added to `ast.h` and wired
+through the analyzer and the bytecode compiler; the duplicate/old statement
+parser was removed; and a latent `Binary` constructor bug (`lhs(std::move(r))`
+with `rhs` left uninitialized) was fixed. The earlier build-blocker fixes
+(Makefile, HTTP servers, system monitor, lexer, parser.h) are below.
 
 ## How to build
 

@@ -69,7 +69,16 @@ class Analyzer{
   if(auto x=dynamic_cast<const ReturnStmt*>(&s)){Type want=tn(cur->retType),g=x->value?expr(*x->value):Type{Kind::Null,{}};if(want.kind==Kind::Void&&x->value)err("void method '"+cur->name+"' cannot return a value");else if(want.kind!=Kind::Void&&!x->value)err("non-void method '"+cur->name+"' must return a value");else if(!assignable(want,g))err("method '"+cur->name+"' returns "+nameOf(g)+", expected "+nameOf(want));return;}
   if(auto i=dynamic_cast<const IfStmt*>(&s)){requireBool(expr(*i->cond),"if condition");stmt(*i->thenS);if(i->elseS)stmt(*i->elseS);return;}
   if(auto w=dynamic_cast<const WhileStmt*>(&s)){requireBool(expr(*w->cond),"while condition");stmt(*w->body);return;}
-  if(auto f=dynamic_cast<const ForStmt*>(&s)){if(f->init)stmt(*f->init);if(f->cond)requireBool(expr(*f->cond),"for condition");if(f->update)stmt(*f->update);stmt(*f->body);return;}
+  if(auto f=dynamic_cast<const ForStmt*>(&s)){push();if(f->init)stmt(*f->init);if(f->cond)requireBool(expr(*f->cond),"for condition");if(f->update)stmt(*f->update);stmt(*f->body);pop();return;}
+  if(auto d=dynamic_cast<const DoStmt*>(&s)){stmt(*d->body);requireBool(expr(*d->cond),"do-while condition");return;}
+  if(dynamic_cast<const BreakStmt*>(&s))return;
+  if(dynamic_cast<const ContinueStmt*>(&s))return;
+  if(auto t=dynamic_cast<const ThrowStmt*>(&s)){expr(*t->value);return;}
+  if(auto a=dynamic_cast<const AssertStmt*>(&s)){requireBool(expr(*a->cond),"assert condition");if(a->message)expr(*a->message);return;}
+  if(auto y=dynamic_cast<const YieldStmt*>(&s)){expr(*y->value);return;}
+  if(auto sy=dynamic_cast<const SynchronizedStmt*>(&s)){expr(*sy->monitor);push();block(*sy->body);pop();return;}
+  if(auto tr=dynamic_cast<const TryStmt*>(&s)){push();block(*tr->body);pop();for(const auto&c:tr->catches){push();declare(c.variable,c.type.empty()?Type{Kind::Unknown,{}}:tn(c.type));block(*c.body);pop();}if(tr->finallyBlock){push();block(*tr->finallyBlock);pop();}return;}
+  if(auto sw=dynamic_cast<const SwitchStmt*>(&s)){expr(*sw->selector);push();for(const auto&c:sw->cases){for(const auto&l:c.labels)expr(*l);for(const auto&st:c.statements)stmt(*st);}pop();return;}
   err("unknown statement kind");
  }
  void requireBool(const Type&t,const char*w){if(t.kind!=Kind::Bool&&t.kind!=Kind::Unknown)err(std::string(w)+" must be bool, got "+nameOf(t));}
@@ -80,7 +89,21 @@ class Analyzer{
   if(auto n=dynamic_cast<const NewExpr*>(&e)){if(!structs.count(n->typeName)){err("new of unknown struct '"+n->typeName+"'");return{Kind::Error,{}};}return{Kind::Struct,n->typeName};}
   if(auto m=dynamic_cast<const MemberAccess*>(&e))return member(*m->base,m->field);
   if(auto u=dynamic_cast<const Unary*>(&e)){Type t=expr(*u->operand);if(u->op=="-"&&!numeric(t)&&t.kind!=Kind::Unknown)err("unary '-' requires numeric operand, got "+nameOf(t));if(u->op=="!"&&t.kind!=Kind::Bool&&t.kind!=Kind::Unknown)err("unary '!' requires bool operand, got "+nameOf(t));return t;}
-  if(auto b=dynamic_cast<const Binary*>(&e))return binary(*b);if(auto c=dynamic_cast<const Call*>(&e))return call(*c);if(auto m=dynamic_cast<const MethodCall*>(&e))return fluent(*m);err("unknown expression kind");return{Kind::Error,{}};
+  if(auto b=dynamic_cast<const Binary*>(&e))return binary(*b);if(auto c=dynamic_cast<const Call*>(&e))return call(*c);if(auto m=dynamic_cast<const MethodCall*>(&e))return fluent(*m);
+  if(auto a=dynamic_cast<const AssignmentExpr*>(&e)){
+   Type g=expr(*a->value);
+   if(auto v=dynamic_cast<const VarExpr*>(a->target.get())){Type t=lookup(v->name);if(t.kind==Kind::Error){err("assignment to undeclared variable '"+v->name+"'");return{Kind::Error,{}};}if(!assignable(t,g))err("cannot assign "+nameOf(g)+" to '"+v->name+"' of type "+nameOf(t));return t;}
+   if(auto mm=dynamic_cast<const MemberAccess*>(a->target.get())){Type t=member(*mm->base,mm->field);if(t.kind!=Kind::Error&&!assignable(t,g))err("cannot assign "+nameOf(g)+" to field '"+mm->field+"'");return t;}
+   err("assignment target must be a variable or a struct field");return{Kind::Error,{}};
+  }
+  if(auto c=dynamic_cast<const ConditionalExpr*>(&e)){requireBool(expr(*c->cond),"conditional '?:' condition");Type a=expr(*c->thenE),b=expr(*c->elseE);if(assignable(a,b))return a;if(assignable(b,a))return b;return{Kind::Unknown,{}};}
+  if(auto io=dynamic_cast<const InstanceOfExpr*>(&e)){expr(*io->value);return{Kind::Bool,{}};}
+  if(auto ca=dynamic_cast<const CastExpr*>(&e)){expr(*ca->operand);return tn(ca->typeName);}
+  if(dynamic_cast<const SuperExpr*>(&e))return{Kind::Unknown,{}};
+  if(dynamic_cast<const ThisExpr*>(&e))return{Kind::Unknown,{}};
+  if(auto aa=dynamic_cast<const ArrayAccess*>(&e)){expr(*aa->base);Type idx=expr(*aa->index);if(idx.kind!=Kind::Int&&idx.kind!=Kind::Unknown)err("array index must be int, got "+nameOf(idx));return{Kind::Unknown,{}};}
+  if(auto mr=dynamic_cast<const MethodReferenceExpr*>(&e)){expr(*mr->base);return{Kind::Unknown,{}};}
+  err("unknown expression kind");return{Kind::Error,{}};
  }
  Type binary(const Binary&b){Type l=expr(*b.lhs),r=expr(*b.rhs);if(b.op=="&&"||b.op=="||"){if(l.kind!=Kind::Bool&&l.kind!=Kind::Unknown)err("operator '"+b.op+"' requires bool operands");if(r.kind!=Kind::Bool&&r.kind!=Kind::Unknown)err("operator '"+b.op+"' requires bool operands");return{Kind::Bool,{}};}
   if(b.op=="+"||b.op=="-"||b.op=="*"||b.op=="/"||b.op=="%"){if(b.op=="+"&&l.kind==Kind::String&&r.kind==Kind::String)return{Kind::String,{}};if(!numeric(l)&&l.kind!=Kind::Unknown)err("operator '"+b.op+"' requires numeric operands");if(!numeric(r)&&r.kind!=Kind::Unknown)err("operator '"+b.op+"' requires numeric operands");return{(l.kind==Kind::Double||r.kind==Kind::Double)?Kind::Double:Kind::Int,{}};}
