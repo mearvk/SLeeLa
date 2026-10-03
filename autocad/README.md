@@ -1,3 +1,5 @@
+<img align="right" src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="75" height="75" alt="SLeeLa">
+
 # SLeeLa AutoCAD Renderer
 
 Take in **descriptions, dimensions, plans, and notes**, and have SLeeLa render
