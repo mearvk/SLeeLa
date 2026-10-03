@@ -318,7 +318,7 @@ $(SECURITY_OBJ): ../runtime/security_supervisor.c ../runtime/security_supervisor
 	$(CC) $(CFLAGS) -c ../runtime/security_supervisor.c -o $@
 $(PARAMETERS_OBJ): ../runtime/Parameters.c ../runtime/Parameters.h | $(BUILD)
 	$(CC) $(CFLAGS) -c ../runtime/Parameters.c -o $@
-$(CORE_OBJ): $(CORE_SRC) core/sleela_core.c core/sleela_core.h core/sleela_thread.h core/pthread.h core/sleela_synchro.h core/sleela_munction.h core/sleela_bestof.h | $(BUILD)
+$(CORE_OBJ): $(CORE_SRC) core/sleela_core.c core/sleela_core.h ../../runtime/garbage_collector.h core/sleela_thread.h core/pthread.h core/sleela_synchro.h core/sleela_munction.h core/sleela_bestof.h | $(BUILD)
 	$(CC) $(CFLAGS) -Icore -c $(CORE_SRC) -o $@
 $(CHEMISTRY_OBJ): subjects/chemistry/chemistry.cpp subjects/chemistry/chemistry.h | $(BUILD)
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c subjects/chemistry/chemistry.cpp -o $@
