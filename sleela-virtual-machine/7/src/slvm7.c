@@ -6,6 +6,9 @@
 #include "slvm7_recovery.h"
 #include "slvm7_checkpoint.h"
 #include "slvm7_resources.h"
+#include "slvm7_attestation.h"
+#include "slvm7_lineage.h"
+#include "slvm7_migration.h"
 int slvm7_config_defaults(slvm7_config_t *c){if(!c)return SLVM7_INVALID;*c=(slvm7_config_t){0};c->instance=7;c->runtime_target=SLVM7_RUNTIME_AUTO;c->memory_limit=536870912ULL;c->policy_version=1;return SLVM7_OK;}
 int slvm7_config_load_file(slvm7_config_t *c,const char *p){if(!c||!p||!*p)return SLVM7_INVALID;return slvm7_config_defaults(c);}
 int slvm7_runtime_validate(const slvm7_config_t *c){return c&&c->instance==7&&c->memory_limit&&c->policy_hash?SLVM7_OK:SLVM7_INVALID;}
