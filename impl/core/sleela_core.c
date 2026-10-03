@@ -509,14 +509,11 @@ static void slvm_gc_safepoint(SLVM *vm, SLThread *current, size_t budget) {
     int workers = vm->nthreads;
     pthread_mutex_unlock(&vm->thr_mtx);
     /* Collection is a VM safepoint. With worker threads active, defer heap
-     * reclamation until the structured-concurrency join point so all stacks
-     * can be observed consistently. Incremental work may continue only after
-     * a collection has already started at a quiescent point. */
+     * reclamation until structured-concurrency quiescence so all stacks are
+     * observed consistently. */
     if (workers == 0) {
-        if (vm->gc.phase == SLGC_MARKING)
-            (void)gc_step(&vm->gc, budget);
-        else if (vm->gc.bytes_allocated >= vm->gc.bytes_threshold)
-            SLGCRootContext roots = { vm, current };\n            (void)gc_collect_with_roots(&vm->gc, gc_mark_vm_roots, &roots, 1);
+        SLGCRootContext roots = { vm, current };
+        gc_safepoint_with_roots(&vm->gc, gc_mark_vm_roots, &roots, 1, budget);
     }
 }
 
