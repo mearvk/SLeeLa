@@ -5320,11 +5320,11 @@
     },
     {
       "path": "impl/frontend/library_index.cpp",
-      "sha256": "bbe6e82bc0bc149aefefd2f36f82d117635fac435e7d062f34376d8a0dbe504e"
+      "sha256": "b93e5c1bb22ae30e8c192941c5e3563e55d7f5c21c4602c07979264eef4277c3"
     },
     {
       "path": "impl/frontend/library_index.h",
-      "sha256": "f4cfa4712db9bf08b946875bd13d70626142809b8f6ad65633f57e1ec383d546"
+      "sha256": "a5208551e3b9c092f5dc76ef95ac4f55074f673ebe10c66549ae011e846d1990"
     },
     {
       "path": "impl/frontend/parser.cpp",
@@ -46695,6 +46695,10 @@
       "sha256": "5c5ed17889a53c3676b84306077e912067d7443be2e6cd7abbbac16494ea293f"
     },
     {
+      "path": "lib/vm/InstructionSet.sleela",
+      "sha256": "0112898a4b09d0028d4028795a72841ecabe359c4181580ce6e3bd71ba49c11f"
+    },
+    {
       "path": "lib/vm/SLVM.sleela",
       "sha256": "d7dfe346fa7e845d246e8d686fdf6f9f63bbe56fc61063461ee5daa132cea84c"
     },
@@ -49164,7 +49168,7 @@
     },
     {
       "path": "tools/sleela-build.py",
-      "sha256": "e3d2ba25a10222a1df58bcd7c302500882c19ed48bae041dca88d9984050399d"
+      "sha256": "90704f1238a2a4278a996266b9b874abe8e60cd4ffd83547ab4329a148e58c5f"
     },
     {
       "path": "tools/stock-market/market_engine.cpp",
@@ -49189,6 +49193,10 @@
     {
       "path": "tools/verify-update.sh",
       "sha256": "e971b6e51e5b4987432fdcdc0e694752c0ca8b3a3b5738961573659e5647097c"
+    },
+    {
+      "path": "tools/verify-vm-source-coverage.sh",
+      "sha256": "577012ccd289a6914eb0d8b3b4a376a464c89b887c5769d3714d92ed0548a413"
     },
     {
       "path": "tutorial/demos/build.sst",
