@@ -189,28 +189,43 @@ def repo_lib_inventory() -> tuple[list[Path], dict[str, list[Path]]]:
     return files, symbols
 
 
+def isa_source_native_check() -> tuple[bool, str]:
+    import re
+    source_path = ROOT / "lib" / "vm" / "InstructionSet.sleela"
+    native_path = ROOT / "impl" / "core" / "sleela_core.h"
+    if not source_path.is_file() or not native_path.is_file():
+        return False, "source-side ISA registry or native SLOp header is missing"
+    source = source_path.read_text(encoding="utf-8", errors="replace")
+    native = native_path.read_text(encoding="utf-8", errors="replace")
+    source_ops = re.findall(r"^// (OP_[A-Z0-9_]+)\\s*$", source, re.MULTILINE)
+    enum_match = re.search(r"typedef enum \\{(.*?)\\} SLOp;", native, re.DOTALL)
+    if not enum_match:
+        return False, "native SLOp enum is missing"
+    native_ops = re.findall(r"\\b(OP_[A-Z0-9_]+)\\b", enum_match.group(1))
+    if source_ops != native_ops:
+        first = next((i for i, pair in enumerate(zip(source_ops, native_ops)) if pair[0] != pair[1]), min(len(source_ops), len(native_ops)))
+        return False, f"ISA order/count mismatch at index {first}: source={len(source_ops)} native={len(native_ops)}"
+    return True, f"{len(source_ops)} ordered instructions verified"
+
+
 def cmd_inventory_lib(_: argparse.Namespace) -> int:
     files, symbols = repo_lib_inventory()
-    duplicates = {name: paths for name, paths in symbols.items() if len(paths) > 1}
-    verifier = TOOLS / "verify-vm-source-coverage.sh"
-    if not verifier.is_file():
-        print("LIBRARY INVENTORY: FAIL; ISA/source verifier is missing", file=sys.stderr)
+    isa_ok, isa_detail = isa_source_native_check()
+    if not isa_ok:
+        print("LIBRARY INVENTORY: FAIL; " + isa_detail, file=sys.stderr)
         return 1
-    result = run(["bash", str(verifier)], cwd=ROOT, check=False)
-    if result.returncode != 0:
-        print("LIBRARY INVENTORY: FAIL; ISA coverage gate failed")
-        return result.returncode
+    duplicates = {name: paths for name, paths in symbols.items() if len(paths) > 1}
     packages = {p.relative_to(ROOT / "lib").parts[0] for p in files if len(p.relative_to(ROOT / "lib").parts) > 1}
     print("LIBRARY INVENTORY: PASS")
     print("  source files:", len(files))
     print("  packages:", len(packages))
     print("  class symbols:", len(symbols))
     print("  duplicate class symbols:", len(duplicates))
+    print("  ISA:", isa_detail)
     if duplicates:
         for name, paths in sorted(duplicates.items()):
             print("  DUPLICATE:", name, "=>", ", ".join(str(p.relative_to(ROOT)) for p in paths))
     return 0
-
 
 def cmd_compile(args: argparse.Namespace) -> int:
     source = Path(args.source).resolve()
