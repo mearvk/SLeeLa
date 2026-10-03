@@ -740,6 +740,8 @@ The build gate is recursive: every `/lib/**/*.sleela` file is inventoried, the s
 
 The complete formal naming system is:
 
+| VM | Formal Name | Repository Path | Primary Role |
+|---|---|---|---|
 | **/impl** | **Core** | `/impl` | Authoritative operational execution substrate |
 | **SLVM/1** | **Foundation** | `/sleela-virtual-machine/1` | Complete VM foundation, broker, capabilities, security, OS boundary |
 | **SLVM/2** | **Operator** | `/sleela-virtual-machine/2` | Cryptographic identity, secure linking, observation |
