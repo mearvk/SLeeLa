@@ -42,3 +42,20 @@ Lookup results can carry provenance and evidence status. External information is
 ## Performance
 
 Pure mathematical expressions should be eligible for native optimization, vectorization, constant caching and specialized numerical kernels. Observable host operations remain explicit barriers so optimization cannot reorder them incorrectly.
+
+
+## Scientific constants registry
+
+Demesresmes™ provides an explicit constants lookup surface. Canonical names are namespaced to avoid collisions between symbols such as mathematical `e` and the elementary charge `e`.
+
+```sleela-script
+let c = constant.get("physics.speed_of_light")
+let h = constant.get("physics.planck")
+let kB = constant.get("physics.boltzmann")
+let NA = constant.get("physics.avogadro")
+let pi = constant.get("math.pi")
+```
+
+The initial registry is published as [constants/math-science.constants.json](constants/math-science.constants.json) and [constants/math-science.constants.xml](constants/math-science.constants.xml). Its physical reference values use the NIST/CODATA 2022 recommended dataset; NIST currently identifies the 2022 values as the latest CODATA values available and describes the next scheduled adjustment as 2026. citeturn0search2turn0search3
+
+Scientific scripts should use the registry rather than hard-coding physical constants when provenance, reproducibility, or unit metadata matters.
