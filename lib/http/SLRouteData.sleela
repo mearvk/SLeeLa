@@ -1,0 +1,24 @@
+/*
+ * Unified route metadata for Server Edition, HTTP 1.0–9.0, and standalone servers.
+ * Capability is explicit; VM generation is metadata and does not grant authority.
+ */
+#sleela 1.3
+class SLRouteData {
+  Integer vmGeneration;
+  String vmName;
+  String vmPath;
+  String protocol;
+  String serverSurface;
+  String configRoot;
+  String routeId;
+  String target;
+  String resolutionMode;
+  String capability;
+  String transport;
+  Integer port;
+  String status;
+  function configure(Integer generation, String name, String path, String proto, String surface) {
+    vmGeneration=generation; vmName=name; vmPath=path; protocol=proto; serverSurface=surface;
+  }
+  function valid() { return vmGeneration >= 0 && vmGeneration <= 11 && vmName != null && protocol != null; }
+}
