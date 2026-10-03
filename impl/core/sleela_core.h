@@ -10,6 +10,7 @@
 #define SLEELA_ARTIFACT_FORMAT_VERSION 2u
 #include <stdint.h>
 #include <stddef.h>
+#include "../../runtime/garbage_collector.h"
 #ifdef __cplusplus
 extern "C" {
 #endif
