@@ -47791,6 +47791,54 @@
       "sha256": "f401780f80e2c02087e5875408d37c44a2946ef11e2db9adb8c209344b568629"
     },
     {
+      "path": "sleela-virtual-machine/10/include/slvm10.h",
+      "sha256": "1de88b75507d399cba7dc86776755c069460579a60e4b758a13b0b53ccd1347f"
+    },
+    {
+      "path": "sleela-virtual-machine/10/include/slvm10_adapter.h",
+      "sha256": "03b9670447cb0fd0c976d2657a4f7da32ea6ffc1c348da1c7cab8357865d61c3"
+    },
+    {
+      "path": "sleela-virtual-machine/10/include/slvm10_filesystem_module.h",
+      "sha256": "c9922d4ed282037eca57a5e0dae16a37ce8d9434f245da7c7eb119f7bf2de8a4"
+    },
+    {
+      "path": "sleela-virtual-machine/10/include/slvm10_identity.h",
+      "sha256": "8c60f495415199e236788c8adc82ef8453be4d6a97e0d9af37dfe68899fe2eb8"
+    },
+    {
+      "path": "sleela-virtual-machine/10/include/slvm10_operation.h",
+      "sha256": "ce78be3c24b5e5cb14222b11dae9456f945ac880976052876eac1dfc34657e34"
+    },
+    {
+      "path": "sleela-virtual-machine/10/include/slvm10_storage.h",
+      "sha256": "825239db7f6810c53dbf0a5e2e04deefe2834da2e7486065a4c7867329bba98a"
+    },
+    {
+      "path": "sleela-virtual-machine/10/src/slvm10.c",
+      "sha256": "4fc511c47684d6fd6a9ea4271363d294d59fa70bc7feba3bf6a1224c74bd7a35"
+    },
+    {
+      "path": "sleela-virtual-machine/10/src/slvm10_filesystem_module.c",
+      "sha256": "6e3827fd16822ebdabfdbe2aaccff53094582e5e98a3967dbeb3e6a198616663"
+    },
+    {
+      "path": "sleela-virtual-machine/10/tests/slvm10_selftest.c",
+      "sha256": "b6bd34696c78df51bad808d018f9a86cad576501f11c3e077f9bc750ca4dfba0"
+    },
+    {
+      "path": "sleela-virtual-machine/11/include/slvm11_filesystem_module.h",
+      "sha256": "aecde6cf820a0a47dff2ddaeade21153af41a3947a8773bcd1ac459fb7df63cf"
+    },
+    {
+      "path": "sleela-virtual-machine/11/src/slvm11_filesystem_module.c",
+      "sha256": "310f155da4677c315327a05a59b0e63db88856be7a90f21fdac843a682834c9f"
+    },
+    {
+      "path": "sleela-virtual-machine/11/tests/slvm11_filesystem_module_selftest.c",
+      "sha256": "582a210fb537dccfe9590e02f6620c7c5a50c8f5dbfb0ba98e4c279ed6c63731"
+    },
+    {
       "path": "sleela-virtual-machine/2/include/slvm2.h",
       "sha256": "8eb5471a5a79a4809ac029d639a9a1107a19d9c57476db8e5dc9b420c1ab3d67"
     },
@@ -47967,12 +48015,20 @@
       "sha256": "14349da625d6a3d07549332ca42054cd21b8ee66039834144b9516c8da32c0bd"
     },
     {
+      "path": "sleela-virtual-machine/9/include/slvm9_filesystem_module.h",
+      "sha256": "2905a12a2da436661b90830868c2799f4518ac53783ec3c561a33732df8a6fc7"
+    },
+    {
       "path": "sleela-virtual-machine/9/include/slvm9_fsop.h",
       "sha256": "a357d188367d75cfdc943695db864c0641d066611331b306a1664494b963f6de"
     },
     {
       "path": "sleela-virtual-machine/9/include/slvm9_mount.h",
       "sha256": "b541f18aefcfb4d34a4e714a53b4723465d71aff24237f216c48ee1abee30deb"
+    },
+    {
+      "path": "sleela-virtual-machine/9/include/slvm9_native.h",
+      "sha256": "a687afe4a74774e346bfc5edf86857ff052a19c6465569fe7b563fb3aacd4fa3"
     },
     {
       "path": "sleela-virtual-machine/9/include/slvm9_supervisor.h",
@@ -47983,8 +48039,20 @@
       "sha256": "32f55f88d8fb1dafe2a034befa4a04ba08ac29c6ccc79ba090ee10cc11a84e7e"
     },
     {
+      "path": "sleela-virtual-machine/9/src/slvm9_filesystem_module.c",
+      "sha256": "47bae415ece4abf66084284b9208bce3a9c84f46eea0f2fa5add129378d7c534"
+    },
+    {
+      "path": "sleela-virtual-machine/9/src/slvm9_native.c",
+      "sha256": "b9aa50fbe4477fda5fd5571493ef9388826ad368ebeba1aabde71d7a555e6988"
+    },
+    {
+      "path": "sleela-virtual-machine/9/tests/slvm9_native_selftest.c",
+      "sha256": "92a9e3d9de338577a2ea75e64972169bd2f9883c3b226bba4c803f8009978e2b"
+    },
+    {
       "path": "sleela-virtual-machine/9/tests/slvm9_selftest.c",
-      "sha256": "e9cd0e8cd33813cac7501a4e51798c8114fb39fdf55f99ef773d1bda06547050"
+      "sha256": "36a3d95075f39d3f10fcc1a0b0930245c1a68bfc8fff05aee91ae0afc232260d"
     },
     {
       "path": "social-model/social_model.sleela",
