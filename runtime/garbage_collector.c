@@ -62,6 +62,8 @@ size_t gc_step(GarbageCollector *g,size_t budget){
     while(g->mark_count&&work<budget){SLGCObject*o=g->mark_stack[--g->mark_count];o->queued=0;if(o->mark_children)o->mark_children(o,o->context);++work;++g->incremental_steps;}
     if(!g->mark_count)g->phase=SLGC_SWEEPING;return work;
 }
+static size_t sweep(GarbageCollector *g);
+
 static size_t sweep(GarbageCollector *g){
     size_t reclaimed=0,promoted=0,write=0;
     for(size_t i=0;i<g->count;i++){SLGCObject*o=g->objects[i];int collect=!o->marked&&(!g->collecting_young||o->generation==SLGC_GENERATION_YOUNG);
@@ -83,8 +85,20 @@ size_t gc_collect_with_roots(GarbageCollector *g,SLGCMarkRootsFn roots,void *ctx
     size_t r=finish(g);++g->collections;if(young_only)++g->young_collections;return r;
 }
 void gc_safepoint(GarbageCollector *g,size_t budget){
-    if(!g||!g->initialized)return;if(g->phase==SLGC_MARKING){gc_step(g,budget?budget:g->target_step_work);return;}
+    if(!g||!g->initialized)return;
+    if(g->phase==SLGC_MARKING){gc_step(g,budget?budget:g->target_step_work);return;}
+    if(g->phase==SLGC_SWEEPING){(void)sweep(g);++g->collections;if(g->collecting_young)++g->young_collections;return;}
     if(g->bytes_allocated>=g->bytes_threshold)gc_collect_young(g);
+}
+void gc_safepoint_with_roots(GarbageCollector *g,SLGCMarkRootsFn roots,void *ctx,int young_only,size_t budget){
+    if(!g||!g->initialized)return;
+    if(g->phase==SLGC_IDLE && g->bytes_allocated>=g->bytes_threshold){
+        clear_marks(g);g->phase=SLGC_MARKING;g->collecting_young=young_only?1:0;
+        if(roots)roots(g,ctx);for(size_t i=0;i<g->root_count;i++)mark_internal(g,g->roots[i]);
+        if(young_only)for(size_t i=0;i<g->remembered_count;i++)mark_internal(g,g->remembered[i]);
+    }
+    if(g->phase==SLGC_MARKING){gc_step(g,budget?budget:g->target_step_work);return;}
+    if(g->phase==SLGC_SWEEPING){(void)sweep(g);++g->collections;if(g->collecting_young)++g->young_collections;}
 }
 size_t gc_live_objects(const GarbageCollector*g){return g?g->count:0;}size_t gc_bytes(const GarbageCollector*g){return g?g->bytes_allocated:0;}
 size_t gc_collections(const GarbageCollector*g){return g?g->collections:0;}size_t gc_young_collections(const GarbageCollector*g){return g?g->young_collections:0;}
