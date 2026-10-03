@@ -1,0 +1,12 @@
+package vm.creator;
+
+class SleelaVMCore {
+ String formalName = "Core"; String path = "/impl"; Integer generation = 0;
+ function standardize(SleelaVMSource source);
+ function validateArchitecture(SleelaVMArchitecture architecture);
+ function validateModules(List modules);
+ function validateCapabilities(List capabilities);
+ function bindNativeC(); function bindNativeCPP();
+ function compileSource(SleelaVMSource source); function emitVMArtifact(SleelaVMBuildPlan plan);
+ function reportReadiness(); function isAuthoritative();
+}
