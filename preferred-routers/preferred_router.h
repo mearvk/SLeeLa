@@ -9,6 +9,11 @@ typedef struct {
   char role[64];
   char candidate[256];
   int routing_preference;
+  int vm_generation;
+  char vm_name[64];
+  char vm_path[32];
+  char protocol[32];
+  char server_surface[128];
 } sleela_preferred_router;
 int sleela_preferred_router_select(const char *config_path, const char *protocol,
                                    sleela_preferred_router *out);
