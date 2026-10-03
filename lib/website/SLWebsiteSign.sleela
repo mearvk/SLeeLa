@@ -1,0 +1,43 @@
+/*
+ * lib/website/SLWebsiteSign.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines the SLeeLa standard-library type SLWebsiteSign used within the website library family.
+ */
+#sleela 1.3
+// Unified SLeeLa standard-library front-end object.
+// Family: website. A "sign" is a semantic content block a page is composed
+// from. A sign carries only its meaning and a little text (three slots); the
+// emitter supplies all layout, color, spacing and motion from the active
+// design. The same sign list under two designs yields two very different sites.
+//
+// Sign kinds: 0 nav, 1 hero, 2 feature, 3 gallery, 4 pricing, 5 testimonial,
+// 6 cta, 7 richtext, 8 footer.
+class SLWebsiteSign {
+  int kind; String a; String b; String c;
+
+  void set(int k, String sa, String sb, String sc) { kind = k; a = sa; b = sb; c = sc; }
+
+  // Convenience constructors -- one per sign kind -- so authoring reads
+  // naturally and never has to remember the kind enum.
+  void nav(String brand, String links)                   { set(0, brand, links, ""); }
+  void hero(String headline, String subhead, String cta) { set(1, headline, subhead, cta); }
+  void feature(String title, String items)               { set(2, title, items, ""); }
+  void gallery(String title, String images)              { set(3, title, images, ""); }
+  void pricing(String title, String tiers)               { set(4, title, tiers, ""); }
+  void testimonial(String quote, String author)          { set(5, quote, author, ""); }
+  void cta(String headline, String button, String href)  { set(6, headline, button, href); }
+  void richtext(String html)                              { set(7, html, "", ""); }
+  void footer(String brand, String columns)              { set(8, brand, columns, ""); }
+
+  String kindName() {
+    if (kind == 0) { return "nav"; }
+    if (kind == 1) { return "hero"; }
+    if (kind == 2) { return "feature"; }
+    if (kind == 3) { return "gallery"; }
+    if (kind == 4) { return "pricing"; }
+    if (kind == 5) { return "testimonial"; }
+    if (kind == 6) { return "cta"; }
+    if (kind == 7) { return "richtext"; }
+    return "footer";
+  }
+}

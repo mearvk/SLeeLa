@@ -1,0 +1,27 @@
+/*
+ * lib/autocad/SLCadRenderer.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines the SLeeLa standard-library type SLCadRenderer used within the autocad library family.
+ */
+#sleela 1.3
+// Unified SLeeLa standard-library front-end object.
+// Family: autocad. The library facade that names the one-call entry point a
+// front end (CLI or the JavaFX AutoCAD Studio) uses to evaluate a plan
+// (descriptions, dimensions, plans, notes) into geometry and render an AutoCAD
+// DXF drawing.
+//
+// This file is part of the package "discovery surface": the SLeeLa compiler's
+// `run` compiles a single self-contained file, so the executable, all-classes-
+// in-one-file build of the renderer lives in `lib/autocad/autocad.sleela`
+// (which inlines SLCadModel, SLCadPlan, SLCadDxf, and this renderer with a
+// `main`). This definition documents the facade's shape; SLeeLa performs the
+// whole computation. No new VM opcode is required -- only arithmetic, struct
+// ops, native math `sqrt`, and the existing String concatenation.
+class SLCadRenderer {
+  String title;         // drawing title
+  String units;         // drawing units (e.g. "mm")
+
+  void begin(String t, String u) { title = t; units = u; }
+  String drawingTitle() { return title; }
+  String drawingUnits() { return units; }
+}

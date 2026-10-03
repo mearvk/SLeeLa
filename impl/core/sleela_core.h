@@ -102,6 +102,7 @@ typedef enum {
 #define SL_MAX_STRUCT_TYPES 256   /* distinct struct declarations per program  */
 #define SL_MAX_STRUCT_FIELDS 64   /* named fields per struct type              */
 #define SL_MAX_STRUCTS 4096       /* live struct instances per VM              */
+#define SL_MAX_STRTEXT 65536      /* max bytes for a built/concatenated String */
 typedef enum { SLR_OK = 0, SLR_ERROR, SLR_HALT } SLResult;
 typedef struct SLVM SLVM;
 typedef int (*SLAudioNativeRenderFn)(

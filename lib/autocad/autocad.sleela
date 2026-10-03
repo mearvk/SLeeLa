@@ -1,0 +1,145 @@
+#sleela 1.3
+import math;
+// autocad.sleela -- the self-contained, runnable build of the SLeeLa AutoCAD
+// Renderer. The SLeeLa compiler's `run` compiles one file as a single unit, so
+// this aggregate inlines every class the renderer needs plus a `main` that
+// evaluates a demo plan and prints the AutoCAD DXF. The split per-class files
+// in this package (SLCadModel.sleela, SLCadPlan.sleela, SLCadDxf.sleela,
+// SLCadRenderer.sleela) are the package's discovery surface; this file is the
+// executable counterpart, mirroring data-structures/data_structures.sleela.
+//
+// Takes descriptions, dimensions, plans, and notes and renders the output as an
+// AutoCAD DXF drawing (R12 text -- opens in AutoCAD / LibreCAD). The SLeeLa
+// surface has no array storage, so geometry is accumulated directly into the
+// growing DXF entity String as the plan is applied, and the drawing extents are
+// tracked in scalar fields. No new VM opcode is required: arithmetic, native
+// math `sqrt`, and the existing String concatenation on OP_ADD (whose buffer is
+// sized from SL_MAX_STRTEXT so large drawings are not truncated).
+
+class AutoCadRenderer {
+    String title; String units;
+    double curX; double curY;                      // insertion point for next room
+    double minX; double minY; double maxX; double maxY; // extents
+    String walls;   // accumulated LINE entities (walls layer)
+    String dims;    // accumulated dimension LINE + measured TEXT entities
+    String notes;   // accumulated TEXT entities (notes layer)
+    int noteCount;
+
+    void begin(String t, String u) {
+        title = t; units = u;
+        curX = 0.0; curY = 0.0;
+        minX = 0.0; minY = 0.0; maxX = 0.0; maxY = 0.0;
+        walls = ""; dims = ""; notes = ""; noteCount = 0;
+    }
+
+    void grow(double x, double y) {
+        if (x < minX) { minX = x; }
+        if (y < minY) { minY = y; }
+        if (x > maxX) { maxX = x; }
+        if (y > maxY) { maxY = y; }
+    }
+
+    String num(double v) { return "" + v; }
+    String istr(int v) { return "" + v; }
+
+    String lineEntity(String lyr, double x1, double y1, double x2, double y2) {
+        String s = "0\nLINE\n8\n" + lyr + "\n";
+        s = s + "10\n" + num(x1) + "\n20\n" + num(y1) + "\n30\n0.0\n";
+        s = s + "11\n" + num(x2) + "\n21\n" + num(y2) + "\n31\n0.0\n";
+        return s;
+    }
+
+    String textEntity(String lyr, double x, double y, double height, String value) {
+        String s = "0\nTEXT\n8\n" + lyr + "\n";
+        s = s + "10\n" + num(x) + "\n20\n" + num(y) + "\n30\n0.0\n";
+        s = s + "40\n" + num(height) + "\n1\n" + value + "\n";
+        return s;
+    }
+
+    double distance(double x1, double y1, double x2, double y2) {
+        return math.hypot(x2 - x1, y2 - y1);
+    }
+
+    void addWall(double x1, double y1, double x2, double y2) {
+        walls = walls + lineEntity("walls", x1, y1, x2, y2);
+        grow(x1, y1); grow(x2, y2);
+    }
+
+    void addRoom(double w, double h) {
+        double ox = curX; double oy = curY;
+        addWall(ox,     oy,     ox + w, oy);
+        addWall(ox + w, oy,     ox + w, oy + h);
+        addWall(ox + w, oy + h, ox,     oy + h);
+        addWall(ox,     oy + h, ox,     oy);
+    }
+
+    void addDim(double x1, double y1, double x2, double y2) {
+        dims = dims + lineEntity("dims", x1, y1, x2, y2);
+        dims = dims + textEntity("dims", (x1 + x2) / 2.0, (y1 + y2) / 2.0, 120.0, num(distance(x1, y1, x2, y2)));
+    }
+
+    void addNote(double x, double y, String text) {
+        notes = notes + textEntity("notes", x, y, 150.0, text);
+        noteCount = noteCount + 1;
+    }
+
+    double numberOf(int v) { return v * 1.0; }
+
+    // Apply one plan directive to the model.
+    void applyDirective(String op, double n1, double n2, double n3, double n4, String text) {
+        if (op == "title") { title = text; addNote(minX, maxY + 500.0, text); return; }
+        if (op == "units") { units = text; return; }
+        if (op == "at")    { curX = n1; curY = n2; return; }
+        if (op == "room") {
+            addRoom(n1, n2);
+            addNote(curX + n1 / 2.0, curY + n2 / 2.0, text);
+            return;
+        }
+        if (op == "wall") { addWall(n1, n2, n3, n4); return; }
+        if (op == "door") { addWall(n1, n2, n1 + n3, n2); return; }
+        if (op == "dim")  { addDim(n1, n2, n3, n4); return; }
+        if (op == "note") { addNote(minX, minY - 500.0 - (300.0 * numberOf(noteCount)), text); return; }
+    }
+
+    String layer(String name, int color) {
+        return "0\nLAYER\n2\n" + name + "\n70\n0\n62\n" + istr(color) + "\n6\nCONTINUOUS\n";
+    }
+
+    // Serialize the whole model to AutoCAD DXF text.
+    String emit() {
+        String s = "0\nSECTION\n2\nHEADER\n";
+        s = s + "9\n$EXTMIN\n10\n" + num(minX) + "\n20\n" + num(minY) + "\n";
+        s = s + "9\n$EXTMAX\n10\n" + num(maxX) + "\n20\n" + num(maxY) + "\n";
+        s = s + "0\nENDSEC\n";
+
+        s = s + "0\nSECTION\n2\nTABLES\n0\nTABLE\n2\nLAYER\n70\n3\n";
+        s = s + layer("walls", 7) + layer("dims", 1) + layer("notes", 3);
+        s = s + "0\nENDTAB\n0\nENDSEC\n";
+
+        s = s + "0\nSECTION\n2\nENTITIES\n";
+        s = s + walls + dims + notes;
+        s = s + "0\nENDSEC\n0\nEOF\n";
+        return s;
+    }
+
+    String build() {
+        begin("Office Floor", "mm");
+
+        applyDirective("at",   0.0,    0.0,    0.0, 0.0, "");
+        applyDirective("room", 6000.0, 4000.0, 0.0, 0.0, "Lobby");
+        applyDirective("at",   6000.0, 0.0,    0.0, 0.0, "");
+        applyDirective("room", 4000.0, 4000.0, 0.0, 0.0, "Office");
+        applyDirective("door", 6000.0, 1500.0, 900.0, 0.0, "");
+        applyDirective("dim",  0.0,    -600.0, 10000.0, -600.0, "");
+        applyDirective("dim",  -600.0, 0.0,    -600.0,  4000.0, "");
+        applyDirective("title", 0.0, 0.0, 0.0, 0.0, "Office Floor - preliminary");
+        applyDirective("note",  0.0, 0.0, 0.0, 0.0, "Fire exit on north wall");
+        applyDirective("note",  0.0, 0.0, 0.0, 0.0, "All dimensions in millimetres");
+
+        return emit();
+    }
+
+    void main() {
+        print(build());
+    }
+}

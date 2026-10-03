@@ -1,0 +1,34 @@
+/*
+ * lib/autocad/SLCadPlan.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines the SLeeLa standard-library type SLCadPlan used within the autocad library family.
+ */
+#sleela 1.3
+// Unified SLeeLa standard-library front-end object.
+// Family: autocad. Documents the plan directive vocabulary (description,
+// dimensions, plan, notes) that the renderer evaluates into geometry. Each
+// directive keyword turns a human's words and numbers into geometry SLeeLa can
+// render. See autocad/FORMAT.md for the directive table.
+//
+// This definition is part of the package discovery surface. The executable,
+// all-classes-in-one-file build that applies directives to a model and emits
+// DXF lives in lib/autocad/autocad.sleela.
+class SLCadPlan {
+
+  // Map a directive keyword to its stable kind code so a front end and the
+  // renderer agree on the vocabulary:
+  //   0 title  1 units  2 at  3 room  4 wall  5 door  6 dim  7 note
+  int kindOf(String op) {
+    if (op == "title") { return 0; }
+    if (op == "units") { return 1; }
+    if (op == "at")    { return 2; }
+    if (op == "room")  { return 3; }
+    if (op == "wall")  { return 4; }
+    if (op == "door")  { return 5; }
+    if (op == "dim")   { return 6; }
+    if (op == "note")  { return 7; }
+    return -1;    // unknown directives are ignored (forward-compatible)
+  }
+
+  boolean known(String op) { return kindOf(op) >= 0; }
+}
