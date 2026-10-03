@@ -3,9 +3,9 @@
 # Product-specific Makefiles remain authoritative. This root dispatcher only
 # enters those existing build systems; it does not duplicate their source lists.
 
-.PHONY: all core java28 regex compiler decompiler vm jetbrains install tutorial-check tests server clean help
+.PHONY: all core java28 regex compiler decompiler vm jetbrains install tutorial-check tests server config clean help
 
-all: core java28 regex compiler decompiler vm jetbrains install tutorial-check tests
+all: core java28 regex compiler decompiler vm jetbrains install tutorial-check tests config
 
 core:
 	$(MAKE) -C impl all
@@ -36,6 +36,11 @@ tests:
 
 server:
 	$(MAKE) -C api/server
+
+config:
+	@echo "SLeeLa unified configuration: config/sleela.conf"
+	@echo "Canonical runtime location: <PROJECT_ROOT>/.sleela/config"
+	@echo "Override with config.mode=absolute and config.absolute_path"
 
 clean:
 	$(MAKE) -C impl clean
