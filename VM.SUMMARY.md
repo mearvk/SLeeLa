@@ -716,3 +716,10 @@ SLVM/9, SLVM/10, and SLVM/11 now contain the same formulaic TAC3 module structur
           tac3.definition.json
 
 The machine-readable `tac3.definition.json` is byte-identical across all three generations. The definition carries the TAC3 v1.0 format, 4096-byte block size, CRC32C integrity, persistent regions, 33-stat contextual identity model, authority notation, memory/swap policy, optional FAT model, boot/recovery sequence, persistence status, and VM integration rules. Generation-specific C headers provide the validation adapter while the filesystem data remains one contract.
+
+
+## Native source compiler implementation
+
+The source-to-VM architecture is backed by the repository's existing native C/C++ frontend under `/impl/frontend`. The lexer, parser, semantic analyzer, compiler/lowering layer, and persistent artifact emitter feed the C SLeeLa Core. The `/lib/compiler` package now builds that authoritative executable through `/impl/Makefile`.
+
+The build gate is recursive: every `/lib/**/*.sleela` file is inventoried, the source-side `lib/vm/InstructionSet.sleela` is compared in exact order with the native `SLOp` enumeration, and only then does `tools/sleela-build.py compile SOURCE OUTPUT` delegate to the native artifact compiler. This makes the `/lib` source collection an actual compiler resource boundary rather than a documentation-only inventory.
