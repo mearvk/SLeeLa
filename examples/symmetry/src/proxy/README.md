@@ -7,7 +7,6 @@
 
 
 
-
 # Proxy Server Example
 
 A SLeeLa symmetry example for a forward proxy with explicit Client, Server, and Admin/Monitor roles.

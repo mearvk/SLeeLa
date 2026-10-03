@@ -7,7 +7,6 @@
 
 
 
-
 # SLeeLa HTTP 1.0
 
 **Status:** Experimental SLeeLa application-protocol generation.

@@ -1,5 +1,7 @@
+/*
+ * lib/common-rails/PrintGlyphs.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines the SLeeLa standard-library type PrintGlyphs used within the common-rails library family.
+ */
 #sleela 1.3
-class PrintGlyphs {
-  String FULL="█";
-  String LIGHT="░";
-}
+class PrintGlyphs { String FULL="█"; String LIGHT="░"; }

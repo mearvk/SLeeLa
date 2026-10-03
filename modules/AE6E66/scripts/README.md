@@ -6,6 +6,7 @@
 
 
 
+
 # AE6E66 Operational Scripts
 
 - `verify-integrity.sh` — fail-closed SHA-256 verifier.

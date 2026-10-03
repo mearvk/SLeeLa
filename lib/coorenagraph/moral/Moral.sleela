@@ -2,10 +2,19 @@
  * Moral.sleela
  * COORENAGRAPH moral vocabulary.
  * Part of speech: adjective
+ * Definition: Relating to principles of right and wrong behavior.
  */
 
 class Moral {
-    String term() { return "Moral"; }
-    String partOfSpeech() { return "adjective"; }
-    String definition() { return "Relating to principles of right and wrong behavior."; }
+    String term() {
+        return "Moral";
+    }
+
+    String partOfSpeech() {
+        return "adjective";
+    }
+
+    String definition() {
+        return "Relating to principles of right and wrong behavior.";
+    }
 }

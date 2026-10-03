@@ -1,7 +1,11 @@
+/*
+ * lib/common-rails/PrintLine.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines the SLeeLa standard-library type PrintLine used within the common-rails library family.
+ */
 #sleela 1.3
 class PrintLine {
-  String content;
-  PrintLine(){content="";}
-  void set(String value){content=value;}
-  String value(){return content;}
+  String value="";
+  void set(String v){value=v;}
+  String get(){return value;}
 }

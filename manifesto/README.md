@@ -6,6 +6,7 @@
 
 
 
+
 # manifesto/ — A Manifesto to Thinking Kind
 
 This directory holds a long-form work written *as* a runnable SLeeLa program and

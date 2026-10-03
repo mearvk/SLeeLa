@@ -6,6 +6,7 @@
 
 
 
+
 # journey/ — the SLeeLa component register
 
 This directory is the **runnable equivalent** of [`JOURNEY.md`](../JOURNEY.md):

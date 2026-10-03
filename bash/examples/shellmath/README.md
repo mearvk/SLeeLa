@@ -7,7 +7,6 @@
 
 
 
-
 # Shellmath
 Introducing decimal arithmetic libraries for the Bash shell, because
 they said it couldn't be done... and because:

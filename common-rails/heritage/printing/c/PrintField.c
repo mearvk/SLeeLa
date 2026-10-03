@@ -1,3 +1,4 @@
 #include "PrintField.h"
+#include "PrintLayout.h"
 #include <string.h>
-void cr_print_field(FILE*o,const char*s,int w){size_t n=strlen(s);fputs(s,o);for(int i=(int)n;i<w;i++)fputc(' ',o);}
+void cr_print_field(FILE *out,const char *text,int width){size_t n=strlen(text);fputs(text,out);for(int i=(int)n;i<width;i++)fputc(' ',out);}

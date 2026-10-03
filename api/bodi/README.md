@@ -7,8 +7,6 @@
 
 
 
-
-
 # BODI XML Projects
 
 BODI XML adds a declarative XML representation to SLeeLa's existing BODI witness model.

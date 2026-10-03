@@ -7,7 +7,6 @@
 
 
 
-
 # Sleela-Complete Module Library
 
 This library establishes the reusable **Sleela-Complete** model for SLeeLa modules.

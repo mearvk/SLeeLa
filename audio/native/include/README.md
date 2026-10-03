@@ -7,7 +7,6 @@
 
 
 
-
 # Native Audio Include
 
 The native adapter uses the public C++17 Audio API in `audio/cpp/include`.

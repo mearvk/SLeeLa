@@ -12,6 +12,8 @@ This directory is the dedicated home for the VM itself. It is intentionally sepa
 
 ## Initial Responsibilities
 
+The SLVM will provide:
+
 - VM state and lifecycle
 - instruction and opcode definitions
 - program counter / instruction pointer
@@ -22,21 +24,29 @@ This directory is the dedicated home for the VM itself. It is intentionally sepa
 - arithmetic, comparison, branching, loading and storing
 - function/method invocation and return
 - exception/error propagation
-- integration with garbage collection and security services
+- integration with the existing garbage collector
+- a lazy, configurable memory budget with a 512 MiB default
+- GC-backed managed content allocation without eagerly reserving 512 MiB
+- integration with the existing security supervisor
 - controlled native/OS boundaries
-- compiler and loader integration
+- integration points for the SLeeLa compiler and loader
+- testable, deterministic execution primitives
 
-## Layout
+## Directory Layout
 
 - `include/` — public VM headers
 - `src/` — VM implementation
-- `tests/` — execution tests
+- `tests/` — VM execution tests
 - `docs/` — architecture and instruction-set documentation
 - `build/` — platform build entry points
 
+## Relationship to runtime/
+
+The VM is the execution engine. The existing `runtime/` directory remains the supporting runtime-services layer. The VM may call those services, but the two directories should not be conflated.
+
 ## Status
 
-This establishes the dedicated SLVM implementation boundary. The initial execution kernel is intentionally small and will be expanded as the compiler and loader instruction representation is integrated.
+This directory establishes the dedicated SLVM implementation boundary. The VM instruction set and execution core will be developed here and connected to the compiler and loader deliberately rather than replacing existing runtime services.
 
 Copyright (c) Max Rupplin - MEARVK LLC - 2026
 

@@ -7,7 +7,6 @@
 
 
 
-
 # system-symmetry — Sleela sources driven by a `.sst` style sheet
 
 This module demonstrates **server/client system symmetry** across two protocols

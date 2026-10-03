@@ -1,58 +1,19 @@
 # SLVM/2 Architecture
 
-SLVM/2 is an incremental VM generation built from the SLVM/1 specification.
+SLVM/2 is the security-oriented evolution of SLVM/1. It preserves the authoritative SLeeLa compiler and Output Symbol contract.
 
-```
-SLeeLa source
-   |
-authoritative SLeeLa compiler
-   |
-SLeeLa Output Symbols / Core representation
-   |
-SLVM/2 execution
-   |
-+-- memory security + GC
-+-- runtime security
-+-- I/O heuristic
-+-- capability broker
-+-- crypto provider
-+-- signed linker
-+-- observer/audit
-+-- certificate/attestation
-   |
-OS-specific runtime adapter
-   |
-Linux / Windows / macOS
-```
+SLeeLa source -> authoritative compiler -> Output Symbols/Core -> SLVM/2 -> capability broker -> OS runtime adapter.
 
-### Runtime Selection
+SLVM/2 adds explicit runtime selection, security policy composition, provider-backed cryptography, signed linking, expanded observability, certificates/attestation, and declarative compliance profiles.
 
-The runtime-selection configuration identifies the VM instance and preferred runtime adapter. Selection is policy input, not privilege.
+Runtime selection chooses execution handling; it never grants capabilities. Capabilities remain the authority boundary.
 
-### Security
+Cryptography is provider-backed and must use established/vetted implementations rather than VM-specific cryptographic inventions.
 
-Every security-sensitive boundary must validate policy before execution. Security state must be observable without exposing secret values.
+Linking validates module identity, version, hashes, signatures, ABI requirements, and requested capabilities before executable modules are accepted.
 
-### Cryptography
+Observer events include VM, security, crypto, link, certificate, and runtime events. Secret values are redacted by default.
 
-SLVM/2 exposes cryptographic operations through a provider abstraction. It must not implement new cryptographic algorithms merely for convenience. Production providers should delegate to vetted platform or established cryptographic libraries.
+Certificates authenticate identities and trust relationships. Attestation records the runtime/module/policy state without exposing credentials.
 
-### Linking
-
-Modules are linked through explicit manifests. The linker records module identity, version, hashes, requested capabilities, ABI requirements, and signatures. Signed-link policy can reject unsigned or incompatible modules before execution.
-
-### Observability
-
-Observer events cover VM lifecycle, function entry/return, parameters, object activity, memory, I/O, broker activity, linking, certificates, and security decisions. Secret values are redacted by default.
-
-### Certificates and Attestation
-
-Certificates authenticate module/runtime identities and trust relationships. Attestation reports describe what was loaded and which policy was applied. Certificate validation must occur before a trust decision is accepted.
-
-### Government / Compliance
-
-Compliance profiles are declarative policy bundles for organizational, contractual, regulatory, or government deployment requirements. The VM engine remains politically neutral: profiles describe technical controls such as approved algorithms, audit retention, certificate authorities, logging requirements, and module-signing requirements.
-
-### Compatibility
-
-SLVM/2 should reject an artifact when its required execution contract cannot be satisfied. It must not silently reinterpret an unknown Output Symbol.
+Compliance profiles are technical policy bundles for deployment requirements. A profile may strengthen controls but cannot itself grant authority or imply legal certification.

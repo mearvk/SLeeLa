@@ -1,17 +1,5 @@
 # Tutorial 01 — Artifact to SLeeLa IR
 
-## Goal
+Treat every executable, library, object, or byte-stream input as untrusted data. Acquire and identify it without executing it; collect format and architecture evidence; decode conservatively; build control flow; lift to SLIR; perform semantic analysis; reconstruct SLeeLa or another requested target; then apply compiler/VM validation when a VM artifact is desired.
 
-Understand the normal evidence-preserving decompiler path.
-
-1. Acquire the artifact without executing it.
-2. Record identity and acquisition metadata.
-3. Identify format evidence from headers, sections, architecture markers, and object metadata.
-4. Decode conservatively according to validated evidence.
-5. Build control-flow relationships where supported.
-6. Lift operations into SLIR while preserving uncertainty.
-7. Use symbols, debug data, calling conventions, imports/exports, and runtime metadata when available.
-8. Reconstruct SLeeLa-oriented source or another requested target.
-9. Validate VM-target output through compiler and VM completeness boundaries.
-
-A decompiler should not claim exact original source when the evidence does not support that conclusion.
+Do not claim exact original source when evidence does not support that conclusion.

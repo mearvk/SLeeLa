@@ -1,3 +1,8 @@
+/*
+ * lib/security/SLCapability.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines the SLeeLa standard-library type SLCapability used within the security library family.
+ */
 #sleela 1.3
 // Unified SLeeLa standard-library front-end object.
 // Family: security. Native VM/OS work crosses an explicit bridge.

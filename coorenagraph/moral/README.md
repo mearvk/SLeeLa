@@ -7,7 +7,6 @@
 
 
 
-
 # COORENAGRAPH Moral
 
 The `/coorenagraph/moral` subfolder contains SLeeLa moral-argument and grounding contracts used by COORENAGRAPH.

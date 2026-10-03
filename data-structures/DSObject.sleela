@@ -1,5 +1,7 @@
 #sleela 1.2
 
+// Named object record with a field-count contract.
+
 struct DSObject {
     String name;
     int fieldCount;

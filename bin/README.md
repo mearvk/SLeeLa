@@ -7,7 +7,6 @@
 
 
 
-
 # SLVM `bin/`
 
 The `bin/` directory contains command-line entry points intended for use from the SLVM environment.

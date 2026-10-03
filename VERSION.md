@@ -8,7 +8,7 @@
 **Native Foundation:** 0.3.2-dev  
 **Sleela Language Syntax:** 1.6 (supported range 1.3 .. 1.6)  
 **Compiler Compatibility Gate:** 2.9-dev  
-**Java Authorship Transition Gate:** 1.19-dev
+**Java Authorship Transition Gate:** 1.17-dev
 **Edition:** SLeeLa Complete / Native Foundation  
 **Status:** Active Development  
 **Repository:** mearkv/SLeeLa
@@ -101,22 +101,6 @@ Added the unified Java qualification manifest, which coordinates the existing so
 The next semantic qualification layer hardens Java control-flow and checked-exception analysis. The source-semantic work remains independent of JVM or SLVM execution and is being extended toward complete Java definite-assignment, abrupt-completion, and exception-flow joins.
 
 **Java Authorship Transition Gate:** 1.18-dev
-
-
-## 0.3.22 Development Increment
-
-The 0.3.22 development increment updates the canonical SLeeLa source inventory and versioned library-control records after the compiler/decompiler source expansion. `/lib` now contains 10,033 `.sleela` source units across 75 package families, with 88 module-facade symbols and 10,121 total symbol records. The repository-wide `.sleela` inventory is 10,235 files. Compiler and decompiler reference/source models are included in the canonical inventory, and the library manifest/index revisions are synchronized with the source tree.
-
-**Library Source Inventory:** 10,033 `/lib` `.sleela` units
-**Repository-wide SLeeLa Source Inventory:** 10,235 `.sleela` files
-**Library Packages:** 75
-**Library Symbol Records:** 10,121
-
-## 0.3.21 Development Design Increment
-
-Added the Java Flow 0.3.21 architecture design. The design establishes directional boolean facts, explicit abrupt-completion paths, structural control-target resolution, loop/switch completion joins, try/catch/finally path composition, constructor/blank-final state, lambda capture boundaries, and shared checked-exception traversal. The qualification boundary remains Java source/API congruence rather than JVM or SLVM execution.
-
-**Java Authorship Transition Gate:** 1.19-dev
 
 ### 0.3.21 Development Execution Phase
 

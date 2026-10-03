@@ -7,7 +7,6 @@
 
 
 
-
 # SLeeLa HTTP Multiplexing and Download API
 
 This API exposes the common HTTP design as source code.

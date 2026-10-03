@@ -1,0 +1,20 @@
+/*
+ * Magnanimous.sleela
+ * COORENAGRAPH moral vocabulary.
+ * Part of speech: adjective
+ * Definition: Showing noble generosity, forgiveness, and high-mindedness toward others.
+ */
+
+class Magnanimous {
+    String term() {
+        return "Magnanimous";
+    }
+
+    String partOfSpeech() {
+        return "adjective";
+    }
+
+    String definition() {
+        return "Showing noble generosity, forgiveness, and high-mindedness toward others.";
+    }
+}

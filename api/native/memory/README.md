@@ -7,7 +7,6 @@
 
 
 
-
 # SLeeLa Memory Manager
 
 Portable C/C++17 native memory-management foundation for SLeeLa. It provides tracked allocation, limits, structure insertion, named Leech attachments, validation, and runtime telemetry.

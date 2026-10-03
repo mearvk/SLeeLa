@@ -1,5 +1,7 @@
 #sleela 1.2
 
+// LIFO stack contract.
+
 struct DSStack {
     int size;
 }

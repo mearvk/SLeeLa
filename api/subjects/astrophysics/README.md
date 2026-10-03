@@ -7,7 +7,6 @@
 
 
 
-
 # Astrophysics Subject Library
 
 Astrophysics is a SLeeLa subject library built on Mathematics and Physics.

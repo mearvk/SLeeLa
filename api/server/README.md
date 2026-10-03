@@ -7,7 +7,6 @@
 
 
 
-
 # Discord-1™ — SLeeLa Server Launcher — sleelas
 
 **Discord-1™** is the programmatic name for the native SLeeLa Server Launcher.

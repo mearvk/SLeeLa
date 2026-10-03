@@ -7,7 +7,6 @@
 
 
 
-
 # SLeeLa Debugger
 
 The SLeeLa Debugger is a development-time diagnostic layer for the SLeeLa software lifecycle.

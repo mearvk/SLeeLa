@@ -7,7 +7,6 @@
 
 
 
-
 # Sociology Subject Library
 
 Sociology is a SLeeLa Subject Library for quantitative description of populations, groups, distributions, rates, transitions, association measures, inequality and group separation.

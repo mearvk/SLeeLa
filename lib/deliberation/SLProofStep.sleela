@@ -1,3 +1,8 @@
+/*
+ * lib/deliberation/SLProofStep.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines the SLeeLa standard-library type SLProofStep used within the deliberation library family.
+ */
 #sleela 1.3
 // SLeeLa deliberation front-end contract.
 // Explicit reasoning/evidence/decision state; native facilities cross a VM/OS bridge.

@@ -6,11 +6,10 @@ These tutorials teach the evidence-preserving path from executable/library/objec
 
 ## Learning path
 
-1. 01-artifact-to-slir.md — acquire an artifact and build an evidence-preserving analysis path.
+1. 01-artifact-to-slir.md — artifact acquisition through SLIR.
 2. 02-os-abi-and-format-discernment.md — combine format, architecture, OS, and ABI evidence.
-3. 03-fractional-input-and-source-reconstruction.md — preserve partial information instead of inventing source.
-4. examples/artifact-analysis.sleela — analysis request example.
-5. examples/fractional-reconstruction.sleela — partial reconstruction example.
+3. 03-fractional-input-and-source-reconstruction.md — preserve incomplete information.
+4. examples/artifact-analysis.sleela and examples/fractional-reconstruction.sleela — analysis examples.
 
 ## Pipeline
 
@@ -24,8 +23,6 @@ Input artifacts are untrusted. Analysis must not execute constructors, entry poi
 
 make decompiler
 
-or
+or make -C lib/decompiler
 
-make -C lib/decompiler
-
-Native C/C++ provides implementation services; .sleela files remain the source-level contract.
+Native C/C++ provides implementation services; .sleela remains the source-level contract.

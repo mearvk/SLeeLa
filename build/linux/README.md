@@ -7,7 +7,6 @@
 
 
 
-
 # SLeeLa Linux Build
 
 This platform build surface targets Linux with GCC/G++ or Clang/Clang++.

@@ -107,6 +107,11 @@ Maintain invalid fixtures proving that claimed Java constraints are enforced, in
 - invalid overriding/signature combinations
 - unsupported constructs with explicit diagnostics
 
+### Q11 — Eight-layer source equivalence model
+- Q1 Lexical, Q2 Type System, Q3 Declarations, Q4 Expressions, Q5 Statements, Q6 Semantic Constraints, Q7 API Counterparts, and Q8 Source Equivalence Testing are represented by explicit frontend equivalence types in impl/frontend/java_equivalence.h.
+- The source-equivalence driver must report structural, semantic, and functional-source states separately.
+- Functional-source status must remain INCOMPLETE unless the corresponding source/API semantics have actually been implemented and checked.
+
 ### Q10 — Platform and reproducibility
 Frontend/API qualification should run independently of JVM availability.
 
@@ -154,6 +159,7 @@ A future Java interoperability project may address those independently.
 - [ ] Q8 Source-to-source congruence
 - [ ] Q9 Negative/constraint corpus
 - [ ] Q10 Platform/reproducibility
+- [ ] Q11 Eight-layer equivalence model
 - [ ] Native SLeeLa symbol inventory remains independent
 - [ ] Java compatibility inventory is separately reportable
 
@@ -181,42 +187,13 @@ The next qualification work targets the remaining source-semantic gap in Java fl
 
 ## 0.3.21 Development Upgrade — Java Flow Qualification Closure
 
-This upgrade turns the next semantic layer into an explicit implementation program. The Java/SLeeLa source-equivalence model now treats control-flow qualification as a first-class closure task rather than a collection of isolated checks.
+This upgrade makes Java control-flow qualification a first-class closure task. A construct is qualified only when its source fixture, normalized representation, semantic rule, positive or negative result, and unified-manifest evidence are present.
 
-### Affected SLeeLa source
+Affected SLeeLa frontend: `impl/frontend/java_flow.h/.cpp`, `impl/frontend/java_exceptions.h/.cpp`, and the Java equivalence frontend. Affected qualification documents: `QUALIFICATION.JAVA.md`, `JAVA.EQUIVALENCE.TASKS.md`, `JAVA.AUTHORSHIP.TRANSITION.md`, `JAVA.COMPATIBILITY.SCOPE.md`, and `tests/JAVA.QUALIFICATION.MANIFEST.md`.
 
-- `impl/frontend/java_flow.h` / `java_flow.cpp` — definite-assignment, definite-unassignment, reachability, abrupt-completion, branch and loop joins.
-- `impl/frontend/java_exceptions.h` / `java_exceptions.cpp` — checked-exception hierarchy, catch coverage, redundant/invalid catches, and override `throws` compatibility.
-- `impl/frontend/java_equivalence.h` / `java_equivalence.cpp` — Java source/API normalization and semantic descriptors consumed by the qualification layer.
+Required next coverage: boolean-path-sensitive `&&`, `||`, `!`, and `?:`; constant boolean expressions; break/continue joins and labels; while/do/for completion; switch completion; try/catch/finally abrupt paths; constructor and blank-final definite-unassignment; lambda capture boundaries; and checked-exception propagation.
 
-### Affected Java-facing qualification documents
-
-- `QUALIFICATION.JAVA.md` — Q5/Q8/Q9/Q10 scope and completion requirements.
-- `JAVA.EQUIVALENCE.TASKS.md` — semantic closure milestones.
-- `JAVA.COMPATIBILITY.SCOPE.md` — Java compatibility vocabulary remains separate from native SLeeLa vocabulary.
-- `JAVA.AUTHORSHIP.TRANSITION.md` — Java-authored source remains the compatibility target; JVM/SLVM execution remains outside this gate.
-- `tests/JAVA.QUALIFICATION.MANIFEST.md` — unified evidence model.
-
-### Required semantic coverage
-
-The next executable fixtures must cover:
-
-1. boolean-path-sensitive `&&`, `||`, `!`, and `?:` assignment facts;
-2. constant boolean expressions;
-3. `break`/`continue` target validation and loop exit joins;
-4. `while`, `do`, and `for` normal-completion rules;
-5. traditional and modern `switch` completion;
-6. `try`, `catch`, `finally`, and abrupt completion joins;
-7. constructor and blank-final field definite-unassignment rules;
-8. lambda/capture flow boundaries;
-9. labeled control-flow targets;
-10. checked-exception propagation through the same statement structure.
-
-The Java Language Specification defines definite assignment in terms of every possible execution path and gives special treatment to `&&`, `||`, `!`, `?:`, and boolean constants. It also defines the consequences of abrupt completion for flow analysis. citeturn0search7turn0search2
-
-### Qualification evidence rule
-
-A source construct is not considered qualified merely because the parser accepts it. Qualification requires the source fixture, normalized representation, semantic rule, positive/negative result, and inclusion in the unified manifest. JVM, bytecode, SLVM, and runtime implementation remain outside this program upgrade.
+JLS definite-assignment rules analyze every possible execution path and give special treatment to conditional boolean operators and boolean constants. Abrupt completion also affects whether a flow fact is required after a construct. This work remains source/API qualification, not JVM, bytecode, SLVM, or runtime equivalence.
 
 ### 0.3.21 executable phase — directional flow and control targets
 

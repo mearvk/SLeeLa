@@ -6,13 +6,13 @@
 extern "C" {
 #endif
 typedef struct {
-    uint32_t schema;
-    uint32_t vm_major;
-    const char *module_id;
-    const char *version;
-    const char *hash;
-    const char *signature;
-    const char *requested_capabilities;
+ uint32_t schema;
+ uint32_t vm_major;
+ const char *module_id;
+ const char *version;
+ const char *hash;
+ const char *signature;
+ const char *requested_capabilities;
 } slvm2_link_manifest_t;
 int slvm2_link_validate(const slvm2_link_manifest_t*, int require_signature);
 #ifdef __cplusplus

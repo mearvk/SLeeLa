@@ -7,7 +7,6 @@
 
 
 
-
 # SLeeLa Web Server Monitor
 
 The SLeeLa Web Server Monitor is a deployment and operations module for web-aware applications that use Apache HTTP Server and/or Apache Tomcat.

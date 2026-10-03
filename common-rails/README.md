@@ -7,7 +7,6 @@
 
 
 
-
 # CommonRails — SST + Sleela edition
 
 Professional printing component for the SLeeLa toolchain, ported from the Java

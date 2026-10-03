@@ -1,3 +1,8 @@
+/*
+ * lib/codecs/SLPackage.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines the SLeeLa standard-library package for codecs.
+ */
 #sleela 1.3
 // Library facade for module package: codecs
 // Exposes the package to the SLeeLa compiler, Loader, and Nordshrift.

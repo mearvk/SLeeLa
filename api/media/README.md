@@ -7,7 +7,6 @@
 
 
 
-
 # SLeeLa Audio and Video API
 
 Native-frame media foundation with broad format and codec discovery.

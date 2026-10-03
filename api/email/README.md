@@ -7,8 +7,6 @@
 
 
 
-
-
 # SLeeLa Email Facade
 
 SMTP-aware native C API with a SLeeLa mapping.

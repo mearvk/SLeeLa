@@ -1,5 +1,6 @@
 #sleela 1.3
 class PrintFormatter {
-  String state(String name,String message){return "["+name+"] "+message;}
-  String component(String current,String message){return "[Current: @"+current+"] . "+message+" .";}
+  String value="";
+  void set(String v){value=v;}
+  String get(){return value;}
 }

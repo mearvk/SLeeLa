@@ -7,7 +7,6 @@
 
 
 
-
 # Slecompiler™
 
 **Max Rupplin - MEARVK LLC - 2026**

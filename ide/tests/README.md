@@ -6,6 +6,7 @@
 
 
 
+
 # IDE Conformance Fixtures
 
 IDE tests will cover tokenization, parsing, PSI structure, symbol resolution, standard-library lookup, diagnostics, formatting, project discovery, build/run/test actions and debugger source mapping.

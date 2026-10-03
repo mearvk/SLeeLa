@@ -1,3 +1,4 @@
+#include "../preferred-routers/preferred_router.h"
 #include "http4_protocol.h"
 
 #include <string.h>
@@ -25,7 +26,7 @@ static uint64_t get64(const uint8_t *p) {
     return v;
 }
 
-int http4_frame_validate(const http4_frame_header_t *h, size_t available_payload) {
+int http4_frame_validate(const http4_frame_header_t *h, size_t available_payload) {\n    if (!sleela_preferred_router_packet_policy("HTTP/4.0", 4)) return -6;
     if (!h) return -1;
     if (h->version != HTTP4_VERSION) return -2;
     if (h->type < HTTP4_FRAME_OPEN || h->type > HTTP4_FRAME_CAPSULE) return -3;

@@ -7,7 +7,6 @@
 
 
 
-
 # SLeeLa Subject Libraries
 
 Subject libraries are source-backed, executable vocabularies for scientific and analytical domains.

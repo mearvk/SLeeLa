@@ -7,8 +7,6 @@
 
 
 
-
-
 # SLeeLa Native Database Connector
 
 SLeeLa now has a native database connector contract for commonly deployed database systems: PostgreSQL, MySQL, MariaDB, SQLite, Microsoft SQL Server, Oracle Database, and ODBC-compatible databases.

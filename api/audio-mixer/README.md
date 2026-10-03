@@ -7,8 +7,6 @@
 
 
 
-
-
 # SLeeLa Synchronized Audio Mixer Configuration
 
 Three equivalent configuration representations are provided:

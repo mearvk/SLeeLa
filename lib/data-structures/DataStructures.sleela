@@ -1,4 +1,13 @@
+/*
+ * lib/data-structures/DataStructures.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines the SLeeLa standard-library type DataStructures used within the data-structures library family.
+ */
 #sleela 1.2
+
+// Aggregate semantic facade for the SLeeLa data-structure family.
+// The concrete structure declarations live in the sibling source files.
+// This class intentionally contains only cross-structure operations.
 
 class DataStructures {
     boolean listIsEmpty(DSList list) { return list.size == 0; }

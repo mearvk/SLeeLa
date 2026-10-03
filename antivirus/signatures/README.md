@@ -7,8 +7,6 @@
 
 
 
-
-
 # Sleelavirin™ Signatures
 
 This directory contains author-owned signatures or manifests that reference external signature databases.

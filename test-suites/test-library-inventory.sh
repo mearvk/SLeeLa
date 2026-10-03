@@ -34,3 +34,7 @@ echo "PASS: /lib inventory packages=$package_count sources=$source_count facades
 test -f "$ROOT/impl/nordshrift/sst_symbol.cpp"
 test -f "$ROOT/impl/nordshrift/SST.SYMBOLS.md"
 grep -q 'SSTSymbol' "$ROOT/impl/nordshrift/sst_symbol.h"
+
+test -f "$ROOT/impl/nordshrift/sst_symbol.cpp"
+test -f "$ROOT/impl/nordshrift/SST.SYMBOLS.md"
+grep -q 'SSTSymbol' "$ROOT/impl/nordshrift/sst_symbol.h"

@@ -1,16 +1,16 @@
 # Permissible Connectors
 
-Permissible Connectors are a distinct source-level connector theme for explicitly identifying and controlling bounded methods involving sight, naming, travel, processes, memory, systems, and linear graphs.
+Permissible Connectors provide an explicit connector theme for bounded methods involving sight, naming, travel, processes, memory, systems, and linear graphs.
 
 ## Import
 
     import :: permissible :: connector :: mysql :: /lib/etc/Permissible.sleela;
 
-A single unnamed connector is also accepted:
+Single unnamed form:
 
     import :: permissible :: connector :: /lib/etc/Permissible.sleela;
 
-A named form is also accepted:
+Named form:
 
     import permissible connector mysql = /lib/etc/Permissible.sleela;
 
@@ -24,7 +24,7 @@ A named form is also accepted:
     permissible domain mysql :: system;
     permissible domain mysql :: linear-graph;
 
-## Seraph, Memory, and Balance
+## Seraph, Memory, Balance
 
 Seraph represents connector identity and continuity. Memory represents bounded state and resource accounting. Balance represents constraints that keep transitions, resources, and graph movement bounded.
 
@@ -34,11 +34,9 @@ Admin Safe and Journey Safe are explicit policy checks. They do not guarantee sa
 
 ## Secure Future
 
-secureFuture represents an admitted state after policy checks. It is a policy state, not a promise about external systems or future events.
+secureFuture represents an admitted policy state. It is not a promise about external systems or future events.
 
 Flow: import -> identify -> domain -> configuration/properties -> capability review -> Admin Safe/Journey Safe -> Seraph/Memory/Balance validation -> deferred construction -> VM load -> bounded execution.
-
-Permissible Connectors do not bypass normal parsing, semantic analysis, dependency resolution, capability checks, security policy, or VM controls.
 
 ## Category
 

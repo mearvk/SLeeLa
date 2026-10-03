@@ -5,7 +5,15 @@
  */
 
 class Reprobate {
-    String term() { return "Reprobate"; }
-    String partOfSpeech() { return "noun"; }
-    String definition() { return "A person characterized as rejecting moral constraints or acting without principle."; }
+    String term() {
+        return "Reprobate";
+    }
+
+    String partOfSpeech() {
+        return "noun";
+    }
+
+    String definition() {
+        return "A person characterized as rejecting moral constraints or acting without principle.";
+    }
 }

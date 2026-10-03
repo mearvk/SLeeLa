@@ -1,5 +1,5 @@
-#ifndef CR_PRINT_RENDERER_H
-#define CR_PRINT_RENDERER_H
+#ifndef COMMONRAILS_PRINT_RENDERER_H
+#define COMMONRAILS_PRINT_RENDERER_H
 #include <stdio.h>
-void cr_render_square(FILE*,int);
+void cr_render_square(FILE*out,int filled);
 #endif

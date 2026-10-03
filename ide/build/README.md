@@ -6,6 +6,7 @@
 
 
 
+
 # IDE Build, Run, and Test
 
 The IDE exposes repository operations through a thin adapter.

@@ -7,7 +7,6 @@
 
 
 
-
 # Sleela Data Structures — C / C++ / Sleela
 
 This directory establishes a small, explicit data-structure layer corresponding to the Java-like model used by the historical Java implementation and the current Sleela C/C++ execution core.

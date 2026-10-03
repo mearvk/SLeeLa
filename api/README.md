@@ -7,8 +7,6 @@
 
 
 
-
-
 # SLeeLa API
 
 ## Full API Catalogue

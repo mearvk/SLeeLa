@@ -1,5 +1,9 @@
 #sleela 1.2
 
+// Aggregate semantic facade for the SLeeLa data-structure family.
+// The concrete structure declarations live in the sibling source files.
+// This class intentionally contains only cross-structure operations.
+
 class DataStructures {
     boolean listIsEmpty(DSList list) { return list.size == 0; }
     boolean stackIsEmpty(DSStack stack) { return stack.size == 0; }

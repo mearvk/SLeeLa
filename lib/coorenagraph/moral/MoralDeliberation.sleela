@@ -1,0 +1,20 @@
+/*
+ * MoralDeliberation.sleela
+ * COORENAGRAPH moral vocabulary.
+ * Part of speech: noun
+ * Definition: The process of applying ethical principles to facts to reach a responsible, consent-filled decision.
+ */
+
+class MoralDeliberation {
+    String term() {
+        return "MoralDeliberation";
+    }
+
+    String partOfSpeech() {
+        return "noun";
+    }
+
+    String definition() {
+        return "The process of applying ethical principles to facts to reach a responsible, consent-filled decision.";
+    }
+}

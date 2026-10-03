@@ -7,7 +7,6 @@
 
 
 
-
 # /3 — Facets
 
 **Facets** is the third *relevance set* (a sibling of `/1` [Longs](../1/README.md),

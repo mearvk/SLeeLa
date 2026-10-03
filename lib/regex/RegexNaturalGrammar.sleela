@@ -1,3 +1,8 @@
+/*
+ * lib/regex/RegexNaturalGrammar.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines the SLeeLa standard-library type RegexNaturalGrammar used within the regex library family.
+ */
 subject RegexNaturalGrammar
 version 1.1.0-dev
 atom literal any digit letter space charset group named anchor

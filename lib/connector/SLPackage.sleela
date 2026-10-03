@@ -1,3 +1,8 @@
+/*
+ * lib/connector/SLPackage.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines the SLeeLa standard-library package for connector.
+ */
 #sleela 1.3
 // Library facade for module package: connector
 // Exposes the package to the SLeeLa compiler, Loader, and Nordshrift.

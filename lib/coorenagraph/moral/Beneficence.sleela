@@ -1,0 +1,20 @@
+/*
+ * Beneficence.sleela
+ * COORENAGRAPH moral vocabulary.
+ * Part of speech: noun
+ * Definition: The practice of doing good, showing kindness, and acting to benefit others.
+ */
+
+class Beneficence {
+    String term() {
+        return "Beneficence";
+    }
+
+    String partOfSpeech() {
+        return "noun";
+    }
+
+    String definition() {
+        return "The practice of doing good, showing kindness, and acting to benefit others.";
+    }
+}

@@ -34,7 +34,7 @@ The driver reports structural, semantic, and functional-source states separately
 2. Expand Java statement AST and parser. **Foundation completed in 0.3.7-dev:** blocks, if/while/do/for, switch, break/continue/return/throw/assert/yield, synchronized, and try/catch/finally. **Remaining:** enhanced-for, local-variable declarations, try-with-resources, switch rules/guards, and full statement semantic constraints.
 3. Implement Java type/conversion semantics. **Foundation completed in 0.3.8-dev:** conversion categories/contexts, identity, widening/narrowing primitive conversion, boxing/unboxing, reference conversion classification, and unary/binary numeric promotion.
 4. Implement overload and override resolution. **Foundation completed in 0.3.9-dev:** strict/loose/variable-arity phases, applicability classification, most-specific selection foundation, override-equivalence, and basic return compatibility.
-5. Implement definite-assignment and reachability rules. **Foundation added in 0.3.12-dev:** source-flow facts, use-before-assignment diagnostics, final reassignment checks, branch merging, loop/abrupt-completion reachability, switch/try/finally flow scaffolding, and deterministic C++/Python qualification suite. **Foundation added in 0.3.12-dev:** source-flow facts, use-before-assignment diagnostics, final reassignment checks, branch merging, loop/abrupt-completion reachability, switch/try/finally flow scaffolding, and deterministic C++/Python qualification suite.
+5. Implement definite-assignment and reachability rules. **Foundation added in 0.3.12-dev:** source-flow facts, use-before-assignment diagnostics, final reassignment checks, branch merging, loop/abrupt-completion reachability, switch/try/finally flow scaffolding, and deterministic C++/Python qualification suite.
 6. Implement checked-exception analysis. **Foundation added in 0.3.13-dev:** exception hierarchy/subtyping, checked-vs-unchecked classification, catch coverage, redundant catch detection, throws-clause coverage, and overriding throws compatibility.
 7. Implement dependency-driven Java API counterpart closure. **Foundation added in 0.3.14-dev:** source-reference discovery, Java-qualified dependency-to-envelope mapping, missing-counterpart diagnostics, and deterministic isolated-fixture qualification.
 8. **Completed in 0.3.15-dev:** expand negative and constraint fixtures with deterministic expected-diagnostic corpus and qualification runner.
@@ -83,13 +83,6 @@ This remains a source-level semantic model rather than a JVM implementation.
 Do not add JVM execution requirements to this ledger. Java source congruence is the target; JVM/SLVM interoperability is a separate future project.
 
 **MEARVK LLC — 2026**
-
-
-### 0.3.12-dev — definite assignment and reachability foundation
-
-Added `impl/frontend/java_flow.h/.cpp`, `tests/java_flow_semantics.cpp`, and `tests/java_flow_suite.py`, plus the `java-flow` Makefile target. The model distinguishes definitely assigned and definitely unassigned facts, reports reads before assignment, checks repeated final assignment, merges conditional paths, tracks abrupt completion, and provides structured flow scaffolding for loops, switch, and try/finally. This is a source-semantic foundation; complete JLS Chapter 16 coverage remains a qualification task.
-
-Oracle's Java Language Specification Chapter 16 defines definite assignment around all possible execution paths and gives dedicated rules for boolean operators and conditional expressions, statements, loops, switch, abrupt completion, and try/finally. citeturn0search1turn0search13
 
 
 ### 0.3.12-dev — definite assignment and reachability foundation
@@ -159,39 +152,8 @@ Added `tests/java_qualification_manifest_suite.py`, `tests/JAVA.QUALIFICATION.MA
 
 ## 0.3.21 Development Upgrade — Java Flow Qualification Closure
 
-This upgrade turns the next semantic layer into an explicit implementation program. The Java/SLeeLa source-equivalence model now treats control-flow qualification as a first-class closure task rather than a collection of isolated checks.
+This upgrade makes Java control-flow qualification a first-class closure task. Qualification now requires a source fixture, normalized representation, semantic rule, positive or negative result, and unified-manifest evidence.
 
-### Affected SLeeLa source
+Required next coverage: boolean-path-sensitive `&&`, `||`, `!`, and `?:`; constant boolean expressions; break/continue joins and labels; while/do/for completion; switch completion; try/catch/finally abrupt paths; constructor and blank-final definite-unassignment; lambda capture boundaries; and checked-exception propagation.
 
-- `impl/frontend/java_flow.h` / `java_flow.cpp` — definite-assignment, definite-unassignment, reachability, abrupt-completion, branch and loop joins.
-- `impl/frontend/java_exceptions.h` / `java_exceptions.cpp` — checked-exception hierarchy, catch coverage, redundant/invalid catches, and override `throws` compatibility.
-- `impl/frontend/java_equivalence.h` / `java_equivalence.cpp` — Java source/API normalization and semantic descriptors consumed by the qualification layer.
-
-### Affected Java-facing qualification documents
-
-- `QUALIFICATION.JAVA.md` — Q5/Q8/Q9/Q10 scope and completion requirements.
-- `JAVA.EQUIVALENCE.TASKS.md` — semantic closure milestones.
-- `JAVA.COMPATIBILITY.SCOPE.md` — Java compatibility vocabulary remains separate from native SLeeLa vocabulary.
-- `JAVA.AUTHORSHIP.TRANSITION.md` — Java-authored source remains the compatibility target; JVM/SLVM execution remains outside this gate.
-- `tests/JAVA.QUALIFICATION.MANIFEST.md` — unified evidence model.
-
-### Required semantic coverage
-
-The next executable fixtures must cover:
-
-1. boolean-path-sensitive `&&`, `||`, `!`, and `?:` assignment facts;
-2. constant boolean expressions;
-3. `break`/`continue` target validation and loop exit joins;
-4. `while`, `do`, and `for` normal-completion rules;
-5. traditional and modern `switch` completion;
-6. `try`, `catch`, `finally`, and abrupt completion joins;
-7. constructor and blank-final field definite-unassignment rules;
-8. lambda/capture flow boundaries;
-9. labeled control-flow targets;
-10. checked-exception propagation through the same statement structure.
-
-The Java Language Specification defines definite assignment in terms of every possible execution path and gives special treatment to `&&`, `||`, `!`, `?:`, and boolean constants. It also defines the consequences of abrupt completion for flow analysis. citeturn0search7turn0search2
-
-### Qualification evidence rule
-
-A source construct is not considered qualified merely because the parser accepts it. Qualification requires the source fixture, normalized representation, semantic rule, positive/negative result, and inclusion in the unified manifest. JVM, bytecode, SLVM, and runtime implementation remain outside this program upgrade.
+The work remains source/API qualification and does not imply JVM, bytecode, SLVM, or runtime equivalence.

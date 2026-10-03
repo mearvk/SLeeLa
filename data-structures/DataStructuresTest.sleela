@@ -1,5 +1,7 @@
 #sleela 1.2
 
+// Contract-oriented source test for the data-structure surface.
+
 class DataStructuresTest {
     void main() {
         DSValue value = new DSValue();
@@ -24,6 +26,7 @@ class DataStructuresTest {
         object.fieldCount = 2;
 
         DataStructures operations = new DataStructures();
+
         print("DSValue kind=" + value.kind);
         print("DSList size=" + operations.listSize(list));
         print("DSStack size=" + operations.stackSize(stack));

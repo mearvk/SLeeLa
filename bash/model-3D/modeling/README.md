@@ -7,7 +7,6 @@
 
 
 
-
 # modeling/ — SleelaTerminal™ · Phraign™ City 3D model data
 
 > Part of **SleelaTerminal™** (Phraign™ City 3D), SLeeLa's terminal product,

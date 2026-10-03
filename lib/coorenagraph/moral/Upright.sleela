@@ -1,0 +1,20 @@
+/*
+ * Upright.sleela
+ * COORENAGRAPH moral vocabulary.
+ * Part of speech: adjective
+ * Definition: Being honest and honorable and conforming to principles of moral justice.
+ */
+
+class Upright {
+    String term() {
+        return "Upright";
+    }
+
+    String partOfSpeech() {
+        return "adjective";
+    }
+
+    String definition() {
+        return "Being honest and honorable and conforming to principles of moral justice.";
+    }
+}

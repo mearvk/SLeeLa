@@ -7,7 +7,6 @@
 
 
 
-
 # Native Security Foundation
 
 Provides secure memory zeroization, SHA-256 digesting, constant-time byte comparison, and credential cleanup.

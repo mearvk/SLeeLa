@@ -7,7 +7,6 @@
 
 
 
-
 # SLeeLa XML Examples
 
 This directory contains clear, runnable examples for the SLeeLa BODI XML project system. The examples are also evidence artifacts: each XML project has a corresponding expected BODI witness output where the result is deterministic and does not require external network access.

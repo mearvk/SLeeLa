@@ -7,8 +7,6 @@
 
 
 
-
-
 # Slecompiler™ API Surface
 
 **Max Rupplin - MEARVK LLC - 2026**

@@ -1,3 +1,8 @@
+/*
+ * lib/audio/SLPackage.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines the SLeeLa standard-library package for audio.
+ */
 #sleela 1.3
 // Library facade for module package: audio
 // Original module sources remain authoritative in the package source tree.

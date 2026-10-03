@@ -7,7 +7,6 @@
 
 
 
-
 # Email Server Example
 
 A SLeeLa symmetry example for a mail service with explicit Client, Server, and Admin/Monitor roles.

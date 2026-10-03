@@ -7,7 +7,6 @@
 
 
 
-
 # model-3D — SleelaTerminal™ · Phraign™ City 3D
 
 > Part of **SleelaTerminal™**, SLeeLa's terminal product, **built on GNU Bash**

@@ -6,6 +6,7 @@
 
 
 
+
 # IDE Debugger Integration
 
 The SLeeLa IDE debugger adapter connects IntelliJ debugger actions to the repository's /debugger implementation.

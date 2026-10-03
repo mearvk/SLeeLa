@@ -1,3 +1,8 @@
+/*
+ * lib/filesystem/SLDirectoryWalker.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines the SLeeLa standard-library type SLDirectoryWalker used within the filesystem library family.
+ */
 #sleela 1.3
 // Unified SLeeLa SDK front-end object.
 // Family: filesystem. Native implementation crosses an explicit VM/OS bridge.

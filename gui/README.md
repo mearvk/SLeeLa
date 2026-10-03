@@ -7,7 +7,6 @@
 
 
 
-
 # SLeeLa Audio GUI
 
 Java 21 / JavaFX 21 presentation layer for SLeeLa Audio/Video.

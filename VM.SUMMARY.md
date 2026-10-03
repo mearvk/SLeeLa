@@ -12,7 +12,7 @@
 
 This document establishes a single architectural view of the SLeeLa Virtual Machine (SLVM) family.
 
-The repository currently contains **seven discrete VM generations or execution architectures** when the authoritative operational VM in `/impl` is considered together with the six numbered generations under `/sleela-virtual-machine`.
+The repository currently contains **eight discrete VM generations or execution architectures** when the authoritative operational VM in `/impl` is considered together with the six numbered generations under `/sleela-virtual-machine`.
 
 These seven are related, but they are not seven equivalent independent interpreters. The current architecture is better understood as:
 
@@ -23,6 +23,7 @@ These seven are related, but they are not seven equivalent independent interpret
 5. **SLVM/4 — authenticated/distributed execution architecture**
 6. **SLVM/5 — reproducibility, policy, recovery, and distributed assurance**
 7. **SLVM/6 — continuous verification, lineage, attestation, leases, and migration**
+8. **SLVM/7 — hardened management, failure handling, recovery, and resource safety**
 
 The numbered generations preserve the architectural development of SLVM. The `/impl` tree provides the present authoritative, buildable execution substrate.
 
@@ -39,6 +40,7 @@ The numbered generations preserve the architectural development of SLVM. The `/i
 | **SLVM/4** | `/sleela-virtual-machine/4` | Architectural generation/specification | Authenticated and distributed execution direction |
 | **SLVM/5** | `/sleela-virtual-machine/5` | Architectural generation with extended policy/reliability model | Reproducibility, policy verification, recovery, replay, quotas, compatibility |
 | **SLVM/6** | `/sleela-virtual-machine/6` | Advanced architectural generation | Continuous verification, execution lineage, multi-party attestation, leases, migration |
+| **SLVM/7** | `/sleela-virtual-machine/7` | Hardened management/recovery generation | Log and memory managers, watchdog health, manager dependency validation, bounded recovery, quarantine, resource pressure handling |
 
 The distinction between **implementation** and **architecture** is intentional. A generation can define a VM contract, security model, execution boundary, or compatibility model before it has an execution implementation equivalent in size to `/impl`.
 
@@ -264,6 +266,9 @@ They can be represented conceptually as:
               |                              SLVM/6
               |
               v
+             SLVM/7
+              |
+              v
        Runtime / OS Boundary
 ```
 
@@ -290,6 +295,9 @@ SLVM/5
 
 SLVM/6
   Continuous verification + lineage + migration
+
+SLVM/7
+  Hardened managers + watchdog health + bounded recovery + quarantine
 ```
 
 ---
@@ -360,6 +368,8 @@ Output Symbols / Core Artifact
      |                                             |
      |                                           SLVM/6
      |                                             |
+                                           SLVM/7
+     |                                             |
      +----------------------+----------------------+
                             |
                             v
@@ -394,6 +404,8 @@ SLVM/1 also contains a substantial historical/dedicated implementation.
 
 A defined architectural generation of the SLVM execution contract.
 
+SLVM/7 currently represents the hardened direction: it adds explicit Log, Memory, Health/Watchdog, Recovery, Checkpoint, Resource, Attestation, and Lineage management around the continuously verified execution model of SLVM/6.
+
 SLVM/2 through SLVM/6 increasingly fit this category in their current repository state.
 
 ### VM Profile
@@ -415,7 +427,7 @@ A profile should not imply a new programming language.
 
 ## XIV. Long-Term Direction
 
-The seven-generation architecture provides a path toward a single coherent SLeeLa VM family without requiring seven permanently divergent runtimes.
+The eight-generation architecture provides a path toward a single coherent SLeeLa VM family without requiring seven permanently divergent runtimes.
 
 The intended progression is:
 
@@ -447,9 +459,9 @@ The goal is to make their relationship explicit.
 
 > **One SLeeLa language. One authoritative compiler model. One common Core representation. A family of VM generations defining progressively stronger execution contracts.**
 
-This principle permits the repository to retain the work represented by all seven VM generations while avoiding unnecessary duplication of language semantics and runtime machinery.
+This principle permits the repository to retain the work represented by all eight VM generations while avoiding unnecessary duplication of language semantics and runtime machinery.
 
-The seven VMs are consequently best understood as **seven discrete points in the evolution of the SLeeLa execution architecture**, with `/impl` serving as the current operational foundation and SLVM/1–6 defining the successive VM-generation architecture.
+The eight VM generations are consequently best understood as **seven discrete points in the evolution of the SLeeLa execution architecture**, with `/impl` serving as the current operational foundation and SLVM/1–6 defining the successive VM-generation architecture.
 
 ---
 
@@ -475,6 +487,7 @@ Generation directories:
 - `/sleela-virtual-machine/4`
 - `/sleela-virtual-machine/5`
 - `/sleela-virtual-machine/6`
+- `/sleela-virtual-machine/7`
 
 **Max Rupplin - MEARVK LLC - 2026**
 
@@ -557,7 +570,7 @@ Both paths converge on the same underlying SLeeLa execution semantics. The Termi
 
 ### Seven-Generation Context
 
-This present source-to-VM model sits beneath the seven-generation architecture described in this document. /impl provides the current operational execution substrate, while SLVM/1 through SLVM/6 describe increasingly strong VM contracts around that common executable representation.
+This present source-to-VM model sits beneath the seven-generation architecture described in this document. /impl provides the current operational execution substrate, while SLVM/1 through SLVM/7 describe increasingly strong VM contracts around that common executable representation.
 
 The important architectural distinction is therefore:
 

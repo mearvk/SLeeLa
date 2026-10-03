@@ -1,0 +1,20 @@
+/*
+ * Principled.sleela
+ * COORENAGRAPH moral vocabulary.
+ * Part of speech: adjective
+ * Definition: Acting firmly according to a clear and honorable system of moral beliefs.
+ */
+
+class Principled {
+    String term() {
+        return "Principled";
+    }
+
+    String partOfSpeech() {
+        return "adjective";
+    }
+
+    String definition() {
+        return "Acting firmly according to a clear and honorable system of moral beliefs.";
+    }
+}

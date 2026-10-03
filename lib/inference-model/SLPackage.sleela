@@ -1,3 +1,8 @@
+/*
+ * lib/inference-model/SLPackage.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines the SLeeLa standard-library package for inference-model.
+ */
 #sleela 1.3
 // Library facade for module package: inference-model
 // Original module sources remain authoritative in the package source tree.

@@ -1,3 +1,8 @@
+/*
+ * lib/reflection/SLClassLoader.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines the SLeeLa standard-library type SLClassLoader used within the reflection library family.
+ */
 #sleela 1.3
 // Unified SLeeLa reflection/class-loader front-end.
 class SLClassLoader {

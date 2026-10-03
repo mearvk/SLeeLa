@@ -7,8 +7,6 @@
 
 
 
-
-
 # Sleelavirin™ Platform Adapters
 
 Platform adapters isolate operating-system security APIs from the portable SLeeLa antivirus model.

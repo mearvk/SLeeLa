@@ -7,8 +7,6 @@
 
 
 
-
-
 # SLeeLa Data Analytics
 
 The data-analytics shelf adds bounded numeric data-analysis operations to the SLeeLa science API.

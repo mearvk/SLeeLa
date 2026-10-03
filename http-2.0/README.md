@@ -7,7 +7,6 @@
 
 
 
-
 # SLeeLa HTTP 2.0 / 2.1
 
 **Status:** Experimental SLeeLa application-protocol generation; HTTP/2 compatibility is a transport concern.

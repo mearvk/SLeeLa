@@ -7,7 +7,6 @@
 
 
 
-
 # DNS Server Example
 
 A SLeeLa symmetry example for a small DNS service with explicit Client, Server, and Admin/Monitor roles.

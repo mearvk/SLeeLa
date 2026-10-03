@@ -1,31 +1,13 @@
 # Tutorial 03 — Dynamic Memory Guard
 
-## Goal
+The Dynamic Memory Guard gives a VM developer three explicit memory-growth policies:
 
-Give a developer an explicit policy for VM memory growth.
+- HARD — never grow beyond the configured hard limit.
+- SLOW_CAREFUL — use bounded growth and allow growth to be deferred under pressure.
+- AGGRESSIVE — allow prompt bounded growth up to the configured maximum and physical limit.
 
-| Mode | Behavior |
-|---|---|
-| HARD | Never grow beyond the configured hard limit. |
-| SLOW_CAREFUL | Grow in bounded steps and permit growth to be deferred under pressure. |
-| AGGRESSIVE | Permit prompt bounded growth up to the configured maximum and physical limit. |
+Attach SleelaVMDynamicMemoryGuard to the VM source and memory options. Configure initial, hard, maximum, growth-step, delay, pressure, and growth-permission values explicitly. Physical/resource limits remain authoritative.
 
-## Configure
+Request flow: allocation request -> Dynamic Memory Guard -> within limit, deferred growth, bounded growth, or limit reached -> Memory Manager -> allocation result.
 
-Attach SleelaVMDynamicMemoryGuard to the VM source and memory options. Reason about initial limit, hard limit, maximum limit, growth step, growth delay, pressure threshold, and explicit growth permission.
-
-## Request flow
-
-Allocation request -> Dynamic Memory Guard -> within current limit / deferred growth / bounded growth / limit reached -> Memory Manager -> allocation result.
-
-Invalid configurations and overflowing requests produce INVALID_REQUEST. The guard cannot exceed the resolved physical/resource limit.
-
-## Native support
-
-C ABI: include/sleela_vm_dynamic_memory_guard.h
-
-C++ facade: include/sleela_vm_dynamic_memory_guard.hpp
-
-SLeeLa policy: SleelaVMDynamicMemoryGuard.sleela
-
-SleelaVMOutput records the selected mode and important limits.
+Inspect SleelaVMDynamicMemoryGuard.sleela, include/sleela_vm_dynamic_memory_guard.h, and SleelaVMOutput.sleela.

@@ -1,5 +1,7 @@
 #sleela 1.2
 
+// Key/value association contract.
+
 struct DSMap {
     int size;
 }

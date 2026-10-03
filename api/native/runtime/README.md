@@ -7,7 +7,6 @@
 
 
 
-
 # Native Runtime Foundation
 
 Portable C++17 runtime primitives for Sleela-Complete applications.

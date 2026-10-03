@@ -7,8 +7,6 @@
 
 
 
-
-
 # SLeeLa AI API
 
 The SLeeLa AI API is a native, VM-connectable interface for data, files, audio,

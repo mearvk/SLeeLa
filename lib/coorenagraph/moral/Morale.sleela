@@ -2,10 +2,19 @@
  * Morale.sleela
  * COORENAGRAPH moral vocabulary.
  * Part of speech: noun
+ * Definition: The collective emotional state, confidence, or spirit of a group.
  */
 
 class Morale {
-    String term() { return "Morale"; }
-    String partOfSpeech() { return "noun"; }
-    String definition() { return "The collective emotional state, confidence, or spirit of a group."; }
+    String term() {
+        return "Morale";
+    }
+
+    String partOfSpeech() {
+        return "noun";
+    }
+
+    String definition() {
+        return "The collective emotional state, confidence, or spirit of a group.";
+    }
 }

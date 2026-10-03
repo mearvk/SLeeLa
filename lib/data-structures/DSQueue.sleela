@@ -1,4 +1,11 @@
+/*
+ * lib/data-structures/DSQueue.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines the SLeeLa standard-library type DSQueue used within the data-structures library family.
+ */
 #sleela 1.2
+
+// FIFO queue contract.
 
 struct DSQueue {
     int size;

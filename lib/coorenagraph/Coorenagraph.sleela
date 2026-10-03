@@ -1,4 +1,9 @@
 /*
+ * lib/coorenagraph/Coorenagraph.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines the SLeeLa standard-library type Coorenagraph used within the coorenagraph library family.
+ */
+/*
  * Coorenagraph.sleela
  * SLeeLa COORENAGRAPH moral-grounding truth contract.
  *

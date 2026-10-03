@@ -1,3 +1,8 @@
+/*
+ * lib/regex/RegexNatural.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines the SLeeLa standard-library type RegexNatural used within the regex library family.
+ */
 subject RegexNatural
 version 1.1.0-dev
 symbols any digit letter space one optional some many begin end or

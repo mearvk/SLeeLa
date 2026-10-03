@@ -1,5 +1,7 @@
 # SLVM OS Capability Matrix
 
+This matrix defines the architectural scope for the operating-system boundary.
+
 | Domain | Portable VM Contract | Platform Adapter |
 |---|---|---|
 | Files | open/read/write/close/stat | POSIX / Win32 |
@@ -21,6 +23,6 @@
 | Crypto | provider boundary | OS/native crypto |
 | GUI/media | native adapter boundary | platform/framework-specific |
 
-Most OS facilities should be capability-broker operations rather than hard-coded opcodes.
+This matrix is intentionally broader than the initial opcode set. Most OS facilities should be capability-broker operations rather than hard-coded opcodes.
 
 Copyright (c) Max Rupplin - MEARVK LLC - 2026

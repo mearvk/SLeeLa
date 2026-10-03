@@ -7,7 +7,6 @@
 
 
 
-
 # SLeeLa Audio GUI
 
 This directory is the first clean Java/JavaFX presentation layer for the SLeeLa

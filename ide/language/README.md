@@ -6,6 +6,7 @@
 
 
 
+
 # IDE Language Layer
 
 The language layer defines the IntelliJ-facing representation of SLeeLa.

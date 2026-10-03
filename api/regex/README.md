@@ -7,7 +7,6 @@
 
 
 
-
 # SLeeLa Regex API — Simple Pattern Matching
 
 **Draft design — Regex API 1.0.0**  

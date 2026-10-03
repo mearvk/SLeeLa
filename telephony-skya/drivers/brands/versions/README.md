@@ -6,6 +6,7 @@
 
 
 
+
 # Skya Telephony Driver Version Catalog
 
 Here, **version** means a device model, series, or hardware family. Firmware/software releases are tracked separately when tested driver behavior depends on them.
