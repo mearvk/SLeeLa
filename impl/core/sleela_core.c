@@ -636,6 +636,16 @@ static int json_find_scalar(SLVM* vm, const char* json, const char* key, SLValue
     return 1;
 }
 
+static void log_unsupported_opcode(SLVM* vm, uint8_t opcode) {
+    const char* configured = getenv("SLEELA_OPCODE_LOG");
+    FILE* out = (configured && *configured) ? fopen(configured, "a") : stderr;
+    if (!out) out = stderr;
+    fprintf(out, "SLeeLa VM: unsupported opcode %u (0x%02X) encountered; execution rejected\\n",
+            (unsigned)opcode, (unsigned)opcode);
+    fflush(out);
+    if (out != stderr) fclose(out);
+}
+
 static SLResult run_thread(SLThread* t);
 static void* thread_trampoline(void* arg) { run_thread((SLThread*)arg); return NULL; }
 
@@ -1127,7 +1137,7 @@ static SLResult run_thread(SLThread* t) {
             pthread_mutex_unlock(&vm->struct_mtx);
             PUSH(slval_struct(h));
         } break;
-        default: TERR("illegal opcode");
+        default: log_unsupported_opcode(vm, in.op); TERR("unsupported opcode");
         }
     }
 }
