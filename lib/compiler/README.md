@@ -73,3 +73,7 @@ SST declarations are not opaque metadata. Nordshrift resolves them as package-qu
 ## SST symbol intake
 
 SST declarations are not opaque metadata. Nordshrift resolves them as package-qualified compiler symbols against the canonical `/lib` index before emitting SLeeLa. The compiler then consumes the emitted SLeeLa symbols through its normal name-resolution pipeline.
+
+## Native compiler build
+
+The native implementation is now wired directly to the authoritative `/impl/frontend` compiler build. `make -C lib/compiler all` builds the compiler contract objects, builds `impl/build/sleela`, and runs the recursive `/lib` source + ISA gate. The repository-wide `tools/sleela-build.py compile SOURCE OUTPUT` command performs the same source inventory/ISA gate before emitting a persistent runnable `.sleela` Core artifact.
