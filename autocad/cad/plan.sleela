@@ -1,0 +1,63 @@
+#sleela 1.3
+// plan.sleela -- parses the line-oriented plan (description, dimensions, plan,
+// notes) into a geometry Model. Each directive line is one instruction. This is
+// where a human's words and numbers become something SLeeLa can evaluate and
+// render. See FORMAT.md for the directive table.
+class Plan {
+
+    // Apply a single already-tokenized directive to the model. `op` is the
+    // directive keyword; the numeric slots carry parsed coordinates/sizes and
+    // `text` carries the trailing free text for `title`/`note`.
+    //
+    // A front end that has structured input can call these model builders
+    // directly; the token form exists so a plain .plan text file round-trips.
+    void applyDirective(Model model, Model.ModelData m, string op,
+                        double n1, double n2, double n3, double n4, string text) {
+        if (op == "title") {
+            m.title = text;
+            // Pin the title as a note at the top-left of the extents.
+            model.addNote(m, m.minX, m.maxY + 500.0, text);
+            return;
+        }
+        if (op == "units") {
+            m.units = text;
+            return;
+        }
+        if (op == "at") {
+            model.setAt(m, n1, n2);
+            return;
+        }
+        if (op == "room") {
+            // n1 = width, n2 = height (name travels as `text` for annotation).
+            model.addRoom(m, n1, n2);
+            // Label the room at its own center.
+            double cx = m.curX + n1 / 2.0;
+            double cy = m.curY + n2 / 2.0;
+            model.addNote(m, cx, cy, text);
+            return;
+        }
+        if (op == "wall") {
+            model.addWall(m, n1, n2, n3, n4);
+            return;
+        }
+        if (op == "door") {
+            // A door of width n3 at (n1,n2): render as a short perpendicular
+            // tick so the opening reads on the drawing.
+            model.addWall(m, n1, n2, n1 + n3, n2);
+            return;
+        }
+        if (op == "dim") {
+            model.addDim(m, n1, n2, n3, n4);
+            return;
+        }
+        if (op == "note") {
+            // Place free notes just below the drawing extents, stacked.
+            double ny = m.minY - 500.0 - (300.0 * numberOf(m.noteCount));
+            model.addNote(m, m.minX, ny, text);
+            return;
+        }
+        // Unknown directives are ignored so a plan stays forward-compatible.
+    }
+
+    double numberOf(int v) { return v * 1.0; }
+}

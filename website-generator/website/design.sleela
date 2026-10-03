@@ -1,0 +1,76 @@
+#sleela 1.3
+// design.sleela -- the global look of a generated website.
+//
+// A Design is the single source of visual truth: a named theme, a palette
+// (brand/base/accent), a type + spacing rhythm, a corner radius, the "energy"
+// dial that makes a site calm or exciting, and a layout grammar that decides
+// how sections stack. The emitter reads a Design to turn plain signs into a
+// styled, dependency-free page. JavaFX presents these values; SLeeLa decides
+// what they mean.
+class Design {
+
+    // Layout grammars: how whole sections relate to one another.
+    //   0 stack  -- sections stacked top to bottom (default, universal)
+    //   1 split  -- hero and content share a two-column split
+    //   2 grid   -- content laid on a responsive grid
+    //   3 canvas -- free, overlap-friendly "exciting" composition
+    struct DesignModel {
+        string theme;      // "aurora" | "brutalist" | "editorial" | "neon"
+        string brand;      // primary brand color   (#rrggbb)
+        string base;       // page background base   (#rrggbb)
+        string accent;     // accent / CTA color      (#rrggbb)
+        string font;       // display font family stack
+        int radius;        // corner radius rhythm in px (0..24)
+        int energy;        // the "exciting" dial, 0..100
+        int grammar;       // layout grammar enum above
+    }
+
+    // Build a design with every value supplied. Values are clamped to sane
+    // ranges so a front end cannot produce a broken style sheet.
+    DesignModel create(string theme, string brand, string base, string accent,
+                       string font, int radius, int energy, int grammar) {
+        DesignModel d;
+        d.theme = theme;
+        d.brand = brand;
+        d.base = base;
+        d.accent = accent;
+        d.font = font;
+        d.radius = clamp(radius, 0, 24);
+        d.energy = clamp(energy, 0, 100);
+        d.grammar = clamp(grammar, 0, 3);
+        return d;
+    }
+
+    // Named presets. A front end can start from a preset then override.
+    DesignModel preset(string name) {
+        if (name == "neon") {
+            return create("neon", "#7c3aed", "#0b0714", "#22d3ee",
+                          "'Space Grotesk', system-ui, sans-serif", 18, 95, 3);
+        }
+        if (name == "brutalist") {
+            return create("brutalist", "#111111", "#f5f5f5", "#ff3b30",
+                          "'Arial Black', system-ui, sans-serif", 0, 70, 0);
+        }
+        if (name == "editorial") {
+            return create("editorial", "#1f2937", "#fbfbf8", "#b45309",
+                          "Georgia, 'Times New Roman', serif", 4, 15, 1);
+        }
+        // default: aurora -- a confident, modern gradient look.
+        return create("aurora", "#2563eb", "#0f172a", "#38bdf8",
+                      "'Inter', system-ui, sans-serif", 14, 60, 2);
+    }
+
+    // Energy drives whether the page uses flat color, soft gradients, or bold
+    // animated gradients. Returns 0 flat, 1 soft, 2 bold.
+    int motionLevel(DesignModel d) {
+        if (d.energy >= 75) { return 2; }
+        if (d.energy >= 35) { return 1; }
+        return 0;
+    }
+
+    int clamp(int v, int lo, int hi) {
+        if (v < lo) { return lo; }
+        if (v > hi) { return hi; }
+        return v;
+    }
+}

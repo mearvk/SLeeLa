@@ -1,0 +1,50 @@
+#sleela 1.3
+// signs.sleela -- the catalog of "signs": the semantic content blocks a page
+// is composed from. A sign carries only its meaning + a little text; the
+// emitter supplies all layout, color, spacing and motion from the active
+// Design. The same sign list under two Designs yields two very different sites.
+class Signs {
+
+    // Sign kinds. Keep these stable: the emitter and the GUI both key off them.
+    //   0 nav       1 hero      2 feature    3 gallery   4 pricing
+    //   5 testimonial  6 cta    7 richtext   8 footer
+    struct Sign {
+        int kind;          // sign kind enum above
+        string a;          // slot A (e.g. headline / title / brand)
+        string b;          // slot B (e.g. subhead / body / links)
+        string c;          // slot C (e.g. CTA label / author / target)
+    }
+
+    Sign make(int kind, string a, string b, string c) {
+        Sign s;
+        s.kind = kind;
+        s.a = a;
+        s.b = b;
+        s.c = c;
+        return s;
+    }
+
+    // Convenience constructors -- one per sign kind -- so a front end reads
+    // naturally and never has to remember the kind enum.
+    Sign nav(string brand, string links)              { return make(0, brand, links, ""); }
+    Sign hero(string headline, string subhead, string cta) { return make(1, headline, subhead, cta); }
+    Sign feature(string title, string items, string c){ return make(2, title, items, c); }
+    Sign gallery(string title, string images, string c){ return make(3, title, images, c); }
+    Sign pricing(string title, string tiers, string c){ return make(4, title, tiers, c); }
+    Sign testimonial(string quote, string author, string c){ return make(5, quote, author, c); }
+    Sign cta(string headline, string button, string href){ return make(6, headline, button, href); }
+    Sign richtext(string html, string b, string c)    { return make(7, html, b, c); }
+    Sign footer(string brand, string columns, string c){ return make(8, brand, columns, c); }
+
+    string kindName(int kind) {
+        if (kind == 0) { return "nav"; }
+        if (kind == 1) { return "hero"; }
+        if (kind == 2) { return "feature"; }
+        if (kind == 3) { return "gallery"; }
+        if (kind == 4) { return "pricing"; }
+        if (kind == 5) { return "testimonial"; }
+        if (kind == 6) { return "cta"; }
+        if (kind == 7) { return "richtext"; }
+        return "footer";
+    }
+}

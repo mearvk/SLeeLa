@@ -1,0 +1,50 @@
+#sleela 1.3
+// render.sleela -- top level of the AutoCAD Renderer. Builds a demo plan
+// (description + dimensions + notes), evaluates it into geometry, and emits an
+// AutoCAD DXF drawing. This is the entry point a CLI or the JavaFX GUI drives:
+// supply a plan, get a .dxf back.
+//
+// SLeeLa performs the whole computation here -- room expansion, extents,
+// dimension measurement, note placement, and DXF serialization. A front end
+// only chooses the plan content.
+class Render {
+
+    void main() {
+        Model model = new Model();
+        Plan plan = new Plan();
+        Dxf dxf = new Dxf();
+
+        // 1. Start a drawing (title + units).
+        Model.ModelData m = model.create("Office Floor", "mm");
+
+        // 2. Feed it a plan. In a real run these directives come from a .plan
+        //    file or the GUI; here we drive the same model builders directly so
+        //    the pipeline is exercised end to end.
+        //    applyDirective(model, m, op, n1, n2, n3, n4, text)
+
+        // Lobby room 6000 x 4000 at origin.
+        plan.applyDirective(model, m, "at",   0.0,    0.0,    0.0, 0.0, "");
+        plan.applyDirective(model, m, "room", 6000.0, 4000.0, 0.0, 0.0, "Lobby");
+
+        // Office room 4000 x 4000 placed to the east of the lobby.
+        plan.applyDirective(model, m, "at",   6000.0, 0.0,    0.0, 0.0, "");
+        plan.applyDirective(model, m, "room", 4000.0, 4000.0, 0.0, 0.0, "Office");
+
+        // A door opening on the shared wall.
+        plan.applyDirective(model, m, "door", 6000.0, 1500.0, 900.0, 0.0, "");
+
+        // Dimensions: overall width along the south wall, and lobby depth.
+        plan.applyDirective(model, m, "dim",  0.0,    -600.0, 10000.0, -600.0, "");
+        plan.applyDirective(model, m, "dim",  -600.0, 0.0,    -600.0,  4000.0, "");
+
+        // Notes / annotations.
+        plan.applyDirective(model, m, "title", 0.0, 0.0, 0.0, 0.0, "Office Floor \u2014 preliminary");
+        plan.applyDirective(model, m, "note",  0.0, 0.0, 0.0, 0.0, "Fire exit on north wall");
+        plan.applyDirective(model, m, "note",  0.0, 0.0, 0.0, 0.0, "All dimensions in millimetres");
+
+        // 3. Emit the AutoCAD DXF and print it. A caller redirects this to
+        //    out/drawing.dxf, then opens it in AutoCAD or LibreCAD.
+        string drawing = dxf.emit(model, m);
+        print(drawing);
+    }
+}
