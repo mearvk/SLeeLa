@@ -1,0 +1,8 @@
+script "hello"
+
+let name = "SLeeLa"
+print("Hello, " + name)
+
+for component in ["scripting", "compiler", "vm", "gc"] {
+    print("component: " + component)
+}
