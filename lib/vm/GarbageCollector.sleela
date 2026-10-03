@@ -1,0 +1,14 @@
+#sleela 1.3
+class GarbageCollector {
+    String algorithm;
+    int phase;
+    int youngThreshold;
+    int heapThreshold;
+    int targetStepWork;
+    int liveObjects;
+    int bytes;
+    int collections;
+    int youngCollections;
+    int promoted;
+    int reclaimed;
+}
