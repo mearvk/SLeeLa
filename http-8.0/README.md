@@ -74,3 +74,16 @@ Before deployment, the build and verification process should:
 3. Validate National Emblems, Signals, and Frequency metadata for schema, provenance, units, and bounded values.
 4. Validate negotiation behavior.
 5. Reject configurations that violate required security policy.
+
+## Unified Route Data
+
+This implementation consumes the SLeeLa unified route-data contract in
+route/ROUTE.DATA.json and route/ROUTE.DATA.md. Route records carry protocol,
+server surface, HTTP generation, VM generation/formal VM name, canonical
+configuration root, route identifier, target/resolution mode, capability,
+transport, port, and status. VM names are architectural metadata only and do
+not grant capabilities. Dynamic targets must use the shared resolver before
+acceptance. The VM identity is: /impl Core, /1 Foundation, /2 Operator,
+/3 Specialist, /4 Supervisor, /5 Manager, /6 Director, /7 Administrator,
+/8 Executive, /9 Authority, /10 Principal, /11 Sovereign.
+
