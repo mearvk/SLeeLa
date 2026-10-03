@@ -12,7 +12,7 @@
 
 This document establishes a single architectural view of the SLeeLa Virtual Machine (SLVM) family.
 
-The repository currently contains **twelve discrete VM generations or execution architectures** when the authoritative operational VM in `/impl` is considered together with the eight numbered generations under `/sleela-virtual-machine`.
+The repository currently contains **twelve discrete VM generations or execution architectures** when the authoritative operational VM in `/impl` is considered together with the eleven numbered generations under `/sleela-virtual-machine`.
 
 These generations are related, but they are not equivalent independent interpreters. The current architecture is better understood as:
 
@@ -235,7 +235,7 @@ The inclusion of migration and lineage is significant. The VM is no longer model
 
 ## X. The Family Relationship
 
-The eight numbered generations should be treated as a **single VM family**.
+The eleven numbered generations should be treated as a **single VM family**.
 
 They can be represented conceptually as:
 
@@ -325,7 +325,7 @@ In particular:
 - Runtime services should be shared where the execution contract permits.
 - OS integration should remain behind explicit VM/runtime boundaries.
 
-This makes the seven-generation architecture sustainable.
+This makes the eleven-generation architecture sustainable.
 
 ---
 
@@ -434,7 +434,7 @@ A profile should not imply a new programming language.
 
 ## XIV. Long-Term Direction
 
-The nine-layer repository architecture provides a path toward a single coherent SLeeLa VM family without requiring eight permanently divergent runtimes.
+The eleven-generation VM architecture plus the Core provides a path toward a single coherent SLeeLa VM family without requiring eight permanently divergent runtimes.
 
 The intended progression is:
 
@@ -466,9 +466,9 @@ The goal is to make their relationship explicit.
 
 > **One SLeeLa language. One authoritative compiler model. One common Core representation. A family of VM generations defining progressively stronger execution contracts.**
 
-This principle permits the repository to retain the work represented by all nine repository VM layers while avoiding unnecessary duplication of language semantics and runtime machinery.
+This principle permits the repository to retain the work represented by all eleven numbered VM generations plus the Core while avoiding unnecessary duplication of language semantics and runtime machinery.
 
-The repository's eight numbered VM generations are consequently best understood as **eight discrete points in the evolution of the SLeeLa execution architecture**, with `/impl` serving as the current operational foundation and SLVM/1–6 defining the successive VM-generation architecture.
+The repository's eleven numbered VM generations are consequently best understood as **eight discrete points in the evolution of the SLeeLa execution architecture**, with `/impl` serving as the current operational foundation and SLVM/1–6 defining the successive VM-generation architecture.
 
 ---
 
@@ -578,7 +578,7 @@ Both paths converge on the same underlying SLeeLa execution semantics. The Termi
 
 ### Seven-Generation Context
 
-This present source-to-VM model sits beneath the seven-generation architecture described in this document. /impl provides the current operational execution substrate, while SLVM/1 through SLVM/8 describe increasingly strong VM contracts around that common executable representation.
+This present source-to-VM model sits beneath the eleven-generation architecture described in this document. /impl provides the current operational execution substrate, while SLVM/1 through SLVM/8 describe increasingly strong VM contracts around that common executable representation.
 
 The important architectural distinction is therefore:
 
@@ -606,7 +606,7 @@ The resulting principle is:
 
 > **SLeeLa source defines the operation; compilation produces the executable SLeeLa representation; the C/C++ VM executes that representation; and the supported OS integration realizes the defined operation without intentionally changing its SLeeLa meaning.**
 
-This is the present foundation on which the eight numbered VM generations can be understood.
+This is the present foundation on which the eleven numbered VM generations can be understood.
 
 
 ---
@@ -723,3 +723,70 @@ The machine-readable `tac3.definition.json` is byte-identical across all three g
 The source-to-VM architecture is backed by the repository's existing native C/C++ frontend under `/impl/frontend`. The lexer, parser, semantic analyzer, compiler/lowering layer, and persistent artifact emitter feed the C SLeeLa Core. The `/lib/compiler` package now builds that authoritative executable through `/impl/Makefile`.
 
 The build gate is recursive: every `/lib/**/*.sleela` file is inventoried, the source-side `lib/vm/InstructionSet.sleela` is compared in exact order with the native `SLOp` enumeration, and only then does `tools/sleela-build.py compile SOURCE OUTPUT` delegate to the native artifact compiler. This makes the `/lib` source collection an actual compiler resource boundary rather than a documentation-only inventory.
+
+
+---
+
+## XXIV. Formal VM Naming and Source-Creator Contract
+
+The complete formal naming system is:
+
+| **/impl** | **Core** | `/impl` | Authoritative operational execution substrate |
+| **SLVM/1** | **Foundation** | `/sleela-virtual-machine/1` | Complete VM foundation, broker, capabilities, security, OS boundary |
+| **SLVM/2** | **Operator** | `/sleela-virtual-machine/2` | Cryptographic identity, secure linking, observation |
+| **SLVM/3** | **Specialist** | `/sleela-virtual-machine/3` | Isolation, verification, observation, attestation |
+| **SLVM/4** | **Supervisor** | `/sleela-virtual-machine/4` | Authenticated and distributed execution |
+| **SLVM/5** | **Manager** | `/sleela-virtual-machine/5` | Reproducibility, policy, recovery, replay, quotas |
+| **SLVM/6** | **Director** | `/sleela-virtual-machine/6` | Continuous verification, lineage, leases, migration |
+| **SLVM/7** | **Administrator** | `/sleela-virtual-machine/7` | Hardened management, recovery, watchdogs, quarantine |
+| **SLVM/8** | **Executive** | `/sleela-virtual-machine/8` | Admission, supervised execution, capability leases, transactions, audit |
+| **SLVM/9** | **Authority** | `/sleela-virtual-machine/9` | Filesystem and operating-system adaptation |
+| **SLVM/10** | **Principal** | `/sleela-virtual-machine/10` | Verified storage execution and storage identity |
+| **SLVM/11** | **Sovereign** | `/sleela-virtual-machine/11` | Filesystem-module hosting and schema-driven extension |
+
+The names are architectural identifiers, not permissions. A higher-numbered generation does not automatically grant OS, filesystem, network, storage, security, or administrative authority. Capabilities remain explicit and validated.
+
+### Source-side VM Creator definitions
+
+The SLeeLa source definitions under `/lib/vm/creator/` mirror the formal VM names:
+
+| VM | Formal Name | SLeeLa Source |
+|---|---|---|
+| `/impl` | **Core** | `SleelaVMCore.sleela` |
+| `/1` | **Foundation** | `SLVMFoundation.sleela` |
+| `/2` | **Operator** | `SLVMOperator.sleela` |
+| `/3` | **Specialist** | `SLVMSpecialist.sleela` |
+| `/4` | **Supervisor** | `SLVMSupervisor.sleela` |
+| `/5` | **Manager** | `SLVMManager.sleela` |
+| `/6` | **Director** | `SLVMDirector.sleela` |
+| `/7` | **Administrator** | `SLVMAdministrator.sleela` |
+| `/8` | **Executive** | `SLVMExecutive.sleela` |
+| `/9` | **Authority** | `SLVMAuthority.sleela` |
+| `/10` | **Principal** | `SLVMPrincipal.sleela` |
+| `/11` | **Sovereign** | `SLVMSovereign.sleela` |
+
+`SleelaVMCreator.sleela` coordinates construction and `SleelaVMGenerationCatalog.sleela` provides the canonical number/name/path mapping.
+
+The VM Creator construction flow is:
+
+**configuration → generation catalog → formal VM source → architecture/options → build plan → compiler → native C/C++ boundary → VM artifact → verification → package**
+
+### Core relationship
+
+`/impl` is **Core** and remains the standard authoritative operational implementation. It is not a twelfth numbered VM generation. The numbered generations define execution contracts around the common SLeeLa language/compiler model and Core representation.
+
+### SLVM/9 Authority
+
+Authority defines the filesystem/OS adaptation boundary and negotiated filesystem capabilities.
+
+### SLVM/10 Principal
+
+Principal adds verified storage execution, requiring storage identity, filesystem generation, adapter qualification, policy state, and requested operation to agree.
+
+### SLVM/11 Sovereign
+
+Sovereign hosts schema-driven filesystem modules under `/sleela-virtual-machine/11/file-system/modules/<module-id>/`. Module discovery does not itself grant capability.
+
+### Documentation consistency
+
+All references in this document to seven, eight, or nine VM generations are historical wording and should be interpreted as superseded by the current **SLVM/1–SLVM/11 + /impl Core** architecture. The current authoritative count is eleven numbered generations plus the standard Core implementation.
