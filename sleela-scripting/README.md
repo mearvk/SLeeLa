@@ -1,3 +1,5 @@
+<img align="right" src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="75" height="75" alt="SLeeLa">
+
 # SLeeLa Scripting
 
 SLeeLa Scripting is the scripting-language layer for SLeeLa. It provides a

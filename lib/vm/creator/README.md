@@ -1,3 +1,5 @@
+<img align="right" src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="75" height="75" alt="SLeeLa">
+
 # SLeeLa VM Creator Source Package
 
 The /lib/vm/creator package is the SLeeLa source-side VM Creator. It gives each SLVM generation a stable formal name and source-level construction contract while keeping /impl as the standard native Core implementation.
