@@ -1,0 +1,11 @@
+#sleela 1.3
+class GCQuality {
+    String name;
+    int pauseBudget;
+    int throughputWeight;
+    int latencyWeight;
+    int memoryWeight;
+    int incremental;
+    int generational;
+    int stableHandles;
+}
