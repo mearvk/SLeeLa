@@ -4,7 +4,7 @@
 **Repository:** `mearvk/SLeeLa`  
 **Document:** `VM.SUMMARY.md`  
 **Status:** Architectural reference  
-**Scope:** The seven discrete SLeeLa virtual-machine generations currently represented by the repository
+**Scope:** The eight discrete SLeeLa virtual-machine generations currently represented by the repository
 
 ---
 
@@ -12,7 +12,7 @@
 
 This document establishes a single architectural view of the SLeeLa Virtual Machine (SLVM) family.
 
-The repository currently contains **eight discrete VM generations or execution architectures** when the authoritative operational VM in `/impl` is considered together with the six numbered generations under `/sleela-virtual-machine`.
+The repository currently contains **nine discrete VM generations or execution architectures** when the authoritative operational VM in `/impl` is considered together with the six numbered generations under `/sleela-virtual-machine`.
 
 These seven are related, but they are not seven equivalent independent interpreters. The current architecture is better understood as:
 
@@ -24,6 +24,7 @@ These seven are related, but they are not seven equivalent independent interpret
 6. **SLVM/5 — reproducibility, policy, recovery, and distributed assurance**
 7. **SLVM/6 — continuous verification, lineage, attestation, leases, and migration**
 8. **SLVM/7 — hardened management, failure handling, recovery, and resource safety**
+9. **SLVM/8 — supervised execution, admission, capability leases, transactions, and audit orchestration**
 
 The numbered generations preserve the architectural development of SLVM. The `/impl` tree provides the present authoritative, buildable execution substrate.
 
@@ -41,6 +42,7 @@ The numbered generations preserve the architectural development of SLVM. The `/i
 | **SLVM/5** | `/sleela-virtual-machine/5` | Architectural generation with extended policy/reliability model | Reproducibility, policy verification, recovery, replay, quotas, compatibility |
 | **SLVM/6** | `/sleela-virtual-machine/6` | Advanced architectural generation | Continuous verification, execution lineage, multi-party attestation, leases, migration |
 | **SLVM/7** | `/sleela-virtual-machine/7` | Hardened management/recovery generation | Log and memory managers, watchdog health, manager dependency validation, bounded recovery, quarantine, resource pressure handling |
+| **SLVM/8** | `/sleela-virtual-machine/8` | Supervised execution generation | Admission gate, immutable policy, capability leases, transaction control, lifecycle supervisor, chained audit evidence |
 
 The distinction between **implementation** and **architecture** is intentional. A generation can define a VM contract, security model, execution boundary, or compatibility model before it has an execution implementation equivalent in size to `/impl`.
 
@@ -298,6 +300,9 @@ SLVM/6
 
 SLVM/7
   Hardened managers + watchdog health + bounded recovery + quarantine
+
+SLVM/8
+  Admission + supervised execution + capability leases + transactions + audit
 ```
 
 ---
@@ -404,7 +409,9 @@ SLVM/1 also contains a substantial historical/dedicated implementation.
 
 A defined architectural generation of the SLVM execution contract.
 
-SLVM/7 currently represents the hardened direction: it adds explicit Log, Memory, Health/Watchdog, Recovery, Checkpoint, Resource, Attestation, and Lineage management around the continuously verified execution model of SLVM/6.
+SLVM/7 currently represents the hardened management direction: it adds explicit Log, Memory, Health/Watchdog, Recovery, Checkpoint, Resource, Attestation, and Lineage management around the continuously verified execution model of SLVM/6.
+
+SLVM/8 represents the next execution-control direction: it adds a pre-execution Admission gate and an explicit Supervisor coordinating immutable policy, expiring capability leases, transactional action groups, chained audit evidence, recovery, quarantine, and shutdown.
 
 SLVM/2 through SLVM/6 increasingly fit this category in their current repository state.
 
@@ -427,7 +434,7 @@ A profile should not imply a new programming language.
 
 ## XIV. Long-Term Direction
 
-The eight-generation architecture provides a path toward a single coherent SLeeLa VM family without requiring seven permanently divergent runtimes.
+The eight-generation architecture provides a path toward a single coherent SLeeLa VM family without requiring eight permanently divergent runtimes.
 
 The intended progression is:
 
@@ -459,9 +466,9 @@ The goal is to make their relationship explicit.
 
 > **One SLeeLa language. One authoritative compiler model. One common Core representation. A family of VM generations defining progressively stronger execution contracts.**
 
-This principle permits the repository to retain the work represented by all eight VM generations while avoiding unnecessary duplication of language semantics and runtime machinery.
+This principle permits the repository to retain the work represented by all nine VM generations while avoiding unnecessary duplication of language semantics and runtime machinery.
 
-The eight VM generations are consequently best understood as **seven discrete points in the evolution of the SLeeLa execution architecture**, with `/impl` serving as the current operational foundation and SLVM/1–6 defining the successive VM-generation architecture.
+The eight VM generations are consequently best understood as **eight discrete points in the evolution of the SLeeLa execution architecture**, with `/impl` serving as the current operational foundation and SLVM/1–6 defining the successive VM-generation architecture.
 
 ---
 
@@ -488,6 +495,7 @@ Generation directories:
 - `/sleela-virtual-machine/5`
 - `/sleela-virtual-machine/6`
 - `/sleela-virtual-machine/7`
+- `/sleela-virtual-machine/8`
 
 **Max Rupplin - MEARVK LLC - 2026**
 
@@ -570,7 +578,7 @@ Both paths converge on the same underlying SLeeLa execution semantics. The Termi
 
 ### Seven-Generation Context
 
-This present source-to-VM model sits beneath the seven-generation architecture described in this document. /impl provides the current operational execution substrate, while SLVM/1 through SLVM/7 describe increasingly strong VM contracts around that common executable representation.
+This present source-to-VM model sits beneath the seven-generation architecture described in this document. /impl provides the current operational execution substrate, while SLVM/1 through SLVM/8 describe increasingly strong VM contracts around that common executable representation.
 
 The important architectural distinction is therefore:
 
@@ -599,3 +607,70 @@ The resulting principle is:
 > **SLeeLa source defines the operation; compilation produces the executable SLeeLa representation; the C/C++ VM executes that representation; and the supported OS integration realizes the defined operation without intentionally changing its SLeeLa meaning.**
 
 This is the present foundation on which the seven VM generations can be understood.
+
+
+---
+
+## XIX. SLVM/8 — Supervised Execution
+
+SLVM/8 builds directly on SLVM/7 rather than replacing it.
+
+Its key architectural change is the introduction of an explicit **execution admission and supervision layer**. The VM should not begin executing an artifact merely because individual managers report healthy. Admission must first establish that the artifact, immutable policy, manager set, resource budget, capabilities, attestation, and lineage are all acceptable.
+
+The SLVM/8 control path is:
+
+    SLeeLa Artifact
+          |
+          v
+       Admission
+          |
+          +--> Artifact
+          +--> Policy
+          +--> Managers
+          +--> Resources
+          +--> Capabilities
+          +--> Attestation
+          +--> Lineage
+          |
+          v
+      Supervisor
+          |
+          v
+     Transactional
+       Execution
+          |
+          +--> Audit
+          |
+          +--> Checkpoint / Recovery
+          |
+          +--> Quarantine / Shutdown
+
+### Supervisor
+
+The Supervisor owns the lifecycle transitions between normal, admitted, running, degraded, checkpointing, recovering, quiescing, quarantined, and stopped states.
+
+It does not define SLeeLa semantics and cannot grant itself capability.
+
+### Policy and Capability Leases
+
+SLVM/8 makes execution policy an explicit admission input. Capabilities are represented as bounded leases with issuance and expiry epochs. Revocation is immediate, and terminal quarantine invalidates the execution path.
+
+### Transactions
+
+Groups of runtime actions may be represented as transactions with explicit begin, record, commit, and abort states. This is a control mechanism rather than a claim that arbitrary operating-system side effects are inherently reversible. Irreversible operations remain subject to broker and SLeeLa policy.
+
+### Audit
+
+Security-relevant lifecycle decisions receive chained audit evidence. Audit evidence is deliberately separate from authorization; an audit record can prove that a decision was recorded but cannot grant authority.
+
+### Relationship to SLVM/7
+
+SLVM/7 answers:
+
+**Are the managers, resources, checkpoints, recovery state, and evidence healthy enough to continue?**
+
+SLVM/8 adds:
+
+**Has this execution been formally admitted, and is the supervised execution lifecycle still authorized to proceed?**
+
+This makes SLVM/8 the natural next hardening layer above the management and failure controls established by SLVM/7.
