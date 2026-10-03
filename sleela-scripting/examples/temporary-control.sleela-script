@@ -1,0 +1,12 @@
+script "temporary-control"
+timeout 5 minutes
+
+let state = object.read("VM11")
+
+if state.scheduler.safe_to_pause {
+    process.pause()
+    queue.push("runtime.control", {
+        action: "pause-requested",
+        sequence: state.master.sequence.index
+    })
+}
