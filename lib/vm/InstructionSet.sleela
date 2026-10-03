@@ -1,6 +1,7 @@
 #sleela 1.3
 /* Source-side canonical SLeeLa VM ISA registry. Numeric order is canonical. */
 /* Canonical opcode order follows the native enum exactly. */
+/* Runtime services (networking, files, sockets, threading, GC, cancellation, ownership, and teardown) are specified in /lib/vm/RUNTIME-SERVICES.md. GC is a runtime mechanism, not a hidden opcode. */
 /* Runtime support: all 98 entries are dispatched by /impl/core. Unknown values are rejected and logged. */
 // OP_NOP
 // OP_CONST
