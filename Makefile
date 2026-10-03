@@ -3,9 +3,9 @@
 # Product-specific Makefiles remain authoritative. This root dispatcher only
 # enters those existing build systems; it does not duplicate their source lists.
 
-.PHONY: all core java28 regex compiler decompiler vm scripting jetbrains install tutorial-check tests server config clean help
+.PHONY: all core java28 regex compiler decompiler vm scripting jetbrains install tutorial-check tests server config route clean help
 
-all: core java28 regex compiler decompiler vm scripting jetbrains install tutorial-check tests config
+all: core java28 regex compiler decompiler vm scripting jetbrains install tutorial-check tests config route
 
 core:
 	$(MAKE) -C impl all
@@ -40,6 +40,10 @@ tests:
 server:
 	$(MAKE) -C api/server
 
+route:
+	@python3 -m json.tool route/ROUTE.DATA.json >/dev/null
+	@echo "SLeeLa unified route data: route/ROUTE.DATA.json"
+
 config:
 	@echo "SLeeLa unified configuration: config/sleela.conf"
 	@echo "Canonical runtime location: <PROJECT_ROOT>/.sleela/config"
@@ -68,6 +72,7 @@ help:
 	@echo "  make tutorial-check Verify tutorial/example inventories"
 	@echo "  make tests     Build and run tests/"
 	@echo "  make server    Build api/server/"
+	@echo "  make route     Validate unified route data"
 	@echo "  make clean     Remove outputs from dispatched build systems"
 	@echo ""
 	@echo "Product-specific build folders and Makefiles remain authoritative."
