@@ -466,22 +466,7 @@ static int file_valid_handle(int h) { return h >= 0 && h < SL_MAX_FILES; }
 static SLIOHandle file_fd_locked(SLFile* f) { return f->active ? f->fd : SLIO_INVALID_HANDLE; }
 
 /* ---- GC integration --------------------------------------------------- */
-static void gc_mark_struct_children(SLGCObject *object, void *context) {
-    GarbageCollector *gc = (GarbageCollector *)context;
-    SLStructInstance *si = (SLStructInstance *)object->payload;
-    if (!si) return;
-    for (int i = 0; i < SL_MAX_STRUCT_FIELDS; ++i) {
-        SLValue v = si->fields[i];
-        if (v.type == SL_STRUCT && si->gc_object) {
-            SLVM *vm = NULL;
-            (void)vm;
-            /* Struct children are resolved by the VM root scanner below. */
-        }
-    }
-    /* Child handles are VM-local, so the actual graph walk is performed by
-     * slvm_gc_mark_value with access to the owning VM. */
-    (void)gc;
-}
+static int struct_valid_handle(SLVM *vm, int h);
 static SLGCObject *struct_gc_object(SLVM *vm, int h) {
     if (!vm || !vm->structs || h < 0 || h >= SL_MAX_STRUCTS) return NULL;
     return vm->structs[h].gc_object;
