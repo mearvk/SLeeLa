@@ -68,3 +68,13 @@ the Java prototype. There is no code sharing between them.
 The authoritative `sleela` CLI supports both textual `.sleela` source and persistent `.sleela` Core artifacts. Textual source is compiled in memory by the C++ frontend and executed by the native C Core SLVM. A persistent artifact is validated and loaded directly into that same SLVM. Thus native SLeeLa execution and SLVM execution are complementary stages of one toolchain, not separate interpreters.
 
 See `sleela-virtual-machine/docs/COMMAND-LINE-EXECUTION.md` for the command contract.
+
+## Corrections
+
+The claim that `impl/` is the "authoritative, buildable, tested system" is now
+accurate: the front end that had never compiled (parser emitting AST nodes
+absent from `ast.h` and unhandled by `semantic.cpp`/`compiler.cpp`) was
+completed end to end, and `cd impl && make test` passes. Build-blocking source
+and Makefile defects across the tree were repaired, and a heap-corruption bug in
+the native memory manager was fixed. See the 2026-10-03 entry in
+[`REVISIONS.md`](REVISIONS.md) for the full list.

@@ -158,3 +158,12 @@ The behavioral test [`impl/tests/core/memmgr_smoke.c`](impl/tests/core/memmgr_sm
 asserts real behavior: untracked-when-disabled, exact byte/alloc accounting
 across `alloc`/`calloc`(zeroed)/`realloc`(preserving)/`free`, and a hard limit
 that fails allocation closed.
+
+## Corrections
+
+A heap-corruption bug was fixed in the native memory manager
+(`api/native/memory/sleela_memory_manager.cpp`): it freed `header(user)` rather
+than the actual `malloc` base, so any **alignment-padded** allocation aborted
+with `free(): invalid pointer`. The true base is now stored in the block header
+and freed, and the memory smoke test passes. See the 2026-10-03 entry in
+[`REVISIONS.md`](REVISIONS.md).

@@ -121,3 +121,11 @@ not grant capabilities. Dynamic targets must use the shared resolver before
 acceptance. The VM identity is: /impl Core, /1 Foundation, /2 Operator,
 /3 Specialist, /4 Supervisor, /5 Manager, /6 Director, /7 Administrator,
 /8 Executive, /9 Authority, /10 Principal, /11 Sovereign.
+
+## Corrections
+
+Fixed a literal-`\n` corruption in `http4_protocol.c` and a link failure: the
+protocol references `sleela_preferred_router_packet_policy` from
+`../preferred-routers/preferred_router.c`, which was added to the build so
+`make` links cleanly. See the 2026-10-03 entry in
+[`../REVISIONS.md`](../REVISIONS.md).

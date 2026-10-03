@@ -36,3 +36,11 @@ Build the smoke test with:
 Run:
 
     ./logger-smoke
+
+## Corrections
+
+Fixed build-blocking defects: a broken string literal (`"\\""` →
+`"\\\""`, which left an unterminated string) and two member functions
+(`archive_segment`, `archive_path_for`) that were defined and used but never
+declared in the `Logger` class. The logger (and the server edition that links
+it) now builds. See the 2026-10-03 entry in [`../REVISIONS.md`](../REVISIONS.md).

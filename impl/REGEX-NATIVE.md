@@ -20,3 +20,14 @@ The foundation uses a small forward scanner for its executable subset. It has no
 ## Smoke test
 
 `impl/tests/core/regex_smoke.c` exercises Level 1 and Level 2 and verifies that Level 3 is reported as unsupported rather than silently misinterpreted.
+
+## Corrections
+
+The standalone `regex/` subproject (which builds under `-Werror`) was repaired:
+a `Diagnostic*=nullptr` default argument that tokenized as `*=`, an over-escaped
+`'\\0'` char constant, misleading-indentation warnings, a Java `Map.of` call
+exceeding its 10-pair overload, a non-executable test script, a locale-dependent
+`sort` / missing `cmp`, a buggy `awk` pattern, and genuinely wrong test
+expectations (an anchored `^...$` pattern used for a substring search, plus a
+wrong match span and capture count). `make -C regex` now builds and tests clean.
+See the 2026-10-03 entry in [`../REVISIONS.md`](../REVISIONS.md).

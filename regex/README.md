@@ -47,3 +47,14 @@ Unknown Natural Form words are rejected. Backend-specific syntax is not silently
 `test-suites/run-all.sh` builds and executes the C, C++, and Java Natural Form tests and verifies the complete 27-object SLeeLa regex source inventory. The Makefile exposes the same verification as `make test`.
 
 SLeeLa — MEARVK LLC — 2026
+
+## Corrections
+
+Fixed so `make` builds and tests clean under this subproject's `-Werror`: a
+`Diagnostic*=nullptr` default argument mis-tokenized as `*=`, an over-escaped
+`'\\0'` char constant, misleading-indentation, a Java `Map.of` call exceeding
+its 10-pair overload (now `Map.ofEntries`), a non-executable test script, a
+locale-dependent `sort` and a dependency on absent `cmp`, a buggy `awk` pattern,
+and wrong test expectations (anchored pattern used for a substring search, plus
+match-span/capture-count). See the 2026-10-03 entry in
+[`../REVISIONS.md`](../REVISIONS.md).

@@ -946,3 +946,22 @@ The project now has a dedicated completion layer for the language, runtime and a
 - [API.INDEX.md](API.INDEX.md) — API index
 
 The intended complete application lifecycle is **SOURCE → CHECK → BUILD → TEST → PACKAGE → INSTALL → RUN → VERIFY**.
+
+## Corrections
+
+Recent corrections to pre-existing defects (full detail in
+[`REVISIONS.md`](REVISIONS.md), 2026-10-03 entry):
+
+- **Compiler front end now builds and runs.** The `impl/` C/C++ front end had
+  never compiled; the missing Java statement/expression AST nodes were added and
+  wired through the semantic analyzer and bytecode compiler, and a latent
+  `Binary`-operand bug was fixed. `cd impl && make test` now passes end to end.
+- **Build integrity across the repo.** Repaired corrupted sources (collapsed
+  `\n` lines, mis-escaped string/char literals), duplicate definitions, missing
+  includes/declarations, Makefile path/rule bugs, and restored executable bits on
+  shell scripts. The top-level `make` completes; sub-project builds pass except
+  environment-only targets (macOS, PowerShell, kernel headers, GTK4/VTE).
+- **A real heap bug** in the native memory manager (freeing the wrong address for
+  alignment-padded allocations) was fixed.
+- **Tests/fixtures** were reconciled with the documented syntax range and had
+  genuinely wrong expectations corrected.
