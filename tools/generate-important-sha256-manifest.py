@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Generate the SLeeLa important-file SHA-256 integrity manifest."""
 from __future__ import annotations
-import argparse, hashlib, json
+import argparse, hashlib, json, subprocess
 from pathlib import Path
 
 SOURCE_SUFFIXES={".c",".h",".cc",".hh",".cpp",".hpp",".py",".sh",".ps1",".sleela",".sst",".model"}
@@ -21,9 +21,24 @@ def digest(path:Path)->str:
         for chunk in iter(lambda:f.read(1024*1024),b""): h.update(chunk)
     return h.hexdigest()
 
-def include(path:Path,root:Path)->bool:
+def _tracked_files(root:Path):
+    """Set of git-tracked paths (POSIX, relative to root), or None if git is
+    unavailable. Used to keep transient build artifacts out of the manifest
+    while still covering committed files that happen to live under build/."""
+    try:
+        out=subprocess.run(["git","-C",str(root),"ls-files","-z"],
+                           capture_output=True,check=True).stdout
+    except (OSError,subprocess.CalledProcessError):
+        return None
+    return {p for p in out.decode("utf-8","surrogateescape").split("\0") if p}
+
+def include(path:Path,root:Path,tracked=None)->bool:
     rel=path.relative_to(root).as_posix()
-    if any(part.startswith(".git") for part in path.relative_to(root).parts): return False
+    parts=path.relative_to(root).parts
+    if any(part.startswith(".git") for part in parts): return False
+    # Never record untracked files (e.g. transient build/ outputs matched by
+    # .gitignore's **/build/ rule). Committed files remain covered even under build/.
+    if tracked is not None and rel not in tracked: return False
     if path.name in EXCLUDE_NAMES: return False
     if rel in ROOT_FILES: return True
     top=path.relative_to(root).parts[0]
@@ -39,9 +54,10 @@ def main():
     ap.add_argument("--output",type=Path,default=Path("security/important-sha256-manifest.json"))
     args=ap.parse_args()
     root=args.root.resolve()
+    tracked=_tracked_files(root)
     files=[]
     for f in sorted(root.rglob("*")):
-        if f.is_file() and include(f,root):
+        if f.is_file() and include(f,root,tracked):
             files.append({"path":f.relative_to(root).as_posix(),"sha256":digest(f)})
     if not files: raise SystemExit("no important files found")
     args.output.parent.mkdir(parents=True,exist_ok=True)

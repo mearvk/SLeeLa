@@ -299,7 +299,7 @@ bool variableArityApplicable(const JavaMethodCandidate& c,const std::vector<Java
 }
 
 
-static std::string eraseTypeVariables(const JavaTypeDescriptor& t){
+[[maybe_unused]] static std::string eraseTypeVariables(const JavaTypeDescriptor& t){
  if(t.referenceKind==JavaReferenceKind::TypeVariable) return "java.lang.Object";
  if(t.referenceKind==JavaReferenceKind::Parameterized){
   JavaTypeDescriptor e=t;e.arguments.clear();e.referenceKind=JavaReferenceKind::Class;return e.normalized();

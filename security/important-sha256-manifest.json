@@ -4860,7 +4860,7 @@
     },
     {
       "path": "impl/core/sleela_core.c",
-      "sha256": "d45a0db6107bb09eadfaa3842f8b95c173f1b185a294f8ee7dcebb539c6d98b5"
+      "sha256": "b62d1cd3a7fefe05bc1906208bd5d5092aa0667e7c886aebf74a1eac38184acb"
     },
     {
       "path": "impl/core/sleela_core.h",
@@ -5020,7 +5020,7 @@
     },
     {
       "path": "impl/core/sleela_time.c",
-      "sha256": "3e45e1a8347f4f4c45ee68740a6e46e2e3a44a349d2e6e6258d5992e40c1a0dd"
+      "sha256": "c26ef18f735c90dc86689b4cdcbb46ef87721bbd905ddb62cca10c15b4abc8fa"
     },
     {
       "path": "impl/core/sleela_time.h",
@@ -5268,7 +5268,7 @@
     },
     {
       "path": "impl/frontend/dynamite.cpp",
-      "sha256": "519dd882e338d2f2a48afe16c640c72878c602639e3bec53748e132909677354"
+      "sha256": "cc4a7627facb35fe3467948745ef5b16ec07e1c34d794fcf6b0699e063018360"
     },
     {
       "path": "impl/frontend/dynamite.h",
@@ -5288,7 +5288,7 @@
     },
     {
       "path": "impl/frontend/java_equivalence.cpp",
-      "sha256": "008c155d90a828132cbe981321a93be951773f8c54b1e26d870f59d5d5d2e41b"
+      "sha256": "f970b454fed5e99d03037d853ace32852c393399d5ca594728aa64a7e5d4deff"
     },
     {
       "path": "impl/frontend/java_equivalence.h",
@@ -5916,7 +5916,7 @@
     },
     {
       "path": "impl/nordshrift/nordshrift.cpp",
-      "sha256": "6f83ba75954403a7392a64d492860b7fd434764c0a61b810f5f6dee73687afd0"
+      "sha256": "2c01f99fd7e78d48f5972d50c948713426a4f11c59ae28ff1da1a0959c1832e8"
     },
     {
       "path": "impl/nordshrift/object_compat.cpp",
@@ -49248,7 +49248,7 @@
     },
     {
       "path": "tools/generate-important-sha256-manifest.py",
-      "sha256": "ddf791c4f8dfbbf353d9368d9da963abc398153f3757ad4480963327ee4e1940"
+      "sha256": "cc297e7dae2f36a8dc372c8b2200fc8cff6dd4f4c11b3ad723f8684d2c7ef6bb"
     },
     {
       "path": "tools/generate-sha256-manifest.py",

@@ -699,8 +699,8 @@ static void log_unsupported_opcode(SLVM* vm, uint8_t opcode) {
     const char* configured = getenv("SLEELA_OPCODE_LOG");
     FILE* out = (configured && *configured) ? fopen(configured, "a") : stderr;
     if (!out) out = stderr;
-    fprintf(out, "SLeeLa VM: unsupported opcode %u (0x%02X) encountered; execution rejected\\n",
-            (unsigned)opcode, (unsigned)opcode);
+    fprintf(out, "SLeeLa VM: unsupported opcode %u (0x%02X) in function %d encountered; execution rejected\\n",
+            (unsigned)opcode, (unsigned)opcode, vm ? vm->cur_func : -1);
     fflush(out);
     if (out != stderr) fclose(out);
 }

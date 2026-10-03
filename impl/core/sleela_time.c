@@ -93,8 +93,11 @@ int sltime_send_raw_time(const char* host,uint16_t port,uint8_t marker,uint32_t 
 #endif
     struct addrinfo hints,*res=NULL,*p;
     uint8_t packet[48]={0}, raw[1]={marker};
+    char portstr[6];
+    /* Honor the caller-supplied UDP port; default to the standard NTP port 123. */
+    snprintf(portstr,sizeof(portstr),"%u",(unsigned)(port?port:123));
     memset(&hints,0,sizeof(hints));hints.ai_family=AF_UNSPEC;hints.ai_socktype=SOCK_DGRAM;hints.ai_protocol=IPPROTO_UDP;
-    if(getaddrinfo(host,"123",&hints,&res)!=0)return EHOSTUNREACH;
+    if(getaddrinfo(host,portstr,&hints,&res)!=0)return EHOSTUNREACH;
     packet[0]=0x23;
     for(p=res;p;p=p->ai_next){
 #ifdef _WIN32

@@ -9,7 +9,7 @@ static std::string trim(const std::string& s){
     return s.substr(a,b-a+1);
 }
 static bool starts(const std::string& s,const std::string& p){ return s.rfind(p,0)==0; }
-std::vector<Import> discoverAll(const std::string& source,const std::string& sourcePath){
+std::vector<Import> discoverAll(const std::string& source,const std::string& /*sourcePath*/){
     std::vector<Import> out;
     std::istringstream in(source);
     std::string line; size_t n=0;

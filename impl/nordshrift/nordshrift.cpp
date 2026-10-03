@@ -525,5 +525,6 @@ int main(int argc, char** argv) {
     if (cmd == "build") { if (argc < 3) return usage(); return doBuild(argv[2]); }
     if (cmd == "objects") { return doObjects(); }
     if (cmd == "relevance") { return doRelevance(argc, argv); }
+    if (cmd == "design-activity") { return designActivityCmd(argc, argv); }
     return usage();
 }
