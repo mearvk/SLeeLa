@@ -40,6 +40,7 @@ static int code(const char*s){
 static int valid_tls_mode(sleela_email_tls_mode_t m){
  return m==SLEELA_EMAIL_TLS_NONE||m==SLEELA_EMAIL_TLS_STARTTLS||m==SLEELA_EMAIL_TLS_IMPLICIT;
 }
+static int tsend(SSL*s,const char*x);
 static int send_data_tls(SSL*s,const char*body){
  const char*p=body;
  if(!body)return 0;
@@ -47,7 +48,7 @@ static int send_data_tls(SSL*s,const char*body){
   const char*e=strstr(p,"\r\n");
   size_t n=e?(size_t)(e-p):strlen(p);
   if(n&&p[0]=='.'&&!tsend(s,"."))return 0;
-  if(n){char*line=malloc(n+1);if(!line)return 0;memcpy(line,p,n);line[n]='\0';if(!tsend(s,line)){free(line);return 0;}free(line);}
+  if(n){char*line=(char*)malloc(n+1);if(!line)return 0;memcpy(line,p,n);line[n]='\0';if(!tsend(s,line)){free(line);return 0;}free(line);}
   if(!e)break;
   if(!tsend(s,"\r\n"))return 0;
   p=e+2;
@@ -61,7 +62,7 @@ static int send_data_plain(int f,const char*s){
   const char*e=strstr(p,"\r\n");
   size_t n=e?(size_t)(e-p):strlen(p);
   if(n&&p[0]=='.'&&!psend(f,"."))return 0;
-  if(n){char*line=malloc(n+1);if(!line)return 0;memcpy(line,p,n);line[n]='\0';if(!psend(f,line)){free(line);return 0;}free(line);}
+  if(n){char*line=(char*)malloc(n+1);if(!line)return 0;memcpy(line,p,n);line[n]='\0';if(!psend(f,line)){free(line);return 0;}free(line);}
   if(!e)break;
   if(!psend(f,"\r\n"))return 0;
   p=e+2;
@@ -80,7 +81,7 @@ static int texpect(SSL*s,int want,char*e,size_t en){
 static int tsend(SSL*s,const char*x){size_t n=strlen(x),p=0;while(p<n){int z=SSL_write(s,x+p,(int)(n-p));if(z<=0)return 0;p+=(size_t)z;}return 1;}
 
 static int auth_plain(SSL*s,const char*u,const char*p,char*e,size_t en){
- size_t rawlen=strlen(u)+strlen(p)+2,b64len=4*((rawlen+2)/3);unsigned char*raw=calloc(1,rawlen);char*b64=calloc(1,b64len+1);int ok=0;
+ size_t rawlen=strlen(u)+strlen(p)+2,b64len=4*((rawlen+2)/3);unsigned char*raw=(unsigned char*)calloc(1,rawlen);char*b64=(char*)calloc(1,b64len+1);int ok=0;
  if(!raw||!b64)goto done;memcpy(raw+1,u,strlen(u));memcpy(raw+strlen(u)+2,p,strlen(p));
  if(EVP_EncodeBlock((unsigned char*)b64,raw,(int)rawlen)<=0)goto done;
  {char cmd[8192];if(strlen(b64)+14>=sizeof(cmd))goto done;snprintf(cmd,sizeof(cmd),"AUTH PLAIN %s\r\n",b64);ok=tsend(s,cmd)&&texpect(s,235,e,en);}

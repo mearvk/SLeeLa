@@ -45,7 +45,7 @@ help:
 	@printf '%s\n' '  make all       Build native VM manager objects and CM sanity check'
 	@printf '%s\n' '  make native    Compile C and C++ VM manager objects'
 	@printf '%s\n' '  make cm-check  Print the Compiler Manager declaration contract'
-	@printf '%s\n' '  make memory-guard-check  Print Dynamic Memory Guard policy modes
-  make gc-check  Print the common GC contract'
-	@printf '%s\n' '  make tutorial-check  Print VM tutorial and example inventory''
+	@printf '%s\n' '  make memory-guard-check  Print Dynamic Memory Guard policy modes'
+	@printf '%s\n' '  make gc-check  Print the common GC contract'
+	@printf '%s\n' '  make tutorial-check  Print VM tutorial and example inventory'
 	@printf '%s\n' '  make clean     Remove package build objects'

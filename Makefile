@@ -7,6 +7,12 @@
 
 all: core java28 regex compiler decompiler vm scripting jetbrains install tutorial-check tests config route
 
+# The impl build is fail-closed on a trusted SHA-256 manifest. Default it to the
+# repository's manifest (absolute path) so `make` works from the repo root; an
+# explicit SLEELA_SHA256_MANIFEST on the command line still overrides it.
+SLEELA_SHA256_MANIFEST ?= $(abspath $(CURDIR)/security/sha256-manifest.json)
+export SLEELA_SHA256_MANIFEST
+
 core:
 	$(MAKE) -C impl all
 

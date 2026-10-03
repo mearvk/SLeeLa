@@ -1,5 +1,6 @@
 #include "sleela_memory_manager.h"
 #include <algorithm>
+#include <cstddef>
 #include <cstdlib>
 #include <cstring>
 #include <limits>
@@ -9,7 +10,7 @@
 #include <vector>
 
 static constexpr uint64_t CANARY=0x534C45454C414D4DULL;
-struct Header { uint64_t canary; size_t size; size_t alignment; };
+struct Header { uint64_t canary; size_t size; size_t alignment; void* base; };
 struct Entry { void* user; void* raw; size_t size; size_t alignment; };
 struct Object { uint64_t id; uint64_t target; bool leech; std::string name; };
 
@@ -34,7 +35,7 @@ static void* raw_alloc(size_t bytes,size_t alignment){
   uintptr_t base=reinterpret_cast<uintptr_t>(raw)+sizeof(Header);
   uintptr_t user=(base+alignment-1)&~(uintptr_t)(alignment-1);
   auto* h=reinterpret_cast<Header*>(user-sizeof(Header));
-  h->canary=CANARY; h->size=bytes; h->alignment=alignment;
+  h->canary=CANARY; h->size=bytes; h->alignment=alignment; h->base=raw;
   *reinterpret_cast<uint64_t*>(user+bytes)=CANARY;
   return reinterpret_cast<void*>(user);
 }
@@ -48,7 +49,7 @@ extern "C" void* sleela_mm_alloc(sleela_mm*x,size_t n){
   if(!x||!n)return nullptr;std::lock_guard<std::mutex>g(x->m);
   if(n>x->limits.hard_limit-x->resident)return nullptr;
   void* user=raw_alloc(n,alignof(std::max_align_t));if(!user)return nullptr;
-  x->blocks[user]={user,header(user),n,header(user)->alignment};
+  x->blocks[user]={user,header(user)->base,n,header(user)->alignment};
   x->resident+=n;x->allocated+=n;x->allocations++;x->peak=std::max(x->peak,x->resident);return user;
 }
 extern "C" void* sleela_mm_calloc(sleela_mm*x,size_t c,size_t n){if(n&&c>SIZE_MAX/n)return nullptr;void*p=sleela_mm_alloc(x,c*n);if(p)std::memset(p,0,c*n);return p;}
@@ -58,7 +59,7 @@ extern "C" void* sleela_mm_realloc(sleela_mm*x,void*p,size_t n){
   auto it=x->blocks.find(p);if(it==x->blocks.end()||!valid_block(p))return nullptr;
   const size_t old=it->second.size;if(n>old&&n-old>x->limits.hard_limit-x->resident)return nullptr;
   void*q=raw_alloc(n,it->second.alignment);if(!q)return nullptr;std::memcpy(q,p,std::min(old,n));
-  std::free(it->second.raw);x->blocks.erase(it);x->blocks[q]={q,header(q),n,header(q)->alignment};
+  std::free(it->second.raw);x->blocks.erase(it);x->blocks[q]={q,header(q)->base,n,header(q)->alignment};
   x->resident=x->resident-old+n;x->allocated+=n;x->freed+=old;x->peak=std::max(x->peak,x->resident);return q;
 }
 extern "C" sleela_mm_status sleela_mm_free(sleela_mm*x,void*p){
@@ -75,7 +76,7 @@ extern "C" sleela_mm_status sleela_mm_insert_struct(sleela_mm*x,const char*n,con
   if(z>x->limits.hard_limit-x->resident)return SLEELA_MM_LIMIT;
   void*p=raw_alloc(z,alignment);if(!p)return SLEELA_MM_LIMIT;
   std::memcpy(p,s,z);
-  x->blocks[p]={p,header(p),z,header(p)->alignment};
+  x->blocks[p]={p,header(p)->base,z,header(p)->alignment};
   x->resident+=z;x->allocated+=z;x->allocations++;x->peak=std::max(x->peak,x->resident);
   const uint64_t id=x->next++;x->objects[id]={id,reinterpret_cast<uint64_t>(p),false,n?n:"struct"};*out=id;
   return SLEELA_MM_OK;

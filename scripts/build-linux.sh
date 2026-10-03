@@ -37,6 +37,11 @@ BUILD_DIR="$IMPL_DIR/build"
 export CC="${CC:-gcc}"
 export CXX="${CXX:-g++}"
 
+# The impl build is fail-closed on a trusted SHA-256 manifest. Default it to the
+# repository manifest so this script works out of the box; an explicit
+# SLEELA_SHA256_MANIFEST in the environment still overrides it.
+export SLEELA_SHA256_MANIFEST="${SLEELA_SHA256_MANIFEST:-$REPO_ROOT/security/sha256-manifest.json}"
+
 # Print configuration
 echo "=========================================="
 echo "SLeeLa Linux Build Configuration"

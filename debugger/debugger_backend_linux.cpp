@@ -37,7 +37,7 @@ public:
         if(!attached_||!buffer||size==0){e="invalid memory write request";return false;}const unsigned char*in=static_cast<const unsigned char*>(buffer);
         for(std::size_t off=0;off<size;off+=sizeof(long)){errno=0;long word=ptrace(PTRACE_PEEKDATA,pid_,reinterpret_cast<void*>(address+off),nullptr);if(errno){e=std::strerror(errno);return false;}std::size_t n=sizeof(word);if(n>size-off)n=size-off;std::memcpy(&word,in+off,n);if(ptrace(PTRACE_POKEDATA,pid_,reinterpret_cast<void*>(address+off),reinterpret_cast<void*>(word))<0){e=std::strerror(errno);return false;}}return true;
     }
-    bool readRegisters(RegisterSnapshot&out,std::string&e) override {
+    bool readRegisters(BackendRegisterSnapshot&out,std::string&e) override {
         if(!attached_){e="no traced process";return false;}
 #if defined(__x86_64__)
         struct user_regs_struct regs{};if(ptrace(PTRACE_GETREGS,pid_,nullptr,&regs)<0){e=std::strerror(errno);return false;}out.architecture="x86_64";out.instruction_pointer=regs.rip;out.stack_pointer=regs.rsp;out.frame_pointer=regs.rbp;return true;

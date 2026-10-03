@@ -1,8 +1,8 @@
 CC ?= cc
 CFLAGS ?= -std=c11 -O2 -Wall -Wextra
 
-PROTOCOL_SOURCES = http4_protocol.c http4_packet_context.c http4_packet_payload.c
-SEGMENTATION_SOURCES = http4_protocol.c http4_segmentation.c http4_reassembly.c
+PROTOCOL_SOURCES = http4_protocol.c http4_packet_context.c http4_packet_payload.c ../preferred-routers/preferred_router.c
+SEGMENTATION_SOURCES = http4_protocol.c http4_segmentation.c http4_reassembly.c ../preferred-routers/preferred_router.c
 PROTOCOL_OBJECTS = $(PROTOCOL_SOURCES:.c=.o)
 SEGMENTATION_OBJECTS = $(SEGMENTATION_SOURCES:.c=.o)
 

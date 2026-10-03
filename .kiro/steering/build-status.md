@@ -181,3 +181,55 @@ Note: `telephony-skya/drivers/platform/{macos,windows}/*.cpp` report
 `skya_platform_device` undeclared under a Linux `-fsyntax-only` check, but that
 is a false positive — they are platform-gated and need the macOS/Windows SDK
 headers; they are not corrupted.
+
+## Repo-wide sub-project build sweep (fourth pass)
+
+Built every sub-project Makefile that compiles on Linux (not just `impl`). The
+authoritative in-scope targets are green: `impl` (`make test`), the top-level
+`make` dispatcher, and the CI directories (`audio/*`, `http-3.0`,
+`sleela-terminal` CLI parts). After this pass the sweep is **57 build / 6
+environment-only** (the 6 need macOS, PowerShell, Linux kernel build headers, or
+GTK4/VTE — not source defects).
+
+Fixed this pass:
+- **Memory manager (real heap bug).** `api/native/memory/sleela_memory_manager.cpp`
+  freed `header(user)` instead of the true malloc base, so any alignment-padded
+  allocation crashed with `free(): invalid pointer`. Added a `base` field to the
+  block header and free that. (This crashed the top-level `make` -> `tests`.)
+- **Source corruption (literal `\n`).** `api/server/sleelas.cpp` (a second
+  collapsed block) and the earlier families.
+- **Broken string/char literals.** `logger/sleela_logger.cpp` (`"\\""` ->
+  `"\\\""`, missing terminator).
+- **Duplicate definitions.** `debugger/debugger_backend.hpp` (duplicate
+  `RegisterSnapshot` struct + duplicate virtual methods; also a name clash with
+  `debug_engine.hpp`'s different `RegisterSnapshot`, renamed the backend one to
+  `BackendRegisterSnapshot`); `sleela-virtual-machine/1/src/slvm.c` (duplicate
+  `slvm_security_allow_io` / `slvm_security_reset`).
+- **Missing declarations/includes.** `logger` (`archive_segment`,
+  `archive_path_for` not declared); `debugger_backend.hpp` (`<memory>`);
+  `api/native/memory` (`<cstddef>` for `std::max_align_t`);
+  `sleela-virtual-machine/1/tests/test_slvm.c` (lost its `#include`s and had a
+  dangling call to an undefined test function).
+- **Struct/portability.** `sleela-virtual-machine/10` (`slvm10_state_t` missing
+  `phase`); `sleela-virtual-machine/9` (`f_fsid.val` -> `__val` on glibc);
+  `video` C++ `Frame` ctor didn't populate `raw.{width,height,format}`.
+- **C-as-C++ casts.** `api/email/sleela_email.c` (`malloc`/`calloc` casts;
+  `tsend` forward declaration) since `api/bodi` compiles it as C++.
+- **Makefile defects.** missing object/platform rules
+  (`telephony-skya/drivers`); missing source in a link line (`api/bodi`
+  data-analytics); wrong relative paths (`sleela-virtual-machine/1` GC);
+  cross-module link deps (`http-3.0`, `http-4.0` -> preferred_router);
+  `missing separator` / unterminated `printf` (`lib/vm`); relative manifest path
+  (`lib/compiler`); and the top-level `make` + `scripts/build-{linux,macos}.sh`
+  now default `SLEELA_SHA256_MANIFEST` so `make` works from the repo root.
+- **Missing source.** `video/src/sleela_video.cpp` (thin C++ wrapper, matching
+  the codecs pattern).
+- **Execute bits.** Restored `+x` on 57 `.sh` scripts repo-wide (outside
+  vendored `bash/`) that had lost it; several Makefiles invoke them as
+  `./script` and failed with "Permission denied".
+
+Remaining 6 are environment-only: `build/macos`, `build/windows`,
+`http-3.0/kernel`, `sleela-terminal` (GUI needs GTK4/VTE; its CLI builds), and
+the two top-level build dirs that only wrap those. Note: several sub-project
+`clean` targets delete tracked files under `build/` — avoid running their
+`clean` before a commit, or restore with `git checkout`.

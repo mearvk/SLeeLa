@@ -28,7 +28,7 @@ int slvm9_native_probe_filesystem(const char*path,slvm9_native_filesystem_t*out)
 #if defined(__APPLE__)
  struct statfs s;if(statfs(path,&s)!=0)return SLVM9_INVALID;uint64_t id=((uint64_t)(uint32_t)s.f_fsid.val[0]<<32)|(uint32_t)s.f_fsid.val[1];uint64_t b=v.f_frsize?v.f_frsize:v.f_bsize;return fill(out,path,id,b,(uint64_t)v.f_blocks*b,(uint64_t)v.f_bavail*b,s.f_fstypename,(s.f_flags&MNT_RDONLY)!=0);
 #elif defined(__linux__)
- struct statfs s;if(statfs(path,&s)!=0)return SLVM9_INVALID;uint64_t id=((uint64_t)(uint32_t)s.f_fsid.val[0]<<32)|(uint32_t)s.f_fsid.val[1];uint64_t b=v.f_frsize?v.f_frsize:v.f_bsize;return fill(out,path,id,b,(uint64_t)v.f_blocks*b,(uint64_t)v.f_bavail*b,"native-linux",(s.f_flags&ST_RDONLY)!=0);
+ struct statfs s;if(statfs(path,&s)!=0)return SLVM9_INVALID;uint64_t id=((uint64_t)(uint32_t)s.f_fsid.__val[0]<<32)|(uint32_t)s.f_fsid.__val[1];uint64_t b=v.f_frsize?v.f_frsize:v.f_bsize;return fill(out,path,id,b,(uint64_t)v.f_blocks*b,(uint64_t)v.f_bavail*b,"native-linux",(s.f_flags&ST_RDONLY)!=0);
 #else
  return SLVM9_INVALID;
 #endif

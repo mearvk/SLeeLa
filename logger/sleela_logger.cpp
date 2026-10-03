@@ -104,7 +104,7 @@ std::string Logger::escape_json(const std::string& value) const {
     std::ostringstream out;
     for (unsigned char c : value) {
         switch (c) {
-            case '\\': out << "\\\\"; break; case '"': out << "\\""; break;
+            case '\\': out << "\\\\"; break; case '"': out << "\\\""; break;
             case '\b': out << "\\b"; break; case '\f': out << "\\f"; break;
             case '\n': out << "\\n"; break; case '\r': out << "\\r"; break;
             case '\t': out << "\\t"; break;
