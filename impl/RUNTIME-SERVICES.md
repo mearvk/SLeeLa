@@ -32,3 +32,9 @@ See `/lib/vm/RUNTIME-SERVICES.md` for the generation-wide contract.
 6. Propagate cancellation and deadlines into blocking operations.
 7. Make teardown idempotent and observable, with double-close/use-after-close/stale-handle diagnostics.
 8. Add cross-platform stress tests for Linux, Windows, and macOS.
+
+## Standard GC implementation
+
+The native runtime now uses the common generational incremental collector in runtime/garbage_collector.c. It provides stable-handle young/old generations, tri-colour incremental marking, explicit roots, safepoints, SATB-style pre-write protection, remembered old-to-young references, promotion and deterministic full collection. The Core VM owns one collector per VM and manages struct instances through it.
+
+During active worker threads, reclamation is deferred until a structured-concurrency quiescent point so the current C VM does not scan unsafely moving thread stacks. Native resources remain under their explicit ownership/teardown APIs.
