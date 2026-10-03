@@ -1,0 +1,7 @@
+package vm.creator;
+
+class SleelaVMGenerationCatalog {
+ function names(); function paths(); function descriptions();
+ function nameForVersion(Integer version); function pathForVersion(Integer version);
+ function validateVersion(Integer version); function isCoreVersion(Integer version);
+}
