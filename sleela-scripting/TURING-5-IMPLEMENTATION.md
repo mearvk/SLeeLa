@@ -32,3 +32,10 @@ Every context receives a context ID, parent document ID, VM target, capability s
 Conformance suites cover recursion, computation, numerical accuracy, dimensional correctness, state contracts, queue schemas, timeout, cancellation, VM condition delivery and source-authority boundaries.
 
 The existing Makefile remains the specification check until the native interpreter is implemented. Documentation must not claim an interpreter feature is executable before native code and tests exist.
+
+
+## Constants implementation
+
+Phase B scientific runtime work includes a fast indexed loader for the Demesresmes™ constants registry. The loader should validate the registry schema, preserve decimal strings until the selected numeric domain is known, attach units and uncertainty metadata, and expose read-only canonical lookup to the interpreter.
+
+The conformance suite should verify JSON/XML semantic equivalence, exactness flags, namespace collision handling, provenance preservation, and deterministic registry revision selection.
