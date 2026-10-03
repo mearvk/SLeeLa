@@ -3,9 +3,9 @@
 # Product-specific Makefiles remain authoritative. This root dispatcher only
 # enters those existing build systems; it does not duplicate their source lists.
 
-.PHONY: all core java28 regex compiler decompiler vm jetbrains install tutorial-check tests server config clean help
+.PHONY: all core java28 regex compiler decompiler vm scripting jetbrains install tutorial-check tests server config clean help
 
-all: core java28 regex compiler decompiler vm jetbrains install tutorial-check tests config
+all: core java28 regex compiler decompiler vm scripting jetbrains install tutorial-check tests config
 
 core:
 	$(MAKE) -C impl all
@@ -24,6 +24,9 @@ decompiler:
 
 vm:
 	$(MAKE) -C lib/vm all
+
+scripting:
+	$(MAKE) -C sleela-scripting all
 
 jetbrains:
 	$(MAKE) -C jetbrains all
