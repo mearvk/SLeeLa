@@ -1,14 +1,22 @@
 CC ?= cc
 CFLAGS ?= -std=c11 -Wall -Wextra -Wpedantic -Iinclude
 BUILD=build
-all: $(BUILD)/libslvm11fs.a
+LIB=$(BUILD)/libslvm11fs.a
+TEST=$(BUILD)/slvm11-filesystem-module-selftest
+all: $(LIB)
 $(BUILD):
 	mkdir -p $(BUILD)
 $(BUILD)/slvm11_filesystem_module.o: src/slvm11_filesystem_module.c | $(BUILD)
 	$(CC) $(CFLAGS) -c $< -o $@
-$(BUILD)/libslvm11fs.a: $(BUILD)/slvm11_filesystem_module.o
+$(LIB): $(BUILD)/slvm11_filesystem_module.o
 	ar rcs $@ $^
-check: all
+$(TEST): tests/slvm11_filesystem_module_selftest.c $(LIB) | $(BUILD)
+	$(CC) $(CFLAGS) $< $(LIB) -o $@
+test: $(TEST)
+	$(TEST)
+check: test
+	test -f file-system/modules/tac3/tac3.definition.json
+	echo "SLVM/11 filesystem module check: PASS"
 clean:
 	rm -rf $(BUILD)
-.PHONY: all check clean
+.PHONY: all test check clean
