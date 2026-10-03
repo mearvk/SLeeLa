@@ -78,18 +78,24 @@ static void test_accounting(void) {
 static void test_hard_limit(void) {
     printf("[mm] hard limit fails allocation closed\n");
     SLMMStats s;
-    slmm_enable(500);
+    /* The manager enforces a configured hard byte limit. The limit must sit in
+     * the manager's valid policy range (SLMM_MIN_MEMORY_BYTES .. MAX); use the
+     * minimum valid limit and allocation sizes that straddle it so the refusal
+     * path is exercised exactly. */
+    const size_t limit = SLMM_MIN_MEMORY_BYTES;      /* smallest valid limit   */
+    const size_t big   = (limit * 3u) / 5u;          /* ~0.6 * limit each      */
+    if (slmm_enable(limit) != 0) { check("enable at minimum valid limit", 0); return; }
     slmm_reset();
-    slmm_set_limit(500);
+    slmm_set_limit(limit);
 
-    void *c = slmm_alloc(400);
+    void *c = slmm_alloc(big);
     check("alloc within limit succeeds", c != NULL);
-    void *d = slmm_alloc(400);   /* 400 + 400 > 500 */
+    void *d = slmm_alloc(big);   /* big + big > limit */
     check("alloc that would exceed limit returns NULL", d == NULL);
     check("last_status == LIMIT", slmm_last_status() == SLMM_LIMIT);
     slmm_stats(&s);
     check("refused counter == 1", s.refused == 1);
-    check("live_bytes unchanged at 400", s.live_bytes == 400);
+    check("live_bytes unchanged at one block", s.live_bytes == big);
 
     slmm_free(c);
     slmm_stats(&s);

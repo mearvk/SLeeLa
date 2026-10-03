@@ -295,6 +295,16 @@ private:
         const std::string& m=mc.method;
         auto oneArgStr=[&](const char* verb){ if(mc.args.size()!=1) throw std::runtime_error("Semantic error: Munction "+std::string(verb)+"(...) takes exactly one argument"); };
         auto noArg=[&](const char* verb){ if(!mc.args.empty()) throw std::runtime_error("Semantic error: Munction "+std::string(verb)+"() takes no arguments"); };
+        // The reach opener `Munction.start(name)` begins a chain and yields a
+        // reach handle. It parses as MethodCall(VarExpr("Munction"), "start").
+        if(m=="start"){
+            if(auto recv=dynamic_cast<const VarExpr*>(mc.receiver.get())){
+                if(recv->name=="Munction"){
+                    if(syntax_<SyntaxVersion{1,3}) throw std::runtime_error("Semantic error: Munction requires #sleela 1.3");
+                    oneArgStr("start"); emitExpr(mc.args[0].get()); emit(OP_MUN_START); return;
+                }
+            }
+        }
         // The Munction reach verbs. Each expects the receiver to evaluate to a
         // reach handle; the op leaves the handle (or a String) on the stack.
         if(m=="connect"||m=="enable"||m=="send"||m=="thatch"||m=="consume"||m=="latch"||m=="closeWithReceipt"||m=="close"||m=="reception"){

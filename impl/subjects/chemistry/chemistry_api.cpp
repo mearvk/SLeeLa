@@ -67,6 +67,22 @@ ExprP lowerExpr(ExprP e) {
         }
         return e;
     }
+    if (auto* mc=dynamic_cast<MethodCall*>(e.get())) {
+        // `chemistry.method(args)` parses as MethodCall(VarExpr("chemistry"), ...);
+        // rewrite it into the synthesized native call.
+        if (auto* recv=dynamic_cast<VarExpr*>(mc->receiver.get())) {
+            if (recv->name=="chemistry") {
+                static const std::set<std::string> allowed={"ratio","similarity","stochastic","inference_level","confidence","uncertainty"};
+                if (!allowed.count(mc->method)) throw std::runtime_error("Semantic error: unsupported executable chemistry call 'chemistry."+mc->method+"'");
+                auto call=std::make_unique<Call>("__native_chemistry_"+mc->method);
+                for (auto& a:mc->args) call->args.push_back(lowerExpr(std::move(a)));
+                return call;
+            }
+        }
+        mc->receiver=lowerExpr(std::move(mc->receiver));
+        for (auto& a:mc->args) a=lowerExpr(std::move(a));
+        return e;
+    }
     if (auto* b=dynamic_cast<Binary*>(e.get())) { b->lhs=lowerExpr(std::move(b->lhs)); b->rhs=lowerExpr(std::move(b->rhs)); }
     else if (auto* u=dynamic_cast<Unary*>(e.get())) u->operand=lowerExpr(std::move(u->operand));
     return e;
@@ -104,6 +120,8 @@ void lowerProgram(Program& program) {
         for (auto& m:c.methods) for (auto& s:m.body->stmts) lowerStmt(s);
         for (auto& f:c.fields) f.init=lowerExpr(std::move(f.init));
     }
+    // Give the synthesized native class a qualified name (Java-compat invariant).
+    for (auto& c:program.classes) if (c.java.qualifiedName.empty()) c.java.qualifiedName=c.name;
 }
 
 } // namespace chemistry

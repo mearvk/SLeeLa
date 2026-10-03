@@ -1,3 +1,7 @@
 #sleela 1.2
 
-print "COMPAT-OLD"
+class CompatOld {
+    void main() {
+        print("COMPAT-OLD");
+    }
+}

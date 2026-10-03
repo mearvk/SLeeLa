@@ -4,14 +4,14 @@ inclusion: always
 
 # SLeeLa build status (verified)
 
-The `impl/` C/C++ tree now **builds end to end**: `cd impl && make` produces the
-`sleela` and `nordshrift` binaries and stages the runtime. The `sleela` binary
-compiles and executes `.sleela` programs, including the Java-style control-flow
-statements (`if/else`, `while`, `do/while`, `for`, `switch/case/default`,
-`break`, `continue`, `return`, `throw`, `assert`, `yield`, `synchronized`,
-`try/catch/finally`) and expression forms (assignment/compound-assignment,
-ternary `?:`, `instanceof`, cast, `this`/`super`, array access, method
-reference) — verified by compiling and running a program that exercises them.
+The `impl/` C/C++ tree **builds and tests clean end to end**: `cd impl && make`
+produces the `sleela` and `nordshrift` binaries and stages the runtime, and
+`make test` passes every target. The `sleela` binary compiles and executes
+`.sleela` programs, including the Java-style control-flow statements (`if/else`,
+`while`, `do/while`, `for`, `switch/case/default`, `break`, `continue`,
+`return`, `throw`, `assert`, `yield`, `synchronized`, `try/catch/finally`) and
+expression forms (assignment/compound-assignment, ternary `?:`, `instanceof`,
+cast, `this`/`super`, array access, method reference).
 
 ## Build command
 
@@ -23,25 +23,49 @@ python3 tools/generate-sha256-manifest.py --root . --output security/sha256-mani
 cd impl && SLEELA_SHA256_MANIFEST="$(pwd)/../security/sha256-manifest.json" make
 ```
 
-## Known remaining issues (pre-existing, NOT frontend-build blockers)
+## Test suite — now green
 
-These are independent of the compiler front end and were latent while the tree
-never built. `make test` still fails on them:
+`cd impl && make clean && make test` passes end to end (every target). Keep it
+that way; if a change breaks a target, fix the root cause rather than skipping it.
 
-- **Version floor vs. test corpus.** `minSupportedSyntax()` is `{1,3}` (per
-  `VERSION.md`, range 1.3..1.6), but `impl/examples/*.sleela` and
-  `impl/tests/subjects/*_values.sleela` declare `#sleela 1.0`, so they are
-  rejected as "too old." The `tests/version/run_version_tests.sh` harness also
-  disagrees with `VERSION.md` (it expects 1.4 to be rejected as "too new").
-- **Type-name convention.** Subject test sources use Java `String`, but the
-  semantic analyzer's known-type set uses lowercase `string`.
-- **`test-java-runtime`.** A generated harness C file trips
-  `-Werror=missing-field-initializers`.
-- **Nordshrift `.sst` examples.** `test-nordshrift` reports stale example
-  content / `source.root` path issues.
+The following were fixed to get there (all were pre-existing, latent while the
+front end never built):
 
-Reconcile the corpus (and the version-test contract) with `VERSION.md` before
-claiming `make test` is green.
+- **Version floor vs. corpus.** `VERSION.md`/`version.h` set the supported range
+  to 1.3 .. 1.6. The example and subject-test corpus (`impl/examples/*.sleela`,
+  `impl/tests/subjects/*_values.sleela`) and several Nordshrift fixtures declared
+  `#sleela 1.0`/`1.1`/`1.2` and were bumped to `1.3`. `tests/version/` and
+  `tests/nordshrift/run_cross_version_tests.sh` were reconciled with the
+  documented 1.3 .. 1.6 range (1.4 is in range; 1.7 is the "too new" fixture).
+- **Type-name convention.** The semantic analyzer now accepts the Java keyword
+  type names the lexer emits (`String`, `boolean`) alongside the lowercase
+  aliases (`string`, `bool`), and treats declared class names as known types
+  (so a constructor's return type resolves).
+- **Qualified module/subject calls.** `math.sqrt(x)` / `chemistry.ratio(a,b)` /
+  `financial.npv4(...)` parse as `MethodCall(VarExpr(module), method)`; the
+  native, chemistry, and financial lowerings now rewrite that form into the
+  synthesized `__native_*` call (previously only a dotted `Call` was handled, so
+  the module name resolved as an undeclared variable). Synthesized native
+  classes also get a `java.qualifiedName`.
+- **String concatenation.** `+` with a String operand is Java-style
+  concatenation in the analyzer (the VM's `OP_ADD` already did this).
+- **`spawn`, `structUnpack`, `Munction.start`, `next.next`.** The analyzer now
+  mirrors the compiler's builtin handling for these special forms;
+  `emitMethodCall` lowers the `Munction.start(...)` opener.
+- **Void `return;`.** A bare `return;` in a void method is valid (was wrongly
+  rejected as "returns null, expected void").
+- **Library import check.** `library::validateImports` exempts all native
+  subject imports (math/physics/economics/inference/astrophysics/sociology/...)
+  from the `/lib` presence requirement.
+- **Build/link + test harness defects.** GC objects were missing from the
+  thread/socket smoke link lines; the `gc_modern_smoke` rule was defined before
+  its variable; `design_activity_smoke.c` and `gc_modern_smoke.c` had an
+  unescaped string / swapped-argument bug; the sociology and memmgr smoke tests
+  had an incorrect expected value / sub-minimum limit; the java-runtime bridge
+  test had a short initializer; the `test-nordshrift-e2e` recipe had been merged
+  into `test-runtime-artifact-abi`; and several Nordshrift example/fixture
+  `.sst`/`.sleela` files were invalid (colon-less blocks, `print "..."` without
+  parens, globs that swept in negative fixtures, missing `source.root` dirs).
 
 ## History note — the front end never compiled before
 

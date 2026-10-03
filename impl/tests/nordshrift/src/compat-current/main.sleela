@@ -1,3 +1,7 @@
 #sleela 1.3
 
-print "COMPAT-CURRENT"
+class CompatCurrent {
+    void main() {
+        print("COMPAT-CURRENT");
+    }
+}

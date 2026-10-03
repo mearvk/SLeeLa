@@ -1,4 +1,4 @@
-#sleela 1.0
+#sleela 1.3
 // SLeeLa layer over the native C++ stock-market analysis engine.
 //
 // The C++ layer owns numerical analysis and terminal rendering. This SLeeLa

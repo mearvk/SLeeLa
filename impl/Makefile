@@ -214,9 +214,9 @@ $(THREAD_PLATFORM_SMOKE): core/thread_platform_smoke.c $(THREAD_OBJ) | $(BUILD)
 # sleela_core.o (sleela_artifact.c) calls into the OS-abstraction backends
 # (net/io/path/library/terminal), so any target that links the core must also
 # link those objects, not just the core + time.
-$(THREAD_SMOKE): core/thread_smoke.c $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(PATH_OBJ) $(LIBRARY_OBJ) $(TERMINAL_OBJ) $(TIME_OBJ)
+$(THREAD_SMOKE): core/thread_smoke.c $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(PATH_OBJ) $(LIBRARY_OBJ) $(TERMINAL_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(GC_OBJ)
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS) $(LIBS)
-$(SOCKET_SMOKE): core/socket_smoke.c $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(PATH_OBJ) $(LIBRARY_OBJ) $(TERMINAL_OBJ) $(TIME_OBJ)
+$(SOCKET_SMOKE): core/socket_smoke.c $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(PATH_OBJ) $(LIBRARY_OBJ) $(TERMINAL_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(GC_OBJ)
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS) $(LIBS)
 $(SYNCHRO_SMOKE): core/synchro_smoke.c $(SYNCHRO_OBJ) | $(BUILD)
 	$(CC) $(CFLAGS) -Icore core/synchro_smoke.c $(SYNCHRO_OBJ) -o $@ $(LDFLAGS) $(LIBS)
@@ -315,7 +315,6 @@ $(PIXEL_TERMINAL_SMOKE): ../bash/pixel_terminal_smoke.cpp ../bash/pixel_terminal
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) ../bash/pixel_terminal_smoke.cpp $(PIXEL_TERMINAL_OBJ) -o $@ $(LDFLAGS) $(LIBS)
 $(GC_OBJ): ../runtime/garbage_collector.c ../runtime/garbage_collector.h | $(BUILD)
 	$(CC) $(CFLAGS) -c ../runtime/garbage_collector.c -o $@
-$(GC_MODERN_SMOKE): tests/runtime/gc_modern_smoke.c $(GC_OBJ) | verify-security $(BUILD)
 $(VM_CONFIG_OBJ): ../runtime/vm_config.c ../runtime/vm_config.h | $(BUILD)
 	$(CC) $(CFLAGS) -c ../runtime/vm_config.c -o $@
 $(VM_CONFIG_SMOKE): ../runtime/vm_config_smoke.c ../runtime/vm_config.h $(VM_CONFIG_OBJ) | $(BUILD)
@@ -323,7 +322,6 @@ $(VM_CONFIG_SMOKE): ../runtime/vm_config_smoke.c ../runtime/vm_config.h $(VM_CON
 test-vm-config: $(VM_CONFIG_SMOKE)
 	@echo "=== SLeeLa VM generation configuration ==="; (cd .. && $(VM_CONFIG_SMOKE))
 
-	$(CC) $(CFLAGS) -I../runtime tests/runtime/gc_modern_smoke.c $(GC_OBJ) -o $@ $(LDFLAGS) $(LIBS)
 $(SECURITY_OBJ): ../runtime/security_supervisor.c ../runtime/security_supervisor.h | $(BUILD)
 	$(CC) $(CFLAGS) -c ../runtime/security_supervisor.c -o $@
 $(PARAMETERS_OBJ): ../runtime/Parameters.c ../runtime/Parameters.h | $(BUILD)
@@ -439,10 +437,9 @@ test-nordshrift-compat: $(NORDSHRIFT_BIN)
 	@bash ../impl/tests/nordshrift/run_cross_version_tests.sh $(NORDSHRIFT_BIN)
 
 test-nordshrift-e2e: $(NORDSHRIFT_BIN) $(SLEELA_BIN)
+	@cd $(CURDIR)/.. && bash impl/tests/nordshrift/run_end_to_end_tests.sh $(CURDIR)/$(NORDSHRIFT_BIN) $(CURDIR)/$(SLEELA_BIN)
 test-runtime-artifact-abi: $(SLEELA_BIN)
 	@cd $(CURDIR)/.. && bash impl/tests/version/run_artifact_abi_tests.sh $(CURDIR)/$(SLEELA_BIN)
-
-	@cd $(CURDIR)/.. && bash impl/tests/nordshrift/run_end_to_end_tests.sh $(CURDIR)/$(NORDSHRIFT_BIN) $(CURDIR)/$(SLEELA_BIN)
 
 test-network: $(SOCKET_SMOKE)
 	@echo "=== core networking smoke (TCP loopback) ==="; $(SOCKET_SMOKE)
@@ -519,6 +516,8 @@ CONFIG_LOCATION_OBJ := $(BUILD)/config_location.o
 CONFIG_LOCATION_SMOKE := $(BUILD)/config_location_smoke
 $(RUNTIME_SMOKE): tests/runtime/runtime_smoke.c $(GC_OBJ) $(SECURITY_OBJ) | verify-security $(BUILD)
 	$(CC) $(CFLAGS) -I../runtime tests/runtime/runtime_smoke.c $(GC_OBJ) $(SECURITY_OBJ) -o $@ $(LDFLAGS) $(LIBS)
+$(GC_MODERN_SMOKE): tests/runtime/gc_modern_smoke.c $(GC_OBJ) | verify-security $(BUILD)
+	$(CC) $(CFLAGS) -I../runtime tests/runtime/gc_modern_smoke.c $(GC_OBJ) -o $@ $(LDFLAGS) $(LIBS)
 
 # Cross-platform source smoke suite. These tests exercise the native
 # OS abstraction layer (threads, sockets, I/O, paths, terminal, loader, time).

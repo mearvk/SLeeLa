@@ -1,8 +1,8 @@
 #nordshrift 1.0
 #sleela     1.3
 
-sheet compat_current:
-  version 1.0.0
+sheet compat_current_1_3:
+  version 1.3.0
   author "SLeeLa Compatibility Test"
   description "Cross-version fixture: syntax at supported compiler version"
 

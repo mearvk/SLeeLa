@@ -17,6 +17,6 @@ int main(void) {
     assert(slda_parse_domain("physics", &result.domain) == 0);
     char json[256];
     assert(slda_format_json("sleela", &result, json, sizeof json) > 0);
-    assert(strstr(json, ""science":"physics"") != NULL);
+    assert(strstr(json, "\"science\":\"physics\"") != NULL);
     return 0;
 }

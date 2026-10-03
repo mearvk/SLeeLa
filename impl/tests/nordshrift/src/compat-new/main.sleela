@@ -1,3 +1,7 @@
-#sleela 1.4
+#sleela 1.7
 
-print "COMPAT-NEW"
+class CompatNew {
+    void main() {
+        print("COMPAT-NEW");
+    }
+}

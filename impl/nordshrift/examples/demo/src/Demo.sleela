@@ -1,4 +1,4 @@
-#sleela 1.1
+#sleela 1.3
 // A small Sleela program driven by the demo sheet.
 // The network helper is compiled into the Sleela runnable; main does not
 // open a socket, so the demo remains deterministic and non-blocking.

@@ -1,4 +1,4 @@
-#sleela 1.0
+#sleela 1.3
 // Normed Presumed Chemistry example.
 // Values are normalized evidence scores in [0,1].
 import math;

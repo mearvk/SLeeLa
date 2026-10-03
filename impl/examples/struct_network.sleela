@@ -1,4 +1,4 @@
-#sleela 1.2
+#sleela 1.3
 // struct_network.sleela -- structs across the network / control paths.
 //
 // A struct instance is a VM-local handle, so it cannot be sent over a socket
