@@ -65,8 +65,8 @@ int slplatform_detect(SLPlatformInfo *out) {
 #elif defined(__linux__)
     struct utsname u;
     if (uname(&u) == 0) {
-        snprintf(out->version, sizeof(out->version), "Linux %s", u.release);
-        snprintf(out->architecture, sizeof(out->architecture), "%s", u.machine);
+        snprintf(out->version, sizeof(out->version), "Linux %.*s", (int)(sizeof(out->version) - 7), u.release);
+        snprintf(out->architecture, sizeof(out->architecture), "%.*s", (int)(sizeof(out->architecture) - 1), u.machine);
     } else { snprintf(out->version, sizeof(out->version), "unknown"); snprintf(out->architecture, sizeof(out->architecture), "unknown"); }
     snprintf(out->runtime, sizeof(out->runtime), "POSIX/libc");
 #else

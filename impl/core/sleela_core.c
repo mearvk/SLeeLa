@@ -797,7 +797,7 @@ static SLResult run_thread(SLThread* t) {
             int cfi=in.a; if(cfi<0||cfi>=vm->nfunc) TERR("call to unknown function");
             SLFunc* f=&vm->funcs[cfi]; if(t->fp>=FRAMES_MAX) TERR("call depth exceeded");
             int base=t->sp-f->nargs; SLFrame* nf=&t->frames[t->fp++]; nf->ret_ip=ip; nf->base=base; nf->nargs=f->nargs;
-            for(int i=f->nargs;i<f->nlocals;i++) PUSH(slval_null()); ip=f->entry;
+            for(int i=f->nargs;i<f->nlocals;i++){ PUSH(slval_null()); } ip=f->entry;
         } break;
         case OP_RET: {
             SLValue rv=(t->sp>t->frames[t->fp-1].base)?POP():slval_null(); SLFrame f=t->frames[--t->fp]; t->sp=f.base;
@@ -812,12 +812,12 @@ static SLResult run_thread(SLThread* t) {
         case OP_LOCK: if(in.a<0||in.a>=SL_MAX_LOCKS) TERR("lock id out of range"); pthread_mutex_lock(&vm->locks[in.a]); break;
         case OP_UNLOCK: if(in.a<0||in.a>=SL_MAX_LOCKS) TERR("lock id out of range"); pthread_mutex_unlock(&vm->locks[in.a]); break;
         case OP_SEND: {
-            if(in.a<0||in.a>=SL_MAX_LOCKS) TERR("mailbox slot out of range"); SLMailbox* mb=&vm->mailbox[in.a]; SLValue v=POP();
+            if(in.a<0||in.a>=SL_MAX_LOCKS){ TERR("mailbox slot out of range"); } SLMailbox* mb=&vm->mailbox[in.a]; SLValue v=POP();
             pthread_mutex_lock(&mb->mtx); while(mb->has) pthread_cond_wait(&mb->cond,&mb->mtx); mb->has=1; mb->tag=in.a; mb->value=v; pthread_cond_broadcast(&mb->cond); pthread_mutex_unlock(&mb->mtx);
         } break;
         case OP_RECV: {
-            if(in.a<0||in.a>=SL_MAX_LOCKS) TERR("mailbox slot out of range"); SLMailbox* mb=&vm->mailbox[in.a]; pthread_mutex_lock(&mb->mtx);
-            while(!mb->has) pthread_cond_wait(&mb->cond,&mb->mtx); SLValue v=mb->value; mb->has=0; pthread_cond_broadcast(&mb->cond); pthread_mutex_unlock(&mb->mtx); PUSH(v);
+            if(in.a<0||in.a>=SL_MAX_LOCKS){ TERR("mailbox slot out of range"); } SLMailbox* mb=&vm->mailbox[in.a]; pthread_mutex_lock(&mb->mtx);
+            while(!mb->has){ pthread_cond_wait(&mb->cond,&mb->mtx); } SLValue v=mb->value; mb->has=0; pthread_cond_broadcast(&mb->cond); pthread_mutex_unlock(&mb->mtx); PUSH(v);
         } break;
 
         case OP_LISTEN: {

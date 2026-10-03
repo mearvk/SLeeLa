@@ -637,5 +637,6 @@ int main(int argc,char**argv){
     else if(cmd=="version"){std::cout<<kVersion<<"\n";return 0;}
     else if(hasExt(cmd,".sleela")||hasExt(cmd,".xclass")||isLangInput(cmd)){if(verifyBeforeExecution(fs::current_path()))return 1;rc=runFile(cmd);}
     else return usage();
-    if(mmEnabled)reportMemoryManager(); return rc;
+    if(mmEnabled){reportMemoryManager();}
+    return rc;
 }

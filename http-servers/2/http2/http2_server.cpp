@@ -22,7 +22,7 @@ namespace fs=std::filesystem; namespace {
 constexpr size_t MAX_HEADERS=65536,MAX_BODY=8*1024*1024,MAX_STREAMS=256;
 std::atomic<bool> stop{false}; void sig(int){stop=true;}
 struct Stream{std::string method,path;std::vector<char> body;size_t header_bytes=0;size_t header_count=0;};
-struct Ctx{int fd;fs::path root;std::ofstream log;std::mutex m;std::unordered_map<int32_t,Stream> streams;};
+struct Ctx{int fd=-1;fs::path root;std::ofstream log;std::mutex m;std::unordered_map<int32_t,Stream> streams;Ctx(int f,fs::path r):fd(f),root(std::move(r)){}};
 void log(Ctx*c,const std::string&s){std::lock_guard<std::mutex>g(c->m);std::cerr<<s<<"\n";if(c->log)c->log<<s<<"\n";}
 ssize_t send_cb(nghttp2_session*,const uint8_t*d,size_t n,int,void*p){Ctx*c=(Ctx*)p;size_t o=0;while(o<n){ssize_t w=send(c->fd,d+o,n-o,MSG_NOSIGNAL);if(w<0){if(errno==EINTR)continue;return NGHTTP2_ERR_CALLBACK_FAILURE;}if(!w)return NGHTTP2_ERR_CALLBACK_FAILURE;o+=(size_t)w;}return n;}
 int begin_cb(nghttp2_session*,const nghttp2_frame*f,void*p){Ctx*c=(Ctx*)p;if(f->hd.stream_id>0&&c->streams.size()<MAX_STREAMS)c->streams.emplace(f->hd.stream_id,Stream{});return 0;}

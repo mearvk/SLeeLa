@@ -10,7 +10,12 @@ struct Type { Kind kind=Kind::Unknown; std::string name; };
 static Type typeOf(const std::string& n){
  // Accept the Java-style keyword names the lexer produces (int, double,
  // boolean, String, void) as well as the lowercase aliases (bool, string).
- if(n=="void")return{Kind::Void,{}}; if(n=="int")return{Kind::Int,{}}; if(n=="double")return{Kind::Double,{}}; if(n=="bool"||n=="boolean")return{Kind::Bool,{}}; if(n=="string"||n=="String")return{Kind::String,{}}; return{Kind::Struct,n};
+ if(n=="void"){return{Kind::Void,{}};}
+ if(n=="int"){return{Kind::Int,{}};}
+ if(n=="double"){return{Kind::Double,{}};}
+ if(n=="bool"||n=="boolean"){return{Kind::Bool,{}};}
+ if(n=="string"||n=="String"){return{Kind::String,{}};}
+ return{Kind::Struct,n};
 }
 static std::string nameOf(const Type&t){
  switch(t.kind){case Kind::Void:return"void";case Kind::Int:return"int";case Kind::Double:return"double";case Kind::Bool:return"bool";case Kind::String:return"string";case Kind::Null:return"null";case Kind::Struct:return t.name;case Kind::Unknown:return"unknown";default:return"error";}
@@ -54,7 +59,8 @@ class Analyzer{
     Type t=tn(f.type);if(t.kind==Kind::Error)err("unknown type '"+f.type+"' for field '"+f.name+"'");if(t.kind==Kind::Void)err("field '"+f.name+"' cannot be void");globals[f.name]=t;owners[f.name]=c.name;}
    for(const auto&m:c.methods){if(methods.count(m.name))err("duplicate method '"+m.name+"'");
     if(!known(m.retType))err("unknown return type '"+m.retType+"' for method '"+m.name+"'");
-    if(m.isProtected&&!m.isStatic)err("protected method '"+m.name+"' must also be static");methods[m.name]={&m,c.name};}}
+    if(m.isProtected&&!m.isStatic){err("protected method '"+m.name+"' must also be static");}
+    methods[m.name]={&m,c.name};}}
  }
  void push(){scopes.push_back({});} void pop(){scopes.pop_back();}
  bool declare(const std::string&n,const Type&t){auto&v=scopes.back().vars;if(v.count(n)){err("duplicate local variable '"+n+"'");return false;}v[n]=t;return true;}
@@ -102,12 +108,18 @@ class Analyzer{
  }
  Type member(const Expr&e,const std::string&f){Type b=expr(e);if(b.kind==Kind::Unknown)return b;if(b.kind!=Kind::Struct){err("member '"+f+"' requires a struct value, got "+nameOf(b));return{Kind::Error,{}};}auto s=fields.find(b.name);if(s==fields.end()){err("unknown struct '"+b.name+"'");return{Kind::Error,{}};}auto x=s->second.find(f);if(x==s->second.end()){err("struct '"+b.name+"' has no field '"+f+"'");return{Kind::Error,{}};}return x->second;}
  Type expr(const Expr&e){
-  if(dynamic_cast<const IntLit*>(&e))return{Kind::Int,{}};if(dynamic_cast<const DoubleLit*>(&e))return{Kind::Double,{}};if(dynamic_cast<const BoolLit*>(&e))return{Kind::Bool,{}};if(dynamic_cast<const StrLit*>(&e))return{Kind::String,{}};if(dynamic_cast<const NullLit*>(&e))return{Kind::Null,{}};
+  if(dynamic_cast<const IntLit*>(&e)){return{Kind::Int,{}};}
+  if(dynamic_cast<const DoubleLit*>(&e)){return{Kind::Double,{}};}
+  if(dynamic_cast<const BoolLit*>(&e)){return{Kind::Bool,{}};}
+  if(dynamic_cast<const StrLit*>(&e)){return{Kind::String,{}};}
+  if(dynamic_cast<const NullLit*>(&e)){return{Kind::Null,{}};}
   if(auto v=dynamic_cast<const VarExpr*>(&e)){Type t=lookup(v->name);if(t.kind==Kind::Error)err("use of undeclared variable '"+v->name+"'");return t;}
   if(auto n=dynamic_cast<const NewExpr*>(&e)){if(!structs.count(n->typeName)){err("new of unknown struct '"+n->typeName+"'");return{Kind::Error,{}};}return{Kind::Struct,n->typeName};}
   if(auto m=dynamic_cast<const MemberAccess*>(&e)){if(m->field=="next"&&isNextChain(*m->base))return{Kind::Int,{}};return member(*m->base,m->field);}
   if(auto u=dynamic_cast<const Unary*>(&e)){Type t=expr(*u->operand);if(u->op=="-"&&!numeric(t)&&t.kind!=Kind::Unknown)err("unary '-' requires numeric operand, got "+nameOf(t));if(u->op=="!"&&t.kind!=Kind::Bool&&t.kind!=Kind::Unknown)err("unary '!' requires bool operand, got "+nameOf(t));return t;}
-  if(auto b=dynamic_cast<const Binary*>(&e))return binary(*b);if(auto c=dynamic_cast<const Call*>(&e))return call(*c);if(auto m=dynamic_cast<const MethodCall*>(&e))return fluent(*m);
+  if(auto b=dynamic_cast<const Binary*>(&e)){return binary(*b);}
+  if(auto c=dynamic_cast<const Call*>(&e)){return call(*c);}
+  if(auto m=dynamic_cast<const MethodCall*>(&e)){return fluent(*m);}
   if(auto a=dynamic_cast<const AssignmentExpr*>(&e)){
    Type g=expr(*a->value);
    if(auto v=dynamic_cast<const VarExpr*>(a->target.get())){Type t=lookup(v->name);if(t.kind==Kind::Error){err("assignment to undeclared variable '"+v->name+"'");return{Kind::Error,{}};}if(!assignable(t,g))err("cannot assign "+nameOf(g)+" to '"+v->name+"' of type "+nameOf(t));return t;}
@@ -128,7 +140,9 @@ class Analyzer{
    // Java-style: `+` with a String operand is string concatenation; the VM's
    // OP_ADD already renders either operand to text. Only `+` concatenates.
    if(b.op=="+"&&(l.kind==Kind::String||r.kind==Kind::String))return{Kind::String,{}};
-   if(!numeric(l)&&l.kind!=Kind::Unknown)err("operator '"+b.op+"' requires numeric operands");if(!numeric(r)&&r.kind!=Kind::Unknown)err("operator '"+b.op+"' requires numeric operands");return{(l.kind==Kind::Double||r.kind==Kind::Double)?Kind::Double:Kind::Int,{}};}
+   if(!numeric(l)&&l.kind!=Kind::Unknown){err("operator '"+b.op+"' requires numeric operands");}
+   if(!numeric(r)&&r.kind!=Kind::Unknown){err("operator '"+b.op+"' requires numeric operands");}
+   return{(l.kind==Kind::Double||r.kind==Kind::Double)?Kind::Double:Kind::Int,{}};}
   if(b.op=="<"||b.op=="<="||b.op==">"||b.op==">="){if((!numeric(l)||!numeric(r))&&l.kind!=Kind::Unknown&&r.kind!=Kind::Unknown)err("comparison '"+b.op+"' requires numeric operands");return{Kind::Bool,{}};}
   if(b.op=="=="||b.op=="!="){if(!assignable(l,r)&&!assignable(r,l)&&l.kind!=Kind::Unknown&&r.kind!=Kind::Unknown)err("equality operands have incompatible types "+nameOf(l)+" and "+nameOf(r));return{Kind::Bool,{}};}err("unknown binary operator '"+b.op+"'");return{Kind::Error,{}};
  }
@@ -139,7 +153,8 @@ class Analyzer{
   // `structUnpack(TypeName, json)` -- the first argument is a struct type name,
   // not a value; the result is an instance of that struct type.
   if(c.callee=="structUnpack"){if(c.args.size()!=2){err("structUnpack(TypeName, json) takes exactly two arguments");return{Kind::Error,{}};}auto v=dynamic_cast<const VarExpr*>(c.args[0].get());if(!v||!structs.count(v->name)){err("structUnpack first argument must be a declared struct type name");return{Kind::Error,{}};}expr(*c.args[1]);return{Kind::Struct,v->name};}
-  for(const auto&a:c.args)expr(*a);if(!builtin(c.callee))err("call to unknown method '"+c.callee+"'");
+  for(const auto&a:c.args){expr(*a);}
+  if(!builtin(c.callee)){err("call to unknown method '"+c.callee+"'");}
   const std::string&n=c.callee;if(n=="conduct"||n=="congruent")return{Kind::Bool,{}};if(n=="role"||n=="insight"||n=="route"||n=="timeLocation"||n=="timeHttpDate"||n=="timeJson")return{Kind::String,{}};if(n=="sysdepth"||n=="degreemax"||n=="timeUtcMillis"||n=="timeUtcNanos"||n=="timeMonotonicNanos"||n=="timePrecisionMillis")return{Kind::Int,{}};if(n=="synchroMean"||n=="synchroMin"||n=="synchroMax"||n=="synchroP95"||n=="synchroLoss"||n=="bestOfMean"||n=="bestOfLoss"||n=="bestOfJitter"||n=="bestOfCertainty")return{Kind::Double,{}};if(n=="Munction.start"||n=="read"||n=="recv"||n=="sockread"||n=="timeNtp")return{Kind::Unknown,{}};return{Kind::Unknown,{}};
  }
  Type fluent(const MethodCall&m){

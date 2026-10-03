@@ -130,7 +130,7 @@ struct TryStmt:Stmt{std::unique_ptr<Block> body;std::vector<CatchClause> catches
 struct SwitchCase{bool isDefault=false;std::vector<ExprP> labels;std::vector<StmtP> statements;};
 struct SwitchStmt:Stmt{ExprP selector;std::vector<SwitchCase> cases;};
 
-struct Param{std::string type,name; std::vector<annotation::Annotation> annotations; std::vector<annotation::Annotation> typeAnnotations;};
+struct Param{std::string type,name; std::vector<annotation::Annotation> annotations{}; std::vector<annotation::Annotation> typeAnnotations{};};
 struct Method {
     std::string retType,name;
     std::vector<Param> params;

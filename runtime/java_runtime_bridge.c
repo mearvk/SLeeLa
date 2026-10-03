@@ -26,26 +26,33 @@ int sleela_java_runtime_bridge_prepare(
 
     /* Process creation and platform-specific argument escaping remain with
        the existing launcher/provider; this layer does not invoke a shell. */
+    int cmd_len;
     if (request->source_file && request->source_file[0]) {
         if (args[0]) {
-            snprintf(plan->command, sizeof(plan->command),
+            cmd_len = snprintf(plan->command, sizeof(plan->command),
                      "%s %s %s",
                      request->java_executable, request->source_file, args);
         } else {
-            snprintf(plan->command, sizeof(plan->command),
+            cmd_len = snprintf(plan->command, sizeof(plan->command),
                      "%s %s",
                      request->java_executable, request->source_file);
         }
     } else if (args[0]) {
-        snprintf(plan->command, sizeof(plan->command),
+        cmd_len = snprintf(plan->command, sizeof(plan->command),
                  "%s -cp %s %s %s",
                  request->java_executable, classpath,
                  request->main_class, args);
     } else {
-        snprintf(plan->command, sizeof(plan->command),
+        cmd_len = snprintf(plan->command, sizeof(plan->command),
                  "%s -cp %s %s",
                  request->java_executable, classpath,
                  request->main_class);
+    }
+    /* Reject a truncated command line rather than returning a silently
+       malformed one (snprintf returns the length it would have written). */
+    if (cmd_len < 0 || (size_t)cmd_len >= sizeof(plan->command)) {
+        memset(plan, 0, sizeof(*plan));
+        return -1;
     }
 
     copy_text(plan->sample_input, sizeof(plan->sample_input),

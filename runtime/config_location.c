@@ -21,10 +21,13 @@ static int is_absolute_path(const char *path) {
 static int join_path(char *dst, size_t cap, const char *base, const char *leaf) {
     if (!dst || cap == 0 || !base || !base[0] || !leaf || !leaf[0]) return 0;
 #ifdef _WIN32
-    snprintf(dst, cap, "%s\\%s", base, leaf);
+    int w = snprintf(dst, cap, "%s\\%s", base, leaf);
 #else
-    snprintf(dst, cap, "%s/%s", base, leaf);
+    int w = snprintf(dst, cap, "%s/%s", base, leaf);
 #endif
+    /* snprintf returns the length it *would* have written; a value >= cap means
+       the joined path was truncated and must not be treated as a valid path. */
+    if (w < 0 || (size_t)w >= cap) { dst[0] = '\0'; return 0; }
     return dst[0] != '\0';
 }
 void sleela_config_location_defaults(SLEELA_CONFIG_LOCATION *location) {

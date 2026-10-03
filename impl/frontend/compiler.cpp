@@ -497,9 +497,11 @@ private:
         return false;
     }
     void emitCall(const Call& c){ if(protectedMethods_.count(c.callee) && methodOwner_[c.callee]!=currentClass_) throw std::runtime_error("protected method access denied");
-        if(tryEmitBuiltin(c))return; auto it=funcIndex_.find(c.callee); if(it==funcIndex_.end())throw std::runtime_error("Semantic error: call to unknown method '"+c.callee+"'");
+        if(tryEmitBuiltin(c)){return;}
+        auto it=funcIndex_.find(c.callee); if(it==funcIndex_.end())throw std::runtime_error("Semantic error: call to unknown method '"+c.callee+"'");
         const Method* target=methods_[it->second].method; if((int)c.args.size()!=(int)target->params.size())throw std::runtime_error("Semantic error: method '"+c.callee+"' expects "+std::to_string(target->params.size())+" argument(s), got "+std::to_string(c.args.size()));
-        for(const auto&a:c.args)emitExpr(a.get());emit(OP_CALL,it->second);
+        for(const auto&a:c.args){emitExpr(a.get());}
+        emit(OP_CALL,it->second);
     }
 };
 

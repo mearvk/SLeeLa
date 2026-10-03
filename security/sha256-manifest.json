@@ -99,7 +99,7 @@
     },
     {
       "path": "impl/core/sleela_core.c",
-      "sha256": "b62d1cd3a7fefe05bc1906208bd5d5092aa0667e7c886aebf74a1eac38184acb"
+      "sha256": "91fdc39090b1f9101516fc18ddb4c160bfca9ea7c65790575229bbf49d276b86"
     },
     {
       "path": "impl/core/sleela_core.h",
@@ -211,7 +211,7 @@
     },
     {
       "path": "impl/core/sleela_platform.c",
-      "sha256": "0c583b51a365ebd74af38eee1532c3865a991667a8cd9c7c6be40a85214c95af"
+      "sha256": "c7cdf0c40814c2f2b17f56457b4a937dd156a56e0a3efa1d73a7f1e5fef7d701"
     },
     {
       "path": "impl/core/sleela_platform.h",
@@ -259,7 +259,7 @@
     },
     {
       "path": "impl/core/sleela_time.c",
-      "sha256": "c26ef18f735c90dc86689b4cdcbb46ef87721bbd905ddb62cca10c15b4abc8fa"
+      "sha256": "1c56d86c40e963f64fa7fde9f2159d521ae769c6e999ca05e6ec7fe17ec98cc9"
     },
     {
       "path": "impl/core/sleela_time.h",
@@ -307,11 +307,11 @@
     },
     {
       "path": "impl/frontend/ast.h",
-      "sha256": "dad9088d65b5b500de473a1a6806f567fc1832cf66e787dc7468cfbabe7b09b3"
+      "sha256": "41d02bae7c3ab604fdc5f8c47252ec784e30f7408c45a797452aa773894b01b0"
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "d55ebe10e0eaab5b930f8fe61e7ac06f45958cfd5a6f2e560b1d431853eebb83"
+      "sha256": "be7cf5fcc48db47915bc0feec0fbf7d7df76a9593ff559db692d2f52d706cfc2"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -319,7 +319,7 @@
     },
     {
       "path": "impl/frontend/driver.cpp",
-      "sha256": "4e297bba61d0d32596349a81fd01a2d214af5b8f573ccd593d1ad2c3e4880f32"
+      "sha256": "4484606df32dfe5d27aa3fd307968ad1b1e7421ed5301188f5f747c21079dd1e"
     },
     {
       "path": "impl/frontend/dynamite.cpp",
@@ -399,7 +399,7 @@
     },
     {
       "path": "impl/frontend/semantic.cpp",
-      "sha256": "9a21539cb2d6392e56b4459126ef626f3e5d238c7b8fa511a57394d8cda3a537"
+      "sha256": "31d08fb02aa55c10eb4a0bace4810fa431c192b39f791e4f6e50b4d8b36ad968"
     },
     {
       "path": "impl/frontend/semantic.h",
@@ -667,7 +667,7 @@
     },
     {
       "path": "runtime/garbage_collector.c",
-      "sha256": "c9f0c75a03968f0eacf167ae3ae2a99a5eb60c68fe6f8a9deae0d424055c2be0"
+      "sha256": "c06acb926dc32f465e4f57cf7d0c4cafca56794e5cdadd8880ef7f5538ada8ae"
     },
     {
       "path": "runtime/garbage_collector.h",
