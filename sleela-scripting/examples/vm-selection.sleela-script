@@ -1,0 +1,8 @@
+script "vm-selection"
+
+let requested = 11
+print("requested VM = " + requested)
+
+# The host decides whether this capability is permitted.
+vm.select(requested)
+print("VM selection requested")
