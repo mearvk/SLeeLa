@@ -99,3 +99,9 @@ The long-term execution path is:
 
 The scripting runtime must use the same unified configuration resolver as the
 rest of SLeeLa.
+
+## Turing 5 profile
+
+The current advanced scripting profile is documented in [TURING-5.md](TURING-5.md). It adds a Turing-complete temporary-work model with first-class scientific and engineering computation, calculus, definitions, lookups, typed object-state inspection, known-variable access, controlled object updates, careful result queues, VM condition channels, master sequence indexes/IDs, pause/yield controls, and finite timeouts from seconds through days.
+
+Supporting contracts: [SCIENCE.md](SCIENCE.md), [OBJECT-STATE.md](OBJECT-STATE.md), [CONTROL.md](CONTROL.md), [TIMEOUTS.md](TIMEOUTS.md), [TYPE-SYSTEM.md](TYPE-SYSTEM.md), and [INTEGRATION.md](INTEGRATION.md).
