@@ -153,6 +153,23 @@ host and adjusts link flags per platform.
   sprawling ~4000-block city onto the Phraign frame per pixel, viewed from the
   top at a slight side angle, with a config-driven viewpoint, `green`/`white`/
   `blue` themes, and per-user models that save to GitHub or a public server.
+- [`website-generator/`](website-generator/) builds custom websites from a
+  **design** (theme, palette, an `energy` "exciting" dial, layout grammar) and
+  an ordered list of semantic **signs** (hero, feature, cta, footer, …). The
+  SLeeLa generator (`website-generator/website/*.sleela`) emits a self-contained
+  HTML + CSS site; a JavaFX **Website Studio** under
+  [`website-generator/gui/`](website-generator/gui/) lets users/developers
+  hand-design and live-preview a site. See
+  [`website-generator/README.md`](website-generator/README.md) and
+  [`website-generator/DESIGN.md`](website-generator/DESIGN.md).
+- [`autocad/`](autocad/) takes **descriptions, dimensions, plans, and notes** and
+  renders the output as an AutoCAD **DXF** drawing (opens in AutoCAD / LibreCAD).
+  The SLeeLa renderer (`autocad/cad/*.sleela`) parses a plan, evaluates the
+  geometry, and emits DXF; a JavaFX **AutoCAD Studio** under
+  [`autocad/gui/`](autocad/gui/) provides plan entry and an on-screen geometry
+  preview. See [`autocad/README.md`](autocad/README.md) and
+  [`autocad/FORMAT.md`](autocad/FORMAT.md). Both studios follow the repository
+  rule *JavaFX presents; SLeeLa decides* ([`JavaFX.md`](JavaFX.md)).
 
 ## COORENAGRAPH — Design and Protocol Foundation
 

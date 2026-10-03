@@ -1,0 +1,19 @@
+# starter.site -- a sample site description for the SLeeLa Website Generator.
+#
+# A .site file is a front-end-friendly description: one design line followed by
+# an ordered list of signs. The generator (website/site.sleela) consumes the
+# same shape programmatically; this file documents the authoring format a CLI
+# or the JavaFX GUI can read/write.
+#
+# Format:
+#   design <preset> [key=value ...]
+#   sign <kind> | slotA | slotB | slotC
+# Lines beginning with '#' are comments.
+
+design neon energy=95 accent=#22d3ee
+
+sign nav     | Lumen | Features &nbsp; Pricing &nbsp; Contact |
+sign hero    | Launch something unforgettable | A website generated from design intent and semantic signs. | Start building
+sign feature | Why it works | Design-driven; Sign-based; Zero dependencies |
+sign cta     | Ready to generate your site? | Open the Studio | #studio
+sign footer  | Lumen | Made with the SLeeLa Website Generator |

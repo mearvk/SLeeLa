@@ -46,8 +46,24 @@ The 69 tracked build-control files cover:
 - Server edition
 - Skya drivers/native components
 - tests/ and video/
+- Application subsystems: website-generator/ and autocad/ (each with a driver Makefile and a JavaFX GUI Maven module under its gui/)
 
 .mk fragments such as the HTTP negotiation.mk files are included in the 69-file control inventory.
+
+## Application subsystem build surfaces
+
+Two application subsystems add their own driver Makefiles plus a JavaFX GUI
+Maven module. Each Makefile only *dispatches* into the authoritative SLeeLa
+source (it runs the SLeeLa runtime on the subsystem's `.sleela` entry point and
+captures the output); the GUI module builds with Maven like `audio/gui/`.
+
+| Subsystem | Driver Makefile | SLeeLa entry | GUI module |
+|---|---|---|---|
+| `website-generator/` | `website-generator/Makefile` (`make generate` → `out/index.html`) | `website/site.sleela` | `website-generator/gui/pom.xml` |
+| `autocad/` | `autocad/Makefile` (`make render` → `out/drawing.dxf`) | `cad/render.sleela` | `autocad/gui/pom.xml` |
+
+These dispatchers follow the same ownership model as the rest of the inventory:
+the subsystem's SLeeLa source and the GUI `pom.xml` remain authoritative.
 
 ## Repository-level dispatcher
 

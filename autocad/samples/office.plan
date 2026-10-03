@@ -1,0 +1,26 @@
+# office.plan -- a sample plan for the SLeeLa AutoCAD Renderer.
+#
+# Description, dimensions, plan, and notes in one line-oriented file. The
+# renderer (cad/render.sleela) evaluates these directives into geometry and
+# emits an AutoCAD DXF drawing. See FORMAT.md for the full directive table.
+
+title Office Floor — preliminary
+units mm
+
+# Rooms (name W H), each placed at the current insertion point.
+at   0 0
+room Lobby 6000 4000
+
+at   6000 0
+room Office 4000 4000
+
+# A 900 mm door opening on the shared wall.
+door 6000 1500 900
+
+# Dimensions (x1 y1 x2 y2): overall width, and lobby depth.
+dim  0 -600 10000 -600
+dim  -600 0 -600 4000
+
+# Notes / annotations.
+note Fire exit on north wall
+note All dimensions in millimetres
