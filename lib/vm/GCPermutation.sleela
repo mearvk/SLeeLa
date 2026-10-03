@@ -1,0 +1,9 @@
+#sleela 1.3
+class GCPermutation {
+    String generationPolicy;
+    String markingPolicy;
+    String barrierPolicy;
+    String rootPolicy;
+    String resourcePolicy;
+    String relocationPolicy;
+}
