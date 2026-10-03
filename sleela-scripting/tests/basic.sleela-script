@@ -1,0 +1,16 @@
+script "basic"
+
+let x = 2
+let y = 3
+
+if x + y == 5 {
+    print("PASS")
+} else {
+    print("FAIL")
+}
+
+fn twice(value) {
+    return value * 2
+}
+
+print(twice(4))
