@@ -489,16 +489,17 @@ static SLGCObject *struct_gc_object(SLVM *vm, int h) {
 static void gc_mark_value(SLVM *vm, GarbageCollector *gc, SLValue v) {
     if (!vm || !gc || v.type != SL_STRUCT || !struct_valid_handle(vm, v.as.h)) return;
     SLGCObject *o = struct_gc_object(vm, v.as.h);
-    if (o) {
-        gc_mark(gc, o);
-        SLStructInstance *si = &vm->structs[v.as.h];
-        for (int i = 0; i < SL_MAX_STRUCT_FIELDS; ++i)
-            if (si->fields[i].type == SL_STRUCT)
-                gc_mark_value(vm, gc, si->fields[i]);
-    }
+    if (!o || o->marked) return;
+    gc_mark(gc, o);
+    SLStructInstance *si = &vm->structs[v.as.h];
+    for (int i = 0; i < SL_MAX_STRUCT_FIELDS; ++i)
+        if (si->fields[i].type == SL_STRUCT)
+            gc_mark_value(vm, gc, si->fields[i]);
 }
+typedef struct { SLVM *vm; SLThread *current; } SLGCRootContext;
 static void gc_mark_vm_roots(GarbageCollector *gc, void *context) {
-    SLVM *vm = (SLVM *)context;
+    SLGCRootContext *roots = (SLGCRootContext *)context;
+    SLVM *vm = roots ? roots->vm : NULL;
     if (!vm) return;
     pthread_mutex_lock(&vm->global_mtx);
     for (int i = 0; i < vm->nglobal; ++i) gc_mark_value(vm, gc, vm->globals[i]);
@@ -509,19 +510,15 @@ static void gc_mark_vm_roots(GarbageCollector *gc, void *context) {
         if (vm->mailbox[i].has) gc_mark_value(vm, gc, vm->mailbox[i].value);
         pthread_mutex_unlock(&vm->mailbox[i].mtx);
     }
-    pthread_mutex_lock(&vm->thr_mtx);
-    for (int i = 0; i < vm->nthreads; ++i) {
-        SLThread *t = vm->threads[i];
-        if (!t) continue;
-        for (int j = 0; j < t->sp; ++j) gc_mark_value(vm, gc, t->stack[j]);
+    if (roots && roots->current) {
+        for (int j = 0; j < roots->current->sp; ++j) gc_mark_value(vm, gc, roots->current->stack[j]);
     }
-    pthread_mutex_unlock(&vm->thr_mtx);
 }
 static void gc_struct_destroy(void *payload) {
     SLStructInstance *si = (SLStructInstance *)payload;
     if (si) { si->active = 0; si->gc_object = NULL; }
 }
-static void slvm_gc_safepoint(SLVM *vm, size_t budget) {
+static void slvm_gc_safepoint(SLVM *vm, SLThread *current, size_t budget) {
     if (!vm) return;
     pthread_mutex_lock(&vm->thr_mtx);
     int workers = vm->nthreads;
@@ -534,7 +531,7 @@ static void slvm_gc_safepoint(SLVM *vm, size_t budget) {
         if (vm->gc.phase == SLGC_MARKING)
             (void)gc_step(&vm->gc, budget);
         else if (vm->gc.bytes_allocated >= vm->gc.bytes_threshold)
-            (void)gc_collect_with_roots(&vm->gc, gc_mark_vm_roots, vm, 1);
+            SLGCRootContext roots = { vm, current };\n            (void)gc_collect_with_roots(&vm->gc, gc_mark_vm_roots, &roots, 1);
     }
 }
 
@@ -778,7 +775,7 @@ static SLResult run_thread(SLThread* t) {
     for (;;) {
         if (ip < 0 || ip >= vm->codelen) TERR("ip out of range");
         SLInstr in = vm->code[ip++];
-        slvm_gc_safepoint(vm, 4);
+        slvm_gc_safepoint(vm, t, 4);
         switch (in.op) {
         case OP_NOP: break;
         case OP_HALT: return SLR_HALT;
