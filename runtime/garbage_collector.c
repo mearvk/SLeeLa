@@ -93,9 +93,10 @@ void gc_safepoint(GarbageCollector *g,size_t budget){
 void gc_safepoint_with_roots(GarbageCollector *g,SLGCMarkRootsFn roots,void *ctx,int young_only,size_t budget){
     if(!g||!g->initialized)return;
     if(g->phase==SLGC_IDLE && g->bytes_allocated>=g->bytes_threshold){
-        clear_marks(g);g->phase=SLGC_MARKING;g->collecting_young=young_only?1:0;
+        int do_young = young_only && ((g->young_collections + 1u) % 8u != 0u);
+        clear_marks(g);g->phase=SLGC_MARKING;g->collecting_young=do_young?1:0;
         if(roots)roots(g,ctx);for(size_t i=0;i<g->root_count;i++)mark_internal(g,g->roots[i]);
-        if(young_only)for(size_t i=0;i<g->remembered_count;i++)mark_internal(g,g->remembered[i]);
+        if(g->collecting_young)for(size_t i=0;i<g->remembered_count;i++)mark_internal(g,g->remembered[i]);
     }
     if(g->phase==SLGC_MARKING){gc_step(g,budget?budget:g->target_step_work);return;}
     if(g->phase==SLGC_SWEEPING){(void)sweep(g);++g->collections;if(g->collecting_young)++g->young_collections;}
