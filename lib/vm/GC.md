@@ -17,7 +17,7 @@ The native collector is a stable-handle, non-moving, generational incremental tr
 
 The design intentionally does not relocate objects. Current SLeeLa values expose VM-local handles, so stable handles avoid pointer relocation while still providing generational and incremental collection.
 
-Modern production collectors use the same broad concepts: generational allocation, incremental work, remembered sets, safepoints, and SATB-style barriers. Java HotSpot G1 is explicitly generational and incremental and uses remembered sets and SATB marking; LLVM documents safepoints and barriers as compiler/runtime contracts. citeturn11search0turn6search3
+Modern production collectors use the same broad concepts: generational allocation, incremental work, remembered sets, safepoints, and SATB-style barriers. Java HotSpot G1 is explicitly generational and incremental and uses remembered sets and SATB marking; LLVM documents safepoints and barriers as compiler/runtime contracts.
 
 ## Native and C++ layers
 
