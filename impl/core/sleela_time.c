@@ -75,7 +75,7 @@ const char* sltime_location_country(void){return g_country[0]?g_country:"??";}
 int sltime_sample(SLTimeSample* s){
  if(!s)return EINVAL;memset(s,0,sizeof(*s));s->utc_ms=sltime_utc_millis();s->monotonic_ns=sltime_monotonic_nanos();
  s->source=SL_TIME_SOURCE_SYSTEM;s->uncertainty_us=1000;strncpy(s->country,sltime_location_country(),sizeof(s->country)-1);s->country[sizeof(s->country)-1]=0;
- strncpy(s->timezone,sltime_location_timezone(),sizeof(s->timezone)-1);return s->utc_ms<0?EIO:0;
+ strncpy(s->timezone,sltime_location_timezone(),sizeof(s->timezone)-1);s->timezone[sizeof(s->timezone)-1]=0;return s->utc_ms<0?EIO:0;
 }
 static uint64_t ntp64_to_us(uint32_t sec,uint32_t frac){return (uint64_t)sec*1000000ULL+((uint64_t)frac*1000000ULL>>32);}
 static void us_to_ntp64(uint64_t unix_us,uint32_t* sec,uint32_t* frac){*sec=(uint32_t)(unix_us/1000000ULL+2208988800ULL);*frac=(uint32_t)(((unix_us%1000000ULL)<<32)/1000000ULL);}
@@ -119,7 +119,7 @@ int sltime_send_raw_time(const char* host,uint16_t port,uint8_t marker,uint32_t 
         sample->uncertainty_us=1000;sample->stratum=0;
         strncpy(sample->source_host,host,sizeof(sample->source_host)-1);
         strncpy(sample->country,sltime_location_country(),sizeof(sample->country)-1);sample->country[sizeof(sample->country)-1]=0;
-        strncpy(sample->timezone,sltime_location_timezone(),sizeof(sample->timezone)-1);
+        strncpy(sample->timezone,sltime_location_timezone(),sizeof(sample->timezone)-1);sample->timezone[sizeof(sample->timezone)-1]=0;
         freeaddrinfo(res);return 0;
     }
     freeaddrinfo(res);return EIO;
@@ -156,7 +156,7 @@ int sltime_query_ntp(const char* host,uint32_t timeout_ms,SLTimeSample* sample){
      sample->utc_ms=(int64_t)(t4/1000ULL)+theta/1000;sample->monotonic_ns=sltime_monotonic_nanos();sample->utc_offset_ms=theta/1000;
      sample->uncertainty_us=(uint64_t)(delay>0?delay/2:0);sample->source=SL_TIME_SOURCE_NTP;sample->stratum=packet[1];
      strncpy(sample->source_host,host,sizeof(sample->source_host)-1);strncpy(sample->country,sltime_location_country(),sizeof(sample->country)-1);sample->country[sizeof(sample->country)-1]=0;
-     strncpy(sample->timezone,sltime_location_timezone(),sizeof(sample->timezone)-1);result=0;}}
+     strncpy(sample->timezone,sltime_location_timezone(),sizeof(sample->timezone)-1);sample->timezone[sizeof(sample->timezone)-1]=0;result=0;}}
   }
 #ifdef _WIN32
   closesocket(s);
