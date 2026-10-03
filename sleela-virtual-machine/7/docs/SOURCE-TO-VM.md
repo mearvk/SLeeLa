@@ -38,3 +38,7 @@ Each VM generation participates in `/lib/vm/RUNTIME-SERVICES.md`. These are cons
 The existing 98-opcode ISA supplies the direct networking, socket, file, pipe, FIFO, threading, synchronization, and asynchronous primitives. GC, ownership, cancellation, deadlines, resource epochs, and teardown remain runtime services rather than hidden opcodes.
 
 Generation-specific additions may strengthen validation or recovery, but SLVM/1 through SLVM/11 preserve these resource-lifetime and source-semantics invariants.
+
+### Common Garbage Collection Service
+
+This VM generation consumes the shared SLeeLa GC contract: stable handles, young/old generations, incremental tri-colour marking, explicit roots, safepoints, SATB-style pre-write protection, remembered old-to-young references, promotion, and deterministic full collection. Native resources remain under the separate ownership and teardown contract.
