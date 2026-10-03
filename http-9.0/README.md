@@ -98,3 +98,16 @@ Conformance and deployment checks should cover:
 ## Relationship to Earlier Generations
 
 HTTP 9.0 is part of the repository's SLeeLa HTTP lineage. It preserves the architectural distinction established by earlier generations: transport mechanisms carry the exchange, while SLeeLa defines its application-level identity, metadata, and protocol behavior. HTTP 9.0 extends that model with structured international security, safety, police, and Dark Band metadata without turning descriptive records into operational authority.
+
+## Unified Route Data
+
+This implementation consumes the SLeeLa unified route-data contract in
+route/ROUTE.DATA.json and route/ROUTE.DATA.md. Route records carry protocol,
+server surface, HTTP generation, VM generation/formal VM name, canonical
+configuration root, route identifier, target/resolution mode, capability,
+transport, port, and status. VM names are architectural metadata only and do
+not grant capabilities. Dynamic targets must use the shared resolver before
+acceptance. The VM identity is: /impl Core, /1 Foundation, /2 Operator,
+/3 Specialist, /4 Supervisor, /5 Manager, /6 Director, /7 Administrator,
+/8 Executive, /9 Authority, /10 Principal, /11 Sovereign.
+
