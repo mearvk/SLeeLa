@@ -4,7 +4,7 @@
 **Repository:** `mearvk/SLeeLa`  
 **Document:** `VM.SUMMARY.md`  
 **Status:** Architectural reference  
-**Scope:** The eight numbered SLeeLa virtual-machine generations currently represented by the repository, plus the authoritative `/impl` execution core
+**Scope:** The eleven numbered SLeeLa virtual-machine generations currently represented by the repository, plus the authoritative `/impl` execution core
 
 ---
 
@@ -12,7 +12,7 @@
 
 This document establishes a single architectural view of the SLeeLa Virtual Machine (SLVM) family.
 
-The repository currently contains **nine discrete VM generations or execution architectures** when the authoritative operational VM in `/impl` is considered together with the eight numbered generations under `/sleela-virtual-machine`.
+The repository currently contains **twelve discrete VM generations or execution architectures** when the authoritative operational VM in `/impl` is considered together with the eight numbered generations under `/sleela-virtual-machine`.
 
 These generations are related, but they are not equivalent independent interpreters. The current architecture is better understood as:
 
@@ -309,7 +309,7 @@ SLVM/8
 
 ## XI. What the Seven VMs Do Not Mean
 
-The existence of seven generations does **not** mean that SLeeLa requires seven unrelated language interpreters.
+The existence of eleven generations does **not** mean that SLeeLa requires seven unrelated language interpreters.
 
 The architectural objective is the opposite.
 
@@ -691,3 +691,28 @@ The resulting path is:
     SLeeLa Source -> Compiler -> Artifact -> SLVM/8 Admission/Supervision -> SLVM/9 Filesystem Abstraction Layer -> OS Adapter -> Native Filesystem
 
 Central invariant: a filesystem may only provide the guarantees it can actually demonstrate. Durability, atomicity, recovery, contextual identity, native handles, and transactions are separately discoverable capabilities. Unknown or unsupported features are denied rather than guessed.
+
+
+---
+
+## XXI. SLVM/10 — Verified Storage Execution
+
+SLVM/10 composes the SLVM/9 filesystem boundary into a verified storage execution layer. Storage identity, filesystem generation, adapter qualification, policy state, and requested operation must agree before an operation is accepted.
+
+Its filesystem-module contract is shared with SLVM/9 and SLVM/11. TAC3 is the first standardized module and uses the same machine-readable definition in all three generations.
+
+## XXII. SLVM/11 — Filesystem-Module Host
+
+SLVM/11 establishes a dedicated extension point for filesystem definitions and structures at `/sleela-virtual-machine/11/file-system/modules/<module-id>/`. Modules are discovered by versioned module ID and schema rather than by pathname or guessed filesystem family. Module presence does not grant SLeeLa capability.
+
+## XXIII. Standardized TAC3 Module
+
+SLVM/9, SLVM/10, and SLVM/11 now contain the same formulaic TAC3 module structure:
+
+    file-system/
+      modules/
+        tac3/
+          MODULE.md
+          tac3.definition.json
+
+The machine-readable `tac3.definition.json` is byte-identical across all three generations. The definition carries the TAC3 v1.0 format, 4096-byte block size, CRC32C integrity, persistent regions, 33-stat contextual identity model, authority notation, memory/swap policy, optional FAT model, boot/recovery sequence, persistence status, and VM integration rules. Generation-specific C headers provide the validation adapter while the filesystem data remains one contract.
