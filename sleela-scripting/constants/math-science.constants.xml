@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<demesresmes-constants registry="sleela.constant.registry/1" language="Demesresmes" languageMark="™" version="1.0" dataset="CODATA-2022-plus-mathematical-reference">
+  <constant name="math.pi" category="mathematics" symbol="π" numericType="real" exact="false" unit="1" source="mathematical-definition">
+    <alias>pi</alias><alias>π</alias>
+    <value>3.14159265358979323846264338327950288419716939937510</value>
+    <description>Ratio of a circle's circumference to its diameter.</description>
+  </constant>
+  <constant name="math.tau" category="mathematics" symbol="τ" numericType="real" exact="false" unit="1" source="mathematical-definition">
+    <alias>tau</alias><alias>τ</alias>
+    <value>6.28318530717958647692528676655900576839433879875021</value>
+    <description>2π.</description>
+  </constant>
+  <constant name="math.euler" category="mathematics" symbol="e" numericType="real" exact="false" unit="1" source="mathematical-definition">
+    <alias>euler</alias><alias>e</alias>
+    <value>2.71828182845904523536028747135266249775724709369995</value>
+    <description>Base of the natural logarithm.</description>
+  </constant>
+  <constant name="math.sqrt2" category="mathematics" symbol="√2" numericType="real" exact="false" unit="1" source="mathematical-definition">
+    <alias>sqrt2</alias><alias>√2</alias>
+    <value>1.41421356237309504880168872420969807856967187537695</value>
+  </constant>
+  <constant name="math.phi" category="mathematics" symbol="φ" numericType="real" exact="false" unit="1" source="mathematical-definition">
+    <alias>phi</alias><alias>φ</alias><alias>golden_ratio</alias>
+    <value>1.61803398874989484820458683436563811772030917980576</value>
+  </constant>
+  <constant name="physics.speed_of_light" category="physics" symbol="c" numericType="real" exact="true" unit="m/s" source="NIST-CODATA-2022">
+    <alias>c</alias><alias>speed_of_light</alias><value>299792458</value>
+  </constant>
+  <constant name="physics.planck" category="physics" symbol="h" numericType="real" exact="true" unit="J*s" source="NIST-CODATA-2022">
+    <alias>h</alias><alias>planck</alias><value>6.62607015e-34</value>
+  </constant>
+  <constant name="physics.reduced_planck" category="physics" symbol="ℏ" numericType="real" exact="true" unit="J*s" source="NIST-CODATA-2022">
+    <alias>hbar</alias><alias>ℏ</alias><value>1.054571817e-34</value>
+    <note>Decimal display is rounded; CODATA defines this value from h and 2π.</note>
+  </constant>
+  <constant name="physics.elementary_charge" category="physics" symbol="e" numericType="real" exact="true" unit="C" source="NIST-CODATA-2022">
+    <alias>elementary_charge</alias><alias>e_charge</alias><value>1.602176634e-19</value>
+  </constant>
+  <constant name="physics.boltzmann" category="physics" symbol="k_B" numericType="real" exact="true" unit="J/K" source="NIST-CODATA-2022">
+    <alias>k_B</alias><alias>boltzmann</alias><value>1.380649e-23</value>
+  </constant>
+  <constant name="physics.avogadro" category="chemistry" symbol="N_A" numericType="real" exact="true" unit="1/mol" source="NIST-CODATA-2022">
+    <alias>N_A</alias><alias>avogadro</alias><value>6.02214076e23</value>
+  </constant>
+  <constant name="physics.newtonian_gravitational_constant" category="physics" symbol="G" numericType="real" exact="false" unit="m^3/(kg*s^2)" source="NIST-CODATA-2022" relativeStandardUncertainty="2.2e-5">
+    <alias>G</alias><alias>gravity_constant</alias><value>6.67430e-11</value>
+  </constant>
+  <constant name="physics.fine_structure" category="physics" symbol="α" numericType="real" exact="false" unit="1" source="NIST-CODATA-2022" relativeStandardUncertainty="1.6e-10">
+    <alias>alpha</alias><alias>α</alias><value>0.0072973525643</value>
+  </constant>
+  <constant name="chemistry.molar_gas" category="chemistry" symbol="R" numericType="real" exact="true" unit="J/(mol*K)" source="NIST-CODATA-2022">
+    <alias>R</alias><alias>gas_constant</alias><value>8.314462618</value>
+  </constant>
+  <constant name="chemistry.faraday" category="chemistry" symbol="F" numericType="real" exact="true" unit="C/mol" source="NIST-CODATA-2022">
+    <alias>F</alias><alias>faraday</alias><value>96485.33212</value>
+  </constant>
+  <constant name="physics.stefan_boltzmann" category="physics" symbol="σ" numericType="real" exact="true" unit="W/(m^2*K^4)" source="NIST-CODATA-2022">
+    <alias>sigma</alias><alias>σ</alias><alias>stefan_boltzmann</alias><value>5.670374419e-8</value>
+  </constant>
+  <constant name="physics.atomic_mass_constant" category="physics" symbol="m_u" numericType="real" exact="false" unit="kg" source="NIST-CODATA-2022" relativeStandardUncertainty="3.1e-10">
+    <alias>m_u</alias><alias>atomic_mass_unit</alias><value>1.66053906892e-27</value>
+  </constant>
+  <constant name="physics.electron_volt" category="physics" symbol="eV" numericType="real" exact="true" unit="J" source="NIST-CODATA-2022">
+    <alias>eV</alias><alias>electron_volt</alias><value>1.602176634e-19</value>
+  </constant>
+  <constant name="engineering.standard_gravity" category="engineering" symbol="g₀" numericType="real" exact="true" unit="m/s^2" source="SI-conventional-reference">
+    <alias>g0</alias><alias>standard_gravity</alias><value>9.80665</value>
+  </constant>
+</demesresmes-constants>
