@@ -81,4 +81,7 @@ int sleela_config_location_resolve(SLEELA_CONFIG_LOCATION *location,
     }
     return 0;
 }
-const char *sleela_config_location_root(const SLEELA_CONFIG_LOCATION *location);
+const char *sleela_config_location_root(const SLEELA_CONFIG_LOCATION *location) {
+    return location ? location->config_root : NULL;
+}
+
