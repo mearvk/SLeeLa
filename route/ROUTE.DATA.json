@@ -1,0 +1,40 @@
+{
+  "schema": "sleela.route.data",
+  "schema_version": "1.0",
+  "authority": "SLeeLa",
+  "config_root": "config/sleela.conf",
+  "vm_generations": [
+    {"path":"/impl","name":"Core","generation":0},
+    {"path":"/1","name":"Foundation","generation":1},
+    {"path":"/2","name":"Operator","generation":2},
+    {"path":"/3","name":"Specialist","generation":3},
+    {"path":"/4","name":"Supervisor","generation":4},
+    {"path":"/5","name":"Manager","generation":5},
+    {"path":"/6","name":"Director","generation":6},
+    {"path":"/7","name":"Administrator","generation":7},
+    {"path":"/8","name":"Executive","generation":8},
+    {"path":"/9","name":"Authority","generation":9},
+    {"path":"/10","name":"Principal","generation":10},
+    {"path":"/11","name":"Sovereign","generation":11}
+  ],
+  "route_fields": ["protocol","server_surface","http_generation","vm_generation","vm_name","config_root","route_id","target","resolution_mode","capability","transport","port","status"],
+  "http_generations": [
+    {"protocol":"HTTP/1.0","server_surface":"http-1.0","http_generation":"1.0","vm_generation":1,"vm_name":"Foundation"},
+    {"protocol":"HTTP/2.0","server_surface":"http-2.0","http_generation":"2.0","vm_generation":2,"vm_name":"Operator"},
+    {"protocol":"HTTP/3.0","server_surface":"http-3.0","http_generation":"3.0","vm_generation":3,"vm_name":"Specialist"},
+    {"protocol":"HTTP/4.0","server_surface":"http-4.0","http_generation":"4.0","vm_generation":4,"vm_name":"Supervisor"},
+    {"protocol":"HTTP/5.0","server_surface":"http-5.0","http_generation":"5.0","vm_generation":5,"vm_name":"Manager"},
+    {"protocol":"HTTP/6.0","server_surface":"http-6.0","http_generation":"6.0","vm_generation":6,"vm_name":"Director"},
+    {"protocol":"HTTP/7.0","server_surface":"http-7.0","http_generation":"7.0","vm_generation":7,"vm_name":"Administrator"},
+    {"protocol":"HTTP/8.0","server_surface":"http-8.0","http_generation":"8.0","vm_generation":8,"vm_name":"Executive"},
+    {"protocol":"HTTP/9.0","server_surface":"http-9.0","http_generation":"9.0","vm_generation":9,"vm_name":"Authority"}
+  ],
+  "standalone_servers": [
+    {"surface":"server-edition","vm_generation":0,"vm_name":"Core"},
+    {"surface":"http-servers/1","vm_generation":1,"vm_name":"Foundation"},
+    {"surface":"http-servers/2","vm_generation":2,"vm_name":"Operator"},
+    {"surface":"http-servers/3","vm_generation":3,"vm_name":"Specialist"},
+    {"surface":"api/server","vm_generation":3,"vm_name":"Specialist"},
+    {"surface":"api/webserver","vm_generation":3,"vm_name":"Specialist"}
+  ]
+}
