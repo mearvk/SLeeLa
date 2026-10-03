@@ -53,3 +53,8 @@ Before an artifact is admitted, the manager requires:
 8. execution-test coverage for every emitted instruction family.
 
 The source-side ISA registry currently contains **98 ordered instructions**, and the native SLOp enumeration has been verified to contain the same 98 instructions in exactly the same order. Missing compiler lowering or runtime dispatch remains a completeness failure even when an opcode is present in both registries.
+
+
+## Native compiler implementation
+
+The native compiler implementation is present under `/impl/frontend` (lexer, parser, semantic analysis, compiler/lowering, artifact emission) and is the authoritative implementation behind `impl/build/sleela`. `/lib/compiler` is the SLeeLa-sourced compiler model; it does not duplicate the native frontend. The package build now wires these layers together and runs the recursive `/lib` source + 98-op ISA gate before source compilation.
