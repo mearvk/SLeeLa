@@ -212,8 +212,10 @@ Method Parser::parseMethod(bool isStatic,bool isProtected,unsigned modifiers,std
     expect(Tok::RParen,"')'");parseThrows(m.java.thrownTypes);
     m.body=parseBlock();return m;
 }
-std::unique_ptr<Block> Parser::parseBlock(){expect(Tok::LBrace,"'{'");auto b=std::make_unique<Block>();while(!check(Tok::RBrace)&&!check(Tok::Eof))b->stmts.push_back(parseStatement());expect(Tok::RBrace,"'}'");return b;}
-StmtP Parser::parseStatement(){if(check(Tok::LBrace))return parseBlock();if(accept(Tok::KwIf)){auto s=std::make_unique<IfStmt>();expect(Tok::LParen,"'('");s->cond=parseExpr();expect(Tok::RParen,"')'");s->thenS=parseStatement();if(accept(Tok::KwElse))s->elseS=parseStatement();return s;}if(accept(Tok::KwWhile)){auto s=std::make_unique<WhileStmt>();expect(Tok::LParen,"'('");s->cond=parseExpr();expect(Tok::RParen,"')'");s->body=parseStatement();return s;}if(accept(Tok::KwFor)){auto s=std::make_unique<ForStmt>();expect(Tok::LParen,"'('");if(!check(Tok::Semicolon))s->init=parseSimpleStatement();expect(Tok::Semicolon,"';'");if(!check(Tok::Semicolon))s->cond=parseExpr();expect(Tok::Semicolon,"';'");if(!check(Tok::RParen))s->update=parseSimpleStatement();expect(Tok::RParen,"')'");s->body=parseStatement();return s;}if(accept(Tok::KwReturn)){auto s=std::make_unique<ReturnStmt>();if(!check(Tok::Semicolon))s->value=parseExpr();expect(Tok::Semicolon,"';'");return s;}if(accept(Tok::KwPrint)){auto s=std::make_unique<PrintStmt>();expect(Tok::LParen,"'('");s->expr=parseExpr();expect(Tok::RParen,"')'");expect(Tok::Semicolon,"';'");return s;}StmtP s=parseSimpleStatement();expect(Tok::Semicolon,"';'");return s;}
+// Parse one "simple statement" without its trailing ';': a local variable
+// declaration (`Type name [= expr]`), an assignment to a variable or struct
+// field, or a bare expression statement. Used by parseStatement() and by the
+// for-statement init/update clauses.
 StmtP Parser::parseSimpleStatement(){
     // Declaration: `Type name [= expr]`. A struct type name is a valid Type.
     // Disambiguate from `structVar.field = ...` / `structVar = ...` by requiring
@@ -352,15 +354,31 @@ ExprP Parser::parsePostfix(ExprP base){
     return base;
 }
 
-StmtP Parser::parseBlock(){expect(Tok::LBrace,"'{'");auto b=std::make_unique<Block>();while(!check(Tok::RBrace)&&!check(Tok::Eof))b->statements.push_back(parseStatement());expect(Tok::RBrace,"'}'");return b;}
-StmtP Parser::parseIf(){expect(Tok::KwIf,"'if'");expect(Tok::LParen,"'('");auto s=std::make_unique<IfStmt>();s->condition=parseExpr();expect(Tok::RParen,"')'");s->thenBranch=parseStatement();if(accept(Tok::KwElse))s->elseBranch=parseStatement();return s;}
-StmtP Parser::parseWhile(){expect(Tok::KwWhile,"'while'");expect(Tok::LParen,"'('");auto s=std::make_unique<WhileStmt>();s->condition=parseExpr();expect(Tok::RParen,"')'");s->body=parseStatement();return s;}
-StmtP Parser::parseDo(){expect(Tok::KwDo,"'do'");auto s=std::make_unique<DoStmt>();s->body=parseStatement();expect(Tok::KwWhile,"'while'");expect(Tok::LParen,"'('");s->condition=parseExpr();expect(Tok::RParen,"')'");expect(Tok::Semicolon,"';'");return s;}
-StmtP Parser::parseFor(){expect(Tok::KwFor,"'for'");expect(Tok::LParen,"'('");auto s=std::make_unique<ForStmt>();if(!check(Tok::Semicolon)){s->init.push_back(std::make_unique<ExprStmt>(parseExpr()));while(accept(Tok::Comma))s->init.push_back(std::make_unique<ExprStmt>(parseExpr()));}expect(Tok::Semicolon,"';'");if(!check(Tok::Semicolon))s->condition=parseExpr();expect(Tok::Semicolon,"';'");if(!check(Tok::RParen)){s->update.push_back(parseExpr());while(accept(Tok::Comma))s->update.push_back(parseExpr());}expect(Tok::RParen,"')'");s->body=parseStatement();return s;}
-StmtP Parser::parseSynchronized(){expect(Tok::KwSynchronized,"'synchronized'");expect(Tok::LParen,"'('");auto s=std::make_unique<SynchronizedStmt>();s->monitor=parseExpr();expect(Tok::RParen,"')'");auto b=parseBlock();s->body.reset(static_cast<Block*>(b.release()));return s;}
-StmtP Parser::parseTry(){expect(Tok::KwTry,"'try'");auto s=std::make_unique<TryStmt>();auto b=parseBlock();s->body.reset(static_cast<Block*>(b.release()));while(accept(Tok::KwCatch)){expect(Tok::LParen,"'('");CatchClause c; c.type=expect(Tok::Ident,"exception type").text;c.variable=expect(Tok::Ident,"exception variable").text;expect(Tok::RParen,"')'");auto cb=parseBlock();c.body.reset(static_cast<Block*>(cb.release()));s->catches.push_back(std::move(c));}if(accept(Tok::KwFinally)){auto fb=parseBlock();s->finallyBlock.reset(static_cast<Block*>(fb.release()));}if(s->catches.empty()&&!s->finallyBlock)error("try requires catch or finally");return s;}
+std::unique_ptr<Block> Parser::parseBlock(){expect(Tok::LBrace,"'{'");auto b=std::make_unique<Block>();while(!check(Tok::RBrace)&&!check(Tok::Eof))b->stmts.push_back(parseStatement());expect(Tok::RBrace,"'}'");return b;}
+StmtP Parser::parseIf(){expect(Tok::KwIf,"'if'");expect(Tok::LParen,"'('");auto s=std::make_unique<IfStmt>();s->cond=parseExpr();expect(Tok::RParen,"')'");s->thenS=parseStatement();if(accept(Tok::KwElse))s->elseS=parseStatement();return s;}
+StmtP Parser::parseWhile(){expect(Tok::KwWhile,"'while'");expect(Tok::LParen,"'('");auto s=std::make_unique<WhileStmt>();s->cond=parseExpr();expect(Tok::RParen,"')'");s->body=parseStatement();return s;}
+StmtP Parser::parseDo(){expect(Tok::KwDo,"'do'");auto s=std::make_unique<DoStmt>();s->body=parseStatement();expect(Tok::KwWhile,"'while'");expect(Tok::LParen,"'('");s->cond=parseExpr();expect(Tok::RParen,"')'");expect(Tok::Semicolon,"';'");return s;}
+StmtP Parser::parseFor(){expect(Tok::KwFor,"'for'");expect(Tok::LParen,"'('");auto s=std::make_unique<ForStmt>();if(!check(Tok::Semicolon))s->init=parseSimpleStatement();expect(Tok::Semicolon,"';'");if(!check(Tok::Semicolon))s->cond=parseExpr();expect(Tok::Semicolon,"';'");if(!check(Tok::RParen))s->update=std::make_unique<ExprStmt>(parseExpr());expect(Tok::RParen,"')'");s->body=parseStatement();return s;}
+StmtP Parser::parseSynchronized(){expect(Tok::KwSynchronized,"'synchronized'");expect(Tok::LParen,"'('");auto s=std::make_unique<SynchronizedStmt>();s->monitor=parseExpr();expect(Tok::RParen,"')'");s->body=parseBlock();return s;}
+StmtP Parser::parseTry(){expect(Tok::KwTry,"'try'");auto s=std::make_unique<TryStmt>();s->body=parseBlock();while(accept(Tok::KwCatch)){expect(Tok::LParen,"'('");CatchClause c; c.type=expect(Tok::Ident,"exception type").text;c.variable=expect(Tok::Ident,"exception variable").text;expect(Tok::RParen,"')'");c.body=parseBlock();s->catches.push_back(std::move(c));}if(accept(Tok::KwFinally))s->finallyBlock=parseBlock();if(s->catches.empty()&&!s->finallyBlock)error("try requires catch or finally");return s;}
 StmtP Parser::parseSwitch(){expect(Tok::KwSwitch,"'switch'");expect(Tok::LParen,"'('");auto s=std::make_unique<SwitchStmt>();s->selector=parseExpr();expect(Tok::RParen,"')'");expect(Tok::LBrace,"'{'");while(!check(Tok::RBrace)&&!check(Tok::Eof)){SwitchCase sc;if(accept(Tok::KwDefault)){sc.isDefault=true;expect(Tok::Colon,"':'");}else{expect(Tok::KwCase,"'case'");sc.labels.push_back(parseExpr());while(accept(Tok::Comma))sc.labels.push_back(parseExpr());expect(Tok::Colon,"':'");}while(!check(Tok::KwCase)&&!check(Tok::KwDefault)&&!check(Tok::RBrace)&&!check(Tok::Eof))sc.statements.push_back(parseStatement());s->cases.push_back(std::move(sc));}expect(Tok::RBrace,"'}'");return s;}
 StmtP Parser::parseStatement(){
- if(check(Tok::LBrace))return parseBlock(); if(check(Tok::KwIf))return parseIf(); if(check(Tok::KwWhile))return parseWhile(); if(check(Tok::KwDo))return parseDo(); if(check(Tok::KwFor))return parseFor(); if(check(Tok::KwSynchronized))return parseSynchronized(); if(check(Tok::KwTry))return parseTry(); if(check(Tok::KwBreak)){i_++;BreakStmt*s=new BreakStmt();if(check(Tok::Ident)){s->label=cur().text;i_++;}expect(Tok::Semicolon,"';'");return StmtP(s);} if(check(Tok::KwContinue)){i_++;ContinueStmt*s=new ContinueStmt();if(check(Tok::Ident)){s->label=cur().text;i_++;}expect(Tok::Semicolon,"';'");return StmtP(s);} if(check(Tok::KwReturn)){i_++;auto s=std::make_unique<ReturnStmt>();if(!check(Tok::Semicolon))s->value=parseExpr();expect(Tok::Semicolon,"';'");return s;} if(check(Tok::KwThrow)){i_++;auto s=std::make_unique<ThrowStmt>();s->value=parseExpr();expect(Tok::Semicolon,"';'");return s;} if(check(Tok::KwAssert)){i_++;auto s=std::make_unique<AssertStmt>();s->condition=parseExpr();if(accept(Tok::Colon))s->message=parseExpr();expect(Tok::Semicolon,"';'");return s;} if(check(Tok::KwYield)){i_++;auto s=std::make_unique<YieldStmt>();s->value=parseExpr();expect(Tok::Semicolon,"';'");return s;} auto e=parseExpr();expect(Tok::Semicolon,"';'");return std::make_unique<ExprStmt>(std::move(e));
+ if(check(Tok::LBrace))return parseBlock();
+ if(check(Tok::KwIf))return parseIf();
+ if(check(Tok::KwWhile))return parseWhile();
+ if(check(Tok::KwDo))return parseDo();
+ if(check(Tok::KwFor))return parseFor();
+ if(check(Tok::KwSwitch))return parseSwitch();
+ if(check(Tok::KwSynchronized))return parseSynchronized();
+ if(check(Tok::KwTry))return parseTry();
+ if(check(Tok::KwBreak)){i_++;auto s=std::make_unique<BreakStmt>();if(check(Tok::Ident)){s->label=cur().text;i_++;}expect(Tok::Semicolon,"';'");return s;}
+ if(check(Tok::KwContinue)){i_++;auto s=std::make_unique<ContinueStmt>();if(check(Tok::Ident)){s->label=cur().text;i_++;}expect(Tok::Semicolon,"';'");return s;}
+ if(check(Tok::KwReturn)){i_++;auto s=std::make_unique<ReturnStmt>();if(!check(Tok::Semicolon))s->value=parseExpr();expect(Tok::Semicolon,"';'");return s;}
+ if(check(Tok::KwThrow)){i_++;auto s=std::make_unique<ThrowStmt>();s->value=parseExpr();expect(Tok::Semicolon,"';'");return s;}
+ if(check(Tok::KwAssert)){i_++;auto s=std::make_unique<AssertStmt>();s->cond=parseExpr();if(accept(Tok::Colon))s->message=parseExpr();expect(Tok::Semicolon,"';'");return s;}
+ if(check(Tok::KwYield)){i_++;auto s=std::make_unique<YieldStmt>();s->value=parseExpr();expect(Tok::Semicolon,"';'");return s;}
+ if(accept(Tok::KwPrint)){auto s=std::make_unique<PrintStmt>();expect(Tok::LParen,"'('");s->expr=parseExpr();expect(Tok::RParen,"')'");expect(Tok::Semicolon,"';'");return s;}
+ // Local declaration, assignment, or bare expression statement.
+ StmtP s=parseSimpleStatement();expect(Tok::Semicolon,"';'");return s;
 }
 } // namespace sleela

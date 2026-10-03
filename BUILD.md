@@ -301,3 +301,17 @@ Both packages use explicit native reference catalogs:
 The catalogs map language names to common producer programs, versions, source forms, IR/object models, and known binary/executable/package formats such as ELF, PE/COFF, Mach-O, JVM class/JAR, .NET assemblies, BEAM, Lua bytecode, WebAssembly, LLVM bitcode, and raw/unknown binaries.
 
 These are safety-aware reference data. Extensions, magic values, compiler strings, and format matches are evidence rather than authorization. The compiler and decompiler must inspect untrusted artifacts without executing them, preserve conflicting evidence, distinguish managed artifacts from native machine code, and keep OS/ABI uncertainty explicit.
+
+## Corrections
+
+- The top-level `make` and `scripts/build-linux.sh` / `scripts/build-macos.sh`
+  now default `SLEELA_SHA256_MANIFEST` to the repository manifest, so the build
+  works from the repo root without manually exporting it (an explicit value
+  still overrides). Several `.sh` build/test scripts had lost their executable
+  bit and are restored.
+- Numerous Makefile defects were fixed: missing compile/link rules, wrong
+  relative paths, cross-module link dependencies, and a `missing separator` /
+  unterminated `printf`. The repo-wide sub-project build sweep now passes except
+  environment-only targets (macOS, PowerShell, Linux kernel headers, GTK4/VTE).
+
+See the 2026-10-03 entry in [`REVISIONS.md`](REVISIONS.md).

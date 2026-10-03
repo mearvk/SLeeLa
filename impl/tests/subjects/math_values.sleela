@@ -1,4 +1,4 @@
-#sleela 1.0
+#sleela 1.3
 // Numeric assertions for the native `math` subject library.
 // Each check compares a computed value against a known reference within a
 // tolerance and prints a stable PASS/FAIL token (independent of float

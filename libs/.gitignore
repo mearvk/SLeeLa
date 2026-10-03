@@ -1,0 +1,11 @@
+# Downloaded third-party artifacts are reproducible via the scripts in this
+# directory; do not commit them as blobs. Only the scripts and MANIFEST.md are
+# tracked.
+java/
+native/
+*.jar
+*.tar.gz
+*.tgz
+*.rpm
+*.deb
+*.zip

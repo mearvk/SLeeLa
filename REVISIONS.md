@@ -1,3 +1,64 @@
+## 2026-10-03 — Corrections
+
+Build, source, and test corrections made while verifying that the C/C++
+implementation builds and runs. These are fixes to pre-existing defects, not new
+features. `cd impl && make test` passes end to end; the top-level `make`
+completes; the repo-wide sub-project build sweep is clean except for
+environment-only targets (macOS, PowerShell, Linux kernel headers, GTK4/VTE).
+
+### Compiler front end (`impl/`)
+
+- Completed the frontend AST: added the ~16 Java statement/expression nodes the
+  parser produced but that were never declared in `ast.h` or handled by the
+  semantic analyzer and bytecode compiler (`do/while`, `switch`, `break`,
+  `continue`, `throw`, `assert`, `yield`, `synchronized`, `try/catch/finally`,
+  assignment/compound-assignment, ternary `?:`, `instanceof`, cast,
+  `this`/`super`, array access, method reference), and wired each through
+  semantic checks and lowering. The front end had never compiled before.
+- Fixed a latent `Binary` constructor bug that moved the right operand into the
+  left and left the right uninitialized (miscompiling `-`, `/`, `%`, and
+  comparisons).
+- The analyzer now accepts the Java keyword type names the lexer emits
+  (`String`, `boolean`) and treats declared class/interface names as types;
+  `+` with a String operand is string concatenation; a bare `return;` in a void
+  method is valid; `spawn`, `structUnpack`, `Munction.start`, and the `next.next`
+  idiom are recognized to match the compiler.
+
+### Build-blocking defects
+
+- Repaired corrupted sources: mis-escaped HTTP token-separator and logger
+  string literals, over-escaped `'\\0'` char constants, and files whose content
+  had collapsed onto one line with literal `\n` (several `.c`/`.cpp`/`.h`, and
+  `http-8.0/DarkPower.{hpp,cpp}` entirely).
+- Removed duplicate `case` labels and declarations (lexer, parser,
+  `debugger_backend.hpp`, VM security functions) and a `RegisterSnapshot` name
+  clash between two debugger headers.
+- Added missing includes/declarations and fixed Makefile paths, missing
+  compile/link rules, and cross-module link dependencies across `impl`,
+  `http-3.0/4.0`, `telephony-skya/drivers`, `lib/vm`, `lib/compiler`, and the
+  `sleela-virtual-machine` generations.
+
+### Memory safety
+
+- The native memory manager (`api/native/memory`) freed the wrong address for
+  alignment-padded allocations (`free(): invalid pointer`); it now records and
+  frees the true allocation base.
+
+### Tests, fixtures, and tooling
+
+- Reconciled the example/test corpus and version harnesses with the documented
+  syntax range (1.3 .. 1.6); fixed genuinely wrong test expectations (regex
+  anchored-vs-substring and capture count; sociology weighted mean; GC
+  destructor argument order; memory-manager limit).
+- Restored the execute bit on 57 `.sh` scripts that Makefiles invoke directly.
+- The top-level `make` and `scripts/build-{linux,macos}.sh` now default
+  `SLEELA_SHA256_MANIFEST` so the build works from the repo root.
+- Added `libs/` download scripts (and a manifest) for the external dependencies
+  that are 50 MB or less, with a per-artifact size cap.
+
+These corrections establish build and test integrity; they do not by themselves
+claim native runtime qualification beyond what `make test` exercises.
+
 ## 2026-10-02 — SLeeLa Source Inventory and Version-Control Refresh
 
 - Advanced the active development line to **0.3.22-dev**.

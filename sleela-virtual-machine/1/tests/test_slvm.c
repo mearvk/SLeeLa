@@ -1,4 +1,5 @@
-
+#include "slvm.h"
+#include <assert.h>
 
 static void test_memory_security(void) {
     slvm_memory_security_t m;
@@ -9,12 +10,6 @@ static void test_memory_security(void) {
     slvm_memory_security_record_free(&m, 512);
     assert(slvm_memory_security_state(&m) != SLVM_MEMORY_DENIED);
 }
-#include "slvm.h"
-#include "slvm_observer.h"
-#include "slvm_broker_security.h"
-
-#include <assert.h>
-#include <stdint.h>
 
 int main(void) {
     const uint8_t program[] = {
@@ -33,6 +28,6 @@ int main(void) {
     assert(slvm_run(&vm) == SLVM_HALTED);
     assert(vm.stack_size == 1);
     assert(vm.stack[0] == 5);
-    test_memory_security();test_observer_and_broker();
+    test_memory_security();
     return 0;
 }

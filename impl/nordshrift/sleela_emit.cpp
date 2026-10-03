@@ -4,7 +4,8 @@
 #include "sleela_emit.h"
 #include "lowering.h"
 
-#include <sstream>\n#include <stdexcept>
+#include <sstream>
+#include <stdexcept>
 
 namespace nordshrift {
 namespace {

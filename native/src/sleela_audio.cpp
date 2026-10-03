@@ -34,7 +34,8 @@ extern "C" int sleela_audio_validate(const sleela_audio_config*c){
  return 1;
 }
 extern "C" int sleela_audio_mix_wav(const sleela_audio_config*c){
- if(!sleela_audio_validate(c))return 0; std::vector<Wav>w(c->input_count);size_t frames=0;
+ if(!sleela_audio_validate(c))return 0;
+ std::vector<Wav>w(c->input_count);size_t frames=0;
  for(uint32_t i=0;i<c->input_count;i++){if(!read_wav(c->inputs[i].path,w[i]))return 0;if(w[i].rate!=c->sample_rate){error="sample-rate mismatch";return 0;}frames=std::max(frames,size_t(std::llround(c->inputs[i].start_seconds*c->sample_rate))+w[i].pcm.size()/w[i].channels);}
  std::vector<int16_t>out(frames*2);double lg=db(c->controls.master_gain_db)*c->controls.left_gain*(c->controls.pan>0?1-c->controls.pan:1),rg=db(c->controls.master_gain_db)*c->controls.right_gain*(c->controls.pan<0?1+c->controls.pan:1);
  for(uint32_t i=0;i<c->input_count;i++){size_t off=size_t(std::llround(c->inputs[i].start_seconds*c->sample_rate));double g=db(c->inputs[i].gain_db);size_t n=w[i].pcm.size()/w[i].channels;

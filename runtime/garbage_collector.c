@@ -3,16 +3,22 @@
 #include <string.h>
 
 static int grow(SLGCObject ***a, size_t *n, size_t *cap) {
-    if (*n < *cap) return 1; size_t next = *cap ? *cap * 2u : 32u;
+    if (*n < *cap) { return 1; }
+    size_t next = *cap ? *cap * 2u : 32u;
     SLGCObject **p = (SLGCObject **)realloc(*a, next * sizeof(*p));
-    if (!p) return 0; *a = p; *cap = next; return 1;
+    if (!p) { return 0; }
+    *a = p; *cap = next; return 1;
 }
 static int live(const GarbageCollector *g, const SLGCObject *o) {
-    if (!g || !o) return 0; for (size_t i=0;i<g->count;i++) if (g->objects[i]==o) return 1; return 0;
+    if (!g || !o) { return 0; }
+    for (size_t i=0;i<g->count;i++) { if (g->objects[i]==o) return 1; }
+    return 0;
 }
 static int push_unique(SLGCObject ***a, size_t *n, size_t *cap, SLGCObject *o) {
-    if (!o) return 1; for (size_t i=0;i<*n;i++) if ((*a)[i]==o) return 1;
-    if (!grow(a,n,cap)) return 0; (*a)[(*n)++]=o; return 1;
+    if (!o) { return 1; }
+    for (size_t i=0;i<*n;i++) { if ((*a)[i]==o) return 1; }
+    if (!grow(a,n,cap)) { return 0; }
+    (*a)[(*n)++]=o; return 1;
 }
 static void mark_internal(GarbageCollector *g, SLGCObject *o) {
     if (!g || !o || !live(g,o) || o->marked) return;
@@ -23,7 +29,8 @@ static void clear_marks(GarbageCollector *g) {
     g->mark_count=0;
 }
 void gc_init(GarbageCollector *g, size_t threshold) {
-    if (!g) return; memset(g,0,sizeof(*g)); g->bytes_threshold=threshold?threshold:1024u*1024u;
+    if (!g) { return; }
+    memset(g,0,sizeof(*g)); g->bytes_threshold=threshold?threshold:1024u*1024u;
     g->young_bytes_threshold=g->bytes_threshold/4u; if (g->young_bytes_threshold<64u*1024u) g->young_bytes_threshold=64u*1024u;
     g->target_step_work=32u; g->phase=SLGC_IDLE; g->initialized=1;
 }
@@ -42,7 +49,9 @@ SLGCObject *gc_allocate_external(GarbageCollector *g,void *payload,size_t bytes,
 }
 int gc_add_root(GarbageCollector *g,SLGCObject *o){if(!g||!o||!live(g,o))return 0;return push_unique(&g->roots,&g->root_count,&g->root_capacity,o);}
 int gc_remove_root(GarbageCollector *g,SLGCObject *o){
-    if(!g||!o)return 0;for(size_t i=0;i<g->root_count;i++)if(g->roots[i]==o){memmove(&g->roots[i],&g->roots[i+1],(g->root_count-i-1u)*sizeof(*g->roots));--g->root_count;return 1;}return 0;
+    if(!g||!o){return 0;}
+    for(size_t i=0;i<g->root_count;i++){if(g->roots[i]==o){memmove(&g->roots[i],&g->roots[i+1],(g->root_count-i-1u)*sizeof(*g->roots));--g->root_count;return 1;}}
+    return 0;
 }
 void gc_mark(GarbageCollector *g,SLGCObject *o){mark_internal(g,o);}
 void gc_write_barrier(GarbageCollector *g,SLGCObject *owner,SLGCObject *oldv,SLGCObject *newv){
@@ -53,14 +62,18 @@ void gc_write_barrier(GarbageCollector *g,SLGCObject *owner,SLGCObject *oldv,SLG
     }
 }
 void gc_start_cycle(GarbageCollector *g,int young_only){
-    if(!g||!g->initialized)return;clear_marks(g);g->phase=SLGC_MARKING;g->collecting_young=young_only?1:0;
+    if(!g||!g->initialized){return;}
+    clear_marks(g);g->phase=SLGC_MARKING;g->collecting_young=young_only?1:0;
     for(size_t i=0;i<g->root_count;i++)mark_internal(g,g->roots[i]);
     if(young_only)for(size_t i=0;i<g->remembered_count;i++)mark_internal(g,g->remembered[i]);
 }
 size_t gc_step(GarbageCollector *g,size_t budget){
-    if(!g||!g->initialized||g->phase!=SLGC_MARKING)return 0;if(!budget)budget=g->target_step_work;size_t work=0;
+    if(!g||!g->initialized||g->phase!=SLGC_MARKING){return 0;}
+    if(!budget){budget=g->target_step_work;}
+    size_t work=0;
     while(g->mark_count&&work<budget){SLGCObject*o=g->mark_stack[--g->mark_count];o->queued=0;if(o->mark_children)o->mark_children(o,o->context);++work;++g->incremental_steps;}
-    if(!g->mark_count)g->phase=SLGC_SWEEPING;return work;
+    if(!g->mark_count){g->phase=SLGC_SWEEPING;}
+    return work;
 }
 static size_t sweep(GarbageCollector *g);
 
@@ -79,9 +92,11 @@ size_t gc_collect_young(GarbageCollector *g){if(!g||!g->initialized)return 0;gc_
 size_t gc_collect_full(GarbageCollector *g){if(!g||!g->initialized)return 0;gc_start_cycle(g,0);size_t r=finish(g);++g->collections;return r;}
 size_t gc_collect(GarbageCollector *g){return gc_collect_full(g);}
 size_t gc_collect_with_roots(GarbageCollector *g,SLGCMarkRootsFn roots,void *ctx,int young_only){
-    if(!g||!g->initialized)return 0;clear_marks(g);g->phase=SLGC_MARKING;g->collecting_young=young_only?1:0;
-    if(roots)roots(g,ctx);for(size_t i=0;i<g->root_count;i++)mark_internal(g,g->roots[i]);
-    if(young_only)for(size_t i=0;i<g->remembered_count;i++)mark_internal(g,g->remembered[i]);
+    if(!g||!g->initialized){return 0;}
+    clear_marks(g);g->phase=SLGC_MARKING;g->collecting_young=young_only?1:0;
+    if(roots){roots(g,ctx);}
+    for(size_t i=0;i<g->root_count;i++){mark_internal(g,g->roots[i]);}
+    if(young_only){for(size_t i=0;i<g->remembered_count;i++)mark_internal(g,g->remembered[i]);}
     size_t r=finish(g);++g->collections;if(young_only)++g->young_collections;return r;
 }
 void gc_safepoint(GarbageCollector *g,size_t budget){
@@ -95,8 +110,9 @@ void gc_safepoint_with_roots(GarbageCollector *g,SLGCMarkRootsFn roots,void *ctx
     if(g->phase==SLGC_IDLE && g->bytes_allocated>=g->bytes_threshold){
         int do_young = young_only && ((g->young_collections + 1u) % 8u != 0u);
         clear_marks(g);g->phase=SLGC_MARKING;g->collecting_young=do_young?1:0;
-        if(roots)roots(g,ctx);for(size_t i=0;i<g->root_count;i++)mark_internal(g,g->roots[i]);
-        if(g->collecting_young)for(size_t i=0;i<g->remembered_count;i++)mark_internal(g,g->remembered[i]);
+        if(roots){roots(g,ctx);}
+        for(size_t i=0;i<g->root_count;i++){mark_internal(g,g->roots[i]);}
+        if(g->collecting_young){for(size_t i=0;i<g->remembered_count;i++)mark_internal(g,g->remembered[i]);}
     }
     if(g->phase==SLGC_MARKING){gc_step(g,budget?budget:g->target_step_work);return;}
     if(g->phase==SLGC_SWEEPING){(void)sweep(g);++g->collections;if(g->collecting_young)++g->young_collections;}
@@ -105,6 +121,7 @@ size_t gc_live_objects(const GarbageCollector*g){return g?g->count:0;}size_t gc_
 size_t gc_collections(const GarbageCollector*g){return g?g->collections:0;}size_t gc_young_collections(const GarbageCollector*g){return g?g->young_collections:0;}
 size_t gc_promoted_objects(const GarbageCollector*g){return g?g->promoted:0;}SLGCPhase gc_phase(const GarbageCollector*g){return g?g->phase:SLGC_IDLE;}
 void gc_free(GarbageCollector*g){
-    if(!g)return;for(size_t i=0;i<g->count;i++){SLGCObject*o=g->objects[i];if(o->destroy)o->destroy(o->payload);if(!o->external)free(o->payload);free(o);}
+    if(!g){return;}
+    for(size_t i=0;i<g->count;i++){SLGCObject*o=g->objects[i];if(o->destroy){o->destroy(o->payload);}if(!o->external){free(o->payload);}free(o);}
     free(g->objects);free(g->roots);free(g->mark_stack);free(g->remembered);memset(g,0,sizeof(*g));
 }

@@ -39,6 +39,7 @@ extern "C" {
 namespace fs=std::filesystem;
 static const char* kVersion="Sleelvac™ 0.3.0-dev (Sleela compiler; executable native math/physics/economics/chemistry/financial modules; persistent .sleela Core artifacts; .xclass input; JVM-family langin input: Java/Kotlin/Scala/Groovy/Clojure; Nordshrift round-trip (SLeeLa->Nordshrift->back); OS Defender provisioning; SHA-256 execution gate)";
 static bool readFile(const std::string& path,std::string& out);
+static int runLangin(const std::vector<std::string>&paths);
 static bool hasExt(const std::string& path,const std::string& ext){return path.size()>=ext.size()&&path.compare(path.size()-ext.size(),ext.size(),ext)==0;}
 static std::string shellQuote(const std::string&s){
 #ifdef _WIN32
@@ -636,5 +637,6 @@ int main(int argc,char**argv){
     else if(cmd=="version"){std::cout<<kVersion<<"\n";return 0;}
     else if(hasExt(cmd,".sleela")||hasExt(cmd,".xclass")||isLangInput(cmd)){if(verifyBeforeExecution(fs::current_path()))return 1;rc=runFile(cmd);}
     else return usage();
-    if(mmEnabled)reportMemoryManager(); return rc;
+    if(mmEnabled){reportMemoryManager();}
+    return rc;
 }

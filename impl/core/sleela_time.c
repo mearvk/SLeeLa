@@ -73,9 +73,10 @@ const char* sltime_location_timezone(void){
 const char* sltime_location_country(void){return g_country[0]?g_country:"??";}
 
 int sltime_sample(SLTimeSample* s){
- if(!s)return EINVAL;memset(s,0,sizeof(*s));s->utc_ms=sltime_utc_millis();s->monotonic_ns=sltime_monotonic_nanos();
+ if(!s){return EINVAL;}
+ memset(s,0,sizeof(*s));s->utc_ms=sltime_utc_millis();s->monotonic_ns=sltime_monotonic_nanos();
  s->source=SL_TIME_SOURCE_SYSTEM;s->uncertainty_us=1000;strncpy(s->country,sltime_location_country(),sizeof(s->country)-1);s->country[sizeof(s->country)-1]=0;
- strncpy(s->timezone,sltime_location_timezone(),sizeof(s->timezone)-1);return s->utc_ms<0?EIO:0;
+ strncpy(s->timezone,sltime_location_timezone(),sizeof(s->timezone)-1);s->timezone[sizeof(s->timezone)-1]=0;return s->utc_ms<0?EIO:0;
 }
 static uint64_t ntp64_to_us(uint32_t sec,uint32_t frac){return (uint64_t)sec*1000000ULL+((uint64_t)frac*1000000ULL>>32);}
 static void us_to_ntp64(uint64_t unix_us,uint32_t* sec,uint32_t* frac){*sec=(uint32_t)(unix_us/1000000ULL+2208988800ULL);*frac=(uint32_t)(((unix_us%1000000ULL)<<32)/1000000ULL);}
@@ -93,8 +94,11 @@ int sltime_send_raw_time(const char* host,uint16_t port,uint8_t marker,uint32_t 
 #endif
     struct addrinfo hints,*res=NULL,*p;
     uint8_t packet[48]={0}, raw[1]={marker};
+    char portstr[6];
+    /* Honor the caller-supplied UDP port; default to the standard NTP port 123. */
+    snprintf(portstr,sizeof(portstr),"%u",(unsigned)(port?port:123));
     memset(&hints,0,sizeof(hints));hints.ai_family=AF_UNSPEC;hints.ai_socktype=SOCK_DGRAM;hints.ai_protocol=IPPROTO_UDP;
-    if(getaddrinfo(host,"123",&hints,&res)!=0)return EHOSTUNREACH;
+    if(getaddrinfo(host,portstr,&hints,&res)!=0)return EHOSTUNREACH;
     packet[0]=0x23;
     for(p=res;p;p=p->ai_next){
 #ifdef _WIN32
@@ -119,7 +123,7 @@ int sltime_send_raw_time(const char* host,uint16_t port,uint8_t marker,uint32_t 
         sample->uncertainty_us=1000;sample->stratum=0;
         strncpy(sample->source_host,host,sizeof(sample->source_host)-1);
         strncpy(sample->country,sltime_location_country(),sizeof(sample->country)-1);sample->country[sizeof(sample->country)-1]=0;
-        strncpy(sample->timezone,sltime_location_timezone(),sizeof(sample->timezone)-1);
+        strncpy(sample->timezone,sltime_location_timezone(),sizeof(sample->timezone)-1);sample->timezone[sizeof(sample->timezone)-1]=0;
         freeaddrinfo(res);return 0;
     }
     freeaddrinfo(res);return EIO;
@@ -156,7 +160,7 @@ int sltime_query_ntp(const char* host,uint32_t timeout_ms,SLTimeSample* sample){
      sample->utc_ms=(int64_t)(t4/1000ULL)+theta/1000;sample->monotonic_ns=sltime_monotonic_nanos();sample->utc_offset_ms=theta/1000;
      sample->uncertainty_us=(uint64_t)(delay>0?delay/2:0);sample->source=SL_TIME_SOURCE_NTP;sample->stratum=packet[1];
      strncpy(sample->source_host,host,sizeof(sample->source_host)-1);strncpy(sample->country,sltime_location_country(),sizeof(sample->country)-1);sample->country[sizeof(sample->country)-1]=0;
-     strncpy(sample->timezone,sltime_location_timezone(),sizeof(sample->timezone)-1);result=0;}}
+     strncpy(sample->timezone,sltime_location_timezone(),sizeof(sample->timezone)-1);sample->timezone[sizeof(sample->timezone)-1]=0;result=0;}}
   }
 #ifdef _WIN32
   closesocket(s);
@@ -177,7 +181,8 @@ static int utc_tm(int64_t ms,struct tm* t){time_t sec=(time_t)(ms/1000);
 int sltime_format_iso8601(int64_t ms,char* out,size_t n){struct tm t;long m=(long)(ms>=0?ms%1000:(1000+ms%1000)%1000);if(!out||n<32||!utc_tm(ms,&t))return EINVAL;
  return snprintf(out,n,"%04d-%02d-%02dT%02d:%02d:%02d.%03ldZ",t.tm_year+1900,t.tm_mon+1,t.tm_mday,t.tm_hour,t.tm_min,t.tm_sec,m)<0?EIO:0;}
 int sltime_http_date(int64_t ms,char* out,size_t n){static const char* wd[]={"Sun","Mon","Tue","Wed","Thu","Fri","Sat"};static const char* mo[]={"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"};struct tm t;
- if(!out||n<30||!utc_tm(ms,&t))return EINVAL;snprintf(out,n,"%s, %02d %s %04d %02d:%02d:%02d GMT",wd[t.tm_wday],t.tm_mday,mo[t.tm_mon],t.tm_year+1900,t.tm_hour,t.tm_min,t.tm_sec);return 0;}
+ if(!out||n<30||!utc_tm(ms,&t)){return EINVAL;}
+ snprintf(out,n,"%s, %02d %s %04d %02d:%02d:%02d GMT",wd[t.tm_wday],t.tm_mday,mo[t.tm_mon],t.tm_year+1900,t.tm_hour,t.tm_min,t.tm_sec);return 0;}
 int sltime_json(const SLTimeSample* s,char* out,size_t n){if(!s||!out||n<64)return EINVAL;return snprintf(out,n,"{\"utc_ms\":%lld,\"monotonic_ns\":%llu,\"offset_ms\":%lld,\"uncertainty_us\":%llu,\"source\":%u,\"stratum\":%u,\"country\":\"%s\",\"timezone\":\"%s\",\"source_host\":\"%s\"}",(long long)s->utc_ms,(unsigned long long)s->monotonic_ns,(long long)s->utc_offset_ms,(unsigned long long)s->uncertainty_us,s->source,s->stratum,s->country,s->timezone,s->source_host)<0?EIO:0;}
 int sltime_rmi_record(const SLTimeSample* s,char* out,size_t n){return sltime_json(s,out,n);}
 size_t sltime_bodi_record(const SLTimeSample* s,uint8_t* out,size_t n){const size_t need=32;if(!s||!out||n<need)return 0;uint64_t u=(uint64_t)s->utc_ms,m=s->monotonic_ns,e=s->uncertainty_us;uint32_t a=s->source,b=s->stratum;int i;for(i=0;i<8;i++)out[i]=(uint8_t)(u>>(56-8*i));for(i=0;i<8;i++)out[8+i]=(uint8_t)(m>>(56-8*i));for(i=0;i<8;i++)out[16+i]=(uint8_t)(e>>(56-8*i));out[24]=a>>24;out[25]=a>>16;out[26]=a>>8;out[27]=a;out[28]=b>>24;out[29]=b>>16;out[30]=b>>8;out[31]=b;return need;}

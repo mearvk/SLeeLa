@@ -1,4 +1,4 @@
-#sleela 1.0
+#sleela 1.3
 // Numeric assertions for the executable `chemistry` inference kernels
 // (the deterministic .sleela-facing chemistry API; weights are
 // observation 0.24, bond 0.20, valence 0.22, similarity 0.13, signal 0.12,

@@ -422,3 +422,13 @@ the C core) with recursion, loops, arithmetic, strings, and I/O, and a
 (SL-META-0001 §4.4) across both the `sleela` CLI and Nordshrift. Next
 candidates: short-circuit `&&`/`||`, arrays, a REPL, and a static type checker
 on top of the Java-like surface.
+
+## Corrections
+
+The front end previously did not compile: `parser.cpp` constructed ~16 Java
+statement/expression AST node types that were never declared in `ast.h` and were
+not handled by `semantic.cpp` or `compiler.cpp`. Those nodes were added and
+wired through the analyzer and the bytecode compiler, a latent `Binary`-operand
+bug was fixed, and several build-blocking source/Makefile defects were repaired.
+`cd impl && make` builds `sleela` and `nordshrift`, and `make test` passes every
+target. See the 2026-10-03 entry in [`../REVISIONS.md`](../REVISIONS.md).

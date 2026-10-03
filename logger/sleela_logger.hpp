@@ -54,6 +54,8 @@ public:
     static const char* sort_key_name(LogSortKey);
 private:
     bool selected(const PacketRecord&) const;
+    bool archive_segment(const std::string&);
+    std::string archive_path_for(const std::string&) const;
     bool rotate_if_needed(std::size_t);
     bool write_json_line(const PacketRecord&);
     std::string escape_json(const std::string&) const;

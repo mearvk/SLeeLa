@@ -40,11 +40,11 @@ if ! grep -Eq "COMPAT-CURRENT|1.3" <<<"${CURRENT_OUTPUT}"; then
   exit 1
 fi
 if [[ ${NEW_RC} -eq 0 ]]; then
-  echo "FAIL: above-ceiling syntax 1.4 was accepted"
+  echo "FAIL: above-ceiling syntax 1.7 was accepted"
   exit 1
 fi
 if ! grep -Eq "TooNew|exceeds this compiler|NSS-E-SRC-002" <<<"${NEW_OUTPUT}"; then
   echo "FAIL: missing above-ceiling compatibility diagnostic"
   exit 1
 fi
-echo "PASS: compiler rejects syntax outside supported range 1.3 .. 1.3"
+echo "PASS: compiler rejects syntax outside supported range 1.3 .. 1.6"

@@ -7,7 +7,8 @@
 namespace sleela { namespace library {
 struct Symbol { std::string package; std::string name; std::string path; };
 class Index { public:
-    // discover() recursively indexes every /lib/**/*.sleela; root-level units use package __root__. static Index discover(const std::string& preferredRoot = ""); bool empty() const; size_t symbolCount() const; bool hasPackage(const std::string&) const; size_t packageCount() const;
+    // discover() recursively indexes every /lib/**/*.sleela; root-level units use package __root__.
+    static Index discover(const std::string& preferredRoot = ""); bool empty() const; size_t symbolCount() const; bool hasPackage(const std::string&) const; size_t packageCount() const;
     size_t packageSymbolCount(const std::string&) const;
     const Symbol* findSymbol(const std::string&, const std::string&) const;
     const std::vector<Symbol>& symbols() const; const std::string& root() const; std::string resolveImport(const std::string&) const;

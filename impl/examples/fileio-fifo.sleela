@@ -1,4 +1,4 @@
-#sleela 1.1
+#sleela 1.3
 
 // NOTE (platform): this demo is POSIX-specific. It relies on a filesystem FIFO
 // created with fifoCreate() at a /tmp path and then opened "rw" (O_RDWR) for a

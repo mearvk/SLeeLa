@@ -1,4 +1,4 @@
-#sleela 1.0
+#sleela 1.3
 // Numeric assertions for the native `inference` subject library.
 // Reference series: X = {1,2,3,4,5}, Y = {2,4,6,8,10} (a perfect line y = 2x).
 //   n=5, sumX=15, sumY=30, sumXX=55, sumYY=220, sumXY=110

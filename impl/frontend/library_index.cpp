@@ -39,5 +39,15 @@ const std::vector<Symbol>& Index::symbols()const{return symbols_;}
 const std::string& Index::root()const{return root_;}
 std::string Index::resolveImport(const std::string&i)const{return hasPackage(i)?root_+"/"+i:"";}
 std::string Index::resolveSymbol(const std::string&p,const std::string&n)const{const Symbol*s=findSymbol(p,n);return s?root_+"/"+s->path:"";}
-void validateImports(const std::vector<std::string>&is,const Index&i){for(const auto&x:is)if(x!="chemistry"&&x!="financial"&&x!="native"&&!i.hasPackage(x))throw std::runtime_error("Library import '"+x+"' is not present under /lib");}
+// Imports satisfied by a native/synthesized subject library rather than by a
+// unit under /lib. These are lowered in the frontend (chemistry/financial have
+// their own lowering; the rest are built by native::lowerProgram) and must not
+// be required to exist as /lib packages.
+static bool isNativeSubjectImport(const std::string&x){
+    return x=="chemistry"||x=="financial"||x=="native"||
+           x=="math"||x=="physics"||x=="economics"||x=="inference"||
+           x=="astrophysics"||x=="sociology"||x=="excel"||x=="json"||
+           x=="crypto"||x=="net";
+}
+void validateImports(const std::vector<std::string>&is,const Index&i){for(const auto&x:is)if(!isNativeSubjectImport(x)&&!i.hasPackage(x))throw std::runtime_error("Library import '"+x+"' is not present under /lib");}
 }}

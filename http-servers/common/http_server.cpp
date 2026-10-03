@@ -34,7 +34,7 @@ std::string lo(std::string s){for(char&c:s)c=(char)std::tolower((unsigned char)c
 const char* reason(int s){switch(s){case 200:return"OK";case 204:return"No Content";case 400:return"Bad Request";case 403:return"Forbidden";case 404:return"Not Found";case 405:return"Method Not Allowed";case 413:return"Content Too Large";case 431:return"Request Header Fields Too Large";case 500:return"Internal Server Error";default:return"Error";}}
 bool sendall(int fd,const char*p,size_t n){while(n){ssize_t w=send(fd,p,n,MSG_NOSIGNAL);if(w<0){if(errno==EINTR)continue;return false;}if(!w)return false;p+=w;n-=(size_t)w;}return true;}
 bool recvmore(int fd,std::string&b){char x[16384];ssize_t n=recv(fd,x,sizeof x,0);if(n<0){if(errno==EINTR)return true;return false;}if(!n)return false;if(b.size()+(size_t)n>HMAX+BMAX+16384)return false;b.append(x,(size_t)n);return true;}
-bool token(std::string_view s){if(s.empty())return false;for(unsigned char c:s)if(c<=32||c>=127||std::string_view("()<>@,;:\\"/[]?={} \t").find((char)c)!=std::string_view::npos)return false;return true;}
+bool token(std::string_view s){if(s.empty())return false;for(unsigned char c:s)if(c<=32||c>=127||std::string_view("()<>@,;:\\\"/[]?={} \t").find((char)c)!=std::string_view::npos)return false;return true;}
 bool parse(int fd,std::string&b,Req&r,std::string&e){
  size_t z=b.find("\r\n\r\n");if(z==std::string::npos)return false;std::istringstream in(b.substr(0,z));std::string line,extra;
  if(!std::getline(in,line)){e="bad request";return false;}if(!line.empty()&&line.back()=='\r')line.pop_back();std::istringstream f(line);

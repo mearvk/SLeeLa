@@ -303,7 +303,7 @@ static void validateSourcePrograms(const Sheet& sheet, const std::string& sheetP
                 std::cout << " line=" << connector.line
                           << " admissible=" << (sleela::permissible::isAdmissible(connector) ? "candidate" : "incomplete") << "\n";
             }
-            sleela::SemanticResult semantic = sleela::analyzeSemantics(program, vr.version);
+            sleela::SemanticResult semantic = sleela::analyzeSemantics(program, vr.declared);
             for (const auto& err : semantic.errors)
                 diags.error("NSS-E-SEM-001", srcPath, 0, err, "SST-SOURCE-SEMANTIC");
             for (const auto& warn : semantic.warnings)
@@ -525,5 +525,6 @@ int main(int argc, char** argv) {
     if (cmd == "build") { if (argc < 3) return usage(); return doBuild(argv[2]); }
     if (cmd == "objects") { return doObjects(); }
     if (cmd == "relevance") { return doRelevance(argc, argv); }
+    if (cmd == "design-activity") { return designActivityCmd(argc, argv); }
     return usage();
 }

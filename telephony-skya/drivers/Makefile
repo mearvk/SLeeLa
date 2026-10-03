@@ -40,7 +40,23 @@ $(OBJDIR)/skya_builtin_drivers.o: src/skya_builtin_drivers.cpp | $(OBJDIR)
 $(OBJDIR)/skya_vendor_drivers.o: src/skya_vendor_drivers.cpp | $(OBJDIR)
 	$(CXX) $(CXXFLAGS) -Iinclude -c $< -o $@
 $(OBJDIR)/c/skya_product_runtime.o: src/skya_product_runtime.c | $(OBJDIR)
+	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -Iinclude -c $< -o $@
+$(OBJDIR)/c/skya_driver_runtime.o: src/skya_driver_runtime.c | $(OBJDIR)
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -Iinclude -c $< -o $@
+$(OBJDIR)/c/skya_hardware_io.o: src/skya_hardware_io.c | $(OBJDIR)
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -Iinclude -c $< -o $@
+$(OBJDIR)/c/skya_hardware_profile.o: src/skya_hardware_profile.c | $(OBJDIR)
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -Iinclude -c $< -o $@
+$(OBJDIR)/c/skya_data_plane.o: src/skya_data_plane.c | $(OBJDIR)
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -Iinclude -c $< -o $@
+$(PLATFORM_OBJ): $(PLATFORM_SRC) | $(OBJDIR)
+	@mkdir -p $(dir $@)
+	$(CXX) $(CXXFLAGS) -Iinclude -c $< -o $@
 $(TARGET): $(OBJS)
 	ar rcs $@ $(OBJS)
 clean:

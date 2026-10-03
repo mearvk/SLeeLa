@@ -47,13 +47,21 @@ reassigned.
 
 ## Operators
 
-Arithmetic: `+`, `-`, `*`, `/`, `%`
+Arithmetic:
 
-Comparison: `==`, `!=`, `<`, `<=`, `>`, `>=`
+`+`, `-`, `*`, `/`, `%`
 
-Boolean: `and`, `or`, `not`
+Comparison:
 
-Assignment: `=`
+`==`, `!=`, `<`, `<=`, `>`, `>=`
+
+Boolean:
+
+`and`, `or`, `not`
+
+Assignment:
+
+`=`
 
 String concatenation uses `+`.
 

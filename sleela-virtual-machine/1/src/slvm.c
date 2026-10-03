@@ -15,8 +15,6 @@ size_t slvm_get_memory_limit(const slvm_t*v){return v?v->memory_limit:0;}
 SLGCObject*slvm_gc_allocate(slvm_t*v,size_t b,SLGCMarkFn m,SLGCDestroyFn d,void*c){if(!v)return NULL;size_t u=gc_bytes(&v->gc);if(b>v->memory_limit||u>v->memory_limit-b)return NULL;if(!slvm_security_observe_resource(&v->security,1))return NULL;slvm_memory_decision_t md=slvm_memory_security_check(&v->memory_security,b,1);if(md==SLVM_MEMORY_DENY||md==SLVM_MEMORY_THROTTLE)return NULL;SLGCObject*o=gc_allocate(&v->gc,b,m,d,c);if(!o)slvm_memory_security_record_free(&v->memory_security,b);return o;}
 size_t slvm_gc_collect(slvm_t*v){if(!v)return 0;size_t reclaimed=gc_collect(&v->gc);if(reclaimed)slvm_memory_security_record_free(&v->memory_security,reclaimed);return reclaimed;}
 size_t slvm_gc_bytes(const slvm_t*v){return v?gc_bytes(&v->gc):0;}
-int slvm_security_allow_io(slvm_t*v,slvm_io_kind_t k,size_t b){if(!v)return 0;if(!slvm_security_observe_io(&v->security,k,b))return 0;slvm_io_decision_t d=slvm_io_heuristic_observe(&v->io_heuristic,k,b,(uint32_t)v->security.window_requests,slvm_security_state(&v->security));return d!=SLVM_IO_HEURISTIC_BLOCK;}
-void slvm_security_reset(slvm_t*v){if(v)slvm_security_reset_window(&v->security);}
 slvm_status_t slvm_step(slvm_t*v){
  if(!v||!v->code||v->pc>=v->code_size)return SLVM_ERROR;if(v->halted)return SLVM_HALTED;if(!slvm_security_observe_instruction(&v->security))return SLVM_ERROR;
  uint8_t op=v->code[v->pc++];

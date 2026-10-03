@@ -10,7 +10,7 @@ int main(void){
     GarbageCollector gc;gc_init(&gc,128);
     SLGCObject*root=gc_allocate(&gc,sizeof(Pair),mark_pair,NULL,&gc);
     SLGCObject*child=gc_allocate(&gc,sizeof(int),NULL,NULL,NULL);
-    SLGCObject*dead=gc_allocate(&gc,sizeof(int),destroy_count,NULL,NULL);
+    SLGCObject*dead=gc_allocate(&gc,sizeof(int),NULL,destroy_count,NULL);
     check("three objects allocated",root&&child&&dead);
     ((Pair*)root->payload)->child=child;
     check("root registration",gc_add_root(&gc,root)==1);

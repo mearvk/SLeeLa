@@ -129,9 +129,6 @@ HTTP_SERVER_OBJ := $(BUILD)/http_server.o
 HTTP_SERVER_CLI_OBJ := $(BUILD)/http_server_cli.o
 HTTP2_SERVER_OBJ := $(BUILD)/http2_server.o
 HTTP3_SERVER_OBJ := $(BUILD)/http3_server.o
-SKYA_ENGINE_OBJ := $(BUILD)/skya_engine.o
-SKYA_POLICY_OBJ := $(BUILD)/skya_policy.o
-SKYA_BRIDGE_OBJ := $(BUILD)/skya_sleela_bridge.o
 NS_SRC := nordshrift/sst_lexer.cpp nordshrift/sst_parser.cpp \
           nordshrift/source_resolve.cpp nordshrift/lowering.cpp nordshrift/sleela_emit.cpp \
           nordshrift/object_compat.cpp nordshrift/subject_model.cpp nordshrift/input_object.cpp \
@@ -144,7 +141,10 @@ NS_OBJ += $(LEDGER_CORE_OBJ)
 # The subset of Nordshrift the `sleela` binary links for its `nordshrift`
 # round-trip subcommand: only the emitter (transpile a Sleela Program to a
 # target). It deliberately EXCLUDES nordshrift.cpp (which has its own main()).
-NS_EMIT_OBJ := $(BUILD)/ns_sleela_emit.o
+NS_EMIT_OBJ := $(BUILD)/ns_sleela_emit.o $(BUILD)/ns_lowering.o
+# Preferred-router policy (used by the native HTTP servers the `sleela` binary
+# links). Lives under ../preferred-routers.
+PREFERRED_ROUTER_OBJ := $(BUILD)/preferred_router.o
 VERIFY_TOOL := ../tools/verify-before-execution.py
 VERIFY_MANIFEST ?= $(SLEELA_SHA256_MANIFEST)
 VERIFY_ARGS = --manifest "$(VERIFY_MANIFEST)" --root "$(CURDIR)/.."
@@ -199,7 +199,7 @@ verify-security:
 # rules link with $^, and a phony target name would leak onto the link line).
 $(ALL_OBJECTS): | verify-security
 
-$(SLEELA_BIN): $(JAVA_RUNTIME_PROBE_OBJ) $(JAVA_RUNTIME_BRIDGE_OBJ) $(AUDIO_NATIVE_OBJ) $(AUDIO_CPP_OBJ) $(SKYA_ENGINE_OBJ) $(SKYA_POLICY_OBJ) $(SKYA_BRIDGE_OBJ) $(HTTP_SERVER_OBJ) $(HTTP_SERVER_CLI_OBJ) $(HTTP2_SERVER_OBJ) $(HTTP3_SERVER_OBJ) $(PLATFORM_OBJ) $(SYSTEM_MONITOR_OBJ) $(DESIGN_ACTIVITY_OBJ) $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(LANGIN_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(NS_EMIT_OBJ)
+$(SLEELA_BIN): $(JAVA_RUNTIME_PROBE_OBJ) $(JAVA_RUNTIME_BRIDGE_OBJ) $(AUDIO_NATIVE_OBJ) $(AUDIO_CPP_OBJ) $(HTTP_SERVER_OBJ) $(HTTP_SERVER_CLI_OBJ) $(HTTP2_SERVER_OBJ) $(HTTP3_SERVER_OBJ) $(PLATFORM_OBJ) $(SYSTEM_MONITOR_OBJ) $(DESIGN_ACTIVITY_OBJ) $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(LANGIN_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(NS_EMIT_OBJ) $(PREFERRED_ROUTER_OBJ)
 	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS) $(LIBS) -lnghttp2
 $(AUDIO_NATIVE_OBJ): core/sleela_audio_bridge.cpp core/sleela_audio_bridge.h ../audio/cpp/include/sleela_audio.hpp | $(BUILD)
 	$(CXX) $(CXXFLAGS) -Icore -I.. -c $< -o $@
@@ -214,9 +214,9 @@ $(THREAD_PLATFORM_SMOKE): core/thread_platform_smoke.c $(THREAD_OBJ) | $(BUILD)
 # sleela_core.o (sleela_artifact.c) calls into the OS-abstraction backends
 # (net/io/path/library/terminal), so any target that links the core must also
 # link those objects, not just the core + time.
-$(THREAD_SMOKE): core/thread_smoke.c $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(PATH_OBJ) $(LIBRARY_OBJ) $(TERMINAL_OBJ) $(TIME_OBJ)
+$(THREAD_SMOKE): core/thread_smoke.c $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(PATH_OBJ) $(LIBRARY_OBJ) $(TERMINAL_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(GC_OBJ)
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS) $(LIBS)
-$(SOCKET_SMOKE): core/socket_smoke.c $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(PATH_OBJ) $(LIBRARY_OBJ) $(TERMINAL_OBJ) $(TIME_OBJ)
+$(SOCKET_SMOKE): core/socket_smoke.c $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(PATH_OBJ) $(LIBRARY_OBJ) $(TERMINAL_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(GC_OBJ)
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS) $(LIBS)
 $(SYNCHRO_SMOKE): core/synchro_smoke.c $(SYNCHRO_OBJ) | $(BUILD)
 	$(CC) $(CFLAGS) -Icore core/synchro_smoke.c $(SYNCHRO_OBJ) -o $@ $(LDFLAGS) $(LIBS)
@@ -315,7 +315,6 @@ $(PIXEL_TERMINAL_SMOKE): ../bash/pixel_terminal_smoke.cpp ../bash/pixel_terminal
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) ../bash/pixel_terminal_smoke.cpp $(PIXEL_TERMINAL_OBJ) -o $@ $(LDFLAGS) $(LIBS)
 $(GC_OBJ): ../runtime/garbage_collector.c ../runtime/garbage_collector.h | $(BUILD)
 	$(CC) $(CFLAGS) -c ../runtime/garbage_collector.c -o $@
-$(GC_MODERN_SMOKE): tests/runtime/gc_modern_smoke.c $(GC_OBJ) | verify-security $(BUILD)
 $(VM_CONFIG_OBJ): ../runtime/vm_config.c ../runtime/vm_config.h | $(BUILD)
 	$(CC) $(CFLAGS) -c ../runtime/vm_config.c -o $@
 $(VM_CONFIG_SMOKE): ../runtime/vm_config_smoke.c ../runtime/vm_config.h $(VM_CONFIG_OBJ) | $(BUILD)
@@ -323,12 +322,11 @@ $(VM_CONFIG_SMOKE): ../runtime/vm_config_smoke.c ../runtime/vm_config.h $(VM_CON
 test-vm-config: $(VM_CONFIG_SMOKE)
 	@echo "=== SLeeLa VM generation configuration ==="; (cd .. && $(VM_CONFIG_SMOKE))
 
-	$(CC) $(CFLAGS) -I../runtime tests/runtime/gc_modern_smoke.c $(GC_OBJ) -o $@ $(LDFLAGS) $(LIBS)
 $(SECURITY_OBJ): ../runtime/security_supervisor.c ../runtime/security_supervisor.h | $(BUILD)
 	$(CC) $(CFLAGS) -c ../runtime/security_supervisor.c -o $@
 $(PARAMETERS_OBJ): ../runtime/Parameters.c ../runtime/Parameters.h | $(BUILD)
 	$(CC) $(CFLAGS) -c ../runtime/Parameters.c -o $@
-$(CORE_OBJ): $(CORE_SRC) core/sleela_core.c core/sleela_core.h ../../runtime/garbage_collector.h core/sleela_thread.h core/pthread.h core/sleela_synchro.h core/sleela_munction.h core/sleela_bestof.h | $(BUILD)
+$(CORE_OBJ): $(CORE_SRC) core/sleela_core.c core/sleela_core.h ../runtime/garbage_collector.h core/sleela_thread.h core/pthread.h core/sleela_synchro.h core/sleela_munction.h core/sleela_bestof.h | $(BUILD)
 	$(CC) $(CFLAGS) -Icore -c $(CORE_SRC) -o $@
 $(CHEMISTRY_OBJ): subjects/chemistry/chemistry.cpp subjects/chemistry/chemistry.h | $(BUILD)
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c subjects/chemistry/chemistry.cpp -o $@
@@ -362,6 +360,20 @@ test-sociology: $(SOC_SMOKE) $(SOC_OBJ)
 
 $(BUILD)/physics_native.o: subjects/physics/physics_native.cpp | $(BUILD)
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
+$(BUILD)/astrophysics_native.o: subjects/astrophysics/astrophysics_native.cpp | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
+$(BUILD)/sociology_native.o: subjects/sociology/sociology_native.cpp | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
+$(BUILD)/Annotation.o: annotation/Annotation.cpp | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
+$(BUILD)/ForwardingAnnotation.o: annotation/ForwardingAnnotation.cpp | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
+$(BUILD)/AnnotationForwarder.o: annotation/AnnotationForwarder.cpp | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
+$(BUILD)/AnnotationInterpreter.o: annotation/AnnotationInterpreter.cpp | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
+$(BUILD)/AnnotationRuntime.o: annotation/AnnotationRuntime.cpp | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
 $(BUILD)/economics_native.o: subjects/economics/economics_native.cpp | $(BUILD)
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
 $(BUILD)/inference_native.o: subjects/inference/inference_native.cpp | $(BUILD)
@@ -386,15 +398,10 @@ $(BUILD)/http_server_cli.o: frontend/http_server_cli.cpp frontend/http_server_cl
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c frontend/http_server_cli.cpp -o $@
 $(BUILD)/http2_server.o: ../http-servers/2/http2/http2_server.cpp ../http-servers/2/http2/http2_server.h | $(BUILD)
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c ../http-servers/2/http2/http2_server.cpp -o $@
+$(PREFERRED_ROUTER_OBJ): ../preferred-routers/preferred_router.cpp ../preferred-routers/preferred_router.h | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c ../preferred-routers/preferred_router.cpp -o $@
 $(BUILD)/http3_server.o: ../http-servers/3/http3/http3_server.cpp ../http-servers/3/http3/http3_server.h | $(BUILD)
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c ../http-servers/3/http3/http3_server.cpp -o $@
-
-$(SKYA_ENGINE_OBJ): ../telephony-skya/native/skya_engine.cpp ../telephony-skya/native/skya_engine.h | $(BUILD)
-	$(CXX) $(CXXFLAGS) -Icore -I.. -c $< -o $@
-$(SKYA_POLICY_OBJ): ../telephony-skya/native/skya_policy.cpp ../telephony-skya/native/skya_policy.h | $(BUILD)
-	$(CXX) $(CXXFLAGS) -Icore -I.. -c $< -o $@
-$(SKYA_BRIDGE_OBJ): ../telephony-skya/native/skya_sleela_bridge.cpp ../telephony-skya/native/skya_sleela_bridge.h | $(BUILD)
-	$(CXX) $(CXXFLAGS) -Icore -I.. -c $< -o $@
 
 $(JAVA_RUNTIME_PROBE_OBJ): ../runtime/java_runtime_probe.c ../runtime/java_runtime_probe.h | $(BUILD)
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -430,10 +437,9 @@ test-nordshrift-compat: $(NORDSHRIFT_BIN)
 	@bash ../impl/tests/nordshrift/run_cross_version_tests.sh $(NORDSHRIFT_BIN)
 
 test-nordshrift-e2e: $(NORDSHRIFT_BIN) $(SLEELA_BIN)
+	@cd $(CURDIR)/.. && bash impl/tests/nordshrift/run_end_to_end_tests.sh $(CURDIR)/$(NORDSHRIFT_BIN) $(CURDIR)/$(SLEELA_BIN)
 test-runtime-artifact-abi: $(SLEELA_BIN)
 	@cd $(CURDIR)/.. && bash impl/tests/version/run_artifact_abi_tests.sh $(CURDIR)/$(SLEELA_BIN)
-
-	@cd $(CURDIR)/.. && bash impl/tests/nordshrift/run_end_to_end_tests.sh $(CURDIR)/$(NORDSHRIFT_BIN) $(CURDIR)/$(SLEELA_BIN)
 
 test-network: $(SOCKET_SMOKE)
 	@echo "=== core networking smoke (TCP loopback) ==="; $(SOCKET_SMOKE)
@@ -510,6 +516,8 @@ CONFIG_LOCATION_OBJ := $(BUILD)/config_location.o
 CONFIG_LOCATION_SMOKE := $(BUILD)/config_location_smoke
 $(RUNTIME_SMOKE): tests/runtime/runtime_smoke.c $(GC_OBJ) $(SECURITY_OBJ) | verify-security $(BUILD)
 	$(CC) $(CFLAGS) -I../runtime tests/runtime/runtime_smoke.c $(GC_OBJ) $(SECURITY_OBJ) -o $@ $(LDFLAGS) $(LIBS)
+$(GC_MODERN_SMOKE): tests/runtime/gc_modern_smoke.c $(GC_OBJ) | verify-security $(BUILD)
+	$(CC) $(CFLAGS) -I../runtime tests/runtime/gc_modern_smoke.c $(GC_OBJ) -o $@ $(LDFLAGS) $(LIBS)
 
 # Cross-platform source smoke suite. These tests exercise the native
 # OS abstraction layer (threads, sockets, I/O, paths, terminal, loader, time).

@@ -55,7 +55,8 @@ int main(void) {
         ".",
         NULL,
         "Example.java",
-        ""
+        "",
+        NULL
     };
     if (sleela_java_runtime_bridge_prepare(&source_request, &plan) != 0) return 1;
     if (check(strstr(plan.command, "/opt/java/bin/java Example.java") != NULL,

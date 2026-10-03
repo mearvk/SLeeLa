@@ -120,6 +120,10 @@ private:
         else if(auto i=dynamic_cast<const IfStmt*>(s)){countInStmt(i->thenS.get(),n);if(i->elseS)countInStmt(i->elseS.get(),n);}
         else if(auto w=dynamic_cast<const WhileStmt*>(s)) countInStmt(w->body.get(),n);
         else if(auto f=dynamic_cast<const ForStmt*>(s)){if(f->init)countInStmt(f->init.get(),n);countInStmt(f->body.get(),n);}
+        else if(auto d=dynamic_cast<const DoStmt*>(s)) countInStmt(d->body.get(),n);
+        else if(auto sy=dynamic_cast<const SynchronizedStmt*>(s)) countInBlock(*sy->body,n);
+        else if(auto tr=dynamic_cast<const TryStmt*>(s)){countInBlock(*tr->body,n);for(const auto& c:tr->catches){n++;countInBlock(*c.body,n);}if(tr->finallyBlock)countInBlock(*tr->finallyBlock,n);}
+        else if(auto sw=dynamic_cast<const SwitchStmt*>(s)){n++;/* selector temp */for(const auto& c:sw->cases)for(const auto& st:c.statements)countInStmt(st.get(),n);}
     }
     int here(){return slvm_here(vm_);} int emit(SLOp op,int a=0){return slvm_emit(vm_,op,a);} void patch(int at,int target){slvm_patch(vm_,at,target);}
     void emitMethod(MethodInfo& mi){
@@ -140,6 +144,15 @@ private:
         if(auto p=dynamic_cast<const PrintStmt*>(s)){emitExpr(p->expr.get());emit(OP_PRINT);return;} if(auto r=dynamic_cast<const ReturnStmt*>(s)){emitReturn(*r);return;}
         if(auto i=dynamic_cast<const IfStmt*>(s)){emitIf(*i);return;} if(auto w=dynamic_cast<const WhileStmt*>(s)){emitWhile(*w);return;} if(auto f=dynamic_cast<const ForStmt*>(s)){emitFor(*f);return;}
         if(auto fa=dynamic_cast<const FieldAssign*>(s)){emitFieldAssign(*fa);return;}
+        if(auto d=dynamic_cast<const DoStmt*>(s)){emitDo(*d);return;}
+        if(auto sw=dynamic_cast<const SwitchStmt*>(s)){emitSwitch(*sw);return;}
+        if(auto sy=dynamic_cast<const SynchronizedStmt*>(s)){emitSynchronized(*sy);return;}
+        if(auto tr=dynamic_cast<const TryStmt*>(s)){emitTry(*tr);return;}
+        if(auto t=dynamic_cast<const ThrowStmt*>(s)){emitExpr(t->value.get());emit(OP_POP);return;}
+        if(auto a=dynamic_cast<const AssertStmt*>(s)){emitExpr(a->cond.get());emit(OP_POP);return;}
+        if(auto y=dynamic_cast<const YieldStmt*>(s)){emitExpr(y->value.get());emit(OP_POP);return;}
+        if(dynamic_cast<const BreakStmt*>(s)){emitBreak();return;}
+        if(dynamic_cast<const ContinueStmt*>(s)){emitContinue();return;}
         throw std::runtime_error("Semantic error: unknown statement kind");
     }
     void emitBlock(const Block& b){for(const auto& s:b.stmts)emitStmt(s.get());}
@@ -148,8 +161,47 @@ private:
     void emitReturn(const ReturnStmt& r){if(r.value)emitExpr(r.value.get());else emit(OP_CONST,addNullConst());emit(OP_RET);}
     void emitFieldAssign(const FieldAssign& fa){int off=-1;memberLayout(fa.base.get(),fa.field,off);emitExpr(fa.base.get());emitExpr(fa.value.get());emit(OP_SETFIELD,off);emit(OP_POP);}
     void emitIf(const IfStmt& s){emitExpr(s.cond.get());int jf=emit(OP_JMPF,0);emitStmt(s.thenS.get());if(s.elseS){int jend=emit(OP_JMP,0);patch(jf,here());emitStmt(s.elseS.get());patch(jend,here());}else patch(jf,here());}
-    void emitWhile(const WhileStmt& s){int top=here();emitExpr(s.cond.get());int jf=emit(OP_JMPF,0);emitStmt(s.body.get());emit(OP_JMP,top);patch(jf,here());}
-    void emitFor(const ForStmt& s){if(s.init)emitStmt(s.init.get());int top=here();int jf=-1;if(s.cond){emitExpr(s.cond.get());jf=emit(OP_JMPF,0);}emitStmt(s.body.get());if(s.update)emitStmt(s.update.get());emit(OP_JMP,top);if(jf>=0)patch(jf,here());}
+    // Loop context for break/continue: each enclosing loop records the jump
+    // sites that must be patched to the loop exit (break) and to the loop's
+    // continue target (continue). We patch them when the loop finishes.
+    struct LoopCtx{std::vector<int> breaks;std::vector<int> continues;};
+    std::vector<LoopCtx> loops_;
+    void emitBreak(){if(loops_.empty())throw std::runtime_error("Semantic error: 'break' used outside a loop or switch");loops_.back().breaks.push_back(emit(OP_JMP,0));}
+    void emitContinue(){if(loops_.empty())throw std::runtime_error("Semantic error: 'continue' used outside a loop");loops_.back().continues.push_back(emit(OP_JMP,0));}
+    void emitWhile(const WhileStmt& s){loops_.push_back({});int top=here();emitExpr(s.cond.get());int jf=emit(OP_JMPF,0);emitStmt(s.body.get());for(int c:loops_.back().continues)patch(c,top);emit(OP_JMP,top);patch(jf,here());for(int b:loops_.back().breaks)patch(b,here());loops_.pop_back();}
+    void emitDo(const DoStmt& s){loops_.push_back({});int top=here();emitStmt(s.body.get());int contTarget=here();for(int c:loops_.back().continues)patch(c,contTarget);emitExpr(s.cond.get());int jf=emit(OP_JMPF,0);emit(OP_JMP,top);patch(jf,here());for(int b:loops_.back().breaks)patch(b,here());loops_.pop_back();}
+    void emitFor(const ForStmt& s){loops_.push_back({});if(s.init)emitStmt(s.init.get());int top=here();int jf=-1;if(s.cond){emitExpr(s.cond.get());jf=emit(OP_JMPF,0);}emitStmt(s.body.get());int contTarget=here();for(int c:loops_.back().continues)patch(c,contTarget);if(s.update)emitStmt(s.update.get());emit(OP_JMP,top);if(jf>=0)patch(jf,here());for(int b:loops_.back().breaks)patch(b,here());loops_.pop_back();}
+    void emitSynchronized(const SynchronizedStmt& s){emitExpr(s.monitor.get());emit(OP_POP);emitBlock(*s.body);}
+    void emitTry(const TryStmt& s){emitBlock(*s.body);if(s.finallyBlock)emitBlock(*s.finallyBlock);}
+    void emitSwitch(const SwitchStmt& s){
+        // Lower a switch to a dispatch chain: evaluate the selector once into a
+        // temp local, test each label with ==, and jump to the matching case
+        // body. Fall-through follows source order; `break` jumps to the end.
+        loops_.push_back({});
+        int sel=ctx_->nextSlot++; emitExpr(s.selector.get()); emit(OP_STOREL,sel);
+        // Dispatch section: for each label, (selector==label) ? enter body.
+        // Record one enter-jump per label, tagged with its owning case index.
+        std::vector<int> enterJump; std::vector<int> enterCase; int defaultIdx=-1;
+        for(size_t i=0;i<s.cases.size();++i){
+            const auto& c=s.cases[i];
+            if(c.isDefault){defaultIdx=(int)i;continue;}
+            for(const auto& lab:c.labels){
+                emit(OP_LOADL,sel); emitExpr(lab.get()); emit(OP_EQ);
+                int jf=emit(OP_JMPF,0);          // no match -> next label test
+                enterJump.push_back(emit(OP_JMP,0)); enterCase.push_back((int)i);
+                patch(jf,here());
+            }
+        }
+        int toDefault=emit(OP_JMP,0);            // no label matched
+        // Case bodies, in source order; record each body's start address.
+        std::vector<int> bodyStart(s.cases.size(),-1);
+        for(size_t i=0;i<s.cases.size();++i){bodyStart[i]=here();for(const auto& st:s.cases[i].statements)emitStmt(st.get());}
+        int endPos=here();
+        patch(toDefault, defaultIdx>=0?bodyStart[defaultIdx]:endPos);
+        for(size_t j=0;j<enterJump.size();++j)patch(enterJump[j],bodyStart[enterCase[j]]);
+        for(int b:loops_.back().breaks)patch(b,endPos);
+        loops_.pop_back();
+    }
     void emitExpr(const Expr* e){
         if(auto x=dynamic_cast<const IntLit*>(e)){emit(OP_CONST,slvm_add_const_int(vm_,x->value));return;} if(auto x=dynamic_cast<const DoubleLit*>(e)){emit(OP_CONST,slvm_add_const_double(vm_,x->value));return;}
         if(auto x=dynamic_cast<const BoolLit*>(e)){emit(OP_CONST,slvm_add_const_bool(vm_,x->value?1:0));return;} if(auto x=dynamic_cast<const StrLit*>(e)){emit(OP_CONST,slvm_add_const_str(vm_,x->value.c_str()));return;}
@@ -157,8 +209,40 @@ private:
         if(auto x=dynamic_cast<const Binary*>(e)){emitBinary(*x);return;} if(auto x=dynamic_cast<const Call*>(e)){emitCall(*x);return;}
         if(auto x=dynamic_cast<const NewExpr*>(e)){emitNew(*x);return;} if(auto x=dynamic_cast<const MemberAccess*>(e)){emitMember(*x);return;}
         if(auto x=dynamic_cast<const MethodCall*>(e)){emitMethodCall(*x);return;}
+        if(auto x=dynamic_cast<const AssignmentExpr*>(e)){emitAssignmentExpr(*x);return;}
+        if(auto x=dynamic_cast<const ConditionalExpr*>(e)){emitConditional(*x);return;}
+        if(auto x=dynamic_cast<const CastExpr*>(e)){emitExpr(x->operand.get());return;}
+        if(auto x=dynamic_cast<const InstanceOfExpr*>(e)){emitExpr(x->value.get());emit(OP_POP);emit(OP_CONST,slvm_add_const_bool(vm_,0));return;}
+        if(dynamic_cast<const SuperExpr*>(e)||dynamic_cast<const ThisExpr*>(e)){emit(OP_CONST,addNullConst());return;}
+        if(auto x=dynamic_cast<const ArrayAccess*>(e)){emitExpr(x->base.get());emitExpr(x->index.get());emit(OP_POP);return;}
+        if(auto x=dynamic_cast<const MethodReferenceExpr*>(e)){emitExpr(x->base.get());return;}
         throw std::runtime_error("Semantic error: unknown expression kind");
     }
+    // Lower a (possibly compound) assignment expression. The result value is
+    // left on the stack. Compound ops expand to `target = target <op> value`.
+    void emitAssignmentExpr(const AssignmentExpr& a){
+        std::string bin = a.op.size()==2 ? std::string(1,a.op[0]) : std::string();
+        if(auto v=dynamic_cast<const VarExpr*>(a.target.get())){
+            if(!bin.empty()){emitVar(*v);emitExpr(a.value.get());emitBinOp(bin);} else emitExpr(a.value.get());
+            int slot=ctx_->slotOf(v->name);
+            if(slot>=0){emit(OP_STOREL,slot);emit(OP_LOADL,slot);return;}
+            int g=fieldSlot(v->name);
+            if(g>=0){if(fieldProtected_[v->name]&&fieldOwner_[v->name]!=currentClass_)throw std::runtime_error("protected field access denied");emit(OP_STOREG,g);emit(OP_LOADG,g);return;}
+            throw std::runtime_error("Semantic error: assignment to undeclared variable '"+v->name+"'");
+        }
+        if(auto m=dynamic_cast<const MemberAccess*>(a.target.get())){
+            int off=-1;memberLayout(m->base.get(),m->field,off);
+            // SETFIELD expects [struct, newval] and leaves newval on the stack.
+            emitExpr(m->base.get());                 // [struct]
+            if(!bin.empty()){emit(OP_DUP);emit(OP_GETFIELD,off);emitExpr(a.value.get());emitBinOp(bin);} // [struct, newval]
+            else emitExpr(a.value.get());            // [struct, newval]
+            emit(OP_SETFIELD,off);                   // [newval]
+            return;
+        }
+        throw std::runtime_error("Semantic error: assignment target must be a variable or a struct field");
+    }
+    void emitConditional(const ConditionalExpr& c){emitExpr(c.cond.get());int jf=emit(OP_JMPF,0);emitExpr(c.thenE.get());int jend=emit(OP_JMP,0);patch(jf,here());emitExpr(c.elseE.get());patch(jend,here());}
+    void emitBinOp(const std::string& o){if(o=="+")emit(OP_ADD);else if(o=="-")emit(OP_SUB);else if(o=="*")emit(OP_MUL);else if(o=="/")emit(OP_DIV);else if(o=="%")emit(OP_MOD);else throw std::runtime_error("Semantic error: unsupported compound assignment operator '"+o+"='");}
     // Determine the struct type name an expression evaluates to, or "" if it is
     // not statically known to be a struct. Used to resolve field offsets.
     std::string exprStructType(const Expr* e){
@@ -211,6 +295,16 @@ private:
         const std::string& m=mc.method;
         auto oneArgStr=[&](const char* verb){ if(mc.args.size()!=1) throw std::runtime_error("Semantic error: Munction "+std::string(verb)+"(...) takes exactly one argument"); };
         auto noArg=[&](const char* verb){ if(!mc.args.empty()) throw std::runtime_error("Semantic error: Munction "+std::string(verb)+"() takes no arguments"); };
+        // The reach opener `Munction.start(name)` begins a chain and yields a
+        // reach handle. It parses as MethodCall(VarExpr("Munction"), "start").
+        if(m=="start"){
+            if(auto recv=dynamic_cast<const VarExpr*>(mc.receiver.get())){
+                if(recv->name=="Munction"){
+                    if(syntax_<SyntaxVersion{1,3}) throw std::runtime_error("Semantic error: Munction requires #sleela 1.3");
+                    oneArgStr("start"); emitExpr(mc.args[0].get()); emit(OP_MUN_START); return;
+                }
+            }
+        }
         // The Munction reach verbs. Each expects the receiver to evaluate to a
         // reach handle; the op leaves the handle (or a String) on the stack.
         if(m=="connect"||m=="enable"||m=="send"||m=="thatch"||m=="consume"||m=="latch"||m=="closeWithReceipt"||m=="close"||m=="reception"){
@@ -403,9 +497,11 @@ private:
         return false;
     }
     void emitCall(const Call& c){ if(protectedMethods_.count(c.callee) && methodOwner_[c.callee]!=currentClass_) throw std::runtime_error("protected method access denied");
-        if(tryEmitBuiltin(c))return; auto it=funcIndex_.find(c.callee); if(it==funcIndex_.end())throw std::runtime_error("Semantic error: call to unknown method '"+c.callee+"'");
+        if(tryEmitBuiltin(c)){return;}
+        auto it=funcIndex_.find(c.callee); if(it==funcIndex_.end())throw std::runtime_error("Semantic error: call to unknown method '"+c.callee+"'");
         const Method* target=methods_[it->second].method; if((int)c.args.size()!=(int)target->params.size())throw std::runtime_error("Semantic error: method '"+c.callee+"' expects "+std::to_string(target->params.size())+" argument(s), got "+std::to_string(c.args.size()));
-        for(const auto&a:c.args)emitExpr(a.get());emit(OP_CALL,it->second);
+        for(const auto&a:c.args){emitExpr(a.get());}
+        emit(OP_CALL,it->second);
     }
 };
 

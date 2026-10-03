@@ -1,4 +1,4 @@
-#sleela 1.0
+#sleela 1.3
 // stock_market_live.sleela -- market-data checker with paper portfolio support.
 //
 // This program is deliberately split into a market-data model and paper trading.

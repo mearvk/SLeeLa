@@ -21,3 +21,11 @@ The initial registry covers RAW, H.264/AVC, H.265/HEVC, AV1, VP8, VP9, MPEG-2 Vi
 ```sh
 make -C video test
 ```
+
+## Corrections
+
+Fixed so `make` builds and tests clean: the missing `src/sleela_video.cpp` thin
+C++ wrapper was added, and the C++ `Frame` constructor now populates the
+underlying `raw.{width,height,format}` fields (previously left zero, so
+`Frame::valid(...)` wrongly failed). See the 2026-10-03 entry in
+[`../REVISIONS.md`](../REVISIONS.md).

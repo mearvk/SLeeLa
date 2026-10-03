@@ -33,6 +33,7 @@ PROTO_SOURCES = \
 	http3_timing.c \
 	http3_handshake.c \
 	http3_pipeline.c \
+	../preferred-routers/preferred_router.c \
 	http3_port.c
 
 PROTO_OBJECTS = $(PROTO_SOURCES:.c=.o)

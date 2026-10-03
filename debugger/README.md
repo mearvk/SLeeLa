@@ -25,3 +25,13 @@ Run:
     ./debugger/sleela-debugger --report debugger/example-report.txt
 
 The debugger records and analyzes events; it does not execute arbitrary payloads or bypass authorization.
+
+## Corrections
+
+Fixed build-blocking defects: `debugger_backend.hpp` defined `RegisterSnapshot`
+and its backend virtual methods twice, and that `RegisterSnapshot` also clashed
+with a different struct of the same name in `debug_engine.hpp`. The duplicates
+were removed and the backend view renamed to `BackendRegisterSnapshot`; a
+missing `<memory>` include (for `std::unique_ptr`) and a literal-`\n` corruption
+were also fixed. The debugger now builds. See the 2026-10-03 entry in
+[`../REVISIONS.md`](../REVISIONS.md).

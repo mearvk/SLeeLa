@@ -34,19 +34,19 @@ echo "supported range:"
 "$SLEELA" version | sed -n '2p'
 
 echo "accepted:"
-expect_ok "$HERE/syntax_1_3.sleela"     "#sleela 1.3 (declared, current range)"
-expect_ok "$HERE/syntax_missing.sleela" "#sleela absent (defaults to 1.3 with warning)"
+expect_ok "$HERE/syntax_1_3.sleela"     "#sleela 1.3 (declared, in range 1.3 .. 1.6)"
+expect_ok "$HERE/syntax_1_4.sleela"     "#sleela 1.4 (declared, in range 1.3 .. 1.6)"
+expect_ok "$HERE/syntax_missing.sleela" "#sleela absent (defaults to the current version with a warning)"
 
 echo "rejected:"
-expect_reject "$HERE/syntax_1_4.sleela" "#sleela 1.4 (too new)"
-expect_reject "$HERE/syntax_1_2.sleela" "#sleela 1.2 (too old)"
+expect_reject "$HERE/syntax_1_2.sleela" "#sleela 1.2 (too old; floor is 1.3)"
 expect_reject "$HERE/too_new.sleela"     "#sleela 2.0 (major too new)"
-expect_reject "$HERE/minor_ahead.sleela" "#sleela 1.9 (minor too new)"
+expect_reject "$HERE/minor_ahead.sleela" "#sleela 1.9 (minor too new; ceiling is 1.6)"
 expect_reject "$HERE/malformed.sleela"   "#sleela malformed"
 
 echo "diagnostics (stderr shown):"
-"$SLEELA" run "$HERE/syntax_1_4.sleela" 2>&1 >/dev/null | sed 's/^/  > /'
 "$SLEELA" run "$HERE/syntax_1_2.sleela" 2>&1 >/dev/null | sed 's/^/  > /'
+"$SLEELA" run "$HERE/minor_ahead.sleela" 2>&1 >/dev/null | sed 's/^/  > /'
 "$SLEELA" run "$HERE/malformed.sleela" 2>&1 >/dev/null | sed 's/^/  > /'
 
 echo "check command (no-run validation):"

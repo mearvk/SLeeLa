@@ -272,7 +272,8 @@ int main(int argc, char **argv) {
             designActivity = true;
             for (int j = 1; j <= 7; ++j) activityArgs.push_back(argv[i + j]);
             i += 7;
-            continue;\n        }
+            continue;
+        }
         std::cerr << "sleelas: unknown option '" << a << "' (use --help)\n"; return 2;
     }
     sleela::server::NatConfig natConfig;
@@ -359,7 +360,16 @@ int main(int argc, char **argv) {
         run_portctl(root, "open", "basic-scan", scanPort, scanProtocol) != 0) {
         std::cerr << "sleelas: firewall could not open probe/scan ports; refusing to start\n";
         return 1;
-    }\n    if (run_portctl(root, "open", "Discord-1", port, portProtocol) != 0) {\n        std::cerr << "sleelas: firewall could not open " << port << "/" << portProtocol << "; refusing to start\n";\n        return 1;\n    }\n    struct PortGuard {\n        const fs::path &root; const std::string &port; const std::string &protocol;\n        ~PortGuard() { (void)run_portctl(root, "close", "Discord-1", port, protocol); }\n    } portGuard{root, port, portProtocol};\n    // Server 1 uses the same packet logger/consumer lifecycle as Server Editions 2 and 3.
+    }
+    if (run_portctl(root, "open", "Discord-1", port, portProtocol) != 0) {
+        std::cerr << "sleelas: firewall could not open " << port << "/" << portProtocol << "; refusing to start\n";
+        return 1;
+    }
+    struct PortGuard {
+        const fs::path &root; const std::string &port; const std::string &protocol;
+        ~PortGuard() { (void)run_portctl(root, "close", "Discord-1", port, protocol); }
+    } portGuard{root, port, portProtocol};
+    // Server 1 uses the same packet logger/consumer lifecycle as Server Editions 2 and 3.
     {
         const fs::path tl = root / "server-edition/port-awareness/traffic-log.sh";
         if (regular_file(tl)) {

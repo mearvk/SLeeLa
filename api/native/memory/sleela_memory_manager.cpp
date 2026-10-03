@@ -1,5 +1,6 @@
 #include "sleela_memory_manager.h"
 #include <algorithm>
+#include <cstddef>
 #include <cstdlib>
 #include <cstring>
 #include <limits>
@@ -9,7 +10,7 @@
 #include <vector>
 
 static constexpr uint64_t CANARY=0x534C45454C414D4DULL;
-struct Header { uint64_t canary; size_t size; size_t alignment; };
+struct Header { uint64_t canary; size_t size; size_t alignment; void* base; };
 struct Entry { void* user; void* raw; size_t size; size_t alignment; };
 struct Object { uint64_t id; uint64_t target; bool leech; std::string name; };
 
@@ -28,13 +29,14 @@ struct sleela_mm {
 static void* raw_alloc(size_t bytes,size_t alignment){
   if(alignment<alignof(void*)) alignment=alignof(void*);
   if((alignment&(alignment-1))!=0) alignment=alignof(void*);
-  if(bytes>std::numeric_limits<size_t>::max()-sizeof(Header)-sizeof(uint64_t)-alignment)return nullptr; const size_t total=sizeof(Header)+bytes+sizeof(uint64_t)+alignment;
+  if(bytes>std::numeric_limits<size_t>::max()-sizeof(Header)-sizeof(uint64_t)-alignment){return nullptr;}
+  const size_t total=sizeof(Header)+bytes+sizeof(uint64_t)+alignment;
   void* raw=std::malloc(total);
   if(!raw)return nullptr;
   uintptr_t base=reinterpret_cast<uintptr_t>(raw)+sizeof(Header);
   uintptr_t user=(base+alignment-1)&~(uintptr_t)(alignment-1);
   auto* h=reinterpret_cast<Header*>(user-sizeof(Header));
-  h->canary=CANARY; h->size=bytes; h->alignment=alignment;
+  h->canary=CANARY; h->size=bytes; h->alignment=alignment; h->base=raw;
   *reinterpret_cast<uint64_t*>(user+bytes)=CANARY;
   return reinterpret_cast<void*>(user);
 }
@@ -45,24 +47,28 @@ extern "C" sleela_mm* sleela_mm_create(){return new sleela_mm;}
 extern "C" void sleela_mm_destroy(sleela_mm*x){if(!x)return;std::lock_guard<std::mutex>g(x->m);for(auto&kv:x->blocks)std::free(kv.second.raw);x->blocks.clear();x->objects.clear();delete x;}
 
 extern "C" void* sleela_mm_alloc(sleela_mm*x,size_t n){
-  if(!x||!n)return nullptr;std::lock_guard<std::mutex>g(x->m);
-  if(n>x->limits.hard_limit-x->resident)return nullptr;
+  if(!x||!n){return nullptr;}
+  std::lock_guard<std::mutex>g(x->m);
+  if(x->resident>=x->limits.hard_limit||n>x->limits.hard_limit-x->resident)return nullptr;
   void* user=raw_alloc(n,alignof(std::max_align_t));if(!user)return nullptr;
-  x->blocks[user]={user,header(user),n,header(user)->alignment};
+  x->blocks[user]={user,header(user)->base,n,header(user)->alignment};
   x->resident+=n;x->allocated+=n;x->allocations++;x->peak=std::max(x->peak,x->resident);return user;
 }
 extern "C" void* sleela_mm_calloc(sleela_mm*x,size_t c,size_t n){if(n&&c>SIZE_MAX/n)return nullptr;void*p=sleela_mm_alloc(x,c*n);if(p)std::memset(p,0,c*n);return p;}
 
 extern "C" void* sleela_mm_realloc(sleela_mm*x,void*p,size_t n){
-  if(!p)return sleela_mm_alloc(x,n);if(!x||!n)return nullptr;std::lock_guard<std::mutex>g(x->m);
+  if(!p){return sleela_mm_alloc(x,n);}
+  if(!x||!n){return nullptr;}
+  std::lock_guard<std::mutex>g(x->m);
   auto it=x->blocks.find(p);if(it==x->blocks.end()||!valid_block(p))return nullptr;
-  const size_t old=it->second.size;if(n>old&&n-old>x->limits.hard_limit-x->resident)return nullptr;
+  const size_t old=it->second.size;if(n>old&&(x->resident>=x->limits.hard_limit||n-old>x->limits.hard_limit-x->resident))return nullptr;
   void*q=raw_alloc(n,it->second.alignment);if(!q)return nullptr;std::memcpy(q,p,std::min(old,n));
-  std::free(it->second.raw);x->blocks.erase(it);x->blocks[q]={q,header(q),n,header(q)->alignment};
+  std::free(it->second.raw);x->blocks.erase(it);x->blocks[q]={q,header(q)->base,n,header(q)->alignment};
   x->resident=x->resident-old+n;x->allocated+=n;x->freed+=old;x->peak=std::max(x->peak,x->resident);return q;
 }
 extern "C" sleela_mm_status sleela_mm_free(sleela_mm*x,void*p){
-  if(!x||!p)return SLEELA_MM_INVALID;std::lock_guard<std::mutex>g(x->m);
+  if(!x||!p){return SLEELA_MM_INVALID;}
+  std::lock_guard<std::mutex>g(x->m);
   auto it=x->blocks.find(p);if(it==x->blocks.end())return SLEELA_MM_NOT_FOUND;
   if(!valid_block(p)){x->condition=SLEELA_MM_CONDITION_CORRUPT;return SLEELA_MM_CORRUPT;}
   const size_t n=it->second.size;x->resident-=n;x->freed+=n;x->frees++;
@@ -72,22 +78,24 @@ extern "C" sleela_mm_status sleela_mm_free(sleela_mm*x,void*p){
 extern "C" sleela_mm_status sleela_mm_insert_struct(sleela_mm*x,const char*n,const void*s,size_t z,size_t alignment,uint64_t*out){
   if(!x||!s||!z||!out)return SLEELA_MM_INVALID;
   std::lock_guard<std::mutex>g(x->m);
-  if(z>x->limits.hard_limit-x->resident)return SLEELA_MM_LIMIT;
+  if(x->resident>=x->limits.hard_limit||z>x->limits.hard_limit-x->resident)return SLEELA_MM_LIMIT;
   void*p=raw_alloc(z,alignment);if(!p)return SLEELA_MM_LIMIT;
   std::memcpy(p,s,z);
-  x->blocks[p]={p,header(p),z,header(p)->alignment};
+  x->blocks[p]={p,header(p)->base,z,header(p)->alignment};
   x->resident+=z;x->allocated+=z;x->allocations++;x->peak=std::max(x->peak,x->resident);
   const uint64_t id=x->next++;x->objects[id]={id,reinterpret_cast<uint64_t>(p),false,n?n:"struct"};*out=id;
   return SLEELA_MM_OK;
 }
 extern "C" sleela_mm_status sleela_mm_remove(sleela_mm*x,uint64_t id){
-  if(!x)return SLEELA_MM_INVALID;std::lock_guard<std::mutex>g(x->m);auto it=x->objects.find(id);if(it==x->objects.end()||it->second.leech)return SLEELA_MM_NOT_FOUND;
+  if(!x){return SLEELA_MM_INVALID;}
+  std::lock_guard<std::mutex>g(x->m);auto it=x->objects.find(id);if(it==x->objects.end()||it->second.leech)return SLEELA_MM_NOT_FOUND;
   void*p=reinterpret_cast<void*>(it->second.target);auto b=x->blocks.find(p);if(b==x->blocks.end()){x->condition=SLEELA_MM_CONDITION_CORRUPT;return SLEELA_MM_CORRUPT;}
   const size_t n=b->second.size;x->resident-=n;x->freed+=n;x->frees++;std::free(b->second.raw);x->blocks.erase(b);x->objects.erase(it);
   for(auto oi=x->objects.begin();oi!=x->objects.end();) {if(oi->second.leech&&oi->second.target==reinterpret_cast<uint64_t>(p))oi=x->objects.erase(oi);else ++oi;}return SLEELA_MM_OK;
 }
 extern "C" sleela_mm_status sleela_mm_leech_attach(sleela_mm*x,const char*n,uint64_t target,uint64_t*out){
-  if(!x||!out)return SLEELA_MM_INVALID;std::lock_guard<std::mutex>g(x->m);auto it=x->objects.find(target);if(it==x->objects.end()||it->second.leech)return SLEELA_MM_NOT_FOUND;
+  if(!x||!out){return SLEELA_MM_INVALID;}
+  std::lock_guard<std::mutex>g(x->m);auto it=x->objects.find(target);if(it==x->objects.end()||it->second.leech)return SLEELA_MM_NOT_FOUND;
   const uint64_t id=x->next++;x->objects[id]={id,it->second.target,true,n?n:"leech"};*out=id;return SLEELA_MM_OK;
 }
 extern "C" sleela_mm_status sleela_mm_leech_detach(sleela_mm*x,uint64_t id){if(!x)return SLEELA_MM_INVALID;std::lock_guard<std::mutex>g(x->m);auto it=x->objects.find(id);if(it==x->objects.end()||!it->second.leech)return SLEELA_MM_NOT_FOUND;x->objects.erase(it);return SLEELA_MM_OK;}

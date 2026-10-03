@@ -16,7 +16,9 @@ CPP_OBJECTS := $(patsubst src/%.cpp,$(BUILD_DIR)/%.o,$(CPP_SOURCES))
 all: native runtime inventory sanity tutorial-check
 native: $(C_OBJECTS) $(CPP_OBJECTS)
 
-SLEELA_SHA256_MANIFEST ?= ../../security/sha256-manifest.json
+# Resolve to an absolute path so it stays correct when passed into `make -C
+# ../../impl` (a relative path would otherwise be re-interpreted against impl/).
+SLEELA_SHA256_MANIFEST ?= $(abspath $(CURDIR)/../../security/sha256-manifest.json)
 
 runtime:
 	$(MAKE) -C ../../impl build/sleela SLEELA_SHA256_MANIFEST="$(SLEELA_SHA256_MANIFEST)"

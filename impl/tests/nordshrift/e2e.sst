@@ -8,7 +8,7 @@ sheet e2e:
 
 source:
   root "src"
-  glob "**/*.sleela"
+  glob "e2e.sleela"
 
 target:
   root "out"
