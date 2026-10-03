@@ -674,3 +674,20 @@ SLVM/8 adds:
 **Has this execution been formally admitted, and is the supervised execution lifecycle still authorized to proceed?**
 
 This makes SLVM/8 the natural next hardening layer above the management and failure controls established by SLVM/7.
+
+
+---
+
+## XX. SLVM/9 — Filesystem and Operating-System Adaptation
+
+SLVM/9 extends SLVM/8 by making filesystem semantics an explicit negotiated capability of the execution environment.
+
+The design introduces a Filesystem Abstraction Layer (FAL) between the supervised VM and native operating-system/filesystem APIs. Linux, Windows, and macOS receive explicit adapter foundations. Custom filesystems can advertise capabilities without changing SLeeLa language semantics.
+
+The TAC3 design in Ubuntu.Determinant.Beta.Restricted/tools/tac3 is an important reference case. TAC3 has a versioned on-disk format, explicit superblock and extents, a read-only persistent-mount phase, a contextual FILE layer, HEALTH/ADMIN/RECOVERY regions, device-class metadata, system-pointer relationships, and a deliberate distinction between reconstructed read-only state and actual durable writes. SLVM/9 models these as capabilities rather than assuming that ordinary inode/path semantics apply.
+
+The resulting path is:
+
+    SLeeLa Source -> Compiler -> Artifact -> SLVM/8 Admission/Supervision -> SLVM/9 Filesystem Abstraction Layer -> OS Adapter -> Native Filesystem
+
+Central invariant: a filesystem may only provide the guarantees it can actually demonstrate. Durability, atomicity, recovery, contextual identity, native handles, and transactions are separately discoverable capabilities. Unknown or unsupported features are denied rather than guessed.
