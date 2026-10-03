@@ -1,0 +1,8 @@
+#sleela 1.3
+class GCBarrier {
+    String kind;
+    String phase;
+    int owner;
+    int previous;
+    int next;
+}
