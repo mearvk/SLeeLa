@@ -31,3 +31,12 @@ The VM speaks a stable filesystem capability contract. The OS/filesystem adapter
 SLeeLa source remains authoritative. Filesystem behavior is reached through the SLeeLa capability/broker boundary.
 
 Copyright (c) Max Rupplin - MEARVK LLC - 2026
+## Native adapter layer
+
+SLVM/9 now includes a host-native filesystem probe beneath the FAL. Linux uses statfs/statvfs/stat observations; macOS uses Darwin statfs/statvfs/stat observations; Windows uses native volume and file-handle APIs. The probe reports evidence and identity into the SLVM/9 contract but never grants SLeeLa authority.
+
+This makes the filesystem boundary noteworthy: the VM can meet an unfamiliar modern filesystem through an adapter without rewriting the language runtime around that filesystem. TAC3 remains an advanced profile above the native probe, where TAC3-specific superblock, FILE, HEALTH, ADMIN, RECOVERY, contextual identity, and durability rules can be verified explicitly.
+
+The control path is:
+
+SLeeLa Artifact -> SLVM/8 Admission -> Policy -> Capability Lease -> SLVM/9 Supervisor -> Native Adapter -> Operating System
