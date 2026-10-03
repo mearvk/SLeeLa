@@ -36,3 +36,20 @@ A textual compile report can therefore read as a module-by-module checklist inst
 ## Build integration
 
 The package build is available with `make -C lib/vm` and from the repository root with `make vm`. The Compiler Manager contract is reviewed before VM package objects are considered ready for assembly; the build does not silently change the declared VM inventory.
+
+## Source-to-VM completeness gate
+
+The Compiler Manager also owns the source inventory boundary. The authoritative input set is every .sleela file recursively under /lib; it is not limited to /lib/compiler or /lib/vm. The current repository contains **10,077 /lib/**/*.sleela source files** on the verified tree snapshot. The inventory is discovered dynamically so newly added library source cannot be omitted by a stale manifest.
+
+Before an artifact is admitted, the manager requires:
+
+1. recursive /lib source discovery;
+2. source identity/digest preservation;
+3. dependency and symbol coverage;
+4. lowering coverage into the canonical SLeeLa IR;
+5. exact ISA coverage against /lib/vm/InstructionSet.sleela;
+6. native dispatch coverage in impl/core/sleela_core.h and its implementation;
+7. artifact ABI validation;
+8. execution-test coverage for every emitted instruction family.
+
+The source-side ISA registry currently contains **98 ordered instructions**, and the native SLOp enumeration has been verified to contain the same 98 instructions in exactly the same order. Missing compiler lowering or runtime dispatch remains a completeness failure even when an opcode is present in both registries.
