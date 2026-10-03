@@ -1,3 +1,5 @@
+<img align="right" src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="75" height="75" alt="SLeeLa">
+
 # SLeeLa Virtual Machine 11
 
 SLVM/11 establishes a filesystem-module host above the verified storage contracts of SLVM/9 and SLVM/10. It provides a stable slot for custom filesystem definitions and structures while keeping filesystem semantics versioned and capability-driven.

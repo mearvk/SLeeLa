@@ -1,3 +1,5 @@
+<img align="right" src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="75" height="75" alt="SLeeLa">
+
 # Filesystem Modules — SLVM/11
 
 Standard extension slot for filesystem definitions and structures recognized by SLVM/11.
