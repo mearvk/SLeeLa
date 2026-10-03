@@ -1,0 +1,10 @@
+#sleela 1.3
+class GCObject {
+    String identity;
+    int generation;
+    int age;
+    int quality;
+    int marked;
+    int remembered;
+    int bytes;
+}
