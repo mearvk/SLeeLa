@@ -23,7 +23,9 @@ IDEA → PROJECT → SOURCE → CHECK → BUILD → TEST → PACKAGE → INSTALL
 - driver-integrated;
 - distributed;
 - compiler/tooling;
-- protocol implementation.
+- protocol implementation;
+- website generation (design + sign driven static sites — see `website-generator/`);
+- CAD / technical drawing (plans/dimensions/notes → AutoCAD DXF — see `autocad/`).
 
 ## Application manifest
 
