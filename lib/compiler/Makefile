@@ -12,9 +12,17 @@ CPP_SOURCES := src/sleela_compiler.cpp
 C_OBJECTS := $(patsubst src/%.c,$(BUILD_DIR)/%.o,$(C_SOURCES))
 CPP_OBJECTS := $(patsubst src/%.cpp,$(BUILD_DIR)/%.o,$(CPP_SOURCES))
 
-.PHONY: all native sanity tutorial-check clean help
-all: native sanity tutorial-check
+.PHONY: all native runtime inventory sanity tutorial-check clean help
+all: native runtime inventory sanity tutorial-check
 native: $(C_OBJECTS) $(CPP_OBJECTS)
+
+SLEELA_SHA256_MANIFEST ?= ../../security/sha256-manifest.json
+
+runtime:
+	$(MAKE) -C ../../impl build/sleela SLEELA_SHA256_MANIFEST="$(SLEELA_SHA256_MANIFEST)"
+
+inventory:
+	python3 ../../tools/sleela-build.py inventory-lib
 
 tutorial-check:
 	@printf '%s\n' 'SLeeLa compiler tutorial check'
