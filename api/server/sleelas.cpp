@@ -272,7 +272,8 @@ int main(int argc, char **argv) {
             designActivity = true;
             for (int j = 1; j <= 7; ++j) activityArgs.push_back(argv[i + j]);
             i += 7;
-            continue;\n        }
+            continue;
+        }
         std::cerr << "sleelas: unknown option '" << a << "' (use --help)\n"; return 2;
     }
     sleela::server::NatConfig natConfig;

@@ -1,1 +1,29 @@
-#include "DarkPower.hpp"\n\n#include <utility>\n\nnamespace sleela::http80 {\n\nDarkPower::DarkPower(std::string schedule_term)\n    : schedule_term_(std::move(schedule_term)) {}\n\nbool DarkPower::valid() const noexcept {\n    return schedule_term_.size() == SCHEDULE_TERM_LENGTH;\n}\n\nconst std::string& DarkPower::schedule_term() const noexcept {\n    return schedule_term_;\n}\n\nstd::uint32_t DarkPower::dark_power() const noexcept {\n    return DARK_POWER;\n}\n\nstd::string DarkPower::contact_request_for_iss() const {\n    if (!valid()) return {};\n    return std::string("CONTACT-REQUEST|DOMAIN=") + ISS_DOMAIN +\n           "|SCHEDULE-TERM=" + schedule_term_ +\n           "|DARK-POWER=0x18ae";\n}\n\n} // namespace sleela::http80\n
+#include "DarkPower.hpp"
+
+#include <utility>
+
+namespace sleela::http80 {
+
+DarkPower::DarkPower(std::string schedule_term)
+    : schedule_term_(std::move(schedule_term)) {}
+
+bool DarkPower::valid() const noexcept {
+    return schedule_term_.size() == SCHEDULE_TERM_LENGTH;
+}
+
+const std::string& DarkPower::schedule_term() const noexcept {
+    return schedule_term_;
+}
+
+std::uint32_t DarkPower::dark_power() const noexcept {
+    return DARK_POWER;
+}
+
+std::string DarkPower::contact_request_for_iss() const {
+    if (!valid()) return {};
+    return std::string("CONTACT-REQUEST|DOMAIN=") + ISS_DOMAIN +
+           "|SCHEDULE-TERM=" + schedule_term_ +
+           "|DARK-POWER=0x18ae";
+}
+
+} // namespace sleela::http80

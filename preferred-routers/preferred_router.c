@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-static void trim(char *s){size_t n;if(!s)return;while(isspace((unsigned char)*s))memmove(s,s+1,strlen(s));n=strlen(s);while(n&&isspace((unsigned char)s[n-1]))s[--n]='\\0';}
+static void trim(char *s){size_t n;if(!s)return;while(isspace((unsigned char)*s))memmove(s,s+1,strlen(s));n=strlen(s);while(n&&isspace((unsigned char)s[n-1]))s[--n]='\0';}
 static int kv(const char *line,const char *key,char *out,size_t cap){size_t k=strlen(key);if(strncmp(line,key,k)!=0||line[k]!='=')return 0;snprintf(out,cap,"%s",line+k+1);trim(out);return 1;}
 static int score_for_role(const char *role){if(!strcmp(role,"national_backbone")||!strcmp(role,"national_ixp"))return 5;if(!strcmp(role,"regional_carrier")||!strcmp(role,"international_dc"))return 4;return 1;}
 static int route_generation(const char *p){if(!p||strncmp(p,"HTTP/",5))return 0;int g=p[5]-'0';return g>=1&&g<=9?g:0;}

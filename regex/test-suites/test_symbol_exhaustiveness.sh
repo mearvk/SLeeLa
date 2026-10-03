@@ -9,7 +9,9 @@ test -s "$SYMBOLS"
 test -s "$REFERENCE"
 
 # The normative reference contains exactly 19 semantic entries.
-entries=$(awk 'BEGIN{n=0} /^| (Atom|Quantity|Group|Logic|Anchor) / {n++} END{print n}' "$REFERENCE")
+# Count table rows whose first column is one of the semantic families. The pipe
+# must be escaped in the regex; an unescaped `^|` matches every line.
+entries=$(awk 'BEGIN{n=0} /^\| (Atom|Quantity|Group|Logic|Anchor) / {n++} END{print n}' "$REFERENCE")
 test "$entries" -eq 19
 
 # Every required semantic family remains represented in the normative

@@ -475,7 +475,7 @@
     },
     {
       "path": "impl/nordshrift/sleela_emit.cpp",
-      "sha256": "43d552869bfb166edb7b9761439d3fa037fe850cedfdc56049c98ec9ba253b38"
+      "sha256": "c261dbef0dfc6e35c13b39324a9edc16fc79bcd81f1e701db0c9518a9ff56f9e"
     },
     {
       "path": "impl/nordshrift/sleela_emit.h",

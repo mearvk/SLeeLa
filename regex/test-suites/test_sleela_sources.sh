@@ -36,13 +36,19 @@ RegexSystem.sleela
 RegexValidator.sleela
 EOF
 
-find "$LIB" -maxdepth 1 -type f -name 'Regex*.sleela' -exec basename {} \; | sort >"$TMP.actual"
+# Use a fixed byte collation so the inventory order is deterministic across
+# locales (the expected list above is in C/ASCII order).
+find "$LIB" -maxdepth 1 -type f -name 'Regex*.sleela' -exec basename {} \; | LC_ALL=C sort >"$TMP.actual"
 
 while IFS= read -r file; do
     test -s "$LIB/$file"
 done <"$TMP.expected"
 
-if ! cmp -s "$TMP.expected" "$TMP.actual"; then
+# Portable comparison: `cmp`/`diff` are not guaranteed present, so compare the
+# captured file contents as shell strings.
+EXPECTED_CONTENT=$(cat "$TMP.expected")
+ACTUAL_CONTENT=$(cat "$TMP.actual")
+if [ "$EXPECTED_CONTENT" != "$ACTUAL_CONTENT" ]; then
     echo "SLeeLa regex source inventory: FAIL" >&2
     echo "Expected:" >&2
     cat "$TMP.expected" >&2

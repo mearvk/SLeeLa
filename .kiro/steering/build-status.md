@@ -135,3 +135,49 @@ has never compiled.
 Finishing this means designing those nodes with correct fields and implementing
 their semantic checks and lowering end to end — a feature-completion task, not a
 typo fix. Until it is done, treat `impl/` as "not building."
+
+## Source-corruption sweep (third pass)
+
+Beyond `impl`, a syntax-only sweep over the other C/C++ trees (and building the
+`regex/` subproject under its `-Werror`) found and fixed more source issues.
+The recurring corruption family is a **literal `\n` or over-escaped char/quote**
+written into source instead of a real newline / `\0` / `"`.
+
+To re-check later:
+
+```sh
+# Fully-collapsed files (whole file on one line with many literal \n):
+for f in $(grep -rlE '\\n' --include=*.c --include=*.cpp --include=*.h --include=*.hpp . | grep -vE '^\./bash/'); do
+  [ "$(wc -l < "$f")" -le 2 ] && [ "$(grep -oE '\\n' "$f" | wc -l)" -ge 5 ] && echo "COLLAPSED: $f"; done
+# Over-escaped null char constant (writes '0' instead of NUL):
+grep -rnE "='\\\\\\\\0'" --include=*.c --include=*.cpp . | grep -vE '^\./bash/'
+# Syntax-only check a non-impl source:
+g++ -std=c++17 -fsyntax-only -I<dir> <file.cpp>
+```
+
+Fixed this pass:
+- `impl/nordshrift/sleela_emit.cpp` — `#include <sstream>\n#include <stdexcept>`
+  on one line (literal `\n`); `<stdexcept>` was effectively not included.
+- `http-8.0/DarkPower.{hpp,cpp}` — entire files collapsed to a single line of
+  literal `\n`; rewritten with real newlines.
+- `api/server/sleelas.cpp`, `debugger/debugger_line.cpp`,
+  `api/email/sleela_email.c`, `http-4.0/http4_protocol.c` — a literal `\n`
+  mid-statement.
+- `regex/include/sleela_regex_natural.hpp` — `Diagnostic*=nullptr` tokenized as
+  the `*=` operator; needs a space (`Diagnostic* =nullptr`).
+- `regex/src/sleela_regex_natural.c` — `'\\0'` (two-char constant) instead of
+  `'\0'` for the string terminator.
+- `preferred-routers/preferred_router.c` — same `'\\0'` bug in `trim()` (this is
+  linked into the `sleela` binary; it wrote `'0'` instead of a NUL terminator).
+- `regex/` subproject (its Makefiles use `-Werror`): misleading-indentation in
+  `src/sleela_regex.c`; `Map.of` with 11 pairs in `java/SleelaRegexNatural.java`
+  (exceeds the 10-pair overload — use `Map.ofEntries`); a non-executable test
+  script; a buggy `awk` pattern (`^|` matched every line) and a locale-dependent
+  `sort` / missing-`cmp` in the test-suite scripts; and genuinely wrong test
+  expectations (anchored `^...$` pattern used for a substring search; wrong
+  match span and capture count).
+
+Note: `telephony-skya/drivers/platform/{macos,windows}/*.cpp` report
+`skya_platform_device` undeclared under a Linux `-fsyntax-only` check, but that
+is a false positive — they are platform-gated and need the macOS/Windows SDK
+headers; they are not corrupted.
