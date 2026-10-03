@@ -88,6 +88,7 @@ host and adjusts link flags per platform.
   Insight/Quality, not a psychometric score. A rendered Markdown edition is at
   [`manifesto/MANIFESTO.md`](manifesto/MANIFESTO.md).
 - [`VERSION.md`](VERSION.md) is the single record of all versions.
+- [`config/CONFIGURATION.md`](config/CONFIGURATION.md) defines the unified configuration root: one absolute runtime configuration location derived from the project name/root or an explicit administrator path, including VM 1–11 and GC configuration.
 - [`COMPILER.md`](COMPILER.md) describes the Sleela compiler — its pipeline,
   version awareness (the `#sleela` pragma), and the versions it implements.
 - [`SOURCE.md`](SOURCE.md) describes the Sleela source file (the `.sleela`
