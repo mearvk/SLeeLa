@@ -82,3 +82,16 @@ Package-manager availability varies by machine. The adapters report unsupported 
 The C API in sleela_webserver.h provides bounded configuration validation and server-selection vocabulary. It is suitable for BODI/XML or other SLeeLa orchestration layers.
 
 The OS adapters remain responsible for native package managers, services, paths, and process controls.
+
+## Unified Route Data
+
+This server consumes the SLeeLa unified route-data contract in
+route/ROUTE.DATA.json and route/ROUTE.DATA.md. Route records carry protocol,
+server surface, HTTP generation, VM generation/formal VM name, canonical
+configuration root, route identifier, target/resolution mode, capability,
+transport, port, and status. VM names are architectural metadata only and do
+not grant capabilities. Dynamic targets must use the shared resolver before
+acceptance. The VM identity is: /impl Core, /1 Foundation, /2 Operator,
+/3 Specialist, /4 Supervisor, /5 Manager, /6 Director, /7 Administrator,
+/8 Executive, /9 Authority, /10 Principal, /11 Sovereign.
+
