@@ -1,0 +1,15 @@
+script "scientific-work"
+timeout 15 minutes
+
+let f = fn(x) { x^3 + 2*x + 1 }
+let derivative = calculus.derivative(f, 2)
+let integral = calculus.integrate(f, 0, 2)
+
+let result = {
+    derivative: derivative,
+    integral: integral,
+    status: "derived"
+}
+
+queue.push("calculation.results", result)
+return result
