@@ -105,3 +105,21 @@ rest of SLeeLa.
 The current advanced scripting profile is documented in [TURING-5.md](TURING-5.md). It adds a Turing-complete temporary-work model with first-class scientific and engineering computation, calculus, definitions, lookups, typed object-state inspection, known-variable access, controlled object updates, careful result queues, VM condition channels, master sequence indexes/IDs, pause/yield controls, and finite timeouts from seconds through days.
 
 Supporting contracts: [SCIENCE.md](SCIENCE.md), [OBJECT-STATE.md](OBJECT-STATE.md), [CONTROL.md](CONTROL.md), [TIMEOUTS.md](TIMEOUTS.md), [TYPE-SYSTEM.md](TYPE-SYSTEM.md), and [INTEGRATION.md](INTEGRATION.md).
+
+
+## Demesresmes™ scientific scripting language
+
+The SLeeLa scripting language is named **Demesresmes™**. The ™ mark is used in the language name and documentation; source identifiers remain ASCII-friendly as `Demesresmes`.
+
+Demesresmes™ includes a versioned scientific constants registry under [constants/](constants/). It provides explicit mathematical, physics, chemistry, and engineering constants in both JSON and XML forms. See [CONSTANTS.md](CONSTANTS.md) and [CONSTANTS.SCHEMA.md](CONSTANTS.SCHEMA.md).
+
+Example:
+
+```sleela-script
+let c = constant.get("physics.speed_of_light")
+let pi = constant.get("math.pi")
+let R = constant.get("chemistry.molar_gas")
+let G = constant.get("physics.newtonian_gravitational_constant")
+```
+
+Canonical names are preferred over short aliases so symbols with multiple scientific meanings remain unambiguous. Registry values retain units, exactness/uncertainty, and provenance metadata.
