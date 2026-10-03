@@ -47,7 +47,7 @@ extern "C" void sleela_mm_destroy(sleela_mm*x){if(!x)return;std::lock_guard<std:
 
 extern "C" void* sleela_mm_alloc(sleela_mm*x,size_t n){
   if(!x||!n)return nullptr;std::lock_guard<std::mutex>g(x->m);
-  if(n>x->limits.hard_limit-x->resident)return nullptr;
+  if(x->resident>=x->limits.hard_limit||n>x->limits.hard_limit-x->resident)return nullptr;
   void* user=raw_alloc(n,alignof(std::max_align_t));if(!user)return nullptr;
   x->blocks[user]={user,header(user)->base,n,header(user)->alignment};
   x->resident+=n;x->allocated+=n;x->allocations++;x->peak=std::max(x->peak,x->resident);return user;
@@ -57,7 +57,7 @@ extern "C" void* sleela_mm_calloc(sleela_mm*x,size_t c,size_t n){if(n&&c>SIZE_MA
 extern "C" void* sleela_mm_realloc(sleela_mm*x,void*p,size_t n){
   if(!p)return sleela_mm_alloc(x,n);if(!x||!n)return nullptr;std::lock_guard<std::mutex>g(x->m);
   auto it=x->blocks.find(p);if(it==x->blocks.end()||!valid_block(p))return nullptr;
-  const size_t old=it->second.size;if(n>old&&n-old>x->limits.hard_limit-x->resident)return nullptr;
+  const size_t old=it->second.size;if(n>old&&(x->resident>=x->limits.hard_limit||n-old>x->limits.hard_limit-x->resident))return nullptr;
   void*q=raw_alloc(n,it->second.alignment);if(!q)return nullptr;std::memcpy(q,p,std::min(old,n));
   std::free(it->second.raw);x->blocks.erase(it);x->blocks[q]={q,header(q)->base,n,header(q)->alignment};
   x->resident=x->resident-old+n;x->allocated+=n;x->freed+=old;x->peak=std::max(x->peak,x->resident);return q;
@@ -73,7 +73,7 @@ extern "C" sleela_mm_status sleela_mm_free(sleela_mm*x,void*p){
 extern "C" sleela_mm_status sleela_mm_insert_struct(sleela_mm*x,const char*n,const void*s,size_t z,size_t alignment,uint64_t*out){
   if(!x||!s||!z||!out)return SLEELA_MM_INVALID;
   std::lock_guard<std::mutex>g(x->m);
-  if(z>x->limits.hard_limit-x->resident)return SLEELA_MM_LIMIT;
+  if(x->resident>=x->limits.hard_limit||z>x->limits.hard_limit-x->resident)return SLEELA_MM_LIMIT;
   void*p=raw_alloc(z,alignment);if(!p)return SLEELA_MM_LIMIT;
   std::memcpy(p,s,z);
   x->blocks[p]={p,header(p)->base,z,header(p)->alignment};

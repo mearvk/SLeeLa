@@ -428,7 +428,7 @@
     },
     {
       "path": "api/native/memory/sleela_memory_manager.cpp",
-      "sha256": "185c0f48756ecbb0230a30ac518daea0a6d09e0d9ab676e1d9f1e8e37381cc42"
+      "sha256": "4ea9fd817973bc0db8875fdec619bb89203eeb03ca525951d1d90906a9a63021"
     },
     {
       "path": "api/native/memory/sleela_memory_manager.h",
@@ -4832,7 +4832,7 @@
     },
     {
       "path": "impl/core/sleela_artifact.c",
-      "sha256": "5b2ce16e034a7eba5411d649fabf408723323b4dc849d9b994f9dc9d58fb2005"
+      "sha256": "eaec5585636543644ef6a9abc17cf13900d63c0a0792ba44fe88b4a3e24fdb66"
     },
     {
       "path": "impl/core/sleela_audio_bridge.cpp",
@@ -4932,7 +4932,7 @@
     },
     {
       "path": "impl/core/sleela_memmgr_grade3.c",
-      "sha256": "6e17ea99cb475b263ef7db12a4016677b71bdf02238eaaca14ea621ee2953f5e"
+      "sha256": "714b6186ddce04cf93cf2ada764fc9553eb71f7e06386981db025e89f7be7091"
     },
     {
       "path": "impl/core/sleela_memmgr_grade3.h",
@@ -4948,7 +4948,7 @@
     },
     {
       "path": "impl/core/sleela_munction.c",
-      "sha256": "9a909adbb88a2793133b618752bdc07857365f7baab1ebc51192d07d33adc233"
+      "sha256": "d7bc47f5043c9b1764acc6a033564e6f2596684a33102190bec203035112820a"
     },
     {
       "path": "impl/core/sleela_munction.h",

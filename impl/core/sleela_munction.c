@@ -269,6 +269,7 @@ static int sdps_deframe(SLMunction* m, const unsigned char* frame, size_t flen,
 
 int64_t slmunction_send(SLMunction* m, const char* datum, size_t len) {
     if (count_verb(m) != 0) return -1;
+    if (!datum && len) { mun_bump(m); return -1; }
     if (m->phase == PH_STARTED || m->phase == PH_CLOSED) { mun_bump(m); return -1; }
     m->phase = PH_MOVING;
     m->sent_calls++;
