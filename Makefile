@@ -3,9 +3,9 @@
 # Product-specific Makefiles remain authoritative. This root dispatcher only
 # enters those existing build systems; it does not duplicate their source lists.
 
-.PHONY: all core java28 regex compiler decompiler vm scripting jetbrains install tutorial-check tests server config route clean help
+.PHONY: all core java28 regex compiler decompiler vm text scripting jetbrains install tutorial-check tests server config route clean help
 
-all: core java28 regex compiler decompiler vm scripting jetbrains install tutorial-check tests config route
+all: core java28 regex compiler decompiler vm text scripting jetbrains install tutorial-check tests config route
 
 # The impl build is fail-closed on a trusted SHA-256 manifest. Default it to the
 # repository's manifest (absolute path) so `make` works from the repo root; an
@@ -30,6 +30,9 @@ decompiler:
 
 vm:
 	$(MAKE) -C lib/vm all
+
+text:
+	$(MAKE) -C lib/text all
 
 scripting:
 	$(MAKE) -C sleela-scripting all
@@ -62,6 +65,7 @@ clean:
 	$(MAKE) -C lib/compiler clean
 	$(MAKE) -C lib/decompiler clean
 	$(MAKE) -C lib/vm clean
+	$(MAKE) -C lib/text clean
 	$(MAKE) -C tests clean
 
 help:
@@ -73,6 +77,7 @@ help:
 	@echo "  make compiler  Build lib/compiler/"
 	@echo "  make decompiler Build lib/decompiler/"
 	@echo "  make vm        Build lib/vm/"
+	@echo "  make text      Build lib/text/ (string processing C/C++)"
 	@echo "  make jetbrains Show JetBrains source acquisition helpers"
 	@echo "  make install     Verify Quick and Safe installer entry points"
 	@echo "  make tutorial-check Verify tutorial/example inventories"
