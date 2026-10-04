@@ -66,6 +66,8 @@ class SLCodecLoader {
     return "WebM Audio";
   }
 
-  // Native codecs implement encode/decode in-package; the rest need a backend.
-  boolean isNative(int id) { return id == 0 || id == 15 || id == 16; }
+  // Native codecs implement encode/decode in-package (no external backend):
+  // PCM/WAV (0), AIFF (1), G.711 mu-law (15), G.711 A-law (16). The rest are
+  // backend handlers until an approved library adapter is registered.
+  boolean isNative(int id) { return id == 0 || id == 1 || id == 15 || id == 16; }
 }

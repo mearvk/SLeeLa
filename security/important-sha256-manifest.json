@@ -2772,7 +2772,7 @@
     },
     {
       "path": "codecs/codecs/aac/aac.c",
-      "sha256": "7537d10a849a00a07e45e090faa331425880fa974963a0c4562a47ddaa1a2ad1"
+      "sha256": "3f8e53315a1ef88f16c86ff1c503bd0f7e29636ffa170ddda542b48a1bad0de4"
     },
     {
       "path": "codecs/codecs/aac/aac_detail.cpp",
@@ -2784,7 +2784,7 @@
     },
     {
       "path": "codecs/codecs/ac3/ac3.c",
-      "sha256": "801f61a7e7376e6c700aef46f76391a84f95f4113b284c27fb9fc0a6385777c8"
+      "sha256": "d295ce79a1ff7682949b2c4e761113168e7c7a5d95eab9a82861785da586e5c4"
     },
     {
       "path": "codecs/codecs/ac3/ac3_detail.cpp",
@@ -2796,19 +2796,19 @@
     },
     {
       "path": "codecs/codecs/aiff/aiff.c",
-      "sha256": "248cc1aa62091fbcd5f4380deb97601f9ccd1d2d352be1dfac21dd7c78c05909"
+      "sha256": "94651db4882ea94ee9ebcdf0c0d8d7d59541493bb2e9b36cc1ac0efd430d8384"
     },
     {
       "path": "codecs/codecs/aiff/aiff_detail.cpp",
-      "sha256": "eb8c4f9975ad434a36488ad71b63684fa0ea9779e9c19c12bdf60111efdefed6"
+      "sha256": "e8fdbbad14196dec66b75cca2fddbc390ab2ed2228e26b9133f9780fc0316988"
     },
     {
       "path": "codecs/codecs/aiff/aiff_detail.h",
-      "sha256": "981837f9496377e3cf6ce0aa7dce42c7635d834d27fe12ee0067a2b9301847ad"
+      "sha256": "fbbb5478935ab1f70551f2b56dea416698748f9de7bb05ab00d477fe626ad56d"
     },
     {
       "path": "codecs/codecs/alac/alac.c",
-      "sha256": "aa42093a12f826d20ed7e9cf6b6513c8555e49ec2a7710af3e05ddeea2fc0b36"
+      "sha256": "1a8d36d219b4413961496e88a9596f562b17dfaa0e2baef8d7b3e362bac55a55"
     },
     {
       "path": "codecs/codecs/alac/alac_detail.cpp",
@@ -2820,7 +2820,7 @@
     },
     {
       "path": "codecs/codecs/amr_nb/amr_nb.c",
-      "sha256": "51a90387f8b596650ea826877cb67461537fb6d1cf0a0e8ce2b0903cb69dd0fd"
+      "sha256": "90eb4451ddb9e092b8e95e4becb1268316d24e2566c2cf97b43e5770444ba2a6"
     },
     {
       "path": "codecs/codecs/amr_nb/amr_nb_detail.cpp",
@@ -2832,7 +2832,7 @@
     },
     {
       "path": "codecs/codecs/amr_wb/amr_wb.c",
-      "sha256": "fc1fb2632bcafd08da75c25179407e7215e2fbd60636cc5d7fc18ae822968697"
+      "sha256": "5b500e2cfad209a5c6c825ecf5c52d2a693c60c9de3554d890d435d5a8a26c0f"
     },
     {
       "path": "codecs/codecs/amr_wb/amr_wb_detail.cpp",
@@ -2844,7 +2844,7 @@
     },
     {
       "path": "codecs/codecs/eac3/eac3.c",
-      "sha256": "6ce61b97d70021c207192b7bef4d909404a8a7a7681f4c863766bd6681be6664"
+      "sha256": "653109525896995f7803bb44df4a8ff431fe3d654d7b7b4b17d049cd6855fed3"
     },
     {
       "path": "codecs/codecs/eac3/eac3_detail.cpp",
@@ -2856,7 +2856,7 @@
     },
     {
       "path": "codecs/codecs/flac/flac.c",
-      "sha256": "ffabe2a8f7a7a007c35047d11f6094f9b9b1bae718340447b53a4159f632d181"
+      "sha256": "806ee47bd9b22141c83a566598da979de66ca2d02320de00ecfc80befabaf9fe"
     },
     {
       "path": "codecs/codecs/flac/flac_detail.cpp",
@@ -2892,7 +2892,7 @@
     },
     {
       "path": "codecs/codecs/he_aac/he_aac.c",
-      "sha256": "d7854684e8b61046fd94d9c321634b39893c2fc270af1b197f4462c95f656ae2"
+      "sha256": "ef4099c46a670cef9c0e3bc8843598cce9c09be8999aa11cfe39d2ae67a58d45"
     },
     {
       "path": "codecs/codecs/he_aac/he_aac_detail.cpp",
@@ -2928,7 +2928,7 @@
     },
     {
       "path": "codecs/codecs/mp3/mp3.c",
-      "sha256": "14f81b5b6d7ced9705a0d0073697aca0c24ed1552847cde9af4dc0ceb6c6cd5c"
+      "sha256": "7cd7e48ffcd092726a040630a62e5efbda82c188cc2b2e57d8b28801166109c4"
     },
     {
       "path": "codecs/codecs/mp3/mp3_detail.cpp",
@@ -2940,7 +2940,7 @@
     },
     {
       "path": "codecs/codecs/opus/opus.c",
-      "sha256": "6210220cf872ecd730c7b9a8dc428e57ef3f7387f6c21f1769565d727832917e"
+      "sha256": "15c197c62afa2d9aa1f43b3e78f00f7d5b0671812d671b574616a3a915d000b5"
     },
     {
       "path": "codecs/codecs/opus/opus_detail.cpp",
@@ -2964,7 +2964,7 @@
     },
     {
       "path": "codecs/codecs/speex/speex.c",
-      "sha256": "a0f5493e11075d69496accfdeff03e85c735c11c8255554c1d205927078df04d"
+      "sha256": "9bbdabbc7f669934980a115a156fc10f550c59ab2801fb88df25c3bee9001bd4"
     },
     {
       "path": "codecs/codecs/speex/speex_detail.cpp",
@@ -2976,7 +2976,7 @@
     },
     {
       "path": "codecs/codecs/vorbis/vorbis.c",
-      "sha256": "cf87775d829ff52ac56cd1ff19ae673f20dcbc95ed517382b7202e837b39b18b"
+      "sha256": "5202091321f815cb141922e17cc246c2ecb3245a9d275fd19d5daf5a31efd94f"
     },
     {
       "path": "codecs/codecs/vorbis/vorbis_detail.cpp",
@@ -3000,7 +3000,7 @@
     },
     {
       "path": "codecs/codecs/wma/wma.c",
-      "sha256": "4d146fe4cf760d42eb9d3fdb1ed623d25c0a61558f00f567c19fda0d7312babd"
+      "sha256": "aa356446a3df6890549dfde8d23f992d38b842b93a109b69345c82d1bb3fbcee"
     },
     {
       "path": "codecs/codecs/wma/wma_detail.cpp",
@@ -3016,11 +3016,15 @@
     },
     {
       "path": "codecs/include/sleela_codec_plugin.h",
-      "sha256": "98ba0d3bfeef1a683beb27356a4a7343eb5c617a92a921288911e1882d59d8e0"
+      "sha256": "28c8cb31dc32ba7d17171b4ff1c7602e87c29bea1e1c2dfcc49542a249844857"
     },
     {
       "path": "codecs/include/sleela_codecs.h",
       "sha256": "08412da3bdd0aacfa2b2f403e29c88a18acdb4a86cc16a193783b8ccdc76468d"
+    },
+    {
+      "path": "codecs/src/sleela_codec_backend.c",
+      "sha256": "bf37db73de8609efb9b16e7aff7768d0730f2412b85fc047ed7f7a21a52c16b5"
     },
     {
       "path": "codecs/src/sleela_codec_manager.c",
@@ -3028,11 +3032,11 @@
     },
     {
       "path": "codecs/src/sleela_codecs.c",
-      "sha256": "e662f958882a5d1abe0248365e43d4f862a8a28d6b54ebdf80b1fcdd61b8bb66"
+      "sha256": "237069bd079d5658bfcef0761685af80eb9c53b41e52170d7636f1172c7847fb"
     },
     {
       "path": "codecs/tests/test_manager.c",
-      "sha256": "1b81a70f83026d7cdac9cfa165f7975ff8e22c5814b8c4aac8e87db911113ac2"
+      "sha256": "b3fac7271df9389f8e4829031ec709af1a9b5431c34c29ee4067221ecca42e43"
     },
     {
       "path": "codecs/tests/test_registry.c",
@@ -5528,7 +5532,7 @@
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "ba59c9f914938c68d67652fd0352d4ad7c6a8ddce8a5756caab84443aa407655"
+      "sha256": "ad21a2fc869f2f7eabbfc0688d17617ffca3f7dcba9d63b6a474d1dacb22eb0a"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -6816,7 +6820,7 @@
     },
     {
       "path": "lib/codecs/SLCodecLoader.sleela",
-      "sha256": "2fcb9cccecc5e96c5ceb3d5b4d9338b0fe3131ec4bcab9e30fc0f7f408987056"
+      "sha256": "592a9c0f920f5b39c242f191af658111e0795f3f5f28e7dcc3f1fe8454890622"
     },
     {
       "path": "lib/codecs/SLPackage.sleela",

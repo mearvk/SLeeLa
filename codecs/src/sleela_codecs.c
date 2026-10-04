@@ -8,7 +8,7 @@
 
 static const sleela_codec_handler handlers[SLEELA_CODEC_COUNT] = {
     C(SLEELA_CODEC_PCM_WAV, "PCM/WAV", "audio/wav", ".wav", SLEELA_CODEC_NATIVE, 1, 1),
-    C(SLEELA_CODEC_AIFF, "AIFF", "audio/aiff", ".aif,.aiff", SLEELA_CODEC_RECOGNIZED, 0, 0),
+    C(SLEELA_CODEC_AIFF, "AIFF", "audio/aiff", ".aif,.aiff", SLEELA_CODEC_NATIVE, 1, 1),
     C(SLEELA_CODEC_FLAC, "FLAC", "audio/flac", ".flac", SLEELA_CODEC_BACKEND, 1, 1),
     C(SLEELA_CODEC_ALAC, "ALAC", "audio/alac", ".m4a,.caf", SLEELA_CODEC_BACKEND, 1, 1),
     C(SLEELA_CODEC_MP3, "MPEG Layer III", "audio/mpeg", ".mp3", SLEELA_CODEC_BACKEND, 1, 1),

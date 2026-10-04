@@ -82,6 +82,36 @@ typedef struct sleela_codec_plugin {
 } sleela_codec_plugin;
 
 /*
+ * Runtime-pluggable backend for a codec whose state is SLEELA_CODEC_BACKEND.
+ *
+ * A codec plugin ships the contract (probe + metadata) but delegates the actual
+ * encode/decode to a backend that a host registers at runtime. When an approved
+ * library (libFLAC, libopus, ...) is available, the host builds a small adapter
+ * exposing these two function pointers and registers it for the codec's id; the
+ * plugin's decode/encode then dispatch to it. With no backend registered, the
+ * plugin reports SLEELA_CODEC_ERR_UNSUPPORTED -- never a false success.
+ *
+ * This keeps the in-tree code free of third-party dependencies while making the
+ * "wire a real backend" path concrete and testable.
+ */
+typedef struct sleela_codec_backend {
+    const char *name;   /* adapter/library name, for diagnostics          */
+    sleela_codec_result (*decode)(const uint8_t *input, size_t input_len,
+                                  sleela_pcm_buffer *out);
+    sleela_codec_result (*encode)(const sleela_pcm_buffer *pcm,
+                                  uint8_t *output, size_t *inout_len);
+} sleela_codec_backend;
+
+/* Register (or clear, with backend==NULL) the backend for a codec id. Returns
+ * SLEELA_CODEC_OK, or SLEELA_CODEC_ERR_INVALID for an out-of-range id. The
+ * registry is process-global and simple; a host wires backends at startup. */
+sleela_codec_result sleela_codec_backend_register(sleela_codec_id id,
+                                                  const sleela_codec_backend *backend);
+
+/* The backend currently registered for a codec id, or NULL if none. */
+const sleela_codec_backend *sleela_codec_backend_get(sleela_codec_id id);
+
+/*
  * Each individual codec exposes exactly one accessor returning its plugin
  * vtable (a stable singleton). The manager calls these to build its table.
  * Declared here; defined in codecs/codecs/<name>/<name>.c (+ optional .cpp).

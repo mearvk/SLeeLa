@@ -11,8 +11,8 @@ LDFLAGS  ?=
 
 BUILD := build
 
-# Core registry + manager (C).
-CORE_C := src/sleela_codecs.c src/sleela_codec_manager.c
+# Core registry + manager + backend registry (C).
+CORE_C := src/sleela_codecs.c src/sleela_codec_manager.c src/sleela_codec_backend.c
 
 # Every individual codec contributes its C plugin and its C/C++ detail.
 CODEC_C := \

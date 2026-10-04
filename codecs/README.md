@@ -77,16 +77,31 @@ which owns every plugin's lifecycle:
 The SLeeLa-facing handle to the Loader is `lib/codecs/SLCodecLoader.sleela`
 (runnable demo: `lib/codecs/codecs.sleela`).
 
-### Native codecs (fully implemented in-package)
+### Native codecs (fully implemented in-package, no external library)
 
 - **PCM/WAV** (`codecs/codecs/pcm_wav/`) — RIFF/WAVE 16-bit PCM read/write; the
   PCM boundary every other codec targets.
+- **AIFF** (`codecs/codecs/aiff/`) — `FORM`/`AIFF` big-endian 16-bit PCM
+  read/write, including the 80-bit extended sample-rate field.
 - **G.711 μ-law / A-law** (`codecs/codecs/g711_mulaw/`, `.../g711_alaw/`) —
   telephony companding, one byte ↔ one 16-bit PCM sample.
 
-All other codecs are **Backend / Recognized / Container / Event** handlers:
-they identify the format (probe) and expose an honest state; their decode/encode
-return `SLEELA_CODEC_ERR_UNSUPPORTED` until an approved backend is wired.
+### Backend codecs (contract + probe, pluggable implementation)
+
+FLAC, ALAC, MP3, AAC, HE-AAC, Vorbis, Opus, Speex, WMA, AC-3, E-AC-3, AMR-NB,
+AMR-WB are **Backend** handlers: they identify the format (a C++ signature
+probe) and delegate encode/decode to a **runtime-registered backend adapter**.
+
+```c
+/* A host wires an approved library (libFLAC, libopus, ...) at startup: */
+static const sleela_codec_backend flac_adapter = { "libFLAC", flac_dec, flac_enc };
+sleela_codec_backend_register(SLEELA_CODEC_FLAC, &flac_adapter);
+```
+
+With a backend registered, the plugin's decode/encode dispatch to it; with none
+registered, they return `SLEELA_CODEC_ERR_UNSUPPORTED` — never a false success.
+(No third-party libraries are bundled in-tree.) MIDI is an **Event** format and
+Matroska/WebM are **Container** handlers (probe + identification).
 
 ## C Handler Registry (metadata)
 
