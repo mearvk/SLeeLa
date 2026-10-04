@@ -170,6 +170,20 @@ host and adjusts link flags per platform.
   preview. See [`autocad/README.md`](autocad/README.md) and
   [`autocad/FORMAT.md`](autocad/FORMAT.md). Both studios follow the repository
   rule *JavaFX presents; SLeeLa decides* ([`JavaFX.md`](JavaFX.md)).
+- [`languages/`](languages/) holds **language packs** that localize SLeeLa's
+  outputs and prompts into a language other than English (English, Spanish,
+  French, German, Portuguese, Italian, Japanese, Chinese, Hindi, and Arabic —
+  the last right-to-left). Each pack is a dependency-free `key = value` file; the
+  [`lib/languages/`](lib/languages/) library (`SLLanguage` /
+  `SLLanguageCatalog`) selects a locale and returns localized text. See
+  [`languages/README.md`](languages/README.md) and
+  [`languages/KEYS.md`](languages/KEYS.md).
+- **Arrays & multi-file input (language core):** SLeeLa has a first-class
+  dynamic **array** type (`T[]`, `new T[n]`, `a[i]`, and `arrayLength` /
+  `arrayGet` / `arraySet` / `arrayPush` — see
+  [`STRUCTS.md`](STRUCTS.md#arrays)), and the `sleela run` / `sleela compile`
+  commands accept **multiple `.sleela` files** that are merged into one
+  compilation unit (`sleela run a.sleela b.sleela`).
 
 ## COORENAGRAPH — Design and Protocol Foundation
 

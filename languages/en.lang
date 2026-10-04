@@ -1,0 +1,48 @@
+#!locale = en
+#!name = English
+#!direction = ltr
+# SLeeLa reference language pack. Every other pack translates these keys.
+
+# Greetings
+greeting.hello = Hello
+greeting.welcome = Welcome
+greeting.goodbye = Goodbye
+
+# Prompts (may use {0} placeholders)
+prompt.continue = Continue?
+prompt.yes_no = Yes or no?
+prompt.retry = Try again?
+prompt.enter_name = Enter your name:
+prompt.confirm = Are you sure?
+prompt.press_enter = Press Enter to continue.
+
+# Single-word labels
+word.yes = Yes
+word.no = No
+word.ok = OK
+word.cancel = Cancel
+word.open = Open
+word.close = Close
+word.save = Save
+word.help = Help
+
+# Status lines
+status.ready = Ready
+status.running = Running
+status.done = Done
+status.failed = Failed
+status.loading = Loading
+status.saved = Saved
+
+# Error leads (may use {0} for the subject)
+error.not_found = Not found: {0}
+error.denied = Permission denied
+error.invalid = Invalid input
+error.timeout = Operation timed out
+error.unknown = Unknown error
+
+# Units
+unit.seconds = seconds
+unit.minutes = minutes
+unit.bytes = bytes
+unit.items = items

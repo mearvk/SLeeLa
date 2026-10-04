@@ -14,7 +14,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-typedef enum { SL_NULL = 0, SL_INT, SL_DOUBLE, SL_BOOL, SL_STR, SL_STRUCT } SLType;
+typedef enum { SL_NULL = 0, SL_INT, SL_DOUBLE, SL_BOOL, SL_STR, SL_STRUCT, SL_ARRAY } SLType;
 /* SL_STRUCT is a VM-local handle (index into the struct-instance store), the
  * same bounded-handle discipline used for sockets/files/threads. Sleela code
  * never sees a raw pointer; a struct value carries only its instance handle. */
@@ -77,7 +77,16 @@ typedef enum {
     OP_AUDIO_VALIDATE,  /* pops handle; pushes bool */
     OP_AUDIO_RENDER,    /* pops handle; invokes host renderer; pushes bool */
     OP_AUDIO_CLOSE,     /* pops handle; releases job; pushes null */
-    OP_AUDIO_PLATFORM   /* pushes host platform name */
+    OP_AUDIO_PLATFORM,  /* pushes host platform name */
+    /* Array support (syntax 1.4): a dynamic, growable, zero-indexed sequence of
+     * SLValues. An array value carries a VM-local handle into a bounded array
+     * store, the same handle discipline as structs. Appended at the end of the
+     * opcode enum so existing serialized-artifact opcode numbers are unchanged. */
+    OP_NEWARRAY,   /* pops int size; pushes a fresh array handle with `size` null elements */
+    OP_ARRGET,     /* pops index then array; pushes element (TERR on out-of-range)              */
+    OP_ARRSET,     /* pops value then index then array; writes element; pushes value            */
+    OP_ARRLEN,     /* pops array; pushes int length                                             */
+    OP_ARRPUSH     /* pops value then array; appends; pushes new int length                     */
 } SLOp;
 /* Synchro stat selectors for OP_SYN_STAT (operand a). */
 #define SL_SYN_STAT_SENT 0
@@ -103,6 +112,8 @@ typedef enum {
 #define SL_MAX_STRUCT_FIELDS 64   /* named fields per struct type              */
 #define SL_MAX_STRUCTS 4096       /* live struct instances per VM              */
 #define SL_MAX_STRTEXT 65536      /* max bytes for a built/concatenated String */
+#define SL_MAX_ARRAYS 4096        /* live array instances per VM               */
+#define SL_MAX_ARRAY_LEN 1048576  /* maximum elements in a single array        */
 typedef enum { SLR_OK = 0, SLR_ERROR, SLR_HALT } SLResult;
 typedef struct SLVM SLVM;
 typedef int (*SLAudioNativeRenderFn)(

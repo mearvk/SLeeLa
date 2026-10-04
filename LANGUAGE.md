@@ -14,6 +14,7 @@ A `.sleela` file is a Wrapper™. A source unit begins with its language-version
 - values, variables, bindings and expressions;
 - conditionals, loops, calls and returns;
 - structured `struct` values and member access;
+- dynamic `T[]` **arrays** (`new T[n]`, `a[i]` read/write, `arrayLength`/`arrayGet`/`arraySet`/`arrayPush`);
 - references and controlled managed storage;
 - static/protected semantics;
 - contracts, flows, effects, contexts, rules and projections;

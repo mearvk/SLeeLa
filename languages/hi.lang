@@ -1,0 +1,42 @@
+#!locale = hi
+#!name = हिन्दी
+#!direction = ltr
+# SLeeLa Hindi language pack.
+
+greeting.hello = नमस्ते
+greeting.welcome = स्वागत है
+greeting.goodbye = अलविदा
+
+prompt.continue = जारी रखें?
+prompt.yes_no = हाँ या नहीं?
+prompt.retry = फिर से प्रयास करें?
+prompt.enter_name = अपना नाम दर्ज करें:
+prompt.confirm = क्या आप निश्चित हैं?
+prompt.press_enter = जारी रखने के लिए Enter दबाएँ।
+
+word.yes = हाँ
+word.no = नहीं
+word.ok = ठीक है
+word.cancel = रद्द करें
+word.open = खोलें
+word.close = बंद करें
+word.save = सहेजें
+word.help = सहायता
+
+status.ready = तैयार
+status.running = चल रहा है
+status.done = पूर्ण
+status.failed = विफल
+status.loading = लोड हो रहा है
+status.saved = सहेजा गया
+
+error.not_found = नहीं मिला: {0}
+error.denied = अनुमति अस्वीकृत
+error.invalid = अमान्य इनपुट
+error.timeout = ऑपरेशन का समय समाप्त
+error.unknown = अज्ञात त्रुटि
+
+unit.seconds = सेकंड
+unit.minutes = मिनट
+unit.bytes = बाइट्स
+unit.items = आइटम

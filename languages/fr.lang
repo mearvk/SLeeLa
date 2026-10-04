@@ -1,0 +1,42 @@
+#!locale = fr
+#!name = Français
+#!direction = ltr
+# SLeeLa French language pack.
+
+greeting.hello = Bonjour
+greeting.welcome = Bienvenue
+greeting.goodbye = Au revoir
+
+prompt.continue = Continuer ?
+prompt.yes_no = Oui ou non ?
+prompt.retry = Réessayer ?
+prompt.enter_name = Entrez votre nom :
+prompt.confirm = Êtes-vous sûr ?
+prompt.press_enter = Appuyez sur Entrée pour continuer.
+
+word.yes = Oui
+word.no = Non
+word.ok = OK
+word.cancel = Annuler
+word.open = Ouvrir
+word.close = Fermer
+word.save = Enregistrer
+word.help = Aide
+
+status.ready = Prêt
+status.running = En cours
+status.done = Terminé
+status.failed = Échec
+status.loading = Chargement
+status.saved = Enregistré
+
+error.not_found = Introuvable : {0}
+error.denied = Autorisation refusée
+error.invalid = Entrée invalide
+error.timeout = Délai dépassé
+error.unknown = Erreur inconnue
+
+unit.seconds = secondes
+unit.minutes = minutes
+unit.bytes = octets
+unit.items = éléments

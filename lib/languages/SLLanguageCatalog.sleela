@@ -1,0 +1,28 @@
+/*
+ * lib/languages/SLLanguageCatalog.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines the SLeeLa standard-library type SLLanguageCatalog used within the languages library family.
+ */
+#sleela 1.3
+// Unified SLeeLa standard-library front-end object.
+// Family: languages. The catalog of available language packs. A program selects
+// the active locale with use(code); text(key) then returns the translation in
+// that language, falling back to English when a key or pack is unavailable. The
+// available packs mirror the repository's /languages folder (en, es, fr, de,
+// pt, it, ja, zh, hi, ar). The runnable, data-bearing build is
+// lib/languages/languages.sleela, which carries the translations inline so a
+// program can present localized output without a separate file parser.
+class SLLanguageCatalog {
+  String active;     // active locale code (default "en")
+
+  void use(String code) { active = code; }
+  String current() { if (active == "") { return "en"; } return active; }
+
+  // The set of locales shipped under /languages, as a stable count + probe.
+  int localeCount() { return 10; }
+  boolean has(String code) {
+    return code == "en" || code == "es" || code == "fr" || code == "de"
+        || code == "pt" || code == "it" || code == "ja" || code == "zh"
+        || code == "hi" || code == "ar";
+  }
+}

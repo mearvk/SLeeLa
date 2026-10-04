@@ -147,3 +147,52 @@ while giving SLeeLa real aggregates.
 *Structs are additive: every pre-1.2 program continues to compile and run
 unchanged, and the compiler rejects `struct` / `new` / `structPack` /
 `structUnpack` when the source declares a syntax below 1.2.*
+
+---
+
+## Arrays — dynamic, zero-indexed sequences
+
+Alongside `struct`, SLeeLa has a first-class **array** type: a dynamic,
+growable, zero-indexed sequence of values. An array value — like a struct — is a
+bounded VM-local handle, not a raw pointer, so the value model stays a
+fixed-size tagged union.
+
+### Syntax
+
+```
+int[] nums = new int[3];      // three zero/null elements
+nums[0] = 10;                 // index write
+nums[1] = 20;
+int x = nums[0] + nums[1];    // index read -> 30
+print(nums[2]);
+print(nums);                  // renders as [10, 20, 0]
+```
+
+Array types are written `T[]` (and nest: `T[][]`). `new T[n]` builds an array of
+`n` null/zero elements; `n` may be any runtime `int`. Index read `a[i]` and
+write `a[i] = v` are bounds-checked at runtime.
+
+### Built-in operations
+
+| Call | Meaning |
+|------|---------|
+| `arrayNew(n)` | Same as `new T[n]`; a fresh array of `n` elements. |
+| `arrayLength(a)` | Element count (`int`). |
+| `arrayGet(a, i)` | Element at `i` (same as `a[i]`). |
+| `arraySet(a, i, v)` | Write element `i` (same as `a[i] = v`). |
+| `arrayPush(a, v)` | Append `v`, growing the array; returns the new length. |
+
+### Implementation surface
+
+| Layer | What it adds |
+|-------|--------------|
+| **Lexer/Parser** | `new T[n]` for scalar and class element types; `a[i]` read and `a[i] = v` write (via the assignment-expression lvalue path). |
+| **Semantic** (`impl/frontend/semantic.cpp`) | `Kind::Array` with an element type; `T[]` type recognition and element typing for index access and assignment. |
+| **Compiler** (`impl/frontend/compiler.cpp`) | Lowering of index read/write, `new T[n]`, and the `array*` built-ins to the opcodes below. |
+| **Core VM** (`impl/core/sleela_core.*`) | `SL_ARRAY` value tag (a bounded instance handle); a mutex-guarded, GC-integrated, geometrically growing instance store; opcodes `OP_NEWARRAY`, `OP_ARRGET`, `OP_ARRSET`, `OP_ARRLEN`, `OP_ARRPUSH` (bounds `SL_MAX_ARRAYS`, `SL_MAX_ARRAY_LEN`). |
+
+The array opcodes are appended at the end of the `SLOp` enum so existing
+serialized-artifact opcode numbers are unchanged.
+
+*Arrays are additive: every earlier program continues to compile and run
+unchanged.*

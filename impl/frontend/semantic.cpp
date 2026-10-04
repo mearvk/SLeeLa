@@ -5,25 +5,31 @@
 #include <string>
 namespace sleela {
 namespace {
-enum class Kind { Void, Int, Double, Bool, String, Null, Struct, Unknown, Error };
-struct Type { Kind kind=Kind::Unknown; std::string name; };
+enum class Kind { Void, Int, Double, Bool, String, Null, Struct, Array, Unknown, Error };
+// For Kind::Array, `name` carries the full array type text (e.g. "int[]") and
+// `elem` the element type name (e.g. "int").
+struct Type { Kind kind=Kind::Unknown; std::string name{}; std::string elem{}; };
 static Type typeOf(const std::string& n){
  // Accept the Java-style keyword names the lexer produces (int, double,
  // boolean, String, void) as well as the lowercase aliases (bool, string).
- if(n=="void"){return{Kind::Void,{}};}
- if(n=="int"){return{Kind::Int,{}};}
- if(n=="double"){return{Kind::Double,{}};}
- if(n=="bool"||n=="boolean"){return{Kind::Bool,{}};}
- if(n=="string"||n=="String"){return{Kind::String,{}};}
- return{Kind::Struct,n};
+ // A trailing "[]" (one or more) denotes an array of the inner type.
+ if(n.size()>=2 && n.compare(n.size()-2,2,"[]")==0){
+  Type t; t.kind=Kind::Array; t.name=n; t.elem=n.substr(0,n.size()-2); return t;
+ }
+ if(n=="void"){return{Kind::Void,{},{}};}
+ if(n=="int"){return{Kind::Int,{},{}};}
+ if(n=="double"){return{Kind::Double,{},{}};}
+ if(n=="bool"||n=="boolean"){return{Kind::Bool,{},{}};}
+ if(n=="string"||n=="String"){return{Kind::String,{},{}};}
+ return{Kind::Struct,n,{}};
 }
 static std::string nameOf(const Type&t){
- switch(t.kind){case Kind::Void:return"void";case Kind::Int:return"int";case Kind::Double:return"double";case Kind::Bool:return"bool";case Kind::String:return"string";case Kind::Null:return"null";case Kind::Struct:return t.name;case Kind::Unknown:return"unknown";default:return"error";}
+ switch(t.kind){case Kind::Void:return"void";case Kind::Int:return"int";case Kind::Double:return"double";case Kind::Bool:return"bool";case Kind::String:return"string";case Kind::Null:return"null";case Kind::Struct:return t.name;case Kind::Array:return t.name.empty()?"array":t.name;case Kind::Unknown:return"unknown";default:return"error";}
 }
-static bool same(const Type&a,const Type&b){return a.kind==b.kind&&(a.kind!=Kind::Struct||a.name==b.name);}
+static bool same(const Type&a,const Type&b){return a.kind==b.kind&&((a.kind!=Kind::Struct&&a.kind!=Kind::Array)||a.name==b.name);}
 static bool numeric(const Type&t){return t.kind==Kind::Int||t.kind==Kind::Double;}
 static bool assignable(const Type&to,const Type&from){
- return to.kind==Kind::Unknown||from.kind==Kind::Unknown||(to.kind==Kind::Double&&from.kind==Kind::Int)||(from.kind==Kind::Null&&(to.kind==Kind::Struct||to.kind==Kind::String))||same(to,from);
+ return to.kind==Kind::Unknown||from.kind==Kind::Unknown||(to.kind==Kind::Double&&from.kind==Kind::Int)||(from.kind==Kind::Null&&(to.kind==Kind::Struct||to.kind==Kind::String||to.kind==Kind::Array))||same(to,from);
 }
 static bool builtin(const std::string&n){
  static const std::set<std::string> s={
@@ -34,6 +40,7 @@ static bool builtin(const std::string&n){
  "bestOfNew","bestOfWeight","bestOfMinVersion","bestOfCostBudget","bestOfCandidate","bestOfRecord","bestOfScore","bestOfBest","bestOfChoice","bestOfReport","bestOfClose",
  "bestOfMean","bestOfLoss","bestOfJitter","bestOfCertainty","bestOfCandidateArch","bestOfArchRealized","bestOfArch","bestOfArchParam","bestOfArchState",
  "audioNew","audioAdd","audioControls","audioValidate","audioRender","audioClose","audioPlatform",
+ "arrayNew","arrayLength","arrayGet","arraySet","arrayPush",
  "conduct","role","insight","congruent","route","sysdepth","degreemax"};
  return s.count(n)!=0;
 }
@@ -47,7 +54,12 @@ class Analyzer{
  // A type is known if it is a scalar keyword (Java or lowercase alias), a
  // declared struct, or a declared class/interface name (so a constructor's
  // return type and object-typed parameters resolve).
- bool known(const std::string&t)const{return t=="void"||t=="int"||t=="double"||t=="bool"||t=="boolean"||t=="string"||t=="String"||structs.count(t)||classNames.count(t);}
+ bool known(const std::string&t)const{
+  // An array type "T[]" is known when its element type T is known. Nested
+  // arrays ("T[][]") recurse. Element type must not be void.
+  if(t.size()>=2 && t.compare(t.size()-2,2,"[]")==0){std::string inner=t.substr(0,t.size()-2);return inner!="void"&&known(inner);}
+  return t=="void"||t=="int"||t=="double"||t=="bool"||t=="boolean"||t=="string"||t=="String"||structs.count(t)||classNames.count(t);
+ }
  Type tn(const std::string&t)const{return known(t)?typeOf(t):Type{Kind::Error,t};}
  void collect(){
   for(const auto&s:p.structs)if(!structs.insert(s.name).second)err("duplicate struct '"+s.name+"'");
@@ -114,7 +126,15 @@ class Analyzer{
   if(dynamic_cast<const StrLit*>(&e)){return{Kind::String,{}};}
   if(dynamic_cast<const NullLit*>(&e)){return{Kind::Null,{}};}
   if(auto v=dynamic_cast<const VarExpr*>(&e)){Type t=lookup(v->name);if(t.kind==Kind::Error)err("use of undeclared variable '"+v->name+"'");return t;}
-  if(auto n=dynamic_cast<const NewExpr*>(&e)){if(!structs.count(n->typeName)){err("new of unknown struct '"+n->typeName+"'");return{Kind::Error,{}};}return{Kind::Struct,n->typeName};}
+  if(auto n=dynamic_cast<const NewExpr*>(&e)){
+   // `new T[n]` arrives as a NewExpr whose typeName ends in "[]" and whose
+   // first arg is the length. `new T()` is a struct instantiation.
+   if(n->typeName.size()>=2 && n->typeName.compare(n->typeName.size()-2,2,"[]")==0){
+    if(!known(n->typeName)){err("new of unknown array type '"+n->typeName+"'");return{Kind::Error,{}};}
+    for(const auto&a:n->args){Type s=expr(*a);if(s.kind!=Kind::Int&&s.kind!=Kind::Unknown)err("array size must be int, got "+nameOf(s));}
+    return typeOf(n->typeName);
+   }
+   if(!structs.count(n->typeName)){err("new of unknown struct '"+n->typeName+"'");return{Kind::Error,{}};}return{Kind::Struct,n->typeName};}
   if(auto m=dynamic_cast<const MemberAccess*>(&e)){if(m->field=="next"&&isNextChain(*m->base))return{Kind::Int,{}};return member(*m->base,m->field);}
   if(auto u=dynamic_cast<const Unary*>(&e)){Type t=expr(*u->operand);if(u->op=="-"&&!numeric(t)&&t.kind!=Kind::Unknown)err("unary '-' requires numeric operand, got "+nameOf(t));if(u->op=="!"&&t.kind!=Kind::Bool&&t.kind!=Kind::Unknown)err("unary '!' requires bool operand, got "+nameOf(t));return t;}
   if(auto b=dynamic_cast<const Binary*>(&e)){return binary(*b);}
@@ -124,14 +144,15 @@ class Analyzer{
    Type g=expr(*a->value);
    if(auto v=dynamic_cast<const VarExpr*>(a->target.get())){Type t=lookup(v->name);if(t.kind==Kind::Error){err("assignment to undeclared variable '"+v->name+"'");return{Kind::Error,{}};}if(!assignable(t,g))err("cannot assign "+nameOf(g)+" to '"+v->name+"' of type "+nameOf(t));return t;}
    if(auto mm=dynamic_cast<const MemberAccess*>(a->target.get())){Type t=member(*mm->base,mm->field);if(t.kind!=Kind::Error&&!assignable(t,g))err("cannot assign "+nameOf(g)+" to field '"+mm->field+"'");return t;}
-   err("assignment target must be a variable or a struct field");return{Kind::Error,{}};
+   if(auto aa=dynamic_cast<const ArrayAccess*>(a->target.get())){Type base=expr(*aa->base);Type idx=expr(*aa->index);if(idx.kind!=Kind::Int&&idx.kind!=Kind::Unknown)err("array index must be int, got "+nameOf(idx));if(base.kind==Kind::Array){Type el=typeOf(base.elem);if(!assignable(el,g))err("cannot assign "+nameOf(g)+" to element of "+nameOf(base));return el;}if(base.kind!=Kind::Unknown)err("index assignment requires an array value, got "+nameOf(base));return g;}
+   err("assignment target must be a variable, struct field, or array element");return{Kind::Error,{}};
   }
   if(auto c=dynamic_cast<const ConditionalExpr*>(&e)){requireBool(expr(*c->cond),"conditional '?:' condition");Type a=expr(*c->thenE),b=expr(*c->elseE);if(assignable(a,b))return a;if(assignable(b,a))return b;return{Kind::Unknown,{}};}
   if(auto io=dynamic_cast<const InstanceOfExpr*>(&e)){expr(*io->value);return{Kind::Bool,{}};}
   if(auto ca=dynamic_cast<const CastExpr*>(&e)){expr(*ca->operand);return tn(ca->typeName);}
   if(dynamic_cast<const SuperExpr*>(&e))return{Kind::Unknown,{}};
   if(dynamic_cast<const ThisExpr*>(&e))return{Kind::Unknown,{}};
-  if(auto aa=dynamic_cast<const ArrayAccess*>(&e)){expr(*aa->base);Type idx=expr(*aa->index);if(idx.kind!=Kind::Int&&idx.kind!=Kind::Unknown)err("array index must be int, got "+nameOf(idx));return{Kind::Unknown,{}};}
+  if(auto aa=dynamic_cast<const ArrayAccess*>(&e)){Type base=expr(*aa->base);Type idx=expr(*aa->index);if(idx.kind!=Kind::Int&&idx.kind!=Kind::Unknown)err("array index must be int, got "+nameOf(idx));if(base.kind==Kind::Array)return typeOf(base.elem);if(base.kind==Kind::Unknown)return{Kind::Unknown,{}};err("index access requires an array value, got "+nameOf(base));return{Kind::Error,{}};}
   if(auto mr=dynamic_cast<const MethodReferenceExpr*>(&e)){expr(*mr->base);return{Kind::Unknown,{}};}
   err("unknown expression kind");return{Kind::Error,{}};
  }
@@ -155,7 +176,16 @@ class Analyzer{
   if(c.callee=="structUnpack"){if(c.args.size()!=2){err("structUnpack(TypeName, json) takes exactly two arguments");return{Kind::Error,{}};}auto v=dynamic_cast<const VarExpr*>(c.args[0].get());if(!v||!structs.count(v->name)){err("structUnpack first argument must be a declared struct type name");return{Kind::Error,{}};}expr(*c.args[1]);return{Kind::Struct,v->name};}
   for(const auto&a:c.args){expr(*a);}
   if(!builtin(c.callee)){err("call to unknown method '"+c.callee+"'");}
-  const std::string&n=c.callee;if(n=="conduct"||n=="congruent")return{Kind::Bool,{}};if(n=="role"||n=="insight"||n=="route"||n=="timeLocation"||n=="timeHttpDate"||n=="timeJson")return{Kind::String,{}};if(n=="sysdepth"||n=="degreemax"||n=="timeUtcMillis"||n=="timeUtcNanos"||n=="timeMonotonicNanos"||n=="timePrecisionMillis")return{Kind::Int,{}};if(n=="synchroMean"||n=="synchroMin"||n=="synchroMax"||n=="synchroP95"||n=="synchroLoss"||n=="bestOfMean"||n=="bestOfLoss"||n=="bestOfJitter"||n=="bestOfCertainty")return{Kind::Double,{}};if(n=="Munction.start"||n=="read"||n=="recv"||n=="sockread"||n=="timeNtp")return{Kind::Unknown,{}};return{Kind::Unknown,{}};
+  const std::string&n=c.callee;
+  if(n=="arrayNew")return{Kind::Array,"array",{}};
+  if(n=="arrayLength"||n=="arrayPush")return{Kind::Int,{}};
+  if(n=="arrayGet"||n=="arraySet")return{Kind::Unknown,{}};
+  if(n=="conduct"||n=="congruent"){return{Kind::Bool,{}};}
+  if(n=="role"||n=="insight"||n=="route"||n=="timeLocation"||n=="timeHttpDate"||n=="timeJson"){return{Kind::String,{}};}
+  if(n=="sysdepth"||n=="degreemax"||n=="timeUtcMillis"||n=="timeUtcNanos"||n=="timeMonotonicNanos"||n=="timePrecisionMillis"){return{Kind::Int,{}};}
+  if(n=="synchroMean"||n=="synchroMin"||n=="synchroMax"||n=="synchroP95"||n=="synchroLoss"||n=="bestOfMean"||n=="bestOfLoss"||n=="bestOfJitter"||n=="bestOfCertainty"){return{Kind::Double,{}};}
+  if(n=="Munction.start"||n=="read"||n=="recv"||n=="sockread"||n=="timeNtp"){return{Kind::Unknown,{}};}
+  return{Kind::Unknown,{}};
  }
  Type fluent(const MethodCall&m){
   // `Munction.start(name)` opens a reach and yields a reach handle. The receiver

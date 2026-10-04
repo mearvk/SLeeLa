@@ -1,0 +1,42 @@
+#!locale = ar
+#!name = العربية
+#!direction = rtl
+# SLeeLa Arabic language pack. Right-to-left script (direction = rtl).
+
+greeting.hello = مرحبا
+greeting.welcome = أهلا وسهلا
+greeting.goodbye = مع السلامة
+
+prompt.continue = متابعة؟
+prompt.yes_no = نعم أم لا؟
+prompt.retry = إعادة المحاولة؟
+prompt.enter_name = أدخل اسمك:
+prompt.confirm = هل أنت متأكد؟
+prompt.press_enter = اضغط Enter للمتابعة.
+
+word.yes = نعم
+word.no = لا
+word.ok = موافق
+word.cancel = إلغاء
+word.open = فتح
+word.close = إغلاق
+word.save = حفظ
+word.help = مساعدة
+
+status.ready = جاهز
+status.running = قيد التشغيل
+status.done = تم
+status.failed = فشل
+status.loading = جارٍ التحميل
+status.saved = تم الحفظ
+
+error.not_found = غير موجود: {0}
+error.denied = تم رفض الإذن
+error.invalid = إدخال غير صالح
+error.timeout = انتهت مهلة العملية
+error.unknown = خطأ غير معروف
+
+unit.seconds = ثوانٍ
+unit.minutes = دقائق
+unit.bytes = بايت
+unit.items = عناصر

@@ -1,0 +1,42 @@
+#!locale = ja
+#!name = 日本語
+#!direction = ltr
+# SLeeLa Japanese language pack.
+
+greeting.hello = こんにちは
+greeting.welcome = ようこそ
+greeting.goodbye = さようなら
+
+prompt.continue = 続けますか？
+prompt.yes_no = はい か いいえ か？
+prompt.retry = もう一度試しますか？
+prompt.enter_name = お名前を入力してください：
+prompt.confirm = よろしいですか？
+prompt.press_enter = Enter キーを押して続行します。
+
+word.yes = はい
+word.no = いいえ
+word.ok = OK
+word.cancel = キャンセル
+word.open = 開く
+word.close = 閉じる
+word.save = 保存
+word.help = ヘルプ
+
+status.ready = 準備完了
+status.running = 実行中
+status.done = 完了
+status.failed = 失敗
+status.loading = 読み込み中
+status.saved = 保存しました
+
+error.not_found = 見つかりません: {0}
+error.denied = アクセスが拒否されました
+error.invalid = 入力が無効です
+error.timeout = 操作がタイムアウトしました
+error.unknown = 不明なエラー
+
+unit.seconds = 秒
+unit.minutes = 分
+unit.bytes = バイト
+unit.items = 項目
