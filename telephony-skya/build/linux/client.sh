@@ -10,8 +10,14 @@ CONF="$ROOT/config/skya.conf"
 if [ -f "$CONF" ]; then
     GUIA_HOST=$(sed -n 's/^control\.guia\.host=//p' "$CONF" | head -n1)
     GUIA_PORT=$(sed -n 's/^control\.guia\.port=//p' "$CONF" | head -n1)
+    SRV_HOST=$(sed -n 's/^listen\.host=//p' "$CONF" | head -n1)
+    SRV_PORT=$(sed -n 's/^listen\.port=//p' "$CONF" | head -n1)
+    DEF_ROOM=$(sed -n 's/^default\.room=//p' "$CONF" | head -n1)
     [ -n "${GUIA_HOST:-}" ] && export SKYA_GUIA_HOST="$GUIA_HOST"
     [ -n "${GUIA_PORT:-}" ] && export SKYA_GUIA_PORT="$GUIA_PORT"
+    [ -n "${SRV_HOST:-}" ] && export SKYA_SERVER_HOST="$SRV_HOST"
+    [ -n "${SRV_PORT:-}" ] && export SKYA_SERVER_PORT="$SRV_PORT"
+    [ -n "${DEF_ROOM:-}" ] && export SKYA_DEFAULT_ROOM="$DEF_ROOM"
 fi
 
 # The user client flow is GUI -> Guia -> SkyaClient.sleela -> SKYA/1, which uses

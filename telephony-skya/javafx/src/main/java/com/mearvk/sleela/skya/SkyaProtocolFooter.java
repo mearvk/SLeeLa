@@ -50,9 +50,6 @@ final class SkyaProtocolFooter {
         "15. GUIA™ MONITOR.STATUS → Engine Status","16. GUIA™ CONTROL.UPDATE → JavaFX GUI"
     };
 
-    /** Default SLeeLa Guia control endpoint (SkyaClient.sleela listens here). */
-    private static final String DEFAULT_HOST = "127.0.0.1";
-    private static final int DEFAULT_PORT = 8700;
     private static final int CONNECT_TIMEOUT_MS = 2000;
     private static final int READ_TIMEOUT_MS = 4000;
 
@@ -69,8 +66,10 @@ final class SkyaProtocolFooter {
     private final java.util.List<Consumer<String>> eventSinks = new java.util.concurrent.CopyOnWriteArrayList<>();
 
     SkyaProtocolFooter(){
-        this.host = envOr("SKYA_GUIA_HOST", DEFAULT_HOST);
-        this.port = envIntOr("SKYA_GUIA_PORT", DEFAULT_PORT);
+        // Guia control endpoint from config/skya.conf via the launch script
+        // (SKYA_GUIA_HOST/PORT), centralized in SkyaConfig.
+        this.host = SkyaConfig.guiaHost();
+        this.port = SkyaConfig.guiaPort();
         message.setFont(Font.font("System",11));message.setStyle("-fx-font-weight:bold;");
         message.setAlignment(Pos.CENTER_LEFT);message.setMaxWidth(Double.MAX_VALUE);
         container.setPrefHeight(24);container.setMinHeight(24);container.setMaxHeight(24);
@@ -132,6 +131,7 @@ final class SkyaProtocolFooter {
         // The SLeeLa agent dispatches on the exact command verb; arguments are
         // for display/logging only, so only the verb is placed on the wire.
         String line = "GUIA/1 " + verb(command);
+        SkyaLog.guia("guia", "->", line + " (" + endpoint() + ")");
         String event;
         try {
             event = exchange(line);
@@ -139,6 +139,7 @@ final class SkyaProtocolFooter {
             event = "GUIA/1 CLIENT.OFFLINE reason=" + sanitize(ex.getMessage());
         }
         final String received = event;
+        logEvent(received);
         callback(guiaEventName(received));
         javafx.application.Platform.runLater(() -> emit(received));
         return event;
@@ -148,15 +149,26 @@ final class SkyaProtocolFooter {
     void sendAsync(String command){
         callback(verb(command));
         final String line = "GUIA/1 " + verb(command);
+        SkyaLog.guia("guia", "->", line + " (" + endpoint() + ")");
         Thread t = new Thread(() -> {
             String event;
             try { event = exchange(line); }
             catch (Exception ex) { event = "GUIA/1 CLIENT.OFFLINE reason=" + sanitize(ex.getMessage()); }
             final String received = event;
+            logEvent(received);
             javafx.application.Platform.runLater(() -> { callback(guiaEventName(received)); emit(received); });
         }, "guia-send");
         t.setDaemon(true);
         t.start();
+    }
+
+    /** Log a received Guia event — WARN for offline/error, INFO otherwise. */
+    private static void logEvent(String event) {
+        if (event.contains("CLIENT.OFFLINE") || event.contains("CLIENT.ERROR")) {
+            SkyaLog.warn("guia", "<- " + event);
+        } else {
+            SkyaLog.guia("guia", "<-", event);
+        }
     }
 
     private String exchange(String line) throws Exception {
@@ -186,7 +198,7 @@ final class SkyaProtocolFooter {
         // Surface the declarative-UI load status so it is observable rather than
         // dead state (the GUI is built in code; skya-ui.xml is the Guia/BODI
         // declaration and reference for the command/binding vocabulary).
-        System.out.println("[skya] " + bodiUiStatus);
+        SkyaLog.info("footer", bodiUiStatus);
     }
 
     /** Map a Guia command or event name to its step index in the 16-step model. */
@@ -231,8 +243,6 @@ final class SkyaProtocolFooter {
     }
 
     private static String sanitize(String s){ return s==null ? "unknown" : s.replace('\n',' ').replace('\r',' '); }
-    private static String envOr(String k,String d){ String v=System.getenv(k); return v==null||v.isBlank()?d:v.trim(); }
-    private static int envIntOr(String k,int d){ try{ String v=System.getenv(k); return v==null||v.isBlank()?d:Integer.parseInt(v.trim()); }catch(NumberFormatException e){ return d; } }
 
     private void restart(){message.setText(MESSAGES[index]);scroll.stop();scroll.setFromX(container.getWidth()+20);scroll.setToX(-message.prefWidth(-1)-20);scroll.playFromStart();}
 }

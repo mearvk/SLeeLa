@@ -22,9 +22,9 @@ public final class SkyaClientApp extends Application {
     private final SkyaProtocolFooter protocolFooter = new SkyaProtocolFooter();
     private final Label connection = new Label("Connection: not connected");
     private final Label selectedFile = new Label("No file selected");
-    private final TextField host = new TextField("localhost");
-    private final TextField port = new TextField("8443");
-    private final TextField room = new TextField("lobby");
+    private final TextField host = new TextField(SkyaConfig.serverHost());
+    private final TextField port = new TextField(SkyaConfig.serverPort());
+    private final TextField room = new TextField(SkyaConfig.defaultRoom());
     private Properties config = new Properties();
     private String configName = "default";
     private final SkyaGroupManager groupManager = new SkyaGroupManager();
@@ -55,6 +55,7 @@ public final class SkyaClientApp extends Application {
     @Override
     public void start(Stage stage) {
         stage.setTitle("Skya — SLeeLa Telephony");
+        SkyaLog.info("client", "SkyaClientApp starting; Guia endpoint " + protocolFooter.endpoint());
         // Every Guia event the SLeeLa client returns updates the status line so
         // the user sees the live result of each command round-trip; connection
         // and session events also refresh the connection label.
@@ -489,7 +490,7 @@ public final class SkyaClientApp extends Application {
         return new Tab("Files", box);
     }
 
-    @Override public void stop() { protocolFooter.stop(); closeGroupWindows(); }
+    @Override public void stop() { SkyaLog.info("client", "SkyaClientApp stopping"); protocolFooter.stop(); closeGroupWindows(); }
 
     public static void main(String[] args) { launch(args); }
 }

@@ -21,6 +21,7 @@ public final class SkyaApp extends Application {
 
     @Override public void start(Stage stage) {
         stage.setTitle("Skya — SLeeLa Telephony — Admin");
+        SkyaLog.info("admin", "SkyaApp (monitor) starting; Guia endpoint " + protocolFooter.endpoint());
         // The admin monitor is a Guia client of the SAME SLeeLa agent the user
         // client talks to (started by sleela-up.sh / client_monitor.sh). It
         // does not spawn its own circuit — doing so would collide on the Guia
@@ -199,7 +200,7 @@ public final class SkyaApp extends Application {
         peers.getItems().setAll(lines);
     }
 
-    @Override public void stop() { protocolFooter.stop(); }
+    @Override public void stop() { SkyaLog.info("admin", "SkyaApp (monitor) stopping"); protocolFooter.stop(); }
 
     public static void main(String[] args){launch(args);}
 }

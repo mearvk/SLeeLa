@@ -30,6 +30,7 @@ public final class SkyaConnectApp extends Application {
 
     @Override public void start(Stage stage) {
         stage.setTitle("Skya — SLeeLa Remote Connection");
+        SkyaLog.info("remote", "SkyaConnectApp starting");
         protocol.getItems().addAll("HTTP/3","HTTP/2","SLeeLa TCP"); protocol.setValue("HTTP/3");
         rooms.addAll(SkyaRoomListManager.defaults()); for(var x:rooms)room.getItems().add(x.name()); room.setValue("Lobby"); room.setOnAction(e->selectRoom());
         log.setEditable(false); status=new Label("Disconnected");
@@ -115,7 +116,13 @@ public final class SkyaConnectApp extends Application {
         listenerPaused=false;close(reader);close(writer);close(socket);reader=null;writer=null;socket=null;
         if(status!=null){status.setText("Disconnected");append("LISTENER.STOP");append("CLIENT.DISCONNECTED");append("SESSION.CLOSED");}
     }
-    private void append(String line){if(Platform.isFxApplicationThread())log.appendText(line+System.lineSeparator());else Platform.runLater(()->append(line));}
+    private void append(String line){
+        // Mirror the on-screen connection log to the shared logger (WARN for
+        // error/timeout lines) so remote-connection activity is captured too.
+        if(line.contains("ERROR")||line.contains("TIMEOUT")) SkyaLog.warn("remote", line);
+        else SkyaLog.info("remote", line);
+        if(Platform.isFxApplicationThread())log.appendText(line+System.lineSeparator());else Platform.runLater(()->append(line));
+    }
     private static void close(Closeable c){if(c!=null)try{c.close();}catch(IOException ignored){}}
     @Override public void stop(){disconnect();}
     public static void main(String[] args){launch(args);}

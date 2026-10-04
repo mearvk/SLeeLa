@@ -20,9 +20,23 @@ powershell -ExecutionPolicy Bypass -File telephony-skya\build\windows\client.ps1
 ```
 
 These need the SLeeLa runtime (`sleela`) on `PATH` and Maven + a JDK with
-JavaFX. The Guia control endpoint defaults to `127.0.0.1:8700` and is read from
-[`../config/skya.conf`](../config/skya.conf) (`control.guia.host`/`port`), which
-the launch script exports as `SKYA_GUIA_HOST`/`SKYA_GUIA_PORT` for the GUI.
+JavaFX. Endpoints default from [`../config/skya.conf`](../config/skya.conf),
+which the launch script exports as environment variables for the GUI:
+
+| skya.conf key | Env var | Used by |
+|---|---|---|
+| `control.guia.host` / `control.guia.port` | `SKYA_GUIA_HOST` / `SKYA_GUIA_PORT` | GUI → agent Guia endpoint (default `127.0.0.1:8700`) |
+| `listen.host` / `listen.port` | `SKYA_SERVER_HOST` / `SKYA_SERVER_PORT` | SKYA/1 server endpoint shown in the GUI (default `localhost:8443`) |
+| `default.room` | `SKYA_DEFAULT_ROOM` | default room (default `lobby`) |
+
+Logging is controlled by `SKYA_LOG_LEVEL` (DEBUG/INFO/WARN/ERROR, default INFO)
+and `SKYA_LOG_FILE` (append to a file) — see [`LOGGING.md`](LOGGING.md).
+
+> **Note.** The `.sleela` programs' listen/connect ports are fixed in source at
+> `8443` (SKYA/1) and `8700` (Guia): the SLeeLa VM exposes no config or
+> environment access to a running `.sleela` program. `skya.conf` configures the
+> layers that can read it — the JavaFX GUI and the native engine. Keep the
+> config ports aligned with those fixed `.sleela` ports.
 
 To run the SLeeLa side by hand (without a launch script):
 
