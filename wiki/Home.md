@@ -4,7 +4,7 @@
 
 A Sleela source file (`.sleela`) is a **Wrapper™** — the program unit governed by the Sleela Language Metadocument (**SL-META-0001**).
 
-> Current versions: **Sleelvac™ 1.4** compiler (supported `.sleela` syntax **1.0 – 1.1**) · **Nordshrift 2.0** driver.
+> Current versions: **Sleelvac™** compiler (supported `.sleela` syntax **1.3 – 1.6**, default **1.6**) · **Nordshrift 2.0** driver.
 
 ---
 
@@ -48,9 +48,9 @@ class Hello {
 ./build/sleela compile examples/hello.sleela -o hello.sleela   # persistent Core artifact
 ```
 
-**Bundled examples:** `hello`, `fizzbuzz`, `factorial`, `fibonacci`, `conduct`, `threads`, `network_echo`, `chemistry_presumed`, `financial`, `versioned`.
+**Bundled examples:** `hello`, `fizzbuzz`, `factorial`, `fibonacci`, `conduct`, `threads`, `network_echo`, `chemistry_presumed`, `financial`, `versioned`, `bestof_route`.
 
-See **[Language Reference](Language-Reference)**, plus `COMPILER.md`, `SOURCE.md`, `VERSION.md`.
+The language is a broad Java-like surface: classes, `struct`s, **`T[]` arrays**, the full statement set (`if/else`, `while`, `do/while`, `for`, `switch`, `try/catch/finally`, `break/continue`, `throw`, `assert`, `synchronized`), **short-circuit `&&`/`||`**, ternary `?:`, `instanceof`, and casts. `run`/`compile` accept **multiple `.sleela` files** merged into one program. See **[Language Reference](Language-Reference)**, plus `COMPILER.md`, `SOURCE.md`, `STRUCTS.md`, `VERSION.md`.
 
 ---
 
@@ -126,7 +126,21 @@ Math is foundational; the others may **explicitly** depend on it.
 
 ## SHEET.sheet — the Object Catalog
 
-`SHEET.sheet` is the machine-readable catalog of common system objects that backs both Sleela's *conducted methods* and Nordshrift's *object-compatibility list*. Currently **156 objects across 18 role categories**, rooted at `System` (depth **3024**). Nordshrift converts each object to a per-target **relevance**: `direct` · `model` · `none`.
+`SHEET.sheet` is the machine-readable catalog of common system objects that backs both Sleela's *conducted methods* and Nordshrift's *object-compatibility list*. It carries **129 objects across 16 role categories**, rooted at `System` (depth **3024**). Nordshrift converts each object to a per-target **relevance**: `direct` · `model` · `none`. (The repo is authoritative — see `README.md` / `SUMMARY.md`.)
+
+---
+
+## Application subsystems
+
+Beyond the core toolchain, SLeeLa ships standalone application subsystems in which SLeeLa is authoritative and any GUI is a thin presentation layer (*JavaFX presents; SLeeLa decides* — see `JavaFX.md`):
+
+| Subsystem | Folder | What it does |
+|---|---|---|
+| **Website Generator** | `website-generator/` | Build sites from a **design** (theme, palette, "energy" dial) + ordered **signs** (hero, feature, cta, …); JavaFX Website Studio under `gui/`. |
+| **AutoCAD Renderer** | `autocad/` | Turn descriptions, dimensions, plans, and notes into an AutoCAD **DXF** drawing; JavaFX studio under `gui/`. |
+| **Codecs** | `codecs/` | Individual codec plugins (C + C++) behind a **Codec Loader / Manager** that SLeeLa calls; native PCM/WAV, AIFF, G.711, pluggable backends for the rest. |
+| **Languages** | `languages/` | Localize SLeeLa's outputs/prompts into 12 languages (incl. RTL Arabic), selected via `settings.conf`; `lib/languages` resolves the active locale. |
+| **Audio / Video** | `audio/` | Synchronized native mixer with a JavaFX A/V GUI. |
 
 ---
 
