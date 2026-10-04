@@ -9,7 +9,7 @@
 // the active locale with use(code); text(key) then returns the translation in
 // that language, falling back to English when a key or pack is unavailable. The
 // available packs mirror the repository's /languages folder (en, es, fr, de,
-// pt, it, ja, zh, hi, ko, ar). The runnable, data-bearing build is
+// pt, it, ja, zh, hi, ko, th, ar). The runnable, data-bearing build is
 // lib/languages/languages.sleela, which carries the translations inline so a
 // program can present localized output without a separate file parser.
 class SLLanguageCatalog {
@@ -19,10 +19,10 @@ class SLLanguageCatalog {
   String current() { if (active == "") { return "en"; } return active; }
 
   // The set of locales shipped under /languages, as a stable count + probe.
-  int localeCount() { return 11; }
+  int localeCount() { return 12; }
   boolean has(String code) {
     return code == "en" || code == "es" || code == "fr" || code == "de"
         || code == "pt" || code == "it" || code == "ja" || code == "zh"
-        || code == "hi" || code == "ko" || code == "ar";
+        || code == "hi" || code == "ko" || code == "th" || code == "ar";
   }
 }

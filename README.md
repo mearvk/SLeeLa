@@ -172,8 +172,9 @@ host and adjusts link flags per platform.
   rule *JavaFX presents; SLeeLa decides* ([`JavaFX.md`](JavaFX.md)).
 - [`languages/`](languages/) holds **language packs** that localize SLeeLa's
   outputs and prompts into a language other than English (English, Spanish,
-  French, German, Portuguese, Italian, Japanese, Chinese, Hindi, Korean, and
-  Arabic — the last right-to-left). Each pack is a dependency-free `key = value` file; the
+  French, German, Portuguese, Italian, Japanese, Chinese, Hindi, Korean, Thai,
+  and Arabic — the last right-to-left), with a `settings.conf` that records the
+  active/default locale. Each pack is a dependency-free `key = value` file; the
   [`lib/languages/`](lib/languages/) library (`SLLanguage` /
   `SLLanguageCatalog`) selects a locale and returns localized text. See
   [`languages/README.md`](languages/README.md) and

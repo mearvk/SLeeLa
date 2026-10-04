@@ -55,6 +55,14 @@ class Languages {
             if (key == "word.no") { return "아니요"; }
             if (key == "status.done") { return "완료"; }
         }
+        if (locale == "th") {
+            if (key == "greeting.hello") { return "สวัสดี"; }
+            if (key == "greeting.welcome") { return "ยินดีต้อนรับ"; }
+            if (key == "prompt.continue") { return "ดำเนินการต่อหรือไม่?"; }
+            if (key == "word.yes") { return "ใช่"; }
+            if (key == "word.no") { return "ไม่"; }
+            if (key == "status.done") { return "เสร็จสิ้น"; }
+        }
         if (locale == "ar") {
             if (key == "greeting.hello") { return "مرحبا"; }
             if (key == "greeting.welcome") { return "أهلا وسهلا"; }
@@ -78,6 +86,15 @@ class Languages {
               + text(locale, "prompt.continue") + " / " + text(locale, "word.yes"));
     }
 
+    // Resolve the active locale from settings: an explicit override (e.g. the
+    // SLEELA_LANG value a launcher supplies) wins; otherwise the configured
+    // active locale. Mirrors languages/settings.conf and SLLanguageSettings.
+    String resolveActive(String configuredActive, String override) {
+        if (override != "") { return override; }
+        if (configuredActive == "") { return "en"; }
+        return configuredActive;
+    }
+
     void main() {
         // The same program, the same logic -- presented in each language.
         greetIn("en");
@@ -86,6 +103,12 @@ class Languages {
         greetIn("de");
         greetIn("ja");
         greetIn("ko");
+        greetIn("th");
         greetIn("ar");
+
+        // Settings-driven selection: with settings.conf active = "th" and no
+        // override, output is presented in Thai.
+        String active = resolveActive("th", "");
+        print("active=" + active + ": " + text(active, "greeting.welcome"));
     }
 }
