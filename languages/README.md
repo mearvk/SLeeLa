@@ -68,6 +68,7 @@ third-party pack content is bundled, so there are no external licenses to track.
 | `ja` | 日本語       | `ja.lang`   | ltr              |
 | `zh` | 中文 (简体)  | `zh.lang`   | ltr              |
 | `hi` | हिन्दी        | `hi.lang`   | ltr              |
+| `ko` | 한국어       | `ko.lang`   | ltr              |
 | `ar` | العربية      | `ar.lang`   | rtl              |
 
 ## Using a pack from SLeeLa

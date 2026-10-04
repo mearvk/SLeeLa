@@ -47,6 +47,14 @@ class Languages {
             if (key == "word.no") { return "いいえ"; }
             if (key == "status.done") { return "完了"; }
         }
+        if (locale == "ko") {
+            if (key == "greeting.hello") { return "안녕하세요"; }
+            if (key == "greeting.welcome") { return "환영합니다"; }
+            if (key == "prompt.continue") { return "계속하시겠습니까?"; }
+            if (key == "word.yes") { return "예"; }
+            if (key == "word.no") { return "아니요"; }
+            if (key == "status.done") { return "완료"; }
+        }
         if (locale == "ar") {
             if (key == "greeting.hello") { return "مرحبا"; }
             if (key == "greeting.welcome") { return "أهلا وسهلا"; }
@@ -77,6 +85,7 @@ class Languages {
         greetIn("fr");
         greetIn("de");
         greetIn("ja");
+        greetIn("ko");
         greetIn("ar");
     }
 }
