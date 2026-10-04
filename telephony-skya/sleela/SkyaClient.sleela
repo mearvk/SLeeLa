@@ -73,6 +73,9 @@ class SkyaClient {
         if (command == "GUIA/1 VIDEO.STOP") { return "GUIA/1 MEDIA.VIDEO state=stopped"; }
         if (command == "GUIA/1 FILE.SEND") { return "GUIA/1 FILE.ACCEPTED"; }
         if (command == "GUIA/1 MONITOR.STATUS") { return "GUIA/1 MONITOR.STATUS state=running"; }
+        if (command == "GUIA/1 CIRCUIT.START") { return "GUIA/1 MONITOR.STATUS state=running"; }
+        if (command == "GUIA/1 CIRCUIT.PAUSE") { return "GUIA/1 MONITOR.STATUS state=paused"; }
+        if (command == "GUIA/1 CIRCUIT.STOP") { return "GUIA/1 MONITOR.STATUS state=stopped"; }
         if (command == "GUIA/1 PING") { return "GUIA/1 ACK"; }
         return "GUIA/1 COMMAND.UNKNOWN";
     }

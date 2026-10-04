@@ -2,10 +2,22 @@
 set -eu
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 "$ROOT/build/linux/firewall-check.sh"
-"$ROOT/build/linux/build.sh"
 export SKYA_SLEEELA_CIRCUIT="$ROOT/sleela/SkyaClient.sleela"
 
-# Bring up the SLeeLa side (SkyaServer + Guia agent) so the GUI has a live
+# Read the Guia control endpoint from config/skya.conf so the GUI and agent
+# agree on where Guia is served. The Java GUI honors SKYA_GUIA_HOST/PORT.
+CONF="$ROOT/config/skya.conf"
+if [ -f "$CONF" ]; then
+    GUIA_HOST=$(sed -n 's/^control\.guia\.host=//p' "$CONF" | head -n1)
+    GUIA_PORT=$(sed -n 's/^control\.guia\.port=//p' "$CONF" | head -n1)
+    [ -n "${GUIA_HOST:-}" ] && export SKYA_GUIA_HOST="$GUIA_HOST"
+    [ -n "${GUIA_PORT:-}" ] && export SKYA_GUIA_PORT="$GUIA_PORT"
+fi
+
+# The user client flow is GUI -> Guia -> SkyaClient.sleela -> SKYA/1, which uses
+# the SLeeLa runtime, not the native C engine. (Build the native engine
+# separately with build.sh / make -C native when you want the standalone
+# skya/skya-server binaries.) Bring up the SLeeLa side so the GUI has a live
 # client to talk to. Best-effort: if the SLeeLa runtime is not installed the
 # GUI still launches and reports CLIENT.OFFLINE for each command.
 if "$ROOT/build/linux/sleela-up.sh"; then

@@ -1,7 +1,6 @@
 package com.mearvk.sleela.skya;
 
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -11,24 +10,27 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import java.io.*;
-import java.nio.file.*;
 import java.util.Properties;
 
 public final class SkyaApp extends Application {
     private Label engineStatus, circuitStatus, status;
-    private Process sleelaProcess;
-    private volatile boolean monitoringPaused;
     private final Properties config = new Properties();
     private String configName = "default";
     private final SkyaProtocolFooter protocolFooter = new SkyaProtocolFooter();
+    private ListView<String> peers;
 
     @Override public void start(Stage stage) {
         stage.setTitle("Skya — SLeeLa Telephony — Admin");
-        protocolFooter.callback("GUI.CREATE");
-        engineStatus = new Label("Client: stopped");
+        // The admin monitor is a Guia client of the SAME SLeeLa agent the user
+        // client talks to (started by sleela-up.sh / client_monitor.sh). It
+        // does not spawn its own circuit — doing so would collide on the Guia
+        // control port. Every event the agent returns updates the monitor.
+        protocolFooter.onEvent(this::onEvent);
+        protocolFooter.sendAsync("GUI.CREATE");
+        engineStatus = new Label("Client: querying agent at " + protocolFooter.endpoint());
         circuitStatus = new Label("Monitoring circuit: ready");
         status = new Label("Admin: ready");
-        ListView<String> peers = new ListView<>();
+        peers = new ListView<>();
         peers.getItems().addAll("Monitoring circuit initialized","Awaiting connected peers");
 
         ImageView logo = logoView();
@@ -44,9 +46,9 @@ public final class SkyaApp extends Application {
         Button start = new Button("Start");
         Button pause = new Button("Pause");
         Button stop = new Button("Stop");
-        start.setOnAction(e -> { protocolFooter.callback("CIRCUIT.START"); startAdminTask(); });
-        pause.setOnAction(e -> { protocolFooter.callback("CIRCUIT.PAUSE"); pauseAdminTask(); });
-        stop.setOnAction(e -> { protocolFooter.callback("CIRCUIT.STOP"); stopAdminTask(); });
+        start.setOnAction(e -> protocolFooter.sendAsync("CIRCUIT.START"));
+        pause.setOnAction(e -> protocolFooter.sendAsync("CIRCUIT.PAUSE"));
+        stop.setOnAction(e -> protocolFooter.sendAsync("CIRCUIT.STOP"));
 
         VBox center = new VBox(10, new Label("Skya Client Monitor"), new Separator(),
             new Label("Connection / Peer Monitor"), peers, new Label("Engine"), engineStatus,
@@ -81,9 +83,11 @@ public final class SkyaApp extends Application {
         configMenu.getItems().addAll(load, save, saveAs, new SeparatorMenuItem(), delete);
 
         Menu service = new Menu("Service");
+        MenuItem refresh = new MenuItem("Refresh Status");
+        refresh.setOnAction(e -> protocolFooter.sendAsync("MONITOR.STATUS"));
         MenuItem restart = new MenuItem("Restart Monitor");
-        restart.setOnAction(e -> { stopAdminTask(); startAdminTask(); });
-        service.getItems().add(restart);
+        restart.setOnAction(e -> { protocolFooter.sendAsync("CIRCUIT.STOP"); protocolFooter.sendAsync("CIRCUIT.START"); });
+        service.getItems().addAll(refresh, restart);
 
         Menu help = new Menu("Help");
         MenuItem about = new MenuItem("About Skya Admin");
@@ -164,59 +168,38 @@ public final class SkyaApp extends Application {
         return view;
     }
 
-    private synchronized void startAdminTask() {
-        if (sleelaProcess != null && sleelaProcess.isAlive()) {
-            monitoringPaused=false; engineStatus.setText("Client: running");
-            circuitStatus.setText("Monitoring circuit: resumed"); return;
+    /**
+     * Apply a Guia event from the agent to the monitor surface. CIRCUIT.*
+     * commands and MONITOR.STATUS return a MONITOR.STATUS event carrying the
+     * circuit state; CLIENT.OFFLINE means the SLeeLa agent is not running.
+     */
+    private void onEvent(String event) {
+        status.setText("Guia: " + event);
+        if (event.contains("CLIENT.OFFLINE")) {
+            engineStatus.setText("Client: agent offline (" + protocolFooter.endpoint() + ")");
+            circuitStatus.setText("Monitoring circuit: no agent — start it with sleela-up.sh / client_monitor.sh");
+            return;
         }
-        Path circuit=locateCircuit();
-        if(circuit==null){circuitStatus.setText("Monitoring circuit: not found");return;}
-        String command=System.getenv("SLEELA_COMMAND");
-        if(command==null||command.isBlank()) command="sleela";
-        try {
-            sleelaProcess=new ProcessBuilder(command,"run",circuit.toString()).redirectErrorStream(true).start();
-            monitoringPaused=false; engineStatus.setText("Client: running");
-            circuitStatus.setText("Monitoring circuit: running — "+circuit);
-            Process active=sleelaProcess;
-            Thread readerThread=new Thread(() -> {
-                try(BufferedReader reader=new BufferedReader(new InputStreamReader(active.getInputStream()))) {
-                    while(reader.readLine()!=null) { if(monitoringPaused) continue; }
-                } catch(IOException ignored) {
-                } finally {
-                    Platform.runLater(() -> { if(sleelaProcess==active&&!active.isAlive()){
-                        sleelaProcess=null; engineStatus.setText("Client: stopped"); circuitStatus.setText("Monitoring circuit: stopped"); }});
-                }
-            },"skya-sleela-output");
-            readerThread.setDaemon(true); readerThread.start();
-        } catch(IOException e) {
-            sleelaProcess=null; engineStatus.setText("Client: unavailable");
-            circuitStatus.setText("SLeeLa runner unavailable: "+e.getMessage());
+        if (event.contains("state=running")) {
+            engineStatus.setText("Client: running");
+            circuitStatus.setText("Monitoring circuit: running");
+            setPeers("Agent reachable", "Circuit running on " + protocolFooter.endpoint());
+        } else if (event.contains("state=paused")) {
+            engineStatus.setText("Client: paused");
+            circuitStatus.setText("Monitoring circuit: paused");
+        } else if (event.contains("state=stopped")) {
+            engineStatus.setText("Client: stopped");
+            circuitStatus.setText("Monitoring circuit: stopped");
+        } else if (event.contains("CLIENT.CREATED")) {
+            engineStatus.setText("Client: agent reachable");
         }
     }
 
-    private synchronized void pauseAdminTask() {
-        if(sleelaProcess==null||!sleelaProcess.isAlive()){
-            engineStatus.setText("Client: stopped"); circuitStatus.setText("Monitoring circuit: not running"); return;
-        }
-        monitoringPaused=true; engineStatus.setText("Client: paused"); circuitStatus.setText("Monitoring circuit: paused");
+    private void setPeers(String... lines) {
+        peers.getItems().setAll(lines);
     }
 
-    private synchronized void stopAdminTask() {
-        monitoringPaused=false; Process process=sleelaProcess; sleelaProcess=null;
-        if(process!=null&&process.isAlive()) process.destroy();
-        engineStatus.setText("Client: stopped"); circuitStatus.setText("Monitoring circuit: stopped");
-    }
-
-    private Path locateCircuit() {
-        String configured=System.getenv("SKYA_SLEEELA_CIRCUIT");
-        if(configured!=null&&!configured.isBlank()){Path p=Paths.get(configured);if(Files.isRegularFile(p))return p;}
-        Path cwd=Paths.get("").toAbsolutePath();
-        Path p=cwd.resolve("telephony-skya/sleela/SkyaClient.sleela");
-        if(Files.isRegularFile(p))return p;
-        p=cwd.resolve("sleela/SkyaClient.sleela");
-        return Files.isRegularFile(p)?p:null;
-    }
-    @Override public void stop() { protocolFooter.stop(); stopAdminTask(); }
+    @Override public void stop() { protocolFooter.stop(); }
 
     public static void main(String[] args){launch(args);}
 }

@@ -74,6 +74,14 @@ Startup sequence:
 6. Create runtime device.
 7. Publish capabilities.
 
+> **Current status.** Steps 1–2 are implemented and exercised today:
+> `libskya-drivers.a` is linked into the native `skya` binary, and
+> `skya --drivers` calls `skya_register_builtin_drivers()` and enumerates the
+> registry (`skya_driver_count()` / `skya_driver_at()`). Steps 3–7 — real device
+> enumeration, probing, and capability publication over ALSA/HID/WASAPI/network
+> — are not yet implemented; the per-model probes are generic placeholders. The
+> list-and-register path is live; hardware discovery remains adapter work.
+
 ### External modules
 
 Future separately installed Linux modules MUST validate architecture, ABI, dependencies, permissions, package/integrity policy, and controlled search path. A filename or catalog name is never sufficient for loading.

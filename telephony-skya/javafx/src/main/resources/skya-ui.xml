@@ -22,19 +22,43 @@
     </style>
   </styles>
   <content id="tabs" style-ref="skya-content-surface">
-    <view id="chat" type="chat"/><view id="video" type="video"/><view id="audio" type="audio"/><view id="file-transfer" type="file"/>
+    <view id="chat" type="chat">
+      <command id="chat-send" action="CHAT.SEND"/>
+    </view>
+    <view id="video" type="video">
+      <command id="video-start" action="VIDEO.START"/>
+      <command id="video-stop" action="VIDEO.STOP"/>
+    </view>
+    <view id="audio" type="audio">
+      <command id="audio-start" action="AUDIO.START"/>
+      <command id="audio-stop" action="AUDIO.STOP"/>
+    </view>
+    <view id="file-transfer" type="file">
+      <command id="file-send" action="FILE.SEND"/>
+    </view>
   </content>
   <footer id="protocol-footer" title="Protocol Message Scroller" callback="Guia™" position="bottom" style-ref="skya-footer-surface">
     <divider id="protocol-divider" orientation="horizontal" style="2d-bevel"/>
     <message-bar id="guia-message-bar" mode="scroll" messages="1-16" position="lowest"/>
   </footer>
+  <!-- Bindings map a Guia command/event to the footer message-scroller step.
+       The command/action and event names here match the live Guia vocabulary
+       served by sleela/SkyaClient.sleela (see docs/GUIA-PROTOCOL.md). -->
   <bindings>
     <binding event="GUI.CREATE" target="guia-message-bar" message="1"/>
     <binding event="CLIENT.CONNECT" target="guia-message-bar" message="4"/>
     <binding event="SESSION.CLOSE" target="guia-message-bar" message="6"/>
+    <binding event="CHAT.SEND" target="guia-message-bar" message="11"/>
+    <binding event="LISTENER.RECEIVE" target="guia-message-bar" message="13"/>
+    <binding event="AUDIO.START" target="guia-message-bar" message="10"/>
+    <binding event="AUDIO.STOP" target="guia-message-bar" message="10"/>
+    <binding event="VIDEO.START" target="guia-message-bar" message="10"/>
+    <binding event="VIDEO.STOP" target="guia-message-bar" message="10"/>
+    <binding event="FILE.SEND" target="guia-message-bar" message="14"/>
     <binding event="CIRCUIT.START" target="guia-message-bar" message="9"/>
     <binding event="CIRCUIT.PAUSE" target="guia-message-bar" message="9"/>
     <binding event="CIRCUIT.STOP" target="guia-message-bar" message="15"/>
+    <binding event="MONITOR.STATUS" target="guia-message-bar" message="15"/>
     <binding event="CONTROL.UPDATE" target="guia-message-bar" message="16"/>
   </bindings>
 </bodi-ui>

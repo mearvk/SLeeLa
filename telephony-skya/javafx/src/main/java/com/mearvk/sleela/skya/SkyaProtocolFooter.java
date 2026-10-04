@@ -183,6 +183,10 @@ final class SkyaProtocolFooter {
             if(in==null)return;var doc=DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(in);var r=doc.getDocumentElement();
             if("bodi-ui".equals(r.getTagName())&&"skya-ui".equals(r.getAttribute("id")))bodiUiStatus="BODI UI: loaded "+r.getAttribute("id");
         }catch(Exception ignored){}
+        // Surface the declarative-UI load status so it is observable rather than
+        // dead state (the GUI is built in code; skya-ui.xml is the Guia/BODI
+        // declaration and reference for the command/binding vocabulary).
+        System.out.println("[skya] " + bodiUiStatus);
     }
 
     /** Map a Guia command or event name to its step index in the 16-step model. */

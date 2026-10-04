@@ -14,8 +14,9 @@ This directory is the native execution boundary for Skya. Keep protocol and oper
 Components:
 - skya_engine.h: stable C ABI.
 - skya_engine.cpp: engine state and lifecycle implementation.
-- main.cpp: command-line native launcher.
-- Makefile: portable C++17 build.
+- main.cpp: combined launcher (`skya`); `--server|--client|--both`, `--http2|--http3`, `--room <r>`, and `--drivers` (register + list the hardware drivers from `../drivers`).
+- skya_server_main.cpp: standalone server launcher (`skya-server`); `--room`, `--port`, `--max-peers`, `--http2|--http3`.
+- Makefile: portable C++17 build. Produces `skya`, `skya-server`, and `libskya.a`; builds and links `../drivers/libskya-drivers.a` into `skya` (adds `-lws2_32` on Windows, `-framework CoreAudio` on macOS, `-pthread` on POSIX).
 - SKYA-SLEEELA-ABI.md: binding contract between native engine and SLeeLa.
 - SKYA-CXX-INTEGRATION.md: C/C++ integration rules and ownership model.
 

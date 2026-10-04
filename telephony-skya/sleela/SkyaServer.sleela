@@ -11,7 +11,7 @@ class SkyaServer {
 
     // Map one SKYA/1 request to an SKYA/1 reply.
     String reply(String request) {
-        if (request == "SKYA/1 client-hello") { return "SKYA/1 server-ready room=lobby http=3"; }
+        if (request == "SKYA/1 client-hello") { return "SKYA/1 server-ready port=8443 room=lobby http=3"; }
         return "SKYA/1 delivered";
     }
 

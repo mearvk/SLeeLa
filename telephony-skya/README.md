@@ -18,7 +18,7 @@ Skya is the SLeeLa telephony application boundary for client, server, and combin
 - docs: protocol, runtime, security, media, NAT, and runnable-program documentation.
 - config: deployment defaults.
 
-The native layer remains authoritative for networking, media, security, NAT, and file transfer. The .sleela programs are application-level runnables and orchestration examples; they do not create a second native runtime.
+The native layer is the C/C++ engine boundary intended to own production networking, media, security, NAT, and file transfer. The current live GUI flow runs on SLeeLa's own socket primitives via the `.sleela` programs (see `docs/GUIA-PROTOCOL.md`); the native engine is built and runnable standalone (`native/skya`) and is where that production transport work is landed. The `.sleela` programs are application-level runnables and orchestration; they do not create a second native runtime.
 
 ## User Client
 
@@ -34,12 +34,27 @@ It provides the primary user-facing surface for:
 
 Administrative lifecycle and local circuit monitoring remain separate in `SkyaApp`, launched through the Client Monitor.
 
-## Build
+## Build and run
 
-make -C telephony-skya/native
+The user-facing telephony flow runs on the SLeeLa runtime (GUI → Guia →
+`SkyaClient.sleela` → SKYA/1). Launch it with the per-platform scripts, which
+bring the SLeeLa side up before the GUI:
+
+```sh
+telephony-skya/build/linux/client.sh          # user client (SkyaClientApp)
+telephony-skya/build/linux/client_monitor.sh  # admin monitor (SkyaApp)
+```
+
+The native C engine is a separate, optional build (not required by the GUI
+flow):
+
+```sh
+make -C telephony-skya/native                 # builds skya, skya-server, libskya.a
 ./telephony-skya/native/skya --both --http3 --room lobby
+./telephony-skya/native/skya --drivers         # list registered hardware drivers
+```
 
-The C++ executable is the native bridge. The .sleela programs are compiled and run through the normal SLeeLa toolchain and use SLeeLa socket/thread primitives where a pure-SLeeLa runnable is appropriate.
+See [`docs/BUILD-AND-RUN.md`](docs/BUILD-AND-RUN.md) for the full matrix.
 
 ## Security and media
 

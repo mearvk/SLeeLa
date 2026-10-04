@@ -1,28 +1,77 @@
 # Skya Build and Run
 
-Native build:
+## The GUI telephony flow (primary)
+
+The user-facing flow is **JavaFX GUI → Guia/1 → `SkyaClient.sleela` → SKYA/1 →
+`SkyaServer.sleela` → back → GUI** (see [`GUIA-PROTOCOL.md`](GUIA-PROTOCOL.md)).
+Launch it per platform; the launch script brings the SLeeLa side up (server +
+Guia agent) before the GUI and tears it down on exit:
+
+```sh
+# Linux / macOS
+telephony-skya/build/linux/client.sh          # user client (SkyaClientApp)
+telephony-skya/build/linux/client_monitor.sh  # admin monitor (SkyaApp)
+telephony-skya/build/linux/remote-client.sh   # remote-connect GUI (SkyaConnectApp)
+```
+
+```powershell
+# Windows 10+
+powershell -ExecutionPolicy Bypass -File telephony-skya\build\windows\client.ps1
+```
+
+These need the SLeeLa runtime (`sleela`) on `PATH` and Maven + a JDK with
+JavaFX. The Guia control endpoint defaults to `127.0.0.1:8700` and is read from
+[`../config/skya.conf`](../config/skya.conf) (`control.guia.host`/`port`), which
+the launch script exports as `SKYA_GUIA_HOST`/`SKYA_GUIA_PORT` for the GUI.
+
+To run the SLeeLa side by hand (without a launch script):
+
+```sh
+export SLEELA_SHEET=SHEET.sheet SLEELA_SHA256_MANIFEST=security/sha256-manifest.json
+sleela run telephony-skya/sleela/SkyaServer.sleela &   # SKYA/1 on :8443
+sleela run telephony-skya/sleela/SkyaClient.sleela &   # Guia/1 agent on :8700
+```
+
+## Native engine (standalone)
+
+The native C engine is a separate, standalone build — the GUI flow above does
+**not** require it. Build and run it directly:
+
+```sh
 make -C telephony-skya/native
-./telephony-skya/native/skya --server --http3 --room lobby
+./telephony-skya/native/skya --both --http3 --room lobby   # engine lifecycle + room
+./telephony-skya/native/skya --drivers                     # enumerate hardware drivers
+./telephony-skya/native/skya-server --room lobby --port 8443
+```
 
-The native command currently validates engine lifecycle and room selection. It is not yet a complete wire-level media server.
+`make -C telephony-skya/native` also builds `../drivers/libskya-drivers.a` and
+links it into `skya`, so `skya --drivers` lists every registered phone/headset
+driver from the per-vendor tree. The native command validates engine lifecycle,
+room selection, and driver registration; it is not yet a complete wire-level
+media server.
 
-SLeeLa runnables:
-- telephony-skya/sleela/SkyaServer.sleela
-- telephony-skya/sleela/SkyaClient.sleela
-- telephony-skya/sleela/Skya.sleela
-- telephony-skya/sleela/SkyaRoom.sleela
+### Platform-native binary entry points
 
-For a two-process smoke test, start the server runnable first and then the client runnable. For a single-process test, use Skya.sleela.
-
-HTTP/2 and HTTP/3 transport, TLS/certificate inspection, media capture/codecs, NAT traversal, resumable file transfer, and explicit OS firewall integration remain adapter work against existing SLeeLa subsystems.
-
-
-## Platform-native binary entry points
-
-The repository now includes direct native Skya build scripts in the top-level `build/` directory:
+The top-level `build/` directory also has direct native Skya build scripts:
 
 - Linux: `./build/skya-linux.sh`
-- Windows 10+: `powershell -ExecutionPolicy Bypass -File .\\build\\skya-windows.ps1`
+- Windows 10+: `powershell -ExecutionPolicy Bypass -File .\build\skya-windows.ps1`
 - macOS: `./build/skya-macos.sh`
 
-Outputs are staged under `build/skya/linux/`, `build/skya/windows/`, and `build/skya/macos/`. These are direct builds of the current native Skya engine and are separate from the integrated SLeeLa executable. The integrated command remains `sleela skya ...`.
+Outputs are staged under `build/skya/linux/`, `build/skya/windows/`, and
+`build/skya/macos/`. These are direct builds of the current native Skya engine,
+separate from the integrated SLeeLa executable.
+
+## SLeeLa runnables
+
+- `telephony-skya/sleela/SkyaServer.sleela` — SKYA/1 server (loops on :8443)
+- `telephony-skya/sleela/SkyaClient.sleela` — Guia control agent + SKYA/1 bridge (:8700)
+- `telephony-skya/sleela/Skya.sleela` — one-process combined smoke test
+- `telephony-skya/sleela/SkyaRoom.sleela` — bounded multi-peer room model
+
+## Scope
+
+HTTP/2 and HTTP/3 transport, TLS/certificate inspection, media capture/codecs,
+NAT traversal, resumable file transfer, and explicit OS firewall integration
+remain adapter work against existing SLeeLa subsystems. `SKYA/1` here is TCP on
+loopback; the production wire transport is supplied by the SLeeLa HTTP layer.

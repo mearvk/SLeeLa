@@ -11,8 +11,12 @@
 
 Here, **version** means a device model, series, or hardware family. Firmware/software releases are tracked separately when tested driver behavior depends on them.
 
+Entries marked **(planned)** are target-matrix models not yet present in the
+driver tree; all other entries have a driver directory under
+`drivers/<vendor>/<model>/` and a record under `drivers/model-records/`.
+
 ## Yealink
-MP45 USB Phone; MP50 USB Phone; UH42; UH44; WH64; WH68
+MP45 USB Phone; MP50 USB Phone; UH42; UH44; UH46; WH64; WH68
 
 ## Poly
 Blackwire 3320; Blackwire 5220; Savi 8200 Series; Savi 8400 Series; Voyager 4320; Voyager 5200 UC
@@ -24,16 +28,16 @@ Biz 1500 USB; Evolve2 40; Evolve3 65; Evolve3 75; SPEAK2 55; SPEAK2 75
 GUV3000; GUV3005; GXP21xx; GRP26xx
 
 ## EPOS / Sennheiser
-IMPACT SC 200; IMPACT SC 600; IMPACT 1000; IMPACT 500; SDW 5000; ADAPT
+IMPACT SC 200; IMPACT SC 600; IMPACT 1000; SDW 5000; IMPACT 500 (planned); ADAPT (planned)
 
 ## Logitech
-Zone Wired 2; Zone Wireless 2; Zone Vibe; H570e; Zone 305; SPEAK
+Zone Wired 2; Zone Wireless 2; Zone Vibe; H570e; Zone 305; SPEAK (planned)
 
 ## Fanvil
-X4U-V2; X5U-V2; X6U-V2; V63; V64; V65; V66; V66 Pro; X210i-V2
+X4U-V2; X5U-V2; X6U-V2; V63; V64; V65; V66; X210i-V2; V66 Pro (planned)
 
 ## Snom
-A330D; A330M; Snom USB Headset Family
+A330D; A330M; Snom USB Headset Family (planned)
 
 ## Cisco
 320 Series headsets (321/322)
