@@ -69,6 +69,7 @@ third-party pack content is bundled, so there are no external licenses to track.
 | `zh` | 中文 (简体)  | `zh.lang`   | ltr              |
 | `hi` | हिन्दी        | `hi.lang`   | ltr              |
 | `ko` | 한국어       | `ko.lang`   | ltr              |
+| `th` | ไทย         | `th.lang`   | ltr              |
 | `ar` | العربية      | `ar.lang`   | rtl              |
 
 ## Using a pack from SLeeLa
@@ -87,5 +88,33 @@ class Hello {
 ```
 
 A runnable demonstration is `lib/languages/languages.sleela`.
+
+## Settings
+
+[`settings.conf`](settings.conf) is the single place to record a localization
+preference, so a chosen language persists and becomes the default. It is an
+INI-style file matching the repository's `config/` convention:
+
+```ini
+[language]
+active   = "en"   # BCP-47 code present here: en es fr de pt it ja zh hi ko th ar
+fallback = "en"   # used when a key is missing or the active code is unknown
+mode     = "folder"
+relative_path = "."
+
+[format]
+respect_direction   = true   # honor a pack's #!direction (ltr/rtl)
+enable_placeholders = true   # fill {0}, {1}, ... in messages
+missing_key         = "key"  # "key" echoes the key; "empty" yields ""
+
+[override]
+env_var = "SLEELA_LANG"      # when set, overrides [language].active for a run
+```
+
+Switch the language of all localized output by changing one line
+(`active = "th"`), or per-run via the `SLEELA_LANG` environment variable. The
+`lib/languages` library reads these settings through `SLLanguageSettings`
+(active/fallback locale, direction, placeholder, and missing-key policy); its
+`resolve(override)` applies the override-then-active precedence.
 
 **Max Rupplin — MEARVK LLC — 2026**

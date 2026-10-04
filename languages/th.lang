@@ -1,0 +1,42 @@
+#!locale = th
+#!name = ไทย
+#!direction = ltr
+# SLeeLa Thai language pack.
+
+greeting.hello = สวัสดี
+greeting.welcome = ยินดีต้อนรับ
+greeting.goodbye = ลาก่อน
+
+prompt.continue = ดำเนินการต่อหรือไม่?
+prompt.yes_no = ใช่หรือไม่?
+prompt.retry = ลองอีกครั้งหรือไม่?
+prompt.enter_name = กรอกชื่อของคุณ:
+prompt.confirm = คุณแน่ใจหรือไม่?
+prompt.press_enter = กด Enter เพื่อดำเนินการต่อ
+
+word.yes = ใช่
+word.no = ไม่
+word.ok = ตกลง
+word.cancel = ยกเลิก
+word.open = เปิด
+word.close = ปิด
+word.save = บันทึก
+word.help = ช่วยเหลือ
+
+status.ready = พร้อม
+status.running = กำลังทำงาน
+status.done = เสร็จสิ้น
+status.failed = ล้มเหลว
+status.loading = กำลังโหลด
+status.saved = บันทึกแล้ว
+
+error.not_found = ไม่พบ: {0}
+error.denied = ปฏิเสธการอนุญาต
+error.invalid = ข้อมูลที่ป้อนไม่ถูกต้อง
+error.timeout = การดำเนินการหมดเวลา
+error.unknown = ข้อผิดพลาดที่ไม่รู้จัก
+
+unit.seconds = วินาที
+unit.minutes = นาที
+unit.bytes = ไบต์
+unit.items = รายการ

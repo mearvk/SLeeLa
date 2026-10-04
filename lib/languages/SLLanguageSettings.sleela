@@ -1,0 +1,41 @@
+/*
+ * lib/languages/SLLanguageSettings.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines the SLeeLa standard-library type SLLanguageSettings used within the languages library family.
+ */
+#sleela 1.3
+// Unified SLeeLa standard-library front-end object.
+// Family: languages. The localization settings a program reads to decide which
+// language to present in. These mirror the repository's languages/settings.conf
+// file (the tool-readable source of truth): the active locale, the fallback
+// locale, whether to honor a pack's script direction, how to fill placeholders,
+// and how to treat a missing key. Changing the active locale here (or in
+// settings.conf) re-languages all localized output without touching program
+// logic.
+class SLLanguageSettings {
+  String active;        // active locale code (default "en")
+  String fallback;      // fallback locale when a key/pack is missing
+  boolean respectDirection;  // honor #!direction (ltr/rtl) for layout
+  boolean enablePlaceholders; // fill {0},{1},... in messages
+  String missingKey;    // "key" (echo the key) or "empty" (empty string)
+
+  // Defaults matching languages/settings.conf.
+  void defaults() {
+    active = "en";
+    fallback = "en";
+    respectDirection = true;
+    enablePlaceholders = true;
+    missingKey = "key";
+  }
+
+  void setActive(String code) { active = code; }
+  String activeLocale() { if (active == "") { return "en"; } return active; }
+  String fallbackLocale() { if (fallback == "") { return "en"; } return fallback; }
+
+  // Resolve the locale to actually use: the explicit override wins (e.g. the
+  // SLEELA_LANG environment value a launcher supplies), else the active locale.
+  String resolve(String override) {
+    if (override != "") { return override; }
+    return activeLocale();
+  }
+}
