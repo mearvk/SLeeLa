@@ -31,6 +31,7 @@ public final class SkyaClientApp extends Application {
     private final List<Stage> groupWindows = new ArrayList<>();
     private ComboBox<String> videoTargetType;
     private TextField videoTarget;
+    private final SkyaCertStore certStore = new SkyaCertStore("skya-client");
 
     /**
      * Send a Guia command to the SLeeLa client on a background thread and
@@ -56,6 +57,7 @@ public final class SkyaClientApp extends Application {
     public void start(Stage stage) {
         stage.setTitle("Skya — SLeeLa Telephony");
         SkyaLog.info("client", "SkyaClientApp starting; Guia endpoint " + protocolFooter.endpoint());
+        SkyaLog.info("client", "security: " + certStore.status());
         // Every Guia event the SLeeLa client returns updates the status line so
         // the user sees the live result of each command round-trip; connection
         // and session events also refresh the connection label.
@@ -123,6 +125,18 @@ public final class SkyaClientApp extends Application {
         stage.setScene(new Scene(root, 1100, 760));
         stage.show();
         protocolFooter.start();
+        // Prompt to update the certificate if it is near/past expiry.
+        if (certStore.needsRenewalPrompt()) {
+            Alert a = new Alert(Alert.AlertType.CONFIRMATION,
+                    "Your Skya certificate " + certStore.status() + ".\n\nRenew it now?",
+                    ButtonType.YES, ButtonType.NO);
+            a.initOwner(stage);
+            a.setTitle("Skya Certificate");
+            a.setHeaderText("Certificate renewal");
+            a.showAndWait().ifPresent(b -> {
+                if (b == ButtonType.YES) { certStore.renew(); status.setText("Security: " + certStore.status()); }
+            });
+        }
     }
 
     private MenuBar buildMenuBar(Stage stage) {
@@ -173,6 +187,27 @@ public final class SkyaClientApp extends Application {
         });
         configMenu.getItems().addAll(edit, folder);
 
+        Menu security = new Menu("Security");
+        MenuItem certStatus = new MenuItem("Certificate Status…");
+        MenuItem certRenew = new MenuItem("Renew Certificate");
+        certStatus.setOnAction(e -> {
+            Alert a = new Alert(Alert.AlertType.INFORMATION);
+            a.initOwner(stage);
+            a.setTitle("Skya Certificate");
+            a.setHeaderText("Connection security");
+            SkyaCertificate c = certStore.certificate();
+            a.setContentText("Status: " + certStore.status()
+                    + (c != null ? "\nSubject: " + c.subject() : "")
+                    + "\n\nSkya uses Diffie–Hellman + DSA with ~30-day certificates."
+                    + "\nConnections still work with no certificate (plaintext).");
+            a.showAndWait();
+        });
+        certRenew.setOnAction(e -> {
+            certStore.renew();
+            status.setText("Security: " + certStore.status());
+        });
+        security.getItems().addAll(certStatus, certRenew);
+
         Menu help = new Menu("Help");
         MenuItem about = new MenuItem("About Skya");
         about.setOnAction(e -> {
@@ -184,7 +219,7 @@ public final class SkyaClientApp extends Application {
             a.showAndWait();
         });
         help.getItems().add(about);
-        return new MenuBar(file, groups, settings, configMenu, help);
+        return new MenuBar(file, groups, settings, configMenu, security, help);
     }
 
     private void loadConfig(Stage stage) {

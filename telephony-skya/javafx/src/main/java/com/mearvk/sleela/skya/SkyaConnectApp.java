@@ -27,6 +27,9 @@ public final class SkyaConnectApp extends Application {
     private volatile boolean listenerPaused;
     private volatile long connectionAttempt;
     private static final int CONNECT_TIMEOUT_MS=5000;
+    // Optional crypto: a local 30-day certificate and the per-connection session.
+    private final SkyaCertStore certStore=new SkyaCertStore("skya-remote-client");
+    private volatile SkyaCrypto.SkyaSession session;
 
     @Override public void start(Stage stage) {
         stage.setTitle("Skya — SLeeLa Remote Connection");
@@ -90,10 +93,18 @@ public final class SkyaConnectApp extends Application {
                 s.connect(new InetSocketAddress(h,p),CONNECT_TIMEOUT_MS);
                 BufferedReader rd=new BufferedReader(new InputStreamReader(s.getInputStream(),StandardCharsets.UTF_8));
                 BufferedWriter wr=new BufferedWriter(new OutputStreamWriter(s.getOutputStream(),StandardCharsets.UTF_8));
-                synchronized(this){socket=s;reader=rd;writer=wr;}
+                synchronized(this){socket=s;reader=rd;writer=wr;session=null;}
+                // Optional crypto handshake first: offer DH (+ our certificate if
+                // we have one). If the peer answers with a crypto HELLO we get an
+                // encrypted (and maybe authenticated) session; if not, that same
+                // line is the peer's normal reply and we continue in plaintext.
+                SkyaCrypto.SkyaSession negotiated=tryCryptoHandshake(rd,wr);
+                synchronized(this){session=negotiated;}
+                final String secLabel=securityLabel(negotiated);
                 wr.write("SKYA/1 client-hello room="+r+" protocol="+protocol.getValue());wr.newLine();wr.flush();
-                Platform.runLater(()->{if(attempt!=connectionAttempt)return;status.setText("Connected: "+h+":"+p);append("CLIENT.CONNECTED");append("SESSION.OPEN room="+r);append("LISTENER.START");});
-                String line;while((line=rd.readLine())!=null){final String x=line;if(!listenerPaused)Platform.runLater(()->append("LISTENER.RECEIVE "+x));}
+                Platform.runLater(()->{if(attempt!=connectionAttempt)return;status.setText("Connected: "+h+":"+p+" ["+secLabel+"]");append("CLIENT.CONNECTED "+secLabel);append("SESSION.OPEN room="+r);append("LISTENER.START");});
+                maybePromptRenewal();
+                String line;while((line=rd.readLine())!=null){final String x=decryptIfNeeded(line);if(!listenerPaused)Platform.runLater(()->append("LISTENER.RECEIVE "+x));}
             }catch(SocketTimeoutException e){Platform.runLater(()->{if(attempt!=connectionAttempt)return;status.setText("Connection timeout after 5s");append("CLIENT.TIMEOUT after 5s");});
             }catch(ConnectException e){Platform.runLater(()->{if(attempt!=connectionAttempt)return;status.setText("Connection failed: "+e.getMessage());append("CLIENT.ERROR "+e.getMessage());});
             }catch(IOException e){Platform.runLater(()->{if(attempt!=connectionAttempt)return;status.setText("Connection failed: "+e.getMessage());append("CLIENT.ERROR "+e.getMessage());});}
@@ -108,12 +119,70 @@ public final class SkyaConnectApp extends Application {
     private synchronized void sendMessage(){
         String text=message.getText();if(text==null||text.isBlank())return;
         if(writer==null||socket==null||socket.isClosed()){append("COMMAND.ERROR not connected");return;}
-        try{writer.write(text);writer.newLine();writer.flush();append("COMMAND.INVOKE "+text);message.clear();}
+        try{
+            String wire=text;
+            if(session!=null){try{wire=SkyaCrypto.WIRE_PREFIX+" DATA "+session.encrypt(text);}catch(SkyaCryptoException ce){append("CRYPTO.ERROR "+ce.getMessage());}}
+            writer.write(wire);writer.newLine();writer.flush();append("COMMAND.INVOKE "+text);message.clear();
+        }
         catch(IOException e){append("TRANSPORT.ERROR "+e.getMessage());disconnect();}
+    }
+
+    /**
+     * Offer an optional crypto handshake. Sends our SKYACRYPTO HELLO, reads one
+     * line; if it is a peer HELLO, derives and returns the encrypted session.
+     * Otherwise the read line is the peer's normal reply, which we surface as a
+     * received line and return null (plaintext). Any failure falls back to
+     * plaintext — a connection must work with no crypto.
+     */
+    private SkyaCrypto.SkyaSession tryCryptoHandshake(BufferedReader rd,BufferedWriter wr){
+        if(!certStore.cryptoEnabled())return null;
+        try{
+            SkyaCrypto crypto=SkyaCrypto.newEphemeral();
+            wr.write(crypto.hello(certStore.certificate()));wr.newLine();wr.flush();
+            rd.mark(16384);
+            String first=rd.readLine();
+            if(SkyaCrypto.isHello(first)){
+                SkyaCrypto.SkyaSession sess=crypto.accept(first);
+                append("CRYPTO.NEGOTIATED "+securityLabel(sess));
+                return sess;
+            }
+            // Peer did not speak crypto: rewind so the normal reader sees that line.
+            rd.reset();
+            append("CRYPTO.PLAINTEXT peer did not negotiate crypto");
+            return null;
+        }catch(Exception e){
+            append("CRYPTO.PLAINTEXT handshake skipped: "+e.getMessage());
+            try{rd.reset();}catch(IOException ignored){}
+            return null;
+        }
+    }
+
+    private String decryptIfNeeded(String line){
+        if(session!=null&&line!=null&&line.startsWith(SkyaCrypto.WIRE_PREFIX+" DATA ")){
+            try{return session.decrypt(line.substring((SkyaCrypto.WIRE_PREFIX+" DATA ").length()));}
+            catch(SkyaCryptoException e){return "[undecryptable] "+line;}
+        }
+        return line;
+    }
+
+    private static String securityLabel(SkyaCrypto.SkyaSession s){
+        if(s==null)return "plaintext";
+        return s.isAuthenticated()?("encrypted+authenticated peer="+s.peerCertificate().subject()):"encrypted (unauthenticated)";
+    }
+
+    /** Prompt the user to renew when the local certificate is near expiry. */
+    private void maybePromptRenewal(){
+        if(!certStore.needsRenewalPrompt())return;
+        Platform.runLater(()->{
+            Alert a=new Alert(Alert.AlertType.CONFIRMATION,
+                "Your Skya certificate "+certStore.status()+".\n\nRenew it now?",ButtonType.YES,ButtonType.NO);
+            a.setTitle("Skya Certificate");a.setHeaderText("Certificate renewal");
+            a.showAndWait().ifPresent(b->{if(b==ButtonType.YES){certStore.renew();append("CRYPTO.CERT.RENEWED "+certStore.status());}});
+        });
     }
     private synchronized void disconnect(){
         connectionAttempt++;
-        listenerPaused=false;close(reader);close(writer);close(socket);reader=null;writer=null;socket=null;
+        listenerPaused=false;close(reader);close(writer);close(socket);reader=null;writer=null;socket=null;session=null;
         if(status!=null){status.setText("Disconnected");append("LISTENER.STOP");append("CLIENT.DISCONNECTED");append("SESSION.CLOSED");}
     }
     private void append(String line){

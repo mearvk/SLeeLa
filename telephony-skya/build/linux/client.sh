@@ -18,6 +18,8 @@ if [ -f "$CONF" ]; then
     [ -n "${SRV_HOST:-}" ] && export SKYA_SERVER_HOST="$SRV_HOST"
     [ -n "${SRV_PORT:-}" ] && export SKYA_SERVER_PORT="$SRV_PORT"
     [ -n "${DEF_ROOM:-}" ] && export SKYA_DEFAULT_ROOM="$DEF_ROOM"
+    CRYPTO=$(sed -n 's/^security\.crypto\.enabled=//p' "$CONF" | head -n1)
+    [ "${CRYPTO:-}" = "false" ] && export SKYA_CRYPTO=off
 fi
 
 # The user client flow is GUI -> Guia -> SkyaClient.sleela -> SKYA/1, which uses

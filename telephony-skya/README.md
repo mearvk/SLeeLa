@@ -58,7 +58,15 @@ See [`docs/BUILD-AND-RUN.md`](docs/BUILD-AND-RUN.md) for the full matrix.
 
 ## Security and media
 
-Skya supports TLS certificate verification, RSA-2048 compatibility, ephemeral Diffie-Hellman, NAT/relay awareness, resumable file-transfer contracts, and codec negotiation. Codec names describe adapter capabilities; deployment must provide the corresponding libraries and comply with applicable licensing.
+Skya connections carry **optional, opportunistic crypto**: an ephemeral
+Diffie–Hellman exchange derives an AES-256-GCM session, optionally authenticated
+by a DSA-signed ~30-day certificate that the GUI prompts to renew. Connections
+still work with no certificate (plaintext fallback). See
+[`docs/SECURITY.md`](docs/SECURITY.md) for the full model and configuration.
+
+NAT/relay awareness, resumable file-transfer contracts, and codec negotiation
+are declared policy; codec names describe adapter capabilities and deployment
+must provide the corresponding libraries and comply with applicable licensing.
 
 ## Guia™ GUI Protocol
 

@@ -10,8 +10,15 @@ class SkyaServer {
     int serving;
 
     // Map one SKYA/1 request to an SKYA/1 reply.
+    //
+    // Crypto note: a peer may open with an optional "SKYACRYPTO/1 HELLO ..."
+    // Diffie-Hellman offer. The SLeeLa VM has no DH/DSA, so this server cannot
+    // negotiate crypto; it answers "SKYACRYPTO/1 PLAIN" so the peer cleanly
+    // falls back to plaintext (connections must work without crypto). Real
+    // encrypted sessions are handled by the Java/Guia layer (see SkyaCrypto).
     String reply(String request) {
         if (request == "SKYA/1 client-hello") { return "SKYA/1 server-ready port=8443 room=lobby http=3"; }
+        if (request == "SKYACRYPTO/1 HELLO") { return "SKYACRYPTO/1 PLAIN"; }
         return "SKYA/1 delivered";
     }
 
