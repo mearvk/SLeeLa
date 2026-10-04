@@ -1,3 +1,5 @@
+<img align="right" src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="75" height="75" alt="SLeeLa">
+
 # Website Generator — Exemplars
 
 Reference HTML/CSS/JS/JSON captured from real, well-built sites, kept here as
