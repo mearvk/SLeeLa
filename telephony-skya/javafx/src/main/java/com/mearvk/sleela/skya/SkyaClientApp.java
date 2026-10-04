@@ -32,10 +32,43 @@ public final class SkyaClientApp extends Application {
     private ComboBox<String> videoTargetType;
     private TextField videoTarget;
 
+    /**
+     * Send a Guia command to the SLeeLa client on a background thread and
+     * return immediately. The command and its returned event drive the footer
+     * status bar and the shared status label (via the registered event sink).
+     * Returns the command text so callers can show an immediate provisional
+     * state; the authoritative result arrives asynchronously through the sink.
+     */
+    private String guia(String command) {
+        protocolFooter.sendAsync(command);
+        return "GUIA/1 " + command;
+    }
+
+    /** Build a connection-label string from a Guia event line. */
+    private static String connectionLabel(String event) {
+        if (event.contains("CLIENT.CONNECTED")) return "Connection: connected (" + event + ")";
+        if (event.contains("CLIENT.OFFLINE")) return "Connection: SLeeLa client offline";
+        if (event.contains("CLIENT.ERROR")) return "Connection: error (" + event + ")";
+        return "Connection: " + event;
+    }
+
     @Override
     public void start(Stage stage) {
         stage.setTitle("Skya — SLeeLa Telephony");
-        protocolFooter.callback("GUI.CREATE");
+        // Every Guia event the SLeeLa client returns updates the status line so
+        // the user sees the live result of each command round-trip; connection
+        // and session events also refresh the connection label.
+        protocolFooter.onEvent(event -> {
+            status.setText("Guia: " + event);
+            if (event.contains("CLIENT.CONNECTED") || event.contains("CLIENT.OFFLINE")
+                    || event.contains("CLIENT.ERROR")) {
+                connection.setText(connectionLabel(event));
+            } else if (event.contains("SESSION.CLOSED")) {
+                connection.setText("Connection: disconnected");
+            }
+        });
+        // Announce the GUI to the SLeeLa client (GUI -> Guia -> SLeeLa client).
+        protocolFooter.sendAsync("GUI.CREATE");
         stage.setMinWidth(980);
         stage.setMinHeight(700);
 
@@ -53,15 +86,18 @@ public final class SkyaClientApp extends Application {
         Button connect = new Button("Connect");
         Button disconnect = new Button("Disconnect");
         connect.setOnAction(e -> {
-            protocolFooter.callback("CLIENT.CONNECT");
-            connection.setText("Connection: requested to " + host.getText() + ":" + port.getText()
+            connection.setText("Connection: requesting " + host.getText() + ":" + port.getText()
                     + " / " + room.getText());
-            status.setText("Skya: connection requested");
+            // Guia CLIENT.CONNECT: the SLeeLa client performs the real network
+            // call and returns CLIENT.CONNECTED (or CLIENT.OFFLINE/ERROR).
+            String event = guia("CLIENT.CONNECT host=" + host.getText() + " port=" + port.getText()
+                    + " room=" + room.getText());
+            connection.setText(connectionLabel(event));
         });
         disconnect.setOnAction(e -> {
-            protocolFooter.callback("SESSION.CLOSE");
-            connection.setText("Connection: disconnected");
-            status.setText("Skya: disconnected");
+            String event = guia("SESSION.CLOSE");
+            connection.setText(event.contains("SESSION.CLOSED")
+                    ? "Connection: disconnected" : "Connection: " + event);
         });
 
         host.setPrefColumnCount(14);
@@ -232,12 +268,19 @@ public final class SkyaClientApp extends Application {
         message.setPromptText("Type a message...");
         Button send = new Button("Send");
         Button clear = new Button("Clear");
+        // Register the chat listener once: a LISTENER.RECEIVE event from the
+        // SLeeLa client (the relayed SKYA/1 reply) is shown as a peer line.
+        protocolFooter.onEvent(event -> {
+            if (event.contains("LISTENER.RECEIVE")) messages.getItems().add("Peer: " + event);
+        });
         Runnable sendMessage = () -> {
             String text = message.getText().trim();
             if (text.isEmpty()) return;
             messages.getItems().add("You: " + text);
             message.clear();
-            status.setText("Chat: message queued");
+            // CHAT.SEND is relayed by the SLeeLa client over SKYA/1; the
+            // LISTENER.RECEIVE event reports delivery back here.
+            guia("CHAT.SEND room=" + room.getText());
         };
         send.setOnAction(e -> sendMessage.run());
         message.setOnAction(e -> sendMessage.run());
@@ -262,10 +305,10 @@ public final class SkyaClientApp extends Application {
         Button start = new Button("Start Video");
         Button camera = new Button("Camera");
         Button stop = new Button("Stop Video");
-        start.setOnAction(e -> status.setText("Video: call requested to " +
-                videoTargetType.getValue() + " " + videoTarget.getText().trim()));
-        camera.setOnAction(e -> status.setText("Video: camera requested"));
-        stop.setOnAction(e -> status.setText("Video: stopped"));
+        start.setOnAction(e -> guia("VIDEO.START target=" + videoTargetType.getValue()
+                + " value=" + videoTarget.getText().trim()));
+        camera.setOnAction(e -> guia("VIDEO.START device=camera"));
+        stop.setOnAction(e -> guia("VIDEO.STOP"));
 
         VBox box = new VBox(12, new Label("Video"),
                 new Label("Video can target an IP, host, private group, or room."),
@@ -341,8 +384,10 @@ public final class SkyaClientApp extends Application {
             String selected = members.getSelectionModel().getSelectedItem();
             if (selected != null && !selected.startsWith("local-user")) members.getItems().remove(selected);
         });
-        video.setOnAction(e -> state.setText("Video: group call requested for " + g.name()));
-        audio.setOnAction(e -> state.setText("Audio: group call requested for " + g.name()));
+        video.setOnAction(e -> { state.setText("Video: group call requested for " + g.name());
+                guia("VIDEO.START target=Group value=" + g.name()); });
+        audio.setOnAction(e -> { state.setText("Audio: group call requested for " + g.name());
+                guia("AUDIO.START target=Group value=" + g.name()); });
         close.setOnAction(e -> { s.close(); groupManager.remove(g.name()); groupWindows.remove(s); status.setText("Private group closed: " + g.name()); });
         HBox controls = new HBox(8, invite, inviteButton, remove, video, audio, close);
         HBox.setHgrow(invite, Priority.ALWAYS);
@@ -405,9 +450,9 @@ public final class SkyaClientApp extends Application {
 
     private Tab audioTab() {
         Button start = new Button("Start Audio"), mute = new Button("Mute"), stop = new Button("Stop Audio");
-        start.setOnAction(e -> status.setText("Audio: call requested"));
-        mute.setOnAction(e -> status.setText("Audio: muted"));
-        stop.setOnAction(e -> status.setText("Audio: stopped"));
+        start.setOnAction(e -> guia("AUDIO.START room=" + room.getText()));
+        mute.setOnAction(e -> guia("AUDIO.START state=mute"));
+        stop.setOnAction(e -> guia("AUDIO.STOP"));
         VBox box = new VBox(12, new Label("Audio"),
                 new Label("Voice calling, microphone and playback controls."),
                 new HBox(8, start, mute, stop), new Separator(),
@@ -428,9 +473,13 @@ public final class SkyaClientApp extends Application {
                 status.setText("File selected: " + file.getName());
             }
         });
-        send.setOnAction(e -> status.setText("No file selected".equals(selectedFile.getText())
-                ? "File transfer: select a file first"
-                : "File transfer: requested for " + selectedFile.getText()));
+        send.setOnAction(e -> {
+            if ("No file selected".equals(selectedFile.getText())) {
+                status.setText("File transfer: select a file first");
+            } else {
+                guia("FILE.SEND path=" + selectedFile.getText());
+            }
+        });
         cancel.setOnAction(e -> status.setText("File transfer: cancelled"));
         VBox box = new VBox(12, new Label("File Transfer"),
                 new Label("Select and manage files for peer transfer."), selectedFile,

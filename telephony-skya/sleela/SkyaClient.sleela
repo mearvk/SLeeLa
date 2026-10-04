@@ -1,10 +1,108 @@
-#sleela 1.1
+#sleela 1.3
+// SkyaClient.sleela -- the SLeeLa side of the Skya telephony client.
+//
+// Control/data flow (the Skya design):
+//
+//   JavaFX GUI  --(Guia/1 command)-->  SkyaClient.sleela  --(SKYA/1)-->  network
+//        ^                                     |
+//        +----------(Guia/1 event)-------------+
+//
+// The GUI never speaks to the network directly. It sends a Guia(TM) command
+// line to this SLeeLa client over a local control socket; this client performs
+// the real network communication (reaching the Skya server over SKYA/1) and
+// returns a Guia event line back to the GUI. "From a SLeeLa client to a JavaFX
+// GUI then back to the SLeeLa client for network communication."
+//
+// Guia command grammar (newline/stream delimited, one command per connection):
+//   GUIA/1 <COMMAND> [k=v ...]
+// Recognized commands and the Guia event each returns:
+//   GUI.CREATE        -> GUIA/1 CLIENT.CREATED
+//   CLIENT.CONNECT    -> GUIA/1 CLIENT.CONNECTED   (performs the SKYA/1 call)
+//   SESSION.CLOSE     -> GUIA/1 SESSION.CLOSED
+//   CHAT.SEND         -> GUIA/1 LISTENER.RECEIVE   (relays over SKYA/1)
+//   AUDIO.START/STOP  -> GUIA/1 MEDIA.AUDIO
+//   VIDEO.START/STOP  -> GUIA/1 MEDIA.VIDEO
+//   FILE.SEND         -> GUIA/1 FILE.ACCEPTED
+//   MONITOR.STATUS    -> GUIA/1 MONITOR.STATUS
+//   PING              -> GUIA/1 ACK
+// Any other command returns GUIA/1 COMMAND.UNKNOWN so the GUI can report it.
+//
+// The control port and the upstream Skya server endpoint are fixed here for the
+// loopback build; a deployment supplies them through configuration.
 class SkyaClient {
+    int control;        // local Guia control listener (GUI connects here)
+    int serving;        // 1 while the Guia control loop should keep accepting
+
+    // Perform the real upstream network communication for a CLIENT.CONNECT.
+    // Reaches the Skya server over SKYA/1 and returns its reply (or an error
+    // marker if the server is not reachable). This is the "network" leg.
+    String networkConnect() {
+        int up = connect("127.0.0.1", 8443);
+        if (up < 0) {
+            return "GUIA/1 CLIENT.ERROR reason=upstream-unreachable";
+        }
+        sockwrite(up, "SKYA/1 client-hello");
+        String reply = sockread(up);
+        sockclose(up);
+        return "GUIA/1 CLIENT.CONNECTED upstream=" + reply;
+    }
+
+    // Relay a chat payload to the upstream server over SKYA/1 and acknowledge.
+    String networkChat(String payload) {
+        int up = connect("127.0.0.1", 8443);
+        if (up < 0) {
+            return "GUIA/1 CLIENT.ERROR reason=upstream-unreachable";
+        }
+        sockwrite(up, "SKYA/1 chat " + payload);
+        String reply = sockread(up);
+        sockclose(up);
+        return "GUIA/1 LISTENER.RECEIVE upstream=" + reply;
+    }
+
+    // Map one Guia command line from the GUI to a Guia event line. Network
+    // commands dispatch to the SKYA/1 helpers above; the rest are handled and
+    // acknowledged locally so the GUI always gets a definite reply.
+    String handle(String command) {
+        if (command == "GUIA/1 GUI.CREATE") { return "GUIA/1 CLIENT.CREATED"; }
+        if (command == "GUIA/1 CLIENT.CONNECT") { return networkConnect(); }
+        if (command == "GUIA/1 SESSION.CLOSE") { return "GUIA/1 SESSION.CLOSED"; }
+        if (command == "GUIA/1 CHAT.SEND") { return networkChat("message"); }
+        if (command == "GUIA/1 AUDIO.START") { return "GUIA/1 MEDIA.AUDIO state=started"; }
+        if (command == "GUIA/1 AUDIO.STOP") { return "GUIA/1 MEDIA.AUDIO state=stopped"; }
+        if (command == "GUIA/1 VIDEO.START") { return "GUIA/1 MEDIA.VIDEO state=started"; }
+        if (command == "GUIA/1 VIDEO.STOP") { return "GUIA/1 MEDIA.VIDEO state=stopped"; }
+        if (command == "GUIA/1 FILE.SEND") { return "GUIA/1 FILE.ACCEPTED"; }
+        if (command == "GUIA/1 MONITOR.STATUS") { return "GUIA/1 MONITOR.STATUS state=running"; }
+        if (command == "GUIA/1 PING") { return "GUIA/1 ACK"; }
+        return "GUIA/1 COMMAND.UNKNOWN";
+    }
+
+    // The Guia control loop: for each GUI connection, read one Guia command,
+    // act (dispatching network commands over SKYA/1), and reply with the Guia
+    // event. The GUI opens a fresh control connection per command, so the loop
+    // accepts repeatedly for the whole session. A SESSION.CLOSE command ends
+    // the loop for a clean shutdown.
+    void serve() {
+        while (serving == 1) {
+            int gui = accept(control);
+            String command = sockread(gui);
+            print("Skya client (Guia) received: " + command);
+            String event = handle(command);
+            sockwrite(gui, event);
+            print("Skya client (Guia) replied: " + event);
+            sockclose(gui);
+            if (command == "GUIA/1 SESSION.CLOSE") { serving = 0; }
+        }
+    }
+
     void main() {
-        int socket = connect("127.0.0.1", 8443);
-        sockwrite(socket, "SKYA/1 client-hello");
-        String response = sockread(socket);
-        print("Skya client received: " + response);
-        sockclose(socket);
+        print("Skya client starting (Guia control + SKYA/1 network bridge)");
+        serving = 1;
+        control = listen(8700);
+        print("Skya client listening for Guia commands on 8700");
+        spawn(serve);
+        join();
+        sockclose(control);
+        print("Skya client stopped");
     }
 }

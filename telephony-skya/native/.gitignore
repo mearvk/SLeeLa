@@ -1,0 +1,7 @@
+# Skya native build outputs
+/skya
+/skya.exe
+/skya-server
+/skya-server.exe
+*.o
+*.a

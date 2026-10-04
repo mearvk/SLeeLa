@@ -1,15 +1,35 @@
-#sleela 1.1
+#sleela 1.3
+// SkyaServer.sleela -- the SLeeLa side of the Skya telephony server.
+//
+// It accepts SKYA/1 peers from the SkyaClient network bridge (see
+// SkyaClient.sleela) and replies with an SKYA/1 status line. A client-hello
+// gets server-ready; a chat frame is echoed as delivered. This is the upstream
+// endpoint the client's "network communication" leg reaches.
 class SkyaServer {
     int listener;
-    void peer() {
-        int client = accept(listener);
-        String request = sockread(client);
-        print("Skya server received: " + request);
-        sockwrite(client, "SKYA/1 server-ready");
-        sockclose(client);
+    int serving;
+
+    // Map one SKYA/1 request to an SKYA/1 reply.
+    String reply(String request) {
+        if (request == "SKYA/1 client-hello") { return "SKYA/1 server-ready room=lobby http=3"; }
+        return "SKYA/1 delivered";
     }
+
+    // Accept SKYA/1 peers in a loop so repeated client connections (connect,
+    // then each chat relay) are all served for the session.
+    void peer() {
+        while (serving == 1) {
+            int client = accept(listener);
+            String request = sockread(client);
+            print("Skya server received: " + request);
+            sockwrite(client, reply(request));
+            sockclose(client);
+        }
+    }
+
     void main() {
         print("Skya server starting");
+        serving = 1;
         listener = listen(8443);
         spawn(peer);
         print("Skya server listening on 8443");
