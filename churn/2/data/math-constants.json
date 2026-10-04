@@ -6,22 +6,32 @@
     "primary_source": "Standard mathematical definitions (public domain)",
     "cross_reference": "OEIS — The On-Line Encyclopedia of Integer Sequences (sequence A-numbers cited per entry)",
     "retrieved": "2026-09",
-    "note": "Mathematical constants are definitional, not measured; digits shown are truncated decimal expansions."
+    "note": "Mathematical constants are definitional, not measured; digits shown are truncated decimal expansions. Constants and sequences are alphabetized by name for reader ease."
   },
   "constants": [
-    { "name": "pi", "symbol": "\u03c0", "value": 3.14159265358979323846, "definition": "ratio of a circle's circumference to its diameter", "oeis": "A000796" },
+    { "name": "apery_constant", "symbol": "\u03b6(3)", "value": 1.20205690315959428540, "definition": "sum of 1/n^3 (zeta of 3)", "oeis": "A002117" },
+    { "name": "catalan_constant", "symbol": "G", "value": 0.91596559417721901505, "definition": "sum of (-1)^n/(2n+1)^2", "oeis": "A006752" },
+    { "name": "cube_root_of_two", "symbol": "\u221b2", "value": 1.25992104989487316477, "definition": "the real root of x^3 = 2", "oeis": "A002580" },
     { "name": "e", "symbol": "e", "value": 2.71828182845904523536, "definition": "base of the natural logarithm", "oeis": "A001113" },
+    { "name": "euler_mascheroni", "symbol": "\u03b3", "value": 0.57721566490153286061, "definition": "limit of (harmonic sum - ln n)", "oeis": "A001620" },
     { "name": "golden_ratio", "symbol": "\u03c6", "value": 1.61803398874989484820, "definition": "(1 + sqrt 5) / 2", "oeis": "A001622" },
-    { "name": "square_root_of_two", "symbol": "\u221a2", "value": 1.41421356237309504880, "definition": "the positive root of x^2 = 2", "oeis": "A002193" },
     { "name": "natural_log_of_two", "symbol": "ln 2", "value": 0.69314718055994530942, "definition": "natural logarithm of 2", "oeis": "A002162" },
-    { "name": "euler_mascheroni", "symbol": "\u03b3", "value": 0.57721566490153286061, "definition": "limit of (harmonic sum - ln n)", "oeis": "A001620" }
+    { "name": "pi", "symbol": "\u03c0", "value": 3.14159265358979323846, "definition": "ratio of a circle's circumference to its diameter", "oeis": "A000796" },
+    { "name": "silver_ratio", "symbol": "\u03b4_S", "value": 2.41421356237309504880, "definition": "1 + sqrt 2", "oeis": "A014176" },
+    { "name": "square_root_of_two", "symbol": "\u221a2", "value": 1.41421356237309504880, "definition": "the positive root of x^2 = 2", "oeis": "A002193" },
+    { "name": "tau_two_pi", "symbol": "\u03c4", "value": 6.28318530717958647692, "definition": "2\u03c0, the radians in one full turn", "oeis": "A019692" }
   ],
   "sequences": [
-    { "name": "fibonacci", "oeis": "A000045", "rule": "F(n) = F(n-1) + F(n-2), F(0)=0, F(1)=1", "terms": [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377] },
-    { "name": "prime_numbers", "oeis": "A000040", "rule": "integers > 1 with no divisors other than 1 and themselves", "terms": [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47] },
-    { "name": "factorials", "oeis": "A000142", "rule": "n! = product of 1..n, 0! = 1", "terms": [1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880] },
-    { "name": "triangular_numbers", "oeis": "A000217", "rule": "T(n) = n(n+1)/2", "terms": [0, 1, 3, 6, 10, 15, 21, 28, 36, 45, 55] },
+    { "name": "bell_numbers", "oeis": "A000110", "rule": "number of partitions of an n-element set", "terms": [1, 1, 2, 5, 15, 52, 203, 877, 4140, 21147] },
     { "name": "catalan_numbers", "oeis": "A000108", "rule": "C(n) = (2n)! / ((n+1)! n!)", "terms": [1, 1, 2, 5, 14, 42, 132, 429, 1430, 4862] },
-    { "name": "powers_of_two", "oeis": "A000079", "rule": "a(n) = 2^n", "terms": [1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024] }
+    { "name": "factorials", "oeis": "A000142", "rule": "n! = product of 1..n, 0! = 1", "terms": [1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880] },
+    { "name": "fibonacci", "oeis": "A000045", "rule": "F(n) = F(n-1) + F(n-2), F(0)=0, F(1)=1", "terms": [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377] },
+    { "name": "lucas_numbers", "oeis": "A000032", "rule": "L(n) = L(n-1) + L(n-2), L(0)=2, L(1)=1", "terms": [2, 1, 3, 4, 7, 11, 18, 29, 47, 76, 123, 199] },
+    { "name": "mersenne_primes", "oeis": "A000668", "rule": "primes of the form 2^p - 1", "terms": [3, 7, 31, 127, 8191, 131071, 524287, 2147483647] },
+    { "name": "perfect_numbers", "oeis": "A000396", "rule": "n equal to the sum of its proper divisors", "terms": [6, 28, 496, 8128, 33550336] },
+    { "name": "powers_of_two", "oeis": "A000079", "rule": "a(n) = 2^n", "terms": [1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024] },
+    { "name": "prime_numbers", "oeis": "A000040", "rule": "integers > 1 with no divisors other than 1 and themselves", "terms": [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47] },
+    { "name": "square_numbers", "oeis": "A000290", "rule": "a(n) = n^2", "terms": [0, 1, 4, 9, 16, 25, 36, 49, 64, 81, 100, 121] },
+    { "name": "triangular_numbers", "oeis": "A000217", "rule": "T(n) = n(n+1)/2", "terms": [0, 1, 3, 6, 10, 15, 21, 28, 36, 45, 55] }
   ]
 }

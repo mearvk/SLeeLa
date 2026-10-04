@@ -9,9 +9,36 @@
       "U.S. Bureau of Labor Statistics — Current Employment Statistics (CES), bls.gov"
     ],
     "retrieved": "2026-09",
-    "note": "Each facet carries its own source and period. These are OBSERVED published statistics; ASSOCIATION != CAUSATION."
+    "note": "Each facet carries its own source and period. These are OBSERVED published statistics; ASSOCIATION != CAUSATION. Facets are alphabetized by facet name for reader ease."
   },
   "facets": [
+    {
+      "object": "worker",
+      "facet": "average_hourly_earnings_private",
+      "value": 35.0,
+      "unit": "usd",
+      "period": "2024 (approx, private nonfarm)",
+      "context": "average hourly earnings of all private nonfarm employees",
+      "source": "BLS Current Employment Statistics (CES)"
+    },
+    {
+      "object": "worker",
+      "facet": "average_weekly_hours_private",
+      "value": 34.3,
+      "unit": "hours",
+      "period": "2024",
+      "context": "average weekly hours of all private nonfarm employees",
+      "source": "BLS Current Employment Statistics (CES)"
+    },
+    {
+      "object": "labor_market",
+      "facet": "hires_rate",
+      "value": 3.4,
+      "unit": "percent",
+      "period": "2024",
+      "context": "hires as a share of employment (an inflow face)",
+      "source": "BLS JOLTS (hires series)"
+    },
     {
       "object": "labor_market",
       "facet": "job_openings_level",
@@ -32,30 +59,30 @@
     },
     {
       "object": "labor_market",
+      "facet": "layoffs_discharges_rate",
+      "value": 1.1,
+      "unit": "percent",
+      "period": "2024",
+      "context": "involuntary separations as a share of employment",
+      "source": "BLS JOLTS (layoffs and discharges series)"
+    },
+    {
+      "object": "worker",
+      "facet": "nonfarm_payroll_change_monthly",
+      "value": 165000,
+      "unit": "jobs_per_month",
+      "period": "2024 (approx monthly average)",
+      "context": "average monthly change in total nonfarm payroll employment",
+      "source": "BLS Current Employment Statistics (CES)"
+    },
+    {
+      "object": "labor_market",
       "facet": "quits_rate",
       "value": 2.0,
       "unit": "percent",
       "period": "2024",
       "context": "voluntary separations as a share of employment (a turnover face)",
       "source": "BLS JOLTS (quits series)"
-    },
-    {
-      "object": "worker",
-      "facet": "average_weekly_hours_private",
-      "value": 34.3,
-      "unit": "hours",
-      "period": "2024",
-      "context": "average weekly hours of all private nonfarm employees",
-      "source": "BLS Current Employment Statistics (CES)"
-    },
-    {
-      "object": "worker",
-      "facet": "average_hourly_earnings_private",
-      "value": 35.0,
-      "unit": "usd",
-      "period": "2024 (approx, private nonfarm)",
-      "context": "average hourly earnings of all private nonfarm employees",
-      "source": "BLS Current Employment Statistics (CES)"
     }
   ]
 }

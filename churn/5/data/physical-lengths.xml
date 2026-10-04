@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  physical-lengths.xml  --  Physical Lines: real distances that reach across
+  physical-lengths.xml  -  Physical Lines: real distances that reach across
   space, in metres. Where the mathematical lengths are EXACT (defined by a
   formula), these are MEASURED or OBSERVED physical extents. A Line here is a
   distance a thing spans or a length light or a body travels.
@@ -13,12 +13,17 @@
                      metre, the light-second); MEASURED/OBSERVED are physical.
 -->
 <lengths unit="metre">
-  <length name="metre (SI base unit)"        value="1.0"            kind="EXACT"    note="defined via the speed of light and the second"/>
-  <length name="light travels in 1 second"   value="299792458.0"    kind="EXACT"    note="c is exact by definition (m/s)"/>
-  <length name="Bohr radius"                 value="5.29177210903e-11" kind="MEASURED" note="CODATA 2018 atomic length scale"/>
-  <length name="human hair (typical width)"  value="7.5e-5"         kind="OBSERVED" note="approx 50-100 micrometres"/>
-  <length name="Earth mean radius"           value="6371000.0"      kind="OBSERVED" note="IUGG mean radius"/>
-  <length name="Earth equatorial circumference" value="40075017.0"  kind="OBSERVED" note="WGS-84 equatorial circumference"/>
-  <length name="Earth-Moon mean distance"    value="384400000.0"    kind="OBSERVED" note="NASA mean centre-to-centre"/>
   <length name="astronomical unit"           value="149597870700.0" kind="EXACT"    note="IAU 2012 exact definition (Earth-Sun)"/>
+  <length name="Bohr radius"                 value="5.29177210903e-11" kind="MEASURED" note="CODATA 2018 atomic length scale"/>
+  <length name="Earth equatorial circumference" value="40075017.0"  kind="OBSERVED" note="WGS-84 equatorial circumference"/>
+  <length name="Earth mean radius"           value="6371000.0"      kind="OBSERVED" note="IUGG mean radius"/>
+  <length name="Earth-Moon mean distance"    value="384400000.0"    kind="OBSERVED" note="NASA mean centre-to-centre"/>
+  <length name="Earth-Sun to Proxima Centauri" value="4.0208e16"   kind="OBSERVED" note="approx 4.2465 light-years (nearest star)"/>
+  <length name="human hair (typical width)"  value="7.5e-5"         kind="OBSERVED" note="approx 50-100 micrometres"/>
+  <length name="light travels in 1 second"   value="299792458.0"    kind="EXACT"    note="c is exact by definition (m/s)"/>
+  <length name="light-year"                  value="9.4607304725808e15" kind="EXACT" note="distance light travels in one Julian year (defined)"/>
+  <length name="metre (SI base unit)"        value="1.0"            kind="EXACT"    note="defined via the speed of light and the second"/>
+  <length name="parsec"                      value="3.0856775814914e16" kind="EXACT" note="IAU 2015 exact definition (648000/pi AU)"/>
+  <length name="proton charge radius"        value="8.4075e-16"     kind="MEASURED" note="CODATA 2022 rms charge radius"/>
+  <length name="Sun equatorial radius"       value="696000000.0"    kind="OBSERVED" note="IAU nominal solar radius"/>
 </lengths>

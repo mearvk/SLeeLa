@@ -6,19 +6,28 @@
   "provenance": {
     "primary_sources": [
       "U.S. Census Bureau (population estimate; land area)",
-      "United Nations Statistics Division / CIA World Factbook (total area, via Wikipedia list)"
+      "United Nations Statistics Division / CIA World Factbook (total area, via Wikipedia list)",
+      "USDA Economic Research Service / National Agricultural Statistics Service (land use)"
     ],
     "retrieved": "2026-09",
-    "note": "Density = population / land area. Values are OBSERVED published figures; ASSOCIATION != CAUSATION."
+    "note": "Density = population / land area. Values are OBSERVED published figures; ASSOCIATION != CAUSATION. Areas are alphabetized by name for reader ease."
   },
   "areas": [
     {
-      "name": "total_area",
-      "value": 9833517,
+      "name": "cropland_area",
+      "value": 1577000,
       "unit": "square_kilometre",
       "kind": "OBSERVED",
-      "source": "UN Statistics Division / CIA World Factbook",
-      "note": "land + inland water within US boundaries"
+      "source": "USDA ERS Major Land Uses (approx 390 million acres cropland)",
+      "note": "land in crops"
+    },
+    {
+      "name": "forest_land_area",
+      "value": 3100000,
+      "unit": "square_kilometre",
+      "kind": "OBSERVED",
+      "source": "USDA Forest Service (approx 765 million acres forest)",
+      "note": "forest cover within the US"
     },
     {
       "name": "land_area",
@@ -29,6 +38,14 @@
       "note": "land only"
     },
     {
+      "name": "population_density",
+      "value": 37.4,
+      "unit": "persons_per_square_kilometre",
+      "kind": "OBSERVED",
+      "source": "derived: resident_population / land_area",
+      "note": "how densely the working society fills the land it spans"
+    },
+    {
       "name": "resident_population",
       "value": 341784857,
       "unit": "persons",
@@ -37,12 +54,20 @@
       "source": "U.S. Census Bureau QuickFacts (V2025)"
     },
     {
-      "name": "population_density",
-      "value": 37.4,
-      "unit": "persons_per_square_kilometre",
+      "name": "total_area",
+      "value": 9833517,
+      "unit": "square_kilometre",
       "kind": "OBSERVED",
-      "source": "derived: resident_population / land_area",
-      "note": "how densely the working society fills the land it spans"
+      "source": "UN Statistics Division / CIA World Factbook",
+      "note": "land + inland water within US boundaries"
+    },
+    {
+      "name": "urban_land_area",
+      "value": 275000,
+      "unit": "square_kilometre",
+      "kind": "OBSERVED",
+      "source": "U.S. Census Bureau 2020 urban-area delineation (approx 3% of land)",
+      "note": "land classified as urban"
     }
   ]
 }

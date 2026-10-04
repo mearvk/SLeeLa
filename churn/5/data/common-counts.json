@@ -3,17 +3,23 @@
   "title": "Common counts of a society (social Lines)",
   "description": "Each entry is a Line as a plain count of a society: how many of a thing there are, reaching from 0. Where /5's math Lines are EXACT integers, these social counts are OBSERVED — published tallies for a stated period. A count is a Line laid unit by unit.",
   "provenance": {
-    "primary_source": "US primary sources: US Census Bureau, US Senate/House, US Code",
-    "cross_reference": "usa.gov / census.gov / senate.gov / house.gov",
+    "primary_source": "US primary sources: US Census Bureau, US Senate/House, US Code, National Archives",
+    "cross_reference": "usa.gov / census.gov / senate.gov / house.gov / archives.gov",
     "retrieved": "2026-09",
-    "note": "Counts are OBSERVED published figures. Structural counts (states, senators) are stable by law; population counts carry a stated period."
+    "note": "Counts are OBSERVED published figures. Structural counts (states, senators) are stable by law; population counts carry a stated period. Counts are alphabetized by name for reader ease."
   },
   "counts": [
-    { "name": "US states",                 "value": 50,        "kind": "OBSERVED", "period": "current", "note": "structural, by admission to the Union" },
-    { "name": "US senators",               "value": 100,       "kind": "OBSERVED", "period": "current", "note": "2 per state, by the Constitution" },
-    { "name": "US House voting members",   "value": 435,       "kind": "OBSERVED", "period": "current", "note": "fixed by the Reapportionment Act of 1929" },
-    { "name": "US electoral votes",        "value": 538,       "kind": "OBSERVED", "period": "current", "note": "435 + 100 + 3 (DC)" },
-    { "name": "US resident population",    "value": 331449281, "kind": "OBSERVED", "period": "2020 Census", "note": "2020 Decennial Census apportionment count" },
-    { "name": "US counties (and equivalents)", "value": 3143,  "kind": "OBSERVED", "period": "2020",    "note": "Census Bureau county and county-equivalent count" }
+    { "name": "US cabinet executive departments", "value": 15,        "kind": "OBSERVED", "period": "current",     "note": "executive departments whose heads form the Cabinet" },
+    { "name": "US constitutional amendments",      "value": 27,        "kind": "OBSERVED", "period": "current",     "note": "ratified amendments to the US Constitution" },
+    { "name": "US counties (and equivalents)",     "value": 3143,      "kind": "OBSERVED", "period": "2020",        "note": "Census Bureau county and county-equivalent count" },
+    { "name": "US electoral votes",                "value": 538,       "kind": "OBSERVED", "period": "current",     "note": "435 + 100 + 3 (DC)" },
+    { "name": "US federal holidays",               "value": 11,        "kind": "OBSERVED", "period": "current",     "note": "federal public holidays (5 U.S.C. 6103)" },
+    { "name": "US House voting members",           "value": 435,       "kind": "OBSERVED", "period": "current",     "note": "fixed by the Reapportionment Act of 1929" },
+    { "name": "US national parks",                 "value": 63,        "kind": "OBSERVED", "period": "current",     "note": "units designated 'National Park' by the NPS" },
+    { "name": "US original colonies",              "value": 13,        "kind": "OBSERVED", "period": "historical",  "note": "the thirteen founding colonies" },
+    { "name": "US resident population",            "value": 331449281, "kind": "OBSERVED", "period": "2020 Census", "note": "2020 Decennial Census apportionment count" },
+    { "name": "US senators",                       "value": 100,       "kind": "OBSERVED", "period": "current",     "note": "2 per state, by the Constitution" },
+    { "name": "US states",                         "value": 50,        "kind": "OBSERVED", "period": "current",     "note": "structural, by admission to the Union" },
+    { "name": "US Supreme Court justices",         "value": 9,         "kind": "OBSERVED", "period": "current",     "note": "set by the Judiciary Act of 1869" }
   ]
 }

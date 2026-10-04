@@ -7,17 +7,20 @@
     "primary_source": "United Nations Statistics Division (total area)",
     "cross_reference": "FAO (land/water split) and CIA World Factbook (reconciliation), as compiled in Wikipedia 'List of countries and dependencies by area'",
     "retrieved": "2026-09",
-    "note": "Total area = land + inland water within international boundaries. Values are OBSERVED published figures; ASSOCIATION != CAUSATION."
+    "note": "Total area = land + inland water within international boundaries. Values are OBSERVED published figures; ASSOCIATION != CAUSATION. Areas are alphabetized by name for reader ease."
   },
   "areas": [
-    { "name": "Russia",        "total_area_km2": 17098242, "kind": "OBSERVED" },
-    { "name": "Canada",        "total_area_km2": 9984670,  "kind": "OBSERVED" },
-    { "name": "United States", "total_area_km2": 9833517,  "kind": "OBSERVED" },
-    { "name": "China",         "total_area_km2": 9596960,  "kind": "OBSERVED" },
-    { "name": "Brazil",        "total_area_km2": 8515767,  "kind": "OBSERVED" },
-    { "name": "Australia",     "total_area_km2": 7692024,  "kind": "OBSERVED" },
-    { "name": "India",         "total_area_km2": 3287263,  "kind": "OBSERVED" },
-    { "name": "Argentina",     "total_area_km2": 2780400,  "kind": "OBSERVED" }
+    { "name": "Algeria",        "total_area_km2": 2381741,  "kind": "OBSERVED" },
+    { "name": "Argentina",      "total_area_km2": 2780400,  "kind": "OBSERVED" },
+    { "name": "Australia",      "total_area_km2": 7692024,  "kind": "OBSERVED" },
+    { "name": "Brazil",         "total_area_km2": 8515767,  "kind": "OBSERVED" },
+    { "name": "Canada",         "total_area_km2": 9984670,  "kind": "OBSERVED" },
+    { "name": "China",          "total_area_km2": 9596960,  "kind": "OBSERVED" },
+    { "name": "India",          "total_area_km2": 3287263,  "kind": "OBSERVED" },
+    { "name": "Kazakhstan",     "total_area_km2": 2724900,  "kind": "OBSERVED" },
+    { "name": "Russia",         "total_area_km2": 17098242, "kind": "OBSERVED" },
+    { "name": "Saudi Arabia",   "total_area_km2": 2149690,  "kind": "OBSERVED" },
+    { "name": "United States",  "total_area_km2": 9833517,  "kind": "OBSERVED" }
   ],
   "reference": {
     "world_land_area_km2": 148940000,

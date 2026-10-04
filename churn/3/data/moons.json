@@ -6,15 +6,21 @@
     "primary_source": "NASA — planetary science pages (science.nasa.gov) and JPL",
     "cross_reference": "NASA NSSDCA fact sheets",
     "retrieved": "2026-09",
-    "note": "Public-domain NASA/JPL values, mean diameters in km, rounded for a compact facet table. Ganymede and Titan both exceed the planet Mercury in size (though not mass)."
+    "note": "Public-domain NASA/JPL values, mean diameters in km, rounded for a compact facet table. Ganymede and Titan both exceed the planet Mercury in size (though not mass). Facets are alphabetized by moon name for reader ease."
   },
   "facets": [
-    { "object": "Jupiter", "facet": "moon", "name": "Ganymede", "mean_diameter_km": 5268, "note": "largest moon in the Solar System" },
-    { "object": "Saturn",  "facet": "moon", "name": "Titan",    "mean_diameter_km": 5150, "note": "thick nitrogen atmosphere" },
     { "object": "Jupiter", "facet": "moon", "name": "Callisto", "mean_diameter_km": 4821, "note": "heavily cratered" },
+    { "object": "Saturn",  "facet": "moon", "name": "Dione",    "mean_diameter_km": 1123, "note": "icy, with wispy terrain" },
+    { "object": "Saturn",  "facet": "moon", "name": "Enceladus","mean_diameter_km": 504,  "note": "water-vapour plumes from south pole" },
+    { "object": "Jupiter", "facet": "moon", "name": "Europa",   "mean_diameter_km": 3121, "note": "subsurface ocean candidate" },
+    { "object": "Jupiter", "facet": "moon", "name": "Ganymede", "mean_diameter_km": 5268, "note": "largest moon in the Solar System" },
+    { "object": "Saturn",  "facet": "moon", "name": "Iapetus",  "mean_diameter_km": 1469, "note": "two-tone light/dark hemispheres" },
     { "object": "Jupiter", "facet": "moon", "name": "Io",       "mean_diameter_km": 3643, "note": "most volcanically active body" },
     { "object": "Earth",   "facet": "moon", "name": "Moon",     "mean_diameter_km": 3475, "note": "Earth's only natural satellite" },
-    { "object": "Jupiter", "facet": "moon", "name": "Europa",   "mean_diameter_km": 3121, "note": "subsurface ocean candidate" },
+    { "object": "Uranus",  "facet": "moon", "name": "Oberon",   "mean_diameter_km": 1523, "note": "outermost large Uranian moon" },
+    { "object": "Saturn",  "facet": "moon", "name": "Rhea",     "mean_diameter_km": 1527, "note": "second-largest moon of Saturn" },
+    { "object": "Saturn",  "facet": "moon", "name": "Titan",    "mean_diameter_km": 5150, "note": "thick nitrogen atmosphere" },
+    { "object": "Uranus",  "facet": "moon", "name": "Titania",  "mean_diameter_km": 1578, "note": "largest moon of Uranus" },
     { "object": "Neptune", "facet": "moon", "name": "Triton",   "mean_diameter_km": 2707, "note": "retrograde orbit" }
   ]
 }

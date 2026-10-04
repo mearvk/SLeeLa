@@ -53,8 +53,8 @@ JSON, XML, or TXT so they read cleanly on GitHub or a public server:
 | [`data/si-base-units.xml`](data/si-base-units.xml) | XML | the 7 SI base units + defining constants | BIPM SI Brochure (2019) |
 | [`data/math-constants.json`](data/math-constants.json) | JSON | math constants + integer sequences | public domain / OEIS |
 | [`data/social-labor-us.json`](data/social-labor-us.json) | JSON | US labor & social figures | BLS / US Census |
-| [`data/chemical-elements.txt`](data/chemical-elements.txt) | TXT | first 20 elements + atomic weights | IUPAC (2021) / NIST |
-| [`data/solar-system.json`](data/solar-system.json) | JSON | the 8 planets (mass, radius, orbit) | NASA NSSDCA |
+| [`data/chemical-elements.txt`](data/chemical-elements.txt) | TXT | first 36 elements + atomic weights | IUPAC (2021) / NIST |
+| [`data/solar-system.json`](data/solar-system.json) | JSON | the 8 planets + 5 dwarf planets (mass, radius, orbit) | NASA NSSDCA / IAU |
 
 ## The model
 

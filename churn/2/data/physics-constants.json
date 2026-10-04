@@ -8,17 +8,24 @@
     "publisher": "NIST — physics.nist.gov/constants",
     "cross_reference": "Particle Data Group, Review of Particle Physics (rpp2022 physical-constants review)",
     "retrieved": "2026-09",
-    "note": "Values transcribed from authoritative public sources; discipline: FACT vs MODEL kept distinct. Exact values are definitions of the SI; measured values include a standard uncertainty."
+    "note": "Values transcribed from authoritative public sources; discipline: FACT vs MODEL kept distinct. Exact values are definitions of the SI; measured values include a standard uncertainty. Structures are alphabetized by name for reader ease."
   },
   "structures": [
-    { "name": "speed_of_light_in_vacuum", "symbol": "c", "value": 299792458, "unit": "m s^-1", "exact": true },
-    { "name": "planck_constant", "symbol": "h", "value": 6.62607015e-34, "unit": "J s", "exact": true },
-    { "name": "reduced_planck_constant", "symbol": "hbar", "value": 1.054571817e-34, "unit": "J s", "exact": false, "note": "derived h/2pi; digits truncated" },
-    { "name": "elementary_charge", "symbol": "e", "value": 1.602176634e-19, "unit": "C", "exact": true },
-    { "name": "boltzmann_constant", "symbol": "k", "value": 1.380649e-23, "unit": "J K^-1", "exact": true },
+    { "name": "atomic_mass_constant", "symbol": "m_u", "value": 1.66053906892e-27, "unit": "kg", "exact": false, "std_uncertainty": 5.2e-37 },
     { "name": "avogadro_constant", "symbol": "N_A", "value": 6.02214076e23, "unit": "mol^-1", "exact": true },
-    { "name": "newtonian_constant_of_gravitation", "symbol": "G", "value": 6.67430e-11, "unit": "m^3 kg^-1 s^-2", "exact": false, "std_uncertainty": 1.5e-15 },
+    { "name": "boltzmann_constant", "symbol": "k", "value": 1.380649e-23, "unit": "J K^-1", "exact": true },
     { "name": "electron_mass", "symbol": "m_e", "value": 9.1093837139e-31, "unit": "kg", "exact": false, "std_uncertainty": 2.8e-40 },
-    { "name": "proton_mass", "symbol": "m_p", "value": 1.67262192595e-27, "unit": "kg", "exact": false, "std_uncertainty": 5.2e-37 }
+    { "name": "elementary_charge", "symbol": "e", "value": 1.602176634e-19, "unit": "C", "exact": true },
+    { "name": "faraday_constant", "symbol": "F", "value": 96485.33212, "unit": "C mol^-1", "exact": true, "note": "N_A * e, both defined" },
+    { "name": "magnetic_constant_vacuum_permeability", "symbol": "mu_0", "value": 1.25663706127e-6, "unit": "N A^-2", "exact": false, "std_uncertainty": 2.0e-16, "note": "no longer exact after the 2019 SI revision" },
+    { "name": "molar_gas_constant", "symbol": "R", "value": 8.314462618, "unit": "J mol^-1 K^-1", "exact": true, "note": "N_A * k, both defined" },
+    { "name": "neutron_mass", "symbol": "m_n", "value": 1.67492750056e-27, "unit": "kg", "exact": false, "std_uncertainty": 8.5e-37 },
+    { "name": "newtonian_constant_of_gravitation", "symbol": "G", "value": 6.67430e-11, "unit": "m^3 kg^-1 s^-2", "exact": false, "std_uncertainty": 1.5e-15 },
+    { "name": "planck_constant", "symbol": "h", "value": 6.62607015e-34, "unit": "J s", "exact": true },
+    { "name": "proton_mass", "symbol": "m_p", "value": 1.67262192595e-27, "unit": "kg", "exact": false, "std_uncertainty": 5.2e-37 },
+    { "name": "reduced_planck_constant", "symbol": "hbar", "value": 1.054571817e-34, "unit": "J s", "exact": false, "note": "derived h/2pi; digits truncated" },
+    { "name": "speed_of_light_in_vacuum", "symbol": "c", "value": 299792458, "unit": "m s^-1", "exact": true },
+    { "name": "standard_acceleration_of_gravity", "symbol": "g_n", "value": 9.80665, "unit": "m s^-2", "exact": true, "note": "conventional standard value (CGPM 1901)" },
+    { "name": "stefan_boltzmann_constant", "symbol": "sigma", "value": 5.670374419e-8, "unit": "W m^-2 K^-4", "exact": true, "note": "derived from h, k, c" }
   ]
 }

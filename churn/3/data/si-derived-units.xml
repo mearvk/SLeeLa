@@ -13,20 +13,30 @@
     <source>BIPM — SI Brochure, 9th edition (2019), coherent derived units with special names</source>
     <crossReference>NIST — physics.nist.gov</crossReference>
     <retrieved>2026-09</retrieved>
-    <note>Each derived unit is a product of powers of the seven SI base units.</note>
+    <note>Each derived unit is a product of powers of the seven SI base units. This is the full set of 22 coherent derived units with special names; rows are alphabetized by unit name for reader ease.</note>
   </provenance>
   <units>
-    <unit name="hertz"   symbol="Hz"  quantity="frequency"            inBaseUnits="s^-1"/>
-    <unit name="newton"  symbol="N"   quantity="force"                inBaseUnits="kg m s^-2"/>
-    <unit name="pascal"  symbol="Pa"  quantity="pressure, stress"     inBaseUnits="kg m^-1 s^-2"      inOtherUnits="N/m^2"/>
-    <unit name="joule"   symbol="J"   quantity="energy, work, heat"   inBaseUnits="kg m^2 s^-2"       inOtherUnits="N m"/>
-    <unit name="watt"    symbol="W"   quantity="power, radiant flux"  inBaseUnits="kg m^2 s^-3"       inOtherUnits="J/s"/>
+    <unit name="becquerel" symbol="Bq" quantity="activity (radioactivity)" inBaseUnits="s^-1"/>
     <unit name="coulomb" symbol="C"   quantity="electric charge"      inBaseUnits="A s"/>
-    <unit name="volt"    symbol="V"   quantity="electric potential"   inBaseUnits="kg m^2 s^-3 A^-1"  inOtherUnits="W/A"/>
-    <unit name="ohm"     symbol="Ohm" quantity="electric resistance"  inBaseUnits="kg m^2 s^-3 A^-2"  inOtherUnits="V/A"/>
+    <unit name="degree_celsius" symbol="degC" quantity="Celsius temperature" inBaseUnits="K" inOtherUnits="K - 273.15"/>
     <unit name="farad"   symbol="F"   quantity="capacitance"          inBaseUnits="kg^-1 m^-2 s^4 A^2" inOtherUnits="C/V"/>
-    <unit name="tesla"   symbol="T"   quantity="magnetic flux density" inBaseUnits="kg s^-2 A^-1"     inOtherUnits="Wb/m^2"/>
-    <unit name="weber"   symbol="Wb"  quantity="magnetic flux"        inBaseUnits="kg m^2 s^-2 A^-1"  inOtherUnits="V s"/>
+    <unit name="gray"    symbol="Gy"  quantity="absorbed dose"        inBaseUnits="m^2 s^-2"         inOtherUnits="J/kg"/>
+    <unit name="henry"   symbol="H"   quantity="inductance"           inBaseUnits="kg m^2 s^-2 A^-2" inOtherUnits="Wb/A"/>
+    <unit name="hertz"   symbol="Hz"  quantity="frequency"            inBaseUnits="s^-1"/>
+    <unit name="joule"   symbol="J"   quantity="energy, work, heat"   inBaseUnits="kg m^2 s^-2"       inOtherUnits="N m"/>
+    <unit name="katal"   symbol="kat" quantity="catalytic activity"   inBaseUnits="mol s^-1"/>
     <unit name="lumen"   symbol="lm"  quantity="luminous flux"        inBaseUnits="cd sr"             inOtherUnits="cd sr"/>
+    <unit name="lux"     symbol="lx"  quantity="illuminance"          inBaseUnits="cd sr m^-2"       inOtherUnits="lm/m^2"/>
+    <unit name="newton"  symbol="N"   quantity="force"                inBaseUnits="kg m s^-2"/>
+    <unit name="ohm"     symbol="Ohm" quantity="electric resistance"  inBaseUnits="kg m^2 s^-3 A^-2"  inOtherUnits="V/A"/>
+    <unit name="pascal"  symbol="Pa"  quantity="pressure, stress"     inBaseUnits="kg m^-1 s^-2"      inOtherUnits="N/m^2"/>
+    <unit name="radian"  symbol="rad" quantity="plane angle"          inBaseUnits="m/m = 1"          inOtherUnits="dimensionless"/>
+    <unit name="siemens" symbol="S"   quantity="electric conductance" inBaseUnits="kg^-1 m^-2 s^3 A^2" inOtherUnits="A/V"/>
+    <unit name="sievert" symbol="Sv"  quantity="dose equivalent"      inBaseUnits="m^2 s^-2"         inOtherUnits="J/kg"/>
+    <unit name="steradian" symbol="sr" quantity="solid angle"         inBaseUnits="m^2/m^2 = 1"      inOtherUnits="dimensionless"/>
+    <unit name="tesla"   symbol="T"   quantity="magnetic flux density" inBaseUnits="kg s^-2 A^-1"     inOtherUnits="Wb/m^2"/>
+    <unit name="volt"    symbol="V"   quantity="electric potential"   inBaseUnits="kg m^2 s^-3 A^-1"  inOtherUnits="W/A"/>
+    <unit name="watt"    symbol="W"   quantity="power, radiant flux"  inBaseUnits="kg m^2 s^-3"       inOtherUnits="J/s"/>
+    <unit name="weber"   symbol="Wb"  quantity="magnetic flux"        inBaseUnits="kg m^2 s^-2 A^-1"  inOtherUnits="V s"/>
   </units>
 </dataset>

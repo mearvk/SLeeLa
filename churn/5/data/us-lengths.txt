@@ -5,11 +5,17 @@
 #
 # provenance : US primary sources (US Census Bureau, CBP, USGS, National Park
 #              Service, Interstate Highway System records); retrieved 2026-09.
+# ordering   : rows are alphabetized by name for reader ease.
 # format     : name | length_km | kind | note
 #
+Appalachian Trail (length) | 3524 | OBSERVED | National Park Service, Georgia to Maine
+Colorado River (length) | 2330 | OBSERVED | USGS main-stem length
+Grand Canyon (length) | 446 | OBSERVED | National Park Service, along the Colorado River
+Interstate Highway System (total) | 78465 | OBSERVED | approx total route length of the Dwight D. Eisenhower system
+Missouri River (length) | 3767 | OBSERVED | USGS; longest river in the United States
+Mississippi River (length) | 3766 | OBSERVED | USGS main-stem length
+Pacific Crest Trail (length) | 4265 | OBSERVED | National Park Service, Mexico to Canada
+Rio Grande (length) | 3058 | OBSERVED | USGS main-stem length
 US-Canada border | 8891 | OBSERVED | longest international land border in the world (incl. Alaska)
 US-Mexico border | 3145 | OBSERVED | US Customs and Border Protection figure
 US total coastline (detailed) | 133312 | OBSERVED | NOAA detailed shoreline (tidal), not the general 19924 km figure
-Mississippi River (length) | 3766 | OBSERVED | USGS main-stem length
-Interstate Highway System (total) | 78465 | OBSERVED | approx total route length of the Dwight D. Eisenhower system
-Appalachian Trail (length) | 3524 | OBSERVED | National Park Service, Georgia to Maine

@@ -1,10 +1,13 @@
 # dataset: chemical-elements
-# The first 20 chemical elements as Structures: atomic number, symbol, name,
+# The first 36 chemical elements as Structures: atomic number, symbol, name,
 # standard atomic weight (u), and period.
 # Provenance: IUPAC standard atomic weights (2021) as published; periodic table
 #   is public-domain scientific fact. Cross-referenced with NIST. Retrieved 2026-09.
 # Standard atomic weights are conventional values; some elements (marked ~) have
 # interval/abridged values here rounded for a compact structure table.
+# Ordering: rows run by atomic number Z (the periodic table's canonical reading
+#   order); within a period Z also runs left-to-right, so Z order is the
+#   reader-friendly order for this dataset.
 # format: Z  symbol  name        atomic_weight_u  period
 1   H   Hydrogen     1.008    1
 2   He  Helium       4.0026   1
@@ -26,3 +29,19 @@
 18  Ar  Argon       39.95     3
 19  K   Potassium   39.098    4
 20  Ca  Calcium     40.078    4
+21  Sc  Scandium    44.956    4
+22  Ti  Titanium    47.867    4
+23  V   Vanadium    50.942    4
+24  Cr  Chromium    51.996    4
+25  Mn  Manganese   54.938    4
+26  Fe  Iron        55.845    4
+27  Co  Cobalt      58.933    4
+28  Ni  Nickel      58.693    4
+29  Cu  Copper      63.546    4
+30  Zn  Zinc        65.38     4
+31  Ga  Gallium     69.723    4
+32  Ge  Germanium   72.630    4
+33  As  Arsenic     74.922    4
+34  Se  Selenium    78.971    4
+35  Br  Bromine     79.904    4
+36  Kr  Krypton     83.798    4

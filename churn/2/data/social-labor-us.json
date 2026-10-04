@@ -6,27 +6,28 @@
   "provenance": {
     "primary_sources": [
       "U.S. Bureau of Labor Statistics (bls.gov)",
-      "U.S. Census Bureau (census.gov)"
+      "U.S. Census Bureau (census.gov)",
+      "Federal Reserve / FRED (fred.stlouisfed.org)"
     ],
     "retrieved": "2026-09",
-    "note": "Each structure carries its own source and period. ASSOCIATION != CAUSATION."
+    "note": "Each structure carries its own source and period. ASSOCIATION != CAUSATION. Structures are alphabetized by name for reader ease."
   },
   "structures": [
     {
-      "name": "unemployment_rate",
-      "value": 4.2,
-      "unit": "percent",
-      "period": "2024 Q4",
-      "context": "up from 3.8 percent a year earlier",
-      "source": "BLS, Monthly Labor Review (2025) — unemployment/participation review of 2024"
+      "name": "average_hourly_earnings_private",
+      "value": 35.0,
+      "unit": "usd",
+      "period": "2024 (private nonfarm, approx)",
+      "context": "average hourly earnings of all private nonfarm employees",
+      "source": "BLS Current Employment Statistics (CES)"
     },
     {
-      "name": "labor_force_participation_rate",
-      "value": 62.5,
-      "unit": "percent",
-      "period": "2024",
-      "context": "little changed over the year",
-      "source": "BLS, Monthly Labor Review (2025)"
+      "name": "civilian_labor_force",
+      "value": 168500000,
+      "unit": "persons",
+      "period": "2024 (annual average, approx)",
+      "context": "all persons employed or actively seeking work",
+      "source": "BLS, Current Population Survey (CPS)"
     },
     {
       "name": "employment_population_ratio",
@@ -34,6 +35,14 @@
       "unit": "percent",
       "period": "2024",
       "context": "edged down over the year",
+      "source": "BLS, Monthly Labor Review (2025)"
+    },
+    {
+      "name": "labor_force_participation_rate",
+      "value": 62.5,
+      "unit": "percent",
+      "period": "2024",
+      "context": "little changed over the year",
       "source": "BLS, Monthly Labor Review (2025)"
     },
     {
@@ -45,12 +54,12 @@
       "source": "BLS, Productivity and Costs, Q4/annual 2024 (revised, 2025-03-06)"
     },
     {
-      "name": "real_median_household_income",
-      "value": 83730,
-      "unit": "usd_2024",
-      "period": "2024",
-      "context": "not statistically different from 82690 in 2023",
-      "source": "U.S. Census Bureau, Income in the United States: 2024 (P60-286)"
+      "name": "median_weekly_earnings_full_time",
+      "value": 1192,
+      "unit": "usd",
+      "period": "2024 Q4",
+      "context": "median usual weekly earnings, full-time wage and salary workers",
+      "source": "BLS, Usual Weekly Earnings news release (2025)"
     },
     {
       "name": "official_poverty_rate",
@@ -61,12 +70,36 @@
       "source": "U.S. Census Bureau, Income and Poverty 2023 press release"
     },
     {
+      "name": "real_median_household_income",
+      "value": 83730,
+      "unit": "usd_2024",
+      "period": "2024",
+      "context": "not statistically different from 82690 in 2023",
+      "source": "U.S. Census Bureau, Income in the United States: 2024 (P60-286)"
+    },
+    {
       "name": "resident_population_estimate",
       "value": 341784857,
       "unit": "persons",
       "period": "2025-07-01",
       "context": "population estimate; 2020 census base was 331,449,281",
       "source": "U.S. Census Bureau QuickFacts (V2025)"
+    },
+    {
+      "name": "unemployment_rate",
+      "value": 4.2,
+      "unit": "percent",
+      "period": "2024 Q4",
+      "context": "up from 3.8 percent a year earlier",
+      "source": "BLS, Monthly Labor Review (2025) — unemployment/participation review of 2024"
+    },
+    {
+      "name": "union_membership_rate",
+      "value": 9.9,
+      "unit": "percent",
+      "period": "2024",
+      "context": "share of wage and salary workers who are union members",
+      "source": "BLS, Union Members news release (2025)"
     }
   ]
 }
