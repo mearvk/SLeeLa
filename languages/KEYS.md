@@ -40,7 +40,7 @@ the reference; a key missing from a pack falls back to the English value.
 
 ## Adding a language
 
-1. Copy `en.lang` to `<code>.lang` (BCP-47 code, e.g. `ko.lang`).
+1. Copy `en.lang` to `<code>.lang` (BCP-47 code, e.g. `ru.lang`).
 2. Set the `#!locale`, `#!name`, and `#!direction` header lines.
 3. Translate each value, leaving `{0}`-style placeholders in place.
 4. Add a row to the table in `README.md`.

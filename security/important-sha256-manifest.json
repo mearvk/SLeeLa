@@ -72,7 +72,7 @@
     },
     {
       "path": "README.md",
-      "sha256": "18fcd8e867dd1099b080c010d808a7c9223bee7f2ab1aed80749ede94ba80ba2"
+      "sha256": "db15ab670403844262e051157e238e16b4cf84b1bacf1752abeb07a3d135bbfc"
     },
     {
       "path": "REVISIONS.md",
@@ -44900,11 +44900,11 @@
     },
     {
       "path": "lib/languages/SLLanguageCatalog.sleela",
-      "sha256": "455d8a61b37ddae201f4d79ec5c8f01cbb8dfb004cafc7742b2c97d8d4f0180c"
+      "sha256": "24115c1ca01b405ce1a93a21f992b93ff8fdcb58c9e5fea8afc4e1adb9dcef32"
     },
     {
       "path": "lib/languages/languages.sleela",
-      "sha256": "d167ea420740a623a9b93248e3f403c73097afdaabfb36e2ac51c110ae49a340"
+      "sha256": "32e132fa9f925a6ba32f3ae87c63f013e57c4ab967a117cab1b57c8f441bbfb4"
     },
     {
       "path": "lib/ledger/SLPackage.sleela",
