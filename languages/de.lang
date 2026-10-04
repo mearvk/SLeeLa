@@ -1,0 +1,42 @@
+#!locale = de
+#!name = Deutsch
+#!direction = ltr
+# SLeeLa German language pack.
+
+greeting.hello = Hallo
+greeting.welcome = Willkommen
+greeting.goodbye = Auf Wiedersehen
+
+prompt.continue = Fortfahren?
+prompt.yes_no = Ja oder nein?
+prompt.retry = Erneut versuchen?
+prompt.enter_name = Geben Sie Ihren Namen ein:
+prompt.confirm = Sind Sie sicher?
+prompt.press_enter = Drücken Sie die Eingabetaste, um fortzufahren.
+
+word.yes = Ja
+word.no = Nein
+word.ok = OK
+word.cancel = Abbrechen
+word.open = Öffnen
+word.close = Schließen
+word.save = Speichern
+word.help = Hilfe
+
+status.ready = Bereit
+status.running = Läuft
+status.done = Fertig
+status.failed = Fehlgeschlagen
+status.loading = Wird geladen
+status.saved = Gespeichert
+
+error.not_found = Nicht gefunden: {0}
+error.denied = Zugriff verweigert
+error.invalid = Ungültige Eingabe
+error.timeout = Zeitüberschreitung
+error.unknown = Unbekannter Fehler
+
+unit.seconds = Sekunden
+unit.minutes = Minuten
+unit.bytes = Bytes
+unit.items = Elemente

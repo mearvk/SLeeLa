@@ -1,0 +1,42 @@
+#!locale = it
+#!name = Italiano
+#!direction = ltr
+# SLeeLa Italian language pack.
+
+greeting.hello = Ciao
+greeting.welcome = Benvenuto
+greeting.goodbye = Arrivederci
+
+prompt.continue = Continuare?
+prompt.yes_no = Sì o no?
+prompt.retry = Riprovare?
+prompt.enter_name = Inserisci il tuo nome:
+prompt.confirm = Sei sicuro?
+prompt.press_enter = Premi Invio per continuare.
+
+word.yes = Sì
+word.no = No
+word.ok = OK
+word.cancel = Annulla
+word.open = Apri
+word.close = Chiudi
+word.save = Salva
+word.help = Aiuto
+
+status.ready = Pronto
+status.running = In esecuzione
+status.done = Completato
+status.failed = Non riuscito
+status.loading = Caricamento
+status.saved = Salvato
+
+error.not_found = Non trovato: {0}
+error.denied = Autorizzazione negata
+error.invalid = Input non valido
+error.timeout = Operazione scaduta
+error.unknown = Errore sconosciuto
+
+unit.seconds = secondi
+unit.minutes = minuti
+unit.bytes = byte
+unit.items = elementi

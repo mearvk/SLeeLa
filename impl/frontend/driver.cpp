@@ -453,7 +453,7 @@ static int designActivityCmd(int argc,char**argv){
     char json[1024];slda_format_json("sleela",&result,json,sizeof json);
     std::cout<<json<<"\n"; return 0;
 }
-static int usage(){std::cerr<<"Usage:\n  sleela [--memory-manager[=<size>]] compile <file.sleela> -o <program.sleela>\n  sleela run <file.sleela>\n  sleela validate-artifact <file.sleela>\n  sleela check <file.sleela>\n  sleela http-server <1|2|3> [--port N] [--threads N] [--root DIR] [--log FILE] [--once]\n  sleela xclass [--run|--emit|--info] <file.xclass>\n  sleela langin [--run|--emit-sleela|--emit-xclass|--info] <file>\n  sleela nordshrift [--emit] [--target=sleela|java|c] <file.sleela>\n  sleela native [--config <file>] [--memory-manager[=<size>]] -- <program> [args...]\n  sleela exec [--config <file>] [--memory-manager[=<size>]] -- <program> [args...]\n  sleela version\n  sleela defender <detect|fetch|build|install|provision> ...\n";return 2;}
+static int usage(){std::cerr<<"Usage:\n  sleela [--memory-manager[=<size>]] compile <file.sleela> [more.sleela ...] -o <program.sleela>\n  sleela run <file.sleela> [more.sleela ...]\n  sleela validate-artifact <file.sleela>\n  sleela check <file.sleela>\n  sleela http-server <1|2|3> [--port N] [--threads N] [--root DIR] [--log FILE] [--once]\n  sleela xclass [--run|--emit|--info] <file.xclass>\n  sleela langin [--run|--emit-sleela|--emit-xclass|--info] <file>\n  sleela nordshrift [--emit] [--target=sleela|java|c] <file.sleela>\n  sleela native [--config <file>] [--memory-manager[=<size>]] -- <program> [args...]\n  sleela exec [--config <file>] [--memory-manager[=<size>]] -- <program> [args...]\n  sleela version\n  sleela defender <detect|fetch|build|install|provision> ...\n";return 2;}
 static bool checkSyntaxVersion(const std::string& path,const std::string& src){sleela::VersionResolution v=sleela::resolveSyntaxVersion(src);if(v.isError()){std::cerr<<"sleelvac: "<<path<<": error: "<<v.message<<"\n";return false;}if(v.isWarning())std::cerr<<"sleelvac: "<<path<<": warning: "<<v.message<<"\n";return true;}
 static bool parseSource(const std::string&path,std::string&src,sleela::Program&prog,sleela::VersionResolution&version){if(!readFile(path,src)){std::cerr<<"sleelvac: cannot open '"<<path<<"'\n";return false;}if(!checkSyntaxVersion(path,src))return false;version=sleela::resolveSyntaxVersion(src);try{sleela::Lexer lexer(src);auto tokens=lexer.tokenize();sleela::Parser parser(std::move(tokens));prog=parser.parseProgram();sleela::Program validation;validation.imports=prog.imports;validation.imports.erase(std::remove(validation.imports.begin(),validation.imports.end(),"chemistry"),validation.imports.end());validation.imports.erase(std::remove(validation.imports.begin(),validation.imports.end(),"financial"),validation.imports.end());sleela::native::validateImports(validation);return true;}catch(const std::exception&ex){std::cerr<<"sleelvac: "<<path<<": "<<ex.what()<<"\n";return false;}}
 static int checkFile(const std::string&path){
@@ -532,6 +532,52 @@ static int runJavaFrameworkSource(const std::string&path){
     return nativeCmd(static_cast<int>(args.size()),argv.data());
 }
 static int runSource(const std::string&path){std::string src;sleela::Program prog;sleela::VersionResolution syntax;if(!parseSource(path,src,prog,syntax))return 1;catalog::Catalog cat=loadCatalog();return compileAndRun(prog,cat,syntax.declared);}
+// Combine several parsed Programs into one compilation unit by concatenating
+// their classes/structs/imports (and merging document annotations). This lets a
+// user split a program across multiple .sleela files passed at run/compile time;
+// downstream stages already treat the whole Program as one unit and will report
+// any duplicate struct/class/method across files.
+static void mergeProgram(sleela::Program& into,sleela::Program&& from){
+    for(auto& s:from.structs) into.structs.push_back(std::move(s));
+    for(auto& c:from.classes) into.classes.push_back(std::move(c));
+    for(auto& i:from.imports) into.imports.push_back(std::move(i));
+    for(auto& d:from.dynamiteImports) into.dynamiteImports.push_back(std::move(d));
+    for(auto& p:from.permissibleImports) into.permissibleImports.push_back(std::move(p));
+    for(const auto& a:from.annotations.all()) into.annotations.add(a);
+}
+// Run one or more .sleela files as a single merged program. Each file is parsed
+// independently; the first file's resolved syntax version governs the unit.
+static int runSourceMulti(const std::vector<std::string>& paths){
+    if(paths.empty())return 1;
+    sleela::Program merged; sleela::VersionResolution firstSyntax; bool haveSyntax=false;
+    for(const auto& path:paths){
+        std::string src; sleela::Program prog; sleela::VersionResolution syntax;
+        if(!parseSource(path,src,prog,syntax))return 1;
+        if(!haveSyntax){firstSyntax=syntax;haveSyntax=true;}
+        mergeProgram(merged,std::move(prog));
+    }
+    catalog::Catalog cat=loadCatalog();
+    return compileAndRun(merged,cat,firstSyntax.declared);
+}
+// Compile one or more .sleela files into a single runnable artifact.
+static int compileFilesMulti(const std::vector<std::string>& paths,const std::string& outputPath){
+    if(verifyBeforeExecution(fs::current_path()))return 1;
+    if(paths.empty())return 1;
+    sleela::Program merged; sleela::VersionResolution firstSyntax; bool haveSyntax=false;
+    for(const auto& path:paths){
+        std::string src; sleela::Program prog; sleela::VersionResolution syntax;
+        if(!parseSource(path,src,prog,syntax))return 1;
+        if(!haveSyntax){firstSyntax=syntax;haveSyntax=true;}
+        mergeProgram(merged,std::move(prog));
+    }
+    catalog::Catalog cat=loadCatalog();
+    try{
+        int rc=sleela::compileToArtifact(merged,outputPath,&cat,firstSyntax.declared);
+        if(rc!=0)return 1;
+        std::cout<<"sleelvac: "<<paths.size()<<" source file(s) -> "<<outputPath<<" (runnable Sleela Core artifact)\n";
+        return 0;
+    }catch(const std::exception&ex){std::cerr<<"sleelvac: "<<ex.what()<<"\n";return 1;}
+}
 static int runXclass(const std::vector<std::string>&paths){catalog::Catalog cat=loadCatalog();try{sleela::xclass::Loaded loaded=sleela::xclass::loadFiles(paths);std::cout<<"[xclass] ingested "<<loaded.metas.size()<<" SecureJDK 28 class(es):\n";for(const auto&m:loaded.metas)std::cout<<"[xclass]   "<<sleela::xclass::infoLine(m)<<"\n";return compileAndRun(loaded.program,cat);}catch(const std::exception&ex){std::cerr<<"sleelvac: "<<ex.what()<<"\n";return 1;}}
 static int xclassCmd(int argc,char**argv){enum{RUN,EMIT,INFO}mode=RUN;std::vector<std::string>files;for(int i=2;i<argc;i++){std::string a=argv[i];if(a=="--emit")mode=EMIT;else if(a=="--info")mode=INFO;else if(a=="--run")mode=RUN;else if(a.rfind("--",0)==0){std::cerr<<"sleelvac: unknown option "<<a<<"\n";return 2;}else files.push_back(a);}if(files.empty()){std::cerr<<"sleela xclass: no .xclass files given\n";return 2;}if(verifyBeforeExecution(fs::current_path()))return 1;if(mode==RUN)return runXclass(files);try{sleela::xclass::Loaded loaded=sleela::xclass::loadFiles(files);if(mode==EMIT)std::cout<<loaded.emitted;else for(const auto&m:loaded.metas){std::cout<<sleela::xclass::infoLine(m)<<"\n";if(!m.sourceFile.empty())std::cout<<"  source    : "<<m.sourceFile<<"\n";if(!m.edition.empty())std::cout<<"  edition   : "<<m.edition<<"\n";if(!m.signatureHex.empty())std::cout<<"  signature : "<<m.signatureAlg<<":"<<m.signatureHex<<(m.signed_?" (signed)":"")<<"\n";}return 0;}catch(const std::exception&ex){std::cerr<<"sleelvac: "<<ex.what()<<"\n";return 1;}}
 static bool readFile(const std::string&path,std::string&out){std::ifstream f(path,std::ios::binary);if(!f)return false;std::ostringstream ss;ss<<f.rdbuf();out=ss.str();return true;}
@@ -625,10 +671,16 @@ int main(int argc,char**argv){
     if(cmd=="http-server")return sleelaHttpServerCommand(argc,argv);
     if(cmd=="native"||cmd=="exec")return nativeCmd(argc,argv);
     int rc=0;
-    if(cmd=="compile"){if(argc!=5||std::string(argv[3])!="-o")return usage();rc=compileFile(argv[2],argv[4]);}
+    if(cmd=="compile"){
+        // compile <file...> -o <out>: collect every source path before "-o".
+        std::vector<std::string> files; std::string out;
+        for(int i=2;i<argc;++i){std::string a=argv[i];if(a=="-o"){if(i+1<argc){out=argv[i+1];i++;}else return usage();}else files.push_back(a);}
+        if(files.empty()||out.empty())return usage();
+        rc=(files.size()==1)?compileFile(files[0],out):compileFilesMulti(files,out);
+    }
     else if(cmd=="check"){if(argc<3)return usage();rc=checkFile(argv[2]);}
     else if(cmd=="validate-artifact"){if(argc!=3)return usage();rc=validateArtifact(argv[2]);}
-    else if(cmd=="run"){if(argc<3)return usage();if(verifyBeforeExecution(fs::current_path()))return 1;if(hasExt(argv[2],".xclass")){std::vector<std::string>files;for(int i=2;i<argc;++i)files.push_back(argv[i]);rc=runXclass(files);}else if(isLangInput(argv[2])){std::vector<std::string>files;for(int i=2;i<argc;++i)files.push_back(argv[i]);if(hasExt(argv[2],".java")){std::string src;if(readFile(argv[2],src)){SleelaJavaRuntimeProbeResult probe{};SleelaJavaProgramRequest request{};request.classpath=".";request.source_file=argv[2];SleelaJavaProgramPlan plan{};int dispatch=sleela_java_runtime_dispatch_source(src.data(),src.size(),argv[2],&request,&probe,&plan);if(dispatch<0)return 1;if(probe.kind>=SLEELA_JAVA_AWT&&probe.kind<=SLEELA_JAVA_FX){rc=runJavaFrameworkSource(argv[2]);}else rc=runLangin(files);}else rc=runLangin(files);}else rc=runLangin(files);}else rc=runFile(argv[2]);}
+    else if(cmd=="run"){if(argc<3)return usage();if(verifyBeforeExecution(fs::current_path()))return 1;if(hasExt(argv[2],".xclass")){std::vector<std::string>files;for(int i=2;i<argc;++i)files.push_back(argv[i]);rc=runXclass(files);}else if(isLangInput(argv[2])){std::vector<std::string>files;for(int i=2;i<argc;++i)files.push_back(argv[i]);if(hasExt(argv[2],".java")){std::string src;if(readFile(argv[2],src)){SleelaJavaRuntimeProbeResult probe{};SleelaJavaProgramRequest request{};request.classpath=".";request.source_file=argv[2];SleelaJavaProgramPlan plan{};int dispatch=sleela_java_runtime_dispatch_source(src.data(),src.size(),argv[2],&request,&probe,&plan);if(dispatch<0)return 1;if(probe.kind>=SLEELA_JAVA_AWT&&probe.kind<=SLEELA_JAVA_FX){rc=runJavaFrameworkSource(argv[2]);}else rc=runLangin(files);}else rc=runLangin(files);}else rc=runLangin(files);}else if(argc>3){std::vector<std::string>files;for(int i=2;i<argc;++i)files.push_back(argv[i]);rc=runSourceMulti(files);}else rc=runFile(argv[2]);}
     else if(cmd=="xclass"){if(argc<3)return usage();rc=xclassCmd(argc,argv);}
     else if(cmd=="langin"){if(argc<3)return usage();rc=langinCmd(argc,argv);}
     else if(cmd=="nordshrift"){if(argc<3)return usage();rc=nordshriftCmd(argc,argv);}

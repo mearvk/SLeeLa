@@ -106,6 +106,11 @@ This is the human-readable support map for the canonical source-defined SLeeLa I
 95 | `OP_AUDIO_RENDER` | Implemented | `impl/core/sleela_core.c`
 96 | `OP_AUDIO_CLOSE` | Implemented | `impl/core/sleela_core.c`
 97 | `OP_AUDIO_PLATFORM` | Implemented | `impl/core/sleela_core.c`
+98 | `OP_NEWARRAY` | Implemented | `impl/core/sleela_core.c`
+99 | `OP_ARRGET` | Implemented | `impl/core/sleela_core.c`
+100 | `OP_ARRSET` | Implemented | `impl/core/sleela_core.c`
+101 | `OP_ARRLEN` | Implemented | `impl/core/sleela_core.c`
+102 | `OP_ARRPUSH` | Implemented | `impl/core/sleela_core.c`
 
 ## Runtime rule
 

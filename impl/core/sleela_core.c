@@ -102,6 +102,17 @@ typedef struct {
     SLGCObject *gc_object;
 } SLStructInstance;
 
+/* A live array instance: a dynamic, growable sequence of SLValues. Like a
+ * struct, it is reached only by a VM-local handle. `elems` is heap-allocated
+ * and grows geometrically; `len` is the logical length, `cap` the allocation. */
+typedef struct {
+    int active;
+    int len;
+    int cap;
+    SLValue *elems;
+    SLGCObject *gc_object;
+} SLArrayInstance;
+
 struct SLVM {
     SLInstr* code; int codelen, codecap;
     SLValue* consts; int nconst, constcap;
@@ -133,6 +144,10 @@ struct SLVM {
     int nstruct_types;
     SLStructInstance* structs;   /* SL_MAX_STRUCTS instances, lazily allocated */
     int nstruct_live;
+
+    pthread_mutex_t array_mtx;
+    SLArrayInstance* arrays;     /* SL_MAX_ARRAYS instances, lazily allocated   */
+    int narray_live;
 
     pthread_mutex_t audio_mtx;
     GarbageCollector gc;
@@ -286,6 +301,7 @@ SLVM* slvm_new(void) {
     pthread_mutex_init(&vm->sock_mtx, NULL);
     pthread_mutex_init(&vm->file_mtx, NULL);
     pthread_mutex_init(&vm->struct_mtx, NULL);
+    pthread_mutex_init(&vm->array_mtx, NULL);
     pthread_mutex_init(&vm->thr_mtx, NULL);
     pthread_mutex_init(&vm->synchro_mtx, NULL);
     pthread_mutex_init(&vm->munction_mtx, NULL);
@@ -357,6 +373,11 @@ void slvm_free(SLVM* vm) {
     }
     free(vm->structs);
     pthread_mutex_destroy(&vm->struct_mtx);
+    if (vm->arrays) {
+        for (int i = 0; i < SL_MAX_ARRAYS; i++) free(vm->arrays[i].elems);
+        free(vm->arrays);
+    }
+    pthread_mutex_destroy(&vm->array_mtx);
     for (int i = 0; i < SL_MAX_LOCKS; i++) {
         pthread_mutex_destroy(&vm->locks[i]);
         pthread_mutex_destroy(&vm->mailbox[i].mtx);
@@ -471,15 +492,30 @@ static SLGCObject *struct_gc_object(SLVM *vm, int h) {
     if (!vm || !vm->structs || h < 0 || h >= SL_MAX_STRUCTS) return NULL;
     return vm->structs[h].gc_object;
 }
+static int array_valid_handle(SLVM *vm, int h);
+static SLGCObject *array_gc_object(SLVM *vm, int h) {
+    if (!vm || !vm->arrays || h < 0 || h >= SL_MAX_ARRAYS) return NULL;
+    return vm->arrays[h].gc_object;
+}
 static void gc_mark_value(SLVM *vm, GarbageCollector *gc, SLValue v) {
-    if (!vm || !gc || v.type != SL_STRUCT || !struct_valid_handle(vm, v.as.h)) return;
-    SLGCObject *o = struct_gc_object(vm, v.as.h);
-    if (!o || o->marked) return;
-    gc_mark(gc, o);
-    SLStructInstance *si = &vm->structs[v.as.h];
-    for (int i = 0; i < SL_MAX_STRUCT_FIELDS; ++i)
-        if (si->fields[i].type == SL_STRUCT)
-            gc_mark_value(vm, gc, si->fields[i]);
+    if (!vm || !gc) return;
+    if (v.type == SL_STRUCT && struct_valid_handle(vm, v.as.h)) {
+        SLGCObject *o = struct_gc_object(vm, v.as.h);
+        if (!o || o->marked) return;
+        gc_mark(gc, o);
+        SLStructInstance *si = &vm->structs[v.as.h];
+        for (int i = 0; i < SL_MAX_STRUCT_FIELDS; ++i)
+            if (si->fields[i].type == SL_STRUCT || si->fields[i].type == SL_ARRAY)
+                gc_mark_value(vm, gc, si->fields[i]);
+    } else if (v.type == SL_ARRAY && array_valid_handle(vm, v.as.h)) {
+        SLGCObject *o = array_gc_object(vm, v.as.h);
+        if (!o || o->marked) return;
+        gc_mark(gc, o);
+        SLArrayInstance *ai = &vm->arrays[v.as.h];
+        for (int i = 0; i < ai->len; ++i)
+            if (ai->elems && (ai->elems[i].type == SL_STRUCT || ai->elems[i].type == SL_ARRAY))
+                gc_mark_value(vm, gc, ai->elems[i]);
+    }
 }
 typedef struct { SLVM *vm; SLThread *current; } SLGCRootContext;
 static void gc_mark_vm_roots(GarbageCollector *gc, void *context) {
@@ -502,6 +538,10 @@ static void gc_mark_vm_roots(GarbageCollector *gc, void *context) {
 static void gc_struct_destroy(void *payload) {
     SLStructInstance *si = (SLStructInstance *)payload;
     if (si) { si->active = 0; si->gc_object = NULL; }
+}
+static void gc_array_destroy(void *payload) {
+    SLArrayInstance *ai = (SLArrayInstance *)payload;
+    if (ai) { free(ai->elems); ai->elems = NULL; ai->len = 0; ai->cap = 0; ai->active = 0; ai->gc_object = NULL; }
 }
 static void slvm_gc_safepoint(SLVM *vm, SLThread *current, size_t budget) {
     if (!vm) return;
@@ -547,6 +587,62 @@ static int struct_alloc(SLVM* vm, int type) {
 }
 static int struct_valid_handle(SLVM* vm, int h) {
     return vm->structs && h >= 0 && h < SL_MAX_STRUCTS && vm->structs[h].active;
+}
+
+/* ---- array instances: the same bounded-handle discipline as structs ------- */
+static SLValue slval_array(int32_t h) { SLValue v; v.type = SL_ARRAY; v.as.h = h; return v; }
+
+static int array_valid_handle(SLVM* vm, int h) {
+    return vm->arrays && h >= 0 && h < SL_MAX_ARRAYS && vm->arrays[h].active;
+}
+
+/* Allocate an array of `n` null elements. Returns a VM-local handle, or -1 on
+ * exhaustion / bad length. The instance store is grown lazily. */
+static int array_alloc(SLVM* vm, int n) {
+    if (n < 0 || n > SL_MAX_ARRAY_LEN) return -1;
+    pthread_mutex_lock(&vm->array_mtx);
+    if (!vm->arrays) {
+        vm->arrays = (SLArrayInstance*)calloc(SL_MAX_ARRAYS, sizeof(SLArrayInstance));
+        if (!vm->arrays) { pthread_mutex_unlock(&vm->array_mtx); return -1; }
+    }
+    for (int i = 0; i < SL_MAX_ARRAYS; i++) {
+        if (!vm->arrays[i].active) {
+            int cap = n > 0 ? n : 8;
+            SLValue* elems = (SLValue*)calloc((size_t)cap, sizeof(SLValue));
+            if (!elems) { pthread_mutex_unlock(&vm->array_mtx); return -1; }
+            vm->arrays[i].active = 1;
+            vm->arrays[i].len = n;
+            vm->arrays[i].cap = cap;
+            vm->arrays[i].elems = elems;
+            vm->arrays[i].gc_object = gc_allocate_external(&vm->gc, &vm->arrays[i], sizeof(vm->arrays[i]), NULL, gc_array_destroy, NULL);
+            if (!vm->arrays[i].gc_object) { free(elems); vm->arrays[i].active = 0; vm->arrays[i].elems = NULL; pthread_mutex_unlock(&vm->array_mtx); return -1; }
+            for (int j = 0; j < n; j++) vm->arrays[i].elems[j] = slval_null();
+            vm->narray_live++;
+            pthread_mutex_unlock(&vm->array_mtx);
+            return i;
+        }
+    }
+    pthread_mutex_unlock(&vm->array_mtx);
+    return -1;
+}
+
+/* Append one element, growing capacity geometrically. Returns new length, -1 on failure. */
+static int array_push(SLVM* vm, int h, SLValue val) {
+    if (!array_valid_handle(vm, h)) return -1;
+    pthread_mutex_lock(&vm->array_mtx);
+    SLArrayInstance* ai = &vm->arrays[h];
+    if (ai->len >= ai->cap) {
+        int ncap = ai->cap > 0 ? ai->cap * 2 : 8;
+        if (ncap > SL_MAX_ARRAY_LEN) ncap = SL_MAX_ARRAY_LEN;
+        if (ai->len >= ncap) { pthread_mutex_unlock(&vm->array_mtx); return -1; }
+        SLValue* ne = (SLValue*)realloc(ai->elems, (size_t)ncap * sizeof(SLValue));
+        if (!ne) { pthread_mutex_unlock(&vm->array_mtx); return -1; }
+        ai->elems = ne; ai->cap = ncap;
+    }
+    ai->elems[ai->len++] = val;
+    int len = ai->len;
+    pthread_mutex_unlock(&vm->array_mtx);
+    return len;
 }
 
 static SLNetHandle make_listener(int port) {
@@ -604,6 +700,25 @@ static void value_to_text(SLVM* vm, SLValue v, char* buf, size_t cap) {
             const char* tn = (vm->structs && struct_valid_handle(vm, v.as.h))
                 ? vm->struct_types[vm->structs[v.as.h].type].name : "struct";
             snprintf(buf, cap, "%s#%d", tn, v.as.h);
+        } break;
+        case SL_ARRAY: {
+            /* Render as [e0, e1, ...] so print()/String concat on an array is
+             * legible. Bounded by cap; elements are rendered recursively. */
+            if (!array_valid_handle(vm, v.as.h)) { snprintf(buf, cap, "[]"); break; }
+            pthread_mutex_lock(&vm->array_mtx);
+            SLArrayInstance* ai = &vm->arrays[v.as.h];
+            size_t pos = 0;
+            if (pos + 1 < cap) buf[pos++] = '[';
+            for (int i = 0; i < ai->len && pos + 2 < cap; ++i) {
+                if (i > 0 && pos + 2 < cap) { buf[pos++] = ','; buf[pos++] = ' '; }
+                char ebuf[256];
+                value_to_text(vm, ai->elems[i], ebuf, sizeof(ebuf));
+                size_t elen = strlen(ebuf);
+                for (size_t k = 0; k < elen && pos + 2 < cap; ++k) buf[pos++] = ebuf[k];
+            }
+            if (pos + 1 < cap) buf[pos++] = ']';
+            buf[pos] = '\0';
+            pthread_mutex_unlock(&vm->array_mtx);
         } break;
     }
 }
@@ -797,8 +912,8 @@ static SLResult run_thread(SLThread* t) {
         case OP_DIV: { SLValue b=POP(),a=POP(); if(both_int(a,b)){if(!b.as.i) TERR("integer divide by zero"); PUSH(slval_int(a.as.i/b.as.i));} else PUSH(slval_double(as_num(a)/as_num(b))); } break;
         case OP_MOD: { SLValue b=POP(),a=POP(); if(both_int(a,b)){ if(!b.as.i) TERR("integer modulo by zero"); PUSH(slval_int(a.as.i%b.as.i)); } else { double db=as_num(b); if(db==0.0) TERR("modulo by zero"); PUSH(slval_double(fmod(as_num(a),db))); } } break;
         case OP_NEG: { SLValue a=POP(); if(a.type==SL_INT) PUSH(slval_int(-a.as.i)); else PUSH(slval_double(-as_num(a))); } break;
-        case OP_EQ: { SLValue b=POP(),a=POP(); int e; if(a.type==SL_STRUCT||b.type==SL_STRUCT) e=(a.type==SL_STRUCT&&b.type==SL_STRUCT&&a.as.h==b.as.h); else if(a.type==SL_STR&&b.type==SL_STR) e=(a.as.s==b.as.s); else e=(as_num(a)==as_num(b)); PUSH(slval_bool(e)); } break;
-        case OP_NE: { SLValue b=POP(),a=POP(); int e; if(a.type==SL_STRUCT||b.type==SL_STRUCT) e=!(a.type==SL_STRUCT&&b.type==SL_STRUCT&&a.as.h==b.as.h); else if(a.type==SL_STR&&b.type==SL_STR) e=(a.as.s!=b.as.s); else e=(as_num(a)!=as_num(b)); PUSH(slval_bool(e)); } break;
+        case OP_EQ: { SLValue b=POP(),a=POP(); int e; if(a.type==SL_STRUCT||b.type==SL_STRUCT) e=(a.type==SL_STRUCT&&b.type==SL_STRUCT&&a.as.h==b.as.h); else if(a.type==SL_ARRAY||b.type==SL_ARRAY) e=(a.type==SL_ARRAY&&b.type==SL_ARRAY&&a.as.h==b.as.h); else if(a.type==SL_STR&&b.type==SL_STR) e=(a.as.s==b.as.s); else e=(as_num(a)==as_num(b)); PUSH(slval_bool(e)); } break;
+        case OP_NE: { SLValue b=POP(),a=POP(); int e; if(a.type==SL_STRUCT||b.type==SL_STRUCT) e=!(a.type==SL_STRUCT&&b.type==SL_STRUCT&&a.as.h==b.as.h); else if(a.type==SL_ARRAY||b.type==SL_ARRAY) e=!(a.type==SL_ARRAY&&b.type==SL_ARRAY&&a.as.h==b.as.h); else if(a.type==SL_STR&&b.type==SL_STR) e=(a.as.s!=b.as.s); else e=(as_num(a)!=as_num(b)); PUSH(slval_bool(e)); } break;
         case OP_LT: { SLValue b=POP(),a=POP(); PUSH(slval_bool(as_num(a)<as_num(b))); } break;
         case OP_LE: { SLValue b=POP(),a=POP(); PUSH(slval_bool(as_num(a)<=as_num(b))); } break;
         case OP_GT: { SLValue b=POP(),a=POP(); PUSH(slval_bool(as_num(a)>as_num(b))); } break;
@@ -1214,6 +1329,56 @@ static SLResult run_thread(SLThread* t) {
             for(int i=0;i<st->nfields;i++){ SLValue fv; if(json_find_scalar(vm,json,st->fields[i],&fv)) vm->structs[h].fields[i]=fv; }
             pthread_mutex_unlock(&vm->struct_mtx);
             PUSH(slval_struct(h));
+        } break;
+        /* ---- arrays: dynamic, zero-indexed SLValue sequences ------------ */
+        case OP_NEWARRAY: {
+            SLValue nv=POP();
+            if(nv.type!=SL_INT) TERR("array size must be an integer");
+            int h=array_alloc(vm,(int)nv.as.i);
+            if(h<0) TERR("array allocation failed (negative/too-large size or store exhausted)");
+            PUSH(slval_array(h));
+        } break;
+        case OP_ARRGET: {
+            SLValue idxv=POP(), av=POP();
+            if(av.type!=SL_ARRAY||!array_valid_handle(vm,av.as.h)) TERR("index read on a non-array value");
+            if(idxv.type!=SL_INT) TERR("array index must be an integer");
+            pthread_mutex_lock(&vm->array_mtx);
+            SLArrayInstance* ai=&vm->arrays[av.as.h];
+            if(idxv.as.i<0||idxv.as.i>=ai->len){pthread_mutex_unlock(&vm->array_mtx);TERR("array index out of range");}
+            SLValue ev=ai->elems[idxv.as.i];
+            pthread_mutex_unlock(&vm->array_mtx);
+            PUSH(ev);
+        } break;
+        case OP_ARRSET: {
+            SLValue val=POP(), idxv=POP(), av=POP();
+            if(av.type!=SL_ARRAY||!array_valid_handle(vm,av.as.h)) TERR("index assignment on a non-array value");
+            if(idxv.type!=SL_INT) TERR("array index must be an integer");
+            pthread_mutex_lock(&vm->array_mtx);
+            SLArrayInstance* ai=&vm->arrays[av.as.h];
+            if(idxv.as.i<0||idxv.as.i>=ai->len){pthread_mutex_unlock(&vm->array_mtx);TERR("array index out of range");}
+            SLValue old=ai->elems[idxv.as.i];
+            if (old.type == SL_STRUCT || old.type == SL_ARRAY || val.type == SL_STRUCT || val.type == SL_ARRAY)
+                gc_write_barrier(&vm->gc, array_gc_object(vm, av.as.h),
+                    old.type==SL_STRUCT?struct_gc_object(vm,old.as.h):array_gc_object(vm,old.as.h),
+                    val.type==SL_STRUCT?struct_gc_object(vm,val.as.h):array_gc_object(vm,val.as.h));
+            ai->elems[idxv.as.i]=val;
+            pthread_mutex_unlock(&vm->array_mtx);
+            PUSH(val);
+        } break;
+        case OP_ARRLEN: {
+            SLValue av=POP();
+            if(av.type!=SL_ARRAY||!array_valid_handle(vm,av.as.h)) TERR("length() on a non-array value");
+            pthread_mutex_lock(&vm->array_mtx);
+            int len=vm->arrays[av.as.h].len;
+            pthread_mutex_unlock(&vm->array_mtx);
+            PUSH(slval_int(len));
+        } break;
+        case OP_ARRPUSH: {
+            SLValue val=POP(), av=POP();
+            if(av.type!=SL_ARRAY||!array_valid_handle(vm,av.as.h)) TERR("push() on a non-array value");
+            int len=array_push(vm,av.as.h,val);
+            if(len<0) TERR("array push failed (array full)");
+            PUSH(slval_int(len));
         } break;
         default: log_unsupported_opcode(vm, in.op); TERR("unsupported opcode");
         }

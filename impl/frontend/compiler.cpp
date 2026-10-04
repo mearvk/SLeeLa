@@ -214,7 +214,7 @@ private:
         if(auto x=dynamic_cast<const CastExpr*>(e)){emitExpr(x->operand.get());return;}
         if(auto x=dynamic_cast<const InstanceOfExpr*>(e)){emitExpr(x->value.get());emit(OP_POP);emit(OP_CONST,slvm_add_const_bool(vm_,0));return;}
         if(dynamic_cast<const SuperExpr*>(e)||dynamic_cast<const ThisExpr*>(e)){emit(OP_CONST,addNullConst());return;}
-        if(auto x=dynamic_cast<const ArrayAccess*>(e)){emitExpr(x->base.get());emitExpr(x->index.get());emit(OP_POP);return;}
+        if(auto x=dynamic_cast<const ArrayAccess*>(e)){emitExpr(x->base.get());emitExpr(x->index.get());emit(OP_ARRGET);return;}
         if(auto x=dynamic_cast<const MethodReferenceExpr*>(e)){emitExpr(x->base.get());return;}
         throw std::runtime_error("Semantic error: unknown expression kind");
     }
@@ -239,7 +239,29 @@ private:
             emit(OP_SETFIELD,off);                   // [newval]
             return;
         }
-        throw std::runtime_error("Semantic error: assignment target must be a variable or a struct field");
+        if(auto aa=dynamic_cast<const ArrayAccess*>(a.target.get())){
+            // OP_ARRSET expects [array, index, value] and leaves value on the stack.
+            emitExpr(aa->base.get());                // [array]
+            emitExpr(aa->index.get());               // [array, index]
+            if(!bin.empty()){
+                // compound: load current element, combine, then store.
+                emit(OP_DUP);                        // [array, index, index] -- dup index
+                // need [array, index] under a copy of (array,index) to read; simplest: recompute
+                // Stack now [array, index, index]; we actually need array too. Recompute cleanly:
+                // Drop the shortcut and recompute both for the read.
+                emit(OP_POP);                        // [array, index]
+                emitExpr(aa->base.get());            // [array, index, array]
+                emitExpr(aa->index.get());           // [array, index, array, index]
+                emit(OP_ARRGET);                     // [array, index, cur]
+                emitExpr(a.value.get());             // [array, index, cur, val]
+                emitBinOp(bin);                      // [array, index, newval]
+            } else {
+                emitExpr(a.value.get());             // [array, index, value]
+            }
+            emit(OP_ARRSET);                         // [value]
+            return;
+        }
+        throw std::runtime_error("Semantic error: assignment target must be a variable, struct field, or array element");
     }
     void emitConditional(const ConditionalExpr& c){emitExpr(c.cond.get());int jf=emit(OP_JMPF,0);emitExpr(c.thenE.get());int jend=emit(OP_JMP,0);patch(jf,here());emitExpr(c.elseE.get());patch(jend,here());}
     void emitBinOp(const std::string& o){if(o=="+")emit(OP_ADD);else if(o=="-")emit(OP_SUB);else if(o=="*")emit(OP_MUL);else if(o=="/")emit(OP_DIV);else if(o=="%")emit(OP_MOD);else throw std::runtime_error("Semantic error: unsupported compound assignment operator '"+o+"='");}
@@ -262,7 +284,15 @@ private:
         if(oit==lit->second.fieldOffset.end()) throw std::runtime_error("Semantic error: struct '"+tn+"' has no field '"+field+"'");
         offset=oit->second; return lit->second;
     }
-    void emitNew(const NewExpr& n){auto it=structLayout_.find(n.typeName);if(it==structLayout_.end())throw std::runtime_error("Semantic error: 'new' of unknown struct '"+n.typeName+"'");emit(OP_NEWSTRUCT,it->second.typeIndex);}
+    void emitNew(const NewExpr& n){
+        // `new T[size]` arrives with a "[]"-suffixed typeName and the size as
+        // the first arg. Lower it to OP_NEWARRAY (which pops the size).
+        if(n.typeName.size()>=2 && n.typeName.compare(n.typeName.size()-2,2,"[]")==0){
+            if(!n.args.empty()) emitExpr(n.args[0].get()); else emit(OP_CONST,slvm_add_const_int(vm_,0));
+            emit(OP_NEWARRAY);
+            return;
+        }
+        auto it=structLayout_.find(n.typeName);if(it==structLayout_.end())throw std::runtime_error("Semantic error: 'new' of unknown struct '"+n.typeName+"'");emit(OP_NEWSTRUCT,it->second.typeIndex);}
     void emitMember(const MemberAccess& m){
         // Back-propagate the terminal degree requirement to the origin.
         // next.next is the Degree-2 proposal. When that proposal is itself
@@ -462,6 +492,14 @@ private:
         if(n=="audioRender"){if(c.args.size()!=1)throw std::runtime_error("Semantic error: audioRender(handle) takes one argument");emitExpr(c.args[0].get());emit(OP_AUDIO_RENDER);return true;}
         if(n=="audioClose"){if(c.args.size()!=1)throw std::runtime_error("Semantic error: audioClose(handle) takes one argument");emitExpr(c.args[0].get());emit(OP_AUDIO_CLOSE);return true;}
         if(n=="audioPlatform"){if(!c.args.empty())throw std::runtime_error("Semantic error: audioPlatform() takes no arguments");emit(OP_AUDIO_PLATFORM);return true;}
+
+        // Array built-ins (syntax 1.4). arrayNew(n) pops size; the index ops
+        // mirror a[i] / a[i]=v and are also exposed as named builtins.
+        if(n=="arrayNew"){if(c.args.size()!=1)throw std::runtime_error("Semantic error: arrayNew(size) takes one argument");emitExpr(c.args[0].get());emit(OP_NEWARRAY);return true;}
+        if(n=="arrayLength"){if(c.args.size()!=1)throw std::runtime_error("Semantic error: arrayLength(array) takes one argument");emitExpr(c.args[0].get());emit(OP_ARRLEN);return true;}
+        if(n=="arrayGet"){if(c.args.size()!=2)throw std::runtime_error("Semantic error: arrayGet(array, index) takes two arguments");emitExpr(c.args[0].get());emitExpr(c.args[1].get());emit(OP_ARRGET);return true;}
+        if(n=="arraySet"){if(c.args.size()!=3)throw std::runtime_error("Semantic error: arraySet(array, index, value) takes three arguments");emitExpr(c.args[0].get());emitExpr(c.args[1].get());emitExpr(c.args[2].get());emit(OP_ARRSET);return true;}
+        if(n=="arrayPush"){if(c.args.size()!=2)throw std::runtime_error("Semantic error: arrayPush(array, value) takes two arguments");emitExpr(c.args[0].get());emitExpr(c.args[1].get());emit(OP_ARRPUSH);return true;}
 
         if(n=="bestOfNew"){if(!c.args.empty())throw std::runtime_error("Semantic error: bestOfNew() takes no arguments");emit(OP_BEST_NEW);return true;}
         if(n=="bestOfWeight"){if(c.args.size()!=3)throw std::runtime_error("Semantic error: bestOfWeight(handle, axis, weight) takes three arguments");emitArgs(c);emit(OP_BEST_WEIGHT);return true;}

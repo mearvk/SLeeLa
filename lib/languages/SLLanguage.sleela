@@ -1,0 +1,26 @@
+/*
+ * lib/languages/SLLanguage.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines the SLeeLa standard-library type SLLanguage used within the languages library family.
+ */
+#sleela 1.3
+// Unified SLeeLa standard-library front-end object.
+// Family: languages. One loaded language pack: a locale code, its endonym, its
+// script direction (ltr/rtl), and the lookup from a stable message key to its
+// translated text. The canonical pack data lives in the repository's
+// /languages/<code>.lang files (the tool-readable source of truth); this class
+// is the SLeeLa-facing contract a program uses to present output in the user's
+// language. Changing language is a one-line choice; program logic is unchanged.
+class SLLanguage {
+  String locale;      // BCP-47 code, e.g. "fr"
+  String name;        // endonym, e.g. "Français"
+  String direction;   // "ltr" or "rtl"
+
+  void configure(String code, String endonym, String dir) {
+    locale = code; name = endonym; direction = dir;
+  }
+
+  boolean isRightToLeft() { return direction == "rtl"; }
+  String code() { return locale; }
+  String endonym() { return name; }
+}

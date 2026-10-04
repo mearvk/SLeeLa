@@ -298,7 +298,15 @@ ExprP Parser::parsePrimary(){
         ExprP e=parseExpr();expect(Tok::RParen,"')'");return parsePostfix(std::move(e));
     }
     case Tok::KwNew:{
-        i_++;std::string type=parseGenericType();auto n=std::make_unique<NewExpr>(type);
+        i_++;
+        // Accept both class names (qualified) and the scalar keyword types
+        // (int/double/boolean/String/void) as the element type, so
+        // `new int[n]` and `new String[n]` parse like `new Point()`.
+        std::string type;
+        if(check(Tok::Ident)) type=parseGenericType();
+        else if(check(Tok::KwIntT)||check(Tok::KwDoubleT)||check(Tok::KwBoolT)||check(Tok::KwStringT)||check(Tok::KwVoid)){ type=cur().text; i_++; }
+        else { error("expected a type after 'new'"); }
+        auto n=std::make_unique<NewExpr>(type);
         if(accept(Tok::LBracket)){
             n->typeName += "[]"; n->args.push_back(parseExpr()); expect(Tok::RBracket,"']'");
             return parsePostfix(std::move(n));

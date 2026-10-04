@@ -1,0 +1,42 @@
+#!locale = zh
+#!name = 中文 (简体)
+#!direction = ltr
+# SLeeLa Simplified Chinese language pack.
+
+greeting.hello = 你好
+greeting.welcome = 欢迎
+greeting.goodbye = 再见
+
+prompt.continue = 继续？
+prompt.yes_no = 是或否？
+prompt.retry = 重试？
+prompt.enter_name = 请输入您的姓名：
+prompt.confirm = 您确定吗？
+prompt.press_enter = 按 Enter 键继续。
+
+word.yes = 是
+word.no = 否
+word.ok = 确定
+word.cancel = 取消
+word.open = 打开
+word.close = 关闭
+word.save = 保存
+word.help = 帮助
+
+status.ready = 就绪
+status.running = 运行中
+status.done = 完成
+status.failed = 失败
+status.loading = 加载中
+status.saved = 已保存
+
+error.not_found = 未找到：{0}
+error.denied = 权限被拒绝
+error.invalid = 输入无效
+error.timeout = 操作超时
+error.unknown = 未知错误
+
+unit.seconds = 秒
+unit.minutes = 分钟
+unit.bytes = 字节
+unit.items = 项

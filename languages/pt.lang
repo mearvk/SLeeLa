@@ -1,0 +1,42 @@
+#!locale = pt
+#!name = Português
+#!direction = ltr
+# SLeeLa Portuguese language pack.
+
+greeting.hello = Olá
+greeting.welcome = Bem-vindo
+greeting.goodbye = Adeus
+
+prompt.continue = Continuar?
+prompt.yes_no = Sim ou não?
+prompt.retry = Tentar novamente?
+prompt.enter_name = Digite o seu nome:
+prompt.confirm = Tem certeza?
+prompt.press_enter = Pressione Enter para continuar.
+
+word.yes = Sim
+word.no = Não
+word.ok = OK
+word.cancel = Cancelar
+word.open = Abrir
+word.close = Fechar
+word.save = Salvar
+word.help = Ajuda
+
+status.ready = Pronto
+status.running = Em execução
+status.done = Concluído
+status.failed = Falhou
+status.loading = Carregando
+status.saved = Salvo
+
+error.not_found = Não encontrado: {0}
+error.denied = Permissão negada
+error.invalid = Entrada inválida
+error.timeout = Tempo esgotado
+error.unknown = Erro desconhecido
+
+unit.seconds = segundos
+unit.minutes = minutos
+unit.bytes = bytes
+unit.items = itens

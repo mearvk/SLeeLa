@@ -127,6 +127,7 @@ static int validate_loaded_vm(const SLVM* vm, char* error, size_t error_size) {
             case OP_GETFIELD: case OP_SETFIELD:
                 if (in->a < 0 || in->a >= SL_MAX_STRUCT_FIELDS) { abi_error(error,error_size,"field operand outside ABI field range"); return 0; }
                 break;
+
             case OP_LOCK: case OP_UNLOCK:
             case OP_SEND: case OP_RECV:
                 if (in->a < 0 || in->a >= SL_MAX_LOCKS) { abi_error(error,error_size,"synchronization slot outside ABI range"); return 0; }

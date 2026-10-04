@@ -1,3 +1,44 @@
+## 2026-10-03 — Language core: arrays, multi-file input, and /languages packs
+
+Three additive language/runtime features. All existing programs continue to
+compile and run unchanged.
+
+### First-class array type
+
+Added a dynamic, growable, zero-indexed **array** type (`T[]`). Surface:
+`new T[n]`, `a[i]` read, `a[i] = v` write (runtime bounds-checked), and the
+built-ins `arrayNew`, `arrayLength`, `arrayGet`, `arraySet`, `arrayPush`.
+Implementation spans the whole pipeline: a `Kind::Array` with element typing in
+the semantic analyzer; lowering of index read/write, `new T[n]`, and the
+built-ins in the compiler; the parser now accepts scalar element types after
+`new` (`new int[n]`); and a new `SL_ARRAY` value tag backed by a mutex-guarded,
+GC-integrated, geometrically growing instance store in the core, with opcodes
+`OP_NEWARRAY`/`OP_ARRGET`/`OP_ARRSET`/`OP_ARRLEN`/`OP_ARRPUSH` appended at the
+end of the `SLOp` enum (so serialized-artifact opcode numbers are unchanged).
+The source/native ISA registries (`lib/vm/InstructionSet.sleela`,
+`lib/vm/OPCODE-MAP.md`) were updated to match. See `STRUCTS.md`.
+
+### Multiple `.sleela` inputs at run and compile time
+
+`sleela run a.sleela b.sleela ...` and
+`sleela compile a.sleela b.sleela ... -o out.sleela` now parse each file and
+merge them into one compilation unit (concatenating classes/structs/imports and
+annotations), mirroring the existing xclass/langin multi-file loaders. A program
+can therefore be split across files; duplicate definitions across files are
+reported as before.
+
+### `/languages` localization packs
+
+Added a `languages/` folder of dependency-free `key = value` language packs that
+localize SLeeLa's outputs and prompts: English (reference), Spanish, French,
+German, Portuguese, Italian, Japanese, Chinese (Simplified), Hindi, and Arabic
+(right-to-left). The pack format, key set, and reference English values are in
+`languages/README.md`, `languages/KEYS.md`, and `languages/en.lang`. A SLeeLa
+library under `lib/languages/` (`SLLanguage`, `SLLanguageCatalog`, and the
+runnable `languages.sleela`) selects a locale and returns localized text; the
+packs are original translations authored for this repository, so no third-party
+pack licenses are bundled.
+
 ## 2026-10-03 — New subsystems: Website Generator and AutoCAD Renderer
 
 Two new application subsystems were added, each following the repository rule

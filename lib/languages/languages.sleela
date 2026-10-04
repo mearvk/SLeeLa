@@ -1,0 +1,82 @@
+#sleela 1.3
+// languages.sleela -- the self-contained, runnable build of the SLeeLa
+// localization library. The compiler's `run` compiles one file as a single
+// unit, so this aggregate carries the translations inline and a `main` that
+// prints a few messages in several languages. The split per-class files
+// (SLLanguage.sleela, SLLanguageCatalog.sleela) are the package discovery
+// surface; the canonical, tool-readable translation data lives in the
+// repository's /languages/<code>.lang files, which this mirrors.
+//
+// SLeeLa decides what to say; the active language decides how it is said.
+// Supported locales mirror /languages: en es fr de pt it ja zh hi ar.
+class Languages {
+
+    // Translate one message key into the given locale. Falls back to English
+    // for an unknown locale or key. Only a representative subset of the full
+    // key set (see /languages/KEYS.md) is shown here for the demonstration.
+    String text(String locale, String key) {
+        if (locale == "es") {
+            if (key == "greeting.hello") { return "Hola"; }
+            if (key == "greeting.welcome") { return "Bienvenido"; }
+            if (key == "prompt.continue") { return "¿Continuar?"; }
+            if (key == "word.yes") { return "Sí"; }
+            if (key == "word.no") { return "No"; }
+            if (key == "status.done") { return "Hecho"; }
+        }
+        if (locale == "fr") {
+            if (key == "greeting.hello") { return "Bonjour"; }
+            if (key == "greeting.welcome") { return "Bienvenue"; }
+            if (key == "prompt.continue") { return "Continuer ?"; }
+            if (key == "word.yes") { return "Oui"; }
+            if (key == "word.no") { return "Non"; }
+            if (key == "status.done") { return "Terminé"; }
+        }
+        if (locale == "de") {
+            if (key == "greeting.hello") { return "Hallo"; }
+            if (key == "greeting.welcome") { return "Willkommen"; }
+            if (key == "prompt.continue") { return "Fortfahren?"; }
+            if (key == "word.yes") { return "Ja"; }
+            if (key == "word.no") { return "Nein"; }
+            if (key == "status.done") { return "Fertig"; }
+        }
+        if (locale == "ja") {
+            if (key == "greeting.hello") { return "こんにちは"; }
+            if (key == "greeting.welcome") { return "ようこそ"; }
+            if (key == "prompt.continue") { return "続けますか？"; }
+            if (key == "word.yes") { return "はい"; }
+            if (key == "word.no") { return "いいえ"; }
+            if (key == "status.done") { return "完了"; }
+        }
+        if (locale == "ar") {
+            if (key == "greeting.hello") { return "مرحبا"; }
+            if (key == "greeting.welcome") { return "أهلا وسهلا"; }
+            if (key == "prompt.continue") { return "متابعة؟"; }
+            if (key == "word.yes") { return "نعم"; }
+            if (key == "word.no") { return "لا"; }
+            if (key == "status.done") { return "تم"; }
+        }
+        // English reference / fallback.
+        if (key == "greeting.hello") { return "Hello"; }
+        if (key == "greeting.welcome") { return "Welcome"; }
+        if (key == "prompt.continue") { return "Continue?"; }
+        if (key == "word.yes") { return "Yes"; }
+        if (key == "word.no") { return "No"; }
+        if (key == "status.done") { return "Done"; }
+        return key;   // unknown key: return the key itself
+    }
+
+    void greetIn(String locale) {
+        print(locale + ": " + text(locale, "greeting.hello") + " / "
+              + text(locale, "prompt.continue") + " / " + text(locale, "word.yes"));
+    }
+
+    void main() {
+        // The same program, the same logic -- presented in each language.
+        greetIn("en");
+        greetIn("es");
+        greetIn("fr");
+        greetIn("de");
+        greetIn("ja");
+        greetIn("ar");
+    }
+}

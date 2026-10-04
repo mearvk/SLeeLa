@@ -101,6 +101,11 @@
 // OP_AUDIO_RENDER
 // OP_AUDIO_CLOSE
 // OP_AUDIO_PLATFORM
+// OP_NEWARRAY
+// OP_ARRGET
+// OP_ARRSET
+// OP_ARRLEN
+// OP_ARRPUSH
 class SLISANop { String name; int code; }
 class SLISAConst { String name; int code; }
 class SLISAPop { String name; int code; }
@@ -199,3 +204,8 @@ class SLISAAudioValidate { String name; int code; }
 class SLISAAudioRender { String name; int code; }
 class SLISAAudioClose { String name; int code; }
 class SLISAAudioPlatform { String name; int code; }
+class SLISANewArray { String name; int code; }
+class SLISAArrGet { String name; int code; }
+class SLISAArrSet { String name; int code; }
+class SLISAArrLen { String name; int code; }
+class SLISAArrPush { String name; int code; }

@@ -1,0 +1,42 @@
+#!locale = es
+#!name = Español
+#!direction = ltr
+# SLeeLa Spanish language pack.
+
+greeting.hello = Hola
+greeting.welcome = Bienvenido
+greeting.goodbye = Adiós
+
+prompt.continue = ¿Continuar?
+prompt.yes_no = ¿Sí o no?
+prompt.retry = ¿Intentar de nuevo?
+prompt.enter_name = Introduzca su nombre:
+prompt.confirm = ¿Está seguro?
+prompt.press_enter = Pulse Intro para continuar.
+
+word.yes = Sí
+word.no = No
+word.ok = Aceptar
+word.cancel = Cancelar
+word.open = Abrir
+word.close = Cerrar
+word.save = Guardar
+word.help = Ayuda
+
+status.ready = Listo
+status.running = En ejecución
+status.done = Hecho
+status.failed = Falló
+status.loading = Cargando
+status.saved = Guardado
+
+error.not_found = No encontrado: {0}
+error.denied = Permiso denegado
+error.invalid = Entrada no válida
+error.timeout = La operación expiró
+error.unknown = Error desconocido
+
+unit.seconds = segundos
+unit.minutes = minutos
+unit.bytes = bytes
+unit.items = elementos
