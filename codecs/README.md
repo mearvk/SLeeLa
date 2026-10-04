@@ -49,9 +49,48 @@ No handler is advertised as fully implemented merely because its name appears in
 | MIDI | MIDI Standard | Note/event data, not sampled audio | Event format |
 | WebM/Matroska audio | Matroska/WebM containers | Container | Container |
 
-## C Handler API
+## Architecture: individual codecs + a Loader/Manager
 
-The initial public registry is in:
+Each codec is now a **self-contained plugin** in its own folder under
+`codecs/codecs/<name>/`, implementing a small common vtable
+(`codecs/include/sleela_codec_plugin.h`): `describe`, `load`, `unload`, `probe`,
+`decode`, `encode`. Every codec ships C **and** C++ (the vtable/glue in `.c`, the
+byte-level/format detail in `.cpp`) plus its own `.md`.
+
+SLeeLa never links or calls an individual codec directly. It calls the **Codec
+Loader / Unloader / Management Controller** (`codecs/include/sleela_codec_manager.h`),
+which owns every plugin's lifecycle:
+
+```
+   SLeeLa  ->  Codec Manager (loader/unloader/controller)  ->  individual codec plugin
+                 load / unload / resolve / decode / encode
+```
+
+- `sleela_codec_manager_create()` registers every known codec (none loaded).
+- `sleela_codec_manager_load(mgr, id)` / `..._unload(mgr, id)` manage lifecycle.
+- `..._resolve_extension` / `..._resolve_probe` pick a codec from a filename or
+  content bytes.
+- `..._decode` / `..._encode` dispatch to the loaded plugin.
+- A backend-less codec reports its state and returns a clean
+  `SLEELA_CODEC_ERR_UNSUPPORTED` instead of faking success.
+
+The SLeeLa-facing handle to the Loader is `lib/codecs/SLCodecLoader.sleela`
+(runnable demo: `lib/codecs/codecs.sleela`).
+
+### Native codecs (fully implemented in-package)
+
+- **PCM/WAV** (`codecs/codecs/pcm_wav/`) — RIFF/WAVE 16-bit PCM read/write; the
+  PCM boundary every other codec targets.
+- **G.711 μ-law / A-law** (`codecs/codecs/g711_mulaw/`, `.../g711_alaw/`) —
+  telephony companding, one byte ↔ one 16-bit PCM sample.
+
+All other codecs are **Backend / Recognized / Container / Event** handlers:
+they identify the format (probe) and expose an honest state; their decode/encode
+return `SLEELA_CODEC_ERR_UNSUPPORTED` until an approved backend is wired.
+
+## C Handler Registry (metadata)
+
+The static registry is in:
 
 - `codecs/include/sleela_codecs.h`
 - `codecs/src/sleela_codecs.c`
