@@ -357,7 +357,36 @@ private:
         int slot=ctx_->slotOf(v.name);if(slot>=0){emit(OP_LOADL,slot);return;}int g=fieldSlot(v.name);if(g>=0){if(fieldProtected_[v.name] && fieldOwner_[v.name]!=currentClass_) throw std::runtime_error("protected field access denied");emit(OP_LOADG,g);return;}throw std::runtime_error("Semantic error: use of undeclared variable '"+v.name+"'");
     }
     void emitUnary(const Unary& u){emitExpr(u.operand.get());if(u.op=="-")emit(OP_NEG);else if(u.op=="!")emit(OP_NOT);else throw std::runtime_error("Semantic error: unknown unary operator '"+u.op+"'");}
-    void emitBinary(const Binary& b){emitExpr(b.lhs.get());emitExpr(b.rhs.get());const std::string&o=b.op;if(o=="+")emit(OP_ADD);else if(o=="-")emit(OP_SUB);else if(o=="*")emit(OP_MUL);else if(o=="/")emit(OP_DIV);else if(o=="%")emit(OP_MOD);else if(o=="==")emit(OP_EQ);else if(o=="!=")emit(OP_NE);else if(o=="<")emit(OP_LT);else if(o=="<=")emit(OP_LE);else if(o==">")emit(OP_GT);else if(o==">=")emit(OP_GE);else if(o=="&&")emit(OP_AND);else if(o=="||")emit(OP_OR);else throw std::runtime_error("Semantic error: unknown binary operator '"+o+"'");}
+    void emitBinary(const Binary& b){
+        const std::string&o=b.op;
+        // Short-circuit boolean operators: the right side must NOT be evaluated
+        // when the left already decides the result (Java/C semantics). This also
+        // means side effects / calls on the right are skipped, as required.
+        if(o=="&&"){
+            // lhs; if false -> result false (skip rhs); else result = rhs.
+            emitExpr(b.lhs.get());
+            int jf=emit(OP_JMPF,0);            // lhs false -> short-circuit
+            emitExpr(b.rhs.get());             // result is rhs (a bool)
+            int jend=emit(OP_JMP,0);
+            patch(jf,here());
+            emit(OP_CONST,slvm_add_const_bool(vm_,0));  // false
+            patch(jend,here());
+            return;
+        }
+        if(o=="||"){
+            // lhs; if false -> result = rhs; else (lhs true) -> result true,
+            // skipping rhs. Uses only OP_JMPF (no jump-if-true opcode needed).
+            emitExpr(b.lhs.get());
+            int jf=emit(OP_JMPF,0);            // lhs false -> go evaluate rhs
+            emit(OP_CONST,slvm_add_const_bool(vm_,1));  // lhs true -> result true
+            int jend=emit(OP_JMP,0);
+            patch(jf,here());
+            emitExpr(b.rhs.get());             // result is rhs
+            patch(jend,here());
+            return;
+        }
+        emitExpr(b.lhs.get());emitExpr(b.rhs.get());
+        if(o=="+")emit(OP_ADD);else if(o=="-")emit(OP_SUB);else if(o=="*")emit(OP_MUL);else if(o=="/")emit(OP_DIV);else if(o=="%")emit(OP_MOD);else if(o=="==")emit(OP_EQ);else if(o=="!=")emit(OP_NE);else if(o=="<")emit(OP_LT);else if(o=="<=")emit(OP_LE);else if(o==">")emit(OP_GT);else if(o==">=")emit(OP_GE);else throw std::runtime_error("Semantic error: unknown binary operator '"+o+"'");}
 
     bool tryEmitBuiltin(const Call& c){
         const std::string& n=c.callee;

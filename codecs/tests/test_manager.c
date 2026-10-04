@@ -9,6 +9,18 @@
 #include <stdlib.h>
 #include <string.h>
 
+/* A stand-in backend adapter: the shape a real libFLAC/libopus adapter takes.
+ * It just records that it ran, proving the manager dispatches to a registered
+ * backend for a BACKEND-state codec. */
+static int g_fake_flac_calls = 0;
+static sleela_codec_result fake_flac_decode(const uint8_t *input, size_t len,
+                                            sleela_pcm_buffer *out) {
+    (void)input; (void)len; (void)out;
+    g_fake_flac_calls++;
+    return SLEELA_CODEC_OK;
+}
+static const sleela_codec_backend g_fake_flac = { "fake-flac", fake_flac_decode, NULL };
+
 int main(void) {
     sleela_codec_manager *m = sleela_codec_manager_create();
     assert(m != NULL);
@@ -54,6 +66,22 @@ int main(void) {
     assert(sleela_codec_manager_decode(m, SLEELA_CODEC_G711_MULAW, ulaw, 8, &udec) == SLEELA_CODEC_OK);
     assert(udec.frame_count == 8 && udec.channels == 1);
 
+    /* --- Native AIFF round-trip through the manager (big-endian container). */
+    assert(sleela_codec_manager_load(m, SLEELA_CODEC_AIFF) == SLEELA_CODEC_OK);
+    const sleela_codec_handler *aiff = sleela_codec_manager_describe(m, SLEELA_CODEC_AIFF);
+    assert(aiff && aiff->state == SLEELA_CODEC_NATIVE);
+    size_t aneed = 0;
+    assert(sleela_codec_manager_encode(m, SLEELA_CODEC_AIFF, &pcm, NULL, &aneed) == SLEELA_CODEC_OK);
+    uint8_t *aiffbuf = (uint8_t *)malloc(aneed);
+    size_t acap = aneed;
+    assert(sleela_codec_manager_encode(m, SLEELA_CODEC_AIFF, &pcm, aiffbuf, &acap) == SLEELA_CODEC_OK);
+    assert(memcmp(aiffbuf, "FORM", 4) == 0 && memcmp(aiffbuf + 8, "AIFF", 4) == 0);
+    sleela_pcm_buffer aback;
+    assert(sleela_codec_manager_decode(m, SLEELA_CODEC_AIFF, aiffbuf, acap, &aback) == SLEELA_CODEC_OK);
+    assert(aback.frame_count == 8 && aback.channels == 1 && aback.sample_rate == 44100);
+    for (int i = 0; i < 8; ++i) assert(aback.samples[i] == src[i]);  /* lossless */
+    free(aiffbuf);
+
     /* --- A backend codec: present and resolvable, but decode fails cleanly. */
     const sleela_codec_handler *flac = sleela_codec_manager_describe(m, SLEELA_CODEC_FLAC);
     assert(flac && flac->state == SLEELA_CODEC_BACKEND);
@@ -61,6 +89,14 @@ int main(void) {
     assert(sleela_codec_manager_load(m, SLEELA_CODEC_FLAC) == SLEELA_CODEC_OK);
     sleela_pcm_buffer dummy;
     const uint8_t fake[4] = { 'f','L','a','C' };
+    /* No backend registered yet -> clean unsupported. */
+    assert(sleela_codec_manager_decode(m, SLEELA_CODEC_FLAC, fake, 4, &dummy) == SLEELA_CODEC_ERR_UNSUPPORTED);
+
+    /* --- Register a backend adapter and confirm the manager dispatches to it. */
+    assert(sleela_codec_backend_register(SLEELA_CODEC_FLAC, &g_fake_flac) == SLEELA_CODEC_OK);
+    assert(sleela_codec_manager_decode(m, SLEELA_CODEC_FLAC, fake, 4, &dummy) == SLEELA_CODEC_OK);
+    assert(g_fake_flac_calls == 1);  /* the adapter's decode ran */
+    assert(sleela_codec_backend_register(SLEELA_CODEC_FLAC, NULL) == SLEELA_CODEC_OK); /* clear */
     assert(sleela_codec_manager_decode(m, SLEELA_CODEC_FLAC, fake, 4, &dummy) == SLEELA_CODEC_ERR_UNSUPPORTED);
 
     /* Decoding a NOT-loaded codec returns ERR_STATE, not a crash. */

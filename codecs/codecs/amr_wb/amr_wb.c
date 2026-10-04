@@ -27,17 +27,20 @@ static sleela_codec_result amr_wb_probe(sleela_codec_instance *inst,
 static sleela_codec_result amr_wb_decode(sleela_codec_instance *inst,
                                          const uint8_t *input, size_t input_len,
                                          sleela_pcm_buffer *out) {
-    (void)inst; (void)input; (void)input_len; (void)out;
-    /* Metadata/identification handler: no in-package decoder. The
-     * manager surfaces this as a clean 'unsupported' rather than a
-     * false success; wire an approved backend to enable decode. */
+    (void)inst;
+    const sleela_codec_backend *b = sleela_codec_backend_get(SLEELA_CODEC_AMR_WB);
+    if (b && b->decode) return b->decode(input, input_len, out);
+    /* No backend wired: report cleanly rather than fake a decode. Register an
+     * approved library adapter via sleela_codec_backend_register(SLEELA_CODEC_AMR_WB, ...). */
     return SLEELA_CODEC_ERR_UNSUPPORTED;
 }
 
 static sleela_codec_result amr_wb_encode(sleela_codec_instance *inst,
                                          const sleela_pcm_buffer *pcm,
                                          uint8_t *output, size_t *inout_len) {
-    (void)inst; (void)pcm; (void)output; (void)inout_len;
+    (void)inst;
+    const sleela_codec_backend *b = sleela_codec_backend_get(SLEELA_CODEC_AMR_WB);
+    if (b && b->encode) return b->encode(pcm, output, inout_len);
     return SLEELA_CODEC_ERR_UNSUPPORTED;
 }
 
