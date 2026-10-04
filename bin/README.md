@@ -23,7 +23,8 @@ $> SLeeLa object
 
 `object` may be a bare name (`hello` → `hello.sleela`), a `.sleela` path, a
 compiled `.sleela` artifact, or an `.xclass` input. Bare names are resolved
-against the current directory, then `examples/`, then `impl/examples/`.
+against the current directory, then the repository root, then `examples/`, then
+`impl/examples/`.
 
 ```sh
 SLeeLa hello                     # runs hello.sleela (from examples/impl-examples)
@@ -33,6 +34,7 @@ SLeeLa check file.sleela         # validate (incl. #sleela version), don't run
 SLeeLa compile src.sleela -o out.sleela   # compile a Wrapper to an artifact
 SLeeLa native /usr/bin/env       # run a native OS executable from the terminal
 SLeeLa exec ./tool --flag value  # `exec` is an alias of `native`
+SLeeLa keysearch                 # verify local Secret.key against the repo's
 SLeeLa version                   # version + supported syntax range
 SLeeLa help                      # usage
 ```
@@ -57,6 +59,25 @@ SLeeLa native --memory-manager ./tool    # run a native under the manager
 ```
 
 See [`../MEMORY_MANAGER.md`](../MEMORY_MANAGER.md) for the full reference.
+
+### Startup key verification and `keysearch`
+
+On normal startup (any VM run), the launcher performs a quiet integrity probe:
+it fetches the published master-branch key over HTTPS (read-only `GET`) and
+compares it, by SHA-256 digest, with the local
+[`../psychiatry/Secret.key`](../psychiatry/Secret.key). A match is silent; a
+connectivity problem or a mismatch prints one small note and never prevents
+SLeeLa from starting. The key itself is never uploaded — only digests are
+compared.
+
+```sh
+SLeeLa keysearch                 # explicit, verbose form of the same check
+```
+
+`keysearch` is the manual/verbose form of that probe and requires `python3`
+(it runs [`../psychiatry/keysearch.py`](../psychiatry/keysearch.py)). It does
+not run the VM, so it works even before the `sleela` binary has been built.
+`help` is likewise network-free and needs no binary.
 
 Build the runtime first if needed:
 
