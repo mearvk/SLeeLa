@@ -45,12 +45,15 @@ chmod +x bin/OSsupport
 
 SLeeLa deliberately uses a fixed mapping rather than accepting arbitrary download URLs:
 
-| Host OS | Native support repository |
-|---|---|
-| Windows | `mearvk/Windows.Admin.Defender` |
-| Linux | `mearvk/Linux.Admin.Defender` |
+| Host OS | Native support repository | Provisioning |
+|---|---|---|
+| Windows 10+ | `mearvk/Windows.Admin.Defender` | supported |
+| Linux | `mearvk/Linux.Admin.Defender` | supported |
+| macOS | `MacOS.Admin.Defender` | detect only (unsupported) |
 
 This mapping is implemented in `impl/frontend/driver.cpp` and is also documented in `impl/defender/README.md`.
+
+On macOS the host is detected and the mapping name is reported, but no privileged Defender backend is implemented: `fetch`, `build`, `install`, and `provision` return a clear failure. See section 4b.
 
 ## 3. SLeeLa CLI
 
@@ -68,11 +71,15 @@ sleela defender provision [directory]
 
 ## 4. Windows behavior
 
-On Windows, SLeeLa uses `curl.exe` or `wget.exe` to retrieve the fixed repository archive and PowerShell `Expand-Archive` to extract it. The build step invokes the support repository's `build/build.ps1`.
+On Windows 10+, SLeeLa uses `curl.exe` or `wget.exe` to retrieve the fixed repository archive and PowerShell `Expand-Archive` to extract it. The build step invokes the support repository's `build/build.ps1`.
 
 A Windows build requires a valid WDK/Visual Studio project in the support repository. The build script is expected to stop if a required `.vcxproj` is absent. Installation uses the normal Windows driver package path (`pnputil.exe`) and remains subject to administrative privileges and applicable driver-signing requirements.
 
 SLeeLa does not bypass execution policy, Secure Boot, UAC, Defender, driver signing, or other Windows security controls.
+
+## 4b. macOS behavior
+
+On macOS the runtime builds (Apple clang via `scripts/build-macos.sh`), runs, and detects the host. `detect`/`status` report the `MacOS.Admin.Defender` mapping. However, no privileged Defender backend is implemented for macOS, so `fetch`, `build`, `install`, and `provision` are deliberately refused with a non-zero exit status and the message `no privileged Defender backend is implemented for macOS`. This is an intentional, visible limitation rather than a silent no-op.
 
 ## 5. Linux behavior
 

@@ -6,9 +6,17 @@ set -u
 
 BIN_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 ROOT_DIR=$(CDPATH= cd -- "$BIN_DIR/.." && pwd)
-SLEELA="${SLEELA_BIN:-$BIN_DIR/sleela}"
-if [ ! -x "$SLEELA" ]; then
-    SLEELA="$ROOT_DIR/impl/build/sleela"
+
+# Resolve the sleela binary: an override, a copy alongside this script, or the
+# in-tree build. On Windows (MinGW/MSYS2/Git Bash) the binary is sleela.exe.
+SLEELA="${SLEELA_BIN:-}"
+if [ -z "$SLEELA" ] || [ ! -x "$SLEELA" ]; then
+    for cand in \
+        "$BIN_DIR/sleela" "$BIN_DIR/sleela.exe" \
+        "$ROOT_DIR/impl/build/sleela" "$ROOT_DIR/impl/build/sleela.exe"; do
+        if [ -x "$cand" ]; then SLEELA="$cand"; break; fi
+    done
+    [ -n "$SLEELA" ] || SLEELA="$ROOT_DIR/impl/build/sleela"
 fi
 
 usage() {
@@ -36,6 +44,11 @@ Choices:
 The selected implementation is OS-native:
   Windows -> Windows.Admin.Defender
   Linux   -> Linux.Admin.Defender
+  macOS   -> MacOS.Admin.Defender (detect only; provisioning unsupported)
+
+On macOS, `detect`/`status` report the mapping, but `fetch`/`build`/`install`/
+`provision` are refused: no privileged Defender backend is implemented for
+macOS. The command still exits with a clear status.
 
 Installation may require administrator privileges and platform-specific
 compiler, driver, signing, or package prerequisites. OSsupport does not
@@ -46,7 +59,9 @@ EOF
 
 if [ ! -x "$SLEELA" ]; then
     echo "OSsupport: SLeeLa executable not found." >&2
-    echo "Build SLeeLa first: make -C \"$ROOT_DIR/impl\"" >&2
+    echo "  Build it first:  make -C \"$ROOT_DIR/impl\"" >&2
+    echo "  Windows (MinGW): run from Git Bash/MSYS2 after building sleela.exe" >&2
+    echo "  Or set SLEELA_BIN=/path/to/sleela" >&2
     exit 127
 fi
 

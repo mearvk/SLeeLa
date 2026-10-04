@@ -40,9 +40,23 @@ SLeeLa help                      # usage
 ```
 
 The launcher resolves the built `sleela` binary (an `SLEELA_BIN` override, a
-copy alongside the script, or `impl/build/sleela`), and sets the `SHEET.sheet`
-catalog and the SHA-256 execution-gate manifest that the runtime requires,
-before handing off to the binary and preserving its exit status.
+copy alongside the script, or `impl/build/sleela`; on Windows the `.exe`
+variants `sleela.exe` / `impl/build/sleela.exe` are also tried), and sets the
+`SHEET.sheet` catalog and the SHA-256 execution-gate manifest that the runtime
+requires, before handing off to the binary and preserving its exit status.
+
+### Platform support
+
+Both scripts are POSIX `sh` and run on **Linux**, **macOS**, and **Windows 10+**:
+
+- **Linux / macOS** — run directly from any POSIX shell. Build the runtime
+  with `make -C impl` (Linux) or `scripts/build-macos.sh` (macOS, Apple
+  clang). The launcher auto-detects `impl/build/sleela`.
+- **Windows 10+** — run from a POSIX shell such as **Git Bash**, **MSYS2**, or
+  **WSL** (these scripts are not `cmd.exe`/PowerShell batch files). Build the
+  MinGW runtime with `powershell -ExecutionPolicy Bypass -File build-windows.ps1`,
+  which produces `impl/build/sleela.exe`; the launcher resolves the `.exe`
+  automatically.
 
 ### Native executables and the Memory Manager
 
@@ -87,7 +101,8 @@ make -C impl                     # produces impl/build/sleela
 
 To make `SLeeLa` available everywhere, put `bin/` on your `PATH` (or copy the
 script and the built binary into a directory that already is). If executable
-permission was lost on checkout: `chmod +x bin/SLeeLa`.
+permission was lost on checkout: `chmod +x bin/SLeeLa`. On Windows, invoke it
+through a POSIX shell (Git Bash / MSYS2 / WSL).
 
 ## OSsupport
 
@@ -105,7 +120,18 @@ OSsupport provision [directory]
 
 Without arguments, `OSsupport` displays the available choices and prompts for an operation. With an argument, it is directly scriptable and preserves the exit status returned by the underlying `sleela defender` command.
 
-The implementation uses the fixed native mapping documented in [`../OS_SUPPORT.md`](../OS_SUPPORT.md): Windows uses `mearvk/Windows.Admin.Defender`, and Linux uses `mearvk/Linux.Admin.Defender`.
+The implementation uses the fixed native mapping documented in [`../OS_SUPPORT.md`](../OS_SUPPORT.md):
+
+| Host OS | Native support repository | Provisioning |
+|---|---|---|
+| Windows 10+ | `mearvk/Windows.Admin.Defender` | supported (elevated terminal + signed WDK driver) |
+| Linux | `mearvk/Linux.Admin.Defender` | supported (kernel module via `make install`) |
+| macOS | `MacOS.Admin.Defender` | **detect only** — no privileged backend is implemented |
+
+On macOS, `OSsupport detect`/`status` report the mapping, but `fetch`, `build`,
+`install`, and `provision` are refused with a clear message (no privileged
+Defender backend is implemented for macOS) and a non-zero exit status. The
+`sleela` runtime itself still builds, runs, and detects the host on macOS.
 
 After checkout, if executable permissions were not preserved by the checkout method, run:
 
