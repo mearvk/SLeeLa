@@ -54,3 +54,8 @@ impl/build/sleela run churn/5/lines.sleela
 ```
 
 A Spark guides; it does not measure. Keep the two apart.
+
+---
+
+*Copyright (C) 2026 MEARVK LLC*
+*Author: Maximilian Eric Alexander Rupplin von Keffikon (Max Rupplin)*

@@ -109,3 +109,8 @@ length* (`/5`).
 Workers requirement is a modelling condition on a working medium; the figures
 that test it are published statistics cited to the U.S. Census Bureau and other
 U.S. primary sources.*
+
+---
+
+*Copyright (C) 2026 MEARVK LLC*
+*Author: Maximilian Eric Alexander Rupplin von Keffikon (Max Rupplin)*

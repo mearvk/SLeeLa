@@ -104,3 +104,8 @@ through its *flow*.
 Workers requirement is a modelling condition on a working medium; the figures
 that test it are published statistics cited to the U.S. Bureau of Labor
 Statistics (JOLTS and CES).*
+
+---
+
+*Copyright (C) 2026 MEARVK LLC*
+*Author: Maximilian Eric Alexander Rupplin von Keffikon (Max Rupplin)*

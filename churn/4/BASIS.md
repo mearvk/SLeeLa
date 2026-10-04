@@ -105,3 +105,8 @@ Across the four sets, the same requirement is tested four ways — over *time*
 Workers requirement is a modelling condition on a working medium; the figures
 that test it are published statistics cited to the U.S. Census Bureau and the
 United Nations Statistics Division.*
+
+---
+
+*Copyright (C) 2026 MEARVK LLC*
+*Author: Maximilian Eric Alexander Rupplin von Keffikon (Max Rupplin)*

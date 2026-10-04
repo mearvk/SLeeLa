@@ -10,12 +10,17 @@ of workers and `/3` (Facets) held the market's flow, `/4` (Areas) holds the
 [`../data/social-density-us.json`](../data/social-density-us.json) — the United
 States' area and density, dated and sourced.
 
+The data file now holds **7 figures** (alphabetized by name):
+
 | Area | Value | Kind | Source |
 |---|---|---|---|
-| Total area | 9,833,517 km² | OBSERVED | UN / CIA World Factbook |
+| Cropland area | 1,577,000 km² | OBSERVED | USDA ERS |
+| Forest land area | 3,100,000 km² | OBSERVED | USDA Forest Service |
 | Land area | 9,147,420 km² | OBSERVED | CIA World Factbook |
-| Resident population | 341,784,857 | OBSERVED (2025) | US Census |
 | Population density | 37.4 /km² | OBSERVED (derived) | pop ÷ land area |
+| Resident population | 341,784,857 | OBSERVED (2025) | US Census |
+| Total area | 9,833,517 km² | OBSERVED | UN / CIA World Factbook |
+| Urban land area | 275,000 km² | OBSERVED | US Census 2020 urban areas |
 
 ## What the model is *for*
 
@@ -42,6 +47,12 @@ to be argued with — never a fact asserted about any person or place.
 
 ## Provenance
 
-U.S. Census Bureau (population; land area) and the United Nations Statistics
-Division / CIA World Factbook (total area), retrieved 2026-09. Density is
-computed as population ÷ land area and labelled as derived.
+U.S. Census Bureau (population; land area), the United Nations Statistics
+Division / CIA World Factbook (total area), and the USDA Economic Research
+Service / Forest Service (land use), retrieved 2026-09. Density is computed as
+population ÷ land area and labelled as derived.
+
+---
+
+*Copyright (C) 2026 MEARVK LLC*
+*Author: Maximilian Eric Alexander Rupplin von Keffikon (Max Rupplin)*

@@ -102,3 +102,8 @@ against evidence rather than asserted.
 *This basis is a stated foundation, offered to be examined and revised. The
 Workers requirement is a modelling condition on a working medium; the figures
 that test it are published statistics cited to BLS and the US Census Bureau.*
+
+---
+
+*Copyright (C) 2026 MEARVK LLC*
+*Author: Maximilian Eric Alexander Rupplin von Keffikon (Max Rupplin)*

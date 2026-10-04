@@ -131,3 +131,8 @@ evidence (`VALUE ≠ SPARK`).
 formulas, MEASURED Lines carry uncertainty, and OBSERVED Lines are
 counted/surveyed extents. A Spark guides but does not measure; any relation
 drawn between Lines is a model, not a causal claim.*
+
+---
+
+*Copyright (C) 2026 MEARVK LLC*
+*Author: Maximilian Eric Alexander Rupplin von Keffikon (Max Rupplin)*

@@ -10,15 +10,21 @@ stated period — and unlike a math constant it is neither exact nor timeless.
 [`../data/social-labor-us.json`](../data/social-labor-us.json) — dated, sourced
 figures for the United States.
 
+The data file now holds **11 structures** (alphabetized by name):
+
 | Structure | Value | Period | Source |
 |---|---|---|---|
-| Unemployment rate | 4.2% | 2024 Q4 | BLS |
-| Labor force participation rate | 62.5% | 2024 | BLS |
+| Average hourly earnings (private) | ~$35.0 | 2024 | BLS CES |
+| Civilian labor force | 168,500,000 | 2024 | BLS CPS |
 | Employment–population ratio | 59.9% | 2024 | BLS |
+| Labor force participation rate | 62.5% | 2024 | BLS |
 | Labor productivity (output/hour) growth | +2.7% | 2023→2024 | BLS Productivity & Costs |
-| Real median household income | $83,730 | 2024 | US Census (P60-286) |
+| Median weekly earnings (full-time) | $1,192 | 2024 Q4 | BLS |
 | Official poverty rate | 11.1% | 2023 | US Census |
+| Real median household income | $83,730 | 2024 | US Census (P60-286) |
 | Resident population estimate | 341,784,857 | 2025-07-01 | US Census QuickFacts |
+| Unemployment rate | 4.2% | 2024 Q4 | BLS |
+| Union membership rate | 9.9% | 2024 | BLS |
 
 ## What the model is *for*
 
@@ -45,5 +51,11 @@ asserted about any person.
 
 ## Provenance
 
-U.S. Bureau of Labor Statistics (bls.gov) and U.S. Census Bureau (census.gov),
-retrieved 2026-09. Each structure in the data file names its exact release.
+U.S. Bureau of Labor Statistics (bls.gov), U.S. Census Bureau (census.gov), and
+the Federal Reserve / FRED, retrieved 2026-09. Each structure in the data file
+names its exact release.
+
+---
+
+*Copyright (C) 2026 MEARVK LLC*
+*Author: Maximilian Eric Alexander Rupplin von Keffikon (Max Rupplin)*

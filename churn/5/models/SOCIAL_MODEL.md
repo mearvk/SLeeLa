@@ -11,28 +11,40 @@ a medium is firm only if it can count itself and measure its own reach.
 [`../data/common-counts.json`](../data/common-counts.json) — counts of the
 United States.
 
+The data file now holds **12 counts** (alphabetized by name); a representative
+selection:
+
 | Count | Value | Kind | Note |
 |---|---:|---|---|
-| US states | 50 | OBSERVED | structural, by admission to the Union |
-| US senators | 100 | OBSERVED | 2 per state, by the Constitution |
-| US House voting members | 435 | OBSERVED | fixed by the Reapportionment Act of 1929 |
-| US electoral votes | 538 | OBSERVED | 435 + 100 + 3 (DC) |
-| US resident population | 331,449,281 | OBSERVED | 2020 Decennial Census |
+| US cabinet executive departments | 15 | OBSERVED | heads form the Cabinet |
+| US constitutional amendments | 27 | OBSERVED | ratified amendments |
 | US counties (and equivalents) | 3,143 | OBSERVED | Census Bureau, 2020 |
+| US electoral votes | 538 | OBSERVED | 435 + 100 + 3 (DC) |
+| US House voting members | 435 | OBSERVED | fixed by the Reapportionment Act of 1929 |
+| US national parks | 63 | OBSERVED | NPS-designated National Parks |
+| US resident population | 331,449,281 | OBSERVED | 2020 Decennial Census |
+| US senators | 100 | OBSERVED | 2 per state, by the Constitution |
+| US states | 50 | OBSERVED | structural, by admission to the Union |
+| US Supreme Court justices | 9 | OBSERVED | Judiciary Act of 1869 |
 
 ## Data — national lengths
 
 [`../data/us-lengths.txt`](../data/us-lengths.txt) — real distances the nation
 spans, in kilometres.
 
+Eleven lengths (alphabetized by name); a representative selection:
+
 | Length | km | Kind | Note |
 |---|---:|---|---|
+| Appalachian Trail | 3,524 | OBSERVED | National Park Service, Georgia to Maine |
+| Colorado River | 2,330 | OBSERVED | USGS main-stem length |
+| Interstate Highway System | 78,465 | OBSERVED | Eisenhower system, approx total route |
+| Mississippi River | 3,766 | OBSERVED | USGS main-stem length |
+| Missouri River | 3,767 | OBSERVED | USGS; longest US river |
+| Pacific Crest Trail | 4,265 | OBSERVED | National Park Service, Mexico to Canada |
+| US total coastline (detailed) | 133,312 | OBSERVED | NOAA detailed tidal shoreline |
 | US–Canada border | 8,891 | OBSERVED | longest international land border (incl. Alaska) |
 | US–Mexico border | 3,145 | OBSERVED | US Customs and Border Protection |
-| US total coastline (detailed) | 133,312 | OBSERVED | NOAA detailed tidal shoreline |
-| Mississippi River | 3,766 | OBSERVED | USGS main-stem length |
-| Interstate Highway System | 78,465 | OBSERVED | Eisenhower system, approx total route |
-| Appalachian Trail | 3,524 | OBSERVED | National Park Service, Georgia to Maine |
 
 ## The three pillars, read through Lines
 
@@ -60,3 +72,8 @@ U.S. primary sources: U.S. Census Bureau (population, counties), U.S. Senate /
 House and the U.S. Constitution (structural counts), U.S. Customs and Border
 Protection (borders), USGS (rivers), and the National Park Service (trails).
 Retrieved 2026-09.
+
+---
+
+*Copyright (C) 2026 MEARVK LLC*
+*Author: Maximilian Eric Alexander Rupplin von Keffikon (Max Rupplin)*

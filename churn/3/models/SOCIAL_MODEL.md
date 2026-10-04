@@ -10,13 +10,18 @@ the **flow and quality** faces the same market shows — turnover, hours, and pa
 [`../data/social-labor-facets.json`](../data/social-labor-facets.json) — dated,
 sourced labor-market facets for the United States.
 
+The data file now holds **8 facets** (alphabetized by facet name):
+
 | Facet | Value | Period | Source |
 |---|---|---|---|
+| Average hourly earnings (private) | ~$35.0 | 2024 | BLS CES |
+| Average weekly hours (private) | 34.3 | 2024 | BLS CES |
+| Hires rate | 3.4% | 2024 | BLS JOLTS |
 | Job openings level | 6.9 million | 2024/25 | BLS JOLTS |
 | Job openings rate | 4.2% | 2024/25 | BLS JOLTS |
+| Layoffs & discharges rate | 1.1% | 2024 | BLS JOLTS |
+| Nonfarm payroll change (monthly) | ~165,000 | 2024 | BLS CES |
 | Quits rate | 2.0% | 2024 | BLS JOLTS |
-| Average weekly hours (private) | 34.3 | 2024 | BLS CES |
-| Average hourly earnings (private) | ~$35.0 | 2024 | BLS CES |
 
 ## What the model is *for*
 
@@ -48,3 +53,8 @@ asserted about any person.
 U.S. Bureau of Labor Statistics — Job Openings and Labor Turnover Survey (JOLTS)
 and Current Employment Statistics (CES), bls.gov, retrieved 2026-09. Each facet
 in the data file names its exact series/release.
+
+---
+
+*Copyright (C) 2026 MEARVK LLC*
+*Author: Maximilian Eric Alexander Rupplin von Keffikon (Max Rupplin)*

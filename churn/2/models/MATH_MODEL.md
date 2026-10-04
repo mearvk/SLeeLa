@@ -13,18 +13,27 @@ the leading terms of several canonical sequences.
 
 | Structure | Symbol | Value (20 sig. figs) | Definition |
 |---|---|---|---|
-| Pi | π | 3.141 592 653 589 793 238 46 | circumference / diameter of a circle |
+| Apéry's constant | ζ(3) | 1.202 056 903 159 594 285 40 | Σ 1/n³ |
+| Catalan's constant | G | 0.915 965 594 177 219 015 05 | Σ (−1)ⁿ/(2n+1)² |
+| Cube root of two | ∛2 | 1.259 921 049 894 873 164 77 | real root of x³ = 2 |
 | Euler's number | e | 2.718 281 828 459 045 235 36 | base of the natural logarithm |
-| Golden ratio | φ | 1.618 033 988 749 894 848 20 | (1 + √5) / 2 |
-| Square root of two | √2 | 1.414 213 562 373 095 048 80 | positive root of x² = 2 |
-| Natural log of two | ln 2 | 0.693 147 180 559 945 309 42 | natural logarithm of 2 |
 | Euler–Mascheroni | γ | 0.577 215 664 901 532 860 61 | lim (harmonic sum − ln n) |
+| Golden ratio | φ | 1.618 033 988 749 894 848 20 | (1 + √5) / 2 |
+| Natural log of two | ln 2 | 0.693 147 180 559 945 309 42 | natural logarithm of 2 |
+| Pi | π | 3.141 592 653 589 793 238 46 | circumference / diameter of a circle |
+| Silver ratio | δ_S | 2.414 213 562 373 095 048 80 | 1 + √2 |
+| Square root of two | √2 | 1.414 213 562 373 095 048 80 | positive root of x² = 2 |
+| Tau (one turn) | τ | 6.283 185 307 179 586 476 92 | 2π, radians in a full turn |
+
+*(11 constants, alphabetized by name; see the data file for the full set.)*
 
 ### Sequences (leading terms)
 
-Fibonacci (A000045), primes (A000040), factorials (A000142), triangular
-(A000217), Catalan (A000108), and powers of two (A000079). Each carries its
-generating rule and its OEIS A-number.
+Eleven canonical sequences, alphabetized by name: Bell numbers (A000110),
+Catalan (A000108), factorials (A000142), Fibonacci (A000045), Lucas numbers
+(A000032), Mersenne primes (A000668), perfect numbers (A000396), powers of two
+(A000079), primes (A000040), square numbers (A000290), and triangular (A000217).
+Each carries its generating rule and its OEIS A-number.
 
 ## The distinction the model keeps
 
@@ -41,3 +50,8 @@ Standard mathematical definitions (public domain); sequence identities
 cross-referenced to the OEIS (On-Line Encyclopedia of Integer Sequences) by
 A-number. These are not "sourced from the internet" in the sense of measured
 data — they are mathematical facts, cited to their canonical reference.
+
+---
+
+*Copyright (C) 2026 MEARVK LLC*
+*Author: Maximilian Eric Alexander Rupplin von Keffikon (Max Rupplin)*

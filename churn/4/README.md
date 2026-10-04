@@ -134,3 +134,8 @@ requirement for Workers, Work and Excellence — Workers**, read through the
 *The areas here are real and sourced. EXACT areas are formula definitions,
 MEASURED areas carry uncertainty, and OBSERVED areas are surveyed/published
 extents. Any relation drawn between areas is a model, not a causal claim.*
+
+---
+
+*Copyright (C) 2026 MEARVK LLC*
+*Author: Maximilian Eric Alexander Rupplin von Keffikon (Max Rupplin)*

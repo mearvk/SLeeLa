@@ -86,3 +86,8 @@ impl/build/sleela run churn/1/relevances.sleela
 *The relevances reported are measured associations over 2019–2024. Direction and
 strength are descriptive; material co-occupation is an interpretation of the
 association, not a causal claim.*
+
+---
+
+*Copyright (C) 2026 MEARVK LLC*
+*Author: Maximilian Eric Alexander Rupplin von Keffikon (Max Rupplin)*

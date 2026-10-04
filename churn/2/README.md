@@ -97,3 +97,8 @@ medium must satisfy — enough **workers**, laying down real **work**, done with
 MEASURED structures carry uncertainty, and OBSERVED structures are published
 figures for a stated period. Any relation drawn between structures is a model,
 not a causal claim.*
+
+---
+
+*Copyright (C) 2026 MEARVK LLC*
+*Author: Maximilian Eric Alexander Rupplin von Keffikon (Max Rupplin)*

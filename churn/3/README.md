@@ -99,3 +99,8 @@ with rising **excellence**.
 derivations, MEASURED facets carry uncertainty, and OBSERVED facets are
 published figures for a stated period. Any relation drawn between facets is a
 model, not a causal claim.*
+
+---
+
+*Copyright (C) 2026 MEARVK LLC*
+*Author: Maximilian Eric Alexander Rupplin von Keffikon (Max Rupplin)*

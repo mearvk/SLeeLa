@@ -112,3 +112,8 @@ Treating the human condition as a product we ship and maintain:
 
 *An opinion about a product's health, computed from stated assumptions. It judges
 processes, not persons, and it is meant to be argued with by editing the datums.*
+
+---
+
+*Copyright (C) 2026 MEARVK LLC*
+*Author: Maximilian Eric Alexander Rupplin von Keffikon (Max Rupplin)*

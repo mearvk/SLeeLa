@@ -91,3 +91,8 @@ impl/build/sleela run churn/1/assumptions/assumptions.sleela
 *These are foundational modelling assumptions, stated to be argued with. The
 moral scores are a transparent function of the assumed inputs, not a judgment of
 any person.*
+
+---
+
+*Copyright (C) 2026 MEARVK LLC*
+*Author: Maximilian Eric Alexander Rupplin von Keffikon (Max Rupplin)*

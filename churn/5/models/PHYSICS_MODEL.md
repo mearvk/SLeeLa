@@ -11,16 +11,24 @@ is *defined* (the metre, the astronomical unit); otherwise it is **MEASURED**
 [`../data/physical-lengths.xml`](../data/physical-lengths.xml) — physical lengths
 in metres, each with its kind and a provenance note.
 
+The data file now holds **13 lengths** (alphabetized by name), spanning a proton
+charge radius to a parsec:
+
 | Name | Value (m) | Kind | Note |
 |---|---:|---|---|
-| metre (SI base unit) | 1 | EXACT | defined via the speed of light and the second |
-| light travels in 1 second | 299,792,458 | EXACT | c is exact by definition |
-| Bohr radius | 5.29177210903×10⁻¹¹ | MEASURED | CODATA atomic length scale |
-| human hair (typical width) | 7.5×10⁻⁵ | OBSERVED | ~50–100 µm |
-| Earth mean radius | 6,371,000 | OBSERVED | IUGG mean radius |
-| Earth equatorial circumference | 40,075,017 | OBSERVED | WGS-84 |
-| Earth–Moon mean distance | 384,400,000 | OBSERVED | NASA mean centre-to-centre |
 | astronomical unit | 149,597,870,700 | EXACT | IAU 2012 exact definition |
+| Bohr radius | 5.29177210903×10⁻¹¹ | MEASURED | CODATA atomic length scale |
+| Earth equatorial circumference | 40,075,017 | OBSERVED | WGS-84 |
+| Earth mean radius | 6,371,000 | OBSERVED | IUGG mean radius |
+| Earth–Moon mean distance | 384,400,000 | OBSERVED | NASA mean centre-to-centre |
+| human hair (typical width) | 7.5×10⁻⁵ | OBSERVED | ~50–100 µm |
+| light travels in 1 second | 299,792,458 | EXACT | c is exact by definition |
+| light-year | 9.4607304725808×10¹⁵ | EXACT | one Julian year of light |
+| metre (SI base unit) | 1 | EXACT | defined via the speed of light and the second |
+| parsec | 3.0856775814914×10¹⁶ | EXACT | IAU 2015 exact definition |
+| proton charge radius | 8.4075×10⁻¹⁶ | MEASURED | CODATA 2022 rms charge radius |
+| Sun equatorial radius | 696,000,000 | OBSERVED | IAU nominal solar radius |
+| to Proxima Centauri | 4.0208×10¹⁶ | OBSERVED | ~4.2465 light-years |
 
 ## The distinction the model keeps
 
@@ -44,3 +52,8 @@ Defined lengths: BIPM SI Brochure (2019) and IAU (2012). Measured lengths:
 CODATA / NIST. Astronomical distances: NASA / IAU. Retrieved 2026-09. Values in
 metres; scientific-notation figures are shown in the data file's XML text (the
 `lines.sleela` model uses plain-decimal Lines so it runs on the current lexer).
+
+---
+
+*Copyright (C) 2026 MEARVK LLC*
+*Author: Maximilian Eric Alexander Rupplin von Keffikon (Max Rupplin)*
