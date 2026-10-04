@@ -1,0 +1,71 @@
+/*
+ * lib/codecs/SLCodecLoader.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines the SLeeLa standard-library type SLCodecLoader used within the codecs library family.
+ */
+#sleela 1.3
+// Unified SLeeLa standard-library front-end object.
+// Family: codecs. The SLeeLa-facing handle to the native Codec Loader /
+// Unloader / Management Controller (codecs/include/sleela_codec_manager.h).
+// SLeeLa calls the Loader -- never an individual codec. The Loader keeps a
+// registry of every codec plugin and a per-codec loaded flag; a program loads a
+// codec by id, decodes/encodes through the Loader, then unloads it.
+//
+// Codec ids mirror sleela_codec_id (0-based, in registry order):
+//   0 PCM_WAV  1 AIFF  2 FLAC  3 ALAC  4 MP3  5 AAC  6 HE_AAC  7 VORBIS
+//   8 OPUS  9 SPEEX  10 WMA  11 AC3  12 EAC3  13 AMR_NB  14 AMR_WB
+//   15 G711_MULAW  16 G711_ALAW  17 MIDI  18 MATROSKA_AUDIO  19 WEBM_AUDIO
+//
+// Handler states: 0 native, 1 backend, 2 recognized, 3 container, 4 event.
+class SLCodecLoader {
+  // Per-codec loaded flag (1 loaded, 0 not), indexed by codec id. Backed by the
+  // first-class array type; call init() before use.
+  int[] loaded;
+
+  // The number of codecs the native manager knows (SLEELA_CODEC_COUNT).
+  int codecCount() { return 20; }
+
+  // Allocate the loaded-flag table with every codec unloaded.
+  void init() { loaded = new int[20]; }
+
+  // load(id): mark a codec loaded. Mirrors sleela_codec_manager_load.
+  void load(int id) { loaded[id] = 1; }
+
+  // unload(id): mark a codec unloaded. Mirrors sleela_codec_manager_unload.
+  void unload(int id) { loaded[id] = 0; }
+
+  boolean isLoaded(int id) { return loaded[id] == 1; }
+
+  // unloadAll(): release every loaded codec. Mirrors sleela_codec_manager_unload_all.
+  void unloadAll() {
+    int i = 0;
+    while (i < 20) { loaded[i] = 0; i = i + 1; }
+  }
+
+  // Human-readable codec name by id, matching the native registry.
+  String nameOf(int id) {
+    if (id == 0) { return "PCM/WAV"; }
+    if (id == 1) { return "AIFF"; }
+    if (id == 2) { return "FLAC"; }
+    if (id == 3) { return "ALAC"; }
+    if (id == 4) { return "MPEG Layer III"; }
+    if (id == 5) { return "AAC"; }
+    if (id == 6) { return "HE-AAC"; }
+    if (id == 7) { return "Ogg Vorbis"; }
+    if (id == 8) { return "Opus"; }
+    if (id == 9) { return "Speex"; }
+    if (id == 10) { return "Windows Media Audio"; }
+    if (id == 11) { return "Dolby Digital AC-3"; }
+    if (id == 12) { return "Dolby Digital Plus"; }
+    if (id == 13) { return "AMR-NB"; }
+    if (id == 14) { return "AMR-WB"; }
+    if (id == 15) { return "G.711 mu-law"; }
+    if (id == 16) { return "G.711 A-law"; }
+    if (id == 17) { return "MIDI"; }
+    if (id == 18) { return "Matroska Audio"; }
+    return "WebM Audio";
+  }
+
+  // Native codecs implement encode/decode in-package; the rest need a backend.
+  boolean isNative(int id) { return id == 0 || id == 15 || id == 16; }
+}
