@@ -101,6 +101,8 @@ outline — and is produced by `tools/logo/Trim.java` from the source artwork in
 
 The title bar and footer retain the dark rich-purple visual language, bright white controls/text, and a clean flat treatment. The settings subframe uses the same purple family rather than introducing a separate theme.
 
+The bottom edge of the title bar is a **living throbber** rather than a static border: a 2px light-blue seam whose brightness breathes lighter and darker. It is repainted ~20 times a second while the terminal is open, driven by an organic algorithm (two incommensurate sine waves plus a small bounded random walk, eased toward each target) so the motion is slow and careful rather than a mechanical pulse. The strip's shade moves between a muted steel blue and an airy light blue. The animation timer is created with the window and removed when the terminal exits or the window closes.
+
 The current GUI displays version `1.0.0`, matching the project's initial SleelaTerminal version baseline. The footer also contains the clickable **CMD** image, representing CMD as the Java native launcher associated with SecureJDK 28. It is rendered as a strict image with no additional footer-button outline.
 
 ## Desktop installation

@@ -1,6 +1,7 @@
 #include <gtk/gtk.h>
 #include <vte/vte.h>
 
+#include <cmath>
 #include <csignal>
 #include <filesystem>
 #include <fstream>
@@ -35,6 +36,15 @@ struct AppState {
     guint footer_tick = 0;
     guint footer_position = 0;
     AppConfig config;
+
+    // Title-bar throbber: a thin living light-blue strip along the bottom of
+    // the title bar (replacing the static border highlight). Its brightness is
+    // advanced ~20x/second by an organic algorithm (see throbber_tick).
+    GtkWidget *throbber = nullptr;
+    guint throbber_tick = 0;
+    double throbber_t = 0.0;       // monotonically advancing time (seconds)
+    double throbber_level = 0.5;   // current brightness in [0,1]
+    double throbber_drift = 0.0;   // slow bounded random-walk component
 };
 
 std::filesystem::path config_path() {
@@ -181,13 +191,19 @@ void install_css() {
 
         window { background: @sl_bg; }
 
-        /* Title bar: flat chrome, a single hairline, no glow. */
+        /* Title bar: flat chrome. The bottom highlight is no longer a static
+           border -- it is the living throbber strip drawn just below the bar
+           (see .sleela-throbber and the 20Hz organic update). A transparent 1px
+           border keeps the bar's height identical to before. */
         headerbar.sleela-titlebar {
             background: @sl_chrome;
             color: @sl_fg;
             min-height: 38px;
-            border-bottom: 1px solid @sl_border;
+            border-bottom: 1px solid transparent;
         }
+        /* The throbber occupies the thin seam between the title bar and the
+           terminal; its colour is painted per-frame by the draw function. */
+        drawingarea.sleela-throbber { background: @sl_chrome; min-height: 2px; }
         headerbar.sleela-titlebar label { color: @sl_fg; font-weight: 600; }
         image.sleela-titlebar-logo { margin-left: 8px; margin-right: 4px; }
         headerbar.sleela-titlebar button.titlebutton {
@@ -735,6 +751,11 @@ void child_exited(VteTerminal *, int, gpointer user_data) {
         g_source_remove(state->footer_tick);
         state->footer_tick = 0;
     }
+    if (state->throbber_tick != 0) {
+        g_source_remove(state->throbber_tick);
+        state->throbber_tick = 0;
+    }
+    state->throbber = nullptr;
     state->child_pid = 0;
     if (state->window != nullptr) {
         GtkApplication *application = gtk_window_get_application(state->window);
@@ -764,9 +785,81 @@ gboolean window_close_request(GtkWindow *window, gpointer user_data) {
         g_source_remove(state->footer_tick);
         state->footer_tick = 0;
     }
+    if (state->throbber_tick != 0) {
+        g_source_remove(state->throbber_tick);
+        state->throbber_tick = 0;
+    }
+    state->throbber = nullptr;
     gtk_window_destroy(window);
     g_application_quit(G_APPLICATION(gtk_window_get_application(window)));
     return TRUE;
+}
+
+// Paint the throbber strip in the current light-blue shade. The brightness
+// `throbber_level` in [0,1] interpolates between a dim and a bright light blue,
+// so the seam breathes rather than flashes.
+void throbber_draw(GtkDrawingArea *, cairo_t *cr, int width, int height, gpointer user_data) {
+    auto *state = static_cast<AppState *>(user_data);
+    const double L = state->throbber_level;  // 0 = dim, 1 = bright
+
+    // Light-blue family. Keep hue stable; move lightness/intensity with L so the
+    // effect reads as the same colour "living" lighter and darker.
+    //   dim   ~ #2d4a6b (muted steel blue, close to the chrome)
+    //   bright~ #9fd4ff (airy light blue)
+    const double r = (0.176 + (0.624 - 0.176) * L);
+    const double g = (0.290 + (0.831 - 0.290) * L);
+    const double b = (0.420 + (1.000 - 0.420) * L);
+
+    cairo_set_source_rgb(cr, r, g, b);
+    cairo_rectangle(cr, 0, 0, width, height);
+    cairo_fill(cr);
+
+    // A soft brighter sheen that glides left<->right with the slow phase, giving
+    // the strip a gentle sense of motion without being a hard scanning bar.
+    const double center = 0.5 + 0.5 * std::sin(state->throbber_t * 0.37);
+    const double cx = center * width;
+    const double radius = (width > 0 ? width : 1) * 0.35;
+    cairo_pattern_t *sheen = cairo_pattern_create_radial(cx, height * 0.5, 0,
+                                                          cx, height * 0.5, radius);
+    cairo_pattern_add_color_stop_rgba(sheen, 0.0, 1.0, 1.0, 1.0, 0.22 * L);
+    cairo_pattern_add_color_stop_rgba(sheen, 1.0, 1.0, 1.0, 1.0, 0.0);
+    cairo_set_source(cr, sheen);
+    cairo_rectangle(cr, 0, 0, width, height);
+    cairo_fill(cr);
+    cairo_pattern_destroy(sheen);
+}
+
+// 20 Hz organic update. Rather than a mechanical sawtooth, the brightness is a
+// blend of two sine waves at incommensurate rates plus a bounded random walk,
+// then eased toward that target. The result drifts and breathes like something
+// alive rather than a fixed loop.
+gboolean throbber_tick(gpointer user_data) {
+    auto *state = static_cast<AppState *>(user_data);
+    if (state->throbber == nullptr) return G_SOURCE_REMOVE;
+
+    const double dt = 1.0 / 20.0;
+    state->throbber_t += dt;
+    const double t = state->throbber_t;
+
+    // Bounded random walk (organic jitter), kept small and self-centering.
+    const double step = (g_random_double() - 0.5) * 0.06;
+    state->throbber_drift = state->throbber_drift * 0.96 + step;
+    if (state->throbber_drift > 0.18) state->throbber_drift = 0.18;
+    if (state->throbber_drift < -0.18) state->throbber_drift = -0.18;
+
+    // Two incommensurate sines so the pattern never repeats on a short cycle.
+    const double breathe = 0.5
+        + 0.30 * std::sin(t * 0.90)
+        + 0.14 * std::sin(t * 1.63 + 0.7);
+    double target = breathe + state->throbber_drift;
+    if (target < 0.08) target = 0.08;
+    if (target > 1.00) target = 1.00;
+
+    // Ease toward the target so each 50 ms step is a careful, smooth move.
+    state->throbber_level += (target - state->throbber_level) * 0.25;
+
+    gtk_widget_queue_draw(state->throbber);
+    return G_SOURCE_CONTINUE;
 }
 
 void activate(GtkApplication *application, gpointer user_data) {
@@ -814,6 +907,18 @@ void activate(GtkApplication *application, gpointer user_data) {
     gtk_window_set_titlebar(state->window, header);
 
     GtkWidget *root = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+
+    // Living throbber strip: a thin drawing area immediately below the title
+    // bar, replacing the old static bottom border. Its light-blue shade is
+    // repainted ~20x/second by throbber_tick while the terminal is open.
+    GtkWidget *throbber = gtk_drawing_area_new();
+    state->throbber = throbber;
+    gtk_widget_add_css_class(throbber, "sleela-throbber");
+    gtk_widget_set_hexpand(throbber, TRUE);
+    gtk_widget_set_size_request(throbber, -1, 2);
+    gtk_drawing_area_set_draw_func(GTK_DRAWING_AREA(throbber), throbber_draw, state, nullptr);
+    gtk_box_append(GTK_BOX(root), throbber);
+
     GtkWidget *terminal = vte_terminal_new();
     state->terminal = VTE_TERMINAL(terminal);
     gtk_widget_set_hexpand(terminal, TRUE);
@@ -881,6 +986,10 @@ void activate(GtkApplication *application, gpointer user_data) {
     // The footer shows a single clear status string; no rotation timer runs.
     state->footer_position = 0;
     state->footer_tick = 0;
+
+    // Drive the throbber at 20 Hz (every 50 ms) for as long as the window lives.
+    // The timer is removed in child_exited / window_close_request.
+    state->throbber_tick = g_timeout_add(50, throbber_tick, state);
 
     std::vector<char *> shell_argv;
     shell_argv.push_back(const_cast<char *>(state->shell_path.c_str()));
