@@ -1,0 +1,23 @@
+/*
+ * lib/opcodes/SLOpBestScore.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLOpBestScore, the single-opcode class for OP_BEST_SCORE (canonical code 83).
+ *
+ * This class carries exactly ONE opcode: OP_BEST_SCORE.
+ * Semantics: push a candidate score.
+ * Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela).
+ *
+ * step() honours the family contract: it first calls the VM to advance to the
+ * next instruction, then executes precisely this one opcode and returns the
+ * next instruction pointer for the following opcode object.
+ *
+ * Family: opcodes. Native VM/OS work crosses an explicit bridge.
+ */
+#sleela 1.3
+// Unified SLeeLa standard-library front-end object.
+class SLOpBestScore extends SLOpcodeBase {
+  static final int CODE = 83;
+  static final String MNEMONIC = "OP_BEST_SCORE";
+
+  void prepare() { configure(CODE, MNEMONIC); }
+}

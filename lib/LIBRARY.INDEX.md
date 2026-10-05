@@ -1,11 +1,17 @@
 # SLeeLa /lib Library Index
 
-**Revision:** 0.8  
-**Packages:** 77  
-**SLeeLa source units:** 10054  
+**Revision:** 0.9  
+**Packages:** 78  
+**SLeeLa source units:** 10159  
 **Module-facade symbols:** 90  
-**Total symbol records:** 10144  
+**Total symbol records:** 10249  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
+
+> Revision 0.9 adds the new `opcodes` package family: one SLeeLa class per
+> canonical VM opcode (103 classes, codes 0–102; the base 98 are OP_NOP..
+> OP_AUDIO_PLATFORM) plus `SLOpcodeBase` and `SLOpcodeStream` — 105 `.sleela`
+> source units. Each class carries a single opcode and honours the fetch-then-
+> execute-one contract against the VM. See `opcodes/OPCODES.md`.
 
 The `/lib` tree is the canonical language-facing source collection. The compiler and Nordshrift use the same recursive library discovery implementation, so a package becomes importable when its directory contains SLeeLa source.
 

@@ -28,9 +28,25 @@ The GUI invokes the native command adapter rather than pretending that JavaFX it
 
 Live-device capture, non-WAV codecs, DSP EQ, audio analysis, video frames, and platform-specific capture remain explicit adapters. Unsupported capabilities are rejected or remain unavailable rather than being simulated as completed native functionality.
 
+# SLeeLa Native Opcode Bridge
+
+C++17 fetch/dispatch primitives behind the `lib/opcodes` single-opcode classes.
+
+- Stable C ABI in `include/sleela_opcode.h`.
+- Canonical mnemonic table of all **103 opcodes** (codes 0–102; base 98 at 0–97).
+- `sleela_opcode_vm_next` — the fetch (advance the instruction pointer).
+- `sleela_opcode_execute_one` — dispatch exactly one opcode.
+- Unknown opcodes are rejected (never a silent no-op); `OP_HALT` stops the stream.
+
+The authoritative execution semantics remain in `/impl/core`; this bridge models
+the same one-op-at-a-time discipline so a SLeeLa opcode object can request the
+fetch and then its single dispatch.
+
 ## Build
 
 ```sh
 make
 make test
 ```
+
+`make test` builds and self-tests the audio and opcode bridges.
