@@ -59,6 +59,23 @@ host and adjusts link flags per platform.
   editorializing "Socialism Status" into a neutral, sourced **Constitutional
   Socialism Reference** indicator (`CONSTITUTIONAL` / `NONE` / `UNASSESSED`,
   nothing invented). See [`SOCIALISM.md`](SOCIALISM.md).
+- **Native-code correctness & portability:** fixed genuine defects surfaced by
+  the translation-unit audit — duplicate `typedef`s in the debugger C ABI
+  header, a C++/C struct field-name mismatch in the audio bridge, invalid
+  single-`auto` declarations in the decompiler, missing extensibility headers,
+  and missing POSIX feature-test macros. The grade-1/2/3 HTTP servers now carry
+  Windows (Win32/Winsock) guards and bind `std::filesystem::path` elements by
+  `const` reference so the macOS/clang build is clean.
+- **Self-contained HTTP/2 build:** the HTTP/2 server builds the committed
+  [`include/nghttp2-1.70.0.zip`](include/) into a static `libnghttp2.a` and
+  links it directly, so the build no longer depends on a system-installed
+  `libnghttp2`.
+- **Standalone translation-unit audit:** `test-suites/run-all.sh --audit`
+  compiles every authored C/C++ unit on its own under a strict `-Werror`
+  warning set, with include resolution that mirrors the per-module Makefiles and
+  with foreign-OS-SDK units (macOS CoreAudio, the Windows SDK, GTK) reported as
+  SKIP. See [`TESTING.md`](TESTING.md) and
+  [`test-suites/README.md`](test-suites/README.md).
 
 - The working implementation lives under [`impl/`](impl/) — see
   [`impl/README.md`](impl/README.md) for the full guide, and
