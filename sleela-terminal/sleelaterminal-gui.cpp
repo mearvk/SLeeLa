@@ -189,6 +189,7 @@ void install_css() {
             border-bottom: 1px solid @sl_border;
         }
         headerbar.sleela-titlebar label { color: @sl_fg; font-weight: 600; }
+        image.sleela-titlebar-logo { margin-left: 8px; margin-right: 4px; }
         headerbar.sleela-titlebar button.titlebutton {
             color: @sl_fg;
             background: alpha(@sl_fg, 0.08);
@@ -735,6 +736,17 @@ void activate(GtkApplication *application, gpointer user_data) {
     GtkWidget *header = gtk_header_bar_new();
     gtk_widget_add_css_class(header, "sleela-titlebar");
     gtk_header_bar_set_show_title_buttons(GTK_HEADER_BAR(header), TRUE);
+
+    // Brand logo in the upper-left of the title bar. The asset is pre-trimmed
+    // to the logo's minimum 2D content box with a transparent background (see
+    // tools/logo/Trim.java), so it sits flush at the left with no surrounding
+    // whitespace. Packed first so it is the leftmost title-bar element.
+    GtkWidget *logo = gtk_image_new_from_file(asset_path(state, "titlebar-logo.png").c_str());
+    gtk_image_set_pixel_size(GTK_IMAGE(logo), 22);
+    gtk_widget_add_css_class(logo, "sleela-titlebar-logo");
+    gtk_widget_set_valign(logo, GTK_ALIGN_CENTER);
+    gtk_widget_set_tooltip_text(logo, "SleelaTerminal™ — Debian / Windows Terminal");
+    gtk_header_bar_pack_start(GTK_HEADER_BAR(header), logo);
 
     GtkWidget *settings = gtk_button_new();
     GtkWidget *settings_image = gtk_image_new_from_icon_name("open-menu-symbolic");

@@ -92,9 +92,16 @@ The application window is branded:
 SleelaTerminal™ — MEARVK LLC
 ```
 
-The title bar and footer retain the dark rich-purple visual language, bright white controls/text, and three-dimensional highlight treatment. The settings popover uses the same purple family rather than introducing a separate theme.
+The upper-left of the title bar carries the SleelaTerminal brand logo (the
+Debian/Windows-terminal mark). The asset is pre-trimmed to the logo's minimum
+2D content bounding box with a transparent background, so it sits flush at the
+left edge with no surrounding whitespace. It is a strict image — no button
+outline — and is produced by `tools/logo/Trim.java` from the source artwork in
+`images/`.
 
-The current GUI displays version `1.0.0`, matching the project's initial SleelaTerminal version baseline.\n\nThe footer also contains the clickable **CMD** image, representing CMD as the Java native launcher associated with SecureJDK 28. It is rendered as a strict image with no additional footer-button outline.
+The title bar and footer retain the dark rich-purple visual language, bright white controls/text, and a clean flat treatment. The settings popover uses the same purple family rather than introducing a separate theme.
+
+The current GUI displays version `1.0.0`, matching the project's initial SleelaTerminal version baseline. The footer also contains the clickable **CMD** image, representing CMD as the Java native launcher associated with SecureJDK 28. It is rendered as a strict image with no additional footer-button outline.
 
 ## Desktop installation
 
