@@ -235,46 +235,57 @@ void install_css() {
         drawingarea.sleela-throbber { background: @sl_chrome; min-height: 2px; }
         headerbar.sleela-titlebar label { color: @sl_fg; font-weight: 600; }
         image.sleela-titlebar-logo { margin-left: 8px; margin-right: 4px; }
-        /* Window controls (close / minimize / maximize). These are native GTK
-           title buttons. On the dark purple chrome the default symbolic glyphs
-           can read dim, so light them up: a visible circular button with a
-           bright, fully-opaque white icon, so each control is clearly legible. */
+        /* Window controls (close / minimize / maximize). In GTK 4 these are
+           native title buttons under a `windowcontrols` node, and the symbolic
+           glyph is recoloured by the `color` property ON THE BUTTON (not a
+           child image). We therefore set `color` on the button itself, and also
+           on the inner .icon/image node as belt-and-suspenders. The whole block
+           is loaded at USER provider priority so it beats the system theme. */
+        windowcontrols > button.titlebutton,
+        headerbar.sleela-titlebar windowcontrols > button.titlebutton,
         headerbar.sleela-titlebar button.titlebutton {
-            color: @sl_fg;
-            background: alpha(@sl_fg, 0.14);
-            border: 1px solid alpha(@sl_fg, 0.28);
+            color: @sl_fg;                 /* recolours the symbolic glyph */
+            background: alpha(@sl_fg, 0.16);
+            border: 1px solid alpha(@sl_fg, 0.35);
             border-radius: 50%;
-            min-width: 24px;
-            min-height: 24px;
+            min-width: 22px;
+            min-height: 22px;
             margin: 0 3px;
             padding: 0;
-            transition: background 120ms ease, border-color 120ms ease;
+            -gtk-icon-shadow: none;
+            transition: background 120ms ease, border-color 120ms ease, color 120ms ease;
         }
-        /* Make the symbolic glyph itself bright and fully opaque -- this is what
-           "lights" the close/min/max icons against the chrome. */
-        headerbar.sleela-titlebar button.titlebutton image,
-        headerbar.sleela-titlebar button.titlebutton > image {
+        /* Belt-and-suspenders: force the inner glyph node bright and opaque. */
+        windowcontrols > button.titlebutton > image,
+        windowcontrols > button.titlebutton image,
+        headerbar.sleela-titlebar button.titlebutton image {
             color: @sl_fg;
             opacity: 1;
             -gtk-icon-size: 16px;
         }
+        windowcontrols > button.titlebutton:hover,
         headerbar.sleela-titlebar button.titlebutton:hover {
-            background: alpha(@sl_fg, 0.26);
-            border-color: alpha(@sl_fg, 0.55);
+            background: alpha(@sl_fg, 0.30);
+            border-color: alpha(@sl_fg, 0.65);
+            color: @sl_fg;
         }
-        headerbar.sleela-titlebar button.titlebutton:active { background: alpha(@sl_fg, 0.36); }
+        windowcontrols > button.titlebutton:active,
+        headerbar.sleela-titlebar button.titlebutton:active { background: alpha(@sl_fg, 0.42); }
+        windowcontrols > button.titlebutton:focus,
         headerbar.sleela-titlebar button.titlebutton:focus { outline: 2px solid @sl_accent; outline-offset: -2px; }
-        /* Close is the one control that gets a colour: a clear red on hover so
-           it is unmistakable, with its glyph forced bright white. */
+        /* Close: a clear red resting tint, solid red on hover, glyph stays white. */
+        windowcontrols > button.titlebutton.close,
         headerbar.sleela-titlebar button.titlebutton.close {
-            background: alpha(#ff5f57, 0.22);
-            border-color: alpha(#ff5f57, 0.55);
+            background: alpha(#ff5f57, 0.28);
+            border-color: alpha(#ff5f57, 0.65);
+            color: @sl_fg;
         }
+        windowcontrols > button.titlebutton.close:hover,
         headerbar.sleela-titlebar button.titlebutton.close:hover {
             background: #ff5f57;
             border-color: #ff5f57;
+            color: #ffffff;
         }
-        headerbar.sleela-titlebar button.titlebutton.close image { color: @sl_fg; opacity: 1; }
 
         /* Settings (gear) button: a quiet, flat affordance. No resting
            background or border -- the icon alone sits in the bar; it reveals a
@@ -361,9 +372,13 @@ void install_css() {
 
     GtkCssProvider *provider = gtk_css_provider_new();
     gtk_css_provider_load_from_string(provider, css);
+    // Use USER priority (above the system theme) so our window-control and
+    // chrome rules actually win over the installed GTK theme -- at APPLICATION
+    // priority the theme's more specific `windowcontrols` selectors override
+    // our colours and the control icons never changed.
     gtk_style_context_add_provider_for_display(
         gdk_display_get_default(), GTK_STYLE_PROVIDER(provider),
-        GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+        GTK_STYLE_PROVIDER_PRIORITY_USER);
     g_object_unref(provider);
 }
 
