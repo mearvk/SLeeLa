@@ -101,13 +101,19 @@ bool readByte(char& c) {
     }
 }
 
+// Read one input line. `eof` is set to true when the input stream is closed
+// (non-tty EOF, Ctrl+D on an empty line, or a read failure) so the caller can
+// terminate the REPL instead of spinning on repeated empty results. A Ctrl+C
+// cancel is NOT end-of-input: it returns an empty line with eof left false.
 std::string readInteractiveLine(const std::string& prompt,
-                                std::vector<std::string>& history) {
+                                std::vector<std::string>& history,
+                                bool& eof) {
+    eof = false;
     RawMode raw;
     if (!raw.active()) {
         std::string line;
         std::cout << prompt << std::flush;
-        if (!std::getline(std::cin, line)) return {};
+        if (!std::getline(std::cin, line)) { eof = true; return {}; }
         return line;
     }
 
@@ -120,14 +126,14 @@ std::string readInteractiveLine(const std::string& prompt,
     writeBytes(prompt);
     for (;;) {
         char c = 0;
-        if (!readByte(c)) return {};
+        if (!readByte(c)) { eof = true; return {}; }
 
         if (c == '\n' || c == '\r') {
             writeBytes("\r\n");
             return line;
         }
 
-        if (c == 0x03) { // Ctrl+C: cancel the current input line.
+        if (c == 0x03) { // Ctrl+C: cancel the current input line (not EOF).
             writeBytes("^C\r\n");
             return {};
         }
@@ -135,6 +141,7 @@ std::string readInteractiveLine(const std::string& prompt,
         if (c == 0x04) { // Ctrl+D: exit on an empty input line.
             if (line.empty()) {
                 writeBytes("\r\n");
+                eof = true;
                 return {};
             }
             continue;
@@ -169,9 +176,9 @@ std::string readInteractiveLine(const std::string& prompt,
 
         if (c == '\x1b') {
             char a = 0, b = 0;
-            if (!readByte(a)) return {};
+            if (!readByte(a)) { eof = true; return {}; }
             if (a != '[' && a != 'O') continue;
-            if (!readByte(b)) return {};
+            if (!readByte(b)) { eof = true; return {}; }
 
             if (b == 'A') { // Up: history previous
                 if (!history.empty() && history_index > 0) {
@@ -353,11 +360,13 @@ int repl(Environment& env) {
     std::cout << "SleelaTerminal(TM) slsh -- original SLeeLa shell. Type 'exit' to leave.\n";
 
     for (;;) {
-        const std::string line = readInteractiveLine(env.prompt(), history);
+        bool eof = false;
+        const std::string line = readInteractiveLine(env.prompt(), history, eof);
         if (g_interrupted) {
             g_interrupted = 0;
             continue;
         }
+        if (eof) return env.exitCode();
         if (line.empty()) continue;
 
         if (history.empty() || history.back() != line) history.push_back(line);
@@ -389,5 +398,14 @@ int main(int argc, char** argv) {
         return runScript(ss.str(), env);
     }
 
-    return repl(env);
+    // No script argument: if stdin is a terminal, run the interactive REPL;
+    // otherwise stdin is a pipe/file, so read it in full and run it as a
+    // non-interactive script -- no banner, no prompts -- matching standard
+    // shell behaviour (`echo cmd | slsh`).
+    if (::isatty(STDIN_FILENO)) {
+        return repl(env);
+    }
+
+    std::ostringstream ss; ss << std::cin.rdbuf();
+    return runScript(ss.str(), env);
 }

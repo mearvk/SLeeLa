@@ -166,8 +166,25 @@ bool lex(const std::string& src, std::vector<Token>& out, LexError& err) {
         // '{' here is structural.
         if (c == '(') { push(Tok::LParen, "(", line, col); adv(); continue; }
         if (c == ')') { push(Tok::RParen, ")", line, col); adv(); continue; }
-        if (c == '{') { push(Tok::LBrace, "{", line, col); adv(); continue; }
-        if (c == '}') { push(Tok::RBrace, "}", line, col); adv(); continue; }
+        // '{' / '}' are structural (brace group `{ cmd; }` / function body) only
+        // when they stand alone -- i.e. followed by whitespace, end-of-input, or
+        // an operator. When immediately followed by word content (e.g. `{a,b}`,
+        // `{m..n}`), the brace begins an ordinary word so that brace expansion
+        // in the L4 layer can act on it. This mirrors the test used inside the
+        // word loop below for a word-initial brace.
+        if (c == '{' || c == '}') {
+            const char after = (i + 1 < n) ? src[i + 1] : '\0';
+            const bool standalone = (after == '\0' || after == ' ' || after == '\t' ||
+                                     after == '\n' || after == '\r' || after == ';' ||
+                                     after == '|' || after == '&');
+            if (standalone) {
+                push(c == '{' ? Tok::LBrace : Tok::RBrace,
+                     std::string(1, c), line, col);
+                adv();
+                continue;
+            }
+            // not standalone -> fall through to the word scanner below
+        }
 
         // a word (possibly with quoted spans), read until a delimiter
         const int wline = line, wcol = col;

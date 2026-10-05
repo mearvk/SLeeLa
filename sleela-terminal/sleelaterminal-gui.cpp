@@ -143,86 +143,120 @@ void apply_terminal_style(AppState *state) {
     if (!parse_rgba(state->config.foreground, foreground)) {
         gdk_rgba_parse(&foreground, "#FFFFFF");
     }
-    gdk_rgba_parse(&background, "#111111");
-    vte_terminal_set_colors(state->terminal, &foreground, &background, nullptr, 0);
+    // Terminal background matches the window background (@sl_bg) so the terminal
+    // reads as one surface with the chrome rather than a separate near-black
+    // rectangle. See UI-PRINCIPLES.md (principle 2).
+    gdk_rgba_parse(&background, "#15101c");
+
+    // A 16-colour ANSI palette tuned to the dark-purple theme: slightly warmer
+    // and less saturated than raw VTE defaults so output is legible and calm on
+    // the @sl_bg background without clashing with the purple frame.
+    static const char *const kPalette[16] = {
+        "#1b1526", "#e06c75", "#8fcf8f", "#e5c07b", // black, red, green, yellow
+        "#8f9ff0", "#c58af0", "#6fd0d8", "#cfcad8", // blue, magenta, cyan, white
+        "#4a4160", "#ff8a93", "#b0e0b0", "#f2d79a", // bright black..yellow
+        "#aab6ff", "#d9b0ff", "#9fe6ec", "#ffffff"  // bright blue..white
+    };
+    GdkRGBA palette[16];
+    for (int i = 0; i < 16; ++i) gdk_rgba_parse(&palette[i], kPalette[i]);
+    vte_terminal_set_colors(state->terminal, &foreground, &background, palette, 16);
 }
 
 void install_css() {
+    // One palette, one source of truth (see UI-PRINCIPLES.md). Every colour
+    // below is a named token; selectors never carry raw hex values. The window
+    // and terminal share @sl_bg so the terminal does not float as a separate
+    // near-black rectangle inside the purple chrome.
+    //
+    // NOTE: this is a C++ raw string literal; newlines here are real newlines.
+    // Never write the two characters backslash-n inside it -- GTK's CSS parser
+    // rejects the stray backslash and drops the rest of the rule.
     const char *css = R"CSS(
-        window { background: #111111; }
+        @define-color sl_bg          #15101c;
+        @define-color sl_surface     #21112f;
+        @define-color sl_chrome      #24103f;
+        @define-color sl_border      #7f56aa;
+        @define-color sl_fg          #ffffff;
+        @define-color sl_accent      #9d6cff;
+
+        window { background: @sl_bg; }
+
+        /* Title bar: flat chrome, a single hairline, no glow. */
         headerbar.sleela-titlebar {
-            background: #24103f;
-            color: #ffffff;
+            background: @sl_chrome;
+            color: @sl_fg;
             min-height: 38px;
-            border-bottom: 1px solid #3f2463;
+            border-bottom: 1px solid @sl_border;
         }
-        headerbar.sleela-titlebar label { color: #ffffff; font-weight: 700; }
+        headerbar.sleela-titlebar label { color: @sl_fg; font-weight: 600; }
+        image.sleela-titlebar-logo { margin-left: 8px; margin-right: 4px; }
         headerbar.sleela-titlebar button.titlebutton {
-            color: #ffffff;
-            background: rgba(255, 255, 255, 0.18);
-            -gtk-icon-style: symbolic;
-            -gtk-icon-shadow: 0 0 4px rgba(255, 255, 255, 1);
-            min-width: 36px;
+            color: @sl_fg;
+            background: alpha(@sl_fg, 0.08);
+            min-width: 32px;
             min-height: 32px;
-            opacity: 1;
-            transition: 150ms ease-in-out;
+            transition: background 120ms ease;
         }
-        headerbar.sleela-titlebar button.titlebutton image {
-            color: #ffffff;
-            opacity: 1;
-            -gtk-icon-shadow: 0 0 4px rgba(255, 255, 255, 1);
-        }
-        headerbar.sleela-titlebar button.titlebutton:hover,
-        headerbar.sleela-titlebar button.titlebutton:focus {
-            color: #ffffff;
-            background: rgba(255, 255, 255, 0.34);
-            -gtk-icon-shadow: 0 0 7px rgba(255, 255, 255, 1);
-        }
-        headerbar.sleela-titlebar button.titlebutton:active {
-            color: #ffffff;
-            background: rgba(255, 255, 255, 0.44);
-            -gtk-icon-shadow: 0 0 8px rgba(255, 255, 255, 1);
-        }
+        headerbar.sleela-titlebar button.titlebutton:hover { background: alpha(@sl_fg, 0.16); }
+        headerbar.sleela-titlebar button.titlebutton:active { background: alpha(@sl_fg, 0.24); }
+        headerbar.sleela-titlebar button.titlebutton:focus { outline: 2px solid @sl_accent; outline-offset: -2px; }
+
+        /* Footer: flat chrome bar matching the title bar, one hairline on top. */
         box.sleela-footer {
             min-height: 38px;
-            background: linear-gradient(to bottom, #5b2f88, #3a1d5c 48%, #2a1644);
-            border-top: 1px solid #7f56aa;
-            border-bottom: 1px solid #160d24;
-            box-shadow: inset 0 1px rgba(255, 255, 255, 0.28), inset 0 -2px rgba(0, 0, 0, 0.42);
+            background: @sl_chrome;
+            border-top: 1px solid @sl_border;
         }
-        box.sleela-footer label {
-            color: #ffffff;
-            font-weight: 600;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
-        }
+        box.sleela-footer label { color: @sl_fg; font-weight: 600; }
         label.sleela-footer-brand { font-weight: 800; letter-spacing: 0.5px; }
-        label.sleela-footer-separator { color: rgba(255, 255, 255, 0.42); padding-left: 6px; padding-right: 6px; }
+        label.sleela-footer-separator { color: alpha(@sl_fg, 0.42); padding-left: 8px; padding-right: 8px; }
         label.sleela-footer-ticker { padding-left: 8px; padding-right: 8px; }
-        button.sleela-footer-java { min-width:34px; min-height:34px; padding:0; margin:0 5px; background:transparent; border:none; box-shadow:none; border-radius:0; outline:none; }
-        button.sleela-footer-java:hover, button.sleela-footer-java:focus, button.sleela-footer-java:active { background:transparent; border:none; box-shadow:none; outline:none; }
-        button.sleela-footer-java image { background:transparent; border:none; box-shadow:none; }
-        window.sleela-installer { background: #21112f; color: #ffffff; }\n        window.sleela-installer label { color: #ffffff; }\n        popover.sleela-software contents { background:linear-gradient(to bottom,#321a4d,#21112f); border:1px solid #7f56aa; }
-        popover.sleela-software label { color:#ffffff; }
-        popover.sleela-software button { color:#ffffff; background:rgba(255,255,255,.08); min-width:260px; min-height:32px; text-align:left; }
-        popover.sleela-software button:hover { background:rgba(255,255,255,.18); }
-        label.sleela-software-note { color:rgba(255,255,255,.72); font-size:.9em; }
-        textview.sleela-scan-output { color:#ffffff; background:#130d1c; }
-        popover.sleela-settings contents {
-            background: linear-gradient(to bottom, #321a4d, #21112f);
-            border: 1px solid #7f56aa;
+        button.sleela-footer-java {
+            min-width: 32px; min-height: 32px; padding: 0; margin: 0 8px;
+            background: transparent; border: none; box-shadow: none; border-radius: 0;
         }
-        popover.sleela-settings label { color: #ffffff; }
-        popover.sleela-settings label.section { font-weight: 800; margin-top: 5px; }
+        button.sleela-footer-java:hover,
+        button.sleela-footer-java:active { background: transparent; border: none; box-shadow: none; }
+        button.sleela-footer-java:focus { outline: 2px solid @sl_accent; outline-offset: -2px; }
+        button.sleela-footer-java image { background: transparent; border: none; box-shadow: none; }
+
+        /* Shared surface styling for popovers and dialogs. */
+        window.sleela-installer { background: @sl_surface; color: @sl_fg; }
+        window.sleela-installer label { color: @sl_fg; }
+
+        popover.sleela-software contents,
+        popover.sleela-settings contents {
+            background: @sl_surface;
+            border: 1px solid @sl_border;
+        }
+        popover.sleela-software label,
+        popover.sleela-settings label { color: @sl_fg; }
+        popover.sleela-settings label.section { font-weight: 800; margin-top: 8px; }
+
+        popover.sleela-software button,
         popover.sleela-settings button {
-            color: #ffffff;
-            background: rgba(255, 255, 255, 0.08);
-            min-width: 250px;
+            color: @sl_fg;
+            background: alpha(@sl_fg, 0.08);
+            min-width: 260px;
             min-height: 32px;
             text-align: left;
+            transition: background 120ms ease;
         }
-        popover.sleela-settings button:hover { background: rgba(255, 255, 255, 0.18); }
+        popover.sleela-software button:hover,
+        popover.sleela-settings button:hover { background: alpha(@sl_fg, 0.16); }
+        popover.sleela-software button:focus,
+        popover.sleela-settings button:focus { outline: 2px solid @sl_accent; outline-offset: -2px; }
+
+        /* The single suggested action uses the accent; nothing else does. */
+        button.suggested-action { background: @sl_accent; color: @sl_fg; }
+        button.suggested-action:hover { background: shade(@sl_accent, 1.12); }
+
+        textview.sleela-scan-output { color: @sl_fg; background: @sl_bg; }
+
+        /* Secondary / explanatory notes: one dim colour, slightly smaller. */
+        label.sleela-software-note,
         label.sleela-trust-note {
-            color: rgba(255, 255, 255, 0.70);
+            color: alpha(@sl_fg, 0.70);
             font-size: 0.9em;
         }
     )CSS";
@@ -268,11 +302,11 @@ void make_settings_menu(AppState *state, GtkWidget *settings_button_widget) {
     gtk_widget_set_parent(GTK_WIDGET(popover), settings_button_widget);
     gtk_popover_set_has_arrow(popover, TRUE);
 
-    GtkWidget *box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
+    GtkWidget *box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 6);
     gtk_widget_set_margin_start(box, 12);
     gtk_widget_set_margin_end(box, 12);
-    gtk_widget_set_margin_top(box, 10);
-    gtk_widget_set_margin_bottom(box, 10);
+    gtk_widget_set_margin_top(box, 12);
+    gtk_widget_set_margin_bottom(box, 12);
 
     GtkWidget *title = gtk_label_new("SleelaTerminal Settings");
     gtk_widget_add_css_class(title, "heading");
@@ -425,7 +459,7 @@ void make_software_menu(AppState *state, GtkWidget *anchor) {
     gtk_widget_set_parent(GTK_WIDGET(popover), anchor);
     GtkWidget *box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 6);
     gtk_widget_set_margin_start(box, 12); gtk_widget_set_margin_end(box, 12);
-    gtk_widget_set_margin_top(box, 10); gtk_widget_set_margin_bottom(box, 10);
+    gtk_widget_set_margin_top(box, 12); gtk_widget_set_margin_bottom(box, 12);
     GtkWidget *title = gtk_label_new("SecureJDK 28 / CMD Software Center");
     gtk_widget_add_css_class(title, "heading"); gtk_widget_set_halign(title, GTK_ALIGN_START); gtk_box_append(GTK_BOX(box), title);
     GtkWidget *note = gtk_label_new("Scan the configured GitHub source for release state, then explicitly install or prepare the latest source. Alpha/pre-release and final states are reported separately.");
@@ -464,11 +498,11 @@ void show_install_prompt(AppState *state, GtkWidget *, const char *product, cons
     gtk_window_set_modal(GTK_WINDOW(dialog), TRUE);
     gtk_window_set_transient_for(GTK_WINDOW(dialog), state->window);
 
-    GtkWidget *box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
-    gtk_widget_set_margin_start(box, 22);
-    gtk_widget_set_margin_end(box, 22);
-    gtk_widget_set_margin_top(box, 20);
-    gtk_widget_set_margin_bottom(box, 20);
+    GtkWidget *box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 12);
+    gtk_widget_set_margin_start(box, 16);
+    gtk_widget_set_margin_end(box, 16);
+    gtk_widget_set_margin_top(box, 16);
+    gtk_widget_set_margin_bottom(box, 16);
 
     GtkWidget *title = gtk_label_new("CMD / Java Program Installer");
     gtk_widget_add_css_class(title, "heading");
@@ -513,10 +547,10 @@ void show_install_prompt(AppState *state, GtkWidget *, const char *product, cons
         gtk_window_set_transient_for(GTK_WINDOW(result_window), p->state->window);
 
         GtkWidget *box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 8);
-        gtk_widget_set_margin_start(box, 14);
-        gtk_widget_set_margin_end(box, 14);
-        gtk_widget_set_margin_top(box, 14);
-        gtk_widget_set_margin_bottom(box, 14);
+        gtk_widget_set_margin_start(box, 16);
+        gtk_widget_set_margin_end(box, 16);
+        gtk_widget_set_margin_top(box, 16);
+        gtk_widget_set_margin_bottom(box, 16);
 
         GtkWidget *title = gtk_label_new(("Installing " + p->display_name).c_str());
         gtk_widget_set_halign(title, GTK_ALIGN_START);
@@ -641,25 +675,12 @@ void terminal_mouse_menu(GtkGestureClick *gesture, int, double, double, gpointer
 }
 
 const std::vector<std::string> &footer_messages() {
+    // A single, static status line. The footer is a calm frame, not a ticker:
+    // moving text competes with terminal output. See UI-PRINCIPLES.md (6).
     static const std::vector<std::string> messages = {
-        "SleelaTerminal™ 1.0.0  •  Terminal Ready",
-        "SLeeLa  •  Secure Shell Interface  •  MEARVK LLC",
-        "M1–M5 Shell Architecture  •  GTK 4  •  VTE",
-        "Status  •  Interactive terminal session active",
-        "Orientation  •  Local configuration  •  Human-readable declarations"
+        "Secure Shell Interface  •  Interactive session"
     };
     return messages;
-}
-
-gboolean footer_tick(gpointer user_data) {
-    auto *state = static_cast<AppState *>(user_data);
-    if (state->footer_text == nullptr) return G_SOURCE_CONTINUE;
-    const auto &messages = footer_messages();
-    if (messages.empty()) return G_SOURCE_CONTINUE;
-    const std::string &message = messages[state->footer_position % messages.size()];
-    gtk_label_set_text(state->footer_text, message.c_str());
-    state->footer_position = (state->footer_position + 1) % messages.size();
-    return G_SOURCE_CONTINUE;
 }
 
 void child_exited(VteTerminal *, int, gpointer user_data) {
@@ -716,6 +737,17 @@ void activate(GtkApplication *application, gpointer user_data) {
     gtk_widget_add_css_class(header, "sleela-titlebar");
     gtk_header_bar_set_show_title_buttons(GTK_HEADER_BAR(header), TRUE);
 
+    // Brand logo in the upper-left of the title bar. The asset is pre-trimmed
+    // to the logo's minimum 2D content box with a transparent background (see
+    // tools/logo/Trim.java), so it sits flush at the left with no surrounding
+    // whitespace. Packed first so it is the leftmost title-bar element.
+    GtkWidget *logo = gtk_image_new_from_file(asset_path(state, "titlebar-logo.png").c_str());
+    gtk_image_set_pixel_size(GTK_IMAGE(logo), 22);
+    gtk_widget_add_css_class(logo, "sleela-titlebar-logo");
+    gtk_widget_set_valign(logo, GTK_ALIGN_CENTER);
+    gtk_widget_set_tooltip_text(logo, "SleelaTerminal™ — Debian / Windows Terminal");
+    gtk_header_bar_pack_start(GTK_HEADER_BAR(header), logo);
+
     GtkWidget *settings = gtk_button_new();
     GtkWidget *settings_image = gtk_image_new_from_icon_name("open-menu-symbolic");
     gtk_button_set_child(GTK_BUTTON(settings), settings_image);
@@ -754,7 +786,7 @@ void activate(GtkApplication *application, gpointer user_data) {
 
     GtkWidget *brand = gtk_label_new("SLeeLa");
     gtk_widget_add_css_class(brand, "sleela-footer-brand");
-    gtk_widget_set_margin_start(brand, 14);
+    gtk_widget_set_margin_start(brand, 12);
     gtk_widget_set_margin_end(brand, 4);
     gtk_widget_set_valign(brand, GTK_ALIGN_CENTER);
     gtk_box_append(GTK_BOX(footer), brand);
@@ -778,12 +810,12 @@ void activate(GtkApplication *application, gpointer user_data) {
     gtk_widget_add_css_class(java_button, "sleela-footer-java");
     gtk_widget_set_tooltip_text(java_button, "CMD — Java native launcher / SecureJDK 28 software center");
     GtkWidget *java_image = gtk_image_new_from_file(asset_path(state, "cmd.svg").c_str());
-    gtk_image_set_pixel_size(GTK_IMAGE(java_image), 30); gtk_button_set_child(GTK_BUTTON(java_button), java_image);
+    gtk_image_set_pixel_size(GTK_IMAGE(java_image), 24); gtk_button_set_child(GTK_BUTTON(java_button), java_image);
     g_object_set_data(G_OBJECT(java_button), "sleela-state", state); g_signal_connect(java_button, "clicked", G_CALLBACK(open_software_menu), java_button); gtk_box_append(GTK_BOX(footer), java_button);
 
     GtkWidget *status = gtk_label_new(kVersion);
     gtk_widget_set_margin_start(status, 8);
-    gtk_widget_set_margin_end(status, 14);
+    gtk_widget_set_margin_end(status, 12);
     gtk_widget_set_valign(status, GTK_ALIGN_CENTER);
     gtk_box_append(GTK_BOX(footer), status);
 
@@ -792,8 +824,11 @@ void activate(GtkApplication *application, gpointer user_data) {
     g_signal_connect(terminal, "child-exited", G_CALLBACK(child_exited), state);
     g_signal_connect(state->window, "close-request", G_CALLBACK(window_close_request), state);
 
-    state->footer_position = 1;
-    state->footer_tick = g_timeout_add(5000, footer_tick, state);
+    // Resting-state status is static: moving/scrolling text competes with the
+    // terminal content, which is the hero. See UI-PRINCIPLES.md (principle 6).
+    // The footer shows a single clear status string; no rotation timer runs.
+    state->footer_position = 0;
+    state->footer_tick = 0;
 
     std::vector<char *> shell_argv;
     shell_argv.push_back(const_cast<char *>(state->shell_path.c_str()));
