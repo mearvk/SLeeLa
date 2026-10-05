@@ -1,4 +1,19 @@
 #include "http_server.h"
+#if defined(_WIN32) || defined(_WIN64)
+// The grade-1 HTTP server is implemented directly against the POSIX sockets
+// API (netinet/in.h, sys/socket.h, poll.h, send(MSG_NOSIGNAL), SIGINT/SIGTERM).
+// On Windows the OS-aware layer uses Winsock2, which is a different surface, so
+// this grade is not available on the Win32 backend. The entry point is still
+// provided so the runtime links and reports the limitation at runtime rather
+// than failing to build. See impl/core/sleela_net.c for the Winsock backend.
+#include <iostream>
+extern "C" int sleela_http_server_run(const char *v, int, char **) {
+  (void)v;
+  std::cerr << "sleela http-server: grade 1 is not supported on the Windows "
+               "(Win32/Winsock) backend\n";
+  return 2;
+}
+#else
 #include "../../preferred-routers/preferred_router.h"
 #include <atomic>
 #include <cerrno>
@@ -59,7 +74,7 @@ bool parse(int fd,std::string&b,Req&r,std::string&e){
  size_t q=r.target.find('?');r.path=q==std::string::npos?r.target:r.target.substr(0,q);if(r.path.empty())r.path="/";return true;
 }
 int hx(char c){if(c>='0'&&c<='9')return c-'0';if(c>='a'&&c<='f')return c-'a'+10;if(c>='A'&&c<='F')return c-'A'+10;return -1;}
-bool safe(const fs::path&root,const std::string&u,fs::path&o){std::string d;for(size_t i=0;i<u.size();++i){unsigned char c=u[i];if(c=='%'){if(i+2>=u.size())return false;int a=hx(u[i+1]),b=hx(u[i+2]);if(a<0||b<0)return false;c=(a<<4)|b;i+=2;}if(!c||c=='\\'||c=='\r'||c=='\n')return false;d.push_back((char)c);}fs::path p=fs::path(d).lexically_normal();if(p.is_absolute())return false;for(auto&x:p)if(x=="..")return false;std::error_code ec,ec2;auto rr=fs::weakly_canonical(root,ec),cc=fs::weakly_canonical(root/p,ec2);if(ec||ec2)return false;auto a=rr.begin(),b=cc.begin();for(;a!=rr.end()&&b!=cc.end()&&*a==*b;++a,++b){}if(a!=rr.end())return false;o=cc;return true;}
+bool safe(const fs::path&root,const std::string&u,fs::path&o){std::string d;for(size_t i=0;i<u.size();++i){unsigned char c=u[i];if(c=='%'){if(i+2>=u.size())return false;int a=hx(u[i+1]),b=hx(u[i+2]);if(a<0||b<0)return false;c=(a<<4)|b;i+=2;}if(!c||c=='\\'||c=='\r'||c=='\n')return false;d.push_back((char)c);}fs::path p=fs::path(d).lexically_normal();if(p.is_absolute())return false;for(const auto&x:p)if(x=="..")return false;std::error_code ec,ec2;auto rr=fs::weakly_canonical(root,ec),cc=fs::weakly_canonical(root/p,ec2);if(ec||ec2)return false;auto a=rr.begin(),b=cc.begin();for(;a!=rr.end()&&b!=cc.end()&&*a==*b;++a,++b){}if(a!=rr.end())return false;o=cc;return true;}
 std::string mime(const fs::path&p){auto e=lo(p.extension().string());if(e==".html"||e==".htm")return"text/html; charset=utf-8";if(e==".css")return"text/css; charset=utf-8";if(e==".js")return"text/javascript; charset=utf-8";if(e==".json")return"application/json";if(e==".txt"||e==".md")return"text/plain; charset=utf-8";if(e==".xml")return"application/xml";if(e==".svg")return"image/svg+xml";if(e==".png")return"image/png";if(e==".jpg"||e==".jpeg")return"image/jpeg";return"application/octet-stream";}
 class Log{std::mutex m;std::ofstream f;public:explicit Log(const fs::path&p){std::error_code e;fs::create_directories(p.parent_path(),e);f.open(p,std::ios::app);}void put(const std::string&s){std::lock_guard<std::mutex>g(m);std::cerr<<s<<'\n';if(f)f<<s<<'\n';}};
 class Pool{std::mutex m;std::condition_variable cv;std::deque<int>q;std::vector<std::thread>w;bool end=false;public:Pool(unsigned n,std::function<void(int)>fn){for(unsigned i=0;i<n;++i)w.emplace_back([this,fn]{for(;;){int fd;{std::unique_lock<std::mutex>g(m);cv.wait(g,[this]{return end||!q.empty();});if(end&&q.empty())return;fd=q.front();q.pop_front();}fn(fd);}});}bool add(int fd){std::lock_guard<std::mutex>g(m);if(end||q.size()>=QMAX)return false;q.push_back(fd);cv.notify_one();return true;}void stop(){{std::lock_guard<std::mutex>g(m);end=true;}cv.notify_all();for(auto&t:w)if(t.joinable())t.join();}};
@@ -77,3 +92,4 @@ int listenfd(int port){int f=socket(AF_INET,SOCK_STREAM,0);if(f<0)return-1;int o
 int run(const std::string&g,int ac,char**av){int port=g=="1"?8080:g=="2"?8081:8082;unsigned threads=TDEFAULT;fs::path root=".",logp;bool once=false;for(int i=1;i<ac;++i){std::string a=av[i];if(a=="--port"&&i+1<ac)port=std::atoi(av[++i]);else if(a=="--threads"&&i+1<ac)threads=(unsigned)std::strtoul(av[++i],nullptr,10);else if(a=="--root"&&i+1<ac)root=av[++i];else if(a=="--log"&&i+1<ac)logp=av[++i];else if(a=="--once")once=true;else if(a=="--help"){std::cout<<"--port N --threads N --root DIR --log FILE [--once]\n";return 0;}else{std::cerr<<"unknown option: "<<a<<"\n";return 2;}}if(port<1||port>65535||threads<1||threads>TMAX)return 2;std::error_code e;root=fs::weakly_canonical(root,e);if(e||!fs::is_directory(root)){std::cerr<<"invalid document root\n";return 2;}if(logp.empty())logp=root/(std::string(".sleela-http-")+g+".log");signal(SIGINT,sig);signal(SIGTERM,sig);int l=listenfd(port);if(l<0){perror("listen");return 1;}Log log(logp);log.put("server=start grade="+g+" port="+std::to_string(port));if(sleela_preferred_router_startup(nullptr,(std::string("HTTP/")+g).c_str())!=0)log.put("preferred-router=config-unavailable using built-in policy");Pool pool(threads,[&](int fd){serve(fd,root,g,log);});while(!stop){pollfd p{l,POLLIN,0};int rc=poll(&p,1,500);if(rc<=0)continue;int fd=accept(l,nullptr,nullptr);if(fd<0)continue;if(!pool.add(fd)){close(fd);log.put("connection rejected reason=worker-queue-full");}if(once)stop=true;}shutdown(l,SHUT_RDWR);close(l);pool.stop();log.put("server=stop grade="+g);return 0;}
 }
 extern "C" int sleela_http_server_run(const char*v,int argc,char**argv){return run(v?v:"",argc,argv);}
+#endif // _WIN32
