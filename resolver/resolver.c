@@ -1,5 +1,6 @@
 #if !defined(_WIN32)
 #define _POSIX_C_SOURCE 200809L
+#define _DEFAULT_SOURCE  /* expose realpath() from <stdlib.h> on glibc */
 #endif
 #include "resolver.h"
 #if defined(_WIN32)

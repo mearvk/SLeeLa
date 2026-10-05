@@ -1,3 +1,6 @@
+#if !defined(_WIN32)
+#define _POSIX_C_SOURCE 200809L  /* clock_gettime and other POSIX.1-2008 symbols */
+#endif
 #include "../include/skya_data_plane.h"
 #include <errno.h>
 #include <pthread.h>
@@ -6,7 +9,7 @@
 #include <time.h>
 typedef struct{skya_data_frame h;uint8_t*p;} slot;
 struct skya_data_plane{pthread_mutex_t lock;pthread_cond_t ready;slot*s;size_t cap,head,tail,count;uint64_t next;int running;};
-static uint64_t now_ns(void){struct timespec t;clock_gettime(CLOCK_MONOTONIC,&t);return(uint64_t)t.tv_sec*1000000000ull+t.tv_nsec;}
+static uint64_t now_ns(void){struct timespec t;clock_gettime(CLOCK_MONOTONIC,&t);return(uint64_t)t.tv_sec*1000000000ull+(uint64_t)t.tv_nsec;}
 static uint32_t crc32b(const void*d,size_t n){uint32_t c=0xffffffffu;const uint8_t*p=d;for(size_t i=0;i<n;i++){c^=p[i];for(unsigned b=0;b<8;b++)c=(c>>1)^(0xedb88320u&-(int)(c&1u));}return~c;}
 int skya_data_plane_init(skya_data_plane**out,size_t cap){if(!out||cap<2)return-EINVAL;skya_data_plane*p=calloc(1,sizeof*p);if(!p)return-ENOMEM;p->s=calloc(cap,sizeof*p->s);if(!p->s){free(p);return-ENOMEM;}for(size_t i=0;i<cap;i++){p->s[i].p=malloc(SKYA_DATA_MAX_PAYLOAD);if(!p->s[i].p){for(size_t j=0;j<i;j++)free(p->s[j].p);free(p->s);free(p);return-ENOMEM;}}p->cap=cap;p->next=1;pthread_mutex_init(&p->lock,0);pthread_cond_init(&p->ready,0);*out=p;return 0;}
 void skya_data_plane_destroy(skya_data_plane*p){if(!p)return;pthread_mutex_lock(&p->lock);p->running=0;pthread_cond_broadcast(&p->ready);pthread_mutex_unlock(&p->lock);for(size_t i=0;i<p->cap;i++)free(p->s[i].p);free(p->s);pthread_cond_destroy(&p->ready);pthread_mutex_destroy(&p->lock);free(p);}

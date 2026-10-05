@@ -1,3 +1,4 @@
+#include "../resolver/resolver.h"
 #include "http_negotiation.h"
 #include <string.h>
 static int has_version(const char *list,const char *version){size_t n;const char*p;if(!list||!version)return 0;n=strlen(version);for(p=list;*p;++p){if(strncmp(p,version,n)==0&&(p==list||p[-1]==','||p[-1]==' '||p[-1]=='\t')&&(p[n]=='\0'||p[n]==','||p[n]==' '||p[n]=='\t'))return 1;}return 0;}

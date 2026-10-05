@@ -1,5 +1,6 @@
 #include "slvm9.h"
 #include "slvm9_filesystem.h"
+#include "slvm9_file.h"
 #include "slvm9_adapter.h"
 #include "slvm9_mount.h"
 #include "slvm9_fsop.h"
