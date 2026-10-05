@@ -40,6 +40,13 @@ jetbrains:
 install:
 	$(MAKE) -C install all
 
+tutorial-check:
+	@tut=`ls tutorial/*.md 2>/dev/null | wc -l`; \
+	ex=`ls examples/*.xml 2>/dev/null | wc -l`; \
+	if [ "$$tut" -eq 0 ]; then echo "tutorial-check: FAIL - no tutorial/*.md found" >&2; exit 1; fi; \
+	if [ "$$ex" -eq 0 ]; then echo "tutorial-check: FAIL - no examples/*.xml found" >&2; exit 1; fi; \
+	echo "tutorial-check: OK - $$tut tutorial document(s), $$ex example(s)"
+
 tests:
 	$(MAKE) -C tests check
 

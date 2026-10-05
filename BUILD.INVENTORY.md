@@ -1,7 +1,7 @@
 # SLeeLa Build and Makefile Inventory
 
 SLeeLa Version: 0.3.0-dev  
-Inventory Date: 2026-09-29  
+Inventory Date: 2026-10-05  
 Purpose: Repository-wide build-surface audit
 
 ## Status
@@ -10,13 +10,13 @@ The repository has been audited on both main and master for tracked build direct
 
 | Surface | master | main |
 |---|---:|---:|
-| Tracked build directories | 18 | 18 |
-| Makefile / GNUmakefile / makefile / .mk files | 69 | 69 |
-| Repository-level Makefile | added by this change | added by this change |
+| Tracked build directories | 22 | 22 |
+| Makefile / GNUmakefile / makefile / .mk files | 93 | 93 |
+| Repository-level Makefile | present | present |
 
 ## Build directory inventory
 
-The tracked build surfaces are:
+The 22 tracked build surfaces are:
 
 - build/
 - coorenagraph/build/
@@ -25,13 +25,14 @@ The tracked build surfaces are:
 - http/7.0/build/, http/8.0/build/, http/9.0/build/
 - ide/build/
 - regex/build/
+- sleela-virtual-machine/7/build/, sleela-virtual-machine/8/build/, sleela-virtual-machine/9/build/, sleela-virtual-machine/11/build/
 - telephony-skya/build/
 
 The HTTP version build directories contain their own Makefiles and negotiation fragments. They are intentionally product/version-local build systems rather than one shared generated output tree.
 
 ## Makefile inventory
 
-The 69 tracked build-control files cover:
+The 93 tracked build-control files cover:
 
 - API components under api/
 - Audio and codec implementations
@@ -48,7 +49,7 @@ The 69 tracked build-control files cover:
 - tests/ and video/
 - Application subsystems: website-generator/ and autocad/ (each with a driver Makefile and a JavaFX GUI Maven module under its gui/)
 
-.mk fragments such as the HTTP negotiation.mk files are included in the 69-file control inventory.
+.mk fragments such as the HTTP negotiation.mk files are included in the 93-file control inventory.
 
 ## Application subsystem build surfaces
 
@@ -67,21 +68,30 @@ the subsystem's SLeeLa source and the GUI `pom.xml` remain authoritative.
 
 ## Repository-level dispatcher
 
-A new root Makefile provides a stable entry point without replacing product-specific Makefiles:
+The root Makefile provides a stable entry point without replacing product-specific Makefiles:
 
-- make all — core + Java 28 + regex + native test build/test surfaces
+- make all — core + Java 28 + regex + compiler + decompiler + VM + scripting + JetBrains helper + install + tutorial-check + tests + config + route
 - make core — impl/
 - make java28 — java28/
 - make regex — regex/
+- make compiler — lib/compiler/
+- make decompiler — lib/decompiler/
+- make vm — lib/vm/
+- make scripting — sleela-scripting/
+- make jetbrains — JetBrains source acquisition helpers
+- make install — install/
+- make tutorial-check — verify tutorial/example inventories
 - make tests — tests/
 - make server — api/server/
+- make route — validate unified route data (route/ROUTE.DATA.json)
+- make config — show unified configuration location
 - make clean — clean those dispatched surfaces
 
 The dispatcher deliberately does not enumerate source files. Each subsystem Makefile remains authoritative.
 
 ## Build-documentation findings
 
-All 18 tracked build directories now have a local README.md or BUILD.md. The repository build surface therefore has both local build notes and a cross-repository inventory.
+All 22 tracked build directories now have a local README.md or BUILD.md. The repository build surface therefore has both local build notes and a cross-repository inventory.
 
 The existing build/README.md, ide/build/README.md, and telephony-skya/build/README.md document their respective build surfaces. The new root inventory is the cross-repository index.
 
