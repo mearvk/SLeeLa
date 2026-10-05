@@ -155,7 +155,7 @@ private:
     std::map<std::string, std::shared_ptr<Node>> functions_;
     std::vector<std::string> positionals_;
     std::vector<Job> jobs_;
-    std::string prompt_ = "slsh$ ";
+    std::string prompt_ = "sleela$ ";
     int next_job_id_ = 1;
     int last_status_ = 0;
     bool should_exit_ = false;
