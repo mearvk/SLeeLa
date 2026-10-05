@@ -3819,12 +3819,44 @@
       "sha256": "6cea4b5c4e0a2e128f3caf6b99891b16a4377a71984a111b435c6e1157eb9e0d"
     },
     {
+      "path": "drivers/include/skya_builtin_drivers.h",
+      "sha256": "113dc1968639abda0dfae3ac774d42d0e31a3580853c2b0e356f8c32bd62848e"
+    },
+    {
       "path": "drivers/include/skya_data_plane.h",
       "sha256": "1d11bab013c72dceed142b623578cfb4f39ae453eb3d9b727bc92e71ed4f0c6f"
     },
     {
+      "path": "drivers/include/skya_driver_runtime.h",
+      "sha256": "5851f0c094228d643fcb840efe97c3c781a3035af808a22b03df625b3a2092e1"
+    },
+    {
+      "path": "drivers/include/skya_driver_runtime.hpp",
+      "sha256": "b7be730657cb4b9c54a5a3171351bb8ef79b0db171188b9cd8fb8a445702ab24"
+    },
+    {
+      "path": "drivers/include/skya_hardware_io.h",
+      "sha256": "377025b5c84538a98f1469ce59dceedb935a098abe6bf0457321cb3036a15bc2"
+    },
+    {
       "path": "drivers/include/skya_hardware_profile.h",
       "sha256": "6c1208a7847d5e8f3aad3ceeba9475ef2cbfa08a0949f001a136c93fe682b525"
+    },
+    {
+      "path": "drivers/include/skya_phone_driver.h",
+      "sha256": "9c12a4362509176725e4c77d4f22934dabf5bde6242e7fc4d59f08010ac7b7f7"
+    },
+    {
+      "path": "drivers/include/skya_platform_driver.h",
+      "sha256": "6c392c66486a06017d9d54d00cf1b99ebcd6347bd4e7d23e6b1787ced9d889bf"
+    },
+    {
+      "path": "drivers/include/skya_product_runtime.h",
+      "sha256": "f2653478cd026df275da933f05bef97ed94eea25d2586612251a074c20b95d66"
+    },
+    {
+      "path": "drivers/include/skya_vendor_drivers.h",
+      "sha256": "9152faca153916b46316a85001cba4b35f456fd404254a5c05a72327517c554b"
     },
     {
       "path": "drivers/jabra/biz-1500/1.0/driver.c",
