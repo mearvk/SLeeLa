@@ -1,11 +1,16 @@
 # SLeeLa /lib Library Index
 
-**Revision:** 0.13  
+**Revision:** 0.14  
 **Packages:** 79  
-**SLeeLa source units:** 10184  
+**SLeeLa source units:** 10241  
 **Module-facade symbols:** 90  
-**Total symbol records:** 10274  
+**Total symbol records:** 10331  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
+
+> Revision 0.14 reconciles the headline source-unit figure to the verified
+> filesystem count of 10,241 `.sleela` units under `/lib` (matching
+> `CLASS.INVENTORY.md` Revision 2.1). Earlier revision stamps lagged the live
+> count; the figure here is the authoritative total.
 
 > Revision 0.9 adds the new `opcodes` package family: one SLeeLa class per
 > canonical VM opcode (103 classes, codes 0–102; the base 98 are OP_NOP..

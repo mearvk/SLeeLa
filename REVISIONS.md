@@ -1,3 +1,56 @@
+## 2026-10-05 — Opcodes object model, governance, running helpers, and the `.sldocument` format
+
+Additive library and format work. All existing programs continue to compile and
+run unchanged. New native bridges are self-tested via `native/Makefile`
+(`make test`: ALL PASS); the authoritative execution/compilation remain in
+`/impl/core` and `lib/compiler` / `impl/frontend`.
+
+### `/lib/opcodes` — one SLeeLa class per VM opcode
+
+Added the `opcodes` package family: 103 `SLOp*` classes (codes 0–102; the base
+98 are `OP_NOP`..`OP_AUDIO_PLATFORM`), plus `SLOpcodeBase` (the single-opcode
+fetch-then-execute-one contract) and `SLOpcodeStream` (the verbatim ordered
+stream) — 105 `.sleela` source units. Native bridge `sleela_opcode.{h,cpp}`.
+See `lib/opcodes/OPCODES.md`.
+
+### `/lib/opcodes/governance` — Registrar · Listener · Event Observer
+
+Added 8 classes giving SLeeLa procedural discretion over opcode execution: a
+Registrar considers a program A→B BEFORE it runs, a Listener confirms live fit
+DURING, and an Event Observer judges the whole as a musical, ordered process
+AFTER (graded verdicts, seven base concepts, known-symbol-map patching), tied
+together by `SLGovernedExecution`. Native bridge `sleela_gov.{h,cpp}`. See
+`lib/opcodes/governance/GOVERNANCE.md`.
+
+### `/lib/opcodes/running` — grouping, conditional-reactive, warming
+
+Added 6 classes: `SLOpcodeGroup` / `SLOpcodeGroupSet` (grouping),
+`SLOpcodeCondition` / `SLOpcodeConditionalReactive` / `SLOpcodeReactorBank`
+(reacts to program state by warming/gating/running/skipping a group), and
+`SLOpcodeWarmer` (pre-arms hot paths). Added opcode-bridge signals/pre-stage.
+See `lib/opcodes/running/RUNNING.md`.
+
+### `.sldocument` ordered-document format
+
+Added the `sldocument` package family and the `.sldocument` format: an ordered
+document whose annotated method steps run top-down and compile against and with
+standard SLeeLa source, each step usually returning a single binary
+veritable-and-kind value (`SLVeritable`). Classes: `SLDocument`,
+`SLDocumentStep`, `SLDocumentAnnotation`, `SLVeritable`, `SLDocumentResult`,
+`SLDocumentCompiler`. `.sldocument` is a selectable compile choice via
+`lib/compiler/SLSourceForm` and `lib/compiler/SLCompileChoice`; and
+`SLDocumentNaming` / `SLSourceNameComparison` / `SLDocumentConverter` synthesize
+method names so an engineer can convert an anonymous `.sldocument` to a named
+`.sleela` for safekeeping. Native bridge `sleela_sldocument.{h,cpp}`. See
+`lib/sldocument/SLDOCUMENT.md`.
+
+### Inventory recount
+
+- Recounted `/lib`: **10,241 `.sleela` source units across 79 package families**.
+- Recorded **10,463 repository-wide `.sleela` source files** on `master`.
+- Updated `CLASS.INVENTORY.md` (Revision 2.1), `lib/LIBRARY.INDEX.md`
+  (Revision 0.14), and `lib/README.md` to these verified figures.
+
 ## 2026-10-03 — Language core: arrays, multi-file input, and /languages packs
 
 Three additive language/runtime features. All existing programs continue to
