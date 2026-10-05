@@ -89,3 +89,17 @@ The HTTP gateway uses the JDK `jdk.httpserver` module. Projects using the Java m
 ## Future extension
 
 The textual connector contract is intentionally small. A future typed `SLValue` protocol can be added without changing the role of `SleelaJavaConnector`; only the invocation/result encoding needs to evolve.
+
+## Referenced device families
+
+The connector contract is reused by device-specific driver families recorded in
+this repository. Each family conforms to the shared `/drivers` architecture and
+the `DRIVER.COMPLETENESS.md` status model; the authoritative implementation may
+live in an external repository while SLeeLa holds the family record.
+
+- **`eprom-corrado/`** — USB → EPROM programmer family (MiniPRO TL866 →
+  27C256-class EPROM, VW Corrado ECU). A SLeeLa-style Connector/Control series
+  (Direct / Process / HTTP transports) implements the same connector shape; the
+  running code lives in the `mearvk/Corrado` repository and is brought in here
+  by reference and congruence. Status: provisional path (software-verified; not
+  yet hardware-complete) — see `eprom-corrado/docs/COMPLETENESS.md`.
