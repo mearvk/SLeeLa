@@ -30,6 +30,7 @@ struct ThrobberCell {
     double intensity = 0.0;      // live rendered contribution (base * fades)
     double energy = 1.0;         // life/decay budget
     double sigma = 0.0;    // spatial half-width of this cell's glow (px)
+    double speed_mul = 1.0;// per-cell speed character (some glide, some race)
     double phase = 0.0;    // per-cell phase for subtle flicker
     bool retro = false;    // a rare child allowed to pause / go right->left
     double retro_px = 0.0; // pixels of retrograde/pause travel remaining
@@ -914,20 +915,34 @@ void throbber_spawn(AppState *state, int W) {
     ThrobberCell c;
     c.alive = true;
 
-    // ~45% are born across the interior (0-100%); the rest enter from the left.
-    if (g_random_double() < 0.45) {
-        c.x = g_random_double() * W;                 // anywhere in 0-100%
-    } else {
+    // Birth position: odds favour starting around 35% of the width, so the
+    // flow then does most of its pulsing through the central sweet spot before
+    // fading by ~65%. A minority still enter from the left edge (keeping the
+    // left->right feed) or appear elsewhere, but the bulk cluster near 0.35W.
+    const double roll = g_random_double();
+    if (roll < 0.65) {
+        // cluster around 35% with a modest spread (approx normal via two rolls)
+        double gauss = (g_random_double() + g_random_double() - 1.0); // ~[-1,1], centre-weighted
+        double frac = 0.35 + gauss * 0.12;                            // mostly 0.23..0.47
+        if (frac < 0.0) frac = 0.0;
+        if (frac > 1.0) frac = 1.0;
+        c.x = frac * W;
+    } else if (roll < 0.85) {
         c.x = -4.0 + g_random_double() * 6.0;        // enter from just off the left
+    } else {
+        c.x = g_random_double() * W;                 // occasional anywhere in 0-100%
     }
 
-    c.v = 24.0 + g_random_double() * 40.0;           // base rightward speed (px/s)
+    // Varied speed: some children glide, some race. Wider spread so the field
+    // reads as many independent reflexes rather than a uniform conveyor.
+    c.v = 14.0 + g_random_double() * g_random_double() * 150.0; // skewed: mostly slow, a few fast
     c.a = 0.0;
     c.j = 0.0;
     c.base_intensity = 0.35 + g_random_double() * 0.6; // relative shade strength
     c.intensity = 0.0;                                  // eases up from birth (fade-in)
     c.energy = 1.0;
     c.sigma = 6.0 + g_random_double() * 14.0;        // glow half-width
+    c.speed_mul = 0.45 + g_random_double() * g_random_double() * 2.6; // 0.45..~3x, skewed slow
     c.phase = g_random_double() * 6.2831853;
     // 1 in 30 children may pause or run right->left for 20-50 px.
     c.retro = (g_random_int_range(0, 30) == 0);
@@ -988,8 +1003,9 @@ gboolean throbber_tick(gpointer user_data) {
     for (auto &c : state->throbber_cells) {
         if (!c.alive) continue;
 
-        // Reflexive, amplified desired speed. Faster where the field is "hot".
-        double desired_v = (18.0 + 70.0 * state->throbber_amp);
+        // Reflexive, amplified desired speed, scaled by this cell's own speed
+        // character so some pulses glide and others race across the sweet spot.
+        double desired_v = (18.0 + 70.0 * state->throbber_amp) * c.speed_mul;
 
         if (c.retro && c.retro_px > 0.0) {
             // This rare child pauses or glides right->left for its allotment.
@@ -1009,22 +1025,45 @@ gboolean throbber_tick(gpointer user_data) {
         c.v += c.a * dt;
         c.x += c.v * dt;
 
-        // Brightness lifetime is INDEPENDENT of travel: the "amplification
-        // series" (energy) decays so a pulse may dim toward 0 partway across,
-        // but the pulse keeps moving and completes the full 0->100 journey.
-        // The cell only dies when it leaves the right edge -- not when it fades.
-        c.energy -= dt * (0.10 + 0.05 * state->throbber_amp);
+        // --- Centre sweet spot (40-60%), soft shoulders to ~35/65% ----------
+        // The pulsing concentrates in the middle of the strip. A column's
+        // "centre weight" is ~1 across 40-60% and falls off outside it; pulses
+        // that drift away from centre both glow less AND decay faster, so the
+        // visible life of a pulse is spent mainly in the 35-65% band.
+        const double frac = (W > 0) ? (c.x / W) : 0.5;
+        double dist = std::fabs(frac - 0.50);
+        double center_weight;
+        if (dist <= 0.10) {
+            center_weight = 1.0;                         // flat top across 40-60%
+        } else {
+            // Gaussian shoulders beyond +/-10%: ~0.37 at the 35/65% edges, less
+            // further out, so off-centre pulses clearly recede.
+            double e = (dist - 0.10) / 0.07;
+            center_weight = std::exp(-0.5 * e * e);
+        }
+
+        // Energy (the "amplification series") decays faster the farther the
+        // pulse is from the sweet spot: in-band it lingers, out-of-band it dies
+        // off quickly because it "wasn't of the sweet spot".
+        double decay = 0.10 + 0.05 * state->throbber_amp
+                     + 0.9 * (1.0 - center_weight);       // off-centre penalty
+        c.energy -= dt * decay;
         if (c.energy < 0.0) c.energy = 0.0;
+
         double edge_fade = 1.0;
         if (c.x > W * 0.90) edge_fade = std::max(0.0, (W - c.x) / (W * 0.10));
         double breath = 0.9 + 0.1 * std::sin(state->throbber_t * 1.7 + c.phase);
-        double target_i = c.base_intensity * edge_fade * c.energy * breath;
+        // Brightness is gated by centre proximity, so the pulsing lives in the
+        // middle and less-centred pulses are already fading relative to it.
+        double target_i = c.base_intensity * center_weight * edge_fade * c.energy * breath;
         // Ease the live intensity toward its target so fade-in / fade-out smooth.
         c.intensity += (target_i - c.intensity) * 0.30;
 
-        // Die only on exit at the right edge (completing 0->100), never from
-        // the brightness having faded mid-strip.
+        // The pulse still travels left->right across the whole width; it only
+        // dies on exit at the right edge (or once it has faded to nothing well
+        // past the sweet spot, so spent pulses don't linger invisibly).
         if (c.x > W + 6.0) c.alive = false;
+        else if (frac > 0.70 && c.energy <= 0.0 && c.intensity < 0.01) c.alive = false;
     }
 
     // Compact the pool: drop dead cells.
