@@ -1,4 +1,16 @@
 #include "http2_server.h"
+#if defined(_WIN32) || defined(_WIN64)
+// The grade-2 (HTTP/2) server is built on nghttp2 driven over POSIX sockets
+// (arpa/inet.h, netinet/in.h, sys/socket.h, send(MSG_NOSIGNAL), SIGINT/SIGTERM).
+// It is not available on the Windows (Win32/Winsock) backend; the entry point
+// is provided so the runtime links and reports the limitation at runtime.
+#include <iostream>
+extern "C" int sleela_http2_server_run(int, char **) {
+  std::cerr << "sleela http-server: grade 2 (HTTP/2) is not supported on the "
+               "Windows (Win32/Winsock) backend\n";
+  return 2;
+}
+#else
 #include <nghttp2/nghttp2.h>
 #include <arpa/inet.h>
 #include <netinet/in.h>
@@ -28,7 +40,7 @@ ssize_t send_cb(nghttp2_session*,const uint8_t*d,size_t n,int,void*p){Ctx*c=(Ctx
 int begin_cb(nghttp2_session*,const nghttp2_frame*f,void*p){Ctx*c=(Ctx*)p;if(f->hd.stream_id>0&&c->streams.size()<MAX_STREAMS)c->streams.emplace(f->hd.stream_id,Stream{});return 0;}
 int header_cb(nghttp2_session*,const nghttp2_frame*f,const uint8_t*n,size_t nl,const uint8_t*v,size_t vl,uint8_t,void*p){Ctx*c=(Ctx*)p;auto i=c->streams.find(f->hd.stream_id);if(i==c->streams.end())return 0;if(++i->second.header_count>256||i->second.header_bytes+nl+vl>MAX_HEADERS)return NGHTTP2_ERR_TEMPORAL_CALLBACK_FAILURE;i->second.header_bytes+=nl+vl;std::string k((char*)n,nl),x((char*)v,vl);if(k==":method")i->second.method=x;else if(k==":path")i->second.path=x;return 0;}
 int data_cb(nghttp2_session*,uint8_t,int32_t id,const uint8_t*d,size_t n,void*p){Ctx*c=(Ctx*)p;auto i=c->streams.find(id);if(i==c->streams.end())return 0;if(i->second.body.size()+n>MAX_BODY)return NGHTTP2_ERR_TEMPORAL_CALLBACK_FAILURE;i->second.body.insert(i->second.body.end(),d,d+n);return 0;}
-bool safe(const fs::path&r,const std::string&u,fs::path&o){if(u.empty()||u[0]!='/'||u.size()>16384)return false;auto q=u.find('?');auto s=u.substr(0,q);for(char c:s)if(c=='%'||c=='\\'||c=='\r'||c=='\n'||c=='\0')return false;fs::path p=fs::path(s).lexically_normal();for(auto&x:p)if(x=="..")return false;std::error_code a,b;auto rr=fs::weakly_canonical(r,a),cc=fs::weakly_canonical(r/p.relative_path(),b);if(a||b)return false;auto i=rr.begin(),j=cc.begin();for(;i!=rr.end()&&j!=cc.end()&&*i==*j;++i,++j){}if(i!=rr.end())return false;o=cc;return true;}
+bool safe(const fs::path&r,const std::string&u,fs::path&o){if(u.empty()||u[0]!='/'||u.size()>16384)return false;auto q=u.find('?');auto s=u.substr(0,q);for(char c:s)if(c=='%'||c=='\\'||c=='\r'||c=='\n'||c=='\0')return false;fs::path p=fs::path(s).lexically_normal();for(const auto&x:p)if(x=="..")return false;std::error_code a,b;auto rr=fs::weakly_canonical(r,a),cc=fs::weakly_canonical(r/p.relative_path(),b);if(a||b)return false;auto i=rr.begin(),j=cc.begin();for(;i!=rr.end()&&j!=cc.end()&&*i==*j;++i,++j){}if(i!=rr.end())return false;o=cc;return true;}
 std::string mime(const fs::path&p){auto e=p.extension().string();if(e==".html"||e==".htm")return"text/html; charset=utf-8";if(e==".css")return"text/css";if(e==".js")return"text/javascript";if(e==".json")return"application/json";if(e==".txt"||e==".md")return"text/plain; charset=utf-8";return"application/octet-stream";}
 struct Data{std::string b;size_t o=0;};
 ssize_t read_cb(nghttp2_session*,int32_t,uint8_t*out,size_t n,uint32_t*flags,nghttp2_data_source*s,void*){auto*d=(Data*)s->ptr;size_t k=std::min(n,d->b.size()-d->o);if(k)memcpy(out,d->b.data()+d->o,k);d->o+=k;if(d->o==d->b.size()){*flags|=NGHTTP2_DATA_FLAG_EOF;delete d;}return k;}
@@ -38,3 +50,4 @@ int conn(int fd,fs::path root,fs::path logp){Ctx c{fd,std::move(root)};c.log.ope
 int listenfd(int p){int f=socket(AF_INET,SOCK_STREAM,0),one=1;if(f<0)return-1;setsockopt(f,SOL_SOCKET,SO_REUSEADDR,&one,sizeof one);sockaddr_in a{};a.sin_family=AF_INET;a.sin_addr.s_addr=htonl(INADDR_ANY);a.sin_port=htons((uint16_t)p);if(bind(f,(sockaddr*)&a,sizeof a)||listen(f,128)){close(f);return-1;}return f;}
 }
 extern "C" int sleela_http2_server_run(int argc,char**argv){int port=8081,threads=16;fs::path root=".",logp;for(int i=1;i<argc;i++){std::string a=argv[i];if(a=="--port"&&i+1<argc)port=atoi(argv[++i]);else if(a=="--threads"&&i+1<argc)threads=atoi(argv[++i]);else if(a=="--root"&&i+1<argc)root=argv[++i];else if(a=="--log"&&i+1<argc)logp=argv[++i];else if(a=="--help"){std::cout<<"--port N --threads N --root DIR --log FILE\n";return 0;}else return 2;}std::error_code e;root=fs::weakly_canonical(root,e);if(e||!fs::is_directory(root)||port<1||port>65535||threads<1||threads>128)return 2;if(logp.empty())logp=root/".sleela-http-2.log";signal(SIGINT,sig);signal(SIGTERM,sig);int l=listenfd(port);if(l<0)return 1;std::vector<std::thread>w;std::mutex m;std::condition_variable cv;std::vector<int>q;bool done=false;auto work=[&]{for(;;){int fd;{std::unique_lock<std::mutex>g(m);cv.wait(g,[&]{return done||!q.empty();});if(done&&q.empty())return;fd=q.back();q.pop_back();}conn(fd,root,logp);}};for(int i=0;i<threads;i++)w.emplace_back(work);while(!stop){int fd=accept(l,nullptr,nullptr);if(fd<0){if(errno==EINTR)continue;break;}std::lock_guard<std::mutex>g(m);if(q.size()>=256)close(fd);else{q.push_back(fd);cv.notify_one();}}{std::lock_guard<std::mutex>g(m);done=true;}cv.notify_all();close(l);for(auto&t:w)t.join();return 0;}
+#endif // _WIN32

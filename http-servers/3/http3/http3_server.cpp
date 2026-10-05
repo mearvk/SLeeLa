@@ -1,5 +1,19 @@
 #include "http3_server.h"
 
+#include "http3_server.h"
+#if defined(_WIN32) || defined(_WIN64)
+// The grade-3 (HTTP/3) server launches an external QUIC/TLS backend with the
+// POSIX exec family (execvp + sys/wait.h). Process spawning on Windows uses a
+// different API (CreateProcess), so this grade is not available on the Win32
+// backend; the entry point is provided so the runtime links and reports the
+// limitation at runtime.
+#include <iostream>
+extern "C" int sleela_http3_server_run(int, char **) {
+  std::cerr << "sleela http-server: grade 3 (HTTP/3) is not supported on the "
+               "Windows (Win32/Winsock) backend\n";
+  return 2;
+}
+#else
 #include <cerrno>
 #include <cstdio>
 #include <cstdlib>
@@ -93,3 +107,4 @@ extern "C" int sleela_http3_server_run(int argc, char **argv) {
             << backend << "': " << std::strerror(err) << "\n";
   return 127;
 }
+#endif // _WIN32

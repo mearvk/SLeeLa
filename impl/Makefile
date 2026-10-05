@@ -129,6 +129,30 @@ HTTP_SERVER_OBJ := $(BUILD)/http_server.o
 HTTP_SERVER_CLI_OBJ := $(BUILD)/http_server_cli.o
 HTTP2_SERVER_OBJ := $(BUILD)/http2_server.o
 HTTP3_SERVER_OBJ := $(BUILD)/http3_server.o
+
+# ---------------------------------------------------------------------------
+# Vendored nghttp2 (HTTP/2 library used by the grade-2 server).
+# The library source is committed as ../include/nghttp2-1.70.0.zip so the build
+# does not depend on a system-installed libnghttp2. It is unpacked under build/,
+# its generated version header is produced from the shipped template, and the
+# core library sources are compiled into a static archive we link directly.
+# This keeps the build self-contained on Linux, macOS, and (MinGW) Windows.
+# ---------------------------------------------------------------------------
+NGHTTP2_VERSION := 1.70.0
+NGHTTP2_VERSION_NUM := 0x014600
+NGHTTP2_ZIP := ../include/nghttp2-$(NGHTTP2_VERSION).zip
+NGHTTP2_DIR := $(BUILD)/nghttp2-$(NGHTTP2_VERSION)
+NGHTTP2_INC := $(NGHTTP2_DIR)/lib/includes
+NGHTTP2_VERHDR := $(NGHTTP2_INC)/nghttp2/nghttp2ver.h
+NGHTTP2_LIB := $(BUILD)/libnghttp2.a
+# Build-time feature defines for the vendored sources (no autotools config.h).
+# On POSIX, pull in the byte-order helpers (htonl/htons) via arpa/inet.h and
+# netinet/in.h; on Windows (MinGW) nghttp2_net.h provides _byteswap_* shims.
+ifeq ($(PLATFORM),windows)
+  NGHTTP2_DEFS := -DNGHTTP2_STATICLIB
+else
+  NGHTTP2_DEFS := -DNGHTTP2_STATICLIB -DHAVE_ARPA_INET_H=1 -DHAVE_NETINET_IN_H=1
+endif
 NS_SRC := nordshrift/sst_lexer.cpp nordshrift/sst_parser.cpp \
           nordshrift/source_resolve.cpp nordshrift/lowering.cpp nordshrift/sleela_emit.cpp \
           nordshrift/object_compat.cpp nordshrift/subject_model.cpp nordshrift/input_object.cpp \
@@ -199,8 +223,8 @@ verify-security:
 # rules link with $^, and a phony target name would leak onto the link line).
 $(ALL_OBJECTS): | verify-security
 
-$(SLEELA_BIN): $(JAVA_RUNTIME_PROBE_OBJ) $(JAVA_RUNTIME_BRIDGE_OBJ) $(AUDIO_NATIVE_OBJ) $(AUDIO_CPP_OBJ) $(HTTP_SERVER_OBJ) $(HTTP_SERVER_CLI_OBJ) $(HTTP2_SERVER_OBJ) $(HTTP3_SERVER_OBJ) $(PLATFORM_OBJ) $(SYSTEM_MONITOR_OBJ) $(DESIGN_ACTIVITY_OBJ) $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(LANGIN_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(NS_EMIT_OBJ) $(PREFERRED_ROUTER_OBJ)
-	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS) $(LIBS) -lnghttp2
+$(SLEELA_BIN): $(JAVA_RUNTIME_PROBE_OBJ) $(JAVA_RUNTIME_BRIDGE_OBJ) $(AUDIO_NATIVE_OBJ) $(AUDIO_CPP_OBJ) $(HTTP_SERVER_OBJ) $(HTTP_SERVER_CLI_OBJ) $(HTTP2_SERVER_OBJ) $(HTTP3_SERVER_OBJ) $(PLATFORM_OBJ) $(SYSTEM_MONITOR_OBJ) $(DESIGN_ACTIVITY_OBJ) $(CORE_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(LANGIN_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(NS_EMIT_OBJ) $(PREFERRED_ROUTER_OBJ) $(NGHTTP2_LIB)
+	$(CXX) $(CXXFLAGS) $(filter-out $(NGHTTP2_LIB),$^) -o $@ $(LDFLAGS) $(LIBS) $(NGHTTP2_LIB)
 $(AUDIO_NATIVE_OBJ): core/sleela_audio_bridge.cpp core/sleela_audio_bridge.h ../audio/cpp/include/sleela_audio.hpp | $(BUILD)
 	$(CXX) $(CXXFLAGS) -Icore -I.. -c $< -o $@
 
@@ -396,8 +420,33 @@ $(BUILD)/http_server.o: ../http-servers/common/http_server.cpp ../http-servers/c
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c ../http-servers/common/http_server.cpp -o $@
 $(BUILD)/http_server_cli.o: frontend/http_server_cli.cpp frontend/http_server_cli.h ../http-servers/common/http_server.h ../http-servers/2/http2/http2_server.h ../http-servers/3/http3/http3_server.h | $(BUILD)
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c frontend/http_server_cli.cpp -o $@
-$(BUILD)/http2_server.o: ../http-servers/2/http2/http2_server.cpp ../http-servers/2/http2/http2_server.h | $(BUILD)
-	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c ../http-servers/2/http2/http2_server.cpp -o $@
+$(BUILD)/http2_server.o: ../http-servers/2/http2/http2_server.cpp ../http-servers/2/http2/http2_server.h $(NGHTTP2_VERHDR) | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -I$(NGHTTP2_INC) -DNGHTTP2_STATICLIB -c ../http-servers/2/http2/http2_server.cpp -o $@
+
+# --- Vendored nghttp2 static library ----------------------------------------
+# Unpack the committed source tree once; the stamp file guards re-extraction.
+$(NGHTTP2_DIR)/.unpacked: $(NGHTTP2_ZIP) | $(BUILD)
+	@echo "=== unpacking vendored nghttp2 $(NGHTTP2_VERSION) ==="
+	@rm -rf $(NGHTTP2_DIR)
+	@cd $(BUILD) && unzip -q ../$(NGHTTP2_ZIP)
+	@touch $@
+
+# Generate the version header from the shipped autotools/cmake template.
+$(NGHTTP2_VERHDR): $(NGHTTP2_DIR)/.unpacked
+	@sed -e 's/@PACKAGE_VERSION@/$(NGHTTP2_VERSION)/' \
+	     -e 's/@PACKAGE_VERSION_NUM@/$(NGHTTP2_VERSION_NUM)/' \
+	     $(NGHTTP2_DIR)/lib/includes/nghttp2/nghttp2ver.h.in > $@
+
+# Compile the core library sources (lib/*.c) into a static archive. The sources
+# are built standalone (no config.h; HAVE_CONFIG_H is left undefined) with
+# NGHTTP2_STATICLIB so no symbol-visibility/DLL attributes are emitted.
+$(NGHTTP2_LIB): $(NGHTTP2_VERHDR)
+	@echo "=== building vendored libnghttp2.a ==="
+	@$(CC) $(CFLAGS) $(NGHTTP2_DEFS) -I$(NGHTTP2_INC) -I$(NGHTTP2_DIR)/lib \
+	    -c $(NGHTTP2_DIR)/lib/*.c
+	@mv nghttp2_*.o sfparse.o $(BUILD)/ 2>/dev/null || true
+	@$(AR) rcs $@ $(BUILD)/nghttp2_*.o $(BUILD)/sfparse.o
+	@rm -f $(BUILD)/nghttp2_*.o $(BUILD)/sfparse.o
 $(PREFERRED_ROUTER_OBJ): ../preferred-routers/preferred_router.cpp ../preferred-routers/preferred_router.h | $(BUILD)
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c ../preferred-routers/preferred_router.cpp -o $@
 $(BUILD)/http3_server.o: ../http-servers/3/http3/http3_server.cpp ../http-servers/3/http3/http3_server.h | $(BUILD)

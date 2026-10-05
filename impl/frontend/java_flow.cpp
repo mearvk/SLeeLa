@@ -176,7 +176,7 @@ static void analyzeStmt(Context& c,FlowState& s,const JavaFlowStmt& st){
         consumeExits(c,start,st.label,ExitKind::Break,exits);
         consumeExits(c,start,st.label,ExitKind::Continue,exits);
         s=joinNormal(exits);
-        mergeDiagnostics(s,head); mergeDiagnostics(s,cond); return;
+        mergeDiagnostics(s,head); mergeDiagnostics(s,cond.whenFalse); return;
     }
     case JavaFlowStmtKind::Do:{
         const std::size_t start=c.exits.size();

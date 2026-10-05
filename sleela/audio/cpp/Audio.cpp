@@ -15,7 +15,7 @@ bool AudioNative::render(const AudioConfiguration&c)const{
 }
 void AudioNative::interrupt()const{sleela_audio_native_interrupt();}
 bool AudioDevice::available()const{return !identifier.empty();}
-bool AudioStream::open(){SleelaAudioDevice d{};std::snprintf(d.identifier,sizeof(d.identifier),"%s",device.identifier.c_str());d.sampleRate=device.sampleRate;d.channels=device.channels;d.input=device.input;d.output=device.output;SleelaAudioStream x{d,sampleRate,channels,0,0};if(!sleela_audio_stream_open(&x))return false;opened=x.opened;running=x.running;return true;}
+bool AudioStream::open(){SleelaAudioDevice d{};std::snprintf(d.identifier,sizeof(d.identifier),"%s",device.identifier.c_str());d.sample_rate=device.sampleRate;d.channels=device.channels;d.input=device.input;d.output=device.output;SleelaAudioStream x{d,sampleRate,channels,0,0};if(!sleela_audio_stream_open(&x))return false;opened=x.opened;running=x.running;return true;}
 bool AudioStream::start(){if(!opened)return false;running=true;return true;}void AudioStream::stop(){running=false;}void AudioStream::close(){running=false;opened=false;}
 bool AudioMixer::add(const AudioInput&i){if(!i.validate()||inputs_.size()>=128)return false;inputs_.push_back(i);return true;}
 bool AudioMixer::setControls(const AudioControls&c){if(!c.validate())return false;controls_=c;return true;}
