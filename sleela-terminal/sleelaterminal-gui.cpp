@@ -201,6 +201,27 @@ void install_css() {
         headerbar.sleela-titlebar button.titlebutton:active { background: alpha(@sl_fg, 0.24); }
         headerbar.sleela-titlebar button.titlebutton:focus { outline: 2px solid @sl_accent; outline-offset: -2px; }
 
+        /* Settings (gear) button: a quiet, flat affordance. No resting
+           background or border -- the icon alone sits in the bar; it reveals a
+           soft tint only on hover/active. ~25% smaller than the 32px controls. */
+        headerbar.sleela-titlebar button.sleela-settings-btn {
+            color: alpha(@sl_fg, 0.82);
+            background: transparent;
+            border: none;
+            box-shadow: none;
+            min-width: 24px;
+            min-height: 24px;
+            padding: 2px;
+            margin-right: 4px;
+            transition: background 120ms ease, color 120ms ease;
+        }
+        headerbar.sleela-titlebar button.sleela-settings-btn:hover {
+            color: @sl_fg;
+            background: alpha(@sl_fg, 0.12);
+        }
+        headerbar.sleela-titlebar button.sleela-settings-btn:active { background: alpha(@sl_fg, 0.20); }
+        headerbar.sleela-titlebar button.sleela-settings-btn:focus { outline: 1px solid @sl_accent; outline-offset: -1px; }
+
         /* Footer: flat chrome bar matching the title bar, one hairline on top. */
         box.sleela-footer {
             min-height: 38px;
@@ -224,17 +245,17 @@ void install_css() {
         window.sleela-installer { background: @sl_surface; color: @sl_fg; }
         window.sleela-installer label { color: @sl_fg; }
 
-        popover.sleela-software contents,
-        popover.sleela-settings contents {
-            background: @sl_surface;
-            border: 1px solid @sl_border;
-        }
+        popover.sleela-software contents { background: @sl_surface; border: 1px solid @sl_border; }
+        /* Settings is a subframe window; theme the window surface itself. */
+        window.sleela-settings { background: @sl_surface; }
+        window.sleela-settings scrolledwindow { background: @sl_surface; }
+
         popover.sleela-software label,
-        popover.sleela-settings label { color: @sl_fg; }
-        popover.sleela-settings label.section { font-weight: 800; margin-top: 8px; }
+        window.sleela-settings label { color: @sl_fg; }
+        window.sleela-settings label.section { font-weight: 800; margin-top: 8px; }
 
         popover.sleela-software button,
-        popover.sleela-settings button {
+        window.sleela-settings button {
             color: @sl_fg;
             background: alpha(@sl_fg, 0.08);
             min-width: 260px;
@@ -243,9 +264,11 @@ void install_css() {
             transition: background 120ms ease;
         }
         popover.sleela-software button:hover,
-        popover.sleela-settings button:hover { background: alpha(@sl_fg, 0.16); }
+        window.sleela-settings button:hover { background: alpha(@sl_fg, 0.16); }
         popover.sleela-software button:focus,
-        popover.sleela-settings button:focus { outline: 2px solid @sl_accent; outline-offset: -2px; }
+        window.sleela-settings button:focus { outline: 2px solid @sl_accent; outline-offset: -2px; }
+        /* Keep the Close suggested-action compact, not full-width like the list. */
+        window.sleela-settings button.suggested-action { min-width: 88px; }
 
         /* The single suggested action uses the accent; nothing else does. */
         button.suggested-action { background: @sl_accent; color: @sl_fg; }
@@ -297,10 +320,26 @@ void set_source(GtkCheckButton *button, bool &target, AppState *state) {
 }
 
 void make_settings_menu(AppState *state, GtkWidget *settings_button_widget) {
-    GtkPopover *popover = GTK_POPOVER(gtk_popover_new());
-    gtk_widget_add_css_class(GTK_WIDGET(popover), "sleela-settings");
-    gtk_widget_set_parent(GTK_WIDGET(popover), settings_button_widget);
-    gtk_popover_set_has_arrow(popover, TRUE);
+    (void) settings_button_widget;
+
+    // Settings opens as a proper subframe window (not a transient popover), so
+    // the adjustments stay on screen while the user works through them. It is a
+    // modal child of the main window, consistent with the other SleelaTerminal
+    // subframes (installer / software output).
+    GtkWidget *frame = gtk_window_new();
+    gtk_window_set_title(GTK_WINDOW(frame), "SleelaTerminal — Settings");
+    gtk_window_set_default_size(GTK_WINDOW(frame), 420, 560);
+    gtk_window_set_modal(GTK_WINDOW(frame), TRUE);
+    if (state->window != nullptr) {
+        gtk_window_set_transient_for(GTK_WINDOW(frame), state->window);
+    }
+    gtk_widget_add_css_class(frame, "sleela-settings");
+
+    // The settings content can be taller than the frame, so make it scrollable.
+    GtkWidget *scroller = gtk_scrolled_window_new();
+    gtk_widget_set_vexpand(scroller, TRUE);
+    gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scroller),
+                                   GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
 
     GtkWidget *box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 6);
     gtk_widget_set_margin_start(box, 12);
@@ -410,9 +449,16 @@ void make_settings_menu(AppState *state, GtkWidget *settings_button_widget) {
     gtk_widget_set_halign(trust, GTK_ALIGN_START);
     gtk_box_append(GTK_BOX(box), trust);
 
-    gtk_popover_set_child(popover, box);
-    gtk_popover_set_autohide(popover, TRUE);
-    gtk_popover_popup(popover);
+    GtkWidget *done = gtk_button_new_with_label("Close");
+    gtk_widget_add_css_class(done, "suggested-action");
+    gtk_widget_set_halign(done, GTK_ALIGN_END);
+    gtk_widget_set_margin_top(done, 8);
+    g_signal_connect_swapped(done, "clicked", G_CALLBACK(gtk_window_destroy), frame);
+    gtk_box_append(GTK_BOX(box), done);
+
+    gtk_scrolled_window_set_child(GTK_SCROLLED_WINDOW(scroller), box);
+    gtk_window_set_child(GTK_WINDOW(frame), scroller);
+    gtk_window_present(GTK_WINDOW(frame));
 }
 
 void open_settings(GtkButton *, gpointer user_data) {
@@ -748,14 +794,20 @@ void activate(GtkApplication *application, gpointer user_data) {
     gtk_widget_set_tooltip_text(logo, "SleelaTerminal™ — Debian / Windows Terminal");
     gtk_header_bar_pack_start(GTK_HEADER_BAR(header), logo);
 
+    // Settings control on the RIGHT of the title bar: a gear icon (the
+    // conventional Settings glyph), flat/quiet by default with only a soft
+    // hover tint, ~25% smaller than the other title controls. Clicking it opens
+    // the Settings subframe window. Packed at the end so it sits on the right.
     GtkWidget *settings = gtk_button_new();
-    GtkWidget *settings_image = gtk_image_new_from_icon_name("open-menu-symbolic");
+    GtkWidget *settings_image = gtk_image_new_from_icon_name("emblem-system-symbolic");
+    gtk_image_set_pixel_size(GTK_IMAGE(settings_image), 16);
     gtk_button_set_child(GTK_BUTTON(settings), settings_image);
-    gtk_widget_set_tooltip_text(settings, "SleelaTerminal Settings and Orientation");
-    gtk_widget_add_css_class(settings, "titlebutton");
+    gtk_widget_set_tooltip_text(settings, "SleelaTerminal Settings");
+    gtk_widget_add_css_class(settings, "sleela-settings-btn");
+    gtk_widget_set_valign(settings, GTK_ALIGN_CENTER);
     g_object_set_data(G_OBJECT(settings), "sleela-state", state);
     g_signal_connect(settings, "clicked", G_CALLBACK(open_settings), settings);
-    gtk_header_bar_pack_start(GTK_HEADER_BAR(header), settings);
+    gtk_header_bar_pack_end(GTK_HEADER_BAR(header), settings);
 
     GtkWidget *title = gtk_label_new(kWindowTitle);
     gtk_header_bar_set_title_widget(GTK_HEADER_BAR(header), title);
