@@ -12,9 +12,15 @@ behaviour, add network/data behaviour, or alter the configuration schema.
 
 The VTE terminal is the primary, centered workspace. Chrome (title bar, footer,
 popovers) is a quiet frame around it. Chrome must never compete with terminal
-content for attention: no animation, blinking, glow, or motion in the resting
-state. Controls appear on demand (popovers / right-click), not as permanent
-panels.
+content for attention: no blinking, flashing, or attention-grabbing motion.
+Controls appear on demand (popovers / right-click), not as permanent panels.
+
+The one sanctioned exception is the **title-bar throbber**: a 2px living
+light-blue seam along the bottom of the title bar that replaces the old static
+border. It breathes lighter/darker under an organic algorithm at ~20 Hz. It is
+allowed because it is *ambient* — low-contrast, slow, edge-only, and carrying no
+information the user must track — so it signals "alive" without pulling the eye
+from the terminal. Any motion in the chrome must clear that same bar.
 
 ## 2. One palette, one source of truth
 
