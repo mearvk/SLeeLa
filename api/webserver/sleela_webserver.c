@@ -1,3 +1,6 @@
+#if !defined(_WIN32)
+#define _POSIX_C_SOURCE 200809L  /* strnlen and other POSIX.1-2008 symbols */
+#endif
 #include "sleela_webserver.h"
 
 #include <stdio.h>
@@ -35,7 +38,9 @@ int sleela_webserver_validate(const sleela_webserver_config_t *config,
         return -1;
     }
 
-    if (config->port < 1U || config->port > 65535U) {
+    /* port is unsigned short, so the upper bound (65535) can never be exceeded;
+       only the lower bound (a port of 0 is invalid) needs checking. */
+    if (config->port < 1U) {
         if (error != NULL && error_size > 0U)
             snprintf(error, error_size, "port must be 1..65535");
         return -1;

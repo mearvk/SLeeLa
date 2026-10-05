@@ -24,7 +24,7 @@ std::string reg_name(std::uint8_t r,bool wide64){
 struct ModRm { std::size_t length{1}; std::string operand; Operand::Kind kind{Operand::Kind::Register}; std::uint8_t reg{}; };
 bool parse_modrm(const std::vector<std::uint8_t>& b,std::size_t p,std::size_t end,bool wide64,ModRm& out){
     if(p>=end)return false;
-    const auto m=b[p],mod=m>>6,reg=(m>>3)&7,rm=m&7; out.reg=reg; std::size_t n=1; std::ostringstream t; 
+    const std::uint8_t m=b[p]; const unsigned mod=m>>6u,reg=(m>>3u)&7u,rm=m&7u; out.reg=static_cast<std::uint8_t>(reg); std::size_t n=1; std::ostringstream t; 
     if(mod==3){out.kind=Operand::Kind::Register;out.operand=reg_name(rm,wide64);return true;}
     out.kind=Operand::Kind::Memory;t<<"[";
     if(rm==4){

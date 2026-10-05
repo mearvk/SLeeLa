@@ -40,6 +40,10 @@ int main(void) {
     if (slai_engine_bind_vm(&engine, vm_stub, NULL)) return 6;
     if (slai_invoke(&engine, &request, &input, &result)) return 7;
     if (!result.accepted || !result.completed || strcmp(result.summary, "inspect:data")) return 8;
-    if (slai_engine_init(&engine, SL_AI_BACKEND_NATIVE)) return 9;\n    if (slai_engine_bind_native(&engine, vm_stub, NULL)) return 10;\n    request.backend = SL_AI_BACKEND_NATIVE;\n    if (slai_invoke(&engine, &request, &input, &result)) return 11;\n    puts("AI API: PASS");
+    if (slai_engine_init(&engine, SL_AI_BACKEND_NATIVE)) return 9;
+    if (slai_engine_bind_native(&engine, vm_stub, NULL)) return 10;
+    request.backend = SL_AI_BACKEND_NATIVE;
+    if (slai_invoke(&engine, &request, &input, &result)) return 11;
+    puts("AI API: PASS");
     return 0;
 }

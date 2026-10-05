@@ -1,3 +1,6 @@
+#if !defined(_WIN32)
+#define _POSIX_C_SOURCE 200809L  /* setenv/unsetenv */
+#endif
 #include "vm_config.h"
 #include <stdio.h>
 #include <stdlib.h>

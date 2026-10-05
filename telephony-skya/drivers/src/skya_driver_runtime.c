@@ -1,3 +1,6 @@
+#if !defined(_WIN32)
+#define _POSIX_C_SOURCE 200809L  /* clock_gettime and other POSIX.1-2008 symbols */
+#endif
 #include "../include/skya_driver_runtime.h"
 #include <errno.h>
 #include <pthread.h>
