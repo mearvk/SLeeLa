@@ -1,6 +1,6 @@
 # SleelaTerminal™ Settings
 
-SleelaTerminal uses a compact three-horizontal-line menu in the title bar for presentation and orientation settings. The menu is intentionally small and keeps the terminal itself visually central.
+SleelaTerminal uses a small, quiet **gear** button on the right of the title bar for presentation and orientation settings. The button is flat — no loud outline, revealing only a soft tint on hover — and is intentionally compact so the terminal itself stays visually central. Clicking it opens the Settings adjustment subframe.
 
 ## Presentation
 
@@ -58,6 +58,6 @@ Settings are loaded at startup and written when a menu choice changes. The appli
 
 ## UI placement
 
-The primary settings control lives in the title bar because presentation settings and orientation declarations are application-level concerns. Terminal text-selection operations remain in the terminal's right-click menu. The terminal remains the primary centered workspace, while contextual controls are exposed through GTK popovers rather than permanent panels.
+The primary settings control is the gear button on the right of the title bar, because presentation settings and orientation declarations are application-level concerns. It opens the Settings as a dedicated modal subframe window (a scrollable child of the main window) so the adjustments stay on screen while the user works through them, rather than a transient popover that dismisses on the first click. Terminal text-selection operations remain in the terminal's right-click menu, and the terminal remains the primary centered workspace.
 
 Future additions such as image-backed footer content, moving text, scrolling information, or explicitly configured feed adapters should extend this same model rather than introduce a second settings system.
