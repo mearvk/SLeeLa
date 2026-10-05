@@ -33,6 +33,10 @@ struct ThrobberCell {
     double phase = 0.0;    // per-cell phase for subtle flicker
     bool retro = false;    // a rare child allowed to pause / go right->left
     double retro_px = 0.0; // pixels of retrograde/pause travel remaining
+    // Optional colour tint, only expressed under strong amplification.
+    // (tr,tg,tb) is a fully-saturated hue; tinted==false means pure base shade.
+    bool tinted = false;
+    double tr = 0.0, tg = 0.0, tb = 0.0;
 };
 
 struct AppConfig {
@@ -819,88 +823,132 @@ gboolean window_close_request(GtkWindow *window, gpointer user_data) {
     return TRUE;
 }
 
-// Paint the throbber strip in the current light-blue shade. The brightness
-// `throbber_level` in [0,1] interpolates between a dim and a bright light blue,
-// so the seam breathes rather than flashes.
-// Render the living field. The strip is NOT one uniform level: a quiet base
-// light-blue is modulated locally by every excitation ("child of wattage"),
-// each adding a relative lighter/darker shade of the SAME base colour near its
-// position. The sum, drawn per column, is a texture that flows left->right.
+// Render the living field. The strip is NOT one uniform level: it rests at the
+// title-bar chrome colour and is modulated locally by every excitation ("child
+// of wattage"), each adding a relative darker/lighter shade near its position.
+// The sum, drawn per column, is a texture that flows left->right. Under strong
+// amplification, latent per-cell hues (orange/green/blue/red) surface.
 void throbber_draw(GtkDrawingArea *, cairo_t *cr, int width, int height, gpointer user_data) {
     auto *state = static_cast<AppState *>(user_data);
     if (width <= 0 || height <= 0) return;
     state->throbber_w = width;
 
-    // Base light-blue family. Endpoints of the "relative shade" range: the local
-    // field value f in [-1..+1] moves a column between a darker and lighter blue
-    // around a quiet resting shade, so it reads as one colour living, not a
-    // whole-bar brightness change.
-    //   dark  ~ #22395a   rest ~ #3f6ea0   light ~ #a9dcff
+    // At rest the strip IS the title bar: the resting shade equals the chrome
+    // colour (@sl_chrome #24103f). Excitations move a column, relative to that
+    // chrome base, toward a darker purple or an airy light blue -- so the seam
+    // reads as the title-bar colour coming alive, not a separate band.
+    //   dark ~ #190b2c    rest(chrome) ~ #24103f    light ~ #a9dcff
     auto mix = [](double c0, double c1, double k) { return c0 + (c1 - c0) * k; };
+    const double rest_r = 0.141, rest_g = 0.063, rest_b = 0.247; // #24103f
 
-    // Draw per column (1px). At 2px tall and a title-bar width this is cheap and
-    // gives smooth left->right flow.
+    // Strong-amplification colour: only when the wattage field is driven hard
+    // (~18/20) do latent hues (orange/green/blue/red) surface. This ramps from
+    // 0 below ~0.80 amp to full by ~0.95, so normal operation stays on-brand.
+    const double amp = state->throbber_amp;
+    const double colour_gate = std::max(0.0, (amp - 0.80) / 0.15); // 0..1
+    const double colour_gate_c = colour_gate > 1.0 ? 1.0 : colour_gate;
+
     for (int x = 0; x < width; ++x) {
         const double px = x + 0.5;
 
-        // Accumulate the field from every alive cell: a Gaussian bump in x,
-        // signed by the cell's intensity. Rightward-leading edge is slightly
-        // sharper so motion reads directionally (left->right).
+        // Accumulate the scalar field (how far this column departs from rest)
+        // and, separately, the hue weighted by each tinted cell's contribution.
         double f = 0.0;
+        double hr = 0.0, hg = 0.0, hb = 0.0, hw = 0.0;
         for (const auto &c : state->throbber_cells) {
             if (!c.alive) continue;
             double dx = px - c.x;
-            // Asymmetric width: trailing (left) side longer -> a comet-like tail
-            // pointing back the way it came, reinforcing flow direction.
+            // Asymmetric width: trailing (left) side longer -> comet tail that
+            // points back the way it came, reinforcing left->right flow.
             double s = (dx < 0.0) ? c.sigma * 1.6 : c.sigma * 0.8;
             if (s < 0.5) s = 0.5;
             double e = dx / s;
             double bump = std::exp(-0.5 * e * e);
-            // subtle per-cell flicker so each child feels independently alive
             double flick = 0.85 + 0.15 * std::sin(state->throbber_t * 6.0 + c.phase);
-            f += c.intensity * bump * flick;
+            double contrib = c.intensity * bump * flick;
+            f += contrib;
+            if (c.tinted) { hr += c.tr * contrib; hg += c.tg * contrib; hb += c.tb * contrib; hw += contrib; }
         }
-        // Reflexive amplification: the global amp field scales how strongly the
-        // texture departs from the resting shade.
-        f *= (0.5 + 0.9 * state->throbber_amp);
+        f *= (0.5 + 0.9 * amp);
         if (f > 1.2) f = 1.2;
 
-        // Map field -> relative shade of the base blue.
-        double k = f;                 // 0 = rest, >0 brighter, (slightly) <0 dimmer
+        // Relative shade of the chrome base.
+        double k = f;
         double r, g, b;
         if (k >= 0.0) {
             double kk = k > 1.0 ? 1.0 : k;
-            r = mix(0.247, 0.663, kk);   // #3f6ea0 -> #a9dcff
-            g = mix(0.431, 0.863, kk);
-            b = mix(0.627, 1.000, kk);
+            r = mix(rest_r, 0.663, kk);   // chrome -> #a9dcff
+            g = mix(rest_g, 0.863, kk);
+            b = mix(rest_b, 1.000, kk);
         } else {
             double kk = -k; if (kk > 1.0) kk = 1.0;
-            r = mix(0.247, 0.133, kk);   // #3f6ea0 -> #22395a
-            g = mix(0.431, 0.224, kk);
-            b = mix(0.627, 0.353, kk);
+            r = mix(rest_r, 0.098, kk);   // chrome -> #190b2c
+            g = mix(rest_g, 0.043, kk);
+            b = mix(rest_b, 0.173, kk);
         }
+
+        // Under strong amplification, bend bright columns toward the local hue.
+        if (colour_gate_c > 0.0 && hw > 0.0 && k > 0.0) {
+            double thr = (hr / hw), tg2 = (hg / hw), tb2 = (hb / hw);
+            double w = colour_gate_c * std::min(1.0, k);  // only where it's bright
+            r = mix(r, thr, w);
+            g = mix(g, tg2, w);
+            b = mix(b, tb2, w);
+        }
+
+        r = std::clamp(r, 0.0, 1.0);
+        g = std::clamp(g, 0.0, 1.0);
+        b = std::clamp(b, 0.0, 1.0);
         cairo_set_source_rgb(cr, r, g, b);
         cairo_rectangle(cr, x, 0, 1, height);
         cairo_fill(cr);
     }
 }
 
-// Spawn a fresh excitation at (usually) the left edge.
-void throbber_spawn(AppState *state) {
+// Spawn a fresh excitation. Birth position spans the whole 0-100% of the strip
+// width: most children enter at the left edge (preserving the dominant
+// left->right feed), but a share are born anywhere across 0-100% and simply
+// fade in at that spot (intensity eases up from 0). Either way the pulse then
+// travels left->right all the way through to 100%.
+void throbber_spawn(AppState *state, int W) {
     ThrobberCell c;
     c.alive = true;
-    c.x = -4.0 + g_random_double() * 6.0;           // enter from just off the left
-    c.v = 24.0 + g_random_double() * 40.0;          // base rightward speed (px/s)
+
+    // ~45% are born across the interior (0-100%); the rest enter from the left.
+    if (g_random_double() < 0.45) {
+        c.x = g_random_double() * W;                 // anywhere in 0-100%
+    } else {
+        c.x = -4.0 + g_random_double() * 6.0;        // enter from just off the left
+    }
+
+    c.v = 24.0 + g_random_double() * 40.0;           // base rightward speed (px/s)
     c.a = 0.0;
     c.j = 0.0;
     c.base_intensity = 0.35 + g_random_double() * 0.6; // relative shade strength
-    c.intensity = 0.0;                                  // eases up from birth
+    c.intensity = 0.0;                                  // eases up from birth (fade-in)
     c.energy = 1.0;
-    c.sigma = 6.0 + g_random_double() * 14.0;       // glow half-width
+    c.sigma = 6.0 + g_random_double() * 14.0;        // glow half-width
     c.phase = g_random_double() * 6.2831853;
     // 1 in 30 children may pause or run right->left for 20-50 px.
     c.retro = (g_random_int_range(0, 30) == 0);
     c.retro_px = c.retro ? (20.0 + g_random_double() * 30.0) : 0.0;
+
+    // Each child carries a latent hue (orange / green / blue / red). It stays
+    // dormant at normal wattage and only surfaces under strong amplification
+    // (see throbber_draw). Give most children a hue so colour can appear when
+    // the field is driven hard.
+    static const double hues[4][3] = {
+        {1.00, 0.55, 0.10},  // orange
+        {0.20, 0.85, 0.35},  // green
+        {0.30, 0.60, 1.00},  // blue
+        {1.00, 0.25, 0.25},  // red
+    };
+    c.tinted = (g_random_double() < 0.75);
+    if (c.tinted) {
+        const int h = g_random_int_range(0, 4);
+        c.tr = hues[h][0]; c.tg = hues[h][1]; c.tb = hues[h][2];
+    }
+
     state->throbber_cells.push_back(c);
 }
 
@@ -933,7 +981,7 @@ gboolean throbber_tick(gpointer user_data) {
     state->throbber_spawn_accum += rate * dt;
     while (state->throbber_spawn_accum >= 1.0) {
         state->throbber_spawn_accum -= 1.0;
-        if (state->throbber_cells.size() < 64) throbber_spawn(state);
+        if (state->throbber_cells.size() < 64) throbber_spawn(state, W);
     }
 
     // --- Advance each child with 3rd-order (jerk-driven) motion ---------------
@@ -961,16 +1009,22 @@ gboolean throbber_tick(gpointer user_data) {
         c.v += c.a * dt;
         c.x += c.v * dt;
 
-        // Gentle lifetime: decay energy, fade out as it nears the right edge.
+        // Brightness lifetime is INDEPENDENT of travel: the "amplification
+        // series" (energy) decays so a pulse may dim toward 0 partway across,
+        // but the pulse keeps moving and completes the full 0->100 journey.
+        // The cell only dies when it leaves the right edge -- not when it fades.
         c.energy -= dt * (0.10 + 0.05 * state->throbber_amp);
+        if (c.energy < 0.0) c.energy = 0.0;
         double edge_fade = 1.0;
-        if (c.x > W * 0.82) edge_fade = std::max(0.0, (W - c.x) / (W * 0.18));
+        if (c.x > W * 0.90) edge_fade = std::max(0.0, (W - c.x) / (W * 0.10));
         double breath = 0.9 + 0.1 * std::sin(state->throbber_t * 1.7 + c.phase);
-        double target_i = c.base_intensity * edge_fade * std::max(0.0, c.energy) * breath;
-        // Ease the live intensity toward its target so births/fades are smooth.
+        double target_i = c.base_intensity * edge_fade * c.energy * breath;
+        // Ease the live intensity toward its target so fade-in / fade-out smooth.
         c.intensity += (target_i - c.intensity) * 0.30;
 
-        if (c.x > W + 6.0 || c.energy <= 0.0) c.alive = false;
+        // Die only on exit at the right edge (completing 0->100), never from
+        // the brightness having faded mid-strip.
+        if (c.x > W + 6.0) c.alive = false;
     }
 
     // Compact the pool: drop dead cells.
