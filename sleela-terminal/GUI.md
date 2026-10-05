@@ -26,6 +26,8 @@ VTE supplies the virtual terminal widget and PTY integration used by GTK termina
 
 The right of the title bar carries a small, quiet gear button for settings. It is flat (no loud outline — only a soft hover tint) and opens the Settings as a dedicated modal subframe window, so configuration does not require a permanent side panel or toolbar and stays on screen while the user adjusts it.
 
+The window controls — minimize, maximize, and close — are shown on the right of the title bar and are **lit for visibility**: each is a distinct rounded button carrying a bright, fully-opaque white glyph so the icons read clearly against the dark purple chrome. Close additionally lights up red on hover as an unmistakable affordance.
+
 The menu currently provides:
 
 - font family and size choices;
