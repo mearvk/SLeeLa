@@ -55,7 +55,11 @@ Any language could target this core; Sleela is the first.
 
 ## Building
 
-Requires a C11 compiler and a C++17 compiler.
+Requires a C11 compiler and a C++17 compiler. The HTTP/2 server is built from
+the committed `include/nghttp2-1.70.0.zip`: the Makefile unpacks it under
+`build/`, compiles it into a static `libnghttp2.a`, and links that directly, so
+no system-installed `libnghttp2` (or `-lnghttp2`) is required. `unzip` must be
+available on the build host.
 
 **Linux (POSIX):**
 

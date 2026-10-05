@@ -17,6 +17,20 @@
 13. Integration tests.
 14. Packaging/install tests.
 
+## Standalone translation-unit audit
+
+In addition to the layers above, `test-suites/run-all.sh --audit` (and
+`--headers`) compiles every SLeeLa-authored translation unit on its own under
+the strict warning set (`-Wall -Wextra -Wpedantic -Wconversion -Wshadow
+-Wformat=2 -Werror`) to catch self-inconsistent files — duplicate type
+definitions, wrong struct-member names, missing includes, and type errors —
+before they reach a link. Each unit is compiled with the same include roots the
+per-module Makefiles use (its own directory and module `include/`/`src/` dirs
+first, then the shared repository roots). Only committed source is audited;
+build output and files that require a foreign OS SDK (macOS CoreAudio, the
+Windows SDK, GTK) are excluded or reported as SKIP. See
+[`test-suites/README.md`](test-suites/README.md) for details.
+
 ## Negative testing
 
 Every public parser, decoder, resource allocator and protocol boundary should have malformed-input tests.
