@@ -24,7 +24,7 @@ VTE supplies the virtual terminal widget and PTY integration used by GTK termina
 
 ## Settings menu
 
-The title bar includes a three-horizontal-line settings/menu button. It opens a compact GTK popover so configuration does not require a permanent side panel or toolbar.
+The right of the title bar carries a small, quiet gear button for settings. It is flat (no loud outline — only a soft hover tint) and opens the Settings as a dedicated modal subframe window, so configuration does not require a permanent side panel or toolbar and stays on screen while the user adjusts it.
 
 The menu currently provides:
 
@@ -99,7 +99,7 @@ left edge with no surrounding whitespace. It is a strict image — no button
 outline — and is produced by `tools/logo/Trim.java` from the source artwork in
 `images/`.
 
-The title bar and footer retain the dark rich-purple visual language, bright white controls/text, and a clean flat treatment. The settings popover uses the same purple family rather than introducing a separate theme.
+The title bar and footer retain the dark rich-purple visual language, bright white controls/text, and a clean flat treatment. The settings subframe uses the same purple family rather than introducing a separate theme.
 
 The current GUI displays version `1.0.0`, matching the project's initial SleelaTerminal version baseline. The footer also contains the clickable **CMD** image, representing CMD as the Java native launcher associated with SecureJDK 28. It is rendered as a strict image with no additional footer-button outline.
 
