@@ -42,6 +42,21 @@ The authoritative execution semantics remain in `/impl/core`; this bridge models
 the same one-op-at-a-time discipline so a SLeeLa opcode object can request the
 fetch and then its single dispatch.
 
+# SLeeLa Native Opcode-Governance Bridge
+
+C++17 phase/ordering primitives behind the `lib/opcodes/governance` series
+(`SLOpcodeRegistrar`, `SLOpcodeListener`, `SLOpcodeEventObserver`,
+`SLGovernedExecution`).
+
+- Stable C ABI in `include/sleela_gov.h`.
+- `sleela_gov_announce_phase` — notify SLeeLa and the VM of BEFORE / DURING / AFTER.
+- `sleela_gov_live_ip` — the live instruction pointer the Listener hears during execution.
+- `sleela_gov_current_phase` / `sleela_gov_phase_count` — phase tracking.
+
+The governance *policy* lives in SLeeLa source; this bridge only announces the
+phases so both SLeeLa and the VM listen for ordering, and reports the live ip.
+Governance never executes an opcode itself — execution stays in `/impl/core`.
+
 ## Build
 
 ```sh
@@ -49,4 +64,4 @@ make
 make test
 ```
 
-`make test` builds and self-tests the audio and opcode bridges.
+`make test` builds and self-tests the audio, opcode, and governance bridges.

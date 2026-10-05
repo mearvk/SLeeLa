@@ -1,0 +1,137 @@
+/*
+ * lib/opcodes/governance/SLGovernedExecution.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLGovernedExecution, the orchestrator that runs an opcode
+ *   stream under the discretion of the Registrar, Listener, and EventObserver so
+ *   that opcodes are not run raw into the VM without consideration.
+ *
+ * The discretion the user asked for, in one place:
+ *   A developer MAY run opcodes raw via SLOpcodeStream.run(). Usually, though, a
+ *   program is handed to a Registrar that considers it A -> B BEFORE running; a
+ *   Listener watches the live VM code DURING; and an EventObserver judges the
+ *   whole as a musical, ordered process AFTER. SLeeLa and the VM both know to
+ *   listen for ordering at these three phases.
+ *
+ * Flow:
+ *   BEFORE: Registrar.consider(stream)
+ *           - REJECT  -> refuse, do not run.
+ *           - PAUSE   -> hold as unrest, do not run (await resolution).
+ *           - ADMIT   -> proceed to DURING.
+ *   DURING: for each opcode as the VM reaches it:
+ *             Listener.observe(op, liveIp, index)
+ *             - REJECT -> stop and refuse.
+ *             - PAUSE  -> stop and hold as unrest.
+ *             - WARN   -> record and continue.
+ *             - ADMIT  -> continue.
+ *             then the opcode fires on the VM.
+ *           Listener.settle() closes DURING.
+ *   AFTER:  EventObserver.assess(stream, flaggedFlaw)
+ *           - may ADMIT / WARN / PATCH / PAUSE / REJECT.
+ *
+ * Family: opcodes.governance. Native VM/OS work crosses an explicit bridge.
+ */
+#sleela 1.3
+// Unified SLeeLa standard-library front-end object.
+class SLGovernedExecution {
+  SLOpcodeStream stream;
+  SLOpcodeRegistrar registrar;
+  SLOpcodeListener listener;
+  SLOpcodeEventObserver observer;
+
+  int state;
+  int warnings;
+  SLGovVerdict beforeVerdict;
+  SLGovVerdict duringVerdict;
+  SLGovVerdict afterVerdict;
+  String haltReason;
+
+  void configure(SLOpcodeStream program,
+                 SLOpcodeRegistrar reg,
+                 SLOpcodeListener lis,
+                 SLOpcodeEventObserver obs) {
+    stream = program;
+    registrar = reg;
+    listener = lis;
+    observer = obs;
+    state = 1;
+    warnings = 0;
+    haltReason = "";
+  }
+
+  boolean active() { return state == 1; }
+  int warningCount() { return warnings; }
+
+  // Notify both SLeeLa and the VM that a governance phase is beginning. The
+  // native bridge lets the VM register its interest so it, too, listens for
+  // ordering at BEFORE / DURING / AFTER.
+  void announce(int phase) {
+    native sleela_gov_announce_phase(phase);
+  }
+
+  // Run the program under full governance. Returns the final VM instruction
+  // pointer on success, or a negative value when a phase blocked execution.
+  int run() {
+    if (!active() || stream == null) { return -1; }
+
+    // ---- BEFORE ----
+    announce(SLGovPhase.BEFORE);
+    beforeVerdict = registrar.consider(stream);
+    if (beforeVerdict.blocks()) {
+      haltReason = beforeVerdict.why();
+      return -1; // rejected or paused as unrest; nothing runs
+    }
+
+    // ---- DURING ----
+    announce(SLGovPhase.DURING);
+    int ip = 0;
+    int n = stream.size();
+    for (int i = 0; i < n; i = i + 1) {
+      SLOpcodeBase op = stream.ops[i];
+
+      // The Listener hears the live VM code before the opcode is allowed to fire.
+      int liveIp = native sleela_gov_live_ip(stream.frame, i);
+      duringVerdict = listener.observe(op, liveIp, i);
+      if (duringVerdict.blocks()) {
+        haltReason = duringVerdict.why();
+        return -1;
+      }
+      if (duringVerdict.value() == SLGovVerdict.WARN) { warnings = warnings + 1; }
+
+      // Admitted: fire exactly this one opcode on the VM.
+      ip = op.step(stream.frame);
+      if (ip < 0) { break; } // OP_HALT or VM rejection ends DURING
+    }
+
+    SLGovVerdict settled = listener.settle();
+    if (settled.blocks()) {
+      haltReason = settled.why();
+      return -1;
+    }
+    if (settled.value() == SLGovVerdict.WARN) { warnings = warnings + 1; }
+
+    // ---- AFTER ----
+    announce(SLGovPhase.AFTER);
+    afterVerdict = observer.assess(stream, -1);
+    if (afterVerdict.value() == SLGovVerdict.REJECT) {
+      haltReason = afterVerdict.why();
+      return -1;
+    }
+    if (afterVerdict.isUnrest()) {
+      haltReason = afterVerdict.why();
+      return -1;
+    }
+    if (afterVerdict.value() == SLGovVerdict.WARN) { warnings = warnings + 1; }
+
+    return ip;
+  }
+
+  // True only when the program passed all three phases without being blocked.
+  boolean admitted() {
+    if (beforeVerdict == null || afterVerdict == null) { return false; }
+    if (beforeVerdict.blocks()) { return false; }
+    if (afterVerdict.value() == SLGovVerdict.REJECT || afterVerdict.isUnrest()) { return false; }
+    return true;
+  }
+
+  String reasonHalted() { return haltReason; }
+}

@@ -1,0 +1,110 @@
+/*
+ * lib/opcodes/governance/SLOpcodeRegistrar.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLOpcodeRegistrar, the BEFORE-phase authority a developer
+ *   adds to a .sleela source so that opcodes are not run raw into the VM without
+ *   consideration.
+ *
+ * Discretion the user described:
+ *   A developer *may* technically run opcodes raw into the VM. Usually, though,
+ *   we want a Registrar to consider the program from A to B before a series of
+ *   opcodes is run upon it. Adding the Registrar to a source therefore checks
+ *   that the opcodes are in order at all unto themselves, or rejects them, and
+ *   may pause the program as "unrest".
+ *
+ * "In order unto themselves" — the Registrar's self-consistency checks, applied
+ *   to the opcode sequence A..B with no reference to any outer program yet:
+ *     1. every opcode is a valid, armed, canonical opcode (0..102);
+ *     2. the sequence terminates — exactly one terminal (OP_HALT) and it is last,
+ *        OR the sequence is a well-formed fragment explicitly marked open-ended;
+ *     3. no opcode appears after the terminal (nothing runs past HALT);
+ *     4. the sequence is non-empty.
+ *   A clean pass ADMITs. A terminal-placement problem PAUSEs as unrest (it may be
+ *   a fragment awaiting composition). A structural violation REJECTs.
+ *
+ * Family: opcodes.governance. Native VM/OS work crosses an explicit bridge.
+ */
+#sleela 1.3
+// Unified SLeeLa standard-library front-end object.
+class SLOpcodeRegistrar {
+  static final int HALT_CODE = 48; // canonical OP_HALT
+
+  String sourceName;   // the .sleela source this registrar was added to
+  int state;
+  boolean allowOpenEnded; // true when the source is a composable fragment
+  SLGovVerdict lastVerdict;
+
+  void configure(String source) {
+    sourceName = source;
+    state = 1;
+    allowOpenEnded = false;
+  }
+
+  void permitOpenEnded() { allowOpenEnded = true; }
+  void enable() { state = 1; }
+  void disable() { state = 0; }
+  boolean active() { return state == 1; }
+
+  // Consider the whole program A -> B before any opcode runs. Returns the
+  // discretionary verdict; the orchestrator honours it before DURING begins.
+  SLGovVerdict consider(SLOpcodeStream stream) {
+    SLGovVerdict v = new SLGovVerdict();
+    if (!active() || stream == null) {
+      v.configure(SLGovVerdict.REJECT, "registrar inactive or no program", -1, SLGovPhase.BEFORE);
+      lastVerdict = v;
+      return v;
+    }
+
+    int n = stream.size();
+    if (n < 1) {
+      v.configure(SLGovVerdict.REJECT, "empty program A..B", -1, SLGovPhase.BEFORE);
+      lastVerdict = v;
+      return v;
+    }
+
+    int haltAt = -1;
+    for (int i = 0; i < n; i = i + 1) {
+      SLOpcodeBase op = stream.ops[i];
+      // (1) validity + armed
+      if (op == null || !op.armed()) {
+        v.configure(SLGovVerdict.REJECT, "unarmed or missing opcode", i, SLGovPhase.BEFORE);
+        lastVerdict = v;
+        return v;
+      }
+      int code = op.opcode();
+      if (code < 0 || code > SLOpcodeBase.CANONICAL_COUNT - 1) {
+        v.configure(SLGovVerdict.REJECT, "non-canonical opcode out of 0..102", i, SLGovPhase.BEFORE);
+        lastVerdict = v;
+        return v;
+      }
+      // (3) nothing after the terminal
+      if (haltAt >= 0) {
+        v.configure(SLGovVerdict.REJECT, "opcode present after OP_HALT", i, SLGovPhase.BEFORE);
+        lastVerdict = v;
+        return v;
+      }
+      if (code == HALT_CODE) { haltAt = i; }
+    }
+
+    // (2) termination discipline
+    if (haltAt < 0) {
+      if (allowOpenEnded) {
+        v.configure(SLGovVerdict.ADMIT, "open-ended fragment admitted for composition", -1, SLGovPhase.BEFORE);
+      } else {
+        // A program with no terminal is held as unrest, not rejected outright.
+        v.configure(SLGovVerdict.PAUSE, "no OP_HALT: program does not terminate (unrest)", n - 1, SLGovPhase.BEFORE);
+      }
+      lastVerdict = v;
+      return v;
+    }
+    if (haltAt != n - 1) {
+      v.configure(SLGovVerdict.PAUSE, "OP_HALT is not the final opcode (unrest)", haltAt, SLGovPhase.BEFORE);
+      lastVerdict = v;
+      return v;
+    }
+
+    v.configure(SLGovVerdict.ADMIT, "program is in order unto itself A..B", -1, SLGovPhase.BEFORE);
+    lastVerdict = v;
+    return v;
+  }
+}

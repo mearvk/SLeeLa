@@ -1,0 +1,43 @@
+/*
+ * lib/opcodes/governance/SLGovPhase.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLGovPhase, the shared phase vocabulary that lets SLeeLa
+ *   and the VM know when to listen for ordering around opcode execution.
+ *
+ * A governed opcode stream is observed at three moments the user named:
+ *   BEFORE  — the Registrar considers the whole program A -> B before any opcode
+ *             runs, and admits, rejects, or pauses it.
+ *   DURING  — the Listener watches the live VM code as each opcode arrives and
+ *             confirms the admitted sequence still fits the program as it comes.
+ *   AFTER   — the EventObserver judges the completed operation(s) against the
+ *             architectural and ethical base concepts and may warn or patch.
+ *
+ * Both SLeeLa (source side) and the VM (runtime side) register their interest in
+ * these phases; the orchestrator (SLGovernedExecution) fires them in order.
+ *
+ * Family: opcodes.governance. Native VM/OS work crosses an explicit bridge.
+ */
+#sleela 1.3
+// Unified SLeeLa standard-library front-end object.
+class SLGovPhase {
+  static final int BEFORE = 1; // Registrar admits/rejects/pauses the program
+  static final int DURING = 2; // Listener confirms live fit, opcode by opcode
+  static final int AFTER  = 3; // EventObserver judges the finished operation(s)
+
+  int phase;
+  String label;
+
+  void configure(int p) {
+    phase = p;
+    if (p == BEFORE) { label = "BEFORE"; }
+    else if (p == DURING) { label = "DURING"; }
+    else if (p == AFTER) { label = "AFTER"; }
+    else { label = "UNKNOWN"; }
+  }
+
+  int value() { return phase; }
+  String name() { return label; }
+  boolean isBefore() { return phase == BEFORE; }
+  boolean isDuring() { return phase == DURING; }
+  boolean isAfter() { return phase == AFTER; }
+}

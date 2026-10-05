@@ -1,6 +1,6 @@
 CXX ?= c++
 CXXFLAGS ?= -std=c++17 -O2 -Wall -Wextra -Wpedantic -Werror -fPIC
-all: build/sleela-audio-native build/sleela-opcode-native
+all: build/sleela-audio-native build/sleela-opcode-native build/sleela-gov-native
 build:
 	mkdir -p build
 build/sleela_audio.o: src/sleela_audio.cpp include/sleela_audio.h | build
@@ -15,9 +15,16 @@ build/libsleela_opcode.a: build/sleela_opcode.o
 	ar rcs $@ $<
 build/sleela-opcode-native: src/sleela_opcode_cli.cpp build/libsleela_opcode.a
 	$(CXX) $(CXXFLAGS) -Iinclude $< build/libsleela_opcode.a -o $@
+build/sleela_gov.o: src/sleela_gov.cpp include/sleela_gov.h | build
+	$(CXX) $(CXXFLAGS) -Iinclude -c $< -o $@
+build/libsleela_gov.a: build/sleela_gov.o
+	ar rcs $@ $<
+build/sleela-gov-native: src/sleela_gov_cli.cpp build/libsleela_gov.a
+	$(CXX) $(CXXFLAGS) -Iinclude $< build/libsleela_gov.a -o $@
 test: all
 	./build/sleela-audio-native 2>&1 | grep -q usage
 	./build/sleela-opcode-native
+	./build/sleela-gov-native
 clean:
 	rm -rf build
 .PHONY: all test clean

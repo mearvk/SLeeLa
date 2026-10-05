@@ -22,6 +22,7 @@ every instruction has a first-class, nameable identity in SLeeLa source.
 | 1 | `SLOpcodeStream.sleela` — the verbatim, ordered opcode sequence driver |
 | 103 | `SLOp*.sleela` — one class per opcode, codes **0–102** |
 | 1 | `OPCODES.md` — this document |
+| 8 | `governance/` — the Registrar · Listener · Event Observer series (see `governance/GOVERNANCE.md`) |
 
 Codes **0–97** are the **base 98** opcodes (`OP_NOP` … `OP_AUDIO_PLATFORM`).
 Codes **98–102** are the five array-extension opcodes added for syntax 1.4
@@ -61,6 +62,18 @@ next instruction, execute the one opcode — flowing control `1,2,3,…,N` exact
 as emitted. The VM owns the instruction pointer; the stream only hands it the
 next single opcode. A negative return (from `OP_HALT` or a rejected opcode) ends
 the stream, matching the runtime rule below.
+
+### Governance — considering a program before it runs
+
+A developer *may* run opcodes raw via `SLOpcodeStream.run()`. Usually, though, a
+program should be **considered before, watched during, and judged after** it
+runs. The `governance/` sub-family adds that discretion in SLeeLa herself: a
+**Registrar** considers the program A → B before any opcode runs, a **Listener**
+confirms the admitted sequence fits the live VM program as it comes, and an
+**Event Observer** decides whether the operations form a musical, ordered process
+about architecture, breadth, height, and purpose — issuing warnings or patching
+faults with known symbol maps. SLeeLa and the VM both listen for ordering at the
+`BEFORE` / `DURING` / `AFTER` phases. See `governance/GOVERNANCE.md`.
 
 ## Native bridge and the runtime rule
 
