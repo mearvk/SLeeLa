@@ -200,7 +200,7 @@ Integrated runtime commands:
     ./impl/build/sleela skya --client --room lobby
     ./impl/build/sleela skya --both --room lobby
 
-Basic, Intermediate, and Advanced initial NAT/firewall decisions are documented in telephony-skya/docs/NAT-FIREWALL-CONFIG.md. NAT uses the existing SLeeLa NAT-aware subsystem; firewall lifecycle remains with the existing OS-specific port-awareness controllers.
+The non-destructive firewall preflight and NAT/inbound-exception policy are documented in telephony-skya/docs/FIREWALL-PREFLIGHT.md. NAT uses the existing SLeeLa NAT-aware subsystem; firewall lifecycle remains with the existing OS-specific port-awareness controllers.
 
 The current Skya Server is an integrated native foundation, not yet a complete telephony server. Production HTTP/2/HTTP/3 wire transport, media capture and codec adapters, certificate-quality reporting, NAT traversal/relay transport, resumable file transfer, and complete firewall lifecycle still require adapter wiring to the existing SLeeLa subsystems.
 
@@ -231,7 +231,7 @@ sleela run program.sleela
 
 The first form is direct/native SLeeLa source execution: the C/C++ SLeeLa toolchain compiles the source in memory and the native C Core executes it through SLVM. The second form separates compilation from execution and loads the persistent Core artifact through the same SLVM. Neither path creates a parallel SLeeLa interpreter.
 
-See `sleela-virtual-machine/docs/COMMAND-LINE-EXECUTION.md`.
+See `sleela-virtual-machine/1/docs/COMMAND-LINE-EXECUTION.md`.
 
 
 ## VM Compiler Manager and native VM support

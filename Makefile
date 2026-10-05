@@ -40,6 +40,9 @@ jetbrains:
 install:
 	$(MAKE) -C install all
 
+tutorial-check:
+	@./scripts/tutorial-check.sh
+
 tests:
 	$(MAKE) -C tests check
 
@@ -75,7 +78,7 @@ help:
 	@echo "  make vm        Build lib/vm/"
 	@echo "  make jetbrains Show JetBrains source acquisition helpers"
 	@echo "  make install     Verify Quick and Safe installer entry points"
-	@echo "  make tutorial-check Verify tutorial/example inventories"
+	@echo "  make tutorial-check Verify tutorial lesson sequence, example XML, and expected-evidence pairing"
 	@echo "  make tests     Build and run tests/"
 	@echo "  make server    Build api/server/"
 	@echo "  make route     Validate unified route data"
