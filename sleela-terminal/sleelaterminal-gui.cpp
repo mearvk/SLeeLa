@@ -235,16 +235,46 @@ void install_css() {
         drawingarea.sleela-throbber { background: @sl_chrome; min-height: 2px; }
         headerbar.sleela-titlebar label { color: @sl_fg; font-weight: 600; }
         image.sleela-titlebar-logo { margin-left: 8px; margin-right: 4px; }
+        /* Window controls (close / minimize / maximize). These are native GTK
+           title buttons. On the dark purple chrome the default symbolic glyphs
+           can read dim, so light them up: a visible circular button with a
+           bright, fully-opaque white icon, so each control is clearly legible. */
         headerbar.sleela-titlebar button.titlebutton {
             color: @sl_fg;
-            background: alpha(@sl_fg, 0.08);
-            min-width: 32px;
-            min-height: 32px;
-            transition: background 120ms ease;
+            background: alpha(@sl_fg, 0.14);
+            border: 1px solid alpha(@sl_fg, 0.28);
+            border-radius: 50%;
+            min-width: 24px;
+            min-height: 24px;
+            margin: 0 3px;
+            padding: 0;
+            transition: background 120ms ease, border-color 120ms ease;
         }
-        headerbar.sleela-titlebar button.titlebutton:hover { background: alpha(@sl_fg, 0.16); }
-        headerbar.sleela-titlebar button.titlebutton:active { background: alpha(@sl_fg, 0.24); }
+        /* Make the symbolic glyph itself bright and fully opaque -- this is what
+           "lights" the close/min/max icons against the chrome. */
+        headerbar.sleela-titlebar button.titlebutton image,
+        headerbar.sleela-titlebar button.titlebutton > image {
+            color: @sl_fg;
+            opacity: 1;
+            -gtk-icon-size: 16px;
+        }
+        headerbar.sleela-titlebar button.titlebutton:hover {
+            background: alpha(@sl_fg, 0.26);
+            border-color: alpha(@sl_fg, 0.55);
+        }
+        headerbar.sleela-titlebar button.titlebutton:active { background: alpha(@sl_fg, 0.36); }
         headerbar.sleela-titlebar button.titlebutton:focus { outline: 2px solid @sl_accent; outline-offset: -2px; }
+        /* Close is the one control that gets a colour: a clear red on hover so
+           it is unmistakable, with its glyph forced bright white. */
+        headerbar.sleela-titlebar button.titlebutton.close {
+            background: alpha(#ff5f57, 0.22);
+            border-color: alpha(#ff5f57, 0.55);
+        }
+        headerbar.sleela-titlebar button.titlebutton.close:hover {
+            background: #ff5f57;
+            border-color: #ff5f57;
+        }
+        headerbar.sleela-titlebar button.titlebutton.close image { color: @sl_fg; opacity: 1; }
 
         /* Settings (gear) button: a quiet, flat affordance. No resting
            background or border -- the icon alone sits in the bar; it reveals a
@@ -1089,6 +1119,9 @@ void activate(GtkApplication *application, gpointer user_data) {
     GtkWidget *header = gtk_header_bar_new();
     gtk_widget_add_css_class(header, "sleela-titlebar");
     gtk_header_bar_set_show_title_buttons(GTK_HEADER_BAR(header), TRUE);
+    // Guarantee all three window controls are present (and on the right) so the
+    // minimize / maximize / close icons are shown and can be lit by the CSS.
+    gtk_header_bar_set_decoration_layout(GTK_HEADER_BAR(header), ":minimize,maximize,close");
 
     // Brand logo in the upper-left of the title bar. The asset is pre-trimmed
     // to the logo's minimum 2D content box with a transparent background (see
