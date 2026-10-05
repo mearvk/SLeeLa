@@ -17,10 +17,12 @@ Controls appear on demand (popovers / right-click), not as permanent panels.
 
 The one sanctioned exception is the **title-bar throbber**: a 2px living
 light-blue seam along the bottom of the title bar that replaces the old static
-border. It breathes lighter/darker under an organic algorithm at ~20 Hz. It is
-allowed because it is *ambient* — low-contrast, slow, edge-only, and carrying no
-information the user must track — so it signals "alive" without pulling the eye
-from the terminal. Any motion in the chrome must clear that same bar.
+border. It is a field of many small excitations in relative shades of one base
+light-blue, flowing mainly left→right at ~20 Hz with third-order (jerk-bounded)
+speed changes, so it drifts and breathes rather than scrolling mechanically. It
+is allowed because it is *ambient* — low-contrast, slow, edge-only, and carrying
+no information the user must track — so it signals "alive" without pulling the
+eye from the terminal. Any motion in the chrome must clear that same bar.
 
 ## 2. One palette, one source of truth
 
