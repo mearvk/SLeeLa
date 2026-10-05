@@ -1,0 +1,23 @@
+/*
+ * lib/opcodes/SLOpSynClose.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLOpSynClose, the single-opcode class for OP_SYN_CLOSE (canonical code 67).
+ *
+ * This class carries exactly ONE opcode: OP_SYN_CLOSE.
+ * Semantics: close a Synchro probe.
+ * Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela).
+ *
+ * step() honours the family contract: it first calls the VM to advance to the
+ * next instruction, then executes precisely this one opcode and returns the
+ * next instruction pointer for the following opcode object.
+ *
+ * Family: opcodes. Native VM/OS work crosses an explicit bridge.
+ */
+#sleela 1.3
+// Unified SLeeLa standard-library front-end object.
+class SLOpSynClose extends SLOpcodeBase {
+  static final int CODE = 67;
+  static final String MNEMONIC = "OP_SYN_CLOSE";
+
+  void prepare() { configure(CODE, MNEMONIC); }
+}

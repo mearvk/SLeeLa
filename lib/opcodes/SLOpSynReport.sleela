@@ -1,0 +1,23 @@
+/*
+ * lib/opcodes/SLOpSynReport.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLOpSynReport, the single-opcode class for OP_SYN_REPORT (canonical code 66).
+ *
+ * This class carries exactly ONE opcode: OP_SYN_REPORT.
+ * Semantics: push an honest Synchro report string.
+ * Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela).
+ *
+ * step() honours the family contract: it first calls the VM to advance to the
+ * next instruction, then executes precisely this one opcode and returns the
+ * next instruction pointer for the following opcode object.
+ *
+ * Family: opcodes. Native VM/OS work crosses an explicit bridge.
+ */
+#sleela 1.3
+// Unified SLeeLa standard-library front-end object.
+class SLOpSynReport extends SLOpcodeBase {
+  static final int CODE = 66;
+  static final String MNEMONIC = "OP_SYN_REPORT";
+
+  void prepare() { configure(CODE, MNEMONIC); }
+}

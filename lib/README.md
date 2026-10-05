@@ -15,16 +15,18 @@ SLeeLa is treated as a Turing-complete language whose front end should be expres
 
 The library uses one SLeeLa source file per front-end object. This makes the object inventory measurable and gives the project a path toward a roughly 2,000-object standard library without hiding declarations inside aggregate files.
 
-Families: `core/`, `collections/`, `text/`, `io/`, `vm/`, `os/`, `net/`, `security/`.
+Families: `core/`, `collections/`, `text/`, `io/`, `vm/`, `os/`, `net/`, `security/`, `opcodes/`.
 
 The standard-library target is **2,048 object types**. This is an architectural target, not a claim that all 2,048 objects are implemented today.
 
 **SLeeLa — MEARVK LLC — 2026**
 ## Library discovery
 
-The /lib tree is recursively indexed by the compiler and Nordshrift loader. Current canonical collection: **75 package families / 10,033 .sleela source units / 88 module-facade symbols / 10,121 total symbol records**. See `LIBRARY.SYMBOLS.md` for the complete collection.
+The /lib tree is recursively indexed by the compiler and Nordshrift loader. Current canonical collection: **76 package families / 10,138 .sleela source units / 88 module-facade symbols / 10,226 total symbol records**. See `LIBRARY.SYMBOLS.md` for the complete collection.
 
 The compiler and Nordshrift share recursive `/lib` discovery; new package directories and source units require no compiler allow-list update.
+
+The `opcodes` family expresses the canonical SLeeLa VM instruction set as one SLeeLa class per opcode: 103 `SLOp*` classes (codes 0–102; the base 98 are `OP_NOP`..`OP_AUDIO_PLATFORM`), plus `SLOpcodeBase` and `SLOpcodeStream`. Each class carries a single opcode and honours the fetch-then-execute-one contract — carefully call the VM to the next instruction, then execute exactly that one opcode — modeling `impl/core`'s dispatch loop at the SLeeLa layer. The fetch/dispatch primitives sit below the explicit VM/OS bridge in `native/src/sleela_opcode.cpp`. See `opcodes/OPCODES.md`, including the rationale for why 98 opcodes is complete for a modern program and developer.
 
 ## Decompiler
 

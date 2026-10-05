@@ -1,0 +1,23 @@
+/*
+ * lib/opcodes/SLOpFifoMk.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLOpFifoMk, the single-opcode class for OP_FIFO_MK (canonical code 42).
+ *
+ * This class carries exactly ONE opcode: OP_FIFO_MK.
+ * Semantics: create a named FIFO.
+ * Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela).
+ *
+ * step() honours the family contract: it first calls the VM to advance to the
+ * next instruction, then executes precisely this one opcode and returns the
+ * next instruction pointer for the following opcode object.
+ *
+ * Family: opcodes. Native VM/OS work crosses an explicit bridge.
+ */
+#sleela 1.3
+// Unified SLeeLa standard-library front-end object.
+class SLOpFifoMk extends SLOpcodeBase {
+  static final int CODE = 42;
+  static final String MNEMONIC = "OP_FIFO_MK";
+
+  void prepare() { configure(CODE, MNEMONIC); }
+}
