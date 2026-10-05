@@ -194,6 +194,7 @@ bool parseTrap(const std::string& line, int& sig, std::string& action) {
 
 bool rewriteProcessSubstitution(const std::string& src, std::string& rewritten,
                                 std::vector<pid_t>& children,
+                                std::vector<std::string>& fifos,
                                 Environment& env, const M5Runner& runner) {
     rewritten.clear(); bool found = false;
     for (std::size_t i = 0; i < src.size();) {
@@ -215,12 +216,22 @@ bool rewriteProcessSubstitution(const std::string& src, std::string& rewritten,
             if (pid < 0) { ::unlink(tmpl); return false; }
             if (pid == 0) {
                 Environment childEnv = env;
-                // O_RDWR prevents a FIFO open deadlock while the parent is still starting the consumer.
-                int io = ::open(tmpl, O_RDWR | O_CLOEXEC); if (io < 0) _exit(126);
+                // Open mode is directional:
+                //  '<' : the child is the PRODUCER (its stdout feeds the FIFO,
+                //        which the parent reads). Open O_RDWR so the child does
+                //        not block on open before the parent opens the read end.
+                //  '>' : the child is the CONSUMER (it reads the FIFO on stdin;
+                //        the parent writes). It MUST open read-only -- holding a
+                //        write descriptor (O_RDWR) keeps a writer open, so the
+                //        consumer never sees EOF and hangs after the parent is
+                //        done. O_RDONLY blocks only until the parent (writer)
+                //        opens, which it does, so there is no deadlock.
+                const int flags = (mode == '<' ? O_RDWR : O_RDONLY) | O_CLOEXEC;
+                int io = ::open(tmpl, flags); if (io < 0) _exit(126);
                 ::dup2(io, mode == '<' ? STDOUT_FILENO : STDIN_FILENO); ::close(io);
                 int rc = runner(cmd, childEnv); _exit(rc & 0xff);
             }
-            children.push_back(pid); rewritten += tmpl; i = j; found = true; continue;
+            children.push_back(pid); fifos.push_back(tmpl); rewritten += tmpl; i = j; found = true; continue;
         }
         rewritten.push_back(src[i++]);
     }
@@ -270,9 +281,29 @@ bool runM5(const std::string& source, Environment& env, const M5Runner& runner, 
             char c = t[k]; if (!(std::isalnum(static_cast<unsigned char>(c)) || c == '_') || (k == 0 && std::isdigit(static_cast<unsigned char>(c)))) { simpleName = false; break; }
         }
         if (!consumedAssignment && simpleName && t.compare(0, eq, "PS3") == 0) {
-            std::string value = t.substr(eq + 1);
-            if (value.size() >= 2 && ((value.front() == '\'' && value.back() == '\'') || (value.front() == '"' && value.back() == '"'))) value = value.substr(1, value.size() - 2);
-            env.set("PS3", value); consumedAssignment = true; continue;
+            // Extract only the PS3 assignment's value. It may be the whole line
+            // (`PS3="pick> "`) or be followed on the same line by more commands
+            // (`PS3="pick> "; select ... done`). Scan the value respecting
+            // quotes and stop at the first unquoted ';' so the remainder (e.g.
+            // the select loop) is preserved for the rest of the M5 pipeline.
+            std::string value; std::size_t p = eq + 1; char quote = 0; bool wasQuoted = false;
+            for (; p < t.size(); ++p) {
+                char c = t[p];
+                if (quote) { if (c == quote) quote = 0; else value.push_back(c); continue; }
+                if (c == '\'' || c == '"') { quote = c; wasQuoted = true; continue; }
+                if (c == ';') { break; }
+                value.push_back(c);
+            }
+            // Preserve quoted content verbatim (e.g. the trailing space in
+            // "pick> "); only trim an entirely unquoted value.
+            if (!wasQuoted) value = trim(value);
+            env.set("PS3", value); consumedAssignment = true;
+            // Preserve anything after the terminating ';' on this line.
+            std::string rest;
+            if (p < t.size() && t[p] == ';') rest = trim(t.substr(p + 1));
+            if (!rest.empty()) { afterAssignments += rest; afterAssignments.push_back('\n'); }
+            std::string tail; while (std::getline(assignLines, tail)) { afterAssignments += tail; afterAssignments.push_back('\n'); }
+            break;
         }
         afterAssignments += firstLine; afterAssignments.push_back('\n');
         std::string tail; while (std::getline(assignLines, tail)) { afterAssignments += tail; afterAssignments.push_back('\n'); }
@@ -287,23 +318,42 @@ bool runM5(const std::string& source, Environment& env, const M5Runner& runner, 
         else { remainder += line; remainder.push_back('\n'); }
     }
 
-    std::vector<pid_t> children; std::string rewritten;
+    std::vector<pid_t> children; std::vector<std::string> fifos; std::string rewritten;
     if (hasProcessSubstitution(remainder)) {
-        if (!rewriteProcessSubstitution(remainder, rewritten, children, env, runner)) { status = 2; return true; }
+        if (!rewriteProcessSubstitution(remainder, rewritten, children, fifos, env, runner)) {
+            for (const auto& f : fifos) ::unlink(f.c_str());
+            status = 2; return true;
+        }
         status = runner(rewritten, env);
         for (pid_t pid : children) { int st = 0; ::waitpid(pid, &st, 0); }
+        // Remove the transient FIFOs now that producers/consumers have finished.
+        for (const auto& f : fifos) ::unlink(f.c_str());
         return true;
     }
 
     std::string var, body; std::vector<std::string> words;
     if (splitSelect(remainder, var, words, body)) { status = runSelect(remainder, env, runner); return true; }
 
-    bool anyTrap = consumedTrap;
-    for (int s = 1; s < NSIG && !anyTrap; ++s) anyTrap = traps[s].installed;
-    if (anyTrap) {
+    // Trap handling. Only engage when a trap was declared *in this script*
+    // (consumedTrap). Engaging merely because some trap is globally installed
+    // would make every later run take this path -- and because the remainder is
+    // re-run through `runner` (which re-enters runM5), that caused unbounded
+    // recursion when the remainder itself raised the trapped signal
+    // (e.g. `trap ... USR1; kill -USR1 $$`).
+    //
+    // The `dispatching` guard prevents the remainder / trap-action sub-runs from
+    // re-triggering this same trap-dispatch logic, so a trapped signal delivered
+    // while the remainder runs is handled exactly once at this level.
+    static bool dispatching = false;
+    if (consumedTrap && !dispatching) {
+        dispatching = true;
         status = remainder.empty() ? 0 : runner(remainder, env);
         const int sig = pending_signal;
-        if (sig > 0 && sig < NSIG && traps[sig].installed && !traps[sig].action.empty()) { pending_signal = 0; status = runner(traps[sig].action, env); }
+        if (sig > 0 && sig < NSIG && traps[sig].installed && !traps[sig].action.empty()) {
+            pending_signal = 0;
+            status = runner(traps[sig].action, env);
+        }
+        dispatching = false;
         return true;
     }
     return false;
