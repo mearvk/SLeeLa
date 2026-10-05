@@ -16,7 +16,7 @@
     },
     {
       "path": "BUILD.md",
-      "sha256": "ac95904f0b6798c7d066d5db5c4619fb4ac0732851837ef0dbf1bd308589ed79"
+      "sha256": "d882aa82acc35ea29be67cd0fbccc7a37c89123c8bbe930545b5ce334fd0444b"
     },
     {
       "path": "CHANGES-MEMORY-NATIVE.md",
@@ -47891,6 +47891,10 @@
       "sha256": "b30c014deb41cd78840467760510a418560181e2fc93bbcd71a8ffe835da2258"
     },
     {
+      "path": "scripts/tutorial-check.sh",
+      "sha256": "c5c146a9cc9c33b12c9abcf05430d4ea5b2ae98f6d4fe1e55403cfc42386b061"
+    },
+    {
       "path": "security/BUILD-VERIFICATION.md",
       "sha256": "f39e670249ceef447d356184646b7a4831d2d020b0e9bb1a2071ad9f0ca5069d"
     },
@@ -48160,7 +48164,7 @@
     },
     {
       "path": "sleela-terminal/lexer.cpp",
-      "sha256": "d392189bbe349735f5f6b5b955a6c50d7bfd9977fd2ccaa94791995991b98e10"
+      "sha256": "a734756d5a562b9310b31615d35c87e2480dfd965ea533177615fdf5ef16d79f"
     },
     {
       "path": "sleela-terminal/lexer.hpp",
@@ -48172,7 +48176,7 @@
     },
     {
       "path": "sleela-terminal/m5.cpp",
-      "sha256": "0ee46c774fedf1c3ece12a0044b556e8425fdc21824dd3eac465f680c74b76d8"
+      "sha256": "60615667e2a74a0997f4aeb78568e6e61762d59d551fa59ae9ecaca009b00fd0"
     },
     {
       "path": "sleela-terminal/m5.hpp",
@@ -48188,11 +48192,11 @@
     },
     {
       "path": "sleela-terminal/sleelaterminal-gui.cpp",
-      "sha256": "cdbe117769ebae1d8c97732e6e24afcc8783a1751d3db5cda3e8bc092d42f47f"
+      "sha256": "037920fd1e38029a3d41d64a30605a6a38ccc1a9a7b7c10628597c5831940e54"
     },
     {
       "path": "sleela-terminal/slsh.cpp",
-      "sha256": "7cfcbf21a51dd6694428d1f5d1e863e1b1823a4142f50b492738dccdc8afb9c5"
+      "sha256": "5f6b0f34606f50b77a4efb76c87d558f9f301647e6640124eef9bd209c15709b"
     },
     {
       "path": "sleela-terminal/smoke.cpp",
