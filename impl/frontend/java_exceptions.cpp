@@ -25,7 +25,7 @@ JavaExceptionFlow JavaExceptionModel::check(const std::set<std::string>& thrown,
   if(!handled && !declaredHere) r.diagnostics.push_back({JavaExceptionDiagnosticKind::UnhandledCheckedException,e,"checked exception is neither caught nor declared"});
  }
  for(std::size_t i=0;i<catchTypes.size();++i) for(std::size_t j=0;j<i;++j)
-  if(isSubtype(catchTypes[i],catchTypes[j])) r.diagnostics.push_back({JavaExceptionDiagnosticKind::RedundantCatch,catches[i],"catch clause is shadowed by a preceding catch clause"});
+  if(isSubtype(catchTypes[i],catchTypes[j])) r.diagnostics.push_back({JavaExceptionDiagnosticKind::RedundantCatch,catchTypes[i],"catch clause is shadowed by a preceding catch clause"});
  return r;
 }
 bool JavaExceptionModel::overrideThrowsCompatible(const std::set<std::string>& overriding,const std::set<std::string>& overridden) const {

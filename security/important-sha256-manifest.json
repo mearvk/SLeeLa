@@ -32,7 +32,7 @@
     },
     {
       "path": "CONNECTOR.md",
-      "sha256": "52a70fbc71dcef9aa911e91aaec45e05b8a9b53c38ff07b2f16472f5da2038e1"
+      "sha256": "a1f7808c7fdae5b684ff571de5557015f6c6e71352814d4c55058a30cea03c2a"
     },
     {
       "path": "DEFINITIONS.md",
@@ -700,7 +700,7 @@
     },
     {
       "path": "audio/cpp/Audio.cpp",
-      "sha256": "b9f51c6bbb8f70d8f1a63ad533bb36e8e82db1b03e31dae4b1b3b2b4267c248a"
+      "sha256": "2a639019f02d67804624836215f9752ad804a0ecaf63340fec7d5732c3f8f0f0"
     },
     {
       "path": "audio/cpp/Audio.hpp",
@@ -3444,7 +3444,7 @@
     },
     {
       "path": "debugger/debugger_c.h",
-      "sha256": "3c69e3f124502f9ed908ecd3b0a2341be5bd6e211841da4946647321db3986f0"
+      "sha256": "40a18e68553dc2d4c787139a7634495ff5c7d27ef35ba36efb254f9b96d18449"
     },
     {
       "path": "debugger/debugger_line.c",
@@ -4145,6 +4145,10 @@
     {
       "path": "drivers/yealink/wh68/1.0/driver.h",
       "sha256": "1ed5f40f61ba56b49dd1be54f4fe36b66785eb025bcd4b35d0fb03315a76b633"
+    },
+    {
+      "path": "eprom-corrado/drivers/include/eprom_corrado_profile.h",
+      "sha256": "8a3c56c0766d53078656b24f21c5dc8d39ebf0cba00aa70403ed808abe21a387"
     },
     {
       "path": "examples/nordshrift/complete-application.sst",
@@ -4952,7 +4956,7 @@
     },
     {
       "path": "http-servers/2/http2/http2_server.cpp",
-      "sha256": "176f67824fa04ad91d5f4242776d43a004a8d648aeb1c76776f373b4da109228"
+      "sha256": "ee908858a3c43fc5cc476643e984340cbb3450246e5a9fb2f4754ba1f2a0710d"
     },
     {
       "path": "http-servers/2/http2/http2_server.h",
@@ -4968,7 +4972,7 @@
     },
     {
       "path": "http-servers/3/http3/http3_server.cpp",
-      "sha256": "59d44f01744ec665840244501a64ce428d75c9c585bb5e387cc1ace669125282"
+      "sha256": "38dd8ac302ff20abe0b4047fcb6cc63d1555ff4e1d6de3400204983b1ed3e9cc"
     },
     {
       "path": "http-servers/3/http3/http3_server.h",
@@ -4992,7 +4996,7 @@
     },
     {
       "path": "http-servers/common/http_server.cpp",
-      "sha256": "4c3f99788f4abf7d6df3757598acfbb0651cb54a3be8c603015d0ea02f16a866"
+      "sha256": "3805e9212f31053a3ce8ed4f19872c9b1ef883d96841bbbff0e3c8a69e83cf39"
     },
     {
       "path": "http-servers/common/http_server.h",
@@ -5152,7 +5156,7 @@
     },
     {
       "path": "impl/core/sleela_events.c",
-      "sha256": "ab0c13c4edfc1d33a25fd86ec262fa810c7af72ade42aef3dd16b70da3eff3f9"
+      "sha256": "f2b5387291da06e6dbd82627bc91bbb5e5ed8fc9378c70bdbb012b517d71d5e5"
     },
     {
       "path": "impl/core/sleela_events.h",
@@ -5572,7 +5576,7 @@
     },
     {
       "path": "impl/frontend/java_exceptions.cpp",
-      "sha256": "4c1f52bf7d0553ace835440cf4a3217701201dbb4ae240d63555e440f7a1b4f1"
+      "sha256": "68570c5654d323cd18a415b5d1fd70ac95856708fb8dd6a17cf4c69b8f2b910c"
     },
     {
       "path": "impl/frontend/java_exceptions.h",
@@ -5580,7 +5584,7 @@
     },
     {
       "path": "impl/frontend/java_flow.cpp",
-      "sha256": "8d4830079306c0f824f2f9b8e35fc521af0cc9303e637d3393557a497133f174"
+      "sha256": "4b8038e70797a79632ad558f34935e273ae24273060b148f07dc4db166f10599"
     },
     {
       "path": "impl/frontend/java_flow.h",
@@ -48076,7 +48080,7 @@
     },
     {
       "path": "sleela/audio/cpp/Audio.cpp",
-      "sha256": "b9f51c6bbb8f70d8f1a63ad533bb36e8e82db1b03e31dae4b1b3b2b4267c248a"
+      "sha256": "2a639019f02d67804624836215f9752ad804a0ecaf63340fec7d5732c3f8f0f0"
     },
     {
       "path": "sleela/audio/cpp/Audio.hpp",

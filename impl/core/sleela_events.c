@@ -15,6 +15,13 @@
 
 #define SL_EVENT_QUEUE_CAPACITY 64
 
+/* NSIG is not part of ISO C and is not exposed under a strict -std=c11 (no
+ * feature-test macro). The signal-flag table is clamped to 64 entries anyway,
+ * so provide a portable fallback bound when the platform does not define it. */
+#ifndef NSIG
+#define NSIG 64
+#endif
+
 static volatile sig_atomic_t sl_signal_flags[NSIG > 64 ? 64 : NSIG];
 static SLEvent sl_queue[SL_EVENT_QUEUE_CAPACITY];
 static size_t sl_queue_head;
