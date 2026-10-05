@@ -1,11 +1,18 @@
 # SLeeLa /lib Library Index
 
-**Revision:** 0.8  
+**Revision:** 0.9  
 **Packages:** 77  
-**SLeeLa source units:** 10054  
+**SLeeLa source units:** 10070  
 **Module-facade symbols:** 90  
-**Total symbol records:** 10144  
+**Total symbol records:** 10160  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
+
+> Revision 0.9 adds 16 general-cryptography sophistication classes to the
+> `crypto` family (SLRadix, SLRadixTable, SLPlainText, SLPlainTextField,
+> SLCryptoBlock, SLCryptoBlockOne/Two/Three, SLIntermixPrimary,
+> SLIntermixSecondary, SLCryptoSeries, SLCryptoResult, SLCryptoComparator,
+> SLNationalRegister, SLFinalResult, SLCryptoPipeline). The `crypto` family grows
+> from 16 to 32 `.sleela` source units. See `crypto/CRYPTO.SOPHISTICATION.md`.
 
 The `/lib` tree is the canonical language-facing source collection. The compiler and Nordshrift use the same recursive library discovery implementation, so a package becomes importable when its directory contains SLeeLa source.
 

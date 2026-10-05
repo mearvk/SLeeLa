@@ -22,7 +22,9 @@ The standard-library target is **2,048 object types**. This is an architectural 
 **SLeeLa — MEARVK LLC — 2026**
 ## Library discovery
 
-The /lib tree is recursively indexed by the compiler and Nordshrift loader. Current canonical collection: **75 package families / 10,033 .sleela source units / 88 module-facade symbols / 10,121 total symbol records**. See `LIBRARY.SYMBOLS.md` for the complete collection.
+The /lib tree is recursively indexed by the compiler and Nordshrift loader. Current canonical collection: **75 package families / 10,049 .sleela source units / 88 module-facade symbols / 10,137 total symbol records**. See `LIBRARY.SYMBOLS.md` for the complete collection.
+
+The `crypto` family carries 32 object source units, including the general-cryptography sophistication classes documented in `crypto/CRYPTO.SOPHISTICATION.md`: a radix-1..2055 converter (`SLRadix`), ordered procedural blocks (`SLCryptoBlock`, `SLCryptoBlockOne`/`Two`/`Three`) carrying Order / Orientation / Respect, two internal intermix stages, a 1..255 main series, and the result/compare/national-register/final-result tail orchestrated by `SLCryptoPipeline`. Their deterministic value primitives sit below the explicit VM/OS bridge in `native/src/sleela_crypto.cpp`.
 
 The compiler and Nordshrift share recursive `/lib` discovery; new package directories and source units require no compiler allow-list update.
 

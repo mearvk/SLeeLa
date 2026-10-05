@@ -1,0 +1,102 @@
+/*
+ * lib/crypto/SLCryptoPipeline.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines the SLeeLa standard-library type SLCryptoPipeline, the
+ *   top-level orchestrator for the general-cryptography process.
+ *
+ * Rationale: The user describes the whole shape of the process:
+ *   "Plain Text fields for init, Some secondary intermix for internal and then
+ *    some again secondary intermix for internal again. Then the main series
+ *    1-XXX of incrementing through the actual general mixtures ... Then a
+ *    result, then a compare, then a call to national register. Then a final
+ *    standard result of all of it."
+ *
+ *   SLCryptoPipeline enforces exactly that order and guards each precondition.
+ *
+ * Order and Orientation (the whole process, in order):
+ *   0. init          — SLPlainTextField (1..255 initial plaintext fields)
+ *   1. primaryMix    — SLIntermixPrimary   (secondary intermix, internal)
+ *   2. secondaryMix  — SLIntermixSecondary (secondary intermix, internal, again)
+ *   3. series        — SLCryptoSeries      (main general intermix, Order 1..255)
+ *   4. result        — SLCryptoResult
+ *   5. compare       — SLCryptoComparator
+ *   6. register       — SLNationalRegister (ORIENT_CALL)
+ *   7. finalResult   — SLFinalResult       (final standard result of all of it)
+ *
+ * Respect: each stage honours the respect ranks of the blocks it drives; the
+ *   series arranges by Order then Respect before advancing.
+ */
+#sleela 1.3
+// Unified SLeeLa SDK front-end object.
+// Family: crypto. Native implementation crosses an explicit VM/OS bridge.
+class SLCryptoPipeline {
+  SLPlainTextField field;         // stage 0 — initial plaintext fields
+  SLRadixTable radices;           // shared radix 1..2055 infrastructure
+  SLIntermixPrimary primaryMix;   // stage 1 — secondary intermix (internal)
+  SLIntermixSecondary secondaryMix; // stage 2 — secondary intermix (internal, again)
+  SLCryptoSeries series;          // stage 3 — main general intermix, Order 1..255
+  SLCryptoResult result;          // stage 4
+  SLCryptoComparator comparator;  // stage 5
+  SLNationalRegister register;    // stage 6
+  SLFinalResult finalResult;      // stage 7
+  int state;
+  String lastError;
+
+  void init() {
+    field = new SLPlainTextField();      field.init();
+    radices = new SLRadixTable();        radices.enable();
+    primaryMix = new SLIntermixPrimary();   primaryMix.prepare();
+    secondaryMix = new SLIntermixSecondary(); secondaryMix.prepare();
+    series = new SLCryptoSeries();       series.init();
+    result = new SLCryptoResult();
+    comparator = new SLCryptoComparator(); comparator.configure("");
+    register = new SLNationalRegister();   register.configure("US-NATIONAL-CRYPTO-REGISTER");
+    finalResult = new SLFinalResult();
+    state = 0;
+    lastError = "";
+  }
+
+  // Supply an initial plaintext field (at least one is required).
+  boolean addPlainText(String label, String content) { return field.add(label, content); }
+
+  // Register an ordered main-series block (1..255).
+  boolean addBlock(SLCryptoBlock block) { return series.register(block); }
+
+  // Guard every precondition before the process may run.
+  boolean valid() {
+    if (!field.valid()) { lastError = field.lastError; return false; }
+    if (!series.valid()) { lastError = series.lastError; return false; }
+    return true;
+  }
+
+  void enable() { if (valid()) { field.enable(); series.enable(); state = 1; } }
+  boolean active() { return state == 1; }
+
+  // Run the whole ordered process and return the final standard result.
+  SLFinalResult run() {
+    if (!active() && !valid()) { return finalResult; }
+    field.enable();
+    series.enable();
+
+    // Stage 0: seed the running text from the primary initial plaintext field.
+    SLPlainText primary = field.primary();
+    String running = primary == null ? "" : primary.value();
+
+    // Stage 1: secondary intermix, internal.
+    running = primaryMix.apply(running, radices);
+    // Stage 2: secondary intermix, internal, again.
+    running = secondaryMix.apply(running, radices);
+    // Stage 3: the main general intermix series, Order 1..255.
+    running = series.run(running, radices);
+
+    // Stage 4: result.
+    result.capture(running, series.size());
+    // Stage 5: compare.
+    boolean verified = comparator.compare(result);
+    // Stage 6: call to national register.
+    boolean registered = register.submit(result, comparator);
+    // Stage 7: final standard result of all of it.
+    finalResult.finalise(result, verified, registered);
+    return finalResult;
+  }
+}
