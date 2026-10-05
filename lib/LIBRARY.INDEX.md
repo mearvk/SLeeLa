@@ -1,10 +1,10 @@
 # SLeeLa /lib Library Index
 
-**Revision:** 0.12  
+**Revision:** 0.13  
 **Packages:** 79  
-**SLeeLa source units:** 10179  
+**SLeeLa source units:** 10184  
 **Module-facade symbols:** 90  
-**Total symbol records:** 10269  
+**Total symbol records:** 10274  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
 
 > Revision 0.9 adds the new `opcodes` package family: one SLeeLa class per
@@ -33,6 +33,14 @@
 > `SLDocumentCompiler`). Each step is an annotated method that runs in order and
 > usually returns a single binary veritable-and-kind value. See
 > `sldocument/SLDOCUMENT.md`.
+>
+> Revision 0.13 makes `.sldocument` a selectable compile choice and adds naming
+> conventions for comparing/converting the forms: `lib/compiler/SLSourceForm` and
+> `lib/compiler/SLCompileChoice` let the compiler be told to compile a `.sleela`
+> or a `.sldocument`; and `sldocument/SLDocumentNaming`,
+> `sldocument/SLSourceNameComparison`, and `sldocument/SLDocumentConverter`
+> synthesize method names for anonymous document steps so an engineer can convert
+> a `.sldocument` to a named `.sleela` for safekeeping. 5 new `.sleela` classes.
 
 The `/lib` tree is the canonical language-facing source collection. The compiler and Nordshrift use the same recursive library discovery implementation, so a package becomes importable when its directory contains SLeeLa source.
 

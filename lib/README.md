@@ -22,9 +22,11 @@ The standard-library target is **2,048 object types**. This is an architectural 
 **SLeeLa — MEARVK LLC — 2026**
 ## Library discovery
 
-The /lib tree is recursively indexed by the compiler and Nordshrift loader. Current canonical collection: **77 package families / 10,158 .sleela source units / 88 module-facade symbols / 10,246 total symbol records**. See `LIBRARY.SYMBOLS.md` for the complete collection.
+The /lib tree is recursively indexed by the compiler and Nordshrift loader. Current canonical collection: **77 package families / 10,163 .sleela source units / 88 module-facade symbols / 10,251 total symbol records**. See `LIBRARY.SYMBOLS.md` for the complete collection.
 
 The `sldocument` family defines the `.sldocument` format: an ordered, top-down SLeeLa document that compiles against and with standard `.sleela` source. Its annotated method steps run in order (`@order` / `@function` / bare method name), and each step usually returns a single binary **veritable-and-kind** value (`SLVeritable`). These documents suit tasks more sophisticated than bash scripting and clear national-program work where order is already established. The compile/invoke primitives sit below the explicit VM/OS bridge in `native/src/sleela_sldocument.cpp`. See `sldocument/SLDOCUMENT.md`.
+
+`.sldocument` is a selectable **compile choice** from the SLeeLa compiler: `lib/compiler/SLSourceForm` and `lib/compiler/SLCompileChoice` let the compiler be told (explicitly or by extension) to compile a `.sleela` program or a `.sldocument`. Because a `.sldocument` may leave steps anonymous while a `.sleela` names every method, `sldocument/SLDocumentNaming`, `sldocument/SLSourceNameComparison`, and `sldocument/SLDocumentConverter` provide a deterministic naming convention (keep explicit names, derive from `@function` roles, else synthesize `step003`-style names) so an engineer can convert a `.sldocument` to a fully named `.sleela` for safekeeping without losing its established order.
 
 The compiler and Nordshrift share recursive `/lib` discovery; new package directories and source units require no compiler allow-list update.
 

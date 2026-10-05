@@ -1,0 +1,94 @@
+/*
+ * lib/sldocument/SLDocumentNaming.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLDocumentNaming, the naming convention that compares a
+ *   .sleela to a .sldocument and synthesizes function names where a document
+ *   step lacks one.
+ *
+ * Why this exists:
+ *   A .sldocument may NOT have names for its functions — a step can be an
+ *   anonymous ordered operation (identified only by its position or role). That
+ *   is fine while it runs as a document. But if an engineer converts a
+ *   .sldocument to a .sleela for safekeeping, every step must become a named
+ *   method, because .sleela is class/method shaped. This class is the authority
+ *   on how an anonymous or role-only step is given a stable, legal .sleela
+ *   method name.
+ *
+ * Convention (deterministic, so a conversion is reproducible):
+ *   1. If the step has an explicit method name, keep it (sanitized).
+ *   2. Else if it has a @function role, derive the name from the role
+ *      (e.g. "reconcile accounts" -> "reconcileAccounts").
+ *   3. Else synthesize from the ordered position: "step" + zero-padded order
+ *      (e.g. order 3 -> "step003"), which is stable and collision-resistant.
+ *   A synthesized or derived name is always a legal SLeeLa identifier.
+ *
+ * Family: sldocument. Native VM/OS work crosses an explicit bridge.
+ */
+#sleela 1.3
+// Unified SLeeLa standard-library front-end object.
+class SLDocumentNaming {
+  String prefix;   // prefix for synthesized names (default "step")
+  int state;
+
+  void configure() { prefix = "step"; state = 1; }
+  void withPrefix(String p) { prefix = p; }
+  boolean active() { return state == 1; }
+
+  // Does the step already carry an explicit method name (vs. being anonymous)?
+  boolean isNamed(SLDocumentAnnotation ann) {
+    if (ann == null) { return false; }
+    if (ann.kindOf() == SLDocumentAnnotation.METHOD) {
+      String m = ann.method();
+      return m != null && m.length() > 0;
+    }
+    // ORDER/FUNCTION annotations may still carry a method identifier.
+    String m = ann.method();
+    return m != null && m.length() > 0;
+  }
+
+  // Produce the stable .sleela method name for a step, per the convention.
+  // `textualPosition` is the step's 1-based top-down position used when a name
+  // must be synthesized.
+  String nameFor(SLDocumentAnnotation ann, int textualPosition) {
+    if (!active()) { return ""; }
+    // 1. explicit method name wins (sanitized to a legal identifier).
+    if (ann != null) {
+      String m = ann.method();
+      if (m != null && m.length() > 0) { return sanitize(m); }
+      // 2. derive from a @function role.
+      if (ann.kindOf() == SLDocumentAnnotation.FUNCTION) {
+        String role = ann.role_();
+        if (role != null && role.length() > 0) {
+          String derived = camelFromRole(role);
+          if (derived.length() > 0) { return derived; }
+        }
+      }
+    }
+    // 3. synthesize from ordered position: prefix + zero-padded order.
+    int ord = textualPosition;
+    if (ann != null && ann.hasExplicitOrder()) { ord = ann.orderValue(); }
+    return native sleela_sldocument_synth_name(prefix, ord);
+  }
+
+  // Was this name synthesized (vs. authored by the engineer)?
+  boolean isSynthesized(SLDocumentAnnotation ann) {
+    if (ann == null) { return true; }
+    String m = ann.method();
+    if (m != null && m.length() > 0) { return false; }
+    if (ann.kindOf() == SLDocumentAnnotation.FUNCTION) {
+      String role = ann.role_();
+      if (role != null && role.length() > 0) { return false; }
+    }
+    return true;
+  }
+
+  // Make an arbitrary string a legal SLeeLa identifier.
+  String sanitize(String raw) {
+    return native sleela_sldocument_sanitize_identifier(raw);
+  }
+
+  // Turn a human role ("reconcile accounts") into camelCase ("reconcileAccounts").
+  String camelFromRole(String role) {
+    return native sleela_sldocument_camel_from_role(role);
+  }
+}

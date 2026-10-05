@@ -113,6 +113,55 @@ semantics:
 The authoritative compilation remains the SLeeLa Compiler (`lib/compiler`,
 `impl/frontend`); this class is the document-aware front end to it.
 
+## A compile choice from the SLeeLa compiler
+
+`.sldocument` is a selectable **compile choice**, not a separate toolchain. The
+compiler family exposes it through two classes in `lib/compiler`:
+
+- **`SLSourceForm`** — names each SLeeLa source form and its extension:
+  `SLEELA` (`.sleela`), `SLDOCUMENT` (`.sldocument`), `SLSCRIPT`
+  (`.sleela-script`). It can infer the form from a file name (the longer
+  `.sldocument` extension is matched before `.sleela`).
+- **`SLCompileChoice`** — records which form to compile, either explicitly
+  (`choose(path, SLSourceForm.SLDOCUMENT)`) or by inferring it from the path
+  (`chooseFromPath`). `compile()` then routes a document through the
+  document-aware path and a program through the ordinary `.sleela` path. The
+  choice is fail-closed: an unrecognised extension is surfaced as a diagnostic,
+  never guessed.
+
+This slots into the compiler selection model
+(`language → family → version → producer → source form → IR/object → target`):
+`.sldocument` is one of the recognised **source forms**. The extension is also
+registered in `lib/compiler/LANGUAGE.FORMAT.REFERENCE.md`.
+
+## Naming conventions — comparing `.sleela` and `.sldocument`
+
+The two forms name things differently: a `.sleela` program names **every**
+method, while a `.sldocument` **may leave steps anonymous** (identified only by
+order or `@function` role). That is fine while a document runs — but if an
+engineer converts a `.sldocument` to a `.sleela` **for safekeeping**, every step
+must become a named method.
+
+- **`SLDocumentNaming`** is the convention authority. It gives each step a stable,
+  legal `.sleela` method name, deterministically:
+  1. keep an explicit method name (sanitized to a legal identifier);
+  2. else derive from a `@function` role (`"reconcile accounts"` →
+     `reconcileAccounts`);
+  3. else synthesize from the ordered position (`@order(3)` or textual position
+     3 → `step003`), which is stable and collision-resistant.
+- **`SLSourceNameComparison`** pairs each document step with the `.sleela` method
+  name it *would* have, flagging which names had to be **synthesized** and
+  whether any two steps **collide**. `convertible()` is true only when there are
+  no collisions.
+- **`SLDocumentConverter`** performs the conversion: it `plan()`s the names,
+  refuses to proceed on a collision (fail-closed), and emits a `.sleela` class
+  whose methods are the named steps plus a `run()` that calls them in the same
+  top-down order — preserving the single-binary / veritable-and-kind contract.
+  `convertToFile(doc, "Kept.sleela")` writes the kept program.
+
+So an anonymous ordered document round-trips into a fully named program for
+archival, review, or further hand-editing, without losing its established order.
+
 ## Classes
 
 | Class | Role |
@@ -123,6 +172,11 @@ The authoritative compilation remains the SLeeLa Compiler (`lib/compiler`,
 | `SLVeritable` | the single binary veritable-and-kind return value |
 | `SLDocumentResult` | the ordered collection of step values |
 | `SLDocumentCompiler` | compiles the document with standard SLeeLa source |
+| `SLDocumentNaming` | names anonymous steps for `.sleela` conversion |
+| `SLSourceNameComparison` | compares `.sleela` vs `.sldocument` step naming |
+| `SLDocumentConverter` | converts a `.sldocument` to a `.sleela` for safekeeping |
+| `SLSourceForm` *(lib/compiler)* | the source-form / extension catalogue |
+| `SLCompileChoice` *(lib/compiler)* | selects `.sldocument` vs `.sleela` to compile |
 
 ## Example
 
@@ -135,6 +189,12 @@ national register → finalize), compiled with its companion `.sleela` sources.
 - `sleela_sldocument_compile(title, version, companions)` — compile with companion sources; returns a frame handle.
 - `sleela_sldocument_invoke(frame, method, order)` — invoke one step; returns the single binary veritable item (1/0).
 - `sleela_sldocument_kind(frame, method)` — report whether the step's value is kind (well-formed/benign).
+- `sleela_compile_choice(path, form)` — compile a chosen source form (`.sldocument` or `.sleela`); returns a frame handle.
+- `sleela_sldocument_synth_name(prefix, order, …)` — synthesize a stable name (`step003`) for an anonymous step.
+- `sleela_sldocument_sanitize_identifier(raw, …)` — make a string a legal SLeeLa identifier.
+- `sleela_sldocument_camel_from_role(role, …)` — role → camelCase (`reconcileAccounts`).
+- `sleela_sldocument_emit_sleela(class, title, steps, …)` — emit the `.sleela` class for a converted document.
+- `sleela_sldocument_write(path, source)` — write the converted `.sleela` for safekeeping.
 
 ```sh
 cd native

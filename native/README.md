@@ -66,6 +66,9 @@ C++17 compile/invoke primitives behind the `lib/sldocument` classes
 - `sleela_sldocument_compile` — compile a document with its companion `.sleela` sources; returns a VM frame handle.
 - `sleela_sldocument_invoke` — invoke one ordered step; returns its single binary veritable item (1/0).
 - `sleela_sldocument_kind` — report whether a step's value is kind (well-formed/benign).
+- `sleela_compile_choice` — compile a chosen source form (`.sldocument` or `.sleela`); makes `.sldocument` a selectable compile choice.
+- `sleela_sldocument_synth_name` / `sleela_sldocument_sanitize_identifier` / `sleela_sldocument_camel_from_role` — naming-convention helpers for converting an anonymous `.sldocument` to a named `.sleela`.
+- `sleela_sldocument_emit_sleela` / `sleela_sldocument_write` — emit and persist the converted `.sleela` for safekeeping.
 
 An `.sldocument` runs its annotated method steps top-down and compiles against
 and with standard SLeeLa source; each step usually returns a single binary
