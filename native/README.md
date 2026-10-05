@@ -57,6 +57,21 @@ The governance *policy* lives in SLeeLa source; this bridge only announces the
 phases so both SLeeLa and the VM listen for ordering, and reports the live ip.
 Governance never executes an opcode itself — execution stays in `/impl/core`.
 
+# SLeeLa Native .sldocument Bridge
+
+C++17 compile/invoke primitives behind the `lib/sldocument` classes
+(`SLDocument`, `SLDocumentStep`, `SLDocumentCompiler`, `SLVeritable`, ...).
+
+- Stable C ABI in `include/sleela_sldocument.h`.
+- `sleela_sldocument_compile` — compile a document with its companion `.sleela` sources; returns a VM frame handle.
+- `sleela_sldocument_invoke` — invoke one ordered step; returns its single binary veritable item (1/0).
+- `sleela_sldocument_kind` — report whether a step's value is kind (well-formed/benign).
+
+An `.sldocument` runs its annotated method steps top-down and compiles against
+and with standard SLeeLa source; each step usually returns a single binary
+"veritable and kind" value. The document policy lives in SLeeLa source; the
+authoritative compilation stays in `lib/compiler` / `impl/frontend`.
+
 ## Build
 
 ```sh
@@ -64,4 +79,4 @@ make
 make test
 ```
 
-`make test` builds and self-tests the audio, opcode, and governance bridges.
+`make test` builds and self-tests the audio, opcode, governance, and sldocument bridges.

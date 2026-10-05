@@ -1,0 +1,86 @@
+/*
+ * lib/sldocument/SLDocumentCompiler.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLDocumentCompiler, which compiles an .sldocument against
+ *   and with standard SLeeLa source so the document's ordered steps resolve to
+ *   compiled methods on the same VM.
+ *
+ * An .sldocument is not interpreted in isolation: its step methods are ordinary
+ * SLeeLa, compiled through the normal SLeeLa Compiler path alongside the
+ * accompanying .sleela source units. This class is the document-aware front end
+ * to that path. It:
+ *   1. registers the companion .sleela source so symbols the steps call resolve;
+ *   2. lowers each annotated step to a method entry the VM can invoke;
+ *   3. validates that the resolved order has no gaps or duplicate @order values;
+ *   4. yields a frame handle the SLDocument runs against.
+ *
+ * The authoritative compilation remains the SLeeLa Compiler (lib/compiler /
+ * impl/frontend); this class drives it with document semantics.
+ *
+ * Family: sldocument. Native VM/OS work crosses an explicit bridge.
+ */
+#sleela 1.3
+// Unified SLeeLa standard-library front-end object.
+class SLDocumentCompiler {
+  String[] companionSources; // .sleela source units compiled alongside
+  int companionCount;
+  int state;
+  String lastError;
+
+  void init() {
+    companionSources = new String[1024];
+    companionCount = 0;
+    state = 1;
+    lastError = "";
+  }
+
+  // Register a companion .sleela source unit the document compiles with.
+  boolean withSource(String sleelaSourcePath) {
+    if (companionCount >= 1024) { lastError = "too many companion sources"; return false; }
+    companionSources[companionCount] = sleelaSourcePath;
+    companionCount = companionCount + 1;
+    return true;
+  }
+
+  void enable() { state = 1; }
+  boolean active() { return state == 1; }
+
+  // Validate that the document's resolved order is a clean 1..N with no gaps and
+  // no duplicate explicit @order values — a national/ordered program must have a
+  // settled sequence.
+  boolean validateOrder(SLDocument doc) {
+    if (doc == null || !doc.valid()) { lastError = "no document"; return false; }
+    doc.arrange();
+    int n = doc.size();
+    int expected = 1;
+    for (int i = 0; i < n; i = i + 1) {
+      int ord = doc.steps[i].order();
+      if (ord != expected) {
+        lastError = "document order is not a clean 1..N sequence";
+        return false;
+      }
+      expected = expected + 1;
+    }
+    return true;
+  }
+
+  // Compile the document together with its companion sources through the SLeeLa
+  // Compiler path. Returns a VM frame handle (>= 0) on success, or -1 on failure.
+  int compile(SLDocument doc) {
+    if (!active()) { lastError = "compiler inactive"; return -1; }
+    if (!validateOrder(doc)) { return -1; }
+    int frame = native sleela_sldocument_compile(doc.title, doc.version, companionCount);
+    if (frame < 0) { lastError = "sldocument compilation failed"; }
+    return frame;
+  }
+
+  // Compile and run in one call, binding the compiled frame into the document.
+  SLDocumentResult compileAndRun(SLDocument doc) {
+    int frame = compile(doc);
+    if (frame < 0) { return doc.results(); }
+    doc.frame = frame;
+    for (int i = 0; i < doc.size(); i = i + 1) { doc.steps[i].frame = frame; }
+    doc.enable();
+    return doc.run();
+  }
+}

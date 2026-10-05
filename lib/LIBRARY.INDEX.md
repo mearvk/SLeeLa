@@ -1,10 +1,10 @@
 # SLeeLa /lib Library Index
 
-**Revision:** 0.11  
-**Packages:** 78  
-**SLeeLa source units:** 10173  
+**Revision:** 0.12  
+**Packages:** 79  
+**SLeeLa source units:** 10179  
 **Module-facade symbols:** 90  
-**Total symbol records:** 10263  
+**Total symbol records:** 10269  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
 
 > Revision 0.9 adds the new `opcodes` package family: one SLeeLa class per
@@ -25,6 +25,14 @@
 > conditional-reactive layer (`SLOpcodeCondition`, `SLOpcodeConditionalReactive`,
 > `SLOpcodeReactorBank`) that warms/gates/runs/skips groups on program state, and
 > warming (`SLOpcodeWarmer`). See `opcodes/running/RUNNING.md`.
+>
+> Revision 0.12 adds the new `sldocument` package family and the `.sldocument`
+> format — 6 classes for an ordered, top-down document that compiles against and
+> with standard SLeeLa source (`SLDocument`, `SLDocumentStep`,
+> `SLDocumentAnnotation`, `SLVeritable`, `SLDocumentResult`,
+> `SLDocumentCompiler`). Each step is an annotated method that runs in order and
+> usually returns a single binary veritable-and-kind value. See
+> `sldocument/SLDOCUMENT.md`.
 
 The `/lib` tree is the canonical language-facing source collection. The compiler and Nordshrift use the same recursive library discovery implementation, so a package becomes importable when its directory contains SLeeLa source.
 

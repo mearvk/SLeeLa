@@ -1,0 +1,62 @@
+/*
+ * lib/sldocument/SLDocumentStep.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLDocumentStep, one ordered step of an .sldocument — an
+ *   annotated method that runs in top-down order and usually returns a single
+ *   binary veritable-and-kind value.
+ *
+ * A step pairs an annotation (how it is named/ordered) with the method it
+ * invokes on the VM. When the document runs, each step is executed in order and
+ * its SLVeritable result is captured. The method body is ordinary compiled
+ * SLeeLa; the step is the document-level wrapper that records order and result.
+ *
+ * Family: sldocument. Native VM/OS work crosses an explicit bridge.
+ */
+#sleela 1.3
+// Unified SLeeLa standard-library front-end object.
+class SLDocumentStep {
+  SLDocumentAnnotation annotation; // how the step is named/ordered
+  int effectiveOrder;              // resolved 1-based position in the run
+  int frame;                       // VM frame the method is invoked against
+  SLVeritable result;              // the single binary value the step returned
+  boolean ran;
+  int state;
+
+  void configure(SLDocumentAnnotation ann, int textualPosition, int vmFrame) {
+    annotation = ann;
+    // Explicit @order wins; otherwise the textual (top-down) position governs.
+    if (ann != null && ann.hasExplicitOrder()) { effectiveOrder = ann.orderValue(); }
+    else { effectiveOrder = textualPosition; }
+    frame = vmFrame;
+    ran = false;
+    state = 1;
+  }
+
+  void enable() { state = 1; }
+  void disable() { state = 0; }
+  boolean active() { return state == 1; }
+  int order() { return effectiveOrder; }
+  String name() { return annotation == null ? "" : annotation.method(); }
+
+  // Invoke the step's method on the VM and capture its single binary result.
+  // The native side evaluates the compiled method and reports a 1 (veritable)
+  // or 0 (not), together with a kindness flag for well-formedness.
+  SLVeritable invoke() {
+    SLVeritable v = new SLVeritable();
+    if (!active() || annotation == null) {
+      v.configure(false, false, name());
+      result = v;
+      ran = true;
+      return v;
+    }
+    int bit = native sleela_sldocument_invoke(frame, annotation.method(), effectiveOrder);
+    boolean kindFlag = native sleela_sldocument_kind(frame, annotation.method());
+    v.configure(bit == 1, kindFlag, name());
+    result = v;
+    ran = true;
+    return v;
+  }
+
+  boolean hasRun() { return ran; }
+  SLVeritable value() { return result; }
+}

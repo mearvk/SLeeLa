@@ -1,0 +1,26 @@
+#sldocument 1.0
+document "national-ledger-close"
+// An .sldocument runs its steps top-down. Each step is a method that returns a
+// single binary veritable-and-kind value. Order is already established, so this
+// reads as settled flow and architecture — not control plumbing.
+//
+// Companion standard SLeeLa source is compiled with this document, so the step
+// methods below resolve to ordinary compiled .sleela methods.
+with source "ledger/LedgerDay.sleela"
+with source "ledger/NationalRegister.sleela"
+
+// --- Steps, top-down ---
+
+// A bare method name IS the step name; its order is its textual position.
+verify_opening_balances()
+
+// @function annotates the step's role without changing its order.
+@function("reconcile")
+match_debits_and_credits()
+
+// @order gives an explicit position; it governs over textual order if needed.
+@order(3)
+post_to_national_register()
+
+// The final step is, by established order, the document's final result.
+finalize_day_close()

@@ -1,0 +1,41 @@
+/*
+ * lib/sldocument/SLDocumentAnnotation.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLDocumentAnnotation, the annotation vocabulary that marks
+ *   how an .sldocument step is named and ordered.
+ *
+ * A step's method may be annotated to indicate its order, its function, or it
+ * may simply be named as the method itself. The three annotation kinds:
+ *   ORDER    — @order(n): an explicit 1-based position in the top-down run.
+ *   FUNCTION — @function("name"): the step's declared role/purpose, independent
+ *              of its identifier.
+ *   METHOD   — no annotation: the method name itself is the step's name, and its
+ *              order is its textual position in the document (top-down).
+ *
+ * When ORDER is present it governs; otherwise textual order governs. A FUNCTION
+ * annotation never changes order, only the step's declared purpose.
+ *
+ * Family: sldocument. Native VM/OS work crosses an explicit bridge.
+ */
+#sleela 1.3
+// Unified SLeeLa standard-library front-end object.
+class SLDocumentAnnotation {
+  static final int METHOD   = 0; // bare method name; order = textual position
+  static final int ORDER    = 1; // @order(n)
+  static final int FUNCTION = 2; // @function("name")
+
+  int kind;
+  int order;      // meaningful when kind == ORDER
+  String role;    // meaningful when kind == FUNCTION
+  String methodName;
+
+  void asMethod(String name) { kind = METHOD; methodName = name; order = -1; role = ""; }
+  void asOrder(String name, int n) { kind = ORDER; methodName = name; order = n; role = ""; }
+  void asFunction(String name, String functionRole) { kind = FUNCTION; methodName = name; role = functionRole; order = -1; }
+
+  int kindOf() { return kind; }
+  int orderValue() { return order; }
+  String role_() { return role; }
+  String method() { return methodName; }
+  boolean hasExplicitOrder() { return kind == ORDER && order >= 1; }
+}
