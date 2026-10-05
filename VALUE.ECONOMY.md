@@ -190,7 +190,47 @@ representation is the expensive, load-bearing kind.
 
 ---
 
-## 9. What can be concluded, and what cannot
+## 9. Time, loopholes, and the error of the standing known
+
+Every term in this essay carries caveats, and the caveats are not footnotes —
+they are the live edge of the thing. A **loophole** is a lawful gap: a place
+where the letter of an arrangement permits what its spirit did not intend. A
+**known exception** is its sanctioned twin: a carve-out the system itself
+records. Both share a property that the careless reader forgets — they are
+*dated*. A loophole open in one year is closed in the next; an exception granted
+under one regime is revoked under another. The caveat is a function of time, not
+a fixed feature of the term.
+
+Here lies the routine error this document means to close: treating a **known
+known** as though it were permanently settled — a *known known knowable*, a
+truth so established it needs no re-checking. The error is to mistake a *standing*
+fact for a *constant* one. Most of what we "know" about company form, about what
+education certifies, about what withholding takes, is true **as of a time** and
+on **a switch** — conditional on a statute, a ruling, a rate, a regime that can
+flip. Read as a constant, it quietly becomes false the moment the switch throws,
+and the reader goes on acting on a truth that has already expired.
+
+So the correct posture is to read every such "known" as **time-stamped and
+switch-conditional**: not *this is so*, but *this is so, as of now, until the
+condition that made it so changes*. The loophole, the exception, the settled
+rate — each is a switch in a particular position, not a law of nature. To hold
+them this way is to **close the known-known-as-knowable error**: to refuse the
+comfort of a fact that has stopped checking itself against the clock.
+
+This is why structural literacy **exceeds the wisdom of counts**. Counting — how
+many exceptions, how large the rate, how many filings — is bookkeeping over a
+frozen frame. It answers *how much* at an instant. But the agent's wisdom is not
+in the count; it is in knowing that the frame itself is a switch that moves, and
+that the count is only ever a reading taken at a time. The one who merely counts
+is captured by the standing known; the one who sees the switches holds priority
+over him, because he knows *when the count will cease to be true*. **[counsel]**
+Whether a given loophole is open, an exception available, or a position
+defensible *today* is precisely a time-bound legal determination — the switch's
+current position is read by an attorney, not asserted here.
+
+---
+
+## 10. What can be concluded, and what cannot
 
 What can be *concluded* from a structural reading: that these three terms are
 arrangements, not natural facts; that each has drifted from personal toward
@@ -208,7 +248,7 @@ that step lives.
 
 ---
 
-## 10. The human at the centre — Homo Novus as agent
+## 11. The human at the centre — Homo Novus as agent
 
 If the system has three vertices, it has one occupant: the person. The closing
 figure of this essay is that person understood as **Homo Novus** — "new man" —
@@ -227,7 +267,7 @@ for the territory.
 
 ---
 
-## 11. The agent's literacy as a social norm
+## 12. The agent's literacy as a social norm
 
 To call this a *norm* — a shared expectation rather than a rare attainment — is
 to say that a mature society expects its members to be agents in this sense:
@@ -247,14 +287,16 @@ it.
 
 ---
 
-## 12. Conclusion — the vessel, the capability, the claim, and the man
+## 13. Conclusion — the vessel, the capability, the claim, and the man
 
 The company is a vessel for pooled risk. Education is the formation of capability
 in the person. Withholding is the continuous claim of the collective on the flows
 the other two generate. Across 1933 to 2026 all three moved the same direction —
 from the personal to the infrastructural, from the visible to the ambient, from
 trust-in-people to trust-in-systems — and all three share one failure mode: the
-representation coming loose from the represented.
+representation coming loose from the represented. And all three carry caveats —
+loopholes, exceptions, settled rates — that are switches, not constants: true as
+of a time, until the time turns.
 
 The figure that holds the system together is not a god above it but a *new agent*
 inside it: Homo Novus, not Homo Deus. He concludes, compiles, directs, and
@@ -277,5 +319,10 @@ force, "here the two must agree."
   systematisation of mass withholding; education's split from credential) are
   stated as general, verifiable history; specifics vary by jurisdiction and year.
 - **Rhetorical framing** ("Homo Novus agent," "representation for its own sake,"
-  "society of agents") is the essay's conceptual voice, offered as a lens, not as
-  an empirical claim about any real population.
+  "society of agents," "known known as knowable," "switches not constants") is
+  the essay's conceptual voice, offered as a lens, not as an empirical claim
+  about any real population.
+- **Time-bound by nature.** Section 9 is the operative caveat for the whole
+  document: loopholes, exceptions, and rates are switch-conditional and dated.
+  Nothing here is a standing truth; the current position of any such switch is a
+  **[counsel]** matter, read by a professional at the time of acting.
