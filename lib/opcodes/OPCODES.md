@@ -23,6 +23,7 @@ every instruction has a first-class, nameable identity in SLeeLa source.
 | 103 | `SLOp*.sleela` — one class per opcode, codes **0–102** |
 | 1 | `OPCODES.md` — this document |
 | 8 | `governance/` — the Registrar · Listener · Event Observer series (see `governance/GOVERNANCE.md`) |
+| 6 | `running/` — grouping, conditional-reactive, and warming helpers (see `running/RUNNING.md`) |
 
 Codes **0–97** are the **base 98** opcodes (`OP_NOP` … `OP_AUDIO_PLATFORM`).
 Codes **98–102** are the five array-extension opcodes added for syntax 1.4
@@ -74,6 +75,16 @@ confirms the admitted sequence fits the live VM program as it comes, and an
 about architecture, breadth, height, and purpose — issuing warnings or patching
 faults with known symbol maps. SLeeLa and the VM both listen for ordering at the
 `BEFORE` / `DURING` / `AFTER` phases. See `governance/GOVERNANCE.md`.
+
+### Running helpers — grouping, conditional-reactive, warming
+
+Beyond a flat stream, the `running/` sub-family offers richer ways to run
+opcodes: **grouping** (`SLOpcodeGroup`, `SLOpcodeGroupSet`) runs cohesive
+clusters as units; a **conditional-reactive** layer (`SLOpcodeCondition`,
+`SLOpcodeConditionalReactive`, `SLOpcodeReactorBank`) reacts to program state by
+warming, gating, running, or skipping a group; and **warming**
+(`SLOpcodeWarmer`) readies hot paths before they run. These compose with the
+governance series. See `running/RUNNING.md`.
 
 ## Native bridge and the runtime rule
 

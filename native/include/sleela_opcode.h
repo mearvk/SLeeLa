@@ -54,6 +54,27 @@ const char *sleela_opcode_mnemonic(int32_t code);
 /* 1 if code is a valid canonical opcode (0..102), else 0. */
 int sleela_opcode_is_valid(int32_t code);
 
+/*
+ * Running-helper signals (used by lib/opcodes/running). Observe a well-known VM
+ * signal for the conditional-reactive layer. `signal` is one of the SIG_*
+ * selectors below; `index` is the current stream position (passed through for
+ * index-relative signals). Returns the observed value, or -1 on invalid frame.
+ */
+#define SLEELA_OPCODE_SIG_IP           1  /* live instruction pointer    */
+#define SLEELA_OPCODE_SIG_LOCK_DEPTH   2  /* locks currently held        */
+#define SLEELA_OPCODE_SIG_CALL_DEPTH   3  /* open call frames            */
+#define SLEELA_OPCODE_SIG_OPEN_SOCKETS 4  /* open sockets                */
+#define SLEELA_OPCODE_SIG_WARN_COUNT   5  /* governance warnings so far  */
+#define SLEELA_OPCODE_SIG_INDEX        6  /* current stream index        */
+int32_t sleela_opcode_signal(int32_t frame, int32_t signal, int32_t index);
+
+/*
+ * Pre-stage (warm) an opcode: ask the VM to make the opcode `code` ready to fire
+ * with no cold-start cost. Returns 1 when staged, 0 when the code is invalid.
+ * Warming never executes the opcode.
+ */
+int sleela_opcode_prestage(int32_t frame, int32_t code);
+
 /* Last human-readable error (never NULL). */
 const char *sleela_opcode_last_error(void);
 

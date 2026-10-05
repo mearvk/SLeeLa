@@ -98,6 +98,35 @@ int32_t sleela_opcode_execute_one(int32_t frame, int32_t code, int32_t ip) {
     return ip + 1;
 }
 
+int32_t sleela_opcode_signal(int32_t frame, int32_t signal, int32_t index) {
+    if (frame < 0) { g_last_error = "invalid VM frame"; return -1; }
+    /* Reference model: /impl/core owns the authoritative counters. This bridge
+     * returns deterministic, frame-relative values so the conditional-reactive
+     * layer can be exercised in isolation. */
+    switch (signal) {
+        case SLEELA_OPCODE_SIG_IP:           return frame + index;
+        case SLEELA_OPCODE_SIG_INDEX:        return index;
+        case SLEELA_OPCODE_SIG_LOCK_DEPTH:   return 0;
+        case SLEELA_OPCODE_SIG_CALL_DEPTH:   return 0;
+        case SLEELA_OPCODE_SIG_OPEN_SOCKETS: return 0;
+        case SLEELA_OPCODE_SIG_WARN_COUNT:   return 0;
+        default:
+            g_last_error = "unknown signal selector";
+            return -1;
+    }
+}
+
+int sleela_opcode_prestage(int32_t frame, int32_t code) {
+    if (frame < 0) { g_last_error = "invalid VM frame"; return 0; }
+    if (!sleela_opcode_is_valid(code)) {
+        g_last_error = "cannot warm an invalid opcode";
+        return 0;
+    }
+    /* Warming only readies the opcode; it never executes it. In a full build
+     * this would hint the VM's fetch/decode. Here it is a validated no-op. */
+    return 1;
+}
+
 const char *sleela_opcode_last_error(void) { return g_last_error.c_str(); }
 
 } /* extern "C" */

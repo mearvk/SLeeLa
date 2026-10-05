@@ -1,0 +1,62 @@
+/*
+ * lib/opcodes/running/SLOpcodeWarmer.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLOpcodeWarmer, which warms opcodes and groups ahead of
+ *   execution so they are ready to fire the instant they are reached.
+ *
+ * Role: "warming" prepares opcodes before they run — arming each one and asking
+ *   the VM to pre-stage the next instruction so the first fire of a hot path has
+ *   no cold-start cost. A warmer can warm a single opcode, a whole group, or a
+ *   group set, and it keeps a tally so the reactive layer can tell whether a
+ *   path is warm before gating it in.
+ *
+ * Family: opcodes.running. Native VM/OS work crosses an explicit bridge.
+ */
+#sleela 1.3
+// Unified SLeeLa standard-library front-end object.
+class SLOpcodeWarmer {
+  int frame;     // the VM frame to pre-stage against
+  int warmedOps; // total opcodes warmed
+  int state;
+
+  void configure(int vmFrame) {
+    frame = vmFrame;
+    warmedOps = 0;
+    state = 1;
+  }
+
+  void enable() { state = 1; }
+  void disable() { state = 0; }
+  boolean active() { return state == 1; }
+  int warmedCount() { return warmedOps; }
+
+  // Warm one opcode: arm it in SLeeLa and ask the VM to pre-stage its fetch.
+  boolean warmOne(SLOpcodeBase op) {
+    if (!active() || op == null) { return false; }
+    op.arm();
+    native sleela_opcode_prestage(frame, op.opcode());
+    warmedOps = warmedOps + 1;
+    return true;
+  }
+
+  // Warm a whole group (arms its members and pre-stages each).
+  int warmGroup(SLOpcodeGroup group) {
+    if (!active() || group == null) { return 0; }
+    int warmed = 0;
+    for (int i = 0; i < group.size(); i = i + 1) {
+      if (warmOne(group.at(i))) { warmed = warmed + 1; }
+    }
+    group.warm();
+    return warmed;
+  }
+
+  // Warm every group in a set.
+  int warmSet(SLOpcodeGroupSet set) {
+    if (!active() || set == null) { return 0; }
+    int warmed = 0;
+    for (int i = 0; i < set.size(); i = i + 1) {
+      warmed = warmed + warmGroup(set.at(i));
+    }
+    return warmed;
+  }
+}

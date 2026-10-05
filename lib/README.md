@@ -22,13 +22,15 @@ The standard-library target is **2,048 object types**. This is an architectural 
 **SLeeLa — MEARVK LLC — 2026**
 ## Library discovery
 
-The /lib tree is recursively indexed by the compiler and Nordshrift loader. Current canonical collection: **76 package families / 10,146 .sleela source units / 88 module-facade symbols / 10,234 total symbol records**. See `LIBRARY.SYMBOLS.md` for the complete collection.
+The /lib tree is recursively indexed by the compiler and Nordshrift loader. Current canonical collection: **76 package families / 10,152 .sleela source units / 88 module-facade symbols / 10,240 total symbol records**. See `LIBRARY.SYMBOLS.md` for the complete collection.
 
 The compiler and Nordshrift share recursive `/lib` discovery; new package directories and source units require no compiler allow-list update.
 
 The `opcodes` family expresses the canonical SLeeLa VM instruction set as one SLeeLa class per opcode: 103 `SLOp*` classes (codes 0–102; the base 98 are `OP_NOP`..`OP_AUDIO_PLATFORM`), plus `SLOpcodeBase` and `SLOpcodeStream`. Each class carries a single opcode and honours the fetch-then-execute-one contract — carefully call the VM to the next instruction, then execute exactly that one opcode — modeling `impl/core`'s dispatch loop at the SLeeLa layer. The fetch/dispatch primitives sit below the explicit VM/OS bridge in `native/src/sleela_opcode.cpp`. See `opcodes/OPCODES.md`, including the rationale for why 98 opcodes is complete for a modern program and developer.
 
 The `opcodes/governance` sub-family adds procedural discretion over opcode execution so programs are not run raw into the VM without consideration: a **Registrar** considers a program A→B *before* it runs, a **Listener** confirms the admitted sequence fits the live VM program *during*, and an **Event Observer** judges the whole as a musical, ordered process *after* — weighing base concepts (straightness, linear reals, outright goals, ethics/norms, finalization, times-upon-counts, final goals) and emitting graded verdicts (admit / warn / patch / pause-as-unrest / reject), including fault patching via known symbol maps. SLeeLa and the VM both listen for ordering at the BEFORE/DURING/AFTER phases through `native/src/sleela_gov.cpp`. See `opcodes/governance/GOVERNANCE.md`.
+
+The `opcodes/running` sub-family adds richer ways to run opcodes beyond a flat stream: **grouping** (`SLOpcodeGroup`, `SLOpcodeGroupSet`) runs cohesive clusters as units; a **conditional-reactive** layer (`SLOpcodeCondition`, `SLOpcodeConditionalReactive`, `SLOpcodeReactorBank`) reacts to VM/program signals by warming, gating, running, or skipping a group on its rising edge; and **warming** (`SLOpcodeWarmer`) pre-arms and pre-stages hot paths. These compose with the governance series and use two added bridge primitives (`sleela_opcode_signal`, `sleela_opcode_prestage`). See `opcodes/running/RUNNING.md`.
 
 ## Decompiler
 

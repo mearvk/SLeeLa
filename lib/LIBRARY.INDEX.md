@@ -1,10 +1,10 @@
 # SLeeLa /lib Library Index
 
-**Revision:** 0.10  
+**Revision:** 0.11  
 **Packages:** 78  
-**SLeeLa source units:** 10167  
+**SLeeLa source units:** 10173  
 **Module-facade symbols:** 90  
-**Total symbol records:** 10257  
+**Total symbol records:** 10263  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
 
 > Revision 0.9 adds the new `opcodes` package family: one SLeeLa class per
@@ -19,6 +19,12 @@
 > judges the whole as a musical, ordered process AFTER (with graded verdicts,
 > base-concept checks, and known-symbol-map patching). See
 > `opcodes/governance/GOVERNANCE.md`.
+>
+> Revision 0.11 adds the `opcodes/running` sub-family — 6 classes for richer
+> opcode execution: grouping (`SLOpcodeGroup`, `SLOpcodeGroupSet`), a
+> conditional-reactive layer (`SLOpcodeCondition`, `SLOpcodeConditionalReactive`,
+> `SLOpcodeReactorBank`) that warms/gates/runs/skips groups on program state, and
+> warming (`SLOpcodeWarmer`). See `opcodes/running/RUNNING.md`.
 
 The `/lib` tree is the canonical language-facing source collection. The compiler and Nordshrift use the same recursive library discovery implementation, so a package becomes importable when its directory contains SLeeLa source.
 

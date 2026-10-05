@@ -69,6 +69,24 @@ int main(int argc, char **argv) {
     check("invalid frame rejected", sleela_opcode_vm_next(-5) == -1);
     check("invalid ip rejected", sleela_opcode_execute_one(0, 0, -1) == -1);
 
+    /* Running-helper signals (grouping / conditional-reactive layer). */
+    check("signal INDEX passthrough",
+          sleela_opcode_signal(10, SLEELA_OPCODE_SIG_INDEX, 3) == 3);
+    int32_t s0 = sleela_opcode_signal(10, SLEELA_OPCODE_SIG_IP, 0);
+    int32_t s1 = sleela_opcode_signal(10, SLEELA_OPCODE_SIG_IP, 1);
+    check("signal IP advances", s1 > s0);
+    check("signal lock depth defaults 0",
+          sleela_opcode_signal(10, SLEELA_OPCODE_SIG_LOCK_DEPTH, 0) == 0);
+    check("signal invalid frame rejected",
+          sleela_opcode_signal(-1, SLEELA_OPCODE_SIG_IP, 0) == -1);
+    check("signal unknown selector rejected",
+          sleela_opcode_signal(0, 999, 0) == -1);
+
+    /* Warming / pre-stage. */
+    check("prestage valid opcode", sleela_opcode_prestage(0, 8 /*OP_ADD*/) == 1);
+    check("prestage invalid opcode rejected", sleela_opcode_prestage(0, 999) == 0);
+    check("prestage invalid frame rejected", sleela_opcode_prestage(-1, 0) == 0);
+
     std::printf("%s (%d failure(s))\n", failures == 0 ? "ALL PASS" : "FAILURES", failures);
     return failures == 0 ? 0 : 1;
 }

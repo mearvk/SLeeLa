@@ -1,0 +1,99 @@
+/*
+ * lib/opcodes/running/SLOpcodeConditionalReactive.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLOpcodeConditionalReactive, a construct that watches a
+ *   condition over the running program and reacts by grouping, warming, gating,
+ *   or skipping a group of opcodes.
+ *
+ * Role: this is the conditional-reactive the user asked for. It binds a
+ *   SLOpcodeCondition (the trigger) to a SLOpcodeGroup (the subject) and a
+ *   reaction. When the condition holds as the stream advances, the reaction
+ *   fires:
+ *     WARM  — pre-warm the group so a hot path is ready before it is reached.
+ *     RUN   — run the group now, inline, as a reactive sub-sequence.
+ *     GATE  — admit the group into the live stream only now that the condition
+ *             holds (gated inclusion).
+ *     SKIP  — hold the group back (do not run it) while the condition holds.
+ *   A reactive is edge-sensitive: it reacts when the condition first becomes
+ *   true, not repeatedly, unless rearmed.
+ *
+ * Family: opcodes.running. Native VM/OS work crosses an explicit bridge.
+ */
+#sleela 1.3
+// Unified SLeeLa standard-library front-end object.
+class SLOpcodeConditionalReactive {
+  static final int WARM = 1;
+  static final int RUN  = 2;
+  static final int GATE = 3;
+  static final int SKIP = 4;
+
+  String label;
+  SLOpcodeCondition trigger;  // the condition watched
+  SLOpcodeGroup subject;      // the group reacted upon
+  SLOpcodeWarmer warmer;      // used when the reaction is WARM/GATE
+  int reaction;               // one of WARM..SKIP
+  int frame;                  // VM frame
+  boolean latched;            // edge state: already reacted this rising edge
+  int reactions;              // how many times it has reacted
+  int state;
+
+  void configure(String name, SLOpcodeCondition cond, SLOpcodeGroup group,
+                 SLOpcodeWarmer warm, int howToReact, int vmFrame) {
+    label = name;
+    trigger = cond;
+    subject = group;
+    warmer = warm;
+    reaction = howToReact;
+    frame = vmFrame;
+    latched = false;
+    reactions = 0;
+    state = 1;
+  }
+
+  void enable() { state = 1; }
+  void disable() { state = 0; }
+  boolean active() { return state == 1; }
+  void rearm() { latched = false; }
+  int reactionCount() { return reactions; }
+  String name() { return label; }
+
+  // Evaluate the trigger at the current stream index and react on the rising
+  // edge. Returns the reaction performed (0 = none this tick).
+  int tick(int index) {
+    if (!active() || trigger == null) { return 0; }
+    boolean now = trigger.holds(frame, index);
+    if (!now) { latched = false; return 0; } // falling/low: reset the edge
+    if (latched) { return 0; }                // already reacted on this edge
+    latched = true;
+    reactions = reactions + 1;
+
+    if (reaction == WARM) {
+      if (warmer != null && subject != null) { warmer.warmGroup(subject); }
+      return WARM;
+    }
+    if (reaction == RUN) {
+      if (subject != null) { subject.run(frame); }
+      return RUN;
+    }
+    if (reaction == GATE) {
+      // Gated inclusion: warm now so the group is ready to be appended/run.
+      if (warmer != null && subject != null) { warmer.warmGroup(subject); }
+      return GATE;
+    }
+    if (reaction == SKIP) {
+      // Hold the group back: disable it so a driver will not run it.
+      if (subject != null) { subject.disable(); }
+      return SKIP;
+    }
+    return 0;
+  }
+
+  // Whether the subject group should be allowed to run given the reaction and
+  // the current edge state. GATE allows only after reacting; SKIP forbids while
+  // latched; WARM/RUN leave running to the driver.
+  boolean admits() {
+    if (reaction == GATE) { return latched; }
+    if (reaction == SKIP) { return !latched; }
+    return true;
+  }
+}
