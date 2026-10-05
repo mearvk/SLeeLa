@@ -1,6 +1,7 @@
 #include <gtk/gtk.h>
 #include <vte/vte.h>
 
+#include <algorithm>
 #include <cmath>
 #include <csignal>
 #include <filesystem>
@@ -14,6 +15,25 @@ constexpr const char *kApplicationId = "com.mearvk.SleelaTerminal";
 constexpr const char *kWindowTitle = "SleelaTerminal™ — MEARVK LLC";
 constexpr const char *kConfigName = "sleela-terminal.conf";
 constexpr const char *kVersion = "1.0.0";
+
+// One "child of wattage": a discrete excitation that flows along the throbber
+// strip and locally modulates the base light-blue colour. Many of these,
+// summed, make the living field. Motion is integrated to third order
+// (jerk -> accel -> vel -> pos) so speed changes are smooth and reflexive.
+struct ThrobberCell {
+    bool alive = false;
+    double x = 0.0;        // position in pixels
+    double v = 0.0;        // velocity (px/s), mostly positive = left->right
+    double a = 0.0;        // acceleration (px/s^2)
+    double j = 0.0;        // jerk (px/s^3) -- the 3rd-order control term
+    double base_intensity = 0.0; // the cell's inherent shade strength [0..1]
+    double intensity = 0.0;      // live rendered contribution (base * fades)
+    double energy = 1.0;         // life/decay budget
+    double sigma = 0.0;    // spatial half-width of this cell's glow (px)
+    double phase = 0.0;    // per-cell phase for subtle flicker
+    bool retro = false;    // a rare child allowed to pause / go right->left
+    double retro_px = 0.0; // pixels of retrograde/pause travel remaining
+};
 
 struct AppConfig {
     std::string font = "Monospace 11";
@@ -38,13 +58,17 @@ struct AppState {
     AppConfig config;
 
     // Title-bar throbber: a thin living light-blue strip along the bottom of
-    // the title bar (replacing the static border highlight). Its brightness is
-    // advanced ~20x/second by an organic algorithm (see throbber_tick).
+    // the title bar (replacing the static border highlight). It is a flowing
+    // field of discrete excitations ("children of wattage") that stream mainly
+    // left->right at ~20 Hz; see throbber_tick / throbber_draw.
     GtkWidget *throbber = nullptr;
     guint throbber_tick = 0;
-    double throbber_t = 0.0;       // monotonically advancing time (seconds)
-    double throbber_level = 0.5;   // current brightness in [0,1]
-    double throbber_drift = 0.0;   // slow bounded random-walk component
+    double throbber_t = 0.0;        // monotonically advancing time (seconds)
+    int    throbber_w = 0;          // last known strip width (px)
+    double throbber_amp = 0.6;      // slow reflexive "amplification" field [0..1]
+    double throbber_amp_v = 0.0;    // its rate of change (for smooth 2nd order)
+    double throbber_spawn_accum = 0.0; // fractional spawn accumulator
+    std::vector<ThrobberCell> throbber_cells;
 };
 
 std::filesystem::path config_path() {
@@ -798,65 +822,162 @@ gboolean window_close_request(GtkWindow *window, gpointer user_data) {
 // Paint the throbber strip in the current light-blue shade. The brightness
 // `throbber_level` in [0,1] interpolates between a dim and a bright light blue,
 // so the seam breathes rather than flashes.
+// Render the living field. The strip is NOT one uniform level: a quiet base
+// light-blue is modulated locally by every excitation ("child of wattage"),
+// each adding a relative lighter/darker shade of the SAME base colour near its
+// position. The sum, drawn per column, is a texture that flows left->right.
 void throbber_draw(GtkDrawingArea *, cairo_t *cr, int width, int height, gpointer user_data) {
     auto *state = static_cast<AppState *>(user_data);
-    const double L = state->throbber_level;  // 0 = dim, 1 = bright
+    if (width <= 0 || height <= 0) return;
+    state->throbber_w = width;
 
-    // Light-blue family. Keep hue stable; move lightness/intensity with L so the
-    // effect reads as the same colour "living" lighter and darker.
-    //   dim   ~ #2d4a6b (muted steel blue, close to the chrome)
-    //   bright~ #9fd4ff (airy light blue)
-    const double r = (0.176 + (0.624 - 0.176) * L);
-    const double g = (0.290 + (0.831 - 0.290) * L);
-    const double b = (0.420 + (1.000 - 0.420) * L);
+    // Base light-blue family. Endpoints of the "relative shade" range: the local
+    // field value f in [-1..+1] moves a column between a darker and lighter blue
+    // around a quiet resting shade, so it reads as one colour living, not a
+    // whole-bar brightness change.
+    //   dark  ~ #22395a   rest ~ #3f6ea0   light ~ #a9dcff
+    auto mix = [](double c0, double c1, double k) { return c0 + (c1 - c0) * k; };
 
-    cairo_set_source_rgb(cr, r, g, b);
-    cairo_rectangle(cr, 0, 0, width, height);
-    cairo_fill(cr);
+    // Draw per column (1px). At 2px tall and a title-bar width this is cheap and
+    // gives smooth left->right flow.
+    for (int x = 0; x < width; ++x) {
+        const double px = x + 0.5;
 
-    // A soft brighter sheen that glides left<->right with the slow phase, giving
-    // the strip a gentle sense of motion without being a hard scanning bar.
-    const double center = 0.5 + 0.5 * std::sin(state->throbber_t * 0.37);
-    const double cx = center * width;
-    const double radius = (width > 0 ? width : 1) * 0.35;
-    cairo_pattern_t *sheen = cairo_pattern_create_radial(cx, height * 0.5, 0,
-                                                          cx, height * 0.5, radius);
-    cairo_pattern_add_color_stop_rgba(sheen, 0.0, 1.0, 1.0, 1.0, 0.22 * L);
-    cairo_pattern_add_color_stop_rgba(sheen, 1.0, 1.0, 1.0, 1.0, 0.0);
-    cairo_set_source(cr, sheen);
-    cairo_rectangle(cr, 0, 0, width, height);
-    cairo_fill(cr);
-    cairo_pattern_destroy(sheen);
+        // Accumulate the field from every alive cell: a Gaussian bump in x,
+        // signed by the cell's intensity. Rightward-leading edge is slightly
+        // sharper so motion reads directionally (left->right).
+        double f = 0.0;
+        for (const auto &c : state->throbber_cells) {
+            if (!c.alive) continue;
+            double dx = px - c.x;
+            // Asymmetric width: trailing (left) side longer -> a comet-like tail
+            // pointing back the way it came, reinforcing flow direction.
+            double s = (dx < 0.0) ? c.sigma * 1.6 : c.sigma * 0.8;
+            if (s < 0.5) s = 0.5;
+            double e = dx / s;
+            double bump = std::exp(-0.5 * e * e);
+            // subtle per-cell flicker so each child feels independently alive
+            double flick = 0.85 + 0.15 * std::sin(state->throbber_t * 6.0 + c.phase);
+            f += c.intensity * bump * flick;
+        }
+        // Reflexive amplification: the global amp field scales how strongly the
+        // texture departs from the resting shade.
+        f *= (0.5 + 0.9 * state->throbber_amp);
+        if (f > 1.2) f = 1.2;
+
+        // Map field -> relative shade of the base blue.
+        double k = f;                 // 0 = rest, >0 brighter, (slightly) <0 dimmer
+        double r, g, b;
+        if (k >= 0.0) {
+            double kk = k > 1.0 ? 1.0 : k;
+            r = mix(0.247, 0.663, kk);   // #3f6ea0 -> #a9dcff
+            g = mix(0.431, 0.863, kk);
+            b = mix(0.627, 1.000, kk);
+        } else {
+            double kk = -k; if (kk > 1.0) kk = 1.0;
+            r = mix(0.247, 0.133, kk);   // #3f6ea0 -> #22395a
+            g = mix(0.431, 0.224, kk);
+            b = mix(0.627, 0.353, kk);
+        }
+        cairo_set_source_rgb(cr, r, g, b);
+        cairo_rectangle(cr, x, 0, 1, height);
+        cairo_fill(cr);
+    }
 }
 
-// 20 Hz organic update. Rather than a mechanical sawtooth, the brightness is a
-// blend of two sine waves at incommensurate rates plus a bounded random walk,
-// then eased toward that target. The result drifts and breathes like something
-// alive rather than a fixed loop.
+// Spawn a fresh excitation at (usually) the left edge.
+void throbber_spawn(AppState *state) {
+    ThrobberCell c;
+    c.alive = true;
+    c.x = -4.0 + g_random_double() * 6.0;           // enter from just off the left
+    c.v = 24.0 + g_random_double() * 40.0;          // base rightward speed (px/s)
+    c.a = 0.0;
+    c.j = 0.0;
+    c.base_intensity = 0.35 + g_random_double() * 0.6; // relative shade strength
+    c.intensity = 0.0;                                  // eases up from birth
+    c.energy = 1.0;
+    c.sigma = 6.0 + g_random_double() * 14.0;       // glow half-width
+    c.phase = g_random_double() * 6.2831853;
+    // 1 in 30 children may pause or run right->left for 20-50 px.
+    c.retro = (g_random_int_range(0, 30) == 0);
+    c.retro_px = c.retro ? (20.0 + g_random_double() * 30.0) : 0.0;
+    state->throbber_cells.push_back(c);
+}
+
+// 20 Hz update of the living field.
 gboolean throbber_tick(gpointer user_data) {
     auto *state = static_cast<AppState *>(user_data);
     if (state->throbber == nullptr) return G_SOURCE_REMOVE;
 
     const double dt = 1.0 / 20.0;
     state->throbber_t += dt;
-    const double t = state->throbber_t;
+    const int W = state->throbber_w > 0 ? state->throbber_w : 600;
 
-    // Bounded random walk (organic jitter), kept small and self-centering.
-    const double step = (g_random_double() - 0.5) * 0.06;
-    state->throbber_drift = state->throbber_drift * 0.96 + step;
-    if (state->throbber_drift > 0.18) state->throbber_drift = 0.18;
-    if (state->throbber_drift < -0.18) state->throbber_drift = -0.18;
+    // --- Reflexive amplification field (smooth, 2nd order) --------------------
+    // A slowly varying global gain that makes the whole field speed up / glow
+    // more at "pertinent" moments, then relax. Driven to a wandering target
+    // through a critically-damped-ish spring so it never snaps.
+    double amp_target = 0.55
+        + 0.30 * std::sin(state->throbber_t * 0.21)
+        + 0.12 * std::sin(state->throbber_t * 0.53 + 1.3);
+    if (amp_target < 0.1) amp_target = 0.1;
+    if (amp_target > 1.0) amp_target = 1.0;
+    double amp_acc = (amp_target - state->throbber_amp) * 2.2 - state->throbber_amp_v * 1.6;
+    state->throbber_amp_v += amp_acc * dt;
+    state->throbber_amp   += state->throbber_amp_v * dt;
+    if (state->throbber_amp < 0.0) state->throbber_amp = 0.0;
+    if (state->throbber_amp > 1.0) state->throbber_amp = 1.0;
 
-    // Two incommensurate sines so the pattern never repeats on a short cycle.
-    const double breathe = 0.5
-        + 0.30 * std::sin(t * 0.90)
-        + 0.14 * std::sin(t * 1.63 + 0.7);
-    double target = breathe + state->throbber_drift;
-    if (target < 0.08) target = 0.08;
-    if (target > 1.00) target = 1.00;
+    // --- Spawn rate scales with amplification (more wattage -> more children) -
+    double rate = 6.0 + 10.0 * state->throbber_amp;   // children per second
+    state->throbber_spawn_accum += rate * dt;
+    while (state->throbber_spawn_accum >= 1.0) {
+        state->throbber_spawn_accum -= 1.0;
+        if (state->throbber_cells.size() < 64) throbber_spawn(state);
+    }
 
-    // Ease toward the target so each 50 ms step is a careful, smooth move.
-    state->throbber_level += (target - state->throbber_level) * 0.25;
+    // --- Advance each child with 3rd-order (jerk-driven) motion ---------------
+    for (auto &c : state->throbber_cells) {
+        if (!c.alive) continue;
+
+        // Reflexive, amplified desired speed. Faster where the field is "hot".
+        double desired_v = (18.0 + 70.0 * state->throbber_amp);
+
+        if (c.retro && c.retro_px > 0.0) {
+            // This rare child pauses or glides right->left for its allotment.
+            desired_v = -(10.0 + 25.0 * state->throbber_amp);
+            c.retro_px -= std::fabs(c.v) * dt;
+        }
+
+        // 3rd order: steer JERK toward closing the velocity error, integrate
+        // jerk -> accel -> vel -> pos. This keeps the *rate of change of
+        // acceleration* bounded, so speed-ups/slow-downs are gentle, not steppy.
+        double v_err = desired_v - c.v;
+        double jerk_target = v_err * 6.0;                       // reflexive gain
+        c.j += (jerk_target - c.j) * 0.35;                      // ease the jerk
+        c.a += c.j * dt;
+        if (c.a >  900.0) c.a =  900.0;
+        if (c.a < -900.0) c.a = -900.0;
+        c.v += c.a * dt;
+        c.x += c.v * dt;
+
+        // Gentle lifetime: decay energy, fade out as it nears the right edge.
+        c.energy -= dt * (0.10 + 0.05 * state->throbber_amp);
+        double edge_fade = 1.0;
+        if (c.x > W * 0.82) edge_fade = std::max(0.0, (W - c.x) / (W * 0.18));
+        double breath = 0.9 + 0.1 * std::sin(state->throbber_t * 1.7 + c.phase);
+        double target_i = c.base_intensity * edge_fade * std::max(0.0, c.energy) * breath;
+        // Ease the live intensity toward its target so births/fades are smooth.
+        c.intensity += (target_i - c.intensity) * 0.30;
+
+        if (c.x > W + 6.0 || c.energy <= 0.0) c.alive = false;
+    }
+
+    // Compact the pool: drop dead cells.
+    state->throbber_cells.erase(
+        std::remove_if(state->throbber_cells.begin(), state->throbber_cells.end(),
+                       [](const ThrobberCell &c) { return !c.alive; }),
+        state->throbber_cells.end());
 
     gtk_widget_queue_draw(state->throbber);
     return G_SOURCE_CONTINUE;
