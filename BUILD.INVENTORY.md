@@ -80,7 +80,7 @@ The root Makefile provides a stable entry point without replacing product-specif
 - make scripting — sleela-scripting/
 - make jetbrains — JetBrains source acquisition helpers
 - make install — install/
-- make tutorial-check — verify tutorial/example inventories
+- make tutorial-check — verify tutorial/example inventories (via `scripts/tutorial-check.sh`): README-linked lessons resolve, lesson numbering is contiguous, example XML is well-formed, and every declared expected-evidence witness is paired with its example
 - make tests — tests/
 - make server — api/server/
 - make route — validate unified route data (route/ROUTE.DATA.json)
