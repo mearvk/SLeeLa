@@ -15,8 +15,9 @@ on:
       - 'security/**'
       - '.github/workflows/**'
       - '*.md'
+      - 'markdown/**'
       - 'SLEELA.syntax'
-      - 'VERSION.md'
+      - 'markdown/VERSION.md'
       - 'tools/generate-important-sha256-manifest.py'
   workflow_dispatch:
 

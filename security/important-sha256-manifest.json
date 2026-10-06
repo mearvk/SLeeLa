@@ -3,84 +3,8 @@
   "scope": "important-files",
   "files": [
     {
-      "path": "ARCHITECTURE.md",
-      "sha256": "0fb356ce7c800fdcfd3443ac1a09af1be8c3c786dac91ae6ffa6a1272e7a5379"
-    },
-    {
-      "path": "BODI.md",
-      "sha256": "7a787a284fbd76cb58b11f771194630300273bbdf571b9eac06dc7cf46994b13"
-    },
-    {
-      "path": "BODI_GARDULUS_II.md",
-      "sha256": "fd5e85b1cd1823af99c01e078e0ced98406746531c583edb244036c52d7462c5"
-    },
-    {
-      "path": "BUILD.md",
-      "sha256": "d882aa82acc35ea29be67cd0fbccc7a37c89123c8bbe930545b5ce334fd0444b"
-    },
-    {
-      "path": "CHANGES-MEMORY-NATIVE.md",
-      "sha256": "40facf4499e64b34711449e606955396491bc43bf5360cbe24f05ee8bfbeb528"
-    },
-    {
-      "path": "CLASS.md",
-      "sha256": "76838130fced1b9f5bbc6377bec272e889616e3b87916f95b69f2260ce375def"
-    },
-    {
-      "path": "COMPILER.md",
-      "sha256": "f136e31aee1e8f085457ee00bd23f49c1b56a7c0184adf26a9c20f25efd64162"
-    },
-    {
-      "path": "CONNECTOR.md",
-      "sha256": "a1f7808c7fdae5b684ff571de5557015f6c6e71352814d4c55058a30cea03c2a"
-    },
-    {
-      "path": "DEFINITIONS.md",
-      "sha256": "7368f7eefce0ec5b2b9fe3b544cd5d33c51b16e436d181ede4e2145cc495ee4f"
-    },
-    {
-      "path": "FILE.SYSTEM.md",
-      "sha256": "b725c40e1aad43310e7e1f2cb22dd24c269a394a86f8f32a3f9ea790b89e3bce"
-    },
-    {
-      "path": "FILEIO.md",
-      "sha256": "72fdf2598af1499a3fec106ddfffd781a624bd77a7c7ee8e870cfbad44871e30"
-    },
-    {
-      "path": "GLOSSARY.md",
-      "sha256": "bb80e644316b2b37e15b7740d9bb7df709484ae33805b57588a9049afec3eae5"
-    },
-    {
-      "path": "IO.md",
-      "sha256": "dce2ea68febfd7ff8d6d4a6ac2c8a0a44a5923864efc5f2ddd6ae28499445ff3"
-    },
-    {
-      "path": "MEMORY_MANAGER.md",
-      "sha256": "fc270f8a7c67932d981465d0697995b8b85cd275241810a512b8e71791ad9b0c"
-    },
-    {
-      "path": "MUNCTION.md",
-      "sha256": "0cada69a89ab0532f7370c3925944a005fa3e66d1fa327f0050188ac68fb26ee"
-    },
-    {
-      "path": "NATIVE_API.md",
-      "sha256": "0f7069ae0784fb358cd6d60175cceb1834bb7322eee7e207c1af07eb43a57f30"
-    },
-    {
-      "path": "NETWORK.md",
-      "sha256": "7b88d183e81e214fb5be98a531c4f760a8d5a1e310127eb3a66bd495bf7bdd3b"
-    },
-    {
       "path": "README.md",
-      "sha256": "c83310674c83c4435a72662b834c8db6e267e033653cbc5227a0a4b1517e1950"
-    },
-    {
-      "path": "REVISIONS.md",
-      "sha256": "75ca3299fc6605e769eaa1df48b3ee0985caeff41ef601ef759a309d54ce4d70"
-    },
-    {
-      "path": "SERVER.EDITION.md",
-      "sha256": "85cce82dae2dec875a55628b350354c75d4ef61e8ae386f21d621635db325f5f"
+      "sha256": "a976a486e770c7421f0d37a2aba5e901d5f0de18ff154fcd278402dd47ae90bf"
     },
     {
       "path": "SLEELA.syntax",
@@ -93,18 +17,6 @@
     {
       "path": "SST.model",
       "sha256": "ade1ea87dad894a1108f047c979e3b29398418500dde3585128356dd2c839a09"
-    },
-    {
-      "path": "SYNCHRO.md",
-      "sha256": "6ba54684bf859bbadc14e051559d32919be67f66a7b4d5db872f93c0ca66d126"
-    },
-    {
-      "path": "TIMINGS.md",
-      "sha256": "eab61b1f8a95012ff3ead21ca4ef4fafaea1eab6271e4779101446933fafb9d0"
-    },
-    {
-      "path": "VERSION.md",
-      "sha256": "bfe84b9486b42f11394d514905b86343069b499d3ec40c3ecab811e855d93aa1"
     },
     {
       "path": "antivirus/src/sleelavirin_heuristic.c",
