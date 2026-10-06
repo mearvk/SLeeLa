@@ -8,11 +8,11 @@
     },
     {
       "path": "SLEELA.syntax",
-      "sha256": "e4d34b53cdb8455761c91e337ff60884232104605e78e4c269d5ca0306a6ff0a"
+      "sha256": "26907b79d3052d69695880ce19b8b372435a3a34368325c85c6ceed375efeaf7"
     },
     {
       "path": "SST-2.0.model",
-      "sha256": "29554cdfb236a05df0e10c9db9c06f2f2affb40cd80bf21b55c8770d7ba11e7b"
+      "sha256": "07d8b1cd45bb5c4982d1a7a0deac5568b0a6ef6511f18e52dd97b515726c7e11"
     },
     {
       "path": "SST.model",
@@ -5496,7 +5496,7 @@
     },
     {
       "path": "impl/frontend/driver.cpp",
-      "sha256": "e1ee9e5b40c8766f44711902a8b34a4b9e89c9528178b5d989c1630072d2a5cf"
+      "sha256": "45b93e57041523535444119b0b20847d2d91ab174cc0752a9a379fafe4671910"
     },
     {
       "path": "impl/frontend/dynamite.cpp",
@@ -6148,7 +6148,7 @@
     },
     {
       "path": "impl/nordshrift/nordshrift.cpp",
-      "sha256": "2c01f99fd7e78d48f5972d50c948713426a4f11c59ae28ff1da1a0959c1832e8"
+      "sha256": "c44189cf80fc5e5050e6a74875acaf2baf8b81de0a690777470f7e0b098883dc"
     },
     {
       "path": "impl/nordshrift/object_compat.cpp",
@@ -6528,7 +6528,7 @@
     },
     {
       "path": "impl/tests/version/run_version_tests.sh",
-      "sha256": "db2a3a3b1b9683b5ed2f8a882440a57db7e78db15b5788c06a2625da406cfd68"
+      "sha256": "9c8fc3bfb1e5eeaec9e2172085785a9bb16851b16620b29a0d2d08bc11924f23"
     },
     {
       "path": "impl/tests/version/syntax_1_2.sleela",

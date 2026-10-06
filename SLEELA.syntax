@@ -1,21 +1,23 @@
 # Sleela — Language Syntax Specification
 
     Language:        Sleela
-    Syntax version:  1.3   (the .sleela grammar version this document describes)
-    Compiler:        Sleelvac(TM) 1.4  (accepts .sleela syntax 1.0 .. 1.3)
+    Syntax version:  1.6   (the current .sleela grammar version; this document
+                     describes the 1.3 surface and the 1.3..1.6 additions below)
+    Compiler:        Sleelvac(TM) 0.3.23-dev  (accepts .sleela syntax 1.3 .. 1.6)
     Surface:         Java-like
     Core:            Turing-complete, thread-friendly C/C++ execution core
     Companion:       SHEET.sheet (system-object catalog), SST.model (NS-SST-0001),
                      lib/LIBRARY.SYMBOLS.md (authoritative /lib class vocabulary)
-    Status:          Normative for the syntax 1.3 surface
+    Status:          Normative for the syntax 1.3..1.6 surface
 
     Versioning note: two distinct version numbers apply and must not be
     conflated. The **syntax version** (MAJOR.MINOR, declared per file with
-    `#sleela 1.3`) is the grammar version defined here and enforced by
-    `impl/frontend/version.{h,cpp}` (supported range 1.0 .. 1.3). The
-    **compiler/tool version** (Sleelvac 1.4, printed by `sleela version`) is the
-    implementation release and evolves independently. A file must declare a
-    syntax version within the supported range; the tool version is informational.
+    `#sleela 1.6`) is the grammar version defined here and enforced by
+    `impl/frontend/version.{h,cpp}` (supported range 1.3 .. 1.6). The
+    **compiler/tool version** (Sleelvac™ 0.3.23-dev, printed by `sleela version`)
+    is the implementation release and evolves independently. A file must declare
+    a syntax version within the supported range; the tool version is
+    informational.
 
 Sleela is a **Java-like** programming language. Its programs are classes of
 fields and methods that compile to bytecode on the C/C++ core. Beyond ordinary

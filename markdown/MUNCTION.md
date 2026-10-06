@@ -2,7 +2,7 @@
 
     Language element: Munction™ (a reach-composition fluent form)
     Syntax version:   1.3   (the .sleela grammar version that introduces Munction™)
-    Compiler:         Sleelvac™ 1.4+ (accepts .sleela syntax 1.0 .. 1.3)
+    Compiler:         Sleelvac™ 0.3.23-dev (accepts .sleela syntax 1.3 .. 1.6)
     Surface:          Java-like fluent chain
     Companions:       BODI.md (witness/verb model), NETWORK.md (TCP layer),
                       FILEIO.md / impl/FILEIO.md (file I/O), SHEET.sheet

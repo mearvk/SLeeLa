@@ -3,7 +3,7 @@
 # run_version_tests.sh -- assert the compiler's SL-META-0001 Section 4.4
 # version awareness against the repository's current syntax contract.
 #
-# Current supported syntax range: 1.3 .. 1.3.
+# Current supported syntax range: 1.3 .. 1.6.
 #
 # Usage: run_version_tests.sh <path-to-sleela-binary>
 # =============================================================================

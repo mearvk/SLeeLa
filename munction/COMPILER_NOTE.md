@@ -59,7 +59,7 @@ fixed while the runtime vocabulary grows through compiler/core coordination.
 | Item | Value |
 |---|---|
 | Syntax version introducing Munction™ | **1.3** |
-| Supported range after this feature | `1.0 .. 1.3` |
+| Supported range (current) | `1.3 .. 1.6` |
 | New lexer/parser tokens | none |
 | Recognition point | compiler built-in dispatch (`tryEmitBuiltin`) |
 | Call-count bound | 4 .. 16 inclusive |
