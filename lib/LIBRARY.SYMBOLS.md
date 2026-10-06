@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.0
-library-source-files: 10186
+library-source-files: 10195
 library-packages: 82
 module-facade-symbols: 55
-total-symbol-records: 10241
+total-symbol-records: 10250
 
 package	symbol	path	kind
 antivirus	SLPackage.sleela	lib/antivirus/SLPackage.sleela	facade
@@ -185,19 +185,28 @@ core	SLType.sleela	lib/core/SLType.sleela	source
 core	SLTypeDescriptor.sleela	lib/core/SLTypeDescriptor.sleela	source
 core	SLUdpTransport.sleela	lib/core/SLUdpTransport.sleela	source
 core	SLValidator.sleela	lib/core/SLValidator.sleela	source
+crypto	SLAes.sleela	lib/crypto/SLAes.sleela	source
+crypto	SLAesGcm.sleela	lib/crypto/SLAesGcm.sleela	source
 crypto	SLCertificate.sleela	lib/crypto/SLCertificate.sleela	source
 crypto	SLCertificateStore.sleela	lib/crypto/SLCertificateStore.sleela	source
 crypto	SLCipher.sleela	lib/crypto/SLCipher.sleela	source
 crypto	SLCipherContext.sleela	lib/crypto/SLCipherContext.sleela	source
 crypto	SLCipherKey.sleela	lib/crypto/SLCipherKey.sleela	source
 crypto	SLDigest.sleela	lib/crypto/SLDigest.sleela	source
+crypto	SLHkdf.sleela	lib/crypto/SLHkdf.sleela	source
 crypto	SLHmac.sleela	lib/crypto/SLHmac.sleela	source
 crypto	SLKey.sleela	lib/crypto/SLKey.sleela	source
 crypto	SLKeyDerivation.sleela	lib/crypto/SLKeyDerivation.sleela	source
 crypto	SLKeyPair.sleela	lib/crypto/SLKeyPair.sleela	source
+crypto	SLMlDsa.sleela	lib/crypto/SLMlDsa.sleela	source
+crypto	SLMlKem.sleela	lib/crypto/SLMlKem.sleela	source
+crypto	SLNationalSuite.sleela	lib/crypto/SLNationalSuite.sleela	source
 crypto	SLNonce.sleela	lib/crypto/SLNonce.sleela	source
 crypto	SLPrivateKey.sleela	lib/crypto/SLPrivateKey.sleela	source
 crypto	SLPublicKey.sleela	lib/crypto/SLPublicKey.sleela	source
+crypto	SLSha256.sleela	lib/crypto/SLSha256.sleela	source
+crypto	SLSha3.sleela	lib/crypto/SLSha3.sleela	source
+crypto	SLSha512.sleela	lib/crypto/SLSha512.sleela	source
 crypto	SLSignature.sleela	lib/crypto/SLSignature.sleela	source
 crypto	SLTrustStore.sleela	lib/crypto/SLTrustStore.sleela	source
 crypto	SLVerifier.sleela	lib/crypto/SLVerifier.sleela	source
