@@ -12,11 +12,11 @@
     },
     {
       "path": "SST-2.0.model",
-      "sha256": "07d8b1cd45bb5c4982d1a7a0deac5568b0a6ef6511f18e52dd97b515726c7e11"
+      "sha256": "2fed93375e6315edc95f356954120280450aeecb7200ab1e0c46f159c90a6f53"
     },
     {
       "path": "SST.model",
-      "sha256": "ade1ea87dad894a1108f047c979e3b29398418500dde3585128356dd2c839a09"
+      "sha256": "0ad7869ee336ca1de83f612daf0e975c17ee824fa55c371b655124aa49848d00"
     },
     {
       "path": "antivirus/src/sleelavirin_heuristic.c",
