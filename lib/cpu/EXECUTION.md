@@ -202,3 +202,12 @@ language produced the identical result.
 | Real binaries | ELF loader and JVM classfile loader for on-disk program images. |
 | Larger programs | Register spilling to the stack (PUSH/POP paths are present), heap allocator, calling-convention finalization. |
 | Boot real Linux | Hardware-virtualization vCPU, MMU + page tables, device model (virtio/APIC/timers), real kernel-image loader. |
+
+### OS-VM hardening progress
+
+The guest layer is being hardened from "model" toward "genuinely executes":
+
+- **Step 1 (done):** `SLGuestVM` runs the guest on an embedded `SLSleelaVM` — guest code is dispatched as canonical opcodes, not counted.
+- **Step 2 (done):** `SLMMU` gives the guest real single-level page tables with present/write/exec permissions and page faults (unmapped + protection); `SLHypervisor` identity-maps each guest's window at creation.
+- **Step 3 (next):** a guest device model (timer/interrupt controller, console, block device).
+- **Step 4 (next):** a real compiled guest-kernel image (built through `SLCompilerDriver`) replacing the inline opcode stub — a custom tiny kernel, not upstream Linux.

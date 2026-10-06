@@ -13,10 +13,10 @@
  * hypervisor/guest-kernel emulates the operation, and the guest resumes. VM
  * exits are recorded so the hypervisor can account for and service them.
  *
- * Guest-physical to host-physical translation here is a single base-offset
- * window; a real MMU (SLMMU) replaces it in step 2.
+ * Guest address translation uses a real MMU (SLMMU, page tables + protection)
+ * when one is attached, falling back to a single base-offset window otherwise.
  *
- * Family: cpu. Composes SLCore, SLSleelaVM, SLRAM.
+ * Family: cpu. Composes SLCore, SLSleelaVM, SLRAM, SLMMU.
  */
 #sleela 1.3
 class SLGuestVM {
@@ -24,6 +24,7 @@ class SLGuestVM {
   SLCore vcpu;          // virtual CPU (the guest's modeled hardware core)
   SLSleelaVM substrate; // the Turing-complete engine that actually runs guest code
   SLRAM hostMemory;
+  SLMMU mmu;            // real page-table translation (step 2); null => base-offset
   int windowBase;       // host-physical base of the guest's memory window
   int windowSize;       // words
   int guestEntry;       // guest-physical entry point
@@ -45,9 +46,19 @@ class SLGuestVM {
     substrate = new SLSleelaVM(); substrate.configure(65536, 8192, 4096);
   }
 
-  // Guest-physical -> host-physical translation: a single base-offset window
-  // (replaced by a real MMU in step 2).
+  // Attach a real MMU for page-table translation + protection faults (step 2).
+  void attachMMU(SLMMU unit) { mmu = unit; }
+  SLMMU memoryUnit() { return mmu; }
+
+  // Guest-virtual -> host-physical translation: via the MMU when present
+  // (page tables + protection; a fault returns -1 and the hypervisor delivers a
+  // TRAP), else a single base-offset window.
   int translate(int guestAddr) {
+    if (mmu != null) {
+      int phys = mmu.translate(guestAddr);
+      if (phys < 0) { recordTrapExit(); return windowBase; } // page fault -> VM-exit
+      return phys;
+    }
     return windowBase + guestAddr;
   }
   boolean inWindow(int guestAddr) { return guestAddr >= 0 && guestAddr < windowSize; }
