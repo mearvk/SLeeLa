@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sst-sheet SYSTEM "sst-nordshrift.dtd">
+<!--
+  XML rendering of a Nordshrift 2.0 semantic sheet, information-equivalent to
+  examples/nordshrift/subject-libraries.sst. Demonstrates the 2.0 semantic
+  layer: subject / quantity / relation / assumption / evidence / workplan.
+-->
+<sst-sheet path="examples/nordshrift/subject-libraries.sst">
+
+  <pragma name="nordshrift" value="2.0"/>
+  <pragma name="sleela"     value="1.3"/>
+
+  <sheet name="subject-libraries" version="2.0">
+    <description>SLeeLa Subject Libraries: Math, Physics, Chemistry, Economics, Finance, Inference, Data Analytics, Astrophysics, Sociology</description>
+  </sheet>
+
+  <subject name="astrophysics" domain="astrophysics">
+    <depends>
+      <subject-ref name="math"/>
+      <subject-ref name="physics"/>
+    </depends>
+
+    <quantity name="redshift" unit="1" dimension="dimensionless" status="derived"/>
+
+    <relation name="observedRedshift">
+      <formula>observedWavelength / restWavelength - 1</formula>
+      <inputs>
+        <var name="observedWavelength"/>
+        <var name="restWavelength"/>
+      </inputs>
+      <outputs>
+        <var name="redshift"/>
+      </outputs>
+    </relation>
+
+    <evidence status="modeled" source="SLeeLa Astrophysics XML model">
+      <note>Demonstration relation; observations require provenance.</note>
+    </evidence>
+  </subject>
+
+  <subject name="sociology" domain="sociology">
+    <depends>
+      <subject-ref name="math"/>
+    </depends>
+
+    <quantity name="proportion" unit="1"     dimension="dimensionless" status="derived"/>
+    <quantity name="population" unit="count" dimension="count"         status="observed"/>
+
+    <relation name="groupProportion">
+      <formula>groupCount / population</formula>
+      <inputs>
+        <var name="groupCount"/>
+        <var name="population"/>
+      </inputs>
+      <outputs>
+        <var name="proportion"/>
+      </outputs>
+    </relation>
+
+    <assumption name="studyDesign" scope="descriptive population analysis" status="specified">
+      <statement>Population, sampling frame, missingness, weighting and measurement definitions must be documented.</statement>
+    </assumption>
+
+    <evidence status="modeled" source="SLeeLa Sociology XML model">
+      <note>A computed association or statistic does not by itself establish causation.</note>
+    </evidence>
+  </subject>
+
+  <workplan>
+    <todo id="financial-007" subject="financial" priority="normal" status="planned">
+      <action>add IRR</action>
+      <validation>benchmark against known cases</validation>
+    </todo>
+  </workplan>
+
+</sst-sheet>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  sleela-class.dtd
+  Document Type Definition for the XML representation of a SLeeLa source
+  unit (a .sleela "Wrapper" file).
+
+  A <sleela-unit> is an information-equivalent, round-trippable rendering of
+  one .sleela file: the #sleela pragma, its import statements, the file-level
+  and member-level comments, and the single top-level class with its fields
+  and methods.
+
+  Terminology follows SST.model / SST-2.0.model and the SLeeLa standard
+  library. A SLeeLa class carries fields (Type name;) and methods
+  (RetType name(params) { body }). SLeeLa has no array storage at the surface;
+  scalar and String/double/int/boolean/long/char/void types are the surface
+  vocabulary. Method bodies are preserved verbatim as text so the XML can
+  reproduce the original source byte-for-byte on emission.
+-->
+
+<!-- ===== Root: one SLeeLa source unit =====
+     Leading comments, the pragma, imports, and member comments may interleave
+     the way they appear in a .sleela file; exactly one class terminates it. -->
+<!ELEMENT sleela-unit ((comment | pragma | import)*, class)>
+<!ATTLIST sleela-unit
+    path        CDATA  #IMPLIED
+    package     CDATA  #IMPLIED
+    schema      CDATA  #FIXED "sleela-class-1">
+
+<!-- ===== Pragma: #sleela <version> ===== -->
+<!ELEMENT pragma EMPTY>
+<!ATTLIST pragma
+    name     CDATA  #FIXED "sleela"
+    version  CDATA  #REQUIRED>
+
+<!-- ===== Import: import <package>; ===== -->
+<!ELEMENT import EMPTY>
+<!ATTLIST import
+    package  CDATA  #REQUIRED
+    alias    CDATA  #IMPLIED>
+
+<!-- ===== Comments (line //, block /*..*/, doc ///) ===== -->
+<!ELEMENT comment (#PCDATA)>
+<!ATTLIST comment
+    kind  (line | block | doc)  "line">
+
+<!-- ===== Class =====
+     Members (fields, methods) and comments may interleave freely, mirroring
+     the way a .sleela class body is written. -->
+<!ELEMENT class (field | method | comment)*>
+<!ATTLIST class
+    name     CDATA  #REQUIRED
+    extends  CDATA  #IMPLIED
+    kind     (class | facade)  "class">
+
+<!-- ===== Field: Type name; (optionally with initializer) ===== -->
+<!ELEMENT field (comment*)>
+<!ATTLIST field
+    name     CDATA  #REQUIRED
+    type     CDATA  #REQUIRED
+    initial  CDATA  #IMPLIED>
+
+<!-- ===== Method: RetType name(params) { body } ===== -->
+<!ELEMENT method (comment*, param*, body?)>
+<!ATTLIST method
+    name     CDATA  #REQUIRED
+    returns  CDATA  #REQUIRED>
+
+<!-- ===== Parameter ===== -->
+<!ELEMENT param EMPTY>
+<!ATTLIST param
+    name  CDATA  #REQUIRED
+    type  CDATA  #REQUIRED>
+
+<!-- ===== Method body: verbatim SLeeLa statements (preserved as text) ===== -->
+<!ELEMENT body (#PCDATA)>

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sst-sheet SYSTEM "sst-nordshrift.dtd">
+<!--
+  XML rendering of a Nordshrift 1.0 transpilation sheet, information-
+  equivalent to the annotated commerce-engine example in SST.model Part XVI.
+-->
+<sst-sheet path="examples/commerce-engine.sst">
+
+  <pragma name="nordshrift" value="1.0"/>
+  <pragma name="sleela"     value="1.0"/>
+
+  <sheet name="commerce-engine" version="1.2.0" author="Platform Engineering Team">
+    <description>
+      Transpilation configuration for the commerce-engine Sleela module.
+      Produces Java 21 source under src/generated/java.
+      All effects must be declared; null safety enforced at all Java boundaries.
+    </description>
+    <tag>commerce</tag>
+    <tag>backend</tag>
+    <tag>production</tag>
+  </sheet>
+
+  <import path="./org-defaults.sst" alias="org"/>
+  <import path="./effects/commerce.sst" alias="fx">
+    <only><section-ref name="effects"/></only>
+  </import>
+
+  <source root="src/main/sleela" watch="false">
+    <glob>**/*.sl</glob>
+    <glob>**/*.sle</glob>
+    <exclude>
+      <pattern>**/*_stub.sl</pattern>
+      <pattern>**/legacy/**</pattern>
+    </exclude>
+  </source>
+
+  <target root="src/generated/java" layout="mirror-source" java-version="21"
+          package-root="com.example.commerce" source-map="true"
+          overwrite="true" clean="false"/>
+
+  <pipeline parallel-threshold="4" cache="true" cache-dir=".nordshrift-cache"
+            verbosity="normal" fail-fast="false">
+    <phases>
+      <phase name="lex"/>
+      <phase name="parse"/>
+      <phase name="desugar"/>
+      <phase name="bind"/>
+      <phase name="infer"/>
+      <phase name="effect-check"/>
+      <phase name="rule-eval"/>
+      <phase name="ir"/>
+      <phase name="java-emit"/>
+      <phase name="java-print"/>
+      <phase name="diagnostic"/>
+    </phases>
+  </pipeline>
+
+  <rules>
+    <activate>
+      <rule-name>NullSafety</rule-name>
+      <rule-name>EffectBoundary</rule-name>
+      <rule-name>ContractExhaustion</rule-name>
+      <rule-name>LensPurity</rule-name>
+      <rule-name>ProjectionIsolation</rule-name>
+    </activate>
+    <deactivate>
+      <rule-name>DeriveExplicit</rule-name>
+    </deactivate>
+    <severity>
+      <entry rule="NullSafety"          level="error"/>
+      <entry rule="EffectBoundary"      level="error"/>
+      <entry rule="ContractExhaustion"  level="error"/>
+      <entry rule="LensPurity"          level="warning"/>
+      <entry rule="ProjectionIsolation" level="warning"/>
+    </severity>
+  </rules>
+
+  <effects policy="strict" default-effect="Pure">
+    <declare>
+      <effect-name>DatabaseRead</effect-name>
+      <effect-name>DatabaseWrite</effect-name>
+      <effect-name>PaymentGateway</effect-name>
+      <effect-name>EventEmit</effect-name>
+    </declare>
+    <aliases>
+      <alias name="Persistence">
+        <effect-name>DatabaseRead</effect-name>
+        <effect-name>DatabaseWrite</effect-name>
+      </alias>
+      <alias name="ExternalCall">
+        <effect-name>PaymentGateway</effect-name>
+        <effect-name>EventEmit</effect-name>
+      </alias>
+    </aliases>
+  </effects>
+
+  <derive lens="true" projection="true" equality="true" hashcode="true"
+          toString="true" copy="true" builder="false" target-style="record"/>
+
+  <guards mode="compile-and-runtime" on-failure="throw"
+          message-format="Guard violation [{guard-name}] in {flow-name} at {source-location}"/>
+
+  <interop assume-impure="true" null-wrapping="maybe" checked-exceptions="wrap">
+    <type-mapping>
+      <map from="java.util.List"     to="sleela.core.Sequence"/>
+      <map from="java.util.Map"      to="sleela.core.Mapping"/>
+      <map from="java.util.Optional" to="sleela.core.Maybe"/>
+    </type-mapping>
+    <package-allow>
+      <pattern>com.example.*</pattern>
+      <pattern>org.springframework.*</pattern>
+    </package-allow>
+    <package-deny>
+      <pattern>sun.*</pattern>
+      <pattern>com.sun.*</pattern>
+    </package-deny>
+  </interop>
+
+  <profile name="release">
+    <target root="src/generated/java" layout="mirror-source" java-version="21"
+            optimize="true" clean="true"/>
+    <pipeline verbosity="silent" parallel-threshold="16" fail-fast="true"/>
+  </profile>
+
+</sst-sheet>

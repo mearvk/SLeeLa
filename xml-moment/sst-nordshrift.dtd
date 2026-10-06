@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  sst-nordshrift.dtd
+  Document Type Definition for the XML representation of a Nordshrift .sst
+  (Scripting Sheet) file.
+
+  A <sst-sheet> is an information-equivalent rendering of a .sst file. It
+  covers both:
+
+    * the 1.0 transpilation control surface (NS-SST-0001 Rev 1.0.0):
+      pragmas, the sheet manifest, imports, and the source / target /
+      pipeline / rules / effects / derive / guards / interop / profile
+      sections; and
+
+    * the 2.0 semantic coordination layer (NS-SST-0001 Rev 2.0.x):
+      subject / quantity / unit / assumption / relation / transformation /
+      comparison / evidence / workplan declarations.
+
+  Element and attribute names mirror the .sst directive keywords so that an
+  XML document and its .sst text are mutually derivable.
+-->
+
+<!-- ===== Root ===== -->
+<!ELEMENT sst-sheet (pragma+, sheet, import*,
+                     (source | target | pipeline | rules | effects | derive |
+                      guards | interop | profile |
+                      subject | comparison | evidence | workplan)*)>
+<!ATTLIST sst-sheet
+    path    CDATA  #IMPLIED
+    schema  CDATA  #FIXED "sst-nordshrift-1">
+
+<!-- ===== Pragmas: #nordshrift / #sleela / #encoding ===== -->
+<!ELEMENT pragma EMPTY>
+<!ATTLIST pragma
+    name     (nordshrift | sleela | encoding)  #REQUIRED
+    value    CDATA  #REQUIRED>
+
+<!-- ===== Sheet manifest ===== -->
+<!ELEMENT sheet (description?, tag*)>
+<!ATTLIST sheet
+    name     CDATA  #REQUIRED
+    version  CDATA  #IMPLIED
+    author   CDATA  #IMPLIED
+    extends  CDATA  #IMPLIED>
+<!ELEMENT description (#PCDATA)>
+<!ELEMENT tag (#PCDATA)>
+
+<!-- ===== Import ===== -->
+<!ELEMENT import (only?, except?)>
+<!ATTLIST import
+    path   CDATA  #REQUIRED
+    alias  CDATA  #REQUIRED>
+<!ELEMENT only  (section-ref+)>
+<!ELEMENT except (section-ref+)>
+<!ELEMENT section-ref EMPTY>
+<!ATTLIST section-ref name CDATA #REQUIRED>
+
+<!-- ===================================================================== -->
+<!-- 1.0 TRANSPILATION SECTIONS                                            -->
+<!-- ===================================================================== -->
+
+<!-- source -->
+<!ELEMENT source (glob+, exclude?)>
+<!ATTLIST source
+    root      CDATA  #REQUIRED
+    encoding  CDATA  #IMPLIED
+    watch     (true | false)  #IMPLIED>
+<!ELEMENT glob (#PCDATA)>
+<!ELEMENT exclude (pattern+)>
+<!ELEMENT pattern (#PCDATA)>
+
+<!-- target -->
+<!ELEMENT target EMPTY>
+<!ATTLIST target
+    root          CDATA  #REQUIRED
+    layout        (mirror-source | flat | package-mapped | custom)  #REQUIRED
+    java-version  CDATA  #REQUIRED
+    package-root  CDATA  #IMPLIED
+    overwrite     (true | false)  #IMPLIED
+    source-map    (true | false)  #IMPLIED
+    optimize      (true | false)  #IMPLIED
+    clean         (true | false)  #IMPLIED>
+
+<!-- pipeline -->
+<!ELEMENT pipeline (phases?, skip?)>
+<!ATTLIST pipeline
+    parallel-threshold  CDATA  #IMPLIED
+    cache               (true | false)  #IMPLIED
+    cache-dir           CDATA  #IMPLIED
+    verbosity           (silent | quiet | normal | verbose | debug)  #IMPLIED
+    fail-fast           (true | false)  #IMPLIED>
+<!ELEMENT phases (phase+)>
+<!ELEMENT skip (phase+)>
+<!ELEMENT phase EMPTY>
+<!ATTLIST phase
+    name  (lex | parse | desugar | bind | infer | effect-check |
+           rule-eval | ir | java-emit | java-print | diagnostic)  #REQUIRED>
+
+<!-- rules -->
+<!ELEMENT rules (activate?, deactivate?, severity?)>
+<!ELEMENT activate   (rule-name+)>
+<!ELEMENT deactivate (rule-name+)>
+<!ELEMENT rule-name (#PCDATA)>
+<!ELEMENT severity (entry+)>
+<!ELEMENT entry EMPTY>
+<!ATTLIST entry
+    rule   CDATA  #REQUIRED
+    level  (error | warning | notice)  #REQUIRED>
+
+<!-- effects -->
+<!ELEMENT effects (declare?, aliases?)>
+<!ATTLIST effects
+    policy          (strict | lenient | audit | off)  #IMPLIED
+    default-effect  CDATA  #IMPLIED>
+<!ELEMENT declare (effect-name+)>
+<!ELEMENT effect-name (#PCDATA)>
+<!ELEMENT aliases (alias+)>
+<!ELEMENT alias (effect-name+)>
+<!ATTLIST alias name CDATA #REQUIRED>
+
+<!-- derive -->
+<!ELEMENT derive EMPTY>
+<!ATTLIST derive
+    lens          (true | false)  #IMPLIED
+    projection    (true | false)  #IMPLIED
+    equality      (true | false)  #IMPLIED
+    hashcode      (true | false)  #IMPLIED
+    toString      (true | false)  #IMPLIED
+    builder       (true | false)  #IMPLIED
+    copy          (true | false)  #IMPLIED
+    target-style  (record | immutable-class | builder | lombok)  #IMPLIED>
+
+<!-- guards -->
+<!ELEMENT guards EMPTY>
+<!ATTLIST guards
+    mode            (compile-only | runtime-only | compile-and-runtime | off)  #IMPLIED
+    on-failure      (throw | assert | log-and-continue | halt)  #IMPLIED
+    message-format  CDATA  #IMPLIED>
+
+<!-- interop -->
+<!ELEMENT interop (type-mapping?, package-allow?, package-deny?)>
+<!ATTLIST interop
+    assume-impure       (true | false)  #IMPLIED
+    null-wrapping       (maybe | nullable-annotation | trust)  #IMPLIED
+    checked-exceptions  (wrap | propagate | rethrow-unchecked)  #IMPLIED>
+<!ELEMENT type-mapping (map+)>
+<!ELEMENT map EMPTY>
+<!ATTLIST map
+    from  CDATA  #REQUIRED
+    to    CDATA  #REQUIRED>
+<!ELEMENT package-allow (pattern+)>
+<!ELEMENT package-deny  (pattern+)>
+
+<!-- profile: a named override variant; may nest any 1.0 section -->
+<!ELEMENT profile (source | target | pipeline | rules | effects |
+                   derive | guards | interop)*>
+<!ATTLIST profile
+    name      CDATA  #REQUIRED
+    inherits  CDATA  #IMPLIED>
+
+<!-- ===================================================================== -->
+<!-- 2.0 SEMANTIC SECTIONS                                                 -->
+<!-- ===================================================================== -->
+
+<!-- subject
+     The semantic children (quantities, assumptions, relations,
+     transformations, comparison, evidence) may appear in any order, as they
+     do in a .sst subject block; an optional depends list leads. -->
+<!ELEMENT subject (depends?,
+                   (quantity | assumption | relation | transformation |
+                    comparison | evidence)*)>
+<!ATTLIST subject
+    name    CDATA  #REQUIRED
+    domain  (math | physics | economics | chemistry | financial |
+             astrophysics | sociology | inference | data-analytics)  #REQUIRED
+    identity CDATA  #IMPLIED>
+<!ELEMENT depends (subject-ref+)>
+<!ELEMENT subject-ref EMPTY>
+<!ATTLIST subject-ref name CDATA #REQUIRED>
+
+<!-- quantity -->
+<!ELEMENT quantity EMPTY>
+<!ATTLIST quantity
+    name       CDATA  #REQUIRED
+    value      CDATA  #IMPLIED
+    unit       CDATA  #IMPLIED
+    dimension  CDATA  #IMPLIED
+    status     (observed | specified | derived | modeled | inferred | assumed)  #IMPLIED>
+
+<!-- assumption -->
+<!ELEMENT assumption (statement)>
+<!ATTLIST assumption
+    name    CDATA  #REQUIRED
+    scope   CDATA  #IMPLIED
+    status  (observed | specified | derived | modeled | inferred | assumed)  #IMPLIED>
+<!ELEMENT statement (#PCDATA)>
+
+<!-- relation / formula -->
+<!ELEMENT relation (formula, inputs?, outputs?)>
+<!ATTLIST relation name CDATA #REQUIRED>
+<!ELEMENT formula (#PCDATA)>
+<!ELEMENT inputs  (var+)>
+<!ELEMENT outputs (var+)>
+<!ELEMENT var EMPTY>
+<!ATTLIST var name CDATA #REQUIRED>
+
+<!-- transformation -->
+<!ELEMENT transformation EMPTY>
+<!ATTLIST transformation
+    name       CDATA  #REQUIRED
+    operation  CDATA  #REQUIRED
+    source     CDATA  #IMPLIED
+    destination CDATA #IMPLIED
+    approximation (true | false)  #IMPLIED>
+
+<!-- comparison (comparative norm) -->
+<!ELEMENT comparison EMPTY>
+<!ATTLIST comparison
+    prior      CDATA  #IMPLIED
+    current    CDATA  #IMPLIED
+    reference  CDATA  #IMPLIED
+    norm       CDATA  #IMPLIED>
+
+<!-- evidence -->
+<!ELEMENT evidence (note?)>
+<!ATTLIST evidence
+    status  (observed | specified | derived | modeled | inferred | assumed)  #REQUIRED
+    source  CDATA  #IMPLIED>
+<!ELEMENT note (#PCDATA)>
+
+<!-- workplan / todo -->
+<!ELEMENT workplan (todo+)>
+<!ELEMENT todo (action, validation?)>
+<!ATTLIST todo
+    id        CDATA  #REQUIRED
+    subject   CDATA  #IMPLIED
+    priority  CDATA  #IMPLIED
+    status    (planned | ready | active | blocked | validating | complete | deferred)  #IMPLIED>
+<!ELEMENT action (#PCDATA)>
+<!ELEMENT validation (#PCDATA)>
