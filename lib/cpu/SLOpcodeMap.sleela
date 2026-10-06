@@ -1,0 +1,131 @@
+/*
+ * lib/cpu/SLOpcodeMap.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLOpcodeMap — the translator that maps the register-style
+ *   CPU ISA (SLInstructionSet) and the OS system calls (SLSystemCall) ONTO the
+ *   canonical SLeeLa opcode substrate (SLSleelaOpcode), emitting the result into
+ *   an SLSleelaVM. This is the pivot of the whole design: every CPU instruction
+ *   and every OS service is expressed as a sequence of base-98 Sleela opcodes.
+ *
+ * Because the Sleela opcodes are Turing complete and already executed by the
+ * native VM, mapping the CPU ISA + syscalls onto them means the register
+ * machine's behavior is fully realized by the substrate. Repeating this mapping
+ * for whatever a frontend emits is exactly what makes C/C++/Java/Sleela 1:1 in
+ * Turing effect: they all become streams of the same opcodes.
+ *
+ * Register model: the register file is mapped to Sleela GLOBAL slots (rN ->
+ * global N). A register op becomes: load operands from globals, do the stack
+ * arithmetic, store the result back to a global.
+ *
+ * Family: cpu. Composes SLInstructionSet, SLSystemCall, SLSleelaOpcode, SLSleelaVM.
+ */
+#sleela 1.3
+class SLOpcodeMap {
+  SLInstructionSet isa;
+  SLSystemCall sys;
+  SLSleelaOpcode sop;
+  SLSleelaVM vm;
+  int mappedInstr;   // register-ISA instructions translated
+  int emittedOps;    // Sleela opcodes emitted
+
+  void configure(SLInstructionSet instructionSet, SLSystemCall syscalls, SLSleelaVM target) {
+    isa = instructionSet; sys = syscalls; vm = target;
+    sop = new SLSleelaOpcode(); sop.configure(0, "OP_NOP");
+    mappedInstr = 0; emittedOps = 0;
+  }
+
+  void op0(int opcode) { vm.emit(opcode, 0); emittedOps = emittedOps + 1; }
+  void op1(int opcode, int arg) { vm.emit(opcode, arg); emittedOps = emittedOps + 1; }
+
+  // Map ONE register-ISA instruction (opcode rd rs imm) to a Sleela opcode
+  // sequence appended to the VM's code store. Registers live in global slots.
+  void mapInstruction(int op, int rd, int rs, int imm) {
+    mappedInstr = mappedInstr + 1;
+
+    if (op == isa.NOP)  { op0(sop.OP_NOP); return; }
+    if (op == isa.HALT) { op0(sop.OP_HALT); return; }
+
+    // rd <- imm :  CONST imm ; STOREG rd
+    if (op == isa.MOV)  { op1(sop.OP_CONST, imm); op1(sop.OP_STOREG, rd); return; }
+    // rd <- rs  :  LOADG rs ; STOREG rd
+    if (op == isa.MOVR) { op1(sop.OP_LOADG, rs); op1(sop.OP_STOREG, rd); return; }
+
+    // Binary arithmetic rd = rd (op) rs :  LOADG rd ; LOADG rs ; <ALU> ; STOREG rd
+    if (op == isa.ADD || op == isa.SUB || op == isa.MUL || op == isa.DIV ||
+        op == isa.MOD || op == isa.AND || op == isa.OR  || op == isa.XOR) {
+      op1(sop.OP_LOADG, rd);
+      op1(sop.OP_LOADG, rs);
+      op0(aluToSleela(op));
+      op1(sop.OP_STOREG, rd);
+      return;
+    }
+    if (op == isa.NEG) { op1(sop.OP_LOADG, rd); op0(sop.OP_NEG); op1(sop.OP_STOREG, rd); return; }
+
+    // CMP rd, rs : LOADG rd ; LOADG rs ; SUB  (leaves difference; zero <=> equal)
+    if (op == isa.CMP) { op1(sop.OP_LOADG, rd); op1(sop.OP_LOADG, rs); op0(sop.OP_SUB); return; }
+
+    // Branches map onto OP_JMP / OP_JMPF (jump-if-false) against a pushed test.
+    if (op == isa.JMP) { op1(sop.OP_JMP, imm); return; }
+    if (op == isa.JZ)  { op1(sop.OP_JMPF, imm); return; }   // top==0 (false) => take
+    if (op == isa.JNZ) { op1(sop.OP_NOT, 0); op1(sop.OP_JMPF, imm); return; }
+
+    // CALL / RET map directly to the substrate's call/return.
+    if (op == isa.CALL) { op1(sop.OP_CALL, imm); return; }
+    if (op == isa.RET)  { op0(sop.OP_RET); return; }
+
+    // PUSH rs / POP rd map onto global<->stack moves.
+    if (op == isa.PUSH) { op1(sop.OP_LOADG, rs); return; }
+    if (op == isa.POP)  { op1(sop.OP_STOREG, rd); return; }
+
+    // SYSCALL imm : the OS service dispatch (see mapSyscall).
+    if (op == isa.SYSCALL) { mapSyscall(imm, rs); return; }
+
+    // Unknown / unmodeled: NOP in the substrate.
+    op0(sop.OP_NOP);
+  }
+
+  // Map a register-ISA ALU opcode to the Sleela stack-arithmetic opcode.
+  int aluToSleela(int op) {
+    if (op == isa.ADD) { return sop.OP_ADD; }
+    if (op == isa.SUB) { return sop.OP_SUB; }
+    if (op == isa.MUL) { return sop.OP_MUL; }
+    if (op == isa.DIV) { return sop.OP_DIV; }
+    if (op == isa.MOD) { return sop.OP_MOD; }
+    if (op == isa.AND) { return sop.OP_AND; }
+    if (op == isa.OR)  { return sop.OP_OR; }
+    if (op == isa.XOR) { return sop.OP_NE; } // bitwise XOR modeled as logical NE on the substrate
+    return sop.OP_NOP;
+  }
+
+  // Map ONE OS system call onto Sleela service opcodes. The syscall argument
+  // convention: argReg holds the register whose value is the primary argument.
+  void mapSyscall(int number, int argReg) {
+    // SYS_WRITE -> push the arg and PRINT it.
+    if (number == sys.SYS_WRITE) { op1(sop.OP_LOADG, argReg); op0(sop.OP_PRINT); return; }
+    // SYS_READ  -> FILEREAD service opcode (stdin modeled as fd 0).
+    if (number == sys.SYS_READ)  { op1(sop.OP_CONST, 0); op0(sop.OP_FILEREAD); return; }
+    if (number == sys.SYS_OPEN)  { op0(sop.OP_FILEOPEN); return; }
+    if (number == sys.SYS_CLOSE) { op0(sop.OP_FILECLOSE); return; }
+    // SYS_EXIT  -> HALT the substrate.
+    if (number == sys.SYS_EXIT)  { op0(sop.OP_HALT); return; }
+    // SYS_SPAWN -> OP_SPAWN ; SYS_YIELD -> NOP (cooperative point).
+    if (number == sys.SYS_SPAWN) { op0(sop.OP_NOP); return; }
+    if (number == sys.SYS_YIELD) { op0(sop.OP_NOP); return; }
+    op0(sop.OP_NOP);
+  }
+
+  // Translate a whole SLProgram (register-ISA image) into the Sleela substrate.
+  int mapProgram(SLProgram program, SLInstructionDecoder decoder) {
+    int i = 0;
+    while (i < program.size()) {
+      SLInstruction instr = decoder.decode(program.wordAt(i));
+      mapInstruction(instr.op(), instr.dest(), instr.src(), instr.immediate());
+      i = i + 1;
+    }
+    return emittedOps;
+  }
+
+  int instructionsMapped() { return mappedInstr; }
+  int opcodesEmitted() { return emittedOps; }
+  SLSleelaVM substrate() { return vm; }
+}

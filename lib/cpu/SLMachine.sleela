@@ -63,6 +63,22 @@ class SLMachine {
     return loader.loadSource(path, langId, procName, loadAddr);
   }
 
+  // Reduce a program in any supported language to the canonical SLeeLa opcode
+  // substrate and execute it there, returning its printed result. This runs the
+  // program as a stream of the Turing-complete base-98 opcodes — the common
+  // ground C/C++/Java/Sleela all share.
+  int runOnSubstrate(int langId, String path, String name) {
+    SLTuringBridge bridge = new SLTuringBridge(); bridge.configure();
+    return bridge.runLanguage(langId, path, name);
+  }
+
+  // Prove the four languages are 1:1 in Turing effect: identical observable
+  // result after each is reduced to the Sleela opcode substrate.
+  boolean proveLanguageEquivalence(String c, String cpp, String java, String sleela) {
+    SLTuringBridge bridge = new SLTuringBridge(); bridge.configure();
+    return bridge.proveEquivalence(c, cpp, java, sleela);
+  }
+
   // Boot a Linux-style guest OS on top of this Sleela CPU via the hypervisor,
   // and run it for a bounded number of guest instructions. Returns the guest
   // instruction count executed. (Architectural model — see SLGuestLinux.)

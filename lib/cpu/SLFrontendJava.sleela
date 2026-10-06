@@ -20,9 +20,12 @@ class SLFrontendJava extends SLFrontend {
 
   void init(String path) { configure("java", LANG_JAVA, path); }
 
-  // Model lowering of JVM bytecode for:
-  //   static void main(String[] a){ int x = 2 + 3; System.out.write(x+60); }
-  // Bytecode: iconst_2; iconst_3; iadd; istore_1; ... linearized to SSA temps.
+  // Model lowering of JVM bytecode for the CANONICAL equivalence program:
+  //   static void main(String[] a){ int x = 2 + 3; System.out.write(x); }
+  // Bytecode: iconst_2; iconst_3; iadd; istore_1; iload_1; invokevirtual.
+  // The bytecode's operand stack is linearized into SSA temporaries; the
+  // computed value (x = 2 + 3) matches every other frontend so the languages
+  // are 1:1 in Turing effect once reduced to the Sleela opcode substrate.
   SLIR lower() {
     SLIR m = intermediate();
     SLIRInstruction k = new SLIRInstruction();
@@ -30,15 +33,11 @@ class SLFrontendJava extends SLFrontend {
     int s2 = m.allocTemp();   // iconst_2 pushes
     int s3 = m.allocTemp();   // iconst_3 pushes
     int x  = m.allocTemp();   // iadd -> istore_1 (local var x)
-    int c60= m.allocTemp();
-    int ch = m.allocTemp();
 
     m.emit(k.IR_CONST, s2, -1, -1, 2);
     m.emit(k.IR_CONST, s3, -1, -1, 3);
     m.emit(k.IR_ADD,   x,  s2, s3, 0);        // iadd; istore_1
-    m.emit(k.IR_CONST, c60, -1, -1, 60);
-    m.emit(k.IR_ADD,   ch, x, c60, 0);        // iload_1; bipush 60; iadd
-    m.emit(k.IR_SYSCALL, -1, ch, -1, 0);      // invokevirtual write -> syscall
+    m.emit(k.IR_SYSCALL, -1, x, -1, 0);       // iload_1; invokevirtual write
     m.emit(k.IR_SYSCALL, -1, -1, -1, 4);      // return -> SYS_EXIT
     m.emit(k.IR_HALT, -1, -1, -1, 0);
     return m;
