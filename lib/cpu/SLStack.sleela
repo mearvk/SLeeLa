@@ -1,0 +1,58 @@
+/*
+ * lib/cpu/SLStack.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLStack — the hardware call/data stack a core uses for
+ *   PUSH/POP and for CALL/RET return addresses. It is a region of main memory
+ *   addressed through a stack pointer (SP) that grows downward from a base, the
+ *   classic convention on x86/ARM. The control unit drives it; the OS gives
+ *   each process its own stack region.
+ *
+ * Grows downward: push decrements SP then writes; pop reads then increments.
+ * Overflow (past the limit) and underflow (past the base) are reported, not
+ * silently wrapped.
+ *
+ * Family: cpu. Composes SLRAM.
+ */
+#sleela 1.3
+class SLStack {
+  SLRAM memory;
+  int base;     // highest address of the stack region (SP starts here)
+  int limit;    // lowest address the stack may reach
+  int sp;       // stack pointer
+  int pushes;
+  int pops;
+  int faulted;  // set on overflow/underflow
+
+  void configure(SLRAM ram, int stackBase, int stackLimit) {
+    memory = ram; base = stackBase; limit = stackLimit; sp = stackBase;
+    pushes = 0; pops = 0; faulted = 0;
+  }
+
+  boolean empty() { return sp >= base; }
+  boolean full() { return sp <= limit; }
+
+  // Push a word: pre-decrement SP, then store. Returns new SP, or -1 on overflow.
+  int push(int value) {
+    if (sp <= limit) { faulted = 1; return -1; }
+    sp = sp - 1;
+    memory.writeWord(sp, value);
+    pushes = pushes + 1;
+    return sp;
+  }
+
+  // Pop a word: read at SP, then post-increment. Returns the value, or -1 on underflow.
+  int pop() {
+    if (sp >= base) { faulted = 1; return -1; }
+    int value = memory.readWord(sp);
+    sp = sp + 1;
+    pops = pops + 1;
+    return value;
+  }
+
+  int peek() { if (sp >= base) { return -1; } return memory.readWord(sp); }
+  int pointer() { return sp; }
+  void setPointer(int newSp) { sp = newSp; }
+  int depth() { return base - sp; }
+  boolean faulting() { return faulted == 1; }
+  void clearFault() { faulted = 0; }
+}

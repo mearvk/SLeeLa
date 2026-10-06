@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.0
-library-source-files: 10240
+library-source-files: 10253
 library-packages: 83
 module-facade-symbols: 55
-total-symbol-records: 10295
+total-symbol-records: 10308
 
 package	symbol	path	kind
 antivirus	SLPackage.sleela	lib/antivirus/SLPackage.sleela	facade
@@ -194,6 +194,7 @@ cpu	SLCPU.sleela	lib/cpu/SLCPU.sleela	source
 cpu	SLCache.sleela	lib/cpu/SLCache.sleela	source
 cpu	SLCircuit.sleela	lib/cpu/SLCircuit.sleela	source
 cpu	SLClock.sleela	lib/cpu/SLClock.sleela	source
+cpu	SLCompilerDriver.sleela	lib/cpu/SLCompilerDriver.sleela	source
 cpu	SLConsoleDriver.sleela	lib/cpu/SLConsoleDriver.sleela	source
 cpu	SLControlUnit.sleela	lib/cpu/SLControlUnit.sleela	source
 cpu	SLCore.sleela	lib/cpu/SLCore.sleela	source
@@ -203,12 +204,22 @@ cpu	SLDiskDriver.sleela	lib/cpu/SLDiskDriver.sleela	source
 cpu	SLDriverManager.sleela	lib/cpu/SLDriverManager.sleela	source
 cpu	SLFileSystem.sleela	lib/cpu/SLFileSystem.sleela	source
 cpu	SLFlipFlop.sleela	lib/cpu/SLFlipFlop.sleela	source
+cpu	SLFrontend.sleela	lib/cpu/SLFrontend.sleela	source
+cpu	SLFrontendC.sleela	lib/cpu/SLFrontendC.sleela	source
+cpu	SLFrontendCpp.sleela	lib/cpu/SLFrontendCpp.sleela	source
+cpu	SLFrontendJava.sleela	lib/cpu/SLFrontendJava.sleela	source
+cpu	SLFrontendSleela.sleela	lib/cpu/SLFrontendSleela.sleela	source
 cpu	SLFullAdder.sleela	lib/cpu/SLFullAdder.sleela	source
 cpu	SLGate.sleela	lib/cpu/SLGate.sleela	source
+cpu	SLGuestLinux.sleela	lib/cpu/SLGuestLinux.sleela	source
+cpu	SLGuestVM.sleela	lib/cpu/SLGuestVM.sleela	source
 cpu	SLHalfAdder.sleela	lib/cpu/SLHalfAdder.sleela	source
 cpu	SLHardDrive.sleela	lib/cpu/SLHardDrive.sleela	source
+cpu	SLHypervisor.sleela	lib/cpu/SLHypervisor.sleela	source
 cpu	SLIOBus.sleela	lib/cpu/SLIOBus.sleela	source
 cpu	SLIOPort.sleela	lib/cpu/SLIOPort.sleela	source
+cpu	SLIR.sleela	lib/cpu/SLIR.sleela	source
+cpu	SLIRInstruction.sleela	lib/cpu/SLIRInstruction.sleela	source
 cpu	SLInstruction.sleela	lib/cpu/SLInstruction.sleela	source
 cpu	SLInstructionDecoder.sleela	lib/cpu/SLInstructionDecoder.sleela	source
 cpu	SLInstructionSet.sleela	lib/cpu/SLInstructionSet.sleela	source
@@ -216,6 +227,7 @@ cpu	SLInterruptController.sleela	lib/cpu/SLInterruptController.sleela	source
 cpu	SLKernel.sleela	lib/cpu/SLKernel.sleela	source
 cpu	SLKeyboardDriver.sleela	lib/cpu/SLKeyboardDriver.sleela	source
 cpu	SLLatch.sleela	lib/cpu/SLLatch.sleela	source
+cpu	SLLowering.sleela	lib/cpu/SLLowering.sleela	source
 cpu	SLMachine.sleela	lib/cpu/SLMachine.sleela	source
 cpu	SLMemoryManager.sleela	lib/cpu/SLMemoryManager.sleela	source
 cpu	SLNetworkDriver.sleela	lib/cpu/SLNetworkDriver.sleela	source
@@ -228,6 +240,7 @@ cpu	SLRAM.sleela	lib/cpu/SLRAM.sleela	source
 cpu	SLRegister.sleela	lib/cpu/SLRegister.sleela	source
 cpu	SLRegisterFile.sleela	lib/cpu/SLRegisterFile.sleela	source
 cpu	SLScheduler.sleela	lib/cpu/SLScheduler.sleela	source
+cpu	SLStack.sleela	lib/cpu/SLStack.sleela	source
 cpu	SLStatusRegister.sleela	lib/cpu/SLStatusRegister.sleela	source
 cpu	SLSystemCall.sleela	lib/cpu/SLSystemCall.sleela	source
 crypto	SLAes.sleela	lib/crypto/SLAes.sleela	source

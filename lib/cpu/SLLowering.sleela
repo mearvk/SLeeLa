@@ -1,0 +1,115 @@
+/*
+ * lib/cpu/SLLowering.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLLowering — the shared compiler backend. It walks an
+ *   SLIR module and emits real machine instructions (via SLAssembler) for the
+ *   SLInstructionSet, performing a simple temporary-to-register allocation and
+ *   two-pass label resolution. Because every language frontend produces the
+ *   same SLIR, this one backend serves C, C++, Java, and Sleela — the ISA is
+ *   multi-language because the backend is shared.
+ *
+ * Register convention: IR temporaries map to r1..r15 round-robin (r0 is the
+ * hardwired zero). Spilling to the stack for programs that exceed the register
+ * file is described in CPU.md and modeled by PUSH/POP; this pass handles the
+ * common small-function case directly.
+ *
+ * Family: cpu. Composes SLIR, SLAssembler, SLProgram, SLInstructionSet.
+ */
+#sleela 1.3
+class SLLowering {
+  SLInstructionSet isa;
+  SLAssembler asm;
+  SLProgram program;
+  SLIR ir;
+  SLRAM labelAddr;   // label id -> emitted instruction address
+  int emitted;
+
+  void configure(SLInstructionSet instructionSet, SLProgram target, SLIR irModule) {
+    isa = instructionSet; program = target; ir = irModule;
+    asm = new SLAssembler(); asm.configure(instructionSet, target);
+    labelAddr = new SLRAM(); labelAddr.configure(1024, 32); labelAddr.allocate();
+    emitted = 0;
+  }
+
+  // Map an IR temporary id to a machine register (r1..r15).
+  int reg(int temp) { if (temp < 0) { return 0; } return (temp % 15) + 1; }
+
+  // Pass 1: record the address each IR_LABEL will occupy. Because every IR node
+  // lowers to a bounded number of machine ops, we pre-scan to assign label
+  // addresses; here each non-label node lowers to exactly one or two ops and we
+  // account for that when resolving.
+  void resolveLabels() {
+    int addr = 0;
+    int i = 0;
+    while (i < ir.size()) {
+      SLIRInstruction n = ir.at(i);
+      if (n.operation() == n.IR_LABEL) {
+        labelAddr.writeWord(n.immediate(), addr);
+      } else {
+        addr = addr + opcodeFootprint(n);
+      }
+      i = i + 1;
+    }
+  }
+
+  // How many machine instructions a given IR node expands to.
+  int opcodeFootprint(SLIRInstruction n) {
+    int op = n.operation();
+    if (op == n.IR_LABEL) { return 0; }
+    if (op == n.IR_CONST) { return 1; }
+    if (op == n.IR_MOVE)  { return 1; }
+    if (op == n.IR_CALL)  { return 1; }
+    if (op == n.IR_PARAM) { return 1; }
+    // binary ops: move a into dst reg, then op with b
+    if (op == n.IR_ADD || op == n.IR_SUB || op == n.IR_MUL || op == n.IR_DIV ||
+        op == n.IR_MOD || op == n.IR_AND || op == n.IR_OR || op == n.IR_XOR) { return 2; }
+    return 1;
+  }
+
+  // Pass 2: emit machine code for the whole IR module.
+  SLProgram lower() {
+    resolveLabels();
+    int i = 0;
+    while (i < ir.size()) {
+      SLIRInstruction n = ir.at(i);
+      lowerNode(n);
+      i = i + 1;
+    }
+    return program;
+  }
+
+  void lowerNode(SLIRInstruction n) {
+    int op = n.operation();
+    int dst = reg(n.destination());
+    int ra = reg(n.sourceA());
+    int rb = reg(n.sourceB());
+
+    if (op == n.IR_LABEL) { return; }
+    if (op == n.IR_CONST) { asm.mov(dst, n.immediate()); emitted = emitted + 1; return; }
+    if (op == n.IR_MOVE)  { asm.emit(isa.MOVR, dst, ra, 0); emitted = emitted + 1; return; }
+
+    if (op == n.IR_ADD) { asm.emit(isa.MOVR, dst, ra, 0); asm.emit(isa.ADD, dst, rb, 0); emitted = emitted + 2; return; }
+    if (op == n.IR_SUB) { asm.emit(isa.MOVR, dst, ra, 0); asm.emit(isa.SUB, dst, rb, 0); emitted = emitted + 2; return; }
+    if (op == n.IR_MUL) { asm.emit(isa.MOVR, dst, ra, 0); asm.emit(isa.MUL, dst, rb, 0); emitted = emitted + 2; return; }
+    if (op == n.IR_DIV) { asm.emit(isa.MOVR, dst, ra, 0); asm.emit(isa.DIV, dst, rb, 0); emitted = emitted + 2; return; }
+    if (op == n.IR_MOD) { asm.emit(isa.MOVR, dst, ra, 0); asm.emit(isa.MOD, dst, rb, 0); emitted = emitted + 2; return; }
+    if (op == n.IR_AND) { asm.emit(isa.MOVR, dst, ra, 0); asm.emit(isa.AND, dst, rb, 0); emitted = emitted + 2; return; }
+    if (op == n.IR_OR)  { asm.emit(isa.MOVR, dst, ra, 0); asm.emit(isa.OR,  dst, rb, 0); emitted = emitted + 2; return; }
+    if (op == n.IR_XOR) { asm.emit(isa.MOVR, dst, ra, 0); asm.emit(isa.XOR, dst, rb, 0); emitted = emitted + 2; return; }
+
+    if (op == n.IR_CMP)   { asm.cmp(ra, rb); emitted = emitted + 1; return; }
+    if (op == n.IR_JUMP)  { asm.jmp(labelAddr.readWord(n.immediate())); emitted = emitted + 1; return; }
+    if (op == n.IR_JZ)    { asm.jz(labelAddr.readWord(n.immediate())); emitted = emitted + 1; return; }
+    if (op == n.IR_JNZ)   { asm.jnz(labelAddr.readWord(n.immediate())); emitted = emitted + 1; return; }
+    if (op == n.IR_LOAD)  { asm.emit(isa.LOADR, dst, ra, 0); emitted = emitted + 1; return; }
+    if (op == n.IR_STORE) { asm.emit(isa.STORER, ra, rb, 0); emitted = emitted + 1; return; }
+    if (op == n.IR_PARAM) { asm.emit(isa.PUSH, 0, ra, 0); emitted = emitted + 1; return; }
+    if (op == n.IR_CALL)  { asm.emit(isa.CALL, 0, 0, labelAddr.readWord(n.immediate())); emitted = emitted + 1; return; }
+    if (op == n.IR_RET)   { asm.emit(isa.RET, 0, 0, 0); emitted = emitted + 1; return; }
+    if (op == n.IR_SYSCALL){ asm.syscall(n.immediate()); emitted = emitted + 1; return; }
+    if (op == n.IR_HALT)  { asm.halt(); emitted = emitted + 1; return; }
+  }
+
+  int emittedCount() { return emitted; }
+  SLProgram lowered() { return program; }
+}

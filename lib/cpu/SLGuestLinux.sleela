@@ -1,0 +1,71 @@
+/*
+ * lib/cpu/SLGuestLinux.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLGuestLinux — a Linux-style guest operating system that
+ *   boots inside an SLGuestVM on the Sleela CPU. It models the Linux boot and
+ *   runtime surface the hypervisor must support: a boot protocol (load kernel
+ *   image + initrd into the guest window and jump to the entry), a Linux-style
+ *   syscall ABI (write/read/open/close/exit/mmap/fork/execve as numbers), and
+ *   the init handoff (PID 1).
+ *
+ * SCOPE NOTE — important: this is an ARCHITECTURAL MODEL of running a Linux-like
+ * guest, not the real Linux kernel. It defines the boot sequence, the syscall
+ * numbers the guest issues, and how those become VM-exits the hypervisor
+ * emulates. Running the actual upstream Linux kernel would require a full
+ * hardware-virtualization CPU and device model (far beyond this library). The
+ * value here is a faithful, composable model of the layering:
+ *     SLCPU -> SleelaOS -> SLHypervisor -> SLGuestVM -> SLGuestLinux -> guest programs.
+ *
+ * Family: cpu. Composes SLGuestVM; booted by SLHypervisor.
+ */
+#sleela 1.3
+class SLGuestLinux {
+  // A small, Linux-like syscall ABI (numbers chosen for the model).
+  static final int LINUX_READ   = 0;
+  static final int LINUX_WRITE  = 1;
+  static final int LINUX_OPEN   = 2;
+  static final int LINUX_CLOSE  = 3;
+  static final int LINUX_MMAP   = 9;
+  static final int LINUX_EXIT   = 60;
+  static final int LINUX_FORK   = 57;
+  static final int LINUX_EXECVE = 59;
+
+  String distro;
+  SLGuestVM vm;
+  int kernelEntry;
+  int initEntry;
+  int booted;
+  int syscalls;
+
+  void configure(String distroName, SLGuestVM guest) {
+    distro = distroName; vm = guest; booted = 0; syscalls = 0;
+    kernelEntry = 0; initEntry = 0;
+  }
+
+  // Boot protocol: place the kernel image at guest-physical 0, record the entry
+  // points, and enter the guest. (Image loading is modeled; a real boot copies
+  // bzImage + initrd into guest memory.)
+  int boot(int kernelImageEntry, int initImageEntry) {
+    kernelEntry = kernelImageEntry;
+    initEntry = initImageEntry;
+    vm.enter();           // vCPU jumps to the guest kernel entry
+    booted = 1;
+    return kernelEntry;
+  }
+
+  // Translate a guest Linux syscall number to the host SleelaOS syscall the
+  // hypervisor emulates it with (the VM-exit handler's job).
+  int emulateSyscall(int linuxNumber) {
+    syscalls = syscalls + 1;
+    if (linuxNumber == LINUX_WRITE) { return 0; } // host SYS_WRITE
+    if (linuxNumber == LINUX_READ)  { return 1; } // host SYS_READ
+    if (linuxNumber == LINUX_OPEN)  { return 2; }
+    if (linuxNumber == LINUX_CLOSE) { return 3; }
+    if (linuxNumber == LINUX_EXIT)  { return 4; } // host SYS_EXIT
+    return -1; // unsupported: delivered as a guest fault
+  }
+
+  boolean isBooted() { return booted == 1; }
+  int syscallsEmulated() { return syscalls; }
+  String distribution() { return distro; }
+}

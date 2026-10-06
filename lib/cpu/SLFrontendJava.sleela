@@ -1,0 +1,46 @@
+/*
+ * lib/cpu/SLFrontendJava.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLFrontendJava — the Java frontend. Java is already
+ *   compiled to JVM bytecode by javac, so this frontend lowers from that
+ *   stack-based bytecode to the common SLIR: bytecode locals become IR
+ *   temporaries, the operand stack is linearized into three-address IR,
+ *   invokestatic/invokevirtual become IR_PARAM/IR_CALL, and System.out writes
+ *   lower to a syscall.
+ *
+ * SCOPE NOTE: a full classfile reader (constant pool, all ~200 bytecodes,
+ * verification) is a project of its own; this models the canonical
+ * bytecode-to-IR lowering and demonstrates one complete lowering. The IR and
+ * backend are shared with the other languages.
+ *
+ * Family: cpu. Extends SLFrontend.
+ */
+#sleela 1.3
+class SLFrontendJava extends SLFrontend {
+
+  void init(String path) { configure("java", LANG_JAVA, path); }
+
+  // Model lowering of JVM bytecode for:
+  //   static void main(String[] a){ int x = 2 + 3; System.out.write(x+60); }
+  // Bytecode: iconst_2; iconst_3; iadd; istore_1; ... linearized to SSA temps.
+  SLIR lower() {
+    SLIR m = intermediate();
+    SLIRInstruction k = new SLIRInstruction();
+
+    int s2 = m.allocTemp();   // iconst_2 pushes
+    int s3 = m.allocTemp();   // iconst_3 pushes
+    int x  = m.allocTemp();   // iadd -> istore_1 (local var x)
+    int c60= m.allocTemp();
+    int ch = m.allocTemp();
+
+    m.emit(k.IR_CONST, s2, -1, -1, 2);
+    m.emit(k.IR_CONST, s3, -1, -1, 3);
+    m.emit(k.IR_ADD,   x,  s2, s3, 0);        // iadd; istore_1
+    m.emit(k.IR_CONST, c60, -1, -1, 60);
+    m.emit(k.IR_ADD,   ch, x, c60, 0);        // iload_1; bipush 60; iadd
+    m.emit(k.IR_SYSCALL, -1, ch, -1, 0);      // invokevirtual write -> syscall
+    m.emit(k.IR_SYSCALL, -1, -1, -1, 4);      // return -> SYS_EXIT
+    m.emit(k.IR_HALT, -1, -1, -1, 0);
+    return m;
+  }
+}

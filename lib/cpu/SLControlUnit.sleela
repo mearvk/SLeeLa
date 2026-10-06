@@ -2,15 +2,20 @@
  * lib/cpu/SLControlUnit.sleela
  * SLeeLa Standard Library Definition.
  * Definition: Defines SLControlUnit — the conductor of a CPU core. It drives
- *   the fetch-decode-execute cycle: read the instruction at the program
- *   counter, decode it, route operands through the register file and ALU,
- *   write results back, update the program counter (sequential or branch), and
- *   set the status flags. It is where the ISA semantics become control signals.
+ *   the fetch-decode-execute cycle for the full SLInstructionSet: fetch the
+ *   instruction at the program counter, decode it, route operands through the
+ *   register file, ALU, and the hardware stack (SLStack), write results back,
+ *   update the program counter (sequential, branch, call, or return), and set
+ *   the status flags.
  *
- * This models a classic single-cycle control unit. Pipelining and out-of-order
- * execution are described in CPU.md; the observable semantics are the same.
+ * This models a classic single-cycle control unit with a real call/stack
+ * protocol: CALL pushes the return address and jumps; RET pops it; PUSH/POP
+ * move words to and from the stack. That protocol is what makes the ISA a
+ * viable lowering target for compiled C/C++/Java/Sleela (function calls,
+ * locals, spills). Pipelining/out-of-order are described in CPU.md; the
+ * observable semantics here are the same.
  *
- * Family: cpu. Composes decoder, register file, ALU, PC, status, and RAM.
+ * Family: cpu. Composes decoder, register file, ALU, PC, status, RAM, and stack.
  */
 #sleela 1.3
 class SLControlUnit {
@@ -21,24 +26,31 @@ class SLControlUnit {
   SLProgramCounter pc;
   SLStatusRegister status;
   SLRAM memory;
+  SLStack stack;
   int halted;
   int executed;
   int syscallVector;   // address the OS installed for SYSCALL
+  int trapVector;      // address installed for TRAP (faults / guest exits)
   int lastSyscall;     // last syscall number requested (for the kernel to read)
+  int lastTrap;        // last trap number requested
 
   void configure(SLInstructionSet instructionSet, SLInstructionDecoder dec,
                  SLRegisterFile registers, SLALU unit, SLProgramCounter counter,
-                 SLStatusRegister stat, SLRAM ram) {
+                 SLStatusRegister stat, SLRAM ram, SLStack hwStack) {
     isa = instructionSet; decoder = dec; regs = registers; alu = unit;
-    pc = counter; status = stat; memory = ram;
-    halted = 0; executed = 0; syscallVector = 0; lastSyscall = -1;
+    pc = counter; status = stat; memory = ram; stack = hwStack;
+    halted = 0; executed = 0; syscallVector = 0; trapVector = 0;
+    lastSyscall = -1; lastTrap = -1;
   }
 
   void installSyscallVector(int addr) { syscallVector = addr; }
+  void installTrapVector(int addr) { trapVector = addr; }
   boolean isHalted() { return halted == 1; }
   int instructionsRetired() { return executed; }
   int pendingSyscall() { return lastSyscall; }
+  int pendingTrap() { return lastTrap; }
   void clearSyscall() { lastSyscall = -1; }
+  void clearTrap() { lastTrap = -1; }
 
   // Execute exactly one instruction at the current PC. Returns the opcode run,
   // or -1 if the core is halted.
@@ -47,53 +59,100 @@ class SLControlUnit {
     int word = memory.readWord(pc.value());
     SLInstruction instr = decoder.decode(word);
     int op = instr.op();
+    int rd = instr.dest();
+    int rs = instr.src();
+    int imm = instr.immediate();
     executed = executed + 1;
 
     if (op == isa.HALT) { halted = 1; return op; }
     if (op == isa.NOP)  { pc.increment(); return op; }
 
-    if (op == isa.LOAD)  { regs.write(instr.dest(), memory.readWord(instr.immediate())); pc.increment(); return op; }
-    if (op == isa.STORE) { memory.writeWord(instr.immediate(), regs.read(instr.src())); pc.increment(); return op; }
-    if (op == isa.MOV)   { regs.write(instr.dest(), instr.immediate()); pc.increment(); return op; }
+    // ---- data movement ----
+    if (op == isa.MOV)    { regs.write(rd, imm); pc.increment(); return op; }
+    if (op == isa.MOVR)   { regs.write(rd, regs.read(rs)); pc.increment(); return op; }
+    if (op == isa.LOAD)   { regs.write(rd, memory.readWord(imm)); pc.increment(); return op; }
+    if (op == isa.LOADR)  { regs.write(rd, memory.readWord(regs.read(rs))); pc.increment(); return op; }
+    if (op == isa.LOADX)  { regs.write(rd, memory.readWord(regs.read(rs) + imm)); pc.increment(); return op; }
+    if (op == isa.STORE)  { memory.writeWord(imm, regs.read(rs)); pc.increment(); return op; }
+    if (op == isa.STORER) { memory.writeWord(regs.read(rd), regs.read(rs)); pc.increment(); return op; }
+    if (op == isa.STOREX) { memory.writeWord(regs.read(rd) + imm, regs.read(rs)); pc.increment(); return op; }
 
+    // ---- arithmetic / logic (register-register, result in rd) ----
     if (isa.isArithmetic(op)) {
-      int a = regs.read(instr.dest());
-      int b = regs.read(instr.src());
-      int aluOp = toAluOp(op);
-      int r = alu.execute(a, b, aluOp);
+      int a = regs.read(rd);
+      int b = regs.read(rs);
+      int r = alu.execute(a, b, toAluOp(op));
       status.setFromALU(alu);
-      if (op != isa.CMP) { regs.write(instr.dest(), r); }
+      regs.write(rd, r);
       pc.increment();
       return op;
     }
 
-    if (op == isa.JMP) { pc.branchTo(instr.immediate()); return op; }
-    if (op == isa.JZ)  { if (status.zeroFlag() == 1) { pc.branchTo(instr.immediate()); } else { pc.increment(); } return op; }
-    if (op == isa.JNZ) { if (status.zeroFlag() == 0) { pc.branchTo(instr.immediate()); } else { pc.increment(); } return op; }
-
-    if (op == isa.SYSCALL) {
-      lastSyscall = instr.immediate();
-      status.enterSupervisorMode();
-      if (syscallVector != 0) { pc.branchTo(syscallVector); } else { pc.increment(); }
+    // ---- compare (sets flags only) ----
+    if (op == isa.CMP) {
+      alu.execute(regs.read(rd), regs.read(rs), alu.OP_SUB);
+      status.setFromALU(alu);
+      pc.increment();
       return op;
     }
 
-    // IN/OUT/PUSH/POP/CALL/RET are routed by the core's I/O and stack units;
-    // advance by default so the cycle makes progress.
-    pc.increment();
+    // ---- branches ----
+    if (op == isa.JMP) { pc.branchTo(imm); return op; }
+    if (op == isa.JZ)  { if (status.zeroFlag() == 1) { pc.branchTo(imm); } else { pc.increment(); } return op; }
+    if (op == isa.JNZ) { if (status.zeroFlag() == 0) { pc.branchTo(imm); } else { pc.increment(); } return op; }
+    if (op == isa.JLT) { if (status.negativeFlag() == 1) { pc.branchTo(imm); } else { pc.increment(); } return op; }
+    if (op == isa.JGE) { if (status.negativeFlag() == 0) { pc.branchTo(imm); } else { pc.increment(); } return op; }
+
+    // ---- call / return / stack ----
+    if (op == isa.CALL) {
+      stack.push(pc.value() + 1);   // return address = instruction after CALL
+      pc.branchTo(imm);
+      return op;
+    }
+    if (op == isa.RET) {
+      int ret = stack.pop();
+      if (ret < 0) { raiseTrap(1); return op; } // stack underflow fault
+      pc.branchTo(ret);
+      return op;
+    }
+    if (op == isa.PUSH) { stack.push(regs.read(rs)); pc.increment(); return op; }
+    if (op == isa.POP)  { regs.write(rd, stack.pop()); pc.increment(); return op; }
+
+    // ---- system ----
+    if (op == isa.SYSCALL) {
+      lastSyscall = imm;
+      status.enterSupervisorMode();
+      if (syscallVector != 0) { stack.push(pc.value() + 1); pc.branchTo(syscallVector); } else { pc.increment(); }
+      return op;
+    }
+    if (op == isa.TRAP) { raiseTrap(imm); return op; }
+
+    // Unknown opcode: fault.
+    raiseTrap(2);
     return op;
+  }
+
+  // Deliver a trap: record it and vector to the handler (or just advance).
+  void raiseTrap(int number) {
+    lastTrap = number;
+    status.enterSupervisorMode();
+    if (trapVector != 0) { stack.push(pc.value() + 1); pc.branchTo(trapVector); } else { pc.increment(); }
   }
 
   // Map ISA arithmetic opcodes onto SLALU operation selectors.
   int toAluOp(int op) {
     if (op == isa.ADD) { return alu.OP_ADD; }
     if (op == isa.SUB) { return alu.OP_SUB; }
+    if (op == isa.MUL) { return alu.OP_MUL; }
+    if (op == isa.DIV) { return alu.OP_DIV; }
+    if (op == isa.MOD) { return alu.OP_MOD; }
+    if (op == isa.NEG) { return alu.OP_NEG; }
     if (op == isa.AND) { return alu.OP_AND; }
     if (op == isa.OR)  { return alu.OP_OR; }
     if (op == isa.XOR) { return alu.OP_XOR; }
+    if (op == isa.NOT) { return alu.OP_NOT; }
     if (op == isa.SHL) { return alu.OP_SHL; }
     if (op == isa.SHR) { return alu.OP_SHR; }
-    if (op == isa.CMP) { return alu.OP_SUB; }
     return alu.OP_PASS;
   }
 

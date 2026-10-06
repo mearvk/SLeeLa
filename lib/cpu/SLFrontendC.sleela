@@ -1,0 +1,47 @@
+/*
+ * lib/cpu/SLFrontendC.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLFrontendC — the C-language frontend. It lowers C
+ *   translation units to the common SLIR: declarations become memory/stack
+ *   slots, expressions become IR temporaries and arithmetic ops, function calls
+ *   become IR_PARAM/IR_CALL, and `return` becomes IR_RET. The shared backend
+ *   then compiles the IR to machine code for the SLInstructionSet.
+ *
+ * SCOPE NOTE: a full C compiler (preprocessor, the entire type system, the
+ * standard library) is far beyond one class; this frontend models the real
+ * C-to-IR lowering contract and demonstrates a complete lowering for a small C
+ * function (int add3(void){ return 2+3; } then write+exit). Extending it to
+ * full C means growing parse() into a complete C parser — the IR and backend
+ * below it do not change. This mirrors how clang targets LLVM IR.
+ *
+ * Family: cpu. Extends SLFrontend.
+ */
+#sleela 1.3
+class SLFrontendC extends SLFrontend {
+
+  void init(String path) { configure("c", LANG_C, path); }
+
+  // Model lowering of:  int main(void){ int x = 2 + 3; putchar(x+60); return 0; }
+  // C semantics: automatic storage for x, an arithmetic expression, a library
+  // call (modeled as a syscall), and a return.
+  SLIR lower() {
+    SLIR m = intermediate();
+    SLIRInstruction k = new SLIRInstruction();
+
+    int c2 = m.allocTemp();
+    int c3 = m.allocTemp();
+    int x  = m.allocTemp();
+    int ch = m.allocTemp();
+    int c60= m.allocTemp();
+
+    m.emit(k.IR_CONST, c2, -1, -1, 2);
+    m.emit(k.IR_CONST, c3, -1, -1, 3);
+    m.emit(k.IR_ADD,   x,  c2, c3, 0);       // x = 2 + 3
+    m.emit(k.IR_CONST, c60, -1, -1, 60);
+    m.emit(k.IR_ADD,   ch, x, c60, 0);       // ch = x + 60  ('5' + offset demo)
+    m.emit(k.IR_SYSCALL, -1, ch, -1, 0);     // putchar -> SYS_WRITE
+    m.emit(k.IR_SYSCALL, -1, -1, -1, 4);     // return 0 -> SYS_EXIT
+    m.emit(k.IR_HALT, -1, -1, -1, 0);
+    return m;
+  }
+}

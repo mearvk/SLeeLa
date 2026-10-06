@@ -1,0 +1,65 @@
+/*
+ * lib/cpu/SLGuestVM.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLGuestVM — one guest virtual machine managed by the
+ *   hypervisor. It presents a virtual CPU over a window of host memory
+ *   (guest-physical addressing), tracks the guest's entry point and run state,
+ *   counts VM-exits (traps/syscalls that the hypervisor emulates), and loads a
+ *   guest OS image. This is the container a guest kernel such as a Linux-style
+ *   SLGuestLinux boots inside.
+ *
+ * Guest-physical to host-physical translation is a base offset (single-level);
+ * the guest sees addresses from 0 while the hypervisor relocates them into the
+ * guest's host-memory window.
+ *
+ * Family: cpu. Composes SLCore, SLRAM; booted via SLGuestLinux.
+ */
+#sleela 1.3
+class SLGuestVM {
+  String name;
+  SLCore vcpu;        // the host core backing this guest's virtual CPU
+  SLRAM hostMemory;
+  int windowBase;     // host-physical base of the guest's memory window
+  int windowSize;     // words
+  int guestEntry;     // guest-physical entry point
+  int running;
+  int exits;
+  int guestInstr;
+
+  void configure(String vmName, SLCore core, SLRAM ram, int base, int size, int entry) {
+    name = vmName; vcpu = core; hostMemory = ram;
+    windowBase = base; windowSize = size; guestEntry = entry;
+    running = 0; exits = 0; guestInstr = 0;
+  }
+
+  // Guest-physical -> host-physical translation.
+  int translate(int guestAddr) { return windowBase + guestAddr; }
+  boolean inWindow(int guestAddr) { return guestAddr >= 0 && guestAddr < windowSize; }
+
+  // Enter the guest at its (translated) entry point.
+  void enter() { vcpu.loadEntryPoint(translate(guestEntry)); running = 1; }
+
+  // Run the guest's vCPU for a budget of instructions. Each guest TRAP/SYSCALL
+  // is a VM-exit: the hypervisor would emulate it; here we count it and resume.
+  int run(int budget) {
+    if (running == 0) { enter(); }
+    int ran = 0;
+    while (running == 1 && ran < budget && !vcpu.halted()) {
+      vcpu.tick();
+      guestInstr = guestInstr + 1;
+      int trap = vcpu.controlUnit().pendingTrap();
+      if (trap >= 0) { exits = exits + 1; vcpu.controlUnit().clearTrap(); } // VM-exit handled
+      int sys = vcpu.controlUnit().pendingSyscall();
+      if (sys >= 0) { exits = exits + 1; vcpu.controlUnit().clearSyscall(); } // guest syscall exit
+      ran = ran + 1;
+    }
+    if (vcpu.halted()) { running = 0; }
+    return ran;
+  }
+
+  void stop() { running = 0; }
+  int exitCount() { return exits; }
+  int guestInstructions() { return guestInstr; }
+  String vmName() { return name; }
+  int entry() { return guestEntry; }
+}
