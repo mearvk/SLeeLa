@@ -213,7 +213,8 @@ The guest layer is being hardened from "model" toward "genuinely executes":
 - **Step 4 (done):** a genuinely-compiled guest kernel. `SLGuestKernelBuilder` compiles kernel source (any supported language) through `SLCompilerDriver` → register ISA → `SLOpcodeMap` → a `SLGuestKernelImage` of canonical opcodes, which the guest substrate loads and executes. `SLGuestLinux.buildKernel()` / `SLMachine.runLinuxGuestFromSource()` boot it. This is a small **custom** kernel, not upstream Linux.
 
 - **Step 5 (done):** the VM-exit loop is wired. In hosted mode `SLSleelaVM` parks a VM-exit on a service opcode (e.g. `OP_PRINT`); `SLGuestVM.run()` routes it (console device / syscall emulation), ticks devices, posts IRQs, and resumes — the device↔substrate↔exit handoff is functional, not just structural.
-- **Step 6 (done):** the guest has preemptive multitasking. `SLGuestTask` + `SLGuestScheduler` run inside the guest; the `SLGuestTimer` IRQ is the preemption source — each expiry drives `onTimerInterrupt()`, which saves the running task's substrate IP, round-robins to the next ready task, and resumes the substrate at that task's saved IP.
+- **Step 6 (done):** the guest has preemptive multitasking.
+- **Step 7 (done):** guest user space. `SLGuestProgram` is a loadable user program compiled from source through the shared toolchain; `SLGuestInit` (PID 1) loads programs into the guest substrate and admits them as scheduler tasks — the guest runs real user processes, not just kernel code. `SLGuestTask` + `SLGuestScheduler` run inside the guest; the `SLGuestTimer` IRQ is the preemption source — each expiry drives `onTimerInterrupt()`, which saves the running task's substrate IP, round-robins to the next ready task, and resumes the substrate at that task's saved IP.
 
 With steps 1–6 complete, the guest is no longer a counter-ticking stub: it
 executes a **compiled kernel image** as canonical opcodes on `SLSleelaVM`, over
