@@ -77,23 +77,57 @@ class SLGuestVM {
 
   SLSleelaVM guestSubstrate() { return substrate; }
 
-  // Enter the guest: the vCPU records the (translated) entry; the substrate ip
-  // is already at 0 where its code was loaded.
-  void enter() { vcpu.loadEntryPoint(translate(guestEntry)); running = 1; }
+  // Enter the guest: put the substrate in hosted mode (service opcodes become
+  // VM-exits the hypervisor routes), record the translated entry on the vCPU.
+  void enter() {
+    substrate.setHosted();
+    vcpu.loadEntryPoint(translate(guestEntry));
+    running = 1;
+  }
 
-  // Run the guest by DISPATCHING its opcodes on the substrate, up to `budget`
-  // opcodes or until a VM-exit (HALT). Each executed opcode advances the guest;
-  // a HALT is an exit the hypervisor observes.
+  // Run the guest, driving the VM-exit loop (step 5): execute substrate opcodes
+  // until a VM-exit (a service opcode parks one) or HALT; route each exit to the
+  // device model / syscall emulation; resolve it and resume. Devices are ticked
+  // each round so the timer heartbeat advances and posts interrupts.
   int run(int budget) {
     if (running == 0) { enter(); }
     int ran = 0;
     while (running == 1 && ran < budget && !substrate.isHalted()) {
-      substrate.step();          // execute exactly one guest opcode
-      guestInstr = guestInstr + 1;
-      ran = ran + 1;
+      int slice = substrate.run(budget - ran);
+      ran = ran + slice;
+      if (slice == 0 && !substrate.exiting()) { ran = ran + 1; } // guard against stall
+
+      if (substrate.exiting()) {
+        handleExit(substrate.exitReasonOpcode(), substrate.exitReasonArg(), substrate.exitReasonPayload());
+        substrate.resolveExit();
+      }
+      tickDevices();                 // advance timer; post device IRQs
+      deliverPendingInterrupts();    // let the guest PIC see raised lines
     }
     if (substrate.isHalted()) { running = 0; exits = exits + 1; lastExitReason = EXIT_HALT; }
     return ran;
+  }
+
+  // Route a VM-exit from a service opcode to the guest device model / host.
+  void handleExit(int opcode, int arg, int payload) {
+    SLSleelaOpcode op = new SLSleelaOpcode(); op.configure(0, "OP_NOP");
+    recordSyscallExit();
+    // OP_PRINT -> the guest console device (its boot log / stdout).
+    if (opcode == op.OP_PRINT && devices != null && devices.hasConsole()) {
+      devices.consoleWrite(payload);
+      return;
+    }
+    // Other service opcodes (FILE*, SOCK*) are emulated by the host here; the
+    // model records the exit and continues (the real engine performs the I/O).
+  }
+
+  // Surface any device interrupts the guest PIC now has pending (for a guest
+  // kernel ISR to observe).
+  void deliverPendingInterrupts() {
+    if (devices != null) {
+      int line = devices.pendingInterrupt();
+      if (line >= 0) { recordTrapExit(); devices.acknowledge(line); }
+    }
   }
 
   // A guest syscall VM-exit: the guest kernel calls this when its code reaches a

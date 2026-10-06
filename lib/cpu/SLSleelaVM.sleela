@@ -31,6 +31,17 @@ class SLSleelaVM {
   int executed;
   int lastPrint;    // last value sent to OP_PRINT (observable output)
 
+  // VM-exit mechanism (step 5): when hosted under a hypervisor, a service
+  // opcode does not act inline — it parks a pending exit so the host can route
+  // it (to a device / syscall emulation) and resume. hosted==0 keeps the
+  // standalone behavior (PRINT acts directly), so SLSleelaVM is usable both
+  // bare and virtualized.
+  int hosted;        // 1 = park service opcodes as VM-exits
+  int exitPending;   // 1 = execution paused awaiting host handling
+  int exitOpcode;    // the service opcode that caused the exit
+  int exitArg;       // its immediate
+  int exitPayload;   // the stack value it carried (e.g. the char to print)
+
   void configure(int codeCap, int stackCap, int globalCap) {
     op = new SLSleelaOpcode(); op.configure(0, "OP_NOP");
     codeOps = new SLRAM(); codeOps.configure(codeCap, 32); codeOps.allocate();
@@ -38,7 +49,17 @@ class SLSleelaVM {
     stack = new SLRAM(); stack.configure(stackCap, 32); stack.allocate();
     globals = new SLRAM(); globals.configure(globalCap, 32); globals.allocate();
     codeLen = 0; ip = 0; sp = 0; halted = 0; executed = 0; lastPrint = 0;
+    hosted = 0; exitPending = 0; exitOpcode = -1; exitArg = 0; exitPayload = 0;
   }
+
+  // Enable hosted mode: service opcodes park VM-exits instead of acting inline.
+  void setHosted() { hosted = 1; }
+  boolean exiting() { return exitPending == 1; }
+  int exitReasonOpcode() { return exitOpcode; }
+  int exitReasonArg() { return exitArg; }
+  int exitReasonPayload() { return exitPayload; }
+  // Host clears the exit after servicing it so the guest can resume.
+  void resolveExit() { exitPending = 0; exitOpcode = -1; }
 
   // Load one opcode+arg into the code store.
   int emit(int opcode, int arg) {
@@ -88,22 +109,36 @@ class SLSleelaVM {
 
     if (o == op.OP_JMP)  { ip = a; return o; }
     if (o == op.OP_JMPF) { if (pop() == 0) { ip = a; } return o; }   // jump if false
-    if (o == op.OP_PRINT){ lastPrint = pop(); printValue(lastPrint); return o; }
+
+    if (o == op.OP_PRINT) {
+      int v = pop();
+      lastPrint = v;
+      if (hosted == 1) { parkExit(o, a, v); } else { printValue(v); }
+      return o;
+    }
     if (o == op.OP_HALT) { halted = 1; return o; }
 
-    // Any opcode not explicitly simulated is a no-op in this model VM; the
-    // native VM dispatches the full set. (Services/time/struct ops cross the
-    // bridge in the real engine.)
+    // Service / I/O opcodes (PRINT handled above, FILE*, SOCK*, etc.): under a
+    // hypervisor these are VM-exits the host routes to the device model; bare,
+    // the native engine crosses the OS bridge. Non-service opcodes not
+    // explicitly simulated are no-ops in this model VM.
+    if (hosted == 1 && op.isService(o)) { parkExit(o, a, (sp > 0) ? top() : 0); return o; }
     return o;
+  }
+
+  // Park a VM-exit: record the service opcode and pause execution until the
+  // host resolves it (step 5).
+  void parkExit(int opcode, int arg, int payload) {
+    exitPending = 1; exitOpcode = opcode; exitArg = arg; exitPayload = payload;
   }
 
   int boolInt(boolean b) { if (b) { return 1; } return 0; }
   void printValue(int v) { native sleela_vm_print_int(v); }
 
-  // Run until HALT or budget exhausted.
+  // Run until HALT, a pending VM-exit (hosted mode), or budget exhausted.
   int run(int budget) {
     int ran = 0;
-    while (halted == 0 && ip < codeLen && ran < budget) { step(); ran = ran + 1; }
+    while (halted == 0 && exitPending == 0 && ip < codeLen && ran < budget) { step(); ran = ran + 1; }
     return ran;
   }
 
