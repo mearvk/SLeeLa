@@ -33,9 +33,19 @@ class SLHypervisor {
   }
 
   // Create a guest VM with a guest-physical window [base, base+size) in host RAM.
+  // A per-guest MMU identity-maps the window with full permissions as the boot
+  // address space (the guest kernel may install its own page tables after).
   SLGuestVM createGuest(String name, int base, int size, int guestEntry) {
     SLGuestVM vm = new SLGuestVM();
     vm.configure(name, host.bootCore(), hostMemory, base, size, guestEntry);
+
+    SLMMU mmu = new SLMMU();
+    int pageSize = 256;
+    int pages = (size / pageSize) + 1;
+    mmu.configure(pageSize, pages);
+    mmu.identityMap(pages, base / pageSize, mmu.PERM_WRITE + mmu.PERM_EXEC);
+    vm.attachMMU(mmu);
+
     int idx = guestCount;
     if (idx == 0) { g0 = vm; } if (idx == 1) { g1 = vm; }
     if (idx == 2) { g2 = vm; } if (idx == 3) { g3 = vm; }
