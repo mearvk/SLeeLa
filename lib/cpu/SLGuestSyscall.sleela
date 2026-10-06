@@ -1,0 +1,83 @@
+/*
+ * lib/cpu/SLGuestSyscall.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLGuestSyscall — the guest kernel's system-call ABI and
+ *   dispatcher. When a guest user program issues a syscall, the substrate takes
+ *   a VM-exit; SLGuestVM routes it here, and this class emulates the requested
+ *   service against the guest's devices (console), filesystem, scheduler, and
+ *   task table, then returns a result the guest resumes with. This is the
+ *   controlled user->kernel boundary a real OS exposes.
+ *
+ * ABI: a guest syscall carries a number plus up to three integer arguments
+ * (modeled as the exit payload + operand-stack values). The dispatcher returns
+ * an integer result (or a negative errno-style code), and reports control
+ * effects (exit/yield) so SLGuestVM can act on them.
+ *
+ * Family: cpu. Composes SLGuestDeviceBus, SLGuestFileSystem, SLGuestScheduler.
+ */
+#sleela 1.3
+class SLGuestSyscall {
+  // Linux-like syscall numbers (a small, representative subset).
+  static final int SYS_READ   = 0;
+  static final int SYS_WRITE  = 1;
+  static final int SYS_OPEN   = 2;
+  static final int SYS_CLOSE  = 3;
+  static final int SYS_BRK    = 12;
+  static final int SYS_YIELD  = 24;  // sched_yield
+  static final int SYS_GETPID = 39;
+  static final int SYS_EXIT   = 60;
+
+  SLGuestDeviceBus devices;
+  SLGuestFileSystem fs;
+  SLGuestScheduler scheduler;
+  int brkTop;          // modeled program break (heap top)
+  int calls;
+  int lastResult;
+
+  void configure(SLGuestDeviceBus deviceBus, SLGuestFileSystem filesystem, SLGuestScheduler sched, int heapBase) {
+    devices = deviceBus; fs = filesystem; scheduler = sched;
+    brkTop = heapBase; calls = 0; lastResult = 0;
+  }
+
+  boolean valid(int number) {
+    return number == SYS_READ || number == SYS_WRITE || number == SYS_OPEN ||
+           number == SYS_CLOSE || number == SYS_BRK || number == SYS_YIELD ||
+           number == SYS_GETPID || number == SYS_EXIT;
+  }
+
+  // Dispatch a syscall. arg0..arg2 are the integer arguments; returns the
+  // syscall result (>=0) or a negative error. Control effects (exit/yield) are
+  // queried separately by the caller via isExit()/isYield().
+  int dispatch(int number, int arg0, int arg1, int arg2) {
+    calls = calls + 1;
+    int r = -1;
+    if (number == SYS_WRITE) {
+      // write(fd, ch, _): fd 1/2 -> console; else -> filesystem.
+      if (arg0 == 1 || arg0 == 2) {
+        if (devices != null && devices.hasConsole()) { devices.consoleWrite(arg1); r = 1; }
+      } else if (fs != null) { r = fs.writeByte(arg0, arg1); }
+    } else if (number == SYS_READ) {
+      if (fs != null) { r = fs.readByte(arg0); }
+    } else if (number == SYS_OPEN) {
+      if (fs != null) { r = fs.openByName(arg0); }
+    } else if (number == SYS_CLOSE) {
+      if (fs != null) { r = fs.close(arg0); }
+    } else if (number == SYS_GETPID) {
+      if (scheduler != null && scheduler.running() != null) { r = scheduler.running().taskId(); } else { r = 1; }
+    } else if (number == SYS_BRK) {
+      if (arg0 > 0) { brkTop = arg0; } r = brkTop;
+    } else if (number == SYS_YIELD) {
+      r = 0;
+    } else if (number == SYS_EXIT) {
+      r = arg0;
+    }
+    lastResult = r;
+    return r;
+  }
+
+  boolean isExit(int number) { return number == SYS_EXIT; }
+  boolean isYield(int number) { return number == SYS_YIELD; }
+  int programBreak() { return brkTop; }
+  int result() { return lastResult; }
+  int callCount() { return calls; }
+}

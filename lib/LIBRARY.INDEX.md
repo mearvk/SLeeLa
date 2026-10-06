@@ -1,11 +1,19 @@
 # SLeeLa /lib Library Index
 
-**Revision:** 0.25  
+**Revision:** 0.26  
 **Packages:** 83  
-**SLeeLa source units:** 10270  
+**SLeeLa source units:** 10271  
 **Module-facade symbols:** 55  
-**Total symbol records:** 10325  
+**Total symbol records:** 10326  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
+
+> Revision 0.26 adds `SLGuestSyscall`: the guest kernel's syscall ABI +
+> dispatcher (write/read/open/close/brk/yield/getpid/exit). Guest service-opcode
+> VM-exits are now routed through it by SLGuestVM.handleExit() and emulated
+> against the guest console, filesystem, and scheduler, with the result pushed
+> back for the guest to resume (SYS_EXIT finishes the running task). This
+> completes the user->kernel boundary. 10,270 -> **10,271** source classes
+> (**10,326** total). See `cpu/EXECUTION.md`.
 
 > Revision 0.25 adds `SLGuestFileSystem`: a minimal in-guest filesystem over
 > the guest block device - a flat directory of files and an open-file-descriptor
@@ -154,9 +162,9 @@ The `/lib` tree is the canonical language-facing source collection. The compiler
 | Coverage | Count |
 |---|---:|
 | Repository module families represented under /lib | 83 |
-| SLeeLa source units | 10,270 |
+| SLeeLa source units | 10,271 |
 | Module-facade symbols | 55 |
-| Total symbol records | 10,325 |
+| Total symbol records | 10,326 |
 
 Every repository-level module family that is a language/runtime/package concern now has at least one SLeeLa source unit under `/lib`. Documentation, images, generated build output, tests, and CI-only directories remain non-library artifacts and are intentionally not presented as language packages.
 
@@ -182,7 +190,7 @@ The complete path-level and facade-level symbol collection is maintained in `LIB
 
 ## Compiler / Nordshrift / Loader Contract
 
-The shared `sleela::library::Index` recursively discovers the 83 package families and all 10,325 `.sleela` source units. It now exposes package counts, per-package symbol counts, symbol lookup, and source-path resolution. Compiler and Nordshrift use this index; `lib/vm/SLVMModuleLoader.sleela` represents the same discovered package/symbol state at the SLeeLa layer.
+The shared `sleela::library::Index` recursively discovers the 83 package families and all 10,326 `.sleela` source units. It now exposes package counts, per-package symbol counts, symbol lookup, and source-path resolution. Compiler and Nordshrift use this index; `lib/vm/SLVMModuleLoader.sleela` represents the same discovered package/symbol state at the SLeeLa layer.
 
 ## SST / Nordshrift Symbol Contract
 
