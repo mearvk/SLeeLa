@@ -1,0 +1,58 @@
+/*
+ * lib/cpu/SLGuestKernelImage.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLGuestKernelImage — a bootable guest kernel image: a
+ *   stream of canonical SLeeLa opcodes (the compiled kernel text), an entry
+ *   point, and metadata (name, version). This is what the guest VM's substrate
+ *   loads and executes. Unlike the earlier inline opcode stub, an image is
+ *   produced by the real toolchain (SLGuestKernelBuilder compiles kernel source
+ *   through SLCompilerDriver -> register ISA -> SLOpcodeMap -> opcodes), so the
+ *   guest boots a GENUINELY COMPILED kernel (OS-VM roadmap step 4).
+ *
+ * SCOPE NOTE: this is a small CUSTOM kernel compiled by our own toolchain, not
+ * the upstream Linux kernel. Booting real Linux remains a separate, much larger
+ * effort (see EXECUTION.md). The point of step 4 is that the guest image is
+ * compiler output, not a hand-written opcode stub.
+ *
+ * Family: cpu. Composes SLSleelaVM (the opcode store it loads into).
+ */
+#sleela 1.3
+class SLGuestKernelImage {
+  String name;
+  String version;
+  SLRAM ops;      // opcode stream: op per word
+  SLRAM args;     // paired immediate per word
+  int length;
+  int entry;
+
+  void configure(String kernelName, String kernelVersion, int capacity) {
+    name = kernelName; version = kernelVersion;
+    ops = new SLRAM(); ops.configure(capacity, 32); ops.allocate();
+    args = new SLRAM(); args.configure(capacity, 32); args.allocate();
+    length = 0; entry = 0;
+  }
+
+  // Append one compiled opcode to the image.
+  int append(int opcode, int arg) {
+    ops.writeWord(length, opcode);
+    args.writeWord(length, arg);
+    int at = length;
+    length = length + 1;
+    return at;
+  }
+
+  int opcodeAt(int i) { return ops.readWord(i); }
+  int argAt(int i) { return args.readWord(i); }
+
+  // Load this image into a guest VM's substrate for execution.
+  void loadInto(SLSleelaVM vm) {
+    int i = 0;
+    while (i < length) { vm.loadOpcode(ops.readWord(i), args.readWord(i)); i = i + 1; }
+  }
+
+  void setEntry(int e) { entry = e; }
+  int entryPoint() { return entry; }
+  int size() { return length; }
+  String kernelName() { return name; }
+  String kernelVersion() { return version; }
+}

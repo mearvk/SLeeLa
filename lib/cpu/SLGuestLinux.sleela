@@ -32,6 +32,7 @@ class SLGuestLinux {
 
   String distro;
   SLGuestVM vm;
+  SLGuestKernelImage kernelImage;   // compiled kernel image (step 4), if built
   int kernelEntry;
   int initEntry;
   int booted;
@@ -40,6 +41,17 @@ class SLGuestLinux {
   void configure(String distroName, SLGuestVM guest) {
     distro = distroName; vm = guest; booted = 0; syscalls = 0;
     kernelEntry = 0; initEntry = 0;
+  }
+
+  // Install a genuinely-compiled kernel image to boot (step 4). When set,
+  // boot() loads this image into the guest substrate instead of the inline stub.
+  void installKernelImage(SLGuestKernelImage image) { kernelImage = image; }
+
+  // Build and install a compiled guest kernel from source in any supported
+  // language, via the real toolchain (SLGuestKernelBuilder).
+  void buildKernel(String sourcePath, int langId) {
+    SLGuestKernelBuilder builder = new SLGuestKernelBuilder(); builder.configure();
+    kernelImage = builder.build(sourcePath, langId, "slk", "0.1");
   }
 
   // Boot protocol: load a minimal guest-kernel opcode image into the guest VM's
@@ -57,11 +69,16 @@ class SLGuestLinux {
     return kernelEntry;
   }
 
-  // Emit the guest kernel's opcode image into the guest substrate. These are
-  // canonical SLeeLa opcodes (SLSleelaOpcode): CONST/ADD/PRINT/HALT.
+  // Load the guest kernel into the substrate. If a compiled image was installed
+  // (step 4), load that genuinely-compiled kernel; otherwise fall back to a
+  // minimal inline opcode heartbeat so an unconfigured guest still boots.
   void loadKernelImage() {
+    if (kernelImage != null) {
+      kernelImage.loadInto(vm.guestSubstrate());
+      return;
+    }
     SLSleelaOpcode op = new SLSleelaOpcode(); op.configure(0, "OP_NOP");
-    // kernel "init": print 2 + 3 (a boot heartbeat), then halt.
+    // Fallback inline "init": print 2 + 3 (a boot heartbeat), then halt.
     vm.loadOpcode(op.OP_CONST, 2);
     vm.loadOpcode(op.OP_CONST, 3);
     vm.loadOpcode(op.OP_ADD, 0);
