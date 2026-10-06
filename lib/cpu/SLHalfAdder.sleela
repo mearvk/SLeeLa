@@ -1,0 +1,32 @@
+/*
+ * lib/cpu/SLHalfAdder.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLHalfAdder — adds two 1-bit inputs, producing a sum bit
+ *   (XOR) and a carry bit (AND). The simplest arithmetic circuit; the building
+ *   block of the full adder.
+ *
+ * sum   = a XOR b
+ * carry = a AND b
+ *
+ * Family: cpu. Pure Sleela logic composed from SLGate semantics.
+ */
+#sleela 1.3
+class SLHalfAdder {
+  SLGate xorGate;
+  SLGate andGate;
+  int sum;
+  int carry;
+
+  void build() {
+    xorGate = new SLGate(); xorGate.configure(SLGate.XOR);
+    andGate = new SLGate(); andGate.configure(SLGate.AND);
+  }
+
+  void add(int a, int b) {
+    sum = xorGate.eval(a, b);
+    carry = andGate.eval(a, b);
+  }
+
+  int sumBit() { return sum; }
+  int carryBit() { return carry; }
+}

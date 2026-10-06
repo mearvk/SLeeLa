@@ -1,0 +1,29 @@
+/*
+ * lib/cpu/SLConsoleDriver.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLConsoleDriver — a character-output driver (the system
+ *   console / serial tty). It extends SLDeviceDriver and writes characters out
+ *   of its port; the OS's print path and the shell use it. The native side
+ *   renders bytes to the host terminal across the explicit VM/OS bridge.
+ *
+ * Family: cpu. Extends SLDeviceDriver.
+ */
+#sleela 1.3
+class SLConsoleDriver extends SLDeviceDriver {
+  int charsWritten;
+
+  void init(SLIOBus bus, int port) {
+    configure("console", port, -1, bus); // console is polled, no IRQ
+    charsWritten = 0;
+  }
+
+  // Write one character code to the console port and to the host terminal.
+  int putChar(int code) {
+    if (!ready()) { return -1; }
+    write(code);
+    charsWritten = charsWritten + 1;
+    return native sleela_console_putc(code);
+  }
+
+  int charCount() { return charsWritten; }
+}

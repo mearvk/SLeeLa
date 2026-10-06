@@ -1,0 +1,40 @@
+/*
+ * lib/cpu/SLFlipFlop.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLFlipFlop — an edge-triggered 1-bit storage element (a
+ *   D flip-flop). Unlike a latch, it captures its input only on a clock edge,
+ *   which is what makes synchronous CPUs possible: all registers update
+ *   together on the rising edge of the clock.
+ *
+ * Built from a master/slave pair of latches.
+ *
+ * Family: cpu. Pure Sleela state; clocked.
+ */
+#sleela 1.3
+class SLFlipFlop {
+  SLLatch master;
+  SLLatch slave;
+  int d;        // sampled data input
+  int lastClk;  // previous clock level, for edge detection
+
+  void build() {
+    master = new SLLatch(); master.reset();
+    slave = new SLLatch(); slave.reset();
+    d = 0; lastClk = 0;
+  }
+
+  void setD(int bit) { d = bit; }
+
+  // Drive the clock. On the rising edge (0 -> 1), the sampled D propagates
+  // through master then slave to the output.
+  int clock(int clk) {
+    if (lastClk == 0 && clk == 1) {
+      master.enable(); master.write(d); master.disable();
+      slave.enable(); slave.write(master.read()); slave.disable();
+    }
+    lastClk = clk;
+    return slave.read();
+  }
+
+  int read() { return slave.read(); }
+}

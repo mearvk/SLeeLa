@@ -1,0 +1,56 @@
+/*
+ * lib/cpu/SLGate.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLGate, a single Boolean logic gate — the foundational
+ *   primitive of the SLeeLa CPU. Every circuit, adder, register, and ALU is
+ *   ultimately composed from gates, so the whole CPU is Sleela source that
+ *   bottoms out here.
+ *
+ * A gate takes one or two 1-bit inputs (0 or 1) and produces one 1-bit output
+ * according to its kind. Kinds: AND, OR, NOT, NAND, NOR, XOR, XNOR, BUF.
+ * NAND/NOR are universal — any logic can be built from them alone — which is
+ * why real silicon favors them; this class exposes them directly.
+ *
+ * Family: cpu. Pure Sleela logic; no native bridge needed at this layer.
+ */
+#sleela 1.3
+class SLGate {
+  static final int AND  = 0;
+  static final int OR   = 1;
+  static final int NOT  = 2;
+  static final int NAND = 3;
+  static final int NOR  = 4;
+  static final int XOR  = 5;
+  static final int XNOR = 6;
+  static final int BUF  = 7;
+
+  int kind;        // one of the constants above
+  int lastOutput;  // most recent evaluated output bit
+  int evaluations; // how many times this gate has been evaluated
+
+  void configure(int gateKind) { kind = gateKind; lastOutput = 0; evaluations = 0; }
+
+  int clampBit(int v) { if (v != 0) { return 1; } return 0; }
+
+  // Evaluate the gate for the given input bits. For unary gates (NOT, BUF),
+  // only `a` is used.
+  int eval(int a, int b) {
+    int x = clampBit(a);
+    int y = clampBit(b);
+    int out = 0;
+    if (kind == AND)  { if (x == 1 && y == 1) { out = 1; } }
+    if (kind == OR)   { if (x == 1 || y == 1) { out = 1; } }
+    if (kind == NOT)  { if (x == 0) { out = 1; } }
+    if (kind == NAND) { if (x == 1 && y == 1) { out = 0; } else { out = 1; } }
+    if (kind == NOR)  { if (x == 0 && y == 0) { out = 1; } else { out = 0; } }
+    if (kind == XOR)  { if (x != y) { out = 1; } }
+    if (kind == XNOR) { if (x == y) { out = 1; } }
+    if (kind == BUF)  { out = x; }
+    lastOutput = out;
+    evaluations = evaluations + 1;
+    return out;
+  }
+
+  int output() { return lastOutput; }
+  int kindOf() { return kind; }
+}

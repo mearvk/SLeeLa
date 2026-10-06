@@ -1,0 +1,98 @@
+/*
+ * lib/cpu/SLMachine.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLMachine — the complete computer: it composes the entire
+ *   /lib/cpu stack into one bootable system and demonstrates the full chain the
+ *   library exists to express:
+ *
+ *     gates -> adders/ALU -> registers/RAM/cache -> cores -> SLCPU            (hardware)
+ *       -> SLBootloader loads the kernel                                      (boot)
+ *         -> SLOperatingSystem / SLKernel comes up with drivers + scheduler   (OS)
+ *           -> SLAssembler builds a Sleela program                            (program)
+ *             -> SLProgramLoader loads it as a process                        (load)
+ *               -> SLKernel schedules and runs it on the Sleela CPU           (run)
+ *
+ * This is the Sleela CPU built from Sleela source, booting a Sleela
+ * Class-Driven OS, which then loads and runs Sleela programs on top of it.
+ *
+ * Family: cpu. Top-level composition of the whole package.
+ */
+#sleela 1.3
+class SLMachine {
+  SLRAM memory;
+  SLHardDrive drive;
+  SLCPU cpu;
+  SLBootloader bootloader;
+  SLOperatingSystem os;
+  SLProgramLoader loader;
+  SLInstructionSet isa;
+  int kernelEntry;
+  int syscallHandler;
+
+  // Build the hardware: main memory, boot disk, and a multi-core CPU.
+  void buildHardware(String vendor, String model, int cores, int bits, int mhz) {
+    memory = new SLRAM(); memory.configure(1048576, bits); memory.allocate(); // 1M words
+    drive = new SLHardDrive(); drive.configure("boot0", 65536, 4096, SLHardDrive.MEDIA_SSD);
+    drive.mount("boot0.img");
+    cpu = new SLCPU(); cpu.configure(vendor, model, cores, bits, mhz);
+    cpu.power(memory);
+    isa = new SLInstructionSet(); isa.configure();
+  }
+
+  // Boot: firmware loads the kernel image, then the OS installs and comes up.
+  void boot() {
+    kernelEntry = 4096;      // kernel loads high above the vector table
+    syscallHandler = 4096;   // kernel's syscall handler entry (modeled)
+
+    bootloader = new SLBootloader();
+    bootloader.configure(cpu, buildBootDiskDriver(), memory);
+    bootloader.loadKernel(0, 32, kernelEntry);
+
+    os = new SLOperatingSystem();
+    os.configure("SleelaOS", cpu, memory);
+    os.install(drive, syscallHandler);
+
+    loader = new SLProgramLoader();
+    loader.configure(os, memory);
+  }
+
+  // The bootloader needs a disk driver before the OS driver manager exists;
+  // build a minimal one bound to the boot drive.
+  SLDiskDriver buildBootDiskDriver() {
+    SLIOBus bus = new SLIOBus(); bus.configure();
+    SLIOPort port = new SLIOPort(); port.configure(1, SLIOPort.DIR_INOUT); bus.registerPort(1, port);
+    SLDMAController dmaEngine = new SLDMAController(); dmaEngine.configure(memory);
+    SLDiskDriver d = new SLDiskDriver(); d.init(bus, 1, drive, dmaEngine);
+    return d;
+  }
+
+  // Author, assemble, load, and run a demonstration Sleela program:
+  // compute 2 + 3 into r1, print a character via SYS_WRITE, then exit.
+  SLProcess loadDemoProgram(int loadAddr) {
+    SLProgram prog = new SLProgram(); prog.configure("demo", 64);
+    SLAssembler asm = new SLAssembler(); asm.configure(isa, prog);
+
+    asm.mov(1, 2);                                   // r1 = 2
+    asm.mov(2, 3);                                   // r2 = 3
+    asm.add(1, 2);                                   // r1 = r1 + r2 = 5
+    asm.mov(2, 65);                                  // r2 = 'A'
+    asm.syscall(0);                                  // SYS_WRITE: print r2
+    asm.syscall(4);                                  // SYS_EXIT
+    asm.halt();
+
+    return loader.load(prog, loadAddr);
+  }
+
+  // Run the whole chain end to end: build -> boot -> load program -> run.
+  int powerOnAndRun(int cores, int bits, int mhz, int rounds) {
+    buildHardware("SleelaWorks", "SL-Core-X", cores, bits, mhz);
+    boot();
+    loadDemoProgram(8192);
+    return os.run(rounds);
+  }
+
+  SLCPU processor() { return cpu; }
+  SLOperatingSystem operatingSystem() { return os; }
+  SLProgramLoader programLoader() { return loader; }
+  SLRAM mainMemory() { return memory; }
+}

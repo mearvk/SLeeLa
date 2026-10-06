@@ -1,0 +1,100 @@
+/*
+ * lib/cpu/SLKernel.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLKernel — the heart of the operating system. It owns the
+ *   scheduler, memory manager, driver manager, syscall interface, and
+ *   filesystem, and it runs on the CPU that the bootloader handed off to. The
+ *   kernel installs its syscall handler and interrupt handlers, services
+ *   syscalls from user programs, and drives preemptive multitasking via the
+ *   timer interrupt.
+ *
+ * This is the "Sleela OS equivalent": a class-driven kernel built entirely from
+ * the /lib/cpu components, running on the Sleela-source CPU.
+ *
+ * Family: cpu. Composes the whole OS layer.
+ */
+#sleela 1.3
+class SLKernel {
+  SLCPU cpu;
+  SLRAM memory;
+  SLScheduler scheduler;
+  SLMemoryManager mm;
+  SLDriverManager drivers;
+  SLSystemCall syscalls;
+  SLFileSystem fs;
+  int syscallHandlerAddr;
+  int ticks;
+  int running;
+
+  void configure(SLCPU processor, SLRAM ram, SLScheduler sched, SLMemoryManager memMgr,
+                 SLDriverManager drv, SLSystemCall sc, SLFileSystem filesystem,
+                 int handlerAddr) {
+    cpu = processor; memory = ram; scheduler = sched; mm = memMgr;
+    drivers = drv; syscalls = sc; fs = filesystem;
+    syscallHandlerAddr = handlerAddr; ticks = 0; running = 0;
+  }
+
+  // Bring the OS up: install the syscall vector and enable the timer interrupt
+  // on the boot core, then switch the boot core to user mode once a process is
+  // dispatched.
+  void boot() {
+    syscalls.configure();
+    SLCore core = cpu.bootCore();
+    core.installSyscallVector(syscallHandlerAddr);
+    core.interrupts().enable(core.interrupts().IRQ_TIMER);
+    running = 1;
+  }
+
+  // The kernel's main loop. Each outer iteration is one scheduling round:
+  // dispatch the next ready process, run it for a quantum, handle any syscall
+  // it made and any timer preemption, until no runnable process remains or the
+  // round budget is spent.
+  int run(int rounds) {
+    SLCore core = cpu.bootCore();
+    int round = 0;
+    while (running == 1 && round < rounds) {
+      SLProcess proc = scheduler.schedule(core);
+      if (proc == null) { running = 0; return round; }
+
+      int q = 0;
+      while (q < scheduler.quantumTicks() && !core.halted()) {
+        core.tick();
+        int sysno = core.pendingSyscall();
+        if (sysno >= 0) { serviceSyscall(core, proc, sysno); core.clearSyscall(); }
+        q = q + 1;
+      }
+
+      // End of quantum: a timer interrupt preempts the process.
+      core.timerTick();
+      if (core.interrupts().hasPending()) {
+        int line = core.interrupts().highestPriorityPending();
+        core.interrupts().acknowledge(line);
+        drivers.dispatchInterrupt(line);
+      }
+      ticks = ticks + 1;
+      round = round + 1;
+    }
+    return round;
+  }
+
+  // Dispatch a user syscall by number. SYS_WRITE goes to the console driver;
+  // SYS_EXIT terminates the process; SYS_YIELD gives up the rest of the quantum.
+  void serviceSyscall(SLCore core, SLProcess proc, int number) {
+    syscalls.count();
+    if (number == syscalls.SYS_WRITE) {
+      int ch = core.registers().read(2); // convention: r2 holds the char
+      if (drivers.consoleDriver() != null) { drivers.consoleDriver().putChar(ch); }
+    } else if (number == syscalls.SYS_EXIT) {
+      proc.terminate();
+    } else if (number == syscalls.SYS_YIELD) {
+      proc.markReady();
+    }
+  }
+
+  void shutdown() { running = 0; }
+  int tickCount() { return ticks; }
+  boolean isRunning() { return running == 1; }
+  SLScheduler sched() { return scheduler; }
+  SLDriverManager driverManager() { return drivers; }
+  SLFileSystem fileSystem() { return fs; }
+}

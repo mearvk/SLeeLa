@@ -1,0 +1,35 @@
+/*
+ * lib/cpu/SLIOPort.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLIOPort — a single port-mapped I/O register through
+ *   which the CPU talks to a device. The IN instruction reads a port; the OUT
+ *   instruction writes one. Each port has a number, a direction, and a latched
+ *   value; devices and drivers sit on the far side.
+ *
+ * Family: cpu. Pure Sleela I/O element.
+ */
+#sleela 1.3
+class SLIOPort {
+  static final int DIR_IN    = 0;
+  static final int DIR_OUT   = 1;
+  static final int DIR_INOUT = 2;
+
+  int portNumber;
+  int direction;
+  int latched;
+  int readCount;
+  int writeCount;
+
+  void configure(int number, int dir) {
+    portNumber = number; direction = dir; latched = 0; readCount = 0; writeCount = 0;
+  }
+
+  int in() { readCount = readCount + 1; return latched; }
+  void out(int value) { writeCount = writeCount + 1; latched = value; }
+
+  // Device side: a device deposits a value for the CPU to read.
+  void deviceDeposit(int value) { latched = value; }
+
+  int number() { return portNumber; }
+  int dir() { return direction; }
+}

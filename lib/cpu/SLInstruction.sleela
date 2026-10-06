@@ -1,0 +1,33 @@
+/*
+ * lib/cpu/SLInstruction.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLInstruction — one decoded machine instruction: an
+ *   opcode plus up to two register operands and an immediate/address field.
+ *   This is the unit the fetch stage produces and the execute stage consumes.
+ *
+ * Encoding (modeled): [opcode][rd][rs][imm]. A real ISA packs these into fixed-
+ * or variable-width words; here they are fields for clarity.
+ *
+ * Family: cpu. Pure Sleela data.
+ */
+#sleela 1.3
+class SLInstruction {
+  int opcode;
+  int rd;    // destination register index
+  int rs;    // source register index
+  int imm;   // immediate value or memory/branch address
+
+  void configure(int op, int dest, int src, int immediate) {
+    opcode = op; rd = dest; rs = src; imm = immediate;
+  }
+
+  int op() { return opcode; }
+  int dest() { return rd; }
+  int src() { return rs; }
+  int immediate() { return imm; }
+
+  // Pack into a single word for storage in RAM (modeled fixed layout).
+  int encode() {
+    return ((opcode % 256) * 16777216) + ((rd % 256) * 65536) + ((rs % 256) * 256) + (imm % 256);
+  }
+}

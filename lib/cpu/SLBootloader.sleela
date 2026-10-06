@@ -1,0 +1,43 @@
+/*
+ * lib/cpu/SLBootloader.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLBootloader — the firmware/boot sequence that runs on
+ *   the CPU's boot core after power-on. It reads the kernel image from the boot
+ *   disk into main memory, sets the boot core's entry point to the kernel, and
+ *   hands off control. This is the bridge from bare hardware (SLCPU) to the OS
+ *   (SLKernel).
+ *
+ * Family: cpu. Composes SLCPU, SLDiskDriver, SLRAM.
+ */
+#sleela 1.3
+class SLBootloader {
+  SLCPU cpu;
+  SLDiskDriver boot;
+  SLRAM memory;
+  int kernelLoadAddr;
+  int kernelBlocks;
+  int booted;
+
+  void configure(SLCPU processor, SLDiskDriver bootDisk, SLRAM ram) {
+    cpu = processor; boot = bootDisk; memory = ram;
+    kernelLoadAddr = 0; kernelBlocks = 0; booted = 0;
+  }
+
+  // POST: minimal power-on self test — confirm core 0 and memory are present.
+  boolean post() { return cpu != null && cpu.bootCore() != null && memory != null; }
+
+  // Load `blocks` of the kernel image starting at disk block `fromBlock` into
+  // memory at `loadAddr`, then point the boot core at it.
+  int loadKernel(int fromBlock, int blocks, int loadAddr) {
+    if (!post()) { return -1; }
+    kernelLoadAddr = loadAddr; kernelBlocks = blocks;
+    int i = 0;
+    while (i < blocks) { boot.readBlock(fromBlock + i); i = i + 1; }
+    cpu.bootCore().loadEntryPoint(loadAddr);
+    booted = 1;
+    return loadAddr;
+  }
+
+  boolean handedOff() { return booted == 1; }
+  int entryPoint() { return kernelLoadAddr; }
+}

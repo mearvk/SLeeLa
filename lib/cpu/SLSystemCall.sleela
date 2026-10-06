@@ -1,0 +1,45 @@
+/*
+ * lib/cpu/SLSystemCall.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLSystemCall — the system-call interface: the controlled
+ *   doorway from user programs into the kernel. A user program issues the
+ *   SYSCALL instruction with a call number; the CPU switches to supervisor mode
+ *   and jumps to the kernel's syscall handler, which dispatches on the number.
+ *   This class is the registry of call numbers and the dispatcher contract.
+ *
+ * Call numbers model a minimal POSIX-like surface: write, read, open, close,
+ * exit, spawn, yield.
+ *
+ * Family: cpu. Pure Sleela ABI definition.
+ */
+#sleela 1.3
+class SLSystemCall {
+  static final int SYS_WRITE = 0;
+  static final int SYS_READ  = 1;
+  static final int SYS_OPEN  = 2;
+  static final int SYS_CLOSE = 3;
+  static final int SYS_EXIT  = 4;
+  static final int SYS_SPAWN = 5;
+  static final int SYS_YIELD = 6;
+  static final int SYS_COUNT = 7;
+
+  int calls;
+
+  void configure() { calls = 0; }
+
+  boolean valid(int number) { return number >= 0 && number < SYS_COUNT; }
+  void count() { calls = calls + 1; }
+
+  String nameOf(int number) {
+    if (number == SYS_WRITE) { return "write"; }
+    if (number == SYS_READ) { return "read"; }
+    if (number == SYS_OPEN) { return "open"; }
+    if (number == SYS_CLOSE) { return "close"; }
+    if (number == SYS_EXIT) { return "exit"; }
+    if (number == SYS_SPAWN) { return "spawn"; }
+    if (number == SYS_YIELD) { return "yield"; }
+    return "invalid";
+  }
+
+  int callCount() { return calls; }
+}

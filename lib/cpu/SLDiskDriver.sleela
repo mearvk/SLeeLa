@@ -1,0 +1,47 @@
+/*
+ * lib/cpu/SLDiskDriver.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLDiskDriver — the block-storage driver. It extends
+ *   SLDeviceDriver and binds an SLHardDrive plus (optionally) an SLDMAController
+ *   so the OS can read/write disk blocks, using DMA for bulk transfers and the
+ *   disk IRQ for completion. The bootloader and filesystem go through it.
+ *
+ * Family: cpu. Extends SLDeviceDriver; composes SLHardDrive and SLDMAController.
+ */
+#sleela 1.3
+class SLDiskDriver extends SLDeviceDriver {
+  SLHardDrive drive;
+  SLDMAController dma;
+  int blocksRead;
+  int blocksWritten;
+
+  void init(SLIOBus bus, int port, SLHardDrive hd, SLDMAController dmaEngine) {
+    configure("disk", port, 2, bus); // IRQ_DISK = 2
+    drive = hd; dma = dmaEngine;
+    blocksRead = 0; blocksWritten = 0;
+  }
+
+  int readBlock(int block) {
+    if (!ready()) { return -1; }
+    blocksRead = blocksRead + 1;
+    return drive.readBlock(block);
+  }
+
+  int writeBlock(int block, int payloadHandle) {
+    if (!ready()) { return -1; }
+    blocksWritten = blocksWritten + 1;
+    return drive.writeBlock(block, payloadHandle);
+  }
+
+  // Bulk read via DMA directly into main memory, then the device raises its IRQ.
+  int dmaReadInto(int diskBlock, int memWord, int words) {
+    if (!ready() || dma == null) { return -1; }
+    dma.program(diskBlock, memWord, words);
+    return dma.runTransfer();
+  }
+
+  void serviceInterrupt() { /* clear device status; wake the waiting process */ }
+
+  int readsIssued() { return blocksRead; }
+  int writesIssued() { return blocksWritten; }
+}

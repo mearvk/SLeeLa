@@ -1,0 +1,36 @@
+/*
+ * lib/cpu/SLProgramLoader.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLProgramLoader — the OS loader that copies an SLProgram
+ *   image into main memory at a chosen load address, registers the entry point,
+ *   and asks the OS to spawn it as a process. This is the final link: it takes
+ *   an assembled Sleela program and makes it a running process on the Sleela
+ *   CPU under the Sleela OS.
+ *
+ * Family: cpu. Composes SLOperatingSystem, SLRAM, SLProgram, SLProcess.
+ */
+#sleela 1.3
+class SLProgramLoader {
+  SLOperatingSystem os;
+  SLRAM memory;
+  int loaded;
+
+  void configure(SLOperatingSystem operatingSystem, SLRAM ram) {
+    os = operatingSystem; memory = ram; loaded = 0;
+  }
+
+  // Copy the program's instruction words into memory starting at loadAddr,
+  // then spawn it. Returns the created process.
+  SLProcess load(SLProgram program, int loadAddr) {
+    int i = 0;
+    while (i < program.size()) {
+      memory.writeWord(loadAddr + i, program.wordAt(i));
+      i = i + 1;
+    }
+    program.setEntryPoint(loadAddr);
+    loaded = loaded + 1;
+    return os.spawn(program.programName(), loadAddr);
+  }
+
+  int programsLoaded() { return loaded; }
+}

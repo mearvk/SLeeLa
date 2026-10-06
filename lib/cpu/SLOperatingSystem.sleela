@@ -1,0 +1,96 @@
+/*
+ * lib/cpu/SLOperatingSystem.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLOperatingSystem — the full OS assembly: it constructs
+ *   the kernel and all its subsystems over a given CPU and memory, wires the
+ *   standard device drivers, and exposes a clean API for the machine to boot
+ *   and for programs to be loaded and run. This is the Sleela Class-Driven OS.
+ *
+ * Composition order mirrors a real boot:
+ *   memory manager -> I/O bus + drivers -> filesystem -> syscalls -> scheduler
+ *   -> kernel.
+ *
+ * Family: cpu. Top of the OS layer; composes SLKernel and all subsystems.
+ */
+#sleela 1.3
+class SLOperatingSystem {
+  String name;
+  SLCPU cpu;
+  SLRAM memory;
+
+  SLIOBus io;
+  SLDMAController dma;
+  SLConsoleDriver console;
+  SLDiskDriver disk;
+  SLKeyboardDriver keyboard;
+  SLNetworkDriver net;
+  SLDriverManager drivers;
+
+  SLMemoryManager mm;
+  SLSystemCall syscalls;
+  SLFileSystem fs;
+  SLScheduler scheduler;
+  SLKernel kernel;
+
+  int nextPid;
+
+  void configure(String osName, SLCPU processor, SLRAM ram) {
+    name = osName; cpu = processor; memory = ram; nextPid = 1;
+  }
+
+  // Build every subsystem and bring the kernel up.
+  void install(SLHardDrive bootDrive, int syscallHandlerAddr) {
+    // Memory
+    mm = new SLMemoryManager(); mm.configure(memory, 256, 16);
+
+    // I/O + drivers
+    io = new SLIOBus(); io.configure();
+    SLIOPort consolePort = new SLIOPort(); consolePort.configure(0, SLIOPort.DIR_OUT); io.registerPort(0, consolePort);
+    SLIOPort diskPort = new SLIOPort(); diskPort.configure(1, SLIOPort.DIR_INOUT); io.registerPort(1, diskPort);
+    SLIOPort kbdPort = new SLIOPort(); kbdPort.configure(2, SLIOPort.DIR_IN); io.registerPort(2, kbdPort);
+    SLIOPort netPort = new SLIOPort(); netPort.configure(3, SLIOPort.DIR_INOUT); io.registerPort(3, netPort);
+
+    dma = new SLDMAController(); dma.configure(memory);
+
+    console = new SLConsoleDriver(); console.init(io, 0);
+    disk = new SLDiskDriver(); disk.init(io, 1, bootDrive, dma);
+    keyboard = new SLKeyboardDriver(); keyboard.init(io, 2);
+    net = new SLNetworkDriver(); net.init(io, 3, dma);
+
+    drivers = new SLDriverManager(); drivers.configure();
+    drivers.installConsole(console);
+    drivers.installDisk(disk);
+    drivers.installKeyboard(keyboard);
+    drivers.installNetwork(net);
+
+    // Filesystem (data region starts after the kernel image blocks)
+    fs = new SLFileSystem(); fs.configure(disk, 64);
+
+    // Syscalls + scheduler
+    syscalls = new SLSystemCall(); syscalls.configure();
+    scheduler = new SLScheduler(); scheduler.configure(16); // 16-tick quantum
+
+    // Kernel
+    kernel = new SLKernel();
+    kernel.configure(cpu, memory, scheduler, mm, drivers, syscalls, fs, syscallHandlerAddr);
+    kernel.boot();
+  }
+
+  // Admit a loaded program as a schedulable process.
+  SLProcess spawn(String procName, int entryPoint) {
+    int base = mm.allocPages(4);
+    SLProcess p = new SLProcess();
+    p.configure(nextPid, procName, entryPoint, base, 1);
+    nextPid = nextPid + 1;
+    scheduler.admit(p);
+    return p;
+  }
+
+  // Hand control to the kernel for a bounded number of scheduling rounds.
+  int run(int rounds) { return kernel.run(rounds); }
+
+  String osName() { return name; }
+  SLKernel getKernel() { return kernel; }
+  SLFileSystem getFileSystem() { return fs; }
+  SLDriverManager getDrivers() { return drivers; }
+}

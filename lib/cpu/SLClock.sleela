@@ -1,0 +1,32 @@
+/*
+ * lib/cpu/SLClock.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLClock — the oscillator that drives synchronous logic.
+ *   It produces alternating low/high levels (ticks); every rising edge advances
+ *   the CPU by one cycle. Frequency is modeled in MHz, and the clock counts the
+ *   cycles it has issued (the basis for performance accounting).
+ *
+ * Family: cpu. Pure Sleela timing source.
+ */
+#sleela 1.3
+class SLClock {
+  int frequencyMHz;
+  int level;    // current clock level, 0 or 1
+  int cycles;   // completed cycles (rising edges issued)
+
+  void configure(int mhz) { frequencyMHz = mhz; level = 0; cycles = 0; }
+
+  // One half-step: toggle the level. A full cycle is two toggles; a rising
+  // edge (0 -> 1) increments the cycle counter.
+  int toggle() {
+    if (level == 0) { level = 1; cycles = cycles + 1; } else { level = 0; }
+    return level;
+  }
+
+  // Issue a full cycle (low then high) and return the new cycle count.
+  int tick() { toggle(); toggle(); return cycles; }
+
+  int currentLevel() { return level; }
+  int cycleCount() { return cycles; }
+  int frequency() { return frequencyMHz; }
+}

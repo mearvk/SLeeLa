@@ -1,0 +1,52 @@
+/*
+ * lib/cpu/SLDeviceDriver.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLDeviceDriver — the base class for all device drivers.
+ *   A driver is the software contract between the OS and a hardware device: it
+ *   owns the device's I/O port(s), exposes a uniform lifecycle (probe, attach,
+ *   open, read/write, close, detach), and fields the device's interrupt. The
+ *   kernel talks to devices only through drivers.
+ *
+ * Concrete drivers (console, disk, keyboard, network) extend this and override
+ * the transfer methods.
+ *
+ * Family: cpu. Composes SLIOBus; base of the driver hierarchy.
+ */
+#sleela 1.3
+class SLDeviceDriver {
+  static final int STATE_UNLOADED = 0;
+  static final int STATE_ATTACHED = 1;
+  static final int STATE_OPEN     = 2;
+
+  String name;
+  int portNumber;
+  int irqLine;
+  int state;
+  SLIOBus io;
+  int opsIn;
+  int opsOut;
+
+  void configure(String driverName, int port, int irq, SLIOBus bus) {
+    name = driverName; portNumber = port; irqLine = irq; io = bus;
+    state = STATE_UNLOADED; opsIn = 0; opsOut = 0;
+  }
+
+  // Lifecycle. probe() asks whether the device is present; attach() binds it.
+  boolean probe() { return io != null && io.port(portNumber) != null; }
+  void attach() { if (probe()) { state = STATE_ATTACHED; } }
+  void open() { if (state == STATE_ATTACHED) { state = STATE_OPEN; } }
+  void close() { if (state == STATE_OPEN) { state = STATE_ATTACHED; } }
+  void detach() { state = STATE_UNLOADED; }
+
+  // Default transfer: byte/word through the bound port. Concrete drivers
+  // override with device-specific framing.
+  int read() { if (state != STATE_OPEN) { return -1; } opsIn = opsIn + 1; return io.in(portNumber); }
+  int write(int value) { if (state != STATE_OPEN) { return -1; } opsOut = opsOut + 1; io.out(portNumber, value); return 0; }
+
+  // Interrupt service routine entry; concrete drivers override.
+  void serviceInterrupt() { }
+
+  boolean ready() { return state == STATE_OPEN; }
+  String driverName() { return name; }
+  int irq() { return irqLine; }
+}
