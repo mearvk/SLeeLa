@@ -1,11 +1,81 @@
 /*
  * lib/os/SLProcess.sleela
  * SLeeLa Standard Library Definition.
- * Definition: Defines the SLeeLa standard-library type SLProcess used within the os library family.
+ * Definition: Defines SLProcess — a host operating-system process launched from
+ *   SLeeLa source. It wraps the VM's process built-ins: osRun (synchronous),
+ *   osSpawn (background), osWait (reap + exit code), osKill (terminate), and
+ *   osProcessClose (release). Underneath, the VM calls CreateProcess + Wait*
+ *   on Windows and posix_spawn + waitpid on Linux/macOS; the spawned child is a
+ *   VM-local handle, never a raw PID, keeping the bounded-handle safety model.
+ *
+ * Lifecycle: configure(command) -> start() (async) or runSync(); then wait()
+ * for the exit code, or kill() to terminate. A handle is single-use: wait()
+ * and close() both release it.
+ *
+ * Family: os. Native VM/OS work crosses the explicit `os*` SLVM bridge.
  */
-#sleela 1.3
-// Unified SLeeLa standard-library front-end object.
-// Family: os. Native VM/OS work crosses an explicit bridge.
+#sleela 1.5
 class SLProcess {
-  String name; int state; void configure(String n){name=n;} void open(){state=1;} void close(){state=0;} boolean active(){return state==1;}
+  static final int STATE_NEW     = 0;
+  static final int STATE_RUNNING = 1;
+  static final int STATE_EXITED  = 2;
+  static final int STATE_FAILED  = 3;
+
+  String command;
+  int handle;      // VM-local process handle (-1 = none)
+  int state;
+  int exitCode;
+
+  void configure(String cmd) {
+    command = cmd; handle = -1; state = STATE_NEW; exitCode = -1;
+  }
+
+  // Run synchronously: block until the process exits, recording the exit code.
+  // Returns the exit code (0 == success).
+  int runSync() {
+    exitCode = osRun(command);
+    state = (exitCode == 0) ? STATE_EXITED : STATE_FAILED;
+    return exitCode;
+  }
+
+  // Start the process in the background. Returns true if it launched. After a
+  // successful start the process is RUNNING and must be reaped with wait()
+  // (or released with close()).
+  boolean start() {
+    handle = osSpawn(command);
+    if (handle < 0) { state = STATE_FAILED; return false; }
+    state = STATE_RUNNING;
+    return true;
+  }
+
+  // Block for a started process and collect its exit code; releases the handle.
+  int wait() {
+    if (handle < 0) { return -1; }
+    exitCode = osWait(handle);
+    handle = -1;                       // osWait consumes the handle
+    state = (exitCode == 0) ? STATE_EXITED : STATE_FAILED;
+    return exitCode;
+  }
+
+  // Terminate a running process and release its handle (reaping it), so a
+  // kill-only path does not leak a VM process-table slot. After kill() the
+  // process is FAILED and the handle is gone.
+  boolean kill() {
+    if (handle < 0) { return false; }
+    boolean ok = osKill(handle) == 0;
+    osProcessClose(handle);            // release the slot (reap the child)
+    handle = -1;
+    state = STATE_FAILED;
+    return ok;
+  }
+
+  // Release a started-but-unwaited process without blocking.
+  void close() {
+    if (handle >= 0) { osProcessClose(handle); handle = -1; }
+  }
+
+  boolean running() { return state == STATE_RUNNING; }
+  boolean succeeded() { return state == STATE_EXITED && exitCode == 0; }
+  int status() { return exitCode; }
+  int processState() { return state; }
 }

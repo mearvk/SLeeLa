@@ -1,0 +1,63 @@
+/*
+ * lib/os/SLMacOS.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLMacOS — the macOS-specific flavor of the OS family. It
+ *   composes the general `os*` built-ins into macOS idioms: /bin/sh and `open`
+ *   command execution, the Apple directory layout (~/Library, /Applications,
+ *   /System, /Volumes), Homebrew prefixes, and `defaults`/`sw_vers`-style
+ *   queries run as commands. Underneath it is genuine POSIX on Darwin —
+ *   posix_spawn/waitpid, getenv/setenv, stat — plus Apple's libSystem.
+ *
+ * Guard: methods are meaningful only when osPlatform()=="macOS"; isHost()
+ * lets a program check first.
+ *
+ * Family: os. Native VM/OS work crosses the explicit `os*` SLVM bridge.
+ */
+#sleela 1.5
+class SLMacOS {
+  void configure() {}
+
+  // True when the running host is actually macOS.
+  boolean isHost() { return osPlatform() == "macOS"; }
+
+  // ---- Shell / Apple tools -----------------------------------------------
+  // Run a command through /bin/sh.
+  int sh(String command) { return osRun(command); }
+  // Open a file/URL/app with the default handler via the `open(1)` tool.
+  int openWith(String target) { return osRun("open " + target); }
+  // Launch a .app bundle by name, e.g. "Safari".
+  int launchApp(String appName) { return osRun("open -a " + appName); }
+  // Start a background command; returns an SLProcess.
+  SLProcess startSh(String command) {
+    SLProcess p = new SLProcess(); p.configure(command); p.start(); return p;
+  }
+
+  // ---- Apple directory layout --------------------------------------------
+  String home()        { return osGetEnv("HOME"); }
+  String library()     { return osGetEnv("HOME") + "/Library"; }
+  String appSupport()  { return osGetEnv("HOME") + "/Library/Application Support"; }
+  String preferences() { return osGetEnv("HOME") + "/Library/Preferences"; }
+  String applications(){ return "/Applications"; }
+  String system()      { return "/System"; }
+  String volumes()     { return "/Volumes"; }
+
+  // Homebrew prefix: Apple Silicon uses /opt/homebrew, Intel uses /usr/local.
+  String brewPrefix() {
+    if (osExists("/opt/homebrew") == 1) { return "/opt/homebrew"; }
+    return "/usr/local";
+  }
+
+  // ---- System facts via Apple CLIs ---------------------------------------
+  // Run `sw_vers` to print the macOS product version to the console.
+  int productVersion() { return osRun("sw_vers -productVersion"); }
+  // Read a defaults domain key, e.g. domain "NSGlobalDomain", key "AppleLocale".
+  int readDefault(String domain, String key) {
+    return osRun("defaults read " + domain + " " + key);
+  }
+
+  // ---- Filesystem / identity (through the real OS) ------------------------
+  boolean exists(String path) { return osExists(path) == 1; }
+  String tempDir() { return osTempDir(); }   // honours TMPDIR
+  String hostName() { return osHostName(); }
+  String userName() { return osUserName(); }
+}

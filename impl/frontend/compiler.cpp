@@ -530,6 +530,38 @@ private:
         if(n=="arraySet"){if(c.args.size()!=3)throw std::runtime_error("Semantic error: arraySet(array, index, value) takes three arguments");emitExpr(c.args[0].get());emitExpr(c.args[1].get());emitExpr(c.args[2].get());emit(OP_ARRSET);return true;}
         if(n=="arrayPush"){if(c.args.size()!=2)throw std::runtime_error("Semantic error: arrayPush(array, value) takes two arguments");emitExpr(c.args[0].get());emitExpr(c.args[1].get());emit(OP_ARRPUSH);return true;}
 
+        // ---- Operating-system system calls (syntax 1.5). The os* built-ins
+        // reach the genuine host System API (Win32 / POSIX / Apple) through the
+        // VM's sleela_os backend. A spawned process is a VM-local handle, the
+        // same bounded-handle discipline as sockets/files. ----
+        if(n=="osPlatform"||n=="osCapability"||n=="osGetEnv"||n=="osSetEnv"||n=="osCurrentDir"||
+           n=="osChangeDir"||n=="osHostName"||n=="osUserName"||n=="osTempDir"||n=="osProcessId"||
+           n=="osExists"||n=="osIsDir"||n=="osFileSize"||n=="osMakeDir"||n=="osRemove"||n=="osRename"||
+           n=="osRun"||n=="osSpawn"||n=="osWait"||n=="osKill"||n=="osProcessClose"){
+            if(syntax_<SyntaxVersion{1,5})throw std::runtime_error("Semantic error: operating-system built-ins require #sleela 1.5");
+        }
+        if(n=="osPlatform"){if(!c.args.empty())throw std::runtime_error("Semantic error: osPlatform() takes no arguments");emit(OP_OS_PLATFORM);return true;}
+        if(n=="osCapability"){if(c.args.size()!=1)throw std::runtime_error("Semantic error: osCapability(capability) takes one argument");emitExpr(c.args[0].get());emit(OP_OS_CAPABILITY);return true;}
+        if(n=="osGetEnv"){if(c.args.size()!=1)throw std::runtime_error("Semantic error: osGetEnv(name) takes one argument");emitExpr(c.args[0].get());emit(OP_OS_GETENV);return true;}
+        if(n=="osSetEnv"){if(c.args.size()!=2)throw std::runtime_error("Semantic error: osSetEnv(name, value) takes two arguments");emitExpr(c.args[0].get());emitExpr(c.args[1].get());emit(OP_OS_SETENV);return true;}
+        if(n=="osCurrentDir"){if(!c.args.empty())throw std::runtime_error("Semantic error: osCurrentDir() takes no arguments");emit(OP_OS_CWD);return true;}
+        if(n=="osChangeDir"){if(c.args.size()!=1)throw std::runtime_error("Semantic error: osChangeDir(path) takes one argument");emitExpr(c.args[0].get());emit(OP_OS_CHDIR);return true;}
+        if(n=="osHostName"){if(!c.args.empty())throw std::runtime_error("Semantic error: osHostName() takes no arguments");emit(OP_OS_HOSTNAME);return true;}
+        if(n=="osUserName"){if(!c.args.empty())throw std::runtime_error("Semantic error: osUserName() takes no arguments");emit(OP_OS_USERNAME);return true;}
+        if(n=="osTempDir"){if(!c.args.empty())throw std::runtime_error("Semantic error: osTempDir() takes no arguments");emit(OP_OS_TEMPDIR);return true;}
+        if(n=="osProcessId"){if(!c.args.empty())throw std::runtime_error("Semantic error: osProcessId() takes no arguments");emit(OP_OS_PID);return true;}
+        if(n=="osExists"){if(c.args.size()!=1)throw std::runtime_error("Semantic error: osExists(path) takes one argument");emitExpr(c.args[0].get());emit(OP_OS_EXISTS);return true;}
+        if(n=="osIsDir"){if(c.args.size()!=1)throw std::runtime_error("Semantic error: osIsDir(path) takes one argument");emitExpr(c.args[0].get());emit(OP_OS_ISDIR);return true;}
+        if(n=="osFileSize"){if(c.args.size()!=1)throw std::runtime_error("Semantic error: osFileSize(path) takes one argument");emitExpr(c.args[0].get());emit(OP_OS_FILESIZE);return true;}
+        if(n=="osMakeDir"){if(c.args.size()!=1)throw std::runtime_error("Semantic error: osMakeDir(path) takes one argument");emitExpr(c.args[0].get());emit(OP_OS_MKDIR);return true;}
+        if(n=="osRemove"){if(c.args.size()!=1)throw std::runtime_error("Semantic error: osRemove(path) takes one argument");emitExpr(c.args[0].get());emit(OP_OS_REMOVE);return true;}
+        if(n=="osRename"){if(c.args.size()!=2)throw std::runtime_error("Semantic error: osRename(from, to) takes two arguments");emitExpr(c.args[0].get());emitExpr(c.args[1].get());emit(OP_OS_RENAME);return true;}
+        if(n=="osRun"){if(c.args.size()!=1)throw std::runtime_error("Semantic error: osRun(command) takes one argument");emitExpr(c.args[0].get());emit(OP_OS_RUN);return true;}
+        if(n=="osSpawn"){if(c.args.size()!=1)throw std::runtime_error("Semantic error: osSpawn(command) takes one argument");emitExpr(c.args[0].get());emit(OP_OS_SPAWN);return true;}
+        if(n=="osWait"){if(c.args.size()!=1)throw std::runtime_error("Semantic error: osWait(process) takes one argument");emitExpr(c.args[0].get());emit(OP_OS_WAIT);return true;}
+        if(n=="osKill"){if(c.args.size()!=1)throw std::runtime_error("Semantic error: osKill(process) takes one argument");emitExpr(c.args[0].get());emit(OP_OS_KILL);return true;}
+        if(n=="osProcessClose"){if(c.args.size()!=1)throw std::runtime_error("Semantic error: osProcessClose(process) takes one argument");emitExpr(c.args[0].get());emit(OP_OS_PCLOSE);return true;}
+
         if(n=="bestOfNew"){if(!c.args.empty())throw std::runtime_error("Semantic error: bestOfNew() takes no arguments");emit(OP_BEST_NEW);return true;}
         if(n=="bestOfWeight"){if(c.args.size()!=3)throw std::runtime_error("Semantic error: bestOfWeight(handle, axis, weight) takes three arguments");emitArgs(c);emit(OP_BEST_WEIGHT);return true;}
         if(n=="bestOfMinVersion"){if(c.args.size()!=2)throw std::runtime_error("Semantic error: bestOfMinVersion(handle, minVersion) takes two arguments");emitArgs(c);emit(OP_BEST_MINVER);return true;}

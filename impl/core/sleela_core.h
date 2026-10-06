@@ -86,8 +86,35 @@ typedef enum {
     OP_ARRGET,     /* pops index then array; pushes element (TERR on out-of-range)              */
     OP_ARRSET,     /* pops value then index then array; writes element; pushes value            */
     OP_ARRLEN,     /* pops array; pushes int length                                             */
-    OP_ARRPUSH     /* pops value then array; appends; pushes new int length                     */
+    OP_ARRPUSH,    /* pops value then array; appends; pushes new int length                     */
+    /* Operating-system system calls (syntax 1.5). The os* built-ins reach the
+     * genuine host System API (Win32 / POSIX / Apple) through sleela_os.c. A
+     * spawned child is a VM-local handle into a bounded process table, the same
+     * handle discipline as sockets/files. Appended at the end of the enum so
+     * existing serialized-artifact opcode numbers are unchanged. */
+    OP_OS_PLATFORM,   /* pushes host OS name String                                 */
+    OP_OS_CAPABILITY, /* pops capability int; pushes 1/0                            */
+    OP_OS_GETENV,     /* pops name String; pushes value String ("" if unset)        */
+    OP_OS_SETENV,     /* pops value,name Strings; pushes 0/-1                        */
+    OP_OS_CWD,        /* pushes current working directory String                    */
+    OP_OS_CHDIR,      /* pops path String; pushes 0/-1                              */
+    OP_OS_HOSTNAME,   /* pushes host name String                                    */
+    OP_OS_USERNAME,   /* pushes current user name String                            */
+    OP_OS_TEMPDIR,    /* pushes system temp directory String                        */
+    OP_OS_PID,        /* pushes this process' id int                                */
+    OP_OS_EXISTS,     /* pops path String; pushes 1/0/-1                            */
+    OP_OS_ISDIR,      /* pops path String; pushes 1/0/-1                            */
+    OP_OS_FILESIZE,   /* pops path String; pushes size int (-1 on error)            */
+    OP_OS_MKDIR,      /* pops path String; pushes 0/-1                              */
+    OP_OS_REMOVE,     /* pops path String; pushes 0/-1                              */
+    OP_OS_RENAME,     /* pops to,from Strings; pushes 0/-1                          */
+    OP_OS_RUN,        /* pops command String; runs it; pushes exit code int         */
+    OP_OS_SPAWN,      /* pops command String; pushes process handle (-1 on failure) */
+    OP_OS_WAIT,       /* pops process handle; waits; pushes exit code int           */
+    OP_OS_KILL,       /* pops process handle; pushes 0/-1                           */
+    OP_OS_PCLOSE      /* pops process handle; releases it; pushes null              */
 } SLOp;
+#define SL_MAX_OS_PROCESSES 64    /* live spawned child processes per VM        */
 /* Synchro stat selectors for OP_SYN_STAT (operand a). */
 #define SL_SYN_STAT_SENT 0
 #define SL_SYN_STAT_RECV 1

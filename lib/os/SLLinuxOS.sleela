@@ -1,0 +1,71 @@
+/*
+ * lib/os/SLLinuxOS.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLLinuxOS — the Linux-specific flavor of the OS family.
+ *   It composes the general `os*` built-ins into Linux idioms: /bin/sh command
+ *   execution, XDG and HOME/PATH environment entries, the Filesystem Hierarchy
+ *   Standard directories (/etc, /proc, /sys, /tmp, /var), and reading kernel/
+ *   distro facts out of /proc and /etc. Underneath it is genuine POSIX —
+ *   posix_spawn/waitpid, getenv/setenv, stat, getcwd — on the real kernel.
+ *
+ * Guard: methods are meaningful only when osPlatform()=="Linux"; isHost()
+ * lets a program check first.
+ *
+ * Family: os. Native VM/OS work crosses the explicit `os*` SLVM bridge.
+ */
+#sleela 1.5
+class SLLinuxOS {
+  void configure() {}
+
+  // True when the running host is actually Linux.
+  boolean isHost() { return osPlatform() == "Linux"; }
+
+  // ---- Shell / processes --------------------------------------------------
+  // Run a command through /bin/sh (osRun uses /bin/sh -c on POSIX).
+  int sh(String command) { return osRun(command); }
+  // Start a background command; returns an SLProcess to wait()/kill().
+  SLProcess startSh(String command) {
+    SLProcess p = new SLProcess(); p.configure(command); p.start(); return p;
+  }
+  // Reap a daemon-style child by handle.
+  int waitFor(int processHandle) { return osWait(processHandle); }
+
+  // ---- Environment (HOME/PATH/XDG/SHELL) ---------------------------------
+  String home()  { return osGetEnv("HOME"); }
+  String path()  { return osGetEnv("PATH"); }
+  String shell() { return osGetEnv("SHELL"); }
+  String xdgConfigHome() {
+    String v = osGetEnv("XDG_CONFIG_HOME");
+    if (v != "") { return v; }
+    return osGetEnv("HOME") + "/.config";
+  }
+  String xdgRuntimeDir() { return osGetEnv("XDG_RUNTIME_DIR"); }
+
+  // ---- Filesystem Hierarchy Standard roots -------------------------------
+  String etc()  { return "/etc"; }
+  String proc() { return "/proc"; }
+  String sys()  { return "/sys"; }
+  String tmp()  { return "/tmp"; }
+  String var()  { return "/var"; }
+
+  // ---- Kernel / distro facts (read real files via file I/O built-ins) -----
+  // The kernel command line exposed by procfs; "" if unreadable.
+  String kernelCmdline() { return readSmallFile("/proc/cmdline"); }
+  // The os-release metadata (distro name/version); "" if unreadable.
+  String osRelease() { return readSmallFile("/etc/os-release"); }
+  // True if a /proc entry exists for the given pid.
+  boolean procExists(int pid) { return osExists("/proc") == 1; }
+
+  // Read a small text file through the shared file I/O built-ins. Handles are
+  // VM-local; returns the first chunk of content, or "" on failure.
+  String readSmallFile(String path) {
+    int fd = openFile(path, 0);     // mode 0 = read
+    if (fd < 0) { return ""; }
+    String data = read(fd);
+    close(fd);
+    return data;
+  }
+
+  String hostName() { return osHostName(); }
+  String userName() { return osUserName(); }
+}

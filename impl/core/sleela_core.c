@@ -19,6 +19,7 @@
 #include "sleela_munction.h"
 #include "sleela_bestof.h"
 #include "sleela_audio_mixer.h"
+#include "sleela_os.h"
 
 #include <math.h>
 #include <stdio.h>
@@ -160,6 +161,13 @@ struct SLVM {
     pthread_mutex_t thr_mtx;
     SLThread* threads[SL_MAX_THREADS];
     int nthreads;
+
+    /* OS system calls: spawned child processes as VM-local bounded handles.
+     * os_proc[h] holds a live backend process, or SLOS_INVALID_PROCESS when the
+     * slot is free. Guarded by os_mtx. */
+    pthread_mutex_t os_mtx;
+    SLOSProcess os_proc[SL_MAX_OS_PROCESSES];
+    int os_proc_init;
 };
 
 static void set_err(SLVM* vm, const char* msg) {
@@ -172,6 +180,48 @@ SLValue slval_null(void) { SLValue v; v.type = SL_NULL; v.as.i = 0; return v; }
 SLValue slval_int(int64_t x) { SLValue v; v.type = SL_INT; v.as.i = x; return v; }
 SLValue slval_double(double x) { SLValue v; v.type = SL_DOUBLE; v.as.d = x; return v; }
 SLValue slval_bool(int x) { SLValue v; v.type = SL_BOOL; v.as.b = x ? 1 : 0; return v; }
+
+/* ---- OS process handle table (bounded, VM-local; mirrors socket_alloc) ---- */
+static void os_proc_ensure_init(SLVM* vm) {
+    if (vm->os_proc_init) return;
+    for (int i = 0; i < SL_MAX_OS_PROCESSES; i++) vm->os_proc[i] = SLOS_INVALID_PROCESS;
+    vm->os_proc_init = 1;
+}
+/* Store a live backend process; returns a VM-local handle or -1 if the table is
+ * full (the caller must then release the backend process). */
+static int os_proc_alloc(SLVM* vm, SLOSProcess p) {
+    pthread_mutex_lock(&vm->os_mtx);
+    os_proc_ensure_init(vm);
+    int h = -1;
+    for (int i = 0; i < SL_MAX_OS_PROCESSES; i++) {
+        if (vm->os_proc[i] == SLOS_INVALID_PROCESS) { vm->os_proc[i] = p; h = i; break; }
+    }
+    pthread_mutex_unlock(&vm->os_mtx);
+    return h;
+}
+static int os_proc_valid(int h) { return h >= 0 && h < SL_MAX_OS_PROCESSES; }
+/* Take the backend process out of the slot (freeing the handle); returns it or
+ * SLOS_INVALID_PROCESS. */
+static SLOSProcess os_proc_take(SLVM* vm, int h) {
+    SLOSProcess p = SLOS_INVALID_PROCESS;
+    if (!os_proc_valid(h)) return p;
+    pthread_mutex_lock(&vm->os_mtx);
+    os_proc_ensure_init(vm);
+    p = vm->os_proc[h];
+    vm->os_proc[h] = SLOS_INVALID_PROCESS;
+    pthread_mutex_unlock(&vm->os_mtx);
+    return p;
+}
+/* Peek the backend process without releasing the slot. */
+static SLOSProcess os_proc_peek(SLVM* vm, int h) {
+    SLOSProcess p = SLOS_INVALID_PROCESS;
+    if (!os_proc_valid(h)) return p;
+    pthread_mutex_lock(&vm->os_mtx);
+    os_proc_ensure_init(vm);
+    p = vm->os_proc[h];
+    pthread_mutex_unlock(&vm->os_mtx);
+    return p;
+}
 
 const char* slvm_error(SLVM* vm) { return (vm && vm->err[0]) ? vm->err : NULL; }
 const char* slvm_str(SLVM* vm, int32_t id) {
@@ -307,6 +357,9 @@ SLVM* slvm_new(void) {
     pthread_mutex_init(&vm->munction_mtx, NULL);
     pthread_mutex_init(&vm->bestof_mtx, NULL);
     pthread_mutex_init(&vm->audio_mtx, NULL);
+    pthread_mutex_init(&vm->os_mtx, NULL);
+    for (int i = 0; i < SL_MAX_OS_PROCESSES; i++) vm->os_proc[i] = SLOS_INVALID_PROCESS;
+    vm->os_proc_init = 1;
     gc_init(&vm->gc, 1024u * 1024u);
     for (int i = 0; i < SL_MAX_SOCKETS; i++) {
         pthread_mutex_init(&vm->sockets[i].mtx, NULL);
@@ -367,6 +420,11 @@ void slvm_free(SLVM* vm) {
         if (vm->bestof[i]) { slbestof_close(vm->bestof[i]); vm->bestof[i] = NULL; }
     }
     pthread_mutex_destroy(&vm->bestof_mtx);
+    /* Release any still-live spawned child processes (reap without blocking). */
+    for (int i = 0; i < SL_MAX_OS_PROCESSES; i++) {
+        if (vm->os_proc[i] != SLOS_INVALID_PROCESS) { slos_release(vm->os_proc[i]); vm->os_proc[i] = SLOS_INVALID_PROCESS; }
+    }
+    pthread_mutex_destroy(&vm->os_mtx);
     for (int i = 0; i < vm->nstruct_types; i++) {
         free(vm->struct_types[i].name);
         for (int j = 0; j < vm->struct_types[i].nfields; j++) free(vm->struct_types[i].fields[j]);
@@ -1380,6 +1438,105 @@ static SLResult run_thread(SLThread* t) {
             if(len<0) TERR("array push failed (array full)");
             PUSH(slval_int(len));
         } break;
+
+        /* ---- operating-system system calls (Win32 / POSIX / Apple) ------ */
+        case OP_OS_PLATFORM: {
+            char buf[32]; if(slos_platform_name(buf,sizeof(buf))<0) buf[0]=0;
+            SLValue out; out.type=SL_STR; out.as.s=intern(vm,buf); PUSH(out);
+        } break;
+        case OP_OS_CAPABILITY: {
+            SLValue cv=POP(); if(cv.type!=SL_INT) TERR("osCapability(cap) requires an integer capability");
+            PUSH(slval_int(slos_capability((int)cv.as.i)));
+        } break;
+        case OP_OS_GETENV: {
+            SLValue nv=POP(); if(nv.type!=SL_STR) TERR("osGetEnv(name) requires a String name");
+            char buf[4096]; if(slos_getenv(slvm_str(vm,nv.as.s),buf,sizeof(buf))<0) buf[0]=0;
+            SLValue out; out.type=SL_STR; out.as.s=intern(vm,buf); PUSH(out);
+        } break;
+        case OP_OS_SETENV: {
+            SLValue vv=POP(), nv=POP();
+            if(nv.type!=SL_STR||vv.type!=SL_STR) TERR("osSetEnv(name, value) requires two Strings");
+            PUSH(slval_int(slos_setenv(slvm_str(vm,nv.as.s),slvm_str(vm,vv.as.s))));
+        } break;
+        case OP_OS_CWD: {
+            char buf[4096]; if(slos_cwd(buf,sizeof(buf))<0) buf[0]=0;
+            SLValue out; out.type=SL_STR; out.as.s=intern(vm,buf); PUSH(out);
+        } break;
+        case OP_OS_CHDIR: {
+            SLValue pv=POP(); if(pv.type!=SL_STR) TERR("osChangeDir(path) requires a String path");
+            PUSH(slval_int(slos_chdir(slvm_str(vm,pv.as.s))));
+        } break;
+        case OP_OS_HOSTNAME: {
+            char buf[256]; if(slos_hostname(buf,sizeof(buf))<0) buf[0]=0;
+            SLValue out; out.type=SL_STR; out.as.s=intern(vm,buf); PUSH(out);
+        } break;
+        case OP_OS_USERNAME: {
+            char buf[256]; if(slos_username(buf,sizeof(buf))<0) buf[0]=0;
+            SLValue out; out.type=SL_STR; out.as.s=intern(vm,buf); PUSH(out);
+        } break;
+        case OP_OS_TEMPDIR: {
+            char buf[4096]; if(slos_tempdir(buf,sizeof(buf))<0) buf[0]=0;
+            SLValue out; out.type=SL_STR; out.as.s=intern(vm,buf); PUSH(out);
+        } break;
+        case OP_OS_PID: {
+            PUSH(slval_int(slos_process_id()));
+        } break;
+        case OP_OS_EXISTS: {
+            SLValue pv=POP(); if(pv.type!=SL_STR) TERR("osExists(path) requires a String path");
+            PUSH(slval_int(slos_exists(slvm_str(vm,pv.as.s))));
+        } break;
+        case OP_OS_ISDIR: {
+            SLValue pv=POP(); if(pv.type!=SL_STR) TERR("osIsDir(path) requires a String path");
+            PUSH(slval_int(slos_is_dir(slvm_str(vm,pv.as.s))));
+        } break;
+        case OP_OS_FILESIZE: {
+            SLValue pv=POP(); if(pv.type!=SL_STR) TERR("osFileSize(path) requires a String path");
+            PUSH(slval_int(slos_file_size(slvm_str(vm,pv.as.s))));
+        } break;
+        case OP_OS_MKDIR: {
+            SLValue pv=POP(); if(pv.type!=SL_STR) TERR("osMakeDir(path) requires a String path");
+            PUSH(slval_int(slos_mkdir(slvm_str(vm,pv.as.s))));
+        } break;
+        case OP_OS_REMOVE: {
+            SLValue pv=POP(); if(pv.type!=SL_STR) TERR("osRemove(path) requires a String path");
+            PUSH(slval_int(slos_remove(slvm_str(vm,pv.as.s))));
+        } break;
+        case OP_OS_RENAME: {
+            SLValue tv=POP(), fv=POP();
+            if(fv.type!=SL_STR||tv.type!=SL_STR) TERR("osRename(from, to) requires two Strings");
+            PUSH(slval_int(slos_rename(slvm_str(vm,fv.as.s),slvm_str(vm,tv.as.s))));
+        } break;
+        case OP_OS_RUN: {
+            SLValue cv=POP(); if(cv.type!=SL_STR) TERR("osRun(command) requires a String command");
+            PUSH(slval_int(slos_run(slvm_str(vm,cv.as.s))));
+        } break;
+        case OP_OS_SPAWN: {
+            SLValue cv=POP(); if(cv.type!=SL_STR) TERR("osSpawn(command) requires a String command");
+            SLOSProcess p=slos_spawn(slvm_str(vm,cv.as.s));
+            if(p==SLOS_INVALID_PROCESS){PUSH(slval_int(-1));break;}
+            int h=os_proc_alloc(vm,p);
+            if(h<0){slos_release(p);PUSH(slval_int(-1));break;}  /* table full */
+            PUSH(slval_int(h));
+        } break;
+        case OP_OS_WAIT: {
+            SLValue hv=POP(); if(hv.type!=SL_INT) TERR("osWait(process) requires a process handle");
+            SLOSProcess p=os_proc_take(vm,(int)hv.as.i);         /* wait consumes the handle */
+            if(p==SLOS_INVALID_PROCESS){PUSH(slval_int(-1));break;}
+            PUSH(slval_int(slos_wait(p)));
+        } break;
+        case OP_OS_KILL: {
+            SLValue hv=POP(); if(hv.type!=SL_INT) TERR("osKill(process) requires a process handle");
+            SLOSProcess p=os_proc_peek(vm,(int)hv.as.i);
+            if(p==SLOS_INVALID_PROCESS){PUSH(slval_int(-1));break;}
+            PUSH(slval_int(slos_kill(p)));
+        } break;
+        case OP_OS_PCLOSE: {
+            SLValue hv=POP(); if(hv.type!=SL_INT) TERR("osProcessClose(process) requires a process handle");
+            SLOSProcess p=os_proc_take(vm,(int)hv.as.i);
+            if(p!=SLOS_INVALID_PROCESS) slos_release(p);
+            PUSH(slval_null());
+        } break;
+
         default: log_unsupported_opcode(vm, in.op); TERR("unsupported opcode");
         }
     }
