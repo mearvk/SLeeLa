@@ -218,14 +218,40 @@ void install_css() {
         @define-color sl_fg          #ffffff;
         @define-color sl_accent      #9d6cff;
 
+        /* Title-bar gradient palette. The bar is no longer a flat chrome fill:
+           it sweeps left -> right through a curated sequence of the project's
+           dark-purple / blue family. These are the only places these shades are
+           used, so they live here as named tokens (principle 2: one palette,
+           one source of truth) and are composed into .sleela-titlebar below. */
+        @define-color sl_tb_deep_purple  #2a0f45;   /* deep purple        */
+        @define-color sl_tb_near_black   #0d0a12;   /* dark gray / black  */
+        @define-color sl_tb_light_blue   #4f74c8;   /* light blue accent  */
+        @define-color sl_tb_dark_blue    #16244f;   /* dark blue          */
+        @define-color sl_tb_dark_purple  #1e0e33;   /* dark purple        */
+        @define-color sl_tb_black        #060409;   /* black              */
+
         window { background: @sl_bg; }
 
-        /* Title bar: flat chrome. The bottom highlight is no longer a static
-           border -- it is the living throbber strip drawn just below the bar
-           (see .sleela-throbber and the 20Hz organic update). A transparent 1px
-           border keeps the bar's height identical to before. */
+        /* Title bar: an elegant horizontal gradient (see below). The bottom
+           highlight is no longer a static border -- it is the living throbber
+           strip drawn just below the bar (see .sleela-throbber and the 20Hz
+           organic update). A transparent 1px border keeps the bar's height
+           identical to before. */
         headerbar.sleela-titlebar {
-            background: @sl_chrome;
+            /* An elegant horizontal sweep across the bar: deep purple ->
+               dark gray/black -> deep purple -> light blue -> dark blue ->
+               dark purple -> black. Stops are eased unevenly so the light-blue
+               highlight sits a little past centre and the ends settle into near
+               black, giving the bar depth without competing with the terminal
+               (principle 1). Colours are the named sl_tb_* tokens above. */
+            background: linear-gradient(to right,
+                @sl_tb_deep_purple  0%,
+                @sl_tb_near_black   16%,
+                @sl_tb_deep_purple  33%,
+                @sl_tb_light_blue   52%,
+                @sl_tb_dark_blue    68%,
+                @sl_tb_dark_purple  85%,
+                @sl_tb_black        100%);
             color: @sl_fg;
             min-height: 38px;
             border-bottom: 1px solid transparent;
