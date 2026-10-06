@@ -1,0 +1,23 @@
+/*
+ * lib/opcodes/SLOpAnd.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLOpAnd, the single-opcode class for OP_AND (canonical code 20).
+ *
+ * This class carries exactly ONE opcode: OP_AND.
+ * Semantics: pop two booleans; push logical AND.
+ * Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela).
+ *
+ * step() honours the family contract: it first calls the VM to advance to the
+ * next instruction, then executes precisely this one opcode and returns the
+ * next instruction pointer for the following opcode object.
+ *
+ * Family: opcodes. Native VM/OS work crosses an explicit bridge.
+ */
+#sleela 1.3
+// Unified SLeeLa standard-library front-end object.
+class SLOpAnd extends SLOpcodeBase {
+  static final int CODE = 20;
+  static final String MNEMONIC = "OP_AND";
+
+  void prepare() { configure(CODE, MNEMONIC); }
+}

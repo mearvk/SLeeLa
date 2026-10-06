@@ -14,7 +14,7 @@ These mappings are recognition and planning references, not execution permission
 
 | Language / family | Common producer programs | Source forms | Common intermediate / object forms | Common executable / package forms |
 |---|---|---|---|---|
-| SLeeLa | SLeeLa Compiler / SLeeLa VM toolchain | .sleela | SLIR, SLVM | SLVM / project-defined artifacts |
+| SLeeLa | SLeeLa Compiler / SLeeLa VM toolchain | .sleela, .sleela-script, .sldocument | SLIR, SLVM | SLVM / project-defined artifacts |
 | C | GCC, Clang, MSVC, ICC/ICX | .c | LLVM IR, assembly, object | ELF, PE/COFF, Mach-O |
 | C++ | GCC/G++, Clang++, MSVC, ICC/ICX | .cc, .cpp, .cxx | LLVM IR, assembly, object | ELF, PE/COFF, Mach-O |
 | Objective-C | Clang | .m | LLVM IR, object | Mach-O, ELF, PE/COFF where supported |

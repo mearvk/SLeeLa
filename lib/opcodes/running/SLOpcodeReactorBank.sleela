@@ -1,0 +1,85 @@
+/*
+ * lib/opcodes/running/SLOpcodeReactorBank.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLOpcodeReactorBank, a bank of conditional-reactives that
+ *   is ticked as a program advances so grouping and warming reactions fire at
+ *   the right moments.
+ *
+ * Role: a program usually has several reactive rules at once — warm a hot group
+ *   when the loop index crosses a threshold, gate a cleanup group once a socket
+ *   is open, skip a debug group unless a flag is set. The bank holds those
+ *   reactives and, at each stream index, ticks every one so each can react on
+ *   its own rising edge. The bank is the single place a running loop consults.
+ *
+ * Family: opcodes.running. Native VM/OS work crosses an explicit bridge.
+ */
+#sleela 1.3
+// Unified SLeeLa standard-library front-end object.
+class SLOpcodeReactorBank {
+  static final int MAX_REACTIVES = 1024;
+
+  String label;
+  SLOpcodeConditionalReactive[] reactives;
+  int count;
+  int fired;   // total reactions fired across all ticks
+  int state;
+
+  void init(String name) {
+    label = name;
+    reactives = new SLOpcodeConditionalReactive[MAX_REACTIVES];
+    count = 0;
+    fired = 0;
+    state = 1;
+  }
+
+  boolean add(SLOpcodeConditionalReactive r) {
+    if (r == null || !r.active()) { return false; }
+    if (count >= MAX_REACTIVES) { return false; }
+    reactives[count] = r;
+    count = count + 1;
+    return true;
+  }
+
+  void enable() { state = 1; }
+  void disable() { state = 0; }
+  boolean active() { return state == 1; }
+  int size() { return count; }
+  int firedCount() { return fired; }
+
+  // Tick every reactive at the given stream index. Returns how many reacted
+  // on this tick.
+  int tick(int index) {
+    if (!active()) { return 0; }
+    int reactedNow = 0;
+    for (int i = 0; i < count; i = i + 1) {
+      int r = reactives[i].tick(index);
+      if (r != 0) { reactedNow = reactedNow + 1; fired = fired + 1; }
+    }
+    return reactedNow;
+  }
+
+  // Reset every reactive's edge so the bank can be reused for another run.
+  void rearmAll() {
+    for (int i = 0; i < count; i = i + 1) { reactives[i].rearm(); }
+    fired = 0;
+  }
+
+  // Drive a stream to completion under this bank: before each opcode fires, tick
+  // the bank at that index so reactives can warm/gate/run/skip around it. The
+  // VM owns the instruction pointer; the opcode still fires via step().
+  int driveStream(SLOpcodeStream stream) {
+    if (!active() || stream == null || !stream.active()) { return -1; }
+    int ip = 0;
+    for (int i = 0; i < stream.size(); i = i + 1) {
+      tick(i);
+      ip = stream.ops[i].step(stream.frame);
+      if (ip < 0) { return ip; }
+    }
+    return ip;
+  }
+
+  SLOpcodeConditionalReactive at(int index) {
+    if (index < 0 || index >= count) { return null; }
+    return reactives[index];
+  }
+}

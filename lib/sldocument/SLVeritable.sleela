@@ -1,0 +1,65 @@
+/*
+ * lib/sldocument/SLVeritable.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLVeritable, the single binary value an .sldocument step
+ *   usually returns — a verified truth that is "veritable and kind".
+ *
+ * An .sldocument runs top-down, and each ordered step generally returns one
+ *   binary item. That item is modeled here as a two-fold judgement:
+ *     - veritable: the step's result is true / holds (the binary truth), AND
+ *     - kind:      the result is well-formed and benign — the right *kind* of
+ *                  value, not a malformed or hostile one.
+ *   Both must hold for the value to be "sound". A step that produces a true but
+ *   ill-formed result is veritable-but-not-kind, and the document does not treat
+ *   it as a clean pass.
+ *
+ * Family: sldocument. Native VM/OS work crosses an explicit bridge.
+ */
+#sleela 1.3
+// Unified SLeeLa standard-library front-end object.
+class SLVeritable {
+  boolean veritable; // the binary truth: did the step hold?
+  boolean kind;      // is the result well-formed and benign?
+  String label;      // the symbol this value answers for
+  int state;
+
+  // The two canonical constructions.
+  void affirm(String forSymbol) { veritable = true;  kind = true;  label = forSymbol; state = 1; }
+  void deny(String forSymbol)   { veritable = false; kind = true;  label = forSymbol; state = 1; }
+
+  // General construction from an explicit pair.
+  void configure(boolean isVeritable, boolean isKind, String forSymbol) {
+    veritable = isVeritable;
+    kind = isKind;
+    label = forSymbol;
+    state = 1;
+  }
+
+  boolean active() { return state == 1; }
+  boolean isVeritable() { return veritable; }
+  boolean isKind() { return kind; }
+  String symbol() { return label; }
+
+  // Sound == veritable AND kind: a true result of the right kind.
+  boolean sound() { return state == 1 && veritable && kind; }
+
+  // The binary item itself, as a single bit (1 = veritable, 0 = not), which is
+  // what the step hands back by default.
+  int bit() { return veritable ? 1 : 0; }
+
+  // Logical composition, preserving kindness: an unkind operand makes the
+  // result unkind, so faults propagate rather than hide.
+  SLVeritable and(SLVeritable other) {
+    SLVeritable r = new SLVeritable();
+    if (other == null) { r.configure(false, false, label); return r; }
+    r.configure(veritable && other.isVeritable(), kind && other.isKind(), label);
+    return r;
+  }
+
+  SLVeritable or(SLVeritable other) {
+    SLVeritable r = new SLVeritable();
+    if (other == null) { r.configure(veritable, kind, label); return r; }
+    r.configure(veritable || other.isVeritable(), kind && other.isKind(), label);
+    return r;
+  }
+}

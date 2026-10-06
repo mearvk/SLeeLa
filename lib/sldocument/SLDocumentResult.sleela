@@ -1,0 +1,60 @@
+/*
+ * lib/sldocument/SLDocumentResult.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLDocumentResult, the ordered collection of per-step
+ *   veritable-and-kind values produced by running an .sldocument top-down.
+ *
+ * The document's overall outcome is the composition of its steps: it is sound
+ * only when every step that ran was itself sound (veritable AND kind). The
+ * result also records where the first unsound step occurred so a national
+ * program with established order can see exactly where flow broke.
+ *
+ * Family: sldocument. Native VM/OS work crosses an explicit bridge.
+ */
+#sleela 1.3
+// Unified SLeeLa standard-library front-end object.
+class SLDocumentResult {
+  static final int MAX_STEPS = 65536;
+
+  SLVeritable[] values; // one per step, in run order
+  String[] names;       // the step name for each value
+  int count;
+  int firstUnsound;     // index of the first unsound step, or -1
+  int state;
+
+  void init() {
+    values = new SLVeritable[MAX_STEPS];
+    names = new String[MAX_STEPS];
+    count = 0;
+    firstUnsound = -1;
+    state = 1;
+  }
+
+  void record(String stepName, SLVeritable v) {
+    if (count >= MAX_STEPS) { return; }
+    values[count] = v;
+    names[count] = stepName;
+    if (firstUnsound < 0 && (v == null || !v.sound())) { firstUnsound = count; }
+    count = count + 1;
+  }
+
+  int size() { return count; }
+  boolean active() { return state == 1; }
+
+  // The document is sound when every recorded step was sound.
+  boolean sound() { return state == 1 && count > 0 && firstUnsound < 0; }
+  int firstFault() { return firstUnsound; }
+
+  SLVeritable at(int index) {
+    if (index < 0 || index >= count) { return null; }
+    return values[index];
+  }
+
+  // The final binary item of the whole document: the last step's bit, which in
+  // an ordered program is the established "final result" of the flow.
+  int finalBit() {
+    if (count < 1) { return 0; }
+    SLVeritable last = values[count - 1];
+    return last == null ? 0 : last.bit();
+  }
+}

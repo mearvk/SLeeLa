@@ -1,0 +1,74 @@
+/*
+ * lib/opcodes/running/SLOpcodeCondition.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLOpcodeCondition, a named predicate over VM/program state
+ *   that a conditional-reactive construct evaluates to decide whether to react.
+ *
+ * Role: a condition answers a yes/no question about the running program without
+ *   itself being an opcode — e.g. "is a LOCK currently held?", "has the stream
+ *   reached index N?", "did the last opcode warn?". Conditions are the triggers
+ *   the reactive layer listens on. The actual state read crosses the VM bridge;
+ *   the comparison and threshold logic live here in SLeeLa.
+ *
+ * Comparators: a condition compares an observed signal value against a target
+ *   using one of the operators below.
+ *
+ * Family: opcodes.running. Native VM/OS work crosses an explicit bridge.
+ */
+#sleela 1.3
+// Unified SLeeLa standard-library front-end object.
+class SLOpcodeCondition {
+  static final int EQ = 0; // observed == target
+  static final int NE = 1; // observed != target
+  static final int LT = 2; // observed <  target
+  static final int LE = 3; // observed <= target
+  static final int GT = 4; // observed >  target
+  static final int GE = 5; // observed >= target
+
+  // Well-known signals the condition may read from the VM frame.
+  static final int SIG_IP          = 1; // the live instruction pointer
+  static final int SIG_LOCK_DEPTH  = 2; // locks currently held
+  static final int SIG_CALL_DEPTH  = 3; // open call frames
+  static final int SIG_OPEN_SOCKETS = 4; // open sockets
+  static final int SIG_WARN_COUNT  = 5; // governance warnings so far
+  static final int SIG_INDEX       = 6; // current stream index
+
+  String label;
+  int signal;    // which SIG_* to observe
+  int op;        // one of EQ..GE
+  int target;    // the value to compare against
+  int state;
+
+  void configure(String name, int whichSignal, int comparator, int targetValue) {
+    label = name;
+    signal = whichSignal;
+    op = comparator;
+    target = targetValue;
+    state = 1;
+  }
+
+  void enable() { state = 1; }
+  void disable() { state = 0; }
+  boolean active() { return state == 1; }
+  String name() { return label; }
+
+  // Read the configured signal from the VM frame across the bridge. `index` is
+  // the current stream position, supplied by the reactive driver.
+  int observe(int frame, int index) {
+    if (signal == SIG_INDEX) { return index; }
+    return native sleela_opcode_signal(frame, signal, index);
+  }
+
+  // Evaluate the predicate against the observed signal.
+  boolean holds(int frame, int index) {
+    if (!active()) { return false; }
+    int observed = observe(frame, index);
+    if (op == EQ) { return observed == target; }
+    if (op == NE) { return observed != target; }
+    if (op == LT) { return observed <  target; }
+    if (op == LE) { return observed <= target; }
+    if (op == GT) { return observed >  target; }
+    if (op == GE) { return observed >= target; }
+    return false;
+  }
+}

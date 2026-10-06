@@ -1,11 +1,11 @@
 # SLeeLa Class Inventory
 
 **SLeeLa Version:** 0.3.22-dev  
-**Inventory Revision:** 2.0  
-**Inventory Date:** 2026-10-02  
+**Inventory Revision:** 2.1  
+**Inventory Date:** 2026-10-05  
 **Known Source Files Explicitly Indexed: 138**
-**Repository-wide SLeeLa source files (verified): 10,235 on `main`**
-**Standard-library SLeeLa source units in `/lib`: 10,033**
+**Repository-wide SLeeLa source files (verified): 10,463 on `master`**
+**Standard-library SLeeLa source units in `/lib`: 10,241**
 **Standard-library target: 2,048 objects**  
 **Unique Foundational C++ Class Files (contract-verified): 50**
 
@@ -13,7 +13,7 @@
 
 ## 1. Verified Foundational Class Files
 
-The current contract suite verifies these 50 foundational class files. The repository-wide SLeeLa source inventory now records 10,235 `.sleela` files, including 10,033 under `/lib`; the library inventory is maintained separately in `lib/LIBRARY.SYMBOLS.md`.
+The current contract suite verifies these 50 foundational class files. The repository-wide SLeeLa source inventory now records 10,463 `.sleela` files, including 10,241 under `/lib`; the library inventory is maintained separately in `lib/LIBRARY.SYMBOLS.md`.
 
 | # | Class | Source |
 |---:|---|---|
@@ -396,3 +396,80 @@ The **`.sleela` file is the source**. The Java 28 source set is represented as S
 `JavaConform.sleela` and the existing Java bridge establish the behavioral boundary. The compiler/VM still needs direct Java invocation lowering and value marshalling for ordinary SLeeLa expressions to invoke these envelopes without a separate Java-side driver.
 
 **Inventory rule:** future Java-supported classes should be added under `/lib/java/java/...`, `/lib/java/javax/...`, or `/lib/java/jdk/...` using their exact Java source class name and `.sleela` extension. The inventory count must be updated with the source set.
+
+## 12. Opcodes, Governance, Running, and the `.sldocument` Format (Revision 2.1)
+
+Revision 2.1 records the VM opcode object model, its governance and running
+sub-families, and the new `.sldocument` ordered-document format. All counts are
+`.sleela` source files; the authoritative library inventory remains
+`lib/LIBRARY.SYMBOLS.md` and `lib/LIBRARY.INDEX.md`.
+
+### `/lib/opcodes` — one class per VM opcode
+
+| Group | `.sleela` files | Notes |
+|---|---:|---|
+| Opcode classes (`SLOp*`) | 103 | one per canonical opcode, codes 0–102; the base 98 are `OP_NOP`..`OP_AUDIO_PLATFORM` |
+| `SLOpcodeBase`, `SLOpcodeStream` | 2 | single-opcode contract + verbatim ordered stream |
+| **`/lib/opcodes` top level** | **105** | see `lib/opcodes/OPCODES.md` |
+
+### `/lib/opcodes/governance` — Registrar · Listener · Event Observer
+
+| Class | Role |
+|---|---|
+| `SLGovPhase` | BEFORE / DURING / AFTER phase vocabulary |
+| `SLGovVerdict` | graded verdict (admit < warn < patch < pause < reject) |
+| `SLGovConcept` | the seven base concepts weighed after a run |
+| `SLGovSymbolMap` | known symbol maps that just work (safe patches) |
+| `SLOpcodeRegistrar` | BEFORE — considers a program A→B; admit/reject/pause |
+| `SLOpcodeListener` | DURING — live fit, relatively and respectively |
+| `SLOpcodeEventObserver` | AFTER — the musical, ordered-process judgement |
+| `SLGovernedExecution` | orchestrator over an `SLOpcodeStream` |
+
+**`/lib/opcodes/governance`: 8 `.sleela` files.** See `lib/opcodes/governance/GOVERNANCE.md`.
+
+### `/lib/opcodes/running` — grouping, conditional-reactive, warming
+
+| Class | Kind |
+|---|---|
+| `SLOpcodeGroup`, `SLOpcodeGroupSet` | grouping |
+| `SLOpcodeCondition`, `SLOpcodeConditionalReactive`, `SLOpcodeReactorBank` | conditional-reactive |
+| `SLOpcodeWarmer` | warming |
+
+**`/lib/opcodes/running`: 6 `.sleela` files.** See `lib/opcodes/running/RUNNING.md`.
+
+**`/lib/opcodes` total (all levels): 119 `.sleela` files.**
+
+### `/lib/sldocument` — the `.sldocument` ordered-document format
+
+| Class | Role |
+|---|---|
+| `SLDocument` | the ordered document; runs steps top-down |
+| `SLDocumentStep` | one annotated/ordered step method |
+| `SLDocumentAnnotation` | `@order` / `@function` / bare-method vocabulary |
+| `SLVeritable` | the single binary veritable-and-kind return value |
+| `SLDocumentResult` | ordered collection of step values |
+| `SLDocumentCompiler` | compiles the document with standard SLeeLa source |
+| `SLDocumentNaming` | names anonymous steps for `.sleela` conversion |
+| `SLSourceNameComparison` | compares `.sleela` vs `.sldocument` step naming |
+| `SLDocumentConverter` | converts a `.sldocument` to a `.sleela` for safekeeping |
+
+**`/lib/sldocument`: 9 `.sleela` files** (plus `SLDOCUMENT.md` and `examples/national-ledger.sldocument`). See `lib/sldocument/SLDOCUMENT.md`.
+
+### `/lib/compiler` — `.sldocument` as a compile choice
+
+| Class | Role |
+|---|---|
+| `SLSourceForm` | the SLeeLa source forms and extensions (`.sleela`, `.sldocument`, `.sleela-script`) |
+| `SLCompileChoice` | selects `.sldocument` vs `.sleela` to compile; fail-closed on unknown forms |
+
+**2 new `/lib/compiler` `.sleela` files.** The `.sldocument` extension is registered in `lib/compiler/LANGUAGE.FORMAT.REFERENCE.md`.
+
+### Native bridges added this revision
+
+Under `native/` (self-tested via `native/Makefile` — `make test`: ALL PASS):
+`sleela_opcode.{h,cpp}` (fetch/dispatch-one, signals, pre-stage),
+`sleela_gov.{h,cpp}` (BEFORE/DURING/AFTER phase announcement),
+`sleela_sldocument.{h,cpp}` (compile, invoke, kind, compile-choice, naming/conversion).
+These are explicit VM/OS bridges below the SLeeLa layer; the authoritative
+execution and compilation remain in `/impl/core` and `lib/compiler` /
+`impl/frontend`.

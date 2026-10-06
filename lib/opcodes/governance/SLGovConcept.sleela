@@ -1,0 +1,63 @@
+/*
+ * lib/opcodes/governance/SLGovConcept.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLGovConcept, the catalogue of base concepts the
+ *   EventObserver weighs when deciding whether an opcode operation is part of a
+ *   musical and ordered process about program architecture, breadth, height,
+ *   and purpose.
+ *
+ * These are the "base concepts" the user enumerated. Each is a named axis the
+ * EventObserver can assess and report on, so that inputs, commands, outputs, and
+ * any resulting stimulus all make sense together:
+ *   STRAIGHTNESS       — the control path is straight: no tangled or orphaned flow.
+ *   LINEAR_REALS       — numeric/measure operations stay on the real line (no
+ *                        divide-by-zero, no undefined magnitude).
+ *   OUTRIGHT_GOALS     — the program states an outright goal and moves toward it.
+ *   ETHICS_NORMS       — no operation violates ethics or norms (e.g. unlawful
+ *                        surveillance, deception, or scaled abuse).
+ *   FINALIZATION       — fields are finalized: opened resources are closed,
+ *                        constructed structs are resolved.
+ *   TIMES_UPON_COUNTS  — time operations are proportionate to counts (no clock
+ *                        read per trivial element where one read would do).
+ *   FINAL_GOALS        — the program reaches a definite final goal (it halts
+ *                        with a result, not by exhaustion).
+ *
+ * Family: opcodes.governance. Native VM/OS work crosses an explicit bridge.
+ */
+#sleela 1.3
+// Unified SLeeLa standard-library front-end object.
+class SLGovConcept {
+  static final int STRAIGHTNESS      = 1;
+  static final int LINEAR_REALS      = 2;
+  static final int OUTRIGHT_GOALS    = 3;
+  static final int ETHICS_NORMS      = 4;
+  static final int FINALIZATION      = 5;
+  static final int TIMES_UPON_COUNTS = 6;
+  static final int FINAL_GOALS       = 7;
+  static final int CONCEPT_COUNT     = 7;
+
+  int concept;
+  String label;
+  boolean satisfied;
+  String note;
+
+  void configure(int c) {
+    concept = c;
+    if (c == STRAIGHTNESS) { label = "straightness"; }
+    else if (c == LINEAR_REALS) { label = "linear reals"; }
+    else if (c == OUTRIGHT_GOALS) { label = "outright goals"; }
+    else if (c == ETHICS_NORMS) { label = "ethics and norms"; }
+    else if (c == FINALIZATION) { label = "finalization over fields"; }
+    else if (c == TIMES_UPON_COUNTS) { label = "times upon counts"; }
+    else if (c == FINAL_GOALS) { label = "final goals"; }
+    else { label = "unknown"; }
+    satisfied = true;
+    note = "";
+  }
+
+  void fail(String why) { satisfied = false; note = why; }
+  boolean ok() { return satisfied; }
+  int value() { return concept; }
+  String name() { return label; }
+  String reason() { return note; }
+}

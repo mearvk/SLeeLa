@@ -1,0 +1,23 @@
+/*
+ * lib/opcodes/SLOpOr.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLOpOr, the single-opcode class for OP_OR (canonical code 21).
+ *
+ * This class carries exactly ONE opcode: OP_OR.
+ * Semantics: pop two booleans; push logical OR.
+ * Membership: base 98 of the canonical SLeeLa ISA (lib/vm/InstructionSet.sleela).
+ *
+ * step() honours the family contract: it first calls the VM to advance to the
+ * next instruction, then executes precisely this one opcode and returns the
+ * next instruction pointer for the following opcode object.
+ *
+ * Family: opcodes. Native VM/OS work crosses an explicit bridge.
+ */
+#sleela 1.3
+// Unified SLeeLa standard-library front-end object.
+class SLOpOr extends SLOpcodeBase {
+  static final int CODE = 21;
+  static final String MNEMONIC = "OP_OR";
+
+  void prepare() { configure(CODE, MNEMONIC); }
+}

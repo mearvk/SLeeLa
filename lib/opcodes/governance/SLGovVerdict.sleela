@@ -1,0 +1,61 @@
+/*
+ * lib/opcodes/governance/SLGovVerdict.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLGovVerdict, the discretionary outcome a governance
+ *   principal (Registrar, Listener, EventObserver) returns about an opcode or
+ *   an opcode sequence.
+ *
+ * This is the "discretion in SLeeLa herself" the user asked for: rather than a
+ * raw boolean pass/fail, a verdict carries a graded disposition so the program
+ * can be admitted, warned about, patched, paused as unrest, or rejected.
+ *
+ * Dispositions, from most permissive to most restrictive:
+ *   ADMIT   — the opcode/sequence is in order; proceed.
+ *   WARN    — proceed, but a concern was recorded (non-blocking).
+ *   PATCH   — a known, safe correction was applied via a symbol map; proceed
+ *             with the patched form.
+ *   PAUSE   — hold the program as "unrest": not rejected, but it may not run
+ *             until a human or a higher authority resolves the concern.
+ *   REJECT  — the opcode/sequence is out of order unto itself; refuse it.
+ *
+ * Family: opcodes.governance. Native VM/OS work crosses an explicit bridge.
+ */
+#sleela 1.3
+// Unified SLeeLa standard-library front-end object.
+class SLGovVerdict {
+  static final int ADMIT  = 0;
+  static final int WARN   = 1;
+  static final int PATCH  = 2;
+  static final int PAUSE  = 3;
+  static final int REJECT = 4;
+
+  int disposition;
+  String reason;      // human-readable justification
+  int atIndex;        // opcode index the verdict concerns (-1 = whole program)
+  int phase;          // SLGovPhase value in which it was issued
+
+  void configure(int d, String why, int index, int govPhase) {
+    disposition = d;
+    reason = why;
+    atIndex = index;
+    phase = govPhase;
+  }
+
+  int value() { return disposition; }
+  String why() { return reason; }
+  int index() { return atIndex; }
+  int phaseValue() { return phase; }
+
+  boolean proceeds() { return disposition == ADMIT || disposition == WARN || disposition == PATCH; }
+  boolean blocks() { return disposition == PAUSE || disposition == REJECT; }
+  boolean isUnrest() { return disposition == PAUSE; }
+  boolean patched() { return disposition == PATCH; }
+
+  // Combine two verdicts: the more restrictive disposition wins, so a single
+  // REJECT or PAUSE anywhere governs the sequence.
+  SLGovVerdict mostRestrictive(SLGovVerdict other) {
+    if (other == null) { return this; }
+    if (other.value() > disposition) { return other; }
+    return this;
+  }
+}

@@ -1,0 +1,81 @@
+/*
+ * lib/sldocument/SLSourceNameComparison.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLSourceNameComparison, which compares the naming of a
+ *   .sleela program against a .sldocument so an engineer can see how the two
+ *   forms line up before or after a conversion.
+ *
+ * The two forms name things differently:
+ *   - .sleela names every method explicitly (it is class/method shaped);
+ *   - .sldocument may leave steps anonymous (ordered position or role only).
+ * This comparison pairs each document step with the .sleela method name it
+ * would have (via SLDocumentNaming) and reports, per step, whether the names
+ * match, whether a name had to be synthesized, and whether any collision arose.
+ *
+ * Family: sldocument. Native VM/OS work crosses an explicit bridge.
+ */
+#sleela 1.3
+// Unified SLeeLa standard-library front-end object.
+class SLSourceNameComparison {
+  static final int MAX_ROWS = 65536;
+
+  SLDocumentNaming naming;
+  String[] documentName; // the step's name in the document (may be "")
+  String[] sleelaName;   // the method name it would have in .sleela
+  boolean[] synthesized; // true when the .sleela name had to be synthesized
+  boolean[] collided;    // true when this name duplicates an earlier one
+  int rows;
+  int state;
+
+  void init(SLDocumentNaming conv) {
+    naming = conv;
+    documentName = new String[MAX_ROWS];
+    sleelaName = new String[MAX_ROWS];
+    synthesized = new boolean[MAX_ROWS];
+    collided = new boolean[MAX_ROWS];
+    rows = 0;
+    state = 1;
+  }
+
+  boolean active() { return state == 1; }
+  int size() { return rows; }
+
+  // Compare one document step. `textualPosition` is its 1-based top-down index.
+  void compareStep(SLDocumentAnnotation ann, int textualPosition) {
+    if (!active() || rows >= MAX_ROWS) { return; }
+    String docName = (ann == null || ann.method() == null) ? "" : ann.method();
+    String slName = naming.nameFor(ann, textualPosition);
+    boolean synth = naming.isSynthesized(ann);
+
+    // collision: does slName already appear in an earlier row?
+    boolean collide = false;
+    for (int i = 0; i < rows; i = i + 1) {
+      if (sleelaName[i] == slName) { collide = true; }
+    }
+
+    documentName[rows] = docName;
+    sleelaName[rows] = slName;
+    synthesized[rows] = synth;
+    collided[rows] = collide;
+    rows = rows + 1;
+  }
+
+  // How many steps had to be given a synthesized .sleela name?
+  int synthesizedCount() {
+    int c = 0;
+    for (int i = 0; i < rows; i = i + 1) { if (synthesized[i]) { c = c + 1; } }
+    return c;
+  }
+
+  // Did any two steps resolve to the same .sleela method name?
+  boolean hasCollision() {
+    for (int i = 0; i < rows; i = i + 1) { if (collided[i]) { return true; } }
+    return false;
+  }
+
+  // True when the comparison is clean enough to convert safely: no collisions.
+  boolean convertible() { return active() && rows > 0 && !hasCollision(); }
+
+  String documentNameAt(int i) { if (i < 0 || i >= rows) { return ""; } return documentName[i]; }
+  String sleelaNameAt(int i) { if (i < 0 || i >= rows) { return ""; } return sleelaName[i]; }
+}

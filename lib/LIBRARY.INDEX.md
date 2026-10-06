@@ -1,11 +1,51 @@
 # SLeeLa /lib Library Index
 
-**Revision:** 0.8  
-**Packages:** 77  
-**SLeeLa source units:** 10054  
+**Revision:** 0.14  
+**Packages:** 79  
+**SLeeLa source units:** 10241  
 **Module-facade symbols:** 90  
-**Total symbol records:** 10144  
+**Total symbol records:** 10331  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
+
+> Revision 0.14 reconciles the headline source-unit figure to the verified
+> filesystem count of 10,241 `.sleela` units under `/lib` (matching
+> `CLASS.INVENTORY.md` Revision 2.1). Earlier revision stamps lagged the live
+> count; the figure here is the authoritative total.
+
+> Revision 0.9 adds the new `opcodes` package family: one SLeeLa class per
+> canonical VM opcode (103 classes, codes 0–102; the base 98 are OP_NOP..
+> OP_AUDIO_PLATFORM) plus `SLOpcodeBase` and `SLOpcodeStream` — 105 `.sleela`
+> source units. Each class carries a single opcode and honours the fetch-then-
+> execute-one contract against the VM. See `opcodes/OPCODES.md`.
+>
+> Revision 0.10 adds the `opcodes/governance` series — 8 classes giving SLeeLa
+> procedural discretion over opcode execution: a Registrar considers a program
+> A→B BEFORE it runs, a Listener confirms live fit DURING, and an Event Observer
+> judges the whole as a musical, ordered process AFTER (with graded verdicts,
+> base-concept checks, and known-symbol-map patching). See
+> `opcodes/governance/GOVERNANCE.md`.
+>
+> Revision 0.11 adds the `opcodes/running` sub-family — 6 classes for richer
+> opcode execution: grouping (`SLOpcodeGroup`, `SLOpcodeGroupSet`), a
+> conditional-reactive layer (`SLOpcodeCondition`, `SLOpcodeConditionalReactive`,
+> `SLOpcodeReactorBank`) that warms/gates/runs/skips groups on program state, and
+> warming (`SLOpcodeWarmer`). See `opcodes/running/RUNNING.md`.
+>
+> Revision 0.12 adds the new `sldocument` package family and the `.sldocument`
+> format — 6 classes for an ordered, top-down document that compiles against and
+> with standard SLeeLa source (`SLDocument`, `SLDocumentStep`,
+> `SLDocumentAnnotation`, `SLVeritable`, `SLDocumentResult`,
+> `SLDocumentCompiler`). Each step is an annotated method that runs in order and
+> usually returns a single binary veritable-and-kind value. See
+> `sldocument/SLDOCUMENT.md`.
+>
+> Revision 0.13 makes `.sldocument` a selectable compile choice and adds naming
+> conventions for comparing/converting the forms: `lib/compiler/SLSourceForm` and
+> `lib/compiler/SLCompileChoice` let the compiler be told to compile a `.sleela`
+> or a `.sldocument`; and `sldocument/SLDocumentNaming`,
+> `sldocument/SLSourceNameComparison`, and `sldocument/SLDocumentConverter`
+> synthesize method names for anonymous document steps so an engineer can convert
+> a `.sldocument` to a named `.sleela` for safekeeping. 5 new `.sleela` classes.
 
 The `/lib` tree is the canonical language-facing source collection. The compiler and Nordshrift use the same recursive library discovery implementation, so a package becomes importable when its directory contains SLeeLa source.
 

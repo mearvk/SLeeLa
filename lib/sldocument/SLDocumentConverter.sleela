@@ -1,0 +1,81 @@
+/*
+ * lib/sldocument/SLDocumentConverter.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLDocumentConverter, which converts an ordered .sldocument
+ *   into a .sleela program for safekeeping, naming any anonymous steps.
+ *
+ * When an engineer wants to keep an .sldocument as ordinary .sleela source, each
+ * ordered step must become a named method of a class, because .sleela is
+ * class/method shaped. The converter:
+ *   1. walks the document's steps in resolved order;
+ *   2. gives every step a stable .sleela method name via SLDocumentNaming
+ *      (keeping explicit names, deriving from @function roles, or synthesizing
+ *      "step003"-style names for anonymous steps);
+ *   3. checks the resulting names do not collide (via SLSourceNameComparison);
+ *   4. emits a .sleela class whose methods call the steps in a run() method, in
+ *      the same top-down order, preserving the single-binary-value contract.
+ *
+ * The conversion is fail-closed: a name collision aborts rather than silently
+ * overwriting a method. The round trip preserves order and the veritable-and-
+ * kind return discipline.
+ *
+ * Family: sldocument. Native VM/OS work crosses an explicit bridge.
+ */
+#sleela 1.3
+// Unified SLeeLa standard-library front-end object.
+class SLDocumentConverter {
+  SLDocumentNaming naming;
+  SLSourceNameComparison comparison;
+  String className;      // the .sleela class the document becomes
+  int state;
+  String lastError;
+
+  void configure(String targetClassName) {
+    naming = new SLDocumentNaming();
+    naming.configure();
+    comparison = new SLSourceNameComparison();
+    comparison.init(naming);
+    className = targetClassName;
+    state = 1;
+    lastError = "";
+  }
+
+  boolean active() { return state == 1; }
+
+  // Build the naming comparison for a whole document (does not emit yet).
+  boolean plan(SLDocument doc) {
+    if (!active() || doc == null || !doc.valid()) { lastError = "no document to convert"; return false; }
+    doc.arrange();
+    for (int i = 0; i < doc.size(); i = i + 1) {
+      SLDocumentStep step = doc.steps[i];
+      comparison.compareStep(step.annotation, i + 1);
+    }
+    if (!comparison.convertible()) {
+      lastError = "cannot convert: synthesized/explicit names collide";
+      return false;
+    }
+    return true;
+  }
+
+  int synthesizedCount() { return comparison == null ? 0 : comparison.synthesizedCount(); }
+
+  // Emit the .sleela class text. Each step becomes a named method; run() calls
+  // them in order. Returns the emitted .sleela source, or "" on failure.
+  String toSleela(SLDocument doc) {
+    if (!plan(doc)) { return ""; }
+    return native sleela_sldocument_emit_sleela(className, doc.title, doc.size());
+  }
+
+  // Convert and write the .sleela to a path for safekeeping. Returns true on
+  // success. The path should carry the .sleela extension.
+  boolean convertToFile(SLDocument doc, String sleelaPath) {
+    String source = toSleela(doc);
+    if (source == null || source.length() == 0) { return false; }
+    boolean ok = native sleela_sldocument_write(sleelaPath, source);
+    if (!ok) { lastError = "failed to write .sleela for safekeeping"; }
+    return ok;
+  }
+
+  SLSourceNameComparison names() { return comparison; }
+  String error() { return lastError; }
+}

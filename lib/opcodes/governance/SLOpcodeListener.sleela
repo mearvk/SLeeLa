@@ -1,0 +1,141 @@
+/*
+ * lib/opcodes/governance/SLOpcodeListener.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLOpcodeListener, the DURING-phase authority that listens
+ *   to the live VM code and confirms the Registrar-admitted opcode sequence
+ *   fits relatively and respectively into the program as it comes.
+ *
+ * Discretion the user described:
+ *   The Listener listens to the VM code and concerns itself that the opcode
+ *   sequence from the Registrar does fit relatively and respectively into the
+ *   program as it arrives. Where the Registrar judged the sequence "unto itself"
+ *   before running, the Listener judges each opcode *in situ* as the VM reaches
+ *   it, against what came before and the shape of the whole.
+ *
+ * "Relatively and respectively" — the Listener's live fit checks per opcode:
+ *   - relatively: the opcode's position relative to its neighbours is coherent
+ *     (e.g. a RET only after a CALL is open on the current frame; an UNLOCK only
+ *     while a LOCK is held; a SOCKREAD/WRITE/CLOSE only on an opened socket);
+ *   - respectively: the opcode respects the admitted program's declared shape —
+ *     the live instruction pointer the VM reports advances monotonically through
+ *     the admitted sequence and does not diverge from it.
+ *
+ * The Listener is attached before DURING begins; the orchestrator calls observe()
+ * for each opcode as it fires. SLeeLa and the VM both know to notify the Listener.
+ *
+ * Family: opcodes.governance. Native VM/OS work crosses an explicit bridge.
+ */
+#sleela 1.3
+// Unified SLeeLa standard-library front-end object.
+class SLOpcodeListener {
+  static final int OP_CALL   = 25;
+  static final int OP_RET    = 26;
+  static final int OP_LOCK   = 30;
+  static final int OP_UNLOCK = 31;
+  static final int OP_CONNECT = 36;
+  static final int OP_ACCEPT  = 35;
+  static final int OP_SOCKREAD  = 37;
+  static final int OP_SOCKWRITE = 38;
+  static final int OP_SOCKCLOSE = 39;
+
+  String channel;    // the VM code channel being listened to
+  int state;
+  int callDepth;     // open CALL frames
+  int lockDepth;     // held LOCKs
+  int openSockets;   // opened sockets (CONNECT/ACCEPT minus SOCKCLOSE)
+  int lastIp;        // last live instruction pointer the VM reported
+  int seen;          // opcodes observed so far
+  SLGovVerdict lastVerdict;
+
+  void configure(String vmChannel) {
+    channel = vmChannel;
+    state = 1;
+    callDepth = 0;
+    lockDepth = 0;
+    openSockets = 0;
+    lastIp = -1;
+    seen = 0;
+  }
+
+  void enable() { state = 1; }
+  void disable() { state = 0; }
+  boolean active() { return state == 1; }
+
+  // Observe one opcode as the VM reaches it. `liveIp` is the instruction pointer
+  // the VM reports for this step; `expectedIndex` is the opcode's position in the
+  // admitted sequence. Returns the DURING verdict for this opcode.
+  SLGovVerdict observe(SLOpcodeBase op, int liveIp, int expectedIndex) {
+    SLGovVerdict v = new SLGovVerdict();
+    if (!active() || op == null) {
+      v.configure(SLGovVerdict.REJECT, "listener inactive or no opcode", expectedIndex, SLGovPhase.DURING);
+      lastVerdict = v;
+      return v;
+    }
+
+    int code = op.opcode();
+
+    // respectively: the live ip must advance monotonically and track the
+    // admitted sequence as it comes. A backwards or stalled ip (outside the
+    // sanctioned branch opcodes) means the running program diverged.
+    if (liveIp >= 0 && lastIp >= 0 && liveIp < lastIp) {
+      if (code != 23 /*OP_JMP*/ && code != 24 /*OP_JMPF*/) {
+        v.configure(SLGovVerdict.PAUSE, "live ip moved backwards outside a branch (unrest)", expectedIndex, SLGovPhase.DURING);
+        lastVerdict = v;
+        return v;
+      }
+    }
+
+    // relatively: paired opcodes must respect their partners.
+    if (code == OP_RET) {
+      if (callDepth <= 0) {
+        v.configure(SLGovVerdict.REJECT, "OP_RET with no open CALL frame", expectedIndex, SLGovPhase.DURING);
+        lastVerdict = v;
+        return v;
+      }
+      callDepth = callDepth - 1;
+    } else if (code == OP_CALL) {
+      callDepth = callDepth + 1;
+    } else if (code == OP_UNLOCK) {
+      if (lockDepth <= 0) {
+        v.configure(SLGovVerdict.REJECT, "OP_UNLOCK with no held LOCK", expectedIndex, SLGovPhase.DURING);
+        lastVerdict = v;
+        return v;
+      }
+      lockDepth = lockDepth - 1;
+    } else if (code == OP_LOCK) {
+      lockDepth = lockDepth + 1;
+    } else if (code == OP_CONNECT || code == OP_ACCEPT) {
+      openSockets = openSockets + 1;
+    } else if (code == OP_SOCKREAD || code == OP_SOCKWRITE || code == OP_SOCKCLOSE) {
+      if (openSockets <= 0) {
+        v.configure(SLGovVerdict.WARN, "socket op without a tracked open socket", expectedIndex, SLGovPhase.DURING);
+        lastVerdict = v;
+        if (code == OP_SOCKCLOSE) { /* nothing open to close; warn only */ }
+        return v;
+      }
+      if (code == OP_SOCKCLOSE) { openSockets = openSockets - 1; }
+    }
+
+    lastIp = liveIp;
+    seen = seen + 1;
+    v.configure(SLGovVerdict.ADMIT, "opcode fits relatively and respectively", expectedIndex, SLGovPhase.DURING);
+    lastVerdict = v;
+    return v;
+  }
+
+  // Called when the program finishes DURING: unresolved pairings are unrest.
+  SLGovVerdict settle() {
+    SLGovVerdict v = new SLGovVerdict();
+    if (callDepth != 0) {
+      v.configure(SLGovVerdict.PAUSE, "program ended with open CALL frames (unrest)", -1, SLGovPhase.DURING);
+    } else if (lockDepth != 0) {
+      v.configure(SLGovVerdict.PAUSE, "program ended with a held LOCK (unrest)", -1, SLGovPhase.DURING);
+    } else if (openSockets != 0) {
+      v.configure(SLGovVerdict.WARN, "program ended with an open socket", -1, SLGovPhase.DURING);
+    } else {
+      v.configure(SLGovVerdict.ADMIT, "live program settled cleanly", -1, SLGovPhase.DURING);
+    }
+    lastVerdict = v;
+    return v;
+  }
+}

@@ -1,0 +1,109 @@
+/*
+ * lib/sldocument/SLDocument.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLDocument, an ordered .sldocument whose annotated method
+ *   steps run top-down and are compiled against and with standard SLeeLa source.
+ *
+ * An .sldocument is a document, not a free script: its order is already
+ * established, so running it is a matter of flow and architecture rather than
+ * control plumbing. These documents suit tasks more sophisticated than bash
+ * scripting, and clear "national program" work where the sequence A..Z is
+ * settled in advance.
+ *
+ * Running the document:
+ *   1. steps are arranged by effective order (explicit @order, else top-down);
+ *   2. each step is invoked in that order and its single binary veritable value
+ *      is recorded;
+ *   3. by default the document stops at the first unsound step (fail-closed),
+ *      because an ordered program should not proceed past a broken step; this
+ *      may be relaxed with permitContinue() to record every step.
+ *
+ * Family: sldocument. Native VM/OS work crosses an explicit bridge.
+ */
+#sleela 1.3
+// Unified SLeeLa standard-library front-end object.
+class SLDocument {
+  static final int MAX_STEPS = 65536;
+
+  String title;
+  String version;        // the declared #sldocument version, e.g. "1.0"
+  SLDocumentStep[] steps;
+  int count;
+  int frame;             // VM frame the steps execute against
+  boolean continueOnUnsound; // false = stop at first unsound step
+  SLDocumentResult result;
+  int state;
+  String lastError;
+
+  void init(String docTitle, String docVersion, int vmFrame) {
+    title = docTitle;
+    version = docVersion;
+    steps = new SLDocumentStep[MAX_STEPS];
+    count = 0;
+    frame = vmFrame;
+    continueOnUnsound = false;
+    result = new SLDocumentResult();
+    result.init();
+    state = 0;
+    lastError = "";
+  }
+
+  void permitContinue() { continueOnUnsound = true; }
+
+  // Add a step in textual (top-down) order. The textual position becomes the
+  // step's order unless the annotation carries an explicit @order.
+  boolean addStep(SLDocumentAnnotation annotation) {
+    if (count >= MAX_STEPS) { lastError = "document full"; return false; }
+    SLDocumentStep s = new SLDocumentStep();
+    s.configure(annotation, count + 1, frame);
+    steps[count] = s;
+    count = count + 1;
+    return true;
+  }
+
+  boolean valid() {
+    if (count < 1) { lastError = "empty document"; return false; }
+    return true;
+  }
+
+  void enable() { if (valid()) { state = 1; } }
+  void disable() { state = 0; }
+  boolean active() { return state == 1 && valid(); }
+  int size() { return count; }
+
+  // Arrange steps by effective order so the run is strictly top-down/ascending.
+  void arrange() {
+    for (int i = 0; i < count; i = i + 1) {
+      for (int j = i + 1; j < count; j = j + 1) {
+        if (steps[j].order() < steps[i].order()) {
+          SLDocumentStep tmp = steps[i];
+          steps[i] = steps[j];
+          steps[j] = tmp;
+        }
+      }
+    }
+  }
+
+  // Run the document top-down. Returns the result collection.
+  SLDocumentResult run() {
+    if (!active()) { return result; }
+    arrange();
+    for (int i = 0; i < count; i = i + 1) {
+      SLVeritable v = steps[i].invoke();
+      result.record(steps[i].name(), v);
+      if (!continueOnUnsound) {
+        if (v == null || !v.sound()) { return result; } // stop at first unsound
+      }
+    }
+    return result;
+  }
+
+  // The whole document's single binary item: sound and final-bit together.
+  SLVeritable outcome() {
+    SLVeritable v = new SLVeritable();
+    v.configure(result.sound(), result.sound(), title);
+    return v;
+  }
+
+  SLDocumentResult results() { return result; }
+}

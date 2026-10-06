@@ -1,0 +1,91 @@
+/*
+ * lib/opcodes/running/SLOpcodeGroupSet.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLOpcodeGroupSet, an ordered collection of SLOpcodeGroup
+ *   units that compose into a larger program of groups.
+ *
+ * Role: real programs are built from several cohesive groups run in sequence
+ *   (setup, work, teardown). A group set holds those groups in order, warms them
+ *   all ahead of time, finds a group by name, and either flattens them onto a
+ *   single stream or runs them group-by-group against a VM frame.
+ *
+ * Family: opcodes.running. Native VM/OS work crosses an explicit bridge.
+ */
+#sleela 1.3
+// Unified SLeeLa standard-library front-end object.
+class SLOpcodeGroupSet {
+  static final int MAX_GROUPS = 1024;
+
+  String label;
+  SLOpcodeGroup[] groups;
+  int count;
+  int state;
+  String lastError;
+
+  void init(String name) {
+    label = name;
+    groups = new SLOpcodeGroup[MAX_GROUPS];
+    count = 0;
+    state = 0;
+    lastError = "";
+  }
+
+  boolean add(SLOpcodeGroup group) {
+    if (group == null || !group.active()) { lastError = "inactive group"; return false; }
+    if (count >= MAX_GROUPS) { lastError = "group set full"; return false; }
+    groups[count] = group;
+    count = count + 1;
+    return true;
+  }
+
+  boolean valid() {
+    if (count < 1) { lastError = "empty group set"; return false; }
+    return true;
+  }
+
+  void enable() { if (valid()) { state = 1; } }
+  void disable() { state = 0; }
+  boolean active() { return state == 1 && valid(); }
+  int size() { return count; }
+
+  // Warm every group in the set. Returns the total number of opcodes warmed.
+  int warmAll() {
+    int total = 0;
+    for (int i = 0; i < count; i = i + 1) {
+      total = total + groups[i].warm();
+    }
+    return total;
+  }
+
+  SLOpcodeGroup byName(String name) {
+    for (int i = 0; i < count; i = i + 1) {
+      if (groups[i] != null && groups[i].name() == name) { return groups[i]; }
+    }
+    return null;
+  }
+
+  // Flatten all groups, in order, onto a single stream.
+  boolean emitInto(SLOpcodeStream stream) {
+    if (stream == null || !active()) { lastError = "inactive set or no stream"; return false; }
+    for (int i = 0; i < count; i = i + 1) {
+      if (!groups[i].emitInto(stream)) { lastError = groups[i].lastError; return false; }
+    }
+    return true;
+  }
+
+  // Run every group in order against a VM frame.
+  int run(int frame) {
+    if (!active()) { return -1; }
+    int ip = 0;
+    for (int i = 0; i < count; i = i + 1) {
+      ip = groups[i].run(frame);
+      if (ip < 0) { return ip; }
+    }
+    return ip;
+  }
+
+  SLOpcodeGroup at(int index) {
+    if (index < 0 || index >= count) { return null; }
+    return groups[index];
+  }
+}

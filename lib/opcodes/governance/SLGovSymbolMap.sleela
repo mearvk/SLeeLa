@@ -1,0 +1,70 @@
+/*
+ * lib/opcodes/governance/SLGovSymbolMap.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLGovSymbolMap, the registry of known symbol maps "that
+ *   just work" — safe, pre-vetted corrections the EventObserver may apply to
+ *   patch a fault mid-program instead of rejecting it.
+ *
+ * A mapping is a trusted substitution: when a given opcode code appears in a
+ * context the EventObserver judges faulty, the map supplies the replacement
+ * opcode code that is known to make the sequence sound. Only substitutions in
+ * this registry may be applied; an unknown fault is never silently "fixed".
+ *
+ * Family: opcodes.governance. Native VM/OS work crosses an explicit bridge.
+ */
+#sleela 1.3
+// Unified SLeeLa standard-library front-end object.
+class SLGovSymbolMap {
+  static final int MAX_MAPS = 512;
+
+  int[] faultCode;    // the opcode code observed as faulty
+  int[] patchCode;    // the known-good replacement opcode code
+  String[] rationale; // why the substitution is safe
+  int count;
+  int state;
+
+  void init() {
+    faultCode = new int[MAX_MAPS];
+    patchCode = new int[MAX_MAPS];
+    rationale = new String[MAX_MAPS];
+    count = 0;
+    state = 1;
+  }
+
+  // Register a trusted substitution. Fail-closed on bound.
+  boolean define(int fault, int patch, String why) {
+    if (count >= MAX_MAPS) { return false; }
+    if (fault < 0 || patch < 0) { return false; }
+    faultCode[count] = fault;
+    patchCode[count] = patch;
+    rationale[count] = why;
+    count = count + 1;
+    return true;
+  }
+
+  // Does a trusted patch exist for this faulty opcode code?
+  boolean known(int fault) {
+    for (int i = 0; i < count; i = i + 1) {
+      if (faultCode[i] == fault) { return true; }
+    }
+    return false;
+  }
+
+  // Return the known-good replacement, or -1 if none is registered.
+  int patchFor(int fault) {
+    for (int i = 0; i < count; i = i + 1) {
+      if (faultCode[i] == fault) { return patchCode[i]; }
+    }
+    return -1;
+  }
+
+  String rationaleFor(int fault) {
+    for (int i = 0; i < count; i = i + 1) {
+      if (faultCode[i] == fault) { return rationale[i]; }
+    }
+    return "";
+  }
+
+  int size() { return count; }
+  boolean active() { return state == 1; }
+}

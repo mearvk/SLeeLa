@@ -28,9 +28,58 @@ The GUI invokes the native command adapter rather than pretending that JavaFX it
 
 Live-device capture, non-WAV codecs, DSP EQ, audio analysis, video frames, and platform-specific capture remain explicit adapters. Unsupported capabilities are rejected or remain unavailable rather than being simulated as completed native functionality.
 
+# SLeeLa Native Opcode Bridge
+
+C++17 fetch/dispatch primitives behind the `lib/opcodes` single-opcode classes.
+
+- Stable C ABI in `include/sleela_opcode.h`.
+- Canonical mnemonic table of all **103 opcodes** (codes 0–102; base 98 at 0–97).
+- `sleela_opcode_vm_next` — the fetch (advance the instruction pointer).
+- `sleela_opcode_execute_one` — dispatch exactly one opcode.
+- Unknown opcodes are rejected (never a silent no-op); `OP_HALT` stops the stream.
+
+The authoritative execution semantics remain in `/impl/core`; this bridge models
+the same one-op-at-a-time discipline so a SLeeLa opcode object can request the
+fetch and then its single dispatch.
+
+# SLeeLa Native Opcode-Governance Bridge
+
+C++17 phase/ordering primitives behind the `lib/opcodes/governance` series
+(`SLOpcodeRegistrar`, `SLOpcodeListener`, `SLOpcodeEventObserver`,
+`SLGovernedExecution`).
+
+- Stable C ABI in `include/sleela_gov.h`.
+- `sleela_gov_announce_phase` — notify SLeeLa and the VM of BEFORE / DURING / AFTER.
+- `sleela_gov_live_ip` — the live instruction pointer the Listener hears during execution.
+- `sleela_gov_current_phase` / `sleela_gov_phase_count` — phase tracking.
+
+The governance *policy* lives in SLeeLa source; this bridge only announces the
+phases so both SLeeLa and the VM listen for ordering, and reports the live ip.
+Governance never executes an opcode itself — execution stays in `/impl/core`.
+
+# SLeeLa Native .sldocument Bridge
+
+C++17 compile/invoke primitives behind the `lib/sldocument` classes
+(`SLDocument`, `SLDocumentStep`, `SLDocumentCompiler`, `SLVeritable`, ...).
+
+- Stable C ABI in `include/sleela_sldocument.h`.
+- `sleela_sldocument_compile` — compile a document with its companion `.sleela` sources; returns a VM frame handle.
+- `sleela_sldocument_invoke` — invoke one ordered step; returns its single binary veritable item (1/0).
+- `sleela_sldocument_kind` — report whether a step's value is kind (well-formed/benign).
+- `sleela_compile_choice` — compile a chosen source form (`.sldocument` or `.sleela`); makes `.sldocument` a selectable compile choice.
+- `sleela_sldocument_synth_name` / `sleela_sldocument_sanitize_identifier` / `sleela_sldocument_camel_from_role` — naming-convention helpers for converting an anonymous `.sldocument` to a named `.sleela`.
+- `sleela_sldocument_emit_sleela` / `sleela_sldocument_write` — emit and persist the converted `.sleela` for safekeeping.
+
+An `.sldocument` runs its annotated method steps top-down and compiles against
+and with standard SLeeLa source; each step usually returns a single binary
+"veritable and kind" value. The document policy lives in SLeeLa source; the
+authoritative compilation stays in `lib/compiler` / `impl/frontend`.
+
 ## Build
 
 ```sh
 make
 make test
 ```
+
+`make test` builds and self-tests the audio, opcode, governance, and sldocument bridges.

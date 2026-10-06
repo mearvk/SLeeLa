@@ -1,0 +1,72 @@
+/*
+ * lib/opcodes/SLOpcodeBase.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLOpcodeBase, the shared base of every single-opcode class
+ *   in the /lib/opcodes family.
+ *
+ * Contract — "call the VM to the next instruction, then execute one opcode":
+ *   Each concrete opcode class carries exactly ONE opcode (its canonical code and
+ *   mnemonic). Its step() does two things, in order:
+ *     1. advance() — carefully ask the VM to move the instruction pointer to the
+ *        next instruction (the fetch), crossing the explicit VM/OS bridge; then
+ *     2. fire()    — execute precisely this one opcode against the live VM frame.
+ *   The return of step() is the VM's next-instruction pointer, so a driver can
+ *   chain opcode objects in verbatim program order, each handing control to the
+ *   next.
+ *
+ * This mirrors the canonical native dispatch loop in impl/core/sleela_core.c
+ *   (`SLInstr in = vm->code[ip++]; switch (in.op) { ... }`): the ip is advanced
+ *   as part of the fetch, then the single decoded op executes. The /lib/opcodes
+ *   classes are the SLeeLa-source face of that one-op-at-a-time discipline.
+ *
+ * Family: opcodes. Native VM/OS work crosses an explicit bridge.
+ */
+#sleela 1.3
+// Unified SLeeLa standard-library front-end object.
+class SLOpcodeBase {
+  static final int CANONICAL_COUNT = 103; // codes 0..102; 0..97 are the base 98
+
+  int code;        // canonical opcode number, 0..102
+  String mnemonic; // canonical mnemonic, e.g. "OP_ADD"
+  int state;       // 0 = idle, 1 = armed
+  int fired;       // number of times this single opcode has executed
+
+  void configure(int opcodeCode, String opcodeMnemonic) {
+    code = opcodeCode;
+    mnemonic = opcodeMnemonic;
+    state = 1;
+    fired = 0;
+  }
+
+  void arm() { state = 1; }
+  void disarm() { state = 0; }
+  boolean armed() { return state == 1; }
+  int opcode() { return code; }
+  String name() { return mnemonic; }
+  int fireCount() { return fired; }
+
+  // Step 1 of the contract: carefully move the VM to the next instruction.
+  // Returns the VM's resulting instruction-pointer. The VM owns the pointer;
+  // this only requests the advance across the bridge.
+  int advance(int frame) {
+    if (!armed()) { return -1; }
+    return native sleela_opcode_vm_next(frame);
+  }
+
+  // Step 2 of the contract: execute THIS single opcode against the VM frame at
+  // the pointer produced by advance(). Concrete classes rely on this base entry;
+  // the native side dispatches exactly `code` and nothing else.
+  int fire(int frame, int ip) {
+    if (!armed()) { return -1; }
+    fired = fired + 1;
+    return native sleela_opcode_execute_one(frame, code, ip);
+  }
+
+  // The full ordered contract: next-instruction fetch, then single execute.
+  // Returns the next instruction pointer for the following opcode object.
+  int step(int frame) {
+    int ip = advance(frame);
+    if (ip < 0) { return -1; }
+    return fire(frame, ip);
+  }
+}

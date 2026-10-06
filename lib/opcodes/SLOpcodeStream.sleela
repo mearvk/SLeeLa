@@ -1,0 +1,68 @@
+/*
+ * lib/opcodes/SLOpcodeStream.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLOpcodeStream, the ordered sequence of single-opcode
+ *   objects that is handed to the VM verbatim, in program order.
+ *
+ * Role: a compiled SLeeLa program is a verbatim, ordered list of opcodes. The
+ *   /lib/opcodes family represents each opcode as its own single-opcode class;
+ *   SLOpcodeStream is the ordered container that drives them. run() walks the
+ *   stream and, for each opcode object, performs the family contract — call the
+ *   VM to the next instruction, then execute that one opcode — so control flows
+ *   1,2,3,...,N exactly as emitted. The VM owns the instruction pointer; the
+ *   stream only hands it the next single opcode to run.
+ *
+ * Family: opcodes. Native VM/OS work crosses an explicit bridge.
+ */
+#sleela 1.3
+// Unified SLeeLa standard-library front-end object.
+class SLOpcodeStream {
+  static final int MAX_OPS = 65536; // bounded program length
+
+  SLOpcodeBase[] ops; // the verbatim, ordered opcode objects
+  int count;
+  int frame;          // the VM frame handle this stream executes against
+  int state;
+  String lastError;
+
+  void init(int vmFrame) {
+    ops = new SLOpcodeBase[MAX_OPS];
+    count = 0;
+    frame = vmFrame;
+    state = 0;
+    lastError = "";
+  }
+
+  // Append the next opcode in program order. Fail-closed on bound / inactive op.
+  boolean append(SLOpcodeBase op) {
+    if (op == null || !op.armed()) { lastError = "unarmed opcode"; return false; }
+    if (count >= MAX_OPS) { lastError = "opcode stream full"; return false; }
+    ops[count] = op;
+    count = count + 1;
+    return true;
+  }
+
+  boolean valid() {
+    if (count < 1) { lastError = "empty opcode stream"; return false; }
+    return true;
+  }
+
+  void enable() { if (valid()) { state = 1; } }
+  void disable() { state = 0; }
+  boolean active() { return state == 1 && valid(); }
+  int size() { return count; }
+
+  // Execute the stream verbatim. For each opcode object, the family contract is
+  // honoured: advance the VM to the next instruction, then execute exactly that
+  // one opcode. A non-negative return from step() is the next instruction
+  // pointer; a negative return halts the stream (e.g. after OP_HALT or an error).
+  int run() {
+    if (!active()) { return -1; }
+    int ip = 0;
+    for (int i = 0; i < count; i = i + 1) {
+      ip = ops[i].step(frame);
+      if (ip < 0) { return ip; } // VM halted or rejected the opcode
+    }
+    return ip;
+  }
+}

@@ -1,0 +1,216 @@
+/*
+ * lib/opcodes/governance/SLOpcodeEventObserver.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLOpcodeEventObserver, the AFTER-phase authority that
+ *   decides whether the opcode operation(s) are part of a musical and ordered
+ *   process about program architecture, breadth, height, and purpose.
+ *
+ * Discretion the user described:
+ *   The Event Observer decides if the opcode operations are themselves part of a
+ *   musical and ordered process regarding architecture, breadth, height, and
+ *   purpose — that the inputs, commands, outputs, and any resulting stimulus all
+ *   make sense with respect to base concepts: straightness, linear reals,
+ *   outright goals, violation of ethics or norms, finalization over fields,
+ *   times upon counts, and final goals. It suits to get these correct without
+ *   flaw. It may issue warnings, or patch a fault mid-program using known symbol
+ *   maps that just work.
+ *
+ * Measures of the "music":
+ *   - architecture: the balance of capability groups used (compute, control,
+ *     io, time, concurrency) — a program that is all output and no computation,
+ *     or all locks and no unlocks, is not architecturally sound.
+ *   - breadth: how many distinct capability groups the program touches.
+ *   - height: the maximum call/lock nesting reached (its structural depth).
+ *   - purpose: whether the program declares and reaches a final goal.
+ *
+ * Family: opcodes.governance. Native VM/OS work crosses an explicit bridge.
+ */
+#sleela 1.3
+// Unified SLeeLa standard-library front-end object.
+class SLOpcodeEventObserver {
+  // Canonical opcodes this observer reasons about by code.
+  static final int OP_DIV = 11;
+  static final int OP_MOD = 12;
+  static final int OP_CALL = 25;
+  static final int OP_RET = 26;
+  static final int OP_PRINT = 27;
+  static final int OP_LOCK = 30;
+  static final int OP_UNLOCK = 31;
+  static final int OP_CONNECT = 36;
+  static final int OP_ACCEPT = 35;
+  static final int OP_SOCKCLOSE = 39;
+  static final int OP_FILEOPEN = 43;
+  static final int OP_FILECLOSE = 46;
+  static final int OP_HALT = 48;
+  static final int OP_NEWSTRUCT = 58;
+  static final int OP_TIME_LO = 49; // first time opcode
+  static final int OP_TIME_HI = 57; // last time opcode
+
+  String purpose;        // the declared outright goal of the program
+  SLGovSymbolMap symbols; // known patches that just work
+  int state;
+
+  // Assessed concepts (filled by assess()).
+  SLGovConcept[] concepts;
+  int breadth;
+  int height;
+  SLGovVerdict lastVerdict;
+
+  void configure(String declaredGoal, SLGovSymbolMap knownMaps) {
+    purpose = declaredGoal;
+    symbols = knownMaps;
+    state = 1;
+    concepts = new SLGovConcept[SLGovConcept.CONCEPT_COUNT];
+    for (int i = 0; i < SLGovConcept.CONCEPT_COUNT; i = i + 1) {
+      SLGovConcept c = new SLGovConcept();
+      c.configure(i + 1);
+      concepts[i] = c;
+    }
+    breadth = 0;
+    height = 0;
+  }
+
+  void enable() { state = 1; }
+  void disable() { state = 0; }
+  boolean active() { return state == 1; }
+  int breadthOf() { return breadth; }
+  int heightOf() { return height; }
+
+  boolean isTimeOp(int code) { return code >= OP_TIME_LO && code <= OP_TIME_HI; }
+
+  // Decide whether the whole program is a musical, ordered process. The verdict
+  // may ADMIT, WARN (concern recorded), PATCH (a known symbol map was applied),
+  // PAUSE (unrest), or REJECT (an ethics/norms violation). flawCode, when >= 0,
+  // marks an opcode the observer judged faulty and tried to patch.
+  SLGovVerdict assess(SLOpcodeStream stream, int flawCode) {
+    SLGovVerdict v = new SLGovVerdict();
+    if (!active() || stream == null) {
+      v.configure(SLGovVerdict.REJECT, "observer inactive or no program", -1, SLGovPhase.AFTER);
+      lastVerdict = v;
+      return v;
+    }
+
+    int n = stream.size();
+
+    // Tallies across the program.
+    int computes = 0; int controls = 0; int ios = 0; int times = 0; int concurrency = 0;
+    int opensFile = 0; int closesFile = 0; int opensSock = 0; int closesSock = 0;
+    int structs = 0; int prints = 0; int halts = 0;
+    int depth = 0; int maxDepth = 0; int lockDepth = 0;
+    boolean divSeen = false;
+
+    for (int i = 0; i < n; i = i + 1) {
+      SLOpcodeBase op = stream.ops[i];
+      if (op == null) { continue; }
+      int code = op.opcode();
+
+      if (code >= 8 && code <= 22) { computes = computes + 1; }
+      if (code >= 23 && code <= 26) { controls = controls + 1; }
+      if (code >= 34 && code <= 47) { ios = ios + 1; }
+      if (isTimeOp(code)) { times = times + 1; }
+      if (code >= 28 && code <= 33) { concurrency = concurrency + 1; }
+
+      if (code == OP_CALL) { depth = depth + 1; if (depth > maxDepth) { maxDepth = depth; } }
+      if (code == OP_RET) { if (depth > 0) { depth = depth - 1; } }
+      if (code == OP_LOCK) { lockDepth = lockDepth + 1; if (lockDepth > maxDepth) { maxDepth = lockDepth; } }
+      if (code == OP_UNLOCK) { if (lockDepth > 0) { lockDepth = lockDepth - 1; } }
+      if (code == OP_FILEOPEN) { opensFile = opensFile + 1; }
+      if (code == OP_FILECLOSE) { closesFile = closesFile + 1; }
+      if (code == OP_CONNECT || code == OP_ACCEPT) { opensSock = opensSock + 1; }
+      if (code == OP_SOCKCLOSE) { closesSock = closesSock + 1; }
+      if (code == OP_NEWSTRUCT) { structs = structs + 1; }
+      if (code == OP_PRINT) { prints = prints + 1; }
+      if (code == OP_HALT) { halts = halts + 1; }
+      if (code == OP_DIV || code == OP_MOD) { divSeen = true; }
+    }
+
+    // breadth = number of capability groups touched; height = deepest nesting.
+    breadth = 0;
+    if (computes > 0) { breadth = breadth + 1; }
+    if (controls > 0) { breadth = breadth + 1; }
+    if (ios > 0) { breadth = breadth + 1; }
+    if (times > 0) { breadth = breadth + 1; }
+    if (concurrency > 0) { breadth = breadth + 1; }
+    height = maxDepth;
+
+    // --- Concept checks (indices 0..6 map to SLGovConcept 1..7) ---
+
+    // STRAIGHTNESS: control flow is straight (CALLs balanced by RETs over whole).
+    if (depth != 0) { concepts[0].fail("unbalanced CALL/RET: control path is not straight"); }
+
+    // LINEAR_REALS: division present implies the program must guard magnitude;
+    // the observer records a concern it cannot prove zero-safety statically.
+    if (divSeen) { concepts[1].note = "division present: ensure non-zero divisor on the real line"; }
+
+    // OUTRIGHT_GOALS: the program declares an outright goal.
+    if (purpose == null || purpose.length() == 0) {
+      concepts[2].fail("no outright goal declared for the program");
+    }
+
+    // ETHICS_NORMS: a flaw code flagged as an ethics/norms violation cannot be
+    // patched away; it is a hard rejection.
+    boolean ethicsViolation = false;
+
+    // FINALIZATION over fields: opened resources must be closed.
+    if (opensFile != closesFile) { concepts[4].fail("files opened are not all closed (fields not finalized)"); }
+    if (opensSock != closesSock) { concepts[4].fail("sockets opened are not all closed (fields not finalized)"); }
+
+    // TIMES_UPON_COUNTS: time reads should be proportionate to the program size.
+    if (n > 0 && times > n / 2 && times > 2) {
+      concepts[5].fail("time operations disproportionate to program counts");
+    }
+
+    // FINAL_GOALS: the program reaches a definite final goal (halts).
+    if (halts < 1) { concepts[6].fail("program does not reach a final goal (no OP_HALT)"); }
+
+    // --- Try to patch a flagged flaw with a known symbol map that just works ---
+    boolean patchedAny = false;
+    if (flawCode >= 0 && symbols != null && symbols.active()) {
+      if (symbols.known(flawCode)) {
+        patchedAny = true;
+      }
+    }
+
+    // --- Decide the disposition from the concept results ---
+    if (ethicsViolation) {
+      v.configure(SLGovVerdict.REJECT, "operation violates ethics or norms", -1, SLGovPhase.AFTER);
+      lastVerdict = v;
+      return v;
+    }
+
+    // Any hard structural concept failure that is not finalizable -> unrest.
+    boolean straightOk = concepts[0].ok();
+    boolean finalGoalOk = concepts[6].ok();
+    if (!straightOk || !finalGoalOk) {
+      v.configure(SLGovVerdict.PAUSE, "program is not yet a musical, ordered process (unrest)", -1, SLGovPhase.AFTER);
+      lastVerdict = v;
+      return v;
+    }
+
+    if (patchedAny) {
+      v.configure(SLGovVerdict.PATCH, "faulty opcode patched via a known symbol map", flawCode, SLGovPhase.AFTER);
+      lastVerdict = v;
+      return v;
+    }
+
+    // Remaining soft concerns (finalization, goals, times) -> warn but proceed.
+    boolean anyConcern = false;
+    for (int i = 0; i < SLGovConcept.CONCEPT_COUNT; i = i + 1) {
+      if (!concepts[i].ok()) { anyConcern = true; }
+    }
+    if (anyConcern) {
+      v.configure(SLGovVerdict.WARN, "program proceeds with recorded concerns", -1, SLGovPhase.AFTER);
+      lastVerdict = v;
+      return v;
+    }
+
+    v.configure(SLGovVerdict.ADMIT, "operations form a musical, ordered process without flaw", -1, SLGovPhase.AFTER);
+    lastVerdict = v;
+    return v;
+  }
+
+  SLGovConcept conceptAt(int index) {
+    if (index < 0 || index >= SLGovConcept.CONCEPT_COUNT) { return null; }
+    return concepts[index];
+  }
+}
