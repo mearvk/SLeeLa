@@ -42,15 +42,31 @@ class SLGuestLinux {
     kernelEntry = 0; initEntry = 0;
   }
 
-  // Boot protocol: place the kernel image at guest-physical 0, record the entry
-  // points, and enter the guest. (Image loading is modeled; a real boot copies
-  // bzImage + initrd into guest memory.)
+  // Boot protocol: load a minimal guest-kernel opcode image into the guest VM's
+  // substrate, record the entry points, and enter the guest. The image is a
+  // real stream of canonical SLeeLa opcodes that the substrate executes (step
+  // 1): the "kernel" computes a value and prints it (its init banner), then
+  // halts — a stand-in for a real kernel image until step 4 loads a compiled
+  // guest kernel. A real boot copies bzImage + initrd into guest memory.
   int boot(int kernelImageEntry, int initImageEntry) {
     kernelEntry = kernelImageEntry;
     initEntry = initImageEntry;
-    vm.enter();           // vCPU jumps to the guest kernel entry
+    loadKernelImage();
+    vm.enter();           // guest substrate ip at 0; vCPU records entry
     booted = 1;
     return kernelEntry;
+  }
+
+  // Emit the guest kernel's opcode image into the guest substrate. These are
+  // canonical SLeeLa opcodes (SLSleelaOpcode): CONST/ADD/PRINT/HALT.
+  void loadKernelImage() {
+    SLSleelaOpcode op = new SLSleelaOpcode(); op.configure(0, "OP_NOP");
+    // kernel "init": print 2 + 3 (a boot heartbeat), then halt.
+    vm.loadOpcode(op.OP_CONST, 2);
+    vm.loadOpcode(op.OP_CONST, 3);
+    vm.loadOpcode(op.OP_ADD, 0);
+    vm.loadOpcode(op.OP_PRINT, 0);
+    vm.loadOpcode(op.OP_HALT, 0);
   }
 
   // Translate a guest Linux syscall number to the host SleelaOS syscall the

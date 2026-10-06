@@ -3,63 +3,90 @@
  * SLeeLa Standard Library Definition.
  * Definition: Defines SLGuestVM — one guest virtual machine managed by the
  *   hypervisor. It presents a virtual CPU over a window of host memory
- *   (guest-physical addressing), tracks the guest's entry point and run state,
- *   counts VM-exits (traps/syscalls that the hypervisor emulates), and loads a
- *   guest OS image. This is the container a guest kernel such as a Linux-style
- *   SLGuestLinux boots inside.
+ *   (guest-physical addressing) and, crucially, EXECUTES the guest as a stream
+ *   of canonical SLeeLa opcodes on an embedded SLSleelaVM substrate. Guest code
+ *   is therefore run by the same Turing-complete engine as everything else in
+ *   the model (step 1 of the OS-VM roadmap): the guest is not merely ticked and
+ *   counted — its opcodes are actually dispatched.
  *
- * Guest-physical to host-physical translation is a base offset (single-level);
- * the guest sees addresses from 0 while the hypervisor relocates them into the
- * guest's host-memory window.
+ * A guest TRAP/SYSCALL opcode is a VM-exit: the vCPU stops at that point, the
+ * hypervisor/guest-kernel emulates the operation, and the guest resumes. VM
+ * exits are recorded so the hypervisor can account for and service them.
  *
- * Family: cpu. Composes SLCore, SLRAM; booted via SLGuestLinux.
+ * Guest-physical to host-physical translation here is a single base-offset
+ * window; a real MMU (SLMMU) replaces it in step 2.
+ *
+ * Family: cpu. Composes SLCore, SLSleelaVM, SLRAM.
  */
 #sleela 1.3
 class SLGuestVM {
   String name;
-  SLCore vcpu;        // the host core backing this guest's virtual CPU
+  SLCore vcpu;          // virtual CPU (the guest's modeled hardware core)
+  SLSleelaVM substrate; // the Turing-complete engine that actually runs guest code
   SLRAM hostMemory;
-  int windowBase;     // host-physical base of the guest's memory window
-  int windowSize;     // words
-  int guestEntry;     // guest-physical entry point
+  int windowBase;       // host-physical base of the guest's memory window
+  int windowSize;       // words
+  int guestEntry;       // guest-physical entry point
   int running;
   int exits;
   int guestInstr;
+  int lastExitReason;   // 0 none, 1 syscall, 2 trap, 3 halt
+
+  static final int EXIT_NONE = 0;
+  static final int EXIT_SYSCALL = 1;
+  static final int EXIT_TRAP = 2;
+  static final int EXIT_HALT = 3;
 
   void configure(String vmName, SLCore core, SLRAM ram, int base, int size, int entry) {
     name = vmName; vcpu = core; hostMemory = ram;
     windowBase = base; windowSize = size; guestEntry = entry;
-    running = 0; exits = 0; guestInstr = 0;
+    running = 0; exits = 0; guestInstr = 0; lastExitReason = EXIT_NONE;
+    // Each guest gets its own opcode substrate (its guest-physical code/data).
+    substrate = new SLSleelaVM(); substrate.configure(65536, 8192, 4096);
   }
 
-  // Guest-physical -> host-physical translation.
-  int translate(int guestAddr) { return windowBase + guestAddr; }
+  // Guest-physical -> host-physical translation: a single base-offset window
+  // (replaced by a real MMU in step 2).
+  int translate(int guestAddr) {
+    return windowBase + guestAddr;
+  }
   boolean inWindow(int guestAddr) { return guestAddr >= 0 && guestAddr < windowSize; }
 
-  // Enter the guest at its (translated) entry point.
+  // Load one guest opcode+arg into the substrate's code store (the guest kernel
+  // / loader populates this; see SLGuestLinux).
+  int loadOpcode(int opcode, int arg) { return substrate.emit(opcode, arg); }
+
+  SLSleelaVM guestSubstrate() { return substrate; }
+
+  // Enter the guest: the vCPU records the (translated) entry; the substrate ip
+  // is already at 0 where its code was loaded.
   void enter() { vcpu.loadEntryPoint(translate(guestEntry)); running = 1; }
 
-  // Run the guest's vCPU for a budget of instructions. Each guest TRAP/SYSCALL
-  // is a VM-exit: the hypervisor would emulate it; here we count it and resume.
+  // Run the guest by DISPATCHING its opcodes on the substrate, up to `budget`
+  // opcodes or until a VM-exit (HALT). Each executed opcode advances the guest;
+  // a HALT is an exit the hypervisor observes.
   int run(int budget) {
     if (running == 0) { enter(); }
     int ran = 0;
-    while (running == 1 && ran < budget && !vcpu.halted()) {
-      vcpu.tick();
+    while (running == 1 && ran < budget && !substrate.isHalted()) {
+      substrate.step();          // execute exactly one guest opcode
       guestInstr = guestInstr + 1;
-      int trap = vcpu.controlUnit().pendingTrap();
-      if (trap >= 0) { exits = exits + 1; vcpu.controlUnit().clearTrap(); } // VM-exit handled
-      int sys = vcpu.controlUnit().pendingSyscall();
-      if (sys >= 0) { exits = exits + 1; vcpu.controlUnit().clearSyscall(); } // guest syscall exit
       ran = ran + 1;
     }
-    if (vcpu.halted()) { running = 0; }
+    if (substrate.isHalted()) { running = 0; exits = exits + 1; lastExitReason = EXIT_HALT; }
     return ran;
   }
 
+  // A guest syscall VM-exit: the guest kernel calls this when its code reaches a
+  // service point, so the hypervisor can emulate it against the host.
+  void recordSyscallExit() { exits = exits + 1; lastExitReason = EXIT_SYSCALL; }
+  void recordTrapExit() { exits = exits + 1; lastExitReason = EXIT_TRAP; }
+
   void stop() { running = 0; }
   int exitCount() { return exits; }
+  int lastExit() { return lastExitReason; }
   int guestInstructions() { return guestInstr; }
+  int printed() { return substrate.printed(); }   // observable guest output
   String vmName() { return name; }
   int entry() { return guestEntry; }
 }
