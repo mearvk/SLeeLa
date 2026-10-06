@@ -7,7 +7,68 @@
 // Unified SLeeLa SDK front-end object.
 // Family: crypto. ML-DSA post-quantum digital signature (FIPS 204, CNSA 2.0).
 // Native impl crosses the VM/OS bridge to /crypto; see crypto/PQ-INTEGRATION.md.
+//
+// IMPLEMENTATION STATUS: the native entry points (slc_mldsa_*) are DECLARED but
+// currently return SLCRYPTO_ERR_UNIMPL. Until an audited reference (liboqs /
+// pq-crystals) is vendored, backendReady() is false and operations return
+// ERR_UNIMPL. Callers must not treat this primitive as available.
+//
+// SECURITY NOTE: the native /crypto backend is a correct, specification-faithful
+// REFERENCE implementation. It is NOT guaranteed constant-time and is NOT
+// side-channel resistant. For data that must be protected use an audited library
+// (BoringSSL, OpenSSL, libsodium, liboqs). See crypto/README.md.
 class SLMlDsa {
-  String parameterSet; int state;
-  void configure(String p){parameterSet=p;} void enable(){state=1;} void disable(){state=0;} boolean active(){return state==1;}
+  // Status codes mirror slcrypto_status in crypto/include/slcrypto.h.
+  static final int OK = 0;
+  static final int ERR_PARAM = -1;
+  static final int ERR_AUTH = -2;      // signature verification failed
+  static final int ERR_UNIMPL = -3;
+
+  String parameterSet;   // "ML-DSA-44" | "ML-DSA-65" | "ML-DSA-87"
+  int state;             // 1 = enabled, 0 = disabled
+  int configured;        // 1 once a supported parameter set has been accepted
+  int backend;           // 1 only once a real native implementation is linked
+
+  // Validate against the three FIPS 204 parameter sets named by CNSA 2.0.
+  int configure(String p) {
+    if (p == null) { configured = 0; return ERR_PARAM; }
+    if (p == "ML-DSA-44" || p == "ML-DSA-65" || p == "ML-DSA-87") {
+      parameterSet = p; configured = 1; return OK;
+    }
+    configured = 0;
+    return ERR_PARAM;
+  }
+
+  // The VM/OS bridge binding calls this with 1 only when a real ML-DSA
+  // implementation is present. It stays 0 while src/pq.c returns ERR_UNIMPL.
+  void bindBackend(int ready) { if (ready == 1) { backend = 1; } else { backend = 0; } }
+  boolean backendReady() { return backend == 1; }
+
+  void enable() { state = 1; }
+  void disable() { state = 0; }
+
+  // active() reflects real usability: it is false while the PQ backend is pending.
+  boolean active() { return state == 1 && configured == 1 && backend == 1; }
+
+  // Signature operations. Model slc_mldsa_keygen/sign/verify; they surface
+  // ERR_UNIMPL until the backend is vendored. verify returns ERR_AUTH on a bad signature.
+  int keygen() {
+    if (configured == 0) { return ERR_PARAM; }
+    if (backend == 0) { return ERR_UNIMPL; }
+    return OK;
+  }
+  int sign(String secretKey, String msg) {
+    if (backend == 0) { return ERR_UNIMPL; }
+    if (secretKey == null || msg == null) { return ERR_PARAM; }
+    return OK;
+  }
+  int verify(String publicKey, String msg, String sig) {
+    if (backend == 0) { return ERR_UNIMPL; }
+    if (publicKey == null || msg == null || sig == null) { return ERR_PARAM; }
+    return OK;
+  }
+
+  String securityNote() {
+    return "Reference-grade and PQ backend pending; not constant-time or side-channel resistant. Use an audited library (liboqs) in production.";
+  }
 }
