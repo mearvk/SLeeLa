@@ -24,6 +24,10 @@ class SLALU {
   static final int OP_SHR = 7;
   static final int OP_CMP = 8;
   static final int OP_PASS= 9;
+  static final int OP_MUL = 10;
+  static final int OP_DIV = 11;
+  static final int OP_MOD = 12;
+  static final int OP_NEG = 13;
 
   int width;
   SLAdder adder;
@@ -78,6 +82,14 @@ class SLALU {
       int nb = (bitwise(b, 0, OP_NOT) + 1) % mask();
       int s = adder.add(a % mask(), nb);
       setFlags(s, adder.carry(), 0);
+    } else if (op == OP_MUL) {
+      setFlags((a * b) % mask(), 0, 0);
+    } else if (op == OP_DIV) {
+      if (b == 0) { setFlags(0, 0, 1); } else { setFlags(a / b, 0, 0); } // div-by-zero sets overflow
+    } else if (op == OP_MOD) {
+      if (b == 0) { setFlags(0, 0, 1); } else { setFlags(a % b, 0, 0); }
+    } else if (op == OP_NEG) {
+      setFlags((mask() - (a % mask())) % mask(), 0, 0);
     } else if (op == OP_AND || op == OP_OR || op == OP_XOR || op == OP_NOT) {
       setFlags(bitwise(a, b, op), 0, 0);
     } else if (op == OP_SHL) {

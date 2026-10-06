@@ -76,13 +76,35 @@ that bottoms out at Boolean logic.
 | `SLKernel` | The OS core: scheduler + memory + drivers + syscalls + filesystem; runs the main loop. |
 | `SLOperatingSystem` | Full OS assembly over a CPU; `install()` + `spawn()` + `run()`. |
 
-### Layer 5 — Programs
+### Layer 2.5 — Hardware stack
+| Class | Role |
+|---|---|
+| `SLStack` | The hardware call/data stack (grows downward) for PUSH/POP and CALL/RET return addresses. |
+
+### Layer 5 — Programs and the multi-language toolchain
 | Class | Role |
 |---|---|
 | `SLProgram` | An executable image (encoded instructions + entry point). |
 | `SLAssembler` | Emits encoded instructions from mnemonics into a program. |
-| `SLProgramLoader` | Copies a program into memory and spawns it as a process. |
+| `SLIRInstruction` / `SLIR` | The common, language-neutral intermediate representation. |
+| `SLFrontend` | Base frontend: source → `SLIR`. |
+| `SLFrontendSleela` / `SLFrontendC` / `SLFrontendCpp` / `SLFrontendJava` | Per-language frontends lowering C, C++, Java, and Sleela to the shared IR. |
+| `SLLowering` | Shared backend: `SLIR` → machine code (register allocation + label resolution). |
+| `SLCompilerDriver` | Selects a frontend by language/extension and runs frontend→IR→backend. |
+| `SLProgramLoader` | Loads a compiled program **or compiles source in any supported language** and spawns it. |
 | `SLMachine` | The capstone: composes the whole stack and runs it end to end. |
+
+### Layer 6 — Virtualization (Linux-style guest)
+| Class | Role |
+|---|---|
+| `SLHypervisor` | Type-2 hosted hypervisor: creates/schedules guest VMs; TRAP = VM-exit. |
+| `SLGuestVM` | One guest: a vCPU over a guest-physical memory window with VM-exit handling. |
+| `SLGuestLinux` | A Linux-style guest kernel (boot protocol + Linux syscall ABI), emulated on VM-exit. |
+
+> **Execution, the multi-language loader, and the Linux-guest boundary are
+> documented in detail in [`EXECUTION.md`](EXECUTION.md).** The ISA
+> (`SLInstructionSet`) is now a real multi-language lowering target with a full
+> call/stack protocol; `SLControlUnit` executes the complete set.
 
 ## The end-to-end chain
 

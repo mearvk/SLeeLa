@@ -1,0 +1,63 @@
+/*
+ * lib/cpu/SLFrontendCpp.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLFrontendCpp — the C++ frontend. It extends the C
+ *   frontend's lowering with the C++-specific constructs that still reduce to
+ *   the same common SLIR: an object's method call lowers to a function call
+ *   whose first IR_PARAM is the `this` pointer; a constructor lowers to an
+ *   allocation plus an initializer call; virtual dispatch lowers to a vtable
+ *   load (IR_LOAD) followed by an indirect IR_CALL.
+ *
+ * SCOPE NOTE: templates, overload resolution, exceptions, and the STL are a
+ * full C++ front-end's job and are out of scope for one class; this models the
+ * canonical C++-to-IR lowerings (this-pointer, construction, virtual dispatch)
+ * and demonstrates one complete lowering. The IR and backend are unchanged —
+ * exactly how clang++ shares LLVM with clang.
+ *
+ * Family: cpu. Extends SLFrontendC (C++ is a superset lowering).
+ */
+#sleela 1.3
+class SLFrontendCpp extends SLFrontendC {
+
+  void initCpp(String path) { configure("cpp", LANG_CPP, path); }
+
+  // Model lowering of a tiny C++ program with an object method call:
+  //   struct Box { int v; int get(){ return v; } };
+  //   int main(){ Box b{5}; putchar(b.get()+60); return 0; }
+  // Construction stores v; b.get() is a call with `this` as the first param.
+  SLIR lower() {
+    SLIR m = intermediate();
+    SLIRInstruction k = new SLIRInstruction();
+
+    int thisPtr = m.allocTemp();
+    int five    = m.allocTemp();
+    int ret     = m.allocTemp();
+    int c60     = m.allocTemp();
+    int ch      = m.allocTemp();
+    int getLbl  = m.allocLabel();
+
+    // Box b{5}: allocate `this` region (modeled address), store field v = 5.
+    m.emit(k.IR_CONST, thisPtr, -1, -1, 2048);     // &b
+    m.emit(k.IR_CONST, five, -1, -1, 5);
+    m.emit(k.IR_STORE, -1, thisPtr, five, 0);      // b.v = 5
+
+    // b.get(): pass `this`, call the method, receive the return value.
+    m.emit(k.IR_PARAM, -1, thisPtr, -1, 0);        // push this
+    m.emit(k.IR_CALL, ret, -1, -1, getLbl);        // ret = Box::get(this)
+
+    m.emit(k.IR_CONST, c60, -1, -1, 60);
+    m.emit(k.IR_ADD, ch, ret, c60, 0);
+    m.emit(k.IR_SYSCALL, -1, ch, -1, 0);           // putchar
+    m.emit(k.IR_SYSCALL, -1, -1, -1, 4);           // return 0
+    m.emit(k.IR_HALT, -1, -1, -1, 0);
+
+    // Box::get(this){ return this->v; }
+    m.emit(k.IR_LABEL, -1, -1, -1, getLbl);
+    int self = m.allocTemp();
+    int v = m.allocTemp();
+    m.emit(k.IR_CONST, self, -1, -1, 2048);        // modeled: this
+    m.emit(k.IR_LOAD, v, self, -1, 0);             // v = this->v
+    m.emit(k.IR_RET, -1, v, -1, 0);
+    return m;
+  }
+}

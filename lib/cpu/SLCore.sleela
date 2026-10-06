@@ -24,6 +24,7 @@ class SLCore {
   SLInstructionSet isa;
   SLInstructionDecoder decoder;
   SLControlUnit control;
+  SLStack stack;
   SLCache l1;
   SLInterruptController irq;
 
@@ -38,12 +39,18 @@ class SLCore {
     isa = new SLInstructionSet(); isa.configure();
     decoder = new SLInstructionDecoder(); decoder.configure(isa);
 
+    // Per-core hardware stack: a high region of shared memory growing downward.
+    // The OS re-points the stack per process; this is the boot default.
+    stack = new SLStack();
+    int top = sharedMemory.capacityWords() - 1 - (coreId * 4096);
+    stack.configure(sharedMemory, top, top - 2048);
+
     l1 = new SLCache(); l1.configure("L1", 32768, 64, 8); l1.attachBacking(sharedMemory);
     irq = new SLInterruptController(); irq.configure(0);
     irq.enable(irq.IRQ_TIMER);
 
     control = new SLControlUnit();
-    control.configure(isa, decoder, regs, alu, pc, status, sharedMemory);
+    control.configure(isa, decoder, regs, alu, pc, status, sharedMemory, stack);
   }
 
   void loadEntryPoint(int addr) { pc.branchTo(addr); }
@@ -64,4 +71,6 @@ class SLCore {
   SLControlUnit controlUnit() { return control; }
   SLRegisterFile registers() { return regs; }
   SLInterruptController interrupts() { return irq; }
+  SLStack hardwareStack() { return stack; }
+  SLInstructionSet instructionSet() { return isa; }
 }

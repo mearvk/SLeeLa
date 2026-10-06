@@ -1,0 +1,52 @@
+/*
+ * lib/cpu/SLFrontend.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLFrontend — the base class for every language frontend.
+ *   A frontend turns program source in one language into the common SLIR, which
+ *   the shared backend (SLLowering) then compiles to machine code for the
+ *   SLInstructionSet. Concrete frontends exist for C, C++, Java, and Sleela.
+ *
+ * The contract is deliberately the same one real toolchains use: a frontend is
+ * responsible for its language's lexing, parsing, and semantic lowering to a
+ * common IR; everything after the IR (optimization, register allocation, code
+ * emission) is language-neutral and shared.
+ *
+ * Family: cpu. Base of the frontend hierarchy; composes SLIR.
+ */
+#sleela 1.3
+class SLFrontend {
+  static final int LANG_SLEELA = 0;
+  static final int LANG_C      = 1;
+  static final int LANG_CPP    = 2;
+  static final int LANG_JAVA   = 3;
+
+  String language;
+  int langId;
+  String sourcePath;
+  int diagnostics;    // count of errors/warnings produced
+  SLIR ir;
+
+  void configure(String lang, int id, String path) {
+    language = lang; langId = id; sourcePath = path; diagnostics = 0;
+    ir = new SLIR(); ir.configure(lang, 4096);
+  }
+
+  // Lex + parse + semantic check. Concrete frontends override; the base reports
+  // readiness only.
+  boolean parse() { return sourcePath != null; }
+
+  // Lower parsed source to the common IR. Concrete frontends override to emit
+  // real IR; the base emits an empty, well-formed module (HALT only).
+  SLIR lower() {
+    ir.emit(SLIRInstructionConst(), -1, -1, -1, 0);
+    return ir;
+  }
+
+  // Helper so subclasses can reference the IR_HALT constant without an instance.
+  int SLIRInstructionConst() { SLIRInstruction t = new SLIRInstruction(); return t.IR_HALT; }
+
+  SLIR intermediate() { return ir; }
+  String languageName() { return language; }
+  int languageId() { return langId; }
+  int diagnosticCount() { return diagnostics; }
+}

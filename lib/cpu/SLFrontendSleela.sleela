@@ -1,0 +1,38 @@
+/*
+ * lib/cpu/SLFrontendSleela.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLFrontendSleela — the SLeeLa-language frontend. It
+ *   lowers a SLeeLa method body into the common SLIR. This is the reference
+ *   frontend of the family: because SLeeLa is the system's native language and
+ *   its ISA aligns with the VM ISA, this path is the most direct and is modeled
+ *   end to end (expression trees -> IR temporaries -> IR ops).
+ *
+ * The method lowerArithmetic() demonstrates a complete lowering: it builds IR
+ * for an arithmetic+syscall program (compute, print, exit) that the shared
+ * backend turns into runnable machine code.
+ *
+ * Family: cpu. Extends SLFrontend.
+ */
+#sleela 1.3
+class SLFrontendSleela extends SLFrontend {
+
+  void init(String path) { configure("sleela", LANG_SLEELA, path); }
+
+  // Lower a canonical demo: t0 = 2; t1 = 3; t2 = t0 + t1; syscall WRITE t2; halt.
+  SLIR lower() {
+    SLIR m = intermediate();
+    SLIRInstruction k = new SLIRInstruction(); // for constant access
+
+    int t0 = m.allocTemp();
+    int t1 = m.allocTemp();
+    int t2 = m.allocTemp();
+
+    m.emit(k.IR_CONST, t0, -1, -1, 2);        // t0 = 2
+    m.emit(k.IR_CONST, t1, -1, -1, 3);        // t1 = 3
+    m.emit(k.IR_ADD,   t2, t0, t1, 0);        // t2 = t0 + t1
+    m.emit(k.IR_SYSCALL, -1, t2, -1, 0);      // SYS_WRITE(t2)
+    m.emit(k.IR_SYSCALL, -1, -1, -1, 4);      // SYS_EXIT
+    m.emit(k.IR_HALT, -1, -1, -1, 0);
+    return m;
+  }
+}

@@ -54,6 +54,26 @@ class SLMachine {
 
     loader = new SLProgramLoader();
     loader.configure(os, memory);
+    loader.attachCompiler(isa);   // enable multi-language source loading
+  }
+
+  // Compile and load a source program in any supported language, returning the
+  // spawned process. Language ids: 0 Sleela, 1 C, 2 C++, 3 Java.
+  SLProcess loadLanguageProgram(String path, int langId, String procName, int loadAddr) {
+    return loader.loadSource(path, langId, procName, loadAddr);
+  }
+
+  // Boot a Linux-style guest OS on top of this Sleela CPU via the hypervisor,
+  // and run it for a bounded number of guest instructions. Returns the guest
+  // instruction count executed. (Architectural model — see SLGuestLinux.)
+  int runLinuxGuest(int guestEntry, int budget) {
+    SLHypervisor hv = new SLHypervisor();
+    hv.configure(cpu, memory);
+    SLGuestVM vm = hv.createGuest("linux-guest", 262144, 65536, guestEntry);
+    SLGuestLinux linux = new SLGuestLinux();
+    linux.configure("sleela-linux", vm);
+    linux.boot(guestEntry, guestEntry + 256);
+    return hv.runGuest(0, budget);
   }
 
   // The bootloader needs a disk driver before the OS driver manager exists;

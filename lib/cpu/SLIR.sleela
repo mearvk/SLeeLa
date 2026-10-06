@@ -1,0 +1,67 @@
+/*
+ * lib/cpu/SLIR.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLIR — a module of common intermediate representation: an
+ *   ordered sequence of SLIRInstruction nodes plus a temporary-allocation
+ *   counter and a label counter. Every language frontend (C, C++, Java, Sleela)
+ *   produces an SLIR; the shared backend SLLowering consumes it. This is the
+ *   single convergence point that makes the ISA genuinely multi-language.
+ *
+ * Backed by SLRAM for the node stream (SLeeLa surface has no arrays); nodes are
+ * stored by index and the lowering pass walks them in order.
+ *
+ * Family: cpu. Composes SLIRInstruction; the IR container.
+ */
+#sleela 1.3
+class SLIR {
+  String language;    // "sleela" | "c" | "cpp" | "java" (provenance only)
+  SLRAM nodeStore;    // encoded IR nodes, one per word-group (modeled)
+  int count;          // number of IR instructions
+  int nextTemp;       // SSA-ish temporary allocator
+  int nextLabel;      // label id allocator
+
+  // Node fields kept in parallel integer stores for walkability.
+  SLRAM opStore; SLRAM dstStore; SLRAM aStore; SLRAM bStore; SLRAM immStore; SLRAM flagStore;
+
+  void configure(String lang, int capacity) {
+    language = lang; count = 0; nextTemp = 0; nextLabel = 0;
+    opStore = new SLRAM(); opStore.configure(capacity, 32); opStore.allocate();
+    dstStore = new SLRAM(); dstStore.configure(capacity, 32); dstStore.allocate();
+    aStore = new SLRAM(); aStore.configure(capacity, 32); aStore.allocate();
+    bStore = new SLRAM(); bStore.configure(capacity, 32); bStore.allocate();
+    immStore = new SLRAM(); immStore.configure(capacity, 32); immStore.allocate();
+    flagStore = new SLRAM(); flagStore.configure(capacity, 32); flagStore.allocate();
+  }
+
+  int allocTemp() { int t = nextTemp; nextTemp = nextTemp + 1; return t; }
+  int allocLabel() { int l = nextLabel; nextLabel = nextLabel + 1; return l; }
+
+  // Append an IR instruction; returns its index.
+  int emit(int op, int dst, int a, int b, int imm) {
+    int i = count;
+    opStore.writeWord(i, op);
+    dstStore.writeWord(i, dst);
+    aStore.writeWord(i, a);
+    bStore.writeWord(i, b);
+    immStore.writeWord(i, imm);
+    flagStore.writeWord(i, 0);
+    count = count + 1;
+    return i;
+  }
+
+  void markImmediateA(int index) { flagStore.writeWord(index, 1); }
+
+  // Read a node back as an SLIRInstruction.
+  SLIRInstruction at(int index) {
+    SLIRInstruction n = new SLIRInstruction();
+    n.configure(opStore.readWord(index), dstStore.readWord(index),
+                aStore.readWord(index), bStore.readWord(index), immStore.readWord(index));
+    if (flagStore.readWord(index) == 1) { n.markImmediateA(); }
+    return n;
+  }
+
+  int size() { return count; }
+  String lang() { return language; }
+  int tempCount() { return nextTemp; }
+  int labelCount() { return nextLabel; }
+}
