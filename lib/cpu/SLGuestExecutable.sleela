@@ -1,0 +1,89 @@
+/*
+ * lib/cpu/SLGuestExecutable.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLGuestExecutable — a simple on-disk executable format
+ *   for guest programs (a miniature ELF). It has a fixed header (magic, version,
+ *   entry offset, opcode count) followed by an opcode section (op+arg pairs).
+ *   A compiled SLGuestProgram can be *serialized* to this format and written to
+ *   the guest filesystem; the loader can later *read it back from disk* and load
+ *   it into the guest substrate — so programs come from storage, not only from
+ *   inline compilation.
+ *
+ * On-disk layout (one word per slot in the backing store):
+ *   [0] magic 0x5345584c ("SEXL")  [1] version  [2] entry  [3] opcode-count
+ *   [4..] interleaved op,arg,op,arg,...
+ *
+ * Family: cpu. Composes SLRAM (image bytes), SLGuestFileSystem (storage),
+ *   SLSleelaVM (load target).
+ */
+#sleela 1.3
+class SLGuestExecutable {
+  static final int MAGIC = 1397113932; // 0x5345584C 'SEXL'
+  static final int HDR_WORDS = 4;
+
+  SLRAM store;      // the serialized image
+  int words;        // total words written
+  int opcodeCount;
+  int entry;
+
+  void configure(int capacity) {
+    store = new SLRAM(); store.configure(capacity, 32); store.allocate();
+    words = 0; opcodeCount = 0; entry = 0;
+  }
+
+  int put(int w) { store.writeWord(words, w); int at = words; words = words + 1; return at; }
+
+  // Serialize a compiled program (op/arg stream) into the executable format.
+  void serialize(SLGuestProgram prog, int entryOffset) {
+    entry = entryOffset; opcodeCount = prog.size();
+    put(MAGIC); put(1); put(entry); put(opcodeCount);
+    int i = 0;
+    while (i < opcodeCount) {
+      // SLGuestProgram stores op/arg in parallel; re-read via a scratch load.
+      // Here we mirror its public op/arg accessors.
+      put(prog.opcodeAt(i)); put(prog.argAt(i));
+      i = i + 1;
+    }
+  }
+
+  // Validate the header: correct magic and a sane opcode count.
+  boolean valid() {
+    if (words < HDR_WORDS) { return false; }
+    return store.readWord(0) == MAGIC && store.readWord(3) >= 0;
+  }
+
+  int headerEntry() { return store.readWord(2); }
+  int headerOpcodeCount() { return store.readWord(3); }
+
+  // Load the executable into a guest substrate: validate the header, then emit
+  // each op/arg pair. Returns the load base (substrate index), or -1 if the
+  // image is invalid.
+  int loadInto(SLSleelaVM vm) {
+    if (!valid()) { return -1; }
+    int base = vm.programLength();
+    int count = headerOpcodeCount();
+    int i = 0;
+    while (i < count) {
+      int op = store.readWord(HDR_WORDS + i * 2);
+      int arg = store.readWord(HDR_WORDS + i * 2 + 1);
+      vm.loadOpcode(op, arg);
+      i = i + 1;
+    }
+    return base;
+  }
+
+  // Write this image to the guest filesystem under integer file id `fileId`,
+  // one byte-per-word through the file's byte stream (so it persists on the
+  // block device and can be read back by another boot/loader).
+  int writeToFile(SLGuestFileSystem fs, int fileId) {
+    int fd = fs.openByName(fileId);
+    if (fd < 0) { return -1; }
+    int i = 0;
+    while (i < words) { fs.writeByte(fd, store.readWord(i)); i = i + 1; }
+    fs.close(fd);
+    return words;
+  }
+
+  int imageWords() { return words; }
+  int entryPoint() { return entry; }
+}
