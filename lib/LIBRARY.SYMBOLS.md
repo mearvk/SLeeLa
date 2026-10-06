@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.0
-library-source-files: 10253
+library-source-files: 10257
 library-packages: 83
 module-facade-symbols: 55
-total-symbol-records: 10308
+total-symbol-records: 10312
 
 package	symbol	path	kind
 antivirus	SLPackage.sleela	lib/antivirus/SLPackage.sleela	facade
@@ -231,6 +231,7 @@ cpu	SLLowering.sleela	lib/cpu/SLLowering.sleela	source
 cpu	SLMachine.sleela	lib/cpu/SLMachine.sleela	source
 cpu	SLMemoryManager.sleela	lib/cpu/SLMemoryManager.sleela	source
 cpu	SLNetworkDriver.sleela	lib/cpu/SLNetworkDriver.sleela	source
+cpu	SLOpcodeMap.sleela	lib/cpu/SLOpcodeMap.sleela	source
 cpu	SLOperatingSystem.sleela	lib/cpu/SLOperatingSystem.sleela	source
 cpu	SLProcess.sleela	lib/cpu/SLProcess.sleela	source
 cpu	SLProgram.sleela	lib/cpu/SLProgram.sleela	source
@@ -240,9 +241,12 @@ cpu	SLRAM.sleela	lib/cpu/SLRAM.sleela	source
 cpu	SLRegister.sleela	lib/cpu/SLRegister.sleela	source
 cpu	SLRegisterFile.sleela	lib/cpu/SLRegisterFile.sleela	source
 cpu	SLScheduler.sleela	lib/cpu/SLScheduler.sleela	source
+cpu	SLSleelaOpcode.sleela	lib/cpu/SLSleelaOpcode.sleela	source
+cpu	SLSleelaVM.sleela	lib/cpu/SLSleelaVM.sleela	source
 cpu	SLStack.sleela	lib/cpu/SLStack.sleela	source
 cpu	SLStatusRegister.sleela	lib/cpu/SLStatusRegister.sleela	source
 cpu	SLSystemCall.sleela	lib/cpu/SLSystemCall.sleela	source
+cpu	SLTuringBridge.sleela	lib/cpu/SLTuringBridge.sleela	source
 crypto	SLAes.sleela	lib/crypto/SLAes.sleela	source
 crypto	SLAesGcm.sleela	lib/crypto/SLAesGcm.sleela	source
 crypto	SLCertificate.sleela	lib/crypto/SLCertificate.sleela	source

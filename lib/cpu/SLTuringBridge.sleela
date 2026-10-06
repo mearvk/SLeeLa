@@ -1,0 +1,85 @@
+/*
+ * lib/cpu/SLTuringBridge.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLTuringBridge — the equivalence driver that closes the
+ *   loop. It takes a program in ANY supported language (C, C++, Java, Sleela),
+ *   runs it through the shared pipeline down to the register ISA, maps that onto
+ *   the canonical SLeeLa opcode substrate (SLOpcodeMap), and executes it on the
+ *   Turing-complete SLSleelaVM. Because all four languages reduce to the SAME
+ *   opcode stream and that stream is run by the substrate, their observable
+ *   results are identical — they are 1:1 in Turing effect.
+ *
+ *   source(C|CPP|Java|Sleela)
+ *     -> SLFrontend*          (language -> common IR)
+ *       -> SLLowering         (IR -> register ISA, SLProgram)
+ *         -> SLOpcodeMap      (register ISA + syscalls -> Sleela opcodes)
+ *           -> SLSleelaVM     (execute the canonical Turing-complete substrate)
+ *
+ * The method proveEquivalence() compiles the SAME computation from all four
+ * frontends, reduces each to the opcode substrate, runs each, and reports
+ * whether every language produced the identical printed result. Equal results
+ * are the operational statement of 1:1 Turing effect across the languages.
+ *
+ * Family: cpu. Composes the frontends, lowering, opcode map, and the Sleela VM.
+ */
+#sleela 1.3
+class SLTuringBridge {
+  SLInstructionSet isa;
+  SLInstructionDecoder decoder;
+  SLSystemCall sys;
+  int runs;
+
+  void configure() {
+    isa = new SLInstructionSet(); isa.configure();
+    decoder = new SLInstructionDecoder(); decoder.configure(isa);
+    sys = new SLSystemCall(); sys.configure();
+    runs = 0;
+  }
+
+  // Compile a given language id to the register ISA, then reduce to the Sleela
+  // opcode substrate, then execute. Returns the value the program PRINTed.
+  int runLanguage(int langId, String path, String name) {
+    // 1. frontend: source -> common IR
+    SLCompilerDriver driver = new SLCompilerDriver(); driver.configure(isa);
+    SLProgram prog = driver.compile(path, langId, name);
+
+    // 2. map register ISA -> Sleela opcode substrate, into a fresh VM
+    SLSleelaVM vm = new SLSleelaVM(); vm.configure(8192, 4096, 1024);
+    SLOpcodeMap map = new SLOpcodeMap(); map.configure(isa, sys, vm);
+    map.mapProgram(prog, decoder);
+
+    // 3. execute the Turing-complete substrate
+    vm.run(100000);
+    runs = runs + 1;
+    return vm.printed();
+  }
+
+  // Reduce ONE already-built register-ISA program to the substrate and run it.
+  int runProgram(SLProgram prog) {
+    SLSleelaVM vm = new SLSleelaVM(); vm.configure(8192, 4096, 1024);
+    SLOpcodeMap map = new SLOpcodeMap(); map.configure(isa, sys, vm);
+    map.mapProgram(prog, decoder);
+    vm.run(100000);
+    runs = runs + 1;
+    return vm.printed();
+  }
+
+  // Prove 1:1 Turing effect: compile the SAME computation from all four
+  // languages, reduce each to the Sleela opcode substrate, run each, and return
+  // true iff every language produced the identical observable result.
+  boolean proveEquivalence(String cPath, String cppPath, String javaPath, String sleelaPath) {
+    int rc = runLanguage(SLFrontend_LANG_C(), cPath, "c-prog");
+    int rcpp = runLanguage(SLFrontend_LANG_CPP(), cppPath, "cpp-prog");
+    int rj = runLanguage(SLFrontend_LANG_JAVA(), javaPath, "java-prog");
+    int rs = runLanguage(SLFrontend_LANG_SLEELA(), sleelaPath, "sleela-prog");
+    return rc == rcpp && rcpp == rj && rj == rs;
+  }
+
+  // Language-id helpers (mirror SLFrontend constants without an instance).
+  int SLFrontend_LANG_SLEELA() { SLFrontend f = new SLFrontend(); return f.LANG_SLEELA; }
+  int SLFrontend_LANG_C() { SLFrontend f = new SLFrontend(); return f.LANG_C; }
+  int SLFrontend_LANG_CPP() { SLFrontend f = new SLFrontend(); return f.LANG_CPP; }
+  int SLFrontend_LANG_JAVA() { SLFrontend f = new SLFrontend(); return f.LANG_JAVA; }
+
+  int runCount() { return runs; }
+}

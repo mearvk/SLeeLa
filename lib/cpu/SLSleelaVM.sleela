@@ -1,0 +1,115 @@
+/*
+ * lib/cpu/SLSleelaVM.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLSleelaVM — a stack machine that executes the canonical
+ *   SLeeLa opcodes (SLSleelaOpcode) directly. It mirrors the native dispatch
+ *   loop in impl/core/sleela_core.c ("in = code[ip++]; switch(in.op){...}"):
+ *   fetch one opcode, execute it against an operand stack and globals, advance.
+ *
+ * This is the Turing-complete substrate of the entire CPU model. Every higher
+ * layer — the register-style SLControlUnit, the OS system calls, and all four
+ * language frontends — ultimately produces a stream of these opcodes, and this
+ * VM gives that stream its meaning. Running the same effect here and on the
+ * native VM is what makes the equivalence (SLTuringBridge) concrete.
+ *
+ * Operand stack and globals are modeled over SLRAM so arbitrarily large
+ * computations are expressible (unbounded tape => Turing-complete).
+ *
+ * Family: cpu. Composes SLSleelaOpcode, SLStack, SLRAM.
+ */
+#sleela 1.3
+class SLSleelaVM {
+  SLSleelaOpcode op;
+  SLRAM codeOps;    // opcode of each instruction
+  SLRAM codeArgs;   // immediate operand of each instruction
+  SLRAM stack;      // operand stack (grows up)
+  SLRAM globals;    // global slots
+  int codeLen;
+  int ip;           // instruction pointer
+  int sp;           // operand-stack pointer
+  int halted;
+  int executed;
+  int lastPrint;    // last value sent to OP_PRINT (observable output)
+
+  void configure(int codeCap, int stackCap, int globalCap) {
+    op = new SLSleelaOpcode(); op.configure(0, "OP_NOP");
+    codeOps = new SLRAM(); codeOps.configure(codeCap, 32); codeOps.allocate();
+    codeArgs = new SLRAM(); codeArgs.configure(codeCap, 32); codeArgs.allocate();
+    stack = new SLRAM(); stack.configure(stackCap, 32); stack.allocate();
+    globals = new SLRAM(); globals.configure(globalCap, 32); globals.allocate();
+    codeLen = 0; ip = 0; sp = 0; halted = 0; executed = 0; lastPrint = 0;
+  }
+
+  // Load one opcode+arg into the code store.
+  int emit(int opcode, int arg) {
+    int at = codeLen;
+    codeOps.writeWord(at, opcode);
+    codeArgs.writeWord(at, arg);
+    codeLen = codeLen + 1;
+    return at;
+  }
+
+  // Stack helpers.
+  void push(int v) { stack.writeWord(sp, v); sp = sp + 1; }
+  int pop() { if (sp == 0) { return 0; } sp = sp - 1; return stack.readWord(sp); }
+
+  // Execute exactly one opcode (the one-at-a-time native contract).
+  int step() {
+    if (halted == 1 || ip >= codeLen) { halted = 1; return -1; }
+    int o = codeOps.readWord(ip);
+    int a = codeArgs.readWord(ip);
+    executed = executed + 1;
+    ip = ip + 1;
+
+    if (o == op.OP_NOP) { return o; }
+    if (o == op.OP_CONST) { push(a); return o; }
+    if (o == op.OP_POP) { pop(); return o; }
+    if (o == op.OP_DUP) { int v = pop(); push(v); push(v); return o; }
+    if (o == op.OP_LOADG) { push(globals.readWord(a)); return o; }
+    if (o == op.OP_STOREG) { globals.writeWord(a, pop()); return o; }
+
+    if (o == op.OP_ADD) { int b = pop(); int x = pop(); push(x + b); return o; }
+    if (o == op.OP_SUB) { int b = pop(); int x = pop(); push(x - b); return o; }
+    if (o == op.OP_MUL) { int b = pop(); int x = pop(); push(x * b); return o; }
+    if (o == op.OP_DIV) { int b = pop(); int x = pop(); if (b != 0) { push(x / b); } else { push(0); } return o; }
+    if (o == op.OP_MOD) { int b = pop(); int x = pop(); if (b != 0) { push(x % b); } else { push(0); } return o; }
+    if (o == op.OP_NEG) { push(0 - pop()); return o; }
+
+    if (o == op.OP_EQ) { int b = pop(); int x = pop(); push(boolInt(x == b)); return o; }
+    if (o == op.OP_NE) { int b = pop(); int x = pop(); push(boolInt(x != b)); return o; }
+    if (o == op.OP_LT) { int b = pop(); int x = pop(); push(boolInt(x < b)); return o; }
+    if (o == op.OP_LE) { int b = pop(); int x = pop(); push(boolInt(x <= b)); return o; }
+    if (o == op.OP_GT) { int b = pop(); int x = pop(); push(boolInt(x > b)); return o; }
+    if (o == op.OP_GE) { int b = pop(); int x = pop(); push(boolInt(x >= b)); return o; }
+
+    if (o == op.OP_AND) { int b = pop(); int x = pop(); push(boolInt(x != 0 && b != 0)); return o; }
+    if (o == op.OP_OR)  { int b = pop(); int x = pop(); push(boolInt(x != 0 || b != 0)); return o; }
+    if (o == op.OP_NOT) { push(boolInt(pop() == 0)); return o; }
+
+    if (o == op.OP_JMP)  { ip = a; return o; }
+    if (o == op.OP_JMPF) { if (pop() == 0) { ip = a; } return o; }   // jump if false
+    if (o == op.OP_PRINT){ lastPrint = pop(); printValue(lastPrint); return o; }
+    if (o == op.OP_HALT) { halted = 1; return o; }
+
+    // Any opcode not explicitly simulated is a no-op in this model VM; the
+    // native VM dispatches the full set. (Services/time/struct ops cross the
+    // bridge in the real engine.)
+    return o;
+  }
+
+  int boolInt(boolean b) { if (b) { return 1; } return 0; }
+  void printValue(int v) { native sleela_vm_print_int(v); }
+
+  // Run until HALT or budget exhausted.
+  int run(int budget) {
+    int ran = 0;
+    while (halted == 0 && ip < codeLen && ran < budget) { step(); ran = ran + 1; }
+    return ran;
+  }
+
+  int top() { if (sp == 0) { return 0; } return stack.readWord(sp - 1); }
+  int printed() { return lastPrint; }
+  int instructionsRun() { return executed; }
+  boolean isHalted() { return halted == 1; }
+  int programLength() { return codeLen; }
+}

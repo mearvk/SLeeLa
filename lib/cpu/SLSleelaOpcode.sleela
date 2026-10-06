@@ -1,0 +1,80 @@
+/*
+ * lib/cpu/SLSleelaOpcode.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLSleelaOpcode — the canonical SLeeLa VM opcode registry,
+ *   the Turing-complete substrate that the whole CPU model reduces to. The
+ *   codes and mnemonics mirror the native enum exactly (impl/core/sleela_core.h
+ *   and lib/vm/InstructionSet.sleela): the base-98 computational core, codes
+ *   0..97, dispatched one-at-a-time by the native VM.
+ *
+ * This is the ground truth. The register-style SLInstructionSet, the OS system
+ * calls, and every language frontend ultimately map onto THESE opcodes. Because
+ * the native VM already executes them and they are Turing complete, any program
+ * expressed as a stream of these opcodes has a well-defined, machine-realizable
+ * meaning — which is what lets C, C++, Java, and Sleela be 1:1 in Turing effect
+ * (SLTuringBridge).
+ *
+ * Family: cpu. Pure Sleela opcode registry; the canonical substrate.
+ */
+#sleela 1.3
+class SLSleelaOpcode {
+  // Base-98 canonical opcodes (exact native numeric order).
+  static final int OP_NOP=0;    static final int OP_CONST=1;  static final int OP_POP=2;    static final int OP_DUP=3;
+  static final int OP_LOADG=4;  static final int OP_STOREG=5; static final int OP_LOADL=6;  static final int OP_STOREL=7;
+  static final int OP_ADD=8;    static final int OP_SUB=9;    static final int OP_MUL=10;   static final int OP_DIV=11;
+  static final int OP_MOD=12;   static final int OP_NEG=13;   static final int OP_EQ=14;    static final int OP_NE=15;
+  static final int OP_LT=16;    static final int OP_LE=17;    static final int OP_GT=18;    static final int OP_GE=19;
+  static final int OP_AND=20;   static final int OP_OR=21;    static final int OP_NOT=22;   static final int OP_JMP=23;
+  static final int OP_JMPF=24;  static final int OP_CALL=25;  static final int OP_RET=26;   static final int OP_PRINT=27;
+  static final int OP_SPAWN=28; static final int OP_JOINALL=29; static final int OP_LOCK=30; static final int OP_UNLOCK=31;
+  static final int OP_SEND=32;  static final int OP_RECV=33;  static final int OP_LISTEN=34; static final int OP_ACCEPT=35;
+  static final int OP_CONNECT=36; static final int OP_SOCKREAD=37; static final int OP_SOCKWRITE=38; static final int OP_SOCKCLOSE=39;
+  static final int OP_PIPE=40;  static final int OP_PIPEPEER=41; static final int OP_FIFO_MK=42; static final int OP_FILEOPEN=43;
+  static final int OP_FILEREAD=44; static final int OP_FILEWRITE=45; static final int OP_FILECLOSE=46; static final int OP_FILEUNLINK=47;
+  static final int OP_HALT=48;
+  // Time services 49..57, structs 58..62 (available to the substrate).
+  static final int OP_NEWSTRUCT=58; static final int OP_GETFIELD=59; static final int OP_SETFIELD=60;
+
+  static final int BASE_COUNT = 98;  // canonical base-98 computational core
+
+  int code;
+  String mnemonic;
+
+  void configure(int opcode, String name) { code = opcode; mnemonic = name; }
+
+  boolean valid(int opcode) { return opcode >= 0 && opcode < BASE_COUNT; }
+
+  // Classification used by the mapping/equivalence layers.
+  boolean isStackPush(int op) { return op == OP_CONST || op == OP_DUP || op == OP_LOADG || op == OP_LOADL; }
+  boolean isArithmetic(int op) { return op >= OP_ADD && op <= OP_NEG; }
+  boolean isComparison(int op) { return op >= OP_EQ && op <= OP_GE; }
+  boolean isLogic(int op) { return op == OP_AND || op == OP_OR || op == OP_NOT; }
+  boolean isControl(int op) { return op == OP_JMP || op == OP_JMPF || op == OP_CALL || op == OP_RET || op == OP_HALT; }
+  // The I/O + OS-service opcodes a system-call layer maps onto.
+  boolean isService(int op) { return (op >= OP_PRINT && op <= OP_FILEUNLINK) && op != OP_HALT; }
+
+  String nameOf(int op) {
+    if (op==OP_NOP){return "OP_NOP";} if (op==OP_CONST){return "OP_CONST";}
+    if (op==OP_POP){return "OP_POP";} if (op==OP_DUP){return "OP_DUP";}
+    if (op==OP_LOADG){return "OP_LOADG";} if (op==OP_STOREG){return "OP_STOREG";}
+    if (op==OP_LOADL){return "OP_LOADL";} if (op==OP_STOREL){return "OP_STOREL";}
+    if (op==OP_ADD){return "OP_ADD";} if (op==OP_SUB){return "OP_SUB";}
+    if (op==OP_MUL){return "OP_MUL";} if (op==OP_DIV){return "OP_DIV";}
+    if (op==OP_MOD){return "OP_MOD";} if (op==OP_NEG){return "OP_NEG";}
+    if (op==OP_EQ){return "OP_EQ";} if (op==OP_NE){return "OP_NE";}
+    if (op==OP_LT){return "OP_LT";} if (op==OP_LE){return "OP_LE";}
+    if (op==OP_GT){return "OP_GT";} if (op==OP_GE){return "OP_GE";}
+    if (op==OP_AND){return "OP_AND";} if (op==OP_OR){return "OP_OR";}
+    if (op==OP_NOT){return "OP_NOT";} if (op==OP_JMP){return "OP_JMP";}
+    if (op==OP_JMPF){return "OP_JMPF";} if (op==OP_CALL){return "OP_CALL";}
+    if (op==OP_RET){return "OP_RET";} if (op==OP_PRINT){return "OP_PRINT";}
+    if (op==OP_HALT){return "OP_HALT";}
+    if (op==OP_FILEOPEN){return "OP_FILEOPEN";} if (op==OP_FILEREAD){return "OP_FILEREAD";}
+    if (op==OP_FILEWRITE){return "OP_FILEWRITE";} if (op==OP_FILECLOSE){return "OP_FILECLOSE";}
+    if (op==OP_NEWSTRUCT){return "OP_NEWSTRUCT";} if (op==OP_GETFIELD){return "OP_GETFIELD";}
+    if (op==OP_SETFIELD){return "OP_SETFIELD";}
+    return "OP_?";
+  }
+
+  int baseCount() { return BASE_COUNT; }
+}
