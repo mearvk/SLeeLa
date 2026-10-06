@@ -169,7 +169,12 @@ class SLGuestVM {
         devices.acknowledge(line);
         if (line == 0 && kernel != null) {           // timer IRQ -> scheduler
           SLGuestTask next = kernel.onTimerInterrupt(substrate.instructionPointer());
-          if (next != null) { substrate.setInstructionPointer(next.resumeIP()); }
+          if (next != null) {
+            // Deliver any pending signal to the newly-scheduled task (its slot
+            // is the scheduler's current index) before resuming it.
+            kernel.deliverSignals();
+            if (next.alive()) { substrate.setInstructionPointer(next.resumeIP()); }
+          }
         }
       }
     }

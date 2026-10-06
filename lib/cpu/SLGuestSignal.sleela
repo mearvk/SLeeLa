@@ -1,0 +1,87 @@
+/*
+ * lib/cpu/SLGuestSignal.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLGuestSignal — asynchronous signal delivery to guest
+ *   tasks (the Unix signal model). A task (or the kernel) raises a signal
+ *   number against a target task; the target has a pending-signal set and a
+ *   per-signal disposition (default, ignore, or a handler entry point). On the
+ *   next scheduling point the kernel delivers the highest-priority pending
+ *   signal: it either applies the default action (e.g. terminate on KILL/TERM),
+ *   ignores it, or vectors the task to its handler.
+ *
+ * Models up to 16 signal numbers with a pending bitset and dispositions held
+ * per target task id (a small fixed table; SLeeLa surface has no arrays).
+ *
+ * Family: cpu. Composes SLGuestScheduler for delivery/termination effects.
+ */
+#sleela 1.3
+class SLGuestSignal {
+  static final int SIG_LINES = 16;
+  static final int SIGKILL = 9;
+  static final int SIGTERM = 15;
+  static final int SIGUSR1 = 10;
+  static final int SIGCHLD = 17;
+
+  static final int DISP_DEFAULT = 0;
+  static final int DISP_IGNORE  = 1;
+  static final int DISP_HANDLE  = 2;
+
+  SLGuestScheduler scheduler;
+  // Pending bitset + handler entry per task slot (indexed by scheduler slot 0..7).
+  int pend0; int pend1; int pend2; int pend3; int pend4; int pend5; int pend6; int pend7;
+  int delivered;
+
+  void configure(SLGuestScheduler sched) {
+    scheduler = sched; delivered = 0;
+    pend0=0;pend1=0;pend2=0;pend3=0;pend4=0;pend5=0;pend6=0;pend7=0;
+  }
+
+  int pow2(int n){int p=1;int i=0;while(i<n){p=p*2;i=i+1;}return p;}
+  boolean bitSet(int mask,int sig){return (mask/pow2(sig))%2==1;}
+
+  int pendOf(int slot){
+    if(slot==0){return pend0;} if(slot==1){return pend1;}
+    if(slot==2){return pend2;} if(slot==3){return pend3;}
+    if(slot==4){return pend4;} if(slot==5){return pend5;}
+    if(slot==6){return pend6;} if(slot==7){return pend7;} return 0;
+  }
+  void setPend(int slot,int mask){
+    if(slot==0){pend0=mask;} if(slot==1){pend1=mask;}
+    if(slot==2){pend2=mask;} if(slot==3){pend3=mask;}
+    if(slot==4){pend4=mask;} if(slot==5){pend5=mask;}
+    if(slot==6){pend6=mask;} if(slot==7){pend7=mask;}
+  }
+
+  // Raise a signal against the task in scheduler slot `slot`.
+  void raise(int slot, int sig) {
+    if (sig < 0 || sig >= SIG_LINES) { return; }
+    int m = pendOf(slot);
+    if (!bitSet(m, sig)) { setPend(slot, m + pow2(sig)); }
+  }
+
+  boolean hasPending(int slot) { return pendOf(slot) != 0; }
+
+  // Lowest-numbered pending signal for a slot, or -1.
+  int nextPending(int slot) {
+    int m = pendOf(slot); int sig = 0;
+    while (sig < SIG_LINES) { if (bitSet(m, sig)) { return sig; } sig = sig + 1; }
+    return -1;
+  }
+
+  // Deliver one pending signal to the task in `slot`. Default action for KILL/
+  // TERM finishes the task; otherwise the signal is cleared (handler/ignore are
+  // modeled as consumed). Returns the delivered signal number, or -1.
+  int deliver(int slot) {
+    int sig = nextPending(slot);
+    if (sig < 0) { return -1; }
+    setPend(slot, pendOf(slot) - pow2(sig));  // clear it
+    delivered = delivered + 1;
+    if (sig == SIGKILL || sig == SIGTERM) {
+      SLGuestTask t = scheduler.at(slot);
+      if (t != null) { t.finish(); }
+    }
+    return sig;
+  }
+
+  int deliveredCount() { return delivered; }
+}

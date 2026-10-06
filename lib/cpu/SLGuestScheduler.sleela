@@ -91,5 +91,6 @@ class SLGuestScheduler {
   int taskCount() { return count; }
   int contextSwitches() { return switches; }
   int quantumTicks() { return quantum; }
+  int currentSlot() { return current; }
   SLGuestTask running() { if (current < 0) { return null; } return at(current); }
 }
