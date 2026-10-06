@@ -47940,7 +47940,7 @@
     },
     {
       "path": "lib/vm/InstructionSet.sleela",
-      "sha256": "93fe58107a90fbb67082d8879b6bf8d60ae68b0046c02c1e234d582082ff448b"
+      "sha256": "82cef2e3ba1f23b29dfd7ee5bcfc96ed10f5e958929ad8c44e362854651ea32d"
     },
     {
       "path": "lib/vm/SLVM.sleela",
@@ -48072,7 +48072,7 @@
     },
     {
       "path": "lib/vm/SleelaVMFeatureBits.sleela",
-      "sha256": "dbf70955b69c0ce4c84f64eb9edb8122f4e63915848560ec5531febb56477d57"
+      "sha256": "7ba22151922a3d8e6eba18b88e6babf095bcceb5b08f0ce446278a83c3d8c0a9"
     },
     {
       "path": "lib/vm/SleelaVMIOOptions.sleela",
@@ -48177,6 +48177,10 @@
     {
       "path": "lib/vm/SleelaVMStartup.sleela",
       "sha256": "c409240100b25ab8859d5bbed1e2ac4718dde1fdcfc97447af709c77b0d0162f"
+    },
+    {
+      "path": "lib/vm/SleelaVMSystemCallBridge.sleela",
+      "sha256": "9138c609ea598d24860f448fa3a14029e1dacdee61b047c9f0171838edbd7692"
     },
     {
       "path": "lib/vm/creator/SLVMAdministrator.sleela",
