@@ -8,8 +8,62 @@
 // Family: crypto. National-grade (NSA CNSA 1.0/2.0, NIST FIPS) algorithm roster.
 // Names the suite member set; native computation crosses the explicit VM/OS
 // bridge into /crypto (libslcrypto). See crypto/README.md.
+//
+// SECURITY NOTE: the native /crypto backend is a correct, specification-faithful
+// REFERENCE implementation. It is NOT guaranteed constant-time and is NOT
+// side-channel resistant. For data that must be protected use an audited library
+// (BoringSSL, OpenSSL, libsodium, liboqs). See crypto/README.md.
 class SLNationalSuite {
-  String suite; int state;
-  void configure(String s){suite=s;} void enable(){state=1;} void disable(){state=0;} boolean active(){return state==1;}
-  String members(){return "SHA-256,SHA-384,SHA-512,SHA3-256,SHA3-512,AES-128,AES-192,AES-256,AES-GCM,HMAC,HKDF,ML-KEM,ML-DSA";}
+  // Status codes mirror slcrypto_status in crypto/include/slcrypto.h.
+  static final int OK = 0;
+  static final int ERR_PARAM = -1;
+  static final int ERR_AUTH = -2;
+  static final int ERR_UNIMPL = -3;
+
+  String suite;      // "CNSA-1.0" | "CNSA-2.0"
+  int state;         // 1 = enabled, 0 = disabled
+  int configured;    // 1 once a supported suite has been accepted
+  int backend;       // 1 when the native /crypto backend is linked and ready
+
+  // Accept only the two named suites.
+  int configure(String s) {
+    if (s == null) { configured = 0; return ERR_PARAM; }
+    if (s == "CNSA-1.0" || s == "CNSA-2.0") { suite = s; configured = 1; return OK; }
+    configured = 0;
+    return ERR_PARAM;
+  }
+
+  void bindBackend(int ready) { if (ready == 1) { backend = 1; } else { backend = 0; } }
+  boolean backendReady() { return backend == 1; }
+
+  void enable() { state = 1; }
+  void disable() { state = 0; }
+  boolean active() { return state == 1 && configured == 1 && backend == 1; }
+
+  // Classical members are implemented and KAT-verified in /crypto today.
+  String members() {
+    return "SHA-256,SHA-384,SHA-512,SHA3-256,SHA3-512,AES-128,AES-192,AES-256,AES-GCM,HMAC,HKDF,ML-KEM,ML-DSA";
+  }
+
+  // The two CNSA 2.0 post-quantum members whose native backend is still pending
+  // (slc_mlkem_* / slc_mldsa_* return ERR_UNIMPL). Surfaced so callers can tell
+  // which roster entries are not yet usable.
+  String pendingMembers() {
+    return "ML-KEM,ML-DSA";
+  }
+
+  // 1 if the named member is implemented and callable today, 0 if pending, ERR_PARAM if unknown.
+  int memberReady(String name) {
+    if (name == null) { return ERR_PARAM; }
+    if (name == "ML-KEM" || name == "ML-DSA") { return 0; }
+    if (name == "SHA-256" || name == "SHA-384" || name == "SHA-512" ||
+        name == "SHA3-256" || name == "SHA3-512" ||
+        name == "AES-128" || name == "AES-192" || name == "AES-256" ||
+        name == "AES-GCM" || name == "HMAC" || name == "HKDF") { return 1; }
+    return ERR_PARAM;
+  }
+
+  String securityNote() {
+    return "Reference-grade: not constant-time, not side-channel resistant; ML-KEM/ML-DSA backend pending. Use an audited library in production.";
+  }
 }
