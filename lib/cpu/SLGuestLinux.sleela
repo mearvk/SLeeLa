@@ -35,6 +35,7 @@ class SLGuestLinux {
   SLGuestKernelImage kernelImage;   // compiled kernel image (step 4), if built
   SLGuestScheduler scheduler;       // guest task scheduler, timer-driven (step 6)
   SLGuestFileSystem filesystem;     // in-guest filesystem over the block device
+  SLGuestSyscall syscalls2;         // guest syscall ABI dispatcher (lazy)
   int kernelEntry;
   int initEntry;
   int booted;
@@ -55,6 +56,16 @@ class SLGuestLinux {
   }
 
   SLGuestFileSystem fileSystem() { return filesystem; }
+
+  // The guest syscall dispatcher, wired to this guest's devices, filesystem,
+  // and scheduler. Lazily built on first use.
+  SLGuestSyscall syscallTable() {
+    if (syscalls2 == null) {
+      syscalls2 = new SLGuestSyscall();
+      syscalls2.configure(vm.deviceBus(), filesystem, scheduler, 49152);
+    }
+    return syscalls2;
+  }
 
   // Create and admit a guest task (a guest thread). The guest init process
   // (PID 1) spawns these; the timer then schedules them preemptively.

@@ -112,17 +112,49 @@ class SLGuestVM {
     return ran;
   }
 
-  // Route a VM-exit from a service opcode to the guest device model / host.
+  // Route a VM-exit from a service opcode to the guest syscall ABI (step b).
+  // Service opcodes are the guest's syscall surface: OP_PRINT is write(1, ch),
+  // and the OP_FILE* opcodes are open/read/write/close. When a kernel is
+  // attached, the exit is dispatched through its syscall table (which emulates
+  // the service against the guest console, filesystem, and scheduler); the
+  // result is pushed back for the guest to resume with. SYS_EXIT finishes the
+  // running task.
   void handleExit(int opcode, int arg, int payload) {
     SLSleelaOpcode op = new SLSleelaOpcode(); op.configure(0, "OP_NOP");
     recordSyscallExit();
-    // OP_PRINT -> the guest console device (its boot log / stdout).
-    if (opcode == op.OP_PRINT && devices != null && devices.hasConsole()) {
-      devices.consoleWrite(payload);
+
+    if (kernel == null) {
+      // No kernel: fall back to direct console emulation for OP_PRINT.
+      if (opcode == op.OP_PRINT && devices != null && devices.hasConsole()) { devices.consoleWrite(payload); }
       return;
     }
-    // Other service opcodes (FILE*, SOCK*) are emulated by the host here; the
-    // model records the exit and continues (the real engine performs the I/O).
+
+    SLGuestSyscall sys = kernel.syscallTable();
+    int number = syscallNumberFor(opcode, op, sys);
+    int result = sys.dispatch(number, syscallArg0(opcode, op, payload), payload, 0);
+    substrate.pushResult(result);           // syscall return value to the guest
+
+    if (sys.isExit(number)) {               // SYS_EXIT: finish the running task
+      SLGuestTask t = kernel.taskScheduler().running();
+      if (t != null) { t.finish(); }
+    }
+  }
+
+  // Map a service opcode to a guest syscall number.
+  int syscallNumberFor(int opcode, SLSleelaOpcode op, SLGuestSyscall sys) {
+    if (opcode == op.OP_PRINT) { return sys.SYS_WRITE; }
+    if (opcode == op.OP_FILEOPEN) { return sys.SYS_OPEN; }
+    if (opcode == op.OP_FILEREAD) { return sys.SYS_READ; }
+    if (opcode == op.OP_FILEWRITE) { return sys.SYS_WRITE; }
+    if (opcode == op.OP_FILECLOSE) { return sys.SYS_CLOSE; }
+    if (opcode == op.OP_HALT) { return sys.SYS_EXIT; }
+    return sys.SYS_YIELD;
+  }
+
+  // The first syscall argument (fd): OP_PRINT writes to stdout (fd 1).
+  int syscallArg0(int opcode, SLSleelaOpcode op, int payload) {
+    if (opcode == op.OP_PRINT) { return 1; }
+    return 0;
   }
 
   // Surface any device interrupts the guest PIC now has pending and deliver them

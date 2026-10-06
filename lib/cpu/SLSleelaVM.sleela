@@ -60,6 +60,8 @@ class SLSleelaVM {
   int exitReasonPayload() { return exitPayload; }
   // Host clears the exit after servicing it so the guest can resume.
   void resolveExit() { exitPending = 0; exitOpcode = -1; }
+  // Host pushes a syscall return value onto the operand stack for the guest.
+  void pushResult(int value) { push(value); }
 
   // Load one opcode+arg into the code store.
   int emit(int opcode, int arg) {
