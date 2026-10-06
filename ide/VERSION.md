@@ -1,6 +1,6 @@
 # SLeeLa IDE Version
 
-Current development version: **0.1.0-dev**
+Current development version: **0.2.0-dev**
 
 - 0.1.0-dev — IntelliJ integration foundation and four-language project model.
 - 0.2.0-dev — SLeeLa lexer/parser/PSI integration.

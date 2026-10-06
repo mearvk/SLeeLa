@@ -1,8 +1,13 @@
 # SleelaTerminal™ Version
 
-**Current version: 1.0.0**
+**Current version: 1.1.0**
 
-SleelaTerminal™ has reached its first formal release baseline. Version `1.0.0` establishes the initial canonical version for the `sleela-terminal` project and its graphical terminal front end.
+SleelaTerminal™ has advanced to its first incremental feature generation beyond
+the `1.0.0` baseline. Version `1.1.0` records a round of user-facing
+functionality on the GTK 4 / VTE graphical terminal front end — a living
+title-bar throbber, recoloured window controls, the brand logo, a Settings
+subframe, the `sleela$` default prompt, and the gradient title bar — together
+with five shell runtime-bug fixes, all within the current `1.x` architecture.
 
 ## Version Components
 
@@ -10,7 +15,7 @@ SleelaTerminal uses a three-component version:
 
 ```text
 MAJOR.MINOR.FORGOTTEN
-1    .0    .0
+1    .1    .0
 ```
 
 ### Major
@@ -23,7 +28,7 @@ Current value: **1**
 
 The **Minor** component identifies incremental user-facing functionality that remains within the current major architecture.
 
-Current value: **0**
+Current value: **1**
 
 ### Forgotten
 
@@ -34,7 +39,7 @@ Current value: **0**
 ## Canonical Version
 
 ```text
-SleelaTerminal™ 1.0.0
+SleelaTerminal™ 1.1.0
 ```
 
 The version applies to the `sleela-terminal` project as a whole, including:
@@ -51,6 +56,23 @@ The version applies to the `sleela-terminal` project as a whole, including:
 Version `1.0.0` marks the transition from an evolving `0.x` development identity to a defined first-release baseline. It does not imply that every future capability is complete; it establishes the version from which subsequent compatible development can be measured.
 
 The existing M1–M5 architecture, documented validation facilities, and graphical terminal integration form the basis of this first version.
+
+## 1.1.0 Feature Generation
+
+Version `1.1.0` is the first incremental feature generation on top of the
+`1.0.0` baseline. It is a MINOR bump (new user-facing functionality within the
+current `1.x` architecture), not a FORGOTTEN maintenance revision. It records:
+
+- a living, left→right flowing title-bar throbber replacing the static bottom
+  border;
+- recoloured, lit window controls (close / minimize / maximize);
+- the trimmed brand logo in the upper-left of the title bar;
+- a refined title-bar Settings button that opens Settings as a subframe;
+- the default shell prompt changed from `slsh$` to `sleela$`; and
+- an elegant gradient title bar.
+
+It also carries five shell runtime-bug fixes (REPL loop, braces, select,
+process substitution, trap). The M1–M5 shell architecture is unchanged.
 
 ## Versioning Policy
 

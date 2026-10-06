@@ -2,13 +2,13 @@
 
 ## Current Development Version
 
-**SLeeLa:** 0.3.22-dev
+**SLeeLa:** 0.3.23-dev
 **Sleela-Complete:** 0.3.2-dev  
 **Nordshrift Complete:** 2.7.1-dev  
 **Native Foundation:** 0.3.2-dev  
 **Sleela Language Syntax:** 1.6 (supported range 1.3 .. 1.6)  
 **Compiler Compatibility Gate:** 2.9-dev  
-**Java Authorship Transition Gate:** 1.17-dev
+**Java Authorship Transition Gate:** 1.19-dev
 **Edition:** SLeeLa Complete / Native Foundation  
 **Status:** Active Development  
 **Repository:** mearkv/SLeeLa
@@ -121,3 +121,69 @@ This step is intentionally incremental: the current public flow model does not y
 The Java Flow analyzer now performs bounded convergence for while, do, and basic for loops. Loop-head facts are repeatedly recomputed from normal body completion and matching continue paths until the assigned/unassigned facts stabilize or the deterministic iteration cap is reached. Matching break paths remain separate normal exits. A loop whose condition is statically false therefore contributes no body facts to its post-loop state, while a guaranteed assignment followed by break can establish a definite assignment on the exit path.
 
 The iteration cap is an implementation safety bound, not a semantic claim of completeness. Full JLS Chapter 16 loop treatment still requires additional path-sensitive constant analysis and more precise abrupt-completion interactions.
+
+## 0.3.22 Development Increment
+
+Language and library expansion.
+
+### Language core
+
+- Added a first-class, dynamic, zero-indexed **array** type (`T[]`): `new T[n]`,
+  `a[i]` read, runtime-bounds-checked `a[i] = v` write, and the built-ins
+  `arrayNew`, `arrayLength`, `arrayGet`, `arraySet`, `arrayPush`. The feature
+  spans the whole pipeline (semantic `Kind::Array`, compiler lowering, parser
+  acceptance of `new T[n]`, a new `SL_ARRAY` value tag, and the appended
+  `OP_NEWARRAY` / `OP_ARRGET` / `OP_ARRSET` / `OP_ARRLEN` / `OP_ARRPUSH`
+  opcodes). Existing programs compile and run unchanged.
+- Added multi-file compile/run input and the `/languages` localization packs.
+
+### Library (`/lib`)
+
+- Added the `opcodes` package family: one SLeeLa class per VM opcode (103
+  `SLOp*` classes plus `SLOpcodeBase` and `SLOpcodeStream` — 105 source units).
+- Added `opcodes/governance` (Registrar / Listener / Event Observer discretion,
+  8 classes) and `opcodes/running` (grouping, conditional-reactive, warming,
+  6 classes).
+- Added the `sldocument` package family and the `.sldocument` ordered,
+  top-down document format, and made `.sldocument` a selectable compile choice
+  (`lib/compiler/SLSourceForm`, `lib/compiler/SLCompileChoice`) with naming
+  conventions for converting documents to named `.sleela`.
+- Added the `autocad` and `website` package families (each with a 0.1.0 Maven
+  GUI module).
+
+### New subsystems
+
+- SleelaTerminal™ graphical front-end work (see `sleela-terminal/VERSION.md`,
+  now 1.1.0): living title-bar throbber, recoloured window controls, brand
+  logo, Settings subframe, `sleela$` default prompt, and the gradient title
+  bar, plus five shell runtime-bug fixes.
+
+**Java Authorship Transition Gate:** 1.19-dev
+
+## 0.3.23 Development Increment
+
+Version-control and consistency refresh. Advanced the active development line to
+0.3.23-dev and reconciled the previously divergent version strings across the
+repository so every record agrees:
+
+- Regenerated `lib/LIBRARY.SYMBOLS.md` from the live `/lib` tree (82 package
+  families; 10,186 source classes + 55 module facades = 10,241 symbol records)
+  and mirrored the class vocabulary into `SLEELA.syntax` §11,
+  `impl/nordshrift/SST.SYMBOLS.md`, and `impl/nordshrift/NORDSHRIFT.SYMBOLS.md`
+  as informative (non-authoritative) appendices.
+- Reconciled the **syntax range** to the code-enforced `1.3 .. 1.6`
+  (`impl/frontend/version.h`): updated the stale `SLEELA.syntax` header
+  (previously syntax 1.3 / range 1.0 .. 1.3) and the `run_version_tests.sh`
+  header comment.
+- Reconciled the **compiler/tool version**: `Sleelvac™` now reports
+  `0.3.23-dev` in `impl/frontend/driver.cpp` and in the `SLEELA.syntax` header,
+  tracking the active development line.
+- Reconciled the **Nordshrift** version to `2.7.1-dev` in
+  `impl/nordshrift/nordshrift.cpp` and `SST-2.0.model` (previously 2.6-dev /
+  2.7-dev), matching the "Nordshrift Complete" registry line.
+- Reconciled the **IDE** development version to `0.2.0-dev` in `ide/VERSION.md`
+  to match `ide/sleela-intellij/gradle.properties`.
+- Corrected the stale **Java Authorship Transition Gate** header above
+  (was 1.17-dev) to the body's current `1.19-dev`.
+
+**Java Authorship Transition Gate:** 1.19-dev

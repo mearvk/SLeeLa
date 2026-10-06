@@ -7,7 +7,7 @@
 // persistent runnable .sleela Core artifact. That artifact is loadable by the
 // Sleela runtime without a second front-end compilation.
 //
-// Nordshrift 2.6-dev also links the common semantic subject model used by the
+// Nordshrift 2.7.1-dev also links the common semantic subject model used by the
 // Math, Physics, Economics, Chemistry, and Financial libraries.
 // ===========================================================================
 #include <cstdio>
@@ -48,7 +48,7 @@ extern "C" {
 using namespace nordshrift;
 
 static const char* kVersion =
-    "Nordshrift 2.6-dev (NS-SST-0001; source validation; semantic analysis; semantic subject model; Sleelvac™ runnable .sleela target)";
+    "Nordshrift 2.7.1-dev (NS-SST-0001; source validation; semantic analysis; semantic subject model; Sleelvac™ runnable .sleela target)";
 
 static int usage() {
     std::cerr <<

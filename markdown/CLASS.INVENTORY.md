@@ -1,6 +1,6 @@
 # SLeeLa Class Inventory
 
-**SLeeLa Version:** 0.3.22-dev  
+**SLeeLa Version:** 0.3.23-dev  
 **Inventory Revision:** 2.1  
 **Inventory Date:** 2026-10-05  
 **Known Source Files Explicitly Indexed: 138**
