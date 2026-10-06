@@ -12,11 +12,11 @@
     },
     {
       "path": "SST-2.0.model",
-      "sha256": "279b41f7ba679fb80a180da9632566fcc7eaf6318c8237bfb74c5c71ad0195c3"
+      "sha256": "74af0df4b8b654eed80a8ed05c8ff11286ba96410384a9b43cb6c6aaa368fd8a"
     },
     {
       "path": "SST.model",
-      "sha256": "f3615964578e04aebfe860571e797064421e478fc213a24ff15e316e893a6d16"
+      "sha256": "0d94d70bc6899669cc3057f3c06e550393bd984366de8cfd74f87e9d18aaeac2"
     },
     {
       "path": "antivirus/src/sleelavirin_heuristic.c",
@@ -3199,6 +3199,38 @@
       "sha256": "60b306901d2d5abeab635e424c6797e65ec86373b896e124f4686c585fc1df18"
     },
     {
+      "path": "crypto/cpp/slcrypto.hpp",
+      "sha256": "8e9d8208572a500df8fa27ae808c50ab7c1b45c6377ad3b85d9811ebbe76da5e"
+    },
+    {
+      "path": "crypto/include/slcrypto.h",
+      "sha256": "d2c6c1fc87739188e6311c885bea415f22da7b6068128a8c844264189aec9979"
+    },
+    {
+      "path": "crypto/src/aes.c",
+      "sha256": "aa65f0d40623ecdd45fb6597c65b54e888e9b6c407ac979b55551e353ec1e215"
+    },
+    {
+      "path": "crypto/src/mac_kdf.c",
+      "sha256": "5366e3577e98c2beb646b28b11c3cabf257aa5c1b89adde337b6fddf65e9f325"
+    },
+    {
+      "path": "crypto/src/pq.c",
+      "sha256": "232ad22b8551d9db7a0692fcf12773e4a121e59ab6b87d7a66792816920cfb38"
+    },
+    {
+      "path": "crypto/src/sha2.c",
+      "sha256": "bfbb3e35b1d2605f1746adacae6cffa28c97d0011fe900e3f9ee8152fecd3f19"
+    },
+    {
+      "path": "crypto/src/sha3.c",
+      "sha256": "283726653db6b7c105d71f3b33ea0bea0707b81a448a34edfe104928b924cefc"
+    },
+    {
+      "path": "crypto/test/kat_test.cpp",
+      "sha256": "1ef85e356e8bf5f25d27e06c66f05ecfb0cfb1e230ffac31940bf5df2e3f1177"
+    },
+    {
       "path": "data-structures/DSList.sleela",
       "sha256": "5011d48a1552933da52595b729b54263b3c7780fcd9692bfc42b243a0dbeee70"
     },
@@ -5084,11 +5116,11 @@
     },
     {
       "path": "impl/core/sleela_core.c",
-      "sha256": "3a8486f5a00854864de27f8a4a5d1b825cdfab9c25c8ea96c1e12df85934f17b"
+      "sha256": "7679cae1729990e89175f32f67bf7d879b3e60a3efd1a1fbef195729e6515fb9"
     },
     {
       "path": "impl/core/sleela_core.h",
-      "sha256": "faa7338021b027fe1c1937f9bca6e7de1e97e2dd25e033e013cb7363c59469ab"
+      "sha256": "2d38e8b079ff5b248963f85794c806b4fcd5e1e9c4fbf48543da6026fa97a644"
     },
     {
       "path": "impl/core/sleela_design_activity.c",
@@ -5185,6 +5217,14 @@
     {
       "path": "impl/core/sleela_net.h",
       "sha256": "2c1e8595cac2fb802fc741c3ec0f164b86510f7efd8be960e60818b107739960"
+    },
+    {
+      "path": "impl/core/sleela_os.c",
+      "sha256": "eeb0df52498469a51f6f7b379e5724a2bab240ab08fbbaf29d990041d188f1c3"
+    },
+    {
+      "path": "impl/core/sleela_os.h",
+      "sha256": "844196600ed86962ae13a1d9b4ddd09f424b6c1825bf9b6b3b4d8702f6c5f5dc"
     },
     {
       "path": "impl/core/sleela_path.c",
@@ -5488,7 +5528,7 @@
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "ad21a2fc869f2f7eabbfc0688d17617ffca3f7dcba9d63b6a474d1dacb22eb0a"
+      "sha256": "708a2b3b9986e85050e69c486f7da95e56575f8a303ca1ef646976cb6435a71f"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -5576,7 +5616,7 @@
     },
     {
       "path": "impl/frontend/semantic.cpp",
-      "sha256": "b121c3f138de0787fdbeb5f90d5eb5ac8ff2964801a537f055bfc0766244f238"
+      "sha256": "9d907000d0b655fc6d63e3a83e4afc71e14ba0ab6f22904669615a5fcbb24833"
     },
     {
       "path": "impl/frontend/semantic.h",
@@ -7463,68 +7503,424 @@
       "sha256": "ab318b0e87db9f8dc351a26954cf8eb62260bddcf6067ed2c09e741e3025bbbb"
     },
     {
+      "path": "lib/cpu/SLALU.sleela",
+      "sha256": "d9c0a4e0a72f12823261bda43d45ed3ec535e0a5bd30bd3ae5e56accb6d78829"
+    },
+    {
+      "path": "lib/cpu/SLAdder.sleela",
+      "sha256": "df7b7ebd026e13ea58a4a1a0c5b1a6a5142a863680b98681443cbff51b0f1e06"
+    },
+    {
+      "path": "lib/cpu/SLAssembler.sleela",
+      "sha256": "5e845f0926241070eab34110e1b6769367471182cf99c46f7b5e7e8c8bb5727c"
+    },
+    {
+      "path": "lib/cpu/SLBootloader.sleela",
+      "sha256": "63bd9156b80f58079a056e54f75a59bf17f862499850344129d02dd92db16fa3"
+    },
+    {
+      "path": "lib/cpu/SLBus.sleela",
+      "sha256": "2d24d748ae17dd61d20a5bed0662a3afaaa84d3b25f8631aabe510bd3d6992bd"
+    },
+    {
+      "path": "lib/cpu/SLCPU.sleela",
+      "sha256": "e5aedd3d8c6fc81e8f6f9195f1a2445f2eaf6adbcf90689bf567150e68624d92"
+    },
+    {
+      "path": "lib/cpu/SLCache.sleela",
+      "sha256": "8156dfcdf3c2fd831280a32aaba0aa078f81fac94f8cefac115312552040af52"
+    },
+    {
+      "path": "lib/cpu/SLCircuit.sleela",
+      "sha256": "e4bc7896669e2ba21e99ccc5f03aca2440698a5aa857d99fe0f3768d16dd3dce"
+    },
+    {
+      "path": "lib/cpu/SLClock.sleela",
+      "sha256": "8d8c871751d9b3b799d2ef4482d05eebb93f11fdef5e18c78a9f77081f6e8339"
+    },
+    {
+      "path": "lib/cpu/SLCompilerDriver.sleela",
+      "sha256": "551d0e542d73373e5f396dbf8d1428ecd97ac3350cdb5e680f0c46d5ab639fda"
+    },
+    {
+      "path": "lib/cpu/SLConsoleDriver.sleela",
+      "sha256": "47e1d0de2f3a1ffd660484a94c0abdfc5325ec9e373300794e1f03d6684f5a24"
+    },
+    {
+      "path": "lib/cpu/SLControlUnit.sleela",
+      "sha256": "b53d7085cef3997a45eedad0f56e8160e1f42fd662f0c1134e8de969f526fef2"
+    },
+    {
+      "path": "lib/cpu/SLCore.sleela",
+      "sha256": "79e0e31fbf450227045a3148d32d90faa1ab576872aec716d7d5502530778a16"
+    },
+    {
+      "path": "lib/cpu/SLDMAController.sleela",
+      "sha256": "45127e29624d4e52503c137d5eba542b69cffac584c161895376e8e081b71048"
+    },
+    {
+      "path": "lib/cpu/SLDeviceDriver.sleela",
+      "sha256": "324f32218a6ce500aec5ec885b982d30aca91623da63b67f768471125e8cab19"
+    },
+    {
+      "path": "lib/cpu/SLDiskDriver.sleela",
+      "sha256": "04c1fa9a3bad50f8ca6fe65bde444fd6e34529d3317ad85a213c52145a53e462"
+    },
+    {
+      "path": "lib/cpu/SLDriverManager.sleela",
+      "sha256": "6b62a59d9cf393739371b7fbaf8b37755321bc360e9b5cd36a946396a2f7fc71"
+    },
+    {
+      "path": "lib/cpu/SLFileSystem.sleela",
+      "sha256": "b68645c5eb0141921406af9a07b7afdd7e8126f3cb96c01e915e4357820140df"
+    },
+    {
+      "path": "lib/cpu/SLFlipFlop.sleela",
+      "sha256": "074bac9a01da0eeae5b65c6250d947dae25dba9a06163c1f8a93610dfddee5cd"
+    },
+    {
+      "path": "lib/cpu/SLFrontend.sleela",
+      "sha256": "9ad71f51a5ffd568ff6c4e130c3664dcd0f2b311b2102fd5a860726bf66989f8"
+    },
+    {
+      "path": "lib/cpu/SLFrontendC.sleela",
+      "sha256": "e85bb9a33cb2b9fc78a55ff8034aede0585071bc4a37e123949b2abb94a60c98"
+    },
+    {
+      "path": "lib/cpu/SLFrontendCpp.sleela",
+      "sha256": "2a5b0386f8d209f680798510750beefb7b0896d21ef4f45b773542825fd727ff"
+    },
+    {
+      "path": "lib/cpu/SLFrontendJava.sleela",
+      "sha256": "551cf24dde4a824be30c287890a032911489669eaa70cb48e918dc79f06ad796"
+    },
+    {
+      "path": "lib/cpu/SLFrontendSleela.sleela",
+      "sha256": "0d2a40d364db21975b393a346df5362e9210f8dd245c9cdfea7c8f372d7ca883"
+    },
+    {
+      "path": "lib/cpu/SLFullAdder.sleela",
+      "sha256": "f8a59059b7388cb5035f14699569deda2062e236cfe8206b2e43093a3d802eca"
+    },
+    {
+      "path": "lib/cpu/SLGate.sleela",
+      "sha256": "4ec06ff7013fdb5eb7f5055e29bd5be00741d4b7aab3bf5f36b20d1c2145539f"
+    },
+    {
+      "path": "lib/cpu/SLGuestBlockDevice.sleela",
+      "sha256": "4b0b49469b50901ae9add1c2fdf11fabd9e624137b45052661e572a8103e19a7"
+    },
+    {
+      "path": "lib/cpu/SLGuestConsole.sleela",
+      "sha256": "c735f65e97d7a6ed47dc4a86411c9235cb45eb9f78d35155fcff07b529c89e5e"
+    },
+    {
+      "path": "lib/cpu/SLGuestDevice.sleela",
+      "sha256": "e0ff22a97f8676bafd31809f0f4796d444cfa840d25f1d0e3c2dd61dedd344f1"
+    },
+    {
+      "path": "lib/cpu/SLGuestDeviceBus.sleela",
+      "sha256": "d12fc094874865dfee456c0c428aa5ef4b32c670a7648f3ea898194e9ddebbcd"
+    },
+    {
+      "path": "lib/cpu/SLGuestExecutable.sleela",
+      "sha256": "3aea708de5c9aeb9c4135db1587a950d0fdc9048ddbc495af41ce0895c770ac8"
+    },
+    {
+      "path": "lib/cpu/SLGuestFileSystem.sleela",
+      "sha256": "11fb521cc7519fd0eed26be1a2f059b0426118933e0e591a032ea463b24e4c34"
+    },
+    {
+      "path": "lib/cpu/SLGuestInit.sleela",
+      "sha256": "05aeec3b1a31b3014b18370bbc5b71e3e5fb3e110525a648af4124908e6edd3d"
+    },
+    {
+      "path": "lib/cpu/SLGuestKernelBuilder.sleela",
+      "sha256": "0b675d760e34949b526ad8ec2e9a02711dd90536180f84286f1ae0fdb657f247"
+    },
+    {
+      "path": "lib/cpu/SLGuestKernelImage.sleela",
+      "sha256": "a813530e79ec28ee390e0071813272216179a11c14063c21a22c5614ce13d15e"
+    },
+    {
+      "path": "lib/cpu/SLGuestLinux.sleela",
+      "sha256": "6d6b2ac837597993bbc1b54be852f856ef50cc3314e802f47425f1a2f71cb04d"
+    },
+    {
+      "path": "lib/cpu/SLGuestPipe.sleela",
+      "sha256": "c9a8d77c74c31ea3f79b96c52cc09ebfa482e805dad685e8412b4bbd337f50db"
+    },
+    {
+      "path": "lib/cpu/SLGuestProgram.sleela",
+      "sha256": "fac915d79374fdc2c844989eb039e4394f0b94e77ea5a816935067c0a875b962"
+    },
+    {
+      "path": "lib/cpu/SLGuestScheduler.sleela",
+      "sha256": "25ead2485769f434ef74283cf17ad5030a06077308d2ea3cd457c11f20b097a3"
+    },
+    {
+      "path": "lib/cpu/SLGuestShell.sleela",
+      "sha256": "9c87be0998200f6aec627e075d16306a02b271b503e83ee74b03ae67f0514b15"
+    },
+    {
+      "path": "lib/cpu/SLGuestSignal.sleela",
+      "sha256": "93336f1c6bafe76a90cdf6f14c4f5d7d3d23749067a08ad1eafa7aaaae8faf9d"
+    },
+    {
+      "path": "lib/cpu/SLGuestSyscall.sleela",
+      "sha256": "b3f1ec18b068d0fc39f56802a3754b7c5d3463896a164a355c0aef8856ed8e27"
+    },
+    {
+      "path": "lib/cpu/SLGuestTask.sleela",
+      "sha256": "a574c4041bc69dabeb19a0dd9bb76d3a0fb8bacbbee59a6b07079e93a5029946"
+    },
+    {
+      "path": "lib/cpu/SLGuestTimer.sleela",
+      "sha256": "ad6b21fe0cf18f79484f982a684e40888e8b58447901439ea8141ff8d429e8ea"
+    },
+    {
+      "path": "lib/cpu/SLGuestVM.sleela",
+      "sha256": "7e92e271d74f5b399369bcd691bd6132e29a1ef458b3af8106f89100c2d179ae"
+    },
+    {
+      "path": "lib/cpu/SLHalfAdder.sleela",
+      "sha256": "13278ba6073f0dfc55df34679075124271df23c6467583b41376ba6be3331ec1"
+    },
+    {
+      "path": "lib/cpu/SLHardDrive.sleela",
+      "sha256": "133d347c56ed87b0a25ec34e4bca28d1ff74f99267be4c54df12f7e31671852c"
+    },
+    {
+      "path": "lib/cpu/SLHypervisor.sleela",
+      "sha256": "82415b3756f68fdab3b424558b3e49e9ef0f6ffe6990d27c3f8632e859f111cd"
+    },
+    {
+      "path": "lib/cpu/SLIOBus.sleela",
+      "sha256": "9eb9e29a9be947525e741ce76fda531ce96b679fcc992ff281df560af283f632"
+    },
+    {
+      "path": "lib/cpu/SLIOPort.sleela",
+      "sha256": "7d32d271b7e5a29c82c84adbae9ac8f50b88dcb5dda78595580b179575bff357"
+    },
+    {
+      "path": "lib/cpu/SLIR.sleela",
+      "sha256": "bbc7d731de6aeccb8976f83f95e576976112f14c8094fee3b72a12493f2bc4b6"
+    },
+    {
+      "path": "lib/cpu/SLIRInstruction.sleela",
+      "sha256": "c95d86eb2a9f0d9bd7e575c21a54f8f432aa9d40f71d5b29443e2276b24c873b"
+    },
+    {
+      "path": "lib/cpu/SLInstruction.sleela",
+      "sha256": "5e635b1d4ab253295c915f737fed204a6e0e3e7410a9263a80f621de51d03fa8"
+    },
+    {
+      "path": "lib/cpu/SLInstructionDecoder.sleela",
+      "sha256": "5a4d902fe2fc041f1ea51ad967c5a85070d937f57a0e2f282115401c72ec6271"
+    },
+    {
+      "path": "lib/cpu/SLInstructionSet.sleela",
+      "sha256": "33245387b598906c9c36a9e68fc3be1089b3c3d5c408203f48b65b78002c9680"
+    },
+    {
+      "path": "lib/cpu/SLInterruptController.sleela",
+      "sha256": "47a3738dce9437e1cd812bc2a6e9c6a306f60963429d4f5d881e9477405dfad4"
+    },
+    {
+      "path": "lib/cpu/SLKernel.sleela",
+      "sha256": "38858118102b8dd7df009e7203fa6c452aa975728a4755a6bf643ee03ef13e78"
+    },
+    {
+      "path": "lib/cpu/SLKeyboardDriver.sleela",
+      "sha256": "902b86bcd99c8fd68f9f682a3a3c869a32e20571601177ad4f758e81d9240e67"
+    },
+    {
+      "path": "lib/cpu/SLLatch.sleela",
+      "sha256": "c2e050c2aedae0645158e5f1337d41f3992a1c5c7ad3ce6e96b77cea29055b51"
+    },
+    {
+      "path": "lib/cpu/SLLowering.sleela",
+      "sha256": "dbb38ec12de4134fbb0634e9a9de5f11b94fcc5a8f6daee84f0aa8835a79571d"
+    },
+    {
+      "path": "lib/cpu/SLMMU.sleela",
+      "sha256": "ee911d42bf0d9a812be961328cda40f7496cbfaf25d9334ada2ca551539f6795"
+    },
+    {
+      "path": "lib/cpu/SLMachine.sleela",
+      "sha256": "d4cb3aadd6f441d57378ff4ce1a4dbe6dd6186137f9b43c951f2dad936038ae0"
+    },
+    {
+      "path": "lib/cpu/SLMemoryManager.sleela",
+      "sha256": "5d2fabbf9d3d19488e77de6b24af62cadaadf443348534267669e176af6f0707"
+    },
+    {
+      "path": "lib/cpu/SLNetworkDriver.sleela",
+      "sha256": "a922d925ede98f1822873fd5e447e66c0325a1ce3e945e8f8d1fc72df9bdc92f"
+    },
+    {
+      "path": "lib/cpu/SLOpcodeMap.sleela",
+      "sha256": "b1ba99e8b7c7e6c462c990cd82b8da7687564976485415c492377cabf13637a0"
+    },
+    {
+      "path": "lib/cpu/SLOperatingSystem.sleela",
+      "sha256": "682feb38309f84ad2bea9dac063b9e4ef5ba1f841eabb6c974f6856729452fa5"
+    },
+    {
+      "path": "lib/cpu/SLProcess.sleela",
+      "sha256": "2fa8281bfdc0818d351696d6e27b073d4ca873d317eed755b760a9d4c75db89d"
+    },
+    {
+      "path": "lib/cpu/SLProgram.sleela",
+      "sha256": "b51fca32326dcc9688bba6dc6d3b5cfb717dfa79aa98eed44a546b62ea090818"
+    },
+    {
+      "path": "lib/cpu/SLProgramCounter.sleela",
+      "sha256": "11735be26d8e0111debd40b74ce361c703af949d38f5f886ef622be19d7c4cc7"
+    },
+    {
+      "path": "lib/cpu/SLProgramLoader.sleela",
+      "sha256": "dcb3859691a9a63d33482749926649ff816367249717b525e5bca58b1c6ddd38"
+    },
+    {
+      "path": "lib/cpu/SLRAM.sleela",
+      "sha256": "73aa9d1defbbccd9224cb822126bb571cae9707cf578d7721b20145cb5c9c2e3"
+    },
+    {
+      "path": "lib/cpu/SLRegister.sleela",
+      "sha256": "d26af7ef3f77d7470122c1dba9031ee32750ce3c57c1a60824c1706c023b9800"
+    },
+    {
+      "path": "lib/cpu/SLRegisterFile.sleela",
+      "sha256": "db55ffa7e9ed2e57948e59202e5f5fff7c8aaf59da18148a7a29a18f0fe98e02"
+    },
+    {
+      "path": "lib/cpu/SLScheduler.sleela",
+      "sha256": "b76503380e8e4646bf4dc7f2433b0f37e2e6333f40f20fa38ed8e7c6d6944bb9"
+    },
+    {
+      "path": "lib/cpu/SLSleelaOpcode.sleela",
+      "sha256": "701de0b75c1f0305759dddbecb4235c5a5ffc1a24c0552edb547e895d7bb9bd5"
+    },
+    {
+      "path": "lib/cpu/SLSleelaVM.sleela",
+      "sha256": "48d86a0af46a0347488dbdf94586c68bf99bd3e974d3e6b3192d66e8b5a2b5dc"
+    },
+    {
+      "path": "lib/cpu/SLStack.sleela",
+      "sha256": "5067110d91e82b49b27405d06364c2bade5c6111a75a3a4359bcd4f737d471bf"
+    },
+    {
+      "path": "lib/cpu/SLStatusRegister.sleela",
+      "sha256": "fb57a996c3d54bd2f4c37719daf441769727170ae56ee09cbbb8370f0cf08686"
+    },
+    {
+      "path": "lib/cpu/SLSystemCall.sleela",
+      "sha256": "1d1429c4489db83aa3b6fd8046abae6f96e3a504773011dda6e0c0147f92a378"
+    },
+    {
+      "path": "lib/cpu/SLTuringBridge.sleela",
+      "sha256": "c1bd926c39f2094dad674991579c45ae686b76aee41c4017bfe26e3136fbdfc2"
+    },
+    {
+      "path": "lib/crypto/SLAes.sleela",
+      "sha256": "4ae5f77b2a4adc6eb392c2bdf76e0d3961f9cadc64332d58c3eac3eb439463d7"
+    },
+    {
+      "path": "lib/crypto/SLAesGcm.sleela",
+      "sha256": "6808e9f0d9ec3cabb19b9363c6c441cffc4846f322c93ea6b8d7b95235c89582"
+    },
+    {
       "path": "lib/crypto/SLCertificate.sleela",
-      "sha256": "f9b21760249dc596a54a447e6776f20f18181382b9cf3dc5445b7cc9b963cedc"
+      "sha256": "1c484e057009c501298231be54f8443501c64bb6ea458b2a49e58ae785323d8c"
     },
     {
       "path": "lib/crypto/SLCertificateStore.sleela",
-      "sha256": "a89b5de62c9f6321dabc81885344941278a15d5de78a0c756f6452ff1caae7cf"
+      "sha256": "8ce720281f69fc58497fabba3cb2362a89de913ef94f723f00bbfd30d53cafb1"
     },
     {
       "path": "lib/crypto/SLCipher.sleela",
-      "sha256": "20990a8f8d29df468178cf8cbb58d426727b1340e485f5412b3b7436e52cfd5d"
+      "sha256": "85d8097dc5d6136fa8bf3d318d8da7d503abe573d9240047b3be7133c869722a"
     },
     {
       "path": "lib/crypto/SLCipherContext.sleela",
-      "sha256": "d464089dc5179cefd22230bb83a472ca4ec413589faf74b46c6cee3450a4d857"
+      "sha256": "9b569aabd9dd9c1b0c7ac3e74e08c194d5a540113ff264a240e7c68a7f33db8e"
     },
     {
       "path": "lib/crypto/SLCipherKey.sleela",
-      "sha256": "62c777968e2b6287f39634be3838f65c15124881b0dde7cafca4aceea13bc536"
+      "sha256": "25a67af8cc8d92fa09d352bd348d130f0e9c9851b55fa88df6ff4a8e58d6ceb4"
     },
     {
       "path": "lib/crypto/SLDigest.sleela",
-      "sha256": "9a8baed7103d6f1b56d1c3220d788496a88cb34361a84b8c3cf7e2d73eef1f1f"
+      "sha256": "76405b0729af9876f24c69dffce3c896a6a7bb11b4d6ef0bc53c204c0b30426a"
+    },
+    {
+      "path": "lib/crypto/SLHkdf.sleela",
+      "sha256": "fedaa8d2407eb68a6b4e9dca0d7c6eeb9a09bc25a085fa4ff3c4855a814069c7"
     },
     {
       "path": "lib/crypto/SLHmac.sleela",
-      "sha256": "8fa8015abcfc382853c192795c39ad123c3ee8f97f8f38a5c11b9a7367ca1988"
+      "sha256": "6c6c7be65600886f8ee6cbb19ad76e91aa7a2ef3a6118935880c8c31d433fd2b"
     },
     {
       "path": "lib/crypto/SLKey.sleela",
-      "sha256": "466e6822df6a1ee5da6efe4e10f9c6963001d51c1f336cfff9863c4773af8fe4"
+      "sha256": "054c15f6e3e04dd2423e7e061d88a3df40d9e90e50041432ea27372f5d503720"
     },
     {
       "path": "lib/crypto/SLKeyDerivation.sleela",
-      "sha256": "66cb2de8b19f3e0f62172d6184b4e6162ff34dbde2ede23df18c04a708169080"
+      "sha256": "936f7292249abb921d1c998265a931144aaa92336f7289126abf8561219db987"
     },
     {
       "path": "lib/crypto/SLKeyPair.sleela",
-      "sha256": "d58785b1fe7acce7cb3ecf2f30880f02c51d7593cb202ca8e21cb4e962a224ec"
+      "sha256": "1daf1c2dd4f9997cf81ec9430e33b10ca30b3afc00d8399b0d5eece2bc7d7c51"
+    },
+    {
+      "path": "lib/crypto/SLMlDsa.sleela",
+      "sha256": "bbfd68c2bef593be942d2daac5768f4ce2e2cd25bd8aedb5b2591b0003d775ed"
+    },
+    {
+      "path": "lib/crypto/SLMlKem.sleela",
+      "sha256": "4a674bc7e03dd714d81a9b577c9551fbfeb8374d70d33a8f2ea2d380dea4eaf1"
+    },
+    {
+      "path": "lib/crypto/SLNationalSuite.sleela",
+      "sha256": "9b88eb47a8d5c36a038ff02bd73c5974c4e1d5fb7294a044f77bc02840ace516"
     },
     {
       "path": "lib/crypto/SLNonce.sleela",
-      "sha256": "437aaba600d7da4676cbf35361b9b45e342b9f107dab0d69958d1bf208ff860e"
+      "sha256": "73c24cb543b4c1986a1c13216f4d2fff99475bde57d3a9811f74afc97f48308e"
     },
     {
       "path": "lib/crypto/SLPrivateKey.sleela",
-      "sha256": "682da79dc2cd5257ea4890133b264bc22fd9f903f7677184dd755294d74f379e"
+      "sha256": "1dcc283a4007cd062c8de5f36afe5345a7d00b3594054fa343f81be102732831"
     },
     {
       "path": "lib/crypto/SLPublicKey.sleela",
-      "sha256": "2329c486ec50f41b58e8708d88ad60ce229d54619a1f3c37f6bc94d260ba93b2"
+      "sha256": "8734771d3d71a5a4cf56238b3816c7409c8fdd89b3053714914616626a5707c5"
+    },
+    {
+      "path": "lib/crypto/SLSha256.sleela",
+      "sha256": "f23b25440bbfb262b676e4935937e69ca13210d3f62cfdd9cd3a329c35835db8"
+    },
+    {
+      "path": "lib/crypto/SLSha3.sleela",
+      "sha256": "9b9a2ccc6c4f6a3f8d7fe8aed8f51323105797759c716eb2d1d824791bb72e45"
+    },
+    {
+      "path": "lib/crypto/SLSha512.sleela",
+      "sha256": "37a4fb25566e7583ccabdae04759b246492491a08128efced946832c3a938f28"
     },
     {
       "path": "lib/crypto/SLSignature.sleela",
-      "sha256": "84aafb5f78cb03280f0bf11a90541635383b96f0c15bf958bd2fd935d7544083"
+      "sha256": "79ecf302644031092859b1d82b4346bc5394d80ffb8f3d0f79b0b66818b13dbe"
     },
     {
       "path": "lib/crypto/SLTrustStore.sleela",
-      "sha256": "d15b90bfbaee6f1ff71e6d3214da51694fc4d34529ba7e2bc3fcc4b9a55dae9b"
+      "sha256": "36521cc6e0d20fb6f1e9278899ac15627c3c77af84b5d67c65313011e8bf56da"
     },
     {
       "path": "lib/crypto/SLVerifier.sleela",
-      "sha256": "172651caaa98028447d439c34f98099a637a7511c9822c659058ff8437b0d03e"
+      "sha256": "7b86a81140bb5403740b8332dbf7b49c3d8f697e56c9266f54d79b6b6ecbd1bd"
     },
     {
       "path": "lib/data/SLPackage.sleela",
@@ -46788,43 +47184,55 @@
     },
     {
       "path": "lib/os/SLClock.sleela",
-      "sha256": "90e539d9d7afdc062f3539b5a5580e0e8928ef2fcbfe60536ed641047bbc3d09"
+      "sha256": "715591db8f8fc6ea7eb8b50345108c10e289d9690fd906dc39056bb4943ba468"
     },
     {
       "path": "lib/os/SLDirectory.sleela",
-      "sha256": "a6b380b0019cae82ab1758f6710a7c63f528ed69dd5de4105847400ea7a220c1"
+      "sha256": "be40810f6ec3c5403eed645d11f9fa58bcc3fab0ea4f2ec4be5a54b7bcc9f6d5"
     },
     {
       "path": "lib/os/SLEnvironment.sleela",
-      "sha256": "8366f65ca3b36fe17b5d4ef953f38d109387d65076b25357972fd46cd7a13c7d"
+      "sha256": "d617095eefa4b905e8305a03e171a275cd50035fc9a0567d6e6eb912564142bf"
     },
     {
       "path": "lib/os/SLEventSignal.sleela",
-      "sha256": "f539771aae7a94edf0ddf39ee644f417e27fbc43c18f6f6a88b4f5047d573258"
+      "sha256": "2bc01d3808a386f57ed178e985a0f2a15a591f6af57e2698e19b6a3edff9c774"
     },
     {
       "path": "lib/os/SLFile.sleela",
-      "sha256": "409eff39f3df015445bac99181bc6a8184dcab2dc8c3bad974d7b3f9896408dd"
+      "sha256": "c426ef7569046141390b4aabf44d7f76fef7fc10d11e95afb4382c68a9217283"
     },
     {
       "path": "lib/os/SLFileSystem.sleela",
-      "sha256": "dfe1255ce8f128df93bf31bb9ccffb86ba15acdf20f33891468403d55192e159"
+      "sha256": "f160f4898d15fbde828788b4b2db3fcd54dc3536e87e9709f4295b59f0dc6985"
+    },
+    {
+      "path": "lib/os/SLLinuxOS.sleela",
+      "sha256": "0862bfa7d5ce5e49d2e9b628e5e8ce0518898ed40f64725896228327b7adbda5"
+    },
+    {
+      "path": "lib/os/SLMacOS.sleela",
+      "sha256": "d9abf1bcd9fc70831f625f2bba780eed1f34fe89d254f1ffc11161d643983ed5"
     },
     {
       "path": "lib/os/SLOperatingSystem.sleela",
-      "sha256": "7cdcc7b6ebd960acc7c3f7f267570d4782ea0be433f9ef8ad2d05764652d64bf"
+      "sha256": "fc5c6d88d6184bd54d7d05e7aacc4d1920ecbc097a1c7c36ea23ae2248b1b76d"
     },
     {
       "path": "lib/os/SLPath.sleela",
-      "sha256": "abc1a99ebee223a43e65f8ae9899d0d1b7bb58695b484753c9bb44e5366a2535"
+      "sha256": "6eaaaaf833e82f0a508dd63def945195d63db949b95a13e8b867be0c97849313"
     },
     {
       "path": "lib/os/SLPermissions.sleela",
-      "sha256": "ec72ddc89f20516428a47ff203e20eb132d1b657b1965ce134aaee6e63fdf7fc"
+      "sha256": "cfb106ab3fa2f1b2591ceeb93788e9a9fcc27f10b96ddc0e4f80d652f8e7acf1"
     },
     {
       "path": "lib/os/SLProcess.sleela",
-      "sha256": "b44e8eff1210e1d17fc3c598a740951ed3df1d5f45d648ea32b39b541c11fcf4"
+      "sha256": "66560dab12f645b5e239274d41e2634be79f8f5ee607d3fbe4b95b0f642ed9ec"
+    },
+    {
+      "path": "lib/os/SLWindowsOS.sleela",
+      "sha256": "8ff48bfefc13744fde3b9443bed68a5bff89c29561e4f912689c2ad1e6394bf1"
     },
     {
       "path": "lib/politico/SLPackage.sleela",
@@ -49912,7 +50320,7 @@
     },
     {
       "path": "test-suites/test-library-inventory.sh",
-      "sha256": "22864467bdbd63aea8d2928d078beceac9206bf41f315df017451a3c11d08c9d"
+      "sha256": "62d8417e5b1acb1d726dbafe171ca8a0ad3d00d79a059a601bc5839c090f54bd"
     },
     {
       "path": "tests/java_api_dependency_suite.py",
