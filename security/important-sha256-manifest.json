@@ -8,7 +8,7 @@
     },
     {
       "path": "SLEELA.syntax",
-      "sha256": "71e61a2a22b9ee5002d635ae18e44f87c99abea0d2cfe1fe9041c8a13b176e71"
+      "sha256": "e4d34b53cdb8455761c91e337ff60884232104605e78e4c269d5ca0306a6ff0a"
     },
     {
       "path": "SST-2.0.model",
@@ -49912,7 +49912,7 @@
     },
     {
       "path": "test-suites/test-library-inventory.sh",
-      "sha256": "5788ddbc49cfd32d7552a97b9fb018d2725ae2db54d94ae18bf90a5947f9b07a"
+      "sha256": "22864467bdbd63aea8d2928d078beceac9206bf41f315df017451a3c11d08c9d"
     },
     {
       "path": "tests/java_api_dependency_suite.py",
@@ -50107,8 +50107,16 @@
       "sha256": "cc297e7dae2f36a8dc372c8b2200fc8cff6dd4f4c11b3ad723f8684d2c7ef6bb"
     },
     {
+      "path": "tools/generate-library-symbols.py",
+      "sha256": "35f452532dff454dc606e9ef95542ce48e2901faee78287f5bbf8be8c12bf7b0"
+    },
+    {
       "path": "tools/generate-sha256-manifest.py",
       "sha256": "6f870421c1fa092f0d7ce32c82ee58d2591ab9d8aa7600c7b768013b6d61a190"
+    },
+    {
+      "path": "tools/generate-vocab-appendix.py",
+      "sha256": "3ca608963515f7a447cdc77acfd1a7f0a8522146346cdd23465f7110be967476"
     },
     {
       "path": "tools/generate_bypass_holidays.py",
