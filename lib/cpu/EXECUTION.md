@@ -214,6 +214,7 @@ The guest layer is being hardened from "model" toward "genuinely executes":
 
 - **Step 5 (done):** the VM-exit loop is wired. In hosted mode `SLSleelaVM` parks a VM-exit on a service opcode (e.g. `OP_PRINT`); `SLGuestVM.run()` routes it (console device / syscall emulation), ticks devices, posts IRQs, and resumes — the device↔substrate↔exit handoff is functional, not just structural.
 - **Step 6 (done):** the guest has preemptive multitasking.
+- **Step 12 (done):** on-disk programs. `SLGuestExecutable` is a miniature executable format (magic header + opcode section); programs serialize to it, persist to the guest filesystem, and load back from disk into the substrate (header-validated) - programs now come from storage, not only inline compilation.
 - **Step 11 (done):** guest shell. `SLGuestShell` is a minimal command interpreter (help/echo/ls/cat/ps/exit) spawned by init as its first child, issuing commands through the syscall ABI - the guest's first interactive user program.
 - **Step 10 (done):** guest IPC. `SLGuestPipe` (byte FIFO between tasks) and `SLGuestSignal` (async signals; SIGKILL/SIGTERM terminate) wired into the syscall ABI (pipe/kill + pipe-fd read/write) and delivered at scheduling points.
 - **Step 9 (done):** guest syscall ABI. `SLGuestSyscall` dispatches write/read/open/close/brk/yield/getpid/exit; `SLGuestVM.handleExit()` routes guest service-opcode VM-exits through it against the console/filesystem/scheduler and pushes the result back - the full user->kernel boundary.

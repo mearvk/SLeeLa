@@ -52,6 +52,10 @@ class SLGuestProgram {
     return base;
   }
 
+  // Op/arg accessors so a program can be serialized to an on-disk executable.
+  int opcodeAt(int i) { return ops.readWord(i); }
+  int argAt(int i) { return args.readWord(i); }
+
   int entryBase() { return base; }
   int size() { return length; }
   String programName() { return name; }

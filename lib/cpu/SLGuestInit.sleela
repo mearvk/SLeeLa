@@ -42,6 +42,31 @@ class SLGuestInit {
     return spawn(prog);
   }
 
+  // Load a program FROM DISK: given a prepared executable image, load it into
+  // the guest substrate and admit it as a task. This is the "run a program from
+  // the filesystem" path (as opposed to inline compilation via exec()).
+  SLGuestTask execFromImage(String name, SLGuestExecutable image) {
+    int base = image.loadInto(substrate);
+    if (base < 0) { return null; }        // invalid image
+    int pid = nextPid; nextPid = nextPid + 1;
+    SLGuestTask task = kernel.spawnTask(pid, name, base);
+    spawned = spawned + 1;
+    return task;
+  }
+
+  // Compile a program, serialize it to the on-disk executable format, write it
+  // to the guest filesystem under `fileId`, then load it back from disk and
+  // spawn it — the full compile -> install -> load-from-disk -> run cycle.
+  SLGuestTask installAndExec(String name, String sourcePath, int langId, int fileId) {
+    SLGuestProgram prog = new SLGuestProgram(); prog.configure(name, 4096);
+    prog.buildFrom(sourcePath, langId);
+    SLGuestExecutable exe = new SLGuestExecutable(); exe.configure(prog.size() * 2 + 8);
+    exe.serialize(prog, 0);
+    SLGuestFileSystem fs = kernel.fileSystem();
+    if (fs != null) { exe.writeToFile(fs, fileId); }   // persist to disk
+    return execFromImage(name, exe);                   // load the image back + run
+  }
+
   // Launch the guest shell as init's first child: build a shell bound to the
   // kernel's syscall table and admit it as a task (the first interactive user
   // program after boot). Returns the shell object so a driver can feed it
