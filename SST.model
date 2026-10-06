@@ -1185,3 +1185,42 @@ The complete path-level manifest is lib/LIBRARY.SYMBOLS.md. Package discovery is
 The canonical SLeeLa language library is the repository /lib tree. The October 2026 collection contains 82 package families, 10,186 SLeeLa source units, 55 module-facade symbols, and 10,241 total symbol records. The complete collection is maintained in lib/LIBRARY.SYMBOLS.md.
 
 SST 1.0 tooling may consume this collection as an external library catalog. The full symbol manifest is not duplicated inside individual SST sheets.
+
+
+# Appendix G — XML Input and Output Method (1.0 sheets)
+
+A Nordshrift 1.0 sheet may be loaded from, or emitted to, an **XML document**
+that conforms to the normative DTD `xml-moment/sst-nordshrift.dtd`. The XML form
+is an information-equivalent serialization of a 1.0 sheet: its elements mirror
+the sections defined in Parts III–XIII (`sheet`, `import`, `source`, `target`,
+`pipeline`, `rules`, `effects`, `derive`, `guards`, `interop`, `profile`), and a
+conforming XML document and its `.sst` text are mutually derivable.
+
+The XML form is an alternate **front-end and output**, not a second grammar.
+Loading a conforming XML document produces the same sheet model that the `.sst`
+parser produces, after which every pipeline phase (Parts V–XII) proceeds
+identically; equivalently, the sheet model may be emitted to XML.
+
+**Driving the input/output method.** The command line drives the direction
+explicitly:
+
+- `nordshrift check <sheet.xml>` / `nordshrift build <sheet.xml>` — a `.xml`
+  argument selects the XML front-end; a `.sst` argument selects the native one.
+- `--input=xml` / `--input=sst` — force the input front-end when the file type
+  is not implied by suffix (load **from** XML, or from `.sst`).
+- `--emit=xml` / `--emit=sst` — select the output serialization (emit **to**
+  XML, or to native text). `--emit=sst` is the default for the native form.
+
+An XML document offered as input must declare and validate against its DTD
+(`<!DOCTYPE sst-sheet SYSTEM "sst-nordshrift.dtd">`), must carry the required
+`#nordshrift` pragma as a `<pragma name="nordshrift" .../>` element (§1.6), and
+must use only the enumerated vocabularies fixed by the DTD. A non-conforming
+document is rejected rather than coerced; XML structural validation reuses the
+NSS error tier (Part XV).
+
+The full normative treatment of the XML input/output methods — including the
+2.0 semantic layer, the VM/runtime XML API (`xmlOpen` / `xmlRequireKind` /
+`xmlValidate` / `xmlLoadDataModel` / `xmlClose`), the input-object relationship,
+and the VM module-loader relationship — is given in SST-2.0.model, Part XXI.
+See also markdown/XML.SLEELA.DEFINITION.md and the `/xml-moment` DTDs and
+examples.

@@ -363,3 +363,138 @@ SST sheets may refer to library packages and symbols as dependencies, provenance
 # Part XX — Canonical SLeeLa Library Collection
 
 Revision 2.0.2 records the canonical `/lib` collection used by compiler, Nordshrift, and the VM-facing loader: **82 package families, 10,186 SLeeLa source units, 55 module-facade symbols, and 10,241 total symbol records**. Package discovery is recursive and filesystem-derived; implementations must not require a second hard-coded package allow-list. See `lib/LIBRARY.INDEX.md` and `lib/LIBRARY.SYMBOLS.md`.
+
+
+# Part XXI — XML Input and Output Methods
+
+> Numbering note: the two preceding "Part XX" headings are retained as
+> historical anchors for the library-symbol collection. This part is the next
+> sequential part and is numbered Part XXI explicitly.
+
+## 21.1 Purpose
+
+Part XXI defines how Nordshrift and the SLeeLa command line and VM accept and
+produce **XML documents** as an alternate, information-equivalent form of an
+SST sheet or a SLeeLa source unit. The governing document type definitions are
+normative and live under `/xml-moment`:
+
+- `xml-moment/sst-nordshrift.dtd` — an SST / Nordshrift sheet (1.0 sections and
+  the 2.0 semantic layer defined in Parts XVII–XX).
+- `xml-moment/sleela-class.dtd` — a SLeeLa source unit (a `.sleela` class).
+
+A conforming XML document and its native `.sst` / `.sleela` text are **mutually
+derivable** (Part XXI is the normative statement of the equivalence the DTDs
+assert). The XML form is an input/output *serialization*, not a second
+language: it adds no new semantics beyond those already specified for `.sst`
+and `.sleela`.
+
+## 21.2 The XML form is an alternate front-end, not a new pipeline
+
+Loading a conforming XML document produces exactly the same internal sheet or
+source model that the native `.sst` / `.sleela` front-end produces. After the
+XML has been read and validated, every downstream phase — source resolution,
+compilation, effect checking, rule evaluation, emission — proceeds
+identically. Equivalently, the native model may be emitted *to* XML. The two
+directions are:
+
+- **Load from XML** (XML → model): parse and DTD-validate an XML document into
+  the sheet model or the source-unit model.
+- **Emit to XML** (model → XML): serialize a sheet model or source-unit model
+  into a DTD-conforming XML document.
+
+An implementation that supports both directions must round-trip: emitting a
+loaded sheet to XML and loading it again must yield an equivalent model.
+
+## 21.3 DTD conformance and validation
+
+A document offered as XML input must:
+
+1. declare the matching DTD (`<!DOCTYPE sst-sheet SYSTEM "sst-nordshrift.dtd">`
+   or `<!DOCTYPE sleela-unit SYSTEM "sleela-class.dtd">`), and validate against
+   it;
+2. carry the pragmas required by the native form (an `sst-sheet` must declare a
+   `<pragma name="nordshrift" .../>`; a `sleela-unit` must declare its
+   `<pragma .../>` version), mirroring §1.6 of NS-SST-0001 Rev 1.0.0;
+3. use only the enumerated attribute vocabularies fixed by the DTD (layout
+   modes, pipeline phase names, severity levels, evidence/TODO statuses, and so
+   on).
+
+A document that is not valid against its declared DTD must be **rejected**, not
+silently coerced; the diagnostic reuses the structural error tier of the native
+form. Validation of XML input is a precondition to building the model, not a
+step that can be lowered to a warning to force success (consistent with §18
+Validation Principles).
+
+## 21.4 Command-line input and output methods
+
+The SLeeLa command line drives the XML direction explicitly. In addition to the
+native positional sheet argument, the driver accepts XML by file type and by an
+explicit input/output selector:
+
+- **Input (load from XML):**
+  - `nordshrift check  <sheet.xml>` — DTD-validate and check an XML sheet.
+  - `nordshrift build  <sheet.xml>` — build from an XML sheet.
+  - `nordshrift check --input=xml <path>` / `nordshrift build --input=xml <path>`
+    — select the XML front-end explicitly when the file type is not implied by
+    a `.xml` suffix.
+  - A `.xml` argument is recognized as the XML front-end; a `.sst` / `.sleela`
+    argument is the native front-end. `--input=sst` forces the native form.
+
+- **Output (emit to XML):**
+  - `nordshrift build --emit=xml <sheet.sst>` — write the sheet model as a
+    DTD-conforming XML document (`sst-nordshrift.dtd`) rather than, or alongside,
+    the native target artifacts.
+  - `--emit=sst` (default for the native form) emits the native text.
+
+The input/output selector is the explicit statement that the driver **drives an
+input method to or from XML**: `--input=xml` reads XML into the model, and
+`--emit=xml` writes the model out as XML. Direction is never inferred when a
+selector is given.
+
+## 21.5 VM and runtime input method
+
+At runtime, the SLeeLa VM accepts XML as a declarative data/model source
+through the XML input API. The canonical surface is:
+
+- `xmlOpen(uri)` — open an XML document by URI (e.g. `file:///…`), returning a
+  handle.
+- `xmlRequireKind(handle, kind)` — assert the document's declared kind/root.
+- `xmlValidate(handle)` — validate the document against its DTD.
+- `xmlLoadDataModel(handle)` — load the validated document into a model object.
+- `xmlDescribe(handle)` / `xmlClose(handle)` — describe and release.
+
+The governing semantic is **declarative input**: opening, validating, or loading
+an XML document does not by itself execute it, open a socket, write a file, or
+otherwise cause effects. Execution, if any, follows separately from the loaded
+model under the normal effect and guard rules. This mirrors the Evidence model
+(§17.8): a loaded document is SPECIFIED/MODELED input, not an OBSERVED result.
+
+## 21.6 Relationship to input objects
+
+An XML source may also be *declared* within a sheet as an input object
+(§ input-object model): `object io <identity>:` or `object data <identity>:`
+with a `source` naming the XML document and a `type` of `xml`. As elsewhere,
+such a declaration is validated bounded metadata — it names an XML input but
+does not itself load or execute it. The actual load is performed by the
+command-line input method (§21.4) or the VM input API (§21.5).
+
+## 21.7 Relationship to the VM module loader
+
+When an XML document stands in for a loadable module form, discovery and
+registration remain the responsibility of the shared recursive library index
+(§20.2); the VM-facing loader contract (`lib/vm/SLVMModuleLoader.sleela`)
+mirrors that lifecycle. XML input does not introduce a second package
+allow-list and does not bypass import validation: a program loaded from XML
+resolves its imports against the same `/lib` index as any native source unit.
+
+## 21.8 Validation principles for XML input/output
+
+In addition to §18, an implementation supporting Part XXI must:
+
+- validate XML input against the declared DTD before constructing any model;
+- preserve mutual derivability — a model loaded from XML and re-emitted to XML
+  must be equivalent to the original;
+- preserve the native-form invariants (required pragmas, enumerated
+  vocabularies, section/member constraints) across the XML boundary;
+- keep declaration distinct from execution for the runtime XML API (§21.5);
+- reject, rather than coerce, a non-conforming document.

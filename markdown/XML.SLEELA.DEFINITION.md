@@ -162,7 +162,49 @@ appear in any order, as in the native block.
 
 ---
 
-## 4. Validation
+## 4. Input and output methods — driving to/from XML
+
+The XML form is **loadable and emittable**: the SLeeLa command line and VM
+drive an input method **from** XML (load) and **to** XML (emit). The XML
+front-end produces the *same* internal model as the native `.sst` / `.sleela`
+front-end, so the two forms are mutually derivable and round-trip.
+
+### 4.1 Command line
+
+| Direction | Invocation | Effect |
+|---|---|---|
+| Load from XML | `nordshrift check <sheet.xml>` / `nordshrift build <sheet.xml>` | A `.xml` argument selects the XML front-end. |
+| Load from XML (explicit) | `nordshrift build --input=xml <path>` | Forces the XML front-end regardless of suffix. |
+| Load native (explicit) | `--input=sst` | Forces the native `.sst` front-end. |
+| Emit to XML | `nordshrift build --emit=xml <sheet.sst>` | Serializes the sheet model as a DTD-conforming XML document. |
+| Emit native (default) | `--emit=sst` | Emits native text. |
+
+The `--input` / `--emit` selectors are the explicit statement of direction: the
+driver reads XML into the model (`--input=xml`) or writes the model out as XML
+(`--emit=xml`). Direction is never inferred when a selector is given.
+
+### 4.2 VM / runtime
+
+The VM accepts XML as a **declarative** data/model source via the XML input API:
+`xmlOpen(uri)` → `xmlRequireKind(h, kind)` → `xmlValidate(h)` →
+`xmlLoadDataModel(h)` → `xmlDescribe(h)` / `xmlClose(h)`. Opening, validating, or
+loading a document **does not by itself execute it** — a loaded document is
+specified/modeled input, not an observed result.
+
+### 4.3 Rules
+
+- An XML input document must declare and validate against its DTD before any
+  model is built; a non-conforming document is **rejected, not coerced**.
+- Required native-form pragmas (`#nordshrift`, `#sleela`) appear as `<pragma>`
+  elements and are preserved across the boundary.
+- An XML source may be *declared* in a sheet as an input object
+  (`object io|data <id>:` with `type` `xml` and a `source`), but a declaration
+  only names the input — the load is performed by the CLI or VM input method.
+
+Normative specification: `SST-2.0.model` **Part XXI** (and `SST.model`
+Appendix G for 1.0 sheets).
+
+## 5. Validation
 
 ```sh
 xmllint --noout --valid xml-moment/sleela-class.example.xml
@@ -174,7 +216,7 @@ All three example documents validate against their DTDs.
 
 ---
 
-## 5. Relationship to existing specifications
+## 6. Relationship to existing specifications
 
 - `SST.model` — Nordshrift `.sst` 1.0 format reference (grammar, sections,
   diagnostics). The 1.0 XML elements mirror its sections one-to-one.
