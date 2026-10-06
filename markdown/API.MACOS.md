@@ -44,6 +44,8 @@ Apple documents the Objective-C Runtime as exposing root types plus runtime func
 
 POSIX/Darwin calls include fork, execve, posix_spawn, waitpid, _exit, getpid, getppid, kill, getuid, geteuid, getgid, and getegid.
 
+**Exposed to SLeeLa.** The process family is reachable from SLeeLa source through the `os*` built-ins (syntax 1.5), serviced by `impl/core/sleela_os.c` (shared POSIX branch): `osRun` (via `system`/`/bin/sh -c`), `osSpawn` (`posix_spawn`), `osWait` (`waitpid`), `osKill` (`kill(SIGTERM)`), `osProcessClose` (reap), and `osProcessId` (`getpid`). The macOS flavor class `SLMacOS` adds Apple idioms (`open(1)`, `open -a`, `sw_vers`, `defaults`) on top. A spawned child is a VM-local bounded handle. See `/lib/os/OS.md`.
+
 Foundation and AppKit add NSProcessInfo, NSApplication, and NSRunningApplication. Apple documents NSApplication as managing the main application event loop and NSRunningApplication as representing a running application instance. citeturn0search11
 
 ## Threads and concurrency
@@ -61,6 +63,8 @@ SLeeLa's managed memory remains the language/runtime policy. The current memory 
 ## Filesystem and I/O
 
 POSIX/Darwin functions include open, openat, close, read, write, pread, pwrite, readv, writev, lseek, fsync, fcntl, stat, fstat, lstat, mkdir, unlink, rename, link, symlink, and readlink.
+
+**Exposed to SLeeLa.** File *content* I/O uses `openFile`/`read`/`write`/`close`/`unlinkFile`. Filesystem *metadata and namespace* operations use the `os*` built-ins (serviced by `impl/core/sleela_os.c`): `osExists`/`osIsDir`/`osFileSize` (`stat`), `osMakeDir` (`mkdir`), `osRemove` (`unlink`/`rmdir`), `osRename` (`rename`), and the working-directory calls `osCurrentDir` (`getcwd`), `osChangeDir` (`chdir`), `osTempDir` (`$TMPDIR`). Environment and identity use `osGetEnv`/`osSetEnv` (`getenv`/`setenv`), `osHostName` (`gethostname`), and `osUserName` (`getpwuid`/`$USER`). See `/lib/os/OS.md`.
 
 Foundation provides higher-level objects including NSData, NSString, NSURL, NSFileManager, NSStream, and related services.
 

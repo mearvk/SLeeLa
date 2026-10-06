@@ -35,6 +35,13 @@ The runtime boundary is intended to provide:
 - diagnostics;
 - controlled native execution.
 
+The host System Call API — environment, identity, working directory, filesystem
+metadata, and process execution — is exposed to SLeeLa source through the `os*`
+built-ins (`osRun`/`osSpawn`/`osGetEnv`/`osExists`/...), which lower to the
+`OP_OS_*` opcodes and are serviced by `impl/core/sleela_os.c` on Windows, Linux,
+and macOS. See [`SYSTEM_CALL_SURFACE.md`](SYSTEM_CALL_SURFACE.md),
+[`/lib/os/OS.md`](../lib/os/OS.md), and [`/lib/vm/OPCODE-MAP.md`](../lib/vm/OPCODE-MAP.md).
+
 ## Concurrency
 
 Thread, lock, join and mailbox operations are bounded. Resource exhaustion is an explicit failure state rather than an implicit unlimited allocation promise.

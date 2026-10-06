@@ -70,6 +70,8 @@ Relevant header families include:
 
 SLeeLa's process/server facilities can use this layer for native Windows process execution and lifecycle management.
 
+**Exposed to SLeeLa.** The process family is reachable from SLeeLa source through the `os*` built-ins (syntax 1.5), serviced by `impl/core/sleela_os.c`: `osRun` (via `system`/cmd.exe), `osSpawn` (`CreateProcess`), `osWait` (`WaitForSingleObject` + `GetExitCodeProcess`), `osKill` (`TerminateProcess`), `osProcessClose` (`CloseHandle`), and `osProcessId` (`GetCurrentProcessId`). A spawned child is a VM-local bounded handle, never a raw Win32 `HANDLE`. See `/lib/os/OS.md`.
+
 ### Memory management
 
 Win32 provides native virtual-memory and process-memory facilities.
@@ -93,6 +95,8 @@ Important implementation concerns for SLeeLa include:
 - File mappings
 - Asynchronous/overlapped I/O where required
 - Windows error reporting
+
+**Exposed to SLeeLa.** File *content* I/O uses `openFile`/`read`/`write`/`close`/`unlinkFile`. Filesystem *metadata and namespace* operations use the `os*` built-ins (serviced by `impl/core/sleela_os.c`): `osExists`/`osIsDir`/`osFileSize` (`GetFileAttributes`/`GetFileAttributesEx`), `osMakeDir` (`CreateDirectory`), `osRemove` (`DeleteFile`/`RemoveDirectory`), `osRename` (`MoveFileEx`), and the working-directory calls `osCurrentDir` (`GetCurrentDirectory`), `osChangeDir` (`SetCurrentDirectory`), `osTempDir` (`GetTempPath`). Environment and identity use `osGetEnv`/`osSetEnv` (`GetEnvironmentVariable`/`SetEnvironmentVariable`), `osHostName` (`GetComputerName`), and `osUserName` (`GetUserName`). See `/lib/os/OS.md`.
 
 ### Networking
 

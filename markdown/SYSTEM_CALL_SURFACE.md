@@ -4,18 +4,28 @@ SLeeLa intentionally uses a compact **OS + version + operation-family** model in
 
 The unit of support is a SLeeLa operation family. The native implementation then selects the platform API appropriate for the host.
 
-| Family | SLeeLa operation shape | Linux | Windows 10+ | macOS |
-|---|---|---|---|---|
-| Memory | alloc/free/realloc/page/time | malloc/free/realloc, sysconf/clock | Heap/CRT allocation, GetSystemInfo/GetTickCount64 | malloc/free/realloc, sysctl/libSystem |
-| File I/O | open/read/write/close/unlink | open/read/write/close/unlink | CreateFile/ReadFile/WriteFile/CloseHandle/DeleteFile | open/read/write/close/unlink |
-| Paths | normalize/query filesystem paths | POSIX filesystem APIs | Win32 path/file APIs | POSIX filesystem APIs |
-| Networking | startup/listen/accept/connect/read/write/close | sockets | Winsock | sockets |
-| Threads | mutex/condition/create/join | pthreads | Win32 threads, CriticalSection, ConditionVariable | pthreads |
-| Libraries | open/symbol/close | dlopen/dlsym/dlclose | LoadLibrary/GetProcAddress/FreeLibrary | dlopen/dlsym/dlclose |
-| Processes | spawn/wait/exit | POSIX process APIs | CreateProcess/process handles | POSIX process APIs |
-| IPC | pipe/named-pipe endpoint | pipe/FIFO | anonymous/named pipes | pipe/FIFO |
-| Terminal | terminal/PTY operations | termios/PTY facilities | console/Win32 terminal facilities | termios/PTY facilities |
-| Time | monotonic/wall-clock | clock_gettime and POSIX time | Win32 timing APIs | libSystem/POSIX timing APIs |
+| Family | SLeeLa operation shape | SLeeLa built-ins | Linux | Windows 10+ | macOS |
+|---|---|---|---|---|---|
+| Memory | alloc/free/realloc/page/time | (runtime) | malloc/free/realloc, sysconf/clock | Heap/CRT allocation, GetSystemInfo/GetTickCount64 | malloc/free/realloc, sysctl/libSystem |
+| File I/O | open/read/write/close/unlink | `openFile`/`read`/`write`/`close`/`unlinkFile` | open/read/write/close/unlink | CreateFile/ReadFile/WriteFile/CloseHandle/DeleteFile | open/read/write/close/unlink |
+| Filesystem metadata | exists/isDir/size/mkdir/remove/rename | `osExists`/`osIsDir`/`osFileSize`/`osMakeDir`/`osRemove`/`osRename` | stat/mkdir/rmdir/unlink/rename | GetFileAttributes(Ex)/CreateDirectory/RemoveDirectory/DeleteFile/MoveFileEx | stat/mkdir/rmdir/unlink/rename |
+| Paths | normalize/query filesystem paths | `osCurrentDir`/`osChangeDir`/`osTempDir` | getcwd/chdir, POSIX filesystem APIs | GetCurrentDirectory/SetCurrentDirectory/GetTempPath | getcwd/chdir, POSIX filesystem APIs |
+| Environment & identity | getenv/setenv/host/user/pid | `osGetEnv`/`osSetEnv`/`osHostName`/`osUserName`/`osProcessId`/`osPlatform`/`osCapability` | getenv/setenv, gethostname, getpwuid, getpid, uname | GetEnvironmentVariable/SetEnvironmentVariable, GetComputerName, GetUserName, GetCurrentProcessId | getenv/setenv, gethostname, getpwuid, getpid, sysctl |
+| Networking | startup/listen/accept/connect/read/write/close | `listen`/`accept`/`connect`/`sockread`/`sockwrite`/`sockclose` | sockets | Winsock | sockets |
+| Threads | mutex/condition/create/join | `spawn`/`join`/`lock`/`unlock`/`send`/`recv` | pthreads | Win32 threads, CriticalSection, ConditionVariable | pthreads |
+| Libraries | open/symbol/close | (runtime) | dlopen/dlsym/dlclose | LoadLibrary/GetProcAddress/FreeLibrary | dlopen/dlsym/dlclose |
+| Processes | spawn/wait/kill/exit | `osRun`/`osSpawn`/`osWait`/`osKill`/`osProcessClose` | posix_spawn/waitpid/kill, system | CreateProcess/WaitForSingleObject/TerminateProcess, system | posix_spawn/waitpid/kill, system |
+| IPC | pipe/named-pipe endpoint | `pipe`/`pipePeer`/`fifoCreate` | pipe/FIFO | anonymous/named pipes | pipe/FIFO |
+| Terminal | terminal/PTY operations | (runtime) | termios/PTY facilities | console/Win32 terminal facilities | termios/PTY facilities |
+| Time | monotonic/wall-clock | `timeUtcMillis`/`timeMonotonicNanos`/`timeHttpDate` | clock_gettime and POSIX time | Win32 timing APIs | libSystem/POSIX timing APIs |
+
+The **Environment & identity**, **Filesystem metadata**, **Paths**, and
+**Processes** families are reached from SLeeLa source through the `os*`
+built-ins (syntax 1.5), which lower to the `OP_OS_*` opcodes and are serviced by
+`impl/core/sleela_os.c`. See [`/lib/os/OS.md`](../lib/os/OS.md) for the full
+built-in surface and the `/lib/os` classes that wrap it, and
+[`/lib/vm/OPCODE-MAP.md`](../lib/vm/OPCODE-MAP.md) for the opcode map. A spawned
+process is a VM-local bounded handle, never a raw PID or HANDLE.
 
 ## Version policy
 

@@ -4,7 +4,7 @@ Max Rupplin - MEARVK LLC - 2026
 
 This is the human-readable support map for the canonical source-defined SLeeLa ISA in `lib/vm/InstructionSet.sleela`.
 
-**Verified master-tree state:** 98 source ISA entries, 98 native `SLOp` entries, and 98 native dispatch cases. There are no missing native dispatch cases.
+**Verified master-tree state:** 124 source ISA entries, 124 native `SLOp` entries, and 124 native dispatch cases. There are no missing native dispatch cases. The tail groups are the array ops (98–102) and the operating-system system calls (103–123, `OP_OS_*`), both appended to the end of the enum so earlier opcode numbers are unchanged.
 
 | Code | Opcode | Runtime status | Native dispatch |
 |---:|---|---|---|
@@ -111,6 +111,37 @@ This is the human-readable support map for the canonical source-defined SLeeLa I
 100 | `OP_ARRSET` | Implemented | `impl/core/sleela_core.c`
 101 | `OP_ARRLEN` | Implemented | `impl/core/sleela_core.c`
 102 | `OP_ARRPUSH` | Implemented | `impl/core/sleela_core.c`
+103 | `OP_OS_PLATFORM` | Implemented | `impl/core/sleela_core.c` (`sleela_os.c`)
+104 | `OP_OS_CAPABILITY` | Implemented | `impl/core/sleela_core.c` (`sleela_os.c`)
+105 | `OP_OS_GETENV` | Implemented | `impl/core/sleela_core.c` (`sleela_os.c`)
+106 | `OP_OS_SETENV` | Implemented | `impl/core/sleela_core.c` (`sleela_os.c`)
+107 | `OP_OS_CWD` | Implemented | `impl/core/sleela_core.c` (`sleela_os.c`)
+108 | `OP_OS_CHDIR` | Implemented | `impl/core/sleela_core.c` (`sleela_os.c`)
+109 | `OP_OS_HOSTNAME` | Implemented | `impl/core/sleela_core.c` (`sleela_os.c`)
+110 | `OP_OS_USERNAME` | Implemented | `impl/core/sleela_core.c` (`sleela_os.c`)
+111 | `OP_OS_TEMPDIR` | Implemented | `impl/core/sleela_core.c` (`sleela_os.c`)
+112 | `OP_OS_PID` | Implemented | `impl/core/sleela_core.c` (`sleela_os.c`)
+113 | `OP_OS_EXISTS` | Implemented | `impl/core/sleela_core.c` (`sleela_os.c`)
+114 | `OP_OS_ISDIR` | Implemented | `impl/core/sleela_core.c` (`sleela_os.c`)
+115 | `OP_OS_FILESIZE` | Implemented | `impl/core/sleela_core.c` (`sleela_os.c`)
+116 | `OP_OS_MKDIR` | Implemented | `impl/core/sleela_core.c` (`sleela_os.c`)
+117 | `OP_OS_REMOVE` | Implemented | `impl/core/sleela_core.c` (`sleela_os.c`)
+118 | `OP_OS_RENAME` | Implemented | `impl/core/sleela_core.c` (`sleela_os.c`)
+119 | `OP_OS_RUN` | Implemented | `impl/core/sleela_core.c` (`sleela_os.c`)
+120 | `OP_OS_SPAWN` | Implemented | `impl/core/sleela_core.c` (`sleela_os.c`)
+121 | `OP_OS_WAIT` | Implemented | `impl/core/sleela_core.c` (`sleela_os.c`)
+122 | `OP_OS_KILL` | Implemented | `impl/core/sleela_core.c` (`sleela_os.c`)
+123 | `OP_OS_PCLOSE` | Implemented | `impl/core/sleela_core.c` (`sleela_os.c`)
+
+The operating-system opcodes (`OP_OS_*`) are the host System Call API: the `os*`
+built-ins (`osRun`/`osSpawn`/`osGetEnv`/`osExists`/...) lower to these opcodes,
+which the VM services through `impl/core/sleela_os.c` on Windows (Win32), Linux,
+and macOS (POSIX). A spawned process is a VM-local bounded handle, the same
+discipline as sockets and files. Source-side they are mirrored by the
+`SLISAOs*` classes in `lib/vm/InstructionSet.sleela` and surfaced to a VM via
+`lib/vm/SleelaVMSystemCallBridge.sleela`. Because every VM generation (SLVM/1
+through SLVM/11) shares this one ISA, the system-call surface is available to
+all of them, not just the base VM.
 
 ## Runtime rule
 
@@ -142,3 +173,8 @@ Any new source-defined opcode must be added in this order:
 6. SLVM/1 through SLVM/11 source-to-VM contracts.
 
 A source opcode is not considered supported merely because it appears in the source registry. Native dispatch is required.
+
+> The `OP_OS_*` system-call group followed this rule end to end: added to
+> `InstructionSet.sleela` (step 1), the native `SLOp` enum (step 2) and dispatch
+> (step 3), this map (step 4), and reflected in the SLVM/1–11 runtime-services
+> contract (step 6) via `RUNTIME-SERVICES.md`.
