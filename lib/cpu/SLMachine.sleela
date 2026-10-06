@@ -181,6 +181,68 @@ class SLMachine {
     return sh.commandCount();
   }
 
+  // Boot a guest, then exercise the full PROCESS-CREATION cycle — fork, execve,
+  // and wait — through the guest's real syscall ABI (SLGuestSyscall). init
+  // spawns a parent task, forks a child, execs the child onto a freshly
+  // compiled image, the child exits, and the parent reaps it with wait().
+  // Returns the reaped child's tid (>0 on success). Demonstrates boot -> init
+  // -> fork/exec/wait: a Linux-style guest creating and reaping processes.
+  int runLinuxGuestForkExec(String kernelSrc, int kernelLang,
+                            int childLang, int guestEntry) {
+    SLHypervisor hv = new SLHypervisor();
+    hv.configure(cpu, memory);
+    hv.attachBootDisk(drive);
+    SLGuestVM vm = hv.createGuest("linux-guest", 262144, 65536, guestEntry);
+    SLGuestLinux linux = new SLGuestLinux();
+    linux.configure("sleela-linux", vm);
+    vm.attachKernel(linux);
+    linux.buildKernel(kernelSrc, kernelLang);
+    linux.boot(guestEntry, guestEntry + 256);
+    SLGuestInit init = linux.startInit();
+    linux.startScheduling(8);
+    return init.forkExecWaitDemo(childLang);             // fork -> execve -> wait
+  }
+
+  // Same process-creation cycle, but driven through the guest's OPCODE path:
+  // the canonical service opcodes OP_SPAWN (fork) and OP_JOINALL (wait) are
+  // routed by SLGuestVM.serviceOpcode() -> syscallNumberFor() -> the syscall
+  // ABI, exactly as a guest program's VM-exits are. This exercises the
+  // opcode->syscall mapping (not just the syscall handlers). Returns the reaped
+  // child's tid (>0 on success).
+  int runLinuxGuestForkExecOpcodes(String kernelSrc, int kernelLang, int guestEntry) {
+    SLHypervisor hv = new SLHypervisor();
+    hv.configure(cpu, memory);
+    hv.attachBootDisk(drive);
+    SLGuestVM vm = hv.createGuest("linux-guest", 262144, 65536, guestEntry);
+    SLGuestLinux linux = new SLGuestLinux();
+    linux.configure("sleela-linux", vm);
+    vm.attachKernel(linux);
+    linux.buildKernel(kernelSrc, kernelLang);
+    linux.boot(guestEntry, guestEntry + 256);
+    SLGuestInit init = linux.startInit();
+    linux.startScheduling(8);
+
+    SLGuestScheduler sched = linux.taskScheduler();
+    SLSleelaOpcode op = new SLSleelaOpcode(); op.configure(0, "OP_NOP");
+
+    // A parent task must be the running task for fork()/wait() to have a caller.
+    SLGuestProgram parentProg = new SLGuestProgram(); parentProg.configure("parent", 64);
+    parentProg.append(op.OP_SPAWN, 0);                 // (modeled parent body)
+    SLGuestTask parent = init.spawn(parentProg);
+    sched.onTimerTick();                                // parent becomes running
+
+    int childTid = vm.serviceOpcode(op.OP_SPAWN, 0, 0); // OP_SPAWN arg 0 -> fork()
+    if (childTid < 0) { return childTid; }
+
+    // Child exits via OP_HALT (-> SYS_EXIT) while it is the running task.
+    sched.markRunningSlot(sched.slotOfTid(childTid));
+    vm.serviceOpcode(op.OP_HALT, 0, 0);                 // child exit(0)
+
+    // Parent reaps the child via OP_JOINALL (-> wait()).
+    sched.markRunningSlot(sched.slotOfTid(parent.taskId()));
+    return vm.serviceOpcode(op.OP_JOINALL, 0, 0);       // OP_JOINALL -> wait()
+  }
+
   // The bootloader needs a disk driver before the OS driver manager exists;
   // build a minimal one bound to the boot drive.
   SLDiskDriver buildBootDiskDriver() {

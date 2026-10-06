@@ -24,9 +24,18 @@ class SLGuestTask {
   int savedIP;      // saved substrate instruction pointer (resume point)
   int ticks;        // timer quanta consumed
 
+  // Process-relationship bookkeeping (fork/wait): the parent that fork()ed this
+  // task, the exit status it finished with, and whether a parent has already
+  // reaped it. These let the kernel model the Unix process tree, not just a flat
+  // set of threads.
+  int parentTid;    // tid of the task that fork()ed this one (0 = none / init-parented)
+  int exitStatus;   // status passed to exit() / left for the parent to wait() on
+  int reaped;       // 1 once a parent has collected this task via wait()
+
   void configure(int id, String taskName, int entryIndex) {
     tid = id; name = taskName; entry = entryIndex;
     state = READY; savedIP = entryIndex; ticks = 0;
+    parentTid = 0; exitStatus = 0; reaped = 0;
   }
 
   void markReady() { state = READY; }
@@ -34,9 +43,25 @@ class SLGuestTask {
   void markBlocked() { state = BLOCKED; }
   void finish() { state = DONE; }
 
+  // finish() with an explicit exit status (the exit()/_exit() path): record the
+  // status the parent will see via wait(), then mark the task done (a zombie
+  // until reaped).
+  void exitWith(int status) { exitStatus = status; state = DONE; }
+
   void saveIP(int ip) { savedIP = ip; }
   int resumeIP() { return savedIP; }
   void chargeTick() { ticks = ticks + 1; }
+
+  // Parentage: who fork()ed this task.
+  void setParent(int ptid) { parentTid = ptid; }
+  int parent() { return parentTid; }
+
+  // Zombie / reaping protocol: a DONE-but-unreaped task is a zombie its parent
+  // can still wait() on; reap() collects it so wait() returns each child once.
+  int status() { return exitStatus; }
+  boolean zombie() { return state == DONE && reaped == 0; }
+  void reap() { reaped = 1; }
+  boolean reapedYet() { return reaped == 1; }
 
   int taskId() { return tid; }
   String taskName() { return name; }

@@ -214,6 +214,7 @@ The guest layer is being hardened from "model" toward "genuinely executes":
 
 - **Step 5 (done):** the VM-exit loop is wired. In hosted mode `SLSleelaVM` parks a VM-exit on a service opcode (e.g. `OP_PRINT`); `SLGuestVM.run()` routes it (console device / syscall emulation), ticks devices, posts IRQs, and resumes — the device↔substrate↔exit handoff is functional, not just structural.
 - **Step 6 (done):** the guest has preemptive multitasking.
+- **Step 13 (done):** process creation — `fork`/`execve`/`wait`. The guest syscall ABI (`SLGuestSyscall`) now implements the fork/exec/wait family: `fork()` clones the running task into a fresh TCB that resumes at the parent's instruction pointer (parent sees the child pid, child a 0-return by convention); `execve()` replaces a task's image in place with a freshly compiled program through init's shared toolchain and repoints its resume IP; `exit(status)` leaves a reaped-on-`wait()` zombie carrying its status; `wait()` reaps a finished child and yields its tid + status (returning a would-block code while children are still live). `SLGuestTask` grew the process-tree bookkeeping (parent tid, exit status, zombie/reaped flags), `SLGuestScheduler` grew `fork()`/`reapChild()`/`hasLiveChild()`/`slotOfTid()`, and `SLGuestVM.handleExit()` routes the canonical `OP_SPAWN` (fork/execve) and `OP_JOINALL` (wait) service opcodes to the new syscalls. `SLGuestLinux.emulateSyscall()` now maps `LINUX_FORK` to the host `SYS_SPAWN` primitive and classifies `LINUX_EXECVE`/`LINUX_WAIT` as in-guest-emulated. Two `SLMachine` demos drive the cycle: `runLinuxGuestForkExec()` goes through the syscall ABI (boot → init → fork → execve → child `exit` → `wait`), and `runLinuxGuestForkExecOpcodes()` goes through the canonical **service opcodes** — `OP_SPAWN` (fork) and `OP_JOINALL` (wait) routed by `SLGuestVM.serviceOpcode()` exactly as a guest program's VM-exits are — so the opcode→syscall mapping is exercised, not just the handlers. A reaped child's scheduler slot is reclaimed (`SLGuestScheduler.admit()` recycles reaped-and-DONE slots), so repeated fork/wait cycles don't exhaust the task table, and all guest pids come from one allocator (`SLGuestInit.allocPid()`) shared by init-spawned programs and fork'd children. This turns the guest's flat set of threads into a real Unix-style process tree with parents reaping children.
 - **Step 12 (done):** on-disk programs. `SLGuestExecutable` is a miniature executable format (magic header + opcode section); programs serialize to it, persist to the guest filesystem, and load back from disk into the substrate (header-validated) - programs now come from storage, not only inline compilation.
 - **Step 11 (done):** guest shell. `SLGuestShell` is a minimal command interpreter (help/echo/ls/cat/ps/exit) spawned by init as its first child, issuing commands through the syscall ABI - the guest's first interactive user program.
 - **Step 10 (done):** guest IPC. `SLGuestPipe` (byte FIFO between tasks) and `SLGuestSignal` (async signals; SIGKILL/SIGTERM terminate) wired into the syscall ABI (pipe/kill + pipe-fd read/write) and delivered at scheduling points.
@@ -221,12 +222,15 @@ The guest layer is being hardened from "model" toward "genuinely executes":
 - **Step 8 (done):** guest filesystem. `SLGuestFileSystem` provides a flat directory of files + an fd table with sequential read/write over the guest block device, mounted by the kernel and backing the file syscalls.
 - **Step 7 (done):** guest user space. `SLGuestProgram` is a loadable user program compiled from source through the shared toolchain; `SLGuestInit` (PID 1) loads programs into the guest substrate and admits them as scheduler tasks — the guest runs real user processes, not just kernel code. `SLGuestTask` + `SLGuestScheduler` run inside the guest; the `SLGuestTimer` IRQ is the preemption source — each expiry drives `onTimerInterrupt()`, which saves the running task's substrate IP, round-robins to the next ready task, and resumes the substrate at that task's saved IP.
 
-With steps 1–6 complete, the guest is no longer a counter-ticking stub: it
+With steps 1–13 complete, the guest is no longer a counter-ticking stub: it
 executes a **compiled kernel image** as canonical opcodes on `SLSleelaVM`, over
 **paged, protected memory** (`SLMMU`), with a **timer/console/block device
 model**, a **wired VM-exit loop** routing service opcodes to devices, and a
-**timer-driven preemptive scheduler** multitasking guest tasks. The remaining
-gap to booting *real* Linux is unchanged and large —
-hardware-virtualization-grade vCPU semantics, a full virtio/APIC/ACPI device
-model, real page-table formats, and an ELF/bzImage loader — and is deliberately
-out of scope for this teaching model.
+**timer-driven preemptive scheduler** multitasking guest tasks. On top of that
+it runs **real user space** (`SLGuestInit` as PID 1), with a **filesystem**, a
+**syscall ABI**, **IPC** (pipes + signals), an interactive **shell**, **on-disk
+executables**, and now **Unix-style process creation** — `fork`/`execve`/`wait`
+over a real parent/child process tree. The remaining gap to booting *real* Linux
+is unchanged and large — hardware-virtualization-grade vCPU semantics, a full
+virtio/APIC/ACPI device model, real page-table formats, and an ELF/bzImage
+loader — and is deliberately out of scope for this teaching model.

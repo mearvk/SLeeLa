@@ -28,6 +28,10 @@ class SLGuestSyscall {
   static final int SYS_GETPID = 39;
   static final int SYS_KILL   = 62;  // send a signal to a task slot
   static final int SYS_EXIT   = 60;
+  // Process creation / lifecycle (the fork/exec/wait family).
+  static final int SYS_FORK   = 57;  // clone the caller; child shares its text
+  static final int SYS_EXECVE = 59;  // replace the caller's image with a new one
+  static final int SYS_WAIT   = 61;  // reap a finished child, yielding its status
 
   // Pipe fd convention: fds >= PIPE_FD_BASE address the single modeled pipe's
   // read (base) / write (base+1) ends.
@@ -36,26 +40,36 @@ class SLGuestSyscall {
   SLGuestDeviceBus devices;
   SLGuestFileSystem fs;
   SLGuestScheduler scheduler;
+  SLGuestInit init;        // process spawner (for execve: compile/load a new image)
   SLGuestPipe pipe;        // IPC: a (modeled single) pipe
   SLGuestSignal signals;   // IPC: signal delivery
   int brkTop;          // modeled program break (heap top)
+  int nextChildPid;    // tid allocator for fork()'d children
   int calls;
   int lastResult;
+  int lastChildStatus; // exit status returned by the most recent wait()
 
   void configure(SLGuestDeviceBus deviceBus, SLGuestFileSystem filesystem, SLGuestScheduler sched, int heapBase) {
     devices = deviceBus; fs = filesystem; scheduler = sched;
     brkTop = heapBase; calls = 0; lastResult = 0;
+    nextChildPid = 1000; lastChildStatus = 0;
     signals = new SLGuestSignal(); signals.configure(sched);
   }
 
+  // Give the syscall layer the init process so execve can reach the shared
+  // compile->load->admit toolchain. Wired lazily by the kernel.
+  void attachInit(SLGuestInit guestInit) { init = guestInit; }
+
   SLGuestSignal signalTable() { return signals; }
   SLGuestPipe currentPipe() { return pipe; }
+  int childStatus() { return lastChildStatus; }
 
   boolean valid(int number) {
     return number == SYS_READ || number == SYS_WRITE || number == SYS_OPEN ||
            number == SYS_CLOSE || number == SYS_BRK || number == SYS_PIPE ||
            number == SYS_YIELD || number == SYS_GETPID || number == SYS_KILL ||
-           number == SYS_EXIT;
+           number == SYS_EXIT || number == SYS_FORK || number == SYS_EXECVE ||
+           number == SYS_WAIT;
   }
   boolean isPipeFd(int fd) { return fd >= PIPE_FD_BASE; }
 
@@ -92,15 +106,83 @@ class SLGuestSyscall {
       if (arg0 > 0) { brkTop = arg0; } r = brkTop;
     } else if (number == SYS_YIELD) {
       r = 0;
+    } else if (number == SYS_FORK) {
+      r = doFork();
+    } else if (number == SYS_EXECVE) {
+      // execve(progName, sourcePath, langId): replace the caller's image with a
+      // freshly compiled one. arg0/arg1 are modeled file identifiers the init
+      // toolchain resolves; arg2 is the source language id.
+      r = doExecve(arg0, arg1, arg2);
+    } else if (number == SYS_WAIT) {
+      r = doWait();
     } else if (number == SYS_EXIT) {
+      // exit(status): record the status on the running task so a waiting parent
+      // can reap it, and leave it DONE (a zombie until wait()ed on).
+      if (scheduler != null && scheduler.running() != null) {
+        scheduler.running().exitWith(arg0);
+      }
       r = arg0;
     }
     lastResult = r;
     return r;
   }
 
+  // fork(): clone the running task. The kernel returns the child's tid to the
+  // parent and (by convention) 0 to the child; here we model the parent's
+  // return value (the child's new tid). The child is admitted as a ready task
+  // that resumes at the same point as the parent. Returns -1 if there is no
+  // running task or the task table is full.
+  int doFork() {
+    if (scheduler == null) { return -1; }
+    SLGuestTask parent = scheduler.running();
+    if (parent == null) { return -1; }
+    // Draw the child pid from the single guest pid allocator (init) so fork'd
+    // children and init-spawned programs share one, collision-free pid space;
+    // fall back to a private counter only if init is not wired yet.
+    int childTid;
+    if (init != null) { childTid = init.allocPid(); }
+    else { childTid = nextChildPid; nextChildPid = nextChildPid + 1; }
+    SLGuestTask child = scheduler.fork(parent, childTid);
+    if (child == null) { return -1; }   // out of task slots
+    return childTid;                     // parent sees the child's pid
+  }
+
+  // execve(): replace the running task's program image with a newly compiled
+  // one, loaded through init's shared toolchain, and repoint the task's resume
+  // IP at the new image's entry. Models the Unix contract that a successful
+  // execve does not return to the old image. Returns the new entry index, or -1
+  // if execve is unavailable or the running task is unknown.
+  int doExecve(int progId, int srcId, int langId) {
+    if (init == null || scheduler == null) { return -1; }
+    SLGuestTask caller = scheduler.running();
+    if (caller == null) { return -1; }
+    int entry = init.execInto(caller, progId, srcId, langId);
+    return entry;   // init repoints caller's IP; <0 on failure
+  }
+
+  // wait(): reap a finished child of the running task. Returns the reaped
+  // child's tid (and stashes its exit status in lastChildStatus for the kernel
+  // to deliver), -1 if the caller has no children at all, or SYS_WAIT_BLOCK
+  // (negative) when children exist but none has exited yet (the caller should
+  // retry — modeled as a yield).
+  int doWait() {
+    if (scheduler == null) { return -1; }
+    SLGuestTask caller = scheduler.running();
+    if (caller == null) { return -1; }
+    SLGuestTask child = scheduler.reapChild(caller.taskId());
+    if (child != null) {
+      lastChildStatus = child.status();
+      return child.taskId();
+    }
+    if (scheduler.hasLiveChild(caller.taskId())) { return WAIT_BLOCK; } // not ready yet
+    return -1;                                                          // no children
+  }
+
+  static final int WAIT_BLOCK = -2;  // wait() would block: children exist, none exited
+
   boolean isExit(int number) { return number == SYS_EXIT; }
   boolean isYield(int number) { return number == SYS_YIELD; }
+  boolean isWaitBlocked(int result) { return result == WAIT_BLOCK; }
   int programBreak() { return brkTop; }
   int result() { return lastResult; }
   int callCount() { return calls; }
