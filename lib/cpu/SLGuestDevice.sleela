@@ -1,0 +1,46 @@
+/*
+ * lib/cpu/SLGuestDevice.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLGuestDevice — the base class for virtual devices the
+ *   hypervisor exposes to a guest VM. A guest kernel talks to these through
+ *   memory-mapped registers (guest MMIO addresses); a register access that
+ *   falls in a device's window is a VM-exit the hypervisor routes to the device
+ *   model. This is step 3 of the OS-VM roadmap: the minimum device surface a
+ *   guest OS expects (timer, interrupt controller, console, block device).
+ *
+ * Each device owns an MMIO base/size and read()/write() register handlers plus
+ * an optional interrupt line it can raise into the guest.
+ *
+ * Family: cpu. Base of the guest device hierarchy.
+ */
+#sleela 1.3
+class SLGuestDevice {
+  String name;
+  int mmioBase;
+  int mmioSize;
+  int irqLine;     // guest IRQ this device raises, or -1
+  int irqPending;
+  int accesses;
+
+  void configure(String deviceName, int base, int size, int irq) {
+    name = deviceName; mmioBase = base; mmioSize = size; irqLine = irq;
+    irqPending = 0; accesses = 0;
+  }
+
+  boolean owns(int addr) { return addr >= mmioBase && addr < mmioBase + mmioSize; }
+  int registerOf(int addr) { return addr - mmioBase; }
+
+  // Default MMIO handlers; concrete devices override.
+  int read(int addr) { accesses = accesses + 1; return 0; }
+  void write(int addr, int value) { accesses = accesses + 1; }
+
+  // Interrupt protocol: a device raises its line; the guest's interrupt
+  // controller later acknowledges it.
+  void raiseIRQ() { if (irqLine >= 0) { irqPending = 1; } }
+  boolean irqRaised() { return irqPending == 1; }
+  void clearIRQ() { irqPending = 0; }
+
+  int irq() { return irqLine; }
+  String deviceName() { return name; }
+  int accessCount() { return accesses; }
+}

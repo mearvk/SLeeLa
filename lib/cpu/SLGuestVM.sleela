@@ -25,6 +25,7 @@ class SLGuestVM {
   SLSleelaVM substrate; // the Turing-complete engine that actually runs guest code
   SLRAM hostMemory;
   SLMMU mmu;            // real page-table translation (step 2); null => base-offset
+  SLGuestDeviceBus devices; // guest device model: timer, console, block (step 3)
   int windowBase;       // host-physical base of the guest's memory window
   int windowSize;       // words
   int guestEntry;       // guest-physical entry point
@@ -49,6 +50,13 @@ class SLGuestVM {
   // Attach a real MMU for page-table translation + protection faults (step 2).
   void attachMMU(SLMMU unit) { mmu = unit; }
   SLMMU memoryUnit() { return mmu; }
+
+  // Attach the guest device model (timer/console/block) (step 3).
+  void attachDevices(SLGuestDeviceBus bus) { devices = bus; }
+  SLGuestDeviceBus deviceBus() { return devices; }
+
+  // Advance the guest's devices by one tick (timer heartbeat, IRQ posting).
+  void tickDevices() { if (devices != null) { devices.tick(); } }
 
   // Guest-virtual -> host-physical translation: via the MMU when present
   // (page tables + protection; a fault returns -1 and the hypervisor delivers a

@@ -1,0 +1,55 @@
+/*
+ * lib/cpu/SLGuestBlockDevice.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLGuestBlockDevice — a virtual block storage device
+ *   (virtio-blk-style) backed by a host SLHardDrive. The guest kernel programs
+ *   a block number and buffer address, issues a read or write, and the device
+ *   performs the transfer and raises its IRQ on completion. This is how a guest
+ *   OS loads its root filesystem and pages to/from disk.
+ *
+ * MMIO registers: 0 = block number, 1 = guest buffer address, 2 = command
+ * (1 read, 2 write), 3 = status (RO). Completion raises the device IRQ.
+ *
+ * Family: cpu. Extends SLGuestDevice; composes SLHardDrive.
+ */
+#sleela 1.3
+class SLGuestBlockDevice extends SLGuestDevice {
+  SLHardDrive backing;
+  int blockNo;
+  int bufAddr;
+  int status;      // 0 idle, 1 busy, 2 done
+  int reads;
+  int writes;
+
+  void init(int base, int irq, SLHardDrive drive) {
+    configure("blk", base, 4, irq);
+    backing = drive; blockNo = 0; bufAddr = 0; status = 0; reads = 0; writes = 0;
+  }
+
+  int read(int addr) {
+    int r = registerOf(addr);
+    if (r == 0) { return blockNo; }
+    if (r == 1) { return bufAddr; }
+    if (r == 3) { return status; }
+    return 0;
+  }
+
+  void write(int addr, int value) {
+    int r = registerOf(addr);
+    if (r == 0) { blockNo = value; }
+    if (r == 1) { bufAddr = value; }
+    if (r == 2) { command(value); }
+  }
+
+  // Execute a block command and signal completion.
+  void command(int cmd) {
+    status = 1; // busy
+    if (cmd == 1 && backing != null) { backing.readBlock(blockNo); reads = reads + 1; }
+    if (cmd == 2 && backing != null) { backing.writeBlock(blockNo, bufAddr); writes = writes + 1; }
+    status = 2; // done
+    raiseIRQ();
+  }
+
+  int readCount() { return reads; }
+  int writeCount() { return writes; }
+}
