@@ -1,13 +1,24 @@
 # SLeeLa /lib Library Index
 
-**Revision:** 0.14  
-**Packages:** 79  
-**SLeeLa source units:** 10241  
-**Module-facade symbols:** 90  
-**Total symbol records:** 10331  
+**Revision:** 0.15  
+**Packages:** 82  
+**SLeeLa source units:** 10186  
+**Module-facade symbols:** 55  
+**Total symbol records:** 10241  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
 
-> Revision 0.14 reconciles the headline source-unit figure to the verified
+> Revision 0.15 fully regenerates `LIBRARY.SYMBOLS.md` from the live `/lib`
+> tree via `tools/generate-library-symbols.py` (one row per `.sleela` unit)
+> and reconciles every count to the filesystem: **82** package families,
+> **10,186** source classes + **55** `SLPackage.sleela` module facades =
+> **10,241** total symbol records. This picks up the package families that had
+> been added since the manifest was last written — `autocad`, `java`,
+> `languages`, `opcodes`, `sldocument`, and `website` — and corrects the earlier
+> internally inconsistent header (which claimed 10,054 sources / 90 facades over
+> a 982-row body). The manifest body and header are now verified in lockstep by
+> `test-suites/test-library-inventory.sh`.
+
+> Revision 0.14 reconciled the headline source-unit figure to the verified
 > filesystem count of 10,241 `.sleela` units under `/lib` (matching
 > `CLASS.INVENTORY.md` Revision 2.1). Earlier revision stamps lagged the live
 > count; the figure here is the authoritative total.
@@ -51,10 +62,10 @@ The `/lib` tree is the canonical language-facing source collection. The compiler
 
 | Coverage | Count |
 |---|---:|
-| Repository module families represented under /lib | 74 |
-| SLeeLa source units | 953 |
-| Module-facade symbols | 88 |
-| Total symbol records | 1,041 |
+| Repository module families represented under /lib | 82 |
+| SLeeLa source units | 10,186 |
+| Module-facade symbols | 55 |
+| Total symbol records | 10,241 |
 
 Every repository-level module family that is a language/runtime/package concern now has at least one SLeeLa source unit under `/lib`. Documentation, images, generated build output, tests, and CI-only directories remain non-library artifacts and are intentionally not presented as language packages.
 
@@ -80,7 +91,7 @@ The complete path-level and facade-level symbol collection is maintained in `LIB
 
 ## Compiler / Nordshrift / Loader Contract
 
-The shared `sleela::library::Index` recursively discovers the 77 package families and all 10,054 `.sleela` source units. It now exposes package counts, per-package symbol counts, symbol lookup, and source-path resolution. Compiler and Nordshrift use this index; `lib/vm/SLVMModuleLoader.sleela` represents the same discovered package/symbol state at the SLeeLa layer.
+The shared `sleela::library::Index` recursively discovers the 82 package families and all 10,241 `.sleela` source units. It now exposes package counts, per-package symbol counts, symbol lookup, and source-path resolution. Compiler and Nordshrift use this index; `lib/vm/SLVMModuleLoader.sleela` represents the same discovered package/symbol state at the SLeeLa layer.
 
 ## SST / Nordshrift Symbol Contract
 
