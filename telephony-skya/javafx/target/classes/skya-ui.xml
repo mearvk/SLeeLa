@@ -1,0 +1,1 @@
+<?xml version="1.0" encoding="UTF-8"?><bodi-ui id="skya-client" title="Skya — SLeeLa Telephony"><window width="760" height="520"/><toolbar actions="start-client stop-monitor"/><monitor circuit="skya-monitoring.xml"/></bodi-ui>

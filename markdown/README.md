@@ -1,0 +1,1016 @@
+<img align="right" src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="75" height="75" alt="SLeeLa">
+
+# SLeeLa
+
+## Bitcoin Conjegeum
+
+![CremeOak](https://github.com/mearvk/Ubuntu.Determinant.Beta.Restricted/blob/main/images/Bitcoin_and_wallet_in_slots_2K_202609042306%20(1).jpeg)
+
+bc1qs6v4q9zsw70t0umk3m0quhvf9dr6cdeskl28dh
+
+US Democratic and US Policy.
+
+**Stance.** This project aligns with the principles upheld by the
+**International Criminal Court** (accountability under international law) and
+presents socialism **stereoscopically** — through two independent lenses: the
+neutral constitutional-text indicator and the historical governance register
+(see [`SOCIALISM.md`](SOCIALISM.md)). This is a stated position, not a claim of
+affiliation with or endorsement by the ICC.
+
+**Sleela** is a Java-like programming language running on a Turing-complete,
+thread-friendly **C/C++ execution core**, with **Nordshrift** — a `.sst`
+transpiler driver (spec `SST.model`, NS-SST-0001) — sitting on top to drive the
+triplet of targets (**Java**, **Sleela**, **C**).
+
+> **Wrapper™** — A Sleela source file (extension `.sleela`) is a **Wrapper™**:
+> the program unit that carries the metadocument addend, i.e. it is governed by
+> and consistent with the Sleela Language Metadocument (SL-META-0001). Throughout
+> this repository, "a `.sleela` file", "a Sleela source file", and "a Wrapper™"
+> all name the same file type.
+
+## Status & platform support
+
+The C/C++ implementation under [`impl/`](impl/) is cross-platform and covered by
+CI on every push and pull request:
+
+| Platform | Toolchain | Build | CI |
+|---|---|---|---|
+| **Linux** | gcc/clang | [`scripts/build-linux.sh`](scripts/build-linux.sh) (or `cd impl && make`) | [`build-linux.yml`](.github/workflows/build-linux.yml) |
+| **macOS** (Darwin) | Apple clang | [`scripts/build-macos.sh`](scripts/build-macos.sh) | [`build-macos.yml`](.github/workflows/build-macos.yml) |
+| **Windows 10+** | MinGW-w64 | [`build-windows.ps1`](build-windows.ps1) | [`build-windows.yml`](.github/workflows/build-windows.yml) |
+
+All OS facilities (threads, TCP sockets, files, pipes/named-pipes, paths,
+terminal, dynamic libraries, time) go through the OS-aware abstraction layer in
+[`impl/core`](impl/core), with POSIX and Win32 backends; the runtime reports its
+native backend as `linux`, `macos`, or `windows`. The Makefile auto-detects the
+host and adjusts link flags per platform.
+
+**Recent hardening and correctness work** (see [`ARCHITECTURE.md`](ARCHITECTURE.md)):
+
+- **Security:** the `sleela defender` provisioning path now requires explicit
+  opt-in (`--allow-defender`), verifies the downloaded payload's SHA-256
+  (fail-closed, no trust-on-first-use), and never elevates privileges implicitly
+  (`--allow-root`). A CI workflow keeps the SHA-256 build-manifest in sync.
+- **Tests:** the subject libraries (math, physics, economics, inference,
+  finance, chemistry) now carry real numeric assertions wired into `make test`;
+  these caught and fixed genuine bugs (a `sin` series off-by-one, a broken
+  `fmod`, integer-only `%` in the VM, and the neutrino oscillation formula).
+- **Data integrity:** the auto-generated BANKS4 column was reworked from an
+  editorializing "Socialism Status" into a neutral, sourced **Constitutional
+  Socialism Reference** indicator (`CONSTITUTIONAL` / `NONE` / `UNASSESSED`,
+  nothing invented). See [`SOCIALISM.md`](SOCIALISM.md).
+- **Native-code correctness & portability:** fixed genuine defects surfaced by
+  the translation-unit audit — duplicate `typedef`s in the debugger C ABI
+  header, a C++/C struct field-name mismatch in the audio bridge, invalid
+  single-`auto` declarations in the decompiler, missing extensibility headers,
+  and missing POSIX feature-test macros. The grade-1/2/3 HTTP servers now carry
+  Windows (Win32/Winsock) guards and bind `std::filesystem::path` elements by
+  `const` reference so the macOS/clang build is clean.
+- **Self-contained HTTP/2 build:** the HTTP/2 server builds the committed
+  [`include/nghttp2-1.70.0.zip`](include/) into a static `libnghttp2.a` and
+  links it directly, so the build no longer depends on a system-installed
+  `libnghttp2`.
+- **Standalone translation-unit audit:** `test-suites/run-all.sh --audit`
+  compiles every authored C/C++ unit on its own under a strict `-Werror`
+  warning set, with include resolution that mirrors the per-module Makefiles and
+  with foreign-OS-SDK units (macOS CoreAudio, the Windows SDK, GTK) reported as
+  SKIP. See [`TESTING.md`](TESTING.md) and
+  [`test-suites/README.md`](test-suites/README.md).
+
+- The working implementation lives under [`impl/`](impl/) — see
+  [`impl/README.md`](impl/README.md) for the full guide, and
+  [`impl/DESIGN.md`](impl/DESIGN.md) for the architecture.
+- **Two source trees:** [`impl/`](impl/) (C/C++) is the authoritative, buildable,
+  tested system; [`src/`](src/) is an earlier/parallel **Java** prototype
+  (`implementations/_001_`) that shares the naming but no code and is not part of
+  the build or CI. [`ARCHITECTURE.md`](ARCHITECTURE.md) delineates the two and
+  says which to use.
+- [`SHEET.sheet`](SHEET.sheet) is the catalog of common system objects (129
+  objects across 16 role categories) that backs Sleela's *conducted methods*
+  and Nordshrift's *object compatibility list*.
+- [`SST.model`](SST.model) is the NS-SST-0001 1.0 compatibility specification.
+- [`SST-2.0.model`](SST-2.0.model) is the normative Nordshrift 2.0 semantic and
+  control-sheet extension.
+- [`SLEELA.md`](SLEELA.md) documents the `.sleela` filetype (**Wrapper™**), the
+  configurable Sigil **QR code**, and the deterministic 248×48 **steganographic
+  frame** — generated by the dependency-free tool in [`tools/sigil/`](tools/sigil/).
+- [`STRUCTS.md`](STRUCTS.md) documents the C/C++-style **`struct`** feature
+  (syntax 1.2+): named aggregates, `new` instantiation, `.` member access,
+  reference semantics, and `structPack`/`structUnpack` network transport.
+- [`manifesto/`](manifesto/) is **A Manifesto to Thinking Kind** — a runnable
+  25-page Wrapper™ written in SLeeLa and documented in the **SleelaDoc** brand
+  ([`manifesto/SLEELADOC.md`](manifesto/SLEELADOC.md)). Every page is real,
+  compiling code; `main()` performs the argument on the core and prints a
+  verdict on itself (proof-of-work). It answers "146+ IQ" as system
+  Insight/Quality, not a psychometric score. A rendered Markdown edition is at
+  [`manifesto/MANIFESTO.md`](manifesto/MANIFESTO.md).
+- [`VERSION.md`](VERSION.md) is the single record of all versions.
+- [`config/CONFIGURATION.md`](config/CONFIGURATION.md) defines the unified configuration root: one absolute runtime configuration location derived from the project name/root or an explicit administrator path, including VM 1–11 and GC configuration.
+
+- [`sleela-scripting/`](sleela-scripting/) provides **Demesresmes™**, the SLeeLa scientific scripting language. Demesresmes™ uses `.sleela-script` sources and the unified configuration root, with a versioned mathematical/physics/chemistry/engineering constants registry in JSON and XML under [`sleela-scripting/constants/`](sleela-scripting/constants/). See [`sleela-scripting/CONSTANTS.md`](sleela-scripting/CONSTANTS.md) for canonical lookup names, provenance, exactness, units, and registry revision rules.
+- [`COMPILER.md`](COMPILER.md) describes the Sleela compiler — its pipeline,
+  version awareness (the `#sleela` pragma), and the versions it implements.
+- [`SOURCE.md`](SOURCE.md) describes the Sleela source file (the `.sleela`
+  **Wrapper™**) and its characteristics.
+- [`NORDSHRIFT.md`](NORDSHRIFT.md) gives the overview of the `.sst` transpiler
+  driver and the Nordshrift 2.0 semantic layer.
+- [`GLOSSARY.md`](GLOSSARY.md) defines all project terms — Part A (science &
+  engineering) and Part B (the United States evidentiary method).
+- [`SUMMARY.md`](SUMMARY.md) is a single-file accounting of the whole
+  repository — every document, source tree, specification, method, and special
+  function, in one place.
+- [`JOURNEY.md`](JOURNEY.md) defines **every component** of the implementation
+  as the journey a program travels — source → front end → execution core →
+  runtime → OS-abstraction → catalog → subjects → Nordshrift → artifacts. Its
+  runnable equivalent is the set of `.sleela` **register** documents in
+  [`journey/`](journey/), which roll-call each component and resolve the
+  catalogued ones live against `SHEET.sheet`.
+- [`SLEELA_TIME_API.md`](SLEELA_TIME_API.md) defines the portable SLeeLa Time API, including precision clocks, NTP, HTTP/RMI/BODI timing records, and the raw international time-request marker.
+- [`MEMORY_MANAGER.md`](MEMORY_MANAGER.md) documents the flag-enabled **Memory
+  Manager** (raw process-memory accounting with an optional fail-closed hard
+  byte limit, layered above the OS allocator in
+  [`impl/core/sleela_memmgr.c`](impl/core/sleela_memmgr.c)) and the **native
+  executable launcher** (`sleela native|exec <program>`), which runs an
+  arbitrary native OS executable from the SLeeLa terminal under a real
+  pseudo-terminal — honoring the SHA-256 gate and engaging the Memory Manager
+  on-need.
+- [`LENS.md`](LENS.md) applies the Sleela *Lens* idea (a focused get/set view)
+  to how the United States was created — who built it, who bought it, and the
+  early reliefs of 1967 — as dated, sourced facts kept apart from framing.
+- [`us-infrastructure/`](us-infrastructure/) is a transparent **US infrastructure
+  economic model** written in SLeeLa (syntax 1.2): it uses `struct`s and the
+  economics identities (`Y = C + I + G`, present value) to relate sector
+  investment, depreciation/renewal, backlog, and marginal NPV — with all inputs
+  marked illustrative and kept apart from framing (see its `SOURCES.md`).
+- [`INFERENCE.md`](INFERENCE.md) documents the native **`inference`** subject
+  library (statistics over a data series: mean/stdev, OLS trend, correlation/R²,
+  CAGR, z-score, forecast, and classification codes). The runnable
+  [`inference-model/`](inference-model/) evaluates national/economic series and
+  emits both a mathematical summary and a plain-language paragraph.
+- [`social-model/`](social-model/) is a **socialing model** of Systems of Social
+  Design / Remedy / Method: it draws 2D and 3D boundaries around a proposed
+  "normal," measures the statistical deviation of the observed from it to flag
+  when base assumptions have gone **stale**, and answers "the State has so many
+  workers — what do they do?" via a workforce-allocation deviation report.
+- [`bash/PHRAIGN.md`](bash/PHRAIGN.md) documents **Phraign™**, SLeeLa's
+  frame-based, pixel-accurate terminal control system: the terminal output
+  surface is a **planar map of pixels** addressed by integer `(x, y)`
+  coordinates (origin upper-left), with terminal-following geometry and
+  `SIGWINCH` resize awareness. The interface spec is
+  [`bash/PIXEL_TERMINAL.md`](bash/PIXEL_TERMINAL.md), the versioned
+  capability negotiation (`SLEELA-BASH/1 PHRAIGN/1 VARIANT=NATIVE`) is
+  [`bash/SLEELA_BASH_HANDSHAKE.md`](bash/SLEELA_BASH_HANDSHAKE.md), the Bash
+  text-protocol interface is [`bash/pixel-terminal.sh`](bash/pixel-terminal.sh),
+  and the native C++ frame/geometry layer is
+  [`bash/pixel_terminal.hpp`](bash/pixel_terminal.hpp) /
+  [`bash/pixel_terminal.cpp`](bash/pixel_terminal.cpp); a pixel-precision header
+  supporting **60&nbsp;Hz refresh** is
+  [`terminal_pixel/pixel_terminal.h`](terminal_pixel/pixel_terminal.h). The
+  [`bash/model-3D/`](bash/model-3D/) application (**Phraign™ City 3D**) renders a
+  sprawling ~4000-block city onto the Phraign frame per pixel, viewed from the
+  top at a slight side angle, with a config-driven viewpoint, `green`/`white`/
+  `blue` themes, and per-user models that save to GitHub or a public server.
+- [`website-generator/`](website-generator/) builds custom websites from a
+  **design** (theme, palette, an `energy` "exciting" dial, layout grammar) and
+  an ordered list of semantic **signs** (hero, feature, cta, footer, …). The
+  SLeeLa generator (`website-generator/website/*.sleela`) emits a self-contained
+  HTML + CSS site; a JavaFX **Website Studio** under
+  [`website-generator/gui/`](website-generator/gui/) lets users/developers
+  hand-design and live-preview a site. See
+  [`website-generator/README.md`](website-generator/README.md) and
+  [`website-generator/DESIGN.md`](website-generator/DESIGN.md).
+- [`autocad/`](autocad/) takes **descriptions, dimensions, plans, and notes** and
+  renders the output as an AutoCAD **DXF** drawing (opens in AutoCAD / LibreCAD).
+  The SLeeLa renderer (`autocad/cad/*.sleela`) parses a plan, evaluates the
+  geometry, and emits DXF; a JavaFX **AutoCAD Studio** under
+  [`autocad/gui/`](autocad/gui/) provides plan entry and an on-screen geometry
+  preview. See [`autocad/README.md`](autocad/README.md) and
+  [`autocad/FORMAT.md`](autocad/FORMAT.md). Both studios follow the repository
+  rule *JavaFX presents; SLeeLa decides* ([`JavaFX.md`](JavaFX.md)).
+- [`languages/`](languages/) holds **language packs** that localize SLeeLa's
+  outputs and prompts into a language other than English (English, Spanish,
+  French, German, Portuguese, Italian, Japanese, Chinese, Hindi, Korean, Thai,
+  and Arabic — the last right-to-left), with a `settings.conf` that records the
+  active/default locale. Each pack is a dependency-free `key = value` file; the
+  [`lib/languages/`](lib/languages/) library (`SLLanguage` /
+  `SLLanguageCatalog`) selects a locale and returns localized text. See
+  [`languages/README.md`](languages/README.md) and
+  [`languages/KEYS.md`](languages/KEYS.md).
+- **Arrays & multi-file input (language core):** SLeeLa has a first-class
+  dynamic **array** type (`T[]`, `new T[n]`, `a[i]`, and `arrayLength` /
+  `arrayGet` / `arraySet` / `arrayPush` — see
+  [`STRUCTS.md`](STRUCTS.md#arrays)), and the `sleela run` / `sleela compile`
+  commands accept **multiple `.sleela` files** that are merged into one
+  compilation unit (`sleela run a.sleela b.sleela`).
+
+## COORENAGRAPH — Design and Protocol Foundation
+
+SLeeLa now has a dedicated [`coorenagraph/`](coorenagraph/) design and protocol foundation for the coordination-graph work that sits beneath transport and application delivery. This is the starting reference for defining **nodes, coordinates, identities, relationships, edges, metadata, graph records, validation, versioning, serialization boundaries, and interoperability** across the SLeeLa system.
+
+The canonical references are:
+
+- [`coorenagraph/README.md`](coorenagraph/README.md) — project purpose, scope, structure, and relationship to the SLeeLa architecture.
+- [`coorenagraph/COORENAGRAPH.SPEC.md`](coorenagraph/COORENAGRAPH.SPEC.md) — the transport-independent design and protocol specification.
+- [`coorenagraph/include/coorenagraph.h`](coorenagraph/include/coorenagraph.h) — the initial C API contract for nodes, edges, coordinates, labels, and validation.
+- [`coorenagraph/src/coorenagraph.c`](coorenagraph/src/coorenagraph.c) — the initial C11 implementation.
+- [`coorenagraph/build/Makefile`](coorenagraph/build/Makefile) — the focused syntax/build verification target.
+
+### Design principle
+
+**Coordinates describe data; relationships describe structure; transport describes delivery.**
+
+COORENAGRAPH is intentionally transport-independent. HTTP 1.0 through HTTP 9.0 may carry graph records through explicit adapters, but the graph model remains separate from any particular HTTP generation. The intended boundary is:
+
+**Create locally → Validate → Serialize → Transport → Validate independently → Consume**
+
+Coordinates are application data and do not acquire geographic meaning merely because fields are named `x`, `y`, or `z`; externally meaningful coordinate systems and units must be declared. Graph records are explicitly versioned, and unsupported versions are rejected rather than guessed. Authentication, authorization, encryption, access control, and transport integrity remain responsibilities of the appropriate surrounding security and protocol layers.
+
+COORENAGRAPH is an application/library foundation, not inherently a map service, GPS service, surveillance system, routing authority, geographic database, or Internet standard. Its purpose in SLeeLa is to establish a clear **Design and Protocol** starting point before higher-level transport, operating-system, and application concerns are applied.
+
+## Subject Libraries — primary references
+
+The subject libraries are first-class parts of the SLeeLa implementation. XML model/procedure declarations are the common declarative layer across subject families; native source remains the source of truth for executable mathematics and validation. Each
+subject has a dedicated reference document and a corresponding implementation
+layer where applicable. These documents are the README-level map to the
+compiler, runtime, and Nordshrift stack.
+
+| Subject | Primary reference | Implementation / integration |
+|---|---|---|
+| **Math** | [`MATH.md`](MATH.md) | [`impl/subjects/math/`](impl/subjects/math/) native math lowering (shared dispatcher in [`impl/subjects/native/`](impl/subjects/native/)) |
+| **Physics** | [`PHYSICS.md`](PHYSICS.md) | [`impl/subjects/physics/`](impl/subjects/physics/) native physics API and executable formula layer |
+| **Astrophysics** | [`api/subjects/astrophysics/README.md`](api/subjects/astrophysics/README.md) | [`impl/subjects/astrophysics/`](impl/subjects/astrophysics/) C numerical ABI, C++ facade, native frontend class, and XML observation store |
+| **Sociology** | [`api/subjects/sociology/README.md`](api/subjects/sociology/README.md) | [`impl/subjects/sociology/`](impl/subjects/sociology/) C statistical mathematics, C++ facade, native frontend vocabulary, and XML model/procedure examples |
+| **Economics** | [`ECONOMICS.md`](ECONOMICS.md) | [`impl/subjects/economics/`](impl/subjects/economics/) native economics API and executable formula layer |
+| **Inference** | [`INFERENCE.md`](INFERENCE.md) | [`impl/subjects/inference/`](impl/subjects/inference/) native statistics over data series (trend, correlation, forecast) |
+| **Chemistry** | [`CHEMISTRY.md`](CHEMISTRY.md) | [`impl/subjects/chemistry/`](impl/subjects/chemistry/) (library + frontend chemistry API) |
+| **Financial** | [`FINANCIAL.md`](FINANCIAL.md) | [`impl/subjects/finance/`](impl/subjects/finance/) (library + frontend financial API) |
+
+### Nordshrift 2.0 semantic layer
+
+Nordshrift now supplies a common semantic coordination model across all subject libraries. The normative specification is [`SST-2.0.model`](SST-2.0.model),
+while the implementation model is [`impl/nordshrift/subject_model.h`](impl/nordshrift/subject_model.h).
+
+The common models are:
+
+| Model | Role |
+|---|---|
+| **Subject** | identity, domain, dependencies, semantic collections, work plan |
+| **Quantity** | value/expression, unit, dimension, domain, status |
+| **Unit** | dimensional identity and conversion meaning |
+| **Assumption** | explicit condition governing model validity |
+| **Relation / Formula** | named connection between inputs and outputs |
+| **Transformation** | inspectable operation and provenance |
+| **ComparativeNorm** | prior/current/reference comparison |
+| **Evidence** | observed, specified, derived, modeled, inferred, or assumed status |
+| **Explanation** | structured rendering of the reasoning chain |
+| **Todo / WorkPlan** | dependencies, action, expected result, validation, and status |
+
+The canonical chain is:
+
+**Subject → Quantity → Unit → Assumption → Relation → Formula → Transformation → Result → ComparativeNorm → Evidence → Explanation → Validation**
+
+### Domain ideals
+
+Nordshrift 2.0 is governed by these ideals:
+
+1. Identity before calculation.
+2. Quantity before formula.
+3. Unit and dimension before interpretation.
+4. Assumption before extrapolation.
+5. Relation before conclusion.
+6. Transformation before result.
+7. Provenance before trust.
+8. Comparison before ranking.
+9. Uncertainty before certainty claims.
+10. Validation before completion.
+11. Explicit dependency before hidden coupling.
+12. Computation remains distinguishable from observation.
+
+Math is the foundational numerical domain. Physics, Economics, Chemistry, and
+Financial may explicitly depend on Math. Other dependencies must be declared
+when genuinely required rather than being hidden in implementation coupling.
+
+### Evidence and comparison
+
+Nordshrift distinguishes **OBSERVED**, **SPECIFIED**, **DERIVED**, **MODELED**,
+**INFERRED**, and **ASSUMED** status. A numerical result is not automatically
+an observation, and an inference is not automatically a fact.
+
+Comparative reasoning follows:
+
+**PriorSubject → CurrentSubject → ReferenceSubject → ComparativeNorm**
+
+Comparison provides context and ranking; it does not silently establish
+causation.
+
+### WorkPlan / TODO
+
+Nordshrift 2.0 adds declarative work items with `PLANNED`, `READY`, `ACTIVE`,
+`BLOCKED`, `VALIDATING`, `COMPLETE`, and `DEFERRED` status. Completion is meant
+to be supported by an explicit validation record.
+
+### Health and IQ Conservators
+
+**Health** and **IQ** remain system-level metrics. IQ means system
+**insight/quality**, not human psychometric intelligence. The IQ Conservator
+tracks insight, congruence, coupling, contract completeness, optimization,
+result traceability, and explanation traceability.
+
+## How the subject libraries relate
+
+**Math** is the foundational numerical layer. Physics, Economics, Chemistry,
+and Financial use mathematical transformation, approximation, ratios, and
+algebraic relationships as appropriate to their domains.
+
+**Physics** provides executable constants and formula families for mechanics,
+relativity, electricity, gases, waves, and related modeled quantities.
+
+**Economics** provides executable time-value, elasticity, rate, profit, margin,
+and macroeconomic identity functions. Economic calculations remain models and
+are not automatically empirical forecasts.
+
+**Chemistry** adds structured chemical subjects, composition, valence and bond
+relationships, symmetry, physical-chemical properties, comparative ratios,
+signals, conferrers, and explicitly qualified inference. Its stochastic
+0–24 evaluation is a computational ranking mechanism, not a scientific
+certainty or psychometric score.
+
+**Financial** adds executable financial mathematics and algebra including time
+value of money, NPV, bonds, CAPM, WACC, determinants, 2×2 systems, quadratic
+relations, and ratios. Its subject-level explanation follows the chain
+**subject → quantities → units → assumptions → algebra → equation →
+transformation → numerical result → interpretation**.
+
+Together these references define a subject-oriented layer above the common
+Sleela execution core while keeping each domain's assumptions and numerical
+contracts explicit.
+
+```sh
+cd impl && make
+./build/sleela run examples/hello.sleela
+./build/nordshrift build nordshrift/examples/demo/build.sst
+```
+
+### Run a SLeeLa object from the OS terminal
+
+Once the runtime is built, the [`bin/SLeeLa`](bin/SLeeLa) launcher runs a SLeeLa
+**object** (a `.sleela` Wrapper™ or a compiled artifact) straight from the shell:
+
+```sh
+$> SLeeLa object          # e.g. SLeeLa hello  ->  runs hello.sleela
+```
+
+It resolves the built `sleela` binary, sets the `SHEET.sheet` catalog and the
+SHA-256 execution-gate manifest the runtime requires, and accepts a bare object
+name, a `.sleela` path, a compiled artifact, an `.xclass` input, or a
+**JVM-family source** — Java, Kotlin, Scala, Groovy, or Clojure — ingested by
+`langin` (`sleela langin [--run|--emit-sleela|--emit-xclass|--info] <file>`; see
+[`impl/langin/`](impl/langin)). The full set of accepted input languages and
+formats is catalogued in [`SUPPORTED.LANGUAGES.md`](SUPPORTED.LANGUAGES.md).
+`SLeeLa run|check|compile|version` are also available. Put `bin/` on your `PATH`
+to use it anywhere. See [`bin/README.md`](bin/README.md).
+
+The compiler can also drive **Nordshrift from SLeeLa and back**, without the
+standalone `nordshrift` binary or an `.sst` sheet:
+
+```sh
+$> SLeeLa nordshrift --emit --target=sleela|java|c prog.sleela   # SLeeLa -> Nordshrift transpile
+$> SLeeLa nordshrift --roundtrip prog.sleela                     # SLeeLa -> Nordshrift(Sleela) -> re-parse -> run
+```
+
+`--roundtrip` transpiles to the Nordshrift **Sleela** target, re-parses it,
+verifies the program's structure is preserved (same classes + per-class
+field/method counts), and runs it on the core. See
+[`impl/nordshrift/README.md`](impl/nordshrift/README.md).
+
+It also runs a **native OS executable** from the terminal, and accepts a
+leading `--memory-manager[=<size>]` to enable the Memory Manager (see
+[`MEMORY_MANAGER.md`](MEMORY_MANAGER.md)):
+
+```sh
+$> SLeeLa native /usr/bin/env            # run a native executable under a PTY
+$> SLeeLa exec ./my-tool --flag value    # `exec` is an alias of `native`
+$> SLeeLa --memory-manager=64M hello     # run hello.sleela with a 64 MiB cap
+```
+
+SLeeLa's C/C++ core runs on **Linux, macOS (Darwin/clang), and Windows 10+**.
+On macOS, build with `./scripts/build-macos.sh` (Apple clang); on Windows, build
+with MinGW-w64 via `build-windows.ps1` (the Makefile auto-links Winsock and
+produces `sleela.exe`/`nordshrift.exe`). The Makefile auto-detects the host and
+adjusts link flags per platform. Each target is built in CI
+(`build-macos.yml`, `build-windows.yml`). See
+[`impl/README.md`](impl/README.md#building) and
+[`ARCHITECTURE.md`](ARCHITECTURE.md).
+
+## The Constitution — ordained constraints, in order
+
+This is the ordered constitution of governing constraints ("congrains") the
+system honors. Every rule here is enforced or expressible today; each is drawn
+from `SHEET.sheet` (the `congrains` and `limits` sections and the `system`
+invariants) or from the NS-SST-0001 diagnostics. Constraints are organized into
+named **groupings**. Two of the groupings — **Health** and **IQ** — are
+*system* metric groupings (system health and system insight/quality); they
+describe the software system's own condition, nothing about people.
+
+### Article I — System invariants (ordained, always in force)
+
+In order of precedence:
+
+1. **Depth** — the relevant system depth is **3024**: the maximum
+   nesting/reachability from `System` to any leaf object (`SHEET.sheet` →
+   `system.depth`; the `DepthLimit` congrain).
+2. **Connectivity** — up to **3024** congruent-linear systems may be connected
+   (`system.congruent-linear-systems-max`).
+3. **Complexity degree** — the connection order between systems must be **≤ 4**
+   (`system.complexity-degree-max`; the `ComplexityDegree` congrain). Degrees:
+   `1` direct · `2` mediated · `3` brokered · `4` federated.
+4. **The connect rule** — `connect(n)` is permitted iff `n ≤ 3024` **and**
+   `degree(topology) ≤ 4`. These are surfaced in Sleela as `sysdepth()` (3024)
+   and `degreemax()` (4).
+
+### Article II — Congrains grouping (the binding constraints)
+
+In `SHEET.sheet` order (`section congrains`):
+
+| # | Constraint      | Ordinance                                                        |
+|---|-----------------|-------------------------------------------------------------------|
+| 1 | `Invariant`     | a condition that must always hold for an object                   |
+| 2 | `Precondition`  | what must be true before an operation runs                        |
+| 3 | `Postcondition` | what the operation promises afterward                             |
+| 4 | `Constraint`    | a restriction on legal object states/relations                    |
+| 5 | `Dependency`    | a binding one object has on another (co-grained)                  |
+| 6 | `Coupling`      | strength of inter-object binding (keep it loose)                  |
+| 7 | `Congruence`    | structural sameness enabling congruent-linear connection          |
+| 8 | `Contract`      | the bundle of congrains an object honors                          |
+
+### Article III — Limits grouping (the bounding constraints)
+
+In `SHEET.sheet` order (`section limits`):
+
+| # | Limit             | Ordinance                                                      |
+|---|-------------------|-----------------------------------------------------------------|
+| 1 | `Bound`           | an inclusive/exclusive extent on a value                        |
+| 2 | `Quota`           | a permitted amount over a scope/time                            |
+| 3 | `RateLimit`       | cap on operations per unit time                                 |
+| 4 | `Timeout`         | a limit on how long an operation may take                       |
+| 5 | `Capacity`        | the maximum a container/resource may hold                       |
+| 6 | `Threshold`       | a boundary value that changes behavior when crossed             |
+| 7 | `DepthLimit`      | maximum reachable depth — here the System depth is **3024**     |
+| 8 | `ComplexityDegree`| the connection order between systems — capped at **4**          |
+
+### Article IV — Health grouping (system-health metrics)
+
+System **Health** is the grouping of runtime-condition constraints the system
+watches (drawn from the catalog's `attention` and `gain` roles). A system is
+*healthy* while all hold:
+
+| Metric        | Constraint                                                          |
+|---------------|--------------------------------------------------------------------|
+| `Watchdog`    | no line of execution is stalled (heartbeat within its `Timeout`)   |
+| `Monitor`     | observed metrics stay within their `Threshold`s                    |
+| `Throughput`  | work completed per unit time stays above its floor                 |
+| `Capacity`    | no `Resource` exceeds its `Capacity` / high-water mark             |
+| `Exception`   | unhandled exceptions do not cross a system boundary                |
+
+### Article V — IQ grouping (system insight / quality)
+
+System **IQ** is the grouping of insight/quality constraints — how well the
+system *understands and expresses itself* (drawn from the `gain` and
+`congruence` roles and Sleela's conducted-method insights). Higher IQ = more of
+these satisfied:
+
+| Metric        | Constraint                                                          |
+|---------------|--------------------------------------------------------------------|
+| `Insight`     | every conducted object resolves an `insight(...)` (a known gloss)  |
+| `Congruence`  | related objects `route(...)` to a known congruence (no dead ends)  |
+| `Coupling`    | inter-object coupling stays loose (Article II·6)                   |
+| `Contract`    | each object's pre/post/invariant `Contract` is stated              |
+| `Optimization`| a defined objective (`gain`) is being measured and improved        |
+
+Query these from Sleela via the conducted methods (`insight`, `role`,
+`congruent`, `route`, `sysdepth`, `degreemax`) and from Nordshrift via
+`nordshrift objects` / `nordshrift relevance`.
+
+---
+
+# cmd — Java Command Executable Format
+
+**Version:** 1.0.0  
+**Edition:** Galactic Cherry Marvell 98  
+**Target:** SecureJDK 28 (.cmd format)  
+**License:** GPL-2.0 WITH Classpath-exception-2.0
+
+## Overview
+
+`.cmd` is a native executable container for Java class/JAR payloads. The current Linux implementation uses a real ELF launcher prefix, followed by a fixed 96-byte CMD header and embedded application sections. The native launcher reads the executable itself, validates the container, verifies the embedded payload SHA-256, discovers a compatible Java runtime, extracts the payload to a private temporary directory, and only then launches Java.
+
+The historical `tools/cmd/cmdlink.c` is intentionally retained. It is built as `cmdlink-original` for compatibility/reference purposes. The native toolchain uses `linker/cmdlink-native.c` as the authoritative linker.
+
+## File Structure
+
+```text
+native launcher prefix
+CMD header (96 bytes)
+icon section
+manifest section
+embedded class/JAR
+security section
+optional native-image metadata
+```
+
+The CMD header contains magic, version, flags, section offsets/sizes, SHA-256, minimum JDK version, native-image hint information, and reserved space. Section offsets are relative to the CMD header rather than the beginning of the native prefix.
+
+## Header
+
+| Offset | Size | Field |
+|---|---:|---|
+| 0x00 | 4 | magic `0x434D4428` (`CMD(`) |
+| 0x04 | 2 | format version |
+| 0x06 | 2 | flags |
+| 0x08 | 4 | icon offset |
+| 0x0C | 4 | icon size |
+| 0x10 | 4 | manifest offset |
+| 0x14 | 4 | manifest size |
+| 0x18 | 4 | class/JAR offset |
+| 0x1C | 4 | class/JAR size |
+| 0x20 | 4 | security offset |
+| 0x24 | 4 | security size |
+| 0x28 | 32 | SHA-256 of class/JAR payload |
+| 0x48 | 4 | minimum JDK version |
+| 0x4C | 4 | native-image hint offset |
+| 0x50 | 4 | native-image hint size |
+| 0x54 | 12 | reserved |
+
+Total: **96 bytes**.
+
+## Toolchain
+
+### Native linker
+
+```bash
+make
+./cmdlink MyApp.class --main=MyApp -o MyApp.cmd
+./cmdlink MyApp.jar --main=com.example.Main -o App.cmd
+```
+
+The authoritative linker is `linker/cmdlink-native.c`. It uses a self-contained, standard SHA-256 implementation and embeds the resulting digest in both the header and security metadata.
+
+### Original linker
+
+The original `tools/cmd/cmdlink.c` remains in the repository and is compiled as:
+
+```bash
+make cmdlink-original
+```
+
+It is retained rather than deleted so the historical implementation remains available for comparison and compatibility work.
+
+### Inspector
+
+```bash
+./cmd-inspect --verify MyApp.cmd
+./cmd-inspect --manifest MyApp.cmd
+./cmd-inspect --security MyApp.cmd
+./cmd-inspect --icon MyApp.cmd
+```
+
+The inspector performs structural section-bound checks before reading sections and independently recomputes the embedded payload SHA-256.
+
+## Integrity and Validation
+
+`format/cmd-validate.h` centralizes range validation and payload-flag validation. It rejects integer-wrap conditions, out-of-file sections, malformed native-image ranges, unsupported header versions, and invalid payload flag combinations.
+
+The Linux launcher verifies the embedded payload before execution. A modified class/JAR payload therefore fails before Java is started. The native smoke test also deliberately tampers with a generated `.cmd` and requires both execution and inspection verification to fail.
+
+The SHA-256 implementation is tested against the standard `SHA-256("abc")` digest:
+
+```text
+ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad
+```
+
+## Platform Launchers
+
+```text
+launcher/linux/cmd-launch-linux.c
+launcher/windows/cmd-launch-windows.c
+launcher/macos/cmd-launch-macos.c
+```
+
+Linux has the executable runtime template used by the current native smoke test. Windows and macOS now have native entry-point source and build targets; their packaging/runtime integration remains platform-specific and is not represented as complete until those native toolchains are exercised.
+
+## Desktop Integration
+
+Platform-specific desktop contracts are separated from linking:
+
+```text
+desktop/linux/
+desktop/windows/
+desktop/macos/
+```
+
+This keeps file association, icon registration, signing, quarantine, and desktop-cache policy out of the core linker. The application payload itself remains self-contained.
+
+## Cross-Platform CLI
+
+SLeeLa's native executable interface is available on Linux, Windows 10+, and macOS. Use `--config FILE` with `native` or `exec` to select the common properties file; executable arguments, including numeric flags, follow `--` unchanged.
+
+See `BUILD.md` for platform build instructions and `RAM_GUARD.md` for the common RAM Guard configuration profile.
+
+## Build and Test
+
+```bash
+make
+make test
+make verify-sha
+make windows-launcher   # Windows host/toolchain
+make macos-launcher     # macOS host/toolchain
+make install
+```
+
+`make test` requires a working C compiler and `javac`. It builds a real ELF-prefixed `.cmd`, inspects it, executes it, modifies the payload, and confirms the modified executable is rejected.
+
+## Relationship to SecureJDK 28
+
+The format records a minimum JDK version of 28 and advertises SecureJDK 28 as the preferred runtime. The launcher still performs runtime discovery rather than assuming one fixed installation path.
+
+## Source Layout
+
+```text
+tools/cmd/
+├── README.md
+├── Makefile
+├── cmdlink.c                    # historical/original implementation
+├── cmd-icon-gen.c
+├── format/
+│   ├── cmd-format.h
+│   └── cmd-validate.h
+├── linker/
+│   ├── cmdlink.c                # existing native linker implementation
+│   └── cmdlink-native.c         # authoritative hardened linker
+├── inspect/
+│   └── cmd-inspect.c
+├── launcher/
+│   ├── linux/
+│   ├── windows/
+│   └── macos/
+├── desktop/
+│   ├── linux/
+│   ├── windows/
+│   └── macos/
+└── tests/                       # native/integrity regression tests
+```
+
+---
+
+*Copyright (C) 2026 MEARVK LLC*  
+*Author: Maximilian Eric Alexander Rupplin von Keffikon*
+
+---
+
+## HTTP 3.0 packet integrity, syllabus key, and specification artifacts
+
+The HTTP 3.0 application protocol under [`http-3.0/`](http-3.0/) now gives every
+packet a per-packet input-integrity method, layered in three stages that all run
+before any dispatch (see [`http-3.0/FLOW.md`](http-3.0/FLOW.md) and
+[`http-3.0/STATUS.md`](http-3.0/STATUS.md)):
+
+- **DIGEST — authenticity.** A per-packet 64-bit **keyed MAC** (SipHash-2-4,
+  [`http-3.0/http3_mac.{h,c}`](http-3.0/)) computed over a canonical big-endian
+  header + payload under a 16-byte per-connection key. It detects accidental
+  corruption *and* deliberate forgery; a party without the key cannot forge a
+  valid tag. A failing packet is answered `BAD_DIGEST` and never dispatched.
+- **INTACTX — host integrity / tamper reset.** A system-specific 64-bit host
+  identity ([`http-3.0/http3_intactx.{h,c}`](http-3.0/)) derived from a stable
+  OS/identity baseline that is persisted across reboots, folded with a per-emit
+  "use-normality" sample. It packs a 16-bit variance in its high bits, so a
+  larger departure from baseline yields a statically larger number; a healthy
+  host reports variance 0. Over the tamper threshold, the exchange is **RESET**
+  (`TAMPERED`) and not dispatched.
+- **NONCE — replay rejection.** A per-connection monotonic counter, covered by
+  the MAC, checked against a pipeline high-water mark. A replay of a previously
+  valid packet is answered `REPLAYED`; since the NONCE is MAC-covered it cannot
+  be bumped to evade the check.
+- **BASKET — goods & services carried on every packet.** A fixed, carefully
+  selected basket of **14 goods and services** ([`http-3.0/http3_basket.{h,c}`](http-3.0/)),
+  atomic-bound to the US capitalism system: each item has an indivisible atomic
+  number and an ISO value **for a Gram** in USD (ISO 4217 USD / 840, integer
+  micro-USD per gram). The full basket is serialized into a 172-byte canonical
+  block that travels in every packet and is covered by the MAC. See
+  [`BASKET.docx`](BASKET.docx) for the human-readable table.
+
+Beyond the integrity gate, the pipeline adds three delivery-oriented layers:
+
+- **Timing / QoS (advisory).** A connection-level timing layer
+  ([`http-3.0/http3_timing.{h,c}`](http-3.0/)) observes each arrival for **max
+  speed** (min inter-arrival gap), **on time** (deadline + grace), **balance**
+  (jitter band), and **continuity** (loss/reordering, `GAP`), and keeps a running
+  **carrier certainty** in `[0,1]`. It is advisory — nothing new on the wire, no
+  rejects; it records counters and an estimate. Mapped to standard TCP/HTTP
+  Quality of Service for internet packets in [`QOS.md`](QOS.md) (a hint, not a
+  guarantee), which now includes a worked arrival-sequence example and the
+  continuity/`GAP` metric, with careful SLeeLa- and Java-side code notes.
+- **Capability handshake.** Two peers advertise a neutral capability bitmask
+  (cumulative tiers **L1 baseline → L4 echo**); the handshake
+  ([`http-3.0/http3_handshake.{h,c}`](http-3.0/)) deterministically selects the
+  **highest common level**, with a baseline fallback so an older/not-yet-updated
+  router runs L1 until its software advertises more — then moves up automatically.
+  Offers are MAC-backed. The bitmask names protocol tiers only (no identity
+  meaning). See [`http-3.0/HANDSHAKE.md`](http-3.0/HANDSHAKE.md).
+- **Internet transport (standard HTTP carrier).** A custom packet builder
+  ([`http-3.0/http3_transport.py`](http-3.0/http3_transport.py)) makes the H3
+  envelope fit for the existing internet by embedding its exact bytes — MAC,
+  NONCE, INTACTX, and basket intact — inside standards-compliant **HTTP/1.1**
+  (text framing) and **HTTP/2** (binary HEADERS+DATA frames) messages, with
+  parse/extract on the far side. A Jakarta servlet
+  ([`connector/.../http/SleelaH3Servlet.java`](connector/java/com/mearvk/sleela/connector/http/SleelaH3Servlet.java))
+  lets Tomcat serve it over **HTTP/2+**, and sample Tomcat/Apache config plus
+  installers for all three OS —
+  [`scripts/install-linux-h3.sh`](scripts/install-linux-h3.sh),
+  [`scripts/install-macos-h3.sh`](scripts/install-macos-h3.sh), and
+  [`scripts/install-windows-h3.ps1`](scripts/install-windows-h3.ps1) —
+  deploy the stack. Because the envelope rides untouched in the HTTP body, any
+  byte flip in transit fails the H3 MAC closed. See
+  [`connector/deploy/README.md`](connector/deploy/README.md).
+- **Client packet ledger — Sleeuum™.** A SLeeLa executable can keep track of
+  the HTTP 3.0 / HTTP 2.0+ packets it sends and receives — with their **dates**
+  and **numbers** — using **Sleeuum™**
+  ([`http-3.0/sleeuum.py`](http-3.0/sleeuum.py)). It records, per packet, the
+  carrier (HTTP/1.1, HTTP/2, or raw H3), direction, service/op ids, an ISO-8601
+  UTC timestamp, a monotonic sequence number, the H3 NONCE/DIGEST/request-id and
+  status, byte counts, and the basket **numerals** carried in each packet — as a
+  queryable JSON ledger. Observe-only: it never alters a packet or an integrity
+  field. See [`http-3.0/SLEEUUM.md`](http-3.0/SLEEUUM.md).
+
+A SLeeLa program can also select its HTTP behavior by **color** — a named bundle
+of wire form, flags, and integrity profile (`green`/`amber`/`red`/`black`),
+declared from source. See [`http-3.0/HTTP-COLORS.md`](http-3.0/HTTP-COLORS.md).
+
+Both a C reference and a dependency-free Python reference
+([`http-3.0/http3_flow.py`](http-3.0/http3_flow.py)) implement all of the above;
+the keyed MAC, the basket block, the timing readings, and the handshake offers
+are byte-for-byte identical across the two, and the SipHash implementation
+matches the published reference test vector. Build and exercise it with
+`cd http-3.0 && make demo` (C) and `make test` (C + Python).
+
+An earlier-generation **HTTP 2.1** sketch — the same core design goals without
+the 3.0-era integrity substrate — lives under [`http-2.0/`](http-2.0/).
+
+### Key and specification documents
+
+| Document | Contents |
+|---|---|
+| [`CLASS.md`](CLASS.md) | The syllabus key (38142-hex-digit CSPRNG value) with the **Moral Code** and the **Class** section, in one document. |
+| [`MIL.SPEC.md`](MIL.SPEC.md) | A CSPRNG-random **1022-bit** value as a 256-char hex string, dedicated to the Military, Endless Charity, and the Strength of the United States. |
+| [`BASKET.docx`](BASKET.docx) | Standard Office Open XML document listing the fixed **14-item basket** of goods & services (atomic number + ISO USD micro-value per gram) carried in every HTTP 3.0 packet. |
+| [`http-3.0/Syllabus.md`](http-3.0/Syllabus.md) | The syllabus key plus Moral Code and Class section. |
+| [`public/Syllabus.md`](public/Syllabus.md) | A byte-for-byte identical public copy of the syllabus. |
+| [`GOODS.AND.SERVICES.md`](GOODS.AND.SERVICES.md) | The 14-item basket published as grouped tables (goods / services / totals). |
+| [`NUMERAL.md`](NUMERAL.md) / [`STATS.md`](STATS.md) | The numerals (basket/account identifiers) and the statistics derived from them. |
+| [`NUMERAL-INTENT.md`](NUMERAL-INTENT.md) | Numeral intent, software sustainability, and the Celebrity term-care standard. |
+| [`FIDUCIARY.md`](FIDUCIARY.md) | A duty model over abstract accounts: bounded wealth, per-second and per-second² rates, lifetime bound & bounding insignia. |
+| [`BRITISH.md`](BRITISH.md) | An institutional fiduciary note (stylized), applying the duty model at the entity level. |
+| [`QOS.md`](QOS.md) | Quality of Service for internet packets over standard TCP/HTTP — throughput, latency, jitter, reliability, and continuity (loss/reordering, `GAP`); includes a worked arrival-sequence example and careful SLeeLa + Java code notes. |
+| [`connector/deploy/README.md`](connector/deploy/README.md) | Carrying the HTTP 3.0 envelope over standard **HTTP/1.1 and HTTP/2** (custom packet builder, Tomcat/Apache HTTP module, and installers for **Linux/macOS/Windows**). |
+| [`http-3.0/SLEEUUM.md`](http-3.0/SLEEUUM.md) | **Sleeuum™** — the client packet ledger a SLeeLa executable uses to track HTTP 3.0 / HTTP 2.0+ packets, their dates, and their numbers. |
+
+The **Moral Code** records the standard of *substantial use of sequitur*, a
+*per-use* evaluation rule, *homognyny* (the asynchronous misuse of frame, or
+better), and the clause that the United States states as the American President
+of the United States. The **Class** section observes class against the social
+calendar of the United States, under which the Very Rich are counted. The term
+**Celebrity** is governed by a *standard degree of norm* (see
+[`GLOSSARY.md`](GLOSSARY.md) §B.2 and [`NUMERAL-INTENT.md`](NUMERAL-INTENT.md)):
+a defined, aggregate, role-level term — never a basis for profiling or tracking
+individuals.
+
+### Tutorial & verifiable artifacts
+
+- **Tutorial series** — a 12-part Markdown course, [`tutorial/`](tutorial/),
+  from your first Wrapper™ to an end-to-end build-and-ledger capstone, plus 12
+  runnable companion demos in [`tutorial/demos/`](tutorial/demos/) that compile
+  through Nordshrift.
+- **The `.ledger` class** — a tamper-evident per-file chain (QR insignia +
+  SHA-256 chain + ISO-8601 timestamp), produced both standalone
+  ([`ledger/`](ledger/)) and by the Nordshrift compiler next to each `.sleela`
+  artifact. See [`ledger/LEDGER.md`](ledger/LEDGER.md).
+
+
+### Further references — consumer software, vital measurements, logistics
+
+Neutral external context for the goods/services basket and the delivery model.
+This project claims no affiliation with, or endorsement by, any external service.
+
+- **Consumer-grade software.** Built to ordinary consumer-software standards:
+  reproducible builds, C ↔ Python parity, honest scope. See
+  [`NUMERAL-INTENT.md`](NUMERAL-INTENT.md) and [`tutorial/`](tutorial/).
+- **Vital measurements.** Basket items are defined, aggregate measures (atomic
+  number + ISO USD value per gram) with stated provenance — never fabricated
+  per-person figures. See [`GOODS.AND.SERVICES.md`](GOODS.AND.SERVICES.md) and
+  [`STATS.md`](STATS.md).
+- **Logistics & delivery.** The packet-as-parcel analogy is developed in
+  [`QOS.md`](QOS.md). Real-world logistics/government context, for background:
+  **US Mail (USPS)** `https://www.usps.com`; **US government services**
+  `https://www.usa.gov`.
+
+The external references are illustrative context only; the basket values and
+protocol behavior are defined by this repository, not by any external service.
+
+
+## HTTP 3.0 build and packet-field compatibility
+
+The HTTP 3.0 implementation under [`http-3.0/`](http-3.0/) includes an explicit 160-bit logical PORT namespace supporting values from `0` through `10^48 - 1`. The extended port is carried in the packet and included in the integrity calculation; it does not claim that an operating system can create `10^48` native sockets. See [`http-3.0/PORTS.md`](http-3.0/PORTS.md).
+
+Packet fields are being treated as typed protocol data rather than as an assumption that semantic fields must arrive in one particular order. Any-order parsing must canonicalize the parsed fields before integrity verification, reject duplicate singleton fields, and enforce required-field rules. The repository should not accept reordered authenticated packets merely by hashing their raw wire order.
+
+For the HTTP 3.0 build and protocol checks:
+
+```sh
+make -C http-3.0 port-test
+make -C http-3.0 demo
+make -C http-3.0 test
+```
+
+The standalone logical-port test is the smallest verification target; `demo` exercises the native packet pipeline; `test` additionally runs the Python reference tests and Station tests.
+
+## XML API projects and examples
+
+SLeeLa provides a source-backed BODI XML project layer under [`api/bodi/`](api/bodi/). XML projects can currently represent executable science operations — including math, physics, chemistry, and data analytics — plus SMTP email, HTTP-style posts, listener declarations, and deterministic routers. The native data-analytics shelf is under [`api/data-analytics/`](api/data-analytics/). The native C vocabulary for posts, listeners, and routers is under [`api/posting/`](api/posting/), [`api/listener/`](api/listener/), and [`api/router/`](api/router/).
+
+Runnable XML examples and expected BODI witness evidence are published under [`examples/`](examples/). Examples 07–09 demonstrate POST, listener, and router declarations without implicitly opening sockets or sending network traffic. The BODI runner uses an allow-listed dispatcher; XML cannot invoke arbitrary shell commands or arbitrary native functions.
+
+
+## GUI and document color system
+
+SLeeLa uses **Yellow, Gray, and Black** as its base visual colors, with **White, Red, and Blue** as semantic support colors. Yellow identifies attention and active states; Gray provides structure; Black provides the foundation; White provides readable surfaces; Red marks errors or danger; and Blue marks information, navigation, or service context. See [GUI-COLORS.md](GUI-COLORS.md) and [DOCUMENT-COLORS.md](DOCUMENT-COLORS.md).
+
+## Regex API — four levels of text matching
+
+SLeeLa now provides a source-backed Regex API under api/regex/. The API is designed to make ordinary text matching readable first and technically precise second: the user asks a simple question about text without needing to learn a full regular-expression engine before getting useful work done.
+
+The API is organized as four progressive levels:
+
+| Level | Name | Core question | Documentation |
+|---|---|---|---|
+| **1** | **Find** | Is this literal text present, at the beginning, at the end, or exactly? | [LEVEL-1-FIND.sleela](api/regex/LEVEL-1-FIND.sleela) |
+| **2** | **Shape** | Does the text have a recognizable character shape and repetition? | [LEVEL-2-SHAPE.sleela](api/regex/LEVEL-2-SHAPE.sleela) |
+| **3** | **Structure** | Can readable pieces be combined into choices, groups, ranges, optionals, and captures? | [LEVEL-3-STRUCTURE.sleela](api/regex/LEVEL-3-STRUCTURE.sleela) |
+| **4** | **Expression** | Does the application need assertions, properties, named captures, and other advanced expression features? | [LEVEL-4-EXPRESSION.sleela](api/regex/LEVEL-4-EXPRESSION.sleela) |
+
+The central teaching progression is **Find → Shape → Repeat → Combine → Advanced**. A pattern should express the question being asked, while the implementation remains responsible for compilation, matching, limits, and validation.
+
+The formal API design is [api/regex/README.md](api/regex/README.md), with the complete HTML reference in [api/regex/API.html](api/regex/API.html) and the design contract in [api/regex/REGEX-DESIGN.md](api/regex/REGEX-DESIGN.md). The complete pattern vocabulary is also collected in [api/regex/regex-patterns.sleela](api/regex/regex-patterns.sleela).
+
+### Native implementation boundary
+
+The executable foundation is implemented in C under [impl/core/sleela_regex.h](impl/core/sleela_regex.h) and [impl/core/sleela_regex.c](impl/core/sleela_regex.c), with regression coverage in [impl/tests/core/regex_smoke.c](impl/tests/core/regex_smoke.c). The current native implementation executes the deterministic **Level 1 Find** and **Level 2 Shape** subset; Levels 3 and 4 report an explicit unsupported-level status until their semantics are fully implemented. This prevents documentation from implying runtime capabilities that the native engine does not yet provide.
+
+The native result records whether a match occurred, its byte range and length, and the API level used. The current Level 2 character classes are intentionally ASCII-oriented; Unicode semantics are documented as a separate contract rather than being silently inferred. See [impl/REGEX-NATIVE.md](impl/REGEX-NATIVE.md).
+
+A minimal example is:
+
+```sleela
+#sleela 1.3
+
+class RegexExample {
+    void main() {
+        print(match("hello, SLeeLa", "contains hello"));
+        print(match("12345", "exact digit+"));
+        print(match("report.txt", "ends .txt"));
+    }
+}
+```
+
+The Regex API is deliberately text-only: matching a pattern does not implicitly acquire network, filesystem, process-execution, or other unrelated side effects.
+
+
+## Apache/Tomcat Web Server Monitor
+
+SLeeLa now includes a cross-platform web-server operations module under [`api/webserver/`](api/webserver/). Web-aware applications can use the module as a deployment dependency for Apache HTTP Server and Apache Tomcat on Linux, Windows 10+, and macOS. The module provides installation/verification, status and HTTP health checks, package-manager upgrades where supported, controlled listener-port changes, configuration validation, and explicit local Tomcat WAR deployment. OS-specific adapters fail closed when a distribution-specific installation layout is unknown; they do not silently select an unofficial binary or elevate privileges.
+
+
+## Native Database Connector
+
+SLeeLa includes `api/database/` for web-aware and general applications needing a native database contract across Linux, Windows 8+, and macOS. Supported database families are PostgreSQL, MySQL, MariaDB, SQLite, Microsoft SQL Server, Oracle Database, and ODBC-compatible systems. The connector provides bounded configuration vocabulary while platform adapters manage native client/driver installation and upgrades.
+
+
+## Subject Library XML
+
+All Subject Library families now share a declarative XML model contract under [api/subjects/](api/subjects/). The contract can describe a model, formulas, ordered procedures, observations, and provenance without granting XML arbitrary execution authority.
+
+Astrophysics is the first expanded implementation of this contract. Its model and procedure examples live under [api/subjects/astrophysics/](api/subjects/astrophysics/). The native C/C++ layer is under [impl/subjects/astrophysics/](impl/subjects/astrophysics/), including an append-only XML observation record writer.
+
+The source-addition rule is deliberately conservative: a new scientific operation enters native source only when its quantities, units, assumptions, valid domain, numerical method, persistence semantics, and tests are explicit. A model may be represented in XML before it becomes an executable native operation.
+
+
+## Native HTTP server grades
+
+SLeeLa provides three native HTTP server grades under `http-servers/1`,
+`http-servers/2`, and `http-servers/3`:
+
+| Grade | Protocol | Default listener |
+|---|---|---|
+| 1 | HTTP/1.x over TCP | TCP 8080 |
+| 2 | HTTP/2 over TCP | TCP 8081 |
+| 3 | HTTP/3 over QUIC/UDP | UDP 8082 |
+
+They are directly runnable from the SLeeLa command line:
+
+```sh
+sleela http-server 1
+sleela http-server 2
+sleela http-server 3 --key server.key --cert server.crt
+```
+
+Grade 2 uses native HTTP/2 framing and multiplexed streams. Grade 3 uses a
+QUIC-capable HTTP/3 backend with QUIC v1, TLS 1.3, ALPN `h3`, and QPACK.
+The dedicated Grade 2 and Grade 3 listeners do not currently claim automatic
+same-listener HTTP/1 fallback.
+
+Runtime configuration, logging, generated binaries, TLS credentials, and
+other outputs are documented in
+[`http-servers/CONFIGURATION.md`](http-servers/CONFIGURATION.md),
+[`http-servers/LOGGING.md`](http-servers/LOGGING.md), and
+[`http-servers/OUTPUTS.md`](http-servers/OUTPUTS.md).
+
+
+
+## Skya™ Telephony — integrated SLeeLa subsystem
+
+Skya™ is the SLeeLa telephony subsystem under [`telephony-skya/`](telephony-skya/). It is implemented as part of the main SLeeLa C/C++ execution path rather than as an unrelated parallel runtime.
+
+The current integration provides:
+
+- native Skya engine lifecycle and peer/room state;
+- SLeeLa VM binding through [`telephony-skya/native/skya_sleela_bridge.*`](telephony-skya/native/);
+- the main `sleela skya` command family;
+- server, client, and combined roles;
+- Basic, Intermediate, and Advanced initial NAT/firewall configuration policy;
+- reuse of SLeeLa's existing NAT-aware and OS-specific port-awareness architecture;
+- HTTP/2 and HTTP/3 capability selection in the configuration model;
+- BODI-to-JavaFX UI assets and SLeeLa application-model documentation;
+- runnable `.sleela` server/client/room integration documents.
+
+Typical commands after building the main runtime are:
+
+```sh
+./impl/build/sleela skya plan
+./impl/build/sleela skya --server --room lobby
+./impl/build/sleela skya --client --room lobby
+./impl/build/sleela skya --both --room lobby
+```
+
+The initial policy layer is deliberately non-destructive: `plan` reports the selected configuration and detects supported firewall facilities without silently changing firewall rules. Firewall lifecycle remains owned by the existing SLeeLa port-awareness subsystem.
+
+Configuration levels are documented in [`telephony-skya/docs/NAT-FIREWALL-CONFIG.md`](telephony-skya/docs/NAT-FIREWALL-CONFIG.md), while the implementation and current completion boundary are documented in [`SKYA.md`](SKYA.md).
+
+**Completion status:** Skya is integrated into the SLeeLa C/C++ runtime, but it is not yet a complete production telephony server. HTTP/2 and HTTP/3 session transport, QUIC integration, media capture/playback and codec adapters, certificate-quality extraction, actual NAT traversal/relay transport, resumable file transfer, runtime firewall open/close lifecycle, and full multi-peer call/session management remain implementation work. Documentation distinguishes the current foundation from those future transport and media layers.
+
+
+## Guia™ GUI Protocol
+
+Add a clear GUI architecture section stating that Guia™ 1.0 is part of the SLeeLa source and is the standard GUI-to-client/listener protocol. JavaFX implementations MUST and DO use the Guia™ contract through their adapter; BODI remains declarative and SLeeLa remains authoritative.
+
+See `docs/SLEELA_GUI_PROTOCOL.md`, `docs/GUIA_PROTOCOL_REFERENCE.md`, `docs/GUIA_OBJECTS.md`, and `docs/GUIA_TRANSITIONS.md` for the normative Guia™ references.
+
+
+## Platform Completion Documents
+
+The project now has a dedicated completion layer for the language, runtime and application platform:
+
+- [LANGUAGE.md](LANGUAGE.md) — language surface
+- [LANGUAGE.SPEC.md](LANGUAGE.SPEC.md) — formal engineering contract
+- [RUNTIME.md](RUNTIME.md) — execution/runtime model
+- [STANDARD.LIBRARY.md](STANDARD.LIBRARY.md) — standard library
+- [BUILD.SYSTEM.md](BUILD.SYSTEM.md) — application build lifecycle
+- [PACKAGE.MANAGER.md](PACKAGE.MANAGER.md) — packages and dependencies
+- [ABI.md](ABI.md) — ABI boundaries
+- [PLATFORM.md](PLATFORM.md) — Linux/macOS/Windows platform contract
+- [SECURITY.md](SECURITY.md) — security model
+- [TESTING.md](TESTING.md) — verification strategy
+- [IDE.md](IDE.md) — IDE/language-server direction
+- [APPLICATIONS.md](APPLICATIONS.md) — SLeeLa-native application model
+- [VOIP.md](VOIP.md) — telephony/VoIP model
+- [HTTP.md](HTTP.md) — HTTP architecture
+- [DRIVERS.md](DRIVERS.md) — driver model
+- [API.INDEX.md](API.INDEX.md) — API index
+
+The intended complete application lifecycle is **SOURCE → CHECK → BUILD → TEST → PACKAGE → INSTALL → RUN → VERIFY**.
+
+## Corrections
+
+Recent corrections to pre-existing defects (full detail in
+[`REVISIONS.md`](REVISIONS.md), 2026-10-03 entry):
+
+- **Compiler front end now builds and runs.** The `impl/` C/C++ front end had
+  never compiled; the missing Java statement/expression AST nodes were added and
+  wired through the semantic analyzer and bytecode compiler, and a latent
+  `Binary`-operand bug was fixed. `cd impl && make test` now passes end to end.
+- **Build integrity across the repo.** Repaired corrupted sources (collapsed
+  `\n` lines, mis-escaped string/char literals), duplicate definitions, missing
+  includes/declarations, Makefile path/rule bugs, and restored executable bits on
+  shell scripts. The top-level `make` completes; sub-project builds pass except
+  environment-only targets (macOS, PowerShell, kernel headers, GTK4/VTE).
+- **A real heap bug** in the native memory manager (freeing the wrong address for
+  alignment-padded allocations) was fixed.
+- **Tests/fixtures** were reconciled with the documented syntax range and had
+  genuinely wrong expectations corrected.
