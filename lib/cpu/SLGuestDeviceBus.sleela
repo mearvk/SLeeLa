@@ -1,0 +1,65 @@
+/*
+ * lib/cpu/SLGuestDeviceBus.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLGuestDeviceBus — the virtual device bus the hypervisor
+ *   presents to a guest VM. It holds the guest's devices (timer, console, block
+ *   device), routes a guest MMIO access to the device that owns the address,
+ *   and aggregates device interrupts into the guest's interrupt controller.
+ *   This is the "chipset" of the guest machine (step 3 of the OS-VM roadmap).
+ *
+ * MMIO dispatch: a guest read/write to a device-owned address is a VM-exit the
+ * hypervisor services by calling the owning device's register handler. IRQ
+ * aggregation: after a tick, any device with a raised line is posted to the
+ * guest interrupt controller for the guest kernel to service.
+ *
+ * Family: cpu. Composes SLGuestTimer/Console/BlockDevice and SLInterruptController.
+ */
+#sleela 1.3
+class SLGuestDeviceBus {
+  SLGuestTimer timer;
+  SLGuestConsole console;
+  SLGuestBlockDevice blk;
+  SLInterruptController pic;   // guest interrupt controller
+  int mmioAccesses;
+
+  void configure(SLGuestTimer t, SLGuestConsole c, SLGuestBlockDevice b, SLInterruptController controller) {
+    timer = t; console = c; blk = b; pic = controller;
+    mmioAccesses = 0;
+    if (timer != null && timer.irq() >= 0) { pic.enable(timer.irq()); }
+    if (blk != null && blk.irq() >= 0) { pic.enable(blk.irq()); }
+  }
+
+  // Route a guest MMIO read to the owning device.
+  int mmioRead(int addr) {
+    mmioAccesses = mmioAccesses + 1;
+    if (timer != null && timer.owns(addr)) { return timer.read(addr); }
+    if (console != null && console.owns(addr)) { return console.read(addr); }
+    if (blk != null && blk.owns(addr)) { return blk.read(addr); }
+    return 0;
+  }
+
+  // Route a guest MMIO write to the owning device.
+  void mmioWrite(int addr, int value) {
+    mmioAccesses = mmioAccesses + 1;
+    if (timer != null && timer.owns(addr)) { timer.write(addr, value); return; }
+    if (console != null && console.owns(addr)) { console.write(addr, value); return; }
+    if (blk != null && blk.owns(addr)) { blk.write(addr, value); return; }
+  }
+
+  // Advance device time by one tick and post any raised interrupts into the
+  // guest interrupt controller.
+  void tick() {
+    if (timer != null) {
+      timer.tick();
+      if (timer.irqRaised()) { pic.raise(timer.irq()); timer.clearIRQ(); }
+    }
+    if (blk != null && blk.irqRaised()) { pic.raise(blk.irq()); blk.clearIRQ(); }
+  }
+
+  // The guest kernel's ISR dispatch asks for the highest-priority pending IRQ.
+  int pendingInterrupt() { if (pic.hasPending()) { return pic.highestPriorityPending(); } return -1; }
+  void acknowledge(int line) { pic.acknowledge(line); }
+
+  int mmioCount() { return mmioAccesses; }
+  SLInterruptController interruptController() { return pic; }
+}

@@ -8,21 +8,23 @@
  *   Linux-style kernel — run on top of the Sleela CPU model.
  *
  * Virtualization model: each guest gets a memory window carved from host RAM
- * (guest-physical -> host-physical by a base offset, the simplest form of
- * second-level address translation), and the host core's TRAP vector is the
- * VM-exit path (a guest SYSCALL/privileged op traps to the hypervisor, which
- * emulates it and resumes the guest).
+ * translated by a real MMU (SLMMU, page tables + protection), a device model
+ * (SLGuestDeviceBus: timer, console, block device) exposed via guest MMIO, and
+ * the host core's TRAP vector as the VM-exit path (a guest privileged op/page
+ * fault/MMIO traps to the hypervisor, which emulates it and resumes the guest).
+ * Guest code runs on the guest's own SLSleelaVM opcode substrate.
  *
  * SCOPE NOTE: this is an architectural model of hosted virtualization, not a
- * hardware-virtualization (VT-x/AMD-V) implementation and not a bootable Linux.
- * See CPU.md and EXECUTION.md for the exact boundary.
+ * hardware-virtualization (VT-x/AMD-V) implementation and not a bootable
+ * upstream Linux. See CPU.md and EXECUTION.md for the exact boundary.
  *
- * Family: cpu. Composes SLCPU/SLCore, SLRAM, SLGuestVM.
+ * Family: cpu. Composes SLCPU/SLCore, SLRAM, SLGuestVM, SLMMU, SLGuestDeviceBus.
  */
 #sleela 1.3
 class SLHypervisor {
   SLCPU host;
   SLRAM hostMemory;
+  SLHardDrive bootDisk;   // host-backed drive the guest block device uses
   SLGuestVM g0; SLGuestVM g1; SLGuestVM g2; SLGuestVM g3;
   int guestCount;
   int exits;         // total VM-exits handled
@@ -31,6 +33,9 @@ class SLHypervisor {
   void configure(SLCPU hostCpu, SLRAM ram) {
     host = hostCpu; hostMemory = ram; guestCount = 0; exits = 0; current = -1;
   }
+
+  // Optionally provide a host drive to back guests' virtual block devices.
+  void attachBootDisk(SLHardDrive drive) { bootDisk = drive; }
 
   // Create a guest VM with a guest-physical window [base, base+size) in host RAM.
   // A per-guest MMU identity-maps the window with full permissions as the boot
@@ -45,6 +50,15 @@ class SLHypervisor {
     mmu.configure(pageSize, pages);
     mmu.identityMap(pages, base / pageSize, mmu.PERM_WRITE + mmu.PERM_EXEC);
     vm.attachMMU(mmu);
+
+    // Guest device model (step 3): timer (IRQ0), console, block device (IRQ2),
+    // and a guest interrupt controller aggregating their lines.
+    SLGuestTimer timer = new SLGuestTimer(); timer.init(57344, 0);
+    SLGuestConsole con = new SLGuestConsole(); con.init(57360);
+    SLGuestBlockDevice blk = new SLGuestBlockDevice(); blk.init(57376, 2, bootDisk);
+    SLInterruptController gpic = new SLInterruptController(); gpic.configure(60000);
+    SLGuestDeviceBus bus = new SLGuestDeviceBus(); bus.configure(timer, con, blk, gpic);
+    vm.attachDevices(bus);
 
     int idx = guestCount;
     if (idx == 0) { g0 = vm; } if (idx == 1) { g1 = vm; }
