@@ -74,6 +74,7 @@ class SLGuestDeviceBus {
     }
   }
   SLGuestTimer timerDevice() { return timer; }
+  SLGuestBlockDevice blockDevice() { return blk; }
 
   int mmioCount() { return mmioAccesses; }
   SLInterruptController interruptController() { return pic; }

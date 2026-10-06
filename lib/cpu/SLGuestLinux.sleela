@@ -34,6 +34,7 @@ class SLGuestLinux {
   SLGuestVM vm;
   SLGuestKernelImage kernelImage;   // compiled kernel image (step 4), if built
   SLGuestScheduler scheduler;       // guest task scheduler, timer-driven (step 6)
+  SLGuestFileSystem filesystem;     // in-guest filesystem over the block device
   int kernelEntry;
   int initEntry;
   int booted;
@@ -44,7 +45,16 @@ class SLGuestLinux {
     distro = distroName; vm = guest; booted = 0; syscalls = 0;
     kernelEntry = 0; initEntry = 0; timerTicks = 0;
     scheduler = new SLGuestScheduler(); scheduler.configure(4); // 4-tick quantum
+    // Mount a filesystem on the guest block device (data region after the
+    // kernel/boot blocks) if the guest has one.
+    SLGuestDeviceBus bus = guest.deviceBus();
+    if (bus != null && bus.blockDevice() != null) {
+      filesystem = new SLGuestFileSystem();
+      filesystem.configure(bus.blockDevice(), 128);
+    }
   }
+
+  SLGuestFileSystem fileSystem() { return filesystem; }
 
   // Create and admit a guest task (a guest thread). The guest init process
   // (PID 1) spawns these; the timer then schedules them preemptively.
