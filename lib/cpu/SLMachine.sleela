@@ -89,7 +89,9 @@ class SLMachine {
     SLGuestVM vm = hv.createGuest("linux-guest", 262144, 65536, guestEntry);
     SLGuestLinux linux = new SLGuestLinux();
     linux.configure("sleela-linux", vm);
+    vm.attachKernel(linux);                 // timer IRQs drive the guest scheduler
     linux.boot(guestEntry, guestEntry + 256);
+    linux.startScheduling(8);               // program the guest timer heartbeat
     return hv.runGuest(0, budget);
   }
 
@@ -103,8 +105,10 @@ class SLMachine {
     SLGuestVM vm = hv.createGuest("linux-guest", 262144, 65536, guestEntry);
     SLGuestLinux linux = new SLGuestLinux();
     linux.configure("sleela-linux", vm);
-    linux.buildKernel(kernelSourcePath, langId);   // compile the guest kernel
+    vm.attachKernel(linux);                         // timer IRQs drive the scheduler
+    linux.buildKernel(kernelSourcePath, langId);    // compile the guest kernel
     linux.boot(guestEntry, guestEntry + 256);
+    linux.startScheduling(8);
     return hv.runGuest(0, budget);
   }
 
