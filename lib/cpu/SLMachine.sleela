@@ -135,6 +135,30 @@ class SLMachine {
     return hv.runGuest(0, budget);
   }
 
+  // Boot a guest, launch its shell as init's first child, and run a short
+  // command script (each entry is a leading-char + arg pair). Returns the
+  // number of shell commands executed. Demonstrates boot -> init -> shell.
+  int runLinuxGuestShell(String kernelSrc, int kernelLang, int guestEntry) {
+    SLHypervisor hv = new SLHypervisor();
+    hv.configure(cpu, memory);
+    hv.attachBootDisk(drive);
+    SLGuestVM vm = hv.createGuest("linux-guest", 262144, 65536, guestEntry);
+    SLGuestLinux linux = new SLGuestLinux();
+    linux.configure("sleela-linux", vm);
+    vm.attachKernel(linux);
+    linux.buildKernel(kernelSrc, kernelLang);
+    linux.boot(guestEntry, guestEntry + 256);
+    SLGuestInit init = linux.startInit();
+    SLGuestShell sh = init.launchShell();
+    linux.startScheduling(8);
+    // A tiny boot script: help, ps, echo 'A', exit.
+    sh.run(104, 0);     // help
+    sh.run(112, 0);     // ps
+    sh.run(101, 65);    // echo 'A'
+    sh.run(120, 0);     // exit
+    return sh.commandCount();
+  }
+
   // The bootloader needs a disk driver before the OS driver manager exists;
   // build a minimal one bound to the boot drive.
   SLDiskDriver buildBootDiskDriver() {
