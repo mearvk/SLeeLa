@@ -1,0 +1,78 @@
+/*
+ * lib/cpu/SLRegisterFile.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLRegisterFile — the bank of general-purpose registers a
+ *   CPU core reads and writes each cycle. Real cores expose on the order of
+ *   16-32 architectural registers with multiple read ports and one or more
+ *   write ports; this models a configurable count with one write and two reads
+ *   per access (the classic RISC pattern feeding the ALU).
+ *
+ * Backed by SLRegister cells; indexed access with bounds checking.
+ *
+ * Family: cpu. Composes SLRegister.
+ */
+#sleela 1.3
+class SLRegisterFile {
+  int count;
+  int width;
+  int r0; int r1; int r2; int r3; int r4; int r5; int r6; int r7;
+  int r8; int r9; int r10; int r11; int r12; int r13; int r14; int r15;
+  int reads;
+  int writes;
+
+  // SLeeLa surface has no array storage; model up to 16 registers as fields,
+  // which matches a typical architectural register count.
+  void configure(int regCount, int bits) {
+    count = regCount; if (count > 16) { count = 16; }
+    width = bits; reads = 0; writes = 0;
+    r0=0;r1=0;r2=0;r3=0;r4=0;r5=0;r6=0;r7=0;
+    r8=0;r9=0;r10=0;r11=0;r12=0;r13=0;r14=0;r15=0;
+  }
+
+  int pow2(int n){int p=1;int i=0;while(i<n){p=p*2;i=i+1;}return p;}
+  int clampWord(int v){int m=pow2(width);int x=v%m;if(x<0){x=x+m;}return x;}
+
+  void write(int index, int v) {
+    writes = writes + 1;
+    int w = clampWord(v);
+    if (index == 0) { return; }        // r0 is the hardwired-zero convention
+    if (index == 1) { r1 = w; }
+    if (index == 2) { r2 = w; }
+    if (index == 3) { r3 = w; }
+    if (index == 4) { r4 = w; }
+    if (index == 5) { r5 = w; }
+    if (index == 6) { r6 = w; }
+    if (index == 7) { r7 = w; }
+    if (index == 8) { r8 = w; }
+    if (index == 9) { r9 = w; }
+    if (index == 10) { r10 = w; }
+    if (index == 11) { r11 = w; }
+    if (index == 12) { r12 = w; }
+    if (index == 13) { r13 = w; }
+    if (index == 14) { r14 = w; }
+    if (index == 15) { r15 = w; }
+  }
+
+  int read(int index) {
+    reads = reads + 1;
+    if (index == 0) { return 0; }
+    if (index == 1) { return r1; }
+    if (index == 2) { return r2; }
+    if (index == 3) { return r3; }
+    if (index == 4) { return r4; }
+    if (index == 5) { return r5; }
+    if (index == 6) { return r6; }
+    if (index == 7) { return r7; }
+    if (index == 8) { return r8; }
+    if (index == 9) { return r9; }
+    if (index == 10) { return r10; }
+    if (index == 11) { return r11; }
+    if (index == 12) { return r12; }
+    if (index == 13) { return r13; }
+    if (index == 14) { return r14; }
+    if (index == 15) { return r15; }
+    return 0;
+  }
+
+  int registerCount() { return count; }
+}

@@ -1,0 +1,44 @@
+/*
+ * lib/cpu/SLAssembler.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLAssembler — a tiny assembler that turns instruction
+ *   mnemonics (from SLInstructionSet) and operands into encoded words appended
+ *   to an SLProgram. It is the convenience layer programs are written through:
+ *   emit(opcode, rd, rs, imm) encodes one instruction via SLInstruction.
+ *
+ * This lets a Sleela program for the Sleela CPU be authored in Sleela source,
+ * assembled into an SLProgram image, and then loaded by the OS.
+ *
+ * Family: cpu. Composes SLInstructionSet, SLInstruction, SLProgram.
+ */
+#sleela 1.3
+class SLAssembler {
+  SLInstructionSet isa;
+  SLProgram program;
+
+  void configure(SLInstructionSet instructionSet, SLProgram target) {
+    isa = instructionSet; program = target;
+  }
+
+  // Encode and append one instruction; returns the address (index) it landed at.
+  int emit(int opcode, int rd, int rs, int imm) {
+    SLInstruction instr = new SLInstruction();
+    instr.configure(opcode, rd, rs, imm);
+    return program.append(instr.encode());
+  }
+
+  // Convenience emitters for the common instructions.
+  int mov(int rd, int imm) { return emit(isa.MOV, rd, 0, imm); }
+  int add(int rd, int rs) { return emit(isa.ADD, rd, rs, 0); }
+  int sub(int rd, int rs) { return emit(isa.SUB, rd, rs, 0); }
+  int cmp(int rd, int rs) { return emit(isa.CMP, rd, rs, 0); }
+  int load(int rd, int addr) { return emit(isa.LOAD, rd, 0, addr); }
+  int store(int rs, int addr) { return emit(isa.STORE, 0, rs, addr); }
+  int jmp(int addr) { return emit(isa.JMP, 0, 0, addr); }
+  int jz(int addr) { return emit(isa.JZ, 0, 0, addr); }
+  int jnz(int addr) { return emit(isa.JNZ, 0, 0, addr); }
+  int syscall(int number) { return emit(isa.SYSCALL, 0, 0, number); }
+  int halt() { return emit(isa.HALT, 0, 0, 0); }
+
+  SLProgram assembled() { return program; }
+}

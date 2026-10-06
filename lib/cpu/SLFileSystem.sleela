@@ -1,0 +1,89 @@
+/*
+ * lib/cpu/SLFileSystem.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLFileSystem — the OS filesystem layer over the block
+ *   device. It models a tiny directory of named files, each a run of disk
+ *   blocks, and provides open/read/write/close by name on top of SLDiskDriver.
+ *   The program loader uses it to find and read executable images.
+ *
+ * Holds up to 8 directory entries (SLeeLa surface has no arrays). This is a
+ * behavioral model of an inode table + block allocation.
+ *
+ * Family: cpu. Composes SLDiskDriver.
+ */
+#sleela 1.3
+class SLFileSystem {
+  static final int MAX_FILES = 8;
+  SLDiskDriver disk;
+
+  String n0; int b0; int l0;   // name, start block, length (blocks) per entry
+  String n1; int b1; int l1;
+  String n2; int b2; int l2;
+  String n3; int b3; int l3;
+  String n4; int b4; int l4;
+  String n5; int b5; int l5;
+  String n6; int b6; int l6;
+  String n7; int b7; int l7;
+  int fileCount;
+  int nextFreeBlock;
+
+  void configure(SLDiskDriver blockDevice, int dataStartBlock) {
+    disk = blockDevice; fileCount = 0; nextFreeBlock = dataStartBlock;
+  }
+
+  // Create a file occupying `blocks` contiguous blocks; returns its index.
+  int create(String name, int blocks) {
+    int idx = fileCount;
+    if (idx >= MAX_FILES) { return -1; }
+    int start = nextFreeBlock;
+    if (idx == 0) { n0 = name; b0 = start; l0 = blocks; }
+    if (idx == 1) { n1 = name; b1 = start; l1 = blocks; }
+    if (idx == 2) { n2 = name; b2 = start; l2 = blocks; }
+    if (idx == 3) { n3 = name; b3 = start; l3 = blocks; }
+    if (idx == 4) { n4 = name; b4 = start; l4 = blocks; }
+    if (idx == 5) { n5 = name; b5 = start; l5 = blocks; }
+    if (idx == 6) { n6 = name; b6 = start; l6 = blocks; }
+    if (idx == 7) { n7 = name; b7 = start; l7 = blocks; }
+    nextFreeBlock = nextFreeBlock + blocks;
+    fileCount = fileCount + 1;
+    return idx;
+  }
+
+  int indexOf(String name) {
+    if (fileCount > 0 && n0 == name) { return 0; }
+    if (fileCount > 1 && n1 == name) { return 1; }
+    if (fileCount > 2 && n2 == name) { return 2; }
+    if (fileCount > 3 && n3 == name) { return 3; }
+    if (fileCount > 4 && n4 == name) { return 4; }
+    if (fileCount > 5 && n5 == name) { return 5; }
+    if (fileCount > 6 && n6 == name) { return 6; }
+    if (fileCount > 7 && n7 == name) { return 7; }
+    return -1;
+  }
+
+  int startBlock(int idx) {
+    if (idx == 0) { return b0; } if (idx == 1) { return b1; }
+    if (idx == 2) { return b2; } if (idx == 3) { return b3; }
+    if (idx == 4) { return b4; } if (idx == 5) { return b5; }
+    if (idx == 6) { return b6; } if (idx == 7) { return b7; }
+    return -1;
+  }
+
+  int lengthBlocks(int idx) {
+    if (idx == 0) { return l0; } if (idx == 1) { return l1; }
+    if (idx == 2) { return l2; } if (idx == 3) { return l3; }
+    if (idx == 4) { return l4; } if (idx == 5) { return l5; }
+    if (idx == 6) { return l6; } if (idx == 7) { return l7; }
+    return 0;
+  }
+
+  // Read the first block of a named file (loader entry; full reads loop over
+  // the file's block run).
+  int readFirstBlock(String name) {
+    int idx = indexOf(name);
+    if (idx < 0 || disk == null) { return -1; }
+    return disk.readBlock(startBlock(idx));
+  }
+
+  int files() { return fileCount; }
+}

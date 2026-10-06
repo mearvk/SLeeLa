@@ -1,0 +1,42 @@
+/*
+ * lib/cpu/SLBus.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLBus — the shared wiring that moves words between CPU
+ *   components (registers, ALU, memory, I/O). A bus has an address lane, a data
+ *   lane, and a control lane, plus a width. It models a single in-flight
+ *   transfer and counts traffic; arbitration between masters is handled by the
+ *   control unit that drives it.
+ *
+ * Family: cpu. Pure Sleela interconnect.
+ */
+#sleela 1.3
+class SLBus {
+  static final int CTRL_IDLE  = 0;
+  static final int CTRL_READ  = 1;
+  static final int CTRL_WRITE = 2;
+
+  String name;
+  int width;
+  int addressLane;
+  int dataLane;
+  int controlLane;
+  int transfers;
+
+  void configure(String busName, int bits) {
+    name = busName; width = bits;
+    addressLane = 0; dataLane = 0; controlLane = CTRL_IDLE; transfers = 0;
+  }
+
+  void driveAddress(int addr) { addressLane = addr; }
+  void driveData(int data) { dataLane = data; }
+  void driveControl(int ctrl) { controlLane = ctrl; }
+
+  // Complete the current transfer; returns the data lane value.
+  int transfer() { transfers = transfers + 1; return dataLane; }
+
+  int address() { return addressLane; }
+  int data() { return dataLane; }
+  int control() { return controlLane; }
+  int transferCount() { return transfers; }
+  String busName() { return name; }
+}

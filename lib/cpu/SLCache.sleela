@@ -1,0 +1,61 @@
+/*
+ * lib/cpu/SLCache.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLCache — a CPU cache level (L1/L2/L3) sitting between a
+ *   core and main memory. It models the properties that matter for behavior:
+ *   total size, line size, associativity, and the hit/miss statistics that
+ *   drive the memory hierarchy. On a miss it falls through to a backing SLRAM
+ *   (or a slower cache level).
+ *
+ * This is a behavioral model: it tracks a modeled hit rate and forwards misses;
+ * the exact line contents live in the backing SLRAM below the bridge.
+ *
+ * Family: cpu. Composes SLRAM as its backing store.
+ */
+#sleela 1.3
+class SLCache {
+  String level;        // "L1", "L2", "L3"
+  int sizeBytes;
+  int lineBytes;
+  int associativity;   // ways
+  SLRAM backing;       // next level down (main memory or a lower cache)
+  int accesses;
+  int hits;
+  int misses;
+  int warmLines;       // modeled count of resident lines
+
+  void configure(String cacheLevel, int size, int line, int ways) {
+    level = cacheLevel; sizeBytes = size; lineBytes = line; associativity = ways;
+    accesses = 0; hits = 0; misses = 0; warmLines = 0;
+  }
+
+  void attachBacking(SLRAM ram) { backing = ram; }
+
+  int lineCount() { if (lineBytes == 0) { return 0; } return sizeBytes / lineBytes; }
+  int lineOf(int addr) { if (lineBytes == 0) { return 0; } return addr / (lineBytes / 4); }
+
+  // Access a word address. A line already warm is a hit; otherwise a miss that
+  // warms the line (bounded by the cache's line capacity) and reads from the
+  // backing store.
+  int access(int addr) {
+    accesses = accesses + 1;
+    int line = lineOf(addr);
+    boolean resident = line < warmLines;
+    if (resident) {
+      hits = hits + 1;
+    } else {
+      misses = misses + 1;
+      if (warmLines < lineCount()) { warmLines = warmLines + 1; }
+      if (backing != null) { return backing.readWord(addr); }
+    }
+    if (backing != null) { return backing.readWord(addr); }
+    return 0;
+  }
+
+  int accessCount() { return accesses; }
+  int hitCount() { return hits; }
+  int missCount() { return misses; }
+  // hit rate in percent (0..100), integer
+  int hitRatePercent() { if (accesses == 0) { return 0; } return (hits * 100) / accesses; }
+  String levelName() { return level; }
+}

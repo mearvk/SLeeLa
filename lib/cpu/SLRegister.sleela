@@ -1,0 +1,61 @@
+/*
+ * lib/cpu/SLRegister.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLRegister — an N-bit register: a word of storage that
+ *   loads on a clock edge. Conceptually a row of SLFlipFlop cells sharing one
+ *   clock and one load-enable. Registers hold the CPU's working values (the
+ *   general-purpose registers, the program counter, the status word).
+ *
+ * This class stores the word as an integer for efficiency but models the
+ * clocked, load-enabled flip-flop behavior exactly.
+ *
+ * Family: cpu. Clocked storage.
+ */
+#sleela 1.3
+class SLRegister {
+  String name;
+  int width;
+  int value;
+  int loadEnable;
+  int lastClk;
+  int writes;
+
+  void configure(String regName, int bits) {
+    name = regName; width = bits; value = 0;
+    loadEnable = 0; lastClk = 0; writes = 0;
+  }
+
+  int pow2(int n) { int p = 1; int i = 0; while (i < n) { p = p * 2; i = i + 1; } return p; }
+  int mask() { return pow2(width); }
+
+  void setInput(int v) { value = v; } // combinational input staging
+  void enableLoad() { loadEnable = 1; }
+  void disableLoad() { loadEnable = 0; }
+
+  // Clocked load. On the rising edge, if load is enabled, capture the input
+  // (already truncated to the register width).
+  int clock(int clk, int input) {
+    if (lastClk == 0 && clk == 1 && loadEnable == 1) {
+      int m = mask();
+      int v = input % m;
+      if (v < 0) { v = v + m; }
+      value = v;
+      writes = writes + 1;
+    }
+    lastClk = clk;
+    return value;
+  }
+
+  // Direct load helper (one clocked write), convenient for drivers.
+  int load(int input) {
+    enableLoad();
+    clock(0, input);
+    clock(1, input);
+    disableLoad();
+    return value;
+  }
+
+  int read() { return value; }
+  String regName() { return name; }
+  int bitWidth() { return width; }
+}

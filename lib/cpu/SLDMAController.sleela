@@ -1,0 +1,44 @@
+/*
+ * lib/cpu/SLDMAController.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLDMAController — Direct Memory Access: hardware that
+ *   moves blocks of data between a device and main memory without the CPU
+ *   copying each word. The CPU programs a source, destination, and length, then
+ *   the DMA engine performs the transfer and raises an interrupt on completion.
+ *   This is how disks and NICs achieve high throughput.
+ *
+ * Family: cpu. Composes SLRAM and signals SLInterruptController.
+ */
+#sleela 1.3
+class SLDMAController {
+  SLRAM memory;
+  int srcAddr;
+  int dstAddr;
+  int length;
+  int busy;
+  int transfers;
+
+  void configure(SLRAM ram) { memory = ram; busy = 0; transfers = 0; }
+
+  void program(int source, int destination, int words) {
+    srcAddr = source; dstAddr = destination; length = words; busy = 1;
+  }
+
+  // Perform the memory-to-memory copy and complete; returns words moved.
+  int runTransfer() {
+    if (busy == 0) { return 0; }
+    int i = 0;
+    while (i < length) {
+      memory.writeWord(dstAddr + i, memory.readWord(srcAddr + i));
+      i = i + 1;
+    }
+    busy = 0;
+    transfers = transfers + 1;
+    return length;
+  }
+
+  // After runTransfer the device/driver raises IRQ_DISK (or similar) via the
+  // interrupt controller; this reports completion for the driver to poll.
+  boolean complete() { return busy == 0; }
+  int transferCount() { return transfers; }
+}

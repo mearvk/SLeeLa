@@ -1,0 +1,68 @@
+/*
+ * lib/cpu/SLCPU.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLCPU — a complete multi-core processor package: a set of
+ *   execution cores sharing main memory and a last-level (L3) cache, plus
+ *   identifying metadata (vendor, model, core count, clock). This is the top of
+ *   the hardware stack — the chip the operating system boots on.
+ *
+ * It models a typical Intel/AMD-style arrangement: N cores, private L1/L2 per
+ * core (L1 lives in SLCore), a shared L3, and one coherent main memory. Up to 8
+ * cores are wired as fields (SLeeLa surface has no arrays).
+ *
+ * Family: cpu. Composes SLCore, SLCache, SLRAM.
+ */
+#sleela 1.3
+class SLCPU {
+  String vendor;
+  String model;
+  int coreCount;
+  int width;
+  int clockMHz;
+
+  SLRAM memory;
+  SLCache l3;
+  SLCore c0; SLCore c1; SLCore c2; SLCore c3;
+  SLCore c4; SLCore c5; SLCore c6; SLCore c7;
+
+  void configure(String cpuVendor, String cpuModel, int cores, int bits, int mhz) {
+    vendor = cpuVendor; model = cpuModel;
+    coreCount = cores; if (coreCount > 8) { coreCount = 8; }
+    width = bits; clockMHz = mhz;
+  }
+
+  // Build the chip: allocate memory, the shared L3, and each core.
+  void power(SLRAM mainMemory) {
+    memory = mainMemory;
+    l3 = new SLCache(); l3.configure("L3", 16777216, 64, 16); l3.attachBacking(memory);
+    if (coreCount > 0) { c0 = new SLCore(); c0.assemble(0, width, clockMHz, memory); }
+    if (coreCount > 1) { c1 = new SLCore(); c1.assemble(1, width, clockMHz, memory); }
+    if (coreCount > 2) { c2 = new SLCore(); c2.assemble(2, width, clockMHz, memory); }
+    if (coreCount > 3) { c3 = new SLCore(); c3.assemble(3, width, clockMHz, memory); }
+    if (coreCount > 4) { c4 = new SLCore(); c4.assemble(4, width, clockMHz, memory); }
+    if (coreCount > 5) { c5 = new SLCore(); c5.assemble(5, width, clockMHz, memory); }
+    if (coreCount > 6) { c6 = new SLCore(); c6.assemble(6, width, clockMHz, memory); }
+    if (coreCount > 7) { c7 = new SLCore(); c7.assemble(7, width, clockMHz, memory); }
+  }
+
+  SLCore core(int index) {
+    if (index == 0) { return c0; }
+    if (index == 1) { return c1; }
+    if (index == 2) { return c2; }
+    if (index == 3) { return c3; }
+    if (index == 4) { return c4; }
+    if (index == 5) { return c5; }
+    if (index == 6) { return c6; }
+    if (index == 7) { return c7; }
+    return c0;
+  }
+
+  // The bootstrap processor (core 0) is where firmware/the OS starts.
+  SLCore bootCore() { return c0; }
+
+  String vendorName() { return vendor; }
+  String modelName() { return model; }
+  int cores() { return coreCount; }
+  int wordWidth() { return width; }
+  int clock() { return clockMHz; }
+}

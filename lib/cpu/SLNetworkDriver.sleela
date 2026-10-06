@@ -1,0 +1,33 @@
+/*
+ * lib/cpu/SLNetworkDriver.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLNetworkDriver — a NIC driver. It extends SLDeviceDriver
+ *   and moves frames between memory and the network device, using DMA ring
+ *   buffers and IRQ_NETWORK for receive/transmit completion. The OS network
+ *   stack sits above it.
+ *
+ * Family: cpu. Extends SLDeviceDriver; composes SLDMAController.
+ */
+#sleela 1.3
+class SLNetworkDriver extends SLDeviceDriver {
+  SLDMAController dma;
+  int framesTx;
+  int framesRx;
+
+  void init(SLIOBus bus, int port, SLDMAController dmaEngine) {
+    configure("net", port, 3, bus); // IRQ_NETWORK = 3
+    dma = dmaEngine; framesTx = 0; framesRx = 0;
+  }
+
+  int transmit(int memWord, int words) {
+    if (!ready() || dma == null) { return -1; }
+    dma.program(memWord, memWord, words); // model: stage frame for the device
+    framesTx = framesTx + 1;
+    return dma.runTransfer();
+  }
+
+  void serviceInterrupt() { framesRx = framesRx + 1; }
+
+  int transmitted() { return framesTx; }
+  int received() { return framesRx; }
+}

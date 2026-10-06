@@ -1,0 +1,58 @@
+/*
+ * lib/cpu/SLAdder.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLAdder — an N-bit ripple-carry adder built from a chain
+ *   of full adders. This is the arithmetic heart of the ALU: it adds two
+ *   machine words bit-by-bit, propagating carry from the least significant bit
+ *   to the most significant, and reports an overflow/carry-out.
+ *
+ * The ripple-carry structure is the textbook adder; faster CPUs use
+ * carry-lookahead or carry-select variants (documented in CPU.md), but the
+ * semantics are identical and this models the canonical case.
+ *
+ * Family: cpu. Composes SLFullAdder over a word width.
+ */
+#sleela 1.3
+class SLAdder {
+  int width;      // bits per word (e.g. 32 or 64)
+  SLFullAdder fa; // one reusable full-adder cell, applied bit by bit
+  int result;     // numeric sum, truncated to `width` bits
+  int carryOut;   // carry out of the most significant bit
+
+  void configure(int bits) {
+    width = bits;
+    fa = new SLFullAdder(); fa.build();
+    result = 0; carryOut = 0;
+  }
+
+  int bitAt(int value, int i) {
+    int shifted = value / pow2(i);
+    return shifted % 2;
+  }
+
+  int pow2(int n) {
+    int p = 1; int i = 0;
+    while (i < n) { p = p * 2; i = i + 1; }
+    return p;
+  }
+
+  // Add two words of `width` bits; ripple the carry through each full adder.
+  int add(int a, int b) {
+    int carry = 0;
+    int sum = 0;
+    int i = 0;
+    while (i < width) {
+      fa.add(bitAt(a, i), bitAt(b, i), carry);
+      if (fa.sumBit() == 1) { sum = sum + pow2(i); }
+      carry = fa.carryBit();
+      i = i + 1;
+    }
+    result = sum;
+    carryOut = carry;
+    return result;
+  }
+
+  int sum() { return result; }
+  int carry() { return carryOut; }
+  int bitWidth() { return width; }
+}

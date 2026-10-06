@@ -1,0 +1,50 @@
+/*
+ * lib/cpu/SLRAM.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLRAM — random-access main memory: a word-addressable
+ *   store the CPU reads instructions and data from. It models capacity, word
+ *   width, and access counting, and crosses the explicit VM/OS bridge to the
+ *   native memory subsystem for the actual backing cells (SLeeLa's surface has
+ *   no large array storage, so bulk cells live below the bridge).
+ *
+ * Addressing is by word index; out-of-range access is rejected.
+ *
+ * Family: cpu. Native backing store via bridge.
+ */
+#sleela 1.3
+class SLRAM {
+  int wordCount;   // number of addressable words
+  int width;       // bits per word
+  int handle;      // native backing-store handle (0 until allocated)
+  int reads;
+  int writes;
+
+  void configure(int words, int bits) {
+    wordCount = words; width = bits; handle = 0; reads = 0; writes = 0;
+  }
+
+  // Allocate the native backing store (zero-initialized).
+  int allocate() {
+    handle = native sleela_mem_alloc_words(wordCount, width);
+    return handle;
+  }
+
+  boolean inRange(int addr) { return addr >= 0 && addr < wordCount; }
+
+  int readWord(int addr) {
+    if (!inRange(addr)) { return -1; }
+    reads = reads + 1;
+    return native sleela_mem_read_word(handle, addr);
+  }
+
+  int writeWord(int addr, int value) {
+    if (!inRange(addr)) { return -1; }
+    writes = writes + 1;
+    return native sleela_mem_write_word(handle, addr, value);
+  }
+
+  void free() { if (handle != 0) { native sleela_mem_free(handle); handle = 0; } }
+
+  int capacityWords() { return wordCount; }
+  int capacityBytes() { return wordCount * (width / 8); }
+}

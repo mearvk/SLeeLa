@@ -1,0 +1,32 @@
+/*
+ * lib/cpu/SLInstructionDecoder.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLInstructionDecoder — the decode stage. It takes a raw
+ *   instruction word fetched from memory and splits it into the opcode and
+ *   operand fields, producing an SLInstruction the control unit can execute.
+ *   This is the inverse of SLInstruction.encode().
+ *
+ * Family: cpu. Pure Sleela decode logic.
+ */
+#sleela 1.3
+class SLInstructionDecoder {
+  SLInstructionSet isa;
+  int decoded;
+
+  void configure(SLInstructionSet instructionSet) { isa = instructionSet; decoded = 0; }
+
+  // Decode a packed word [opcode][rd][rs][imm] into an SLInstruction.
+  SLInstruction decode(int word) {
+    int opcode = (word / 16777216) % 256;
+    int rd     = (word / 65536) % 256;
+    int rs     = (word / 256) % 256;
+    int imm    = word % 256;
+    SLInstruction instr = new SLInstruction();
+    instr.configure(opcode, rd, rs, imm);
+    decoded = decoded + 1;
+    return instr;
+  }
+
+  boolean validOpcode(int opcode) { return isa.valid(opcode); }
+  int decodeCount() { return decoded; }
+}

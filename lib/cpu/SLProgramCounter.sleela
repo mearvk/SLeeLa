@@ -1,0 +1,29 @@
+/*
+ * lib/cpu/SLProgramCounter.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLProgramCounter (PC) — the register holding the address
+ *   of the next instruction to fetch. Each cycle it either increments to the
+ *   following instruction or is overwritten by a branch/jump target. It is a
+ *   specialized SLRegister with increment and branch operations.
+ *
+ * Family: cpu. Specializes the register abstraction.
+ */
+#sleela 1.3
+class SLProgramCounter {
+  SLRegister reg;
+  int stride;   // bytes/words advanced per sequential instruction
+
+  void configure(int bits, int step) {
+    reg = new SLRegister(); reg.configure("PC", bits);
+    stride = step;
+  }
+
+  void reset() { reg.load(0); }
+  int value() { return reg.read(); }
+
+  // Sequential advance to the next instruction.
+  int increment() { int next = reg.read() + stride; reg.load(next); return next; }
+
+  // Non-sequential transfer of control (jump/branch/call target).
+  int branchTo(int target) { reg.load(target); return reg.read(); }
+}

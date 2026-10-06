@@ -1,0 +1,44 @@
+/*
+ * lib/cpu/SLCircuit.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLCircuit, a named combinational circuit built from gates.
+ *   It is the organizing abstraction one level above SLGate: a circuit has a
+ *   name, a declared gate/transistor budget, and tracks propagation so higher
+ *   components (adders, decoders, the ALU) can describe themselves as circuits.
+ *
+ * Modern CPUs are hierarchies of circuits (standard cells -> functional blocks
+ * -> units -> cores). This class models that hierarchy at the Sleela-source
+ * layer: it counts constituent gates and composes sub-circuits, which lets the
+ * whole design report a transistor-order estimate.
+ *
+ * Family: cpu. Pure Sleela structure.
+ */
+#sleela 1.3
+class SLCircuit {
+  String name;
+  int gateCount;        // gates directly in this circuit
+  int subCircuitCount;  // nested sub-circuits
+  int inputs;
+  int outputs;
+  int propagationUnits; // modeled gate-delay depth (critical path)
+
+  void configure(String circuitName, int in, int out) {
+    name = circuitName; inputs = in; outputs = out;
+    gateCount = 0; subCircuitCount = 0; propagationUnits = 0;
+  }
+
+  void addGate() { gateCount = gateCount + 1; }
+  void addGates(int n) { gateCount = gateCount + n; }
+  void addSubCircuit(SLCircuit c) {
+    subCircuitCount = subCircuitCount + 1;
+    gateCount = gateCount + c.totalGates();
+    if (c.criticalPath() > propagationUnits) { propagationUnits = c.criticalPath(); }
+  }
+  void setCriticalPath(int depth) { propagationUnits = depth; }
+
+  int totalGates() { return gateCount; }
+  int criticalPath() { return propagationUnits; }
+  // CMOS rule of thumb: a 2-input gate is ~4 transistors; report an estimate.
+  int transistorEstimate() { return gateCount * 4; }
+  String circuitName() { return name; }
+}

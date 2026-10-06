@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.0
-library-source-files: 10195
-library-packages: 82
+library-source-files: 10240
+library-packages: 83
 module-facade-symbols: 55
-total-symbol-records: 10250
+total-symbol-records: 10295
 
 package	symbol	path	kind
 antivirus	SLPackage.sleela	lib/antivirus/SLPackage.sleela	facade
@@ -185,6 +185,51 @@ core	SLType.sleela	lib/core/SLType.sleela	source
 core	SLTypeDescriptor.sleela	lib/core/SLTypeDescriptor.sleela	source
 core	SLUdpTransport.sleela	lib/core/SLUdpTransport.sleela	source
 core	SLValidator.sleela	lib/core/SLValidator.sleela	source
+cpu	SLALU.sleela	lib/cpu/SLALU.sleela	source
+cpu	SLAdder.sleela	lib/cpu/SLAdder.sleela	source
+cpu	SLAssembler.sleela	lib/cpu/SLAssembler.sleela	source
+cpu	SLBootloader.sleela	lib/cpu/SLBootloader.sleela	source
+cpu	SLBus.sleela	lib/cpu/SLBus.sleela	source
+cpu	SLCPU.sleela	lib/cpu/SLCPU.sleela	source
+cpu	SLCache.sleela	lib/cpu/SLCache.sleela	source
+cpu	SLCircuit.sleela	lib/cpu/SLCircuit.sleela	source
+cpu	SLClock.sleela	lib/cpu/SLClock.sleela	source
+cpu	SLConsoleDriver.sleela	lib/cpu/SLConsoleDriver.sleela	source
+cpu	SLControlUnit.sleela	lib/cpu/SLControlUnit.sleela	source
+cpu	SLCore.sleela	lib/cpu/SLCore.sleela	source
+cpu	SLDMAController.sleela	lib/cpu/SLDMAController.sleela	source
+cpu	SLDeviceDriver.sleela	lib/cpu/SLDeviceDriver.sleela	source
+cpu	SLDiskDriver.sleela	lib/cpu/SLDiskDriver.sleela	source
+cpu	SLDriverManager.sleela	lib/cpu/SLDriverManager.sleela	source
+cpu	SLFileSystem.sleela	lib/cpu/SLFileSystem.sleela	source
+cpu	SLFlipFlop.sleela	lib/cpu/SLFlipFlop.sleela	source
+cpu	SLFullAdder.sleela	lib/cpu/SLFullAdder.sleela	source
+cpu	SLGate.sleela	lib/cpu/SLGate.sleela	source
+cpu	SLHalfAdder.sleela	lib/cpu/SLHalfAdder.sleela	source
+cpu	SLHardDrive.sleela	lib/cpu/SLHardDrive.sleela	source
+cpu	SLIOBus.sleela	lib/cpu/SLIOBus.sleela	source
+cpu	SLIOPort.sleela	lib/cpu/SLIOPort.sleela	source
+cpu	SLInstruction.sleela	lib/cpu/SLInstruction.sleela	source
+cpu	SLInstructionDecoder.sleela	lib/cpu/SLInstructionDecoder.sleela	source
+cpu	SLInstructionSet.sleela	lib/cpu/SLInstructionSet.sleela	source
+cpu	SLInterruptController.sleela	lib/cpu/SLInterruptController.sleela	source
+cpu	SLKernel.sleela	lib/cpu/SLKernel.sleela	source
+cpu	SLKeyboardDriver.sleela	lib/cpu/SLKeyboardDriver.sleela	source
+cpu	SLLatch.sleela	lib/cpu/SLLatch.sleela	source
+cpu	SLMachine.sleela	lib/cpu/SLMachine.sleela	source
+cpu	SLMemoryManager.sleela	lib/cpu/SLMemoryManager.sleela	source
+cpu	SLNetworkDriver.sleela	lib/cpu/SLNetworkDriver.sleela	source
+cpu	SLOperatingSystem.sleela	lib/cpu/SLOperatingSystem.sleela	source
+cpu	SLProcess.sleela	lib/cpu/SLProcess.sleela	source
+cpu	SLProgram.sleela	lib/cpu/SLProgram.sleela	source
+cpu	SLProgramCounter.sleela	lib/cpu/SLProgramCounter.sleela	source
+cpu	SLProgramLoader.sleela	lib/cpu/SLProgramLoader.sleela	source
+cpu	SLRAM.sleela	lib/cpu/SLRAM.sleela	source
+cpu	SLRegister.sleela	lib/cpu/SLRegister.sleela	source
+cpu	SLRegisterFile.sleela	lib/cpu/SLRegisterFile.sleela	source
+cpu	SLScheduler.sleela	lib/cpu/SLScheduler.sleela	source
+cpu	SLStatusRegister.sleela	lib/cpu/SLStatusRegister.sleela	source
+cpu	SLSystemCall.sleela	lib/cpu/SLSystemCall.sleela	source
 crypto	SLAes.sleela	lib/crypto/SLAes.sleela	source
 crypto	SLAesGcm.sleela	lib/crypto/SLAesGcm.sleela	source
 crypto	SLCertificate.sleela	lib/crypto/SLCertificate.sleela	source

@@ -1,0 +1,41 @@
+/*
+ * lib/cpu/SLDriverManager.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLDriverManager — the OS subsystem that registers,
+ *   probes, and dispatches device drivers. It holds the installed drivers,
+ *   binds each to its interrupt line, and routes an incoming interrupt to the
+ *   driver that owns that line. The kernel installs drivers here at boot.
+ *
+ * Holds the standard four drivers (console, disk, keyboard, network); more can
+ * be added by extension.
+ *
+ * Family: cpu. Composes the SLDeviceDriver hierarchy.
+ */
+#sleela 1.3
+class SLDriverManager {
+  SLConsoleDriver console;
+  SLDiskDriver disk;
+  SLKeyboardDriver keyboard;
+  SLNetworkDriver net;
+  int installed;
+
+  void configure() { installed = 0; }
+
+  void installConsole(SLConsoleDriver d) { console = d; d.attach(); d.open(); installed = installed + 1; }
+  void installDisk(SLDiskDriver d) { disk = d; d.attach(); d.open(); installed = installed + 1; }
+  void installKeyboard(SLKeyboardDriver d) { keyboard = d; d.attach(); d.open(); installed = installed + 1; }
+  void installNetwork(SLNetworkDriver d) { net = d; d.attach(); d.open(); installed = installed + 1; }
+
+  // Route an interrupt line to the driver that owns it (ISR dispatch).
+  void dispatchInterrupt(int line) {
+    if (line == 1 && keyboard != null) { keyboard.serviceInterrupt(); }
+    if (line == 2 && disk != null) { disk.serviceInterrupt(); }
+    if (line == 3 && net != null) { net.serviceInterrupt(); }
+  }
+
+  SLConsoleDriver consoleDriver() { return console; }
+  SLDiskDriver diskDriver() { return disk; }
+  SLKeyboardDriver keyboardDriver() { return keyboard; }
+  SLNetworkDriver networkDriver() { return net; }
+  int driverCount() { return installed; }
+}

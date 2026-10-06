@@ -1,0 +1,85 @@
+/*
+ * lib/cpu/SLInstructionSet.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLInstructionSet — the CPU's basic instruction set
+ *   architecture (ISA): the catalog of operations the control unit can decode
+ *   and execute. This is a compact, RISC-style ISA sufficient to run a kernel
+ *   and user programs: load/store, arithmetic/logic, compare, branch, call,
+ *   stack, I/O, system call, and halt.
+ *
+ * It aligns with the canonical SLeeLa VM ISA in lib/vm/InstructionSet.sleela
+ * (OP_ADD, OP_JMP, OP_CALL, OP_HALT, ...) so a program expressed for this CPU
+ * maps cleanly onto the underlying VM.
+ *
+ * Each mnemonic has a stable numeric opcode; mnemonic<->code lookup is provided.
+ *
+ * Family: cpu. Pure Sleela ISA registry.
+ */
+#sleela 1.3
+class SLInstructionSet {
+  // Core RISC-style opcodes (numeric codes are this ISA's canonical order).
+  static final int NOP   = 0;
+  static final int LOAD  = 1;   // reg <- mem[addr]
+  static final int STORE = 2;   // mem[addr] <- reg
+  static final int MOV   = 3;   // reg <- reg / imm
+  static final int ADD   = 4;
+  static final int SUB   = 5;
+  static final int AND   = 6;
+  static final int OR    = 7;
+  static final int XOR   = 8;
+  static final int SHL   = 9;
+  static final int SHR   = 10;
+  static final int CMP   = 11;
+  static final int JMP   = 12;  // unconditional branch
+  static final int JZ    = 13;  // branch if zero flag
+  static final int JNZ   = 14;  // branch if not zero
+  static final int CALL  = 15;
+  static final int RET   = 16;
+  static final int PUSH  = 17;
+  static final int POP   = 18;
+  static final int IN    = 19;  // read from I/O port
+  static final int OUT   = 20;  // write to I/O port
+  static final int SYSCALL = 21;
+  static final int HALT  = 22;
+
+  static final int OPCODE_COUNT = 23;
+
+  int defined;
+
+  void configure() { defined = OPCODE_COUNT; }
+
+  boolean valid(int opcode) { return opcode >= 0 && opcode < OPCODE_COUNT; }
+  boolean isBranch(int opcode) { return opcode == JMP || opcode == JZ || opcode == JNZ || opcode == CALL || opcode == RET; }
+  boolean isMemory(int opcode) { return opcode == LOAD || opcode == STORE || opcode == PUSH || opcode == POP; }
+  boolean isArithmetic(int opcode) { return opcode >= ADD && opcode <= CMP; }
+  boolean isIO(int opcode) { return opcode == IN || opcode == OUT; }
+
+  String mnemonic(int opcode) {
+    if (opcode == NOP) { return "NOP"; }
+    if (opcode == LOAD) { return "LOAD"; }
+    if (opcode == STORE) { return "STORE"; }
+    if (opcode == MOV) { return "MOV"; }
+    if (opcode == ADD) { return "ADD"; }
+    if (opcode == SUB) { return "SUB"; }
+    if (opcode == AND) { return "AND"; }
+    if (opcode == OR) { return "OR"; }
+    if (opcode == XOR) { return "XOR"; }
+    if (opcode == SHL) { return "SHL"; }
+    if (opcode == SHR) { return "SHR"; }
+    if (opcode == CMP) { return "CMP"; }
+    if (opcode == JMP) { return "JMP"; }
+    if (opcode == JZ) { return "JZ"; }
+    if (opcode == JNZ) { return "JNZ"; }
+    if (opcode == CALL) { return "CALL"; }
+    if (opcode == RET) { return "RET"; }
+    if (opcode == PUSH) { return "PUSH"; }
+    if (opcode == POP) { return "POP"; }
+    if (opcode == IN) { return "IN"; }
+    if (opcode == OUT) { return "OUT"; }
+    if (opcode == SYSCALL) { return "SYSCALL"; }
+    if (opcode == HALT) { return "HALT"; }
+    return "???";
+  }
+
+  int opcodeCount() { return OPCODE_COUNT; }
+}

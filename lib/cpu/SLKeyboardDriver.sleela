@@ -1,0 +1,28 @@
+/*
+ * lib/cpu/SLKeyboardDriver.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLKeyboardDriver — an interrupt-driven character-input
+ *   driver. A key press makes the device raise IRQ_KEYBOARD; the driver's ISR
+ *   reads the scancode from its port and buffers it for the OS input layer.
+ *
+ * Family: cpu. Extends SLDeviceDriver.
+ */
+#sleela 1.3
+class SLKeyboardDriver extends SLDeviceDriver {
+  int lastKey;
+  int keysRead;
+
+  void init(SLIOBus bus, int port) {
+    configure("keyboard", port, 1, bus); // IRQ_KEYBOARD = 1
+    lastKey = -1; keysRead = 0;
+  }
+
+  // ISR: pull the scancode the device deposited on the port.
+  void serviceInterrupt() {
+    if (ready()) { lastKey = read(); keysRead = keysRead + 1; }
+  }
+
+  int getKey() { int k = lastKey; lastKey = -1; return k; }
+  boolean hasKey() { return lastKey >= 0; }
+  int keyCount() { return keysRead; }
+}

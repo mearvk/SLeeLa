@@ -1,0 +1,27 @@
+/*
+ * lib/cpu/SLLatch.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLLatch — a level-sensitive 1-bit storage element (an
+ *   SR / gated-D latch). It is the most basic memory cell: when enabled, it
+ *   captures the data input; otherwise it holds its stored bit. Flip-flops,
+ *   registers, and SRAM cells are built up from latches.
+ *
+ * Family: cpu. Pure Sleela state.
+ */
+#sleela 1.3
+class SLLatch {
+  int q;        // stored bit
+  int enabled;  // 1 = transparent (follows D), 0 = holding
+
+  void reset() { q = 0; enabled = 0; }
+  void enable() { enabled = 1; }
+  void disable() { enabled = 0; }
+
+  // Gated-D behavior: capture D only while enabled, otherwise hold.
+  int write(int d) {
+    if (enabled == 1) { if (d != 0) { q = 1; } else { q = 0; } }
+    return q;
+  }
+
+  int read() { return q; }
+}

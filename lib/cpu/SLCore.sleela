@@ -1,0 +1,67 @@
+/*
+ * lib/cpu/SLCore.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLCore — a single execution core: one control unit, its
+ *   register file, ALU, program counter, status register, L1 cache, and
+ *   interrupt controller, all driven by a clock. A modern CPU is several of
+ *   these cores on one die; SLCPU composes them.
+ *
+ * assemble() wires the sub-units together so the core is ready to fetch from a
+ * shared RAM. tick() advances one clock cycle (one instruction in this
+ * single-cycle model).
+ *
+ * Family: cpu. Composes the Layer-0/1/2 components into a runnable core.
+ */
+#sleela 1.3
+class SLCore {
+  int id;
+  int width;
+  SLClock clock;
+  SLRegisterFile regs;
+  SLALU alu;
+  SLProgramCounter pc;
+  SLStatusRegister status;
+  SLInstructionSet isa;
+  SLInstructionDecoder decoder;
+  SLControlUnit control;
+  SLCache l1;
+  SLInterruptController irq;
+
+  void assemble(int coreId, int bits, int clockMHz, SLRAM sharedMemory) {
+    id = coreId; width = bits;
+
+    clock = new SLClock(); clock.configure(clockMHz);
+    regs = new SLRegisterFile(); regs.configure(16, bits);
+    alu = new SLALU(); alu.configure(bits);
+    pc = new SLProgramCounter(); pc.configure(bits, 1);
+    status = new SLStatusRegister(); status.reset();
+    isa = new SLInstructionSet(); isa.configure();
+    decoder = new SLInstructionDecoder(); decoder.configure(isa);
+
+    l1 = new SLCache(); l1.configure("L1", 32768, 64, 8); l1.attachBacking(sharedMemory);
+    irq = new SLInterruptController(); irq.configure(0);
+    irq.enable(irq.IRQ_TIMER);
+
+    control = new SLControlUnit();
+    control.configure(isa, decoder, regs, alu, pc, status, sharedMemory);
+  }
+
+  void loadEntryPoint(int addr) { pc.branchTo(addr); }
+  void installSyscallVector(int addr) { control.installSyscallVector(addr); }
+
+  // Advance one clock cycle: tick the clock, execute one instruction.
+  int tick() { clock.toggle(); return control.step(); }
+
+  // Raise the timer interrupt (the OS uses this for preemptive scheduling).
+  void timerTick() { irq.raise(irq.IRQ_TIMER); }
+
+  boolean halted() { return control.isHalted(); }
+  int pendingSyscall() { return control.pendingSyscall(); }
+  void clearSyscall() { control.clearSyscall(); }
+  int coreId() { return id; }
+  int cyclesRun() { return clock.cycleCount(); }
+  int retired() { return control.instructionsRetired(); }
+  SLControlUnit controlUnit() { return control; }
+  SLRegisterFile registers() { return regs; }
+  SLInterruptController interrupts() { return irq; }
+}
