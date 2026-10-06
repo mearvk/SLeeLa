@@ -60,6 +60,11 @@ class SLGuestDeviceBus {
   int pendingInterrupt() { if (pic.hasPending()) { return pic.highestPriorityPending(); } return -1; }
   void acknowledge(int line) { pic.acknowledge(line); }
 
+  // Console convenience for the hypervisor's VM-exit router: write one char to
+  // the guest console device's data register.
+  boolean hasConsole() { return console != null; }
+  void consoleWrite(int code) { if (console != null) { console.write(console.mmioBase, code); } }
+
   int mmioCount() { return mmioAccesses; }
   SLInterruptController interruptController() { return pic; }
 }
