@@ -321,7 +321,7 @@ This chain is the principal semantic bridge between Nordshrift and the Math, Phy
 
 The SLeeLa standard library is authoritative under /lib. The compiler and Nordshrift library loader recursively discover every .sleela source unit beneath /lib.
 
-Current inventory: 83 packages; 10,267 .sleela source units; 55 module-facade symbols; 10,322 total symbol records. Complete inventory: lib/LIBRARY.SYMBOLS.md.
+Current inventory: 83 packages; 10,269 .sleela source units; 55 module-facade symbols; 10,324 total symbol records. Complete inventory: lib/LIBRARY.SYMBOLS.md.
 
 Package imports resolve only when their package directory is present in the discovered /lib index. Native bridge imports such as chemistry and financial remain explicitly handled by native lowering.
 
@@ -331,9 +331,9 @@ The SLeeLa standard library is authoritative under /lib. Nordshrift 2.0 uses the
 
 Current collection:
 - 83 package families
-- 10,267 SLeeLa source units
+- 10,269 SLeeLa source units
 - 55 module-facade symbols
-- 10,322 total symbol records
+- 10,324 total symbol records
 
 Every language/runtime/package module family represented in the repository has a corresponding SLeeLa source unit under /lib. The complete collection is recorded in lib/LIBRARY.SYMBOLS.md. The VM-facing loader contract is represented by lib/vm/SLVMModuleLoader.sleela, while native loading remains behind the explicit C/C++ OS bridge.
 
@@ -345,9 +345,9 @@ Every language/runtime/package module family represented in the repository has a
 The SLeeLa /lib tree is the authoritative language-facing library source collection. The October 2026 repository collection contains:
 
 - 83 package families.
-- 10,267 .sleela source units.
+- 10,269 .sleela source units.
 - 55 module-facade symbols.
-- 10,322 total symbol records.
+- 10,324 total symbol records.
 
 The complete path-level manifest is lib/LIBRARY.SYMBOLS.md. These counts are repository inventory facts and are checked by the library inventory test.
 
@@ -357,12 +357,12 @@ Compiler and Nordshrift library resolution use the shared recursive library inde
 
 ## 20.3 SST relationship to the symbol manifest
 
-SST sheets may refer to library packages and symbols as dependencies, provenance, or validation inputs. The complete 10,322-record collection remains in the repository manifest rather than being duplicated into every sheet.
+SST sheets may refer to library packages and symbols as dependencies, provenance, or validation inputs. The complete 10,324-record collection remains in the repository manifest rather than being duplicated into every sheet.
 
 
 # Part XX — Canonical SLeeLa Library Collection
 
-Revision 2.0.2 records the canonical `/lib` collection used by compiler, Nordshrift, and the VM-facing loader: **83 package families, 10,267 SLeeLa source units, 55 module-facade symbols, and 10,322 total symbol records**. Package discovery is recursive and filesystem-derived; implementations must not require a second hard-coded package allow-list. See `lib/LIBRARY.INDEX.md` and `lib/LIBRARY.SYMBOLS.md`.
+Revision 2.0.2 records the canonical `/lib` collection used by compiler, Nordshrift, and the VM-facing loader: **83 package families, 10,269 SLeeLa source units, 55 module-facade symbols, and 10,324 total symbol records**. Package discovery is recursive and filesystem-derived; implementations must not require a second hard-coded package allow-list. See `lib/LIBRARY.INDEX.md` and `lib/LIBRARY.SYMBOLS.md`.
 
 
 # Part XXI — XML Input and Output Methods

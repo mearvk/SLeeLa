@@ -73,6 +73,14 @@ class SLGuestLinux {
   SLGuestScheduler taskScheduler() { return scheduler; }
   int timerTickCount() { return timerTicks; }
 
+  // Start the guest init process (PID 1), which loads and spawns user programs.
+  // Returns the init object so the caller can exec() programs on it.
+  SLGuestInit startInit() {
+    SLGuestInit init = new SLGuestInit();
+    init.configure(this, vm.guestSubstrate());
+    return init;
+  }
+
   // Install a genuinely-compiled kernel image to boot (step 4). When set,
   // boot() loads this image into the guest substrate instead of the inline stub.
   void installKernelImage(SLGuestKernelImage image) { kernelImage = image; }

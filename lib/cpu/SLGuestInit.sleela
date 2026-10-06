@@ -1,0 +1,47 @@
+/*
+ * lib/cpu/SLGuestInit.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLGuestInit — the guest's init process (PID 1). After the
+ *   guest kernel boots, init loads user programs (SLGuestProgram) into the
+ *   guest substrate and hands each to the guest scheduler as a task
+ *   (SLGuestTask). This is how a guest OS goes from "kernel running" to "running
+ *   user processes": init is the first task and the parent of the rest.
+ *
+ * Models the Unix init contract: PID 1 is spawned by the kernel, then spawns
+ * the system's initial programs; the timer-driven scheduler multitasks them.
+ *
+ * Family: cpu. Composes SLGuestLinux, SLGuestProgram, SLGuestTask, SLSleelaVM.
+ */
+#sleela 1.3
+class SLGuestInit {
+  SLGuestLinux kernel;
+  SLSleelaVM substrate;
+  int nextPid;
+  int spawned;
+
+  void configure(SLGuestLinux guestKernel, SLSleelaVM guestSubstrate) {
+    kernel = guestKernel; substrate = guestSubstrate;
+    nextPid = 2;      // PID 1 is init itself; children start at 2
+    spawned = 0;
+  }
+
+  // Load a user program into the guest substrate and admit it as a task. The
+  // program's load base becomes the task's entry/resume IP.
+  SLGuestTask spawn(SLGuestProgram program) {
+    int base = program.loadInto(substrate);
+    int pid = nextPid; nextPid = nextPid + 1;
+    SLGuestTask task = kernel.spawnTask(pid, program.programName(), base);
+    spawned = spawned + 1;
+    return task;
+  }
+
+  // Compile a program from source and spawn it (exec-style convenience).
+  SLGuestTask exec(String name, String sourcePath, int langId) {
+    SLGuestProgram prog = new SLGuestProgram(); prog.configure(name, 4096);
+    prog.buildFrom(sourcePath, langId);
+    return spawn(prog);
+  }
+
+  int pid() { return 1; }
+  int childrenSpawned() { return spawned; }
+}

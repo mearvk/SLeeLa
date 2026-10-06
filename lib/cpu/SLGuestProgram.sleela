@@ -1,0 +1,58 @@
+/*
+ * lib/cpu/SLGuestProgram.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLGuestProgram — a loadable guest *user* program: a
+ *   compiled opcode image (like SLGuestKernelImage) plus the base address at
+ *   which it is loaded into the guest substrate's code store. Where
+ *   SLGuestKernelImage is the kernel, SLGuestProgram is an application the guest
+ *   kernel loads as a task and the scheduler runs. Programs are built from
+ *   source in any supported language through the same toolchain, so a guest
+ *   user program can be C/C++/Java/Sleela.
+ *
+ * loadInto() appends the program's opcodes to the guest substrate and returns
+ * the entry index (its base), which becomes the task's entry point.
+ *
+ * Family: cpu. Composes SLSleelaVM, SLGuestKernelBuilder (shared compile path).
+ */
+#sleela 1.3
+class SLGuestProgram {
+  String name;
+  SLRAM ops;
+  SLRAM args;
+  int length;
+  int base;        // substrate code index where this program was loaded
+
+  void configure(String programName, int capacity) {
+    name = programName;
+    ops = new SLRAM(); ops.configure(capacity, 32); ops.allocate();
+    args = new SLRAM(); args.configure(capacity, 32); args.allocate();
+    length = 0; base = 0;
+  }
+
+  int append(int opcode, int arg) {
+    ops.writeWord(length, opcode); args.writeWord(length, arg);
+    int at = length; length = length + 1; return at;
+  }
+
+  // Build a guest program from source via the shared toolchain, copying the
+  // compiled opcode image out of a scratch kernel-image build.
+  void buildFrom(String sourcePath, int langId) {
+    SLGuestKernelBuilder builder = new SLGuestKernelBuilder(); builder.configure();
+    SLGuestKernelImage img = builder.build(sourcePath, langId, name, "task");
+    int i = 0;
+    while (i < img.size()) { append(img.opcodeAt(i), img.argAt(i)); i = i + 1; }
+  }
+
+  // Load the program into the guest substrate at the current end of its code
+  // store; returns the entry index (base) for the task.
+  int loadInto(SLSleelaVM vm) {
+    base = vm.programLength();
+    int i = 0;
+    while (i < length) { vm.loadOpcode(ops.readWord(i), args.readWord(i)); i = i + 1; }
+    return base;
+  }
+
+  int entryBase() { return base; }
+  int size() { return length; }
+  String programName() { return name; }
+}
