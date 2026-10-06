@@ -33,15 +33,45 @@ class SLGuestLinux {
   String distro;
   SLGuestVM vm;
   SLGuestKernelImage kernelImage;   // compiled kernel image (step 4), if built
+  SLGuestScheduler scheduler;       // guest task scheduler, timer-driven (step 6)
   int kernelEntry;
   int initEntry;
   int booted;
   int syscalls;
+  int timerTicks;
 
   void configure(String distroName, SLGuestVM guest) {
     distro = distroName; vm = guest; booted = 0; syscalls = 0;
-    kernelEntry = 0; initEntry = 0;
+    kernelEntry = 0; initEntry = 0; timerTicks = 0;
+    scheduler = new SLGuestScheduler(); scheduler.configure(4); // 4-tick quantum
   }
+
+  // Create and admit a guest task (a guest thread). The guest init process
+  // (PID 1) spawns these; the timer then schedules them preemptively.
+  SLGuestTask spawnTask(int tid, String name, int entryIndex) {
+    SLGuestTask t = new SLGuestTask(); t.configure(tid, name, entryIndex);
+    scheduler.admit(t);
+    return t;
+  }
+
+  // Program the guest timer and start preemptive scheduling: set the timer
+  // reload and enable it so each expiry drives scheduler.onTimerTick().
+  void startScheduling(int reload) {
+    SLGuestDeviceBus bus = vm.deviceBus();
+    if (bus != null) { bus.programTimer(reload); }
+  }
+
+  // The guest timer-IRQ handler (the preemption point): advance the scheduler,
+  // save the current task's resume IP, and select the next task to run.
+  SLGuestTask onTimerInterrupt(int currentIP) {
+    timerTicks = timerTicks + 1;
+    SLGuestTask prev = scheduler.running();
+    if (prev != null) { prev.saveIP(currentIP); }
+    return scheduler.onTimerTick();
+  }
+
+  SLGuestScheduler taskScheduler() { return scheduler; }
+  int timerTickCount() { return timerTicks; }
 
   // Install a genuinely-compiled kernel image to boot (step 4). When set,
   // boot() loads this image into the guest substrate instead of the inline stub.

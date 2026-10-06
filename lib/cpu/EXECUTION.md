@@ -212,10 +212,15 @@ The guest layer is being hardened from "model" toward "genuinely executes":
 - **Step 3 (done):** a guest device model — `SLGuestTimer` (interval timer + IRQ), `SLGuestConsole`, `SLGuestBlockDevice` (virtio-blk over a host drive), routed by `SLGuestDeviceBus` with IRQ aggregation into the guest interrupt controller.
 - **Step 4 (done):** a genuinely-compiled guest kernel. `SLGuestKernelBuilder` compiles kernel source (any supported language) through `SLCompilerDriver` → register ISA → `SLOpcodeMap` → a `SLGuestKernelImage` of canonical opcodes, which the guest substrate loads and executes. `SLGuestLinux.buildKernel()` / `SLMachine.runLinuxGuestFromSource()` boot it. This is a small **custom** kernel, not upstream Linux.
 
-With steps 1–4 complete, the guest is no longer a counter-ticking stub: it
+- **Step 5 (done):** the VM-exit loop is wired. In hosted mode `SLSleelaVM` parks a VM-exit on a service opcode (e.g. `OP_PRINT`); `SLGuestVM.run()` routes it (console device / syscall emulation), ticks devices, posts IRQs, and resumes — the device↔substrate↔exit handoff is functional, not just structural.
+- **Step 6 (done):** the guest has preemptive multitasking. `SLGuestTask` + `SLGuestScheduler` run inside the guest; the `SLGuestTimer` IRQ is the preemption source — each expiry drives `onTimerInterrupt()`, which saves the running task's substrate IP, round-robins to the next ready task, and resumes the substrate at that task's saved IP.
+
+With steps 1–6 complete, the guest is no longer a counter-ticking stub: it
 executes a **compiled kernel image** as canonical opcodes on `SLSleelaVM`, over
 **paged, protected memory** (`SLMMU`), with a **timer/console/block device
-model**. The remaining gap to booting *real* Linux is unchanged and large —
+model**, a **wired VM-exit loop** routing service opcodes to devices, and a
+**timer-driven preemptive scheduler** multitasking guest tasks. The remaining
+gap to booting *real* Linux is unchanged and large —
 hardware-virtualization-grade vCPU semantics, a full virtio/APIC/ACPI device
 model, real page-table formats, and an ELF/bzImage loader — and is deliberately
 out of scope for this teaching model.

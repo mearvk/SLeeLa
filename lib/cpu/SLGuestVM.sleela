@@ -26,6 +26,7 @@ class SLGuestVM {
   SLRAM hostMemory;
   SLMMU mmu;            // real page-table translation (step 2); null => base-offset
   SLGuestDeviceBus devices; // guest device model: timer, console, block (step 3)
+  SLGuestLinux kernel;  // guest kernel, for timer-driven scheduling (step 6)
   int windowBase;       // host-physical base of the guest's memory window
   int windowSize;       // words
   int guestEntry;       // guest-physical entry point
@@ -54,6 +55,9 @@ class SLGuestVM {
   // Attach the guest device model (timer/console/block) (step 3).
   void attachDevices(SLGuestDeviceBus bus) { devices = bus; }
   SLGuestDeviceBus deviceBus() { return devices; }
+
+  // Attach the guest kernel so timer interrupts drive its scheduler (step 6).
+  void attachKernel(SLGuestLinux guestKernel) { kernel = guestKernel; }
 
   // Advance the guest's devices by one tick (timer heartbeat, IRQ posting).
   void tickDevices() { if (devices != null) { devices.tick(); } }
@@ -121,12 +125,21 @@ class SLGuestVM {
     // model records the exit and continues (the real engine performs the I/O).
   }
 
-  // Surface any device interrupts the guest PIC now has pending (for a guest
-  // kernel ISR to observe).
+  // Surface any device interrupts the guest PIC now has pending and deliver them
+  // to the guest kernel. A timer IRQ (line 0) drives the guest scheduler
+  // (step 6): the kernel preempts the running task and selects the next one,
+  // and the substrate resumes at that task's saved instruction pointer.
   void deliverPendingInterrupts() {
     if (devices != null) {
       int line = devices.pendingInterrupt();
-      if (line >= 0) { recordTrapExit(); devices.acknowledge(line); }
+      if (line >= 0) {
+        recordTrapExit();
+        devices.acknowledge(line);
+        if (line == 0 && kernel != null) {           // timer IRQ -> scheduler
+          SLGuestTask next = kernel.onTimerInterrupt(substrate.instructionPointer());
+          if (next != null) { substrate.setInstructionPointer(next.resumeIP()); }
+        }
+      }
     }
   }
 

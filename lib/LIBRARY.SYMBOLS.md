@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.0
-library-source-files: 10265
+library-source-files: 10267
 library-packages: 83
 module-facade-symbols: 55
-total-symbol-records: 10320
+total-symbol-records: 10322
 
 package	symbol	path	kind
 antivirus	SLPackage.sleela	lib/antivirus/SLPackage.sleela	facade
@@ -218,6 +218,8 @@ cpu	SLGuestDeviceBus.sleela	lib/cpu/SLGuestDeviceBus.sleela	source
 cpu	SLGuestKernelBuilder.sleela	lib/cpu/SLGuestKernelBuilder.sleela	source
 cpu	SLGuestKernelImage.sleela	lib/cpu/SLGuestKernelImage.sleela	source
 cpu	SLGuestLinux.sleela	lib/cpu/SLGuestLinux.sleela	source
+cpu	SLGuestScheduler.sleela	lib/cpu/SLGuestScheduler.sleela	source
+cpu	SLGuestTask.sleela	lib/cpu/SLGuestTask.sleela	source
 cpu	SLGuestTimer.sleela	lib/cpu/SLGuestTimer.sleela	source
 cpu	SLGuestVM.sleela	lib/cpu/SLGuestVM.sleela	source
 cpu	SLHalfAdder.sleela	lib/cpu/SLHalfAdder.sleela	source

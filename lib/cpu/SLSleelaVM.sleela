@@ -146,6 +146,11 @@ class SLSleelaVM {
   int opcodeAtIndex(int i) { return codeOps.readWord(i); }
   int argAtIndex(int i) { return codeArgs.readWord(i); }
 
+  // Instruction-pointer access, for guest context switches (step 6): the guest
+  // scheduler saves the preempted task's ip and restores the next task's.
+  int instructionPointer() { return ip; }
+  void setInstructionPointer(int newIp) { if (newIp >= 0 && newIp <= codeLen) { ip = newIp; } }
+
   int top() { if (sp == 0) { return 0; } return stack.readWord(sp - 1); }
   int printed() { return lastPrint; }
   int instructionsRun() { return executed; }

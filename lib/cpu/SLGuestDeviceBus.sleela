@@ -65,6 +65,16 @@ class SLGuestDeviceBus {
   boolean hasConsole() { return console != null; }
   void consoleWrite(int code) { if (console != null) { console.write(console.mmioBase, code); } }
 
+  // Program and enable the guest timer (reload value + enable) so its expiries
+  // drive the guest scheduler. Convenience for the guest kernel bring-up.
+  void programTimer(int reload) {
+    if (timer != null) {
+      timer.write(timer.mmioBase + 0, reload);  // reload register
+      timer.write(timer.mmioBase + 2, 1);       // control: enable
+    }
+  }
+  SLGuestTimer timerDevice() { return timer; }
+
   int mmioCount() { return mmioAccesses; }
   SLInterruptController interruptController() { return pic; }
 }
