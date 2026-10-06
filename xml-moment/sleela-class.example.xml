@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sleela-unit SYSTEM "sleela-class.dtd">
+<!--
+  XML rendering of lib/autocad/SLCadModel.sleela (abridged to the first
+  members for illustration). This document is information-equivalent to the
+  original .sleela source: the pragma, import, comments, class, fields,
+  methods, parameters, and verbatim method bodies all round-trip.
+-->
+<sleela-unit path="lib/autocad/SLCadModel.sleela" package="autocad">
+
+  <comment kind="block">
+ lib/autocad/SLCadModel.sleela
+ SLeeLa Standard Library Definition.
+ Definition: Defines the SLeeLa standard-library type SLCadModel used within the autocad library family.
+  </comment>
+
+  <pragma version="1.3"/>
+
+  <import package="math"/>
+
+  <comment kind="line">Unified SLeeLa standard-library front-end object.</comment>
+  <comment kind="line">Family: autocad. The geometry model the AutoCAD renderer builds from a plan.</comment>
+
+  <class name="SLCadModel" kind="class">
+
+    <field name="title"     type="String"/>
+    <field name="units"     type="String"/>
+    <field name="curX"      type="double"/>
+    <field name="curY"      type="double"/>
+    <field name="minX"      type="double"/>
+    <field name="minY"      type="double"/>
+    <field name="maxX"      type="double"/>
+    <field name="maxY"      type="double"/>
+    <field name="walls"     type="String"/>
+    <field name="dims"      type="String"/>
+    <field name="notes"     type="String"/>
+    <field name="noteCount" type="int"/>
+
+    <method name="begin" returns="void">
+      <param name="t" type="String"/>
+      <param name="u" type="String"/>
+      <body><![CDATA[
+    title = t; units = u;
+    curX = 0.0; curY = 0.0;
+    minX = 0.0; minY = 0.0; maxX = 0.0; maxY = 0.0;
+    walls = ""; dims = ""; notes = ""; noteCount = 0;
+      ]]></body>
+    </method>
+
+    <method name="setAt" returns="void">
+      <param name="x" type="double"/>
+      <param name="y" type="double"/>
+      <body><![CDATA[ curX = x; curY = y; ]]></body>
+    </method>
+
+    <method name="grow" returns="void">
+      <param name="x" type="double"/>
+      <param name="y" type="double"/>
+      <body><![CDATA[
+    if (x < minX) { minX = x; }
+    if (y < minY) { minY = y; }
+    if (x > maxX) { maxX = x; }
+    if (y > maxY) { maxY = y; }
+      ]]></body>
+    </method>
+
+    <method name="num" returns="String">
+      <param name="v" type="double"/>
+      <body><![CDATA[ return "" + v; ]]></body>
+    </method>
+
+    <comment kind="line">Straight-line distance -- used to compute dimension labels.</comment>
+    <method name="distance" returns="double">
+      <param name="x1" type="double"/>
+      <param name="y1" type="double"/>
+      <param name="x2" type="double"/>
+      <param name="y2" type="double"/>
+      <body><![CDATA[ return math.hypot(x2 - x1, y2 - y1); ]]></body>
+    </method>
+
+  </class>
+</sleela-unit>
