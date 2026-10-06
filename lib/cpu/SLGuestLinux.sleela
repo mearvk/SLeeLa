@@ -57,6 +57,17 @@ class SLGuestLinux {
 
   SLGuestFileSystem fileSystem() { return filesystem; }
 
+  // Deliver any pending signal to the currently-running task's slot. Called at
+  // scheduling points so signals (e.g. SIGKILL/SIGTERM) take effect.
+  void deliverSignals() {
+    SLGuestSyscall sys = syscallTable();
+    SLGuestTask run = scheduler.running();
+    if (run != null && sys.signalTable() != null) {
+      int slot = scheduler.currentSlot();
+      if (slot >= 0) { sys.signalTable().deliver(slot); }
+    }
+  }
+
   // The guest syscall dispatcher, wired to this guest's devices, filesystem,
   // and scheduler. Lazily built on first use.
   SLGuestSyscall syscallTable() {

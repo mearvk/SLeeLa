@@ -1,0 +1,69 @@
+/*
+ * lib/cpu/SLGuestPipe.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLGuestPipe — a unidirectional byte FIFO between guest
+ *   tasks, the classic Unix pipe. One task writes bytes to the write end;
+ *   another reads them from the read end in order. A read on an empty pipe
+ *   signals "would block" (the kernel can block the reader); a write to a full
+ *   pipe signals back-pressure. This is the first inter-process communication
+ *   primitive for the guest OS.
+ *
+ * Backed by a ring buffer over SLRAM so the capacity is configurable. The guest
+ * syscall layer exposes pipe()/read()/write()/close() over these.
+ *
+ * Family: cpu. Composes SLRAM.
+ */
+#sleela 1.3
+class SLGuestPipe {
+  SLRAM buffer;
+  int capacity;
+  int head;        // read index
+  int tail;        // write index
+  int size;        // bytes currently buffered
+  int readerClosed;
+  int writerClosed;
+  int totalWritten;
+  int totalRead;
+
+  void configure(int cap) {
+    buffer = new SLRAM(); buffer.configure(cap, 32); buffer.allocate();
+    capacity = cap; head = 0; tail = 0; size = 0;
+    readerClosed = 0; writerClosed = 0; totalWritten = 0; totalRead = 0;
+  }
+
+  boolean empty() { return size == 0; }
+  boolean full() { return size == capacity; }
+
+  // Write one byte; returns 1 on success, 0 if full (back-pressure), -1 if the
+  // read end is closed (broken pipe).
+  int writeByte(int value) {
+    if (readerClosed == 1) { return -1; }
+    if (full()) { return 0; }
+    buffer.writeWord(tail, value);
+    tail = (tail + 1) % capacity;
+    size = size + 1;
+    totalWritten = totalWritten + 1;
+    return 1;
+  }
+
+  // Read one byte; returns the byte (>=0), -1 at end-of-stream (writer closed
+  // and empty), or -2 if empty but still open ("would block").
+  int readByte() {
+    if (empty()) {
+      if (writerClosed == 1) { return -1; }
+      return -2;
+    }
+    int v = buffer.readWord(head);
+    head = (head + 1) % capacity;
+    size = size - 1;
+    totalRead = totalRead + 1;
+    return v;
+  }
+
+  void closeReader() { readerClosed = 1; }
+  void closeWriter() { writerClosed = 1; }
+  boolean readable() { return size > 0; }
+  int available() { return size; }
+  int written() { return totalWritten; }
+  int read() { return totalRead; }
+}
