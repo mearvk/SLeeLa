@@ -1173,16 +1173,16 @@ The SLeeLa standard library is authoritative under /lib. The compiler and Nordsh
 
 Current collection after the October 2026 module coverage expansion:
 - 83 package families
-- 10,273 SLeeLa source units
+- 10,274 SLeeLa source units
 - 55 module-facade symbols
-- 10,328 total symbol records
+- 10,329 total symbol records
 
 The complete path-level manifest is lib/LIBRARY.SYMBOLS.md. Package discovery is filesystem-derived rather than a fixed allow-list, so new /lib packages become visible to compiler and Nordshrift import validation automatically.
 
 
 # Appendix F — SLeeLa /lib Symbol Collection
 
-The canonical SLeeLa language library is the repository /lib tree. The October 2026 collection contains 83 package families, 10,273 SLeeLa source units, 55 module-facade symbols, and 10,328 total symbol records. The complete collection is maintained in lib/LIBRARY.SYMBOLS.md.
+The canonical SLeeLa language library is the repository /lib tree. The October 2026 collection contains 83 package families, 10,274 SLeeLa source units, 55 module-facade symbols, and 10,329 total symbol records. The complete collection is maintained in lib/LIBRARY.SYMBOLS.md.
 
 SST 1.0 tooling may consume this collection as an external library catalog. The full symbol manifest is not duplicated inside individual SST sheets.
 

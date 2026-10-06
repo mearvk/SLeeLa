@@ -42,6 +42,20 @@ class SLGuestInit {
     return spawn(prog);
   }
 
+  // Launch the guest shell as init's first child: build a shell bound to the
+  // kernel's syscall table and admit it as a task (the first interactive user
+  // program after boot). Returns the shell object so a driver can feed it
+  // commands.
+  SLGuestShell launchShell() {
+    SLGuestShell shell = new SLGuestShell();
+    shell.configure(kernel.syscallTable());
+    // Register the shell as a task so the scheduler accounts for it.
+    int pid = nextPid; nextPid = nextPid + 1;
+    kernel.spawnTask(pid, "sh", 0);
+    spawned = spawned + 1;
+    return shell;
+  }
+
   int pid() { return 1; }
   int childrenSpawned() { return spawned; }
 }

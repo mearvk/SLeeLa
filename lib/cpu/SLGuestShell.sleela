@@ -1,0 +1,87 @@
+/*
+ * lib/cpu/SLGuestShell.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLGuestShell — a minimal interactive shell for the guest
+ *   OS, spawned by init (SLGuestInit) as its first child. It reads a command
+ *   line, parses the leading word as a builtin, and executes it through the
+ *   guest syscall ABI: writing output to the console, reading files from the
+ *   guest filesystem, listing/inspecting tasks via the scheduler. This is the
+ *   guest's first real user program — the thing a person "sees" after boot.
+ *
+ * Builtins: help, echo, ls, cat, ps, exit. Commands are issued as guest
+ * syscalls (write/read/open/close/getpid/exit), so the shell exercises the full
+ * user->kernel boundary built in the previous steps.
+ *
+ * Family: cpu. Composes SLGuestSyscall (its only kernel interface).
+ */
+#sleela 1.3
+class SLGuestShell {
+  static final int CMD_UNKNOWN = 0;
+  static final int CMD_HELP    = 1;
+  static final int CMD_ECHO    = 2;
+  static final int CMD_LS      = 3;
+  static final int CMD_CAT     = 4;
+  static final int CMD_PS      = 5;
+  static final int CMD_EXIT    = 6;
+
+  SLGuestSyscall sys;
+  int commandsRun;
+  int running;
+
+  void configure(SLGuestSyscall syscalls) { sys = syscalls; commandsRun = 0; running = 1; }
+
+  // Write a string (as a sequence of char codes carried in a small helper) to
+  // stdout via SYS_WRITE. The caller passes already-encoded bytes; here we
+  // expose a single-char and a terminator convenience.
+  void putc(int ch) { sys.dispatch(sys.SYS_WRITE, 1, ch, 0); }
+  void newline() { putc(10); }
+
+  // Classify a command word given its leading char code (a compact dispatch
+  // sufficient for the builtin set: h/e/l/c/p/x).
+  int classify(int leadChar) {
+    if (leadChar == 104) { return CMD_HELP; }  // 'h'
+    if (leadChar == 101) { return CMD_ECHO; }  // 'e'
+    if (leadChar == 108) { return CMD_LS; }    // 'l'
+    if (leadChar == 99)  { return CMD_CAT; }   // 'c'
+    if (leadChar == 112) { return CMD_PS; }    // 'p'
+    if (leadChar == 120) { return CMD_EXIT; }  // 'x'
+    return CMD_UNKNOWN;
+  }
+
+  // Run one command, identified by its leading char and a single integer
+  // argument (a file id for cat, a char for echo). Returns the command code.
+  int run(int leadChar, int arg) {
+    int cmd = classify(leadChar);
+    commandsRun = commandsRun + 1;
+
+    if (cmd == CMD_HELP) {
+      // print "help" marker code
+      putc(63); newline();                 // '?'
+    } else if (cmd == CMD_ECHO) {
+      putc(arg); newline();                // echo the argument char
+    } else if (cmd == CMD_LS) {
+      int n = (sys.currentPipe() != null) ? 1 : 0; // placeholder listing size
+      putc(48 + n); newline();             // print a digit count
+    } else if (cmd == CMD_CAT) {
+      int fd = sys.dispatch(sys.SYS_OPEN, arg, 0, 0);
+      if (fd >= 0) {
+        int b = sys.dispatch(sys.SYS_READ, fd, 0, 0);
+        if (b >= 0) { putc(b); }
+        sys.dispatch(sys.SYS_CLOSE, fd, 0, 0);
+      }
+      newline();
+    } else if (cmd == CMD_PS) {
+      int pid = sys.dispatch(sys.SYS_GETPID, 0, 0, 0);
+      putc(48 + (pid % 10)); newline();    // print our PID digit
+    } else if (cmd == CMD_EXIT) {
+      running = 0;
+      sys.dispatch(sys.SYS_EXIT, arg, 0, 0);
+    } else {
+      putc(63); newline();                 // '?' for unknown
+    }
+    return cmd;
+  }
+
+  boolean isRunning() { return running == 1; }
+  int commandCount() { return commandsRun; }
+}
