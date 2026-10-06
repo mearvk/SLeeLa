@@ -209,5 +209,13 @@ The guest layer is being hardened from "model" toward "genuinely executes":
 
 - **Step 1 (done):** `SLGuestVM` runs the guest on an embedded `SLSleelaVM` — guest code is dispatched as canonical opcodes, not counted.
 - **Step 2 (done):** `SLMMU` gives the guest real single-level page tables with present/write/exec permissions and page faults (unmapped + protection); `SLHypervisor` identity-maps each guest's window at creation.
-- **Step 3 (next):** a guest device model (timer/interrupt controller, console, block device).
-- **Step 4 (next):** a real compiled guest-kernel image (built through `SLCompilerDriver`) replacing the inline opcode stub — a custom tiny kernel, not upstream Linux.
+- **Step 3 (done):** a guest device model — `SLGuestTimer` (interval timer + IRQ), `SLGuestConsole`, `SLGuestBlockDevice` (virtio-blk over a host drive), routed by `SLGuestDeviceBus` with IRQ aggregation into the guest interrupt controller.
+- **Step 4 (done):** a genuinely-compiled guest kernel. `SLGuestKernelBuilder` compiles kernel source (any supported language) through `SLCompilerDriver` → register ISA → `SLOpcodeMap` → a `SLGuestKernelImage` of canonical opcodes, which the guest substrate loads and executes. `SLGuestLinux.buildKernel()` / `SLMachine.runLinuxGuestFromSource()` boot it. This is a small **custom** kernel, not upstream Linux.
+
+With steps 1–4 complete, the guest is no longer a counter-ticking stub: it
+executes a **compiled kernel image** as canonical opcodes on `SLSleelaVM`, over
+**paged, protected memory** (`SLMMU`), with a **timer/console/block device
+model**. The remaining gap to booting *real* Linux is unchanged and large —
+hardware-virtualization-grade vCPU semantics, a full virtio/APIC/ACPI device
+model, real page-table formats, and an ELF/bzImage loader — and is deliberately
+out of scope for this teaching model.

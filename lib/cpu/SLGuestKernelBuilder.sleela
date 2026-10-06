@@ -1,0 +1,61 @@
+/*
+ * lib/cpu/SLGuestKernelBuilder.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLGuestKernelBuilder — builds a bootable guest kernel
+ *   image by running kernel source through the real toolchain: a language
+ *   frontend (SLCompilerDriver) lowers it to the register ISA, SLOpcodeMap
+ *   reduces that to canonical SLeeLa opcodes, and the result is packaged as an
+ *   SLGuestKernelImage. This is step 4 of the OS-VM roadmap: the guest boots a
+ *   GENUINELY COMPILED kernel instead of a hand-written opcode stub.
+ *
+ * Because the kernel is compiled through the same frontend/IR/opcode pipeline
+ * as user programs, the guest kernel can in principle be written in any of the
+ * supported languages (C/C++/Java/Sleela) — a direct consequence of the 1:1
+ * Turing-effect mapping (SLTuringBridge).
+ *
+ * SCOPE NOTE: this builds a small CUSTOM kernel, not upstream Linux.
+ *
+ * Family: cpu. Composes SLCompilerDriver, SLOpcodeMap, SLSleelaVM,
+ *   SLInstructionSet, SLSystemCall, SLGuestKernelImage.
+ */
+#sleela 1.3
+class SLGuestKernelBuilder {
+  SLInstructionSet isa;
+  SLInstructionDecoder decoder;
+  SLSystemCall sys;
+  int built;
+
+  void configure() {
+    isa = new SLInstructionSet(); isa.configure();
+    decoder = new SLInstructionDecoder(); decoder.configure(isa);
+    sys = new SLSystemCall(); sys.configure();
+    built = 0;
+  }
+
+  // Compile a guest kernel from source in the given language into a bootable
+  // opcode image. langId: 0 Sleela, 1 C, 2 C++, 3 Java.
+  SLGuestKernelImage build(String sourcePath, int langId, String name, String version) {
+    // 1. frontend + lowering: source -> register ISA program.
+    SLCompilerDriver driver = new SLCompilerDriver(); driver.configure(isa);
+    SLProgram prog = driver.compile(sourcePath, langId, name);
+
+    // 2. map register ISA + syscalls -> canonical SLeeLa opcodes, into a scratch VM.
+    SLSleelaVM scratch = new SLSleelaVM(); scratch.configure(65536, 8192, 4096);
+    SLOpcodeMap map = new SLOpcodeMap(); map.configure(isa, sys, scratch);
+    map.mapProgram(prog, decoder);
+
+    // 3. package the emitted opcode stream as a bootable kernel image.
+    SLGuestKernelImage image = new SLGuestKernelImage();
+    image.configure(name, version, scratch.programLength() + 8);
+    int i = 0;
+    while (i < scratch.programLength()) {
+      image.append(scratch.opcodeAtIndex(i), scratch.argAtIndex(i));
+      i = i + 1;
+    }
+    image.setEntry(0);
+    built = built + 1;
+    return image;
+  }
+
+  int buildCount() { return built; }
+}

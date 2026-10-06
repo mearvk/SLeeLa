@@ -107,6 +107,10 @@ class SLSleelaVM {
     return ran;
   }
 
+  // Read back a loaded code slot (used by the kernel builder to package an image).
+  int opcodeAtIndex(int i) { return codeOps.readWord(i); }
+  int argAtIndex(int i) { return codeArgs.readWord(i); }
+
   int top() { if (sp == 0) { return 0; } return stack.readWord(sp - 1); }
   int printed() { return lastPrint; }
   int instructionsRun() { return executed; }
