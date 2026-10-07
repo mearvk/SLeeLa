@@ -1,3 +1,5 @@
+<img align="right" src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="75" height="75" alt="SLeeLa">
+
 # Thermodynamics Curriculum
 
 A novice-to-advanced ladder of the module's equations. Each rung is the next
