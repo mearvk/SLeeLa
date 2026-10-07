@@ -1,0 +1,47 @@
+/*
+ * lib/thermodynamics/curriculum/courses/SLCoursesDemo.sleela
+ * Thermodynamics course sequence - runnable orchestration demo.
+ * Definition: instantiates each course algorithm class (Thermo I, Thermo II,
+ *   Statistical Mechanics, Advanced/Chemical) and prints one representative
+ *   result per course, so each course's algorithms are actually exercised.
+ *
+ * Authoritative numeric implementations live in the parent module
+ * (lib/thermodynamics C/C++); these classes mirror the same relations.
+ * Max Rupplin - MEARVK LLC - 2026
+ */
+#sleela 1.3
+class SLCoursesDemo {
+
+  void main() {
+    // --- Thermodynamics I (Introductory) ---
+    SLThermoI t1 = new SLThermoI();
+    t1.configure(287.0);   // air, R = 287 J/(kg*K)
+    print("[Thermo I]   zeroth(300,300,300) = " + t1.zerothLaw(300.0, 300.0, 300.0, 0.5));
+    print("[Thermo I]   P(1kg,300K,0.86m^3) = " + t1.pressure(1.0, 300.0, 0.86137) + " Pa");
+    print("[Thermo I]   dU(Q=500,W=200) = " + t1.internalEnergyChange(500.0, 200.0) + " J");
+    print("[Thermo I]   dS_iso(1kg,V1->2V1) = " + t1.entropyIsothermal(1.0, 1.0, 2.0) + " J/K");
+    print("[Thermo I]   clausius(sum=0) = " + t1.clausius(0.0, 0.000001));
+
+    // --- Thermodynamics II (Applied) ---
+    SLThermoII t2 = new SLThermoII();
+    print("[Thermo II]  Rankine eta = " + t2.rankineEfficiency(3450.0, 2300.0, 190.0, 200.0));
+    print("[Thermo II]  COP_R = " + t2.refrigerationCOP(240.0, 280.0, 90.0));
+    print("[Thermo II]  COP_HP = " + t2.heatPumpCOP(240.0, 280.0, 90.0));
+    print("[Thermo II]  y1(2 of 5 mol) = " + t2.moleFraction(2.0, 5.0));
+
+    // --- Statistical Mechanics ---
+    SLStatisticalMechanics sm = new SLStatisticalMechanics();
+    sm.configure();
+    print("[StatMech]   S = kB ln(2) = " + sm.entropyBoltzmann(2.0) + " J/K");
+    double zz = sm.partitionTwoLevel(1.0, 0.0, 1.0, 0.000000000000000000001, 300.0);
+    print("[StatMech]   Z(two-level,300K) = " + zz);
+
+    // --- Advanced / Chemical Thermodynamics ---
+    SLAdvancedChemicalThermo adv = new SLAdvancedChemicalThermo();
+    adv.configure();
+    print("[Advanced]   K(dG0=-30000,300K) = " + adv.equilibriumConstant(0.0 - 30000.0, 300.0));
+    print("[Advanced]   dG(dH=-40000,T=300,dS=50) = " + adv.gibbsReaction(0.0 - 40000.0, 300.0, 50.0) + " J");
+    print("[Advanced]   Onsager L12==L21 (0.3,0.3) = " + adv.onsagerReciprocal(0.3, 0.3, 0.000001));
+    print("[Advanced]   sigma(J1=2,X1=1,J2=1,X2=1) = " + adv.entropyProduction(2.0, 1.0, 1.0, 1.0));
+  }
+}

@@ -8,6 +8,11 @@ transcendental terms (`exp`, `ln`) that the SLeeLa 1.3 surface lacks are
 provided as self-contained series, with the native core
 (`lib/thermodynamics` C/C++) authoritative for production accuracy.
 
+A runnable SLeeLa program `SLCoursesDemo.sleela` (with `void main()`) exercises
+all four course classes, and `../../src/courses_demo.c` (run by `make`) asserts
+the same relations against known values — the course algorithms are both
+authored in SLeeLa and verified executable.
+
 ## Core sequence
 
 ### `SLThermoI.sleela` — Thermodynamics I (Introductory)

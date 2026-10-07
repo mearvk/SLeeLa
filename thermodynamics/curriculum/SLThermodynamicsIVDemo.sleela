@@ -1,0 +1,70 @@
+/*
+ * lib/thermodynamics/curriculum/SLThermodynamicsIVDemo.sleela
+ * SLeeLa Thermodynamics IV Curriculum - runnable orchestration demo.
+ * Definition: instantiates every curriculum equation class (Levels 0-6 plus the
+ *   stochastic, slots, and facade classes) and prints one result line each, so
+ *   the whole ladder is exercised end to end, not just defined.
+ *
+ * The authoritative numeric implementations live in the parent module
+ * (lib/thermodynamics C/C++); these SLeeLa classes mirror the same equations.
+ * Max Rupplin - MEARVK LLC - 2026
+ */
+#sleela 1.3
+class SLThermodynamicsIVDemo {
+
+  void main() {
+    // Level 0 - sensible heat Q = m c dT (copper: c = 385).
+    SLHeatLinear heat = new SLHeatLinear();
+    heat.configure(2.0, 385.0);
+    print("[L0 heat]      Q(2kg,50K) = " + heat.heat(50.0) + " J");
+
+    // Level 1 - Fourier flux q = -k dT/dx (copper k = 401).
+    SLFourierFlux fourier = new SLFourierFlux();
+    fourier.configure(401.0);
+    print("[L1 fourier]   q(100K/0.5m) = " + fourier.flux(100.0, 0.5) + " W/m^2");
+
+    // Level 2 - Carnot efficiency between 300 K and 600 K.
+    SLCarnot carnot = new SLCarnot();
+    print("[L2 carnot]    eta(300,600) = " + carnot.efficiency(300.0, 600.0));
+
+    // Level 3 - Newton cooling toward 300 K.
+    SLNewtonCooling cool = new SLNewtonCooling();
+    cool.configure(300.0, 0.1);
+    print("[L3 cooling]   T(500K,t=1s) = " + cool.temperatureApprox(500.0, 1.0) + " K");
+
+    // Level 4 - Boltzmann two-level partition function and probability.
+    SLBoltzmann boltz = new SLBoltzmann();
+    boltz.configure();
+    double z = boltz.partitionTwoLevel(0.0, 0.000000000000000000001, 300.0);
+    print("[L4 boltzmann] Z(two-level,300K) = " + z);
+
+    // Level 5 - 3D heat equation: Laplacian of a hot center and one FTCS step.
+    SLHeatEquation3D heat3d = new SLHeatEquation3D();
+    heat3d.configure(0.1, 0.000111);
+    double lap = heat3d.laplacian(1000.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+    print("[L5 heat3D]    lap(hot center) = " + lap + " K/m^2");
+
+    // Level 6 - Arrhenius rate and the stochastic step.
+    SLArrhenius arr = new SLArrhenius();
+    arr.configure();
+    print("[L6 arrhenius] k(A=1,Ea=80000,300K) = " + arr.rate(1.0, 80000.0, 300.0));
+
+    SLStochasticHeat stoch = new SLStochasticHeat();
+    stoch.configure(0.000111, 5.0);
+    print("[L6 stochastic] noiseScale(dt=1) = " + stoch.noiseScale(1.0));
+
+    // Slots - enforced caps 22/6/2.
+    SLSlots slots = new SLSlots();
+    slots.configure(100.0);
+    boolean ok = slots.offer(105.0, 0.95, 0.9);
+    print("[slots]        first offer accepted = " + ok
+        + "; futuresFull = " + slots.futuresFull());
+
+    // Facade - coverage report.
+    SLThermodynamicsIV facade = new SLThermodynamicsIV();
+    facade.configure();
+    print("[facade]       topLevel = " + facade.topLevel()
+        + "; files = " + facade.fileCount()
+        + "; complete = " + facade.complete());
+  }
+}

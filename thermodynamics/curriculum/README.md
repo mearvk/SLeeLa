@@ -72,5 +72,13 @@ encoded as algorithm classes in [`courses/`](courses/):
 See [`courses/README.md`](courses/README.md) for the per-course algorithm and
 equation tables.
 
+## Runnable demos & executable coverage
+- `SLThermodynamicsIVDemo.sleela` — a runnable SLeeLa program (`void main()`)
+  that instantiates every curriculum class and prints one result per level.
+- `courses/SLCoursesDemo.sleela` — the same, for the four course classes.
+- `../src/courses_demo.c` — a C self-test (run by `make`) that asserts the
+  course relations against known textbook values, so the course algorithms have
+  the same executable coverage as the rest of the module.
+
 ---
 _Max Rupplin - MEARVK LLC - 2026_
