@@ -1,0 +1,84 @@
+/*
+ * lib/thermodynamics/curriculum/courses/SLThermoI.sleela
+ * Thermodynamics I (Introductory) - algorithms.
+ * Basic concepts, properties of pure substances, the Zeroth and First Laws
+ * (energy balances), and the Second Law (entropy, reversible/irreversible) for
+ * closed and open systems. Every method is a standard textbook relation.
+ *
+ * exp/ln are not SLeeLa 1.3 builtins; where entropy needs a log, a
+ * self-contained series is provided (native core is authoritative:
+ * lib/thermodynamics C). Units are SI.
+ * Max Rupplin - MEARVK LLC - 2026
+ */
+#sleela 1.3
+class SLThermoI {
+  double gasConstant;   // specific gas constant R, J/(kg*K)
+  void configure(double rSpecific) { gasConstant = rSpecific; }
+
+  // Natural log via atanh series: ln(x) = 2*(t + t^3/3 + t^5/5 + ...),
+  // t = (x-1)/(x+1). Converges for x > 0.
+  double ln(double x) {
+    if (x <= 0.0) { return 0.0; }
+    double t = (x - 1.0) / (x + 1.0);
+    double t2 = t * t;
+    double term = t;
+    double sum = 0.0;
+    int k = 1;
+    while (k <= 99) {
+      sum = sum + term / k;
+      term = term * t2;
+      k = k + 2;
+    }
+    return 2.0 * sum;
+  }
+
+  // --- Zeroth Law: transitivity of thermal equilibrium ---
+  // If A~B and B~C (equal temperatures within tol) then A~C.
+  boolean inEquilibrium(double tA, double tB, double tol) {
+    double d = tA - tB;
+    if (d < 0.0) { d = 0.0 - d; }
+    return d <= tol;
+  }
+  boolean zerothLaw(double tA, double tB, double tC, double tol) {
+    return inEquilibrium(tA, tB, tol) && inEquilibrium(tB, tC, tol)
+        && inEquilibrium(tA, tC, tol);
+  }
+
+  // --- Properties of a pure substance: ideal gas law  P V = m R T ---
+  double pressure(double mass, double temperature, double volume) {
+    if (volume <= 0.0) { return 0.0; }
+    return mass * gasConstant * temperature / volume;
+  }
+
+  // --- First Law, closed system:  dU = Q - W ---
+  double internalEnergyChange(double heatIn, double workBySystem) {
+    return heatIn - workBySystem;
+  }
+
+  // --- First Law, open system (steady flow), neglecting KE/PE:
+  //     Q - W = mdot * (h_out - h_in)  -> solve for required Q - W. ---
+  double steadyFlowEnergy(double massFlow, double hIn, double hOut) {
+    return massFlow * (hOut - hIn);
+  }
+
+  // --- Second Law: entropy change of heat transfer at temperature T:
+  //     dS = Q / T  (reversible); for an ideal gas, isothermal:
+  //     dS = m R ln(V2/V1). ---
+  double entropyFromHeat(double heat, double temperature) {
+    if (temperature <= 0.0) { return 0.0; }
+    return heat / temperature;
+  }
+  double entropyIsothermal(double mass, double v1, double v2) {
+    if (v1 <= 0.0 || v2 <= 0.0) { return 0.0; }
+    return mass * gasConstant * ln(v2 / v1);
+  }
+
+  // Clausius inequality check: a cycle is reversible if sum(dQ/T) == 0,
+  // irreversible-but-possible if < 0, impossible if > 0.
+  // Returns -1 impossible, 0 reversible, 1 possible/irreversible.
+  int clausius(double cycleEntropySum, double tol) {
+    if (cycleEntropySum > tol) { return 0 - 1; }
+    if (cycleEntropySum < (0.0 - tol)) { return 1; }
+    return 0;
+  }
+}

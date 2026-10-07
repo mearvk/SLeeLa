@@ -58,5 +58,19 @@ counterpart above:
 The authoritative, fully-tested implementations of every equation here live in
 the parent module (`thermodynamics/` C and C++ sources).
 
+## Course algorithms — `courses/`
+Beyond the equation ladder, the standard thermodynamics **course sequence** is
+encoded as algorithm classes in [`courses/`](courses/):
+
+| Course | SLeeLa file |
+|---|---|
+| Thermodynamics I (Introductory) | `courses/SLThermoI.sleela` |
+| Thermodynamics II (Applied) | `courses/SLThermoII.sleela` |
+| Statistical Thermodynamics / Mechanics | `courses/SLStatisticalMechanics.sleela` |
+| Advanced / Chemical Thermodynamics | `courses/SLAdvancedChemicalThermo.sleela` |
+
+See [`courses/README.md`](courses/README.md) for the per-course algorithm and
+equation tables.
+
 ---
 _Max Rupplin - MEARVK LLC - 2026_

@@ -1,0 +1,62 @@
+/*
+ * lib/thermodynamics/curriculum/courses/SLAdvancedChemicalThermo.sleela
+ * Advanced / Chemical Thermodynamics - algorithms.
+ * Multicomponent equilibrium, chemical kinetics, and nonequilibrium
+ * thermodynamics (Onsager reciprocal relations). Standard relations; SI units.
+ *
+ * exp/ln are not SLeeLa 1.3 builtins; self-contained series are provided.
+ * Native core is authoritative (C: sl_thermo_arrhenius_rate etc.).
+ * Max Rupplin - MEARVK LLC - 2026
+ */
+#sleela 1.3
+class SLAdvancedChemicalThermo {
+  double R;    // molar gas constant J/(mol*K)
+  void configure() { R = 8.314462618; }
+
+  double expSeries(double x) {
+    double term = 1.0; double sum = 1.0; int n = 1;
+    while (n <= 30) { term = term * x / n; sum = sum + term; n = n + 1; }
+    return sum;
+  }
+
+  // --- Chemical equilibrium: equilibrium constant from Gibbs energy ---
+  //   K = exp(-dG0 / (R*T)),  and  dG = dG0 + R*T*ln(Q) = 0 at equilibrium.
+  double equilibriumConstant(double deltaG0, double temperature) {
+    if (temperature <= 0.0) { return 0.0; }
+    return expSeries((0.0 - deltaG0) / (R * temperature));
+  }
+
+  // Gibbs energy of reaction: dG = dH - T*dS.
+  double gibbsReaction(double deltaH, double temperature, double deltaS) {
+    return deltaH - temperature * deltaS;
+  }
+
+  // van't Hoff slope term d(lnK)/d(1/T) = -dH/R (linearized temperature
+  // dependence of equilibrium). Returns -dH/R.
+  double vantHoffSlope(double deltaH) {
+    return (0.0 - deltaH) / R;
+  }
+
+  // --- Chemical kinetics: Arrhenius rate k = A*exp(-Ea/(R*T)) ---
+  double arrheniusRate(double aFactor, double activationEnergy, double temperature) {
+    if (temperature <= 0.0) { return 0.0; }
+    return aFactor * expSeries((0.0 - activationEnergy) / (R * temperature));
+  }
+
+  // --- Nonequilibrium: Onsager reciprocal relations ---
+  // For coupled flows J_i = sum_j L_ij X_j, the kinetic coefficient matrix is
+  // symmetric: L_ij == L_ji. This verifies reciprocity for a 2x2 system.
+  boolean onsagerReciprocal(double l12, double l21, double tol) {
+    double d = l12 - l21;
+    if (d < 0.0) { d = 0.0 - d; }
+    return d <= tol;
+  }
+  // Entropy production rate (bilinear form) sigma = J1*X1 + J2*X2 >= 0.
+  double entropyProduction(double j1, double x1, double j2, double x2) {
+    return j1 * x1 + j2 * x2;
+  }
+  // Coupled flow J1 = L11*X1 + L12*X2 (first row of the Onsager system).
+  double coupledFlow(double l11, double x1, double l12, double x2) {
+    return l11 * x1 + l12 * x2;
+  }
+}
