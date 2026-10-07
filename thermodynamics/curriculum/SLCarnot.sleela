@@ -1,0 +1,16 @@
+/*
+ * thermodynamics/curriculum/SLCarnot.sleela
+ * SLeeLa Thermodynamics Curriculum - Level 2: Carnot efficiency limit.
+ * Definition: eta = 1 - (Tcold / Thot). A dimensionless ratio bounding every
+ * heat engine between two reservoir temperatures (kelvin).
+ * Max Rupplin - MEARVK LLC - 2026
+ */
+#sleela 1.3
+// Level 2 - a ratio of two quantities yields a pure-number limit in [0,1).
+class SLCarnot {
+  // eta = 1 - Tc/Th. Returns 0 for a non-physical hot reservoir (<= 0 K).
+  double efficiency(double tCold, double tHot) {
+    if (tHot <= 0.0) { return 0.0; }
+    return 1.0 - (tCold / tHot);
+  }
+}

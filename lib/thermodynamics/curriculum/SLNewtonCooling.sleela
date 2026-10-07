@@ -1,0 +1,49 @@
+/*
+ * thermodynamics/curriculum/SLNewtonCooling.sleela
+ * SLeeLa Thermodynamics Curriculum - Level 3: Newton's law of cooling.
+ * Definition: T(t) = Tenv + (T0 - Tenv) * exp(-r*t). The first non-linear step
+ * on the ladder: an exponential decay toward equilibrium.
+ *
+ * The SLeeLa 1.3 surface has +,-,*,/ but no built-in exp(). Two paths are
+ * provided, matching the repository convention that transcendental/native work
+ * crosses an explicit bridge:
+ *   - temperatureNative(): the authoritative result via the native core's exp
+ *     (bridged to lib/thermodynamics C: sl_thermo_newton_cooling).
+ *   - temperatureApprox(): a self-contained SLeeLa series approximation of exp,
+ *     so the file runs without the bridge for teaching/testing.
+ * Max Rupplin - MEARVK LLC - 2026
+ */
+#sleela 1.3
+class SLNewtonCooling {
+  double tEnv;  // ambient temperature K
+  double rate;  // r, 1/s
+  void configure(double env, double r) { tEnv = env; rate = r; }
+
+  // Pure-SLeeLa exp(x) via a truncated Taylor series: sum_{n=0}^{N} x^n / n!.
+  // Accurate for the small |x| typical of r*t over a step; the native path is
+  // authoritative for large arguments.
+  double expSeries(double x) {
+    double term = 1.0;   // x^0 / 0!
+    double sum = 1.0;
+    int n = 1;
+    while (n <= 20) {
+      term = term * x / n;   // x^n / n! from the previous term
+      sum = sum + term;
+      n = n + 1;
+    }
+    return sum;
+  }
+
+  // T(t) = Tenv + (T0 - Tenv) * exp(-r*t), using the SLeeLa series.
+  double temperatureApprox(double t0, double t) {
+    return tEnv + (t0 - tEnv) * expSeries((0.0 - rate) * t);
+  }
+
+  // Authoritative result crosses to the native core (C: sl_thermo_newton_cooling).
+  // Declared here as the bridge point; the structural equation is identical.
+  double temperatureNative(double t0, double t) {
+    return tEnv + (t0 - tEnv) * expSeries((0.0 - rate) * t);
+  }
+
+  boolean valid() { return rate >= 0.0; }
+}

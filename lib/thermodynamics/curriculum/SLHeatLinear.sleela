@@ -1,0 +1,22 @@
+/*
+ * thermodynamics/curriculum/SLHeatLinear.sleela
+ * SLeeLa Thermodynamics Curriculum - Level 0 (novice): linear sensible heat.
+ * Definition: Q = m * c * dT, the straight-line relation between heat and
+ * temperature change. Also solves for dT = Q / (m * c).
+ * Max Rupplin - MEARVK LLC - 2026
+ */
+#sleela 1.3
+// Level 0 - linear. Everything here is a plain product or quotient; no curves.
+class SLHeatLinear {
+  double mass;          // kg
+  double specificHeat;  // J/(kg*K)
+  void configure(double m, double c) { mass = m; specificHeat = c; }
+
+  // Q = m * c * dT
+  double heat(double deltaT) { return mass * specificHeat * deltaT; }
+
+  // dT = Q / (m * c)  -- the same linear law, rearranged.
+  double deltaTForHeat(double q) { return q / (mass * specificHeat); }
+
+  boolean valid() { return mass > 0.0 && specificHeat > 0.0; }
+}
