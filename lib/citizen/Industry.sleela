@@ -1,0 +1,102 @@
+/*
+ * lib/citizen/Industry.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines Industry, the civic-sector Master Class — the honest
+ *   living a Citizen claims to make. It models which slice of "the whole
+ *   economy" a person belongs to and what that slice pays per cycle.
+ *
+ * Industry is a NATURAL / LOADABLE MODULE sharing the common module contract
+ * (load / loaded / moduleName / describe). It is a sidecar owned by Citizen:
+ * Citizen models the person; Industry models their place in the great churning
+ * machine of commerce — and whether that machine currently remembers their
+ * name. It covers the whole industry at the sector level, from the people who
+ * grow the food to the people who grow the spreadsheets.
+ *
+ * Family: citizen. Economic data crosses an explicit bridge to the ledger.
+ */
+#sleela 1.3
+// Unified SLeeLa SDK front-end object.
+class Industry {
+
+  static final String MODULE = "Industry";
+
+  // The whole economy, abridged to fit on one business card.
+  static final int SECTOR_NONE          = 0;   // between jobs; "consulting"
+  static final int SECTOR_AGRICULTURE   = 1;   // feeds everyone, thanked by few
+  static final int SECTOR_MINING        = 2;   // digs up tomorrow's shortage
+  static final int SECTOR_MANUFACTURING = 3;   // makes the thing in the box
+  static final int SECTOR_ENERGY        = 4;   // keeps the lights, bills on
+  static final int SECTOR_CONSTRUCTION  = 5;   // runs 3 weeks over, always
+  static final int SECTOR_RETAIL        = 6;   // "did you find everything okay?"
+  static final int SECTOR_TRANSPORT     = 7;   // the box, now moving
+  static final int SECTOR_FINANCE       = 8;   // moves money, keeps a slice
+  static final int SECTOR_HEALTHCARE    = 9;   // the only sector that bills you
+                                               //   for existing near it
+  static final int SECTOR_EDUCATION     = 10;  // underpaid, over-caffeinated
+  static final int SECTOR_TECHNOLOGY    = 11;  // "we've gone fully remote"
+  static final int SECTOR_GOVERNMENT    = 12;  // the sector that counts the rest
+  static final int SECTOR_COUNT         = 13;
+
+  int loadedFlag;
+  int sector;        // one of SECTOR_*
+  int wageCents;     // pay per cycle, in cents, so nobody loses a penny
+  boolean onPayroll; // whether the machine currently remembers your name
+
+  void load() {
+    loadedFlag = 1;
+    sector = SECTOR_NONE;
+    wageCents = 0;
+    onPayroll = false;
+  }
+  boolean loaded() { return loadedFlag == 1; }
+  String moduleName() { return MODULE; }
+
+  // Join the workforce in a given sector at a given wage. Welcome aboard.
+  void employ(int whichSector, int cents) {
+    if (whichSector < 0 || whichSector >= SECTOR_COUNT) {
+      whichSector = SECTOR_NONE;
+    }
+    if (cents < 0) { cents = 0; }
+    sector = whichSector;
+    wageCents = cents;
+    onPayroll = whichSector != SECTOR_NONE;
+  }
+
+  // "We're going in a different direction." Famous last words of a Friday.
+  void layOff() {
+    onPayroll = false;
+  }
+
+  // A modest raise. The economy's rare act of kindness.
+  void giveRaise(int cents) {
+    if (cents > 0) { wageCents = wageCents + cents; }
+  }
+
+  boolean employed() { return onPayroll && sector != SECTOR_NONE; }
+  int wage() { if (!employed()) { return 0; } return wageCents; }
+  int currentSector() { return sector; }
+
+  // A human-readable job title, because SECTOR_8 impresses no one at dinner.
+  String sectorName() {
+    if (sector == SECTOR_AGRICULTURE)   { return "Agriculture"; }
+    if (sector == SECTOR_MINING)        { return "Mining"; }
+    if (sector == SECTOR_MANUFACTURING) { return "Manufacturing"; }
+    if (sector == SECTOR_ENERGY)        { return "Energy"; }
+    if (sector == SECTOR_CONSTRUCTION)  { return "Construction"; }
+    if (sector == SECTOR_RETAIL)        { return "Retail"; }
+    if (sector == SECTOR_TRANSPORT)     { return "Transport"; }
+    if (sector == SECTOR_FINANCE)       { return "Finance"; }
+    if (sector == SECTOR_HEALTHCARE)    { return "Healthcare"; }
+    if (sector == SECTOR_EDUCATION)     { return "Education"; }
+    if (sector == SECTOR_TECHNOLOGY)    { return "Technology"; }
+    if (sector == SECTOR_GOVERNMENT)    { return "Government"; }
+    return "Unemployed (Consulting)";
+  }
+
+  String yn(boolean b) { if (b) { return "yes"; } return "no"; }
+
+  String describe() {
+    return MODULE + " sector=" + sectorName() + " wage=" + wageCents
+         + " employed=" + yn(employed());
+  }
+}

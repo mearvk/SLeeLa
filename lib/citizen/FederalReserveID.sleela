@@ -1,0 +1,160 @@
+/*
+ * lib/citizen/FederalReserveID.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines FederalReserveID, the central-bank identity Master Class
+ *   — the number by which the Federal Reserve pretends to know a Citizen
+ *   personally. It issues and validates a civic clearing ID and maps the money
+ *   to one of the twelve Federal Reserve Districts.
+ *
+ * FederalReserveID is a NATURAL / LOADABLE MODULE sharing the common module
+ * contract (load / loaded / moduleName / describe). It is a sidecar owned by
+ * Citizen and the single source of truth for Federal Reserve details in this
+ * package: the twelve District codes (01 Boston .. 12 San Francisco), the
+ * mapping from an ABA routing prefix to a District, and the issuance of a
+ * deterministic, obviously-synthetic clearing identifier. No real identifiers
+ * are generated — the central bank's holiday card list remains, mercifully,
+ * fictional.
+ *
+ * Family: citizen. Clearing crosses an explicit bridge to the ledger.
+ */
+#sleela 1.3
+// Unified SLeeLa SDK front-end object.
+class FederalReserveID {
+
+  static final String MODULE = "FederalReserveID";
+
+  // The twelve Federal Reserve Districts. Yes, there are exactly twelve.
+  // No, nobody remembers why Missouri got two.
+  static final int DISTRICT_BOSTON        = 1;
+  static final int DISTRICT_NEW_YORK      = 2;
+  static final int DISTRICT_PHILADELPHIA  = 3;
+  static final int DISTRICT_CLEVELAND     = 4;
+  static final int DISTRICT_RICHMOND      = 5;
+  static final int DISTRICT_ATLANTA       = 6;
+  static final int DISTRICT_CHICAGO       = 7;
+  static final int DISTRICT_ST_LOUIS      = 8;
+  static final int DISTRICT_MINNEAPOLIS   = 9;
+  static final int DISTRICT_KANSAS_CITY   = 10;
+  static final int DISTRICT_DALLAS        = 11;
+  static final int DISTRICT_SAN_FRANCISCO = 12;
+  static final int DISTRICT_COUNT         = 12;
+
+  int loadedFlag;
+  boolean issued;
+  String idNumber;    // synthetic clearing ID: FRS-<district>-<serial>
+  int district;       // one of DISTRICT_*
+  int serial;         // the citizen's spot in a very long, patient line
+
+  void load() {
+    loadedFlag = 1;
+    issued = false;
+    idNumber = null;
+    district = DISTRICT_NEW_YORK;   // when in doubt, blame New York
+    serial = 0;
+  }
+  boolean loaded() { return loadedFlag == 1; }
+  String moduleName() { return MODULE; }
+
+  // Issue a Fed clearing ID to a named citizen. Deterministic + fake on purpose.
+  void issue(String legalName) {
+    serial = nameSerial(legalName);
+    district = DISTRICT_NEW_YORK;
+    issued = true;
+    idNumber = "FRS-" + district + "-" + serial;
+  }
+
+  // Re-home the citizen to a specific District (e.g. they moved to Dallas).
+  void assignDistrict(int whichDistrict) {
+    if (whichDistrict >= DISTRICT_BOSTON && whichDistrict <= DISTRICT_COUNT) {
+      district = whichDistrict;
+      if (issued) { idNumber = "FRS-" + district + "-" + serial; }
+    }
+  }
+
+  // Map an ABA routing number to its Federal Reserve District. The first two
+  // digits (01..12) ARE the District; anything else is a rounding error.
+  int districtOfRouting(String routing) {
+    if (routing == null) { return 0; }
+    int d = routingPrefix(routing);
+    if (d >= DISTRICT_BOSTON && d <= DISTRICT_COUNT) { return d; }
+    return 0;
+  }
+
+  // A friendly name for the District, for forms and small talk alike.
+  String districtName() {
+    if (district == DISTRICT_BOSTON)        { return "Boston"; }
+    if (district == DISTRICT_NEW_YORK)      { return "New York"; }
+    if (district == DISTRICT_PHILADELPHIA)  { return "Philadelphia"; }
+    if (district == DISTRICT_CLEVELAND)     { return "Cleveland"; }
+    if (district == DISTRICT_RICHMOND)      { return "Richmond"; }
+    if (district == DISTRICT_ATLANTA)       { return "Atlanta"; }
+    if (district == DISTRICT_CHICAGO)       { return "Chicago"; }
+    if (district == DISTRICT_ST_LOUIS)      { return "St. Louis"; }
+    if (district == DISTRICT_MINNEAPOLIS)   { return "Minneapolis"; }
+    if (district == DISTRICT_KANSAS_CITY)   { return "Kansas City"; }
+    if (district == DISTRICT_DALLAS)        { return "Dallas"; }
+    if (district == DISTRICT_SAN_FRANCISCO) { return "San Francisco"; }
+    return "Unassigned";
+  }
+
+  boolean valid() { return issued && idNumber != null; }
+  String number() { if (idNumber == null) { return "FRS-UNISSUED"; } return idNumber; }
+  int currentDistrict() { return district; }
+
+  // --- small deterministic helpers (no randomness; archives must repeat) ---
+  // SLeeLa Strings are Java-style: length() and substring() only — no char
+  // type — so these helpers work purely by slicing and comparing substrings.
+
+  // Turn the first two characters of the routing string into an int 0..99.
+  int routingPrefix(String routing) {
+    if (routing == null || routing.length() < 2) { return 0; }
+    int tens = digitValue(routing.substring(0, 1));
+    int ones = digitValue(routing.substring(1, 2));
+    if (tens < 0 || ones < 0) { return 0; }
+    return tens * 10 + ones;
+  }
+
+  // Fold a name into a stable 6-digit serial. Not secure; delightfully not.
+  int nameSerial(String legalName) {
+    if (legalName == null) { return 0; }
+    int acc = 7;
+    int i = 0;
+    int n = legalName.length();
+    while (i < n) {
+      // charWeight() gives each one-character slice a small stable number.
+      acc = (acc * 31 + charWeight(legalName.substring(i, i + 1))) % 1000000;
+      i = i + 1;
+    }
+    return acc;
+  }
+
+  // Map a single-character String to its digit value 0..9, or -1 if not a digit.
+  int digitValue(String c) {
+    if (c == "0") { return 0; }
+    if (c == "1") { return 1; }
+    if (c == "2") { return 2; }
+    if (c == "3") { return 3; }
+    if (c == "4") { return 4; }
+    if (c == "5") { return 5; }
+    if (c == "6") { return 6; }
+    if (c == "7") { return 7; }
+    if (c == "8") { return 8; }
+    if (c == "9") { return 9; }
+    return -1;
+  }
+
+  // A stable per-character weight for serial folding. Digits use their value;
+  // everything else gets a constant nudge so names still spread out nicely.
+  int charWeight(String c) {
+    int d = digitValue(c);
+    if (d >= 0) { return d + 1; }
+    if (c == " ") { return 11; }
+    if (c == ".") { return 13; }
+    return 17;
+  }
+
+  String describe() {
+    return MODULE + " id=" + number() + " district=" + district
+         + " (" + districtName() + ") valid=" + valid();
+  }
+}

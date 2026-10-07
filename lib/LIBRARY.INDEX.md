@@ -1,11 +1,26 @@
 # SLeeLa /lib Library Index
 
-**Revision:** 0.31  
-**Packages:** 83  
-**SLeeLa source units:** 10297  
-**Module-facade symbols:** 55  
-**Total symbol records:** 10352  
+**Revision:** 0.32  
+**Packages:** 84  
+**SLeeLa source units:** 10301  
+**Module-facade symbols:** 56  
+**Total symbol records:** 10357  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
+
+> Revision 0.32 adds the new `citizen` package — the civic layer of the
+> Republic of Sleela. It introduces four one-class-per-file Master Classes:
+> `Citizen` (one honest, taxpaying, coffee-drinking person who is, famously,
+> able), `Industry` (their place across the whole economy, sector by sector),
+> `BankAccount` (the banking relationship, with a 9-digit ABA routing number and
+> account number), and `FederalReserveID` (the central-bank clearing identity
+> that maps money to one of the twelve Federal Reserve Districts). A matching
+> `SLPackage` facade names the package, and a runnable orchestration example
+> lives outside `/lib` at `citizen/sleela/CitizenDemo.sleela` (so it is not
+> double-counted in the inventory). One new package and five new `.sleela`
+> units: 10,352 -> **10,357** total records (10,297 -> **10,301** source
+> classes), 55 -> **56** facades, 83 -> **84** packages. `LIBRARY.SYMBOLS.md`
+> was regenerated from the live tree and the counts are verified in lockstep by
+> `test-suites/test-library-inventory.sh`.
 
 > Revision 0.31 promotes the emblematic Skya telephony modules into first-class
 > `/lib` Master Classes. The `telephony-skya` package gains six one-class-per-
