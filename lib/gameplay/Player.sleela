@@ -1,0 +1,96 @@
+/*
+ * lib/gameplay/Player.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines Player, the actor who takes a turn in the gameplay
+ *   package. A Player carries experience, a Person/Citizen quality score (which
+ *   sets the price they pay for information), cash, and the three things a turn
+ *   can grant them — file, tact, and rolls — plus a Management Courtroom to keep
+ *   them in.
+ *
+ * Player is a NATURAL / LOADABLE MODULE sharing the common module contract
+ * (load / loaded / moduleName / describe). The quality score is the hinge of
+ * move (b): a higher-quality Person/Citizen is charged more for the Inference
+ * Engine's information, because good information finds the people who can use it.
+ *
+ * Family: gameplay.
+ */
+#sleela 1.3
+// Unified SLeeLa SDK front-end object.
+class Player {
+
+  static final String MODULE = "Player";
+
+  int loadedFlag;
+  String handle;        // the player's name at the table
+  int experience;       // more experience per turn is the whole point
+  int quality;          // Person/Citizen quality, 0..100 (sets info price)
+  int cashCents;        // what they can spend on reports
+  int bossUnderstanding;// 0..100 — how much the boss "gets" them this turn
+
+  ManagementCourtroom courtroom;  // where file / tact / rolls accumulate
+
+  // --- loadable-module contract ------------------------------------------
+  void load() {
+    loadedFlag = 1;
+    handle = "Player One";
+    experience = 0;
+    quality = 50;
+    cashCents = 0;
+    bossUnderstanding = 50;
+    courtroom = new ManagementCourtroom();
+    courtroom.load();
+  }
+  boolean loaded() { return loadedFlag == 1; }
+  String moduleName() { return MODULE; }
+
+  void introduce(String name, int startQuality, int startCash) {
+    if (name != null) { handle = name; }
+    quality = clamp(startQuality);
+    if (startCash >= 0) { cashCents = startCash; }
+  }
+
+  // --- turn rewards -------------------------------------------------------
+  void gainExperience(int xp) { if (xp > 0) { experience = experience + xp; } }
+  void raiseBossUnderstanding(int d) { bossUnderstanding = clamp(bossUnderstanding + d); }
+
+  // The price of information scales with the Player's own quality: a better
+  // Person/Citizen pays more, because the report is worth more to them.
+  int infoPriceCents(int baseCents) {
+    if (baseCents < 0) { baseCents = 0; }
+    return baseCents + (baseCents * quality) / 100;
+  }
+
+  // Try to pay for information. Returns true if the player could afford it.
+  boolean payForInfo(int baseCents) {
+    int price = infoPriceCents(baseCents);
+    if (price > cashCents) { return false; }
+    cashCents = cashCents - price;
+    return true;
+  }
+
+  void earn(int cents) { if (cents > 0) { cashCents = cashCents + cents; } }
+
+  // Convenience pass-throughs to the courtroom.
+  void gainFile(int n) { courtroom.addFile(n); }
+  void gainTact(int n) { courtroom.addTact(n); }
+  void gainRolls(int n) { courtroom.addRolls(n); }
+
+  int xp() { return experience; }
+  int qualityScore() { return quality; }
+  int cash() { return cashCents; }
+  int bossRapport() { return bossUnderstanding; }
+  ManagementCourtroom management() { return courtroom; }
+  String name() { return handle; }
+
+  int clamp(int v) {
+    if (v < 0) { return 0; }
+    if (v > 100) { return 100; }
+    return v;
+  }
+
+  String describe() {
+    return MODULE + " " + handle + " xp=" + experience
+         + " quality=" + quality + " cash=" + cashCents
+         + " boss=" + bossUnderstanding + "; " + courtroom.describe();
+  }
+}

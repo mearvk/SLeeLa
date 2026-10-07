@@ -1,0 +1,19 @@
+/*
+ * lib/gameplay/SLPackage.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines the SLeeLa standard-library package for gameplay.
+ */
+#sleela 1.3
+// Library facade for module package: gameplay
+// Exposes the package to the SLeeLa compiler, Loader, and Nordshrift.
+// The Master Classes (DiceRoll, Player, ManagementCourtroom, MoveOutcome,
+// ExpectedFuture, DetailedReport, PortfolioDecision, InferenceEngine, GameMove +
+// the three concrete moves, GameTurn) are first-class one-class-per-file source
+// units in this package; this facade only names the package itself, mirroring
+// lib/ledger/SLPackage.sleela and lib/citizen/SLPackage.sleela.
+class SLPackage {
+  String packageName;
+  void configure(String name){packageName=name;}
+  String name(){return packageName;}
+  boolean available(){return packageName!=null;}
+}

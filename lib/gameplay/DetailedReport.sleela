@@ -1,0 +1,70 @@
+/*
+ * lib/gameplay/DetailedReport.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines DetailedReport, the document the Boss hands a Player on a
+ *   LOSING "ask for help" roll — the consolation prize that is often the better
+ *   prize. Where ExpectedFuture only shows the schedule, a DetailedReport comes
+ *   with some Game-Engineering moves ALREADY decided, so the player gets a plan
+ *   instead of a prophecy. The player pays for it based on their own quality.
+ *
+ * DetailedReport is a NATURAL / LOADABLE MODULE sharing the common module
+ * contract (load / loaded / moduleName / describe). It holds an ordered list of
+ * pre-decided engineering moves and the price that was charged for it.
+ *
+ * Family: gameplay.
+ */
+#sleela 1.3
+// Unified SLeeLa SDK front-end object.
+class DetailedReport {
+
+  static final String MODULE = "DetailedReport";
+  static final int MAX_MOVES = 16;
+
+  int loadedFlag;
+  String title;
+  String[] decidedMoves;   // Game-Engineering moves the boss already chose
+  int moveCount;
+  int pricePaidCents;      // what the player paid, by their quality
+  boolean affordable;      // whether the player could pay at all
+
+  // --- loadable-module contract ------------------------------------------
+  void load() {
+    loadedFlag = 1;
+    title = "Boss's Detailed Report";
+    decidedMoves = new String[MAX_MOVES];
+    moveCount = 0;
+    pricePaidCents = 0;
+    affordable = false;
+  }
+  boolean loaded() { return loadedFlag == 1; }
+  String moduleName() { return MODULE; }
+
+  void name(String t) { if (t != null) { title = t; } }
+  void setPrice(int cents, boolean couldPay) {
+    pricePaidCents = cents;
+    affordable = couldPay;
+  }
+
+  // Record one pre-decided Game-Engineering move.
+  void decide(String move) {
+    if (move == null || moveCount >= MAX_MOVES) { return; }
+    decidedMoves[moveCount] = move;
+    moveCount = moveCount + 1;
+  }
+
+  String moveAt(int i) {
+    if (i < 0 || i >= moveCount) { return null; }
+    return decidedMoves[i];
+  }
+
+  int moves() { return moveCount; }
+  boolean paid() { return affordable; }
+  int price() { return pricePaidCents; }
+
+  String yn(boolean v) { if (v) { return "yes"; } return "no"; }
+
+  String describe() {
+    return MODULE + " '" + title + "' decidedMoves=" + moveCount
+         + " price=" + pricePaidCents + " paid=" + yn(affordable);
+  }
+}

@@ -1,0 +1,98 @@
+/*
+ * lib/gameplay/NewDesireMove.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Move (c) — create a new desire. You review a slate of likeable,
+ *   medium portfolio decisions across realistic industries. Reviewing them
+ *   earns you standing in your Management Courtroom — file, tact, or banked
+ *   rolls — and the decision you back resolves into profit and a futures read.
+ *   The game's one law applies: big bets are always winners, where you find
+ *   them. So when a BIG one shows up, bet big.
+ *
+ * A concrete GameMove: override resolve() to offer the slate, grant courtroom
+ * standing, and resolve the chosen bet into profit. Family: gameplay.
+ */
+#sleela 1.3
+class NewDesireMove extends GameMove {
+
+  PortfolioDecision chosen;   // the decision the player backed
+  int futuresOutlook;         // a simple futures read, derived from the result
+
+  void setUp() {
+    load();
+    declare("Create a New Desire", CHOICE_NEW_DESIRE);
+    chosen = null;
+    futuresOutlook = 0;
+  }
+
+  MoveOutcome resolve(Player p) {
+    MoveOutcome out = new MoveOutcome();
+    out.begin("Create a New Desire");
+    chosen = null;
+    futuresOutlook = 0;
+    if (dice == null || p == null) {
+      out.say("No roller or player; no desire to create.");
+      return out;
+    }
+
+    // Reviewing likeable medium portfolio decisions always teaches you
+    // something — you gain courtroom standing just for doing the work.
+    out.addXp(2);
+    out.addTact(1);                       // tact, from reading the room
+    if (dice.rollUnder(40)) { out.addFile(1); }   // sometimes a useful file
+    if (dice.rollUnder(25)) { out.addRolls(1); }  // sometimes a banked roll
+
+    // The slate: three realistic industries. The third is a BIG bet — and in
+    // this game a found big bet always wins, so it is the one to back.
+    PortfolioDecision a = offer("Logistics",  5000, 55, 18, PortfolioDecision.SIZE_MEDIUM);
+    PortfolioDecision b = offer("Healthcare", 8000, 45, 22, PortfolioDecision.SIZE_MEDIUM);
+    PortfolioDecision big = offer("Energy", 20000, 50, 30, PortfolioDecision.SIZE_BIG);
+
+    // Bet big where you find it. Otherwise, back the higher-expected medium.
+    if (big.isGuaranteed()) {
+      chosen = big;
+    } else if (expected(b) >= expected(a)) {
+      chosen = b;
+    } else {
+      chosen = a;
+    }
+
+    int profit = chosen.resolve(dice);
+    if (profit > 0) {
+      out.succeed();
+      out.addCash(profit);
+      // A win sharpens your futures read and your experience.
+      futuresOutlook = profit / 100;
+      out.addXp(3);
+      out.say("Backed the " + chosen.sizeName() + " "
+            + chosen.industryName() + " bet and WON: profit=" + profit
+            + ", futures=+" + futuresOutlook + ".");
+    } else {
+      futuresOutlook = profit / 100;      // negative outlook on a loss
+      out.say("Backed the " + chosen.sizeName() + " "
+            + chosen.industryName() + " bet and lost " + (0 - profit)
+            + "; futures=" + futuresOutlook + ".");
+    }
+    return out;
+  }
+
+  // Build one offered decision bound to the player's industry slate.
+  PortfolioDecision offer(String industry, int stake, int winPct, int multX10, int size) {
+    PortfolioDecision d = new PortfolioDecision();
+    d.load();
+    d.offer(industry, stake, winPct, multX10, size);
+    return d;
+  }
+
+  // Expected value of a (non-guaranteed) decision, in cents, for comparison:
+  //   win% * (stake*mult/10 - stake) - (100-win%)*stake, scaled down by 100.
+  int expected(PortfolioDecision d) {
+    int winPct = d.effectiveWinPercent();
+    int grossWin = (d.stake() * d.multiplierTimesTen()) / 10;
+    int netWin = grossWin - d.stake();
+    int ev = (winPct * netWin - (100 - winPct) * d.stake()) / 100;
+    return ev;
+  }
+
+  PortfolioDecision backed() { return chosen; }
+  int futures() { return futuresOutlook; }
+}

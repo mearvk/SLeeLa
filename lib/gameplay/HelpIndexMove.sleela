@@ -1,0 +1,59 @@
+/*
+ * lib/gameplay/HelpIndexMove.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Move (a) — create a help index or a friend. It generally plays as
+ *   an 80% roll, then a 20% roll. On the first (80%) roll you build the index
+ *   and bank solid experience; on the rarer second (20%) roll you also pull the
+ *   BETTER player's index and your boss's deeper understanding. Each reward is a
+ *   subevent resolved on its own percentage, live-play, so no two turns feel
+ *   identical even on the same seed stream.
+ *
+ * A concrete GameMove: override resolve() to roll and fill a MoveOutcome.
+ * Family: gameplay.
+ */
+#sleela 1.3
+class HelpIndexMove extends GameMove {
+
+  void setUp() {
+    load();
+    declare("Create Help Index / Friend", CHOICE_HELP_INDEX);
+  }
+
+  MoveOutcome resolve(Player p) {
+    MoveOutcome out = new MoveOutcome();
+    out.begin("Create Help Index / Friend");
+    if (dice == null || p == null) {
+      out.say("No roller or player; nothing indexed.");
+      return out;
+    }
+
+    // The primary 80% roll: build the help index / make the friend.
+    boolean built = dice.rollUnder(80);
+    if (!built) {
+      out.say("The index wouldn't come together this turn.");
+      out.addXp(1);                 // you learn a little even from a dud
+      return out;
+    }
+    out.succeed();
+    out.addXp(5);                   // more experience per turn, as desired
+
+    // The rarer 20% roll unlocks the premium rewards, each a live subevent.
+    boolean premium = dice.rollUnder(20);
+    if (premium) {
+      // Subevent 1: the better player's index (65% within the premium branch).
+      if (dice.rollUnder(65)) {
+        out.addXp(4);
+        out.addFile(1);
+      }
+      // Subevent 2: your boss's deeper understanding (55% within premium).
+      if (dice.rollUnder(55)) {
+        p.raiseBossUnderstanding(10);
+        out.addTact(1);
+      }
+      out.say("Index built AND the premium 20% landed: better index + boss rapport.");
+    } else {
+      out.say("Index built on the 80% roll; the premium 20% did not land.");
+    }
+    return out;
+  }
+}

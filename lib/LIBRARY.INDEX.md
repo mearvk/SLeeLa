@@ -1,11 +1,37 @@
 # SLeeLa /lib Library Index
 
-**Revision:** 0.39  
-**Packages:** 87  
-**SLeeLa source units:** 10386  
-**Module-facade symbols:** 59  
-**Total symbol records:** 10445  
+**Revision:** 0.40  
+**Packages:** 88  
+**SLeeLa source units:** 10399  
+**Module-facade symbols:** 60  
+**Total symbol records:** 10459  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
+
+> Revision 0.40 adds the new `gameplay` package — a turn/move system where a
+> player makes one of three moves per turn, each resolved by deterministic,
+> seeded rolls (so a replayed game, luck included, repeats). Thirteen
+> one-class-per-file Master Classes. Core: `DiceRoll` (a seeded MINSTD roller
+> giving the 80/20 and 50/50 rolls), `Player` (experience, Person/Citizen
+> quality that sets information price, cash, boss understanding),
+> `ManagementCourtroom` (banked file/tact/rolls and standing), `MoveOutcome`
+> (the result record a move returns and applies to the player), and `GameTurn`
+> (the orchestrator). Move (b)'s brain: `InferenceEngine` with `ExpectedFuture`
+> (the on-schedule projection on a winning 50/50) and `DetailedReport` (the
+> boss's pre-decided Game-Engineering moves on a losing 50/50, priced by player
+> quality). Move (c)'s substance: `PortfolioDecision` (a medium bet on a
+> realistic industry; a found BIG bet always wins). The three moves subclass a
+> `GameMove` base: `HelpIndexMove` (a — help index/friend, 80% then 20% with
+> live subevents), `AskForHelpMove` (b — ask for help/new routes, 50/50), and
+> `NewDesireMove` (c — create a new desire, review portfolios for profits and
+> futures). The base/subclass + override pattern mirrors lib/compiler's
+> `SLLanguageCompiler` front ends. A matching `SLPackage` facade names the
+> package, and a runnable orchestration example lives outside `/lib` at
+> `gameplay/sleela/GameplayDemo.sleela` (so it is not double-counted). One new
+> package and fourteen new `.sleela` units: 10,445 -> **10,459** total records
+> (10,386 -> **10,399** source classes), 59 -> **60** facades, 87 -> **88**
+> packages. `LIBRARY.SYMBOLS.md` was regenerated from the live tree and the
+> counts are verified in lockstep by
+> `test-suites/test-library-inventory.sh`.
 
 > Revision 0.39 adds **fonts and font effects** to the `user-interface` package.
 > Two new one-class-per-file Master Classes: `SLFont` (a face — family, size,

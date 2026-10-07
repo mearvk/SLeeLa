@@ -1,0 +1,71 @@
+/*
+ * lib/gameplay/AskForHelpMove.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Move (b) — ask for help or new routes. A straight 50/50. Win the
+ *   flip and the Inference Engine lets you LOOK at your Expected Future as it is
+ *   being modeled, so you can see whether you are on schedule in your own custom
+ *   game. Lose the flip and your Boss instead hands you a Detailed Report with
+ *   some Game-Engineering moves already decided — and you pay for that
+ *   information based on the Quality of your Person/Citizen.
+ *
+ * A concrete GameMove: override resolve() to flip, then either read the future
+ * or buy the report. The future it modeled and the report it bought are stashed
+ * on the move so the turn can show them. Family: gameplay.
+ */
+#sleela 1.3
+class AskForHelpMove extends GameMove {
+
+  static final int BASE_REPORT_COST = 2000;  // cents, before quality scaling
+
+  ExpectedFuture lastFuture;   // populated on a winning flip
+  DetailedReport lastReport;   // populated on a losing flip
+
+  void setUp() {
+    load();
+    declare("Ask for Help / New Routes", CHOICE_ASK_HELP);
+    lastFuture = null;
+    lastReport = null;
+  }
+
+  MoveOutcome resolve(Player p) {
+    MoveOutcome out = new MoveOutcome();
+    out.begin("Ask for Help / New Routes");
+    lastFuture = null;
+    lastReport = null;
+    if (dice == null || engine == null || p == null) {
+      out.say("No roller, engine, or player; no help available.");
+      return out;
+    }
+
+    boolean win = dice.coinFlip();   // the 50/50
+    if (win) {
+      // You get to see your Expected Future being modeled live.
+      lastFuture = engine.model(p, turnNumber);
+      out.succeed();
+      out.addXp(3);
+      if (lastFuture.onSchedule()) {
+        out.say("50/50 won: you're ON SCHEDULE. gap=" + lastFuture.scheduleGap());
+      } else {
+        out.say("50/50 won: you're BEHIND by " + lastFuture.scheduleGap()
+              + " turn(s) — time to re-route.");
+      }
+    } else {
+      // The boss steps in with a pre-decided brief; you pay by your quality.
+      lastReport = engine.brief(p, BASE_REPORT_COST);
+      if (lastReport.paid()) {
+        out.succeed();
+        out.addXp(2);
+        out.addFile(1);     // a report is paper; paper is file
+        out.say("50/50 lost, but bought the Boss's brief ("
+              + lastReport.moves() + " moves) for " + lastReport.price() + "c.");
+      } else {
+        out.say("50/50 lost and couldn't afford the Boss's brief (needed "
+              + lastReport.price() + "c).");
+      }
+    }
+    return out;
+  }
+
+  ExpectedFuture future() { return lastFuture; }
+  DetailedReport report() { return lastReport; }
+}
