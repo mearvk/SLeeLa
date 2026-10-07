@@ -1,0 +1,24 @@
+/*
+ * lib/alphabet/SolarizedTheme.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: SolarizedTheme — a muted, low-contrast theme in the famous
+ *   solarized spirit: a tan-cream base, slate-gray text, and a cyan accent.
+ *   For users of Sleela who find pure black and white a little shouty.
+ *
+ * A concrete Theme: override dress() to fill the palette and role colors. Call
+ * begin("Solarized") to build it. Family: alphabet.
+ */
+#sleela 1.3
+class SolarizedTheme extends Theme {
+
+  void dress() {
+    palette.add("base3",     253, 246, 227);  // cream base
+    palette.add("base00",    101, 123, 131);  // slate text
+    palette.add("cyan",       42, 161, 152);  // accent
+    palette.add("yellow",    181, 137,   0);
+
+    setBackground(253, 246, 227); // base3
+    setForeground(101, 123, 131); // base00
+    setAccent(42, 161, 152);      // cyan
+  }
+}

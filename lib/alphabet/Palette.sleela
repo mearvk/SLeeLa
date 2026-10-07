@@ -1,0 +1,83 @@
+/*
+ * lib/alphabet/Palette.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines Palette, an ordered collection of Colors — the box of
+ *   crayons every Theme reaches into. A Palette gives colors names and an
+ *   order, so a user of Sleela can say "the third one" and mean it.
+ *
+ * Palette is a NATURAL / LOADABLE MODULE sharing the common module contract
+ * (load / loaded / moduleName / describe). It owns an array of Colors and the
+ * labels that go with them; a Theme borrows from it to assign roles.
+ *
+ * Family: alphabet.
+ */
+#sleela 1.3
+// Unified SLeeLa SDK front-end object.
+class Palette {
+
+  static final String MODULE = "Palette";
+  static final int MAX = 64;
+
+  int loadedFlag;
+  String paletteName;
+  Color[] colors;
+  String[] labels;
+  int count;
+
+  // --- loadable-module contract ------------------------------------------
+  void load() {
+    loadedFlag = 1;
+    paletteName = "Untitled";
+    colors = new Color[MAX];
+    labels = new String[MAX];
+    count = 0;
+  }
+  boolean loaded() { return loadedFlag == 1; }
+  String moduleName() { return MODULE; }
+
+  void name(String n) { if (n != null) { paletteName = n; } }
+
+  // Add a labeled color by its channels. Returns the color's index, or -1 if
+  // the palette is full.
+  int add(String label, int r, int g, int b) {
+    if (count >= MAX) { return -1; }
+    Color c = new Color();
+    c.load();
+    c.set(r, g, b);
+    colors[count] = c;
+    if (label == null) { label = "color" + count; }
+    labels[count] = label;
+    int idx = count;
+    count = count + 1;
+    return idx;
+  }
+
+  Color at(int i) {
+    if (i < 0 || i >= count) { return null; }
+    return colors[i];
+  }
+
+  String labelAt(int i) {
+    if (i < 0 || i >= count) { return null; }
+    return labels[i];
+  }
+
+  // Find a color by its label, or null if the palette never heard of it.
+  Color byLabel(String label) {
+    if (label == null) { return null; }
+    int i = 0;
+    while (i < count) {
+      if (labels[i] == label) { return colors[i]; }
+      i = i + 1;
+    }
+    return null;
+  }
+
+  int size() { return count; }
+  String title() { return paletteName; }
+
+  String describe() {
+    return MODULE + " '" + paletteName + "' colors=" + count
+         + " capacity=" + MAX;
+  }
+}

@@ -1,0 +1,27 @@
+/*
+ * lib/alphabet/CyrillicAlphabet.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: CyrillicAlphabet — a 33-letter Russian Cyrillic script, rendered
+ *   here in Latin transliteration so it is readable in any Sleela terminal
+ *   while still carrying its own order and vowel pattern.
+ *
+ * A concrete Alphabet: override compose() to append its letters in order. Call
+ * begin("Cyrillic") to build it. Family: alphabet.
+ */
+#sleela 1.3
+class CyrillicAlphabet extends Alphabet {
+
+  void compose() {
+    append("A", true);    append("Be", false);  append("Ve", false);
+    append("Ge", false);  append("De", false);  append("Ye", true);
+    append("Yo", true);   append("Zhe", false); append("Ze", false);
+    append("I", true);    append("Iy", false);  append("Ka", false);
+    append("El", false);  append("Em", false);  append("En", false);
+    append("O", true);    append("Pe", false);  append("Er", false);
+    append("Es", false);  append("Te", false);  append("U", true);
+    append("Ef", false);  append("Ha", false);  append("Tse", false);
+    append("Che", false); append("Sha", false); append("Shcha", false);
+    append("HardSign", false); append("Yery", true); append("SoftSign", false);
+    append("E", true);    append("Yu", true);   append("Ya", true);
+  }
+}

@@ -1,0 +1,98 @@
+/*
+ * lib/alphabet/Theme.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines Theme, the base Master Class that binds the three things
+ *   this package is about — a Palette of Colors, role colors (background,
+ *   foreground, accent), and an Alphabet — into one coherent, user-facing look.
+ *   A Theme is what a user of Sleela actually sees.
+ *
+ * A concrete theme is created by subclassing Theme and overriding dress(),
+ * which fills in the palette and role colors. The base owns the role plumbing,
+ * contrast checking, and the loadable-module contract, mirroring the
+ * base/subclass pattern used by Alphabet and the lib/compiler front ends.
+ *
+ * Theme is a NATURAL / LOADABLE MODULE sharing the common module contract
+ * (load / loaded / moduleName / describe).
+ *
+ * Family: alphabet.
+ */
+#sleela 1.3
+// Unified SLeeLa SDK front-end object.
+class Theme {
+
+  static final String MODULE = "Theme";
+
+  int loadedFlag;
+  String themeName;
+  Palette palette;      // the colors this theme draws from
+  Color background;     // the canvas
+  Color foreground;     // the text
+  Color accent;         // the one color that gets to be loud
+  Alphabet script;      // the writing system this theme presents
+
+  // --- loadable-module contract ------------------------------------------
+  void load() {
+    loadedFlag = 1;
+    themeName = "Unnamed";
+    palette = new Palette();
+    palette.load();
+    background = new Color();
+    background.load();
+    foreground = new Color();
+    foreground.load();
+    accent = new Color();
+    accent.load();
+    script = null;
+  }
+  boolean loaded() { return loadedFlag == 1; }
+  String moduleName() { return MODULE; }
+
+  // A subclass calls this to build the theme: name it, dress it, done. Mirrors
+  // Alphabet.begin() / compose().
+  void begin(String name) {
+    load();
+    if (name != null) { themeName = name; }
+    palette.name(themeName);
+    dress();
+  }
+
+  // Overridable: a concrete theme fills palette + role colors here. The base
+  // leaves everything black-on-black, which is honestly unusable on purpose.
+  void dress() { }
+
+  // Helpers a subclass uses from dress() to set the three role colors.
+  void setBackground(int r, int g, int b) { background.set(r, g, b); }
+  void setForeground(int r, int g, int b) { foreground.set(r, g, b); }
+  void setAccent(int r, int g, int b)     { accent.set(r, g, b); }
+
+  // Attach the writing system this theme presents.
+  void useAlphabet(Alphabet a) { script = a; }
+
+  Color bg() { return background; }
+  Color fg() { return foreground; }
+  Color highlight() { return accent; }
+  Palette colors() { return palette; }
+  Alphabet alphabet() { return script; }
+  String name() { return themeName; }
+
+  // A theme is "dark" when its canvas is dark. All users of Sleela will have
+  // opinions about this.
+  boolean isDark() { return background.isDark(); }
+
+  // Readable means the text and the canvas disagree about darkness — a crude
+  // but effective contrast check.
+  boolean readable() { return background.isDark() != foreground.isDark(); }
+
+  int letterCount() { if (script == null) { return 0; } return script.size(); }
+
+  String yn(boolean v) { if (v) { return "yes"; } return "no"; }
+
+  String describe() {
+    String scriptName = "none";
+    if (script != null) { scriptName = script.script(); }
+    return MODULE + "/" + themeName + " bg=" + background.hex()
+         + " fg=" + foreground.hex() + " accent=" + accent.hex()
+         + " dark=" + yn(isDark()) + " readable=" + yn(readable())
+         + " script=" + scriptName;
+  }
+}

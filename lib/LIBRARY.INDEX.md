@@ -1,11 +1,30 @@
 # SLeeLa /lib Library Index
 
-**Revision:** 0.37  
-**Packages:** 86  
-**SLeeLa source units:** 10373  
-**Module-facade symbols:** 58  
-**Total symbol records:** 10431  
+**Revision:** 0.38  
+**Packages:** 87  
+**SLeeLa source units:** 10384  
+**Module-facade symbols:** 59  
+**Total symbol records:** 10443  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
+
+> Revision 0.38 adds the new `alphabet` package — colors, themes, and alphabets,
+> thematically important to all users of Sleela. It introduces eleven
+> one-class-per-file Master Classes. The color/theme family: `Color` (one RGB
+> color with hex, blending, and luminance), `Palette` (an ordered, labeled set
+> of Colors), `Theme` (the base that binds a Palette + role colors
+> background/foreground/accent + an Alphabet into one user-facing look), and
+> three concrete themes `LightTheme`, `DarkTheme`, and `SolarizedTheme`. The
+> writing-system family: `Letter` (one glyph with order and vowel flag),
+> `Alphabet` (the base writing system a developer extends by overriding
+> `compose()`), and three concrete scripts `LatinAlphabet` (26), `GreekAlphabet`
+> (24), and `CyrillicAlphabet` (33). The base/subclass + override pattern mirrors
+> lib/compiler's `SLLanguageCompiler` front ends. A matching `SLPackage` facade
+> names the package, and a runnable orchestration example lives outside `/lib`
+> at `alphabet/sleela/AlphabetDemo.sleela` (so it is not double-counted). One new
+> package and twelve new `.sleela` units: 10,431 -> **10,443** total records
+> (10,373 -> **10,384** source classes), 58 -> **59** facades, 86 -> **87**
+> packages. `LIBRARY.SYMBOLS.md` was regenerated from the live tree and the
+> counts are verified in lockstep by `test-suites/test-library-inventory.sh`.
 
 > Revision 0.37 sets Sleela's UI **base colour to #2B1608** (a deep warm umber;
 > the default `SLUI_THEME_SLEELA_BASE`, configurable at code or config time, with
