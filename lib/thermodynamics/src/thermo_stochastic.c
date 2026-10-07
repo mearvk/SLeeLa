@@ -1,5 +1,5 @@
 /*
- * thermo_stochastic.c - stochastic extension of the thermodynamics vignette
+ * thermo_stochastic.c - stochastic extension of Thermodynamics IV
  * Max Rupplin - MEARVK LLC - 2026
  *
  * The deterministic heat equation (thermodynamics.c) fixes every future

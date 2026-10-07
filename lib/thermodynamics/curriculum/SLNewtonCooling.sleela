@@ -1,6 +1,6 @@
 /*
  * thermodynamics/curriculum/SLNewtonCooling.sleela
- * SLeeLa Thermodynamics Curriculum - Level 3: Newton's law of cooling.
+ * SLeeLa Thermodynamics IV Curriculum - Level 3: Newton's law of cooling.
  * Definition: T(t) = Tenv + (T0 - Tenv) * exp(-r*t). The first non-linear step
  * on the ladder: an exponential decay toward equilibrium.
  *

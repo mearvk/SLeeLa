@@ -1,6 +1,6 @@
 /*
  * thermodynamics/curriculum/SLHeatLinear.sleela
- * SLeeLa Thermodynamics Curriculum - Level 0 (novice): linear sensible heat.
+ * SLeeLa Thermodynamics IV Curriculum - Level 0 (novice): linear sensible heat.
  * Definition: Q = m * c * dT, the straight-line relation between heat and
  * temperature change. Also solves for dT = Q / (m * c).
  * Max Rupplin - MEARVK LLC - 2026

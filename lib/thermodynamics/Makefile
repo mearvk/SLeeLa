@@ -1,4 +1,4 @@
-# SLeeLa thermodynamics package build
+# SLeeLa Thermodynamics IV package build
 # Max Rupplin - MEARVK LLC - 2026
 CC ?= cc
 CXX ?= c++
@@ -30,7 +30,7 @@ selftest: $(LIB_C_OBJECTS) $(BUILD_DIR)/thermodynamics.cpp.o | $(BUILD_DIR)
 	$(BUILD_DIR)/slots_demo
 
 sanity:
-	@printf '%s\n' 'SLeeLa thermodynamics package sanity check'
+	@printf '%s\n' 'SLeeLa Thermodynamics IV package sanity check'
 	@printf '%s\n' '  scalar relations: sensible heat, Fourier flux, Newton cooling, Carnot efficiency'
 	@printf '%s\n' '  statistical mechanics: partition function, Boltzmann probability, mean energy'
 	@printf '%s\n' '  multivariable (3D model): gradient, divergence, Laplacian, FTCS heat equation'
@@ -48,7 +48,7 @@ $(BUILD_DIR)/%.cpp.o: src/%.cpp | $(BUILD_DIR)
 clean:
 	rm -rf $(BUILD_DIR)
 help:
-	@printf '%s\n' 'SLeeLa thermodynamics package build'
+	@printf '%s\n' 'SLeeLa Thermodynamics IV package build'
 	@printf '%s\n' '  make all       Build objects, run the vignette self-test, print sanity'
 	@printf '%s\n' '  make native    Compile C and C++ objects only'
 	@printf '%s\n' '  make selftest  Build and run the worked-example assertions'

@@ -1,5 +1,5 @@
 /*
- * thermodynamics.cpp - C++17 orchestration over the C thermodynamics ABI
+ * thermodynamics.cpp - C++17 orchestration over the C Thermodynamics IV ABI
  * Max Rupplin - MEARVK LLC - 2026
  *
  * Mirrors the repository's "C ABI + C++ orchestration" boundary: the physics

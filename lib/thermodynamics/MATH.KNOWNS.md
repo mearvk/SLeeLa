@@ -1,7 +1,7 @@
 # MATH.KNOWNS.md
 
-Known quantities for the thermodynamics vignette. This file separates two kinds
-of numbers clearly:
+Known quantities for the **Thermodynamics IV** module. This file separates two
+kinds of numbers clearly:
 
 1. **Assumptions (user-specified slots)** — caps you provided. They are recorded
    as stated; they are *not* derived from or validated by the physics in this

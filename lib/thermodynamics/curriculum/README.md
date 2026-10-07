@@ -1,9 +1,11 @@
 <img align="right" src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="75" height="75" alt="SLeeLa">
 
-# Thermodynamics Curriculum
+# Thermodynamics IV — Curriculum
 
-A novice-to-advanced ladder of the module's equations. Each rung is the next
-logical step (*sequitur*) after the one before it.
+A novice-to-advanced ladder of the **Thermodynamics IV** module's equations.
+Each rung is the next logical step (*sequitur*) after the one before it; the
+upper rungs (statistical mechanics, 3D PDEs, stochastic methods) are what make
+this a 4th-level ("IV") treatment rather than an introduction.
 
 - **`EQUATIONS.md`** — the equations as readable math, Level 0 → Level 6, each
   with the one new idea it introduces.
