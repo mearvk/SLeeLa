@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 10386
-library-packages: 87
-module-facade-symbols: 59
-total-symbol-records: 10445
+library-source-files: 10399
+library-packages: 88
+module-facade-symbols: 60
+total-symbol-records: 10459
 
 package	symbol	path	kind
 alphabet	Alphabet.sleela	lib/alphabet/Alphabet.sleela	source
@@ -715,6 +715,20 @@ filesystem	SLFileWatcher.sleela	lib/filesystem/SLFileWatcher.sleela	source
 filesystem	SLFileWriter.sleela	lib/filesystem/SLFileWriter.sleela	source
 filesystem	SLPathPattern.sleela	lib/filesystem/SLPathPattern.sleela	source
 filesystem	SLPathResolver.sleela	lib/filesystem/SLPathResolver.sleela	source
+gameplay	AskForHelpMove.sleela	lib/gameplay/AskForHelpMove.sleela	source
+gameplay	DetailedReport.sleela	lib/gameplay/DetailedReport.sleela	source
+gameplay	DiceRoll.sleela	lib/gameplay/DiceRoll.sleela	source
+gameplay	ExpectedFuture.sleela	lib/gameplay/ExpectedFuture.sleela	source
+gameplay	GameMove.sleela	lib/gameplay/GameMove.sleela	source
+gameplay	GameTurn.sleela	lib/gameplay/GameTurn.sleela	source
+gameplay	HelpIndexMove.sleela	lib/gameplay/HelpIndexMove.sleela	source
+gameplay	InferenceEngine.sleela	lib/gameplay/InferenceEngine.sleela	source
+gameplay	ManagementCourtroom.sleela	lib/gameplay/ManagementCourtroom.sleela	source
+gameplay	MoveOutcome.sleela	lib/gameplay/MoveOutcome.sleela	source
+gameplay	NewDesireMove.sleela	lib/gameplay/NewDesireMove.sleela	source
+gameplay	Player.sleela	lib/gameplay/Player.sleela	source
+gameplay	PortfolioDecision.sleela	lib/gameplay/PortfolioDecision.sleela	source
+gameplay	SLPackage.sleela	lib/gameplay/SLPackage.sleela	facade
 gui	SLPackage.sleela	lib/gui/SLPackage.sleela	facade
 html	SLPackage.sleela	lib/html/SLPackage.sleela	facade
 http	SLHttpBody.sleela	lib/http/SLHttpBody.sleela	source

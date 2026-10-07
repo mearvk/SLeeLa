@@ -1,0 +1,60 @@
+/*
+ * gameplay/sleela/GameplayDemo.sleela
+ * SLeeLa Standard Library — runnable orchestration example.
+ * Definition: Plays three turns for one Player, one of each move type:
+ *   (a) create a help index / friend, (b) ask for help / new routes, and
+ *   (c) create a new desire. It shows the whole package in motion — the 80/20
+ *   and 50/50 rolls, the Expected Future vs. the Boss's Detailed Report, and the
+ *   big-bet portfolio decision that always wins where you find it.
+ *
+ * Deterministic by seed, so this demo replays identically. The authoritative
+ * definitions live one level up in lib/gameplay/*.sleela. Family: gameplay.
+ */
+#sleela 1.3
+class GameplayDemo {
+
+  void main() {
+    // One turn engine, seeded for a repeatable game, target finish at turn 20.
+    GameTurn game = new GameTurn();
+    game.load();
+    game.configure(1337, 20);
+
+    // One player: a decent Person/Citizen with some cash to spend on reports.
+    Player me = new Player();
+    me.load();
+    me.introduce("Avery", 70, 100000);
+    me.gainExperience(30);   // not a rookie
+    print("[start]   " + me.describe());
+
+    // Move (a): create a help index / friend — the 80% then 20% move.
+    HelpIndexMove a = new HelpIndexMove();
+    a.setUp();
+    MoveOutcome oa = game.play(me, a);
+    print("[move a]  " + oa.describe());
+
+    // Move (b): ask for help / new routes — the 50/50 move.
+    AskForHelpMove b = new AskForHelpMove();
+    b.setUp();
+    MoveOutcome ob = game.play(me, b);
+    print("[move b]  " + ob.describe());
+    if (b.future() != null) {
+      print("[move b]  future: " + b.future().describe());
+    }
+    if (b.report() != null) {
+      print("[move b]  report: " + b.report().describe());
+    }
+
+    // Move (c): create a new desire — review portfolios, bet big.
+    NewDesireMove c = new NewDesireMove();
+    c.setUp();
+    MoveOutcome oc = game.play(me, c);
+    print("[move c]  " + oc.describe());
+    if (c.backed() != null) {
+      print("[move c]  backed: " + c.backed().describe());
+    }
+
+    // Where the player ended up after one of each move.
+    print("[end]     " + me.describe());
+    print("[end]     " + game.describe());
+  }
+}
