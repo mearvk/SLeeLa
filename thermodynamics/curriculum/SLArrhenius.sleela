@@ -1,0 +1,42 @@
+/*
+ * thermodynamics/curriculum/SLArrhenius.sleela
+ * SLeeLa Thermodynamics Curriculum - Level 6: Arrhenius log-rate law.
+ * Definition:
+ *   k = A * exp(-Ea / (R * T))        <=>        ln k = ln A - Ea / (R * T)
+ * Taking the logarithm turns the exponential rate law into a straight line in
+ * 1/T -- the ladder closes back to the Level 0 linearity, one level up.
+ *
+ * The stochastic step dT/dt = alpha*lap(T) + sigma*xi(t) and the Monte Carlo
+ * driver live in the native core (C: thermo_stochastic.c) because they need a
+ * PRNG and large ensembles; this class carries the closed-form rate law.
+ * exp() uses the shared SLeeLa series; native path is authoritative
+ * (C: sl_thermo_arrhenius_rate).
+ * Max Rupplin - MEARVK LLC - 2026
+ */
+#sleela 1.3
+class SLArrhenius {
+  double gasConstant; // R, J/(mol*K)
+  void configure() { gasConstant = 8.314462618; }
+
+  double expSeries(double x) {
+    double term = 1.0;
+    double sum = 1.0;
+    int n = 1;
+    while (n <= 20) { term = term * x / n; sum = sum + term; n = n + 1; }
+    return sum;
+  }
+
+  // k = A * exp(-Ea / (R*T)).
+  double rate(double aFactor, double activationEnergy, double temperature) {
+    if (temperature <= 0.0) { return 0.0; }
+    double exponent = (0.0 - activationEnergy) / (gasConstant * temperature);
+    return aFactor * expSeries(exponent);
+  }
+
+  // The linearized form value  (ln A - Ea/(R*T))  WITHOUT the log on A, i.e. the
+  // temperature-dependent term -Ea/(R*T). Shows the straight line in 1/T.
+  double logSlopeTerm(double activationEnergy, double temperature) {
+    if (temperature <= 0.0) { return 0.0; }
+    return (0.0 - activationEnergy) / (gasConstant * temperature);
+  }
+}

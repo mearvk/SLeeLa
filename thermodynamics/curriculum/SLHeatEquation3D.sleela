@@ -1,0 +1,50 @@
+/*
+ * thermodynamics/curriculum/SLHeatEquation3D.sleela
+ * SLeeLa Thermodynamics Curriculum - Level 5: 3D heat equation (multivariable).
+ * Definition:
+ *   gradient    grad T  = (dT/dx, dT/dy, dT/dz)
+ *   divergence  div F   = dFx/dx + dFy/dy + dFz/dz
+ *   Laplacian   lap T   = d2T/dx2 + d2T/dy2 + d2T/dz2   (= div grad T)
+ *   evolution   dT/dt   = alpha * lap T
+ *
+ * This class evaluates the finite-difference stencils the native core uses on a
+ * uniform grid (spacing h). Full 3D array storage lives in the native field
+ * type (C: sl_thermo_field3d); here the operators are shown point-wise on the
+ * six neighbor samples so the discretization is explicit and teachable.
+ * Max Rupplin - MEARVK LLC - 2026
+ */
+#sleela 1.3
+class SLHeatEquation3D {
+  double h;      // grid spacing m
+  double alpha;  // thermal diffusivity m^2/s
+  void configure(double spacing, double a) { h = spacing; alpha = a; }
+
+  // One component of grad T by central difference: (T_plus - T_minus)/(2h).
+  double gradientComponent(double tPlus, double tMinus) {
+    return (tPlus - tMinus) / (2.0 * h);
+  }
+
+  // Divergence from the three central differences of a vector field (Fx,Fy,Fz).
+  double divergence(double fxP, double fxM, double fyP, double fyM, double fzP, double fzM) {
+    return gradientComponent(fxP, fxM)
+         + gradientComponent(fyP, fyM)
+         + gradientComponent(fzP, fzM);
+  }
+
+  // 7-point Laplacian: (sum of 6 neighbors - 6*center) / h^2.
+  double laplacian(double center, double xP, double xM, double yP, double yM, double zP, double zM) {
+    double sum = xP + xM + yP + yM + zP + zM;
+    return (sum - 6.0 * center) / (h * h);
+  }
+
+  // One explicit FTCS update of the center node: T_next = T + alpha*dt*lap(T).
+  double heatStepCenter(double center, double lap, double dt) {
+    return center + alpha * dt * lap;
+  }
+
+  // Stability guard for the explicit 3D scheme: dt <= h^2 / (6*alpha).
+  boolean stable(double dt) {
+    if (alpha <= 0.0) { return false; }
+    return dt <= (h * h) / (6.0 * alpha);
+  }
+}

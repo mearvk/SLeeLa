@@ -1,0 +1,45 @@
+/*
+ * thermodynamics/curriculum/SLBoltzmann.sleela
+ * SLeeLa Thermodynamics Curriculum - Level 4: Boltzmann distribution.
+ * Definition:
+ *   Z   = sum_i exp(-E_i / (kB * T))
+ *   p_i = exp(-E_i / (kB * T)) / Z
+ *   <E> = sum_i E_i * p_i
+ * A normalized sum of exponentials turns energies into probabilities.
+ *
+ * exp() uses the same self-contained SLeeLa series as SLNewtonCooling; the
+ * authoritative values are the native core (C: sl_thermo_partition_function,
+ * sl_thermo_boltzmann_probability, sl_thermo_mean_energy).
+ * Max Rupplin - MEARVK LLC - 2026
+ */
+#sleela 1.3
+class SLBoltzmann {
+  double kB;  // Boltzmann constant J/K
+  void configure() { kB = 0.0000000000000000000000138649; }
+
+  double expSeries(double x) {
+    double term = 1.0;
+    double sum = 1.0;
+    int n = 1;
+    while (n <= 20) { term = term * x / n; sum = sum + term; n = n + 1; }
+    return sum;
+  }
+
+  // Boltzmann weight exp(-E / (kB*T)) for a single level.
+  double weight(double energy, double temperature) {
+    if (temperature <= 0.0) { return 0.0; }
+    double beta = 1.0 / (kB * temperature);
+    return expSeries((0.0 - beta) * energy);
+  }
+
+  // Two-level partition function Z = w0 + w1 (the shape generalizes to N).
+  double partitionTwoLevel(double e0, double e1, double temperature) {
+    return weight(e0, temperature) + weight(e1, temperature);
+  }
+
+  // Probability p_i = weight_i / Z.
+  double probability(double energy, double temperature, double z) {
+    if (z <= 0.0) { return 0.0; }
+    return weight(energy, temperature) / z;
+  }
+}
