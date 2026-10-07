@@ -1,0 +1,39 @@
+/*
+ * lib/user-interface/SLWash.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLWash — an "Excellent Wash": a soft, multi-stop graded
+ *   colour field (up to 8 stops) that paints a SleelaUI mood. Stops are
+ *   sampled with smoothstep so the wash reads as a gentle gradient, not hard
+ *   bands. Light colours are known and adjustable; the wash is how a mood
+ *   colours the light. It is a VM-local handle built up stop by stop and handed
+ *   to an SLMood. Each method bottoms out in a `wash*` SLVM built-in calling the
+ *   C ABI (sleela_ui_mood.h).
+ *
+ * Family: user-interface. Native VM/UI work crosses the explicit `wash*` SLVM
+ * bridge.
+ */
+#sleela 1.5
+class SLWash {
+  int wash;   // VM-local handle (-1 = none)
+
+  void begin() { wash = washBegin(); }
+  int handle() { return wash; }
+  boolean valid() { return wash >= 0; }
+  void destroy() { if (wash >= 0) { washDestroy(wash); wash = -1; } }
+
+  // Add a colour stop at position in [0,1]. Softness (0..1) extra-blurs between
+  // stops for a gentler wash.
+  void stop(double position, int color) { if (wash >= 0) { washStop(wash, position, color); } }
+  void setSoftness(double softness) { if (wash >= 0) { washSoftness(wash, softness); } }
+
+  // Two- and three-stop shortcuts for the common washes.
+  void linear(int a, int b) {
+    begin(); stop(0.0, a); stop(1.0, b);
+  }
+  void triad(int a, int b, int c) {
+    begin(); stop(0.0, a); stop(0.5, b); stop(1.0, c);
+  }
+
+  // Sample the wash at t in [0,1] -> colour (0xRRGGBBAA).
+  int sample(double t) { if (wash < 0) { return 0; } return washSample(wash, t); }
+}

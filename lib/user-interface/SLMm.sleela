@@ -1,0 +1,33 @@
+/*
+ * lib/user-interface/SLMm.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLMm — a millimetre placement for a SleelaUI light/dark/
+ *   shadow emitter, relative to the text's font-paint location. It holds a
+ *   left/right offset, an up/down offset, and a HEIGHT the light shines down
+ *   from, all in millimetres, and converts to device pixels at a DPI. This is
+ *   the mm-precise placement the lighting design calls for: the light shines
+ *   down from some mm of height, and left/right/up/down are all supported.
+ *   Mirrors SLUIMm in the SleelaUI Mood/Light C ABI (sleela_ui_mood.h).
+ *
+ * SLMm is a pure value helper (no VM handle); feed it to SLMood.placeLight or
+ * the `light*` built-ins.
+ *
+ * Family: user-interface.
+ */
+#sleela 1.5
+class SLMm {
+  double rightMm;   // +right, -left
+  double downMm;    // +down, -up
+  double heightMm;  // above the plane the light shines down from
+
+  void of(double right, double down, double height) {
+    rightMm = right; downMm = down; heightMm = height;
+  }
+  void left(double mm, double height)  { of(-mm, 0.0, height); }
+  void right(double mm, double height) { of(mm, 0.0, height); }
+  void up(double mm, double height)    { of(0.0, -mm, height); }
+  void down(double mm, double height)  { of(0.0, mm, height); }
+
+  // Millimetres to device pixels at `dpi` (25.4 mm per inch).
+  double toPixels(double mm, double dpi) { return mmToPx(mm, dpi); }
+}

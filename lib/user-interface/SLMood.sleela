@@ -1,0 +1,79 @@
+/*
+ * lib/user-interface/SLMood.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLMood — a named, adjustable SleelaUI mood: an Excellent
+ *   Wash + a natural tanor + a Calculus-8, together. The mood's colour is the
+ *   wash sampled at the calculus's mood scalar, freshened over time by the
+ *   tanor's refresh and its gentle "a little left" bias. A tanor is a soft,
+ *   portrait-quality ambient glow for "lightless bulbs" (light-of-effect with no
+ *   hard source). Applying a mood to a light sets its colour and folds in the
+ *   tanor's portrait softness/depth — so inputs flow into direct moods in one
+ *   call. Each method bottoms out in a `mood*`/`light*` SLVM built-in calling the
+ *   C ABI (sleela_ui_mood.h).
+ *
+ * A mood is a VM-local handle (-1 = none).
+ *
+ * Family: user-interface. Native VM/UI work crosses the explicit `mood*` SLVM
+ * bridge.
+ */
+#sleela 1.5
+class SLMood {
+  // Mood-kind ordinals (mirror SLUIMoodKind).
+  static final int CALM    = 0;
+  static final int WARM    = 1;
+  static final int COOL    = 2;
+  static final int VIVID   = 3;
+  static final int SOMBER  = 4;
+  static final int TENDER  = 5;
+  static final int RADIANT = 6;
+  static final int CUSTOM  = 7;
+  // Role/polarity ordinals (mirror the Lighting C ABI) for placeLight.
+  static final int SOURCE  = 0;
+  static final int EMITTER = 1;
+  static final int LIGHT   = 0;
+  static final int SHADOW  = 1;
+
+  int mood;   // VM-local handle (-1 = none)
+
+  // Create a mood from a built-in kind (pre-filled tasteful wash + tanor) or
+  // CUSTOM to set your own.
+  void create(int kind) { mood = moodCreate(kind); }
+  int handle() { return mood; }
+  boolean valid() { return mood >= 0; }
+  void destroy() { if (mood >= 0) { moodDestroy(mood); mood = -1; } }
+
+  // Give the mood an Excellent Wash and a Calculus-8 (borrowed).
+  void setWash(SLWash wash) {
+    if (mood >= 0 && wash != null) { moodSetWash(mood, wash.handle()); }
+  }
+  void setCalculus(SLCalculus8 calc) {
+    if (mood >= 0 && calc != null) { moodSetCalculus(mood, calc.handle()); }
+  }
+
+  // Configure the natural tanor (lightless-bulb glow): warmth 0 cool..1 warm,
+  // diffusion 0..1 portrait softness, refreshHz pattern refresh, leftBias
+  // "a little left", depth 0..1, tone 0xRRGGBBAA.
+  void setTanor(double warmth, double diffusion, double refreshHz,
+                double leftBias, double depth, int tone) {
+    if (mood >= 0) {
+      moodSetTanor(mood, warmth, diffusion, refreshHz, leftBias, depth, tone);
+    }
+  }
+
+  // The mood's current colour, freshened at time_s seconds (0xRRGGBBAA).
+  int color(double timeS) { if (mood < 0) { return 0; } return moodColor(mood, timeS); }
+
+  // Build a mm-placed, mood-coloured light for text painted at
+  // (fontX, fontBaseline). mm places it (height it shines down from, plus
+  // left/right/up/down); dpi resolves mm to pixels; role/polarity choose
+  // source vs emitter and light vs shadow. Adds it to `scene` and returns the
+  // light index (or a negative error).
+  int placeLight(SLLightScene scene, double fontX, double fontBaseline,
+                 SLMm mm, double dpi, double timeS, int role, int polarity,
+                 double reachPx, double intensity) {
+    if (mood < 0 || scene == null || mm == null) { return -1; }
+    return moodPlaceLight(mood, scene.handle(), fontX, fontBaseline,
+                          mm.rightMm, mm.downMm, mm.heightMm, dpi, timeS,
+                          role, polarity, reachPx, intensity);
+  }
+}

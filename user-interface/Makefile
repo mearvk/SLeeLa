@@ -41,7 +41,7 @@ INCLUDES := -Iinclude -Isrc
 # Portable core (backend-independent) translation units.
 CORE_SRC := src/slui_theme.cpp src/slui_widget.cpp src/slui_window.cpp \
             src/slui_api.cpp src/slui_draw.cpp src/slui_throbber.cpp \
-            src/slui_light.cpp src/slui_font.cpp
+            src/slui_light.cpp src/slui_font.cpp src/slui_mood.cpp
 
 # ---------------------------------------------------------------------------
 # Host detection and backend selection.
@@ -80,7 +80,7 @@ CORE_OBJ    := $(CORE_SRC:%.cpp=$(BUILD)/%.o)
 BACKEND_OBJ := $(BUILD)/$(basename $(BACKEND_SRC)).o
 HEADLESS_OBJ := $(BUILD)/src/backend/headless.o
 
-.PHONY: all lib example smoke snapshot throbber-snapshot relief-snapshot font-snapshot install install-strip uninstall clean help
+.PHONY: all lib example smoke snapshot throbber-snapshot relief-snapshot font-snapshot mood-snapshot install install-strip uninstall clean help
 
 all: lib
 
@@ -167,6 +167,15 @@ $(FONT_SNAPSHOT): tools/font_snapshot.cpp $(CORE_OBJ) $(HEADLESS_OBJ)
 	@mkdir -p $(dir $@)
 	$(CXX) $(CXXFLAGS) $(INCLUDES) tools/font_snapshot.cpp $(CORE_OBJ) $(HEADLESS_OBJ) -o $@
 
+# ---- mood snapshot (display-free mood/wash/tanor preview) ------------------
+MOOD_SNAPSHOT := $(BUILD)/slui-mood-snapshot$(EXE)
+mood-snapshot: $(MOOD_SNAPSHOT)
+	$(MOOD_SNAPSHOT) docs/mood.png
+
+$(MOOD_SNAPSHOT): tools/mood_snapshot.cpp $(CORE_OBJ) $(HEADLESS_OBJ)
+	@mkdir -p $(dir $@)
+	$(CXX) $(CXXFLAGS) $(INCLUDES) tools/mood_snapshot.cpp $(CORE_OBJ) $(HEADLESS_OBJ) -o $@
+
 # ---- install ---------------------------------------------------------------
 install: $(LIB)
 	$(INSTALL) -d $(DESTDIR)$(LIBDIR) $(DESTDIR)$(INCDIR) $(DESTDIR)$(DESKTOPDIR)
@@ -175,6 +184,7 @@ install: $(LIB)
 	$(INSTALL) -m 0644 include/sleela_ui_draw.h $(DESTDIR)$(INCDIR)/sleela_ui_draw.h
 	$(INSTALL) -m 0644 include/sleela_ui_light.h $(DESTDIR)$(INCDIR)/sleela_ui_light.h
 	$(INSTALL) -m 0644 include/sleela_ui_font.h $(DESTDIR)$(INCDIR)/sleela_ui_font.h
+	$(INSTALL) -m 0644 include/sleela_ui_mood.h $(DESTDIR)$(INCDIR)/sleela_ui_mood.h
 	$(INSTALL) -m 0644 SleelaUI.desktop $(DESTDIR)$(DESKTOPDIR)/SleelaUI.desktop
 
 install-strip: CXXFLAGS += -s
@@ -186,6 +196,7 @@ uninstall:
 	rm -f $(DESTDIR)$(INCDIR)/sleela_ui_draw.h
 	rm -f $(DESTDIR)$(INCDIR)/sleela_ui_light.h
 	rm -f $(DESTDIR)$(INCDIR)/sleela_ui_font.h
+	rm -f $(DESTDIR)$(INCDIR)/sleela_ui_mood.h
 	rm -f $(DESTDIR)$(DESKTOPDIR)/SleelaUI.desktop
 
 clean:
@@ -200,5 +211,6 @@ help:
 	@echo "  make throbber-snapshot  Render the water throbber PNG (docs/throbber.png)"
 	@echo "  make relief-snapshot    Render the lighting/relief PNG (docs/relief.png)"
 	@echo "  make font-snapshot      Render the font-effects PNG (docs/font.png)"
+	@echo "  make mood-snapshot      Render the mood/wash/tanor PNG (docs/mood.png)"
 	@echo "  make install   Install library, header, and desktop entry"
 	@echo "  make clean     Remove build outputs"
