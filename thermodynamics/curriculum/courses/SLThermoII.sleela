@@ -1,0 +1,66 @@
+/*
+ * lib/thermodynamics/curriculum/courses/SLThermoII.sleela
+ * Thermodynamics II (Applied) - algorithms.
+ * Practical engineering: power and refrigeration cycles (Rankine, Brayton,
+ * vapor-compression), gas mixtures, and basic reaction/equilibrium ratios.
+ * Standard textbook relations throughout; SI units.
+ * Max Rupplin - MEARVK LLC - 2026
+ */
+#sleela 1.3
+class SLThermoII {
+
+  // --- Rankine cycle thermal efficiency ---
+  // eta = w_net / q_in = ((h1-h2) - (h4-h3)) / (h1-h4), where
+  //   1 turbine inlet, 2 turbine outlet, 3 pump inlet, 4 pump outlet/boiler in.
+  double rankineEfficiency(double h1, double h2, double h3, double h4) {
+    double wTurbine = h1 - h2;
+    double wPump = h4 - h3;
+    double qIn = h1 - h4;
+    if (qIn == 0.0) { return 0.0; }
+    return (wTurbine - wPump) / qIn;
+  }
+
+  // --- Brayton cycle (cold-air-standard) thermal efficiency ---
+  // eta = 1 - rp^(-(gamma-1)/gamma), rp = pressure ratio.
+  // Uses a positive-integer power via repeated multiply when the exponent
+  // reduces to that; here we expose the pressure-ratio term directly and let
+  // the native core (pow) supply the fractional exponent. For teaching we
+  // accept the already-computed ratio term tRatio = T1/T2 = rp^(-(g-1)/g).
+  double braytonEfficiencyFromRatio(double tRatio) {
+    return 1.0 - tRatio;
+  }
+  // Convenience when the temperature ratio is known directly (T2/T1 isentropic).
+  double braytonEfficiencyTemps(double tInletCompressor, double tInletTurbine,
+                                double tExitCompressor, double tExitTurbine) {
+    double qIn = tInletTurbine - tExitCompressor;
+    double qOut = tExitTurbine - tInletCompressor;
+    if (qIn == 0.0) { return 0.0; }
+    return 1.0 - (qOut / qIn);
+  }
+
+  // --- Vapor-compression refrigeration COP ---
+  // COP_R = q_evap / w_comp = (h1 - h4) / (h2 - h1).
+  double refrigerationCOP(double h1, double h2, double h4) {
+    double w = h2 - h1;
+    if (w == 0.0) { return 0.0; }
+    return (h1 - h4) / w;
+  }
+  // Heat-pump COP = COP_R + 1.
+  double heatPumpCOP(double h1, double h2, double h4) {
+    return refrigerationCOP(h1, h2, h4) + 1.0;
+  }
+
+  // --- Ideal gas mixture (Amagat/Dalton): mole fraction and apparent
+  //     molar mass of a two-component mixture. ---
+  double moleFraction(double nComponent, double nTotal) {
+    if (nTotal <= 0.0) { return 0.0; }
+    return nComponent / nTotal;
+  }
+  double apparentMolarMass(double y1, double m1, double y2, double m2) {
+    return y1 * m1 + y2 * m2;    // sum of y_i * M_i
+  }
+  // Partial pressure (Dalton): p_i = y_i * P.
+  double partialPressure(double yComponent, double totalPressure) {
+    return yComponent * totalPressure;
+  }
+}
