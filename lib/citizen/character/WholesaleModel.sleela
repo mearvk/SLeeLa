@@ -1,0 +1,35 @@
+/*
+ * lib/citizen/character/WholesaleModel.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: WholesaleModel — sell in bulk to the people who sell to people.
+ *   Thin margin per case, enormous volume, and a loyalty to the pallet jack
+ *   that borders on romantic.
+ *
+ * A concrete BusinessModel: revenue is cases x case-price; the per-case margin
+ * is slim by design. Family: character.
+ */
+#sleela 1.3
+class WholesaleModel extends BusinessModel {
+
+  int cases;              // cases moved this month
+  int casePriceCents;     // price per case to the retailer
+  int caseCostCents;      // cost per case from the manufacturer
+  int logisticsCents;     // monthly warehouse + freight overhead
+
+  void setUp(int casesSold, int casePrice, int caseCost, int logistics) {
+    load();
+    configure("Wholesale", KIND_WHOLESALE);
+    if (casesSold < 0) { casesSold = 0; }
+    if (casePrice < 0) { casePrice = 0; }
+    if (caseCost < 0) { caseCost = 0; }
+    if (logistics < 0) { logistics = 0; }
+    cases = casesSold;
+    casePriceCents = casePrice;
+    caseCostCents = caseCost;
+    logisticsCents = logistics;
+    setUnits(casesSold);
+  }
+
+  int monthlyRevenue() { return cases * casePriceCents; }
+  int monthlyCost() { return cases * caseCostCents + logisticsCents; }
+}

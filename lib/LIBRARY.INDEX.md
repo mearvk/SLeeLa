@@ -1,11 +1,28 @@
 # SLeeLa /lib Library Index
 
-**Revision:** 0.32  
+**Revision:** 0.33  
 **Packages:** 85  
-**SLeeLa source units:** 10315  
+**SLeeLa source units:** 10329  
 **Module-facade symbols:** 57  
-**Total symbol records:** 10372  
+**Total symbol records:** 10386  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
+
+> Revision 0.33 copies the fourteen `character` business-model Master Classes
+> into a new nested sub-area, `lib/citizen/character/`, so the `citizen` package
+> carries its own in-place copy of `Character`, `BusinessModel`, and the twelve
+> concrete models (`SubscriptionModel`, `FreemiumModel`, `MarketplaceModel`,
+> `AdvertisingModel`, `RetailModel`, `WholesaleModel`, `FranchiseModel`,
+> `LicensingModel`, `SaaSModel`, `ConsultingModel`, `ManufacturingModel`,
+> `BrokerageModel`). The sources are unchanged apart from their header path
+> comments. Following the one-facade-per-package convention (see
+> `lib/compiler/frontends/*`, which hold source classes but no nested
+> `SLPackage`), the copied `SLPackage` facade was NOT duplicated into the
+> sub-area — the `citizen` package keeps its single root facade. Fourteen new
+> source units, all attributed to the `citizen` package: 10,372 -> **10,386**
+> total records (10,315 -> **10,329** source classes); facade and package counts
+> unchanged at 57 and 85. `LIBRARY.SYMBOLS.md` was regenerated from the live
+> tree and the counts are verified in lockstep by
+> `test-suites/test-library-inventory.sh`.
 
 > Revision 0.32 adds two new packages — `citizen` and `character` — together.
 >

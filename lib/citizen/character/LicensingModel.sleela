@@ -1,0 +1,32 @@
+/*
+ * lib/citizen/character/LicensingModel.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: LicensingModel — own the idea, let others do the sweating. The
+ *   Character licenses intellectual property and collects a royalty per licensed
+ *   unit sold by someone else, with almost no marginal cost of its own.
+ *
+ * A concrete BusinessModel: wonderfully cheap to run, entirely dependent on the
+ * licensee's hustle. Family: character.
+ */
+#sleela 1.3
+class LicensingModel extends BusinessModel {
+
+  int licensedUnits;      // units the licensees sold this month
+  int royaltyPerUnitCents;// royalty collected per licensed unit
+  int ipUpkeepCents;      // monthly cost to maintain/defend the IP
+
+  void setUp(int unitsLicensed, int royaltyPerUnit, int ipUpkeep) {
+    load();
+    configure("Licensing", KIND_LICENSING);
+    if (unitsLicensed < 0) { unitsLicensed = 0; }
+    if (royaltyPerUnit < 0) { royaltyPerUnit = 0; }
+    if (ipUpkeep < 0) { ipUpkeep = 0; }
+    licensedUnits = unitsLicensed;
+    royaltyPerUnitCents = royaltyPerUnit;
+    ipUpkeepCents = ipUpkeep;
+    setUnits(unitsLicensed);
+  }
+
+  int monthlyRevenue() { return licensedUnits * royaltyPerUnitCents; }
+  int monthlyCost() { return ipUpkeepCents; }
+}
