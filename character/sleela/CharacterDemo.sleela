@@ -1,0 +1,65 @@
+/*
+ * character/sleela/CharacterDemo.sleela
+ * SLeeLa Standard Library — runnable orchestration example.
+ * Definition: Casts three Characters, hands each a different BusinessModel, and
+ *   runs a quarter of business. It shows the whole point of the package: one
+ *   Character class composing many business-model classes through a single
+ *   base-typed reference, each answering the same question — did we make money?
+ *   — with entirely different math.
+ *
+ * The authoritative definitions live one level up in lib/character/*.sleela.
+ * Family: character.
+ */
+#sleela 1.3
+class CharacterDemo {
+
+  void main() {
+    // --- Character 1: a SaaS founder with two tiers of seats. ---
+    SaaSModel saas = new SaaSModel();
+    //        basic, premium, basicPrice, premiumPrice, infraPerSeat (cents)
+    saas.setUp(800, 200, 2000, 8000, 400);
+
+    Character ada = new Character();
+    ada.load();
+    ada.introduce("Ada", "Seats for everyone, dashboards for days.", 70, 500000);
+    ada.adopt(saas);
+    print("[saas]    " + saas.describe());
+
+    // --- Character 2: a marketplace broker taking a cut of every deal. ---
+    MarketplaceModel market = new MarketplaceModel();
+    //          txns, avgOrder, takeRate%, opCost (cents)
+    market.setUp(10000, 4500, 12, 50);
+
+    Character max = new Character();
+    max.load();
+    max.introduce("Max", "We don't make it, we match it.", 60, 300000);
+    max.adopt(market);
+    print("[market]  " + market.describe());
+
+    // --- Character 3: a manufacturer fighting a big fixed plant cost. ---
+    ManufacturingModel plant = new ManufacturingModel();
+    //         produced, wholesalePrice, variableCost, fixedPlant (cents)
+    plant.setUp(5000, 3000, 1800, 4000000);
+
+    Character mae = new Character();
+    mae.load();
+    mae.introduce("Mae", "If it isn't bolted down, we made the bolt.", 85, 1000000);
+    mae.adopt(plant);
+    print("[plant]   " + plant.describe());
+    print("[plant]   break-even units = " + plant.breakEvenUnits());
+
+    // --- Run one quarter (3 months) for each Character. ---
+    int adaQ = ada.runMonths(3);
+    int maxQ = max.runMonths(3);
+    int maeQ = mae.runMonths(3);
+
+    print("[quarter] Ada profit=" + adaQ + "; " + ada.describe());
+    print("[quarter] Max profit=" + maxQ + "; " + max.describe());
+    print("[quarter] Mae profit=" + maeQ + "; " + mae.describe());
+
+    // --- The headline the whole package exists to print. ---
+    print("[verdict] Ada thriving? " + ada.thriving()
+        + " | Max thriving? " + max.thriving()
+        + " | Mae still standing? " + mae.stillStanding());
+  }
+}
