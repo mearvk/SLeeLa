@@ -1,11 +1,30 @@
 # SLeeLa /lib Library Index
 
-**Revision:** 0.35  
+**Revision:** 0.36  
 **Packages:** 86  
-**SLeeLa source units:** 10366  
+**SLeeLa source units:** 10370  
 **Module-facade symbols:** 58  
-**Total symbol records:** 10424  
+**Total symbol records:** 10428  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
+
+> Revision 0.36 adds motion and a comprehensive drawing surface to the
+> **`user-interface`** package: four new one-class-per-file Master Classes.
+> `SLThrobber` is a width-adjustable, full-motion, colour-predictive, water-like
+> flowing activity field (a fluid shallow-water crest field whose hue leads the
+> flow; see `user-interface/THROBBER.md`). `SLCanvasView` is a general animated
+> drawing surface whose per-frame draw routine paints with the Draw API.
+> `SLDrawContext` binds the comprehensive SleelaUI Draw API
+> (`user-interface/include/sleela_ui_draw.h`): owned RGBA surfaces, single/double
+> buffering, pixel-level get/set/blend, blend modes, a clip stack, and the full
+> primitive set (rects, rounded rects, lines, circles, ellipses, arcs,
+> triangles, gradients, text, blits). `SLFrameClock` binds the refresh-rate
+> controller (target FPS, delta time, measured rate, sleep hint, fixed-step).
+> Each bottoms out in `ui*`/`draw*` SLVM built-ins calling the genuine C ABI;
+> see `user-interface/DRAW-API.md`. Four new source units: 10,424 -> **10,428**
+> total records (10,366 -> **10,370** source classes); facade and package counts
+> unchanged at 58 and 86. `LIBRARY.SYMBOLS.md` was regenerated from the live tree
+> and the counts are verified in lockstep by
+> `test-suites/test-library-inventory.sh`.
 
 > Revision 0.35 expands the **`user-interface`** package with the full SleelaUI™
 > widget collection: twenty-two new one-class-per-file Master Classes binding

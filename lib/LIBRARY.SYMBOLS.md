@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 10366
+library-source-files: 10370
 library-packages: 86
 module-facade-symbols: 58
-total-symbol-records: 10424
+total-symbol-records: 10428
 
 package	symbol	path	kind
 antivirus	SLPackage.sleela	lib/antivirus/SLPackage.sleela	facade
@@ -10296,13 +10296,16 @@ user-interface	SLAvatar.sleela	lib/user-interface/SLAvatar.sleela	source
 user-interface	SLBadge.sleela	lib/user-interface/SLBadge.sleela	source
 user-interface	SLBox.sleela	lib/user-interface/SLBox.sleela	source
 user-interface	SLButton.sleela	lib/user-interface/SLButton.sleela	source
+user-interface	SLCanvasView.sleela	lib/user-interface/SLCanvasView.sleela	source
 user-interface	SLCard.sleela	lib/user-interface/SLCard.sleela	source
 user-interface	SLCheckBox.sleela	lib/user-interface/SLCheckBox.sleela	source
 user-interface	SLChip.sleela	lib/user-interface/SLChip.sleela	source
 user-interface	SLColor.sleela	lib/user-interface/SLColor.sleela	source
 user-interface	SLComboBox.sleela	lib/user-interface/SLComboBox.sleela	source
+user-interface	SLDrawContext.sleela	lib/user-interface/SLDrawContext.sleela	source
 user-interface	SLEntry.sleela	lib/user-interface/SLEntry.sleela	source
 user-interface	SLFrame.sleela	lib/user-interface/SLFrame.sleela	source
+user-interface	SLFrameClock.sleela	lib/user-interface/SLFrameClock.sleela	source
 user-interface	SLGalleryDemo.sleela	lib/user-interface/SLGalleryDemo.sleela	source
 user-interface	SLGrid.sleela	lib/user-interface/SLGrid.sleela	source
 user-interface	SLHeaderBar.sleela	lib/user-interface/SLHeaderBar.sleela	source
@@ -10325,6 +10328,7 @@ user-interface	SLSpinButton.sleela	lib/user-interface/SLSpinButton.sleela	source
 user-interface	SLSpinner.sleela	lib/user-interface/SLSpinner.sleela	source
 user-interface	SLStatusBar.sleela	lib/user-interface/SLStatusBar.sleela	source
 user-interface	SLTheme.sleela	lib/user-interface/SLTheme.sleela	source
+user-interface	SLThrobber.sleela	lib/user-interface/SLThrobber.sleela	source
 user-interface	SLToggle.sleela	lib/user-interface/SLToggle.sleela	source
 user-interface	SLTooltip.sleela	lib/user-interface/SLTooltip.sleela	source
 user-interface	SLUserInterface.sleela	lib/user-interface/SLUserInterface.sleela	source

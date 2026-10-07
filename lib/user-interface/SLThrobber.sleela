@@ -1,0 +1,49 @@
+/*
+ * lib/user-interface/SLThrobber.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLThrobber — a SleelaUI width-adjustable, full-motion,
+ *   colour-predictive, water-like flowing activity throbber. Unlike a spinning
+ *   ring, it is a fluid field: crests travel, disperse, and recombine like
+ *   ripples on water, their colour arriving slightly AHEAD of the motion (the
+ *   hue leads the local velocity), with latent hues surfacing on the brightest
+ *   crests under strong flow and receding as it calms. The width is adjustable
+ *   at any time and the field rescales while keeping the same physical feel.
+ *   The constructor bottoms out in the `uiThrobber` built-in (SleelaUI C ABI
+ *   slui_throbber()); it is an animated widget — while visible the window's
+ *   frame loop advances it and repaints it at its refresh rate.
+ *
+ * An SLThrobber IS an SLWidget. Height follows setSizeRequest (a slim seam by
+ * default); set the width with setWidth, the flow vigour with setIntensity, and
+ * the base hue with setHue.
+ *
+ * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
+ * bridge.
+ */
+#sleela 1.5
+class SLThrobber extends SLWidget {
+  // Create a throbber inside `parent` with an initial pixel width.
+  void createIn(SLWidget parent, int widthPx) {
+    widget = uiThrobber(parent.handle(), widthPx);
+  }
+  void createInHandle(int parentHandle, int widthPx) {
+    widget = uiThrobber(parentHandle, widthPx);
+  }
+
+  // Adjust the width in pixels; the water field rescales to fit.
+  void setWidth(int widthPx) {
+    if (widget >= 0) { uiThrobberSetWidth(widget, widthPx); }
+  }
+
+  // Flow vigour in [0,1]: 0 = a calm trickle, 1 = vigorous flow. Drives both
+  // the speed and the colour spread of the field.
+  void setIntensity(double intensity) {
+    if (widget >= 0) { uiThrobberSetIntensity(widget, intensity); }
+  }
+
+  // Base hue in degrees the predictive colouring flows around (205 ~ water;
+  // 150 ~ green water; 30 ~ warm). The actual rendered hue leads this by the
+  // local flow velocity.
+  void setHue(double hueDegrees) {
+    if (widget >= 0) { uiThrobberSetHue(widget, hueDegrees); }
+  }
+}

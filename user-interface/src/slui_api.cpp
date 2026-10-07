@@ -289,6 +289,42 @@ SLUIWidget* slui_info_bar(SLUIWidget* parent, const char* text, int severity) {
                   std::make_unique<slui::InfoBar>(text ? text : "", severity));
 }
 
+/* ---- Motion & custom drawing --------------------------------------------- */
+SLUIWidget* slui_throbber(SLUIWidget* parent, int width_px) {
+    return attach(parent, std::make_unique<slui::Throbber>(width_px));
+}
+void slui_throbber_set_width(SLUIWidget* t, int width_px) {
+    if (!t) return;
+    auto* th = dynamic_cast<slui::Throbber*>(as_widget(t));
+    if (th) th->set_width_px(width_px);
+}
+void slui_throbber_set_intensity(SLUIWidget* t, double intensity) {
+    if (!t) return;
+    auto* th = dynamic_cast<slui::Throbber*>(as_widget(t));
+    if (th) th->set_intensity(intensity);
+}
+void slui_throbber_set_hue(SLUIWidget* t, double hue_degrees) {
+    if (!t) return;
+    auto* th = dynamic_cast<slui::Throbber*>(as_widget(t));
+    if (th) th->set_hue(hue_degrees);
+}
+
+SLUIWidget* slui_canvas_view(SLUIWidget* parent, int width, int height) {
+    return attach(parent, std::make_unique<slui::CanvasView>(width, height));
+}
+void slui_canvas_view_set_draw(SLUIWidget* view, SLUICanvasDrawFn fn,
+                               void* user) {
+    if (!view) return;
+    auto* cv = dynamic_cast<slui::CanvasView*>(as_widget(view));
+    if (cv)
+        cv->set_draw_fn(reinterpret_cast<slui::CanvasDrawFn>(fn), user);
+}
+void slui_canvas_view_set_fps(SLUIWidget* view, double fps) {
+    if (!view) return;
+    auto* cv = dynamic_cast<slui::CanvasView*>(as_widget(view));
+    if (cv) cv->set_fps(fps);
+}
+
 /* ---- Widget configuration ------------------------------------------------ */
 void slui_widget_set_margin(SLUIWidget* w, int top, int right, int bottom,
                             int left) {

@@ -89,18 +89,35 @@ public:
         std::fill(pixels_.begin(), pixels_.end(), p);
     }
 
-    /* Blend one pixel with coverage [0..1] applied to the source alpha. */
+    /* Compositing modes mirrored by the public SLUIBlendMode. */
+    enum class BlendMode { Over, Copy, Add, Multiply, Screen, Max };
+
+    void set_blend(BlendMode m) { blend_mode_ = m; }
+    BlendMode blend_mode() const { return blend_mode_; }
+    void set_opacity(double o) { opacity_ = std::clamp(o, 0.0, 1.0); }
+    double opacity() const { return opacity_; }
+
+    /* Blend one pixel with coverage [0..1] applied to the source alpha, under
+     * the active blend mode and layer opacity. */
     void blend(int x, int y, const Color& src, double coverage) {
         if (coverage <= 0.0) return;
         if (!clip_.contains(x, y)) return;
+        double a = src.a * coverage * opacity_;
+        if (a <= 0.0) return;
         Color s = src;
-        s.a = static_cast<uint8_t>(std::clamp(src.a * coverage, 0.0, 255.0) + 0.5);
+        s.a = static_cast<uint8_t>(std::clamp(a, 0.0, 255.0) + 0.5);
         if (s.a == 0) return;
         size_t idx = static_cast<size_t>(y) * width_ + x;
         Color dst = unpack(pixels_[idx]);
-        Color out = over(s, dst);
+        Color out = composite(s, dst);
         out.a = 255; /* window buffer is opaque */
         pixels_[idx] = pack(out);
+    }
+
+    /* Read a pixel as straight-alpha (front buffer). */
+    Color get_pixel(int x, int y) const {
+        if (x < 0 || y < 0 || x >= width_ || y >= height_) return Color{0, 0, 0, 0};
+        return unpack(pixels_[static_cast<size_t>(y) * width_ + x]);
     }
 
     void fill_rect(const Rect& r, const Color& c) {
@@ -196,7 +213,200 @@ public:
         }
     }
 
+    /* ---- Extended primitives for the Draw API ------------------------- */
+
+    /* Antialiased thick line (round caps) via per-pixel distance to segment. */
+    void line(double x0, double y0, double x1, double y1, double thickness,
+              const Color& c) {
+        double half = std::max(thickness, 0.5) / 2.0;
+        int minx = static_cast<int>(std::floor(std::min(x0, x1) - half - 1));
+        int maxx = static_cast<int>(std::ceil(std::max(x0, x1) + half + 1));
+        int miny = static_cast<int>(std::floor(std::min(y0, y1) - half - 1));
+        int maxy = static_cast<int>(std::ceil(std::max(y0, y1) + half + 1));
+        double dx = x1 - x0, dy = y1 - y0;
+        double len2 = dx * dx + dy * dy;
+        for (int y = miny; y <= maxy; ++y) {
+            for (int x = minx; x <= maxx; ++x) {
+                double px = x + 0.5, py = y + 0.5;
+                double t = len2 > 0 ? ((px - x0) * dx + (py - y0) * dy) / len2 : 0.0;
+                t = std::clamp(t, 0.0, 1.0);
+                double qx = x0 + t * dx, qy = y0 + t * dy;
+                double d = std::sqrt((px - qx) * (px - qx) + (py - qy) * (py - qy));
+                double cov = 1.0 - smooth_edge(d - half);
+                blend(x, y, c, cov);
+            }
+        }
+    }
+
+    void fill_circle(double cx, double cy, double r, const Color& c) {
+        if (r <= 0) return;
+        int minx = static_cast<int>(std::floor(cx - r - 1));
+        int maxx = static_cast<int>(std::ceil(cx + r + 1));
+        int miny = static_cast<int>(std::floor(cy - r - 1));
+        int maxy = static_cast<int>(std::ceil(cy + r + 1));
+        for (int y = miny; y <= maxy; ++y) {
+            for (int x = minx; x <= maxx; ++x) {
+                double d = std::sqrt((x + 0.5 - cx) * (x + 0.5 - cx) +
+                                     (y + 0.5 - cy) * (y + 0.5 - cy));
+                blend(x, y, c, 1.0 - smooth_edge(d - r));
+            }
+        }
+    }
+
+    void fill_ellipse(double cx, double cy, double rx, double ry, const Color& c) {
+        if (rx <= 0 || ry <= 0) return;
+        int minx = static_cast<int>(std::floor(cx - rx - 1));
+        int maxx = static_cast<int>(std::ceil(cx + rx + 1));
+        int miny = static_cast<int>(std::floor(cy - ry - 1));
+        int maxy = static_cast<int>(std::ceil(cy + ry + 1));
+        for (int y = miny; y <= maxy; ++y) {
+            for (int x = minx; x <= maxx; ++x) {
+                double nx = (x + 0.5 - cx) / rx;
+                double ny = (y + 0.5 - cy) / ry;
+                double d = std::sqrt(nx * nx + ny * ny); /* ~1 at the edge */
+                /* scale the smoothstep band to roughly one pixel */
+                double edge = (d - 1.0) * std::min(rx, ry);
+                blend(x, y, c, 1.0 - smooth_edge(edge));
+            }
+        }
+    }
+
+    void stroke_circle(double cx, double cy, double r, double thickness,
+                       const Color& c) {
+        double half = thickness / 2.0;
+        int minx = static_cast<int>(std::floor(cx - r - half - 1));
+        int maxx = static_cast<int>(std::ceil(cx + r + half + 1));
+        int miny = static_cast<int>(std::floor(cy - r - half - 1));
+        int maxy = static_cast<int>(std::ceil(cy + r + half + 1));
+        for (int y = miny; y <= maxy; ++y) {
+            for (int x = minx; x <= maxx; ++x) {
+                double d = std::sqrt((x + 0.5 - cx) * (x + 0.5 - cx) +
+                                     (y + 0.5 - cy) * (y + 0.5 - cy));
+                blend(x, y, c, 1.0 - smooth_edge(std::fabs(d - r) - half));
+            }
+        }
+    }
+
+    /* Stroked arc from start to start+sweep (radians), 0 = +x, CW in screen y. */
+    void arc(double cx, double cy, double r, double start, double sweep,
+             double thickness, const Color& c) {
+        double half = thickness / 2.0;
+        int minx = static_cast<int>(std::floor(cx - r - half - 1));
+        int maxx = static_cast<int>(std::ceil(cx + r + half + 1));
+        int miny = static_cast<int>(std::floor(cy - r - half - 1));
+        int maxy = static_cast<int>(std::ceil(cy + r + half + 1));
+        double end = start + sweep;
+        for (int y = miny; y <= maxy; ++y) {
+            for (int x = minx; x <= maxx; ++x) {
+                double vx = x + 0.5 - cx, vy = y + 0.5 - cy;
+                double d = std::sqrt(vx * vx + vy * vy);
+                double radial = 1.0 - smooth_edge(std::fabs(d - r) - half);
+                if (radial <= 0.0) continue;
+                double ang = std::atan2(vy, vx);
+                /* normalise ang into [start, start+2pi) and test the sweep */
+                double rel = ang - start;
+                while (rel < 0) rel += 2.0 * 3.14159265358979323846;
+                while (rel >= 2.0 * 3.14159265358979323846)
+                    rel -= 2.0 * 3.14159265358979323846;
+                double s = std::fabs(sweep);
+                double inside = (rel <= s) ? 1.0 : 0.0;
+                /* soften the two angular ends by ~1px worth of arc */
+                double soft = r > 0 ? 1.5 / r : 0.0;
+                if (rel > s && rel < s + soft) inside = 1.0 - (rel - s) / soft;
+                (void)end;
+                blend(x, y, c, radial * inside);
+            }
+        }
+    }
+
+    void fill_triangle(double x0, double y0, double x1, double y1, double x2,
+                       double y2, const Color& c) {
+        int minx = static_cast<int>(std::floor(std::min({x0, x1, x2})));
+        int maxx = static_cast<int>(std::ceil(std::max({x0, x1, x2})));
+        int miny = static_cast<int>(std::floor(std::min({y0, y1, y2})));
+        int maxy = static_cast<int>(std::ceil(std::max({y0, y1, y2})));
+        auto edge = [](double ax, double ay, double bx, double by, double px,
+                       double py) {
+            return (px - ax) * (by - ay) - (py - ay) * (bx - ax);
+        };
+        double area = edge(x0, y0, x1, y1, x2, y2);
+        if (area == 0) return;
+        for (int y = miny; y <= maxy; ++y) {
+            for (int x = minx; x <= maxx; ++x) {
+                double px = x + 0.5, py = y + 0.5;
+                double w0 = edge(x1, y1, x2, y2, px, py);
+                double w1 = edge(x2, y2, x0, y0, px, py);
+                double w2 = edge(x0, y0, x1, y1, px, py);
+                bool inside = (area > 0) ? (w0 >= 0 && w1 >= 0 && w2 >= 0)
+                                         : (w0 <= 0 && w1 <= 0 && w2 <= 0);
+                if (inside) blend(x, y, c, 1.0);
+            }
+        }
+    }
+
+    void radial_gradient(double cx, double cy, double r, const Color& inner,
+                         const Color& outer) {
+        if (r <= 0) return;
+        int minx = static_cast<int>(std::floor(cx - r));
+        int maxx = static_cast<int>(std::ceil(cx + r));
+        int miny = static_cast<int>(std::floor(cy - r));
+        int maxy = static_cast<int>(std::ceil(cy + r));
+        for (int y = miny; y <= maxy; ++y) {
+            for (int x = minx; x <= maxx; ++x) {
+                double d = std::sqrt((x + 0.5 - cx) * (x + 0.5 - cx) +
+                                     (y + 0.5 - cy) * (y + 0.5 - cy));
+                if (d > r + 1) continue;
+                double t = std::clamp(d / r, 0.0, 1.0);
+                Color col = lerp(inner, outer, t);
+                double cov = 1.0 - smooth_edge(d - r);
+                blend(x, y, col, cov);
+            }
+        }
+    }
+
+    /* Copy another canvas's pixels at (dx,dy) under the active blend/opacity. */
+    void blit(const Canvas& src, int dx, int dy, const Rect& srcRect) {
+        for (int sy = srcRect.y; sy < srcRect.bottom(); ++sy) {
+            for (int sx = srcRect.x; sx < srcRect.right(); ++sx) {
+                Color s = src.get_pixel(sx, sy);
+                if (s.a == 0) continue;
+                blend(dx + (sx - srcRect.x), dy + (sy - srcRect.y), s,
+                      s.a / 255.0 == 0 ? 0.0 : 1.0);
+            }
+        }
+    }
+
 private:
+    /* Composite src OVER/into dst under the active blend mode. */
+    Color composite(const Color& src, const Color& dst) const {
+        switch (blend_mode_) {
+        case BlendMode::Copy:
+            return src;
+        case BlendMode::Add:
+            return Color{
+                static_cast<uint8_t>(std::min(255, dst.r + src.r * src.a / 255)),
+                static_cast<uint8_t>(std::min(255, dst.g + src.g * src.a / 255)),
+                static_cast<uint8_t>(std::min(255, dst.b + src.b * src.a / 255)),
+                255};
+        case BlendMode::Multiply:
+            return Color{static_cast<uint8_t>(dst.r * src.r / 255),
+                         static_cast<uint8_t>(dst.g * src.g / 255),
+                         static_cast<uint8_t>(dst.b * src.b / 255), 255};
+        case BlendMode::Screen:
+            return Color{
+                static_cast<uint8_t>(255 - (255 - dst.r) * (255 - src.r) / 255),
+                static_cast<uint8_t>(255 - (255 - dst.g) * (255 - src.g) / 255),
+                static_cast<uint8_t>(255 - (255 - dst.b) * (255 - src.b) / 255),
+                255};
+        case BlendMode::Max:
+            return Color{std::max(dst.r, src.r), std::max(dst.g, src.g),
+                         std::max(dst.b, src.b), 255};
+        case BlendMode::Over:
+        default:
+            return over(src, dst);
+        }
+    }
+
     /* Smoothstep edge over a 1px band: 0 well inside, 1 well outside. */
     static double smooth_edge(double d) {
         if (d <= -0.5) return 0.0;
@@ -232,6 +442,8 @@ private:
     std::vector<uint32_t> pixels_{0};
     Rect clip_{0, 0, 1, 1};
     std::vector<Rect> clip_stack_;
+    BlendMode blend_mode_ = BlendMode::Over;
+    double opacity_ = 1.0;
 };
 
 } // namespace slui

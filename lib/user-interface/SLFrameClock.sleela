@@ -1,0 +1,57 @@
+/*
+ * lib/user-interface/SLFrameClock.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLFrameClock — the SLeeLa binding of the SleelaUI Draw
+ *   API's refresh-rate controller. It paces a render loop: a target rate (FPS),
+ *   a per-frame delta time, an elapsed animation clock, a smoothed measured
+ *   rate, a sleep hint so the loop idles instead of busy-spinning, and a
+ *   fixed-timestep accumulator for deterministic field/physics updates
+ *   regardless of frame rate. Every method bottoms out in a `draw*` SLVM
+ *   built-in that calls the genuine frame-clock API.
+ *
+ * Typical loop:
+ *     SLFrameClock fc = new SLFrameClock(); fc.create(60.0);
+ *     while (running) {
+ *       double dt = fc.tick();
+ *       update(dt);
+ *       draw(dc); dc.present();
+ *       int ms = fc.sleepHint(); if (ms > 0) host.sleep(ms);
+ *     }
+ *
+ * A frame clock is a VM-local handle (-1 = none).
+ *
+ * Family: user-interface. Native VM/UI work crosses the explicit `draw*` SLVM
+ * bridge.
+ */
+#sleela 1.5
+class SLFrameClock {
+  int fc;   // VM-local frame-clock handle (-1 = none)
+
+  // Create a frame clock with a target refresh rate (0 = unthrottled).
+  void create(double targetFps) { fc = drawClockCreate(targetFps); }
+  int handle() { return fc; }
+  boolean valid() { return fc >= 0; }
+  void destroy() { if (fc >= 0) { drawClockDestroy(fc); fc = -1; } }
+
+  void setFps(double targetFps) { if (fc >= 0) { drawClockSetFps(fc, targetFps); } }
+  double fps() { if (fc < 0) { return 0.0; } return drawClockGetFps(fc); }
+
+  // Advance one frame; returns the delta time in seconds since the last tick.
+  double tick() { if (fc < 0) { return 0.0; } return drawClockTick(fc); }
+
+  // Seconds since the clock was created (monotonic animation time).
+  double elapsed() { if (fc < 0) { return 0.0; } return drawClockElapsed(fc); }
+
+  // The smoothed frames-per-second actually being achieved.
+  double measuredFps() { if (fc < 0) { return 0.0; } return drawClockMeasuredFps(fc); }
+
+  // Milliseconds the caller should idle to hit the target rate (0 if behind).
+  int sleepHint() { if (fc < 0) { return 0; } return drawClockSleepHint(fc); }
+
+  // Fixed-timestep drain: after tick(), call repeatedly, running one fixed
+  // `step`-second update each time it returns true, until it returns false.
+  boolean fixedStep(double step) {
+    if (fc < 0) { return false; }
+    return drawClockFixedStep(fc, step) == 1;
+  }
+}

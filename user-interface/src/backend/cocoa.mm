@@ -178,6 +178,7 @@ public:
             [win setDelegate:del];
 
             [NSApp activateIgnoringOtherApps:YES];
+            owners_.push_back(owner);
             return std::make_unique<CocoaWindow>(win, view, del);
         }
     }
@@ -185,7 +186,26 @@ public:
     int pump(bool block) override {
         @autoreleasepool {
             int dispatched = 0;
-            NSDate* until = block ? [NSDate distantFuture] : [NSDate distantPast];
+
+            /* Any animated widget? Pick the fastest refresh so we wake on a
+             * frame timer and advance throbbers/canvas views while idle. */
+            double fps = 0.0;
+            bool animated = false;
+            for (Window* o : owners_) {
+                double f = 0.0;
+                if (o && o->has_animation(&f)) {
+                    animated = true;
+                    if (f > fps) fps = f;
+                }
+            }
+            if (fps <= 0.0) fps = 60.0;
+
+            NSDate* until;
+            if (!block) until = [NSDate distantPast];
+            else if (animated)
+                until = [NSDate dateWithTimeIntervalSinceNow:1.0 / fps];
+            else until = [NSDate distantFuture];
+
             for (;;) {
                 NSEvent* ev = [NSApp nextEventMatchingMask:NSEventMaskAny
                                                  untilDate:until
@@ -196,6 +216,15 @@ public:
                 [NSApp sendEvent:ev];
                 ++dispatched;
                 until = [NSDate distantPast];
+            }
+
+            if (animated) {
+                double now = now_seconds();
+                double dt = last_anim_ > 0 ? now - last_anim_ : 1.0 / fps;
+                last_anim_ = now;
+                if (dt > 0.25) dt = 0.25;
+                for (Window* o : owners_)
+                    if (o) o->animation_tick(dt, nullptr);
             }
             return dispatched;
         }
@@ -378,6 +407,11 @@ private:
     bool quit_ = false;
     int exit_code_ = 0;
     std::unordered_map<uint32_t, double> advance_cache_;
+    std::vector<Window*> owners_;
+    double last_anim_ = 0.0;
+    static double now_seconds() {
+        return CFAbsoluteTimeGetCurrent();
+    }
 };
 
 uint32_t map_keycode(unsigned short kc) {

@@ -9,6 +9,7 @@
  * Max Rupplin -- MEARVK LLC -- 2026
  * ===========================================================================*/
 #include "sleela_ui.h"
+#include "sleela_ui_draw.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -150,6 +151,16 @@ int main(void) {
     slui_widget_set_toggle(chk, 0); /* state change, not an activation */
     CHECK(slui_widget_take_activated(btn) == 0, "no spurious activation latched");
 
+    /* --- motion widgets ------------------------------------------------ */
+    SLUIWidget* thr = slui_throbber(col, 240);
+    CHECK(thr != NULL, "throbber created");
+    slui_throbber_set_width(thr, 300);
+    slui_throbber_set_intensity(thr, 0.8);
+    slui_throbber_set_hue(thr, 150.0);
+    SLUIWidget* cv = slui_canvas_view(col, 120, 40);
+    CHECK(cv != NULL, "canvas view created");
+    slui_canvas_view_set_fps(cv, 30.0);
+
     /* --- render a frame; the rasterizer must produce non-background pixels */
     slui_window_show(win);
     slui_window_request_redraw(win);
@@ -168,6 +179,40 @@ int main(void) {
     CHECK(g_clicked >= 0, "activate handler installed");
 
     slui_app_destroy(app);
+
+    /* --- Draw API: free-standing context, primitives, pixels, buffering - */
+    SLUIDrawContext* dc = slui_draw_create(64, 48, SLUI_BUFFER_DOUBLE);
+    CHECK(dc != NULL, "draw context created");
+    CHECK(slui_draw_width(dc) == 64 && slui_draw_height(dc) == 48,
+          "draw context size");
+    slui_draw_clear(dc, slui_rgb(0, 0, 0));
+    slui_draw_fill_rect(dc, (SLUIRect){8, 8, 16, 16}, slui_rgb(255, 0, 0));
+    slui_draw_fill_circle(dc, 40, 24, 10, slui_rgb(0, 255, 0));
+    slui_draw_line(dc, 0, 0, 63, 47, 2.0, slui_rgb(0, 0, 255));
+    slui_draw_present(dc); /* publish back -> front */
+    /* The red rect's interior pixel should now read red on the front buffer. */
+    SLUIColor px = slui_draw_get_pixel(dc, 16, 16);
+    CHECK(((px >> 24) & 0xFF) >= 200 && ((px >> 16) & 0xFF) <= 40,
+          "pixel read-back after present (red rect)");
+    /* read_rgba reports the full byte size. */
+    size_t need = slui_draw_read_rgba(dc, NULL, 0);
+    CHECK(need == (size_t)64 * 48 * 4, "read_rgba reports full size");
+    /* HSV helper produces a saturated colour. */
+    SLUIColor hsv = slui_color_hsv(120.0, 1.0, 1.0, 1.0);
+    CHECK(((hsv >> 16) & 0xFF) >= 200, "hsv green is bright");
+    slui_draw_destroy(dc);
+
+    /* --- Frame clock: ticks advance, elapsed grows ---------------------- */
+    SLUIFrameClock* fc = slui_frame_clock_create(60.0);
+    CHECK(fc != NULL, "frame clock created");
+    CHECK(slui_frame_clock_get_fps(fc) == 60.0, "frame clock target fps");
+    double dt0 = slui_frame_clock_tick(fc);
+    CHECK(dt0 > 0.0, "first tick returns positive dt");
+    /* Fixed-step drains the accumulator in `step` chunks. */
+    int steps = 0;
+    while (slui_frame_clock_fixed_step(fc, 0.001) && steps < 100) ++steps;
+    CHECK(steps >= 0, "fixed-step drains without hanging");
+    slui_frame_clock_destroy(fc);
 
     printf("\n%s (%d failure%s)\n", g_failures ? "FAILED" : "PASSED",
            g_failures, g_failures == 1 ? "" : "s");

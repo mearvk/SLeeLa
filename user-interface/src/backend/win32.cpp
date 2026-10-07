@@ -175,14 +175,32 @@ public:
     int pump(bool block) override {
         MSG msg;
         int dispatched = 0;
-        if (block) {
-            if (GetMessageW(&msg, nullptr, 0, 0) <= 0) {
-                quit_ = true;
-                return dispatched;
+
+        /* Any animated widget? If so, pick the fastest requested refresh and
+         * wake on a frame timer so throbbers/canvas views advance while idle. */
+        double fps = 0.0;
+        bool animated = false;
+        for (auto& kv : owners_) {
+            double f = 0.0;
+            if (kv.second && kv.second->has_animation(&f)) {
+                animated = true;
+                if (f > fps) fps = f;
             }
-            TranslateMessage(&msg);
-            DispatchMessageW(&msg);
-            ++dispatched;
+        }
+        if (fps <= 0.0) fps = 60.0;
+
+        if (block && !PeekMessageW(&msg, nullptr, 0, 0, PM_NOREMOVE)) {
+            DWORD wait = animated ? static_cast<DWORD>(1000.0 / fps) : INFINITE;
+            MsgWaitForMultipleObjects(0, nullptr, FALSE, wait, QS_ALLINPUT);
+            if (animated && !PeekMessageW(&msg, nullptr, 0, 0, PM_NOREMOVE)) {
+                /* Frame timeout: advance animation and repaint. */
+                double now = now_seconds();
+                double dt = last_anim_ > 0 ? now - last_anim_ : 1.0 / fps;
+                last_anim_ = now;
+                if (dt > 0.25) dt = 0.25;
+                for (auto& kv : owners_)
+                    if (kv.second) kv.second->animation_tick(dt, nullptr);
+            }
         }
         while (PeekMessageW(&msg, nullptr, 0, 0, PM_REMOVE)) {
             if (msg.message == WM_QUIT) {
@@ -393,6 +411,10 @@ private:
     double ascent_ = 12, descent_ = 3, line_height_ = 16;
     bool quit_ = false;
     int exit_code_ = 0;
+    static double now_seconds() {
+        return static_cast<double>(GetTickCount64()) / 1000.0;
+    }
+    double last_anim_ = 0.0;
     std::map<HWND, Window*> owners_;
     std::map<HWND, Win32Window*> windows_;
     std::unordered_map<uint32_t, double> advance_cache_;

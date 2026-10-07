@@ -40,6 +40,13 @@ public:
     const Canvas& render(); /* lay out + paint into the Canvas, return it */
     void request_redraw();
 
+    /* Animation: advance every CanvasView/Throbber in the tree by `dt` seconds
+     * and mark the window dirty. Returns true if the tree contains any animated
+     * widget, so the backend knows whether to keep running an animation timer.
+     * `out_fps` receives the fastest requested refresh rate (0 if none). */
+    bool animation_tick(double dt, double* out_fps);
+    bool has_animation(double* out_fps) const;
+
     NativeWindow* native() { return native_.get(); }
     bool closed() const { return closed_; }
 

@@ -18,6 +18,9 @@
 #include <X11/Xutil.h>
 #include <X11/keysym.h>
 
+#include <sys/select.h>
+#include <time.h>
+
 #include <fontconfig/fontconfig.h>
 
 #include <ft2build.h>
@@ -168,13 +171,51 @@ public:
             }
         }
 
-        if (!block && !XPending(dpy_)) return 0;
+        /* Does any window have an animated widget? If so, pick the fastest
+         * requested refresh so we drive a frame timer while idle. */
+        double fps = 0.0;
+        bool animated = false;
+        for (auto& kv : owners_) {
+            double f = 0.0;
+            if (kv.second && kv.second->has_animation(&f)) {
+                animated = true;
+                if (f > fps) fps = f;
+            }
+        }
+        if (fps <= 0.0) fps = 60.0;
+        double frame_s = 1.0 / fps;
 
-        XEvent xe;
-        do {
+        if (!XPending(dpy_)) {
+            if (!block && !animated) return 0;
+            /* Wait on the X connection fd, but no longer than one frame so an
+             * animated window gets ticked on timeout. */
+            int fd = ConnectionNumber(dpy_);
+            fd_set rfds;
+            FD_ZERO(&rfds);
+            FD_SET(fd, &rfds);
+            struct timeval tv;
+            double wait = animated ? frame_s : (block ? 1.0 : 0.0);
+            tv.tv_sec = static_cast<long>(wait);
+            tv.tv_usec = static_cast<long>((wait - tv.tv_sec) * 1e6);
+            int rc = select(fd + 1, &rfds, nullptr, nullptr,
+                            (block || animated) ? &tv : &tv);
+            if (rc == 0 && animated) {
+                /* Frame timeout: advance animation and repaint. */
+                double now = now_seconds();
+                double dt = last_anim_ > 0 ? now - last_anim_ : frame_s;
+                last_anim_ = now;
+                if (dt > 0.25) dt = 0.25;
+                for (auto& kv : owners_) {
+                    if (kv.second) kv.second->animation_tick(dt, nullptr);
+                }
+            }
+        }
+
+        while (XPending(dpy_)) {
+            XEvent xe;
             XNextEvent(dpy_, &xe);
             dispatched += dispatch(xe) ? 1 : 0;
-        } while (XPending(dpy_));
+        }
 
         /* Repaint windows whose handlers marked themselves dirty. */
         for (auto& kv : windows_) {
@@ -378,11 +419,18 @@ private:
         }
     }
 
+    static double now_seconds() {
+        struct timespec ts;
+        clock_gettime(CLOCK_MONOTONIC, &ts);
+        return ts.tv_sec + ts.tv_nsec / 1e9;
+    }
+
     Display* dpy_ = nullptr;
     int screen_ = 0;
     Atom wm_delete_ = 0;
     bool quit_ = false;
     int exit_code_ = 0;
+    double last_anim_ = 0.0;
 
     FT_Library ft_ = nullptr;
     FT_Face active_face_ = nullptr;

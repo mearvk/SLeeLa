@@ -132,6 +132,8 @@ void slui_theme_preset(SLUITheme *out, SLUIThemeId id);
 typedef struct SLUIApp SLUIApp;
 typedef struct SLUIWindow SLUIWindow;
 typedef struct SLUIWidget SLUIWidget;
+/* Defined in sleela_ui_draw.h; forward-declared here for the canvas-view API. */
+typedef struct SLUIDrawContext SLUIDrawContext;
 
 /* --------------------------------------------------------------------------
  * Events. The event model is a small, explicit tagged union so a C host can
@@ -313,6 +315,35 @@ SLUIWidget *slui_password_entry(SLUIWidget *parent, const char *placeholder);
 
 /* Feedback. INFO=0, WARNING=1, ERROR=2. */
 SLUIWidget *slui_info_bar(SLUIWidget *parent, const char *text, int severity);
+
+/* --------------------------------------------------------------------------
+ * Motion & custom drawing. These are animated widgets: while visible they are
+ * advanced by the window's frame loop and repainted at their requested rate.
+ * See sleela_ui_draw.h for the full developer draw surface a canvas view uses.
+ * ------------------------------------------------------------------------- */
+
+/* A width-adjustable, full-motion, colour-predictive, water-like flowing
+ * activity throbber. `width_px` is the initial width; adjust it later with
+ * slui_throbber_set_width. Height follows the widget's size request (a slim
+ * seam by default). */
+SLUIWidget *slui_throbber(SLUIWidget *parent, int width_px);
+void slui_throbber_set_width(SLUIWidget *throbber, int width_px);
+/* Flow vigour, 0 (calm trickle) .. 1 (vigorous). Drives speed + colour spread. */
+void slui_throbber_set_intensity(SLUIWidget *throbber, double intensity);
+/* Base hue in degrees the predictive colouring flows around (205 ~ water). */
+void slui_throbber_set_hue(SLUIWidget *throbber, double hue_degrees);
+
+/* A general animated drawing surface. Register a draw callback with
+ * slui_canvas_view_set_draw; it receives the view's own double-buffered draw
+ * context (see sleela_ui_draw.h), the animation time, and the per-frame delta,
+ * each frame, and draws whatever it likes. The view presents + blits the
+ * result into the window automatically. */
+SLUIWidget *slui_canvas_view(SLUIWidget *parent, int width, int height);
+typedef void (*SLUICanvasDrawFn)(SLUIDrawContext *dc, double time_s,
+                                 double dt_s, void *user);
+void slui_canvas_view_set_draw(SLUIWidget *view, SLUICanvasDrawFn fn,
+                               void *user);
+void slui_canvas_view_set_fps(SLUIWidget *view, double fps);
 
 /* Common widget configuration. */
 void slui_widget_set_margin(SLUIWidget *w, int top, int right, int bottom,

@@ -62,7 +62,10 @@ enum class WidgetKind {
     InfoBar,
     Tooltip,
     ComboBox,
-    SpinButton
+    SpinButton,
+    /* Motion / drawing */
+    Throbber,
+    CanvasView
 };
 
 enum class Visual { Normal, Hover, Active, Disabled };
@@ -715,6 +718,80 @@ public:
 
 private:
     double min_, max_, step_, value_;
+};
+
+/* ======================================================================== */
+/* Throbber -- a width-adjustable, full-motion, colour-predictive, water-like  */
+/* flowing activity field. See slui_throbber.{hpp,cpp}.                        */
+/* ======================================================================== */
+
+/* A developer/agent draw callback for the CanvasView widget. It is handed the
+ * view's own double-buffered draw context each frame plus the animation time
+ * and the per-frame delta, and draws whatever it likes with the Draw API.
+ * SLUIDrawContext is the opaque type from sleela_ui.h / sleela_ui_draw.h, which
+ * is a struct at global scope (declared outside this namespace below). */
+typedef void (*CanvasDrawFn)(::SLUIDrawContext* dc, double time_s, double dt_s,
+                             void* user);
+
+/* A general animated drawing surface: a widget that owns a double-buffered
+ * draw context sized to its bounds and, each frame, calls a developer draw
+ * callback then presents + blits the result. This is the host for custom
+ * visualisations and the substrate the Throbber is built on. It animates while
+ * visible and reports a target refresh rate the window's loop can honour. */
+class CanvasView : public Widget {
+public:
+    CanvasView(int min_w, int min_h);
+    ~CanvasView() override;
+    SLUISize measure(const PaintContext& ctx) override;
+    void paint(PaintContext& ctx) override;
+
+    void set_draw_fn(CanvasDrawFn fn, void* user) {
+        draw_fn_ = fn;
+        draw_user_ = user;
+    }
+    void set_fps(double fps) { fps_ = fps > 0 ? fps : 0.0; }
+    double fps() const { return fps_; }
+    /* Advance animation time; the window's animation loop calls this. */
+    void advance(double dt) {
+        time_ += dt;
+        last_dt_ = dt;
+        invalidate();
+    }
+    bool animated() const { return true; }
+
+protected:
+    int req_w_, req_h_;
+    double time_ = 0.0;
+    double last_dt_ = 0.0;
+    double fps_ = 60.0;
+    CanvasDrawFn draw_fn_ = nullptr;
+    void* draw_user_ = nullptr;
+    SLUIDrawContext* ctx_ = nullptr; /* owned draw context (lazy)            */
+    int ctx_w_ = 0, ctx_h_ = 0;
+
+    void ensure_context(int w, int h);
+};
+
+/* The Throbber is a CanvasView whose draw callback is an internal water-like
+ * flow field: a smoothly advected height/velocity field whose crests light up
+ * in a predictive hue that leads the motion. Width is adjustable; the field
+ * rescales to any width while keeping the same physical feel. */
+class Throbber : public CanvasView {
+public:
+    explicit Throbber(int width_px);
+    ~Throbber() override;
+    void set_width_px(int w);
+    int width_px() const { return req_w_; }
+    /* 0 = calm trickle ... 1 = vigorous flow. Drives speed + colour spread. */
+    void set_intensity(double v);
+    double intensity() const { return intensity_; }
+    /* Base hue (degrees) the predictive colouring flows around. */
+    void set_hue(double degrees);
+    double hue() const { return hue_; }
+
+private:
+    double intensity_ = 0.6;
+    double hue_ = 205.0; /* airy light-blue by default (water) */
 };
 
 /* Shared text helpers used by several widgets (declared here, defined in

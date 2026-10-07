@@ -85,6 +85,38 @@ const Canvas& Window::render() {
     return canvas_;
 }
 
+/* Depth-first walk visiting every CanvasView (and its Throbber subclass). */
+static void walk_canvas_views(Widget* w, double dt, bool advance, double* fps,
+                              bool* any) {
+    if (!w->visible()) return;
+    if (w->kind() == WidgetKind::CanvasView || w->kind() == WidgetKind::Throbber) {
+        auto* cv = static_cast<CanvasView*>(w);
+        if (any) *any = true;
+        if (fps && cv->fps() > *fps) *fps = cv->fps();
+        if (advance) cv->advance(dt);
+    }
+    for (auto& c : w->children())
+        walk_canvas_views(c.get(), dt, advance, fps, any);
+}
+
+bool Window::animation_tick(double dt, double* out_fps) {
+    double fps = 0.0;
+    bool any = false;
+    walk_canvas_views(root_.get(), dt, /*advance=*/true, &fps, &any);
+    if (out_fps) *out_fps = fps;
+    if (any) request_redraw();
+    return any;
+}
+
+bool Window::has_animation(double* out_fps) const {
+    double fps = 0.0;
+    bool any = false;
+    walk_canvas_views(const_cast<Widget*>(root_.get()), 0.0, /*advance=*/false,
+                      &fps, &any);
+    if (out_fps) *out_fps = fps;
+    return any;
+}
+
 void Window::handle_event(const SLUIEvent& ev) {
     /* Window-level events first offer the host handler. */
     if (ev.type == SLUI_EVENT_CLOSE) {

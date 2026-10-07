@@ -79,10 +79,23 @@ called in C and in SLeeLa?"
 | **Info Bar** | `slui_info_bar` | `SLInfoBar` | Inline tinted notice strip with a left severity bar (info/warning/error). | — |
 | **Tooltip** | `slui_tooltip` | `SLTooltip` | Small raised bubble with short explanatory text. | — |
 
+## Motion & drawing
+
+| Widget | C ABI constructor | SLeeLa class | Description | Focus |
+|---|---|---|---|---|
+| **Throbber** | `slui_throbber` | `SLThrobber` | Width-adjustable, full-motion, colour-predictive **water-like flowing** activity field (see [THROBBER.md](THROBBER.md)). | — |
+| **Canvas View** | `slui_canvas_view` | `SLCanvasView` | A general animated drawing surface: your draw callback paints its double-buffered context each frame with the [Draw API](DRAW-API.md). | — |
+
+Both are **animated widgets**: while visible the window's frame loop advances
+them and repaints at their requested rate. The comprehensive developer drawing
+surface they expose — primitives, pixel-level control, buffering, blend modes,
+and a refresh-rate frame clock — is documented in [DRAW-API.md](DRAW-API.md)
+with SLeeLa bindings `SLDrawContext` and `SLFrameClock`.
+
 ## Totals
 
-- **31 widget types** across containers, actions, selection, input, ranges,
-  display, and feedback.
+- **33 widget types** across containers, actions, selection, input, ranges,
+  display, feedback, and motion/drawing.
 - **Keyboard-focusable:** Button, Link Button, Toggle, Check Box, Radio Button,
   Combo Box, Spin Button, Entry, Search Entry, Password Entry, Slider, Scroll
   Bar (12 interactive controls, all operable with Tab / Shift-Tab + Enter /

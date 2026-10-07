@@ -121,6 +121,12 @@ int main(void) {
 
     slui_info_bar(content, "Welcome to the SleelaUI widget collection.", 0);
 
+    /* A width-adjustable, water-like flowing throbber. */
+    SLUIWidget* throb = slui_throbber(content, 400);
+    slui_widget_set_size_request(throb, 0, 24);
+    slui_widget_set_expand(throb, 1, 0);
+    slui_throbber_set_intensity(throb, 0.7);
+
     slui_separator(content, SLUI_ORIENT_HORIZONTAL);
 
     SLUIWidget* disabled = slui_button(content, "Unavailable action");
