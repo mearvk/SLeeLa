@@ -50311,6 +50311,18 @@
       "sha256": "29922b8a68b5010fd98246e4e09f1bcd6bf74994e262778469a34447c029d7be"
     },
     {
+      "path": "telephony-skya/native/sleela_skya_cli.cpp",
+      "sha256": "1b872a8cc41b18ee5862000f41ab376aafdc84e5a685c128071c726f0c56d468"
+    },
+    {
+      "path": "telephony-skya/native/sleela_skya_cli.h",
+      "sha256": "39453b44226d7ccb4c31775e748333f5da1ef64b20672da02603e96d52f919f5"
+    },
+    {
+      "path": "telephony-skya/native/sleela_skya_main.cpp",
+      "sha256": "cd7f79d983141348f8feffc5a476f2cd87bf891a1b4659c48c2c78e6f87f9974"
+    },
+    {
       "path": "telephony-skya/sleela/AudioDeviceManager.sleela",
       "sha256": "5015cf2373a44cfba7ff389f4081214b5eda5b68355fb23a5a6cbf6d35a26e96"
     },
