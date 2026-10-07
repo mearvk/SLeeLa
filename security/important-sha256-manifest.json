@@ -8,15 +8,15 @@
     },
     {
       "path": "SLEELA.syntax",
-      "sha256": "26907b79d3052d69695880ce19b8b372435a3a34368325c85c6ceed375efeaf7"
+      "sha256": "7fc8e70fa3fa20f4037fb88073eace1112920432d2111e65d6245ea68bd5eb33"
     },
     {
       "path": "SST-2.0.model",
-      "sha256": "74af0df4b8b654eed80a8ed05c8ff11286ba96410384a9b43cb6c6aaa368fd8a"
+      "sha256": "6859600b7e47c3874144ca6dc8a3825833e3883cc2da1dfff9243b3883ad7983"
     },
     {
       "path": "SST.model",
-      "sha256": "0d94d70bc6899669cc3057f3c06e550393bd984366de8cfd74f87e9d18aaeac2"
+      "sha256": "5d8a342a0880bb1605695a84b46a1115e7bb4f62eb419840da8a4dea4cd6cd10"
     },
     {
       "path": "antivirus/src/sleelavirin_heuristic.c",
@@ -6955,12 +6955,28 @@
       "sha256": "045b04a07297c40ebecf63bd3ad78ae22bc9f948863b9cadc07ca1edef07570f"
     },
     {
+      "path": "lib/compiler/SLCompilePlan.sleela",
+      "sha256": "168c90ef3153b4f2ee845e7b5bb6e3671b1db7535a54dd6d42e370ca0f8816d9"
+    },
+    {
+      "path": "lib/compiler/SLCompileRequest.sleela",
+      "sha256": "a6789327d5a6d50cd9a227876d974c824a30c3a61d706cfe3e1462067fdbdb35"
+    },
+    {
       "path": "lib/compiler/SLCompiler.sleela",
       "sha256": "b22bc6693224c06fb4c8d1eb02549521ae740d0fa35e7d45671ed312b59a4769"
     },
     {
       "path": "lib/compiler/SLCompilerDiagnostic.sleela",
       "sha256": "00f33fc4715ef958ec2d610dd5abb122b7b0550903140b8a43df365d06299f54"
+    },
+    {
+      "path": "lib/compiler/SLCompilerRegistry.sleela",
+      "sha256": "b9deb728dca2a39fd907ca59beafe710169cad8c47aff4194515edb631de5826"
+    },
+    {
+      "path": "lib/compiler/SLLanguageCompiler.sleela",
+      "sha256": "2a4ce2a480cfd434dd53eff97642e70811cb96ca17cfd09661d928f944133d15"
     },
     {
       "path": "lib/compiler/SLLexer.sleela",
@@ -7055,12 +7071,52 @@
       "sha256": "38e5cad0fffb9036117f3cdf21327d2944126e10502e488c9d60b6e238f7c0ec"
     },
     {
+      "path": "lib/compiler/frontends/c/CLanguageCompiler.sleela",
+      "sha256": "dcc9f641bc52756ce2f764f2969c88a69c5633b841d96238a99e9c6e19d35701"
+    },
+    {
+      "path": "lib/compiler/frontends/cpp/CppLanguageCompiler.sleela",
+      "sha256": "28e24d0c653dd23945e31862d150f20193f996445de1f2244aadc179f06cd838"
+    },
+    {
+      "path": "lib/compiler/frontends/go/GoLanguageCompiler.sleela",
+      "sha256": "672bcd6fc347d570d88a65e359a47015fdec7ff81f12df6f2c677d5a13173945"
+    },
+    {
+      "path": "lib/compiler/frontends/java/JavaLanguageCompiler.sleela",
+      "sha256": "1c037eef65d0f733aa6ed932fa36d98f008c87182b5efd1766c4b4f220329fa9"
+    },
+    {
+      "path": "lib/compiler/frontends/javascript/JavaScriptLanguageCompiler.sleela",
+      "sha256": "1609801a603930b9b0a03a8fced00ea0be814dac4517a81b837fa2ca9edd0579"
+    },
+    {
+      "path": "lib/compiler/frontends/python/PythonLanguageCompiler.sleela",
+      "sha256": "9dc545a2b9083d0557dd72a57602020ff9a4e5f779d5e2c252471c30051eb84e"
+    },
+    {
+      "path": "lib/compiler/frontends/rust/RustLanguageCompiler.sleela",
+      "sha256": "95ab505101348458f9a2df92f1ad5c5fc86ca245a45c1d28dc9aba3e57b8524a"
+    },
+    {
       "path": "lib/compiler/include/sleela_compiler.h",
       "sha256": "139882ad2eee9e3741f89a35969baea136ec239a5ad2fe10f9e1b4d064681410"
     },
     {
       "path": "lib/compiler/include/sleela_compiler.hpp",
       "sha256": "6a21871efa55abc11be3686452d2ac171cccfbd96dda9c20a7d38702d97f84ec"
+    },
+    {
+      "path": "lib/compiler/include/sleela_lang_bridge.h",
+      "sha256": "ebfb0fc0c5c3dbc2f27d4d4283d40a30768e29f189bebbb243cecf1fba39b14e"
+    },
+    {
+      "path": "lib/compiler/include/sleela_langc.h",
+      "sha256": "bf3e59a6eca1f59814f2dfb26f7d332388983bd550aa46f86d553fb5572eeabc"
+    },
+    {
+      "path": "lib/compiler/include/sleela_langc.hpp",
+      "sha256": "21da90ebd75e5f2a2c0b2c3434658b03c952068f12dfe9d91f01028a2eebdd5a"
     },
     {
       "path": "lib/compiler/src/sleela_compiler.c",
@@ -7071,12 +7127,32 @@
       "sha256": "6e82d3a2312329aad6261993e5acf5ea0fbddd495a8418ba03a5cf6297da4635"
     },
     {
+      "path": "lib/compiler/src/sleela_lang_bridge.c",
+      "sha256": "194bbaac1d463fd1f8856605178e08ed09605de985ccd219ca8702c14351ca02"
+    },
+    {
+      "path": "lib/compiler/src/sleela_langc.c",
+      "sha256": "72b18822a674b747d2a62ca5b98773ed26be1dc4824890cd93cb271d27d18184"
+    },
+    {
+      "path": "lib/compiler/src/sleela_langc.cpp",
+      "sha256": "e525bb8facaf97a5c5ba60adc4eb019630a600a4a8eaf6a9ec83bc3c12cc67b4"
+    },
+    {
+      "path": "lib/compiler/tests/langc_selftest.c",
+      "sha256": "1291f16f44b92a439c57a292f7b84eee27b72c1d77be8bbbfe3d54e2358070c8"
+    },
+    {
       "path": "lib/compiler/tutorials/examples/advanced-vm-target.sleela",
       "sha256": "b0fdb4ce9f1393689596aabb5059684cf01fc216745fe93afff15d9fe60bfa7f"
     },
     {
       "path": "lib/compiler/tutorials/examples/hello-vm.sleela",
       "sha256": "e8825b3bd1ff42ca25372288b95eef61ed78877b7885fae37835178542392462"
+    },
+    {
+      "path": "lib/compiler/tutorials/examples/multi-language-registry.sleela",
+      "sha256": "d62f869698023261c1cb6f7149e1d9cf8796c51a2f866723306a71bcaeec0cf4"
     },
     {
       "path": "lib/config/SLPackage.sleela",
@@ -50324,7 +50400,7 @@
     },
     {
       "path": "test-suites/test-library-inventory.sh",
-      "sha256": "62d8417e5b1acb1d726dbafe171ca8a0ad3d00d79a059a601bc5839c090f54bd"
+      "sha256": "f5ff5c98612ddece1a0076c2cfb9cd3d162518187fbfcada42ef667ad1cf29b8"
     },
     {
       "path": "tests/java_api_dependency_suite.py",
@@ -50520,7 +50596,7 @@
     },
     {
       "path": "tools/generate-library-symbols.py",
-      "sha256": "35f452532dff454dc606e9ef95542ce48e2901faee78287f5bbf8be8c12bf7b0"
+      "sha256": "ab564dac6d747d5ce94a61b8e92e430376df043a5447ea52c346f139ac37ccf5"
     },
     {
       "path": "tools/generate-sha256-manifest.py",
