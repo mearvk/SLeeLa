@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 10297
-library-packages: 83
-module-facade-symbols: 55
-total-symbol-records: 10352
+library-source-files: 10301
+library-packages: 84
+module-facade-symbols: 56
+total-symbol-records: 10357
 
 package	symbol	path	kind
 antivirus	SLPackage.sleela	lib/antivirus/SLPackage.sleela	facade
@@ -17,6 +17,11 @@ autocad	SLCadRenderer.sleela	lib/autocad/SLCadRenderer.sleela	source
 autocad	autocad.sleela	lib/autocad/autocad.sleela	source
 bash	SLPackage.sleela	lib/bash/SLPackage.sleela	facade
 churn	SLPackage.sleela	lib/churn/SLPackage.sleela	facade
+citizen	BankAccount.sleela	lib/citizen/BankAccount.sleela	source
+citizen	Citizen.sleela	lib/citizen/Citizen.sleela	source
+citizen	FederalReserveID.sleela	lib/citizen/FederalReserveID.sleela	source
+citizen	Industry.sleela	lib/citizen/Industry.sleela	source
+citizen	SLPackage.sleela	lib/citizen/SLPackage.sleela	facade
 codecs	SLCodecLoader.sleela	lib/codecs/SLCodecLoader.sleela	source
 codecs	SLPackage.sleela	lib/codecs/SLPackage.sleela	facade
 codecs	codecs.sleela	lib/codecs/codecs.sleela	source

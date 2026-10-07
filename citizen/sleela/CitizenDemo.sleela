@@ -1,0 +1,59 @@
+/*
+ * citizen/sleela/CitizenDemo.sleela
+ * SLeeLa Standard Library — runnable orchestration example.
+ * Definition: Walks a single Citizen through a whole, slightly comic life —
+ *   born, schooled, employed across the whole industry, banked, cleared through
+ *   a Federal Reserve District, paid, taxed, treated, and retired — printing a
+ *   describe() line at each milestone. This is the executable counterpart to
+ *   the citizen Master Classes; the authoritative definitions live one level up
+ *   in lib/citizen/*.sleela.
+ *
+ * Family: citizen.
+ */
+#sleela 1.3
+// A life, in one main(). No pressure.
+class CitizenDemo {
+
+  void main() {
+    // 1. A citizen loads into existence. The paperwork springs up around them.
+    Citizen jane = new Citizen();
+    jane.load();
+    jane.beBorn("Jane Q. Public");
+    print("[born]     " + jane.describe());
+
+    // 2. Eighteen trips around the sun. Adulthood arrives, uninvited.
+    int y = 0;
+    while (y < 18) { jane.haveABirthday(); y = y + 1; }
+    print("[grown]    " + jane.describe());
+
+    // 3. A job in the Technology sector at $4,200.00 per cycle (in cents).
+    jane.getAJob(Industry.SECTOR_TECHNOLOGY, 420000);
+    print("[employed] " + jane.industry.describe());
+
+    // 4. The Federal Reserve re-homes her to the San Francisco District.
+    jane.fedId.assignDistrict(FederalReserveID.DISTRICT_SAN_FRANCISCO);
+    print("[fed]      " + jane.fedId.describe());
+
+    // 5. Three paydays, one at a time, each quietly thrilling.
+    jane.getPaid();
+    jane.getPaid();
+    jane.getPaid();
+    print("[paid]     " + jane.bank.describe());
+
+    // 6. The tax authority says hello (22%).
+    int taxed = jane.payTaxes(22);
+    print("[taxed]    paid " + taxed + " cents; " + jane.bank.describe());
+
+    // 7. A small, well-earned indulgence: $59.99.
+    boolean treated = jane.treatYourself(5999);
+    print("[treat]    bought=" + treated + "; mood=" + jane.happiness());
+
+    // 8. Decades pass. She retires with opinions intact.
+    int z = 0;
+    while (z < 49) { jane.haveABirthday(); z = z + 1; }
+    print("[retired]  " + jane.describe());
+
+    // 9. The headline question this whole module exists to answer.
+    print("[able?]    This citizen is able: " + jane.isAble());
+  }
+}
