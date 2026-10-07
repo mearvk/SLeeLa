@@ -25,6 +25,9 @@ extern "C" {
 /* Boltzmann constant [J/K]. */
 #define SL_THERMO_KB 1.380649e-23
 
+/* Molar gas constant [J/(mol*K)]. */
+#define SL_THERMO_R 8.314462618
+
 /* ---- Scalar / lumped-parameter relations -------------------------------- */
 
 /* Sensible heat: Q = m * c * dT. */
@@ -81,6 +84,64 @@ double sl_thermo_divergence(const sl_thermo_field3d *fx,
  * a dt that violates the stability limit dt <= h^2 / (6 alpha). */
 int sl_thermo_heat_step(const sl_thermo_field3d *cur, sl_thermo_field3d *next,
                         double alpha, double dt);
+
+/* ---- Stochastic extension: time you do not control ---------------------- *
+ * The deterministic heat_step above fixes every future exactly. Real systems
+ * are driven by fluctuations outside your control. These routines add genuine
+ * randomness and quantify the resulting distribution of outcomes.
+ */
+
+/* Reproducible PRNG state (splitmix64) so Monte Carlo runs are seedable. */
+typedef struct { unsigned long long s; } sl_thermo_rng;
+
+void sl_thermo_rng_seed(sl_thermo_rng *rng, unsigned long long seed);
+
+/* Uniform double in [0,1). */
+double sl_thermo_rng_uniform(sl_thermo_rng *rng);
+
+/* Standard normal sample (Box-Muller). */
+double sl_thermo_rng_normal(sl_thermo_rng *rng);
+
+/* One step of the stochastic (Langevin) heat equation:
+ *   dT/dt = alpha * laplacian(T) + sigma * xi(t)
+ * where xi is Gaussian white noise. Equivalent to sl_thermo_heat_step plus an
+ * independent N(0, sigma^2 * dt) kick at each interior node. Dirichlet
+ * boundaries stay fixed. Same return codes as sl_thermo_heat_step. */
+int sl_thermo_heat_step_stochastic(const sl_thermo_field3d *cur, sl_thermo_field3d *next,
+                                   double alpha, double dt, double sigma,
+                                   sl_thermo_rng *rng);
+
+/* Summary statistics over an ensemble of simulated futures. */
+typedef struct {
+    double mean;        /* sample mean of the tracked quantity */
+    double variance;    /* unbiased sample variance */
+    double std_dev;     /* sqrt(variance) */
+    double ci95_low;    /* mean - 1.96 * std_dev / sqrt(n) */
+    double ci95_high;   /* mean + 1.96 * std_dev / sqrt(n) */
+    size_t samples;     /* ensemble size n */
+} sl_thermo_distribution;
+
+/* Monte Carlo over futures: run `runs` independent stochastic simulations of
+ * `steps` each, starting from `initial`, and summarize the final temperature
+ * at grid node (i,j,k). This is how randomized futures are "sorted" into a
+ * distribution with a confidence interval. Returns 0 on success. */
+int sl_thermo_monte_carlo(const sl_thermo_field3d *initial,
+                          size_t i, size_t j, size_t k,
+                          double alpha, double dt, double sigma,
+                          size_t steps, size_t runs, unsigned long long seed,
+                          sl_thermo_distribution *out);
+
+/* Arrhenius rate law k = A * exp(-Ea / (R T)): the real logarithmic/engineering
+ * link between temperature and reaction or decay rate.
+ *   A  pre-exponential factor [same units as k]
+ *   Ea activation energy [J/mol]
+ *   T  temperature [K]
+ * Uses the molar gas constant R = 8.314462618 J/(mol K). */
+double sl_thermo_arrhenius_rate(double a_factor, double activation_energy, double temperature);
+
+/* Inverse: given a measured rate and A, recover the required temperature via
+ *   T = -Ea / (R * ln(k / A)).  Returns a negative value if inputs are invalid. */
+double sl_thermo_arrhenius_temperature(double rate, double a_factor, double activation_energy);
 
 #ifdef __cplusplus
 }
