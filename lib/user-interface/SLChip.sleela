@@ -1,0 +1,23 @@
+/*
+ * lib/user-interface/SLChip.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLChip — a SleelaUI chip / tag: a rounded surface pill
+ *   with a 1px hairline and text, used for filters, tags, or compact selections.
+ *   The constructor bottoms out in the `uiChip` built-in (SleelaUI C ABI
+ *   slui_chip()); the text is updated through the inherited setText().
+ *
+ * An SLChip IS an SLWidget.
+ *
+ * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
+ * bridge.
+ */
+#sleela 1.5
+class SLChip extends SLWidget {
+  // Create a chip inside `parent` with a label.
+  void createIn(SLWidget parent, String text) {
+    widget = uiChip(parent.handle(), text);
+  }
+  void createInHandle(int parentHandle, String text) {
+    widget = uiChip(parentHandle, text);
+  }
+}

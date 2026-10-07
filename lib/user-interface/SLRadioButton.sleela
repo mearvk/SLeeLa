@@ -1,0 +1,41 @@
+/*
+ * lib/user-interface/SLRadioButton.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLRadioButton — a SleelaUI labelled radio button: a circle
+ *   with an accent dot when selected. Radio buttons that share a group ordinal
+ *   AND the same parent are mutually exclusive — selecting one clears the others
+ *   in its group. Selecting (click, or Space/Enter while focused) raises an
+ *   activate event. The constructor bottoms out in the `uiRadioButton` built-in
+ *   (SleelaUI C ABI slui_radio_button()); the state is read through isSelected().
+ *
+ * An SLRadioButton IS an SLWidget and is keyboard-focusable.
+ *
+ * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
+ * bridge.
+ */
+#sleela 1.5
+class SLRadioButton extends SLWidget {
+  // Create a radio inside `parent`, in exclusivity `group`, with a label and
+  // initial selected state.
+  void createIn(SLWidget parent, String label, int group, boolean selected) {
+    widget = uiRadioButton(parent.handle(), label, group, selected ? 1 : 0);
+  }
+  void createInHandle(int parentHandle, String label, int group,
+                      boolean selected) {
+    widget = uiRadioButton(parentHandle, label, group, selected ? 1 : 0);
+  }
+
+  boolean isSelected() {
+    if (widget < 0) { return false; }
+    return uiWidgetGetToggle(widget) == 1;
+  }
+  void select() {
+    if (widget >= 0) { uiWidgetSetToggle(widget, 1); }
+  }
+
+  // True if this radio was just selected since the last check (latch cleared).
+  boolean changed() {
+    if (widget < 0) { return false; }
+    return uiWidgetTakeActivated(widget) == 1;
+  }
+}

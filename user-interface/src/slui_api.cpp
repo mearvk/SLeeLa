@@ -202,6 +202,93 @@ SLUIWidget* slui_spacer(SLUIWidget* parent) {
     return attach(parent, std::make_unique<slui::Spacer>());
 }
 
+/* ---- Expanded widget collection ------------------------------------------ */
+SLUIWidget* slui_check_box(SLUIWidget* parent, const char* text, int on) {
+    return attach(parent,
+                  std::make_unique<slui::CheckBox>(text ? text : "", on != 0));
+}
+SLUIWidget* slui_radio_button(SLUIWidget* parent, const char* text, int group,
+                              int on) {
+    return attach(parent, std::make_unique<slui::RadioButton>(text ? text : "",
+                                                              group, on != 0));
+}
+SLUIWidget* slui_combo_box(SLUIWidget* parent) {
+    return attach(parent, std::make_unique<slui::ComboBox>());
+}
+void slui_combo_box_add(SLUIWidget* combo, const char* option) {
+    if (combo && option) {
+        auto* c = dynamic_cast<slui::ComboBox*>(as_widget(combo));
+        if (c) c->add_option(option);
+    }
+}
+SLUIWidget* slui_spin_button(SLUIWidget* parent, double min, double max,
+                             double step, double value) {
+    return attach(parent,
+                  std::make_unique<slui::SpinButton>(min, max, step, value));
+}
+SLUIWidget* slui_progress_bar(SLUIWidget* parent, double fraction) {
+    return attach(parent, std::make_unique<slui::ProgressBar>(fraction));
+}
+SLUIWidget* slui_level_bar(SLUIWidget* parent, double fraction) {
+    return attach(parent, std::make_unique<slui::LevelBar>(fraction));
+}
+SLUIWidget* slui_spinner(SLUIWidget* parent) {
+    return attach(parent, std::make_unique<slui::Spinner>());
+}
+SLUIWidget* slui_scroll_bar(SLUIWidget* parent, SLUIOrientation orient,
+                            double value, double page) {
+    return attach(parent,
+                  std::make_unique<slui::ScrollBar>(orient, value, page));
+}
+SLUIWidget* slui_frame(SLUIWidget* parent, const char* title) {
+    return attach(parent, std::make_unique<slui::Frame>(title ? title : ""));
+}
+SLUIWidget* slui_card(SLUIWidget* parent) {
+    return attach(parent, std::make_unique<slui::Card>());
+}
+SLUIWidget* slui_grid(SLUIWidget* parent, int columns, int spacing) {
+    return attach(parent, std::make_unique<slui::Grid>(columns, spacing));
+}
+SLUIWidget* slui_status_bar(SLUIWidget* parent) {
+    return attach(parent, std::make_unique<slui::StatusBar>());
+}
+SLUIWidget* slui_image(SLUIWidget* parent, const char* glyph, int w, int h) {
+    return attach(parent,
+                  std::make_unique<slui::Image>(glyph ? glyph : "", w, h));
+}
+SLUIWidget* slui_avatar(SLUIWidget* parent, const char* initial, int diameter) {
+    return attach(parent, std::make_unique<slui::Avatar>(initial ? initial : "",
+                                                        diameter));
+}
+SLUIWidget* slui_badge(SLUIWidget* parent, const char* text) {
+    return attach(parent, std::make_unique<slui::Badge>(text ? text : ""));
+}
+SLUIWidget* slui_chip(SLUIWidget* parent, const char* text) {
+    return attach(parent, std::make_unique<slui::Chip>(text ? text : ""));
+}
+SLUIWidget* slui_heading(SLUIWidget* parent, const char* text, int size_pt) {
+    return attach(parent,
+                  std::make_unique<slui::Heading>(text ? text : "", size_pt));
+}
+SLUIWidget* slui_tooltip(SLUIWidget* parent, const char* text) {
+    return attach(parent, std::make_unique<slui::Tooltip>(text ? text : ""));
+}
+SLUIWidget* slui_link_button(SLUIWidget* parent, const char* text) {
+    return attach(parent, std::make_unique<slui::LinkButton>(text ? text : ""));
+}
+SLUIWidget* slui_search_entry(SLUIWidget* parent, const char* placeholder) {
+    return attach(parent,
+                  std::make_unique<slui::SearchEntry>(placeholder ? placeholder : ""));
+}
+SLUIWidget* slui_password_entry(SLUIWidget* parent, const char* placeholder) {
+    return attach(parent, std::make_unique<slui::PasswordEntry>(
+                              placeholder ? placeholder : ""));
+}
+SLUIWidget* slui_info_bar(SLUIWidget* parent, const char* text, int severity) {
+    return attach(parent,
+                  std::make_unique<slui::InfoBar>(text ? text : "", severity));
+}
+
 /* ---- Widget configuration ------------------------------------------------ */
 void slui_widget_set_margin(SLUIWidget* w, int top, int right, int bottom,
                             int left) {
@@ -248,6 +335,9 @@ void slui_widget_set_value(SLUIWidget* w, double value) {
 }
 double slui_widget_get_value(const SLUIWidget* w) {
     return w ? as_widget(w)->value() : 0.0;
+}
+int slui_widget_take_activated(SLUIWidget* w) {
+    return w ? (as_widget(w)->take_activated() ? 1 : 0) : 0;
 }
 void slui_widget_set_suggested(SLUIWidget* w, int suggested) {
     if (w) as_widget(w)->set_suggested(suggested != 0);

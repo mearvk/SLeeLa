@@ -1,0 +1,23 @@
+/*
+ * lib/user-interface/SLImage.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLImage — a SleelaUI image/icon tile: a rounded surface of
+ *   a fixed size with a centred glyph, used as a picture or icon placeholder in
+ *   a layout. The constructor bottoms out in the `uiImage` built-in (SleelaUI C
+ *   ABI slui_image()); the glyph is updated through the inherited setText().
+ *
+ * An SLImage IS an SLWidget but is non-interactive.
+ *
+ * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
+ * bridge.
+ */
+#sleela 1.5
+class SLImage extends SLWidget {
+  // Create an image tile inside `parent` with a centred glyph and a size.
+  void createIn(SLWidget parent, String glyph, int width, int height) {
+    widget = uiImage(parent.handle(), glyph, width, height);
+  }
+  void createInHandle(int parentHandle, String glyph, int width, int height) {
+    widget = uiImage(parentHandle, glyph, width, height);
+  }
+}

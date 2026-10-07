@@ -1,0 +1,26 @@
+/*
+ * lib/user-interface/SLFrame.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLFrame — a SleelaUI titled, bordered group container: a
+ *   1px hairline rectangle with an optional dim title in the top-left, holding a
+ *   vertical stack of children. Use it to visually group related controls. The
+ *   constructor bottoms out in the `uiFrame` built-in (SleelaUI C ABI
+ *   slui_frame()); children are added by constructing control classes against
+ *   this frame's handle, and the title is updated through the inherited
+ *   setText().
+ *
+ * An SLFrame IS an SLWidget container.
+ *
+ * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
+ * bridge.
+ */
+#sleela 1.5
+class SLFrame extends SLWidget {
+  // Create a frame inside `parent` with a title (pass "" for no title).
+  void createIn(SLWidget parent, String title) {
+    widget = uiFrame(parent.handle(), title);
+  }
+  void createInHandle(int parentHandle, String title) {
+    widget = uiFrame(parentHandle, title);
+  }
+}

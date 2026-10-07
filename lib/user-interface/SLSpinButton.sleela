@@ -1,0 +1,42 @@
+/*
+ * lib/user-interface/SLSpinButton.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLSpinButton — a SleelaUI numeric spin button: a value
+ *   between two steppers (minus / plus) that increment by a fixed step, clamped
+ *   to a [min, max] range (arrow keys also step while focused). Use it for
+ *   bounded numeric input. The constructor bottoms out in the `uiSpinButton`
+ *   built-in (SleelaUI C ABI slui_spin_button()); the value is read/written
+ *   through value()/setValue().
+ *
+ * An SLSpinButton IS an SLWidget and is keyboard-focusable.
+ *
+ * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
+ * bridge.
+ */
+#sleela 1.5
+class SLSpinButton extends SLWidget {
+  // Create a spin button inside `parent` spanning [min, max], stepping by
+  // `step`, with an initial value.
+  void createIn(SLWidget parent, double min, double max, double step,
+                double value) {
+    widget = uiSpinButton(parent.handle(), min, max, step, value);
+  }
+  void createInHandle(int parentHandle, double min, double max, double step,
+                      double value) {
+    widget = uiSpinButton(parentHandle, min, max, step, value);
+  }
+
+  double value() {
+    if (widget < 0) { return 0.0; }
+    return uiWidgetGetValue(widget);
+  }
+  void setValue(double value) {
+    if (widget >= 0) { uiWidgetSetValue(widget, value); }
+  }
+
+  // True if the value changed since the last check (latch cleared on read).
+  boolean changed() {
+    if (widget < 0) { return false; }
+    return uiWidgetTakeActivated(widget) == 1;
+  }
+}

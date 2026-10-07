@@ -97,6 +97,59 @@ int main(void) {
     CHECK(slui_widget_get_value(sld) == 7.5, "slider value set");
     CHECK(g_last_value == 7.5, "slider value-changed callback fired");
 
+    /* --- expanded widget collection ------------------------------------ */
+    SLUIWidget* chk = slui_check_box(col, "Accept", 0);
+    CHECK(chk != NULL && slui_widget_get_toggle(chk) == 0, "check box created, off");
+    slui_widget_set_toggle(chk, 1);
+    CHECK(slui_widget_get_toggle(chk) == 1, "check box checked");
+
+    SLUIWidget* r1 = slui_radio_button(col, "A", 1, 1);
+    SLUIWidget* r2 = slui_radio_button(col, "B", 1, 0);
+    CHECK(r1 && r2 && slui_widget_get_toggle(r1) == 1, "radio A selected");
+
+    SLUIWidget* pb = slui_progress_bar(col, 0.5);
+    CHECK(pb && slui_widget_get_value(pb) == 0.5, "progress bar value");
+    SLUIWidget* lb = slui_level_bar(col, 0.3);
+    CHECK(lb && slui_widget_get_value(lb) == 0.3, "level bar value");
+    CHECK(slui_spinner(col) != NULL, "spinner created");
+
+    SLUIWidget* combo = slui_combo_box(col);
+    slui_combo_box_add(combo, "one");
+    slui_combo_box_add(combo, "two");
+    slui_combo_box_add(combo, "three");
+    char cbuf[32];
+    slui_widget_get_text(combo, cbuf, sizeof(cbuf));
+    CHECK(strcmp(cbuf, "one") == 0, "combo first option selected");
+    slui_widget_set_value(combo, 2);
+    slui_widget_get_text(combo, cbuf, sizeof(cbuf));
+    CHECK(strcmp(cbuf, "three") == 0, "combo index set to third");
+
+    SLUIWidget* spin = slui_spin_button(col, 0.0, 10.0, 1.0, 3.0);
+    CHECK(spin && slui_widget_get_value(spin) == 3.0, "spin button value");
+    slui_widget_set_value(spin, 50.0);
+    CHECK(slui_widget_get_value(spin) == 10.0, "spin button clamps to max");
+
+    CHECK(slui_frame(col, "Group") != NULL, "frame created");
+    CHECK(slui_card(col) != NULL, "card created");
+    CHECK(slui_grid(col, 3, 8) != NULL, "grid created");
+    CHECK(slui_status_bar(col) != NULL, "status bar created");
+    CHECK(slui_image(col, "IMG", 48, 48) != NULL, "image created");
+    CHECK(slui_avatar(col, "S", 32) != NULL, "avatar created");
+    CHECK(slui_badge(col, "9") != NULL, "badge created");
+    CHECK(slui_chip(col, "tag") != NULL, "chip created");
+    CHECK(slui_heading(col, "Title", 18) != NULL, "heading created");
+    CHECK(slui_tooltip(col, "hint") != NULL, "tooltip created");
+    CHECK(slui_link_button(col, "link") != NULL, "link button created");
+    CHECK(slui_search_entry(col, "") != NULL, "search entry created");
+    CHECK(slui_password_entry(col, "") != NULL, "password entry created");
+    CHECK(slui_info_bar(col, "note", 0) != NULL, "info bar created");
+    CHECK(slui_scroll_bar(col, SLUI_ORIENT_VERTICAL, 0.0, 0.3) != NULL,
+          "scroll bar created");
+
+    /* The activation latch returns an activation at most once. */
+    slui_widget_set_toggle(chk, 0); /* state change, not an activation */
+    CHECK(slui_widget_take_activated(btn) == 0, "no spurious activation latched");
+
     /* --- render a frame; the rasterizer must produce non-background pixels */
     slui_window_show(win);
     slui_window_request_redraw(win);

@@ -1,0 +1,34 @@
+/*
+ * lib/user-interface/SLSpinner.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLSpinner — a SleelaUI indeterminate activity spinner: an
+ *   accent arc riding a faint ring, used while a task of unknown length runs.
+ *   The host advances the arc by setting a phase in [0,1] each frame (the
+ *   toolkit draws the arc at that position). The constructor bottoms out in the
+ *   `uiSpinner` built-in (SleelaUI C ABI slui_spinner()); the phase is set
+ *   through setPhase().
+ *
+ * An SLSpinner IS an SLWidget but is non-interactive.
+ *
+ * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
+ * bridge.
+ */
+#sleela 1.5
+class SLSpinner extends SLWidget {
+  // Create a spinner inside `parent`.
+  void createIn(SLWidget parent) {
+    widget = uiSpinner(parent.handle());
+  }
+  void createInHandle(int parentHandle) {
+    widget = uiSpinner(parentHandle);
+  }
+
+  // Advance the bright arc; phase wraps over [0,1].
+  void setPhase(double phase) {
+    if (widget >= 0) { uiWidgetSetValue(widget, phase); }
+  }
+  double phase() {
+    if (widget < 0) { return 0.0; }
+    return uiWidgetGetValue(widget);
+  }
+}

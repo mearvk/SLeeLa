@@ -1,0 +1,23 @@
+/*
+ * lib/user-interface/SLAvatar.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLAvatar — a SleelaUI round avatar: an accent disc of a
+ *   fixed diameter showing a centred initial, used to represent a person or
+ *   account. The constructor bottoms out in the `uiAvatar` built-in (SleelaUI C
+ *   ABI slui_avatar()); the initial is updated through the inherited setText().
+ *
+ * An SLAvatar IS an SLWidget but is non-interactive.
+ *
+ * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
+ * bridge.
+ */
+#sleela 1.5
+class SLAvatar extends SLWidget {
+  // Create an avatar inside `parent` with an initial and a diameter (px).
+  void createIn(SLWidget parent, String initial, int diameter) {
+    widget = uiAvatar(parent.handle(), initial, diameter);
+  }
+  void createInHandle(int parentHandle, String initial, int diameter) {
+    widget = uiAvatar(parentHandle, initial, diameter);
+  }
+}

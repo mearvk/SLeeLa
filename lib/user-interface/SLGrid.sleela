@@ -1,0 +1,26 @@
+/*
+ * lib/user-interface/SLGrid.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLGrid — a SleelaUI fixed row/column grid container.
+ *   Children fill cells in row-major order across a fixed number of columns; the
+ *   grid sizes every cell to the largest child and spreads them to fill the
+ *   available width. Use it for form layouts and tiles. The constructor bottoms
+ *   out in the `uiGrid` built-in (SleelaUI C ABI slui_grid()); children are
+ *   added by constructing control classes against this grid's handle.
+ *
+ * An SLGrid IS an SLWidget container.
+ *
+ * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
+ * bridge.
+ */
+#sleela 1.5
+class SLGrid extends SLWidget {
+  // Create a grid inside `parent` with a column count and a spacing (px)
+  // applied between both rows and columns.
+  void createIn(SLWidget parent, int columns, int spacing) {
+    widget = uiGrid(parent.handle(), columns, spacing);
+  }
+  void createInHandle(int parentHandle, int columns, int spacing) {
+    widget = uiGrid(parentHandle, columns, spacing);
+  }
+}

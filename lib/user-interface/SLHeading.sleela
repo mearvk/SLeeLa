@@ -1,0 +1,23 @@
+/*
+ * lib/user-interface/SLHeading.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLHeading — a SleelaUI title label drawn at a larger point
+ *   size than body text, used for section and page headings. The constructor
+ *   bottoms out in the `uiHeading` built-in (SleelaUI C ABI slui_heading());
+ *   the text is updated through the inherited setText().
+ *
+ * An SLHeading IS an SLWidget but is non-interactive.
+ *
+ * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
+ * bridge.
+ */
+#sleela 1.5
+class SLHeading extends SLWidget {
+  // Create a heading inside `parent` with text at a point size (e.g. 16, 20).
+  void createIn(SLWidget parent, String text, int sizePt) {
+    widget = uiHeading(parent.handle(), text, sizePt);
+  }
+  void createInHandle(int parentHandle, String text, int sizePt) {
+    widget = uiHeading(parentHandle, text, sizePt);
+  }
+}

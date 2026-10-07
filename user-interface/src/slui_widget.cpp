@@ -7,6 +7,8 @@
 #include "slui_backend.hpp"
 
 #include <algorithm>
+#include <cmath>
+#include <cstdio>
 
 namespace slui {
 
@@ -604,6 +606,861 @@ void Separator::paint(PaintContext& ctx) {
         ctx.canvas->hline(c.x, c.right() - 1, c.y + c.h / 2, t.border);
     else
         ctx.canvas->vline(c.x + c.w / 2, c.y, c.bottom() - 1, t.border);
+}
+
+/* ======================================================================== */
+/* Shared helpers for the expanded collection                               */
+/* ======================================================================== */
+namespace {
+/* Baseline that vertically centres one text line inside a rect. */
+int centered_baseline(const PaintContext& ctx, const Rect& r) {
+    double asc = ctx.backend->font_ascent();
+    double lh = ctx.backend->font_line_height();
+    return r.y + static_cast<int>((r.h - lh) / 2.0 + asc + 0.5);
+}
+} // namespace
+
+/* ======================================================================== */
+/* CheckBox                                                                 */
+/* ======================================================================== */
+SLUISize CheckBox::measure(const PaintContext& ctx) {
+    const Theme& t = *ctx.theme;
+    double tw = measure_text(ctx.backend, text_);
+    int boxd = t.control_height - t.unit * 2;
+    int w = boxd + t.unit * 2 + static_cast<int>(tw + 0.5) + margin_.left +
+            margin_.right;
+    int h = t.control_height + margin_.top + margin_.bottom;
+    return SLUISize{std::max(w, min_w_), std::max(h, min_h_)};
+}
+
+void CheckBox::paint(PaintContext& ctx) {
+    const Theme& t = *ctx.theme;
+    Rect c = content();
+    int boxd = t.control_height - t.unit * 2;
+    Rect box{c.x, c.y + (c.h - boxd) / 2, boxd, boxd};
+    Color fill = on_ ? t.accent : t.surface;
+    if (!sensitive_) fill = t.surface;
+    ctx.canvas->fill_round_rect(box, 5.0, fill);
+    if (!on_) ctx.canvas->stroke_round_rect(box, 5.0, 1.0, t.border);
+    if (on_) {
+        /* A tick: two strokes forming a check, drawn as short thick lines. */
+        Color m = t.accent_fg;
+        int x0 = box.x + boxd / 4;
+        int y0 = box.y + boxd / 2;
+        int x1 = box.x + boxd / 2 - 1;
+        int y1 = box.bottom() - boxd / 4;
+        int x2 = box.right() - boxd / 4;
+        int y2 = box.y + boxd / 4;
+        for (int o = -1; o <= 1; ++o) {
+            ctx.canvas->hline(x0, x1, y0 + o, m);
+            ctx.canvas->vline(x1 + o, y0, y1, m);
+            ctx.canvas->hline(x1, x2, y1 + o, m);
+            ctx.canvas->vline(x2 + o, y2, y1, m);
+        }
+    }
+    if (focused_)
+        ctx.canvas->stroke_round_rect(box.inset(-2), 7.0, 1.0, t.accent);
+
+    int baseline = centered_baseline(ctx, c);
+    draw_text(ctx, text_, box.right() + t.unit * 2, baseline,
+              sensitive_ ? t.fg : t.fg_dim);
+}
+
+bool CheckBox::on_event(const SLUIEvent& ev) {
+    if (!sensitive_) return false;
+    switch (ev.type) {
+    case SLUI_EVENT_POINTER_MOVE:
+        hovered_ = true;
+        return true;
+    case SLUI_EVENT_POINTER_DOWN:
+        set_focused(true);
+        return true;
+    case SLUI_EVENT_POINTER_UP:
+        if (bounds_.contains(ev.x, ev.y)) {
+            on_ = !on_;
+            invalidate();
+            emit_activate();
+            emit_value_changed(on_ ? 1.0 : 0.0);
+        }
+        return true;
+    case SLUI_EVENT_KEY_DOWN:
+        if (focused_ && (ev.keysym == SLUI_KEY_SPACE || ev.keysym == SLUI_KEY_ENTER)) {
+            on_ = !on_;
+            invalidate();
+            emit_activate();
+            emit_value_changed(on_ ? 1.0 : 0.0);
+            return true;
+        }
+        return false;
+    default:
+        return false;
+    }
+}
+
+/* ======================================================================== */
+/* RadioButton                                                              */
+/* ======================================================================== */
+SLUISize RadioButton::measure(const PaintContext& ctx) {
+    const Theme& t = *ctx.theme;
+    double tw = measure_text(ctx.backend, text_);
+    int d = t.control_height - t.unit * 2;
+    int w = d + t.unit * 2 + static_cast<int>(tw + 0.5) + margin_.left +
+            margin_.right;
+    int h = t.control_height + margin_.top + margin_.bottom;
+    return SLUISize{std::max(w, min_w_), std::max(h, min_h_)};
+}
+
+void RadioButton::select_in_group() {
+    if (!parent_) return;
+    for (auto& sib : parent_->children()) {
+        if (sib.get() == this) continue;
+        if (sib->kind() == WidgetKind::RadioButton) {
+            RadioButton* r = static_cast<RadioButton*>(sib.get());
+            if (r->group() == group_ && r->toggle()) {
+                r->set_toggle(false);
+            }
+        }
+    }
+    on_ = true;
+}
+
+void RadioButton::paint(PaintContext& ctx) {
+    const Theme& t = *ctx.theme;
+    Rect c = content();
+    int d = t.control_height - t.unit * 2;
+    Rect disc{c.x, c.y + (c.h - d) / 2, d, d};
+    ctx.canvas->fill_round_rect(disc, d / 2.0, on_ ? t.accent : t.surface);
+    if (!on_) ctx.canvas->stroke_round_rect(disc, d / 2.0, 1.0, t.border);
+    if (on_) {
+        int id = d / 3;
+        Rect dot{disc.x + (d - id) / 2, disc.y + (d - id) / 2, id, id};
+        ctx.canvas->fill_round_rect(dot, id / 2.0, t.accent_fg);
+    }
+    if (focused_)
+        ctx.canvas->stroke_round_rect(disc.inset(-2), d / 2.0 + 2, 1.0, t.accent);
+
+    int baseline = centered_baseline(ctx, c);
+    draw_text(ctx, text_, disc.right() + t.unit * 2, baseline,
+              sensitive_ ? t.fg : t.fg_dim);
+}
+
+bool RadioButton::on_event(const SLUIEvent& ev) {
+    if (!sensitive_) return false;
+    switch (ev.type) {
+    case SLUI_EVENT_POINTER_MOVE:
+        hovered_ = true;
+        return true;
+    case SLUI_EVENT_POINTER_DOWN:
+        set_focused(true);
+        return true;
+    case SLUI_EVENT_POINTER_UP:
+        if (bounds_.contains(ev.x, ev.y) && !on_) {
+            select_in_group();
+            invalidate();
+            emit_activate();
+            emit_value_changed(1.0);
+        }
+        return true;
+    case SLUI_EVENT_KEY_DOWN:
+        if (focused_ && (ev.keysym == SLUI_KEY_SPACE || ev.keysym == SLUI_KEY_ENTER) &&
+            !on_) {
+            select_in_group();
+            invalidate();
+            emit_activate();
+            emit_value_changed(1.0);
+            return true;
+        }
+        return false;
+    default:
+        return false;
+    }
+}
+
+/* ======================================================================== */
+/* ProgressBar                                                              */
+/* ======================================================================== */
+void ProgressBar::set_value(double v) {
+    value_ = std::clamp(v, 0.0, 1.0);
+    invalidate();
+}
+SLUISize ProgressBar::measure(const PaintContext& ctx) {
+    const Theme& t = *ctx.theme;
+    int w = std::max(min_w_, 160) + margin_.left + margin_.right;
+    int h = std::max(t.unit * 2, 8) + margin_.top + margin_.bottom;
+    return SLUISize{w, std::max(h, min_h_)};
+}
+void ProgressBar::paint(PaintContext& ctx) {
+    const Theme& t = *ctx.theme;
+    Rect c = content();
+    int h = std::min(c.h, t.unit * 2);
+    Rect track{c.x, c.y + (c.h - h) / 2, c.w, h};
+    ctx.canvas->fill_round_rect(track, h / 2.0, t.surface_hi);
+    int fw = static_cast<int>(c.w * value_ + 0.5);
+    if (fw > 0) {
+        Rect fill{track.x, track.y, fw, h};
+        ctx.canvas->fill_round_rect(fill, h / 2.0, t.accent);
+    }
+}
+
+/* ======================================================================== */
+/* LevelBar                                                                 */
+/* ======================================================================== */
+void LevelBar::set_value(double v) {
+    value_ = std::clamp(v, 0.0, 1.0);
+    invalidate();
+}
+SLUISize LevelBar::measure(const PaintContext& ctx) {
+    const Theme& t = *ctx.theme;
+    int w = std::max(min_w_, 160) + margin_.left + margin_.right;
+    int h = std::max(t.unit * 3, 10) + margin_.top + margin_.bottom;
+    return SLUISize{w, std::max(h, min_h_)};
+}
+void LevelBar::paint(PaintContext& ctx) {
+    const Theme& t = *ctx.theme;
+    Rect c = content();
+    int segments = 10;
+    int gap = t.unit;
+    int segw = (c.w - gap * (segments - 1)) / segments;
+    if (segw < 1) segw = 1;
+    int lit = static_cast<int>(value_ * segments + 0.5);
+    int h = std::min(c.h, t.unit * 3);
+    int y = c.y + (c.h - h) / 2;
+    for (int i = 0; i < segments; ++i) {
+        Rect seg{c.x + i * (segw + gap), y, segw, h};
+        ctx.canvas->fill_round_rect(seg, 2.0, i < lit ? t.accent : t.surface_hi);
+    }
+}
+
+/* ======================================================================== */
+/* Spinner                                                                  */
+/* ======================================================================== */
+SLUISize Spinner::measure(const PaintContext& ctx) {
+    const Theme& t = *ctx.theme;
+    int d = t.control_height;
+    return SLUISize{d + margin_.left + margin_.right,
+                    d + margin_.top + margin_.bottom};
+}
+void Spinner::paint(PaintContext& ctx) {
+    const Theme& t = *ctx.theme;
+    Rect c = content();
+    int d = std::min(c.w, c.h);
+    Rect ring{c.x + (c.w - d) / 2, c.y + (c.h - d) / 2, d, d};
+    /* Faint full ring, then a bright accent arc whose head follows phase_. */
+    ctx.canvas->stroke_round_rect(ring, d / 2.0, 2.0, t.surface_hi);
+    /* Approximate the arc with a short bright chord near the phase angle by
+     * tinting a small inset wedge rect; keeps the rasterizer simple while
+     * reading as "activity". */
+    double cx = ring.x + d / 2.0;
+    double cy = ring.y + d / 2.0;
+    double r = d / 2.0;
+    for (int k = 0; k < 90; ++k) {
+        double ang = (phase_ * 360.0 + k) * 3.14159265 / 180.0;
+        int px = static_cast<int>(cx + std::cos(ang) * r + 0.5);
+        int py = static_cast<int>(cy + std::sin(ang) * r + 0.5);
+        ctx.canvas->fill_rect(Rect{px - 1, py - 1, 2, 2}, t.accent);
+    }
+}
+
+/* ======================================================================== */
+/* Frame                                                                    */
+/* ======================================================================== */
+SLUISize Frame::measure(const PaintContext& ctx) {
+    const Theme& t = *ctx.theme;
+    int pad = t.unit * 3;
+    int titleH = title_.empty() ? 0 : static_cast<int>(ctx.backend->font_line_height());
+    int inner_w = 0, inner_h = 0;
+    for (auto& ch : children_) {
+        if (!ch->visible()) continue;
+        SLUISize cs = ch->measure(ctx);
+        inner_w = std::max(inner_w, cs.w);
+        inner_h += cs.h;
+    }
+    int w = inner_w + pad * 2 + margin_.left + margin_.right;
+    int h = inner_h + pad * 2 + titleH + margin_.top + margin_.bottom;
+    return SLUISize{std::max(w, min_w_), std::max(h, min_h_)};
+}
+void Frame::arrange(const PaintContext& ctx, const Rect& area) {
+    bounds_ = area;
+    const Theme& t = *ctx.theme;
+    int pad = t.unit * 3;
+    int titleH = title_.empty() ? 0 : static_cast<int>(ctx.backend->font_line_height());
+    Rect box = content().inset(pad + titleH, pad, pad, pad);
+    int y = box.y;
+    for (auto& ch : children_) {
+        if (!ch->visible()) continue;
+        SLUISize cs = ch->measure(ctx);
+        ch->arrange(ctx, Rect{box.x, y, box.w, cs.h});
+        y += cs.h;
+    }
+}
+void Frame::paint(PaintContext& ctx) {
+    const Theme& t = *ctx.theme;
+    Rect c = content();
+    ctx.canvas->stroke_round_rect(c, t.radius, 1.0, t.border);
+    if (!title_.empty()) {
+        int baseline = c.y + static_cast<int>(ctx.backend->font_ascent()) + t.unit;
+        draw_text(ctx, title_, c.x + t.unit * 3, baseline, t.fg_dim);
+    }
+    paint_children(ctx);
+}
+
+/* ======================================================================== */
+/* Card                                                                     */
+/* ======================================================================== */
+SLUISize Card::measure(const PaintContext& ctx) {
+    const Theme& t = *ctx.theme;
+    int pad = t.unit * 4;
+    int inner_w = 0, inner_h = 0, n = 0;
+    for (auto& ch : children_) {
+        if (!ch->visible()) continue;
+        SLUISize cs = ch->measure(ctx);
+        inner_w = std::max(inner_w, cs.w);
+        inner_h += cs.h;
+        ++n;
+    }
+    if (n > 1) inner_h += t.unit * 2 * (n - 1);
+    return SLUISize{std::max(inner_w + pad * 2 + margin_.left + margin_.right, min_w_),
+                    std::max(inner_h + pad * 2 + margin_.top + margin_.bottom, min_h_)};
+}
+void Card::arrange(const PaintContext& ctx, const Rect& area) {
+    bounds_ = area;
+    const Theme& t = *ctx.theme;
+    int pad = t.unit * 4;
+    Rect box = content().inset(pad);
+    int y = box.y;
+    for (auto& ch : children_) {
+        if (!ch->visible()) continue;
+        SLUISize cs = ch->measure(ctx);
+        ch->arrange(ctx, Rect{box.x, y, box.w, cs.h});
+        y += cs.h + t.unit * 2;
+    }
+}
+void Card::paint(PaintContext& ctx) {
+    const Theme& t = *ctx.theme;
+    Rect c = content();
+    ctx.canvas->fill_round_rect(c, t.radius, t.surface);
+    ctx.canvas->stroke_round_rect(c, t.radius, 1.0, t.border);
+    paint_children(ctx);
+}
+
+/* ======================================================================== */
+/* Grid                                                                     */
+/* ======================================================================== */
+SLUISize Grid::measure(const PaintContext& ctx) {
+    int cellw = 0, cellh = 0, n = 0;
+    for (auto& ch : children_) {
+        if (!ch->visible()) continue;
+        SLUISize cs = ch->measure(ctx);
+        cellw = std::max(cellw, cs.w);
+        cellh = std::max(cellh, cs.h);
+        ++n;
+    }
+    int rows = (n + columns_ - 1) / columns_;
+    if (rows < 1) rows = 1;
+    int w = cellw * columns_ + spacing_ * (columns_ - 1) + margin_.left +
+            margin_.right;
+    int h = cellh * rows + spacing_ * (rows - 1) + margin_.top + margin_.bottom;
+    return SLUISize{std::max(w, min_w_), std::max(h, min_h_)};
+}
+void Grid::arrange(const PaintContext& ctx, const Rect& area) {
+    bounds_ = area;
+    Rect box = content();
+    int n = 0, cellw = 0, cellh = 0;
+    for (auto& ch : children_) {
+        if (!ch->visible()) continue;
+        SLUISize cs = ch->measure(ctx);
+        cellw = std::max(cellw, cs.w);
+        cellh = std::max(cellh, cs.h);
+        ++n;
+    }
+    /* Expand cells to fill the available width evenly. */
+    int availw = (box.w - spacing_ * (columns_ - 1)) / columns_;
+    if (availw > cellw) cellw = availw;
+    int i = 0;
+    for (auto& ch : children_) {
+        if (!ch->visible()) continue;
+        int col = i % columns_;
+        int row = i / columns_;
+        int x = box.x + col * (cellw + spacing_);
+        int y = box.y + row * (cellh + spacing_);
+        ch->arrange(ctx, Rect{x, y, cellw, cellh});
+        ++i;
+    }
+}
+void Grid::paint(PaintContext& ctx) { paint_children(ctx); }
+
+/* ======================================================================== */
+/* Image (themed placeholder tile)                                          */
+/* ======================================================================== */
+SLUISize Image::measure(const PaintContext&) {
+    return SLUISize{w_ + margin_.left + margin_.right,
+                    h_ + margin_.top + margin_.bottom};
+}
+void Image::paint(PaintContext& ctx) {
+    const Theme& t = *ctx.theme;
+    Rect c = content();
+    Rect tile{c.x, c.y, w_, h_};
+    ctx.canvas->fill_round_rect(tile, t.radius, t.surface_hi);
+    ctx.canvas->stroke_round_rect(tile, t.radius, 1.0, t.border);
+    if (!glyph_.empty()) {
+        double tw = measure_text(ctx.backend, glyph_);
+        int baseline = centered_baseline(ctx, tile);
+        draw_text(ctx, glyph_, tile.x + static_cast<int>((w_ - tw) / 2.0 + 0.5),
+                  baseline, t.fg_dim);
+    }
+}
+
+/* ======================================================================== */
+/* Avatar                                                                   */
+/* ======================================================================== */
+SLUISize Avatar::measure(const PaintContext&) {
+    return SLUISize{diameter_ + margin_.left + margin_.right,
+                    diameter_ + margin_.top + margin_.bottom};
+}
+void Avatar::paint(PaintContext& ctx) {
+    const Theme& t = *ctx.theme;
+    Rect c = content();
+    Rect disc{c.x, c.y, diameter_, diameter_};
+    ctx.canvas->fill_round_rect(disc, diameter_ / 2.0, t.accent);
+    if (!initial_.empty()) {
+        double tw = measure_text(ctx.backend, initial_);
+        int baseline = centered_baseline(ctx, disc);
+        draw_text(ctx, initial_,
+                  disc.x + static_cast<int>((diameter_ - tw) / 2.0 + 0.5),
+                  baseline, t.accent_fg);
+    }
+}
+
+/* ======================================================================== */
+/* Badge                                                                    */
+/* ======================================================================== */
+SLUISize Badge::measure(const PaintContext& ctx) {
+    const Theme& t = *ctx.theme;
+    double tw = measure_text(ctx.backend, text_);
+    int h = static_cast<int>(ctx.backend->font_line_height()) + t.unit;
+    int w = std::max(static_cast<int>(tw + 0.5) + t.unit * 2, h);
+    return SLUISize{w + margin_.left + margin_.right,
+                    h + margin_.top + margin_.bottom};
+}
+void Badge::paint(PaintContext& ctx) {
+    const Theme& t = *ctx.theme;
+    Rect c = content();
+    int h = static_cast<int>(ctx.backend->font_line_height()) + t.unit;
+    double tw = measure_text(ctx.backend, text_);
+    int w = std::max(static_cast<int>(tw + 0.5) + t.unit * 2, h);
+    Rect pill{c.x, c.y + (c.h - h) / 2, w, h};
+    ctx.canvas->fill_round_rect(pill, h / 2.0, t.accent);
+    int baseline = centered_baseline(ctx, pill);
+    draw_text(ctx, text_, pill.x + static_cast<int>((w - tw) / 2.0 + 0.5),
+              baseline, t.accent_fg);
+}
+
+/* ======================================================================== */
+/* Chip                                                                     */
+/* ======================================================================== */
+SLUISize Chip::measure(const PaintContext& ctx) {
+    const Theme& t = *ctx.theme;
+    double tw = measure_text(ctx.backend, text_);
+    int h = static_cast<int>(ctx.backend->font_line_height()) + t.unit * 2;
+    int w = static_cast<int>(tw + 0.5) + t.unit * 4;
+    return SLUISize{w + margin_.left + margin_.right,
+                    h + margin_.top + margin_.bottom};
+}
+void Chip::paint(PaintContext& ctx) {
+    const Theme& t = *ctx.theme;
+    Rect c = content();
+    int h = static_cast<int>(ctx.backend->font_line_height()) + t.unit * 2;
+    Rect pill{c.x, c.y + (c.h - h) / 2, c.w, h};
+    ctx.canvas->fill_round_rect(pill, h / 2.0, t.surface);
+    ctx.canvas->stroke_round_rect(pill, h / 2.0, 1.0, t.border);
+    int baseline = centered_baseline(ctx, pill);
+    draw_text(ctx, text_, pill.x + t.unit * 2, baseline, t.fg);
+}
+
+/* ======================================================================== */
+/* LinkButton                                                               */
+/* ======================================================================== */
+SLUISize LinkButton::measure(const PaintContext& ctx) {
+    double tw = measure_text(ctx.backend, text_);
+    double h = ctx.backend->font_line_height();
+    return SLUISize{static_cast<int>(tw + 0.5) + margin_.left + margin_.right,
+                    static_cast<int>(h + 0.5) + margin_.top + margin_.bottom};
+}
+void LinkButton::paint(PaintContext& ctx) {
+    const Theme& t = *ctx.theme;
+    Rect c = content();
+    int baseline = centered_baseline(ctx, c);
+    Color col = sensitive_ ? t.accent : t.fg_dim;
+    double tw = measure_text(ctx.backend, text_);
+    draw_text(ctx, text_, c.x, baseline, col);
+    /* Underline on hover/focus. */
+    if (hovered_ || focused_)
+        ctx.canvas->hline(c.x, c.x + static_cast<int>(tw), baseline + 2, col);
+}
+bool LinkButton::on_event(const SLUIEvent& ev) {
+    if (!sensitive_) return false;
+    switch (ev.type) {
+    case SLUI_EVENT_POINTER_MOVE:
+        hovered_ = true;
+        invalidate();
+        return true;
+    case SLUI_EVENT_POINTER_DOWN:
+        set_focused(true);
+        return true;
+    case SLUI_EVENT_POINTER_UP:
+        if (bounds_.contains(ev.x, ev.y)) emit_activate();
+        return true;
+    case SLUI_EVENT_KEY_DOWN:
+        if (focused_ && (ev.keysym == SLUI_KEY_ENTER || ev.keysym == SLUI_KEY_SPACE)) {
+            emit_activate();
+            return true;
+        }
+        return false;
+    default:
+        return false;
+    }
+}
+
+/* ======================================================================== */
+/* SearchEntry / PasswordEntry                                              */
+/* ======================================================================== */
+SLUISize SearchEntry::measure(const PaintContext& ctx) {
+    SLUISize s = Entry::measure(ctx);
+    s.w += ctx.theme->control_height; /* room for the leading glyph */
+    return s;
+}
+void SearchEntry::paint(PaintContext& ctx) {
+    const Theme& t = *ctx.theme;
+    Rect c = content();
+    /* Draw the entry surface + border like the base, then a magnifier glyph. */
+    ctx.canvas->fill_round_rect(c, t.radius, t.surface);
+    ctx.canvas->stroke_round_rect(c, t.radius, 1.0, focused_ ? t.accent : t.border);
+    int gy = c.y + c.h / 2;
+    int gx = c.x + t.unit * 3;
+    int r = t.unit;
+    /* a tiny circle + handle approximated with rects */
+    ctx.canvas->stroke_round_rect(Rect{gx, gy - r, r * 2, r * 2}, r, 1.0, t.fg_dim);
+    ctx.canvas->hline(gx + r * 2, gx + r * 2 + r, gy + r, t.fg_dim);
+    int baseline = centered_baseline(ctx, c);
+    int tx = gx + r * 3 + t.unit;
+    std::string shown = text();
+    if (shown.empty())
+        draw_text(ctx, "Search", tx, baseline, t.fg_dim);
+    else
+        draw_text(ctx, shown, tx, baseline, t.fg);
+}
+void PasswordEntry::paint(PaintContext& ctx) {
+    const Theme& t = *ctx.theme;
+    Rect c = content();
+    ctx.canvas->fill_round_rect(c, t.radius, t.surface);
+    ctx.canvas->stroke_round_rect(c, t.radius, 1.0, focused_ ? t.accent : t.border);
+    int pad = t.unit * 3;
+    int baseline = centered_baseline(ctx, c);
+    std::string shown = text();
+    if (shown.empty()) {
+        draw_text(ctx, "Password", c.x + pad, baseline, t.fg_dim);
+    } else {
+        /* Count scalars and draw that many bullet dots. */
+        std::string dots;
+        for (size_t i = 0; i < shown.size(); ++i)
+            if ((static_cast<unsigned char>(shown[i]) & 0xC0) != 0x80)
+                dots += "\xe2\x80\xa2"; /* U+2022 bullet */
+        draw_text(ctx, dots, c.x + pad, baseline, t.fg);
+    }
+}
+
+/* ======================================================================== */
+/* Heading                                                                  */
+/* ======================================================================== */
+SLUISize Heading::measure(const PaintContext& ctx) {
+    const Theme& t = *ctx.theme;
+    ctx.backend->set_font(t.font_family, size_);
+    double tw = measure_text(ctx.backend, text_);
+    double h = ctx.backend->font_line_height();
+    ctx.backend->set_font(t.font_family, t.font_size); /* restore */
+    return SLUISize{static_cast<int>(tw + 0.5) + margin_.left + margin_.right,
+                    static_cast<int>(h + 0.5) + margin_.top + margin_.bottom};
+}
+void Heading::paint(PaintContext& ctx) {
+    const Theme& t = *ctx.theme;
+    Rect c = content();
+    ctx.backend->set_font(t.font_family, size_);
+    int baseline = centered_baseline(ctx, c);
+    draw_text(ctx, text_, c.x, baseline, t.fg);
+    ctx.backend->set_font(t.font_family, t.font_size); /* restore base font */
+}
+
+/* ======================================================================== */
+/* ScrollBar                                                                */
+/* ======================================================================== */
+void ScrollBar::set_value(double v) {
+    value_ = std::clamp(v, 0.0, 1.0);
+    invalidate();
+    emit_value_changed(value_);
+}
+SLUISize ScrollBar::measure(const PaintContext& ctx) {
+    const Theme& t = *ctx.theme;
+    int thick = t.unit * 3;
+    if (orient_ == SLUI_ORIENT_VERTICAL)
+        return SLUISize{thick + margin_.left + margin_.right,
+                        std::max(min_h_, 80) + margin_.top + margin_.bottom};
+    return SLUISize{std::max(min_w_, 80) + margin_.left + margin_.right,
+                    thick + margin_.top + margin_.bottom};
+}
+void ScrollBar::paint(PaintContext& ctx) {
+    const Theme& t = *ctx.theme;
+    Rect c = content();
+    ctx.canvas->fill_round_rect(c, std::min(c.w, c.h) / 2.0, t.surface);
+    double page = std::clamp(page_, 0.05, 1.0);
+    if (orient_ == SLUI_ORIENT_VERTICAL) {
+        int th = static_cast<int>(c.h * page);
+        int ty = c.y + static_cast<int>((c.h - th) * value_);
+        Rect thumb{c.x, ty, c.w, th};
+        ctx.canvas->fill_round_rect(thumb, c.w / 2.0, focused_ ? t.accent : t.border);
+    } else {
+        int tw = static_cast<int>(c.w * page);
+        int tx = c.x + static_cast<int>((c.w - tw) * value_);
+        Rect thumb{tx, c.y, tw, c.h};
+        ctx.canvas->fill_round_rect(thumb, c.h / 2.0, focused_ ? t.accent : t.border);
+    }
+}
+bool ScrollBar::on_event(const SLUIEvent& ev) {
+    auto val_at = [&](int px, int py) {
+        Rect c = content();
+        if (orient_ == SLUI_ORIENT_VERTICAL)
+            return c.h > 0 ? std::clamp((py - c.y) / static_cast<double>(c.h), 0.0, 1.0) : 0.0;
+        return c.w > 0 ? std::clamp((px - c.x) / static_cast<double>(c.w), 0.0, 1.0) : 0.0;
+    };
+    switch (ev.type) {
+    case SLUI_EVENT_POINTER_DOWN:
+        dragging_ = true;
+        set_focused(true);
+        set_value(val_at(ev.x, ev.y));
+        return true;
+    case SLUI_EVENT_POINTER_MOVE:
+        if (dragging_) set_value(val_at(ev.x, ev.y));
+        return true;
+    case SLUI_EVENT_POINTER_UP:
+        dragging_ = false;
+        return true;
+    default:
+        return false;
+    }
+}
+
+/* ======================================================================== */
+/* StatusBar                                                                */
+/* ======================================================================== */
+SLUISize StatusBar::measure(const PaintContext& ctx) {
+    const Theme& t = *ctx.theme;
+    int h = static_cast<int>(ctx.backend->font_line_height()) + t.unit * 2;
+    int w = 0;
+    for (auto& ch : children_) {
+        if (!ch->visible()) continue;
+        SLUISize cs = ch->measure(ctx);
+        w += cs.w + t.unit * 2;
+    }
+    return SLUISize{std::max(w, min_w_), std::max(h, min_h_)};
+}
+void StatusBar::arrange(const PaintContext& ctx, const Rect& area) {
+    bounds_ = area;
+    const Theme& t = *ctx.theme;
+    Rect box = content().inset(0, t.unit * 2, 0, t.unit * 2);
+    int x = box.x;
+    for (auto& ch : children_) {
+        if (!ch->visible()) continue;
+        SLUISize cs = ch->measure(ctx);
+        ch->arrange(ctx, Rect{x, box.y, cs.w, box.h});
+        x += cs.w + t.unit * 2;
+    }
+}
+void StatusBar::paint(PaintContext& ctx) {
+    const Theme& t = *ctx.theme;
+    Rect c = content();
+    ctx.canvas->fill_rect(c, t.chrome);
+    ctx.canvas->hline(c.x, c.right() - 1, c.y, t.border);
+    paint_children(ctx);
+}
+
+/* ======================================================================== */
+/* InfoBar                                                                  */
+/* ======================================================================== */
+SLUISize InfoBar::measure(const PaintContext& ctx) {
+    const Theme& t = *ctx.theme;
+    double tw = measure_text(ctx.backend, text_);
+    int h = static_cast<int>(ctx.backend->font_line_height()) + t.unit * 3;
+    return SLUISize{std::max(static_cast<int>(tw + 0.5) + t.unit * 6, min_w_) +
+                        margin_.left + margin_.right,
+                    std::max(h, min_h_) + margin_.top + margin_.bottom};
+}
+void InfoBar::paint(PaintContext& ctx) {
+    const Theme& t = *ctx.theme;
+    Rect c = content();
+    Color base = (severity_ == WARNING)
+                     ? Color{0xE0, 0xA5, 0x3A, 0xFF}
+                     : (severity_ == ERROR) ? t.danger : t.accent;
+    ctx.canvas->fill_round_rect(c, t.radius, base.with_alpha(0x2A));
+    ctx.canvas->stroke_round_rect(c, t.radius, 1.0, base.with_alpha(0x80));
+    /* severity accent bar on the left */
+    ctx.canvas->fill_round_rect(Rect{c.x, c.y, t.unit, c.h}, 1.0, base);
+    int baseline = centered_baseline(ctx, c);
+    draw_text(ctx, text_, c.x + t.unit * 3, baseline, t.fg);
+}
+
+/* ======================================================================== */
+/* Tooltip                                                                  */
+/* ======================================================================== */
+SLUISize Tooltip::measure(const PaintContext& ctx) {
+    const Theme& t = *ctx.theme;
+    double tw = measure_text(ctx.backend, text_);
+    int h = static_cast<int>(ctx.backend->font_line_height()) + t.unit * 2;
+    return SLUISize{static_cast<int>(tw + 0.5) + t.unit * 4 + margin_.left +
+                        margin_.right,
+                    h + margin_.top + margin_.bottom};
+}
+void Tooltip::paint(PaintContext& ctx) {
+    const Theme& t = *ctx.theme;
+    Rect c = content();
+    ctx.canvas->fill_round_rect(c, 6.0, t.surface_hi);
+    ctx.canvas->stroke_round_rect(c, 6.0, 1.0, t.border);
+    int baseline = centered_baseline(ctx, c);
+    draw_text(ctx, text_, c.x + t.unit * 2, baseline, t.fg);
+}
+
+/* ======================================================================== */
+/* ComboBox                                                                 */
+/* ======================================================================== */
+void ComboBox::set_value(double v) {
+    if (options_.empty()) return;
+    long i = static_cast<long>(v + 0.5);
+    if (i < 0) i = 0;
+    if (i >= static_cast<long>(options_.size())) i = options_.size() - 1;
+    index_ = static_cast<size_t>(i);
+    invalidate();
+}
+SLUISize ComboBox::measure(const PaintContext& ctx) {
+    const Theme& t = *ctx.theme;
+    double widest = 0;
+    for (auto& o : options_) widest = std::max(widest, measure_text(ctx.backend, o));
+    int w = static_cast<int>(widest + 0.5) + t.unit * 4 + t.control_height;
+    int h = t.control_height;
+    return SLUISize{std::max(w, min_w_) + margin_.left + margin_.right,
+                    std::max(h, min_h_) + margin_.top + margin_.bottom};
+}
+void ComboBox::paint(PaintContext& ctx) {
+    const Theme& t = *ctx.theme;
+    Rect c = content();
+    ctx.canvas->fill_round_rect(c, t.radius, t.surface);
+    if (hovered_) ctx.canvas->fill_round_rect(c, t.radius, t.hover);
+    ctx.canvas->stroke_round_rect(c, t.radius, 1.0, focused_ ? t.accent : t.border);
+    int baseline = centered_baseline(ctx, c);
+    draw_text(ctx, text(), c.x + t.unit * 3, baseline, t.fg);
+    /* chevron on the right */
+    int cx = c.right() - t.unit * 4;
+    int cy = c.y + c.h / 2;
+    for (int k = 0; k < t.unit + 1; ++k) {
+        ctx.canvas->hline(cx - k, cx + k, cy - t.unit / 2 + k, t.fg_dim);
+    }
+}
+bool ComboBox::on_event(const SLUIEvent& ev) {
+    if (!sensitive_) return false;
+    switch (ev.type) {
+    case SLUI_EVENT_POINTER_MOVE:
+        hovered_ = true;
+        invalidate();
+        return true;
+    case SLUI_EVENT_POINTER_DOWN:
+        set_focused(true);
+        return true;
+    case SLUI_EVENT_POINTER_UP:
+        if (bounds_.contains(ev.x, ev.y) && !options_.empty()) {
+            index_ = (index_ + 1) % options_.size();
+            invalidate();
+            emit_activate();
+            emit_value_changed(static_cast<double>(index_));
+        }
+        return true;
+    case SLUI_EVENT_KEY_DOWN:
+        if (!focused_ || options_.empty()) return false;
+        if (ev.keysym == SLUI_KEY_DOWN || ev.keysym == SLUI_KEY_RIGHT) {
+            index_ = (index_ + 1) % options_.size();
+            invalidate();
+            emit_value_changed(static_cast<double>(index_));
+            return true;
+        }
+        if (ev.keysym == SLUI_KEY_UP || ev.keysym == SLUI_KEY_LEFT) {
+            index_ = (index_ + options_.size() - 1) % options_.size();
+            invalidate();
+            emit_value_changed(static_cast<double>(index_));
+            return true;
+        }
+        return false;
+    default:
+        return false;
+    }
+}
+
+/* ======================================================================== */
+/* SpinButton                                                               */
+/* ======================================================================== */
+void SpinButton::set_value(double v) {
+    value_ = std::clamp(v, min_, max_);
+    invalidate();
+    emit_value_changed(value_);
+}
+SLUISize SpinButton::measure(const PaintContext& ctx) {
+    const Theme& t = *ctx.theme;
+    int w = t.control_height * 2 + 80;
+    int h = t.control_height;
+    return SLUISize{std::max(w, min_w_) + margin_.left + margin_.right,
+                    std::max(h, min_h_) + margin_.top + margin_.bottom};
+}
+void SpinButton::paint(PaintContext& ctx) {
+    const Theme& t = *ctx.theme;
+    Rect c = content();
+    ctx.canvas->fill_round_rect(c, t.radius, t.surface);
+    ctx.canvas->stroke_round_rect(c, t.radius, 1.0, focused_ ? t.accent : t.border);
+    int bw = t.control_height;
+    Rect minus{c.x, c.y, bw, c.h};
+    Rect plus{c.right() - bw, c.y, bw, c.h};
+    /* steppers */
+    ctx.canvas->vline(minus.right(), c.y + 4, c.bottom() - 4, t.border);
+    ctx.canvas->vline(plus.x, c.y + 4, c.bottom() - 4, t.border);
+    int my = c.y + c.h / 2;
+    ctx.canvas->hline(minus.x + bw / 3, minus.right() - bw / 3, my, t.fg);
+    ctx.canvas->hline(plus.x + bw / 3, plus.right() - bw / 3, my, t.fg);
+    ctx.canvas->vline(plus.x + bw / 2, my - bw / 6, my + bw / 6, t.fg);
+    /* value, centred */
+    char buf[32];
+    std::snprintf(buf, sizeof(buf), "%g", value_);
+    std::string s(buf);
+    double tw = measure_text(ctx.backend, s);
+    int baseline = centered_baseline(ctx, c);
+    draw_text(ctx, s, c.x + static_cast<int>((c.w - tw) / 2.0 + 0.5), baseline, t.fg);
+}
+bool SpinButton::on_event(const SLUIEvent& ev) {
+    if (!sensitive_) return false;
+    const int bw = 34;
+    switch (ev.type) {
+    case SLUI_EVENT_POINTER_DOWN:
+        set_focused(true);
+        if (ev.x < bounds_.x + bw) set_value(value_ - step_);
+        else if (ev.x > bounds_.right() - bw) set_value(value_ + step_);
+        return true;
+    case SLUI_EVENT_KEY_DOWN:
+        if (!focused_) return false;
+        if (ev.keysym == SLUI_KEY_UP || ev.keysym == SLUI_KEY_RIGHT) {
+            set_value(value_ + step_);
+            return true;
+        }
+        if (ev.keysym == SLUI_KEY_DOWN || ev.keysym == SLUI_KEY_LEFT) {
+            set_value(value_ - step_);
+            return true;
+        }
+        return false;
+    default:
+        return false;
+    }
 }
 
 } // namespace slui

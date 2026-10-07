@@ -136,44 +136,87 @@ int main(int argc, char** argv) {
     SLUITheme abi;
     theme_fill_preset(&abi, SLUI_THEME_SLICK_BLACK);
     SLUIWindowConfig cfg{};
-    cfg.title = "SleelaUI Gallery";
-    cfg.width = 520;
-    cfg.height = 420;
+    cfg.title = "SleelaUI Widget Collection";
+    cfg.width = 760;
+    cfg.height = 560;
     cfg.theme = &abi;
 
     Window win(nullptr, be.get(), cfg);
     Widget* root = win.root();
 
     auto header = root->add_child(std::make_unique<HeaderBar>());
-    header->set_size_request(0, 44);
+    header->set_size_request(0, 46);
+    auto av = header->add_child(std::make_unique<Avatar>("S", 30));
+    av->set_margin(Margin{8, 0, 8, 12});
+    av->set_align(SLUI_ALIGN_START, SLUI_ALIGN_CENTER);
     auto brand = header->add_child(std::make_unique<Label>("SleelaUI"));
-    brand->set_margin(Margin{0, 0, 0, 12});
+    brand->set_margin(Margin{0, 0, 0, 8});
     brand->set_align(SLUI_ALIGN_START, SLUI_ALIGN_CENTER);
+    auto badge = header->add_child(std::make_unique<Badge>("24"));
+    badge->set_margin(Margin{0, 0, 0, 8});
+    badge->set_align(SLUI_ALIGN_START, SLUI_ALIGN_CENTER);
     header->add_child(std::make_unique<Spacer>());
     auto gear = header->add_child(std::make_unique<Button>("Settings"));
-    gear->set_margin(Margin{6, 12, 6, 0});
+    gear->set_margin(Margin{7, 12, 7, 0});
 
-    auto col = root->add_child(std::make_unique<Box>(SLUI_ORIENT_VERTICAL, 12));
-    col->set_margin(Margin{20, 20, 20, 20});
-    col->set_expand(true, true);
+    /* Body: two columns of widgets. */
+    auto body = root->add_child(std::make_unique<Box>(SLUI_ORIENT_HORIZONTAL, 16));
+    body->set_margin(Margin{18, 18, 12, 18});
+    body->set_expand(true, true);
 
-    col->add_child(std::make_unique<Label>("Slick Black controls"));
-    col->add_child(std::make_unique<Entry>("Type here"));
+    auto left = body->add_child(std::make_unique<Box>(SLUI_ORIENT_VERTICAL, 10));
+    left->set_expand(true, true);
+    auto h1 = left->add_child(std::make_unique<Heading>("Controls", 16));
+    (void)h1;
+    left->add_child(std::make_unique<SearchEntry>(""));
+    left->add_child(std::make_unique<PasswordEntry>(""));
+    auto cb = left->add_child(std::make_unique<CheckBox>("Enable sync", true));
+    (void)cb;
+    auto r1 = left->add_child(std::make_unique<RadioButton>("Option A", 1, true));
+    auto r2 = left->add_child(std::make_unique<RadioButton>("Option B", 1, false));
+    (void)r1; (void)r2;
+    auto combo_box = std::make_unique<ComboBox>();
+    combo_box->add_option("Linux");
+    combo_box->add_option("macOS");
+    combo_box->add_option("Windows");
+    left->add_child(std::move(combo_box));
+    auto spin = left->add_child(std::make_unique<SpinButton>(0, 100, 1, 42));
+    (void)spin;
+    auto chiprow = left->add_child(std::make_unique<Box>(SLUI_ORIENT_HORIZONTAL, 6));
+    chiprow->add_child(std::make_unique<Chip>("alpha"));
+    chiprow->add_child(std::make_unique<Chip>("beta"));
+    chiprow->add_child(std::make_unique<LinkButton>("Learn more"));
+    chiprow->add_child(std::make_unique<Spacer>());
 
-    auto row = col->add_child(std::make_unique<Box>(SLUI_ORIENT_HORIZONTAL, 8));
-    auto save = row->add_child(std::make_unique<Button>("Save"));
-    save->set_suggested(true);
-    auto discard = row->add_child(std::make_unique<Button>("Discard"));
-    discard->set_destructive(true);
-    row->add_child(std::make_unique<Spacer>());
+    auto right = body->add_child(std::make_unique<Box>(SLUI_ORIENT_VERTICAL, 10));
+    right->set_expand(true, true);
+    auto h2 = right->add_child(std::make_unique<Heading>("Indicators", 16));
+    (void)h2;
+    auto pb = right->add_child(std::make_unique<ProgressBar>(0.62));
+    pb->set_expand(true, false);
+    auto lv = right->add_child(std::make_unique<LevelBar>(0.4));
+    lv->set_expand(true, false);
+    auto sp = right->add_child(std::make_unique<Spinner>());
+    sp->set_value(0.25);
+    sp->set_align(SLUI_ALIGN_START, SLUI_ALIGN_START);
 
-    auto tog = col->add_child(std::make_unique<Toggle>("Dark mode", true));
-    (void)tog;
-    auto sld = col->add_child(std::make_unique<Slider>(0.0, 100.0, 72.0));
-    sld->set_expand(true, false);
-    col->add_child(std::make_unique<Separator>(SLUI_ORIENT_HORIZONTAL));
-    auto dis = col->add_child(std::make_unique<Button>("Unavailable action"));
-    dis->set_sensitive(false);
+    auto card = right->add_child(std::make_unique<Card>());
+    card->set_expand(true, false);
+    card->add_child(std::make_unique<Label>("A card surface"));
+    card->add_child(std::make_unique<Toggle>("Notifications", true));
+
+    auto frame = right->add_child(std::make_unique<Frame>("Group"));
+    frame->set_expand(true, false);
+    frame->add_child(std::make_unique<Slider>(0.0, 100.0, 72.0));
+
+    auto info = right->add_child(std::make_unique<InfoBar>("Saved successfully.", 0));
+    info->set_expand(true, false);
+
+    /* Footer status bar. */
+    auto status = root->add_child(std::make_unique<StatusBar>());
+    status->add_child(std::make_unique<Label>("Ready"));
+    status->add_child(std::make_unique<Spacer>());
+    status->add_child(std::make_unique<Label>("SleelaUI 1.0.0"));
 
     const Canvas& c = win.render();
 

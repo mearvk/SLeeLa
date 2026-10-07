@@ -1,0 +1,25 @@
+/*
+ * lib/user-interface/SLCard.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLCard — a SleelaUI raised surface panel: a rounded
+ *   surface fill with a 1px hairline, padding, and a vertical stack of children.
+ *   Use it to lift a related cluster of content off the window floor. The
+ *   constructor bottoms out in the `uiCard` built-in (SleelaUI C ABI
+ *   slui_card()); children are added by constructing control classes against
+ *   this card's handle.
+ *
+ * An SLCard IS an SLWidget container.
+ *
+ * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
+ * bridge.
+ */
+#sleela 1.5
+class SLCard extends SLWidget {
+  // Create a card inside `parent`.
+  void createIn(SLWidget parent) {
+    widget = uiCard(parent.handle());
+  }
+  void createInHandle(int parentHandle) {
+    widget = uiCard(parentHandle);
+  }
+}
