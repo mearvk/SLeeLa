@@ -92,6 +92,17 @@ surface they expose — primitives, pixel-level control, buffering, blend modes,
 and a refresh-rate frame clock — is documented in [DRAW-API.md](DRAW-API.md)
 with SLeeLa bindings `SLDrawContext` and `SLFrameClock`.
 
+## Lighting, shadow & relief
+
+Canvas-aware objects can be **lit**: place lights and give an object a material
+with a relief profile, and the toolkit shades its pixels with directional
+highlights, raised/recessed relief, soft cast shadows, and ambient occlusion —
+on Sleela's deep warm **#2B1608** base. Lights come from a **source** (reserves
+its anchor object — the object is *used* as the light) or an **emitter**
+(reserves nothing, reusable); both light and shadow are emissions, chosen by
+polarity. Full reference: [LIGHTING.md](LIGHTING.md), SLeeLa bindings `SLLight`,
+`SLLightScene`, `SLMaterial`.
+
 ## Totals
 
 - **33 widget types** across containers, actions, selection, input, ranges,

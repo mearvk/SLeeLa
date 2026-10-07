@@ -3,16 +3,20 @@
  * SLeeLa Standard Library Definition.
  * Definition: Defines SLTheme — a SleelaUI palette handle. A theme is the
  *   single source of truth for a window's look: a flat set of named role
- *   colours plus a corner radius, spacing unit, control height, and font. The
- *   DEFAULT is "Slick Black" — a matte near-black surface family with one cool
- *   steel-blue accent and crisp white text. This class wraps the toolkit's
- *   theme built-ins: uiThemePreset (fill from a built-in preset), the role
- *   setters (uiThemeSet*), and metric/font setters. Each bottoms out in the
- *   SleelaUI C ABI (slui_theme_preset + the SLUITheme fields).
+ *   colours plus a corner radius, spacing unit, control height, and font. This
+ *   class wraps the toolkit's theme built-ins: uiThemePreset (fill from a
+ *   built-in preset), the role setters (uiThemeSet*), metric/font setters, and
+ *   the base-colour hooks. Each bottoms out in the SleelaUI C ABI
+ *   (slui_theme_preset + the SLUITheme fields).
+ *
+ * The DEFAULT is "Sleela Base": the whole warm palette DERIVED from Sleela's
+ * base colour #2B1608 (a deep toasted umber). The base is configurable at code
+ * time (setBaseColor) or configuration time (loadConfig reads base_color from a
+ * key=value file), and the surfaces/border/accent re-tune around it.
  *
  * A theme is a VM-local handle (-1 = none). Pass handle() to
- * SLUserInterface.openWindow() or SLWindow.setTheme(); pass -1 anywhere a
- * theme is expected to get Slick Black.
+ * SLUserInterface.openWindow() or SLWindow.setTheme(); pass -1 anywhere a theme
+ * is expected to get the default.
  *
  * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
  * bridge.
@@ -20,22 +24,40 @@
 #sleela 1.5
 class SLTheme {
   // Preset ordinals (mirror SLUIThemeId in the toolkit C ABI).
-  static final int SLICK_BLACK = 0;   // the default matte-black theme
+  static final int SLICK_BLACK = 0;   // the original matte-black theme
   static final int GRAPHITE    = 1;   // a lighter neutral alternative
   static final int CUSTOM      = 2;   // fully host-defined via the setters
+  static final int SLEELA_BASE = 3;   // THE DEFAULT: base colour #2B1608
+
+  // Sleela's base colour, #2B1608 opaque, as a 0xRRGGBBAA word.
+  static final int BASE_COLOR_DEFAULT = 0x2B1608FF;
 
   int theme;   // VM-local theme handle (-1 = none)
 
-  // Build a theme pre-filled from a built-in preset. Start from SLICK_BLACK
-  // and override roles for a custom palette, or GRAPHITE for a lighter base.
+  // Build a theme pre-filled from a built-in preset. Start from SLEELA_BASE for
+  // the warm default, SLICK_BLACK for the matte-black look, or GRAPHITE.
   void preset(int presetId) {
     theme = uiThemePreset(presetId);
   }
-  // Shorthand for the signature default.
+  // Shorthand for the signature default (the #2B1608 warm family).
+  void sleelaBase() { preset(SLEELA_BASE); }
+  // Shorthand for the original matte-black theme.
   void slickBlack() { preset(SLICK_BLACK); }
 
   int handle() { return theme; }
   boolean valid() { return theme >= 0; }
+
+  // Re-derive the whole warm palette from a new base colour (0xRRGGBBAA; the
+  // alpha is ignored). The configuration/code-time base-colour hook.
+  void setBaseColor(int baseColor) {
+    if (theme >= 0) { uiThemeSetBaseColor(theme, baseColor); }
+  }
+  // Load base_color (and optional accent/font/radius) from a key=value config
+  // file into this theme. Returns true on success.
+  boolean loadConfig(String path) {
+    if (theme < 0) { return false; }
+    return uiThemeLoadConfig(theme, path) == 0;
+  }
 
   // ---- Role colours (each takes an SLColor word, 0xRRGGBBAA) -------------
   void setBackground(int color) { if (theme >= 0) { uiThemeSetBg(theme, color); } }

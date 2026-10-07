@@ -1,0 +1,68 @@
+/*
+ * lib/user-interface/SLLight.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLLight — a SleelaUI light descriptor used to light and
+ *   relieve Canvas-aware objects. A light has a KIND (point, directional,
+ *   ambient), a ROLE, a POLARITY, a position/direction, a reach, an intensity,
+ *   a softness (penumbra width), and a colour. It is a pure value object the
+ *   host fills and hands to an SLLightScene; the scene decides whether it is a
+ *   SOURCE (reserves an anchor object — the object is used as the light) or an
+ *   EMITTER (reserves nothing, reusable).
+ *
+ * Both light and shadow come from either a source or an emitter: the POLARITY
+ * decides whether the emission brightens (light) or darkens (shadow/umbra).
+ *
+ * Family: user-interface. Mirrors SLUILight in the SleelaUI Lighting C ABI
+ * (sleela_ui_light.h).
+ */
+#sleela 1.5
+class SLLight {
+  // Kind ordinals (mirror SLUILightKind).
+  static final int POINT       = 0;
+  static final int DIRECTIONAL = 1;
+  static final int AMBIENT     = 2;
+  // Role ordinals (mirror SLUILightRole).
+  static final int SOURCE  = 0;   // reserves its anchor object (object USED)
+  static final int EMITTER = 1;   // reserves nothing; reusable
+  // Polarity ordinals (mirror SLUIPolarity).
+  static final int LIGHT  = 0;    // brightens
+  static final int SHADOW = 1;    // darkens (umbra emission)
+
+  int kind;
+  int role;
+  int polarity;
+  double x; double y; double z;   // point position + height above the plane
+  double dx; double dy;           // directional unit vector
+  double radius;                  // point reach in px (0 = infinite)
+  double intensity;               // 0..N emission multiplier
+  double softness;                // 0..1 penumbra width for cast shadows
+  int color;                      // 0xRRGGBBAA emission (shadow colour if SHADOW)
+  int anchor;                     // for a SOURCE: the reserved anchor id
+
+  // A point light at (x,y) reaching `radius` px, with an intensity + colour.
+  void point(double px, double py, double reach, double i, int c) {
+    kind = POINT; role = EMITTER; polarity = LIGHT;
+    x = px; y = py; z = reach * 0.5 + 24.0;
+    dx = 0.0; dy = 0.0; radius = reach; intensity = i; softness = 0.5;
+    color = c; anchor = -1;
+  }
+
+  // A directional "sun" travelling along (ux,uy).
+  void directional(double ux, double uy, double i, int c) {
+    kind = DIRECTIONAL; role = EMITTER; polarity = LIGHT;
+    x = 0.0; y = 0.0; z = 0.6; dx = ux; dy = uy;
+    radius = 0.0; intensity = i; softness = 0.4; color = c; anchor = -1;
+  }
+
+  // A uniform ambient fill.
+  void ambient(double i, int c) {
+    kind = AMBIENT; role = EMITTER; polarity = LIGHT;
+    x = 0.0; y = 0.0; z = 0.0; dx = 0.0; dy = 0.0;
+    radius = 0.0; intensity = i; softness = 0.0; color = c; anchor = -1;
+  }
+
+  // Turn this light into a shadow (negative-polarity) emission.
+  void asShadow() { polarity = SHADOW; }
+  // Turn this light into a light (positive-polarity) emission.
+  void asLight()  { polarity = LIGHT; }
+}

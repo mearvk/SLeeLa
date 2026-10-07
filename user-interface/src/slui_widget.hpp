@@ -759,6 +759,21 @@ public:
     }
     bool animated() const { return true; }
 
+    /* Attach a light scene (borrowed) + material so the view is lit and
+     * relieved each frame after its draw callback runs. `material_tag` encodes
+     * the SLUIMaterial fields the C ABI passes (profile, depth, gloss,
+     * occlusion, edge) without this header depending on sleela_ui_light.h. */
+    void set_light(const void* scene, int profile, double depth, double gloss,
+                   double occlusion, double edge) {
+        light_scene_ = scene;
+        light_profile_ = profile;
+        light_depth_ = depth;
+        light_gloss_ = gloss;
+        light_occlusion_ = occlusion;
+        light_edge_ = edge;
+        invalidate();
+    }
+
 protected:
     int req_w_, req_h_;
     double time_ = 0.0;
@@ -769,7 +784,16 @@ protected:
     SLUIDrawContext* ctx_ = nullptr; /* owned draw context (lazy)            */
     int ctx_w_ = 0, ctx_h_ = 0;
 
+    /* optional lighting applied to the whole view each frame */
+    const void* light_scene_ = nullptr;
+    int light_profile_ = 0;
+    double light_depth_ = 0.0;
+    double light_gloss_ = 0.35;
+    double light_occlusion_ = 0.4;
+    double light_edge_ = 6.0;
+
     void ensure_context(int w, int h);
+    void apply_light(); /* defined in slui_throbber.cpp */
 };
 
 /* The Throbber is a CanvasView whose draw callback is an internal water-like

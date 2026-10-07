@@ -1,16 +1,42 @@
 # SleelaUI™ Theming
 
-SleelaUI is **configurable but ships Slick Black by default**. A theme is a flat
-`SLUITheme` struct: a set of named role colours (0xRRGGBBAA words), one corner
-radius, the 4px spacing unit, a minimum control height, and a font family/size.
-Because every widget reads these roles — and nothing else — restyling the whole
-UI is a single struct edit.
+SleelaUI is **configurable but ships a warm base colour by default**: Sleela's
+base is **`#2B1608`**, a deep toasted umber, and the whole palette is *derived*
+from it. A theme is a flat `SLUITheme` struct: a set of named role colours
+(0xRRGGBBAA words), one corner radius, the 4px spacing unit, a minimum control
+height, and a font family/size. Because every widget reads these roles — and
+nothing else — restyling the whole UI is a single value (the base colour) or a
+single struct edit.
+
+## The base colour
+
+The default theme's floor is `SLUI_BASE_COLOR_DEFAULT` = `#2B1608`. The rest of
+the warm family (surfaces, chrome, border, text, ember-amber accent) is derived
+from it, so changing the one base re-tunes everything. It is configurable:
+
+**At code time** — pick a preset, then re-derive from any base:
+
+```c
+SLUITheme t;
+slui_theme_preset(&t, SLUI_THEME_SLEELA_BASE);   /* the #2B1608 default      */
+slui_theme_set_base_color(&t, 0x113355FF);        /* re-derive from any base  */
+```
+
+**At configuration time** — load `base_color` (and optional overrides) from a
+`key=value` file (see [`sleela-ui.conf.example`](sleela-ui.conf.example)):
+
+```c
+SLUITheme t;
+slui_theme_preset(&t, SLUI_THEME_SLEELA_BASE);
+slui_theme_load_config(&t, "~/.config/sleela/sleela-ui.conf");
+```
 
 ## Presets
 
 ```c
 SLUITheme t;
-slui_theme_preset(&t, SLUI_THEME_SLICK_BLACK);  /* the default, matte black  */
+slui_theme_preset(&t, SLUI_THEME_SLEELA_BASE);  /* THE DEFAULT: warm #2B1608 */
+slui_theme_preset(&t, SLUI_THEME_SLICK_BLACK);  /* the original matte black  */
 slui_theme_preset(&t, SLUI_THEME_GRAPHITE);     /* a lighter neutral palette */
 ```
 
@@ -20,7 +46,7 @@ Pass the theme in `SLUIWindowConfig.theme` at window creation, or swap it live:
 slui_window_set_theme(win, &t);   /* repaints immediately */
 ```
 
-Passing `NULL` for `cfg.theme` uses Slick Black.
+Passing `NULL` for `cfg.theme` uses the Sleela base (`#2B1608`).
 
 ## Role colours
 

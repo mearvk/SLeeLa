@@ -169,11 +169,23 @@ implements the same surface.
 > throbber model at
 > [`user-interface/THROBBER.md`](../../user-interface/THROBBER.md).
 
+### Lighting, shadow & relief
+
+| Class | Role |
+|---|---|
+| `SLLight` | A light descriptor: kind (point/directional/ambient), role (SOURCE reserves its anchor object; EMITTER reserves nothing), polarity (LIGHT brightens / SHADOW darkens), position/direction, reach, intensity, softness, colour. |
+| `SLLightScene` | A collection of lights applied to a draw context; owns the source-reservation table (an anchor is used as a source at most once) and the base ambient fill. |
+| `SLMaterial` | How an object catches light: a relief profile (flat/rounded/bevel/engraved/embossed) plus depth, gloss, and crease occlusion — the "quality relief". |
+
+> The lighting model — sources vs emitters, light vs shadow emissions, and the
+> relief profiles — is documented at
+> [`user-interface/LIGHTING.md`](../../user-interface/LIGHTING.md).
+
 ### Theme
 
 | Class | Role |
 |---|---|
-| `SLTheme` | A palette handle. Start from the **Slick Black** default (`slickBlack()`) or `GRAPHITE`, then override any role colour, radius, control height, or font. |
+| `SLTheme` | A palette handle. Start from the default **Sleela Base** (`sleelaBase()`, warm **#2B1608**), `slickBlack()`, or `GRAPHITE`; reconfigure the base colour (`setBaseColor` / `loadConfig`) or override any role, radius, control height, or font. |
 | `SLColor` | A straight-alpha `0xRRGGBBAA` colour value helper (`rgb`/`rgba` + channel accessors). |
 
 ### Example
@@ -189,7 +201,7 @@ SLUserInterface ui = new SLUserInterface();
 ui.configure("com.example.App");
 if (ui.open()) {                               // false if no display (X11)
   SLTheme theme = new SLTheme();
-  theme.slickBlack();                          // the default look
+  theme.sleelaBase();                          // the default look (#2B1608)
 
   SLWindow win = ui.openWindow("Hello", 480, 320, theme.handle());
   SLWidget root = win.rootWidget();

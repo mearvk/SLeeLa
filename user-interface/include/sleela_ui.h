@@ -90,10 +90,17 @@ static inline SLUIColor slui_rgb(uint8_t r, uint8_t g, uint8_t b) {
  * host can restyle the whole UI by editing one struct (or loading a .conf).
  * ------------------------------------------------------------------------- */
 typedef enum {
-    SLUI_THEME_SLICK_BLACK = 0, /* the default matte-black theme             */
-    SLUI_THEME_GRAPHITE = 1,    /* a lighter neutral alternative             */
-    SLUI_THEME_CUSTOM = 2       /* fully host-defined via SLUITheme fields   */
+    SLUI_THEME_SLICK_BLACK = 0,  /* the original matte-black theme            */
+    SLUI_THEME_GRAPHITE = 1,     /* a lighter neutral alternative             */
+    SLUI_THEME_CUSTOM = 2,       /* fully host-defined via SLUITheme fields   */
+    SLUI_THEME_SLEELA_BASE = 3   /* THE DEFAULT: base colour #2B1608 (warm)   */
 } SLUIThemeId;
+
+/* Sleela's configurable BASE COLOUR, the floor of the default theme. Deep warm
+ * brown #2B1608. A host may override it at code time (edit the SLUITheme after
+ * slui_theme_preset) or at configuration time (slui_theme_set_base_color /
+ * a loaded .conf), and the rest of the warm palette is derived from it. */
+#define SLUI_BASE_COLOR_DEFAULT 0x2B1608FFu /* #2B1608, opaque */
 
 typedef struct {
     SLUIThemeId id;
@@ -121,9 +128,25 @@ typedef struct {
     int font_size;        /* UI text size (pt)                               */
 } SLUITheme;
 
-/* Fill `out` with one of the built-in palettes. SLUI_THEME_SLICK_BLACK is the
- * documented default and what slui_window_create() uses when given no theme. */
+/* Fill `out` with one of the built-in palettes. SLUI_THEME_SLEELA_BASE is the
+ * documented default (base colour #2B1608) and what slui_window_create() uses
+ * when given no theme. */
 void slui_theme_preset(SLUITheme *out, SLUIThemeId id);
+
+/* Re-derive the whole warm palette in `out` from a new base colour, in place.
+ * This is the configuration-time hook: pass the colour read from a .conf (or a
+ * code-time choice) and every surface/border/accent is recomputed as a tasteful
+ * tint/shade of it, so a single value re-themes the UI. The alpha of `base` is
+ * ignored (the floor is opaque). */
+void slui_theme_set_base_color(SLUITheme *out, SLUIColor base);
+
+/* Load the base colour (and optional overrides) from a simple key=value config
+ * file into `out`, which must already hold a preset. Recognised keys:
+ *   base_color=#RRGGBB      (or 0xRRGGBB)   -> re-derives the warm palette
+ *   accent=#RRGGBB  font_family=...  font_size=NN  radius=NN
+ * Returns SLUI_OK, or SLUI_ERR_INVALID if the file could not be read. Unknown
+ * keys are ignored so the file can carry other sections. */
+SLUIStatus slui_theme_load_config(SLUITheme *out, const char *path);
 
 /* --------------------------------------------------------------------------
  * Opaque handles. The toolkit owns these; a widget is owned by its parent and

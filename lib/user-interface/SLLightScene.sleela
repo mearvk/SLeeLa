@@ -1,0 +1,61 @@
+/*
+ * lib/user-interface/SLLightScene.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLLightScene — a collection of SleelaUI lights applied to
+ *   a draw context to light and relieve Canvas-aware objects. The scene owns the
+ *   SOURCE RESERVATION table: an anchor object can be used as a source at most
+ *   once (addSource refuses a second), while EMITTERS reserve nothing and may be
+ *   added freely and reused. It also holds the base ambient illumination so even
+ *   an unlit object is not pure black. Each method bottoms out in a `light*`
+ *   SLVM built-in that calls the SleelaUI Lighting C ABI (sleela_ui_light.h).
+ *
+ * A scene is a VM-local handle (-1 = none). An SLLight is passed by its
+ * descriptor fields through the built-ins.
+ *
+ * Family: user-interface. Native VM/UI work crosses the explicit `light*` SLVM
+ * bridge.
+ */
+#sleela 1.5
+class SLLightScene {
+  int scene;   // VM-local scene handle (-1 = none)
+
+  void create() { scene = lightSceneCreate(); }
+  int handle() { return scene; }
+  boolean valid() { return scene >= 0; }
+  void destroy() { if (scene >= 0) { lightSceneDestroy(scene); scene = -1; } }
+  void clear() { if (scene >= 0) { lightSceneClear(scene); } }
+  int count() { if (scene < 0) { return 0; } return lightSceneCount(scene); }
+
+  // Add an EMITTER (reserves nothing). Returns its index (>=0), reusable.
+  int addEmitter(SLLight l) {
+    if (scene < 0) { return -1; }
+    return lightSceneAddEmitter(scene, l.kind, l.polarity, l.x, l.y, l.z,
+                                l.dx, l.dy, l.radius, l.intensity, l.softness,
+                                l.color);
+  }
+
+  // Add a SOURCE bound to `anchor` (reserves it; the object is USED as a
+  // source). Returns the light index (>=0), or a negative error if `anchor` is
+  // already reserved by another source in this scene.
+  int addSource(int anchor, SLLight l) {
+    if (scene < 0) { return -1; }
+    return lightSceneAddSource(scene, anchor, l.kind, l.polarity, l.x, l.y, l.z,
+                               l.dx, l.dy, l.radius, l.intensity, l.softness,
+                               l.color);
+  }
+
+  // True if `anchor` is currently reserved as a source in this scene.
+  boolean anchorReserved(int anchor) {
+    if (scene < 0) { return false; }
+    return lightSceneAnchorReserved(scene, anchor) == 1;
+  }
+  // Release a source's reservation so the anchor can be a source again.
+  void releaseSource(int anchor) {
+    if (scene >= 0) { lightSceneReleaseSource(scene, anchor); }
+  }
+
+  // The base ambient illumination applied before any light.
+  void setAmbient(double intensity, int color) {
+    if (scene >= 0) { lightSceneSetAmbient(scene, intensity, color); }
+  }
+}
