@@ -181,6 +181,19 @@ implements the same surface.
 > relief profiles — is documented at
 > [`user-interface/LIGHTING.md`](../../user-interface/LIGHTING.md).
 
+### Moods, washes, Calculus-8 & millimetre placement
+
+| Class | Role |
+|---|---|
+| `SLMm` | Millimetre placement for a light/dark/shadow emitter relative to the text's font-paint location: left/right, up/down, and the HEIGHT it shines down from; converts to pixels at a DPI. |
+| `SLCalculus8` | The careful 8-stage calculus with **100 differentiable** inputs that maps a light's control points into a mood scalar; `slope()` gives d(mood)/d(input) (differentiable). |
+| `SLWash` | An **Excellent Wash**: a soft, multi-stop graded colour field (smoothstep-sampled) that paints a mood. |
+| `SLMood` | A named, adjustable mood = a wash + a natural **tanor** (portrait glow for lightless bulbs, with a refresh and an "a little left" bias) + a Calculus-8; colours and places lights in one call. |
+
+> Millimetre placement, the Calculus-8, Excellent Washes, the natural tanor, and
+> moods are documented at
+> [`user-interface/MOODS.md`](../../user-interface/MOODS.md).
+
 ### Fonts & font effects
 
 | Class | Role |

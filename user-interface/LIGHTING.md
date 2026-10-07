@@ -138,4 +138,12 @@ shadows are multi-sampled across the penumbra so the edge is soft. The result is
 composited back as a *modulation* of the object's own colour, so an object keeps
 its albedo but gains real relief — crisp even on the dark #2B1608 base.
 
+## Moods, washes, Calculus-8 & millimetre placement
+
+A light can be placed in real **millimetres** (a height it shines down from, plus
+left/right/up/down), driven by **100 differentiables** through a **Calculus-8**
+into a **mood**, and coloured from an **Excellent Wash** with a natural **tanor**
+glow that refreshes "a little left". See [MOODS.md](MOODS.md)
+([`sleela_ui_mood.h`](include/sleela_ui_mood.h)).
+
 — SleelaUI™ · MEARVK LLC · 2026

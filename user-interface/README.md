@@ -111,6 +111,12 @@ warm base. Lights come from a **source** (reserves its anchor object) or an
 chosen by polarity. See [`LIGHTING.md`](LIGHTING.md)
 ([`sleela_ui_light.h`](include/sleela_ui_light.h)).
 
+A light can be placed in real **millimetres** (a height it shines down from, plus
+left/right/up/down), driven by **100 differentiables** through a **Calculus-8**
+into a **mood** coloured from an **Excellent Wash**, with a natural **tanor**
+glow for lightless bulbs that refreshes "a little left". See
+[`MOODS.md`](MOODS.md) ([`sleela_ui_mood.h`](include/sleela_ui_mood.h)).
+
 ### Fonts & font effects
 
 A **font** bundles a face (family, size, weight, slant, spacing) with a stack of

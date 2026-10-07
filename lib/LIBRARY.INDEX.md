@@ -1,11 +1,29 @@
 # SLeeLa /lib Library Index
 
-**Revision:** 0.40  
+**Revision:** 0.41  
 **Packages:** 88  
-**SLeeLa source units:** 10399  
+**SLeeLa source units:** 10403  
 **Module-facade symbols:** 60  
-**Total symbol records:** 10459  
+**Total symbol records:** 10463  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
+
+> Revision 0.41 adds **moods, washes, a Calculus-8, and millimetre light
+> placement** to the `user-interface` package. Four new one-class-per-file
+> Master Classes: `SLMm` (place a light/dark/shadow emitter in millimetres
+> relative to the text's font-paint location — a HEIGHT it shines down from plus
+> left/right/up/down, resolved to pixels at a DPI), `SLCalculus8` (a careful
+> 8-stage calculus over **100 differentiable** inputs that maps a light's control
+> points into a mood scalar, with an analytic d(mood)/d(input) slope),
+> `SLWash` (an Excellent Wash — a soft multi-stop graded colour field), and
+> `SLMood` (a named mood = wash + a natural tanor glow for lightless bulbs, with
+> a refresh and an "a little left" bias, + a Calculus-8; colours and places
+> lights in one call). Each bottoms out in `mm*`/`calc8*`/`wash*`/`mood*` SLVM
+> built-ins calling the genuine C ABI (`sleela_ui_mood.h`); see
+> `user-interface/MOODS.md`. Four new source units: 10,459 -> **10,463** total
+> records (10,399 -> **10,403** source classes); facade and package counts
+> unchanged at 60 and 88. `LIBRARY.SYMBOLS.md` was regenerated from the live tree
+> and the counts are verified in lockstep by
+> `test-suites/test-library-inventory.sh`.
 
 > Revision 0.40 adds the new `gameplay` package — a turn/move system where a
 > player makes one of three moves per turn, each resolved by deterministic,

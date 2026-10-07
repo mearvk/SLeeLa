@@ -12,7 +12,9 @@
 #include "sleela_ui_draw.h"
 #include "sleela_ui_font.h"
 #include "sleela_ui_light.h"
+#include "sleela_ui_mood.h"
 
+#include <math.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -330,6 +332,80 @@ int main(void) {
     slui_font_destroy(src);
 
     slui_font_destroy(fnt);
+
+    /* --- Mood / Wash / Calculus-8 / mm placement ----------------------- */
+    /* mm -> px at 96 dpi: 25.4mm == 96px. */
+    CHECK(((int)(slui_mm_to_px(25.4, 96.0) + 0.5)) == 96, "25.4mm -> 96px at 96dpi");
+    /* place a light 10mm above and a little left of a font origin */
+    SLUILight ml = slui_light_point(0, 0, 100, 1.0, slui_rgb(255, 255, 255));
+    slui_light_place_mm(&ml, 200.0, 100.0, slui_mm_left(5.0, 10.0), 96.0);
+    CHECK(ml.x < 200.0, "mm left shifted the light left of the origin");
+    CHECK(ml.z > 0.0, "mm height set the light's elevation");
+    double hz10 = slui_mm_to_px(10.0, 96.0);
+    CHECK(((int)(ml.z + 0.5)) == ((int)(hz10 + 0.5)),
+          "light shines down from the mm height");
+
+    /* Calculus-8: 100 differentiables, 8 stages, differentiable mapping */
+    SLUICalculus8* calc = slui_calc8_create();
+    CHECK(calc != NULL, "calculus-8 created");
+    slui_calc8_set(calc, 0, 0.9);
+    slui_calc8_set(calc, 99, 0.1);
+    CHECK(slui_calc8_get(calc, 0) == 0.9 && slui_calc8_get(calc, 99) == 0.1,
+          "calculus-8 holds 100 differentiables");
+    double deriv = -999.0;
+    double mood_val = slui_calc8_eval(calc, 5, &deriv);
+    CHECK(mood_val >= 0.0 && mood_val <= 1.0, "calculus-8 mood scalar in [0,1]");
+    CHECK(deriv != -999.0, "calculus-8 returns a derivative (differentiable)");
+    /* numerically verify the analytic derivative along input 5 */
+    double eps = 1e-5, d0;
+    double base_m = slui_calc8_eval(calc, 5, &d0);
+    double was = slui_calc8_get(calc, 5);
+    slui_calc8_set(calc, 5, was + eps);
+    double up_m = slui_calc8_eval(calc, 5, NULL);
+    slui_calc8_set(calc, 5, was);
+    double numeric = (up_m - base_m) / eps;
+    CHECK(fabs(numeric - d0) < 0.05, "analytic derivative matches numeric slope");
+    double stages[8];
+    CHECK(slui_calc8_stages(calc, stages, 8) == 8, "calculus-8 reports 8 stages");
+
+    /* Excellent wash: soft multi-stop sample */
+    SLUIWash wash = slui_wash_triad(slui_rgb(255, 240, 200), slui_rgb(255, 160, 80),
+                                    slui_rgb(140, 70, 30));
+    SLUIColor w0 = slui_wash_sample(&wash, 0.0);
+    SLUIColor w1 = slui_wash_sample(&wash, 1.0);
+    CHECK(w0 != w1, "wash samples differ end-to-end");
+    SLUIColor wm = slui_wash_sample(&wash, 0.5);
+    CHECK(((wm >> 24) & 0xFF) > ((w1 >> 24) & 0xFF),
+          "wash midpoint lighter than its dark end");
+
+    /* Tanor: a natural portrait glow, a little left, with refresh */
+    SLUITanor tan = slui_tanor_default();
+    CHECK(tan.left_bias > 0.0, "tanor has a little-left bias");
+    CHECK(tan.refresh_hz > 0.0, "tanor has a refresh on the pattern");
+
+    /* Mood: wash + tanor + calculus -> a colour that freshens over time */
+    SLUIMood* mood = slui_mood_create(SLUI_MOOD_WARM);
+    CHECK(mood != NULL, "mood created");
+    slui_mood_set_calculus(mood, calc);
+    SLUIColor c_t0 = slui_mood_color(mood, 0.0);
+    SLUIColor c_t1 = slui_mood_color(mood, 0.9); /* half a 0.5Hz refresh later */
+    CHECK(c_t0 != c_t1, "mood colour freshens over time (refresh pattern)");
+    /* apply the mood to a light: it gets the mood colour + portrait softness */
+    SLUILight lm = slui_light_point(10, 10, 80, 1.0, slui_rgb(0, 0, 0));
+    slui_light_apply_mood(&lm, mood, 0.0);
+    CHECK(lm.color != slui_rgb(0, 0, 0), "light took the mood colour");
+    CHECK(lm.softness > 0.3, "light took the tanor's portrait softness");
+
+    /* one-call mm-placed, mood-coloured light for text */
+    SLUILight textlight = slui_light_for_text(
+        200, 100, slui_mm_right(3, 12), 96.0, mood, 0.0, SLUI_LIGHT_EMITTER,
+        SLUI_POLARITY_LIGHT, 120, 1.0);
+    CHECK(textlight.x > 200.0 && textlight.z > 0.0 &&
+              textlight.role == SLUI_LIGHT_EMITTER,
+          "slui_light_for_text placed + moodified an emitter");
+
+    slui_mood_destroy(mood);
+    slui_calc8_destroy(calc);
     slui_light_scene_destroy(scene);
 
     printf("\n%s (%d failure%s)\n", g_failures ? "FAILED" : "PASSED",

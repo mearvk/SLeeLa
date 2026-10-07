@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 10399
+library-source-files: 10403
 library-packages: 88
 module-facade-symbols: 60
-total-symbol-records: 10459
+total-symbol-records: 10463
 
 package	symbol	path	kind
 alphabet	Alphabet.sleela	lib/alphabet/Alphabet.sleela	source
@@ -10322,6 +10322,7 @@ user-interface	SLAvatar.sleela	lib/user-interface/SLAvatar.sleela	source
 user-interface	SLBadge.sleela	lib/user-interface/SLBadge.sleela	source
 user-interface	SLBox.sleela	lib/user-interface/SLBox.sleela	source
 user-interface	SLButton.sleela	lib/user-interface/SLButton.sleela	source
+user-interface	SLCalculus8.sleela	lib/user-interface/SLCalculus8.sleela	source
 user-interface	SLCanvasView.sleela	lib/user-interface/SLCanvasView.sleela	source
 user-interface	SLCard.sleela	lib/user-interface/SLCard.sleela	source
 user-interface	SLCheckBox.sleela	lib/user-interface/SLCheckBox.sleela	source
@@ -10346,6 +10347,8 @@ user-interface	SLLight.sleela	lib/user-interface/SLLight.sleela	source
 user-interface	SLLightScene.sleela	lib/user-interface/SLLightScene.sleela	source
 user-interface	SLLinkButton.sleela	lib/user-interface/SLLinkButton.sleela	source
 user-interface	SLMaterial.sleela	lib/user-interface/SLMaterial.sleela	source
+user-interface	SLMm.sleela	lib/user-interface/SLMm.sleela	source
+user-interface	SLMood.sleela	lib/user-interface/SLMood.sleela	source
 user-interface	SLPackage.sleela	lib/user-interface/SLPackage.sleela	facade
 user-interface	SLPasswordEntry.sleela	lib/user-interface/SLPasswordEntry.sleela	source
 user-interface	SLProgressBar.sleela	lib/user-interface/SLProgressBar.sleela	source
@@ -10363,6 +10366,7 @@ user-interface	SLThrobber.sleela	lib/user-interface/SLThrobber.sleela	source
 user-interface	SLToggle.sleela	lib/user-interface/SLToggle.sleela	source
 user-interface	SLTooltip.sleela	lib/user-interface/SLTooltip.sleela	source
 user-interface	SLUserInterface.sleela	lib/user-interface/SLUserInterface.sleela	source
+user-interface	SLWash.sleela	lib/user-interface/SLWash.sleela	source
 user-interface	SLWidget.sleela	lib/user-interface/SLWidget.sleela	source
 user-interface	SLWindow.sleela	lib/user-interface/SLWindow.sleela	source
 video	Video.sleela	lib/video/Video.sleela	source

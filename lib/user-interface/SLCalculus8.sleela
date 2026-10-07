@@ -1,0 +1,44 @@
+/*
+ * lib/user-interface/SLCalculus8.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLCalculus8 — the careful 8-stage calculus with 100
+ *   differentiable inputs that maps a SleelaUI light's control points directly
+ *   into a MOOD. Each of the 100 inputs is a "differentiable" the host nudges in
+ *   [0,1]; eight smooth, analytically-differentiable basis stages (identity,
+ *   quadratic, smoothstep, sine, cosine, logistic, gaussian, tanh) combine them
+ *   into a mood scalar in [0,1]. Because every stage is differentiable, eval
+ *   returns both the mood and the slope d(mood)/d(input) so an adjuster can walk
+ *   the gradient into a mood. Each method bottoms out in a `calc8*` SLVM
+ *   built-in that calls the genuine C ABI (sleela_ui_mood.h).
+ *
+ * A calculus is a VM-local handle (-1 = none). Attach it to an SLMood with
+ * SLMood.setCalculus to drive where the mood's wash is sampled.
+ *
+ * Family: user-interface. Native VM/UI work crosses the explicit `calc8*` SLVM
+ * bridge.
+ */
+#sleela 1.5
+class SLCalculus8 {
+  static final int INPUTS = 100;  // the 100 differentiables
+  static final int STAGES = 8;    // the careful 8 stages
+
+  int calc;   // VM-local handle (-1 = none)
+
+  void create() { calc = calc8Create(); }
+  int handle() { return calc; }
+  boolean valid() { return calc >= 0; }
+  void destroy() { if (calc >= 0) { calc8Destroy(calc); calc = -1; } }
+
+  // Set/get one of the 100 differentiables (index 0..99), each in [0,1].
+  void set(int index, double value) { if (calc >= 0) { calc8Set(calc, index, value); } }
+  double get(int index) { if (calc < 0) { return 0.0; } return calc8Get(calc, index); }
+
+  // Evaluate: the mood scalar in [0,1].
+  double mood() { if (calc < 0) { return 0.5; } return calc8Eval(calc, -1); }
+  // The slope d(mood)/d(input) along a given differentiable (differentiable
+  // calculus: nudging that input moves the mood by this slope).
+  double slope(int wrtIndex) {
+    if (calc < 0) { return 0.0; }
+    return calc8Slope(calc, wrtIndex);
+  }
+}
