@@ -1,0 +1,42 @@
+SleelaUI(TM) — original User Interface toolkit
+==============================================
+
+SleelaUI(TM) is an ORIGINAL cross-platform widget toolkit authored by the SLeeLa
+project. The code in this directory (user-interface/) is clean-room work: it was
+written from scratch by SLeeLa, guided by public window-system and font
+*specifications* and the *ideas* common to modern UI toolkits, not by copying
+any existing toolkit's source code.
+
+Authorship
+----------
+
+  SleelaUI(TM) User Interface toolkit
+  Copyright (C) The SLeeLa project.
+
+All source, headers, docs, and tests under user-interface/ are SLeeLa's own work
+and carry the SleelaUI(TM) identity.
+
+Not GTK, Qt, wxWidgets, or a wrapper
+------------------------------------
+
+SleelaUI(TM) is NOT a fork of, and does NOT incorporate source from, GTK, Qt,
+wxWidgets, Cairo, Skia, or any other UI/2D toolkit. It draws its own widgets
+with its own software rasterizer. Where SleelaUI(TM) behaves like other modern
+toolkits (a box layout model, a themed widget set, a focus ring), that is
+because it targets the same *observable behaviour* and well-known interaction
+patterns — behaviour and interfaces are not themselves copyrightable, but source
+code is, and none was taken.
+
+Platform backends use only each operating system's own public, system-provided
+APIs:
+
+  * Linux / Unix ... X11 (Xlib), with FreeType and Fontconfig for fonts.
+  * macOS .......... AppKit (Cocoa), with Core Text and Core Graphics.
+  * Windows 10+ .... Win32 (user32 / gdi32), with GDI for fonts.
+
+These are the platforms' native system libraries, linked and called through
+their documented interfaces; no third-party UI toolkit is used or vendored.
+
+In short: brand what you authored. This is authored.
+
+— SleelaUI(TM) · MEARVK LLC · 2026
