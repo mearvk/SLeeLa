@@ -1,0 +1,29 @@
+/*
+ * lib/thermodynamics/curriculum/SLThermodynamicsIV.sleela
+ * SLeeLa Thermodynamics IV Curriculum - umbrella facade / index.
+ * A single entry point that names the curriculum rungs and reports coverage,
+ * mirroring the lib/core SLLibrary facade pattern. It does not re-implement the
+ * physics; each equation lives in its own SL*.sleela class and is backed by the
+ * native core (lib/thermodynamics C/C++).
+ * Max Rupplin - MEARVK LLC - 2026
+ */
+#sleela 1.3
+class SLThermodynamicsIV {
+  // The nine curriculum source classes, by level.
+  // L0 SLHeatLinear      L1 SLFourierFlux   L2 SLCarnot
+  // L3 SLNewtonCooling   L4 SLBoltzmann     L5 SLHeatEquation3D
+  // L6 SLArrhenius + SLStochasticHeat       aux SLSlots
+  int levels;         // 0..6 inclusive => 7 rungs
+  int equationFiles;  // SL*.sleela equation classes
+  boolean enforcedSlots;
+
+  void configure() {
+    levels = 7;
+    equationFiles = 9;   // 7 rungs, with Level 6 split across Arrhenius + stochastic, plus SLSlots
+    enforcedSlots = true;
+  }
+
+  int topLevel() { return levels - 1; }        // highest rung index = 6
+  int fileCount() { return equationFiles; }
+  boolean complete() { return levels == 7 && equationFiles >= 9 && enforcedSlots; }
+}

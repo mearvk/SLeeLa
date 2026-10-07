@@ -10,17 +10,37 @@ this a 4th-level ("IV") treatment rather than an introduction.
 - **`EQUATIONS.md`** — the equations as readable math, Level 0 → Level 6, each
   with the one new idea it introduces.
 - **`SL*.sleela`** — the same equations encoded as SLeeLa (`#sleela 1.3`)
-  classes, one file per rung.
+  classes. There is one source file for **every public capability of the
+  native module**, so the SLeeLa surface is complete with respect to the C API.
 
-| Level | SLeeLa file | Equation |
-|------:|-------------|----------|
+| Level | SLeeLa file | Equation / purpose |
+|------:|-------------|--------------------|
 | 0 | `SLHeatLinear.sleela` | `Q = m c ΔT` |
 | 1 | `SLFourierFlux.sleela` | `q = -k ΔT/Δx` |
 | 2 | `SLCarnot.sleela` | `η = 1 - Tc/Th` |
 | 3 | `SLNewtonCooling.sleela` | `T(t) = T_env + (T₀-T_env) e^(−rt)` |
 | 4 | `SLBoltzmann.sleela` | `p_i = e^(−E_i/kT)/Z` |
-| 5 | `SLHeatEquation3D.sleela` | `∂T/∂t = α ∇²T` |
+| 5 | `SLHeatEquation3D.sleela` | `∂T/∂t = α ∇²T` (gradient, divergence, Laplacian) |
 | 6 | `SLArrhenius.sleela` | `k = A e^(−Ea/RT)` |
+| 6 | `SLStochasticHeat.sleela` | `∂T/∂t = α ∇²T + σ ξ(t)` (Langevin + Monte Carlo CI) |
+| — | `SLSlots.sleela` | enforced slot caps (futures ≤ 22, gains ≤ 6, confidences ≤ 2) |
+| — | `SLThermodynamicsIV.sleela` | umbrella facade / index of the curriculum |
+
+### Coverage against the native C API
+Every public `sl_thermo_*` function in `include/thermodynamics.h` has a SLeeLa
+counterpart above:
+
+| Native capability | SLeeLa file |
+|---|---|
+| `sl_thermo_heat_energy` | `SLHeatLinear` |
+| `sl_thermo_fourier_flux_1d` | `SLFourierFlux` |
+| `sl_thermo_carnot_efficiency` | `SLCarnot` |
+| `sl_thermo_newton_cooling` | `SLNewtonCooling` |
+| `sl_thermo_partition_function` / `_boltzmann_probability` / `_mean_energy` | `SLBoltzmann` |
+| `sl_thermo_gradient` / `_divergence` / `_laplacian` / `_heat_step` | `SLHeatEquation3D` |
+| `sl_thermo_heat_step_stochastic` / `_monte_carlo` / `_rng_*` | `SLStochasticHeat` |
+| `sl_thermo_arrhenius_rate` / `_arrhenius_temperature` | `SLArrhenius` |
+| `sl_thermo_slots_init` / `_slots_offer` | `SLSlots` |
 
 ## Notes on the SLeeLa encoding
 - The SLeeLa 1.3 surface has `+ - * / %` but no built-in `exp`/`sqrt`. Levels

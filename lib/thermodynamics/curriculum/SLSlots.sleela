@@ -1,0 +1,55 @@
+/*
+ * lib/thermodynamics/curriculum/SLSlots.sleela
+ * SLeeLa Thermodynamics IV Curriculum - enforced slot caps.
+ * Encodes the design assumptions recorded in MATH.KNOWNS.md and enforced by the
+ * native core (C: sl_thermo_slots_init / sl_thermo_slots_offer):
+ *   - futures:                 at most 22  (hard cap; further offers rejected)
+ *   - positive gains:          at most 6   (keep the strongest)
+ *   - long-term confidences:   at most 2   (keep the highest)
+ *
+ * This class holds the caps as fields and the acceptance logic expressible in
+ * pure SLeeLa. The authoritative sorted storage lives in the native collector.
+ * Max Rupplin - MEARVK LLC - 2026
+ */
+#sleela 1.3
+class SLSlots {
+  int futuresMax;              // 22
+  int positiveGainsMax;        // 6
+  int longTermConfidencesMax;  // 2
+  int futureCount;
+  int positiveCount;
+  int longTermCount;
+  double baseline;             // a future "gains" if its value exceeds this
+
+  void configure(double base) {
+    futuresMax = 22;
+    positiveGainsMax = 6;
+    longTermConfidencesMax = 2;
+    futureCount = 0;
+    positiveCount = 0;
+    longTermCount = 0;
+    baseline = base;
+  }
+
+  // Hard cap: a new future is admissible only while below the futures cap.
+  boolean canAcceptFuture() { return futureCount < futuresMax; }
+
+  // Record one future offer. Returns true if the future slot accepted it.
+  boolean offer(double value, double confidence, double longTermThreshold) {
+    if (confidence < 0.0 || confidence > 1.0) { return false; }
+    if (futureCount >= futuresMax) { return false; }   // hard cap enforced
+    futureCount = futureCount + 1;
+
+    // Positive gain: value strictly above baseline, up to the gains cap.
+    if (value > baseline) {
+      if (positiveCount < positiveGainsMax) { positiveCount = positiveCount + 1; }
+    }
+    // Long-term confidence: at/above threshold, up to the confidences cap.
+    if (confidence >= longTermThreshold) {
+      if (longTermCount < longTermConfidencesMax) { longTermCount = longTermCount + 1; }
+    }
+    return true;
+  }
+
+  boolean futuresFull() { return futureCount >= futuresMax; }
+}

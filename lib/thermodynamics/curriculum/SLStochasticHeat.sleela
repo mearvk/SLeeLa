@@ -1,0 +1,62 @@
+/*
+ * lib/thermodynamics/curriculum/SLStochasticHeat.sleela
+ * SLeeLa Thermodynamics IV Curriculum - Level 6: stochastic heat equation.
+ * Definition:
+ *   dT/dt = alpha * lap(T) + sigma * xi(t)        (Langevin form)
+ * The deterministic heat equation (Level 5) plus a Gaussian white-noise term
+ * xi(t). The solution is no longer one curve but a distribution of futures,
+ * summarized by Monte Carlo as mean +/- a confidence interval.
+ *
+ * SLeeLa 1.3 has no PRNG or sqrt/exp builtins, so the authoritative stochastic
+ * stepper and Monte Carlo driver live in the native core
+ * (C: sl_thermo_heat_step_stochastic, sl_thermo_monte_carlo, sl_thermo_rng_*).
+ * This class carries the parts expressible in pure SLeeLa: the deterministic
+ * drift update, the noise-amplitude scaling, and the confidence-interval
+ * arithmetic used to "sort futures" into a summary.
+ * Max Rupplin - MEARVK LLC - 2026
+ */
+#sleela 1.3
+class SLStochasticHeat {
+  double alpha;  // thermal diffusivity m^2/s
+  double sigma;  // noise amplitude
+  void configure(double a, double s) { alpha = a; sigma = s; }
+
+  // Deterministic drift part of one FTCS step: alpha * dt * laplacian.
+  double driftStep(double laplacian, double dt) {
+    return alpha * dt * laplacian;
+  }
+
+  // The per-step noise standard deviation is sigma * sqrt(dt). SLeeLa 1.3 has
+  // no sqrt builtin; this Newton-iteration helper computes it so the class is
+  // self-contained (native path is authoritative for production).
+  double sqrtApprox(double x) {
+    if (x <= 0.0) { return 0.0; }
+    double g = x;
+    int n = 0;
+    while (n < 40) { g = 0.5 * (g + x / g); n = n + 1; }
+    return g;
+  }
+
+  // Noise scale applied to a standard-normal draw to form the kick for a step.
+  double noiseScale(double dt) {
+    return sigma * sqrtApprox(dt);
+  }
+
+  // Full stochastic update for one node: drift + a supplied normal sample z.
+  // (z is produced by the native PRNG; passed in here so the equation is whole.)
+  double stepNode(double center, double laplacian, double dt, double z) {
+    return center + driftStep(laplacian, dt) + noiseScale(dt) * z;
+  }
+
+  // Monte Carlo summary: 95% CI half-width = 1.96 * stdDev / sqrt(n).
+  double ci95HalfWidth(double stdDev, int n) {
+    if (n <= 0) { return 0.0; }
+    double rootN = sqrtApprox(n);
+    return 1.96 * stdDev / rootN;
+  }
+
+  boolean stable(double h, double dt) {
+    if (alpha <= 0.0) { return false; }
+    return dt <= (h * h) / (6.0 * alpha);
+  }
+}
