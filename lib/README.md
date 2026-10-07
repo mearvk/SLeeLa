@@ -20,6 +20,41 @@ Families: `core/`, `collections/`, `text/`, `io/`, `vm/`, `os/`, `net/`, `securi
 The standard-library target is **2,048 object types**. This is an architectural target, not a claim that all 2,048 objects are implemented today.
 
 **SLeeLa — MEARVK LLC — 2026**
+
+## Cross-platform support — Windows 10+, macOS, and Linux
+
+Every `/lib` package runs on **Windows 10+**, **macOS** (Darwin), and **Linux**.
+This is the project's best offer to customers: one SLeeLa source library, the
+same on all three desktop platforms.
+
+Portability is structural, not per-package. A `/lib` class is either pure SLeeLa
+(inherently portable) or it crosses the **explicit VM/OS bridge**, and that
+bridge resolves to the genuine host System API for whatever OS the program runs
+on — the OS-aware abstraction layer in [`impl/core`](../impl/core) with POSIX
+(Linux/macOS) and Win32 (Windows) backends. The runtime reports its native
+backend as `linux`, `macos`, or `windows`. Because every bridged facility
+(threads, sockets, files, pipes/named-pipes, paths, terminal, dynamic libraries,
+time, process, and the OS namespace/identity services) has all three backends,
+no `/lib` package is single-platform.
+
+Where the platforms genuinely differ (shells, path/list separators, directory
+layout, permission/ACL vs. mode-bit models, signals vs. `TerminateProcess`), the
+`os/` package makes those differences explicit rather than hiding them:
+
+- **General, write-once classes** — `SLOperatingSystem`, `SLEnvironment`,
+  `SLProcess`, `SLFileSystem`, `SLFile`, `SLDirectory`, `SLPath`,
+  `SLPermissions`, `SLClock`, `SLEventSignal` — expose the portable intersection
+  and run identically on all three OSes.
+- **OS-specific flavor classes** — `SLWindowsOS`, `SLMacOS`, `SLLinuxOS` — expose
+  each platform's native idioms (cmd.exe / PowerShell / `%USERPROFILE%` /
+  `%APPDATA%` on Windows; `open(1)` / `~/Library` / Homebrew on macOS; `/bin/sh` /
+  XDG / the FHS roots on Linux). Each has `isHost()` so a program can branch
+  safely.
+
+See [`os/OS.md`](os/OS.md) for the full host OS surface, and the repository
+[`README.md`](../README.md#status--platform-support) platform table (each OS is
+built in CI: `build-linux.yml`, `build-macos.yml`, `build-windows.yml`).
+
 ## Library discovery
 
 The /lib tree is recursively indexed by the compiler and Nordshrift loader. Current canonical collection: **83 package families / 10,291 .sleela source classes / 55 `SLPackage.sleela` module facades / 10,346 total symbol records** (verified filesystem count via `tools/generate-library-symbols.py`, reconciled with `CLASS.INVENTORY.md` Revision 2.2). See `LIBRARY.SYMBOLS.md` for the complete collection.
@@ -35,6 +70,22 @@ The `opcodes` family expresses the canonical SLeeLa VM instruction set as one SL
 The `opcodes/governance` sub-family adds procedural discretion over opcode execution so programs are not run raw into the VM without consideration: a **Registrar** considers a program A→B *before* it runs, a **Listener** confirms the admitted sequence fits the live VM program *during*, and an **Event Observer** judges the whole as a musical, ordered process *after* — weighing base concepts (straightness, linear reals, outright goals, ethics/norms, finalization, times-upon-counts, final goals) and emitting graded verdicts (admit / warn / patch / pause-as-unrest / reject), including fault patching via known symbol maps. SLeeLa and the VM both listen for ordering at the BEFORE/DURING/AFTER phases through `native/src/sleela_gov.cpp`. See `opcodes/governance/GOVERNANCE.md`.
 
 The `opcodes/running` sub-family adds richer ways to run opcodes beyond a flat stream: **grouping** (`SLOpcodeGroup`, `SLOpcodeGroupSet`) runs cohesive clusters as units; a **conditional-reactive** layer (`SLOpcodeCondition`, `SLOpcodeConditionalReactive`, `SLOpcodeReactorBank`) reacts to VM/program signals by warming, gating, running, or skipping a group on its rising edge; and **warming** (`SLOpcodeWarmer`) pre-arms and pre-stages hot paths. These compose with the governance series and use two added bridge primitives (`sleela_opcode_signal`, `sleela_opcode_prestage`). See `opcodes/running/RUNNING.md`.
+
+## Compiler — modular multi-language framework
+
+The `/lib/compiler` package is a **modular framework for building compilers for
+any publicly known programming language**. A developer adds a language by
+writing one small SLeeLa front end that extends the language-neutral
+`SLLanguageCompiler` contract; many independent front ends register into one
+shared `SLCompilerRegistry` with no per-language allow-list. Each front end
+lowers its own language toward the common SLeeLa IR and onward to a VM-ready
+artifact. Shipped reference front ends under `compiler/frontends/<lang>/` cover
+C, C++, Java, Python, JavaScript, Rust, and Go — spanning native, JVM, and
+scripting families. The framework identifies, plans, and reports only; it never
+executes an input program (compilation is not execution). Its native support —
+a C ABI, a C++ orchestration facade, the `.sleela` VM/OS bridge, and a
+behavioral self-test — builds and runs on Windows 10+, macOS, and Linux. See
+`compiler/MULTI-LANGUAGE.FRAMEWORK.md`.
 
 ## Decompiler
 

@@ -45,6 +45,21 @@ terminal, dynamic libraries, time) go through the OS-aware abstraction layer in
 native backend as `linux`, `macos`, or `windows`. The Makefile auto-detects the
 host and adjusts link flags per platform.
 
+**The whole standard library follows the same guarantee.** Every package in
+[`lib/`](lib/) runs on **Windows 10+**, **macOS**, and **Linux** — the project's
+best offer to customers is one SLeeLa source library, identical on all three
+desktop platforms. A `/lib` class is either pure SLeeLa (inherently portable) or
+it crosses the explicit VM/OS bridge, which resolves to the genuine host System
+API through the three `impl/core` backends, so no `/lib` package is
+single-platform. The [`lib/os/`](lib/os/) package drives the **real** host OS
+through one portable surface: general write-once classes (`SLOperatingSystem`,
+`SLEnvironment`, `SLProcess`, `SLFileSystem`, `SLPath`, `SLClock`, …) expose the
+portable intersection, while the OS-specific flavor classes `SLWindowsOS`,
+`SLMacOS`, and `SLLinuxOS` expose each platform's native idioms (cmd.exe /
+PowerShell and `%APPDATA%`; `open(1)` and `~/Library` / Homebrew; `/bin/sh` and
+the FHS roots) with an `isHost()` guard. See [`lib/os/OS.md`](lib/os/OS.md) and
+the cross-platform statement in [`lib/README.md`](lib/README.md#cross-platform-support--windows-10-macos-and-linux).
+
 **Recent hardening and correctness work** (see [`ARCHITECTURE.md`](markdown/ARCHITECTURE.md)):
 
 - **Security:** the `sleela defender` provisioning path now requires explicit
@@ -110,6 +125,20 @@ host and adjusts link flags per platform.
 - [`sleela-scripting/`](sleela-scripting/) provides **Demesresmes™**, the SLeeLa scientific scripting language. Demesresmes™ uses `.sleela-script` sources and the unified configuration root, with a versioned mathematical/physics/chemistry/engineering constants registry in JSON and XML under [`sleela-scripting/constants/`](sleela-scripting/constants/). See [`sleela-scripting/CONSTANTS.md`](sleela-scripting/CONSTANTS.md) for canonical lookup names, provenance, exactness, units, and registry revision rules.
 - [`COMPILER.md`](markdown/COMPILER.md) describes the Sleela compiler — its pipeline,
   version awareness (the `#sleela` pragma), and the versions it implements.
+- [`lib/compiler/`](lib/compiler/) is a **modular framework for building
+  compilers for any publicly known programming language**. A developer adds a
+  language by writing one small SLeeLa front end that extends the
+  language-neutral `SLLanguageCompiler` contract; many independent front ends
+  register into one shared `SLCompilerRegistry` with no per-language allow-list,
+  each lowering its own language toward the common SLeeLa IR and onward to a
+  VM-ready artifact. Shipped reference front ends under
+  [`lib/compiler/frontends/`](lib/compiler/frontends/) cover C, C++, Java,
+  Python, JavaScript, Rust, and Go — spanning native, JVM, and scripting
+  families. The framework identifies, plans, and reports only; it never executes
+  an input program (compilation is not execution), and its native support (C ABI,
+  C++ orchestration facade, the `.sleela` VM/OS bridge, and a behavioral
+  self-test) builds and runs on Windows 10+, macOS, and Linux. See
+  [`lib/compiler/MULTI-LANGUAGE.FRAMEWORK.md`](lib/compiler/MULTI-LANGUAGE.FRAMEWORK.md).
 - [`SOURCE.md`](markdown/SOURCE.md) describes the Sleela source file (the `.sleela`
   **Wrapper™**) and its characteristics.
 - [`NORDSHRIFT.md`](markdown/NORDSHRIFT.md) gives the overview of the `.sst` transpiler
