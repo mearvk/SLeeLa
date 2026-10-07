@@ -143,6 +143,45 @@ double sl_thermo_arrhenius_rate(double a_factor, double activation_energy, doubl
  *   T = -Ea / (R * ln(k / A)).  Returns a negative value if inputs are invalid. */
 double sl_thermo_arrhenius_temperature(double rate, double a_factor, double activation_energy);
 
+/* ---- Slot caps: enforced capacity limits -------------------------------- *
+ * The design assumptions recorded in MATH.KNOWNS.md, now enforced in code.
+ * A sl_thermo_slots collector sorts simulated futures and classifies each one,
+ * holding at most FUTURES_MAX futures, POSITIVE_GAINS_MAX of them that improve
+ * on a baseline, and LONG_TERM_CONFIDENCES_MAX high-confidence long-term ones.
+ */
+#define SL_THERMO_FUTURES_MAX              22u  /* sort all futures: <= 22 */
+#define SL_THERMO_POSITIVE_GAINS_MAX        6u  /* positive gains:   <= 6  */
+#define SL_THERMO_LONG_TERM_CONFIDENCES_MAX 2u  /* long-term/conf.:  <= 2  */
+
+typedef struct {
+    double   futures[SL_THERMO_FUTURES_MAX];               /* kept sorted ascending */
+    size_t   future_count;
+    double   positive_gains[SL_THERMO_POSITIVE_GAINS_MAX]; /* values above baseline */
+    size_t   positive_count;
+    double   long_term[SL_THERMO_LONG_TERM_CONFIDENCES_MAX];/* top long-term confidences */
+    size_t   long_term_count;
+    double   baseline;   /* a future "gains" if its value exceeds this */
+} sl_thermo_slots;
+
+/* Initialize an empty collector with the baseline used to judge positive gains. */
+void sl_thermo_slots_init(sl_thermo_slots *s, double baseline);
+
+/* Offer one future (e.g. a Monte Carlo outcome) with an associated confidence
+ * in [0,1]. The collector:
+ *   - inserts the value into the sorted futures slot (rejected when full),
+ *   - if value > baseline, records it as a positive gain (rejected when full),
+ *   - if it is long-term confident (confidence >= threshold), keeps it among
+ *     the top LONG_TERM_CONFIDENCES_MAX by confidence.
+ * Returns:
+ *    0  accepted into the futures slot (and classified)
+ *    1  bad arguments (null s, confidence out of [0,1])
+ *    2  futures slot is full (cap reached) — value not stored
+ * The positive-gains and long-term slots never overflow; when full they keep
+ * only the best entries and silently drop weaker ones (reported via the
+ * *_dropped counters queryable through the struct's counts). */
+int sl_thermo_slots_offer(sl_thermo_slots *s, double value, double confidence,
+                          double long_term_threshold);
+
 #ifdef __cplusplus
 }
 #endif

@@ -25,9 +25,14 @@ These are the "slots for the numbers we've given." They are upper bounds
 Notes:
 - These are stated assumptions. No physical derivation backs the specific
   values; they define how many entries each category is allowed to hold.
-- Nothing in the compiled code enforces these yet — they are documented here as
-  design knowns. If you want them enforced in code, say so and they can become
-  real constants/guards.
+- **These caps are now enforced in code.** They are defined as the macros
+  `SL_THERMO_FUTURES_MAX` (22), `SL_THERMO_POSITIVE_GAINS_MAX` (6), and
+  `SL_THERMO_LONG_TERM_CONFIDENCES_MAX` (2) in `include/thermodynamics.h`, and
+  applied by the `sl_thermo_slots` collector (`src/thermo_slots.c`):
+  - the futures slot is a **hard cap** — the 23rd offer is rejected (code 2);
+  - the positive-gains and long-term slots are **keep-the-best caps** — they
+    retain the strongest entries up to the limit.
+  The self-test `src/slots_demo.c` asserts each cap holds.
 
 ---
 
