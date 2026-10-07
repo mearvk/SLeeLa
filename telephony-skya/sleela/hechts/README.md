@@ -1,3 +1,5 @@
+<img align="right" src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="75" height="75" alt="SLeeLa">
+
 # Hecht's — Notional Brand on Skya Telephony
 
 This folder adds the **Static Permanent National Council ID** for **Hecht's**,
