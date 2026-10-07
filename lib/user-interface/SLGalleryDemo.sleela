@@ -1,0 +1,96 @@
+/*
+ * lib/user-interface/SLGalleryDemo.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLGalleryDemo — a worked, runnable example that builds a
+ *   complete Slick Black window from pure SLeeLa source using the
+ *   /lib/user-interface classes. It opens an application, raises a window with a
+ *   header bar and the full control set (label, entry, suggested/destructive
+ *   buttons, toggle, slider, separator, a disabled button, a status line), and
+ *   runs the toolkit's event loop. It is the SLeeLa-source twin of the native C
+ *   gallery in /user-interface/examples/gallery.c, proving the toolkit is fully
+ *   usable from the language itself.
+ *
+ * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
+ * bridge.
+ */
+#sleela 1.5
+class SLGalleryDemo {
+  SLUserInterface ui;
+  SLWindow win;
+  SLButton save;
+  SLToggle dark;
+  SLSlider opacity;
+
+  // Build the whole interface and return the application exit code.
+  int run() {
+    ui = new SLUserInterface();
+    ui.configure("com.mearvk.SleelaUI.Gallery");
+    if (!ui.open()) { return 1; }    // no display (e.g. headless X11)
+
+    // The Slick Black default theme (pass -1 to openWindow for it, or build it
+    // explicitly so a program could customise it first).
+    SLTheme theme = new SLTheme();
+    theme.slickBlack();
+
+    win = ui.openWindow("SleelaUI Gallery - MEARVK LLC", 520, 460,
+                        theme.handle());
+    SLWidget root = win.rootWidget();
+
+    // Header bar: brand on the left, a settings action on the right.
+    SLHeaderBar header = new SLHeaderBar();
+    header.createIn(root);
+    header.setSizeRequest(0, 44);
+    SLLabel brand = new SLLabel();
+    brand.createIn(header, "SleelaUI");
+    brand.setMargin(0, 0, 0, 12);
+    brand.setAlign(SLWidget.ALIGN_START, SLWidget.ALIGN_CENTER);
+    SLSpacer headSpace = new SLSpacer();
+    headSpace.createIn(header);
+    SLButton gear = new SLButton();
+    gear.createIn(header, "Settings");
+    gear.setMargin(6, 12, 6, 0);
+
+    // Content column.
+    SLBox content = new SLBox();
+    content.vertical(root, 12);
+    content.setMarginAll(20);
+    content.setExpand(true, true);
+
+    SLLabel heading = new SLLabel();
+    heading.createIn(content, "Slick Black controls");
+    heading.setAlign(SLWidget.ALIGN_START, SLWidget.ALIGN_START);
+
+    SLEntry entry = new SLEntry();
+    entry.createIn(content, "Type here");
+    entry.setExpand(true, false);
+
+    // A row of actions: one suggested (accent), one destructive.
+    SLBox row = new SLBox();
+    row.horizontal(content, 8);
+    save = new SLButton();
+    save.createIn(row, "Save");
+    save.setSuggested(true);
+    SLButton discard = new SLButton();
+    discard.createIn(row, "Discard");
+    discard.setDestructive(true);
+    SLSpacer rowSpace = new SLSpacer();
+    rowSpace.createIn(row);
+
+    dark = new SLToggle();
+    dark.createIn(content, "Dark mode", true);
+
+    opacity = new SLSlider();
+    opacity.createIn(content, 0.0, 100.0, 72.0);
+    opacity.setExpand(true, false);
+
+    SLSeparator rule = new SLSeparator();
+    rule.horizontal(content);
+
+    SLButton disabled = new SLButton();
+    disabled.createIn(content, "Unavailable action");
+    disabled.setSensitive(false);
+
+    win.show();
+    return ui.run();
+  }
+}

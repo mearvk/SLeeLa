@@ -1,0 +1,24 @@
+/*
+ * lib/user-interface/SLSpacer.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLSpacer — a SleelaUI flexible gap: an invisible,
+ *   zero-natural-size child that expands to absorb surplus space along its box's
+ *   main axis. It is the idiom for pushing a control to the far edge of a box
+ *   (e.g. a settings gear to the right of a header bar). The constructor bottoms
+ *   out in the `uiSpacer` built-in, which calls the SleelaUI C ABI slui_spacer().
+ *
+ * An SLSpacer IS an SLWidget but has no painted content; it only consumes space.
+ *
+ * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
+ * bridge.
+ */
+#sleela 1.5
+class SLSpacer extends SLWidget {
+  // Create a flexible spacer inside `parent`.
+  void createIn(SLWidget parent) {
+    widget = uiSpacer(parent.handle());
+  }
+  void createInHandle(int parentHandle) {
+    widget = uiSpacer(parentHandle);
+  }
+}

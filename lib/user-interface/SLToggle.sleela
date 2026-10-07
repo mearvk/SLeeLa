@@ -1,0 +1,39 @@
+/*
+ * lib/user-interface/SLToggle.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLToggle — a SleelaUI toggle switch: a pill track with a
+ *   sliding knob and a trailing label. On uses the theme accent; off uses a
+ *   neutral surface with a hairline. Flipping it (click, or Enter/Space while
+ *   focused) raises an activate event and updates the boolean state. The
+ *   constructor bottoms out in the `uiToggle` built-in (SleelaUI C ABI
+ *   slui_toggle()); the state is read/written through isOn()/setOn().
+ *
+ * An SLToggle IS an SLWidget and is keyboard-focusable.
+ *
+ * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
+ * bridge.
+ */
+#sleela 1.5
+class SLToggle extends SLWidget {
+  // Create a toggle inside `parent` with a label and initial state.
+  void createIn(SLWidget parent, String label, boolean initialOn) {
+    widget = uiToggle(parent.handle(), label, initialOn ? 1 : 0);
+  }
+  void createInHandle(int parentHandle, String label, boolean initialOn) {
+    widget = uiToggle(parentHandle, label, initialOn ? 1 : 0);
+  }
+
+  boolean isOn() {
+    if (widget < 0) { return false; }
+    return uiWidgetGetToggle(widget) == 1;
+  }
+  void setOn(boolean on) {
+    if (widget >= 0) { uiWidgetSetToggle(widget, on ? 1 : 0); }
+  }
+
+  // True if the toggle flipped since the last check (latch cleared on read).
+  boolean changed() {
+    if (widget < 0) { return false; }
+    return uiWidgetTakeActivated(widget) == 1;
+  }
+}

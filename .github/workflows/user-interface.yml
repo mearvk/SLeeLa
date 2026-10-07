@@ -1,0 +1,89 @@
+name: Build SleelaUI toolkit
+
+# Proves SLeeLa's own cross-platform User Interface toolkit (user-interface/)
+# builds its native backend on every modern desktop OS and that the portable
+# core passes the headless smoke test everywhere:
+#   * Linux   -> X11 backend   (Xlib + FreeType + Fontconfig)
+#   * macOS   -> Cocoa backend (AppKit + Core Text)
+#   * Windows -> Win32 backend (MinGW-w64, gdi32/user32)
+# The headless backend has no window-system dependency, so the smoke test runs
+# on all three runners with no display.
+
+on:
+  push:
+    paths:
+      - 'user-interface/**'
+      - '.github/workflows/user-interface.yml'
+  pull_request:
+    paths:
+      - 'user-interface/**'
+      - '.github/workflows/user-interface.yml'
+  workflow_dispatch:
+
+jobs:
+  linux:
+    name: Linux (X11 backend)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: user-interface
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install X11, FreeType, and Fontconfig development packages
+        run: sudo apt-get update && sudo apt-get install -y libx11-dev libfreetype-dev libfontconfig-dev
+      - name: Show toolchain
+        run: { g++ --version | head -1; make --version | head -1; }
+      - name: Build the toolkit (X11 backend)
+        run: make clean all
+      - name: Build the gallery example
+        run: make example
+      - name: Headless smoke test
+        run: make smoke
+      - name: Confirm the X11 backend was selected
+        run: make help | grep -qi "backend auto-detected: linux"
+
+  macos:
+    name: macOS (Cocoa backend)
+    runs-on: macos-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: user-interface
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build the toolkit (Cocoa backend)
+        run: make clean all
+      - name: Build the gallery example
+        run: make example
+      - name: Headless smoke test
+        run: make smoke
+      - name: Confirm the Cocoa backend was selected
+        run: make help | grep -qi "backend auto-detected: macos"
+
+  windows:
+    name: Windows 10+ (Win32 backend, MinGW)
+    runs-on: windows-latest
+    timeout-minutes: 25
+    defaults:
+      run:
+        shell: msys2 {0}
+        working-directory: user-interface
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up MSYS2 / MinGW-w64
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: UCRT64
+          update: true
+          install: >-
+            make
+            mingw-w64-ucrt-x86_64-gcc
+      - name: Build the toolkit (Win32 backend)
+        run: make clean all
+      - name: Build the gallery example
+        run: make example
+      - name: Headless smoke test
+        run: make smoke
+      - name: Confirm the Win32 backend was selected
+        run: make help | grep -qi "backend auto-detected: windows"

@@ -1,0 +1,39 @@
+/*
+ * lib/user-interface/SLSlider.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLSlider — a SleelaUI horizontal slider: a thin trough
+ *   with an accent fill up to the current value and a round knob, draggable with
+ *   the pointer or nudgeable with the arrow keys when focused. The constructor
+ *   bottoms out in the `uiSlider` built-in (SleelaUI C ABI slui_slider());
+ *   the value is read/written through value()/setValue(), clamped to the
+ *   [min, max] range given at construction.
+ *
+ * An SLSlider IS an SLWidget and is keyboard-focusable.
+ *
+ * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
+ * bridge.
+ */
+#sleela 1.5
+class SLSlider extends SLWidget {
+  // Create a slider inside `parent` spanning [min, max] with an initial value.
+  void createIn(SLWidget parent, double min, double max, double value) {
+    widget = uiSlider(parent.handle(), min, max, value);
+  }
+  void createInHandle(int parentHandle, double min, double max, double value) {
+    widget = uiSlider(parentHandle, min, max, value);
+  }
+
+  double value() {
+    if (widget < 0) { return 0.0; }
+    return uiWidgetGetValue(widget);
+  }
+  void setValue(double value) {
+    if (widget >= 0) { uiWidgetSetValue(widget, value); }
+  }
+
+  // True if the value changed since the last check (latch cleared on read).
+  boolean changed() {
+    if (widget < 0) { return false; }
+    return uiWidgetTakeActivated(widget) == 1;
+  }
+}

@@ -1,0 +1,64 @@
+/*
+ * lib/user-interface/SLWindow.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLWindow — a top-level SleelaUI window opened from SLeeLa
+ *   source. It wraps the toolkit's window built-ins: uiWindowCreate (bound to
+ *   an application + theme), uiWindowShow/Hide, uiWindowSetTitle,
+ *   uiWindowRoot (the root container to add widgets to), uiWindowSetTheme, and
+ *   uiWindowRedraw. Underneath, the VM calls the SleelaUI C ABI, which creates
+ *   a real native window (X11/Cocoa/Win32) and paints it with the toolkit's own
+ *   software rasterizer, so the window looks identical on every platform.
+ *
+ * Lifecycle: configureOn(app, title, w, h, theme) is called by SLUserInterface;
+ * then show(), set the title, add widgets to root(), and the application's run
+ * loop drives it. A window is a VM-local handle (-1 = none).
+ *
+ * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
+ * bridge.
+ */
+#sleela 1.5
+class SLWindow {
+  int window;   // VM-local window handle (-1 = none)
+  int root;     // VM-local handle of the window's root container widget
+  String title;
+
+  // Called by SLUserInterface.openWindow(). themeHandle -1 selects the
+  // built-in Slick Black default theme.
+  void configureOn(int app, String windowTitle, int width, int height,
+                   int themeHandle) {
+    title = windowTitle;
+    window = uiWindowCreate(app, windowTitle, width, height, themeHandle);
+    root = (window >= 0) ? uiWindowRoot(window) : -1;
+  }
+
+  boolean valid() { return window >= 0; }
+
+  // The root container widget. Add boxes/controls to this to build the UI.
+  SLWidget rootWidget() {
+    SLBox box = new SLBox();
+    box.adopt(root);
+    return box;
+  }
+
+  // Raw root handle, for widget constructors that attach to a parent handle.
+  int rootHandle() { return root; }
+
+  void show() { if (window >= 0) { uiWindowShow(window); } }
+  void hide() { if (window >= 0) { uiWindowHide(window); } }
+
+  void setTitle(String t) {
+    title = t;
+    if (window >= 0) { uiWindowSetTitle(window, t); }
+  }
+  String windowTitle() { return title; }
+
+  // Swap the whole palette live (pass an SLTheme handle).
+  void setTheme(int themeHandle) {
+    if (window >= 0) { uiWindowSetTheme(window, themeHandle); }
+  }
+
+  // Ask the toolkit to repaint this window on the next turn.
+  void requestRedraw() { if (window >= 0) { uiWindowRedraw(window); } }
+
+  int handle() { return window; }
+}

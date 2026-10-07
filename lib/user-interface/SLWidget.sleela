@@ -1,0 +1,81 @@
+/*
+ * lib/user-interface/SLWidget.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLWidget — the base class for every SleelaUI control and
+ *   container reached from SLeeLa source. It holds the VM-local widget handle
+ *   and the common configuration the toolkit exposes on all widgets: margins,
+ *   alignment, expansion, a minimum size request, sensitivity (grey-out),
+ *   visibility, text, and the suggested/destructive accents. Each setter
+ *   bottoms out in a `ui*` built-in that calls the SleelaUI C ABI.
+ *
+ * Subclasses (SLBox, SLHeaderBar, SLLabel, SLButton, SLToggle, SLEntry,
+ * SLSlider, SLSeparator, SLSpacer) are constructed against a parent handle and
+ * then inherit all of this common configuration surface.
+ *
+ * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
+ * bridge.
+ */
+#sleela 1.5
+class SLWidget {
+  // Alignment ordinals (mirror SLUIAlign in the toolkit C ABI).
+  static final int ALIGN_START  = 0;
+  static final int ALIGN_CENTER = 1;
+  static final int ALIGN_END    = 2;
+  static final int ALIGN_FILL   = 3;
+
+  // Orientation ordinals (mirror SLUIOrientation).
+  static final int ORIENT_VERTICAL   = 0;
+  static final int ORIENT_HORIZONTAL = 1;
+
+  int widget;   // VM-local widget handle (-1 = none)
+
+  // Adopt an existing handle (used for the window's root container).
+  void adopt(int handle) { widget = handle; }
+  int handle() { return widget; }
+  boolean valid() { return widget >= 0; }
+
+  // ---- Box model: margin, alignment, expansion, minimum size -------------
+  void setMargin(int top, int right, int bottom, int left) {
+    if (widget >= 0) { uiWidgetMargin(widget, top, right, bottom, left); }
+  }
+  void setMarginAll(int all) { setMargin(all, all, all, all); }
+
+  void setAlign(int horizontal, int vertical) {
+    if (widget >= 0) { uiWidgetAlign(widget, horizontal, vertical); }
+  }
+  void setExpand(boolean horizontal, boolean vertical) {
+    if (widget >= 0) {
+      uiWidgetExpand(widget, horizontal ? 1 : 0, vertical ? 1 : 0);
+    }
+  }
+  void setSizeRequest(int minWidth, int minHeight) {
+    if (widget >= 0) { uiWidgetSizeRequest(widget, minWidth, minHeight); }
+  }
+
+  // ---- State -------------------------------------------------------------
+  void setSensitive(boolean sensitive) {
+    if (widget >= 0) { uiWidgetSensitive(widget, sensitive ? 1 : 0); }
+  }
+  void setVisible(boolean visible) {
+    if (widget >= 0) { uiWidgetVisible(widget, visible ? 1 : 0); }
+  }
+
+  // ---- Text (label / button / entry) -------------------------------------
+  void setText(String text) {
+    if (widget >= 0) { uiWidgetSetText(widget, text); }
+  }
+  String text() {
+    if (widget < 0) { return null; }
+    return uiWidgetGetText(widget);
+  }
+
+  // ---- Accents -----------------------------------------------------------
+  // Mark this as the SINGLE suggested (accent) action in its group.
+  void setSuggested(boolean suggested) {
+    if (widget >= 0) { uiWidgetSuggested(widget, suggested ? 1 : 0); }
+  }
+  // Mark this as destructive (uses the danger colour on hover).
+  void setDestructive(boolean destructive) {
+    if (widget >= 0) { uiWidgetDestructive(widget, destructive ? 1 : 0); }
+  }
+}

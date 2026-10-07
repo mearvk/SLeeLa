@@ -35,6 +35,7 @@ governed by the Sleela Language Metadocument (SL-META-0001).
 | [`markdown/`](markdown/) | Reference documentation (architecture, build, compiler, class/library inventories, subject domains, and more). |
 | [`examples/`](examples/) | Worked examples: XML subject models, Nordshrift `.sst` sheets (`examples/nordshrift/`), symmetry builds. |
 | [`xml-moment/`](xml-moment/) | XML + DTD interchange form for SLeeLa classes and SST/Nordshrift sheets (see the XML definition doc). |
+| [`user-interface/`](user-interface/) | **SleelaUI™ — SLeeLa's own original cross-platform UI toolkit.** C/C++ widget library with a software rasterizer and native backends (X11, Cocoa, Win32); default **Slick Black** theme. Not GTK/Qt. Build entry: `cd user-interface && make`. |
 | [`tools/`](tools/) | Generator and verification scripts (SHA-256 manifests, data generation, accuracy checks). |
 | [`test-suites/`](test-suites/) / [`tests/`](tests/) | Test harnesses (C, C++, negative, coverage) and project tests. |
 | [`scripts/`](scripts/) | Per-platform build/install helpers (`build-linux.sh`, `build-macos.sh`, …). |

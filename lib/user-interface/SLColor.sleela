@@ -1,0 +1,38 @@
+/*
+ * lib/user-interface/SLColor.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLColor — a straight-alpha colour value for SleelaUI,
+ *   packed as a single 0xRRGGBBAA word exactly as the toolkit's C ABI uses
+ *   (SLUIColor). It provides the rgb()/rgba() builders (mirroring slui_rgb /
+ *   slui_rgba) and channel accessors, so a SLeeLa program can compose a custom
+ *   theme palette without touching native code.
+ *
+ * SLColor is a pure value helper — it holds no VM handle and makes no `ui*`
+ * calls; it only packs/unpacks the integer the theme built-ins consume.
+ *
+ * Family: user-interface.
+ */
+#sleela 1.3
+class SLColor {
+  int packed;   // 0xRRGGBBAA
+
+  // Opaque colour from 8-bit channels.
+  void rgb(int r, int g, int b) { rgba(r, g, b, 255); }
+
+  // Colour with explicit alpha. Channels are masked to 0..255.
+  void rgba(int r, int g, int b, int a) {
+    int rr = r & 255;
+    int gg = g & 255;
+    int bb = b & 255;
+    int aa = a & 255;
+    packed = (rr * 16777216) + (gg * 65536) + (bb * 256) + aa;
+  }
+
+  int value() { return packed; }
+  void setValue(int word) { packed = word; }
+
+  int red()   { return (packed / 16777216) & 255; }
+  int green() { return (packed / 65536) & 255; }
+  int blue()  { return (packed / 256) & 255; }
+  int alpha() { return packed & 255; }
+}

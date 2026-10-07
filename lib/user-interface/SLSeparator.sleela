@@ -1,0 +1,28 @@
+/*
+ * lib/user-interface/SLSeparator.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLSeparator — a SleelaUI 1px hairline rule in the theme's
+ *   border colour, used to divide sections of a layout. It can be horizontal
+ *   (a full-width rule in a vertical box) or vertical (a full-height rule in a
+ *   horizontal box). The constructor bottoms out in the `uiSeparator` built-in,
+ *   which calls the SleelaUI C ABI slui_separator().
+ *
+ * An SLSeparator IS an SLWidget but is non-interactive and non-focusable.
+ *
+ * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
+ * bridge.
+ */
+#sleela 1.5
+class SLSeparator extends SLWidget {
+  // Create a separator inside `parent`. orientation is ORIENT_HORIZONTAL
+  // (a horizontal rule) or ORIENT_VERTICAL (a vertical rule).
+  void createIn(SLWidget parent, int orientation) {
+    widget = uiSeparator(parent.handle(), orientation);
+  }
+  void createInHandle(int parentHandle, int orientation) {
+    widget = uiSeparator(parentHandle, orientation);
+  }
+
+  void horizontal(SLWidget parent) { createIn(parent, ORIENT_HORIZONTAL); }
+  void vertical(SLWidget parent)   { createIn(parent, ORIENT_VERTICAL); }
+}

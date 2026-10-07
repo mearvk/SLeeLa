@@ -1,0 +1,76 @@
+/*
+ * lib/user-interface/SLUserInterface.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLUserInterface — the capstone facade of the
+ *   /lib/user-interface family. It is the single object a developer reaches for
+ *   to open a window and build a graphical interface from SLeeLa source using
+ *   SleelaUI™, SLeeLa's OWN original cross-platform UI toolkit (not GTK/Qt).
+ *   Every method bottoms out in a `ui*` SLVM built-in that calls the GENUINE
+ *   SleelaUI C ABI (include/sleela_ui.h) — which in turn drives the real host
+ *   window system: X11 on Linux/Unix, Cocoa on macOS, Win32 on Windows 10+.
+ *   So the same SLeeLa program raises a real window on whichever platform runs
+ *   it, with the signature Slick Black look identical on all three.
+ *
+ * This is the general entry point: create the application, open a window, hand
+ * back its root container, then run the toolkit's event loop. The individual
+ * widget classes (SLButton, SLLabel, …) build on the same `ui*` built-ins.
+ *
+ * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
+ * bridge, the same discipline as /lib/os's `os*` bridge.
+ */
+#sleela 1.5
+class SLUserInterface {
+  // Backend ordinals (mirror SLUIBackend in the toolkit C ABI).
+  static final int BACKEND_UNKNOWN = 0;
+  static final int BACKEND_WIN32   = 1;
+  static final int BACKEND_COCOA   = 2;
+  static final int BACKEND_X11     = 3;
+
+  String appId;      // application identifier, e.g. "com.mearvk.App"
+  int app;           // VM-local application handle (-1 = none)
+
+  void configure(String id) { appId = id; app = -1; }
+
+  // Create the SleelaUI application connection (opens the host display).
+  // Returns true if the toolkit came up (false if, e.g., no display on X11).
+  boolean open() {
+    app = uiAppCreate(appId);
+    return app >= 0;
+  }
+
+  boolean active() { return app >= 0; }
+
+  // The window-system backend driving this process: "x11" / "cocoa" / "win32".
+  String backend() { return uiBackendName(uiBackend()); }
+  int backendId()  { return uiBackend(); }
+  String version() { return uiVersion(); }
+
+  boolean isLinux()   { return uiBackend() == BACKEND_X11; }
+  boolean isMac()     { return uiBackend() == BACKEND_COCOA; }
+  boolean isWindows() { return uiBackend() == BACKEND_WIN32; }
+
+  // Open a window on this application. title/width/height describe the content
+  // area; theme is an SLTheme handle (pass -1 for the Slick Black default).
+  // Returns an SLWindow bound to the new native window.
+  SLWindow openWindow(String title, int width, int height, int themeHandle) {
+    SLWindow w = new SLWindow();
+    w.configureOn(app, title, width, height, themeHandle);
+    return w;
+  }
+
+  // Run the toolkit's own event loop until every window closes (or quit()).
+  // Returns the process-style exit code.
+  int run() { return uiAppRun(app); }
+
+  // Process pending host events once; block != 0 waits for at least one.
+  // Returns the number of events dispatched, or a negative error.
+  int pump(boolean block) { return uiAppPump(app, block ? 1 : 0); }
+
+  // Ask the event loop to stop; run() returns exitCode.
+  void quit(int exitCode) { uiAppQuit(app, exitCode); }
+
+  // Release the application and all its windows.
+  void close() {
+    if (app >= 0) { uiAppDestroy(app); app = -1; }
+  }
+}
