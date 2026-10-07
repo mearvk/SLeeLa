@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 10291
+library-source-files: 10297
 library-packages: 83
 module-facade-symbols: 55
-total-symbol-records: 10346
+total-symbol-records: 10352
 
 package	symbol	path	kind
 antivirus	SLPackage.sleela	lib/antivirus/SLPackage.sleela	facade
@@ -10224,7 +10224,13 @@ sst	SSTSymbolReference.sleela	lib/sst/SSTSymbolReference.sleela	source
 sst	SSTSymbolTable.sleela	lib/sst/SSTSymbolTable.sleela	source
 synchro	SLPackage.sleela	lib/synchro/SLPackage.sleela	facade
 systems	SLPackage.sleela	lib/systems/SLPackage.sleela	facade
+telephony-skya	Communication.sleela	lib/telephony-skya/Communication.sleela	source
+telephony-skya	Network.sleela	lib/telephony-skya/Network.sleela	source
+telephony-skya	RealAcquaintances.sleela	lib/telephony-skya/RealAcquaintances.sleela	source
 telephony-skya	SLPackage.sleela	lib/telephony-skya/SLPackage.sleela	facade
+telephony-skya	Servers.sleela	lib/telephony-skya/Servers.sleela	source
+telephony-skya	SkyaModules.sleela	lib/telephony-skya/SkyaModules.sleela	source
+telephony-skya	Socio.sleela	lib/telephony-skya/Socio.sleela	source
 terminal	SLPackage.sleela	lib/terminal/SLPackage.sleela	facade
 terminal_pixel	SLPackage.sleela	lib/terminal_pixel/SLPackage.sleela	facade
 text	SLCharset.sleela	lib/text/SLCharset.sleela	source

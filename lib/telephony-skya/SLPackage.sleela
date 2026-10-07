@@ -86,41 +86,6 @@ class HechtsClient {
   String path(){return source;}
   boolean available(){return source!=null;}
 }
-// Emblematic Skya modules — loadable naturals. Authoritative runnables live in
-// telephony-skya/sleela/.
-class Socio {
-  String source;
-  void configure(String path){source=path;}
-  String path(){return source;}
-  boolean available(){return source!=null;}
-}
-class Network {
-  String source;
-  void configure(String path){source=path;}
-  String path(){return source;}
-  boolean available(){return source!=null;}
-}
-class Servers {
-  String source;
-  void configure(String path){source=path;}
-  String path(){return source;}
-  boolean available(){return source!=null;}
-}
-class Communication {
-  String source;
-  void configure(String path){source=path;}
-  String path(){return source;}
-  boolean available(){return source!=null;}
-}
-class RealAcquaintances {
-  String source;
-  void configure(String path){source=path;}
-  String path(){return source;}
-  boolean available(){return source!=null;}
-}
-class SkyaModules {
-  String source;
-  void configure(String path){source=path;}
-  String path(){return source;}
-  boolean available(){return source!=null;}
-}
+// The emblematic Skya modules (Socio, Network, Servers, Communication,
+// RealAcquaintances) and their SkyaModules loader are now first-class /lib
+// Master Classes, one per file in this package, rather than facade stubs.

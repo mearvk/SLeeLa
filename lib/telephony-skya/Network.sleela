@@ -1,0 +1,69 @@
+/*
+ * lib/telephony-skya/Network.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines Network, the Skya transport-reachability Master Class —
+ *   local/public address and a careful, non-destructive NAT posture.
+ *
+ * Network is an emblematic Skya module and a NATURAL / LOADABLE MODULE sharing
+ * the common module contract (load / loaded / moduleName / describe). It is
+ * deliberately descriptive and non-destructive: it never opens a firewall or
+ * asserts a public mapping — authoritative NAT/firewall lifecycle stays with
+ * the native SLeeLa port-awareness subsystem. The sockets live in Servers and
+ * Communication; Network only describes the shape of reach. The runnable
+ * orchestration example lives in telephony-skya/sleela/Network.sleela.
+ *
+ * Family: telephony-skya. Native VM/OS work crosses an explicit bridge.
+ */
+#sleela 1.3
+// Unified SLeeLa SDK front-end object.
+class Network {
+
+  static final String MODULE = "Network";
+
+  static final int NAT_UNKNOWN   = 0; // reachability unknown; let PINGs decide
+  static final int NAT_REFLEXIVE = 1; // reachable after local reflexive discovery
+  static final int NAT_DIRECT    = 2; // inbound feasibly reachable / already-mapped
+
+  int loadedFlag;
+  String localHost;
+  String publicHost;
+  int natPosture;
+  int routes;
+
+  void load() {
+    loadedFlag = 1;
+    localHost = "127.0.0.1";
+    publicHost = "";
+    natPosture = NAT_UNKNOWN;
+    routes = 0;
+  }
+  boolean loaded() { return loadedFlag == 1; }
+  String moduleName() { return MODULE; }
+
+  void bindLocal(String host) { localHost = host; }
+  void observePublic(String host) { publicHost = host; }
+
+  void observeNat(int posture) {
+    if (posture < NAT_UNKNOWN) { natPosture = NAT_UNKNOWN; }
+    else if (posture > NAT_DIRECT) { natPosture = NAT_DIRECT; }
+    else { natPosture = posture; }
+  }
+
+  void addRoute() { routes = routes + 1; }
+
+  boolean inboundFeasible() {
+    if (localHost == "127.0.0.1") { return true; }
+    return natPosture == NAT_DIRECT;
+  }
+
+  int posture() { return natPosture; }
+  int routeCount() { return routes; }
+  String local() { return localHost; }
+  String publicAddr() { return publicHost; }
+
+  String describe() {
+    return MODULE + " local=" + localHost + " public=" + publicHost
+         + " nat=" + natPosture + " routes=" + routes
+         + " inboundFeasible=" + inboundFeasible();
+  }
+}

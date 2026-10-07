@@ -2,7 +2,7 @@
 
 ## Current Development Version
 
-**SLeeLa:** 0.3.24-dev
+**SLeeLa:** 0.3.25-dev
 **Sleela-Complete:** 0.3.2-dev  
 **Nordshrift Complete:** 2.7.1-dev  
 **Native Foundation:** 0.3.2-dev  
@@ -229,6 +229,41 @@ active development line to 0.3.24-dev.
   `impl/nordshrift/NORDSHRIFT.SYMBOLS.md`, and `SLEELA.syntax` (now 10,346 / 83).
 - Counts are verified in lockstep (filesystem == manifest header == manifest
   body) by `test-suites/test-library-inventory.sh`.
+
+**Java Authorship Transition Gate:** 1.19-dev
+
+**SLeeLa — MEARVK LLC — 2026**
+
+## 0.3.25 Development Increment
+
+Library expansion and inventory recount. Advanced the active development line to
+0.3.25-dev.
+
+### Library (`/lib`) — Skya telephony emblematic Master Classes
+
+- Promoted the emblematic Skya telephony modules into first-class `/lib`
+  **Master Classes**, one class per file under `lib/telephony-skya/`: `Socio`
+  (social fabric), `Network` (transport reachability), `Servers` (server-side
+  presence), `Communication` (message exchange), `RealAcquaintances` (confirmed
+  trust roster), and the `SkyaModules` loader. These were previously facade
+  stubs / top-level-only runnables; as `/lib` source units they are now counted
+  and discoverable as Master Classes. The matching stubs were removed from
+  `telephony-skya/SLPackage.sleela` to avoid duplicate class declarations; the
+  runnable orchestration examples remain under `telephony-skya/sleela/`.
+
+### Inventory recount (`/lib`)
+
+- Regenerated `lib/LIBRARY.SYMBOLS.md` from the live `/lib` tree and reconciled
+  every record so each agrees: **83** package families; **10,297** `.sleela`
+  source classes + **55** module facades = **10,352** total symbol records
+  (10,346 -> 10,352; +6 units). Repository-wide SLeeLa source files: **10,583**.
+- Updated the matching records: `lib/LIBRARY.INDEX.md` (Revision 0.31),
+  `markdown/CLASS.INVENTORY.md` (Revision 2.3), `test-suites/test-library-
+  inventory.sh` (`EXPECTED_*` totals), `SST.model` and `SST-2.0.model`
+  (Revision 2.0.4) current-inventory lines, `lib/README.md`, and the informative
+  mirror appendices in `impl/nordshrift/SST.SYMBOLS.md`,
+  `impl/nordshrift/NORDSHRIFT.SYMBOLS.md`, and `SLEELA.syntax` (now 10,352 / 83).
+- Counts verified in lockstep by `test-suites/test-library-inventory.sh`.
 
 **Java Authorship Transition Gate:** 1.19-dev
 
