@@ -1,0 +1,138 @@
+/*
+ * telephony-skya/sleela/hechts/HechtsServer.sleela
+ * SLeeLa — Skya Telephony — Hecht's Notional Brand.
+ *
+ * The local, ALWAYS-OPEN Hecht's server. When the host is running the Promise
+ * brand, this server keeps the one authorized Hecht's port (171) open and
+ * listening so it can ably expect inbound traffic — simple or moderate PINGing
+ * activity — reaching back from Hecht's clients that fell through their silent
+ * public reachout window.
+ *
+ * It is deliberately conservative about NAT: it does NOT change firewall rules,
+ * punch holes, or claim a public mapping. It reports what it can observe about
+ * reachability through the existing SLeeLa port-awareness / NAT-discovery
+ * subsystem and otherwise simply stays open on the local SLeeLa comm server
+ * (assumed already established). Firewall lifecycle remains owned by that
+ * subsystem, exactly as the rest of Skya does it.
+ *
+ * Identity and the authorized port come from HechtsNationalCouncil — the Static
+ * Permanent National Council ID — so the server can never bind the wrong port
+ * or answer under the wrong identity.
+ *
+ * Native networking (listen/accept/sockread/sockwrite) crosses the explicit
+ * SLeeLa VM/OS bridge.
+ */
+#sleela 1.3
+// Skya telephony — Hecht's always-open local server on the authorized port.
+class HechtsServer {
+
+  HechtsNationalCouncil council;
+  int listener;       // the always-open listener handle
+  int open;           // 1 while the port is held open
+  int pings;          // count of PING activity served
+
+  void configure() {
+    council = new HechtsNationalCouncil();
+    open = 0;
+    pings = 0;
+  }
+
+  // --- NAT discovery (careful, non-destructive) --------------------------
+  // Report, conservatively, what we can say about inbound reachability for the
+  // authorized port WITHOUT changing any firewall rule, punching a hole, or
+  // claiming a public mapping. Authoritative NAT traversal / port-mapping is
+  // owned by the native SLeeLa port-awareness subsystem (see the Skya
+  // NAT/firewall policy, which is deliberately non-destructive: `skya plan`
+  // reports and detects but does not silently change rules). This SLeeLa-layer
+  // method therefore defaults to the safe discernment "unknown" so the
+  // always-open server never refuses to run over NAT doubt — it stays open and
+  // lets inbound PINGs decide reachability in practice.
+  //
+  // Discernment code:
+  //   2 = inbound feasibly reachable (direct / already-mapped, as observed)
+  //   1 = reachable only after local reflexive discovery (behind NAT, benign)
+  //   0 = reachability unknown; stay open and let PINGs decide (the default)
+  int discoverNat() {
+    // Loopback is always reachable; a client on the same host (the established
+    // local SLeeLa comm server case) can PING us regardless of NAT.
+    if (council.localHost() == "127.0.0.1") { return 2; }
+    // Everything else is left to the native subsystem to assert; the SLeeLa
+    // layer does not guess a public mapping.
+    return 0;
+  }
+
+  // Serve exactly one accepted peer: read its line, and if it is a PING answer
+  // with a council-stamped PONG. Non-PING lines get the council greeting so the
+  // peer can confirm the Static Permanent National Council ID.
+  void peer() {
+    int client = accept(listener);
+    String request = sockread(client);
+    if (isPing(request)) {
+      pings = pings + 1;
+      sockwrite(client, "SKYA/1 HECHTS PONG council=" + council.councilId()
+                        + " port=" + council.authorizedPort());
+    } else {
+      sockwrite(client, council.greeting());
+    }
+    sockclose(client);
+  }
+
+  boolean isPing(String line) {
+    if (line == null) { return false; }
+    int n = line.length();
+    if (n < 4) { return false; }
+    // Accept a leading "PING" (simple) or "SKYA/1 ... PING" (moderate) marker.
+    return line.substring(0, 4) == "PING" || contains(line, "PING");
+  }
+
+  boolean contains(String haystack, String needle) {
+    if (haystack == null || needle == null) { return false; }
+    int hl = haystack.length();
+    int nl = needle.length();
+    if (nl == 0) { return true; }
+    if (nl > hl) { return false; }
+    int i = 0;
+    while (i + nl <= hl) {
+      if (haystack.substring(i, i + nl) == needle) { return true; }
+      i = i + 1;
+    }
+    return false;
+  }
+
+  // --- Always-open run loop ----------------------------------------------
+  // Hold the authorized port open and keep accepting inbound PING activity.
+  // "Always open" means the listener is not torn down between peers; it is
+  // released only when the host stops the Promise brand.
+  void main() {
+    configure();
+    int port = council.authorizedPort();  // permanently 171
+    print("Hecht's server: " + council.describe());
+
+    int nat = discoverNat();
+    print("Hecht's NAT discovery (careful, non-destructive) code=" + nat);
+
+    // Bind the all-interfaces address so inbound PINGs can arrive; the native
+    // listener binds 0.0.0.0:<port> exactly as the Skya server socket does.
+    listener = listen(port);
+    open = 1;
+    print("Hecht's ALWAYS-OPEN on authorized port " + port
+          + " (local SLeeLa comm server); awaiting PING activity");
+
+    // Accept inbound peers for as long as the port is held open. Each accepted
+    // peer is served on its own, then we return to accept the next — simple or
+    // moderate PINGing is handled one request at a time.
+    while (open == 1) {
+      spawn(peer);
+      join();
+    }
+
+    sockclose(listener);
+    print("Hecht's server stopped; served " + pings + " PING(s)");
+  }
+
+  // Externally signal the always-open server to close (host leaving Promise).
+  void requestClose() { open = 0; }
+
+  int pingsServed() { return pings; }
+  boolean isOpen()  { return open == 1; }
+}

@@ -1,0 +1,76 @@
+/*
+ * telephony-skya/sleela/hechts/HechtsNationalCouncil.sleela
+ * SLeeLa — Skya Telephony — Hecht's Notional Brand.
+ *
+ * The Static Permanent National Council ID for Hecht's, the Notional Brand of
+ * Hecht's (formerly a department store). This is a FIXED, PERMANENT identity
+ * record: the council ID never changes across runs, and the authorized service
+ * port is permanently 171. Both the Hecht's client and the local Hecht's server
+ * read their identity and port from this one authority so they can never drift
+ * apart.
+ *
+ * "Static Permanent" here means two things, together:
+ *   - static:    the values are compile-time constants, not configured at run time;
+ *   - permanent: they are the one and only national identity for the brand and
+ *                are not reassigned, rotated, or negotiated.
+ *
+ * This class is declarative identity only. It opens no socket and sends no
+ * traffic; the server (HechtsServer) and client (HechtsClient) carry the
+ * behavior and cross the explicit SLeeLa VM/OS network bridge.
+ */
+#sleela 1.3
+// Skya telephony — Hecht's Notional Brand national identity.
+class HechtsNationalCouncil {
+
+  // --- The Static Permanent National Council ID (never changes) ----------
+  // A stable, human-auditable national identity string for the brand. It is a
+  // notional registration marker, not a government-issued number.
+  static final String COUNCIL_ID   = "SKYA-NC-HECHTS-0001-PERMANENT";
+  static final String BRAND_NAME   = "Hecht's";
+  static final String BRAND_KIND   = "Notional Brand (formerly a department store)";
+  static final String PROMISE_BRAND = "Promise";
+
+  // --- The one authorized service port -----------------------------------
+  // Port 171 is the permanent, authorized Hecht's service port for both the
+  // always-open local server and the client's fallback reach.
+  static final int AUTHORIZED_PORT = 171;
+
+  // --- The silent-reachout budget ----------------------------------------
+  // For the first 500 minutes a Hecht's client reaches out SILENTLY to the
+  // public brand host before falling back to the local Promise-brand server.
+  static final int SILENT_REACHOUT_MINUTES = 500;
+
+  // Preferred public endpoints the client tries, in order, during the silent
+  // window. Any one that answers ends the reach; none is required to exist.
+  static final String PUBLIC_HOST_PRIMARY   = "hechts.com";
+  static final String PUBLIC_HOST_SECONDARY = "www.hechts.com";
+
+  // The local Promise-brand fallback (the already-established local SLeeLa
+  // comm server). Loopback by default; the server binds the all-interfaces
+  // address so inbound PINGs can arrive.
+  static final String LOCAL_HOST = "127.0.0.1";
+
+  // --- Accessors (so client/server share one authority) ------------------
+  String councilId()      { return COUNCIL_ID; }
+  String brand()          { return BRAND_NAME; }
+  String promiseBrand()   { return PROMISE_BRAND; }
+  int    authorizedPort() { return AUTHORIZED_PORT; }
+  int    silentMinutes()  { return SILENT_REACHOUT_MINUTES; }
+  String publicPrimary()  { return PUBLIC_HOST_PRIMARY; }
+  String publicSecondary(){ return PUBLIC_HOST_SECONDARY; }
+  String localHost()      { return LOCAL_HOST; }
+
+  // Is this port the one authorized Hecht's port? Fail-closed: only 171.
+  boolean isAuthorizedPort(int port) { return port == AUTHORIZED_PORT; }
+
+  // The council greeting line used on the wire so a peer can confirm identity.
+  String greeting() {
+    return "SKYA/1 HECHTS council=" + COUNCIL_ID + " port=" + AUTHORIZED_PORT;
+  }
+
+  // A compact, auditable description of the permanent identity.
+  String describe() {
+    return BRAND_NAME + " [" + BRAND_KIND + "] council=" + COUNCIL_ID
+         + " port=" + AUTHORIZED_PORT + " promise=" + PROMISE_BRAND;
+  }
+}

@@ -66,3 +66,23 @@ class VoIPApplication {
   String path(){return source;}
   boolean available(){return source!=null;}
 }
+// Hecht's Notional Brand — Static Permanent National Council ID on port 171.
+// Authoritative runnables live in telephony-skya/sleela/hechts/.
+class HechtsNationalCouncil {
+  String source;
+  void configure(String path){source=path;}
+  String path(){return source;}
+  boolean available(){return source!=null;}
+}
+class HechtsServer {
+  String source;
+  void configure(String path){source=path;}
+  String path(){return source;}
+  boolean available(){return source!=null;}
+}
+class HechtsClient {
+  String source;
+  void configure(String path){source=path;}
+  String path(){return source;}
+  boolean available(){return source!=null;}
+}

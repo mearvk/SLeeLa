@@ -1002,6 +1002,8 @@ Configuration levels are documented in [`telephony-skya/docs/NAT-FIREWALL-CONFIG
 
 **Completion status:** Skya is integrated into the SLeeLa C/C++ runtime, but it is not yet a complete production telephony server. HTTP/2 and HTTP/3 session transport, QUIC integration, media capture/playback and codec adapters, certificate-quality extraction, actual NAT traversal/relay transport, resumable file transfer, runtime firewall open/close lifecycle, and full multi-peer call/session management remain implementation work. Documentation distinguishes the current foundation from those future transport and media layers.
 
+**Hecht's — Notional Brand.** Skya carries a **Static Permanent National Council ID** for **Hecht's**, the Notional Brand of Hecht's (formerly a department store), operating on the one authorized port **171**. The identity (`SKYA-NC-HECHTS-0001-PERMANENT`) and port are fixed, compile-time constants shared by the client and server so they cannot drift. For the first **500 minutes** the Hecht's **client** reaches out *silently* to `hechts.com` (or a similar secondary) on port 171, and if that silent window is spent or the public host is down it reaches back *finally* to its own local **Promise**-brand server and PINGs it. When the host runs the Promise brand, the local **server** keeps an **always-open** Hecht's port 171 on the already-established local SLeeLa comm server, where it ably expects inbound simple/moderate **PING** activity; its NAT discovery is deliberately careful and non-destructive (it reports only — firewall and mapping lifecycle stay owned by the existing SLeeLa port-awareness subsystem). The runnables and full behavior are under [`telephony-skya/sleela/hechts/`](telephony-skya/sleela/hechts/).
+
 
 ## Guia™ GUI Protocol
 

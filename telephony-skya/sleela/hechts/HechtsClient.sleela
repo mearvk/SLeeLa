@@ -1,0 +1,115 @@
+/*
+ * telephony-skya/sleela/hechts/HechtsClient.sleela
+ * SLeeLa — Skya Telephony — Hecht's Notional Brand.
+ *
+ * The Hecht's client. For the first 500 minutes of its life it reaches out
+ * SILENTLY to the public brand host (hechts.com, or a similar secondary) on the
+ * one authorized port, 171. "Silently" means: no console chatter, no user
+ * prompt, and failure is not an error — an unreachable public host simply ends
+ * that attempt quietly. If the silent window is still open and a public host
+ * answers, the client is satisfied.
+ *
+ * Once the 500-minute silent budget is spent (or every silent attempt in a run
+ * comes back empty), the client reaches back FINALLY to its own local server —
+ * the always-open Promise-brand Hecht's server on port 171 (the established
+ * local SLeeLa comm server) — and PINGs it there instead.
+ *
+ * Identity, the authorized port, the public hosts, the silent-minute budget,
+ * and the local fallback all come from HechtsNationalCouncil (the Static
+ * Permanent National Council ID), so the client cannot drift from the server.
+ *
+ * Native networking crosses the explicit SLeeLa VM/OS bridge; time comes from
+ * the SLeeLa Time API.
+ */
+#sleela 1.3
+// Skya telephony — Hecht's client: silent public reachout, then local fallback.
+class HechtsClient {
+
+  HechtsNationalCouncil council;
+  int startMillis;    // when this client began its silent window
+  int reached;        // 1 once any reach (public or local) succeeded
+  int usedLocal;      // 1 if the final reach fell back to the local server
+
+  void configure() {
+    council = new HechtsNationalCouncil();
+    startMillis = now();
+    reached = 0;
+    usedLocal = 0;
+  }
+
+  // Wall-clock milliseconds via the SLeeLa Time API (the OS clock service's
+  // timeUtcMillis built-in, the same one lib/os/SLClock uses).
+  int now() { return timeUtcMillis(); }
+
+  // Are we still inside the 500-minute silent reachout window?
+  boolean withinSilentWindow() {
+    int elapsedMin = (now() - startMillis) / 60000;
+    return elapsedMin < council.silentMinutes();
+  }
+
+  // --- Silent public reachout --------------------------------------------
+  // Try one public host on the authorized port, silently. A connect failure or
+  // empty answer returns false with NO output; a council-stamped answer returns
+  // true. Nothing here prints during the silent window.
+  boolean reachPublicHost(String host) {
+    int sock = connect(host, council.authorizedPort());  // port 171
+    if (sock < 0) { return false; }                       // silent failure
+    sockwrite(sock, "SKYA/1 HECHTS hello council=" + council.councilId());
+    String response = sockread(sock);
+    sockclose(sock);
+    return response != null && response.length() > 0;
+  }
+
+  // Try the preferred public hosts in order, silently. Returns true on the
+  // first that answers within the silent window.
+  boolean silentReachout() {
+    if (!withinSilentWindow()) { return false; }
+    if (reachPublicHost(council.publicPrimary()))   { return true; }
+    if (!withinSilentWindow()) { return false; }
+    if (reachPublicHost(council.publicSecondary())) { return true; }
+    return false;
+  }
+
+  // --- Final local fallback ----------------------------------------------
+  // Reach back to the local always-open Promise-brand Hecht's server on port
+  // 171 and PING it. This is the deliberate, visible fallback once the silent
+  // public window has not produced a reach.
+  boolean reachLocalServer() {
+    int sock = connect(council.localHost(), council.authorizedPort());
+    if (sock < 0) { return false; }
+    sockwrite(sock, "PING SKYA/1 HECHTS council=" + council.councilId());
+    String response = sockread(sock);
+    sockclose(sock);
+    usedLocal = 1;
+    return response != null && response.length() > 0;
+  }
+
+  // --- The client reach ---------------------------------------------------
+  // Silent public reachout first; if that does not land (host down, or the
+  // 500-minute window is spent), reach back finally to the local Promise-brand
+  // server and PING it.
+  void main() {
+    configure();
+
+    if (silentReachout()) {
+      reached = 1;
+      // Only now, after a successful public reach, is it appropriate to speak.
+      print("Hecht's client reached the public brand host silently (council="
+            + council.councilId() + ")");
+      return;
+    }
+
+    // Silent window produced nothing: reach back finally to the local server.
+    if (reachLocalServer()) {
+      reached = 1;
+      print("Hecht's client fell back to the local Promise-brand server on port "
+            + council.authorizedPort() + " and PINGed it");
+    } else {
+      print("Hecht's client could not reach the local Promise-brand server on port "
+            + council.authorizedPort());
+    }
+  }
+
+  boolean didReach()         { return reached == 1; }
+  boolean fellBackToLocal()  { return usedLocal == 1; }
+}
