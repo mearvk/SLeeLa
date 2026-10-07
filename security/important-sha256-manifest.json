@@ -48303,6 +48303,10 @@
       "sha256": "c7d100081a27dbc0aee5d636bccd8edd17848b71235d14a8d427f549453aba11"
     },
     {
+      "path": "lib/user-interface/SLLayout.sleela",
+      "sha256": "13d7468646776da6d99df18c6c7ac17f995dc173e9e8c58de212cfc18d754a4e"
+    },
+    {
       "path": "lib/user-interface/SLLevelBar.sleela",
       "sha256": "7e06c52c5cf19a7ecd5b3f96d3fb143cbc9d531db65d62d91842ba7082211944"
     },
@@ -48321,6 +48325,10 @@
     {
       "path": "lib/user-interface/SLMaterial.sleela",
       "sha256": "414e29b10b201af36edafbddce0a24825fd82be3648b51da04d8a94f3a537024"
+    },
+    {
+      "path": "lib/user-interface/SLMeasure.sleela",
+      "sha256": "142c5f714db7a2c74b62acff1284c075bbe23a0540296aa8fff377f3962f1c64"
     },
     {
       "path": "lib/user-interface/SLMm.sleela",
@@ -50932,7 +50940,7 @@
     },
     {
       "path": "test-suites/test-library-inventory.sh",
-      "sha256": "61459389cae25bb3b14c683521493fd80ea0965692862060b32563efc8733b53"
+      "sha256": "a114e0afdfca13b322845b013085e9d2de434b6376c7cc0f0953cbb494db51e5"
     },
     {
       "path": "tests/java_api_dependency_suite.py",
@@ -51291,6 +51299,10 @@
       "sha256": "d013051eccc16caabf59999dfba3e4f8148589838f0a69ca6d1ba2a2589b50b2"
     },
     {
+      "path": "user-interface/include/sleela_ui_layout.h",
+      "sha256": "764dd679c6fbeaf891a6de12b3615015105a4660ff026e92cf726ee7fdde08e1"
+    },
+    {
       "path": "user-interface/include/sleela_ui_light.h",
       "sha256": "c83fccfa1d50343dbeb844faf3fd3ebeaa083b9703e97cb68e443608d8e97989"
     },
@@ -51329,6 +51341,10 @@
     {
       "path": "user-interface/src/slui_geometry.hpp",
       "sha256": "2f72a57963ee13d26f35bc0d6b68aa47b94c4086e5aaa96aeb2a489e858ac67a"
+    },
+    {
+      "path": "user-interface/src/slui_layout.cpp",
+      "sha256": "187c8af4560f532e28659eee47f6bcae9f93cfe5e86339c177d34b41ac10efe5"
     },
     {
       "path": "user-interface/src/slui_light.cpp",
@@ -51372,7 +51388,7 @@
     },
     {
       "path": "user-interface/tests/smoke.c",
-      "sha256": "c7c5d3a9c7b68a1e0164a6ef5f970e63b8670e69bf69b80aa3a9f3b0b3761f2a"
+      "sha256": "3c1c0edce3b9b75b8f4f04827276877c3fdd5389cae72cfb326b113768558346"
     },
     {
       "path": "user-interface/tools/font_snapshot.cpp",
