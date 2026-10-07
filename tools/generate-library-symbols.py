@@ -76,7 +76,7 @@ def main() -> int:
     lines = []
     lines.append("# SLeeLa /lib Symbol Manifest")
     lines.append("schema: SLeeLa-Library-Symbols-1")
-    lines.append("collection-revision: 2.0")
+    lines.append("collection-revision: 2.1")
     lines.append(f"library-source-files: {n_sources}")
     lines.append(f"library-packages: {n_packages}")
     lines.append(f"module-facade-symbols: {n_facades}")
