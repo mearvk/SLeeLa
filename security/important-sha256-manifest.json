@@ -8,15 +8,15 @@
     },
     {
       "path": "SLEELA.syntax",
-      "sha256": "7fc8e70fa3fa20f4037fb88073eace1112920432d2111e65d6245ea68bd5eb33"
+      "sha256": "8eb4454c94ab286e5827f7fb27ddca13d7121069aea3eee0817bbb7d5ce63733"
     },
     {
       "path": "SST-2.0.model",
-      "sha256": "6859600b7e47c3874144ca6dc8a3825833e3883cc2da1dfff9243b3883ad7983"
+      "sha256": "638a7a39d043464ce7db11cc122aeb1243ac081f0bd048a1f2ac6ce935125cb9"
     },
     {
       "path": "SST.model",
-      "sha256": "5d8a342a0880bb1605695a84b46a1115e7bb4f62eb419840da8a4dea4cd6cd10"
+      "sha256": "d994df3b103f67b0d89986e3daa287d2c3ecb08534cf1b59e6da0b6d9ba47794"
     },
     {
       "path": "antivirus/src/sleelavirin_heuristic.c",
@@ -47815,8 +47815,32 @@
       "sha256": "09ee11ee699c5e5e85f5361f2281d4e33cac7a5fd19da98ed795c5dfa71adbf1"
     },
     {
+      "path": "lib/telephony-skya/Communication.sleela",
+      "sha256": "3c84342587aa5d4187af39058357c16bb6f5741d17c9ecb506a2511df276f1fa"
+    },
+    {
+      "path": "lib/telephony-skya/Network.sleela",
+      "sha256": "99767edd160a8ffab4435b0a5d06490d7a2afeb93f29176f963f3f8eb8909363"
+    },
+    {
+      "path": "lib/telephony-skya/RealAcquaintances.sleela",
+      "sha256": "f3c97ce1526a4066641b283a062408ce5f99bc5324f325b517bb1e1386b08412"
+    },
+    {
       "path": "lib/telephony-skya/SLPackage.sleela",
-      "sha256": "4d1840162d4cfbf9db5ed7322b27f6d6670082542c18c2200058b653a36bc03b"
+      "sha256": "5dd815e8785bf7b7fd2fab3730f7d29b3da8356b3e8eea4fe55087dd5e094ad4"
+    },
+    {
+      "path": "lib/telephony-skya/Servers.sleela",
+      "sha256": "8c01d20bbead06c8bec07dcc04adabcb532eaab699d3e30f75bb6d7efd97d738"
+    },
+    {
+      "path": "lib/telephony-skya/SkyaModules.sleela",
+      "sha256": "3b4452f9e70ac2558369f43eb3d10fdccadfbb009f6e48230f414658319a3841"
+    },
+    {
+      "path": "lib/telephony-skya/Socio.sleela",
+      "sha256": "ad1f0c3658c97df356163b6b3711b5cfc64a90952fb2c57ca1f4dbcda8872bbf"
     },
     {
       "path": "lib/terminal/SLPackage.sleela",
@@ -50436,7 +50460,7 @@
     },
     {
       "path": "test-suites/test-library-inventory.sh",
-      "sha256": "f5ff5c98612ddece1a0076c2cfb9cd3d162518187fbfcada42ef667ad1cf29b8"
+      "sha256": "a31b6b5a2d05563c380c0c1fd9fd0d6bd50b3dc8064b13835b4a5e35bef0d279"
     },
     {
       "path": "tests/java_api_dependency_suite.py",
