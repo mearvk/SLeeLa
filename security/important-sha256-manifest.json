@@ -4,7 +4,7 @@
   "files": [
     {
       "path": "README.md",
-      "sha256": "b72f49f96a436e092f846d56d46842dcc2332248eb87444dd77ea5b131140d52"
+      "sha256": "4d63b868ffe3c805702bc8e64fc13c25f03dbae82a6cf01d9b228548b25a960b"
     },
     {
       "path": "SLEELA.syntax",
@@ -47816,7 +47816,7 @@
     },
     {
       "path": "lib/telephony-skya/SLPackage.sleela",
-      "sha256": "6b87111a87a0adebaa808239c18e317e8617c2534365730eb0cf3c3e9eea9708"
+      "sha256": "2b5b0a1aa5fe80af8e31ab8e6fbc35ed5a6bfc38ce08f681901dadeb70cb632d"
     },
     {
       "path": "lib/terminal/SLPackage.sleela",
@@ -50325,6 +50325,18 @@
     {
       "path": "telephony-skya/sleela/VoIPApplication.sleela",
       "sha256": "72e5bdef413b95aec2cfa90bb1604569b10afb2e3e6a0e6258bc9ebac902036e"
+    },
+    {
+      "path": "telephony-skya/sleela/hechts/HechtsClient.sleela",
+      "sha256": "00c8fdbe982a0f6a4a8f160207ece14b32d19a67badec53415b8faf594fb8b6c"
+    },
+    {
+      "path": "telephony-skya/sleela/hechts/HechtsNationalCouncil.sleela",
+      "sha256": "02058675e4a98de95c2c4416faccfdbcaa94df43951a82a84e73f88ced95a159"
+    },
+    {
+      "path": "telephony-skya/sleela/hechts/HechtsServer.sleela",
+      "sha256": "369ca513779a70f1c3f68af86171b0ed02e705fd95c5bf8ecc52e33c4e940a85"
     },
     {
       "path": "terminal_pixel/pixel_terminal.h",
