@@ -4271,6 +4271,10 @@
       "sha256": "9056afdb4cd7d3882b10f226887856c1beb14a28be8e5ac526b64add940e20ce"
     },
     {
+      "path": "gameplay/sleela/GameplayDemo.sleela",
+      "sha256": "eb9b882079d398d84dff93ebf13b0612e0c3d9a80eb9d9d48623aa6f2f6238ae"
+    },
+    {
       "path": "gui/native/sleela_gui_bridge.cpp",
       "sha256": "6a8442f96089a771e851920d3d8a27d34ee88fee1c878d45db0b74ff48733c82"
     },
@@ -9673,6 +9677,62 @@
     {
       "path": "lib/filesystem/SLPathResolver.sleela",
       "sha256": "4180e56fcd9dbb00b763956f45c692188116643ef51adcc98e7234ae426ebaf1"
+    },
+    {
+      "path": "lib/gameplay/AskForHelpMove.sleela",
+      "sha256": "afcd66982c97b8e62d2308ee2db971da68fa0e9fc80d41d1e71e18da7c6cbb7a"
+    },
+    {
+      "path": "lib/gameplay/DetailedReport.sleela",
+      "sha256": "7311b220f10f3ecfdd2c628dc602802faa8987a06282aeeaa9d7f90f191b0588"
+    },
+    {
+      "path": "lib/gameplay/DiceRoll.sleela",
+      "sha256": "d0c06c570f417746d757a174346e3a77c9487e7fbf2fe84d58b248216b0f7534"
+    },
+    {
+      "path": "lib/gameplay/ExpectedFuture.sleela",
+      "sha256": "269e33d71b37c289b4717a00a062335cffcfdba2b762046f60a11ae2e28e67a8"
+    },
+    {
+      "path": "lib/gameplay/GameMove.sleela",
+      "sha256": "b78d25f9df1d8c14f70d1dfb5ecf056fef3139db71de4bf9f46bfb90eefc73ef"
+    },
+    {
+      "path": "lib/gameplay/GameTurn.sleela",
+      "sha256": "e6af9f2ee62ea28f3f535bd12821299e49e775b31ae0bc9333c421f1769817e4"
+    },
+    {
+      "path": "lib/gameplay/HelpIndexMove.sleela",
+      "sha256": "dd836afe98bb9002d1ec04ccd869e62247d855b9421d57a1e59014a8a056923a"
+    },
+    {
+      "path": "lib/gameplay/InferenceEngine.sleela",
+      "sha256": "5e519d3484a22fadc7eff82de65fd3192bb5488ae3aaa1026d93cd4486e38b30"
+    },
+    {
+      "path": "lib/gameplay/ManagementCourtroom.sleela",
+      "sha256": "0a8d1c4fb1fa318321b4d45fc265a54e492f9655497c0c3b7f1acc33899dfe4c"
+    },
+    {
+      "path": "lib/gameplay/MoveOutcome.sleela",
+      "sha256": "529bd46bfecf2ec14e6f4d371dafb49fbfad334cb9f4be1544b37420ef434568"
+    },
+    {
+      "path": "lib/gameplay/NewDesireMove.sleela",
+      "sha256": "ad59faa5113866d5e592d2a8ed830b7212131169dee33b1b88c524c213231594"
+    },
+    {
+      "path": "lib/gameplay/Player.sleela",
+      "sha256": "daeca67c20540028acf022d2596b3c98da2c85f9b755e9383fede40497b15d44"
+    },
+    {
+      "path": "lib/gameplay/PortfolioDecision.sleela",
+      "sha256": "337d237dc86de29bf13a973b2de8a0a32d7118cec5be4bbb5931b747fa3f5680"
+    },
+    {
+      "path": "lib/gameplay/SLPackage.sleela",
+      "sha256": "c8d599e98fc4bebb3dec49bda0f0ad200496358351b9f8eea8039b32cdeec581"
     },
     {
       "path": "lib/gui/SLPackage.sleela",
@@ -48163,6 +48223,10 @@
       "sha256": "0b47e324b3f20c445c52f28fdd6fecf3037ca183c3a193345b2b12c2bf411110"
     },
     {
+      "path": "lib/user-interface/SLCalculus8.sleela",
+      "sha256": "4326bc05b62d9be7f7a498a4c39459dffd6df2d2d19293427f47fe02de0ba1c9"
+    },
+    {
       "path": "lib/user-interface/SLCanvasView.sleela",
       "sha256": "e09616f6437bcd3e70e3675618535a03cfa71a59509dd5a98c304dcf2f22bf1c"
     },
@@ -48259,6 +48323,14 @@
       "sha256": "414e29b10b201af36edafbddce0a24825fd82be3648b51da04d8a94f3a537024"
     },
     {
+      "path": "lib/user-interface/SLMm.sleela",
+      "sha256": "59e0e6a8020eea80233ec515c164c6045b92f1b4a31f2c5a5369f75ef6dcd6d4"
+    },
+    {
+      "path": "lib/user-interface/SLMood.sleela",
+      "sha256": "676d2a7c01bfe4ea18122beb93723b5921e64bb61553abccaba9e56eb152c487"
+    },
+    {
       "path": "lib/user-interface/SLPackage.sleela",
       "sha256": "e54f128b9b97c1d201565a67f828df3d171fe9e297dbcfaa727a3961cc0e2905"
     },
@@ -48325,6 +48397,10 @@
     {
       "path": "lib/user-interface/SLUserInterface.sleela",
       "sha256": "25ff525e97922a8000b49a97cf102e287a628b5cfea399841203288e51135564"
+    },
+    {
+      "path": "lib/user-interface/SLWash.sleela",
+      "sha256": "07b9b4aeeaeebb35733eb5b561f3e8a2303bab954cb206cb9b9ff88d6f307482"
     },
     {
       "path": "lib/user-interface/SLWidget.sleela",
@@ -50856,7 +50932,7 @@
     },
     {
       "path": "test-suites/test-library-inventory.sh",
-      "sha256": "e69f0a3403e715b94db43d153131644b0abcdaffe9844656a9434cba05507ff2"
+      "sha256": "61459389cae25bb3b14c683521493fd80ea0965692862060b32563efc8733b53"
     },
     {
       "path": "tests/java_api_dependency_suite.py",
@@ -51219,6 +51295,10 @@
       "sha256": "c83fccfa1d50343dbeb844faf3fd3ebeaa083b9703e97cb68e443608d8e97989"
     },
     {
+      "path": "user-interface/include/sleela_ui_mood.h",
+      "sha256": "da383b86830550cf137f92e40a4d81ace419d28851f7c9a4de304e0dcbcf50e5"
+    },
+    {
       "path": "user-interface/src/backend/headless.cpp",
       "sha256": "75572af47b1c517af6da2a955b9255386670a5d1a6143a296934c7b3859f8309"
     },
@@ -51255,6 +51335,10 @@
       "sha256": "ef1dfa86c0b807bfb2a586bb018a1bb2a5b62372118d0ae8a6b493307877438d"
     },
     {
+      "path": "user-interface/src/slui_mood.cpp",
+      "sha256": "ca568ac44dbab1c39c906a32af436e6a0071a1b09c41dfed4853614f471bfc93"
+    },
+    {
       "path": "user-interface/src/slui_render.hpp",
       "sha256": "d3ee9dfca6c513d1a779785e0e275d51578585eeb43a20fb0dfc4057740bf6a5"
     },
@@ -51288,11 +51372,15 @@
     },
     {
       "path": "user-interface/tests/smoke.c",
-      "sha256": "7a92d39c30fbdb7a71791ac8ffa738afcbfb0c02ed42b487a5ad1be90d831a85"
+      "sha256": "c7c5d3a9c7b68a1e0164a6ef5f970e63b8670e69bf69b80aa3a9f3b0b3761f2a"
     },
     {
       "path": "user-interface/tools/font_snapshot.cpp",
       "sha256": "1347a25e69bbc1aa1bd00353f9617d993cd07174dd28da1a82291c444dd767ba"
+    },
+    {
+      "path": "user-interface/tools/mood_snapshot.cpp",
+      "sha256": "cd2b7c57a16fcdb254025d7bccb54aaae307968312079e22bf51a38e17e9a866"
     },
     {
       "path": "user-interface/tools/relief_snapshot.cpp",
