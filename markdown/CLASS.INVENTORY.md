@@ -1,11 +1,11 @@
 # SLeeLa Class Inventory
 
-**SLeeLa Version:** 0.3.23-dev  
-**Inventory Revision:** 2.1  
-**Inventory Date:** 2026-10-05  
+**SLeeLa Version:** 0.3.24-dev  
+**Inventory Revision:** 2.2  
+**Inventory Date:** 2026-10-07  
 **Known Source Files Explicitly Indexed: 138**
-**Repository-wide SLeeLa source files (verified): 10,463 on `master`**
-**Standard-library SLeeLa source units in `/lib`: 10,241**
+**Repository-wide SLeeLa source files (verified): 10,568 on `main`/`master`**
+**Standard-library SLeeLa source units in `/lib`: 10,291 (10,346 total symbol records incl. 55 module facades)**
 **Standard-library target: 2,048 objects**  
 **Unique Foundational C++ Class Files (contract-verified): 50**
 
@@ -13,7 +13,7 @@
 
 ## 1. Verified Foundational Class Files
 
-The current contract suite verifies these 50 foundational class files. The repository-wide SLeeLa source inventory now records 10,463 `.sleela` files, including 10,241 under `/lib`; the library inventory is maintained separately in `lib/LIBRARY.SYMBOLS.md`.
+The current contract suite verifies these 50 foundational class files. The repository-wide SLeeLa source inventory now records 10,568 `.sleela` files, including 10,291 source classes under `/lib` (10,346 total symbol records with the 55 module facades); the library inventory is maintained separately in `lib/LIBRARY.SYMBOLS.md`.
 
 | # | Class | Source |
 |---:|---|---|
@@ -473,3 +473,47 @@ Under `native/` (self-tested via `native/Makefile` — `make test`: ALL PASS):
 These are explicit VM/OS bridges below the SLeeLa layer; the authoritative
 execution and compilation remain in `/impl/core` and `lib/compiler` /
 `impl/frontend`.
+
+## 13. Modular Multi-Language Compiler Framework and Recount (Revision 2.2)
+
+Revision 2.2 records the modular multi-language compiler framework added to the
+`/lib/compiler` package and reconciles the class counts to the merged tree.
+
+### `/lib/compiler` — multi-language compiler framework
+
+A developer can now build a compiler for any publicly known programming language
+by writing one small SLeeLa front end that extends a common contract; many
+independent front ends register into one shared catalog with no per-language
+allow-list. Each front end lowers its own language toward the common SLeeLa IR
+and onward to a VM-ready artifact.
+
+| Class | Role |
+|---|---|
+| `SLLanguageCompiler` | language-neutral base: identity, provided-phase bitmask, phase hooks (source..codegen), register/plan |
+| `SLCompileRequest` | a single compile request (language, input, target, strict flag) |
+| `SLCompilePlan` | fail-closed plan/result: covered vs required phases, first missing phase, resolved target, vm-ready verdict |
+| `SLCompilerRegistry` | register many front ends; resolve by name or source extension |
+
+Seven modular front ends under `lib/compiler/frontends/<lang>/` — `CLanguageCompiler`,
+`CppLanguageCompiler`, `JavaLanguageCompiler`, `PythonLanguageCompiler`,
+`JavaScriptLanguageCompiler`, `RustLanguageCompiler`, `GoLanguageCompiler` —
+spanning native, JVM, and scripting families. **12 new `/lib/compiler`
+`.sleela` files** (4 framework classes + 7 front ends + 1 tutorial example).
+
+The framework identifies, plans, and reports only; it never executes an input
+program. New native support crosses the explicit VM/OS bridge: a stable C ABI
+(`lib/compiler/include/sleela_langc.h` / `src/sleela_langc.c`), a C++
+orchestration facade (`sleela_langc.hpp` / `.cpp`), the `.sleela` bridge
+(`sleela_lang_bridge.h` / `.c`), and a behavioral self-test
+(`tests/langc_selftest.c`). See `lib/compiler/MULTI-LANGUAGE.FRAMEWORK.md`.
+
+### Recount (merged tree)
+
+- Repository-wide SLeeLa source files: **10,568** `.sleela` (verified via
+  `git ls-files '*.sleela'`).
+- `/lib` collection: **83** package families; **10,291** source classes +
+  **55** `SLPackage.sleela` module facades = **10,346** total symbol records.
+  Regenerated into `lib/LIBRARY.SYMBOLS.md` (`collection-revision: 2.1`) and
+  verified in lockstep by `test-suites/test-library-inventory.sh`.
+- The **50 foundational C++ class files** contract-checked by
+  `test-suites/cpp/test_class_contracts.cpp` are unchanged this revision.
