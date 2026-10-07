@@ -1,0 +1,33 @@
+/*
+ * lib/user-interface/SLInfoBar.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLInfoBar — a SleelaUI inline notice bar: a tinted,
+ *   rounded surface strip with a left severity bar and a message, used for
+ *   non-modal feedback (info, warning, error). The constructor bottoms out in
+ *   the `uiInfoBar` built-in (SleelaUI C ABI slui_info_bar()); the message is
+ *   updated through the inherited setText().
+ *
+ * An SLInfoBar IS an SLWidget but is non-interactive.
+ *
+ * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
+ * bridge.
+ */
+#sleela 1.5
+class SLInfoBar extends SLWidget {
+  // Severity ordinals (mirror InfoBar::Severity in the toolkit).
+  static final int INFO    = 0;
+  static final int WARNING = 1;
+  static final int ERROR   = 2;
+
+  // Create an info bar inside `parent` with a message and a severity.
+  void createIn(SLWidget parent, String text, int severity) {
+    widget = uiInfoBar(parent.handle(), text, severity);
+  }
+  void createInHandle(int parentHandle, String text, int severity) {
+    widget = uiInfoBar(parentHandle, text, severity);
+  }
+
+  void info(SLWidget parent, String text)    { createIn(parent, text, INFO); }
+  void warning(SLWidget parent, String text) { createIn(parent, text, WARNING); }
+  void error(SLWidget parent, String text)   { createIn(parent, text, ERROR); }
+}

@@ -1,0 +1,25 @@
+/*
+ * lib/user-interface/SLStatusBar.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLStatusBar — a SleelaUI footer status strip: a chrome
+ *   band with a 1px top hairline that lays its children out horizontally. Use it
+ *   for a resting status line (e.g. "Ready", a spacer, the version). The
+ *   constructor bottoms out in the `uiStatusBar` built-in (SleelaUI C ABI
+ *   slui_status_bar()); children are added by constructing control classes
+ *   against this status bar's handle.
+ *
+ * An SLStatusBar IS an SLWidget container (horizontal).
+ *
+ * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
+ * bridge.
+ */
+#sleela 1.5
+class SLStatusBar extends SLWidget {
+  // Create a status bar inside `parent` (normally the window root).
+  void createIn(SLWidget parent) {
+    widget = uiStatusBar(parent.handle());
+  }
+  void createInHandle(int parentHandle) {
+    widget = uiStatusBar(parentHandle);
+  }
+}

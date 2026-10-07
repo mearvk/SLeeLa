@@ -1,0 +1,24 @@
+/*
+ * lib/user-interface/SLBadge.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLBadge — a SleelaUI count/status pill: a small rounded
+ *   accent pill with centred text, used to annotate a control with a count or
+ *   short status (e.g. an unread count next to a title). The constructor bottoms
+ *   out in the `uiBadge` built-in (SleelaUI C ABI slui_badge()); the text is
+ *   updated through the inherited setText().
+ *
+ * An SLBadge IS an SLWidget but is non-interactive.
+ *
+ * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
+ * bridge.
+ */
+#sleela 1.5
+class SLBadge extends SLWidget {
+  // Create a badge inside `parent` with text (often a small number).
+  void createIn(SLWidget parent, String text) {
+    widget = uiBadge(parent.handle(), text);
+  }
+  void createInHandle(int parentHandle, String text) {
+    widget = uiBadge(parentHandle, text);
+  }
+}

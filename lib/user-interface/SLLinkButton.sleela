@@ -1,0 +1,31 @@
+/*
+ * lib/user-interface/SLLinkButton.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLLinkButton — a SleelaUI hyperlink-style button:
+ *   accent-coloured text that underlines on hover/focus and activates like a
+ *   button (click, or Enter/Space while focused). Use it for navigation and
+ *   "learn more" affordances where a full button would be too heavy. The
+ *   constructor bottoms out in the `uiLinkButton` built-in (SleelaUI C ABI
+ *   slui_link_button()); the text is updated through the inherited setText().
+ *
+ * An SLLinkButton IS an SLWidget and is keyboard-focusable.
+ *
+ * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
+ * bridge.
+ */
+#sleela 1.5
+class SLLinkButton extends SLWidget {
+  // Create a link button inside `parent` with a label.
+  void createIn(SLWidget parent, String label) {
+    widget = uiLinkButton(parent.handle(), label);
+  }
+  void createInHandle(int parentHandle, String label) {
+    widget = uiLinkButton(parentHandle, label);
+  }
+
+  // True if the link was activated since the last check (latch cleared on read).
+  boolean clicked() {
+    if (widget < 0) { return false; }
+    return uiWidgetTakeActivated(widget) == 1;
+  }
+}

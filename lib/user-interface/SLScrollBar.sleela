@@ -1,0 +1,42 @@
+/*
+ * lib/user-interface/SLScrollBar.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLScrollBar — a SleelaUI scroll bar indicator: a thin
+ *   rounded track with a draggable thumb. The thumb covers a `page` fraction of
+ *   the track and sits at a `value` position in [0,1]; dragging it reports a new
+ *   value. The constructor bottoms out in the `uiScrollBar` built-in (SleelaUI
+ *   C ABI slui_scroll_bar()); the position is read/written through
+ *   position()/setPosition().
+ *
+ * An SLScrollBar IS an SLWidget and is keyboard-focusable.
+ *
+ * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
+ * bridge.
+ */
+#sleela 1.5
+class SLScrollBar extends SLWidget {
+  // Create a scroll bar inside `parent`. orientation is ORIENT_VERTICAL or
+  // ORIENT_HORIZONTAL; value is the initial position in [0,1]; page is the
+  // visible fraction the thumb covers (0..1).
+  void createIn(SLWidget parent, int orientation, double value, double page) {
+    widget = uiScrollBar(parent.handle(), orientation, value, page);
+  }
+  void createInHandle(int parentHandle, int orientation, double value,
+                      double page) {
+    widget = uiScrollBar(parentHandle, orientation, value, page);
+  }
+
+  double position() {
+    if (widget < 0) { return 0.0; }
+    return uiWidgetGetValue(widget);
+  }
+  void setPosition(double value) {
+    if (widget >= 0) { uiWidgetSetValue(widget, value); }
+  }
+
+  // True if the position changed since the last check (latch cleared on read).
+  boolean changed() {
+    if (widget < 0) { return false; }
+    return uiWidgetTakeActivated(widget) == 1;
+  }
+}

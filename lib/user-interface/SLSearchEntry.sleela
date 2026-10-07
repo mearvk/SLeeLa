@@ -1,0 +1,31 @@
+/*
+ * lib/user-interface/SLSearchEntry.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLSearchEntry — a SleelaUI search field: a single-line
+ *   entry with a leading magnifier glyph and a "Search" placeholder, used for
+ *   filter/search inputs. It behaves like SLEntry otherwise (UTF-8 editing,
+ *   caret, Enter raises an activate event). The constructor bottoms out in the
+ *   `uiSearchEntry` built-in (SleelaUI C ABI slui_search_entry()); the committed
+ *   text is read/written through the inherited text()/setText().
+ *
+ * An SLSearchEntry IS an SLWidget and is keyboard-focusable.
+ *
+ * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
+ * bridge.
+ */
+#sleela 1.5
+class SLSearchEntry extends SLWidget {
+  // Create a search entry inside `parent` (placeholder defaults to "Search").
+  void createIn(SLWidget parent, String placeholder) {
+    widget = uiSearchEntry(parent.handle(), placeholder);
+  }
+  void createInHandle(int parentHandle, String placeholder) {
+    widget = uiSearchEntry(parentHandle, placeholder);
+  }
+
+  // True if Enter was pressed since the last check (latch cleared on read).
+  boolean submitted() {
+    if (widget < 0) { return false; }
+    return uiWidgetTakeActivated(widget) == 1;
+  }
+}

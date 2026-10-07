@@ -107,6 +107,20 @@ int main(void) {
     slui_widget_set_expand(slider, 1, 0);
     slui_widget_on_value_changed(slider, on_slider, NULL);
 
+    /* A few widgets from the expanded collection. */
+    slui_check_box(content, "Remember me", 1);
+    SLUIWidget* progress = slui_progress_bar(content, 0.62);
+    slui_widget_set_expand(progress, 1, 0);
+
+    SLUIWidget* tags = slui_box(content, SLUI_ORIENT_HORIZONTAL, 6);
+    slui_chip(tags, "alpha");
+    slui_chip(tags, "beta");
+    slui_link_button(tags, "Learn more");
+    slui_spacer(tags);
+    slui_badge(tags, "24");
+
+    slui_info_bar(content, "Welcome to the SleelaUI widget collection.", 0);
+
     slui_separator(content, SLUI_ORIENT_HORIZONTAL);
 
     SLUIWidget* disabled = slui_button(content, "Unavailable action");

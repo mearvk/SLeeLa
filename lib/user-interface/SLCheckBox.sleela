@@ -1,0 +1,39 @@
+/*
+ * lib/user-interface/SLCheckBox.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLCheckBox — a SleelaUI labelled check box: a rounded
+ *   square that shows an accent tick when on, with a trailing label. Flipping it
+ *   (click, or Space/Enter while focused) toggles the boolean state and raises an
+ *   activate event. The constructor bottoms out in the `uiCheckBox` built-in
+ *   (SleelaUI C ABI slui_check_box()); the state is read/written through
+ *   isChecked()/setChecked().
+ *
+ * An SLCheckBox IS an SLWidget and is keyboard-focusable.
+ *
+ * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
+ * bridge.
+ */
+#sleela 1.5
+class SLCheckBox extends SLWidget {
+  // Create a check box inside `parent` with a label and initial state.
+  void createIn(SLWidget parent, String label, boolean checked) {
+    widget = uiCheckBox(parent.handle(), label, checked ? 1 : 0);
+  }
+  void createInHandle(int parentHandle, String label, boolean checked) {
+    widget = uiCheckBox(parentHandle, label, checked ? 1 : 0);
+  }
+
+  boolean isChecked() {
+    if (widget < 0) { return false; }
+    return uiWidgetGetToggle(widget) == 1;
+  }
+  void setChecked(boolean checked) {
+    if (widget >= 0) { uiWidgetSetToggle(widget, checked ? 1 : 0); }
+  }
+
+  // True if the check box flipped since the last check (latch cleared on read).
+  boolean changed() {
+    if (widget < 0) { return false; }
+    return uiWidgetTakeActivated(widget) == 1;
+  }
+}

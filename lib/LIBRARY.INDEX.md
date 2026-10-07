@@ -1,11 +1,27 @@
 # SLeeLa /lib Library Index
 
-**Revision:** 0.34  
+**Revision:** 0.35  
 **Packages:** 86  
-**SLeeLa source units:** 10344  
+**SLeeLa source units:** 10366  
 **Module-facade symbols:** 58  
-**Total symbol records:** 10402  
+**Total symbol records:** 10424  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
+
+> Revision 0.35 expands the **`user-interface`** package with the full SleelaUI™
+> widget collection: twenty-two new one-class-per-file Master Classes binding
+> the toolkit's expanded native widget set. Selection/boolean: `SLCheckBox`,
+> `SLRadioButton`, `SLComboBox`, `SLSpinButton`. Indicators: `SLProgressBar`,
+> `SLLevelBar`, `SLSpinner`, `SLScrollBar`. Containers: `SLFrame`, `SLCard`,
+> `SLGrid`, `SLStatusBar`. Display/feedback: `SLImage`, `SLAvatar`, `SLBadge`,
+> `SLChip`, `SLHeading`, `SLTooltip`, `SLInfoBar`. Text variants: `SLLinkButton`,
+> `SLSearchEntry`, `SLPasswordEntry`. Each bottoms out in a `ui*` SLVM built-in
+> calling the SleelaUI C ABI (`user-interface/include/sleela_ui.h`); the full
+> catalogue is tabulated in `user-interface/WIDGETS.DESCRIPTION.md` and the class
+> roster + `ui*` surface in `lib/user-interface/USER-INTERFACE.md`. Twenty-two
+> new source units: 10,402 -> **10,424** total records (10,344 -> **10,366**
+> source classes); facade and package counts unchanged at 58 and 86.
+> `LIBRARY.SYMBOLS.md` was regenerated from the live tree and the counts are
+> verified in lockstep by `test-suites/test-library-inventory.sh`.
 
 > Revision 0.34 adds the **`user-interface`** package: the SLeeLa-source binding
 > for **SleelaUI™**, SLeeLa's own original cross-platform UI toolkit (native

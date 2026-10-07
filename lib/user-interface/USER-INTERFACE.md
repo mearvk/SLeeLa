@@ -59,6 +59,29 @@ implements the same surface.
 | `uiSlider(parent,min,max,val)` → int | A slider | `slui_slider` |
 | `uiSeparator(parent,orient)` → int | A hairline rule | `slui_separator` |
 | `uiSpacer(parent)` → int | A flexible expanding gap | `slui_spacer` |
+| `uiCheckBox(parent,text,on)` → int | A labelled check box | `slui_check_box` |
+| `uiRadioButton(parent,text,group,on)` → int | A grouped radio button | `slui_radio_button` |
+| `uiComboBox(parent)` → int | A drop-down selection | `slui_combo_box` |
+| `uiComboBoxAdd(combo,option)` | Append a combo option | `slui_combo_box_add` |
+| `uiSpinButton(parent,min,max,step,val)` → int | A numeric spin button | `slui_spin_button` |
+| `uiProgressBar(parent,frac)` → int | A determinate progress bar | `slui_progress_bar` |
+| `uiLevelBar(parent,frac)` → int | A segmented level bar | `slui_level_bar` |
+| `uiSpinner(parent)` → int | An indeterminate activity spinner | `slui_spinner` |
+| `uiScrollBar(parent,orient,val,page)` → int | A scroll bar indicator | `slui_scroll_bar` |
+| `uiFrame(parent,title)` → int | A titled bordered container | `slui_frame` |
+| `uiCard(parent)` → int | A raised surface panel | `slui_card` |
+| `uiGrid(parent,cols,spacing)` → int | A row/column grid | `slui_grid` |
+| `uiStatusBar(parent)` → int | A footer status strip | `slui_status_bar` |
+| `uiImage(parent,glyph,w,h)` → int | An image/icon tile | `slui_image` |
+| `uiAvatar(parent,initial,d)` → int | A round avatar | `slui_avatar` |
+| `uiBadge(parent,text)` → int | A count/status pill | `slui_badge` |
+| `uiChip(parent,text)` → int | A tag / chip pill | `slui_chip` |
+| `uiHeading(parent,text,size)` → int | A large title label | `slui_heading` |
+| `uiTooltip(parent,text)` → int | A tooltip bubble | `slui_tooltip` |
+| `uiLinkButton(parent,text)` → int | A hyperlink-style button | `slui_link_button` |
+| `uiSearchEntry(parent,ph)` → int | A search field | `slui_search_entry` |
+| `uiPasswordEntry(parent,ph)` → int | A masked password field | `slui_password_entry` |
+| `uiInfoBar(parent,text,severity)` → int | An inline notice bar | `slui_info_bar` |
 | `uiWidgetMargin(w,t,r,b,l)` | Set margins | `slui_widget_set_margin` |
 | `uiWidgetAlign(w,h,v)` | Set alignment | `slui_widget_set_align` |
 | `uiWidgetExpand(w,h,v)` | Set expansion | `slui_widget_set_expand` |
@@ -104,6 +127,32 @@ implements the same surface.
 | `SLSlider` | A horizontal slider over a `[min,max]` range. |
 | `SLSeparator` | A 1px hairline rule. |
 | `SLSpacer` | A flexible expanding gap. |
+| `SLCheckBox` | A labelled check box with an accent tick. |
+| `SLRadioButton` | A grouped, mutually-exclusive radio button. |
+| `SLComboBox` | A drop-down selection control. |
+| `SLSpinButton` | A numeric value with − / + steppers over `[min,max]`. |
+| `SLProgressBar` | A determinate progress bar over `[0,1]`. |
+| `SLLevelBar` | A segmented level indicator over `[0,1]`. |
+| `SLSpinner` | An indeterminate activity spinner. |
+| `SLScrollBar` | A scroll bar with a draggable thumb. |
+| `SLFrame` | A titled, bordered group container. |
+| `SLCard` | A raised rounded surface panel. |
+| `SLGrid` | A fixed row/column grid container. |
+| `SLStatusBar` | A footer status strip. |
+| `SLImage` | An image/icon tile with a centred glyph. |
+| `SLAvatar` | A round accent avatar with an initial. |
+| `SLBadge` | A small accent count/status pill. |
+| `SLChip` | A rounded tag/filter pill. |
+| `SLHeading` | A large title label. |
+| `SLTooltip` | A small tooltip bubble. |
+| `SLLinkButton` | A hyperlink-style accent button. |
+| `SLSearchEntry` | An entry with a leading search glyph. |
+| `SLPasswordEntry` | An entry that masks its characters. |
+| `SLInfoBar` | An inline info/warning/error notice bar. |
+
+> The full catalogue — every widget with its C ABI constructor, SLeeLa class,
+> description, and focus behaviour — is tabulated in
+> [`user-interface/WIDGETS.DESCRIPTION.md`](../../user-interface/WIDGETS.DESCRIPTION.md).
 
 ### Theme
 

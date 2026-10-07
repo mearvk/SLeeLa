@@ -270,6 +270,50 @@ SLUIWidget *slui_slider(SLUIWidget *parent, double min, double max, double value
 SLUIWidget *slui_separator(SLUIWidget *parent, SLUIOrientation orient);
 SLUIWidget *slui_spacer(SLUIWidget *parent); /* an expanding flexible gap     */
 
+/* --------------------------------------------------------------------------
+ * Expanded widget collection. Every one is drawn by the same software
+ * rasterizer and reads only theme roles, so each is pixel-identical on every
+ * backend. Constructors attach to `parent` and return a borrowed handle.
+ * ------------------------------------------------------------------------- */
+
+/* Selection / boolean controls. */
+SLUIWidget *slui_check_box(SLUIWidget *parent, const char *text, int on);
+SLUIWidget *slui_radio_button(SLUIWidget *parent, const char *text, int group,
+                              int on);
+SLUIWidget *slui_combo_box(SLUIWidget *parent); /* add options, then show      */
+void slui_combo_box_add(SLUIWidget *combo, const char *option);
+SLUIWidget *slui_spin_button(SLUIWidget *parent, double min, double max,
+                             double step, double value);
+
+/* Indicators. */
+SLUIWidget *slui_progress_bar(SLUIWidget *parent, double fraction); /* [0,1]   */
+SLUIWidget *slui_level_bar(SLUIWidget *parent, double fraction);    /* [0,1]   */
+SLUIWidget *slui_spinner(SLUIWidget *parent);  /* indeterminate activity       */
+SLUIWidget *slui_scroll_bar(SLUIWidget *parent, SLUIOrientation orient,
+                            double value, double page);
+
+/* Containers / structure. */
+SLUIWidget *slui_frame(SLUIWidget *parent, const char *title);
+SLUIWidget *slui_card(SLUIWidget *parent);
+SLUIWidget *slui_grid(SLUIWidget *parent, int columns, int spacing);
+SLUIWidget *slui_status_bar(SLUIWidget *parent);
+
+/* Display / ornament. */
+SLUIWidget *slui_image(SLUIWidget *parent, const char *glyph, int w, int h);
+SLUIWidget *slui_avatar(SLUIWidget *parent, const char *initial, int diameter);
+SLUIWidget *slui_badge(SLUIWidget *parent, const char *text);
+SLUIWidget *slui_chip(SLUIWidget *parent, const char *text);
+SLUIWidget *slui_heading(SLUIWidget *parent, const char *text, int size_pt);
+SLUIWidget *slui_tooltip(SLUIWidget *parent, const char *text);
+
+/* Text input variants. */
+SLUIWidget *slui_link_button(SLUIWidget *parent, const char *text);
+SLUIWidget *slui_search_entry(SLUIWidget *parent, const char *placeholder);
+SLUIWidget *slui_password_entry(SLUIWidget *parent, const char *placeholder);
+
+/* Feedback. INFO=0, WARNING=1, ERROR=2. */
+SLUIWidget *slui_info_bar(SLUIWidget *parent, const char *text, int severity);
+
 /* Common widget configuration. */
 void slui_widget_set_margin(SLUIWidget *w, int top, int right, int bottom,
                             int left);
@@ -289,6 +333,11 @@ void slui_widget_set_toggle(SLUIWidget *w, int on);
 int slui_widget_get_toggle(const SLUIWidget *w);
 void slui_widget_set_value(SLUIWidget *w, double value); /* slider            */
 double slui_widget_get_value(const SLUIWidget *w);
+
+/* One-shot activation latch for polling hosts (e.g. the SLeeLa `ui*` bridge):
+ * returns 1 at most once per activation and clears the latch. The callback path
+ * (slui_widget_on_activate) still works independently. */
+int slui_widget_take_activated(SLUIWidget *w);
 
 /* Mark a button/entry as the single suggested (accent) action in its group. */
 void slui_widget_set_suggested(SLUIWidget *w, int suggested);

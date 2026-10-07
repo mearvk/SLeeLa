@@ -1,0 +1,53 @@
+/*
+ * lib/user-interface/SLComboBox.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLComboBox — a SleelaUI drop-down selection control: a
+ *   rounded surface showing the current option and a chevron. Options are added
+ *   with addOption(); clicking (or arrow keys while focused) advances the
+ *   selection and raises an activate event. The constructor bottoms out in the
+ *   `uiComboBox` built-in (SleelaUI C ABI slui_combo_box()); options are added
+ *   via `uiComboBoxAdd` and the selected index is read/written through
+ *   selectedIndex()/setSelectedIndex().
+ *
+ * An SLComboBox IS an SLWidget and is keyboard-focusable.
+ *
+ * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
+ * bridge.
+ */
+#sleela 1.5
+class SLComboBox extends SLWidget {
+  // Create a combo box inside `parent`; add options afterwards.
+  void createIn(SLWidget parent) {
+    widget = uiComboBox(parent.handle());
+  }
+  void createInHandle(int parentHandle) {
+    widget = uiComboBox(parentHandle);
+  }
+
+  // Append a selectable option.
+  void addOption(String option) {
+    if (widget >= 0) { uiComboBoxAdd(widget, option); }
+  }
+
+  // The currently-selected option index (0-based), as a value. The VM carries
+  // the index as a numeric; callers typically use selected() for the text.
+  double selectedIndex() {
+    if (widget < 0) { return -1.0; }
+    return uiWidgetGetValue(widget);
+  }
+  void setSelectedIndex(int index) {
+    if (widget >= 0) { uiWidgetSetValue(widget, index); }
+  }
+
+  // The currently-selected option text.
+  String selected() {
+    if (widget < 0) { return null; }
+    return uiWidgetGetText(widget);
+  }
+
+  // True if the selection changed since the last check (latch cleared on read).
+  boolean changed() {
+    if (widget < 0) { return false; }
+    return uiWidgetTakeActivated(widget) == 1;
+  }
+}

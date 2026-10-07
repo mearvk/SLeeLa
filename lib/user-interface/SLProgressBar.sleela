@@ -1,0 +1,32 @@
+/*
+ * lib/user-interface/SLProgressBar.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLProgressBar — a SleelaUI determinate progress bar: a
+ *   rounded trough with an accent fill proportional to a fraction in [0,1]. Use
+ *   it to show how far a known-length task has advanced. The constructor bottoms
+ *   out in the `uiProgressBar` built-in (SleelaUI C ABI slui_progress_bar());
+ *   the fraction is read/written through fraction()/setFraction().
+ *
+ * An SLProgressBar IS an SLWidget but is non-interactive.
+ *
+ * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
+ * bridge.
+ */
+#sleela 1.5
+class SLProgressBar extends SLWidget {
+  // Create a progress bar inside `parent` with an initial fraction in [0,1].
+  void createIn(SLWidget parent, double fraction) {
+    widget = uiProgressBar(parent.handle(), fraction);
+  }
+  void createInHandle(int parentHandle, double fraction) {
+    widget = uiProgressBar(parentHandle, fraction);
+  }
+
+  double fraction() {
+    if (widget < 0) { return 0.0; }
+    return uiWidgetGetValue(widget);
+  }
+  void setFraction(double fraction) {
+    if (widget >= 0) { uiWidgetSetValue(widget, fraction); }
+  }
+}

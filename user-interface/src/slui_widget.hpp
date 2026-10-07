@@ -30,6 +30,7 @@ namespace slui {
 class Backend;
 
 enum class WidgetKind {
+    /* Original set */
     Box,
     HeaderBar,
     Label,
@@ -38,7 +39,30 @@ enum class WidgetKind {
     Entry,
     Slider,
     Separator,
-    Spacer
+    Spacer,
+    /* Expanded collection */
+    CheckBox,
+    RadioButton,
+    ProgressBar,
+    LevelBar,
+    Spinner,
+    Frame,
+    Card,
+    Grid,
+    Image,
+    Avatar,
+    Badge,
+    Chip,
+    LinkButton,
+    SearchEntry,
+    PasswordEntry,
+    Heading,
+    ScrollBar,
+    StatusBar,
+    InfoBar,
+    Tooltip,
+    ComboBox,
+    SpinButton
 };
 
 enum class Visual { Normal, Hover, Active, Disabled };
@@ -159,8 +183,19 @@ public:
         if (invalidate_fn_) invalidate_fn_(invalidate_ctx_);
     }
 
+    /* Activation latch: set on every activate, read-and-cleared by the host.
+     * The C callback path (on_activate) and this latch coexist, so a C host can
+     * use callbacks and a polling host (e.g. the SLeeLa `ui*` bridge) can use
+     * take_activated() for exactly-once observation. */
+    bool take_activated() {
+        bool a = activated_;
+        activated_ = false;
+        return a;
+    }
+
 protected:
     void emit_activate() {
+        activated_ = true;
         if (activate_) activate_(reinterpret_cast<SLUIWidget*>(this), activate_user_);
     }
     void emit_value_changed(double v) {
@@ -195,6 +230,7 @@ protected:
     bool focused_ = false;
     bool suggested_ = false;
     bool destructive_ = false;
+    bool activated_ = false; /* one-shot activation latch (take_activated) */
 
     SLUIActivateHandler activate_ = nullptr;
     void* activate_user_ = nullptr;
@@ -333,6 +369,352 @@ public:
     }
     SLUISize measure(const PaintContext&) override { return SLUISize{0, 0}; }
     void paint(PaintContext&) override {}
+};
+
+/* ======================================================================== */
+/* Expanded widget collection                                               */
+/* The look of every new widget is drawn by the same software rasterizer and  */
+/* reads only theme roles, so each is pixel-identical on every backend and     */
+/* obeys the UI principles (one palette, one accent, >=32px hit targets).      */
+/* ======================================================================== */
+
+/* A labelled check box: a rounded square that shows an accent tick when on. */
+class CheckBox : public Widget {
+public:
+    CheckBox(std::string text, bool on)
+        : Widget(WidgetKind::CheckBox), text_(std::move(text)), on_(on) {}
+    SLUISize measure(const PaintContext& ctx) override;
+    void paint(PaintContext& ctx) override;
+    bool on_event(const SLUIEvent& ev) override;
+    bool wants_focus() const override { return true; }
+    void set_text(const std::string& t) override { text_ = t; invalidate(); }
+    std::string text() const override { return text_; }
+    void set_toggle(bool on) override { on_ = on; invalidate(); }
+    bool toggle() const override { return on_; }
+
+private:
+    std::string text_;
+    bool on_;
+};
+
+/* A labelled radio button: a circle with an accent dot when selected. Radios
+ * sharing a group ordinal are mutually exclusive within their parent. */
+class RadioButton : public Widget {
+public:
+    RadioButton(std::string text, int group, bool on)
+        : Widget(WidgetKind::RadioButton), text_(std::move(text)),
+          group_(group), on_(on) {}
+    SLUISize measure(const PaintContext& ctx) override;
+    void paint(PaintContext& ctx) override;
+    bool on_event(const SLUIEvent& ev) override;
+    bool wants_focus() const override { return true; }
+    void set_text(const std::string& t) override { text_ = t; invalidate(); }
+    std::string text() const override { return text_; }
+    void set_toggle(bool on) override { on_ = on; invalidate(); }
+    bool toggle() const override { return on_; }
+    int group() const { return group_; }
+
+private:
+    void select_in_group();
+    std::string text_;
+    int group_;
+    bool on_;
+};
+
+/* A determinate progress bar in [0,1] (uses value()/set_value()). */
+class ProgressBar : public Widget {
+public:
+    explicit ProgressBar(double fraction)
+        : Widget(WidgetKind::ProgressBar), value_(fraction) {}
+    SLUISize measure(const PaintContext& ctx) override;
+    void paint(PaintContext& ctx) override;
+    void set_value(double v) override;
+    double value() const override { return value_; }
+
+private:
+    double value_;
+};
+
+/* A segmented level bar (battery/volume style) over [0,1]. */
+class LevelBar : public Widget {
+public:
+    explicit LevelBar(double fraction)
+        : Widget(WidgetKind::LevelBar), value_(fraction) {}
+    SLUISize measure(const PaintContext& ctx) override;
+    void paint(PaintContext& ctx) override;
+    void set_value(double v) override;
+    double value() const override { return value_; }
+
+private:
+    double value_;
+};
+
+/* An indeterminate activity spinner: an accent arc on a faint ring. The
+ * fraction of the ring that is bright advances with the animation phase. */
+class Spinner : public Widget {
+public:
+    Spinner() : Widget(WidgetKind::Spinner) {}
+    SLUISize measure(const PaintContext& ctx) override;
+    void paint(PaintContext& ctx) override;
+    void set_value(double v) override { phase_ = v; invalidate(); }
+    double value() const override { return phase_; }
+
+private:
+    double phase_ = 0.0; /* 0..1 position of the bright arc */
+};
+
+/* A titled, bordered container (a group frame). Lays out children in a
+ * vertical stack inside the border, below the title. */
+class Frame : public Widget {
+public:
+    explicit Frame(std::string title)
+        : Widget(WidgetKind::Frame), title_(std::move(title)) {}
+    SLUISize measure(const PaintContext& ctx) override;
+    void arrange(const PaintContext& ctx, const Rect& area) override;
+    void paint(PaintContext& ctx) override;
+    void set_text(const std::string& t) override { title_ = t; invalidate(); }
+    std::string text() const override { return title_; }
+
+private:
+    std::string title_;
+};
+
+/* A raised surface panel (a card): rounded surface fill + hairline, children
+ * stacked vertically inside padding. */
+class Card : public Widget {
+public:
+    Card() : Widget(WidgetKind::Card) {}
+    SLUISize measure(const PaintContext& ctx) override;
+    void arrange(const PaintContext& ctx, const Rect& area) override;
+    void paint(PaintContext& ctx) override;
+};
+
+/* A simple fixed row/column grid container. Children fill cells in row-major
+ * order; the grid sizes columns/rows to the largest child in each line. */
+class Grid : public Widget {
+public:
+    Grid(int columns, int spacing)
+        : Widget(WidgetKind::Grid), columns_(columns < 1 ? 1 : columns),
+          spacing_(spacing) {}
+    SLUISize measure(const PaintContext& ctx) override;
+    void arrange(const PaintContext& ctx, const Rect& area) override;
+    void paint(PaintContext& ctx) override;
+
+private:
+    int columns_;
+    int spacing_;
+};
+
+/* A placeholder image/icon tile: a rounded surface with a centred glyph. In a
+ * real asset pipeline this would blit a decoded image; here it draws a themed
+ * monogram so layouts are complete and backend-independent. */
+class Image : public Widget {
+public:
+    Image(std::string glyph, int w, int h)
+        : Widget(WidgetKind::Image), glyph_(std::move(glyph)), w_(w), h_(h) {}
+    SLUISize measure(const PaintContext& ctx) override;
+    void paint(PaintContext& ctx) override;
+    void set_text(const std::string& t) override { glyph_ = t; invalidate(); }
+    std::string text() const override { return glyph_; }
+
+private:
+    std::string glyph_;
+    int w_, h_;
+};
+
+/* A round avatar showing an initial on an accent disc. */
+class Avatar : public Widget {
+public:
+    Avatar(std::string initial, int diameter)
+        : Widget(WidgetKind::Avatar), initial_(std::move(initial)),
+          diameter_(diameter) {}
+    SLUISize measure(const PaintContext& ctx) override;
+    void paint(PaintContext& ctx) override;
+    void set_text(const std::string& t) override { initial_ = t; invalidate(); }
+    std::string text() const override { return initial_; }
+
+private:
+    std::string initial_;
+    int diameter_;
+};
+
+/* A small count/status pill (badge) drawn in the accent colour. */
+class Badge : public Widget {
+public:
+    explicit Badge(std::string text)
+        : Widget(WidgetKind::Badge), text_(std::move(text)) {}
+    SLUISize measure(const PaintContext& ctx) override;
+    void paint(PaintContext& ctx) override;
+    void set_text(const std::string& t) override { text_ = t; invalidate(); }
+    std::string text() const override { return text_; }
+
+private:
+    std::string text_;
+};
+
+/* A chip / tag: a rounded surface pill with a hairline and text. */
+class Chip : public Widget {
+public:
+    explicit Chip(std::string text)
+        : Widget(WidgetKind::Chip), text_(std::move(text)) {}
+    SLUISize measure(const PaintContext& ctx) override;
+    void paint(PaintContext& ctx) override;
+    void set_text(const std::string& t) override { text_ = t; invalidate(); }
+    std::string text() const override { return text_; }
+
+private:
+    std::string text_;
+};
+
+/* A hyperlink-style button: accent-coloured text, activates like a button. */
+class LinkButton : public Widget {
+public:
+    explicit LinkButton(std::string text)
+        : Widget(WidgetKind::LinkButton), text_(std::move(text)) {}
+    SLUISize measure(const PaintContext& ctx) override;
+    void paint(PaintContext& ctx) override;
+    bool on_event(const SLUIEvent& ev) override;
+    bool wants_focus() const override { return true; }
+    void set_text(const std::string& t) override { text_ = t; invalidate(); }
+    std::string text() const override { return text_; }
+
+private:
+    std::string text_;
+};
+
+/* An entry with a leading search glyph. Behaves like Entry otherwise. */
+class SearchEntry : public Entry {
+public:
+    explicit SearchEntry(std::string placeholder) : Entry(std::move(placeholder)) {
+        kind_ = WidgetKind::SearchEntry;
+    }
+    void paint(PaintContext& ctx) override;
+    SLUISize measure(const PaintContext& ctx) override;
+};
+
+/* An entry that renders dots instead of its characters. */
+class PasswordEntry : public Entry {
+public:
+    explicit PasswordEntry(std::string placeholder) : Entry(std::move(placeholder)) {
+        kind_ = WidgetKind::PasswordEntry;
+    }
+    void paint(PaintContext& ctx) override;
+};
+
+/* A large title label (heading). */
+class Heading : public Widget {
+public:
+    Heading(std::string text, int levelPt)
+        : Widget(WidgetKind::Heading), text_(std::move(text)), size_(levelPt) {}
+    SLUISize measure(const PaintContext& ctx) override;
+    void paint(PaintContext& ctx) override;
+    void set_text(const std::string& t) override { text_ = t; invalidate(); }
+    std::string text() const override { return text_; }
+
+private:
+    std::string text_;
+    int size_;
+};
+
+/* A thin scroll bar indicator (position 0..1, thumb covers `page` fraction). */
+class ScrollBar : public Widget {
+public:
+    ScrollBar(SLUIOrientation orient, double value, double page)
+        : Widget(WidgetKind::ScrollBar), orient_(orient), value_(value),
+          page_(page) {}
+    SLUISize measure(const PaintContext& ctx) override;
+    void paint(PaintContext& ctx) override;
+    bool on_event(const SLUIEvent& ev) override;
+    bool wants_focus() const override { return true; }
+    void set_value(double v) override;
+    double value() const override { return value_; }
+
+private:
+    SLUIOrientation orient_;
+    double value_, page_;
+    bool dragging_ = false;
+};
+
+/* A footer status bar: chrome strip + top hairline, lays children horizontally. */
+class StatusBar : public Widget {
+public:
+    StatusBar() : Widget(WidgetKind::StatusBar) {}
+    SLUISize measure(const PaintContext& ctx) override;
+    void arrange(const PaintContext& ctx, const Rect& area) override;
+    void paint(PaintContext& ctx) override;
+};
+
+/* An inline info/notice bar: a tinted surface strip with a message. The tint
+ * follows a severity (info/accent, warning, error/danger). */
+class InfoBar : public Widget {
+public:
+    enum Severity { INFO = 0, WARNING = 1, ERROR = 2 };
+    InfoBar(std::string text, int severity)
+        : Widget(WidgetKind::InfoBar), text_(std::move(text)),
+          severity_(severity) {}
+    SLUISize measure(const PaintContext& ctx) override;
+    void paint(PaintContext& ctx) override;
+    void set_text(const std::string& t) override { text_ = t; invalidate(); }
+    std::string text() const override { return text_; }
+
+private:
+    std::string text_;
+    int severity_;
+};
+
+/* A floating tooltip bubble: a small raised surface with a hairline + text. */
+class Tooltip : public Widget {
+public:
+    explicit Tooltip(std::string text)
+        : Widget(WidgetKind::Tooltip), text_(std::move(text)) {}
+    SLUISize measure(const PaintContext& ctx) override;
+    void paint(PaintContext& ctx) override;
+    void set_text(const std::string& t) override { text_ = t; invalidate(); }
+    std::string text() const override { return text_; }
+
+private:
+    std::string text_;
+};
+
+/* A drop-down combo box showing the current selection and a chevron. Cycles
+ * through its options on click (a compact, dependency-free selection control). */
+class ComboBox : public Widget {
+public:
+    ComboBox() : Widget(WidgetKind::ComboBox) {}
+    SLUISize measure(const PaintContext& ctx) override;
+    void paint(PaintContext& ctx) override;
+    bool on_event(const SLUIEvent& ev) override;
+    bool wants_focus() const override { return true; }
+    void add_option(const std::string& o) {
+        options_.push_back(o);
+        invalidate();
+    }
+    void set_value(double v) override;
+    double value() const override { return static_cast<double>(index_); }
+    std::string text() const override {
+        return options_.empty() ? std::string() : options_[index_];
+    }
+
+private:
+    std::vector<std::string> options_;
+    size_t index_ = 0;
+};
+
+/* A numeric spin button: a value with - and + steppers. */
+class SpinButton : public Widget {
+public:
+    SpinButton(double min, double max, double step, double value)
+        : Widget(WidgetKind::SpinButton), min_(min), max_(max), step_(step),
+          value_(value) {}
+    SLUISize measure(const PaintContext& ctx) override;
+    void paint(PaintContext& ctx) override;
+    bool on_event(const SLUIEvent& ev) override;
+    bool wants_focus() const override { return true; }
+    void set_value(double v) override;
+    double value() const override { return value_; }
+
+private:
+    double min_, max_, step_, value_;
 };
 
 /* Shared text helpers used by several widgets (declared here, defined in

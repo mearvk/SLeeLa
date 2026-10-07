@@ -72,12 +72,22 @@ host-defined `SLUI_THEME_CUSTOM` are also provided.
 
 ## Control set
 
-Containers: **box** (vertical/horizontal, GTK/CSS box model with expand +
-align), **header bar**, **separator**, flexible **spacer**.
-Controls: **label**, **button** (with suggested/destructive variants),
-**toggle** switch, single-line **entry** with caret and UTF-8 editing,
-**slider**. All are keyboard-navigable (Tab/Shift-Tab focus ring, Enter/Space
-activate) and expose their state through the C ABI.
+**31 widget types**, each drawn by the software rasterizer and backend-identical:
+
+- **Containers & structure:** box, grid, frame, card, header bar, status bar,
+  separator, spacer.
+- **Buttons & actions:** button (suggested/destructive), link button, toggle.
+- **Selection & boolean:** check box, radio button, combo box, spin button.
+- **Text input:** entry (UTF-8 + caret), search entry, password entry.
+- **Ranges & indicators:** slider, scroll bar, progress bar, level bar, spinner.
+- **Text & display:** label, heading, image, avatar.
+- **Tags & feedback:** badge, chip, info bar, tooltip.
+
+The twelve interactive controls are keyboard-navigable (Tab/Shift-Tab focus
+ring, Enter/Space activate, arrows for ranges) and expose their state through
+the C ABI. The full catalogue — C constructor, SLeeLa class, description, and
+focus behaviour per widget — is in
+[`WIDGETS.DESCRIPTION.md`](WIDGETS.DESCRIPTION.md).
 
 ## Quick start (C)
 

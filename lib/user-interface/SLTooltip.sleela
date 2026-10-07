@@ -1,0 +1,23 @@
+/*
+ * lib/user-interface/SLTooltip.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLTooltip — a SleelaUI tooltip bubble: a small raised
+ *   surface with a 1px hairline and short explanatory text, used to annotate a
+ *   control. The constructor bottoms out in the `uiTooltip` built-in (SleelaUI
+ *   C ABI slui_tooltip()); the text is updated through the inherited setText().
+ *
+ * An SLTooltip IS an SLWidget but is non-interactive.
+ *
+ * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
+ * bridge.
+ */
+#sleela 1.5
+class SLTooltip extends SLWidget {
+  // Create a tooltip inside `parent` with a message.
+  void createIn(SLWidget parent, String text) {
+    widget = uiTooltip(parent.handle(), text);
+  }
+  void createInHandle(int parentHandle, String text) {
+    widget = uiTooltip(parentHandle, text);
+  }
+}

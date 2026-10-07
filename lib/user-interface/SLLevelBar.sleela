@@ -1,0 +1,33 @@
+/*
+ * lib/user-interface/SLLevelBar.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLLevelBar — a SleelaUI segmented level indicator
+ *   (battery/volume style): a row of ten segments, the leading ones lit in the
+ *   accent colour in proportion to a fraction in [0,1]. Use it for a discrete
+ *   "how full / how strong" reading. The constructor bottoms out in the
+ *   `uiLevelBar` built-in (SleelaUI C ABI slui_level_bar()); the fraction is
+ *   read/written through level()/setLevel().
+ *
+ * An SLLevelBar IS an SLWidget but is non-interactive.
+ *
+ * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
+ * bridge.
+ */
+#sleela 1.5
+class SLLevelBar extends SLWidget {
+  // Create a level bar inside `parent` with an initial level in [0,1].
+  void createIn(SLWidget parent, double level) {
+    widget = uiLevelBar(parent.handle(), level);
+  }
+  void createInHandle(int parentHandle, double level) {
+    widget = uiLevelBar(parentHandle, level);
+  }
+
+  double level() {
+    if (widget < 0) { return 0.0; }
+    return uiWidgetGetValue(widget);
+  }
+  void setLevel(double level) {
+    if (widget >= 0) { uiWidgetSetValue(widget, level); }
+  }
+}
