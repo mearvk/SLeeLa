@@ -1,0 +1,57 @@
+/*
+ * telephony-skya/sleela/Socio.sleela
+ * SLeeLa — Skya Telephony — emblematic loadable module.
+ *
+ * Socio is the SOCIAL fabric of a Skya node: the people-and-ties layer that
+ * sits above raw peers. Where SkyaRoom counts connected peers, Socio knows the
+ * social shape — members, their standing, and the ties between them — so the
+ * telephony program can reason about "who is socially present" rather than only
+ * "how many sockets are open".
+ *
+ * It is a NATURAL / LOADABLE MODULE: a self-describing SLeeLa class the Skya
+ * program can load and compose. It carries the common module contract
+ * (`load()` / `loaded()` / `moduleName()` / `describe()`) so a loader can treat
+ * every emblematic Skya module the same way. It holds no socket; it models the
+ * social layer the networking classes serve.
+ */
+#sleela 1.3
+// Skya telephony — social fabric (loadable module / natural).
+class Socio {
+
+  static final String MODULE = "Socio";
+
+  int loadedFlag;      // 1 once the module is loaded
+  int members;         // social members currently present
+  int ties;            // acknowledged ties between members
+  int standing;        // 0 guest, 1 member, 2 trusted, 3 steward
+
+  // --- loadable-module contract ------------------------------------------
+  void load() { loadedFlag = 1; members = 0; ties = 0; standing = 0; }
+  boolean loaded() { return loadedFlag == 1; }
+  String moduleName() { return MODULE; }
+
+  // --- social behavior ----------------------------------------------------
+  // Admit a member into the social fabric at a given standing (0..3).
+  void admit(int atStanding) {
+    members = members + 1;
+    if (atStanding > standing) { standing = atStanding; }
+  }
+
+  // Record an acknowledged social tie between two present members.
+  void tie() { if (members >= 2) { ties = ties + 1; } }
+
+  // Social density: ties relative to the members present (x100, integer).
+  int density() {
+    if (members < 2) { return 0; }
+    return (ties * 100) / members;
+  }
+
+  int memberCount() { return members; }
+  int tieCount() { return ties; }
+  int topStanding() { return standing; }
+
+  String describe() {
+    return MODULE + " members=" + members + " ties=" + ties
+         + " density=" + density() + " standing=" + standing;
+  }
+}

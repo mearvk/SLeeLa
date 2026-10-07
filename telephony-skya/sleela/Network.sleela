@@ -1,0 +1,78 @@
+/*
+ * telephony-skya/sleela/Network.sleela
+ * SLeeLa — Skya Telephony — emblematic loadable module.
+ *
+ * Network is the TRANSPORT reachability layer of a Skya node: the view of the
+ * paths a node has to the outside and to its peers. It models local vs. public
+ * address, NAT posture, and a small set of reachable routes, so the telephony
+ * program can decide HOW a reach should travel before it travels.
+ *
+ * It is a NATURAL / LOADABLE MODULE carrying the common module contract
+ * (`load()` / `loaded()` / `moduleName()` / `describe()`). It is deliberately
+ * descriptive and non-destructive: it never opens a firewall or asserts a
+ * public mapping — authoritative NAT/firewall lifecycle stays with the native
+ * SLeeLa port-awareness subsystem. The actual sockets live in the Servers and
+ * Communication modules; Network only describes the shape of reach.
+ */
+#sleela 1.3
+// Skya telephony — transport reachability (loadable module / natural).
+class Network {
+
+  static final String MODULE = "Network";
+
+  // NAT posture codes (mirror the careful, reports-only discernment used by
+  // the always-open Skya servers):
+  static final int NAT_UNKNOWN   = 0; // reachability unknown; let PINGs decide
+  static final int NAT_REFLEXIVE = 1; // reachable after local reflexive discovery
+  static final int NAT_DIRECT    = 2; // inbound feasibly reachable / already-mapped
+
+  int loadedFlag;
+  String localHost;
+  String publicHost;
+  int natPosture;
+  int routes;          // count of reachable routes recorded
+
+  void load() {
+    loadedFlag = 1;
+    localHost = "127.0.0.1";
+    publicHost = "";
+    natPosture = NAT_UNKNOWN;
+    routes = 0;
+  }
+  boolean loaded() { return loadedFlag == 1; }
+  String moduleName() { return MODULE; }
+
+  // Describe the node's own addresses.
+  void bindLocal(String host) { localHost = host; }
+  void observePublic(String host) { publicHost = host; }
+
+  // Record a careful, non-destructive NAT discernment (never changes rules).
+  void observeNat(int posture) {
+    if (posture < NAT_UNKNOWN) { natPosture = NAT_UNKNOWN; }
+    else if (posture > NAT_DIRECT) { natPosture = NAT_DIRECT; }
+    else { natPosture = posture; }
+  }
+
+  // Note a reachable route to a peer/host (bookkeeping only).
+  void addRoute() { routes = routes + 1; }
+
+  // Can inbound traffic feasibly arrive? Loopback always; otherwise only when
+  // the observed posture says so. Unknown is treated as "stay open, let PINGs
+  // decide" — this returns false for "assert public reachability" but the
+  // caller (an always-open server) stays open regardless.
+  boolean inboundFeasible() {
+    if (localHost == "127.0.0.1") { return true; }
+    return natPosture == NAT_DIRECT;
+  }
+
+  int posture() { return natPosture; }
+  int routeCount() { return routes; }
+  String local() { return localHost; }
+  String publicAddr() { return publicHost; }
+
+  String describe() {
+    return MODULE + " local=" + localHost + " public=" + publicHost
+         + " nat=" + natPosture + " routes=" + routes
+         + " inboundFeasible=" + inboundFeasible();
+  }
+}

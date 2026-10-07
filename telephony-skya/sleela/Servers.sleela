@@ -1,0 +1,86 @@
+/*
+ * telephony-skya/sleela/Servers.sleela
+ * SLeeLa — Skya Telephony — emblematic loadable module.
+ *
+ * Servers is the SERVER-side presence of a Skya node: the set of listeners the
+ * node is holding open and the roles they serve. It is the companion to the
+ * Network module — Network describes reach, Servers describes what is standing
+ * ready to be reached. It can hold the always-open comm listener (the local
+ * SLeeLa comm server) and additional role listeners, and it answers a basic
+ * PING so a peer can confirm the node is alive.
+ *
+ * It is a NATURAL / LOADABLE MODULE carrying the common module contract
+ * (`load()` / `loaded()` / `moduleName()` / `describe()`). Networking uses the
+ * same portable VM socket primitives as SkyaServer (`listen`/`accept`/
+ * `sockread`/`sockwrite`) across the explicit SLeeLa VM/OS bridge.
+ */
+#sleela 1.3
+// Skya telephony — server-side listeners and roles (loadable module / natural).
+class Servers {
+
+  static final String MODULE = "Servers";
+
+  int loadedFlag;
+  int commListener;    // the always-open local comm listener handle (-1 = none)
+  int commPort;        // port the comm listener holds open
+  int openCount;       // how many listeners are currently held open
+  int served;          // requests served (PING answered + greetings)
+
+  void load() {
+    loadedFlag = 1;
+    commListener = -1;
+    commPort = 0;
+    openCount = 0;
+    served = 0;
+  }
+  boolean loaded() { return loadedFlag == 1; }
+  String moduleName() { return MODULE; }
+
+  // Open the always-open comm listener on `port` (the local SLeeLa comm
+  // server). Binds the all-interfaces address via the native listener so
+  // inbound traffic can arrive.
+  void openComm(int port) {
+    commPort = port;
+    commListener = listen(port);
+    openCount = openCount + 1;
+  }
+
+  boolean commOpen() { return commListener >= 0; }
+  int listenersOpen() { return openCount; }
+  int port() { return commPort; }
+
+  // Serve exactly one accepted peer on the comm listener: answer PING with a
+  // PONG, anything else with a server-ready line. Returns true if a PING was
+  // served.
+  boolean serveOne() {
+    if (commListener < 0) { return false; }
+    int client = accept(commListener);
+    String request = sockread(client);
+    boolean isPing = request != null && request.length() >= 4
+                     && request.substring(0, 4) == "PING";
+    if (isPing) {
+      sockwrite(client, "SKYA/1 PONG port=" + commPort);
+    } else {
+      sockwrite(client, "SKYA/1 server-ready port=" + commPort);
+    }
+    sockclose(client);
+    served = served + 1;
+    return isPing;
+  }
+
+  // Release the comm listener (host leaving / shutdown).
+  void closeComm() {
+    if (commListener >= 0) {
+      sockclose(commListener);
+      commListener = -1;
+      if (openCount > 0) { openCount = openCount - 1; }
+    }
+  }
+
+  int servedCount() { return served; }
+
+  String describe() {
+    return MODULE + " commOpen=" + commOpen() + " port=" + commPort
+         + " listeners=" + openCount + " served=" + served;
+  }
+}

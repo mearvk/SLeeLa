@@ -20,6 +20,28 @@ Skya is the SLeeLa telephony application boundary for client, server, and combin
 
 The native layer remains authoritative for networking, media, security, NAT, and file transfer. The .sleela programs are application-level runnables and orchestration examples; they do not create a second native runtime.
 
+## Emblematic modules (loadable naturals)
+
+Alongside the server/client/room runnables, Skya carries five **emblematic
+modules** — self-describing SLeeLa classes the Skya program can load and compose
+as *naturals* (load now, or load on demand). Each shares one loadable-module
+contract (`load()` / `loaded()` / `moduleName()` / `describe()`) so a loader can
+treat them uniformly, and the `SkyaModules` registry brings them up together.
+
+| Module | File | Layer it emblematizes |
+|---|---|---|
+| **Socio** | [`sleela/Socio.sleela`](sleela/Socio.sleela) | the social fabric — members, standing, and ties above raw peers |
+| **Network** | [`sleela/Network.sleela`](sleela/Network.sleela) | transport reachability — local/public address and careful, non-destructive NAT posture |
+| **Servers** | [`sleela/Servers.sleela`](sleela/Servers.sleela) | server-side presence — the always-open comm listener and the roles it serves |
+| **Communication** | [`sleela/Communication.sleela`](sleela/Communication.sleela) | message exchange — client-side reach/send/receive with a coherence tally |
+| **RealAcquaintances** | [`sleela/RealAcquaintances.sleela`](sleela/RealAcquaintances.sleela) | the confirmed trust roster — acquaintances made real only after a verified exchange |
+| *(loader)* | [`sleela/SkyaModules.sleela`](sleela/SkyaModules.sleela) | loads and composes the five modules as naturals |
+
+These are descriptive application-level models composed over the same portable
+VM socket primitives as `SkyaServer` / `SkyaClient`; they open no second native
+runtime, and NAT/firewall lifecycle stays owned by the native port-awareness
+subsystem.
+
 ## User Client
 
 The default Skya GUI is the non-administrative user client, `SkyaClientApp`.
