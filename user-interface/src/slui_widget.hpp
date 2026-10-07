@@ -176,6 +176,15 @@ public:
         value_changed_user_ = u;
     }
 
+    /* An optional styled SLUIFont (opaque here) that text-bearing widgets use
+     * to render their label with font effects instead of plain theme text. The
+     * widget borrows it; the host owns it. */
+    void set_styled_font(void* font) {
+        styled_font_ = font;
+        invalidate();
+    }
+    void* styled_font() const { return styled_font_; }
+
     /* Window hook: set by the window when the tree is attached. */
     using InvalidateFn = void (*)(void*);
     void set_invalidate(InvalidateFn fn, void* ctx) {
@@ -242,6 +251,7 @@ protected:
 
     InvalidateFn invalidate_fn_ = nullptr;
     void* invalidate_ctx_ = nullptr;
+    void* styled_font_ = nullptr; /* optional SLUIFont for text widgets */
 };
 
 /* ---- concrete widgets --------------------------------------------------- */
@@ -823,6 +833,13 @@ private:
 double measure_text(Backend* backend, const std::string& utf8);
 void draw_text(PaintContext& ctx, const std::string& utf8, int x, int baseline,
                const Color& color);
+
+/* Draw text honouring a widget's optional styled SLUIFont: if `font` is set the
+ * run is rendered with the font's effects (via the Font API, composited into the
+ * window canvas); otherwise this is exactly draw_text(). Defined in
+ * slui_font.cpp so the widget layer need not depend on the font internals. */
+void draw_text_styled(PaintContext& ctx, void* font, const std::string& utf8,
+                      int x, int baseline, const Color& color);
 
 } // namespace slui
 

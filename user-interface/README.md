@@ -111,6 +111,15 @@ warm base. Lights come from a **source** (reserves its anchor object) or an
 chosen by polarity. See [`LIGHTING.md`](LIGHTING.md)
 ([`sleela_ui_light.h`](include/sleela_ui_light.h)).
 
+### Fonts & font effects
+
+A **font** bundles a face (family, size, weight, slant, spacing) with a stack of
+**effects** — drop/inner shadow, glow, light, an **emitter** (text that radiates
+light into a scene), outline, relief emboss/engrave, and gradient fill — each
+with a **quality** knob (draft .. ultra). Attach a styled font to any text widget
+with `slui_widget_set_font`. See [`FONTS.md`](FONTS.md)
+([`sleela_ui_font.h`](include/sleela_ui_font.h)).
+
 ## Quick start (C)
 
 ```c

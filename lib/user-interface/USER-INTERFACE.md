@@ -181,6 +181,16 @@ implements the same surface.
 > relief profiles — is documented at
 > [`user-interface/LIGHTING.md`](../../user-interface/LIGHTING.md).
 
+### Fonts & font effects
+
+| Class | Role |
+|---|---|
+| `SLFont` | A font for Sleela's UI: face (family/size/weight/slant/spacing/line-height) + an effect stack + a quality level; draws into an SLDrawContext and attaches to a text widget via `SLWidget.setFont`. |
+| `SLFontEffect` | One effect: drop/inner shadow, glow, light sheen, EMITTER (text that radiates into a light scene — pure emitter or anchored source), outline, relief emboss/engrave, or gradient fill. |
+
+> The font model and effects are documented at
+> [`user-interface/FONTS.md`](../../user-interface/FONTS.md).
+
 ### Theme
 
 | Class | Role |

@@ -1,0 +1,80 @@
+/*
+ * lib/user-interface/SLFontEffect.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLFontEffect — one entry in an SLFont's effect stack. An
+ *   effect is a drop/inner shadow, a soft glow, a directional light sheen, an
+ *   EMITTER (the text radiates light into a scene — reserving nothing as an
+ *   emitter, or binding as a source on an anchor), an outline, a relief
+ *   emboss/engrave, or a gradient fill. It is a pure value object the host fills
+ *   with the builder methods and adds to an SLFont; the font applies the stack
+ *   back-to-front when drawing. Mirrors SLUIFontEffect in the SleelaUI Font C
+ *   ABI (sleela_ui_font.h).
+ *
+ * Family: user-interface.
+ */
+#sleela 1.5
+class SLFontEffect {
+  // Effect-type ordinals (mirror SLUIFontEffectType).
+  static final int DROP_SHADOW  = 0;
+  static final int INNER_SHADOW = 1;
+  static final int GLOW         = 2;
+  static final int LIGHT        = 3;
+  static final int EMITTER      = 4;
+  static final int OUTLINE      = 5;
+  static final int RELIEF       = 6;
+  static final int GRADIENT_FILL= 7;
+  // Relief direction (mirror SLUIFontRelief).
+  static final int EMBOSSED = 0;
+  static final int ENGRAVED = 1;
+
+  int type;
+  int color;         // shadow/glow/light/outline/emitter colour (0xRRGGBBAA)
+  int color2;        // gradient bottom colour
+  double dx; double dy;  // shadow offset / light + emitter direction
+  double blur;       // shadow/glow softness radius (px)
+  double size;       // outline width / relief depth / emitter radius (px)
+  double intensity;  // 0..N strength (glow/light/emitter/relief)
+  double opacity;    // 0..1 effect opacity
+  int relief;        // EMBOSSED / ENGRAVED for a RELIEF effect
+  int reservedAnchor;// EMITTER: -1 reserve nothing; >=0 bind as a source
+
+  void base(int t) {
+    type = t; color = 0x000000FF; color2 = 0x000000FF;
+    dx = 0.0; dy = 0.0; blur = 0.0; size = 0.0; intensity = 1.0; opacity = 1.0;
+    relief = EMBOSSED; reservedAnchor = -1;
+  }
+
+  // An offset, blurred, dark copy behind the glyph.
+  void dropShadow(double ox, double oy, double softness, int c) {
+    base(DROP_SHADOW); dx = ox; dy = oy; blur = softness; color = c; opacity = 0.6;
+  }
+  // Shadow inside the glyph (a pressed-in look).
+  void innerShadow(double ox, double oy, double softness, int c) {
+    base(INNER_SHADOW); dx = ox; dy = oy; blur = softness; color = c; opacity = 0.7;
+  }
+  // A soft coloured halo around the glyph.
+  void glow(double radius, double i, int c) {
+    base(GLOW); blur = radius; intensity = i; color = c;
+  }
+  // A directional sheen lighting the glyph face.
+  void light(double ux, double uy, double i, int c) {
+    base(LIGHT); dx = ux; dy = uy; intensity = i; color = c;
+  }
+  // The text radiates light into a scene. anchor < 0 => a pure emitter
+  // (reserves nothing); anchor >= 0 => bind as a light SOURCE on that anchor.
+  void emitter(double radius, double i, int c, int anchor) {
+    base(EMITTER); size = radius; intensity = i; color = c; reservedAnchor = anchor;
+  }
+  // A stroked edge of a chosen width + colour.
+  void outline(double width, int c) {
+    base(OUTLINE); size = width; color = c;
+  }
+  // Emboss/engrave the glyph using lighting normals.
+  void reliefEffect(int direction, double depth, double i) {
+    base(RELIEF); relief = direction; size = depth; intensity = i;
+  }
+  // Fill the glyph with a vertical gradient.
+  void gradientFill(int top, int bottom) {
+    base(GRADIENT_FILL); color = top; color2 = bottom;
+  }
+}

@@ -228,7 +228,7 @@ void Label::paint(PaintContext& ctx) {
     int tx = c.x;
     if (halign_ == SLUI_ALIGN_CENTER) tx = c.x + static_cast<int>((c.w - tw) / 2.0);
     else if (halign_ == SLUI_ALIGN_END) tx = c.right() - static_cast<int>(tw);
-    draw_text(ctx, text_, tx, baseline, col);
+    draw_text_styled(ctx, styled_font_, text_, tx, baseline, col);
 }
 
 /* ======================================================================== */
@@ -1186,7 +1186,7 @@ void Heading::paint(PaintContext& ctx) {
     Rect c = content();
     ctx.backend->set_font(t.font_family, size_);
     int baseline = centered_baseline(ctx, c);
-    draw_text(ctx, text_, c.x, baseline, t.fg);
+    draw_text_styled(ctx, styled_font_, text_, c.x, baseline, t.fg);
     ctx.backend->set_font(t.font_family, t.font_size); /* restore base font */
 }
 

@@ -48095,6 +48095,186 @@
       "sha256": "6790ca03574497eeb38009ccbb245024dbe6c02c56ea82f1f9f542f47dcd8ee7"
     },
     {
+      "path": "lib/user-interface/SLAvatar.sleela",
+      "sha256": "a9f56d362a86f142449e63a31f1404ba4437ffc4e9320a198a4d07fce546ac12"
+    },
+    {
+      "path": "lib/user-interface/SLBadge.sleela",
+      "sha256": "a8a9d6bb1a119a530d9e3bfa9dde1ca0ed3ab69a3f650bb32b58e9f0ce700108"
+    },
+    {
+      "path": "lib/user-interface/SLBox.sleela",
+      "sha256": "d8a33acb2f2c3f831e7eb9ea1bb42425a331901eae5ae849abd63a56438e9fc0"
+    },
+    {
+      "path": "lib/user-interface/SLButton.sleela",
+      "sha256": "0b47e324b3f20c445c52f28fdd6fecf3037ca183c3a193345b2b12c2bf411110"
+    },
+    {
+      "path": "lib/user-interface/SLCanvasView.sleela",
+      "sha256": "e09616f6437bcd3e70e3675618535a03cfa71a59509dd5a98c304dcf2f22bf1c"
+    },
+    {
+      "path": "lib/user-interface/SLCard.sleela",
+      "sha256": "ac54bd9ff5255dc2334f5039d26037bd3849784c6a9e0256fffd2e90aa3c65cc"
+    },
+    {
+      "path": "lib/user-interface/SLCheckBox.sleela",
+      "sha256": "95fd6e12446ecf114ab1bc2525c6f5b5401a10173838ef2a27686a620a906c92"
+    },
+    {
+      "path": "lib/user-interface/SLChip.sleela",
+      "sha256": "e020e172e1c864468c5aae40521786efe8f9a33157925b79004fb1cda945fed5"
+    },
+    {
+      "path": "lib/user-interface/SLColor.sleela",
+      "sha256": "af5e05dc56288ed1f7b7a85619635cc4ed075fcf43579276811b31e9b8f2a1d2"
+    },
+    {
+      "path": "lib/user-interface/SLComboBox.sleela",
+      "sha256": "2c1476f45a992404fe004516b31ec2dc42acb85dfc51b3c677aeb7defe49d510"
+    },
+    {
+      "path": "lib/user-interface/SLDrawContext.sleela",
+      "sha256": "0c5989ff6e8f25f917234a0372711eb788d8d6cfc1e93b548dd724ce49909803"
+    },
+    {
+      "path": "lib/user-interface/SLEntry.sleela",
+      "sha256": "6b12b2d425a92dceb4dd0c628d6f98f1ec232056e51d71228a6dbd06c7d3d584"
+    },
+    {
+      "path": "lib/user-interface/SLFrame.sleela",
+      "sha256": "ccd1b7f64b48022cdaa92f61dd243a081342a15aab7faeaf1167e2ae25b66959"
+    },
+    {
+      "path": "lib/user-interface/SLFrameClock.sleela",
+      "sha256": "e98fc0e336efeb2d121e5405d0030b92465b9b71ff8dd610a0b109d117f33cd9"
+    },
+    {
+      "path": "lib/user-interface/SLGalleryDemo.sleela",
+      "sha256": "293afb6ac8b8d8fff2f5c7d0288a05d04d76591ee3ac9fc3a9fc32c9c667c329"
+    },
+    {
+      "path": "lib/user-interface/SLGrid.sleela",
+      "sha256": "3f3689b38c8ad4691dda7f854ea74f3fcc4be4b8d2a3dbfbbd0e810d1ab551be"
+    },
+    {
+      "path": "lib/user-interface/SLHeaderBar.sleela",
+      "sha256": "c4ad2369cf9553d03cf9d441c2403a1b7c90ec5a7ce424b47efdf76ff765803e"
+    },
+    {
+      "path": "lib/user-interface/SLHeading.sleela",
+      "sha256": "1ee552544b2164598765ef136252d346c18efa7dc44925048714549bd1b65c1b"
+    },
+    {
+      "path": "lib/user-interface/SLImage.sleela",
+      "sha256": "4a9c63496cd2ce258e1b1d542ba8f59fa3e5ab3ba7b91edee7ff86c4ae32c6c1"
+    },
+    {
+      "path": "lib/user-interface/SLInfoBar.sleela",
+      "sha256": "826afa2274389e031871248ce40d19217a7f5601756e9608cedd5b898eddc7c5"
+    },
+    {
+      "path": "lib/user-interface/SLLabel.sleela",
+      "sha256": "c7d100081a27dbc0aee5d636bccd8edd17848b71235d14a8d427f549453aba11"
+    },
+    {
+      "path": "lib/user-interface/SLLevelBar.sleela",
+      "sha256": "7e06c52c5cf19a7ecd5b3f96d3fb143cbc9d531db65d62d91842ba7082211944"
+    },
+    {
+      "path": "lib/user-interface/SLLight.sleela",
+      "sha256": "06213fbff917b526cfc1badd4f82cf706dddd38857f715d6d847104f3152783c"
+    },
+    {
+      "path": "lib/user-interface/SLLightScene.sleela",
+      "sha256": "35d8a9cf76c111df6412fcc34397dc2b713406f1d84feadb17588e311e92815e"
+    },
+    {
+      "path": "lib/user-interface/SLLinkButton.sleela",
+      "sha256": "40fcdfb1e43eb9760ad7808fd5ce9e62092f88e4b6d7b26a030b65a84972b3b0"
+    },
+    {
+      "path": "lib/user-interface/SLMaterial.sleela",
+      "sha256": "414e29b10b201af36edafbddce0a24825fd82be3648b51da04d8a94f3a537024"
+    },
+    {
+      "path": "lib/user-interface/SLPackage.sleela",
+      "sha256": "e54f128b9b97c1d201565a67f828df3d171fe9e297dbcfaa727a3961cc0e2905"
+    },
+    {
+      "path": "lib/user-interface/SLPasswordEntry.sleela",
+      "sha256": "2302bd94cc117391c2a985b8b760ebf5a90ede5e3129c8c0eba5d8a6c8bf68a8"
+    },
+    {
+      "path": "lib/user-interface/SLProgressBar.sleela",
+      "sha256": "07a47db853bf809f74e24a2c729059e87f890dfb82c44087e44dea9a817a2747"
+    },
+    {
+      "path": "lib/user-interface/SLRadioButton.sleela",
+      "sha256": "b1d5521048adfd921044cdf5798cc2c84e590d01e437e83801f34e77767aac87"
+    },
+    {
+      "path": "lib/user-interface/SLScrollBar.sleela",
+      "sha256": "b845189266df4de38a6fea84225edfe2937a9342f16ee6a623328fa7e7299478"
+    },
+    {
+      "path": "lib/user-interface/SLSearchEntry.sleela",
+      "sha256": "61d092599a38885682275eb08f45e3377691012cee01f8f5675a1e09088b19e5"
+    },
+    {
+      "path": "lib/user-interface/SLSeparator.sleela",
+      "sha256": "98207a5c5dba9a1cac6a3910cfc2722c3c20f237e5fbc3aa8e52bcf5d1071e3b"
+    },
+    {
+      "path": "lib/user-interface/SLSlider.sleela",
+      "sha256": "a39c337712fc9613067ab80f6fd3cca80155b5d1ab0ba50f47eefe34a6e508c5"
+    },
+    {
+      "path": "lib/user-interface/SLSpacer.sleela",
+      "sha256": "e19854842d98b323a4a3d65ab916494653513688ba5338e83d5a3edea795b6dd"
+    },
+    {
+      "path": "lib/user-interface/SLSpinButton.sleela",
+      "sha256": "3cc92e9775add7063c845f050047aac35dfb553ea5df3db1445364564fb966b6"
+    },
+    {
+      "path": "lib/user-interface/SLSpinner.sleela",
+      "sha256": "4b61ee85e21bcf208c0b4b6f0d303ee184875e0996cc9b00fe1582cb4b853aa3"
+    },
+    {
+      "path": "lib/user-interface/SLStatusBar.sleela",
+      "sha256": "4e04d21b25a3a3be8553a3bc5f15d9638ef4dbdec742d4eb1042949ac8c5606b"
+    },
+    {
+      "path": "lib/user-interface/SLTheme.sleela",
+      "sha256": "ec7dc6be1e97cf8608936c3546291e1016075084a643c9b9fd356b01ad70f8c8"
+    },
+    {
+      "path": "lib/user-interface/SLThrobber.sleela",
+      "sha256": "7d3fb76362e2182f391f2a33aa0e92aa8b18b3566faac53ff90dd25d92571341"
+    },
+    {
+      "path": "lib/user-interface/SLToggle.sleela",
+      "sha256": "be4e24bf7976f1394ea304427b4d091a20cff6bb6149a4e2ab340b007f2e30e8"
+    },
+    {
+      "path": "lib/user-interface/SLTooltip.sleela",
+      "sha256": "ec5915596b83016edc5f11a023cc2075548e5a9fa6f68999e08a34162d393492"
+    },
+    {
+      "path": "lib/user-interface/SLUserInterface.sleela",
+      "sha256": "25ff525e97922a8000b49a97cf102e287a628b5cfea399841203288e51135564"
+    },
+    {
+      "path": "lib/user-interface/SLWidget.sleela",
+      "sha256": "0e94b6ad931aa40102e03d5a4d4eef9a407fbed2a07b8d254984185588297472"
+    },
+    {
+      "path": "lib/user-interface/SLWindow.sleela",
+      "sha256": "b7ba876632edc957100a62978858b561e37fed5ae766f4f5306c1911c103f02e"
+    },
+    {
       "path": "lib/video/Video.sleela",
       "sha256": "ecd41922562a48645c60e1d6f6180665eeb3346f21ae643ab774ce056717d283"
     },
@@ -50616,7 +50796,7 @@
     },
     {
       "path": "test-suites/test-library-inventory.sh",
-      "sha256": "2c5ca8217c6a6cfb4b3319df9c70fadcc2995f18f64f4fae6899bff58fb2e38a"
+      "sha256": "8178b0825f2619b7ade0dd7a64400b41e75a817adf117f9216543ad637f14803"
     },
     {
       "path": "tests/java_api_dependency_suite.py",
@@ -50957,6 +51137,102 @@
     {
       "path": "us-infrastructure/model.sleela",
       "sha256": "b644a20a120d95b2ecc94c88b6525338350123fdc0b49b0904e413c21d13d96f"
+    },
+    {
+      "path": "user-interface/examples/gallery.c",
+      "sha256": "36100b2df353b2c2428020e2628f3f1d3541e1e79bbaafe821a80369e0f05e00"
+    },
+    {
+      "path": "user-interface/include/sleela_ui.h",
+      "sha256": "e850ee8e13bb6c3cee75b679103652dd231e22bc4490775f6ca9bb11b4a282c3"
+    },
+    {
+      "path": "user-interface/include/sleela_ui_draw.h",
+      "sha256": "c1a9aaf2e3fcb89e8a6fe9cef9168a776fd55cb4eecb4f21de6e9e4e7754968e"
+    },
+    {
+      "path": "user-interface/include/sleela_ui_light.h",
+      "sha256": "c83fccfa1d50343dbeb844faf3fd3ebeaa083b9703e97cb68e443608d8e97989"
+    },
+    {
+      "path": "user-interface/src/backend/headless.cpp",
+      "sha256": "75572af47b1c517af6da2a955b9255386670a5d1a6143a296934c7b3859f8309"
+    },
+    {
+      "path": "user-interface/src/backend/win32.cpp",
+      "sha256": "b20c72c123e0cfeaa8b15d7dcd57937b1cd32c158de2e6caff82366185ed128e"
+    },
+    {
+      "path": "user-interface/src/backend/x11.cpp",
+      "sha256": "e298022af3f17bf624175a08af1afb50c9ed83ce0072326cefaef689690d9fe4"
+    },
+    {
+      "path": "user-interface/src/slui_api.cpp",
+      "sha256": "cff973a423600498b73176c13381d35aeaafffb651e18c1fb5cc8c71f8c01ca9"
+    },
+    {
+      "path": "user-interface/src/slui_backend.hpp",
+      "sha256": "9d621d6b42937d4451dadbf44f0215d75f12935d3e6b81013f87b966ed20669b"
+    },
+    {
+      "path": "user-interface/src/slui_draw.cpp",
+      "sha256": "3b31797f387ee4eb1a210ca6ca7ebca84b42bcb9c9feb0c5143655e0ebb241df"
+    },
+    {
+      "path": "user-interface/src/slui_geometry.hpp",
+      "sha256": "2f72a57963ee13d26f35bc0d6b68aa47b94c4086e5aaa96aeb2a489e858ac67a"
+    },
+    {
+      "path": "user-interface/src/slui_light.cpp",
+      "sha256": "ef1dfa86c0b807bfb2a586bb018a1bb2a5b62372118d0ae8a6b493307877438d"
+    },
+    {
+      "path": "user-interface/src/slui_render.hpp",
+      "sha256": "d3ee9dfca6c513d1a779785e0e275d51578585eeb43a20fb0dfc4057740bf6a5"
+    },
+    {
+      "path": "user-interface/src/slui_theme.cpp",
+      "sha256": "145b9eb454c791339cf53ad3d0f00c26bdce39c650b2de97c95b73280975e43d"
+    },
+    {
+      "path": "user-interface/src/slui_theme.hpp",
+      "sha256": "528f61193c9d26b8952901493bbca271d3dfc81f70cfda96a9348b7d0130778a"
+    },
+    {
+      "path": "user-interface/src/slui_throbber.cpp",
+      "sha256": "507740c9268daff33711d6a68b3c85362365f37868a9576624995b973850f2fb"
+    },
+    {
+      "path": "user-interface/src/slui_widget.cpp",
+      "sha256": "7ecfa1a7cc924d0127cdd3f2a39a399b8357b76bbb28b34a25f800e179eed0be"
+    },
+    {
+      "path": "user-interface/src/slui_widget.hpp",
+      "sha256": "bc8c2b838eb191b0c9967593db1223483950811520db329f376573810ff2a3e1"
+    },
+    {
+      "path": "user-interface/src/slui_window.cpp",
+      "sha256": "22dbcf75931d1ad81dc007e16e7e49dc08fed9ee89d1fe5fd44d0d3c0cb14c5b"
+    },
+    {
+      "path": "user-interface/src/slui_window.hpp",
+      "sha256": "4d7c2ae34a53aade578e98bfb9b55554a774d06a9d21ee7628cc87529c7c88da"
+    },
+    {
+      "path": "user-interface/tests/smoke.c",
+      "sha256": "b1ec689a77f9f9dca6d014864ff55c6972a9fa64095281694d17325d32900e09"
+    },
+    {
+      "path": "user-interface/tools/relief_snapshot.cpp",
+      "sha256": "a5f164f6d5728ff4e25dd482246df9c519a6fb84c21d38b99338dc7648674e45"
+    },
+    {
+      "path": "user-interface/tools/snapshot.cpp",
+      "sha256": "d0b3cc953a52d575a1f73a7e5ec54561302542bf8c57c88e199a5d8401125b64"
+    },
+    {
+      "path": "user-interface/tools/throbber_snapshot.cpp",
+      "sha256": "c8831aa2b87160f7d6038e410ab74663938f0f1eea8215746a9e54f90b74ddd5"
     },
     {
       "path": "video/Codec.sleela",

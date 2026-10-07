@@ -78,4 +78,11 @@ class SLWidget {
   void setDestructive(boolean destructive) {
     if (widget >= 0) { uiWidgetDestructive(widget, destructive ? 1 : 0); }
   }
+
+  // Give this text widget a styled SLFont so its label renders with the font's
+  // effects (shadows, glow, outline, relief, gradient). The widget borrows the
+  // font. Pass null to revert to plain theme text.
+  void setFont(SLFont font) {
+    if (widget >= 0 && font != null) { uiWidgetSetFont(widget, font.handle()); }
+  }
 }
