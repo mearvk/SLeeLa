@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
-collection-revision: 2.0
-library-source-files: 10275
+collection-revision: 2.1
+library-source-files: 10291
 library-packages: 83
 module-facade-symbols: 55
-total-symbol-records: 10330
+total-symbol-records: 10346
 
 package	symbol	path	kind
 antivirus	SLPackage.sleela	lib/antivirus/SLPackage.sleela	facade
@@ -52,8 +52,12 @@ compiler	SLBuildArtifact.sleela	lib/compiler/SLBuildArtifact.sleela	source
 compiler	SLBytecodeEmitter.sleela	lib/compiler/SLBytecodeEmitter.sleela	source
 compiler	SLCodeGenerator.sleela	lib/compiler/SLCodeGenerator.sleela	source
 compiler	SLCompileChoice.sleela	lib/compiler/SLCompileChoice.sleela	source
+compiler	SLCompilePlan.sleela	lib/compiler/SLCompilePlan.sleela	source
+compiler	SLCompileRequest.sleela	lib/compiler/SLCompileRequest.sleela	source
 compiler	SLCompiler.sleela	lib/compiler/SLCompiler.sleela	source
 compiler	SLCompilerDiagnostic.sleela	lib/compiler/SLCompilerDiagnostic.sleela	source
+compiler	SLCompilerRegistry.sleela	lib/compiler/SLCompilerRegistry.sleela	source
+compiler	SLLanguageCompiler.sleela	lib/compiler/SLLanguageCompiler.sleela	source
 compiler	SLLexer.sleela	lib/compiler/SLLexer.sleela	source
 compiler	SLLowerer.sleela	lib/compiler/SLLowerer.sleela	source
 compiler	SLNameResolver.sleela	lib/compiler/SLNameResolver.sleela	source
@@ -77,8 +81,16 @@ compiler	SleelaCompilerSemantics.sleela	lib/compiler/SleelaCompilerSemantics.sle
 compiler	SleelaCompilerSource.sleela	lib/compiler/SleelaCompilerSource.sleela	source
 compiler	SleelaCompilerSymbols.sleela	lib/compiler/SleelaCompilerSymbols.sleela	source
 compiler	SleelaCompilerVMTarget.sleela	lib/compiler/SleelaCompilerVMTarget.sleela	source
+compiler	CLanguageCompiler.sleela	lib/compiler/frontends/c/CLanguageCompiler.sleela	source
+compiler	CppLanguageCompiler.sleela	lib/compiler/frontends/cpp/CppLanguageCompiler.sleela	source
+compiler	GoLanguageCompiler.sleela	lib/compiler/frontends/go/GoLanguageCompiler.sleela	source
+compiler	JavaLanguageCompiler.sleela	lib/compiler/frontends/java/JavaLanguageCompiler.sleela	source
+compiler	JavaScriptLanguageCompiler.sleela	lib/compiler/frontends/javascript/JavaScriptLanguageCompiler.sleela	source
+compiler	PythonLanguageCompiler.sleela	lib/compiler/frontends/python/PythonLanguageCompiler.sleela	source
+compiler	RustLanguageCompiler.sleela	lib/compiler/frontends/rust/RustLanguageCompiler.sleela	source
 compiler	advanced-vm-target.sleela	lib/compiler/tutorials/examples/advanced-vm-target.sleela	source
 compiler	hello-vm.sleela	lib/compiler/tutorials/examples/hello-vm.sleela	source
+compiler	multi-language-registry.sleela	lib/compiler/tutorials/examples/multi-language-registry.sleela	source
 config	SLPackage.sleela	lib/config/SLPackage.sleela	facade
 connector	SLPackage.sleela	lib/connector/SLPackage.sleela	facade
 coorenagraph	Coorenagraph.sleela	lib/coorenagraph/Coorenagraph.sleela	source
@@ -10094,10 +10106,13 @@ os	SLEnvironment.sleela	lib/os/SLEnvironment.sleela	source
 os	SLEventSignal.sleela	lib/os/SLEventSignal.sleela	source
 os	SLFile.sleela	lib/os/SLFile.sleela	source
 os	SLFileSystem.sleela	lib/os/SLFileSystem.sleela	source
+os	SLLinuxOS.sleela	lib/os/SLLinuxOS.sleela	source
+os	SLMacOS.sleela	lib/os/SLMacOS.sleela	source
 os	SLOperatingSystem.sleela	lib/os/SLOperatingSystem.sleela	source
 os	SLPath.sleela	lib/os/SLPath.sleela	source
 os	SLPermissions.sleela	lib/os/SLPermissions.sleela	source
 os	SLProcess.sleela	lib/os/SLProcess.sleela	source
+os	SLWindowsOS.sleela	lib/os/SLWindowsOS.sleela	source
 politico	SLPackage.sleela	lib/politico/SLPackage.sleela	facade
 process	SLAtomic.sleela	lib/process/SLAtomic.sleela	source
 process	SLBarrier.sleela	lib/process/SLBarrier.sleela	source
@@ -10319,6 +10334,7 @@ vm	SleelaVMSecurityManagementSimple.sleela	lib/vm/SleelaVMSecurityManagementSimp
 vm	SleelaVMSecurityOptions.sleela	lib/vm/SleelaVMSecurityOptions.sleela	source
 vm	SleelaVMSource.sleela	lib/vm/SleelaVMSource.sleela	source
 vm	SleelaVMStartup.sleela	lib/vm/SleelaVMStartup.sleela	source
+vm	SleelaVMSystemCallBridge.sleela	lib/vm/SleelaVMSystemCallBridge.sleela	source
 vm	SLVMAdministrator.sleela	lib/vm/creator/SLVMAdministrator.sleela	source
 vm	SLVMAuthority.sleela	lib/vm/creator/SLVMAuthority.sleela	source
 vm	SLVMDirector.sleela	lib/vm/creator/SLVMDirector.sleela	source

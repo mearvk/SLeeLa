@@ -1,0 +1,46 @@
+/*
+ * lib/compiler/SLCompilePlan.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLCompilePlan, the fail-closed plan/result the framework
+ *   produces for a compile request against a language front end.
+ *
+ * A plan records which phases the chosen front end covers, which phases the
+ * requested target requires, the first missing phase (0 when none), the
+ * resolved target, and whether the request can reach a VM-ready artifact. The
+ * native planner never guesses: an unresolved or reference-only path is
+ * surfaced rather than silently satisfied.
+ *
+ * Family: compiler. Native VM/OS work crosses an explicit bridge.
+ */
+#sleela 1.3
+// Unified SLeeLa SDK front-end object.
+class SLCompilePlan {
+  int coveredPhaseMask;   // phases the front end provides
+  int requiredPhaseMask;  // phases the request needs for its target
+  int firstMissingPhase;  // 0 when none missing
+  int resolvedTarget;     // SLLanguageCompiler.TARGET_*
+  boolean vmReady;        // true when every required phase is covered
+  int status;             // native status: OK / ABSENT / INVALID / BLOCKED
+  String diagnostic;
+
+  // Build the plan by asking the native framework to walk required vs covered
+  // phases for the request's resolved target.
+  void buildFor(SLLanguageCompiler frontEnd, SLCompileRequest request) {
+    int handle = native sleela_lang_plan_request(
+      frontEnd.name(), request.input(), request.target(), request.isStrict());
+    status            = native sleela_lang_plan_status(handle);
+    coveredPhaseMask  = native sleela_lang_plan_covered(handle);
+    requiredPhaseMask = native sleela_lang_plan_required(handle);
+    firstMissingPhase = native sleela_lang_plan_first_missing(handle);
+    resolvedTarget    = native sleela_lang_plan_target(handle);
+    vmReady           = native sleela_lang_plan_vm_ready(handle) == 1;
+    diagnostic = vmReady ? "" : "plan incomplete: a required phase is missing or blocked";
+  }
+
+  boolean isVMReady()        { return vmReady; }
+  int     missingPhase()     { return firstMissingPhase; }
+  int     target()           { return resolvedTarget; }
+  int     covered()          { return coveredPhaseMask; }
+  int     required()         { return requiredPhaseMask; }
+  String  diagnostics()      { return diagnostic; }
+}

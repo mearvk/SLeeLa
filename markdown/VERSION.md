@@ -2,7 +2,7 @@
 
 ## Current Development Version
 
-**SLeeLa:** 0.3.23-dev
+**SLeeLa:** 0.3.24-dev
 **Sleela-Complete:** 0.3.2-dev  
 **Nordshrift Complete:** 2.7.1-dev  
 **Native Foundation:** 0.3.2-dev  
@@ -187,3 +187,49 @@ repository so every record agrees:
   (was 1.17-dev) to the body's current `1.19-dev`.
 
 **Java Authorship Transition Gate:** 1.19-dev
+
+## 0.3.24 Development Increment
+
+Library expansion and version-control/inventory reconciliation. Advanced the
+active development line to 0.3.24-dev.
+
+### Library (`/lib`) — modular multi-language compiler framework
+
+- Added a modular framework to the `compiler` package for building compilers for
+  any publicly known programming language. A developer adds a language by writing
+  one small SLeeLa front end that extends a common contract; many independent
+  front ends register into one shared catalog with no per-language allow-list.
+  New SLeeLa units: `SLLanguageCompiler`, `SLCompileRequest`, `SLCompilePlan`,
+  `SLCompilerRegistry`, and seven modular front ends under
+  `lib/compiler/frontends/<lang>/` (C, C++, Java, Python, JavaScript, Rust, Go).
+  Each front end lowers its own language toward the common SLeeLa IR and onward
+  to a VM-ready artifact. The framework identifies, plans, and reports only — it
+  never executes an input program; compilation is not execution. New native
+  support crosses the explicit VM/OS bridge: a stable C ABI
+  (`lib/compiler/include/sleela_langc.h` / `src/sleela_langc.c`), a C++
+  orchestration facade (`sleela_langc.hpp` / `.cpp`), the `.sleela` bridge
+  (`sleela_lang_bridge.h` / `.c`), and a behavioral self-test
+  (`tests/langc_selftest.c`). See `lib/compiler/MULTI-LANGUAGE.FRAMEWORK.md` and
+  tutorial `lib/compiler/tutorials/04-building-a-language-front-end.md`.
+
+### Inventory reconciliation (`/lib`)
+
+- Regenerated `lib/LIBRARY.SYMBOLS.md` from the live `/lib` tree
+  (`collection-revision: 2.1`) and reconciled every count across the repository
+  so each record agrees: **83** package families; **10,291** `.sleela` source
+  classes + **55** `SLPackage.sleela` module facades = **10,346** total symbol
+  records (10,330 -> 10,346; +16 units). The increment folds in the compiler
+  framework's 12 new units plus four previously-uncounted units from the
+  intervening operating-system system-call work (`os/SLLinuxOS`, `os/SLMacOS`,
+  `os/SLWindowsOS`, `vm/SleelaVMSystemCallBridge`).
+- Updated the matching records: `lib/LIBRARY.INDEX.md` (Revision 0.30),
+  `test-suites/test-library-inventory.sh` (`EXPECTED_*` totals), `SST.model` and
+  `SST-2.0.model` (Revision 2.0.3) current-inventory lines, and the informative
+  mirror appendices in `impl/nordshrift/SST.SYMBOLS.md`,
+  `impl/nordshrift/NORDSHRIFT.SYMBOLS.md`, and `SLEELA.syntax` (now 10,346 / 83).
+- Counts are verified in lockstep (filesystem == manifest header == manifest
+  body) by `test-suites/test-library-inventory.sh`.
+
+**Java Authorship Transition Gate:** 1.19-dev
+
+**SLeeLa — MEARVK LLC — 2026**

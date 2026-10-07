@@ -1,11 +1,54 @@
 /*
  * lib/os/SLEnvironment.sleela
  * SLeeLa Standard Library Definition.
- * Definition: Defines the SLeeLa standard-library type SLEnvironment used within the os library family.
+ * Definition: Defines SLEnvironment — read/write access to the host process
+ *   environment (environment variables) and a few well-known entries. Reads go
+ *   through osGetEnv and writes through osSetEnv, which call the real host API
+ *   (GetEnvironmentVariable/SetEnvironmentVariable on Windows, getenv/setenv on
+ *   POSIX). A variable that is unset reads back as the empty string.
+ *
+ * Family: os. Native VM/OS work crosses the explicit `os*` SLVM bridge.
  */
-#sleela 1.3
-// Unified SLeeLa standard-library front-end object.
-// Family: os. Native VM/OS work crosses an explicit bridge.
+#sleela 1.5
 class SLEnvironment {
-  String name; int state; void configure(String n){name=n;} void open(){state=1;} void close(){state=0;} boolean active(){return state==1;}
+  int reads;
+  int writes;
+
+  void configure() { reads = 0; writes = 0; }
+
+  // Read a variable; "" when unset. Tracks a read count for observability.
+  String get(String key) { reads = reads + 1; return osGetEnv(key); }
+
+  // Read with a fallback used when the variable is unset (empty).
+  String getOrDefault(String key, String fallback) {
+    String v = osGetEnv(key);
+    reads = reads + 1;
+    if (v == "") { return fallback; }
+    return v;
+  }
+
+  // True when the variable is present (non-empty).
+  boolean has(String key) { reads = reads + 1; return osGetEnv(key) != ""; }
+
+  // Set (overwrite) a variable; returns true on success.
+  boolean set(String key, String value) {
+    writes = writes + 1;
+    return osSetEnv(key, value) == 0;
+  }
+
+  // Common entries, resolved per-OS by the host (PATH, HOME/USERPROFILE, ...).
+  String path() { return osGetEnv("PATH"); }
+  String home() {
+    String h = osGetEnv("HOME");
+    if (h != "") { return h; }
+    return osGetEnv("USERPROFILE");   // Windows
+  }
+  String shell() {
+    String s = osGetEnv("SHELL");
+    if (s != "") { return s; }
+    return osGetEnv("COMSPEC");        // Windows (cmd.exe)
+  }
+
+  int readCount() { return reads; }
+  int writeCount() { return writes; }
 }

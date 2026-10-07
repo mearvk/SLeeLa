@@ -1,11 +1,37 @@
 /*
  * lib/os/SLEventSignal.sleela
  * SLeeLa Standard Library Definition.
- * Definition: Defines the SLeeLa standard-library type SLEventSignal used within the os library family.
+ * Definition: Defines SLEventSignal — delivery of an OS termination request to
+ *   a running child process. The portable action a developer needs across OSes
+ *   is "ask this process to stop": on POSIX that is kill(SIGTERM), on Windows it
+ *   is TerminateProcess — both reached through osKill. SLEventSignal pairs that
+ *   request with the SLProcess handle model so a supervisor written in SLeeLa
+ *   can stop the children it spawned. Full per-signal control (SIGINT/SIGHUP/
+ *   custom numbers) belongs to the OS-specific flavor classes.
+ *
+ * Family: os. Native VM/OS work crosses the explicit `os*` SLVM bridge.
  */
-#sleela 1.3
-// Unified SLeeLa standard-library front-end object.
-// Family: os. Native VM/OS work crosses an explicit bridge.
+#sleela 1.5
 class SLEventSignal {
-  String name; int state; void configure(String n){name=n;} void open(){state=1;} void close(){state=0;} boolean active(){return state==1;}
+  int delivered;
+  void configure() { delivered = 0; }
+
+  // Ask the process behind the given handle to terminate (SIGTERM /
+  // TerminateProcess). Returns true if the request was accepted.
+  boolean terminate(int processHandle) {
+    if (processHandle < 0) { return false; }
+    boolean ok = osKill(processHandle) == 0;
+    if (ok) { delivered = delivered + 1; }
+    return ok;
+  }
+
+  // Convenience: terminate the process wrapped by an SLProcess.
+  boolean terminateProcess(SLProcess p) {
+    if (p == null) { return false; }
+    boolean ok = p.kill();
+    if (ok) { delivered = delivered + 1; }
+    return ok;
+  }
+
+  int deliveredCount() { return delivered; }
 }

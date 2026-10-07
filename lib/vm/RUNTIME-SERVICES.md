@@ -13,6 +13,7 @@ This document is the common runtime-services construction for SLVM/1 through SLV
 | Networking | Address resolution, connection/listen/accept, nonblocking readiness, deadlines, cancellation, backpressure, bounded buffers, protocol errors, and capability checks. |
 | File I/O | Opaque VM handles, open/read/write/close/unlink, explicit ownership, EOF/error distinction, atomic close, platform adapters, and recovery-safe invalidation. |
 | Sockets | Sockets are resources with states: NEW, BOUND, LISTENING, CONNECTING, CONNECTED, HALF_CLOSED, CLOSING, CLOSED, FAILED. Native descriptors/handles never escape the VM. |
+| OS system calls | Host System API access (environment, identity, working directory, filesystem metadata, and process execution) through the `OP_OS_*` opcodes / `os*` built-ins, serviced by `impl/core/sleela_os.c` on Windows (Win32), Linux, and macOS (POSIX). A spawned child process is a resource with states NEW, RUNNING, EXITED, FAILED, tracked as a VM-local bounded handle (never a raw PID/HANDLE); it is reaped by `osWait`/`osProcessClose` and force-released at VM teardown. |
 | Threading | Structured concurrency: every spawned execution has an owner/scope, cancellation token, join/detach policy, deadline, and terminal result. Unowned threads are rejected. |
 | Garbage Collection | VM-managed heap objects use tracing reachability as the semantic baseline. Collection is incremental/generational where practical, with safepoints and write barriers. Native resources are not reclaimed by GC alone. |
 | Teardown | Shutdown is idempotent and ordered: stop admission, cancel child work, quiesce I/O, close sockets/files, join owned threads, drain deferred work, run finalizers for language objects, then release VM memory. |
@@ -96,7 +97,7 @@ Any unrecoverable lifecycle violation moves to `QUARANTINED` rather than reopeni
 
 The sequence is idempotent: repeated shutdown requests observe the current state and do not execute destruction twice.
 
-## Mapping to the 98-opcode ISA
+## Mapping to the 124-opcode ISA
 
 The existing ISA already contains direct primitives for:
 
@@ -104,9 +105,10 @@ The existing ISA already contains direct primitives for:
 - sockets: `LISTEN`, `ACCEPT`, `CONNECT`, `SOCKREAD`, `SOCKWRITE`, `SOCKCLOSE`;
 - pipes/FIFOs: `PIPE`, `PIPEPEER`, `FIFO_MK`;
 - files: `FILEOPEN`, `FILEREAD`, `FILEWRITE`, `FILECLOSE`, `FILEUNLINK`;
-- asynchronous/synchronization facilities: `SYN_*`, `MUN_*`.
+- asynchronous/synchronization facilities: `SYN_*`, `MUN_*`;
+- OS system calls: `OS_PLATFORM`, `OS_CAPABILITY`, `OS_GETENV`, `OS_SETENV`, `OS_CWD`, `OS_CHDIR`, `OS_HOSTNAME`, `OS_USERNAME`, `OS_TEMPDIR`, `OS_PID`, `OS_EXISTS`, `OS_ISDIR`, `OS_FILESIZE`, `OS_MKDIR`, `OS_REMOVE`, `OS_RENAME`, `OS_RUN`, `OS_SPAWN`, `OS_WAIT`, `OS_KILL`, `OS_PCLOSE` (the `OP_OS_*` group, codes 103–123).
 
-GC, cancellation, ownership, deadlines, resource epochs, and teardown are deliberately runtime services rather than one opcode per concept. This avoids bloating the ISA while allowing the native implementation and future VM generations to evolve.
+The OS process opcodes (`OS_SPAWN`/`OS_WAIT`/`OS_KILL`/`OS_PCLOSE`) reuse the same resource-ownership discipline as sockets and files: a spawned child is a VM-local bounded handle with an explicit terminal lifecycle, reaped on wait/close and released during teardown. GC, cancellation, ownership, deadlines, resource epochs, and teardown remain runtime services rather than one opcode per concept. This avoids bloating the ISA while allowing the native implementation and every VM generation to evolve.
 
 ## Generation responsibilities
 
@@ -120,6 +122,15 @@ GC, cancellation, ownership, deadlines, resource epochs, and teardown are delibe
 - **SLVM/11:** apply the same ownership and lifecycle rules to filesystem modules.
 
 All generations preserve the same SLeeLa source semantics. A generation may add stronger validation or more capable adapters, but it must not weaken resource lifetime, cancellation, safety, or teardown guarantees.
+
+Because the `OP_OS_*` system-call group is part of the one shared ISA, the host
+System Call API is available to **every** generation, SLVM/1 through SLVM/11 —
+not only the base VM. Each generation applies its existing resource-ownership
+and teardown rules to spawned processes exactly as it does to sockets and files
+(e.g. SLVM/8 enforces capability leases and audit over `OS_RUN`/`OS_SPAWN`;
+SLVM/9–11 bind process and filesystem-metadata calls to the storage-identity
+model). A generation may restrict or sandbox the OS surface via capability
+policy, but it inherits the same `os*` semantics the base VM exposes.
 
 ## Standard GC implementation
 

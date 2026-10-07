@@ -129,31 +129,61 @@ class SLGuestVM {
       return;
     }
 
-    SLGuestSyscall sys = kernel.syscallTable();
-    int number = syscallNumberFor(opcode, op, sys);
-    int result = sys.dispatch(number, syscallArg0(opcode, op, payload), payload, 0);
+    int result = serviceOpcode(opcode, arg, payload);
     substrate.pushResult(result);           // syscall return value to the guest
+  }
 
+  // Route one service opcode to the guest syscall ABI and return the syscall
+  // result, applying the SYS_EXIT side effect (finish the running task). This
+  // is the shared routing used by handleExit(); exposing it lets the guest's
+  // process-creation path (OP_SPAWN fork/execve, OP_JOINALL wait) be driven and
+  // observed directly, so the opcode->syscall mapping is exercised end to end.
+  int serviceOpcode(int opcode, int arg, int payload) {
+    if (kernel == null) { return -1; }
+    SLSleelaOpcode op = new SLSleelaOpcode(); op.configure(0, "OP_NOP");
+    SLGuestSyscall sys = kernel.syscallTable();
+    int number = syscallNumberFor(opcode, arg, op, sys);
+    int result = sys.dispatch(number, syscallArg0(opcode, arg, op, payload), payload, syscallArg2(opcode, arg, op));
     if (sys.isExit(number)) {               // SYS_EXIT: finish the running task
       SLGuestTask t = kernel.taskScheduler().running();
       if (t != null) { t.finish(); }
     }
+    return result;
   }
 
-  // Map a service opcode to a guest syscall number.
-  int syscallNumberFor(int opcode, SLSleelaOpcode op, SLGuestSyscall sys) {
+  // Map a service opcode to a guest syscall number. The process-creation family
+  // reuses the canonical substrate opcodes: OP_SPAWN is clone/exec (its arg
+  // selects fork vs. execve) and OP_JOINALL is wait.
+  int syscallNumberFor(int opcode, int arg, SLSleelaOpcode op, SLGuestSyscall sys) {
     if (opcode == op.OP_PRINT) { return sys.SYS_WRITE; }
     if (opcode == op.OP_FILEOPEN) { return sys.SYS_OPEN; }
     if (opcode == op.OP_FILEREAD) { return sys.SYS_READ; }
     if (opcode == op.OP_FILEWRITE) { return sys.SYS_WRITE; }
     if (opcode == op.OP_FILECLOSE) { return sys.SYS_CLOSE; }
+    if (opcode == op.OP_SPAWN) {
+      // OP_SPAWN with arg 0 is fork(); arg > 0 selects execve() (arg carries
+      // langId + 1 so 0 stays reserved for a plain fork).
+      if (arg == 0) { return sys.SYS_FORK; }
+      return sys.SYS_EXECVE;
+    }
+    if (opcode == op.OP_JOINALL) { return sys.SYS_WAIT; }
     if (opcode == op.OP_HALT) { return sys.SYS_EXIT; }
     return sys.SYS_YIELD;
   }
 
-  // The first syscall argument (fd): OP_PRINT writes to stdout (fd 1).
-  int syscallArg0(int opcode, SLSleelaOpcode op, int payload) {
+  // The first syscall argument (fd for I/O; progId for execve): OP_PRINT writes
+  // to stdout (fd 1); OP_SPAWN carries the exec program id as its stack payload,
+  // surfaced to execve as arg0.
+  int syscallArg0(int opcode, int arg, SLSleelaOpcode op, int payload) {
     if (opcode == op.OP_PRINT) { return 1; }
+    if (opcode == op.OP_SPAWN && arg != 0) { return payload; } // execve progId
+    return 0;
+  }
+
+  // The third syscall argument (execve langId): recovered from OP_SPAWN's arg,
+  // which holds langId + 1 so that arg 0 can mean "plain fork".
+  int syscallArg2(int opcode, int arg, SLSleelaOpcode op) {
+    if (opcode == op.OP_SPAWN && arg != 0) { return arg - 1; } // langId
     return 0;
   }
 

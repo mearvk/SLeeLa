@@ -41,6 +41,8 @@ static bool builtin(const std::string&n){
  "bestOfMean","bestOfLoss","bestOfJitter","bestOfCertainty","bestOfCandidateArch","bestOfArchRealized","bestOfArch","bestOfArchParam","bestOfArchState",
  "audioNew","audioAdd","audioControls","audioValidate","audioRender","audioClose","audioPlatform",
  "arrayNew","arrayLength","arrayGet","arraySet","arrayPush",
+ "osPlatform","osCapability","osGetEnv","osSetEnv","osCurrentDir","osChangeDir","osHostName","osUserName","osTempDir","osProcessId",
+ "osExists","osIsDir","osFileSize","osMakeDir","osRemove","osRename","osRun","osSpawn","osWait","osKill","osProcessClose",
  "conduct","role","insight","congruent","route","sysdepth","degreemax"};
  return s.count(n)!=0;
 }
@@ -182,6 +184,8 @@ class Analyzer{
   if(n=="arrayGet"||n=="arraySet")return{Kind::Unknown,{}};
   if(n=="conduct"||n=="congruent"){return{Kind::Bool,{}};}
   if(n=="role"||n=="insight"||n=="route"||n=="timeLocation"||n=="timeHttpDate"||n=="timeJson"){return{Kind::String,{}};}
+  if(n=="osPlatform"||n=="osGetEnv"||n=="osCurrentDir"||n=="osHostName"||n=="osUserName"||n=="osTempDir"){return{Kind::String,{}};}
+  if(n=="osCapability"||n=="osSetEnv"||n=="osChangeDir"||n=="osProcessId"||n=="osExists"||n=="osIsDir"||n=="osFileSize"||n=="osMakeDir"||n=="osRemove"||n=="osRename"||n=="osRun"||n=="osSpawn"||n=="osWait"||n=="osKill"){return{Kind::Int,{}};}
   if(n=="sysdepth"||n=="degreemax"||n=="timeUtcMillis"||n=="timeUtcNanos"||n=="timeMonotonicNanos"||n=="timePrecisionMillis"){return{Kind::Int,{}};}
   if(n=="synchroMean"||n=="synchroMin"||n=="synchroMax"||n=="synchroP95"||n=="synchroLoss"||n=="bestOfMean"||n=="bestOfLoss"||n=="bestOfJitter"||n=="bestOfCertainty"){return{Kind::Double,{}};}
   if(n=="Munction.start"||n=="read"||n=="recv"||n=="sockread"||n=="timeNtp"){return{Kind::Unknown,{}};}

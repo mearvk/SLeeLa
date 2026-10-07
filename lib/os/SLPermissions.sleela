@@ -1,11 +1,37 @@
 /*
  * lib/os/SLPermissions.sleela
  * SLeeLa Standard Library Definition.
- * Definition: Defines the SLeeLa standard-library type SLPermissions used within the os library family.
+ * Definition: Defines SLPermissions — a portable view of a filesystem entry's
+ *   access permissions. The permission MODEL differs sharply between POSIX
+ *   (owner/group/other read/write/execute bits) and Windows (ACL-based), so
+ *   this class presents the common, portable questions — can the current
+ *   process read/write/execute a path, and does the path exist — and leaves the
+ *   full native ACL/mode surface to the OS-specific flavor classes. Existence
+ *   and type come from the real OS via `os*`; the read/write/execute view is
+ *   modeled from existence + platform until finer-grained access checks are
+ *   added to the VM.
+ *
+ * Family: os. Native VM/OS work crosses the explicit `os*` SLVM bridge.
  */
-#sleela 1.3
-// Unified SLeeLa standard-library front-end object.
-// Family: os. Native VM/OS work crosses an explicit bridge.
+#sleela 1.5
 class SLPermissions {
-  String name; int state; void configure(String n){name=n;} void open(){state=1;} void close(){state=0;} boolean active(){return state==1;}
+  String path;
+  void configure(String p) { path = p; }
+
+  boolean exists() { return osExists(path) == 1; }
+
+  // Portable access questions. Existence is authoritative (from the host); the
+  // finer read/write/execute distinctions are conservatively derived here and
+  // refined by SLWindowsOS / SLLinuxOS / SLMacOS where the native model allows.
+  boolean readable() { return osExists(path) == 1; }
+  boolean writable() { return osExists(path) == 1; }
+  boolean executable() {
+    // On POSIX a directory is "executable" (searchable); files need the x bit,
+    // which this portable view cannot see yet, so report false for files.
+    if (osPlatform() == "Windows") { return osExists(path) == 1; }
+    return osIsDir(path) == 1;
+  }
+
+  // Whether the host uses the POSIX mode-bit model (vs. Windows ACLs).
+  boolean posixModel() { return osPlatform() != "Windows"; }
 }

@@ -1,0 +1,67 @@
+/*
+ * lib/vm/SleelaVMSystemCallBridge.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SleelaVMSystemCallBridge — the VM-family face of the
+ *   operating-system System Call API. Where SLVMNativeBinding is the lifecycle
+ *   anchor for "the VM reaches native code," this class is the concrete bridge
+ *   that exposes the host System API to a running VM through the os* built-ins
+ *   (OP_OS_* opcodes), serviced by impl/core/sleela_os.c on Windows, Linux, and
+ *   macOS. Every SLeeLa VM — the base SLVM and generations SLVM/1..11 — shares
+ *   one ISA, so if the base VM can issue these system calls, every generation
+ *   can too; this class is how a VM advertises and performs them.
+ *
+ * Capability: pairs with SleelaVMFeatureBits.PROCESS and .OS_SYSCALLS. A VM that
+ * sets those bits is declaring it supports this bridge. A spawned process is a
+ * VM-local bounded handle (the sockets/files discipline), never a raw PID.
+ *
+ * Family: vm. Native VM/OS work crosses the explicit os* SLVM bridge.
+ */
+#sleela 1.5
+class SleelaVMSystemCallBridge {
+  String name;
+  int state;
+  int calls;
+
+  void configure(String n) { name = n; state = 0; calls = 0; }
+  void start() { state = 1; }
+  void stop() { state = 0; }
+  boolean active() { return state == 1; }
+
+  // ---- Host identity ------------------------------------------------------
+  String platform() { calls = calls + 1; return osPlatform(); }
+  String hostName() { calls = calls + 1; return osHostName(); }
+  String userName() { calls = calls + 1; return osUserName(); }
+  int processId()   { calls = calls + 1; return osProcessId(); }
+  boolean supports(int capability) { calls = calls + 1; return osCapability(capability) == 1; }
+
+  // ---- Environment --------------------------------------------------------
+  String getEnv(String key) { calls = calls + 1; return osGetEnv(key); }
+  boolean setEnv(String key, String value) { calls = calls + 1; return osSetEnv(key, value) == 0; }
+
+  // ---- Working directory --------------------------------------------------
+  String currentDir() { calls = calls + 1; return osCurrentDir(); }
+  boolean changeDir(String path) { calls = calls + 1; return osChangeDir(path) == 0; }
+  String tempDir() { calls = calls + 1; return osTempDir(); }
+
+  // ---- Filesystem metadata ------------------------------------------------
+  boolean exists(String path) { calls = calls + 1; return osExists(path) == 1; }
+  boolean isDir(String path) { calls = calls + 1; return osIsDir(path) == 1; }
+  int fileSize(String path) { calls = calls + 1; return osFileSize(path); }
+  boolean makeDir(String path) { calls = calls + 1; return osMakeDir(path) == 0; }
+  boolean remove(String path) { calls = calls + 1; return osRemove(path) == 0; }
+  boolean rename(String from, String to) { calls = calls + 1; return osRename(from, to) == 0; }
+
+  // ---- Process execution (bounded VM-local handles) -----------------------
+  // Synchronous run; returns the command's exit code.
+  int run(String command) { calls = calls + 1; return osRun(command); }
+  // Background start; returns a VM-local process handle (-1 on failure).
+  int spawn(String command) { calls = calls + 1; return osSpawn(command); }
+  // Wait for a spawned process; returns its exit code and frees the handle.
+  int waitFor(int processHandle) { calls = calls + 1; return osWait(processHandle); }
+  // Terminate a spawned process.
+  boolean kill(int processHandle) { calls = calls + 1; return osKill(processHandle) == 0; }
+  // Release a spawned process without waiting.
+  void closeProcess(int processHandle) { calls = calls + 1; osProcessClose(processHandle); }
+
+  int callCount() { return calls; }
+}

@@ -1,11 +1,71 @@
 /*
  * lib/os/SLOperatingSystem.sleela
  * SLeeLa Standard Library Definition.
- * Definition: Defines the SLeeLa standard-library type SLOperatingSystem used within the os library family.
+ * Definition: Defines SLOperatingSystem — the capstone facade of the /lib/os
+ *   family. It is the single object a developer reaches for to talk to the host
+ *   operating system from SLeeLa source: identity (which OS, hostname, user),
+ *   the environment, the working directory, and process execution. Every method
+ *   bottoms out in an `os*` SLVM built-in that makes the GENUINE host System API
+ *   call — Win32 on Windows, POSIX on Linux, POSIX+Apple on macOS — so the same
+ *   SLeeLa program drives the real OS on whichever platform runs it.
+ *
+ * This is the general, cross-OS surface. The OS-specific flavor classes
+ * (SLWindowsOS / SLLinuxOS / SLMacOS) build on these same built-ins to expose
+ * features idiomatic to each platform.
+ *
+ * Family: os. Native VM/OS work crosses the explicit `os*` SLVM bridge.
  */
-#sleela 1.3
-// Unified SLeeLa standard-library front-end object.
-// Family: os. Native VM/OS work crosses an explicit bridge.
+#sleela 1.5
 class SLOperatingSystem {
-  String name; int state; void configure(String n){name=n;} void open(){state=1;} void close(){state=0;} boolean active(){return state==1;}
+  // Capability ordinals (mirror SLPlatformCapability in the VM).
+  static final int CAP_MEMORY  = 0;
+  static final int CAP_FILE_IO = 1;
+  static final int CAP_NETWORK = 2;
+  static final int CAP_THREADS = 3;
+  static final int CAP_LIBRARY = 4;
+  static final int CAP_TERMINAL= 5;
+  static final int CAP_PATHS   = 6;
+  static final int CAP_PROCESS = 7;
+  static final int CAP_IPC     = 8;
+  static final int CAP_TIME    = 9;
+
+  String name;        // human label chosen by the caller
+  int opened;
+
+  void configure(String label) { name = label; opened = 0; }
+  void open() { opened = 1; }
+  void close() { opened = 0; }
+  boolean active() { return opened == 1; }
+
+  // ---- Identity -----------------------------------------------------------
+  // The host OS name as reported by the VM: "Windows", "Linux", or "macOS".
+  String platform() { return osPlatform(); }
+  boolean isWindows() { return equalsString(osPlatform(), "Windows"); }
+  boolean isLinux()   { return equalsString(osPlatform(), "Linux"); }
+  boolean isMac()     { return equalsString(osPlatform(), "macOS"); }
+
+  String hostName() { return osHostName(); }
+  String userName() { return osUserName(); }
+  int processId()   { return osProcessId(); }
+
+  // True if the host advertises a capability class (process/ipc/network/...).
+  boolean supports(int capability) { return osCapability(capability) == 1; }
+
+  // ---- Environment --------------------------------------------------------
+  String getEnv(String key) { return osGetEnv(key); }
+  boolean setEnv(String key, String value) { return osSetEnv(key, value) == 0; }
+
+  // ---- Working directory --------------------------------------------------
+  String currentDir() { return osCurrentDir(); }
+  boolean changeDir(String path) { return osChangeDir(path) == 0; }
+  String tempDir() { return osTempDir(); }
+
+  // ---- Process execution --------------------------------------------------
+  // Run a shell command synchronously; returns its exit code (0 == success).
+  int run(String command) { return osRun(command); }
+  // True if the command ran and exited 0.
+  boolean runOk(String command) { return osRun(command) == 0; }
+
+  // String equality helper (SLeeLa compares value by ==, but keep intent clear).
+  boolean equalsString(String a, String b) { return a == b; }
 }

@@ -25,11 +25,15 @@ class SLGuestInit {
     spawned = 0;
   }
 
+  // Single pid allocator for the whole guest: init-spawned programs and
+  // fork()'d children both draw from this counter so pids never collide.
+  int allocPid() { int pid = nextPid; nextPid = nextPid + 1; return pid; }
+
   // Load a user program into the guest substrate and admit it as a task. The
   // program's load base becomes the task's entry/resume IP.
   SLGuestTask spawn(SLGuestProgram program) {
     int base = program.loadInto(substrate);
-    int pid = nextPid; nextPid = nextPid + 1;
+    int pid = allocPid();
     SLGuestTask task = kernel.spawnTask(pid, program.programName(), base);
     spawned = spawned + 1;
     return task;
@@ -48,7 +52,7 @@ class SLGuestInit {
   SLGuestTask execFromImage(String name, SLGuestExecutable image) {
     int base = image.loadInto(substrate);
     if (base < 0) { return null; }        // invalid image
-    int pid = nextPid; nextPid = nextPid + 1;
+    int pid = allocPid();
     SLGuestTask task = kernel.spawnTask(pid, name, base);
     spawned = spawned + 1;
     return task;
@@ -67,6 +71,33 @@ class SLGuestInit {
     return execFromImage(name, exe);                   // load the image back + run
   }
 
+  // execve support: replace an EXISTING task's image with a freshly compiled
+  // program, loaded into the shared guest substrate, and repoint that task's
+  // resume IP at the new image's entry. Unlike spawn()/exec(), this does NOT
+  // create a new task — the caller keeps its tid and scheduling slot but now
+  // runs different code, exactly as Unix execve() replaces the process image in
+  // place. The program is resolved through the same toolchain; progId/srcId are
+  // modeled identifiers the kernel maps to a source path/name. Returns the new
+  // entry index, or -1 on failure.
+  int execInto(SLGuestTask task, int progId, int srcId, int langId) {
+    if (task == null) { return -1; }
+    SLGuestProgram prog = new SLGuestProgram();
+    prog.configure(execName(progId), 4096);
+    prog.buildFrom(execSourcePath(srcId), langId);
+    int base = prog.loadInto(substrate);
+    if (base < 0) { return -1; }
+    task.saveIP(base);              // the task resumes in the new image
+    task.markReady();
+    spawned = spawned + 1;          // count the exec as a program launch
+    return base;
+  }
+
+  // Map a modeled program/source identifier to a name/path. Kept trivial and
+  // deterministic so the exec path is reproducible in the model; a real kernel
+  // would resolve these from the execve() argument vector.
+  String execName(int progId) { return "execd"; }
+  String execSourcePath(int srcId) { return "guest/exec.sleela"; }
+
   // Launch the guest shell as init's first child: build a shell bound to the
   // kernel's syscall table and admit it as a task (the first interactive user
   // program after boot). Returns the shell object so a driver can feed it
@@ -75,10 +106,46 @@ class SLGuestInit {
     SLGuestShell shell = new SLGuestShell();
     shell.configure(kernel.syscallTable());
     // Register the shell as a task so the scheduler accounts for it.
-    int pid = nextPid; nextPid = nextPid + 1;
+    int pid = allocPid();
     kernel.spawnTask(pid, "sh", 0);
     spawned = spawned + 1;
     return shell;
+  }
+
+  // Demonstrate the full process-creation cycle through the real syscall ABI:
+  // spawn a base task, then from that task's context fork a child, execve the
+  // child onto a freshly compiled image, let the child exit, and wait() to reap
+  // it. Returns the reaped child's tid (>0) on success, or a negative error.
+  // This is the end-to-end fork/exec/wait path a Unix shell relies on.
+  int forkExecWaitDemo(int childLang) {
+    SLGuestSyscall sys = kernel.syscallTable();
+    SLGuestScheduler sched = kernel.taskScheduler();
+
+    // A parent task must be the "running" task so fork()/wait() have a caller.
+    SLGuestProgram parentProg = new SLGuestProgram();
+    parentProg.configure("parent", 64);
+    parentProg.append(28, 0);                  // (modeled parent body)
+    SLGuestTask parent = spawn(parentProg);
+    sched.onTimerTick();                        // make the parent the running task
+
+    int childTid = sys.dispatch(sys.SYS_FORK, 0, 0, 0);   // fork()
+    if (childTid < 0) { return childTid; }
+
+    // execve() the child onto a new image, then let the CHILD itself issue the
+    // terminating exit(status) syscall — the exit flows through the real
+    // SYS_EXIT path (which records the status on the running task), so the
+    // zombie wait() later reaps is produced by the child, not fabricated.
+    int childSlot = sched.slotOfTid(childTid);
+    sched.markRunningSlot(childSlot);
+    int entry = sys.dispatch(sys.SYS_EXECVE, 1, 1, childLang);  // execve()
+    if (entry < 0) { return entry; }
+    sched.markRunningSlot(childSlot);                           // child is current
+    sys.dispatch(sys.SYS_EXIT, 42, 0, 0);                      // child exit(42)
+
+    // Back in the parent, wait() reaps the finished child and reports status 42.
+    sched.markRunningSlot(sched.slotOfTid(parent.taskId()));
+    int reaped = sys.dispatch(sys.SYS_WAIT, 0, 0, 0);          // wait()
+    return reaped;
   }
 
   int pid() { return 1; }

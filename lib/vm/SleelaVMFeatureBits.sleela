@@ -8,5 +8,11 @@ class SleelaVMFeatureBits {
  Integer RESOLVER = 16777216; Integer BROKER = 33554432; Integer CERTIFICATES = 67108864; Integer SANDBOX = 134217728;
  Integer LINK_OBSERVATION = 268435456; Integer LINK_TRANSACTIONS = 536870912; Integer LINK_MEMORY = 1073741824; Integer LINK_ATTESTATION = 2147483648;
  Integer CHALLENGE_EVENTS = 4294967296; Integer CHALLENGE_REMOTE = 8589934592; Integer REPORTS_INPUT = 17179869184; Integer REPORTS_OUTPUT = 34359738368; Integer REPORTS_MESSAGES = 68719476736; Integer REPORTS_IQ = 137438953472;
+ // Operating-system system-call capability (syntax 1.5). PROCESS covers process
+ // execution (osRun/osSpawn/osWait/osKill); OS_SYSCALLS covers the full host
+ // System API surface (environment, identity, cwd, filesystem metadata) exposed
+ // via the os* built-ins and OP_OS_* opcodes. Backed by impl/core/sleela_os.c
+ // on Windows/Linux/macOS; a spawned process is a VM-local bounded handle.
+ Integer PROCESS = 274877906944; Integer OS_SYSCALLS = 549755813888;
  function contains(mask, bit); function add(mask, bit); function remove(mask, bit); function validate(mask);
 }

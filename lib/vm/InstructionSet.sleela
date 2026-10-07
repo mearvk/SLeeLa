@@ -2,7 +2,8 @@
 /* Source-side canonical SLeeLa VM ISA registry. Numeric order is canonical. */
 /* Canonical opcode order follows the native enum exactly. */
 /* Runtime services (networking, files, sockets, threading, GC, cancellation, ownership, and teardown) are specified in /lib/vm/RUNTIME-SERVICES.md. GC is a runtime mechanism, not a hidden opcode. */
-/* Runtime support: all 98 entries are dispatched by /impl/core. Unknown values are rejected and logged. */
+/* Runtime support: all 124 entries are dispatched by /impl/core. Unknown values are rejected and logged. */
+/* Operating-system system calls (OP_OS_*, syntax 1.5) are a runtime-service family like sockets/files: a spawned process is a VM-local bounded handle. See /lib/vm/RUNTIME-SERVICES.md and /lib/os/OS.md. */
 // OP_NOP
 // OP_CONST
 // OP_POP
@@ -106,6 +107,27 @@
 // OP_ARRSET
 // OP_ARRLEN
 // OP_ARRPUSH
+// OP_OS_PLATFORM
+// OP_OS_CAPABILITY
+// OP_OS_GETENV
+// OP_OS_SETENV
+// OP_OS_CWD
+// OP_OS_CHDIR
+// OP_OS_HOSTNAME
+// OP_OS_USERNAME
+// OP_OS_TEMPDIR
+// OP_OS_PID
+// OP_OS_EXISTS
+// OP_OS_ISDIR
+// OP_OS_FILESIZE
+// OP_OS_MKDIR
+// OP_OS_REMOVE
+// OP_OS_RENAME
+// OP_OS_RUN
+// OP_OS_SPAWN
+// OP_OS_WAIT
+// OP_OS_KILL
+// OP_OS_PCLOSE
 class SLISANop { String name; int code; }
 class SLISAConst { String name; int code; }
 class SLISAPop { String name; int code; }
@@ -209,3 +231,24 @@ class SLISAArrGet { String name; int code; }
 class SLISAArrSet { String name; int code; }
 class SLISAArrLen { String name; int code; }
 class SLISAArrPush { String name; int code; }
+class SLISAOsPlatform { String name; int code; }
+class SLISAOsCapability { String name; int code; }
+class SLISAOsGetEnv { String name; int code; }
+class SLISAOsSetEnv { String name; int code; }
+class SLISAOsCwd { String name; int code; }
+class SLISAOsChdir { String name; int code; }
+class SLISAOsHostName { String name; int code; }
+class SLISAOsUserName { String name; int code; }
+class SLISAOsTempDir { String name; int code; }
+class SLISAOsPid { String name; int code; }
+class SLISAOsExists { String name; int code; }
+class SLISAOsIsDir { String name; int code; }
+class SLISAOsFileSize { String name; int code; }
+class SLISAOsMkdir { String name; int code; }
+class SLISAOsRemove { String name; int code; }
+class SLISAOsRename { String name; int code; }
+class SLISAOsRun { String name; int code; }
+class SLISAOsSpawn { String name; int code; }
+class SLISAOsWait { String name; int code; }
+class SLISAOsKill { String name; int code; }
+class SLISAOsPClose { String name; int code; }

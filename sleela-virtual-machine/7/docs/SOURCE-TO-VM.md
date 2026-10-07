@@ -16,7 +16,9 @@ SLVM/7 is an ordered architectural layer, not a separate SLeeLa language.
 
 ## Opcode support and unsupported-opcode handling
 
-This generation consumes the canonical source ISA in `/lib/vm/InstructionSet.sleela`. The current repository verification finds **98 source opcodes, 98 native enum entries, and 98 native dispatch cases**, with no missing dispatch cases.
+This generation consumes the canonical source ISA in `/lib/vm/InstructionSet.sleela`. The current repository verification finds **124 source opcodes, 124 native enum entries, and 124 native dispatch cases**, with no missing dispatch cases.
+
+The tail of that ISA is the operating-system System Call API (`OP_OS_*`, codes 103-123): the `os*` built-ins (`osRun`/`osSpawn`/`osGetEnv`/`osExists`/...) serviced by `impl/core/sleela_os.c` on Windows, Linux, and macOS. Because this generation consumes the one shared ISA, the host system-call surface is available here exactly as in the base VM; a spawned process is a VM-local bounded handle governed by the same resource-ownership and teardown rules as sockets and files.
 
 The support map is maintained in `/lib/vm/OPCODE-MAP.md`. The authoritative execution dispatch remains `/impl/core/sleela_core.c`.
 
@@ -35,7 +37,7 @@ Each VM generation participates in `/lib/vm/RUNTIME-SERVICES.md`. These are cons
 - **Garbage collection:** tracing VM heap semantics with incremental/generational collection where practical, precise roots, write barriers, and safepoints. GC does not implicitly own scarce OS resources.
 - **Teardown:** idempotent ordered shutdown: quiesce, cancel, drain, join, close resources, finalize language objects, then release VM memory. Lifecycle violations fail closed/quarantine.
 
-The existing 98-opcode ISA supplies the direct networking, socket, file, pipe, FIFO, threading, synchronization, and asynchronous primitives. GC, ownership, cancellation, deadlines, resource epochs, and teardown remain runtime services rather than hidden opcodes.
+The existing 124-opcode ISA supplies the direct networking, socket, file, pipe, FIFO, threading, synchronization, and asynchronous primitives. GC, ownership, cancellation, deadlines, resource epochs, and teardown remain runtime services rather than hidden opcodes.
 
 Generation-specific additions may strengthen validation or recovery, but SLVM/1 through SLVM/11 preserve these resource-lifetime and source-semantics invariants.
 

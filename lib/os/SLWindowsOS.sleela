@@ -1,0 +1,61 @@
+/*
+ * lib/os/SLWindowsOS.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLWindowsOS — the Windows-specific flavor of the OS
+ *   family. It composes the general `os*` built-ins into idioms a Windows
+ *   developer expects: cmd.exe/PowerShell invocation, Windows environment
+ *   entries (USERPROFILE, APPDATA, COMSPEC, SystemRoot), backslash paths and
+ *   drive letters, and Windows directory conventions. Every call still runs on
+ *   the genuine Win32 System API underneath (CreateProcess, GetEnvironmentVariable,
+ *   GetCurrentDirectory, ...), so this class is a thin, honest Windows face over
+ *   the same cross-OS SLVM bridge.
+ *
+ * Guard: methods are meaningful only when osPlatform()=="Windows"; isHost()
+ * lets a program check before using Windows-specific behavior.
+ *
+ * Family: os. Native VM/OS work crosses the explicit `os*` SLVM bridge.
+ */
+#sleela 1.5
+class SLWindowsOS {
+  void configure() {}
+
+  // True when the running host is actually Windows.
+  boolean isHost() { return osPlatform() == "Windows"; }
+
+  // ---- Shells -------------------------------------------------------------
+  // Run a command through cmd.exe (osRun already routes through cmd.exe on
+  // Windows). Returns the exit code.
+  int cmd(String commandLine) { return osRun(commandLine); }
+  // Run a command through PowerShell. Returns the exit code.
+  int powershell(String script) {
+    return osRun("powershell -NoProfile -Command " + script);
+  }
+  // Start a background command via the process bridge; returns an SLProcess.
+  SLProcess startCmd(String commandLine) {
+    SLProcess p = new SLProcess(); p.configure(commandLine); p.start(); return p;
+  }
+
+  // ---- Windows environment entries ---------------------------------------
+  String userProfile() { return osGetEnv("USERPROFILE"); }
+  String appData()     { return osGetEnv("APPDATA"); }
+  String localAppData(){ return osGetEnv("LOCALAPPDATA"); }
+  String systemRoot()  { return osGetEnv("SystemRoot"); }
+  String programFiles(){ return osGetEnv("ProgramFiles"); }
+  String comSpec()     { return osGetEnv("COMSPEC"); }     // path to cmd.exe
+  String computerName(){ return osGetEnv("COMPUTERNAME"); }
+
+  // ---- Paths (backslash world) -------------------------------------------
+  String separator() { return "\\"; }
+  String join(String base, String child) { return base + "\\" + child; }
+  // Build a drive-rooted path, e.g. drive 'C' -> "C:\\...".
+  String onDrive(String driveLetter, String rest) {
+    return driveLetter + ":\\" + rest;
+  }
+
+  // ---- Filesystem / identity (through the real OS) ------------------------
+  boolean exists(String path) { return osExists(path) == 1; }
+  boolean makeDir(String path) { return osMkdir(path) == 0; }
+  String tempDir() { return osTempDir(); }   // honours TMP/TEMP via GetTempPath
+  String hostName() { return osHostName(); }
+  String userName() { return osUserName(); }
+}

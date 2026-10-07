@@ -1,11 +1,39 @@
 /*
  * lib/os/SLDirectory.sleela
  * SLeeLa Standard Library Definition.
- * Definition: Defines the SLeeLa standard-library type SLDirectory used within the os library family.
+ * Definition: Defines SLDirectory — a host directory handle. Create, test, and
+ *   remove directories, and move/rename them, through the VM's `os*` built-ins
+ *   (CreateDirectory/RemoveDirectory/MoveFileEx on Windows; mkdir/rmdir/rename
+ *   on POSIX). The current working directory is also reached here, since it is
+ *   a directory-scoped concept.
+ *
+ * Family: os. Native VM/OS work crosses the explicit `os*` SLVM bridge.
  */
-#sleela 1.3
-// Unified SLeeLa standard-library front-end object.
-// Family: os. Native VM/OS work crosses an explicit bridge.
+#sleela 1.5
 class SLDirectory {
-  String name; int state; void configure(String n){name=n;} void open(){state=1;} void close(){state=0;} boolean active(){return state==1;}
+  String path;
+  void configure(String p) { path = p; }
+
+  String name() { return path; }
+  boolean exists() { return osIsDir(path) == 1; }
+
+  // Create this directory (succeeds if it already exists).
+  boolean create() { return osMkdir(path) == 0; }
+
+  // Remove this directory (must be empty on POSIX/Windows).
+  boolean remove() { return osRemove(path) == 0; }
+
+  // Rename/move; on success the handle tracks the new path.
+  boolean renameTo(String newPath) {
+    if (osRename(path, newPath) == 0) { path = newPath; return true; }
+    return false;
+  }
+
+  // Make this directory the process' current working directory.
+  boolean enter() { return osChangeDir(path) == 0; }
+
+  // The process' current working directory (static-style convenience).
+  String current() { return osCurrentDir(); }
+  // The system temporary directory.
+  String temp() { return osTempDir(); }
 }

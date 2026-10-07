@@ -28,6 +28,7 @@ class SLGuestLinux {
   static final int LINUX_MMAP   = 9;
   static final int LINUX_EXIT   = 60;
   static final int LINUX_FORK   = 57;
+  static final int LINUX_WAIT   = 61;
   static final int LINUX_EXECVE = 59;
 
   String distro;
@@ -110,6 +111,10 @@ class SLGuestLinux {
   SLGuestInit startInit() {
     SLGuestInit init = new SLGuestInit();
     init.configure(this, vm.guestSubstrate());
+    // Give the syscall layer access to init so execve() can reach the shared
+    // compile->load toolchain, and so fork()/wait() route through the same
+    // process table init manages.
+    syscallTable().attachInit(init);
     return init;
   }
 
@@ -158,14 +163,36 @@ class SLGuestLinux {
 
   // Translate a guest Linux syscall number to the host SleelaOS syscall the
   // hypervisor emulates it with (the VM-exit handler's job).
+  // Host-syscall mapping constants (SLSystemCall surface: write/read/open/close/
+  // exit/spawn/yield = 0..6). Process creation is modeled thus: a guest fork()
+  // leans on the host's SYS_SPAWN primitive, while execve()/wait() have no host
+  // equivalent and are serviced entirely in-guest (SLGuestSyscall against the
+  // guest scheduler/process table). The actual in-guest routing happens in
+  // SLGuestVM.handleExit() off the OP_SPAWN/OP_JOINALL service opcodes;
+  // emulateSyscall() is the ABI-classification view, so it returns the
+  // GUEST_EMULATED tag (not a host syscall number) for those two to make the
+  // "no host delegate" distinction explicit to callers that classify a syscall.
+  static final int GUEST_EMULATED = 100;
+
+  // True if the given guest Linux syscall is serviced in-guest (no host
+  // delegate): execve/wait are emulated against the guest process table rather
+  // than mapped to a host SleelaOS syscall. (A pure predicate — unlike
+  // emulateSyscall(), it does not count the call.)
+  boolean isGuestEmulated(int linuxNumber) {
+    return linuxNumber == LINUX_EXECVE || linuxNumber == LINUX_WAIT;
+  }
+
   int emulateSyscall(int linuxNumber) {
     syscalls = syscalls + 1;
-    if (linuxNumber == LINUX_WRITE) { return 0; } // host SYS_WRITE
-    if (linuxNumber == LINUX_READ)  { return 1; } // host SYS_READ
-    if (linuxNumber == LINUX_OPEN)  { return 2; }
-    if (linuxNumber == LINUX_CLOSE) { return 3; }
-    if (linuxNumber == LINUX_EXIT)  { return 4; } // host SYS_EXIT
-    return -1; // unsupported: delivered as a guest fault
+    if (linuxNumber == LINUX_WRITE)  { return 0; }  // host SYS_WRITE
+    if (linuxNumber == LINUX_READ)   { return 1; }  // host SYS_READ
+    if (linuxNumber == LINUX_OPEN)   { return 2; }
+    if (linuxNumber == LINUX_CLOSE)  { return 3; }
+    if (linuxNumber == LINUX_EXIT)   { return 4; }  // host SYS_EXIT
+    if (linuxNumber == LINUX_FORK)   { return 5; }  // host SYS_SPAWN (process create)
+    if (linuxNumber == LINUX_EXECVE) { return GUEST_EMULATED; } // emulated in-guest
+    if (linuxNumber == LINUX_WAIT)   { return GUEST_EMULATED; } // emulated in-guest
+    return -1; // unsupported (e.g. LINUX_MMAP): delivered as a guest fault
   }
 
   boolean isBooted() { return booted == 1; }

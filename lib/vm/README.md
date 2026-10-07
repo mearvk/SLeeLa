@@ -31,6 +31,7 @@ The following `.sleela` files are the source-level VM and architecture definitio
 - `SLVMModule.sleela` — VM module representation.
 - `SLVMModuleLoader.sleela` — VM module loading model.
 - `SLVMNativeBinding.sleela` — native binding model.
+- `SleelaVMSystemCallBridge.sleela` — the VM-family face of the operating-system System Call API: exposes the host System API (environment, identity, working directory, filesystem metadata, process execution) to a running VM through the `os*` built-ins / `OP_OS_*` opcodes. Shared by the base VM and every generation. Pairs with the `PROCESS`/`OS_SYSCALLS` feature bits. See `OPCODE-MAP.md` and `/lib/os/OS.md`.
 - `SLVMMemory.sleela` — VM memory model.
 - `SLVMHeap.sleela` — VM heap model.
 
@@ -38,7 +39,7 @@ The following `.sleela` files are the source-level VM and architecture definitio
 
 - `SleelaVMOptions.sleela` — aggregate VM configuration options.
 - `SleelaVMOptionCodes.sleela` — mutually exclusive VM option codes.
-- `SleelaVMFeatureBits.sleela` — independent VM feature/capability bits.
+- `SleelaVMFeatureBits.sleela` — independent VM feature/capability bits (now including `PROCESS` and `OS_SYSCALLS` for the host System Call API).
 - `SleelaVMExecutionOptions.sleela` — execution configuration.
 - `SleelaVMRuntimeOptions.sleela` — runtime configuration.
 - `SleelaVMCpuOptions.sleela` — CPU configuration.
@@ -124,7 +125,7 @@ This makes startup a staged transition rather than an assumption that the comple
 VM construction is controlled by two complementary mechanisms:
 
 - **Integer option codes** select one value from a mutually exclusive condition set: target, architecture, OS, ABI, execution mode, garbage collector, threading model, I/O model, security model, link model, and package model.
-- **Integer bit masks** enable independent capabilities/features such as files, network, DNS, IPC, threads, async I/O, GUI/media, crypto/TLS, JIT/AOT, SIMD/atomics, GC, checkpointing, migration, attestation, observability, deterministic execution, resolver, broker, certificates, and sandboxing.
+- **Integer bit masks** enable independent capabilities/features such as files, network, DNS, IPC, threads, async I/O, GUI/media, crypto/TLS, JIT/AOT, SIMD/atomics, GC, checkpointing, migration, attestation, observability, deterministic execution, resolver, broker, certificates, sandboxing, process execution (`PROCESS`), and the host operating-system System Call API (`OS_SYSCALLS`).
 - **Specific option classes** hold detailed resource and policy parameters for execution, memory, CPU, concurrency, I/O, security, runtime, JVM, and build/package construction.
 
 ## Memory and Security Management

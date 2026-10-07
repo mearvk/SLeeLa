@@ -1,11 +1,38 @@
 /*
  * lib/os/SLFileSystem.sleela
  * SLeeLa Standard Library Definition.
- * Definition: Defines the SLeeLa standard-library type SLFileSystem used within the os library family.
+ * Definition: Defines SLFileSystem — host filesystem metadata and operations:
+ *   existence/type/size queries, directory creation, removal, and rename/move.
+ *   These map to the real OS calls through the VM (GetFileAttributes/
+ *   CreateDirectory/MoveFileEx on Windows; stat/mkdir/rmdir/unlink/rename on
+ *   POSIX). File CONTENT read/write stays with the existing file I/O built-ins
+ *   (openFile/read/write/close); this class is the metadata + namespace layer.
+ *
+ * Family: os. Native VM/OS work crosses the explicit `os*` SLVM bridge.
  */
-#sleela 1.3
-// Unified SLeeLa standard-library front-end object.
-// Family: os. Native VM/OS work crosses an explicit bridge.
+#sleela 1.5
 class SLFileSystem {
-  String name; int state; void configure(String n){name=n;} void open(){state=1;} void close(){state=0;} boolean active(){return state==1;}
+  int ops;
+  void configure() { ops = 0; }
+
+  boolean exists(String path) { ops = ops + 1; return osExists(path) == 1; }
+  boolean isDir(String path)  { ops = ops + 1; return osIsDir(path) == 1; }
+  boolean isFile(String path) { ops = ops + 1; return osExists(path) == 1 && osIsDir(path) == 0; }
+
+  // Size in bytes, or -1 if the path does not exist / is not a regular file.
+  int size(String path) { ops = ops + 1; return osFileSize(path); }
+
+  // Create a directory (succeeds if it already exists). Returns true on success.
+  boolean makeDir(String path) { ops = ops + 1; return osMkdir(path) == 0; }
+
+  // Remove a file or an empty directory. Returns true on success.
+  boolean remove(String path) { ops = ops + 1; return osRemove(path) == 0; }
+
+  // Rename/move a path. Returns true on success.
+  boolean rename(String from, String to) { ops = ops + 1; return osRename(from, to) == 0; }
+
+  // Move is rename across directories (same host primitive).
+  boolean move(String from, String to) { return rename(from, to); }
+
+  int operationCount() { return ops; }
 }

@@ -1,11 +1,48 @@
 /*
  * lib/os/SLPath.sleela
  * SLeeLa Standard Library Definition.
- * Definition: Defines the SLeeLa standard-library type SLPath used within the os library family.
+ * Definition: Defines SLPath — path construction and inspection that is aware
+ *   of the host's path conventions. The separator differs per OS ('\' on
+ *   Windows, '/' on POSIX), so SLPath asks the VM which platform it is on
+ *   (osPlatform) and joins/normalizes accordingly. This is a pure-SLeeLa helper
+ *   layered on the one OS fact it needs — the platform — so developers write
+ *   portable path code once.
+ *
+ * Family: os. Reads the host platform via the `os*` SLVM bridge.
  */
-#sleela 1.3
-// Unified SLeeLa standard-library front-end object.
-// Family: os. Native VM/OS work crosses an explicit bridge.
+#sleela 1.5
 class SLPath {
-  String name; int state; void configure(String n){name=n;} void open(){state=1;} void close(){state=0;} boolean active(){return state==1;}
+  String value;
+
+  void configure(String p) { value = p; }
+  String text() { return value; }
+
+  // The host path separator: "\\" on Windows, "/" elsewhere.
+  String separator() {
+    if (osPlatform() == "Windows") { return "\\"; }
+    return "/";
+  }
+
+  // The host entry (PATH) separator: ";" on Windows, ":" elsewhere.
+  String listSeparator() {
+    if (osPlatform() == "Windows") { return ";"; }
+    return ":";
+  }
+
+  // Join a child segment onto this path using the host separator; returns the
+  // combined path text.
+  String join(String child) {
+    if (value == "") { return child; }
+    return value + separator() + child;
+  }
+
+  // Append in place and return the new path text.
+  String append(String child) { value = join(child); return value; }
+
+  // Build a PATH-style list string from two entries using the host list
+  // separator (";" on Windows, ":" elsewhere).
+  String joinList(String a, String b) { return a + listSeparator() + b; }
+
+  // True when this path exists on the host filesystem.
+  boolean exists() { return osExists(value) == 1; }
 }
