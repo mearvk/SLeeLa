@@ -1,11 +1,24 @@
 # SLeeLa /lib Library Index
 
-**Revision:** 0.30  
+**Revision:** 0.31  
 **Packages:** 83  
-**SLeeLa source units:** 10291  
+**SLeeLa source units:** 10297  
 **Module-facade symbols:** 55  
-**Total symbol records:** 10346  
+**Total symbol records:** 10352  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
+
+> Revision 0.31 promotes the emblematic Skya telephony modules into first-class
+> `/lib` Master Classes. The `telephony-skya` package gains six one-class-per-
+> file source units — `Socio` (social fabric), `Network` (transport
+> reachability), `Servers` (server-side presence), `Communication` (message
+> exchange), `RealAcquaintances` (confirmed trust roster), and the `SkyaModules`
+> loader — so they are counted and discoverable as Master Classes rather than
+> living only as facade stubs or top-level runnables. The matching facade stubs
+> were removed from `telephony-skya/SLPackage.sleela` to avoid duplicate class
+> declarations. Six new source units: 10,346 -> **10,352** total records (10,291
+> -> **10,297** source classes); package count unchanged at 83.
+> `LIBRARY.SYMBOLS.md` was regenerated from the live tree and the counts are
+> verified in lockstep by `test-suites/test-library-inventory.sh`.
 
 > Revision 0.30 reconciles the `/lib` inventory to the live tree after the
 > **modular multi-language compiler framework** and the operating-system
@@ -200,9 +213,9 @@ The `/lib` tree is the canonical language-facing source collection. The compiler
 | Coverage | Count |
 |---|---:|
 | Repository module families represented under /lib | 83 |
-| SLeeLa source units | 10,291 |
+| SLeeLa source units | 10,297 |
 | Module-facade symbols | 55 |
-| Total symbol records | 10,346 |
+| Total symbol records | 10,352 |
 
 Every repository-level module family that is a language/runtime/package concern now has at least one SLeeLa source unit under `/lib`. Documentation, images, generated build output, tests, and CI-only directories remain non-library artifacts and are intentionally not presented as language packages.
 
@@ -228,7 +241,7 @@ The complete path-level and facade-level symbol collection is maintained in `LIB
 
 ## Compiler / Nordshrift / Loader Contract
 
-The shared `sleela::library::Index` recursively discovers the 83 package families and all 10,346 `.sleela` source units. It now exposes package counts, per-package symbol counts, symbol lookup, and source-path resolution. Compiler and Nordshrift use this index; `lib/vm/SLVMModuleLoader.sleela` represents the same discovered package/symbol state at the SLeeLa layer.
+The shared `sleela::library::Index` recursively discovers the 83 package families and all 10,352 `.sleela` source units. It now exposes package counts, per-package symbol counts, symbol lookup, and source-path resolution. Compiler and Nordshrift use this index; `lib/vm/SLVMModuleLoader.sleela` represents the same discovered package/symbol state at the SLeeLa layer.
 
 ## SST / Nordshrift Symbol Contract
 

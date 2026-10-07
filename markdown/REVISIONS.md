@@ -1,3 +1,35 @@
+## 2026-10-07 — Skya telephony emblematic Master Classes
+
+Promoted the emblematic Skya telephony modules into first-class `/lib` **Master
+Classes** so they are counted and discoverable rather than living only as facade
+stubs or top-level runnables. All existing programs continue to compile and run
+unchanged.
+
+### `/lib/telephony-skya` — emblematic modules as Master Classes
+
+Added six one-class-per-file `/lib` source units: `Socio` (social fabric),
+`Network` (transport reachability, careful non-destructive NAT posture),
+`Servers` (server-side presence; always-open comm listener; answers PING with
+PONG), `Communication` (client-side message exchange with a coherence tally),
+`RealAcquaintances` (confirmed trust roster), and the `SkyaModules` loader. Each
+shares one loadable-module contract (`load` / `loaded` / `moduleName` /
+`describe`). The matching stubs were removed from
+`telephony-skya/SLPackage.sleela` to avoid duplicate class declarations; the
+runnable orchestration examples remain under `telephony-skya/sleela/`.
+
+### Inventory recount and version
+
+- Recounted `/lib`: **10,297 `.sleela` source classes + 55 module facades =
+  10,352 total symbol records across 83 package families** (+6 units).
+- Recorded **10,583 repository-wide `.sleela` source files**.
+- Advanced the active development line to **0.3.25-dev** (`markdown/VERSION.md`,
+  0.3.25 increment).
+- Updated `CLASS.INVENTORY.md` (Revision 2.3), `lib/LIBRARY.INDEX.md`
+  (Revision 0.31), `lib/LIBRARY.SYMBOLS.md` (regenerated), `lib/README.md`,
+  `SST.model` / `SST-2.0.model` (Revision 2.0.4), and the mirror appendices in
+  `impl/nordshrift/SST.SYMBOLS.md`, `impl/nordshrift/NORDSHRIFT.SYMBOLS.md`, and
+  `SLEELA.syntax`. Counts verified by `test-suites/test-library-inventory.sh`.
+
 ## 2026-10-07 — Modular multi-language compiler framework and inventory/version reconciliation
 
 Additive library work plus a repo-wide inventory and version reconciliation. All

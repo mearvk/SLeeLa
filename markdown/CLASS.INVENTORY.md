@@ -1,11 +1,11 @@
 # SLeeLa Class Inventory
 
 **SLeeLa Version:** 0.3.24-dev  
-**Inventory Revision:** 2.2  
+**Inventory Revision:** 2.3  
 **Inventory Date:** 2026-10-07  
 **Known Source Files Explicitly Indexed: 138**
-**Repository-wide SLeeLa source files (verified): 10,568 on `main`/`master`**
-**Standard-library SLeeLa source units in `/lib`: 10,291 (10,346 total symbol records incl. 55 module facades)**
+**Repository-wide SLeeLa source files (verified): 10,583 on `main`/`master`**
+**Standard-library SLeeLa source units in `/lib`: 10,297 (10,352 total symbol records incl. 55 module facades)**
 **Standard-library target: 2,048 objects**  
 **Unique Foundational C++ Class Files (contract-verified): 50**
 
@@ -13,7 +13,7 @@
 
 ## 1. Verified Foundational Class Files
 
-The current contract suite verifies these 50 foundational class files. The repository-wide SLeeLa source inventory now records 10,568 `.sleela` files, including 10,291 source classes under `/lib` (10,346 total symbol records with the 55 module facades); the library inventory is maintained separately in `lib/LIBRARY.SYMBOLS.md`.
+The current contract suite verifies these 50 foundational class files. The repository-wide SLeeLa source inventory now records 10,583 `.sleela` files, including 10,297 source classes under `/lib` (10,352 total symbol records with the 55 module facades); the library inventory is maintained separately in `lib/LIBRARY.SYMBOLS.md`.
 
 | # | Class | Source |
 |---:|---|---|
@@ -513,6 +513,42 @@ orchestration facade (`sleela_langc.hpp` / `.cpp`), the `.sleela` bridge
   `git ls-files '*.sleela'`).
 - `/lib` collection: **83** package families; **10,291** source classes +
   **55** `SLPackage.sleela` module facades = **10,346** total symbol records.
+  Regenerated into `lib/LIBRARY.SYMBOLS.md` (`collection-revision: 2.1`) and
+  verified in lockstep by `test-suites/test-library-inventory.sh`.
+- The **50 foundational C++ class files** contract-checked by
+  `test-suites/cpp/test_class_contracts.cpp` are unchanged this revision.
+
+## 14. Skya Telephony Emblematic Master Classes (Revision 2.3)
+
+Revision 2.3 promotes the emblematic Skya telephony modules into first-class
+`/lib` **Master Classes** and recounts.
+
+### `/lib/telephony-skya` — emblematic modules as Master Classes
+
+The emblematic Skya modules are now one-class-per-file `/lib` source units (not
+facade stubs or top-level-only runnables), so they are counted and discoverable
+as Master Classes:
+
+| Class | Role |
+|---|---|
+| `Socio` | the social fabric — members, standing, ties, density |
+| `Network` | transport reachability — local/public address, careful non-destructive NAT posture |
+| `Servers` | server-side presence — the always-open comm listener and the roles it serves |
+| `Communication` | message exchange — client-side reach/send/receive with a coherence tally |
+| `RealAcquaintances` | the confirmed trust roster — acquaintances made real only after a verified exchange |
+| `SkyaModules` | loads and composes the five modules as naturals |
+
+**6 new `/lib/telephony-skya` `.sleela` source units.** The matching stubs were
+removed from `telephony-skya/SLPackage.sleela` to avoid duplicate class
+declarations. The runnable orchestration examples remain under
+`telephony-skya/sleela/`.
+
+### Recount (merged tree)
+
+- Repository-wide SLeeLa source files: **10,583** `.sleela` (verified via
+  `git ls-files '*.sleela'` plus the six new units).
+- `/lib` collection: **83** package families; **10,297** source classes +
+  **55** `SLPackage.sleela` module facades = **10,352** total symbol records.
   Regenerated into `lib/LIBRARY.SYMBOLS.md` (`collection-revision: 2.1`) and
   verified in lockstep by `test-suites/test-library-inventory.sh`.
 - The **50 foundational C++ class files** contract-checked by
