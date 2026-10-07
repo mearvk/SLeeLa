@@ -1,0 +1,38 @@
+/*
+ * lib/citizen/character/FranchiseModel.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: FranchiseModel — don't run the shops; rent out the right to BE
+ *   the shop. Revenue is an ongoing royalty on each franchisee's sales plus a
+ *   one-time fee amortized across the month, and the brand does the rest.
+ *
+ * A concrete BusinessModel. Family: character.
+ */
+#sleela 1.3
+class FranchiseModel extends BusinessModel {
+
+  int outlets;               // franchised locations
+  int avgOutletSalesCents;   // average monthly sales per outlet
+  int royaltyPercent;        // the franchisor's royalty (0..100)
+  int supportCostCents;      // monthly cost to support one outlet
+
+  void setUp(int locations, int avgSales, int royalty, int supportCost) {
+    load();
+    configure("Franchise", KIND_FRANCHISE);
+    if (locations < 0) { locations = 0; }
+    if (avgSales < 0) { avgSales = 0; }
+    if (royalty < 0) { royalty = 0; }
+    if (royalty > 100) { royalty = 100; }
+    if (supportCost < 0) { supportCost = 0; }
+    outlets = locations;
+    avgOutletSalesCents = avgSales;
+    royaltyPercent = royalty;
+    supportCostCents = supportCost;
+    setUnits(locations);
+  }
+
+  // Total sales across the whole brand this month.
+  int networkSales() { return outlets * avgOutletSalesCents; }
+
+  int monthlyRevenue() { return (networkSales() * royaltyPercent) / 100; }
+  int monthlyCost() { return outlets * supportCostCents; }
+}

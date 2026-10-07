@@ -1,0 +1,42 @@
+/*
+ * lib/citizen/character/SaaSModel.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: SaaSModel — software as a service, billed per seat per month,
+ *   priced across tiers. Like Subscription's more ambitious cousin: seats are
+ *   split across a basic and a premium tier, each at its own price, and the
+ *   cloud bill scales with the whole seat count.
+ *
+ * A concrete BusinessModel. Family: character.
+ */
+#sleela 1.3
+class SaaSModel extends BusinessModel {
+
+  int basicSeats;         // seats on the basic tier
+  int premiumSeats;       // seats on the premium tier
+  int basicPriceCents;    // monthly price per basic seat
+  int premiumPriceCents;  // monthly price per premium seat
+  int infraCostPerSeatCents; // cloud/infra cost per seat per month
+
+  void setUp(int basic, int premium, int basicPrice, int premiumPrice, int infraPerSeat) {
+    load();
+    configure("SaaS", KIND_SAAS);
+    if (basic < 0) { basic = 0; }
+    if (premium < 0) { premium = 0; }
+    if (basicPrice < 0) { basicPrice = 0; }
+    if (premiumPrice < 0) { premiumPrice = 0; }
+    if (infraPerSeat < 0) { infraPerSeat = 0; }
+    basicSeats = basic;
+    premiumSeats = premium;
+    basicPriceCents = basicPrice;
+    premiumPriceCents = premiumPrice;
+    infraCostPerSeatCents = infraPerSeat;
+    setUnits(basic + premium);
+  }
+
+  int totalSeats() { return basicSeats + premiumSeats; }
+
+  int monthlyRevenue() {
+    return basicSeats * basicPriceCents + premiumSeats * premiumPriceCents;
+  }
+  int monthlyCost() { return totalSeats() * infraCostPerSeatCents; }
+}

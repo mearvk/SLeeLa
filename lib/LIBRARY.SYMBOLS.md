@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 10315
+library-source-files: 10329
 library-packages: 85
 module-facade-symbols: 57
-total-symbol-records: 10372
+total-symbol-records: 10386
 
 package	symbol	path	kind
 antivirus	SLPackage.sleela	lib/antivirus/SLPackage.sleela	facade
@@ -37,6 +37,20 @@ citizen	Citizen.sleela	lib/citizen/Citizen.sleela	source
 citizen	FederalReserveID.sleela	lib/citizen/FederalReserveID.sleela	source
 citizen	Industry.sleela	lib/citizen/Industry.sleela	source
 citizen	SLPackage.sleela	lib/citizen/SLPackage.sleela	facade
+citizen	AdvertisingModel.sleela	lib/citizen/character/AdvertisingModel.sleela	source
+citizen	BrokerageModel.sleela	lib/citizen/character/BrokerageModel.sleela	source
+citizen	BusinessModel.sleela	lib/citizen/character/BusinessModel.sleela	source
+citizen	Character.sleela	lib/citizen/character/Character.sleela	source
+citizen	ConsultingModel.sleela	lib/citizen/character/ConsultingModel.sleela	source
+citizen	FranchiseModel.sleela	lib/citizen/character/FranchiseModel.sleela	source
+citizen	FreemiumModel.sleela	lib/citizen/character/FreemiumModel.sleela	source
+citizen	LicensingModel.sleela	lib/citizen/character/LicensingModel.sleela	source
+citizen	ManufacturingModel.sleela	lib/citizen/character/ManufacturingModel.sleela	source
+citizen	MarketplaceModel.sleela	lib/citizen/character/MarketplaceModel.sleela	source
+citizen	RetailModel.sleela	lib/citizen/character/RetailModel.sleela	source
+citizen	SaaSModel.sleela	lib/citizen/character/SaaSModel.sleela	source
+citizen	SubscriptionModel.sleela	lib/citizen/character/SubscriptionModel.sleela	source
+citizen	WholesaleModel.sleela	lib/citizen/character/WholesaleModel.sleela	source
 codecs	SLCodecLoader.sleela	lib/codecs/SLCodecLoader.sleela	source
 codecs	SLPackage.sleela	lib/codecs/SLPackage.sleela	facade
 codecs	codecs.sleela	lib/codecs/codecs.sleela	source

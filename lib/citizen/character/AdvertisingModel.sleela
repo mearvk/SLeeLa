@@ -1,0 +1,32 @@
+/*
+ * lib/citizen/character/AdvertisingModel.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: AdvertisingModel — the audience is not the customer; the audience
+ *   is the product. Revenue is impressions priced per thousand (CPM), and the
+ *   only cost that matters is keeping the audience entertained enough to stay.
+ *
+ * A concrete BusinessModel: revenue = (impressions / 1000) x CPM. Family:
+ * character.
+ */
+#sleela 1.3
+class AdvertisingModel extends BusinessModel {
+
+  int impressions;       // ad views this month
+  int cpmCents;          // revenue per 1000 impressions
+  int contentCostCents;  // monthly cost of making the audience show up
+
+  void setUp(int views, int cpm, int contentCost) {
+    load();
+    configure("Advertising", KIND_ADVERTISING);
+    if (views < 0) { views = 0; }
+    if (cpm < 0) { cpm = 0; }
+    if (contentCost < 0) { contentCost = 0; }
+    impressions = views;
+    cpmCents = cpm;
+    contentCostCents = contentCost;
+    setUnits(views);
+  }
+
+  int monthlyRevenue() { return (impressions / 1000) * cpmCents; }
+  int monthlyCost() { return contentCostCents; }
+}
