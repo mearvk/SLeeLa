@@ -1,0 +1,43 @@
+/*
+ * lib/character/ManufacturingModel.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: ManufacturingModel — make the physical thing at scale. Revenue is
+ *   units shipped x wholesale price; cost is variable material/labor per unit
+ *   plus a large, stubborn fixed cost for the factory that does not care whether
+ *   the line ran today.
+ *
+ * A concrete BusinessModel: the fixed cost is the drama; volume is the cure.
+ * Family: character.
+ */
+#sleela 1.3
+class ManufacturingModel extends BusinessModel {
+
+  int unitsProduced;        // units shipped this month
+  int wholesalePriceCents;  // price per unit to the buyer
+  int variableCostCents;    // material + labor per unit
+  int fixedPlantCents;      // monthly fixed factory cost (regardless of volume)
+
+  void setUp(int produced, int wholesalePrice, int variableCost, int fixedPlant) {
+    load();
+    configure("Manufacturing", KIND_MANUFACTURING);
+    if (produced < 0) { produced = 0; }
+    if (wholesalePrice < 0) { wholesalePrice = 0; }
+    if (variableCost < 0) { variableCost = 0; }
+    if (fixedPlant < 0) { fixedPlant = 0; }
+    unitsProduced = produced;
+    wholesalePriceCents = wholesalePrice;
+    variableCostCents = variableCost;
+    fixedPlantCents = fixedPlant;
+    setUnits(produced);
+  }
+
+  // Break-even volume: units needed to cover the fixed plant cost alone.
+  int breakEvenUnits() {
+    int contribution = wholesalePriceCents - variableCostCents;
+    if (contribution <= 0) { return 0; }
+    return fixedPlantCents / contribution;
+  }
+
+  int monthlyRevenue() { return unitsProduced * wholesalePriceCents; }
+  int monthlyCost() { return unitsProduced * variableCostCents + fixedPlantCents; }
+}

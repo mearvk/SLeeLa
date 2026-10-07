@@ -1,0 +1,121 @@
+/*
+ * lib/character/Character.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines Character, the central Master Class of the character
+ *   package — a named actor in the Sleela economy who adopts exactly one
+ *   BusinessModel and lives or dies by its monthly profit. A Character is
+ *   classful by design: it is one class that composes any one of the many,
+ *   many business-model classes in this package.
+ *
+ * Character is a NATURAL / LOADABLE MODULE sharing the common module contract
+ * (load / loaded / moduleName / describe). It holds a BusinessModel reference
+ * typed to the base class, so it can carry a Subscription, Freemium,
+ * Marketplace, Advertising, Retail, Wholesale, Franchise, Licensing, SaaS,
+ * Consulting, Manufacturing, or Brokerage model interchangeably and ask it, each
+ * month, the only question that matters. The polymorphism follows the exact
+ * base/subclass pattern used by lib/compiler's SLLanguageCompiler front ends.
+ *
+ * It also carries a little personality — grit and reputation — because a
+ * business model is only as good as the Character running it.
+ *
+ * Family: character. Settlement crosses an explicit bridge to the ledger.
+ */
+#sleela 1.3
+// Unified SLeeLa SDK front-end object.
+class Character {
+
+  static final String MODULE = "Character";
+
+  int loadedFlag;        // 1 once the module is loaded
+  String name;           // who this Character is
+  String tagline;        // their elevator pitch, mercifully short
+  int grit;              // 0..100 — how many bad months they can stomach
+  int reputation;        // 0..100 — grows with profit, bruises with loss
+  int cashCents;         // running cash on hand
+
+  BusinessModel model;   // the one model they live by (any concrete subclass)
+
+  // --- loadable-module contract ------------------------------------------
+  void load() {
+    loadedFlag = 1;
+    name = "Nameless Founder";
+    tagline = "We're pre-revenue but post-vision.";
+    grit = 50;
+    reputation = 50;
+    cashCents = 0;
+    model = null;
+  }
+  boolean loaded() { return loadedFlag == 1; }
+  String moduleName() { return MODULE; }
+
+  // Introduce the Character and give them a little personality.
+  void introduce(String who, String pitch, int startingGrit, int startingCash) {
+    if (who != null) { name = who; }
+    if (pitch != null) { tagline = pitch; }
+    grit = clamp(startingGrit);
+    reputation = 50;
+    if (startingCash >= 0) { cashCents = startingCash; }
+  }
+
+  // Adopt a business model. Any concrete BusinessModel subclass will do — the
+  // Character does not care which, only whether it makes money. This is the
+  // whole point of a base-typed reference holding a subclass instance.
+  void adopt(BusinessModel chosen) {
+    model = chosen;
+  }
+
+  boolean hasModel() { return model != null && model.ready(); }
+
+  // Live one month: realize the model's profit into cash and let it move the
+  // Character's reputation and grit. Returns the profit for the month.
+  int liveAMonth() {
+    if (!hasModel()) { return 0; }
+    int profit = model.monthlyProfit();
+    cashCents = cashCents + profit;
+    if (profit > 0) {
+      reputation = clamp(reputation + 3);
+      grit = clamp(grit + 1);
+    } else {
+      reputation = clamp(reputation - 2);
+      grit = clamp(grit - 5);   // a losing month really takes it out of you
+    }
+    return profit;
+  }
+
+  // Run several months and report the total profit realized.
+  int runMonths(int months) {
+    int total = 0;
+    int i = 0;
+    while (i < months) {
+      total = total + liveAMonth();
+      i = i + 1;
+    }
+    return total;
+  }
+
+  // The question every Character secretly asks at 3am.
+  boolean stillStanding() { return cashCents >= 0 && grit > 0; }
+  boolean thriving() { return hasModel() && model.profitable() && reputation >= 60; }
+
+  int cash() { return cashCents; }
+  int reputationScore() { return reputation; }
+  int gritScore() { return grit; }
+  String characterName() { return name; }
+  int modelKind() { if (!hasModel()) { return BusinessModel.KIND_NONE; } return model.modelKind(); }
+  String modelName() { if (model == null) { return "none"; } return model.name(); }
+
+  int clamp(int v) {
+    if (v < 0) { return 0; }
+    if (v > 100) { return 100; }
+    return v;
+  }
+
+  String yn(boolean b) { if (b) { return "yes"; } return "no"; }
+
+  String describe() {
+    return MODULE + " name=" + name + " model=" + modelName()
+         + " cash=" + cashCents + " reputation=" + reputation
+         + " grit=" + grit + " thriving=" + yn(thriving())
+         + " standing=" + yn(stillStanding());
+  }
+}
