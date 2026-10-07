@@ -19,6 +19,10 @@
       "sha256": "d994df3b103f67b0d89986e3daa287d2c3ecb08534cf1b59e6da0b6d9ba47794"
     },
     {
+      "path": "alphabet/sleela/AlphabetDemo.sleela",
+      "sha256": "6f615ee8bed4ca407de7835173e2d6012cedefa291351d7d63ddc0010da08f3d"
+    },
+    {
       "path": "antivirus/src/sleelavirin_heuristic.c",
       "sha256": "2c1bea5d86c3b1b311ec145eeb9b688b0fa0c4f82b705f2b93ade304042af0a5"
     },
@@ -6781,6 +6785,54 @@
     {
       "path": "ledger/qr.py",
       "sha256": "789d84e9fa8043189fc40ed7b0b292245bd22999d01030fa0e30c4be6663f696"
+    },
+    {
+      "path": "lib/alphabet/Alphabet.sleela",
+      "sha256": "e11e96c328a4f1e26e0366a2b61394ce1201ba44b8b3d928a7b5d6722500005b"
+    },
+    {
+      "path": "lib/alphabet/Color.sleela",
+      "sha256": "9484cec25fc95500ef4c05f59e8b2e19121dd875c3443756f71b2186f87a1040"
+    },
+    {
+      "path": "lib/alphabet/CyrillicAlphabet.sleela",
+      "sha256": "45f95bdcc355394c012c0819c25790cbc46450f115cbd754841321c4ef5c5480"
+    },
+    {
+      "path": "lib/alphabet/DarkTheme.sleela",
+      "sha256": "55eee57b7edb05c3bce0015b6d0748b27a48553463a839adbc97e91dda369ceb"
+    },
+    {
+      "path": "lib/alphabet/GreekAlphabet.sleela",
+      "sha256": "1ad135ec864ebda34d8ec64e4646a75391f68adc1bc3fece2ae8e5163ab609bb"
+    },
+    {
+      "path": "lib/alphabet/LatinAlphabet.sleela",
+      "sha256": "29b1de703a5f88fccc1b4280ac68bf9d8f34530964391b3fed0d92f1ba1ab7f4"
+    },
+    {
+      "path": "lib/alphabet/Letter.sleela",
+      "sha256": "d801f38962b4bf58f83c8a2436511e9cdc1a1472b601fde7af4f485b0f6502f2"
+    },
+    {
+      "path": "lib/alphabet/LightTheme.sleela",
+      "sha256": "645fafd724b3413530d2de5e39d83b6a224d02daa50c754da05d8a7946bdcb24"
+    },
+    {
+      "path": "lib/alphabet/Palette.sleela",
+      "sha256": "0e36088e6a1ca8b5f4328e92e3f307143283320f3921017be0dfa966d1675ed3"
+    },
+    {
+      "path": "lib/alphabet/SLPackage.sleela",
+      "sha256": "7b5a0a48a6ffb9748cf6930c1a27deaf7483bf84836dfcc1ced1407e587d446b"
+    },
+    {
+      "path": "lib/alphabet/SolarizedTheme.sleela",
+      "sha256": "b90dae4fe69d5ebd3cfa5c754739de47b9142cb40657e7c12493939a7e80b5c3"
+    },
+    {
+      "path": "lib/alphabet/Theme.sleela",
+      "sha256": "f8abd36a0902491a40b1d63f2e5c3977219d4d0c1fb2541ab0e2fbcfeabe4226"
     },
     {
       "path": "lib/antivirus/SLPackage.sleela",
@@ -48143,6 +48195,14 @@
       "sha256": "6b12b2d425a92dceb4dd0c628d6f98f1ec232056e51d71228a6dbd06c7d3d584"
     },
     {
+      "path": "lib/user-interface/SLFont.sleela",
+      "sha256": "3c0056a0e088d3787431fe78a795843862b091efc325dadb0511a76cbd54695c"
+    },
+    {
+      "path": "lib/user-interface/SLFontEffect.sleela",
+      "sha256": "ab2cd0ffdb978525b29db89261ccf808703acdded4828b829d728d8deb07f06e"
+    },
+    {
       "path": "lib/user-interface/SLFrame.sleela",
       "sha256": "ccd1b7f64b48022cdaa92f61dd243a081342a15aab7faeaf1167e2ae25b66959"
     },
@@ -48268,7 +48328,7 @@
     },
     {
       "path": "lib/user-interface/SLWidget.sleela",
-      "sha256": "0e94b6ad931aa40102e03d5a4d4eef9a407fbed2a07b8d254984185588297472"
+      "sha256": "3136c1cb4ddab03ca9e2e519121fa78a007b44d2a874a44efb0889ac6ec87d55"
     },
     {
       "path": "lib/user-interface/SLWindow.sleela",
@@ -50796,7 +50856,7 @@
     },
     {
       "path": "test-suites/test-library-inventory.sh",
-      "sha256": "8178b0825f2619b7ade0dd7a64400b41e75a817adf117f9216543ad637f14803"
+      "sha256": "e69f0a3403e715b94db43d153131644b0abcdaffe9844656a9434cba05507ff2"
     },
     {
       "path": "tests/java_api_dependency_suite.py",
@@ -51151,6 +51211,10 @@
       "sha256": "c1a9aaf2e3fcb89e8a6fe9cef9168a776fd55cb4eecb4f21de6e9e4e7754968e"
     },
     {
+      "path": "user-interface/include/sleela_ui_font.h",
+      "sha256": "d013051eccc16caabf59999dfba3e4f8148589838f0a69ca6d1ba2a2589b50b2"
+    },
+    {
       "path": "user-interface/include/sleela_ui_light.h",
       "sha256": "c83fccfa1d50343dbeb844faf3fd3ebeaa083b9703e97cb68e443608d8e97989"
     },
@@ -51172,11 +51236,15 @@
     },
     {
       "path": "user-interface/src/slui_backend.hpp",
-      "sha256": "9d621d6b42937d4451dadbf44f0215d75f12935d3e6b81013f87b966ed20669b"
+      "sha256": "dc22ea59a519f0f116218231fd76103ba82ac3bd286c17c3fde70fac36377387"
     },
     {
       "path": "user-interface/src/slui_draw.cpp",
-      "sha256": "3b31797f387ee4eb1a210ca6ca7ebca84b42bcb9c9feb0c5143655e0ebb241df"
+      "sha256": "3278ffdd10774fbdda03a8b6c2951a7e9fa6f19f655108c43c42585311fcc2d6"
+    },
+    {
+      "path": "user-interface/src/slui_font.cpp",
+      "sha256": "6119ae06824d0245b90186cee1acda6b137eecd5b5bab036fa0acac5be1e2ec0"
     },
     {
       "path": "user-interface/src/slui_geometry.hpp",
@@ -51204,11 +51272,11 @@
     },
     {
       "path": "user-interface/src/slui_widget.cpp",
-      "sha256": "7ecfa1a7cc924d0127cdd3f2a39a399b8357b76bbb28b34a25f800e179eed0be"
+      "sha256": "dfada1669083c711224726e2d1ce1139a09dc4b6950d81ae171536f8d3c0b6d7"
     },
     {
       "path": "user-interface/src/slui_widget.hpp",
-      "sha256": "bc8c2b838eb191b0c9967593db1223483950811520db329f376573810ff2a3e1"
+      "sha256": "3e96abf0b50b64c6804899cfdc00ddc0bbf73a9ff7e5638be292f4f9876fa58f"
     },
     {
       "path": "user-interface/src/slui_window.cpp",
@@ -51220,7 +51288,11 @@
     },
     {
       "path": "user-interface/tests/smoke.c",
-      "sha256": "b1ec689a77f9f9dca6d014864ff55c6972a9fa64095281694d17325d32900e09"
+      "sha256": "7a92d39c30fbdb7a71791ac8ffa738afcbfb0c02ed42b487a5ad1be90d831a85"
+    },
+    {
+      "path": "user-interface/tools/font_snapshot.cpp",
+      "sha256": "1347a25e69bbc1aa1bd00353f9617d993cd07174dd28da1a82291c444dd767ba"
     },
     {
       "path": "user-interface/tools/relief_snapshot.cpp",
