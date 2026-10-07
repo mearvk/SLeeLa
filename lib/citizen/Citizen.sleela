@@ -1,0 +1,168 @@
+/*
+ * lib/citizen/Citizen.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines Citizen, the civic Master Class — one honest, taxpaying,
+ *   coffee-drinking person as modeled by the Republic of Sleela. A Citizen is
+ *   the smallest unit of a nation that still complains about the weather.
+ *
+ * Citizen is a NATURAL / LOADABLE MODULE sharing the common module contract
+ * (load / loaded / moduleName / describe) with the other /lib Master Classes,
+ * so a loader can treat it uniformly. It composes three sidecar records that it
+ * owns and keeps consistent: an Industry affiliation (what they do for a
+ * living), a BankAccount (where the money quietly leaves from), and a
+ * FederalReserveID (how the central bank pretends to know them personally).
+ *
+ * A Citizen is, famously, able. It can be born, employed, paid, taxed, retired,
+ * and — on a good day — content. It holds civic state only; the paperwork is
+ * performed by the sidecar classes in this package. The runnable orchestration
+ * example lives in citizen/sleela/CitizenDemo.sleela.
+ *
+ * Family: citizen. Civic data crosses an explicit bridge to the ledger.
+ */
+#sleela 1.3
+// Unified SLeeLa SDK front-end object.
+class Citizen {
+
+  static final String MODULE = "Citizen";
+
+  // Life stages, because every bureaucracy loves an enum it can't spell.
+  static final int STAGE_UNBORN   = 0;   // a gleam in the census-taker's eye
+  static final int STAGE_MINOR    = 1;   // all rights, none of the taxes
+  static final int STAGE_WORKING  = 2;   // the golden, caffeinated years
+  static final int STAGE_RETIRED  = 3;   // emeritus citizen, senior discount
+  static final int STAGE_DECEASED = 4;   // files one final, very late return
+
+  int loadedFlag;              // 1 once the module is loaded
+
+  String legalName;            // the name on the forms nobody reads
+  String nickname;             // the name their friends actually use
+  int age;                     // in laps around a medium yellow star
+  int stage;                   // one of STAGE_*
+  int moodOutOf100;            // 0 = DMV queue, 100 = Friday 5pm
+
+  Industry industry;           // what they claim at parties
+  BankAccount bank;            // the sad truth of what they can afford
+  FederalReserveID fedId;      // how the central bank addresses the holiday card
+
+  // --- loadable-module contract ------------------------------------------
+  void load() {
+    loadedFlag = 1;
+    legalName = "Jane Q. Public";
+    nickname = "Jay";
+    age = 0;
+    stage = STAGE_UNBORN;
+    moodOutOf100 = 50;
+    industry = new Industry();
+    industry.load();
+    bank = new BankAccount();
+    bank.load();
+    fedId = new FederalReserveID();
+    fedId.load();
+  }
+  boolean loaded() { return loadedFlag == 1; }
+  String moduleName() { return MODULE; }
+
+  // --- civic life cycle ---------------------------------------------------
+
+  // A citizen is born. Congratulations, you now owe the system a resume.
+  void beBorn(String name) {
+    if (name != null) { legalName = name; }
+    age = 0;
+    stage = STAGE_MINOR;
+    moodOutOf100 = 100;            // newborns have no idea yet. Bless them.
+    fedId.issue(legalName);
+    bank.openFor(legalName);
+  }
+
+  // Time, that undefeated opponent, advances exactly one year.
+  void haveABirthday() {
+    age = age + 1;
+    if (age >= 18 && stage == STAGE_MINOR) { stage = STAGE_WORKING; }
+    if (age >= 67 && stage == STAGE_WORKING) { retire(); }
+    moodOutOf100 = moodOutOf100 + 1;   // another candle, mild optimism
+    if (moodOutOf100 > 100) { moodOutOf100 = 100; }
+  }
+
+  // Pick a trade. The Industry class judges you so this class doesn't have to.
+  void getAJob(int sector, int wageCents) {
+    industry.employ(sector, wageCents);
+    if (stage == STAGE_MINOR && age >= 16) { stage = STAGE_WORKING; }
+    moodOutOf100 = moodOutOf100 + 5;   // the thrill wears off by Tuesday
+    clampMood();
+  }
+
+  // Payday. The one unambiguously good day of the fortnight.
+  int getPaid() {
+    if (!employed()) { return 0; }
+    int gross = industry.wage();
+    bank.deposit(gross);
+    moodOutOf100 = moodOutOf100 + 10;
+    clampMood();
+    return gross;
+  }
+
+  // Taxes. A citizen is, after all, defined by their relationship with Form 1040.
+  int payTaxes(int ratePercent) {
+    if (ratePercent < 0) { ratePercent = 0; }
+    if (ratePercent > 100) { ratePercent = 100; }
+    int owed = (bank.balance() * ratePercent) / 100;
+    bank.withdraw(owed);
+    moodOutOf100 = moodOutOf100 - 15;   // the one unambiguously bad day
+    clampMood();
+    return owed;
+  }
+
+  // Spend some money on something frivolous. Highly recommended for morale.
+  boolean treatYourself(int cents) {
+    boolean ok = bank.withdraw(cents);
+    if (ok) { moodOutOf100 = moodOutOf100 + 8; }
+    clampMood();
+    return ok;
+  }
+
+  // Gracefully exit the workforce; keep the opinions.
+  void retire() {
+    stage = STAGE_RETIRED;
+    industry.layOff();
+    moodOutOf100 = moodOutOf100 + 20;   // no more Monday meetings
+    clampMood();
+  }
+
+  // The final, non-negotiable withdrawal.
+  void passAway() {
+    stage = STAGE_DECEASED;
+    industry.layOff();
+  }
+
+  // --- queries ------------------------------------------------------------
+  boolean alive() { return stage != STAGE_UNBORN && stage != STAGE_DECEASED; }
+  boolean employed() { return industry.employed() && stage == STAGE_WORKING; }
+  boolean solvent() { return bank.balance() >= 0; }
+
+  // The whole point: a Citizen is able. This proves it.
+  boolean isAble() {
+    return alive() && fedId.valid() && bank.open() && moodOutOf100 > 0;
+  }
+
+  int netWorthCents() { return bank.balance(); }
+  int lifeStage() { return stage; }
+  int happiness() { return moodOutOf100; }
+  String name() { return legalName; }
+  String fedNumber() { return fedId.number(); }
+
+  void clampMood() {
+    if (moodOutOf100 > 100) { moodOutOf100 = 100; }
+    if (moodOutOf100 < 0) { moodOutOf100 = 0; }
+  }
+
+  // Render a boolean as a word, so describe() concatenates only Strings/ints —
+  // the exact idiom the shipped /lib describe() methods already use.
+  String yn(boolean b) { if (b) { return "yes"; } return "no"; }
+
+  String describe() {
+    return MODULE + " name=" + legalName + " age=" + age
+         + " stage=" + stage + " able=" + yn(isAble())
+         + " worth=" + bank.balance() + " mood=" + moodOutOf100
+         + " fed=" + fedId.number();
+  }
+}
