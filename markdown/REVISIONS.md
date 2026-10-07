@@ -1,3 +1,41 @@
+## 2026-10-07 — Modular multi-language compiler framework and inventory/version reconciliation
+
+Additive library work plus a repo-wide inventory and version reconciliation. All
+existing programs continue to compile and run unchanged.
+
+### `/lib/compiler` — modular multi-language compiler framework
+
+Added a modular framework for building compilers for any publicly known
+programming language. A developer adds a language by writing one small SLeeLa
+front end that extends a common contract; many independent front ends register
+into one shared catalog with no per-language allow-list, each lowering its own
+language toward the common SLeeLa IR and onward to a VM-ready artifact. Classes:
+`SLLanguageCompiler`, `SLCompileRequest`, `SLCompilePlan`, `SLCompilerRegistry`,
+and seven modular front ends under `lib/compiler/frontends/<lang>/` (C, C++,
+Java, Python, JavaScript, Rust, Go). **12 new `/lib/compiler` `.sleela` files.**
+The framework identifies, plans, and reports only — it never executes an input
+program. New native support crosses the explicit VM/OS bridge: a C ABI
+(`sleela_langc.h` / `.c`), a C++ facade (`sleela_langc.hpp` / `.cpp`), the
+`.sleela` bridge (`sleela_lang_bridge.h` / `.c`), and a behavioral self-test
+(`tests/langc_selftest.c`). See `lib/compiler/MULTI-LANGUAGE.FRAMEWORK.md`.
+
+### Inventory recount and version reconciliation
+
+- Recounted `/lib`: **10,291 `.sleela` source classes + 55 module facades =
+  10,346 total symbol records across 83 package families** (+16 units since the
+  prior stamp: the 12 compiler-framework units plus four previously-uncounted
+  OS/VM units).
+- Recorded **10,568 repository-wide `.sleela` source files** on `main`/`master`.
+- Advanced the active development line to **0.3.24-dev** (`markdown/VERSION.md`,
+  0.3.24 increment).
+- Updated `CLASS.INVENTORY.md` (Revision 2.2), `lib/LIBRARY.INDEX.md`
+  (Revision 0.30), `lib/LIBRARY.SYMBOLS.md` (regenerated, `collection-revision:
+  2.1`), `lib/README.md`, `SST.model` / `SST-2.0.model` (Revision 2.0.3), and
+  the informative mirror appendices in `impl/nordshrift/SST.SYMBOLS.md`,
+  `impl/nordshrift/NORDSHRIFT.SYMBOLS.md`, and `SLEELA.syntax` to these verified
+  figures. Counts are verified in lockstep by
+  `test-suites/test-library-inventory.sh`.
+
 ## 2026-10-05 — Opcodes object model, governance, running helpers, and the `.sldocument` format
 
 Additive library and format work. All existing programs continue to compile and
