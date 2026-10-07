@@ -1,0 +1,35 @@
+/*
+ * lib/user-interface/SLBox.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLBox — the primary SleelaUI container: a horizontal or
+ *   vertical box that lays its children out with the GTK/CSS box model
+ *   (natural sizes first, surplus split among expanding children, then
+ *   cross-axis alignment). Children are added by constructing control classes
+ *   against this box's handle. The constructor bottoms out in the `uiBox`
+ *   built-in, which calls the SleelaUI C ABI slui_box().
+ *
+ * A box IS an SLWidget, so it carries the full margin/align/expand surface and
+ * can itself be nested inside another box to build rich layouts.
+ *
+ * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
+ * bridge.
+ */
+#sleela 1.5
+class SLBox extends SLWidget {
+  // Create a box inside `parent` (an SLWidget). orientation is ORIENT_VERTICAL
+  // or ORIENT_HORIZONTAL; spacing is the gap between children in pixels.
+  void createIn(SLWidget parent, int orientation, int spacing) {
+    widget = uiBox(parent.handle(), orientation, spacing);
+  }
+  void createInHandle(int parentHandle, int orientation, int spacing) {
+    widget = uiBox(parentHandle, orientation, spacing);
+  }
+
+  // Convenience constructors for the two orientations.
+  void vertical(SLWidget parent, int spacing) {
+    createIn(parent, ORIENT_VERTICAL, spacing);
+  }
+  void horizontal(SLWidget parent, int spacing) {
+    createIn(parent, ORIENT_HORIZONTAL, spacing);
+  }
+}

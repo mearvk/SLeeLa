@@ -1,11 +1,28 @@
 # SLeeLa /lib Library Index
 
-**Revision:** 0.33  
-**Packages:** 85  
-**SLeeLa source units:** 10329  
-**Module-facade symbols:** 57  
-**Total symbol records:** 10386  
+**Revision:** 0.34  
+**Packages:** 86  
+**SLeeLa source units:** 10344  
+**Module-facade symbols:** 58  
+**Total symbol records:** 10402  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
+
+> Revision 0.34 adds the **`user-interface`** package: the SLeeLa-source binding
+> for **SleelaUI™**, SLeeLa's own original cross-platform UI toolkit (native
+> toolkit under `/user-interface`; not GTK/Qt). It gains fifteen one-class-per-
+> file Master Classes — the capstone `SLUserInterface`, `SLWindow`, the widget
+> base `SLWidget`, containers `SLBox`/`SLHeaderBar`, controls `SLLabel`/
+> `SLButton`/`SLToggle`/`SLEntry`/`SLSlider`/`SLSeparator`/`SLSpacer`, the
+> palette pair `SLTheme`/`SLColor` (default **Slick Black**), and the runnable
+> `SLGalleryDemo` — plus the `SLPackage` facade. Every method bottoms out in a
+> `ui*` SLVM built-in that calls the genuine SleelaUI C ABI
+> (`user-interface/include/sleela_ui.h`), which drives X11 / Cocoa / Win32; the
+> `ui*` surface and the class roster are documented in
+> `lib/user-interface/USER-INTERFACE.md`. Sixteen new source units (1 facade +
+> 15 sources): 10,386 -> **10,402** total records (10,329 -> **10,344** source
+> classes), 57 -> **58** facades, 85 -> **86** packages. `LIBRARY.SYMBOLS.md`
+> was regenerated from the live tree and the counts are verified in lockstep by
+> `test-suites/test-library-inventory.sh`.
 
 > Revision 0.33 copies the fourteen `character` business-model Master Classes
 > into a new nested sub-area, `lib/citizen/character/`, so the `citizen` package

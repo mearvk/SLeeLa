@@ -1,0 +1,31 @@
+/*
+ * lib/user-interface/SLEntry.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLEntry — a SleelaUI single-line text field: a rounded
+ *   surface with a hairline (accent when focused), placeholder text when empty,
+ *   a blinking-free caret, and full UTF-8 editing (insert, backspace, Home/End,
+ *   left/right). The constructor bottoms out in the `uiEntry` built-in
+ *   (SleelaUI C ABI slui_entry()); the committed text is read/written through
+ *   the inherited text()/setText(), and Enter raises an activate event.
+ *
+ * An SLEntry IS an SLWidget and is keyboard-focusable.
+ *
+ * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
+ * bridge.
+ */
+#sleela 1.5
+class SLEntry extends SLWidget {
+  // Create an entry inside `parent` with placeholder text (shown when empty).
+  void createIn(SLWidget parent, String placeholder) {
+    widget = uiEntry(parent.handle(), placeholder);
+  }
+  void createInHandle(int parentHandle, String placeholder) {
+    widget = uiEntry(parentHandle, placeholder);
+  }
+
+  // True if Enter was pressed since the last check (latch cleared on read).
+  boolean submitted() {
+    if (widget < 0) { return false; }
+    return uiWidgetTakeActivated(widget) == 1;
+  }
+}

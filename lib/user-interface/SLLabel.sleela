@@ -1,0 +1,24 @@
+/*
+ * lib/user-interface/SLLabel.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLLabel — a SleelaUI text label: a non-interactive run of
+ *   text drawn in the theme's primary (or dim, when insensitive) colour. The
+ *   constructor bottoms out in the `uiLabel` built-in, which calls the SleelaUI
+ *   C ABI slui_label(); the text is updated through the inherited setText().
+ *
+ * An SLLabel IS an SLWidget, so it carries margin and alignment; set its
+ * horizontal alignment to START/CENTER/END to place the text within its cell.
+ *
+ * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
+ * bridge.
+ */
+#sleela 1.5
+class SLLabel extends SLWidget {
+  // Create a label inside `parent` with initial text.
+  void createIn(SLWidget parent, String text) {
+    widget = uiLabel(parent.handle(), text);
+  }
+  void createInHandle(int parentHandle, String text) {
+    widget = uiLabel(parentHandle, text);
+  }
+}

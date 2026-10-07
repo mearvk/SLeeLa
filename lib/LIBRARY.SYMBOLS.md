@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 10329
-library-packages: 85
-module-facade-symbols: 57
-total-symbol-records: 10386
+library-source-files: 10344
+library-packages: 86
+module-facade-symbols: 58
+total-symbol-records: 10402
 
 package	symbol	path	kind
 antivirus	SLPackage.sleela	lib/antivirus/SLPackage.sleela	facade
@@ -10292,6 +10292,22 @@ ui	SLView.sleela	lib/ui/SLView.sleela	source
 ui	SLWidget.sleela	lib/ui/SLWidget.sleela	source
 ui	SLWindow.sleela	lib/ui/SLWindow.sleela	source
 us-infrastructure	SLPackage.sleela	lib/us-infrastructure/SLPackage.sleela	facade
+user-interface	SLBox.sleela	lib/user-interface/SLBox.sleela	source
+user-interface	SLButton.sleela	lib/user-interface/SLButton.sleela	source
+user-interface	SLColor.sleela	lib/user-interface/SLColor.sleela	source
+user-interface	SLEntry.sleela	lib/user-interface/SLEntry.sleela	source
+user-interface	SLGalleryDemo.sleela	lib/user-interface/SLGalleryDemo.sleela	source
+user-interface	SLHeaderBar.sleela	lib/user-interface/SLHeaderBar.sleela	source
+user-interface	SLLabel.sleela	lib/user-interface/SLLabel.sleela	source
+user-interface	SLPackage.sleela	lib/user-interface/SLPackage.sleela	facade
+user-interface	SLSeparator.sleela	lib/user-interface/SLSeparator.sleela	source
+user-interface	SLSlider.sleela	lib/user-interface/SLSlider.sleela	source
+user-interface	SLSpacer.sleela	lib/user-interface/SLSpacer.sleela	source
+user-interface	SLTheme.sleela	lib/user-interface/SLTheme.sleela	source
+user-interface	SLToggle.sleela	lib/user-interface/SLToggle.sleela	source
+user-interface	SLUserInterface.sleela	lib/user-interface/SLUserInterface.sleela	source
+user-interface	SLWidget.sleela	lib/user-interface/SLWidget.sleela	source
+user-interface	SLWindow.sleela	lib/user-interface/SLWindow.sleela	source
 video	Video.sleela	lib/video/Video.sleela	source
 video	VideoCodec.sleela	lib/video/VideoCodec.sleela	source
 video	VideoCodecCatalog.sleela	lib/video/VideoCodecCatalog.sleela	source

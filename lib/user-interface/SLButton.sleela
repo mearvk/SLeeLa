@@ -1,0 +1,33 @@
+/*
+ * lib/user-interface/SLButton.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLButton — a SleelaUI push button: a rounded surface with
+ *   centred text, a 1px hairline, a hover/active tint, and an accent focus ring
+ *   when keyboard-focused. Mark it suggested() to make it the one accent action
+ *   in its group, or destructive() to turn it red on hover. The constructor
+ *   bottoms out in the `uiButton` built-in (SleelaUI C ABI slui_button());
+ *   clicks (and Enter/Space while focused) raise an activate event the host
+ *   polls through the application's event loop.
+ *
+ * An SLButton IS an SLWidget and is keyboard-focusable.
+ *
+ * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
+ * bridge.
+ */
+#sleela 1.5
+class SLButton extends SLWidget {
+  // Create a button inside `parent` with a label.
+  void createIn(SLWidget parent, String label) {
+    widget = uiButton(parent.handle(), label);
+  }
+  void createInHandle(int parentHandle, String label) {
+    widget = uiButton(parentHandle, label);
+  }
+
+  // True if this button has an activation pending since the last check; the
+  // VM clears the latch on read, so each click is observed exactly once.
+  boolean clicked() {
+    if (widget < 0) { return false; }
+    return uiWidgetTakeActivated(widget) == 1;
+  }
+}

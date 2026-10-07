@@ -1,0 +1,26 @@
+/*
+ * lib/user-interface/SLHeaderBar.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLHeaderBar — a SleelaUI title-bar strip: a horizontal
+ *   box that also paints the chrome fill and a 1px bottom hairline, the quiet
+ *   frame edge of a window. It is where a brand label, a spacer, and action
+ *   buttons (e.g. a settings gear) typically live. The constructor bottoms out
+ *   in the `uiHeaderBar` built-in, which calls the SleelaUI C ABI
+ *   slui_header_bar().
+ *
+ * An SLHeaderBar IS an SLWidget and behaves like a horizontal SLBox for the
+ * purpose of adding children.
+ *
+ * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
+ * bridge.
+ */
+#sleela 1.5
+class SLHeaderBar extends SLWidget {
+  // Create a header bar inside `parent` (normally the window root).
+  void createIn(SLWidget parent) {
+    widget = uiHeaderBar(parent.handle());
+  }
+  void createInHandle(int parentHandle) {
+    widget = uiHeaderBar(parentHandle);
+  }
+}
