@@ -1,5 +1,3 @@
-<img align="right" src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="75" height="75" alt="SLeeLa">
-
 # House of Representatives — state lower-chamber contacts
 
 Contact lists for the **lower chamber** (State House of Representatives /
