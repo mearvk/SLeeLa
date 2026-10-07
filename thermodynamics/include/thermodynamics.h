@@ -1,10 +1,13 @@
 /*
- * thermodynamics.h - Thermodynamics vignette public API
+ * thermodynamics.h - Thermodynamics IV public API
  * Max Rupplin - MEARVK LLC - 2026
  *
- * A small, self-contained thermodynamics library. Every function implements a
- * standard, textbook relation so the results are physically meaningful and the
- * code actually compiles and runs. The 3D field routines (gradient /
+ * Thermodynamics IV: an advanced, self-contained thermodynamics library. It is
+ * named "IV" because it carries a 4th-level treatment -- beyond introductory
+ * scalar relations it includes statistical mechanics, multivariable (3D) vector
+ * calculus with a heat-equation PDE, and a stochastic/Monte-Carlo layer. Every
+ * function implements a standard, textbook relation, so results are physically
+ * meaningful and the code compiles and runs. The 3D field routines (gradient /
  * divergence / Laplacian / heat equation) are the multivariable-calculus core
  * used for 3D thermal models.
  *

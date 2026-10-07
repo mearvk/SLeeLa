@@ -1,6 +1,6 @@
 /*
  * thermodynamics/curriculum/SLBoltzmann.sleela
- * SLeeLa Thermodynamics Curriculum - Level 4: Boltzmann distribution.
+ * SLeeLa Thermodynamics IV Curriculum - Level 4: Boltzmann distribution.
  * Definition:
  *   Z   = sum_i exp(-E_i / (kB * T))
  *   p_i = exp(-E_i / (kB * T)) / Z

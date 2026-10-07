@@ -1,6 +1,6 @@
 /*
  * thermodynamics/curriculum/SLCarnot.sleela
- * SLeeLa Thermodynamics Curriculum - Level 2: Carnot efficiency limit.
+ * SLeeLa Thermodynamics IV Curriculum - Level 2: Carnot efficiency limit.
  * Definition: eta = 1 - (Tcold / Thot). A dimensionless ratio bounding every
  * heat engine between two reservoir temperatures (kelvin).
  * Max Rupplin - MEARVK LLC - 2026

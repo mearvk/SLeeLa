@@ -1,6 +1,6 @@
 /*
  * thermodynamics/curriculum/SLFourierFlux.sleela
- * SLeeLa Thermodynamics Curriculum - Level 1: Fourier's law of conduction.
+ * SLeeLa Thermodynamics IV Curriculum - Level 1: Fourier's law of conduction.
  * Definition: q = -k * (dT / dx). Heat flux is the (negative) slope of the
  * temperature profile times the conductivity. The novice's first "rate".
  * Max Rupplin - MEARVK LLC - 2026

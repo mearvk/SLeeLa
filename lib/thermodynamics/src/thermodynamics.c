@@ -1,5 +1,5 @@
 /*
- * thermodynamics.c - C implementation of the thermodynamics vignette
+ * thermodynamics.c - C implementation of Thermodynamics IV (the physics)
  * Max Rupplin - MEARVK LLC - 2026
  *
  * Pure C11. Every routine is a direct transcription of a standard physical

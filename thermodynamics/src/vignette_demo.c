@@ -1,5 +1,5 @@
 /*
- * vignette_demo.c - runnable vignette + self-test for the thermodynamics lib
+ * vignette_demo.c - runnable Thermodynamics IV vignette + self-test
  * Max Rupplin - MEARVK LLC - 2026
  *
  * Demonstrates every public routine on a worked "metal bar" example and
@@ -26,7 +26,7 @@ static int check(const char *name, int ok)
 int main(void)
 {
     int failures = 0;
-    puts("SLeeLa thermodynamics vignette - worked example: heating a copper bar");
+    puts("SLeeLa Thermodynamics IV vignette - worked example: heating a copper bar");
 
     /* 1) Sensible heat for 2 kg of copper (c = 385 J/kg.K) raised by 50 K. */
     const double Q = sl_thermo_heat_energy(2.0, 385.0, 50.0);

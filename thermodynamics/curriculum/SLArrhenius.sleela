@@ -1,6 +1,6 @@
 /*
  * thermodynamics/curriculum/SLArrhenius.sleela
- * SLeeLa Thermodynamics Curriculum - Level 6: Arrhenius log-rate law.
+ * SLeeLa Thermodynamics IV Curriculum - Level 6: Arrhenius log-rate law.
  * Definition:
  *   k = A * exp(-Ea / (R * T))        <=>        ln k = ln A - Ea / (R * T)
  * Taking the logarithm turns the exponential rate law into a straight line in

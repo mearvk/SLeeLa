@@ -1,6 +1,6 @@
 /*
  * thermodynamics/curriculum/SLHeatEquation3D.sleela
- * SLeeLa Thermodynamics Curriculum - Level 5: 3D heat equation (multivariable).
+ * SLeeLa Thermodynamics IV Curriculum - Level 5: 3D heat equation (multivariable).
  * Definition:
  *   gradient    grad T  = (dT/dx, dT/dy, dT/dz)
  *   divergence  div F   = dFx/dx + dFy/dy + dFz/dz

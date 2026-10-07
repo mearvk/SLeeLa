@@ -1,6 +1,10 @@
-# Thermodynamics Equations — Novice to Advanced
+# Thermodynamics IV — Equations, Novice to Advanced
 
-A ladder of the equations in this module. Each level is a *sequitur* from the
+The equation ladder for the **Thermodynamics IV** module. "IV" denotes the
+4th-level scope: the ladder climbs from introductory scalar relations (Levels
+0–2) through statistical mechanics (Level 4) and multivariable 3D PDEs (Level
+5) to the stochastic methods (Level 6) that define the advanced tier. Each
+level is a *sequitur* from the
 one before: the new idea is exactly the next thing you need once the previous
 level is understood. Every equation here is implemented in the module's C/C++
 code and mirrored as a `.sleela` file in this folder.

@@ -19,7 +19,7 @@ static int check(const char *name, int ok)
 int main(void)
 {
     int failures = 0;
-    puts("SLeeLa thermodynamics - enforced slot caps (22 / 6 / 2)");
+    puts("SLeeLa Thermodynamics IV - enforced slot caps (22 / 6 / 2)");
 
     /* The cap macros must match the recorded assumptions exactly. */
     failures += check("FUTURES_MAX == 22", SL_THERMO_FUTURES_MAX == 22u);

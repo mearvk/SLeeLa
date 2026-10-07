@@ -1,5 +1,5 @@
 /*
- * stochastic_demo.c - self-test for the stochastic thermodynamics extension
+ * stochastic_demo.c - self-test for the Thermodynamics IV stochastic extension
  * Max Rupplin - MEARVK LLC - 2026
  *
  * Verifies the Langevin step, the Monte Carlo distribution, and the Arrhenius
@@ -22,7 +22,7 @@ static int check(const char *name, int ok)
 int main(void)
 {
     int failures = 0;
-    puts("SLeeLa thermodynamics - stochastic extension (time you do not control)");
+    puts("SLeeLa Thermodynamics IV - stochastic extension (time you do not control)");
 
     /* 1) PRNG is reproducible: same seed -> same stream. */
     sl_thermo_rng r1, r2;

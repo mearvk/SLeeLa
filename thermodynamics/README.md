@@ -1,10 +1,21 @@
 <img align="right" src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="75" height="75" alt="SLeeLa">
 
-# thermodynamics
+# Thermodynamics IV
 
-A small, self-contained thermodynamics vignette for SLeeLa, written in C
+A self-contained **Thermodynamics IV** library for SLeeLa, written in C
 (the ABI) and C++ (the orchestration layer), following the repository's
 `C ABI + C++ orchestration` convention.
+
+**Why "IV"?** This is a 4th-level treatment, not an introduction. It layers
+four tiers of material, each the next step beyond the last:
+
+1. **I — classical/scalar:** sensible heat, Fourier conduction, Newton cooling, Carnot limit.
+2. **II — statistical mechanics:** the Boltzmann partition function and energy averages.
+3. **III — multivariable (3D):** vector calculus (gradient, divergence, Laplacian) and the heat-equation PDE on a 3D field.
+4. **IV — stochastic:** the Langevin heat equation, Monte Carlo over an ensemble of futures with confidence intervals, and the Arrhenius log-rate law.
+
+The full novice-to-advanced progression is laid out in
+[`curriculum/EQUATIONS.md`](curriculum/EQUATIONS.md).
 
 Every function implements a standard, textbook relation, so the code is real,
 compiles cleanly under `-Wall -Wextra -Wpedantic`, and runs a self-test that
