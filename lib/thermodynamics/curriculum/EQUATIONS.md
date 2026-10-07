@@ -138,12 +138,15 @@ equations.
 ```
 - `σ` noise amplitude, `ξ(t)` Gaussian white noise
 - **New idea:** add a random forcing term — the solution is now a random process, not a single curve.
+- SLeeLa: `SLStochasticHeat.sleela`
 
 **Monte Carlo over futures** (how you make it quantitative)
 ```
 run N simulations → mean, variance, 95% CI = mean ± 1.96 · (σ̂ / √N)
 ```
 - **New idea:** sample many futures and summarize them with a confidence interval.
+- SLeeLa: `SLStochasticHeat.sleela` (CI arithmetic); native driver `sl_thermo_monte_carlo`
+- Capacity caps on how many futures/gains/confidences are kept: `SLSlots.sleela`
 
 **Arrhenius log-rate law** (the logarithm/engineering link)
 ```
