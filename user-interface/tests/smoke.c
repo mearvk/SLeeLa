@@ -11,6 +11,7 @@
 #include "sleela_ui.h"
 #include "sleela_ui_draw.h"
 #include "sleela_ui_font.h"
+#include "sleela_ui_layout.h"
 #include "sleela_ui_light.h"
 #include "sleela_ui_mood.h"
 
@@ -407,6 +408,87 @@ int main(void) {
     slui_mood_destroy(mood);
     slui_calc8_destroy(calc);
     slui_light_scene_destroy(scene);
+
+    /* --- Layout / flow manager ----------------------------------------- */
+    /* Standardized units across US + Eurasian metric + px, at 96 dpi. */
+    CHECK(((int)(slui_measure_to_px(slui_in(1.0), 96.0, 0, 16) + 0.5)) == 96,
+          "1in -> 96px at 96dpi (US)");
+    CHECK(((int)(slui_measure_to_px(slui_mm_u(25.4), 96.0, 0, 16) + 0.5)) == 96,
+          "25.4mm -> 96px (metric)");
+    CHECK(((int)(slui_measure_to_px(slui_cm(2.54), 96.0, 0, 16) + 0.5)) == 96,
+          "2.54cm -> 96px (metric)");
+    CHECK(((int)(slui_measure_to_px(slui_ft(1.0), 96.0, 0, 16) + 0.5)) == 1152,
+          "1ft -> 1152px (US)");
+    CHECK(((int)(slui_measure_to_px(slui_ptm(72.0), 96.0, 0, 16) + 0.5)) == 96,
+          "72pt -> 96px (US points)");
+    CHECK(((int)(slui_measure_to_px(slui_px(50), 96.0, 0, 16) + 0.5)) == 50,
+          "50px stays 50px");
+    CHECK(((int)(slui_measure_to_px(slui_pct(50), 96.0, 200, 16) + 0.5)) == 100,
+          "50%% of 200 -> 100px");
+    SLUIMeasure parsed;
+    CHECK(slui_measure_parse("3mm", &parsed) && parsed.unit == SLUI_UNIT_MM &&
+              parsed.value == 3.0,
+          "parse 3mm");
+    CHECK(slui_measure_parse("2fr", &parsed) && slui_measure_is_flex(parsed),
+          "parse 2fr as flexible");
+
+    /* Named groups + named items. */
+    SLUILayout* lay = slui_layout_create();
+    CHECK(lay != NULL, "layout created");
+    slui_layout_group(lay, "sidebar", SLUI_FLOW_STACK, SLUI_AXIS_VERTICAL);
+    slui_layout_item(lay, "sidebar", "home", NULL, slui_px(40));
+    slui_layout_item(lay, "sidebar", "files", NULL, slui_px(40));
+    slui_layout_item(lay, "sidebar", "body", NULL, slui_fr(1)); /* flexible */
+    CHECK(slui_layout_group_count(lay) == 1, "one named group");
+    CHECK(slui_group_item_count(lay, "sidebar") == 3, "three named items");
+    CHECK(slui_layout_group_by_name(lay, "sidebar") >= 0, "group found by name");
+    CHECK(slui_layout_item_by_name(lay, "body") >= 0, "item found by name");
+
+    /* Arrange a 200x300 column: fixed 40+40, flexible body takes the rest. */
+    slui_layout_arrange(lay, "sidebar", (SLUIRect){0, 0, 200, 300});
+    SLUIRect rh, rf, rb;
+    slui_layout_item_rect(lay, "home", &rh);
+    slui_layout_item_rect(lay, "files", &rf);
+    slui_layout_item_rect(lay, "body", &rb);
+    CHECK(rh.h == 40 && rf.h == 40, "fixed items keep their px size");
+    CHECK(rb.h > 150, "flexible fr item absorbed the leftover space");
+    CHECK(rf.y > rh.y && rb.y > rf.y, "stack ordered top to bottom");
+
+    /* n-ary adjustment: resize just two named items of the group. */
+    const char* pair[2] = {"home", "files"};
+    slui_nary_set_size(lay, pair, 2, slui_px(60));
+    slui_layout_arrange(lay, "sidebar", (SLUIRect){0, 0, 200, 300});
+    slui_layout_item_rect(lay, "home", &rh);
+    slui_layout_item_rect(lay, "body", &rb);
+    CHECK(rh.h == 60, "n-ary resized the selected items only");
+
+    /* MEDIUM implies center: a centered run sits off the leading edge. */
+    slui_layout_group(lay, "bar", SLUI_FLOW_STACK, SLUI_AXIS_HORIZONTAL);
+    slui_layout_item(lay, "bar", "chip", NULL, slui_px(40));
+    slui_group_set_align(lay, "bar", SLUI_PLACE_MEDIUM, SLUI_PLACE_MEDIUM);
+    slui_layout_arrange(lay, "bar", (SLUIRect){0, 0, 200, 50});
+    SLUIRect rc;
+    slui_layout_item_rect(lay, "chip", &rc);
+    CHECK(rc.x > 0, "MEDIUM centered the item (medium implies center)");
+
+    /* CENTRAL implies weight/mass: a heavier item migrates toward centre. */
+    slui_layout_group(lay, "mass", SLUI_FLOW_CENTRAL, SLUI_AXIS_HORIZONTAL);
+    slui_layout_item(lay, "mass", "light1", NULL, slui_px(30));
+    slui_layout_item(lay, "mass", "heavy", NULL, slui_px(30));
+    slui_layout_item(lay, "mass", "light2", NULL, slui_px(30));
+    slui_item_set_mass(lay, "heavy", 8.0); /* central weight */
+    slui_layout_arrange(lay, "mass", (SLUIRect){0, 0, 300, 80});
+    SLUIRect rheavy;
+    CHECK(slui_layout_item_rect(lay, "heavy", &rheavy) == 1,
+          "CENTRAL flow arranged a mass-weighted item");
+
+    /* Named ergonomics of publics. */
+    slui_layout_group(lay, "gallery", SLUI_FLOW_STACK, SLUI_AXIS_VERTICAL);
+    slui_group_set_ergonomics(lay, "gallery", SLUI_ERGO_GALLERY);
+    CHECK(slui_layout_group_by_name(lay, "gallery") >= 0,
+          "named ergonomic preset applied to a group");
+
+    slui_layout_destroy(lay);
 
     printf("\n%s (%d failure%s)\n", g_failures ? "FAILED" : "PASSED",
            g_failures, g_failures == 1 ? "" : "s");

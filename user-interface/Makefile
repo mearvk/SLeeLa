@@ -41,7 +41,8 @@ INCLUDES := -Iinclude -Isrc
 # Portable core (backend-independent) translation units.
 CORE_SRC := src/slui_theme.cpp src/slui_widget.cpp src/slui_window.cpp \
             src/slui_api.cpp src/slui_draw.cpp src/slui_throbber.cpp \
-            src/slui_light.cpp src/slui_font.cpp src/slui_mood.cpp
+            src/slui_light.cpp src/slui_font.cpp src/slui_mood.cpp \
+            src/slui_layout.cpp
 
 # ---------------------------------------------------------------------------
 # Host detection and backend selection.
@@ -185,6 +186,7 @@ install: $(LIB)
 	$(INSTALL) -m 0644 include/sleela_ui_light.h $(DESTDIR)$(INCDIR)/sleela_ui_light.h
 	$(INSTALL) -m 0644 include/sleela_ui_font.h $(DESTDIR)$(INCDIR)/sleela_ui_font.h
 	$(INSTALL) -m 0644 include/sleela_ui_mood.h $(DESTDIR)$(INCDIR)/sleela_ui_mood.h
+	$(INSTALL) -m 0644 include/sleela_ui_layout.h $(DESTDIR)$(INCDIR)/sleela_ui_layout.h
 	$(INSTALL) -m 0644 SleelaUI.desktop $(DESTDIR)$(DESKTOPDIR)/SleelaUI.desktop
 
 install-strip: CXXFLAGS += -s
@@ -197,6 +199,7 @@ uninstall:
 	rm -f $(DESTDIR)$(INCDIR)/sleela_ui_light.h
 	rm -f $(DESTDIR)$(INCDIR)/sleela_ui_font.h
 	rm -f $(DESTDIR)$(INCDIR)/sleela_ui_mood.h
+	rm -f $(DESTDIR)$(INCDIR)/sleela_ui_layout.h
 	rm -f $(DESTDIR)$(DESKTOPDIR)/SleelaUI.desktop
 
 clean:

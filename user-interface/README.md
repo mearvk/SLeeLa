@@ -92,6 +92,16 @@ Enter/Space activate, arrows for ranges) and expose their state through the C
 ABI. The full catalogue — C constructor, SLeeLa class, description, and focus
 behaviour per widget — is in [`WIDGETS.DESCRIPTION.md`](WIDGETS.DESCRIPTION.md).
 
+### Layout & flow manager
+
+A nameable flow/layout manager groups and places items as an **orthogonal
+conflation** of unit parts and organizations: named **groups** of named
+**items**, adjusted singly, by group, or **n-ary**; **standardized units**
+across US (in/ft/pt), Eurasian metric (mm/cm/m), and `px`; several flow
+solutions (stack, wrap, grid, dock, central weight/mass); and Named placement —
+**MEDIUM** = center, **CENTRAL** = weight/mass — with named ergonomic presets.
+See [`LAYOUT.md`](LAYOUT.md) ([`sleela_ui_layout.h`](include/sleela_ui_layout.h)).
+
 ### Drawing surface for developers & agents
 
 Beyond widgets, [`sleela_ui_draw.h`](include/sleela_ui_draw.h) exposes the

@@ -181,6 +181,17 @@ implements the same surface.
 > relief profiles — is documented at
 > [`user-interface/LIGHTING.md`](../../user-interface/LIGHTING.md).
 
+### Layout & flow manager
+
+| Class | Role |
+|---|---|
+| `SLMeasure` | A standardized unit of measurement across US customary (in/ft/pt/pica), Eurasian metric (mm/cm/m), device px, and relative (%/fr/em); resolves to pixels at a DPI. |
+| `SLLayout` | A flow/layout manager: named **groups** of named **items**, adjusted singly, by group, or n-ary; several flow solutions (stack, wrap, grid, dock, central weight/mass); Named placement (**MEDIUM** = center, **CENTRAL** = weight/mass) and named ergonomic presets. |
+
+> The layout manager — the orthogonal conflation of unit parts and
+> organizations, the flows, named placement, and the ergonomics of publics — is
+> documented at [`user-interface/LAYOUT.md`](../../user-interface/LAYOUT.md).
+
 ### Moods, washes, Calculus-8 & millimetre placement
 
 | Class | Role |
