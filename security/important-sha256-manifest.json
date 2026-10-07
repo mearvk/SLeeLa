@@ -47816,7 +47816,7 @@
     },
     {
       "path": "lib/telephony-skya/SLPackage.sleela",
-      "sha256": "2b5b0a1aa5fe80af8e31ab8e6fbc35ed5a6bfc38ce08f681901dadeb70cb632d"
+      "sha256": "4d1840162d4cfbf9db5ed7322b27f6d6670082542c18c2200058b653a36bc03b"
     },
     {
       "path": "lib/terminal/SLPackage.sleela",
@@ -50295,8 +50295,24 @@
       "sha256": "084d1a12fec4e6e0db723edc5d809280cce947b21af21aa61d789dd5593bec39"
     },
     {
+      "path": "telephony-skya/sleela/Communication.sleela",
+      "sha256": "71d9bd4265704f60601c6bc39072868a1afe48bcf951925246612e3627b7d6dc"
+    },
+    {
+      "path": "telephony-skya/sleela/Network.sleela",
+      "sha256": "641644d941bc46d69c96e626cb5445c41d10f7b32479a43f5e3df21aefd2b6d0"
+    },
+    {
       "path": "telephony-skya/sleela/PlaybackStream.sleela",
       "sha256": "8f7fc0ca8e9975115bb19fa0fec3b51548589a752985d057af4bd62cdf21527a"
+    },
+    {
+      "path": "telephony-skya/sleela/RealAcquaintances.sleela",
+      "sha256": "e95dcf0f8a449a446e974fd5529f28b6f81f8fac06a4de50f0ffdfedf814b031"
+    },
+    {
+      "path": "telephony-skya/sleela/Servers.sleela",
+      "sha256": "41e39503021cdaf5dfbfc5eb381707a8cd344b1cca3e0bcca9465bc2da933d7d"
     },
     {
       "path": "telephony-skya/sleela/Skya.sleela",
@@ -50307,12 +50323,20 @@
       "sha256": "278b8c1e40d98526a722ad5f157acef9a8264a054437b9c4fd097d866d77722c"
     },
     {
+      "path": "telephony-skya/sleela/SkyaModules.sleela",
+      "sha256": "d52c869c26236f64b164850359966e444485df0adad9ba72f00a4ab6b58aaf05"
+    },
+    {
       "path": "telephony-skya/sleela/SkyaRoom.sleela",
       "sha256": "47e3ca92c8b397f90fb6476886f0efa26cf55e9b3c28dc69080e9cca460a39e0"
     },
     {
       "path": "telephony-skya/sleela/SkyaServer.sleela",
       "sha256": "5b17275aba437bd4e121bab5485c38088d65308ad09dc91ac76b655d850cb88e"
+    },
+    {
+      "path": "telephony-skya/sleela/Socio.sleela",
+      "sha256": "422fc14fe86218b9ee36964e5527ec0194f2ef3ce6e5eec760c27eebbfcb8cad"
     },
     {
       "path": "telephony-skya/sleela/VoIPAccount.sleela",
