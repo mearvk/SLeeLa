@@ -1,25 +1,44 @@
 # SLeeLa /lib Library Index
 
 **Revision:** 0.32  
-**Packages:** 84  
-**SLeeLa source units:** 10301  
-**Module-facade symbols:** 56  
-**Total symbol records:** 10357  
+**Packages:** 85  
+**SLeeLa source units:** 10315  
+**Module-facade symbols:** 57  
+**Total symbol records:** 10372  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
 
-> Revision 0.32 adds the new `citizen` package — the civic layer of the
-> Republic of Sleela. It introduces four one-class-per-file Master Classes:
-> `Citizen` (one honest, taxpaying, coffee-drinking person who is, famously,
-> able), `Industry` (their place across the whole economy, sector by sector),
-> `BankAccount` (the banking relationship, with a 9-digit ABA routing number and
-> account number), and `FederalReserveID` (the central-bank clearing identity
-> that maps money to one of the twelve Federal Reserve Districts). A matching
-> `SLPackage` facade names the package, and a runnable orchestration example
-> lives outside `/lib` at `citizen/sleela/CitizenDemo.sleela` (so it is not
-> double-counted in the inventory). One new package and five new `.sleela`
-> units: 10,352 -> **10,357** total records (10,297 -> **10,301** source
-> classes), 55 -> **56** facades, 83 -> **84** packages. `LIBRARY.SYMBOLS.md`
-> was regenerated from the live tree and the counts are verified in lockstep by
+> Revision 0.32 adds two new packages — `citizen` and `character` — together.
+>
+> The `citizen` package is the civic layer of the Republic of Sleela. It
+> introduces four one-class-per-file Master Classes: `Citizen` (one honest,
+> taxpaying, coffee-drinking person who is, famously, able), `Industry` (their
+> place across the whole economy, sector by sector), `BankAccount` (the banking
+> relationship, with a 9-digit ABA routing number and account number), and
+> `FederalReserveID` (the central-bank clearing identity that maps money to one
+> of the twelve Federal Reserve Districts). A runnable example lives outside
+> `/lib` at `citizen/sleela/CitizenDemo.sleela`.
+>
+> The `character` package is a classful study in business models. It introduces
+> fourteen one-class-per-file Master Classes: `Character` (a named actor who
+> adopts exactly one model and lives or dies by its monthly profit),
+> `BusinessModel` (the language-neutral base contract a developer extends,
+> following the same base/subclass pattern as lib/compiler's
+> `SLLanguageCompiler` front ends), and twelve concrete models that each override
+> the revenue/cost math — `SubscriptionModel`, `FreemiumModel`,
+> `MarketplaceModel`, `AdvertisingModel`, `RetailModel`, `WholesaleModel`,
+> `FranchiseModel`, `LicensingModel`, `SaaSModel`, `ConsultingModel`,
+> `ManufacturingModel`, and `BrokerageModel`. A `Character` holds its model
+> through a single base-typed reference, so any one of the twelve plugs in
+> interchangeably and answers the same question — did we make money? — with
+> entirely different arithmetic. A runnable example lives outside `/lib` at
+> `character/sleela/CharacterDemo.sleela`.
+>
+> Each package ships a matching `SLPackage` facade, and the runnable examples
+> live outside `/lib` so they are not double-counted in the inventory. Two new
+> packages and twenty new `.sleela` units: 10,352 -> **10,372** total records
+> (10,297 -> **10,315** source classes), 55 -> **57** facades, 83 -> **85**
+> packages. `LIBRARY.SYMBOLS.md` was regenerated from the live tree and the
+> counts are verified in lockstep by
 > `test-suites/test-library-inventory.sh`.
 
 > Revision 0.31 promotes the emblematic Skya telephony modules into first-class

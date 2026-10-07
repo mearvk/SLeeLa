@@ -1,0 +1,39 @@
+/*
+ * lib/character/MarketplaceModel.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: MarketplaceModel — the Character owns neither the goods nor the
+ *   buyers; it owns the handshake, and takes a cut of every one. Revenue is a
+ *   commission on gross merchandise value (GMV).
+ *
+ * A concrete BusinessModel: revenue = GMV x take-rate; cost scales with the
+ * number of transactions it has to shepherd. Family: character.
+ */
+#sleela 1.3
+class MarketplaceModel extends BusinessModel {
+
+  int transactions;      // deals brokered this month
+  int avgOrderCents;     // average value of one order
+  int takeRatePercent;   // the house's cut (0..100)
+  int opCostCents;       // operating cost per transaction (support, fraud, etc.)
+
+  void setUp(int txns, int avgOrder, int takeRate, int opCost) {
+    load();
+    configure("Marketplace", KIND_MARKETPLACE);
+    if (txns < 0) { txns = 0; }
+    if (avgOrder < 0) { avgOrder = 0; }
+    if (takeRate < 0) { takeRate = 0; }
+    if (takeRate > 100) { takeRate = 100; }
+    if (opCost < 0) { opCost = 0; }
+    transactions = txns;
+    avgOrderCents = avgOrder;
+    takeRatePercent = takeRate;
+    opCostCents = opCost;
+    setUnits(txns);
+  }
+
+  // Gross merchandise value: everything that flowed through the marketplace.
+  int gmv() { return transactions * avgOrderCents; }
+
+  int monthlyRevenue() { return (gmv() * takeRatePercent) / 100; }
+  int monthlyCost() { return transactions * opCostCents; }
+}

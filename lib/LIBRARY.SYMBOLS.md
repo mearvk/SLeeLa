@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 10301
-library-packages: 84
-module-facade-symbols: 56
-total-symbol-records: 10357
+library-source-files: 10315
+library-packages: 85
+module-facade-symbols: 57
+total-symbol-records: 10372
 
 package	symbol	path	kind
 antivirus	SLPackage.sleela	lib/antivirus/SLPackage.sleela	facade
@@ -16,6 +16,21 @@ autocad	SLCadPlan.sleela	lib/autocad/SLCadPlan.sleela	source
 autocad	SLCadRenderer.sleela	lib/autocad/SLCadRenderer.sleela	source
 autocad	autocad.sleela	lib/autocad/autocad.sleela	source
 bash	SLPackage.sleela	lib/bash/SLPackage.sleela	facade
+character	AdvertisingModel.sleela	lib/character/AdvertisingModel.sleela	source
+character	BrokerageModel.sleela	lib/character/BrokerageModel.sleela	source
+character	BusinessModel.sleela	lib/character/BusinessModel.sleela	source
+character	Character.sleela	lib/character/Character.sleela	source
+character	ConsultingModel.sleela	lib/character/ConsultingModel.sleela	source
+character	FranchiseModel.sleela	lib/character/FranchiseModel.sleela	source
+character	FreemiumModel.sleela	lib/character/FreemiumModel.sleela	source
+character	LicensingModel.sleela	lib/character/LicensingModel.sleela	source
+character	ManufacturingModel.sleela	lib/character/ManufacturingModel.sleela	source
+character	MarketplaceModel.sleela	lib/character/MarketplaceModel.sleela	source
+character	RetailModel.sleela	lib/character/RetailModel.sleela	source
+character	SLPackage.sleela	lib/character/SLPackage.sleela	facade
+character	SaaSModel.sleela	lib/character/SaaSModel.sleela	source
+character	SubscriptionModel.sleela	lib/character/SubscriptionModel.sleela	source
+character	WholesaleModel.sleela	lib/character/WholesaleModel.sleela	source
 churn	SLPackage.sleela	lib/churn/SLPackage.sleela	facade
 citizen	BankAccount.sleela	lib/citizen/BankAccount.sleela	source
 citizen	Citizen.sleela	lib/citizen/Citizen.sleela	source
