@@ -1,0 +1,46 @@
+/*
+ * lib/user-interface/SLCanvasView.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLCanvasView — a SleelaUI general animated drawing
+ *   surface. It owns a double-buffered draw context sized to its bounds and, on
+ *   every frame, invokes a developer draw routine that paints into that context
+ *   with the comprehensive SleelaUI Draw API (see SLDrawContext), then presents
+ *   and blits the result into the window. It is the host for custom
+ *   visualisations and the substrate the SLThrobber is built on. The
+ *   constructor bottoms out in the `uiCanvasView` built-in (SleelaUI C ABI
+ *   slui_canvas_view()).
+ *
+ * The native toolkit drives the draw routine through a C function pointer each
+ * frame. From SLeeLa a draw routine is registered with the VM as a `ui*` draw
+ * handler keyed to this view's handle; the VM calls back into SLeeLa with an
+ * SLDrawContext bound to the view's per-frame surface, the animation time, and
+ * the per-frame delta. Set the refresh rate with setFps.
+ *
+ * An SLCanvasView IS an SLWidget and is an animated widget.
+ *
+ * Family: user-interface. Native VM/UI work crosses the explicit `ui*` SLVM
+ * bridge.
+ */
+#sleela 1.5
+class SLCanvasView extends SLWidget {
+  // Create a canvas view inside `parent` with an initial pixel size.
+  void createIn(SLWidget parent, int width, int height) {
+    widget = uiCanvasView(parent.handle(), width, height);
+  }
+  void createInHandle(int parentHandle, int width, int height) {
+    widget = uiCanvasView(parentHandle, width, height);
+  }
+
+  // The target refresh rate (frames per second) the window loop honours while
+  // this view is visible (0 = the window's default).
+  void setFps(double fps) {
+    if (widget >= 0) { uiCanvasViewSetFps(widget, fps); }
+  }
+
+  // Register the draw routine for this view. `handlerId` is a VM draw-handler
+  // ordinal the host has bound to a SLeeLa method; the VM invokes it each frame
+  // with an SLDrawContext, the animation time, and the per-frame delta.
+  void setDrawHandler(int handlerId) {
+    if (widget >= 0) { uiCanvasViewSetDraw(widget, handlerId); }
+  }
+}

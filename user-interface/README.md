@@ -82,12 +82,24 @@ host-defined `SLUI_THEME_CUSTOM` are also provided.
 - **Ranges & indicators:** slider, scroll bar, progress bar, level bar, spinner.
 - **Text & display:** label, heading, image, avatar.
 - **Tags & feedback:** badge, chip, info bar, tooltip.
+- **Motion & drawing:** a width-adjustable, water-like flowing **throbber** and
+  a general animated **canvas view** (see [THROBBER.md](THROBBER.md) and the
+  developer [Draw API](DRAW-API.md)).
 
-The twelve interactive controls are keyboard-navigable (Tab/Shift-Tab focus
-ring, Enter/Space activate, arrows for ranges) and expose their state through
-the C ABI. The full catalogue — C constructor, SLeeLa class, description, and
-focus behaviour per widget — is in
-[`WIDGETS.DESCRIPTION.md`](WIDGETS.DESCRIPTION.md).
+The interactive controls are keyboard-navigable (Tab/Shift-Tab focus ring,
+Enter/Space activate, arrows for ranges) and expose their state through the C
+ABI. The full catalogue — C constructor, SLeeLa class, description, and focus
+behaviour per widget — is in [`WIDGETS.DESCRIPTION.md`](WIDGETS.DESCRIPTION.md).
+
+### Drawing surface for developers & agents
+
+Beyond widgets, [`sleela_ui_draw.h`](include/sleela_ui_draw.h) exposes the
+rasterizer directly: an owned RGBA **draw context** (single/double buffered),
+**pixel-level** get/set/blend, blend modes, a clip stack, a complete **primitive
+set** (lines, rects, circles, ellipses, arcs, triangles, gradients, text,
+blits), and a **frame clock** for refresh-rate pacing. The animated **canvas
+view** widget hands your draw callback a context each frame. Full reference:
+[`DRAW-API.md`](DRAW-API.md).
 
 ## Quick start (C)
 

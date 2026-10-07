@@ -40,7 +40,7 @@ INCLUDES := -Iinclude -Isrc
 
 # Portable core (backend-independent) translation units.
 CORE_SRC := src/slui_theme.cpp src/slui_widget.cpp src/slui_window.cpp \
-            src/slui_api.cpp
+            src/slui_api.cpp src/slui_draw.cpp src/slui_throbber.cpp
 
 # ---------------------------------------------------------------------------
 # Host detection and backend selection.
@@ -79,7 +79,7 @@ CORE_OBJ    := $(CORE_SRC:%.cpp=$(BUILD)/%.o)
 BACKEND_OBJ := $(BUILD)/$(basename $(BACKEND_SRC)).o
 HEADLESS_OBJ := $(BUILD)/src/backend/headless.o
 
-.PHONY: all lib example smoke snapshot install install-strip uninstall clean help
+.PHONY: all lib example smoke snapshot throbber-snapshot install install-strip uninstall clean help
 
 all: lib
 
@@ -139,11 +139,21 @@ $(SNAPSHOT): tools/snapshot.cpp $(CORE_OBJ) $(HEADLESS_OBJ)
 	@mkdir -p $(dir $@)
 	$(CXX) $(CXXFLAGS) $(INCLUDES) tools/snapshot.cpp $(CORE_OBJ) $(HEADLESS_OBJ) -o $@
 
+# ---- throbber snapshot (display-free water-field preview) ------------------
+THROBBER_SNAPSHOT := $(BUILD)/slui-throbber-snapshot$(EXE)
+throbber-snapshot: $(THROBBER_SNAPSHOT)
+	$(THROBBER_SNAPSHOT) docs/throbber.png
+
+$(THROBBER_SNAPSHOT): tools/throbber_snapshot.cpp $(CORE_OBJ) $(HEADLESS_OBJ)
+	@mkdir -p $(dir $@)
+	$(CXX) $(CXXFLAGS) $(INCLUDES) tools/throbber_snapshot.cpp $(CORE_OBJ) $(HEADLESS_OBJ) -o $@
+
 # ---- install ---------------------------------------------------------------
 install: $(LIB)
 	$(INSTALL) -d $(DESTDIR)$(LIBDIR) $(DESTDIR)$(INCDIR) $(DESTDIR)$(DESKTOPDIR)
 	$(INSTALL) -m 0644 $(LIB) $(DESTDIR)$(LIBDIR)/libsleelaui.a
 	$(INSTALL) -m 0644 include/sleela_ui.h $(DESTDIR)$(INCDIR)/sleela_ui.h
+	$(INSTALL) -m 0644 include/sleela_ui_draw.h $(DESTDIR)$(INCDIR)/sleela_ui_draw.h
 	$(INSTALL) -m 0644 SleelaUI.desktop $(DESTDIR)$(DESKTOPDIR)/SleelaUI.desktop
 
 install-strip: CXXFLAGS += -s
@@ -152,6 +162,7 @@ install-strip: clean install
 uninstall:
 	rm -f $(DESTDIR)$(LIBDIR)/libsleelaui.a
 	rm -f $(DESTDIR)$(INCDIR)/sleela_ui.h
+	rm -f $(DESTDIR)$(INCDIR)/sleela_ui_draw.h
 	rm -f $(DESTDIR)$(DESKTOPDIR)/SleelaUI.desktop
 
 clean:
@@ -163,5 +174,6 @@ help:
 	@echo "  make example   Build the C gallery demo"
 	@echo "  make smoke     Build and run the headless smoke test (no display)"
 	@echo "  make snapshot  Render a display-free preview PNG (docs/preview.png)"
+	@echo "  make throbber-snapshot  Render the water throbber PNG (docs/throbber.png)"
 	@echo "  make install   Install library, header, and desktop entry"
 	@echo "  make clean     Remove build outputs"

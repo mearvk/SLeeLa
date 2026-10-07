@@ -150,9 +150,24 @@ implements the same surface.
 | `SLPasswordEntry` | An entry that masks its characters. |
 | `SLInfoBar` | An inline info/warning/error notice bar. |
 
+| `SLThrobber` | A width-adjustable, water-like flowing, colour-predictive activity field. |
+| `SLCanvasView` | A general animated drawing surface driven by a per-frame draw routine. |
+
 > The full catalogue — every widget with its C ABI constructor, SLeeLa class,
 > description, and focus behaviour — is tabulated in
 > [`user-interface/WIDGETS.DESCRIPTION.md`](../../user-interface/WIDGETS.DESCRIPTION.md).
+
+### Drawing (the Draw API)
+
+| Class | Role |
+|---|---|
+| `SLDrawContext` | The comprehensive 2D draw surface: owned RGBA buffers, single/double buffering, pixel-level get/set/blend, blend modes, a clip stack, and all primitives (rects, rounded rects, lines, circles, ellipses, arcs, triangles, gradients, text, blits). |
+| `SLFrameClock` | Refresh-rate control for a render loop: target FPS, per-frame delta, elapsed time, measured rate, sleep hint, and a fixed-timestep accumulator. |
+
+> The Draw API is documented in full at
+> [`user-interface/DRAW-API.md`](../../user-interface/DRAW-API.md), and the water
+> throbber model at
+> [`user-interface/THROBBER.md`](../../user-interface/THROBBER.md).
 
 ### Theme
 

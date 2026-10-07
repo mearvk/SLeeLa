@@ -1,0 +1,119 @@
+/*
+ * lib/user-interface/SLDrawContext.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLDrawContext — the SLeeLa binding of the comprehensive
+ *   SleelaUI Draw API (user-interface/include/sleela_ui_draw.h). It is an owned
+ *   RGBA pixel surface with an optional back buffer, giving a SLeeLa program the
+ *   PIXELS: clear/present buffering, pixel-level get/set/blend, a blend mode and
+ *   layer opacity, a clip stack, and the full primitive set — rects, rounded
+ *   rects, lines, polylines, circles, ellipses, arcs, triangles, linear/radial
+ *   gradients, text, and surface-to-surface blits. Every method bottoms out in
+ *   a `draw*` SLVM built-in that calls the genuine Draw API, which renders with
+ *   the toolkit's own software rasterizer (identical pixels on every OS).
+ *
+ * A draw context can be free-standing (an image you render and read back) or
+ * handed to you by an SLCanvasView's per-frame draw routine. It is a VM-local
+ * handle (-1 = none). Colours are 0xRRGGBBAA words (see SLColor).
+ *
+ * Family: user-interface. Native VM/UI work crosses the explicit `draw*` SLVM
+ * bridge.
+ */
+#sleela 1.5
+class SLDrawContext {
+  // Buffer-mode ordinals (mirror SLUIBufferMode).
+  static final int BUFFER_SINGLE = 0;
+  static final int BUFFER_DOUBLE = 1;
+  // Blend-mode ordinals (mirror SLUIBlendMode).
+  static final int BLEND_OVER     = 0;
+  static final int BLEND_COPY     = 1;
+  static final int BLEND_ADD      = 2;
+  static final int BLEND_MULTIPLY = 3;
+  static final int BLEND_SCREEN   = 4;
+  static final int BLEND_MAX      = 5;
+  // Orientation ordinals (mirror SLUIOrientation), for linear gradients.
+  static final int ORIENT_VERTICAL   = 0;
+  static final int ORIENT_HORIZONTAL = 1;
+
+  int dc;   // VM-local draw-context handle (-1 = none)
+
+  // Create a free-standing context of width x height device pixels.
+  void create(int width, int height, int bufferMode) {
+    dc = drawCreate(width, height, bufferMode);
+  }
+  // Adopt a context handed in by an SLCanvasView draw routine.
+  void adopt(int handle) { dc = handle; }
+  int handle() { return dc; }
+  boolean valid() { return dc >= 0; }
+
+  void destroy() { if (dc >= 0) { drawDestroy(dc); dc = -1; } }
+  void resize(int width, int height) { if (dc >= 0) { drawResize(dc, width, height); } }
+  int width()  { if (dc < 0) { return 0; } return drawWidth(dc); }
+  int height() { if (dc < 0) { return 0; } return drawHeight(dc); }
+
+  // ---- state --------------------------------------------------------------
+  void setBlend(int mode)       { if (dc >= 0) { drawSetBlend(dc, mode); } }
+  void setOpacity(double value) { if (dc >= 0) { drawSetOpacity(dc, value); } }
+  void clipPush(int x, int y, int w, int h) { if (dc >= 0) { drawClipPush(dc, x, y, w, h); } }
+  void clipPop()                { if (dc >= 0) { drawClipPop(dc); } }
+  void clipReset()              { if (dc >= 0) { drawClipReset(dc); } }
+
+  // ---- buffering ----------------------------------------------------------
+  void clear(int color) { if (dc >= 0) { drawClear(dc, color); } }
+  void present()        { if (dc >= 0) { drawPresent(dc); } }
+
+  // ---- pixel-level control ------------------------------------------------
+  void setPixel(int x, int y, int color) { if (dc >= 0) { drawSetPixel(dc, x, y, color); } }
+  int getPixel(int x, int y) { if (dc < 0) { return 0; } return drawGetPixel(dc, x, y); }
+  void blendPixel(int x, int y, int color, double coverage) {
+    if (dc >= 0) { drawBlendPixel(dc, x, y, color, coverage); }
+  }
+
+  // ---- primitives ---------------------------------------------------------
+  void fillRect(int x, int y, int w, int h, int color) {
+    if (dc >= 0) { drawFillRect(dc, x, y, w, h, color); }
+  }
+  void fillRoundRect(int x, int y, int w, int h, double radius, int color) {
+    if (dc >= 0) { drawFillRoundRect(dc, x, y, w, h, radius, color); }
+  }
+  void strokeRect(int x, int y, int w, int h, double thickness, int color) {
+    if (dc >= 0) { drawStrokeRect(dc, x, y, w, h, thickness, color); }
+  }
+  void strokeRoundRect(int x, int y, int w, int h, double radius,
+                       double thickness, int color) {
+    if (dc >= 0) { drawStrokeRoundRect(dc, x, y, w, h, radius, thickness, color); }
+  }
+  void line(double x0, double y0, double x1, double y1, double thickness,
+            int color) {
+    if (dc >= 0) { drawLine(dc, x0, y0, x1, y1, thickness, color); }
+  }
+  void fillCircle(double cx, double cy, double radius, int color) {
+    if (dc >= 0) { drawFillCircle(dc, cx, cy, radius, color); }
+  }
+  void strokeCircle(double cx, double cy, double radius, double thickness,
+                    int color) {
+    if (dc >= 0) { drawStrokeCircle(dc, cx, cy, radius, thickness, color); }
+  }
+  void fillEllipse(double cx, double cy, double rx, double ry, int color) {
+    if (dc >= 0) { drawFillEllipse(dc, cx, cy, rx, ry, color); }
+  }
+  void arc(double cx, double cy, double radius, double startRad,
+           double sweepRad, double thickness, int color) {
+    if (dc >= 0) { drawArc(dc, cx, cy, radius, startRad, sweepRad, thickness, color); }
+  }
+  void fillTriangle(double x0, double y0, double x1, double y1, double x2,
+                    double y2, int color) {
+    if (dc >= 0) { drawFillTriangle(dc, x0, y0, x1, y1, x2, y2, color); }
+  }
+  void linearGradient(int x, int y, int w, int h, int axis, int c0, int c1) {
+    if (dc >= 0) { drawLinearGradient(dc, x, y, w, h, axis, c0, c1); }
+  }
+  void radialGradient(double cx, double cy, double radius, int inner, int outer) {
+    if (dc >= 0) { drawRadialGradient(dc, cx, cy, radius, inner, outer); }
+  }
+  void text(String utf8, int x, int baseline, int color) {
+    if (dc >= 0) { drawText(dc, utf8, x, baseline, color); }
+  }
+  void blit(SLDrawContext src, int dx, int dy) {
+    if (dc >= 0 && src != null) { drawBlit(dc, src.handle(), dx, dy); }
+  }
+}
