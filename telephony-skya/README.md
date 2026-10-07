@@ -42,6 +42,27 @@ VM socket primitives as `SkyaServer` / `SkyaClient`; they open no second native
 runtime, and NAT/firewall lifecycle stays owned by the native port-awareness
 subsystem.
 
+## Command line — `sleela-skya`
+
+`sleela-skya` is the Skya command-line program. It **loads/unloads** the
+emblematic modules and **starts the default, ordered components** — the
+`SleelaServer` (component 1) then the `SkyaGui` (component 2) — through the
+existing Skya engine. Build it with `make -C telephony-skya/native sleela-skya`.
+
+```sh
+sleela-skya start                 # load all modules, then server + GUI (ordered)
+sleela-skya start --no-gui        # server only
+sleela-skya load Socio Network    # load specific modules
+sleela-skya unload --all          # unload every module
+sleela-skya list                  # modules + ordered components
+sleela-skya gui                   # launch the Skya GUI (JavaFX studio)
+```
+
+The model lives in `native/sleela_skya_cli.{h,cpp}` (a `ModuleRegistry`, an
+ordered `Component` set, and the `App` dispatch); it orchestrates the native
+engine rather than creating a second runtime. See
+[`docs/SLEELA-SKYA-CLI.md`](docs/SLEELA-SKYA-CLI.md).
+
 ## User Client
 
 The default Skya GUI is the non-administrative user client, `SkyaClientApp`.
