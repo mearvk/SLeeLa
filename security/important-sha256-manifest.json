@@ -4,7 +4,7 @@
   "files": [
     {
       "path": "README.md",
-      "sha256": "4d63b868ffe3c805702bc8e64fc13c25f03dbae82a6cf01d9b228548b25a960b"
+      "sha256": "63c8da09b1345509968103387d242b6fa78aeec612e99569eb56e723d56de853"
     },
     {
       "path": "SLEELA.syntax",
@@ -2639,6 +2639,10 @@
       "sha256": "6700e12d4d9c6be4745f2a6009107acd904ff92d29921c3bf079c072c06cb94e"
     },
     {
+      "path": "character/sleela/CharacterDemo.sleela",
+      "sha256": "8e1ecae3364d96778f5a3d7224fd36339fd24c025f24d2e230b918f5715de7a5"
+    },
+    {
       "path": "churn/1/assumptions/assumptions.sleela",
       "sha256": "7209ddb6f93236f337ed12178f40a8ae4442fc7209ab186711da49daa3b86550"
     },
@@ -2681,6 +2685,10 @@
     {
       "path": "churn/5/lines.sleela",
       "sha256": "4653e6aa8bec8490ae372a052c38a946d24db251d5726a9667bc44ba52cf564a"
+    },
+    {
+      "path": "citizen/sleela/CitizenDemo.sleela",
+      "sha256": "f11c816d4907e80037a678e1310920042647ed8be0f4ade48d925b4bd33dbc5f"
     },
     {
       "path": "codecs/codecs/aac/aac.c",
@@ -6811,8 +6819,144 @@
       "sha256": "0ebbcda312b260d830ae5613ff2040ffb80e225bc1ac9fb6b13a9ca282725b93"
     },
     {
+      "path": "lib/character/AdvertisingModel.sleela",
+      "sha256": "0958113cb277800199c1f0fe587c92b644402c1b586e319b1fb5128a3ac1b0bf"
+    },
+    {
+      "path": "lib/character/BrokerageModel.sleela",
+      "sha256": "5bd7669aa83f4305cf0a852417def87497ceb552fe1d25ac3fcbdaa9eb11b575"
+    },
+    {
+      "path": "lib/character/BusinessModel.sleela",
+      "sha256": "4a3b34fddcd85ec02e9d041b0cd78974b22413f37c30bb054e50cfa7e7f1bebc"
+    },
+    {
+      "path": "lib/character/Character.sleela",
+      "sha256": "9150ec974ae8048b71713eb2417cd6e7566e0cacd0ffaaa2716eda0b60bd1fa1"
+    },
+    {
+      "path": "lib/character/ConsultingModel.sleela",
+      "sha256": "727c5a7e9ced87da2095da53813d02aa868c4c17144d7eb9fa4eded3c6ef2e7e"
+    },
+    {
+      "path": "lib/character/FranchiseModel.sleela",
+      "sha256": "4efd20646a79f4a33be1f9bec05988bb986bd140b04d2ad56149e3c6654c4ef2"
+    },
+    {
+      "path": "lib/character/FreemiumModel.sleela",
+      "sha256": "b6c67be8cce71e1d46b764981e2142c04d4d85b16e19a35209468cabf9b0bc7e"
+    },
+    {
+      "path": "lib/character/LicensingModel.sleela",
+      "sha256": "99b9e74b968f24ed902330f066191679a60cd515936aba30c4b3e5f97001b8ca"
+    },
+    {
+      "path": "lib/character/ManufacturingModel.sleela",
+      "sha256": "6d98cf07e49db99b5a7097d5036ac29f56bdd08101251b7e2d37ee61a7c3e60e"
+    },
+    {
+      "path": "lib/character/MarketplaceModel.sleela",
+      "sha256": "0a051bb7d41379295fd1096b0ac69ed304bdb54eb903a7d16bd9e121d41b1eef"
+    },
+    {
+      "path": "lib/character/RetailModel.sleela",
+      "sha256": "e6f7731e12e526a02097f606f55edcb67be544dfd487c8c56c8f8f639722e899"
+    },
+    {
+      "path": "lib/character/SLPackage.sleela",
+      "sha256": "1703d4f3f641653e8764f1c990adc572fad73e23ef34e09da485a43754c54e1c"
+    },
+    {
+      "path": "lib/character/SaaSModel.sleela",
+      "sha256": "7df65cf2fe2341932fead26d536ff622406e4cb537c2dae3a7099655485886bf"
+    },
+    {
+      "path": "lib/character/SubscriptionModel.sleela",
+      "sha256": "dead73df42dfec87a140ac89c197deeca45de7ccb9a59c288fb4a753e7e82c34"
+    },
+    {
+      "path": "lib/character/WholesaleModel.sleela",
+      "sha256": "e97463e8d45bfd70e806f53ea50215ec10811439e9bdbea7954ccc938d41e4ae"
+    },
+    {
       "path": "lib/churn/SLPackage.sleela",
       "sha256": "ed623ae9037514573f8a8c12f0bd12b007e707366e6d758f7a9caec2b66aa9fe"
+    },
+    {
+      "path": "lib/citizen/BankAccount.sleela",
+      "sha256": "cee5e3c772a0b3f691a566422d568b02e362907aebbd06fd9deabf5a07fb2847"
+    },
+    {
+      "path": "lib/citizen/Citizen.sleela",
+      "sha256": "affe6bec17a15af3d9ba31a0a9cada5a6f6656e7de6180bb511c6619628aeedc"
+    },
+    {
+      "path": "lib/citizen/FederalReserveID.sleela",
+      "sha256": "4efa9d13bc25603b654ea78da6b853a02414b9873e096951917f390cfebf1158"
+    },
+    {
+      "path": "lib/citizen/Industry.sleela",
+      "sha256": "f849d00aed852275101f2a03e8e5fe921cdd400a7d04f97d5c0755faa566ab3a"
+    },
+    {
+      "path": "lib/citizen/SLPackage.sleela",
+      "sha256": "0766f57d4ebe5dd78a720d7c1d85e69e256ac92c8be4f9b2ca5ff22c33441f7b"
+    },
+    {
+      "path": "lib/citizen/character/AdvertisingModel.sleela",
+      "sha256": "ec097f2bcbc566cf339cd0ebc038508eaf1f0fcdc54168778c3474af463d75f9"
+    },
+    {
+      "path": "lib/citizen/character/BrokerageModel.sleela",
+      "sha256": "4b419acb43ed3ac456a12cb314e2d58aa825529dda74544e310e8754c16c9bef"
+    },
+    {
+      "path": "lib/citizen/character/BusinessModel.sleela",
+      "sha256": "6667da5a5ffc833762f0c6334319fb6e848e044f645616e988911104878df88a"
+    },
+    {
+      "path": "lib/citizen/character/Character.sleela",
+      "sha256": "e1f4338d424b92755c7cd858c34c4b411be557b7ce40bc9172a684bcd6ffeb51"
+    },
+    {
+      "path": "lib/citizen/character/ConsultingModel.sleela",
+      "sha256": "95fdbd9ce9c761bab4b6a4f8d129d25e51df06e2fab6f8b048314611c34fcd65"
+    },
+    {
+      "path": "lib/citizen/character/FranchiseModel.sleela",
+      "sha256": "1e40312866eabff602cb0828aad59960493e35bbe77d63357c2198d324bd1936"
+    },
+    {
+      "path": "lib/citizen/character/FreemiumModel.sleela",
+      "sha256": "00f71bd8674ea9fe489f8043339021453c0d3c83d11d1138a134a561928f0ca3"
+    },
+    {
+      "path": "lib/citizen/character/LicensingModel.sleela",
+      "sha256": "1661c8658487889c75d7fba8de2536144cd146c2373c64da3005785aca167ab6"
+    },
+    {
+      "path": "lib/citizen/character/ManufacturingModel.sleela",
+      "sha256": "2e366d5208a802af68e2d02056b9ec9f22cff553e3d5677bf23ce424f8b70877"
+    },
+    {
+      "path": "lib/citizen/character/MarketplaceModel.sleela",
+      "sha256": "6ad6eda9c2f3239512142cf6f84ef61d0536affa08fe22c6a8cc98119f47f227"
+    },
+    {
+      "path": "lib/citizen/character/RetailModel.sleela",
+      "sha256": "e31170f0fb9c328cccd68e9ca5a74124863de1f88c55c0530e53a3eb5f7df9ac"
+    },
+    {
+      "path": "lib/citizen/character/SaaSModel.sleela",
+      "sha256": "03bd56aa4a367c5071f1be7678367eff9b3d3cabe3ba147111e3853814f5a9bf"
+    },
+    {
+      "path": "lib/citizen/character/SubscriptionModel.sleela",
+      "sha256": "a451df4dd19f77a20385d53d163f581d61a5f4473a192586dca04ca2de2c6d8c"
+    },
+    {
+      "path": "lib/citizen/character/WholesaleModel.sleela",
+      "sha256": "cd90bd97bdec7082059fafafd7e87353b9201760a210d1c07011869fb1af8a5e"
     },
     {
       "path": "lib/codecs/SLCodecLoader.sleela",
@@ -50472,7 +50616,7 @@
     },
     {
       "path": "test-suites/test-library-inventory.sh",
-      "sha256": "a31b6b5a2d05563c380c0c1fd9fd0d6bd50b3dc8064b13835b4a5e35bef0d279"
+      "sha256": "2c5ca8217c6a6cfb4b3319df9c70fadcc2995f18f64f4fae6899bff58fb2e38a"
     },
     {
       "path": "tests/java_api_dependency_suite.py",
