@@ -1,0 +1,73 @@
+/*
+ * telephony-skya/sleela/RealAcquaintances.sleela
+ * SLeeLa — Skya Telephony — emblematic loadable module.
+ *
+ * RealAcquaintances is the TRUST roster of a Skya node: the people a node has
+ * actually met and confirmed, as opposed to anonymous or merely-present peers.
+ * It is the counterpart to Socio — Socio models the social fabric in the
+ * abstract; RealAcquaintances records the concrete, confirmed acquaintances a
+ * node will preferentially reach and admit. An acquaintance becomes "real" only
+ * after a confirmed two-way exchange (e.g. a PING that was answered), so the
+ * roster never contains unverified entries.
+ *
+ * It is a NATURAL / LOADABLE MODULE carrying the common module contract
+ * (`load()` / `loaded()` / `moduleName()` / `describe()`). It holds roster
+ * state only; the confirming exchange is performed by the Communication module.
+ */
+#sleela 1.3
+// Skya telephony — confirmed trust roster (loadable module / natural).
+class RealAcquaintances {
+
+  static final String MODULE = "RealAcquaintances";
+  static final int MAX = 256;         // roster capacity
+
+  int loadedFlag;
+  String[] names;      // acquaintance identities (confirmed only)
+  int count;           // confirmed acquaintances
+  int pending;         // introduced but not yet confirmed
+
+  void load() {
+    loadedFlag = 1;
+    names = new String[MAX];
+    count = 0;
+    pending = 0;
+  }
+  boolean loaded() { return loadedFlag == 1; }
+  String moduleName() { return MODULE; }
+
+  // Introduce a candidate acquaintance (not yet real).
+  void introduce() { pending = pending + 1; }
+
+  // Confirm an introduced candidate as a REAL acquaintance after a verified
+  // two-way exchange. Returns true if added; false if already known or full.
+  boolean confirm(String name) {
+    if (name == null || count >= MAX) { return false; }
+    if (knows(name)) { return false; }
+    names[count] = name;
+    count = count + 1;
+    if (pending > 0) { pending = pending - 1; }
+    return true;
+  }
+
+  // Is `name` already a confirmed, real acquaintance?
+  boolean knows(String name) {
+    if (name == null) { return false; }
+    int i = 0;
+    while (i < count) {
+      if (names[i] == name) { return true; }
+      i = i + 1;
+    }
+    return false;
+  }
+
+  // Should the node preferentially reach this identity? Only reals qualify.
+  boolean trusts(String name) { return knows(name); }
+
+  int acquaintanceCount() { return count; }
+  int pendingCount() { return pending; }
+
+  String describe() {
+    return MODULE + " real=" + count + " pending=" + pending
+         + " capacity=" + MAX;
+  }
+}

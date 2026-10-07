@@ -1,0 +1,65 @@
+/*
+ * telephony-skya/sleela/Communication.sleela
+ * SLeeLa — Skya Telephony — emblematic loadable module.
+ *
+ * Communication is the MESSAGE-exchange layer of a Skya node: the act of
+ * reaching a peer, sending a datum, and receiving the answer coherently. Where
+ * Servers stands ready and Network describes reach, Communication performs the
+ * client-side exchange and keeps a simple, honest tally of what was sent and
+ * received so a program can tell whether a conversation actually completed.
+ *
+ * It is a NATURAL / LOADABLE MODULE carrying the common module contract
+ * (`load()` / `loaded()` / `moduleName()` / `describe()`). It uses the same
+ * portable VM socket primitives as SkyaClient (`connect`/`sockwrite`/
+ * `sockread`/`sockclose`) across the explicit SLeeLa VM/OS bridge.
+ */
+#sleela 1.3
+// Skya telephony — message exchange (loadable module / natural).
+class Communication {
+
+  static final String MODULE = "Communication";
+
+  int loadedFlag;
+  int sent;            // messages sent
+  int received;        // non-empty answers received
+  int failures;        // reaches that could not connect
+
+  void load() { loadedFlag = 1; sent = 0; received = 0; failures = 0; }
+  boolean loaded() { return loadedFlag == 1; }
+  String moduleName() { return MODULE; }
+
+  // Reach `host:port`, send `message`, return the answer ("" on failure or
+  // empty answer). Keeps the send/receive tally honest.
+  String exchange(String host, int port, String message) {
+    int sock = connect(host, port);
+    if (sock < 0) { failures = failures + 1; return ""; }
+    sockwrite(sock, message);
+    sent = sent + 1;
+    String response = sockread(sock);
+    sockclose(sock);
+    if (response != null && response.length() > 0) {
+      received = received + 1;
+      return response;
+    }
+    return "";
+  }
+
+  // A simple PING exchange: reach a node and confirm it answers.
+  boolean ping(String host, int port) {
+    String r = exchange(host, port, "PING SKYA/1");
+    return r.length() > 0;
+  }
+
+  // Was every send answered? (A coherent conversation: nothing sent went
+  // unanswered and nothing failed to connect.)
+  boolean coherent() { return failures == 0 && sent == received; }
+
+  int sentCount() { return sent; }
+  int receivedCount() { return received; }
+  int failureCount() { return failures; }
+
+  String describe() {
+    return MODULE + " sent=" + sent + " received=" + received
+         + " failures=" + failures + " coherent=" + coherent();
+  }
+}

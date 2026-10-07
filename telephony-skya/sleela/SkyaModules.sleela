@@ -1,0 +1,60 @@
+/*
+ * telephony-skya/sleela/SkyaModules.sleela
+ * SLeeLa — Skya Telephony — the emblematic-module loader.
+ *
+ * SkyaModules is the small registry that LOADS and composes the emblematic Skya
+ * modules as naturals: Socio (social fabric), Network (reachability), Servers
+ * (server-side listeners), Communication (message exchange), and
+ * RealAcquaintances (confirmed trust roster). It gives the Skya program one
+ * place to bring the modules up together and confirm each loaded.
+ *
+ * Each module is a self-describing, loadable SLeeLa class sharing the common
+ * contract (`load()` / `loaded()` / `moduleName()` / `describe()`), so the Skya
+ * program can treat them uniformly — load now, or load on demand as naturals.
+ */
+#sleela 1.3
+// Skya telephony — loader/registry for the emblematic modules.
+class SkyaModules {
+
+  Socio socio;
+  Network network;
+  Servers servers;
+  Communication comm;
+  RealAcquaintances acquaintances;
+  int ready;           // count of modules confirmed loaded
+
+  // Load all five emblematic modules as naturals and confirm each.
+  void loadAll() {
+    ready = 0;
+
+    socio = new Socio();                 socio.load();
+    if (socio.loaded()) { ready = ready + 1; }
+
+    network = new Network();             network.load();
+    if (network.loaded()) { ready = ready + 1; }
+
+    servers = new Servers();             servers.load();
+    if (servers.loaded()) { ready = ready + 1; }
+
+    comm = new Communication();          comm.load();
+    if (comm.loaded()) { ready = ready + 1; }
+
+    acquaintances = new RealAcquaintances(); acquaintances.load();
+    if (acquaintances.loaded()) { ready = ready + 1; }
+  }
+
+  // How many of the five modules are loaded.
+  int readyCount() { return ready; }
+  boolean allReady() { return ready == 5; }
+
+  void main() {
+    print("Skya emblematic modules: loading naturals");
+    loadAll();
+    print("  " + socio.describe());
+    print("  " + network.describe());
+    print("  " + servers.describe());
+    print("  " + comm.describe());
+    print("  " + acquaintances.describe());
+    print("Skya modules ready = " + ready + " of 5 (allReady=" + allReady() + ")");
+  }
+}
