@@ -28,6 +28,8 @@ selftest: $(LIB_C_OBJECTS) $(BUILD_DIR)/thermodynamics.cpp.o | $(BUILD_DIR)
 	$(BUILD_DIR)/stochastic_demo
 	$(CC) $(CPPFLAGS) $(CFLAGS) src/slots_demo.c $(LIB_C_OBJECTS) -o $(BUILD_DIR)/slots_demo $(LDLIBS)
 	$(BUILD_DIR)/slots_demo
+	$(CC) $(CPPFLAGS) $(CFLAGS) src/courses_demo.c $(LIB_C_OBJECTS) -o $(BUILD_DIR)/courses_demo $(LDLIBS)
+	$(BUILD_DIR)/courses_demo
 
 sanity:
 	@printf '%s\n' 'SLeeLa Thermodynamics IV package sanity check'
@@ -36,6 +38,7 @@ sanity:
 	@printf '%s\n' '  multivariable (3D model): gradient, divergence, Laplacian, FTCS heat equation'
 	@printf '%s\n' '  stochastic: Langevin noise step, Monte Carlo over futures, Arrhenius log-rate'
 	@printf '%s\n' '  slot caps (enforced): futures<=22, positive gains<=6, long-term confidences<=2'
+	@printf '%s\n' '  courses: Thermo I/II, statistical mechanics, advanced/chemical (SLeeLa + C self-test)'
 	@printf '%s\n' '  native boundary: C ABI (thermodynamics.c) + C++ orchestration (thermodynamics.cpp)'
 	@printf '%s\n' '  stability rule: FTCS requires dt <= h^2 / (6 alpha)'
 
