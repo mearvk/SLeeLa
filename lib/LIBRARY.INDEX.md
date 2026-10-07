@@ -1,11 +1,28 @@
 # SLeeLa /lib Library Index
 
-**Revision:** 0.41  
+**Revision:** 0.42  
 **Packages:** 88  
-**SLeeLa source units:** 10403  
+**SLeeLa source units:** 10405  
 **Module-facade symbols:** 60  
-**Total symbol records:** 10463  
+**Total symbol records:** 10465  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
+
+> Revision 0.42 adds a **flow/layout manager** to the `user-interface` package.
+> Two new one-class-per-file Master Classes: `SLMeasure` (a standardized unit of
+> measurement across US customary — in/ft/pt/pica — Eurasian metric — mm/cm/m —
+> device px, and relative %/fr/em, resolving to pixels at a DPI) and `SLLayout`
+> (the manager: a UI as an orthogonal conflation of unit parts and
+> organizations, with named **groups** of named **items** adjusted singly, by
+> group, or **n-ary**; several flow solutions — stack, wrap, grid, dock, and
+> central weight/mass; Named placement where **MEDIUM** implies center and
+> **CENTRAL** implies weight/mass; and named ergonomic presets for the
+> ergonomics of publics). Each bottoms out in `measure*`/`layout*` SLVM built-ins
+> calling the genuine C ABI (`sleela_ui_layout.h`); see
+> `user-interface/LAYOUT.md`. Two new source units: 10,463 -> **10,465** total
+> records (10,403 -> **10,405** source classes); facade and package counts
+> unchanged at 60 and 88. `LIBRARY.SYMBOLS.md` was regenerated from the live tree
+> and the counts are verified in lockstep by
+> `test-suites/test-library-inventory.sh`.
 
 > Revision 0.41 adds **moods, washes, a Calculus-8, and millimetre light
 > placement** to the `user-interface` package. Four new one-class-per-file

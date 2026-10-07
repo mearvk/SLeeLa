@@ -1,0 +1,147 @@
+/*
+ * lib/user-interface/SLLayout.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLLayout — a flow/layout manager for the SleelaUI. It
+ *   treats a UI as an ORTHOGONAL CONFLATION of unit parts (what each item
+ *   measures) and organizations (how items are grouped and flowed): items have
+ *   NAMES, groups have NAMES, and you adjust a single named item, a whole named
+ *   group, or an N-ARY selection (any subset of a group of some size). Several
+ *   flow solutions arrange a group: STACK, WRAP, GRID, DOCK, and CENTRAL
+ *   (weight/mass packing). Placement is Named for the ergonomics of publics —
+ *   MEDIUM implies CENTER and CENTRAL implies weight/mass — and named ergonomic
+ *   presets tune a group for a common public use. Each method bottoms out in a
+ *   `layout*` SLVM built-in calling the C ABI (sleela_ui_layout.h).
+ *
+ * A layout is a VM-local handle (-1 = none). Sizes are SLMeasure values
+ * (US/metric/px). After adjustment call arrange(), then read item rects.
+ *
+ * Family: user-interface. Native VM/UI work crosses the explicit `layout*` SLVM
+ * bridge.
+ */
+#sleela 1.5
+class SLLayout {
+  // Flow ordinals (mirror SLUIFlowKind) — several layout solutions.
+  static final int FLOW_STACK   = 0;  // one row/column (the box model)
+  static final int FLOW_WRAP    = 1;  // wraps to new lines when full
+  static final int FLOW_GRID    = 2;  // fixed-column grid
+  static final int FLOW_DOCK    = 3;  // edges dock, centre fills
+  static final int FLOW_CENTRAL = 4;  // weight/mass packing
+  // Axis ordinals (mirror SLUIAxis).
+  static final int AXIS_HORIZONTAL = 0;
+  static final int AXIS_VERTICAL   = 1;
+  // Placement ordinals (mirror SLUIPlacement). The ergonomics of publics,
+  // Named: MEDIUM is center; CENTRAL is weight/mass.
+  static final int START   = 0;
+  static final int MEDIUM  = 1;  // implies CENTER
+  static final int END     = 2;
+  static final int FILL    = 3;
+  static final int CENTRAL = 4;  // implies weight/mass
+  // Named ergonomic presets (mirror SLUIErgonomics).
+  static final int ERGO_READING   = 0;
+  static final int ERGO_GALLERY   = 1;
+  static final int ERGO_DASHBOARD = 2;
+  static final int ERGO_CONSOLE   = 3;
+  static final int ERGO_PORTRAIT  = 4;
+  static final int ERGO_TOOLBAR   = 5;
+
+  int layout;   // VM-local handle (-1 = none)
+
+  void create() { layout = layoutCreate(); }
+  int handle() { return layout; }
+  boolean valid() { return layout >= 0; }
+  void destroy() { if (layout >= 0) { layoutDestroy(layout); layout = -1; } }
+
+  void setDpi(double dpi) { if (layout >= 0) { layoutSetDpi(layout, dpi); } }
+  void setEm(double emPx) { if (layout >= 0) { layoutSetEm(layout, emPx); } }
+
+  // ---- groups (named) -----------------------------------------------------
+  int group(String groupName, int flow, int axis) {
+    if (layout < 0) { return -1; }
+    return layoutGroup(layout, groupName, flow, axis);
+  }
+  int groupCount() { if (layout < 0) { return 0; } return layoutGroupCount(layout); }
+  void setFlow(String groupName, int flow, int axis) {
+    if (layout >= 0) { groupSetFlow(layout, groupName, flow, axis); }
+  }
+  void setSpacing(String groupName, SLMeasure spacing) {
+    if (layout >= 0 && spacing != null) {
+      groupSetSpacing(layout, groupName, spacing.value, spacing.unit);
+    }
+  }
+  void setPadding(String groupName, SLMeasure padding) {
+    if (layout >= 0 && padding != null) {
+      groupSetPadding(layout, groupName, padding.value, padding.unit);
+    }
+  }
+  void setAlign(String groupName, int mainAlign, int crossAlign) {
+    if (layout >= 0) { groupSetAlign(layout, groupName, mainAlign, crossAlign); }
+  }
+  void setColumns(String groupName, int columns) {
+    if (layout >= 0) { groupSetColumns(layout, groupName, columns); }
+  }
+  // A named ergonomic preset for the ergonomics of publics.
+  void setErgonomics(String groupName, int ergo) {
+    if (layout >= 0) { groupSetErgonomics(layout, groupName, ergo); }
+  }
+
+  // ---- items (named) ------------------------------------------------------
+  // Add a named item (an optional widget handle, -1 for a pure placeholder)
+  // into a named group, with a main-axis size (fr makes it flexible).
+  int item(String groupName, String itemName, int widgetHandle, SLMeasure size) {
+    if (layout < 0 || size == null) { return -1; }
+    return layoutItem(layout, groupName, itemName, widgetHandle, size.value,
+                      size.unit);
+  }
+  int itemCount(String groupName) {
+    if (layout < 0) { return 0; }
+    return groupItemCount(layout, groupName);
+  }
+
+  // ---- adjustment: single ------------------------------------------------
+  void setItemSize(String itemName, SLMeasure size) {
+    if (layout >= 0 && size != null) {
+      itemSetSize(layout, itemName, size.value, size.unit);
+    }
+  }
+  void setItemMass(String itemName, double mass) {
+    if (layout >= 0) { itemSetMass(layout, itemName, mass); }
+  }
+  void setItemAlign(String itemName, int crossAlign) {
+    if (layout >= 0) { itemSetAlign(layout, itemName, crossAlign); }
+  }
+
+  // ---- adjustment: whole group -------------------------------------------
+  void setGroupSize(String groupName, SLMeasure size) {
+    if (layout >= 0 && size != null) {
+      groupSetSize(layout, groupName, size.value, size.unit);
+    }
+  }
+  void setGroupMass(String groupName, double mass) {
+    if (layout >= 0) { groupSetMass(layout, groupName, mass); }
+  }
+
+  // ---- adjustment: n-ary (a subset of a group of some size) --------------
+  // `itemNames` is an array of the names to adjust; count its length.
+  void setNarySize(String[] itemNames, int count, SLMeasure size) {
+    if (layout >= 0 && size != null) {
+      narySetSize(layout, itemNames, count, size.value, size.unit);
+    }
+  }
+  void setNaryMass(String[] itemNames, int count, double mass) {
+    if (layout >= 0) { narySetMass(layout, itemNames, count, mass); }
+  }
+  void setNaryAlign(String[] itemNames, int count, int crossAlign) {
+    if (layout >= 0) { narySetAlign(layout, itemNames, count, crossAlign); }
+  }
+
+  // ---- resolution ---------------------------------------------------------
+  // Lay a named group out within a device-pixel rectangle; then read item
+  // rects with itemX/itemY/itemWidth/itemHeight.
+  void arrange(String groupName, int x, int y, int w, int h) {
+    if (layout >= 0) { layoutArrange(layout, groupName, x, y, w, h); }
+  }
+  int itemX(String itemName) { if (layout < 0) { return 0; } return layoutItemX(layout, itemName); }
+  int itemY(String itemName) { if (layout < 0) { return 0; } return layoutItemY(layout, itemName); }
+  int itemWidth(String itemName)  { if (layout < 0) { return 0; } return layoutItemW(layout, itemName); }
+  int itemHeight(String itemName) { if (layout < 0) { return 0; } return layoutItemH(layout, itemName); }
+}

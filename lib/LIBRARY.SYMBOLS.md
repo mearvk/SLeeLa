@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 10403
+library-source-files: 10405
 library-packages: 88
 module-facade-symbols: 60
-total-symbol-records: 10463
+total-symbol-records: 10465
 
 package	symbol	path	kind
 alphabet	Alphabet.sleela	lib/alphabet/Alphabet.sleela	source
@@ -10342,11 +10342,13 @@ user-interface	SLHeading.sleela	lib/user-interface/SLHeading.sleela	source
 user-interface	SLImage.sleela	lib/user-interface/SLImage.sleela	source
 user-interface	SLInfoBar.sleela	lib/user-interface/SLInfoBar.sleela	source
 user-interface	SLLabel.sleela	lib/user-interface/SLLabel.sleela	source
+user-interface	SLLayout.sleela	lib/user-interface/SLLayout.sleela	source
 user-interface	SLLevelBar.sleela	lib/user-interface/SLLevelBar.sleela	source
 user-interface	SLLight.sleela	lib/user-interface/SLLight.sleela	source
 user-interface	SLLightScene.sleela	lib/user-interface/SLLightScene.sleela	source
 user-interface	SLLinkButton.sleela	lib/user-interface/SLLinkButton.sleela	source
 user-interface	SLMaterial.sleela	lib/user-interface/SLMaterial.sleela	source
+user-interface	SLMeasure.sleela	lib/user-interface/SLMeasure.sleela	source
 user-interface	SLMm.sleela	lib/user-interface/SLMm.sleela	source
 user-interface	SLMood.sleela	lib/user-interface/SLMood.sleela	source
 user-interface	SLPackage.sleela	lib/user-interface/SLPackage.sleela	facade

@@ -1,0 +1,52 @@
+/*
+ * lib/user-interface/SLMeasure.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLMeasure — a standardized unit of measurement for the
+ *   SleelaUI layout system, spanning US customary (inch, foot, point, pica),
+ *   Eurasian metric (mm, cm, m), device pixels (px), and relative units
+ *   (percent, flexible fraction fr, em). A measure is a (value, unit) pair that
+ *   resolves to device pixels at a DPI — one vocabulary across US and Eurasian
+ *   countries, with px available of course. It is a pure value helper mirroring
+ *   SLUIMeasure in the SleelaUI Layout C ABI (sleela_ui_layout.h).
+ *
+ * Family: user-interface.
+ */
+#sleela 1.5
+class SLMeasure {
+  // Unit ordinals (mirror SLUIUnitKind).
+  static final int PX   = 0;   // device pixels
+  static final int MM   = 1;   // millimetre (metric)
+  static final int CM   = 2;   // centimetre (metric)
+  static final int M    = 3;   // metre (metric)
+  static final int IN   = 4;   // inch (US)
+  static final int FT   = 5;   // foot (US)
+  static final int PT   = 6;   // typographic point (US, 1/72in)
+  static final int PICA = 7;   // pica (US, 12pt)
+  static final int PCT  = 8;   // percent of the reference extent
+  static final int FR   = 9;   // flexible fraction / weight share
+  static final int EM   = 10;  // multiples of the base font size
+
+  double value;
+  int unit;
+
+  void of(double v, int u) { value = v; unit = u; }
+  // US customary + metric + device + relative builders.
+  void px(double v)   { of(v, PX); }
+  void mm(double v)   { of(v, MM); }
+  void cm(double v)   { of(v, CM); }
+  void meters(double v){ of(v, M); }
+  void inch(double v) { of(v, IN); }
+  void feet(double v) { of(v, FT); }
+  void points(double v){ of(v, PT); }
+  void pica(double v) { of(v, PICA); }
+  void percent(double v){ of(v, PCT); }
+  void fraction(double v){ of(v, FR); }
+  void em(double v)   { of(v, EM); }
+
+  // Resolve to device pixels at `dpi`, with a reference extent (for percent)
+  // and em size (for em).
+  double toPixels(double dpi, double referencePx, double emPx) {
+    return measureToPx(value, unit, dpi, referencePx, emPx);
+  }
+  boolean isFlexible() { return unit == FR; }
+}
