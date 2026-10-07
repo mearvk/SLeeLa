@@ -1,0 +1,61 @@
+/*
+ * alphabet/sleela/AlphabetDemo.sleela
+ * SLeeLa Standard Library — runnable orchestration example.
+ * Definition: Builds the three alphabets, the three themes, and shows the whole
+ *   point of the package: colors, themes, and alphabets composing into a look a
+ *   user of Sleela can actually read. Prints a describe() line per milestone.
+ *
+ * The authoritative definitions live one level up in lib/alphabet/*.sleela.
+ * Family: alphabet.
+ */
+#sleela 1.3
+class AlphabetDemo {
+
+  void main() {
+    // --- Three alphabets, each built by its own compose() override. ---
+    LatinAlphabet latin = new LatinAlphabet();
+    latin.begin("Latin");
+    print("[alphabet] " + latin.describe());
+
+    GreekAlphabet greek = new GreekAlphabet();
+    greek.begin("Greek");
+    print("[alphabet] " + greek.describe());
+
+    CyrillicAlphabet cyr = new CyrillicAlphabet();
+    cyr.begin("Cyrillic");
+    print("[alphabet] " + cyr.describe());
+
+    // A lookup, to prove the letters are really in there.
+    print("[lookup]   Latin has 'Q'? " + latin.has("Q")
+        + "; Greek letter 1 = " + greek.at(0).symbol()
+        + "; Latin vowels = " + latin.vowelCount());
+
+    // --- A single Color, exercised. ---
+    Color sky = new Color();
+    sky.load();
+    sky.set(30, 144, 255);
+    print("[color]    " + sky.describe());
+
+    // --- Three themes, each dressing itself in its own palette. ---
+    LightTheme light = new LightTheme();
+    light.begin("Light");
+    light.useAlphabet(latin);
+    print("[theme]    " + light.describe());
+
+    DarkTheme dark = new DarkTheme();
+    dark.begin("Dark");
+    dark.useAlphabet(greek);
+    print("[theme]    " + dark.describe());
+
+    SolarizedTheme sol = new SolarizedTheme();
+    sol.begin("Solarized");
+    sol.useAlphabet(cyr);
+    print("[theme]    " + sol.describe());
+
+    // --- The headline: colors + themes + alphabets, all agreeing. ---
+    print("[verdict]  Light readable? " + light.readable()
+        + " | Dark readable? " + dark.readable()
+        + " | Solarized readable? " + sol.readable()
+        + " | Dark presents " + dark.letterCount() + " letters");
+  }
+}

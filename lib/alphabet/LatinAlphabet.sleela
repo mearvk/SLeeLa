@@ -1,0 +1,22 @@
+/*
+ * lib/alphabet/LatinAlphabet.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: LatinAlphabet — the 26-letter Latin script (A..Z), the default
+ *   writing system most users of Sleela will reach for first.
+ *
+ * A concrete Alphabet: subclass, and override compose() to append its letters
+ * in order. Call begin("Latin") to build it. Family: alphabet.
+ */
+#sleela 1.3
+class LatinAlphabet extends Alphabet {
+
+  void compose() {
+    append("A", true);  append("B", false); append("C", false); append("D", false);
+    append("E", true);  append("F", false); append("G", false); append("H", false);
+    append("I", true);  append("J", false); append("K", false); append("L", false);
+    append("M", false); append("N", false); append("O", true);  append("P", false);
+    append("Q", false); append("R", false); append("S", false); append("T", false);
+    append("U", true);  append("V", false); append("W", false); append("X", false);
+    append("Y", false); append("Z", false);
+  }
+}

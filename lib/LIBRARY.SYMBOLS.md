@@ -1,12 +1,24 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 10373
-library-packages: 86
-module-facade-symbols: 58
-total-symbol-records: 10431
+library-source-files: 10384
+library-packages: 87
+module-facade-symbols: 59
+total-symbol-records: 10443
 
 package	symbol	path	kind
+alphabet	Alphabet.sleela	lib/alphabet/Alphabet.sleela	source
+alphabet	Color.sleela	lib/alphabet/Color.sleela	source
+alphabet	CyrillicAlphabet.sleela	lib/alphabet/CyrillicAlphabet.sleela	source
+alphabet	DarkTheme.sleela	lib/alphabet/DarkTheme.sleela	source
+alphabet	GreekAlphabet.sleela	lib/alphabet/GreekAlphabet.sleela	source
+alphabet	LatinAlphabet.sleela	lib/alphabet/LatinAlphabet.sleela	source
+alphabet	Letter.sleela	lib/alphabet/Letter.sleela	source
+alphabet	LightTheme.sleela	lib/alphabet/LightTheme.sleela	source
+alphabet	Palette.sleela	lib/alphabet/Palette.sleela	source
+alphabet	SLPackage.sleela	lib/alphabet/SLPackage.sleela	facade
+alphabet	SolarizedTheme.sleela	lib/alphabet/SolarizedTheme.sleela	source
+alphabet	Theme.sleela	lib/alphabet/Theme.sleela	source
 antivirus	SLPackage.sleela	lib/antivirus/SLPackage.sleela	facade
 api	SLPackage.sleela	lib/api/SLPackage.sleela	facade
 audio	SLPackage.sleela	lib/audio/SLPackage.sleela	facade

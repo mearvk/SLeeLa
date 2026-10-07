@@ -1,0 +1,101 @@
+/*
+ * lib/alphabet/Color.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines Color, the smallest unit of delight in the alphabet
+ *   package — one RGB color, held as three channels of 0..255, with the hex
+ *   string, blending, and luminance every user of Sleela quietly relies on.
+ *
+ * Color is a NATURAL / LOADABLE MODULE sharing the common module contract
+ * (load / loaded / moduleName / describe). It is thematically important to ALL
+ * users of Sleela: every Theme is, at heart, a handful of Colors that agree to
+ * get along. It holds channel state only; a Palette groups Colors and a Theme
+ * assigns them roles.
+ *
+ * Family: alphabet.
+ */
+#sleela 1.3
+// Unified SLeeLa SDK front-end object.
+class Color {
+
+  static final String MODULE = "Color";
+
+  int loadedFlag;   // 1 once the module is loaded
+  int r;            // red   channel, 0..255
+  int g;            // green channel, 0..255
+  int b;            // blue  channel, 0..255
+
+  // --- loadable-module contract ------------------------------------------
+  void load() { loadedFlag = 1; r = 0; g = 0; b = 0; }
+  boolean loaded() { return loadedFlag == 1; }
+  String moduleName() { return MODULE; }
+
+  // Set the three channels, each clamped to the honest 0..255 range.
+  void set(int red, int green, int blue) {
+    r = channel(red);
+    g = channel(green);
+    b = channel(blue);
+  }
+
+  int channel(int v) {
+    if (v < 0) { return 0; }
+    if (v > 255) { return 255; }
+    return v;
+  }
+
+  int red() { return r; }
+  int green() { return g; }
+  int blue() { return b; }
+
+  // Perceived luminance, 0..255 (ITU-R BT.601 weights, integer math).
+  int luminance() { return (r * 299 + g * 587 + b * 114) / 1000; }
+
+  // Is this a "dark" color? Useful for deciding what text to put on top.
+  boolean isDark() { return luminance() < 128; }
+
+  // Blend halfway toward another color — the diplomacy of design.
+  Color blendHalf(Color other) {
+    Color out = new Color();
+    out.load();
+    if (other == null) { out.set(r, g, b); return out; }
+    out.set((r + other.red()) / 2, (g + other.green()) / 2, (b + other.blue()) / 2);
+    return out;
+  }
+
+  // Two colors are equal when all three channels agree.
+  boolean equalsColor(Color other) {
+    if (other == null) { return false; }
+    return r == other.red() && g == other.green() && b == other.blue();
+  }
+
+  // Lowercase hex like "#1e90ff". Built with substring math — no char type.
+  String hex() { return "#" + hex2(r) + hex2(g) + hex2(b); }
+
+  // One byte (0..255) to a two-digit lowercase hex string.
+  String hex2(int v) { return hexDigit(v / 16) + hexDigit(v - (v / 16) * 16); }
+
+  String hexDigit(int d) {
+    if (d == 0)  { return "0"; }
+    if (d == 1)  { return "1"; }
+    if (d == 2)  { return "2"; }
+    if (d == 3)  { return "3"; }
+    if (d == 4)  { return "4"; }
+    if (d == 5)  { return "5"; }
+    if (d == 6)  { return "6"; }
+    if (d == 7)  { return "7"; }
+    if (d == 8)  { return "8"; }
+    if (d == 9)  { return "9"; }
+    if (d == 10) { return "a"; }
+    if (d == 11) { return "b"; }
+    if (d == 12) { return "c"; }
+    if (d == 13) { return "d"; }
+    if (d == 14) { return "e"; }
+    return "f";
+  }
+
+  String yn(boolean v) { if (v) { return "yes"; } return "no"; }
+
+  String describe() {
+    return MODULE + " " + hex() + " rgb=(" + r + "," + g + "," + b + ")"
+         + " luminance=" + luminance() + " dark=" + yn(isDark());
+  }
+}

@@ -1,0 +1,25 @@
+/*
+ * lib/alphabet/LightTheme.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: LightTheme — a bright, paper-white theme with near-black text and
+ *   a friendly blue accent. The default daytime look for users of Sleela who
+ *   like their contrast crisp and their eyes complaining by evening.
+ *
+ * A concrete Theme: override dress() to fill the palette and role colors. Call
+ * begin("Light") to build it. Family: alphabet.
+ */
+#sleela 1.3
+class LightTheme extends Theme {
+
+  void dress() {
+    // Palette entries, in order, so a user can reference them by name.
+    palette.add("paper",     250, 250, 250);
+    palette.add("ink",        17,  17,  17);
+    palette.add("accent",     30, 144, 255);  // dodger blue
+    palette.add("muted",     120, 120, 120);
+
+    setBackground(250, 250, 250);  // paper
+    setForeground(17, 17, 17);     // ink
+    setAccent(30, 144, 255);       // accent
+  }
+}

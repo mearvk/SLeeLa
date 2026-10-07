@@ -1,0 +1,24 @@
+/*
+ * lib/alphabet/DarkTheme.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: DarkTheme — a deep charcoal canvas with soft off-white text and a
+ *   warm amber accent. The nighttime look beloved by users of Sleela who code
+ *   at hours they will not admit to.
+ *
+ * A concrete Theme: override dress() to fill the palette and role colors. Call
+ * begin("Dark") to build it. Family: alphabet.
+ */
+#sleela 1.3
+class DarkTheme extends Theme {
+
+  void dress() {
+    palette.add("charcoal",   24,  24,  28);
+    palette.add("mist",      224, 224, 224);
+    palette.add("amber",     255, 176,  32);
+    palette.add("muted",     140, 140, 150);
+
+    setBackground(24, 24, 28);    // charcoal
+    setForeground(224, 224, 224); // mist
+    setAccent(255, 176, 32);      // amber
+  }
+}

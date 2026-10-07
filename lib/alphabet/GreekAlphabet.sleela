@@ -1,0 +1,24 @@
+/*
+ * lib/alphabet/GreekAlphabet.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: GreekAlphabet — the 24-letter Greek script (Alpha..Omega), the
+ *   script of mathematics, philosophy, and every variable name that wanted to
+ *   look serious.
+ *
+ * A concrete Alphabet: override compose() to append its letters in order. Call
+ * begin("Greek") to build it. Family: alphabet.
+ */
+#sleela 1.3
+class GreekAlphabet extends Alphabet {
+
+  void compose() {
+    append("Alpha", true);    append("Beta", false);   append("Gamma", false);
+    append("Delta", false);   append("Epsilon", true); append("Zeta", false);
+    append("Eta", true);      append("Theta", false);  append("Iota", true);
+    append("Kappa", false);   append("Lambda", false); append("Mu", false);
+    append("Nu", false);      append("Xi", false);     append("Omicron", true);
+    append("Pi", false);      append("Rho", false);    append("Sigma", false);
+    append("Tau", false);     append("Upsilon", true); append("Phi", false);
+    append("Chi", false);     append("Psi", false);    append("Omega", true);
+  }
+}

@@ -2,10 +2,10 @@
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 LIB="$ROOT/lib"
-EXPECTED_PACKAGES=86
-EXPECTED_SOURCES=10373
-EXPECTED_FACADES=58
-EXPECTED_SYMBOLS=10431
+EXPECTED_PACKAGES=87
+EXPECTED_SOURCES=10384
+EXPECTED_FACADES=59
+EXPECTED_SYMBOLS=10443
 # Filesystem truth: /lib is the single source of truth for the class vocabulary.
 package_count=$(find "$LIB" -mindepth 1 -maxdepth 1 -type d | wc -l)
 sleela_count=$(find "$LIB" -type f -name '*.sleela' | wc -l)
