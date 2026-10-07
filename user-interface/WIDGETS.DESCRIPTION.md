@@ -103,6 +103,16 @@ its anchor object — the object is *used* as the light) or an **emitter**
 polarity. Full reference: [LIGHTING.md](LIGHTING.md), SLeeLa bindings `SLLight`,
 `SLLightScene`, `SLMaterial`.
 
+## Fonts & font effects
+
+Any text can be rendered with a **font** that carries a stack of **effects** —
+drop/inner shadow, glow, light sheen, an **emitter** (text that radiates light
+into a scene — reserving nothing, or binding as a source on an anchor), outline,
+relief emboss/engrave, and gradient fill — each with a **quality** knob
+(draft .. ultra). Attach a styled font to any text widget with
+`slui_widget_set_font` / `SLWidget.setFont`. Full reference:
+[FONTS.md](FONTS.md), SLeeLa bindings `SLFont`, `SLFontEffect`.
+
 ## Totals
 
 - **33 widget types** across containers, actions, selection, input, ranges,

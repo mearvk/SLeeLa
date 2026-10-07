@@ -31,13 +31,17 @@ using slui::Rect;
 
 /* --------------------------------------------------------------------------
  * A lazily-created, process-wide backend for free-standing contexts that draw
- * text. Widget-bound contexts use the window's backend instead.
+ * text. Widget-bound contexts use the window's backend instead. Defined in the
+ * slui namespace (declared in slui_backend.hpp) so the Font API shares it.
  * ------------------------------------------------------------------------- */
-static slui::Backend* shared_text_backend() {
-    static std::unique_ptr<slui::Backend> be = slui::create_backend("com.mearvk.SleelaUI.Draw");
+namespace slui {
+Backend* shared_text_backend() {
+    static std::unique_ptr<Backend> be = create_backend("com.mearvk.SleelaUI.Draw");
     if (be) be->set_font("system", 11);
     return be.get();
 }
+} // namespace slui
+using slui::shared_text_backend;
 
 /* --------------------------------------------------------------------------
  * SLUIDrawContext

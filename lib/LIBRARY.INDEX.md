@@ -1,11 +1,26 @@
 # SLeeLa /lib Library Index
 
-**Revision:** 0.38  
+**Revision:** 0.39  
 **Packages:** 87  
-**SLeeLa source units:** 10384  
+**SLeeLa source units:** 10386  
 **Module-facade symbols:** 59  
-**Total symbol records:** 10443  
+**Total symbol records:** 10445  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
+
+> Revision 0.39 adds **fonts and font effects** to the `user-interface` package.
+> Two new one-class-per-file Master Classes: `SLFont` (a face — family, size,
+> weight, slant, spacing, line height — plus an ordered effect stack and a
+> quality level draft..ultra; draws into an `SLDrawContext` and attaches to a
+> text widget via `SLWidget.setFont`) and `SLFontEffect` (one effect: drop/inner
+> shadow, glow, directional light sheen, an EMITTER that radiates the text into
+> a light scene — a pure emitter reserving nothing, or a source binding an
+> anchor — outline, relief emboss/engrave, or gradient fill). Each bottoms out in
+> `font*`/`ui*` SLVM built-ins calling the genuine SleelaUI Font C ABI
+> (`sleela_ui_font.h`); see `user-interface/FONTS.md`. Two new source units:
+> 10,443 -> **10,445** total records (10,384 -> **10,386** source classes);
+> facade and package counts unchanged at 59 and 87. `LIBRARY.SYMBOLS.md` was
+> regenerated from the live tree and the counts are verified in lockstep by
+> `test-suites/test-library-inventory.sh`.
 
 > Revision 0.38 adds the new `alphabet` package — colors, themes, and alphabets,
 > thematically important to all users of Sleela. It introduces eleven

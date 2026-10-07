@@ -92,6 +92,11 @@ public:
 /* Factory implemented by exactly one backend translation unit. */
 std::unique_ptr<Backend> create_backend(const std::string& app_id);
 
+/* The process-wide backend used for free-standing text (Draw + Font APIs).
+ * Lazily created; shared so measuring/rasterizing text needs no window. May be
+ * null if no backend could be created (e.g. no display for X11). */
+Backend* shared_text_backend();
+
 } // namespace slui
 
 #endif /* SLUI_BACKEND_HPP */

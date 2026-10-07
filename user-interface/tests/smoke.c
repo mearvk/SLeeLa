@@ -10,6 +10,7 @@
  * ===========================================================================*/
 #include "sleela_ui.h"
 #include "sleela_ui_draw.h"
+#include "sleela_ui_font.h"
 #include "sleela_ui_light.h"
 
 #include <stdio.h>
@@ -278,6 +279,57 @@ int main(void) {
     CHECK(tl_lum > br_lum, "relief: lit facet brighter than shadowed facet");
     slui_light_scene_destroy(lit);
     slui_draw_destroy(ldc);
+
+    /* --- Fonts & font effects ------------------------------------------ */
+    SLUIFont* fnt = slui_font_create("system", 24.0);
+    CHECK(fnt != NULL, "font created");
+    CHECK(slui_font_size(fnt) == 24.0, "font size");
+    slui_font_set_weight(fnt, SLUI_FONT_BOLD);
+    slui_font_set_quality(fnt, SLUI_QUALITY_ULTRA);
+    CHECK(slui_font_quality(fnt) == SLUI_QUALITY_ULTRA, "font quality set");
+    /* a stack of quality effects */
+    slui_font_add_effect(fnt, slui_fx_drop_shadow(2, 3, 3.0, slui_rgb(0, 0, 0)));
+    slui_font_add_effect(fnt, slui_fx_glow(5.0, 0.8, slui_rgb(255, 180, 80)));
+    slui_font_add_effect(fnt, slui_fx_outline(1.5, slui_rgb(40, 20, 8)));
+    slui_font_add_effect(fnt, slui_fx_relief(SLUI_FONT_EMBOSSED, 2.0, 0.9));
+    slui_font_add_effect(fnt,
+        slui_fx_gradient_fill(slui_rgb(255, 240, 210), slui_rgb(230, 160, 90)));
+    CHECK(slui_font_effect_count(fnt) == 5, "five font effects stacked");
+    double fw = slui_font_measure(fnt, "Sleela");
+    CHECK(fw > 0.0, "font measures a run");
+    CHECK(slui_font_ascent(fnt) > 0.0, "font ascent positive");
+
+    /* draw styled text and confirm it marks pixels */
+    SLUIDrawContext* fdc = slui_draw_create(240, 60, SLUI_BUFFER_SINGLE);
+    slui_draw_clear(fdc, 0x2B1608FF);
+    slui_font_draw(fdc, fnt, "Sleela", 12, 40, slui_rgb(255, 240, 210));
+    long marked = 0;
+    for (int yy = 0; yy < 60; ++yy)
+        for (int xx = 0; xx < 240; ++xx) {
+            SLUIColor p = slui_draw_get_pixel(fdc, xx, yy);
+            if (p != 0x2B1608FFu) ++marked;
+        }
+    CHECK(marked > 100, "styled font draw marked pixels");
+    slui_draw_destroy(fdc);
+
+    /* the EMITTER effect radiates into a scene without reserving (emitter),
+     * or reserving an anchor (source) */
+    SLUIFont* lamp = slui_font_create("system", 20.0);
+    slui_font_add_effect(lamp, slui_fx_emitter(60.0, 1.0, slui_rgb(255, 200, 120), -1));
+    int before = slui_light_scene_count(scene);
+    int li = slui_font_emit_into_scene(lamp, scene, 0, 20, "glow");
+    CHECK(li >= 0 && slui_light_scene_count(scene) == before + 1,
+          "font emitter added an emission (reserves nothing)");
+    slui_font_destroy(lamp);
+
+    SLUIFont* src = slui_font_create("system", 20.0);
+    slui_font_add_effect(src, slui_fx_emitter(60.0, 1.0, slui_rgb(255, 200, 120), 777));
+    int li2 = slui_font_emit_into_scene(src, scene, 0, 20, "sign");
+    CHECK(li2 >= 0 && slui_light_scene_anchor_reserved(scene, 777) == 1,
+          "font source emitter reserved its anchor");
+    slui_font_destroy(src);
+
+    slui_font_destroy(fnt);
     slui_light_scene_destroy(scene);
 
     printf("\n%s (%d failure%s)\n", g_failures ? "FAILED" : "PASSED",
