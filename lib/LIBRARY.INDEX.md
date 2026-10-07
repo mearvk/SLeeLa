@@ -1,11 +1,32 @@
 # SLeeLa /lib Library Index
 
-**Revision:** 0.31  
-**Packages:** 83  
-**SLeeLa source units:** 10297  
-**Module-facade symbols:** 55  
-**Total symbol records:** 10352  
+**Revision:** 0.32  
+**Packages:** 84  
+**SLeeLa source units:** 10311  
+**Module-facade symbols:** 56  
+**Total symbol records:** 10367  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
+
+> Revision 0.32 adds the new `character` package — a classful study in business
+> models. It introduces fourteen one-class-per-file Master Classes: `Character`
+> (a named actor in the Sleela economy who adopts exactly one model and lives or
+> dies by its monthly profit), `BusinessModel` (the language-neutral base
+> contract a developer extends, following the same base/subclass pattern as
+> lib/compiler's `SLLanguageCompiler` front ends), and twelve concrete models
+> that each override the revenue/cost math — `SubscriptionModel`,
+> `FreemiumModel`, `MarketplaceModel`, `AdvertisingModel`, `RetailModel`,
+> `WholesaleModel`, `FranchiseModel`, `LicensingModel`, `SaaSModel`,
+> `ConsultingModel`, `ManufacturingModel`, and `BrokerageModel`. A `Character`
+> holds its model through a single base-typed reference, so any one of the
+> twelve plugs in interchangeably and answers the same question — did we make
+> money? — with entirely different arithmetic. A matching `SLPackage` facade
+> names the package, and a runnable orchestration example lives outside `/lib`
+> at `character/sleela/CharacterDemo.sleela` (so it is not double-counted). One
+> new package and fifteen new `.sleela` units: 10,352 -> **10,367** total
+> records (10,297 -> **10,311** source classes), 55 -> **56** facades, 83 ->
+> **84** packages. `LIBRARY.SYMBOLS.md` was regenerated from the live tree and
+> the counts are verified in lockstep by
+> `test-suites/test-library-inventory.sh`.
 
 > Revision 0.31 promotes the emblematic Skya telephony modules into first-class
 > `/lib` Master Classes. The `telephony-skya` package gains six one-class-per-

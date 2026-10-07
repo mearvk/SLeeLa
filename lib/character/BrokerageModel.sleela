@@ -1,0 +1,35 @@
+/*
+ * lib/character/BrokerageModel.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: BrokerageModel — stand between two parties who want to trade and
+ *   charge a fee per trade for the privilege of your standing there. Revenue is
+ *   trades x fee; cost is the clearing/compliance machinery that keeps the
+ *   regulators calm.
+ *
+ * A concrete BusinessModel. Family: character.
+ */
+#sleela 1.3
+class BrokerageModel extends BusinessModel {
+
+  int trades;             // trades executed this month
+  int feePerTradeCents;   // commission per trade
+  int clearingCostCents;  // clearing/settlement cost per trade
+  int complianceCents;    // monthly fixed compliance overhead
+
+  void setUp(int executed, int feePerTrade, int clearingCost, int compliance) {
+    load();
+    configure("Brokerage", KIND_BROKERAGE);
+    if (executed < 0) { executed = 0; }
+    if (feePerTrade < 0) { feePerTrade = 0; }
+    if (clearingCost < 0) { clearingCost = 0; }
+    if (compliance < 0) { compliance = 0; }
+    trades = executed;
+    feePerTradeCents = feePerTrade;
+    clearingCostCents = clearingCost;
+    complianceCents = compliance;
+    setUnits(executed);
+  }
+
+  int monthlyRevenue() { return trades * feePerTradeCents; }
+  int monthlyCost() { return trades * clearingCostCents + complianceCents; }
+}
