@@ -36,6 +36,7 @@
 #include "slui_widget.hpp"
 
 #include "sleela_ui_draw.h"
+#include "sleela_ui_light.h"
 #include "slui_backend.hpp"
 #include "slui_render.hpp"
 
@@ -58,6 +59,21 @@ SLUISize CanvasView::measure(const PaintContext&) {
                     req_h_ + margin_.top + margin_.bottom};
 }
 
+void CanvasView::apply_light() {
+    if (!light_scene_ || !ctx_) return;
+    SLUIMaterial m{};
+    m.profile = static_cast<SLUIReliefProfile>(light_profile_);
+    m.depth = light_depth_;
+    m.gloss = light_gloss_;
+    m.occlusion = light_occlusion_;
+    m.edge_px = light_edge_;
+    SLUIRect full{0, 0, ctx_w_, ctx_h_};
+    slui_light_apply_relief(ctx_,
+                            full,
+                            /*radius=*/0.0, m,
+                            static_cast<const SLUILightScene*>(light_scene_));
+}
+
 void CanvasView::ensure_context(int w, int h) {
     if (w < 1) w = 1;
     if (h < 1) h = 1;
@@ -78,6 +94,7 @@ void CanvasView::paint(PaintContext& ctx) {
     ensure_context(c.w, c.h);
     if (draw_fn_ && ctx_) {
         draw_fn_(ctx_, time_, last_dt_, draw_user_);
+        apply_light(); /* light + relieve the whole view, if a scene is set */
         slui_draw_present(ctx_);
         /* Blit the context's front buffer into the window canvas. */
         const int stride = ctx_w_;
@@ -233,8 +250,9 @@ void throbber_draw(SLUIDrawContext* dc, double /*time_s*/, double dt_s,
     w.ensure(W);
     step_field(w, dt_s > 0 ? dt_s : 1.0 / 60.0);
 
-    /* At rest the strip is the chrome floor; crests light up over it. */
-    slui_draw_clear(dc, slui_rgb(0x10, 0x10, 0x13));
+    /* At rest the strip is the warm chrome floor (0.8x of Sleela's #2B1608
+     * base); crests light up over it. */
+    slui_draw_clear(dc, slui_rgb(0x22, 0x12, 0x06));
 
     int n = w.cells;
     /* Draw additively so overlapping crests accumulate light like water. */

@@ -19,7 +19,7 @@ Window::Window(void*, Backend* backend, const SLUIWindowConfig& cfg)
     if (cfg.theme) {
         abi = *cfg.theme;
     } else {
-        theme_fill_preset(&abi, SLUI_THEME_SLICK_BLACK);
+        theme_fill_preset(&abi, SLUI_THEME_SLEELA_BASE);
     }
     theme_ = Theme::from_abi(abi);
 

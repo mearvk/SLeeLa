@@ -5,17 +5,18 @@
 **SLeeLa's own, original User Interface toolkit** — a self-contained C/C++
 widget library with a software rasterizer and native per-OS backends. It is
 **not** GTK, Qt, wxWidgets, or a wrapper around any of them: SleelaUI draws its
-own widgets with its own 2D rasterizer, so its signature **Slick Black** matte
-look is pixel-identical on every target. It talks to the real host window
-system through one small backend interface with three implementations.
+own widgets with its own 2D rasterizer, so its look is pixel-identical on every
+target. Its base colour is a deep warm **`#2B1608`** (configurable at code or
+config time); the whole palette is derived from it. It talks to the real host
+window system through one small backend interface with three implementations.
 
 > SleelaUI™ — MEARVK LLC. Original SLeeLa work.
 
-![SleelaUI Slick Black preview](docs/preview.png)
+![SleelaUI preview on the #2B1608 base](docs/preview.png)
 
-*The Slick Black default theme, rendered by the toolkit's own software
-rasterizer. Regenerate with `make snapshot` (no display required). The schematic
-text is the headless preview font; real backends render system glyphs.*
+*The default warm theme (base colour #2B1608), rendered by the toolkit's own
+software rasterizer. Regenerate with `make snapshot` (no display required). The
+schematic text is the headless preview font; real backends render system glyphs.*
 
 ## Status & platform support
 
@@ -100,6 +101,15 @@ set** (lines, rects, circles, ellipses, arcs, triangles, gradients, text,
 blits), and a **frame clock** for refresh-rate pacing. The animated **canvas
 view** widget hands your draw callback a context each frame. Full reference:
 [`DRAW-API.md`](DRAW-API.md).
+
+### Lighting, shadow & relief
+
+Canvas-aware objects can be lit for genuine **relief** — directional highlights,
+raised/recessed surfaces, soft cast shadows, and ambient occlusion — on Sleela's
+warm base. Lights come from a **source** (reserves its anchor object) or an
+**emitter** (reserves nothing, reusable); both light and shadow are emissions
+chosen by polarity. See [`LIGHTING.md`](LIGHTING.md)
+([`sleela_ui_light.h`](include/sleela_ui_light.h)).
 
 ## Quick start (C)
 

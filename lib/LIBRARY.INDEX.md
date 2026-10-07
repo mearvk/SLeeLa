@@ -1,11 +1,29 @@
 # SLeeLa /lib Library Index
 
-**Revision:** 0.36  
+**Revision:** 0.37  
 **Packages:** 86  
-**SLeeLa source units:** 10370  
+**SLeeLa source units:** 10373  
 **Module-facade symbols:** 58  
-**Total symbol records:** 10428  
+**Total symbol records:** 10431  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
+
+> Revision 0.37 sets Sleela's UI **base colour to #2B1608** (a deep warm umber;
+> the default `SLUI_THEME_SLEELA_BASE`, configurable at code or config time, with
+> the whole warm palette derived from the one base) and adds a **lighting /
+> shadow / relief** system for Canvas-aware objects. Three new one-class-per-file
+> Master Classes in `user-interface`: `SLLight` (a light descriptor with a KIND,
+> a ROLE — SOURCE reserves its anchor object, EMITTER reserves nothing — and a
+> POLARITY so both light and shadow are first-class emissions), `SLLightScene`
+> (a scene owning the source-reservation table and ambient fill), and
+> `SLMaterial` (a relief profile — flat/rounded/bevel/engraved/embossed — plus
+> depth, gloss, and occlusion). `SLTheme` gains base-colour hooks (setBaseColor /
+> loadConfig). Each bottoms out in `ui*`/`light*` SLVM built-ins calling the
+> genuine C ABI (`sleela_ui_light.h`); see `user-interface/LIGHTING.md` and
+> `user-interface/THEMING.md`. Three new source units: 10,428 -> **10,431** total
+> records (10,370 -> **10,373** source classes); facade and package counts
+> unchanged at 58 and 86. `LIBRARY.SYMBOLS.md` was regenerated from the live tree
+> and the counts are verified in lockstep by
+> `test-suites/test-library-inventory.sh`.
 
 > Revision 0.36 adds motion and a comprehensive drawing surface to the
 > **`user-interface`** package: four new one-class-per-file Master Classes.

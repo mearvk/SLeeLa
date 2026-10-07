@@ -1,0 +1,46 @@
+/*
+ * lib/user-interface/SLMaterial.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLMaterial — how a Canvas-aware object catches light. The
+ *   RELIEF profile is a height model the lighting uses to compute surface
+ *   normals, which is what produces the raised/recessed "quality relief": a
+ *   smooth dome (ROUNDED), a crisp chamfer (BEVEL), an inset the shape reads as
+ *   pressed INTO the floor (ENGRAVED), or a raised plateau standing OFF the
+ *   floor (EMBOSSED). It also carries depth (how pronounced), gloss (specular
+ *   sheen), occlusion (how much darkness pools in the creases), and the edge
+ *   band width. It is a pure value object passed to SLLightScene painting
+ *   helpers and to a canvas widget's light attachment.
+ *
+ * Family: user-interface. Mirrors SLUIMaterial in the SleelaUI Lighting C ABI.
+ */
+#sleela 1.5
+class SLMaterial {
+  // Relief-profile ordinals (mirror SLUIReliefProfile).
+  static final int FLAT     = 0;
+  static final int ROUNDED  = 1;
+  static final int BEVEL    = 2;
+  static final int ENGRAVED = 3;
+  static final int EMBOSSED = 4;
+
+  int profile;
+  double depth;      // relief height in px
+  double gloss;      // 0 matte .. 1 mirror (specular sheen)
+  double occlusion;  // 0..1 ambient-occlusion darkening in the creases
+  double edgePx;     // bevel/edge band width in px
+
+  // Fill a material for a profile at a given relief depth, with sensible
+  // defaults for gloss/occlusion/edge the host may then tune.
+  void of(int reliefProfile, double reliefDepth) {
+    profile = reliefProfile;
+    depth = reliefDepth;
+    gloss = 0.35;
+    occlusion = 0.4;
+    edgePx = 6.0;
+  }
+
+  // Common relief shorthands.
+  void rounded(double depth)  { of(ROUNDED, depth); }
+  void bevel(double depth)    { of(BEVEL, depth); }
+  void engraved(double depth) { of(ENGRAVED, depth); }
+  void embossed(double depth) { of(EMBOSSED, depth); }
+}

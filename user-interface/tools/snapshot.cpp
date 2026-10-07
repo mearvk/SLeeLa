@@ -134,7 +134,7 @@ int main(int argc, char** argv) {
     }
 
     SLUITheme abi;
-    theme_fill_preset(&abi, SLUI_THEME_SLICK_BLACK);
+    theme_fill_preset(&abi, SLUI_THEME_SLEELA_BASE);
     SLUIWindowConfig cfg{};
     cfg.title = "SleelaUI Widget Collection";
     cfg.width = 760;

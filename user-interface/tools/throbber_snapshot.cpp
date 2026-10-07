@@ -118,7 +118,7 @@ int main(int argc, char** argv) {
         return 1;
     }
     SLUITheme abi;
-    theme_fill_preset(&abi, SLUI_THEME_SLICK_BLACK);
+    theme_fill_preset(&abi, SLUI_THEME_SLEELA_BASE);
     SLUIWindowConfig cfg{};
     cfg.title = "SleelaUI Throbber";
     cfg.width = 460;

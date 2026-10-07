@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 10370
+library-source-files: 10373
 library-packages: 86
 module-facade-symbols: 58
-total-symbol-records: 10428
+total-symbol-records: 10431
 
 package	symbol	path	kind
 antivirus	SLPackage.sleela	lib/antivirus/SLPackage.sleela	facade
@@ -10314,7 +10314,10 @@ user-interface	SLImage.sleela	lib/user-interface/SLImage.sleela	source
 user-interface	SLInfoBar.sleela	lib/user-interface/SLInfoBar.sleela	source
 user-interface	SLLabel.sleela	lib/user-interface/SLLabel.sleela	source
 user-interface	SLLevelBar.sleela	lib/user-interface/SLLevelBar.sleela	source
+user-interface	SLLight.sleela	lib/user-interface/SLLight.sleela	source
+user-interface	SLLightScene.sleela	lib/user-interface/SLLightScene.sleela	source
 user-interface	SLLinkButton.sleela	lib/user-interface/SLLinkButton.sleela	source
+user-interface	SLMaterial.sleela	lib/user-interface/SLMaterial.sleela	source
 user-interface	SLPackage.sleela	lib/user-interface/SLPackage.sleela	facade
 user-interface	SLPasswordEntry.sleela	lib/user-interface/SLPasswordEntry.sleela	source
 user-interface	SLProgressBar.sleela	lib/user-interface/SLProgressBar.sleela	source

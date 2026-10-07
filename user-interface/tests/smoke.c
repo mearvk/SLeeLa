@@ -10,6 +10,7 @@
  * ===========================================================================*/
 #include "sleela_ui.h"
 #include "sleela_ui_draw.h"
+#include "sleela_ui_light.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -46,6 +47,22 @@ int main(void) {
     slui_theme_preset(&black, SLUI_THEME_SLICK_BLACK);
     slui_theme_preset(&graphite, SLUI_THEME_GRAPHITE);
     CHECK(black.id == SLUI_THEME_SLICK_BLACK, "slick black preset id");
+
+    /* --- Sleela base colour (#2B1608) is the default theme ------------- */
+    SLUITheme base;
+    slui_theme_preset(&base, SLUI_THEME_SLEELA_BASE);
+    CHECK(base.id == SLUI_THEME_SLEELA_BASE, "sleela base preset id");
+    CHECK(((base.bg >> 24) & 0xFF) == 0x2B && ((base.bg >> 16) & 0xFF) == 0x16 &&
+              ((base.bg >> 8) & 0xFF) == 0x08,
+          "base colour floor is #2B1608");
+    /* surfaces are lighter warm tints of the floor */
+    CHECK(((base.surface >> 24) & 0xFF) > 0x2B, "surface lighter than base");
+    /* configurable: re-derive from a different base in place */
+    SLUITheme recol;
+    slui_theme_preset(&recol, SLUI_THEME_SLEELA_BASE);
+    slui_theme_set_base_color(&recol, 0x113355FFu);
+    CHECK(((recol.bg >> 24) & 0xFF) == 0x11 && ((recol.bg >> 8) & 0xFF) == 0x55,
+          "base colour reconfigured in place");
     CHECK(black.control_height >= 32, "control height clears 32px hit target");
     CHECK(black.unit == 4, "spacing unit is 4px");
     CHECK(black.fg == slui_rgb(0xff, 0xff, 0xff), "slick black primary text is white");
@@ -213,6 +230,55 @@ int main(void) {
     while (slui_frame_clock_fixed_step(fc, 0.001) && steps < 100) ++steps;
     CHECK(steps >= 0, "fixed-step drains without hanging");
     slui_frame_clock_destroy(fc);
+
+    /* --- Lighting & shadow: sources, emitters, relief ------------------ */
+    SLUILightScene* scene = slui_light_scene_create();
+    CHECK(scene != NULL, "light scene created");
+    /* An EMITTER reserves nothing and can be added freely. */
+    int e0 = slui_light_scene_add_emitter(
+        scene, slui_light_directional(-1, 1, 1.0, slui_rgb(255, 240, 220)));
+    int e1 = slui_light_scene_add_emitter(
+        scene, slui_shadow_point(10, 10, 80, 0.8, slui_rgb(0, 0, 0)));
+    CHECK(e0 >= 0 && e1 >= 0, "emitters added (reserve nothing)");
+    CHECK(slui_light_scene_count(scene) == 2, "scene has two emissions");
+    /* A SOURCE reserves its anchor; a second source on the same anchor fails. */
+    int anchor = 4242;
+    int s0 = slui_light_scene_add_source(
+        scene, anchor, slui_light_point(0, 0, 60, 1.0, slui_rgb(255, 200, 120)));
+    CHECK(s0 >= 0, "source added, anchor reserved");
+    CHECK(slui_light_scene_anchor_reserved(scene, anchor) == 1,
+          "anchor reads as reserved (used as a source)");
+    int s1 = slui_light_scene_add_source(
+        scene, anchor, slui_light_point(0, 0, 60, 1.0, slui_rgb(255, 0, 0)));
+    CHECK(s1 == SLUI_ERR_BACKEND, "second source on same anchor is refused");
+    /* releasing frees the anchor to be a source again */
+    slui_light_scene_release_source(scene, anchor);
+    CHECK(slui_light_scene_anchor_reserved(scene, anchor) == 0,
+          "anchor freed after release");
+    /* An emitter on the same id always works (reserves nothing). */
+    int e2 = slui_light_scene_add_emitter(
+        scene, slui_light_point(0, 0, 60, 1.0, slui_rgb(255, 255, 255)));
+    CHECK(e2 >= 0, "emitter never blocked by reservation");
+
+    /* Relief lighting changes the pixels of a filled shape (quality relief). */
+    SLUIDrawContext* ldc = slui_draw_create(80, 80, SLUI_BUFFER_SINGLE);
+    slui_draw_clear(ldc, 0x2B1608FF);
+    SLUILightScene* lit = slui_light_scene_create();
+    slui_light_scene_add_emitter(
+        lit, slui_light_directional(-1, 1, 1.2, slui_rgb(255, 240, 220)));
+    SLUIMaterial mat = slui_material(SLUI_RELIEF_EMBOSSED, 6.0);
+    slui_light_panel(ldc, (SLUIRect){16, 16, 48, 48}, 10.0,
+                     slui_rgb(0x6B, 0x3C, 0x18), mat, lit);
+    /* The top-left (toward the light) should be brighter than the bottom-right
+     * (away) -- the signature of directional relief. */
+    SLUIColor tl = slui_draw_get_pixel(ldc, 22, 22);
+    SLUIColor br = slui_draw_get_pixel(ldc, 58, 58);
+    int tl_lum = ((tl >> 24) & 0xFF) + ((tl >> 16) & 0xFF) + ((tl >> 8) & 0xFF);
+    int br_lum = ((br >> 24) & 0xFF) + ((br >> 16) & 0xFF) + ((br >> 8) & 0xFF);
+    CHECK(tl_lum > br_lum, "relief: lit facet brighter than shadowed facet");
+    slui_light_scene_destroy(lit);
+    slui_draw_destroy(ldc);
+    slui_light_scene_destroy(scene);
 
     printf("\n%s (%d failure%s)\n", g_failures ? "FAILED" : "PASSED",
            g_failures, g_failures == 1 ? "" : "s");
