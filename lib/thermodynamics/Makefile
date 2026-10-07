@@ -8,11 +8,11 @@ CXXFLAGS ?= -std=c++17 -Wall -Wextra -Wpedantic
 LDLIBS ?= -lm
 BUILD_DIR ?= build
 
-C_SOURCES := src/thermodynamics.c src/thermo_stochastic.c
+C_SOURCES := src/thermodynamics.c src/thermo_stochastic.c src/thermo_slots.c
 CPP_SOURCES := src/thermodynamics.cpp
 C_OBJECTS := $(patsubst src/%.c,$(BUILD_DIR)/%.c.o,$(C_SOURCES))
 CPP_OBJECTS := $(patsubst src/%.cpp,$(BUILD_DIR)/%.cpp.o,$(CPP_SOURCES))
-LIB_C_OBJECTS := $(BUILD_DIR)/thermodynamics.c.o $(BUILD_DIR)/thermo_stochastic.c.o
+LIB_C_OBJECTS := $(BUILD_DIR)/thermodynamics.c.o $(BUILD_DIR)/thermo_stochastic.c.o $(BUILD_DIR)/thermo_slots.c.o
 
 .PHONY: all native selftest sanity clean help
 all: native selftest sanity
@@ -26,6 +26,8 @@ selftest: $(LIB_C_OBJECTS) $(BUILD_DIR)/thermodynamics.cpp.o | $(BUILD_DIR)
 	$(BUILD_DIR)/vignette_demo
 	$(CC) $(CPPFLAGS) $(CFLAGS) src/stochastic_demo.c $(LIB_C_OBJECTS) -o $(BUILD_DIR)/stochastic_demo $(LDLIBS)
 	$(BUILD_DIR)/stochastic_demo
+	$(CC) $(CPPFLAGS) $(CFLAGS) src/slots_demo.c $(LIB_C_OBJECTS) -o $(BUILD_DIR)/slots_demo $(LDLIBS)
+	$(BUILD_DIR)/slots_demo
 
 sanity:
 	@printf '%s\n' 'SLeeLa thermodynamics package sanity check'
@@ -33,6 +35,7 @@ sanity:
 	@printf '%s\n' '  statistical mechanics: partition function, Boltzmann probability, mean energy'
 	@printf '%s\n' '  multivariable (3D model): gradient, divergence, Laplacian, FTCS heat equation'
 	@printf '%s\n' '  stochastic: Langevin noise step, Monte Carlo over futures, Arrhenius log-rate'
+	@printf '%s\n' '  slot caps (enforced): futures<=22, positive gains<=6, long-term confidences<=2'
 	@printf '%s\n' '  native boundary: C ABI (thermodynamics.c) + C++ orchestration (thermodynamics.cpp)'
 	@printf '%s\n' '  stability rule: FTCS requires dt <= h^2 / (6 alpha)'
 
