@@ -9,6 +9,23 @@ Max Rupplin - MEARVK LLC - 2026
 
 The `/lib/compiler` package is the SLeeLa-sourced compiler design and implementation layer. It is VM-ready: compiler declarations are written in `.sleela`, and the native C/C++ layer provides a stable implementation boundary for compiler services.
 
+## Multi-language framework
+
+The package also provides a **modular framework for building compilers for any
+publicly known programming language** (C, C++, Java, Python, JavaScript, Rust,
+Go, …). A developer adds a language by writing one small SLeeLa front end that
+extends `SLLanguageCompiler`; many independent front ends register into one
+shared `SLCompilerRegistry` with no per-language allow-list. Each front end
+lowers its own language toward the common SLeeLa IR and a VM-ready artifact.
+
+See [`MULTI-LANGUAGE.FRAMEWORK.md`](MULTI-LANGUAGE.FRAMEWORK.md) for the full
+reference, the per-language front ends under [`frontends/`](frontends/), and
+lesson [`tutorials/04-building-a-language-front-end.md`](tutorials/04-building-a-language-front-end.md).
+
+The framework identifies, plans, and reports; it never executes an input
+program. Compilation is not execution — a produced artifact runs only later
+across an explicit SLeeLa VM/OS and security boundary.
+
 ## Authority
 
 The authoritative path is:

@@ -1,0 +1,38 @@
+// SLeeLa Compiler tutorial example — modular multi-language framework.
+//
+// Register several language front ends into one shared registry, resolve an
+// input file to a front end by extension, and plan a compile toward a target.
+// Each language is an independent SLLanguageCompiler subclass under
+// lib/compiler/frontends/<language>/.
+#sleela 1.3
+class MultiLanguageRegistryExample {
+
+  function main() {
+    SLCompilerRegistry registry = new SLCompilerRegistry();
+    registry.reset();
+
+    // Register front ends for several publicly known languages. A developer can
+    // register as many implementations as they like.
+    CLanguageCompiler c = new CLanguageCompiler();            c.configure();
+    CppLanguageCompiler cpp = new CppLanguageCompiler();      cpp.configure();
+    JavaLanguageCompiler java = new JavaLanguageCompiler();   java.configure();
+    PythonLanguageCompiler py = new PythonLanguageCompiler(); py.configure();
+
+    registry.add(c);
+    registry.add(cpp);
+    registry.add(java);
+    registry.add(py);
+
+    // Resolve an input file to its front end by extension (unresolved => "").
+    text language = registry.resolveByExtension("widget.cpp"); // -> "C++"
+
+    // Plan a compile of a C source toward the SLeeLa VM artifact.
+    SLCompileRequest request = new SLCompileRequest();
+    request.configure("C", "util.c", SLLanguageCompiler.TARGET_SLVM);
+
+    SLCompilePlan plan = c.planCompile(request);
+    boolean ready = plan.isVMReady(); // true: C provides every required phase
+
+    return ready;
+  }
+}

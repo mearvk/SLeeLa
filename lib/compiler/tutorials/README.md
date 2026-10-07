@@ -9,7 +9,8 @@ These tutorials teach /lib/compiler from authoritative .sleela source through se
 1. 01-source-to-vm.md — source through the compiler pipeline.
 2. 02-compiler-manager-and-profiles.md — Basic/Complete and Advanced/Total checks.
 3. 03-language-and-binary-format-reference.md — language, producer, toolchain, and binary mappings.
-4. examples/hello-vm.sleela and examples/advanced-vm-target.sleela — source examples.
+4. 04-building-a-language-front-end.md — build a compiler for any public language with the modular framework.
+5. examples/hello-vm.sleela, examples/advanced-vm-target.sleela, and examples/multi-language-registry.sleela — source examples.
 
 ## Pipeline
 
