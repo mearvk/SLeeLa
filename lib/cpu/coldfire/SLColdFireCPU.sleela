@@ -1,0 +1,43 @@
+# SLColdFireCPU
+
+class SLColdFireCPU {
+  architecture;
+  profile;
+  clock;
+  programCounter;
+  statusRegister;
+  dataRegisters;
+  addressRegisters;
+  instructionFetch;
+  decoder;
+  effectiveAddressUnit;
+  integerUnit;
+  macUnit;
+  floatingPointUnit;
+  mmu;
+  tlb;
+  instructionCache;
+  dataCache;
+  exceptionController;
+  interruptController;
+  debugController;
+  busArbiter;
+  ioBus;
+  couplers;
+
+  reset();
+  fetch();
+  decode();
+  calculateEffectiveAddress();
+  executeInteger();
+  executeMac();
+  executeFloatingPoint();
+  translateAddress();
+  cacheCycle();
+  memoryCycle();
+  handleException();
+  handleInterrupt();
+  debug();
+  complete();
+  validate();
+}
