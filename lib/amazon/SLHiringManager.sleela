@@ -1,0 +1,8 @@
+#sleela 1.3
+class SLHiringManager {
+    string name() { return "SLHiringManager"; }
+    string decide(string role, double fit) {
+        if (fit >= 0.70) { return "REVIEW_FOR_HIRE"; }
+        return "DEVELOP_OR_REASSESS";
+    }
+}
