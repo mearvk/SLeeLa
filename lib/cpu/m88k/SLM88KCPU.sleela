@@ -1,0 +1,39 @@
+# SLM88KCPU
+
+class SLM88KCPU {
+  architecture;
+  clock;
+  registers;
+  controlRegisters;
+  programCounter;
+  decoder;
+  integerUnit;
+  shiftUnit;
+  multiplyDivideUnit;
+  floatingPointUnit;
+  branchUnit;
+  loadStoreUnit;
+  scoreboard;
+  pipeline;
+  mmu;
+  tlb;
+  cache;
+  trapController;
+  interruptController;
+  busArbiter;
+  ioBus;
+  couplers;
+
+  reset();
+  fetch();
+  decode();
+  issue();
+  execute();
+  memoryTranslate();
+  memoryCycle();
+  branch();
+  trap();
+  interrupt();
+  retire();
+  validate();
+}
