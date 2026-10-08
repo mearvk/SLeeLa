@@ -1,0 +1,8 @@
+#sleela 1.3
+class SLFiringManager {
+    string name() { return "SLFiringManager"; }
+    string decide(string reason, boolean documented) {
+        if (documented) { return "HUMAN_REVIEW_REQUIRED"; }
+        return "DO_NOT_PROCEED";
+    }
+}
