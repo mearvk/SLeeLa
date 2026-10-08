@@ -1,0 +1,36 @@
+# SL68020CPU
+
+class SL68020CPU {
+  architecture;
+  clock;
+  programCounter;
+  statusRegister;
+  dataRegisters;
+  addressRegisters;
+  instructionPrefetch;
+  instructionCache;
+  decoder;
+  effectiveAddressUnit;
+  integerUnit;
+  shiftUnit;
+  branchUnit;
+  exceptionController;
+  coprocessorInterface;
+  busInterface;
+  busArbiter;
+  ioBus;
+  couplers;
+
+  reset();
+  prefetch();
+  decode();
+  calculateEffectiveAddress();
+  execute();
+  memoryCycle();
+  coprocessorCycle();
+  branch();
+  handleException();
+  handleInterrupt();
+  complete();
+  validate();
+}
