@@ -1,0 +1,8 @@
+#sleela 1.3
+class SLCollegeManager {
+    string name() { return "SLCollegeManager"; }
+    string courseFor(double trainingNeed) {
+        if (trainingNeed >= 0.75) { return "FOUNDATIONS_AND_SAFETY"; }
+        return "CONTINUING_EDUCATION";
+    }
+}
