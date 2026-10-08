@@ -1,0 +1,8 @@
+#sleela 1.3
+class SLFashionGearManager {
+    string name() { return "SLFashionGearManager"; }
+    string outfit(string role, boolean required) {
+        if (required) { return "ROLE_APPROPRIATE_GEAR"; }
+        return "OPTIONAL_STYLE_WITH_POLICY_CHECK";
+    }
+}
