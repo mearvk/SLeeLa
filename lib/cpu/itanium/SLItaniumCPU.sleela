@@ -1,0 +1,48 @@
+# SLItaniumCPU
+
+class SLItaniumCPU {
+  architecture;
+  clock;
+  bundleFetcher;
+  templateDecoder;
+  generalRegisters;
+  floatingPointRegisters;
+  predicateRegisters;
+  branchRegisters;
+  applicationRegisters;
+  controlRegisters;
+  rotatingRegisterEngine;
+  registerStackEngine;
+  integerUnits;
+  floatingPointUnits;
+  branchUnits;
+  loadStoreUnits;
+  speculationUnit;
+  issueScheduler;
+  mmu;
+  tlb;
+  cache;
+  trapController;
+  interruptController;
+  compatibilityX86;
+  busArbiter;
+  ioBus;
+  couplers;
+
+  reset();
+  fetchBundle();
+  decodeTemplate();
+  decodeSlots();
+  predicate();
+  issue();
+  execute();
+  memoryTranslate();
+  memoryCycle();
+  rotateRegisters();
+  manageRegisterStack();
+  checkSpeculation();
+  trap();
+  interrupt();
+  retire();
+  validate();
+}
