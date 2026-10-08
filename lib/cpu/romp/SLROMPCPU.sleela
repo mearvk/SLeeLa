@@ -1,0 +1,38 @@
+# SLROMPCPU
+
+class SLROMPCPU {
+  architecture;
+  profile;
+  clock;
+  registers;
+  programCounter;
+  controlState;
+  instructionFetch;
+  decoder;
+  integerUnit;
+  branchUnit;
+  loadStoreUnit;
+  mmu;
+  tlb;
+  instructionCache;
+  dataCache;
+  exceptionController;
+  interruptController;
+  busArbiter;
+  ioBus;
+  couplers;
+
+  reset();
+  fetch();
+  decode();
+  readRegisters();
+  executeInteger();
+  executeBranch();
+  translateAddress();
+  cacheCycle();
+  memoryCycle();
+  handleException();
+  handleInterrupt();
+  complete();
+  validate();
+}
