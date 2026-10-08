@@ -1,0 +1,40 @@
+# SLWeitekPowerCPU
+
+class SLWeitekPowerCPU {
+  architecture;
+  profile;
+  clock;
+  integerRegisters;
+  floatingPointRegisters;
+  programCounter;
+  controlState;
+  instructionFetch;
+  decoder;
+  integerUnit;
+  floatingPointUnit;
+  loadStoreUnit;
+  branchUnit;
+  mmu;
+  tlb;
+  instructionCache;
+  dataCache;
+  exceptionController;
+  interruptController;
+  busArbiter;
+  ioBus;
+  couplers;
+
+  reset();
+  fetch();
+  decode();
+  executeInteger();
+  executeFloatingPoint();
+  executeBranch();
+  translateAddress();
+  cacheCycle();
+  memoryCycle();
+  handleException();
+  handleInterrupt();
+  complete();
+  validate();
+}
