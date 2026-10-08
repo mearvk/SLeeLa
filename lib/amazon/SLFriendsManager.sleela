@@ -1,0 +1,8 @@
+#sleela 1.3
+class SLFriendsManager {
+    string name() { return "SLFriendsManager"; }
+    string connect(string a, string b) {
+        if (a != b && a != "" && b != "") { return "HEALTHY_CONNECTION"; }
+        return "NO_CONNECTION";
+    }
+}
