@@ -1,0 +1,42 @@
+# SLNS32000CPU
+
+class SLNS32000CPU {
+  architecture;
+  profile;
+  clock;
+  registers;
+  programCounter;
+  processorStatus;
+  instructionFetch;
+  decoder;
+  operandUnit;
+  effectiveAddressUnit;
+  integerUnit;
+  multiplyDivideUnit;
+  floatingPointUnit;
+  mmu;
+  tlb;
+  instructionCache;
+  dataCache;
+  exceptionController;
+  interruptController;
+  busArbiter;
+  ioBus;
+  couplers;
+
+  reset();
+  fetch();
+  decode();
+  decodeOperands();
+  calculateEffectiveAddress();
+  executeInteger();
+  executeMultiplyDivide();
+  executeFloatingPoint();
+  translateAddress();
+  cacheCycle();
+  memoryCycle();
+  handleException();
+  handleInterrupt();
+  complete();
+  validate();
+}
