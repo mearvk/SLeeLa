@@ -1,0 +1,41 @@
+# SLRISCVCPU
+
+class SLRISCVCPU {
+  xlen;
+  isaExtensions;
+  privilegeProfile;
+  clock;
+  registers;
+  programCounter;
+  decoder;
+  immediateGenerator;
+  integerUnit;
+  branchUnit;
+  multiplyDivideUnit;
+  atomicUnit;
+  floatingPointUnit;
+  vectorUnit;
+  loadStoreUnit;
+  csrFile;
+  pipeline;
+  mmu;
+  tlb;
+  cache;
+  interruptController;
+  busArbiter;
+  ioBus;
+  couplers;
+
+  reset();
+  fetch();
+  decode();
+  execute();
+  memoryTranslate();
+  memoryCycle();
+  branch();
+  systemInstruction();
+  trap();
+  interrupt();
+  retire();
+  validate();
+}
