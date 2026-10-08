@@ -1,0 +1,8 @@
+#sleela 1.3
+class SLTalentManager {
+    string name() { return "SLTalentManager"; }
+    string develop(double skill, double mentorship) {
+        if (skill < 0.60 || mentorship < 0.50) { return "MENTOR_AND_TRAIN"; }
+        return "ADVANCE_OR_SPECIALIZE";
+    }
+}
