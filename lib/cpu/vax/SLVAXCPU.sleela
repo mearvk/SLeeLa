@@ -1,0 +1,42 @@
+# SLVAXCPU
+
+class SLVAXCPU {
+  architecture;
+  profile;
+  clock;
+  registers;
+  programCounter;
+  processorStatus;
+  instructionFetch;
+  decoder;
+  operandUnit;
+  effectiveAddressUnit;
+  integerUnit;
+  floatingPointUnit;
+  stringUnit;
+  mmu;
+  tlb;
+  instructionCache;
+  dataCache;
+  exceptionController;
+  interruptController;
+  busArbiter;
+  ioBus;
+  couplers;
+
+  reset();
+  fetch();
+  decode();
+  decodeOperands();
+  calculateEffectiveAddress();
+  executeInteger();
+  executeFloatingPoint();
+  executeString();
+  translateAddress();
+  cacheCycle();
+  memoryCycle();
+  handleException();
+  handleInterrupt();
+  complete();
+  validate();
+}
