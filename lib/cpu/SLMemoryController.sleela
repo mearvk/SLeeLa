@@ -1,0 +1,2 @@
+# SLMemoryController
+class SLMemoryController { addressWidth; dataWidth; timing; channels; memoryMap; read(address); write(address, value); }
