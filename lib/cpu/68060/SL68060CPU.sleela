@@ -1,0 +1,50 @@
+# SL68060CPU
+
+class SL68060CPU {
+  architecture;
+  profile;
+  clock;
+  programCounter;
+  statusRegister;
+  dataRegisters;
+  addressRegisters;
+  instructionBuffer;
+  decoder;
+  branchPredictor;
+  branchUnit;
+  dispatchUnit;
+  issueUnit;
+  integerUnits;
+  addressGenerationUnits;
+  floatingPointUnit;
+  instructionCache;
+  dataCache;
+  mmu;
+  addressTranslation;
+  cacheController;
+  exceptionController;
+  interruptController;
+  burstBusInterface;
+  busArbiter;
+  ioBus;
+  completionUnit;
+  couplers;
+
+  reset();
+  fetch();
+  bufferInstruction();
+  decode();
+  predictBranch();
+  dispatch();
+  issue();
+  executeInteger();
+  executeFloatingPoint();
+  calculateAddress();
+  translateAddress();
+  cacheCycle();
+  burstCycle();
+  handleException();
+  handleInterrupt();
+  complete();
+  validate();
+}
