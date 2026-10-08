@@ -1,0 +1,33 @@
+# SLMIPSCPU
+
+class SLMIPSCPU {
+  architecture;
+  clock;
+  registers;
+  hi;
+  lo;
+  pc;
+  pipeline;
+  instructionFetch;
+  executionUnit;
+  ioBus;
+  interrupts;
+  busArbiter;
+  couplers;
+  cp0;
+  cache = implementation_defined;
+  mmu = implementation_defined;
+  tlb = implementation_defined;
+  dma = external;
+
+  reset();
+  fetch();
+  decode();
+  execute();
+  memoryCycle();
+  writeback();
+  branchDelaySlot();
+  exception();
+  interrupt();
+  validate();
+}
