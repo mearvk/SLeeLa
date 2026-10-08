@@ -1,0 +1,35 @@
+# SLPDP11CPU
+
+class SLPDP11CPU {
+  architecture;
+  profile;
+  clock;
+  registers;
+  programCounter;
+  processorStatus;
+  instructionRegister;
+  decoder;
+  addressUnit;
+  integerUnit;
+  conditionCodes;
+  memoryController;
+  memoryManagement;
+  interruptController;
+  busArbiter;
+  ioBus;
+  dmaController;
+  couplers;
+
+  reset();
+  fetch();
+  decode();
+  calculateEffectiveAddress();
+  readOperand();
+  execute();
+  writeOperand();
+  updateConditionCodes();
+  serviceInterrupt();
+  serviceTrap();
+  complete();
+  validate();
+}
