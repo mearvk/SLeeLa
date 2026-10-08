@@ -1,0 +1,37 @@
+# SLARMCPU
+
+class SLARMCPU {
+  architecture;
+  executionState;
+  clock;
+  registers;
+  instructionFetch;
+  decoder;
+  integerUnits;
+  branchUnit;
+  loadStoreUnit;
+  floatingPointUnit;
+  simdUnit;
+  pipeline;
+  mmu;
+  tlb;
+  cache;
+  systemRegisters;
+  interrupts;
+  securityState;
+  busArbiter;
+  ioBus;
+  couplers;
+
+  reset();
+  fetch();
+  decode();
+  execute();
+  memoryTranslate();
+  memoryCycle();
+  branch();
+  exception();
+  interrupt();
+  retire();
+  validate();
+}
