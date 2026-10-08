@@ -1,0 +1,37 @@
+# SLPowerPCCPU
+
+class SLPowerPCCPU {
+  architecture;
+  clock;
+  registers;
+  branchProcessor;
+  fixedPointUnit;
+  floatingPointUnit;
+  loadStoreUnit;
+  pipeline;
+  instructionFetch;
+  ioBus;
+  interrupts;
+  busArbiter;
+  couplers;
+  msr;
+  specialPurposeRegisters;
+  cache = implementation_defined;
+  mmu = implementation_defined;
+  tlb = implementation_defined;
+  dma = external;
+
+  reset();
+  fetch();
+  decode();
+  dispatch();
+  executeInteger();
+  executeFloat();
+  load();
+  store();
+  branch();
+  complete();
+  exception();
+  interrupt();
+  validate();
+}
