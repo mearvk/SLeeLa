@@ -1,0 +1,2 @@
+# SLIOTiming
+class SLIOTiming { setupCycles; waitCycles; transferCycles; completionCycles; interruptCycles; measure(transaction); }
