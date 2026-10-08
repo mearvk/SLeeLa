@@ -23,6 +23,22 @@
       "sha256": "6f615ee8bed4ca407de7835173e2d6012cedefa291351d7d63ddc0010da08f3d"
     },
     {
+      "path": "amazon/amazon.c",
+      "sha256": "c742f415a3044ca8705c9450e57d81e692f956e503a2e7a6789a71fa92f13c35"
+    },
+    {
+      "path": "amazon/amazon.cpp",
+      "sha256": "66ecc4808829dbf72720d5873148bdb3d9b0eeff7f556f303d5f2976ef55be8b"
+    },
+    {
+      "path": "amazon/amazon.h",
+      "sha256": "de118e2096a00a182f1fcd60227b8def4c6182d3ff8d41849920d18315355a14"
+    },
+    {
+      "path": "amazon/amazon.hpp",
+      "sha256": "ed7f7f7c025009bdc41e9404f009d3a4ff4f197c09f5e4806cca78331f8b8ded"
+    },
+    {
       "path": "antivirus/src/sleelavirin_heuristic.c",
       "sha256": "2c1bea5d86c3b1b311ec145eeb9b688b0fa0c4f82b705f2b93ade304042af0a5"
     },
@@ -6837,6 +6853,58 @@
     {
       "path": "lib/alphabet/Theme.sleela",
       "sha256": "f8abd36a0902491a40b1d63f2e5c3977219d4d0c1fb2541ab0e2fbcfeabe4226"
+    },
+    {
+      "path": "lib/amazon/SLCollegeManager.sleela",
+      "sha256": "091c7823705e99858576e10430436b3059438d130ccda43f2751ac889d5a5711"
+    },
+    {
+      "path": "lib/amazon/SLFashionGearManager.sleela",
+      "sha256": "c1c55137761cd98d708146b2f11726ba771af84e80ee6d91ca6586a5da1762f1"
+    },
+    {
+      "path": "lib/amazon/SLFiringManager.sleela",
+      "sha256": "739a80b4c1adf4b8ddc56fca27d456b6cd5c4997b4d3b63b20bb76a8c88bf3d0"
+    },
+    {
+      "path": "lib/amazon/SLFriendsManager.sleela",
+      "sha256": "6d2f3690c74bf97840456af229d48254a6002e91ec5d96fff287c2026ab4927f"
+    },
+    {
+      "path": "lib/amazon/SLGearManager.sleela",
+      "sha256": "873772e046feac023c6df3430aa959becec18077b7f5f97d4c12af8347914e16"
+    },
+    {
+      "path": "lib/amazon/SLHiringManager.sleela",
+      "sha256": "b8d259ad4c2336d0f7c205c5c5e2fcd7e058e816c5ddb61bd5753d7f3dfb9dbf"
+    },
+    {
+      "path": "lib/amazon/SLInterTrireManager.sleela",
+      "sha256": "88cebada86e96344a4d024b0cc7d61e41134663054881c59d1c87e4a9caee946"
+    },
+    {
+      "path": "lib/amazon/SLOrganizationManager.sleela",
+      "sha256": "95506696334076006a9944802db67f845ce660d0ae66b8f938ce019d912ea0c5"
+    },
+    {
+      "path": "lib/amazon/SLPackage.sleela",
+      "sha256": "2a1ca9c716cc2bf22f5b03495a0acf1e6635dd0f7450c5e785ca8f6926cea348"
+    },
+    {
+      "path": "lib/amazon/SLRetirementManager.sleela",
+      "sha256": "4ba540baa15fe58768e8696b1de64ecf6f2c6e0cbc3847cbafeb446ca3a2143c"
+    },
+    {
+      "path": "lib/amazon/SLTalentManager.sleela",
+      "sha256": "bee75812820a16da2a15b8d2fb24f8741547c5a56ff4292e794577fc9e29ea2a"
+    },
+    {
+      "path": "lib/amazon/SLWorkforceManager.sleela",
+      "sha256": "4d4ebda6945e36c4eef321a662bc77b820f703550271ab1824f7e907b3d5583d"
+    },
+    {
+      "path": "lib/amazon/SLWorkplaceLaw.sleela",
+      "sha256": "a99ef1b0370dbc716cd36ede26f2c20ac1e7a1df236ef2c363de8fb61beca599"
     },
     {
       "path": "lib/antivirus/SLPackage.sleela",
@@ -48139,6 +48207,106 @@
       "sha256": "1489a44f53c32d6f8408dd600fc55833a22396d195faec9fcab99c0a943d9598"
     },
     {
+      "path": "lib/thermodynamics/curriculum/SLArrhenius.sleela",
+      "sha256": "9e05e630650995312134bed7515a8c5790b5479c91cece88722c43a71a54294b"
+    },
+    {
+      "path": "lib/thermodynamics/curriculum/SLBoltzmann.sleela",
+      "sha256": "1cb9d9c1053afdb753a659cfb6c4169b20e29a72a088e738e7489063ce7ddbf4"
+    },
+    {
+      "path": "lib/thermodynamics/curriculum/SLCarnot.sleela",
+      "sha256": "26077572cc90076c03a84741caa30c78702cae1c6f412aa8983b40ce433aa2d7"
+    },
+    {
+      "path": "lib/thermodynamics/curriculum/SLFourierFlux.sleela",
+      "sha256": "d3d64e6464b58143fba2a0714a03cc48a3c298b7478a397708c2a0f3d06f6996"
+    },
+    {
+      "path": "lib/thermodynamics/curriculum/SLHeatEquation3D.sleela",
+      "sha256": "b22b8235b3015d55d0cc756428a995b12c20575592c346e4c8ca6e73e465fcb2"
+    },
+    {
+      "path": "lib/thermodynamics/curriculum/SLHeatLinear.sleela",
+      "sha256": "09885c1d86b52e8b646d1bc29c0adfed321adc7583aba9aebded01d69c76e79c"
+    },
+    {
+      "path": "lib/thermodynamics/curriculum/SLNewtonCooling.sleela",
+      "sha256": "a705d77caa335187cda2343ba44d2a324edba2ed9411158f1b864f65f757d495"
+    },
+    {
+      "path": "lib/thermodynamics/curriculum/SLSlots.sleela",
+      "sha256": "07cd6ed6dc46c49572d913bf73775d8edb435d68d77d5b3b36bb075802951945"
+    },
+    {
+      "path": "lib/thermodynamics/curriculum/SLStochasticHeat.sleela",
+      "sha256": "31841331c0fdbe4ac50ce90934e80ef3b2963b78db95030724283836729970fc"
+    },
+    {
+      "path": "lib/thermodynamics/curriculum/SLThermodynamicsIV.sleela",
+      "sha256": "972f7a2758fa66524f757477a9e03a88426840abb95f2ac8767c3b9c92d0d3ca"
+    },
+    {
+      "path": "lib/thermodynamics/curriculum/SLThermodynamicsIVDemo.sleela",
+      "sha256": "c3d2a69c3ca66943e794f1cf3524a25b1f5aa8d2c19cb21fb71142d868a8a8fc"
+    },
+    {
+      "path": "lib/thermodynamics/curriculum/courses/SLAdvancedChemicalThermo.sleela",
+      "sha256": "88a53afa56ead6c49bba1e29906c8f56f94f2ada8690d94dddfe7ad36d3c2463"
+    },
+    {
+      "path": "lib/thermodynamics/curriculum/courses/SLCoursesDemo.sleela",
+      "sha256": "d81722b74f3edb61ccd549b53d3a2b242f32e03128dc72bfeb645cce4e3b6dd0"
+    },
+    {
+      "path": "lib/thermodynamics/curriculum/courses/SLStatisticalMechanics.sleela",
+      "sha256": "64438a888f34c34365dd1e702f5c0803c3f2343e0389e4c70372e534b488245a"
+    },
+    {
+      "path": "lib/thermodynamics/curriculum/courses/SLThermoI.sleela",
+      "sha256": "d77d6375034bbd49f58c50984f508893dafe512776fd510dbf0ee0273cdb36f7"
+    },
+    {
+      "path": "lib/thermodynamics/curriculum/courses/SLThermoII.sleela",
+      "sha256": "472e0991d95c34a197799ed6707c09553c9ca8645fe9b264cd8c2afa6d0301d2"
+    },
+    {
+      "path": "lib/thermodynamics/include/thermodynamics.h",
+      "sha256": "684d0ce7aa035815a7bf21833dd44869cf34a789974ae9e7c5d09440019cd8a8"
+    },
+    {
+      "path": "lib/thermodynamics/src/courses_demo.c",
+      "sha256": "7c5a5143cdc66375bf7210753f4a4d1a5c4f52e80f76c6ca8139b11f9a892bb9"
+    },
+    {
+      "path": "lib/thermodynamics/src/slots_demo.c",
+      "sha256": "c63e65040d6998b488542883d198145469ce364ac25899d671f461041deba52b"
+    },
+    {
+      "path": "lib/thermodynamics/src/stochastic_demo.c",
+      "sha256": "4c3668df8722bc86a0571036b62a8593a92cbfe0c85a770f1b8a75e89df6ad1a"
+    },
+    {
+      "path": "lib/thermodynamics/src/thermo_slots.c",
+      "sha256": "bad61768b90082d19e1416fcd8c49cc6448211b154cedc41207164ee4440922c"
+    },
+    {
+      "path": "lib/thermodynamics/src/thermo_stochastic.c",
+      "sha256": "662c9165b9c0580dda9780b542c13b814080670c723f1cb2a690ad719a61cca5"
+    },
+    {
+      "path": "lib/thermodynamics/src/thermodynamics.c",
+      "sha256": "d5d661587644bf49cb8a5a0fab34c0fe244d5a33c459f8cbbb65f3b1a4c63d36"
+    },
+    {
+      "path": "lib/thermodynamics/src/thermodynamics.cpp",
+      "sha256": "00a94ba2ba1fb01717dae45e8b630de6391b026b3b62699eedf4320e276c433f"
+    },
+    {
+      "path": "lib/thermodynamics/src/vignette_demo.c",
+      "sha256": "14502ffe8ea3d2f1e222f955619c9b01ec558e05f470f94ed79addd00ae1e258"
+    },
+    {
       "path": "lib/ui/SLApplication.sleela",
       "sha256": "c531db522e1b74d52f59327c39295420ab53af8258bc56e7438a5a1fe8f07bbc"
     },
@@ -50940,7 +51108,7 @@
     },
     {
       "path": "test-suites/test-library-inventory.sh",
-      "sha256": "a114e0afdfca13b322845b013085e9d2de434b6376c7cc0f0953cbb494db51e5"
+      "sha256": "9e6b1b955adfef27369d8afec5e00640e5e5b89d6f727b1a7639b4dce2de1374"
     },
     {
       "path": "tests/java_api_dependency_suite.py",
@@ -51049,6 +51217,106 @@
     {
       "path": "tests/runtime_smoke.cpp",
       "sha256": "d26c349aff6429421d6030d50f45e2597b73b9ecfac5555460bbf16e0312d318"
+    },
+    {
+      "path": "thermodynamics/curriculum/SLArrhenius.sleela",
+      "sha256": "9e05e630650995312134bed7515a8c5790b5479c91cece88722c43a71a54294b"
+    },
+    {
+      "path": "thermodynamics/curriculum/SLBoltzmann.sleela",
+      "sha256": "1cb9d9c1053afdb753a659cfb6c4169b20e29a72a088e738e7489063ce7ddbf4"
+    },
+    {
+      "path": "thermodynamics/curriculum/SLCarnot.sleela",
+      "sha256": "26077572cc90076c03a84741caa30c78702cae1c6f412aa8983b40ce433aa2d7"
+    },
+    {
+      "path": "thermodynamics/curriculum/SLFourierFlux.sleela",
+      "sha256": "d3d64e6464b58143fba2a0714a03cc48a3c298b7478a397708c2a0f3d06f6996"
+    },
+    {
+      "path": "thermodynamics/curriculum/SLHeatEquation3D.sleela",
+      "sha256": "b22b8235b3015d55d0cc756428a995b12c20575592c346e4c8ca6e73e465fcb2"
+    },
+    {
+      "path": "thermodynamics/curriculum/SLHeatLinear.sleela",
+      "sha256": "09885c1d86b52e8b646d1bc29c0adfed321adc7583aba9aebded01d69c76e79c"
+    },
+    {
+      "path": "thermodynamics/curriculum/SLNewtonCooling.sleela",
+      "sha256": "a705d77caa335187cda2343ba44d2a324edba2ed9411158f1b864f65f757d495"
+    },
+    {
+      "path": "thermodynamics/curriculum/SLSlots.sleela",
+      "sha256": "07cd6ed6dc46c49572d913bf73775d8edb435d68d77d5b3b36bb075802951945"
+    },
+    {
+      "path": "thermodynamics/curriculum/SLStochasticHeat.sleela",
+      "sha256": "31841331c0fdbe4ac50ce90934e80ef3b2963b78db95030724283836729970fc"
+    },
+    {
+      "path": "thermodynamics/curriculum/SLThermodynamicsIV.sleela",
+      "sha256": "972f7a2758fa66524f757477a9e03a88426840abb95f2ac8767c3b9c92d0d3ca"
+    },
+    {
+      "path": "thermodynamics/curriculum/SLThermodynamicsIVDemo.sleela",
+      "sha256": "c3d2a69c3ca66943e794f1cf3524a25b1f5aa8d2c19cb21fb71142d868a8a8fc"
+    },
+    {
+      "path": "thermodynamics/curriculum/courses/SLAdvancedChemicalThermo.sleela",
+      "sha256": "88a53afa56ead6c49bba1e29906c8f56f94f2ada8690d94dddfe7ad36d3c2463"
+    },
+    {
+      "path": "thermodynamics/curriculum/courses/SLCoursesDemo.sleela",
+      "sha256": "d81722b74f3edb61ccd549b53d3a2b242f32e03128dc72bfeb645cce4e3b6dd0"
+    },
+    {
+      "path": "thermodynamics/curriculum/courses/SLStatisticalMechanics.sleela",
+      "sha256": "64438a888f34c34365dd1e702f5c0803c3f2343e0389e4c70372e534b488245a"
+    },
+    {
+      "path": "thermodynamics/curriculum/courses/SLThermoI.sleela",
+      "sha256": "d77d6375034bbd49f58c50984f508893dafe512776fd510dbf0ee0273cdb36f7"
+    },
+    {
+      "path": "thermodynamics/curriculum/courses/SLThermoII.sleela",
+      "sha256": "472e0991d95c34a197799ed6707c09553c9ca8645fe9b264cd8c2afa6d0301d2"
+    },
+    {
+      "path": "thermodynamics/include/thermodynamics.h",
+      "sha256": "684d0ce7aa035815a7bf21833dd44869cf34a789974ae9e7c5d09440019cd8a8"
+    },
+    {
+      "path": "thermodynamics/src/courses_demo.c",
+      "sha256": "7c5a5143cdc66375bf7210753f4a4d1a5c4f52e80f76c6ca8139b11f9a892bb9"
+    },
+    {
+      "path": "thermodynamics/src/slots_demo.c",
+      "sha256": "c63e65040d6998b488542883d198145469ce364ac25899d671f461041deba52b"
+    },
+    {
+      "path": "thermodynamics/src/stochastic_demo.c",
+      "sha256": "4c3668df8722bc86a0571036b62a8593a92cbfe0c85a770f1b8a75e89df6ad1a"
+    },
+    {
+      "path": "thermodynamics/src/thermo_slots.c",
+      "sha256": "bad61768b90082d19e1416fcd8c49cc6448211b154cedc41207164ee4440922c"
+    },
+    {
+      "path": "thermodynamics/src/thermo_stochastic.c",
+      "sha256": "662c9165b9c0580dda9780b542c13b814080670c723f1cb2a690ad719a61cca5"
+    },
+    {
+      "path": "thermodynamics/src/thermodynamics.c",
+      "sha256": "d5d661587644bf49cb8a5a0fab34c0fe244d5a33c459f8cbbb65f3b1a4c63d36"
+    },
+    {
+      "path": "thermodynamics/src/thermodynamics.cpp",
+      "sha256": "00a94ba2ba1fb01717dae45e8b630de6391b026b3b62699eedf4320e276c433f"
+    },
+    {
+      "path": "thermodynamics/src/vignette_demo.c",
+      "sha256": "14502ffe8ea3d2f1e222f955619c9b01ec558e05f470f94ed79addd00ae1e258"
     },
     {
       "path": "tools/add-country-existence-dates.py",
