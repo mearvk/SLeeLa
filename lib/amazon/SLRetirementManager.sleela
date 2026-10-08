@@ -1,0 +1,8 @@
+#sleela 1.3
+class SLRetirementManager {
+    string name() { return "SLRetirementManager"; }
+    string plan(boolean voluntary, double readiness) {
+        if (voluntary && readiness >= 0.70) { return "PLAN_TRANSITION"; }
+        return "DISCUSS_OPTIONS";
+    }
+}
