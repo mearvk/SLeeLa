@@ -1,0 +1,41 @@
+# SLTransputerCPU
+
+class SLTransputerCPU {
+  architecture;
+  profile;
+  clock;
+  instructionPointer;
+  workspacePointer;
+  operandState;
+  processorStatus;
+  instructionFetch;
+  decoder;
+  integerUnit;
+  floatingPointUnit;
+  processScheduler;
+  channelController;
+  linkControllers;
+  timerController;
+  localMemory;
+  memoryController;
+  interruptController;
+  busArbiter;
+  ioBus;
+  couplers;
+
+  reset();
+  fetch();
+  decode();
+  evaluateOperand();
+  executeInteger();
+  executeFloatingPoint();
+  scheduleProcess();
+  sendChannel();
+  receiveChannel();
+  transferLink();
+  memoryCycle();
+  handleEvent();
+  handleInterrupt();
+  complete();
+  validate();
+}
