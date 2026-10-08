@@ -1,0 +1,44 @@
+# SLSuperHCPU
+
+class SLSuperHCPU {
+  architecture;
+  profile;
+  clock;
+  programCounter;
+  procedureRegister;
+  registerFile;
+  statusRegister;
+  controlRegisters;
+  mach;
+  macl;
+  decoder;
+  integerUnit;
+  multiplyAccumulateUnit;
+  branchUnit;
+  loadStoreUnit;
+  fpu;
+  dsp;
+  mmu;
+  itlb;
+  dtlb;
+  instructionCache;
+  dataCache;
+  interruptController;
+  trapController;
+  busArbiter;
+  ioBus;
+  couplers;
+
+  reset();
+  fetch();
+  decode();
+  execute();
+  branchDelay();
+  multiplyAccumulate();
+  memoryTranslate();
+  memoryCycle();
+  handleException();
+  handleInterrupt();
+  retire();
+  validate();
+}
