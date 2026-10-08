@@ -1,0 +1,36 @@
+# SLPOWERCPU
+
+class SLPOWERCPU {
+  architecture;
+  clock;
+  programCounter;
+  instructionFetch;
+  decoder;
+  branchProcessor;
+  fixedPointProcessor;
+  floatingPointProcessor;
+  registerFile;
+  conditionRegister;
+  linkRegister;
+  countRegister;
+  xer;
+  mq;
+  storageUnit;
+  cache;
+  interruptController;
+  trapController;
+  busArbiter;
+  ioBus;
+  couplers;
+
+  reset();
+  fetch();
+  decode();
+  branch();
+  executeFixedPoint();
+  executeFloatingPoint();
+  accessStorage();
+  handleException();
+  complete();
+  validate();
+}
