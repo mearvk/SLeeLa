@@ -1,0 +1,40 @@
+# SLSparcCPU
+
+class SLSparcCPU {
+  version;
+  wordSize;
+  clock;
+  registers;
+  windowState;
+  programCounter;
+  nextProgramCounter;
+  decoder;
+  integerUnit;
+  branchUnit;
+  loadStoreUnit;
+  floatingPointUnit;
+  trapController;
+  mmu;
+  tlb;
+  cache;
+  pipeline;
+  busArbiter;
+  ioBus;
+  couplers;
+
+  reset();
+  fetch();
+  decode();
+  execute();
+  saveWindow();
+  restoreWindow();
+  spillWindow();
+  fillWindow();
+  memoryTranslate();
+  memoryCycle();
+  branch();
+  trap();
+  interrupt();
+  retire();
+  validate();
+}
