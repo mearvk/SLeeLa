@@ -1,11 +1,11 @@
 # SLeeLa Class Inventory
 
 **SLeeLa Version:** 0.3.24-dev  
-**Inventory Revision:** 2.3  
-**Inventory Date:** 2026-10-07  
+**Inventory Revision:** 2.4  
+**Inventory Date:** 2026-10-08  
 **Known Source Files Explicitly Indexed: 138**
-**Repository-wide SLeeLa source files (verified): 10,583 on `main`/`master`**
-**Standard-library SLeeLa source units in `/lib`: 10,297 (10,352 total symbol records incl. 55 module facades)**
+**Repository-wide SLeeLa source files (verified): 10,596 on `main`/`master`**
+**Standard-library SLeeLa source units in `/lib`: 10,417 (10,478 total symbol records incl. 61 module facades)**
 **Standard-library target: 2,048 objects**  
 **Unique Foundational C++ Class Files (contract-verified): 50**
 
@@ -553,3 +553,26 @@ declarations. The runnable orchestration examples remain under
   verified in lockstep by `test-suites/test-library-inventory.sh`.
 - The **50 foundational C++ class files** contract-checked by
   `test-suites/cpp/test_class_contracts.cpp` are unchanged this revision.
+
+
+## 15. Amazon Workforce & Organization Package (Revision 2.4)
+
+The new `amazon` package separates a native C/C++ operational substrate from the language-facing `/lib/amazon` source layer. The package name is a project namespace and does not imply affiliation with Amazon.com, Inc.
+
+### Native `/amazon`
+
+- `amazon/amazon.h` / `amazon/amazon.c` — stable C ABI and policy gate.
+- `amazon/amazon.hpp` / `amazon/amazon.cpp` — C++ orchestration classes: `HiringManager`, `WorkforceManager`, `CollegeManager`, `GearManager`, `FriendsManager`, `WorkplaceLaw`, and `InterTrireManager`.
+- `amazon/Makefile` — portable native-library build.
+
+### `/lib/amazon`
+
+Twelve Master Classes plus the `SLPackage` facade:
+
+`SLHiringManager`, `SLFiringManager`, `SLWorkforceManager`, `SLCollegeManager`, `SLFashionGearManager`, `SLGearManager`, `SLFriendsManager`, `SLWorkplaceLaw`, `SLInterTrireManager`, `SLRetirementManager`, `SLTalentManager`, and `SLOrganizationManager`.
+
+The package covers hiring, firing/termination review, staffing, education, fashion/equipment, colleague connections, workplace-law escalation, succession/retirement ("InterTrire"), talent development, and organization.
+
+Employment actions are deliberately advisory: termination, involuntary reassignment, and retirement transitions require human review. The package does not use protected characteristics or an intelligence score to automate employment decisions.
+
+**Inventory delta:** +12 `/lib` source classes, +1 module facade, +1 package; therefore **10,417 source classes / 61 facades / 10,478 symbol records / 89 packages** in `/lib`, and **10,596 repository-wide `.sleela` files**.
