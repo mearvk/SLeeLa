@@ -1,0 +1,8 @@
+#sleela 1.3
+class SLWorkplaceLaw {
+    string name() { return "SLWorkplaceLaw"; }
+    string check(string jurisdiction, string action) {
+        if (jurisdiction == "" || action == "") { return "ESCALATE"; }
+        return "POLICY_AND_COUNSEL_REVIEW";
+    }
+}
