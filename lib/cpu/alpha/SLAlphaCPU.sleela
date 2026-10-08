@@ -1,0 +1,30 @@
+# SLAlphaCPU
+
+class SLAlphaCPU {
+  architecture;
+  clock;
+  integerRegisters;
+  floatingPointRegisters;
+  programCounter;
+  decoder;
+  integerUnit;
+  shiftUnit;
+  multiplyDivideUnit;
+  floatingPointUnit;
+  branchUnit;
+  loadStoreUnit;
+  issueUnit;
+  reorderBuffer;
+  palcodeInterface;
+  mmu;
+  tlb;
+  cache;
+  memoryOrdering;
+  trapController;
+  interruptController;
+  busArbiter;
+  ioBus;
+  couplers;
+
+  reset(); fetch(); decode(); issue(); execute(); memoryTranslate(); memoryCycle(); branch(); palCall(); trap(); interrupt(); retire(); validate();
+}
