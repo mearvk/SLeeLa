@@ -1,3 +1,5 @@
+<img align="right" src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="75" height="75" alt="SLeeLa">
+
 # /lib/amazon — SLeeLa Workforce & Organization
 
 Language-facing SLeeLa source for workforce planning, hiring, transition,
