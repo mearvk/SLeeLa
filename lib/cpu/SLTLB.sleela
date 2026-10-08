@@ -1,0 +1,2 @@
+# SLTLB
+class SLTLB { entries; pageSize; associativity; lookup(address); invalidate(address); }
