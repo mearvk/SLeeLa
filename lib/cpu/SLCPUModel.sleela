@@ -1,0 +1,2 @@
+# SLCPUModel
+class SLCPUModel { architecture; clock; registers; pipeline; executionUnits; caches; memory; ioBus; dma; mmu; interrupts; couplers; validate(); }
