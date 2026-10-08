@@ -1,0 +1,33 @@
+# SLiAPX432CPU
+
+class SLiAPX432CPU {
+  architecture;
+  profile;
+  clock;
+  controlState;
+  objectManager;
+  descriptorManager;
+  protectionUnit;
+  operandUnit;
+  executionUnit;
+  memoryManagement;
+  faultController;
+  interruptController;
+  busArbiter;
+  ioBus;
+  dmaController;
+  couplers;
+
+  reset();
+  fetchControl();
+  resolveObject();
+  resolveDescriptor();
+  checkProtection();
+  readOperand();
+  execute();
+  memoryCycle();
+  handleFault();
+  handleInterrupt();
+  complete();
+  validate();
+}
