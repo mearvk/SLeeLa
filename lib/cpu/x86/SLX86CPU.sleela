@@ -1,0 +1,39 @@
+# SLX86CPU
+
+class SLX86CPU {
+  architecture;
+  mode;
+  clock;
+  registers;
+  instructionFetch;
+  decoder;
+  microOpLayer;
+  integerUnits;
+  addressGeneration;
+  branchUnit;
+  loadStoreUnit;
+  floatingPointUnit;
+  vectorUnit;
+  mmu;
+  tlb;
+  cache;
+  interrupts;
+  controlRegisters;
+  debugRegisters;
+  modelSpecificRegisters;
+  busArbiter;
+  ioBus;
+  couplers;
+
+  reset();
+  fetch();
+  decode();
+  execute();
+  memoryTranslate();
+  memoryCycle();
+  branch();
+  exception();
+  interrupt();
+  retire();
+  validate();
+}
