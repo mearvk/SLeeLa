@@ -1,0 +1,2 @@
+# SLCacheCoherence
+class SLCacheCoherence { protocol; sharers; states; snoop(transaction); invalidate(address); update(address); }
