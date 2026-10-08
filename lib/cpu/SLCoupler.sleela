@@ -1,0 +1,2 @@
+# SLCoupler
+class SLCoupler { source; target; protocol; width; latencyCycles; connect(source, target); transfer(transaction); }
