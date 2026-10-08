@@ -1,0 +1,8 @@
+#sleela 1.3
+class SLGearManager {
+    string name() { return "SLGearManager"; }
+    string assign(string person, string gear) {
+        if (person != "" && gear != "") { return "ASSIGNED"; }
+        return "NEEDS_INVENTORY_REVIEW";
+    }
+}
