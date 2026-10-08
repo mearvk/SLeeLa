@@ -1,0 +1,9 @@
+#sleela 1.3
+package amazon
+
+class SLPackage {
+    string load() { return "amazon"; }
+    string loaded() { return "true"; }
+    string moduleName() { return "amazon"; }
+    string describe() { return "SLeeLa workforce and organization management"; }
+}
