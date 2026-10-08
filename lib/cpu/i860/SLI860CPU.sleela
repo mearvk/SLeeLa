@@ -1,0 +1,45 @@
+# SLI860CPU
+
+class SLI860CPU {
+  architecture;
+  profile;
+  clock;
+  programCounter;
+  integerRegisters;
+  floatingPointRegisters;
+  controlState;
+  instructionFetch;
+  decoder;
+  pairingUnit;
+  integerUnit;
+  addressUnit;
+  floatingPointUnit;
+  vectorUnit;
+  loadStoreUnit;
+  mmu;
+  tlb;
+  instructionCache;
+  dataCache;
+  branchUnit;
+  exceptionController;
+  interruptController;
+  busArbiter;
+  ioBus;
+  couplers;
+
+  reset();
+  fetch();
+  decode();
+  pairInstructions();
+  executeInteger();
+  executeAddress();
+  executeFloatingPoint();
+  executeVector();
+  memoryCycle();
+  translateAddress();
+  branch();
+  handleException();
+  handleInterrupt();
+  complete();
+  validate();
+}
