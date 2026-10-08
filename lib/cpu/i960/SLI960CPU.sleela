@@ -1,0 +1,43 @@
+# SLI960CPU
+
+class SLI960CPU {
+  architecture;
+  profile;
+  clock;
+  registers;
+  registerCache;
+  instructionPointer;
+  controlState;
+  instructionFetch;
+  decoder;
+  integerUnit;
+  floatingPointUnit;
+  loadStoreUnit;
+  branchUnit;
+  mmu;
+  tlb;
+  instructionCache;
+  dataCache;
+  protectionUnit;
+  exceptionController;
+  interruptController;
+  busArbiter;
+  ioBus;
+  couplers;
+
+  reset();
+  fetch();
+  decode();
+  accessRegisterCache();
+  executeInteger();
+  executeFloatingPoint();
+  executeBranch();
+  checkProtection();
+  translateAddress();
+  cacheCycle();
+  memoryCycle();
+  handleException();
+  handleInterrupt();
+  complete();
+  validate();
+}
