@@ -1,0 +1,28 @@
+# SLZ80CPU
+class SLZ80CPU {
+  architecture;
+  clock;
+  registers;
+  pipeline;
+  instructionFetch;
+  executionUnit;
+  ioBus;
+  ioTiming;
+  interrupts;
+  couplers;
+  cache = none;
+  dma = none;
+  mmu = none;
+  tlb = none;
+
+  reset();
+  fetch();
+  decode();
+  execute();
+  memoryCycle();
+  ioCycle();
+  interruptAcknowledge();
+  refresh();
+  wait();
+  validate();
+}
