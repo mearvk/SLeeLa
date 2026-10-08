@@ -1,0 +1,40 @@
+# SLPARISCCPU
+
+class SLPARISCCPU {
+  architectureVersion;
+  wordSize;
+  clock;
+  registers;
+  shadowRegisters;
+  programCounter;
+  decoder;
+  integerUnit;
+  shiftUnit;
+  branchUnit;
+  loadStoreUnit;
+  floatingPointUnit;
+  maxUnit;
+  issueUnit;
+  reorderBuffer;
+  mmu;
+  tlb;
+  cache;
+  trapController;
+  interruptController;
+  busArbiter;
+  ioBus;
+  couplers;
+
+  reset();
+  fetch();
+  decode();
+  issue();
+  execute();
+  memoryTranslate();
+  memoryCycle();
+  branch();
+  trap();
+  interrupt();
+  retire();
+  validate();
+}
