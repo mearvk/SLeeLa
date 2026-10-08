@@ -1,0 +1,25 @@
+# SL6502CPU
+class SL6502CPU {
+  architecture;
+  clock;
+  registers;
+  pipeline;
+  instructionFetch;
+  executionUnit;
+  ioBus;
+  ioTiming;
+  interrupts;
+  couplers;
+  cache = none;
+  dma = none;
+  mmu = none;
+  tlb = none;
+
+  reset();
+  fetch();
+  decode();
+  execute();
+  busCycle();
+  interrupt();
+  validate();
+}
