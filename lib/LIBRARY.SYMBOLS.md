@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
-collection-revision: 2.1
-library-source-files: 10405
-library-packages: 88
-module-facade-symbols: 60
-total-symbol-records: 10465
+collection-revision: 2.2
+library-source-files: 10417
+library-packages: 89
+module-facade-symbols: 61
+total-symbol-records: 10478
 
 package	symbol	path	kind
 alphabet	Alphabet.sleela	lib/alphabet/Alphabet.sleela	source
@@ -10472,3 +10472,17 @@ website	SLWebsiteEmitter.sleela	lib/website/SLWebsiteEmitter.sleela	source
 website	SLWebsiteGenerator.sleela	lib/website/SLWebsiteGenerator.sleela	source
 website	SLWebsiteSign.sleela	lib/website/SLWebsiteSign.sleela	source
 website	website.sleela	lib/website/website.sleela	source
+
+amazon	SLCollegeManager.sleela	lib/amazon/SLCollegeManager.sleela	source
+amazon	SLFashionGearManager.sleela	lib/amazon/SLFashionGearManager.sleela	source
+amazon	SLFiringManager.sleela	lib/amazon/SLFiringManager.sleela	source
+amazon	SLFriendsManager.sleela	lib/amazon/SLFriendsManager.sleela	source
+amazon	SLGearManager.sleela	lib/amazon/SLGearManager.sleela	source
+amazon	SLHiringManager.sleela	lib/amazon/SLHiringManager.sleela	source
+amazon	SLInterTrireManager.sleela	lib/amazon/SLInterTrireManager.sleela	source
+amazon	SLOrganizationManager.sleela	lib/amazon/SLOrganizationManager.sleela	source
+amazon	SLPackage.sleela	lib/amazon/SLPackage.sleela	facade
+amazon	SLRetirementManager.sleela	lib/amazon/SLRetirementManager.sleela	source
+amazon	SLTalentManager.sleela	lib/amazon/SLTalentManager.sleela	source
+amazon	SLWorkforceManager.sleela	lib/amazon/SLWorkforceManager.sleela	source
+amazon	SLWorkplaceLaw.sleela	lib/amazon/SLWorkplaceLaw.sleela	source
