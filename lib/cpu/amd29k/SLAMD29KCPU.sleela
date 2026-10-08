@@ -1,0 +1,41 @@
+# SLAMD29KCPU
+
+class SLAMD29KCPU {
+  architecture;
+  profile;
+  clock;
+  logicalRegisters;
+  registerWindowMapper;
+  programCounter;
+  controlState;
+  instructionFetch;
+  decoder;
+  integerUnit;
+  floatingPointUnit;
+  loadStoreUnit;
+  branchUnit;
+  mmu;
+  tlb;
+  instructionCache;
+  dataCache;
+  exceptionController;
+  interruptController;
+  busArbiter;
+  ioBus;
+  couplers;
+
+  reset();
+  fetch();
+  decode();
+  mapRegisters();
+  executeInteger();
+  executeFloatingPoint();
+  executeBranch();
+  memoryCycle();
+  translateAddress();
+  cacheCycle();
+  handleException();
+  handleInterrupt();
+  complete();
+  validate();
+}
