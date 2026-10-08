@@ -1,0 +1,40 @@
+# SLClipperCPU
+
+class SLClipperCPU {
+  architecture;
+  profile;
+  clock;
+  registers;
+  programCounter;
+  processorStatus;
+  instructionFetch;
+  decoder;
+  integerUnit;
+  branchUnit;
+  floatingPointUnit;
+  loadStoreUnit;
+  mmu;
+  tlb;
+  instructionCache;
+  dataCache;
+  exceptionController;
+  interruptController;
+  busArbiter;
+  ioBus;
+  couplers;
+
+  reset();
+  fetch();
+  decode();
+  readRegisters();
+  executeInteger();
+  executeBranch();
+  executeFloatingPoint();
+  memoryCycle();
+  translateAddress();
+  cacheCycle();
+  handleException();
+  handleInterrupt();
+  complete();
+  validate();
+}
