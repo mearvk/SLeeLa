@@ -1,0 +1,2 @@
+# SLBusArbiter
+class SLBusArbiter { policy; masters; currentOwner; priority; grant(master); release(master); }
