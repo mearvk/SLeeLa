@@ -1,0 +1,2 @@
+# SLL2Cache
+class SLL2Cache { capacityBytes; lineBytes; associativity; latencyCycles; policy; coherenceDomain; }
