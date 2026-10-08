@@ -1,0 +1,8 @@
+#sleela 1.3
+class SLWorkforceManager {
+    string name() { return "SLWorkforceManager"; }
+    string plan(string role, double capacity) {
+        if (capacity < 0.80) { return "STAFF_OR_TRAIN"; }
+        return "BALANCE";
+    }
+}
