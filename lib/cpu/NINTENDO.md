@@ -1,6 +1,6 @@
 # Nintendo CPU Model Reference
 
-The SLeeLa CPU library provides historical Nintendo console hardware profiles under lowercase `/nintendo-model` paths.
+The SLeeLa CPU library provides historical Nintendo console hardware profiles under lowercase `/nintendo-*` paths.
 
 | Model | CPU / Architecture | Speed | Main/System RAM | US Launch MSRP |
 |---|---|---:|---:|---:|
@@ -17,14 +17,14 @@ The SLeeLa CPU library provides historical Nintendo console hardware profiles un
 
 All model directory names are lowercase:
 
-- `/lib/cpu/nintendo-model/nes`
-- `/lib/cpu/nintendo-model/snes`
-- `/lib/cpu/nintendo-model/nintendo-64`
-- `/lib/cpu/nintendo-model/gamecube`
-- `/lib/cpu/nintendo-model/wii`
-- `/lib/cpu/nintendo-model/wii-u`
-- `/lib/cpu/nintendo-model/switch`
-- `/lib/cpu/nintendo-model/switch-2`
+- `/lib/cpu/nintendo-nes`
+- `/lib/cpu/nintendo-snes`
+- `/lib/cpu/nintendo-nintendo-64`
+- `/lib/cpu/nintendo-gamecube`
+- `/lib/cpu/nintendo-wii`
+- `/lib/cpu/nintendo-wii-u`
+- `/lib/cpu/nintendo-switch`
+- `/lib/cpu/nintendo-switch-2`
 
 Each model contains a `CPU.md` reference document covering CPU architecture, clock/timing information, memory, launch date, cost, SLeeLa representation, and compatibility intent.
 
