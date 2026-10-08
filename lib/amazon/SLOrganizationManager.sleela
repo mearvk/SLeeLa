@@ -1,0 +1,8 @@
+#sleela 1.3
+class SLOrganizationManager {
+    string name() { return "SLOrganizationManager"; }
+    string team(string role, string manager) {
+        if (role != "" && manager != "") { return "TEAM_DEFINED"; }
+        return "STRUCTURE_REVIEW";
+    }
+}
