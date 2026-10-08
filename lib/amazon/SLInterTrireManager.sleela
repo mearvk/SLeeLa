@@ -1,0 +1,8 @@
+#sleela 1.3
+class SLInterTrireManager {
+    string name() { return "SLInterTrireManager"; }
+    string transition(string person, boolean voluntary) {
+        if (person != "" && voluntary) { return "SUCCESSION_OR_RETIREMENT_REVIEW"; }
+        return "HUMAN_REVIEW";
+    }
+}
