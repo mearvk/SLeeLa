@@ -1,0 +1,19 @@
+# SLCPUArchitecture
+
+class SLCPUArchitecture {
+  identity;
+  isa;
+  wordWidth;
+  addressWidth;
+  registerFile;
+  pipeline;
+  executionUnits;
+  cacheHierarchy;
+  memoryController;
+  interconnect;
+  ioTiming;
+  dmaController;
+  mmu;
+  interruptController;
+  couplers;
+}
