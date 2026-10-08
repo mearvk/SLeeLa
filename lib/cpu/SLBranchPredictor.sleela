@@ -1,0 +1,2 @@
+# SLBranchPredictor
+class SLBranchPredictor { algorithm; historyBits; targetEntries; predict(address); update(address, taken, target); }
