@@ -1,0 +1,33 @@
+# SLIBM801CPU
+
+class SLIBM801CPU {
+  architecture;
+  profile;
+  clock;
+  registers;
+  programCounter;
+  controlState;
+  instructionFetch;
+  decoder;
+  integerUnit;
+  branchUnit;
+  loadStoreUnit;
+  memoryController;
+  exceptionController;
+  interruptController;
+  busArbiter;
+  ioBus;
+  couplers;
+
+  reset();
+  fetch();
+  decode();
+  readRegisters();
+  executeInteger();
+  executeBranch();
+  memoryCycle();
+  handleException();
+  handleInterrupt();
+  complete();
+  validate();
+}
