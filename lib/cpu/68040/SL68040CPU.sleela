@@ -1,0 +1,45 @@
+# SL68040CPU
+
+class SL68040CPU {
+  architecture;
+  profile;
+  clock;
+  programCounter;
+  statusRegister;
+  dataRegisters;
+  addressRegisters;
+  instructionCache;
+  dataCache;
+  decoder;
+  issueUnit;
+  effectiveAddressUnit;
+  integerUnits;
+  floatingPointUnit;
+  branchUnit;
+  mmu;
+  addressTranslation;
+  cacheController;
+  exceptionController;
+  interruptController;
+  burstBusInterface;
+  busArbiter;
+  ioBus;
+  completionUnit;
+  couplers;
+
+  reset();
+  fetch();
+  decode();
+  issue();
+  calculateEffectiveAddress();
+  executeInteger();
+  executeFloatingPoint();
+  translateAddress();
+  cacheCycle();
+  burstCycle();
+  branch();
+  handleException();
+  handleInterrupt();
+  complete();
+  validate();
+}
