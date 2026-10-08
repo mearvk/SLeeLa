@@ -1,10 +1,12 @@
+> Revision 0.43 adds the `amazon` workforce and organization package: 12 new Master Classes plus one `SLPackage` facade, with native C/C++ originals under `/amazon`. Employment actions remain auditable decision support with human review.
+
 # SLeeLa /lib Library Index
 
-**Revision:** 0.42  
-**Packages:** 88  
-**SLeeLa source units:** 10405  
-**Module-facade symbols:** 60  
-**Total symbol records:** 10465  
+**Revision:** 0.43  
+**Packages:** 89  
+**SLeeLa source units:** 10417  
+**Module-facade symbols:** 61  
+**Total symbol records:** 10478  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
 
 > Revision 0.42 adds a **flow/layout manager** to the `user-interface` package.
