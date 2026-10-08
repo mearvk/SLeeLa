@@ -1,0 +1,30 @@
+# SL68000CPU
+class SL68000CPU {
+  architecture;
+  clock;
+  registers;
+  pipeline;
+  instructionFetch;
+  executionUnit;
+  ioBus;
+  ioTiming;
+  interrupts;
+  busArbiter;
+  couplers;
+  cache = none;
+  dma = none;
+  mmu = none;
+  tlb = none;
+
+  reset();
+  fetch();
+  decode();
+  effectiveAddress();
+  execute();
+  memoryCycle();
+  ioCycle();
+  interruptAcknowledge();
+  busRequest();
+  busGrant();
+  validate();
+}
