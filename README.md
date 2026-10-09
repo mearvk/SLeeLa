@@ -1053,3 +1053,10 @@ Recent corrections to pre-existing defects (full detail in
   alignment-padded allocations) was fixed.
 - **Tests/fixtures** were reconciled with the documented syntax range and had
   genuinely wrong expectations corrected.
+
+## Lawful claims and compiler language additions
+
+- [CDMA.LAWFUL.CLAIMS.md](CDMA.LAWFUL.CLAIMS.md) — evidence-led registry guidance for lawful claims, help pathways, and the life/CMDA intersection. Acronyms and organizational authority remain unconfirmed until sourced.
+- [SLeeLa case handler](lib/compiler/CASE-HANDLER.md) — case-label validation contract.
+- [SLeeLa object creation](lib/compiler/OBJECT-CREATION.md) — explicit and concise object construction.
+- [SLeeLa constructor series](lib/compiler/CONSTRUCTOR-SERIES.md) — the joining and validation structure for constructor chains.
