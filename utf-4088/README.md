@@ -4,6 +4,11 @@
 
 UTF-4088 is a hypothetical character-encoding and symbol-generation system. It is **not an existing Unicode encoding** and is not intended to claim compatibility with UTF-8, UTF-16, or UTF-32.
 
+
+## SLeeLa character-set capacity signature
+
+SLeeLa's source catalogue defines `C<n>` as a character-set capacity signature. The standard example `C1048576` means a maximum catalogue capacity of `1024 * 1024 = 1,048,576` distinct character entries. This is separate from UTF-4088's current 16,606 generated front-end records and its experimental identifier range. Capacity does not imply population, verified semantics, historical provenance, or Unicode compatibility. See the SLeeLa source contract in [`../markdown/SOURCE.md`](../markdown/SOURCE.md).
+
 ## Design premise
 
 The working model assumes a code space larger than four billion character identifiers. The exact representation is intentionally left open; the specification distinguishes the abstract character/code-point space from the physical processor, memory, bus, and motherboard implementation.
