@@ -106,6 +106,38 @@ that bottoms out at Boolean logic.
 > (`SLInstructionSet`) is now a real multi-language lowering target with a full
 > call/stack protocol; `SLControlUnit` executes the complete set.
 
+### Layer 7 — Runnable CPU fleet, executors, and the Secondary-VM stack
+| Class | Role |
+|---|---|
+| `SLCPURuntime` | The runnable base every specific CPU extends: register storage, memory, ALU, fetch-decode-execute loop, clock, and the resource-aware workload path. |
+| `SL<ARCH>CPU` (99 folders) | A runnable model per architecture — 6502, Z80, x86, ARM, MIPS, RISC-V, 68000, the DEC PDP line, SPARC/POWER/Alpha/…, and every console SoC — each `extends SLCPURuntime`. |
+| `SLCPUResource` | A resource grant: memory words, instruction budget (time-slice), priority, I/O/privilege, affinity. |
+| `SLWorkload` | A unit of work (C / C++ / Java / Sleela source) + its grant; compiles to a language-independent image. |
+| `SLClockPolicy` | Spec clock (base × multiplier) + overclocking with a stability ceiling. |
+| `SLDMAController` | **Direct DMA option**: multi-channel block transfers over memory without the CPU copying word by word. |
+| `SLGPUDevice` | **Native GPU option**: offload compute kernels (host GPU over the bridge, else a modelled SIMT engine). |
+
+The component catalog (`components/`) adds user-selectable parts — RAM
+(`SLMemoryModule`: DRAM…DDR5), storage (`SLStorageDevice`: floppy/HDD/SSD/NVMe/
+tape), optical (`SLOpticalDrive`: CD/DVD/Blu-ray), and a system bus
+(`SLSystemBus`: ISA/PCI/AGP/PCIe) — assembled by `SLExecutorBuild`. See
+[`components/README.md`](components/README.md).
+
+**Running at spec and overclocking.** Each model sets its rated clock in
+`configure()` (`setSpecClock`) and runs there by default; `cpu.overclock(mhz)`
+pushes it higher, with `cpu.clockStable()` reporting the stability ceiling.
+
+**Resource-assigned multi-language workloads.** Any CPU runs a C/C++/Java/Sleela
+program within a grant: `cpu.runWorkload(job)` compiles the source, maps it onto
+the canonical opcode substrate, and runs it inside the budget.
+
+**The full stack (Creator → Secondary VM → CPU → program).** `SleelaVMCreator`
+(in `lib/vm/creator`) builds and boots a live Secondary Sleela VM (`SLVM`),
+hosts a chosen CPU as the executor nested on the VM substrate, and runs a
+program through it — optionally with the DMA, GPU, and native-RAM options.
+See [`CPU-ON-SECONDARY-VM.md`](CPU-ON-SECONDARY-VM.md) and the native-vs-VM
+speed/feasibility tables in [`PERFECT.CONSEQUENCE.md`](PERFECT.CONSEQUENCE.md).
+
 ## The end-to-end chain
 
 `SLMachine` demonstrates exactly what this package is for — a Sleela CPU built
