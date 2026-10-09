@@ -55,6 +55,17 @@ New-Item -ItemType Directory -Force -Path (Join-Path $Stage "lib"),(Join-Path $S
 if (Test-Path (Join-Path $RepoRoot "lib")) { Copy-Item -Recurse -Force (Join-Path $RepoRoot "lib\\*") (Join-Path $Stage "lib") }
 Copy-Item -Force (Join-Path $RepoRoot "tools\\verify-before-execution.py") (Join-Path $Stage "tools")
 Copy-Item -Force (Join-Path $RepoRoot "security\\sha256-manifest.json") (Join-Path $Stage "security")
+# Preserve the trusted manifest's relative source paths so the installed verifier
+# sees the complete source set that the manifest describes.
+$Manifest = Get-Content (Join-Path $RepoRoot "security\\sha256-manifest.json") -Raw | ConvertFrom-Json
+foreach ($Entry in $Manifest.files) {
+  $Relative = $Entry.path.Replace("/", "\\")
+  $Source = Join-Path $RepoRoot $Relative
+  if (-not (Test-Path $Source -PathType Leaf)) { throw "Manifest source missing: $($Entry.path)" }
+  $Target = Join-Path $Stage $Relative
+  New-Item -ItemType Directory -Force -Path (Split-Path -Parent $Target) | Out-Null
+  Copy-Item -Force $Source $Target
+}
 foreach ($Product in @("sleela.exe","nordshrift.exe")) {
   $Built = Join-Path $RepoRoot ("impl\build\" + $Product)
   if (-not (Test-Path $Built)) { throw "Required compiled product missing: $Built" }
