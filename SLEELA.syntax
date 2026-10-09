@@ -82,7 +82,8 @@ variables `camelCase` (convention, not enforced).
     top-decl    ::= struct-decl | class-decl
     struct-decl ::= "struct" ident "{" struct-field* "}"   // §3.4 (syntax 1.2+)
     class-decl  ::= "class" ident "{" member* "}"
-    member      ::= field-decl | method-decl
+    member      ::= field-decl | method-decl | constructor-decl
+    constructor-decl ::= ident "(" params? ")" block   // name must equal class name
 
 A program is one or more classes, optionally preceded or interleaved with
 `struct` declarations. Execution begins at the method named `main`
@@ -211,17 +212,23 @@ its effect).
     primary     ::= int-lit | double-lit | string-lit | bool-lit | null-lit
                   | ident
                   | call
-                  | new-expr                        // struct instantiation (1.2+)
+                  | new-expr                        // struct/class/array creation; see status below
                   | member-access                   // struct field read (1.2+)
                   | "(" expr ")"
     call          ::= ident "(" args? ")"
-    new-expr      ::= "new" struct-name "(" ")"
+    new-expr      ::= "new" type-name "(" args? ")"
+                  | "new" type-name "[" expr "]"
     member-access ::= primary ("." ident)+
     args          ::= expr ("," expr)*
 
-`new Point()` builds a fresh instance; `p.x` reads a field. A dotted name that
-ends in `(` is still parsed as a qualified call (namespaced built-ins); a dotted
-name that does not is a struct member access.
+`new Point()` builds a fresh struct instance; a class with no explicit
+constructor can use the current implicit zero-argument allocation path. The
+parser accepts constructor declarations and argument-bearing `new` expressions,
+but constructor overload resolution and constructor-body execution are not yet
+implemented; semantic analysis rejects those forms rather than silently skipping
+initialization. Array creation (`new int[n]`) is separate from object creation.
+A dotted name that ends in `(` is parsed as a qualified call; a dotted name that
+does not is a struct member access.
 
 `+` is arithmetic on numbers and **concatenation** when either operand is a
 `String` (Java-style). Comparisons and logical operators yield `boolean`.
