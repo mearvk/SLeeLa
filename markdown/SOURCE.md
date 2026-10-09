@@ -89,4 +89,7 @@ To keep the vocabulary precise, these are **not** Sleela source files:
 | `.sheet`    | `SHEET.sheet` object catalog                           |
 | `.manifest` | SL-META-0001 metadocument text                         |
 | `.xclass`   | SecureJDK 28 ingest input, reconstructed into a program |
-\n## Unsigned integer implementation status\n\nThe C++ arbitrary-width value foundation is in `impl/frontend/unsigned_integer.h`, with an independent smoke test under `impl/tests/unsigned_integer_test.cpp` and the `test-unsigned-integer` Makefile target. It stores normalized little-endian bytes for widths 1..1048576 and supports decimal parsing/formatting, same-width comparison, checked subtraction, and overflow detection for addition. The type checker recognizes the `U<n>` type-name family. This is an implementation phase, not yet a claim that all operators are lowered through the VM's stable runtime value ABI.\n
+
+## Unsigned integer implementation status
+
+The C++ arbitrary-width value foundation is in `impl/frontend/unsigned_integer.h`, with an independent smoke test under `impl/tests/unsigned_integer_test.cpp` and the `test-unsigned-integer` Makefile target. It stores normalized little-endian bytes for widths 1..1048576 and supports decimal parsing/formatting, same-width comparison, checked subtraction, and overflow detection for addition. The type checker recognizes the `U<n>` type-name family. This is an implementation phase, not yet a claim that all operators are lowered through the VM's stable runtime value ABI.
