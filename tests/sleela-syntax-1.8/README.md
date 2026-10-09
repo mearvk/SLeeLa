@@ -1,3 +1,5 @@
+<img align="right" src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="75" height="75" alt="SLeeLa">
+
 # SLeeLa syntax 1.8 regression fixtures
 
 These fixtures exercise the first syntax 1.8 feature: local type inference with
