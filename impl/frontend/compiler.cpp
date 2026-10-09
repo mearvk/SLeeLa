@@ -190,7 +190,20 @@ private:
         throw std::runtime_error("Semantic error: unknown statement kind");
     }
     void emitBlock(const Block& b){for(const auto& s:b.stmts)emitStmt(s.get());}
-    void emitVarDecl(const VarDecl& d){int slot=ctx_->declare(d.name);if(structLayout_.count(d.type))varType_[d.name]=d.type;if(d.init)emitExpr(d.init.get());else emit(OP_CONST,addNullConst());emit(OP_STOREL,slot);}
+    void emitVarDecl(const VarDecl& d){
+        int slot=ctx_->declare(d.name);
+        if(structLayout_.count(d.type)) varType_[d.name]=d.type;
+        else if(d.type=="let" && d.init){
+            if(auto created=dynamic_cast<const NewExpr*>(d.init.get())){
+                if(structLayout_.count(created->typeName)) varType_[d.name]=created->typeName;
+            } else if(auto existing=dynamic_cast<const VarExpr*>(d.init.get())){
+                auto known=varType_.find(existing->name);
+                if(known!=varType_.end()) varType_[d.name]=known->second;
+            }
+        }
+        if(d.init)emitExpr(d.init.get());else emit(OP_CONST,addNullConst());
+        emit(OP_STOREL,slot);
+    }
     void emitAssign(const Assign& a){int slot=ctx_->slotOf(a.name);if(slot>=0){emitExpr(a.value.get());emit(OP_STOREL,slot);return;}int off=instanceFieldOffset(a.name);if(off>=0){emitThis();emitExpr(a.value.get());emit(OP_SETFIELD,off);emit(OP_POP);return;}int g=fieldSlot(a.name);if(g>=0){emitExpr(a.value.get());emit(OP_STOREG,g);return;}throw std::runtime_error("Semantic error: assignment to undeclared variable '"+a.name+"'");}
     void emitReturn(const ReturnStmt& r){if(r.value)emitExpr(r.value.get());else emit(OP_CONST,addNullConst());emit(OP_RET);}
     void emitFieldAssign(const FieldAssign& fa){int off=-1;memberLayout(fa.base.get(),fa.field,off);emitExpr(fa.base.get());emitExpr(fa.value.get());emit(OP_SETFIELD,off);emit(OP_POP);}
