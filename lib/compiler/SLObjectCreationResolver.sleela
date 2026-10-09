@@ -1,0 +1,34 @@
+# SLObjectCreationResolver — resolves explicit and concise construction
+#
+# new Type(args) is explicit. Type(args) is construction only after type resolution.
+
+class SLObjectCreationResolver {
+    resolve(callNode, symbols, constructorSeries) {
+        let typeSymbol = symbols.resolveType(callNode.callee, callNode.scope);
+        let functionSymbol = symbols.resolveFunction(callNode.callee, callNode.scope);
+
+        if (callNode.hasNewKeyword) {
+            if (typeSymbol == null) {
+                return diagnostic("NEW_TARGET_NOT_A_TYPE", callNode.location);
+            }
+            return constructorSeries.resolve(typeSymbol, callNode.arguments, callNode.location);
+        }
+
+        if (typeSymbol != null && typeSymbol.isConstructible) {
+            let constructor = constructorSeries.tryResolve(typeSymbol, callNode.arguments);
+            if (constructor.isUnique) {
+                return objectCreationIR(typeSymbol, constructor.selected, callNode.location);
+            }
+            if (functionSymbol == null) {
+                return constructor.diagnostic;
+            }
+            return diagnostic("AMBIGUOUS_CALL_OR_CONSTRUCTION_USE_NEW_OR_QUALIFY", callNode.location);
+        }
+
+        if (functionSymbol != null) {
+            return ordinaryCallIR(functionSymbol, callNode.arguments, callNode.location);
+        }
+
+        return diagnostic("UNRESOLVED_CALL_TARGET", callNode.location);
+    }
+}
