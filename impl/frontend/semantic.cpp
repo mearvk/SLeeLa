@@ -176,7 +176,14 @@ class Analyzer{
   if(b.op=="<"||b.op=="<="||b.op==">"||b.op==">="){if((!numeric(l)||!numeric(r))&&l.kind!=Kind::Unknown&&r.kind!=Kind::Unknown)err("comparison '"+b.op+"' requires numeric operands");return{Kind::Bool,{}};}
   if(b.op=="=="||b.op=="!="){if(!assignable(l,r)&&!assignable(r,l)&&l.kind!=Kind::Unknown&&r.kind!=Kind::Unknown)err("equality operands have incompatible types "+nameOf(l)+" and "+nameOf(r));return{Kind::Bool,{}};}err("unknown binary operator '"+b.op+"'");return{Kind::Error,{}};
  }
- Type call(const Call&c){auto it=methods.find(cls+"::"+c.callee);if(it==methods.end())it=methods.find(c.callee);if(it==methods.end()&&c.callee.rfind("__native_chemistry_",0)==0)it=methods.find("__NativeChemistry::"+c.callee);if(it!=methods.end()){const Method&m=*it->second.m;if(c.args.size()!=m.params.size())err("method '"+c.callee+"' expects "+std::to_string(m.params.size())+" argument(s), got "+std::to_string(c.args.size()));size_t n=c.args.size()<m.params.size()?c.args.size():m.params.size();for(size_t i=0;i<n;i++){Type g=expr(*c.args[i]),w=tn(m.params[i].type);if(!assignable(w,g))err("argument "+std::to_string(i+1)+" to '"+c.callee+"' has type "+nameOf(g)+", expected "+nameOf(w));}if(m.isProtected&&it->second.owner!=cls)err("protected method access denied for '"+c.callee+"'");return tn(m.retType);}
+ Type call(const Call&c){auto it=methods.find(cls+"::"+c.callee);if(it==methods.end())it=methods.find(c.callee);if(it==methods.end()&&c.callee.rfind("__native_",0)==0){
+   // Synthesized native helpers are stored as qualified class methods. Match
+   // the complete helper symbol across native owners, not just chemistry.
+   for(const auto& entry:methods){
+    const auto sep=entry.first.rfind("::");
+    if(sep!=std::string::npos&&entry.first.compare(sep+2,std::string::npos,c.callee)==0&&entry.first.substr(0,sep).rfind("__Native",0)==0){it=methods.find(entry.first);break;}
+   }
+  }if(it!=methods.end()){const Method&m=*it->second.m;if(c.args.size()!=m.params.size())err("method '"+c.callee+"' expects "+std::to_string(m.params.size())+" argument(s), got "+std::to_string(c.args.size()));size_t n=c.args.size()<m.params.size()?c.args.size():m.params.size();for(size_t i=0;i<n;i++){Type g=expr(*c.args[i]),w=tn(m.params[i].type);if(!assignable(w,g))err("argument "+std::to_string(i+1)+" to '"+c.callee+"' has type "+nameOf(g)+", expected "+nameOf(w));}if(m.isProtected&&it->second.owner!=cls)err("protected method access denied for '"+c.callee+"'");return tn(m.retType);}
   // `spawn(method)` names a zero-arg method to run on a new thread; its single
   // argument is a method name, not a value, so it is not resolved as a variable.
   if(c.callee=="spawn"){if(c.args.size()!=1){err("spawn(method) takes exactly one argument");return{Kind::Unknown,{}};}auto v=dynamic_cast<const VarExpr*>(c.args[0].get());if(!v||!methods.count(v->name))err("spawn(method) argument must be a declared method name");return{Kind::Unknown,{}};}
