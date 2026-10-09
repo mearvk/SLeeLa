@@ -57,6 +57,23 @@ mkdir -p "$STAGE_DIR/lib" "$STAGE_DIR/bin" "$STAGE_DIR/config" "$STAGE_DIR/tools
 cp -a "$REPO_ROOT/lib/." "$STAGE_DIR/lib/"
 cp -a "$REPO_ROOT/tools/verify-before-execution.py" "$STAGE_DIR/tools/"
 cp -a "$REPO_ROOT/security/sha256-manifest.json" "$STAGE_DIR/security/"
+# Ship every source file named by the trusted manifest so installed verifier
+# calls can validate against the same root rather than a partial source tree.
+python3 - "$REPO_ROOT" "$STAGE_DIR" <<'PY_MANIFEST_COPY'
+import json, os, shutil, sys
+repo, stage = map(os.path.abspath, sys.argv[1:3])
+manifest = os.path.join(repo, "security", "sha256-manifest.json")
+with open(manifest, encoding="utf-8") as stream:
+    entries = json.load(stream).get("files", [])
+for entry in entries:
+    rel = entry["path"]
+    src = os.path.abspath(os.path.join(repo, rel))
+    if os.path.commonpath((repo, src)) != repo or not os.path.isfile(src):
+        raise SystemExit("Invalid or missing manifest source: " + rel)
+    dst = os.path.join(stage, rel)
+    os.makedirs(os.path.dirname(dst), exist_ok=True)
+    shutil.copy2(src, dst)
+PY_MANIFEST_COPY
 if [ -d "$REPO_ROOT/bin" ]; then cp -a "$REPO_ROOT/bin/." "$STAGE_DIR/bin/"; fi
 for product in sleela nordshrift; do
   built="$REPO_ROOT/impl/build/$product"
