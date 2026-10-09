@@ -1,6 +1,6 @@
-## 0.3.28-dev Development Increment
+## 0.3.29-dev Development Increment
 
-This increment begins the arbitrary-width unsigned integer implementation for source types U1 through U1048576. It adds a byte-backed value foundation, decimal parsing and formatting, width-checked byte serialization, checked same-width addition/subtraction, comparison, semantic type-name recognition, and a dedicated test target. Integration with the stable VM value ABI and end-to-end source execution remains in progress.
+This increment extends the arbitrary-width unsigned integer foundation for source types U1 through U1048576 with checked multiplication, division/remainder, width-bounded bitwise operations, and logical shifts. New representative tests cover these operations; VM value ABI integration and end-to-end source execution remain in progress.
 
 **SLeeLa — MEARVK LLC — 2026**
 
@@ -8,7 +8,7 @@ This increment begins the arbitrary-width unsigned integer implementation for so
 
 ## Current Development Version
 
-**SLeeLa:** 0.3.28-dev
+**SLeeLa:** 0.3.29-dev
 **Sleela-Complete:** 0.3.2-dev  
 **Nordshrift Complete:** 2.7.1-dev  
 **Native Foundation:** 0.3.2-dev  
@@ -19,9 +19,9 @@ This increment begins the arbitrary-width unsigned integer implementation for so
 **Status:** Active Development  
 **Repository:** mearkv/SLeeLa
 
-## 0.3.28 Development Increment
+## 0.3.29 Development Increment
 
-Implemented the first compiler-facing phase of parameterized unsigned integer types `U<n>` for widths 1..1048576: byte-backed arbitrary-width value storage, decimal parsing/formatting, width checks, comparison, checked addition/subtraction, semantic recognition, and a dedicated Makefile test target. Full lowering and runtime ABI integration remain open work and must not be considered complete until end-to-end tests pass.
+Extended the compiler-facing unsigned integer foundation for `U<n>` widths 1..1048576 with checked multiplication, division/remainder, bitwise operations, and logical shifts. Full lowering and runtime ABI integration remain open work and must not be considered complete until end-to-end tests pass.
 
 ## 0.3.9 Development Increment
 
