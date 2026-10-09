@@ -1,0 +1,48 @@
+# SLLINC8CPU — SLeeLa LINC-8 hybrid CPU profile
+#
+# Functional model with explicit LINC/PDP-8 execution modes.
+# Exact opcodes and mode transitions must come from a verified profile.
+
+class SLLINC8CPU extends SLCPU {
+    const WORD_BITS = 12;
+    const MODE_LINC = "linc";
+    const MODE_PDP8 = "pdp8";
+
+    state {
+        pc;
+        ac;
+        mode;
+        instructionRegister;
+        memory;
+        deviceMap;
+        timingProfile;
+    }
+
+    configure(profile) {
+        require(profile.wordBits == WORD_BITS);
+        require(profile.memoryWords > 0);
+        require(profile.modeDefinitions.linc != null);
+        require(profile.modeDefinitions.pdp8 != null);
+        this.memory = SLRAM.create(profile.memoryWords, WORD_BITS);
+        this.deviceMap = profile.deviceMap ?? {};
+        this.timingProfile = profile.timingProfile ?? "functional";
+        this.mode = profile.initialMode ?? MODE_LINC;
+        return this;
+    }
+
+    step() {
+        let instruction = this.fetchWord(this.pc, WORD_BITS);
+        this.instructionRegister = instruction;
+        let decoded = this.mode == MODE_LINC
+            ? this.decodeLINC8LINC(instruction)
+            : this.decodeLINC8PDP8(instruction);
+        if (!decoded.supported) {
+            this.reportUnsupported("LINC8_MODE_OPCODE", instruction, this.pc);
+            return this.result("unsupported", instruction);
+        }
+        return this.executeLINC8(decoded);
+    }
+
+    # Mode transitions, addressing and device semantics are profile-defined.
+    # Never reinterpret an unsupported instruction using the other mode's decoder.
+}
