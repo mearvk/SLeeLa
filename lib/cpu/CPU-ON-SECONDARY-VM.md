@@ -170,3 +170,45 @@ Each generated model uses a compact, arch-flavored instruction encoding
 and memory. The per-arch bus/timing/register detail continues to live in each
 folder's nine markdown docs; `tools/generate-cpu-models.py` is the source of
 truth for the generated set and can be re-run or extended with richer decoders.
+
+## Optional acceleration: direct DMA and native GPU access
+
+Two opt-in capabilities span the whole stack (native VM → Secondary VM → CPU →
+program). Both default **off** and are turned on only when a program needs them.
+
+- **Direct DMA** (`SLDMAController`): a direct memory-access engine that moves a
+  block of words between regions over `SLRAM` **without the CPU copying each
+  word** in its fetch-decode-execute loop. Multiple channels, memory↔memory /
+  memory↔device modes, overlap-safe copy, and `memcpy`/`fill` helpers.
+- **Native GPU access** (`SLGPUDevice`): a compute GPU (compute units × SIMT
+  lanes, a core clock, VRAM) the CPU can offload a kernel to. A kernel is a
+  canonical-opcode program dispatched across a lane grid; the device uses a real
+  host GPU over the bridge (`sleela_gpu_available` / `sleela_gpu_dispatch`) when
+  present, else a modelled SIMT engine, so GPU code always runs.
+
+They are exposed as **options** at every layer, and flow down when enabled:
+
+| Layer | Enable | Access |
+| --- | --- | --- |
+| CPU (`SLCPURuntime`) | `enableDMA()` / `enableGPU()` | `dmaEngine()` / `gpuDevice()`, `dmaCopy(...)` |
+| Secondary VM (`SLVM`) | `enableDMA()` / `enableGPU()` (before `hostCpu`) | hosted CPU inherits them; `dmaEngine()`/`gpuDevice()` |
+| Creator (`SleelaVMCreator`) | `requestDMA()` / `requestGPU()` | applied to the built VM and its hosted CPU |
+| Build (`SLExecutorBuild`) | `enableDMA()` / `enableGPU()` | on the build's CPU |
+| Options model (`SleelaVMFeatureBits`) | `DMA` / `GPU` capability bits | feature-mask gating |
+
+Example (Creator grants both; the program uses them):
+
+```
+SleelaVMCreator creator = new SleelaVMCreator(); creator.configure();
+creator.requestDMA(); creator.requestGPU();
+creator.selectGeneration(5); creator.create(); creator.installExecutor(cpu);
+
+cpu.dmaEngine().memcpy(0, 100, 4);     // direct block move, no CPU loop
+SLGPUDevice gpu = cpu.gpuDevice();     // offload a compute kernel
+gpu.emitKernel(1, 2); gpu.emitKernel(1, 3); gpu.emitKernel(8, 0); gpu.emitKernel(27, 0); gpu.emitKernel(48, 0);
+int out = gpu.dispatch(gpu.totalLanes(), 100);
+```
+
+See `examples/dma-and-gpu-options.sleela`. Because they are plain options, a
+program that never needs them pays nothing; one that needs DMA or the GPU at any
+point simply enables it.

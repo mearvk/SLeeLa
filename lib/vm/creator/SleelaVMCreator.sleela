@@ -62,6 +62,8 @@ class SleelaVMCreator {
     vm.configure(formalName);
     if (nativeRamOption == 1) { vm.useNativeRam(); }   // run on real host RAM
     vm.boot(heapWords, memoryWords);
+    if (dmaOption == 1) { vm.enableDMA(); }   // apply opted-in acceleration
+    if (gpuOption == 1) { vm.enableGPU(); }
     return vm;
   }
     if (dmaOption == 1) { vm.enableDMA(); }             // apply opted-in acceleration
@@ -82,6 +84,14 @@ class SleelaVMCreator {
   // Call before create()/run(). Corresponds to the NATIVE_RAM feature bit.
   void requestNativeRam() { nativeRamOption = 1; }
   boolean nativeRamRequested() { return nativeRamOption == 1; }
+
+  // Optional capabilities: request direct DMA and/or native GPU access for the
+  // built VM. Call before create()/run() so the hosted CPU and its program get
+  // them. These correspond to the DMA and GPU feature bits (SleelaVMFeatureBits).
+  void requestDMA() { dmaOption = 1; if (vm != null) { vm.enableDMA(); } }
+  void requestGPU() { gpuOption = 1; if (vm != null) { vm.enableGPU(); } }
+  boolean dmaRequested() { return dmaOption == 1; }
+  boolean gpuRequested() { return gpuOption == 1; }
 
   // Host a Sleela CPU model as the VM's executor (nested on the SLVM substrate).
   void installExecutor(SLCPURuntime cpu) {
