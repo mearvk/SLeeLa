@@ -15,9 +15,9 @@ ExprP C1(const std::string& name, ExprP a) { auto c=C(name); c->args.push_back(s
 ExprP C2(const std::string& name, ExprP a, ExprP b) { auto c=C(name); c->args.push_back(std::move(a)); c->args.push_back(std::move(b)); return c; }
 ExprP Clamp(ExprP x) { return C2("__native_math_max", C2("__native_math_min", std::move(x), D(1)), D(0)); }
 StmtP Ret(ExprP e) { auto s=std::make_unique<ReturnStmt>(); s->value=std::move(e); return s; }
-Method M1(const char* r,const char* n,const char* t,const char* p) { Method m; m.retType=r; m.name=n; m.params.push_back({t,p}); m.body=std::make_unique<Block>(); return m; }
+Method M1(const char* r,const char* n,const char* t,const char* p) { Method m; m.retType=r; m.name=n; m.isStatic=true; m.params.push_back({t,p}); m.body=std::make_unique<Block>(); return m; }
 Method M2(const char* r,const char* n,const char* t1,const char* p1,const char* t2,const char* p2) { auto m=M1(r,n,t1,p1); m.params.push_back({t2,p2}); return m; }
-Method M6(const char* r,const char* n) { Method m; m.retType=r; m.name=n; m.body=std::make_unique<Block>(); m.params={{"double","observation"},{"double","bond"},{"double","valence"},{"double","similarity"},{"double","signal"},{"double","symmetry"}}; return m; }
+Method M6(const char* r,const char* n) { Method m; m.retType=r; m.name=n; m.isStatic=true; m.body=std::make_unique<Block>(); m.params={{"double","observation"},{"double","bond"},{"double","valence"},{"double","similarity"},{"double","signal"},{"double","symmetry"}}; return m; }
 
 ExprP evidenceSum() {
     return B("+",
