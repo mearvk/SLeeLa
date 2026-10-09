@@ -96,7 +96,19 @@ class Analyzer{
  void block(const Block&b){for(const auto&s:b.stmts)stmt(*s);}
  void stmt(const Stmt&s){
   if(auto b=dynamic_cast<const Block*>(&s)){push();block(*b);pop();return;}
-  if(auto d=dynamic_cast<const VarDecl*>(&s)){Type t=tn(d->type);if(t.kind==Kind::Error){err("unknown variable type '"+d->type+"'");return;}if(t.kind==Kind::Void){err("variable '"+d->name+"' cannot be void");return;}if(d->init){Type g=expr(*d->init);if(!assignable(t,g))err("initializer for variable '"+d->name+"' has type "+nameOf(g)+", expected "+nameOf(t));}declare(d->name,t);return;}
+  if(auto d=dynamic_cast<const VarDecl*>(&s)){
+   if(d->type=="let"){
+    if(syntax<SyntaxVersion{1,8}){err("'let' inferred declarations require syntax 1.8");return;}
+    if(!d->init){err("'let' declaration '"+d->name+"' requires an initializer");return;}
+    Type inferred=expr(*d->init);
+    if(inferred.kind==Kind::Unknown||inferred.kind==Kind::Error||inferred.kind==Kind::Null||inferred.kind==Kind::Void){
+     err("cannot infer a usable type for 'let' declaration '"+d->name+"'");
+     return;
+    }
+    declare(d->name,inferred);return;
+   }
+   Type t=tn(d->type);if(t.kind==Kind::Error){err("unknown variable type '"+d->type+"'");return;}if(t.kind==Kind::Void){err("variable '"+d->name+"' cannot be void");return;}if(d->init){Type g=expr(*d->init);if(!assignable(t,g))err("initializer for variable '"+d->name+"' has type "+nameOf(g)+", expected "+nameOf(t));}declare(d->name,t);return;
+  }
   if(auto a=dynamic_cast<const Assign*>(&s)){Type t=lookup(a->name);if(t.kind==Kind::Error){err("assignment to undeclared variable '"+a->name+"'");return;}Type g=expr(*a->value);if(!assignable(t,g))err("cannot assign "+nameOf(g)+" to '"+a->name+"' of type "+nameOf(t));return;}
   if(auto f=dynamic_cast<const FieldAssign*>(&s)){Type t=member(*f->base,f->field),g=expr(*f->value);if(t.kind!=Kind::Error&&!assignable(t,g))err("cannot assign "+nameOf(g)+" to field '"+f->field+"' of type "+nameOf(t));return;}
   if(auto e=dynamic_cast<const ExprStmt*>(&s)){expr(*e->expr);return;} if(auto p=dynamic_cast<const PrintStmt*>(&s)){Type t=expr(*p->expr);if(t.kind==Kind::Void)err("print() cannot print void");return;}
