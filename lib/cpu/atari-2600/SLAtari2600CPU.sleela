@@ -1,0 +1,79 @@
+/*
+ * lib/cpu/atari-2600/SLAtari2600CPU.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLAtari2600CPU — a runnable model of the Atari 2600 (6507 / 6502). It extends
+ *   SLCPURuntime, so it inherits register storage, a word-addressable memory
+ *   interface, an SLALU, the fetch-decode-execute loop, and — crucially — the
+ *   resource-aware workload path (admit()/runWorkload()) that runs C, C++ or
+ *   Sleela programs on this CPU within an SLCPUResource grant, mapped onto the
+ *   canonical SLeeLa opcode substrate.
+ *
+ * This file supplies the Atari 2600 (6507 / 6502) register set and a decode() over a compact
+ * instruction encoding (load/move/arithmetic/compare/branch/halt). It is a
+ * functional model sufficient to run the CPU as a CPU and as a target for
+ * further .sleela inputs, not a cycle-accurate emulator; per-arch bus/timing
+ * detail remains in this folder's markdown docs.
+ *
+ * Family: cpu. Extends SLCPURuntime.
+ */
+#sleela 1.3
+class SLAtari2600CPU extends SLCPURuntime {
+  static final int R_A = 0;
+  static final int R_B = 1;
+  static final int R_X = 2;
+  static final int R_Y = 3;
+  static final int R_SP = 4;
+
+  int gpr(int i)            { return readReg(i); }
+  void setGpr(int i, int v) { writeReg(i, v); }
+
+  void configure() {
+    bringUp("Atari 2600 (6507 / 6502)", 8, 13, 5, 8192);
+  }
+
+  static final int I_LOADI = 1;   // dst <- imm
+  static final int I_MOVE  = 2;   // dst <- src
+  static final int I_LOAD  = 3;   // dst <- mem[imm]
+  static final int I_STORE = 4;   // mem[imm] <- dst
+  static final int I_ADD   = 5;   // dst <- dst + src
+  static final int I_SUB   = 6;   // dst <- dst - src
+  static final int I_MUL   = 7;   // dst <- dst * src
+  static final int I_AND   = 8;   // dst <- dst & src
+  static final int I_OR    = 9;   // dst <- dst | src
+  static final int I_CMP   = 10;  // flags <- dst - src
+  static final int I_JMP   = 11;  // pc <- imm
+  static final int I_JZ    = 12;  // if Z: pc <- imm
+  static final int I_HALT  = 13;
+
+  int opOf(int w)  { return (w / 65536) % 256; }
+  int dstOf(int w) { return (w / 256) % 256; }
+  int srcOf(int w) { return w % 256; }
+
+  void decode(int word) {
+    int opc = opOf(word);
+    int dst = dstOf(word);
+    int src = srcOf(word);
+
+    if (opc == I_LOADI) { setGpr(dst, src); setZN(gpr(dst)); return; }
+    if (opc == I_MOVE)  { setGpr(dst, gpr(src)); setZN(gpr(dst)); return; }
+    if (opc == I_LOAD)  { setGpr(dst, readMem(src)); setZN(gpr(dst)); return; }
+    if (opc == I_STORE) { writeMem(src, gpr(dst)); return; }
+    if (opc == I_ADD)   { setGpr(dst, aluOp(gpr(dst), gpr(src), alu.OP_ADD)); return; }
+    if (opc == I_SUB)   { setGpr(dst, aluOp(gpr(dst), gpr(src), alu.OP_SUB)); return; }
+    if (opc == I_MUL)   { setGpr(dst, aluOp(gpr(dst), gpr(src), alu.OP_MUL)); return; }
+    if (opc == I_AND)   { setGpr(dst, aluOp(gpr(dst), gpr(src), alu.OP_AND)); return; }
+    if (opc == I_OR)    { setGpr(dst, aluOp(gpr(dst), gpr(src), alu.OP_OR)); return; }
+    if (opc == I_CMP)   { aluOp(gpr(dst), gpr(src), alu.OP_SUB); return; }
+    if (opc == I_JMP)   { setEntryPoint(src); return; }
+    if (opc == I_JZ)    { if (zero() == 1) { setEntryPoint(src); } return; }
+    if (opc == I_HALT)  { halted = 1; return; }
+  }
+
+  void setZN(int v) { flagZ = (v == 0) ? 1 : 0; flagN = (v < 0) ? 1 : 0; }
+  int encode(int opcode, int dst, int src) {
+    return (opcode % 256) * 65536 + (dst % 256) * 256 + (src % 256);
+  }
+
+  int reg(int i) { return gpr(i); }
+  int registers() { return registerCount(); }
+}

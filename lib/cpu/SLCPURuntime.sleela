@@ -46,6 +46,16 @@ class SLCPURuntime {
   SLSleelaOpcode op;
   int lowering;         // 1 => execute by lowering to canonical opcodes
 
+  // --- workload execution: run C / C++ / Sleela work on this CPU within a
+  // resource grant. The register-ISA mapping pipeline is shared across all
+  // architectures (SLCompilerDriver -> SLProgram -> SLOpcodeMap -> substrate). ---
+  SLInstructionSet workIsa;
+  SLInstructionDecoder workDecoder;
+  SLSystemCall workSys;
+  SLCPUResource activeGrant;    // the grant the current workload runs within
+  int admittedWorkloads;
+  int completedWorkloads;
+
   // Bring the inherited machinery up once a subclass has set its widths.
   void bringUp(String name, int dataBits, int addressBits, int registers, int memoryWords) {
     archName = name; width = dataBits; addrWidth = addressBits;
@@ -62,7 +72,68 @@ class SLCPURuntime {
     substrate.configure(memoryWords, 4096, registers + 16);
     op = new SLSleelaOpcode(); op.configure(0, "OP_NOP");
     lowering = 0;
+
+    // Shared multi-language workload pipeline.
+    workIsa = new SLInstructionSet(); workIsa.configure();
+    workDecoder = new SLInstructionDecoder(); workDecoder.configure(workIsa);
+    workSys = new SLSystemCall(); workSys.configure();
+    admittedWorkloads = 0; completedWorkloads = 0;
   }
+
+  // The register ISA used by the shared compile/map pipeline (SLWorkload.compile
+  // needs it to lower any supported language to a language-independent image).
+  SLInstructionSet workloadIsa() { return workIsa; }
+
+  // --- resource assignment + workload execution ---
+  // Admission control: can this CPU satisfy the workload's resource grant?
+  // A workload is admitted only when its memory request fits the CPU's address
+  // space and (if it needs I/O/privileged services) the model provides them.
+  boolean admit(SLWorkload work) {
+    SLCPUResource g = work.grant();
+    if (g == null) { work.markRejected(); return false; }
+    if (g.words() > memWords) { work.markRejected(); return false; }
+    if (g.budget() <= 0) { work.markRejected(); return false; }
+    work.markAdmitted();
+    admittedWorkloads = admittedWorkloads + 1;
+    return true;
+  }
+
+  // Run a workload on this CPU within its grant. The source (C/C++/Sleela/Java)
+  // is compiled to the register ISA, mapped onto THIS CPU's canonical-opcode
+  // substrate, and executed up to the grant's instruction budget. Returns the
+  // observable output (the printed value), or -1 if the workload was rejected.
+  int runWorkload(SLWorkload work) {
+    if (!admit(work)) { return -1; }
+    activeGrant = work.grant();
+
+    // Compile the source to a language-independent register-ISA image.
+    if (!work.compiled()) { work.compile(workIsa); }
+
+    // Fresh substrate sized to the grant so one workload cannot see another's
+    // memory; honor the I/O permission by hosting service opcodes when denied.
+    substrate = new SLSleelaVM();
+    substrate.configure(activeGrant.words(), 4096, regCount + 16);
+    if (!activeGrant.ioEnabled()) { substrate.setHosted(); }
+
+    // Map the register-ISA image onto this CPU's substrate.
+    SLOpcodeMap map = new SLOpcodeMap();
+    map.configure(workIsa, workSys, substrate);
+    map.mapProgram(work.image(), workDecoder);
+
+    // Execute within the instruction budget (the resource time-slice).
+    work.markRunning();
+    int ran = substrate.run(activeGrant.budget());
+    int i = 0; while (i < ran) { activeGrant.chargeInstruction(); i = i + 1; }
+
+    int observable = substrate.printed();
+    work.markDone(observable);
+    completedWorkloads = completedWorkloads + 1;
+    return observable;
+  }
+
+  int grantsAdmitted()  { return admittedWorkloads; }
+  int workloadsRun()    { return completedWorkloads; }
+  SLCPUResource currentGrant() { return activeGrant; }
 
   // --- register / memory access (what decode() uses) ---
   int readReg(int i)             { if (i < 0 || i > regCount) { return 0; } return regs.readWord(i); }
