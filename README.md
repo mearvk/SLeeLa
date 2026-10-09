@@ -2,6 +2,11 @@
 
 # SLeeLa
 
+
+## Language Specification and VM Compatibility (Syntax 1.7)
+
+The authoritative language grammar is [`SLEELA.syntax`](SLEELA.syntax), version **1.7**. The compiler accepts declared syntax versions `1.3` through `1.7`. The unsigned fixed-width source-signature family is `U1` through `U1048576`; its type contract is documented in [`markdown/SOURCE.md`](markdown/SOURCE.md). The native compiler references this specification, and each SLVM/1 through SLVM/11 has a [`LANGUAGE.SPEC.md`](sleela-virtual-machine/1/LANGUAGE.SPEC.md) conformance reference. These references establish a shared specification, not a claim that every VM runtime operation is already implemented; unsupported paths must reject explicitly rather than silently narrowing values.
+
 ## Bitcoin Conjegeum
 
 bc1qs6v4q9zsw70t0umk3m0quhvf9dr6cdeskl28dh
