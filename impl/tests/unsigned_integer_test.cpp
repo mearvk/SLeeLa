@@ -1,0 +1,78 @@
+#include "unsigned_integer.h"
+#include <cassert>
+#include <iostream>
+#include <stdexcept>
+#include <string>
+
+using sleela::UnsignedInteger;
+
+int main() {
+    assert(UnsignedInteger::isValidTypeName("U1"));
+    assert(UnsignedInteger::isValidTypeName("U8"));
+    assert(UnsignedInteger::isValidTypeName("U1048576"));
+    assert(!UnsignedInteger::isValidTypeName("U0"));
+    assert(!UnsignedInteger::isValidTypeName("U01"));
+    assert(!UnsignedInteger::isValidTypeName("U1048577"));
+    assert(!UnsignedInteger::isValidTypeName("U999999999999999999999999"));
+    assert(!UnsignedInteger::isValidTypeName("Unsigned8"));
+    assert(UnsignedInteger::fromDecimal(1, "1").toDecimal() == "1");
+    assert(UnsignedInteger::fromDecimal(8, "255").toDecimal() == "255");
+    assert(UnsignedInteger::fromDecimal(64, "18446744073709551615").toDecimal() == "18446744073709551615");
+    assert(UnsignedInteger::fromDecimal(9, "511").toDecimal() == "511");
+    assert(UnsignedInteger::fromDecimal(9, "511").compare(UnsignedInteger::fromDecimal(9, "510")) > 0);
+    assert(UnsignedInteger::fromDecimal(8, "12").add(UnsignedInteger::fromDecimal(8, "20")).toDecimal() == "32");
+    const auto serialized = UnsignedInteger::fromDecimal(9, "511").toBytes();
+    assert(UnsignedInteger::fromBytes(9, serialized).toDecimal() == "511");
+    assert(UnsignedInteger::fromDecimal(8, "20").subtract(UnsignedInteger::fromDecimal(8, "12")).toDecimal() == "8");
+    assert(UnsignedInteger::fromDecimal(8, "12").multiply(UnsignedInteger::fromDecimal(8, "10")).toDecimal() == "120");
+    assert(UnsignedInteger::fromDecimal(8, "255").divide(UnsignedInteger::fromDecimal(8, "10")).toDecimal() == "25");
+    assert(UnsignedInteger::fromDecimal(8, "255").modulo(UnsignedInteger::fromDecimal(8, "10")).toDecimal() == "5");
+    assert(UnsignedInteger::fromDecimal(8, "12").bitwiseAnd(UnsignedInteger::fromDecimal(8, "10")).toDecimal() == "8");
+    assert(UnsignedInteger::fromDecimal(8, "12").bitwiseOr(UnsignedInteger::fromDecimal(8, "10")).toDecimal() == "14");
+    assert(UnsignedInteger::fromDecimal(8, "12").bitwiseXor(UnsignedInteger::fromDecimal(8, "10")).toDecimal() == "6");
+    assert(UnsignedInteger::fromDecimal(8, "12").bitwiseNot().toDecimal() == "243");
+    assert(UnsignedInteger::fromDecimal(8, "12").shiftLeft(2).toDecimal() == "48");
+    assert(UnsignedInteger::fromDecimal(8, "48").shiftRight(2).toDecimal() == "12");
+    bool multiplyOverflow = false;
+    try { (void)UnsignedInteger::fromDecimal(8, "20").multiply(UnsignedInteger::fromDecimal(8, "20")); }
+    catch (const std::overflow_error&) { multiplyOverflow = true; }
+    assert(multiplyOverflow);
+    bool divideByZero = false;
+    try { (void)UnsignedInteger::fromDecimal(8, "1").divide(UnsignedInteger(8)); }
+    catch (const std::domain_error&) { divideByZero = true; }
+    assert(divideByZero);
+    assert(UnsignedInteger::fromDecimal(1048576, "123456789012345678901234567890").toDecimal() == "123456789012345678901234567890");
+
+    bool oneBitOverflow = false;
+    try { (void)UnsignedInteger::fromDecimal(1, "2"); }
+    catch (const std::out_of_range&) { oneBitOverflow = true; }
+    assert(oneBitOverflow);
+
+    bool additionOverflow = false;
+    try { (void)UnsignedInteger::fromDecimal(8, "255").add(UnsignedInteger::fromDecimal(8, "1")); }
+    catch (const std::overflow_error&) { additionOverflow = true; }
+    assert(additionOverflow);
+
+    bool underflow = false;
+    try { (void)UnsignedInteger::fromDecimal(8, "0").subtract(UnsignedInteger::fromDecimal(8, "1")); }
+    catch (const std::underflow_error&) { underflow = true; }
+    assert(underflow);
+
+    bool overflow = false;
+    try { (void)UnsignedInteger::fromDecimal(8, "256"); }
+    catch (const std::out_of_range&) { overflow = true; }
+    assert(overflow);
+
+    bool badSerialization = false;
+    try { (void)UnsignedInteger::fromBytes(9, {0xff, 0xff}); }
+    catch (const std::out_of_range&) { badSerialization = true; }
+    assert(badSerialization);
+
+    bool badWidth = false;
+    try { (void)UnsignedInteger(1048577); }
+    catch (const std::out_of_range&) { badWidth = true; }
+    assert(badWidth);
+
+    std::cout << "unsigned-integer tests: PASS\n";
+    return 0;
+}
