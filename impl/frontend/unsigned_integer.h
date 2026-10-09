@@ -35,8 +35,19 @@ public:
         return value;
     }
 
+    static UnsignedInteger fromBytes(std::size_t width, const std::vector<std::uint8_t>& bytes) {
+        UnsignedInteger value(width);
+        if (bytes.size() != value.bytes_.size())
+            throw std::invalid_argument("serialized unsigned integer has incorrect byte length");
+        value.bytes_ = bytes;
+        if (value.exceedsWidth())
+            throw std::out_of_range("serialized unsigned integer exceeds declared width");
+        return value;
+    }
+
     std::size_t width() const noexcept { return width_; }
     const std::vector<std::uint8_t>& bytes() const noexcept { return bytes_; }
+    std::vector<std::uint8_t> toBytes() const { return bytes_; }
 
     bool isZero() const noexcept {
         return std::all_of(bytes_.begin(), bytes_.end(), [](std::uint8_t b) { return b == 0; });
