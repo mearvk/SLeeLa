@@ -312,6 +312,21 @@ private:
         auto it=structLayout_.find(n.typeName);if(it==structLayout_.end())throw std::runtime_error("Semantic error: 'new' of unknown class or struct '"+n.typeName+"'");
         if(!n.args.empty())throw std::runtime_error("Semantic error: constructors with arguments are not yet supported for '"+n.typeName+"'");
         emit(OP_NEWSTRUCT,it->second.typeIndex);
+        // Initialize class fields per instance. A duplicated handle is consumed
+        // by SETFIELD while the original stays on the stack as the new value.
+        for(const auto& cls:prog_.classes) if(cls.name==n.typeName){
+            for(const auto& f:cls.fields) if(!f.isStatic){
+                auto off=it->second.fieldOffset.find(f.name);if(off==it->second.fieldOffset.end())continue;
+                emit(OP_DUP);
+                if(f.init) emitExpr(f.init.get());
+                else if(f.type=="int") emit(OP_CONST,slvm_add_const_int(vm_,0));
+                else if(f.type=="double") emit(OP_CONST,slvm_add_const_double(vm_,0.0));
+                else if(f.type=="bool"||f.type=="boolean") emit(OP_CONST,slvm_add_const_bool(vm_,0));
+                else if(f.type=="string"||f.type=="String") emit(OP_CONST,slvm_add_const_str(vm_,""));
+                else emit(OP_CONST,addNullConst());
+                emit(OP_SETFIELD,off->second);emit(OP_POP);
+            }
+        }
     }
     void emitMember(const MemberAccess& m){
         // Back-propagate the terminal degree requirement to the origin.
