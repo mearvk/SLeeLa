@@ -11,7 +11,7 @@
 namespace sleela {
 
 /*
- * Width-parameterized unsigned integer used by the source compiler/runtime.
+ * Width-parameterized unsigned integer value foundation for compiler/runtime integration.
  * Bytes are little-endian. Every value is normalized to exactly ceil(width/8)
  * bytes and unused high bits are always cleared.
  */
@@ -91,9 +91,6 @@ public:
         return out;
     }
 
-    // Multiplication is modular only at the declared width; detect overflow
-    // separately so callers can choose checked or explicitly wrapping behavior.
-    struct Product { UnsignedInteger* unused = nullptr; }; // declaration intentionally avoided in API
     bool addWouldOverflow(const UnsignedInteger& other) const {
         requireSameWidth(other);
         unsigned carry = 0;
