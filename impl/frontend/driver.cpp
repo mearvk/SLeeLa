@@ -105,10 +105,31 @@ static bool verifyArchiveHash(const fs::path&archive,const std::string&expected)
 // if no such ancestor exists.
 static fs::path findRepoRoot(const fs::path&start){
     std::error_code ec;
+
+    // Prefer the explicitly configured SLeeLa installation/project root. This
+    // is essential when a client project (for example Airport Tycoon) invokes
+    // Sleelvac from its own edition directory, outside the SLeeLa checkout.
+    // Only trust SLEELA_HOME when it contains the required verifier; otherwise
+    // fall back to the normal upward search.
+    if(const char* home=std::getenv("SLEELA_HOME"); home && *home){
+        fs::path configured=fs::absolute(fs::path(home),ec);
+        if(ec){ec.clear();configured=fs::path(home);}
+        if(fs::is_directory(configured,ec) &&
+           fs::is_regular_file(configured/"tools"/"verify-before-execution.py",ec)){
+            fs::path canonical=fs::weakly_canonical(configured,ec);
+            return ec ? configured : canonical;
+        }
+        ec.clear();
+    }
+
     fs::path dir=fs::absolute(start,ec);
-    if(ec)dir=start;
+    if(ec){ec.clear();dir=start;}
     for(;;){
-        if(fs::exists(dir/"tools"/"verify-before-execution.py"))return dir;
+        if(fs::is_regular_file(dir/"tools"/"verify-before-execution.py",ec)){
+            fs::path canonical=fs::weakly_canonical(dir,ec);
+            return ec ? dir : canonical;
+        }
+        ec.clear();
         fs::path parent=dir.parent_path();
         if(parent.empty()||parent==dir)break;
         dir=parent;
