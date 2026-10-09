@@ -1,0 +1,6 @@
+#sleela 1.8
+class LetInferenceInvalidNull {
+    static void main() {
+        let missing = null;
+    }
+}
