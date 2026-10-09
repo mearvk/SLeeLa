@@ -631,6 +631,6 @@ test-config-location: $(CONFIG_LOCATION_SMOKE)
 	@echo "=== SLeeLa configuration location policy ==="; (cd .. && $(CONFIG_LOCATION_SMOKE))
 \nUNSIGNED_INTEGER_TEST := $(BUILD)/unsigned_integer.test
 $(UNSIGNED_INTEGER_TEST): tests/unsigned_integer_test.cpp frontend/unsigned_integer.h | $(BUILD)
-\t$(CXX) $(CXXFLAGS) -Ifrontend tests/unsigned_integer_test.cpp -o $@
+	$(CXX) $(CXXFLAGS) -Ifrontend tests/unsigned_integer_test.cpp -o $@
 test-unsigned-integer: $(UNSIGNED_INTEGER_TEST)
-\t@echo "=== SLeeLa arbitrary-width unsigned integer tests ==="; $(UNSIGNED_INTEGER_TEST)
+	@echo "=== SLeeLa arbitrary-width unsigned integer tests ==="; $(UNSIGNED_INTEGER_TEST)
