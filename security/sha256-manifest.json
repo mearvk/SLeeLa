@@ -99,11 +99,11 @@
     },
     {
       "path": "impl/core/sleela_core.c",
-      "sha256": "3a8486f5a00854864de27f8a4a5d1b825cdfab9c25c8ea96c1e12df85934f17b"
+      "sha256": "7679cae1729990e89175f32f67bf7d879b3e60a3efd1a1fbef195729e6515fb9"
     },
     {
       "path": "impl/core/sleela_core.h",
-      "sha256": "faa7338021b027fe1c1937f9bca6e7de1e97e2dd25e033e013cb7363c59469ab"
+      "sha256": "2d38e8b079ff5b248963f85794c806b4fcd5e1e9c4fbf48543da6026fa97a644"
     },
     {
       "path": "impl/core/sleela_design_activity.c",
@@ -311,7 +311,7 @@
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "ad21a2fc869f2f7eabbfc0688d17617ffca3f7dcba9d63b6a474d1dacb22eb0a"
+      "sha256": "3ac6d5f7207696467457f9c3d9bce481996c2eaf10294ad5ebf23aa35da8b5c4"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -319,7 +319,7 @@
     },
     {
       "path": "impl/frontend/driver.cpp",
-      "sha256": "e1ee9e5b40c8766f44711902a8b34a4b9e89c9528178b5d989c1630072d2a5cf"
+      "sha256": "0c6d975cb4ed5b141b92f03a0d5d6327d7e61ce9ec745e1b4fc9c32b12424d43"
     },
     {
       "path": "impl/frontend/dynamite.cpp",
@@ -399,7 +399,7 @@
     },
     {
       "path": "impl/frontend/semantic.cpp",
-      "sha256": "b121c3f138de0787fdbeb5f90d5eb5ac8ff2964801a537f055bfc0766244f238"
+      "sha256": "74e7dc0fe0d1e6f7ec93a13662e11354541358945a29a00e498e3979a4db52aa"
     },
     {
       "path": "impl/frontend/semantic.h",
@@ -459,7 +459,7 @@
     },
     {
       "path": "impl/nordshrift/nordshrift.cpp",
-      "sha256": "2c01f99fd7e78d48f5972d50c948713426a4f11c59ae28ff1da1a0959c1832e8"
+      "sha256": "c44189cf80fc5e5050e6a74875acaf2baf8b81de0a690777470f7e0b098883dc"
     },
     {
       "path": "impl/nordshrift/object_compat.cpp",
