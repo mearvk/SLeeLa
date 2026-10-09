@@ -1,0 +1,9 @@
+# SLSHARCCPU
+
+class SLSHARCCPU {
+  architecture; profile; clock; programCounter; registerFile; statusRegisters;
+  addressGenerationUnits; alu; multiplier; macUnit; floatingPointUnits; loopController;
+  programMemory; dataMemory; instructionBuffer; pipeline; interruptController;
+  peripheralBus; dmaController; couplers;
+  reset(); fetch(); decode(); generateAddress(); executeInteger(); executeMAC(); executeFloatingPoint(); accessProgramMemory(); accessDataMemory(); executeLoopStep(); serviceInterrupt(); serviceDMA(); complete(); validate();
+}
