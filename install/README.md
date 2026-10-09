@@ -82,12 +82,21 @@ These settings describe startup policy; they do not by themselves grant network 
 ## Commands
 
 ```text
-make install-help
-make install-check
-./install/quick-safe-install.sh
-./install/quick-safe-install-macos.sh
-install\quick-safe-install.cmd
+make install                 # from the repo root: build, deploy, set SLEELA/PATH
+make -C install install       # same, invoked directly
+make -C install install-noninteractive   # accept all defaults, no prompts
+make -C install install-check # verify installer entry points only (does NOT install)
+./install/quick-safe-install.sh          # Linux installer (direct)
+./install/quick-safe-install-macos.sh    # macOS installer (direct)
+install\quick-safe-install.cmd           # Windows 10+ installer (direct)
 ```
+
+> **`make install` deploys; `make -C install all` / `install-check` only
+> verifies.** The default target of `install/Makefile` is `install-check` (a
+> safe, side-effect-free check), so running `make -C install all` reports that
+> the installer is present but does **not** install anything. Use
+> `make install` (repo root) or `make -C install install` to actually build,
+> deploy, and set `SLEELA`/`PATH`.
 
 The JetBrains source acquisition helper remains separate and is not downloaded or built by this installer.
 
