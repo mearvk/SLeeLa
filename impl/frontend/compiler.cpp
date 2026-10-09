@@ -662,11 +662,17 @@ private:
             if(!target->isStatic)emitThis();
             for(const auto&a:c.args)emitExpr(a.get());emit(OP_CALL,it->second);return;
         }
-        // Chemistry's public API lowers to private helpers on a synthesized
-        // class. Resolve those helpers by qualified name now that all class
-        // methods use Class::method symbols.
-        if(c.callee.rfind("__native_chemistry_",0)==0)
-            it=funcIndex_.find("__NativeChemistry::"+c.callee);
+        // Native subject helpers are synthesized as qualified class methods.
+        // Resolve all __Native* helper names consistently with semantic analysis.
+        if(it==funcIndex_.end()&&c.callee.rfind("__native_",0)==0){
+            const std::string suffix="::"+c.callee;
+            for(const auto& entry:funcIndex_){
+                if(entry.first.size()>=suffix.size()&&entry.first.compare(entry.first.size()-suffix.size(),suffix.size(),suffix)==0&&entry.first.rfind("__Native",0)==0){
+                    it=funcIndex_.find(entry.first);
+                    break;
+                }
+            }
+        }
         if(it==funcIndex_.end())it=funcIndex_.find(c.callee);
         if(it==funcIndex_.end())throw std::runtime_error("Semantic error: call to unknown method '"+c.callee+"'");
         const Method* target=methods_[it->second].method;
