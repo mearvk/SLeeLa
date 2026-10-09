@@ -19,6 +19,18 @@ class UnsignedInteger {
 public:
     static constexpr std::size_t kMaximumWidth = 1048576;
 
+    static bool isValidTypeName(const std::string& name) noexcept {
+        if (name.size() < 2 || name[0] != 'U' || (name.size() > 2 && name[1] == '0')) return false;
+        std::size_t width = 0;
+        for (std::size_t i = 1; i < name.size(); ++i) {
+            if (name[i] < '0' || name[i] > '9') return false;
+            const unsigned digit = static_cast<unsigned>(name[i] - '0');
+            if (width > 104857 || (width == 104857 && digit > 6)) return false;
+            width = width * 10 + digit;
+        }
+        return width >= 1 && width <= kMaximumWidth;
+    }
+
     explicit UnsignedInteger(std::size_t width, std::uint8_t fill = 0)
         : width_(width), bytes_(byteCount(width), fill) {
         normalize();
