@@ -3,7 +3,7 @@
 # Product-specific Makefiles remain authoritative. This root dispatcher only
 # enters those existing build systems; it does not duplicate their source lists.
 
-.PHONY: all core java28 regex compiler decompiler vm scripting jetbrains install tutorial-check tests server config route clean help
+.PHONY: all autocheck core java28 regex compiler decompiler vm scripting jetbrains install tutorial-check tests server config route clean help
 
 all: autocheck core java28 regex compiler decompiler vm scripting jetbrains install tutorial-check tests config route
 

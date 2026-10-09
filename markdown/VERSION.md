@@ -1,6 +1,6 @@
 ## 0.3.29-dev Development Increment
 
-This increment adds the arbitrary-width unsigned integer foundation for `U1` through `U1048576`, including decimal conversion, width validation, checked arithmetic, division/remainder, bitwise operations, shifts, semantic type recognition, and focused tests. VM value ABI and end-to-end source execution integration remain in progress. The release remains in development pending the full Linux, macOS, Windows, and regression CI results.
+This increment extends the arbitrary-width unsigned integer foundation for source types U1 through U1048576 with checked multiplication, division/remainder, width-bounded bitwise operations, and logical shifts. New representative tests cover these operations; VM value ABI integration and end-to-end source execution remain in progress.
 
 **SLeeLa — MEARVK LLC — 2026**
 
@@ -21,7 +21,11 @@ This increment adds the arbitrary-width unsigned integer foundation for `U1` thr
 
 ## 0.3.29 Development Increment
 
-Defined the parameterized unsigned integer source-signature family `U<n>` for every width from `U1` through `U1048576`. Each type denotes an exactly n-bit unsigned value with range `0..(2^n - 1)`. The source contract requires width validation, range-safe conversions, and explicit diagnostics rather than silently lowering unsupported widths to a host integer. This records the source-language contract; complete runtime/compiler support must be verified by implementation and conformance tests.
+Extended the compiler-facing unsigned integer foundation for `U<n>` widths 1..1048576 with checked multiplication, division/remainder, bitwise operations, and logical shifts. Full lowering and runtime ABI integration remain open work and must not be considered complete until end-to-end tests pass.
+
+## Language Syntax 1.7
+
+Advanced the Sleela language syntax version from 1.6 to 1.7 for the arbitrary-width unsigned integer signature family `U1` through `U1048576`. The supported syntax range is now 1.3 through 1.7; compiler/tool versioning remains independent.
 
 ## 0.3.9 Development Increment
 

@@ -212,9 +212,12 @@ stage: verify-security $(SLEELA_BIN) $(NORDSHRIFT_BIN)
 	@cp ../config/config-location.conf $(STAGE_CONFIG)/config-location.conf
 	@cp ../MEMORY_MANAGER.md $(STAGE_DOCS)/MEMORY_MANAGER.md 2>/dev/null || true
 	@cp ../PURPOSE.md $(STAGE_DOCS)/PURPOSE.md 2>/dev/null || true
-	@printf '%s\n' '# SLeeLa Build Options' '' 'The staged runtime uses the defaults in Config/sleela.conf.' '' 'Available command-line memory options:' '' '  --memory-manager       Use the default 2 GiB ceiling' '  --memory-manager=SIZE  Set 256M through 2G' '  --mm=SIZE              Short form of --memory-manager=SIZE' > $(STAGE_OPTIONS)/OPTIONS.md
-	@printf '%s\n' '# SLeeLa Runtime Layout' '' 'bin/       Executables' 'Config/    Consolidated default configuration (including VM generation)' 'Options/   Runtime/build option reference' 'lib/       Reserved for runtime libraries' 'docs/      Runtime documentation' > $(STAGE)/README.md
-	@printf '%s\n' '# SLeeLa VM Selection' '' 'Config/vm.conf selects VM generation 1-11.' 'Selection precedence: CLI, SLEELA_VM_VERSION, Config/vm.conf, compiled default.' > $(STAGE_DOCS)/VM-SELECTION.md
+	@printf '%s
+' '# SLeeLa Build Options' '' 'The staged runtime uses the defaults in Config/sleela.conf.' '' 'Available command-line memory options:' '' '  --memory-manager       Use the default 2 GiB ceiling' '  --memory-manager=SIZE  Set 256M through 2G' '  --mm=SIZE              Short form of --memory-manager=SIZE' > $(STAGE_OPTIONS)/OPTIONS.md
+	@printf '%s
+' '# SLeeLa Runtime Layout' '' 'bin/       Executables' 'Config/    Consolidated default configuration (including VM generation)' 'Options/   Runtime/build option reference' 'lib/       Reserved for runtime libraries' 'docs/      Runtime documentation' > $(STAGE)/README.md
+	@printf '%s
+' '# SLeeLa VM Selection' '' 'Config/vm.conf selects VM generation 1-11.' 'Selection precedence: CLI, SLEELA_VM_VERSION, Config/vm.conf, compiled default.' > $(STAGE_DOCS)/VM-SELECTION.md
 	@echo "=== staged SLeeLa runtime: $(STAGE) ==="
 
 package: stage
@@ -476,11 +479,7 @@ $(BUILD)/driver.o: frontend/driver.cpp frontend/compiler.h frontend/artifact.h s
 $(BUILD):
 	mkdir -p $(BUILD)
 
-test: verify-security test-unsigned-integer test-java-runtime test-java-authorship test-system-monitor test-sleela test-class-dispatch test-design-activity test-regex test-version test-nordshrift test-nordshrift-compiler test-nordshrift-semantic test-nordshrift-e2e test-nordshrift-compat test-runtime-artifact-abi test-threads test-thread-platform test-network test-network-platform test-synchro test-munction test-bestof test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-math test-physics test-economics test-inference test-chemistry test-financial test-astrophysics test-sociology test-runtime test-memmgr
-test-unsigned-integer: $(BUILD)
-	$(CXX) $(CXXFLAGS) -Ifrontend tests/unsigned_integer_test.cpp -o $(BUILD)/unsigned_integer_test
-	$(BUILD)/unsigned_integer_test
-
+test: verify-security test-java-runtime test-java-authorship test-system-monitor test-sleela test-class-dispatch test-design-activity test-regex test-version test-nordshrift test-nordshrift-compiler test-nordshrift-semantic test-nordshrift-e2e test-nordshrift-compat test-runtime-artifact-abi test-threads test-thread-platform test-network test-network-platform test-synchro test-munction test-bestof test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-math test-physics test-economics test-inference test-chemistry test-financial test-astrophysics test-sociology test-unsigned-integer test-runtime test-memmgr
 test-thread-platform: $(THREAD_PLATFORM_SMOKE)
 	@echo "=== OS-aware threading backend ==="; SLEELA_THREAD_PLATFORM=auto $(THREAD_PLATFORM_SMOKE)
 test-threads: $(THREAD_SMOKE)
@@ -545,9 +544,12 @@ define RUN_SUBJECT_VALUES
 	  f=impl/tests/subjects/$(1)_values.sleela; \
 	  echo "=== $(1) numeric assertions ($$f) ==="; \
 	  out="$$($(CURDIR)/$(SLEELA_BIN) run $$f 2>/dev/null)" || { echo "  FAIL ($$f did not run)"; exit 1; }; \
-	  printf '%s\n' "$$out" | grep -E '^(PASS|FAIL) '; \
-	  fails=$$(printf '%s\n' "$$out" | grep -c '^FAIL '); \
-	  passes=$$(printf '%s\n' "$$out" | grep -c '^PASS '); \
+	  printf '%s
+' "$$out" | grep -E '^(PASS|FAIL) '; \
+	  fails=$$(printf '%s
+' "$$out" | grep -c '^FAIL '); \
+	  passes=$$(printf '%s
+' "$$out" | grep -c '^PASS '); \
 	  expected=$$(grep -oE 'EXPECTED_PASS=[0-9]+' $$f | head -1 | cut -d= -f2); \
 	  if [ "$$fails" -ne 0 ]; then echo "  $(1): $$fails FAILED"; exit 1; fi; \
 	  if [ -n "$$expected" ] && [ "$$passes" -ne "$$expected" ]; then echo "  $(1): expected $$expected checks, got $$passes"; exit 1; fi; \
@@ -644,3 +646,9 @@ $(CONFIG_LOCATION_SMOKE): ../runtime/config_location_smoke.c ../runtime/config_l
 	$(CC) $(CFLAGS) -I../runtime ../runtime/config_location_smoke.c $(CONFIG_LOCATION_OBJ) -o $@ $(LDFLAGS) $(LIBS)
 test-config-location: $(CONFIG_LOCATION_SMOKE)
 	@echo "=== SLeeLa configuration location policy ==="; (cd .. && $(CONFIG_LOCATION_SMOKE))
+
+UNSIGNED_INTEGER_TEST := $(BUILD)/unsigned_integer.test
+$(UNSIGNED_INTEGER_TEST): tests/unsigned_integer_test.cpp frontend/unsigned_integer.h | $(BUILD)
+	$(CXX) $(CXXFLAGS) -Ifrontend tests/unsigned_integer_test.cpp -o $@
+test-unsigned-integer: $(UNSIGNED_INTEGER_TEST)
+	@echo "=== SLeeLa arbitrary-width unsigned integer tests ==="; $(UNSIGNED_INTEGER_TEST)

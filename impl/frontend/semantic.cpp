@@ -10,14 +10,15 @@ enum class Kind { Void, Int, Unsigned, Double, Bool, String, Null, Struct, Array
 // For Kind::Array, `name` carries the full array type text (e.g. "int[]") and
 // `elem` the element type name (e.g. "int").
 struct Type { Kind kind=Kind::Unknown; std::string name{}; std::string elem{}; };
+static bool unsignedTypeName(const std::string& n){return UnsignedInteger::isValidTypeName(n);}
 static Type typeOf(const std::string& n){
- if(UnsignedInteger::isValidTypeName(n)) return{Kind::Unsigned,n,{}};
  // Accept the Java-style keyword names the lexer produces (int, double,
  // boolean, String, void) as well as the lowercase aliases (bool, string).
  // A trailing "[]" (one or more) denotes an array of the inner type.
  if(n.size()>=2 && n.compare(n.size()-2,2,"[]")==0){
   Type t; t.kind=Kind::Array; t.name=n; t.elem=n.substr(0,n.size()-2); return t;
  }
+ if(unsignedTypeName(n)){return{Kind::Unsigned,n,{}};}
  if(n=="void"){return{Kind::Void,{},{}};}
  if(n=="int"){return{Kind::Int,{},{}};}
  if(n=="double"){return{Kind::Double,{},{}};}
@@ -29,7 +30,7 @@ static std::string nameOf(const Type&t){
  switch(t.kind){case Kind::Void:return"void";case Kind::Int:return"int";case Kind::Unsigned:return t.name;case Kind::Double:return"double";case Kind::Bool:return"bool";case Kind::String:return"string";case Kind::Null:return"null";case Kind::Struct:return t.name;case Kind::Array:return t.name.empty()?"array":t.name;case Kind::Unknown:return"unknown";default:return"error";}
 }
 static bool same(const Type&a,const Type&b){return a.kind==b.kind&&((a.kind!=Kind::Struct&&a.kind!=Kind::Array&&a.kind!=Kind::Unsigned)||a.name==b.name);}
-static bool numeric(const Type&t){return t.kind==Kind::Int||t.kind==Kind::Unsigned||t.kind==Kind::Double;}
+static bool numeric(const Type&t){return t.kind==Kind::Int||t.kind==Kind::Double||t.kind==Kind::Unsigned;}
 static bool assignable(const Type&to,const Type&from){
  return to.kind==Kind::Unknown||from.kind==Kind::Unknown||(to.kind==Kind::Double&&from.kind==Kind::Int)||(from.kind==Kind::Null&&(to.kind==Kind::Struct||to.kind==Kind::String||to.kind==Kind::Array))||same(to,from);
 }
@@ -62,7 +63,7 @@ class Analyzer{
   // An array type "T[]" is known when its element type T is known. Nested
   // arrays ("T[][]") recurse. Element type must not be void.
   if(t.size()>=2 && t.compare(t.size()-2,2,"[]")==0){std::string inner=t.substr(0,t.size()-2);return inner!="void"&&known(inner);}
-  return t=="void"||t=="int"||t=="double"||t=="bool"||t=="boolean"||t=="string"||t=="String"||structs.count(t)||classNames.count(t);
+  return t=="void"||t=="int"||unsignedTypeName(t)||t=="double"||t=="bool"||t=="boolean"||t=="string"||t=="String"||structs.count(t)||classNames.count(t);
  }
  Type tn(const std::string&t)const{return known(t)?typeOf(t):Type{Kind::Error,t};}
  void collect(){
@@ -147,7 +148,7 @@ class Analyzer{
    if(!n->args.empty())err("constructors with arguments are not yet supported for '"+n->typeName+"'");
    return{Kind::Struct,n->typeName};}
   if(auto m=dynamic_cast<const MemberAccess*>(&e)){if(m->field=="next"&&isNextChain(*m->base))return{Kind::Int,{}};return member(*m->base,m->field);}
-  if(auto u=dynamic_cast<const Unary*>(&e)){Type t=expr(*u->operand);if(u->op=="-"&&!numeric(t)&&t.kind!=Kind::Unknown)err("unary '-' requires numeric operand, got "+nameOf(t));if(u->op=="!"&&t.kind!=Kind::Bool&&t.kind!=Kind::Unknown)err("unary '!' requires bool operand, got "+nameOf(t));return t;}
+  if(auto u=dynamic_cast<const Unary*>(&e)){Type t=expr(*u->operand);if(u->op=="-"&&(!numeric(t)||t.kind==Kind::Unsigned)&&t.kind!=Kind::Unknown)err("unary '-' requires signed numeric operand, got "+nameOf(t));if(u->op=="!"&&t.kind!=Kind::Bool&&t.kind!=Kind::Unknown)err("unary '!' requires bool operand, got "+nameOf(t));return t;}
   if(auto b=dynamic_cast<const Binary*>(&e)){return binary(*b);}
   if(auto c=dynamic_cast<const Call*>(&e)){return call(*c);}
   if(auto m=dynamic_cast<const MethodCall*>(&e)){return fluent(*m);}
@@ -172,10 +173,17 @@ class Analyzer{
    // Java-style: `+` with a String operand is string concatenation; the VM's
    // OP_ADD already renders either operand to text. Only `+` concatenates.
    if(b.op=="+"&&(l.kind==Kind::String||r.kind==Kind::String))return{Kind::String,{}};
+   if(l.kind==Kind::Unsigned || r.kind==Kind::Unsigned){
+    if(l.kind!=Kind::Unsigned || r.kind!=Kind::Unsigned || l.name!=r.name){
+     err("operator '"+b.op+"' requires unsigned operands of the same width");
+     return{Kind::Error,{},{}};
+    }
+    return{Kind::Unsigned,l.name,{}};
+   }
    if(!numeric(l)&&l.kind!=Kind::Unknown){err("operator '"+b.op+"' requires numeric operands");}
    if(!numeric(r)&&r.kind!=Kind::Unknown){err("operator '"+b.op+"' requires numeric operands");}
    return{(l.kind==Kind::Double||r.kind==Kind::Double)?Kind::Double:Kind::Int,{}};}
-  if(b.op=="<"||b.op=="<="||b.op==">"||b.op==">="){if((!numeric(l)||!numeric(r))&&l.kind!=Kind::Unknown&&r.kind!=Kind::Unknown)err("comparison '"+b.op+"' requires numeric operands");return{Kind::Bool,{}};}
+  if(b.op=="<"||b.op=="<="||b.op==">"||b.op==">="){if(l.kind==Kind::Unsigned||r.kind==Kind::Unsigned){if(l.kind!=Kind::Unsigned||r.kind!=Kind::Unsigned||l.name!=r.name)err("comparison '"+b.op+"' requires unsigned operands of the same width");}else if((!numeric(l)||!numeric(r))&&l.kind!=Kind::Unknown&&r.kind!=Kind::Unknown)err("comparison '"+b.op+"' requires numeric operands");return{Kind::Bool,{}};}
   if(b.op=="=="||b.op=="!="){if(!assignable(l,r)&&!assignable(r,l)&&l.kind!=Kind::Unknown&&r.kind!=Kind::Unknown)err("equality operands have incompatible types "+nameOf(l)+" and "+nameOf(r));return{Kind::Bool,{}};}err("unknown binary operator '"+b.op+"'");return{Kind::Error,{}};
  }
  Type call(const Call&c){auto it=methods.find(cls+"::"+c.callee);if(it==methods.end())it=methods.find(c.callee);if(it==methods.end()&&c.callee.rfind("__native_",0)==0){

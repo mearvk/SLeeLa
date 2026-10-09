@@ -8,7 +8,7 @@
     },
     {
       "path": "SLEELA.syntax",
-      "sha256": "5faeb7925abda82eedddd6f8c75e46d8754a868632440d8090ddac234a5a1b21"
+      "sha256": "0fb59ac0bddf1da36ded8f609ba022529b6e0670fa93221b4fc8a84fff30325d"
     },
     {
       "path": "SST-2.0.model",
@@ -5632,7 +5632,7 @@
     },
     {
       "path": "impl/frontend/semantic.cpp",
-      "sha256": "4126abb1a8394f2a562ac2938bd565c7a4b837fafb63e8143ad4a7c8cb47f1c2"
+      "sha256": "ba38d80a0456bc3ab7f0667709653681eaf65c7b1153b6aeafd2461800e78c53"
     },
     {
       "path": "impl/frontend/semantic.h",

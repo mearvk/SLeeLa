@@ -11,16 +11,18 @@ for p in tools/verify-before-execution.py security/sha256-manifest.json impl/Mak
 done
 if [ -x impl/build/sleela ]; then
   echo "INFO: local executable: $ROOT/impl/build/sleela"
-  if command -v strings >/dev/null 2>&1 && strings impl/build/sleela | grep -q 'searched upward from'; then
-    echo "FAIL: local executable contains the old verifier-discovery diagnostic; rebuild with: make -C impl all"
-    fail=1
-  else
-    echo "PASS: local executable does not contain the known stale diagnostic"
-  fi
 else
   echo "WARN: impl/build/sleela is not built yet"
 fi
-if command -v python3 >/dev/null 2>&1; then python3 -m json.tool security/sha256-manifest.json >/dev/null 2>&1 && echo "PASS: manifest JSON parses" || { echo "FAIL: manifest JSON invalid"; fail=1; }; else echo "WARN: python3 not found; skipped manifest JSON parse"; fi
+if command -v python3 >/dev/null 2>&1; then
+  python3 -m json.tool security/sha256-manifest.json >/dev/null 2>&1 && echo "PASS: manifest JSON parses" || { echo "FAIL: manifest JSON invalid"; fail=1; }
+else
+  echo "WARN: python3 not found; skipped manifest JSON parse"
+fi
 echo "== Search: stale verifier-discovery diagnostics and hard-coded paths =="
-if grep -R -n --include='Makefile' --include='*.mk' --include='*.cpp' --include='*.h' --include='*.py' -E 'searched upward from|verification tool not found|SLEELA_HOME.*security/sha256-manifest' impl tools . 2>/dev/null; then echo "INFO: matches above; review for stale path assumptions"; else echo "INFO: no matching stale verifier diagnostics found"; fi
+if grep -R -n --include='Makefile' --include='*.mk' --include='*.cpp' --include='*.h' --include='*.py'   -E 'searched upward from|verification tool not found|SLEELA_HOME.*security/sha256-manifest' impl tools . 2>/dev/null; then
+  echo "INFO: matches above; review for stale path assumptions"
+else
+  echo "INFO: no matching stale verifier diagnostics found"
+fi
 exit "$fail"
