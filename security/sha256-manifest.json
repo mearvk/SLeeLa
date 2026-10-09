@@ -99,11 +99,11 @@
     },
     {
       "path": "impl/core/sleela_core.c",
-      "sha256": "3a8486f5a00854864de27f8a4a5d1b825cdfab9c25c8ea96c1e12df85934f17b"
+      "sha256": "7679cae1729990e89175f32f67bf7d879b3e60a3efd1a1fbef195729e6515fb9"
     },
     {
       "path": "impl/core/sleela_core.h",
-      "sha256": "faa7338021b027fe1c1937f9bca6e7de1e97e2dd25e033e013cb7363c59469ab"
+      "sha256": "2d38e8b079ff5b248963f85794c806b4fcd5e1e9c4fbf48543da6026fa97a644"
     },
     {
       "path": "impl/core/sleela_design_activity.c",
@@ -200,6 +200,14 @@
     {
       "path": "impl/core/sleela_net.h",
       "sha256": "2c1e8595cac2fb802fc741c3ec0f164b86510f7efd8be960e60818b107739960"
+    },
+    {
+      "path": "impl/core/sleela_os.c",
+      "sha256": "eeb0df52498469a51f6f7b379e5724a2bab240ab08fbbaf29d990041d188f1c3"
+    },
+    {
+      "path": "impl/core/sleela_os.h",
+      "sha256": "844196600ed86962ae13a1d9b4ddd09f424b6c1825bf9b6b3b4d8702f6c5f5dc"
     },
     {
       "path": "impl/core/sleela_path.c",
@@ -311,7 +319,7 @@
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "ad21a2fc869f2f7eabbfc0688d17617ffca3f7dcba9d63b6a474d1dacb22eb0a"
+      "sha256": "708a2b3b9986e85050e69c486f7da95e56575f8a303ca1ef646976cb6435a71f"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -319,7 +327,7 @@
     },
     {
       "path": "impl/frontend/driver.cpp",
-      "sha256": "e1ee9e5b40c8766f44711902a8b34a4b9e89c9528178b5d989c1630072d2a5cf"
+      "sha256": "45b93e57041523535444119b0b20847d2d91ab174cc0752a9a379fafe4671910"
     },
     {
       "path": "impl/frontend/dynamite.cpp",
@@ -399,7 +407,7 @@
     },
     {
       "path": "impl/frontend/semantic.cpp",
-      "sha256": "b121c3f138de0787fdbeb5f90d5eb5ac8ff2964801a537f055bfc0766244f238"
+      "sha256": "9d907000d0b655fc6d63e3a83e4afc71e14ba0ab6f22904669615a5fcbb24833"
     },
     {
       "path": "impl/frontend/semantic.h",
@@ -459,7 +467,7 @@
     },
     {
       "path": "impl/nordshrift/nordshrift.cpp",
-      "sha256": "2c01f99fd7e78d48f5972d50c948713426a4f11c59ae28ff1da1a0959c1832e8"
+      "sha256": "c44189cf80fc5e5050e6a74875acaf2baf8b81de0a690777470f7e0b098883dc"
     },
     {
       "path": "impl/nordshrift/object_compat.cpp",
