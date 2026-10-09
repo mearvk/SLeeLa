@@ -89,7 +89,7 @@ class Analyzer{
   for(const auto&c:p.classes){for(const auto&f:c.fields){if(f.isProtected&&!f.isStatic)err("protected field '"+f.name+"' must also be static");}
    for(const auto&m:c.methods){std::set<std::string> seen;for(const auto&x:m.params){if(!known(x.type))err("unknown parameter type '"+x.type+"'");if(x.type=="void")err("parameter '"+x.name+"' cannot be void");if(!seen.insert(x.name).second)err("duplicate parameter '"+x.name+"' in method '"+m.name+"'");}}}
  }
- void method(const ClassDecl&owner,const Method&m){cur=&m;cls=owner.name;scopes.clear();push();if(!m.isStatic&&m.name!="main")declare("this",Type{Kind::Struct,owner.name,{}});for(const auto&x:m.params)declare(x.name,tn(x.type));block(*m.body);if(m.name=="main"&&m.retType!="void")err("main must return void");pop();}
+ void method(const ClassDecl&owner,const Method&m){cur=&m;cls=owner.name;scopes.clear();push();if(!m.isStatic)declare("this",Type{Kind::Struct,owner.name,{}});for(const auto&x:m.params)declare(x.name,tn(x.type));block(*m.body);if(m.name=="main"&&m.retType!="void")err("main must return void");pop();}
  void block(const Block&b){for(const auto&s:b.stmts)stmt(*s);}
  void stmt(const Stmt&s){
   if(auto b=dynamic_cast<const Block*>(&s)){push();block(*b);pop();return;}
@@ -160,7 +160,7 @@ class Analyzer{
   if(auto io=dynamic_cast<const InstanceOfExpr*>(&e)){expr(*io->value);return{Kind::Bool,{}};}
   if(auto ca=dynamic_cast<const CastExpr*>(&e)){expr(*ca->operand);return tn(ca->typeName);}
   if(dynamic_cast<const SuperExpr*>(&e))return{Kind::Unknown,{}};
-  if(dynamic_cast<const ThisExpr*>(&e)){if(cls.empty()||!cur||cur->isStatic||cur->name=="main"){err("'this' is only available in an instance method");return{Kind::Error,{}};}return{Kind::Struct,cls,{}};}
+  if(dynamic_cast<const ThisExpr*>(&e)){if(cls.empty()||!cur||cur->isStatic){err("'this' is only available in an instance method");return{Kind::Error,{}};}return{Kind::Struct,cls,{}};}
   if(auto aa=dynamic_cast<const ArrayAccess*>(&e)){Type base=expr(*aa->base);Type idx=expr(*aa->index);if(idx.kind!=Kind::Int&&idx.kind!=Kind::Unknown)err("array index must be int, got "+nameOf(idx));if(base.kind==Kind::Array)return typeOf(base.elem);if(base.kind==Kind::Unknown)return{Kind::Unknown,{}};err("index access requires an array value, got "+nameOf(base));return{Kind::Error,{}};}
   if(auto mr=dynamic_cast<const MethodReferenceExpr*>(&e)){expr(*mr->base);return{Kind::Unknown,{}};}
   err("unknown expression kind");return{Kind::Error,{}};
