@@ -1,4 +1,4 @@
-## 0.3.27-dev Development Increment
+## 0.3.28-dev Development Increment
 
 This increment advances class-instance semantics with per-object instance fields, receiver-aware method dispatch, and default field initialization. It also corrects dispatch for synthesized chemistry helpers and improves cross-platform build staging and vendored dependency extraction. The release remains in development pending the full Linux, macOS, Windows, and regression CI results.
 
@@ -8,7 +8,7 @@ This increment advances class-instance semantics with per-object instance fields
 
 ## Current Development Version
 
-**SLeeLa:** 0.3.27-dev
+**SLeeLa:** 0.3.28-dev
 **Sleela-Complete:** 0.3.2-dev  
 **Nordshrift Complete:** 2.7.1-dev  
 **Native Foundation:** 0.3.2-dev  
