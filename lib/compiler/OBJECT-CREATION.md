@@ -28,3 +28,5 @@ Use `new Type(...)` when explicitness improves clarity or resolves ambiguity. Us
 ## Safety and correctness
 
 Construction must respect type visibility, allocation limits, capability checks, constructor chaining, and failure cleanup. Partially initialized objects must not escape. Compiler diagnostics should identify the selected constructor or explain why resolution failed.
+
+**Implementation status:** The constructor-series and object-creation resolver sources describe the intended resolution model. The current native frontend still rejects constructor arguments and does not yet implement the concise `Type(args)` form end-to-end. These design documents are not a claim that runtime constructor invocation is complete.
