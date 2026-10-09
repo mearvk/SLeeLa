@@ -5568,7 +5568,7 @@
     },
     {
       "path": "impl/frontend/driver.cpp",
-      "sha256": "45b93e57041523535444119b0b20847d2d91ab174cc0752a9a379fafe4671910"
+      "sha256": "b3a2a7adff7a16d934cfb9bada3561d902d9541cd4282d43a5eab73a031e3c1b"
     },
     {
       "path": "impl/frontend/dynamite.cpp",
@@ -6696,11 +6696,11 @@
     },
     {
       "path": "install/quick-safe-install.ps1",
-      "sha256": "2da458903d96f32a89476f60409168ec6a224cea9d212e501f4e5e4c6183746f"
+      "sha256": "c8b424d5523d335364f9dbf6321df05139c1a94d2c324a3b524f621a8489eab9"
     },
     {
       "path": "install/quick-safe-install.sh",
-      "sha256": "6a91bccb23cf137da191b56f02023f337ddeb35192ff31f5f4aedbfdaf60c065"
+      "sha256": "524ebc9f4131018a086fd1841c53f3cd2471ff42fc791d8388c7369d05a1b568"
     },
     {
       "path": "international-criminal-court/ABOUT-THE-COURT.md",
@@ -7847,6 +7847,30 @@
       "sha256": "ab318b0e87db9f8dc351a26954cf8eb62260bddcf6067ed2c09e741e3025bbbb"
     },
     {
+      "path": "lib/cpu/6502/SL6502CPU.sleela",
+      "sha256": "b70192df82739d0e16d79992c2cf90da5a1be2b31e0b435c45d8251b3df4dbea"
+    },
+    {
+      "path": "lib/cpu/68020/SL68020CPU.sleela",
+      "sha256": "9402df8ad4417aa3e60ee0eea3b6fdf37e91ad7845726101ee57a77ab3f5ef4b"
+    },
+    {
+      "path": "lib/cpu/68030/SL68030CPU.sleela",
+      "sha256": "d35fb4c0c3a01dbfd3a797baa45ace1e70d4c36bc2fbe775de41fc625ea446a1"
+    },
+    {
+      "path": "lib/cpu/68040/SL68040CPU.sleela",
+      "sha256": "18acc7e727636a93eea8e9fbfbd3f3995c1c9972fcd1a6c8ba05e1ebe5ff6b15"
+    },
+    {
+      "path": "lib/cpu/68060/SL68060CPU.sleela",
+      "sha256": "bf730f01fbd438bd1c0918e8d77e30cb8013d7000165af85ba2c316bde983f3d"
+    },
+    {
+      "path": "lib/cpu/6809/SL6809CPU.sleela",
+      "sha256": "4b09567d5520e5e042a15327a3e9aced808533edc885b2a922ca35a04fefec45"
+    },
+    {
       "path": "lib/cpu/SLALU.sleela",
       "sha256": "d9c0a4e0a72f12823261bda43d45ed3ec535e0a5bd30bd3ae5e56accb6d78829"
     },
@@ -7863,16 +7887,44 @@
       "sha256": "63bd9156b80f58079a056e54f75a59bf17f862499850344129d02dd92db16fa3"
     },
     {
+      "path": "lib/cpu/SLBranchPredictor.sleela",
+      "sha256": "475b314bd21ada13322fa23d9eda8c4ff3fdfaefbffe6fffe9b7a23bd921bd0a"
+    },
+    {
       "path": "lib/cpu/SLBus.sleela",
       "sha256": "2d24d748ae17dd61d20a5bed0662a3afaaa84d3b25f8631aabe510bd3d6992bd"
+    },
+    {
+      "path": "lib/cpu/SLBusArbiter.sleela",
+      "sha256": "3f38abe83bc8bbbb3e45262978624ba709d567c777f357a4ab631597187a09d7"
     },
     {
       "path": "lib/cpu/SLCPU.sleela",
       "sha256": "e5aedd3d8c6fc81e8f6f9195f1a2445f2eaf6adbcf90689bf567150e68624d92"
     },
     {
+      "path": "lib/cpu/SLCPUArchitecture.sleela",
+      "sha256": "61cd678aa3151100d382173e4aad4a6ff0d7f6e2798b4c7c5704513197902aad"
+    },
+    {
+      "path": "lib/cpu/SLCPUModel.sleela",
+      "sha256": "c3f3c001e8b691a874a91923747fcda0c314d9a6c5bcad3860cde9947d8bbb55"
+    },
+    {
+      "path": "lib/cpu/SLCPUResource.sleela",
+      "sha256": "4551977de416b65f6ed9d6f4c68ad690e7c0e2d52ecb7c0f3ac37d2c4e905c3a"
+    },
+    {
+      "path": "lib/cpu/SLCPURuntime.sleela",
+      "sha256": "ffaf6b154c309f89ff7915794bf9e3ef49d17d7fffbb4a800dc184305771838c"
+    },
+    {
       "path": "lib/cpu/SLCache.sleela",
       "sha256": "8156dfcdf3c2fd831280a32aaba0aa078f81fac94f8cefac115312552040af52"
+    },
+    {
+      "path": "lib/cpu/SLCacheCoherence.sleela",
+      "sha256": "710a3762f195cfc40c55cb3e27b379258e79109fa95f6fccc1d532dd0162b989"
     },
     {
       "path": "lib/cpu/SLCircuit.sleela",
@@ -7880,7 +7932,11 @@
     },
     {
       "path": "lib/cpu/SLClock.sleela",
-      "sha256": "8d8c871751d9b3b799d2ef4482d05eebb93f11fdef5e18c78a9f77081f6e8339"
+      "sha256": "82d70cf9acbf7bd9dd99e854a4326212e9bd8af2b5257b99a9b86b1f69ddf51e"
+    },
+    {
+      "path": "lib/cpu/SLClockPolicy.sleela",
+      "sha256": "bad946124e092b05350176f6b42d1a38976650bafadb511838de01ca2f3711a2"
     },
     {
       "path": "lib/cpu/SLCompilerDriver.sleela",
@@ -7899,8 +7955,12 @@
       "sha256": "79e0e31fbf450227045a3148d32d90faa1ab576872aec716d7d5502530778a16"
     },
     {
+      "path": "lib/cpu/SLCoupler.sleela",
+      "sha256": "c39db154a779760cf59902b166063407171a0fe017534f2d4ef9b5d016b808c2"
+    },
+    {
       "path": "lib/cpu/SLDMAController.sleela",
-      "sha256": "45127e29624d4e52503c137d5eba542b69cffac584c161895376e8e081b71048"
+      "sha256": "21ac4b24621343cd20cb6f91cacfdcf958ae18605b0f706d82195a2c9ed7054a"
     },
     {
       "path": "lib/cpu/SLDeviceDriver.sleela",
@@ -7913,6 +7973,10 @@
     {
       "path": "lib/cpu/SLDriverManager.sleela",
       "sha256": "6b62a59d9cf393739371b7fbaf8b37755321bc360e9b5cd36a946396a2f7fc71"
+    },
+    {
+      "path": "lib/cpu/SLExecutionUnit.sleela",
+      "sha256": "2f86bf72f7758caca25387ca93a8fd4ee0a77ca2ac806cb7b845ce2e00324dc2"
     },
     {
       "path": "lib/cpu/SLFileSystem.sleela",
@@ -7945,6 +8009,10 @@
     {
       "path": "lib/cpu/SLFullAdder.sleela",
       "sha256": "f8a59059b7388cb5035f14699569deda2062e236cfe8206b2e43093a3d802eca"
+    },
+    {
+      "path": "lib/cpu/SLGPUDevice.sleela",
+      "sha256": "47c94a76457d836d42142504eed231fadbaaeefb2234d960685ec63501670908"
     },
     {
       "path": "lib/cpu/SLGate.sleela",
@@ -8040,11 +8108,15 @@
     },
     {
       "path": "lib/cpu/SLIOBus.sleela",
-      "sha256": "9eb9e29a9be947525e741ce76fda531ce96b679fcc992ff281df560af283f632"
+      "sha256": "9b70154e3325e5d63e86f5b53d7b2708b14c7bf3d6079ff1a04b5dbf8b0fa29e"
     },
     {
       "path": "lib/cpu/SLIOPort.sleela",
       "sha256": "7d32d271b7e5a29c82c84adbae9ac8f50b88dcb5dda78595580b179575bff357"
+    },
+    {
+      "path": "lib/cpu/SLIOTiming.sleela",
+      "sha256": "a4001f2231eda765b4f9630be3bd149b861e7966bcbc2b04e00b90895b75321a"
     },
     {
       "path": "lib/cpu/SLIR.sleela",
@@ -8063,12 +8135,16 @@
       "sha256": "5a4d902fe2fc041f1ea51ad967c5a85070d937f57a0e2f282115401c72ec6271"
     },
     {
+      "path": "lib/cpu/SLInstructionFetch.sleela",
+      "sha256": "594a6f4cbc6763a58316421f4b1d60cc8434b4a3364f48b7ecac4552268bcf2b"
+    },
+    {
       "path": "lib/cpu/SLInstructionSet.sleela",
       "sha256": "33245387b598906c9c36a9e68fc3be1089b3c3d5c408203f48b65b78002c9680"
     },
     {
       "path": "lib/cpu/SLInterruptController.sleela",
-      "sha256": "47a3738dce9437e1cd812bc2a6e9c6a306f60963429d4f5d881e9477405dfad4"
+      "sha256": "e101ff90851ec8225774cc008dc1845326118b047dea2b593acf36ab862abff1"
     },
     {
       "path": "lib/cpu/SLKernel.sleela",
@@ -8077,6 +8153,14 @@
     {
       "path": "lib/cpu/SLKeyboardDriver.sleela",
       "sha256": "902b86bcd99c8fd68f9f682a3a3c869a32e20571601177ad4f758e81d9240e67"
+    },
+    {
+      "path": "lib/cpu/SLL2Cache.sleela",
+      "sha256": "c6c1eb6f32dbcb0c7df58ce956b18ce9ed61e92b0ecdaf496c3a9f1d149de32e"
+    },
+    {
+      "path": "lib/cpu/SLL3Cache.sleela",
+      "sha256": "9d617934f3d4de2f49558c96ed6865cc24e7ffea8d93da1949195a5bfaf577ba"
     },
     {
       "path": "lib/cpu/SLLatch.sleela",
@@ -8088,11 +8172,15 @@
     },
     {
       "path": "lib/cpu/SLMMU.sleela",
-      "sha256": "ee911d42bf0d9a812be961328cda40f7496cbfaf25d9334ada2ca551539f6795"
+      "sha256": "3ba148ee28b6e2f932327f413feed3c0a9d50deca4ece33ab3f877b9325df7a6"
     },
     {
       "path": "lib/cpu/SLMachine.sleela",
       "sha256": "d4cb3aadd6f441d57378ff4ce1a4dbe6dd6186137f9b43c951f2dad936038ae0"
+    },
+    {
+      "path": "lib/cpu/SLMemoryController.sleela",
+      "sha256": "04d62d1c1e078c012b06be505e4ad739612eb12b6b8bcdd8c8a8251d8ed149e8"
     },
     {
       "path": "lib/cpu/SLMemoryManager.sleela",
@@ -8109,6 +8197,10 @@
     {
       "path": "lib/cpu/SLOperatingSystem.sleela",
       "sha256": "682feb38309f84ad2bea9dac063b9e4ef5ba1f841eabb6c974f6856729452fa5"
+    },
+    {
+      "path": "lib/cpu/SLPipeline.sleela",
+      "sha256": "e29c08f532ced21c7e7d5fd943e732efbe1d4267481adfcde3d517fc59beaf29"
     },
     {
       "path": "lib/cpu/SLProcess.sleela",
@@ -8136,7 +8228,7 @@
     },
     {
       "path": "lib/cpu/SLRegisterFile.sleela",
-      "sha256": "db55ffa7e9ed2e57948e59202e5f5fff7c8aaf59da18148a7a29a18f0fe98e02"
+      "sha256": "6fc5cc56e83271b4dd8c4020720b7c47b78d84bb71ab1ebfc9c8c4e53ca24377"
     },
     {
       "path": "lib/cpu/SLScheduler.sleela",
@@ -8163,8 +8255,424 @@
       "sha256": "1d1429c4489db83aa3b6fd8046abae6f96e3a504773011dda6e0c0147f92a378"
     },
     {
+      "path": "lib/cpu/SLTLB.sleela",
+      "sha256": "990316e79036a8bc788ce52fc237ab9249f9c7cd17113d84aa1fce0190421d36"
+    },
+    {
       "path": "lib/cpu/SLTuringBridge.sleela",
       "sha256": "c1bd926c39f2094dad674991579c45ae686b76aee41c4017bfe26e3136fbdfc2"
+    },
+    {
+      "path": "lib/cpu/SLWorkload.sleela",
+      "sha256": "4daf4ae6c35ce045f7ffcb2d6554c99836c507efdb9b59147de45984d6b18f31"
+    },
+    {
+      "path": "lib/cpu/alpha/SLAlphaCPU.sleela",
+      "sha256": "ccdc826320b5437d10fe2c25dc1b447c07bc25fb948a58729b1fe459459701f7"
+    },
+    {
+      "path": "lib/cpu/amd29k/SLAMD29KCPU.sleela",
+      "sha256": "d66fbbe7875aa04897e74286d607eb2bf4ef9bb9c124349e72da51cb1be38669"
+    },
+    {
+      "path": "lib/cpu/arm/SLARMCPU.sleela",
+      "sha256": "6eb4e700bc88a9728185184f12969ed2aef5d589b5f4e810d81972d876758c93"
+    },
+    {
+      "path": "lib/cpu/atari-2600/SLAtari2600CPU.sleela",
+      "sha256": "543e429d5f5b4990b164fc2ce10ee6eedc759a3e1bc4c2079e4a8e0bbdfaef8f"
+    },
+    {
+      "path": "lib/cpu/atari-5200/SLAtari5200CPU.sleela",
+      "sha256": "c4b9a74835c6cf86c97b66e7a4205dcc49b50a70ea65db10fa14ff1a97f5d10a"
+    },
+    {
+      "path": "lib/cpu/atari-7800/SLAtari7800CPU.sleela",
+      "sha256": "bdb585c0bcf6d5e7ffe021f40109b2245c57558c1296f5a790df0d261c78f475"
+    },
+    {
+      "path": "lib/cpu/atari-jaguar/SLAtariJaguarCPU.sleela",
+      "sha256": "8cea63f95a3306f082143340973a78f367f0eab8549db0468d1390713c535b39"
+    },
+    {
+      "path": "lib/cpu/atari-jaguar-cd/SLAtariJaguarCDCPU.sleela",
+      "sha256": "d0da0128d083ff72eed7f3a4b59719cfeb26fadbf00b865c5486f6f714cac714"
+    },
+    {
+      "path": "lib/cpu/atari-lynx/SLAtariLynxCPU.sleela",
+      "sha256": "610baae201143022aa0636f6732e998fdcdede2c70bd32a2f35280f980c58b9d"
+    },
+    {
+      "path": "lib/cpu/atari-vcs/SLAtariVCSCPU.sleela",
+      "sha256": "6a3e11eb69532760e1e888f79acc875e5d687070a96dedadc0ef77db9a4f37ae"
+    },
+    {
+      "path": "lib/cpu/atari-xegs/SLAtariXEGSCPU.sleela",
+      "sha256": "9babbad478ca0d772e12a4df2bfa450b42688d3ce2a891b30bc17017049d6445"
+    },
+    {
+      "path": "lib/cpu/clipper/SLClipperCPU.sleela",
+      "sha256": "6b2dc95cab0669d45763350af667fd3a5efed5fddb6f46764e2fd52f92b5e287"
+    },
+    {
+      "path": "lib/cpu/coldfire/SLColdFireCPU.sleela",
+      "sha256": "72a4e24b9a2726473b935162e20b76aad85e7c85262fb8ee55e44602cb5bf9ce"
+    },
+    {
+      "path": "lib/cpu/components/SLComponentCatalog.sleela",
+      "sha256": "7ec6e31fcf3709f7ee5460f913ecfbfad219f46ba08c8a72e88d04af0f1acb72"
+    },
+    {
+      "path": "lib/cpu/components/SLExecutorBuild.sleela",
+      "sha256": "b39e412848d691a79ef8701b33ffb481cf636daab401b9a68ccc7249b911978e"
+    },
+    {
+      "path": "lib/cpu/components/SLMemoryModule.sleela",
+      "sha256": "676d563108dc693358cecc67cddfc7a91a8925363e59b120449c5dfdc63e010a"
+    },
+    {
+      "path": "lib/cpu/components/SLOpticalDrive.sleela",
+      "sha256": "47b30e3f6faddc0736736a6f23a104ab23ae22af80db5ab703d980afc49a1e3d"
+    },
+    {
+      "path": "lib/cpu/components/SLStorageDevice.sleela",
+      "sha256": "02d20e5851d1f483d5302c4b42f2be6518e8c93112db564c7ea03f1463dfff2b"
+    },
+    {
+      "path": "lib/cpu/components/SLSystemBus.sleela",
+      "sha256": "c98efb613d134d4e84fd4b0ead5f68322a781ade6ccf4fbf5fa12ba3827bf3e2"
+    },
+    {
+      "path": "lib/cpu/components/examples/build-your-executor.sleela",
+      "sha256": "2ab02e9a02b437a266b4df44b9c61e423bb27c3a1b1f424823a7144940ef0799"
+    },
+    {
+      "path": "lib/cpu/cortex-m/SLCortexMCPU.sleela",
+      "sha256": "3cc191a97a3628fa204bca0821d2fc1f26493d7d557215872c91c41aed662de7"
+    },
+    {
+      "path": "lib/cpu/cortex-r/SLCortexRCPU.sleela",
+      "sha256": "fd81c7d6c2da983edd12b9e86e090e67f6a087e2634498639e7413bff9645ec2"
+    },
+    {
+      "path": "lib/cpu/dsp56000/SLDSP56000CPU.sleela",
+      "sha256": "ef4bc4ea8538cf24028cad7c9f57130163dbd5a762772df0b9352186a00e2fc4"
+    },
+    {
+      "path": "lib/cpu/dspic/SLdsPICCPU.sleela",
+      "sha256": "d72263512143e8ca83e2dc352fa68ddaf05372ce0aef02bc26c4fce60b2f3d08"
+    },
+    {
+      "path": "lib/cpu/examples/dma-and-gpu-options.sleela",
+      "sha256": "d7ececaf0bbaf15ebf77d3d766eb00196d10e5566c5f7f995cd0f54736cc1ac2"
+    },
+    {
+      "path": "lib/cpu/examples/run-workloads-on-cpus.sleela",
+      "sha256": "bf26025d9ef66aa7925f598c3089660f2f5d84a0620635be16d20802324275ac"
+    },
+    {
+      "path": "lib/cpu/i860/SLI860CPU.sleela",
+      "sha256": "54ba10a77bd1761cb5960080a2552f6307252e837428de423bca860c6dce2fca"
+    },
+    {
+      "path": "lib/cpu/i960/SLI960CPU.sleela",
+      "sha256": "a418751db6ef103db11ef28a7f257132e50dc7f190f793d2e1c62877413bf43e"
+    },
+    {
+      "path": "lib/cpu/iapx432/SLiAPX432CPU.sleela",
+      "sha256": "7c254c6f2c97edb0b0861c279911a2c0df150ca97f8d0fc6f83c4867eb579407"
+    },
+    {
+      "path": "lib/cpu/ibm801/SLIBM801CPU.sleela",
+      "sha256": "69a0ca36ccb68fe2e3fac402de3ea0c20ecc980456b6e1eca88d55a967f1b84b"
+    },
+    {
+      "path": "lib/cpu/intel4004/SLIntel4004CPU.sleela",
+      "sha256": "7710c471eadba1663b9c9cf47258193648bb91bcfb53ff6d70da62112c374f66"
+    },
+    {
+      "path": "lib/cpu/itanium/SLItaniumCPU.sleela",
+      "sha256": "3e60e20d0ea4e4a75366ea7d858866c2ef0c5aa250d4ffef5121412c78499071"
+    },
+    {
+      "path": "lib/cpu/linc8/SLLINC8CPU.sleela",
+      "sha256": "a60b82d57219efbab6cc2ec45330effd2a0f8d965b94f64018f5cda0bff3e977"
+    },
+    {
+      "path": "lib/cpu/m88k/SLM88KCPU.sleela",
+      "sha256": "cd25067e0761a4359b2a021bdf3ed6932e97b0c34dc5f3b93afba56932aff486"
+    },
+    {
+      "path": "lib/cpu/mips/SLMIPSCPU.sleela",
+      "sha256": "4d3f8eccf082dd193285077167ab9028668df354c0d4ba0dc51bc2ca8d42f3ed"
+    },
+    {
+      "path": "lib/cpu/motorola-68000/SL68000CPU.sleela",
+      "sha256": "c85e93f3eb483f99bbd5d71bd66b27d84de8cf0f7a253ff375bb332822d85b7c"
+    },
+    {
+      "path": "lib/cpu/nintendo-64/SLNintendo64CPU.sleela",
+      "sha256": "a711aa89fcd8c854e552f181fd3761cc7f3fe6f1a408352f2461ebdbb19c11cc"
+    },
+    {
+      "path": "lib/cpu/nintendo-gamecube/SLGameCubeCPU.sleela",
+      "sha256": "9faa6b1f806416a606f28c13491d81053c6011c0153cc99169bd97da19537fc7"
+    },
+    {
+      "path": "lib/cpu/nintendo-nes/SLNESCPU.sleela",
+      "sha256": "7478c9ada1bfd1d37c5c21a66abf2eba642035d05b8445f16610f9b377549f74"
+    },
+    {
+      "path": "lib/cpu/nintendo-snes/SLSNESCPU.sleela",
+      "sha256": "7e56d87650031081fd994e7335db7c23bf45bbcbf432c1e4852f8f78acaae615"
+    },
+    {
+      "path": "lib/cpu/nintendo-switch/SLSwitchCPU.sleela",
+      "sha256": "dbbc512904b37ae972b25054a4cf141fc7fe5df8605738deb0af18d1a05d2d3a"
+    },
+    {
+      "path": "lib/cpu/nintendo-switch-2/SLSwitch2CPU.sleela",
+      "sha256": "d7e660f29df3f6b5f24d0c4cec6b145a3fe0b46be43c519d37ebafb76af90c26"
+    },
+    {
+      "path": "lib/cpu/nintendo-wii/SLWiiCPU.sleela",
+      "sha256": "2c5d3197023bcf1ac95fec1232abbac1aaf83d0ec36dedace49599b0f0894949"
+    },
+    {
+      "path": "lib/cpu/nintendo-wii-u/SLWiiUCPU.sleela",
+      "sha256": "7d4f0df585d126e7c02a9970f3b9ef0be3e0520334d4a9f5c8315abc23037da3"
+    },
+    {
+      "path": "lib/cpu/ns32000/SLNS32000CPU.sleela",
+      "sha256": "7a835a4a3cb27fa8cd8b86eafee38401af9a9c5a2efdf04ccc3edff301c581f3"
+    },
+    {
+      "path": "lib/cpu/openrisc/SLOpenRISCCPU.sleela",
+      "sha256": "7654075718322298288d064d18e84f67fe817e705fe22d1e81858442cbff1a31"
+    },
+    {
+      "path": "lib/cpu/pa-risc/SLPARISCCPU.sleela",
+      "sha256": "48f65246e59636f5a3c5e42deb098bd3fd8f5106891ecd7222dd6a3ad92e2671"
+    },
+    {
+      "path": "lib/cpu/pdp1/SLPDP1CPU.sleela",
+      "sha256": "4231b01355fc9ed38cd2a1c47e0e6d816ffd8cd0e8d76c99e67dec10e1cf2b39"
+    },
+    {
+      "path": "lib/cpu/pdp10/SLPDP10CPU.sleela",
+      "sha256": "3a9952dd65795ee7d4a4087add65f83fa5bd0d94c0d09db30955d065e2e1079c"
+    },
+    {
+      "path": "lib/cpu/pdp11/SLPDP11CPU.sleela",
+      "sha256": "afa4e942ddca5d7da50b1e09c4eed18c4b08d7656604d8f4601a5846f38066f5"
+    },
+    {
+      "path": "lib/cpu/pdp12/SLPDP12CPU.sleela",
+      "sha256": "eccd22db7841edb6389e926241a2d0007d4f24f0105434de0fdd4074d21bb372"
+    },
+    {
+      "path": "lib/cpu/pdp14/SLPDP14CPU.sleela",
+      "sha256": "2510edf108d10ff9f629ee934a297e16420e4f28f9788fefd22432ed5eebcddf"
+    },
+    {
+      "path": "lib/cpu/pdp15/SLPDP15CPU.sleela",
+      "sha256": "b3d6e86c72ac49e666a8cf6cea00f22224054660b652074bf8ebe6e66ed187d5"
+    },
+    {
+      "path": "lib/cpu/pdp4/SLPDP4CPU.sleela",
+      "sha256": "23268291c2bee625feb5ed29b6f8f2341a015ef23f2dd43acfe3b7d83bbf06e0"
+    },
+    {
+      "path": "lib/cpu/pdp5/SLPDP5CPU.sleela",
+      "sha256": "90bf3b9d9de84e55f50509014d0681a0f9d3762c671cec49e31cb22a49e559d5"
+    },
+    {
+      "path": "lib/cpu/pdp6/SLPDP6CPU.sleela",
+      "sha256": "942f6daffceecea955705a8220c9469996c6ca993046841d403478e3ab304fdb"
+    },
+    {
+      "path": "lib/cpu/pdp7/SLPDP7CPU.sleela",
+      "sha256": "46dafc409e49b63fac76a95d52545581a944f824d722915a086d25b7cc510a28"
+    },
+    {
+      "path": "lib/cpu/pdp8/SLPDP8CPU.sleela",
+      "sha256": "bc5519aad5d73e3939f83804b9be6ed7e5be17cca9f5bbe4cec5dbe2599815ac"
+    },
+    {
+      "path": "lib/cpu/pdp9/SLPDP9CPU.sleela",
+      "sha256": "90b07c9c2494e7d84df7e679c8f1a0916aa78a39812e6d2f3dd67f88ec16705d"
+    },
+    {
+      "path": "lib/cpu/playstation-1/SLPlayStation1CPU.sleela",
+      "sha256": "4abbd49bf0ca618b2776c9c9b2ff4223d056ad1da7abb992befff05f743fdf2c"
+    },
+    {
+      "path": "lib/cpu/playstation-2/SLPlayStation2CPU.sleela",
+      "sha256": "1d17d109ccc74b4a10bf497f928c9a5549ded252d1438dfd75aa9bce297def42"
+    },
+    {
+      "path": "lib/cpu/playstation-3/SLPlayStation3CPU.sleela",
+      "sha256": "23c8f5d387d27b86d3d0d4356a51465881803b9c1913fe94f3138d66efb8bad9"
+    },
+    {
+      "path": "lib/cpu/playstation-4/SLPlayStation4CPU.sleela",
+      "sha256": "91f8e7ae303fc446c806e63ad7dbe205ed5f396d6827601deaa187bc6b69bd2a"
+    },
+    {
+      "path": "lib/cpu/playstation-5/SLPlayStation5CPU.sleela",
+      "sha256": "d7976683200f40a0a6e0b070469e6e8ebfc6da4a4190006acf75222c770107b3"
+    },
+    {
+      "path": "lib/cpu/power/SLPOWERCPU.sleela",
+      "sha256": "67ad6eb35827963f0bf8b095815efc4b7889b15ef8cfe041d3d4d06ff68e2e43"
+    },
+    {
+      "path": "lib/cpu/powerpc/SLPowerPCCPU.sleela",
+      "sha256": "f4b1812af648498970bdc9911390b0b8cdb651432ece9ba26f5f99b21abcd486"
+    },
+    {
+      "path": "lib/cpu/riscv/SLRISCVCPU.sleela",
+      "sha256": "38e1f9656a5bd1f6e28b69cc8afbb24229181f98e6056af1b891f44ac1e62c89"
+    },
+    {
+      "path": "lib/cpu/romp/SLROMPCPU.sleela",
+      "sha256": "33ff22c6ee5829d846b3694e13d282d69d9354b9e8a71b0c2499e29f8a74fdb7"
+    },
+    {
+      "path": "lib/cpu/sega-32x/SLSega32XCPU.sleela",
+      "sha256": "7ccb42f507a7ebff08c0acf5e3f8050245303e72ab7cf5f267bd1eb1c3c5e9f6"
+    },
+    {
+      "path": "lib/cpu/sega-dreamcast/SLDreamcastCPU.sleela",
+      "sha256": "3d22255fa8298fb98de4de1d366170162dd98a5e1f3ca044d9ad5537f6a4ec58"
+    },
+    {
+      "path": "lib/cpu/sega-game-gear/SLGameGearCPU.sleela",
+      "sha256": "9be9b8d64555a117da636433fcb7dd146949b4a518e9100b87937af5a7a099dc"
+    },
+    {
+      "path": "lib/cpu/sega-genesis/SLGenesisCPU.sleela",
+      "sha256": "2382ce30660d2dda1e15ed4beba2e635f9ca6dc05a7c1bd6969eaf838253fb76"
+    },
+    {
+      "path": "lib/cpu/sega-mark-iii/SLMarkIIICPU.sleela",
+      "sha256": "092994a2317c4551ca6943c54bb58c0fa3928d76650616ae969f493f9d3c9f8e"
+    },
+    {
+      "path": "lib/cpu/sega-master-system/SLMasterSystemCPU.sleela",
+      "sha256": "ea3f3a843d9d3a91d0e0523799adc4ce6ad1e92057e4c27feb592894a7fce52e"
+    },
+    {
+      "path": "lib/cpu/sega-mega-cd/SLMegaCDCPU.sleela",
+      "sha256": "2f57aa88ff7310eef69db5b7e1bbcb79486f17b95fc5c07f8ea6e1a4e029ebe8"
+    },
+    {
+      "path": "lib/cpu/sega-nomad/SLNomadCPU.sleela",
+      "sha256": "b04c9ea6e3071f3f0e1cc76ebed048d6be8f2bc98133b9a8d83b99cd9be274c7"
+    },
+    {
+      "path": "lib/cpu/sega-pico/SLPicoCPU.sleela",
+      "sha256": "655d5232e07b2336dba899e0546b6ae7ff8ae35f1d29a7d74055f54bd338b034"
+    },
+    {
+      "path": "lib/cpu/sega-saturn/SLSaturnCPU.sleela",
+      "sha256": "47746084b5f04473b33b4c4edabee5be15b5036548621847abe76b15b77df76a"
+    },
+    {
+      "path": "lib/cpu/sega-sg-1000/SLSG1000CPU.sleela",
+      "sha256": "8d18d2d9a7a78f17992eef562333baabcb15cea1b2d288c15d40c386b10952c5"
+    },
+    {
+      "path": "lib/cpu/sharc/SLSHARCCPU.sleela",
+      "sha256": "b269743edc9bf233f03532f5835e5323ca9cd9f311e4d0d47fbb27ff7f5c7dae"
+    },
+    {
+      "path": "lib/cpu/sparc/SLSparcCPU.sleela",
+      "sha256": "fbcf07bab483654eb030f2c7a05c430325b9178dd29aa268cc3b13865ec079cf"
+    },
+    {
+      "path": "lib/cpu/superh/SLSuperHCPU.sleela",
+      "sha256": "ae9d5ebf37e2d970d196b0d856508237b1a7fb903c8c0430bada8771b14b6536"
+    },
+    {
+      "path": "lib/cpu/system-360/SLSystem360CPU.sleela",
+      "sha256": "0e1b9c072001b03c6107d1f4bac848f8c8e04975e6d929296c099eec91eb4476"
+    },
+    {
+      "path": "lib/cpu/system-370/SLSystem370CPU.sleela",
+      "sha256": "45937f93eb2b1b5e7e46986e03ee1bfbf392cb79ad631f5ce938d3903552ec43"
+    },
+    {
+      "path": "lib/cpu/system-390/SLESAS390CPU.sleela",
+      "sha256": "39499c3acadbac0756a7390ef7169c37c2c1f3653a92692fae88298932379d9f"
+    },
+    {
+      "path": "lib/cpu/tms320/SLTMS320CPU.sleela",
+      "sha256": "fe1cf9ae4c9e1356626afd5a1a4db66294316f59b40cfd691b82db6cd20bc453"
+    },
+    {
+      "path": "lib/cpu/transputer/SLTransputerCPU.sleela",
+      "sha256": "af09d329759b4111a0a2b8cdb9f4d7a3ce645cc08a63ca8d22a36ecfceaafd87"
+    },
+    {
+      "path": "lib/cpu/tx0/SLTX0CPU.sleela",
+      "sha256": "d3437f9e57a157e524b8ab01548f11b233ee80385efc4991c1c391585b468a04"
+    },
+    {
+      "path": "lib/cpu/vax/SLVAXCPU.sleela",
+      "sha256": "fa69a0a6601e7316d6515fc4fe3b8a03b32b44c5da038bde962e9b41bbb087f1"
+    },
+    {
+      "path": "lib/cpu/weitek/SLWeitekPowerCPU.sleela",
+      "sha256": "7a5695eb6c086a651ed0e0f5c273b9b0b5948a3f006fb9469c0d30933bc25154"
+    },
+    {
+      "path": "lib/cpu/x86/SLX86CPU.sleela",
+      "sha256": "87620babd015b3e368c88f0efcd3cca7b84b3aedb5f0f0a040dd8acd02619806"
+    },
+    {
+      "path": "lib/cpu/xbox/SLXboxCPU.sleela",
+      "sha256": "28b8e567abf213dbde25ca4dd8ed6faadbd390f36adc395afe556b5ba075f15b"
+    },
+    {
+      "path": "lib/cpu/xbox-360/SLXbox360CPU.sleela",
+      "sha256": "505ef13e48341fec97dbbf0a0453ced256a9d2ec1392a5bca26c089b980eb0d6"
+    },
+    {
+      "path": "lib/cpu/xbox-one/SLXboxOneCPU.sleela",
+      "sha256": "21eb3dc5c63cb2d87b57a27bc62771150e710cf00fe59f449f67254807a0bb58"
+    },
+    {
+      "path": "lib/cpu/xbox-one-s/SLXboxOneSCPU.sleela",
+      "sha256": "ae3697c34cedcfbbd82e3e0dc721926b7d0a3f925c3004ee27e8396701da9da2"
+    },
+    {
+      "path": "lib/cpu/xbox-one-x/SLXboxOneXCPU.sleela",
+      "sha256": "dd734b6f87f84e91ea0144e71a768a39ea0074bb8d24397a2f124e25c1a60c32"
+    },
+    {
+      "path": "lib/cpu/xbox-series-s/SLXboxSeriesSCPU.sleela",
+      "sha256": "c124d16e8a5a36f399755b19de90bab1e791665dae2b2108e4b51f3c2fc701b7"
+    },
+    {
+      "path": "lib/cpu/xbox-series-x/SLXboxSeriesXCPU.sleela",
+      "sha256": "2a1ae3516b0a2b4afe1583e6b75c9af06cdb2459ccdd6e96e166c56265bfe78e"
+    },
+    {
+      "path": "lib/cpu/xtensa/SLXtensaCPU.sleela",
+      "sha256": "8210fc639a67d204fb862aeab4ba7976b53f76f8499a51195a3637c7502762ac"
+    },
+    {
+      "path": "lib/cpu/z-architecture/SLZArchitectureCPU.sleela",
+      "sha256": "e18e8d79904074486feb8e1cbfea810d88966194c1ce8b961f8eff830f4f42ba"
+    },
+    {
+      "path": "lib/cpu/z80/SLZ80CPU.sleela",
+      "sha256": "486c28c4fc70e2d990240729979c28220d5f55643b55f33f7c65d3f3b7535941"
+    },
+    {
+      "path": "lib/cpu/z8000/SLZ8000CPU.sleela",
+      "sha256": "69b7bc81610c64f4e986343cd6d47511429c85e5ed5f6c365aaa82a0f1daa5b0"
     },
     {
       "path": "lib/crypto/SLAes.sleela",
@@ -48679,56 +49187,60 @@
       "sha256": "82cef2e3ba1f23b29dfd7ee5bcfc96ed10f5e958929ad8c44e362854651ea32d"
     },
     {
+      "path": "lib/vm/SLNativeMemory.sleela",
+      "sha256": "bdd6f4289762d04add3b0d4dddbc022dfdbdb5527a02e52cba884cd44cd9810d"
+    },
+    {
       "path": "lib/vm/SLVM.sleela",
-      "sha256": "d7dfe346fa7e845d246e8d686fdf6f9f63bbe56fc61063461ee5daa132cea84c"
+      "sha256": "718dcc9bb5e8ab92a0dc3c55781b5a87c6d65ccf96861ac3a1ef929b57ae42ba"
     },
     {
       "path": "lib/vm/SLVMClass.sleela",
-      "sha256": "a8c30907f2c55550ffff9ff07c2b059eb4175c82ee191c5624d0c406fbbf7519"
+      "sha256": "a4c4ae3fe5ccc2504c4088e7647d0e3a9231bc28dd8a9181ee42ed7d248bd8ea"
     },
     {
       "path": "lib/vm/SLVMField.sleela",
-      "sha256": "e490bdee16899c8f96b728dca40e93e5c0e2a690d6423ce3c146782e21cab847"
+      "sha256": "2826ea60377ce0e1ccd9784cc827afd2f0d5c547daeca4449220afbb73df78b9"
     },
     {
       "path": "lib/vm/SLVMFrame.sleela",
-      "sha256": "fc68b701bef8637149db260775eabfd0f381c1e241cbaa63ce9df3e3823c5958"
+      "sha256": "0444cfde0031c30f5b00e5120ff60c9c95ab701425baf11c5f541a7103cf0a4c"
     },
     {
       "path": "lib/vm/SLVMHeap.sleela",
-      "sha256": "7a394254f7829bb0b01614cdd855f9598386dbae64ccebaae8a3cddf49332da9"
+      "sha256": "62adb928a2f9bed37311bd7578485549ae91750d83c7dc39f6ff14a4e7d361a0"
     },
     {
       "path": "lib/vm/SLVMMemory.sleela",
-      "sha256": "6ae018cdb0f2eb35ce7a77dad58ea1749a6ef5e5f5bc5a6d96f4294241ff82d4"
+      "sha256": "0678d040991e792fbaf505de082c44037d6b634ed1894c0bde2e2b0f8359af0f"
     },
     {
       "path": "lib/vm/SLVMMethod.sleela",
-      "sha256": "f1cf2cf2dd42e7f3f93757feff6285a616baf195d1972ebb36ad93827f40fe2b"
+      "sha256": "069bd439e600a2ce67e0db0c6364ea3aa63da11a633a84b7883bd3a0838153c4"
     },
     {
       "path": "lib/vm/SLVMModule.sleela",
-      "sha256": "4732562ed28281a3aa4a834fa798ebe0778093a2ef542ce0dde4cd343ccbe982"
+      "sha256": "cda0d529489caf745058ec1ea55046ad837c136ac415d09b0f9049269e784c8d"
     },
     {
       "path": "lib/vm/SLVMModuleLoader.sleela",
-      "sha256": "c2d132ab8169022f637ad617ed97ae3d544d9eacb6ad696da5f67af8da372064"
+      "sha256": "56afe676591fe4a91e48949c80d43a71a1c285c71daa63c92c59bd3c3faa6bb3"
     },
     {
       "path": "lib/vm/SLVMNativeBinding.sleela",
-      "sha256": "023d57934c409a9865f0c2435ff542dce04fab340ed7d3c07dcf0aab08926995"
+      "sha256": "7c62cc1fa5e3c6d930d0eade51e924d47557f6ff1dc19d3c98995f2324f0cb52"
     },
     {
       "path": "lib/vm/SLVMObject.sleela",
-      "sha256": "c993e6bfcedff6ca61883d3b1bd730720f019b6761250d6f2317cf253239eaa6"
+      "sha256": "01494ead4455644c4ec5b1bfceaea127b24d40f6d304ce53fb25d267a7114104"
     },
     {
       "path": "lib/vm/SLVMThread.sleela",
-      "sha256": "6a843e94b12406c80a1915af6cd8f900c928db04779c28e0aa1f4439ce1d4024"
+      "sha256": "80b865bbb140fec8f35662f2cf0de9ecd4a09dc80b3b4fb44e1d7309893a9539"
     },
     {
       "path": "lib/vm/SLVMValue.sleela",
-      "sha256": "9af5960d3f6956c7cd79a2294c092b2d93bb3affa726b930deafbe5d441ca6c0"
+      "sha256": "8c1e5b9191165f8245a15b08e6eaa8b68acc9a92aa80556db95707c213e646ea"
     },
     {
       "path": "lib/vm/SleelaSLJVM.sleela",
@@ -48808,7 +49320,7 @@
     },
     {
       "path": "lib/vm/SleelaVMFeatureBits.sleela",
-      "sha256": "7ba22151922a3d8e6eba18b88e6babf095bcceb5b08f0ce446278a83c3d8c0a9"
+      "sha256": "e78156471a05792a34ae4506f4e65ecd0af7924ab080491cbe3e211dd71d5fee"
     },
     {
       "path": "lib/vm/SleelaVMIOOptions.sleela",
@@ -48947,6 +49459,14 @@
       "sha256": "f39e2aa4df126179550776eb2fa64e0a6a5470c155d5d666fbe83fce63fcec19"
     },
     {
+      "path": "lib/vm/creator/SLVMPrincipal.sleela",
+      "sha256": "99a62f6b7a5546ce926a2baeeca279d788c9f849c67e7c9a38fe4b5b02c58b2c"
+    },
+    {
+      "path": "lib/vm/creator/SLVMSovereign.sleela",
+      "sha256": "e9352f90f7743ab0717cddbf7b48782ab063041a877b46f83d81e666245b679a"
+    },
+    {
       "path": "lib/vm/creator/SLVMSpecialist.sleela",
       "sha256": "2a873c30f52831d64b912f67423c5d1ad69e32a72b6da959ee47955933bdf730"
     },
@@ -48959,8 +49479,20 @@
       "sha256": "ffd180f07dda776433e9b38c8f56dc894ab362e7f41e0b2be08d59908ef22b5f"
     },
     {
+      "path": "lib/vm/creator/SleelaVMCreator.sleela",
+      "sha256": "caad597fe2181b3bc93509c69b24eeb1691c7af7c2f77bacac01bf93ca1f1575"
+    },
+    {
       "path": "lib/vm/creator/SleelaVMGenerationCatalog.sleela",
-      "sha256": "6647f71c3d8f4e3939191923eb2a081810539d0330b4f83866a12575538cdc97"
+      "sha256": "0b66e4e9e31d4151590147de97d594d88dcc4ed2170854dc10d68e964670882d"
+    },
+    {
+      "path": "lib/vm/creator/examples/creator-full-stack.sleela",
+      "sha256": "9989a4a60ec66ad5af56624a81d60f318c6b6a4ed86e295915d7b81954c8fd09"
+    },
+    {
+      "path": "lib/vm/creator/examples/native-ram-vm.sleela",
+      "sha256": "b7621e09b66a8b99012f7e0f0ddbaa4a05f714b7ca4f981178572dae7a81e1f5"
     },
     {
       "path": "lib/vm/include/sleela_vm_builder.hpp",
@@ -49084,7 +49616,7 @@
     },
     {
       "path": "lib/vm/tutorials/examples/basic-vm.sleela",
-      "sha256": "5ea0acfd693e558d35cc08ef091c7e5c1c88fb0fd6724f616f0c17b3709799f6"
+      "sha256": "e0444116b6e5f62bdeaabace6b336d6a8e55630f3b2679623716669d5057b6b8"
     },
     {
       "path": "lib/vm/tutorials/examples/startup-and-memory-guard.sleela",
@@ -51393,6 +51925,10 @@
     {
       "path": "tools/generate-all-sha256-md.sh",
       "sha256": "f45c0fe228bcb1fca0a4e32c2fe8dff97b90a8d2dc9b31985ba1a286517eeb03"
+    },
+    {
+      "path": "tools/generate-cpu-models.py",
+      "sha256": "b7b2ec1f1ddb39d6f0876cf55ecaa5575538a5f10051d04a3d7e6b3d944bdde6"
     },
     {
       "path": "tools/generate-enclosure-data.py",
