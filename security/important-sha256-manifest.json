@@ -4,11 +4,11 @@
   "files": [
     {
       "path": "README.md",
-      "sha256": "38436095550eebffadfd2d3485b88b4f152f149072b8a6da9b90e6e1e3d0a230"
+      "sha256": "7f24eed032d859fbebc3cd71b2b7884524b5cdbac002d192cfaed4e6b8e0e9ed"
     },
     {
       "path": "SLEELA.syntax",
-      "sha256": "0c549ad0de40bf851dc7feb5fb49445d23d8b5b8392e8b9e603b425f7eb00fc7"
+      "sha256": "0fb59ac0bddf1da36ded8f609ba022529b6e0670fa93221b4fc8a84fff30325d"
     },
     {
       "path": "SST-2.0.model",
@@ -5552,7 +5552,7 @@
     },
     {
       "path": "impl/frontend/driver.cpp",
-      "sha256": "a6ff26fbe7e3163970612171801e16a7ef2f8f29c62ec3ff1e36820190fc7ac5"
+      "sha256": "dc3919861f1eff58ffb76ab41e4ee83022f906ab550b8954e3fd6dafae7b4228"
     },
     {
       "path": "impl/frontend/dynamite.cpp",
@@ -5632,11 +5632,15 @@
     },
     {
       "path": "impl/frontend/semantic.cpp",
-      "sha256": "a60988c2a17a458a5a68811017ec68aa7275b5face199cecf26b81a24ec498ea"
+      "sha256": "ba38d80a0456bc3ab7f0667709653681eaf65c7b1153b6aeafd2461800e78c53"
     },
     {
       "path": "impl/frontend/semantic.h",
       "sha256": "d3aa0ef2b02b1f783e67f2f28e2e5a706c91d3779fc829ae47adf4d0c38e2bec"
+    },
+    {
+      "path": "impl/frontend/unsigned_integer.h",
+      "sha256": "85ed06c4ccb026b8d0cd61ac7f7f8ff5e18ac03a6d818c7a242d0fcb6703abc1"
     },
     {
       "path": "impl/frontend/version.cpp",
@@ -5644,7 +5648,7 @@
     },
     {
       "path": "impl/frontend/version.h",
-      "sha256": "5da5710f9fc5f1fccafc903f75e25a79532160e5e23e17a44b65253bf891a2a2"
+      "sha256": "7c9d819f90a83a11a19d1361e5648210c72a3f3c051e97de97482401e61f6dcc"
     },
     {
       "path": "impl/fundamental/Buffer.cpp",
@@ -6569,6 +6573,10 @@
     {
       "path": "impl/tests/subjects/sociology_smoke.c",
       "sha256": "04fde475ae63917fd4d67c4af1233732d2dff1a0972eaaee2521aef2c001d8cf"
+    },
+    {
+      "path": "impl/tests/unsigned_integer_test.cpp",
+      "sha256": "e878825999c9f59d6b2ea664b306e0189a8abb92f34f2f366b8b024bdf50b4f4"
     },
     {
       "path": "impl/tests/version/malformed.sleela",
