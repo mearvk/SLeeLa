@@ -1,0 +1,9 @@
+# SLOpenRISCCPU
+
+class SLOpenRISCCPU {
+  architecture; profile; isaRevision; endianness; clock; programCounter;
+  generalRegisters; statusRegister; specialPurposeRegisters; exceptionState; interruptController;
+  integerALU; branchUnit; loadStoreUnit; floatingPointUnit; dspUnit; atomicUnit;
+  mmu; tlb; instructionCache; dataCache; systemBus; dmaController; couplers;
+  reset(); fetch(); decodeByProfile(); readRegister(); writeRegister(); executeInteger(); executeExtension(); accessMemory(); readSPR(); writeSPR(); raiseException(); serviceInterrupt(); serviceDMA(); complete(); validate();
+}
