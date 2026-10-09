@@ -31,6 +31,7 @@ class SLSG1000CPU extends SLCPURuntime {
   void setGpr(int i, int v) { writeReg(i, v); }
 
   void configure() {
+    setSpecClock(4);   // the model's rated clock (MHz); overclockable
     bringUp("Sega SG-1000 (Z80)", 8, 16, 10, 65536);
   }
 

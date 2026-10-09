@@ -26,6 +26,7 @@ class SLXboxCPU extends SLCPURuntime {
   void setGpr(int i, int v) { writeReg(i, v); }
 
   void configure() {
+    setSpecClock(733);   // the model's rated clock (MHz); overclockable
     bringUp("Xbox (x86 Pentium III)", 32, 32, 8, 262144);
   }
 

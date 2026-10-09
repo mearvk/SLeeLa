@@ -28,6 +28,7 @@ class SLAtari7800CPU extends SLCPURuntime {
   void setGpr(int i, int v) { writeReg(i, v); }
 
   void configure() {
+    setSpecClock(2);   // the model's rated clock (MHz); overclockable
     bringUp("Atari 7800 (6502C)", 8, 16, 5, 65536);
   }
 

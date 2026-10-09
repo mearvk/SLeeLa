@@ -26,6 +26,7 @@ class SLDreamcastCPU extends SLCPURuntime {
   void setGpr(int i, int v) { writeReg(i, v); }
 
   void configure() {
+    setSpecClock(200);   // the model's rated clock (MHz); overclockable
     bringUp("Sega Dreamcast (SH-4)", 32, 32, 16, 262144);
   }
 

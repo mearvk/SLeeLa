@@ -27,6 +27,7 @@ class SLPARISCCPU extends SLCPURuntime {
   void setGpr(int i, int v) { if (i == 0) { return; } writeReg(i, v); }
 
   void configure() {
+    setSpecClock(66);   // the model's rated clock (MHz); overclockable
     bringUp("HP PA-RISC", 32, 32, 32, 262144);
   }
 

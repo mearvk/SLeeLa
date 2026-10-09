@@ -26,6 +26,7 @@ class SLAMD29KCPU extends SLCPURuntime {
   void setGpr(int i, int v) { writeReg(i, v); }
 
   void configure() {
+    setSpecClock(25);   // the model's rated clock (MHz); overclockable
     bringUp("AMD Am29000", 32, 32, 64, 262144);
   }
 

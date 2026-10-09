@@ -26,6 +26,7 @@ class SLSystem370CPU extends SLCPURuntime {
   void setGpr(int i, int v) { writeReg(i, v); }
 
   void configure() {
+    setSpecClock(9);   // the model's rated clock (MHz); overclockable
     bringUp("IBM System/370", 32, 24, 16, 262144);
   }
 

@@ -41,6 +41,10 @@ class SLCPURuntime {
   int halted;
   int retired;          // instructions executed
 
+  // --- clock: run at the model's spec, with overclock support ---
+  SLClockPolicy clock;  // spec/overclock frequency policy
+  int specMHz;          // the model's rated clock (set via setSpecClock)
+
   // --- secondary-VM substrate: the CPU runs its lowered form here ---
   SLSleelaVM substrate;
   SLSleelaOpcode op;
@@ -82,6 +86,12 @@ class SLCPURuntime {
     op = new SLSleelaOpcode(); op.configure(0, "OP_NOP");
     lowering = 0;
 
+    // Default the clock to a conservative 1 MHz spec; a model/user overrides it
+    // with setSpecClock(ratedMHz) so the CPU runs at its own specification.
+    clock = new SLClockPolicy();
+    specMHz = (specMHz > 0) ? specMHz : 1;
+    clock.configureSpec(specMHz);
+
     // Shared multi-language workload pipeline.
     workIsa = new SLInstructionSet(); workIsa.configure();
     workDecoder = new SLInstructionDecoder(); workDecoder.configure(workIsa);
@@ -97,6 +107,37 @@ class SLCPURuntime {
   void attachSubstrate(SLSleelaVM hostSubstrate) { attachedSubstrate = hostSubstrate; }
   void detachSubstrate() { attachedSubstrate = null; }
   boolean nested() { return attachedSubstrate != null; }
+
+  // --- clock / overclocking ---
+  // Set the model's rated clock (its own specification). A concrete SL<ARCH>CPU
+  // calls this in configure() so the CPU runs at spec; it may be called before
+  // or after bringUp().
+  void setSpecClock(int ratedMHz) {
+    specMHz = ratedMHz;
+    if (clock == null) { clock = new SLClockPolicy(); }
+    clock.configureSpec(ratedMHz);
+  }
+  // Overclock the CPU to a target effective frequency (returns false if the
+  // target exceeds the model's stability ceiling — the OC is applied but the
+  // policy reports it unstable).
+  boolean overclock(int targetMHz) {
+    if (clock == null) { return false; }
+    clock.overclockTo(targetMHz);
+    return clock.isStable();
+  }
+  void setClockMultiplier(int m)  { if (clock != null) { clock.setMultiplier(m); } }
+  void setBaseClock(int mhz)      { if (clock != null) { clock.setBaseClock(mhz); } }
+  void setStabilityCeiling(int mhz){ if (clock != null) { clock.setStabilityCeiling(mhz); } }
+  void resetClock()               { if (clock != null) { clock.resetToSpec(); } }
+
+  SLClockPolicy clockPolicy() { return clock; }
+  int specClockMHz()   { return specMHz; }
+  int effectiveMHz()   { return (clock != null) ? clock.effectiveMHz() : specMHz; }
+  boolean overclocked(){ return clock != null && clock.isOverclocked(); }
+  boolean clockStable(){ return clock == null || clock.isStable(); }
+  // How many model cycles the clock delivers in a given number of microseconds
+  // (lets a workload budget be expressed in time rather than raw instructions).
+  int cyclesInMicroseconds(int us) { return effectiveMHz() * us; }
 
   // Compile + map a workload onto a target substrate WITHOUT running it, so a
   // host (SLVM) can drive the resulting opcode stream itself. Returns the

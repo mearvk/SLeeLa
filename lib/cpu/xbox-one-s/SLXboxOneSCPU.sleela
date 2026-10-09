@@ -26,6 +26,7 @@ class SLXboxOneSCPU extends SLCPURuntime {
   void setGpr(int i, int v) { writeReg(i, v); }
 
   void configure() {
+    setSpecClock(1750);   // the model's rated clock (MHz); overclockable
     bringUp("Xbox One S (x86-64 Jaguar)", 64, 48, 16, 262144);
   }
 

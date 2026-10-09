@@ -27,6 +27,7 @@ class SLAlphaCPU extends SLCPURuntime {
   void setGpr(int i, int v) { if (i == 31) { return; } writeReg(i, v); }
 
   void configure() {
+    setSpecClock(200);   // the model's rated clock (MHz); overclockable
     bringUp("DEC Alpha 21064", 64, 48, 32, 262144);
   }
 

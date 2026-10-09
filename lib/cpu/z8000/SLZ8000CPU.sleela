@@ -26,6 +26,7 @@ class SLZ8000CPU extends SLCPURuntime {
   void setGpr(int i, int v) { writeReg(i, v); }
 
   void configure() {
+    setSpecClock(6);   // the model's rated clock (MHz); overclockable
     bringUp("Zilog Z8000", 16, 23, 16, 262144);
   }
 

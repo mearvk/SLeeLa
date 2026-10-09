@@ -26,6 +26,7 @@ class SLVAXCPU extends SLCPURuntime {
   void setGpr(int i, int v) { writeReg(i, v); }
 
   void configure() {
+    setSpecClock(5);   // the model's rated clock (MHz); overclockable
     bringUp("DEC VAX-11", 32, 32, 16, 262144);
   }
 

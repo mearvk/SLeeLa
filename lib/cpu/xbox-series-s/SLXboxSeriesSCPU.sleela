@@ -26,6 +26,7 @@ class SLXboxSeriesSCPU extends SLCPURuntime {
   void setGpr(int i, int v) { writeReg(i, v); }
 
   void configure() {
+    setSpecClock(3600);   // the model's rated clock (MHz); overclockable
     bringUp("Xbox Series S (x86-64 Zen 2)", 64, 48, 16, 262144);
   }
 
