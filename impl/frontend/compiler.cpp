@@ -166,7 +166,7 @@ private:
         for(const auto& p:m.params) if(structLayout_.count(p.type)) varType_[p.name]=p.type;
         if(!m.isStatic)varType_["this"]=currentClass_;
         slvm_begin_func(vm_,key.c_str(),(int)m.params.size()+(m.isStatic?0:1),mi.nlocals); ctx_=&ctx;
-        if(m.name=="main"&&m.isStatic) for(const auto& cls:prog_.classes) if(cls.name==currentClass_) for(const auto& f:cls.fields) if(f.isStatic){if(f.init)emitExpr(f.init.get());else emit(OP_CONST,addNullConst());emit(OP_STOREG,fieldGlobal_[currentClass_+"::"+f.name]);}
+        if(m.name=="main") for(const auto& cls:prog_.classes) if(cls.name==currentClass_) for(const auto& f:cls.fields) if(f.isStatic){if(f.init)emitExpr(f.init.get());else emit(OP_CONST,addNullConst());emit(OP_STOREG,fieldGlobal_[currentClass_+"::"+f.name]);}
         emitBlock(*m.body);ctx_=nullptr;emit(OP_CONST,addNullConst());emit(OP_RET);slvm_end_func(vm_);
         varType_=savedTypes;
     }
