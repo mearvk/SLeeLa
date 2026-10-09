@@ -47,6 +47,21 @@ SLeeLa source signatures define a parameterized unsigned, fixed-width integer fa
 
 The family is parameterized, not a requirement to create 1,048,576 separate hand-written declarations. `U8` and `U16` are ordinary instances of the same width-checked type constructor. This specification records the intended source signature; runtime/compiler conformance must be demonstrated by tests before claiming all widths execute end-to-end.
 
+## Character-set capacity signatures (C1–C1048576)
+
+SLeeLa also defines a parameterized **character-set capacity signature** family, parallel in notation to the `U<n>` unsigned-integer family but with a different meaning:
+
+- **Type/signature form:** `C<n>`, where `n` is a decimal integer in the inclusive range `1..1048576`.
+- **Meaning:** `C<n>` describes a character-set/catalogue capable of addressing up to `n` distinct character entries. It is a capacity declaration, **not** an integer with `n` bits and not a promise that all entries have assigned meanings.
+- **Default example:** `C1048576` means a target capacity of `1024 * 1024 = 1,048,576` distinct character entries.
+- **UTF-4088 example:** the experimental `utf-4088/` catalogue can be described as a character-set family whose intended capacity is declared separately from its currently generated 16,606-entry front-end registry. The current UTF-4088 implementation uses a 64-bit container and an experimental 33-bit identifier interval; neither fact means its present registry contains 1,048,576 semantically defined characters.
+- **Identity and encoding:** a character-set entry has a stable catalogue ID and may map to a code point, glyph/bitmap, optional semantic annotation, and provenance record. IDs, Unicode scalar values, glyphs, and meanings are distinct fields and must not be conflated.
+- **Capacity vs. population:** `C<n>` sets an upper capacity, not the number of populated, validated, or culturally attested entries. A registry must report its actual population separately.
+- **Validation:** zero, leading-zero forms, non-decimal values, and values above `1048576` are invalid. Any registry overflow must be rejected or handled by an explicit extension/version mechanism; entries must never silently collide or be truncated.
+- **Implementation status:** this catalogue entry defines the source-level signature contract. Full compiler type-checking, runtime representation, serialization, and UTF-4088 registry binding must each be covered by implementation tests before being described as end-to-end supported.
+
+Examples: `C8`, `C256`, `C65536`, and `C1048576`. The number is a count of addressable character entries, unlike `U8` or `U64`, where the number is a bit width.
+
 ## The version pragma
 
 Per SL-META-0001 §4.4, a Wrapper™ declares its **syntax version** on the first
