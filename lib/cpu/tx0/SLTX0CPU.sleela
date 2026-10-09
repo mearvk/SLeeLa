@@ -1,0 +1,40 @@
+# SLTX0CPU — SLeeLa TX-0 CPU profile
+#
+# Profile-driven functional model. Not cycle-accurate by default.
+# TX-0 opcodes and state transitions must remain independent of PDP-family tables.
+
+class SLTX0CPU extends SLCPU {
+    const WORD_BITS = 18;
+
+    state {
+        pc;
+        accumulatorState;
+        instructionRegister;
+        memory;
+        deviceMap;
+        timingProfile;
+    }
+
+    configure(profile) {
+        require(profile.wordBits == WORD_BITS);
+        require(profile.memoryWords > 0);
+        this.memory = SLRAM.create(profile.memoryWords, WORD_BITS);
+        this.deviceMap = profile.deviceMap ?? {};
+        this.timingProfile = profile.timingProfile ?? "functional";
+        return this;
+    }
+
+    step() {
+        let instruction = this.fetchWord(this.pc, WORD_BITS);
+        this.instructionRegister = instruction;
+        let decoded = this.decodeTX0(instruction, this.profile);
+        if (!decoded.supported) {
+            this.reportUnsupported("TX0_OPCODE", instruction, this.pc);
+            return this.result("unsupported", instruction);
+        }
+        return this.executeTX0(decoded);
+    }
+
+    # Populate opcode fields and exact state transitions from a verified TX-0 reference.
+    # Do not substitute PDP-1/PDP-4/PDP-7 instruction semantics.
+}
