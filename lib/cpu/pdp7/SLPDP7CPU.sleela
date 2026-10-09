@@ -1,0 +1,44 @@
+# SLPDP7CPU — SLeeLa PDP-7 CPU profile
+#
+# Functional, profile-driven implementation; not cycle-accurate by default.
+# Do not alias PDP-4 or PDP-9 instruction decoding to this profile.
+
+class SLPDP7CPU extends SLCPU {
+    const WORD_BITS = 18;
+
+    state {
+        pc;
+        ac;
+        conditionState;
+        instructionRegister;
+        memory;
+        addressBits;
+        deviceMap;
+        timingProfile;
+    }
+
+    configure(profile) {
+        require(profile.wordBits == WORD_BITS);
+        require(profile.memoryWords > 0);
+        require(profile.addressBits > 0);
+        this.addressBits = profile.addressBits;
+        this.memory = SLRAM.create(profile.memoryWords, WORD_BITS);
+        this.deviceMap = profile.deviceMap ?? {};
+        this.timingProfile = profile.timingProfile ?? "functional";
+        return this;
+    }
+
+    step() {
+        let instruction = this.fetchWord(this.pc, WORD_BITS);
+        this.instructionRegister = instruction;
+        let decoded = this.decodePDP7(instruction, this.addressBits);
+        if (!decoded.supported) {
+            this.reportUnsupported("PDP7_OPCODE", instruction, this.pc);
+            return this.result("unsupported", instruction);
+        }
+        return this.executePDP7(decoded);
+    }
+
+    # Exact opcode fields, register side effects, and timing belong in a verified profile.
+    # Shared helpers must not erase PDP-7-specific behavior.
+}
