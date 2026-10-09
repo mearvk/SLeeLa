@@ -1,3 +1,5 @@
+#sleela 1.8
+
 # SLObjectCreationResolver — resolves explicit and concise construction
 #
 # new Type(args) is explicit. Type(args) is construction only after type resolution.
