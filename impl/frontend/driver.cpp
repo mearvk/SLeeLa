@@ -116,20 +116,44 @@ static fs::path findRepoRoot(const fs::path&start){
     return fs::path();
 }
 static int verifyBeforeExecution(const fs::path&cwd){
-    const char* env=std::getenv("SLEELA_SHA256_MANIFEST");
-    if(!env||!*env){
-        std::cerr<<"sleelvac: SHA-256 verification is required; set SLEELA_SHA256_MANIFEST to a trusted JSON manifest\n";
-        return 1;
-    }
-    // Resolve the repo root robustly (any CWD), falling back to the CWD itself.
+    // Resolve the verification root. In a repo checkout this is the ancestor
+    // containing tools/verify-before-execution.py. For an INSTALLED toolchain
+    // run from an unrelated project (no such ancestor), fall back to SLEELA_HOME,
+    // which the installer populates with the verify tool, the manifest, and the
+    // hashed runtime sources — so an installed `sleela` stays verifiable
+    // anywhere. The gate itself is unchanged: it still re-hashes against a
+    // trusted manifest and fails closed on any mismatch.
     fs::path root=findRepoRoot(cwd);
+    if(root.empty()){
+        const char* home=std::getenv("SLEELA_HOME");
+        if(home&&*home&&fs::exists(fs::path(home)/"tools"/"verify-before-execution.py"))
+            root=fs::path(home);
+    }
     if(root.empty())root=cwd;
-    fs::path manifest=fs::path(env);
-    if(!manifest.is_absolute())manifest=root/manifest;
+
+    // The manifest may be given explicitly (SLEELA_SHA256_MANIFEST) or, for an
+    // installed toolchain, auto-located under the resolved root. It is NOT
+    // optional — if neither is present we fail closed.
+    const char* env=std::getenv("SLEELA_SHA256_MANIFEST");
+    fs::path manifest;
+    if(env&&*env){
+        manifest=fs::path(env);
+        if(!manifest.is_absolute())manifest=root/manifest;
+    } else {
+        fs::path candidates[]={root/"security/sha256-manifest.json",
+                               root/"security/important-sha256-manifest.json"};
+        for(const fs::path&c:candidates){ if(fs::exists(c)){manifest=c;break;} }
+        if(manifest.empty()){
+            std::cerr<<"sleelvac: SHA-256 verification is required; set SLEELA_SHA256_MANIFEST to a trusted JSON manifest"
+                     <<" (or install the toolchain so SLEELA_HOME carries security/sha256-manifest.json)\n";
+            return 1;
+        }
+    }
     fs::path tool=root/"tools"/"verify-before-execution.py";
     if(!fs::exists(tool)){
         std::cerr<<"sleelvac: verification tool not found: "<<tool
-                 <<"\n  (searched upward from "<<cwd<<" for tools/verify-before-execution.py)\n";
+                 <<"\n  (searched upward from "<<cwd<<" for tools/verify-before-execution.py,"
+                 <<" then SLEELA_HOME)\n";
         return 1;
     }
 #ifdef _WIN32

@@ -65,6 +65,26 @@ that downstream projects look for (the "`set SLEELA=/path/to/sleela`"
 convention). If the native build did not complete, the installer warns that
 `sleela` is missing — run `make -C impl all` and re-install.
 
+### SHA-256 verification (running `sleela` outside this repo)
+
+`sleela`/`sleelvac` runs a fail-closed SHA-256 gate before compiling or
+executing anything: it re-hashes a set of trusted runtime sources against a
+manifest and refuses to run on any mismatch. Inside a repo checkout the gate
+finds its assets by walking up to the repo root; for an **installed** toolchain
+run from an unrelated project (e.g. another game or app), it falls back to
+`SLEELA_HOME`. The installer therefore stages three things into `$SLEELA_HOME`:
+
+- `tools/verify-before-execution.py` — the verifier,
+- `security/sha256-manifest.json` — the trusted manifest, and
+- every source the manifest lists (under `impl/`, `runtime/`, etc.), so the
+  installed root can be re-verified in place,
+
+and sets `SLEELA_SHA256_MANIFEST` to the installed manifest in the environment
+snippet. This is why a project like Airport Tycoon can run `sleela` and pass
+verification without being inside the SLeeLa repo. The gate is **not** weakened —
+it still verifies every file against the trusted manifest; the installed
+toolchain simply carries its own trusted copy.
+
 ## Startup settings
 
 The generated `startup.conf` records:
