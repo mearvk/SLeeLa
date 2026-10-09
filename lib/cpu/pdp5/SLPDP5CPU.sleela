@@ -1,0 +1,43 @@
+# SLPDP5CPU — SLeeLa PDP-5 CPU profile
+#
+# Profile-driven functional model. Not cycle-accurate by default.
+# PDP-5 and PDP-8 must remain separate architecture profiles.
+
+class SLPDP5CPU extends SLCPU {
+    const WORD_BITS = 12;
+    const ADDRESS_BITS = 12;
+    const DEFAULT_MEMORY_WORDS = 4096;
+
+    state {
+        pc;
+        ac;
+        link;
+        instructionRegister;
+        memory;
+        deviceMap;
+        timingProfile;
+    }
+
+    configure(profile) {
+        require(profile.wordBits == WORD_BITS);
+        require(profile.memoryWords > 0);
+        this.memory = SLRAM.create(profile.memoryWords, WORD_BITS);
+        this.deviceMap = profile.deviceMap ?? {};
+        this.timingProfile = profile.timingProfile ?? "functional";
+        return this;
+    }
+
+    step() {
+        let instruction = this.fetch12(this.pc);
+        this.instructionRegister = instruction;
+        let decoded = this.decodePDP5(instruction);
+        if (!decoded.supported) {
+            this.reportUnsupported("PDP5_OPCODE", instruction, this.pc);
+            return this.result("unsupported", instruction);
+        }
+        return this.executePDP5(decoded);
+    }
+
+    # Machine-specific instruction details belong in the decoder/profile.
+    # Do not automatically enable PDP-8-only extensions.
+}
