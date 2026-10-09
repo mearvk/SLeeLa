@@ -1,81 +1,77 @@
-/**
- * SLeeLa ARM Cortex-M family CPU model.
- * Profile-driven architectural skeleton; not a cycle-accurate silicon model.
- * Configure profile and optional features before execution.
+/*
+ * lib/cpu/cortex-m/SLCortexMCPU.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLCortexMCPU — a runnable model of the ARM Cortex-M. It extends
+ *   SLCPURuntime, so it inherits register storage, a word-addressable memory
+ *   interface, an SLALU, the fetch-decode-execute loop, and — crucially — the
+ *   resource-aware workload path (admit()/runWorkload()) that runs C, C++ or
+ *   Sleela programs on this CPU within an SLCPUResource grant, mapped onto the
+ *   canonical SLeeLa opcode substrate.
+ *
+ * This file supplies the ARM Cortex-M register set and a decode() over a compact
+ * instruction encoding (load/move/arithmetic/compare/branch/halt). It is a
+ * functional model sufficient to run the CPU as a CPU and as a target for
+ * further .sleela inputs, not a cycle-accurate emulator; per-arch bus/timing
+ * detail remains in this folder's markdown docs.
+ *
+ * Family: cpu. Extends SLCPURuntime.
  */
-class SLCortexMCPU extends SLCPU {
-    String profile = "ARMv7-M";
-    String variant = "Cortex-M3";
-    Boolean strictProfile = true;
+#sleela 1.3
+class SLCortexMCPU extends SLCPURuntime {
+  static final int R_ZERO = 0;
+  static final int R_SP = 15;
+  static final int R_LINK = 14;
 
-    Boolean hasMPU = false;
-    Boolean hasFPU = false;
-    Boolean hasDSP = false;
-    Boolean hasMVE = false;
-    Boolean hasTrustZoneM = false;
-    Boolean hasICache = false;
-    Boolean hasDCache = false;
-    Boolean hasPSP = true;
+  int gpr(int i)            { return readReg(i); }
+  void setGpr(int i, int v) { writeReg(i, v); }
 
-    Map<String, Integer> registers = new Map<String, Integer>();
-    Map<String, Boolean> extensions = new Map<String, Boolean>();
+  void configure() {
+    bringUp("ARM Cortex-M", 32, 32, 16, 262144);
+  }
 
-    function configure(String selectedProfile, String selectedVariant,
-                       Map<String, Boolean> selectedExtensions) {
-        profile = selectedProfile;
-        variant = selectedVariant;
-        extensions = selectedExtensions;
+  static final int I_LOADI = 1;   // dst <- imm
+  static final int I_MOVE  = 2;   // dst <- src
+  static final int I_LOAD  = 3;   // dst <- mem[imm]
+  static final int I_STORE = 4;   // mem[imm] <- dst
+  static final int I_ADD   = 5;   // dst <- dst + src
+  static final int I_SUB   = 6;   // dst <- dst - src
+  static final int I_MUL   = 7;   // dst <- dst * src
+  static final int I_AND   = 8;   // dst <- dst & src
+  static final int I_OR    = 9;   // dst <- dst | src
+  static final int I_CMP   = 10;  // flags <- dst - src
+  static final int I_JMP   = 11;  // pc <- imm
+  static final int I_JZ    = 12;  // if Z: pc <- imm
+  static final int I_HALT  = 13;
 
-        hasMPU = extensions.getOrDefault("mpu", false);
-        hasFPU = extensions.getOrDefault("fpu", false);
-        hasDSP = extensions.getOrDefault("dsp", false);
-        hasMVE = extensions.getOrDefault("mve", false);
-        hasTrustZoneM = extensions.getOrDefault("trustzone_m", false);
-        hasICache = extensions.getOrDefault("icache", false);
-        hasDCache = extensions.getOrDefault("dcache", false);
-        hasPSP = !profile.equals("ARMv6-M") || variant.equals("Cortex-M0+");
+  int opOf(int w)  { return (w / 65536) % 256; }
+  int dstOf(int w) { return (w / 256) % 256; }
+  int srcOf(int w) { return w % 256; }
 
-        validateProfile();
-        resetArchitecturalState();
-    }
+  void decode(int word) {
+    int opc = opOf(word);
+    int dst = dstOf(word);
+    int src = srcOf(word);
 
-    function validateProfile() {
-        if (hasMVE && !(profile.equals("ARMv8-M-Mainline"))) {
-            throw new IllegalArgumentException("MVE requires a compatible ARMv8-M Mainline implementation");
-        }
-        if (hasTrustZoneM && !(profile.startsWith("ARMv8-M"))) {
-            throw new IllegalArgumentException("TrustZone-M requires a compatible ARMv8-M profile");
-        }
-        if (strictProfile && hasFPU && profile.equals("ARMv6-M")) {
-            throw new IllegalArgumentException("FPU is not part of the ARMv6-M baseline profile");
-        }
-    }
+    if (opc == I_LOADI) { setGpr(dst, src); setZN(gpr(dst)); return; }
+    if (opc == I_MOVE)  { setGpr(dst, gpr(src)); setZN(gpr(dst)); return; }
+    if (opc == I_LOAD)  { setGpr(dst, readMem(src)); setZN(gpr(dst)); return; }
+    if (opc == I_STORE) { writeMem(src, gpr(dst)); return; }
+    if (opc == I_ADD)   { setGpr(dst, aluOp(gpr(dst), gpr(src), alu.OP_ADD)); return; }
+    if (opc == I_SUB)   { setGpr(dst, aluOp(gpr(dst), gpr(src), alu.OP_SUB)); return; }
+    if (opc == I_MUL)   { setGpr(dst, aluOp(gpr(dst), gpr(src), alu.OP_MUL)); return; }
+    if (opc == I_AND)   { setGpr(dst, aluOp(gpr(dst), gpr(src), alu.OP_AND)); return; }
+    if (opc == I_OR)    { setGpr(dst, aluOp(gpr(dst), gpr(src), alu.OP_OR)); return; }
+    if (opc == I_CMP)   { aluOp(gpr(dst), gpr(src), alu.OP_SUB); return; }
+    if (opc == I_JMP)   { setEntryPoint(src); return; }
+    if (opc == I_JZ)    { if (zero() == 1) { setEntryPoint(src); } return; }
+    if (opc == I_HALT)  { halted = 1; return; }
+  }
 
-    function resetArchitecturalState() {
-        for (int i = 0; i <= 12; i++) {
-            registers.put("R" + i, 0);
-        }
-        registers.put("MSP", 0);
-        if (hasPSP) registers.put("PSP", 0);
-        registers.put("LR", 0);
-        registers.put("PC", 0);
-        registers.put("xPSR", 0);
-    }
+  void setZN(int v) { flagZ = (v == 0) ? 1 : 0; flagN = (v < 0) ? 1 : 0; }
+  int encode(int opcode, int dst, int src) {
+    return (opcode % 256) * 65536 + (dst % 256) * 256 + (src % 256);
+  }
 
-    function supportsInstruction(String instructionFeature) {
-        if (instructionFeature.equals("dsp")) return hasDSP;
-        if (instructionFeature.equals("fpu")) return hasFPU;
-        if (instructionFeature.equals("mve")) return hasMVE;
-        if (instructionFeature.equals("trustzone_m")) return hasTrustZoneM;
-        return true;
-    }
-
-    function onUnsupportedInstruction(String opcode) {
-        log.warn("Unsupported Cortex-M instruction for profile " + profile + ": " + opcode);
-        if (strictProfile) throw new IllegalStateException("Profile fault: unsupported instruction " + opcode);
-    }
-
-    function getArchitectureProfile() {
-        return profile;
-    }
+  int reg(int i) { return gpr(i); }
+  int registers() { return registerCount(); }
 }

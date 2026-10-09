@@ -1,0 +1,79 @@
+/*
+ * lib/cpu/SLWorkload.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLWorkload — a unit of work to run on a CPU, written in
+ *   C, C++, or Sleela (and Java, which shares the same frontend path). A
+ *   workload names its source, its language, and the SLCPUResource grant it
+ *   needs. compile() drives the shared multi-language pipeline
+ *   (SLCompilerDriver -> SLProgram, the register-ISA image); the CPU then maps
+ *   that image onto its own canonical-opcode substrate and runs it inside the
+ *   grant. The SAME workload therefore runs identically whether its source was
+ *   C, C++, or Sleela — the 1:1 Turing-effect guarantee (SLTuringBridge).
+ *
+ * Family: cpu. Composes SLCPUResource, SLCompilerDriver, SLProgram; consumed by
+ *   SLCPURuntime.runWorkload().
+ */
+#sleela 1.3
+class SLWorkload {
+  // Language ids (match SLCompilerDriver / SLFrontend).
+  static final int LANG_SLEELA = 0;
+  static final int LANG_C      = 1;
+  static final int LANG_CPP    = 2;
+  static final int LANG_JAVA   = 3;
+
+  // Lifecycle states.
+  static final int STATE_NEW      = 0;
+  static final int STATE_COMPILED = 1;
+  static final int STATE_ADMITTED = 2;
+  static final int STATE_RUNNING  = 3;
+  static final int STATE_DONE     = 4;
+  static final int STATE_REJECTED = 5;
+
+  String name;
+  String sourcePath;
+  int language;
+  int state;
+
+  SLCPUResource resource;    // the grant this workload runs within
+  SLProgram program;         // compiled register-ISA image (language-independent)
+  int result;                // last observable output (printed value)
+
+  void configure(String workloadName, String path, int langId, SLCPUResource grant) {
+    name = workloadName; sourcePath = path; language = langId;
+    resource = grant; state = STATE_NEW; result = 0;
+  }
+
+  // Compile the source (any supported language) to the shared register-ISA
+  // image via the multi-language driver. After this the image is language-
+  // independent, so the CPU runs it the same regardless of source language.
+  SLProgram compile(SLInstructionSet isa) {
+    SLCompilerDriver driver = new SLCompilerDriver();
+    driver.configure(isa);
+    program = driver.compile(sourcePath, language, name);
+    state = STATE_COMPILED;
+    return program;
+  }
+
+  void markAdmitted() { state = STATE_ADMITTED; }
+  void markRejected() { state = STATE_REJECTED; }
+  void markRunning()  { state = STATE_RUNNING; }
+  void markDone(int observable) { result = observable; state = STATE_DONE; }
+
+  SLProgram image()        { return program; }
+  SLCPUResource grant()    { return resource; }
+  int languageId()         { return language; }
+  String workloadName()    { return name; }
+  String source()          { return sourcePath; }
+  int runState()           { return state; }
+  int output()             { return result; }
+  boolean compiled()       { return state >= STATE_COMPILED; }
+  boolean finished()       { return state == STATE_DONE; }
+  boolean rejected()       { return state == STATE_REJECTED; }
+
+  String languageName() {
+    if (language == LANG_C) { return "C"; }
+    if (language == LANG_CPP) { return "C++"; }
+    if (language == LANG_JAVA) { return "Java"; }
+    return "Sleela";
+  }
+}
