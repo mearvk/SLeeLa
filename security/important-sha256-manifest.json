@@ -4,11 +4,11 @@
   "files": [
     {
       "path": "README.md",
-      "sha256": "63c8da09b1345509968103387d242b6fa78aeec612e99569eb56e723d56de853"
+      "sha256": "38436095550eebffadfd2d3485b88b4f152f149072b8a6da9b90e6e1e3d0a230"
     },
     {
       "path": "SLEELA.syntax",
-      "sha256": "701626cf927ba943f281e243228ce5d83c6ac9ecbba6d48a17020e323a1f90a5"
+      "sha256": "bc87d7440ffd74a5ae82f7584c73f99cf2c6baccc25e071b9149ecf9c059a40e"
     },
     {
       "path": "SST-2.0.model",
@@ -5568,7 +5568,7 @@
     },
     {
       "path": "impl/frontend/driver.cpp",
-      "sha256": "8017d40876079ce14cee818588c3eeb916452d1c4cbd9e468f0232131066c35e"
+      "sha256": "eef40c1d20fe1e094781052fb97b24fe1f0e042e7f01f8254d719cf55edc1224"
     },
     {
       "path": "impl/frontend/dynamite.cpp",
@@ -7215,6 +7215,10 @@
       "sha256": "b33fe5f76ebb997e486220409a277a19b44fea08009c759551b0557e6709bebe"
     },
     {
+      "path": "lib/compiler/SLCaseHandler.sleela",
+      "sha256": "50c47b8c196455a322f587d30b6be9ced294d49ec5b8a7ecdeba6e73515b0b6d"
+    },
+    {
       "path": "lib/compiler/SLCodeGenerator.sleela",
       "sha256": "f177a6818f31f87d1f661c591cce9cd9ede3320d0fe34c51df4f8e05f7507950"
     },
@@ -7243,6 +7247,10 @@
       "sha256": "b9deb728dca2a39fd907ca59beafe710169cad8c47aff4194515edb631de5826"
     },
     {
+      "path": "lib/compiler/SLConstructorSeries.sleela",
+      "sha256": "790392de65635e001f0b2a750edb5a9767741ba6ad3d50dabc678596e260e617"
+    },
+    {
       "path": "lib/compiler/SLLanguageCompiler.sleela",
       "sha256": "2a4ce2a480cfd434dd53eff97642e70811cb96ca17cfd09661d928f944133d15"
     },
@@ -7257,6 +7265,10 @@
     {
       "path": "lib/compiler/SLNameResolver.sleela",
       "sha256": "374d6f6183c65aeac53fd01551e9d19d7169a4ace13c19fe1bf737f4f1de3645"
+    },
+    {
+      "path": "lib/compiler/SLObjectCreationResolver.sleela",
+      "sha256": "4ef648942c27e33073a7babcf75c3027d6192b8a52afe3b51432d442d2ad463e"
     },
     {
       "path": "lib/compiler/SLParser.sleela",
