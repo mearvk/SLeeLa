@@ -2,7 +2,7 @@
 
 ## Current Development Version
 
-**SLeeLa:** 0.3.25-dev
+**SLeeLa:** 0.3.26-dev
 **Sleela-Complete:** 0.3.2-dev  
 **Nordshrift Complete:** 2.7.1-dev  
 **Native Foundation:** 0.3.2-dev  
@@ -229,6 +229,14 @@ active development line to 0.3.24-dev.
   `impl/nordshrift/NORDSHRIFT.SYMBOLS.md`, and `SLEELA.syntax` (now 10,346 / 83).
 - Counts are verified in lockstep (filesystem == manifest header == manifest
   body) by `test-suites/test-library-inventory.sh`.
+
+**Java Authorship Transition Gate:** 1.19-dev
+
+**SLeeLa — MEARVK LLC — 2026**
+
+## 0.3.26 Development Increment
+
+Version increment and release-string reconciliation. Advanced the active SLeeLa development line from `0.3.25-dev` to `0.3.26-dev`. The syntax version remains `1.6` (supported range `1.3 .. 1.6`); the compiler/tool version is independent of the language syntax version. Updated the CLI version banner and syntax-specification header to match this development line.
 
 **Java Authorship Transition Gate:** 1.19-dev
 
