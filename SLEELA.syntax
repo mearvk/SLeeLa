@@ -95,16 +95,23 @@ A program is one or more classes, optionally preceded or interleaved with
 
     type       ::= "int" | "double" | "boolean" | "String" | "void"
                  | unsigned-type
+                 | character-set-type
                  | struct-name                      // any declared struct (1.2+)
 
     unsigned-type ::= ident                        // if it matches U[1-9][0-9]*
-    // Semantic constraint: decimal width is in the inclusive range 1..1048576.
-    // U<n> is lexed as an identifier; type resolution validates the whole name.
+    character-set-type ::= ident                   // if it matches C[1-9][0-9]*
+    // U<n>: value-bit width 1..1048576.
+    // C<n>: character-entry capacity 1..1048576.
+    // Both forms are lexed as identifiers; type resolution validates the whole name.
 
 `U<n>` is an unsigned, fixed-width integer type whose width `n` is a decimal integer in the inclusive range `1..1048576`; leading zeroes, zero, non-decimal characters, and widths above `1048576` are invalid. Its value range is `0..(2^n - 1)`. For example, `U1`, `U8`, `U16`, `U32`, `U64`, and `U1048576` are valid type names. Width and unsignedness must be preserved in compiler signatures and VM/module metadata; implementations must not silently lower values to signed or fixed 64-bit host integers. A runtime operation not yet supported for a width must produce an explicit diagnostic. `int` remains 64-bit. `void` is a return type only. The core is dynamically typed
 underneath; syntax 1.2 scalar type annotations are surface-level (parsed, not
 enforced), so a declared type documents intent without constraining the runtime
-value. A **struct type name** (§3.4) is additionally used at compile time to
+value. 
+
+`C<n>` is a character-set capacity signature, where `n` is a decimal integer in the inclusive range `1..1048576`. Unlike `U<n>`, which specifies a bit width, `C<n>` specifies the maximum number of distinct character entries addressable by a character catalogue. `C1048576` therefore denotes a capacity of `1024 * 1024 = 1,048,576` entries. It does not assert that every slot is populated, that every entry has a verified meaning, or that the set is Unicode-compatible. The actual registry population must be reported separately. A character-set record should distinguish catalogue ID, code point/identifier, glyph, semantic annotation, and source provenance. `C<n>` is a source-catalogue contract; full compiler/runtime integration must be tested before claiming end-to-end runtime support. `U<n>` and `C<n>` are different parameterized families even though both use decimal parameters.
+
+A **struct type name** (§3.4) is additionally used at compile time to
 resolve `.field` offsets, so struct-typed variables/parameters/fields must be
 declared with their struct type for member access to compile.
 
