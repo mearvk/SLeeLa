@@ -74,15 +74,58 @@ class SL6502CPU extends SLCPURuntime {
 }
 ```
 
-## CPUs converted in this pass (representative set)
+## Resource assignment and multi-language workloads
 
-`6502`, `z80`, `motorola-68000`, `mips`, `riscv`, `arm`, `x86` — each upgraded
-from a declarative skeleton to a runnable model with real registers, a decoder,
-ALU-backed flags, and a memory interface. `x86` additionally includes
-`lowerAddAndPrint()` as a worked example of a CPU running on the secondary VM
-substrate.
+Every CPU can now run a workload written in **C, C++, or Sleela** within an
+explicit **resource grant**, via two classes and one inherited method:
 
-The remaining per-architecture folders still carry their declarative skeleton +
-9 markdown docs; they can be converted the same way (declare registers, extend
-`SLCPURuntime`, implement `decode()`), general cases first and specific cases as
-needed.
+- `SLCPUResource` — the grant: memory words, instruction budget (time-slice),
+  priority, I/O and privilege permissions, core affinity, plus live accounting.
+- `SLWorkload` — a unit of work: a source path + language id + its grant. Its
+  `compile()` drives the shared multi-language pipeline (`SLCompilerDriver` →
+  `SLProgram`, the language-independent register-ISA image).
+- `SLCPURuntime.runWorkload(SLWorkload)` — admission control against the grant,
+  then maps the compiled image onto *this CPU's* canonical-opcode substrate
+  (`SLOpcodeMap`) and runs it up to the grant's instruction budget.
+
+Because the register-ISA image is language-independent, the **same workload runs
+identically whether its source was C, C++, or Sleela** — the 1:1 Turing-effect
+guarantee. Example:
+
+```
+SLCPUResource grant = new SLCPUResource();
+grant.configure(4096, 100000, grant.PRIORITY_NORMAL);   // 4K words, 100k-instr slice
+
+SLWorkload job = new SLWorkload();
+job.configure("hello", "examples/hello.c", job.LANG_C, grant);
+
+SL6502CPU cpu = new SL6502CPU(); cpu.configure();
+int out = cpu.runWorkload(job);     // compiles C -> maps onto substrate -> runs in grant
+```
+
+Admission is enforced: a workload whose memory request exceeds the CPU's address
+space, or whose budget is non-positive, is rejected (`runWorkload` returns -1).
+
+## CPU fleet status — all 99 folders runnable
+
+Every architecture folder now carries a runnable `SL<ARCH>CPU` that
+`extends SLCPURuntime`, declares a real register file, and implements `decode()`:
+
+- **Hand-written models** (richer, arch-specific decoders): `6502`, `z80`,
+  `motorola-68000`, `mips`, `riscv`, `arm`, `x86`, and `pdp8` (12-bit AC/LINK
+  semantics). `x86` includes `lowerAddAndPrint()` as a worked lowering example.
+- **Generated models** (`tools/generate-cpu-models.py`): the remaining ~90
+  folders — the 680x0 family, DEC (Alpha, VAX, the full PDP-1..PDP-15 line),
+  Intel (4004, i860, i960, iAPX 432, Itanium), IBM/POWER (801, ROMP, POWER,
+  PowerPC, System/360-370-390, z/Architecture), RISC workstation (SPARC,
+  PA-RISC, 88000, Am29000, Clipper, NS32000, OpenRISC), embedded/DSP (Cortex-M/R,
+  SuperH, Xtensa, Transputer, DSP56000, dsPIC, TMS320, SHARC, Z8000), and all
+  the **console SoCs** (Nintendo NES→Switch 2, Sega SG-1000→Dreamcast,
+  PlayStation 1→5, Xbox→Series X, Atari 2600→VCS) each modelled on their real
+  main CPU.
+
+Each generated model uses a compact, arch-flavored instruction encoding
+(load/move/arithmetic/compare/branch/halt) routed through the inherited `SLALU`
+and memory. The per-arch bus/timing/register detail continues to live in each
+folder's nine markdown docs; `tools/generate-cpu-models.py` is the source of
+truth for the generated set and can be re-run or extended with richer decoders.
