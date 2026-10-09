@@ -53,6 +53,7 @@ public:
 
     UnsignedInteger add(const UnsignedInteger& other) const {
         requireSameWidth(other);
+        if (addWouldOverflow(other)) throw std::overflow_error("unsigned integer addition overflow");
         UnsignedInteger out(width_);
         unsigned carry = 0;
         for (std::size_t i = 0; i < bytes_.size(); ++i) {
@@ -88,11 +89,10 @@ public:
         for (std::size_t i = 0; i < bytes_.size(); ++i) {
             unsigned sum = static_cast<unsigned>(bytes_[i]) + other.bytes_[i] + carry;
             carry = sum >> 8;
-        }
-        if ((width_ % 8) != 0) {
-            const unsigned mask = (1u << (width_ % 8)) - 1u;
-            unsigned top = static_cast<unsigned>(bytes_.back()) + other.bytes_.back();
-            return carry != 0 || top > mask;
+            if (i + 1 == bytes_.size() && (width_ % 8) != 0) {
+                const unsigned mask = (1u << (width_ % 8)) - 1u;
+                if ((sum & ~mask) != 0) return true;
+            }
         }
         return carry != 0;
     }
