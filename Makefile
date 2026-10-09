@@ -13,7 +13,10 @@ all: autocheck core java28 regex compiler decompiler vm scripting jetbrains inst
 SLEELA_SHA256_MANIFEST ?= $(abspath $(CURDIR)/security/sha256-manifest.json)
 export SLEELA_SHA256_MANIFEST
 
-core:
+autocheck:
+	@sh ./scripts/autocheck-toolchain.sh
+
+core: autocheck
 	$(MAKE) -C impl all
 
 java28:
