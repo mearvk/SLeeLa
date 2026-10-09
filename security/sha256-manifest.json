@@ -411,7 +411,7 @@
     },
     {
       "path": "impl/frontend/unsigned_integer.h",
-      "sha256": "486d9eac4737859955770f95629200c22131ee44a4c48b2be1e55d078bdb41fb"
+      "sha256": "f8f2121754a8848adfbb1c440ee757f04a35fa5d8d7f1e002f5bccad11181f66"
     },
     {
       "path": "impl/frontend/version.cpp",
@@ -651,7 +651,7 @@
     },
     {
       "path": "impl/tests/unsigned_integer_test.cpp",
-      "sha256": "93c2e0539de4638cca7458e8c2a14d4d0db52268135fec198e621d8e880c7293"
+      "sha256": "e878825999c9f59d6b2ea664b306e0189a8abb92f34f2f366b8b024bdf50b4f4"
     },
     {
       "path": "impl/xclass/xclass_loader.cpp",
