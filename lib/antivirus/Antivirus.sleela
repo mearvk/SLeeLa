@@ -1,0 +1,62 @@
+/*
+ * lib/antivirus/Antivirus.sleela
+ * Public facade for the SLeeLa antivirus component package.
+ */
+#sleela 1.3
+class Antivirus {
+  SLScanPolicy policy;
+  SLClamAVAdapter adapter;
+  SLScannerEngine engine;
+  SLLocalScanner localScanner;
+  SLSystemScanner systemScanner;
+
+  void configureClamAVDaemon(String localEndpoint) {
+    policy = new SLScanPolicy();
+    policy.configureDefaults();
+    adapter = new SLClamAVAdapter();
+    adapter.configureDaemon(localEndpoint);
+    assemble();
+  }
+
+  void configureClamAVOneShot() {
+    policy = new SLScanPolicy();
+    policy.configureDefaults();
+    adapter = new SLClamAVAdapter();
+    adapter.configureOneShot();
+    assemble();
+  }
+
+  void assemble() {
+    engine = new SLScannerEngine();
+    engine.configure(policy, adapter);
+    localScanner = new SLLocalScanner();
+    localScanner.configure(engine);
+    systemScanner = new SLSystemScanner();
+    systemScanner.configure(engine);
+  }
+
+  SLScanResult scanLocal(String path) {
+    if (localScanner == null) {
+      SLScanResult result = new SLScanResult();
+      result.configure(path, "ClamAV");
+      result.markError("ANTIVIRUS_NOT_CONFIGURED");
+      return result;
+    }
+    return localScanner.scanPath(path);
+  }
+
+  void authorizeSystemScan(boolean authorized) {
+    if (systemScanner != null) systemScanner.authorizeAdministrator(authorized);
+    if (policy != null) policy.allowSystemScope = authorized;
+  }
+
+  SLScanResult scanSystemRoot(String approvedRoot) {
+    if (systemScanner == null) {
+      SLScanResult result = new SLScanResult();
+      result.configure(approvedRoot, "ClamAV");
+      result.markError("ANTIVIRUS_NOT_CONFIGURED");
+      return result;
+    }
+    return systemScanner.scanApprovedRoot(approvedRoot);
+  }
+}
