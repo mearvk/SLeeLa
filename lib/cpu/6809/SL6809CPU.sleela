@@ -1,0 +1,11 @@
+# SL6809CPU
+
+class SL6809CPU {
+  architecture; profile; clock;
+  accumulatorA; accumulatorB; indexX; indexY;
+  userStackPointer; systemStackPointer; programCounter;
+  directPageRegister; conditionCodeRegister; instructionRegister;
+  decoder; addressUnit; alu; interruptController; memoryController;
+  ioBus; busArbiter; dmaController; couplers;
+  reset(); fetch(); decodePrefix(); decodeOpcode(); calculateEffectiveAddress(); execute(); updateConditionCodes(); enterInterrupt(); memoryCycle(); complete(); validate();
+}
