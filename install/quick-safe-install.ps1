@@ -51,8 +51,10 @@ if (-not $NoBuild) {
 }
 
 $Stage = Join-Path ([System.IO.Path]::GetTempPath()) ("sleela-install-" + [guid]::NewGuid())
-New-Item -ItemType Directory -Force -Path (Join-Path $Stage "lib"),(Join-Path $Stage "bin"),(Join-Path $Stage "config") | Out-Null
-if (Test-Path (Join-Path $RepoRoot "lib")) { Copy-Item -Recurse -Force (Join-Path $RepoRoot "lib") (Join-Path $Stage "lib") }
+New-Item -ItemType Directory -Force -Path (Join-Path $Stage "lib"),(Join-Path $Stage "bin"),(Join-Path $Stage "config"),(Join-Path $Stage "tools"),(Join-Path $Stage "security") | Out-Null
+if (Test-Path (Join-Path $RepoRoot "lib")) { Copy-Item -Recurse -Force (Join-Path $RepoRoot "lib\\*") (Join-Path $Stage "lib") }
+Copy-Item -Force (Join-Path $RepoRoot "tools\\verify-before-execution.py") (Join-Path $Stage "tools")
+Copy-Item -Force (Join-Path $RepoRoot "security\\sha256-manifest.json") (Join-Path $Stage "security")
 foreach ($Product in @("sleela.exe","nordshrift.exe")) {
   $Built = Join-Path $RepoRoot ("impl\build\" + $Product)
   if (-not (Test-Path $Built)) { throw "Required compiled product missing: $Built" }
