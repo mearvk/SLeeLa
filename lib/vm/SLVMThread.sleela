@@ -1,88 +1,11 @@
 /*
  * lib/vm/SLVMThread.sleela
  * SLeeLa Standard Library Definition.
- * Definition: Defines SLVMThread — one thread of control in the secondary Sleela
- *   VM. A thread is a chain of SLVMFrames (its call stack) plus a run state. The
- *   topmost frame is the one currently executing; CALL links a new frame as its
- *   caller, RET unlinks it. Each thread executes independently so the VM can
- *   model OP_SPAWN / OP_JOINALL from the canonical ISA.
- *
- * Frames are wired as a linked chain through SLVMFrame rather than an array
- * (SLeeLa surface has no arrays): the thread holds only the current frame and a
- * depth counter; callers keep their frame in a local as they recurse. For the
- * bounded common case the thread also pins up to 8 frames so a scheduler can
- * inspect the stack.
- *
- * Family: vm. Composes SLVMFrame; composed by SLVM.
+ * Definition: Defines the SLeeLa standard-library type SLVMThread used within the vm library family.
  */
 #sleela 1.3
+// Unified SLeeLa standard-library front-end object.
+// Family: vm. Native VM/OS work crosses an explicit bridge.
 class SLVMThread {
-  static final int STATE_NEW     = 0;
-  static final int STATE_RUNNING = 1;
-  static final int STATE_BLOCKED = 2;
-  static final int STATE_DONE    = 3;
-
-  int id;
-  String name;
-  int state;
-  int depth;          // number of active frames
-
-  // Bounded frame pins (current at index depth-1). Deeper recursion still works
-  // via the returnIp chain inside SLVM; these give a scheduler a visible stack.
-  SLVMFrame f0; SLVMFrame f1; SLVMFrame f2; SLVMFrame f3;
-  SLVMFrame f4; SLVMFrame f5; SLVMFrame f6; SLVMFrame f7;
-
-  int thisClassId;    // current "this" context class for field opcodes
-  int thisHandle;     // current "this" object handle
-
-  void configure(int threadId, String threadName) {
-    id = threadId; name = threadName;
-    state = STATE_NEW; depth = 0;
-    thisClassId = -1; thisHandle = -1;
-  }
-
-  void start() { state = STATE_RUNNING; }
-  void block() { state = STATE_BLOCKED; }
-  void resume(){ if (state == STATE_BLOCKED) { state = STATE_RUNNING; } }
-  void finish(){ state = STATE_DONE; }
-
-  void pushFrame(SLVMFrame frame) {
-    if (depth == 0) { f0 = frame; }
-    else if (depth == 1) { f1 = frame; }
-    else if (depth == 2) { f2 = frame; }
-    else if (depth == 3) { f3 = frame; }
-    else if (depth == 4) { f4 = frame; }
-    else if (depth == 5) { f5 = frame; }
-    else if (depth == 6) { f6 = frame; }
-    else if (depth == 7) { f7 = frame; }
-    if (depth < 8) { depth = depth + 1; }
-  }
-
-  SLVMFrame frameAt(int index) {
-    if (index == 0) { return f0; }
-    if (index == 1) { return f1; }
-    if (index == 2) { return f2; }
-    if (index == 3) { return f3; }
-    if (index == 4) { return f4; }
-    if (index == 5) { return f5; }
-    if (index == 6) { return f6; }
-    if (index == 7) { return f7; }
-    return null;
-  }
-
-  SLVMFrame currentFrame() { if (depth == 0) { return null; } return frameAt(depth - 1); }
-
-  void popFrame() { if (depth > 0) { depth = depth - 1; } }
-
-  void enterContext(int classId, int handle) { thisClassId = classId; thisHandle = handle; }
-  int contextClass()  { return thisClassId; }
-  int contextHandle() { return thisHandle; }
-
-  int threadId()   { return id; }
-  String threadName(){ return name; }
-  int runState()   { return state; }
-  int stackDepth() { return depth; }
-  boolean running(){ return state == STATE_RUNNING; }
-  boolean done()   { return state == STATE_DONE; }
-  boolean active() { return state == STATE_RUNNING; }
+  String name; int state; int count; void configure(String n){name=n;} void start(){state=1;} void stop(){state=0;} void register(){count=count+1;} boolean active(){return state==1;}
 }

@@ -1,3 +1,12 @@
 # Motorola 6809 Registers
 
-A and B are 8-bit accumulators; D is their combined 16-bit A:B view. X and Y are 16-bit index registers. U is the user stack pointer, S the system stack pointer, PC the program counter, DP the direct-page register, and CC the condition-code/interrupt-mask register. Register aliases and stack distinctions are preserved.
+- A and B: 8-bit accumulators
+- D: combined 16-bit A:B register view
+- X and Y: 16-bit index registers
+- U: user stack pointer
+- S: system stack pointer
+- PC: 16-bit program counter
+- DP: direct-page register
+- CC: condition-code register
+
+The CC tracks the architecture's condition and interrupt-mask state. SLeeLa preserves register aliases and stack distinctions in the model.

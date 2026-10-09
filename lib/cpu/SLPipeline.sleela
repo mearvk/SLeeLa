@@ -1,2 +1,0 @@
-# SLPipeline
-class SLPipeline { stages; issueWidth; dispatchWidth; retireWidth; hazards; advance(); }

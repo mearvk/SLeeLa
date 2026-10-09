@@ -71,7 +71,7 @@ public:
         // Struct declarations: register each layout with the VM and record a
         // compiler-side layout (type index + ordered field names -> offsets).
         for(const auto& st:prog_.structs){
-            if(st.fields.size()>64) throw std::runtime_error("Semantic error: struct '"+st.name+"' exceeds 64 fields");
+            if(st.fields.size()>128) throw std::runtime_error("Semantic error: struct '"+st.name+"' exceeds 128 fields");
             if(structLayout_.count(st.name)) throw std::runtime_error("Semantic error: duplicate struct '"+st.name+"'");
             if(syntax_<SyntaxVersion{1,2}) throw std::runtime_error("Semantic error: struct declarations require #sleela 1.2");
             StructLayout layout; layout.name=st.name;
@@ -85,17 +85,48 @@ public:
             if(layout.typeIndex<0) throw std::runtime_error("Semantic error: could not register struct '"+st.name+"' (too many struct types?)");
             structLayout_[st.name]=layout;
         }
-        for(const auto& cls:prog_.classes) for(const auto& f:cls.fields){
-            if(fieldGlobal_.count(f.name)) throw std::runtime_error("Semantic error: duplicate field '"+f.name+"'");
-            fieldGlobal_[f.name]=slvm_declare_global(vm_,f.name.c_str()); fieldProtected_[f.name]=f.isProtected; fieldOwner_[f.name]=cls.name; fields_.push_back(&f);
-            if(structLayout_.count(f.type)) varType_[f.name]=f.type; // struct-typed global
+        // Class instances share the VM's managed struct allocator, but each
+        // class gets an independent layout and each object gets independent storage.
+        for(const auto& cls:prog_.classes){
+            if(structLayout_.count(cls.name)) throw std::runtime_error("Semantic error: class/struct name collision '"+cls.name+"'");
+            StructLayout layout; layout.name=cls.name; std::vector<const char*> names;
+            for(const auto& f:cls.fields) if(!f.isStatic){
+                if(layout.fieldOffset.count(f.name)) throw std::runtime_error("Semantic error: duplicate instance field '"+f.name+"' in class '"+cls.name+"'");
+                layout.fieldOffset[f.name]=(int)layout.fieldType.size(); layout.fieldType.push_back(f.type); names.push_back(f.name.c_str());
+            }
+            if(layout.fieldType.size()>128) throw std::runtime_error("Semantic error: class '"+cls.name+"' exceeds 128 instance fields");
+            layout.typeIndex=slvm_declare_struct(vm_,cls.name.c_str(),names.empty()?nullptr:names.data(),(int)names.size());
+            if(layout.typeIndex<0) throw std::runtime_error("Semantic error: could not register class layout '"+cls.name+"'");
+            structLayout_[cls.name]=layout;
+        }
+        for(const auto& cls:prog_.classes) for(const auto& f:cls.fields) if(f.isStatic){
+            const std::string key=cls.name+"::"+f.name;
+            fieldGlobal_[key]=slvm_declare_global(vm_,key.c_str()); fieldProtected_[key]=f.isProtected; fieldOwner_[key]=cls.name; fields_.push_back(&f);
+            if(structLayout_.count(f.type)) varType_[key]=f.type;
         }
         for(const auto& cls:prog_.classes) for(const auto& m:cls.methods){
-            MethodInfo mi; mi.method=&m; mi.nlocals=countLocals(m); if (m.isProtected) protectedMethods_.insert(m.name); methodOwner_[m.name]=cls.name; funcIndex_[m.name]=(int)methods_.size(); methods_.push_back(mi);
+            const std::string key=cls.name+"::"+m.name;
+            MethodInfo mi; mi.method=&m; mi.nlocals=countLocals(m)+(m.isStatic?0:1);
+            methodKeyByPtr_[&m]=key; methodOwner_[key]=cls.name;
+            if(m.isProtected) protectedMethods_.insert(key);
+            funcIndex_[key]=(int)methods_.size(); methods_.push_back(mi);
+            if(m.name=="main") funcIndex_["main"]=(int)methods_.size()-1;
         }
         if(funcIndex_.find("main")==funcIndex_.end()) throw std::runtime_error("Semantic error: no 'main' method found");
         for(auto& mi:methods_) emitMethod(mi);
-        int entry=funcIndex_["main"]; slvm_set_entry(vm_,entry); return entry;
+        int entry=funcIndex_["main"];
+        const Method* entryMethod=methods_[entry].method;
+        if(!entryMethod->isStatic){
+            // Legacy Sleela main methods may be instance methods. Synthesize a
+            // zero-argument VM entry wrapper that creates the owning class and
+            // invokes main on that instance.
+            currentClass_=methodOwner_.at(methodKeyByPtr_.at(entryMethod));
+            slvm_begin_func(vm_,"__sleela_entry",0,0);
+            NewExpr instance(currentClass_); emitNew(instance); emit(OP_CALL,entry);
+            emit(OP_POP); emit(OP_CONST,addNullConst()); emit(OP_RET); slvm_end_func(vm_);
+            entry=(int)methods_.size();
+        }
+        slvm_set_entry(vm_,entry); return entry;
     }
 private:
     struct MethodInfo { const Method* method; int nlocals; };
@@ -103,7 +134,7 @@ private:
     // position (offset) and declared type, in declaration order.
     struct StructLayout { std::string name; int typeIndex=-1; std::map<std::string,int> fieldOffset; std::vector<std::string> fieldType; };
     const Program& prog_; SLVM* vm_; const catalog::Catalog* cat_; SyntaxVersion syntax_;
-    std::map<std::string,int> funcIndex_; std::map<std::string,std::string> methodOwner_; std::set<std::string> protectedMethods_; std::vector<MethodInfo> methods_;
+    std::map<std::string,int> funcIndex_; std::map<std::string,std::string> methodOwner_; std::map<const Method*,std::string> methodKeyByPtr_; std::set<std::string> protectedMethods_; std::vector<MethodInfo> methods_;
     std::map<std::string,int> fieldGlobal_; std::map<std::string,bool> fieldProtected_; std::map<std::string,std::string> fieldOwner_; std::vector<const Field*> fields_; MethodCtx* ctx_=nullptr;
     std::string currentClass_;
     std::map<std::string,StructLayout> structLayout_;
@@ -111,7 +142,9 @@ private:
     // can resolve `x.field` to the right struct layout. Names not present are
     // untyped (dynamic); member access then defers field resolution to runtime.
     std::map<std::string,std::string> varType_;
-    int fieldSlot(const std::string& name) const { auto it=fieldGlobal_.find(name); return it==fieldGlobal_.end()?-1:it->second; }
+    int fieldSlot(const std::string& name) const { auto it=fieldGlobal_.find(currentClass_+"::"+name); if(it!=fieldGlobal_.end())return it->second;it=fieldGlobal_.find(name);return it==fieldGlobal_.end()?-1:it->second; }
+    int instanceFieldOffset(const std::string& name) const { auto it=structLayout_.find(currentClass_);if(it==structLayout_.end())return -1;auto f=it->second.fieldOffset.find(name);return f==it->second.fieldOffset.end()?-1:f->second; }
+    void emitThis(){if(!ctx_||ctx_->slotOf("this")<0)throw std::runtime_error("Semantic error: instance member requires an instance context");emit(OP_LOADL,ctx_->slotOf("this"));}
     int countLocals(const Method& m){int n=(int)m.params.size();countInBlock(*m.body,n);return n;}
     void countInBlock(const Block& b,int& n){for(const auto& s:b.stmts)countInStmt(s.get(),n);}
     void countInStmt(const Stmt* s,int& n){
@@ -127,12 +160,13 @@ private:
     }
     int here(){return slvm_here(vm_);} int emit(SLOp op,int a=0){return slvm_emit(vm_,op,a);} void patch(int at,int target){slvm_patch(vm_,at,target);}
     void emitMethod(MethodInfo& mi){
-        const Method& m=*mi.method; MethodCtx ctx; currentClass_=methodOwner_[m.name]; for(const auto& p:m.params)ctx.declare(p.name);
-        // Per-method type scope: seed parameter types, restore globals after.
+        const Method& m=*mi.method; const std::string key=methodKeyByPtr_.at(&m); currentClass_=methodOwner_.at(key);
+        MethodCtx ctx; if(!m.isStatic)ctx.declare("this"); for(const auto& p:m.params)ctx.declare(p.name);
         std::map<std::string,std::string> savedTypes=varType_;
         for(const auto& p:m.params) if(structLayout_.count(p.type)) varType_[p.name]=p.type;
-        slvm_begin_func(vm_,m.name.c_str(),(int)m.params.size(),mi.nlocals); ctx_=&ctx;
-        if(m.name=="main") for(const Field* f:fields_){if(f->init)emitExpr(f->init.get());else emit(OP_CONST,addNullConst());emit(OP_STOREG,fieldGlobal_[f->name]);}
+        if(!m.isStatic)varType_["this"]=currentClass_;
+        slvm_begin_func(vm_,key.c_str(),(int)m.params.size()+(m.isStatic?0:1),mi.nlocals); ctx_=&ctx;
+        if(m.name=="main") for(const auto& cls:prog_.classes) if(cls.name==currentClass_) for(const auto& f:cls.fields) if(f.isStatic){if(f.init)emitExpr(f.init.get());else emit(OP_CONST,addNullConst());emit(OP_STOREG,fieldGlobal_[currentClass_+"::"+f.name]);}
         emitBlock(*m.body);ctx_=nullptr;emit(OP_CONST,addNullConst());emit(OP_RET);slvm_end_func(vm_);
         varType_=savedTypes;
     }
@@ -157,7 +191,7 @@ private:
     }
     void emitBlock(const Block& b){for(const auto& s:b.stmts)emitStmt(s.get());}
     void emitVarDecl(const VarDecl& d){int slot=ctx_->declare(d.name);if(structLayout_.count(d.type))varType_[d.name]=d.type;if(d.init)emitExpr(d.init.get());else emit(OP_CONST,addNullConst());emit(OP_STOREL,slot);}
-    void emitAssign(const Assign& a){int slot=ctx_->slotOf(a.name);if(slot>=0){emitExpr(a.value.get());emit(OP_STOREL,slot);return;}int g=fieldSlot(a.name);if(g>=0){if(fieldProtected_[a.name] && fieldOwner_[a.name]!=currentClass_) throw std::runtime_error("protected field access denied");emitExpr(a.value.get());emit(OP_STOREG,g);return;}throw std::runtime_error("Semantic error: assignment to undeclared variable '"+a.name+"'");}
+    void emitAssign(const Assign& a){int slot=ctx_->slotOf(a.name);if(slot>=0){emitExpr(a.value.get());emit(OP_STOREL,slot);return;}int off=instanceFieldOffset(a.name);if(off>=0){emitThis();emitExpr(a.value.get());emit(OP_SETFIELD,off);emit(OP_POP);return;}int g=fieldSlot(a.name);if(g>=0){emitExpr(a.value.get());emit(OP_STOREG,g);return;}throw std::runtime_error("Semantic error: assignment to undeclared variable '"+a.name+"'");}
     void emitReturn(const ReturnStmt& r){if(r.value)emitExpr(r.value.get());else emit(OP_CONST,addNullConst());emit(OP_RET);}
     void emitFieldAssign(const FieldAssign& fa){int off=-1;memberLayout(fa.base.get(),fa.field,off);emitExpr(fa.base.get());emitExpr(fa.value.get());emit(OP_SETFIELD,off);emit(OP_POP);}
     void emitIf(const IfStmt& s){emitExpr(s.cond.get());int jf=emit(OP_JMPF,0);emitStmt(s.thenS.get());if(s.elseS){int jend=emit(OP_JMP,0);patch(jf,here());emitStmt(s.elseS.get());patch(jend,here());}else patch(jf,here());}
@@ -213,7 +247,8 @@ private:
         if(auto x=dynamic_cast<const ConditionalExpr*>(e)){emitConditional(*x);return;}
         if(auto x=dynamic_cast<const CastExpr*>(e)){emitExpr(x->operand.get());return;}
         if(auto x=dynamic_cast<const InstanceOfExpr*>(e)){emitExpr(x->value.get());emit(OP_POP);emit(OP_CONST,slvm_add_const_bool(vm_,0));return;}
-        if(dynamic_cast<const SuperExpr*>(e)||dynamic_cast<const ThisExpr*>(e)){emit(OP_CONST,addNullConst());return;}
+        if(dynamic_cast<const SuperExpr*>(e)){emit(OP_CONST,addNullConst());return;}
+        if(dynamic_cast<const ThisExpr*>(e)){emitThis();return;}
         if(auto x=dynamic_cast<const ArrayAccess*>(e)){emitExpr(x->base.get());emitExpr(x->index.get());emit(OP_ARRGET);return;}
         if(auto x=dynamic_cast<const MethodReferenceExpr*>(e)){emitExpr(x->base.get());return;}
         throw std::runtime_error("Semantic error: unknown expression kind");
@@ -223,11 +258,31 @@ private:
     void emitAssignmentExpr(const AssignmentExpr& a){
         std::string bin = a.op.size()==2 ? std::string(1,a.op[0]) : std::string();
         if(auto v=dynamic_cast<const VarExpr*>(a.target.get())){
-            if(!bin.empty()){emitVar(*v);emitExpr(a.value.get());emitBinOp(bin);} else emitExpr(a.value.get());
+            // Resolve the target before emitting the RHS. Assignment expressions
+            // are also used for statement-level assignments, so instance fields
+            // must follow the same resolution path as Assign statements.
             int slot=ctx_->slotOf(v->name);
-            if(slot>=0){emit(OP_STOREL,slot);emit(OP_LOADL,slot);return;}
+            if(slot>=0){
+                if(!bin.empty()){emit(OP_LOADL,slot);emitExpr(a.value.get());emitBinOp(bin);}
+                else emitExpr(a.value.get());
+                emit(OP_STOREL,slot);emit(OP_LOADL,slot);return;
+            }
+            int off=instanceFieldOffset(v->name);
+            if(off>=0){
+                emitThis();                         // [this]
+                if(!bin.empty()){emit(OP_DUP);emit(OP_GETFIELD,off);emitExpr(a.value.get());emitBinOp(bin);}
+                else emitExpr(a.value.get());
+                emit(OP_SETFIELD,off);              // leaves assigned value
+                return;
+            }
             int g=fieldSlot(v->name);
-            if(g>=0){if(fieldProtected_[v->name]&&fieldOwner_[v->name]!=currentClass_)throw std::runtime_error("protected field access denied");emit(OP_STOREG,g);emit(OP_LOADG,g);return;}
+            if(g>=0){
+                const std::string key=fieldOwner_.count(v->name)?v->name:currentClass_+"::"+v->name;
+                if(fieldProtected_[key]&&fieldOwner_[key]!=currentClass_)throw std::runtime_error("protected field access denied");
+                if(!bin.empty()){emit(OP_LOADG,g);emitExpr(a.value.get());emitBinOp(bin);}
+                else emitExpr(a.value.get());
+                emit(OP_STOREG,g);emit(OP_LOADG,g);return;
+            }
             throw std::runtime_error("Semantic error: assignment to undeclared variable '"+v->name+"'");
         }
         if(auto m=dynamic_cast<const MemberAccess*>(a.target.get())){
@@ -269,6 +324,7 @@ private:
     // not statically known to be a struct. Used to resolve field offsets.
     std::string exprStructType(const Expr* e){
         if(auto v=dynamic_cast<const VarExpr*>(e)){auto it=varType_.find(v->name);return it==varType_.end()?"":it->second;}
+        if(dynamic_cast<const ThisExpr*>(e))return currentClass_;
         if(auto m=dynamic_cast<const MemberAccess*>(e)){std::string bt=exprStructType(m->base.get());if(bt.empty())return "";auto lit=structLayout_.find(bt);if(lit==structLayout_.end())return "";int idx=-1;auto oit=lit->second.fieldOffset.find(m->field);if(oit!=lit->second.fieldOffset.end())idx=oit->second;if(idx<0)return "";return lit->second.fieldType[idx];}
         if(auto n=dynamic_cast<const NewExpr*>(e))return n->typeName;
         return "";
@@ -285,14 +341,26 @@ private:
         offset=oit->second; return lit->second;
     }
     void emitNew(const NewExpr& n){
-        // `new T[size]` arrives with a "[]"-suffixed typeName and the size as
-        // the first arg. Lower it to OP_NEWARRAY (which pops the size).
-        if(n.typeName.size()>=2 && n.typeName.compare(n.typeName.size()-2,2,"[]")==0){
-            if(!n.args.empty()) emitExpr(n.args[0].get()); else emit(OP_CONST,slvm_add_const_int(vm_,0));
-            emit(OP_NEWARRAY);
-            return;
+        if(n.typeName.size()>=2 && n.typeName.compare(n.typeName.size()-2,2,"[]")==0){if(!n.args.empty())emitExpr(n.args[0].get());else emit(OP_CONST,slvm_add_const_int(vm_,0));emit(OP_NEWARRAY);return;}
+        auto it=structLayout_.find(n.typeName);if(it==structLayout_.end())throw std::runtime_error("Semantic error: 'new' of unknown class or struct '"+n.typeName+"'");
+        if(!n.args.empty())throw std::runtime_error("Semantic error: constructors with arguments are not yet supported for '"+n.typeName+"'");
+        emit(OP_NEWSTRUCT,it->second.typeIndex);
+        // Initialize class fields per instance. A duplicated handle is consumed
+        // by SETFIELD while the original stays on the stack as the new value.
+        for(const auto& cls:prog_.classes) if(cls.name==n.typeName){
+            for(const auto& f:cls.fields) if(!f.isStatic){
+                auto off=it->second.fieldOffset.find(f.name);if(off==it->second.fieldOffset.end())continue;
+                emit(OP_DUP);
+                if(f.init) emitExpr(f.init.get());
+                else if(f.type=="int") emit(OP_CONST,slvm_add_const_int(vm_,0));
+                else if(f.type=="double") emit(OP_CONST,slvm_add_const_double(vm_,0.0));
+                else if(f.type=="bool"||f.type=="boolean") emit(OP_CONST,slvm_add_const_bool(vm_,0));
+                else if(f.type=="string"||f.type=="String") emit(OP_CONST,slvm_add_const_str(vm_,""));
+                else emit(OP_CONST,addNullConst());
+                emit(OP_SETFIELD,off->second);emit(OP_POP);
+            }
         }
-        auto it=structLayout_.find(n.typeName);if(it==structLayout_.end())throw std::runtime_error("Semantic error: 'new' of unknown struct '"+n.typeName+"'");emit(OP_NEWSTRUCT,it->second.typeIndex);}
+    }
     void emitMember(const MemberAccess& m){
         // Back-propagate the terminal degree requirement to the origin.
         // next.next is the Degree-2 proposal. When that proposal is itself
@@ -325,17 +393,6 @@ private:
         const std::string& m=mc.method;
         auto oneArgStr=[&](const char* verb){ if(mc.args.size()!=1) throw std::runtime_error("Semantic error: Munction "+std::string(verb)+"(...) takes exactly one argument"); };
         auto noArg=[&](const char* verb){ if(!mc.args.empty()) throw std::runtime_error("Semantic error: Munction "+std::string(verb)+"() takes no arguments"); };
-        // String methods (syntax 1.6). Emit the receiver (deepest), then the
-        // arguments in source order, then the opcode. The semantic analyzer has
-        // already confirmed the receiver is a String and the arity/types match.
-        if(m=="length"||m=="substring"||m=="charAt"||m=="indexOf"){
-            emitExpr(mc.receiver.get());
-            for(const auto& a:mc.args) emitExpr(a.get());
-            if(m=="length"){emit(OP_STR_LEN);return;}
-            if(m=="substring"){emit(OP_STR_SUB);return;}
-            if(m=="charAt"){emit(OP_STR_CHARAT);return;}
-            emit(OP_STR_INDEXOF);return;
-        }
         // The reach opener `Munction.start(name)` begins a chain and yields a
         // reach handle. It parses as MethodCall(VarExpr("Munction"), "start").
         if(m=="start"){
@@ -360,12 +417,21 @@ private:
             if(m=="reception"){noArg("reception");emit(OP_MUN_RECEPTION);return;}
             /* close / closeWithReceipt */ noArg(m.c_str());emit(OP_MUN_CLOSE);return;
         }
-        throw std::runtime_error("Semantic error: unknown fluent method '."+m+"()' (Munction verbs: connect/enable/send/thatch/consume/latch/closeWithReceipt/reception)");
+        const std::string receiverType=exprStructType(mc.receiver.get());
+        auto target=funcIndex_.find(receiverType+"::"+m);
+        if(target==funcIndex_.end())throw std::runtime_error("Semantic error: class '"+(receiverType.empty()?std::string("<unknown>"):receiverType)+"' has no method '"+m+"'");
+        const Method* method=methods_[target->second].method;
+        if(method->isStatic)throw std::runtime_error("Semantic error: static method '"+receiverType+"::"+m+"' must be called through its class");
+        if((int)mc.args.size()!=(int)method->params.size())throw std::runtime_error("Semantic error: method '"+receiverType+"::"+m+"' expects "+std::to_string(method->params.size())+" argument(s), got "+std::to_string(mc.args.size()));
+        if(method->isProtected&&receiverType!=currentClass_)throw std::runtime_error("protected method access denied");
+        emitExpr(mc.receiver.get());for(const auto&a:mc.args)emitExpr(a.get());emit(OP_CALL,target->second);
     }
     void emitVar(const VarExpr& v){
-        // `next` is the one-step system relation (System Degree 1).
-        if(v.name=="next"){ emit(OP_CONST,slvm_add_const_int(vm_,kNextSystemDegree)); return; }
-        int slot=ctx_->slotOf(v.name);if(slot>=0){emit(OP_LOADL,slot);return;}int g=fieldSlot(v.name);if(g>=0){if(fieldProtected_[v.name] && fieldOwner_[v.name]!=currentClass_) throw std::runtime_error("protected field access denied");emit(OP_LOADG,g);return;}throw std::runtime_error("Semantic error: use of undeclared variable '"+v.name+"'");
+        if(v.name=="next"){emit(OP_CONST,slvm_add_const_int(vm_,kNextSystemDegree));return;}
+        int slot=ctx_->slotOf(v.name);if(slot>=0){emit(OP_LOADL,slot);return;}
+        int off=instanceFieldOffset(v.name);if(off>=0){emitThis();emit(OP_GETFIELD,off);return;}
+        int g=fieldSlot(v.name);if(g>=0){emit(OP_LOADG,g);return;}
+        throw std::runtime_error("Semantic error: use of undeclared variable '"+v.name+"'");
     }
     void emitUnary(const Unary& u){emitExpr(u.operand.get());if(u.op=="-")emit(OP_NEG);else if(u.op=="!")emit(OP_NOT);else throw std::runtime_error("Semantic error: unknown unary operator '"+u.op+"'");}
     void emitBinary(const Binary& b){
@@ -397,15 +463,12 @@ private:
             return;
         }
         emitExpr(b.lhs.get());emitExpr(b.rhs.get());
-        if(o=="+")emit(OP_ADD);else if(o=="-")emit(OP_SUB);else if(o=="*")emit(OP_MUL);else if(o=="/")emit(OP_DIV);else if(o=="%")emit(OP_MOD);else if(o=="==")emit(OP_EQ);else if(o=="!=")emit(OP_NE);else if(o=="<")emit(OP_LT);else if(o=="<=")emit(OP_LE);else if(o==">")emit(OP_GT);else if(o==">=")emit(OP_GE);
-        /* Bitwise and shift operators (syntax 1.6). */
-        else if(o=="&")emit(OP_BAND);else if(o=="|")emit(OP_BOR);else if(o=="^")emit(OP_BXOR);else if(o=="<<")emit(OP_SHL);else if(o==">>")emit(OP_SHR);else if(o==">>>")emit(OP_USHR);
-        else throw std::runtime_error("Semantic error: unknown binary operator '"+o+"'");}
+        if(o=="+")emit(OP_ADD);else if(o=="-")emit(OP_SUB);else if(o=="*")emit(OP_MUL);else if(o=="/")emit(OP_DIV);else if(o=="%")emit(OP_MOD);else if(o=="==")emit(OP_EQ);else if(o=="!=")emit(OP_NE);else if(o=="<")emit(OP_LT);else if(o=="<=")emit(OP_LE);else if(o==">")emit(OP_GT);else if(o==">=")emit(OP_GE);else throw std::runtime_error("Semantic error: unknown binary operator '"+o+"'");}
 
     bool tryEmitBuiltin(const Call& c){
         const std::string& n=c.callee;
         auto litInt=[&](const Expr*e,const char*what)->int{auto il=dynamic_cast<const IntLit*>(e);if(!il)throw std::runtime_error("Semantic error: "+std::string(what)+" must be an integer literal");return(int)il->value;};
-        if(n=="spawn"){if(c.args.size()!=1)throw std::runtime_error("Semantic error: spawn(method) takes exactly one argument");auto var=dynamic_cast<const VarExpr*>(c.args[0].get());if(!var)throw std::runtime_error("Semantic error: spawn(method) argument must be a method name");auto it=funcIndex_.find(var->name);if(it==funcIndex_.end())throw std::runtime_error("Semantic error: spawn of unknown method '"+var->name+"'");if(!methods_[it->second].method->params.empty())throw std::runtime_error("Semantic error: spawn target '"+var->name+"' must take no parameters");emit(OP_SPAWN,it->second);return true;}
+        if(n=="spawn"){if(c.args.size()!=1)throw std::runtime_error("Semantic error: spawn(method) takes exactly one argument");auto var=dynamic_cast<const VarExpr*>(c.args[0].get());if(!var)throw std::runtime_error("Semantic error: spawn(method) argument must be a method name");auto it=funcIndex_.find(var->name);if(it==funcIndex_.end())it=funcIndex_.find(currentClass_+"::"+var->name);if(it==funcIndex_.end())throw std::runtime_error("Semantic error: spawn of unknown method '"+var->name+"'");if(!methods_[it->second].method->isStatic)throw std::runtime_error("Semantic error: spawn target '"+var->name+"' must be static because a thread has no instance receiver");if(!methods_[it->second].method->params.empty())throw std::runtime_error("Semantic error: spawn target '"+var->name+"' must take no parameters");emit(OP_SPAWN,it->second);return true;}
         if(n=="join"){if(!c.args.empty())throw std::runtime_error("Semantic error: join() takes no arguments");emit(OP_JOINALL);emit(OP_CONST,addNullConst());return true;}
         if(n=="lock"||n=="unlock"){if(c.args.size()!=1)throw std::runtime_error("Semantic error: "+n+"(id) takes exactly one argument");int id=litInt(c.args[0].get(),(n+" id").c_str());emit(n=="lock"?OP_LOCK:OP_UNLOCK,id);emit(OP_CONST,addNullConst());return true;}
         if(n=="send"){if(c.args.size()!=2)throw std::runtime_error("Semantic error: send(slot, value) takes two arguments");int slot=litInt(c.args[0].get(),"send slot");emitExpr(c.args[1].get());emit(OP_SEND,slot);emit(OP_CONST,addNullConst());return true;}
@@ -609,12 +672,32 @@ private:
         if(n=="degreemax"){if(!c.args.empty())throw std::runtime_error("Semantic error: degreemax() takes no arguments");emit(OP_CONST,slvm_add_const_int(vm_,cat_?cat_->complexityDegreeMax:0));return true;}
         return false;
     }
-    void emitCall(const Call& c){ if(protectedMethods_.count(c.callee) && methodOwner_[c.callee]!=currentClass_) throw std::runtime_error("protected method access denied");
-        if(tryEmitBuiltin(c)){return;}
-        auto it=funcIndex_.find(c.callee); if(it==funcIndex_.end())throw std::runtime_error("Semantic error: call to unknown method '"+c.callee+"'");
-        const Method* target=methods_[it->second].method; if((int)c.args.size()!=(int)target->params.size())throw std::runtime_error("Semantic error: method '"+c.callee+"' expects "+std::to_string(target->params.size())+" argument(s), got "+std::to_string(c.args.size()));
-        for(const auto&a:c.args){emitExpr(a.get());}
-        emit(OP_CALL,it->second);
+    void emitCall(const Call& c){
+        if(tryEmitBuiltin(c))return;
+        auto it=funcIndex_.find(currentClass_+"::"+c.callee);
+        if(it!=funcIndex_.end()){
+            const Method* target=methods_[it->second].method;
+            if((int)c.args.size()!=(int)target->params.size())throw std::runtime_error("Semantic error: method '"+currentClass_+"::"+c.callee+"' expects "+std::to_string(target->params.size())+" argument(s), got "+std::to_string(c.args.size()));
+            if(target->isProtected&&methodOwner_[currentClass_+"::"+c.callee]!=currentClass_)throw std::runtime_error("protected method access denied");
+            if(!target->isStatic)emitThis();
+            for(const auto&a:c.args)emitExpr(a.get());emit(OP_CALL,it->second);return;
+        }
+        // Native subject helpers are synthesized as qualified class methods.
+        // Resolve all __Native* helper names consistently with semantic analysis.
+        if(it==funcIndex_.end()&&c.callee.rfind("__native_",0)==0){
+            const std::string suffix="::"+c.callee;
+            for(const auto& entry:funcIndex_){
+                if(entry.first.size()>=suffix.size()&&entry.first.compare(entry.first.size()-suffix.size(),suffix.size(),suffix)==0&&entry.first.rfind("__Native",0)==0){
+                    it=funcIndex_.find(entry.first);
+                    break;
+                }
+            }
+        }
+        if(it==funcIndex_.end())it=funcIndex_.find(c.callee);
+        if(it==funcIndex_.end())throw std::runtime_error("Semantic error: call to unknown method '"+c.callee+"'");
+        const Method* target=methods_[it->second].method;
+        if((int)c.args.size()!=(int)target->params.size())throw std::runtime_error("Semantic error: method '"+c.callee+"' expects "+std::to_string(target->params.size())+" argument(s), got "+std::to_string(c.args.size()));
+        for(const auto&a:c.args)emitExpr(a.get());emit(OP_CALL,it->second);
     }
 };
 

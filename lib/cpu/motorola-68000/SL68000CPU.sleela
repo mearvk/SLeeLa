@@ -1,85 +1,30 @@
-/*
- * lib/cpu/motorola-68000/SL68000CPU.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SL68000CPU — a runnable model of the Motorola 68000: a
- *   16/32-bit CISC with eight data registers D0..D7 and eight address registers
- *   A0..A7 (A7 is the stack pointer), plus the X N Z V C condition codes. It
- *   extends SLCPURuntime and adds the 68000 register set, a decoder, and the
- *   effective-address / bus-arbitration hooks the skeleton named.
- *
- * Instruction model (op in high byte, then a 4-bit dst and 4-bit src selector
- * or an immediate in the low byte): MOVE Dn,Dm / MOVEQ #imm,Dn / MOVE Dn,(An) /
- * MOVE (An),Dn / ADD Dn,Dm / SUB Dn,Dm / ADDQ #imm,Dn / LEA #imm,An / JMP abs /
- * BEQ / BNE / RTS(halt) / NOP. Compact teaching encoding, enough to run the CPU
- * and model further .sleela inputs.
- *
- * Family: cpu. Extends SLCPURuntime.
- */
-#sleela 1.3
-class SL68000CPU extends SLCPURuntime {
-  // D0..D7 => 0..7, A0..A7 => 8..15 (A7 == stack pointer).
-  static final int D0 = 0;
-  static final int A0 = 8;
-  static final int SP = 15;   // A7
+# SL68000CPU
+class SL68000CPU {
+  architecture;
+  clock;
+  registers;
+  pipeline;
+  instructionFetch;
+  executionUnit;
+  ioBus;
+  ioTiming;
+  interrupts;
+  busArbiter;
+  couplers;
+  cache = none;
+  dma = none;
+  mmu = none;
+  tlb = none;
 
-  static final int MOVE_RR  = 1;   // MOVE Dsrc,Ddst
-  static final int MOVEQ    = 2;   // MOVEQ #imm,Dn
-  static final int MOVE_RM  = 3;   // MOVE Dn,(An)
-  static final int MOVE_MR  = 4;   // MOVE (An),Dn
-  static final int ADD_RR   = 5;
-  static final int SUB_RR   = 6;
-  static final int ADDQ     = 7;   // ADDQ #imm,Dn
-  static final int LEA_IMM  = 8;   // LEA #imm,An
-  static final int JMP_ABS  = 9;
-  static final int BEQ      = 10;
-  static final int BNE      = 11;
-  static final int RTS      = 12;
-
-  int busHeld;    // bus-arbitration state (BR/BG)
-
-  void configure() {
-    // 32-bit data path, 24-bit address bus, 16 registers, 16 MiW model memory.
-    setSpecClock(8);   // Motorola 68000 at 8 MHz; overclockable
-    bringUp("Motorola 68000", 32, 24, 16, 1048576);
-    busHeld = 0;
-    writeReg(SP, 0x100000 - 4);
-  }
-
-  int opOf(int w)   { return (w / 256) % 256; }
-  int dstOf(int w)  { return (w % 256) / 16; }    // high nibble of low byte
-  int srcOf(int w)  { return w % 16; }            // low nibble
-  int immOf(int w)  { return w % 256; }
-
-  void decode(int word) {
-    int opcode = opOf(word);
-
-    if (opcode == MOVE_RR) { int v = readReg(D0 + srcOf(word)); writeReg(D0 + dstOf(word), v); setZN(v); return; }
-    if (opcode == MOVEQ)   { int v = signed(immOf(word)); writeReg(D0 + dstOf(word), v); setZN(v); return; }
-    if (opcode == MOVE_RM) { writeMem(readReg(A0 + dstOf(word)), readReg(D0 + srcOf(word))); return; }
-    if (opcode == MOVE_MR) { int v = readMem(readReg(A0 + srcOf(word))); writeReg(D0 + dstOf(word), v); setZN(v); return; }
-    if (opcode == ADD_RR)  { int r = aluOp(readReg(D0 + dstOf(word)), readReg(D0 + srcOf(word)), alu.OP_ADD); writeReg(D0 + dstOf(word), r); return; }
-    if (opcode == SUB_RR)  { int r = aluOp(readReg(D0 + dstOf(word)), readReg(D0 + srcOf(word)), alu.OP_SUB); writeReg(D0 + dstOf(word), r); return; }
-    if (opcode == ADDQ)    { int r = aluOp(readReg(D0 + dstOf(word)), immOf(word) % 16, alu.OP_ADD); writeReg(D0 + dstOf(word), r); return; }
-    if (opcode == LEA_IMM) { writeReg(A0 + dstOf(word), effectiveAddress(immOf(word))); return; }
-    if (opcode == JMP_ABS) { setEntryPoint(immOf(word)); return; }
-    if (opcode == BEQ)     { if (zero() == 1) { setEntryPoint(programCounter() + signed(immOf(word))); } return; }
-    if (opcode == BNE)     { if (zero() == 0) { setEntryPoint(programCounter() + signed(immOf(word))); } return; }
-    if (opcode == RTS)     { halted = 1; return; }
-  }
-
-  // Effective-address computation hook (immediate/absolute in this model).
-  int effectiveAddress(int operand) { return operand; }
-
-  // Bus arbitration hooks the skeleton named (BR / BG handshake).
-  void busRequest() { busHeld = 1; }
-  void busGrant()   { busHeld = 0; }
-  boolean busBusy() { return busHeld == 1; }
-
-  int signed(int b) { if (b >= 128) { return b - 256; } return b; }
-  void setZN(int v) { flagZ = (v == 0) ? 1 : 0; flagN = (v < 0) ? 1 : 0; }
-  int encode(int opcode, int dstReg, int srcReg) { return (opcode % 256) * 256 + ((dstReg % 16) * 16) + (srcReg % 16); }
-  int encodeImm(int opcode, int dstReg, int imm) { return (opcode % 256) * 256 + ((dstReg % 16) * 16) + (imm % 16); }
-
-  int dataRegister(int n)    { return readReg(D0 + n); }
-  int addressRegister(int n) { return readReg(A0 + n); }
+  reset();
+  fetch();
+  decode();
+  effectiveAddress();
+  execute();
+  memoryCycle();
+  ioCycle();
+  interruptAcknowledge();
+  busRequest();
+  busGrant();
+  validate();
 }

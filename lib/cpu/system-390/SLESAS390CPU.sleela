@@ -1,78 +1,69 @@
-/*
- * lib/cpu/system-390/SLESAS390CPU.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLESAS390CPU — a runnable model of the IBM ESA/390. It extends
- *   SLCPURuntime, so it inherits register storage, a word-addressable memory
- *   interface, an SLALU, the fetch-decode-execute loop, and — crucially — the
- *   resource-aware workload path (admit()/runWorkload()) that runs C, C++ or
- *   Sleela programs on this CPU within an SLCPUResource grant, mapped onto the
- *   canonical SLeeLa opcode substrate.
- *
- * This file supplies the IBM ESA/390 register set and a decode() over a compact
- * instruction encoding (load/move/arithmetic/compare/branch/halt). It is a
- * functional model sufficient to run the CPU as a CPU and as a target for
- * further .sleela inputs, not a cycle-accurate emulator; per-arch bus/timing
- * detail remains in this folder's markdown docs.
- *
- * Family: cpu. Extends SLCPURuntime.
+/**
+ * SLeeLa IBM ESA/390 / System/390 CPU architecture profile.
+ * Profile-driven foundation; not a complete or cycle-accurate emulator.
  */
-#sleela 1.3
-class SLESAS390CPU extends SLCPURuntime {
-  static final int R_ZERO = 0;
-  static final int R_SP = 15;
-  static final int R_LINK = 14;
+class SLESAS390CPU extends SLCPU {
+    String machineModel = "";
+    String architectureLevel = "esa-390";
+    String addressingMode = "31-bit";
+    Boolean strictProfile = true;
+    Map<String, Integer> generalRegisters = new Map<String, Integer>();
+    Map<String, Boolean> features = new Map<String, Boolean>();
+    Integer conditionCode = 0;
+    Long instructionAddress = 0;
+    Map<String, Long> systemState = new Map<String, Long>();
 
-  int gpr(int i)            { return readReg(i); }
-  void setGpr(int i, int v) { writeReg(i, v); }
+    function configure(String selectedMachineModel,
+                       String selectedAddressingMode,
+                       Map<String, Boolean> selectedFeatures) {
+        machineModel = selectedMachineModel;
+        addressingMode = selectedAddressingMode;
+        features = selectedFeatures;
+        if (machineModel.trim().isEmpty()) {
+            throw new IllegalArgumentException("A named System/390 machine profile is required");
+        }
+        if (addressingMode != "24-bit" && addressingMode != "31-bit") {
+            throw new IllegalArgumentException("ESA/390 addressing mode must be 24-bit or 31-bit");
+        }
+        resetArchitecturalState();
+    }
 
-  void configure() {
-    setSpecClock(60);   // the model's rated clock (MHz); overclockable
-    bringUp("IBM ESA/390", 32, 31, 16, 262144);
-  }
+    function resetArchitecturalState() {
+        generalRegisters.clear();
+        for (int i = 0; i < 16; i++) {
+            generalRegisters.put("R" + i, 0);
+        }
+        conditionCode = 0;
+        instructionAddress = 0L;
+        systemState.clear();
+        // Initialize ESA/390 PSW and control state from the selected profile.
+    }
 
-  static final int I_LOADI = 1;   // dst <- imm
-  static final int I_MOVE  = 2;   // dst <- src
-  static final int I_LOAD  = 3;   // dst <- mem[imm]
-  static final int I_STORE = 4;   // mem[imm] <- dst
-  static final int I_ADD   = 5;   // dst <- dst + src
-  static final int I_SUB   = 6;   // dst <- dst - src
-  static final int I_MUL   = 7;   // dst <- dst * src
-  static final int I_AND   = 8;   // dst <- dst & src
-  static final int I_OR    = 9;   // dst <- dst | src
-  static final int I_CMP   = 10;  // flags <- dst - src
-  static final int I_JMP   = 11;  // pc <- imm
-  static final int I_JZ    = 12;  // if Z: pc <- imm
-  static final int I_HALT  = 13;
+    function supportsFeature(String feature) {
+        return features.getOrDefault(feature, false);
+    }
 
-  int opOf(int w)  { return (w / 65536) % 256; }
-  int dstOf(int w) { return (w / 256) % 256; }
-  int srcOf(int w) { return w % 256; }
+    function requireFeature(String feature, String opcode) {
+        if (!supportsFeature(feature)) {
+            log.warn("Unavailable ESA/390 feature " + feature + " for opcode " + opcode);
+            if (strictProfile) {
+                throw new IllegalStateException("Operation exception: unavailable feature " + feature);
+            }
+        }
+    }
 
-  void decode(int word) {
-    int opc = opOf(word);
-    int dst = dstOf(word);
-    int src = srcOf(word);
+    function setConditionCode(Integer value) {
+        if (value < 0 || value > 3) {
+            throw new IllegalArgumentException("Condition code must be in range 0..3");
+        }
+        conditionCode = value;
+    }
 
-    if (opc == I_LOADI) { setGpr(dst, src); setZN(gpr(dst)); return; }
-    if (opc == I_MOVE)  { setGpr(dst, gpr(src)); setZN(gpr(dst)); return; }
-    if (opc == I_LOAD)  { setGpr(dst, readMem(src)); setZN(gpr(dst)); return; }
-    if (opc == I_STORE) { writeMem(src, gpr(dst)); return; }
-    if (opc == I_ADD)   { setGpr(dst, aluOp(gpr(dst), gpr(src), alu.OP_ADD)); return; }
-    if (opc == I_SUB)   { setGpr(dst, aluOp(gpr(dst), gpr(src), alu.OP_SUB)); return; }
-    if (opc == I_MUL)   { setGpr(dst, aluOp(gpr(dst), gpr(src), alu.OP_MUL)); return; }
-    if (opc == I_AND)   { setGpr(dst, aluOp(gpr(dst), gpr(src), alu.OP_AND)); return; }
-    if (opc == I_OR)    { setGpr(dst, aluOp(gpr(dst), gpr(src), alu.OP_OR)); return; }
-    if (opc == I_CMP)   { aluOp(gpr(dst), gpr(src), alu.OP_SUB); return; }
-    if (opc == I_JMP)   { setEntryPoint(src); return; }
-    if (opc == I_JZ)    { if (zero() == 1) { setEntryPoint(src); } return; }
-    if (opc == I_HALT)  { halted = 1; return; }
-  }
+    function getAddressingMode() {
+        return addressingMode;
+    }
 
-  void setZN(int v) { flagZ = (v == 0) ? 1 : 0; flagN = (v < 0) ? 1 : 0; }
-  int encode(int opcode, int dst, int src) {
-    return (opcode % 256) * 65536 + (dst % 256) * 256 + (src % 256);
-  }
-
-  int reg(int i) { return gpr(i); }
-  int registers() { return registerCount(); }
+    function getMachineModel() {
+        return machineModel;
+    }
 }

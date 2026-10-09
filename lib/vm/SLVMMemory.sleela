@@ -1,87 +1,11 @@
 /*
  * lib/vm/SLVMMemory.sleela
  * SLeeLa Standard Library Definition.
- * Definition: Defines SLVMMemory — the flat linear address space of the
- *   secondary Sleela VM, distinct from the object heap (SLVMHeap). It backs raw
- *   loads/stores, string/array blobs, and the module code image over SLRAM, with
- *   word- and byte-granular access and simple bounds checking. The heap carves
- *   its arena from this space; native bindings may map device windows into it.
- *
- * Keeping a byte-addressable linear memory separate from the typed heap lets the
- * secondary VM model both managed objects and the raw memory a guest OS/CPU
- * model expects — the same split the native layer draws between SLRAM and the
- * managed runtime.
- *
- * Family: vm. Composes SLRAM; composed by SLVM.
+ * Definition: Defines the SLeeLa standard-library type SLVMMemory used within the vm library family.
  */
 #sleela 1.3
+// Unified SLeeLa standard-library front-end object.
+// Family: vm. Native VM/OS work crosses an explicit bridge.
 class SLVMMemory {
-  // Backing mode.
-  static final int MODE_SIMULATED = 0;   // SLRAM (bridge-backed, accounted)
-  static final int MODE_NATIVE    = 1;   // SLNativeMemory (real host RAM, direct)
-
-  int mode;
-  SLRAM store;             // used in MODE_SIMULATED
-  SLNativeMemory native;   // used in MODE_NATIVE
-  int capacityWords;
-  int reads;
-  int writes;
-
-  // Default (simulated) backing over SLRAM.
-  void configure(int words) {
-    mode = MODE_SIMULATED;
-    capacityWords = words;
-    store = new SLRAM(); store.configure(words, 32); store.allocate();
-    reads = 0; writes = 0;
-  }
-
-  // Native-RAM backing: the linear address space lives in REAL host memory, for
-  // running outside the simulated store (procedural layment). Same interface.
-  void configureNative(int words) {
-    mode = MODE_NATIVE;
-    capacityWords = words;
-    native = new SLNativeMemory(); native.configure(words, 32); native.allocate();
-    reads = 0; writes = 0;
-  }
-
-  boolean nativeBacked() { return mode == MODE_NATIVE; }
-
-  boolean inRange(int addr) { return addr >= 0 && addr < capacityWords; }
-
-  int readWord(int addr) {
-    if (!inRange(addr)) { return 0; }
-    reads = reads + 1;
-    if (mode == MODE_NATIVE) { return native.readWord(addr); }
-    return store.readWord(addr);
-  }
-  void writeWord(int addr, int value) {
-    if (!inRange(addr)) { return; }
-    writes = writes + 1;
-    if (mode == MODE_NATIVE) { native.writeWord(addr, value); return; }
-    store.writeWord(addr, value);
-  }
-
-  // Byte view packed four-per-word, little-endian within the word.
-  int readByte(int byteAddr) {
-    int w = byteAddr / 4; int b = byteAddr % 4;
-    int word = readWord(w);
-    return (word >> (b * 8)) & 0xFF;
-  }
-  void writeByte(int byteAddr, int value) {
-    int w = byteAddr / 4; int b = byteAddr % 4;
-    int word = readWord(w);
-    int shift = b * 8;
-    int cleared = word & ~(0xFF << shift);
-    writeWord(w, cleared | ((value & 0xFF) << shift));
-  }
-
-  // Copy a block of words (memmove-style, forward).
-  void copy(int dst, int src, int words) {
-    int i = 0;
-    while (i < words) { writeWord(dst + i, readWord(src + i)); i = i + 1; }
-  }
-
-  int capacity()  { return capacityWords; }
-  int readCount() { return reads; }
-  int writeCount(){ return writes; }
+  String name; int state; int count; void configure(String n){name=n;} void start(){state=1;} void stop(){state=0;} void register(){count=count+1;} boolean active(){return state==1;}
 }

@@ -18,8 +18,8 @@ The installer is a three-platform, user-local deployment layer for Linux, macOS,
 10. Back up an existing user-local installation.
 11. Copy the staged `lib` and optional `bin` trees.
 12. Write `config/startup.conf`.
-13. Apply user-level `SLEELA_HOME` and `PATH` configuration (opt-in).
-14. Report the installation, `SLEELA_HOME`, and configuration locations.
+13. Apply only user-level PATH configuration.
+14. Report the installation and configuration locations.
 
 ## Platform entry points
 
@@ -40,50 +40,7 @@ The installer is deliberately user-local. It does not require sudo/root for its 
 
 A build failure stops deployment before the staged result is copied. Existing installations are copied to a timestamped user-local backup before replacement.
 
-PATH changes are user-level only.
-
-- **Linux / macOS:** the installer writes an environment snippet at
-  `$SLEELA_INSTALL_ROOT/profile/sleela-env.sh` that sets `SLEELA_HOME`, sets
-  `SLEELA` to `$SLEELA_HOME/bin/sleela` (the toolchain executable), and prepends
-  `$SLEELA_HOME/bin` to `PATH`, then adds one guarded `source` line to each shell
-  startup file present (`~/.bashrc`, `~/.bash_profile`, `~/.zshrc`, `~/.profile`)
-  so it applies to both bash (Linux default) and zsh (macOS default). The hook is
-  idempotent — re-running the installer does not duplicate it — and `source`-ing
-  the snippet makes `sleela` available in the current shell without reopening it.
-- **Windows 10+:** the installer sets a user-level `SLEELA_HOME`, sets `SLEELA`
-  to `%SLEELA_HOME%\bin\sleela.exe`, and prepends `%SLEELA_HOME%\bin` to the
-  current user's `Path` (never the machine-wide PATH), and reflects all into the
-  running session so new terminals inherit them automatically.
-
-### The `sleela` executable
-
-The toolchain binary (`sleela` / `sleela.exe`) is produced by the native `impl`
-build (`make all`, which runs `make -C impl all`) and staged under
-`impl/build/SLeeLa/bin`. The installer copies it into `$SLEELA_HOME/bin`, so a
-successful install puts `sleela` on `PATH` **and** sets the `SLEELA` variable
-that downstream projects look for (the "`set SLEELA=/path/to/sleela`"
-convention). If the native build did not complete, the installer warns that
-`sleela` is missing — run `make -C impl all` and re-install.
-
-### SHA-256 verification (running `sleela` outside this repo)
-
-`sleela`/`sleelvac` runs a fail-closed SHA-256 gate before compiling or
-executing anything: it re-hashes a set of trusted runtime sources against a
-manifest and refuses to run on any mismatch. Inside a repo checkout the gate
-finds its assets by walking up to the repo root; for an **installed** toolchain
-run from an unrelated project (e.g. another game or app), it falls back to
-`SLEELA_HOME`. The installer therefore stages three things into `$SLEELA_HOME`:
-
-- `tools/verify-before-execution.py` — the verifier,
-- `security/sha256-manifest.json` — the trusted manifest, and
-- every source the manifest lists (under `impl/`, `runtime/`, etc.), so the
-  installed root can be re-verified in place,
-
-and sets `SLEELA_SHA256_MANIFEST` to the installed manifest in the environment
-snippet. This is why a project like Airport Tycoon can run `sleela` and pass
-verification without being inside the SLeeLa repo. The gate is **not** weakened —
-it still verifies every file against the trusted manifest; the installed
-toolchain simply carries its own trusted copy.
+PATH changes are user-level only. On Linux/macOS the installer writes a small profile snippet; on Windows it updates the current user's PATH and never the machine-wide PATH.
 
 ## Startup settings
 
@@ -102,21 +59,12 @@ These settings describe startup policy; they do not by themselves grant network 
 ## Commands
 
 ```text
-make install                 # from the repo root: build, deploy, set SLEELA/PATH
-make -C install install       # same, invoked directly
-make -C install install-noninteractive   # accept all defaults, no prompts
-make -C install install-check # verify installer entry points only (does NOT install)
-./install/quick-safe-install.sh          # Linux installer (direct)
-./install/quick-safe-install-macos.sh    # macOS installer (direct)
-install\quick-safe-install.cmd           # Windows 10+ installer (direct)
+make install-help
+make install-check
+./install/quick-safe-install.sh
+./install/quick-safe-install-macos.sh
+install\quick-safe-install.cmd
 ```
-
-> **`make install` deploys; `make -C install all` / `install-check` only
-> verifies.** The default target of `install/Makefile` is `install-check` (a
-> safe, side-effect-free check), so running `make -C install all` reports that
-> the installer is present but does **not** install anything. Use
-> `make install` (repo root) or `make -C install install` to actually build,
-> deploy, and set `SLEELA`/`PATH`.
 
 The JetBrains source acquisition helper remains separate and is not downloaded or built by this installer.
 

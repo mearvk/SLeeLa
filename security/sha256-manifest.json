@@ -99,11 +99,11 @@
     },
     {
       "path": "impl/core/sleela_core.c",
-      "sha256": "b6de544352aa9988319120f35dd64a1d83cb384e016591d1eaaca60411cd20ea"
+      "sha256": "7679cae1729990e89175f32f67bf7d879b3e60a3efd1a1fbef195729e6515fb9"
     },
     {
       "path": "impl/core/sleela_core.h",
-      "sha256": "5ca7ce61b54a3fd9411ccf2e98852f16ef09c26a1c869b34529e676d45c42b2f"
+      "sha256": "2d38e8b079ff5b248963f85794c806b4fcd5e1e9c4fbf48543da6026fa97a644"
     },
     {
       "path": "impl/core/sleela_design_activity.c",
@@ -319,7 +319,7 @@
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "36ac3060aa64da857c1bbc980d44b4788f528b2be725a02b0a84af9d9cbe717b"
+      "sha256": "5428afd9a09944fafe8765c75f2f0c02237030b25560ef27288b59ec43124e98"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -327,7 +327,7 @@
     },
     {
       "path": "impl/frontend/driver.cpp",
-      "sha256": "8017d40876079ce14cee818588c3eeb916452d1c4cbd9e468f0232131066c35e"
+      "sha256": "a6ff26fbe7e3163970612171801e16a7ef2f8f29c62ec3ff1e36820190fc7ac5"
     },
     {
       "path": "impl/frontend/dynamite.cpp",
@@ -407,7 +407,7 @@
     },
     {
       "path": "impl/frontend/semantic.cpp",
-      "sha256": "ca1720a277de6574d769498a3162b16f597b579ac0e63a382ce3650c0f45cc07"
+      "sha256": "a60988c2a17a458a5a68811017ec68aa7275b5face199cecf26b81a24ec498ea"
     },
     {
       "path": "impl/frontend/semantic.h",
@@ -575,7 +575,7 @@
     },
     {
       "path": "impl/subjects/chemistry/chemistry_api.cpp",
-      "sha256": "49591965cc96b5a4e2a07f046c60c659a4e3f25bb0e4c4e2c8187fee7be56dff"
+      "sha256": "c6dbd036c5ed97ae41db6381c62b5ea2488b2e32486db6424160fb1343449c67"
     },
     {
       "path": "impl/subjects/chemistry/chemistry_api.h",
@@ -607,7 +607,7 @@
     },
     {
       "path": "impl/subjects/math/math_native.cpp",
-      "sha256": "046d373ea030baf6e006f061def5dbfd5b8aada876aa251ed03d9d93693461c1"
+      "sha256": "057e4c40f18e80d8500fd281b2cc0684af96e18dc223b7e55e3ca0abeee1f612"
     },
     {
       "path": "impl/subjects/native/native_add.h",

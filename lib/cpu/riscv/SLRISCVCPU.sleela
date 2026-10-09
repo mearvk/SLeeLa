@@ -1,88 +1,41 @@
-/*
- * lib/cpu/riscv/SLRISCVCPU.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLRISCVCPU — a runnable model of RV32I: 32 integer
- *   registers (x0 hardwired to zero), a program counter, and a small CSR file.
- *   It extends SLCPURuntime and adds the RISC-V register conventions, an
- *   immediate generator, a decoder for a compact R/I/B/J encoding, and the
- *   trap / system-instruction hooks the skeleton named.
- *
- * Instruction model (op in bits 24..31, rd in 16..23, rs1 in 8..15, rs2/imm in
- * 0..7): ADD / SUB / ADDI / LW / SW / BEQ / BNE / JAL / ECALL(trap+halt) / NOP.
- * x0 reads as zero and discards writes, matching the architecture. Compact
- * teaching encoding, enough to run the CPU and host further .sleela inputs.
- *
- * Family: cpu. Extends SLCPURuntime.
- */
-#sleela 1.3
-class SLRISCVCPU extends SLCPURuntime {
-  static final int ADD  = 1;
-  static final int SUB  = 2;
-  static final int ADDI = 3;
-  static final int LW   = 4;
-  static final int SW   = 5;
-  static final int BEQ  = 6;
-  static final int BNE  = 7;
-  static final int JAL  = 8;
-  static final int ECALL = 9;
+# SLRISCVCPU
 
-  // A few CSRs modelled as named registers above the GPR file.
-  static final int CSR_MSTATUS = 32;
-  static final int CSR_MCAUSE  = 33;
-  static final int CSR_MEPC    = 34;
+class SLRISCVCPU {
+  xlen;
+  isaExtensions;
+  privilegeProfile;
+  clock;
+  registers;
+  programCounter;
+  decoder;
+  immediateGenerator;
+  integerUnit;
+  branchUnit;
+  multiplyDivideUnit;
+  atomicUnit;
+  floatingPointUnit;
+  vectorUnit;
+  loadStoreUnit;
+  csrFile;
+  pipeline;
+  mmu;
+  tlb;
+  cache;
+  interruptController;
+  busArbiter;
+  ioBus;
+  couplers;
 
-  int xlen;             // register width (32 for RV32)
-  String isaExtensions; // e.g. "IMAFD"
-  int privilege;        // 0 U, 1 S, 3 M
-
-  void configure(String extensions) {
-    xlen = 32;
-    setSpecClock(100);   // RISC-V RV32I reference at 100 MHz; overclockable
-    bringUp("RISC-V RV32I", 32, 32, 35, 262144);
-    isaExtensions = extensions; privilege = 3;
-  }
-
-  int x(int i)            { if (i == 0) { return 0; } return readReg(i); }
-  void setX(int i, int v) { if (i == 0) { return; } writeReg(i, v); }
-
-  int opOf(int w)   { return (w / 16777216) % 256; }
-  int rdOf(int w)   { return (w / 65536) % 256; }
-  int rs1Of(int w)  { return (w / 256) % 256; }
-  int rs2ImmOf(int w){ return w % 256; }
-
-  // Immediate generator: sign-extend the compact 8-bit immediate field.
-  int immediate(int w) { int v = rs2ImmOf(w); if (v >= 128) { return v - 256; } return v; }
-
-  void decode(int word) {
-    int opcode = opOf(word);
-    int rd = rdOf(word); int rs1 = rs1Of(word); int rs2 = rs2ImmOf(word);
-
-    if (opcode == ADD)  { setX(rd, aluOp(x(rs1), x(rs2), alu.OP_ADD)); return; }
-    if (opcode == SUB)  { setX(rd, aluOp(x(rs1), x(rs2), alu.OP_SUB)); return; }
-    if (opcode == ADDI) { setX(rd, aluOp(x(rs1), immediate(word), alu.OP_ADD)); return; }
-    if (opcode == LW)   { setX(rd, readMem(x(rs1) + immediate(word))); return; }
-    if (opcode == SW)   { writeMem(x(rs1) + immediate(word), x(rd)); return; }
-    if (opcode == BEQ)  { if (x(rd) == x(rs1)) { setEntryPoint(programCounter() + immediate(word)); } return; }
-    if (opcode == BNE)  { if (x(rd) != x(rs1)) { setEntryPoint(programCounter() + immediate(word)); } return; }
-    if (opcode == JAL)  { setX(rd, programCounter()); setEntryPoint(rs2 + rs1 * 256); return; }
-    if (opcode == ECALL){ systemInstruction(); return; }
-  }
-
-  // ECALL: record the trap in CSRs and halt (environment call to the host/VM).
-  void systemInstruction() { trap(11); halted = 1; }   // mcause 11 = ecall from M
-  void trap(int cause) {
-    writeReg(CSR_MCAUSE, cause);
-    writeReg(CSR_MEPC, programCounter());
-  }
-  void interrupt(int vector) { trap(vector); }
-
-  int encodeR(int op, int rd, int rs1, int rs2) {
-    return (op % 256) * 16777216 + (rd % 256) * 65536 + (rs1 % 256) * 256 + (rs2 % 256);
-  }
-  int encodeI(int op, int rd, int rs1, int imm) { return encodeR(op, rd, rs1, imm); }
-
-  int reg(int i)   { return x(i); }
-  int csr(int i)   { return readReg(i); }
-  int registerWidth(){ return xlen; }
-  String extensions(){ return isaExtensions; }
+  reset();
+  fetch();
+  decode();
+  execute();
+  memoryTranslate();
+  memoryCycle();
+  branch();
+  systemInstruction();
+  trap();
+  interrupt();
+  retire();
+  validate();
 }

@@ -1,2 +1,0 @@
-# SLInstructionFetch
-class SLInstructionFetch { programCounter; instructionCache; prefetch; fetchWidth; fetch(address); }

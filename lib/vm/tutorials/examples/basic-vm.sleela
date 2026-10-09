@@ -10,38 +10,3 @@ class BasicVMTutorialExample {
     }
     function describe() { output.validate(); }
 }
-
-// SLeeLa VM tutorial example: drive the secondary VM runtime end to end.
-// Builds an SLVM, emits a canonical-opcode program (2 + 3), runs it on the
-// native SLSleelaVM substrate through the secondary VM, and reads the result.
-class SecondaryVMRuntimeExample {
-    SLVM vm;
-    int result;
-
-    void main() {
-        vm = new SLVM();
-        vm.configure("tutorial");
-        vm.boot(65536, 65536);
-
-        SLVMModule m = vm.loader().beginModule("tutorial", 4096, 4096, 1024);
-        m.emit(1, 2);    // OP_CONST 2
-        m.emit(1, 3);    // OP_CONST 3
-        m.emit(8, 0);    // OP_ADD
-        m.emit(27, 0);   // OP_PRINT
-        m.emit(48, 0);   // OP_HALT
-
-        // One class with a 5-opcode main() method starting at index 0.
-        SLVMClass app = new SLVMClass();
-        app.configure(0, "App", -1, 0);
-        SLVMMethod entry = new SLVMMethod();
-        entry.configure("main", "()V", 0, 5, 0, 0, true, false);
-        app.addMethod(entry);
-        vm.loader().defineClass(app);
-        vm.loader().finishModule(0, "main");
-
-        vm.install(m);
-        vm.run(1000);
-        result = vm.engine().printed();   // 5
-        print("secondary-vm result = " + result);
-    }
-}

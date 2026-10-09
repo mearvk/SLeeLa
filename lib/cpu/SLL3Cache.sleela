@@ -1,2 +1,0 @@
-# SLL3Cache
-class SLL3Cache { capacityBytes; lineBytes; associativity; latencyCycles; policy; coherenceDomain; }

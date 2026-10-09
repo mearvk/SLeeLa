@@ -1,95 +1,11 @@
 /*
  * lib/vm/SLVMHeap.sleela
  * SLeeLa Standard Library Definition.
- * Definition: Defines SLVMHeap — the object store of the secondary Sleela VM.
- *   It hands out stable integer handles and lays every object out over SLRAM as
- *   a small header (classId, fieldCount, mark) followed by its field slots. A
- *   value never embeds another object; it embeds a handle, so the GC can relocate
- *   or reclaim without the SLeeLa surface needing pointers.
- *
- * Allocation is a bump pointer over an SLRAM arena (unbounded tape => the VM can
- * express arbitrarily large object graphs). mark()/sweepReset() give the native
- * tri-colour collector (GC.md) a surface to drive; here they maintain the mark
- * bit so a Sleela-sourced VM can reason about liveness without crossing to C.
- *
- * Family: vm. Composes SLRAM; composed by SLVM.
+ * Definition: Defines the SLeeLa standard-library type SLVMHeap used within the vm library family.
  */
 #sleela 1.3
+// Unified SLeeLa standard-library front-end object.
+// Family: vm. Native VM/OS work crosses an explicit bridge.
 class SLVMHeap {
-  // Per-object header layout (words), then fieldCount field slots follow.
-  static final int H_CLASS  = 0;   // classId of this object
-  static final int H_FIELDS = 1;   // number of field slots
-  static final int H_MARK   = 2;   // GC mark bit (0 = white, 1 = reachable)
-  static final int HEADER   = 3;   // header size in words
-  // Each field slot is a packed SLVMValue: 2 words (tag, payload).
-  static final int SLOT     = 2;
-
-  SLRAM arena;
-  int capacityWords;
-  int next;        // bump pointer (word index of next free cell)
-  int liveObjects;
-  int allocated;   // total objects ever allocated
-
-  void configure(int words) {
-    capacityWords = words;
-    arena = new SLRAM(); arena.configure(words, 32); arena.allocate();
-    next = 0; liveObjects = 0; allocated = 0;
-  }
-
-  // Allocate an object of classId with fieldCount fields; returns its handle
-  // (the word index of its header). All fields start as NULL.
-  int allocate(int classId, int fieldCount) {
-    int size = HEADER + (fieldCount * SLOT);
-    if (next + size > capacityWords) { return -1; }   // out of heap; GC must run
-    int handle = next;
-    arena.writeWord(handle + H_CLASS, classId);
-    arena.writeWord(handle + H_FIELDS, fieldCount);
-    arena.writeWord(handle + H_MARK, 0);
-    int i = 0;
-    while (i < fieldCount) {
-      int slot = handle + HEADER + (i * SLOT);
-      arena.writeWord(slot, 0);      // TAG_NULL
-      arena.writeWord(slot + 1, 0);  // payload 0
-      i = i + 1;
-    }
-    next = next + size;
-    liveObjects = liveObjects + 1;
-    allocated = allocated + 1;
-    return handle;
-  }
-
-  int classOf(int handle)   { return arena.readWord(handle + H_CLASS); }
-  int fieldCount(int handle){ return arena.readWord(handle + H_FIELDS); }
-
-  // Read field i of an object into the provided SLVMValue carrier.
-  void getField(int handle, int index, SLVMValue out) {
-    int slot = handle + HEADER + (index * SLOT);
-    out.unpack(arena.readWord(slot), arena.readWord(slot + 1));
-  }
-
-  // Write a value into field i of an object.
-  void setField(int handle, int index, SLVMValue v) {
-    int slot = handle + HEADER + (index * SLOT);
-    arena.writeWord(slot, v.packedTag());
-    arena.writeWord(slot + 1, v.packedPayload());
-  }
-
-  // --- GC surface (drives / mirrors the native collector) ---
-  void mark(int handle)    { if (handle >= 0) { arena.writeWord(handle + H_MARK, 1); } }
-  boolean marked(int handle){ return arena.readWord(handle + H_MARK) == 1; }
-  void clearMarks() {
-    int i = 0;
-    while (i < next) {
-      int fc = arena.readWord(i + H_FIELDS);
-      arena.writeWord(i + H_MARK, 0);
-      i = i + HEADER + (fc * SLOT);
-    }
-  }
-
-  int bytesUsed()   { return next * 4; }
-  int wordsUsed()   { return next; }
-  int capacity()    { return capacityWords; }
-  int objectCount() { return liveObjects; }
-  int totalAllocated() { return allocated; }
-  boolean full(int fieldCount) { return next + HEADER + (fieldCount * SLOT) > capacityWords; }
+  String name; int state; int count; void configure(String n){name=n;} void start(){state=1;} void stop(){state=0;} void register(){count=count+1;} boolean active(){return state==1;}
 }

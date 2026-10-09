@@ -1,3 +1,9 @@
+## 0.3.27-dev Development Increment
+
+This increment advances class-instance semantics with per-object instance fields, receiver-aware method dispatch, and default field initialization. It also corrects dispatch for synthesized chemistry helpers and improves cross-platform build staging and vendored dependency extraction. The release remains in development pending the full Linux, macOS, Windows, and regression CI results.
+
+**SLeeLa — MEARVK LLC — 2026**
+
 # SLeeLa Version
 
 ## Current Development Version

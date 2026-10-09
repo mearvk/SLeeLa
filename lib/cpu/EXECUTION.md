@@ -234,35 +234,3 @@ over a real parent/child process tree. The remaining gap to booting *real* Linux
 is unchanged and large — hardware-virtualization-grade vCPU semantics, a full
 virtio/APIC/ACPI device model, real page-table formats, and an ELF/bzImage
 loader — and is deliberately out of scope for this teaching model.
-
-## 5. The runnable executor fleet and the Secondary-VM stack
-
-Alongside the register-ISA `SLControlUnit` path above, `lib/cpu` now has a
-second, uniform execution path: a **runnable CPU fleet** where every
-architecture folder carries an `SL<ARCH>CPU` that `extends SLCPURuntime`.
-
-- **Executor base (`SLCPURuntime`).** Supplies register storage, a memory
-  interface, an `SLALU`, a fetch–decode–execute loop, a clock policy, and a
-  resource-aware workload path. A concrete CPU only declares its registers,
-  sets its spec clock, and implements `decode()`.
-- **Resource-assigned workloads.** `cpu.runWorkload(job)` admits an `SLWorkload`
-  against its `SLCPUResource` grant, compiles the C/C++/Java/Sleela source
-  (`SLCompilerDriver`), maps it onto the canonical opcode substrate
-  (`SLOpcodeMap`), and runs it within the instruction budget. The same program
-  runs identically across languages and architectures — the 1:1 Turing-effect
-  guarantee from §4, now exercised per CPU.
-- **Spec clock + overclocking.** Each model runs at its rated clock
-  (`setSpecClock`) and can be pushed higher (`overclock`), bounded by a
-  stability ceiling (`SLClockPolicy`).
-- **Composable hardware.** The `components/` catalog adds selectable RAM,
-  storage, optical, and bus parts (`SLExecutorBuild`).
-- **Nesting under the Secondary VM.** `SLVM` (lib/vm) hosts a CPU as a guest
-  nested on its substrate; `SleelaVMCreator` builds and boots the VM and runs a
-  program through the hosted CPU — the full Creator → Secondary VM → CPU →
-  program stack. Optional **direct DMA**, **native GPU access**, and
-  **native-RAM residency** are opt-in capabilities along this path.
-
-Reference: [`CPU-ON-SECONDARY-VM.md`](CPU-ON-SECONDARY-VM.md) (the stack and the
-substrate-injection seam), [`PERFECT.CONSEQUENCE.md`](PERFECT.CONSEQUENCE.md)
-(native vs native-VM vs Secondary-VM speeds and feasibility), and
-[`components/README.md`](components/README.md) (parts and overclocking).

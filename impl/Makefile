@@ -44,7 +44,8 @@ CPPFLAGS += -Ifrontend $(SUBJECT_INCLUDES) -I../bash
 LDFLAGS ?= $(THREADFLAG)
 LIBS ?= $(PLATFORM_LIBS)
 BUILD := build
-STAGE := $(BUILD)/SLeeLa
+PYTHON ?= python3
+STAGE := $(BUILD)/sleela-package
 STAGE_BIN := $(STAGE)/bin
 STAGE_CONFIG := $(STAGE)/Config
 STAGE_OPTIONS := $(STAGE)/Options
@@ -198,8 +199,8 @@ stage: verify-security $(SLEELA_BIN) $(NORDSHRIFT_BIN)
 	@cp ../sleela.conf.example $(STAGE_CONFIG)/sleela.conf
 	@cp ../config/vm.conf $(STAGE_CONFIG)/vm.conf
 	@cp ../config/config-location.conf $(STAGE_CONFIG)/config-location.conf
-	@cp ../markdown/MEMORY_MANAGER.md $(STAGE_DOCS)/MEMORY_MANAGER.md 2>/dev/null || cp ../MEMORY_MANAGER.md $(STAGE_DOCS)/MEMORY_MANAGER.md 2>/dev/null || true
-	@cp ../markdown/PURPOSE.md $(STAGE_DOCS)/PURPOSE.md 2>/dev/null || cp ../PURPOSE.md $(STAGE_DOCS)/PURPOSE.md 2>/dev/null || true
+	@cp ../MEMORY_MANAGER.md $(STAGE_DOCS)/MEMORY_MANAGER.md 2>/dev/null || true
+	@cp ../PURPOSE.md $(STAGE_DOCS)/PURPOSE.md 2>/dev/null || true
 	@printf '%s\n' '# SLeeLa Build Options' '' 'The staged runtime uses the defaults in Config/sleela.conf.' '' 'Available command-line memory options:' '' '  --memory-manager       Use the default 2 GiB ceiling' '  --memory-manager=SIZE  Set 256M through 2G' '  --mm=SIZE              Short form of --memory-manager=SIZE' > $(STAGE_OPTIONS)/OPTIONS.md
 	@printf '%s\n' '# SLeeLa Runtime Layout' '' 'bin/       Executables' 'Config/    Consolidated default configuration (including VM generation)' 'Options/   Runtime/build option reference' 'lib/       Reserved for runtime libraries' 'docs/      Runtime documentation' > $(STAGE)/README.md
 	@printf '%s\n' '# SLeeLa VM Selection' '' 'Config/vm.conf selects VM generation 1-11.' 'Selection precedence: CLI, SLEELA_VM_VERSION, Config/vm.conf, compiled default.' > $(STAGE_DOCS)/VM-SELECTION.md
@@ -431,7 +432,7 @@ $(BUILD)/http2_server.o: ../http-servers/2/http2/http2_server.cpp ../http-server
 $(NGHTTP2_DIR)/.unpacked: $(NGHTTP2_ZIP) | $(BUILD)
 	@echo "=== unpacking vendored nghttp2 $(NGHTTP2_VERSION) ==="
 	@rm -rf $(NGHTTP2_DIR)
-	@cd $(BUILD) && unzip -q ../$(NGHTTP2_ZIP)
+	@cd $(BUILD) && $(PYTHON) -c "import zipfile; zipfile.ZipFile('../$(NGHTTP2_ZIP)').extractall('.')"
 	@touch $@
 
 # Generate the version header from the shipped autotools/cmake template.
@@ -464,7 +465,7 @@ $(BUILD)/driver.o: frontend/driver.cpp frontend/compiler.h frontend/artifact.h s
 $(BUILD):
 	mkdir -p $(BUILD)
 
-test: verify-security test-java-runtime test-java-authorship test-system-monitor test-sleela test-design-activity test-regex test-version test-nordshrift test-nordshrift-compiler test-nordshrift-semantic test-nordshrift-e2e test-nordshrift-compat test-runtime-artifact-abi test-threads test-thread-platform test-network test-network-platform test-synchro test-munction test-bestof test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-math test-physics test-economics test-inference test-chemistry test-financial test-astrophysics test-sociology test-runtime test-memmgr
+test: verify-security test-java-runtime test-java-authorship test-system-monitor test-sleela test-class-dispatch test-design-activity test-regex test-version test-nordshrift test-nordshrift-compiler test-nordshrift-semantic test-nordshrift-e2e test-nordshrift-compat test-runtime-artifact-abi test-threads test-thread-platform test-network test-network-platform test-synchro test-munction test-bestof test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-math test-physics test-economics test-inference test-chemistry test-financial test-astrophysics test-sociology test-runtime test-memmgr
 test-thread-platform: $(THREAD_PLATFORM_SMOKE)
 	@echo "=== OS-aware threading backend ==="; SLEELA_THREAD_PLATFORM=auto $(THREAD_PLATFORM_SMOKE)
 test-threads: $(THREAD_SMOKE)
@@ -474,7 +475,10 @@ test-java-runtime: $(SLEELA_BIN)
 	@cd $(CURDIR)/.. && bash test-suites/java-runtime-bridge.sh
 
 test-sleela: $(SLEELA_BIN)
-	@export SLEELA_SHEET=$(CURDIR)/../SHEET.sheet; export SLEELA_SHA256_MANIFEST=$${SLEELA_SHA256_MANIFEST:-$(CURDIR)/../security/sha256-manifest.json}; cd $(CURDIR)/.. && for f in impl/examples/*.sleela; do echo "=== $$f ==="; $(CURDIR)/$(SLEELA_BIN) run $$f || exit 1; done
+	@export SLEELA_SHEET=$(CURDIR)/../SHEET.sheet; export SLEELA_SHA256_MANIFEST=${SLEELA_SHA256_MANIFEST:-$(CURDIR)/../security/sha256-manifest.json}; cd $(CURDIR)/.. && for f in impl/examples/*.sleela; do echo "=== $f ==="; $(CURDIR)/$(SLEELA_BIN) run $f || exit 1; done
+
+test-class-dispatch: $(SLEELA_BIN)
+	@cd $(CURDIR)/.. && bash impl/tests/class_dispatch/run_class_dispatch_tests.sh $(CURDIR)/$(SLEELA_BIN)
 test-version: $(SLEELA_BIN)
 	@export SLEELA_SHEET=$(CURDIR)/../SHEET.sheet; export SLEELA_SHA256_MANIFEST=$${SLEELA_SHA256_MANIFEST:-$(CURDIR)/../security/sha256-manifest.json}; cd $(CURDIR)/.. && bash impl/tests/version/run_version_tests.sh $(CURDIR)/$(SLEELA_BIN)
 test-nordshrift: $(NORDSHRIFT_BIN)

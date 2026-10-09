@@ -69,22 +69,27 @@ class Analyzer{
    for(const auto&x:s.fields){if(f.count(x.name))err("duplicate field '"+x.name+"' in struct '"+s.name+"'");
     Type t=tn(x.type);if(t.kind==Kind::Error)err("unknown type '"+x.type+"' for field '"+x.name+"'");if(t.kind==Kind::Void)err("field '"+x.name+"' cannot be void");f[x.name]=t;}fields[s.name]=f;}
   for(const auto&c:p.classes)classNames.insert(c.name);
-  for(const auto&c:p.classes){for(const auto&f:c.fields){if(globals.count(f.name))err("duplicate global field '"+f.name+"'");
-    Type t=tn(f.type);if(t.kind==Kind::Error)err("unknown type '"+f.type+"' for field '"+f.name+"'");if(t.kind==Kind::Void)err("field '"+f.name+"' cannot be void");globals[f.name]=t;owners[f.name]=c.name;}
-   for(const auto&m:c.methods){if(methods.count(m.name))err("duplicate method '"+m.name+"'");
+  for(const auto&c:p.classes){
+   std::map<std::string,Type> instanceFields;
+   for(const auto&f:c.fields){Type t=tn(f.type);if(t.kind==Kind::Error)err("unknown type '"+f.type+"' for field '"+f.name+"'");if(t.kind==Kind::Void)err("field '"+f.name+"' cannot be void");
+    if(f.isStatic){const std::string key=c.name+"::"+f.name;if(globals.count(key))err("duplicate static field '"+key+"'");globals[key]=t;owners[key]=c.name;}
+    else {if(instanceFields.count(f.name))err("duplicate field '"+f.name+"' in class '"+c.name+"'");instanceFields[f.name]=t;}}
+   fields[c.name]=instanceFields;
+   for(const auto&m:c.methods){const std::string key=c.name+"::"+m.name;if(methods.count(key))err("duplicate method '"+key+"'");
     if(!known(m.retType))err("unknown return type '"+m.retType+"' for method '"+m.name+"'");
-    if(m.isProtected&&!m.isStatic){err("protected method '"+m.name+"' must also be static");}
-    methods[m.name]={&m,c.name};}}
+    if(m.isProtected&&!m.isStatic)err("protected method '"+m.name+"' must also be static");
+    methods[key]={&m,c.name};if(m.name=="main")methods["main"]={&m,c.name};}
+  }
  }
  void push(){scopes.push_back({});} void pop(){scopes.pop_back();}
  bool declare(const std::string&n,const Type&t){auto&v=scopes.back().vars;if(v.count(n)){err("duplicate local variable '"+n+"'");return false;}v[n]=t;return true;}
- Type lookup(const std::string&n)const{for(auto i=scopes.rbegin();i!=scopes.rend();++i){auto x=i->vars.find(n);if(x!=i->vars.end())return x->second;}auto g=globals.find(n);if(g!=globals.end())return g->second;if(n=="next")return{Kind::Int,{}};return{Kind::Error,n};}
+ Type lookup(const std::string&n)const{for(auto i=scopes.rbegin();i!=scopes.rend();++i){auto x=i->vars.find(n);if(x!=i->vars.end())return x->second;}auto cf=fields.find(cls);if(cf!=fields.end()){auto x=cf->second.find(n);if(x!=cf->second.end())return x->second;}auto g=globals.find(cls+"::"+n);if(g!=globals.end())return g->second;g=globals.find(n);if(g!=globals.end())return g->second;if(n=="next")return{Kind::Int,{}};return{Kind::Error,n};}
  void declarations(){
   if(!methods.count("main"))err("no 'main' method found");
   for(const auto&c:p.classes){for(const auto&f:c.fields){if(f.isProtected&&!f.isStatic)err("protected field '"+f.name+"' must also be static");}
    for(const auto&m:c.methods){std::set<std::string> seen;for(const auto&x:m.params){if(!known(x.type))err("unknown parameter type '"+x.type+"'");if(x.type=="void")err("parameter '"+x.name+"' cannot be void");if(!seen.insert(x.name).second)err("duplicate parameter '"+x.name+"' in method '"+m.name+"'");}}}
  }
- void method(const ClassDecl&owner,const Method&m){cur=&m;cls=owner.name;scopes.clear();push();for(const auto&x:m.params)declare(x.name,tn(x.type));block(*m.body);if(m.name=="main"&&m.retType!="void")err("main must return void");pop();}
+ void method(const ClassDecl&owner,const Method&m){cur=&m;cls=owner.name;scopes.clear();push();if(!m.isStatic)declare("this",Type{Kind::Struct,owner.name,{}});for(const auto&x:m.params)declare(x.name,tn(x.type));block(*m.body);if(m.name=="main"&&m.retType!="void")err("main must return void");pop();}
  void block(const Block&b){for(const auto&s:b.stmts)stmt(*s);}
  void stmt(const Stmt&s){
   if(auto b=dynamic_cast<const Block*>(&s)){push();block(*b);pop();return;}
@@ -136,7 +141,9 @@ class Analyzer{
     for(const auto&a:n->args){Type s=expr(*a);if(s.kind!=Kind::Int&&s.kind!=Kind::Unknown)err("array size must be int, got "+nameOf(s));}
     return typeOf(n->typeName);
    }
-   if(!structs.count(n->typeName)){err("new of unknown struct '"+n->typeName+"'");return{Kind::Error,{}};}return{Kind::Struct,n->typeName};}
+   if(!structs.count(n->typeName)&&!classNames.count(n->typeName)){err("new of unknown class or struct '"+n->typeName+"'");return{Kind::Error,{}};}
+   if(!n->args.empty())err("constructors with arguments are not yet supported for '"+n->typeName+"'");
+   return{Kind::Struct,n->typeName};}
   if(auto m=dynamic_cast<const MemberAccess*>(&e)){if(m->field=="next"&&isNextChain(*m->base))return{Kind::Int,{}};return member(*m->base,m->field);}
   if(auto u=dynamic_cast<const Unary*>(&e)){Type t=expr(*u->operand);if(u->op=="-"&&!numeric(t)&&t.kind!=Kind::Unknown)err("unary '-' requires numeric operand, got "+nameOf(t));if(u->op=="!"&&t.kind!=Kind::Bool&&t.kind!=Kind::Unknown)err("unary '!' requires bool operand, got "+nameOf(t));return t;}
   if(auto b=dynamic_cast<const Binary*>(&e)){return binary(*b);}
@@ -153,7 +160,7 @@ class Analyzer{
   if(auto io=dynamic_cast<const InstanceOfExpr*>(&e)){expr(*io->value);return{Kind::Bool,{}};}
   if(auto ca=dynamic_cast<const CastExpr*>(&e)){expr(*ca->operand);return tn(ca->typeName);}
   if(dynamic_cast<const SuperExpr*>(&e))return{Kind::Unknown,{}};
-  if(dynamic_cast<const ThisExpr*>(&e))return{Kind::Unknown,{}};
+  if(dynamic_cast<const ThisExpr*>(&e)){if(cls.empty()||!cur||cur->isStatic){err("'this' is only available in an instance method");return{Kind::Error,{}};}return{Kind::Struct,cls,{}};}
   if(auto aa=dynamic_cast<const ArrayAccess*>(&e)){Type base=expr(*aa->base);Type idx=expr(*aa->index);if(idx.kind!=Kind::Int&&idx.kind!=Kind::Unknown)err("array index must be int, got "+nameOf(idx));if(base.kind==Kind::Array)return typeOf(base.elem);if(base.kind==Kind::Unknown)return{Kind::Unknown,{}};err("index access requires an array value, got "+nameOf(base));return{Kind::Error,{}};}
   if(auto mr=dynamic_cast<const MethodReferenceExpr*>(&e)){expr(*mr->base);return{Kind::Unknown,{}};}
   err("unknown expression kind");return{Kind::Error,{}};
@@ -167,20 +174,19 @@ class Analyzer{
    if(!numeric(r)&&r.kind!=Kind::Unknown){err("operator '"+b.op+"' requires numeric operands");}
    return{(l.kind==Kind::Double||r.kind==Kind::Double)?Kind::Double:Kind::Int,{}};}
   if(b.op=="<"||b.op=="<="||b.op==">"||b.op==">="){if((!numeric(l)||!numeric(r))&&l.kind!=Kind::Unknown&&r.kind!=Kind::Unknown)err("comparison '"+b.op+"' requires numeric operands");return{Kind::Bool,{}};}
-  if(b.op=="=="||b.op=="!="){if(!assignable(l,r)&&!assignable(r,l)&&l.kind!=Kind::Unknown&&r.kind!=Kind::Unknown)err("equality operands have incompatible types "+nameOf(l)+" and "+nameOf(r));return{Kind::Bool,{}};}
-  // Bitwise and shift operators (syntax 1.6): integer-only, yield int. The
-  // parser already produces these nodes (parseBitOr/Xor/And, parseShift); accept
-  // them here so the compiler can emit the OP_BAND..OP_USHR opcodes.
-  if(b.op=="&"||b.op=="|"||b.op=="^"||b.op=="<<"||b.op==">>"||b.op==">>>"){
-   if(l.kind!=Kind::Int&&l.kind!=Kind::Unknown)err("operator '"+b.op+"' requires int operands");
-   if(r.kind!=Kind::Int&&r.kind!=Kind::Unknown)err("operator '"+b.op+"' requires int operands");
-   return{Kind::Int,{}};}
-  err("unknown binary operator '"+b.op+"'");return{Kind::Error,{}};
+  if(b.op=="=="||b.op=="!="){if(!assignable(l,r)&&!assignable(r,l)&&l.kind!=Kind::Unknown&&r.kind!=Kind::Unknown)err("equality operands have incompatible types "+nameOf(l)+" and "+nameOf(r));return{Kind::Bool,{}};}err("unknown binary operator '"+b.op+"'");return{Kind::Error,{}};
  }
- Type call(const Call&c){auto it=methods.find(c.callee);if(it!=methods.end()){const Method&m=*it->second.m;if(c.args.size()!=m.params.size())err("method '"+c.callee+"' expects "+std::to_string(m.params.size())+" argument(s), got "+std::to_string(c.args.size()));size_t n=c.args.size()<m.params.size()?c.args.size():m.params.size();for(size_t i=0;i<n;i++){Type g=expr(*c.args[i]),w=tn(m.params[i].type);if(!assignable(w,g))err("argument "+std::to_string(i+1)+" to '"+c.callee+"' has type "+nameOf(g)+", expected "+nameOf(w));}if(m.isProtected&&it->second.owner!=cls)err("protected method access denied for '"+c.callee+"'");return tn(m.retType);}
+ Type call(const Call&c){auto it=methods.find(cls+"::"+c.callee);if(it==methods.end())it=methods.find(c.callee);if(it==methods.end()&&c.callee.rfind("__native_",0)==0){
+   // Synthesized native helpers are stored as qualified class methods. Match
+   // the complete helper symbol across native owners, not just chemistry.
+   for(const auto& entry:methods){
+    const auto sep=entry.first.rfind("::");
+    if(sep!=std::string::npos&&entry.first.compare(sep+2,std::string::npos,c.callee)==0&&entry.first.substr(0,sep).rfind("__Native",0)==0){it=methods.find(entry.first);break;}
+   }
+  }if(it!=methods.end()){const Method&m=*it->second.m;if(c.args.size()!=m.params.size())err("method '"+c.callee+"' expects "+std::to_string(m.params.size())+" argument(s), got "+std::to_string(c.args.size()));size_t n=c.args.size()<m.params.size()?c.args.size():m.params.size();for(size_t i=0;i<n;i++){Type g=expr(*c.args[i]),w=tn(m.params[i].type);if(!assignable(w,g))err("argument "+std::to_string(i+1)+" to '"+c.callee+"' has type "+nameOf(g)+", expected "+nameOf(w));}if(m.isProtected&&it->second.owner!=cls)err("protected method access denied for '"+c.callee+"'");return tn(m.retType);}
   // `spawn(method)` names a zero-arg method to run on a new thread; its single
   // argument is a method name, not a value, so it is not resolved as a variable.
-  if(c.callee=="spawn"){if(c.args.size()!=1){err("spawn(method) takes exactly one argument");return{Kind::Unknown,{}};}auto v=dynamic_cast<const VarExpr*>(c.args[0].get());if(!v||!methods.count(v->name))err("spawn(method) argument must be a declared method name");return{Kind::Unknown,{}};}
+  if(c.callee=="spawn"){if(c.args.size()!=1){err("spawn(method) takes exactly one argument");return{Kind::Unknown,{}};}auto v=dynamic_cast<const VarExpr*>(c.args[0].get());if(!v||(!methods.count(v->name)&&!methods.count(cls+"::"+v->name)))err("spawn(method) argument must be a declared method name");return{Kind::Unknown,{}};}
   // `structUnpack(TypeName, json)` -- the first argument is a struct type name,
   // not a value; the result is an instance of that struct type.
   if(c.callee=="structUnpack"){if(c.args.size()!=2){err("structUnpack(TypeName, json) takes exactly two arguments");return{Kind::Error,{}};}auto v=dynamic_cast<const VarExpr*>(c.args[0].get());if(!v||!structs.count(v->name)){err("structUnpack first argument must be a declared struct type name");return{Kind::Error,{}};}expr(*c.args[1]);return{Kind::Struct,v->name};}
@@ -200,22 +206,18 @@ class Analyzer{
   return{Kind::Unknown,{}};
  }
  Type fluent(const MethodCall&m){
-  // `Munction.start(name)` opens a reach and yields a reach handle. The receiver
-  // is the `Munction` opener identifier, not a declared variable, so handle it
-  // before trying to resolve the receiver as a value.
-  if(m.method=="start"){if(auto r=dynamic_cast<const VarExpr*>(m.receiver.get())){if(r->name=="Munction"){if(m.args.size()!=1)err("Munction.start(name) takes exactly one argument");else{Type t=expr(*m.args[0]);if(t.kind!=Kind::String&&t.kind!=Kind::Unknown)err("Munction.start name must be string");}return{Kind::Unknown,{}};}}}
+  if(m.method=="start"){if(auto r=dynamic_cast<const VarExpr*>(m.receiver.get())){if(r->name=="Munction"){if(m.args.size()!=1)err("Munction.start(name) takes one argument");else{Type t=expr(*m.args[0]);if(t.kind!=Kind::String&&t.kind!=Kind::Unknown)err("Munction.start name must be string");}return{Kind::Unknown,{}};}}}
   Type rcv=expr(*m.receiver);
-  // String methods (syntax 1.6): Java-style instance methods on a String value.
-  //   length() -> int; substring(int,int) -> String; charAt(int) -> String;
-  //   indexOf(String) -> int. Resolved when the receiver is a String (or Unknown
-  //   so a not-yet-typed receiver does not spuriously error).
-  if(rcv.kind==Kind::String||rcv.kind==Kind::Unknown){
-   if(m.method=="length"){if(!m.args.empty())err("String.length() takes no arguments");return{Kind::Int,{}};}
-   if(m.method=="substring"){if(m.args.size()!=2)err("String.substring(begin,end) takes two arguments");else{for(size_t i=0;i<m.args.size();i++){Type a=expr(*m.args[i]);if(a.kind!=Kind::Int&&a.kind!=Kind::Unknown)err("String.substring arguments must be int");}}return{Kind::String,{}};}
-   if(m.method=="charAt"){if(m.args.size()!=1)err("String.charAt(index) takes one argument");else{Type a=expr(*m.args[0]);if(a.kind!=Kind::Int&&a.kind!=Kind::Unknown)err("String.charAt index must be int");}return{Kind::String,{}};}
-   if(m.method=="indexOf"){if(m.args.size()!=1)err("String.indexOf(needle) takes one argument");else{Type a=expr(*m.args[0]);if(a.kind!=Kind::String&&a.kind!=Kind::Unknown)err("String.indexOf argument must be String");}return{Kind::Int,{}};}
-  }
-  static const std::set<std::string>v={"connect","enable","send","thatch","consume","latch","closeWithReceipt","close","reception"};if(!v.count(m.method)){err("unknown fluent method '"+m.method+"'");return{Kind::Error,{}};}if(m.method=="consume"||m.method=="latch"||m.method=="close"||m.method=="reception"||m.method=="closeWithReceipt"){if(!m.args.empty())err("Munction "+m.method+"() takes no arguments");}else{if(m.args.size()!=1)err("Munction "+m.method+"() takes exactly one argument");if(!m.args.empty()){Type t=expr(*m.args[0]);if(t.kind!=Kind::String&&t.kind!=Kind::Unknown)err("Munction "+m.method+" argument must be string");}}return m.method=="closeWithReceipt"?Type{Kind::String,{}}:rcv;}
+  static const std::set<std::string> v={"connect","enable","send","thatch","consume","latch","closeWithReceipt","close","reception"};
+  if(v.count(m.method)){if(m.method=="consume"||m.method=="latch"||m.method=="close"||m.method=="reception"||m.method=="closeWithReceipt"){if(!m.args.empty())err("Munction "+m.method+"() takes no arguments");}else{if(m.args.size()!=1)err("Munction "+m.method+"() takes exactly one argument");if(!m.args.empty()){Type t=expr(*m.args[0]);if(t.kind!=Kind::String&&t.kind!=Kind::Unknown)err("Munction "+m.method+" argument must be string");}}return m.method=="closeWithReceipt"?Type{Kind::String,{}}:rcv;}
+  if(rcv.kind!=Kind::Struct){err("method '"+m.method+"' requires a class or struct receiver");return{Kind::Error,{}};}
+  auto it=methods.find(rcv.name+"::"+m.method);if(it==methods.end()){err("class '"+rcv.name+"' has no method '"+m.method+"'");return{Kind::Error,{}};}
+  const Method& target=*it->second.m;if(target.isStatic)err("static method '"+rcv.name+"::"+m.method+"' must be called through its class");
+  if(m.args.size()!=target.params.size())err("method '"+m.method+"' expects "+std::to_string(target.params.size())+" argument(s), got "+std::to_string(m.args.size()));
+  for(size_t i=0;i<m.args.size()&&i<target.params.size();++i){Type g=expr(*m.args[i]),w=tn(target.params[i].type);if(!assignable(w,g))err("argument to '"+m.method+"' has type "+nameOf(g)+", expected "+nameOf(w));}
+  if(target.isProtected&&it->second.owner!=cls)err("protected method access denied for '"+m.method+"'");
+  return tn(target.retType);
+}
 public:
  Analyzer(const Program&x,const SyntaxVersion&s):p(x),syntax(s){}
  SemanticResult run(){

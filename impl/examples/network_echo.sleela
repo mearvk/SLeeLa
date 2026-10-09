@@ -3,16 +3,16 @@
 // The server worker accepts a loopback client, reads "ping", and writes "pong".
 // The main thread runs the client and joins the worker before closing the listener.
 class NetworkEcho {
-    int listener;
+    static int listener;
 
-    void server() {
+    static void server() {
         int client = accept(listener);
         String request = sockread(client);
         sockwrite(client, "pong");
         sockclose(client);
     }
 
-    String client() {
+    static String client() {
         int socket = connect("127.0.0.1", 45218);
         sockwrite(socket, "ping");
         String response = sockread(socket);
@@ -20,7 +20,7 @@ class NetworkEcho {
         return response;
     }
 
-    void main() {
+    static void main() {
         listener = listen(45218);
         spawn(server);
         String response = client();

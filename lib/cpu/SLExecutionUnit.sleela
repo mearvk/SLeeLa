@@ -1,2 +1,0 @@
-# SLExecutionUnit
-class SLExecutionUnit { kind; width; latencyCycles; throughput; execute(operation); }

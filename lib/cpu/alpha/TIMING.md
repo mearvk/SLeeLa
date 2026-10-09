@@ -1,5 +1,25 @@
 # DEC Alpha Timing
 
-Tracked timing events: fetch, decode, register read, issue, integer execution, FP execution, branch, load/store, cache access, TLB activity, dependency stalls, traps, and retirement.
+## Timing model
 
-EV4, EV5, and EV6 differ materially in pipeline and issue behavior. No universal Alpha cycle count is claimed.
+SLeeLa tracks:
+
+- fetch;
+- decode;
+- register read;
+- issue;
+- integer execution;
+- FP execution;
+- branch prediction/result;
+- load/store;
+- cache hit/miss;
+- TLB;
+- dependency stalls;
+- exception;
+- retirement.
+
+## Microarchitectural generations
+
+EV4, EV5, and EV6 have materially different pipeline and issue behavior. EV6's out-of-order, superscalar design requires explicit scheduling and retirement state.
+
+The generic Alpha implementation therefore does not claim one universal cycle count or pipeline depth.

@@ -1,85 +1,33 @@
-/*
- * lib/cpu/mips/SLMIPSCPU.sleela
- * SLeeLa Standard Library Definition.
- * Definition: Defines SLMIPSCPU — a runnable model of a classic 32-bit MIPS R-
- *   style load/store RISC: 32 general registers (R0 hardwired to zero), the HI
- *   and LO multiply/divide result registers, and a program counter. It extends
- *   SLCPURuntime and adds the MIPS register conventions, a decoder for a compact
- *   R/I-type encoding, and the branch-delay-slot / CP0 hooks the skeleton named.
- *
- * Instruction model (op in bits 24..31, rd in 16..23, rs in 8..15, rt/imm in
- * 0..7): ADD rd,rs,rt / SUB rd,rs,rt / ADDI rd,rs,imm / LW rd,imm(rs) /
- * SW rt,imm(rs) / BEQ rs,rt,off / BNE rs,rt,off / J addr / NOP / SYSCALL(halt).
- * R0 reads as zero and ignores writes, as on real MIPS.
- *
- * Family: cpu. Extends SLCPURuntime.
- */
-#sleela 1.3
-class SLMIPSCPU extends SLCPURuntime {
-  static final int R_HI = 32;
-  static final int R_LO = 33;
+# SLMIPSCPU
 
-  static final int ADD  = 1;
-  static final int SUB  = 2;
-  static final int ADDI = 3;
-  static final int LW   = 4;
-  static final int SW   = 5;
-  static final int BEQ  = 6;
-  static final int BNE  = 7;
-  static final int J    = 8;
-  static final int SYSCALL = 9;
+class SLMIPSCPU {
+  architecture;
+  clock;
+  registers;
+  hi;
+  lo;
+  pc;
+  pipeline;
+  instructionFetch;
+  executionUnit;
+  ioBus;
+  interrupts;
+  busArbiter;
+  couplers;
+  cp0;
+  cache = implementation_defined;
+  mmu = implementation_defined;
+  tlb = implementation_defined;
+  dma = external;
 
-  int cp0Status;        // CP0 (system control) status register
-  int inDelaySlot;
-
-  void configure() {
-    // 32-bit, 32-bit addressing (capped), 34 regs (32 GPR + HI + LO).
-    setSpecClock(33);   // MIPS R3000 at ~33 MHz; overclockable
-    bringUp("MIPS R3000", 32, 32, 34, 262144);
-    cp0Status = 0; inDelaySlot = 0;
-  }
-
-  // R0 is hardwired to zero.
-  int gpr(int i)            { if (i == 0) { return 0; } return readReg(i); }
-  void setGpr(int i, int v) { if (i == 0) { return; } writeReg(i, v); }
-
-  int opOf(int w)  { return (w / 16777216) % 256; }
-  int rdOf(int w)  { return (w / 65536) % 256; }
-  int rsOf(int w)  { return (w / 256) % 256; }
-  int rtImmOf(int w){ return w % 256; }
-
-  void decode(int word) {
-    int opcode = opOf(word);
-    int rd = rdOf(word); int rs = rsOf(word); int rtImm = rtImmOf(word);
-
-    if (opcode == ADD)  { setGpr(rd, aluOp(gpr(rs), gpr(rtImm), alu.OP_ADD)); return; }
-    if (opcode == SUB)  { setGpr(rd, aluOp(gpr(rs), gpr(rtImm), alu.OP_SUB)); return; }
-    if (opcode == ADDI) { setGpr(rd, aluOp(gpr(rs), signed(rtImm), alu.OP_ADD)); return; }
-    if (opcode == LW)   { setGpr(rd, readMem(gpr(rs) + signed(rtImm))); return; }
-    if (opcode == SW)   { writeMem(gpr(rs) + signed(rtImm), gpr(rd)); return; }
-    if (opcode == BEQ)  { if (gpr(rd) == gpr(rs)) { branchDelaySlot(); setEntryPoint(programCounter() + signed(rtImm)); } return; }
-    if (opcode == BNE)  { if (gpr(rd) != gpr(rs)) { branchDelaySlot(); setEntryPoint(programCounter() + signed(rtImm)); } return; }
-    if (opcode == J)    { branchDelaySlot(); setEntryPoint(rtImm + rs * 256); return; }
-    if (opcode == SYSCALL) { exception(8); halted = 1; return; }
-  }
-
-  // The classic MIPS branch-delay slot: the instruction after a taken branch
-  // still executes. Modelled by letting fetch run one more time before the new
-  // PC takes effect (hook retained for callers reasoning about pipeline order).
-  void branchDelaySlot() { inDelaySlot = 1; }
-
-  // CP0 exception entry (SYSCALL, overflow, etc.).
-  void exception(int cause) { cp0Status = cause; }
-  void interrupt(int vector) { exception(vector); }
-
-  int signed(int b) { if (b >= 128) { return b - 256; } return b; }
-  int encodeR(int op, int rd, int rs, int rt) {
-    return (op % 256) * 16777216 + (rd % 256) * 65536 + (rs % 256) * 256 + (rt % 256);
-  }
-  int encodeI(int op, int rd, int rs, int imm) { return encodeR(op, rd, rs, imm); }
-
-  int reg(int i)   { return gpr(i); }
-  int hi()         { return readReg(R_HI); }
-  int lo()         { return readReg(R_LO); }
-  int cp0()        { return cp0Status; }
+  reset();
+  fetch();
+  decode();
+  execute();
+  memoryCycle();
+  writeback();
+  branchDelaySlot();
+  exception();
+  interrupt();
+  validate();
 }

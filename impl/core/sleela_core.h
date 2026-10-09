@@ -112,26 +112,7 @@ typedef enum {
     OP_OS_SPAWN,      /* pops command String; pushes process handle (-1 on failure) */
     OP_OS_WAIT,       /* pops process handle; waits; pushes exit code int           */
     OP_OS_KILL,       /* pops process handle; pushes 0/-1                           */
-    OP_OS_PCLOSE,     /* pops process handle; releases it; pushes null              */
-    /* Bitwise and shift operators (syntax 1.6). The parser already produces
-     * these Binary nodes (parseBitOr/Xor/And, parseShift); the semantic analyzer
-     * and compiler now resolve them, and the VM evaluates them on integer
-     * operands. Appended at the end of the enum so existing serialized-artifact
-     * opcode numbers are unchanged. All require int operands and push an int. */
-    OP_BAND,          /* pops b,a; pushes a & b   (bitwise AND)                     */
-    OP_BOR,           /* pops b,a; pushes a | b   (bitwise OR)                      */
-    OP_BXOR,          /* pops b,a; pushes a ^ b   (bitwise XOR)                     */
-    OP_SHL,           /* pops b,a; pushes a << b  (left shift)                      */
-    OP_SHR,           /* pops b,a; pushes a >> b  (arithmetic right shift)          */
-    OP_USHR,          /* pops b,a; pushes a >>> b (logical/unsigned right shift)    */
-    /* String methods (syntax 1.6). Java-style instance methods on String values.
-     * Appended at the end of the enum so existing serialized-artifact opcode
-     * numbers are unchanged. Operands are popped with the receiver pushed first
-     * (so it is deepest on the stack), then the arguments in source order. */
-    OP_STR_LEN,       /* pops str; pushes int length (UTF-8 bytes)                  */
-    OP_STR_SUB,       /* pops end,begin,str; pushes substring [begin,end)           */
-    OP_STR_CHARAT,    /* pops idx,str; pushes 1-char String at idx                  */
-    OP_STR_INDEXOF    /* pops needle,str; pushes int index of needle (-1 if absent) */
+    OP_OS_PCLOSE      /* pops process handle; releases it; pushes null              */
 } SLOp;
 #define SL_MAX_OS_PROCESSES 64    /* live spawned child processes per VM        */
 /* Synchro stat selectors for OP_SYN_STAT (operand a). */
