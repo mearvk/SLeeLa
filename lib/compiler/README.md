@@ -102,3 +102,7 @@ The native implementation is now wired directly to the authoritative `/impl/fron
 - [CONSTRUCTOR-SERIES.md](CONSTRUCTOR-SERIES.md) — constructor overload resolution, delegation graph, initialization order, and cycle checks
 
 SLeeLa source-level reference handlers are provided by `SLCaseHandler.sleela`, `SLObjectCreationResolver.sleela`, and `SLConstructorSeries.sleela`. These define the intended compiler contract; integration with the native frontend and passing tests must be verified before describing the feature as production-ready.
+
+## Authoritative language specification (syntax 1.7)
+
+The native compiler and all compiler front ends must validate against the repository-root [`SLEELA.syntax`](../../SLEELA.syntax) specification. Its active version is `1.7` and the native frontend's supported range is `1.3..1.7`. The `U<n>` unsigned fixed-width family accepts widths from `U1` through `U1048576`. Do not lower these types to signed or 64-bit host integers silently; unsupported runtime paths must emit an explicit diagnostic. The shared type-signature contract is in [`markdown/SOURCE.md`](../../markdown/SOURCE.md), and the runtime implementation boundary is tracked by the tests in `impl/tests/unsigned_integer_test.cpp`.
