@@ -49,7 +49,10 @@ install-check:
 	@grep -q 'impl/build' quick-safe-install.sh || { echo "ERROR: Linux/macOS installer does not install the built sleela binary"; exit 1; }
 	@grep -q 'SLEELA"' quick-safe-install.ps1 || { echo "ERROR: Windows installer does not set SLEELA"; exit 1; }
 	@grep -q 'impl.build' quick-safe-install.ps1 || { echo "ERROR: Windows installer does not install the built sleela binary"; exit 1; }
-	@echo "PATH + SLEELA_HOME + SLEELA + built-binary install present for all three platforms."
+	@grep -q 'SLEELA_SHA256_MANIFEST' quick-safe-install.sh || { echo "ERROR: Linux/macOS installer does not set SLEELA_SHA256_MANIFEST"; exit 1; }
+	@grep -q 'verify-before-execution.py' quick-safe-install.sh || { echo "ERROR: Linux/macOS installer does not stage the verify tool"; exit 1; }
+	@grep -q 'SLEELA_SHA256_MANIFEST' quick-safe-install.ps1 || { echo "ERROR: Windows installer does not set SLEELA_SHA256_MANIFEST"; exit 1; }
+	@echo "PATH + SLEELA_HOME + SLEELA + built-binary + SHA-256 verification assets present for all three platforms."
 	@echo ""
 	@echo "NOTE: this only VERIFIED the installer. To actually install, run:"
 	@echo "  make -C install install        (or, from the repo root, make install)"
