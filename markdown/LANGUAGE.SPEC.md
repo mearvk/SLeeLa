@@ -45,3 +45,9 @@ Conformance requires positive tests, negative tests, version tests, ABI tests, r
 **Authoritative companions:** `src/Sleela.manifest`, `src/Sleela.formal-core`, `SLEELA.syntax`, `COMPILER.md`.
 
 **Max Rupplin — MEARVK LLC — 2026**
+
+## Unsigned integer family
+
+The source type constructor `U<n>` is defined for each decimal width `n` in `1..1048576`, inclusive. `U<n>` is an unsigned fixed-width integer with exactly n value bits and mathematical range `0 <= value <= 2^n - 1`. Examples include `U1`, `U8`, `U16`, `U32`, `U64`, and `U1048576`.
+
+The width is a compile-time type parameter, not a request to generate a separate declaration for every width. A conforming implementation must parse and validate widths without host-integer overflow, preserve the declared width in type identity and signatures, and define checked conversion, arithmetic, comparison, and serialization behavior. If a particular backend cannot lower an operation at a requested width, it must issue a clear unsupported-width/operation diagnostic rather than silently truncating or substituting a 64-bit type. The language contract alone does not imply that every width is already implemented by every backend; conformance requires tests.
