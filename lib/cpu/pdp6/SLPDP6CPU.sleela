@@ -1,0 +1,44 @@
+# SLPDP6CPU — SLeeLa PDP-6 CPU profile
+#
+# Functional, profile-driven model. Cycle accuracy is not implied.
+# PDP-6 is related to, but not identical with, PDP-10 family processors.
+
+class SLPDP6CPU extends SLCPU {
+    const WORD_BITS = 36;
+
+    state {
+        pc;
+        registers;
+        instructionRegister;
+        memory;
+        addressBits;
+        deviceMap;
+        timingProfile;
+    }
+
+    configure(profile) {
+        require(profile.wordBits == WORD_BITS);
+        require(profile.memoryWords > 0);
+        require(profile.addressBits > 0);
+        this.addressBits = profile.addressBits;
+        this.memory = SLRAM.create(profile.memoryWords, WORD_BITS);
+        this.registers = SLRegisterFile.create(profile.registerCount, WORD_BITS);
+        this.deviceMap = profile.deviceMap ?? {};
+        this.timingProfile = profile.timingProfile ?? "functional";
+        return this;
+    }
+
+    step() {
+        let instruction = this.fetchWord(this.pc, WORD_BITS);
+        this.instructionRegister = instruction;
+        let decoded = this.decodePDP6(instruction, this.addressBits);
+        if (!decoded.supported) {
+            this.reportUnsupported("PDP6_OPCODE", instruction, this.pc);
+            return this.result("unsupported", instruction);
+        }
+        return this.executePDP6(decoded);
+    }
+
+    # Opcode fields, register layout, halfword behavior, and timing must be
+    # sourced from a verified PDP-6 profile; do not silently reuse PDP-10 rules.
+}
