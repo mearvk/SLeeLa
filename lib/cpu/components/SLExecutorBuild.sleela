@@ -35,6 +35,13 @@ class SLExecutorBuild {
   void installOptical(SLOpticalDrive drive)      { optical = drive; }
   void installBus(SLSystemBus systemBus)         { bus = systemBus; }
 
+  // Optional accelerators: give the build's CPU direct DMA and/or native GPU
+  // access, so a program on this executor can use them at any point.
+  void enableDMA() { if (cpu != null) { cpu.enableDMA(); } }
+  void enableGPU() { if (cpu != null) { cpu.enableGPU(); } }
+  boolean dmaEnabled() { return cpu != null && cpu.dmaEnabled(); }
+  boolean gpuEnabled() { return cpu != null && cpu.gpuEnabled(); }
+
   // Run the CPU at a chosen frequency (0 = leave at spec). Overclocking returns
   // false if the target is above the model's stability ceiling.
   boolean setClock(int targetMHz) {

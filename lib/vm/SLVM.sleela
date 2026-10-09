@@ -178,8 +178,24 @@ class SLVM {
     substrate.configure(1 << 16, 4096, 1024);
     substrate.setHosted();           // the CPU's service opcodes become our VM-exits
     cpu.attachSubstrate(substrate);  // CPU lowers onto OUR substrate => true nesting
+    if (dmaOption == 1) { cpu.enableDMA(); }   // grant the enabled options to the guest
+    if (gpuOption == 1) { cpu.enableGPU(); }
     state = 1;
   }
+
+  // --- optional capabilities: enable BEFORE hostCpu() so the guest inherits them ---
+  // Direct DMA: the hosted CPU gets a direct memory-access engine, so a program
+  // under this VM can move bulk data without the CPU copying it word by word.
+  void enableDMA() { dmaOption = 1; if (guestCpu != null) { guestCpu.enableDMA(); } }
+  void disableDMA(){ dmaOption = 0; if (guestCpu != null) { guestCpu.disableDMA(); } }
+  boolean dmaEnabled() { return dmaOption == 1; }
+  // Native GPU access: the hosted CPU gets a GPU device to offload compute to.
+  void enableGPU() { gpuOption = 1; if (guestCpu != null) { guestCpu.enableGPU(); } }
+  void disableGPU(){ gpuOption = 0; if (guestCpu != null) { guestCpu.disableGPU(); } }
+  boolean gpuEnabled() { return gpuOption == 1; }
+  // Direct access to the guest's engines (null until hosted/enabled).
+  SLDMAController dmaEngine() { return (guestCpu != null) ? guestCpu.dmaEngine() : null; }
+  SLGPUDevice gpuDevice()     { return (guestCpu != null) ? guestCpu.gpuDevice() : null; }
 
   SLCPURuntime hostedCpu() { return guestCpu; }
 
