@@ -1,6 +1,6 @@
 ## 0.3.28-dev Development Increment
 
-This increment begins the arbitrary-width unsigned integer implementation for source types U1 through U1048576. It adds a byte-backed value foundation, decimal parsing and formatting, checked same-width addition/subtraction, comparison, semantic type-name recognition, and a dedicated test target. Integration with the stable VM value ABI and end-to-end source execution remains in progress.
+This increment begins the arbitrary-width unsigned integer implementation for source types U1 through U1048576. It adds a byte-backed value foundation, decimal parsing and formatting, width-checked byte serialization, checked same-width addition/subtraction, comparison, semantic type-name recognition, and a dedicated test target. Integration with the stable VM value ABI and end-to-end source execution remains in progress.
 
 **SLeeLa — MEARVK LLC — 2026**
 
