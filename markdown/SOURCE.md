@@ -34,6 +34,19 @@ surface (authoritative list in `impl/README.md`):
 - **conducted methods** backed by `SHEET.sheet` —
   `conduct`/`role`/`insight`/`congruent`/`route`/`sysdepth`/`degreemax`.
 
+## Unsigned integer type signatures (U1–U1048576)
+
+SLeeLa source signatures define a parameterized unsigned, fixed-width integer family:
+
+- **Type form:** `U<n>`, where `n` is a decimal integer in the inclusive range `1..1048576`.
+- **Meaning:** `U<n>` stores exactly `n` value bits and has range `0..(2^n - 1)`.
+- **Examples:** `U1`, `U8`, `U16`, `U32`, `U64`, and `U1048576`.
+- **Signature use:** types may be written in field, local-variable, parameter, and return-type positions wherever the compiler supports this type family.
+- **No signedness ambiguity:** unsigned values cannot represent negative numbers; conversions that narrow a value must be explicit or rejected when out of range.
+- **Implementation requirement:** parsers and type-checkers must validate the width without overflowing host integers. Runtime storage, arithmetic, serialization, and ABI lowering must support arbitrary bit widths or report a specific unsupported-operation diagnostic; they must not silently substitute a host `int`/64-bit type.
+
+The family is parameterized, not a requirement to create 1,048,576 separate hand-written declarations. `U8` and `U16` are ordinary instances of the same width-checked type constructor. This specification records the intended source signature; runtime/compiler conformance must be demonstrated by tests before claiming all widths execute end-to-end.
+
 ## The version pragma
 
 Per SL-META-0001 §4.4, a Wrapper™ declares its **syntax version** on the first
