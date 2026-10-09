@@ -662,7 +662,12 @@ private:
             if(!target->isStatic)emitThis();
             for(const auto&a:c.args)emitExpr(a.get());emit(OP_CALL,it->second);return;
         }
-        it=funcIndex_.find(c.callee);
+        // Chemistry's public API lowers to private helpers on a synthesized
+        // class. Resolve those helpers by qualified name now that all class
+        // methods use Class::method symbols.
+        if(c.callee.rfind("__native_chemistry_",0)==0)
+            it=funcIndex_.find("__NativeChemistry::"+c.callee);
+        if(it==funcIndex_.end())it=funcIndex_.find(c.callee);
         if(it==funcIndex_.end())throw std::runtime_error("Semantic error: call to unknown method '"+c.callee+"'");
         const Method* target=methods_[it->second].method;
         if((int)c.args.size()!=(int)target->params.size())throw std::runtime_error("Semantic error: method '"+c.callee+"' expects "+std::to_string(target->params.size())+" argument(s), got "+std::to_string(c.args.size()));
