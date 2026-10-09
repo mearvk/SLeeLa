@@ -7,6 +7,14 @@
 using sleela::UnsignedInteger;
 
 int main() {
+    assert(UnsignedInteger::isValidTypeName("U1"));
+    assert(UnsignedInteger::isValidTypeName("U8"));
+    assert(UnsignedInteger::isValidTypeName("U1048576"));
+    assert(!UnsignedInteger::isValidTypeName("U0"));
+    assert(!UnsignedInteger::isValidTypeName("U01"));
+    assert(!UnsignedInteger::isValidTypeName("U1048577"));
+    assert(!UnsignedInteger::isValidTypeName("U999999999999999999999999"));
+    assert(!UnsignedInteger::isValidTypeName("Unsigned8"));
     assert(UnsignedInteger::fromDecimal(1, "1").toDecimal() == "1");
     assert(UnsignedInteger::fromDecimal(8, "255").toDecimal() == "255");
     assert(UnsignedInteger::fromDecimal(64, "18446744073709551615").toDecimal() == "18446744073709551615");
