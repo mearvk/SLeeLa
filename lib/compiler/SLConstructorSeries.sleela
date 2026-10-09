@@ -1,0 +1,33 @@
+# SLConstructorSeries — joined, validated constructor graph
+
+class SLConstructorSeries {
+    resolve(typeSymbol, arguments, sourceLocation) {
+        let candidates = typeSymbol.constructors.visibleFrom(sourceLocation.scope);
+        let match = resolveOverload(candidates, arguments);
+        if (!match.isUnique) {
+            return diagnostic(match.isAmbiguous ? "CONSTRUCTOR_AMBIGUOUS" : "CONSTRUCTOR_NOT_FOUND", sourceLocation);
+        }
+
+        let graph = buildDelegationGraph(typeSymbol, match.selected);
+        if (graph.hasCycle()) {
+            return diagnostic("CONSTRUCTOR_DELEGATION_CYCLE", sourceLocation);
+        }
+        if (!validateBaseCalls(graph) || !validateCapabilities(graph)) {
+            return diagnostic("CONSTRUCTOR_CHAIN_INVALID", sourceLocation);
+        }
+
+        return objectCreationIR(typeSymbol, graph.initializationOrder(), sourceLocation);
+    }
+
+    tryResolve(typeSymbol, arguments) {
+        let candidates = typeSymbol.constructors.visibleFromCurrentScope();
+        let match = resolveOverload(candidates, arguments);
+        if (match.isUnique) {
+            return { isUnique: true, selected: match.selected };
+        }
+        return {
+            isUnique: false,
+            diagnostic: diagnostic(match.isAmbiguous ? "CONSTRUCTOR_AMBIGUOUS" : "CONSTRUCTOR_NOT_FOUND")
+        };
+    }
+}
