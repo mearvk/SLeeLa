@@ -3,9 +3,9 @@
 # Product-specific Makefiles remain authoritative. This root dispatcher only
 # enters those existing build systems; it does not duplicate their source lists.
 
-.PHONY: all core java28 regex compiler decompiler vm scripting jetbrains install tutorial-check tests server config route clean help
+.PHONY: all autocheck core java28 regex compiler decompiler vm scripting jetbrains install tutorial-check tests server config route clean help
 
-all: core java28 regex compiler decompiler vm scripting jetbrains install tutorial-check tests config route
+all: autocheck core java28 regex compiler decompiler vm scripting jetbrains install tutorial-check tests config route
 
 # The impl build is fail-closed on a trusted SHA-256 manifest. Default it to the
 # repository's manifest (absolute path) so `make` works from the repo root; an
