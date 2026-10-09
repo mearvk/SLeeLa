@@ -5352,11 +5352,11 @@
     },
     {
       "path": "impl/examples/fileio-fifo.sleela",
-      "sha256": "7be652ec2b16ec1d3dcc03942364d977ff1bfb056839ec1ac52fc2acc472d7f9"
+      "sha256": "25850c6bf813c893997447e7d7a3130e98500bf7b9f5c01bfd7503f2ed5ea1c8"
     },
     {
       "path": "impl/examples/fileio.sleela",
-      "sha256": "4e4eb23fc9764f556595b21efa9170c614bff17f05a735fe385cf1f6b65e43ad"
+      "sha256": "4bbde1dfff59c11b45c5e2121c1a5154c481fefdb8f89f8d08edeee0a0f5f29d"
     },
     {
       "path": "impl/examples/financial.sleela",
@@ -5376,7 +5376,7 @@
     },
     {
       "path": "impl/examples/network_echo.sleela",
-      "sha256": "fc5f2235a09954b6f636528051e0efddf085e354f644bf01494f197cdf933de5"
+      "sha256": "658bec5d8f30914623c61bb5b2b84a6c788989032c4e73fa9871694677b82b9c"
     },
     {
       "path": "impl/examples/static-protected.sleela",
@@ -5400,7 +5400,7 @@
     },
     {
       "path": "impl/examples/struct_network.sleela",
-      "sha256": "9155de06aa74b240640e7a82ee37552e91f713a19c9c399fd61963efdcf61fcb"
+      "sha256": "198c184b14927e1ab90a693dc534682f35f997a0fbdffcd2a36fc5377d3335da"
     },
     {
       "path": "impl/examples/synchro_measure.sleela",
@@ -5408,7 +5408,7 @@
     },
     {
       "path": "impl/examples/threads.sleela",
-      "sha256": "f62384d639702369fc469dab3cd7ee630b1a65d33118678f87947ef7ec65d156"
+      "sha256": "83640b2b1238d55a1547408b9f17c8820c2644dcfcaecab5eada7d4de1a02556"
     },
     {
       "path": "impl/examples/time.sleela",
@@ -5544,7 +5544,7 @@
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "708a2b3b9986e85050e69c486f7da95e56575f8a303ca1ef646976cb6435a71f"
+      "sha256": "5428afd9a09944fafe8765c75f2f0c02237030b25560ef27288b59ec43124e98"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -5552,7 +5552,7 @@
     },
     {
       "path": "impl/frontend/driver.cpp",
-      "sha256": "0c6d975cb4ed5b141b92f03a0d5d6327d7e61ce9ec745e1b4fc9c32b12424d43"
+      "sha256": "a6ff26fbe7e3163970612171801e16a7ef2f8f29c62ec3ff1e36820190fc7ac5"
     },
     {
       "path": "impl/frontend/dynamite.cpp",
@@ -5632,7 +5632,7 @@
     },
     {
       "path": "impl/frontend/semantic.cpp",
-      "sha256": "9d907000d0b655fc6d63e3a83e4afc71e14ba0ab6f22904669615a5fcbb24833"
+      "sha256": "a60988c2a17a458a5a68811017ec68aa7275b5face199cecf26b81a24ec498ea"
     },
     {
       "path": "impl/frontend/semantic.h",
@@ -6312,7 +6312,7 @@
     },
     {
       "path": "impl/subjects/chemistry/chemistry_api.cpp",
-      "sha256": "49591965cc96b5a4e2a07f046c60c659a4e3f25bb0e4c4e2c8187fee7be56dff"
+      "sha256": "c6dbd036c5ed97ae41db6381c62b5ea2488b2e32486db6424160fb1343449c67"
     },
     {
       "path": "impl/subjects/chemistry/chemistry_api.h",
@@ -6356,7 +6356,7 @@
     },
     {
       "path": "impl/subjects/math/math_native.cpp",
-      "sha256": "046d373ea030baf6e006f061def5dbfd5b8aada876aa251ed03d9d93693461c1"
+      "sha256": "057e4c40f18e80d8500fd281b2cc0684af96e18dc223b7e55e3ca0abeee1f612"
     },
     {
       "path": "impl/subjects/native/native_add.h",
@@ -6405,6 +6405,14 @@
     {
       "path": "impl/terminal/terminal_capability.hpp",
       "sha256": "5cac25a5d038932dab1e6163f5c6bde9055c5366934ea666d5d40eed90573b0d"
+    },
+    {
+      "path": "impl/tests/class_dispatch/class_instance_dispatch.sleela",
+      "sha256": "0f2b48a2d701e0df9721d2ae2ef85ae7c2d48f0a31fd27d6d71655266376ef18"
+    },
+    {
+      "path": "impl/tests/class_dispatch/run_class_dispatch_tests.sh",
+      "sha256": "31251704b4ce4cf24e14d7dfb524b2ca8026e0836475b58b6a935ac6d4b28cd1"
     },
     {
       "path": "impl/tests/core/ai_smoke.c",
