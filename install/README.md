@@ -2,59 +2,42 @@
 
 # SLeeLa Quick and Safe Install
 
-The installer is a three-platform, user-local deployment layer for Linux, macOS, and Windows 10+.
+The installer supports user-local and system-wide installation on Linux, macOS, and Windows 10+. User-local installation is the recommended default and does not require administrator access.
+
+## Installation scope
+
+At the start, choose:
+
+- **User-local (recommended):** Linux/macOS default `$HOME/.local/sleela`; Windows default `%LOCALAPPDATA%\\SLeeLa`. The installer places compiled executables in the installation's `bin/` directory and can configure only the current user's PATH.
+- **System-wide:** Linux/macOS default runtime root `/usr/local/lib/sleela`, executables exposed through `/usr/local/bin`, and startup configuration in `/etc/sleela/startup.conf`. The installer uses `sudo` for privileged writes. Windows default is `%ProgramFiles%\\SLeeLa`, requires an elevated PowerShell, and adds the install's `bin/` directory to the machine PATH.
+
+The Linux/macOS user-local destination can be overridden with `SLEELA_INSTALL_ROOT`; system runtime root can be overridden with `SLEELA_SYSTEM_ROOT`. On Windows, pass `-Destination` to choose the destination explicitly.
 
 ## Installation flow
 
-1. Detect the repository and platform.
-2. Prompt for SLeeLa System startup.
-3. Prompt for SLeeLa Server startup.
-4. Prompt independently for HTTP Servers 1–9.
-5. Prompt for VM Edition: `simple`, `managed`, or `advanced`.
-6. Prompt for Port Authority startup, pause, and shutdown.
-7. Prompt for user-level PATH configuration.
-8. Build SLeeLa before deployment.
-9. Stage the build before copying.
-10. Back up an existing user-local installation.
-11. Copy the staged `lib` and optional `bin` trees.
-12. Write `config/startup.conf`.
-13. Apply only user-level PATH configuration.
-14. Report the installation and configuration locations.
+1. Choose user-local or system-wide scope.
+2. Select SLeeLa System/server, HTTP servers 1–9, VM edition, and Port Authority startup options.
+3. Build SLeeLa before deployment unless the Windows `-NoBuild` option is used.
+4. Stage the runtime, including the compiled `sleela` and `nordshrift` products.
+5. Back up an existing destination before updating it.
+6. Install binaries, libraries, and `config/startup.conf`.
+7. Configure only the PATH scope corresponding to the selected installation mode.
+8. Report the installation and configuration locations.
+
+A missing compiled product or failed build stops installation before deployment.
 
 ## Platform entry points
 
 - Linux: `./install/quick-safe-install.sh`
 - macOS: `./install/quick-safe-install-macos.sh`
-- Windows 10+: `install\\quick-safe-install.cmd` or PowerShell directly.
-
-Default destinations are:
-
-- Linux/macOS: `$HOME/.local/sleela`
-- Windows: `%LOCALAPPDATA%\\SLeeLa`
-
-Set `SLEELA_INSTALL_ROOT` on Linux/macOS to choose another user-local destination.
+- Windows 10+: `install\\quick-safe-install.cmd` or `install\\quick-safe-install.ps1`
 
 ## Safety model
 
-The installer is deliberately user-local. It does not require sudo/root for its normal path, silently enable network listeners, install system-wide services, or alter system service configuration.
-
-A build failure stops deployment before the staged result is copied. Existing installations are copied to a timestamped user-local backup before replacement.
-
-PATH changes are user-level only. On Linux/macOS the installer writes a small profile snippet; on Windows it updates the current user's PATH and never the machine-wide PATH.
-
-## Startup settings
-
-The generated `startup.conf` records:
-
-- SLeeLa System startup
-- SLeeLa Server startup
-- HTTP Server 1–9 startup
-- VM Edition
-- Port Authority startup
-- Port Authority pause
-- Port Authority shutdown
-
-These settings describe startup policy; they do not by themselves grant network or operating-system authority.
+- User-local mode never elevates privileges or changes the machine PATH.
+- System-wide mode explicitly requests administrator privileges and uses conventional system paths.
+- Build failure stops deployment. Existing destination files are backed up before replacement.
+- System-wide PATH is not changed on Linux/macOS because `/usr/local/bin` is the conventional executable location; `/etc/profile.d/sleela.sh` sets `SLEELA_HOME`. Windows system-wide mode adds its binary directory to the machine PATH.
 
 ## Commands
 
@@ -63,9 +46,7 @@ make install-help
 make install-check
 ./install/quick-safe-install.sh
 ./install/quick-safe-install-macos.sh
-install\quick-safe-install.cmd
+install\\quick-safe-install.cmd
 ```
-
-The JetBrains source acquisition helper remains separate and is not downloaded or built by this installer.
 
 **SLeeLa — MEARVK LLC — 2026**
