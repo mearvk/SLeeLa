@@ -1,15 +1,17 @@
 #include "semantic.h"
+#include "unsigned_integer.h"
 #include "annotation_pipeline.h"
 #include <map>
 #include <set>
 #include <string>
 namespace sleela {
 namespace {
-enum class Kind { Void, Int, Double, Bool, String, Null, Struct, Array, Unknown, Error };
+enum class Kind { Void, Int, Unsigned, Double, Bool, String, Null, Struct, Array, Unknown, Error };
 // For Kind::Array, `name` carries the full array type text (e.g. "int[]") and
 // `elem` the element type name (e.g. "int").
 struct Type { Kind kind=Kind::Unknown; std::string name{}; std::string elem{}; };
 static Type typeOf(const std::string& n){
+ if(UnsignedInteger::isValidTypeName(n)) return{Kind::Unsigned,n,{}};
  // Accept the Java-style keyword names the lexer produces (int, double,
  // boolean, String, void) as well as the lowercase aliases (bool, string).
  // A trailing "[]" (one or more) denotes an array of the inner type.
@@ -24,10 +26,10 @@ static Type typeOf(const std::string& n){
  return{Kind::Struct,n,{}};
 }
 static std::string nameOf(const Type&t){
- switch(t.kind){case Kind::Void:return"void";case Kind::Int:return"int";case Kind::Double:return"double";case Kind::Bool:return"bool";case Kind::String:return"string";case Kind::Null:return"null";case Kind::Struct:return t.name;case Kind::Array:return t.name.empty()?"array":t.name;case Kind::Unknown:return"unknown";default:return"error";}
+ switch(t.kind){case Kind::Void:return"void";case Kind::Int:return"int";case Kind::Unsigned:return t.name;case Kind::Double:return"double";case Kind::Bool:return"bool";case Kind::String:return"string";case Kind::Null:return"null";case Kind::Struct:return t.name;case Kind::Array:return t.name.empty()?"array":t.name;case Kind::Unknown:return"unknown";default:return"error";}
 }
-static bool same(const Type&a,const Type&b){return a.kind==b.kind&&((a.kind!=Kind::Struct&&a.kind!=Kind::Array)||a.name==b.name);}
-static bool numeric(const Type&t){return t.kind==Kind::Int||t.kind==Kind::Double;}
+static bool same(const Type&a,const Type&b){return a.kind==b.kind&&((a.kind!=Kind::Struct&&a.kind!=Kind::Array&&a.kind!=Kind::Unsigned)||a.name==b.name);}
+static bool numeric(const Type&t){return t.kind==Kind::Int||t.kind==Kind::Unsigned||t.kind==Kind::Double;}
 static bool assignable(const Type&to,const Type&from){
  return to.kind==Kind::Unknown||from.kind==Kind::Unknown||(to.kind==Kind::Double&&from.kind==Kind::Int)||(from.kind==Kind::Null&&(to.kind==Kind::Struct||to.kind==Kind::String||to.kind==Kind::Array))||same(to,from);
 }
