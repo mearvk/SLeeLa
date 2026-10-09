@@ -154,7 +154,7 @@ private:
         for(const auto& p:m.params) if(structLayout_.count(p.type)) varType_[p.name]=p.type;
         if(!m.isStatic&&m.name!="main")varType_["this"]=currentClass_;
         slvm_begin_func(vm_,key.c_str(),(int)m.params.size()+((m.isStatic||m.name=="main")?0:1),mi.nlocals); ctx_=&ctx;
-        if(m.name=="main") for(const Field* f:fields_){auto owner=fieldOwner_.find(currentClass_+"::"+f->name);if(owner==fieldOwner_.end())continue;if(f->init)emitExpr(f->init.get());else emit(OP_CONST,addNullConst());emit(OP_STOREG,fieldGlobal_[currentClass_+"::"+f->name]);}
+        if(m.name=="main") for(const auto& cls:prog_.classes) if(cls.name==currentClass_) for(const auto& f:cls.fields) if(f.isStatic){if(f.init)emitExpr(f.init.get());else emit(OP_CONST,addNullConst());emit(OP_STOREG,fieldGlobal_[currentClass_+"::"+f.name]);}
         emitBlock(*m.body);ctx_=nullptr;emit(OP_CONST,addNullConst());emit(OP_RET);slvm_end_func(vm_);
         varType_=savedTypes;
     }
@@ -292,6 +292,7 @@ private:
     // not statically known to be a struct. Used to resolve field offsets.
     std::string exprStructType(const Expr* e){
         if(auto v=dynamic_cast<const VarExpr*>(e)){auto it=varType_.find(v->name);return it==varType_.end()?"":it->second;}
+        if(dynamic_cast<const ThisExpr*>(e))return currentClass_;
         if(auto m=dynamic_cast<const MemberAccess*>(e)){std::string bt=exprStructType(m->base.get());if(bt.empty())return "";auto lit=structLayout_.find(bt);if(lit==structLayout_.end())return "";int idx=-1;auto oit=lit->second.fieldOffset.find(m->field);if(oit!=lit->second.fieldOffset.end())idx=oit->second;if(idx<0)return "";return lit->second.fieldType[idx];}
         if(auto n=dynamic_cast<const NewExpr*>(e))return n->typeName;
         return "";
