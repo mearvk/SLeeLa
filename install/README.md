@@ -43,17 +43,27 @@ A build failure stops deployment before the staged result is copied. Existing in
 PATH changes are user-level only.
 
 - **Linux / macOS:** the installer writes an environment snippet at
-  `$SLEELA_INSTALL_ROOT/profile/sleela-env.sh` that sets `SLEELA_HOME` and
-  prepends `$SLEELA_HOME/bin` to `PATH`, then adds one guarded `source` line to
-  each shell startup file present (`~/.bashrc`, `~/.bash_profile`, `~/.zshrc`,
-  `~/.profile`) so it applies to both bash (Linux default) and zsh (macOS
-  default). The hook is idempotent — re-running the installer does not duplicate
-  it — and `source`-ing the snippet makes `sleela` available in the current
-  shell without reopening it.
-- **Windows 10+:** the installer sets a user-level `SLEELA_HOME` and prepends
-  `%SLEELA_HOME%\bin` to the current user's `Path` (never the machine-wide
-  PATH), and reflects both into the running session so new terminals inherit
-  them automatically.
+  `$SLEELA_INSTALL_ROOT/profile/sleela-env.sh` that sets `SLEELA_HOME`, sets
+  `SLEELA` to `$SLEELA_HOME/bin/sleela` (the toolchain executable), and prepends
+  `$SLEELA_HOME/bin` to `PATH`, then adds one guarded `source` line to each shell
+  startup file present (`~/.bashrc`, `~/.bash_profile`, `~/.zshrc`, `~/.profile`)
+  so it applies to both bash (Linux default) and zsh (macOS default). The hook is
+  idempotent — re-running the installer does not duplicate it — and `source`-ing
+  the snippet makes `sleela` available in the current shell without reopening it.
+- **Windows 10+:** the installer sets a user-level `SLEELA_HOME`, sets `SLEELA`
+  to `%SLEELA_HOME%\bin\sleela.exe`, and prepends `%SLEELA_HOME%\bin` to the
+  current user's `Path` (never the machine-wide PATH), and reflects all into the
+  running session so new terminals inherit them automatically.
+
+### The `sleela` executable
+
+The toolchain binary (`sleela` / `sleela.exe`) is produced by the native `impl`
+build (`make all`, which runs `make -C impl all`) and staged under
+`impl/build/SLeeLa/bin`. The installer copies it into `$SLEELA_HOME/bin`, so a
+successful install puts `sleela` on `PATH` **and** sets the `SLEELA` variable
+that downstream projects look for (the "`set SLEELA=/path/to/sleela`"
+convention). If the native build did not complete, the installer warns that
+`sleela` is missing — run `make -C impl all` and re-install.
 
 ## Startup settings
 
