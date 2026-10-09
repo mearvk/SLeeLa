@@ -1,0 +1,8 @@
+# SLdsPICCPU
+
+class SLdsPICCPU {
+  architecture; profile; clock; programCounter; workingRegisters; statusRegisters;
+  alu; multiplier; macUnit; accumulators; addressGenerator; loopController;
+  programMemory; dataMemory; peripheralMap; pipeline; interruptController; dmaController; couplers;
+  reset(); fetch(); decode(); generateAddress(); executeInteger(); executeDSP(); executeMAC(); accessProgramMemory(); accessDataMemory(); accessPeripheral(); executeLoopStep(); serviceInterrupt(); serviceDMA(); complete(); validate();
+}
