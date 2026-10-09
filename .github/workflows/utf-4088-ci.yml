@@ -1,0 +1,32 @@
+name: UTF-4088 CI
+
+on:
+  push:
+    paths:
+      - "utf-4088/**"
+      - ".github/workflows/utf-4088-ci.yml"
+  pull_request:
+    paths:
+      - "utf-4088/**"
+      - ".github/workflows/utf-4088-ci.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-test:
+    name: Build and test (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure
+        run: cmake -S utf-4088 -B build/utf4088 -DCMAKE_BUILD_TYPE=Release
+      - name: Build
+        run: cmake --build build/utf4088 --config Release --parallel
+      - name: Test
+        run: ctest --test-dir build/utf4088 -C Release --output-on-failure
