@@ -1,23 +1,23 @@
 # Sleela — Language Syntax Specification
 
     Language:        Sleela
-    Syntax version:  1.7   (checked-in grammar version; this document describes
-                     the 1.3 surface and the 1.3..1.7 additions below)
-    Compiler:        Sleelvac(TM) 0.3.29-dev  (accepts .sleela syntax 1.3 .. 1.7)
+    Syntax version:  1.8   (1.3..1.7 baseline plus inferred local declarations)
+    Compiler:        Sleelvac(TM) 0.3.29-dev  (version gate accepts syntax 1.3 .. 1.8)
     Surface:         Java-like
     Core:            Turing-complete, thread-friendly C/C++ execution core
     Companion:       SHEET.sheet (system-object catalog), SST.model (NS-SST-0001),
                      lib/LIBRARY.SYMBOLS.md (authoritative /lib class vocabulary)
-    Status:          Normative for the syntax 1.3..1.7 surface
+    Status:          Normative for the syntax 1.3..1.8 surface
 
     Versioning note: two distinct version numbers apply and must not be
     conflated. The **syntax version** (MAJOR.MINOR, declared per file with
     `#sleela 1.7`) is the grammar version defined here and enforced by
     `impl/frontend/version.{h,cpp}` (documented supported range 1.3 .. 1.7).
-    Syntax 1.8 has been requested but is NOT declared supported by this snapshot;
-    do not use `#sleela 1.8` until the version gate, grammar, parser/semantic
-    implementation, regression fixtures, and CI have been updated and verified
-    together. The **compiler/tool version** (Sleelvac™ 0.3.29-dev, printed by
+    Syntax 1.8 adds inferred local declarations using `let`. The compiler's
+    semantic analyzer supports inference from non-null, non-void, statically
+    known initializer expressions. Constructor arguments and concise `Type(args)`
+    construction remain outside the verified implementation; do not infer their
+    support from the constructor-series design documents. The **compiler/tool version** (Sleelvac™ 0.3.29-dev, printed by
     `sleela version`) is the implementation release and evolves independently.
     A file must declare a syntax version within the verified supported range;
     the tool version is informational.
@@ -28,7 +28,7 @@ Java-like code, Sleela can **address every object type named in `SHEET.sheet`**
 through its *conducted methods*, and it honors the **Constitution** invariants
 (system depth 3024, complexity degree ≤ 4).
 
-This document is normative for the syntax 1.3 surface the front end accepts.
+This document is normative for the syntax 1.3..1.8 surface the front end accepts.
 Every production and built-in below is implemented in `impl/frontend` and
 executes on `impl/core`.
 
@@ -488,3 +488,32 @@ This appendix mirrors the **10352** package-qualified class symbols across **83*
 --------------------------------------------------------------------------------
 Sleela (syntax 1.2) — Java-like surface, addressing the full SHEET.sheet object space,
 on the Turing-complete threaded C/C++ core.
+
+
+--------------------------------------------------------------------------------
+## 9. Syntax 1.8 — inferred local declarations
+
+A local declaration may use `let` when its initializer has a statically known,
+non-null and non-void type:
+
+```sleela
+#sleela 1.8
+class LetExample {
+    static void main() {
+        let count = 3;
+        let greeting = "hello";
+        let enabled = true;
+        print(count);
+        print(greeting);
+        print(enabled);
+    }
+}
+```
+
+The inferred type is the initializer's semantic type. An initializer is required.
+Inference from `null`, `void`, or an unknown/dynamic expression is rejected rather
+than silently assigning an unsafe type. Explicit declarations remain valid.
+
+Constructor overload resolution and runtime invocation are not declared part of
+this syntax 1.8 implementation until the compiler and runtime support them and
+constructor regression tests pass.
