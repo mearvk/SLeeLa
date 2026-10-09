@@ -133,7 +133,7 @@ private:
     int fieldSlot(const std::string& name) const { auto it=fieldGlobal_.find(currentClass_+"::"+name); if(it!=fieldGlobal_.end())return it->second;it=fieldGlobal_.find(name);return it==fieldGlobal_.end()?-1:it->second; }
     int instanceFieldOffset(const std::string& name) const { auto it=structLayout_.find(currentClass_);if(it==structLayout_.end())return -1;auto f=it->second.fieldOffset.find(name);return f==it->second.fieldOffset.end()?-1:f->second; }
     void emitThis(){if(!ctx_||ctx_->slotOf("this")<0)throw std::runtime_error("Semantic error: instance member requires an instance context");emit(OP_LOADL,ctx_->slotOf("this"));}
-    int countLocals(const Method& m){int n=(int)m.params.size()+(m.isStatic?0:1);countInBlock(*m.body,n);return n;}
+    int countLocals(const Method& m){int n=(int)m.params.size();countInBlock(*m.body,n);return n;}
     void countInBlock(const Block& b,int& n){for(const auto& s:b.stmts)countInStmt(s.get(),n);}
     void countInStmt(const Stmt* s,int& n){
         if(dynamic_cast<const VarDecl*>(s)) n++;
