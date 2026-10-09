@@ -67,7 +67,7 @@ jobs:
           export SLEELA_SHA256_MANIFEST="$(pwd)/security/sha256-manifest.json"
           cd impl
           make clean
-          make all
+          make all PYTHON=python
           test -f build/sleela.exe
           test -f build/nordshrift.exe
           ./build/sleela.exe version
