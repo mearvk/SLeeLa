@@ -1,0 +1,90 @@
+/*
+ * lib/vm/creator/SleelaVMCreator.sleela
+ * SLeeLa VM Creator — construction coordinator.
+ * Definition: Defines SleelaVMCreator, the entry point of the VM Creator Edition.
+ *   It reads a VM configuration, selects one SLVM generation from the generation
+ *   catalog, and produces a LIVE, runnable Secondary Sleela VM (lib/vm/SLVM) that
+ *   runs on the native Sleela VM substrate (lib/cpu/SLSleelaVM). It then hosts a
+ *   chosen Sleela CPU model (any SLCPURuntime / SL<ARCH>CPU) as that VM's
+ *   executor and runs a C, C++, Java, or Sleela program through the CPU — the
+ *   full Creator -> SLVM -> Sleela CPU -> program stack, in one object.
+ *
+ *   This is the bridge the Creator package previously only described in prose:
+ *   earlier generation classes (SleelaVMCore .. SLVMSovereign) are build-artifact
+ *   contracts; SleelaVMCreator is what actually instantiates and boots the SLVM
+ *   runtime and drives a guest CPU on it.
+ *
+ * Construction model (realized):
+ *   configuration -> generation catalog -> create() boots SLVM
+ *     -> hostCpu(cpu) nests the Sleela CPU on the SLVM substrate
+ *       -> run(workload) compiles+maps a C/C++/Java/Sleela program and executes
+ *
+ * Family: vm.creator. Composes SleelaVMGenerationCatalog; builds SLVM; hosts
+ *   SLCPURuntime; runs SLWorkload (SLCPUResource-bounded).
+ */
+#sleela 1.3
+class SleelaVMCreator {
+  SleelaVMGenerationCatalog catalog;
+  int generation;         // selected SLVM generation (0 = /impl Core .. 11 Sovereign)
+  String formalName;      // catalog name for the generation
+  SLVM vm;                // the live Secondary VM this creator built
+  int heapWords;
+  int memoryWords;
+
+  void configure() {
+    catalog = new SleelaVMGenerationCatalog();
+    generation = 0;
+    formalName = "Core";
+    heapWords = 1 << 16;
+    memoryWords = 1 << 16;
+  }
+
+  // Size the VM the creator will build (optional; sensible defaults otherwise).
+  void sizeVM(int heap, int memory) { heapWords = heap; memoryWords = memory; }
+
+  // Select a generation by version; validated against the catalog.
+  boolean selectGeneration(int version) {
+    if (!catalog.validateVersion(version)) { return false; }
+    generation = version;
+    formalName = catalog.nameForVersion(version);
+    return true;
+  }
+
+  // Build and boot a LIVE Secondary Sleela VM for the selected generation.
+  // This is the step the Creator README called "VM artifact" — here it is an
+  // actual runnable SLVM instance, not just a packaged build plan.
+  SLVM create() {
+    vm = new SLVM();
+    vm.configure(formalName);
+    vm.boot(heapWords, memoryWords);
+    return vm;
+  }
+
+  // Host a Sleela CPU model as the VM's executor (nested on the SLVM substrate).
+  void installExecutor(SLCPURuntime cpu) {
+    if (vm == null) { create(); }
+    vm.hostCpu(cpu);
+  }
+
+  // Run a C / C++ / Java / Sleela program through the hosted CPU under the SLVM.
+  // Returns the observable output. The whole stack — Creator built the SLVM, the
+  // SLVM hosts the CPU, the CPU executes the program — resolves in this call.
+  int runProgram(SLWorkload work, int budget) {
+    if (vm == null) { return -1; }
+    return vm.runGuestWorkload(work, budget);
+  }
+
+  // Convenience: do the entire stack in one call.
+  //   creator.run(generationVersion, cpu, workload, budget)
+  int run(int version, SLCPURuntime cpu, SLWorkload work, int budget) {
+    selectGeneration(version);
+    create();
+    installExecutor(cpu);
+    return runProgram(work, budget);
+  }
+
+  SLVM builtVM()        { return vm; }
+  int selectedGeneration(){ return generation; }
+  String generationName() { return formalName; }
+  boolean ready()       { return vm != null && vm.active(); }
+}
