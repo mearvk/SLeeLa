@@ -172,7 +172,18 @@ NS_EMIT_OBJ := $(BUILD)/ns_sleela_emit.o $(BUILD)/ns_lowering.o
 # links). Lives under ../preferred-routers.
 PREFERRED_ROUTER_OBJ := $(BUILD)/preferred_router.o
 VERIFY_TOOL := ../tools/verify-before-execution.py
-VERIFY_MANIFEST ?= $(SLEELA_SHA256_MANIFEST)
+# Resolve the trusted manifest for both root-dispatched and direct builds.
+# A stale template value (/path/to/...) is not a real installation path; use
+# the repository-relative manifest instead. Real explicit paths remain honored.
+ifneq ($(filter /path/to/%,$(SLEELA_SHA256_MANIFEST) $(VERIFY_MANIFEST)),)
+  VERIFY_MANIFEST := ../security/sha256-manifest.json
+else ifeq ($(origin VERIFY_MANIFEST),undefined)
+  ifneq ($(strip $(SLEELA_SHA256_MANIFEST)),)
+    VERIFY_MANIFEST := $(SLEELA_SHA256_MANIFEST)
+  else
+    VERIFY_MANIFEST := ../security/sha256-manifest.json
+  endif
+endif
 VERIFY_ARGS = --manifest "$(VERIFY_MANIFEST)" --root "$(CURDIR)/.."
 # Python launcher differs between Windows and POSIX shells. Keep the security
 # gate in the build itself, but select a launcher that exists on each platform.
