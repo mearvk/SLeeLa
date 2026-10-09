@@ -1,10 +1,11 @@
 #include "character_map.hpp"
 
+#include <algorithm>
 #include <cmath>
+#include <cstdint>
 #include <limits>
 
 namespace utf4088 {
-
 namespace {
 std::uint64_t mix(std::uint64_t z) {
     z ^= z >> 30;
@@ -24,18 +25,16 @@ std::uint64_t q(double value) {
 } // namespace
 
 const std::vector<CharacterRecord>& frontend_registry() {
-    // This intentionally fails closed until the generated registry is
-    // populated. A partial table must never masquerade as the promised 16,606
-    // published-symbol front end.
-    static const std::vector<CharacterRecord> registry;
+    // Materialize the canonical deterministic registry once. A release build
+    // and tests now use the same generator instead of an empty placeholder.
+    static const std::vector<CharacterRecord> registry = generate_frontend_registry();
     return registry;
 }
 
 std::uint64_t derive_remainder_symbol(double x, double y,
                                       double pressure, double voltage) {
-    // 4-D deterministic address mixing. The output is an experimental symbol
-    // identifier, not an assertion that every generated identifier already
-    // has a human-language meaning or glyph.
+    // Stable deterministic address mixing. This is an identifier, not a claim
+    // that every generated value has a human-language meaning or glyph.
     std::uint64_t h = 0x9e3779b97f4a7c15ULL;
     h ^= mix(q(x) + 0x100000001b3ULL);
     h ^= mix(q(y) + 0x9e3779b97f4a7c15ULL);
