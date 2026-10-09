@@ -325,6 +325,17 @@ private:
         const std::string& m=mc.method;
         auto oneArgStr=[&](const char* verb){ if(mc.args.size()!=1) throw std::runtime_error("Semantic error: Munction "+std::string(verb)+"(...) takes exactly one argument"); };
         auto noArg=[&](const char* verb){ if(!mc.args.empty()) throw std::runtime_error("Semantic error: Munction "+std::string(verb)+"() takes no arguments"); };
+        // String methods (syntax 1.6). Emit the receiver (deepest), then the
+        // arguments in source order, then the opcode. The semantic analyzer has
+        // already confirmed the receiver is a String and the arity/types match.
+        if(m=="length"||m=="substring"||m=="charAt"||m=="indexOf"){
+            emitExpr(mc.receiver.get());
+            for(const auto& a:mc.args) emitExpr(a.get());
+            if(m=="length"){emit(OP_STR_LEN);return;}
+            if(m=="substring"){emit(OP_STR_SUB);return;}
+            if(m=="charAt"){emit(OP_STR_CHARAT);return;}
+            emit(OP_STR_INDEXOF);return;
+        }
         // The reach opener `Munction.start(name)` begins a chain and yields a
         // reach handle. It parses as MethodCall(VarExpr("Munction"), "start").
         if(m=="start"){
@@ -386,7 +397,10 @@ private:
             return;
         }
         emitExpr(b.lhs.get());emitExpr(b.rhs.get());
-        if(o=="+")emit(OP_ADD);else if(o=="-")emit(OP_SUB);else if(o=="*")emit(OP_MUL);else if(o=="/")emit(OP_DIV);else if(o=="%")emit(OP_MOD);else if(o=="==")emit(OP_EQ);else if(o=="!=")emit(OP_NE);else if(o=="<")emit(OP_LT);else if(o=="<=")emit(OP_LE);else if(o==">")emit(OP_GT);else if(o==">=")emit(OP_GE);else throw std::runtime_error("Semantic error: unknown binary operator '"+o+"'");}
+        if(o=="+")emit(OP_ADD);else if(o=="-")emit(OP_SUB);else if(o=="*")emit(OP_MUL);else if(o=="/")emit(OP_DIV);else if(o=="%")emit(OP_MOD);else if(o=="==")emit(OP_EQ);else if(o=="!=")emit(OP_NE);else if(o=="<")emit(OP_LT);else if(o=="<=")emit(OP_LE);else if(o==">")emit(OP_GT);else if(o==">=")emit(OP_GE);
+        /* Bitwise and shift operators (syntax 1.6). */
+        else if(o=="&")emit(OP_BAND);else if(o=="|")emit(OP_BOR);else if(o=="^")emit(OP_BXOR);else if(o=="<<")emit(OP_SHL);else if(o==">>")emit(OP_SHR);else if(o==">>>")emit(OP_USHR);
+        else throw std::runtime_error("Semantic error: unknown binary operator '"+o+"'");}
 
     bool tryEmitBuiltin(const Call& c){
         const std::string& n=c.callee;

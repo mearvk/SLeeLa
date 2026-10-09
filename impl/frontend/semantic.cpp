@@ -167,7 +167,15 @@ class Analyzer{
    if(!numeric(r)&&r.kind!=Kind::Unknown){err("operator '"+b.op+"' requires numeric operands");}
    return{(l.kind==Kind::Double||r.kind==Kind::Double)?Kind::Double:Kind::Int,{}};}
   if(b.op=="<"||b.op=="<="||b.op==">"||b.op==">="){if((!numeric(l)||!numeric(r))&&l.kind!=Kind::Unknown&&r.kind!=Kind::Unknown)err("comparison '"+b.op+"' requires numeric operands");return{Kind::Bool,{}};}
-  if(b.op=="=="||b.op=="!="){if(!assignable(l,r)&&!assignable(r,l)&&l.kind!=Kind::Unknown&&r.kind!=Kind::Unknown)err("equality operands have incompatible types "+nameOf(l)+" and "+nameOf(r));return{Kind::Bool,{}};}err("unknown binary operator '"+b.op+"'");return{Kind::Error,{}};
+  if(b.op=="=="||b.op=="!="){if(!assignable(l,r)&&!assignable(r,l)&&l.kind!=Kind::Unknown&&r.kind!=Kind::Unknown)err("equality operands have incompatible types "+nameOf(l)+" and "+nameOf(r));return{Kind::Bool,{}};}
+  // Bitwise and shift operators (syntax 1.6): integer-only, yield int. The
+  // parser already produces these nodes (parseBitOr/Xor/And, parseShift); accept
+  // them here so the compiler can emit the OP_BAND..OP_USHR opcodes.
+  if(b.op=="&"||b.op=="|"||b.op=="^"||b.op=="<<"||b.op==">>"||b.op==">>>"){
+   if(l.kind!=Kind::Int&&l.kind!=Kind::Unknown)err("operator '"+b.op+"' requires int operands");
+   if(r.kind!=Kind::Int&&r.kind!=Kind::Unknown)err("operator '"+b.op+"' requires int operands");
+   return{Kind::Int,{}};}
+  err("unknown binary operator '"+b.op+"'");return{Kind::Error,{}};
  }
  Type call(const Call&c){auto it=methods.find(c.callee);if(it!=methods.end()){const Method&m=*it->second.m;if(c.args.size()!=m.params.size())err("method '"+c.callee+"' expects "+std::to_string(m.params.size())+" argument(s), got "+std::to_string(c.args.size()));size_t n=c.args.size()<m.params.size()?c.args.size():m.params.size();for(size_t i=0;i<n;i++){Type g=expr(*c.args[i]),w=tn(m.params[i].type);if(!assignable(w,g))err("argument "+std::to_string(i+1)+" to '"+c.callee+"' has type "+nameOf(g)+", expected "+nameOf(w));}if(m.isProtected&&it->second.owner!=cls)err("protected method access denied for '"+c.callee+"'");return tn(m.retType);}
   // `spawn(method)` names a zero-arg method to run on a new thread; its single
@@ -196,7 +204,18 @@ class Analyzer{
   // is the `Munction` opener identifier, not a declared variable, so handle it
   // before trying to resolve the receiver as a value.
   if(m.method=="start"){if(auto r=dynamic_cast<const VarExpr*>(m.receiver.get())){if(r->name=="Munction"){if(m.args.size()!=1)err("Munction.start(name) takes exactly one argument");else{Type t=expr(*m.args[0]);if(t.kind!=Kind::String&&t.kind!=Kind::Unknown)err("Munction.start name must be string");}return{Kind::Unknown,{}};}}}
-  Type rcv=expr(*m.receiver);static const std::set<std::string>v={"connect","enable","send","thatch","consume","latch","closeWithReceipt","close","reception"};if(!v.count(m.method)){err("unknown fluent method '"+m.method+"'");return{Kind::Error,{}};}if(m.method=="consume"||m.method=="latch"||m.method=="close"||m.method=="reception"||m.method=="closeWithReceipt"){if(!m.args.empty())err("Munction "+m.method+"() takes no arguments");}else{if(m.args.size()!=1)err("Munction "+m.method+"() takes exactly one argument");if(!m.args.empty()){Type t=expr(*m.args[0]);if(t.kind!=Kind::String&&t.kind!=Kind::Unknown)err("Munction "+m.method+" argument must be string");}}return m.method=="closeWithReceipt"?Type{Kind::String,{}}:rcv;}
+  Type rcv=expr(*m.receiver);
+  // String methods (syntax 1.6): Java-style instance methods on a String value.
+  //   length() -> int; substring(int,int) -> String; charAt(int) -> String;
+  //   indexOf(String) -> int. Resolved when the receiver is a String (or Unknown
+  //   so a not-yet-typed receiver does not spuriously error).
+  if(rcv.kind==Kind::String||rcv.kind==Kind::Unknown){
+   if(m.method=="length"){if(!m.args.empty())err("String.length() takes no arguments");return{Kind::Int,{}};}
+   if(m.method=="substring"){if(m.args.size()!=2)err("String.substring(begin,end) takes two arguments");else{for(size_t i=0;i<m.args.size();i++){Type a=expr(*m.args[i]);if(a.kind!=Kind::Int&&a.kind!=Kind::Unknown)err("String.substring arguments must be int");}}return{Kind::String,{}};}
+   if(m.method=="charAt"){if(m.args.size()!=1)err("String.charAt(index) takes one argument");else{Type a=expr(*m.args[0]);if(a.kind!=Kind::Int&&a.kind!=Kind::Unknown)err("String.charAt index must be int");}return{Kind::String,{}};}
+   if(m.method=="indexOf"){if(m.args.size()!=1)err("String.indexOf(needle) takes one argument");else{Type a=expr(*m.args[0]);if(a.kind!=Kind::String&&a.kind!=Kind::Unknown)err("String.indexOf argument must be String");}return{Kind::Int,{}};}
+  }
+  static const std::set<std::string>v={"connect","enable","send","thatch","consume","latch","closeWithReceipt","close","reception"};if(!v.count(m.method)){err("unknown fluent method '"+m.method+"'");return{Kind::Error,{}};}if(m.method=="consume"||m.method=="latch"||m.method=="close"||m.method=="reception"||m.method=="closeWithReceipt"){if(!m.args.empty())err("Munction "+m.method+"() takes no arguments");}else{if(m.args.size()!=1)err("Munction "+m.method+"() takes exactly one argument");if(!m.args.empty()){Type t=expr(*m.args[0]);if(t.kind!=Kind::String&&t.kind!=Kind::Unknown)err("Munction "+m.method+" argument must be string");}}return m.method=="closeWithReceipt"?Type{Kind::String,{}}:rcv;}
 public:
  Analyzer(const Program&x,const SyntaxVersion&s):p(x),syntax(s){}
  SemanticResult run(){

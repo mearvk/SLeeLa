@@ -460,6 +460,15 @@ static double as_num(SLValue v) {
     if (v.type == SL_BOOL) return v.as.b;
     return 0.0;
 }
+/* Integer coercion for the bitwise/shift operators (OP_BAND..OP_USHR). Bitwise
+ * ops are integer-only; a double or bool operand is truncated/widened to its
+ * int64 value, matching how as_num() treats mixed numeric operands elsewhere. */
+static int64_t as_int(SLValue v) {
+    if (v.type == SL_INT) return v.as.i;
+    if (v.type == SL_DOUBLE) return (int64_t)v.as.d;
+    if (v.type == SL_BOOL) return v.as.b;
+    return 0;
+}
 static int is_truthy(SLValue v) {
     if (v.type == SL_NULL) return 0;
     if (v.type == SL_INT) return v.as.i != 0;
@@ -970,6 +979,50 @@ static SLResult run_thread(SLThread* t) {
         case OP_DIV: { SLValue b=POP(),a=POP(); if(both_int(a,b)){if(!b.as.i) TERR("integer divide by zero"); PUSH(slval_int(a.as.i/b.as.i));} else PUSH(slval_double(as_num(a)/as_num(b))); } break;
         case OP_MOD: { SLValue b=POP(),a=POP(); if(both_int(a,b)){ if(!b.as.i) TERR("integer modulo by zero"); PUSH(slval_int(a.as.i%b.as.i)); } else { double db=as_num(b); if(db==0.0) TERR("modulo by zero"); PUSH(slval_double(fmod(as_num(a),db))); } } break;
         case OP_NEG: { SLValue a=POP(); if(a.type==SL_INT) PUSH(slval_int(-a.as.i)); else PUSH(slval_double(-as_num(a))); } break;
+        /* Bitwise and shift operators (syntax 1.6): integer-only, push int. The
+         * shift count is masked to 0..63 so a wild count cannot be UB. OP_USHR
+         * is the logical (unsigned) right shift; the signed ops use int64_t. */
+        case OP_BAND: { SLValue b=POP(),a=POP(); PUSH(slval_int(as_int(a) & as_int(b))); } break;
+        case OP_BOR:  { SLValue b=POP(),a=POP(); PUSH(slval_int(as_int(a) | as_int(b))); } break;
+        case OP_BXOR: { SLValue b=POP(),a=POP(); PUSH(slval_int(as_int(a) ^ as_int(b))); } break;
+        case OP_SHL:  { SLValue b=POP(),a=POP(); PUSH(slval_int(as_int(a) << (as_int(b) & 63))); } break;
+        case OP_SHR:  { SLValue b=POP(),a=POP(); PUSH(slval_int(as_int(a) >> (as_int(b) & 63))); } break;
+        case OP_USHR: { SLValue b=POP(),a=POP(); PUSH(slval_int((int64_t)((uint64_t)as_int(a) >> (as_int(b) & 63)))); } break;
+        /* String methods (syntax 1.6). The receiver String is deepest on the
+         * stack; arguments are above it in source order. Lengths/indices are in
+         * UTF-8 bytes (the VM's string representation). */
+        case OP_STR_LEN: {
+            SLValue s=POP(); if(s.type!=SL_STR) TERR("length() requires a String receiver");
+            const char* cs=slvm_str(vm,s.as.s); PUSH(slval_int((int64_t)strlen(cs)));
+        } break;
+        case OP_STR_SUB: {
+            SLValue e=POP(), b=POP(), s=POP();
+            if(s.type!=SL_STR) TERR("substring() requires a String receiver");
+            if(e.type!=SL_INT||b.type!=SL_INT) TERR("substring(begin,end) requires int arguments");
+            const char* cs=slvm_str(vm,s.as.s); int64_t n=(int64_t)strlen(cs);
+            int64_t bi=b.as.i, ei=e.as.i;
+            if(bi<0||ei<bi||ei>n) TERR("substring range out of bounds");
+            size_t len=(size_t)(ei-bi);
+            char* buf=(char*)malloc(len+1); if(!buf) TERR("out of memory in substring()");
+            memcpy(buf,cs+bi,len); buf[len]=0;
+            SLValue r; r.type=SL_STR; r.as.s=intern(vm,buf); free(buf); PUSH(r);
+        } break;
+        case OP_STR_CHARAT: {
+            SLValue idx=POP(), s=POP();
+            if(s.type!=SL_STR) TERR("charAt() requires a String receiver");
+            if(idx.type!=SL_INT) TERR("charAt(index) requires an int argument");
+            const char* cs=slvm_str(vm,s.as.s); int64_t n=(int64_t)strlen(cs);
+            if(idx.as.i<0||idx.as.i>=n) TERR("charAt index out of bounds");
+            char buf[2]; buf[0]=cs[idx.as.i]; buf[1]=0;
+            SLValue r; r.type=SL_STR; r.as.s=intern(vm,buf); PUSH(r);
+        } break;
+        case OP_STR_INDEXOF: {
+            SLValue needle=POP(), s=POP();
+            if(s.type!=SL_STR||needle.type!=SL_STR) TERR("indexOf() requires String receiver and argument");
+            const char* cs=slvm_str(vm,s.as.s); const char* nd=slvm_str(vm,needle.as.s);
+            const char* hit=strstr(cs,nd);
+            PUSH(slval_int(hit? (int64_t)(hit-cs) : (int64_t)-1));
+        } break;
         case OP_EQ: { SLValue b=POP(),a=POP(); int e; if(a.type==SL_STRUCT||b.type==SL_STRUCT) e=(a.type==SL_STRUCT&&b.type==SL_STRUCT&&a.as.h==b.as.h); else if(a.type==SL_ARRAY||b.type==SL_ARRAY) e=(a.type==SL_ARRAY&&b.type==SL_ARRAY&&a.as.h==b.as.h); else if(a.type==SL_STR&&b.type==SL_STR) e=(a.as.s==b.as.s); else e=(as_num(a)==as_num(b)); PUSH(slval_bool(e)); } break;
         case OP_NE: { SLValue b=POP(),a=POP(); int e; if(a.type==SL_STRUCT||b.type==SL_STRUCT) e=!(a.type==SL_STRUCT&&b.type==SL_STRUCT&&a.as.h==b.as.h); else if(a.type==SL_ARRAY||b.type==SL_ARRAY) e=!(a.type==SL_ARRAY&&b.type==SL_ARRAY&&a.as.h==b.as.h); else if(a.type==SL_STR&&b.type==SL_STR) e=(a.as.s!=b.as.s); else e=(as_num(a)!=as_num(b)); PUSH(slval_bool(e)); } break;
         case OP_LT: { SLValue b=POP(),a=POP(); PUSH(slval_bool(as_num(a)<as_num(b))); } break;

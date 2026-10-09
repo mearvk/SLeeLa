@@ -3,7 +3,7 @@
     Language:        Sleela
     Syntax version:  1.6   (the current .sleela grammar version; this document
                      describes the 1.3 surface and the 1.3..1.6 additions below)
-    Compiler:        Sleelvac(TM) 0.3.23-dev  (accepts .sleela syntax 1.3 .. 1.6)
+    Compiler:        Sleelvac(TM) 0.3.24-dev  (accepts .sleela syntax 1.3 .. 1.6)
     Surface:         Java-like
     Core:            Turing-complete, thread-friendly C/C++ execution core
     Companion:       SHEET.sheet (system-object catalog), SST.model (NS-SST-0001),
@@ -14,7 +14,7 @@
     conflated. The **syntax version** (MAJOR.MINOR, declared per file with
     `#sleela 1.6`) is the grammar version defined here and enforced by
     `impl/frontend/version.{h,cpp}` (supported range 1.3 .. 1.6). The
-    **compiler/tool version** (Sleelvac™ 0.3.23-dev, printed by `sleela version`)
+    **compiler/tool version** (Sleelvac™ 0.3.24-dev, printed by `sleela version`)
     is the implementation release and evolves independently. A file must declare
     a syntax version within the supported range; the tool version is
     informational.
@@ -71,9 +71,18 @@ variables `camelCase` (convention, not enforced).
     arithmetic   +   -   *   /   %
     comparison   ==  !=  <   <=  >   >=
     logical      &&  ||  !
+    bitwise      &   |   ^           (syntax 1.6; integer operands, yield int)
+    shift        <<  >>  >>>         (syntax 1.6; integer operands, yield int)
     assignment   =
     grouping     (   )   {   }
     separators   ;   ,
+
+    Bitwise & shift operators (syntax 1.6): `&` `|` `^` `<<` `>>` `>>>` take
+    integer operands and produce an int. `>>` is the arithmetic (sign-propagating)
+    right shift; `>>>` is the logical (zero-fill) right shift on the 64-bit
+    representation. Shift counts are taken modulo 64. Precedence follows Java:
+    shifts bind tighter than comparisons; `&` then `^` then `|` bind between
+    equality and `&&`.
 
 --------------------------------------------------------------------------------
 ## 2. Program structure
@@ -202,9 +211,13 @@ its effect).
 
     expr        ::= logic-or
     logic-or    ::= logic-and   ("||" logic-and)*
-    logic-and   ::= equality    ("&&" equality)*
+    logic-and   ::= bit-or      ("&&" bit-or)*
+    bit-or      ::= bit-xor     ("|" bit-xor)*       // syntax 1.6
+    bit-xor     ::= bit-and     ("^" bit-and)*       // syntax 1.6
+    bit-and     ::= equality    ("&" equality)*      // syntax 1.6
     equality    ::= comparison  (("==" | "!=") comparison)*
-    comparison  ::= additive    (("<" | "<=" | ">" | ">=") additive)*
+    comparison  ::= shift       (("<" | "<=" | ">" | ">=") shift)*
+    shift       ::= additive    (("<<" | ">>" | ">>>") additive)*  // syntax 1.6
     additive    ::= multiplic.  (("+" | "-") multiplic.)*
     multiplic.  ::= unary       (("*" | "/" | "%") unary)*
     unary       ::= ("-" | "!") unary | primary
@@ -225,6 +238,18 @@ name that does not is a struct member access.
 
 `+` is arithmetic on numbers and **concatenation** when either operand is a
 `String` (Java-style). Comparisons and logical operators yield `boolean`.
+
+**String methods (syntax 1.6).** A `String` value supports Java-style instance
+methods via the `.` operator:
+
+    s.length()            -> int     // number of UTF-8 bytes
+    s.substring(b, e)     -> String  // the bytes in [b, e); 0 <= b <= e <= len
+    s.charAt(i)           -> String  // the one-byte String at index i
+    s.indexOf(needle)     -> int     // first index of needle, or -1 if absent
+
+`substring`/`charAt` fail (a runtime error) on an out-of-range index. These are
+the first instance methods on a primitive type; they parse as member-access
+calls and are resolved by the receiver being a `String`.
 
 --------------------------------------------------------------------------------
 ## 6. Conducted methods — addressing `.sheet` object types
