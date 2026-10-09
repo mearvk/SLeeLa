@@ -1,0 +1,34 @@
+/*
+ * lib/antivirus/SLSystemScanner.sleela
+ * Administrator-authorized scan entry point.
+ */
+#sleela 1.3
+class SLSystemScanner {
+  SLScannerEngine engine;
+  boolean administratorAuthorized;
+
+  void configure(SLScannerEngine scannerEngine) {
+    engine = scannerEngine;
+    administratorAuthorized = false;
+  }
+
+  void authorizeAdministrator(boolean authorized) {
+    administratorAuthorized = authorized;
+  }
+
+  SLScanResult scanApprovedRoot(String path) {
+    SLScanResult result = new SLScanResult();
+    result.configure(path, "ClamAV");
+    if (!administratorAuthorized) {
+      result.markError("ADMINISTRATOR_AUTHORIZATION_REQUIRED");
+      return result;
+    }
+    if (engine == null) {
+      result.markError("SCANNER_ENGINE_NOT_CONFIGURED");
+      return result;
+    }
+    SLScanRequest request = new SLScanRequest();
+    request.configure(path, "SYSTEM");
+    return engine.scan(request);
+  }
+}

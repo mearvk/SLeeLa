@@ -1,0 +1,14 @@
+/*
+ * OS profile: Apple / macOS.
+ */
+#sleela 1.3
+class SLMacOSAntivirusProfile {
+  String brand() { return "Apple"; }
+  String name() { return "macOS"; }
+  String systemConfigPath() { return "/Library/Application Support/SLeeLa/Antivirus/antivirus.json"; }
+  String userConfigPath() { return "~/Library/Application Support/SLeeLa/Antivirus/antivirus.json"; }
+  String daemonClient() { return "clamdscan"; }
+  String oneShotClient() { return "clamscan"; }
+  String endpointPolicy() { return "Detect local clamd socket from installed configuration."; }
+  boolean supportsClamOnAccess() { return false; }
+}

@@ -1,0 +1,38 @@
+/*
+ * lib/antivirus/SLQuarantineManager.sleela
+ * Safe quarantine workflow contract; no deletion is performed here.
+ */
+#sleela 1.3
+class SLQuarantineManager {
+  String quarantineRoot;
+  boolean enabled;
+  boolean verifyCopy;
+  boolean auditEnabled;
+
+  void configure(String root) {
+    quarantineRoot = root;
+    enabled = false;
+    verifyCopy = true;
+    auditEnabled = true;
+  }
+
+  void enable() {
+    enabled = true;
+  }
+
+  void disable() {
+    enabled = false;
+  }
+
+  boolean isReady() {
+    return enabled && verifyCopy && auditEnabled &&
+      quarantineRoot != null && quarantineRoot.length() > 0;
+  }
+
+  String quarantineStatus(String targetPath) {
+    if (!enabled) return "QUARANTINE_DISABLED";
+    if (targetPath == null || targetPath.length() == 0) return "INVALID_TARGET";
+    if (!isReady()) return "QUARANTINE_NOT_CONFIGURED";
+    return "HOST_BRIDGE_NOT_IMPLEMENTED";
+  }
+}

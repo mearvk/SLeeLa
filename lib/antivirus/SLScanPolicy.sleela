@@ -1,0 +1,37 @@
+/*
+ * lib/antivirus/SLScanPolicy.sleela
+ * Conservative defaults for user and administrator scans.
+ */
+#sleela 1.3
+class SLScanPolicy {
+  boolean allowSystemScope;
+  boolean followSymbolicLinks;
+  boolean quarantineEnabled;
+  boolean failClosedOnEngineError;
+  long maxFileSizeBytes;
+  long timeoutSeconds;
+  long maxDepth;
+
+  void configureDefaults() {
+    allowSystemScope = false;
+    followSymbolicLinks = false;
+    quarantineEnabled = false;
+    failClosedOnEngineError = true;
+    maxFileSizeBytes = 268435456;
+    timeoutSeconds = 120;
+    maxDepth = 64;
+  }
+
+  boolean permits(SLScanRequest request) {
+    if (request == null || !request.isValid()) return false;
+    if (request.isSystem() && !allowSystemScope) return false;
+    if (request.followLinks && !followSymbolicLinks) return false;
+    if (request.maxFileSizeBytes > maxFileSizeBytes) return false;
+    if (request.timeoutSeconds > timeoutSeconds) return false;
+    return true;
+  }
+
+  boolean canQuarantine() {
+    return quarantineEnabled;
+  }
+}

@@ -1,0 +1,39 @@
+/*
+ * lib/antivirus/SLScanRequest.sleela
+ * Request model for local and system-wide antivirus scans.
+ */
+#sleela 1.3
+class SLScanRequest {
+  String targetPath;
+  String scope;
+  boolean recursive;
+  boolean followLinks;
+  long maxFileSizeBytes;
+  long timeoutSeconds;
+
+  void configure(String path, String requestedScope) {
+    targetPath = path;
+    scope = requestedScope;
+    recursive = true;
+    followLinks = false;
+    maxFileSizeBytes = 268435456;
+    timeoutSeconds = 120;
+  }
+
+  boolean hasTarget() {
+    return targetPath != null && targetPath.length() > 0;
+  }
+
+  boolean isLocal() {
+    return scope != null && scope.equals("LOCAL");
+  }
+
+  boolean isSystem() {
+    return scope != null && scope.equals("SYSTEM");
+  }
+
+  boolean isValid() {
+    return hasTarget() && (isLocal() || isSystem()) &&
+      maxFileSizeBytes > 0 && timeoutSeconds > 0;
+  }
+}

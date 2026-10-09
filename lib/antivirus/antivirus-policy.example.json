@@ -1,0 +1,23 @@
+{
+  "schema": "sleela-antivirus-policy-1",
+  "scope": "LOCAL",
+  "engine": "clamav",
+  "preferDaemon": true,
+  "allowOneShotFallback": true,
+  "systemScanEnabled": false,
+  "quarantineEnabled": false,
+  "followSymbolicLinks": false,
+  "maxFileSizeBytes": 268435456,
+  "timeoutSeconds": 120,
+  "maxDepth": 64,
+  "onAccess": {
+    "enabled": false,
+    "mode": "notify-only",
+    "platformSpecific": true
+  },
+  "logging": {
+    "enabled": true,
+    "includeTargetPath": true,
+    "redactUserHomeInExport": true
+  }
+}
