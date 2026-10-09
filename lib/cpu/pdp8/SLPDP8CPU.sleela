@@ -1,0 +1,78 @@
+/**
+ * SLeeLa DEC PDP-8 CPU model.
+ * Functional architecture foundation; not a cycle-accurate emulator.
+ */
+class SLPDP8CPU extends SLCPU {
+    String machineModel = "";
+    Boolean strictProfile = true;
+    Boolean extendedArithmeticEnabled = false;
+    Boolean memoryExtensionEnabled = false;
+    Integer accumulator = 0;
+    Integer link = 0;
+    Integer programCounter = 0;
+    Integer instructionRegister = 0;
+    Integer currentInstructionAddress = 0;
+    Integer memoryWords = 4096;
+    Map<Integer, Integer> memory = new Map<Integer, Integer>();
+    Map<Integer, Object> ioDevices = new Map<Integer, Object>();
+
+    function configure(String selectedMachineModel,
+                       Integer selectedMemoryWords,
+                       Boolean enableEAE,
+                       Boolean enableMemoryExtension) {
+        if (selectedMachineModel.trim().isEmpty()) {
+            throw new IllegalArgumentException("A PDP-8 machine profile is required");
+        }
+        if (selectedMemoryWords < 1 || selectedMemoryWords > 4096) {
+            throw new IllegalArgumentException("Base PDP-8 memory must be 1..4096 words; configure documented memory extension separately");
+        }
+        machineModel = selectedMachineModel;
+        memoryWords = selectedMemoryWords;
+        extendedArithmeticEnabled = enableEAE;
+        memoryExtensionEnabled = enableMemoryExtension;
+        resetArchitecturalState();
+    }
+
+    function resetArchitecturalState() {
+        accumulator = 0;
+        link = 0;
+        programCounter = 0;
+        instructionRegister = 0;
+        currentInstructionAddress = 0;
+    }
+
+    function maskWord(Integer value) {
+        return value & 0xFFF;
+    }
+
+    function readWord(Integer address) {
+        if (address < 0 || address >= memoryWords) {
+            throw new IllegalStateException("PDP-8 memory address out of range: " + address);
+        }
+        return memory.getOrDefault(address, 0) & 0xFFF;
+    }
+
+    function writeWord(Integer address, Integer value) {
+        if (address < 0 || address >= memoryWords) {
+            throw new IllegalStateException("PDP-8 memory address out of range: " + address);
+        }
+        memory.put(address, maskWord(value));
+    }
+
+    function setLink(Integer value) {
+        if (value != 0 && value != 1) {
+            throw new IllegalArgumentException("PDP-8 link must be 0 or 1");
+        }
+        link = value;
+    }
+
+    function requireFeature(Boolean enabled, String featureName) {
+        if (!enabled && strictProfile) {
+            throw new IllegalStateException("Unsupported PDP-8 feature: " + featureName);
+        }
+    }
+
+    function getMachineModel() {
+        return machineModel;
+    }
+}
