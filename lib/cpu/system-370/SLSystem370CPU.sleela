@@ -1,0 +1,67 @@
+/**
+ * SLeeLa IBM System/370 CPU family model.
+ * Profile-driven foundation; not a complete or cycle-accurate emulator.
+ */
+class SLSystem370CPU extends SLCPU {
+    String machineModel = "";
+    String architectureLevel = "system-370";
+    Boolean strictProfile = true;
+    Boolean dynamicAddressTranslationEnabled = false;
+    Map<String, Integer> generalRegisters = new Map<String, Integer>();
+    Map<String, Boolean> features = new Map<String, Boolean>();
+    Integer conditionCode = 0;
+    Long instructionAddress = 0;
+    Map<String, Long> systemState = new Map<String, Long>();
+
+    function configure(String selectedMachineModel,
+                       String selectedArchitectureLevel,
+                       Map<String, Boolean> selectedFeatures) {
+        machineModel = selectedMachineModel;
+        architectureLevel = selectedArchitectureLevel;
+        features = selectedFeatures;
+        if (machineModel.trim().isEmpty() || architectureLevel.trim().isEmpty()) {
+            throw new IllegalArgumentException("System/370 model and architecture level are required");
+        }
+        dynamicAddressTranslationEnabled = supportsFeature("dat");
+        resetArchitecturalState();
+    }
+
+    function resetArchitecturalState() {
+        generalRegisters.clear();
+        for (int i = 0; i < 16; i++) {
+            generalRegisters.put("R" + i, 0);
+        }
+        conditionCode = 0;
+        instructionAddress = 0L;
+        systemState.clear();
+        // Populate PSW/control state using the selected documented profile.
+    }
+
+    function supportsFeature(String feature) {
+        return features.getOrDefault(feature, false);
+    }
+
+    function requireFeature(String feature, String opcode) {
+        if (!supportsFeature(feature)) {
+            log.warn("Unavailable System/370 feature " + feature + " for opcode " + opcode);
+            if (strictProfile) {
+                throw new IllegalStateException("Operation exception: unavailable feature " + feature);
+            }
+        }
+    }
+
+    function setConditionCode(Integer value) {
+        if (value < 0 || value > 3) {
+            throw new IllegalArgumentException("Condition code must be in range 0..3");
+        }
+        conditionCode = value;
+    }
+
+    function isDynamicAddressTranslationEnabled() {
+        return dynamicAddressTranslationEnabled;
+    }
+
+    function getMachineModel() {
+        return machineModel;
+    }
+}
