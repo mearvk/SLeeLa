@@ -9,6 +9,17 @@ UTF-4088 is a hypothetical character-encoding and symbol-generation system. It i
 
 SLeeLa's source catalogue defines `C<n>` as a character-set capacity signature. The standard example `C1048576` means a maximum catalogue capacity of `1024 * 1024 = 1,048,576` distinct character entries. This is separate from UTF-4088's current 16,606 generated front-end records and its experimental identifier range. Capacity does not imply population, verified semantics, historical provenance, or Unicode compatibility. See the SLeeLa source contract in [`../markdown/SOURCE.md`](../markdown/SOURCE.md).
 
+## Runtime source-folder scan
+
+This folder declares its inventory policy in [SLEELA-CHARSET.conf](SLEELA-CHARSET.conf) as a **hybrid** catalogue: a procedural input-to-symbol model alongside generated/literal records. From the repository root, inspect it with:
+
+```sh
+python3 tools/sleela-character-scan.py utf-4088
+python3 tools/sleela-character-scan.py utf-4088 --json
+```
+
+The scan is read-only. It does not execute the procedural generator, does not assert that the declared `C1048576` capacity is populated, and does not establish Unicode compatibility. The scanner's behavior and manifest fields are documented in [the scanner contract](../tools/CHARACTER-CATALOG-SCANNER.md).
+
 ## Design premise
 
 The working model assumes a code space larger than four billion character identifiers. The exact representation is intentionally left open; the specification distinguishes the abstract character/code-point space from the physical processor, memory, bus, and motherboard implementation.
