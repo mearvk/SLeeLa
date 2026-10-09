@@ -1,15 +1,29 @@
 # SLeeLa Object Creation
 
-## Supported source forms
+> **Implementation status (0.3.27-dev):** This document describes the intended
+> construction architecture, not complete current support. The parser represents
+> constructor declarations and `new Type(args)`, but constructor overload
+> selection and constructor-body execution are not implemented. The semantic
+> analyzer therefore fails closed for constructor arguments and explicit class
+> constructors; it must not accept an instance while silently skipping its
+> initialization. A class with no explicit constructor can use the current
+> implicit zero-argument allocation path. Struct creation remains the established
+> aggregate path.
 
-SLeeLa defines two source forms for creating an instance:
+## Intended source forms
+
+The planned surface includes explicit construction and (when unambiguous) concise
+construction:
 
 ```sleela
-let first = new Widget(config);
-let second = Widget(config);
+Widget first = new Widget();
+Widget second = Widget();
 ```
 
-The explicit `new` form communicates object creation directly. The concise form is allowed only when semantic resolution identifies `Widget` as a constructible type and resolves the arguments to a valid constructor. It is not a blanket reinterpretation of every function call.
+The examples above illustrate the intended shared resolution model. They do not
+claim that constructor arguments or concise constructor syntax are currently
+supported. Until constructor planning and execution land, do not rely on
+`new Widget(args)` or on `Widget(args)` to run a constructor.
 
 ## Resolution rules
 
