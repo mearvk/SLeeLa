@@ -9,9 +9,9 @@
 class Threads {
 
     // A shared counter lives in a global; the lock keeps increments race-free.
-    int total = 0;
+    static int total = 0;
 
-    void worker() {
+    static void worker() {
         // do a little arithmetic so the threads actually overlap
         int s = 0;
         int k = 0;
@@ -25,7 +25,7 @@ class Threads {
         send(1, s);             // announce completion on the burble line (slot 1)
     }
 
-    void main() {
+    static void main() {
         int spawned = 0;
         while (spawned < 8) {
             spawn(worker);      // start worker on a new thread (up to 128)

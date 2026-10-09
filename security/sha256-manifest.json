@@ -99,11 +99,11 @@
     },
     {
       "path": "impl/core/sleela_core.c",
-      "sha256": "3a8486f5a00854864de27f8a4a5d1b825cdfab9c25c8ea96c1e12df85934f17b"
+      "sha256": "7679cae1729990e89175f32f67bf7d879b3e60a3efd1a1fbef195729e6515fb9"
     },
     {
       "path": "impl/core/sleela_core.h",
-      "sha256": "faa7338021b027fe1c1937f9bca6e7de1e97e2dd25e033e013cb7363c59469ab"
+      "sha256": "2d38e8b079ff5b248963f85794c806b4fcd5e1e9c4fbf48543da6026fa97a644"
     },
     {
       "path": "impl/core/sleela_design_activity.c",
@@ -200,6 +200,14 @@
     {
       "path": "impl/core/sleela_net.h",
       "sha256": "2c1e8595cac2fb802fc741c3ec0f164b86510f7efd8be960e60818b107739960"
+    },
+    {
+      "path": "impl/core/sleela_os.c",
+      "sha256": "eeb0df52498469a51f6f7b379e5724a2bab240ab08fbbaf29d990041d188f1c3"
+    },
+    {
+      "path": "impl/core/sleela_os.h",
+      "sha256": "844196600ed86962ae13a1d9b4ddd09f424b6c1825bf9b6b3b4d8702f6c5f5dc"
     },
     {
       "path": "impl/core/sleela_path.c",
@@ -311,7 +319,7 @@
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "ad21a2fc869f2f7eabbfc0688d17617ffca3f7dcba9d63b6a474d1dacb22eb0a"
+      "sha256": "5428afd9a09944fafe8765c75f2f0c02237030b25560ef27288b59ec43124e98"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -319,7 +327,7 @@
     },
     {
       "path": "impl/frontend/driver.cpp",
-      "sha256": "e1ee9e5b40c8766f44711902a8b34a4b9e89c9528178b5d989c1630072d2a5cf"
+      "sha256": "a6ff26fbe7e3163970612171801e16a7ef2f8f29c62ec3ff1e36820190fc7ac5"
     },
     {
       "path": "impl/frontend/dynamite.cpp",
@@ -399,7 +407,7 @@
     },
     {
       "path": "impl/frontend/semantic.cpp",
-      "sha256": "b121c3f138de0787fdbeb5f90d5eb5ac8ff2964801a537f055bfc0766244f238"
+      "sha256": "a60988c2a17a458a5a68811017ec68aa7275b5face199cecf26b81a24ec498ea"
     },
     {
       "path": "impl/frontend/semantic.h",
@@ -459,7 +467,7 @@
     },
     {
       "path": "impl/nordshrift/nordshrift.cpp",
-      "sha256": "2c01f99fd7e78d48f5972d50c948713426a4f11c59ae28ff1da1a0959c1832e8"
+      "sha256": "c44189cf80fc5e5050e6a74875acaf2baf8b81de0a690777470f7e0b098883dc"
     },
     {
       "path": "impl/nordshrift/object_compat.cpp",
@@ -567,7 +575,7 @@
     },
     {
       "path": "impl/subjects/chemistry/chemistry_api.cpp",
-      "sha256": "49591965cc96b5a4e2a07f046c60c659a4e3f25bb0e4c4e2c8187fee7be56dff"
+      "sha256": "c6dbd036c5ed97ae41db6381c62b5ea2488b2e32486db6424160fb1343449c67"
     },
     {
       "path": "impl/subjects/chemistry/chemistry_api.h",
@@ -599,7 +607,7 @@
     },
     {
       "path": "impl/subjects/math/math_native.cpp",
-      "sha256": "046d373ea030baf6e006f061def5dbfd5b8aada876aa251ed03d9d93693461c1"
+      "sha256": "057e4c40f18e80d8500fd281b2cc0684af96e18dc223b7e55e3ca0abeee1f612"
     },
     {
       "path": "impl/subjects/native/native_add.h",

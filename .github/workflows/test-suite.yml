@@ -13,6 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Set Debian logo to 75x75 upper-right in README files
+        if: github.event_name != 'pull_request'
         shell: bash
         run: |
           set -euo pipefail
@@ -52,6 +53,7 @@ jobs:
           git push origin "HEAD:refs/heads/$target"
           fi
       - name: Synchronize Ubuntu contacts into SLeeLa
+        if: github.event_name != 'pull_request'
         shell: bash
         run: |
           set -euo pipefail

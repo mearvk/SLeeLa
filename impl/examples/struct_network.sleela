@@ -13,11 +13,12 @@ struct Order {
 }
 
 class StructNetwork {
-    int listener;
+    // The network worker has no object receiver; shared socket state is static.
+    static int listener;
 
     // Server: accept one client, receive a packed Order, rebuild it, and
     // acknowledge with a computed notional value.
-    void server() {
+    static void server() {
         int client = accept(listener);
         String json = sockread(client);
         Order o = structUnpack(Order, json);
@@ -27,7 +28,7 @@ class StructNetwork {
     }
 
     // Client: build an Order, pack it to JSON, send it, and read the ack.
-    String client() {
+    static String client() {
         Order o = new Order();
         o.symbol = "AAPL";
         o.shares = 100;
@@ -43,7 +44,7 @@ class StructNetwork {
         return ack;
     }
 
-    void main() {
+    static void main() {
         listener = listen(45231);
         spawn(server);
         String ack = client();

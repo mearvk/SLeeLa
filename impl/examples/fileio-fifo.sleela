@@ -9,9 +9,8 @@
 // portable I/O. The Windows CI skips this example for that reason.
 
 class FifoIO {
-    int channel;
-
     void main() {
+        int channel;
         fifoCreate("/tmp/sleela-fifo-demo", 438);
         channel = openFile("/tmp/sleela-fifo-demo", "rw");
         write(channel, "hello from Sleela FIFO");
