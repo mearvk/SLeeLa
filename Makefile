@@ -43,6 +43,10 @@ jetbrains:
 install:
 	$(MAKE) -C install all
 
+# Interactive deployment of the compiled binaries; choose user-local or system-wide.
+install-product: autocheck
+	@./install/quick-safe-install.sh
+
 tutorial-check:
 	@./scripts/tutorial-check.sh
 
@@ -80,7 +84,8 @@ help:
 	@echo "  make decompiler Build lib/decompiler/"
 	@echo "  make vm        Build lib/vm/"
 	@echo "  make jetbrains Show JetBrains source acquisition helpers"
-	@echo "  make install     Verify Quick and Safe installer entry points"\n\t@echo "  make install-product  Build and interactively install compiled products (user-local or system-wide)"
+	@echo "  make install     Verify Quick and Safe installer entry points"
+	@echo "  make install-product  Build and interactively install compiled products (user-local or system-wide)"\n\t@echo "  make install-product  Build and interactively install compiled products (user-local or system-wide)"
 	@echo "  make tutorial-check Verify tutorial lesson sequence, example XML, and expected-evidence pairing"
 	@echo "  make tests     Build and run tests/"
 	@echo "  make server    Build api/server/"
