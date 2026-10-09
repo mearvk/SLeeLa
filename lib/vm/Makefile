@@ -12,14 +12,32 @@ CPP_SOURCES := src/sleela_vm_compiler_manager.cpp src/sleela_vm_management.cpp s
 C_OBJECTS := $(patsubst src/%.c,$(BUILD_DIR)/%.o,$(C_SOURCES))
 CPP_OBJECTS := $(patsubst src/%.cpp,$(BUILD_DIR)/%.o,$(CPP_SOURCES))
 
-.PHONY: all native cm-check memory-guard-check gc-check tutorial-check clean help
-all: native cm-check memory-guard-check gc-check tutorial-check
+.PHONY: all native cm-check memory-guard-check gc-check runtime-check creator-check tutorial-check clean help
+all: native cm-check memory-guard-check gc-check runtime-check creator-check tutorial-check
 native: $(C_OBJECTS) $(CPP_OBJECTS)
 
 tutorial-check:
 	@printf '%s\n' 'SLeeLa VM tutorial check'
 	@printf '%s\n' '  lessons: basic VM, progressive VM source, Startup Module, Dynamic Memory Guard, memory, security, linking'
-	@printf '%s\n' '  examples: tutorials/examples/*.sleela'
+	@printf '%s\n' '  examples: tutorials/examples/*.sleela, creator/examples/*.sleela'
+
+# The runnable Secondary-VM runtime object model (interpreter over the native
+# SLSleelaVM substrate) plus the native-RAM option.
+runtime-check:
+	@printf '%s\n' 'Secondary VM runtime check'
+	@for c in SLVM SLVMHeap SLVMMemory SLVMObject SLVMValue SLVMClass SLVMField SLVMMethod SLVMFrame SLVMThread SLVMModule SLVMModuleLoader SLVMNativeBinding SLNativeMemory ; do \
+	  test -f "$$c.sleela" && printf '  present: %s\n' "$$c" || { echo "  MISSING: $$c" ; exit 1 ; } ; \
+	done
+	@printf '%s\n' '  options: native-RAM residency (SLNativeMemory, MODE_NATIVE) for running outside simulation'
+
+# The VM Creator Edition: builds+boots a live SLVM, hosts a Sleela CPU as the
+# executor, runs C/C++/Java/Sleela programs; options DMA / GPU / NATIVE_RAM.
+creator-check:
+	@printf '%s\n' 'VM Creator check'
+	@for c in SleelaVMCreator SleelaVMGenerationCatalog SleelaVMCore SLVMFoundation SLVMOperator SLVMSpecialist SLVMSupervisor SLVMManager SLVMDirector SLVMAdministrator SLVMExecutive SLVMAuthority SLVMPrincipal SLVMSovereign ; do \
+	  test -f "creator/$$c.sleela" && printf '  present: %s\n' "$$c" || { echo "  MISSING: creator/$$c" ; exit 1 ; } ; \
+	done
+	@printf '%s\n' '  generations: /impl Core .. /11 Sovereign; options: requestDMA requestGPU requestNativeRam'
 cm-check:
 	@printf '%s\n' 'Compiler Manager package sanity check'
 	@printf '%s\n' '  profiles: BASIC_COMPLETE ADVANCED_TOTAL'
@@ -47,5 +65,7 @@ help:
 	@printf '%s\n' '  make cm-check  Print the Compiler Manager declaration contract'
 	@printf '%s\n' '  make memory-guard-check  Print Dynamic Memory Guard policy modes'
 	@printf '%s\n' '  make gc-check  Print the common GC contract'
+	@printf '%s\n' '  make runtime-check  Verify the Secondary VM runtime object model + native-RAM option'
+	@printf '%s\n' '  make creator-check  Verify the VM Creator sources + DMA/GPU/native-RAM options'
 	@printf '%s\n' '  make tutorial-check  Print VM tutorial and example inventory'
 	@printf '%s\n' '  make clean     Remove package build objects'
