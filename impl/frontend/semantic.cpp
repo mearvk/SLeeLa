@@ -5,10 +5,16 @@
 #include <string>
 namespace sleela {
 namespace {
-enum class Kind { Void, Int, Double, Bool, String, Null, Struct, Array, Unknown, Error };
+enum class Kind { Void, Int, Unsigned, Double, Bool, String, Null, Struct, Array, Unknown, Error };
 // For Kind::Array, `name` carries the full array type text (e.g. "int[]") and
 // `elem` the element type name (e.g. "int").
 struct Type { Kind kind=Kind::Unknown; std::string name{}; std::string elem{}; };
+static bool unsignedTypeName(const std::string& n){
+ if(n.size()<2 || n[0]!='U') return false;
+ std::size_t width=0;
+ for(std::size_t i=1;i<n.size();++i){if(n[i]<'0'||n[i]>'9') return false; unsigned d=static_cast<unsigned>(n[i]-'0'); if(width>104857 || (width==104857 && d>6)) return false; width=width*10+d;}
+ return width>=1 && width<=1048576;
+}
 static Type typeOf(const std::string& n){
  // Accept the Java-style keyword names the lexer produces (int, double,
  // boolean, String, void) as well as the lowercase aliases (bool, string).
@@ -16,7 +22,7 @@ static Type typeOf(const std::string& n){
  if(n.size()>=2 && n.compare(n.size()-2,2,"[]")==0){
   Type t; t.kind=Kind::Array; t.name=n; t.elem=n.substr(0,n.size()-2); return t;
  }
- if(n=="void"){return{Kind::Void,{},{}};}
+ if(unsignedTypeName(n)){return{Kind::Unsigned,n,{}};}\n if(n=="void"){return{Kind::Void,{},{}};}
  if(n=="int"){return{Kind::Int,{},{}};}
  if(n=="double"){return{Kind::Double,{},{}};}
  if(n=="bool"||n=="boolean"){return{Kind::Bool,{},{}};}
@@ -24,10 +30,10 @@ static Type typeOf(const std::string& n){
  return{Kind::Struct,n,{}};
 }
 static std::string nameOf(const Type&t){
- switch(t.kind){case Kind::Void:return"void";case Kind::Int:return"int";case Kind::Double:return"double";case Kind::Bool:return"bool";case Kind::String:return"string";case Kind::Null:return"null";case Kind::Struct:return t.name;case Kind::Array:return t.name.empty()?"array":t.name;case Kind::Unknown:return"unknown";default:return"error";}
+ switch(t.kind){case Kind::Void:return"void";case Kind::Int:return"int";case Kind::Unsigned:return t.name;case Kind::Double:return"double";case Kind::Bool:return"bool";case Kind::String:return"string";case Kind::Null:return"null";case Kind::Struct:return t.name;case Kind::Array:return t.name.empty()?"array":t.name;case Kind::Unknown:return"unknown";default:return"error";}
 }
-static bool same(const Type&a,const Type&b){return a.kind==b.kind&&((a.kind!=Kind::Struct&&a.kind!=Kind::Array)||a.name==b.name);}
-static bool numeric(const Type&t){return t.kind==Kind::Int||t.kind==Kind::Double;}
+static bool same(const Type&a,const Type&b){return a.kind==b.kind&&((a.kind!=Kind::Struct&&a.kind!=Kind::Array&&a.kind!=Kind::Unsigned)||a.name==b.name);}
+static bool numeric(const Type&t){return t.kind==Kind::Int||t.kind==Kind::Double||t.kind==Kind::Unsigned;}
 static bool assignable(const Type&to,const Type&from){
  return to.kind==Kind::Unknown||from.kind==Kind::Unknown||(to.kind==Kind::Double&&from.kind==Kind::Int)||(from.kind==Kind::Null&&(to.kind==Kind::Struct||to.kind==Kind::String||to.kind==Kind::Array))||same(to,from);
 }
@@ -60,7 +66,7 @@ class Analyzer{
   // An array type "T[]" is known when its element type T is known. Nested
   // arrays ("T[][]") recurse. Element type must not be void.
   if(t.size()>=2 && t.compare(t.size()-2,2,"[]")==0){std::string inner=t.substr(0,t.size()-2);return inner!="void"&&known(inner);}
-  return t=="void"||t=="int"||t=="double"||t=="bool"||t=="boolean"||t=="string"||t=="String"||structs.count(t)||classNames.count(t);
+  return t=="void"||t=="int"||unsignedTypeName(t)||t=="double"||t=="bool"||t=="boolean"||t=="string"||t=="String"||structs.count(t)||classNames.count(t);
  }
  Type tn(const std::string&t)const{return known(t)?typeOf(t):Type{Kind::Error,t};}
  void collect(){
