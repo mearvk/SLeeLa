@@ -1,0 +1,11 @@
+#sleela 1.8
+class LetInferencePass {
+    static void main() {
+        let count = 3;
+        let greeting = "hello";
+        let enabled = true;
+        print(count);
+        print(greeting);
+        print(enabled);
+    }
+}
