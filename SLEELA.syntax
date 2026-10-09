@@ -98,10 +98,8 @@ A program is one or more classes, optionally preceded or interleaved with
                  | struct-name                      // any declared struct (1.2+)
 
     unsigned-type ::= "U" unsigned-width
-    unsigned-width ::= nonzero-digit digit*
-                    | nonzero-digit digit*           // width must be <= 1048576
-    nonzero-digit  ::= "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
-    digit          ::= "0" | nonzero-digit
+    unsigned-width ::= digit+                       // semantic range: 1..1048576
+    digit          ::= "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
 
 `U<n>` is an unsigned, fixed-width integer type whose width `n` is a decimal integer in the inclusive range `1..1048576`; leading zeroes, zero, non-decimal characters, and widths above `1048576` are invalid. Its value range is `0..(2^n - 1)`. For example, `U1`, `U8`, `U16`, `U32`, `U64`, and `U1048576` are valid type names. Width and unsignedness must be preserved in compiler signatures and VM/module metadata; implementations must not silently lower values to signed or fixed 64-bit host integers. A runtime operation not yet supported for a width must produce an explicit diagnostic. `int` remains 64-bit. `void` is a return type only. The core is dynamically typed
 underneath; syntax 1.2 scalar type annotations are surface-level (parsed, not
