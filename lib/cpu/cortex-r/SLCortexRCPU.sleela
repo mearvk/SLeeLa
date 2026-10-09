@@ -1,75 +1,77 @@
-/**
- * SLeeLa ARM Cortex-R family CPU model.
- * Profile-driven foundation for real-time embedded processors.
- * This class is not a cycle-accurate model of any particular silicon.
+/*
+ * lib/cpu/cortex-r/SLCortexRCPU.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLCortexRCPU — a runnable model of the ARM Cortex-R. It extends
+ *   SLCPURuntime, so it inherits register storage, a word-addressable memory
+ *   interface, an SLALU, the fetch-decode-execute loop, and — crucially — the
+ *   resource-aware workload path (admit()/runWorkload()) that runs C, C++ or
+ *   Sleela programs on this CPU within an SLCPUResource grant, mapped onto the
+ *   canonical SLeeLa opcode substrate.
+ *
+ * This file supplies the ARM Cortex-R register set and a decode() over a compact
+ * instruction encoding (load/move/arithmetic/compare/branch/halt). It is a
+ * functional model sufficient to run the CPU as a CPU and as a target for
+ * further .sleela inputs, not a cycle-accurate emulator; per-arch bus/timing
+ * detail remains in this folder's markdown docs.
+ *
+ * Family: cpu. Extends SLCPURuntime.
  */
-class SLCortexRCPU extends SLCPU {
-    String coreVariant = "";
-    String instructionProfile = "";
-    Boolean strictProfile = true;
+#sleela 1.3
+class SLCortexRCPU extends SLCPURuntime {
+  static final int R_ZERO = 0;
+  static final int R_SP = 15;
+  static final int R_LINK = 14;
 
-    Boolean hasFPU = false;
-    Boolean hasDSP = false;
-    Boolean hasMPU = false;
-    Boolean hasMMU = false;
-    Boolean hasICache = false;
-    Boolean hasDCache = false;
-    Boolean hasTCM = false;
-    Boolean hasVirtualization = false;
+  int gpr(int i)            { return readReg(i); }
+  void setGpr(int i, int v) { writeReg(i, v); }
 
-    Map<String, Integer> registers = new Map<String, Integer>();
-    Map<String, Boolean> capabilities = new Map<String, Boolean>();
+  void configure() {
+    bringUp("ARM Cortex-R", 32, 32, 16, 262144);
+  }
 
-    function configure(String selectedVariant, String selectedInstructionProfile,
-                       Map<String, Boolean> selectedCapabilities) {
-        coreVariant = selectedVariant;
-        instructionProfile = selectedInstructionProfile;
-        capabilities = selectedCapabilities;
+  static final int I_LOADI = 1;   // dst <- imm
+  static final int I_MOVE  = 2;   // dst <- src
+  static final int I_LOAD  = 3;   // dst <- mem[imm]
+  static final int I_STORE = 4;   // mem[imm] <- dst
+  static final int I_ADD   = 5;   // dst <- dst + src
+  static final int I_SUB   = 6;   // dst <- dst - src
+  static final int I_MUL   = 7;   // dst <- dst * src
+  static final int I_AND   = 8;   // dst <- dst & src
+  static final int I_OR    = 9;   // dst <- dst | src
+  static final int I_CMP   = 10;  // flags <- dst - src
+  static final int I_JMP   = 11;  // pc <- imm
+  static final int I_JZ    = 12;  // if Z: pc <- imm
+  static final int I_HALT  = 13;
 
-        hasFPU = capabilities.getOrDefault("fpu", false);
-        hasDSP = capabilities.getOrDefault("dsp", false);
-        hasMPU = capabilities.getOrDefault("mpu", false);
-        hasMMU = capabilities.getOrDefault("mmu", false);
-        hasICache = capabilities.getOrDefault("icache", false);
-        hasDCache = capabilities.getOrDefault("dcache", false);
-        hasTCM = capabilities.getOrDefault("tcm", false);
-        hasVirtualization = capabilities.getOrDefault("virtualization", false);
+  int opOf(int w)  { return (w / 65536) % 256; }
+  int dstOf(int w) { return (w / 256) % 256; }
+  int srcOf(int w) { return w % 256; }
 
-        validateConfiguration();
-        resetArchitecturalState();
-    }
+  void decode(int word) {
+    int opc = opOf(word);
+    int dst = dstOf(word);
+    int src = srcOf(word);
 
-    function validateConfiguration() {
-        if (coreVariant.trim().isEmpty() || instructionProfile.trim().isEmpty()) {
-            throw new IllegalArgumentException("Cortex-R core variant and instruction profile are required");
-        }
-        if (hasMPU && hasMMU && capabilities.getOrDefault("exclusive_protection_modes", false)) {
-            throw new IllegalArgumentException("Selected platform configuration marks MPU/MMU modes exclusive");
-        }
-    }
+    if (opc == I_LOADI) { setGpr(dst, src); setZN(gpr(dst)); return; }
+    if (opc == I_MOVE)  { setGpr(dst, gpr(src)); setZN(gpr(dst)); return; }
+    if (opc == I_LOAD)  { setGpr(dst, readMem(src)); setZN(gpr(dst)); return; }
+    if (opc == I_STORE) { writeMem(src, gpr(dst)); return; }
+    if (opc == I_ADD)   { setGpr(dst, aluOp(gpr(dst), gpr(src), alu.OP_ADD)); return; }
+    if (opc == I_SUB)   { setGpr(dst, aluOp(gpr(dst), gpr(src), alu.OP_SUB)); return; }
+    if (opc == I_MUL)   { setGpr(dst, aluOp(gpr(dst), gpr(src), alu.OP_MUL)); return; }
+    if (opc == I_AND)   { setGpr(dst, aluOp(gpr(dst), gpr(src), alu.OP_AND)); return; }
+    if (opc == I_OR)    { setGpr(dst, aluOp(gpr(dst), gpr(src), alu.OP_OR)); return; }
+    if (opc == I_CMP)   { aluOp(gpr(dst), gpr(src), alu.OP_SUB); return; }
+    if (opc == I_JMP)   { setEntryPoint(src); return; }
+    if (opc == I_JZ)    { if (zero() == 1) { setEntryPoint(src); } return; }
+    if (opc == I_HALT)  { halted = 1; return; }
+  }
 
-    function resetArchitecturalState() {
-        registers.clear();
-        // Register inventory and reset state must be supplied by the selected profile.
-        // Do not assume identical banked registers across Cortex-R generations.
-    }
+  void setZN(int v) { flagZ = (v == 0) ? 1 : 0; flagN = (v < 0) ? 1 : 0; }
+  int encode(int opcode, int dst, int src) {
+    return (opcode % 256) * 65536 + (dst % 256) * 256 + (src % 256);
+  }
 
-    function supportsFeature(String feature) {
-        return capabilities.getOrDefault(feature, false);
-    }
-
-    function onUnsupportedInstruction(String opcode) {
-        log.warn("Unsupported Cortex-R instruction for " + coreVariant + " (" + instructionProfile + "): " + opcode);
-        if (strictProfile) {
-            throw new IllegalStateException("Unsupported instruction for selected Cortex-R profile: " + opcode);
-        }
-    }
-
-    function getCoreVariant() {
-        return coreVariant;
-    }
-
-    function getInstructionProfile() {
-        return instructionProfile;
-    }
+  int reg(int i) { return gpr(i); }
+  int registers() { return registerCount(); }
 }

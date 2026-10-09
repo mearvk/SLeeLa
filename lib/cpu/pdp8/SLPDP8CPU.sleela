@@ -1,25 +1,42 @@
 /**
+ * lib/cpu/pdp8/SLPDP8CPU.sleela
  * SLeeLa DEC PDP-8 CPU model.
- * Functional architecture foundation; not a cycle-accurate emulator.
+ *
+ * Functional architecture foundation; not a cycle-accurate emulator. Extends
+ * SLCPURuntime so, in addition to its hand-written PDP-8 semantics (12-bit
+ * accumulator/link, masked word memory, EAE/memory-extension feature gates), it
+ * inherits the resource-aware workload path (admit()/runWorkload()) and can run
+ * C, C++ or Sleela programs within an SLCPUResource grant on the canonical
+ * SLeeLa opcode substrate — the same contract every CPU in lib/cpu now honors.
+ *
+ * Family: cpu. Extends SLCPURuntime.
  */
-class SLPDP8CPU extends SLCPU {
+#sleela 1.3
+class SLPDP8CPU extends SLCPURuntime {
     String machineModel = "";
     Boolean strictProfile = true;
     Boolean extendedArithmeticEnabled = false;
     Boolean memoryExtensionEnabled = false;
     Integer accumulator = 0;
     Integer link = 0;
-    Integer programCounter = 0;
     Integer instructionRegister = 0;
     Integer currentInstructionAddress = 0;
     Integer memoryWords = 4096;
     Map<Integer, Integer> memory = new Map<Integer, Integer>();
     Map<Integer, Object> ioDevices = new Map<Integer, Object>();
 
-    function configure(String selectedMachineModel,
-                       Integer selectedMemoryWords,
-                       Boolean enableEAE,
-                       Boolean enableMemoryExtension) {
+    // Standard entry point: bring up the inherited runtime (12-bit data, 12-bit
+    // address, a small register file for AC/LINK/PC) and apply a default PDP-8/E
+    // profile. Call configureModel(...) to select a specific machine profile.
+    void configure() {
+        bringUp("DEC PDP-8", 12, 12, 4, 4096);
+        configureModel("PDP-8/E", 4096, false, false);
+    }
+
+    void configureModel(String selectedMachineModel,
+                        Integer selectedMemoryWords,
+                        Boolean enableEAE,
+                        Boolean enableMemoryExtension) {
         if (selectedMachineModel.trim().isEmpty()) {
             throw new IllegalArgumentException("A PDP-8 machine profile is required");
         }
@@ -33,46 +50,48 @@ class SLPDP8CPU extends SLCPU {
         resetArchitecturalState();
     }
 
-    function resetArchitecturalState() {
+    void resetArchitecturalState() {
         accumulator = 0;
         link = 0;
-        programCounter = 0;
         instructionRegister = 0;
         currentInstructionAddress = 0;
+        setEntryPoint(0);
     }
 
-    function maskWord(Integer value) {
+    int maskWord12(Integer value) {
         return value & 0xFFF;
     }
 
-    function readWord(Integer address) {
+    Integer readPdpWord(Integer address) {
         if (address < 0 || address >= memoryWords) {
             throw new IllegalStateException("PDP-8 memory address out of range: " + address);
         }
         return memory.getOrDefault(address, 0) & 0xFFF;
     }
 
-    function writeWord(Integer address, Integer value) {
+    void writePdpWord(Integer address, Integer value) {
         if (address < 0 || address >= memoryWords) {
             throw new IllegalStateException("PDP-8 memory address out of range: " + address);
         }
-        memory.put(address, maskWord(value));
+        memory.put(address, maskWord12(value));
     }
 
-    function setLink(Integer value) {
+    void setLink(Integer value) {
         if (value != 0 && value != 1) {
             throw new IllegalArgumentException("PDP-8 link must be 0 or 1");
         }
         link = value;
     }
 
-    function requireFeature(Boolean enabled, String featureName) {
+    void requireFeature(Boolean enabled, String featureName) {
         if (!enabled && strictProfile) {
             throw new IllegalStateException("Unsupported PDP-8 feature: " + featureName);
         }
     }
 
-    function getMachineModel() {
+    String getMachineModel() {
         return machineModel;
     }
+    Integer getAccumulator() { return accumulator; }
+    Integer getLink() { return link; }
 }
