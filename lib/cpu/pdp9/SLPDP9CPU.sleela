@@ -1,0 +1,44 @@
+# SLPDP9CPU — SLeeLa PDP-9 CPU profile
+#
+# Profile-driven functional model. Cycle accuracy is not implied.
+# Keep PDP-9 instruction decoding distinct from PDP-4 and PDP-7.
+
+class SLPDP9CPU extends SLCPU {
+    const WORD_BITS = 18;
+
+    state {
+        pc;
+        ac;
+        conditionState;
+        instructionRegister;
+        memory;
+        addressBits;
+        deviceMap;
+        timingProfile;
+    }
+
+    configure(profile) {
+        require(profile.wordBits == WORD_BITS);
+        require(profile.memoryWords > 0);
+        require(profile.addressBits > 0);
+        this.addressBits = profile.addressBits;
+        this.memory = SLRAM.create(profile.memoryWords, WORD_BITS);
+        this.deviceMap = profile.deviceMap ?? {};
+        this.timingProfile = profile.timingProfile ?? "functional";
+        return this;
+    }
+
+    step() {
+        let instruction = this.fetchWord(this.pc, WORD_BITS);
+        this.instructionRegister = instruction;
+        let decoded = this.decodePDP9(instruction, this.addressBits);
+        if (!decoded.supported) {
+            this.reportUnsupported("PDP9_OPCODE", instruction, this.pc);
+            return this.result("unsupported", instruction);
+        }
+        return this.executePDP9(decoded);
+    }
+
+    # Fill opcode fields, register side effects, and timing from verified PDP-9 documentation.
+    # Do not reuse PDP-4/PDP-7 decoding tables without validation.
+}
