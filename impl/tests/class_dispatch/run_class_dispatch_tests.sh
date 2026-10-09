@@ -12,3 +12,28 @@ if [[ "$actual" != "$expected" ]]; then
   exit 1
 fi
 printf 'class dispatch regression: PASS\n'
+
+# Constructor syntax is parsed today, but argument resolution and constructor
+# body execution are not implemented. These programs must fail semantic
+# analysis instead of producing objects whose initialization was skipped.
+tmp="$(mktemp)"
+trap 'rm -f "$tmp"' EXIT
+if "$BIN" run impl/tests/class_dispatch/constructor_arguments_rejected.sleela >"$tmp" 2>&1; then
+  printf 'constructor argument guard failed: unsupported construction was accepted\n' >&2
+  exit 1
+fi
+if ! grep -F "constructors with arguments are not yet supported" "$tmp" >/dev/null; then
+  printf 'constructor argument guard failed: expected diagnostic not found\n' >&2
+  cat "$tmp" >&2
+  exit 1
+fi
+if "$BIN" run impl/tests/class_dispatch/explicit_default_constructor_rejected.sleela >"$tmp" 2>&1; then
+  printf 'explicit constructor guard failed: constructor body was silently skipped\n' >&2
+  exit 1
+fi
+if ! grep -F "explicit constructors for class" "$tmp" >/dev/null; then
+  printf 'explicit constructor guard failed: expected diagnostic not found\n' >&2
+  cat "$tmp" >&2
+  exit 1
+fi
+printf 'constructor safety regressions: PASS\n'
