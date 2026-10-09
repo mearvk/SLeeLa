@@ -1,0 +1,9 @@
+# SLDSP56000CPU
+
+class SLDSP56000CPU {
+  architecture; profile; clock; programCounter; dataRegisters; addressRegisters;
+  accumulatorState; multiplierState; statusRegisters; addressGenerator; loopController;
+  dataALU; macUnit; programMemory; xDataMemory; yDataMemory; externalBus;
+  interruptController; peripheralMap; dmaController; couplers;
+  reset(); fetch(); decodeByProfile(); generateAddress(); fetchOperands(); executeInteger(); executeMAC(); moveParallelOperands(); executeHardwareLoop(); accessProgramMemory(); accessXMemory(); accessYMemory(); serviceInterrupt(); serviceDMA(); complete(); validate();
+}
