@@ -4,11 +4,11 @@
   "files": [
     {
       "path": "README.md",
-      "sha256": "7f24eed032d859fbebc3cd71b2b7884524b5cdbac002d192cfaed4e6b8e0e9ed"
+      "sha256": "e14af16a78284401d8c4650f3e4e9cce210f88bcfe6836b646bc9fbd1eab4fa2"
     },
     {
       "path": "SLEELA.syntax",
-      "sha256": "0fb59ac0bddf1da36ded8f609ba022529b6e0670fa93221b4fc8a84fff30325d"
+      "sha256": "612758bd8350e32cdd89b8bb640a7954f8595a39b521862316f792dfd9ec4b35"
     },
     {
       "path": "SST-2.0.model",
@@ -6696,11 +6696,11 @@
     },
     {
       "path": "install/quick-safe-install.ps1",
-      "sha256": "2da458903d96f32a89476f60409168ec6a224cea9d212e501f4e5e4c6183746f"
+      "sha256": "f792c3044186d4370e5574fc6c293af76dd49c3eeff236aa1c685766f5c30b96"
     },
     {
       "path": "install/quick-safe-install.sh",
-      "sha256": "6a91bccb23cf137da191b56f02023f337ddeb35192ff31f5f4aedbfdaf60c065"
+      "sha256": "e8d40902a51e9ee2cd1b2b7d1726fdc92b7543de01d6a3229c79c3750ca544b7"
     },
     {
       "path": "international-criminal-court/ABOUT-THE-COURT.md",
@@ -49587,6 +49587,10 @@
       "sha256": "96c75c4fcec7f794dbdeea22ed7e8eea3ef47db0068bd26cb0a9515eccef1846"
     },
     {
+      "path": "scripts/autocheck-toolchain.sh",
+      "sha256": "b05b958889803fe4a36b95c3db0ab3151d47196f32a4ab4ac737a3324543a5f0"
+    },
+    {
       "path": "scripts/build-linux.sh",
       "sha256": "43779b1a7d60d61d722d44563250f27ed3a76b12705f94f608fa85382ea2e92a"
     },
@@ -51467,6 +51471,10 @@
       "sha256": "18c3af0d830035e72c2fb4840b5ea29f476a353e6b7fea470cc9aa782b334351"
     },
     {
+      "path": "tools/sleela-character-scan.py",
+      "sha256": "90ad45e0223238d9c95ec0cbdccf8923ed7e4d3845249c2d8c1a49c1972bad63"
+    },
+    {
       "path": "tools/stock-market/market_engine.cpp",
       "sha256": "d9a18a9b39fb29a5d672bb05e3ff1be9fac2aaeb92f98a1c19d49b0481c391b2"
     },
@@ -51481,6 +51489,10 @@
     {
       "path": "tools/stock-market/stock-market.sh",
       "sha256": "39f22fa5bacc2d10f9c9fa5561736b991c123a49b12720f737654175f1e7996a"
+    },
+    {
+      "path": "tools/tests/test_sleela_character_scan.py",
+      "sha256": "c23336a1ba3ae171645fc66220dcc9dbc256022f502cf6cc08b8eca96f5af074"
     },
     {
       "path": "tools/verify-before-execution.py",
@@ -51677,6 +51689,110 @@
     {
       "path": "user-interface/tools/throbber_snapshot.cpp",
       "sha256": "c8831aa2b87160f7d6038e410ab74663938f0f1eea8215746a9e54f90b74ddd5"
+    },
+    {
+      "path": "utf-4088/algebra/cross_language_corpus.cpp",
+      "sha256": "7fad5326a800493579a3a1abd21d71664e6b78a263d6d8a92521c1c94cc2cee6"
+    },
+    {
+      "path": "utf-4088/algebra/feasibility_report.cpp",
+      "sha256": "cbb3b407384351590b5b7eb1d0aa68fae8febf06c4ec5362cf4270978217190a"
+    },
+    {
+      "path": "utf-4088/algebra/glyph8x12.cpp",
+      "sha256": "a2361ff725f8fde8cedbafd31c20da83c48cd1538e36496843993de711f404c5"
+    },
+    {
+      "path": "utf-4088/algebra/glyph8x12.hpp",
+      "sha256": "9f510bdfaa4514bb6790ba14133ff064aa7ba60c3b8f8b39b8568fc357e04bc5"
+    },
+    {
+      "path": "utf-4088/algebra/glyph_resolution.cpp",
+      "sha256": "da7886cf1e971bda99c2eae11585c56d3eef5aba80a408d716216ccccf9cb149"
+    },
+    {
+      "path": "utf-4088/algebra/historical_prior.cpp",
+      "sha256": "ce7cefe6e7b6973a941ecd2c6148f20a40a286e22b98e1618da26fb7e8213cce"
+    },
+    {
+      "path": "utf-4088/algebra/historical_prior.hpp",
+      "sha256": "bd87c683477e7f7eb304c9b935f52737015d71f3683ebc550347cd5816563311"
+    },
+    {
+      "path": "utf-4088/algebra/interpretability_sampler.cpp",
+      "sha256": "87881d6dfce5ff51183595e802562d289574a9e9300a9c678d1fc327df7ef4f7"
+    },
+    {
+      "path": "utf-4088/algebra/large_sampling_map.cpp",
+      "sha256": "a52b1d0b3b2be5b45291dd3fbea046d4c98eab4a12ee237829dead109b94cdc6"
+    },
+    {
+      "path": "utf-4088/algebra/norm_cost.cpp",
+      "sha256": "4322e3431b293449bc11e8b1382bc82ab1ecded1428675a1f0ce1e2d1ebb2291"
+    },
+    {
+      "path": "utf-4088/algebra/norm_cost.hpp",
+      "sha256": "5d25dda63f29cd212df6d6247476165aa9ecd5f2f5ec9bbf9792f700146f4573"
+    },
+    {
+      "path": "utf-4088/algebra/polygraph5_expansion_100m.cpp",
+      "sha256": "9ce11b655df772d368fb32877c91022529b7facd0d5bf9e16fbda1ce9d550c13"
+    },
+    {
+      "path": "utf-4088/algebra/space_sampler.cpp",
+      "sha256": "05ac3011b8083d2005a4a7a19ac63840ffa013163487bafce63d3010dd80a68e"
+    },
+    {
+      "path": "utf-4088/algebra/symbol_resolution.cpp",
+      "sha256": "99d259336066e25f14073861b36439ea095855d2a8493760969182e9a8d095d2"
+    },
+    {
+      "path": "utf-4088/algebra/symbol_resolution.hpp",
+      "sha256": "80055a3c517ea57f1fa24aca2e892dd55cf7d4d4a604f74b620dd93130252660"
+    },
+    {
+      "path": "utf-4088/character_map.cpp",
+      "sha256": "5e9a961053a71aff55f92902bb0e2dde8670ce268a8e8a60182c5d5f8a819f96"
+    },
+    {
+      "path": "utf-4088/character_map.hpp",
+      "sha256": "3362dc34e703f29b834a96ae3ae09a3ab2cc216286bf21b7cd493133afc564da"
+    },
+    {
+      "path": "utf-4088/digraph_engine.cpp",
+      "sha256": "f211d4e0aea50d4b71b58de73383e8242146b01c2b8f9293a4fb5d38fa4cf39f"
+    },
+    {
+      "path": "utf-4088/digraph_engine.hpp",
+      "sha256": "cd58c64bfc080cdebc2978abceab90ccb843b792c18e14993dc21dbcde904d96"
+    },
+    {
+      "path": "utf-4088/neural/relayer.hpp",
+      "sha256": "43cd7eec6d3808982ca3230036915625af3d1d4c5c5bc3e84a7fbaaab9d4e04c"
+    },
+    {
+      "path": "utf-4088/registry_generator.cpp",
+      "sha256": "8e68b5646a099a428c7f05efc643aed291aed489d11b5a8c838d76634e6302dc"
+    },
+    {
+      "path": "utf-4088/tests/utf4088_tests.cpp",
+      "sha256": "e859c29a56941031dfc62a0825bc7929fcf05d143075bd6af3eb9b5fd16ccf3e"
+    },
+    {
+      "path": "utf-4088/utf4088.cpp",
+      "sha256": "2471b16f508955f052d13e0b3c3e748e790aee3c10ff5b4c853d93aa925299eb"
+    },
+    {
+      "path": "utf-4088/utf4088.hpp",
+      "sha256": "8ec03f53862c56b5d064f333694d624fe4efad98a405ee438fb9c13fc3dbc88c"
+    },
+    {
+      "path": "utf-4088/voltage_field.cpp",
+      "sha256": "5f601f4543f5d48fdffeeae06b1f497681347293e9b89eeec9ffa889188767ae"
+    },
+    {
+      "path": "utf-4088/voltage_field.hpp",
+      "sha256": "a9baeb5d7f018f65510e01a0edd00f1b734f86784655b20536e0f9c037b2b9d7"
     },
     {
       "path": "video/Codec.sleela",
