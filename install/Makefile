@@ -15,4 +15,8 @@ install-check:
 	@grep -q 'SLEELA_HOME' quick-safe-install.sh || { echo "ERROR: Linux/macOS installer missing SLEELA_HOME/PATH setup"; exit 1; }
 	@grep -q 'sleela-env.sh' quick-safe-install.sh || { echo "ERROR: Linux/macOS installer missing PATH snippet"; exit 1; }
 	@grep -q 'SLEELA_HOME' quick-safe-install.ps1 || { echo "ERROR: Windows installer missing SLEELA_HOME/PATH setup"; exit 1; }
-	@echo "PATH + SLEELA_HOME setup present for all three platforms."
+	@grep -q 'export SLEELA=' quick-safe-install.sh || { echo "ERROR: Linux/macOS installer does not set SLEELA"; exit 1; }
+	@grep -q 'impl/build' quick-safe-install.sh || { echo "ERROR: Linux/macOS installer does not install the built sleela binary"; exit 1; }
+	@grep -q 'SLEELA"' quick-safe-install.ps1 || { echo "ERROR: Windows installer does not set SLEELA"; exit 1; }
+	@grep -q 'impl.build' quick-safe-install.ps1 || { echo "ERROR: Windows installer does not install the built sleela binary"; exit 1; }
+	@echo "PATH + SLEELA_HOME + SLEELA + built-binary install present for all three platforms."
