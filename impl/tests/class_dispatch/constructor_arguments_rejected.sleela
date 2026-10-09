@@ -1,0 +1,17 @@
+#sleela 1.3
+// Regression: do not accept constructor arguments until constructor dispatch
+// and constructor-body execution are implemented.
+class ConstructorArgumentGuard {
+    int value;
+
+    ConstructorArgumentGuard(int initialValue) {
+        value = initialValue;
+    }
+}
+
+class ConstructorArgumentGuardRegression {
+    static void main() {
+        ConstructorArgumentGuard instance = new ConstructorArgumentGuard(7);
+        print(instance.value);
+    }
+}
