@@ -1,4 +1,5 @@
 #include "semantic.h"
+#include "unsigned_integer.h"
 #include "annotation_pipeline.h"
 #include <map>
 #include <set>
@@ -9,12 +10,7 @@ enum class Kind { Void, Int, Unsigned, Double, Bool, String, Null, Struct, Array
 // For Kind::Array, `name` carries the full array type text (e.g. "int[]") and
 // `elem` the element type name (e.g. "int").
 struct Type { Kind kind=Kind::Unknown; std::string name{}; std::string elem{}; };
-static bool unsignedTypeName(const std::string& n){
- if(n.size()<2 || n[0]!='U') return false;
- std::size_t width=0;
- for(std::size_t i=1;i<n.size();++i){if(n[i]<'0'||n[i]>'9') return false; unsigned d=static_cast<unsigned>(n[i]-'0'); if(width>104857 || (width==104857 && d>6)) return false; width=width*10+d;}
- return width>=1 && width<=1048576;
-}
+static bool unsignedTypeName(const std::string& n){return UnsignedInteger::isValidTypeName(n);}
 static Type typeOf(const std::string& n){
  // Accept the Java-style keyword names the lexer produces (int, double,
  // boolean, String, void) as well as the lowercase aliases (bool, string).
