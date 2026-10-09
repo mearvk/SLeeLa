@@ -142,7 +142,24 @@ class Analyzer{
     return typeOf(n->typeName);
    }
    if(!structs.count(n->typeName)&&!classNames.count(n->typeName)){err("new of unknown class or struct '"+n->typeName+"'");return{Kind::Error,{}};}
-   if(!n->args.empty())err("constructors with arguments are not yet supported for '"+n->typeName+"'");
+   if(!n->args.empty()){
+    err("constructors with arguments are not yet supported for '"+n->typeName+"'");
+    return{Kind::Error,{}};
+   }
+   // Do not silently treat a declared class constructor as an ordinary method:
+   // class allocation currently supports the implicit zero-argument case only.
+   // Constructor bodies/initialization plans must be implemented before an
+   // explicit constructor can be selected or executed.
+   for(const auto& owner:p.classes){
+    if(owner.name!=n->typeName)continue;
+    for(const auto& candidate:owner.methods){
+     if(candidate.java.constructor){
+      err("explicit constructors for class '"+n->typeName+"' are parsed but not yet executed; refusing to create a partially initialized instance");
+      return{Kind::Error,{}};
+     }
+    }
+    break;
+   }
    return{Kind::Struct,n->typeName};}
   if(auto m=dynamic_cast<const MemberAccess*>(&e)){if(m->field=="next"&&isNextChain(*m->base))return{Kind::Int,{}};return member(*m->base,m->field);}
   if(auto u=dynamic_cast<const Unary*>(&e)){Type t=expr(*u->operand);if(u->op=="-"&&!numeric(t)&&t.kind!=Kind::Unknown)err("unary '-' requires numeric operand, got "+nameOf(t));if(u->op=="!"&&t.kind!=Kind::Bool&&t.kind!=Kind::Unknown)err("unary '!' requires bool operand, got "+nameOf(t));return t;}
