@@ -30,14 +30,21 @@ This document carries two tables:
   (`SLVMFrame` operand stacks, `SLVMValue` tagging, `SLVM.run()` dispatch, native
   bindings as VM-exits). It adds a bounded, constant per-opcode overhead on top
   of the native VM path.
-- **Feasibility on a 12-core 5.2 GHz host (0–100)** rates whether that host,
-  running the CPU on top of the Secondary Sleela Source VM, can run the CPU's
-  **own expected software** acceptably: **100** = comfortably at speed, **0** =
-  absolutely out of the question, linear/sampled in between. It is the host's
-  sustained secondary-VM capacity (~3,600 guest-MIPS across 12 cores, after
-  realistic multi-core scaling) divided by the software's demand (the CPU's
-  native MIPS, weighted up for hard-real-time, many-core-saturating workloads
-  like modern console titles), clamped to 0–100.
+- **Feasibility (0–100)** rates whether a **12-core 5.2 GHz host** can run the
+  CPU's **own expected software** acceptably: **100** = comfortably at speed,
+  **0** = absolutely out of the question, linear/sampled in between. It is the
+  host's sustained capacity divided by the software's demand (the CPU's native
+  MIPS, weighted up for hard-real-time, many-core-saturating workloads like
+  modern console titles), clamped to 0–100. Two columns, for two stackings:
+  - **Direct** — the CPU runs on the Secondary Sleela Source VM, and the
+    Secondary VM runs directly on the host. One interpretation layer; host
+    capacity ≈ 3,600 guest-MIPS across the 12 cores.
+  - **Nested** — the full stack: Native Sleela VM on the host, the Secondary
+    Sleela Source VM hosted **on the Native VM**, the CPU on the Secondary VM,
+    and then that generation's software on the CPU. The two interpreter layers
+    **compound** (the Secondary VM's own work is itself interpreted by the
+    Native VM), so host capacity drops ≈ 8× to ≈ 450 guest-MIPS — and the
+    demanding modern generations fall toward (and reach) 0.
 - These are **model characterizations**, not measured benchmarks: they describe
   the designed, monotone cost of the stack (native ≥ native-VM ≥ secondary-VM)
   so workload sizing with `SLCPUResource` is predictable. The *result* of a
@@ -52,9 +59,16 @@ Model constants used below (per the one-opcode-at-a-time substrate contract):
 | Native Sleela VM | ≈ 1/8 of native | ~4–6 substrate opcodes per CPU instruction, interpreted |
 | Secondary Sleela Source VM | ≈ 1/20 of native | native-VM path + managed frame/value/dispatch overhead (~2.5×) |
 
-Host used for the feasibility column: **12 cores @ 5.2 GHz**, each core sustaining
-≈ 600 guest-MIPS through the Secondary Sleela Source VM, scaling to ≈ 3,600
-effective guest-MIPS for one CPU's (mostly serial) software stream.
+Host used for the feasibility columns: **12 cores @ 5.2 GHz**.
+
+| Feasibility stacking | Host sustained capacity | Why |
+| --- | --- | --- |
+| Direct (CPU → Secondary VM → host) | ≈ 3,600 guest-MIPS | one interpretation layer; ≈ 600 guest-MIPS/core × 6 effective cores |
+| Nested (CPU → Secondary VM → Native VM → host) | ≈ 450 guest-MIPS | two layers compound: the ≈ 8× Native-VM overhead multiplies the Secondary-VM path |
+
+The guest result is identical for both stackings and to native hardware; only
+the sustainable rate — and therefore the feasibility of running real-time
+software — changes.
 
 ---
 
@@ -181,107 +195,107 @@ capacity (~3,600 guest-MIPS across the 12 cores) against the CPU's software
 demand (its native MIPS, weighted up for hard-real-time, many-core-
 saturating workloads such as modern console AAA titles).
 
-| # | CPU model (`SL<ARCH>CPU`) | Width | Native MIPS | (a) Native Sleela VM (MIPS) | (b) Secondary Sleela Source VM (MIPS) | Feasibility on 12-core 5.2 GHz host (0–100) |
-| --- | --- | --- | --- | --- | --- | --- |
-| 1 | Intel 4004 | 4-bit | 0.09 | 0.011 | 0.0045 | 100 |
-| 2 | MOS 6502 | 8-bit | 0.43 | 0.054 | 0.022 | 100 |
-| 3 | Motorola 6809 | 8-bit | 0.50 | 0.063 | 0.025 | 100 |
-| 4 | Zilog Z80 | 8-bit | 0.58 | 0.073 | 0.029 | 100 |
-| 5 | Zilog Z8000 | 16-bit | 1.2 | 0.15 | 0.06 | 100 |
-| 6 | Microchip dsPIC | 16-bit | 40 | 5.0 | 2.0 | 100 |
-| 7 | TI TMS320 | 16-bit | 5 | 0.63 | 0.25 | 100 |
-| 8 | Motorola DSP56000 | 24-bit | 10 | 1.25 | 0.50 | 100 |
-| 9 | Intel IA-32 | 32-bit | 12 | 1.5 | 0.60 | 100 |
-| 10 | Motorola 68000 | 32-bit | 1.3 | 0.16 | 0.065 | 100 |
-| 11 | Motorola 68020 | 32-bit | 2.5 | 0.31 | 0.125 | 100 |
-| 12 | Motorola 68030 | 32-bit | 5 | 0.63 | 0.25 | 100 |
-| 13 | Motorola 68040 | 32-bit | 20 | 2.5 | 1.0 | 100 |
-| 14 | Motorola 68060 | 32-bit | 88 | 11 | 4.4 | 100 |
-| 15 | Motorola ColdFire | 32-bit | 60 | 7.5 | 3.0 | 100 |
-| 16 | MIPS R3000 | 32-bit | 30 | 3.75 | 1.5 | 100 |
-| 17 | SPARC V8 | 32-bit | 28 | 3.5 | 1.4 | 100 |
-| 18 | HP PA-RISC | 32-bit | 60 | 7.5 | 3.0 | 100 |
-| 19 | Motorola 88000 | 32-bit | 17 | 2.1 | 0.85 | 100 |
-| 20 | AMD Am29000 | 32-bit | 17 | 2.1 | 0.85 | 100 |
-| 21 | Fairchild Clipper | 32-bit | 33 | 4.1 | 1.65 | 100 |
-| 22 | NS 32000 | 32-bit | 2 | 0.25 | 0.10 | 100 |
-| 23 | OpenRISC 1000 | 32-bit | 45 | 5.6 | 2.25 | 100 |
-| 24 | Weitek | 32-bit | 20 | 2.5 | 1.0 | 100 |
-| 25 | Intel i860 | 32-bit | 40 | 5.0 | 2.0 | 100 |
-| 26 | Intel i960 | 32-bit | 20 | 2.5 | 1.0 | 100 |
-| 27 | Intel iAPX 432 | 32-bit | 0.5 | 0.063 | 0.025 | 100 |
-| 28 | IBM 801 | 32-bit | 15 | 1.9 | 0.75 | 100 |
-| 29 | IBM ROMP | 32-bit | 2 | 0.25 | 0.10 | 100 |
-| 30 | IBM POWER1 | 32-bit | 25 | 3.1 | 1.25 | 100 |
-| 31 | PowerPC 601 | 32-bit | 60 | 7.5 | 3.0 | 100 |
-| 32 | ARM Cortex-M | 32-bit | 125 | 15.6 | 6.25 | 100 |
-| 33 | ARM Cortex-R | 32-bit | 750 | 94 | 37.5 | 100 |
-| 34 | ARMv4 (A32) | 32-bit | 20 | 2.5 | 1.0 | 100 |
-| 35 | Hitachi SuperH SH-4 | 32-bit | 360 | 45 | 18 | 100 |
-| 36 | Tensilica Xtensa | 32-bit | 300 | 37.5 | 15 | 100 |
-| 37 | Analog Devices SHARC | 32-bit | 120 | 15 | 6.0 | 100 |
-| 38 | Inmos Transputer T800 | 32-bit | 10 | 1.25 | 0.50 | 100 |
-| 39 | IBM System/360 | 32-bit | 0.13 | 0.016 | 0.0065 | 100 |
-| 40 | IBM System/370 | 32-bit | 1 | 0.125 | 0.05 | 100 |
-| 41 | IBM ESA/390 | 32-bit | 70 | 8.75 | 3.5 | 100 |
-| 42 | IBM z/Architecture | 64-bit | 900 | 112 | 45 | 100 |
-| 43 | DEC Alpha 21064 | 64-bit | 300 | 37.5 | 15 | 100 |
-| 44 | Intel Itanium (IA-64) | 64-bit | 1600 | 200 | 80 | 100 |
-| 45 | DEC VAX-11/780 | 32-bit | 1 | 0.125 | 0.05 | 100 |
-| 46 | MIT TX-0 | 18-bit | 0.08 | 0.010 | 0.004 | 100 |
-| 47 | DEC LINC-8 | 12-bit | 0.06 | 0.0075 | 0.003 | 100 |
-| 48 | DEC PDP-1 | 18-bit | 0.1 | 0.013 | 0.005 | 100 |
-| 49 | DEC PDP-4 | 18-bit | 0.06 | 0.0075 | 0.003 | 100 |
-| 50 | DEC PDP-5 | 12-bit | 0.05 | 0.0063 | 0.0025 | 100 |
-| 51 | DEC PDP-6 | 36-bit | 0.25 | 0.031 | 0.0125 | 100 |
-| 52 | DEC PDP-7 | 18-bit | 0.28 | 0.035 | 0.014 | 100 |
-| 53 | DEC PDP-8 | 12-bit | 0.33 | 0.041 | 0.0165 | 100 |
-| 54 | DEC PDP-9 | 18-bit | 0.5 | 0.063 | 0.025 | 100 |
-| 55 | DEC PDP-10 | 36-bit | 0.4 | 0.05 | 0.02 | 100 |
-| 56 | DEC PDP-11/70 | 16-bit | 1.2 | 0.15 | 0.06 | 100 |
-| 57 | DEC PDP-12 | 12-bit | 0.33 | 0.041 | 0.0165 | 100 |
-| 58 | DEC PDP-14 | 12-bit | 0.2 | 0.025 | 0.010 | 100 |
-| 59 | DEC PDP-15 | 18-bit | 0.57 | 0.071 | 0.0285 | 100 |
-| 60 | Nintendo NES (6502) | 8-bit | 0.5 | 0.063 | 0.025 | 100 |
-| 61 | Nintendo SNES (65C816) | 16-bit | 1.5 | 0.19 | 0.075 | 100 |
-| 62 | Nintendo 64 (VR4300) | 64-bit | 125 | 15.6 | 6.25 | 100 |
-| 63 | GameCube (Gekko) | 32-bit | 1125 | 141 | 56 | 100 |
-| 64 | Wii (Broadway) | 32-bit | 1700 | 212 | 85 | 100 |
-| 65 | Wii U (Espresso) | 32-bit | 3600 | 450 | 180 | 100 |
-| 66 | Switch (Cortex-A57) | 64-bit | 3000 | 375 | 150 | 40 |
-| 67 | Switch 2 (Cortex-A78C) | 64-bit | 6000 | 750 | 300 | 15 |
-| 68 | Sega SG-1000 (Z80) | 8-bit | 0.5 | 0.063 | 0.025 | 100 |
-| 69 | Sega Mark III (Z80) | 8-bit | 0.5 | 0.063 | 0.025 | 100 |
-| 70 | Sega Master System (Z80) | 8-bit | 0.5 | 0.063 | 0.025 | 100 |
-| 71 | Sega Game Gear (Z80) | 8-bit | 0.5 | 0.063 | 0.025 | 100 |
-| 72 | Sega Genesis (68000) | 32-bit | 1.3 | 0.16 | 0.065 | 100 |
-| 73 | Sega Nomad (68000) | 32-bit | 1.3 | 0.16 | 0.065 | 100 |
-| 74 | Sega Mega-CD (68000) | 32-bit | 2.1 | 0.26 | 0.105 | 100 |
-| 75 | Sega Pico (68000) | 32-bit | 1.3 | 0.16 | 0.065 | 100 |
-| 76 | Sega 32X (SH-2) | 32-bit | 28 | 3.5 | 1.4 | 100 |
-| 77 | Sega Saturn (SH-2) | 32-bit | 35 | 4.4 | 1.75 | 100 |
-| 78 | Sega Dreamcast (SH-4) | 32-bit | 360 | 45 | 18 | 100 |
-| 79 | PlayStation (R3000A) | 32-bit | 30 | 3.75 | 1.5 | 100 |
-| 80 | PlayStation 2 (EE) | 64-bit | 550 | 69 | 27.5 | 100 |
-| 81 | PlayStation 3 (Cell PPE) | 64-bit | 10200 | 1275 | 510 | 6 |
-| 82 | PlayStation 4 (Jaguar) | 64-bit | 6400 | 800 | 320 | 11 |
-| 83 | PlayStation 5 (Zen 2) | 64-bit | 28000 | 3500 | 1400 | 1 |
-| 84 | Xbox (Pentium III) | 32-bit | 1500 | 187 | 75 | 100 |
-| 85 | Xbox 360 (Xenon) | 64-bit | 9600 | 1200 | 480 | 6 |
-| 86 | Xbox One (Jaguar) | 64-bit | 7000 | 875 | 350 | 10 |
-| 87 | Xbox One S (Jaguar) | 64-bit | 7000 | 875 | 350 | 10 |
-| 88 | Xbox One X (Jaguar) | 64-bit | 9200 | 1150 | 460 | 7 |
-| 89 | Xbox Series S (Zen 2) | 64-bit | 29000 | 3625 | 1450 | 1 |
-| 90 | Xbox Series X (Zen 2) | 64-bit | 30000 | 3750 | 1500 | 1 |
-| 91 | Atari 2600 (6507) | 8-bit | 0.5 | 0.063 | 0.025 | 100 |
-| 92 | Atari 5200 (6502C) | 8-bit | 0.75 | 0.094 | 0.0375 | 100 |
-| 93 | Atari 7800 (6502C) | 8-bit | 0.75 | 0.094 | 0.0375 | 100 |
-| 94 | Atari XEGS (6502C) | 8-bit | 0.75 | 0.094 | 0.0375 | 100 |
-| 95 | Atari Lynx (65C02) | 8-bit | 1.6 | 0.20 | 0.08 | 100 |
-| 96 | Atari Jaguar (68000) | 32-bit | 4.4 | 0.55 | 0.22 | 100 |
-| 97 | Atari Jaguar CD (68000) | 32-bit | 4.4 | 0.55 | 0.22 | 100 |
-| 98 | Atari VCS (Ryzen) | 64-bit | 6800 | 850 | 340 | 11 |
-| 99 | RISC-V RV32I | 32-bit | 100 | 12.5 | 5.0 | 100 |
+| # | CPU model (`SL<ARCH>CPU`) | Width | Native MIPS | (a) Native Sleela VM (MIPS) | (b) Secondary Sleela Source VM (MIPS) | Feasibility — direct: CPU on Secondary VM, on host (0–100) | Feasibility — nested: CPU on Secondary VM on Native VM, on host (0–100) |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | Intel 4004 | 4-bit | 0.09 | 0.011 | 0.0045 | 100 | 100 |
+| 2 | MOS 6502 | 8-bit | 0.43 | 0.054 | 0.022 | 100 | 100 |
+| 3 | Motorola 6809 | 8-bit | 0.50 | 0.063 | 0.025 | 100 | 100 |
+| 4 | Zilog Z80 | 8-bit | 0.58 | 0.073 | 0.029 | 100 | 100 |
+| 5 | Zilog Z8000 | 16-bit | 1.2 | 0.15 | 0.06 | 100 | 100 |
+| 6 | Microchip dsPIC | 16-bit | 40 | 5.0 | 2.0 | 100 | 100 |
+| 7 | TI TMS320 | 16-bit | 5 | 0.63 | 0.25 | 100 | 100 |
+| 8 | Motorola DSP56000 | 24-bit | 10 | 1.25 | 0.50 | 100 | 100 |
+| 9 | Intel IA-32 | 32-bit | 12 | 1.5 | 0.60 | 100 | 100 |
+| 10 | Motorola 68000 | 32-bit | 1.3 | 0.16 | 0.065 | 100 | 100 |
+| 11 | Motorola 68020 | 32-bit | 2.5 | 0.31 | 0.125 | 100 | 100 |
+| 12 | Motorola 68030 | 32-bit | 5 | 0.63 | 0.25 | 100 | 100 |
+| 13 | Motorola 68040 | 32-bit | 20 | 2.5 | 1.0 | 100 | 100 |
+| 14 | Motorola 68060 | 32-bit | 88 | 11 | 4.4 | 100 | 100 |
+| 15 | Motorola ColdFire | 32-bit | 60 | 7.5 | 3.0 | 100 | 100 |
+| 16 | MIPS R3000 | 32-bit | 30 | 3.75 | 1.5 | 100 | 100 |
+| 17 | SPARC V8 | 32-bit | 28 | 3.5 | 1.4 | 100 | 100 |
+| 18 | HP PA-RISC | 32-bit | 60 | 7.5 | 3.0 | 100 | 100 |
+| 19 | Motorola 88000 | 32-bit | 17 | 2.1 | 0.85 | 100 | 100 |
+| 20 | AMD Am29000 | 32-bit | 17 | 2.1 | 0.85 | 100 | 100 |
+| 21 | Fairchild Clipper | 32-bit | 33 | 4.1 | 1.65 | 100 | 100 |
+| 22 | NS 32000 | 32-bit | 2 | 0.25 | 0.10 | 100 | 100 |
+| 23 | OpenRISC 1000 | 32-bit | 45 | 5.6 | 2.25 | 100 | 100 |
+| 24 | Weitek | 32-bit | 20 | 2.5 | 1.0 | 100 | 100 |
+| 25 | Intel i860 | 32-bit | 40 | 5.0 | 2.0 | 100 | 100 |
+| 26 | Intel i960 | 32-bit | 20 | 2.5 | 1.0 | 100 | 100 |
+| 27 | Intel iAPX 432 | 32-bit | 0.5 | 0.063 | 0.025 | 100 | 100 |
+| 28 | IBM 801 | 32-bit | 15 | 1.9 | 0.75 | 100 | 100 |
+| 29 | IBM ROMP | 32-bit | 2 | 0.25 | 0.10 | 100 | 100 |
+| 30 | IBM POWER1 | 32-bit | 25 | 3.1 | 1.25 | 100 | 100 |
+| 31 | PowerPC 601 | 32-bit | 60 | 7.5 | 3.0 | 100 | 100 |
+| 32 | ARM Cortex-M | 32-bit | 125 | 15.6 | 6.25 | 100 | 100 |
+| 33 | ARM Cortex-R | 32-bit | 750 | 94 | 37.5 | 100 | 60 |
+| 34 | ARMv4 (A32) | 32-bit | 20 | 2.5 | 1.0 | 100 | 100 |
+| 35 | Hitachi SuperH SH-4 | 32-bit | 360 | 45 | 18 | 100 | 100 |
+| 36 | Tensilica Xtensa | 32-bit | 300 | 37.5 | 15 | 100 | 100 |
+| 37 | Analog Devices SHARC | 32-bit | 120 | 15 | 6.0 | 100 | 100 |
+| 38 | Inmos Transputer T800 | 32-bit | 10 | 1.25 | 0.50 | 100 | 100 |
+| 39 | IBM System/360 | 32-bit | 0.13 | 0.016 | 0.0065 | 100 | 100 |
+| 40 | IBM System/370 | 32-bit | 1 | 0.125 | 0.05 | 100 | 100 |
+| 41 | IBM ESA/390 | 32-bit | 70 | 8.75 | 3.5 | 100 | 100 |
+| 42 | IBM z/Architecture | 64-bit | 900 | 112 | 45 | 100 | 50 |
+| 43 | DEC Alpha 21064 | 64-bit | 300 | 37.5 | 15 | 100 | 100 |
+| 44 | Intel Itanium (IA-64) | 64-bit | 1600 | 200 | 80 | 100 | 28 |
+| 45 | DEC VAX-11/780 | 32-bit | 1 | 0.125 | 0.05 | 100 | 100 |
+| 46 | MIT TX-0 | 18-bit | 0.08 | 0.010 | 0.004 | 100 | 100 |
+| 47 | DEC LINC-8 | 12-bit | 0.06 | 0.0075 | 0.003 | 100 | 100 |
+| 48 | DEC PDP-1 | 18-bit | 0.1 | 0.013 | 0.005 | 100 | 100 |
+| 49 | DEC PDP-4 | 18-bit | 0.06 | 0.0075 | 0.003 | 100 | 100 |
+| 50 | DEC PDP-5 | 12-bit | 0.05 | 0.0063 | 0.0025 | 100 | 100 |
+| 51 | DEC PDP-6 | 36-bit | 0.25 | 0.031 | 0.0125 | 100 | 100 |
+| 52 | DEC PDP-7 | 18-bit | 0.28 | 0.035 | 0.014 | 100 | 100 |
+| 53 | DEC PDP-8 | 12-bit | 0.33 | 0.041 | 0.0165 | 100 | 100 |
+| 54 | DEC PDP-9 | 18-bit | 0.5 | 0.063 | 0.025 | 100 | 100 |
+| 55 | DEC PDP-10 | 36-bit | 0.4 | 0.05 | 0.02 | 100 | 100 |
+| 56 | DEC PDP-11/70 | 16-bit | 1.2 | 0.15 | 0.06 | 100 | 100 |
+| 57 | DEC PDP-12 | 12-bit | 0.33 | 0.041 | 0.0165 | 100 | 100 |
+| 58 | DEC PDP-14 | 12-bit | 0.2 | 0.025 | 0.010 | 100 | 100 |
+| 59 | DEC PDP-15 | 18-bit | 0.57 | 0.071 | 0.0285 | 100 | 100 |
+| 60 | Nintendo NES (6502) | 8-bit | 0.5 | 0.063 | 0.025 | 100 | 100 |
+| 61 | Nintendo SNES (65C816) | 16-bit | 1.5 | 0.19 | 0.075 | 100 | 100 |
+| 62 | Nintendo 64 (VR4300) | 64-bit | 125 | 15.6 | 6.25 | 100 | 100 |
+| 63 | GameCube (Gekko) | 32-bit | 1125 | 141 | 56 | 100 | 40 |
+| 64 | Wii (Broadway) | 32-bit | 1700 | 212 | 85 | 100 | 26 |
+| 65 | Wii U (Espresso) | 32-bit | 3600 | 450 | 180 | 100 | 12 |
+| 66 | Switch (Cortex-A57) | 64-bit | 3000 | 375 | 150 | 40 | 5 |
+| 67 | Switch 2 (Cortex-A78C) | 64-bit | 6000 | 750 | 300 | 15 | 2 |
+| 68 | Sega SG-1000 (Z80) | 8-bit | 0.5 | 0.063 | 0.025 | 100 | 100 |
+| 69 | Sega Mark III (Z80) | 8-bit | 0.5 | 0.063 | 0.025 | 100 | 100 |
+| 70 | Sega Master System (Z80) | 8-bit | 0.5 | 0.063 | 0.025 | 100 | 100 |
+| 71 | Sega Game Gear (Z80) | 8-bit | 0.5 | 0.063 | 0.025 | 100 | 100 |
+| 72 | Sega Genesis (68000) | 32-bit | 1.3 | 0.16 | 0.065 | 100 | 100 |
+| 73 | Sega Nomad (68000) | 32-bit | 1.3 | 0.16 | 0.065 | 100 | 100 |
+| 74 | Sega Mega-CD (68000) | 32-bit | 2.1 | 0.26 | 0.105 | 100 | 100 |
+| 75 | Sega Pico (68000) | 32-bit | 1.3 | 0.16 | 0.065 | 100 | 100 |
+| 76 | Sega 32X (SH-2) | 32-bit | 28 | 3.5 | 1.4 | 100 | 100 |
+| 77 | Sega Saturn (SH-2) | 32-bit | 35 | 4.4 | 1.75 | 100 | 100 |
+| 78 | Sega Dreamcast (SH-4) | 32-bit | 360 | 45 | 18 | 100 | 100 |
+| 79 | PlayStation (R3000A) | 32-bit | 30 | 3.75 | 1.5 | 100 | 100 |
+| 80 | PlayStation 2 (EE) | 64-bit | 550 | 69 | 27.5 | 100 | 82 |
+| 81 | PlayStation 3 (Cell PPE) | 64-bit | 10200 | 1275 | 510 | 6 | 1 |
+| 82 | PlayStation 4 (Jaguar) | 64-bit | 6400 | 800 | 320 | 11 | 1 |
+| 83 | PlayStation 5 (Zen 2) | 64-bit | 28000 | 3500 | 1400 | 1 | 0 |
+| 84 | Xbox (Pentium III) | 32-bit | 1500 | 187 | 75 | 100 | 30 |
+| 85 | Xbox 360 (Xenon) | 64-bit | 9600 | 1200 | 480 | 6 | 1 |
+| 86 | Xbox One (Jaguar) | 64-bit | 7000 | 875 | 350 | 10 | 1 |
+| 87 | Xbox One S (Jaguar) | 64-bit | 7000 | 875 | 350 | 10 | 1 |
+| 88 | Xbox One X (Jaguar) | 64-bit | 9200 | 1150 | 460 | 7 | 1 |
+| 89 | Xbox Series S (Zen 2) | 64-bit | 29000 | 3625 | 1450 | 1 | 0 |
+| 90 | Xbox Series X (Zen 2) | 64-bit | 30000 | 3750 | 1500 | 1 | 0 |
+| 91 | Atari 2600 (6507) | 8-bit | 0.5 | 0.063 | 0.025 | 100 | 100 |
+| 92 | Atari 5200 (6502C) | 8-bit | 0.75 | 0.094 | 0.0375 | 100 | 100 |
+| 93 | Atari 7800 (6502C) | 8-bit | 0.75 | 0.094 | 0.0375 | 100 | 100 |
+| 94 | Atari XEGS (6502C) | 8-bit | 0.75 | 0.094 | 0.0375 | 100 | 100 |
+| 95 | Atari Lynx (65C02) | 8-bit | 1.6 | 0.20 | 0.08 | 100 | 100 |
+| 96 | Atari Jaguar (68000) | 32-bit | 4.4 | 0.55 | 0.22 | 100 | 100 |
+| 97 | Atari Jaguar CD (68000) | 32-bit | 4.4 | 0.55 | 0.22 | 100 | 100 |
+| 98 | Atari VCS (Ryzen) | 64-bit | 6800 | 850 | 340 | 11 | 1 |
+| 99 | RISC-V RV32I | 32-bit | 100 | 12.5 | 5.0 | 100 | 100 |
 
 ---
 
@@ -305,17 +319,30 @@ C, C++, or Sleela produces the **identical result** on all three, on any of the
 99 CPUs. Speed degrades predictably as you climb; correctness does not change at
 all.
 
-The feasibility column then answers the practical question: on a strong modern
-host (12 cores @ 5.2 GHz) hosting a CPU on the Secondary Sleela Source VM, the
-host runs the *own expected software* of **87 of the 99** CPUs comfortably
-(score 100) — everything through the sixth-generation consoles — while the
-twelve most demanding modern SoCs taper linearly down toward 0 (Switch 40,
-Switch 2 15, PlayStation 4 11, PlayStation 3 / Xbox 360 6, PlayStation 5 /
-Xbox Series S and X 1 — effectively out of the question in real time).
+The feasibility columns then answer the practical question for two stackings on
+a strong modern host (12 cores @ 5.2 GHz):
+
+- **Direct** (CPU on the Secondary VM, Secondary VM on the host): the host runs
+  the *own expected software* of **87 of 99** CPUs comfortably (score 100) —
+  everything through the sixth-generation consoles — while the twelve most
+  demanding modern SoCs taper down (Switch 40 → Switch 2 15 → PS4 11 → PS3 /
+  Xbox 360 6 → PS5 / Xbox Series S and X 1).
+- **Nested** (CPU on the Secondary VM, Secondary VM on the **Native VM**, on the
+  host): the two interpreter layers compound, so the demanding generations fall
+  much harder and some reach genuine **0** — GameCube 40, Wii 26, Wii U 12,
+  Switch 5, Switch 2 2, PlayStation 2 82, Xbox 30, and PlayStation 3/4,
+  Xbox 360/One, Atari VCS at 1, with **PlayStation 5 and Xbox Series S/X at 0**:
+  absolutely out of the question in real time. Everything through the fifth/
+  sixth generation and all the historical/business/RISC CPUs still score 100.
+
+The difference between the two columns is exactly the cost of the extra layer:
+running the Secondary VM *on* the Native VM rather than on bare host.
 
 > Figures are model characterizations for workload sizing with `SLCPUResource`,
 > not measured benchmarks. Native clocks/MIPS reflect the representative real
 > hardware each model is named after; the VM columns apply the fixed stack-cost
-> factors (1/8 and 1/20 of native) defined above, and the feasibility column
-> compares the 12-core 5.2 GHz host's sustained secondary-VM capacity against
-> each CPU's (real-time-weighted) software demand, clamped to 0–100.
+> factors (1/8 and 1/20 of native) defined above. The two feasibility columns
+> compare the 12-core 5.2 GHz host's sustained capacity — **direct** (≈ 3,600
+> guest-MIPS, Secondary VM on the host) and **nested** (≈ 450 guest-MIPS,
+> Secondary VM on the Native VM) — against each CPU's (real-time-weighted)
+> software demand, clamped to 0–100.
