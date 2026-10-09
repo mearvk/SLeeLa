@@ -1,0 +1,75 @@
+/**
+ * SLeeLa ARM Cortex-R family CPU model.
+ * Profile-driven foundation for real-time embedded processors.
+ * This class is not a cycle-accurate model of any particular silicon.
+ */
+class SLCortexRCPU extends SLCPU {
+    String coreVariant = "";
+    String instructionProfile = "";
+    Boolean strictProfile = true;
+
+    Boolean hasFPU = false;
+    Boolean hasDSP = false;
+    Boolean hasMPU = false;
+    Boolean hasMMU = false;
+    Boolean hasICache = false;
+    Boolean hasDCache = false;
+    Boolean hasTCM = false;
+    Boolean hasVirtualization = false;
+
+    Map<String, Integer> registers = new Map<String, Integer>();
+    Map<String, Boolean> capabilities = new Map<String, Boolean>();
+
+    function configure(String selectedVariant, String selectedInstructionProfile,
+                       Map<String, Boolean> selectedCapabilities) {
+        coreVariant = selectedVariant;
+        instructionProfile = selectedInstructionProfile;
+        capabilities = selectedCapabilities;
+
+        hasFPU = capabilities.getOrDefault("fpu", false);
+        hasDSP = capabilities.getOrDefault("dsp", false);
+        hasMPU = capabilities.getOrDefault("mpu", false);
+        hasMMU = capabilities.getOrDefault("mmu", false);
+        hasICache = capabilities.getOrDefault("icache", false);
+        hasDCache = capabilities.getOrDefault("dcache", false);
+        hasTCM = capabilities.getOrDefault("tcm", false);
+        hasVirtualization = capabilities.getOrDefault("virtualization", false);
+
+        validateConfiguration();
+        resetArchitecturalState();
+    }
+
+    function validateConfiguration() {
+        if (coreVariant.trim().isEmpty() || instructionProfile.trim().isEmpty()) {
+            throw new IllegalArgumentException("Cortex-R core variant and instruction profile are required");
+        }
+        if (hasMPU && hasMMU && capabilities.getOrDefault("exclusive_protection_modes", false)) {
+            throw new IllegalArgumentException("Selected platform configuration marks MPU/MMU modes exclusive");
+        }
+    }
+
+    function resetArchitecturalState() {
+        registers.clear();
+        // Register inventory and reset state must be supplied by the selected profile.
+        // Do not assume identical banked registers across Cortex-R generations.
+    }
+
+    function supportsFeature(String feature) {
+        return capabilities.getOrDefault(feature, false);
+    }
+
+    function onUnsupportedInstruction(String opcode) {
+        log.warn("Unsupported Cortex-R instruction for " + coreVariant + " (" + instructionProfile + "): " + opcode);
+        if (strictProfile) {
+            throw new IllegalStateException("Unsupported instruction for selected Cortex-R profile: " + opcode);
+        }
+    }
+
+    function getCoreVariant() {
+        return coreVariant;
+    }
+
+    function getInstructionProfile() {
+        return instructionProfile;
+    }
+}
