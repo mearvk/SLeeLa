@@ -30,6 +30,8 @@ class SleelaVMCreator {
   SLVM vm;                // the live Secondary VM this creator built
   int heapWords;
   int memoryWords;
+  int dmaOption;          // 1 => grant direct DMA to the built VM/CPU/program
+  int gpuOption;          // 1 => grant native GPU access
 
   void configure() {
     catalog = new SleelaVMGenerationCatalog();
@@ -37,6 +39,7 @@ class SleelaVMCreator {
     formalName = "Core";
     heapWords = 1 << 16;
     memoryWords = 1 << 16;
+    dmaOption = 0; gpuOption = 0;
   }
 
   // Size the VM the creator will build (optional; sensible defaults otherwise).
@@ -57,8 +60,18 @@ class SleelaVMCreator {
     vm = new SLVM();
     vm.configure(formalName);
     vm.boot(heapWords, memoryWords);
+    if (dmaOption == 1) { vm.enableDMA(); }   // apply opted-in acceleration
+    if (gpuOption == 1) { vm.enableGPU(); }
     return vm;
   }
+
+  // Optional capabilities: request direct DMA and/or native GPU access for the
+  // built VM. Call before create()/run() so the hosted CPU and its program get
+  // them. These correspond to the DMA and GPU feature bits (SleelaVMFeatureBits).
+  void requestDMA() { dmaOption = 1; if (vm != null) { vm.enableDMA(); } }
+  void requestGPU() { gpuOption = 1; if (vm != null) { vm.enableGPU(); } }
+  boolean dmaRequested() { return dmaOption == 1; }
+  boolean gpuRequested() { return gpuOption == 1; }
 
   // Host a Sleela CPU model as the VM's executor (nested on the SLVM substrate).
   void installExecutor(SLCPURuntime cpu) {

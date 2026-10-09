@@ -69,6 +69,15 @@ class SLCPURuntime {
   // describe. When null (the default) the CPU owns its substrate as before.
   SLSleelaVM attachedSubstrate;
 
+  // --- optional capabilities: direct DMA and native GPU access ---
+  // Off by default. A program/executor that needs them turns them on; when on,
+  // the CPU exposes a direct-memory-access engine and a GPU device it can
+  // offload to at any point.
+  int dmaOption;        // 1 when direct DMA is enabled
+  int gpuOption;        // 1 when native GPU access is enabled
+  SLDMAController dma;   // the DMA engine (operates over this CPU's memory)
+  SLGPUDevice gpu;       // the GPU device
+
   // Bring the inherited machinery up once a subclass has set its widths.
   void bringUp(String name, int dataBits, int addressBits, int registers, int memoryWords) {
     archName = name; width = dataBits; addrWidth = addressBits;
@@ -97,7 +106,44 @@ class SLCPURuntime {
     workDecoder = new SLInstructionDecoder(); workDecoder.configure(workIsa);
     workSys = new SLSystemCall(); workSys.configure();
     admittedWorkloads = 0; completedWorkloads = 0;
+
+    // Optional capabilities default to off.
+    dmaOption = 0; gpuOption = 0;
   }
+
+  // --- optional capability: direct DMA ---
+  // Enable the direct memory-access engine over this CPU's memory. After this a
+  // program can call dmaEngine().transfer(...) / memcpy(...) / fill(...) to move
+  // bulk data without the CPU copying word by word.
+  void enableDMA() {
+    dmaOption = 1;
+    if (dma == null) { dma = new SLDMAController(); }
+    dma.configure(mem);
+    dma.enable();
+  }
+  void disableDMA() { dmaOption = 0; if (dma != null) { dma.disable(); } }
+  boolean dmaEnabled() { return dmaOption == 1; }
+  SLDMAController dmaEngine() { return dma; }
+  // Convenience passthrough for the common bulk move (returns words moved or -1).
+  int dmaCopy(int src, int dst, int length) {
+    if (dmaOption == 0 || dma == null) { return -1; }
+    return dma.memcpy(src, dst, length);
+  }
+
+  // --- optional capability: native GPU access ---
+  // Enable a GPU device the CPU can offload parallel/compute kernels to. The
+  // device uses a real host GPU over the bridge when available, else a modelled
+  // SIMT engine, so GPU code always runs.
+  void enableGPU() { enableGPU("SLeeLa Compute GPU", 16, 64, 1000, 256); }
+  void enableGPU(String name, int units, int lanes, int core, int vramMiB) {
+    gpuOption = 1;
+    if (gpu == null) { gpu = new SLGPUDevice(); }
+    gpu.configure(name, units, lanes, core, vramMiB);
+    gpu.enable();
+  }
+  void disableGPU() { gpuOption = 0; if (gpu != null) { gpu.disable(); } }
+  boolean gpuEnabled() { return gpuOption == 1; }
+  SLGPUDevice gpuDevice() { return gpu; }
 
   // The register ISA used by the shared compile/map pipeline (SLWorkload.compile
   // needs it to lower any supported language to a language-independent image).

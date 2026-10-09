@@ -1,2 +1,101 @@
-# SLDMAController
-class SLDMAController { channels; descriptors; priority; sourceAddress; destinationAddress; transferLength; start(channel); stop(channel); }
+/*
+ * lib/cpu/SLDMAController.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLDMAController — a direct memory access engine. When the
+ *   DMA option is enabled, a program (or a device) can move a block of words
+ *   between memory regions WITHOUT the CPU copying each word in its
+ *   fetch-decode-execute loop: the controller does the transfer directly over
+ *   SLRAM. It models independent channels, source/destination/length
+ *   descriptors, a direction/mode, and completion status, like a real DMA
+ *   controller (8237 / modern scatter-gather).
+ *
+ * This is the "direct DMA option": a Sleela executor that enables it can hand a
+ * bulk move to the DMA engine at any point the program needs it, freeing the
+ * CPU. Transfers are bounded by the backing SLRAM and accounted for.
+ *
+ * Family: cpu. Composes SLRAM. Enabled via the DMA option on SLCPURuntime / SLVM.
+ */
+#sleela 1.3
+class SLDMAController {
+  // Transfer modes.
+  static final int MODE_MEM_TO_MEM = 0;
+  static final int MODE_MEM_TO_DEV = 1;
+  static final int MODE_DEV_TO_MEM = 2;
+
+  static final int CHANNELS = 8;
+
+  int enabled;          // 1 when the DMA option is on
+  SLRAM memory;         // the address space transfers operate over
+
+  // Per-channel descriptors (bounded: 8 channels, wired as fields).
+  int busyMask;         // bit c set while channel c is running
+  int completedMask;    // bit c set once channel c finished
+  int lastSource; int lastDest; int lastLength; int lastMode;
+  int transfersDone;    // completed transfers
+  int wordsMoved;       // total words moved
+
+  void configure(SLRAM addressSpace) {
+    enabled = 0; memory = addressSpace;
+    busyMask = 0; completedMask = 0;
+    lastSource = 0; lastDest = 0; lastLength = 0; lastMode = 0;
+    transfersDone = 0; wordsMoved = 0;
+  }
+
+  void enable()  { enabled = 1; }
+  void disable() { enabled = 0; }
+  boolean isEnabled() { return enabled == 1; }
+
+  // Program a channel and perform a direct memory-to-memory block transfer.
+  // Returns the number of words moved, or -1 if DMA is disabled / out of range.
+  int transfer(int channel, int src, int dst, int length, int mode) {
+    if (enabled == 0) { return -1; }
+    if (channel < 0 || channel >= CHANNELS) { return -1; }
+    if (memory == null) { return -1; }
+    if (src < 0 || dst < 0 || length < 0) { return -1; }
+    if (src + length > memory.capacityWords()) { return -1; }
+    if (dst + length > memory.capacityWords()) { return -1; }
+
+    start(channel);
+    lastSource = src; lastDest = dst; lastLength = length; lastMode = mode;
+
+    // Direct copy over SLRAM. Overlap-safe (copy backward when dst > src).
+    if (dst > src) {
+      int i = length - 1;
+      while (i >= 0) { memory.writeWord(dst + i, memory.readWord(src + i)); i = i - 1; }
+    } else {
+      int i = 0;
+      while (i < length) { memory.writeWord(dst + i, memory.readWord(src + i)); i = i + 1; }
+    }
+
+    wordsMoved = wordsMoved + length;
+    transfersDone = transfersDone + 1;
+    complete(channel);
+    return length;
+  }
+
+  // Convenience: a plain memory-to-memory move on channel 0.
+  int memcpy(int src, int dst, int length) { return transfer(0, src, dst, length, MODE_MEM_TO_MEM); }
+
+  // Fill a region with a constant (memset-style) without CPU involvement.
+  int fill(int channel, int dst, int length, int value) {
+    if (enabled == 0 || memory == null) { return -1; }
+    if (dst < 0 || length < 0 || dst + length > memory.capacityWords()) { return -1; }
+    start(channel);
+    int i = 0; while (i < length) { memory.writeWord(dst + i, value); i = i + 1; }
+    wordsMoved = wordsMoved + length; transfersDone = transfersDone + 1;
+    complete(channel);
+    return length;
+  }
+
+  void start(int channel) { busyMask = busyMask | pow2(channel); }
+  void complete(int channel) { busyMask = busyMask & ~pow2(channel); completedMask = completedMask | pow2(channel); }
+  void stop(int channel) { busyMask = busyMask & ~pow2(channel); }
+  boolean busy(int channel) { return (busyMask & pow2(channel)) != 0; }
+  boolean finished(int channel) { return (completedMask & pow2(channel)) != 0; }
+
+  int pow2(int n) { int p = 1; int i = 0; while (i < n) { p = p * 2; i = i + 1; } return p; }
+
+  int transfers()  { return transfersDone; }
+  int totalWords() { return wordsMoved; }
+  int channels()   { return CHANNELS; }
+}
