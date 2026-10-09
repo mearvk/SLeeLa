@@ -139,10 +139,11 @@ public:
         if (divisor.isZero()) throw std::domain_error("unsigned integer division by zero");
         UnsignedInteger quotient(width_), remainder(width_);
         for (std::size_t bit = width_; bit-- > 0;) {
+            const bool highCarry = remainder.bitAt(width_ - 1);
             remainder = remainder.shiftLeftOneModulo();
             if (bitAt(bit)) remainder.bytes_[0] |= 1u;
-            if (remainder.compare(divisor) >= 0) {
-                remainder = remainder.subtract(divisor);
+            if (highCarry || remainder.compare(divisor) >= 0) {
+                remainder = remainder.subtractModulo(divisor);
                 quotient.setBit(bit);
             }
         }
@@ -228,6 +229,15 @@ private:
         return (bytes_[bit/8] & static_cast<std::uint8_t>(1u << (bit%8))) != 0;
     }
     void setBit(std::size_t bit) noexcept { bytes_[bit/8] |= static_cast<std::uint8_t>(1u << (bit%8)); }
+    UnsignedInteger subtractModulo(const UnsignedInteger& other) const {
+        UnsignedInteger out(width_); int borrow=0;
+        for(std::size_t i=0;i<bytes_.size();++i) {
+            int d=static_cast<int>(bytes_[i])-static_cast<int>(other.bytes_[i])-borrow;
+            if(d<0){d+=256;borrow=1;}else borrow=0;
+            out.bytes_[i]=static_cast<std::uint8_t>(d);
+        }
+        out.normalize(); return out;
+    }
     UnsignedInteger shiftLeftOneModulo() const {
         UnsignedInteger out(width_); unsigned carry=0;
         for(std::size_t i=0;i<bytes_.size();++i) {
