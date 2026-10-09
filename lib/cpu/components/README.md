@@ -70,3 +70,16 @@ int out = creator.run(5, build.processor(), job, 1000000);
 The CPU runs at its chosen (spec or overclocked) frequency; the RAM/storage/
 optical/bus choices determine the memory bandwidth and access-time behavior of
 the machine. See `examples/build-your-executor.sleela` for the full flow.
+
+## Related VM-level options
+
+Three capabilities toggled when the VM Creator builds the Secondary VM
+(`lib/vm/creator/SleelaVMCreator`):
+
+- `requestDMA()` — direct memory-access engine (bulk moves without the CPU loop).
+- `requestGPU()` — native GPU access (offload compute kernels; host GPU over the
+  bridge when present, else a modelled SIMT engine).
+- `requestNativeRam()` — run the VM's linear memory on **real host RAM**
+  (`SLNativeMemory`) instead of the simulated `SLRAM` store, for running outside
+  simulation for procedural layment. Corresponds to the `NATIVE_RAM` feature bit;
+  see `lib/vm/creator/examples/native-ram-vm.sleela`.
