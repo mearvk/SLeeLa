@@ -1,0 +1,16 @@
+#sleela 1.3
+// Regression: a declared zero-argument constructor must not be silently skipped.
+class ExplicitDefaultConstructorGuard {
+    int value;
+
+    ExplicitDefaultConstructorGuard() {
+        value = 7;
+    }
+}
+
+class ExplicitDefaultConstructorGuardRegression {
+    static void main() {
+        ExplicitDefaultConstructorGuard instance = new ExplicitDefaultConstructorGuard();
+        print(instance.value);
+    }
+}
