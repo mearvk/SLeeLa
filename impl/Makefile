@@ -540,7 +540,7 @@ define RUN_SUBJECT_VALUES
 	@$(SUBJECT_TEST_ENV); cd $(CURDIR)/.. && \
 	  f=impl/tests/subjects/$(1)_values.sleela; \
 	  echo "=== $(1) numeric assertions ($$f) ==="; \
-	  out="$( $(CURDIR)/$(SLEELA_BIN) run $f 2>&1)" || { printf "  FAIL (%s did not run; compiler/runtime diagnostic follows)\n" "$f"; printf "%s\n" "$out" | sed "s/^/    > /"; exit 1; }; \
+	  out="$$( $(CURDIR)/$(SLEELA_BIN) run $$f 2>&1)" || { printf "  FAIL (%s did not run; compiler/runtime diagnostic follows)\n" "$$f"; printf "%s\n" "$$out" | sed "s/^/    > /"; exit 1; }; \
 	  printf '%s\n' "$$out" | grep -E '^(PASS|FAIL) '; \
 	  fails=$$(printf '%s\n' "$$out" | grep -c '^FAIL '); \
 	  passes=$$(printf '%s\n' "$$out" | grep -c '^PASS '); \
