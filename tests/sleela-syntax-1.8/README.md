@@ -1,3 +1,5 @@
+<img align="right" src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="75" height="75" alt="SLeeLa">
+
 # SLeeLa syntax 1.8 regression fixtures
 
 - `let-inference-pass.sleela` should parse, pass semantic analysis, compile, and print the inferred integer, string, and boolean values.
