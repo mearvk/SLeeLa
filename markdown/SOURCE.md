@@ -62,6 +62,12 @@ SLeeLa also defines a parameterized **character-set capacity signature** family,
 
 Examples: `C8`, `C256`, `C65536`, and `C1048576`. The number is a count of addressable character entries, unlike `U8` or `U64`, where the number is a bit width.
 
+## Runtime character-catalogue discovery
+
+The read-only scanner in [tools/sleela-character-scan.py](../tools/sleela-character-scan.py) inventories a character-library source folder and reports its declared `C<n>` capacity, source files, and best-effort literal-record count. Run it with `python3 tools/sleela-character-scan.py <folder>`; use `--json` for machine-readable output. A library can declare its strategy in a root-level `SLEELA-CHARSET.conf` manifest.
+
+The scanner distinguishes **literal** libraries (characters are enumerated ahead of time), **procedural** libraries (a character is computed from a known input), and **hybrid** libraries containing both. Auto-detection is based on file types; an explicit manifest is preferred when the library's architecture is known. Scanning never executes source code or calls a generator. Literal record counts are estimates until checked by the library's own validated registry. See [the scanner contract](../tools/CHARACTER-CATALOG-SCANNER.md).
+
 ## The version pragma
 
 Per SL-META-0001 §4.4, a Wrapper™ declares its **syntax version** on the first
