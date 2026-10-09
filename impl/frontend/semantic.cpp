@@ -22,7 +22,8 @@ static Type typeOf(const std::string& n){
  if(n.size()>=2 && n.compare(n.size()-2,2,"[]")==0){
   Type t; t.kind=Kind::Array; t.name=n; t.elem=n.substr(0,n.size()-2); return t;
  }
- if(unsignedTypeName(n)){return{Kind::Unsigned,n,{}};}\n if(n=="void"){return{Kind::Void,{},{}};}
+ if(unsignedTypeName(n)){return{Kind::Unsigned,n,{}};}
+ if(n=="void"){return{Kind::Void,{},{}};}
  if(n=="int"){return{Kind::Int,{},{}};}
  if(n=="double"){return{Kind::Double,{},{}};}
  if(n=="bool"||n=="boolean"){return{Kind::Bool,{},{}};}
@@ -176,6 +177,13 @@ class Analyzer{
    // Java-style: `+` with a String operand is string concatenation; the VM's
    // OP_ADD already renders either operand to text. Only `+` concatenates.
    if(b.op=="+"&&(l.kind==Kind::String||r.kind==Kind::String))return{Kind::String,{}};
+   if(l.kind==Kind::Unsigned || r.kind==Kind::Unsigned){
+    if(l.kind!=Kind::Unsigned || r.kind!=Kind::Unsigned || l.name!=r.name){
+     err("operator '"+b.op+"' requires unsigned operands of the same width");
+     return{Kind::Error,{},{}};
+    }
+    return{Kind::Unsigned,l.name,{}};
+   }
    if(!numeric(l)&&l.kind!=Kind::Unknown){err("operator '"+b.op+"' requires numeric operands");}
    if(!numeric(r)&&r.kind!=Kind::Unknown){err("operator '"+b.op+"' requires numeric operands");}
    return{(l.kind==Kind::Double||r.kind==Kind::Double)?Kind::Double:Kind::Int,{}};}
