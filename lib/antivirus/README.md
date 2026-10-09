@@ -1,3 +1,5 @@
+<img align="right" src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="75" height="75" alt="SLeeLa">
+
 # SLeeLa Antivirus Components
 
 **Status: component framework / integration contracts.** This directory defines the SLeeLa-side components for local and system-wide scanning and the ClamAV adapter boundary. It is not yet a complete, active antivirus product: the SLeeLa runtime still needs a trusted filesystem walker, process/daemon bridge, OS event monitor, and platform-specific service installer wired to these contracts.
