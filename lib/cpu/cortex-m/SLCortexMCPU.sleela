@@ -1,0 +1,81 @@
+/**
+ * SLeeLa ARM Cortex-M family CPU model.
+ * Profile-driven architectural skeleton; not a cycle-accurate silicon model.
+ * Configure profile and optional features before execution.
+ */
+class SLCortexMCPU extends SLCPU {
+    String profile = "ARMv7-M";
+    String variant = "Cortex-M3";
+    Boolean strictProfile = true;
+
+    Boolean hasMPU = false;
+    Boolean hasFPU = false;
+    Boolean hasDSP = false;
+    Boolean hasMVE = false;
+    Boolean hasTrustZoneM = false;
+    Boolean hasICache = false;
+    Boolean hasDCache = false;
+    Boolean hasPSP = true;
+
+    Map<String, Integer> registers = new Map<String, Integer>();
+    Map<String, Boolean> extensions = new Map<String, Boolean>();
+
+    function configure(String selectedProfile, String selectedVariant,
+                       Map<String, Boolean> selectedExtensions) {
+        profile = selectedProfile;
+        variant = selectedVariant;
+        extensions = selectedExtensions;
+
+        hasMPU = extensions.getOrDefault("mpu", false);
+        hasFPU = extensions.getOrDefault("fpu", false);
+        hasDSP = extensions.getOrDefault("dsp", false);
+        hasMVE = extensions.getOrDefault("mve", false);
+        hasTrustZoneM = extensions.getOrDefault("trustzone_m", false);
+        hasICache = extensions.getOrDefault("icache", false);
+        hasDCache = extensions.getOrDefault("dcache", false);
+        hasPSP = !profile.equals("ARMv6-M") || variant.equals("Cortex-M0+");
+
+        validateProfile();
+        resetArchitecturalState();
+    }
+
+    function validateProfile() {
+        if (hasMVE && !(profile.equals("ARMv8-M-Mainline"))) {
+            throw new IllegalArgumentException("MVE requires a compatible ARMv8-M Mainline implementation");
+        }
+        if (hasTrustZoneM && !(profile.startsWith("ARMv8-M"))) {
+            throw new IllegalArgumentException("TrustZone-M requires a compatible ARMv8-M profile");
+        }
+        if (strictProfile && hasFPU && profile.equals("ARMv6-M")) {
+            throw new IllegalArgumentException("FPU is not part of the ARMv6-M baseline profile");
+        }
+    }
+
+    function resetArchitecturalState() {
+        for (int i = 0; i <= 12; i++) {
+            registers.put("R" + i, 0);
+        }
+        registers.put("MSP", 0);
+        if (hasPSP) registers.put("PSP", 0);
+        registers.put("LR", 0);
+        registers.put("PC", 0);
+        registers.put("xPSR", 0);
+    }
+
+    function supportsInstruction(String instructionFeature) {
+        if (instructionFeature.equals("dsp")) return hasDSP;
+        if (instructionFeature.equals("fpu")) return hasFPU;
+        if (instructionFeature.equals("mve")) return hasMVE;
+        if (instructionFeature.equals("trustzone_m")) return hasTrustZoneM;
+        return true;
+    }
+
+    function onUnsupportedInstruction(String opcode) {
+        log.warn("Unsupported Cortex-M instruction for profile " + profile + ": " + opcode);
+        if (strictProfile) throw new IllegalStateException("Profile fault: unsupported instruction " + opcode);
+    }
+
+    function getArchitectureProfile() {
+        return profile;
+    }
+}
