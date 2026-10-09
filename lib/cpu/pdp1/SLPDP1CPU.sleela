@@ -1,0 +1,43 @@
+# SLPDP1CPU — SLeeLa PDP-1 CPU profile
+#
+# Functional, profile-driven foundation. Cycle accuracy is not implied.
+# Keep PDP-1 instruction decoding separate from all other DEC PDP families.
+
+class SLPDP1CPU extends SLCPU {
+    const WORD_BITS = 18;
+
+    state {
+        pc;
+        ac;
+        instructionRegister;
+        memory;
+        addressBits;
+        deviceMap;
+        timingProfile;
+    }
+
+    configure(profile) {
+        require(profile.wordBits == WORD_BITS);
+        require(profile.memoryWords > 0);
+        require(profile.addressBits > 0);
+        this.addressBits = profile.addressBits;
+        this.memory = SLRAM.create(profile.memoryWords, WORD_BITS);
+        this.deviceMap = profile.deviceMap ?? {};
+        this.timingProfile = profile.timingProfile ?? "functional";
+        return this;
+    }
+
+    step() {
+        let instruction = this.fetchWord(this.pc, WORD_BITS);
+        this.instructionRegister = instruction;
+        let decoded = this.decodePDP1(instruction, this.addressBits);
+        if (!decoded.supported) {
+            this.reportUnsupported("PDP1_OPCODE", instruction, this.pc);
+            return this.result("unsupported", instruction);
+        }
+        return this.executePDP1(decoded);
+    }
+
+    # Populate opcode and field definitions from a verified PDP-1 programming reference.
+    # Do not substitute instruction semantics from another PDP-family CPU.
+}
