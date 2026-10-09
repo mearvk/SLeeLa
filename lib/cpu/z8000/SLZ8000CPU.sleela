@@ -1,0 +1,23 @@
+# SLZ8000CPU
+
+class SLZ8000CPU {
+  architecture;
+  profile;
+  clock;
+  registers;
+  programCounter;
+  statusRegister;
+  instructionRegister;
+  decoder;
+  addressUnit;
+  segmentUnit;
+  integerUnit;
+  conditionCodeUnit;
+  memoryController;
+  ioBus;
+  interruptController;
+  busArbiter;
+  dmaController;
+  couplers;
+  reset(); fetch(); decode(); readOperands(); calculateEffectiveAddress(); resolveSegment(); execute(); memoryCycle(); ioCycle(); updateStatus(); serviceInterrupt(); complete(); validate();
+}
