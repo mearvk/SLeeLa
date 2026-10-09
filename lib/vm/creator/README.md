@@ -77,6 +77,30 @@ How the layers connect (the bridge):
 See `examples/creator-full-stack.sleela` for a runnable demonstration (C and
 Java programs through a 6502 executor on a Manager-generation SLVM).
 
+## Build options
+
+Request these on the creator before `create()`/`run()`; they flow into the built
+VM and its hosted CPU:
+
+- `requestDMA()` — direct memory-access engine (bulk transfers without the CPU
+  copying word by word).
+- `requestGPU()` — native GPU access (offload compute kernels to a host GPU over
+  the bridge, or a modelled SIMT engine when none is present).
+- `requestNativeRam()` — run the VM's linear memory on **real host RAM**
+  (`SLNativeMemory`) instead of the simulated `SLRAM` store, for running outside
+  simulation for procedural layment.
+
+```
+SleelaVMCreator creator = new SleelaVMCreator(); creator.configure();
+creator.requestNativeRam();   // run on real host RAM
+creator.requestDMA();         // direct DMA
+creator.requestGPU();         // native GPU
+int out = creator.run(5, cpu, job, 1000000);
+```
+
+These correspond to the `DMA`, `GPU`, and `NATIVE_RAM` capability bits in
+`../SleelaVMFeatureBits.sleela`. See `examples/native-ram-vm.sleela`.
+
 ## Source authority
 
 The .sleela definitions describe what the VM Creator is constructing. Native C/C++ implements required low-level services. The creator must not silently invent modules, capabilities, memory limits, or host authority.
