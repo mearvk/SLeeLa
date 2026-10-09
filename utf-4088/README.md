@@ -8,6 +8,8 @@ UTF-4088 is a hypothetical character-encoding and symbol-generation system. It i
 
 The working model assumes a code space larger than four billion character identifiers. The exact representation is intentionally left open; the specification distinguishes the abstract character/code-point space from the physical processor, memory, bus, and motherboard implementation.
 
+The current C++ implementation stores `InputState` and `CodePoint` as unsigned 64-bit integers. Its currently accepted experimental identifier interval is `0x110000` through `0x1FFFFFFFF` inclusive, requiring 33 bits. This is a practical implementation boundary, not a literal 4088-bit integer or physical encoding. See [CODE-POINT-AND-SERIALIZATION.md](CODE-POINT-AND-SERIALIZATION.md) for the contract and versioning rules.
+
 The proposed `.cpp` driver is modeled as a deterministic function:
 
 `output_symbol = F(input_state)`
@@ -75,6 +77,18 @@ The project's IQ terminology is retained only as a design metaphor and is explic
 ## International-trade objective
 
 The intended application is an experimental international symbol system in which common commercial concepts can be represented consistently across language families. Any real implementation should prioritize deterministic encoding, interoperability, normalization, security, and documented mappings over subjective linguistic rankings.
+
+## Build and test
+
+A C++20 compiler and CMake 3.20 or newer are required. From this directory:
+
+```sh
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build --parallel
+ctest --test-dir build --output-on-failure
+```
+
+The regression suite checks identifier boundaries, deterministic registry generation, glyph signatures, invalid floating-point inputs, fixed-width packing, and directed graph edge coalescing. GitHub Actions runs the build and tests on Linux, Windows, and macOS.
 
 ## Status
 
