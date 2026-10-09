@@ -319,7 +319,7 @@
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "d980c1c46652a78e7d35f0c517ef5453c0988bb057590331eeb9c87ec9380ab9"
+      "sha256": "435ffea38c55ee37210d7e6aebb447fb60de404687308e62fd5d853f9d9ae68b"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -575,7 +575,7 @@
     },
     {
       "path": "impl/subjects/chemistry/chemistry_api.cpp",
-      "sha256": "49591965cc96b5a4e2a07f046c60c659a4e3f25bb0e4c4e2c8187fee7be56dff"
+      "sha256": "c6dbd036c5ed97ae41db6381c62b5ea2488b2e32486db6424160fb1343449c67"
     },
     {
       "path": "impl/subjects/chemistry/chemistry_api.h",
