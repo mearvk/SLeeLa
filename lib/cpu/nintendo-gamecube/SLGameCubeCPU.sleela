@@ -26,6 +26,7 @@ class SLGameCubeCPU extends SLCPURuntime {
   void setGpr(int i, int v) { writeReg(i, v); }
 
   void configure() {
+    setSpecClock(486);   // the model's rated clock (MHz); overclockable
     bringUp("Nintendo GameCube (Gekko / PowerPC)", 32, 32, 32, 262144);
   }
 

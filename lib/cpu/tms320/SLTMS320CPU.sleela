@@ -31,6 +31,7 @@ class SLTMS320CPU extends SLCPURuntime {
   void setGpr(int i, int v) { writeReg(i, v); }
 
   void configure() {
+    setSpecClock(20);   // the model's rated clock (MHz); overclockable
     bringUp("TI TMS320", 16, 16, 8, 65536);
   }
 

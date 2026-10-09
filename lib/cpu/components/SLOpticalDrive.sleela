@@ -1,0 +1,61 @@
+/*
+ * lib/cpu/components/SLOpticalDrive.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLOpticalDrive — a selectable optical drive for a Sleela
+ *   executor build: CD, DVD, or Blu-ray reader/writer. It models the real spec
+ *   that sets its speed: the medium, the base 1× data rate for that medium, the
+ *   drive's speed multiplier (e.g. 52× CD, 16× DVD), and whether it can write.
+ *   The 1× rate differs per medium (CD 150 KB/s, DVD 1,385 KB/s, BD 4,500 KB/s),
+ *   so a "16×" DVD and a "16×" CD are very different throughputs — this class
+ *   makes that explicit.
+ *
+ * Family: cpu.components. Selected via SLComponentCatalog.
+ */
+#sleela 1.3
+class SLOpticalDrive {
+  static final int MEDIUM_CD = 0;
+  static final int MEDIUM_DVD = 1;
+  static final int MEDIUM_BD  = 2;   // Blu-ray
+
+  // Base 1x data rate in KB/s for each medium.
+  static final int BASE_CD_KBS = 150;
+  static final int BASE_DVD_KBS = 1385;
+  static final int BASE_BD_KBS = 4500;
+
+  String partName;
+  int medium;
+  int speedMultiplier;   // the "nnX" rating
+  int writer;            // 1 if it can burn media
+  int capacityMiB;       // disc capacity (CD 700, DVD 4700, BD 25000, ...)
+
+  void configure(String name, int mediumId, int multiplier, boolean canWrite, int discMiB) {
+    partName = name; medium = mediumId; speedMultiplier = multiplier;
+    writer = canWrite ? 1 : 0; capacityMiB = discMiB;
+  }
+
+  int baseRateKBs() {
+    if (medium == MEDIUM_CD)  { return BASE_CD_KBS; }
+    if (medium == MEDIUM_DVD) { return BASE_DVD_KBS; }
+    if (medium == MEDIUM_BD)  { return BASE_BD_KBS; }
+    return BASE_CD_KBS;
+  }
+
+  // Sustained read rate in KB/s = base × multiplier.
+  int readRateKBs() { return baseRateKBs() * speedMultiplier; }
+  int readRateMBs() { return readRateKBs() / 1024; }
+
+  // Time in milliseconds to read `mib` megabytes at the drive's rate.
+  int readTimeMs(int mib) { int r = readRateKBs(); if (r <= 0) { return 0; } return (mib * 1024 * 1000) / r; }
+
+  String name()      { return partName; }
+  int speed()        { return speedMultiplier; }
+  boolean canWrite() { return writer == 1; }
+  int capacity()     { return capacityMiB; }
+
+  String mediumName() {
+    if (medium == MEDIUM_CD)  { return "CD"; }
+    if (medium == MEDIUM_DVD) { return "DVD"; }
+    if (medium == MEDIUM_BD)  { return "Blu-ray"; }
+    return "optical";
+  }
+}

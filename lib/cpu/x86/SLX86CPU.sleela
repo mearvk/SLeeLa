@@ -31,6 +31,7 @@ class SLX86CPU extends SLCPURuntime {
   int cr0;              // control register 0
 
   void configure() {
+    setSpecClock(33);   // Intel IA-32 (386/486-class) at ~33 MHz; overclockable
     bringUp("Intel IA-32", 32, 32, 9, 262144);
     mode = 1; cr0 = 1;
     writeReg(ESP, 0x40000 - 4);

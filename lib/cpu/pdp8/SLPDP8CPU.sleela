@@ -29,6 +29,7 @@ class SLPDP8CPU extends SLCPURuntime {
     // address, a small register file for AC/LINK/PC) and apply a default PDP-8/E
     // profile. Call configureModel(...) to select a specific machine profile.
     void configure() {
+        setSpecClock(1);   // DEC PDP-8 (~0.67 MHz, rounded to 1); overclockable
         bringUp("DEC PDP-8", 12, 12, 4, 4096);
         configureModel("PDP-8/E", 4096, false, false);
     }

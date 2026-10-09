@@ -45,6 +45,7 @@ class SL6502CPU extends SLCPURuntime {
 
   void configure() {
     // 8-bit data, 16-bit address, 5 architectural registers, 64 KiB words.
+    setSpecClock(1);   // MOS 6502 ran at ~1 MHz; overclockable via the clock policy
     bringUp("MOS 6502", 8, 16, 5, 65536);
     writeReg(R_SP, 0xFF);
   }

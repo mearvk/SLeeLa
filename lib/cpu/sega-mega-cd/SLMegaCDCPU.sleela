@@ -26,6 +26,7 @@ class SLMegaCDCPU extends SLCPURuntime {
   void setGpr(int i, int v) { writeReg(i, v); }
 
   void configure() {
+    setSpecClock(13);   // the model's rated clock (MHz); overclockable
     bringUp("Sega Mega-CD (68000)", 32, 24, 16, 262144);
   }
 

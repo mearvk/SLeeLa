@@ -39,6 +39,7 @@ class SL68000CPU extends SLCPURuntime {
 
   void configure() {
     // 32-bit data path, 24-bit address bus, 16 registers, 16 MiW model memory.
+    setSpecClock(8);   // Motorola 68000 at 8 MHz; overclockable
     bringUp("Motorola 68000", 32, 24, 16, 1048576);
     busHeld = 0;
     writeReg(SP, 0x100000 - 4);

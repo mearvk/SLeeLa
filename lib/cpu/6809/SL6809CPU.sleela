@@ -29,6 +29,7 @@ class SL6809CPU extends SLCPURuntime {
   void setGpr(int i, int v) { writeReg(i, v); }
 
   void configure() {
+    setSpecClock(1);   // the model's rated clock (MHz); overclockable
     bringUp("Motorola 6809", 8, 16, 6, 65536);
   }
 

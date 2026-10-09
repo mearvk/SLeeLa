@@ -27,6 +27,7 @@ class SLTX0CPU extends SLCPURuntime {
   void setGpr(int i, int v) { writeReg(i, v); }
 
   void configure() {
+    setSpecClock(1);   // the model's rated clock (MHz); overclockable
     bringUp("MIT TX-0", 18, 18, 4, 262144);
   }
 
