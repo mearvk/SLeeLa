@@ -3,7 +3,7 @@
 # Product-specific Makefiles remain authoritative. This root dispatcher only
 # enters those existing build systems; it does not duplicate their source lists.
 
-.PHONY: all autocheck core java28 regex compiler decompiler vm scripting jetbrains install tutorial-check tests server config route clean help
+.PHONY: all autocheck core java28 regex compiler decompiler vm scripting jetbrains install install-product tutorial-check tests server config route clean help
 
 all: autocheck core java28 regex compiler decompiler vm scripting jetbrains install tutorial-check tests config route
 
@@ -80,7 +80,7 @@ help:
 	@echo "  make decompiler Build lib/decompiler/"
 	@echo "  make vm        Build lib/vm/"
 	@echo "  make jetbrains Show JetBrains source acquisition helpers"
-	@echo "  make install     Verify Quick and Safe installer entry points"
+	@echo "  make install     Verify Quick and Safe installer entry points"\n\t@echo "  make install-product  Build and interactively install compiled products (user-local or system-wide)"
 	@echo "  make tutorial-check Verify tutorial lesson sequence, example XML, and expected-evidence pairing"
 	@echo "  make tests     Build and run tests/"
 	@echo "  make server    Build api/server/"
