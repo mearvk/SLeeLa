@@ -1,0 +1,8 @@
+# SLTMS320CPU
+
+class SLTMS320CPU {
+  architecture; profile; clock; programCounter; registerFile; statusRegisters;
+  addressGenerator; multiplier; macUnit; accumulatorUnit; programMemory; dataMemory;
+  loopController; pipeline; interruptController; peripheralBus; dmaController; couplers;
+  reset(); fetch(); decode(); generateAddress(); executeMultiply(); executeMAC(); executeArithmetic(); accessProgramMemory(); accessDataMemory(); repeatLoopStep(); serviceInterrupt(); complete(); validate();
+}
