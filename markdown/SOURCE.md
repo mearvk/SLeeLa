@@ -60,9 +60,10 @@ class Hello {
 ```
 
 Form is `#sleela MAJOR.MINOR` (a trailing `.PATCH` is tolerated and ignored).
-The compiler is version aware: it accepts a declared version within its
-supported range, warns and assumes the floor when the pragma is absent, and
-rejects a version outside the range or a malformed pragma. See
+The compiler is version aware: it accepts declared syntax versions from `1.3`
+through `1.7`, warns and assumes the floor when the pragma is absent, and rejects
+a version outside that range or a malformed pragma. Syntax version `1.7` adds
+the `U1` through `U1048576` arbitrary-width unsigned integer type signatures. See
 [`COMPILER.md`](COMPILER.md) §3.
 
 ## Lifecycle
