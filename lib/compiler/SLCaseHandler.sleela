@@ -1,0 +1,40 @@
+# SLCaseHandler — source-level case statement validation
+#
+# This class validates selection branches. Object creation is handled separately.
+
+class SLCaseHandler {
+    validate(selectionNode, languageProfile) {
+        require(selectionNode != null);
+        let seenConstants = Set();
+        let defaultSeen = false;
+
+        for (let branch in selectionNode.branches) {
+            if (branch.kind == "default") {
+                if (defaultSeen) {
+                    return diagnostic("CASE_DUPLICATE_DEFAULT", branch.location);
+                }
+                defaultSeen = true;
+                continue;
+            }
+
+            if (branch.kind != "case") {
+                return diagnostic("CASE_INVALID_BRANCH", branch.location);
+            }
+            if (!branch.hasConstantValue && !languageProfile.supportsPatternCases) {
+                return diagnostic("CASE_REQUIRES_CONSTANT", branch.location);
+            }
+            if (branch.hasConstantValue) {
+                let key = canonicalConstant(branch.constantValue);
+                if (seenConstants.contains(key)) {
+                    return diagnostic("CASE_DUPLICATE_LABEL", branch.location);
+                }
+                seenConstants.add(key);
+            }
+            if (!typesCompatible(selectionNode.selectorType, branch.labelType)) {
+                return diagnostic("CASE_TYPE_MISMATCH", branch.location);
+            }
+        }
+
+        return validationSuccess(selectionNode);
+    }
+}
