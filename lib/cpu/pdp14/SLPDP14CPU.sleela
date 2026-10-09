@@ -1,0 +1,44 @@
+# SLPDP14CPU — SLeeLa PDP-14 industrial-control profile
+#
+# Profile-driven functional control model. Cycle accuracy is not implied.
+
+class SLPDP14CPU extends SLCPU {
+    state {
+        programPosition;
+        inputImage;
+        outputImage;
+        internalState;
+        pointMap;
+        scanPolicy;
+        faultState;
+    }
+
+    configure(profile) {
+        require(profile.pointMap != null);
+        this.pointMap = profile.pointMap;
+        this.scanPolicy = profile.scanPolicy ?? "sample-then-commit";
+        this.inputImage = {};
+        this.outputImage = {};
+        this.internalState = {};
+        this.faultState = false;
+        return this;
+    }
+
+    scan() {
+        this.inputImage = this.sampleConfiguredInputs(this.pointMap);
+        while (this.hasNextControlInstruction()) {
+            let instruction = this.fetchControlInstruction();
+            let decoded = this.decodePDP14(instruction);
+            if (!decoded.supported) {
+                this.reportUnsupported("PDP14_INSTRUCTION", instruction, this.programPosition);
+                this.faultState = true;
+                return this.result("unsupported", instruction);
+            }
+            this.executePDP14Control(decoded);
+        }
+        this.commitConfiguredOutputs(this.pointMap, this.outputImage, this.scanPolicy);
+        return this.result("scan-complete", this.outputImage);
+    }
+
+    # Exact opcode encoding and hardware scan behavior must come from a verified profile.
+}
