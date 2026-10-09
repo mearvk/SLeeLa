@@ -1,0 +1,46 @@
+# SLPDP15CPU — SLeeLa PDP-15 CPU profile
+#
+# Profile-driven functional model; cycle accuracy requires sourced timing metadata.
+# Do not share decoder tables implicitly with PDP-4, PDP-7, or PDP-9.
+
+class SLPDP15CPU extends SLCPU {
+    const WORD_BITS = 18;
+
+    state {
+        pc;
+        ac;
+        linkState;
+        instructionRegister;
+        memory;
+        addressBits;
+        enabledOptions;
+        deviceMap;
+        timingProfile;
+    }
+
+    configure(profile) {
+        require(profile.wordBits == WORD_BITS);
+        require(profile.memoryWords > 0);
+        require(profile.addressBits > 0);
+        this.addressBits = profile.addressBits;
+        this.memory = SLRAM.create(profile.memoryWords, WORD_BITS);
+        this.enabledOptions = profile.enabledOptions ?? [];
+        this.deviceMap = profile.deviceMap ?? {};
+        this.timingProfile = profile.timingProfile ?? "functional";
+        return this;
+    }
+
+    step() {
+        let instruction = this.fetchWord(this.pc, WORD_BITS);
+        this.instructionRegister = instruction;
+        let decoded = this.decodePDP15(instruction, this.addressBits, this.enabledOptions);
+        if (!decoded.supported) {
+            this.reportUnsupported("PDP15_OPCODE_OR_OPTION", instruction, this.pc);
+            return this.result("unsupported", instruction);
+        }
+        return this.executePDP15(decoded);
+    }
+
+    # Complete opcode and option behavior must be validated against PDP-15 references.
+    # Unsupported instructions must remain visible to diagnostics.
+}
