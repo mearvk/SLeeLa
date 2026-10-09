@@ -1,3 +1,7 @@
+#ifdef NDEBUG
+#undef NDEBUG
+#endif
+
 #include "character_map.hpp"
 #include "digraph_engine.hpp"
 #include "utf4088.hpp"
