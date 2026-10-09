@@ -1,19 +1,61 @@
-# SLCPUArchitecture
-
+/*
+ * lib/cpu/SLCPUArchitecture.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLCPUArchitecture — the identity and shape of an
+ *   instruction-set architecture, independent of any one chip: name, data and
+ *   address widths, endianness, register count, and which structural features
+ *   (pipeline, cache, MMU, DMA, interrupts, I/O timing, couplers) the ISA
+ *   assumes. SLCPUModel references one of these; SLCPURuntime consults it to
+ *   size its register file and address space.
+ *
+ * Family: cpu. Describes the ISA an SLCPURuntime realizes.
+ */
+#sleela 1.3
 class SLCPUArchitecture {
-  identity;
-  isa;
-  wordWidth;
-  addressWidth;
-  registerFile;
-  pipeline;
-  executionUnits;
-  cacheHierarchy;
-  memoryController;
-  interconnect;
-  ioTiming;
-  dmaController;
-  mmu;
-  interruptController;
-  couplers;
+  static final int ENDIAN_LITTLE = 0;
+  static final int ENDIAN_BIG     = 1;
+
+  String identity;      // ISA name, e.g. "MOS 6502", "ARMv7-A"
+  String isa;           // ISA family tag, e.g. "6502", "arm", "riscv"
+  int wordWidth;        // data path width in bits
+  int addressWidth;     // address bus width in bits
+  int endian;
+  int registerFile;     // architectural register count
+  int pipeline;         // assumed pipeline depth (0 = none)
+  int executionUnits;
+  int cacheHierarchy;   // cache level count
+  int memoryController; // 1 if a memory controller is modelled
+  int interconnect;
+  int ioTiming;
+  int dmaController;
+  int mmu;
+  int interruptController;
+  int couplers;
+
+  void configure(String name, String isaTag, int dataBits, int addrBits, int endianness,
+                 int regCount) {
+    identity = name; isa = isaTag;
+    wordWidth = dataBits; addressWidth = addrBits; endian = endianness;
+    registerFile = regCount;
+    pipeline = 0; executionUnits = 1; cacheHierarchy = 0; memoryController = 0;
+    interconnect = 0; ioTiming = 0; dmaController = 0; mmu = 0;
+    interruptController = 0; couplers = 0;
+  }
+
+  // Address space size in words implied by the address width (bounded for the
+  // bounded SLeeLa surface; large ISAs use a windowed subset).
+  int addressSpaceWords() {
+    int bits = addressWidth; if (bits > 24) { bits = 24; }   // cap model memory
+    int words = 1; int i = 0; while (i < bits) { words = words * 2; i = i + 1; }
+    return words;
+  }
+
+  String name()        { return identity; }
+  String isaFamily()   { return isa; }
+  int dataWidth()      { return wordWidth; }
+  int addrWidth()      { return addressWidth; }
+  int endianness()     { return endian; }
+  boolean littleEndian(){ return endian == ENDIAN_LITTLE; }
+  int registers()      { return registerFile; }
+  boolean hasMmu()     { return mmu == 1; }
 }

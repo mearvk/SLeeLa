@@ -1,0 +1,163 @@
+/*
+ * lib/cpu/SLCPURuntime.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLCPURuntime — the runnable base class every specific
+ *   Sleela-sourced CPU model extends. It supplies the machinery a bare
+ *   SL<ARCH>CPU skeleton was missing: real register storage (over SLRAM),
+ *   architectural flags, a word-addressable memory interface, an ALU, a program
+ *   counter, and a fetch-decode-execute loop with reset/step/run lifecycle.
+ *
+ *   Crucially, SLCPURuntime is the seam that lets a CPU model run ON TOP OF the
+ *   secondary Sleela VM: it owns an SLSleelaVM substrate and a lowering surface
+ *   (emitConst/emitBinary/emitStore/...) so a concrete CPU can translate each of
+ *   its native instructions into the 124 canonical opcodes and execute them on
+ *   the same engine the native Sleela VM interprets. A per-architecture model
+ *   therefore only has to (a) declare its registers and (b) implement decode()
+ *   to map its opcodes onto the ALU and the substrate — everything structural is
+ *   inherited.
+ *
+ * Subclassing contract (what a concrete CPU overrides):
+ *   - configureArch(): set widths and register count, then call bringUp().
+ *   - decode(int word): map one fetched instruction word to execute*() / emit*().
+ *   - optionally reset()/interrupt() for arch-specific state.
+ *
+ * Family: cpu. Composes SLRAM, SLALU, SLSleelaVM, SLSleelaOpcode. Extended by
+ *   SL6502CPU, SLZ80CPU, SLX86CPU, SLARMCPU, SLMIPSCPU, SLRISCVCPU, SLM68000CPU.
+ */
+#sleela 1.3
+class SLCPURuntime {
+  String archName;
+  int width;            // data path width in bits
+  int addrWidth;        // address bus width in bits
+  int regCount;         // architectural register count
+
+  SLRAM regs;           // architectural registers (one word each)
+  SLRAM mem;            // word-addressable system memory
+  int memWords;
+
+  SLALU alu;
+  int pc;               // program counter (word index)
+  int flagZ; int flagN; int flagC; int flagV;
+  int halted;
+  int retired;          // instructions executed
+
+  // --- secondary-VM substrate: the CPU runs its lowered form here ---
+  SLSleelaVM substrate;
+  SLSleelaOpcode op;
+  int lowering;         // 1 => execute by lowering to canonical opcodes
+
+  // Bring the inherited machinery up once a subclass has set its widths.
+  void bringUp(String name, int dataBits, int addressBits, int registers, int memoryWords) {
+    archName = name; width = dataBits; addrWidth = addressBits;
+    regCount = registers; memWords = memoryWords;
+
+    regs = new SLRAM(); regs.configure(registers + 1, 32); regs.allocate();
+    mem  = new SLRAM(); mem.configure(memoryWords, 32); mem.allocate();
+    alu  = new SLALU(); alu.configure(dataBits);
+
+    pc = 0; flagZ = 0; flagN = 0; flagC = 0; flagV = 0;
+    halted = 0; retired = 0;
+
+    substrate = new SLSleelaVM();
+    substrate.configure(memoryWords, 4096, registers + 16);
+    op = new SLSleelaOpcode(); op.configure(0, "OP_NOP");
+    lowering = 0;
+  }
+
+  // --- register / memory access (what decode() uses) ---
+  int readReg(int i)             { if (i < 0 || i > regCount) { return 0; } return regs.readWord(i); }
+  void writeReg(int i, int v)    { if (i < 0 || i > regCount) { return; } regs.writeWord(i, maskWord(v)); }
+  int readMem(int addr)          { if (addr < 0 || addr >= memWords) { return 0; } return mem.readWord(addr); }
+  void writeMem(int addr, int v) { if (addr < 0 || addr >= memWords) { return; } mem.writeWord(addr, maskWord(v)); }
+
+  int maskWord(int v) {
+    int m = 1; int i = 0; while (i < width) { m = m * 2; i = i + 1; }
+    int r = v % m; if (r < 0) { r = r + m; } return r;
+  }
+
+  // --- ALU surface (decode() routes arithmetic through here so flags are set) ---
+  int aluOp(int a, int b, int op) {
+    int r = alu.execute(a, b, op);
+    flagZ = alu.zero(); flagN = alu.negative(); flagC = alu.carry(); flagV = alu.overflow();
+    return r;
+  }
+
+  // --- lowering surface: emit canonical opcodes onto the secondary VM ---
+  void enableLowering() { lowering = 1; substrate.setHosted(); }
+  int emitConst(int v)        { return substrate.emit(op.OP_CONST, v); }
+  int emitLoadGlobal(int slot){ return substrate.emit(op.OP_LOADG, slot); }
+  int emitStoreGlobal(int slot){ return substrate.emit(op.OP_STOREG, slot); }
+  int emitAdd()  { return substrate.emit(op.OP_ADD, 0); }
+  int emitSub()  { return substrate.emit(op.OP_SUB, 0); }
+  int emitMul()  { return substrate.emit(op.OP_MUL, 0); }
+  int emitPrint(){ return substrate.emit(op.OP_PRINT, 0); }
+  int emitHalt() { return substrate.emit(op.OP_HALT, 0); }
+  int emitJump(int target)      { return substrate.emit(op.OP_JMP, target); }
+  int emitJumpIfFalse(int target){ return substrate.emit(op.OP_JMPF, target); }
+
+  // Execute the lowered program on the substrate (the "run on top of the
+  // secondary VM" path). Returns opcodes retired on the substrate.
+  int runLowered(int budget) { return substrate.run(budget); }
+  int loweredOutput() { return substrate.printed(); }
+  SLSleelaVM engine() { return substrate; }
+
+  // --- fetch-decode-execute lifecycle (overridable) ---
+  // Default fetch: read the instruction word at pc and advance.
+  int fetch() {
+    if (pc < 0 || pc >= memWords) { halted = 1; return 0; }
+    int word = mem.readWord(pc);
+    pc = pc + 1;
+    return word;
+  }
+
+  // Subclasses override decode() to interpret one instruction word. The base
+  // treats a zero word as NOP and anything else as HALT so the loop terminates
+  // safely if a model forgets to override.
+  void decode(int word) {
+    if (word == 0) { return; }
+    halted = 1;
+  }
+
+  // Per-instruction hook a subclass overrides for M1-cycle side effects (e.g.
+  // the Z80 memory refresh). Default does nothing.
+  void preFetch() { }
+
+  // One instruction: pre-fetch hook, fetch, decode/execute, count.
+  int step() {
+    if (halted == 1) { return -1; }
+    preFetch();
+    int word = fetch();
+    if (halted == 1) { return -1; }
+    decode(word);
+    retired = retired + 1;
+    return word;
+  }
+
+  int run(int budget) {
+    int ran = 0;
+    while (halted == 0 && ran < budget) { step(); ran = ran + 1; }
+    return ran;
+  }
+
+  void reset() {
+    pc = 0; flagZ = 0; flagN = 0; flagC = 0; flagV = 0; halted = 0; retired = 0;
+    int i = 0; while (i <= regCount) { regs.writeWord(i, 0); i = i + 1; }
+  }
+
+  void loadProgramWord(int addr, int word) { writeMem(addr, word); }
+  void setEntryPoint(int addr) { pc = addr; }
+  void interrupt(int vector) { }   // arch-specific; default no-op
+
+  // --- introspection ---
+  boolean validate() { return width > 0 && regCount > 0 && memWords > 0; }
+  String architecture() { return archName; }
+  int programCounter()  { return pc; }
+  int instructionsRetired(){ return retired; }
+  boolean isHalted()    { return halted == 1; }
+  int dataWidth()       { return width; }
+  int registerCount()   { return regCount; }
+  int zero()     { return flagZ; }
+  int negative() { return flagN; }
+  int carry()    { return flagC; }
+  int overflow() { return flagV; }
+}

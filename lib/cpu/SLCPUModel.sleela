@@ -1,2 +1,69 @@
-# SLCPUModel
-class SLCPUModel { architecture; clock; registers; pipeline; executionUnits; caches; memory; ioBus; dma; mmu; interrupts; couplers; validate(); }
+/*
+ * lib/cpu/SLCPUModel.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLCPUModel — the declarative description of a specific
+ *   processor: the inventory of units it is built from (architecture metadata,
+ *   clock, register file, pipeline, execution units, caches, memory, I/O bus,
+ *   DMA, MMU, interrupts, couplers) and a validate() contract that a concrete
+ *   model satisfies. It is the specification half; SLCPURuntime is the runnable
+ *   half a per-architecture model extends.
+ *
+ * Kept as populatable fields (not bare names) so a Sleela-sourced CPU can be
+ * described, validated, and then handed to SLCPURuntime to execute on top of the
+ * secondary VM.
+ *
+ * Family: cpu. Describes what SLCPURuntime runs.
+ */
+#sleela 1.3
+class SLCPUModel {
+  String architecture;
+  int clock;
+  int registers;        // register count
+  int width;            // data path width in bits
+  int pipeline;         // pipeline stage count (0 = non-pipelined)
+  int executionUnits;
+  int caches;           // cache level count
+  int memory;           // addressable words
+  int ioBus;            // 1 if an I/O bus is present
+  int dma;              // 1 if a DMA engine is present
+  int mmu;              // 1 if an MMU is present
+  int interrupts;       // interrupt line count
+  int couplers;
+
+  void configure(String arch, int clockMHz, int regCount, int bits,
+                 int stages, int units, int addressableWords) {
+    architecture = arch; clock = clockMHz; registers = regCount; width = bits;
+    pipeline = stages; executionUnits = units; memory = addressableWords;
+    caches = 0; ioBus = 0; dma = 0; mmu = 0; interrupts = 0; couplers = 0;
+  }
+
+  void withCaches(int levels)  { caches = levels; }
+  void withIoBus()             { ioBus = 1; }
+  void withDma()               { dma = 1; }
+  void withMmu()               { mmu = 1; }
+  void withInterrupts(int n)   { interrupts = n; }
+  void withCouplers(int n)     { couplers = n; }
+
+  // A model is valid when it names an architecture, has a positive width and
+  // register count, and a non-empty address space.
+  boolean validate() {
+    if (architecture == null || architecture == "") { return false; }
+    if (width <= 0) { return false; }
+    if (registers <= 0) { return false; }
+    if (memory <= 0) { return false; }
+    return true;
+  }
+
+  String architectureName() { return architecture; }
+  int clockMHz()    { return clock; }
+  int registerCount(){ return registers; }
+  int dataWidth()   { return width; }
+  int pipelineDepth(){ return pipeline; }
+  int units()       { return executionUnits; }
+  int cacheLevels() { return caches; }
+  int addressableWords() { return memory; }
+  boolean hasMmu()  { return mmu == 1; }
+  boolean hasDma()  { return dma == 1; }
+  boolean hasIoBus(){ return ioBus == 1; }
+  int interruptLines() { return interrupts; }
+}

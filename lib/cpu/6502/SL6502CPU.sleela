@@ -1,25 +1,91 @@
-# SL6502CPU
-class SL6502CPU {
-  architecture;
-  clock;
-  registers;
-  pipeline;
-  instructionFetch;
-  executionUnit;
-  ioBus;
-  ioTiming;
-  interrupts;
-  couplers;
-  cache = none;
-  dma = none;
-  mmu = none;
-  tlb = none;
+/*
+ * lib/cpu/6502/SL6502CPU.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SL6502CPU — a runnable model of the MOS 6502: an 8-bit
+ *   accumulator machine with X/Y index registers, a stack pointer, and the
+ *   N V - B D I Z C status flags. It extends SLCPURuntime, so register storage,
+ *   memory, the ALU, and the fetch-decode-execute loop are inherited; this file
+ *   supplies the 6502's registers and an instruction decoder.
+ *
+ * Instruction model (one word per instruction: op in bits 8..15, operand in
+ * bits 0..7) — a compact teaching encoding, not the byte-exact 6502 opcode map,
+ * sufficient to run the CPU as a CPU and as a model for further .sleela inputs:
+ *   LDA#imm, LDX#imm, LDY#imm, STA abs, LDA abs, ADC#imm, SBC#imm, INX, INY,
+ *   TAX, TAY, JMP abs, BEQ rel, BNE rel, BRK(halt), NOP.
+ * decode() routes arithmetic through the inherited ALU (so flags are real) and
+ * can also lower the stream onto the secondary VM via the inherited emit*().
+ *
+ * Family: cpu. Extends SLCPURuntime.
+ */
+#sleela 1.3
+class SL6502CPU extends SLCPURuntime {
+  // Register file indices (into the inherited SLRAM register store).
+  static final int R_A  = 0;   // accumulator
+  static final int R_X  = 1;   // X index
+  static final int R_Y  = 2;   // Y index
+  static final int R_SP = 3;   // stack pointer
+  static final int R_P  = 4;   // processor status
 
-  reset();
-  fetch();
-  decode();
-  execute();
-  busCycle();
-  interrupt();
-  validate();
+  // Opcodes in the compact model encoding (high byte of the instruction word).
+  static final int LDA_IMM = 1;
+  static final int LDX_IMM = 2;
+  static final int LDY_IMM = 3;
+  static final int STA_ABS = 4;
+  static final int LDA_ABS = 5;
+  static final int ADC_IMM = 6;
+  static final int SBC_IMM = 7;
+  static final int INX     = 8;
+  static final int INY     = 9;
+  static final int TAX     = 10;
+  static final int TAY     = 11;
+  static final int JMP_ABS = 12;
+  static final int BEQ_REL = 13;
+  static final int BNE_REL = 14;
+  static final int BRK      = 15;
+
+  void configure() {
+    // 8-bit data, 16-bit address, 5 architectural registers, 64 KiB words.
+    bringUp("MOS 6502", 8, 16, 5, 65536);
+    writeReg(R_SP, 0xFF);
+  }
+
+  int opOf(int word)      { return (word / 256) % 256; }
+  int operandOf(int word) { return word % 256; }
+
+  void decode(int word) {
+    int opcode = opOf(word);
+    int arg = operandOf(word);
+
+    if (opcode == LDA_IMM) { writeReg(R_A, arg); setZN(arg); return; }
+    if (opcode == LDX_IMM) { writeReg(R_X, arg); setZN(arg); return; }
+    if (opcode == LDY_IMM) { writeReg(R_Y, arg); setZN(arg); return; }
+    if (opcode == STA_ABS) { writeMem(arg, readReg(R_A)); return; }
+    if (opcode == LDA_ABS) { int v = readMem(arg); writeReg(R_A, v); setZN(v); return; }
+    if (opcode == ADC_IMM) { int r = aluOp(readReg(R_A), arg, alu.OP_ADD); writeReg(R_A, r); return; }
+    if (opcode == SBC_IMM) { int r = aluOp(readReg(R_A), arg, alu.OP_SUB); writeReg(R_A, r); return; }
+    if (opcode == INX)     { int r = aluOp(readReg(R_X), 1, alu.OP_ADD); writeReg(R_X, r); return; }
+    if (opcode == INY)     { int r = aluOp(readReg(R_Y), 1, alu.OP_ADD); writeReg(R_Y, r); return; }
+    if (opcode == TAX)     { int v = readReg(R_A); writeReg(R_X, v); setZN(v); return; }
+    if (opcode == TAY)     { int v = readReg(R_A); writeReg(R_Y, v); setZN(v); return; }
+    if (opcode == JMP_ABS) { setEntryPoint(arg); return; }
+    if (opcode == BEQ_REL) { if (zero() == 1) { setEntryPoint(programCounter() + signed(arg)); } return; }
+    if (opcode == BNE_REL) { if (zero() == 0) { setEntryPoint(programCounter() + signed(arg)); } return; }
+    if (opcode == BRK)     { halted = 1; return; }
+    // NOP / unknown
+  }
+
+  // Treat the low byte as a signed relative offset for branches.
+  int signed(int b) { if (b >= 128) { return b - 256; } return b; }
+
+  void setZN(int v) {
+    flagZ = (v % 256 == 0) ? 1 : 0;
+    flagN = ((v / 128) % 2 == 1) ? 1 : 0;
+  }
+
+  // Assembler helper: pack an instruction word for loadProgramWord().
+  int encode(int opcode, int operand) { return (opcode % 256) * 256 + (operand % 256); }
+
+  int accumulator() { return readReg(R_A); }
+  int indexX()      { return readReg(R_X); }
+  int indexY()      { return readReg(R_Y); }
 }
