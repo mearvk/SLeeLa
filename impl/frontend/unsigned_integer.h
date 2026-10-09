@@ -6,6 +6,7 @@
 #include <cstdint>
 #include <stdexcept>
 #include <string>
+#include <utility>
 #include <vector>
 
 namespace sleela {
@@ -117,6 +118,79 @@ public:
         return carry != 0;
     }
 
+    UnsignedInteger multiply(const UnsignedInteger& other) const {
+        requireSameWidth(other);
+        UnsignedInteger result(width_), addend(*this);
+        for (std::size_t bit = 0; bit < width_; ++bit) {
+            if (other.bitAt(bit)) {
+                if (result.addWouldOverflow(addend)) throw std::overflow_error("unsigned integer multiplication overflow");
+                result = result.add(addend);
+            }
+            bool remaining = false;
+            for (std::size_t next = bit + 1; next < width_; ++next)
+                if (other.bitAt(next)) { remaining = true; break; }
+            if (remaining) addend = addend.shiftLeftOneChecked();
+        }
+        return result;
+    }
+
+    std::pair<UnsignedInteger, UnsignedInteger> divideAndRemainder(const UnsignedInteger& divisor) const {
+        requireSameWidth(divisor);
+        if (divisor.isZero()) throw std::domain_error("unsigned integer division by zero");
+        UnsignedInteger quotient(width_), remainder(width_);
+        for (std::size_t bit = width_; bit-- > 0;) {
+            remainder = remainder.shiftLeftOneModulo();
+            if (bitAt(bit)) remainder.bytes_[0] |= 1u;
+            if (remainder.compare(divisor) >= 0) {
+                remainder = remainder.subtract(divisor);
+                quotient.setBit(bit);
+            }
+        }
+        return {quotient, remainder};
+    }
+    UnsignedInteger divide(const UnsignedInteger& divisor) const { return divideAndRemainder(divisor).first; }
+    UnsignedInteger modulo(const UnsignedInteger& divisor) const { return divideAndRemainder(divisor).second; }
+
+    UnsignedInteger bitwiseAnd(const UnsignedInteger& other) const {
+        requireSameWidth(other); UnsignedInteger out(width_);
+        for (std::size_t i=0;i<bytes_.size();++i) out.bytes_[i]=bytes_[i]&other.bytes_[i];
+        return out;
+    }
+    UnsignedInteger bitwiseOr(const UnsignedInteger& other) const {
+        requireSameWidth(other); UnsignedInteger out(width_);
+        for (std::size_t i=0;i<bytes_.size();++i) out.bytes_[i]=bytes_[i]|other.bytes_[i];
+        out.normalize(); return out;
+    }
+    UnsignedInteger bitwiseXor(const UnsignedInteger& other) const {
+        requireSameWidth(other); UnsignedInteger out(width_);
+        for (std::size_t i=0;i<bytes_.size();++i) out.bytes_[i]=bytes_[i]^other.bytes_[i];
+        out.normalize(); return out;
+    }
+    UnsignedInteger bitwiseNot() const {
+        UnsignedInteger out(width_);
+        for (std::size_t i=0;i<bytes_.size();++i) out.bytes_[i]=static_cast<std::uint8_t>(~bytes_[i]);
+        out.normalize(); return out;
+    }
+    UnsignedInteger shiftLeft(std::size_t amount) const {
+        if (amount >= width_) return UnsignedInteger(width_);
+        UnsignedInteger out(*this);
+        while (amount--) out=out.shiftLeftOneModulo();
+        return out;
+    }
+    UnsignedInteger shiftRight(std::size_t amount) const {
+        if (amount >= width_) return UnsignedInteger(width_);
+        UnsignedInteger out(*this);
+        while (amount--) {
+            unsigned carry=0;
+            for (std::size_t i=out.bytes_.size();i-- > 0;) {
+                unsigned cur=out.bytes_[i];
+                out.bytes_[i]=static_cast<std::uint8_t>((cur>>1)|(carry<<7));
+                carry=cur&1u;
+            }
+        }
+        out.normalize(); return out;
+    }
+
     std::string toDecimal() const {
         if (isZero()) return "0";
         std::vector<std::uint8_t> work = bytes_;
@@ -148,6 +222,27 @@ private:
     void normalize() noexcept {
         if (bytes_.empty() || width_ % 8 == 0) return;
         bytes_.back() &= static_cast<std::uint8_t>((1u << (width_ % 8)) - 1u);
+    }
+
+    bool bitAt(std::size_t bit) const noexcept {
+        return (bytes_[bit/8] & static_cast<std::uint8_t>(1u << (bit%8))) != 0;
+    }
+    void setBit(std::size_t bit) noexcept { bytes_[bit/8] |= static_cast<std::uint8_t>(1u << (bit%8)); }
+    UnsignedInteger shiftLeftOneModulo() const {
+        UnsignedInteger out(width_); unsigned carry=0;
+        for(std::size_t i=0;i<bytes_.size();++i) {
+            unsigned cur=(static_cast<unsigned>(bytes_[i])<<1)|carry;
+            out.bytes_[i]=static_cast<std::uint8_t>(cur&0xffu); carry=cur>>8;
+        }
+        out.normalize(); return out;
+    }
+    UnsignedInteger shiftLeftOneChecked() const {
+        if ((width_%8)==0) {
+            if (bytes_.back()&0x80u) throw std::overflow_error("unsigned integer multiplication overflow");
+        } else if (bytes_.back() & static_cast<std::uint8_t>(1u << ((width_%8)-1))) {
+            throw std::overflow_error("unsigned integer multiplication overflow");
+        }
+        return shiftLeftOneModulo();
     }
 
     void multiplySmall(unsigned factor) {
