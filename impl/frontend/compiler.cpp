@@ -258,11 +258,31 @@ private:
     void emitAssignmentExpr(const AssignmentExpr& a){
         std::string bin = a.op.size()==2 ? std::string(1,a.op[0]) : std::string();
         if(auto v=dynamic_cast<const VarExpr*>(a.target.get())){
-            if(!bin.empty()){emitVar(*v);emitExpr(a.value.get());emitBinOp(bin);} else emitExpr(a.value.get());
+            // Resolve the target before emitting the RHS. Assignment expressions
+            // are also used for statement-level assignments, so instance fields
+            // must follow the same resolution path as Assign statements.
             int slot=ctx_->slotOf(v->name);
-            if(slot>=0){emit(OP_STOREL,slot);emit(OP_LOADL,slot);return;}
+            if(slot>=0){
+                if(!bin.empty()){emit(OP_LOADL,slot);emitExpr(a.value.get());emitBinOp(bin);}
+                else emitExpr(a.value.get());
+                emit(OP_STOREL,slot);emit(OP_LOADL,slot);return;
+            }
+            int off=instanceFieldOffset(v->name);
+            if(off>=0){
+                emitThis();                         // [this]
+                if(!bin.empty()){emit(OP_DUP);emit(OP_GETFIELD,off);emitExpr(a.value.get());emitBinOp(bin);}
+                else emitExpr(a.value.get());
+                emit(OP_SETFIELD,off);              // leaves assigned value
+                return;
+            }
             int g=fieldSlot(v->name);
-            if(g>=0){if(fieldProtected_[v->name]&&fieldOwner_[v->name]!=currentClass_)throw std::runtime_error("protected field access denied");emit(OP_STOREG,g);emit(OP_LOADG,g);return;}
+            if(g>=0){
+                const std::string key=fieldOwner_.count(v->name)?v->name:currentClass_+"::"+v->name;
+                if(fieldProtected_[key]&&fieldOwner_[key]!=currentClass_)throw std::runtime_error("protected field access denied");
+                if(!bin.empty()){emit(OP_LOADG,g);emitExpr(a.value.get());emitBinOp(bin);}
+                else emitExpr(a.value.get());
+                emit(OP_STOREG,g);emit(OP_LOADG,g);return;
+            }
             throw std::runtime_error("Semantic error: assignment to undeclared variable '"+v->name+"'");
         }
         if(auto m=dynamic_cast<const MemberAccess*>(a.target.get())){
