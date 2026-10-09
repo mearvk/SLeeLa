@@ -44,7 +44,8 @@ CPPFLAGS += -Ifrontend $(SUBJECT_INCLUDES) -I../bash
 LDFLAGS ?= $(THREADFLAG)
 LIBS ?= $(PLATFORM_LIBS)
 BUILD := build
-STAGE := $(BUILD)/SLeeLa
+PYTHON ?= python3
+STAGE := $(BUILD)/sleela-package
 STAGE_BIN := $(STAGE)/bin
 STAGE_CONFIG := $(STAGE)/Config
 STAGE_OPTIONS := $(STAGE)/Options
@@ -431,7 +432,7 @@ $(BUILD)/http2_server.o: ../http-servers/2/http2/http2_server.cpp ../http-server
 $(NGHTTP2_DIR)/.unpacked: $(NGHTTP2_ZIP) | $(BUILD)
 	@echo "=== unpacking vendored nghttp2 $(NGHTTP2_VERSION) ==="
 	@rm -rf $(NGHTTP2_DIR)
-	@cd $(BUILD) && unzip -q ../$(NGHTTP2_ZIP)
+	@cd $(BUILD) && $(PYTHON) -c "import zipfile; zipfile.ZipFile('../$(NGHTTP2_ZIP)').extractall('.')"
 	@touch $@
 
 # Generate the version header from the shipped autotools/cmake template.
