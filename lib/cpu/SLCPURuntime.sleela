@@ -56,6 +56,15 @@ class SLCPURuntime {
   int admittedWorkloads;
   int completedWorkloads;
 
+  // --- substrate injection (nesting seam) ---
+  // When a host (the Secondary Sleela VM, SLVM) wants the CPU to run as a guest
+  // ON its substrate rather than on a private one, it attaches that substrate
+  // here. runWorkload()/mapWorkload() then target the attached substrate, so the
+  // CPU's lowered opcode stream and the host's dispatch loop operate on ONE
+  // SLSleelaVM — the true "CPU on top of the Secondary VM" nesting the docs
+  // describe. When null (the default) the CPU owns its substrate as before.
+  SLSleelaVM attachedSubstrate;
+
   // Bring the inherited machinery up once a subclass has set its widths.
   void bringUp(String name, int dataBits, int addressBits, int registers, int memoryWords) {
     archName = name; width = dataBits; addrWidth = addressBits;
@@ -84,6 +93,28 @@ class SLCPURuntime {
   // needs it to lower any supported language to a language-independent image).
   SLInstructionSet workloadIsa() { return workIsa; }
 
+  // Host hands its substrate to the CPU so the CPU runs nested on it (SLVM).
+  void attachSubstrate(SLSleelaVM hostSubstrate) { attachedSubstrate = hostSubstrate; }
+  void detachSubstrate() { attachedSubstrate = null; }
+  boolean nested() { return attachedSubstrate != null; }
+
+  // Compile + map a workload onto a target substrate WITHOUT running it, so a
+  // host (SLVM) can drive the resulting opcode stream itself. Returns the
+  // substrate that now carries the workload, or null if the workload was
+  // rejected. Used by SLVM.runGuestWorkload for the Creator -> SLVM -> CPU ->
+  // program stack.
+  SLSleelaVM mapWorkload(SLWorkload work, SLSleelaVM target) {
+    if (!admit(work)) { return null; }
+    activeGrant = work.grant();
+    if (!work.compiled()) { work.compile(workIsa); }
+    if (!activeGrant.ioEnabled()) { target.setHosted(); }
+    SLOpcodeMap map = new SLOpcodeMap();
+    map.configure(workIsa, workSys, target);
+    map.mapProgram(work.image(), workDecoder);
+    work.markRunning();
+    return target;
+  }
+
   // --- resource assignment + workload execution ---
   // Admission control: can this CPU satisfy the workload's resource grant?
   // A workload is admitted only when its memory request fits the CPU's address
@@ -109,10 +140,15 @@ class SLCPURuntime {
     // Compile the source to a language-independent register-ISA image.
     if (!work.compiled()) { work.compile(workIsa); }
 
-    // Fresh substrate sized to the grant so one workload cannot see another's
-    // memory; honor the I/O permission by hosting service opcodes when denied.
-    substrate = new SLSleelaVM();
-    substrate.configure(activeGrant.words(), 4096, regCount + 16);
+    // Target substrate: the host's injected one when nested (CPU runs as a guest
+    // of the Secondary VM), otherwise a fresh private one sized to the grant so
+    // one workload cannot see another's memory.
+    if (attachedSubstrate != null) {
+      substrate = attachedSubstrate;
+    } else {
+      substrate = new SLSleelaVM();
+      substrate.configure(activeGrant.words(), 4096, regCount + 16);
+    }
     if (!activeGrant.ioEnabled()) { substrate.setHosted(); }
 
     // Map the register-ISA image onto this CPU's substrate.

@@ -35,6 +35,29 @@ The following `.sleela` files are the source-level VM and architecture definitio
 - `SLVMMemory.sleela` — VM memory model.
 - `SLVMHeap.sleela` — VM heap model.
 
+### Running a guest CPU and a C/C++/Java/Sleela program (the full stack)
+
+The Secondary Sleela VM can host a **Sleela CPU model** as its executor and run a
+C, C++, Java, or Sleela program through it. The chain is:
+
+```
+SleelaVMCreator (creator/)  →  SLVM (this package, on the Native Sleela VM)
+                            →  hostCpu(SL<ARCH>CPU from /lib/cpu)
+                            →  runGuestWorkload(C | C++ | Java | Sleela program)
+```
+
+- `SLVM.hostCpu(cpu)` lends the hosted CPU this VM's `SLSleelaVM` substrate; the
+  CPU attaches to it (`SLCPURuntime.attachSubstrate`) so it lowers its program
+  onto **this** substrate — the CPU runs *nested* on the Secondary VM.
+- `SLVM.runGuestWorkload(work, budget)` has the CPU compile + map a workload
+  (`/lib/cpu` `SLWorkload` + `SLCompilerDriver` + `SLOpcodeMap`) onto the shared
+  substrate, then SLVM drives the opcode stream and services I/O VM-exits.
+- `creator/SleelaVMCreator.sleela` builds and boots the SLVM and runs the whole
+  stack in one call (`creator.run(generation, cpu, workload, budget)`).
+
+See `creator/README.md` and `creator/examples/creator-full-stack.sleela`, plus
+`/lib/cpu/CPU-ON-SECONDARY-VM.md` for the CPU-side view.
+
 ### VM options, capabilities, and resource architecture
 
 - `SleelaVMOptions.sleela` — aggregate VM configuration options.
