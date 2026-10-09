@@ -1,11 +1,156 @@
 /*
  * lib/vm/SLVM.sleela
  * SLeeLa Standard Library Definition.
- * Definition: Defines the SLeeLa standard-library type SLVM used within the vm library family.
+ * Definition: Defines SLVM — the secondary Sleela VM: the runnable interpreter a
+ *   coder uses to design and control a Sleela-sourced virtual machine. It owns
+ *   the managed object heap (SLVMHeap), the flat linear memory (SLVMMemory), the
+ *   module loader (SLVMModuleLoader), a main thread with a frame-based call
+ *   stack (SLVMThread/SLVMFrame), and a native-binding table (SLVMNativeBinding).
+ *
+ * SLVM does not re-implement opcode semantics — it drives the module's canonical
+ * SLSleelaVM substrate (the native Sleela VM, lib/cpu/SLSleelaVM) one opcode at a
+ * time, intercepting CALL/RET to maintain frames and service opcodes to route
+ * through native bindings. Running on top of that substrate is exactly what makes
+ * this the "secondary VM on top of the Native Sleela VM": every effect ultimately
+ * executes on the same 124-opcode engine the native layer interprets.
+ *
+ * Typical use:
+ *   vm = new SLVM(); vm.boot(1<<16, 1<<16);
+ *   module = vm.loader().beginModule("app", 4096, 4096, 1024);
+ *   ... emit opcodes / define classes ...
+ *   vm.install(module); vm.run(1000000);
+ *
+ * Family: vm. Composes SLVMHeap, SLVMMemory, SLVMModuleLoader, SLVMThread,
+ *   SLVMFrame, SLVMValue, SLVMNativeBinding, SLSleelaVM.
  */
 #sleela 1.3
-// Unified SLeeLa standard-library front-end object.
-// Family: vm. Native VM/OS work crosses an explicit bridge.
 class SLVM {
-  String name; int state; int count; void configure(String n){name=n;} void start(){state=1;} void stop(){state=0;} void register(){count=count+1;} boolean active(){return state==1;}
+  String name;
+  int state;              // 0 off, 1 booted, 2 running, 3 halted
+
+  SLVMHeap heap;
+  SLVMMemory memory;
+  SLVMModuleLoader moduleLoader;
+  SLVMModule module;      // the currently installed module
+  SLSleelaVM substrate;   // == module.engine(); the native-opcode engine we drive
+  SLVMThread main;
+
+  // Bounded native-binding table (SLeeLa surface has no arrays).
+  int bindingCount;
+  SLVMNativeBinding b0; SLVMNativeBinding b1; SLVMNativeBinding b2; SLVMNativeBinding b3;
+
+  int steps;              // opcodes executed through this VM
+  int lastExit;           // last serviced VM-exit opcode (-1 if none)
+
+  void configure(String vmName) { name = vmName; state = 0; }
+
+  // Boot: build the heap, linear memory, loader and main thread.
+  void boot(int heapWords, int memoryWords) {
+    heap = new SLVMHeap(); heap.configure(heapWords);
+    memory = new SLVMMemory(); memory.configure(memoryWords);
+    moduleLoader = new SLVMModuleLoader(); moduleLoader.configure("lib/vm");
+    main = new SLVMThread(); main.configure(0, "main");
+    bindingCount = 0;
+    steps = 0; lastExit = -1;
+    state = 1;
+  }
+
+  SLVMModuleLoader loader() { return moduleLoader; }
+
+  // Register a native binding (e.g. print). Up to 4 in this bounded surface.
+  void bindNative(SLVMNativeBinding binding) {
+    binding.resolve();
+    if (bindingCount == 0) { b0 = binding; }
+    else if (bindingCount == 1) { b1 = binding; }
+    else if (bindingCount == 2) { b2 = binding; }
+    else if (bindingCount == 3) { b3 = binding; }
+    if (bindingCount < 4) { bindingCount = bindingCount + 1; }
+  }
+
+  SLVMNativeBinding bindingFor(int opcode) {
+    if (bindingCount > 0 && b0.opcode() == opcode) { return b0; }
+    if (bindingCount > 1 && b1.opcode() == opcode) { return b1; }
+    if (bindingCount > 2 && b2.opcode() == opcode) { return b2; }
+    if (bindingCount > 3 && b3.opcode() == opcode) { return b3; }
+    return null;
+  }
+
+  // Install a loaded module and prime its entry method as the first frame.
+  void install(SLVMModule m) {
+    module = m;
+    substrate = m.engine();
+    substrate.setHosted();   // service opcodes become VM-exits we route
+    SLVMMethod entry = m.resolveMethod(m.entryClass(), m.entryName());
+    if (entry != null) {
+      SLVMFrame frame = new SLVMFrame();
+      frame.configure(entry, -1, m.entryClass(), 256);
+      main.pushFrame(frame);
+      main.enterContext(m.entryClass(), -1);
+      substrate.setInstructionPointer(entry.entryPoint());
+    }
+    main.start();
+    state = 1;
+  }
+
+  // Run up to budget opcodes, servicing VM-exits (native bindings) inline.
+  int run(int budget) {
+    if (state == 0) { return 0; }
+    state = 2;
+    int ran = 0;
+    while (ran < budget && !substrate.isHalted() && main.running()) {
+      substrate.step();
+      steps = steps + 1;
+      ran = ran + 1;
+      if (substrate.exiting()) { serviceExit(); }
+    }
+    if (substrate.isHalted()) { main.finish(); state = 3; }
+    return ran;
+  }
+
+  // Route a parked VM-exit: a bound native service runs and returns a value;
+  // an unbound service is acknowledged so the guest can proceed.
+  void serviceExit() {
+    int opcode = substrate.exitReasonOpcode();
+    int payload = substrate.exitReasonPayload();
+    lastExit = opcode;
+    SLVMNativeBinding binding = bindingFor(opcode);
+    int result = 0;
+    if (binding != null) {
+      binding.recordResult(payload);  // host would perform real work here
+      result = payload;
+    }
+    substrate.resolveExit();
+    substrate.pushResult(result);
+  }
+
+  // --- object allocation surface for Sleela-sourced VM code ---
+  SLVMObject newInstance(int classId) {
+    SLVMClass k = (module != null) ? module.classById(classId) : null;
+    int fields = (k != null) ? k.instanceSize() : 0;
+    SLVMObject obj = new SLVMObject();
+    obj.create(heap, classId, fields);
+    return obj;
+  }
+
+  // --- GC surface: clear marks, mark reachable from the main thread's "this". ---
+  int collect() {
+    heap.clearMarks();
+    if (main.contextHandle() >= 0) { heap.mark(main.contextHandle()); }
+    return heap.objectCount();
+  }
+
+  void start()  { state = 2; }
+  void stop()   { state = 3; main.finish(); }
+  void register() { }
+
+  String vmName()   { return name; }
+  int runState()    { return state; }
+  int stepsRun()    { return steps; }
+  int lastService() { return lastExit; }
+  SLVMHeap theHeap(){ return heap; }
+  SLVMMemory linearMemory() { return memory; }
+  SLVMThread mainThread()   { return main; }
+  SLSleelaVM engine(){ return substrate; }
+  boolean active() { return state == 1 || state == 2; }
+  boolean halted() { return state == 3; }
 }

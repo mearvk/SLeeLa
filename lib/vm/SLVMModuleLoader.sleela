@@ -1,22 +1,62 @@
 /*
  * lib/vm/SLVMModuleLoader.sleela
  * SLeeLa Standard Library Definition.
- * Definition: Defines the SLeeLa standard-library type SLVMModuleLoader used within the vm library family.
+ * Definition: Defines SLVMModuleLoader — the loader-facing lifecycle that turns
+ *   a named package into a resolved SLVMModule in the secondary Sleela VM. It
+ *   discovers a package root, builds the module's class/method/field metadata,
+ *   registers each resolved symbol, and tracks link state so the linking manager
+ *   (SleelaVMLinkingManager*) can bind entry points. Native discovery remains
+ *   filesystem-driven below the bridge; this object models the package lifecycle
+ *   above it.
+ *
+ * Family: vm. Produces/consumes SLVMModule, SLVMClass; composed by SLVM.
  */
 #sleela 1.3
-// Unified SLeeLa standard-library module loader front-end.
-// Native compiler/Nordshrift discovery is filesystem-driven; this object models
-// the loader-facing package lifecycle exposed above the native bridge.
 class SLVMModuleLoader {
   String root; String packageName; int state; int packages; int symbols;
-  void configure(String libraryRoot){root=libraryRoot;}
-  void select(String name){packageName=name;}
-  void discover(String name){packageName=name;state=1;}
-  void registerPackage(){packages=packages+1;} void registerSymbol(){symbols=symbols+1;}
-  void load(){state=1;}
-  void unload(){state=0;}
-  boolean active(){return state==1;}
-  boolean selected(){return packageName!=null;} int packageCount(){return packages;} int symbolCount(){return symbols;} boolean packageAvailable(String p){return p!=null && p!="";}
-  String library(){return root;}
-  String package(){return packageName;}
+  SLVMModule current;
+
+  void configure(String libraryRoot){ root=libraryRoot; state=0; packages=0; symbols=0; }
+  void select(String name){ packageName=name; }
+  void discover(String name){ packageName=name; state=1; }
+
+  // Begin a module: allocate its substrate-backed body so classes can be added.
+  SLVMModule beginModule(String name, int codeCap, int stackCap, int globalCap) {
+    current = new SLVMModule();
+    current.configure(name, codeCap, stackCap, globalCap);
+    packageName = name;
+    return current;
+  }
+
+  // Register a resolved class into the current module and count its symbols.
+  void defineClass(SLVMClass k) {
+    if (current == null) { return; }
+    current.addClass(k);
+    registerPackage();
+    int i = 0;
+    while (i < k.methods()) { registerSymbol(); i = i + 1; }
+    i = 0;
+    while (i < k.fields()) { registerSymbol(); i = i + 1; }
+  }
+
+  // Finalise loading: mark the module loaded and set its entry point.
+  SLVMModule finishModule(int entryClassId, String entryMethod) {
+    if (current == null) { return null; }
+    current.setEntry(entryClassId, entryMethod);
+    current.load();
+    state = 1;
+    return current;
+  }
+
+  void registerPackage(){ packages=packages+1; } void registerSymbol(){ symbols=symbols+1; }
+  void load(){ state=1; }
+  void unload(){ state=0; current=null; }
+  boolean active(){ return state==1; }
+  boolean selected(){ return packageName!=null; }
+  int packageCount(){ return packages; }
+  int symbolCount(){ return symbols; }
+  boolean packageAvailable(String p){ return p!=null && p!=""; }
+  SLVMModule module(){ return current; }
+  String library(){ return root; }
+  String package(){ return packageName; }
 }

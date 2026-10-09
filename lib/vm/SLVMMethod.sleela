@@ -1,11 +1,50 @@
 /*
  * lib/vm/SLVMMethod.sleela
  * SLeeLa Standard Library Definition.
- * Definition: Defines the SLeeLa standard-library type SLVMMethod used within the vm library family.
+ * Definition: Defines SLVMMethod — one executable method in the secondary Sleela
+ *   VM. A method is a window into its module's canonical-opcode code store
+ *   (SLVMModule holds the SLSleelaVM substrate): an entry instruction index, a
+ *   length, an argument count, and a local-slot count. Calling a method pushes
+ *   an SLVMFrame sized to maxLocals and points the substrate's ip at entry.
+ *
+ * The method does not own code bytes itself — code lives once in the module's
+ * SLSleelaVM so every layer executes the same 124 canonical opcodes the native
+ * engine (lib/cpu/SLSleelaVM) interprets.
+ *
+ * Family: vm. Composed by SLVMClass; drives SLVMFrame + SLVMModule.
  */
 #sleela 1.3
-// Unified SLeeLa standard-library front-end object.
-// Family: vm. Native VM/OS work crosses an explicit bridge.
 class SLVMMethod {
-  String name; int state; int count; void configure(String n){name=n;} void start(){state=1;} void stop(){state=0;} void register(){count=count+1;} boolean active(){return state==1;}
+  String name;
+  String descriptor;   // e.g. "(II)I" style signature summary
+  int entry;           // first opcode index in the module code store
+  int length;          // number of opcodes
+  int argCount;        // operands popped from caller / consumed as params
+  int maxLocals;       // local slots the frame must reserve
+  boolean isStatic;
+  boolean isNative;    // body is an SLVMNativeBinding instead of opcodes
+
+  void configure(String methodName, String sig, int entryIndex, int codeLength,
+                 int args, int locals, boolean staticMethod, boolean nativeMethod) {
+    name = methodName;
+    descriptor = sig;
+    entry = entryIndex;
+    length = codeLength;
+    argCount = args;
+    maxLocals = locals;
+    isStatic = staticMethod;
+    isNative = nativeMethod;
+  }
+
+  String methodName() { return name; }
+  String signature()  { return descriptor; }
+  int entryPoint()    { return entry; }
+  int lastIndex()     { return entry + length; }
+  int arity()         { return argCount; }
+  int locals()        { return maxLocals; }
+  boolean staticMethod(){ return isStatic; }
+  boolean nativeMethod(){ return isNative; }
+
+  // Does the given instruction index fall inside this method's code window?
+  boolean contains(int ip) { return ip >= entry && ip < entry + length; }
 }
