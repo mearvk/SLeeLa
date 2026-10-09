@@ -122,11 +122,8 @@ EOF
   fi
 else
   command -v sudo >/dev/null 2>&1 || { echo "System installation needs sudo or an already privileged shell." >&2; exit 1; }
-  sudo mkdir -p "$INSTALL_ROOT/bin" "$INSTALL_ROOT/lib" "$INSTALL_ROOT/tools" "$INSTALL_ROOT/security" "$BIN_DEST" "$CONFIG_DIR" /etc/profile.d
-  sudo cp -a "$STAGE_DIR/lib" "$INSTALL_ROOT/"
-  sudo cp -a "$STAGE_DIR/tools" "$INSTALL_ROOT/"
-  sudo cp -a "$STAGE_DIR/security" "$INSTALL_ROOT/"
-  sudo cp -a "$STAGE_DIR/bin/." "$INSTALL_ROOT/bin/"
+  sudo mkdir -p "$INSTALL_ROOT" "$BIN_DEST" "$CONFIG_DIR" /etc/profile.d
+  sudo cp -a "$STAGE_DIR/." "$INSTALL_ROOT/"
   sudo cp "$STAGE_DIR/config/startup.conf" "$CONFIG_DIR/startup.conf"
   for product in sleela nordshrift; do sudo ln -sfn "$INSTALL_ROOT/bin/$product" "$BIN_DEST/$product"; done
   printf 'export SLEELA_HOME="%s"\n' "$INSTALL_ROOT" | sudo tee /etc/profile.d/sleela.sh >/dev/null
