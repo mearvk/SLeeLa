@@ -3,6 +3,14 @@
   "status": "experimental",
   "published_symbol_count": 16606,
   "integer_id_range": [0, 16605],
+  "experimental_codepoint_range": ["0x110000", "0x1FFFFFFFF"],
+  "representation": {
+    "input_state": "uint64",
+    "codepoint": "uint64",
+    "effective_codepoint_width_bits": 33,
+    "literal_4088_bit_integer_implemented": false,
+    "unicode_compatibility": false
+  },
   "stages": ["start", "intermediate", "final"],
   "language_tuple": ["american-english", "korean", "germanic"],
   "allocation": {
@@ -25,6 +33,13 @@
     "codepoint": "0x110000 + id",
     "shape_id": "SplitMix64(id xor 0x5348415045)",
     "meaning_id": "SplitMix64(id xor 0x4D45414E494E47)"
+  },
+  "glyphs": {
+    "format": "8x12 binary bitmap",
+    "storage": "12 uint8 rows, least significant 8 bits are pixels",
+    "generated_seed_glyphs_are_semantic_placeholders": true,
+    "human_meaning_requires_annotation": true,
+    "historical_claim_requires_traceable_provenance": true
   },
   "validation": {
     "count": 16606,
