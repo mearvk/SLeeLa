@@ -1,11 +1,83 @@
 /*
  * lib/vm/SLVMFrame.sleela
  * SLeeLa Standard Library Definition.
- * Definition: Defines the SLeeLa standard-library type SLVMFrame used within the vm library family.
+ * Definition: Defines SLVMFrame — one activation record on a thread's call
+ *   stack in the secondary Sleela VM. A frame owns a local-variable array and an
+ *   operand stack (both SLVMValue carriers laid out over SLRAM), remembers the
+ *   method it is running and the return instruction index to resume the caller,
+ *   and tracks the current instruction pointer within the method's code window.
+ *
+ * Frames are what make the secondary VM a real interpreter rather than a flat
+ * opcode tape: CALL pushes a frame, RET pops it and restores the caller's ip.
+ *
+ * Family: vm. Composes SLRAM, SLVMValue, SLVMMethod; composed by SLVMThread.
  */
 #sleela 1.3
-// Unified SLeeLa standard-library front-end object.
-// Family: vm. Native VM/OS work crosses an explicit bridge.
 class SLVMFrame {
-  String name; int state; int count; void configure(String n){name=n;} void start(){state=1;} void stop(){state=0;} void register(){count=count+1;} boolean active(){return state==1;}
+  SLVMMethod method;
+  int returnIp;        // caller ip to resume on RET
+  int callerClassId;   // caller's "this" class, for RET context
+  int ip;              // current instruction index (within method window)
+
+  SLRAM locals;        // local slots: 2 words each (tag,payload)
+  int localCount;
+
+  SLRAM operands;      // operand stack: 2 words each (tag,payload)
+  int sp;              // operand count (not word index)
+  int capacity;        // max operands
+
+  void configure(SLVMMethod m, int retIp, int callerClass, int operandCap) {
+    method = m;
+    returnIp = retIp;
+    callerClassId = callerClass;
+    ip = (m != null) ? m.entryPoint() : 0;
+    localCount = (m != null) ? m.locals() : 0;
+    locals = new SLRAM(); locals.configure(localCount * 2 + 2, 32); locals.allocate();
+    capacity = operandCap;
+    operands = new SLRAM(); operands.configure(operandCap * 2 + 2, 32); operands.allocate();
+    sp = 0;
+  }
+
+  // --- locals ---
+  void setLocal(int index, SLVMValue v) {
+    int slot = index * 2;
+    locals.writeWord(slot, v.packedTag());
+    locals.writeWord(slot + 1, v.packedPayload());
+  }
+  void getLocal(int index, SLVMValue out) {
+    int slot = index * 2;
+    out.unpack(locals.readWord(slot), locals.readWord(slot + 1));
+  }
+
+  // --- operand stack ---
+  void push(SLVMValue v) {
+    if (sp >= capacity) { return; }
+    int slot = sp * 2;
+    operands.writeWord(slot, v.packedTag());
+    operands.writeWord(slot + 1, v.packedPayload());
+    sp = sp + 1;
+  }
+  void pop(SLVMValue out) {
+    if (sp == 0) { out.setNull(); return; }
+    sp = sp - 1;
+    int slot = sp * 2;
+    out.unpack(operands.readWord(slot), operands.readWord(slot + 1));
+  }
+  void peek(SLVMValue out) {
+    if (sp == 0) { out.setNull(); return; }
+    int slot = (sp - 1) * 2;
+    out.unpack(operands.readWord(slot), operands.readWord(slot + 1));
+  }
+
+  // --- ip control ---
+  int instructionPointer() { return ip; }
+  void setIp(int newIp)     { ip = newIp; }
+  void advance()            { ip = ip + 1; }
+
+  SLVMMethod runningMethod(){ return method; }
+  int returnAddress()       { return returnIp; }
+  int callerClass()         { return callerClassId; }
+  int operandDepth()        { return sp; }
+  int localSlots()          { return localCount; }
+  boolean empty()           { return sp == 0; }
 }

@@ -1,28 +1,86 @@
-# SLZ80CPU
-class SLZ80CPU {
-  architecture;
-  clock;
-  registers;
-  pipeline;
-  instructionFetch;
-  executionUnit;
-  ioBus;
-  ioTiming;
-  interrupts;
-  couplers;
-  cache = none;
-  dma = none;
-  mmu = none;
-  tlb = none;
+/*
+ * lib/cpu/z80/SLZ80CPU.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLZ80CPU — a runnable model of the Zilog Z80: an 8-bit
+ *   machine with the A accumulator, B/C/D/E/H/L general registers, a 16-bit
+ *   stack pointer, an R refresh register, and S Z H PV N C flags. It extends
+ *   SLCPURuntime for register/memory/ALU/loop machinery and adds the Z80
+ *   register set, a decoder, a separate I/O port space, and the refresh/wait
+ *   behaviours the skeleton named.
+ *
+ * Instruction model (op in high byte, operand in low byte of each word): a
+ * compact teaching encoding sufficient to run the CPU and host further .sleela
+ * inputs — LD r,n / LD A,(nn) / LD (nn),A / ADD A,n / SUB n / INC r / OUT (n),A
+ * / IN A,(n) / JP nn / JR Z,e / JR NZ,e / HALT / NOP.
+ *
+ * Family: cpu. Extends SLCPURuntime.
+ */
+#sleela 1.3
+class SLZ80CPU extends SLCPURuntime {
+  static final int R_A = 0; static final int R_B = 1; static final int R_C = 2;
+  static final int R_D = 3; static final int R_E = 4; static final int R_H = 5;
+  static final int R_L = 6; static final int R_SP = 7; static final int R_R = 8;
+  static final int R_F = 9;   // flags
 
-  reset();
-  fetch();
-  decode();
-  execute();
-  memoryCycle();
-  ioCycle();
-  interruptAcknowledge();
-  refresh();
-  wait();
-  validate();
+  static final int LD_R_N   = 1;   // operand low nibble = reg, high nibble = n (packed)
+  static final int LD_A_NN  = 2;   // A <- (nn)
+  static final int ST_NN_A  = 3;   // (nn) <- A
+  static final int ADD_A_N  = 4;
+  static final int SUB_N    = 5;
+  static final int INC_R    = 6;
+  static final int OUT_N_A  = 7;
+  static final int IN_A_N   = 8;
+  static final int JP_NN    = 9;
+  static final int JR_Z     = 10;
+  static final int JR_NZ    = 11;
+  static final int HALT     = 12;
+
+  SLRAM ioPorts;        // 256-port I/O space (separate from memory, Z80 style)
+  int rCounter;         // memory-refresh counter (R register wraps 0..127)
+
+  void configure() {
+    bringUp("Zilog Z80", 8, 16, 10, 65536);
+    ioPorts = new SLRAM(); ioPorts.configure(256, 32); ioPorts.allocate();
+    rCounter = 0;
+    writeReg(R_SP, 0xFFFF);
+  }
+
+  int opOf(int w)      { return (w / 256) % 256; }
+  int operandOf(int w) { return w % 256; }
+
+  // Each M1 (opcode-fetch) cycle a real Z80 ticks its memory-refresh register.
+  // SLCPURuntime.step() calls preFetch() before fetch(), so refresh runs for
+  // every instruction without depending on fetch() override dispatch.
+  void preFetch() { refresh(); }
+
+  void refresh() { rCounter = (rCounter + 1) % 128; writeReg(R_R, rCounter); }
+  void wait(int cycles) { }   // model hook; cycle-accurate waits are documented, not simulated
+
+  void decode(int word) {
+    int opcode = opOf(word);
+    int arg = operandOf(word);
+
+    if (opcode == LD_R_N)  { int reg = arg % 16; int n = arg / 16; writeReg(reg, n); return; }
+    if (opcode == LD_A_NN) { int v = readMem(arg); writeReg(R_A, v); return; }
+    if (opcode == ST_NN_A) { writeMem(arg, readReg(R_A)); return; }
+    if (opcode == ADD_A_N) { int r = aluOp(readReg(R_A), arg, alu.OP_ADD); writeReg(R_A, r); return; }
+    if (opcode == SUB_N)   { int r = aluOp(readReg(R_A), arg, alu.OP_SUB); writeReg(R_A, r); return; }
+    if (opcode == INC_R)   { int r = aluOp(readReg(arg), 1, alu.OP_ADD); writeReg(arg, r); return; }
+    if (opcode == OUT_N_A) { ioCycleWrite(arg, readReg(R_A)); return; }
+    if (opcode == IN_A_N)  { writeReg(R_A, ioCycleRead(arg)); return; }
+    if (opcode == JP_NN)   { setEntryPoint(arg); return; }
+    if (opcode == JR_Z)    { if (zero() == 1) { setEntryPoint(programCounter() + signed(arg)); } return; }
+    if (opcode == JR_NZ)   { if (zero() == 0) { setEntryPoint(programCounter() + signed(arg)); } return; }
+    if (opcode == HALT)    { halted = 1; return; }
+  }
+
+  // Separate I/O port space (OUT/IN), distinct from the memory bus.
+  void ioCycleWrite(int port, int value) { ioPorts.writeWord(port % 256, value % 256); }
+  int ioCycleRead(int port)              { return ioPorts.readWord(port % 256); }
+
+  int signed(int b) { if (b >= 128) { return b - 256; } return b; }
+  int encode(int opcode, int operand) { return (opcode % 256) * 256 + (operand % 256); }
+
+  int accumulator() { return readReg(R_A); }
+  int refreshRegister() { return rCounter; }
 }

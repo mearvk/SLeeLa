@@ -1,39 +1,85 @@
-# SLX86CPU
+/*
+ * lib/cpu/x86/SLX86CPU.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLX86CPU — a runnable model of a 32-bit x86 (IA-32 style):
+ *   the general registers EAX ECX EDX EBX ESP EBP ESI EDI, an EFLAGS register,
+ *   and a program counter (EIP). It extends SLCPURuntime and adds the x86
+ *   register set, a decoder for a compact two-operand encoding, the protected-
+ *   mode / control-register and interrupt hooks the skeleton named, and — as a
+ *   worked example of a CPU running ON TOP OF the secondary Sleela VM — a
+ *   lower() path that translates a short x86 sequence into canonical opcodes and
+ *   executes them on the inherited SLSleelaVM substrate.
+ *
+ * Instruction model (op in high byte, 4-bit dst + 4-bit src/imm in low byte):
+ * MOV r,imm / MOV r,r / ADD r,r / SUB r,r / INC r / CMP r,r / MOV r,[m] /
+ * MOV [m],r / JMP / JE / JNE / INT(interrupt+halt) / HLT / NOP.
+ *
+ * Family: cpu. Extends SLCPURuntime.
+ */
+#sleela 1.3
+class SLX86CPU extends SLCPURuntime {
+  static final int EAX = 0; static final int ECX = 1; static final int EDX = 2; static final int EBX = 3;
+  static final int ESP = 4; static final int EBP = 5; static final int ESI = 6; static final int EDI = 7;
+  static final int EFLAGS = 8;
 
-class SLX86CPU {
-  architecture;
-  mode;
-  clock;
-  registers;
-  instructionFetch;
-  decoder;
-  microOpLayer;
-  integerUnits;
-  addressGeneration;
-  branchUnit;
-  loadStoreUnit;
-  floatingPointUnit;
-  vectorUnit;
-  mmu;
-  tlb;
-  cache;
-  interrupts;
-  controlRegisters;
-  debugRegisters;
-  modelSpecificRegisters;
-  busArbiter;
-  ioBus;
-  couplers;
+  static final int MOV_RI = 1; static final int MOV_RR = 2; static final int ADD_RR = 3;
+  static final int SUB_RR = 4; static final int INC_R  = 5; static final int CMP_RR = 6;
+  static final int MOV_RM = 7; static final int MOV_MR = 8; static final int JMP = 9;
+  static final int JE = 10; static final int JNE = 11; static final int INT = 12; static final int HLT = 13;
 
-  reset();
-  fetch();
-  decode();
-  execute();
-  memoryTranslate();
-  memoryCycle();
-  branch();
-  exception();
-  interrupt();
-  retire();
-  validate();
+  int mode;             // 0 real, 1 protected (control-register hook)
+  int cr0;              // control register 0
+
+  void configure() {
+    bringUp("Intel IA-32", 32, 32, 9, 262144);
+    mode = 1; cr0 = 1;
+    writeReg(ESP, 0x40000 - 4);
+  }
+
+  int opOf(int w)  { return (w / 256) % 256; }
+  int dstOf(int w) { return (w % 256) / 16; }
+  int srcOf(int w) { return w % 16; }
+  int immOf(int w) { return w % 256; }
+
+  void decode(int word) {
+    int opcode = opOf(word);
+
+    if (opcode == MOV_RI) { int v = immOf(word); writeReg(dstOf(word), v); setZN(v); return; }
+    if (opcode == MOV_RR) { int v = readReg(srcOf(word)); writeReg(dstOf(word), v); setZN(v); return; }
+    if (opcode == ADD_RR) { int r = aluOp(readReg(dstOf(word)), readReg(srcOf(word)), alu.OP_ADD); writeReg(dstOf(word), r); return; }
+    if (opcode == SUB_RR) { int r = aluOp(readReg(dstOf(word)), readReg(srcOf(word)), alu.OP_SUB); writeReg(dstOf(word), r); return; }
+    if (opcode == INC_R)  { int r = aluOp(readReg(dstOf(word)), 1, alu.OP_ADD); writeReg(dstOf(word), r); return; }
+    if (opcode == CMP_RR) { aluOp(readReg(dstOf(word)), readReg(srcOf(word)), alu.OP_SUB); return; }
+    if (opcode == MOV_RM) { writeReg(dstOf(word), readMem(immOf(word))); return; }
+    if (opcode == MOV_MR) { writeMem(immOf(word), readReg(dstOf(word))); return; }
+    if (opcode == JMP)    { setEntryPoint(immOf(word)); return; }
+    if (opcode == JE)     { if (zero() == 1) { setEntryPoint(immOf(word)); } return; }
+    if (opcode == JNE)    { if (zero() == 0) { setEntryPoint(immOf(word)); } return; }
+    if (opcode == INT)    { interrupt(immOf(word)); halted = 1; return; }
+    if (opcode == HLT)    { halted = 1; return; }
+  }
+
+  void interrupt(int vector) { cr0 = cr0; }   // IDT dispatch hook (model no-op)
+
+  void setZN(int v) { flagZ = (v == 0) ? 1 : 0; flagN = (v < 0) ? 1 : 0; }
+  int encode(int opcode, int dst, int src) { return (opcode % 256) * 256 + (dst % 16) * 16 + (src % 16); }
+  int encodeImm(int opcode, int dst, int imm) { return (opcode % 256) * 256 + (imm % 256); }
+
+  // --- Worked example: run x86 "MOV EAX,a; MOV EBX,b; ADD; PRINT" on top of
+  // the secondary Sleela VM by lowering to canonical opcodes. This demonstrates
+  // a CPU model executing on the native-opcode substrate rather than inline.
+  int lowerAddAndPrint(int a, int b) {
+    enableLowering();
+    emitConst(a);
+    emitConst(b);
+    emitAdd();
+    emitPrint();
+    emitHalt();
+    runLowered(100);
+    return loweredOutput();
+  }
+
+  int reg(int i)       { return readReg(i); }
+  int eflags()         { return readReg(EFLAGS); }
+  boolean protectedMode(){ return mode == 1; }
 }
