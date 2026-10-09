@@ -24,6 +24,23 @@ int main() {
     const auto serialized = UnsignedInteger::fromDecimal(9, "511").toBytes();
     assert(UnsignedInteger::fromBytes(9, serialized).toDecimal() == "511");
     assert(UnsignedInteger::fromDecimal(8, "20").subtract(UnsignedInteger::fromDecimal(8, "12")).toDecimal() == "8");
+    assert(UnsignedInteger::fromDecimal(8, "12").multiply(UnsignedInteger::fromDecimal(8, "10")).toDecimal() == "120");
+    assert(UnsignedInteger::fromDecimal(8, "255").divide(UnsignedInteger::fromDecimal(8, "10")).toDecimal() == "25");
+    assert(UnsignedInteger::fromDecimal(8, "255").modulo(UnsignedInteger::fromDecimal(8, "10")).toDecimal() == "5");
+    assert(UnsignedInteger::fromDecimal(8, "12").bitwiseAnd(UnsignedInteger::fromDecimal(8, "10")).toDecimal() == "8");
+    assert(UnsignedInteger::fromDecimal(8, "12").bitwiseOr(UnsignedInteger::fromDecimal(8, "10")).toDecimal() == "14");
+    assert(UnsignedInteger::fromDecimal(8, "12").bitwiseXor(UnsignedInteger::fromDecimal(8, "10")).toDecimal() == "6");
+    assert(UnsignedInteger::fromDecimal(8, "12").bitwiseNot().toDecimal() == "243");
+    assert(UnsignedInteger::fromDecimal(8, "12").shiftLeft(2).toDecimal() == "48");
+    assert(UnsignedInteger::fromDecimal(8, "48").shiftRight(2).toDecimal() == "12");
+    bool multiplyOverflow = false;
+    try { (void)UnsignedInteger::fromDecimal(8, "20").multiply(UnsignedInteger::fromDecimal(8, "20")); }
+    catch (const std::overflow_error&) { multiplyOverflow = true; }
+    assert(multiplyOverflow);
+    bool divideByZero = false;
+    try { (void)UnsignedInteger::fromDecimal(8, "1").divide(UnsignedInteger(8)); }
+    catch (const std::domain_error&) { divideByZero = true; }
+    assert(divideByZero);
     assert(UnsignedInteger::fromDecimal(1048576, "123456789012345678901234567890").toDecimal() == "123456789012345678901234567890");
 
     bool oneBitOverflow = false;
