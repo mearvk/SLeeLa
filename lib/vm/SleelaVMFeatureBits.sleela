@@ -20,5 +20,10 @@ class SleelaVMFeatureBits {
  // bridge, or a modelled SIMT engine when none is present). Both are opt-in and
  // flow from the VM through a hosted CPU to the running program.
  Integer DMA = 1099511627776; Integer GPU = 2199023255552;
+ // Native-RAM residency (syntax 1.6). When set, the Secondary VM's linear memory
+ // runs on REAL host RAM (SLNativeMemory) instead of the simulated SLRAM store —
+ // for running outside simulation for procedural layment. Backed by the native
+ // host allocator (sleela_native_ram_*). Opt-in via the VM Creator.
+ Integer NATIVE_RAM = 4398046511104;
  function contains(mask, bit); function add(mask, bit); function remove(mask, bit); function validate(mask);
 }
