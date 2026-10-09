@@ -106,6 +106,47 @@ int out = cpu.runWorkload(job);     // compiles C -> maps onto substrate -> runs
 Admission is enforced: a workload whose memory request exceeds the CPU's address
 space, or whose budget is non-positive, is rejected (`runWorkload` returns -1).
 
+## The full nested stack: Creator → SLVM → Sleela CPU → program
+
+`runWorkload()` above runs a CPU on its *own* substrate. The full product stack
+nests the CPU inside the Secondary Sleela VM, built by the VM Creator Edition:
+
+```
+SleelaVMCreator (lib/vm/creator)
+  → builds + boots a live SLVM (lib/vm, the Secondary Sleela VM)
+      → which runs on the Native Sleela VM substrate (lib/cpu/SLSleelaVM)
+          → hosts a Sleela CPU model (SLCPURuntime / SL<ARCH>CPU) as executor
+              → runs a C / C++ / Java / Sleela program through that CPU
+```
+
+This is now wired in code (previously it existed only in this document). The
+bridge is a **substrate-injection seam**:
+
+- `SLVM.hostCpu(cpu)` creates the VM's `SLSleelaVM` substrate and calls
+  `cpu.attachSubstrate(substrate)`.
+- `SLCPURuntime.attachSubstrate(...)` records that substrate; `runWorkload()` and
+  `mapWorkload()` then lower the program onto the **attached** substrate instead
+  of a private `new SLSleelaVM()`. CPU and SLVM therefore share **one** engine —
+  the CPU genuinely runs *on top of* the Secondary VM, not beside it.
+- `SLVM.runGuestWorkload(job, budget)` has the CPU compile + map the program onto
+  the shared substrate, then SLVM drives the opcode stream and services I/O
+  VM-exits, surfacing the observable result.
+
+One-call usage through the creator:
+
+```
+SLCPUResource grant = new SLCPUResource(); grant.configure(4096, 100000, grant.PRIORITY_NORMAL);
+SL6502CPU cpu = new SL6502CPU(); cpu.configure();
+SLWorkload job = new SLWorkload(); job.configure("app", "examples/hello.c", job.LANG_C, grant);
+
+SleelaVMCreator creator = new SleelaVMCreator(); creator.configure();
+int out = creator.run(5, cpu, job, 1000000);   // generation 5 "Manager"
+```
+
+The two feasibility stackings in `PERFECT.CONSEQUENCE.md` correspond exactly to
+whether the CPU uses its own substrate (**direct**) or an SLVM-injected one
+(**nested**); the nested column is this `hostCpu` path.
+
 ## CPU fleet status — all 99 folders runnable
 
 Every architecture folder now carries a runnable `SL<ARCH>CPU` that

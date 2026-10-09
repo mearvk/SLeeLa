@@ -1,0 +1,19 @@
+/*
+ * lib/vm/creator/SLVMSovereign.sleela
+ * SLeeLa VM Creator — generation /11 "Sovereign".
+ * Definition: the source-level construction contract for the Sovereign SLVM
+ *   generation (the highest defined generation). Like the other generation
+ *   classes it is a build-side contract (configure/build/verify), descriptive
+ *   only; selecting it never implicitly grants OS, filesystem, network, storage,
+ *   security, or administrative capability. SleelaVMCreator does the actual
+ *   instantiation/boot.
+ *
+ * Family: vm.creator.
+ */
+package vm.creator;
+
+class SLVMSovereign {
+ String formalName = "Sovereign"; Integer generation = 11; String vmPath = "/11";
+ function configureSovereignGovernance(); function selectSovereignModules(); function validateSovereign();
+ function configure(SleelaVMOptions options); function build(SleelaVMSource source); function verify(SleelaVMBuildPlan plan);
+}

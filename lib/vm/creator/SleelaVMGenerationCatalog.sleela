@@ -1,7 +1,52 @@
+/*
+ * lib/vm/creator/SleelaVMGenerationCatalog.sleela
+ * SLeeLa VM Creator — canonical generation catalog.
+ * Definition: the authoritative version -> formal-name / path mapping for the
+ *   twelve SLVM generations the Creator can build (/impl Core, then /1 .. /11).
+ *   SleelaVMCreator consults it to name and validate a selected generation.
+ *
+ * Family: vm.creator. Consulted by SleelaVMCreator.
+ */
 package vm.creator;
 
 class SleelaVMGenerationCatalog {
- function names(); function paths(); function descriptions();
- function nameForVersion(Integer version); function pathForVersion(Integer version);
- function validateVersion(Integer version); function isCoreVersion(Integer version);
+  static final int CORE       = 0;
+  static final int SOVEREIGN  = 11;   // highest defined generation
+
+  String nameForVersion(int version) {
+    if (version == 0)  { return "Core"; }
+    if (version == 1)  { return "Foundation"; }
+    if (version == 2)  { return "Operator"; }
+    if (version == 3)  { return "Specialist"; }
+    if (version == 4)  { return "Supervisor"; }
+    if (version == 5)  { return "Manager"; }
+    if (version == 6)  { return "Director"; }
+    if (version == 7)  { return "Administrator"; }
+    if (version == 8)  { return "Executive"; }
+    if (version == 9)  { return "Authority"; }
+    if (version == 10) { return "Principal"; }
+    if (version == 11) { return "Sovereign"; }
+    return "Unknown";
+  }
+
+  String pathForVersion(int version) {
+    if (version == 0) { return "/impl"; }
+    if (version == 1) { return "/1"; }
+    if (version == 2) { return "/2"; }
+    if (version == 3) { return "/3"; }
+    if (version == 4) { return "/4"; }
+    if (version == 5) { return "/5"; }
+    if (version == 6) { return "/6"; }
+    if (version == 7) { return "/7"; }
+    if (version == 8) { return "/8"; }
+    if (version == 9) { return "/9"; }
+    if (version == 10) { return "/10"; }
+    if (version == 11) { return "/11"; }
+    return "/?";
+  }
+
+  boolean validateVersion(int version) { return version >= CORE && version <= SOVEREIGN; }
+  boolean isCoreVersion(int version)    { return version == CORE; }
+  int highestVersion()                  { return SOVEREIGN; }
+  int generationCount()                 { return SOVEREIGN + 1; }
 }
