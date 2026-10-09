@@ -1,3 +1,5 @@
+<img align="right" src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="75" height="75" alt="SLeeLa">
+
 # Historical alphabet source register
 
 This directory records source-oriented alphabet material for the UTF-4088 experimental project.
