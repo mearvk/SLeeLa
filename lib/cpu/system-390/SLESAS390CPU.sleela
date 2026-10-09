@@ -1,0 +1,69 @@
+/**
+ * SLeeLa IBM ESA/390 / System/390 CPU architecture profile.
+ * Profile-driven foundation; not a complete or cycle-accurate emulator.
+ */
+class SLESAS390CPU extends SLCPU {
+    String machineModel = "";
+    String architectureLevel = "esa-390";
+    String addressingMode = "31-bit";
+    Boolean strictProfile = true;
+    Map<String, Integer> generalRegisters = new Map<String, Integer>();
+    Map<String, Boolean> features = new Map<String, Boolean>();
+    Integer conditionCode = 0;
+    Long instructionAddress = 0;
+    Map<String, Long> systemState = new Map<String, Long>();
+
+    function configure(String selectedMachineModel,
+                       String selectedAddressingMode,
+                       Map<String, Boolean> selectedFeatures) {
+        machineModel = selectedMachineModel;
+        addressingMode = selectedAddressingMode;
+        features = selectedFeatures;
+        if (machineModel.trim().isEmpty()) {
+            throw new IllegalArgumentException("A named System/390 machine profile is required");
+        }
+        if (addressingMode != "24-bit" && addressingMode != "31-bit") {
+            throw new IllegalArgumentException("ESA/390 addressing mode must be 24-bit or 31-bit");
+        }
+        resetArchitecturalState();
+    }
+
+    function resetArchitecturalState() {
+        generalRegisters.clear();
+        for (int i = 0; i < 16; i++) {
+            generalRegisters.put("R" + i, 0);
+        }
+        conditionCode = 0;
+        instructionAddress = 0L;
+        systemState.clear();
+        // Initialize ESA/390 PSW and control state from the selected profile.
+    }
+
+    function supportsFeature(String feature) {
+        return features.getOrDefault(feature, false);
+    }
+
+    function requireFeature(String feature, String opcode) {
+        if (!supportsFeature(feature)) {
+            log.warn("Unavailable ESA/390 feature " + feature + " for opcode " + opcode);
+            if (strictProfile) {
+                throw new IllegalStateException("Operation exception: unavailable feature " + feature);
+            }
+        }
+    }
+
+    function setConditionCode(Integer value) {
+        if (value < 0 || value > 3) {
+            throw new IllegalArgumentException("Condition code must be in range 0..3");
+        }
+        conditionCode = value;
+    }
+
+    function getAddressingMode() {
+        return addressingMode;
+    }
+
+    function getMachineModel() {
+        return machineModel;
+    }
+}
