@@ -106,7 +106,7 @@ public:
         }
         for(const auto& cls:prog_.classes) for(const auto& m:cls.methods){
             const std::string key=cls.name+"::"+m.name;
-            MethodInfo mi; mi.method=&m; mi.nlocals=countLocals(m)+(m.isStatic?0:1);
+            MethodInfo mi; mi.method=&m; mi.nlocals=countLocals(m)+((m.isStatic||m.name=="main")?0:1);
             methodKeyByPtr_[&m]=key; methodOwner_[key]=cls.name;
             if(m.isProtected) protectedMethods_.insert(key);
             funcIndex_[key]=(int)methods_.size(); methods_.push_back(mi);
@@ -149,12 +149,12 @@ private:
     int here(){return slvm_here(vm_);} int emit(SLOp op,int a=0){return slvm_emit(vm_,op,a);} void patch(int at,int target){slvm_patch(vm_,at,target);}
     void emitMethod(MethodInfo& mi){
         const Method& m=*mi.method; const std::string key=methodKeyByPtr_.at(&m); currentClass_=methodOwner_.at(key);
-        MethodCtx ctx; if(!m.isStatic)ctx.declare("this"); for(const auto& p:m.params)ctx.declare(p.name);
+        MethodCtx ctx; if(!m.isStatic&&m.name!="main")ctx.declare("this"); for(const auto& p:m.params)ctx.declare(p.name);
         std::map<std::string,std::string> savedTypes=varType_;
         for(const auto& p:m.params) if(structLayout_.count(p.type)) varType_[p.name]=p.type;
-        if(!m.isStatic)varType_["this"]=currentClass_;
-        slvm_begin_func(vm_,key.c_str(),(int)m.params.size()+(m.isStatic?0:1),mi.nlocals); ctx_=&ctx;
-        if(m.isStatic&&m.name=="main") for(const Field* f:fields_){if(f->init)emitExpr(f->init.get());else emit(OP_CONST,addNullConst());emit(OP_STOREG,fieldGlobal_[currentClass_+"::"+f->name]);}
+        if(!m.isStatic&&m.name!="main")varType_["this"]=currentClass_;
+        slvm_begin_func(vm_,key.c_str(),(int)m.params.size()+((m.isStatic||m.name=="main")?0:1),mi.nlocals); ctx_=&ctx;
+        if(m.name=="main") for(const Field* f:fields_){auto owner=fieldOwner_.find(currentClass_+"::"+f->name);if(owner==fieldOwner_.end())continue;if(f->init)emitExpr(f->init.get());else emit(OP_CONST,addNullConst());emit(OP_STOREG,fieldGlobal_[currentClass_+"::"+f->name]);}
         emitBlock(*m.body);ctx_=nullptr;emit(OP_CONST,addNullConst());emit(OP_RET);slvm_end_func(vm_);
         varType_=savedTypes;
     }
@@ -631,7 +631,7 @@ private:
             const Method* target=methods_[it->second].method;
             if((int)c.args.size()!=(int)target->params.size())throw std::runtime_error("Semantic error: method '"+currentClass_+"::"+c.callee+"' expects "+std::to_string(target->params.size())+" argument(s), got "+std::to_string(c.args.size()));
             if(target->isProtected&&methodOwner_[currentClass_+"::"+c.callee]!=currentClass_)throw std::runtime_error("protected method access denied");
-            if(!target->isStatic)emitThis();
+            if(!target->isStatic&&target->name!="main")emitThis();
             for(const auto&a:c.args)emitExpr(a.get());emit(OP_CALL,it->second);return;
         }
         it=funcIndex_.find(c.callee);
