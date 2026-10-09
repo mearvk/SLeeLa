@@ -1,0 +1,51 @@
+# SLPDP12CPU — SLeeLa PDP-12 CPU profile
+#
+# Functional, profile-driven dual-environment model.
+# PDP-8-family and LINC-compatible instruction decoding remain separate.
+
+class SLPDP12CPU extends SLCPU {
+    const WORD_BITS = 12;
+    const MODE_PDP8 = "pdp8";
+    const MODE_LINC = "linc";
+
+    state {
+        pc;
+        ac;
+        link;
+        instructionRegister;
+        activeMode;
+        modeState;
+        memory;
+        deviceMap;
+        timingProfile;
+    }
+
+    configure(profile) {
+        require(profile.wordBits == WORD_BITS);
+        require(profile.memoryWords > 0);
+        this.memory = SLRAM.create(profile.memoryWords, WORD_BITS);
+        this.deviceMap = profile.deviceMap ?? {};
+        this.timingProfile = profile.timingProfile ?? "functional";
+        this.activeMode = profile.initialMode ?? MODE_PDP8;
+        require(this.activeMode == MODE_PDP8 || this.activeMode == MODE_LINC);
+        this.modeState = profile.modeState ?? {};
+        return this;
+    }
+
+    step() {
+        let instruction = this.fetch12(this.pc);
+        this.instructionRegister = instruction;
+        let decoded = this.activeMode == MODE_PDP8
+            ? this.decodePDP8(instruction)
+            : this.decodeLINC(instruction);
+
+        if (!decoded.supported) {
+            this.reportUnsupported("PDP12_OPCODE", instruction, this.pc);
+            return this.result("unsupported", instruction);
+        }
+        return this.executePDP12Environment(this.activeMode, decoded);
+    }
+
+    # Exact LINC state and mode-transition rules must come from a verified profile.
+    # Never merge PDP-8 and LINC opcode tables into a synthetic instruction set.
+}
