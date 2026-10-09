@@ -1,6 +1,6 @@
-## 0.3.27-dev Development Increment
+## 0.3.29-dev Development Increment
 
-This increment advances class-instance semantics with per-object instance fields, receiver-aware method dispatch, and default field initialization. It also corrects dispatch for synthesized chemistry helpers and improves cross-platform build staging and vendored dependency extraction. The release remains in development pending the full Linux, macOS, Windows, and regression CI results.
+This increment adds the arbitrary-width unsigned integer foundation for `U1` through `U1048576`, including decimal conversion, width validation, checked arithmetic, division/remainder, bitwise operations, shifts, semantic type recognition, and focused tests. VM value ABI and end-to-end source execution integration remain in progress. The release remains in development pending the full Linux, macOS, Windows, and regression CI results.
 
 **SLeeLa — MEARVK LLC — 2026**
 
@@ -8,7 +8,7 @@ This increment advances class-instance semantics with per-object instance fields
 
 ## Current Development Version
 
-**SLeeLa:** 0.3.27-dev
+**SLeeLa:** 0.3.29-dev
 **Sleela-Complete:** 0.3.2-dev  
 **Nordshrift Complete:** 2.7.1-dev  
 **Native Foundation:** 0.3.2-dev  
@@ -19,7 +19,7 @@ This increment advances class-instance semantics with per-object instance fields
 **Status:** Active Development  
 **Repository:** mearkv/SLeeLa
 
-## 0.3.27 Development Increment
+## 0.3.29 Development Increment
 
 Defined the parameterized unsigned integer source-signature family `U<n>` for every width from `U1` through `U1048576`. Each type denotes an exactly n-bit unsigned value with range `0..(2^n - 1)`. The source contract requires width validation, range-safe conversions, and explicit diagnostics rather than silently lowering unsupported widths to a host integer. This records the source-language contract; complete runtime/compiler support must be verified by implementation and conformance tests.
 
