@@ -1,0 +1,9 @@
+# SLXtensaCPU
+
+class SLXtensaCPU {
+  architecture; profile; isaOptions; customInstructions; clock; programCounter;
+  registerFile; registerWindowState; processorStatus; exceptionState; interruptController;
+  integerALU; branchUnit; loopUnit; loadStoreUnit; floatingPointUnit; dspUnit;
+  mmu; mpu; instructionCache; dataCache; localMemory; systemBus; dmaController; couplers;
+  reset(); fetch(); decodeByProfile(); mapRegisters(); executeInteger(); executeExtension(); executeCustomInstruction(); accessMemory(); handleException(); serviceInterrupt(); serviceDMA(); complete(); validate();
+}
