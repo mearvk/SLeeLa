@@ -137,20 +137,26 @@ static fs::path findRepoRoot(const fs::path&start){
     return fs::path();
 }
 static int verifyBeforeExecution(const fs::path&cwd){
-    const char* env=std::getenv("SLEELA_SHA256_MANIFEST");
-    if(!env||!*env){
-        std::cerr<<"sleelvac: SHA-256 verification is required; set SLEELA_SHA256_MANIFEST to a trusted JSON manifest\n";
-        return 1;
-    }
-    // Resolve the repo root robustly (any CWD), falling back to the CWD itself.
+    // Resolve the SLeeLa root first so a configured installation works even
+    // when the caller is a separate client project and has no local verifier.
     fs::path root=findRepoRoot(cwd);
     if(root.empty())root=cwd;
-    fs::path manifest=fs::path(env);
+
+    const char* env=std::getenv("SLEELA_SHA256_MANIFEST");
+    fs::path manifest=(env&&*env)?fs::path(env):(root/"security"/"sha256-manifest.json");
     if(!manifest.is_absolute())manifest=root/manifest;
+
     fs::path tool=root/"tools"/"verify-before-execution.py";
-    if(!fs::exists(tool)){
+    std::error_code ec;
+    if(!fs::is_regular_file(tool,ec)){
         std::cerr<<"sleelvac: verification tool not found: "<<tool
-                 <<"\n  (searched upward from "<<cwd<<" for tools/verify-before-execution.py)\n";
+                 <<"\n  (set SLEELA_HOME to the SLeeLa root, or search upward from "<<cwd<<")\n";
+        return 1;
+    }
+    ec.clear();
+    if(!fs::is_regular_file(manifest,ec)){
+        std::cerr<<"sleelvac: trusted SHA-256 manifest not found: "<<manifest
+                 <<"\n  (set SLEELA_SHA256_MANIFEST or provide security/sha256-manifest.json under the selected SLeeLa root)\n";
         return 1;
     }
 #ifdef _WIN32
