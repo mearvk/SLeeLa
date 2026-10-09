@@ -14,14 +14,23 @@
  * this the "secondary VM on top of the Native Sleela VM": every effect ultimately
  * executes on the same 124-opcode engine the native layer interprets.
  *
- * Typical use:
+ * Typical use (opcode module):
  *   vm = new SLVM(); vm.boot(1<<16, 1<<16);
  *   module = vm.loader().beginModule("app", 4096, 4096, 1024);
  *   ... emit opcodes / define classes ...
  *   vm.install(module); vm.run(1000000);
  *
+ * Guest-CPU use (Creator -> SLVM -> CPU -> program): SLVM can also host a Sleela
+ * CPU model (any SLCPURuntime / SL<ARCH>CPU) as its executor and run a C / C++ /
+ * Java / Sleela program through it, nested on this VM's substrate:
+ *   vm = new SLVM(); vm.configure("edition"); vm.boot(1<<16, 1<<16);
+ *   SL6502CPU cpu = new SL6502CPU(); cpu.configure();
+ *   vm.hostCpu(cpu);
+ *   int out = vm.runGuestWorkload(job, 1000000);   // job wraps a .c/.cpp/.java/.sleela source
+ * (SleelaVMCreator builds and boots the SLVM for this flow.)
+ *
  * Family: vm. Composes SLVMHeap, SLVMMemory, SLVMModuleLoader, SLVMThread,
- *   SLVMFrame, SLVMValue, SLVMNativeBinding, SLSleelaVM.
+ *   SLVMFrame, SLVMValue, SLVMNativeBinding, SLSleelaVM; hosts SLCPURuntime.
  */
 #sleela 1.3
 class SLVM {
@@ -41,6 +50,13 @@ class SLVM {
 
   int steps;              // opcodes executed through this VM
   int lastExit;           // last serviced VM-exit opcode (-1 if none)
+
+  // --- guest-CPU hosting (Creator -> SLVM -> CPU -> program stack) ---
+  // When SLVM hosts a Sleela CPU model as its executor, the CPU is pinned here
+  // and SLVM lends it the substrate so the CPU's lowered program runs nested on
+  // the Secondary VM rather than on a private engine.
+  SLCPURuntime guestCpu;
+  int guestResult;        // last observable output of a guest workload
 
   void configure(String vmName) { name = vmName; state = 0; }
 
@@ -122,6 +138,47 @@ class SLVM {
     substrate.resolveExit();
     substrate.pushResult(result);
   }
+
+  // --- guest-CPU hosting: run a Sleela CPU model as SLVM's executor ---
+  // Pin a Sleela CPU model (any SLCPURuntime / SL<ARCH>CPU) as the guest this VM
+  // executes, and lend it a hosted substrate so the CPU runs nested on the
+  // Secondary VM. The substrate is sized generously; the CPU's workload grant
+  // bounds actual use.
+  void hostCpu(SLCPURuntime cpu) {
+    guestCpu = cpu;
+    substrate = new SLSleelaVM();
+    substrate.configure(1 << 16, 4096, 1024);
+    substrate.setHosted();           // the CPU's service opcodes become our VM-exits
+    cpu.attachSubstrate(substrate);  // CPU lowers onto OUR substrate => true nesting
+    state = 1;
+  }
+
+  SLCPURuntime hostedCpu() { return guestCpu; }
+
+  // Run the full stack in one call: the hosted guest CPU compiles a C/C++/Java/
+  // Sleela workload, maps it onto SLVM's substrate, and SLVM drives that opcode
+  // stream (servicing I/O VM-exits through its native bindings). Returns the
+  // observable output. This is the Creator -> SLVM -> CPU -> program executor
+  // path realized end to end.
+  int runGuestWorkload(SLWorkload work, int budget) {
+    if (guestCpu == null) { return -1; }
+    SLSleelaVM target = guestCpu.mapWorkload(work, substrate);
+    if (target == null) { return -1; }   // workload rejected by the CPU's grant
+    state = 2;
+    int ran = 0;
+    while (ran < budget && !substrate.isHalted()) {
+      substrate.step();
+      steps = steps + 1;
+      ran = ran + 1;
+      if (substrate.exiting()) { serviceExit(); }
+    }
+    if (substrate.isHalted()) { state = 3; }
+    guestResult = substrate.printed();
+    work.markDone(guestResult);
+    return guestResult;
+  }
+
+  int lastGuestResult() { return guestResult; }
 
   // --- object allocation surface for Sleela-sourced VM code ---
   SLVMObject newInstance(int classId) {
