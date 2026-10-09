@@ -13,6 +13,8 @@ int main() {
     assert(UnsignedInteger::fromDecimal(9, "511").toDecimal() == "511");
     assert(UnsignedInteger::fromDecimal(9, "511").compare(UnsignedInteger::fromDecimal(9, "510")) > 0);
     assert(UnsignedInteger::fromDecimal(8, "12").add(UnsignedInteger::fromDecimal(8, "20")).toDecimal() == "32");
+    const auto serialized = UnsignedInteger::fromDecimal(9, "511").toBytes();
+    assert(UnsignedInteger::fromBytes(9, serialized).toDecimal() == "511");
     assert(UnsignedInteger::fromDecimal(8, "20").subtract(UnsignedInteger::fromDecimal(8, "12")).toDecimal() == "8");
     assert(UnsignedInteger::fromDecimal(1048576, "123456789012345678901234567890").toDecimal() == "123456789012345678901234567890");
 
@@ -35,6 +37,11 @@ int main() {
     try { (void)UnsignedInteger::fromDecimal(8, "256"); }
     catch (const std::out_of_range&) { overflow = true; }
     assert(overflow);
+
+    bool badSerialization = false;
+    try { (void)UnsignedInteger::fromBytes(9, {0xff, 0xff}); }
+    catch (const std::out_of_range&) { badSerialization = true; }
+    assert(badSerialization);
 
     bool badWidth = false;
     try { (void)UnsignedInteger(1048577); }
