@@ -1,3 +1,5 @@
+<img align="right" src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="75" height="75" alt="SLeeLa">
+
 # Mayorial — municipal mayor contacts
 
 Contact lists for **municipal mayors** (city-level), organized by state.
