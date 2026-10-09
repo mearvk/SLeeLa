@@ -212,12 +212,9 @@ stage: verify-security $(SLEELA_BIN) $(NORDSHRIFT_BIN)
 	@cp ../config/config-location.conf $(STAGE_CONFIG)/config-location.conf
 	@cp ../MEMORY_MANAGER.md $(STAGE_DOCS)/MEMORY_MANAGER.md 2>/dev/null || true
 	@cp ../PURPOSE.md $(STAGE_DOCS)/PURPOSE.md 2>/dev/null || true
-	@printf '%s
-' '# SLeeLa Build Options' '' 'The staged runtime uses the defaults in Config/sleela.conf.' '' 'Available command-line memory options:' '' '  --memory-manager       Use the default 2 GiB ceiling' '  --memory-manager=SIZE  Set 256M through 2G' '  --mm=SIZE              Short form of --memory-manager=SIZE' > $(STAGE_OPTIONS)/OPTIONS.md
-	@printf '%s
-' '# SLeeLa Runtime Layout' '' 'bin/       Executables' 'Config/    Consolidated default configuration (including VM generation)' 'Options/   Runtime/build option reference' 'lib/       Reserved for runtime libraries' 'docs/      Runtime documentation' > $(STAGE)/README.md
-	@printf '%s
-' '# SLeeLa VM Selection' '' 'Config/vm.conf selects VM generation 1-11.' 'Selection precedence: CLI, SLEELA_VM_VERSION, Config/vm.conf, compiled default.' > $(STAGE_DOCS)/VM-SELECTION.md
+	@printf '%s\n' '# SLeeLa Build Options' '' 'The staged runtime uses the defaults in Config/sleela.conf.' '' 'Available command-line memory options:' '' '  --memory-manager       Use the default 2 GiB ceiling' '  --memory-manager=SIZE  Set 256M through 2G' '  --mm=SIZE              Short form of --memory-manager=SIZE' > $(STAGE_OPTIONS)/OPTIONS.md
+	@printf '%s\n' '# SLeeLa Runtime Layout' '' 'bin/       Executables' 'Config/    Consolidated default configuration (including VM generation)' 'Options/   Runtime/build option reference' 'lib/       Reserved for runtime libraries' 'docs/      Runtime documentation' > $(STAGE)/README.md
+	@printf '%s\n' '# SLeeLa VM Selection' '' 'Config/vm.conf selects VM generation 1-11.' 'Selection precedence: CLI, SLEELA_VM_VERSION, Config/vm.conf, compiled default.' > $(STAGE_DOCS)/VM-SELECTION.md
 	@echo "=== staged SLeeLa runtime: $(STAGE) ==="
 
 package: stage
