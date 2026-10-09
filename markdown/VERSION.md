@@ -1,6 +1,6 @@
 ## 0.3.28-dev Development Increment
 
-This increment advances class-instance semantics with per-object instance fields, receiver-aware method dispatch, and default field initialization. It also corrects dispatch for synthesized chemistry helpers and improves cross-platform build staging and vendored dependency extraction. The release remains in development pending the full Linux, macOS, Windows, and regression CI results.
+This increment begins the arbitrary-width unsigned integer implementation for source types U1 through U1048576. It adds a byte-backed value foundation, decimal parsing and formatting, checked same-width addition/subtraction, comparison, semantic type-name recognition, and a dedicated test target. Integration with the stable VM value ABI and end-to-end source execution remains in progress.
 
 **SLeeLa — MEARVK LLC — 2026**
 
@@ -19,9 +19,9 @@ This increment advances class-instance semantics with per-object instance fields
 **Status:** Active Development  
 **Repository:** mearkv/SLeeLa
 
-## 0.3.27 Development Increment
+## 0.3.28 Development Increment
 
-Defined the parameterized unsigned integer source-signature family `U<n>` for every width from `U1` through `U1048576`. Each type denotes an exactly n-bit unsigned value with range `0..(2^n - 1)`. The source contract requires width validation, range-safe conversions, and explicit diagnostics rather than silently lowering unsupported widths to a host integer. This records the source-language contract; complete runtime/compiler support must be verified by implementation and conformance tests.
+Implemented the first compiler-facing phase of parameterized unsigned integer types `U<n>` for widths 1..1048576: byte-backed arbitrary-width value storage, decimal parsing/formatting, width checks, comparison, checked addition/subtraction, semantic recognition, and a dedicated Makefile test target. Full lowering and runtime ABI integration remain open work and must not be considered complete until end-to-end tests pass.
 
 ## 0.3.9 Development Increment
 
