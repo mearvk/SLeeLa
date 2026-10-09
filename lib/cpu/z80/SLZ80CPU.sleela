@@ -39,6 +39,7 @@ class SLZ80CPU extends SLCPURuntime {
   int rCounter;         // memory-refresh counter (R register wraps 0..127)
 
   void configure() {
+    setSpecClock(4);   // Zilog Z80 at 4 MHz; overclockable
     bringUp("Zilog Z80", 8, 16, 10, 65536);
     ioPorts = new SLRAM(); ioPorts.configure(256, 32); ioPorts.allocate();
     rCounter = 0;

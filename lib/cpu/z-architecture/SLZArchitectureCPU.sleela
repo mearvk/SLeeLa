@@ -26,6 +26,7 @@ class SLZArchitectureCPU extends SLCPURuntime {
   void setGpr(int i, int v) { writeReg(i, v); }
 
   void configure() {
+    setSpecClock(770);   // the model's rated clock (MHz); overclockable
     bringUp("IBM z/Architecture", 64, 64, 16, 262144);
   }
 

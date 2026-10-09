@@ -31,6 +31,7 @@ class SLIntel4004CPU extends SLCPURuntime {
   void setGpr(int i, int v) { writeReg(i, v); }
 
   void configure() {
+    setSpecClock(1);   // the model's rated clock (MHz); overclockable
     bringUp("Intel 4004", 4, 12, 16, 4096);
   }
 

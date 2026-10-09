@@ -27,6 +27,7 @@ class SLPlayStation2CPU extends SLCPURuntime {
   void setGpr(int i, int v) { if (i == 0) { return; } writeReg(i, v); }
 
   void configure() {
+    setSpecClock(294);   // the model's rated clock (MHz); overclockable
     bringUp("PlayStation 2 (Emotion Engine / MIPS)", 64, 32, 34, 262144);
   }
 

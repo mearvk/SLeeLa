@@ -26,6 +26,7 @@ class SLCortexRCPU extends SLCPURuntime {
   void setGpr(int i, int v) { writeReg(i, v); }
 
   void configure() {
+    setSpecClock(600);   // the model's rated clock (MHz); overclockable
     bringUp("ARM Cortex-R", 32, 32, 16, 262144);
   }
 

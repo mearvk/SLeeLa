@@ -26,6 +26,7 @@ class SLAtariVCSCPU extends SLCPURuntime {
   void setGpr(int i, int v) { writeReg(i, v); }
 
   void configure() {
+    setSpecClock(1700);   // the model's rated clock (MHz); overclockable
     bringUp("Atari VCS (x86-64 AMD Ryzen)", 64, 48, 16, 262144);
   }
 
