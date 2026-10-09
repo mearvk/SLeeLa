@@ -99,7 +99,7 @@ if [ "$INSTALL_MODE" = user ]; then
     mkdir -p "$PROFILE_DIR"
     cat > "$PROFILE_DIR/sleela.sh" <<EOF
 export SLEELA_HOME="$INSTALL_ROOT"
-case ":$PATH:" in *:"$SLEELA_HOME/bin":*) ;; *) export PATH="$SLEELA_HOME/bin:$PATH";; esac
+case ":\$PATH:" in *:"\$SLEELA_HOME/bin":*) ;; *) export PATH="\$SLEELA_HOME/bin:\$PATH";; esac
 EOF
     echo "User PATH snippet: $PROFILE_DIR/sleela.sh (source it from your shell profile if your shell does not load ~/.profile.d)"
   fi
