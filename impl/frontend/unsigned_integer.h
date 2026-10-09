@@ -137,8 +137,8 @@ private:
             bytes_[i] = static_cast<std::uint8_t>(product & 0xffu);
             carry = product >> 8;
         }
+        if (carry != 0 || exceedsWidth()) throw std::out_of_range("unsigned integer value exceeds declared width");
         normalize();
-        if (carry != 0) throw std::out_of_range("unsigned integer value exceeds declared width");
     }
 
     void addSmall(unsigned value) {
@@ -148,8 +148,14 @@ private:
             bytes_[i] = static_cast<std::uint8_t>(sum & 0xffu);
             carry = sum >> 8;
         }
+        if (carry != 0 || exceedsWidth()) throw std::out_of_range("unsigned integer value exceeds declared width");
         normalize();
-        if (carry != 0) throw std::out_of_range("unsigned integer value exceeds declared width");
+    }
+
+    bool exceedsWidth() const noexcept {
+        if (width_ % 8 == 0) return false;
+        const unsigned mask = (1u << (width_ % 8)) - 1u;
+        return (static_cast<unsigned>(bytes_.back()) & ~mask) != 0;
     }
 
     std::size_t width_;
