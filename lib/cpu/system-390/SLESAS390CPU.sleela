@@ -26,6 +26,7 @@ class SLESAS390CPU extends SLCPURuntime {
   void setGpr(int i, int v) { writeReg(i, v); }
 
   void configure() {
+    setSpecClock(60);   // the model's rated clock (MHz); overclockable
     bringUp("IBM ESA/390", 32, 31, 16, 262144);
   }
 

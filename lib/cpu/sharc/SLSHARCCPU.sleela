@@ -26,6 +26,7 @@ class SLSHARCCPU extends SLCPURuntime {
   void setGpr(int i, int v) { writeReg(i, v); }
 
   void configure() {
+    setSpecClock(40);   // the model's rated clock (MHz); overclockable
     bringUp("Analog Devices SHARC", 32, 32, 16, 262144);
   }
 

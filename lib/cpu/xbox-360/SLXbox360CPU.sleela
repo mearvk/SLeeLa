@@ -26,6 +26,7 @@ class SLXbox360CPU extends SLCPURuntime {
   void setGpr(int i, int v) { writeReg(i, v); }
 
   void configure() {
+    setSpecClock(3200);   // the model's rated clock (MHz); overclockable
     bringUp("Xbox 360 (Xenon / PowerPC)", 64, 42, 32, 262144);
   }
 

@@ -34,6 +34,7 @@ class SLMIPSCPU extends SLCPURuntime {
 
   void configure() {
     // 32-bit, 32-bit addressing (capped), 34 regs (32 GPR + HI + LO).
+    setSpecClock(33);   // MIPS R3000 at ~33 MHz; overclockable
     bringUp("MIPS R3000", 32, 32, 34, 262144);
     cp0Status = 0; inDelaySlot = 0;
   }

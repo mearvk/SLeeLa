@@ -31,6 +31,7 @@ class SLARMCPU extends SLCPURuntime {
   int securityState;    // 0 non-secure, 1 secure (TrustZone hook)
 
   void configure() {
+    setSpecClock(25);   // ARMv4 (ARM7-class) at ~25 MHz; overclockable
     bringUp("ARMv4 (A32)", 32, 32, 17, 262144);
     securityState = 0;
     writeReg(R_SP, 0x40000 - 4);

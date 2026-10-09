@@ -246,6 +246,7 @@ class {cls} extends SLCPURuntime {{
 {regs}
 {gpr}
   void configure() {{
+    setSpecClock({clock});   // the model's rated clock (MHz); overclockable
     bringUp("{identity}", {data}, {addr}, {regc}, {mem});
   }}
 {decode}
@@ -255,6 +256,35 @@ class {cls} extends SLCPURuntime {{
 """
 
 
+# Rated spec clock in MHz per folder (whole-MHz; sub-MHz historical parts are
+# rounded up to 1 so the model has a usable clock). Mirrors the native clocks in
+# lib/cpu/PERFECT.CONSEQUENCE.md.
+CLOCK = {
+    "68020":16,"68030":25,"68040":25,"68060":50,"6809":1,"coldfire":66,
+    "alpha":200,"vax":5,"tx0":1,"linc8":1,
+    "intel4004":1,"i860":40,"i960":25,"iapx432":8,"itanium":800,
+    "ibm801":15,"romp":10,"power":25,"powerpc":66,
+    "system-360":2,"system-370":9,"system-390":60,"z-architecture":770,
+    "sparc":40,"pa-risc":66,"m88k":25,"amd29k":25,"clipper":33,"ns32000":15,
+    "openrisc":50,"weitek":20,
+    "cortex-m":100,"cortex-r":600,"superh":200,"xtensa":240,"transputer":20,
+    "dsp56000":20,"dspic":40,"tms320":20,"sharc":40,"z8000":6,
+    "pdp1":1,"pdp4":1,"pdp5":1,"pdp6":1,"pdp7":1,"pdp9":1,"pdp10":1,
+    "pdp11":15,"pdp12":1,"pdp14":1,"pdp15":1,
+    "nintendo-nes":2,"nintendo-snes":4,"nintendo-64":94,"nintendo-gamecube":486,
+    "nintendo-wii":729,"nintendo-wii-u":1240,"nintendo-switch":1020,"nintendo-switch-2":1100,
+    "sega-sg-1000":4,"sega-mark-iii":4,"sega-master-system":4,"sega-game-gear":4,
+    "sega-genesis":8,"sega-nomad":8,"sega-32x":23,"sega-mega-cd":13,"sega-pico":8,
+    "sega-saturn":29,"sega-dreamcast":200,
+    "playstation-1":34,"playstation-2":294,"playstation-3":3200,"playstation-4":1600,
+    "playstation-5":3500,
+    "xbox":733,"xbox-360":3200,"xbox-one":1750,"xbox-one-s":1750,"xbox-one-x":2300,
+    "xbox-series-s":3600,"xbox-series-x":3800,
+    "atari-2600":1,"atari-5200":2,"atari-7800":2,"atari-xegs":2,"atari-lynx":4,
+    "atari-jaguar":27,"atari-jaguar-cd":27,"atari-vcs":1700,
+}
+
+
 def generate_one(spec):
     folder, filename, cls, identity, data, addr, regc, style, zero = spec
     body = TEMPLATE.format(
@@ -262,6 +292,7 @@ def generate_one(spec):
         filename=filename,
         cls=cls,
         identity=identity,
+        clock=CLOCK.get(folder, 1),
         regs=reg_block(regc, style, zero),
         gpr=gpr_helpers(zero),
         decode=decode_body(style),

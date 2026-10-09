@@ -37,6 +37,7 @@ class SLRISCVCPU extends SLCPURuntime {
 
   void configure(String extensions) {
     xlen = 32;
+    setSpecClock(100);   // RISC-V RV32I reference at 100 MHz; overclockable
     bringUp("RISC-V RV32I", 32, 32, 35, 262144);
     isaExtensions = extensions; privilege = 3;
   }

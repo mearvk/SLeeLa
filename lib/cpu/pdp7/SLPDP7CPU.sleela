@@ -25,6 +25,7 @@ class SLPDP7CPU extends SLCPURuntime {
   void setGpr(int i, int v) { writeReg(i, v); }
 
   void configure() {
+    setSpecClock(1);   // the model's rated clock (MHz); overclockable
     bringUp("DEC PDP-7", 18, 13, 2, 8192);
   }
 

@@ -26,6 +26,7 @@ class SLAtariJaguarCPU extends SLCPURuntime {
   void setGpr(int i, int v) { writeReg(i, v); }
 
   void configure() {
+    setSpecClock(27);   // the model's rated clock (MHz); overclockable
     bringUp("Atari Jaguar (68000 + Tom/Jerry RISC)", 32, 24, 16, 262144);
   }
 

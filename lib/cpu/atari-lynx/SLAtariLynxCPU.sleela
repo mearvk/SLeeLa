@@ -28,6 +28,7 @@ class SLAtariLynxCPU extends SLCPURuntime {
   void setGpr(int i, int v) { writeReg(i, v); }
 
   void configure() {
+    setSpecClock(4);   // the model's rated clock (MHz); overclockable
     bringUp("Atari Lynx (65C02 / Mikey)", 8, 16, 5, 65536);
   }
 

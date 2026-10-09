@@ -28,6 +28,7 @@ class SLAtari2600CPU extends SLCPURuntime {
   void setGpr(int i, int v) { writeReg(i, v); }
 
   void configure() {
+    setSpecClock(1);   // the model's rated clock (MHz); overclockable
     bringUp("Atari 2600 (6507 / 6502)", 8, 13, 5, 8192);
   }
 
