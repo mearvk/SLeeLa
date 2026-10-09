@@ -18,6 +18,7 @@ def read_manifest(path: Path) -> dict[str, str]:
     values: dict[str, str] = {}
     if not path.is_file():
         return values
+    line_no = 0
     for line_no, raw in enumerate(path.read_text(encoding="utf-8-sig").splitlines(), 1):
         line = raw.strip()
         if not line or line.startswith("#") or "=" not in line:
@@ -57,7 +58,7 @@ def count_records(path: Path) -> int:
             return 0
     lines = [line for line in raw.splitlines() if line.strip() and not line.lstrip().startswith(("#", "//"))]
     if path.suffix.lower() in {".csv", ".tsv"} and lines:
-        return max(0, len(lines) - 1)  # first non-comment line is treated as the header
+        return max(0, len(lines) - 1)
     return len(lines)
 
 
