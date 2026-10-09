@@ -32,8 +32,9 @@ run_one() {  # run_one <file>
     local label
     label="$(basename "$file")"
     local out
-    if ! out="$("$SLEELA" run "$file" 2>/dev/null)"; then
-        echo "  FAIL ($label did not run cleanly)"
+    if ! out="$("$SLEELA" run "$file" 2>&1)"; then
+        echo "  FAIL ($label did not run cleanly; compiler/runtime diagnostic follows)"
+        printf '%s\n' "$out" | sed 's/^/    > /'
         fail=1
         return
     fi
