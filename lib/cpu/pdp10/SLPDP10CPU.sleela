@@ -1,0 +1,36 @@
+# SLPDP10CPU
+
+class SLPDP10CPU {
+  architecture;
+  profile;
+  clock;
+  accumulators;
+  programCounter;
+  processorStatus;
+  instructionRegister;
+  decoder;
+  addressUnit;
+  bytePointerUnit;
+  arithmeticUnit;
+  logicUnit;
+  memoryController;
+  ioBus;
+  interruptController;
+  busArbiter;
+  dmaController;
+  couplers;
+
+  reset();
+  fetch();
+  decode();
+  readAccumulator();
+  calculateEffectiveAddress();
+  processBytePointer();
+  executeArithmetic();
+  executeLogic();
+  memoryCycle();
+  ioCycle();
+  serviceInterrupt();
+  complete();
+  validate();
+}
