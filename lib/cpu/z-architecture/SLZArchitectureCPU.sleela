@@ -1,0 +1,60 @@
+/**
+ * SLeeLa IBM z/Architecture CPU model.
+ * Profile-driven architectural foundation; not a cycle-accurate model of a
+ * particular IBM processor or complete mainframe system.
+ */
+class SLZArchitectureCPU extends SLCPU {
+    String architectureLevel = "";
+    Boolean strictFacilities = true;
+
+    Map<String, Long> generalRegisters = new Map<String, Long>();
+    Map<String, Boolean> facilities = new Map<String, Boolean>();
+    Integer conditionCode = 0;
+    Long instructionAddress = 0;
+    Map<String, Long> specialState = new Map<String, Long>();
+
+    function configure(String selectedArchitectureLevel,
+                       Map<String, Boolean> enabledFacilities) {
+        architectureLevel = selectedArchitectureLevel;
+        facilities = enabledFacilities;
+        if (architectureLevel.trim().isEmpty()) {
+            throw new IllegalArgumentException("A documented z/Architecture level is required");
+        }
+        resetArchitecturalState();
+    }
+
+    function resetArchitecturalState() {
+        generalRegisters.clear();
+        for (int i = 0; i < 16; i++) {
+            generalRegisters.put("R" + i, 0L);
+        }
+        conditionCode = 0;
+        instructionAddress = 0L;
+        specialState.clear();
+        // PSW and privileged state require the selected system/profile definition.
+    }
+
+    function supportsFacility(String facility) {
+        return facilities.getOrDefault(facility, false);
+    }
+
+    function requireFacility(String facility, String opcode) {
+        if (!supportsFacility(facility)) {
+            log.warn("Unavailable z/Architecture facility " + facility + " for opcode " + opcode);
+            if (strictFacilities) {
+                throw new IllegalStateException("Operation exception: unavailable facility " + facility);
+            }
+        }
+    }
+
+    function setConditionCode(Integer value) {
+        if (value < 0 || value > 3) {
+            throw new IllegalArgumentException("Condition code must be in range 0..3");
+        }
+        conditionCode = value;
+    }
+
+    function getArchitectureLevel() {
+        return architectureLevel;
+    }
+}
