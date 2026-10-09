@@ -1,0 +1,52 @@
+# SLIntel4004CPU — SLeeLa Intel 4004 profile
+#
+# Functional profile; cycle accuracy requires verified timing metadata.
+# Keep 4004 instruction and chipset behavior separate from later Intel CPUs.
+
+class SLIntel4004CPU extends SLCPU {
+    const DATA_BITS = 4;
+    const INSTRUCTION_BITS = 8;
+    const ADDRESS_BITS = 12;
+    const REGISTER_COUNT = 16;
+    const RETURN_STACK_DEPTH = 3;
+
+    state {
+        pc;
+        accumulator;
+        carry;
+        registers;
+        returnStack;
+        instructionRegister;
+        programStore;
+        chipset;
+        timingProfile;
+    }
+
+    configure(profile) {
+        require(profile.dataBits == DATA_BITS);
+        require(profile.addressBits == ADDRESS_BITS);
+        this.programStore = profile.programStore;
+        this.chipset = profile.chipset ?? {};
+        this.timingProfile = profile.timingProfile ?? "functional";
+        this.registers = SLLowWidthRegisterFile.create(REGISTER_COUNT, DATA_BITS);
+        this.returnStack = SLReturnStack.create(RETURN_STACK_DEPTH, ADDRESS_BITS);
+        return this;
+    }
+
+    step() {
+        let firstByte = this.fetchInstructionByte(this.pc);
+        this.instructionRegister = firstByte;
+        let decoded = this.decodeIntel4004(firstByte);
+        if (decoded.requiresSecondByte) {
+            decoded.secondByte = this.fetchInstructionByte(this.nextPC(this.pc));
+        }
+        if (!decoded.supported) {
+            this.reportUnsupported("INTEL4004_OPCODE", firstByte, this.pc);
+            return this.result("unsupported", firstByte);
+        }
+        return this.executeIntel4004(decoded);
+    }
+
+    # Instruction-specific PC increments, stack rotation, and chipset commands
+    # must follow the verified 4004 opcode table and selected system profile.
+}
