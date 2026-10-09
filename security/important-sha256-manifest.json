@@ -8,7 +8,7 @@
     },
     {
       "path": "SLEELA.syntax",
-      "sha256": "8eb4454c94ab286e5827f7fb27ddca13d7121069aea3eee0817bbb7d5ce63733"
+      "sha256": "701626cf927ba943f281e243228ce5d83c6ac9ecbba6d48a17020e323a1f90a5"
     },
     {
       "path": "SST-2.0.model",
@@ -5148,11 +5148,11 @@
     },
     {
       "path": "impl/core/sleela_core.c",
-      "sha256": "7679cae1729990e89175f32f67bf7d879b3e60a3efd1a1fbef195729e6515fb9"
+      "sha256": "b6de544352aa9988319120f35dd64a1d83cb384e016591d1eaaca60411cd20ea"
     },
     {
       "path": "impl/core/sleela_core.h",
-      "sha256": "2d38e8b079ff5b248963f85794c806b4fcd5e1e9c4fbf48543da6026fa97a644"
+      "sha256": "5ca7ce61b54a3fd9411ccf2e98852f16ef09c26a1c869b34529e676d45c42b2f"
     },
     {
       "path": "impl/core/sleela_design_activity.c",
@@ -5560,7 +5560,7 @@
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "708a2b3b9986e85050e69c486f7da95e56575f8a303ca1ef646976cb6435a71f"
+      "sha256": "36ac3060aa64da857c1bbc980d44b4788f528b2be725a02b0a84af9d9cbe717b"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -5568,7 +5568,7 @@
     },
     {
       "path": "impl/frontend/driver.cpp",
-      "sha256": "b3a2a7adff7a16d934cfb9bada3561d902d9541cd4282d43a5eab73a031e3c1b"
+      "sha256": "8017d40876079ce14cee818588c3eeb916452d1c4cbd9e468f0232131066c35e"
     },
     {
       "path": "impl/frontend/dynamite.cpp",
@@ -5648,7 +5648,7 @@
     },
     {
       "path": "impl/frontend/semantic.cpp",
-      "sha256": "9d907000d0b655fc6d63e3a83e4afc71e14ba0ab6f22904669615a5fcbb24833"
+      "sha256": "ca1720a277de6574d769498a3162b16f597b579ac0e63a382ce3650c0f45cc07"
     },
     {
       "path": "impl/frontend/semantic.h",
