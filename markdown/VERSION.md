@@ -12,7 +12,7 @@ This increment extends the arbitrary-width unsigned integer foundation for sourc
 **Sleela-Complete:** 0.3.2-dev  
 **Nordshrift Complete:** 2.7.1-dev  
 **Native Foundation:** 0.3.2-dev  
-**Sleela Language Syntax:** 1.6 (supported range 1.3 .. 1.6)  
+**Sleela Language Syntax:** 1.7 (supported range 1.3 .. 1.7)  
 **Compiler Compatibility Gate:** 2.9-dev  
 **Java Authorship Transition Gate:** 1.19-dev
 **Edition:** SLeeLa Complete / Native Foundation  
@@ -22,6 +22,10 @@ This increment extends the arbitrary-width unsigned integer foundation for sourc
 ## 0.3.29 Development Increment
 
 Extended the compiler-facing unsigned integer foundation for `U<n>` widths 1..1048576 with checked multiplication, division/remainder, bitwise operations, and logical shifts. Full lowering and runtime ABI integration remain open work and must not be considered complete until end-to-end tests pass.
+
+## Language Syntax 1.7
+
+Advanced the Sleela language syntax version from 1.6 to 1.7 for the arbitrary-width unsigned integer signature family `U1` through `U1048576`. The supported syntax range is now 1.3 through 1.7; compiler/tool versioning remains independent.
 
 ## 0.3.9 Development Increment
 
