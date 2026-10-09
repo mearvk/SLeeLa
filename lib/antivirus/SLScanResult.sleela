@@ -1,0 +1,57 @@
+/*
+ * lib/antivirus/SLScanResult.sleela
+ * Structured result; errors must never be interpreted as a clean scan.
+ */
+#sleela 1.3
+class SLScanResult {
+  String targetPath;
+  String verdict;
+  String engine;
+  String detail;
+  long filesScanned;
+  long filesSkipped;
+  long detections;
+
+  void configure(String path, String sourceEngine) {
+    targetPath = path;
+    engine = sourceEngine;
+    verdict = "UNKNOWN";
+    detail = "Scan has not completed.";
+    filesScanned = 0;
+    filesSkipped = 0;
+    detections = 0;
+  }
+
+  void markClean(long scanned, long skipped) {
+    verdict = "CLEAN";
+    detail = "Engine completed without reporting a detection.";
+    filesScanned = scanned;
+    filesSkipped = skipped;
+    detections = 0;
+    if (skipped > 0) {
+      verdict = "INCOMPLETE";
+      detail = "No detection reported, but one or more files were skipped.";
+    }
+  }
+
+  void markDetected(long scanned, long skipped, long count) {
+    verdict = "DETECTED";
+    detail = "Engine reported one or more detections.";
+    filesScanned = scanned;
+    filesSkipped = skipped;
+    detections = count;
+  }
+
+  void markError(String reason) {
+    verdict = "ERROR";
+    detail = reason;
+  }
+
+  boolean isClean() {
+    return verdict != null && verdict.equals("CLEAN") && filesSkipped == 0;
+  }
+
+  boolean hasDetection() {
+    return verdict != null && verdict.equals("DETECTED");
+  }
+}

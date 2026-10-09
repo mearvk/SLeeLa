@@ -1,0 +1,39 @@
+/*
+ * lib/antivirus/SLScannerEngine.sleela
+ * Validates requests and coordinates the host scanner bridge.
+ */
+#sleela 1.3
+class SLScannerEngine {
+  SLScanPolicy policy;
+  SLClamAVAdapter adapter;
+  String engineName;
+
+  void configure(SLScanPolicy scanPolicy, SLClamAVAdapter scannerAdapter) {
+    policy = scanPolicy;
+    adapter = scannerAdapter;
+    engineName = "ClamAV";
+  }
+
+  SLScanResult scan(SLScanRequest request) {
+    SLScanResult result = new SLScanResult();
+    String path = null;
+    if (request != null) path = request.targetPath;
+    result.configure(path, engineName);
+
+    if (policy == null || adapter == null) {
+      result.markError("SCANNER_COMPONENTS_NOT_CONFIGURED");
+      return result;
+    }
+    if (!policy.permits(request)) {
+      result.markError("REQUEST_REJECTED_BY_POLICY");
+      return result;
+    }
+    if (!adapter.isReady()) {
+      result.markError("CLAMAV_ENGINE_NOT_CONNECTED");
+      return result;
+    }
+
+    result.markError(adapter.scanStatus(request.targetPath));
+    return result;
+  }
+}

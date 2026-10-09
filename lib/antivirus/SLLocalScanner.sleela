@@ -1,0 +1,24 @@
+/*
+ * lib/antivirus/SLLocalScanner.sleela
+ * User-scoped scanner entry point; does not elevate privileges.
+ */
+#sleela 1.3
+class SLLocalScanner {
+  SLScannerEngine engine;
+
+  void configure(SLScannerEngine scannerEngine) {
+    engine = scannerEngine;
+  }
+
+  SLScanResult scanPath(String path) {
+    SLScanRequest request = new SLScanRequest();
+    request.configure(path, "LOCAL");
+    if (engine == null) {
+      SLScanResult result = new SLScanResult();
+      result.configure(path, "ClamAV");
+      result.markError("SCANNER_ENGINE_NOT_CONFIGURED");
+      return result;
+    }
+    return engine.scan(request);
+  }
+}

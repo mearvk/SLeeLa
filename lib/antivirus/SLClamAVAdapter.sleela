@@ -1,0 +1,54 @@
+/*
+ * lib/antivirus/SLClamAVAdapter.sleela
+ * ClamAV integration contract. Native process/socket bridge is required.
+ */
+#sleela 1.3
+class SLClamAVAdapter {
+  String executable;
+  String mode;
+  String endpoint;
+  boolean connected;
+
+  void configureDaemon(String daemonEndpoint) {
+    executable = "clamdscan";
+    mode = "DAEMON";
+    endpoint = daemonEndpoint;
+    connected = false;
+  }
+
+  void configureOneShot() {
+    executable = "clamscan";
+    mode = "ONE_SHOT";
+    endpoint = null;
+    connected = false;
+  }
+
+  String selectedExecutable() {
+    return executable;
+  }
+
+  String selectedMode() {
+    return mode;
+  }
+
+  String state() {
+    if (connected) return "CONNECTED";
+    return "NOT_CONNECTED";
+  }
+
+  boolean isReady() {
+    return connected && executable != null &&
+      (mode != null && (mode.equals("DAEMON") || mode.equals("ONE_SHOT")));
+  }
+
+  /*
+   * This method is intentionally a contract, not a fake scanner.
+   * The native bridge must use an argument vector or a local socket,
+   * enforce timeouts, parse exit codes/output, and set connected only
+   * after a real health check. Never interpolate paths into a shell.
+   */
+  String scanStatus(String targetPath) {
+    if (!isReady()) return "ENGINE_NOT_CONNECTED";
+    return "HOST_BRIDGE_NOT_IMPLEMENTED";
+  }
+}

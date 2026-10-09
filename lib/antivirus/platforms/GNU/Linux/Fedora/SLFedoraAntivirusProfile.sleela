@@ -1,0 +1,14 @@
+/*
+ * OS profile: GNU/Linux / Fedora.
+ */
+#sleela 1.3
+class SLFedoraAntivirusProfile {
+  String brand() { return "GNU/Linux"; }
+  String name() { return "Fedora"; }
+  String systemConfigPath() { return "/etc/sleela/antivirus/antivirus.json"; }
+  String userConfigPath() { return "~/.config/sleela/antivirus/antivirus.json"; }
+  String daemonClient() { return "clamdscan"; }
+  String oneShotClient() { return "clamscan"; }
+  String endpointPolicy() { return "Detect local clamd socket from installed configuration."; }
+  boolean supportsClamOnAccess() { return true; }
+}

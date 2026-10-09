@@ -1,0 +1,14 @@
+/*
+ * OS profile: Microsoft / Windows.
+ */
+#sleela 1.3
+class SLWindowsAntivirusProfile {
+  String brand() { return "Microsoft"; }
+  String name() { return "Windows"; }
+  String systemConfigPath() { return "C:\\ProgramData\\SLeeLa\\Antivirus\\antivirus.json"; }
+  String userConfigPath() { return "%LOCALAPPDATA%\\SLeeLa\\Antivirus\\antivirus.json"; }
+  String daemonClient() { return "clamdscan.exe"; }
+  String oneShotClient() { return "clamscan.exe"; }
+  String endpointPolicy() { return "Use an explicitly configured local endpoint or process bridge; never expose clamd TCP."; }
+  boolean supportsClamOnAccess() { return false; }
+}
