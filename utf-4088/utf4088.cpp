@@ -1,26 +1,23 @@
 #include "utf4088.hpp"
 
 namespace utf4088 {
-
 namespace {
-constexpr CodePoint kMaxCodePoint = (CodePoint{1} << 32) + 0xFFFFFFFFULL;
+// InputState and CodePoint are uint64_t. This implementation intentionally
+// exposes only a 33-bit experimental range, not a literal 4088-bit integer.
+constexpr CodePoint kMaxExperimentalCodePoint = 0x1FFFFFFFFULL;
 }
 
 bool is_valid_code_point(CodePoint value) {
-    // Experimental range: values above the UTF-32 ceiling through the
-    // proposed 4088-bit conceptual space are implementation-defined.
-    return value > 0x10FFFFULL && value <= kMaxCodePoint;
+    // Keep this namespace separate from Unicode scalar values. Values above
+    // Unicode's maximum are experimental identifiers, not Unicode characters.
+    return value > 0x10FFFFULL && value <= kMaxExperimentalCodePoint;
 }
 
 std::optional<CodePoint> symbol_from_input(InputState input) {
-    // The initial driver is deliberately deterministic and digital. It does
-    // not sample raw electrical voltage. Hardware adapters must convert
-    // electrical signals into a documented digital InputState first.
-    const CodePoint candidate = static_cast<CodePoint>(input);
-    if (!is_valid_code_point(candidate)) {
-        return std::nullopt;
-    }
-    return candidate;
+    // The driver accepts documented digital values only. Electrical sampling
+    // belongs in a hardware adapter with explicit voltage/safety constraints.
+    if (!is_valid_code_point(input)) return std::nullopt;
+    return static_cast<CodePoint>(input);
 }
 
 } // namespace utf4088
