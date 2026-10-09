@@ -2,7 +2,7 @@
 
 ## Current Development Version
 
-**SLeeLa:** 0.3.26-dev
+**SLeeLa:** 0.3.27-dev
 **Sleela-Complete:** 0.3.2-dev  
 **Nordshrift Complete:** 2.7.1-dev  
 **Native Foundation:** 0.3.2-dev  
@@ -12,6 +12,10 @@
 **Edition:** SLeeLa Complete / Native Foundation  
 **Status:** Active Development  
 **Repository:** mearkv/SLeeLa
+
+## 0.3.27 Development Increment
+
+Defined the parameterized unsigned integer source-signature family `U<n>` for every width from `U1` through `U1048576`. Each type denotes an exactly n-bit unsigned value with range `0..(2^n - 1)`. The source contract requires width validation, range-safe conversions, and explicit diagnostics rather than silently lowering unsupported widths to a host integer. This records the source-language contract; complete runtime/compiler support must be verified by implementation and conformance tests.
 
 ## 0.3.9 Development Increment
 
