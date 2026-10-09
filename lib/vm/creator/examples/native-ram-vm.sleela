@@ -1,0 +1,36 @@
+/*
+ * lib/vm/creator/examples/native-ram-vm.sleela
+ * SLeeLa example: build a Secondary VM that runs on REAL host RAM.
+ *
+ * The native-RAM option makes the VM's linear memory live in actual host memory
+ * (SLNativeMemory) instead of the simulated SLRAM store — for running outside
+ * simulation for procedural layment. The rest of the stack (hosting a Sleela
+ * CPU, running a C/C++/Java/Sleela program) is unchanged.
+ */
+#sleela 1.3
+class NativeRamVMExample {
+  int result;
+
+  void main() {
+    SL6502CPU cpu = new SL6502CPU();
+    cpu.configure();
+
+    // Ask the Creator to build a VM that runs on native host RAM.
+    SleelaVMCreator creator = new SleelaVMCreator();
+    creator.configure();
+    creator.requestNativeRam();        // <- run outside simulation, on real RAM
+    creator.selectGeneration(5);       // "Manager" generation
+    creator.create();
+    print("VM native RAM: " + creator.builtVM().nativeRam());
+
+    creator.installExecutor(cpu);
+
+    // Run a program on the native-RAM VM exactly as on a simulated one.
+    SLCPUResource grant = new SLCPUResource();
+    grant.configure(4096, 100000, grant.PRIORITY_NORMAL);
+    SLWorkload job = new SLWorkload();
+    job.configure("hello", "examples/hello.c", job.LANG_C, grant);
+    result = creator.runProgram(job, 1000000);
+    print("program on native-RAM VM -> " + result);
+  }
+}

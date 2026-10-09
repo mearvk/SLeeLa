@@ -64,17 +64,39 @@ class SLVM {
   int dmaOption;
   int gpuOption;
 
+  // --- native-RAM option ---
+  // When set before boot(), the VM's linear memory runs on REAL host RAM
+  // (SLNativeMemory) instead of the simulated SLRAM store, for running outside
+  // simulation for procedural layment. Off (simulated) by default.
+  int nativeRamOption;
+
   void configure(String vmName) { name = vmName; state = 0; }
 
-  // Boot: build the heap, linear memory, loader and main thread.
+  // Native-RAM option: when set before boot(), the VM's linear memory runs on
+  // REAL host RAM (SLNativeMemory) instead of the simulated SLRAM store — for
+  // running outside simulation for procedural layment. Off by default.
+  void useNativeRam()  { nativeRamOption = 1; }
+  void useSimulatedRam(){ nativeRamOption = 0; }
+  boolean nativeRam()  { return nativeRamOption == 1; }
+
+  // Boot: build the heap, linear memory, loader and main thread. The linear
+  // memory honors the native-RAM option.
   void boot(int heapWords, int memoryWords) {
     heap = new SLVMHeap(); heap.configure(heapWords);
-    memory = new SLVMMemory(); memory.configure(memoryWords);
+    memory = new SLVMMemory();
+    if (nativeRamOption == 1) { memory.configureNative(memoryWords); }
+    else { memory.configure(memoryWords); }
     moduleLoader = new SLVMModuleLoader(); moduleLoader.configure("lib/vm");
     main = new SLVMThread(); main.configure(0, "main");
     bindingCount = 0;
     steps = 0; lastExit = -1;
     state = 1;
+  }
+
+  // Convenience: boot directly onto native host RAM.
+  void bootNative(int heapWords, int memoryWords) {
+    nativeRamOption = 1;
+    boot(heapWords, memoryWords);
   }
 
   SLVMModuleLoader loader() { return moduleLoader; }

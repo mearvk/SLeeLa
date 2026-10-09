@@ -32,6 +32,7 @@ class SleelaVMCreator {
   int memoryWords;
   int dmaOption;          // 1 => grant direct DMA to the built VM/CPU/program
   int gpuOption;          // 1 => grant native GPU access
+  int nativeRamOption;    // 1 => build the VM to run on real host RAM
 
   void configure() {
     catalog = new SleelaVMGenerationCatalog();
@@ -39,7 +40,7 @@ class SleelaVMCreator {
     formalName = "Core";
     heapWords = 1 << 16;
     memoryWords = 1 << 16;
-    dmaOption = 0; gpuOption = 0;
+    dmaOption = 0; gpuOption = 0; nativeRamOption = 0;
   }
 
   // Size the VM the creator will build (optional; sensible defaults otherwise).
@@ -59,8 +60,9 @@ class SleelaVMCreator {
   SLVM create() {
     vm = new SLVM();
     vm.configure(formalName);
+    if (nativeRamOption == 1) { vm.useNativeRam(); }   // run on real host RAM
     vm.boot(heapWords, memoryWords);
-    if (dmaOption == 1) { vm.enableDMA(); }   // apply opted-in acceleration
+    if (dmaOption == 1) { vm.enableDMA(); }             // apply opted-in acceleration
     if (gpuOption == 1) { vm.enableGPU(); }
     return vm;
   }
@@ -72,6 +74,12 @@ class SleelaVMCreator {
   void requestGPU() { gpuOption = 1; if (vm != null) { vm.enableGPU(); } }
   boolean dmaRequested() { return dmaOption == 1; }
   boolean gpuRequested() { return gpuOption == 1; }
+
+  // Native-RAM option: build the VM to run on REAL host RAM instead of the
+  // simulated store — for running outside simulation for procedural layment.
+  // Call before create()/run(). Corresponds to the NATIVE_RAM feature bit.
+  void requestNativeRam() { nativeRamOption = 1; }
+  boolean nativeRamRequested() { return nativeRamOption == 1; }
 
   // Host a Sleela CPU model as the VM's executor (nested on the SLVM substrate).
   void installExecutor(SLCPURuntime cpu) {
