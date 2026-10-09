@@ -61,7 +61,7 @@ vm.edition=$VmEdition
 port-authority.startup=$PortStart
 port-authority.pause=$PortPause
 port-authority.shutdown=$PortShutdown
-"@ | Set-Content -Encoding UTF8 (Join-Path $Stage "configstartup.conf")
+"@ | Set-Content -Encoding UTF8 (Join-Path $Stage "config/startup.conf")
 
 if (Test-Path $Destination) {
   $BackupRoot = Join-Path $env:LOCALAPPDATA "SLeeLa-backups"
@@ -74,12 +74,26 @@ New-Item -ItemType Directory -Force -Path $Destination | Out-Null
 Copy-Item -Recurse -Force (Join-Path $Stage "*") $Destination
 
 if ($PathUpdate -eq "yes") {
+  # Set a user-level SLEELA_HOME and prepend the SLeeLa bin to the user PATH
+  # (Windows 10+). Both are persistent user environment variables; a WM_
+  # SETTINGCHANGE broadcast nudges already-open Explorer-launched shells.
+  $BinDir = Join-Path $Destination "bin"
+  [Environment]::SetEnvironmentVariable("SLEELA_HOME", $Destination, "User")
+
   $Current = [Environment]::GetEnvironmentVariable("Path","User")
-  $Parts = @($Current -split ';' | Where-Object { $_ -and $_ -ne (Join-Path $Destination "bin") })
-  [Environment]::SetEnvironmentVariable("Path", (($Parts + (Join-Path $Destination "bin")) -join ';'), "User")
-  Write-Host "User PATH updated. Open a new terminal to inherit it."
+  $Parts = @()
+  if ($Current) { $Parts = @($Current -split ';' | Where-Object { $_ -and $_ -ne $BinDir }) }
+  $NewPath = (@($BinDir) + $Parts) -join ';'
+  [Environment]::SetEnvironmentVariable("Path", $NewPath, "User")
+
+  # Reflect into the current session too, so 'sleela' works without reopening.
+  $env:SLEELA_HOME = $Destination
+  if (($env:Path -split ';') -notcontains $BinDir) { $env:Path = "$BinDir;$env:Path" }
+
+  Write-Host "User PATH updated and SLEELA_HOME set. New terminals inherit it automatically."
 }
 Remove-Item -Recurse -Force $Stage
 Write-Host "SLeeLa installation complete."
 Write-Host "Install root: $Destination"
-Write-Host "Configuration: $(Join-Path $Destination 'configstartup.conf')"
+Write-Host "SLEELA_HOME:  $Destination"
+Write-Host "Configuration: $(Join-Path $Destination 'config/startup.conf')"

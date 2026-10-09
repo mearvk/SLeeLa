@@ -18,8 +18,8 @@ The installer is a three-platform, user-local deployment layer for Linux, macOS,
 10. Back up an existing user-local installation.
 11. Copy the staged `lib` and optional `bin` trees.
 12. Write `config/startup.conf`.
-13. Apply only user-level PATH configuration.
-14. Report the installation and configuration locations.
+13. Apply user-level `SLEELA_HOME` and `PATH` configuration (opt-in).
+14. Report the installation, `SLEELA_HOME`, and configuration locations.
 
 ## Platform entry points
 
@@ -40,7 +40,20 @@ The installer is deliberately user-local. It does not require sudo/root for its 
 
 A build failure stops deployment before the staged result is copied. Existing installations are copied to a timestamped user-local backup before replacement.
 
-PATH changes are user-level only. On Linux/macOS the installer writes a small profile snippet; on Windows it updates the current user's PATH and never the machine-wide PATH.
+PATH changes are user-level only.
+
+- **Linux / macOS:** the installer writes an environment snippet at
+  `$SLEELA_INSTALL_ROOT/profile/sleela-env.sh` that sets `SLEELA_HOME` and
+  prepends `$SLEELA_HOME/bin` to `PATH`, then adds one guarded `source` line to
+  each shell startup file present (`~/.bashrc`, `~/.bash_profile`, `~/.zshrc`,
+  `~/.profile`) so it applies to both bash (Linux default) and zsh (macOS
+  default). The hook is idempotent — re-running the installer does not duplicate
+  it — and `source`-ing the snippet makes `sleela` available in the current
+  shell without reopening it.
+- **Windows 10+:** the installer sets a user-level `SLEELA_HOME` and prepends
+  `%SLEELA_HOME%\bin` to the current user's `Path` (never the machine-wide
+  PATH), and reflects both into the running session so new terminals inherit
+  them automatically.
 
 ## Startup settings
 
