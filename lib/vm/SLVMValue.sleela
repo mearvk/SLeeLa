@@ -1,11 +1,57 @@
 /*
  * lib/vm/SLVMValue.sleela
  * SLeeLa Standard Library Definition.
- * Definition: Defines the SLeeLa standard-library type SLVMValue used within the vm library family.
+ * Definition: Defines SLVMValue — a single tagged runtime value in the secondary
+ *   Sleela VM. Every operand on a frame's stack, every field slot, and every
+ *   local is an SLVMValue: a 2-word pair of (tag, payload). The tag says how to
+ *   read the payload; the payload is either an inline scalar (int/bool/char) or
+ *   a heap handle (object/string/array reference) into SLVMHeap.
+ *
+ * This is the atom the whole secondary VM manipulates. Keeping it a flat
+ * (tag,payload) pair means values can live uniformly in SLRAM-backed stacks and
+ * heaps without the SLeeLa surface needing arrays of structs.
+ *
+ * Family: vm. Composed by SLVMFrame, SLVMObject, SLVMHeap.
  */
 #sleela 1.3
-// Unified SLeeLa standard-library front-end object.
-// Family: vm. Native VM/OS work crosses an explicit bridge.
 class SLVMValue {
-  String name; int state; int count; void configure(String n){name=n;} void start(){state=1;} void stop(){state=0;} void register(){count=count+1;} boolean active(){return state==1;}
+  // Type tags. NULL is the canonical empty reference.
+  static final int TAG_NULL = 0;
+  static final int TAG_INT  = 1;
+  static final int TAG_BOOL = 2;
+  static final int TAG_CHAR = 3;
+  static final int TAG_REF  = 4;   // payload is a heap handle (object/array)
+  static final int TAG_STR  = 5;   // payload is a heap handle to a string blob
+
+  int tag;
+  int payload;
+
+  void setNull()           { tag = TAG_NULL; payload = 0; }
+  void setInt(int v)       { tag = TAG_INT;  payload = v; }
+  void setBool(boolean b)  { tag = TAG_BOOL; payload = b ? 1 : 0; }
+  void setChar(int c)      { tag = TAG_CHAR; payload = c; }
+  void setRef(int handle)  { tag = TAG_REF;  payload = handle; }
+  void setStr(int handle)  { tag = TAG_STR;  payload = handle; }
+
+  int type()    { return tag; }
+  int raw()     { return payload; }
+  int asInt()   { return payload; }
+  boolean asBool() { return payload != 0; }
+  int asHandle(){ return payload; }
+
+  boolean isNull()      { return tag == TAG_NULL; }
+  boolean isScalar()    { return tag == TAG_INT || tag == TAG_BOOL || tag == TAG_CHAR; }
+  boolean isReference() { return tag == TAG_REF || tag == TAG_STR; }
+
+  // Truthiness used by control-flow opcodes (JMPF): null and 0 are false.
+  boolean truthy() {
+    if (tag == TAG_NULL) { return false; }
+    return payload != 0;
+  }
+
+  // Pack/unpack the (tag,payload) pair as a single word so a value can be
+  // stored in one SLRAM slot when a frame stack is laid out two words apart.
+  int packedTag()     { return tag; }
+  int packedPayload() { return payload; }
+  void unpack(int t, int p) { tag = t; payload = p; }
 }

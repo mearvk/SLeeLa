@@ -1,11 +1,47 @@
 /*
  * lib/vm/SLVMNativeBinding.sleela
  * SLeeLa Standard Library Definition.
- * Definition: Defines the SLeeLa standard-library type SLVMNativeBinding used within the vm library family.
+ * Definition: Defines SLVMNativeBinding — the controlled seam where a method of
+ *   the secondary Sleela VM crosses to the native engine. A binding names a
+ *   native service (by symbol and by a canonical OS/service opcode from the
+ *   124-opcode ISA) and records its arity. When the VM dispatches a native
+ *   method it invokes the binding, which parks a VM-exit the host services —
+ *   exactly the mechanism lib/cpu/SLSleelaVM uses in hosted mode.
+ *
+ * This keeps "native work crosses an explicit bridge" (the vm-family rule)
+ * concrete: nothing in the secondary VM calls C directly; it goes through a
+ * named, arity-checked binding that the hypervisor/OS can audit.
+ *
+ * Family: vm. Composed by SLVM; mirrors lib/cpu VM-exit routing.
  */
 #sleela 1.3
-// Unified SLeeLa standard-library front-end object.
-// Family: vm. Native VM/OS work crosses an explicit bridge.
 class SLVMNativeBinding {
-  String name; int state; int count; void configure(String n){name=n;} void start(){state=1;} void stop(){state=0;} void register(){count=count+1;} boolean active(){return state==1;}
+  String symbol;       // e.g. "sleela_vm_print_int"
+  int serviceOpcode;   // canonical OP_* this binding fronts (-1 if pure native)
+  int arity;           // operands consumed
+  int bound;           // 1 once resolved against the native table
+  int lastResult;
+
+  void configure(String nativeSymbol, int opcode, int args) {
+    symbol = nativeSymbol; serviceOpcode = opcode; arity = args; bound = 0; lastResult = 0;
+  }
+  void resolve() { bound = 1; }
+
+  String nativeSymbol() { return symbol; }
+  int opcode()          { return serviceOpcode; }
+  int argCount()        { return arity; }
+  boolean resolved()    { return bound == 1; }
+
+  // Front the native call by parking a VM-exit on the substrate. The host reads
+  // exitReasonOpcode()/exitReasonPayload(), performs the real work, and resumes
+  // with pushResult(). payload is the primary argument (e.g. char to print).
+  int invoke(SLSleelaVM substrate, int payload) {
+    if (bound == 0) { return -1; }
+    substrate.setHosted();
+    substrate.parkExit(serviceOpcode, 0, payload);
+    return serviceOpcode;
+  }
+
+  void recordResult(int value) { lastResult = value; }
+  int result() { return lastResult; }
 }
