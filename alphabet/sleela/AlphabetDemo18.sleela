@@ -1,0 +1,54 @@
+/*
+ * alphabet/sleela/AlphabetDemo18.sleela
+ * SLeeLa Standard Library — runnable orchestration example (syntax 1.8+).
+ * Definition: The syntax 1.8 companion to AlphabetDemo.sleela. It shows the two
+ *   1.8 features improving alphabet ergonomics:
+ *     - `let` inferred locals, so a glyph or an alphabet needs no type noise;
+ *     - the Letter CONSTRUCTOR `new Letter(glyph, order, vowel)`, so a letter is
+ *       built in one line instead of load()+set();
+ *   and the subclass-free AlphabetBuilder those features make possible. It also
+ *   exercises the two writing systems added for broader coverage: Hebrew and
+ *   Arabic (abjads).
+ *
+ * The authoritative definitions live one level up in lib/alphabet/*.sleela.
+ * Family: alphabet.
+ */
+#sleela 1.8
+class AlphabetDemo18 {
+
+  static void main() {
+    // --- A single Letter, built in one line with the 1.8 constructor. ---
+    let a = new Letter("A", 1, true);
+    print("[letter]   " + a.describe());
+
+    // --- A custom alphabet assembled inline with AlphabetBuilder + let. ---
+    let b = new AlphabetBuilder("Vowelish");
+    b.vowel("A"); b.vowel("E"); b.consonant("N"); b.vowel("I");
+    b.consonant("T"); b.vowel("O"); b.vowel("U");
+    let vowelish = b.build();
+    print("[builder]  " + vowelish.describe());
+    print("[builder]  letter 3 = " + vowelish.at(2).symbol()
+        + "; has 'O'? " + vowelish.has("O")
+        + "; vowels = " + vowelish.vowelCount());
+
+    // --- The classic subclass path still works, now readable with let. ---
+    let latin = new LatinAlphabet();
+    latin.begin("Latin");
+    print("[classic]  " + latin.describe());
+
+    // --- New writing systems for broader coverage: two abjads. ---
+    let hebrew = new HebrewAlphabet();
+    hebrew.begin("Hebrew");
+    print("[script]   " + hebrew.describe());
+
+    let arabic = new ArabicAlphabet();
+    arabic.begin("Arabic");
+    print("[script]   " + arabic.describe());
+
+    // --- The headline: constructor + builder + classic, all agreeing. ---
+    print("[verdict]  Vowelish letters = " + vowelish.size()
+        + " | Hebrew letters = " + hebrew.size()
+        + " | Arabic letters = " + arabic.size()
+        + " | Latin vowels = " + latin.vowelCount());
+  }
+}

@@ -1,0 +1,28 @@
+/*
+ * lib/alphabet/ArabicAlphabet.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: ArabicAlphabet — the 28-letter Arabic script (Alif..Ya). Like
+ *   Hebrew, Arabic is an ABJAD: the letters are consonants and short vowels are
+ *   written with optional diacritics, so each letter here is a consonant. Three
+ *   letters (Alif, Waw, Ya) double as long-vowel carriers, but as letters they
+ *   remain consonantal, so the alphabet's vowel count is honestly zero.
+ *
+ * A concrete Alphabet: override compose() to append its letters in order. Call
+ * begin("Arabic") to build it. Family: alphabet.
+ */
+#sleela 1.3
+class ArabicAlphabet extends Alphabet {
+
+  void compose() {
+    append("Alif", false);  append("Ba", false);   append("Ta", false);
+    append("Tha", false);   append("Jim", false);  append("Ha", false);
+    append("Kha", false);   append("Dal", false);  append("Dhal", false);
+    append("Ra", false);    append("Zay", false);  append("Sin", false);
+    append("Shin", false);  append("Sad", false);  append("Dad", false);
+    append("Ta2", false);   append("Za", false);   append("Ayn", false);
+    append("Ghayn", false); append("Fa", false);   append("Qaf", false);
+    append("Kaf", false);   append("Lam", false);  append("Mim", false);
+    append("Nun", false);   append("Ha2", false);  append("Waw", false);
+    append("Ya", false);
+  }
+}
