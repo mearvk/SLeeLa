@@ -1,3 +1,5 @@
+<img align="right" src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="75" height="75" alt="SLeeLa">
+
 # General Assembly — state legislature contacts
 
 This folder holds contact lists for the **state legislatures** (the "General
