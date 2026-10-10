@@ -4,11 +4,11 @@
   "files": [
     {
       "path": "README.md",
-      "sha256": "e14af16a78284401d8c4650f3e4e9cce210f88bcfe6836b646bc9fbd1eab4fa2"
+      "sha256": "58a318c3e2fc3b4cee01077e07be2d7a599d92fe9473949f2e2ee7853252725e"
     },
     {
       "path": "SLEELA.syntax",
-      "sha256": "612758bd8350e32cdd89b8bb640a7954f8595a39b521862316f792dfd9ec4b35"
+      "sha256": "ca3d4192087a46d559f44ec4d367b0b1e141adf98d3e29a6f9957778eb6769a1"
     },
     {
       "path": "SST-2.0.model",
@@ -5544,7 +5544,7 @@
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "5428afd9a09944fafe8765c75f2f0c02237030b25560ef27288b59ec43124e98"
+      "sha256": "2a35bab9199af8c48d1d84f54610bb82985203a76c7a6cbfbd065e316938a1a0"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -5632,7 +5632,7 @@
     },
     {
       "path": "impl/frontend/semantic.cpp",
-      "sha256": "ba38d80a0456bc3ab7f0667709653681eaf65c7b1153b6aeafd2461800e78c53"
+      "sha256": "9a731a8d9835826c7f566ab6c490f5ccb4ef2f3ada2a8d567234fd201b926fe3"
     },
     {
       "path": "impl/frontend/semantic.h",
@@ -5648,7 +5648,7 @@
     },
     {
       "path": "impl/frontend/version.h",
-      "sha256": "7c9d819f90a83a11a19d1361e5648210c72a3f3c051e97de97482401e61f6dcc"
+      "sha256": "92e38e50f29e89a6e4a6f9ae0051f87e4212e6240b30dee5bc1e15c601cd5960"
     },
     {
       "path": "impl/fundamental/Buffer.cpp",
@@ -6600,7 +6600,7 @@
     },
     {
       "path": "impl/tests/version/run_version_tests.sh",
-      "sha256": "9c8fc3bfb1e5eeaec9e2172085785a9bb16851b16620b29a0d2d08bc11924f23"
+      "sha256": "c136d09b1af7429d88708a5ebc4ab01ba8d35ed408032fb48c7bfa7f97eb3a80"
     },
     {
       "path": "impl/tests/version/syntax_1_2.sleela",
@@ -6855,8 +6855,64 @@
       "sha256": "f8abd36a0902491a40b1d63f2e5c3977219d4d0c1fb2541ab0e2fbcfeabe4226"
     },
     {
+      "path": "lib/antivirus/Antivirus.sleela",
+      "sha256": "ba4d8130916acb32ff99c7a8918bbb5b4f7532ac9ef213fe7bd2c6c84b50fb0f"
+    },
+    {
+      "path": "lib/antivirus/SLClamAVAdapter.sleela",
+      "sha256": "71e84f8a209d64e84d3aead1a63bad0916ad4f89d9eae590709440e0f3823161"
+    },
+    {
+      "path": "lib/antivirus/SLLocalScanner.sleela",
+      "sha256": "8ed838a18a30279025964d100db7ee9c0b0c1c3c572a19b4ff823392264e160f"
+    },
+    {
       "path": "lib/antivirus/SLPackage.sleela",
       "sha256": "2e7da530214cd5a5e0410a7fe5e763f313c70e28060460eccab928c5df89fd3d"
+    },
+    {
+      "path": "lib/antivirus/SLQuarantineManager.sleela",
+      "sha256": "a5669cd8b87a7e28fe932468e92ee7c52c3257aac3337c0b5693b93a7e97f296"
+    },
+    {
+      "path": "lib/antivirus/SLScanPolicy.sleela",
+      "sha256": "a03c87712ba1cd76f6b5734e25758e23d9fda844e79caae312c52aac82b10354"
+    },
+    {
+      "path": "lib/antivirus/SLScanRequest.sleela",
+      "sha256": "84f4225a231a128dc6d4ad02232ec29f242b88c72bc8f685da4197e43c844fdf"
+    },
+    {
+      "path": "lib/antivirus/SLScanResult.sleela",
+      "sha256": "92e6bdc202954ca8db16e27a8d5567912ee4e638a1fe6b91f0e4c3bf5ff604a1"
+    },
+    {
+      "path": "lib/antivirus/SLScannerEngine.sleela",
+      "sha256": "897ff2c82ca536df36b9a9118e1424f2034e94742e92d9c6439f81992ef9522c"
+    },
+    {
+      "path": "lib/antivirus/SLSystemScanner.sleela",
+      "sha256": "90754a3ec59257b1673f34ad9ba812a23b0cb83a784c72d000d81efcafbdcc1b"
+    },
+    {
+      "path": "lib/antivirus/platforms/Apple/macOS/SLMacOSAntivirusProfile.sleela",
+      "sha256": "68d16950167d16768418713c831ed4db880b81d3a1b9cc632c1e377e2b6f502a"
+    },
+    {
+      "path": "lib/antivirus/platforms/GNU/Linux/Debian/SLDebianAntivirusProfile.sleela",
+      "sha256": "68d4ab4e0859afbc995e79aa059081ee380592b19c3c68b56cdf68de00c99710"
+    },
+    {
+      "path": "lib/antivirus/platforms/GNU/Linux/Fedora/SLFedoraAntivirusProfile.sleela",
+      "sha256": "091b80284cb9114807f93b3d6e5f0a0be8c0dedb6101b9f4afdd66afb4274a6a"
+    },
+    {
+      "path": "lib/antivirus/platforms/GNU/Linux/Ubuntu/SLUbuntuAntivirusProfile.sleela",
+      "sha256": "04870ad6cbcb8bd9c8f81ca90a0f7f69ae9789866843f293c46ae15476b29405"
+    },
+    {
+      "path": "lib/antivirus/platforms/Microsoft/Windows/SLWindowsAntivirusProfile.sleela",
+      "sha256": "3eb81622fa4e1bead0404e14d44e7823450b9acab8a9ae55e95f3d99b2ae26fa"
     },
     {
       "path": "lib/api/SLPackage.sleela",
@@ -7196,7 +7252,7 @@
     },
     {
       "path": "lib/compiler/SLConstructorSeries.sleela",
-      "sha256": "790392de65635e001f0b2a750edb5a9767741ba6ad3d50dabc678596e260e617"
+      "sha256": "a2933c2c0f24e0d7ceecd594ad7654cc56fe1e04d9e7ddbd159da8282c2cd61a"
     },
     {
       "path": "lib/compiler/SLLanguageCompiler.sleela",
@@ -7216,7 +7272,7 @@
     },
     {
       "path": "lib/compiler/SLObjectCreationResolver.sleela",
-      "sha256": "4ef648942c27e33073a7babcf75c3027d6192b8a52afe3b51432d442d2ad463e"
+      "sha256": "fe0c264372ea28c8bbd980efc585095c928201400bdb96f960e966c041421640"
     },
     {
       "path": "lib/compiler/SLParser.sleela",
@@ -47783,12 +47839,36 @@
       "sha256": "ea5a6100f7e7be268a0a73a54c58f89406e003cd8edcc01e00c6834fa0ec8dc1"
     },
     {
+      "path": "lib/os/SLArchitectureSet.sleela",
+      "sha256": "7cde65d0433ca14745e448af53a1dc1be52a515f51a4016d5580bde4b365ecb2"
+    },
+    {
+      "path": "lib/os/SLBootloaderSpec.sleela",
+      "sha256": "3827165b94aaabf82e7c404fc49e7cfbbded624739cbd4a2f8df278bcae4ff87"
+    },
+    {
+      "path": "lib/os/SLCEmitter.sleela",
+      "sha256": "869f9b0efa1251b5efa701e1c620e75acfa78ba13a15165383720e197439e31a"
+    },
+    {
       "path": "lib/os/SLClock.sleela",
       "sha256": "715591db8f8fc6ea7eb8b50345108c10e289d9690fd906dc39056bb4943ba468"
     },
     {
+      "path": "lib/os/SLCppEmitter.sleela",
+      "sha256": "3388f98e3098ecd6628ae93d1ecad69d36423e8860d02c112c74146244e44175"
+    },
+    {
+      "path": "lib/os/SLDesktopSpec.sleela",
+      "sha256": "37070c40bf3710d3ba80f642b43cc24a707f94f528dbaca7e660dcd7eac27d51"
+    },
+    {
       "path": "lib/os/SLDirectory.sleela",
       "sha256": "be40810f6ec3c5403eed645d11f9fa58bcc3fab0ea4f2ec4be5a54b7bcc9f6d5"
+    },
+    {
+      "path": "lib/os/SLDriverSet.sleela",
+      "sha256": "bfa0e311fec2d9305143f7c7f74ff3160da494d86005c45870e2dfdda714490a"
     },
     {
       "path": "lib/os/SLEnvironment.sleela",
@@ -47807,16 +47887,84 @@
       "sha256": "f160f4898d15fbde828788b4b2db3fcd54dc3536e87e9709f4295b59f0dc6985"
     },
     {
+      "path": "lib/os/SLFilesystemLayout.sleela",
+      "sha256": "d50a6f9abd64cfd0e9fbe4678642d11473e19c93aba98778e1a3ceaadcf803a3"
+    },
+    {
+      "path": "lib/os/SLHardwareComponent.sleela",
+      "sha256": "64af026e3c628f2d20ac37fc009d1c96cfb17de5220feabc8a554235f60beb95"
+    },
+    {
+      "path": "lib/os/SLHardwareRegistry.sleela",
+      "sha256": "fec9fd9d611c702c43b666c478cbea1c1f6ca0d31ec1a69bb715b9b3b561a085"
+    },
+    {
+      "path": "lib/os/SLISOBuilder.sleela",
+      "sha256": "a5c4eb7aab8877809f61a4ea0c73dca43cce7e3a4369540ffe28fad176bb7ca4"
+    },
+    {
+      "path": "lib/os/SLInstallerGenerator.sleela",
+      "sha256": "2f5c5d01a933d591a60c472c7d5da0422b60ab606b8e24bb9556dec4176cc116"
+    },
+    {
+      "path": "lib/os/SLKernelSpec.sleela",
+      "sha256": "bc2e04307cefae0c81fcd5e8e07487261dd7b5776a879e5f712ba0945c9e7ae8"
+    },
+    {
       "path": "lib/os/SLLinuxOS.sleela",
       "sha256": "0862bfa7d5ce5e49d2e9b628e5e8ce0518898ed40f64725896228327b7adbda5"
+    },
+    {
+      "path": "lib/os/SLLinuxOSModel.sleela",
+      "sha256": "f97ce9be7a8b2482c47a2693af48fc18f8b99e6cfc3d874f1b45711896969355"
     },
     {
       "path": "lib/os/SLMacOS.sleela",
       "sha256": "d9abf1bcd9fc70831f625f2bba780eed1f34fe89d254f1ffc11161d643983ed5"
     },
     {
+      "path": "lib/os/SLMacOSModel.sleela",
+      "sha256": "40bed6bc163f1cd8e75c6011255746349ca00d03a2d4e72852536b6ce3172816"
+    },
+    {
+      "path": "lib/os/SLMachineBuilder.sleela",
+      "sha256": "6b0fe5ad2a14269ab5a027febf825006fbfb1414259d8adfbe187c75cdbe2093"
+    },
+    {
+      "path": "lib/os/SLMachineModel.sleela",
+      "sha256": "4e4986fcdb785a58a2c51dc3458367216c12e0ef103ed8b2b8f42bcfa596af3f"
+    },
+    {
+      "path": "lib/os/SLOSArchitecture.sleela",
+      "sha256": "c699c5b88a96ec6d3fa06490fa4c22763c0dc82563a7f58ce02143b06a65c929"
+    },
+    {
+      "path": "lib/os/SLOSArtifact.sleela",
+      "sha256": "17ab6d764f6b49e6e20c6a30c35f2353ba940ae4433ea10c26342ccf3cb556b4"
+    },
+    {
+      "path": "lib/os/SLOSBuildReport.sleela",
+      "sha256": "381ff39dbe12d06d7f4d84b3bd522a6762809de8a1aacbe37d30ce678dc7bdee"
+    },
+    {
+      "path": "lib/os/SLOSCompiler.sleela",
+      "sha256": "417b8f10b9bd118aa83ec9e8ebc7b27e3b344a70d8ee60b82e73e6a092ebfb7e"
+    },
+    {
+      "path": "lib/os/SLOSModel.sleela",
+      "sha256": "45d145e33f3c48e8292a37c143026481600f143012bcadd8b4223b17293f4b42"
+    },
+    {
+      "path": "lib/os/SLOSShape.sleela",
+      "sha256": "6d8260f69b0875f6472a21371a0a4ba6a3b150efccf236a4fdb0ee2f24304e68"
+    },
+    {
       "path": "lib/os/SLOperatingSystem.sleela",
       "sha256": "fc5c6d88d6184bd54d7d05e7aacc4d1920ecbc097a1c7c36ea23ae2248b1b76d"
+    },
+    {
+      "path": "lib/os/SLPackageSet.sleela",
+      "sha256": "30f2a63a81e7f0a5fc7a0239fbb0363f29977cfd2dec33a931a8ec22cb3e66fa"
     },
     {
       "path": "lib/os/SLPath.sleela",
@@ -47831,8 +47979,120 @@
       "sha256": "66560dab12f645b5e239274d41e2634be79f8f5ee607d3fbe4b95b0f642ed9ec"
     },
     {
+      "path": "lib/os/SLServiceSet.sleela",
+      "sha256": "0e150bd624eaca97de7b50a1ae0e170005603aca0980e1de1452fb29f59bdd4f"
+    },
+    {
       "path": "lib/os/SLWindowsOS.sleela",
       "sha256": "8ff48bfefc13744fde3b9443bed68a5bff89c29561e4f912689c2ad1e6394bf1"
+    },
+    {
+      "path": "lib/os/SLWindowsOSModel.sleela",
+      "sha256": "4b26bff901f17e3da31dd1e7c4ee3edc9c814271edd31a904b1fe5ba8ba8ed8a"
+    },
+    {
+      "path": "lib/os/hdd/SLHardDisk.sleela",
+      "sha256": "fc33a20f72f28cad8199902b3b1254783f6aa8828016f48f9b6bd00fba6b603b"
+    },
+    {
+      "path": "lib/os/hdd/SLHardDiskCatalog.sleela",
+      "sha256": "9c2c82d1c9a262affcd6e3ac140ddd68a34a69ddebc87ff0513b7d3ee4f33d7d"
+    },
+    {
+      "path": "lib/os/machine-build.sleela",
+      "sha256": "4d33b7306d59c0e46472e14052dee78bf1c5d5fca9d93b614d296841f425e5a6"
+    },
+    {
+      "path": "lib/os/memory-ddr/SLDDRCatalog.sleela",
+      "sha256": "8538f298aa148f9f93d24f9d895f35a367bc366af8fb08494ecbabc3d7888053"
+    },
+    {
+      "path": "lib/os/memory-ddr/SLDDRModule.sleela",
+      "sha256": "03ebc96dc643b934a630edadc4aa72d30119e640be678e057d7bc1d0f807a5a1"
+    },
+    {
+      "path": "lib/os/os-build.sleela",
+      "sha256": "7d04d511c71734ddacb7cfcf8901ea131ae776b80398866d75fe645d074ab5dd"
+    },
+    {
+      "path": "lib/os/os-creator/SLBIOSEmitter.sleela",
+      "sha256": "4a64d8c66ff052138f6baf74a030a395a27bb025687e65003ad4e9e8a87957ed"
+    },
+    {
+      "path": "lib/os/os-creator/SLBootLoaderEmitter.sleela",
+      "sha256": "acd0ae72fd776a54b4cd88d05a7fca0596213e3dfbb5a6072ddc32cf65c203c4"
+    },
+    {
+      "path": "lib/os/os-creator/SLDesktopLoaderEmitter.sleela",
+      "sha256": "583248b43f4361ef8e0f1c1a4fc4d3f2d42ff6b67324ac13fa43117870c3b060"
+    },
+    {
+      "path": "lib/os/os-creator/SLDriverLoaderEmitter.sleela",
+      "sha256": "26a456003f61a1d4d3d45cd4c1a5225797886f14cdb6087389b0416122e3ecdc"
+    },
+    {
+      "path": "lib/os/os-creator/SLKernelLoaderEmitter.sleela",
+      "sha256": "e75627cb10a8e5954e4612b09a97b70e95106abd691b2a8eb17f75fb069097e8"
+    },
+    {
+      "path": "lib/os/os-creator/SLOSCreator.sleela",
+      "sha256": "7a66fbded060b98b627382c08f602bd9a3271acf53ff0953439e0ac79a9d3738"
+    },
+    {
+      "path": "lib/os/os-creator/SLOSDevTree.sleela",
+      "sha256": "456d50a6c83717847a7aa19ba57c355adc60ef0a8feb768a57ed5de6f91552d6"
+    },
+    {
+      "path": "lib/os/os-creator/SLOSLoaderEmitter.sleela",
+      "sha256": "894277cc566d93348fc821a91af9074b23dd7623e010900b976a619baa33695c"
+    },
+    {
+      "path": "lib/os/os-creator/SLOSPiece.sleela",
+      "sha256": "40836ed5c25c559495fa558cf81091aa3ea9bd3fb553f2e8e46b67d045577812"
+    },
+    {
+      "path": "lib/os/os-creator/SLSourceDropper.sleela",
+      "sha256": "eb84e27e3fe3a270494b500e079d3b9717941469cf7d98048b924c3ccc933ac6"
+    },
+    {
+      "path": "lib/os/os-creator/SLToolchainEmitter.sleela",
+      "sha256": "448c9a23802648b37a4a3d5108ea19b599853f4c1ccdc647d4dee01238c46814"
+    },
+    {
+      "path": "lib/os/os-creator/SLUEFIEmitter.sleela",
+      "sha256": "433df5949b71227340a8aaed275a322ec201049674eaa32e37f24d19e55916e7"
+    },
+    {
+      "path": "lib/os/os-creator/os-creator.sleela",
+      "sha256": "9d382bd18fa1448b28fbd1aff2a4d3a968de3e67b24b85558fd162831c097363"
+    },
+    {
+      "path": "lib/os/ssd/SLSSD.sleela",
+      "sha256": "1abba28bd704a182f5745b18e7c44229c548c37cfa47d2d0fa6830fa2e80cd84"
+    },
+    {
+      "path": "lib/os/ssd/SLSSDCatalog.sleela",
+      "sha256": "a12d832d07a9fa34aaedb421930f45cd68cb3b4597c91320c874837a0ce09f5c"
+    },
+    {
+      "path": "lib/os/uefi/SLUEFIFirmware.sleela",
+      "sha256": "2c19f1c4efc4ca6300be5d43b94d7aa3b60e2e10200753b35819f3eeae0594fd"
+    },
+    {
+      "path": "lib/os/usb/SLUSBCatalog.sleela",
+      "sha256": "22841f6819709a96b502a39296d7f2c2e747888844b96914ca12983af6333b15"
+    },
+    {
+      "path": "lib/os/usb/SLUSBDevice.sleela",
+      "sha256": "8f3b7f9c420cf0c07c1b2e9f9cb7d844a00d36066511e15ae4eac62d491677ac"
+    },
+    {
+      "path": "lib/os/video-cards/SLVideoCard.sleela",
+      "sha256": "d47744f386e10e6bb0da8207d97197a4b8524a0030b34d13882aa2ba48469927"
+    },
+    {
+      "path": "lib/os/video-cards/SLVideoCardCatalog.sleela",
+      "sha256": "ab53218250aebbeb6898652e07ff8ffed1759e78554ef3de8c7fced58f11c52d"
     },
     {
       "path": "lib/politico/SLPackage.sleela",
@@ -51321,6 +51581,30 @@
     {
       "path": "tests/runtime_smoke.cpp",
       "sha256": "d26c349aff6429421d6030d50f45e2597b73b9ecfac5555460bbf16e0312d318"
+    },
+    {
+      "path": "tests/sleela-syntax-1.8/constructor-args-pass.sleela",
+      "sha256": "dc55b0a5afa4c283af1651e19d7efd429c3769a4bae478a0ff1ed22bbc0a3d0d"
+    },
+    {
+      "path": "tests/sleela-syntax-1.8/constructor-arity-invalid.sleela",
+      "sha256": "127076b39631e3ec8b3b70e831adf8296bf56fe48495c81847f495d338691ffe"
+    },
+    {
+      "path": "tests/sleela-syntax-1.8/constructor-overload-unsupported.sleela",
+      "sha256": "cf77dbcf3dff30afe7a05bcef41ec24af37040d66fcf9b7912ea9ce19be5f11e"
+    },
+    {
+      "path": "tests/sleela-syntax-1.8/let-inference-invalid-null.sleela",
+      "sha256": "cb3c6657811b3607e8b9df27836b190675fef11bbac79935302a0ceb926fe428"
+    },
+    {
+      "path": "tests/sleela-syntax-1.8/let-inference-pass.sleela",
+      "sha256": "4de31362b5969759774c4573dfadd9934dbcc6049ec6ba9adaf1cf3b2d091ddc"
+    },
+    {
+      "path": "tests/sleela-syntax-1.8/run_syntax_1_8_tests.sh",
+      "sha256": "47cf1dbe3ee3c17639e3a86e6d9ff9733b54af56e413f5653117cf8368b73d2b"
     },
     {
       "path": "tools/add-country-existence-dates.py",
