@@ -460,3 +460,52 @@ clone command as a dry run, and a live reachability probe — no download):
 `/os-development/upstream/` with the real Ubuntu parts next to it, so a developer
 can generate the shape, source the upstream, and reconcile the two. The pinned
 commit keeps a fetch reproducible; repin with `SLDistroSource.pin(commit)`.
+
+---
+
+# Generating the OS source to disk — `os-generate.sleela`
+
+`os-build.sleela` and `os-creator.sleela` *print* the generated artifacts to make
+the shape visible. **`os-generate.sleela` writes them** — compiling and running
+it materialises a real, buildable Linux source tree on disk through the
+`osMakeDir` / `openFile` / `write` / `close` bridge, and closes the loop to the
+upstream OS parts.
+
+```sh
+# Linux OS source tree with defaults (-> /projects/sandbox/os-out):
+./impl/build/sleela run lib/os/os-generate.sleela
+
+# Parameterised by the environment:
+OS_NAME=Resolute OS_VERSION=2.5 OS_ARCH=arm64 OS_OUT=/tmp/myos \
+  ./impl/build/sleela run lib/os/os-generate.sleela
+```
+
+Build parameters (environment, with Linux defaults): `OS_NAME` (`Determinant`),
+`OS_VERSION` (`1.0`), `OS_ARCH` (`amd64`; `arm64` flips the triple to
+`aarch64-unknown-linux-gnu`), `OS_OUT` (`/projects/sandbox/os-out`).
+
+It writes a self-describing tree:
+
+```text
+<OS_OUT>/
+  os/os_config.h  os/os_boot.c  os/os_image.cpp     the Linux-level C/C++ sources
+  userspace/os-loader/os_loader.c                   PID 1 / service manager
+  tools/gen-iso.sh   Makefile   build.sh            build tooling + ISO recipe
+  upstream/DISTRO.reference                          the pinned SLDistroSource sheet
+  fetch-upstream.sh                                  opt-in shallow clone of the real parts
+  MANIFEST.md                                        bytes/path index of everything written
+```
+
+**The emitted C/C++ compiles** with a stock toolchain (`cc -c os/os_boot.c`,
+`c++ -c os/os_image.cpp`, `cc -c userspace/os-loader/os_loader.c` all build
+clean). After generating, a developer:
+
+```sh
+cd <OS_OUT>
+sh build.sh          # make all -> compile the generated OS sources (-> ISO recipe)
+sh fetch-upstream.sh # opt-in: shallow-clone the real Ubuntu OS parts into upstream/
+```
+
+So the full path is one program: **SLeeLa source → real Linux C/C++ on disk →
+(opt-in) the sourced upstream parts beside it**, reproducible by the pinned
+commit in `upstream/DISTRO.reference`.
