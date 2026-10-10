@@ -1,0 +1,148 @@
+/*
+ * lib/os/os-creator/SLOSCreator.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLOSCreator — the OS Creator(TM) provider: the single
+ *   object that turns an SLOSModel into a complete /os-development tree on disk.
+ *   Running the compiled SLeeLa program that calls create(model, root) lays out
+ *   the directory tree (SLOSDevTree) and writes, for every piece of the
+ *   firmware -> boot -> kernel -> userspace -> desktop chain, its C source, its
+ *   C++ source, and its configuration file; then it writes the OS itself
+ *   (os_config.h / os_boot.c / os_image.cpp via SLCEmitter/SLCppEmitter), the
+ *   ISO recipe (SLISOBuilder), the build tooling (SLToolchainEmitter: Makefile,
+ *   build.sh, build.ps1), and the SLeeLa source that produced the tree
+ *   (SLSourceDropper). Finally it writes MANIFEST.md.
+ *
+ * This is the top-down path from a SLeeLa OS description to a buildable,
+ * self-describing OS project on disk. Every file is a genuine host filesystem
+ * write across the explicit VM/OS bridge; nothing is in-memory only.
+ *
+ * Family: os. OS Creator(TM) orchestrator. Composes SLOSDevTree, the seven piece
+ *   emitters, SLCEmitter/SLCppEmitter, SLISOBuilder, SLToolchainEmitter,
+ *   SLSourceDropper; records an SLOSBuildReport.
+ */
+#sleela 1.5
+class SLOSCreator {
+  SLUEFIEmitter uefi;
+  SLBIOSEmitter bios;
+  SLBootLoaderEmitter bootLoader;
+  SLKernelLoaderEmitter kernelLoader;
+  SLDriverLoaderEmitter driverLoader;
+  SLOSLoaderEmitter osLoader;
+  SLDesktopLoaderEmitter desktopLoader;
+  SLCEmitter cEmit;
+  SLCppEmitter cppEmit;
+  SLToolchainEmitter toolchain;
+  SLSourceDropper dropper;
+  SLOSDevTree tree;
+
+  void configure() {
+    uefi = new SLUEFIEmitter();
+    bios = new SLBIOSEmitter();
+    bootLoader = new SLBootLoaderEmitter();
+    kernelLoader = new SLKernelLoaderEmitter();
+    driverLoader = new SLDriverLoaderEmitter();
+    osLoader = new SLOSLoaderEmitter();
+    desktopLoader = new SLDesktopLoaderEmitter();
+    cEmit = new SLCEmitter();
+    cppEmit = new SLCppEmitter();
+    toolchain = new SLToolchainEmitter();
+    dropper = new SLSourceDropper();
+  }
+
+  // The OS Creator(TM) provider entry point. Materialise a complete
+  // /os-development tree at `root` for the given model. Returns a build report
+  // indexing every file written. If the model is not buildable, the report is
+  // marked failed and nothing is written.
+  SLOSBuildReport create(SLOSModel m, String root) {
+    SLOSBuildReport report = new SLOSBuildReport();
+    report.configure(m.identity());
+
+    if (!m.isBuildable()) {
+      report.fail();
+      return report;
+    }
+
+    boolean withDesktop = m.desktopSpec().hasDesktop();
+
+    // 1. Lay out the /os-development directory tree.
+    tree = new SLOSDevTree();
+    tree.configure(root);
+    tree.layout(withDesktop);
+
+    // 2. Global config.
+    tree.writeFile("/config/os.conf", toolchain.emitOsConf(m));
+
+    // 3. Pieces 1-7: C + C++ + config for each stage of the boot chain.
+    writePiece(uefi.emit(m), report);
+    writePiece(bios.emit(m), report);
+    writePiece(bootLoader.emit(m), report);
+    writePiece(kernelLoader.emit(m), report);
+    writePiece(driverLoader.emit(m), report);
+    writePiece(osLoader.emit(m), report);
+    if (withDesktop) { writePiece(desktopLoader.emit(m), report); }
+
+    // 4. Piece 8: the OS itself (reuse the existing C/C++ emitters).
+    recordWrite(report, "/os/os_config.h", tree.writeFile("/os/os_config.h", cEmit.emitConfigHeader(m)));
+    recordWrite(report, "/os/os_boot.c",   tree.writeFile("/os/os_boot.c",   cEmit.emitBootUnit(m)));
+    recordWrite(report, "/os/os_image.cpp",tree.writeFile("/os/os_image.cpp",cppEmit.emitOsImage(m)));
+
+    // 5. The ISO recipe (reuse SLISOBuilder through a scratch compiler).
+    SLOSCompiler compiler = new SLOSCompiler(); compiler.configure();
+    SLISOBuilder iso = new SLISOBuilder(); iso.configure();
+    SLOSArtifact isoRecipe = iso.build(m, compiler);
+    recordWrite(report, "/tools/gen-iso.sh", tree.writeFile("/tools/gen-iso.sh", isoRecipe.text()));
+
+    // 6. The build tooling (make + build drivers).
+    recordWrite(report, "/Makefile", tree.writeFile("/Makefile", toolchain.emitMakefile(m, withDesktop)));
+    recordWrite(report, "/build.sh", tree.writeFile("/build.sh", toolchain.emitBuildSh(m)));
+    recordWrite(report, "/build.ps1", tree.writeFile("/build.ps1", toolchain.emitBuildPs1(m)));
+
+    // 7. The SLeeLa source that produced the tree.
+    dropper.drop(m, tree);
+    report.record(sourceArtifact("/src/sleela/os-model.sleela"));
+    report.record(sourceArtifact("/src/README.md"));
+
+    // 8. Finalise with the manifest.
+    tree.writeManifest(m.identity());
+    report.record(sourceArtifact("/MANIFEST.md"));
+
+    return report;
+  }
+
+  // plan() returns a human description of what create() would write, without
+  // touching the filesystem — useful for a dry run.
+  String plan(SLOSModel m) {
+    boolean withDesktop = m.desktopSpec().hasDesktop();
+    String s = "OS Creator(TM) plan for " + m.identity() + "\n";
+    s = s + "root: /os-development\n";
+    s = s + "pieces: UEFI, BIOS, Boot Loader, Kernel Loader, Driver Loader, OS Loader";
+    if (withDesktop) { s = s + ", Desktop GUI Loader"; }
+    s = s + "\nos: os_config.h, os_boot.c, os_image.cpp\n";
+    s = s + "tooling: Makefile, build.sh, build.ps1, tools/gen-iso.sh\n";
+    s = s + "source: src/sleela/os-model.sleela, src/README.md\n";
+    return s;
+  }
+
+  // Write a piece and record each of its files in the report.
+  void writePiece(SLOSPiece p, SLOSBuildReport report) {
+    tree.writePiece(p);
+    report.record(sourceArtifact("/" + p.cPath()));
+    report.record(sourceArtifact("/" + p.cppPath()));
+    if (p.hasConfig()) { report.record(sourceArtifact("/" + p.configPath())); }
+    if (p.hasReadme()) { report.record(sourceArtifact("/" + p.readmePath())); }
+  }
+
+  // Record a direct writeFile result in the report when the write succeeded.
+  void recordWrite(SLOSBuildReport report, String path, int bytes) {
+    if (bytes >= 0) { report.record(sourceArtifact(path)); }
+  }
+
+  // Build a lightweight artifact handle for the report index.
+  SLOSArtifact sourceArtifact(String path) {
+    SLOSArtifact a = new SLOSArtifact();
+    a.configure(path, a.KIND_SCRIPT, "");
+    return a;
+  }
+
+  SLOSDevTree devTree() { return tree; }
+}

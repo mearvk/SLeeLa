@@ -39,6 +39,7 @@ class SLBootloaderSpec {
 
   void requireSecureBoot(boolean on) { if (on) { secureBoot = 1; } else { secureBoot = 0; } }
   void setTimeout(String seconds) { timeout = seconds; }
+  String menuTimeout() { return timeout; }
 
   boolean isUefi() { return firmware == "UEFI"; }
   String loaderName() { return loader; }

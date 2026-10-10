@@ -1,0 +1,127 @@
+#sleela 1.5
+// os-creator.sleela -- the self-contained, runnable demonstrator of OS Creator(TM)
+// (lib/os/os-creator/SLOSCreator and its piece emitters). The SLeeLa compiler's
+// `run` compiles one file as a single unit, so this aggregate inlines a compact
+// slice of the model + the piece emitters and a `main` that:
+//   1. describes a Linux-shaped OS,
+//   2. "creates" the /os-development layout (printed as the plan + file index),
+//   3. shows the emitted C and C++ for a representative piece (the OS loader),
+// then prints the toolchain (Makefile target) and the regeneration source.
+// The split per-class files under this directory are the full provider; this
+// file is the executable counterpart, mirroring the os-build.sleela convention.
+//
+// The point it demonstrates: one SLeeLa OS description, run through OS Creator(TM),
+// produces a complete /os-development tree -- every OS piece's C/C++, its config,
+// the build tools, and the SLeeLa source that regenerates it -- top-down to
+// runnables. The real provider (SLOSCreator) writes these files to disk through
+// the os*/file bridge; this demonstrator prints them so the flow is visible.
+
+struct Os {
+    String name; String version; String shape; String arch;
+    String loader; String kernel; String cmdline; String init; String desktop;
+}
+
+class OsCreatorDemo {
+
+    Os linux(String name, String version) {
+        Os o = new Os();
+        o.name = name; o.version = version; o.shape = "Linux"; o.arch = "amd64";
+        o.loader = "GRUB"; o.kernel = "Linux"; o.cmdline = "ro quiet splash";
+        o.init = "systemd"; o.desktop = "GNOME Shell";
+        return o;
+    }
+
+    String identity(Os o) { return o.name + " " + o.version + " (" + o.shape + ", " + o.arch + ")"; }
+
+    void banner(String t) {
+        print("================================================================");
+        print("  " + t);
+        print("================================================================");
+    }
+
+    // The /os-development layout OS Creator(TM) writes.
+    void printLayout(Os o) {
+        print("/os-development/");
+        print("  MANIFEST.md  Makefile  build.sh  build.ps1");
+        print("  config/os.conf");
+        print("  firmware/uefi/{uefi.c, uefi.cpp, uefi.conf, README.md}");
+        print("  firmware/bios/{bios.c, bios.cpp, bios.cfg, README.md}");
+        print("  boot/loader/{bootloader.c, bootloader.cpp, loader.conf, README.md}");
+        print("  boot/kernel-loader/{kernel_loader.c, kernel_loader.cpp, kernel-loader.conf, README.md}");
+        print("  kernel/driver-loader/{driver_loader.c, driver_loader.cpp, drivers.conf, README.md}");
+        print("  userspace/os-loader/{os_loader.c, os_loader.cpp, services.conf, README.md}");
+        print("  desktop/gui-loader/{gui_loader.c, gui_loader.cpp, session.conf, README.md}");
+        print("  os/{os_config.h, os_boot.c, os_image.cpp}");
+        print("  src/sleela/os-model.sleela   tools/gen-iso.sh");
+    }
+
+    // A representative emitted piece: the OS loader (PID 1) C surface.
+    String osLoaderC(Os o) {
+        String c = "/* os_loader.c - PID 1 / service manager for " + o.name + " */\n";
+        c = c + "extern int start_manager(const char *manager);\n";
+        c = c + "extern int start_service(const char *unit);\n";
+        c = c + "extern int start_session(void);\n\n";
+        c = c + "int os_loader_main(void) {\n";
+        c = c + "    if (start_manager(\"" + o.init + "\") != 0) return 1;\n";
+        c = c + "    start_service(\"systemd-udevd\");\n";
+        c = c + "    start_service(\"systemd-networkd\");\n";
+        c = c + "    start_service(\"systemd-journald\");\n";
+        c = c + "    start_session();  /* -> desktop GUI loader (" + o.desktop + ") */\n";
+        c = c + "    for (;;) { /* reap children; PID 1 never exits */ }\n";
+        c = c + "}\n";
+        return c;
+    }
+
+    String osLoaderCpp(Os o) {
+        String s = "// os_loader.cpp - PID 1 (C++ surface) for " + o.name + "\n";
+        s = s + "#include <string>\n#include <vector>\nnamespace oscreator {\n";
+        s = s + "class OsLoader {\npublic:\n";
+        s = s + "  std::string manager = \"" + o.init + "\";\n";
+        s = s + "  std::vector<std::string> bootUnits = {\"systemd-udevd\", \"systemd-networkd\", \"systemd-journald\"};\n";
+        s = s + "  int run() {\n    if (!startManager(manager)) return 1;\n";
+        s = s + "    for (auto &u : bootUnits) startService(u);\n    startSession();\n    supervise();\n    return 0;\n  }\n";
+        s = s + "private:\n  bool startManager(const std::string&);\n  void startService(const std::string&);\n";
+        s = s + "  void startSession();\n  void supervise();\n};\n} // namespace oscreator\n";
+        return s;
+    }
+
+    String makefileTarget(Os o) {
+        String mk = "# Makefile (excerpt) for " + identity(o) + "\n";
+        mk = mk + "all: iso\n";
+        mk = mk + "iso: os\n\tsh tools/gen-iso.sh\n";
+        mk = mk + "os: pieces\n\t$(CC) -c os/os_boot.c -o build/os_boot.o\n";
+        mk = mk + "\t$(CXX) -c os/os_image.cpp -o build/os_image.o\n";
+        return mk;
+    }
+
+    String regenSource(Os o) {
+        String s = "#sleela 1.5\n// src/sleela/os-model.sleela - regenerates this tree\n";
+        s = s + "class OsModelMain {\n  void main() {\n";
+        s = s + "    SLLinuxOSModel os = new SLLinuxOSModel();\n";
+        s = s + "    os.build(\"" + o.name + "\", \"" + o.version + "\");\n";
+        s = s + "    SLOSCreator creator = new SLOSCreator(); creator.configure();\n";
+        s = s + "    creator.create(os, \"/os-development\");\n  }\n}\n";
+        return s;
+    }
+
+    void main() {
+        Os os = linux("Determinant", "1.0");
+
+        banner("OS Creator(TM): " + identity(os));
+        print("Running the compiled OS Creator object writes this tree to /os-development:");
+        print("");
+        printLayout(os);
+
+        banner("Emitted piece (C)  -> userspace/os-loader/os_loader.c");
+        print(osLoaderC(os));
+        banner("Emitted piece (C++) -> userspace/os-loader/os_loader.cpp");
+        print(osLoaderCpp(os));
+        banner("Build tooling -> Makefile");
+        print(makefileTarget(os));
+        banner("Regeneration source -> src/sleela/os-model.sleela");
+        print(regenSource(os));
+
+        banner("Done");
+        print("Next: cd /os-development && sh build.sh   (compiles every piece -> OS -> ISO)");
+    }
+}

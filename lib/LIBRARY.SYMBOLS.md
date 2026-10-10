@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 10520
+library-source-files: 10533
 library-packages: 88
 module-facade-symbols: 60
-total-symbol-records: 10580
+total-symbol-records: 10593
 
 package	symbol	path	kind
 alphabet	Alphabet.sleela	lib/alphabet/Alphabet.sleela	source
@@ -10281,6 +10281,19 @@ os	machine-build.sleela	lib/os/machine-build.sleela	source
 os	SLDDRCatalog.sleela	lib/os/memory-ddr/SLDDRCatalog.sleela	source
 os	SLDDRModule.sleela	lib/os/memory-ddr/SLDDRModule.sleela	source
 os	os-build.sleela	lib/os/os-build.sleela	source
+os	SLBIOSEmitter.sleela	lib/os/os-creator/SLBIOSEmitter.sleela	source
+os	SLBootLoaderEmitter.sleela	lib/os/os-creator/SLBootLoaderEmitter.sleela	source
+os	SLDesktopLoaderEmitter.sleela	lib/os/os-creator/SLDesktopLoaderEmitter.sleela	source
+os	SLDriverLoaderEmitter.sleela	lib/os/os-creator/SLDriverLoaderEmitter.sleela	source
+os	SLKernelLoaderEmitter.sleela	lib/os/os-creator/SLKernelLoaderEmitter.sleela	source
+os	SLOSCreator.sleela	lib/os/os-creator/SLOSCreator.sleela	source
+os	SLOSDevTree.sleela	lib/os/os-creator/SLOSDevTree.sleela	source
+os	SLOSLoaderEmitter.sleela	lib/os/os-creator/SLOSLoaderEmitter.sleela	source
+os	SLOSPiece.sleela	lib/os/os-creator/SLOSPiece.sleela	source
+os	SLSourceDropper.sleela	lib/os/os-creator/SLSourceDropper.sleela	source
+os	SLToolchainEmitter.sleela	lib/os/os-creator/SLToolchainEmitter.sleela	source
+os	SLUEFIEmitter.sleela	lib/os/os-creator/SLUEFIEmitter.sleela	source
+os	os-creator.sleela	lib/os/os-creator/os-creator.sleela	source
 os	SLSSD.sleela	lib/os/ssd/SLSSD.sleela	source
 os	SLSSDCatalog.sleela	lib/os/ssd/SLSSDCatalog.sleela	source
 os	SLUEFIFirmware.sleela	lib/os/uefi/SLUEFIFirmware.sleela	source
