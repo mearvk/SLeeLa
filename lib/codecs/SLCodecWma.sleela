@@ -1,0 +1,34 @@
+/*
+ * lib/codecs/SLCodecWma.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Windows Media Audio codec class — the SLeeLa-facing handle to codec id 10.
+ */
+#sleela 1.3
+// Family: codecs. Individual codec class for Windows Media Audio:
+// Windows Media Audio family, lossy/lossless. Mirrors codecs/codecs/wma/ and the registry entry in
+// sleela_codec_manager.h. SLeeLa never calls a codec directly; the
+// SLCodecLoader loads this plugin by id and dispatches decode/encode. This
+// class is the metadata + capability contract for that plugin.
+//
+// Handler state codes: 0 native, 1 backend, 2 recognized, 3 container, 4 event.
+class SLCodecWma {
+  // Registry identity (mirrors sleela_codec_handler).
+  int id() { return 10; }
+  String name() { return "Windows Media Audio"; }
+  String mime() { return "audio/x-ms-wma"; }
+  String extensions() { return ".wma"; }
+
+  // Capability state: 1 == backend.
+  int state() { return 1; }
+  String stateName() { return "backend"; }
+
+  // Direction support advertised by the plugin vtable.
+  boolean canDecode() { return true; }
+  boolean canEncode() { return true; }
+
+  // Native codecs implement encode/decode in-package (no external backend);
+  // a backend codec reports its honest state and fails cleanly from
+  // decode/encode until an approved backend adapter is registered.
+  boolean isNative() { return false; }
+  boolean needsBackend() { return true; }
+}
