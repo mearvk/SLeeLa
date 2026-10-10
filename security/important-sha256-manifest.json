@@ -8,7 +8,7 @@
     },
     {
       "path": "SLEELA.syntax",
-      "sha256": "309a372ac6c8748eff06c5daae91411053225e0ddc1ca2078c7c13c033e3a7e3"
+      "sha256": "641bfd4ae26b03f422d3dfb6f3a6f2cb0b0dc5912b593a7313bd20fe1ed072e4"
     },
     {
       "path": "SST-2.0.model",
@@ -5391,6 +5391,10 @@
       "sha256": "d9539b5f4857be001ab0c464829c0bb87d3847f2a35e4809a0eabe0a9d86150f"
     },
     {
+      "path": "impl/examples/nested_classes.sleela",
+      "sha256": "672c2ffe93113f0471bc2dc84103fe0fd14ed9da59339dff3ad87426ba42b8e9"
+    },
+    {
       "path": "impl/examples/network_echo.sleela",
       "sha256": "658bec5d8f30914623c61bb5b2b84a6c788989032c4e73fa9871694677b82b9c"
     },
@@ -5556,11 +5560,11 @@
     },
     {
       "path": "impl/frontend/ast.h",
-      "sha256": "e25944eb6483a1cf01e4e1d0f5a627d62b393d23309626f11a195a201d62be50"
+      "sha256": "276c2a363d6f1f63cd8e34e2de83e69d150091a59a69afe0c57e5061cad6a035"
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "fe4af4a8635965c7a30918dd70e15c15c6264e612645e7c93cd904c0229fcdfd"
+      "sha256": "edc177401c58c7f0468f34fbabe6ddd953a46a016fb57b3d4bb007b82d6cbf53"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -5632,11 +5636,11 @@
     },
     {
       "path": "impl/frontend/parser.cpp",
-      "sha256": "89cfd3fc180262976a40e508f0d52a48bce989ff029a2646d8d18ffdc927b575"
+      "sha256": "3c4ca549e63b6fbc468c67d2fc20430144b0d69c0e97f7e6cf76a0e6f2dd5498"
     },
     {
       "path": "impl/frontend/parser.h",
-      "sha256": "2e71d3887e2797b640086b2def38204dd5d1f61a7565156453db201f39cdf338"
+      "sha256": "cd8aa1280b8b3e029777e6a68663256cebf00bea8b44652cfb7628e32925988f"
     },
     {
       "path": "impl/frontend/permissible.cpp",
@@ -5648,7 +5652,7 @@
     },
     {
       "path": "impl/frontend/semantic.cpp",
-      "sha256": "2b8b5a13eb7a8ea1fc9a0181182b4ec01a470e1a38c1703a4f44ff1c5ef25235"
+      "sha256": "69c5743a2b1b08d912c79d27b88aada4cf2978c0a10486e085676c5f7d2be270"
     },
     {
       "path": "impl/frontend/semantic.h",
@@ -5664,7 +5668,7 @@
     },
     {
       "path": "impl/frontend/version.h",
-      "sha256": "582189e732a785b963a618fac1900ea114e5e7d2699182d1ae2a379f0629881f"
+      "sha256": "1754088bb4af8f07c3937154ee03a595f7bf351d178ea9e6bdfb2c68f7418c92"
     },
     {
       "path": "impl/fundamental/Buffer.cpp",
@@ -6600,7 +6604,7 @@
     },
     {
       "path": "impl/tests/version/minor_ahead.sleela",
-      "sha256": "ced6e79586d475895a91c2d9d9eae5b9e3ce02be7c4c56ada7f363e2e1814bad"
+      "sha256": "9b59d5548aeb12211152b1ab9255eb48f4d04b3b42115c48c37285a38c9c8c61"
     },
     {
       "path": "impl/tests/version/network_1_1.sleela",
@@ -6616,7 +6620,7 @@
     },
     {
       "path": "impl/tests/version/run_version_tests.sh",
-      "sha256": "373537bebce97876b56e251446030889cbe5716d21dd06f5b295ef9f43bb08ff"
+      "sha256": "f7a9ce4e15aa56189cec7ff966cc9c1d9d36034dc5a135f3487e5c9d0a81b284"
     },
     {
       "path": "impl/tests/version/syntax_1_2.sleela",
@@ -8200,27 +8204,27 @@
     },
     {
       "path": "lib/codecs/SLCodecAac.sleela",
-      "sha256": "d70bf2ef8b8c99cc9cd74b7c52ce90be76bd9aef847b910350291e97005cd7a6"
+      "sha256": "11baac7cd60bd97d16b9794c1cca7982438fdfafaeec2bedcdceec9854a8e377"
     },
     {
       "path": "lib/codecs/SLCodecAc3.sleela",
-      "sha256": "5b84cdf0957408b8bed051d6440b3453ab6ff05a950e403f2a0a2cf8a1360e33"
+      "sha256": "eccfa1320329688efb0904a6552f171463105e27c6b30af51112d316dee65627"
     },
     {
       "path": "lib/codecs/SLCodecAiff.sleela",
-      "sha256": "e64d369516078cdc353d941f1b1aaf32de9089b32033a0f1b2232994db45d88b"
+      "sha256": "a39a48ee4c7c72cda53747f3352bf9efc2711ac5a576b4a6b80aec314f2aa866"
     },
     {
       "path": "lib/codecs/SLCodecAlac.sleela",
-      "sha256": "ee35c1ada45e6f96fb335798de914e39d6a0a54c105dea5502b369cfc079708f"
+      "sha256": "2a96ef1c0ac21115166242d515d24163fa39c68117d9cf90c169dc50dda4559b"
     },
     {
       "path": "lib/codecs/SLCodecAmrNb.sleela",
-      "sha256": "b31afc801518f6534193f5c3127bfb379f6bc5d7d4aa856e2743967635793f30"
+      "sha256": "de306817b7854b04e6f20be9b32fea14915f4243a7f5ee064bf7b048d5a527e8"
     },
     {
       "path": "lib/codecs/SLCodecAmrWb.sleela",
-      "sha256": "a452ac017415428f6a591aefb4248d176a369639fd4ce5893c8e8ea19cb6bd9c"
+      "sha256": "dd3e3f1abfa225f50a0a74ed7723c7971f436bb040680c014fda11b2ff49800d"
     },
     {
       "path": "lib/codecs/SLCodecController.sleela",
@@ -8228,23 +8232,23 @@
     },
     {
       "path": "lib/codecs/SLCodecEac3.sleela",
-      "sha256": "4795e84dd7e43458a1f215e2edf1ff254531a6d9ae399b7f3e15ed67cc57f9ed"
+      "sha256": "d21c40fd1ed00dc773769b787e54bd2ffd123ccffcf2a93d9985f1584e8eb0e7"
     },
     {
       "path": "lib/codecs/SLCodecFlac.sleela",
-      "sha256": "a8d5eb471df04074019228adabc288b3097e2b7a33ae79986098d419e330fc06"
+      "sha256": "305344e876b0134b6fe7ac94b5ea820745efa9c1c835d60915912d74eabea050"
     },
     {
       "path": "lib/codecs/SLCodecG711Alaw.sleela",
-      "sha256": "297c6b47ea4a7a82c43a2b336af8ffb89781647343a974f8ac99eafb31e31580"
+      "sha256": "be8c06de7948bc66e8cd00fdaf21842170bb6b7b6277cabf349baf805b6b2ae0"
     },
     {
       "path": "lib/codecs/SLCodecG711Mulaw.sleela",
-      "sha256": "f0962f48e697edafb6fe48e9d4956b1065b9e13cf734d2aa3630732b99e99988"
+      "sha256": "5b5f25aa22a0b6f8a8978da62d00a1ad49346900f739e3cd9f1bc4571cc09825"
     },
     {
       "path": "lib/codecs/SLCodecHeAac.sleela",
-      "sha256": "35704e9177606326c0440121699eff060b81355132c1c4366807d9a55918dbbc"
+      "sha256": "8e1d487ac6c1c74e32f2eba216f5c63d94e0eb1d7410daeff77c0fbd851f1560"
     },
     {
       "path": "lib/codecs/SLCodecLoader.sleela",
@@ -8252,23 +8256,23 @@
     },
     {
       "path": "lib/codecs/SLCodecMatroskaAudio.sleela",
-      "sha256": "c246d099dd1422dc7586a893f44e077c5ab16bf18ce892e64cf1ee5f50fb30fb"
+      "sha256": "8306a1b8f38e86bdde06458bad50050f03a4a231d933125c9d0e7395d2f86303"
     },
     {
       "path": "lib/codecs/SLCodecMidi.sleela",
-      "sha256": "d7c60afe7e8d3373f37838f2577e608915d9162730234e9d04ac4be6b0c33d91"
+      "sha256": "d22258f4e77aa3674b8e7e94e4b39b0ef57b33b35dc11c6304aa5eed04541081"
     },
     {
       "path": "lib/codecs/SLCodecMp3.sleela",
-      "sha256": "b5a491033a7ac14d8486d06954b4ec7c80402561b9ca564d8c343975e7d41e50"
+      "sha256": "d7fe6dca2b6f9f0d7853b2de2fbfa074d82d25ad82c64cee80a9271614534110"
     },
     {
       "path": "lib/codecs/SLCodecOpus.sleela",
-      "sha256": "cdf7acf3d175dff8da8106071cfbc6bb83d864ae64d0c859168cc10eadeab303"
+      "sha256": "d9ca794d12e4cbf90452fd29658344fffcf498dca8457a69f0a1ee45d9125edd"
     },
     {
       "path": "lib/codecs/SLCodecPcmWav.sleela",
-      "sha256": "3fc6e0b6214dc08a0b9ddd29ab26535e06399c1bb1911575347c5d3272ce645d"
+      "sha256": "561711ad37f3b309ac4f6c78ac28bdad9fcb4120773867af944a031eb0267957"
     },
     {
       "path": "lib/codecs/SLCodecProcessor.sleela",
@@ -8276,7 +8280,7 @@
     },
     {
       "path": "lib/codecs/SLCodecSpeex.sleela",
-      "sha256": "1373438e5e6b7b29f4ec7f71bc3e8c04c87ae766f2d7157786656846ca41906a"
+      "sha256": "c4caafbf2348c0f98d9c4f6a2d9ed38b00e9ef2c19dccf87e4da3d19425a45e0"
     },
     {
       "path": "lib/codecs/SLCodecVerifier.sleela",
@@ -8284,15 +8288,15 @@
     },
     {
       "path": "lib/codecs/SLCodecVorbis.sleela",
-      "sha256": "31112217c7f6d32f6435acc5a6a8432aa5bd33b6196aedb152f259802c38044b"
+      "sha256": "f4816d7cdd8df9156b8f8a4643595f7cc41f0d9b27dfba497f94fa7104b5fe33"
     },
     {
       "path": "lib/codecs/SLCodecWebmAudio.sleela",
-      "sha256": "6d9ae9c936dbe308027e7c45c5f5086e70babbab0f66a527672ab55f2dfda45c"
+      "sha256": "3823f9610604a5f3b6a0baeb0e9c40674cff6d6def763bce266346e13bcc1c95"
     },
     {
       "path": "lib/codecs/SLCodecWma.sleela",
-      "sha256": "e182ac7a042d98d22f68272b05dff391e74d1385ccb65682af7814be81cb88d7"
+      "sha256": "1c26f61244f1d58ddffa973ae7e2ec7c02dd445d1d8be02c4a2501122e2ef8e2"
     },
     {
       "path": "lib/codecs/SLPackage.sleela",
