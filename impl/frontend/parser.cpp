@@ -217,6 +217,35 @@ Method Parser::parseMethod(bool isStatic,bool isProtected,unsigned modifiers,std
 // field, or a bare expression statement. Used by parseStatement() and by the
 // for-statement init/update clauses.
 StmtP Parser::parseSimpleStatement(){
+    // GC hint, ran:: qualified form (syntax 1.9): `x = ran::gc [N];` or
+    // `x = ran::mem [N];`. The explicit, system-scoped spelling: `ran::` names
+    // the System meaning so the compiler decides the author's intent instantly
+    // and the words gc/mem stay usable as identifiers. Shape: target `=` `ran`
+    // `::` (gc|mem) [int] `;`.
+    if(cur().kind==Tok::Ident && peek(1).kind==Tok::Assign
+       && peek(2).kind==Tok::Ident && peek(2).text=="ran"
+       && peek(3).kind==Tok::DoubleColon
+       && peek(4).kind==Tok::Ident && isGcHintWord(peek(4).text)){
+        bool bareHint = (peek(5).kind==Tok::Semicolon);
+        bool levelHint = (peek(5).kind==Tok::Int && peek(6).kind==Tok::Semicolon);
+        if(bareHint || levelHint){
+            auto h=std::make_unique<GcHintStmt>();
+            h->ranQualified=true;
+            h->target=cur().text;           // the value being released
+            i_+=2;                          // consume target and '='
+            i_+=2;                          // consume `ran` and `::`
+            h->spelling=cur().text;         // "gc" or "mem"
+            i_++;                           // consume the GC-hint word
+            if(levelHint){
+                long long n=std::stoll(cur().text); i_++;
+                if(n>1000000) n=1000000;
+                h->aggressiveness=(int)n;
+            } else {
+                h->aggressiveness=50;
+            }
+            return h;
+        }
+    }
     // GC hint (syntax 1.9): `x = gc [N];` or `x = mem [N];`. Recognised
     // positionally before ordinary assignment: target identifier, `=`, then the
     // contextual word `gc`/`mem` as the WHOLE right-hand side, optionally with a
@@ -345,6 +374,16 @@ ExprP Parser::parsePrimary(){
         return parsePostfix(std::move(n));
     }
     case Tok::Ident:{
+        // `ran::<word>` -- the System / already-Ran-in-RAM reference, used as a
+        // value (e.g. `let b = ran::mem;`). Recognised only when the identifier
+        // is exactly `ran` and is immediately followed by `::` and a word, so a
+        // variable named `ran` and ordinary `base::method` references are
+        // unaffected. The system word is validated in semantic analysis.
+        if(t.text=="ran" && peek(1).kind==Tok::DoubleColon && peek(2).kind==Tok::Ident){
+            i_+=2;                                  // consume `ran` and `::`
+            std::string word=cur().text; i_++;      // consume the system word
+            return parsePostfix(std::make_unique<RanRefExpr>(word));
+        }
         std::string name=t.text;i_++;
         ExprP base=std::make_unique<VarExpr>(name);
         while(accept(Tok::Dot)){

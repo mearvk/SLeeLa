@@ -20,6 +20,7 @@
 #include "sleela_bestof.h"
 #include "sleela_audio_mixer.h"
 #include "sleela_os.h"
+#include "sleela_memmgr.h"
 
 #include <math.h>
 #include <stdio.h>
@@ -969,6 +970,19 @@ static SLResult run_thread(SLThread* t) {
                                           young_only);
                 }
             }
+        } break;
+        case OP_RAN_MEM: {
+            /* `ran::mem` -- the System memory already Ran in RAM, read as the
+             * current live byte count. When the memory manager is enabled this
+             * is its live_bytes; otherwise it reports the GC's tracked bytes, so
+             * the value is always a real, consistent system figure. */
+            int64_t bytes = 0;
+            if (slmm_is_enabled()) {
+                SLMMStats st; slmm_stats(&st); bytes = (int64_t)st.live_bytes;
+            } else {
+                bytes = (int64_t)gc_bytes(&vm->gc);
+            }
+            PUSH(slval_int(bytes));
         } break;
         case OP_CONST: PUSH(vm->consts[in.a]); break;
         case OP_POP: (void)POP(); break;

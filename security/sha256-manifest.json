@@ -99,11 +99,11 @@
     },
     {
       "path": "impl/core/sleela_core.c",
-      "sha256": "4624521b57a478e9ca9251efedc60cfd29221b4f4e1b1c1d4feba379db112977"
+      "sha256": "de45276eef78a74fd89ab798fde5e4a42dfe2b0e0eac13c7029f4a38b3a6d020"
     },
     {
       "path": "impl/core/sleela_core.h",
-      "sha256": "32678ffe271942d16992ea03a854a304ada85e8bfee98c7832f5b90d05b15328"
+      "sha256": "ae205390492ae20e00d37757e2eeffed6160c65149a8c5ba77c7080cde313ee8"
     },
     {
       "path": "impl/core/sleela_design_activity.c",
@@ -315,11 +315,11 @@
     },
     {
       "path": "impl/frontend/ast.h",
-      "sha256": "18a9961dd844bdad28c7d1c4d83ffe379393931f295277dc16e73009b957f411"
+      "sha256": "23c8846a2182ead0ad24015b7a03bf9fdd42cf350789de376251b2fa063a505a"
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "fc962a3b58f20ce0d1270c58bb35a74641a0558f031bb62f9f6c5add6882d2a8"
+      "sha256": "4bec57bebb86cc481b448fc7cc3f81ba6c57c1b42636b1d327cbb57b0d065ca7"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -375,7 +375,7 @@
     },
     {
       "path": "impl/frontend/lexer.cpp",
-      "sha256": "906662b2ba0652c90b30505afd589563097dc3c28ca17e7c385a98d8e69694bf"
+      "sha256": "cb9fa6a08ad5df50aa6bb527974b9e735fad2a6390266d2f8a0528dca54e8485"
     },
     {
       "path": "impl/frontend/lexer.h",
@@ -391,7 +391,7 @@
     },
     {
       "path": "impl/frontend/parser.cpp",
-      "sha256": "9c6b744769e9e9e495a271555333ec67aaf692b3cdb8a32fb8f597926532fd91"
+      "sha256": "ff8ee918ee0e85aa7fbb4f7c9ca5afd9820fca23669b61e5e350e576658d2f8e"
     },
     {
       "path": "impl/frontend/parser.h",
@@ -407,7 +407,7 @@
     },
     {
       "path": "impl/frontend/semantic.cpp",
-      "sha256": "3dd752008f7300d74934628e246ae9a143ef8fffc48c0163819c877d1350f35b"
+      "sha256": "75a999b6b176c5cf29b49e1941af0299db9a7b6a350879f96e79f220d5e8747b"
     },
     {
       "path": "impl/frontend/semantic.h",

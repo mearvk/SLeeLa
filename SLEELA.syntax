@@ -393,6 +393,8 @@ Expected output (order of the concurrent phase aside):
                     bestOfArch bestOfArchParam bestOfArchState   (syntax 1.3+)
     gc-hint (2):    gc mem        contextual; only as the whole RHS of
                     `x = gc N;` / `x = mem N;`, N in 0..100  (syntax 1.9+)
+    system (1):     ran           contextual; the `ran::` namespace qualifier for
+                    system refs — `ran::mem`, `ran::gc` (syntax 1.9+, §13.4)
 
 Contextual built-ins are recognized in call position only (they are not reserved
 words). The Munction fluent chain is one sane reach sentence of 4..16 calls; see
@@ -663,3 +665,46 @@ These constraints are enforced rather than silently narrowed: an unsupported
 target or band produces an explicit semantic error (see
 `impl/frontend/semantic.cpp` and `impl/frontend/compiler.cpp`). Regression
 fixtures live in `tests/sleela-syntax-1.9/`.
+
+### 13.4 The `ran::` system namespace
+
+Some words a program naturally wants for its own variables — `mem`, `gc`, and
+the like — also name system meanings. To keep every such word free for ordinary
+class and variable names, syntax 1.9 adds an explicit system-namespace
+qualifier, **`ran::`**. The prefix `ran` denotes the **System** — the facility
+already *Ran* and resident in **RAM** — so `ran::mem` and `ran::gc` name the
+system meaning unambiguously and the bare words stay available as identifiers.
+
+    ran-ref      ::= "ran" "::" ident                 // system value reference
+    gc-hint-stmt ::= ident "=" ("ran" "::")? ("gc" | "mem") int-lit? ";"
+
+`ran` is **contextual**, not reserved: it is special only immediately before
+`::`. A variable, field, or struct member may be named `ran`, `mem`, or `gc`,
+and ordinary `base::method` references are unaffected (only the exact identifier
+`ran` before `::` is the system namespace).
+
+```sleela
+#sleela 1.9
+let mem = 11;            // ordinary variables: mem/gc/ran are just names
+let gc  = 22;
+let ran = 33;
+print(mem + gc + ran);   // 66
+
+let b = ran::mem;        // THE system memory: current live bytes (int)
+x = ran::gc 100;         // the GC hint, explicitly system-scoped
+x = ran::mem 25;         // equivalently, the `mem` spelling of the hint
+x = ran::gc;             // bare qualified form -> default modest cleanup
+```
+
+System references (value forms):
+
+| Reference | Meaning | Type |
+|---|---|---|
+| `ran::mem` | current live system memory in bytes (the memory manager's `live_bytes` when enabled, else the GC's tracked bytes) | `int` |
+
+The `ran::`-qualified GC hint (`x = ran::gc N;` / `x = ran::mem N;`) is identical
+in effect to the unqualified `x = gc N;` / `x = mem N;` of §13.1 — the qualifier
+only makes the system intent explicit so a modern compiler decides the author's
+meaning instantly. `ran::mem` lowers to the `OP_RAN_MEM` opcode (pushes the live
+byte count); an unknown system word (`ran::<other>`) is an explicit semantic
+error. The namespace requires syntax 1.9.

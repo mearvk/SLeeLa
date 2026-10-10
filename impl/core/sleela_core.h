@@ -123,7 +123,13 @@ typedef enum {
      * deferred (like every safepoint) while worker threads are active. Appended
      * at the end of the enum so existing serialized-artifact opcode numbers are
      * unchanged. */
-    OP_GC_HINT        /* operand a = aggressiveness 0..100; pushes nothing          */
+    OP_GC_HINT,       /* operand a = aggressiveness 0..100; pushes nothing          */
+    /* ran:: system namespace (syntax 1.9). The `ran::` qualifier names the
+     * System / already-Ran-in-RAM meaning of a word, so ordinary identifiers
+     * (mem, gc, ...) stay free for class/variable names. `ran::mem` reads the
+     * current live system memory in bytes as an int. Appended at the end of the
+     * enum so existing serialized-artifact opcode numbers are unchanged. */
+    OP_RAN_MEM        /* pushes current live system memory in bytes (int)           */
 } SLOp;
 /* GC-hint aggressiveness bands for OP_GC_HINT (operand a). */
 #define SL_GC_HINT_MAX  100   /* clamp ceiling for the 0..100 aggressiveness scale */

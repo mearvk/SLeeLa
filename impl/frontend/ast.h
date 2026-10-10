@@ -87,6 +87,11 @@ struct Binary:Expr{std::string op;ExprP lhs,rhs;Binary(std::string o,ExprP l,Exp
 struct Call:Expr{std::string callee;std::vector<ExprP> args;explicit Call(std::string c):callee(std::move(c)){}};
 struct MethodCall:Expr{ExprP receiver;std::string method;std::vector<ExprP> args;MethodCall(ExprP r,std::string m):receiver(std::move(r)),method(std::move(m)){}};
 struct NewExpr:Expr{std::string typeName;std::vector<ExprP> args;explicit NewExpr(std::string t):typeName(std::move(t)){}};
+// `ran::<word>` -- the System / already-Ran-in-RAM reference. The `ran::`
+// qualifier names a system meaning explicitly, so ordinary words (mem, gc, ...)
+// stay free as identifiers. `word` is the system name after `ran::` (e.g.
+// "mem"). A value form such as `ran::mem` evaluates to a system quantity.
+struct RanRefExpr:Expr{std::string word;explicit RanRefExpr(std::string w):word(std::move(w)){}};
 struct MemberAccess:Expr{ExprP base;std::string field;MemberAccess(ExprP b,std::string f):base(std::move(b)),field(std::move(f)){}};
 // --- Java expression forms (surface completeness). -------------------------
 // Compound/plain assignment as an expression (e.g. a = b, a += b). `op` is the
@@ -116,7 +121,7 @@ struct PrintStmt:Stmt{ExprP expr;};
 // value the developer is done using; `aggressiveness` is the 0..100 cleanup
 // strength. Both the `gc` and `mem` spellings produce this node. It lowers to a
 // single OP_GC_HINT with the aggressiveness as its operand.
-struct GcHintStmt:Stmt{std::string target;std::string spelling;int aggressiveness=0;};
+struct GcHintStmt:Stmt{std::string target;std::string spelling;int aggressiveness=0;bool ranQualified=false;};
 struct ReturnStmt:Stmt{ExprP value;};
 struct Block:Stmt{std::vector<StmtP> stmts;};
 struct IfStmt:Stmt{ExprP cond;StmtP thenS,elseS;};

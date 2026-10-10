@@ -1,0 +1,7 @@
+#sleela 1.9
+class RanNamespaceUnknown {
+    static void main() {
+        let x = ran::cpu;      // not a known system reference -> semantic error
+        print(x);
+    }
+}

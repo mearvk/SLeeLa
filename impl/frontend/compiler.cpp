@@ -220,6 +220,13 @@ private:
         int level=h.aggressiveness; if(level<0)level=0; if(level>100)level=100;
         emit(OP_GC_HINT, level);
     }
+    // `ran::<word>` value reference. `ran::mem` lowers to OP_RAN_MEM, which
+    // pushes the current live system memory in bytes. Unknown words are rejected
+    // in semantic analysis; this emitter handles the value forms.
+    void emitRanRef(const RanRefExpr& r){
+        if(r.word=="mem"){emit(OP_RAN_MEM);return;}
+        throw std::runtime_error("Semantic error: unknown system reference 'ran::"+r.word+"'");
+    }
     void emitReturn(const ReturnStmt& r){if(r.value)emitExpr(r.value.get());else emit(OP_CONST,addNullConst());emit(OP_RET);}
     void emitFieldAssign(const FieldAssign& fa){int off=-1;memberLayout(fa.base.get(),fa.field,off);emitExpr(fa.base.get());emitExpr(fa.value.get());emit(OP_SETFIELD,off);emit(OP_POP);}
     void emitIf(const IfStmt& s){emitExpr(s.cond.get());int jf=emit(OP_JMPF,0);emitStmt(s.thenS.get());if(s.elseS){int jend=emit(OP_JMP,0);patch(jf,here());emitStmt(s.elseS.get());patch(jend,here());}else patch(jf,here());}
@@ -268,6 +275,7 @@ private:
         if(auto x=dynamic_cast<const IntLit*>(e)){emit(OP_CONST,slvm_add_const_int(vm_,x->value));return;} if(auto x=dynamic_cast<const DoubleLit*>(e)){emit(OP_CONST,slvm_add_const_double(vm_,x->value));return;}
         if(auto x=dynamic_cast<const BoolLit*>(e)){emit(OP_CONST,slvm_add_const_bool(vm_,x->value?1:0));return;} if(auto x=dynamic_cast<const StrLit*>(e)){emit(OP_CONST,slvm_add_const_str(vm_,x->value.c_str()));return;}
         if(dynamic_cast<const NullLit*>(e)){emit(OP_CONST,addNullConst());return;} if(auto x=dynamic_cast<const VarExpr*>(e)){emitVar(*x);return;} if(auto x=dynamic_cast<const Unary*>(e)){emitUnary(*x);return;}
+        if(auto x=dynamic_cast<const RanRefExpr*>(e)){emitRanRef(*x);return;}
         if(auto x=dynamic_cast<const Binary*>(e)){emitBinary(*x);return;} if(auto x=dynamic_cast<const Call*>(e)){emitCall(*x);return;}
         if(auto x=dynamic_cast<const NewExpr*>(e)){emitNew(*x);return;} if(auto x=dynamic_cast<const MemberAccess*>(e)){emitMember(*x);return;}
         if(auto x=dynamic_cast<const MethodCall*>(e)){emitMethodCall(*x);return;}
