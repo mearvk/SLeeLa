@@ -1,0 +1,87 @@
+#sleela 1.3
+// DatabaseMunction.sleela — query / alter / read a table as a Munction™ reach.
+//
+// Part of the SLeeLa Native Database Connector (api/database). A Munction™ is a
+// single sane sentence of reach (MUNCTION.md §1): start a named reach, connect
+// over a system method resolved from the URI scheme, send the datum, consume
+// what returns, latch the reached state, and close with a receipt. The database
+// is reached the same way every other system method is — only the scheme is new.
+//
+// The `db:` channel (MUNCTION.md §4 registration table) resolves a DbChannel
+// over the native connector (api/database/sleela_database.{h,c} + the platform
+// driver). Like every Munction™ channel it satisfies the receivability +
+// coherent-send contract (MUNCTION.md §5):
+//
+//     db:<kind>://<user>@<host>:<port>/<database>
+//     e.g.  db:mysql://app@db:3306/catalog
+//
+//   send(statement)  -> coherent push of a SQL or SLeeLaSQL statement
+//   thatch(interims) -> weave interim stages (e.g. "ddl,dml") over the reach
+//   consume()        -> pull one row of the result set (repeatable; receivable)
+//   latch()          -> commit the transaction so it survives the close
+//   closeWithReceipt -> close the connection; hand back a witnessed receipt
+//
+// Each sentence below stays inside the 4..16 call sanity bound (MUNCTION.md
+// §1.2) and the legal verb ladder (§3.1): one opener first, data verbs after a
+// connect, latch at most once before the closer, exactly one closer last.
+class DatabaseMunction {
+
+    // ALTER (minimum sane reach, 4 calls): connect to the DB and publish one
+    // change. `send` coherently pushes the statement; the receipt proves it.
+    void alter(String statement) {
+        Munction.start("ddl")
+                .connect("db:mysql://app@db:3306/catalog")
+                .send(statement)
+                .closeWithReceipt();
+    }
+
+    // READ (7 calls): send a query, consume two returned rows, latch, close.
+    // `consume()` is receivable — at end-of-reach a row is truthfully absent,
+    // never fabricated (MUNCTION.md §2.2).
+    // (Named readRows, not read: `read` is a reserved file-I/O built-in.)
+    void readRows(String query) {
+        Munction.start("scan")
+                .connect("db:mysql://app@db:3306/catalog")
+                .send(query)
+                .consume()
+                .consume()
+                .latch()
+                .closeWithReceipt();
+    }
+
+    // Transactional ALTER (9 calls, still one sane sentence): send two
+    // statements under one reach, thatch the interim stages, consume the two
+    // per-statement acknowledgments, latch (commit), and close with a receipt.
+    // A bump leaves the reach CONTAINED and the receipt records the residual —
+    // no fictional rollback (BODI.md §5). `latch()` is the BODI™ `commit`.
+    void transaction(String create, String insert) {
+        Munction.start("load")
+                .connect("db:mysql://app@db:3306/catalog")
+                .send(create)
+                .send(insert)
+                .thatch("ddl,dml")
+                .consume()
+                .latch()
+                .closeWithReceipt();
+    }
+
+    void main() {
+        print("== SLeeLa Native Database — Munction™ reach surface ==");
+        print("query / alter / read a table as a bounded, receivable reach.");
+        print("");
+
+        // ALTER — the statement datum may be SQL or SLeeLaSQL.
+        alter("table('games').create(id, title, year)");          // SLeeLaSQL
+        alter("INSERT INTO games VALUES (1, 'Metroid', 1986)");    // SQL
+
+        // READ — pull rows back; the receipt lists what was actually received.
+        readRows("SELECT title, year FROM games WHERE year = '1986'");
+        readRows("from('games').select(*)");                       // SLeeLaSQL
+
+        // One transactional reach: create + insert under a latched txn.
+        transaction("CREATE TABLE arcade (id, name)",
+                    "into('arcade').insert(1, 'Donkey Kong')");
+
+        print("every database reach closed with a receipt");
+    }
+}

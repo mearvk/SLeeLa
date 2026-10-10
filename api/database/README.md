@@ -20,3 +20,12 @@ The module deliberately does not bundle database servers. Installation and upgra
 Credentials must be supplied through environment variables or an OS credential facility. Do not put passwords in source control or command-line arguments.
 
 See API.html and the platform adapters for deployment details.
+
+## SLeeLa procedural surfaces — query / alter / read a table
+
+Two SLeeLa (`#sleela 1.3`) surfaces let you query, alter, or read a table in a few lines of procedural code. Both accept statements in either dialect the engine understands — classic SQL or the fluent SLeeLaSQL — and both are thin surfaces over the connector vocabulary above; the native connector and platform driver still do the work.
+
+- **BODI™** — [`sleela/DatabaseBodi.sleela`](sleela/DatabaseBodi.sleela): each database action is a witnessed BODI™ middle verb against an addressed table (`open`→connect, `push`→execute/alter, `pull`→query/read, `activate`/`commit`/`rollback`, `close`). Good for step-by-step work and explicit transactions.
+- **Munction™** — [`sleela/DatabaseMunction.sleela`](sleela/DatabaseMunction.sleela): one bounded `db:` reach sentence that connects, sends a statement, consumes rows, latches, and closes with a witnessed receipt. The database is reached the same way every other system method is; only the `db:` scheme is new.
+
+See [`sleela/DATABASE_REACH.md`](sleela/DATABASE_REACH.md) for the full guide, the verb mapping, and runnable examples.
