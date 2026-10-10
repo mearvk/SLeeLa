@@ -78,6 +78,42 @@ class SLDistroSource {
 
   boolean providesLayer(String layer) { return dirFor(layer) != ""; }
 
+  // ---- Downloadability notes ------------------------------------------
+  // Not every OS part comes down with a clone. This records what a fetch does
+  // and does NOT retrieve, so a builder knows before pulling (multi-GB) data.
+  //
+  //   source tree      : YES  -- all git-tracked source for every part dir
+  //                             (kernels, installer, gnome-source, file-systems,
+  //                             userland, ...) is in the repo and clones fully.
+  //   large binaries   : NO   -- the distro caps committed files at 50 MB
+  //                             (LFS.check.sh) and .gitignores anything larger,
+  //                             so prebuilt images / big blobs are NOT in the
+  //                             repo and cannot be downloaded from it.
+  //   GraalVM submodule: SEPARATE -- graal-latest is a submodule pointing at
+  //                             oracle/graal; it is fetched only with a
+  //                             --recurse-submodules (SLDistroFetch MODE_RECURSE)
+  //                             clone, as an additional external download.
+  //   no Git LFS       : the repo uses no LFS filters, so a normal clone needs
+  //                             no `git lfs` step; the size is plain git objects.
+
+  // downloadabilityNote(part): per-part answer to "can this be downloaded?".
+  String downloadabilityNote(String part) {
+    if (part == "submodule" || part == "graal") {
+      return "SEPARATE: external submodule (oracle/graal); use a recurse-submodules clone";
+    }
+    if (part == "binaries" || part == "images") {
+      return "NO: files >= 50 MB are excluded by the distro's size policy and not in the repo";
+    }
+    // Any source part directory.
+    if (dirFor(part) != "" || part == "source") {
+      return "YES: git-tracked source clones fully (shallow is enough)";
+    }
+    return "UNKNOWN part";
+  }
+
+  // Whether a complete working tree needs the submodule fetched too.
+  boolean needsSubmoduleForComplete() { return hasSubmodules == 1; }
+
   // A newline-separated reference sheet a tool or README can print.
   String referenceSheet() {
     String s = "# Upstream OS-parts reference\n";
@@ -95,6 +131,10 @@ class SLDistroSource {
     s = s + "  desktop    -> " + dirFor("desktop") + "\n";
     s = s + "  filesystem -> " + dirFor("filesystem") + "\n";
     s = s + "  userland   -> " + dirFor("userland") + "\n";
+    s = s + "downloadable:\n";
+    s = s + "  source parts -> " + downloadabilityNote("source") + "\n";
+    s = s + "  >=50MB blobs -> " + downloadabilityNote("binaries") + "\n";
+    s = s + "  graal submod -> " + downloadabilityNote("submodule") + "\n";
     return s;
   }
 }

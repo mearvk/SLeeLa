@@ -566,3 +566,60 @@ resolved kernel into `os_config.h` as `OS_KERNEL` / `OS_KERNEL_VER`:
 OS_KERNEL_VER="6.6 LTS" ./impl/build/sleela run lib/os/os-generate.sleela
 # -> os/os_config.h: #define OS_KERNEL_VER "6.6.0"
 ```
+
+---
+
+# Running foreign executables — `SLExecutableTranslator`
+
+`SLExecutableTypes` (above) says which file types are *native* to a shape.
+`SLExecutableTranslator` lets the builder declare any file type runnable on a
+host even when it is **foreign** — the canonical case: a **Linux host running a
+Windows `.exe`**. Running a foreign type needs a translation layer, of two kinds:
+
+| Kind | Mechanism | Example |
+|---|---|---|
+| **binfmt** (FS-level interpreter) | the Linux `binfmt_misc` facility: register `extension/magic → interpreter` so the filesystem hands the file to an interpreter on `exec()` | Windows PE via Wine; cross-arch ELF via QEMU-user |
+| **container / compat layer** | a user-space translator that houses the execution | Wine/CrossOver (Win32), Rosetta 2 (x86-64 on Apple Silicon), WSL2 (ELF on Windows), Docker/Lima/QEMU VMs |
+
+```sleela
+SLExecutableTranslator t = new SLExecutableTranslator(); t.configure("Linux");
+t.isForeign(".exe");                      // true (a Windows world on a Linux host)
+t.kind(".exe");                           // "binfmt"  (Linux FS-level route)
+t.translatorFor(".exe");                  // "Wine (Win32 compatibility layer)"
+t.binfmtLine(".exe", "/usr/bin/wine");    // :foreign:E::exe::/usr/bin/wine:OC
+t.register(".exe", "/usr/bin/wine");      // register with binfmt_misc (0 ok; needs privilege)
+t.runCommand("/opt/app.exe", ".exe", "/usr/bin/wine");  // how the host launches it
+```
+
+Host coverage: **Linux** exposes `binfmt_misc`, so foreign types register at the
+filesystem level (Wine for PE, QEMU-user for cross-arch). **macOS** and
+**Windows** have no FS-level interpreter, so a foreign type runs through a named
+container/compat layer (Wine/CrossOver, Rosetta, WSL2, or a VM). The methods are
+honest: naming a translator does not install it — `register()` returns a
+non-zero code where the facility is absent, and `runnableNow()` checks the
+interpreter binary exists, so a missing layer is reported rather than faked.
+
+The OS generator emits an **`exec_translate.h`** into the working C/C++ set
+(`OS_HAS_BINFMT`, `OS_FOREIGN_EXE`, the `binfmt_misc` registration path), so the
+generated Linux image records that it can host `.exe` via Wine and cross-arch
+ELF via QEMU-user. It compiles with a stock C toolchain.
+
+---
+
+# Notes: what of the OS can — and cannot — be downloaded
+
+The upstream parts (`SLDistroSource` / `SLDistroFetch`, and the generated
+`fetch-upstream.sh`) pull from `mearvk/Ubuntu.Determinant.Beta.Restricted`.
+Not everything comes down with a clone — `SLDistroSource.downloadabilityNote()`
+records the specifics:
+
+| Part | Downloadable? | Note |
+|---|---|---|
+| **Source tree** (kernels, installer, gnome-source, file-systems, userland, …) | **YES** — fully | All git-tracked source is in the repo; a shallow clone retrieves every part directory's source. |
+| **Large binaries / prebuilt images** (≥ 50 MB) | **NO** — not in the repo | The distro enforces a 50 MB cap (`LFS.check.sh`) and `.gitignore`s anything larger, so big blobs are excluded and cannot be fetched from the repo. Rebuild them from the sources, or obtain them from their own release channel. |
+| **GraalVM** (`graal-latest`) | **SEPARATE** download | It is a Git submodule pointing at `oracle/graal` — fetched only with a `--recurse-submodules` clone (`SLDistroFetch` `MODE_RECURSE` / `fetchComplete()`), as an additional external download. |
+| **Git LFS** | n/a | The repo uses no LFS filters, so no `git lfs` step is needed; its size is plain git objects. |
+
+In short: **all of the OS *source* can be downloaded** (shallow is enough for the
+distro's own tree); **the ≥50 MB prebuilt artifacts cannot** (excluded by policy —
+build them from source); and **GraalVM is a separate, opt-in submodule fetch**.

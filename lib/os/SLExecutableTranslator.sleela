@@ -1,0 +1,174 @@
+/*
+ * lib/os/SLExecutableTranslator.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLExecutableTranslator — the policy and mechanism for
+ *   running a FOREIGN executable type on a host OS, so a builder can declare
+ *   any file type runnable on a given OS even when the host would not natively
+ *   execute it (the canonical example: a Linux host running a Windows .exe).
+ *   Native executables run directly (see SLExecutableTypes); a foreign type
+ *   needs a TRANSLATION layer, of which there are two kinds:
+ *
+ *     1. FS-level interpreter  — the kernel's binfmt_misc facility: register a
+ *        magic/extension -> interpreter mapping so the filesystem itself hands
+ *        the file to an interpreter when it is exec()'d (Linux).
+ *     2. OS container / compat layer — a user-space translator that houses the
+ *        execution: Wine (Win32 on Linux/macOS), QEMU-user (cross-architecture
+ *        ELF), Rosetta 2 (x86-64 on Apple Silicon), WSL (ELF on Windows).
+ *
+ * This object answers "can host H run foreign type T, and how?", names the
+ * translator, and emits the registration (a binfmt_misc line, or the container
+ * invocation) so a builder can wire the capability into the generated OS. It is
+ * both a design object (consulted by the OS generator) and a host object
+ * (register()/run() cross the os* bridge where the facility exists).
+ *
+ * Family: os. Design + host roles; register()/run() cross the osRun bridge
+ *   (requires #sleela 1.5). Honesty: naming a translator does not install it;
+ *   where the interpreter/container is absent the foreign type stays unrunnable
+ *   and the methods report that rather than faking success.
+ */
+#sleela 1.11
+class SLExecutableTranslator {
+  String host;   // the host OS running the file: "Linux" / "Windows" / "macOS"
+
+  void configure(String hostShape) {
+    if (hostShape == "Windows") { host = "Windows"; return; }
+    if (hostShape == "macOS")   { host = "macOS";   return; }
+    host = "Linux";
+  }
+  void configureForHost() { configure(osPlatform()); }
+  String hostName() { return host; }
+
+  // ---- The foreign "world" a file type belongs to ---------------------
+  // worldOf(ext): the executable world an extension/type comes from, so the
+  // translator can pick the right layer. "" = a bare (no-ext) binary, treated
+  // as native to whatever host it sits on.
+  String worldOf(String ext) {
+    if (ext == ".exe" || ext == ".com" || ext == ".bat" || ext == ".cmd"
+     || ext == ".ps1" || ext == ".msi" || ext == ".vbs" || ext == ".scr") { return "Windows"; }
+    if (ext == ".app" || ext == ".command" || ext == ".dylib") { return "macOS"; }
+    if (ext == ".sh" || ext == ".elf" || ext == ".so" || ext == ".run"
+     || ext == ".AppImage" || ext == ".ko") { return "Linux"; }
+    return "native";
+  }
+
+  // isForeign(ext): does running this type on the host require translation?
+  boolean isForeign(String ext) {
+    String w = worldOf(ext);
+    if (w == "native") { return false; }
+    return w != host;
+  }
+
+  // ---- Which translator applies, and how ------------------------------
+  // translatorFor(ext): the name of the layer that runs this foreign type on
+  // the host, or "" when the type is native (no translation needed). The names
+  // are the real-world facilities a builder would install.
+  String translatorFor(String ext) {
+    if (!isForeign(ext)) { return ""; }
+    String w = worldOf(ext);
+    if (host == "Linux") {
+      if (w == "Windows") { return "Wine (Win32 compatibility layer)"; }
+      if (w == "macOS")   { return "Darling (macOS compatibility layer)"; }
+      return "QEMU-user (cross-arch ELF)";
+    }
+    if (host == "macOS") {
+      if (w == "Windows") { return "Wine / CrossOver"; }
+      if (w == "Linux")   { return "Docker/Lima (Linux VM) or QEMU-user"; }
+      return "Rosetta 2 (x86-64 translation)";
+    }
+    // Windows host.
+    if (w == "Linux") { return "WSL2 (Windows Subsystem for Linux)"; }
+    return "a VM / QEMU (no native compat layer)";
+  }
+
+  // kind(ext): the TRANSLATION KIND for the host+type: "native" (runs direct),
+  // "binfmt" (an FS-level interpreter can be registered), or "container"
+  // (a user-space compat layer / VM houses the execution).
+  String kind(String ext) {
+    if (!isForeign(ext)) { return "native"; }
+    // Only Linux exposes binfmt_misc, and it is the FS-level route for Windows
+    // PE and cross-arch ELF (binding Wine / QEMU as the interpreter).
+    if (host == "Linux") { return "binfmt"; }
+    return "container";
+  }
+
+  // Does the host provide a filesystem-level interpreter facility at all?
+  boolean hasFsInterpreter() { return host == "Linux"; }
+
+  // ---- Registration: make a foreign type runnable ---------------------
+  // binfmtLine(ext, interpreter): the binfmt_misc registration string that
+  // binds a foreign type to an interpreter at the filesystem level. Written to
+  // /proc/sys/fs/binfmt_misc/register (or a systemd-binfmt .conf) on Linux.
+  // Form: ":name:extension|magic:::interpreter:flags".
+  String binfmtLine(String ext, String interpreter) {
+    String tag = ext;
+    // Strip the leading dot for the registration name.
+    String nm = "foreign";
+    return ":" + nm + ":E::" + stripDot(ext) + "::" + interpreter + ":OC";
+  }
+
+  String stripDot(String ext) {
+    if (ext == ".exe") { return "exe"; }
+    if (ext == ".com") { return "com"; }
+    if (ext == ".bat") { return "bat"; }
+    if (ext == ".msi") { return "msi"; }
+    if (ext == ".app") { return "app"; }
+    if (ext == ".elf") { return "elf"; }
+    return "bin";
+  }
+
+  // The host command that registers a foreign type so the FS/compat layer runs
+  // it. On Linux this appends a binfmt_misc rule; elsewhere it is advisory text
+  // naming the container to install (there is no FS-level register there).
+  String registerCommand(String ext, String interpreter) {
+    if (host == "Linux") {
+      return "echo '" + binfmtLine(ext, interpreter)
+           + "' > /proc/sys/fs/binfmt_misc/register";
+    }
+    return "# install " + translatorFor(ext) + " to run " + ext + " on " + host;
+  }
+
+  // runCommand(path, ext, interpreter): how the host actually launches a
+  // foreign file. With a registered FS interpreter it runs directly; otherwise
+  // it is invoked through the named container/compat layer.
+  String runCommand(String path, String ext, String interpreter) {
+    if (!isForeign(ext)) { return path; }                 // native: direct
+    if (kind(ext) == "binfmt") { return path; }           // FS interpreter handles it
+    return interpreter + " " + path;                      // container/compat prefix
+  }
+
+  // ---- Host actions (cross the os* bridge) ----------------------------
+  // register(ext, interpreter): on Linux, attempt the binfmt_misc registration
+  // (requires the facility mounted and privilege); returns the exit code (0 ok).
+  // On other hosts there is no FS-level register, so it reports -1 (the builder
+  // must install the named container). Never fakes success.
+  int register(String ext, String interpreter) {
+    if (host != "Linux") { return -1; }
+    if (osExists("/proc/sys/fs/binfmt_misc") != 1) { return -2; } // facility absent
+    return osRun(registerCommand(ext, interpreter) + " 2>/dev/null");
+  }
+
+  // runnableNow(ext, interpreterPath): best-effort check that the host can run
+  // this foreign type right now — the interpreter/container binary is present.
+  boolean runnableNow(String ext, String interpreterPath) {
+    if (!isForeign(ext)) { return true; }
+    return osExists(interpreterPath) == 1;
+  }
+
+  // ---- Generated C/C++ note -------------------------------------------
+  // A short header documenting the host's foreign-exec policy for the generated
+  // OS, so the working C/CPP set records which translators the image expects.
+  String emitTranslatorHeader() {
+    String h = "/* exec_translate.h - foreign-executable policy for " + host + " (generated by SLeeLa lib/os) */\n";
+    h = h + "#ifndef EXEC_TRANSLATE_H\n#define EXEC_TRANSLATE_H\n\n";
+    h = h + "#define OS_HOST_SHAPE      \"" + host + "\"\n";
+    h = h + "#define OS_HAS_BINFMT      " + bit(hasFsInterpreter()) + "\n";
+    h = h + "/* Foreign type -> translator (host-specific). Empty interpreter means native. */\n";
+    h = h + "#define OS_FOREIGN_EXE     \"" + translatorFor(".exe") + "\"\n";
+    h = h + "#define OS_FOREIGN_ELF     \"" + translatorFor(".elf") + "\"\n";
+    h = h + "#define OS_FOREIGN_APP     \"" + translatorFor(".app") + "\"\n";
+    h = h + "\n#endif /* EXEC_TRANSLATE_H */\n";
+    return h;
+  }
+
+  String bit(boolean b) { if (b) { return "1"; } return "0"; }
+}

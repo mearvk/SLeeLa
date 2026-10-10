@@ -233,7 +233,23 @@ private:
         for(const auto& p:m.params) if(structLayout_.count(p.type)) varType_[p.name]=p.type;
         if(!m.isStatic)varType_["this"]=currentClass_;
         slvm_begin_func(vm_,key.c_str(),(int)m.params.size()+(m.isStatic?0:1),mi.nlocals); ctx_=&ctx;
-        if(m.name=="main") for(const auto& cls:prog_.classes) if(cls.name==currentClass_) for(const auto& f:cls.fields) if(f.isStatic){if(f.init)emitExpr(f.init.get());else emit(OP_CONST,addNullConst());emit(OP_STOREG,fieldGlobal_[currentClass_+"::"+f.name]);}
+        // Initialise static fields before main runs. These compile to VM
+        // globals; their initialisers must execute regardless of which class
+        // declares them, so a static read from a non-entry class (e.g. a
+        // library class's `static final int` constant) sees its value rather
+        // than null. Every class's statics are initialised here, in program
+        // declaration order, when the entry `main` begins. (Previously only the
+        // entry class's statics were initialised, leaving every other class's
+        // static constants null.)
+        if(m.name=="main"){
+            const std::string savedClass=currentClass_;
+            for(const auto& cls:prog_.classes) for(const auto& f:cls.fields) if(f.isStatic){
+                currentClass_=cls.name;   // a static initialiser referencing a sibling static resolves against its own class
+                if(f.init)emitExpr(f.init.get());else emit(OP_CONST,addNullConst());
+                emit(OP_STOREG,fieldGlobal_[cls.name+"::"+f.name]);
+            }
+            currentClass_=savedClass;
+        }
         emitBlock(*m.body);ctx_=nullptr;emit(OP_CONST,addNullConst());emit(OP_RET);slvm_end_func(vm_);
         varType_=savedTypes;
     }

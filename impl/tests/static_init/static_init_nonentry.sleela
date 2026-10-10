@@ -1,0 +1,21 @@
+#sleela 1.11
+// Regression: static field initialisers must run for EVERY class before main,
+// not only the entry class's. A static constant read from a non-entry library
+// class must see its value, not null. (Fixed 2026-10: emitMethod initialised
+// only the entry class's statics; now all classes' statics are initialised at
+// main's entry.)
+class Lib {
+  static final int A = 7;
+  static final int B = 11;
+  int v;
+  void useA() { v = A; }
+  void useB() { v = B; }
+  int get() { return v; }
+}
+class Main {
+  void main() {
+    Lib x = new Lib();
+    x.useA(); print(x.get());   // 7
+    x.useB(); print(x.get());   // 11
+  }
+}
