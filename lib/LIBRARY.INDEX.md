@@ -1,11 +1,59 @@
 # SLeeLa /lib Library Index
 
-**Revision:** 0.42  
-**Packages:** 88  
-**SLeeLa source units:** 10405  
-**Module-facade symbols:** 60  
-**Total symbol records:** 10465  
+**Revision:** 0.45  
+**Packages:** 89  
+**SLeeLa source units:** 10554  
+**Module-facade symbols:** 61  
+**Total symbol records:** 10615  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
+
+> Revision 0.45 improves the **`alphabet`** package for **Sleela 1.8+**. `Letter`
+> and `Alphabet` are upgraded to `#sleela 1.8` and gain the two 1.8 ergonomics
+> without breaking the classic path: `Letter` now offers a one-line constructor
+> `new Letter(glyph, order, vowel)` (the load()+set() two-step and zero-arg
+> `new Letter()` used by `Alphabet.append()` are retained), and `Alphabet` gains
+> `appendLetter(Letter)` to accept constructor-built glyphs. A new
+> subclass-free **`AlphabetBuilder`** assembles a custom writing system inline
+> with `let` + Letter constructors. Two new scripts broaden coverage —
+> **`HebrewAlphabet`** and **`ArabicAlphabet`** (both abjads) — alongside Latin,
+> Greek, and Cyrillic. Three new source units (10,612 → **10,615** total
+> records; 10,551 → **10,554** source classes); packages and facades unchanged
+> at 89 and 61. A runnable 1.8 demonstrator lives at
+> `alphabet/sleela/AlphabetDemo18.sleela` (outside `/lib`, so not counted here).
+> `LIBRARY.SYMBOLS.md` was regenerated from the live tree and verified by
+> `test-suites/test-library-inventory.sh`.
+
+> Revision 0.44 extends the **Moral Capacitor™** family with a **Certificate of
+> Morals™** and a **Guard of the Moral Code**, putting the moral code — with a
+> warranty — into our products. Six new source units: `SLMoralWarranty` (the
+> warranty terms), `SLMoralCertificate` (the signed, sealed attestation that a
+> product embeds and enforces the capacitor), `SLMoralCertificateAuthority`
+> (issues/verifies certificates), `SLMoralCodeGuard` (admits a product only when
+> a valid certificate + live capacitor are present), `SLMoralCertified` (the
+> one-object certify-a-product convention), and the runnable demonstrator
+> `moral-certificate.sleela`. The VM/OS/Machine adapters each gained
+> `certify(...)` + `admit(...)` so they ship as morally certified products.
+> 10,606 → **10,612** total records (10,545 → **10,551** source classes);
+> packages and facades unchanged at 89 and 61. `LIBRARY.SYMBOLS.md` was
+> regenerated from the live tree and verified by
+> `test-suites/test-library-inventory.sh`.
+
+> Revision 0.43 adds the **Moral Capacitor™** (`moral-capacitor/`): a uniform
+> ethical gate every `/lib` library can place in front of a consequential
+> operation. It accumulates moral **charge** from ethical frameworks
+> (deontology, utilitarianism, virtue ethics, beneficence, consent) and only
+> **discharges — permits the operation — when charge meets a policy threshold and
+> no absolute red line is tripped** (`SLMoralCapacitor`, `SLMoralCharge`,
+> `SLMoralVeto`, `SLMoralFramework`, `SLMoralVerdict`, `SLMoralPolicy`,
+> `SLMoralOperation`, `SLMoralLedger`). It is placed first and foremost in front
+> of the VM, OS, and Machine via `SLVMMoralGuard`, `SLOSMoralGate`, and
+> `SLMachineMoralGate`, and ships a runnable demonstrator `moral-capacitor.sleela`
+> and `moral-capacitor/ARCHITECTURE.md`. One new package (89), thirteen new source
+> units of which one is the package facade (10,593 → **10,606** total records;
+> 10,533 → **10,545** source classes; 60 → **61** facades). This revision also
+> reconciles the header counts and `test-suites/test-library-inventory.sh`
+> expectations with the live tree. `LIBRARY.SYMBOLS.md` was regenerated from the
+> live tree and verified by `test-suites/test-library-inventory.sh`.
 
 > Revision 0.42 adds a **flow/layout manager** to the `user-interface` package.
 > Two new one-class-per-file Master Classes: `SLMeasure` (a standardized unit of

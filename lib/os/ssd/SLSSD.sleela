@@ -1,0 +1,89 @@
+/*
+ * lib/os/ssd/SLSSD.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLSSD — a named solid-state drive. It extends
+ *   SLHardwareComponent and models the finite catalogue of SSD variants by the
+ *   dimensions that actually distinguish them: host interface (SATA III,
+ *   NVMe/PCIe 3.0/4.0/5.0), form factor (2.5", M.2 2280, U.2, add-in card),
+ *   NAND type (SLC/MLC/TLC/QLC), capacity, and representative sequential
+ *   read/write throughput. A machine description requests an SSD by
+ *   manufacturer + model (or a preset) and composes it as a boot/storage
+ *   device.
+ *
+ * It is a storage device: capacity-in-blocks maps onto the VM's block store the
+ * same way SLHardDisk and lib/cpu/SLHardDrive do, so a named SSD can be the
+ * emulated machine's boot disk.
+ *
+ * Family: os. Extends SLHardwareComponent.
+ */
+#sleela 1.5
+class SLSSD extends SLHardwareComponent {
+  // Interface ordinals.
+  static final int IF_SATA3    = 0;  // 6 Gb/s
+  static final int IF_NVME_PCIE3 = 1;
+  static final int IF_NVME_PCIE4 = 2;
+  static final int IF_NVME_PCIE5 = 3;
+  // NAND cell types.
+  static final int NAND_SLC = 1;
+  static final int NAND_MLC = 2;
+  static final int NAND_TLC = 3;
+  static final int NAND_QLC = 4;
+
+  int iface;          // IF_*
+  String formFactor;  // "2.5\"", "M.2 2280", "U.2", "AIC"
+  int nand;           // NAND_*
+  int capacityGb;
+  int seqReadMBps;    // representative sequential read
+  int seqWriteMBps;   // representative sequential write
+  int blockBytes;     // logical block size (typically 512 or 4096)
+
+  // Configure from manufacturer, model, interface, and capacity. The interface
+  // preset fills representative throughput and form factor; refine afterward.
+  void configure(String manufacturer, String partName, int interfaceKind, int capacityGigabytes) {
+    configureComponent(manufacturer, partName, CLASS_SSD);
+    iface = interfaceKind; capacityGb = capacityGigabytes;
+    nand = NAND_TLC; blockBytes = 4096; formFactor = "M.2 2280";
+    if (iface == IF_SATA3)      { seqReadMBps = 560;   seqWriteMBps = 530;  formFactor = "2.5\""; }
+    if (iface == IF_NVME_PCIE3) { seqReadMBps = 3500;  seqWriteMBps = 3000; }
+    if (iface == IF_NVME_PCIE4) { seqReadMBps = 7000;  seqWriteMBps = 5500; }
+    if (iface == IF_NVME_PCIE5) { seqReadMBps = 14000; seqWriteMBps = 12000; }
+  }
+
+  // Configure by interface name ("SATA", "PCIe3", "PCIe4", "PCIe5").
+  void configureByName(String manufacturer, String partName, String ifName, int capacityGb) {
+    if (ifName == "PCIe5") { configure(manufacturer, partName, IF_NVME_PCIE5, capacityGb); return; }
+    if (ifName == "PCIe4") { configure(manufacturer, partName, IF_NVME_PCIE4, capacityGb); return; }
+    if (ifName == "PCIe3") { configure(manufacturer, partName, IF_NVME_PCIE3, capacityGb); return; }
+    configure(manufacturer, partName, IF_SATA3, capacityGb);
+  }
+
+  void setNand(int cellType) { nand = cellType; }
+  void setFormFactor(String ff) { formFactor = ff; }
+  void setThroughput(int readMBps, int writeMBps) { seqReadMBps = readMBps; seqWriteMBps = writeMBps; }
+
+  boolean isNvme() { return iface != IF_SATA3; }
+  String interfaceName() {
+    if (iface == IF_NVME_PCIE5) { return "NVMe PCIe 5.0"; }
+    if (iface == IF_NVME_PCIE4) { return "NVMe PCIe 4.0"; }
+    if (iface == IF_NVME_PCIE3) { return "NVMe PCIe 3.0"; }
+    return "SATA III";
+  }
+  String nandName() {
+    if (nand == NAND_SLC) { return "SLC"; }
+    if (nand == NAND_MLC) { return "MLC"; }
+    if (nand == NAND_QLC) { return "QLC"; }
+    return "TLC";
+  }
+  String form()           { return formFactor; }
+  int capacityGigabytes() { return capacityGb; }
+  int readMBps()          { return seqReadMBps; }
+  int writeMBps()         { return seqWriteMBps; }
+  int blockSize()         { return blockBytes; }
+
+  // Capacity as VM block count for the given block size — what SLMachineModel
+  // hands the block store when this SSD is the boot disk.
+  int capacityBlocks() {
+    int bytes = capacityGb * 1073741824;
+    return bytes / blockBytes;
+  }
+}

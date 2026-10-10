@@ -1,0 +1,67 @@
+/*
+ * lib/os/video-cards/SLVideoCardCatalog.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLVideoCardCatalog — a by-name factory for graphics
+ *   cards. Discrete-GPU silicon comes from a finite set of vendors — NVIDIA
+ *   (GeForce/RTX), AMD (Radeon RX), and Intel (Arc) — with board partners
+ *   (ASUS, MSI, Gigabyte, Sapphire, PowerColor, Zotac) shipping the same GPUs.
+ *   The catalogue returns representative, correctly-specified SLVideoCard
+ *   instances for well-known models so a machine description can request a
+ *   display adapter by name.
+ *
+ * Representative model names stand in for identity; VRAM and clocks vary by SKU
+ * and board partner and can be refined on the returned SLVideoCard.
+ *
+ * Family: os. Produces SLVideoCard.
+ */
+#sleela 1.5
+class SLVideoCardCatalog {
+  void configure() {}
+
+  // A GeForce/RTX card by model, e.g. geforce("RTX 4090", 24576).
+  SLVideoCard geforce(String model, int vramMb) {
+    SLVideoCard g = new SLVideoCard();
+    g.configure("NVIDIA", "GeForce " + model, g.GPU_NVIDIA, vramMb);
+    g.setBoardPower(nvPower(model));
+    return g;
+  }
+  // A Radeon RX card by model, e.g. radeon("RX 7900 XTX", 24576).
+  SLVideoCard radeon(String model, int vramMb) {
+    SLVideoCard g = new SLVideoCard();
+    g.configure("AMD", "Radeon " + model, g.GPU_AMD, vramMb);
+    return g;
+  }
+  // An Intel Arc card by model, e.g. arc("A770", 16384).
+  SLVideoCard arc(String model, int vramMb) {
+    SLVideoCard g = new SLVideoCard();
+    g.configure("Intel", "Arc " + model, g.GPU_INTEL, vramMb);
+    return g;
+  }
+
+  // Build any card by vendor + model name.
+  SLVideoCard card(String vendor, String model, int vramMb) {
+    if (vendor == "NVIDIA") { return geforce(model, vramMb); }
+    if (vendor == "AMD")    { return radeon(model, vramMb); }
+    if (vendor == "Intel")  { return arc(model, vramMb); }
+    SLVideoCard g = new SLVideoCard();
+    g.configureByVendor(vendor, model, vramMb);
+    return g;
+  }
+
+  boolean knownVendor(String vendor) {
+    return vendor == "NVIDIA" || vendor == "AMD" || vendor == "Intel";
+  }
+  // Board partners that ship these GPUs (for identity/branding).
+  boolean knownBoardPartner(String partner) {
+    return partner == "ASUS" || partner == "MSI" || partner == "Gigabyte"
+        || partner == "Sapphire" || partner == "PowerColor" || partner == "Zotac"
+        || partner == "EVGA" || partner == "XFX";
+  }
+
+  int nvPower(String model) {
+    if (model == "RTX 4090") { return 450; }
+    if (model == "RTX 4080") { return 320; }
+    if (model == "RTX 4070") { return 200; }
+    return 220;
+  }
+}

@@ -1,23 +1,37 @@
 # Sleela — Language Syntax Specification
 
     Language:        Sleela
-    Syntax version:  1.8   (the current .sleela grammar version; this document
-                     describes the 1.3..1.8 surface)
-    Compiler:        Sleelvac(TM) 0.3.29-dev  (accepts .sleela syntax 1.3 .. 1.8)
+    Syntax version:  1.10  (1.3..1.9 baseline plus the two `extends` meanings)
+    Compiler:        Sleelvac(TM) 0.3.29-dev  (version gate accepts syntax 1.3 .. 1.10)
     Surface:         Java-like
     Core:            Turing-complete, thread-friendly C/C++ execution core
     Companion:       SHEET.sheet (system-object catalog), SST.model (NS-SST-0001),
-                     lib/LIBRARY.SYMBOLS.md (authoritative /lib class vocabulary)
-    Status:          Normative for the syntax 1.3..1.8 surface
+                     lib/LIBRARY.SYMBOLS.md (authoritative /lib class vocabulary),
+                     markdown/EXTENDS.md (the two `extends` meanings, syntax 1.10)
+    Status:          Normative for the syntax 1.3..1.10 surface
 
     Versioning note: two distinct version numbers apply and must not be
     conflated. The **syntax version** (MAJOR.MINOR, declared per file with
-    `#sleela 1.7`) is the grammar version defined here and enforced by
-    `impl/frontend/version.{h,cpp}` (supported range 1.3 .. 1.7). The
-    **compiler/tool version** (Sleelvac™ 0.3.29-dev, printed by `sleela version`)
-    is the implementation release and evolves independently. A file must declare
-    a syntax version within the supported range; the tool version is
-    informational.
+    `#sleela 1.10`) is the grammar version defined here and enforced by
+    `impl/frontend/version.{h,cpp}` (documented supported range 1.3 .. 1.10).
+    Syntax 1.10 adds the two meanings of `extends`: resolved OOD class
+    inheritance (a derived class inherits a base's fields and methods, with
+    override), and the document form `extends to <targets> <grouper>;` where a
+    grouper is linear | group | services (see markdown/EXTENDS.md).
+    Syntax 1.8 adds two features over the 1.3..1.7 baseline: inferred local
+    declarations using `let`, and constructor arguments on `new Type(args)`
+    (see section 12). Syntax 1.9 adds the **GC-hint statement** `x = gc N;` /
+    `x = mem N;` — a short-term garbage-collection cleanup request with a 0..100
+    aggressiveness (see section 13). The semantic analyzer infers `let` locals
+    from non-null, non-void, statically known initializers, binds constructor
+    arguments to a single declared constructor, and gates the GC hint on a
+    valid in-scope target and a 0..100 band. Constructor overload resolution and
+    `this(...)`/base delegation remain outside the verified implementation and
+    are rejected explicitly; do not infer their support from the
+    constructor-series design documents. The **compiler/tool version** (Sleelvac™ 0.3.29-dev, printed by
+    `sleela version`) is the implementation release and evolves independently.
+    A file must declare a syntax version within the verified supported range;
+    the tool version is informational.
 
 Sleela is a **Java-like** programming language. Its programs are classes of
 fields and methods that compile to bytecode on the C/C++ core. Beyond ordinary
@@ -166,6 +180,7 @@ instances are runtime-only (a struct-typed global reloads as `null`).
                  | var-decl
                  | assign
                  | field-assign
+                 | gc-hint-stmt                      // §13 (syntax 1.9)
                  | if-stmt
                  | while-stmt
                  | for-stmt
@@ -185,6 +200,11 @@ field of the same name).
     member       ::= primary ("." ident)+
 `box.width = 20;` and `box.origin.x = 1;` write through a struct handle. The
 base's struct type is resolved at compile time to compute the field offset.
+
+A `gc-hint-stmt` (syntax 1.9, §13) shares the `ident "=" ...` shape but is NOT an
+assignment: `x = gc N;` / `x = mem N;` is a short-term GC-cleanup request, not a
+store. It is recognised when the whole right-hand side is the contextual word
+`gc`/`mem` (optionally followed by a 0..100 int). The target keeps its value.
 
 ### 4.3 If / else
     if-stmt    ::= "if" "(" expr ")" statement ["else" statement]
@@ -376,6 +396,10 @@ Expected output (order of the concurrent phase aside):
                     bestOfRecord bestOfScore bestOfBest bestOfChoice bestOfReport
                     bestOfClose bestOfMean bestOfLoss bestOfJitter bestOfCertainty
                     bestOfArch bestOfArchParam bestOfArchState   (syntax 1.3+)
+    gc-hint (2):    gc mem        contextual; only as the whole RHS of
+                    `x = gc N;` / `x = mem N;`, N in 0..100  (syntax 1.9+)
+    system (1):     ran           contextual; the `ran::` namespace qualifier for
+                    system refs — `ran::mem`, `ran::gc` (syntax 1.9+, §13.4)
 
 Contextual built-ins are recognized in call position only (they are not reserved
 words). The Munction fluent chain is one sane reach sentence of 4..16 calls; see
@@ -397,23 +421,27 @@ written `<package>.<ClassName>`. This section is informative; `/lib` and
 
 <!-- GENERATED by tools/generate-vocab-appendix.py from lib/LIBRARY.SYMBOLS.md. Do not edit by hand; re-run the tool. -->
 
-This appendix mirrors the **10352** package-qualified class symbols across **83** `/lib` package families, as recorded in the authoritative manifest `lib/LIBRARY.SYMBOLS.md`. It is **informative**: `/lib` and the shared `sleela::library::Index` remain the single source of truth, and nothing here constitutes a second registry. Each entry is resolvable as `<package>.<ClassName>`. Large auto-generated families (> 40 classes) are summarized by count and facade; smaller families list every class.
+This appendix mirrors the **10615** package-qualified class symbols across **89** `/lib` package families, as recorded in the authoritative manifest `lib/LIBRARY.SYMBOLS.md`. It is **informative**: `/lib` and the shared `sleela::library::Index` remain the single source of truth, and nothing here constitutes a second registry. Each entry is resolvable as `<package>.<ClassName>`. Large auto-generated families (> 40 classes) are summarized by count and facade; smaller families list every class.
 
-- **`antivirus`** (1): `SLPackage`
+- **`alphabet`** (15): `Alphabet`, `AlphabetBuilder`, `ArabicAlphabet`, `Color`, `CyrillicAlphabet`, `DarkTheme`, `GreekAlphabet`, `HebrewAlphabet`, `LatinAlphabet`, `Letter`, `LightTheme`, `Palette`, `SLPackage`, `SolarizedTheme`, `Theme`
+- **`antivirus`** (15): `Antivirus`, `SLClamAVAdapter`, `SLDebianAntivirusProfile`, `SLFedoraAntivirusProfile`, `SLLocalScanner`, `SLMacOSAntivirusProfile`, `SLPackage`, `SLQuarantineManager`, `SLScanPolicy`, `SLScanRequest`, `SLScanResult`, `SLScannerEngine`, `SLSystemScanner`, `SLUbuntuAntivirusProfile`, `SLWindowsAntivirusProfile`
 - **`api`** (1): `SLPackage`
 - **`audio`** (1): `SLPackage`
 - **`autocad`** (5): `SLCadDxf`, `SLCadModel`, `SLCadPlan`, `SLCadRenderer`, `autocad`
 - **`bash`** (1): `SLPackage`
+- **`character`** (15): `AdvertisingModel`, `BrokerageModel`, `BusinessModel`, `Character`, `ConsultingModel`, `FranchiseModel`, `FreemiumModel`, `LicensingModel`, `ManufacturingModel`, `MarketplaceModel`, `RetailModel`, `SLPackage`, `SaaSModel`, `SubscriptionModel`, `WholesaleModel`
 - **`churn`** (1): `SLPackage`
+- **`citizen`** (19): `AdvertisingModel`, `BankAccount`, `BrokerageModel`, `BusinessModel`, `Character`, `Citizen`, `ConsultingModel`, `FederalReserveID`, `FranchiseModel`, `FreemiumModel`, `Industry`, `LicensingModel`, `ManufacturingModel`, `MarketplaceModel`, `RetailModel`, `SLPackage`, `SaaSModel`, `SubscriptionModel`, `WholesaleModel`
 - **`codecs`** (3): `SLCodecLoader`, `SLPackage`, `codecs`
 - **`collections`** (8): `SLArray`, `SLIterator`, `SLList`, `SLMap`, `SLQueue`, `SLRange`, `SLSet`, `SLStack`
 - **`common-rails`** (12): `PrintComponent`, `PrintContractTest`, `PrintField`, `PrintFormatter`, `PrintGlyphs`, `PrintLayout`, `PrintLine`, `PrintProgress`, `PrintRenderer`, `PrintState`, `PrintWriter`, `SLPackage`
-- **`compiler`** (39): `BinaryFormatReference`, `DynamiteConnector`, `LanguageReference`, `PermissibleConnector`, `ProgramMapping`, `SLAstBuilder`, `SLAstNode`, `SLBinder`, `SLBuildArtifact`, `SLBytecodeEmitter`, `SLCodeGenerator`, `SLCompileChoice`, `SLCompiler`, `SLCompilerDiagnostic`, `SLLexer`, `SLLowerer`, `SLNameResolver`, `SLParser`, `SLSourceForm`, `SLSourceLocation`, `SLToken`, `SLTokenStream`, `SLTypeChecker`, `SafetyReference`, `SleelaCompiler`, `SleelaCompilerAdvanced`, `SleelaCompilerBasic`, `SleelaCompilerCodegen`, `SleelaCompilerDiagnostics`, `SleelaCompilerIR`, `SleelaCompilerLexer`, `SleelaCompilerLowering`, `SleelaCompilerParser`, `SleelaCompilerSemantics`, `SleelaCompilerSource`, `SleelaCompilerSymbols`, `SleelaCompilerVMTarget`, `advanced-vm-target`, `hello-vm`
+- **`compiler`** — 54 classes (facade `compiler.BinaryFormatReference`); see `lib/LIBRARY.SYMBOLS.md` for the full list.
 - **`config`** (1): `SLPackage`
 - **`connector`** (1): `SLPackage`
 - **`coorenagraph`** (20): `Amoral`, `Beneficence`, `Coorenagraph`, `Deontology`, `Ethics`, `Magnanimous`, `Moral`, `MoralDeliberation`, `MoralVocabulary`, `Morale`, `Morals`, `Pernicious`, `Principled`, `Probity`, `Reprobate`, `SLPackage`, `Unscrupulous`, `Upright`, `Utilitarianism`, `VirtueEthics`
 - **`core`** — 84 classes (facade `core.SLPackage`); see `lib/LIBRARY.SYMBOLS.md` for the full list.
-- **`crypto`** (16): `SLCertificate`, `SLCertificateStore`, `SLCipher`, `SLCipherContext`, `SLCipherKey`, `SLDigest`, `SLHmac`, `SLKey`, `SLKeyDerivation`, `SLKeyPair`, `SLNonce`, `SLPrivateKey`, `SLPublicKey`, `SLSignature`, `SLTrustStore`, `SLVerifier`
+- **`cpu`** — 140 classes (facade `cpu.SL6502CPU`); see `lib/LIBRARY.SYMBOLS.md` for the full list.
+- **`crypto`** (25): `SLAes`, `SLAesGcm`, `SLCertificate`, `SLCertificateStore`, `SLCipher`, `SLCipherContext`, `SLCipherKey`, `SLDigest`, `SLHkdf`, `SLHmac`, `SLKey`, `SLKeyDerivation`, `SLKeyPair`, `SLMlDsa`, `SLMlKem`, `SLNationalSuite`, `SLNonce`, `SLPrivateKey`, `SLPublicKey`, `SLSha256`, `SLSha3`, `SLSha512`, `SLSignature`, `SLTrustStore`, `SLVerifier`
 - **`data`** (1): `SLPackage`
 - **`data-structures`** (9): `DSList`, `DSMap`, `DSObject`, `DSQueue`, `DSStack`, `DSValue`, `DataStructures`, `DataStructuresTest`, `SLPackage`
 - **`database`** (16): `SLColumn`, `SLConnectionPool`, `SLDataSource`, `SLDatabase`, `SLDatabaseConfig`, `SLIndex`, `SLMigration`, `SLPreparedStatement`, `SLQuery`, `SLQueryParameter`, `SLResultSet`, `SLRow`, `SLSchema`, `SLStatement`, `SLTable`, `SLTransaction`
@@ -422,6 +450,7 @@ This appendix mirrors the **10352** package-qualified class symbols across **83*
 - **`deliberation`** — 295 classes (facade `deliberation.SLAStarSearch`); see `lib/LIBRARY.SYMBOLS.md` for the full list.
 - **`drivers`** (1): `SLPackage`
 - **`filesystem`** (16): `SLArchive`, `SLDirectoryInfo`, `SLDirectoryReader`, `SLDirectoryWalker`, `SLFileAttributes`, `SLFileCopier`, `SLFileInfo`, `SLFileLock`, `SLFileMode`, `SLFileMover`, `SLFilePermissions`, `SLFileReader`, `SLFileWatcher`, `SLFileWriter`, `SLPathPattern`, `SLPathResolver`
+- **`gameplay`** (14): `AskForHelpMove`, `DetailedReport`, `DiceRoll`, `ExpectedFuture`, `GameMove`, `GameTurn`, `HelpIndexMove`, `InferenceEngine`, `ManagementCourtroom`, `MoveOutcome`, `NewDesireMove`, `Player`, `PortfolioDecision`, `SLPackage`
 - **`gui`** (1): `SLPackage`
 - **`html`** (1): `SLPackage`
 - **`http`** (17): `SLHttpBody`, `SLHttpCache`, `SLHttpClient`, `SLHttpCookie`, `SLHttpHandler`, `SLHttpHeaders`, `SLHttpMiddleware`, `SLHttpMultipart`, `SLHttpProxy`, `SLHttpRoute`, `SLHttpRouter`, `SLHttpServer`, `SLHttpSession`, `SLHttpStatus`, `SLHttpTls`, `SLHttpVersion`, `SLRouteData`
@@ -449,12 +478,13 @@ This appendix mirrors the **10352** package-qualified class symbols across **83*
 - **`math`** — 243 classes (facade `math.SLANOVA`); see `lib/LIBRARY.SYMBOLS.md` for the full list.
 - **`memory`** (16): `SLAddress`, `SLAllocator`, `SLArena`, `SLBuffer`, `SLByteBuffer`, `SLMemory`, `SLMemoryBlock`, `SLMemoryManager`, `SLMemoryRegion`, `SLMemorySegment`, `SLMemoryStatistics`, `SLMemoryView`, `SLPointer`, `SLPoolAllocator`, `SLReference`, `SLWeakReference`
 - **`modules`** (1): `SLPackage`
+- **`moral-capacitor`** (19): `SLMachineMoralGate`, `SLMoralCapacitor`, `SLMoralCertificate`, `SLMoralCertificateAuthority`, `SLMoralCertified`, `SLMoralCharge`, `SLMoralCodeGuard`, `SLMoralFramework`, `SLMoralLedger`, `SLMoralOperation`, `SLMoralPolicy`, `SLMoralVerdict`, `SLMoralVeto`, `SLMoralWarranty`, `SLOSMoralGate`, `SLPackage`, `SLVMMoralGuard`, `moral-capacitor`, `moral-certificate`
 - **`munction`** (1): `SLPackage`
 - **`native`** (1): `SLPackage`
 - **`net`** (8): `SLDnsResolver`, `SLEndpoint`, `SLHttpRequest`, `SLHttpResponse`, `SLSocket`, `SLTcpConnection`, `SLUdpSocket`, `SLUri`
 - **`nordshrift`** (11): `DynamiteConnector`, `MySQLConnector`, `NordshriftCompilerBridge`, `NordshriftSource`, `NordshriftSymbol`, `NordshriftSymbolResolver`, `NordshriftSymbolTable`, `PermissibleConnector`, `PostgreSQLConnector`, `SLPackage`, `SQLConnector`
 - **`opcodes`** — 119 classes (facade `opcodes.SLGovConcept`); see `lib/LIBRARY.SYMBOLS.md` for the full list.
-- **`os`** (10): `SLClock`, `SLDirectory`, `SLEnvironment`, `SLEventSignal`, `SLFile`, `SLFileSystem`, `SLOperatingSystem`, `SLPath`, `SLPermissions`, `SLProcess`
+- **`os`** — 64 classes (facade `os.SLArchitectureSet`); see `lib/LIBRARY.SYMBOLS.md` for the full list.
 - **`politico`** (1): `SLPackage`
 - **`process`** (16): `SLAtomic`, `SLBarrier`, `SLCondition`, `SLExecutor`, `SLMutex`, `SLProcessBuilder`, `SLProcessEnvironment`, `SLProcessGroup`, `SLProcessHandle`, `SLProcessInfo`, `SLProcessScheduler`, `SLProcessSignal`, `SLSemaphore`, `SLThreadGroup`, `SLThreadLocal`, `SLThreadState`
 - **`psychiatry`** (1): `SLPackage`
@@ -472,14 +502,15 @@ This appendix mirrors the **10352** package-qualified class symbols across **83*
 - **`sst`** (11): `DynamiteConnector`, `MySQLConnector`, `PostgreSQLConnector`, `SLPackage`, `SQLConnector`, `SSTLibrary`, `SSTSource`, `SSTSymbol`, `SSTSymbolKind`, `SSTSymbolReference`, `SSTSymbolTable`
 - **`synchro`** (1): `SLPackage`
 - **`systems`** (1): `SLPackage`
-- **`telephony-skya`** (1): `SLPackage`
+- **`telephony-skya`** (7): `Communication`, `Network`, `RealAcquaintances`, `SLPackage`, `Servers`, `SkyaModules`, `Socio`
 - **`terminal`** (1): `SLPackage`
 - **`terminal_pixel`** (1): `SLPackage`
 - **`text`** (8): `SLCharset`, `SLFormatter`, `SLRegex`, `SLString`, `SLStringBuffer`, `SLStringBuilder`, `SLTextReader`, `SLTextWriter`
 - **`ui`** (16): `SLApplication`, `SLButton`, `SLDialog`, `SLLabel`, `SLLayout`, `SLListView`, `SLMenu`, `SLMenuItem`, `SLTableView`, `SLTextArea`, `SLTextField`, `SLTheme`, `SLTreeView`, `SLView`, `SLWidget`, `SLWindow`
 - **`us-infrastructure`** (1): `SLPackage`
+- **`user-interface`** — 53 classes (facade `user-interface.SLPackage`); see `lib/LIBRARY.SYMBOLS.md` for the full list.
 - **`video`** (16): `Video`, `VideoCodec`, `VideoCodecCatalog`, `VideoDecoder`, `VideoEncoder`, `VideoFormat`, `VideoFrame`, `VideoFrameBuffer`, `VideoPixelFormat`, `VideoProfile`, `VideoRenderer`, `VideoStream`, `VideoTimeline`, `VideoTimestamp`, `VideoTrack`, `VideoWork`
-- **`vm`** — 79 classes (facade `vm.GCBarrier`); see `lib/LIBRARY.SYMBOLS.md` for the full list.
+- **`vm`** — 80 classes (facade `vm.GCBarrier`); see `lib/LIBRARY.SYMBOLS.md` for the full list.
 - **`website`** (5): `SLWebsiteDesign`, `SLWebsiteEmitter`, `SLWebsiteGenerator`, `SLWebsiteSign`, `website`
 
 --------------------------------------------------------------------------------
@@ -488,7 +519,12 @@ on the Turing-complete threaded C/C++ core.
 
 
 --------------------------------------------------------------------------------
-## 9. Syntax 1.8 — inferred local declarations
+## 12. Syntax 1.8 — inferred locals and constructor arguments
+
+Syntax 1.8 extends the 1.3..1.7 surface with two features: inferred local
+declarations (`let`) and constructor arguments on `new Type(args)`.
+
+### 12.1 Inferred local declarations (`let`)
 
 A local declaration may use `let` when its initializer has a statically known,
 non-null and non-void type:
@@ -508,7 +544,172 @@ class LetExample {
 ```
 
 The inferred type is the initializer's semantic type. An initializer is required.
-Inference from `null`, `void`, or an unknown/dynamic expression is rejected.
-Explicit declarations remain valid. Constructor overload resolution and runtime
-invocation are not declared part of this implementation until compiler/runtime
-support and constructor regression tests are complete.
+Inference from `null`, `void`, or an unknown/dynamic expression is rejected rather
+than silently assigning an unsafe type. Explicit declarations remain valid.
+
+### 12.2 Constructor arguments
+
+A class may declare a constructor: a member whose name is the class name,
+followed by a parameter list and a body. Syntax 1.8 allows that constructor to
+be invoked with arguments through `new Type(args)`; the arguments bind to the
+constructor parameters and the constructor body runs before the new instance is
+published to the caller.
+
+    constructorDecl ::= javaModifiers? Ident "(" paramList? ")" throwsClause? block
+                        // Ident must equal the enclosing class name   (1.8+)
+    newExpr         ::= "new" typeName "(" argList? ")"
+                        // argList non-empty selects the matching constructor (1.8+)
+
+```sleela
+#sleela 1.8
+class Point {
+    int x;
+    int y;
+
+    Point(int px, int py) {
+        this.x = px;
+        this.y = py;
+    }
+
+    static void main() {
+        Point p = new Point(3, 4);
+        print(p.x);        // 3
+        print(p.y);        // 4
+        let q = new Point(10, 20);
+        print(q.x);        // 10
+    }
+}
+```
+
+Instance field initializers run first (producing a default-initialized instance),
+then the selected constructor body executes with `this` bound to that instance.
+A `new Type(args)` expression evaluates to the fully initialized instance.
+
+Scope and limits of the 1.8 constructor feature:
+
+- **Single constructor only.** Constructor **overload resolution is not part of
+  syntax 1.8**: a class that declares more than one constructor is rejected. The
+  constructor's parameter count must equal the number of supplied arguments, and
+  each argument type must be assignable to its parameter type.
+- **No delegation.** Explicit `this(...)` and base-constructor delegation are not
+  part of syntax 1.8; the chaining model in `lib/compiler/CONSTRUCTOR-SERIES.md`
+  is a forward-looking design, not a claim of current support.
+- A zero-argument `new Type()` continues to work whether or not a no-argument
+  constructor is declared; when one is declared it runs.
+
+These limits are enforced rather than silently narrowed: unsupported constructor
+forms produce an explicit semantic error (see `impl/frontend/semantic.cpp` and
+`impl/frontend/compiler.cpp`). Regression fixtures live in
+`tests/sleela-syntax-1.8/`.
+
+--------------------------------------------------------------------------------
+## 13. Syntax 1.9 — the GC-hint statement (`x = gc N;` / `x = mem N;`)
+
+Syntax 1.9 adds one feature over the 1.3..1.8 baseline: an explicit, developer-
+emitted request for a **short-term garbage-collection cleanup** of unreachable
+allocations once a value is finished being used.
+
+### 13.1 Form
+
+    gc-hint-stmt ::= ident "=" ("gc" | "mem") int-lit? ";"
+
+```sleela
+#sleela 1.9
+class Example {
+    static void main() {
+        let x = new Widget();
+        // ... use x ...
+        x = gc 100;     // most-aggressive short-term cleanup after use
+        let y = new Buffer();
+        y = mem 25;     // the `mem` spelling, a modest cleanup
+        let z = new Cache();
+        z = gc;         // bare form: a default modest cleanup
+    }
+}
+```
+
+The two spellings `gc` and `mem` are equivalent; both name the same hint. `N` is
+the **aggressiveness**, an integer in the inclusive band **0..100**:
+
+  * `0`                 — a no-op (the hint is recorded but asks for nothing).
+  * `1..99`             — a young-only safepoint collection, sized to the level.
+  * `100`               — the strongest claim: a full (not young-only) collection.
+  * omitted (bare form) — defaults to a modest cleanup (level 50).
+
+### 13.2 Contextual, not reserved
+
+`gc` and `mem` are **contextual** words, not reserved keywords. They are special
+only as the *whole* right-hand side of an assignment; everywhere else they are
+ordinary identifiers. So a variable may still be named `gc` or `mem`, and an
+expression RHS that merely begins with such a name is not a hint:
+
+```sleela
+let gc = 10;
+let x = gc + 5;   // normal assignment: x = 15 (gc is a plain variable)
+x = gc;           // the WHOLE RHS is `gc`: this is the GC hint
+```
+
+### 13.3 Semantics and limits
+
+  * The **target** must be an in-scope value (a local, instance field, or static
+    field). Naming the value the developer is done with keeps the hint honest:
+    it marks a real binding as releasable. An unknown target is a semantic error.
+  * The **aggressiveness** must be within `0..100`; an out-of-range literal is a
+    semantic error, not silently clamped.
+  * The hint reclaims **only genuinely unreachable** objects. It never frees a
+    live value, and it does not change the program's observable result — the
+    target's value is unchanged by the hint.
+  * Collection is a VM safepoint, so (like every collection) it is **deferred
+    while worker threads are active** and runs at structured-concurrency
+    quiescence.
+  * The hint lowers to a single VM opcode, `OP_GC_HINT`, whose operand is the
+    0..100 aggressiveness; the VM runs a `gc_safepoint_with_roots` collection at
+    that strength (young-only below 100, full at 100).
+
+These constraints are enforced rather than silently narrowed: an unsupported
+target or band produces an explicit semantic error (see
+`impl/frontend/semantic.cpp` and `impl/frontend/compiler.cpp`). Regression
+fixtures live in `tests/sleela-syntax-1.9/`.
+
+### 13.4 The `ran::` system namespace
+
+Some words a program naturally wants for its own variables — `mem`, `gc`, and
+the like — also name system meanings. To keep every such word free for ordinary
+class and variable names, syntax 1.9 adds an explicit system-namespace
+qualifier, **`ran::`**. The prefix `ran` denotes the **System** — the facility
+already *Ran* and resident in **RAM** — so `ran::mem` and `ran::gc` name the
+system meaning unambiguously and the bare words stay available as identifiers.
+
+    ran-ref      ::= "ran" "::" ident                 // system value reference
+    gc-hint-stmt ::= ident "=" ("ran" "::")? ("gc" | "mem") int-lit? ";"
+
+`ran` is **contextual**, not reserved: it is special only immediately before
+`::`. A variable, field, or struct member may be named `ran`, `mem`, or `gc`,
+and ordinary `base::method` references are unaffected (only the exact identifier
+`ran` before `::` is the system namespace).
+
+```sleela
+#sleela 1.9
+let mem = 11;            // ordinary variables: mem/gc/ran are just names
+let gc  = 22;
+let ran = 33;
+print(mem + gc + ran);   // 66
+
+let b = ran::mem;        // THE system memory: current live bytes (int)
+x = ran::gc 100;         // the GC hint, explicitly system-scoped
+x = ran::mem 25;         // equivalently, the `mem` spelling of the hint
+x = ran::gc;             // bare qualified form -> default modest cleanup
+```
+
+System references (value forms):
+
+| Reference | Meaning | Type |
+|---|---|---|
+| `ran::mem` | current live system memory in bytes (the memory manager's `live_bytes` when enabled, else the GC's tracked bytes) | `int` |
+
+The `ran::`-qualified GC hint (`x = ran::gc N;` / `x = ran::mem N;`) is identical
+in effect to the unqualified `x = gc N;` / `x = mem N;` of §13.1 — the qualifier
+only makes the system intent explicit so a modern compiler decides the author's
+meaning instantly. `ran::mem` lowers to the `OP_RAN_MEM` opcode (pushes the live
+byte count); an unknown system word (`ran::<other>`) is an explicit semantic
+error. The namespace requires syntax 1.9.

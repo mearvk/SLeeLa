@@ -1,0 +1,60 @@
+/*
+ * lib/os/SLDesktopSpec.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLDesktopSpec — the desktop/session layer of an OS being
+ *   constructed: the graphics stack, display server/compositor, session shell,
+ *   and widget toolkit that sit on top of the kernel and system services. The
+ *   three shapes present their native stacks — GNOME Shell on a Wayland
+ *   compositor for Linux, Explorer/DWM for Windows, Aqua on WindowServer for
+ *   macOS — but the layer is explicitly OPTIONAL: a server edition composes an
+ *   OS with no desktop at all.
+ *
+ * In the firmware -> boot -> kernel -> userspace -> desktop model, this is the
+ * topmost node. The design principle it encodes is that the desktop is NOT the
+ * operating system: it is a replaceable stack above Linux/NT/XNU and the
+ * userspace services, so it can be swapped (GNOME for KDE/Xfce) or omitted.
+ *
+ * Family: os. Pure design model; no native bridge calls.
+ */
+#sleela 1.5
+class SLDesktopSpec {
+  int enabled;        // 1 if the OS has a desktop at all (0 = server/headless)
+  String displayServer; // "Wayland" / "DWM" / "WindowServer"
+  String sessionShell;  // "GNOME Shell" / "Explorer" / "Aqua"
+  String toolkit;       // "GTK" / "Win32/WinUI" / "AppKit"
+  String displayManager;// login/greeter
+  int configured;
+
+  // A headless (no desktop) configuration — valid for a server edition.
+  void headless() {
+    enabled = 0; displayServer = ""; sessionShell = "";
+    toolkit = ""; displayManager = ""; configured = 1;
+  }
+
+  void configure(String server, String shell, String kit, String greeter) {
+    enabled = 1; displayServer = server; sessionShell = shell;
+    toolkit = kit; displayManager = greeter; configured = 1;
+  }
+
+  // Seed the native desktop stack for a shape.
+  void forShape(SLOSShape shape) {
+    if (shape.isWindows()) {
+      configure("DWM", "Explorer", "Win32/WinUI", "LogonUI"); return;
+    }
+    if (shape.isMac()) {
+      configure("WindowServer", "Aqua", "AppKit", "loginwindow"); return;
+    }
+    configure("Wayland", "GNOME Shell", "GTK", "GDM");
+  }
+
+  // Swap the Linux desktop for an alternate (the desktop is replaceable).
+  void useAlternate(String shell, String kit) {
+    sessionShell = shell; toolkit = kit;
+  }
+
+  boolean hasDesktop()      { return enabled == 1; }
+  String server()           { return displayServer; }
+  String shell()            { return sessionShell; }
+  String widgetToolkit()    { return toolkit; }
+  String greeter()          { return displayManager; }
+}

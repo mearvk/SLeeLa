@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 #include <set>
+#include <functional>
 #include "library_index.h"
 
 namespace sleela {
@@ -87,10 +88,40 @@ public:
         }
         // Class instances share the VM's managed struct allocator, but each
         // class gets an independent layout and each object gets independent storage.
+        //
+        // OOD inheritance (syntax 1.10): a derived class's instance layout is the
+        // base class's inherited instance fields first, then the derived class's
+        // own fields (a same-name field is not duplicated). Base-first ordering
+        // keeps a base method's field offsets valid on a derived instance. The
+        // extends chain is resolved base-first; <=1.9 keeps the flat layout.
+        std::map<std::string,const ClassDecl*> classByName;
+        for(const auto& c:prog_.classes) classByName[c.name]=&c;
+        const bool inheritance = !(syntax_<SyntaxVersion{1,10});
+        std::map<std::string,std::vector<const Field*>> instanceFieldsOf; // resolved, in layout order
+        std::set<std::string> laidOut; std::set<std::string> layoutInProgress;
+        std::function<void(const std::string&)> resolveFields=[&](const std::string& name){
+            if(laidOut.count(name)||!classByName.count(name)) return;
+            if(!layoutInProgress.insert(name).second) return; // cycle guard
+            const ClassDecl* cls=classByName[name];
+            std::vector<const Field*> ordered; std::set<std::string> seen;
+            if(inheritance){
+                const std::string& sup=cls->java.superclass;
+                if(!sup.empty()&&classByName.count(sup)&&!layoutInProgress.count(sup)){
+                    resolveFields(sup);
+                    for(const Field* bf:instanceFieldsOf[sup]) if(seen.insert(bf->name).second) ordered.push_back(bf);
+                }
+            }
+            for(const auto& f:cls->fields) if(!f.isStatic){ if(seen.insert(f.name).second) ordered.push_back(&f); }
+            instanceFieldsOf[name]=std::move(ordered);
+            layoutInProgress.erase(name);
+            laidOut.insert(name);
+        };
+        for(const auto& cls:prog_.classes) resolveFields(cls.name);
         for(const auto& cls:prog_.classes){
             if(structLayout_.count(cls.name)) throw std::runtime_error("Semantic error: class/struct name collision '"+cls.name+"'");
             StructLayout layout; layout.name=cls.name; std::vector<const char*> names;
-            for(const auto& f:cls.fields) if(!f.isStatic){
+            for(const Field* fp:instanceFieldsOf[cls.name]){
+                const auto& f=*fp;
                 if(layout.fieldOffset.count(f.name)) throw std::runtime_error("Semantic error: duplicate instance field '"+f.name+"' in class '"+cls.name+"'");
                 layout.fieldOffset[f.name]=(int)layout.fieldType.size(); layout.fieldType.push_back(f.type); names.push_back(f.name.c_str());
             }
@@ -111,6 +142,30 @@ public:
             if(m.isProtected) protectedMethods_.insert(key);
             funcIndex_[key]=(int)methods_.size(); methods_.push_back(mi);
             if(m.name=="main") funcIndex_["main"]=(int)methods_.size()-1;
+        }
+        // OOD inheritance (syntax 1.10): make a base method callable as
+        // Derived::method when the derived class does not override it. The
+        // inherited method shares the base's compiled body (its field accesses
+        // resolve against the base-first layout, which the derived instance
+        // shares). Resolved base-first so multi-level chains inherit fully.
+        if(inheritance){
+            std::set<std::string> aliased; std::set<std::string> aliasInProgress;
+            std::function<void(const std::string&)> inheritMethods=[&](const std::string& name){
+                if(aliased.count(name)||!classByName.count(name)) return;
+                if(!aliasInProgress.insert(name).second) return; // cycle guard
+                const std::string& sup=classByName[name]->java.superclass;
+                if(sup.empty()||!classByName.count(sup)||aliasInProgress.count(sup)){ aliasInProgress.erase(name); aliased.insert(name); return; }
+                inheritMethods(sup);
+                // Alias the base's RESOLVED function set (its own + inherited),
+                // so multi-level chains carry grandparent methods down.
+                const std::string pfx=sup+"::";
+                std::vector<std::pair<std::string,int>> toAlias;
+                for(const auto& kv:funcIndex_){ const std::string& bk=kv.first; if(bk.rfind(pfx,0)!=0) continue; std::string mname=bk.substr(pfx.size()); if(mname=="main") continue; const std::string dk=name+"::"+mname; if(funcIndex_.count(dk)) continue; toAlias.push_back({dk,kv.second}); auto ow=methodOwner_.find(bk); if(ow!=methodOwner_.end()) methodOwner_[dk]=ow->second; }
+                for(auto& e:toAlias) funcIndex_[e.first]=e.second;
+                aliasInProgress.erase(name);
+                aliased.insert(name);
+            };
+            for(const auto& cls:prog_.classes) inheritMethods(cls.name);
         }
         if(funcIndex_.find("main")==funcIndex_.end()) throw std::runtime_error("Semantic error: no 'main' method found");
         for(auto& mi:methods_) emitMethod(mi);
@@ -176,6 +231,7 @@ private:
         if(auto b=dynamic_cast<const Block*>(s)){emitBlock(*b);return;} if(auto d=dynamic_cast<const VarDecl*>(s)){emitVarDecl(*d);return;}
         if(auto a=dynamic_cast<const Assign*>(s)){emitAssign(*a);return;} if(auto e=dynamic_cast<const ExprStmt*>(s)){emitExpr(e->expr.get());emit(OP_POP);return;}
         if(auto p=dynamic_cast<const PrintStmt*>(s)){emitExpr(p->expr.get());emit(OP_PRINT);return;} if(auto r=dynamic_cast<const ReturnStmt*>(s)){emitReturn(*r);return;}
+        if(auto gh=dynamic_cast<const GcHintStmt*>(s)){emitGcHint(*gh);return;}
         if(auto i=dynamic_cast<const IfStmt*>(s)){emitIf(*i);return;} if(auto w=dynamic_cast<const WhileStmt*>(s)){emitWhile(*w);return;} if(auto f=dynamic_cast<const ForStmt*>(s)){emitFor(*f);return;}
         if(auto fa=dynamic_cast<const FieldAssign*>(s)){emitFieldAssign(*fa);return;}
         if(auto d=dynamic_cast<const DoStmt*>(s)){emitDo(*d);return;}
@@ -205,6 +261,27 @@ private:
         emit(OP_STOREL,slot);
     }
     void emitAssign(const Assign& a){int slot=ctx_->slotOf(a.name);if(slot>=0){emitExpr(a.value.get());emit(OP_STOREL,slot);return;}int off=instanceFieldOffset(a.name);if(off>=0){emitThis();emitExpr(a.value.get());emit(OP_SETFIELD,off);emit(OP_POP);return;}int g=fieldSlot(a.name);if(g>=0){emitExpr(a.value.get());emit(OP_STOREG,g);return;}throw std::runtime_error("Semantic error: assignment to undeclared variable '"+a.name+"'");}
+    // GC hint (syntax 1.9): `x = gc N;` / `x = mem N;`. The target must name an
+    // in-scope value the developer is finished using (a local, instance field,
+    // or static field), which keeps the hint honest: it marks a real binding as
+    // releasable. The hint lowers to a single OP_GC_HINT whose operand is the
+    // 0..100 aggressiveness; the VM runs a short-term collection of unreachable
+    // allocations at that strength. No value is pushed or popped.
+    void emitGcHint(const GcHintStmt& h){
+        bool known = ctx_ && ctx_->slotOf(h.target)>=0;
+        if(!known) known = instanceFieldOffset(h.target)>=0;
+        if(!known) known = fieldSlot(h.target)>=0;
+        if(!known) throw std::runtime_error("Semantic error: GC hint target '"+h.target+"' is not an in-scope variable");
+        int level=h.aggressiveness; if(level<0)level=0; if(level>100)level=100;
+        emit(OP_GC_HINT, level);
+    }
+    // `ran::<word>` value reference. `ran::mem` lowers to OP_RAN_MEM, which
+    // pushes the current live system memory in bytes. Unknown words are rejected
+    // in semantic analysis; this emitter handles the value forms.
+    void emitRanRef(const RanRefExpr& r){
+        if(r.word=="mem"){emit(OP_RAN_MEM);return;}
+        throw std::runtime_error("Semantic error: unknown system reference 'ran::"+r.word+"'");
+    }
     void emitReturn(const ReturnStmt& r){if(r.value)emitExpr(r.value.get());else emit(OP_CONST,addNullConst());emit(OP_RET);}
     void emitFieldAssign(const FieldAssign& fa){int off=-1;memberLayout(fa.base.get(),fa.field,off);emitExpr(fa.base.get());emitExpr(fa.value.get());emit(OP_SETFIELD,off);emit(OP_POP);}
     void emitIf(const IfStmt& s){emitExpr(s.cond.get());int jf=emit(OP_JMPF,0);emitStmt(s.thenS.get());if(s.elseS){int jend=emit(OP_JMP,0);patch(jf,here());emitStmt(s.elseS.get());patch(jend,here());}else patch(jf,here());}
@@ -253,6 +330,7 @@ private:
         if(auto x=dynamic_cast<const IntLit*>(e)){emit(OP_CONST,slvm_add_const_int(vm_,x->value));return;} if(auto x=dynamic_cast<const DoubleLit*>(e)){emit(OP_CONST,slvm_add_const_double(vm_,x->value));return;}
         if(auto x=dynamic_cast<const BoolLit*>(e)){emit(OP_CONST,slvm_add_const_bool(vm_,x->value?1:0));return;} if(auto x=dynamic_cast<const StrLit*>(e)){emit(OP_CONST,slvm_add_const_str(vm_,x->value.c_str()));return;}
         if(dynamic_cast<const NullLit*>(e)){emit(OP_CONST,addNullConst());return;} if(auto x=dynamic_cast<const VarExpr*>(e)){emitVar(*x);return;} if(auto x=dynamic_cast<const Unary*>(e)){emitUnary(*x);return;}
+        if(auto x=dynamic_cast<const RanRefExpr*>(e)){emitRanRef(*x);return;}
         if(auto x=dynamic_cast<const Binary*>(e)){emitBinary(*x);return;} if(auto x=dynamic_cast<const Call*>(e)){emitCall(*x);return;}
         if(auto x=dynamic_cast<const NewExpr*>(e)){emitNew(*x);return;} if(auto x=dynamic_cast<const MemberAccess*>(e)){emitMember(*x);return;}
         if(auto x=dynamic_cast<const MethodCall*>(e)){emitMethodCall(*x);return;}
@@ -353,10 +431,30 @@ private:
         if(oit==lit->second.fieldOffset.end()) throw std::runtime_error("Semantic error: struct '"+tn+"' has no field '"+field+"'");
         offset=oit->second; return lit->second;
     }
+    // Resolve the single constructor declared for `className` that accepts
+    // `argc` arguments. Syntax 1.8 supports constructor arguments but NOT
+    // overload resolution or this()/base delegation, so there must be exactly
+    // one constructor and its arity must match. Returns nullptr when the class
+    // declares no constructor at all (the zero-arg field-init path applies).
+    const Method* findConstructor(const std::string& className,size_t argc){
+        const Method* match=nullptr; int ctorCount=0;
+        for(const auto& cls:prog_.classes) if(cls.name==className)
+            for(const auto& m:cls.methods) if(m.java.constructor){
+                ctorCount++;
+                if(m.params.size()==argc) match=&m;
+            }
+        if(ctorCount==0) return nullptr;
+        if(ctorCount>1) throw std::runtime_error("Semantic error: class '"+className+"' declares multiple constructors; syntax 1.8 does not support constructor overload resolution");
+        if(!match) throw std::runtime_error("Semantic error: no constructor of '"+className+"' takes "+std::to_string(argc)+" argument(s)");
+        return match;
+    }
     void emitNew(const NewExpr& n){
         if(n.typeName.size()>=2 && n.typeName.compare(n.typeName.size()-2,2,"[]")==0){if(!n.args.empty())emitExpr(n.args[0].get());else emit(OP_CONST,slvm_add_const_int(vm_,0));emit(OP_NEWARRAY);return;}
         auto it=structLayout_.find(n.typeName);if(it==structLayout_.end())throw std::runtime_error("Semantic error: 'new' of unknown class or struct '"+n.typeName+"'");
-        if(!n.args.empty())throw std::runtime_error("Semantic error: constructors with arguments are not yet supported for '"+n.typeName+"'");
+        // Resolve a matching constructor before allocating so an arity/overload
+        // error is reported without leaving a half-built instance plan.
+        const Method* ctor = n.args.empty() ? findConstructor(n.typeName,0) : findConstructor(n.typeName,n.args.size());
+        if(!n.args.empty() && !ctor) throw std::runtime_error("Semantic error: class '"+n.typeName+"' has no constructor to accept "+std::to_string(n.args.size())+" argument(s)");
         emit(OP_NEWSTRUCT,it->second.typeIndex);
         // Initialize class fields per instance. A duplicated handle is consumed
         // by SETFIELD while the original stays on the stack as the new value.
@@ -372,6 +470,19 @@ private:
                 else emit(OP_CONST,addNullConst());
                 emit(OP_SETFIELD,off->second);emit(OP_POP);
             }
+        }
+        // Syntax 1.8 constructor invocation. After field initialization the
+        // fresh instance is on top of the stack. Duplicate it as the `this`
+        // receiver, push the constructor arguments, and call the constructor
+        // method; its (null) return value is discarded so the fully initialized
+        // instance remains on the stack as the value of `new Type(args)`.
+        if(ctor){
+            auto target=funcIndex_.find(n.typeName+"::"+ctor->name);
+            if(target==funcIndex_.end()) throw std::runtime_error("Semantic error: constructor of '"+n.typeName+"' is not registered");
+            emit(OP_DUP);
+            for(const auto& a:n.args) emitExpr(a.get());
+            emit(OP_CALL,target->second);
+            emit(OP_POP);
         }
     }
     void emitMember(const MemberAccess& m){

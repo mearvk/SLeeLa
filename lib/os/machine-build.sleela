@@ -1,0 +1,125 @@
+#sleela 1.5
+// machine-build.sleela -- the self-contained, runnable demonstrator of the
+// lib/os NAMED-HARDWARE machine family (SLHardwareComponent, the per-family
+// catalogues under memory-ddr/ ssd/ hdd/ usb/ uefi/ video-cards/, the
+// SLHardwareRegistry, SLMachineModel, and SLMachineBuilder). The SLeeLa
+// compiler's `run` compiles one file as a single unit, so this aggregate
+// inlines a compact slice of the named-part model + a `main` that:
+//   1. requests named parts by manufacturer + variant (DDR5, NVMe PCIe5, UEFI,
+//      a GeForce card),
+//   2. assembles them into a machine "build sheet",
+//   3. sizes the Sleela VM from the real part capacities,
+// then prints the resulting machine description. The split per-family files are
+// the full catalogue; this file is the executable counterpart, mirroring the
+// os-build.sleela / website.sleela convention.
+//
+// The point it demonstrates: a machine is described ONCE by its named parts in
+// Sleela source, and compiling + running that description yields a concrete,
+// sized machine ready to boot on the Sleela VM. Swapping a part name (SSD ->
+// HDD, DDR5 -> DDR4) re-sizes the produced machine.
+
+// --- A compact named-parts machine model --------------------------------
+struct Part { String cls; String vendor; String model; String spec; int sizeUnits; }
+
+struct Machine {
+    String name; String cpuVendor; String cpuModel; int cores; int bits; int mhz;
+    Part memory; Part storage; Part firmware; Part usb; Part video;
+    int memModules;
+}
+
+class MachineBuilder {
+
+    String intToStr(int v) { return "" + v; }
+
+    Part part(String cls, String vendor, String model, String spec, int sizeUnits) {
+        Part p = new Part();
+        p.cls = cls; p.vendor = vendor; p.model = model; p.spec = spec; p.sizeUnits = sizeUnits;
+        return p;
+    }
+
+    // DDR module: sizeUnits = capacity in MB. spec = generation name.
+    Part ddr(String vendor, String gen, int capacityMb) {
+        return part("memory", vendor, vendor + " " + gen, gen, capacityMb);
+    }
+    // SSD: sizeUnits = capacity in GB. spec = interface name.
+    Part ssd(String vendor, String model, String iface, int capacityGb) {
+        return part("ssd", vendor, model, iface, capacityGb);
+    }
+    // HDD: sizeUnits = capacity in GB. spec = "RPM/iface".
+    Part hdd(String vendor, String model, int capacityGb) {
+        return part("hdd", vendor, model, "7200rpm SATA", capacityGb);
+    }
+    Part uefi(String vendor, String product) {
+        return part("uefi", vendor, product, "UEFI 2.10", 0);
+    }
+    Part usbController(String vendor, String gen, int ports) {
+        return part("usb", vendor, vendor + " xHCI", gen, ports);
+    }
+    Part gpu(String vendor, String model, int vramMb) {
+        return part("video", vendor, vendor + " " + model, "PCIe4 x16", vramMb);
+    }
+
+    Machine machine(String name) {
+        Machine m = new Machine();
+        m.name = name;
+        m.cpuVendor = "SleelaWorks"; m.cpuModel = "SL-Core-X";
+        m.cores = 8; m.bits = 64; m.mhz = 3200; m.memModules = 2;
+        return m;
+    }
+
+    // Total installed memory (MB) across modules.
+    int totalMemMb(Machine m) {
+        if (m.memory.sizeUnits == 0) { return 0; }
+        return m.memory.sizeUnits * m.memModules;
+    }
+
+    // VM memory words from installed MB at the machine's word width.
+    int memoryWords(Machine m) {
+        int bytes = totalMemMb(m) * 1048576;
+        return bytes / (m.bits / 8);
+    }
+    // VM block count from the boot device's GB capacity at 4096-byte blocks.
+    int bootBlocks(Machine m) {
+        int bytes = m.storage.sizeUnits * 1073741824;
+        return bytes / 4096;
+    }
+
+    void banner(String title) {
+        print("================================================================");
+        print("  " + title);
+        print("================================================================");
+    }
+
+    void printPart(Machine m, String label, Part p) {
+        print("  " + label + ": " + p.vendor + " " + p.model + "  [" + p.spec + "]");
+    }
+
+    void main() {
+        // 1. Describe a machine by requesting named parts.
+        Machine m = machine("Determinant Workstation");
+        m.memory   = ddr("Samsung", "DDR5", 16384);              // 16 GB per module
+        m.storage  = ssd("Samsung", "990 PRO", "NVMe PCIe 5.0", 2048); // 2 TB NVMe
+        m.firmware = uefi("AMI", "Aptio V");
+        m.usb      = usbController("Intel", "USB4", 4);
+        m.video    = gpu("NVIDIA", "GeForce RTX 4090", 24576);   // 24 GB
+
+        // 2. Print the build sheet.
+        banner("Machine build sheet: " + m.name);
+        print("  CPU: " + m.cpuVendor + " " + m.cpuModel
+              + "  x" + intToStr(m.cores) + "  " + intToStr(m.bits) + "-bit  "
+              + intToStr(m.mhz) + " MHz");
+        printPart(m, "RAM", m.memory);
+        print("       " + intToStr(m.memModules) + " modules, "
+              + intToStr(totalMemMb(m)) + " MB total");
+        printPart(m, "Boot", m.storage);
+        printPart(m, "UEFI", m.firmware);
+        printPart(m, "USB ", m.usb);
+        printPart(m, "GPU ", m.video);
+
+        // 3. Size the Sleela VM from the real part capacities.
+        banner("Sized for the Sleela VM");
+        print("  main memory : " + intToStr(memoryWords(m)) + " words");
+        print("  boot store  : " + intToStr(bootBlocks(m)) + " blocks of 4096 bytes");
+        print("  -> machine ready to boot on the Sleela VM.");
+    }
+}

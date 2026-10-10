@@ -1,0 +1,19 @@
+#sleela 1.8
+class Point {
+    int x;
+    int y;
+
+    Point(int px, int py) {
+        this.x = px;
+        this.y = py;
+    }
+
+    static void main() {
+        Point p = new Point(3, 4);
+        print(p.x);
+        print(p.y);
+        let q = new Point(10, 20);
+        print(q.x);
+        print(q.y);
+    }
+}

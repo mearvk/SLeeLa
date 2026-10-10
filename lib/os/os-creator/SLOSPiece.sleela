@@ -1,0 +1,57 @@
+/*
+ * lib/os/os-creator/SLOSPiece.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLOSPiece — one emitted piece of an OS produced by
+ *   OS Creator(TM). A piece is a named unit of the firmware -> boot -> kernel ->
+ *   userspace -> desktop chain (UEFI, BIOS, Boot Loader, Kernel Loader, Driver
+ *   Loader, OS Loader, Desktop GUI Loader, or the OS itself) together with the
+ *   files that realise it: its C source, its C++ source, its configuration
+ *   file, and a short README. SLOSCreator produces one SLOSPiece per piece and
+ *   hands them to SLOSDevTree to be written under /os-development.
+ *
+ * This is a flat value object; the per-piece emitters fill it and SLOSDevTree
+ * writes it. Each piece knows its own subdirectory and base file name so the
+ * tree layout is derived, not hard-coded in the writer.
+ *
+ * Family: os. Produced by the OS Creator(TM) piece emitters.
+ */
+#sleela 1.5
+class SLOSPiece {
+  String name;        // human name, e.g. "Boot Loader"
+  String directory;   // tree-relative dir, e.g. "boot/loader"
+  String baseName;    // file stem, e.g. "bootloader"
+  String cSource;     // the .c surface
+  String cppSource;   // the .cpp surface
+  String configName;  // config file name, e.g. "loader.conf"
+  String configText;  // config file contents
+  String readme;      // per-piece README.md contents
+  int configured;
+
+  void configure(String pieceName, String dir, String stem) {
+    name = pieceName; directory = dir; baseName = stem;
+    cSource = ""; cppSource = ""; configName = ""; configText = ""; readme = "";
+    configured = 1;
+  }
+
+  void setC(String src)   { cSource = src; }
+  void setCpp(String src) { cppSource = src; }
+  void setConfig(String fileName, String text) { configName = fileName; configText = text; }
+  void setReadme(String text) { readme = text; }
+
+  // ---- Derived file paths (relative to the dev-tree root) -----------------
+  String cPath()      { return directory + "/" + baseName + ".c"; }
+  String cppPath()    { return directory + "/" + baseName + ".cpp"; }
+  String configPath() { return directory + "/" + configName; }
+  String readmePath() { return directory + "/README.md"; }
+
+  // ---- Accessors ----------------------------------------------------------
+  String pieceName()  { return name; }
+  String dir()        { return directory; }
+  String c()          { return cSource; }
+  String cpp()        { return cppSource; }
+  String config()     { return configText; }
+  String configFile() { return configName; }
+  String readmeText() { return readme; }
+  boolean hasConfig() { return configName != ""; }
+  boolean hasReadme() { return readme != ""; }
+}

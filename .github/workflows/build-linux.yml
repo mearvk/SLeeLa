@@ -81,6 +81,13 @@ jobs:
             ./impl/build/sleela run "$f" || exit 1
           done
 
+      - name: Run syntax version and syntax 1.8 regression fixtures
+        run: |
+          export SLEELA_SHA256_MANIFEST="$(pwd)/security/sha256-manifest.json"
+          export SLEELA_SHEET="$(pwd)/SHEET.sheet"
+          bash impl/tests/version/run_version_tests.sh impl/build/sleela
+          bash tests/sleela-syntax-1.8/run_syntax_1_8_tests.sh impl/build/sleela
+
       - name: Run subject numeric assertions
         run: |
           export SLEELA_SHA256_MANIFEST="$(pwd)/security/sha256-manifest.json"

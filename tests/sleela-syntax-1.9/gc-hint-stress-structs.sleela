@@ -1,0 +1,19 @@
+#sleela 1.9
+// Large case: 20000 short-lived structs with a per-pass young-collection hint
+// (gc 80). Confirms repeated hints under struct churn keep the live set bounded
+// and never corrupt the running sum.
+struct Node { int value; }
+class GcHintStressStructs {
+    static void main() {
+        int sum = 0;
+        int i = 0;
+        while (i < 20000) {
+            Node n = new Node();
+            n.value = i;
+            sum = sum + n.value;
+            n = gc 80;            // hint a cleanup of the now-dead node each pass
+            i = i + 1;
+        }
+        print(sum);               // 0+1+...+19999 = 199990000
+    }
+}

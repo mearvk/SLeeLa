@@ -1,0 +1,115 @@
+/*
+ * lib/os/SLOSModel.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLOSModel — the root aggregate of the OS-construction
+ *   family: a complete object-oriented description of an operating system a
+ *   developer is DESIGNING. It composes one of each layer in the
+ *   firmware -> boot -> kernel -> userspace -> desktop model: a shape
+ *   (SLOSShape), a target-architecture set (SLArchitectureSet), a bootloader
+ *   (SLBootloaderSpec), a kernel (SLKernelSpec), a filesystem layout
+ *   (SLFilesystemLayout), a driver set (SLDriverSet), a package seed
+ *   (SLPackageSet), a service set (SLServiceSet), and an optional desktop
+ *   (SLDesktopSpec).
+ *
+ * This is the OOD extrapolation point: `shape()` applies every per-family
+ * default in one call, so an OS can "assume the shape" of Windows, Linux, or
+ * macOS and then be refined field by field. A fully configured SLOSModel is the
+ * single input to SLOSCompiler (which emits C and C++), SLISOBuilder (which
+ * assembles the bootable ISO), and SLInstallerGenerator (which writes the
+ * per-OS installer).
+ *
+ * This models an OS being BUILT. It is distinct from SLOperatingSystem, which
+ * talks to the real host OS the VM already runs on.
+ *
+ * Family: os. Composes SLOSShape, SLArchitectureSet, SLBootloaderSpec,
+ *   SLKernelSpec, SLFilesystemLayout, SLDriverSet, SLPackageSet, SLServiceSet,
+ *   SLDesktopSpec. Pure design model; no native bridge calls.
+ */
+#sleela 1.5
+class SLOSModel {
+  String osName;      // product name, e.g. "Determinant"
+  String edition;     // "Desktop" / "Server"
+  String version;     // product version
+
+  SLOSShape shape;
+  SLArchitectureSet arches;
+  SLBootloaderSpec boot;
+  SLKernelSpec kernel;
+  SLFilesystemLayout filesystem;
+  SLDriverSet drivers;
+  SLPackageSet packages;
+  SLServiceSet services;
+  SLDesktopSpec desktop;
+  int configured;
+
+  // Begin a model with a product name and version. Layers are created empty;
+  // call shape(...) to populate them with a family's defaults.
+  void configure(String name, String ver) {
+    osName = name; version = ver; edition = "Desktop";
+    shape = new SLOSShape();
+    arches = new SLArchitectureSet();
+    boot = new SLBootloaderSpec();
+    kernel = new SLKernelSpec();
+    filesystem = new SLFilesystemLayout();
+    drivers = new SLDriverSet();
+    packages = new SLPackageSet();
+    services = new SLServiceSet();
+    desktop = new SLDesktopSpec();
+    configured = 1;
+  }
+
+  // OOD extrapolation: take the shape of a named family ("Linux"/"Windows"/
+  // "macOS") on a primary architecture, filling every layer with that family's
+  // defaults. Refine any layer afterwards by reaching its spec object.
+  void shapeAs(String family, String primaryArch) {
+    shape.configure(family);
+    SLOSArchitecture a = new SLOSArchitecture();
+    a.configure(primaryArch);
+    a.retargetForShape(shape);
+    arches.configure(a);
+    boot.forShape(shape);
+    kernel.forShape(shape);
+    filesystem.forShape(shape);
+    drivers.forShape(shape);
+    packages.baseSeedForShape(shape);
+    services.forShape(shape);
+    desktop.forShape(shape);
+  }
+
+  // Mark this as a server edition: drop the desktop layer.
+  void asServer() { edition = "Server"; desktop.headless(); }
+
+  // ---- Accessors for the layers (for refinement and emission) -------------
+  SLOSShape osShape()            { return shape; }
+  SLArchitectureSet architectures() { return arches; }
+  SLBootloaderSpec bootloader()  { return boot; }
+  SLKernelSpec kernelSpec()      { return kernel; }
+  SLFilesystemLayout layout()    { return filesystem; }
+  SLDriverSet driverSet()        { return drivers; }
+  SLPackageSet packageSet()      { return packages; }
+  SLServiceSet serviceSet()      { return services; }
+  SLDesktopSpec desktopSpec()    { return desktop; }
+
+  String name()    { return osName; }
+  String osVersion() { return version; }
+  String osEdition() { return edition; }
+
+  // ---- Validity: can this model be built into a bootable OS? --------------
+  // Every irreducible layer must be present and self-consistent.
+  boolean isBuildable() {
+    if (configured != 1) { return false; }
+    if (!boot.isComplete()) { return false; }
+    if (!kernel.isBootable()) { return false; }
+    if (!drivers.canReachRootfs()) { return false; }
+    if (!filesystem.isComplete()) { return false; }
+    if (packages.isEmpty()) { return false; }
+    if (!services.hasServices()) { return false; }
+    return true;
+  }
+
+  // A short, human-readable identity line for logs and ISO volume labels.
+  String identity() {
+    return osName + " " + version + " (" + edition + ", " + shape.name()
+         + ", " + arches.primaryArch().arch() + ")";
+  }
+}

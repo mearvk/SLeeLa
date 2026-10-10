@@ -1,0 +1,70 @@
+/*
+ * lib/os/uefi/SLUEFIFirmware.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLUEFIFirmware — a named UEFI platform firmware. It
+ *   extends SLHardwareComponent and models the finite set of UEFI
+ *   implementations and their relevant attributes: the firmware vendor
+ *   (AMI Aptio, Insyde InsydeH2O, Phoenix SecureCore, the open-source
+ *   TianoCore/EDK II, and coreboot+Tianocore payloads), the UEFI specification
+ *   revision it implements, Secure Boot capability, the Compatibility Support
+ *   Module (legacy BIOS) option, the boot-services/runtime-services split, and
+ *   the EFI System Partition it reads. A machine description selects a firmware
+ *   and composes it as the part that hands control to a bootloader.
+ *
+ * This is the hardware/firmware counterpart to the OS-side SLBootloaderSpec: the
+ * firmware is what runs first and loads the loader named there.
+ *
+ * Family: os. Extends SLHardwareComponent.
+ */
+#sleela 1.5
+class SLUEFIFirmware extends SLHardwareComponent {
+  String specRevision;  // UEFI spec revision, e.g. "2.10"
+  int secureBoot;       // 1 if Secure Boot is supported
+  int csm;              // 1 if a Compatibility Support Module (legacy BIOS) exists
+  int bootServices;     // 1 if boot services present (always, modeled)
+  int runtimeServices;  // 1 if runtime services present
+  String espLabel;      // EFI System Partition label it reads
+  int configured2;
+
+  void configure(String vendor, String product, String revision) {
+    configureComponent(vendor, product, CLASS_UEFI);
+    specRevision = revision; secureBoot = 1; csm = 0;
+    bootServices = 1; runtimeServices = 1; espLabel = "EFI System Partition";
+    configured2 = 1;
+  }
+
+  // Named presets for the common firmware vendors.
+  void ami()        { configure("AMI", "Aptio V", "2.10"); }
+  void insyde()     { configure("Insyde", "InsydeH2O", "2.9"); }
+  void phoenix()    { configure("Phoenix", "SecureCore", "2.8"); }
+  void tianocore()  { configure("TianoCore", "EDK II (OVMF)", "2.10"); }
+  void coreboot()   { configure("coreboot", "coreboot + Tianocore payload", "2.10"); }
+
+  // Choose by vendor name; defaults to TianoCore (the reference/open firmware).
+  void configureByVendor(String vendor) {
+    if (vendor == "AMI")      { ami();      return; }
+    if (vendor == "Insyde")   { insyde();   return; }
+    if (vendor == "Phoenix")  { phoenix();  return; }
+    if (vendor == "coreboot") { coreboot(); return; }
+    tianocore();
+  }
+
+  void enableSecureBoot(boolean on) { if (on) { secureBoot = 1; } else { secureBoot = 0; } }
+  void enableCsm(boolean on) { if (on) { csm = 1; } else { csm = 0; } }
+
+  String uefiRevision()     { return specRevision; }
+  boolean supportsSecureBoot() { return secureBoot == 1; }
+  boolean hasCsm()          { return csm == 1; }
+  boolean hasRuntimeServices() { return runtimeServices == 1; }
+  String esp()              { return espLabel; }
+
+  // True if this firmware can hand off to the given OS-side bootloader name.
+  // Modeled: UEFI firmware can launch any EFI loader; a legacy loader needs CSM.
+  boolean canLaunch(String loaderName) {
+    if (loaderName == "GRUB" || loaderName == "BOOTMGR"
+        || loaderName == "boot.efi" || loaderName == "systemd-boot") {
+      return true;
+    }
+    return csm == 1;   // non-EFI loaders require the Compatibility Support Module
+  }
+}

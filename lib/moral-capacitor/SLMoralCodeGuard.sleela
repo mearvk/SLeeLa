@@ -1,0 +1,101 @@
+/*
+ * lib/moral-capacitor/SLMoralCodeGuard.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLMoralCodeGuard — the Guard of the Moral Code: the
+ *   enforcement that a SLeeLa software product actually INCLUDES the moral code
+ *   it claims. Before a product is permitted to run or ship, the guard checks
+ *   that it (1) embeds a live Moral Capacitor(TM), (2) presents a Certificate of
+ *   Morals(TM) that is well-formed, (3) was sealed by a trusted authority and
+ *   verifies against it, (4) is within its validity span, and (5) attests a
+ *   posture consistent with the embedded capacitor (same policy threshold, red
+ *   lines armed). A product that fails any check is refused — the moral code is
+ *   mandatory, not optional.
+ *
+ * This is how the project strives to include Morals and Certificates in all its
+ * SLeeLa software: the guard is the gate at the product boundary, the
+ * counterpart to SLMoralCapacitor at the operation boundary.
+ *
+ * Family: moral-capacitor. Verifies SLMoralCertificate via
+ *   SLMoralCertificateAuthority; inspects SLMoralCapacitor.
+ */
+#sleela 1.5
+class SLMoralCodeGuard {
+  // Guard outcome ordinals.
+  static final int ADMIT   = 1;  // the product includes the moral code: admit
+  static final int REFUSE  = 2;  // missing/invalid moral code: refuse
+
+  SLMoralCertificateAuthority trustedAuthority;
+  String lastReason;
+  int outcome;
+  int configured;
+
+  void configure(SLMoralCertificateAuthority authority) {
+    trustedAuthority = authority; lastReason = ""; outcome = REFUSE; configured = 1;
+  }
+
+  // Guard a product: it must embed a live capacitor and present a valid
+  // Certificate of Morals that verifies against the trusted authority, is
+  // unexpired at `nowStamp`, and attests a posture matching the capacitor.
+  // Returns ADMIT or REFUSE; lastReason explains a refusal.
+  int guard(String product, SLMoralCapacitor cap, SLMoralCertificate cert, String nowStamp) {
+    // 1. The moral code must be present at the operation boundary.
+    if (cap == null) { return refuse("no Moral Capacitor embedded in " + product); }
+
+    // 2. A certificate must be presented and well-formed.
+    if (cert == null) { return refuse("no Certificate of Morals presented for " + product); }
+    if (!cert.isWellFormed()) { return refuse("Certificate of Morals is not well-formed"); }
+
+    // 3. The certificate must cover THIS product.
+    if (cert.subjectProduct() != product) {
+      return refuse("certificate subject does not match product " + product);
+    }
+
+    // 4. The certificate must verify against the trusted authority.
+    if (!trustedAuthority.verify(cert)) {
+      return refuse("certificate seal does not verify against trusted authority "
+                    + trustedAuthority.authorityName());
+    }
+
+    // 5. The certificate must be within its validity span.
+    if (!withinValidity(cert, nowStamp)) {
+      return refuse("certificate expired (expires " + cert.expires() + ", now " + nowStamp + ")");
+    }
+
+    // 6. The attested posture must match the embedded capacitor.
+    if (cert.dischargeThreshold() != cap.policy().threshold()) {
+      return refuse("certificate threshold does not match the embedded capacitor policy");
+    }
+    if (cert.redlinesArmed() < 1) {
+      return refuse("certificate attests no armed red lines");
+    }
+
+    return admit();
+  }
+
+  // Validity check: a certificate with an empty expiry is non-expiring. A
+  // non-empty expiry must be lexicographically >= now for ISO-8601 stamps.
+  boolean withinValidity(SLMoralCertificate cert, String nowStamp) {
+    String exp = cert.expires();
+    if (exp == "") { return true; }
+    // ISO-8601 timestamps compare correctly as strings.
+    return exp >= nowStamp;
+  }
+
+  int refuse(String why) { outcome = REFUSE; lastReason = why; return REFUSE; }
+  int admit()            { outcome = ADMIT; lastReason = "moral code present and certified"; return ADMIT; }
+
+  boolean admitted() { return outcome == ADMIT; }
+  boolean refused()  { return outcome == REFUSE; }
+  String reason()    { return lastReason; }
+  int lastOutcome()  { return outcome; }
+
+  // A boolean form for a call site that just needs permit/deny.
+  boolean permits(String product, SLMoralCapacitor cap, SLMoralCertificate cert, String nowStamp) {
+    return guard(product, cap, cert, nowStamp) == ADMIT;
+  }
+
+  String outcomeName() {
+    if (outcome == ADMIT) { return "ADMIT"; }
+    return "REFUSE";
+  }
+}

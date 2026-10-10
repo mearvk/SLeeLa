@@ -1,0 +1,97 @@
+/*
+ * lib/moral-capacitor/SLOSMoralGate.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLOSMoralGate — the Moral Capacitor(TM) adapter for the
+ *   OS surface (SLOperatingSystem, the OS Creator(TM) provider, and the
+ *   installers). It wraps an SLMoralCapacitor with OS-appropriate policies and
+ *   exposes intention-named checks the OS consults before a consequential step:
+ *   running a shell command, deleting or formatting a filesystem path,
+ *   installing to a disk, and writing an OS development tree. Destructive
+ *   operations use a strict, consent-requiring, fail-closed policy.
+ *
+ * The gate makes the OS's most dangerous actions — the ones that erase data or
+ * execute arbitrary commands — require an explicit, auditable moral discharge
+ * before they run.
+ *
+ * Family: moral-capacitor. OS adapter over SLMoralCapacitor.
+ */
+#sleela 1.5
+class SLOSMoralGate {
+  SLMoralCapacitor cap;
+  SLMoralLedger ledger;
+  SLMoralCertificate certificate;   // the OS product's Certificate of Morals
+  SLMoralCodeGuard codeGuard;       // admits the OS only when certified
+  int configured;
+
+  void configure() {
+    cap = new SLMoralCapacitor(); cap.configure();
+    ledger = new SLMoralLedger(); ledger.configure();
+    certificate = null; codeGuard = null;
+    configured = 1;
+  }
+
+  // Certify this OS: issue a Certificate of Morals over the gate's capacitor and
+  // arm a code guard against it, so the OS is a morally certified product.
+  void certify(SLMoralCertificateAuthority authority, int redlinesArmed,
+               String issuedAt, String expiresAt) {
+    certificate = authority.issue("sleela-os", cap, redlinesArmed, issuedAt, expiresAt);
+    codeGuard = new SLMoralCodeGuard(); codeGuard.configure(authority);
+  }
+
+  // Prove at the OS product boundary (ship/boot/install) that the moral code is
+  // present and certified as of nowStamp.
+  boolean admit(String nowStamp) {
+    if (codeGuard == null || certificate == null) { return false; }
+    return codeGuard.permits("sleela-os", cap, certificate, nowStamp);
+  }
+  SLMoralCertificate moralCertificate() { return certificate; }
+
+  // Reading identity/env/cwd is routine and reversible.
+  SLMoralVerdict permitQuery(String what) {
+    SLMoralPolicy p = new SLMoralPolicy(); p.osRoutine();
+    return decide(op("os", "query", what, "host", true, true), p);
+  }
+
+  // Running a shell command reaches the host: a higher bar, consent assumed
+  // from the caller but screened for red lines.
+  SLMoralVerdict permitRun(String command, boolean consented) {
+    SLMoralPolicy p = new SLMoralPolicy(); p.osRoutine(); p.setThreshold(4);
+    return decide(op("os", "run", command, "host", true, consented), p);
+  }
+
+  // Deleting a path is irreversible: strict policy, consent required.
+  SLMoralVerdict permitErase(String path, boolean consented) {
+    SLMoralPolicy p = new SLMoralPolicy(); p.osDestructive();
+    return decide(op("os", "erase", path, "disk", false, consented), p);
+  }
+
+  // Formatting / installing to a disk is the most destructive OS action.
+  SLMoralVerdict permitInstallToDisk(String device, boolean consented) {
+    SLMoralPolicy p = new SLMoralPolicy(); p.osDestructive();
+    return decide(op("os", "format", device, "disk", false, consented), p);
+  }
+
+  // OS Creator(TM) writing a development tree is reversible (an output dir).
+  SLMoralVerdict permitWriteDevTree(String root) {
+    SLMoralPolicy p = new SLMoralPolicy(); p.osRoutine();
+    return decide(op("os", "write", root, "disk", true, true), p);
+  }
+
+  SLMoralLedger auditLedger() { return ledger; }
+  SLMoralCapacitor capacitor() { return cap; }
+
+  SLMoralOperation op(String actor, String action, String target, String scope,
+                      boolean reversible, boolean consented) {
+    SLMoralOperation o = new SLMoralOperation();
+    o.configure(actor, action, target, scope);
+    o.setReversible(reversible); o.setConsented(consented);
+    return o;
+  }
+  SLMoralVerdict decide(SLMoralOperation o, SLMoralPolicy p) {
+    cap.discharge();
+    cap.setPolicy(p);
+    SLMoralVerdict v = cap.gate(o);
+    ledger.record(o, v);
+    return v;
+  }
+}

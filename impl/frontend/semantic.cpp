@@ -4,6 +4,9 @@
 #include <map>
 #include <set>
 #include <string>
+#include <functional>
+#include <vector>
+#include <utility>
 namespace sleela {
 namespace {
 enum class Kind { Void, Int, Unsigned, Double, Bool, String, Null, Struct, Array, Unknown, Error };
@@ -54,6 +57,7 @@ class Analyzer{
  const Program&p; const SyntaxVersion&syntax; SemanticResult r;
  std::set<std::string> structs; std::set<std::string> classNames; std::map<std::string,std::map<std::string,Type>> fields;
  std::map<std::string,MethodSig> methods; std::map<std::string,Type> globals; std::map<std::string,std::string> owners;
+ std::map<std::string,std::string> superOf; // derived class -> resolved base (syntax 1.10)
  struct Scope{std::map<std::string,Type> vars;}; std::vector<Scope> scopes; const Method* cur=nullptr; std::string cls;
  void err(const std::string&s){r.errors.push_back("Semantic error: "+s);}
  // A type is known if it is a scalar keyword (Java or lowercase alias), a
@@ -83,6 +87,68 @@ class Analyzer{
     if(m.isProtected&&!m.isStatic)err("protected method '"+m.name+"' must also be static");
     methods[key]={&m,c.name};if(m.name=="main")methods["main"]={&m,c.name};}
   }
+  // --- OOD inheritance (syntax 1.10): resolve `class D extends B`. ----------
+  // A derived class inherits the base class's instance fields and methods.
+  // A same-name method in the derived class overrides the base's. Resolution
+  // is version-gated so that <=1.9 documents keep their historical behavior
+  // (extends was retained metadata, not resolved). This runs after every
+  // class's own members are collected, and walks each extends chain base-first.
+  if(!(syntax<SyntaxVersion{1,10})){
+   // index classes by name for superclass lookup
+   std::map<std::string,const ClassDecl*> byName;
+   for(const auto&c:p.classes) byName[c.name]=&c;
+   // validate: known base, no cycles
+   for(const auto&c:p.classes){
+    const std::string&sup=c.java.superclass;
+    if(sup.empty()) continue;
+    if(!byName.count(sup)){ if(classNames.count(sup)==0 && structs.count(sup)==0) err("class '"+c.name+"' extends unknown type '"+sup+"'"); continue; }
+    // cycle detection: walk the extends chain from c; if we return to a class
+    // already on the path, the inheritance is cyclic.
+    { std::set<std::string> seen; std::string cur2=c.name;
+      while(byName.count(cur2)){ seen.insert(cur2); const std::string&s2=byName[cur2]->java.superclass;
+        if(s2.empty()) break; if(seen.count(s2)){ err("cyclic inheritance involving class '"+c.name+"'"); break; } cur2=s2; } }
+   }
+   // merge base members into each derived class, resolving the chain base-first
+   std::set<std::string> done; std::set<std::string> inProgress;
+   std::function<void(const std::string&)> resolve=[&](const std::string& name){
+    if(done.count(name)||!byName.count(name)) return;
+    if(!inProgress.insert(name).second) return; // cycle guard (reported above)
+    const ClassDecl* c=byName[name];
+    const std::string&sup=c->java.superclass;
+    if(!sup.empty()&&byName.count(sup)&&!inProgress.count(sup)){
+     resolve(sup); // ensure base is fully resolved first
+     // inherit instance fields the derived class does not redeclare (the base's
+     // field set is already fully resolved, so this carries grandparent fields).
+     auto bf=fields.find(sup); if(bf!=fields.end()){ auto&df=fields[name]; for(const auto&kv:bf->second) if(!df.count(kv.first)) df[kv.first]=kv.second; }
+     // inherit methods the derived class does not override. Walk the base's
+     // RESOLVED method set (its own + what it inherited), so multi-level chains
+     // carry grandparent methods down. A same-name derived method overrides.
+     const std::string pfx=sup+"::";
+     std::vector<std::pair<std::string,MethodSig>> toAdd;
+     for(const auto&kv:methods){ const std::string&bk=kv.first; if(bk.rfind(pfx,0)!=0) continue; std::string mname=bk.substr(pfx.size()); if(mname=="main") continue; const std::string dk=name+"::"+mname; if(!methods.count(dk)) toAdd.push_back({dk,kv.second}); }
+     for(auto&e:toAdd) methods[e.first]=e.second;
+     superOf[name]=sup;
+    }
+    inProgress.erase(name);
+    done.insert(name);
+   };
+   for(const auto&c:p.classes) resolve(c.name);
+  }
+  // --- Document extension (syntax 1.10): `extends to ... <grouper>;` --------
+  for(const auto&de:p.documentExtensions){
+   if(syntax<SyntaxVersion{1,10}){err("document extension 'extends to ...' requires syntax 1.10");break;}
+   if(de.targets.empty()){err("document extension names no target document");continue;}
+   if(de.grouper==Grouper::Linear){
+    // linear reals: a congruent-linear chain, bounded by the catalog's
+    // congruent-linear-systems-max (3024). The chain degree is targets+self.
+    if((long)de.targets.size()+1>3024) err("linear document extension exceeds the congruent-linear maximum (3024)");
+   } else {
+    // grouped structures are bounded by the complexity-degree-max (4): a
+    // grouper may organize up to 4 member documents in one degree.
+    if(de.targets.size()>4) err("grouped document extension exceeds the complexity-degree maximum (4 members per group)");
+    if(de.grouper==Grouper::Services&&de.server.empty()) err("the 'services' grouper requires a Server-of-Services document name");
+   }
+  }
  }
  void push(){scopes.push_back({});} void pop(){scopes.pop_back();}
  bool declare(const std::string&n,const Type&t){auto&v=scopes.back().vars;if(v.count(n)){err("duplicate local variable '"+n+"'");return false;}v[n]=t;return true;}
@@ -111,6 +177,17 @@ class Analyzer{
   }
   if(auto a=dynamic_cast<const Assign*>(&s)){Type t=lookup(a->name);if(t.kind==Kind::Error){err("assignment to undeclared variable '"+a->name+"'");return;}Type g=expr(*a->value);if(!assignable(t,g))err("cannot assign "+nameOf(g)+" to '"+a->name+"' of type "+nameOf(t));return;}
   if(auto f=dynamic_cast<const FieldAssign*>(&s)){Type t=member(*f->base,f->field),g=expr(*f->value);if(t.kind!=Kind::Error&&!assignable(t,g))err("cannot assign "+nameOf(g)+" to field '"+f->field+"' of type "+nameOf(t));return;}
+  if(auto gh=dynamic_cast<const GcHintStmt*>(&s)){
+   // GC hint (syntax 1.9): `x = gc N;` / `x = mem N;`. The target must be an
+   // in-scope value the developer is releasing, and the aggressiveness must be
+   // within the 0..100 band. Both constraints are enforced rather than silently
+   // narrowed, so a mistaken target or an out-of-range level is a clear error.
+   if(syntax<SyntaxVersion{1,9}){err("GC hint 'x = "+gh->spelling+" N;' requires syntax 1.9");return;}
+   Type t=lookup(gh->target);
+   if(t.kind==Kind::Error){err("GC hint target '"+gh->target+"' is not an in-scope variable");return;}
+   if(gh->aggressiveness<0||gh->aggressiveness>100){err("GC hint aggressiveness must be 0..100");return;}
+   return;
+  }
   if(auto e=dynamic_cast<const ExprStmt*>(&s)){expr(*e->expr);return;} if(auto p=dynamic_cast<const PrintStmt*>(&s)){Type t=expr(*p->expr);if(t.kind==Kind::Void)err("print() cannot print void");return;}
   if(auto x=dynamic_cast<const ReturnStmt*>(&s)){Type want=tn(cur->retType);
    if(want.kind==Kind::Void){if(x->value){expr(*x->value);err("void method '"+cur->name+"' cannot return a value");}return;}
@@ -131,6 +208,22 @@ class Analyzer{
   err("unknown statement kind");
  }
  void requireBool(const Type&t,const char*w){if(t.kind!=Kind::Bool&&t.kind!=Kind::Unknown)err(std::string(w)+" must be bool, got "+nameOf(t));}
+ // Syntax 1.8 constructor invocation `new T(args...)`. Supported: a single
+ // declared constructor whose arity matches and whose parameter types accept
+ // the supplied arguments. NOT supported in 1.8: overload resolution (more than
+ // one constructor) and this()/base delegation -- those are rejected explicitly
+ // rather than silently narrowing behavior. Argument subexpressions are always
+ // analyzed (even on the error paths) so nested type errors are still reported.
+ void checkConstructorArgs(const NewExpr&n){
+  if(syntax<SyntaxVersion{1,8}){for(const auto&a:n.args)expr(*a);err("constructor arguments for '"+n.typeName+"' require syntax 1.8");return;}
+  const Method* ctor=nullptr; int ctorCount=0;
+  for(const auto&c:p.classes) if(c.name==n.typeName)
+   for(const auto&m:c.methods) if(m.java.constructor){ctorCount++; if(m.params.size()==n.args.size())ctor=&m;}
+  if(ctorCount==0){for(const auto&a:n.args)expr(*a);err("class '"+n.typeName+"' declares no constructor to accept "+std::to_string(n.args.size())+" argument(s)");return;}
+  if(ctorCount>1){for(const auto&a:n.args)expr(*a);err("class '"+n.typeName+"' declares multiple constructors; syntax 1.8 does not support constructor overload resolution");return;}
+  if(!ctor){for(const auto&a:n.args)expr(*a);err("constructor of '"+n.typeName+"' expects a different number of arguments than "+std::to_string(n.args.size()));return;}
+  for(size_t i=0;i<n.args.size();++i){Type g=expr(*n.args[i]),w=tn(ctor->params[i].type);if(!assignable(w,g))err("constructor argument "+std::to_string(i+1)+" to '"+n.typeName+"' has type "+nameOf(g)+", expected "+nameOf(w));}
+ }
  // The `next` / `next.next` / `next.next.next.next` system-degree idiom (see
  // compiler emitVar/emitMember): `next` is Degree 1 and each `.next` step is a
  // bounded symbolic relation, not a struct field access. Recognize an all-`next`
@@ -147,6 +240,16 @@ class Analyzer{
   if(dynamic_cast<const BoolLit*>(&e)){return{Kind::Bool,{}};}
   if(dynamic_cast<const StrLit*>(&e)){return{Kind::String,{}};}
   if(dynamic_cast<const NullLit*>(&e)){return{Kind::Null,{}};}
+  if(auto rr=dynamic_cast<const RanRefExpr*>(&e)){
+   // `ran::<word>` -- the System / already-Ran-in-RAM reference. Requires 1.9.
+   // `ran::mem` is the current live system memory as an int. The GC words
+   // `ran::gc` / `ran::mem N` are statement hints (handled in parseSimpleStatement),
+   // not value expressions, so only the value names resolve here.
+   if(syntax<SyntaxVersion{1,9}){err("the 'ran::' system namespace requires syntax 1.9");return{Kind::Error,{}};}
+   if(rr->word=="mem"){return{Kind::Int,{}};}
+   err("unknown system reference 'ran::"+rr->word+"' (known value: ran::mem)");
+   return{Kind::Error,{}};
+  }
   if(auto v=dynamic_cast<const VarExpr*>(&e)){Type t=lookup(v->name);if(t.kind==Kind::Error)err("use of undeclared variable '"+v->name+"'");return t;}
   if(auto n=dynamic_cast<const NewExpr*>(&e)){
    // `new T[n]` arrives as a NewExpr whose typeName ends in "[]" and whose
@@ -157,7 +260,7 @@ class Analyzer{
     return typeOf(n->typeName);
    }
    if(!structs.count(n->typeName)&&!classNames.count(n->typeName)){err("new of unknown class or struct '"+n->typeName+"'");return{Kind::Error,{}};}
-   if(!n->args.empty())err("constructors with arguments are not yet supported for '"+n->typeName+"'");
+   if(!n->args.empty())checkConstructorArgs(*n);
    return{Kind::Struct,n->typeName};}
   if(auto m=dynamic_cast<const MemberAccess*>(&e)){if(m->field=="next"&&isNextChain(*m->base))return{Kind::Int,{}};return member(*m->base,m->field);}
   if(auto u=dynamic_cast<const Unary*>(&e)){Type t=expr(*u->operand);if(u->op=="-"&&(!numeric(t)||t.kind==Kind::Unsigned)&&t.kind!=Kind::Unknown)err("unary '-' requires signed numeric operand, got "+nameOf(t));if(u->op=="!"&&t.kind!=Kind::Bool&&t.kind!=Kind::Unknown)err("unary '!' requires bool operand, got "+nameOf(t));return t;}

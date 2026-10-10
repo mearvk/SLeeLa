@@ -1,0 +1,95 @@
+#sleela 1.5
+// moral-capacitor.sleela -- the self-contained, runnable demonstrator of the
+// Moral Capacitor(TM) (lib/moral-capacitor/SLMoralCapacitor and friends). The
+// SLeeLa compiler's `run` compiles one file as a single unit, so this aggregate
+// inlines a compact capacitor + a `main` that gates four operations across the
+// VM, OS, and Machine surfaces and prints each verdict with its charge/threshold
+// and reason. The split per-class files are the full component; this file is the
+// executable counterpart, mirroring the os-build.sleela / machine-build.sleela
+// convention.
+//
+// The point it demonstrates: a capacitor accumulates moral charge from ethical
+// frameworks and only DISCHARGES (PERMIT) when charge meets the threshold and no
+// red line is tripped; otherwise it DEFERs or DENYs. Routine reversible work
+// permits; a non-consensual irreversible disk erase trips a veto and is denied.
+
+struct Op { String actor; String action; String target; int reversible; int consented; }
+
+class MoralCapacitorDemo {
+
+    int DEONTOLOGY = 1; int UTILITARIANISM = 2; int VIRTUE = 3; int BENEFICENCE = 4; int CONSENT = 5;
+
+    String intToStr(int v) { return "" + v; }
+
+    Op op(String actor, String action, String target, int reversible, int consented) {
+        Op o = new Op();
+        o.actor = actor; o.action = action; o.target = target;
+        o.reversible = reversible; o.consented = consented;
+        return o;
+    }
+
+    // Charge the capacitor from the frameworks' reading of the operation.
+    int chargeFor(Op o) {
+        int charge = 0;
+        if (o.consented == 1) { charge = charge + 2; }   // consent
+        else { charge = charge - 2; }
+        if (o.reversible == 1) { charge = charge + 2; }   // beneficence
+        else { charge = charge - 1; }
+        if (o.consented == 1) { charge = charge + 1; }   // deontology
+        if (o.reversible == 1) { charge = charge + 1; }  // utilitarianism
+        if (o.consented == 1 && o.reversible == 1) { charge = charge + 1; } // virtue
+        if (charge < 0) { charge = 0; }
+        return charge;
+    }
+
+    // Is an absolute red line tripped for this operation?
+    String veto(Op o) {
+        if (o.action == "weaponize") { return "weapons / CBRN enablement"; }
+        if (o.action == "surveil" && o.consented == 0) { return "non-consensual surveillance"; }
+        if (o.action == "impersonate") { return "deception / impersonation"; }
+        if (o.action == "erase" && o.reversible == 0 && o.consented == 0) {
+            return "irreversible harm without consent";
+        }
+        return "";
+    }
+
+    // Evaluate: DENY on veto, PERMIT if charge >= threshold, else DEFER/DENY.
+    String evaluate(Op o, int threshold, int allowDefer) {
+        int charge = chargeFor(o);
+        String v = veto(o);
+        String id = o.actor + ":" + o.action + " " + o.target;
+        String head = id + "  [charge " + intToStr(charge) + "/" + intToStr(threshold) + "]  -> ";
+        if (v != "") { return head + "DENY (veto: " + v + ")"; }
+        if (charge >= threshold) { return head + "PERMIT (sufficient moral charge)"; }
+        if (charge > 0 && allowDefer == 1) { return head + "DEFER (needs more justification/consent)"; }
+        return head + "DENY (no sufficient moral basis)";
+    }
+
+    void banner(String t) {
+        print("================================================================");
+        print("  " + t);
+        print("================================================================");
+    }
+
+    void main() {
+        banner("Moral Capacitor(TM): gating VM / OS / Machine operations");
+
+        // VM: routine reversible memory growth, threshold 2 -> permit.
+        print(evaluate(op("vm", "allocate", "guest-memory", 1, 1), 2, 1));
+
+        // OS: delete a path with consent, reversible=0, strict threshold 6, no defer.
+        print(evaluate(op("os", "erase", "/tmp/build-cache", 0, 1), 6, 0));
+
+        // OS: wipe a disk WITHOUT consent, irreversible -> veto -> deny.
+        print(evaluate(op("os", "erase", "/dev/sda", 0, 0), 6, 0));
+
+        // Machine: boot a guest with consent, threshold 5 -> permit.
+        print(evaluate(op("machine", "boot", "linux-guest", 1, 1), 5, 1));
+
+        // Machine: execute a prohibited purpose -> veto -> deny.
+        print(evaluate(op("machine", "surveil", "target-host", 1, 0), 3, 1));
+
+        banner("Done");
+        print("A capacitor discharges (PERMIT) only on sufficient charge and no red line.");
+    }
+}

@@ -112,8 +112,28 @@ typedef enum {
     OP_OS_SPAWN,      /* pops command String; pushes process handle (-1 on failure) */
     OP_OS_WAIT,       /* pops process handle; waits; pushes exit code int           */
     OP_OS_KILL,       /* pops process handle; pushes 0/-1                           */
-    OP_OS_PCLOSE      /* pops process handle; releases it; pushes null              */
+    OP_OS_PCLOSE,     /* pops process handle; releases it; pushes null              */
+    /* GC hint (syntax 1.9): a developer-emitted request for a short-term GC
+     * cleanup of unreachable allocations after a value is done being used,
+     * written `x = gc N;` or `x = mem N;` where N is 0..100 aggressiveness.
+     * operand a = aggressiveness (0..100): 0 is a no-op; a modest level runs a
+     * young-only safepoint collection sized to the level; a top level (>=
+     * SL_GC_HINT_FULL) requests a full collection. The hint reclaims only
+     * genuinely unreachable objects; it never frees a live value, and it is
+     * deferred (like every safepoint) while worker threads are active. Appended
+     * at the end of the enum so existing serialized-artifact opcode numbers are
+     * unchanged. */
+    OP_GC_HINT,       /* operand a = aggressiveness 0..100; pushes nothing          */
+    /* ran:: system namespace (syntax 1.9). The `ran::` qualifier names the
+     * System / already-Ran-in-RAM meaning of a word, so ordinary identifiers
+     * (mem, gc, ...) stay free for class/variable names. `ran::mem` reads the
+     * current live system memory in bytes as an int. Appended at the end of the
+     * enum so existing serialized-artifact opcode numbers are unchanged. */
+    OP_RAN_MEM        /* pushes current live system memory in bytes (int)           */
 } SLOp;
+/* GC-hint aggressiveness bands for OP_GC_HINT (operand a). */
+#define SL_GC_HINT_MAX  100   /* clamp ceiling for the 0..100 aggressiveness scale */
+#define SL_GC_HINT_FULL 100   /* at this level the hint requests a full collection */
 #define SL_MAX_OS_PROCESSES 64    /* live spawned child processes per VM        */
 /* Synchro stat selectors for OP_SYN_STAT (operand a). */
 #define SL_SYN_STAT_SENT 0

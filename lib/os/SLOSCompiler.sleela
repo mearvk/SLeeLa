@@ -1,0 +1,93 @@
+/*
+ * lib/os/SLOSCompiler.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLOSCompiler — the front door of the OS-construction
+ *   pipeline. It takes a configured SLOSModel (an OS designed by OOD) and
+ *   compiles it to the C and C++ sources that realise the OS: it validates the
+ *   model is buildable, runs SLCEmitter to produce os_config.h + os_boot.c,
+ *   runs SLCppEmitter to produce os_image.cpp, and records each result as an
+ *   SLOSArtifact in an SLOSBuildReport. Its output is the exact set of C/C++
+ *   files the native toolchain then compiles on the way to the ISO.
+ *
+ * This is the operational meaning of "compiling and running the Sleela files
+ * produces the C and C++ code for the OS": the SLeeLa object model IS the OS
+ * description, and this class lowers it to portable native source. It composes
+ * SLISOBuilder (the next stage) and SLInstallerGenerator (per-OS installers) so
+ * one call can carry a model all the way from object model to installable ISO.
+ *
+ * Family: os. Consumes SLOSModel; composes SLCEmitter, SLCppEmitter,
+ *   SLOSArtifact, SLOSBuildReport, SLISOBuilder, SLInstallerGenerator.
+ */
+#sleela 1.5
+class SLOSCompiler {
+  SLCEmitter cEmit;
+  SLCppEmitter cppEmit;
+  SLOSBuildReport report;
+
+  // The artifacts of the most recent compile (held for the caller to persist).
+  SLOSArtifact configHeader;
+  SLOSArtifact bootUnit;
+  SLOSArtifact osImage;
+
+  void configure() {
+    cEmit = new SLCEmitter();
+    cppEmit = new SLCppEmitter();
+  }
+
+  // Compile a model to C and C++. Returns the build report (succeeded() is
+  // false if the model is not buildable). Artifacts are reachable via the
+  // header()/boot()/image() accessors afterward.
+  SLOSBuildReport compile(SLOSModel m) {
+    report = new SLOSBuildReport();
+    report.configure(m.identity());
+
+    if (!m.isBuildable()) {
+      report.fail();
+      return report;
+    }
+
+    // C surface: a config header and an early-boot translation unit.
+    configHeader = new SLOSArtifact();
+    configHeader.configure("gen/os_config.h", configHeader.KIND_C_HEADER,
+                           cEmit.emitConfigHeader(m));
+    report.record(configHeader);
+
+    bootUnit = new SLOSArtifact();
+    bootUnit.configure("gen/os_boot.c", bootUnit.KIND_C_SOURCE,
+                       cEmit.emitBootUnit(m));
+    report.record(bootUnit);
+
+    // C++ surface: the OsImage object that composes the boot chain.
+    osImage = new SLOSArtifact();
+    osImage.configure("gen/os_image.cpp", osImage.KIND_CPP_SOURCE,
+                      cppEmit.emitOsImage(m));
+    report.record(osImage);
+
+    return report;
+  }
+
+  // Compile the model, then build its ISO and generate its installer in one
+  // call. The returned report indexes every artifact across all three stages.
+  SLOSBuildReport compileToIso(SLOSModel m) {
+    SLOSBuildReport r = compile(m);
+    if (!r.succeeded()) { return r; }
+
+    SLISOBuilder iso = new SLISOBuilder();
+    iso.configure();
+    SLOSArtifact image = iso.build(m, this);
+    r.record(image);
+
+    SLInstallerGenerator gen = new SLInstallerGenerator();
+    gen.configure();
+    SLOSArtifact installer = gen.generate(m);
+    r.record(installer);
+
+    return r;
+  }
+
+  // ---- Accessors to the most recent compile's artifacts -------------------
+  SLOSArtifact header() { return configHeader; }
+  SLOSArtifact boot()   { return bootUnit; }
+  SLOSArtifact image()  { return osImage; }
+  SLOSBuildReport lastReport() { return report; }
+}

@@ -1,0 +1,101 @@
+/*
+ * lib/moral-capacitor/SLMoralCertificate.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLMoralCertificate — the Certificate of Morals(TM): a
+ *   signed attestation that a SLeeLa software product embeds the Moral
+ *   Capacitor(TM) and operates under a named moral policy with the absolute
+ *   red-line veto set armed, carrying the SLMoralWarranty. The certificate names
+ *   the subject product, the issuer, the moral policy name and discharge
+ *   threshold, the number of armed red lines, an issue serial, a validity span,
+ *   and a cryptographic seal (digest/signature) over its canonical body so a
+ *   Guard can verify it was issued by the authority and not altered.
+ *
+ * The certificate is the product-facing warranty: it travels WITH the software
+ * and is what SLMoralCodeGuard checks before a product is allowed to run or
+ * ship. The seal here is an abstract value filled by SLMoralCertificateAuthority
+ * (optionally hardened with lib/crypto SLDigest/SLSignature in production).
+ *
+ * Family: moral-capacitor. Carries SLMoralWarranty; issued by
+ *   SLMoralCertificateAuthority; verified by SLMoralCodeGuard.
+ */
+#sleela 1.5
+class SLMoralCertificate {
+  static final int SCHEMA_VERSION = 1;
+
+  String subject;       // the product / software unit certified
+  String issuer;        // the authority that issued the certificate
+  String policyName;    // the moral policy in force
+  int threshold;        // the policy's discharge threshold
+  int armedRedlines;    // how many absolute red lines are armed
+  int capacitorPresent; // 1 if a live Moral Capacitor is embedded
+  SLMoralWarranty warranty;
+  String serial;        // issue serial
+  String issuedAt;      // issue timestamp (as a String; set by the authority)
+  String expiresAt;     // expiry timestamp (empty = non-expiring)
+  String seal;          // cryptographic seal over the canonical body
+  int sealed;           // 1 once a seal has been applied
+  int configured;
+
+  void configure(String certifiedProduct, String issuingAuthority) {
+    subject = certifiedProduct; issuer = issuingAuthority;
+    policyName = ""; threshold = 0; armedRedlines = 0; capacitorPresent = 0;
+    warranty = new SLMoralWarranty(); warranty.configure(issuingAuthority, certifiedProduct);
+    serial = ""; issuedAt = ""; expiresAt = ""; seal = ""; sealed = 0; configured = 1;
+  }
+
+  // Record the moral posture the certificate attests to.
+  void attest(String policy, int dischargeThreshold, int redlineCount, boolean capacitorEmbedded) {
+    policyName = policy; threshold = dischargeThreshold; armedRedlines = redlineCount;
+    if (capacitorEmbedded) { capacitorPresent = 1; } else { capacitorPresent = 0; }
+  }
+
+  void setValidity(String issued, String expires) { issuedAt = issued; expiresAt = expires; }
+  void setSerial(String s) { serial = s; }
+
+  // Apply the authority's seal over the canonical body.
+  void applySeal(String sealValue) { seal = sealValue; sealed = 1; }
+
+  SLMoralWarranty warrantyOf() { return warranty; }
+  String subjectProduct() { return subject; }
+  String issuerName()     { return issuer; }
+  String policy()         { return policyName; }
+  int dischargeThreshold(){ return threshold; }
+  int redlinesArmed()     { return armedRedlines; }
+  boolean embedsCapacitor() { return capacitorPresent == 1; }
+  String certificateSerial() { return serial; }
+  String issued()         { return issuedAt; }
+  String expires()        { return expiresAt; }
+  String sealValue()      { return seal; }
+  boolean isSealed()      { return sealed == 1; }
+
+  // The canonical body the seal is computed over. Stable field order so a Guard
+  // can recompute and compare the seal.
+  String canonicalBody() {
+    String b = "MORAL-CERTIFICATE v" + intToStr(SCHEMA_VERSION) + "\n";
+    b = b + "subject=" + subject + "\n";
+    b = b + "issuer=" + issuer + "\n";
+    b = b + "policy=" + policyName + "\n";
+    b = b + "threshold=" + intToStr(threshold) + "\n";
+    b = b + "redlines=" + intToStr(armedRedlines) + "\n";
+    b = b + "capacitor=" + intToStr(capacitorPresent) + "\n";
+    b = b + "serial=" + serial + "\n";
+    b = b + "issued=" + issuedAt + "\n";
+    b = b + "expires=" + expiresAt + "\n";
+    b = b + warranty.text();
+    return b;
+  }
+
+  // A certificate is well-formed when it attests an embedded capacitor under a
+  // named policy with at least one red line armed, and carries a seal.
+  boolean isWellFormed() {
+    return configured == 1 && capacitorPresent == 1 && policyName != ""
+        && armedRedlines >= 1 && sealed == 1;
+  }
+
+  // The full presentable certificate (body + seal).
+  String render() {
+    return canonicalBody() + "seal=" + seal + "\n";
+  }
+
+  String intToStr(int v) { return "" + v; }
+}

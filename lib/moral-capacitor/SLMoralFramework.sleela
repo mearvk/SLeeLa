@@ -1,0 +1,71 @@
+/*
+ * lib/moral-capacitor/SLMoralFramework.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLMoralFramework — the catalogue of ethical lenses the
+ *   Moral Capacitor(TM) charges from. Each framework is a named way of judging
+ *   an operation's rightness, drawn from the coorenagraph moral vocabulary:
+ *   deontology (duties/rules), consequentialism/utilitarianism (outcomes),
+ *   virtue ethics (character), beneficence (do good / avoid harm), and
+ *   consent/autonomy (respect the affected party's will). A framework contributes
+ *   a small signed charge to the capacitor: positive when it endorses the
+ *   operation, negative when it objects.
+ *
+ * This is the vocabulary bridge: the frameworks name the same ethics the
+ * coorenagraph package defines (Deontology, Utilitarianism, VirtueEthics,
+ * Beneficence), made evaluable as capacitor charge.
+ *
+ * Family: moral-capacitor. Bridges coorenagraph; charges SLMoralCapacitor.
+ */
+#sleela 1.5
+class SLMoralFramework {
+  // Framework ordinals.
+  static final int DEONTOLOGY     = 1;  // duties / rules
+  static final int UTILITARIANISM = 2;  // outcomes / greatest good
+  static final int VIRTUE_ETHICS  = 3;  // character / what a good agent does
+  static final int BENEFICENCE    = 4;  // do good, avoid harm
+  static final int CONSENT        = 5;  // respect autonomy / consent
+  static final int FRAMEWORK_COUNT = 5;
+
+  int framework;      // one of the ordinals
+  String label;
+  int weight;         // how much this framework's charge counts (1..4)
+  int configured;
+
+  void configure(int fw) {
+    framework = fw; weight = 1; configured = 1;
+    if (fw == DEONTOLOGY)          { label = "deontology"; }
+    else if (fw == UTILITARIANISM) { label = "utilitarianism"; }
+    else if (fw == VIRTUE_ETHICS)  { label = "virtue ethics"; }
+    else if (fw == BENEFICENCE)    { label = "beneficence"; }
+    else if (fw == CONSENT)        { label = "consent and autonomy"; }
+    else { label = "unknown"; framework = 0; }
+  }
+
+  // Configure by name ("deontology", "utilitarianism", ...).
+  void configureByName(String name) {
+    if (name == "utilitarianism") { configure(UTILITARIANISM); return; }
+    if (name == "virtue")         { configure(VIRTUE_ETHICS); return; }
+    if (name == "beneficence")    { configure(BENEFICENCE); return; }
+    if (name == "consent")        { configure(CONSENT); return; }
+    configure(DEONTOLOGY);
+  }
+
+  void setWeight(int w) {
+    if (w < 1) { weight = 1; } else if (w > 4) { weight = 4; } else { weight = w; }
+  }
+
+  int ordinal()   { return framework; }
+  String name()   { return label; }
+  int frameworkWeight() { return weight; }
+
+  // The coorenagraph vocabulary class name this framework corresponds to, so a
+  // caller can cross-reference the moral definition.
+  String coorenagraphTerm() {
+    if (framework == DEONTOLOGY)     { return "Deontology"; }
+    if (framework == UTILITARIANISM) { return "Utilitarianism"; }
+    if (framework == VIRTUE_ETHICS)  { return "VirtueEthics"; }
+    if (framework == BENEFICENCE)    { return "Beneficence"; }
+    if (framework == CONSENT)        { return "MoralDeliberation"; }
+    return "Ethics";
+  }
+}

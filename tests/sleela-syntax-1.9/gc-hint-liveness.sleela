@@ -1,0 +1,14 @@
+#sleela 1.9
+// Liveness: a GC hint must never reclaim a still-reachable object. `keep` is
+// used after the hint, so a full `gc 100` collection must preserve it.
+struct Box { int v; }
+class GcHintLiveness {
+    static void main() {
+        Box keep = new Box();
+        keep.v = 777;
+        Box dead = new Box();
+        dead.v = 1;
+        dead = gc 100;            // full collection while `keep` is still live
+        print(keep.v);            // must still be 777
+    }
+}

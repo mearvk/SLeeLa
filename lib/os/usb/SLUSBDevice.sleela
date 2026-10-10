@@ -1,0 +1,86 @@
+/*
+ * lib/os/usb/SLUSBDevice.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLUSBDevice — a named Universal Serial Bus device or
+ *   controller. It extends SLHardwareComponent and models the finite USB
+ *   specification generations by name (USB 1.1, 2.0, 3.2 Gen 1/Gen 2/Gen 2x2,
+ *   USB4) together with the attributes a machine description needs: signalling
+ *   rate, connector type (A / B / C / Micro), device class (HID, mass storage,
+ *   hub, audio, video), and whether the port can deliver USB Power Delivery. A
+ *   machine description requests a controller/device by generation and class
+ *   and attaches it to the machine's USB tree.
+ *
+ * Family: os. Extends SLHardwareComponent.
+ */
+#sleela 1.5
+class SLUSBDevice extends SLHardwareComponent {
+  // Specification-generation ordinals.
+  static final int USB_1_1   = 0;  // Full Speed, 12 Mb/s
+  static final int USB_2_0   = 1;  // High Speed, 480 Mb/s
+  static final int USB_3_2G1 = 2;  // 5 Gb/s   (formerly USB 3.0)
+  static final int USB_3_2G2 = 3;  // 10 Gb/s  (formerly USB 3.1)
+  static final int USB_3_2G2X2 = 4; // 20 Gb/s
+  static final int USB4      = 5;  // 40 Gb/s
+
+  // Device-class ordinals (USB class codes, abbreviated set).
+  static final int UC_HID     = 1;
+  static final int UC_MASS    = 2;
+  static final int UC_HUB     = 3;
+  static final int UC_AUDIO   = 4;
+  static final int UC_VIDEO   = 5;
+  static final int UC_CONTROLLER = 6;  // host controller / root hub
+
+  int generation;     // USB_*
+  int usbClass;       // UC_*
+  int rateMbps;       // signalling rate in Mb/s
+  String connector;   // "Type-A" / "Type-B" / "Type-C" / "Micro-B"
+  int powerDelivery;  // 1 if USB-PD capable
+  int maxPorts;       // for hubs/controllers
+
+  void configure(String manufacturer, String partName, int gen, int cls) {
+    configureComponent(manufacturer, partName, CLASS_USB);
+    generation = gen; usbClass = cls; connector = "Type-C"; powerDelivery = 1; maxPorts = 0;
+    if (gen == USB_1_1)     { rateMbps = 12;    connector = "Type-A"; powerDelivery = 0; }
+    if (gen == USB_2_0)     { rateMbps = 480;   connector = "Type-A"; powerDelivery = 0; }
+    if (gen == USB_3_2G1)   { rateMbps = 5000;  connector = "Type-A"; }
+    if (gen == USB_3_2G2)   { rateMbps = 10000; }
+    if (gen == USB_3_2G2X2) { rateMbps = 20000; }
+    if (gen == USB4)        { rateMbps = 40000; }
+    if (cls == UC_HUB || cls == UC_CONTROLLER) { maxPorts = 4; }
+  }
+
+  // Configure by generation name ("USB1.1","USB2.0","USB3.2G1","USB3.2G2","USB3.2G2x2","USB4").
+  void configureByName(String manufacturer, String partName, String genName, int cls) {
+    if (genName == "USB4")        { configure(manufacturer, partName, USB4, cls); return; }
+    if (genName == "USB3.2G2x2")  { configure(manufacturer, partName, USB_3_2G2X2, cls); return; }
+    if (genName == "USB3.2G2")    { configure(manufacturer, partName, USB_3_2G2, cls); return; }
+    if (genName == "USB3.2G1")    { configure(manufacturer, partName, USB_3_2G1, cls); return; }
+    if (genName == "USB2.0")      { configure(manufacturer, partName, USB_2_0, cls); return; }
+    configure(manufacturer, partName, USB_1_1, cls);
+  }
+
+  void setConnector(String c) { connector = c; }
+  void setPorts(int ports) { maxPorts = ports; }
+
+  String generationName() {
+    if (generation == USB4)        { return "USB4"; }
+    if (generation == USB_3_2G2X2) { return "USB 3.2 Gen 2x2"; }
+    if (generation == USB_3_2G2)   { return "USB 3.2 Gen 2"; }
+    if (generation == USB_3_2G1)   { return "USB 3.2 Gen 1"; }
+    if (generation == USB_2_0)     { return "USB 2.0"; }
+    return "USB 1.1";
+  }
+  String usbClassName() {
+    if (usbClass == UC_HID)        { return "HID"; }
+    if (usbClass == UC_MASS)       { return "Mass Storage"; }
+    if (usbClass == UC_HUB)        { return "Hub"; }
+    if (usbClass == UC_AUDIO)      { return "Audio"; }
+    if (usbClass == UC_VIDEO)      { return "Video"; }
+    return "Host Controller";
+  }
+  int signallingRateMbps() { return rateMbps; }
+  String connectorType()   { return connector; }
+  boolean hasPowerDelivery() { return powerDelivery == 1; }
+  int portCount()          { return maxPorts; }
+  boolean isController()   { return usbClass == UC_CONTROLLER; }
+}

@@ -33,7 +33,7 @@ This generated table is an evidence-backed data pull. `N/A` means the source did
 | 025 | Bhutan | BT / BTN | N/A | $3.58B | $4,493 | 3.56 | 79.36 | Lower middle income | PENDING | PARTIAL |
 | 026 | Bolivia | BO / BOL | N/A | $64.77B | $5,148 | 19.52 | 46.98 | Lower middle income | PENDING | PARTIAL |
 | 027 | Bonaire, Sint Eustatius and Saba | N/A / N/A | N/A | N/A | N/A | N/A | N/A | N/A | PENDING | MISSING |
-| 028 | Bosnia and Herzegovina | BA / BIH | N/A | $32.60B | $10,382 | 6.11 | 95.12 | Upper middle income | PENDING | PARTIAL |
+| 028 | Bosnia and Herzegovina | BA / BIH | N/A | $32.60B | $10,382 | 3.98 | 95.12 | Upper middle income | PENDING | PARTIAL |
 | 029 | Botswana | BW / BWA | N/A | $19.93B | $7,778 | 2.66 | 69.54 | Upper middle income | PENDING | PARTIAL |
 | 030 | Bouvet Island | N/A / N/A | N/A | N/A | N/A | N/A | N/A | N/A | PENDING | MISSING |
 | 031 | Brazil | BR / BRA | N/A | $2279.92B | $10,713 | 5.02 | 35.29 | Upper middle income | PENDING | PARTIAL |
@@ -80,7 +80,7 @@ This generated table is an evidence-backed data pull. `N/A` means the source did
 | 072 | Falkland Islands | N/A / N/A | N/A | N/A | N/A | N/A | N/A | N/A | PENDING | MISSING |
 | 073 | Faroe Islands | FO / FRO | N/A | $4.05B | $74,175 | N/A | 105.75 | High income | PENDING | PARTIAL |
 | 074 | Fiji | FJ / FJI | N/A | $6.20B | $6,642 | -1.38 | 118.96 | Upper middle income | PENDING | PARTIAL |
-| 075 | Finland | FI / FIN | N/A | $317.04B | $56,149 | 0.34 | 83.40 | High income | PENDING | PARTIAL |
+| 075 | Finland | FI / FIN | N/A | $317.04B | $56,149 | 0.33 | 83.40 | High income | PENDING | PARTIAL |
 | 076 | France | FR / FRA | N/A | $3366.32B | $48,986 | 0.94 | 67.19 | High income | PENDING | PARTIAL |
 | 077 | French Guiana | N/A / N/A | N/A | N/A | N/A | N/A | N/A | N/A | PENDING | MISSING |
 | 078 | French Polynesia | PF / PYF | N/A | $6.32B | $22,440 | N/A | 64.47 | High income | PENDING | PARTIAL |
@@ -98,7 +98,7 @@ This generated table is an evidence-backed data pull. `N/A` means the source did
 | 090 | Guam | GU / GUM | N/A | $6.91B | $41,833 | N/A | 71.87 | High income | PENDING | PARTIAL |
 | 091 | Guatemala | GT / GTM | N/A | $123.31B | $6,598 | 1.49 | 46.53 | Upper middle income | PENDING | PARTIAL |
 | 092 | Guernsey | N/A / N/A | N/A | N/A | N/A | N/A | N/A | N/A | PENDING | MISSING |
-| 093 | Guinea | GN / GIN | N/A | $28.35B | $1,877 | 3.55 | 103.68 | Lower middle income | PENDING | PARTIAL |
+| 093 | Guinea | GN / GIN | N/A | $28.35B | $1,877 | 3.57 | 103.68 | Lower middle income | PENDING | PARTIAL |
 | 094 | Guinea-Bissau | GW / GNB | N/A | $2.53B | $1,124 | 0.87 | 40.88 | Low income | PENDING | PARTIAL |
 | 095 | Guyana | GY / GUY | N/A | $27.10B | $32,414 | 3.33 | 194.35 | High income | PENDING | PARTIAL |
 | 096 | Haiti | HT / HTI | N/A | $32.08B | $2,694 | 28.64 | 15.89 | Lower middle income | PENDING | PARTIAL |
@@ -120,9 +120,9 @@ This generated table is an evidence-backed data pull. `N/A` means the source did
 | 112 | Japan | JP / JPN | N/A | $4435.16B | $35,951 | 3.17 | 44.85 | High income | PENDING | PARTIAL |
 | 113 | Jersey | N/A / N/A | N/A | N/A | N/A | N/A | N/A | N/A | PENDING | MISSING |
 | 114 | Jordan | JO / JOR | N/A | $61.61B | $5,348 | 1.77 | 145.99 | Upper middle income | PENDING | PARTIAL |
-| 115 | Kazakhstan | KZ / KAZ | N/A | $306.24B | $14,692 | 11.39 | 57.16 | Upper middle income | PENDING | PARTIAL |
+| 115 | Kazakhstan | KZ / KAZ | N/A | $306.24B | $14,692 | 11.38 | 57.16 | Upper middle income | PENDING | PARTIAL |
 | 116 | Kenya | KE / KEN | N/A | $135.94B | $2,363 | 4.07 | 37.52 | Lower middle income | PENDING | PARTIAL |
-| 117 | Kiribati | KI / KIR | N/A | $349.23M | $2,559 | 2.46 | 102.11 | Lower middle income | PENDING | PARTIAL |
+| 117 | Kiribati | KI / KIR | N/A | $349.23M | $2,559 | 6.51 | 102.11 | Lower middle income | PENDING | PARTIAL |
 | 118 | North Korea | N/A / N/A | N/A | N/A | N/A | N/A | N/A | N/A | PENDING | MISSING |
 | 119 | South Korea | N/A / N/A | N/A | N/A | N/A | N/A | N/A | N/A | PENDING | MISSING |
 | 120 | Kuwait | KW / KWT | N/A | $157.21B | $32,312 | 2.36 | 93.99 | High income | PENDING | PARTIAL |
@@ -161,7 +161,7 @@ This generated table is an evidence-backed data pull. `N/A` means the source did
 | 153 | Namibia | NA / NAM | N/A | $15.08B | $4,876 | 3.51 | 108.58 | Lower middle income | PENDING | PARTIAL |
 | 154 | Nauru | N/A / N/A | N/A | N/A | N/A | N/A | N/A | N/A | PENDING | MISSING |
 | 155 | Nepal | NP / NPL | N/A | $45.49B | $1,536 | 2.65 | 42.55 | Lower middle income | PENDING | PARTIAL |
-| 156 | Netherlands | NL / NLD | N/A | $1332.77B | $73,684 | 3.26 | 150.12 | High income | PENDING | PARTIAL |
+| 156 | Netherlands | NL / NLD | N/A | $1332.77B | $73,684 | 3.20 | 150.12 | High income | PENDING | PARTIAL |
 | 157 | New Caledonia | NC / NCL | N/A | $8.55B | $29,213 | 0.58 | 40.37 | High income | PENDING | PARTIAL |
 | 158 | New Zealand | NZ / NZL | N/A | $264.06B | $49,591 | 2.84 | 50.66 | High income | PENDING | PARTIAL |
 | 159 | Nicaragua | NI / NIC | N/A | $22.24B | $3,173 | 2.08 | 96.45 | Lower middle income | PENDING | PARTIAL |
@@ -171,7 +171,7 @@ This generated table is an evidence-backed data pull. `N/A` means the source did
 | 163 | Norfolk Island | N/A / N/A | N/A | N/A | N/A | N/A | N/A | N/A | PENDING | MISSING |
 | 164 | North Macedonia | MK / MKD | N/A | $19.10B | $10,490 | 4.07 | 133.04 | Upper middle income | PENDING | PARTIAL |
 | 165 | Northern Mariana Islands | MP / MNP | N/A | $1.10B | $23,786 | N/A | 93.16 | High income | PENDING | PARTIAL |
-| 166 | Norway | NO / NOR | N/A | $530.76B | $94,594 | 3.06 | 79.05 | High income | PENDING | PARTIAL |
+| 166 | Norway | NO / NOR | N/A | $530.76B | $94,594 | 3.04 | 79.05 | High income | PENDING | PARTIAL |
 | 167 | Oman | OM / OMN | N/A | $109.60B | $19,947 | 0.97 | 114.85 | High income | PENDING | PARTIAL |
 | 168 | Pakistan | PK / PAK | N/A | $407.31B | $1,596 | 3.55 | 27.19 | Lower middle income | PENDING | PARTIAL |
 | 169 | Palau | PW / PLW | N/A | $345.00M | $19,532 | -0.42 | 105.81 | High income | PENDING | PARTIAL |
@@ -200,7 +200,7 @@ This generated table is an evidence-backed data pull. `N/A` means the source did
 | 192 | Samoa | WS / WSM | N/A | $1.29B | $5,873 | 2.21 | 70.63 | Upper middle income | PENDING | PARTIAL |
 | 193 | San Marino | SM / SMR | N/A | $2.03B | $59,871 | 2.30 | 340.98 | High income | PENDING | PARTIAL |
 | 194 | Sao Tome and Principe | ST / STP | N/A | $981.29M | $4,084 | 11.05 | 46.57 | Lower middle income | PENDING | PARTIAL |
-| 195 | Saudi Arabia | SA / SAU | N/A | $1276.94B | $34,537 | 2.08 | 57.92 | High income | PENDING | PARTIAL |
+| 195 | Saudi Arabia | SA / SAU | N/A | $1276.94B | $34,537 | 2.04 | 57.92 | High income | PENDING | PARTIAL |
 | 196 | Senegal | SN / SEN | N/A | $37.01B | $1,955 | 1.46 | 71.07 | Lower middle income | PENDING | PARTIAL |
 | 197 | Serbia | RS / SRB | N/A | $99.95B | $15,262 | 3.89 | 112.92 | Upper middle income | PENDING | PARTIAL |
 | 198 | Seychelles | SC / SYC | N/A | $2.39B | $19,449 | 0.30 | 172.29 | High income | PENDING | PARTIAL |
@@ -214,7 +214,7 @@ This generated table is an evidence-backed data pull. `N/A` means the source did
 | 206 | South Africa | ZA / ZAF | N/A | $427.18B | $6,598 | 3.21 | 60.91 | Upper middle income | PENDING | PARTIAL |
 | 207 | South Georgia and the South Sandwich Islands | N/A / N/A | N/A | N/A | N/A | N/A | N/A | N/A | PENDING | MISSING |
 | 208 | South Sudan | SS / SSD | N/A | $12.00B | $1,080 | 91.44 | 65.55 | Low income | PENDING | PARTIAL |
-| 209 | Spain | ES / ESP | N/A | $1906.45B | $38,627 | 2.70 | 69.45 | High income | PENDING | PARTIAL |
+| 209 | Spain | ES / ESP | N/A | $1906.45B | $38,627 | 2.67 | 69.45 | High income | PENDING | PARTIAL |
 | 210 | Sri Lanka | LK / LKA | N/A | $108.83B | $5,002 | -4.76 | 41.81 | Upper middle income | PENDING | PARTIAL |
 | 211 | Sudan | SD / SDN | N/A | $60.16B | $1,165 | 138.81 | 2.38 | Low income | PENDING | PARTIAL |
 | 212 | Suriname | SR / SUR | N/A | $4.52B | $7,070 | 9.21 | 90.96 | Upper middle income | PENDING | PARTIAL |
@@ -223,7 +223,7 @@ This generated table is an evidence-backed data pull. `N/A` means the source did
 | 215 | Switzerland | CH / CHE | N/A | $1043.53B | $114,769 | 0.15 | 147.16 | High income | PENDING | PARTIAL |
 | 216 | Syrian Arab Republic | SY / SYR | N/A | $23.74B | $1,057 | 13.42 | 35.44 | Low income | PENDING | PARTIAL |
 | 217 | Taiwan | N/A / N/A | N/A | N/A | N/A | N/A | N/A | N/A | PENDING | MISSING |
-| 218 | Tajikistan | TJ / TJK | N/A | $17.66B | $1,637 | 6.00 | 59.09 | Lower middle income | PENDING | PARTIAL |
+| 218 | Tajikistan | TJ / TJK | N/A | $17.66B | $1,637 | 3.39 | 59.09 | Lower middle income | PENDING | PARTIAL |
 | 219 | Tanzania | TZ / TZA | N/A | $90.14B | $1,319 | 3.33 | 38.97 | Lower middle income | PENDING | PARTIAL |
 | 220 | Thailand | TH / THA | N/A | $577.01B | $8,057 | -0.13 | 138.41 | Upper middle income | PENDING | PARTIAL |
 | 221 | Timor-Leste | TL / TLS | N/A | $1.90B | $1,341 | 0.43 | 95.45 | Lower middle income | PENDING | PARTIAL |

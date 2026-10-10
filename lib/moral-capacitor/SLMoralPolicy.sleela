@@ -1,0 +1,51 @@
+/*
+ * lib/moral-capacitor/SLMoralPolicy.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLMoralPolicy — a named moral stance a library applies
+ *   consistently through the Moral Capacitor(TM). A policy bundles the discharge
+ *   threshold (how much moral charge an operation needs to proceed) with the set
+ *   of red lines that are armed for the surface, plus whether a DEFER is allowed
+ *   or a partial charge should fail closed to DENY. The adapters ship ready
+ *   policies: a lenient VM default, a strict OS-destructive policy, and a
+ *   Machine-power policy.
+ *
+ * Making the stance a first-class object means a surface's ethical posture is
+ * declared once and reused, rather than re-expressed at every call site.
+ *
+ * Family: moral-capacitor. Consumed by SLMoralCapacitor and the adapters.
+ */
+#sleela 1.5
+class SLMoralPolicy {
+  String label;
+  int dischargeThreshold;  // minimum charge to PERMIT
+  int allowDefer;          // 1: partial charge -> DEFER; 0: fail closed to DENY
+  int requireConsent;      // 1: a non-consented irreversible op auto-trips a veto
+  int configured;
+
+  void configure(String name, int threshold) {
+    label = name; dischargeThreshold = threshold; allowDefer = 1; requireConsent = 1;
+    configured = 1;
+  }
+
+  // ---- Ready-made stances for the priority surfaces ----------------------
+  // Routine VM work: a modest threshold, DEFER allowed.
+  void vmDefault() { configure("vm-default", 2); allowDefer = 1; requireConsent = 0; }
+  // VM native/OS-bridge or process spawn: higher bar.
+  void vmBridge()  { configure("vm-bridge", 4); allowDefer = 1; requireConsent = 1; }
+  // OS routine (read env, cwd): low bar.
+  void osRoutine() { configure("os-routine", 2); allowDefer = 1; requireConsent = 0; }
+  // OS destructive (remove/format/install to disk): high bar, consent required,
+  // fail closed (no DEFER — an unsure destructive op is denied).
+  void osDestructive() { configure("os-destructive", 6); allowDefer = 0; requireConsent = 1; }
+  // Machine power-on / boot a guest: high bar.
+  void machinePower()  { configure("machine-power", 5); allowDefer = 1; requireConsent = 1; }
+
+  void setThreshold(int t) { dischargeThreshold = t; }
+  void setAllowDefer(boolean on) { if (on) { allowDefer = 1; } else { allowDefer = 0; } }
+  void setRequireConsent(boolean on) { if (on) { requireConsent = 1; } else { requireConsent = 0; } }
+
+  String name()         { return label; }
+  int threshold()       { return dischargeThreshold; }
+  boolean defersAllowed() { return allowDefer == 1; }
+  boolean consentRequired() { return requireConsent == 1; }
+}

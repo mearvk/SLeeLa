@@ -87,6 +87,11 @@ struct Binary:Expr{std::string op;ExprP lhs,rhs;Binary(std::string o,ExprP l,Exp
 struct Call:Expr{std::string callee;std::vector<ExprP> args;explicit Call(std::string c):callee(std::move(c)){}};
 struct MethodCall:Expr{ExprP receiver;std::string method;std::vector<ExprP> args;MethodCall(ExprP r,std::string m):receiver(std::move(r)),method(std::move(m)){}};
 struct NewExpr:Expr{std::string typeName;std::vector<ExprP> args;explicit NewExpr(std::string t):typeName(std::move(t)){}};
+// `ran::<word>` -- the System / already-Ran-in-RAM reference. The `ran::`
+// qualifier names a system meaning explicitly, so ordinary words (mem, gc, ...)
+// stay free as identifiers. `word` is the system name after `ran::` (e.g.
+// "mem"). A value form such as `ran::mem` evaluates to a system quantity.
+struct RanRefExpr:Expr{std::string word;explicit RanRefExpr(std::string w):word(std::move(w)){}};
 struct MemberAccess:Expr{ExprP base;std::string field;MemberAccess(ExprP b,std::string f):base(std::move(b)),field(std::move(f)){}};
 // --- Java expression forms (surface completeness). -------------------------
 // Compound/plain assignment as an expression (e.g. a = b, a += b). `op` is the
@@ -112,6 +117,11 @@ struct Assign:Stmt{std::string name;ExprP value;};
 struct FieldAssign:Stmt{ExprP base;std::string field;ExprP value;};
 struct ExprStmt:Stmt{ExprP expr;ExprStmt()=default;explicit ExprStmt(ExprP e):expr(std::move(e)){}};
 struct PrintStmt:Stmt{ExprP expr;};
+// GC-hint statement (syntax 1.9): `x = gc N;` / `x = mem N;`. `target` names the
+// value the developer is done using; `aggressiveness` is the 0..100 cleanup
+// strength. Both the `gc` and `mem` spellings produce this node. It lowers to a
+// single OP_GC_HINT with the aggressiveness as its operand.
+struct GcHintStmt:Stmt{std::string target;std::string spelling;int aggressiveness=0;bool ranQualified=false;};
 struct ReturnStmt:Stmt{ExprP value;};
 struct Block:Stmt{std::vector<StmtP> stmts;};
 struct IfStmt:Stmt{ExprP cond;StmtP thenS,elseS;};
@@ -160,6 +170,29 @@ struct StructDecl{std::string name;std::vector<Field> fields;};
 struct DynamiteImport { std::string referenceName; std::string sourcePath; };
 struct PermissibleImport { std::string referenceName; std::string sourcePath; };
 
+// --- Document extension (syntax 1.10): `extends to ... <grouper>;` ----------
+// A `.sleela` document may extend *to* one or more other documents, organized
+// by a grouper (organization term). This is the document-sheet meaning of
+// `extends`, distinct from a class's OOD `extends` of a base type:
+//
+//   extends to Other linear;            // linear reals: an ordered chain
+//   extends to { A, B, C } group;       // an unordered grouped set
+//   extends to { A, B } services Hub;   // a group fronted by a Server of Services
+//
+// The grouper names the structure the referenced documents form (see
+// Grouper below); `server` holds the Server-of-Services document name for the
+// `services` grouper (empty otherwise).
+enum class Grouper {
+    Linear,     // ordered chain of document references (congruent-linear reals)
+    Group,      // unordered set gathered under one organizer
+    Services    // a group fronted by one Server-of-Services document
+};
+struct DocumentExtension {
+    Grouper grouper = Grouper::Linear;
+    std::vector<std::string> targets;  // referenced document names
+    std::string server;                // Server-of-Services name (services only)
+};
+
 struct Program {
     annotation::DocumentAnnotations annotations;
     std::vector<std::string> imports;
@@ -167,6 +200,7 @@ struct Program {
     std::vector<PermissibleImport> permissibleImports;
     std::vector<StructDecl> structs;
     std::vector<ClassDecl> classes;
+    std::vector<DocumentExtension> documentExtensions;
 };
 
 } // namespace sleela

@@ -3,9 +3,9 @@
 # SLeeLa
 
 
-## Language Specification and VM Compatibility (Syntax 1.7)
+## Language Specification and VM Compatibility (Syntax 1.10)
 
-The authoritative language grammar is [`SLEELA.syntax`](SLEELA.syntax), version **1.7**. The compiler accepts declared syntax versions `1.3` through `1.7`. The unsigned fixed-width source-signature family is `U1` through `U1048576`; its type contract is documented in [`markdown/SOURCE.md`](markdown/SOURCE.md). The character-set capacity signature family is `C1` through `C1048576`, where `C1048576` denotes a catalogue capacity of 1024 × 1024 character entries (not a bit width); its contract and UTF-4088 example are documented in [`markdown/SOURCE.md`](markdown/SOURCE.md). The native compiler references this specification, and each SLVM/1 through SLVM/11 has a [`LANGUAGE.SPEC.md`](sleela-virtual-machine/1/LANGUAGE.SPEC.md) conformance reference. These references establish a shared specification, not a claim that every VM runtime operation is already implemented; unsupported paths must reject explicitly rather than silently narrowing values.
+The checked-in authoritative grammar is [`SLEELA.syntax`](SLEELA.syntax), version **1.10**; the checked-in compiler version gate (`impl/frontend/version.{h,cpp}`) accepts `1.3` through `1.10` and defaults to `1.10`. **Syntax 1.10 adds the two meanings of the `extends` keyword:** resolved OOD class inheritance (a derived class inherits a base's instance fields and methods, with override and multi-level chains) and the document form `extends to <targets> <grouper>;` — where a grouper (`linear` | `group` | `services`) organizes the documents a sheet points to (see [`markdown/EXTENDS.md`](markdown/EXTENDS.md)). Both are version-gated, so documents at `#sleela 1.9` or lower are unchanged. **Syntax 1.8 adds two features over the 1.3–1.7 baseline: inferred local declarations (`let`) and constructor arguments on `new Type(args)`** — both are implemented in the native front end (parser, semantic analyzer, and code generator) and exercised by the regression fixtures in [`tests/sleela-syntax-1.8/`](tests/sleela-syntax-1.8/). Constructor **overload resolution** and `this(...)`/base **delegation** are deliberately **not** part of verified 1.8 and are rejected with explicit semantic errors (see [`SLEELA.syntax`](SLEELA.syntax) §12). Compiler/tool version and source syntax version are separate. See the [documentation index](docs/README.md) for implementation status, build/test guidance, and VM references. The unsigned fixed-width source-signature family is `U1` through `U1048576`; its type contract is documented in [`markdown/SOURCE.md`](markdown/SOURCE.md). The character-set capacity signature family is `C1` through `C1048576`, where `C1048576` denotes a catalogue capacity of 1024 × 1024 character entries (not a bit width); its contract and UTF-4088 example are documented in [`markdown/SOURCE.md`](markdown/SOURCE.md). The native compiler references this specification, and each SLVM/1 through SLVM/11 has a [`LANGUAGE.SPEC.md`](sleela-virtual-machine/1/LANGUAGE.SPEC.md) conformance reference. These references establish a shared specification, not a claim that every VM runtime operation is already implemented; unsupported paths must reject explicitly rather than silently narrowing values.
 
 ## Bitcoin Conjegeum
 
@@ -74,9 +74,14 @@ the cross-platform statement in [`lib/README.md`](lib/README.md#cross-platform-s
   (fail-closed, no trust-on-first-use), and never elevates privileges implicitly
   (`--allow-root`). A CI workflow keeps the SHA-256 build-manifest in sync.
 - **Tests:** the subject libraries (math, physics, economics, inference,
-  finance, chemistry) now carry real numeric assertions wired into `make test`;
-  these caught and fixed genuine bugs (a `sin` series off-by-one, a broken
-  `fmod`, integer-only `%` in the VM, and the neutrino oscillation formula).
+  finance, chemistry) have numeric assertions wired into `make test`; these
+  caught and fixed genuine bugs (a `sin` series off-by-one, a broken `fmod`,
+  integer-only `%` in the VM, and the neutrino oscillation formula). Test
+  coverage does not imply that the latest run is green: the most recently
+  inspected Linux and Windows subject-test runs crashed with invalid-pointer
+  errors in physics, economics, inference, and finance. Consult the current
+  [GitHub Actions runs](https://github.com/mearvk/SLeeLa/actions) before treating
+  the suite as passing; the runtime failure is unresolved in this documentation update.
 - **Data integrity:** the auto-generated BANKS4 column was reworked from an
   editorializing "Socialism Status" into a neutral, sourced **Constitutional
   Socialism Reference** indicator (`CONSTITUTIONAL` / `NONE` / `UNASSESSED`,
@@ -102,8 +107,7 @@ the cross-platform statement in [`lib/README.md`](lib/README.md#cross-platform-s
 - The working implementation lives under [`impl/`](impl/) — see
   [`impl/README.md`](impl/README.md) for the full guide, and
   [`impl/DESIGN.md`](impl/DESIGN.md) for the architecture.
-- **Two source trees:** [`impl/`](impl/) (C/C++) is the authoritative, buildable,
-  tested system; [`src/`](src/) is an earlier/parallel **Java** prototype
+- **Two source trees:** [`impl/`](impl/) (C/C++) is the authoritative implementation, actively built and tested; current test results must be checked in CI; [`src/`](src/) is an earlier/parallel **Java** prototype
   (`implementations/_001_`) that shares the naming but no code and is not part of
   the build or CI. [`ARCHITECTURE.md`](markdown/ARCHITECTURE.md) delineates the two and
   says which to use.

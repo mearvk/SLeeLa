@@ -15,7 +15,32 @@ SLeeLa is treated as a Turing-complete language whose front end should be expres
 
 The library uses one SLeeLa source file per front-end object. This makes the object inventory measurable and gives the project a path toward a roughly 2,000-object standard library without hiding declarations inside aggregate files.
 
-Families: `core/`, `collections/`, `text/`, `io/`, `vm/`, `os/`, `net/`, `security/`, `opcodes/`, `sldocument/`.
+Families: `core/`, `collections/`, `text/`, `io/`, `vm/`, `os/`, `net/`, `security/`, `opcodes/`, `sldocument/`, `coorenagraph/`, `moral-capacitor/`.
+
+### Moral Capacitor™ — the ethical gate for every family
+
+The `moral-capacitor/` family provides the **Moral Capacitor™**: a small, uniform
+ethical gate any `/lib` class can place in front of a consequential operation. It
+**accumulates moral charge** from ethical frameworks (deontology, utilitarianism,
+virtue ethics, beneficence, consent) and only **discharges — permits the
+operation — when stored charge meets a policy threshold and no absolute red line
+is tripped** (child safety, weapons/CBRN, non-consensual surveillance, deception,
+scaled abuse, irreversible harm without consent). It is intended for all `/lib`
+libraries and is placed first and foremost in front of the **VM**, **OS**, and
+**Machine** surfaces via `SLVMMoralGuard`, `SLOSMoralGate`, and
+`SLMachineMoralGate`. It refines the governance `ETHICS_NORMS` axis and draws its
+vocabulary from `coorenagraph`.
+
+The family also puts the moral code **into the products** with a warranty: the
+**Certificate of Morals™** (`SLMoralCertificate`, `SLMoralWarranty`,
+`SLMoralCertificateAuthority`) is a signed attestation — travelling with a SLeeLa
+software unit — that the unit embeds the Moral Capacitor™ and enforces it; and
+the **Guard of the Moral Code** (`SLMoralCodeGuard`) admits a product to run or
+ship only when that certificate is present, authentic, unexpired, and consistent
+with the embedded capacitor. Embed one `SLMoralCertified` to make a product both
+gated and certified; the VM, OS, and Machine adapters each gained `certify(...)`
+and `admit(...)`. The project strives to certify **all** SLeeLa software this
+way. See `moral-capacitor/ARCHITECTURE.md`.
 
 The standard-library target is **2,048 object types**. This is an architectural target, not a claim that all 2,048 objects are implemented today.
 

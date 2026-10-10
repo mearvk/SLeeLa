@@ -1,0 +1,57 @@
+/*
+ * lib/os/SLPackageSet.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLPackageSet — the userland composition of an OS being
+ *   constructed: the seed of packages (the base system plus layered software)
+ *   that is installed into the root filesystem. This is the compositional heart
+ *   of the design — "the desktop is not the kernel, and the kernel is not the
+ *   distribution": each package is an independently versioned unit, and the OS
+ *   is their assembled whole.
+ *
+ * It mirrors the debootstrap-style model the OS lineage uses: a base seed is
+ * laid down first, then desktop / toolchain / service packages are layered on
+ * top. Packages are accumulated into a newline-separated manifest the ISO
+ * builder consumes to populate the rootfs.
+ *
+ * Family: os. Pure design model; no native bridge calls.
+ */
+#sleela 1.5
+class SLPackageSet {
+  String manifest;    // newline-separated "name version" lines
+  int count;
+  int configured;
+
+  void configure() { manifest = ""; count = 0; configured = 1; }
+
+  // Add a package with an explicit version.
+  void add(String name, String version) {
+    String line = name + " " + version;
+    if (manifest == "") { manifest = line; } else { manifest = manifest + "\n" + line; }
+    count = count + 1;
+  }
+  // Add a package at an unpinned/"latest" version.
+  void addLatest(String name) { add(name, "latest"); }
+
+  // Seed the base-system packages a shape needs before any layering.
+  void baseSeedForShape(SLOSShape shape) {
+    if (configured != 1) { configure(); }
+    if (shape.isWindows()) {
+      add("ntoskrnl", "10.0"); add("win32-base", "10.0");
+      add("services.exe", "10.0"); add("explorer", "10.0");
+      return;
+    }
+    if (shape.isMac()) {
+      add("xnu-base", "24.0"); add("libSystem", "24.0");
+      add("launchd", "24.0"); add("CoreServices", "24.0");
+      return;
+    }
+    // Linux base seed.
+    add("libc", "2.39"); add("coreutils", "9.5");
+    add("bash", "5.2"); add("systemd", "255");
+    add("util-linux", "2.40");
+  }
+
+  String packages() { return manifest; }
+  int packageCount() { return count; }
+  boolean isEmpty() { return count == 0; }
+}

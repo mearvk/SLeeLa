@@ -1,0 +1,82 @@
+/*
+ * lib/os/SLHardwareRegistry.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLHardwareRegistry — the single by-name front door to the
+ *   whole hardware-component catalogue. It composes every per-family catalogue
+ *   (SLDDRCatalog, SLSSDCatalog, SLHardDiskCatalog, SLUSBCatalog, and the UEFI
+ *   and video-card factories) so a machine description can request any part by
+ *   its class, manufacturer, and model/generation name through one object and
+ *   receive a correctly-specified component.
+ *
+ * This is what makes the parts "name-addressable": because the real catalogue
+ * of device types is finite, the registry exposes memory(), ssd(), hdd(),
+ * usb(), uefi(), and video() lookups keyed on manufacturer + variant name.
+ *
+ * Family: os. Composes the per-family catalogues; produces SLHardwareComponent
+ *   subclasses.
+ */
+#sleela 1.5
+class SLHardwareRegistry {
+  SLDDRCatalog ddr;
+  SLSSDCatalog ssds;
+  SLHardDiskCatalog hdds;
+  SLUSBCatalog usb;
+  SLVideoCardCatalog gpus;
+
+  void configure() {
+    ddr = new SLDDRCatalog(); ddr.configure();
+    ssds = new SLSSDCatalog(); ssds.configure();
+    hdds = new SLHardDiskCatalog(); hdds.configure();
+    usb = new SLUSBCatalog(); usb.configure();
+    gpus = new SLVideoCardCatalog(); gpus.configure();
+  }
+
+  // ---- Memory ------------------------------------------------------------
+  // A DDR module by manufacturer, generation name ("DDR".."DDR5"), capacity MB.
+  SLDDRModule memory(String manufacturer, String generation, int capacityMb) {
+    return ddr.module(manufacturer, generation, capacityMb, false);
+  }
+  SLDDRModule eccMemory(String manufacturer, String generation, int capacityMb) {
+    return ddr.module(manufacturer, generation, capacityMb, true);
+  }
+
+  // ---- Solid-state storage -----------------------------------------------
+  // An SSD by manufacturer, interface name ("SATA"/"PCIe3"/"PCIe4"/"PCIe5"), GB.
+  SLSSD ssd(String manufacturer, String iface, int capacityGb) {
+    return ssds.drive(manufacturer, iface, capacityGb);
+  }
+
+  // ---- Rotational storage ------------------------------------------------
+  SLHardDisk hdd(String manufacturer, int rpm, int capacityGb) {
+    if (rpm > 7200) { return hdds.performance(manufacturer, rpm, capacityGb); }
+    return hdds.sata7200(manufacturer, capacityGb);
+  }
+
+  // ---- USB ---------------------------------------------------------------
+  // A USB host controller by vendor + generation name.
+  SLUSBDevice usbController(String vendor, String generation, int ports) {
+    return usb.controller(vendor, generation, ports);
+  }
+  SLUSBDevice usbFlash(String vendor, String model, String generation) {
+    return usb.flashDrive(vendor, model, generation);
+  }
+
+  // ---- UEFI firmware -----------------------------------------------------
+  SLUEFIFirmware uefi(String vendor) {
+    SLUEFIFirmware fw = new SLUEFIFirmware();
+    fw.configureByVendor(vendor);
+    return fw;
+  }
+
+  // ---- Video card --------------------------------------------------------
+  SLVideoCard video(String vendor, String model, int vramMb) {
+    return gpus.card(vendor, model, vramMb);
+  }
+
+  // Catalogue accessors for callers that want the richer per-family API.
+  SLDDRCatalog memoryCatalog()     { return ddr; }
+  SLSSDCatalog ssdCatalog()        { return ssds; }
+  SLHardDiskCatalog hddCatalog()   { return hdds; }
+  SLUSBCatalog usbCatalog()        { return usb; }
+  SLVideoCardCatalog videoCatalog(){ return gpus; }
+}

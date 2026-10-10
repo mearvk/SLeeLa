@@ -125,3 +125,289 @@ and macOS. Where an OS concept has no portable equivalent (POSIX mode bits vs.
 Windows ACLs; signals vs. `TerminateProcess`), the general classes expose the
 portable intersection and the flavor classes expose the native idiom, so the
 differences are named rather than hidden.
+
+---
+
+# Building an OS by OOD — the OS-construction family
+
+The classes above *use* the real host OS. The classes below *design and build a
+new one*. This is the second half of `lib/os`: an object-oriented model for
+**constructing an operating system**, able to assume the shape of Windows,
+Linux, or macOS, where **compiling and running the SLeeLa description emits the
+C and C++ code for the OS, assembles it into a bootable ISO, and generates a
+per-OS-type installer**.
+
+It is the complement to `lib/cpu` from the other direction. `lib/cpu` compiles a
+small custom kernel onto a simulated CPU; this family describes a *whole
+distribution* — firmware → boot → kernel → user space → desktop — as composed
+SLeeLa objects, then lowers that object model to the native sources a real
+toolchain builds toward an `.iso`.
+
+> **Boundary — honesty note.** These classes are a **design and code-generation
+> model**. They emit C/C++ source, an `xorriso`/`mkisofs` ISO recipe, and
+> installer scripts; the actual compilation, image authoring, and disk writes
+> are performed by the native toolchain the emitted recipes drive (`cc`, `c++`,
+> `xorriso`, `grub-install`/`bcdboot`/`bless`, `qemu`). The SLeeLa layer is the
+> single source of the OS *description* and of those recipes, not a replacement
+> for the host toolchain.
+
+## The layered model
+
+An OS is described as one `SLOSModel` aggregate composing one object per layer,
+in the firmware → desktop order a system actually boots:
+
+```text
+SLOSShape          which family: Linux / Windows / macOS (the OOD axis)
+SLArchitectureSet  target CPU arch(es): amd64 / arm64 / riscv64 / ...
+      ↓
+SLBootloaderSpec   firmware + loader (UEFI+GRUB / UEFI+BOOTMGR / UEFI+boot.efi)
+      ↓
+SLKernelSpec       kernel family, version, subsystems, command line
+      ↓
+SLDriverSet        drivers (built-in vs module; storage must reach the rootfs)
+      ↓
+SLFilesystemLayout root filesystem format + directory namespace (FHS / Windows / Apple)
+      ↓
+SLPackageSet       the composed userland package seed (debootstrap-style)
+      ↓
+SLServiceSet       system services under the init manager (systemd / SCM / launchd)
+      ↓
+SLDesktopSpec      optional desktop/session (GNOME / Explorer / Aqua), or headless
+```
+
+## The classes
+
+### Model (the OOD aggregate and its layers)
+
+| Class | Role |
+|---|---|
+| `SLOSModel` | Root aggregate: composes every layer; `shapeAs(family, arch)` applies a shape's defaults; `isBuildable()` checks the model is self-consistent. |
+| `SLOSShape` | The OOD extrapolation axis: Linux / Windows / macOS, and the per-family defaults (separators, init manager, boot style, rootfs, desktop). |
+| `SLOSArchitecture` / `SLArchitectureSet` | A target CPU architecture (triple, package arch, word size, endianness) and the multi-arch set a model builds for. |
+| `SLBootloaderSpec` | Firmware interface + boot loader + Secure Boot + initramfs decision + ESP. |
+| `SLKernelSpec` | Kernel family/version, subsystem toggles, boot command line; `isBootable()`. |
+| `SLDriverSet` | Device drivers, each built-in or module; `canReachRootfs()`. |
+| `SLFilesystemLayout` | Root filesystem format and the directory manifest for the shape. |
+| `SLPackageSet` | The base + layered package seed installed into the rootfs. |
+| `SLServiceSet` | The services the init/service manager brings up at boot. |
+| `SLDesktopSpec` | The desktop/session stack, or `headless()` for a server edition. |
+
+### Shape presets — OOD extrapolation
+
+| Class | Role |
+|---|---|
+| `SLLinuxOSModel` | `extends SLOSModel`; `build(name, ver)` yields a Linux-shaped OS (Linux + GRUB + ext4/FHS + systemd + GNOME). `buildMultiArch` adds arm64/riscv64. |
+| `SLWindowsOSModel` | `extends SLOSModel`; a Windows-shaped OS (NT + BOOTMGR + NTFS + SCM + Explorer). |
+| `SLMacOSModel` | `extends SLOSModel`; a macOS-shaped OS (XNU + boot.efi + APFS + launchd + Aqua). `buildUniversal` adds x86_64. |
+
+### Compilation → C/C++ → ISO → installer
+
+| Class | Role |
+|---|---|
+| `SLCEmitter` | Emits `os_config.h` + `os_boot.c` (the C early-boot path) from a model. |
+| `SLCppEmitter` | Emits `os_image.cpp` (the C++ `OsImage` that composes the boot chain). |
+| `SLOSCompiler` | Front door: validates the model, runs both emitters, and (via `compileToIso`) drives the ISO build and installer generation. |
+| `SLISOBuilder` | Assembles the rootfs and emits the `xorriso`/`mkisofs` ISO recipe. |
+| `SLInstallerGenerator` | Emits the installer in the shape's idiom: `install-linux.sh`, `install-windows.ps1`, or `install-macos.sh`, each with a QEMU `--vm` path. |
+| `SLOSArtifact` / `SLOSBuildReport` | A produced artifact (source / script / ISO) and the enumerable index of a whole build. |
+
+## Minimal usage
+
+```sleela
+// Design a Linux-shaped OS by OOD, then compile it to C/C++, an ISO, and an installer.
+SLLinuxOSModel m = new SLLinuxOSModel();
+m.build("Determinant", "1.0");          // assume the shape of Linux
+m.packageSet().add("firefox", "latest"); // refine any layer afterwards
+
+SLOSCompiler c = new SLOSCompiler();
+c.configure();
+SLOSBuildReport report = c.compileToIso(m);   // -> os_config.h, os_boot.c,
+                                              //    os_image.cpp, the ISO recipe,
+                                              //    and install-linux.sh
+print(report.summary());                      // "OK: Determinant 1.0 (...) -> 5 artifacts"
+```
+
+Re-shaping the OS is a one-line change — `new SLWindowsOSModel()` or
+`new SLMacOSModel()` — and every emitted artifact (header defines, the C++
+`OsImage`, the ISO loader and rootfs format, the installer idiom) changes with
+it. See `os-build.sleela` for a self-contained, runnable demonstrator that
+prints each generated artifact.
+
+## Relationship to the OS projects in this lineage
+
+This model mirrors the structure of the real OS projects built with SLeeLa (an
+Ubuntu-derived distribution): a compositional, `debootstrap`-style base plus
+layered packages; a firmware → boot → kernel → user space → desktop boot chain;
+multi-architecture targets; an `xorriso`-authored ISO; and an installer that is
+a control plane over the established Make/ISO contracts with a QEMU VM path for
+read-only verification before touching a real disk. The desktop is modeled as a
+replaceable, optional layer — **GNOME is not the operating system** — exactly as
+that lineage treats it.
+
+---
+
+# Named hardware parts → a Machine on the Sleela VM
+
+Beyond describing an OS, `lib/os` describes the **physical machine** it runs on,
+part by part. Because the real catalogue of device types is finite, each part is
+a **named SLeeLa class** you request by manufacturer and variant — "Samsung
+DDR5", "Samsung 990 PRO NVMe PCIe 5.0", "AMI Aptio UEFI", "NVIDIA GeForce RTX
+4090" — and compose into a machine. Compiling and running that machine
+description **produces an actual machine on the Sleela VM** (it sizes the VM's
+RAM and block store from the real part capacities and composes the `lib/cpu`
+stack), which can then boot and run programs.
+
+## The part families (with spec documents)
+
+Each family ships a base device class, a by-name manufacturer catalogue, and a
+`SPECIFICATION.md` grounded in the real device standard.
+
+| Directory | Class(es) | Variants modeled by name | Manufacturers |
+|---|---|---|---|
+| `memory-ddr/` | `SLDDRModule`, `SLDDRCatalog` | **DDR, DDR2, DDR3, DDR4, DDR5** (standard, data rate, voltage, ECC) | Samsung, SK Hynix, Micron/Crucial, Kingston, Corsair, G.Skill, Mushkin |
+| `ssd/` | `SLSSD`, `SLSSDCatalog` | **SATA III, NVMe PCIe 3/4/5**; form factor; SLC/MLC/TLC/QLC | Samsung, WD/SanDisk, SK Hynix/Solidigm, Crucial, Kingston, Seagate, Sabrent |
+| `hdd/` | `SLHardDisk`, `SLHardDiskCatalog` | **5400/7200/10k/15k RPM**; SATA/SAS; CMR/SMR | Seagate, Western Digital, Toshiba |
+| `usb/` | `SLUSBDevice`, `SLUSBCatalog` | **USB 1.1, 2.0, 3.2 Gen 1/Gen 2/Gen 2x2, USB4**; HID/mass/hub/controller | Intel, AMD, ASMedia, VIA, Renesas, TI, Fresco Logic |
+| `uefi/` | `SLUEFIFirmware` | UEFI revision, Secure Boot, CSM, runtime services | AMI, Insyde, Phoenix, TianoCore/EDK II (OVMF), coreboot |
+| `video-cards/` | `SLVideoCard`, `SLVideoCardCatalog` | GPU vendor/arch, PCIe gen, GDDR6/6X/7/HBM, outputs, power, Vulkan/D3D | NVIDIA, AMD, Intel (+ board partners ASUS/MSI/Gigabyte/Sapphire/Zotac/…) |
+
+All device classes extend **`SLHardwareComponent`** (shared vendor / model /
+device-class identity), so every part has a uniform `identity()` and class tag.
+
+## The registry, model, and builder
+
+| Class | Role |
+|---|---|
+| `SLHardwareComponent` | Common base of every named part. |
+| `SLHardwareRegistry` | One by-name front door composing all catalogues: `memory(mfr, gen, mb)`, `ssd(mfr, iface, gb)`, `hdd(mfr, rpm, gb)`, `usbController(mfr, gen, ports)`, `uefi(vendor)`, `video(vendor, model, vramMb)`. |
+| `SLMachineModel` | The OOD aggregate of a machine: CPU identity + the named parts installed into it; `isRunnable()`, `identity()` (a build sheet). |
+| `SLMachineBuilder` | Turns a model into a **running machine on the Sleela VM**: sizes `SLRAM`/the block store from the real part capacities and composes the `lib/cpu` `SLMachine` (`SLCPU` + `SLHardDrive`), then boots and runs programs on it. |
+
+## Minimal usage
+
+```sleela
+// 1. Request named parts from the registry.
+SLHardwareRegistry hw = new SLHardwareRegistry(); hw.configure();
+SLDDRModule   ram = hw.memory("Samsung", "DDR5", 16384);         // 16 GB DDR5
+SLSSD         ssd = hw.ssd("Samsung", "PCIe5", 2048);            // 2 TB NVMe PCIe 5
+SLUEFIFirmware fw = hw.uefi("AMI");                              // AMI Aptio
+SLVideoCard   gpu = hw.video("NVIDIA", "RTX 4090", 24576);      // 24 GB
+
+// 2. Assemble the machine model.
+SLMachineModel m = new SLMachineModel(); m.configure("Workstation");
+m.cpu("AMD", "Ryzen 9", 16, 64, 4500);
+m.installMemory(ram, 2);        // two modules -> 32 GB
+m.installSsd(ssd);
+m.installFirmware(fw);
+m.installVideo(gpu);
+print(m.identity());            // the build sheet
+
+// 3. Produce a machine on the Sleela VM and run a program on it.
+SLMachineBuilder b = new SLMachineBuilder(); b.configure();
+int result = b.buildBootAndRun(m, 64);                 // boot + run the demo program
+// or run a program from source on the composed machine:
+// int r = b.buildAndRunSource(m, 1, "prog.c", "prog");   // 1 = C
+// or boot an OS guest (ties back to SLOSModel's Linux shape):
+// int n = b.buildAndBootGuest(m, "kernel.c", 1, 4096, 100000);
+```
+
+Swapping a part name re-sizes the produced machine: `hw.ssd(...)` → `hw.hdd(...)`
+changes the boot media and block count, and `"DDR5"` → `"DDR4"` changes the
+memory standard and bandwidth. See `machine-build.sleela` for a self-contained,
+runnable demonstrator that prints a full build sheet and the VM sizing.
+
+## How the two halves connect
+
+- **`SLOSModel`** (above) describes the **software** OS by shape (Windows/Linux/
+  macOS) and emits C/C++ → ISO → installer.
+- **`SLMachineModel`** describes the **hardware** by named parts and builds a
+  running machine on the Sleela VM.
+- `SLUEFIFirmware.canLaunch(loader)` is the seam between them: the hardware
+  firmware launches the OS model's `SLBootloaderSpec` loader, and
+  `SLMachineBuilder.buildAndBootGuest(...)` boots an OS guest on the machine the
+  hardware description produced — firmware → boot → kernel → userspace →
+  desktop, from named silicon up.
+
+---
+
+# OS Creator™ — from an OS description to `/os-development`
+
+OS Creator™ is the capstone provider of `lib/os` (its classes live under
+`lib/os/os-creator/`; see `os-creator/ARCHITECTURE.md` for the full design). It
+turns an `SLOSModel` into a complete, on-disk **OS development tree** at
+`/os-development`: every piece of the OS, its C and C++ source, its configuration
+file, the build tooling, and the SLeeLa source that regenerates it — written as
+real files through the `osMakeDir` / `openFile` / `write` / `close` bridge.
+
+Running the **compiled** OS Creator object (a SLeeLa program that composes an
+`SLOSModel` and calls `SLOSCreator.create(model, "/os-development")`) is what
+materialises the tree.
+
+## What it writes
+
+| Piece | Directory | Files |
+|---|---|---|
+| UEFI | `firmware/uefi/` | `uefi.c`, `uefi.cpp`, `uefi.conf`, `README.md` |
+| BIOS / CSM | `firmware/bios/` | `bios.c`, `bios.cpp`, `bios.cfg`, `README.md` |
+| Boot Loader | `boot/loader/` | `bootloader.c`, `bootloader.cpp`, `loader.conf`, `README.md` |
+| Kernel Loader | `boot/kernel-loader/` | `kernel_loader.c`, `kernel_loader.cpp`, `kernel-loader.conf`, `README.md` |
+| Driver Loader | `kernel/driver-loader/` | `driver_loader.c`, `driver_loader.cpp`, `drivers.conf`, `README.md` |
+| OS Loader (PID 1) | `userspace/os-loader/` | `os_loader.c`, `os_loader.cpp`, `services.conf`, `README.md` |
+| Desktop GUI Loader | `desktop/gui-loader/` | `gui_loader.c`, `gui_loader.cpp`, `session.conf`, `README.md` |
+| The OS | `os/` | `os_config.h`, `os_boot.c`, `os_image.cpp` |
+
+Plus the top-level `Makefile`, `build.sh`, `build.ps1`, `config/os.conf`,
+`tools/gen-iso.sh`, `src/sleela/os-model.sleela` (the regenerating source), and
+`MANIFEST.md`.
+
+## Classes
+
+| Class | Role |
+|---|---|
+| `SLOSCreator` | The OS Creator™ provider: `create(model, root)` writes the whole tree; `plan(model)` is a dry run. |
+| `SLOSDevTree` | Owns `/os-development`: makes directories and writes files through the OS bridge; records a manifest. |
+| `SLOSPiece` | One emitted piece (name, dir, C, C++, config, README). |
+| `SLUEFIEmitter`, `SLBIOSEmitter`, `SLBootLoaderEmitter`, `SLKernelLoaderEmitter`, `SLDriverLoaderEmitter`, `SLOSLoaderEmitter`, `SLDesktopLoaderEmitter` | Per-piece C/C++ + config emitters. |
+| `SLToolchainEmitter` | Emits `Makefile`, `build.sh`, `build.ps1`, `config/os.conf`. |
+| `SLSourceDropper` | Writes the regenerating SLeeLa source + provenance into `src/`. |
+
+The OS itself (`os/`) and the ISO recipe (`tools/gen-iso.sh`) reuse the existing
+`SLCEmitter` / `SLCppEmitter` / `SLISOBuilder`, so there is one source of truth.
+
+## Minimal usage
+
+```sleela
+// Describe the OS, then run OS Creator™ to write /os-development.
+SLLinuxOSModel os = new SLLinuxOSModel();
+os.build("Determinant", "1.0");
+
+SLOSCreator creator = new SLOSCreator();
+creator.configure();
+SLOSBuildReport report = creator.create(os, "/os-development");   // writes the whole tree
+print(report.summary());    // "OK: Determinant 1.0 (...) -> N artifacts"
+
+// Then build the OS from the generated sources:
+//   cd /os-development && sh build.sh      (make all -> every piece -> OS -> ISO)
+```
+
+Changing the model's shape (`SLWindowsOSModel` / `SLMacOSModel`) re-shapes every
+emitted piece: a Windows tree gets a BOOTMGR `bootloader.c`, a Service Control
+Manager `os_loader.c`, and `build.ps1` as the primary driver; macOS gets a
+`boot.efi` loader and a launchd OS loader. See `os-creator/os-creator.sleela` for
+a self-contained, runnable demonstrator that prints the layout, a sample emitted
+piece, the Makefile, and the regenerating source.
+
+## Varieties and scales
+
+- **Variety** — `SLOSShape` selects each piece's content (GRUB vs BOOTMGR vs
+  boot.efi; systemd vs SCM vs launchd; GNOME vs Explorer vs Aqua).
+- **Scale** — `SLArchitectureSet` and the edition select how many targets and
+  pieces: multi-arch models emit a per-arch build matrix; a server edition drops
+  the Desktop GUI Loader; the memory/storage parts size `config/os.conf`.
+
+## Integrity
+
+OS Creator™ writes **into** `/os-development` (an output tree), never into the
+repository's gated sources, so it does not perturb `security/sha256-manifest.json`.
+Its own source files are ordinary `/lib` units recorded in
+`lib/LIBRARY.SYMBOLS.md` and `SHA256-DIGESTS.md`.

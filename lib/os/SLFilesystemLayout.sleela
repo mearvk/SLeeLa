@@ -1,0 +1,81 @@
+/*
+ * lib/os/SLFilesystemLayout.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLFilesystemLayout — the root-filesystem namespace of an
+ *   OS being constructed. It records the on-disk filesystem format (ext4 / NTFS
+ *   / APFS), the mount hierarchy, and the directory tree the installed system
+ *   presents: the FHS roots for Linux shapes (/etc,/usr,/var,/home,/proc,/sys,
+ *   /tmp,/boot), the Windows directory world (C:\Windows, Program Files, Users,
+ *   ProgramData) for Windows shapes, and the Apple layout (/System,/Library,
+ *   /Applications,/Users) for macOS shapes.
+ *
+ * In the firmware -> boot -> kernel -> userspace -> desktop model, this is the
+ * installed root filesystem the early userspace mounts. Directories are
+ * accumulated into a portable, newline-separated manifest the ISO builder reads
+ * to assemble the rootfs tree (the debootstrap-style compositional assembly the
+ * OS lineage uses).
+ *
+ * Family: os. Pure design model; no native bridge calls.
+ */
+#sleela 1.5
+class SLFilesystemLayout {
+  String format;      // "ext4" / "NTFS" / "APFS"
+  String separator;   // path separator for this layout
+  String tree;        // newline-separated directory manifest
+  int dirCount;
+  int configured;
+
+  void configure(String fsFormat, String sep) {
+    format = fsFormat; separator = sep; tree = ""; dirCount = 0; configured = 1;
+  }
+
+  // Add one directory to the manifest.
+  void addDir(String path) {
+    if (tree == "") { tree = path; } else { tree = tree + "\n" + path; }
+    dirCount = dirCount + 1;
+  }
+
+  // Seed the standard directory tree for a shape.
+  void forShape(SLOSShape shape) {
+    configure(shape.rootFilesystem(), shape.pathSeparator());
+    if (shape.isWindows()) {
+      addDir("C:\\Windows");
+      addDir("C:\\Windows\\System32");
+      addDir("C:\\Program Files");
+      addDir("C:\\Program Files (x86)");
+      addDir("C:\\ProgramData");
+      addDir("C:\\Users");
+      addDir("C:\\Users\\Default");
+      return;
+    }
+    if (shape.isMac()) {
+      addDir("/System");
+      addDir("/System/Library");
+      addDir("/Library");
+      addDir("/Applications");
+      addDir("/Users");
+      addDir("/private/var");
+      addDir("/private/tmp");
+      return;
+    }
+    // Linux: Filesystem Hierarchy Standard roots.
+    addDir("/boot");
+    addDir("/etc");
+    addDir("/usr");
+    addDir("/usr/bin");
+    addDir("/usr/lib");
+    addDir("/var");
+    addDir("/home");
+    addDir("/root");
+    addDir("/proc");
+    addDir("/sys");
+    addDir("/dev");
+    addDir("/tmp");
+  }
+
+  String fsFormat()  { return format; }
+  String manifest()  { return tree; }
+  int directoryCount() { return dirCount; }
+  // A layout must declare at least a system root and a user-data root.
+  boolean isComplete() { return dirCount >= 2; }
+}

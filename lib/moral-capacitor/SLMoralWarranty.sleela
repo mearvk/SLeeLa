@@ -1,0 +1,64 @@
+/*
+ * lib/moral-capacitor/SLMoralWarranty.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLMoralWarranty — the warranty terms a Certificate of
+ *   Morals carries. The warranty is the promise that a piece of SLeeLa software
+ *   embeds the Moral Capacitor(TM), gates its consequential operations through
+ *   it, honours the absolute red-line veto set, and records its verdicts for
+ *   audit. It names the warrantor (the issuing party), the covered product, the
+ *   warranty statement, and the limits of the warranty (it is a conduct
+ *   guarantee about the embedded gate, not a claim of objective morality or of
+ *   fitness for any particular purpose).
+ *
+ * The warranty is deliberately explicit and bounded: it warrants that the moral
+ * gate is PRESENT and ENFORCED, which is a checkable property, rather than
+ * warranting an outcome the gate cannot guarantee.
+ *
+ * Family: moral-capacitor. Carried by SLMoralCertificate.
+ */
+#sleela 1.5
+class SLMoralWarranty {
+  String warrantor;   // the issuing party (e.g. "MEARVK LLC")
+  String product;     // the covered product / software unit
+  String statement;   // the human-readable warranty
+  String limits;      // the explicit limits of the warranty
+  int configured;
+
+  void configure(String issuer, String coveredProduct) {
+    warrantor = issuer; product = coveredProduct;
+    statement = defaultStatement(coveredProduct);
+    limits = defaultLimits();
+    configured = 1;
+  }
+
+  void setStatement(String s) { statement = s; }
+  void setLimits(String l) { limits = l; }
+
+  // The standard warranty: the moral gate is present and enforced.
+  String defaultStatement(String coveredProduct) {
+    return "This software (" + coveredProduct + ") embeds the Moral Capacitor(TM): "
+         + "its consequential operations are gated by an ethical capacitor that "
+         + "permits an operation only when sufficient moral charge is present and "
+         + "no absolute red line is tripped, and it records its verdicts for audit.";
+  }
+
+  // The standard limits: a conduct guarantee, not an oracle or fitness claim.
+  String defaultLimits() {
+    return "This is a warranty that the moral gate is PRESENT and ENFORCED, a "
+         + "checkable property. It is not a claim of objective morality, not a "
+         + "guarantee of any outcome, and not a warranty of merchantability or "
+         + "fitness for a particular purpose. The red-line veto set is absolute "
+         + "and mirrors the platform content-safety boundaries.";
+  }
+
+  String warrantorName() { return warrantor; }
+  String coveredProduct() { return product; }
+  String warrantyStatement() { return statement; }
+  String warrantyLimits() { return limits; }
+
+  // The full warranty text (statement + limits) for embedding in a certificate.
+  String text() {
+    return "WARRANTY OF MORALS\nWarrantor: " + warrantor + "\nProduct: " + product
+         + "\n\n" + statement + "\n\nLimits: " + limits + "\n";
+  }
+}

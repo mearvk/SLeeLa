@@ -1,0 +1,26 @@
+#sleela 1.9
+// The ran:: system namespace: `ran::mem` reads live system memory, and the
+// GC hint has an explicit, system-scoped spelling `x = ran::gc N;` /
+// `x = ran::mem N;`. Crucially, `mem`, `gc`, and even `ran` remain usable as
+// ordinary variable names -- the ran:: qualifier is the only thing that means
+// "the System", so the compiler decides the author's intent instantly.
+class RanNamespacePass {
+    static void main() {
+        // Any word is a plain variable: mem, gc, ran are just names here.
+        let mem = 11;
+        let gc = 22;
+        let ran = 33;
+        print(mem + gc + ran);          // 66 -- all three are ordinary ints
+
+        // The system reference reads live memory as an int (>= 0).
+        let before = ran::mem;
+        print(before >= 0);             // true
+
+        // The explicit, system-scoped GC hint. `x` is any value being released.
+        let x = 1;
+        x = ran::gc 100;                // full collection, fully qualified
+        x = ran::mem 25;               // the mem spelling, modest level
+        x = ran::gc;                    // bare qualified form -> default cleanup
+        print(x);                       // 1 -- the hint does not change x
+    }
+}

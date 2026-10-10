@@ -1,0 +1,113 @@
+#sleela 1.5
+// moral-certificate.sleela -- the self-contained, runnable demonstrator of the
+// Certificate of Morals(TM) and the Guard of the Moral Code (lib/moral-capacitor
+// SLMoralCertificate, SLMoralCertificateAuthority, SLMoralCodeGuard,
+// SLMoralCertified). The SLeeLa compiler's `run` compiles one file as a single
+// unit, so this aggregate inlines a compact certificate + authority + guard and
+// a `main` that:
+//   1. issues a Certificate of Morals over a product's moral policy,
+//   2. verifies it against the issuing authority (seal recompute),
+//   3. guards the product -> ADMIT, then shows that tampering or a missing
+//      certificate -> REFUSE.
+// The split per-class files are the full component; this file is the executable
+// counterpart, mirroring the moral-capacitor.sleela convention.
+//
+// The point it demonstrates: moral code and its certificate travel WITH a
+// product. The authority seals a warranty that the Moral Capacitor is embedded
+// and enforced; the guard admits the product only when that certificate is
+// present, authentic, unexpired, and consistent -- so Morals and Certificates
+// are included in all our Sleela software by construction, not by hope.
+
+struct Cert {
+    String subject; String issuer; String policy; int threshold; int redlines;
+    int capacitor; String expires; String seal;
+}
+
+class MoralCertificateDemo {
+
+    String intToStr(int v) { return "" + v; }
+
+    // A stable per-character weight for the seal fold.
+    int charWeight(String c) {
+        if (c == "0") { return 1; } if (c == "1") { return 2; } if (c == "2") { return 3; }
+        if (c == "3") { return 4; } if (c == "4") { return 5; } if (c == "5") { return 6; }
+        if (c == "6") { return 7; } if (c == "7") { return 8; } if (c == "8") { return 9; }
+        if (c == "9") { return 10; } if (c == " ") { return 11; } if (c == "-") { return 19; }
+        if (c == "=") { return 23; } return 17;
+    }
+
+    int strLen(String s) { return native sleela_str_length(s); }
+    String charAt(String s, int i) { return native sleela_str_substring(s, i, i + 1); }
+
+    String body(Cert c) {
+        return "subject=" + c.subject + ";issuer=" + c.issuer + ";policy=" + c.policy
+             + ";threshold=" + intToStr(c.threshold) + ";redlines=" + intToStr(c.redlines)
+             + ";capacitor=" + intToStr(c.capacitor) + ";expires=" + c.expires;
+    }
+
+    // Deterministic seal over the body, keyed on the issuer.
+    String computeSeal(Cert c) {
+        String b = body(c);
+        int acc = 7;
+        int i = 0; int n = strLen(c.issuer);
+        while (i < n) { acc = (acc * 131 + charWeight(charAt(c.issuer, i))) % 1000000007; i = i + 1; }
+        i = 0; n = strLen(b);
+        while (i < n) { acc = (acc * 131 + charWeight(charAt(b, i))) % 1000000007; i = i + 1; }
+        return "MCS1-" + c.issuer + "-" + intToStr(acc);
+    }
+
+    Cert issue(String subject, String issuer, String policy, int threshold, int redlines, String expires) {
+        Cert c = new Cert();
+        c.subject = subject; c.issuer = issuer; c.policy = policy;
+        c.threshold = threshold; c.redlines = redlines; c.capacitor = 1; c.expires = expires;
+        c.seal = computeSeal(c);
+        return c;
+    }
+
+    boolean verify(Cert c) { return c.seal == computeSeal(c); }
+
+    // Guard: admit only when capacitor present, cert verifies, unexpired, red lines armed.
+    String guard(String product, Cert c, String now) {
+        if (c.capacitor != 1) { return "REFUSE: no Moral Capacitor embedded in " + product; }
+        if (c.subject != product) { return "REFUSE: certificate subject mismatch"; }
+        if (!verify(c)) { return "REFUSE: certificate seal does not verify"; }
+        if (c.expires != "" && c.expires < now) { return "REFUSE: certificate expired " + c.expires; }
+        if (c.redlines < 1) { return "REFUSE: no red lines armed"; }
+        return "ADMIT: moral code present and certified (" + product + ")";
+    }
+
+    void banner(String t) {
+        print("================================================================");
+        print("  " + t);
+        print("================================================================");
+    }
+
+    void main() {
+        banner("Certificate of Morals(TM) + Guard of the Moral Code");
+
+        // 1. Issue a Certificate of Morals for a VM product.
+        Cert vm = issue("sleela-vm", "MEARVK LLC", "vm-bridge", 4, 6, "2030-01-01");
+        print("Issued: subject=" + vm.subject + " issuer=" + vm.issuer
+              + " policy=" + vm.policy + " seal=" + vm.seal);
+
+        // 2. Verify + guard a genuine certificate -> ADMIT.
+        print(guard("sleela-vm", vm, "2026-10-10"));
+
+        // 3. Tamper with the attested threshold (without re-sealing) -> REFUSE.
+        Cert tampered = issue("sleela-vm", "MEARVK LLC", "vm-bridge", 4, 6, "2030-01-01");
+        tampered.threshold = 1;    // altered after sealing: seal no longer matches body
+        print(guard("sleela-vm", tampered, "2026-10-10"));
+
+        // 4. An expired certificate -> REFUSE.
+        Cert old = issue("sleela-os", "MEARVK LLC", "os-destructive", 6, 6, "2020-01-01");
+        print(guard("sleela-os", old, "2026-10-10"));
+
+        // 5. A product with no moral code at all -> REFUSE.
+        Cert none = new Cert();
+        none.subject = "uncertified-tool"; none.capacitor = 0;
+        print(guard("uncertified-tool", none, "2026-10-10"));
+
+        banner("Done");
+        print("Morals and Certificates travel with the product; the Guard admits only the certified.");
+    }
+}

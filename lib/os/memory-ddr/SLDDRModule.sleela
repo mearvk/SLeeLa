@@ -1,0 +1,91 @@
+/*
+ * lib/os/memory-ddr/SLDDRModule.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLDDRModule — a named DDR SDRAM memory module (a DIMM or
+ *   SO-DIMM). It extends SLHardwareComponent and models the finite catalogue of
+ *   DDR generations (DDR, DDR2, DDR3, DDR4, DDR5) by name, with the per-
+ *   generation specification a machine description needs: generation ordinal,
+ *   data rate (MT/s), module standard (e.g. "PC5-44800"), supply voltage
+ *   (millivolts), bus width, and capacity. A module is requested by
+ *   manufacturer + part and a generation preset, then composed into an
+ *   SLMachine as its main memory.
+ *
+ * Generations and their canonical voltages/data-rate ranges follow the JEDEC
+ * DDR family (see memory-ddr/SPECIFICATION.md). Values are design metadata the
+ * machine builder reads; the actual backing store is the VM's SLRAM.
+ *
+ * Family: os. Extends SLHardwareComponent.
+ */
+#sleela 1.5
+class SLDDRModule extends SLHardwareComponent {
+  // Generation ordinals.
+  static final int GEN_DDR  = 1;
+  static final int GEN_DDR2 = 2;
+  static final int GEN_DDR3 = 3;
+  static final int GEN_DDR4 = 4;
+  static final int GEN_DDR5 = 5;
+
+  int generation;     // GEN_*
+  String standard;    // JEDEC module standard, e.g. "PC5-44800"
+  int dataRateMtps;   // transfer rate in MT/s
+  int voltageMv;      // supply voltage in millivolts
+  int busWidthBits;   // data bus width (64 non-ECC, 72 ECC)
+  int capacityMb;     // module capacity in megabytes
+  int eccSupported;   // 1 if the module carries ECC
+
+  // Configure a module from a manufacturer, part, and generation preset. The
+  // preset fills the generation's canonical voltage and a representative speed;
+  // capacity and ECC are set by the caller afterward (or via sized()).
+  void configure(String manufacturer, String part, int gen) {
+    configureComponent(manufacturer, part, CLASS_MEMORY);
+    generation = gen; busWidthBits = 64; capacityMb = 8192; eccSupported = 0;
+    if (gen == GEN_DDR)  { standard = "PC-3200";    dataRateMtps = 400;  voltageMv = 2500; }
+    if (gen == GEN_DDR2) { standard = "PC2-6400";   dataRateMtps = 800;  voltageMv = 1800; }
+    if (gen == GEN_DDR3) { standard = "PC3-12800";  dataRateMtps = 1600; voltageMv = 1500; }
+    if (gen == GEN_DDR4) { standard = "PC4-25600";  dataRateMtps = 3200; voltageMv = 1200; }
+    if (gen == GEN_DDR5) { standard = "PC5-44800";  dataRateMtps = 5600; voltageMv = 1100; }
+  }
+
+  // Convenience: configure by generation name ("DDR".."DDR5").
+  void configureByName(String manufacturer, String part, String genName) {
+    if (genName == "DDR5") { configure(manufacturer, part, GEN_DDR5); return; }
+    if (genName == "DDR4") { configure(manufacturer, part, GEN_DDR4); return; }
+    if (genName == "DDR3") { configure(manufacturer, part, GEN_DDR3); return; }
+    if (genName == "DDR2") { configure(manufacturer, part, GEN_DDR2); return; }
+    configure(manufacturer, part, GEN_DDR);
+  }
+
+  // Refine capacity (MB) and bus width; ECC uses a 72-bit bus.
+  void sized(int megabytes, boolean ecc) {
+    capacityMb = megabytes;
+    if (ecc) { eccSupported = 1; busWidthBits = 72; }
+    else     { eccSupported = 0; busWidthBits = 64; }
+  }
+  // Override the data rate for an overclock/XMP/EXPO profile.
+  void setDataRate(int mtps) { dataRateMtps = mtps; }
+
+  int generationOrdinal() { return generation; }
+  String generationName() {
+    if (generation == GEN_DDR5) { return "DDR5"; }
+    if (generation == GEN_DDR4) { return "DDR4"; }
+    if (generation == GEN_DDR3) { return "DDR3"; }
+    if (generation == GEN_DDR2) { return "DDR2"; }
+    return "DDR";
+  }
+  String moduleStandard() { return standard; }
+  int dataRate()          { return dataRateMtps; }
+  int voltageMillivolts() { return voltageMv; }
+  int busWidth()          { return busWidthBits; }
+  int capacityMegabytes() { return capacityMb; }
+  boolean hasEcc()        { return eccSupported == 1; }
+
+  // Peak transfer bandwidth in MB/s: data rate * (bus width in bytes).
+  int peakBandwidthMBps() { return dataRateMtps * (busWidthBits / 8); }
+
+  // The number of VM memory words this module backs, given a word width in
+  // bits — the figure SLMachineModel hands to SLRAM.
+  int wordsForWidth(int wordBits) {
+    int bytes = capacityMb * 1048576;
+    return bytes / (wordBits / 8);
+  }
+}

@@ -20,6 +20,7 @@
 #include "sleela_bestof.h"
 #include "sleela_audio_mixer.h"
 #include "sleela_os.h"
+#include "sleela_memmgr.h"
 
 #include <math.h>
 #include <stdio.h>
@@ -940,6 +941,49 @@ static SLResult run_thread(SLThread* t) {
         switch (in.op) {
         case OP_NOP: break;
         case OP_HALT: return SLR_HALT;
+        case OP_GC_HINT: {
+            /* Short-term GC cleanup requested by `x = gc N;` / `x = mem N;`.
+             * operand a is the 0..100 aggressiveness. 0 is a no-op. Because this
+             * is an EXPLICIT developer request (unlike the automatic
+             * per-instruction safepoint above), it runs a COMPLETE collection
+             * via gc_collect_with_roots -- clear, mark all reachable from the
+             * roots, then sweep -- so a single hint actually reclaims the dead
+             * objects (and frees their VM-local struct/array handle slots) it is
+             * meant to clean up, rather than only advancing an incremental,
+             * budgeted mark. The aggressiveness selects the scope: a modest
+             * level runs a young-only collection (recent garbage, the common
+             * post-use case), and the ceiling (SL_GC_HINT_FULL) runs a full
+             * collection. Only unreachable objects are reclaimed; a hint never
+             * frees a live value. Like every collection it is a VM safepoint, so
+             * it is deferred while worker threads are active. */
+            int level = in.a;
+            if (level < 0) level = 0;
+            if (level > SL_GC_HINT_MAX) level = SL_GC_HINT_MAX;
+            if (level > 0) {
+                pthread_mutex_lock(&vm->thr_mtx);
+                int workers = vm->nthreads;
+                pthread_mutex_unlock(&vm->thr_mtx);
+                if (workers == 0) {
+                    SLGCRootContext roots = { vm, t };
+                    int young_only = (level >= SL_GC_HINT_FULL) ? 0 : 1;
+                    gc_collect_with_roots(&vm->gc, gc_mark_vm_roots, &roots,
+                                          young_only);
+                }
+            }
+        } break;
+        case OP_RAN_MEM: {
+            /* `ran::mem` -- the System memory already Ran in RAM, read as the
+             * current live byte count. When the memory manager is enabled this
+             * is its live_bytes; otherwise it reports the GC's tracked bytes, so
+             * the value is always a real, consistent system figure. */
+            int64_t bytes = 0;
+            if (slmm_is_enabled()) {
+                SLMMStats st; slmm_stats(&st); bytes = (int64_t)st.live_bytes;
+            } else {
+                bytes = (int64_t)gc_bytes(&vm->gc);
+            }
+            PUSH(slval_int(bytes));
+        } break;
         case OP_CONST: PUSH(vm->consts[in.a]); break;
         case OP_POP: (void)POP(); break;
         case OP_DUP: { SLValue dupv = t->stack[t->sp-1]; PUSH(dupv); } break;

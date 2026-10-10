@@ -676,6 +676,31 @@ section inheritances:        # role: inheritance
     siblings:  Class, Delegate
     note:      object-to-object inheritance via a prototype link.
 
+  DocumentExtension
+    children:  LinearGrouper, GroupGrouper, ServicesGrouper
+    siblings:  DerivedClass, Grouper
+    note:      a document that extends to other documents, organized by a grouper (syntax 1.10).
+
+  Grouper
+    children:  LinearGrouper, GroupGrouper, ServicesGrouper
+    siblings:  DocumentExtension, BaseClass
+    note:      the organization term naming the structure extended-to documents form.
+
+  LinearGrouper
+    children:  -
+    siblings:  GroupGrouper, ServicesGrouper
+    note:      ordered chain of document references -- linear reals, bounded by congruent-linear max.
+
+  GroupGrouper
+    children:  -
+    siblings:  LinearGrouper, ServicesGrouper
+    note:      unordered set of documents gathered under one organizer, bounded by complexity-degree max.
+
+  ServicesGrouper
+    children:  ServerOfServices
+    siblings:  LinearGrouper, GroupGrouper
+    note:      a group of documents fronted by one Server-of-Services document.
+
 
 # ---------------------------------------------------------------------------
 # 14. SMART MOVES — objects encoding safe, efficient, self-managing choices

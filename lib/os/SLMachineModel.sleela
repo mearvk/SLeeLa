@@ -1,0 +1,120 @@
+/*
+ * lib/os/SLMachineModel.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLMachineModel — the OOD aggregate of a physical machine
+ *   described by its NAMED hardware parts. Where SLOSModel describes the
+ *   operating system (software layers), SLMachineModel describes the computer it
+ *   runs on: a CPU identity, one or more DDR memory modules, a primary storage
+ *   device (SSD or HDD), the UEFI firmware, a USB host controller, and an
+ *   optional video card. Each part is a named SLHardwareComponent requested from
+ *   SLHardwareRegistry, so a machine is specified the way a build sheet is —
+ *   "Samsung DDR5 32 GB, Samsung 990 PRO 2 TB, AMI Aptio UEFI, NVIDIA RTX 4090".
+ *
+ * A completed SLMachineModel is the input to SLMachineBuilder, which composes
+ * these parts into a runnable machine on the Sleela VM and (optionally) boots an
+ * SLOSModel on it.
+ *
+ * Family: os. Composes SLHardwareRegistry parts; consumed by SLMachineBuilder.
+ */
+#sleela 1.5
+class SLMachineModel {
+  String machineName;
+  // CPU identity (the processor itself is modeled by lib/cpu/SLCPU at build).
+  String cpuVendor;
+  String cpuModel;
+  int cpuCores;
+  int wordBits;
+  int clockMhz;
+
+  // Named parts.
+  SLDDRModule memory;       // main memory module (represents the populated set)
+  int memoryModules;        // how many identical modules are installed
+  SLSSD ssd;                // primary SSD, or null
+  SLHardDisk hdd;           // primary HDD, or null
+  SLUEFIFirmware firmware;  // platform firmware
+  SLUSBDevice usb;          // USB host controller
+  SLVideoCard video;        // display adapter, or null (headless)
+  int configured;
+
+  void configure(String name) {
+    machineName = name;
+    cpuVendor = "SleelaWorks"; cpuModel = "SL-Core-X";
+    cpuCores = 4; wordBits = 64; clockMhz = 3200;
+    memoryModules = 1;
+    memory = null; ssd = null; hdd = null; firmware = null; usb = null; video = null;
+    configured = 1;
+  }
+
+  // ---- CPU ---------------------------------------------------------------
+  void cpu(String vendor, String model, int cores, int bits, int mhz) {
+    cpuVendor = vendor; cpuModel = model; cpuCores = cores; wordBits = bits; clockMhz = mhz;
+  }
+
+  // ---- Named parts (set from a registry lookup) --------------------------
+  void installMemory(SLDDRModule module, int count) { memory = module; memoryModules = count; }
+  void installSsd(SLSSD drive) { ssd = drive; }
+  void installHdd(SLHardDisk disk) { hdd = disk; }
+  void installFirmware(SLUEFIFirmware fw) { firmware = fw; }
+  void installUsb(SLUSBDevice controller) { usb = controller; }
+  void installVideo(SLVideoCard card) { video = card; }
+
+  // ---- Accessors ---------------------------------------------------------
+  String name()        { return machineName; }
+  String processorVendor() { return cpuVendor; }
+  String processorModel()  { return cpuModel; }
+  int cores()          { return cpuCores; }
+  int bits()           { return wordBits; }
+  int mhz()            { return clockMhz; }
+  SLDDRModule memoryModule() { return memory; }
+  int moduleCount()    { return memoryModules; }
+  SLSSD primarySsd()   { return ssd; }
+  SLHardDisk primaryHdd() { return hdd; }
+  SLUEFIFirmware uefiFirmware() { return firmware; }
+  SLUSBDevice usbController() { return usb; }
+  SLVideoCard videoCard() { return video; }
+  boolean hasVideo()   { return video != null; }
+  boolean bootsFromSsd() { return ssd != null; }
+
+  // Total installed memory in MB across all modules.
+  int totalMemoryMb() {
+    if (memory == null) { return 0; }
+    return memory.capacityMegabytes() * memoryModules;
+  }
+
+  // The boot storage device's capacity in VM blocks (SSD preferred over HDD).
+  int bootCapacityBlocks() {
+    if (ssd != null) { return ssd.capacityBlocks(); }
+    if (hdd != null) { return hdd.capacityBlocks(); }
+    return 0;
+  }
+  int bootBlockBytes() {
+    if (ssd != null) { return ssd.blockSize(); }
+    if (hdd != null) { return hdd.blockSize(); }
+    return 4096;
+  }
+  // Media kind for lib/cpu/SLHardDrive: 1 solid-state, 0 rotational.
+  int bootMediaKind() {
+    if (ssd != null) { return 1; }
+    return 0;
+  }
+
+  // A machine is runnable when it has memory, a boot device, and firmware.
+  boolean isRunnable() {
+    if (configured != 1) { return false; }
+    if (memory == null) { return false; }
+    if (ssd == null && hdd == null) { return false; }
+    if (firmware == null) { return false; }
+    return true;
+  }
+
+  // A build-sheet identity line.
+  String identity() {
+    String mem = "no-memory";
+    if (memory != null) { mem = memory.generationName() + " " + totalMemoryMb() + "MB"; }
+    String boot = "no-boot";
+    if (ssd != null) { boot = ssd.manufacturer() + " " + ssd.partName(); }
+    else if (hdd != null) { boot = hdd.manufacturer() + " " + hdd.partName(); }
+    return machineName + ": " + cpuVendor + " " + cpuModel + " x" + cpuCores
+         + ", " + mem + ", " + boot;
+  }
+}
