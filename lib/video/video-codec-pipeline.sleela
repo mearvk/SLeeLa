@@ -1,4 +1,4 @@
-#sleela 1.3
+#sleela 1.11
 // video-codec-pipeline.sleela -- the self-contained, runnable build of the
 // SLeeLa video codec Controller/Verifier/Processor pipeline, parallel to the
 // audio codecs/codec-pipeline.sleela. The split per-class files
@@ -11,6 +11,11 @@
 //   0 RAW 1 H264 2 HEVC 3 AV1 4 VP8 5 VP9 6 MPEG2 7 THEORA 8 MJPEG 9 FFV1
 //   10 PRORES 11 DNX. Result codes: 0 ok -1 unsupported -2 invalid -3 format
 //   -4 io -5 not-loaded.
+//
+// Syntax 1.11: method calls resolve on class-typed fields, so the Controller
+// holds its Verifier and Processor as fields (wired in create()) and delegates
+// through them -- a GUI drives one object: ctrl.decode(id), ctrl.resolve
+// Extension(ext), ctrl.resultText(code).
 
 class Verifier {
   int resolveExtension(string ext) {
@@ -51,7 +56,16 @@ class Processor {
 class Controller {
   int[] loaded;
   int[] backend;
-  void create() { loaded = new int[12]; backend = new int[12]; }
+  Verifier verifier;      // wired by create(), called via the field (1.11)
+  Processor processor;
+
+  void create() {
+    loaded = new int[12];
+    backend = new int[12];
+    verifier = new Verifier();
+    processor = new Processor();
+  }
+
   int count() { return 12; }
   boolean isNative(int id) { return id == 0; }
   string nameOf(int id) {
@@ -72,27 +86,31 @@ class Controller {
     return n;
   }
 
+  // Clean facade methods: delegate to the wired collaborators.
+  int resolveExtension(string ext) { return verifier.resolveExtension(ext); }
+  string resultText(int code) { return verifier.resultText(code); }
+  int decode(int id) { return processor.decode(isLoaded(id), isNative(id), hasBackend(id)); }
+  int encode(int id) { return processor.encode(isLoaded(id), isNative(id), hasBackend(id)); }
+
   void main() {
     print("=== SLeeLa video codec pipeline (Controller/Loader/Verifier/Processor) ===");
-    Verifier verifier = new Verifier();
-    Processor processor = new Processor();
     create();
     print("video codecs known: " + count());
 
-    int raw = verifier.resolveExtension(".yuv");
-    int av1 = verifier.resolveExtension(".av1");
+    int raw = resolveExtension(".yuv");
+    int av1 = resolveExtension(".av1");
     print("resolve .yuv -> " + raw + " (" + nameOf(raw) + ")");
     print("resolve .av1 -> " + av1 + " (" + nameOf(av1) + ")");
 
-    print("decode .av1 before load: " + verifier.resultText(processor.decode(isLoaded(av1), isNative(av1), hasBackend(av1))));
+    print("decode .av1 before load: " + resultText(decode(av1)));
 
     load(raw);
-    print("decode raw loaded (native): " + verifier.resultText(processor.decode(isLoaded(raw), isNative(raw), hasBackend(raw))));
+    print("decode raw loaded (native): " + resultText(decode(raw)));
 
     load(av1);
-    print("decode .av1 no backend: " + verifier.resultText(processor.decode(isLoaded(av1), isNative(av1), hasBackend(av1))));
+    print("decode .av1 no backend: " + resultText(decode(av1)));
     registerBackend(av1);
-    print("decode .av1 backend:    " + verifier.resultText(processor.decode(isLoaded(av1), isNative(av1), hasBackend(av1))));
+    print("decode .av1 backend:    " + resultText(decode(av1)));
 
     print("loaded count=" + loadedCount());
     unloadAll();
