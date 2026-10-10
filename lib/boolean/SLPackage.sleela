@@ -1,0 +1,18 @@
+/*
+ * lib/boolean/SLPackage.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines the SLeeLa standard-library package for boolean.
+ */
+#sleela 1.3
+// Library facade for module package: boolean
+// Exposes the package to the SLeeLa compiler, Loader, and Nordshrift.
+// The Master Classes (BooleanTrue, BooleanFalse, the depth-8 enumeration under
+// 8/, and the depth-16/32 word factories under 16/ and 32/) are first-class
+// one-class-per-file source units in this package; this facade only names the
+// package itself, mirroring lib/citizen/SLPackage.sleela.
+class SLPackage {
+  String packageName;
+  void configure(String name) { packageName = name; }
+  String name() { return packageName; }
+  boolean available() { return packageName != null; }
+}

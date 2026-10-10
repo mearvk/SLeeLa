@@ -1,0 +1,18 @@
+/*
+ * lib/boolean/BooleanTrue.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines the primitive Boolean syllable BOOLEAN.TRUE as a SLeeLa standard-library constant.
+ */
+#sleela 1.3
+// SLeeLa boolean primitive syllable — BOOLEAN.TRUE.
+// Family: boolean. The two primitive syllables from which every Boolean word
+// (BOOLEAN.TRUE.FALSE, BOOLEAN.TRUE.FALSE.FALSE, ...) is composed.
+class BooleanTrue {
+  String word() { return "BOOLEAN.TRUE"; }
+  String glyphs() { return "T"; }
+  int depth() { return 1; }
+  boolean head() { return true; }
+  String headSyllable() { return "TRUE"; }
+  boolean value() { return true; }
+  int bit() { return 1; }
+}

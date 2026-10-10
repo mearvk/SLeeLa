@@ -1,0 +1,70 @@
+/*
+ * lib/boolean/boolean-demo.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Runnable demonstrator for the boolean package — a Return Value
+ *   may plainly imply TRUE/FALSE, or it may imply a further relation. This
+ *   program reconstructs, inline, the HEAD (result) + CARRY (caveat) reading of
+ *   Boolean/Binary syllable words at depth 8, 16, and 32.
+ */
+#sleela 1.3
+// SLeeLa boolean package demonstrator.
+// A word is BOOLEAN.<syllable>.<syllable>...  The HEAD syllable is the RESULT;
+// every trailing syllable is CARRY (a caveat structure) that must be observed
+// or agree. BOOLEAN.TRUE.FALSE says: result is TRUE, but FALSE is carried as a
+// caveat — a concern of carry that must be observed. The split per-class files
+// (BooleanTrue, BooleanFalse, boolean/8, boolean/16, boolean/32) are the full
+// vocabulary; this file is the one-shot runnable walkthrough.
+class BooleanDemo {
+
+  String intToStr(int v) { return "" + v; }
+
+  // Render a word from its summary: head bit (1=TRUE,0=FALSE) and the counts of
+  // carried TRUE / carried FALSE syllables, exactly as BooleanWord16/32 model it.
+  String headSyllable(int headBit) { return headBit == 1 ? "TRUE" : "FALSE"; }
+
+  boolean caveat(int carryFalse) { return carryFalse > 0; }
+
+  // The headline reading: result + whether a carry caveat must be observed.
+  String reading(String name, int depth, int headBit, int carryTrue, int carryFalse) {
+    String head = name + " (depth " + intToStr(depth) + "): result "
+                + headSyllable(headBit);
+    if (caveat(carryFalse)) {
+      return head + ", CAVEAT — " + intToStr(carryFalse)
+           + " FALSE carried (must be observed); " + intToStr(carryTrue)
+           + " TRUE carried.";
+    }
+    return head + ", CLEAN — carry agrees (" + intToStr(carryTrue)
+         + " TRUE carried).";
+  }
+
+  void banner(String t) {
+    print("================================================================");
+    print("  " + t);
+    print("================================================================");
+  }
+
+  void main() {
+    banner("SLeeLa BOOLEAN syllable words: result + carry (caveat)");
+
+    // The two primitive syllables.
+    print(reading("BOOLEAN.TRUE",  1, 1, 0, 0));
+    print(reading("BOOLEAN.FALSE", 1, 0, 0, 0));
+
+    // The canonical two-syllable caveat: TRUE result, one FALSE carried.
+    // BOOLEAN.TRUE.FALSE -> result TRUE, caveat on the carry.
+    print(reading("BOOLEAN.TRUE.FALSE", 2, 1, 0, 1));
+
+    // Depth 8 (enumerated as Bool_TFFFFFFF): TRUE result, 7 FALSE carried.
+    print(reading("BOOLEAN.TRUE.FALSE.FALSE.FALSE.FALSE.FALSE.FALSE.FALSE",
+                  8, 1, 0, 7));
+
+    // Depth 16 (BooleanWord16): TRUE result, 15 FALSE carried -> full caveat.
+    print(reading("boolean/16 TRUE+carry-FALSE", 16, 1, 0, 15));
+
+    // Depth 32 (BooleanWord32): all-TRUE -> clean, no caveat.
+    print(reading("boolean/32 all-TRUE", 32, 1, 31, 0));
+
+    banner("Done");
+    print("TRUE is the result; a carried FALSE is a caveat that must be observed.");
+  }
+}
