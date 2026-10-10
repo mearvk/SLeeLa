@@ -1,0 +1,103 @@
+/*
+ * lib/os/SLDistroFetch.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLDistroFetch — the OPT-IN downloader that materialises
+ *   the upstream Ubuntu distro referenced by SLDistroSource into a developer-
+ *   chosen directory, through the osRun host-process bridge. It never runs
+ *   automatically and bundles nothing: SLeeLa carries only the reference
+ *   (SLDistroSource); a developer invokes fetch(root) explicitly to download
+ *   the real OS parts. Because the distro is large (multi-GB, with a GraalVM
+ *   submodule), the default mode is a SHALLOW, single-branch clone pinned to
+ *   the reference's branch; a full clone and a submodule-recursive clone are
+ *   available for a complete working tree.
+ *
+ * Strategy: compose a `git clone` command from the SLDistroSource reference and
+ * run it via osRun (which returns the child's exit code). The output directory
+ * is created with osMakeDir first; a prior clone is detected with osExists so a
+ * re-fetch is a cheap no-op unless forced. Nothing is written into the SLeeLa
+ * repository itself -- the destination is an external output root the developer
+ * names (e.g. "/os-development/upstream").
+ *
+ * Family: os. Opt-in network fetch via the osRun / osMakeDir / osExists bridge;
+ *   requires #sleela 1.5 for the os* built-ins.
+ */
+#sleela 1.11
+class SLDistroFetch {
+  // Fetch depth/mode tags.
+  static final int MODE_SHALLOW = 0;   // --depth 1 --single-branch (default)
+  static final int MODE_FULL    = 1;   // full history
+  static final int MODE_RECURSE = 2;   // full + --recurse-submodules
+
+  SLDistroSource src;   // the reference (field; wired by configure())
+  int mode;
+  int lastExit;         // exit code of the most recent fetch (-1 if none run)
+
+  void configure() {
+    src = new SLDistroSource();
+    src.configure();
+    mode = MODE_SHALLOW;
+    lastExit = -1;
+  }
+
+  // Point at a specific reference instead of the default.
+  void useSource(SLDistroSource source) { src = source; }
+  void setMode(int m) { mode = m; }
+  SLDistroSource source() { return src; }
+
+  // Build the git clone command that fetch(root) will run, without running it.
+  // Exposed so a tool can show or log the exact command (dry run).
+  String cloneCommand(String destDir) {
+    String base = "git -c http.postBuffer=524288000 -c http.version=HTTP/1.1 clone";
+    String opts = "";
+    if (mode == MODE_SHALLOW) {
+      opts = " --depth 1 --single-branch --branch " + src.defaultBranch();
+    } else if (mode == MODE_RECURSE) {
+      opts = " --recurse-submodules";
+    }
+    return base + opts + " " + src.cloneUrl() + " " + destDir;
+  }
+
+  // After a shallow clone, check out the pinned commit when the full history is
+  // present (shallow clones can only pin the branch tip; a FULL/RECURSE clone
+  // can hard-pin). Returns the checkout command, or "" when pinning is not
+  // meaningful for the chosen mode.
+  String pinCommand(String destDir) {
+    if (mode == MODE_SHALLOW) { return ""; }
+    return "git -C " + destDir + " checkout " + src.commit();
+  }
+
+  // The opt-in fetch. Creates destRoot, clones the distro into
+  // destRoot/<repo>, optionally pins the commit, and returns the git exit code
+  // (0 == success). force==false and an existing destination short-circuits to
+  // 0 so a re-run does not re-download.
+  int fetch(String destRoot, boolean force) {
+    osMakeDir(destRoot);
+    String dest = destRoot + "/" + src.repo;
+    if (osExists(dest) == 1 && !force) {
+      lastExit = 0;              // already present; nothing to do
+      return 0;
+    }
+    int rc = osRun(cloneCommand(dest));
+    if (rc == 0) {
+      String pin = pinCommand(dest);
+      if (pin != "") { osRun(pin); }
+    }
+    lastExit = rc;
+    return rc;
+  }
+
+  // Convenience: shallow fetch (the safe default for the large distro).
+  int fetchShallow(String destRoot) { setMode(MODE_SHALLOW); return fetch(destRoot, false); }
+
+  // Convenience: full fetch with submodules (a complete working tree).
+  int fetchComplete(String destRoot) { setMode(MODE_RECURSE); return fetch(destRoot, false); }
+
+  int lastExitCode() { return lastExit; }
+  boolean succeeded() { return lastExit == 0; }
+
+  // Verify the upstream is reachable without downloading it (git ls-remote).
+  // Returns 0 when the branch is resolvable. Cheap pre-flight for a GUI.
+  int probe() {
+    return osRun("git ls-remote --heads " + src.cloneUrl() + " " + src.defaultBranch() + " >/dev/null 2>&1");
+  }
+}

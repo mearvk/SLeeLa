@@ -1,0 +1,92 @@
+#sleela 1.11
+// distro-source.sleela -- the self-contained, runnable demonstrator of the
+// upstream OS-parts reference + opt-in downloader (lib/os/SLDistroSource and
+// SLDistroFetch). The SLeeLa compiler's `run` compiles one file as a single
+// unit, so this aggregate inlines compact slices of both classes plus a `main`
+// that:
+//   1. prints the reference sheet (identity, URL, pinned commit, part map),
+//   2. prints the exact git clone command fetch() would run (a dry run),
+//   3. probes that the upstream is reachable WITHOUT downloading it,
+//   4. shows the one call that would materialise the real OS parts on disk.
+//
+// The point it demonstrates: SLeeLa REFERENCES the Ubuntu distro (zero bytes
+// bundled) and downloads it only on demand. The real split classes are the
+// package surface; this file is the executable counterpart, mirroring the
+// os-build.sleela / os-creator.sleela convention.
+
+class Source {
+  String owner;  String repo;  String url;  String branch;  String pinnedCommit;
+  int hasSubmodules;
+  void configure() {
+    owner = "mearvk";
+    repo = "Ubuntu.Determinant.Beta.Restricted";
+    url = "https://github.com/mearvk/Ubuntu.Determinant.Beta.Restricted.git";
+    branch = "main";
+    pinnedCommit = "4918080dcf0f52dc771aa1a30b0e0f63495f7a8d";
+    hasSubmodules = 1;
+  }
+  String dirFor(String layer) {
+    if (layer == "kernel")     { return "kernels"; }
+    if (layer == "installer")  { return "installer"; }
+    if (layer == "desktop")    { return "gnome-source"; }
+    if (layer == "filesystem") { return "file-systems"; }
+    if (layer == "userland")   { return "userland"; }
+    return "";
+  }
+  String referenceSheet() {
+    String s = "# Upstream OS-parts reference\n";
+    s = s + "repo:   " + owner + "/" + repo + "\n";
+    s = s + "url:    " + url + "\n";
+    s = s + "branch: " + branch + "\n";
+    s = s + "commit: " + pinnedCommit + "\n";
+    s = s + "parts:  kernel->" + dirFor("kernel") + "  installer->" + dirFor("installer")
+          + "  desktop->" + dirFor("desktop") + "  filesystem->" + dirFor("filesystem")
+          + "  userland->" + dirFor("userland") + "\n";
+    return s;
+  }
+}
+
+class Fetch {
+  Source src;
+  void configure() { src = new Source(); src.configure(); }
+  String cloneCommand(String destDir) {
+    return "git -c http.postBuffer=524288000 -c http.version=HTTP/1.1 clone"
+         + " --depth 1 --single-branch --branch " + src.branch
+         + " " + src.url + " " + destDir;
+  }
+  int probe() {
+    return osRun("git ls-remote --heads " + src.url + " " + src.branch + " >/dev/null 2>&1");
+  }
+}
+
+class DistroSourceDemo {
+  void banner(String t) {
+    print("================================================================");
+    print("  " + t);
+    print("================================================================");
+  }
+  void main() {
+    Source src = new Source(); src.configure();
+    Fetch fetch = new Fetch(); fetch.configure();
+
+    banner("SLeeLa lib/os -- upstream OS-parts reference");
+    print(src.referenceSheet());
+
+    banner("Dry run: the git command fetch() would execute");
+    print(fetch.cloneCommand("/os-development/upstream/" + src.repo));
+    print("");
+
+    banner("Pre-flight: is the upstream reachable? (no download)");
+    int rc = fetch.probe();
+    if (rc == 0) { print("reachable: yes (branch '" + src.branch + "' resolved)"); }
+    else { print("reachable: no (git ls-remote rc=" + rc + ")"); }
+    print("");
+
+    banner("To materialise the real OS parts on disk (opt-in)");
+    print("SLDistroFetch f = new SLDistroFetch(); f.configure();");
+    print("f.fetchShallow(\"/os-development/upstream\");  // shallow by default");
+    print("// or f.fetchComplete(root)  for full history + submodules");
+    print("");
+    print("done");
+  }
+}

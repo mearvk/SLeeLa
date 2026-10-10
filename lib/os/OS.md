@@ -411,3 +411,52 @@ OS Creator™ writes **into** `/os-development` (an output tree), never into the
 repository's gated sources, so it does not perturb `security/sha256-manifest.json`.
 Its own source files are ordinary `/lib` units recorded in
 `lib/LIBRARY.SYMBOLS.md` and `SHA256-DIGESTS.md`.
+
+---
+
+# Upstream OS parts — reference and opt-in download
+
+The OS-construction model above *generates* SLeeLa-shaped scaffolding (C/C++ →
+ISO → installer) for a Linux/Windows/macOS shape. The **real, production OS
+parts** — kernels, the installer, the GNOME desktop sources, filesystem tooling,
+and the userland seed — live in a separate, large Ubuntu-lineage distribution:
+[`mearvk/Ubuntu.Determinant.Beta.Restricted`](https://github.com/mearvk/Ubuntu.Determinant.Beta.Restricted).
+Its architecture is the same firmware → boot → kernel → user space → desktop,
+`debootstrap`-compositional, multi-architecture model `SLOSModel` describes (see
+that repo's `UBUNTU_OS.md`), so the two are two views of one system: SLeeLa
+*designs and emits* the shape; the distro *is* the sourced parts.
+
+That distribution is multi-gigabyte and carries a GraalVM submodule, so SLeeLa
+does **not** vendor it. Instead `lib/os` carries a zero-payload **reference** and
+an **opt-in downloader**:
+
+| Class | Role |
+|---|---|
+| `SLDistroSource` | The reference: owner/repo, clone URL, **pinned commit**, default branch, submodule flag, and the map from an OS layer (`kernel`, `installer`, `desktop`, `filesystem`, `userland`) to the distro directory that provides it. Carries no distro bytes. |
+| `SLDistroFetch` | The opt-in downloader: composes a `git clone` from the reference and runs it through the `osRun` bridge. **Shallow + single-branch by default** (the safe mode for a large repo); `fetchComplete()` does a full, submodule-recursive clone and pins the exact commit. Nothing runs automatically and nothing is written into the SLeeLa repo — the destination is an external output root the developer names. |
+
+```sleela
+// Reference only (no network): know exactly where the parts come from.
+SLDistroSource ref = new SLDistroSource(); ref.configure();
+print(ref.identity());                 // ...@4918080dcf...
+print(ref.dirFor("kernel"));           // kernels
+
+// Opt-in download of the real OS parts, on demand:
+SLDistroFetch f = new SLDistroFetch(); f.configure();
+if (f.probe() == 0) {                   // cheap pre-flight (git ls-remote)
+    f.fetchShallow("/os-development/upstream");   // or fetchComplete(root)
+}
+```
+
+Run the self-contained demonstrator (prints the reference sheet, the exact
+clone command as a dry run, and a live reachability probe — no download):
+
+```sh
+./impl/build/sleela run lib/os/distro-source.sleela
+```
+
+**How it ties into generation.** The OS Creator(TM) output tree
+(`/os-development`) is the SLeeLa-emitted scaffolding; `SLDistroFetch` populates
+`/os-development/upstream/` with the real Ubuntu parts next to it, so a developer
+can generate the shape, source the upstream, and reconcile the two. The pinned
+commit keeps a fetch reproducible; repin with `SLDistroSource.pin(commit)`.

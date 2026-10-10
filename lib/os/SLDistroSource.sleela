@@ -1,0 +1,100 @@
+/*
+ * lib/os/SLDistroSource.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLDistroSource — the zero-payload REFERENCE to the
+ *   upstream Ubuntu distribution that supplies the real OS parts
+ *   (mearvk/Ubuntu.Determinant.Beta.Restricted). It records the distro's
+ *   identity, clone URL, the pinned commit for reproducibility, its default
+ *   branch, its Git submodule(s), and the map of OS-part directories it
+ *   provides (kernels, installer, gnome-source, file-systems, userland, ...).
+ *   It carries NO distro bytes: SLeeLa references the distro here and fetches
+ *   it only on demand through SLDistroFetch, so SLeeLa stays small while still
+ *   knowing exactly where its OS parts come from and at which revision.
+ *
+ * The reference is the single source of truth for "which upstream, which
+ * revision, which parts". SLOSModel / OS Creator(TM) generate the SLeeLa-shaped
+ * scaffolding; this points at the real Ubuntu-lineage sources the generated
+ * tree is modelled on, so provenance is explicit rather than implied.
+ *
+ * Family: os. Pure reference/manifest; no payload. SLDistroFetch performs the
+ *   opt-in download; SLOSModel/SLOSCreator may record this as provenance.
+ */
+#sleela 1.11
+class SLDistroSource {
+  // Upstream identity.
+  String name;
+  String owner;
+  String repo;
+  String url;          // https clone URL
+  String branch;       // default branch
+  String pinnedCommit; // exact revision for reproducible fetches
+  int    hasSubmodules;// 1 if the distro uses git submodules (needs --recurse)
+
+  // Configure with the known Ubuntu.Determinant distro reference. The pinned
+  // commit is the current main tip; callers may repin with pin(commit).
+  void configure() {
+    name = "Ubuntu Determinant (Beta, Restricted)";
+    owner = "mearvk";
+    repo = "Ubuntu.Determinant.Beta.Restricted";
+    url = "https://github.com/mearvk/Ubuntu.Determinant.Beta.Restricted.git";
+    branch = "main";
+    pinnedCommit = "4918080dcf0f52dc771aa1a30b0e0f63495f7a8d";
+    hasSubmodules = 1;   // graal-latest -> https://github.com/oracle/graal.git
+  }
+
+  // Repin to a specific revision (keeps fetches reproducible).
+  void pin(String commit) { pinnedCommit = commit; }
+
+  String identity() { return name + " [" + owner + "/" + repo + "@" + shortCommit() + "]"; }
+  String cloneUrl() { return url; }
+  String defaultBranch() { return branch; }
+  String commit() { return pinnedCommit; }
+  boolean usesSubmodules() { return hasSubmodules == 1; }
+
+  // First 10 chars of the pinned commit, for human-readable identity. The core
+  // value model has no substring, so this is derived by comparison-free display
+  // of the full commit when short form is unavailable; callers that need the
+  // exact value use commit().
+  String shortCommit() { return pinnedCommit; }
+
+  // ---- OS-part directory map ------------------------------------------
+  // The directories in the distro that carry each OS layer. A caller resolves a
+  // layer name to its upstream path; dirFor returns "" for an unknown layer.
+  // These mirror the distro's top-level tree (firmware/boot/kernel/userspace/
+  // desktop plus the installer and filesystem tooling).
+  String dirFor(String layer) {
+    if (layer == "kernel")     { return "kernels"; }
+    if (layer == "installer")  { return "installer"; }
+    if (layer == "desktop")    { return "gnome-source"; }
+    if (layer == "filesystem") { return "file-systems"; }
+    if (layer == "userland")   { return "userland"; }
+    if (layer == "userspace")  { return "userland"; }
+    if (layer == "windows")    { return "windows"; }
+    if (layer == "national")   { return "national"; }
+    if (layer == "java")       { return "java"; }
+    if (layer == "ubuntu")     { return "ubuntu-white"; }
+    return "";
+  }
+
+  boolean providesLayer(String layer) { return dirFor(layer) != ""; }
+
+  // A newline-separated reference sheet a tool or README can print.
+  String referenceSheet() {
+    String s = "# Upstream OS-parts reference\n";
+    s = s + "name:   " + name + "\n";
+    s = s + "repo:   " + owner + "/" + repo + "\n";
+    s = s + "url:    " + url + "\n";
+    s = s + "branch: " + branch + "\n";
+    s = s + "commit: " + pinnedCommit + "\n";
+    s = s + "submodules: ";
+    if (hasSubmodules == 1) { s = s + "yes (graal-latest -> oracle/graal)\n"; }
+    else { s = s + "no\n"; }
+    s = s + "parts:\n";
+    s = s + "  kernel     -> " + dirFor("kernel") + "\n";
+    s = s + "  installer  -> " + dirFor("installer") + "\n";
+    s = s + "  desktop    -> " + dirFor("desktop") + "\n";
+    s = s + "  filesystem -> " + dirFor("filesystem") + "\n";
+    s = s + "  userland   -> " + dirFor("userland") + "\n";
+    return s;
+  }
+}
