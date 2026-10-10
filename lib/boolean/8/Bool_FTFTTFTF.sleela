@@ -1,0 +1,31 @@
+/*
+ * lib/boolean/8/Bool_FTFTTFTF.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines the Boolean/Binary word BOOLEAN.FALSE.TRUE.FALSE.TRUE.TRUE.FALSE.TRUE.FALSE (depth 8) as a SLeeLa standard-library constant. HEAD syllable is the result (FALSE); the remaining 7 syllable(s) are carried caveat structure.
+ */
+#sleela 1.3
+// SLeeLa boolean/8 front-end constant — one Boolean word per file.
+// Word: BOOLEAN.FALSE.TRUE.FALSE.TRUE.TRUE.FALSE.TRUE.FALSE
+// Family: boolean. The HEAD syllable is the RESULT; trailing syllables are
+// CARRY (caveat structure) that must be observed/agree. A FALSE carried behind
+// a TRUE result means: result is TRUE, but a concern of carry is noted.
+class Bool_FTFTTFTF {
+  String word() { return "BOOLEAN.FALSE.TRUE.FALSE.TRUE.TRUE.FALSE.TRUE.FALSE"; }
+  String glyphs() { return "FTFTTFTF"; }
+  int depth() { return 8; }
+  // Head syllable = the asserted result.
+  boolean head() { return false; }
+  String headSyllable() { return "FALSE"; }
+  // Carry = the trailing syllables, read as a caveat structure.
+  String carry() { return "TFTTFTF"; }
+  int carryDepth() { return 7; }
+  // A caveat exists when any carried syllable disagrees (a FALSE is carried).
+  boolean caveat() { return true; }
+  // Agreement: the whole word is uniform (all syllables equal the head).
+  boolean agrees() { return false; }
+  int trueCount() { return 4; }
+  int falseCount() { return 4; }
+  // Binary reading: TRUE=1, FALSE=0, head syllable most significant.
+  String bits() { return "01011010"; }
+  int value() { return 90; }
+}

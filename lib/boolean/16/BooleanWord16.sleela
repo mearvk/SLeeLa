@@ -1,0 +1,45 @@
+/*
+ * lib/boolean/16/BooleanWord16.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines BooleanWord16, the generative factory for all 65536 depth-16 Boolean/Binary words. Full materialization of every combination as a file is impractical at this depth; this factory models any such word by its HEAD (result) and CARRY (caveat) composition, which is validated and read on demand.
+ */
+#sleela 1.3
+// SLeeLa boolean/16 generative word factory.
+// All 65536 combinations of BOOLEAN.TRUE / BOOLEAN.FALSE at depth 16
+// are modeled by this type rather than materialized as 65536 separate files.
+// A word is summarized by its HEAD syllable (the RESULT) and the composition of
+// its CARRY (the caveat structure): how many carried syllables are TRUE and how
+// many are FALSE. A FALSE carried behind the head raises a caveat to observe.
+class BooleanWord16 {
+  int headBit;        // 1 = TRUE result, 0 = FALSE result
+  int carryTrue;      // number of carried TRUE syllables
+  int carryFalse;     // number of carried FALSE syllables
+  // Configure one word of this depth: the head result and the carry makeup.
+  void configure(int head, int cTrue, int cFalse) {
+    headBit = head; carryTrue = cTrue; carryFalse = cFalse;
+  }
+  int depth() { return 16; }
+  int carryDepth() { return 15; }
+  // Valid when the head bit is 0/1 and the carry syllables fill the carry slots.
+  boolean valid() {
+    return (headBit == 0 || headBit == 1)
+        && carryTrue >= 0 && carryFalse >= 0
+        && carryTrue + carryFalse == 15;
+  }
+  // Head syllable = the asserted result.
+  boolean head() { return headBit == 1; }
+  String headSyllable() { return headBit == 1 ? "TRUE" : "FALSE"; }
+  // A caveat exists when any carried syllable is FALSE.
+  boolean caveat() { return carryFalse > 0; }
+  // Agreement: the word is uniform (carry entirely matches the head).
+  boolean agrees() {
+    return (headBit == 1 && carryFalse == 0) || (headBit == 0 && carryTrue == 0);
+  }
+  int trueCount() { return carryTrue + (headBit == 1 ? 1 : 0); }
+  int falseCount() { return carryFalse + (headBit == 0 ? 1 : 0); }
+  // Dotted label for the result and the caveat posture.
+  String describe() {
+    return "BOOLEAN." + headSyllable()
+         + (caveat() ? " +carry-caveat" : " +clean");
+  }
+}

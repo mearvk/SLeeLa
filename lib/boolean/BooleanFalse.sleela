@@ -1,0 +1,18 @@
+/*
+ * lib/boolean/BooleanFalse.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines the primitive Boolean syllable BOOLEAN.FALSE as a SLeeLa standard-library constant.
+ */
+#sleela 1.3
+// SLeeLa boolean primitive syllable — BOOLEAN.FALSE.
+// Family: boolean. The two primitive syllables from which every Boolean word
+// (BOOLEAN.TRUE.FALSE, BOOLEAN.TRUE.FALSE.FALSE, ...) is composed.
+class BooleanFalse {
+  String word() { return "BOOLEAN.FALSE"; }
+  String glyphs() { return "F"; }
+  int depth() { return 1; }
+  boolean head() { return false; }
+  String headSyllable() { return "FALSE"; }
+  boolean value() { return false; }
+  int bit() { return 0; }
+}

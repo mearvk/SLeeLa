@@ -1,11 +1,33 @@
 # SLeeLa /lib Library Index
 
-**Revision:** 0.45  
-**Packages:** 89  
-**SLeeLa source units:** 10554  
-**Module-facade symbols:** 61  
-**Total symbol records:** 10615  
+**Revision:** 0.46  
+**Packages:** 90  
+**SLeeLa source units:** 10852  
+**Module-facade symbols:** 62  
+**Total symbol records:** 10914  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
+
+> Revision 0.46 adds the **`boolean`** package (`lib/boolean/`): a
+> Boolean/Binary **syllable-word** vocabulary. The two primitive syllables
+> `BooleanTrue` (`BOOLEAN.TRUE`) and `BooleanFalse` (`BOOLEAN.FALSE`) compose
+> into ordered **words** (`BOOLEAN.TRUE.FALSE`, `BOOLEAN.TRUE.FALSE.FALSE`, …)
+> where the **HEAD** syllable is the *result* and every trailing syllable is a
+> *carry* — a caveat structure that must be observed or agree. Depth 8 is the
+> **full enumeration** of all 2⁸ = 256 words, one class per file under
+> `boolean/8/` (`Bool_<glyphs>.sleela`, names coherent to their value: `T`=TRUE,
+> `F`=FALSE). Depths 16 and 32 ship the generative word factories
+> `BooleanWord16` / `BooleanWord32` plus canonical boundary words under
+> `boolean/16/` and `boolean/32/`; full enumeration (2¹⁶ = 65,536 and
+> 2³² = 4,294,967,296 files) is not materialized — any such word is constructed,
+> validated, and read on demand with the same result/caveat semantics. See
+> `boolean/ARCHITECTURE.md` and the runnable `boolean/boolean-demo.sleela`. This
+> revision also **reconciles the manifest to the live tree**: 29 previously
+> unrecorded `codecs`/`video` codec source units (already present on disk) are
+> now counted. One new package (89 → **90**), one new facade (61 → **62**);
+> 10,554 → **10,852** source classes and 10,615 → **10,914** total records.
+> `LIBRARY.SYMBOLS.md` was regenerated from the live tree by
+> `tools/generate-library-symbols.py` and verified by
+> `test-suites/test-library-inventory.sh`.
 
 > Revision 0.45 improves the **`alphabet`** package for **Sleela 1.8+**. `Letter`
 > and `Alphabet` are upgraded to `#sleela 1.8` and gain the two 1.8 ergonomics
