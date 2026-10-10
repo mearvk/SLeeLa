@@ -5568,7 +5568,7 @@
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "7325c7518ed2e4aaadabbeb2f969db04846cfe5011bcf8349d930ffb887f3d2e"
+      "sha256": "292bbb66a7c4a76e4c3db909b16e654a2ff926cf085dfbfe8976bb2a7016f3b9"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -6563,6 +6563,14 @@
       "sha256": "af5348c459fe6c7abd888fb87621ef6de5248a92ebb5cb82620684421f6cd519"
     },
     {
+      "path": "impl/tests/static_init/run_static_init_tests.sh",
+      "sha256": "9fa452ca10b142a9bb724af677669921e2439c74bcd4c8527189cf481e64c3dd"
+    },
+    {
+      "path": "impl/tests/static_init/static_init_nonentry.sleela",
+      "sha256": "2e899989b99f1f9fdedb9b2152d912fadb7ae57e879b9eb972c1577356ff81a1"
+    },
+    {
       "path": "impl/tests/subjects/astrophysics_smoke.c",
       "sha256": "a3b0eb8085be3f74aaca63f4b89f8435f2321a3a2c4f83c5097d818d8fe31259"
     },
@@ -6735,12 +6743,24 @@
       "sha256": "781e6b434e406188f8aaa3eaee457a451121e0632e2df52a0e52cade79ff7904"
     },
     {
+      "path": "international-criminal-court/ICC Legal Standing 3.docx",
+      "sha256": "afb6534a4ecf4a370a33059d14e50de0d863d62d112d7dab866448ca18fe2a51"
+    },
+    {
+      "path": "international-criminal-court/ICC Legal Standings 1.docx",
+      "sha256": "eba50a4bc0fbb4b08cacb3ff42e0dd85f8c09da994ada5010be7b4553d745555"
+    },
+    {
+      "path": "international-criminal-court/ICC Legal Standings 2.docx",
+      "sha256": "d191fa1a7733e78c1f815e40d0c9668e11fcd0b3a047d56af5cf96d50d84bf6f"
+    },
+    {
       "path": "international-criminal-court/INTEGRITY.md",
       "sha256": "96477aa3faebbc6ee982b06a254812811bbe1dadb8619175afee51ad84e592f9"
     },
     {
       "path": "international-criminal-court/README.md",
-      "sha256": "95c3c96126c76da87d8b1b868d6e3deca9e876d15c85f8d4a91b98565771ee16"
+      "sha256": "9b59beb6ecb8992e82932f8d75183d0338f6919d701522dda08f80a46d4db3e4"
     },
     {
       "path": "international-criminal-court/SHA256SUMS",
@@ -49199,6 +49219,14 @@
       "sha256": "be40810f6ec3c5403eed645d11f9fa58bcc3fab0ea4f2ec4be5a54b7bcc9f6d5"
     },
     {
+      "path": "lib/os/SLDistroFetch.sleela",
+      "sha256": "18d159e8386da44f1d68c1aeb376adc84a16215044d2be54c4e4a95518504055"
+    },
+    {
+      "path": "lib/os/SLDistroSource.sleela",
+      "sha256": "f71b789fe2df90060dcad17d5347e518afec198f421dcb40aacf850681b4c719"
+    },
+    {
       "path": "lib/os/SLDriverSet.sleela",
       "sha256": "bfa0e311fec2d9305143f7c7f74ff3160da494d86005c45870e2dfdda714490a"
     },
@@ -49209,6 +49237,14 @@
     {
       "path": "lib/os/SLEventSignal.sleela",
       "sha256": "2bc01d3808a386f57ed178e985a0f2a15a591f6af57e2698e19b6a3edff9c774"
+    },
+    {
+      "path": "lib/os/SLExecutableTranslator.sleela",
+      "sha256": "fffb0a506faeafc919834096afa1f82bf6df2d510043c6aa6dad4ce9dd5fc970"
+    },
+    {
+      "path": "lib/os/SLExecutableTypes.sleela",
+      "sha256": "466b6d7a5ccbe2a404867a517103ffac2acd2f97e95fa23b29f00f4997c97afd"
     },
     {
       "path": "lib/os/SLFile.sleela",
@@ -49239,8 +49275,12 @@
       "sha256": "2f5c5d01a933d591a60c472c7d5da0422b60ab606b8e24bb9556dec4176cc116"
     },
     {
+      "path": "lib/os/SLKernelCatalog.sleela",
+      "sha256": "43970eae0fd110ac287af90c567f938a927d97f10004a1004efe93a214283027"
+    },
+    {
       "path": "lib/os/SLKernelSpec.sleela",
-      "sha256": "bc2e04307cefae0c81fcd5e8e07487261dd7b5776a879e5f712ba0945c9e7ae8"
+      "sha256": "e16fbd1f4b2599e927060595af60e295ac959bc812c4bd47d28a9e1f7a41a023"
     },
     {
       "path": "lib/os/SLLinuxOS.sleela",
@@ -49323,6 +49363,10 @@
       "sha256": "4b26bff901f17e3da31dd1e7c4ee3edc9c814271edd31a904b1fe5ba8ba8ed8a"
     },
     {
+      "path": "lib/os/distro-source.sleela",
+      "sha256": "112f75067e6afd571f8426851e94a76aae81a8d080cc5a5264028ee28fc71a5f"
+    },
+    {
       "path": "lib/os/hdd/SLHardDisk.sleela",
       "sha256": "fc33a20f72f28cad8199902b3b1254783f6aa8828016f48f9b6bd00fba6b603b"
     },
@@ -49397,6 +49441,10 @@
     {
       "path": "lib/os/os-creator/os-creator.sleela",
       "sha256": "9d382bd18fa1448b28fbd1aff2a4d3a968de3e67b24b85558fd162831c097363"
+    },
+    {
+      "path": "lib/os/os-generate.sleela",
+      "sha256": "42d038e9e0eca48351948f3655517b2c1cfef2453e20649f91a949269c7d4fc7"
     },
     {
       "path": "lib/os/ssd/SLSSD.sleela",
