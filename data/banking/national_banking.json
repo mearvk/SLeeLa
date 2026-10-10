@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-09",
+  "generated": "2026-10-10",
   "expected": 391,
   "coverage": {
     "total": 391,
@@ -64,7 +64,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": -6.60118564073726,
+          "value": -6.60118564073725,
           "year": 2024,
           "source": "World Bank API"
         },
@@ -85,7 +85,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -131,7 +131,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 2.14618551167388,
+          "value": 2.14618551167387,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -152,7 +152,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -219,7 +219,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -288,7 +288,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -358,7 +358,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -425,7 +425,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -493,7 +493,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -561,7 +561,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -607,7 +607,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 1.36873527521954,
+          "value": 1.36873527521953,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -629,7 +629,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -696,7 +696,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -742,7 +742,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 3.30693341072904,
+          "value": 3.30693341072903,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -763,7 +763,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -831,7 +831,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -898,7 +898,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -965,7 +965,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -1032,7 +1032,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -1100,7 +1100,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -1146,7 +1146,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": -0.137708855447902,
+          "value": -0.137708855447901,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -1167,7 +1167,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -1234,7 +1234,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -1302,7 +1302,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -1369,7 +1369,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -1415,7 +1415,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 2.46705543774613,
+          "value": 2.46605755272817,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -1436,7 +1436,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -1503,7 +1503,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -1549,7 +1549,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 1.10155247902978,
+          "value": 1.10155247902977,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -1570,7 +1570,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -1639,7 +1639,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -1706,7 +1706,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -1752,7 +1752,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 19.517120804733,
+          "value": 19.5171208047329,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -1773,7 +1773,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -1841,7 +1841,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -1887,8 +1887,8 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 6.1059011284828,
-          "year": 2023,
+          "value": 3.97821271880433,
+          "year": 2025,
           "source": "World Bank API"
         },
         "unemployment_pct": {
@@ -1908,7 +1908,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -1954,7 +1954,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 2.6597506179431,
+          "value": 2.65985038423427,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -1975,7 +1975,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -2043,7 +2043,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -2110,7 +2110,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -2178,7 +2178,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -2224,7 +2224,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": -0.302994414446762,
+          "value": -0.302994414446814,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -2245,7 +2245,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -2312,7 +2312,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -2358,7 +2358,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": -0.586235316330579,
+          "value": -0.586235316330578,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -2379,7 +2379,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -2425,7 +2425,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 34.1339985744832,
+          "value": 34.1339985744831,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -2447,7 +2447,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -2493,7 +2493,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 2.34333897365163,
+          "value": 2.34333897365162,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -2514,7 +2514,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -2581,7 +2581,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -2648,7 +2648,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -2715,7 +2715,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -2783,7 +2783,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -2850,7 +2850,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -2896,7 +2896,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": -3.9119812440659,
+          "value": -3.91198124406589,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -2917,7 +2917,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -2963,7 +2963,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 4.21293601694293,
+          "value": 4.21294031801535,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -2984,7 +2984,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -3030,7 +3030,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 0.0595646916565403,
+          "value": 0.0595646916565402,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -3051,7 +3051,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -3119,7 +3119,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -3187,7 +3187,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -3254,7 +3254,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -3300,7 +3300,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 3.24909332306433,
+          "value": 3.24909332306432,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -3321,7 +3321,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -3389,7 +3389,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -3457,7 +3457,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -3524,7 +3524,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -3592,7 +3592,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -3638,7 +3638,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 3.69153459605729,
+          "value": 3.69153459605728,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -3659,7 +3659,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -3727,7 +3727,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -3795,7 +3795,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -3841,7 +3841,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 0.126528851920189,
+          "value": 0.126528851920188,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -3862,7 +3862,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -3908,7 +3908,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 2.45996367838865,
+          "value": 2.45996367838864,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -3929,7 +3929,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -3997,7 +3997,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -4043,7 +4043,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 1.89367372703044,
+          "value": 1.8900606245861,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -4064,7 +4064,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -4110,7 +4110,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": -0.313731799533481,
+          "value": -0.31373179953348,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -4131,7 +4131,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -4200,7 +4200,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -4246,7 +4246,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 3.8731176804813,
+          "value": 3.87311768048129,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -4267,7 +4267,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -4334,7 +4334,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -4402,7 +4402,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -4448,7 +4448,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 0.257570528307203,
+          "value": 0.257570528307202,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -4469,7 +4469,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -4536,7 +4536,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -4604,7 +4604,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -4650,7 +4650,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 4.82920753628342,
+          "value": 4.82894582449954,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -4671,7 +4671,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -4738,7 +4738,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -4784,7 +4784,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 13.2296432836809,
+          "value": 13.2296432836808,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -4805,7 +4805,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -4873,7 +4873,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -4942,7 +4942,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -4988,7 +4988,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": -1.38326833934224,
+          "value": -1.38326833934223,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -5009,7 +5009,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -5055,7 +5055,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 0.337874659400574,
+          "value": 0.332787049734142,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -5076,7 +5076,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -5122,7 +5122,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 0.943770212469976,
+          "value": 0.943824761520197,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -5143,7 +5143,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -5211,7 +5211,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -5279,7 +5279,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -5347,7 +5347,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -5393,7 +5393,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 1.76766609003481,
+          "value": 1.7676660900348,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -5414,7 +5414,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -5482,7 +5482,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -5528,7 +5528,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 3.8692132193969,
+          "value": 3.86921321939689,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -5549,7 +5549,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -5616,7 +5616,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -5683,7 +5683,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -5755,7 +5755,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -5801,7 +5801,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 2.48209745378857,
+          "value": 2.48162694360829,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -5822,7 +5822,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -5891,7 +5891,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -5937,7 +5937,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 0.610311975893833,
+          "value": 0.610311975893832,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -5960,7 +5960,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -6028,7 +6028,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -6096,7 +6096,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -6142,7 +6142,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 1.48841591086169,
+          "value": 1.48841591086168,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -6163,7 +6163,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -6231,7 +6231,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -6277,7 +6277,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 3.54630163142885,
+          "value": 3.57096573355343,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -6298,7 +6298,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -6365,7 +6365,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -6432,7 +6432,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -6499,7 +6499,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -6567,7 +6567,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -6635,7 +6635,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -6702,7 +6702,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -6770,7 +6770,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -6816,7 +6816,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 4.41198445905562,
+          "value": 4.41198445905566,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -6837,7 +6837,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -6904,7 +6904,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -6971,7 +6971,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -7017,7 +7017,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 1.9133344329508,
+          "value": 1.91333443295079,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -7038,7 +7038,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -7106,7 +7106,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -7152,7 +7152,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 0.303454715219382,
+          "value": 0.303454715219381,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -7173,7 +7173,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -7219,7 +7219,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 2.21044788475857,
+          "value": 2.21044788475856,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -7240,7 +7240,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -7310,7 +7310,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -7356,7 +7356,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 3.0414132155654,
+          "value": 3.04141321556539,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -7377,7 +7377,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -7423,7 +7423,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 1.5316682765282,
+          "value": 1.5316735709312,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -7444,7 +7444,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -7490,7 +7490,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 4.00459048079239,
+          "value": 4.00459048079238,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -7512,7 +7512,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -7558,7 +7558,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 3.17253034260248,
+          "value": 3.17253034260247,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -7579,7 +7579,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -7647,7 +7647,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -7693,7 +7693,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 1.76646490894206,
+          "value": 1.76646490894205,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -7714,7 +7714,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -7760,7 +7760,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 11.3879454675914,
+          "value": 11.3789456104214,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -7781,7 +7781,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -7827,7 +7827,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 4.06912878540729,
+          "value": 4.0693076061457,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -7848,7 +7848,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -7894,8 +7894,8 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 2.45545072159028,
-          "year": 2024,
+          "value": 6.51130441863551,
+          "year": 2025,
           "source": "World Bank API"
         },
         "unemployment_pct": {
@@ -7916,7 +7916,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -7984,7 +7984,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -8052,7 +8052,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -8119,7 +8119,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -8187,7 +8187,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -8255,7 +8255,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -8322,7 +8322,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -8389,7 +8389,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -8435,7 +8435,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 4.27011140706666,
+          "value": 4.27011140706665,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -8456,7 +8456,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -8502,7 +8502,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 8.31564329402952,
+          "value": 8.31564329402951,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -8524,7 +8524,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -8591,7 +8591,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -8661,7 +8661,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -8707,7 +8707,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 3.79170510860467,
+          "value": 3.79132375529774,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -8728,7 +8728,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -8774,7 +8774,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 2.25723817871726,
+          "value": 2.25723817871725,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -8795,7 +8795,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -8863,7 +8863,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -8930,7 +8930,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -8997,7 +8997,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -9043,7 +9043,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 1.38060872293692,
+          "value": 1.38060872293691,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -9064,7 +9064,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -9110,7 +9110,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 4.00578494118752,
+          "value": 4.00578494118751,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -9131,7 +9131,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -9198,7 +9198,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -9265,7 +9265,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -9334,7 +9334,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -9402,7 +9402,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -9469,7 +9469,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -9536,7 +9536,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -9604,7 +9604,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -9650,7 +9650,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 3.80668650726485,
+          "value": 3.80957950037393,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -9671,7 +9671,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -9739,7 +9739,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -9785,7 +9785,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 7.75904124001159,
+          "value": 7.75904124001158,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -9806,7 +9806,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -9876,7 +9876,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -9922,7 +9922,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 8.60536487369695,
+          "value": 8.60536487369694,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -9943,7 +9943,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -9989,7 +9989,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 3.89960910704956,
+          "value": 3.89921045747158,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -10010,7 +10010,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -10078,7 +10078,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -10124,7 +10124,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 0.701902154839545,
+          "value": 0.701902154839544,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -10145,7 +10145,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -10191,7 +10191,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 4.3684695014615,
+          "value": 4.36846950146149,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -10212,7 +10212,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -10280,7 +10280,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -10347,7 +10347,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -10415,7 +10415,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -10482,7 +10482,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -10528,7 +10528,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 3.2595766451366,
+          "value": 3.20363967869003,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -10549,7 +10549,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -10616,7 +10616,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -10683,7 +10683,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -10729,7 +10729,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 2.08132127098376,
+          "value": 2.08132127098375,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -10750,7 +10750,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -10817,7 +10817,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -10884,7 +10884,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -10952,7 +10952,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -11020,7 +11020,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -11066,7 +11066,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 4.07249176848348,
+          "value": 4.07249176848347,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -11087,7 +11087,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -11156,7 +11156,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -11202,7 +11202,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 3.05562484410077,
+          "value": 3.03967027305512,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -11223,7 +11223,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -11269,7 +11269,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 0.967741935483928,
+          "value": 0.967741935483927,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -11290,7 +11290,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -11336,7 +11336,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 3.54555214890893,
+          "value": 3.54555214890892,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -11357,7 +11357,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -11425,7 +11425,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -11493,7 +11493,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -11539,7 +11539,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": -0.189587880235675,
+          "value": -0.187950146495633,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -11560,7 +11560,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -11627,7 +11627,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -11694,7 +11694,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -11740,7 +11740,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 1.53125450314273,
+          "value": 1.53125450314272,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -11761,7 +11761,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -11828,7 +11828,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -11896,7 +11896,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -11963,7 +11963,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -12030,7 +12030,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -12098,7 +12098,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -12165,7 +12165,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -12233,7 +12233,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -12300,7 +12300,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -12367,7 +12367,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -12413,7 +12413,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 5.913000168826,
+          "value": 5.91300016882599,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -12434,7 +12434,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -12502,7 +12502,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -12570,7 +12570,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -12638,7 +12638,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -12706,7 +12706,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -12774,7 +12774,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -12842,7 +12842,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -12910,7 +12910,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -12977,7 +12977,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -13045,7 +13045,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -13112,7 +13112,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -13158,7 +13158,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 2.08420853585036,
+          "value": 2.03559944812264,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -13179,7 +13179,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -13225,7 +13225,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 1.45900719841385,
+          "value": 1.45900719841384,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -13246,7 +13246,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -13292,7 +13292,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 3.8903678606001,
+          "value": 3.89036786060009,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -13313,7 +13313,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -13359,7 +13359,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 0.297589655467556,
+          "value": 0.297589655467555,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -13381,7 +13381,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -13427,7 +13427,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 7.48750166612986,
+          "value": 7.48750166612985,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -13448,7 +13448,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -13515,7 +13515,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -13583,7 +13583,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -13651,7 +13651,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -13697,7 +13697,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 2.37284807226549,
+          "value": 2.37420873927207,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -13718,7 +13718,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -13764,7 +13764,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 3.36462189317825,
+          "value": 3.36462189317824,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -13785,7 +13785,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -13853,7 +13853,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -13920,7 +13920,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -13988,7 +13988,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -14034,7 +14034,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 91.4408220769046,
+          "value": 91.4408220769045,
           "year": 2024,
           "source": "World Bank API"
         },
@@ -14055,7 +14055,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -14101,7 +14101,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 2.699932857627,
+          "value": 2.67326741144651,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -14122,7 +14122,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -14168,7 +14168,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": -4.76386036960983,
+          "value": -4.76386036960982,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -14189,7 +14189,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -14256,7 +14256,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -14323,7 +14323,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -14391,7 +14391,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -14437,7 +14437,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 0.679869285243995,
+          "value": 0.679015259300199,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -14458,7 +14458,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -14525,7 +14525,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -14571,7 +14571,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 13.4175653228571,
+          "value": 13.417565322857,
           "year": 2019,
           "source": "World Bank API"
         },
@@ -14592,7 +14592,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -14660,7 +14660,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -14706,8 +14706,8 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 6.00458082322139,
-          "year": 2016,
+          "value": 3.38875846243549,
+          "year": 2025,
           "source": "World Bank API"
         },
         "unemployment_pct": {
@@ -14727,7 +14727,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -14794,7 +14794,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -14840,7 +14840,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": -0.133634356480207,
+          "value": -0.133634356480206,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -14861,7 +14861,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -14928,7 +14928,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -14974,7 +14974,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 0.433183451279109,
+          "value": 0.433183451279108,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -14995,7 +14995,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -15063,7 +15063,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -15109,7 +15109,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 5.59276642101027,
+          "value": 5.59276642101026,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -15130,7 +15130,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -15198,7 +15198,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -15265,7 +15265,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -15333,7 +15333,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -15401,7 +15401,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -15471,7 +15471,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -15540,7 +15540,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -15586,7 +15586,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 3.58082784438067,
+          "value": 3.58082784438066,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -15607,7 +15607,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -15653,7 +15653,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 12.7303341026903,
+          "value": 12.7303341026902,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -15674,7 +15674,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -15741,7 +15741,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -15787,7 +15787,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 3.88306881626,
+          "value": 3.88306881625999,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -15808,7 +15808,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -15875,7 +15875,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -15943,7 +15943,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -15989,7 +15989,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 4.65032720433324,
+          "value": 4.65032720433323,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -16010,7 +16010,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -16056,7 +16056,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 8.79638847052461,
+          "value": 8.79630890491107,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -16077,7 +16077,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -16144,7 +16144,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -16212,7 +16212,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -16258,7 +16258,7 @@
           "source": "World Bank API"
         },
         "inflation_pct": {
-          "value": 3.3099931421974,
+          "value": 3.30999314219739,
           "year": 2025,
           "source": "World Bank API"
         },
@@ -16279,7 +16279,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -16347,7 +16347,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -16415,7 +16415,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -16483,7 +16483,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -16551,7 +16551,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -16619,7 +16619,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -16686,7 +16686,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -16753,7 +16753,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -16821,7 +16821,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -16889,7 +16889,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -16957,7 +16957,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -17025,7 +17025,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -17093,7 +17093,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -17161,7 +17161,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -17229,7 +17229,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -17297,7 +17297,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -17365,7 +17365,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -17433,7 +17433,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -17501,7 +17501,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -17569,7 +17569,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -17637,7 +17637,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -17705,7 +17705,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -17773,7 +17773,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -17841,7 +17841,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -17909,7 +17909,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -17977,7 +17977,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -18045,7 +18045,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -18113,7 +18113,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -18181,7 +18181,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -18249,7 +18249,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -18317,7 +18317,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -18385,7 +18385,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -18453,7 +18453,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -18521,7 +18521,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -18589,7 +18589,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -18657,7 +18657,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -18725,7 +18725,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -18793,7 +18793,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -18861,7 +18861,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -18929,7 +18929,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -18997,7 +18997,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -19065,7 +19065,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -19133,7 +19133,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -19201,7 +19201,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -19269,7 +19269,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -19337,7 +19337,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -19405,7 +19405,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -19473,7 +19473,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -19541,7 +19541,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -19609,7 +19609,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -19677,7 +19677,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -19745,7 +19745,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -19813,7 +19813,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -19881,7 +19881,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -19949,7 +19949,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -20017,7 +20017,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -20085,7 +20085,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -20153,7 +20153,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -20221,7 +20221,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -20289,7 +20289,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -20357,7 +20357,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -20425,7 +20425,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -20493,7 +20493,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -20561,7 +20561,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -20629,7 +20629,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -20697,7 +20697,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -20765,7 +20765,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -20833,7 +20833,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -20901,7 +20901,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -20969,7 +20969,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -21037,7 +21037,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -21105,7 +21105,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -21173,7 +21173,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -21241,7 +21241,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -21309,7 +21309,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -21377,7 +21377,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -21445,7 +21445,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -21513,7 +21513,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -21581,7 +21581,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -21649,7 +21649,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -21717,7 +21717,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -21785,7 +21785,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -21853,7 +21853,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -21921,7 +21921,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -21989,7 +21989,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -22057,7 +22057,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -22125,7 +22125,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -22193,7 +22193,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -22261,7 +22261,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -22329,7 +22329,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -22397,7 +22397,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -22465,7 +22465,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -22533,7 +22533,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -22601,7 +22601,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -22669,7 +22669,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -22737,7 +22737,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -22805,7 +22805,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -22873,7 +22873,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -22941,7 +22941,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -23009,7 +23009,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -23077,7 +23077,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -23145,7 +23145,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -23213,7 +23213,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -23281,7 +23281,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -23349,7 +23349,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -23417,7 +23417,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -23485,7 +23485,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -23553,7 +23553,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -23621,7 +23621,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -23689,7 +23689,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -23757,7 +23757,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -23825,7 +23825,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -23893,7 +23893,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -23961,7 +23961,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -24029,7 +24029,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -24097,7 +24097,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -24165,7 +24165,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -24233,7 +24233,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -24301,7 +24301,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -24369,7 +24369,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -24437,7 +24437,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -24505,7 +24505,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -24573,7 +24573,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -24641,7 +24641,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -24709,7 +24709,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -24777,7 +24777,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -24845,7 +24845,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -24913,7 +24913,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -24981,7 +24981,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -25049,7 +25049,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -25117,7 +25117,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -25185,7 +25185,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -25253,7 +25253,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -25321,7 +25321,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -25389,7 +25389,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -25457,7 +25457,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -25525,7 +25525,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -25593,7 +25593,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -25661,7 +25661,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -25729,7 +25729,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -25797,7 +25797,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -25865,7 +25865,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -25933,7 +25933,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -26001,7 +26001,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -26069,7 +26069,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -26137,7 +26137,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -26205,7 +26205,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -26273,7 +26273,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -26341,7 +26341,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -26409,7 +26409,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
@@ -26477,7 +26477,7 @@
         "rest_countries_name": null
       },
       "verification": {
-        "last_verified": "2026-10-09",
+        "last_verified": "2026-10-10",
         "source_status": "PRIMARY_OR_INTERNATIONAL",
         "sources": [
           "http/spec/BYPASS.md",
