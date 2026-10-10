@@ -1,0 +1,58 @@
+/*
+ * lib/os/usb/SLUSBCatalog.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLUSBCatalog — a by-name factory for USB host controllers
+ *   and devices. USB host-controller silicon comes from a finite set of vendors
+ *   (Intel, AMD, ASMedia, VIA, Renesas, Texas Instruments, Fresco Logic), and
+ *   the catalogue returns representative, correctly-specified SLUSBDevice
+ *   instances — a root/host controller for the machine, or a class device
+ *   (keyboard/mouse HID, mass-storage key, hub) to attach to it.
+ *
+ * Family: os. Produces SLUSBDevice.
+ */
+#sleela 1.5
+class SLUSBCatalog {
+  void configure() {}
+
+  // A USB host controller (root hub) from a named vendor at a generation.
+  SLUSBDevice controller(String vendor, String genName, int ports) {
+    SLUSBDevice d = new SLUSBDevice();
+    d.configureByName(vendor, controllerPart(vendor), genName, d.UC_CONTROLLER);
+    d.setPorts(ports);
+    return d;
+  }
+  // A USB hub from a named vendor.
+  SLUSBDevice hub(String vendor, String genName, int ports) {
+    SLUSBDevice d = new SLUSBDevice();
+    d.configureByName(vendor, vendor + " Hub", genName, d.UC_HUB);
+    d.setPorts(ports);
+    return d;
+  }
+  // A HID device (keyboard/mouse), typically USB 2.0 Type-A.
+  SLUSBDevice hid(String vendor, String part) {
+    SLUSBDevice d = new SLUSBDevice();
+    d.configure(vendor, part, d.USB_2_0, d.UC_HID);
+    return d;
+  }
+  // A mass-storage flash drive at a given generation.
+  SLUSBDevice flashDrive(String vendor, String part, String genName) {
+    SLUSBDevice d = new SLUSBDevice();
+    d.configureByName(vendor, part, genName, d.UC_MASS);
+    return d;
+  }
+
+  boolean knownController(String vendor) {
+    return vendor == "Intel" || vendor == "AMD" || vendor == "ASMedia"
+        || vendor == "VIA"   || vendor == "Renesas" || vendor == "Texas Instruments"
+        || vendor == "Fresco Logic";
+  }
+
+  String controllerPart(String vendor) {
+    if (vendor == "Intel")   { return "xHCI Root Hub"; }
+    if (vendor == "AMD")     { return "xHCI Controller"; }
+    if (vendor == "ASMedia") { return "ASM3242"; }
+    if (vendor == "Renesas") { return "uPD720201"; }
+    if (vendor == "VIA")     { return "VL805"; }
+    return vendor + " xHCI";
+  }
+}

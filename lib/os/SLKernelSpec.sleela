@@ -1,0 +1,78 @@
+/*
+ * lib/os/SLKernelSpec.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLKernelSpec — the kernel layer of an OS being
+ *   constructed. It names the kernel the target OS boots (an NT-style, a
+ *   Linux-style, or an XNU/Darwin-style kernel), its version, the subsystems
+ *   it must provide (process management, memory management, scheduling,
+ *   networking, filesystems, drivers, security primitives), and the kernel
+ *   command line handed to it at boot.
+ *
+ * In the firmware -> boot -> kernel -> userspace -> desktop model, this is the
+ * kernel node. The C/C++ emitters turn a configured SLKernelSpec into the
+ * kernel-config and command-line artifacts the ISO build consumes; where a
+ * real upstream kernel is used (the common case) the spec records which kernel
+ * and configuration to assemble rather than re-implementing one.
+ *
+ * SCOPE NOTE: this models the kernel's COMPOSITION contract, not a from-scratch
+ * kernel implementation. Compare lib/cpu/SLGuestKernelBuilder, which compiles a
+ * small custom teaching kernel on a simulated CPU.
+ *
+ * Family: os. Pure design model; no native bridge calls.
+ */
+#sleela 1.5
+class SLKernelSpec {
+  String kernelName;    // "NT", "Linux", "XNU"
+  String version;       // e.g. "6.18.27"
+  String cmdline;       // kernel boot parameters
+  // Subsystem toggles (1 = required, 0 = omitted).
+  int processMgmt;
+  int memoryMgmt;
+  int scheduler;
+  int networking;
+  int filesystems;
+  int drivers;
+  int security;
+  int preemptible;      // preemptible kernel
+  int configured;
+
+  // Baseline: a full-featured, preemptible kernel with every core subsystem.
+  void configure(String name, String ver) {
+    kernelName = name; version = ver; cmdline = "ro quiet";
+    processMgmt = 1; memoryMgmt = 1; scheduler = 1; networking = 1;
+    filesystems = 1; drivers = 1; security = 1; preemptible = 1;
+    configured = 1;
+  }
+
+  // Pick the kernel family that matches a shape, with a sensible version.
+  void forShape(SLOSShape shape) {
+    if (shape.isWindows()) { configure("NT", "10.0"); return; }
+    if (shape.isMac())     { configure("XNU", "24.0"); return; }
+    configure("Linux", "6.18.27");
+  }
+
+  void setCmdline(String line) { cmdline = line; }
+  void appendCmdline(String arg) { cmdline = cmdline + " " + arg; }
+  void requireSecurity(boolean on) { if (on) { security = 1; } else { security = 0; } }
+
+  String name()        { return kernelName; }
+  String kernelVersion() { return version; }
+  String commandLine() { return cmdline; }
+
+  // Count of enabled core subsystems (used by the model's validity check).
+  int subsystemCount() {
+    int n = 0;
+    if (processMgmt == 1) { n = n + 1; }
+    if (memoryMgmt == 1)  { n = n + 1; }
+    if (scheduler == 1)   { n = n + 1; }
+    if (networking == 1)  { n = n + 1; }
+    if (filesystems == 1) { n = n + 1; }
+    if (drivers == 1)     { n = n + 1; }
+    if (security == 1)    { n = n + 1; }
+    return n;
+  }
+  // A kernel is bootable only if it provides the three irreducible subsystems.
+  boolean isBootable() {
+    return processMgmt == 1 && memoryMgmt == 1 && scheduler == 1;
+  }
+}

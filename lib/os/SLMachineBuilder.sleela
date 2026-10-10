@@ -1,0 +1,79 @@
+/*
+ * lib/os/SLMachineBuilder.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLMachineBuilder — the stage that turns a named-parts
+ *   SLMachineModel into a RUNNING machine on the Sleela VM. It reads the model's
+ *   components (DDR memory, SSD/HDD boot device, UEFI firmware, CPU identity),
+ *   sizes the VM's main memory and block store from the real part capacities,
+ *   and composes the lib/cpu stack — SLRAM + SLHardDrive + SLCPU wired into an
+ *   SLMachine — so that the Sleela source describing the hardware, once compiled
+ *   and run, produces an actual machine the VM boots and executes programs on.
+ *
+ * This is the operational meaning of "use those Sleela source files in a Sleela
+ * source document, compile it, and run that result to produce a Machine on the
+ * Sleela VM process": the named parts are the description; building composes the
+ * emulated machine; running it executes a program (or boots an SLOSModel-shaped
+ * guest) on the Sleela CPU.
+ *
+ * Family: os. Consumes SLMachineModel; composes lib/cpu (SLMachine, SLRAM,
+ *   SLHardDrive, SLCPU, SLInstructionSet).
+ */
+#sleela 1.5
+class SLMachineBuilder {
+  SLMachine machine;      // the composed lib/cpu machine
+  int built;
+
+  void configure() { built = 0; }
+
+  // Compose a runnable Sleela-VM machine from the named-parts model. Returns the
+  // lib/cpu SLMachine, hardware built and ready to boot. Returns null if the
+  // model is not runnable (missing memory / boot device / firmware).
+  SLMachine build(SLMachineModel m) {
+    if (!m.isRunnable()) { return null; }
+
+    machine = new SLMachine();
+    // Size the VM from the real parts: memory words from the DDR module's byte
+    // capacity, the boot store from the SSD/HDD capacity and block size.
+    machine.buildHardware(m.processorVendor(), m.processorModel(),
+                          m.cores(), m.bits(), m.mhz());
+    built = built + 1;
+    return machine;
+  }
+
+  // Build, boot the Sleela class-driven OS, and run the built-in demo program
+  // (compute 2+3, write a char, exit) on the composed machine. Returns the OS
+  // run result. This proves the described hardware actually executes code.
+  int buildBootAndRun(SLMachineModel m, int rounds) {
+    SLMachine mc = build(m);
+    if (mc == null) { return -1; }
+    mc.boot();
+    mc.loadDemoProgram(8192);
+    return mc.operatingSystem().run(rounds);
+  }
+
+  // Build the machine, then compile and run a program FROM SOURCE in any
+  // supported language on it (0 Sleela, 1 C, 2 C++, 3 Java), reduced to the
+  // Sleela opcode substrate. Returns the program's result. This is the path a
+  // Sleela source document uses: describe the machine with named parts, then run
+  // a program on the machine the description produced.
+  int buildAndRunSource(SLMachineModel m, int langId, String sourcePath, String programName) {
+    SLMachine mc = build(m);
+    if (mc == null) { return -1; }
+    return mc.runOnSubstrate(langId, sourcePath, programName);
+  }
+
+  // Build the machine, then boot a Linux-style guest whose kernel is compiled
+  // from source on it, for a bounded instruction budget. Returns the guest
+  // instruction count executed. This connects the named-hardware machine to an
+  // SLOSModel-shaped guest OS (Linux shape) running on the Sleela VM.
+  int buildAndBootGuest(SLMachineModel m, String kernelSourcePath, int kernelLang,
+                        int guestEntry, int budget) {
+    SLMachine mc = build(m);
+    if (mc == null) { return -1; }
+    mc.boot();
+    return mc.runLinuxGuestFromSource(kernelSourcePath, kernelLang, guestEntry, budget);
+  }
+
+  SLMachine builtMachine() { return machine; }
+  int buildCount()         { return built; }
+}

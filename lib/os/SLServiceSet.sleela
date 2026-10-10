@@ -1,0 +1,65 @@
+/*
+ * lib/os/SLServiceSet.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLServiceSet — the system-service layer of an OS being
+ *   constructed: the set of services the init/service manager (systemd on Linux
+ *   shapes, the Service Control Manager on Windows shapes, launchd on macOS
+ *   shapes) brings up after the kernel hands off to user space. It records the
+ *   name of the manager and the enabled services (device management,
+ *   networking, logging, login/session, time sync), each marked as a boot-time
+ *   or on-demand unit.
+ *
+ * In the firmware -> boot -> kernel -> userspace -> desktop model, this is the
+ * userspace-services node (PID 1 and the units it starts). The emitters turn
+ * the enabled set into the per-manager unit/registry artifacts the ISO carries.
+ *
+ * Family: os. Pure design model; no native bridge calls.
+ */
+#sleela 1.5
+class SLServiceSet {
+  String manager;     // "systemd" / "ServiceControlManager" / "launchd"
+  String units;       // newline-separated "name mode" lines (mode: boot|ondemand)
+  int count;
+  int configured;
+
+  void configure(String svcManager) {
+    manager = svcManager; units = ""; count = 0; configured = 1;
+  }
+
+  void addUnit(String name, String mode) {
+    String line = name + " " + mode;
+    if (units == "") { units = line; } else { units = units + "\n" + line; }
+    count = count + 1;
+  }
+  void enableAtBoot(String name) { addUnit(name, "boot"); }
+  void enableOnDemand(String name) { addUnit(name, "ondemand"); }
+
+  // Seed the baseline services a shape brings up, under its own manager.
+  void forShape(SLOSShape shape) {
+    configure(shape.initManager());
+    if (shape.isWindows()) {
+      enableAtBoot("Winmgmt"); enableAtBoot("EventLog");
+      enableAtBoot("Dnscache"); enableAtBoot("LanmanServer");
+      enableAtBoot("Themes");
+      return;
+    }
+    if (shape.isMac()) {
+      enableAtBoot("com.apple.coreservicesd");
+      enableAtBoot("com.apple.securityd");
+      enableAtBoot("com.apple.networkd");
+      enableAtBoot("com.apple.loginwindow");
+      return;
+    }
+    // Linux: systemd units.
+    enableAtBoot("systemd-udevd");       // device management
+    enableAtBoot("systemd-networkd");    // networking
+    enableAtBoot("systemd-journald");    // logging
+    enableAtBoot("systemd-logind");      // login/session
+    enableAtBoot("systemd-timesyncd");   // time sync
+  }
+
+  String serviceManager() { return manager; }
+  String unitManifest()   { return units; }
+  int serviceCount()      { return count; }
+  boolean hasServices()   { return count > 0; }
+}

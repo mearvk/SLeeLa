@@ -1,0 +1,49 @@
+/*
+ * lib/os/SLOSArtifact.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLOSArtifact — a single named build artifact produced by
+ *   the OS-construction pipeline: a generated source file (os_config.h,
+ *   os_boot.c, os_image.cpp), an installer script, a manifest, or the final
+ *   bootable ISO descriptor. It carries a logical output path, a kind tag, and
+ *   the artifact's text contents (for source/scripts/manifests) or a descriptor
+ *   (for the ISO). SLOSCompiler, SLISOBuilder, and SLInstallerGenerator each
+ *   produce these; SLOSBuildReport collects them.
+ *
+ * This is a flat value object (no self-reference): callers hold artifacts in
+ * their own fields or feed them to SLOSBuildReport, which accumulates a
+ * printable index without needing a dynamic array.
+ *
+ * Family: os. Produced by SLOSCompiler, SLISOBuilder, SLInstallerGenerator.
+ */
+#sleela 1.5
+class SLOSArtifact {
+  // Kind tags.
+  static final int KIND_C_HEADER = 0;
+  static final int KIND_C_SOURCE = 1;
+  static final int KIND_CPP_SOURCE = 2;
+  static final int KIND_SCRIPT = 3;
+  static final int KIND_ISO = 4;
+  static final int KIND_MANIFEST = 5;
+
+  String path;        // logical output path
+  int kind;           // one of KIND_*
+  String contents;    // text (source/script/manifest) or ISO descriptor
+
+  void configure(String outPath, int artifactKind, String text) {
+    path = outPath; kind = artifactKind; contents = text;
+  }
+
+  String outputPath() { return path; }
+  int artifactKind()  { return kind; }
+  String text()       { return contents; }
+  int byteCount()     { return native sleela_str_length(contents); }
+
+  String kindName() {
+    if (kind == KIND_C_HEADER)   { return "c-header"; }
+    if (kind == KIND_C_SOURCE)   { return "c-source"; }
+    if (kind == KIND_CPP_SOURCE) { return "cpp-source"; }
+    if (kind == KIND_SCRIPT)     { return "script"; }
+    if (kind == KIND_ISO)        { return "iso"; }
+    return "manifest";
+  }
+}

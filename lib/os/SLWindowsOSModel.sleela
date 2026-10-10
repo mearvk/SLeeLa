@@ -1,0 +1,37 @@
+/*
+ * lib/os/SLWindowsOSModel.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLWindowsOSModel — a preset that extends SLOSModel and
+ *   extrapolates it into a Windows-shaped operating system: an NT-style kernel,
+ *   UEFI+BOOTMGR boot (no initramfs), an NTFS root under the Windows directory
+ *   world (C:\Windows, Program Files, Users, ProgramData), a Service Control
+ *   Manager service set, a Win32 base package seed, and the Explorer/DWM
+ *   desktop. It is the OOD realisation of "assume the shape of Windows".
+ *
+ * After build(), refine any layer through the inherited accessors. Windows
+ * shapes conventionally ship a desktop; asServer() still yields a valid
+ * headless server edition.
+ *
+ * Family: os. Extends SLOSModel.
+ */
+#sleela 1.5
+class SLWindowsOSModel extends SLOSModel {
+  // Build a Windows-shaped model with the given product name/version on amd64.
+  void build(String name, String ver) {
+    configure(name, ver);
+    shapeAs("Windows", "amd64");
+    // Layer the user-facing Windows subsystems and shell components.
+    packageSet().add("win32k", "10.0");
+    packageSet().add("dwm", "10.0");
+    packageSet().add("powershell", "7.4");
+    packageSet().add("edge-webview", "10.0");
+    // Windows ships NTFS + a recovery service by convention.
+    serviceSet().enableAtBoot("WindowsUpdate");
+  }
+
+  // Build a multi-arch Windows model (adds arm64 to the primary amd64 target).
+  void buildMultiArch(String name, String ver) {
+    build(name, ver);
+    architectures().addTarget("arm64");
+  }
+}

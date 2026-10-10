@@ -1,0 +1,58 @@
+/*
+ * lib/os/SLHardwareComponent.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLHardwareComponent — the common base of every named
+ *   hardware part in the OS-construction family (RAM/DDR modules, SSDs, hard
+ *   disks, USB devices, UEFI firmware, video cards). It carries the identity
+ *   every part shares: a manufacturer, a model/part name, a device class, and a
+ *   configured flag, plus a human identity line. Concrete device classes extend
+ *   it and add their class-specific specification fields.
+ *
+ * The point of the family is name-addressable parts: because the real world has
+ * a finite catalogue of device types (DDR..DDR5, SATA/NVMe SSDs, USB 1.1..4,
+ * UEFI revisions, GPU families), each is a named SLeeLa class a machine
+ * description can request by manufacturer + model, compose into an SLMachine,
+ * and run on the Sleela VM.
+ *
+ * Family: os. Base of the hardware-component hierarchy.
+ */
+#sleela 1.5
+class SLHardwareComponent {
+  // Device-class ordinals (what kind of part this is).
+  static final int CLASS_MEMORY  = 0;
+  static final int CLASS_SSD     = 1;
+  static final int CLASS_HDD     = 2;
+  static final int CLASS_USB     = 3;
+  static final int CLASS_UEFI    = 4;
+  static final int CLASS_VIDEO   = 5;
+  static final int CLASS_CPU     = 6;
+  static final int CLASS_MAINBOARD = 7;
+
+  String vendor;      // manufacturer, e.g. "Samsung", "NVIDIA"
+  String model;       // model / part name, e.g. "M378A2K43DB1", "GeForce RTX 4090"
+  int deviceClass;    // one of CLASS_*
+  int configured;
+
+  void configureComponent(String manufacturer, String partName, int cls) {
+    vendor = manufacturer; model = partName; deviceClass = cls; configured = 1;
+  }
+
+  String manufacturer() { return vendor; }
+  String partName()     { return model; }
+  int componentClass()  { return deviceClass; }
+  boolean isConfigured(){ return configured == 1; }
+
+  String className() {
+    if (deviceClass == CLASS_MEMORY)    { return "memory"; }
+    if (deviceClass == CLASS_SSD)       { return "ssd"; }
+    if (deviceClass == CLASS_HDD)       { return "hdd"; }
+    if (deviceClass == CLASS_USB)       { return "usb"; }
+    if (deviceClass == CLASS_UEFI)      { return "uefi"; }
+    if (deviceClass == CLASS_VIDEO)     { return "video"; }
+    if (deviceClass == CLASS_CPU)       { return "cpu"; }
+    return "mainboard";
+  }
+
+  // A short identity line shared by every part, e.g. "ssd Samsung 990 PRO".
+  String identity() { return className() + " " + vendor + " " + model; }
+}

@@ -1,0 +1,78 @@
+/*
+ * lib/os/memory-ddr/SLDDRCatalog.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLDDRCatalog — a by-name factory for DDR memory modules
+ *   from the major DRAM manufacturers. The DRAM industry is dominated by a
+ *   small, finite set of makers (Samsung, SK Hynix, Micron, plus module
+ *   assemblers such as Kingston, Corsair, G.Skill, Crucial, Mushkin), so a
+ *   machine description can request a module by manufacturer name and get a
+ *   representative, correctly-specified SLDDRModule back.
+ *
+ * The catalogue returns configured SLDDRModule instances; the caller may refine
+ * capacity, ECC, and speed afterward. Representative part numbers are used for
+ * identity; exact SKUs vary by capacity/speed bin.
+ *
+ * Family: os. Produces SLDDRModule.
+ */
+#sleela 1.5
+class SLDDRCatalog {
+  void configure() {}
+
+  // Return a DDR5 module from a named manufacturer at a given capacity (MB).
+  SLDDRModule ddr5(String manufacturer, int capacityMb) {
+    SLDDRModule m = new SLDDRModule();
+    m.configure(manufacturer, ddr5Part(manufacturer), m.GEN_DDR5);
+    m.sized(capacityMb, false);
+    return m;
+  }
+  // Return a DDR4 module from a named manufacturer at a given capacity (MB).
+  SLDDRModule ddr4(String manufacturer, int capacityMb) {
+    SLDDRModule m = new SLDDRModule();
+    m.configure(manufacturer, ddr4Part(manufacturer), m.GEN_DDR4);
+    m.sized(capacityMb, false);
+    return m;
+  }
+
+  // Build a module of any generation by name from any manufacturer.
+  SLDDRModule module(String manufacturer, String genName, int capacityMb, boolean ecc) {
+    SLDDRModule m = new SLDDRModule();
+    m.configureByName(manufacturer, genPart(manufacturer, genName), genName);
+    m.sized(capacityMb, ecc);
+    return m;
+  }
+
+  // Is this one of the recognised DRAM manufacturers?
+  boolean known(String manufacturer) {
+    return manufacturer == "Samsung" || manufacturer == "SK Hynix"
+        || manufacturer == "Micron"  || manufacturer == "Kingston"
+        || manufacturer == "Corsair" || manufacturer == "G.Skill"
+        || manufacturer == "Crucial" || manufacturer == "Mushkin";
+  }
+
+  // ---- Representative part numbers per manufacturer ----------------------
+  String ddr5Part(String mfr) {
+    if (mfr == "Samsung")  { return "M323R-DDR5"; }
+    if (mfr == "SK Hynix") { return "HMCG-DDR5"; }
+    if (mfr == "Micron")   { return "MTC-DDR5"; }
+    if (mfr == "Crucial")  { return "CT-DDR5"; }
+    if (mfr == "Kingston") { return "KF560-DDR5"; }
+    if (mfr == "Corsair")  { return "CMK-DDR5"; }
+    if (mfr == "G.Skill")  { return "F5-DDR5"; }
+    return "GEN5-MODULE";
+  }
+  String ddr4Part(String mfr) {
+    if (mfr == "Samsung")  { return "M378A-DDR4"; }
+    if (mfr == "SK Hynix") { return "HMA-DDR4"; }
+    if (mfr == "Micron")   { return "MTA-DDR4"; }
+    if (mfr == "Crucial")  { return "CT-DDR4"; }
+    if (mfr == "Kingston") { return "KF432-DDR4"; }
+    if (mfr == "Corsair")  { return "CMK-DDR4"; }
+    if (mfr == "G.Skill")  { return "F4-DDR4"; }
+    return "GEN4-MODULE";
+  }
+  String genPart(String mfr, String genName) {
+    if (genName == "DDR5") { return ddr5Part(mfr); }
+    if (genName == "DDR4") { return ddr4Part(mfr); }
+    return mfr + "-" + genName;
+  }
+}
