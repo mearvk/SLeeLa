@@ -1,0 +1,391 @@
+#sleela 1.3
+//
+// PrinterConfig.sleela — object-oriented configuration for CommonRails printing.
+// =============================================================================
+// This is the OO (object-oriented design) edition of the CommonRails print
+// configurations. Where CommonRails.sleela exposes printing as flat helper
+// methods with long positional argument lists, this file models each printing
+// concern as a configurable *object* (a Sleela `struct`): a developer builds
+// the config objects they need, sets their fields, and hands them to a
+// `Printer` to compose their own print method.
+//
+// Sleela structs are reference types created with `new`, with `.` field access
+// and reference semantics (see impl/examples/struct_basic.sleela), so these
+// configs behave like real objects: construct once, reuse, and pass around.
+//
+// The core value model still has no arrays or string-length/char indexing, so
+// every content primitive takes an explicit character count, and a table is
+// composed one row at a time rather than from a row array. Operators must be
+// space-separated (`w - chars`, never `w-chars`) because the lexer folds a
+// hyphen into an identifier.
+//
+// Run:   ./impl/build/sleela run   common-rails/PrinterConfig.sleela
+// Check: ./impl/build/sleela check common-rails/PrinterConfig.sleela
+//
+// -----------------------------------------------------------------------------
+//  Configuration objects
+// -----------------------------------------------------------------------------
+
+// How a single value is padded into a fixed width.
+//   width     — the field width in characters
+//   fill      — the fill string (usually " ", or "0" for zero-padding)
+//   leftAlign — true: content then fill (left-aligned);
+//               false: fill then content (right-aligned)
+struct PadConfig {
+    int width;
+    String fill;
+    boolean leftAlign;
+}
+
+// One table column: its header text (+ char count), its width, and alignment.
+struct ColumnConfig {
+    String header;
+    int headerChars;
+    int width;
+    boolean leftAlign;
+}
+
+// The box-drawing glyph set that frames a table. Swapping these restyles every
+// table without touching the rendering logic (e.g. heavy, double, or ASCII).
+struct TableStyle {
+    String tl;  String tm;  String tr;   // top-left / top-mid / top-right
+    String ml;  String mm;  String mr;   // mid-left / cross / mid-right
+    String bl;  String bm;  String br;   // bottom-left / bottom-mid / bottom-right
+    String h;   String v;                // horizontal / vertical
+    int inset;                           // spaces of padding inside each cell
+}
+
+// State-label styling: the fixed field the "[STATE]" label is laid into so the
+// following messages align across lines.
+struct StateStyle {
+    int field;
+}
+
+// Top-level printer configuration — the "printer object" a developer tunes.
+//   printWidth  — fixed-width line width (canonical default 80)
+//   oidWidth    — zero-pad width for Object IDs
+//   currentWidth— inner width of the "[Current: @Name]" field
+//   squareSize  — progress-square side (21 → 441 cells)
+//   full/light  — filled / empty progress glyphs
+//   table       — the TableStyle used for framed output
+//   state       — the StateStyle used for state-labelled lines
+struct PrinterConfig {
+    int printWidth;
+    int oidWidth;
+    int currentWidth;
+    int squareSize;
+    String full;
+    String light;
+    TableStyle table;
+    StateStyle state;
+}
+
+// -----------------------------------------------------------------------------
+//  The Printer — consumes the config objects above
+// -----------------------------------------------------------------------------
+class Printer {
+
+    // ---- factories: build the config objects ----------------------------
+
+    PadConfig pad(int width, String fill, boolean leftAlign) {
+        PadConfig c = new PadConfig();
+        c.width = width;
+        c.fill = fill;
+        c.leftAlign = leftAlign;
+        return c;
+    }
+
+    // Convenience: a left-aligned, space-filled pad (the common case).
+    PadConfig left(int width) {
+        return pad(width, " ", true);
+    }
+
+    // Convenience: a right-aligned, space-filled pad.
+    PadConfig right(int width) {
+        return pad(width, " ", false);
+    }
+
+    // Convenience: a right-aligned, zero-filled pad (Object-ID style).
+    PadConfig zeros(int width) {
+        return pad(width, "0", false);
+    }
+
+    ColumnConfig column(String header, int headerChars, int width, boolean leftAlign) {
+        ColumnConfig c = new ColumnConfig();
+        c.header = header;
+        c.headerChars = headerChars;
+        c.width = width;
+        c.leftAlign = leftAlign;
+        return c;
+    }
+
+    // The default Unicode "light" box-drawing style.
+    TableStyle lightTable() {
+        TableStyle s = new TableStyle();
+        s.tl = "┌";  s.tm = "┬";  s.tr = "┐";
+        s.ml = "├";  s.mm = "┼";  s.mr = "┤";
+        s.bl = "└";  s.bm = "┴";  s.br = "┘";
+        s.h  = "─";  s.v  = "│";
+        s.inset = 1;
+        return s;
+    }
+
+    // A plain ASCII style for terminals without box-drawing glyphs.
+    TableStyle asciiTable() {
+        TableStyle s = new TableStyle();
+        s.tl = "+";  s.tm = "+";  s.tr = "+";
+        s.ml = "+";  s.mm = "+";  s.mr = "+";
+        s.bl = "+";  s.bm = "+";  s.br = "+";
+        s.h  = "-";  s.v  = "|";
+        s.inset = 1;
+        return s;
+    }
+
+    StateStyle stateStyle(int field) {
+        StateStyle s = new StateStyle();
+        s.field = field;
+        return s;
+    }
+
+    // The canonical CommonRails printer: 80 columns, 10-digit Object IDs, a
+    // 39-wide Current field, a 21x21 square, █/░ glyphs, and the light table.
+    PrinterConfig defaults() {
+        PrinterConfig p = new PrinterConfig();
+        p.printWidth = 80;
+        p.oidWidth = 10;
+        p.currentWidth = 39;
+        p.squareSize = 21;
+        p.full = "█";
+        p.light = "░";
+        p.table = lightTable();
+        p.state = stateStyle(10);
+        return p;
+    }
+
+    // ---- measured-string core -------------------------------------------
+
+    String repeat(String s, int n) {
+        String out = "";
+        int i = 0;
+        while (i < n) {
+            out = out + s;
+            i = i + 1;
+        }
+        return out;
+    }
+
+    int digitCount(int v) {
+        int n = v;
+        if (n < 0) { n = -n; }
+        int count = 1;
+        while (n >= 10) { n = n / 10; count = count + 1; }
+        return count;
+    }
+
+    // Apply a PadConfig to content with a known character count.
+    String applyPad(PadConfig cfg, String content, int chars) {
+        int gap = cfg.width - chars;
+        if (gap < 0) { gap = 0; }
+        String run = repeat(cfg.fill, gap);
+        if (cfg.leftAlign) {
+            return content + run;
+        }
+        return run + content;
+    }
+
+    // Zero-pad a non-negative int to a width using a zeros() PadConfig.
+    String padInt(PadConfig cfg, int value) {
+        int v = value;
+        if (v < 0) { v = -v; }
+        return applyPad(cfg, "" + v, digitCount(v));
+    }
+
+    // ---- fixed-width lines ----------------------------------------------
+
+    void line(PrinterConfig cfg, String content, int chars) {
+        print(applyPad(left(cfg.printWidth), content, chars));
+    }
+
+    void field(String content, int chars, int width) {
+        print(applyPad(left(width), content, chars));
+    }
+
+    // ---- professional component line ------------------------------------
+
+    String current(PrinterConfig cfg, String name, int nameChars) {
+        String inner = "Current: @" + name;
+        int gap = cfg.currentWidth - (10 + nameChars);
+        if (gap < 0) { gap = 0; }
+        return "[" + inner + repeat(" ", gap) + "]";
+    }
+
+    void component(PrinterConfig cfg, String name, int nameChars, int oid, int dateSeq, String message) {
+        String oidStr = padInt(zeros(cfg.oidWidth), oid);
+        String out = "-- : "
+            + "[Object ID: " + oidStr + "] "
+            + "[Date: " + dateSeq + "] "
+            + current(cfg, name, nameChars) + " "
+            + ". " + message + " .";
+        print(out);
+    }
+
+    // ---- state-labelled line --------------------------------------------
+
+    void stateLine(PrinterConfig cfg, String state, int stateChars, String message, int messageChars) {
+        String label = "[" + state + "]";
+        int labelChars = stateChars + 2;
+        int fieldWidth = cfg.state.field;
+        if (fieldWidth < labelChars + 1) {
+            fieldWidth = labelChars + 1;
+        }
+        String content = applyPad(left(fieldWidth), label, labelChars) + message;
+        line(cfg, content, fieldWidth + messageChars);
+    }
+
+    // ---- tables (driven by TableStyle + ColumnConfig) -------------------
+
+    // One horizontal rule given the three junction glyphs and the two columns.
+    String rule(TableStyle st, String leftG, String midG, String rightG, ColumnConfig a, ColumnConfig b) {
+        int wa = a.width + st.inset + st.inset;
+        int wb = b.width + st.inset + st.inset;
+        return leftG + repeat(st.h, wa) + midG + repeat(st.h, wb) + rightG;
+    }
+
+    void tableTop(TableStyle st, ColumnConfig a, ColumnConfig b) {
+        print(rule(st, st.tl, st.tm, st.tr, a, b));
+    }
+    void tableSep(TableStyle st, ColumnConfig a, ColumnConfig b) {
+        print(rule(st, st.ml, st.mm, st.mr, a, b));
+    }
+    void tableBottom(TableStyle st, ColumnConfig a, ColumnConfig b) {
+        print(rule(st, st.bl, st.bm, st.br, a, b));
+    }
+
+    // A data row: pads each cell per its column's width + alignment.
+    void tableRow(TableStyle st, ColumnConfig a, String c0, int c0Chars, ColumnConfig b, String c1, int c1Chars) {
+        String pad = repeat(" ", st.inset);
+        String cell0 = applyPad(pad(a.width, " ", a.leftAlign), c0, c0Chars);
+        String cell1 = applyPad(pad(b.width, " ", b.leftAlign), c1, c1Chars);
+        print(st.v + pad + cell0 + pad + st.v + pad + cell1 + pad + st.v);
+    }
+
+    // The header row uses each column's own header text and alignment.
+    void tableHeader(TableStyle st, ColumnConfig a, ColumnConfig b) {
+        tableRow(st, a, a.header, a.headerChars, b, b.header, b.headerChars);
+    }
+
+    // Compose a full two-column table from the config objects: top, header,
+    // separator, two data rows, bottom. A developer calls the pieces directly
+    // for any number of rows; this is the common two-row convenience.
+    void table2(PrinterConfig cfg, ColumnConfig a, ColumnConfig b,
+                String r0c0, int r0c0Chars, String r0c1, int r0c1Chars,
+                String r1c0, int r1c0Chars, String r1c1, int r1c1Chars) {
+        TableStyle st = cfg.table;
+        tableTop(st, a, b);
+        tableHeader(st, a, b);
+        tableSep(st, a, b);
+        tableRow(st, a, r0c0, r0c0Chars, b, r0c1, r0c1Chars);
+        tableRow(st, a, r1c0, r1c0Chars, b, r1c1, r1c1Chars);
+        tableBottom(st, a, b);
+    }
+
+    // ---- progress square + pixel ----------------------------------------
+
+    int clampPercent(int percent) {
+        int p = percent;
+        if (p < 0) { p = 0; }
+        if (p > 100) { p = 100; }
+        return p;
+    }
+
+    int percentToCells(PrinterConfig cfg, int percent) {
+        int p = clampPercent(percent);
+        int total = cfg.squareSize * cfg.squareSize;
+        return (p * total) / 100;
+    }
+
+    void square(PrinterConfig cfg, int filledCells) {
+        int size = cfg.squareSize;
+        int total = size * size;
+        int filled = filledCells;
+        if (filled < 0) { filled = 0; }
+        if (filled > total) { filled = total; }
+
+        int displayRow = 0;
+        while (displayRow < size) {
+            String row = "";
+            int displayCol = 0;
+            while (displayCol < size) {
+                int fillRow = (size - 1) - displayRow;
+                int fillCol = (size - 1) - displayCol;
+                int fillIndex = fillRow * size + fillCol;
+                if (fillIndex < filled) {
+                    row = row + cfg.full;
+                } else {
+                    row = row + cfg.light;
+                }
+                displayCol = displayCol + 1;
+            }
+            print(row);
+            displayRow = displayRow + 1;
+        }
+    }
+
+    void pixel(PrinterConfig cfg, int filledCells) {
+        if (filledCells > 0) {
+            print(cfg.full);
+        } else {
+            print(cfg.light);
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    //  Demonstration: a developer composing their own print method from the
+    //  configuration objects above.
+    // -------------------------------------------------------------------------
+    void main() {
+        print("=== PrinterConfig — object-oriented CommonRails printing ===");
+        print("");
+
+        // 1) Build a printer. Start from defaults, then tune a field.
+        PrinterConfig cfg = defaults();
+
+        // 2) Padding objects, reused across calls.
+        print("  PadConfig objects (left / right / zeros)");
+        print("[" + applyPad(left(10), "left", 4) + "]");
+        print("[" + applyPad(right(10), "right", 5) + "]");
+        print("[" + padInt(zeros(10), 1234) + "]");
+        print("");
+
+        // 3) Professional component + state lines through the config.
+        component(cfg, "SearchEngineClient", 18, 1234, 1, "category images now crawling");
+        stateLine(cfg, "START", 5, "CommonRails printing initialized", 32);
+        stateLine(cfg, "COMPLETE", 8, "fixed-width output ready", 24);
+        print("");
+
+        // 4) A table built from ColumnConfig objects + the config's TableStyle.
+        print("  table from ColumnConfig objects (light style)");
+        ColumnConfig comp = column("Component", 9, 18, true);
+        ColumnConfig stat = column("State", 5, 10, true);
+        table2(cfg, comp, stat,
+            "SearchEngineClient", 18, "WORKING", 7,
+            "CommonRails", 11, "COMPLETE", 8);
+        print("");
+
+        // 5) Restyle every table by swapping one object — the TableStyle.
+        print("  same table, ASCII style (swap TableStyle only)");
+        cfg.table = asciiTable();
+        table2(cfg, comp, stat,
+            "SearchEngineClient", 18, "WORKING", 7,
+            "CommonRails", 11, "COMPLETE", 8);
+        print("");
+
+        // 6) Progress, driven by the printer's square size + glyphs.
+        print("  progress: single cell, then 100%");
+        square(cfg, 1);
+        print("");
+        square(cfg, percentToCells(cfg, 100));
+        print("");
+        print("done");
+    }
+}

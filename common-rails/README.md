@@ -61,16 +61,36 @@ Professional printing component for the SLeeLa toolchain, ported from the Java
    same data. Cells are padded, never truncated, and respect per-column widths
    and left/right alignment.
 
-This directory ships **two editions** of that component, matching the two
-first-class file types of the toolchain.
+This directory ships the printer in a **procedural** and an **object-oriented**
+Sleela edition, plus the SST control sheet and the C/C++/Java Heritage layer.
 
 ## Files
 
 | File | Edition | What it is |
 |------|---------|------------|
-| [`CommonRails.sleela`](CommonRails.sleela) | **Sleela** (Wrapper™) | The program — the printer written in the Sleela source language. |
+| [`CommonRails.sleela`](CommonRails.sleela) | **Sleela** (Wrapper™) | The program — the printer written as flat helper methods. |
+| [`PrinterConfig.sleela`](PrinterConfig.sleela) | **Sleela** (OO) | The object-oriented edition — configurable `struct` objects (`PadConfig`, `ColumnConfig`, `TableStyle`, `StateStyle`, `PrinterConfig`) consumed by a `Printer`, so a developer composes their own print method. |
+| [`PRINTER.OOD.md`](PRINTER.OOD.md) | — | The object-oriented design: the object model, developer recipe, and growth plan. |
 | [`common-rails.sst`](common-rails.sst) | **SST** (Nordshrift) | The control sheet — declares the square geometry as a semantic subject and drives the Wrapper™ through the triplet. |
 | `.gitignore` | — | Excludes generated `build/` / `out/` artifacts. |
+
+### The object-oriented edition — `PrinterConfig.sleela`
+
+Each printing concern is a configurable object (a Sleela `struct`, a reference
+type built with `new`): `PadConfig` (width + fill + alignment), `ColumnConfig`
+(a table column), `TableStyle` (the box-drawing glyph set), `StateStyle`, and
+the top-level `PrinterConfig`. A `Printer` class supplies factories that build
+them and renderers that consume them, so a developer assembles a print method
+by constructing and wiring objects instead of threading long argument lists.
+Restyling every table is a one-object swap (`cfg.table = p.asciiTable()`). The
+full object model and a worked developer recipe are in
+[`PRINTER.OOD.md`](PRINTER.OOD.md).
+
+```sh
+# from the repository root
+./impl/build/sleela check common-rails/PrinterConfig.sleela
+./impl/build/sleela run   common-rails/PrinterConfig.sleela
+```
 
 ### The Sleela edition — `CommonRails.sleela`
 
