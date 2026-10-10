@@ -174,6 +174,16 @@ class Analyzer{
   if(dynamic_cast<const BoolLit*>(&e)){return{Kind::Bool,{}};}
   if(dynamic_cast<const StrLit*>(&e)){return{Kind::String,{}};}
   if(dynamic_cast<const NullLit*>(&e)){return{Kind::Null,{}};}
+  if(auto rr=dynamic_cast<const RanRefExpr*>(&e)){
+   // `ran::<word>` -- the System / already-Ran-in-RAM reference. Requires 1.9.
+   // `ran::mem` is the current live system memory as an int. The GC words
+   // `ran::gc` / `ran::mem N` are statement hints (handled in parseSimpleStatement),
+   // not value expressions, so only the value names resolve here.
+   if(syntax<SyntaxVersion{1,9}){err("the 'ran::' system namespace requires syntax 1.9");return{Kind::Error,{}};}
+   if(rr->word=="mem"){return{Kind::Int,{}};}
+   err("unknown system reference 'ran::"+rr->word+"' (known value: ran::mem)");
+   return{Kind::Error,{}};
+  }
   if(auto v=dynamic_cast<const VarExpr*>(&e)){Type t=lookup(v->name);if(t.kind==Kind::Error)err("use of undeclared variable '"+v->name+"'");return t;}
   if(auto n=dynamic_cast<const NewExpr*>(&e)){
    // `new T[n]` arrives as a NewExpr whose typeName ends in "[]" and whose

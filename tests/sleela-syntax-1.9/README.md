@@ -47,6 +47,20 @@ Negative/edge forms exercised during review (behave as ordinary code, not hints)
 variables); `x = gc.field;` is a member access; `x = gc 1.5;` is a syntax error
 (a double is not a valid aggressiveness); an out-of-scope target is rejected.
 
+The `ran::` system namespace (§13.4):
+
+- `ran-namespace-pass.sleela` must build and run: `mem`, `gc`, and `ran` are used
+  as ordinary variable names (sum `66`); `ran::mem` reads live system memory as
+  an int (`before >= 0` is `true`); and the explicit `x = ran::gc 100;`,
+  `x = ran::mem 25;`, `x = ran::gc;` qualified GC hints leave the target
+  unchanged (`1`).
+- `ran-namespace-unknown.sleela` must fail: `ran::cpu` is not a known system
+  reference (`unknown system reference 'ran::cpu' (known value: ran::mem)`).
+
+The qualifier `ran` is contextual (special only immediately before `::`), so
+`ran`/`mem`/`gc` are also valid struct field names and plain variables; this is
+exercised in the pass fixture.
+
 Run them from the repository root after building the native compiler:
 
 ```sh

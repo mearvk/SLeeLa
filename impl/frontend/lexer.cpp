@@ -45,8 +45,12 @@ static const std::unordered_map<std::string,int> kContextualBuiltins13={
      * they tokenize as ordinary identifiers and are only special as the whole
      * right-hand side of an assignment (`x = gc N;` / `x = mem N;`), so they
      * remain usable as identifiers everywhere else. The parser recognises the
-     * hint positionally; this registry entry documents them as contextual. */
-    {"gc",1},{"mem",1}
+     * hint positionally; this registry entry documents them as contextual.
+     * `ran` is the System / already-Ran-in-RAM namespace qualifier: `ran::mem`,
+     * `ran::gc` name the system meaning explicitly so any word (mem, gc, ...)
+     * stays usable as a class/variable name. `ran` is contextual too -- it is
+     * special only immediately before `::`. */
+    {"gc",1},{"mem",1},{"ran",1}
 };
 bool isContextualBuiltin(const std::string& name){return kContextualBuiltins13.find(name)!=kContextualBuiltins13.end();}
 // True for the two GC-hint spellings recognised as the RHS of `x = gc/mem N;`.
