@@ -8,7 +8,7 @@
     },
     {
       "path": "SLEELA.syntax",
-      "sha256": "ca3d4192087a46d559f44ec4d367b0b1e141adf98d3e29a6f9957778eb6769a1"
+      "sha256": "97dff134e360e7d492439183cf99ba9e29663b01f3e7cd1376ba626c22de0f48"
     },
     {
       "path": "SST-2.0.model",
@@ -47243,6 +47243,58 @@
       "sha256": "c2506b24d54e4f8a0722567a79ce476bdd35facfa706817e3bcb37fd38e3cc6d"
     },
     {
+      "path": "lib/moral-capacitor/SLMachineMoralGate.sleela",
+      "sha256": "da4500bf797d1a357f3b7a71811c2dabf5e6a1e3f2046365fafa947ca9d3e7c9"
+    },
+    {
+      "path": "lib/moral-capacitor/SLMoralCapacitor.sleela",
+      "sha256": "c6b202578638e9c0bd59906402f9cdd0178496d443517250f5e966743e109863"
+    },
+    {
+      "path": "lib/moral-capacitor/SLMoralCharge.sleela",
+      "sha256": "44867741b73aa1f1573a01d85aea6cd875673ee6ea51c17c3c9c1cd2bf9be88c"
+    },
+    {
+      "path": "lib/moral-capacitor/SLMoralFramework.sleela",
+      "sha256": "e2aa6fbb418f9e518d79d88e454152b241f08711f3665aa99a414e6a1a3d1590"
+    },
+    {
+      "path": "lib/moral-capacitor/SLMoralLedger.sleela",
+      "sha256": "b853d48823a01e1078311a53a64a25a45d163834a9e1858e42e173ef00b342a5"
+    },
+    {
+      "path": "lib/moral-capacitor/SLMoralOperation.sleela",
+      "sha256": "6c29f03e9c839356edfb6f6ecfbc0fd6ecec9f3064c0022a108d455632901261"
+    },
+    {
+      "path": "lib/moral-capacitor/SLMoralPolicy.sleela",
+      "sha256": "7952a681e8a6abc546e3d3878cd412353cca7767e69bbeb9c2a99105eddda88b"
+    },
+    {
+      "path": "lib/moral-capacitor/SLMoralVerdict.sleela",
+      "sha256": "465777920328f25b3b53715d905e77451bb527af07482c5799af9689eb70f067"
+    },
+    {
+      "path": "lib/moral-capacitor/SLMoralVeto.sleela",
+      "sha256": "8a1b2885f11248f0d342f0c7f5475a5b6485707db2e1a2d9cdd1468bd414c1ee"
+    },
+    {
+      "path": "lib/moral-capacitor/SLOSMoralGate.sleela",
+      "sha256": "1bf224ed122650c5c21cf23b092fc7cb2b15d4e37515997ff8d31eaa428fec53"
+    },
+    {
+      "path": "lib/moral-capacitor/SLPackage.sleela",
+      "sha256": "f39953fd896412c7c793e28fe5295e0ed5eb165e90abf6a20799de950abaf081"
+    },
+    {
+      "path": "lib/moral-capacitor/SLVMMoralGuard.sleela",
+      "sha256": "4ba76e93e214585249ef040bdecb5fb3612c23d8ab25627f78da718e7ecde0d6"
+    },
+    {
+      "path": "lib/moral-capacitor/moral-capacitor.sleela",
+      "sha256": "870560f7f36053b617e15b5e04965236e0963d9f6ce7a5817dc5d1e58cae470f"
+    },
+    {
       "path": "lib/munction/SLPackage.sleela",
       "sha256": "d330d4498c9c2a8abb8a3f61a03cdef4cb8e1e6e531eac6dbd2fd90c64492dbe"
     },
@@ -51472,7 +51524,7 @@
     },
     {
       "path": "test-suites/test-library-inventory.sh",
-      "sha256": "a114e0afdfca13b322845b013085e9d2de434b6376c7cc0f0953cbb494db51e5"
+      "sha256": "0d7e55d1cc71fc509491a60997ce57d07859ba717923478b89758ad32476689d"
     },
     {
       "path": "tests/java_api_dependency_suite.py",
