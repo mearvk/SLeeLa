@@ -1,0 +1,56 @@
+/*
+ * lib/gui/SLGuiBridge.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLGuiBridge — Path 3 of gui/INTEGRATION.md: the shared
+ *   native ABI. Mirrors gui/native/sleela_gui_bridge.h: a C-compatible callback
+ *   boundary (slgui_bridge_create/call/destroy) plus the document-change
+ *   refresh hook (slgui_bridge_on_document_change / slgui_bridge_document_changed)
+ *   that is the native counterpart of SleelaGui.refresh(). The attached document
+ *   count is bounded 1..14 to match the Java listener.
+ */
+#sleela 1.3
+// SLeeLa gui front-end contract — Path 3 (shared native C ABI bridge).
+// Family: gui. Native VM/OS work crosses this explicit low-overhead boundary;
+// SLeeLa models the bridge's lifecycle and refresh hook.
+class SLGuiBridge {
+  int SLGUI_MIN_DOCUMENTS = 1;
+  int SLGUI_MAX_DOCUMENTS = 14;
+  int created;                 // 1 after slgui_bridge_create succeeds
+  int hasRefresh;              // 1 while a refresh callback is installed
+  int documents;              // attached document count (bounded 1..14)
+  int delivered;               // total refreshes delivered to the callback
+  // slgui_bridge_create(context, call): a non-null call is required.
+  boolean create(boolean hasCall) {
+    if (!hasCall) { created = 0; return false; }
+    created = 1; hasRefresh = 0; documents = 0; delivered = 0;
+    return true;
+  }
+  boolean isCreated() { return created == 1; }
+  // slgui_bridge_call(operation, arguments): valid only on a created bridge
+  // with a non-empty operation (null arguments are treated as empty).
+  boolean call(String operation) {
+    return created == 1 && operation != null;
+  }
+  // Attach the watched-document count; enforces the 1..14 ABI bound.
+  boolean attachDocuments(int count) {
+    if (created == 0) { return false; }
+    if (count < SLGUI_MIN_DOCUMENTS || count > SLGUI_MAX_DOCUMENTS) { return false; }
+    documents = count;
+    return true;
+  }
+  int documentCount() { return documents; }
+  // slgui_bridge_on_document_change(refresh): install (or clear with false).
+  void onDocumentChange(boolean installRefresh) {
+    hasRefresh = installRefresh ? 1 : 0;
+  }
+  // slgui_bridge_document_changed(id, revision): forwards one change; returns
+  // 1 when delivered, else 0 (no-op when no callback is installed).
+  int documentChanged(String documentId) {
+    if (created == 0 || hasRefresh == 0 || documentId == null) { return 0; }
+    delivered = delivered + 1;
+    return 1;
+  }
+  int totalDelivered() { return delivered; }
+  // slgui_bridge_destroy(bridge).
+  void destroy() { created = 0; hasRefresh = 0; documents = 0; }
+}

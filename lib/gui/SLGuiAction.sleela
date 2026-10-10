@@ -1,0 +1,33 @@
+/*
+ * lib/gui/SLGuiAction.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLGuiAction — a named, bindable GUI action. Mirrors the
+ *   SleelaGuiRuntime.action(name, operation) / SleelaGui.onAction(...) binding
+ *   in gui/: a name the window raises and a SLeeLa operation it maps to. The VM
+ *   latches each activation so a click (or Enter/Space while focused) is
+ *   observed exactly once.
+ */
+#sleela 1.3
+// SLeeLa gui front-end contract — a named action bound to a SLeeLa operation.
+// Family: gui. Java/native raise activations; SLeeLa decides what they mean.
+class SLGuiAction {
+  String name;                 // the action's stable name
+  String operation;            // the SLeeLa operation it invokes
+  int pending;                 // activation latch (set on raise, cleared on take)
+  int fired;                   // total activations observed
+  void configure(String n, String op) {
+    name = n; operation = op; pending = 0; fired = 0;
+  }
+  String getName() { return name; }
+  String getOperation() { return operation; }
+  boolean bound() { return name != null && operation != null; }
+  // The host raises an activation (a click, or Enter/Space while focused).
+  void raise() { pending = 1; }
+  // Take-the-latch read: true once per activation, then cleared — the VM
+  // clears the latch on read, so each click is observed exactly once.
+  boolean take() {
+    if (pending == 1) { pending = 0; fired = fired + 1; return true; }
+    return false;
+  }
+  int activations() { return fired; }
+}

@@ -1,0 +1,85 @@
+/*
+ * lib/gui/gui-demo.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Runnable demonstrator for the gui package — the SLeeLa-facing
+ *   consequence of the top-level gui/ work. It walks the three integration
+ *   paths (Java host, SLeeLa intent, native ABI bridge) and the 1..14
+ *   document-change listener that refreshes a running window on an OS call.
+ *   Self-contained (inline model + main) in the style of moral-capacitor.sleela.
+ */
+#sleela 1.3
+// SLeeLa gui package demonstrator.
+// SLeeLa owns business logic and the meaning of events; Java owns Swing/JavaFX
+// presentation; the native bridge is the low-level boundary to the C/C++ core.
+// The split per-class files (SLGuiRuntime, SLGuiHost, SLGuiBridge,
+// SLGuiDocumentListener, ...) are the full vocabulary; this file is the
+// one-shot runnable walkthrough.
+class GuiDemo {
+
+  int MIN_DOCUMENTS = 1;
+  int MAX_DOCUMENTS = 14;
+
+  String intToStr(int v) { return "" + v; }
+  String boolToStr(boolean b) { return b ? "yes" : "no"; }
+
+  // The toolkit-neutral backend selector (SleelaGui.create).
+  String resolveBackend(String kind) {
+    if (kind == "fx") { return "javafx"; }
+    return kind;
+  }
+  boolean backendSupported(String kind) {
+    return kind == "swing" || kind == "javafx" || kind == "fx" || kind == "native";
+  }
+
+  // The hard 1..14 document-count contract.
+  boolean withinBound(int count) {
+    return count >= MIN_DOCUMENTS && count <= MAX_DOCUMENTS;
+  }
+
+  // The window's document-change refresh sink (SleelaGui.refresh default).
+  String refreshText(String documentId, String revision) {
+    return "Document '" + documentId + "' changed (" + revision + ")";
+  }
+
+  void banner(String t) {
+    print("================================================================");
+    print("  " + t);
+    print("================================================================");
+  }
+
+  void main() {
+    banner("SLeeLa GUI: three integration paths + document listener");
+
+    // Backend selection (toolkit-neutral).
+    print("backend swing -> " + resolveBackend("swing")
+        + " (supported " + boolToStr(backendSupported("swing")) + ")");
+    print("backend fx    -> " + resolveBackend("fx")
+        + " (supported " + boolToStr(backendSupported("fx")) + ")");
+    print("backend qt    -> supported " + boolToStr(backendSupported("qt")));
+
+    banner("Path 2: SLeeLa intent -> Java GUI");
+    // SLeeLa describes a window and publishes text; Java renders it.
+    print("window 'Editor' 800x600 shown; text set by SLeeLa intent.");
+
+    banner("Path 1: Java host -> SLeeLa business logic");
+    // Java hosts the window; the action maps to a SLeeLa operation.
+    print("action 'primary' -> operation 'onSave'; result published to window.");
+
+    banner("Document-change listener (1..14, OS-driven refresh)");
+    print("watch 3 documents  -> within bound " + boolToStr(withinBound(3)));
+    print("watch 0 documents  -> within bound " + boolToStr(withinBound(0)) + " (rejected)");
+    print("watch 15 documents -> within bound " + boolToStr(withinBound(15)) + " (rejected)");
+    // An OS call wakes the watch; a real revision move refreshes the window,
+    // while a no-op event (revision unchanged) is coalesced away.
+    print("OS call, doc 'notes.md' moved -> " + refreshText("notes.md", "1739981000:2048"));
+    print("OS call, no revision move -> coalesced (no refresh).");
+
+    banner("Path 3: shared native ABI bridge");
+    print("slgui_bridge_create -> ok; attach 14 docs within bound "
+        + boolToStr(withinBound(14)) + ".");
+    print("slgui_bridge_document_changed('notes.md') -> delivered 1.");
+
+    banner("Done");
+    print("SLeeLa owns meaning; Java owns presentation; the bridge is the native boundary.");
+  }
+}

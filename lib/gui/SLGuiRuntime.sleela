@@ -1,0 +1,50 @@
+/*
+ * lib/gui/SLGuiRuntime.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLGuiRuntime — Path 2 of gui/INTEGRATION.md: SLeeLa owns
+ *   GUI intent and the host (Swing/JavaFX) supplies the desktop controls.
+ *   Mirrors SleelaGuiRuntime: window(title,w,h), text(...), action(name,op),
+ *   and the listen(...) document-change option that refreshes the running
+ *   window directly on an OS call.
+ */
+#sleela 1.3
+// SLeeLa gui front-end contract — Path 2 (SLeeLa intent -> Java GUI).
+// Family: gui. The .sleela Wrapper describes the UI behavior; Java/native is a
+// presentation/runtime substrate.
+class SLGuiRuntime {
+  SLGuiWindow window;
+  SLGuiDocumentListener listener;
+  int listening;               // 1 when the listen option is enabled
+  void configure(SLGuiWindow w) {
+    window = w; listening = 0;
+  }
+  // Open/describe the window at the requested size.
+  void openWindow(String title, int width, int height) {
+    window.configure(title, width, height);
+    window.show();
+  }
+  // Publish text to the running window.
+  void text(String value) { window.setText(value); }
+  // Enable the document-change listener option over 1..14 documents; the
+  // listener refreshes the running window directly when a document changes.
+  boolean listen(SLGuiDocumentListener l) {
+    listener = l;
+    if (!listener.watch()) { listening = 0; return false; }
+    listening = 1;
+    return true;
+  }
+  boolean isListening() { return listening == 1 && listener != null && listener.isRunning(); }
+  // An OS call reports `realChanges`; refresh the window for the change.
+  int onDocumentChange(String documentId, String revision, int realChanges) {
+    if (!isListening()) { return 0; }
+    int emitted = listener.onOsCall(realChanges);
+    if (emitted > 0) { window.refresh(documentId, revision); }
+    return emitted;
+  }
+  int refreshNow(int realChanges) {
+    if (listener == null) { return 0; }
+    return listener.refreshNow(realChanges);
+  }
+  void stopListening() { if (listener != null) { listener.close(); } listening = 0; }
+  void close() { stopListening(); }
+}

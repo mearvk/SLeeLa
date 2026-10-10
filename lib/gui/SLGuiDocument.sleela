@@ -1,0 +1,34 @@
+/*
+ * lib/gui/SLGuiDocument.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLGuiDocument — one document watched by the GUI document
+ *   listener. Mirrors SleelaDocument in gui/: a stable id, a resolved host
+ *   path, and an OS-derived revision fingerprint (lastModifiedMillis:size, or
+ *   "absent" when the file is gone). A change is a same-id/same-path document
+ *   whose revision moved; an OS event that does not move the revision is
+ *   coalesced away.
+ */
+#sleela 1.3
+// SLeeLa gui front-end contract — an immutable watched-document snapshot.
+// Family: gui. The revision is OS metadata (cheap on every OS call), not file
+// contents; it is sufficient to detect the "document changed" condition.
+class SLGuiDocument {
+  String id;                   // SLeeLa-facing identity, stable across revisions
+  String path;                 // resolved, normalized host path
+  String revision;             // "lastModifiedMillis:size", or "absent"
+  void configure(String docId, String docPath, String rev) {
+    id = docId; path = docPath; revision = rev;
+  }
+  String getId() { return id; }
+  String getPath() { return path; }
+  String getRevision() { return revision; }
+  // Absent means the file was gone/unreadable at snapshot time; appearance or
+  // disappearance is itself a detectable change.
+  boolean absent() { return revision == "absent"; }
+  boolean present() { return revision != null && revision != "absent"; }
+  // True when `other` names the same document at a different revision.
+  boolean changedFrom(SLGuiDocument other) {
+    if (other == null) { return false; }
+    return id == other.id && path == other.path && revision != other.revision;
+  }
+}

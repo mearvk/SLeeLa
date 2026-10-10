@@ -1,0 +1,39 @@
+/*
+ * lib/gui/SLGuiWindow.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLGuiWindow — a toolkit-neutral window intent. Mirrors the
+ *   SleelaGui contract in gui/: show(title, width, height), setText(text), and
+ *   refresh(documentId, revision). SLeeLa describes the window; the backend
+ *   (Swing/JavaFX/native) renders it and marshals updates onto the toolkit
+ *   thread.
+ */
+#sleela 1.3
+// SLeeLa gui front-end contract — a window the host renders.
+// Family: gui. State transitions and the meaning of events stay in SLeeLa; the
+// backend owns presentation and desktop lifecycle.
+class SLGuiWindow {
+  String title;
+  int width;
+  int height;
+  String text;
+  int shown;                   // 1 once show() has been requested
+  void configure(String t, int w, int h) {
+    title = t; width = w; height = h; text = ""; shown = 0;
+  }
+  // Request the window be shown at its configured size.
+  void show() { shown = 1; }
+  boolean visible() { return shown == 1; }
+  // A window is valid once it has a title and a positive extent.
+  boolean valid() { return title != null && width > 0 && height > 0; }
+  String getTitle() { return title; }
+  int getWidth() { return width; }
+  int getHeight() { return height; }
+  // Set the window's text (the SleelaGui.setText sink).
+  void setText(String value) { text = value; }
+  String getText() { return text; }
+  // The document-change refresh sink: SleelaGui.refresh(id, revision). The
+  // default publishes a short status line, exactly like the Java default.
+  void refresh(String documentId, String revision) {
+    text = "Document '" + documentId + "' changed (" + revision + ")";
+  }
+}

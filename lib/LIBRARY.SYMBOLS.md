@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 10823
+library-source-files: 10833
 library-packages: 90
 module-facade-symbols: 62
-total-symbol-records: 10885
+total-symbol-records: 10895
 
 package	symbol	path	kind
 alphabet	Alphabet.sleela	lib/alphabet/Alphabet.sleela	source
@@ -1079,7 +1079,17 @@ gameplay	NewDesireMove.sleela	lib/gameplay/NewDesireMove.sleela	source
 gameplay	Player.sleela	lib/gameplay/Player.sleela	source
 gameplay	PortfolioDecision.sleela	lib/gameplay/PortfolioDecision.sleela	source
 gameplay	SLPackage.sleela	lib/gameplay/SLPackage.sleela	facade
+gui	SLGuiAction.sleela	lib/gui/SLGuiAction.sleela	source
+gui	SLGuiBackend.sleela	lib/gui/SLGuiBackend.sleela	source
+gui	SLGuiBridge.sleela	lib/gui/SLGuiBridge.sleela	source
+gui	SLGuiDocument.sleela	lib/gui/SLGuiDocument.sleela	source
+gui	SLGuiDocumentListener.sleela	lib/gui/SLGuiDocumentListener.sleela	source
+gui	SLGuiHost.sleela	lib/gui/SLGuiHost.sleela	source
+gui	SLGuiIntegration.sleela	lib/gui/SLGuiIntegration.sleela	source
+gui	SLGuiRuntime.sleela	lib/gui/SLGuiRuntime.sleela	source
+gui	SLGuiWindow.sleela	lib/gui/SLGuiWindow.sleela	source
 gui	SLPackage.sleela	lib/gui/SLPackage.sleela	facade
+gui	gui-demo.sleela	lib/gui/gui-demo.sleela	source
 html	SLPackage.sleela	lib/html/SLPackage.sleela	facade
 http	SLHttpBody.sleela	lib/http/SLHttpBody.sleela	source
 http	SLHttpCache.sleela	lib/http/SLHttpCache.sleela	source

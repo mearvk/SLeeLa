@@ -6,9 +6,16 @@
 #sleela 1.3
 // Library facade for module package: gui
 // Exposes the package to the SLeeLa compiler, Loader, and Nordshrift.
+// This package is the SLeeLa-facing *consequence* of the top-level gui/ work
+// (the Java host, the native C ABI bridge gui/native/sleela_gui_bridge.*, and
+// the 1..14 document-change listener). The Master Classes (SLGuiBackend,
+// SLGuiWindow, SLGuiAction, SLGuiRuntime, SLGuiHost, SLGuiDocument,
+// SLGuiDocumentListener, SLGuiBridge, SLGuiIntegration) are first-class
+// one-class-per-file source units; this facade only names the package itself,
+// mirroring lib/citizen/SLPackage.sleela.
 class SLPackage {
   String packageName;
-  void configure(String name){packageName=name;}
-  String name(){return packageName;}
-  boolean available(){return packageName!=null;}
+  void configure(String name) { packageName = name; }
+  String name() { return packageName; }
+  boolean available() { return packageName != null; }
 }

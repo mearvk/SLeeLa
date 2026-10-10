@@ -44,3 +44,34 @@ Current native scope is deliberately narrow and testable: PCM16 WAV input/output
 Next production adapters are platform device capture, broader codecs, real audio analysis/DSP, RGB/RGBA video frames, direct JNI where appropriate, and signed Linux/Windows/macOS packaging.
 
 Version: Audio GUI 0.3.0; Native Audio 0.1.0
+
+## GUI integration bridge (`native/`) and the SLeeLa `lib/gui` contract
+
+Beyond the audio GUI above, this directory carries the **GUI integration layer**
+that connects SLeeLa to a desktop host over three complementary paths — a Java
+host, SLeeLa-owned GUI intent, and a shared native C ABI — plus a 1..14
+document-change listener that refreshes a running window on an OS call. See
+[`INTEGRATION.md`](INTEGRATION.md) and [`DOCUMENT_LISTENER.md`](DOCUMENT_LISTENER.md).
+
+- **Native bridge (Path 3):** `native/sleela_gui_bridge.{h,cpp}` is the
+  C-compatible callback boundary (`slgui_bridge_create` / `_call` /
+  `_on_document_change` / `_document_changed` / `_destroy`). Build and test it:
+
+      cd gui/native
+      make clean all test
+
+  The round-trip test (`slgui_bridge_test.cpp`) exercises create/call, the
+  document-change refresh hook, NULL-argument normalization, and the documented
+  `SLGUI_MIN_DOCUMENTS`..`SLGUI_MAX_DOCUMENTS` (1..14) bound, built with
+  `-Werror`.
+
+- **SLeeLa-facing contract:** the `.sleela` vocabulary a SLeeLa program uses to
+  express this model lives in [`../lib/gui/`](../lib/gui/) — `SLGuiBackend`,
+  `SLGuiWindow`, `SLGuiAction`, `SLGuiRuntime` (Path 2), `SLGuiHost` (Path 1),
+  `SLGuiDocument`, `SLGuiDocumentListener`, `SLGuiBridge` (Path 3), and
+  `SLGuiIntegration`, with a runnable `gui-demo.sleela`. See
+  [`../lib/gui/ARCHITECTURE.md`](../lib/gui/ARCHITECTURE.md).
+
+- **CI:** [`.github/workflows/gui-ci.yml`](../.github/workflows/gui-ci.yml)
+  builds and tests the native bridge and validates the `lib/gui` source layer on
+  every change under `gui/**` or `lib/gui/**`.
