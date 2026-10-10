@@ -1,0 +1,63 @@
+/*
+ * lib/moral-capacitor/SLMoralCharge.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLMoralCharge — the stored moral charge of a Moral
+ *   Capacitor(TM). Charge is the signed sum of per-framework contributions:
+ *   each ethical framework that endorses the operation adds charge, each that
+ *   objects subtracts it. Charge is bounded by a maximum (a capacitor has finite
+ *   capacity) and floored at zero on the discharge decision (negative net charge
+ *   is simply "no moral basis"). The charge keeps per-framework attribution so a
+ *   verdict can report which lens contributed what.
+ *
+ * Family: moral-capacitor. Held by SLMoralCapacitor.
+ */
+#sleela 1.5
+class SLMoralCharge {
+  int total;          // net stored charge (may be negative before flooring)
+  int maxCharge;      // capacity ceiling
+  int contributions;  // number of frameworks that contributed
+  // Per-framework running tallies (index by SLMoralFramework ordinal 1..5).
+  int deonCharge; int utilCharge; int virtueCharge; int benefCharge; int consentCharge;
+  int configured;
+
+  void configure(int capacity) {
+    total = 0; maxCharge = capacity; contributions = 0;
+    deonCharge = 0; utilCharge = 0; virtueCharge = 0; benefCharge = 0; consentCharge = 0;
+    configured = 1;
+  }
+
+  // Add a framework's signed contribution (bounded to the capacity ceiling).
+  void add(int frameworkOrdinal, int delta) {
+    total = total + delta;
+    if (total > maxCharge) { total = maxCharge; }
+    contributions = contributions + 1;
+    if (frameworkOrdinal == 1)      { deonCharge = deonCharge + delta; }
+    else if (frameworkOrdinal == 2) { utilCharge = utilCharge + delta; }
+    else if (frameworkOrdinal == 3) { virtueCharge = virtueCharge + delta; }
+    else if (frameworkOrdinal == 4) { benefCharge = benefCharge + delta; }
+    else if (frameworkOrdinal == 5) { consentCharge = consentCharge + delta; }
+  }
+
+  // Reset to empty (the capacitor discharges after a decision).
+  void reset() {
+    total = 0; contributions = 0;
+    deonCharge = 0; utilCharge = 0; virtueCharge = 0; benefCharge = 0; consentCharge = 0;
+  }
+
+  // Net charge, floored at zero for the discharge comparison.
+  int level() { if (total < 0) { return 0; } return total; }
+  int rawTotal()    { return total; }
+  int capacity()    { return maxCharge; }
+  int contributors(){ return contributions; }
+
+  // The framework ordinal that contributed the most positive charge (0 if none).
+  int dominantFramework() {
+    int best = 0; int bestVal = 0;
+    if (deonCharge > bestVal)    { best = 1; bestVal = deonCharge; }
+    if (utilCharge > bestVal)    { best = 2; bestVal = utilCharge; }
+    if (virtueCharge > bestVal)  { best = 3; bestVal = virtueCharge; }
+    if (benefCharge > bestVal)   { best = 4; bestVal = benefCharge; }
+    if (consentCharge > bestVal) { best = 5; bestVal = consentCharge; }
+    return best;
+  }
+}

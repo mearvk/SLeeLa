@@ -1,0 +1,14 @@
+/*
+ * lib/moral-capacitor/SLPackage.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines the SLeeLa standard-library package for moral-capacitor.
+ */
+#sleela 1.5
+// Library facade for module package: moral-capacitor
+// Exposes the package to the SLeeLa compiler, Loader, and Nordshrift.
+class SLPackage {
+  String packageName;
+  void configure(String name){packageName=name;}
+  String name(){return packageName;}
+  boolean available(){return packageName!=null;}
+}

@@ -1,0 +1,73 @@
+/*
+ * lib/moral-capacitor/SLVMMoralGuard.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLVMMoralGuard — the Moral Capacitor(TM) adapter for the
+ *   VM. It wraps an SLMoralCapacitor with VM-appropriate policies and exposes
+ *   intention-named checks a VM consults before a consequential step: growing
+ *   memory, spawning a thread or process, crossing the native/OS bridge, and
+ *   running a program on the opcode substrate. Each check builds the matching
+ *   SLMoralOperation, gates it through the capacitor, records the verdict in a
+ *   ledger, and returns the SLMoralVerdict so the VM can proceed, defer, or
+ *   refuse.
+ *
+ * This is the first and foremost placement of the capacitor: the VM is where
+ * programs actually run, so it is where moral charge must discharge before an
+ * effect is produced.
+ *
+ * Family: moral-capacitor. VM adapter over SLMoralCapacitor.
+ */
+#sleela 1.5
+class SLVMMoralGuard {
+  SLMoralCapacitor cap;
+  SLMoralLedger ledger;
+  int configured;
+
+  void configure() {
+    cap = new SLMoralCapacitor(); cap.configure();
+    ledger = new SLMoralLedger(); ledger.configure();
+    configured = 1;
+  }
+
+  // Routine VM op (reversible, in-process). Low bar.
+  SLMoralVerdict permitMemoryGrowth(String region, boolean reversible) {
+    SLMoralPolicy p = new SLMoralPolicy(); p.vmDefault();
+    return decide(op("vm", "allocate", region, "process", reversible, true), p);
+  }
+
+  // Spawning a thread/process is higher-consequence than in-process work.
+  SLMoralVerdict permitSpawn(String what) {
+    SLMoralPolicy p = new SLMoralPolicy(); p.vmBridge();
+    return decide(op("vm", "spawn", what, "process", true, true), p);
+  }
+
+  // Crossing the native/OS bridge reaches outside the VM: the higher bar.
+  SLMoralVerdict permitBridgeCall(String target, boolean reversible, boolean consented) {
+    SLMoralPolicy p = new SLMoralPolicy(); p.vmBridge();
+    return decide(op("vm", "bridge", target, "host", reversible, consented), p);
+  }
+
+  // Running a compiled program on the substrate.
+  SLMoralVerdict permitRun(String program) {
+    SLMoralPolicy p = new SLMoralPolicy(); p.vmDefault();
+    return decide(op("vm", "run", program, "process", true, true), p);
+  }
+
+  SLMoralLedger auditLedger() { return ledger; }
+  SLMoralCapacitor capacitor() { return cap; }
+
+  // ---- Internals ----------------------------------------------------------
+  SLMoralOperation op(String actor, String action, String target, String scope,
+                      boolean reversible, boolean consented) {
+    SLMoralOperation o = new SLMoralOperation();
+    o.configure(actor, action, target, scope);
+    o.setReversible(reversible); o.setConsented(consented);
+    return o;
+  }
+  SLMoralVerdict decide(SLMoralOperation o, SLMoralPolicy p) {
+    cap.discharge();
+    cap.setPolicy(p);
+    SLMoralVerdict v = cap.gate(o);
+    ledger.record(o, v);
+    return v;
+  }
+}

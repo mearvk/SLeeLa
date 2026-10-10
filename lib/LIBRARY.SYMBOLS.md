@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 10533
-library-packages: 88
-module-facade-symbols: 60
-total-symbol-records: 10593
+library-source-files: 10545
+library-packages: 89
+module-facade-symbols: 61
+total-symbol-records: 10606
 
 package	symbol	path	kind
 alphabet	Alphabet.sleela	lib/alphabet/Alphabet.sleela	source
@@ -10097,6 +10097,19 @@ memory	SLPoolAllocator.sleela	lib/memory/SLPoolAllocator.sleela	source
 memory	SLReference.sleela	lib/memory/SLReference.sleela	source
 memory	SLWeakReference.sleela	lib/memory/SLWeakReference.sleela	source
 modules	SLPackage.sleela	lib/modules/SLPackage.sleela	facade
+moral-capacitor	SLMachineMoralGate.sleela	lib/moral-capacitor/SLMachineMoralGate.sleela	source
+moral-capacitor	SLMoralCapacitor.sleela	lib/moral-capacitor/SLMoralCapacitor.sleela	source
+moral-capacitor	SLMoralCharge.sleela	lib/moral-capacitor/SLMoralCharge.sleela	source
+moral-capacitor	SLMoralFramework.sleela	lib/moral-capacitor/SLMoralFramework.sleela	source
+moral-capacitor	SLMoralLedger.sleela	lib/moral-capacitor/SLMoralLedger.sleela	source
+moral-capacitor	SLMoralOperation.sleela	lib/moral-capacitor/SLMoralOperation.sleela	source
+moral-capacitor	SLMoralPolicy.sleela	lib/moral-capacitor/SLMoralPolicy.sleela	source
+moral-capacitor	SLMoralVerdict.sleela	lib/moral-capacitor/SLMoralVerdict.sleela	source
+moral-capacitor	SLMoralVeto.sleela	lib/moral-capacitor/SLMoralVeto.sleela	source
+moral-capacitor	SLOSMoralGate.sleela	lib/moral-capacitor/SLOSMoralGate.sleela	source
+moral-capacitor	SLPackage.sleela	lib/moral-capacitor/SLPackage.sleela	facade
+moral-capacitor	SLVMMoralGuard.sleela	lib/moral-capacitor/SLVMMoralGuard.sleela	source
+moral-capacitor	moral-capacitor.sleela	lib/moral-capacitor/moral-capacitor.sleela	source
 munction	SLPackage.sleela	lib/munction/SLPackage.sleela	facade
 native	SLPackage.sleela	lib/native/SLPackage.sleela	facade
 net	SLDnsResolver.sleela	lib/net/SLDnsResolver.sleela	source

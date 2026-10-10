@@ -1,0 +1,50 @@
+/*
+ * lib/moral-capacitor/SLMoralLedger.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLMoralLedger — an append-only audit record of the
+ *   verdicts a Moral Capacitor(TM) has returned. Each entry names the operation
+ *   judged, the decision (PERMIT / DEFER / DENY), the charge versus threshold,
+ *   and the reason, so a library can prove after the fact what was asked and how
+ *   it was decided. The ledger keeps running counts of each decision for a
+ *   quick posture summary.
+ *
+ * The record is a newline-separated String (the same bounded, enumerable form
+ * the rest of the library favours); a caller can print it or persist it.
+ *
+ * Family: moral-capacitor. Written by SLMoralCapacitor / the adapters.
+ */
+#sleela 1.5
+class SLMoralLedger {
+  String entries;     // newline-separated verdict summaries
+  int total;
+  int permits;
+  int defers;
+  int denials;
+  int configured;
+
+  void configure() {
+    entries = ""; total = 0; permits = 0; defers = 0; denials = 0; configured = 1;
+  }
+
+  // Append a verdict for an operation.
+  void record(SLMoralOperation op, SLMoralVerdict v) {
+    String line = op.identity() + " -> " + v.summary();
+    if (entries == "") { entries = line; } else { entries = entries + "\n" + line; }
+    total = total + 1;
+    if (v.permitted())    { permits = permits + 1; }
+    else if (v.deferred()){ defers = defers + 1; }
+    else                  { denials = denials + 1; }
+  }
+
+  String log()        { return entries; }
+  int recordCount()   { return total; }
+  int permitCount()   { return permits; }
+  int deferCount()    { return defers; }
+  int denyCount()     { return denials; }
+
+  String summary() {
+    return intToStr(total) + " decisions: " + intToStr(permits) + " permit, "
+         + intToStr(defers) + " defer, " + intToStr(denials) + " deny";
+  }
+  String intToStr(int v) { return "" + v; }
+}
