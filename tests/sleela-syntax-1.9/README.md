@@ -1,3 +1,5 @@
+<img align="right" src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="75" height="75" alt="SLeeLa">
+
 # SLeeLa syntax 1.9 regression fixtures
 
 These fixtures exercise the syntax 1.9 feature: the **GC-hint statement**
