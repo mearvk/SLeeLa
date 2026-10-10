@@ -52,6 +52,14 @@ subject CommonRailsPrinting:
     statement: "percent is clamped to 0..100 and mapped with floor(percent*441/100)"
     status: specified
 
+  assumption tableFlag:
+    statement: "when the table flag is true a field/value pair is framed as a box-drawing table; when false it is emitted as a plain fixed-width line"
+    status: specified
+
+  assumption tableColumns:
+    statement: "table cells are padded to per-column widths with left or right alignment and are never truncated; a cell wider than its column widens that row by the overflow"
+    status: specified
+
 subject CommonRailsPrintingHeritage:
   domain: formatting
   languages: [ C, C++, Java ]

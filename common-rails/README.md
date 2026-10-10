@@ -42,6 +42,25 @@ Professional printing component for the SLeeLa toolchain, ported from the Java
    ░   (0%)      █   (started)
    ```
 
+4. **A sophisticated bordered table** — a clean, Unicode box-drawing frame
+   around fixed-width, aligned columns:
+
+   ```
+   ┌────────────────────┬────────────┐
+   │ Component          │ State      │
+   ├────────────────────┼────────────┤
+   │ SearchEngineClient │ WORKING    │
+   │ CommonRails        │ COMPLETE   │
+   └────────────────────┴────────────┘
+   ```
+
+   The table is opt-in through a **`table` flag**: renderers such as
+   `printPair(field, fieldChars, value, valueChars, table)` emit a framed
+   table when `table` is `true` and a plain fixed-width line when it is
+   `false` — the single flag tells the printer which form to produce for the
+   same data. Cells are padded, never truncated, and respect per-column widths
+   and left/right alignment.
+
 This directory ships **two editions** of that component, matching the two
 first-class file types of the toolchain.
 
@@ -55,13 +74,21 @@ first-class file types of the toolchain.
 
 ### The Sleela edition — `CommonRails.sleela`
 
-A `#sleela 1.1` Wrapper™ written against the accepted Sleela surface
+A `#sleela 1.3` Wrapper™ written against the accepted Sleela surface
 (`impl/README.md`): classes, `int`/`String`/`boolean`, `if`/`else`,
 `while`/`for`, arithmetic and comparisons, `+` string concatenation, `print`,
 recursion, and class fields. Because the core value model has no arrays or
 character indexing, the square is produced entirely with nested integer loops,
-and field widths are measured arithmetically. The lexer decodes only
-`\n \t \r \\ \"`, so the block glyphs `█` / `░` are embedded as raw UTF-8.
+field widths are measured arithmetically, and every content primitive takes an
+explicit character count. The lexer decodes only `\n \t \r \\ \"`, so the block
+glyphs `█` / `░` and the box-drawing glyphs `┌ ┬ ┐ │ ├ ┼ ┤ └ ┴ ┘ ─` are
+embedded as raw UTF-8.
+
+> **Syntax note.** The Sleela lexer folds a hyphen into an identifier, so every
+> binary operator — including `-` — must be surrounded by spaces (`w - chars`,
+> not `w-chars`). The source previously declared `#sleela 1.1`, which the
+> current compiler (supported range `1.3 .. 1.10`) rejects; it now declares
+> `1.3` and passes `sleela check`.
 
 ```sh
 # from the repository root

@@ -1,25 +1,35 @@
-#sleela 1.1
+#sleela 1.3
 //
 // CommonRails.sleela — Sleela (Wrapper™) edition of CommonRails.
 // ================================================================
 // Professional printing component for the Sleela toolchain, ported from the
-// Java Tiamat CommonRails. It renders two things:
+// Java Tiamat CommonRails. It renders four things:
 //
 //   1. A professional component line:
 //        -- : [Object ID: 0000001234] [Date: <n>] [Current: @ClassName ] . message .
-//   2. A 21x21 progress square (441 cells) that fills bottom-right -> left,
-//      then up one row at a time — the SST/Sleela "professional printing" square.
+//   2. State-labelled status lines ([START] [WORKING] [PROGRESS] [COMPLETE]
+//      [WARN] [ERROR]) drawn from the Beautiful Design state vocabulary.
+//   3. A clean, sophisticated bordered TABLE, drawn with Unicode box-drawing
+//      glyphs, with per-column fixed widths and left/right alignment. The
+//      renderers take a `table` flag: when true the data is framed as a table;
+//      when false the same data falls back to a plain fixed-width line.
+//   4. A 21x21 progress square (441 cells) that fills bottom-right -> left,
+//      then up one row at a time — the SST/Sleela "professional printing"
+//      square — plus the single-pixel compact indicator.
 //
 // Written against the accepted Sleela surface (impl/README.md): classes,
 // int/String/boolean, if/else, while/for, arithmetic + comparisons, string
 // concatenation with '+', print(...), recursion, and class fields. The core
-// value model has no arrays or char indexing, so the square is produced purely
-// with nested integer loops and block glyphs concatenated into a String, and
-// field widths are measured arithmetically rather than by string indexing.
-// (The Sleela lexer decodes only \n \t \r \\ \" escapes, so the block glyphs
-// below are embedded as raw UTF-8 characters rather than \u escapes.)
+// value model has no arrays or char indexing, so widths are measured
+// arithmetically and every content primitive takes an explicit character
+// count. (The lexer decodes only \n \t \r \\ \" escapes, so the block and
+// box-drawing glyphs below are embedded as raw UTF-8 characters.)
 //
-// Run:   ./impl/build/sleela run common-rails/CommonRails.sleela
+// NOTE on syntax: the Sleela lexer folds a hyphen into an identifier, so every
+// binary operator — including '-' — MUST be surrounded by spaces (`w - chars`,
+// never `w-chars`).
+//
+// Run:   ./impl/build/sleela run   common-rails/CommonRails.sleela
 // Check: ./impl/build/sleela check common-rails/CommonRails.sleela
 //
 class CommonRails {
@@ -34,11 +44,23 @@ class CommonRails {
     int CURRENT_WIDTH = 39;
     int PRINT_WIDTH   = 80;
 
-    // Block glyphs. FULL is the filled cell, LIGHT the empty cell — the same
-    // roles as the orange/white blocks in the Java edition (ANSI color escapes
-    // are not part of the core value model, so the glyphs carry the meaning).
+    // Progress-square glyphs. FULL is the filled cell, LIGHT the empty cell.
     String FULL  = "█";   // full block  — filled cell
     String LIGHT = "░";   // light shade — empty cell
+
+    // Box-drawing glyphs for sophisticated tables. These carry the frame; the
+    // meaning survives when color is unavailable (Beautiful Design §7).
+    String BOX_TL = "┌";  String BOX_TM = "┬";  String BOX_TR = "┐";
+    String BOX_ML = "├";  String BOX_MM = "┼";  String BOX_MR = "┤";
+    String BOX_BL = "└";  String BOX_BM = "┴";  String BOX_BR = "┘";
+    String BOX_H  = "─";  String BOX_V  = "│";
+
+    // =====================================================================
+    //  Measured-string primitives
+    //  The core surface has no string-length or indexing, so every helper
+    //  that needs a width takes the content's character count explicitly.
+    //  This keeps all width arithmetic deterministic.
+    // =====================================================================
 
     // repeat(s, n) — the core String has no repeat; build it by concatenation.
     String repeat(String s, int n) {
@@ -52,7 +74,6 @@ class CommonRails {
     }
 
     // digitCount(v) — number of decimal digits in a non-negative int.
-    // Used to size the zero-padding without any string indexing.
     int digitCount(int v) {
         int n = v;
         if (n < 0) {
@@ -79,9 +100,44 @@ class CommonRails {
         return repeat("0", need) + v;
     }
 
+    // padRight(content, contentChars, width) — content then right-pad spaces.
+    // Padding is clamped at zero; content is never silently truncated.
+    String padRight(String content, int contentChars, int width) {
+        int pad = width - contentChars;
+        if (pad < 0) {
+            pad = 0;
+        }
+        return content + repeat(" ", pad);
+    }
+
+    // padLeft(content, contentChars, width) — left-pad spaces then content.
+    String padLeft(String content, int contentChars, int width) {
+        int pad = width - contentChars;
+        if (pad < 0) {
+            pad = 0;
+        }
+        return repeat(" ", pad) + content;
+    }
+
+    // =====================================================================
+    //  Fixed-width line printing
+    // =====================================================================
+
+    // Every organized content line occupies PRINT_WIDTH columns.
+    void printWidthLine(String content, int contentChars) {
+        print(padRight(content, contentChars, PRINT_WIDTH));
+    }
+
+    // A reusable fixed-width field for stable columns.
+    void printField(String content, int contentChars, int fieldWidth) {
+        print(padRight(content, contentChars, fieldWidth));
+    }
+
+    // =====================================================================
+    //  Professional component + state lines
+    // =====================================================================
+
     // padCurrent(name, nameChars) — "[Current: @Name" + spaces to width + "]".
-    // nameChars is the character count of `name` (the core has no length
-    // primitive on the surface; the caller supplies it — names are literals).
     String padCurrent(String name, int nameChars) {
         String inner = "Current: @" + name;
         // inner length = len("Current: @") + nameChars = 10 + nameChars.
@@ -92,29 +148,6 @@ class CommonRails {
         return "[" + inner + repeat(" ", pad) + "]";
     }
 
-    // ---- Fixed-width printing --------------------------------------------
-    // Every organized content line occupies PRINT_WIDTH columns when the
-    // caller supplies the content character count. The core language does
-    // not expose string-length/indexing here, so the count is explicit.
-    // Content is padded; it is never silently truncated.
-    void printWidthLine(String content, int contentChars) {
-        int pad = PRINT_WIDTH - contentChars;
-        if (pad < 0) {
-            pad = 0;
-        }
-        print(content + repeat(" ", pad));
-    }
-
-    // A reusable fixed-width field for stable columns.
-    void printField(String content, int contentChars, int fieldWidth) {
-        int pad = fieldWidth - contentChars;
-        if (pad < 0) {
-            pad = 0;
-        }
-        print(content + repeat(" ", pad));
-    }
-
-    // ---- Professional component line ------------------------------------
     // -- : [Object ID: 0000001234] [Date: <seq>] [Current: @Name ] . msg .
     void printComponent(String name, int nameChars, int oid, int dateSeq, String message) {
         String line = "-- : "
@@ -125,12 +158,106 @@ class CommonRails {
         print(line);
     }
 
-    // ---- 21x21 progress square ------------------------------------------
+    // State-labelled status line: "[STATE] message", padded to the print width.
+    // `state`/`stateChars` and `message`/`messageChars` carry their own counts.
+    // The label is laid into a fixed field so messages align across states, and
+    // a wider label still keeps at least one space before its message.
+    int STATE_FIELD = 10;
+    void printState(String state, int stateChars, String message, int messageChars) {
+        String label = "[" + state + "]";
+        int labelChars = stateChars + 2;           // 2 brackets
+        int field = STATE_FIELD;
+        if (field < labelChars + 1) {              // always keep a gap
+            field = labelChars + 1;
+        }
+        String content = padRight(label, labelChars, field) + message;
+        printWidthLine(content, field + messageChars);
+    }
+
+    // =====================================================================
+    //  Sophisticated bordered tables
+    //  A table is a frame of box-drawing glyphs around fixed-width columns.
+    //  Because the core has no arrays, the table is driven two columns wide
+    //  (the common component shape) with an explicit per-cell character count
+    //  and a per-column width. Cells are padded, never truncated; a cell wider
+    //  than its column simply widens that printed row by the overflow.
+    // =====================================================================
+
+    // One horizontal rule: left + (H repeated width+2) + mid + ... + right.
+    // The "+2" accounts for the single space of inset on each side of a cell.
+    String tableRule(String left, String mid, String right, int w0, int w1) {
+        return left
+            + repeat(BOX_H, w0 + 2) + mid
+            + repeat(BOX_H, w1 + 2) + right;
+    }
+
+    void printTableTop(int w0, int w1) {
+        print(tableRule(BOX_TL, BOX_TM, BOX_TR, w0, w1));
+    }
+
+    void printTableSeparator(int w0, int w1) {
+        print(tableRule(BOX_ML, BOX_MM, BOX_MR, w0, w1));
+    }
+
+    void printTableBottom(int w0, int w1) {
+        print(tableRule(BOX_BL, BOX_BM, BOX_BR, w0, w1));
+    }
+
+    // A table row: "│ cell0 │ cell1 │". Each cell is inset by one space, then
+    // laid left-aligned into its column width. `leftAlign` selects left vs.
+    // right alignment for BOTH data cells (headers are always left-aligned).
+    void printTableRow(
+        String c0, int c0Chars, int w0,
+        String c1, int c1Chars, int w1,
+        boolean leftAlign) {
+        String cell0 = "";
+        String cell1 = "";
+        if (leftAlign) {
+            cell0 = padRight(c0, c0Chars, w0);
+            cell1 = padRight(c1, c1Chars, w1);
+        } else {
+            cell0 = padLeft(c0, c0Chars, w0);
+            cell1 = padLeft(c1, c1Chars, w1);
+        }
+        print(BOX_V + " " + cell0 + " " + BOX_V + " " + cell1 + " " + BOX_V);
+    }
+
+    // A complete two-column table: top border, a left-aligned header row, a
+    // separator, two left-aligned data rows, and the bottom border.
+    void printTable(
+        String h0, int h0Chars, String h1, int h1Chars, int w0, int w1,
+        String r0c0, int r0c0Chars, String r0c1, int r0c1Chars,
+        String r1c0, int r1c0Chars, String r1c1, int r1c1Chars) {
+        printTableTop(w0, w1);
+        printTableRow(h0, h0Chars, w0, h1, h1Chars, w1, true);
+        printTableSeparator(w0, w1);
+        printTableRow(r0c0, r0c0Chars, w0, r0c1, r0c1Chars, w1, true);
+        printTableRow(r1c0, r1c0Chars, w0, r1c1, r1c1Chars, w1, true);
+        printTableBottom(w0, w1);
+    }
+
+    // Field/value renderer with a `table` switch. When `table` is true the
+    // pair is framed as a clean two-row table; when false it falls back to a
+    // plain fixed-width line — the single flag tells the printer which form to
+    // emit for the same data.
+    void printPair(
+        String field, int fieldChars, String value, int valueChars, boolean table) {
+        if (table) {
+            printTableTop(fieldChars, valueChars);
+            printTableRow("Field", 5, fieldChars, "Value", 5, valueChars, true);
+            printTableSeparator(fieldChars, valueChars);
+            printTableRow(field, fieldChars, fieldChars, value, valueChars, valueChars, true);
+            printTableBottom(fieldChars, valueChars);
+        } else {
+            printWidthLine(field + ": " + value, fieldChars + 2 + valueChars);
+        }
+    }
+
+    // =====================================================================
+    //  21x21 progress square
+    // =====================================================================
+
     // `filled` cells are filled in order bottom-right -> left, then up.
-    // Cell (fillRow, fillCol) has fill index fillRow*SIZE + fillCol, where
-    // fillRow/fillCol count up from the bottom-right corner. A display cell at
-    // (displayRow, displayCol) maps to fillRow = (SIZE-1)-displayRow and
-    // fillCol = (SIZE-1)-displayCol — identical to the Java edition.
     void printSquare(int filledCells) {
         int total = SQUARE_SIZE * SQUARE_SIZE;
         int filled = filledCells;
@@ -188,10 +315,6 @@ class CommonRails {
     }
 
     // ---- Single-pixel progress indicator --------------------------------
-    // The most compact rendering: one cell — a single pixel. The square is
-    // collapsed to its bottom-right corner cell (fill index 0, the first cell
-    // the 21x21 square would light). It reads as FULL as soon as there is any
-    // progress, and LIGHT while still at zero — a one-glyph progress state.
     void printPixel(int filledCells) {
         if (filledCells > 0) {
             print(FULL);
@@ -214,11 +337,26 @@ class CommonRails {
         printComponent("CommonRails", 11, 441, 3, "square progress ready");
         print("");
 
-        // Fixed-width content lines: each print statement owns 80 columns.
-        print("  fixed-width printing (80 columns)");
-        printWidthLine("[START]   CommonRails printing initialized", 41);
-        printWidthLine("[WORKING] Content remains aligned inside the declared width", 59);
-        printWidthLine("[COMPLETE] Fixed-width output ready", 36);
+        // State-labelled status lines (Beautiful Design state vocabulary).
+        print("  state-labelled status lines");
+        printState("START", 5, "CommonRails printing initialized", 32);
+        printState("WORKING", 7, "content remains aligned inside the width", 40);
+        printState("COMPLETE", 8, "fixed-width output ready", 24);
+        print("");
+
+        // Sophisticated table: a clean, bordered two-column table.
+        print("  sophisticated table (box-drawing frame, aligned columns)");
+        printTable(
+            "Component", 9, "State", 5, 18, 10,
+            "SearchEngineClient", 18, "WORKING", 7,
+            "CommonRails", 11, "COMPLETE", 8);
+        print("");
+
+        // The `table` flag: same data, two forms. First plain, then framed.
+        print("  table flag OFF (plain fixed-width line)");
+        printPair("Object ID", 9, "0000001234", 10, false);
+        print("  table flag ON (framed as a table)");
+        printPair("Object ID", 9, "0000001234", 10, true);
         print("");
 
         // Single-pixel progress: the most compact rendering — one glyph.
@@ -227,8 +365,7 @@ class CommonRails {
         printPixelPercent(100);
         print("");
 
-        // The 21x21 square at the corner-cell stage (exactly one filled cell,
-        // bottom-right) — matching the requested diagram.
+        // The 21x21 square at the corner-cell stage (exactly one filled cell).
         print("  progress: single cell (bottom-right corner)");
         printSquare(1);
         print("");
