@@ -44,7 +44,7 @@ The next compiler gate is now implemented at the SST check boundary.
 
 10. **Cross-version compiler compatibility fixtures**
    - Added below-floor syntax fixture `#sleela 1.2` and above-ceiling syntax fixture `#sleela 1.4`.
-   - The supported compiler range remains `1.3 .. 1.3`.
+   - The supported compiler range is `1.3 .. 1.10` (see `impl/frontend/version.h`).
    - Nordshrift `check` must reject both out-of-range declarations with the source version diagnostic path.
    - `make test-nordshrift-compat` records the compatibility evidence without weakening the supported syntax range.
 

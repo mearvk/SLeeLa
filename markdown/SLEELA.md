@@ -102,12 +102,12 @@ through both entry points (`sleela` and Nordshrift).
 - **Format.** `#sleela MAJOR.MINOR` (a trailing `.PATCH` is tolerated and
   ignored, since a PATCH increment introduces no grammar changes).
 - **Supported range.** The compiler advertises its range via `sleela version`;
-  it is currently **1.0 .. 1.0**. Query the exact range at any time:
+  it is currently **1.3 .. 1.10**. Query the exact range at any time:
 
   ```sh
   ./build/sleela version
-  #  Sleela 0.1.2 (...)
-  #    supported .sleela syntax: 1.0 .. 1.0 (declare per-file with '#sleela 1.0')
+  #  Sleela 0.3.29-dev (...)
+  #    supported .sleela syntax: 1.3 .. 1.10 (declare per-file with '#sleela 1.10')
   ```
 
 - **Enforcement (the normative rule).** *"A compiler must reject files whose
@@ -126,7 +126,7 @@ through both entry points (`sleela` and Nordshrift).
 
   ```
   sleela: prog.sleela: error: source declares Sleela syntax 2.0, which exceeds
-  this compiler's supported range (1.0 .. 1.0). Upgrade the compiler or lower
+  this compiler's supported range (1.3 .. 1.10). Upgrade the compiler or lower
   the #sleela pragma.
   ```
 
