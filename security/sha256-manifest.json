@@ -315,11 +315,11 @@
     },
     {
       "path": "impl/frontend/ast.h",
-      "sha256": "e25944eb6483a1cf01e4e1d0f5a627d62b393d23309626f11a195a201d62be50"
+      "sha256": "276c2a363d6f1f63cd8e34e2de83e69d150091a59a69afe0c57e5061cad6a035"
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "fe4af4a8635965c7a30918dd70e15c15c6264e612645e7c93cd904c0229fcdfd"
+      "sha256": "edc177401c58c7f0468f34fbabe6ddd953a46a016fb57b3d4bb007b82d6cbf53"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -391,11 +391,11 @@
     },
     {
       "path": "impl/frontend/parser.cpp",
-      "sha256": "89cfd3fc180262976a40e508f0d52a48bce989ff029a2646d8d18ffdc927b575"
+      "sha256": "3c4ca549e63b6fbc468c67d2fc20430144b0d69c0e97f7e6cf76a0e6f2dd5498"
     },
     {
       "path": "impl/frontend/parser.h",
-      "sha256": "2e71d3887e2797b640086b2def38204dd5d1f61a7565156453db201f39cdf338"
+      "sha256": "cd8aa1280b8b3e029777e6a68663256cebf00bea8b44652cfb7628e32925988f"
     },
     {
       "path": "impl/frontend/permissible.cpp",
@@ -407,7 +407,7 @@
     },
     {
       "path": "impl/frontend/semantic.cpp",
-      "sha256": "2b8b5a13eb7a8ea1fc9a0181182b4ec01a470e1a38c1703a4f44ff1c5ef25235"
+      "sha256": "69c5743a2b1b08d912c79d27b88aada4cf2978c0a10486e085676c5f7d2be270"
     },
     {
       "path": "impl/frontend/semantic.h",
@@ -423,7 +423,7 @@
     },
     {
       "path": "impl/frontend/version.h",
-      "sha256": "582189e732a785b963a618fac1900ea114e5e7d2699182d1ae2a379f0629881f"
+      "sha256": "1754088bb4af8f07c3937154ee03a595f7bf351d178ea9e6bdfb2c68f7418c92"
     },
     {
       "path": "impl/nordshrift/complete/class_bindings.cpp",

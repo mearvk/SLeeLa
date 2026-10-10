@@ -31,4 +31,43 @@ class SLCodecAlac {
   // decode/encode until an approved backend adapter is registered.
   boolean isNative() { return false; }
   boolean needsBackend() { return true; }
+
+  // ---- Descriptive metadata (version 1.11 nested-friendly accessors) ----
+  // Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+  // or catalog can read and (where appropriate) override each codec's record.
+  // Values are faithful to the codec's real origin where publicly known.
+  String metaVersion = "1.0.0";
+  int metaId = 3;
+  String metaAuthor = "Apple Inc.";
+  String metaDate = "2026-09-28";
+  String metaCopyright = "Apache-2.0 (reference)";
+  String metaTrademark = "Apple Lossless";
+  String metaCorporation = "Apple Inc.";
+  String metaOrigin = "United States";
+  String metaBirthDate = "2004";
+  int metaScienceRating = 8;        // maturity/robustness on a 1..10 scale
+  String metaNationalSchedule = "Apple open-sourced 2011";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
 }

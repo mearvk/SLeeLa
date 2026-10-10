@@ -1,19 +1,26 @@
 # Sleela — Language Syntax Specification
 
     Language:        Sleela
-    Syntax version:  1.10  (1.3..1.9 baseline plus the two `extends` meanings)
-    Compiler:        Sleelvac(TM) 0.3.29-dev  (version gate accepts syntax 1.3 .. 1.10)
+    Syntax version:  1.11  (1.3..1.10 baseline plus nested classes)
+    Compiler:        Sleelvac(TM) 0.3.29-dev  (version gate accepts syntax 1.3 .. 1.11)
     Surface:         Java-like
     Core:            Turing-complete, thread-friendly C/C++ execution core
     Companion:       SHEET.sheet (system-object catalog), SST.model (NS-SST-0001),
                      lib/LIBRARY.SYMBOLS.md (authoritative /lib class vocabulary),
                      markdown/EXTENDS.md (the two `extends` meanings, syntax 1.10)
-    Status:          Normative for the syntax 1.3..1.10 surface
+    Status:          Normative for the syntax 1.3..1.11 surface
 
     Versioning note: two distinct version numbers apply and must not be
     conflated. The **syntax version** (MAJOR.MINOR, declared per file with
-    `#sleela 1.10`) is the grammar version defined here and enforced by
-    `impl/frontend/version.{h,cpp}` (documented supported range 1.3 .. 1.10).
+    `#sleela 1.11`) is the grammar version defined here and enforced by
+    `impl/frontend/version.{h,cpp}` (documented supported range 1.3 .. 1.11).
+    Syntax 1.11 adds **nested classes** (section 14): a class body may declare
+    one level of nested class. The "rule of two" bounds lexical nesting to
+    depth 2 (the enclosing class and one nested class); to go deeper, declare
+    the deeper class at top level and hold a reference to it (a field of that
+    type) inside the nested class. A single document may declare at most 42
+    nested classes. Each nested class is compiled as an ordinary class under
+    the qualified name `Outer.Inner` (internally mangled to `Outer__Inner`).
     Syntax 1.10 adds the two meanings of `extends`: resolved OOD class
     inheritance (a derived class inherits a base's fields and methods, with
     override), and the document form `extends to <targets> <grouper>;` where a
@@ -96,7 +103,8 @@ variables `camelCase` (convention, not enforced).
     top-decl    ::= struct-decl | class-decl
     struct-decl ::= "struct" ident "{" struct-field* "}"   // §3.4 (syntax 1.2+)
     class-decl  ::= "class" ident "{" member* "}"
-    member      ::= field-decl | method-decl
+    member      ::= field-decl | method-decl | nested-class   // nested: §14 (syntax 1.11+)
+    nested-class::= "class" ident "{" (field-decl | method-decl)* "}"  // one level only
 
 A program is one or more classes, optionally preceded or interleaved with
 `struct` declarations. Execution begins at the method named `main`
@@ -713,3 +721,52 @@ only makes the system intent explicit so a modern compiler decides the author's
 meaning instantly. `ran::mem` lowers to the `OP_RAN_MEM` opcode (pushes the live
 byte count); an unknown system word (`ran::<other>`) is an explicit semantic
 error. The namespace requires syntax 1.9.
+
+--------------------------------------------------------------------------------
+## 14. Syntax 1.11 — nested classes (the "rule of two")
+
+Syntax 1.11 adds nested classes. A class body may declare a nested class in
+addition to its fields and methods:
+
+    class Outer {
+        class Inner {              // a nested class (depth 2)
+            Deep deep;             // a reference to a deeper class (top level)
+            int value;
+            void set(int v) { value = v; }
+            int get() { return value; }
+        }
+        void main() {
+            Outer.Inner x = new Outer.Inner();   // dotted qualified name
+            x.set(7);
+            x.deep = new Deep();                 // follow the reference
+        }
+    }
+    class Deep { int tag() { return 99; } }
+
+### 14.1 The rule of two
+
+A document nests **at most two deep**: the enclosing class and one nested class
+(depth 2 is normal). A nested class may **not** itself contain an inline nested
+class. To model deeper structure, declare the deeper class at **top level** and
+hold a **reference** to it — a field whose type is that class — inside the
+nested class. A third inline level is a syntax error that names this remedy.
+
+### 14.2 Per-document limit
+
+A single Sleela document may declare **at most 42 nested classes**. Exceeding
+the cap is a syntax error.
+
+### 14.3 Naming and compilation
+
+A nested class is referenced in source by the dotted qualified name
+`Outer.Inner` (type position and `new Outer.Inner()`). The compiler hoists each
+nested class to an ordinary top-level class under that qualified name, mangling
+the dot to `__` internally (`Outer__Inner`) because the core VM reserves `.`
+for numeric literals. No new runtime concept is introduced: a nested class
+compiles to its own struct layout and flattened `Outer__Inner::method` funcs,
+exactly like a top-level class.
+
+### 14.4 Version gate
+
+Nested classes require `#sleela 1.11`. A document that nests a class under a
+lower declared version is rejected ("nested classes require #sleela 1.11").

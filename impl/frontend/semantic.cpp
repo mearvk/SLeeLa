@@ -76,6 +76,17 @@ class Analyzer{
    for(const auto&x:s.fields){if(f.count(x.name))err("duplicate field '"+x.name+"' in struct '"+s.name+"'");
     Type t=tn(x.type);if(t.kind==Kind::Error)err("unknown type '"+x.type+"' for field '"+x.name+"'");if(t.kind==Kind::Void)err("field '"+x.name+"' cannot be void");f[x.name]=t;}fields[s.name]=f;}
   for(const auto&c:p.classes)classNames.insert(c.name);
+  // Nested classes (syntax 1.11): the parser hoists each lexically nested class
+  // into p.classes as "Outer__Inner" (flagged isNested) and records the count.
+  // Gate the feature on the declared syntax version and re-assert the
+  // per-document cap of 42 (the parser's rule-of-two already bounded depth).
+  {
+   bool anyNested=false; for(const auto&c:p.classes) if(c.isNested){anyNested=true;break;}
+   if((anyNested||p.nestedClassCount>0)&&syntax<SyntaxVersion{1,11})
+    err("nested classes require #sleela 1.11");
+   if(p.nestedClassCount>42)
+    err("a single Sleela document may contain at most 42 nested classes");
+  }
   for(const auto&c:p.classes){
    std::map<std::string,Type> instanceFields;
    for(const auto&f:c.fields){Type t=tn(f.type);if(t.kind==Kind::Error)err("unknown type '"+f.type+"' for field '"+f.name+"'");if(t.kind==Kind::Void)err("field '"+f.name+"' cannot be void");

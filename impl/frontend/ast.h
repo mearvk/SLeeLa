@@ -163,6 +163,17 @@ struct ClassDecl {
     std::vector<Field> fields;
     std::vector<Method> methods;
     JavaTypeMetadata java;
+    // Nested-class support (syntax 1.11). The "rule of two": a document nests
+    // one level deep (the enclosing class and one nested class = depth 2). A
+    // nested class may not itself contain an inline nested class; to go deeper
+    // it holds a reference (a field typed as the deeper class, declared at top
+    // level). The parser does not store nested classes inside their enclosing
+    // ClassDecl (that would require ClassDecl to be copyable, which it is not --
+    // Field/Method carry move-only expression bodies); instead each nested
+    // class is hoisted directly into Program.classes under the qualified name
+    // "Outer.Inner". These two fields mark a hoisted nested class for tooling.
+    bool isNested=false;           // true once hoisted from an enclosing class
+    std::string enclosingName;     // the enclosing class name when isNested
 };
 
 struct StructDecl{std::string name;std::vector<Field> fields;};
@@ -201,6 +212,9 @@ struct Program {
     std::vector<StructDecl> structs;
     std::vector<ClassDecl> classes;
     std::vector<DocumentExtension> documentExtensions;
+    // Number of nested classes hoisted from enclosing classes in this document
+    // (syntax 1.11). Capped by the parser at 42 per document.
+    int nestedClassCount=0;
 };
 
 } // namespace sleela

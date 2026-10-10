@@ -69,6 +69,18 @@ public:
         (void)kProtectedSystemDegree;
         (void)kNextSystemDegree;
         (void)kStaticExtensionViewpointDegree;
+        // Nested classes (syntax 1.11): the parser hoists each lexically nested
+        // class into prog_.classes as "Outer__Inner" and records the count. Gate
+        // the feature on the declared syntax version, and re-assert the
+        // per-document cap of 42 as a defence in depth.
+        {
+            bool anyNested=false;
+            for(const auto& cls:prog_.classes) if(cls.isNested){ anyNested=true; break; }
+            if((anyNested||prog_.nestedClassCount>0) && syntax_<SyntaxVersion{1,11})
+                throw std::runtime_error("Semantic error: nested classes require #sleela 1.11");
+            if(prog_.nestedClassCount>42)
+                throw std::runtime_error("Semantic error: a single Sleela document may contain at most 42 nested classes");
+        }
         // Struct declarations: register each layout with the VM and record a
         // compiler-side layout (type index + ordered field names -> offsets).
         for(const auto& st:prog_.structs){

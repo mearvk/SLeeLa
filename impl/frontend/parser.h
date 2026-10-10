@@ -17,6 +17,11 @@ public:
 private:
     std::vector<Token> toks_; size_t i_=0;
     std::set<std::string> structNames_;
+    // Nested classes (syntax 1.11) hoisted out of their enclosing class during
+    // parseClass, in declaration order, each already named "Outer.Inner" and
+    // flagged isNested. parseProgram appends these to Program.classes and
+    // enforces the per-document cap of 42.
+    std::vector<ClassDecl> hoistedNested_;
     void collectStructNames();
     const Token& peek(int off=0) const; const Token& cur() const { return toks_[i_]; }
     bool check(Tok k) const { return cur().kind==k; } bool accept(Tok k);
@@ -25,12 +30,13 @@ private:
     unsigned parseJavaModifiers();
     JavaTypeKind tokenTypeKind(Tok k) const;
     std::string parseQualifiedName();
+    static std::string mangleTypeName(const std::string& t);
     std::vector<std::string> parseTypeList(Tok terminator);
     std::vector<std::string> parseTypeParameters();
     std::string parseGenericType();
     void parseThrows(std::vector<std::string>& out);
     StructDecl parseStruct();
-    ClassDecl parseClass(unsigned classModifiers=0, std::vector<annotation::Annotation> annotations={});
+    ClassDecl parseClass(unsigned classModifiers=0, std::vector<annotation::Annotation> annotations={}, int depth=1);
     DocumentExtension parseDocumentExtension();
     Field parseField(bool isStatic,bool isProtected,unsigned modifiers=0, std::vector<annotation::Annotation> annotations={});
     Method parseMethod(bool isStatic,bool isProtected,unsigned modifiers=0, std::vector<annotation::Annotation> annotations={});

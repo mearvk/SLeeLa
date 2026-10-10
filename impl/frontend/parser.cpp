@@ -38,6 +38,18 @@ std::string Parser::parseQualifiedName(){
     while(accept(Tok::Dot)) n+="."+expect(Tok::Ident,"identifier after '.'").text;
     return n;
 }
+// Nested-class name mangling (syntax 1.11). The source spells a nested class
+// type with a dot ("Outer.Inner"), but the core VM reserves '.' for numeric
+// literals and uses it in no identifier, so a dotted name must never reach the
+// VM as a struct/function name. Every type name is normalised here by replacing
+// '.' with "__", giving the identifier-safe internal name "Outer__Inner". The
+// same transform is applied where nested classes are hoisted, so source
+// references and the registered class name always agree.
+std::string Parser::mangleTypeName(const std::string& t){
+    std::string out; out.reserve(t.size());
+    for(char ch:t){ if(ch=='.') out+="__"; else out.push_back(ch); }
+    return out;
+}
 std::vector<std::string> Parser::parseTypeList(Tok terminator){
     std::vector<std::string> out;
     if(check(terminator)) return out;
@@ -166,6 +178,14 @@ Program Parser::parseProgram(){
         }
     }
     if(p.classes.empty()) error("program contains no classes");
+    // Append nested classes (syntax 1.11) hoisted during parseClass to the flat
+    // Program.classes list. Each is already named "Outer__Inner" and flagged, so
+    // the semantic analyzer and compiler treat it as an ordinary class. The
+    // "rule of two" has already bounded lexical nesting to depth 2; here we
+    // enforce the per-document cap of 42 nested classes and record the count.
+    if(hoistedNested_.size()>42) error("a single Sleela document may contain at most 42 nested classes (found "+std::to_string(hoistedNested_.size())+")");
+    p.nestedClassCount=(int)hoistedNested_.size();
+    for(auto& h:hoistedNested_) p.classes.push_back(std::move(h));
     return p;
 }
 StructDecl Parser::parseStruct(){expect(Tok::KwStruct,"'struct'");StructDecl s;s.name=expect(Tok::Ident,"struct name").text;expect(Tok::LBrace,"'{'");while(!check(Tok::RBrace)&&!check(Tok::Eof)){Field f;f.type=parseType();f.name=expect(Tok::Ident,"field name").text;expect(Tok::Semicolon,"';'");s.fields.push_back(std::move(f));}expect(Tok::RBrace,"'}'");return s;}
@@ -201,7 +221,7 @@ DocumentExtension Parser::parseDocumentExtension(){
     expect(Tok::Semicolon,"';'");
     return ext;
 }
-ClassDecl Parser::parseClass(unsigned classModifiers,std::vector<annotation::Annotation> annotations){
+ClassDecl Parser::parseClass(unsigned classModifiers,std::vector<annotation::Annotation> annotations,int depth){
     Tok kind=cur().kind; ClassDecl c; c.java.kind=tokenTypeKind(kind); c.java.modifiers=classModifiers; c.java.annotations=std::move(annotations);
     if(kind!=Tok::KwClass&&kind!=Tok::KwInterface&&kind!=Tok::KwEnum&&kind!=Tok::KwRecord) error("expected Java type declaration");
     i_++; c.name=expect(Tok::Ident,"type name").text; c.java.qualifiedName=c.name; c.java.typeParameters=parseTypeParameters();
@@ -211,6 +231,22 @@ ClassDecl Parser::parseClass(unsigned classModifiers,std::vector<annotation::Ann
     while(!check(Tok::RBrace)&&!check(Tok::Eof)){
         auto annotations=parseAnnotations(annotation::UseSite::Declaration);
         unsigned mods=parseJavaModifiers();
+        // Nested class (syntax 1.11): a `class` keyword inside a class body
+        // declares a nested class. The "rule of two" caps lexical nesting at
+        // depth 2 (the enclosing class + one nested class). Deeper nesting is
+        // rejected with guidance to use a reference instead: a field typed as
+        // the deeper class, declared at top level, held inside the parent.
+        if(check(Tok::KwClass)||check(Tok::KwInterface)||check(Tok::KwEnum)||check(Tok::KwRecord)){
+            if(depth>=2) error("nested classes follow the rule of two: a document nests at most two deep (the enclosing class and one nested class). To go deeper, declare the deeper class at top level and hold a reference to it (a field of that type) inside this nested class, rather than nesting a third level inline");
+            ClassDecl nested=parseClass(mods,std::move(annotations),depth+1);
+            nested.isNested=true; nested.enclosingName=c.name;
+            // Internal name uses the identifier-safe mangling "Outer__Inner";
+            // source type references ("Outer.Inner") are mangled the same way in
+            // parseType / the `new` path, so the names always agree.
+            nested.name=c.name+"__"+nested.name; nested.java.qualifiedName=nested.name;
+            hoistedNested_.push_back(std::move(nested));
+            continue;
+        }
         if(!isTypeStart() && !(check(Tok::Ident)&&peek(1).kind==Tok::LParen)) error("expected a type/member declaration");
         if(check(Tok::Ident)&&peek(1).kind==Tok::LParen&&cur().text==c.name){
             Method m; m.isStatic=false; m.isProtected=(mods&JavaProtected)!=0; m.java.modifiers=mods; m.java.constructor=true; m.java.annotations=std::move(annotations);
@@ -234,7 +270,7 @@ std::string Parser::parseType(std::vector<annotation::Annotation>* typeAnnotatio
     if(typeAnnotations){auto a=parseTypeAnnotations(); typeAnnotations->insert(typeAnnotations->end(),a.begin(),a.end());}
     if(!isTypeStart()) error("expected a type");
     std::string t;
-    if(check(Tok::Ident)) t=parseGenericType(); else { t=cur().text; i_++; }
+    if(check(Tok::Ident)) t=mangleTypeName(parseGenericType()); else { t=cur().text; i_++; }
     while(accept(Tok::LBracket)){ if(typeAnnotations){auto a=parseTypeAnnotations(); typeAnnotations->insert(typeAnnotations->end(),a.begin(),a.end());} expect(Tok::RBracket,"']'");t+="[]"; }
     return t;
 }
@@ -311,8 +347,21 @@ StmtP Parser::parseSimpleStatement(){
     }
     // Declaration: `Type name [= expr]`. A struct type name is a valid Type.
     // Disambiguate from `structVar.field = ...` / `structVar = ...` by requiring
-    // the token after a bare-identifier "type" to be another identifier.
-    if(isTypeStart()&&!(cur().kind==Tok::Ident&&peek(1).kind!=Tok::Ident)){auto d=std::make_unique<VarDecl>();d->type=parseType();d->name=expect(Tok::Ident,"variable name").text;if(accept(Tok::Assign))d->init=parseExpr();return d;}
+    // the token after a bare-identifier "type" to be another identifier. A
+    // qualified (dotted) type name — e.g. a nested class `Outer.Inner name`
+    // (syntax 1.11) — is detected by scanning `Ident (Dot Ident)*` and checking
+    // the token immediately after that run is another identifier (the var name).
+    bool localDecl=false;
+    if(isTypeStart()){
+        if(cur().kind!=Tok::Ident){ localDecl=true; }                 // scalar keyword type
+        else if(peek(1).kind==Tok::Ident){ localDecl=true; }          // bare `Type name`
+        else if(peek(1).kind==Tok::Dot){                              // dotted `A.B[.C] name`
+            size_t k=1;                                               // peek offset: at first Dot
+            while(peek((int)k).kind==Tok::Dot&&peek((int)(k+1)).kind==Tok::Ident) k+=2;
+            if(peek((int)k).kind==Tok::Ident) localDecl=true;         // run followed by the var name
+        }
+    }
+    if(localDecl){auto d=std::make_unique<VarDecl>();d->type=parseType();d->name=expect(Tok::Ident,"variable name").text;if(accept(Tok::Assign))d->init=parseExpr();return d;}
     // Otherwise parse an expression; if `=` follows, it is an assignment whose
     // target must be an lvalue (a plain name or a struct member access).
     ExprP lhs=parseExpr();
@@ -395,7 +444,7 @@ ExprP Parser::parsePrimary(){
         // (int/double/boolean/String/void) as the element type, so
         // `new int[n]` and `new String[n]` parse like `new Point()`.
         std::string type;
-        if(check(Tok::Ident)) type=parseGenericType();
+        if(check(Tok::Ident)) type=mangleTypeName(parseGenericType());
         else if(check(Tok::KwIntT)||check(Tok::KwDoubleT)||check(Tok::KwBoolT)||check(Tok::KwStringT)||check(Tok::KwVoid)){ type=cur().text; i_++; }
         else { error("expected a type after 'new'"); }
         auto n=std::make_unique<NewExpr>(type);

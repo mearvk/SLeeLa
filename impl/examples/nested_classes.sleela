@@ -1,0 +1,48 @@
+#sleela 1.11
+// nested_classes.sleela -- the "rule of two" for nested classes (syntax 1.11).
+//
+// A class body may declare one nested class (depth 2 is normal). A nested class
+// does not nest a third level inline; to go deeper it holds a REFERENCE to a
+// top-level class. A single document may declare at most 42 nested classes.
+//
+//   Garage                 (enclosing class, depth 1)
+//     class Car            (nested class,    depth 2)
+//        Engine engine;    (reference to a top-level class -- goes "deeper")
+//
+// Run:   ./build/sleela run examples/nested_classes.sleela
+
+// A top-level class the nested Car refers to (the deeper level, by reference).
+class Engine {
+    int horsepower;
+    void rate(int hp) { horsepower = hp; }
+    int rating() { return horsepower; }
+}
+
+class Garage {
+    // One nested class, depth 2. It reaches the deeper Engine by reference,
+    // not by nesting a third inline level. (Method calls resolve on locals and
+    // parameters, so describe() takes the resolved rating as an argument; the
+    // held `engine` reference is read as a field.)
+    class Car {
+        Engine engine;         // reference to the top-level Engine
+        String model;
+        void build(String name, Engine e) { model = name; engine = e; }
+        String describe(int hp) { return model + " (" + hp + " hp)"; }
+    }
+
+    void main() {
+        Engine v8 = new Engine();
+        v8.rate(420);
+
+        Garage.Car car = new Garage.Car();   // dotted qualified nested name
+        car.build("Sleela GT", v8);
+        // The nested Car holds the Engine reference; call through a local.
+        Engine held = car.engine;
+        print(car.describe(held.rating()));
+
+        // Mutate through the reference and observe it via the nested object.
+        v8.rate(500);
+        Engine again = car.engine;
+        print("after tuning: " + car.describe(again.rating()));
+    }
+}
