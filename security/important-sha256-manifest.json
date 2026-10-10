@@ -5564,7 +5564,7 @@
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "edc177401c58c7f0468f34fbabe6ddd953a46a016fb57b3d4bb007b82d6cbf53"
+      "sha256": "7325c7518ed2e4aaadabbeb2f969db04846cfe5011bcf8349d930ffb887f3d2e"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -8228,7 +8228,7 @@
     },
     {
       "path": "lib/codecs/SLCodecController.sleela",
-      "sha256": "c625d64e55bcc31ace227181cb69c0e6f31aa4443ac3be24dba6013096a452af"
+      "sha256": "050d951aafbe4bb5a77cd1f6903936664e9312823d79fdca64ad5e19bf8486be"
     },
     {
       "path": "lib/codecs/SLCodecEac3.sleela",
@@ -50248,7 +50248,7 @@
     },
     {
       "path": "lib/video/VideoCodecController.sleela",
-      "sha256": "ea05a9c22de902d323206c22398e68a896e3e9f92b277440133e539dc86d77c9"
+      "sha256": "6e0cfb783aba40d335498d0c2f8719c2a6afba961bcd0f0211035e8f998c03cb"
     },
     {
       "path": "lib/video/VideoCodecLoader.sleela",
