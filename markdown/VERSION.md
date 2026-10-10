@@ -12,7 +12,7 @@ This increment extends the arbitrary-width unsigned integer foundation for sourc
 **Sleela-Complete:** 0.3.2-dev  
 **Nordshrift Complete:** 2.7.1-dev  
 **Native Foundation:** 0.3.2-dev  
-**Sleela Language Syntax:** 1.7 (supported range 1.3 .. 1.7)  
+**Sleela Language Syntax:** 1.10 (supported range 1.3 .. 1.10)  
 **Compiler Compatibility Gate:** 2.9-dev  
 **Java Authorship Transition Gate:** 1.19-dev
 **Edition:** SLeeLa Complete / Native Foundation  
@@ -23,9 +23,21 @@ This increment extends the arbitrary-width unsigned integer foundation for sourc
 
 Extended the compiler-facing unsigned integer foundation for `U<n>` widths 1..1048576 with checked multiplication, division/remainder, bitwise operations, and logical shifts. Full lowering and runtime ABI integration remain open work and must not be considered complete until end-to-end tests pass.
 
+## Language Syntax 1.10
+
+Advanced the Sleela language syntax version to 1.10 for the two meanings of the `extends` keyword: resolved OOD class inheritance (a derived class inherits a base's instance fields and methods, with override and multi-level chains) and the document form `extends to <targets> <grouper>;` where a grouper is `linear` | `group` | `services` (see `markdown/EXTENDS.md`). The supported syntax range is now 1.3 through 1.10, default 1.10; compiler/tool versioning remains independent.
+
+## Language Syntax 1.9
+
+Advanced the syntax version to 1.9 for the GC-hint statement `x = gc N;` / `x = mem N;` (a short-term garbage-collection cleanup request with 0..100 aggressiveness) and the `ran::` system namespace.
+
+## Language Syntax 1.8
+
+Advanced the syntax version to 1.8 for two features over the 1.3..1.7 baseline: inferred local declarations (`let`) and constructor arguments on `new Type(args)`. Constructor overload resolution and `this(...)`/base delegation are deliberately not part of verified 1.8.
+
 ## Language Syntax 1.7
 
-Advanced the Sleela language syntax version from 1.6 to 1.7 for the arbitrary-width unsigned integer signature family `U1` through `U1048576`. The supported syntax range is now 1.3 through 1.7; compiler/tool versioning remains independent.
+Advanced the Sleela language syntax version from 1.6 to 1.7 for the arbitrary-width unsigned integer signature family `U1` through `U1048576`. (Historical: the supported range at that increment was 1.3 through 1.7; the current range is 1.3 through 1.10 — see the current-version block above.)
 
 ## 0.3.9 Development Increment
 

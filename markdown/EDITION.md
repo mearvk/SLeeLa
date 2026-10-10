@@ -76,7 +76,7 @@ The C++ front end provides:
 
 The compiler CLI includes run, check, version, and XCLASS-related operations.
 
-The current repository records language syntax 1.0 and toolchain version 0.1.2
+The current repository records language syntax 1.10 and toolchain version 0.3.29-dev
 in VERSION.md.
 
 ## 5. Execution Core

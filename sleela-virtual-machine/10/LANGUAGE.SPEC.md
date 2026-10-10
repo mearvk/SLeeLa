@@ -1,6 +1,6 @@
 # SLVM/10 — Authoritative SLeeLa Language Specification
 
-This VM must interpret language-level type and source metadata according to the repository-wide [SLeeLa syntax specification](../../SLEELA.syntax). The active syntax version is **1.7**; the compiler currently declares the supported range **1.3 through 1.7** in [`impl/frontend/version.h`](../../impl/frontend/version.h).
+This VM must interpret language-level type and source metadata according to the repository-wide [SLeeLa syntax specification](../../SLEELA.syntax). The active syntax version is **1.10**; the compiler currently declares the supported range **1.3 through 1.10** in [`impl/frontend/version.h`](../../impl/frontend/version.h).
 
 ## Unsigned integer source signatures
 

@@ -104,9 +104,16 @@ class Analyzer{
     if(!byName.count(sup)){ if(classNames.count(sup)==0 && structs.count(sup)==0) err("class '"+c.name+"' extends unknown type '"+sup+"'"); continue; }
     // cycle detection: walk the extends chain from c; if we return to a class
     // already on the path, the inheritance is cyclic.
-    { std::set<std::string> seen; std::string cur2=c.name;
-      while(byName.count(cur2)){ seen.insert(cur2); const std::string&s2=byName[cur2]->java.superclass;
-        if(s2.empty()) break; if(seen.count(s2)){ err("cyclic inheritance involving class '"+c.name+"'"); break; } cur2=s2; } }
+    {
+      std::set<std::string> seen; std::string cur2=c.name;
+      while(byName.count(cur2)){
+        seen.insert(cur2);
+        const std::string&s2=byName[cur2]->java.superclass;
+        if(s2.empty()) break;
+        if(seen.count(s2)){ err("cyclic inheritance involving class '"+c.name+"'"); break; }
+        cur2=s2;
+      }
+    }
    }
    // merge base members into each derived class, resolving the chain base-first
    std::set<std::string> done; std::set<std::string> inProgress;

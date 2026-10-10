@@ -122,11 +122,11 @@ class Hello { void main() { print("Hello, Sleela!"); } }
 ```
 
 The compiler **rejects** any file whose declared version is outside its
-supported range (shown by `sleela version`, currently `1.3 .. 1.7`); a file with
+supported range (shown by `sleela version`, currently `1.3 .. 1.10`); a file with
 no pragma is accepted with a warning and assumed to be the floor version. The
 supported range is defined in [`frontend/version.h`](frontend/version.h). The current
 normative language grammar is [`../SLEELA.syntax`](../SLEELA.syntax), syntax version
-`1.7`. The `U<n>` family (`U1` through `U1048576`) is part of this syntax; see
+`1.10`. The `U<n>` family (`U1` through `U1048576`) is part of this syntax; see
 [`../markdown/SOURCE.md`](../markdown/SOURCE.md) for the type-signature contract.
 
 ## The language (first pass)
