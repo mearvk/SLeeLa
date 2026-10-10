@@ -1,0 +1,82 @@
+/*
+ * lib/moral-capacitor/SLMoralVeto.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLMoralVeto — the catalogue of absolute moral red lines
+ *   the Moral Capacitor(TM) honours. A veto is a hard boundary that, when
+ *   tripped for an operation, denies it regardless of how much moral charge the
+ *   capacitor has stored: a capacitor cannot discharge through an open circuit.
+ *   The red lines mirror the platform's content-safety boundaries — child
+ *   safety, weapons/CBRN enablement, non-consensual surveillance,
+ *   deception/impersonation, scaled abuse, and irreversible destruction without
+ *   consent.
+ *
+ * An SLMoralVeto instance tracks which red lines are armed and which are tripped
+ * for the operation under evaluation; the capacitor asks it whether any tripped
+ * line forbids discharge.
+ *
+ * Family: moral-capacitor. Consulted by SLMoralCapacitor.
+ */
+#sleela 1.5
+class SLMoralVeto {
+  // Red-line ordinals.
+  static final int CHILD_SAFETY        = 1;
+  static final int WEAPONS_CBRN        = 2;
+  static final int NONCONSENSUAL_SURVEILLANCE = 3;
+  static final int DECEPTION           = 4;   // impersonation / spoofing / fraud
+  static final int SCALED_ABUSE        = 5;   // spam / manipulation / coordinated harm
+  static final int IRREVERSIBLE_HARM   = 6;   // destruction without consent
+  static final int REDLINE_COUNT       = 6;
+
+  // Tripped bitmap, one slot per red line (index = ordinal).
+  int tripped1; int tripped2; int tripped3; int tripped4; int tripped5; int tripped6;
+  String firstReason;
+  int configured;
+
+  void configure() {
+    tripped1 = 0; tripped2 = 0; tripped3 = 0; tripped4 = 0; tripped5 = 0; tripped6 = 0;
+    firstReason = ""; configured = 1;
+  }
+
+  // Trip a red line with a reason. The first tripped line's reason is retained.
+  void trip(int redline, String reason) {
+    if (redline == CHILD_SAFETY)        { tripped1 = 1; }
+    else if (redline == WEAPONS_CBRN)   { tripped2 = 1; }
+    else if (redline == NONCONSENSUAL_SURVEILLANCE) { tripped3 = 1; }
+    else if (redline == DECEPTION)      { tripped4 = 1; }
+    else if (redline == SCALED_ABUSE)   { tripped5 = 1; }
+    else if (redline == IRREVERSIBLE_HARM) { tripped6 = 1; }
+    if (firstReason == "") { firstReason = reason; }
+  }
+
+  boolean isTripped(int redline) {
+    if (redline == CHILD_SAFETY)        { return tripped1 == 1; }
+    if (redline == WEAPONS_CBRN)        { return tripped2 == 1; }
+    if (redline == NONCONSENSUAL_SURVEILLANCE) { return tripped3 == 1; }
+    if (redline == DECEPTION)           { return tripped4 == 1; }
+    if (redline == SCALED_ABUSE)        { return tripped5 == 1; }
+    if (redline == IRREVERSIBLE_HARM)   { return tripped6 == 1; }
+    return false;
+  }
+
+  // Any red line tripped forbids discharge.
+  boolean anyTripped() {
+    return tripped1 == 1 || tripped2 == 1 || tripped3 == 1
+        || tripped4 == 1 || tripped5 == 1 || tripped6 == 1;
+  }
+
+  int trippedCount() {
+    return tripped1 + tripped2 + tripped3 + tripped4 + tripped5 + tripped6;
+  }
+
+  String reason() { return firstReason; }
+
+  String redlineName(int redline) {
+    if (redline == CHILD_SAFETY)        { return "child safety"; }
+    if (redline == WEAPONS_CBRN)        { return "weapons / CBRN enablement"; }
+    if (redline == NONCONSENSUAL_SURVEILLANCE) { return "non-consensual surveillance"; }
+    if (redline == DECEPTION)           { return "deception / impersonation"; }
+    if (redline == SCALED_ABUSE)        { return "scaled abuse"; }
+    if (redline == IRREVERSIBLE_HARM)   { return "irreversible harm without consent"; }
+    return "unknown";
+  }
+}

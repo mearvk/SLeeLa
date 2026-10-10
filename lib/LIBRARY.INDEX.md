@@ -1,11 +1,28 @@
 # SLeeLa /lib Library Index
 
-**Revision:** 0.42  
-**Packages:** 88  
-**SLeeLa source units:** 10405  
-**Module-facade symbols:** 60  
-**Total symbol records:** 10465  
+**Revision:** 0.43  
+**Packages:** 89  
+**SLeeLa source units:** 10545  
+**Module-facade symbols:** 61  
+**Total symbol records:** 10606  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
+
+> Revision 0.43 adds the **Moral Capacitor™** (`moral-capacitor/`): a uniform
+> ethical gate every `/lib` library can place in front of a consequential
+> operation. It accumulates moral **charge** from ethical frameworks
+> (deontology, utilitarianism, virtue ethics, beneficence, consent) and only
+> **discharges — permits the operation — when charge meets a policy threshold and
+> no absolute red line is tripped** (`SLMoralCapacitor`, `SLMoralCharge`,
+> `SLMoralVeto`, `SLMoralFramework`, `SLMoralVerdict`, `SLMoralPolicy`,
+> `SLMoralOperation`, `SLMoralLedger`). It is placed first and foremost in front
+> of the VM, OS, and Machine via `SLVMMoralGuard`, `SLOSMoralGate`, and
+> `SLMachineMoralGate`, and ships a runnable demonstrator `moral-capacitor.sleela`
+> and `moral-capacitor/ARCHITECTURE.md`. One new package (89), thirteen new source
+> units of which one is the package facade (10,593 → **10,606** total records;
+> 10,533 → **10,545** source classes; 60 → **61** facades). This revision also
+> reconciles the header counts and `test-suites/test-library-inventory.sh`
+> expectations with the live tree. `LIBRARY.SYMBOLS.md` was regenerated from the
+> live tree and verified by `test-suites/test-library-inventory.sh`.
 
 > Revision 0.42 adds a **flow/layout manager** to the `user-interface` package.
 > Two new one-class-per-file Master Classes: `SLMeasure` (a standardized unit of

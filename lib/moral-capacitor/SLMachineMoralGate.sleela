@@ -1,0 +1,63 @@
+/*
+ * lib/moral-capacitor/SLMachineMoralGate.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLMachineMoralGate — the Moral Capacitor(TM) adapter for
+ *   the Machine surface (SLMachineModel / SLMachineBuilder and the lib/cpu
+ *   SLMachine it composes). It wraps an SLMoralCapacitor with machine-power
+ *   policies and exposes intention-named checks consulted before a machine does
+ *   something consequential: powering on, booting a guest OS, and executing a
+ *   program on the composed machine. Booting a guest and running code are gated
+ *   so a machine built from named parts cannot be turned to a prohibited use
+ *   without an auditable moral discharge.
+ *
+ * Family: moral-capacitor. Machine adapter over SLMoralCapacitor.
+ */
+#sleela 1.5
+class SLMachineMoralGate {
+  SLMoralCapacitor cap;
+  SLMoralLedger ledger;
+  int configured;
+
+  void configure() {
+    cap = new SLMoralCapacitor(); cap.configure();
+    ledger = new SLMoralLedger(); ledger.configure();
+    configured = 1;
+  }
+
+  // Powering on the composed machine.
+  SLMoralVerdict permitPowerOn(String machineName) {
+    SLMoralPolicy p = new SLMoralPolicy(); p.machinePower();
+    return decide(op("machine", "power-on", machineName, "host", true, true), p);
+  }
+
+  // Booting a guest OS on the machine.
+  SLMoralVerdict permitBootGuest(String guest, boolean consented) {
+    SLMoralPolicy p = new SLMoralPolicy(); p.machinePower();
+    return decide(op("machine", "boot", guest, "host", true, consented), p);
+  }
+
+  // Executing a program on the machine. Purpose is the stated use; it is
+  // screened for red-line verbs (surveil/impersonate/weaponize/...).
+  SLMoralVerdict permitExecute(String purpose, boolean consented) {
+    SLMoralPolicy p = new SLMoralPolicy(); p.machinePower(); p.setThreshold(3);
+    return decide(op("machine", purpose, "program", "process", true, consented), p);
+  }
+
+  SLMoralLedger auditLedger() { return ledger; }
+  SLMoralCapacitor capacitor() { return cap; }
+
+  SLMoralOperation op(String actor, String action, String target, String scope,
+                      boolean reversible, boolean consented) {
+    SLMoralOperation o = new SLMoralOperation();
+    o.configure(actor, action, target, scope);
+    o.setReversible(reversible); o.setConsented(consented);
+    return o;
+  }
+  SLMoralVerdict decide(SLMoralOperation o, SLMoralPolicy p) {
+    cap.discharge();
+    cap.setPolicy(p);
+    SLMoralVerdict v = cap.gate(o);
+    ledger.record(o, v);
+    return v;
+  }
+}

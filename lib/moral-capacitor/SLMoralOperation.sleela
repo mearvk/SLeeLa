@@ -1,0 +1,46 @@
+/*
+ * lib/moral-capacitor/SLMoralOperation.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLMoralOperation — the thing the Moral Capacitor(TM)
+ *   judges. An operation is described by who performs it (actor, e.g. "vm" /
+ *   "os" / "machine"), the action verb (e.g. "allocate", "erase", "spawn",
+ *   "boot"), the target it affects (e.g. "guest-memory", "/dev/sda"), the scope
+ *   (e.g. "process", "disk", "host"), whether it is reversible, and whether the
+ *   affected party has consented. These fields are what the frameworks appraise
+ *   and what the veto set tests.
+ *
+ * Keeping the operation an explicit object (rather than loose arguments) means a
+ * verdict and a ledger entry can name exactly what was judged.
+ *
+ * Family: moral-capacitor. Evaluated by SLMoralCapacitor.
+ */
+#sleela 1.5
+class SLMoralOperation {
+  String actor;       // "vm" / "os" / "machine" / library name
+  String action;      // verb: "allocate" / "erase" / "spawn" / "boot" / ...
+  String target;      // what it affects
+  String scope;       // "process" / "disk" / "host" / "network" / ...
+  int reversible;     // 1 if the effect can be undone
+  int consented;      // 1 if the affected party has consented
+  int configured;
+
+  void configure(String who, String what, String onWhat, String howWide) {
+    actor = who; action = what; target = onWhat; scope = howWide;
+    reversible = 1; consented = 1; configured = 1;
+  }
+
+  void setReversible(boolean yes) { if (yes) { reversible = 1; } else { reversible = 0; } }
+  void setConsented(boolean yes)  { if (yes) { consented = 1; } else { consented = 0; } }
+
+  String actorName()  { return actor; }
+  String actionVerb() { return action; }
+  String targetName() { return target; }
+  String scopeName()  { return scope; }
+  boolean isReversible() { return reversible == 1; }
+  boolean hasConsent()   { return consented == 1; }
+
+  // A short identity line for verdicts and the ledger.
+  String identity() {
+    return actor + ":" + action + " " + target + " (" + scope + ")";
+  }
+}

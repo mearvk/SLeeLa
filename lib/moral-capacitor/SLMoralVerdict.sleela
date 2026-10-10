@@ -1,0 +1,55 @@
+/*
+ * lib/moral-capacitor/SLMoralVerdict.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLMoralVerdict — the decision a Moral Capacitor(TM)
+ *   returns for an operation. A verdict is PERMIT (charge met the threshold and
+ *   no veto tripped), DEFER (partial charge: hold and request more justification
+ *   or consent), or DENY (no charge, or a veto tripped). The verdict carries the
+ *   stored charge, the threshold it was compared against, the deciding
+ *   framework or red line, and a human-readable reason, so a caller can log
+ *   exactly why an operation was allowed, held, or refused.
+ *
+ * Family: moral-capacitor. Returned by SLMoralCapacitor.evaluate.
+ */
+#sleela 1.5
+class SLMoralVerdict {
+  // Decision ordinals.
+  static final int PERMIT = 1;
+  static final int DEFER  = 2;
+  static final int DENY   = 3;
+
+  int decision;       // PERMIT / DEFER / DENY
+  int charge;         // stored moral charge at decision time
+  int threshold;      // the threshold compared against
+  String basis;       // deciding framework or tripped red line
+  String reason;      // human-readable explanation
+  int configured;
+
+  void configure(int d, int chargeLevel, int thresh, String decidingBasis, String why) {
+    decision = d; charge = chargeLevel; threshold = thresh;
+    basis = decidingBasis; reason = why; configured = 1;
+  }
+
+  boolean permitted() { return decision == PERMIT; }
+  boolean deferred()  { return decision == DEFER; }
+  boolean denied()    { return decision == DENY; }
+
+  int decisionCode()  { return decision; }
+  int chargeLevel()   { return charge; }
+  int thresholdLevel(){ return threshold; }
+  String decidingBasis() { return basis; }
+  String explanation() { return reason; }
+
+  String decisionName() {
+    if (decision == PERMIT) { return "PERMIT"; }
+    if (decision == DEFER)  { return "DEFER"; }
+    return "DENY";
+  }
+
+  // A one-line summary for logs/ledger.
+  String summary() {
+    return decisionName() + " (charge " + intToStr(charge) + "/" + intToStr(threshold)
+         + "; " + basis + "): " + reason;
+  }
+  String intToStr(int v) { return "" + v; }
+}
