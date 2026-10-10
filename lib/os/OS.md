@@ -327,3 +327,87 @@ runnable demonstrator that prints a full build sheet and the VM sizing.
   `SLMachineBuilder.buildAndBootGuest(...)` boots an OS guest on the machine the
   hardware description produced — firmware → boot → kernel → userspace →
   desktop, from named silicon up.
+
+---
+
+# OS Creator™ — from an OS description to `/os-development`
+
+OS Creator™ is the capstone provider of `lib/os` (its classes live under
+`lib/os/os-creator/`; see `os-creator/ARCHITECTURE.md` for the full design). It
+turns an `SLOSModel` into a complete, on-disk **OS development tree** at
+`/os-development`: every piece of the OS, its C and C++ source, its configuration
+file, the build tooling, and the SLeeLa source that regenerates it — written as
+real files through the `osMakeDir` / `openFile` / `write` / `close` bridge.
+
+Running the **compiled** OS Creator object (a SLeeLa program that composes an
+`SLOSModel` and calls `SLOSCreator.create(model, "/os-development")`) is what
+materialises the tree.
+
+## What it writes
+
+| Piece | Directory | Files |
+|---|---|---|
+| UEFI | `firmware/uefi/` | `uefi.c`, `uefi.cpp`, `uefi.conf`, `README.md` |
+| BIOS / CSM | `firmware/bios/` | `bios.c`, `bios.cpp`, `bios.cfg`, `README.md` |
+| Boot Loader | `boot/loader/` | `bootloader.c`, `bootloader.cpp`, `loader.conf`, `README.md` |
+| Kernel Loader | `boot/kernel-loader/` | `kernel_loader.c`, `kernel_loader.cpp`, `kernel-loader.conf`, `README.md` |
+| Driver Loader | `kernel/driver-loader/` | `driver_loader.c`, `driver_loader.cpp`, `drivers.conf`, `README.md` |
+| OS Loader (PID 1) | `userspace/os-loader/` | `os_loader.c`, `os_loader.cpp`, `services.conf`, `README.md` |
+| Desktop GUI Loader | `desktop/gui-loader/` | `gui_loader.c`, `gui_loader.cpp`, `session.conf`, `README.md` |
+| The OS | `os/` | `os_config.h`, `os_boot.c`, `os_image.cpp` |
+
+Plus the top-level `Makefile`, `build.sh`, `build.ps1`, `config/os.conf`,
+`tools/gen-iso.sh`, `src/sleela/os-model.sleela` (the regenerating source), and
+`MANIFEST.md`.
+
+## Classes
+
+| Class | Role |
+|---|---|
+| `SLOSCreator` | The OS Creator™ provider: `create(model, root)` writes the whole tree; `plan(model)` is a dry run. |
+| `SLOSDevTree` | Owns `/os-development`: makes directories and writes files through the OS bridge; records a manifest. |
+| `SLOSPiece` | One emitted piece (name, dir, C, C++, config, README). |
+| `SLUEFIEmitter`, `SLBIOSEmitter`, `SLBootLoaderEmitter`, `SLKernelLoaderEmitter`, `SLDriverLoaderEmitter`, `SLOSLoaderEmitter`, `SLDesktopLoaderEmitter` | Per-piece C/C++ + config emitters. |
+| `SLToolchainEmitter` | Emits `Makefile`, `build.sh`, `build.ps1`, `config/os.conf`. |
+| `SLSourceDropper` | Writes the regenerating SLeeLa source + provenance into `src/`. |
+
+The OS itself (`os/`) and the ISO recipe (`tools/gen-iso.sh`) reuse the existing
+`SLCEmitter` / `SLCppEmitter` / `SLISOBuilder`, so there is one source of truth.
+
+## Minimal usage
+
+```sleela
+// Describe the OS, then run OS Creator™ to write /os-development.
+SLLinuxOSModel os = new SLLinuxOSModel();
+os.build("Determinant", "1.0");
+
+SLOSCreator creator = new SLOSCreator();
+creator.configure();
+SLOSBuildReport report = creator.create(os, "/os-development");   // writes the whole tree
+print(report.summary());    // "OK: Determinant 1.0 (...) -> N artifacts"
+
+// Then build the OS from the generated sources:
+//   cd /os-development && sh build.sh      (make all -> every piece -> OS -> ISO)
+```
+
+Changing the model's shape (`SLWindowsOSModel` / `SLMacOSModel`) re-shapes every
+emitted piece: a Windows tree gets a BOOTMGR `bootloader.c`, a Service Control
+Manager `os_loader.c`, and `build.ps1` as the primary driver; macOS gets a
+`boot.efi` loader and a launchd OS loader. See `os-creator/os-creator.sleela` for
+a self-contained, runnable demonstrator that prints the layout, a sample emitted
+piece, the Makefile, and the regenerating source.
+
+## Varieties and scales
+
+- **Variety** — `SLOSShape` selects each piece's content (GRUB vs BOOTMGR vs
+  boot.efi; systemd vs SCM vs launchd; GNOME vs Explorer vs Aqua).
+- **Scale** — `SLArchitectureSet` and the edition select how many targets and
+  pieces: multi-arch models emit a per-arch build matrix; a server edition drops
+  the Desktop GUI Loader; the memory/storage parts size `config/os.conf`.
+
+## Integrity
+
+OS Creator™ writes **into** `/os-development` (an output tree), never into the
+repository's gated sources, so it does not perturb `security/sha256-manifest.json`.
+Its own source files are ordinary `/lib` units recorded in
+`lib/LIBRARY.SYMBOLS.md` and `SHA256-DIGESTS.md`.
