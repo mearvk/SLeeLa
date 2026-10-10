@@ -50783,6 +50783,10 @@
       "sha256": "a1f35370a84530967e579a9cfee466e45dce2a6ef1dc308cc50b6fab7c0e9a61"
     },
     {
+      "path": "lib/website/generate-establishment.py",
+      "sha256": "ad05e132b8b26044d7b6d38c7d454bac8a195456b5ea68436f8d756cd8ea91e7"
+    },
+    {
       "path": "lib/website/hawaiian-airlines/HawaiianWebsite.sleela",
       "sha256": "66affbf17f52a59161e2348da23c7d08bfd92384064e7a92894e57a8489a9541"
     },
