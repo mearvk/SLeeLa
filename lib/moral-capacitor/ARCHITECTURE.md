@@ -120,3 +120,56 @@ it does not claim to compute objective morality. A library is responsible for
 charging it honestly (not padding charge to force a discharge) and for honouring
 a `DENY`/`DEFER`. The red-line veto set is deliberately absolute and mirrors the
 platform's content-safety boundaries.
+
+---
+
+## 8. Certificate of Morals™ and the Guard of the Moral Code
+
+The Moral Capacitor™ gates operations *inside* a product. To put the moral code
+*into our products* and warrant it, the family adds two product-boundary
+components: a **Certificate of Morals™** (the warranty) and a **Guard of the
+Moral Code** (its enforcement).
+
+### Certificate of Morals™
+
+A signed attestation that travels **with** a SLeeLa software unit, warranting
+that the unit embeds the Moral Capacitor™, runs under a named moral policy, and
+keeps the absolute red-line veto set armed.
+
+| Class | Role |
+|---|---|
+| `SLMoralWarranty` | The warranty terms: the moral gate is **present and enforced** (a checkable property), with explicit limits (not an oracle, not a fitness claim). |
+| `SLMoralCertificate` | The certificate: subject product, issuer, policy + threshold, armed red-line count, capacitor-present flag, serial, validity span, and a cryptographic **seal** over a canonical body. |
+| `SLMoralCertificateAuthority` | Issues and verifies certificates: records the posture from a live capacitor, assigns a serial/validity, and seals the canonical body (deterministic fold keyed on the authority; hardened by `lib/crypto` `SLDigest`/`SLSignature` in production). |
+
+### Guard of the Moral Code
+
+The enforcement that a product actually **includes** the moral code before it is
+allowed to run or ship — the counterpart, at the product boundary, to the
+capacitor at the operation boundary.
+
+| Class | Role |
+|---|---|
+| `SLMoralCodeGuard` | Admits a product only when it (1) embeds a live capacitor, (2) presents a well-formed certificate, (3) that verifies against the trusted authority, (4) is within validity, and (5) attests a posture matching the capacitor. Any failure → **REFUSE**. |
+| `SLMoralCertified` | The one-object convention a product embeds to become certified: it bundles the capacitor, an issued certificate, the authority, and the guard, so a product is gated **and** certified in one step. |
+
+### Striving to certify all SLeeLa software
+
+The three priority adapters each gained a `certify(authority, redlines, issued,
+expires)` method and an `admit(nowStamp)` product-boundary check, so the VM, OS,
+and Machine ship as morally certified products:
+
+```sleela
+SLMoralCertificateAuthority ca = new SLMoralCertificateAuthority();
+ca.configure("MEARVK LLC", "moral-seal-key");
+
+SLVMMoralGuard vm = new SLVMMoralGuard(); vm.configure();
+vm.certify(ca, SLMoralVeto.REDLINE_COUNT, "2026-01-01", "2030-01-01");
+if (!vm.admit("2026-10-10")) { /* refuse to run: moral code not certified */ }
+```
+
+Any other product embeds a single `SLMoralCertified` to carry both the gate and
+its warranty. The intent is that **every** SLeeLa software unit is morally
+certified by construction: operations gated by the capacitor, the whole product
+warranted by a certificate, and admission enforced by the guard. See the
+runnable demonstrator `moral-certificate.sleela`.

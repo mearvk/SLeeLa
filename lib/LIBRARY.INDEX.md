@@ -1,11 +1,26 @@
 # SLeeLa /lib Library Index
 
-**Revision:** 0.43  
+**Revision:** 0.44  
 **Packages:** 89  
-**SLeeLa source units:** 10545  
+**SLeeLa source units:** 10551  
 **Module-facade symbols:** 61  
-**Total symbol records:** 10606  
+**Total symbol records:** 10612  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
+
+> Revision 0.44 extends the **Moral Capacitor™** family with a **Certificate of
+> Morals™** and a **Guard of the Moral Code**, putting the moral code — with a
+> warranty — into our products. Six new source units: `SLMoralWarranty` (the
+> warranty terms), `SLMoralCertificate` (the signed, sealed attestation that a
+> product embeds and enforces the capacitor), `SLMoralCertificateAuthority`
+> (issues/verifies certificates), `SLMoralCodeGuard` (admits a product only when
+> a valid certificate + live capacitor are present), `SLMoralCertified` (the
+> one-object certify-a-product convention), and the runnable demonstrator
+> `moral-certificate.sleela`. The VM/OS/Machine adapters each gained
+> `certify(...)` + `admit(...)` so they ship as morally certified products.
+> 10,606 → **10,612** total records (10,545 → **10,551** source classes);
+> packages and facades unchanged at 89 and 61. `LIBRARY.SYMBOLS.md` was
+> regenerated from the live tree and verified by
+> `test-suites/test-library-inventory.sh`.
 
 > Revision 0.43 adds the **Moral Capacitor™** (`moral-capacitor/`): a uniform
 > ethical gate every `/lib` library can place in front of a consequential

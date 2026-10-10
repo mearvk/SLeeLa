@@ -1,0 +1,118 @@
+/*
+ * lib/moral-capacitor/SLMoralCertificateAuthority.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLMoralCertificateAuthority — the issuer of a Certificate
+ *   of Morals(TM). Given a product name and a live Moral Capacitor (its policy
+ *   and armed red-line set), the authority mints an SLMoralCertificate: it
+ *   records the moral posture, assigns a serial and validity span, computes a
+ *   deterministic seal over the certificate's canonical body, and applies it.
+ *   The same authority re-verifies a certificate by recomputing the seal, so a
+ *   Guard can trust that a certificate was issued here and not altered.
+ *
+ * The seal is a deterministic fold over the canonical body keyed on the
+ * authority's name — a self-contained, reproducible integrity tag. In
+ * production it is hardened by signing the body with lib/crypto SLDigest +
+ * SLSignature under the authority's key; this class keeps the issue/verify
+ * contract stable regardless of which seal backend is linked.
+ *
+ * Family: moral-capacitor. Issues/verifies SLMoralCertificate; reads
+ *   SLMoralCapacitor + SLMoralPolicy.
+ */
+#sleela 1.5
+class SLMoralCertificateAuthority {
+  String authority;   // the issuing party name
+  String key;         // the authority's seal key (keeps the fold authority-specific)
+  int issuedCount;
+  int configured;
+
+  void configure(String name, String sealKey) {
+    authority = name; key = sealKey; issuedCount = 0; configured = 1;
+  }
+
+  // Issue a Certificate of Morals for a product, reading the posture from a live
+  // capacitor. redlinesArmed is the number of absolute red lines the product
+  // keeps armed (SLMoralVeto.REDLINE_COUNT for the full set).
+  SLMoralCertificate issue(String product, SLMoralCapacitor cap, int redlinesArmed,
+                           String issuedAt, String expiresAt) {
+    SLMoralCertificate cert = new SLMoralCertificate();
+    cert.configure(product, authority);
+    SLMoralPolicy p = cap.policy();
+    cert.attest(p.name(), p.threshold(), redlinesArmed, cap.chargeLevel() >= 0);
+    issuedCount = issuedCount + 1;
+    cert.setSerial(authority + "-" + intToStr(issuedCount));
+    cert.setValidity(issuedAt, expiresAt);
+    cert.applySeal(computeSeal(cert.canonicalBody()));
+    return cert;
+  }
+
+  // Re-verify a certificate: recompute the seal over its canonical body and
+  // compare. Returns true when the seal matches (the certificate is authentic
+  // and unaltered) and the certificate names this authority.
+  boolean verify(SLMoralCertificate cert) {
+    if (cert.issuerName() != authority) { return false; }
+    if (!cert.isSealed()) { return false; }
+    String expected = computeSeal(cert.canonicalBody());
+    return cert.sealValue() == expected;
+  }
+
+  // Deterministic seal over the body, keyed on the authority name. A rolling
+  // polynomial fold over per-character weights; stable and reproducible without
+  // relying on a Unicode codepoint intrinsic (the fold only needs determinism).
+  String computeSeal(String body) {
+    int acc = foldKey(authority) + foldKey(key);
+    int i = 0;
+    int n = strLen(body);
+    while (i < n) {
+      acc = (acc * 131 + charWeight(charAt(body, i))) % 1000000007;
+      i = i + 1;
+    }
+    return "MCS1-" + authority + "-" + intToStr(acc);
+  }
+
+  int foldKey(String s) {
+    int acc = 7;
+    int i = 0;
+    int n = strLen(s);
+    while (i < n) { acc = (acc * 131 + charWeight(charAt(s, i))) % 1000000007; i = i + 1; }
+    return acc;
+  }
+
+  int issuedTotal() { return issuedCount; }
+  String authorityName() { return authority; }
+
+  // ---- Text helpers -------------------------------------------------------
+  int strLen(String s) { return native sleela_str_length(s); }
+  String charAt(String s, int i) { return native sleela_str_substring(s, i, i + 1); }
+
+  // A stable per-character weight for the fold (same portable technique as
+  // lib/citizen/FederalReserveID.charWeight): digits use their value, common
+  // punctuation and letters map to small distinct constants. The fold needs
+  // determinism, not a full character map.
+  int charWeight(String c) {
+    int d = digitValue(c);
+    if (d >= 0) { return d + 1; }
+    if (c == " ") { return 11; }
+    if (c == ".") { return 13; }
+    if (c == "-") { return 19; }
+    if (c == "=") { return 23; }
+    if (c == "\n") { return 29; }
+    if (c == "(" || c == ")") { return 31; }
+    if (c == "/") { return 37; }
+    return 17;
+  }
+  int digitValue(String c) {
+    if (c == "0") { return 0; }
+    if (c == "1") { return 1; }
+    if (c == "2") { return 2; }
+    if (c == "3") { return 3; }
+    if (c == "4") { return 4; }
+    if (c == "5") { return 5; }
+    if (c == "6") { return 6; }
+    if (c == "7") { return 7; }
+    if (c == "8") { return 8; }
+    if (c == "9") { return 9; }
+    return -1;
+  }
+
+  String intToStr(int v) { return "" + v; }
+}

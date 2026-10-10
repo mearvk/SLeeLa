@@ -16,13 +16,33 @@
 class SLMachineMoralGate {
   SLMoralCapacitor cap;
   SLMoralLedger ledger;
+  SLMoralCertificate certificate;   // the Machine product's Certificate of Morals
+  SLMoralCodeGuard codeGuard;       // admits the Machine only when certified
   int configured;
 
   void configure() {
     cap = new SLMoralCapacitor(); cap.configure();
     ledger = new SLMoralLedger(); ledger.configure();
+    certificate = null; codeGuard = null;
     configured = 1;
   }
+
+  // Certify this Machine: issue a Certificate of Morals over the gate's
+  // capacitor and arm a code guard against it, so the Machine is a morally
+  // certified product.
+  void certify(SLMoralCertificateAuthority authority, int redlinesArmed,
+               String issuedAt, String expiresAt) {
+    certificate = authority.issue("sleela-machine", cap, redlinesArmed, issuedAt, expiresAt);
+    codeGuard = new SLMoralCodeGuard(); codeGuard.configure(authority);
+  }
+
+  // Prove at the Machine product boundary (power-on/boot) that the moral code is
+  // present and certified as of nowStamp.
+  boolean admit(String nowStamp) {
+    if (codeGuard == null || certificate == null) { return false; }
+    return codeGuard.permits("sleela-machine", cap, certificate, nowStamp);
+  }
+  SLMoralCertificate moralCertificate() { return certificate; }
 
   // Powering on the composed machine.
   SLMoralVerdict permitPowerOn(String machineName) {

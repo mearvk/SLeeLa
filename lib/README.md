@@ -29,7 +29,18 @@ scaled abuse, irreversible harm without consent). It is intended for all `/lib`
 libraries and is placed first and foremost in front of the **VM**, **OS**, and
 **Machine** surfaces via `SLVMMoralGuard`, `SLOSMoralGate`, and
 `SLMachineMoralGate`. It refines the governance `ETHICS_NORMS` axis and draws its
-vocabulary from `coorenagraph`. See `moral-capacitor/ARCHITECTURE.md`.
+vocabulary from `coorenagraph`.
+
+The family also puts the moral code **into the products** with a warranty: the
+**Certificate of Morals™** (`SLMoralCertificate`, `SLMoralWarranty`,
+`SLMoralCertificateAuthority`) is a signed attestation — travelling with a SLeeLa
+software unit — that the unit embeds the Moral Capacitor™ and enforces it; and
+the **Guard of the Moral Code** (`SLMoralCodeGuard`) admits a product to run or
+ship only when that certificate is present, authentic, unexpired, and consistent
+with the embedded capacitor. Embed one `SLMoralCertified` to make a product both
+gated and certified; the VM, OS, and Machine adapters each gained `certify(...)`
+and `admit(...)`. The project strives to certify **all** SLeeLa software this
+way. See `moral-capacitor/ARCHITECTURE.md`.
 
 The standard-library target is **2,048 object types**. This is an architectural target, not a claim that all 2,048 objects are implemented today.
 

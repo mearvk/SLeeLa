@@ -19,13 +19,32 @@
 class SLOSMoralGate {
   SLMoralCapacitor cap;
   SLMoralLedger ledger;
+  SLMoralCertificate certificate;   // the OS product's Certificate of Morals
+  SLMoralCodeGuard codeGuard;       // admits the OS only when certified
   int configured;
 
   void configure() {
     cap = new SLMoralCapacitor(); cap.configure();
     ledger = new SLMoralLedger(); ledger.configure();
+    certificate = null; codeGuard = null;
     configured = 1;
   }
+
+  // Certify this OS: issue a Certificate of Morals over the gate's capacitor and
+  // arm a code guard against it, so the OS is a morally certified product.
+  void certify(SLMoralCertificateAuthority authority, int redlinesArmed,
+               String issuedAt, String expiresAt) {
+    certificate = authority.issue("sleela-os", cap, redlinesArmed, issuedAt, expiresAt);
+    codeGuard = new SLMoralCodeGuard(); codeGuard.configure(authority);
+  }
+
+  // Prove at the OS product boundary (ship/boot/install) that the moral code is
+  // present and certified as of nowStamp.
+  boolean admit(String nowStamp) {
+    if (codeGuard == null || certificate == null) { return false; }
+    return codeGuard.permits("sleela-os", cap, certificate, nowStamp);
+  }
+  SLMoralCertificate moralCertificate() { return certificate; }
 
   // Reading identity/env/cwd is routine and reversible.
   SLMoralVerdict permitQuery(String what) {

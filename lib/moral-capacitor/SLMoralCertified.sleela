@@ -1,0 +1,68 @@
+/*
+ * lib/moral-capacitor/SLMoralCertified.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLMoralCertified — the one-object convention a SLeeLa
+ *   product embeds to become morally certified. It bundles the three things a
+ *   certified product needs: a live Moral Capacitor(TM) (the operation-boundary
+ *   gate), a Certificate of Morals(TM) issued over that capacitor (the product-
+ *   boundary warranty), and the Guard that admits the product only when both are
+ *   present and valid. A product configures one SLMoralCertified at startup,
+ *   gates its operations through capacitor(), and lets ship()/boot() paths call
+ *   admit() to prove the moral code is included before running.
+ *
+ * This is how the project strives to include Morals and Certificates in ALL its
+ * SLeeLa software: embedding one SLMoralCertified makes a product both gated and
+ * certified, in a single, uniform step.
+ *
+ * Family: moral-capacitor. Composes SLMoralCapacitor, SLMoralCertificate,
+ *   SLMoralCertificateAuthority, SLMoralCodeGuard.
+ */
+#sleela 1.5
+class SLMoralCertified {
+  String product;
+  SLMoralCapacitor cap;
+  SLMoralCertificate cert;
+  SLMoralCertificateAuthority authority;
+  SLMoralCodeGuard guard;
+  int configured;
+
+  // Certify a product: embed a capacitor under the given policy, issue a
+  // Certificate of Morals from the authority over it, and arm the guard.
+  // redlinesArmed is the number of absolute red lines kept armed (use
+  // SLMoralVeto.REDLINE_COUNT for the full set).
+  void configure(String productName, SLMoralPolicy policy, int redlinesArmed,
+                 String issuer, String sealKey, String issuedAt, String expiresAt) {
+    product = productName;
+
+    cap = new SLMoralCapacitor(); cap.configure();
+    cap.setPolicy(policy);
+
+    authority = new SLMoralCertificateAuthority();
+    authority.configure(issuer, sealKey);
+
+    cert = authority.issue(productName, cap, redlinesArmed, issuedAt, expiresAt);
+
+    guard = new SLMoralCodeGuard();
+    guard.configure(authority);
+
+    configured = 1;
+  }
+
+  // The operation-boundary gate a product uses to judge operations.
+  SLMoralCapacitor capacitor() { return cap; }
+  // The product-boundary warranty the product ships with.
+  SLMoralCertificate certificate() { return cert; }
+
+  // Prove, at a product boundary (ship / boot / run), that the moral code is
+  // included and certified as of `nowStamp`. Returns true to admit.
+  boolean admit(String nowStamp) {
+    return guard.permits(product, cap, cert, nowStamp);
+  }
+  // The reason behind the last admit() decision (for logs / refusal messages).
+  String admitReason() { return guard.reason(); }
+
+  String productName() { return product; }
+  SLMoralCodeGuard codeGuard() { return guard; }
+  SLMoralCertificateAuthority issuingAuthority() { return authority; }
+  boolean isCertified() { return configured == 1 && cert.isWellFormed(); }
+}
