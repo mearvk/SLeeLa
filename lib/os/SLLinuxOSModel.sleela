@@ -1,0 +1,39 @@
+/*
+ * lib/os/SLLinuxOSModel.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLLinuxOSModel — a preset that extends SLOSModel and
+ *   extrapolates it into a Linux-shaped operating system: a Linux kernel,
+ *   UEFI+GRUB boot with an initramfs, an ext4 root under the Filesystem
+ *   Hierarchy Standard, a systemd service set, a Debian-style base package seed,
+ *   and a GNOME-on-Wayland desktop. It is the OOD realisation of "assume the
+ *   shape of Linux" and the model the OS projects in this lineage (an
+ *   Ubuntu-derived distribution) start from.
+ *
+ * After build(), refine any layer through the inherited accessors — e.g. swap
+ * the desktop with desktopSpec().useAlternate(...), or add packages with
+ * packageSet().add(...). Call asServer() for a headless server edition.
+ *
+ * Family: os. Extends SLOSModel.
+ */
+#sleela 1.5
+class SLLinuxOSModel extends SLOSModel {
+  // Build a Linux-shaped model with the given product name/version on amd64.
+  void build(String name, String ver) {
+    configure(name, ver);
+    shapeAs("Linux", "amd64");
+    kernelSpec().appendCmdline("splash");
+    // Layer the toolchain and desktop packages a Linux desktop expects.
+    packageSet().add("gcc", "14");
+    packageSet().add("binutils", "2.42");
+    packageSet().add("grub", "2.12");
+    packageSet().add("gnome-shell", "46");
+    packageSet().add("mesa", "24.0");
+  }
+
+  // Build a multi-arch Linux model (adds arm64 to the primary amd64 target).
+  void buildMultiArch(String name, String ver) {
+    build(name, ver);
+    architectures().addTarget("arm64");
+    architectures().addTarget("riscv64");
+  }
+}

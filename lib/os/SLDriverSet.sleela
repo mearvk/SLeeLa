@@ -1,0 +1,58 @@
+/*
+ * lib/os/SLDriverSet.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLDriverSet — the device-driver layer of an OS being
+ *   constructed: the drivers the kernel loads to abstract real hardware
+ *   (storage controllers, network interfaces, display/GPU, input, USB, audio).
+ *   It records each driver's name and binding model — built into the kernel
+ *   image, or loaded as a module after boot — so the kernel-config and
+ *   initramfs steps know which drivers must be present before the root
+ *   filesystem can be mounted.
+ *
+ * In the firmware -> boot -> kernel -> userspace -> desktop model, drivers hang
+ * off the kernel node: storage and bus drivers in particular must be available
+ * early (built-in or in the initramfs) for the kernel to reach the rootfs.
+ *
+ * Family: os. Pure design model; no native bridge calls.
+ */
+#sleela 1.5
+class SLDriverSet {
+  String drivers;     // newline-separated "name binding" lines (binding: builtin|module)
+  int count;
+  int builtinCount;
+  int configured;
+
+  void configure() { drivers = ""; count = 0; builtinCount = 0; configured = 1; }
+
+  void add(String name, String binding) {
+    String line = name + " " + binding;
+    if (drivers == "") { drivers = line; } else { drivers = drivers + "\n" + line; }
+    count = count + 1;
+    if (binding == "builtin") { builtinCount = builtinCount + 1; }
+  }
+  // A driver that must be present before the rootfs mounts -> built-in.
+  void builtin(String name) { add(name, "builtin"); }
+  // A driver loaded on demand after boot -> module.
+  void module(String name) { add(name, "module"); }
+
+  // Seed the baseline driver set for a shape. Storage/bus/input are built in;
+  // GPU/audio/extra network are modules.
+  void forShape(SLOSShape shape) {
+    configure();
+    builtin("storage-ahci");
+    builtin("storage-nvme");
+    builtin("bus-pci");
+    builtin("input-hid");
+    module("net-ethernet");
+    module("net-wifi");
+    module("gpu-display");
+    module("usb-xhci");
+    module("audio");
+  }
+
+  String driverManifest() { return drivers; }
+  int driverCount()       { return count; }
+  int builtinDriverCount(){ return builtinCount; }
+  // The kernel can reach a rootfs only if at least one storage driver is built in.
+  boolean canReachRootfs() { return builtinCount > 0; }
+}

@@ -1,0 +1,84 @@
+/*
+ * lib/os/SLOSArchitecture.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLOSArchitecture — the target CPU architecture an OS
+ *   being constructed is built for. It records the architecture triple
+ *   (e.g. "x86_64-unknown-linux-gnu"), the package-architecture label used by
+ *   the distribution tooling (amd64/arm64/...), the machine word width, and
+ *   endianness. The ISO builder and C/C++ emitters read these to pick the
+ *   right toolchain target and bootloader image.
+ *
+ * The supported architecture set mirrors the real OS projects in this lineage:
+ * amd64, arm64, armhf, ppc64el, s390x, riscv64 — the officially supported
+ * package architectures of a modern Linux distribution — plus x86 for legacy
+ * targets. A given SLOSModel composes one or more SLOSArchitecture entries
+ * (a multi-arch build) through SLArchitectureSet.
+ *
+ * Family: os. Pure design model; no native bridge calls.
+ */
+#sleela 1.5
+class SLOSArchitecture {
+  String triple;      // LLVM-style target triple
+  String packageArch; // distro package arch label (amd64/arm64/...)
+  int wordBits;       // 32 or 64
+  int littleEndian;   // 1 little, 0 big
+  int configured;
+
+  // ---- Presets ------------------------------------------------------------
+  void amd64() {
+    triple = "x86_64-unknown-linux-gnu"; packageArch = "amd64";
+    wordBits = 64; littleEndian = 1; configured = 1;
+  }
+  void arm64() {
+    triple = "aarch64-unknown-linux-gnu"; packageArch = "arm64";
+    wordBits = 64; littleEndian = 1; configured = 1;
+  }
+  void armhf() {
+    triple = "arm-unknown-linux-gnueabihf"; packageArch = "armhf";
+    wordBits = 32; littleEndian = 1; configured = 1;
+  }
+  void ppc64el() {
+    triple = "powerpc64le-unknown-linux-gnu"; packageArch = "ppc64el";
+    wordBits = 64; littleEndian = 1; configured = 1;
+  }
+  void s390x() {
+    triple = "s390x-unknown-linux-gnu"; packageArch = "s390x";
+    wordBits = 64; littleEndian = 0; configured = 1;
+  }
+  void riscv64() {
+    triple = "riscv64-unknown-linux-gnu"; packageArch = "riscv64";
+    wordBits = 64; littleEndian = 1; configured = 1;
+  }
+  void x86() {
+    triple = "i686-unknown-linux-gnu"; packageArch = "i386";
+    wordBits = 32; littleEndian = 1; configured = 1;
+  }
+
+  // Choose by package-arch label; defaults to amd64.
+  void configure(String arch) {
+    if (arch == "arm64")   { arm64();   return; }
+    if (arch == "armhf")   { armhf();   return; }
+    if (arch == "ppc64el") { ppc64el(); return; }
+    if (arch == "s390x")   { s390x();   return; }
+    if (arch == "riscv64") { riscv64(); return; }
+    if (arch == "i386")    { x86();     return; }
+    amd64();
+  }
+
+  // Re-triple for a non-Linux shape so the triple reflects the target OS.
+  void retargetForShape(SLOSShape shape) {
+    if (shape.isWindows()) {
+      if (packageArch == "arm64") { triple = "aarch64-pc-windows-msvc"; }
+      else { triple = "x86_64-pc-windows-msvc"; }
+    }
+    if (shape.isMac()) {
+      if (packageArch == "arm64") { triple = "aarch64-apple-darwin"; }
+      else { triple = "x86_64-apple-darwin"; }
+    }
+  }
+
+  String targetTriple() { return triple; }
+  String arch()         { return packageArch; }
+  int bits()            { return wordBits; }
+  boolean isLittleEndian() { return littleEndian == 1; }
+}

@@ -1,0 +1,50 @@
+/*
+ * lib/os/SLBootloaderSpec.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLBootloaderSpec — the firmware/boot layer of an OS being
+ *   constructed. It records how the target OS is handed control by firmware and
+ *   reaches its kernel: the firmware interface (UEFI or legacy BIOS), the boot
+ *   loader used (GRUB for Linux shapes, BOOTMGR for Windows shapes, boot.efi
+ *   for macOS shapes), whether Secure Boot is required, and the EFI System
+ *   Partition layout. It also carries the initramfs/initrd decision for shapes
+ *   that stage an early userspace before the root filesystem is mounted.
+ *
+ * In the firmware -> boot -> kernel -> userspace -> desktop model, this is the
+ * node between firmware and kernel. The ISO builder writes the ESP, installs
+ * the loader, and points it at the kernel the SLKernelSpec names.
+ *
+ * Family: os. Pure design model; no native bridge calls.
+ */
+#sleela 1.5
+class SLBootloaderSpec {
+  String firmware;    // "UEFI" or "BIOS"
+  String loader;      // "GRUB" / "BOOTMGR" / "boot.efi" / "systemd-boot"
+  int secureBoot;     // 1 require Secure Boot
+  int useInitramfs;   // 1 stage an initramfs/initrd early userspace
+  String espLabel;    // EFI System Partition volume label
+  String timeout;     // menu timeout, as a string ("5")
+  int configured;
+
+  void configure(String fw, String bootLoader) {
+    firmware = fw; loader = bootLoader; secureBoot = 1; useInitramfs = 1;
+    espLabel = "ESP"; timeout = "5"; configured = 1;
+  }
+
+  // Default boot style for a shape (UEFI everywhere on modern hardware).
+  void forShape(SLOSShape shape) {
+    if (shape.isWindows()) { configure("UEFI", "BOOTMGR"); useInitramfs = 0; return; }
+    if (shape.isMac())     { configure("UEFI", "boot.efi"); useInitramfs = 0; return; }
+    configure("UEFI", "GRUB");   // Linux: GRUB + initramfs
+  }
+
+  void requireSecureBoot(boolean on) { if (on) { secureBoot = 1; } else { secureBoot = 0; } }
+  void setTimeout(String seconds) { timeout = seconds; }
+
+  boolean isUefi() { return firmware == "UEFI"; }
+  String loaderName() { return loader; }
+  String firmwareName() { return firmware; }
+  boolean stagesInitramfs() { return useInitramfs == 1; }
+
+  // A boot layer is complete when it names a firmware and a loader.
+  boolean isComplete() { return configured == 1 && loader != "" && firmware != ""; }
+}

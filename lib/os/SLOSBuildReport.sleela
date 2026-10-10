@@ -1,0 +1,51 @@
+/*
+ * lib/os/SLOSBuildReport.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLOSBuildReport — the running record of an OS build. As
+ *   SLOSCompiler, SLISOBuilder, and SLInstallerGenerator produce SLOSArtifacts,
+ *   each is recorded here with its path, kind, and byte size, building a
+ *   printable index of everything the pipeline emitted. It also tracks the
+ *   model identity the build started from and an overall success flag, so a
+ *   caller can print one summary and know exactly which files to persist.
+ *
+ * The index is a newline-separated manifest ("kind size path"); no dynamic
+ * array is needed. This mirrors the honest, enumerable-output style the rest of
+ * the library favours.
+ *
+ * Family: os. Collects SLOSArtifact; summarises an SLOSModel build.
+ */
+#sleela 1.5
+class SLOSBuildReport {
+  String identity;    // the model identity this build is for
+  String index;       // newline-separated "kind size path" lines
+  int artifactCount;
+  int ok;             // 1 if the build completed without a failure
+
+  void configure(String modelIdentity) {
+    identity = modelIdentity; index = ""; artifactCount = 0; ok = 1;
+  }
+
+  // Record one produced artifact.
+  void record(SLOSArtifact a) {
+    String line = a.kindName() + " " + intToStr(a.byteCount()) + " " + a.outputPath();
+    if (index == "") { index = line; } else { index = index + "\n" + line; }
+    artifactCount = artifactCount + 1;
+  }
+
+  // Mark the build as failed (e.g. an unbuildable model).
+  void fail() { ok = 0; }
+
+  boolean succeeded()   { return ok == 1; }
+  int count()           { return artifactCount; }
+  String artifactIndex(){ return index; }
+  String modelIdentity(){ return identity; }
+
+  // A one-line human summary.
+  String summary() {
+    String state = "FAILED";
+    if (ok == 1) { state = "OK"; }
+    return state + ": " + identity + " -> " + intToStr(artifactCount) + " artifacts";
+  }
+
+  String intToStr(int v) { return "" + v; }
+}

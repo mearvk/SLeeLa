@@ -1,0 +1,43 @@
+/*
+ * lib/os/SLArchitectureSet.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLArchitectureSet — the set of target CPU architectures
+ *   an OS being constructed is built for. A modern distribution is multi-arch:
+ *   the same OS composition is realised for amd64, arm64, and others. This
+ *   class holds a primary architecture plus a manifest of additional targets,
+ *   so the ISO builder can emit one image per architecture from a single model.
+ *
+ * It composes SLOSArchitecture (one entry per target) and records the primary
+ * target the single-ISO path uses when the caller does not ask for every arch.
+ *
+ * Family: os. Pure design model; no native bridge calls.
+ */
+#sleela 1.5
+class SLArchitectureSet {
+  SLOSArchitecture primary;
+  String targets;     // newline-separated package-arch labels
+  int count;
+  int configured;
+
+  void configure(SLOSArchitecture primaryArch) {
+    primary = primaryArch; targets = primaryArch.arch(); count = 1; configured = 1;
+  }
+
+  // Convenience: configure directly from a package-arch label.
+  void configureLabel(String arch) {
+    SLOSArchitecture a = new SLOSArchitecture();
+    a.configure(arch);
+    configure(a);
+  }
+
+  // Add another target architecture by label.
+  void addTarget(String arch) {
+    targets = targets + "\n" + arch;
+    count = count + 1;
+  }
+
+  SLOSArchitecture primaryArch() { return primary; }
+  String targetManifest()        { return targets; }
+  int targetCount()              { return count; }
+  boolean isMultiArch()          { return count > 1; }
+}

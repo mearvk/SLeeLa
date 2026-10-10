@@ -1,0 +1,99 @@
+/*
+ * lib/os/SLOSShape.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLOSShape — the design-time "shape" an OS being
+ *   constructed should take. A shape is the family of conventions a target OS
+ *   adopts: how it boots, what its init/service manager is called, how its
+ *   filesystem namespace is laid out, what its path separator is, and which
+ *   desktop/session stack sits on top. The three canonical shapes mirror the
+ *   real world: Windows, Linux, and macOS.
+ *
+ * This is the OOD extrapolation axis. One SLOSModel (the aggregate being
+ * built) composes exactly one SLOSShape; the shape supplies the per-family
+ * defaults that the kernel, bootloader, filesystem, service, and desktop
+ * specs read when a developer does not override them. The three preset model
+ * classes (SLWindowsOSModel / SLLinuxOSModel / SLMacOSModel) are thin presets
+ * over the shapes defined here.
+ *
+ * This class describes an OS a developer is DESIGNING. It is distinct from the
+ * host-facing SLOperatingSystem/SLWindowsOS/SLLinuxOS/SLMacOS classes, which
+ * drive the REAL host OS the VM already runs on.
+ *
+ * Family: os. Pure design model; no native bridge calls.
+ */
+#sleela 1.5
+class SLOSShape {
+  // Canonical shape ordinals.
+  static final int SHAPE_LINUX   = 0;
+  static final int SHAPE_WINDOWS = 1;
+  static final int SHAPE_MACOS   = 2;
+
+  int shape;          // one of SHAPE_*
+  String label;       // "Linux" / "Windows" / "macOS"
+  int configured;
+
+  // ---- Construction -------------------------------------------------------
+  void linux()   { shape = SHAPE_LINUX;   label = "Linux";   configured = 1; }
+  void windows() { shape = SHAPE_WINDOWS; label = "Windows"; configured = 1; }
+  void macos()   { shape = SHAPE_MACOS;   label = "macOS";   configured = 1; }
+
+  // Choose by name; defaults to Linux for an unrecognised label.
+  void configure(String name) {
+    if (name == "Windows") { windows(); return; }
+    if (name == "macOS")   { macos();   return; }
+    linux();
+  }
+
+  boolean isLinux()   { return shape == SHAPE_LINUX; }
+  boolean isWindows() { return shape == SHAPE_WINDOWS; }
+  boolean isMac()     { return shape == SHAPE_MACOS; }
+  int ordinal()       { return shape; }
+  String name()       { return label; }
+
+  // ---- Per-family defaults the composed specs read -----------------------
+  // The path separator convention for this shape.
+  String pathSeparator() {
+    if (shape == SHAPE_WINDOWS) { return "\\"; }
+    return "/";
+  }
+  // The PATH-list separator convention for this shape.
+  String listSeparator() {
+    if (shape == SHAPE_WINDOWS) { return ";"; }
+    return ":";
+  }
+  // The name of the first user-space process / service manager.
+  String initManager() {
+    if (shape == SHAPE_WINDOWS) { return "smss+ServiceControlManager"; }
+    if (shape == SHAPE_MACOS)   { return "launchd"; }
+    return "systemd";
+  }
+  // The default firmware/boot style for this shape.
+  String bootStyle() {
+    if (shape == SHAPE_WINDOWS) { return "UEFI+BOOTMGR"; }
+    if (shape == SHAPE_MACOS)   { return "UEFI+boot.efi"; }
+    return "UEFI+GRUB";
+  }
+  // The default root-filesystem format for this shape.
+  String rootFilesystem() {
+    if (shape == SHAPE_WINDOWS) { return "NTFS"; }
+    if (shape == SHAPE_MACOS)   { return "APFS"; }
+    return "ext4";
+  }
+  // The default desktop/session shell for this shape.
+  String desktopSession() {
+    if (shape == SHAPE_WINDOWS) { return "Explorer/DWM"; }
+    if (shape == SHAPE_MACOS)   { return "Aqua/WindowServer"; }
+    return "GNOME/Wayland";
+  }
+  // The conventional system-root directory for this shape.
+  String systemRoot() {
+    if (shape == SHAPE_WINDOWS) { return "C:\\Windows"; }
+    if (shape == SHAPE_MACOS)   { return "/System"; }
+    return "/usr";
+  }
+  // The conventional installed-executable extension for this shape.
+  String executableExtension() {
+    if (shape == SHAPE_WINDOWS) { return ".exe"; }
+    return "";
+  }
+}

@@ -1,0 +1,34 @@
+/*
+ * lib/os/SLMacOSModel.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLMacOSModel — a preset that extends SLOSModel and
+ *   extrapolates it into a macOS-shaped operating system: an XNU/Darwin-style
+ *   kernel, UEFI+boot.efi boot, an APFS root under the Apple directory layout
+ *   (/System, /Library, /Applications, /Users), a launchd service set, a
+ *   libSystem/CoreServices base package seed, and the Aqua/WindowServer
+ *   desktop. It is the OOD realisation of "assume the shape of macOS".
+ *
+ * After build(), refine any layer through the inherited accessors. macOS shapes
+ * default to arm64 (Apple silicon) with x86_64 available as an added target.
+ *
+ * Family: os. Extends SLOSModel.
+ */
+#sleela 1.5
+class SLMacOSModel extends SLOSModel {
+  // Build a macOS-shaped model with the given product name/version on arm64.
+  void build(String name, String ver) {
+    configure(name, ver);
+    shapeAs("macOS", "arm64");
+    // Layer the Apple frameworks and shell components.
+    packageSet().add("Foundation", "24.0");
+    packageSet().add("AppKit", "24.0");
+    packageSet().add("Finder", "24.0");
+    packageSet().add("Dock", "24.0");
+  }
+
+  // Build a universal macOS model (adds the x86_64 target alongside arm64).
+  void buildUniversal(String name, String ver) {
+    build(name, ver);
+    architectures().addTarget("amd64");
+  }
+}
