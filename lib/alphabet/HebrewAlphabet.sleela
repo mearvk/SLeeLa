@@ -1,0 +1,27 @@
+/*
+ * lib/alphabet/HebrewAlphabet.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: HebrewAlphabet — the 22-letter Hebrew script (Alef..Tav). Hebrew
+ *   is an ABJAD: its letters are consonants, with vowels normally supplied by
+ *   points (niqqud) rather than letters, so every letter here is marked a
+ *   consonant. A few letters (Alef, He, Vav, Yod) act as mater lectionis — vowel
+ *   carriers — but as letters they remain consonantal, which is why the vowel
+ *   count of a pure abjad is honestly zero.
+ *
+ * A concrete Alphabet: override compose() to append its letters in order. Call
+ * begin("Hebrew") to build it. Family: alphabet.
+ */
+#sleela 1.3
+class HebrewAlphabet extends Alphabet {
+
+  void compose() {
+    append("Alef", false);   append("Bet", false);    append("Gimel", false);
+    append("Dalet", false);  append("He", false);     append("Vav", false);
+    append("Zayin", false);  append("Het", false);    append("Tet", false);
+    append("Yod", false);    append("Kaf", false);    append("Lamed", false);
+    append("Mem", false);    append("Nun", false);    append("Samekh", false);
+    append("Ayin", false);   append("Pe", false);     append("Tsadi", false);
+    append("Qof", false);    append("Resh", false);   append("Shin", false);
+    append("Tav", false);
+  }
+}

@@ -1,0 +1,50 @@
+/*
+ * lib/alphabet/AlphabetBuilder.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines AlphabetBuilder — the syntax 1.8+ way to assemble a
+ *   custom Alphabet without declaring a subclass. Where the classic path is
+ *   "subclass Alphabet and override compose()", the builder lets a user of
+ *   Sleela compose a writing system inline using one-line Letter constructors
+ *   and `let`-inferred locals:
+ *
+ *     let b = new AlphabetBuilder("Runic");
+ *     b.vowel("A"); b.consonant("B"); ...
+ *     let alpha = b.build();            // a fully formed Alphabet
+ *
+ * Each add() builds a Letter with `new Letter(glyph, order, vowel)` (the 1.8
+ * constructor) and hands it to Alphabet.appendLetter. The builder is the
+ * ergonomic, subclass-free front door the 1.8 surface makes possible.
+ *
+ * Family: alphabet. Composes Alphabet + Letter (1.8 constructors).
+ */
+#sleela 1.8
+class AlphabetBuilder {
+
+  Alphabet target;
+  int next;        // 1-based running order for constructed Letters
+
+  // Syntax 1.8 constructor: start a builder for a named script.
+  AlphabetBuilder(String scriptName) {
+    this.target = new Alphabet();
+    this.target.begin(scriptName);   // base compose() is empty: a blank canvas
+    this.next = 1;
+  }
+
+  // Add a letter built in one line with the Letter 1.8 constructor.
+  void add(String glyph, boolean vowel) {
+    Letter L = new Letter(glyph, next, vowel);
+    target.appendLetter(L);
+    next = next + 1;
+  }
+  void vowel(String glyph)     { add(glyph, true); }
+  void consonant(String glyph) { add(glyph, false); }
+
+  // Add a whole run of consonants or vowels from pre-split glyphs is left to the
+  // caller; the per-glyph adders keep vowel-ness explicit (only the script knows).
+
+  // The assembled alphabet.
+  Alphabet build() { return target; }
+
+  int letterCount() { return target.size(); }
+  String describe() { return "AlphabetBuilder -> " + target.describe(); }
+}

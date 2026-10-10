@@ -1,11 +1,27 @@
 # SLeeLa /lib Library Index
 
-**Revision:** 0.44  
+**Revision:** 0.45  
 **Packages:** 89  
-**SLeeLa source units:** 10551  
+**SLeeLa source units:** 10554  
 **Module-facade symbols:** 61  
-**Total symbol records:** 10612  
+**Total symbol records:** 10615  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
+
+> Revision 0.45 improves the **`alphabet`** package for **Sleela 1.8+**. `Letter`
+> and `Alphabet` are upgraded to `#sleela 1.8` and gain the two 1.8 ergonomics
+> without breaking the classic path: `Letter` now offers a one-line constructor
+> `new Letter(glyph, order, vowel)` (the load()+set() two-step and zero-arg
+> `new Letter()` used by `Alphabet.append()` are retained), and `Alphabet` gains
+> `appendLetter(Letter)` to accept constructor-built glyphs. A new
+> subclass-free **`AlphabetBuilder`** assembles a custom writing system inline
+> with `let` + Letter constructors. Two new scripts broaden coverage —
+> **`HebrewAlphabet`** and **`ArabicAlphabet`** (both abjads) — alongside Latin,
+> Greek, and Cyrillic. Three new source units (10,612 → **10,615** total
+> records; 10,551 → **10,554** source classes); packages and facades unchanged
+> at 89 and 61. A runnable 1.8 demonstrator lives at
+> `alphabet/sleela/AlphabetDemo18.sleela` (outside `/lib`, so not counted here).
+> `LIBRARY.SYMBOLS.md` was regenerated from the live tree and verified by
+> `test-suites/test-library-inventory.sh`.
 
 > Revision 0.44 extends the **Moral Capacitor™** family with a **Certificate of
 > Morals™** and a **Guard of the Moral Code**, putting the moral code — with a
