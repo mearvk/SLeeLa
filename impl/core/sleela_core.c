@@ -942,12 +942,19 @@ static SLResult run_thread(SLThread* t) {
         case OP_HALT: return SLR_HALT;
         case OP_GC_HINT: {
             /* Short-term GC cleanup requested by `x = gc N;` / `x = mem N;`.
-             * operand a is the 0..100 aggressiveness. 0 is a no-op. Higher
-             * levels run a larger safepoint collection; the ceiling requests a
-             * full (not young-only) collection. Only unreachable objects are
-             * reclaimed; a hint never frees a live value. Collection is a
-             * safepoint, so it is deferred while worker threads are active (the
-             * same discipline as the per-instruction safepoint above). */
+             * operand a is the 0..100 aggressiveness. 0 is a no-op. Because this
+             * is an EXPLICIT developer request (unlike the automatic
+             * per-instruction safepoint above), it runs a COMPLETE collection
+             * via gc_collect_with_roots -- clear, mark all reachable from the
+             * roots, then sweep -- so a single hint actually reclaims the dead
+             * objects (and frees their VM-local struct/array handle slots) it is
+             * meant to clean up, rather than only advancing an incremental,
+             * budgeted mark. The aggressiveness selects the scope: a modest
+             * level runs a young-only collection (recent garbage, the common
+             * post-use case), and the ceiling (SL_GC_HINT_FULL) runs a full
+             * collection. Only unreachable objects are reclaimed; a hint never
+             * frees a live value. Like every collection it is a VM safepoint, so
+             * it is deferred while worker threads are active. */
             int level = in.a;
             if (level < 0) level = 0;
             if (level > SL_GC_HINT_MAX) level = SL_GC_HINT_MAX;
@@ -958,10 +965,8 @@ static SLResult run_thread(SLThread* t) {
                 if (workers == 0) {
                     SLGCRootContext roots = { vm, t };
                     int young_only = (level >= SL_GC_HINT_FULL) ? 0 : 1;
-                    /* Budget scales with the requested aggressiveness. */
-                    size_t budget = (size_t)level;
-                    gc_safepoint_with_roots(&vm->gc, gc_mark_vm_roots, &roots,
-                                            young_only, budget);
+                    gc_collect_with_roots(&vm->gc, gc_mark_vm_roots, &roots,
+                                          young_only);
                 }
             }
         } break;

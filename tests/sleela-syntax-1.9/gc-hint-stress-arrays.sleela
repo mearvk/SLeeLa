@@ -1,0 +1,22 @@
+#sleela 1.9
+// Large case: allocate and discard 100000 arrays in a loop, each followed by a
+// full-collection hint. This exercises the hint under heavy churn and, crucially,
+// confirms it frees the VM-local array handle slots (the bounded array store,
+// 4096 slots) rather than only the GC heap bytes -- without the complete
+// collection the store would exhaust long before 100000. The sum is an exact
+// correctness witness that live state is never clobbered.
+class GcHintStressArrays {
+    static void main() {
+        int i = 0;
+        int touched = 0;
+        while (i < 100000) {
+            int[] a = new int[64];
+            a[0] = i;
+            a[63] = i;
+            touched = touched + a[0];
+            a = gc 100;           // full-collection hint for the now-dead array
+            i = i + 1;
+        }
+        print(touched);           // 0+1+...+99999 = 4999950000
+    }
+}
