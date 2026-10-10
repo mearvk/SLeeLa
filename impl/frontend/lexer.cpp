@@ -40,9 +40,17 @@ static const std::unordered_map<std::string,int> kContextualBuiltins13={
     {"Munction",1},{"start",1},{"connect",1},{"enable",1},{"send",1},{"thatch",1},{"consume",1},{"latch",1},{"closeWithReceipt",1},{"reception",1},
     {"synchroOpen",1},{"synchroDispatch",1},{"synchroReport",1},{"synchroClose",1},{"synchroSent",1},{"synchroReceived",1},{"synchroMean",1},{"synchroMin",1},{"synchroMax",1},{"synchroP95",1},{"synchroLoss",1},
     {"bestOfNew",1},{"bestOfWeight",1},{"bestOfMinVersion",1},{"bestOfCostBudget",1},{"bestOfCandidate",1},{"bestOfRecord",1},{"bestOfScore",1},{"bestOfBest",1},{"bestOfChoice",1},{"bestOfReport",1},{"bestOfClose",1},
-    {"bestOfMean",1},{"bestOfLoss",1},{"bestOfJitter",1},{"bestOfCertainty",1},{"bestOfCandidateArch",1},{"bestOfArchRealized",1},{"bestOfArch",1},{"bestOfArchParam",1},{"bestOfArchState",1}
+    {"bestOfMean",1},{"bestOfLoss",1},{"bestOfJitter",1},{"bestOfCertainty",1},{"bestOfCandidateArch",1},{"bestOfArchRealized",1},{"bestOfArch",1},{"bestOfArchParam",1},{"bestOfArchState",1},
+    /* GC-hint words (syntax 1.9). `gc` and `mem` are CONTEXTUAL, not reserved:
+     * they tokenize as ordinary identifiers and are only special as the whole
+     * right-hand side of an assignment (`x = gc N;` / `x = mem N;`), so they
+     * remain usable as identifiers everywhere else. The parser recognises the
+     * hint positionally; this registry entry documents them as contextual. */
+    {"gc",1},{"mem",1}
 };
 bool isContextualBuiltin(const std::string& name){return kContextualBuiltins13.find(name)!=kContextualBuiltins13.end();}
+// True for the two GC-hint spellings recognised as the RHS of `x = gc/mem N;`.
+bool isGcHintWord(const std::string& name){return name=="gc"||name=="mem";}
 Token Lexer::makeIdentOrKeyword(){
     static const std::unordered_map<std::string,Tok> kw={
         {"class",Tok::KwClass},{"interface",Tok::KwInterface},{"enum",Tok::KwEnum},{"record",Tok::KwRecord},

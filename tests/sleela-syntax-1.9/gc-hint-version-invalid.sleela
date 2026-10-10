@@ -1,0 +1,8 @@
+#sleela 1.8
+class GcHintVersionInvalid {
+    static void main() {
+        let x = 1;
+        x = gc 50;         // the GC hint requires syntax 1.9
+        print(x);
+    }
+}

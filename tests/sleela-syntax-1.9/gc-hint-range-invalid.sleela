@@ -1,0 +1,8 @@
+#sleela 1.9
+class GcHintRangeInvalid {
+    static void main() {
+        let x = 1;
+        x = gc 250;        // 250 is out of the 0..100 aggressiveness band
+        print(x);
+    }
+}

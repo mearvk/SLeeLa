@@ -112,6 +112,11 @@ struct Assign:Stmt{std::string name;ExprP value;};
 struct FieldAssign:Stmt{ExprP base;std::string field;ExprP value;};
 struct ExprStmt:Stmt{ExprP expr;ExprStmt()=default;explicit ExprStmt(ExprP e):expr(std::move(e)){}};
 struct PrintStmt:Stmt{ExprP expr;};
+// GC-hint statement (syntax 1.9): `x = gc N;` / `x = mem N;`. `target` names the
+// value the developer is done using; `aggressiveness` is the 0..100 cleanup
+// strength. Both the `gc` and `mem` spellings produce this node. It lowers to a
+// single OP_GC_HINT with the aggressiveness as its operand.
+struct GcHintStmt:Stmt{std::string target;std::string spelling;int aggressiveness=0;};
 struct ReturnStmt:Stmt{ExprP value;};
 struct Block:Stmt{std::vector<StmtP> stmts;};
 struct IfStmt:Stmt{ExprP cond;StmtP thenS,elseS;};

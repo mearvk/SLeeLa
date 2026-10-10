@@ -176,6 +176,7 @@ private:
         if(auto b=dynamic_cast<const Block*>(s)){emitBlock(*b);return;} if(auto d=dynamic_cast<const VarDecl*>(s)){emitVarDecl(*d);return;}
         if(auto a=dynamic_cast<const Assign*>(s)){emitAssign(*a);return;} if(auto e=dynamic_cast<const ExprStmt*>(s)){emitExpr(e->expr.get());emit(OP_POP);return;}
         if(auto p=dynamic_cast<const PrintStmt*>(s)){emitExpr(p->expr.get());emit(OP_PRINT);return;} if(auto r=dynamic_cast<const ReturnStmt*>(s)){emitReturn(*r);return;}
+        if(auto gh=dynamic_cast<const GcHintStmt*>(s)){emitGcHint(*gh);return;}
         if(auto i=dynamic_cast<const IfStmt*>(s)){emitIf(*i);return;} if(auto w=dynamic_cast<const WhileStmt*>(s)){emitWhile(*w);return;} if(auto f=dynamic_cast<const ForStmt*>(s)){emitFor(*f);return;}
         if(auto fa=dynamic_cast<const FieldAssign*>(s)){emitFieldAssign(*fa);return;}
         if(auto d=dynamic_cast<const DoStmt*>(s)){emitDo(*d);return;}
@@ -205,6 +206,20 @@ private:
         emit(OP_STOREL,slot);
     }
     void emitAssign(const Assign& a){int slot=ctx_->slotOf(a.name);if(slot>=0){emitExpr(a.value.get());emit(OP_STOREL,slot);return;}int off=instanceFieldOffset(a.name);if(off>=0){emitThis();emitExpr(a.value.get());emit(OP_SETFIELD,off);emit(OP_POP);return;}int g=fieldSlot(a.name);if(g>=0){emitExpr(a.value.get());emit(OP_STOREG,g);return;}throw std::runtime_error("Semantic error: assignment to undeclared variable '"+a.name+"'");}
+    // GC hint (syntax 1.9): `x = gc N;` / `x = mem N;`. The target must name an
+    // in-scope value the developer is finished using (a local, instance field,
+    // or static field), which keeps the hint honest: it marks a real binding as
+    // releasable. The hint lowers to a single OP_GC_HINT whose operand is the
+    // 0..100 aggressiveness; the VM runs a short-term collection of unreachable
+    // allocations at that strength. No value is pushed or popped.
+    void emitGcHint(const GcHintStmt& h){
+        bool known = ctx_ && ctx_->slotOf(h.target)>=0;
+        if(!known) known = instanceFieldOffset(h.target)>=0;
+        if(!known) known = fieldSlot(h.target)>=0;
+        if(!known) throw std::runtime_error("Semantic error: GC hint target '"+h.target+"' is not an in-scope variable");
+        int level=h.aggressiveness; if(level<0)level=0; if(level>100)level=100;
+        emit(OP_GC_HINT, level);
+    }
     void emitReturn(const ReturnStmt& r){if(r.value)emitExpr(r.value.get());else emit(OP_CONST,addNullConst());emit(OP_RET);}
     void emitFieldAssign(const FieldAssign& fa){int off=-1;memberLayout(fa.base.get(),fa.field,off);emitExpr(fa.base.get());emitExpr(fa.value.get());emit(OP_SETFIELD,off);emit(OP_POP);}
     void emitIf(const IfStmt& s){emitExpr(s.cond.get());int jf=emit(OP_JMPF,0);emitStmt(s.thenS.get());if(s.elseS){int jend=emit(OP_JMP,0);patch(jf,here());emitStmt(s.elseS.get());patch(jend,here());}else patch(jf,here());}
