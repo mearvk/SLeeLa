@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 #include <set>
+#include <functional>
 #include "library_index.h"
 
 namespace sleela {
@@ -87,10 +88,40 @@ public:
         }
         // Class instances share the VM's managed struct allocator, but each
         // class gets an independent layout and each object gets independent storage.
+        //
+        // OOD inheritance (syntax 1.10): a derived class's instance layout is the
+        // base class's inherited instance fields first, then the derived class's
+        // own fields (a same-name field is not duplicated). Base-first ordering
+        // keeps a base method's field offsets valid on a derived instance. The
+        // extends chain is resolved base-first; <=1.9 keeps the flat layout.
+        std::map<std::string,const ClassDecl*> classByName;
+        for(const auto& c:prog_.classes) classByName[c.name]=&c;
+        const bool inheritance = !(syntax_<SyntaxVersion{1,10});
+        std::map<std::string,std::vector<const Field*>> instanceFieldsOf; // resolved, in layout order
+        std::set<std::string> laidOut; std::set<std::string> layoutInProgress;
+        std::function<void(const std::string&)> resolveFields=[&](const std::string& name){
+            if(laidOut.count(name)||!classByName.count(name)) return;
+            if(!layoutInProgress.insert(name).second) return; // cycle guard
+            const ClassDecl* cls=classByName[name];
+            std::vector<const Field*> ordered; std::set<std::string> seen;
+            if(inheritance){
+                const std::string& sup=cls->java.superclass;
+                if(!sup.empty()&&classByName.count(sup)&&!layoutInProgress.count(sup)){
+                    resolveFields(sup);
+                    for(const Field* bf:instanceFieldsOf[sup]) if(seen.insert(bf->name).second) ordered.push_back(bf);
+                }
+            }
+            for(const auto& f:cls->fields) if(!f.isStatic){ if(seen.insert(f.name).second) ordered.push_back(&f); }
+            instanceFieldsOf[name]=std::move(ordered);
+            layoutInProgress.erase(name);
+            laidOut.insert(name);
+        };
+        for(const auto& cls:prog_.classes) resolveFields(cls.name);
         for(const auto& cls:prog_.classes){
             if(structLayout_.count(cls.name)) throw std::runtime_error("Semantic error: class/struct name collision '"+cls.name+"'");
             StructLayout layout; layout.name=cls.name; std::vector<const char*> names;
-            for(const auto& f:cls.fields) if(!f.isStatic){
+            for(const Field* fp:instanceFieldsOf[cls.name]){
+                const auto& f=*fp;
                 if(layout.fieldOffset.count(f.name)) throw std::runtime_error("Semantic error: duplicate instance field '"+f.name+"' in class '"+cls.name+"'");
                 layout.fieldOffset[f.name]=(int)layout.fieldType.size(); layout.fieldType.push_back(f.type); names.push_back(f.name.c_str());
             }
@@ -111,6 +142,30 @@ public:
             if(m.isProtected) protectedMethods_.insert(key);
             funcIndex_[key]=(int)methods_.size(); methods_.push_back(mi);
             if(m.name=="main") funcIndex_["main"]=(int)methods_.size()-1;
+        }
+        // OOD inheritance (syntax 1.10): make a base method callable as
+        // Derived::method when the derived class does not override it. The
+        // inherited method shares the base's compiled body (its field accesses
+        // resolve against the base-first layout, which the derived instance
+        // shares). Resolved base-first so multi-level chains inherit fully.
+        if(inheritance){
+            std::set<std::string> aliased; std::set<std::string> aliasInProgress;
+            std::function<void(const std::string&)> inheritMethods=[&](const std::string& name){
+                if(aliased.count(name)||!classByName.count(name)) return;
+                if(!aliasInProgress.insert(name).second) return; // cycle guard
+                const std::string& sup=classByName[name]->java.superclass;
+                if(sup.empty()||!classByName.count(sup)||aliasInProgress.count(sup)){ aliasInProgress.erase(name); aliased.insert(name); return; }
+                inheritMethods(sup);
+                // Alias the base's RESOLVED function set (its own + inherited),
+                // so multi-level chains carry grandparent methods down.
+                const std::string pfx=sup+"::";
+                std::vector<std::pair<std::string,int>> toAlias;
+                for(const auto& kv:funcIndex_){ const std::string& bk=kv.first; if(bk.rfind(pfx,0)!=0) continue; std::string mname=bk.substr(pfx.size()); if(mname=="main") continue; const std::string dk=name+"::"+mname; if(funcIndex_.count(dk)) continue; toAlias.push_back({dk,kv.second}); auto ow=methodOwner_.find(bk); if(ow!=methodOwner_.end()) methodOwner_[dk]=ow->second; }
+                for(auto& e:toAlias) funcIndex_[e.first]=e.second;
+                aliasInProgress.erase(name);
+                aliased.insert(name);
+            };
+            for(const auto& cls:prog_.classes) inheritMethods(cls.name);
         }
         if(funcIndex_.find("main")==funcIndex_.end()) throw std::runtime_error("Semantic error: no 'main' method found");
         for(auto& mi:methods_) emitMethod(mi);
