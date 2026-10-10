@@ -131,6 +131,22 @@ class Analyzer{
   err("unknown statement kind");
  }
  void requireBool(const Type&t,const char*w){if(t.kind!=Kind::Bool&&t.kind!=Kind::Unknown)err(std::string(w)+" must be bool, got "+nameOf(t));}
+ // Syntax 1.8 constructor invocation `new T(args...)`. Supported: a single
+ // declared constructor whose arity matches and whose parameter types accept
+ // the supplied arguments. NOT supported in 1.8: overload resolution (more than
+ // one constructor) and this()/base delegation -- those are rejected explicitly
+ // rather than silently narrowing behavior. Argument subexpressions are always
+ // analyzed (even on the error paths) so nested type errors are still reported.
+ void checkConstructorArgs(const NewExpr&n){
+  if(syntax<SyntaxVersion{1,8}){for(const auto&a:n.args)expr(*a);err("constructor arguments for '"+n.typeName+"' require syntax 1.8");return;}
+  const Method* ctor=nullptr; int ctorCount=0;
+  for(const auto&c:p.classes) if(c.name==n.typeName)
+   for(const auto&m:c.methods) if(m.java.constructor){ctorCount++; if(m.params.size()==n.args.size())ctor=&m;}
+  if(ctorCount==0){for(const auto&a:n.args)expr(*a);err("class '"+n.typeName+"' declares no constructor to accept "+std::to_string(n.args.size())+" argument(s)");return;}
+  if(ctorCount>1){for(const auto&a:n.args)expr(*a);err("class '"+n.typeName+"' declares multiple constructors; syntax 1.8 does not support constructor overload resolution");return;}
+  if(!ctor){for(const auto&a:n.args)expr(*a);err("constructor of '"+n.typeName+"' expects a different number of arguments than "+std::to_string(n.args.size()));return;}
+  for(size_t i=0;i<n.args.size();++i){Type g=expr(*n.args[i]),w=tn(ctor->params[i].type);if(!assignable(w,g))err("constructor argument "+std::to_string(i+1)+" to '"+n.typeName+"' has type "+nameOf(g)+", expected "+nameOf(w));}
+ }
  // The `next` / `next.next` / `next.next.next.next` system-degree idiom (see
  // compiler emitVar/emitMember): `next` is Degree 1 and each `.next` step is a
  // bounded symbolic relation, not a struct field access. Recognize an all-`next`
@@ -157,7 +173,7 @@ class Analyzer{
     return typeOf(n->typeName);
    }
    if(!structs.count(n->typeName)&&!classNames.count(n->typeName)){err("new of unknown class or struct '"+n->typeName+"'");return{Kind::Error,{}};}
-   if(!n->args.empty())err("constructors with arguments are not yet supported for '"+n->typeName+"'");
+   if(!n->args.empty())checkConstructorArgs(*n);
    return{Kind::Struct,n->typeName};}
   if(auto m=dynamic_cast<const MemberAccess*>(&e)){if(m->field=="next"&&isNextChain(*m->base))return{Kind::Int,{}};return member(*m->base,m->field);}
   if(auto u=dynamic_cast<const Unary*>(&e)){Type t=expr(*u->operand);if(u->op=="-"&&(!numeric(t)||t.kind==Kind::Unsigned)&&t.kind!=Kind::Unknown)err("unary '-' requires signed numeric operand, got "+nameOf(t));if(u->op=="!"&&t.kind!=Kind::Bool&&t.kind!=Kind::Unknown)err("unary '!' requires bool operand, got "+nameOf(t));return t;}

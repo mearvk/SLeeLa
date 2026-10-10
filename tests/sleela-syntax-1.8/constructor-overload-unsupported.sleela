@@ -1,0 +1,20 @@
+#sleela 1.8
+class Pair {
+    int a;
+    int b;
+
+    Pair(int x) {
+        this.a = x;
+        this.b = x;
+    }
+
+    Pair(int x, int y) {
+        this.a = x;
+        this.b = y;
+    }
+
+    static void main() {
+        Pair p = new Pair(1, 2);
+        print(p.a);
+    }
+}

@@ -1,0 +1,13 @@
+#sleela 1.8
+class Box {
+    int size;
+
+    Box(int s) {
+        this.size = s;
+    }
+
+    static void main() {
+        Box b = new Box(1, 2);
+        print(b.size);
+    }
+}

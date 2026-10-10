@@ -353,10 +353,30 @@ private:
         if(oit==lit->second.fieldOffset.end()) throw std::runtime_error("Semantic error: struct '"+tn+"' has no field '"+field+"'");
         offset=oit->second; return lit->second;
     }
+    // Resolve the single constructor declared for `className` that accepts
+    // `argc` arguments. Syntax 1.8 supports constructor arguments but NOT
+    // overload resolution or this()/base delegation, so there must be exactly
+    // one constructor and its arity must match. Returns nullptr when the class
+    // declares no constructor at all (the zero-arg field-init path applies).
+    const Method* findConstructor(const std::string& className,size_t argc){
+        const Method* match=nullptr; int ctorCount=0;
+        for(const auto& cls:prog_.classes) if(cls.name==className)
+            for(const auto& m:cls.methods) if(m.java.constructor){
+                ctorCount++;
+                if(m.params.size()==argc) match=&m;
+            }
+        if(ctorCount==0) return nullptr;
+        if(ctorCount>1) throw std::runtime_error("Semantic error: class '"+className+"' declares multiple constructors; syntax 1.8 does not support constructor overload resolution");
+        if(!match) throw std::runtime_error("Semantic error: no constructor of '"+className+"' takes "+std::to_string(argc)+" argument(s)");
+        return match;
+    }
     void emitNew(const NewExpr& n){
         if(n.typeName.size()>=2 && n.typeName.compare(n.typeName.size()-2,2,"[]")==0){if(!n.args.empty())emitExpr(n.args[0].get());else emit(OP_CONST,slvm_add_const_int(vm_,0));emit(OP_NEWARRAY);return;}
         auto it=structLayout_.find(n.typeName);if(it==structLayout_.end())throw std::runtime_error("Semantic error: 'new' of unknown class or struct '"+n.typeName+"'");
-        if(!n.args.empty())throw std::runtime_error("Semantic error: constructors with arguments are not yet supported for '"+n.typeName+"'");
+        // Resolve a matching constructor before allocating so an arity/overload
+        // error is reported without leaving a half-built instance plan.
+        const Method* ctor = n.args.empty() ? findConstructor(n.typeName,0) : findConstructor(n.typeName,n.args.size());
+        if(!n.args.empty() && !ctor) throw std::runtime_error("Semantic error: class '"+n.typeName+"' has no constructor to accept "+std::to_string(n.args.size())+" argument(s)");
         emit(OP_NEWSTRUCT,it->second.typeIndex);
         // Initialize class fields per instance. A duplicated handle is consumed
         // by SETFIELD while the original stays on the stack as the new value.
@@ -372,6 +392,19 @@ private:
                 else emit(OP_CONST,addNullConst());
                 emit(OP_SETFIELD,off->second);emit(OP_POP);
             }
+        }
+        // Syntax 1.8 constructor invocation. After field initialization the
+        // fresh instance is on top of the stack. Duplicate it as the `this`
+        // receiver, push the constructor arguments, and call the constructor
+        // method; its (null) return value is discarded so the fully initialized
+        // instance remains on the stack as the value of `new Type(args)`.
+        if(ctor){
+            auto target=funcIndex_.find(n.typeName+"::"+ctor->name);
+            if(target==funcIndex_.end()) throw std::runtime_error("Semantic error: constructor of '"+n.typeName+"' is not registered");
+            emit(OP_DUP);
+            for(const auto& a:n.args) emitExpr(a.get());
+            emit(OP_CALL,target->second);
+            emit(OP_POP);
         }
     }
     void emitMember(const MemberAccess& m){

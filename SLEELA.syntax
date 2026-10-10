@@ -11,13 +11,16 @@
 
     Versioning note: two distinct version numbers apply and must not be
     conflated. The **syntax version** (MAJOR.MINOR, declared per file with
-    `#sleela 1.7`) is the grammar version defined here and enforced by
-    `impl/frontend/version.{h,cpp}` (documented supported range 1.3 .. 1.7).
-    Syntax 1.8 adds inferred local declarations using `let`. The compiler's
-    semantic analyzer supports inference from non-null, non-void, statically
-    known initializer expressions. Constructor arguments and concise `Type(args)`
-    construction remain outside the verified implementation; do not infer their
-    support from the constructor-series design documents. The **compiler/tool version** (Sleelvac™ 0.3.29-dev, printed by
+    `#sleela 1.8`) is the grammar version defined here and enforced by
+    `impl/frontend/version.{h,cpp}` (documented supported range 1.3 .. 1.8).
+    Syntax 1.8 adds two features over the 1.3..1.7 baseline: inferred local
+    declarations using `let`, and constructor arguments on `new Type(args)`
+    (see section 12). The semantic analyzer infers `let` locals from non-null,
+    non-void, statically known initializers, and binds constructor arguments to
+    a single declared constructor. Constructor overload resolution and
+    `this(...)`/base delegation remain outside the verified 1.8 implementation
+    and are rejected explicitly; do not infer their support from the
+    constructor-series design documents. The **compiler/tool version** (Sleelvac™ 0.3.29-dev, printed by
     `sleela version`) is the implementation release and evolves independently.
     A file must declare a syntax version within the verified supported range;
     the tool version is informational.
@@ -491,7 +494,12 @@ on the Turing-complete threaded C/C++ core.
 
 
 --------------------------------------------------------------------------------
-## 9. Syntax 1.8 — inferred local declarations
+## 12. Syntax 1.8 — inferred locals and constructor arguments
+
+Syntax 1.8 extends the 1.3..1.7 surface with two features: inferred local
+declarations (`let`) and constructor arguments on `new Type(args)`.
+
+### 12.1 Inferred local declarations (`let`)
 
 A local declaration may use `let` when its initializer has a statically known,
 non-null and non-void type:
@@ -514,6 +522,57 @@ The inferred type is the initializer's semantic type. An initializer is required
 Inference from `null`, `void`, or an unknown/dynamic expression is rejected rather
 than silently assigning an unsafe type. Explicit declarations remain valid.
 
-Constructor overload resolution and runtime invocation are not declared part of
-this syntax 1.8 implementation until the compiler and runtime support them and
-constructor regression tests pass.
+### 12.2 Constructor arguments
+
+A class may declare a constructor: a member whose name is the class name,
+followed by a parameter list and a body. Syntax 1.8 allows that constructor to
+be invoked with arguments through `new Type(args)`; the arguments bind to the
+constructor parameters and the constructor body runs before the new instance is
+published to the caller.
+
+    constructorDecl ::= javaModifiers? Ident "(" paramList? ")" throwsClause? block
+                        // Ident must equal the enclosing class name   (1.8+)
+    newExpr         ::= "new" typeName "(" argList? ")"
+                        // argList non-empty selects the matching constructor (1.8+)
+
+```sleela
+#sleela 1.8
+class Point {
+    int x;
+    int y;
+
+    Point(int px, int py) {
+        this.x = px;
+        this.y = py;
+    }
+
+    static void main() {
+        Point p = new Point(3, 4);
+        print(p.x);        // 3
+        print(p.y);        // 4
+        let q = new Point(10, 20);
+        print(q.x);        // 10
+    }
+}
+```
+
+Instance field initializers run first (producing a default-initialized instance),
+then the selected constructor body executes with `this` bound to that instance.
+A `new Type(args)` expression evaluates to the fully initialized instance.
+
+Scope and limits of the 1.8 constructor feature:
+
+- **Single constructor only.** Constructor **overload resolution is not part of
+  syntax 1.8**: a class that declares more than one constructor is rejected. The
+  constructor's parameter count must equal the number of supplied arguments, and
+  each argument type must be assignable to its parameter type.
+- **No delegation.** Explicit `this(...)` and base-constructor delegation are not
+  part of syntax 1.8; the chaining model in `lib/compiler/CONSTRUCTOR-SERIES.md`
+  is a forward-looking design, not a claim of current support.
+- A zero-argument `new Type()` continues to work whether or not a no-argument
+  constructor is declared; when one is declared it runs.
+
+These limits are enforced rather than silently narrowed: unsupported constructor
+forms produce an explicit semantic error (see `impl/frontend/semantic.cpp` and
+`impl/frontend/compiler.cpp`). Regression fixtures live in
+`tests/sleela-syntax-1.8/`.
