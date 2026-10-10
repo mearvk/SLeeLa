@@ -1,0 +1,54 @@
+/*
+ * lib/gui/SLGuiDocumentListener.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLGuiDocumentListener — the SLeeLa GUI document-change
+ *   listener option. Mirrors DocumentListener in gui/: watch 1..14 documents
+ *   and refresh the running GUI whenever any changes on an OS call. Detection
+ *   is OS-driven (WatchService over inotify / ReadDirectoryChangesW /
+ *   kqueue/FSEvents), not polling; an OS event that does not move a document's
+ *   revision is coalesced away. The 1..14 bound is a hard contract.
+ */
+#sleela 1.3
+// SLeeLa gui front-end contract — the OS-backed 1..14 document watch.
+// Family: gui. The watch wakes on an OS call, re-reads each document's
+// revision, and emits only real changes; a host may also force a refresh.
+class SLGuiDocumentListener {
+  int MIN_DOCUMENTS = 1;       // lower bound (inclusive)
+  int MAX_DOCUMENTS = 14;      // upper bound (inclusive)
+  int watched;                 // how many documents are attached (1..14)
+  int running;                 // 1 while the OS watch loop is active
+  int changes;                 // total real changes emitted
+  int pollMillis;              // OS wake cadence / coalescing window
+  void configure(int documentCount) {
+    watched = documentCount; running = 0; changes = 0; pollMillis = 500;
+  }
+  int count() { return watched; }
+  int minDocuments() { return MIN_DOCUMENTS; }
+  int maxDocuments() { return MAX_DOCUMENTS; }
+  // The hard 1..14 contract, enforced at construction and on watch().
+  boolean withinBound() {
+    return watched >= MIN_DOCUMENTS && watched <= MAX_DOCUMENTS;
+  }
+  // Start the OS-backed watch; a no-op unless the bound holds and not running.
+  boolean watch() {
+    if (!withinBound()) { return false; }
+    if (running == 1) { return true; }
+    running = 1;
+    return true;
+  }
+  boolean isRunning() { return running == 1; }
+  // One OS-call wake delivered `realChanges` revision moves (0 is coalesced
+  // away and emits nothing). Returns the number emitted this wake.
+  int onOsCall(int realChanges) {
+    if (running == 0 || realChanges <= 0) { return 0; }
+    changes = changes + realChanges;
+    return realChanges;
+  }
+  // Force an immediate re-evaluation (an explicit OS/lifecycle refresh).
+  int refreshNow(int realChanges) { return onOsCall(realChanges); }
+  int totalChanges() { return changes; }
+  void setPollMillis(int ms) { if (ms > 0) { pollMillis = ms; } }
+  int getPollMillis() { return pollMillis; }
+  // Stop the watch and release the OS watch handle. Idempotent.
+  void close() { running = 0; }
+}

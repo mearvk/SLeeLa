@@ -1,0 +1,63 @@
+/*
+ * lib/gui/SLGuiHost.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLGuiHost — Path 1 of gui/INTEGRATION.md: a Java host owns
+ *   the process and desktop lifecycle while SLeeLa owns business logic. Mirrors
+ *   SleelaGuiHost: show(title,w,h, actionOperation) binds the window's action to
+ *   a SLeeLa operation, and listen(...) ties each document change to a SLeeLa
+ *   operation whose result is published to the window.
+ */
+#sleela 1.3
+// SLeeLa gui front-end contract — Path 1 (Java host -> SLeeLa business logic).
+// Family: gui. Java is a native desktop host for SLeeLa, not a second
+// business-logic implementation; SLeeLa stays authoritative for meaning.
+class SLGuiHost {
+  SLGuiWindow window;
+  SLGuiAction action;
+  SLGuiDocumentListener listener;
+  String changeOperation;      // SLeeLa operation invoked on each doc change
+  int listening;
+  void configure(SLGuiWindow w, SLGuiAction a) {
+    window = w; action = a; listening = 0; changeOperation = "";
+  }
+  // Show the window and bind its action to a SLeeLa operation.
+  void show(String title, int width, int height, String actionOperation) {
+    window.configure(title, width, height);
+    action.configure("primary", actionOperation);
+    window.show();
+  }
+  // The host raised the window's action; it maps to the SLeeLa operation whose
+  // (non-null) result is published to the window.
+  boolean onAction(String result) {
+    action.raise();
+    if (!action.take()) { return false; }
+    if (result != null) { window.setText(result); }
+    return true;
+  }
+  // Enable the document-change listener option on the Java host path: SLeeLa
+  // stays authoritative for what a change means.
+  boolean listen(SLGuiDocumentListener l, String operation) {
+    listener = l; changeOperation = operation;
+    if (!listener.watch()) { listening = 0; return false; }
+    listening = 1;
+    return true;
+  }
+  boolean isListening() { return listening == 1 && listener != null && listener.isRunning(); }
+  // On a change the host calls `changeOperation`; its result is published, or
+  // the window's default refresh is used when the operation returns null.
+  int onDocumentChange(String documentId, String revision, int realChanges, String operationResult) {
+    if (!isListening()) { return 0; }
+    int emitted = listener.onOsCall(realChanges);
+    if (emitted > 0) {
+      if (operationResult != null) { window.setText(operationResult); }
+      else { window.refresh(documentId, revision); }
+    }
+    return emitted;
+  }
+  int refreshNow(int realChanges) {
+    if (listener == null) { return 0; }
+    return listener.refreshNow(realChanges);
+  }
+  void stopListening() { if (listener != null) { listener.close(); } listening = 0; }
+  void close() { stopListening(); }
+}

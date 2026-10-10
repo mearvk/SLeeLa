@@ -1,0 +1,26 @@
+/*
+ * lib/gui/SLGuiBackend.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLGuiBackend — the toolkit-neutral GUI backend identity.
+ *   Mirrors SleelaGui.create(backend) in gui/: a backend is "swing", "javafx"
+ *   (alias "fx"), or "native" (the C ABI bridge). SLeeLa names the backend; the
+ *   Java host or the native bridge supplies the actual desktop controls.
+ */
+#sleela 1.3
+// SLeeLa gui front-end contract — toolkit-neutral backend selector.
+// Family: gui. The chosen backend is realized by the Java host (Swing/JavaFX)
+// or by the native bridge; SLeeLa only expresses the intent.
+class SLGuiBackend {
+  String kind;                 // "swing" | "javafx" | "fx" | "native"
+  void configure(String k) { kind = k; }
+  String name() { return kind; }
+  // A backend is supported when it is one of the known toolkits/bridges.
+  boolean supported() {
+    return kind == "swing" || kind == "javafx" || kind == "fx" || kind == "native";
+  }
+  boolean isSwing() { return kind == "swing"; }
+  boolean isJavaFx() { return kind == "javafx" || kind == "fx"; }
+  boolean isNative() { return kind == "native"; }
+  // Normalized label: the "fx" alias resolves to "javafx".
+  String resolved() { return kind == "fx" ? "javafx" : kind; }
+}

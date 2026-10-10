@@ -4299,6 +4299,10 @@
       "sha256": "80110f92fc3105eb60f673de9add1f5e56e482342dd2206d4c070c35c16e75dd"
     },
     {
+      "path": "gui/native/slgui_bridge_test.cpp",
+      "sha256": "10896a4a839eb07c8541b47f37b53ed3a1eda68b1fe643efbd6b26d81a26c12c"
+    },
+    {
       "path": "http/7.0/http70.c",
       "sha256": "64c46d44ecfe782b7ec654fadb8adfff517a974425ad75d94c3051eead163c7f"
     },
@@ -8304,7 +8308,7 @@
     },
     {
       "path": "lib/codecs/codec-pipeline.sleela",
-      "sha256": "265e36fbb8e238b4be6e44a9299071b3f9a1771a8af48efe1afd95b02701dae2"
+      "sha256": "b75237e546aedc9a51af4dc114fb5f13346f93b79df8075543dd7c96909b18e4"
     },
     {
       "path": "lib/codecs/codecs.sleela",
@@ -11271,8 +11275,48 @@
       "sha256": "c8d599e98fc4bebb3dec49bda0f0ad200496358351b9f8eea8039b32cdeec581"
     },
     {
+      "path": "lib/gui/SLGuiAction.sleela",
+      "sha256": "b96e9ab5455804a25c713af4cecf7ed83d002ebe92216513a59240d89a6166f7"
+    },
+    {
+      "path": "lib/gui/SLGuiBackend.sleela",
+      "sha256": "1cdfc6f0ca0d3d95cbbe58160cc772ec023fd94913266efbb31be7e93d5375bf"
+    },
+    {
+      "path": "lib/gui/SLGuiBridge.sleela",
+      "sha256": "157d06d5522ad4e34989b5bcd5163f9a2d924bd6c97f54001656b4df9647e828"
+    },
+    {
+      "path": "lib/gui/SLGuiDocument.sleela",
+      "sha256": "52f62a4dd97bced47b7385fe75f0ef9dfc9beec65f18592d5cc19b21a65016ef"
+    },
+    {
+      "path": "lib/gui/SLGuiDocumentListener.sleela",
+      "sha256": "9bdbce7ac2da628501731ea27047bae6bf78219dcdc6db438f5092e9a2767fa4"
+    },
+    {
+      "path": "lib/gui/SLGuiHost.sleela",
+      "sha256": "dd902778029fa7f89f2850f07e9546b57f477237491a6af5e0bfb8512dd43b66"
+    },
+    {
+      "path": "lib/gui/SLGuiIntegration.sleela",
+      "sha256": "1c57f8f0fdbddf601def695b009e81a4038f9497c5c060c9bf3208adf945fb2a"
+    },
+    {
+      "path": "lib/gui/SLGuiRuntime.sleela",
+      "sha256": "ccfd0baf6af9ca75f0ff84fc84247c4bf8071ec2539a45c6a9a1c9a4ac11aede"
+    },
+    {
+      "path": "lib/gui/SLGuiWindow.sleela",
+      "sha256": "8d0f2dade3df589951c6d23a851b4cef53884eb2b88699c80890007927667c10"
+    },
+    {
       "path": "lib/gui/SLPackage.sleela",
-      "sha256": "a12b84717eb108a3d2c2a7de23a253d2c8d207eded3902d31a418bca7c4ea1c4"
+      "sha256": "d4cdef9faf3bc02737c1cf49d30c1369d36acd2ecda8bc85e2f7fad54612d3d3"
+    },
+    {
+      "path": "lib/gui/gui-demo.sleela",
+      "sha256": "ed99102593c8b34cb88fcb626bd6a43c015fda7d6ba0d502d365f4be232a7cea"
     },
     {
       "path": "lib/html/SLPackage.sleela",
@@ -50316,7 +50360,7 @@
     },
     {
       "path": "lib/video/video-codec-pipeline.sleela",
-      "sha256": "a1c0e4936bfd18f1c5e50e0bb1eff15e575c1506890f6529d1fe77374d6b9cda"
+      "sha256": "038913241bdcf8d1e2bd79cf72796f55963b8fd35624bef717c7a287ebbae12c"
     },
     {
       "path": "lib/vm/GCBarrier.sleela",
@@ -52780,7 +52824,7 @@
     },
     {
       "path": "test-suites/test-library-inventory.sh",
-      "sha256": "32513494ed00bdd0cda42195be8c87f707aa4587d9ba6b7ee46c3e532503e36a"
+      "sha256": "733e65707391ccc353b2abf50adfd00b3bc82bde88d3813b4c247cff70c9b2c7"
     },
     {
       "path": "tests/java_api_dependency_suite.py",

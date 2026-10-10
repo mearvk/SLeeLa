@@ -1,11 +1,32 @@
 # SLeeLa /lib Library Index
 
-**Revision:** 0.46  
+**Revision:** 0.47  
 **Packages:** 90  
-**SLeeLa source units:** 10852  
+**SLeeLa source units:** 10862  
 **Module-facade symbols:** 62  
-**Total symbol records:** 10914  
+**Total symbol records:** 10924  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
+
+> Revision 0.47 populates the **`gui`** package (`lib/gui/`) — previously only a
+> facade — as the SLeeLa-facing *consequence* of the top-level `gui/` work (the
+> Java host, the native C ABI bridge `gui/native/sleela_gui_bridge.{h,cpp}`, and
+> the 1..14 document-change listener). Nine Master Classes mirror the `gui/`
+> model: `SLGuiBackend` (toolkit-neutral backend selector), `SLGuiWindow`
+> (window intent + the `refresh(id,revision)` document sink), `SLGuiAction`
+> (named action with take-the-latch activation), `SLGuiDocument` (immutable
+> watched-document snapshot with an OS revision fingerprint),
+> `SLGuiDocumentListener` (the OS-driven 1..14 watch with revision coalescing),
+> `SLGuiRuntime` (Path 2 — SLeeLa intent drives the window), `SLGuiHost`
+> (Path 1 — a Java host ties actions/changes to SLeeLa operations), `SLGuiBridge`
+> (Path 3 — the shared native ABI), and `SLGuiIntegration` (the recommended
+> three-path posture), plus a runnable `gui-demo.sleela` and
+> `gui/ARCHITECTURE.md`. The native bridge gains a `Makefile` and a `-Werror`
+> round-trip test (`gui/native/slgui_bridge_test.cpp`) and a dedicated
+> `.github/workflows/gui-ci.yml`. Ten new source classes in the existing `gui`
+> package (packages and facades unchanged at 90 and 62); 10,852 → **10,862**
+> source classes and 10,914 → **10,924** total records. `LIBRARY.SYMBOLS.md` was
+> regenerated from the live tree by `tools/generate-library-symbols.py` and
+> verified by `test-suites/test-library-inventory.sh`.
 
 > Revision 0.46 adds the **`boolean`** package (`lib/boolean/`): a
 > Boolean/Binary **syllable-word** vocabulary. The two primitive syllables
