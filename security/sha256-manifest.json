@@ -187,11 +187,11 @@
     },
     {
       "path": "impl/core/sleela_munction.c",
-      "sha256": "d7bc47f5043c9b1764acc6a033564e6f2596684a33102190bec203035112820a"
+      "sha256": "b7adfd9a684c943b810239df7c13c5fe611b450c3ce5fb41c64e4afa9dc3fb74"
     },
     {
       "path": "impl/core/sleela_munction.h",
-      "sha256": "fbca9c0af71b4def3c98a375a7ec57a55b5fd7647b618711ee4a38bae05ceca6"
+      "sha256": "e040413ecc329d32f18a7a0c77a69498d59badd7337198413c53891ab9909196"
     },
     {
       "path": "impl/core/sleela_net.c",

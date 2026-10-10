@@ -153,6 +153,7 @@ static SLMunChannel scheme_of(const char* uri, const char** rest_out) {
     if (n == 3 && strncmp(uri, "net", 3) == 0) return SL_MUN_NET;
     if (n == 4 && strncmp(uri, "sdps", 4) == 0) return SL_MUN_SDPS;
     if (n == 6 && strncmp(uri, "crypto", 6) == 0) return SL_MUN_CRYPTO;
+    if (n == 2 && strncmp(uri, "db", 2) == 0) return SL_MUN_DB;
     return SL_MUN_NONE;
 }
 
@@ -384,6 +385,7 @@ int slmunction_observe(SLMunction* m, char* out, size_t cap) {
         case SL_MUN_FILE: chname = "file"; break;
         case SL_MUN_NET:  chname = "tcp";  break;
         case SL_MUN_SDPS: chname = "sdps"; break;
+        case SL_MUN_DB:   chname = "db";   break;
         default: chname = "none"; break;
     }
     int n = snprintf(out, cap, "%s%s:queued=%d:sent=%lld:recv=%lld%s",
@@ -431,7 +433,8 @@ static SLMunOutcome mun_finish(SLMunction* m, SLMunOutcome requested,
               m->channel == SL_MUN_PIPE ? "pipe" :
               m->channel == SL_MUN_FILE ? "file" :
               m->channel == SL_MUN_NET ? "tcp" :
-              m->channel == SL_MUN_SDPS ? "sdps" : "none",
+              m->channel == SL_MUN_SDPS ? "sdps" :
+              m->channel == SL_MUN_DB ? "db" : "none",
             m->address, m->verbs,
             (long long)m->sent_bytes, (long long)m->ack_bytes,
             (long long)m->received_units, m->interims,

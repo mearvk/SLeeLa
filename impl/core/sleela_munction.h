@@ -39,7 +39,8 @@ typedef enum {
     SL_MUN_FILE,     /* file: file I/O (send appends, consume reads)  */
     SL_MUN_NET,      /* tcp:  internet TCP                            */
     SL_MUN_SDPS,     /* sdps: private packets (magic+len+MAC framing) */
-    SL_MUN_CRYPTO    /* crypto: authenticated seal/open envelope       */
+    SL_MUN_CRYPTO,   /* crypto: authenticated seal/open envelope       */
+    SL_MUN_DB        /* db:   database connector (framed, in-process)  */
 } SLMunChannel;
 
 /* Reach outcome, recorded in the receipt. */
