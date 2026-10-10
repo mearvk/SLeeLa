@@ -4,6 +4,9 @@
 #include <map>
 #include <set>
 #include <string>
+#include <functional>
+#include <vector>
+#include <utility>
 namespace sleela {
 namespace {
 enum class Kind { Void, Int, Unsigned, Double, Bool, String, Null, Struct, Array, Unknown, Error };
@@ -54,6 +57,7 @@ class Analyzer{
  const Program&p; const SyntaxVersion&syntax; SemanticResult r;
  std::set<std::string> structs; std::set<std::string> classNames; std::map<std::string,std::map<std::string,Type>> fields;
  std::map<std::string,MethodSig> methods; std::map<std::string,Type> globals; std::map<std::string,std::string> owners;
+ std::map<std::string,std::string> superOf; // derived class -> resolved base (syntax 1.10)
  struct Scope{std::map<std::string,Type> vars;}; std::vector<Scope> scopes; const Method* cur=nullptr; std::string cls;
  void err(const std::string&s){r.errors.push_back("Semantic error: "+s);}
  // A type is known if it is a scalar keyword (Java or lowercase alias), a
@@ -82,6 +86,68 @@ class Analyzer{
     if(!known(m.retType))err("unknown return type '"+m.retType+"' for method '"+m.name+"'");
     if(m.isProtected&&!m.isStatic)err("protected method '"+m.name+"' must also be static");
     methods[key]={&m,c.name};if(m.name=="main")methods["main"]={&m,c.name};}
+  }
+  // --- OOD inheritance (syntax 1.10): resolve `class D extends B`. ----------
+  // A derived class inherits the base class's instance fields and methods.
+  // A same-name method in the derived class overrides the base's. Resolution
+  // is version-gated so that <=1.9 documents keep their historical behavior
+  // (extends was retained metadata, not resolved). This runs after every
+  // class's own members are collected, and walks each extends chain base-first.
+  if(!(syntax<SyntaxVersion{1,10})){
+   // index classes by name for superclass lookup
+   std::map<std::string,const ClassDecl*> byName;
+   for(const auto&c:p.classes) byName[c.name]=&c;
+   // validate: known base, no cycles
+   for(const auto&c:p.classes){
+    const std::string&sup=c.java.superclass;
+    if(sup.empty()) continue;
+    if(!byName.count(sup)){ if(classNames.count(sup)==0 && structs.count(sup)==0) err("class '"+c.name+"' extends unknown type '"+sup+"'"); continue; }
+    // cycle detection: walk the extends chain from c; if we return to a class
+    // already on the path, the inheritance is cyclic.
+    { std::set<std::string> seen; std::string cur2=c.name;
+      while(byName.count(cur2)){ seen.insert(cur2); const std::string&s2=byName[cur2]->java.superclass;
+        if(s2.empty()) break; if(seen.count(s2)){ err("cyclic inheritance involving class '"+c.name+"'"); break; } cur2=s2; } }
+   }
+   // merge base members into each derived class, resolving the chain base-first
+   std::set<std::string> done; std::set<std::string> inProgress;
+   std::function<void(const std::string&)> resolve=[&](const std::string& name){
+    if(done.count(name)||!byName.count(name)) return;
+    if(!inProgress.insert(name).second) return; // cycle guard (reported above)
+    const ClassDecl* c=byName[name];
+    const std::string&sup=c->java.superclass;
+    if(!sup.empty()&&byName.count(sup)&&!inProgress.count(sup)){
+     resolve(sup); // ensure base is fully resolved first
+     // inherit instance fields the derived class does not redeclare (the base's
+     // field set is already fully resolved, so this carries grandparent fields).
+     auto bf=fields.find(sup); if(bf!=fields.end()){ auto&df=fields[name]; for(const auto&kv:bf->second) if(!df.count(kv.first)) df[kv.first]=kv.second; }
+     // inherit methods the derived class does not override. Walk the base's
+     // RESOLVED method set (its own + what it inherited), so multi-level chains
+     // carry grandparent methods down. A same-name derived method overrides.
+     const std::string pfx=sup+"::";
+     std::vector<std::pair<std::string,MethodSig>> toAdd;
+     for(const auto&kv:methods){ const std::string&bk=kv.first; if(bk.rfind(pfx,0)!=0) continue; std::string mname=bk.substr(pfx.size()); if(mname=="main") continue; const std::string dk=name+"::"+mname; if(!methods.count(dk)) toAdd.push_back({dk,kv.second}); }
+     for(auto&e:toAdd) methods[e.first]=e.second;
+     superOf[name]=sup;
+    }
+    inProgress.erase(name);
+    done.insert(name);
+   };
+   for(const auto&c:p.classes) resolve(c.name);
+  }
+  // --- Document extension (syntax 1.10): `extends to ... <grouper>;` --------
+  for(const auto&de:p.documentExtensions){
+   if(syntax<SyntaxVersion{1,10}){err("document extension 'extends to ...' requires syntax 1.10");break;}
+   if(de.targets.empty()){err("document extension names no target document");continue;}
+   if(de.grouper==Grouper::Linear){
+    // linear reals: a congruent-linear chain, bounded by the catalog's
+    // congruent-linear-systems-max (3024). The chain degree is targets+self.
+    if((long)de.targets.size()+1>3024) err("linear document extension exceeds the congruent-linear maximum (3024)");
+   } else {
+    // grouped structures are bounded by the complexity-degree-max (4): a
+    // grouper may organize up to 4 member documents in one degree.
+    if(de.targets.size()>4) err("grouped document extension exceeds the complexity-degree maximum (4 members per group)");
+    if(de.grouper==Grouper::Services&&de.server.empty()) err("the 'services' grouper requires a Server-of-Services document name");
+   }
   }
  }
  void push(){scopes.push_back({});} void pop(){scopes.pop_back();}

@@ -170,6 +170,29 @@ struct StructDecl{std::string name;std::vector<Field> fields;};
 struct DynamiteImport { std::string referenceName; std::string sourcePath; };
 struct PermissibleImport { std::string referenceName; std::string sourcePath; };
 
+// --- Document extension (syntax 1.10): `extends to ... <grouper>;` ----------
+// A `.sleela` document may extend *to* one or more other documents, organized
+// by a grouper (organization term). This is the document-sheet meaning of
+// `extends`, distinct from a class's OOD `extends` of a base type:
+//
+//   extends to Other linear;            // linear reals: an ordered chain
+//   extends to { A, B, C } group;       // an unordered grouped set
+//   extends to { A, B } services Hub;   // a group fronted by a Server of Services
+//
+// The grouper names the structure the referenced documents form (see
+// Grouper below); `server` holds the Server-of-Services document name for the
+// `services` grouper (empty otherwise).
+enum class Grouper {
+    Linear,     // ordered chain of document references (congruent-linear reals)
+    Group,      // unordered set gathered under one organizer
+    Services    // a group fronted by one Server-of-Services document
+};
+struct DocumentExtension {
+    Grouper grouper = Grouper::Linear;
+    std::vector<std::string> targets;  // referenced document names
+    std::string server;                // Server-of-Services name (services only)
+};
+
 struct Program {
     annotation::DocumentAnnotations annotations;
     std::vector<std::string> imports;
@@ -177,6 +200,7 @@ struct Program {
     std::vector<PermissibleImport> permissibleImports;
     std::vector<StructDecl> structs;
     std::vector<ClassDecl> classes;
+    std::vector<DocumentExtension> documentExtensions;
 };
 
 } // namespace sleela

@@ -1,0 +1,25 @@
+#sleela 1.10
+// examples/extends/document_grouping.sleela
+// The document-sheet meaning of `extends` (syntax 1.10): one .sleela document
+// naturally points to other documents, organized by a GROUPER. The grouper is
+// the organization term that says what structure the referenced documents form:
+//
+//   linear   -- linear reals: an ordered chain (this -> target -> ...),
+//               bounded by the congruent-linear maximum (3024).
+//   group    -- an unordered set gathered under one organizer,
+//               bounded by the complexity-degree maximum (4 members).
+//   services -- a group fronted by one Server-of-Services document the
+//               members register under (grouped, then a server of services).
+//
+// `to` and the grouper words stay ordinary identifiers (not keywords), so they
+// remain free to use elsewhere; recognition is anchored on `extends`.
+
+extends to NextChapter linear;                       // linear reals
+extends to { Intro, Body, Appendix } group;          // grouped set
+extends to { Orders, Billing } services ClearingHub; // group + Server of Services
+
+class ExtendsDocument {
+    void main() {
+        print("document extends to: 1 linear chain, 1 group, 1 services group");
+    }
+}

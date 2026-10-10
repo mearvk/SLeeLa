@@ -31,6 +31,7 @@ private:
     void parseThrows(std::vector<std::string>& out);
     StructDecl parseStruct();
     ClassDecl parseClass(unsigned classModifiers=0, std::vector<annotation::Annotation> annotations={});
+    DocumentExtension parseDocumentExtension();
     Field parseField(bool isStatic,bool isProtected,unsigned modifiers=0, std::vector<annotation::Annotation> annotations={});
     Method parseMethod(bool isStatic,bool isProtected,unsigned modifiers=0, std::vector<annotation::Annotation> annotations={});
     bool isTypeStart() const;

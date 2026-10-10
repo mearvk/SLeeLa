@@ -3,7 +3,7 @@
   "files": [
     {
       "path": "SHEET.sheet",
-      "sha256": "6b0fbe1b05f5e55fe22ff57df386d581e4d77d0bc13bae435d7ab4a63a7bf6c9"
+      "sha256": "4a1db07047989c32f866701a5b919781781d7fc1718bfacb0f5e009cbda204dc"
     },
     {
       "path": "bash/pixel_terminal.cpp",
@@ -315,11 +315,11 @@
     },
     {
       "path": "impl/frontend/ast.h",
-      "sha256": "23c8846a2182ead0ad24015b7a03bf9fdd42cf350789de376251b2fa063a505a"
+      "sha256": "e25944eb6483a1cf01e4e1d0f5a627d62b393d23309626f11a195a201d62be50"
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "4bec57bebb86cc481b448fc7cc3f81ba6c57c1b42636b1d327cbb57b0d065ca7"
+      "sha256": "fe4af4a8635965c7a30918dd70e15c15c6264e612645e7c93cd904c0229fcdfd"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -391,11 +391,11 @@
     },
     {
       "path": "impl/frontend/parser.cpp",
-      "sha256": "ff8ee918ee0e85aa7fbb4f7c9ca5afd9820fca23669b61e5e350e576658d2f8e"
+      "sha256": "89cfd3fc180262976a40e508f0d52a48bce989ff029a2646d8d18ffdc927b575"
     },
     {
       "path": "impl/frontend/parser.h",
-      "sha256": "d3e3e1761ed2fb49812e6b1261d0bffe7385bc708c703a2094676b9294ea3aa5"
+      "sha256": "2e71d3887e2797b640086b2def38204dd5d1f61a7565156453db201f39cdf338"
     },
     {
       "path": "impl/frontend/permissible.cpp",
@@ -407,7 +407,7 @@
     },
     {
       "path": "impl/frontend/semantic.cpp",
-      "sha256": "75a999b6b176c5cf29b49e1941af0299db9a7b6a350879f96e79f220d5e8747b"
+      "sha256": "2b8b5a13eb7a8ea1fc9a0181182b4ec01a470e1a38c1703a4f44ff1c5ef25235"
     },
     {
       "path": "impl/frontend/semantic.h",
@@ -423,7 +423,7 @@
     },
     {
       "path": "impl/frontend/version.h",
-      "sha256": "3a46b6017564351797f9502fa40f89ed32ff046ef0f5cf88489cdb382c681f64"
+      "sha256": "582189e732a785b963a618fac1900ea114e5e7d2699182d1ae2a379f0629881f"
     },
     {
       "path": "impl/nordshrift/complete/class_bindings.cpp",

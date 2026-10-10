@@ -1,0 +1,32 @@
+#sleela 1.10
+// examples/extends/inheritance.sleela
+// The OOD meaning of `extends` (syntax 1.10): a derived class inherits the
+// base class's instance fields and methods; a same-name method overrides the
+// base's. Multi-level chains inherit the whole way down. Under <=1.9, `extends`
+// is retained metadata only (historical behavior), so this is version-gated.
+class Animal {
+    String name;
+    void setName(String n) { name = n; }
+    String describe() { return "animal " + name; }
+}
+class Pet extends Animal {
+    String owner;
+    void setOwner(String o) { owner = o; }
+    String describe() { return "pet " + name + " of " + owner; }  // override
+}
+class Dog extends Pet {
+    String fetch() { return name + " fetches for " + owner; }      // own; both fields inherited
+}
+class ExtendsInheritance {
+    void main() {
+        Dog d = new Dog();
+        d.setName("Rex");        // inherited from Animal (2 levels up)
+        d.setOwner("Sam");       // inherited from Pet
+        print(d.describe());     // Pet's override -> "pet Rex of Sam"
+        print(d.fetch());        // Dog's own -> "Rex fetches for Sam"
+
+        Animal a = new Animal();
+        a.setName("Generic");
+        print(a.describe());     // base -> "animal Generic"
+    }
+}

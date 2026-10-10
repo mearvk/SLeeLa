@@ -156,6 +156,7 @@ Program Parser::parseProgram(){
                 expect(Tok::Semicolon,"';'");
             }
         }
+        else if(check(Tok::KwExtends)){ contentStarted=true; p.documentExtensions.push_back(parseDocumentExtension()); }
         else if(check(Tok::KwStruct)){ contentStarted=true; p.structs.push_back(parseStruct()); }
         else {
             unsigned mods=parseJavaModifiers();
@@ -168,6 +169,38 @@ Program Parser::parseProgram(){
     return p;
 }
 StructDecl Parser::parseStruct(){expect(Tok::KwStruct,"'struct'");StructDecl s;s.name=expect(Tok::Ident,"struct name").text;expect(Tok::LBrace,"'{'");while(!check(Tok::RBrace)&&!check(Tok::Eof)){Field f;f.type=parseType();f.name=expect(Tok::Ident,"field name").text;expect(Tok::Semicolon,"';'");s.fields.push_back(std::move(f));}expect(Tok::RBrace,"'}'");return s;}
+// Document extension (syntax 1.10):
+//   extends to <Target> <grouper> ;
+//   extends to { <Target> (, <Target>)* } <grouper> [<Server>] ;
+// `to` and the grouper (linear | group | services) are ordinary identifiers,
+// not keywords, so they stay free elsewhere. Recognition is anchored on the
+// top-level `extends` token (which is only valid inside a class otherwise).
+DocumentExtension Parser::parseDocumentExtension(){
+    expect(Tok::KwExtends,"'extends'");
+    if(!(check(Tok::Ident)&&cur().text=="to")) error("document extension expects 'extends to ...'");
+    ++i_; // consume 'to'
+    DocumentExtension ext;
+    if(accept(Tok::LBrace)){
+        if(!check(Tok::RBrace)){
+            do{ ext.targets.push_back(parseQualifiedName()); }while(accept(Tok::Comma));
+        }
+        expect(Tok::RBrace,"'}'");
+    } else {
+        ext.targets.push_back(parseQualifiedName());
+    }
+    if(ext.targets.empty()) error("document extension names no target document");
+    std::string g=expect(Tok::Ident,"a grouper (linear | group | services)").text;
+    if(g=="linear") ext.grouper=Grouper::Linear;
+    else if(g=="group") ext.grouper=Grouper::Group;
+    else if(g=="services") ext.grouper=Grouper::Services;
+    else error("unknown grouper '"+g+"' (expected linear | group | services)");
+    if(ext.grouper==Grouper::Services){
+        if(check(Tok::Ident)) ext.server=parseQualifiedName();
+        else error("the 'services' grouper requires a Server-of-Services name");
+    }
+    expect(Tok::Semicolon,"';'");
+    return ext;
+}
 ClassDecl Parser::parseClass(unsigned classModifiers,std::vector<annotation::Annotation> annotations){
     Tok kind=cur().kind; ClassDecl c; c.java.kind=tokenTypeKind(kind); c.java.modifiers=classModifiers; c.java.annotations=std::move(annotations);
     if(kind!=Tok::KwClass&&kind!=Tok::KwInterface&&kind!=Tok::KwEnum&&kind!=Tok::KwRecord) error("expected Java type declaration");
