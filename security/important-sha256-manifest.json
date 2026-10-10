@@ -50819,8 +50819,192 @@
       "sha256": "8c9fcf0dc8e5e70e2a6f3745de3d3b3cf7a2614672533206fc1667cb3d3e0d62"
     },
     {
+      "path": "lib/website/aer-lingus/AerLingusWebsite.sleela",
+      "sha256": "b2c90c921b7d23182b9a98b6f5b06b0f19da5e4f2aa752b0e924f91e9badd60b"
+    },
+    {
+      "path": "lib/website/aeromexico/AeromexicoWebsite.sleela",
+      "sha256": "ea169fcfe48bd59c4167c9a080621fbd6f34b7478c76e066f39e7b2527873666"
+    },
+    {
+      "path": "lib/website/air-canada/AirCanadaWebsite.sleela",
+      "sha256": "c5f69b97064ab7a37ce6455f91f52df52b8e1061e00ff8514ebddb6ac16da0fd"
+    },
+    {
+      "path": "lib/website/air-france/AirFranceWebsite.sleela",
+      "sha256": "2efdba525efbe5b65ef598f6a104014b171fa2c45e094a9481a52741b90593f0"
+    },
+    {
+      "path": "lib/website/air-india/AirIndiaWebsite.sleela",
+      "sha256": "8c8b0b83c80aa5454c69cfa88fb93303eebd2ba30a5d83e18fc33adfbe80956f"
+    },
+    {
+      "path": "lib/website/air-new-zealand/AirNewZealandWebsite.sleela",
+      "sha256": "e7e46ca480101ec8d48897106f7631501cf0a15f95acff13c796d42f57d5dacc"
+    },
+    {
+      "path": "lib/website/alaska-airlines/AlaskaWebsite.sleela",
+      "sha256": "c0e114b1027af47876f37a75da3dbb1883e93f4e21623701aa1676af73901703"
+    },
+    {
+      "path": "lib/website/alitalia-ita-airways/ItaAirwaysWebsite.sleela",
+      "sha256": "72fc868d16ebc74a7f78b48d43aec5586c3237bccf183a23c923c9112d4cfdd3"
+    },
+    {
+      "path": "lib/website/all-nippon-airways/AllNipponAirwaysWebsite.sleela",
+      "sha256": "f516a67b04eafa18908c814bdf6cb9ea50a5a3837c54742591a0210492d6a840"
+    },
+    {
+      "path": "lib/website/american-airlines/AmericanWebsite.sleela",
+      "sha256": "d9bdfea7585d8863a6edeeff53065fc2a05ba3d140cc263196d935ea2c8faffa"
+    },
+    {
+      "path": "lib/website/avianca/AviancaWebsite.sleela",
+      "sha256": "4b7467947e33485cd116b9b2bbe5442172a29c5431579a92440824b54278e174"
+    },
+    {
+      "path": "lib/website/british-airways/BritishAirwaysWebsite.sleela",
+      "sha256": "ec3897e889301e57c9f23db04311cd093fbf99b07f85286fce05b82a0a86b82c"
+    },
+    {
+      "path": "lib/website/cathay-pacific/CathayPacificWebsite.sleela",
+      "sha256": "e1614f31842843bf98cbb6c6ee32f92c820e7351038461660b6878862a040474"
+    },
+    {
+      "path": "lib/website/china-southern-airlines/ChinaSouthernWebsite.sleela",
+      "sha256": "48d378283a5d05ef04554cc02f7c836c0cfd37bb4cf40ad43108743b6fd86e93"
+    },
+    {
+      "path": "lib/website/copa-airlines/CopaWebsite.sleela",
+      "sha256": "23f23d32d577a4e7a7cbf23d3d99f4f9cc8503cc523f41183a26ed8d1665c0c1"
+    },
+    {
+      "path": "lib/website/delta-air-lines/DeltaWebsite.sleela",
+      "sha256": "180091529358ccea1a891bdf9f28980ee264dbfe4e59ce4d088296956f07d876"
+    },
+    {
+      "path": "lib/website/easyjet/EasyJetWebsite.sleela",
+      "sha256": "c31040e78112c09741940f48b0d429408acb51842d228b3dec61109f8e37e3ef"
+    },
+    {
+      "path": "lib/website/emirates/EmiratesWebsite.sleela",
+      "sha256": "bada7182ae46ba980a0677e90f678a9f70f4c8e2361a42f55ab37f974f53d6de"
+    },
+    {
+      "path": "lib/website/ethiopian-airlines/EthiopianWebsite.sleela",
+      "sha256": "3dfd8edeb0b10065779258fb5a306bcaa1fd9305a53583632826427390a50a64"
+    },
+    {
+      "path": "lib/website/etihad-airways/EtihadWebsite.sleela",
+      "sha256": "72fea4e72d86a5ed5dd0555c57370fa66e78cce35d06cfc80624403322cd2980"
+    },
+    {
+      "path": "lib/website/frontier-airlines/FrontierWebsite.sleela",
+      "sha256": "e3f39243237226e68c3a70cc87f16d9712dcb2549fc3d2b81b419241dffa04ea"
+    },
+    {
+      "path": "lib/website/generate-airlines.py",
+      "sha256": "a1f35370a84530967e579a9cfee466e45dce2a6ef1dc308cc50b6fab7c0e9a61"
+    },
+    {
+      "path": "lib/website/hawaiian-airlines/HawaiianWebsite.sleela",
+      "sha256": "66affbf17f52a59161e2348da23c7d08bfd92384064e7a92894e57a8489a9541"
+    },
+    {
+      "path": "lib/website/iberia/IberiaWebsite.sleela",
+      "sha256": "c2e8c99041264d0cfaa416597b668de30d8bda7fc0acd3e9d29c49e26b926760"
+    },
+    {
+      "path": "lib/website/indigo/IndiGoWebsite.sleela",
+      "sha256": "f1eb5b3723a0833ace26e3bb06c1d11ac89271a8b78ffcf01ff9af8c8c9a8b9c"
+    },
+    {
+      "path": "lib/website/japan-airlines/JapanAirlinesWebsite.sleela",
+      "sha256": "e994d0740716bf4b55fed16f0703506716a02e06d5ca4931bc88135d348ed142"
+    },
+    {
+      "path": "lib/website/jetblue-airways/JetBlueWebsite.sleela",
+      "sha256": "3dd2e7ee6ba61bafb66be272938c9261ed64e4b3e2be98522a8ba35a5d83e67c"
+    },
+    {
+      "path": "lib/website/kenya-airways/KenyaAirwaysWebsite.sleela",
+      "sha256": "12d2d551c682bed350e72cca6893b359363fcd5607169b94774100494dcdf580"
+    },
+    {
+      "path": "lib/website/klm/KLMWebsite.sleela",
+      "sha256": "62b53bca91e90399d50b36a55895ebbfebe327e2cd4a967277024febacd3b1a0"
+    },
+    {
+      "path": "lib/website/korean-air/KoreanAirWebsite.sleela",
+      "sha256": "55881399d5479945e7a62ec4dda3c7e5016e0147604b8dd0adf1d1021908b056"
+    },
+    {
+      "path": "lib/website/latam-airlines/LatamWebsite.sleela",
+      "sha256": "9e30fc5417f7fd4d4b91fa7bd3381ab4eaa08c96f030a2bf7c6754eb69fd96d0"
+    },
+    {
+      "path": "lib/website/lufthansa/LufthansaWebsite.sleela",
+      "sha256": "16a38d81863b6a9bdc7215bf606ddbab19ef53df5f03c9574eec1fd170635039"
+    },
+    {
+      "path": "lib/website/piedmont-airlines/PiedmontWebsite.sleela",
+      "sha256": "57655031f269d7f5c5f722167c9bb075f64b83736d81401480bbc428dbdc1d6c"
+    },
+    {
+      "path": "lib/website/qantas/QantasWebsite.sleela",
+      "sha256": "d329095fa43b1b3b738e5f1b637f0b9e1f1175bacad6bbb9c968c835ef3b3db6"
+    },
+    {
+      "path": "lib/website/qatar-airways/QatarAirwaysWebsite.sleela",
+      "sha256": "9381cd789b3a7af3aae073f31d50296836e2bfc67e7c158e1e9f72bdf35d54db"
+    },
+    {
+      "path": "lib/website/ryanair/RyanairWebsite.sleela",
+      "sha256": "880315ad679a0763ef8a2d127f414c324ae9498565abf0234908a7bf5d67ac26"
+    },
+    {
+      "path": "lib/website/sas/SASWebsite.sleela",
+      "sha256": "76d848f12db4cbf177868846f05d272c83a32e000c0445501f56bc75e5c984b0"
+    },
+    {
+      "path": "lib/website/singapore-airlines/SingaporeAirlinesWebsite.sleela",
+      "sha256": "932fa7f08710f913ff573d7d6f42676f9d70da189dc0cecc27e789b6d0799a94"
+    },
+    {
+      "path": "lib/website/south-african-airways/SouthAfricanAirwaysWebsite.sleela",
+      "sha256": "cddf71419ebe94a3d493239d05ea7a805429d39b0295d69a790036570a40ef59"
+    },
+    {
+      "path": "lib/website/southwest-airlines/SouthwestWebsite.sleela",
+      "sha256": "4e726f6df7d0f26a2b1721d086da591ae9d7aa306a2bf86fe59a9a0c9b3f35f8"
+    },
+    {
+      "path": "lib/website/spirit-airlines/SpiritWebsite.sleela",
+      "sha256": "d52df6dbeb2166ea675c7b33fb07c55193707a18dc050df47d831ef23a37a6da"
+    },
+    {
+      "path": "lib/website/swiss/SwissWebsite.sleela",
+      "sha256": "4614f759f3a60bd6bb7e4b12b86fcf352b39d427b2285524e1c66d5f0f666e3a"
+    },
+    {
+      "path": "lib/website/thai-airways/ThaiAirwaysWebsite.sleela",
+      "sha256": "a3c69bca713adad450d94f51697f7935d7e3173c026fad35b02de6ce7108ca19"
+    },
+    {
+      "path": "lib/website/turkish-airlines/TurkishAirlinesWebsite.sleela",
+      "sha256": "5c8e96c718ef0bc508d4b10020614b8e6087bc389ef982fc0997a407e327a3e7"
+    },
+    {
+      "path": "lib/website/united-airlines/UnitedWebsite.sleela",
+      "sha256": "062a146e57c0d6282c07b9a875fc17b6e8e2985d4cdadd2f0ddf8b730fa8cf99"
+    },
+    {
       "path": "lib/website/website.sleela",
       "sha256": "ab9d6c74d4e778c207604c3368d4132e121f0622dc571f22586b1c9a0fcdd57b"
+    },
+    {
+      "path": "lib/website/westjet/WestJetWebsite.sleela",
+      "sha256": "86cddb7a42936070805d523f3f8a8906ff32737531b5d23708491675ffe69d4f"
     },
     {
       "path": "libs/download-all.sh",
@@ -52824,7 +53008,7 @@
     },
     {
       "path": "test-suites/test-library-inventory.sh",
-      "sha256": "733e65707391ccc353b2abf50adfd00b3bc82bde88d3813b4c247cff70c9b2c7"
+      "sha256": "cc469203fc001e3614043ba1a6a4217cab995708880b3892298d4438aac2119b"
     },
     {
       "path": "tests/java_api_dependency_suite.py",

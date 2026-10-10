@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 10862
+library-source-files: 10907
 library-packages: 90
 module-facade-symbols: 62
-total-symbol-records: 10924
+total-symbol-records: 10969
 
 package	symbol	path	kind
 alphabet	Alphabet.sleela	lib/alphabet/Alphabet.sleela	source
@@ -10930,4 +10930,49 @@ website	SLWebsiteDesign.sleela	lib/website/SLWebsiteDesign.sleela	source
 website	SLWebsiteEmitter.sleela	lib/website/SLWebsiteEmitter.sleela	source
 website	SLWebsiteGenerator.sleela	lib/website/SLWebsiteGenerator.sleela	source
 website	SLWebsiteSign.sleela	lib/website/SLWebsiteSign.sleela	source
+website	AerLingusWebsite.sleela	lib/website/aer-lingus/AerLingusWebsite.sleela	source
+website	AeromexicoWebsite.sleela	lib/website/aeromexico/AeromexicoWebsite.sleela	source
+website	AirCanadaWebsite.sleela	lib/website/air-canada/AirCanadaWebsite.sleela	source
+website	AirFranceWebsite.sleela	lib/website/air-france/AirFranceWebsite.sleela	source
+website	AirIndiaWebsite.sleela	lib/website/air-india/AirIndiaWebsite.sleela	source
+website	AirNewZealandWebsite.sleela	lib/website/air-new-zealand/AirNewZealandWebsite.sleela	source
+website	AlaskaWebsite.sleela	lib/website/alaska-airlines/AlaskaWebsite.sleela	source
+website	ItaAirwaysWebsite.sleela	lib/website/alitalia-ita-airways/ItaAirwaysWebsite.sleela	source
+website	AllNipponAirwaysWebsite.sleela	lib/website/all-nippon-airways/AllNipponAirwaysWebsite.sleela	source
+website	AmericanWebsite.sleela	lib/website/american-airlines/AmericanWebsite.sleela	source
+website	AviancaWebsite.sleela	lib/website/avianca/AviancaWebsite.sleela	source
+website	BritishAirwaysWebsite.sleela	lib/website/british-airways/BritishAirwaysWebsite.sleela	source
+website	CathayPacificWebsite.sleela	lib/website/cathay-pacific/CathayPacificWebsite.sleela	source
+website	ChinaSouthernWebsite.sleela	lib/website/china-southern-airlines/ChinaSouthernWebsite.sleela	source
+website	CopaWebsite.sleela	lib/website/copa-airlines/CopaWebsite.sleela	source
+website	DeltaWebsite.sleela	lib/website/delta-air-lines/DeltaWebsite.sleela	source
+website	EasyJetWebsite.sleela	lib/website/easyjet/EasyJetWebsite.sleela	source
+website	EmiratesWebsite.sleela	lib/website/emirates/EmiratesWebsite.sleela	source
+website	EthiopianWebsite.sleela	lib/website/ethiopian-airlines/EthiopianWebsite.sleela	source
+website	EtihadWebsite.sleela	lib/website/etihad-airways/EtihadWebsite.sleela	source
+website	FrontierWebsite.sleela	lib/website/frontier-airlines/FrontierWebsite.sleela	source
+website	HawaiianWebsite.sleela	lib/website/hawaiian-airlines/HawaiianWebsite.sleela	source
+website	IberiaWebsite.sleela	lib/website/iberia/IberiaWebsite.sleela	source
+website	IndiGoWebsite.sleela	lib/website/indigo/IndiGoWebsite.sleela	source
+website	JapanAirlinesWebsite.sleela	lib/website/japan-airlines/JapanAirlinesWebsite.sleela	source
+website	JetBlueWebsite.sleela	lib/website/jetblue-airways/JetBlueWebsite.sleela	source
+website	KenyaAirwaysWebsite.sleela	lib/website/kenya-airways/KenyaAirwaysWebsite.sleela	source
+website	KLMWebsite.sleela	lib/website/klm/KLMWebsite.sleela	source
+website	KoreanAirWebsite.sleela	lib/website/korean-air/KoreanAirWebsite.sleela	source
+website	LatamWebsite.sleela	lib/website/latam-airlines/LatamWebsite.sleela	source
+website	LufthansaWebsite.sleela	lib/website/lufthansa/LufthansaWebsite.sleela	source
+website	PiedmontWebsite.sleela	lib/website/piedmont-airlines/PiedmontWebsite.sleela	source
+website	QantasWebsite.sleela	lib/website/qantas/QantasWebsite.sleela	source
+website	QatarAirwaysWebsite.sleela	lib/website/qatar-airways/QatarAirwaysWebsite.sleela	source
+website	RyanairWebsite.sleela	lib/website/ryanair/RyanairWebsite.sleela	source
+website	SASWebsite.sleela	lib/website/sas/SASWebsite.sleela	source
+website	SingaporeAirlinesWebsite.sleela	lib/website/singapore-airlines/SingaporeAirlinesWebsite.sleela	source
+website	SouthAfricanAirwaysWebsite.sleela	lib/website/south-african-airways/SouthAfricanAirwaysWebsite.sleela	source
+website	SouthwestWebsite.sleela	lib/website/southwest-airlines/SouthwestWebsite.sleela	source
+website	SpiritWebsite.sleela	lib/website/spirit-airlines/SpiritWebsite.sleela	source
+website	SwissWebsite.sleela	lib/website/swiss/SwissWebsite.sleela	source
+website	ThaiAirwaysWebsite.sleela	lib/website/thai-airways/ThaiAirwaysWebsite.sleela	source
+website	TurkishAirlinesWebsite.sleela	lib/website/turkish-airlines/TurkishAirlinesWebsite.sleela	source
+website	UnitedWebsite.sleela	lib/website/united-airlines/UnitedWebsite.sleela	source
 website	website.sleela	lib/website/website.sleela	source
+website	WestJetWebsite.sleela	lib/website/westjet/WestJetWebsite.sleela	source
