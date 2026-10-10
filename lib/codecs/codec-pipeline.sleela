@@ -1,0 +1,125 @@
+#sleela 1.3
+// codec-pipeline.sleela -- the self-contained, runnable build of the SLeeLa
+// audio codec Controller/Verifier/Processor pipeline. The compiler's `run`
+// compiles one file as a single unit, so this aggregate inlines the
+// collaborators (mirroring the split SLCodecController / SLCodecVerifier /
+// SLCodecProcessor / SLCodecLoader discovery files) plus a `main` that drives
+// them the way a GUI or app would: resolve -> load -> verify -> decode/encode
+// -> unload. The split per-class files are the package's discovery surface;
+// this file is the executable counterpart, mirroring codecs.sleela.
+//
+// Codec ids: 0 PCM_WAV 1 AIFF 2 FLAC ... 15 G711_MULAW 16 G711_ALAW 17 MIDI
+// 18 MATROSKA_AUDIO 19 WEBM_AUDIO. States: 0 native 1 backend 2 recognized
+// 3 container 4 event. Result codes: 0 ok -1 unsupported -2 invalid -3 format
+// -4 io -5 not-loaded.
+//
+// Note: on this SLeeLa surface, method calls resolve on locals and parameters
+// but not on class-typed fields, so the Controller keeps its lifecycle state in
+// int[] tables and receives the (pure) Verifier/Processor as parameters.
+
+// ---- Verifier: extension/magic resolution + result text ----------------
+class Verifier {
+  int resolveExtension(String ext) {
+    if (ext == ".wav") { return 0; }
+    if (ext == ".aif" || ext == ".aiff") { return 1; }
+    if (ext == ".flac") { return 2; }
+    if (ext == ".opus") { return 8; }
+    if (ext == ".mid" || ext == ".midi") { return 17; }
+    return -1;
+  }
+  int probeMagic(String tag) {
+    if (tag == "RIFF") { return 0; }
+    if (tag == "fLaC") { return 2; }
+    if (tag == "OpusHead") { return 8; }
+    if (tag == "MThd") { return 17; }
+    return -1;
+  }
+  String resultText(int code) {
+    if (code == 0) { return "ok"; }
+    if (code == -1) { return "unsupported (backend not present)"; }
+    if (code == -2) { return "invalid arguments"; }
+    if (code == -3) { return "input is not this codec's format"; }
+    if (code == -4) { return "I/O or allocation failure"; }
+    if (code == -5) { return "codec not loaded"; }
+    return "unknown";
+  }
+}
+
+// ---- Processor: pure decode/encode dispatch over the facts -------------
+class Processor {
+  int decode(boolean loaded, boolean nativeCodec, boolean backendReady) {
+    if (!loaded) { return -5; }
+    if (nativeCodec) { return 0; }
+    if (backendReady) { return 0; }
+    return -1;
+  }
+  int encode(boolean loaded, boolean nativeCodec, boolean backendReady) {
+    if (!loaded) { return -5; }
+    if (nativeCodec) { return 0; }
+    if (backendReady) { return 0; }
+    return -1;
+  }
+}
+
+// ---- Controller: owns lifecycle + backend tables -----------------------
+class Controller {
+  int[] loaded;
+  int[] backend;
+  void create() { loaded = new int[20]; backend = new int[20]; }
+  int count() { return 20; }
+  boolean isNative(int id) { return id == 0 || id == 1 || id == 15 || id == 16; }
+  String nameOf(int id) {
+    if (id == 0) { return "PCM/WAV"; }
+    if (id == 2) { return "FLAC"; }
+    if (id == 17) { return "MIDI"; }
+    return "codec#" + id;
+  }
+  int load(int id) { loaded[id] = 1; return 0; }
+  boolean isLoaded(int id) { return loaded[id] == 1; }
+  void unloadAll() { int i = 0; while (i < 20) { loaded[i] = 0; i = i + 1; } }
+  int registerBackend(int id) { backend[id] = 1; return 0; }
+  boolean hasBackend(int id) { return backend[id] == 1; }
+  int loadedCount() {
+    int n = 0; int i = 0;
+    while (i < 20) { if (loaded[i] == 1) { n = n + 1; } i = i + 1; }
+    return n;
+  }
+
+  void main() {
+    print("=== SLeeLa audio codec pipeline (Controller/Loader/Verifier/Processor) ===");
+    Verifier verifier = new Verifier();
+    Processor processor = new Processor();
+    create();
+    print("codecs known: " + count());
+
+    // Resolve a file the way a GUI would when the user opens it.
+    int wav = verifier.resolveExtension(".wav");
+    int flac = verifier.resolveExtension(".flac");
+    print("resolve .wav  -> " + wav + " (" + nameOf(wav) + ")");
+    print("resolve .flac -> " + flac + " (" + nameOf(flac) + ")");
+
+    // Decode before load: honest state error (-5).
+    print("decode .wav before load: " + verifier.resultText(processor.decode(isLoaded(wav), isNative(wav), hasBackend(wav))));
+
+    // Load the native WAV codec and process it.
+    load(wav);
+    print("decode .wav loaded:      " + verifier.resultText(processor.decode(isLoaded(wav), isNative(wav), hasBackend(wav))));
+    print("encode .wav loaded:      " + verifier.resultText(processor.encode(isLoaded(wav), isNative(wav), hasBackend(wav))));
+
+    // Load backend FLAC with no backend wired: unsupported (-1), not a false ok.
+    load(flac);
+    print("decode .flac no backend: " + verifier.resultText(processor.decode(isLoaded(flac), isNative(flac), hasBackend(flac))));
+
+    // Wire a FLAC backend adapter, then it processes.
+    registerBackend(flac);
+    print("decode .flac backend:    " + verifier.resultText(processor.decode(isLoaded(flac), isNative(flac), hasBackend(flac))));
+
+    // Verifier content probe for a GUI pre-classify.
+    print("probe 'MThd' -> id " + verifier.probeMagic("MThd") + " (" + nameOf(17) + ")");
+
+    print("loaded count=" + loadedCount());
+    unloadAll();
+    print("after unloadAll, .wav loaded? " + isLoaded(wav));
+    print("done");
+  }
+}

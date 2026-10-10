@@ -1,0 +1,102 @@
+#sleela 1.3
+// video-codec-pipeline.sleela -- the self-contained, runnable build of the
+// SLeeLa video codec Controller/Verifier/Processor pipeline, parallel to the
+// audio codecs/codec-pipeline.sleela. The split per-class files
+// (VideoCodecController / VideoCodecLoader / VideoCodecVerifier /
+// VideoCodecProcessor) are the package discovery surface; this file is the
+// executable counterpart, inlining the collaborators plus a `main` that drives
+// them the way a GUI or app would.
+//
+// Video codec ids mirror sleela_video_codec_id:
+//   0 RAW 1 H264 2 HEVC 3 AV1 4 VP8 5 VP9 6 MPEG2 7 THEORA 8 MJPEG 9 FFV1
+//   10 PRORES 11 DNX. Result codes: 0 ok -1 unsupported -2 invalid -3 format
+//   -4 io -5 not-loaded.
+
+class Verifier {
+  int resolveExtension(string ext) {
+    if (ext == ".yuv" || ext == ".rgb") { return 0; }
+    if (ext == ".h264" || ext == ".264") { return 1; }
+    if (ext == ".h265" || ext == ".hevc") { return 2; }
+    if (ext == ".av1") { return 3; }
+    if (ext == ".mov") { return 10; }
+    if (ext == ".mxf") { return 11; }
+    return -1;
+  }
+  string resultText(int code) {
+    if (code == 0) { return "ok"; }
+    if (code == -1) { return "unsupported (backend not present)"; }
+    if (code == -2) { return "invalid arguments"; }
+    if (code == -3) { return "input is not this codec's format"; }
+    if (code == -4) { return "I/O or allocation failure"; }
+    if (code == -5) { return "codec not loaded"; }
+    return "unknown";
+  }
+}
+
+class Processor {
+  int decode(boolean loaded, boolean nativeCodec, boolean backendReady) {
+    if (!loaded) { return -5; }
+    if (nativeCodec) { return 0; }
+    if (backendReady) { return 0; }
+    return -1;
+  }
+  int encode(boolean loaded, boolean nativeCodec, boolean backendReady) {
+    if (!loaded) { return -5; }
+    if (nativeCodec) { return 0; }
+    if (backendReady) { return 0; }
+    return -1;
+  }
+}
+
+class Controller {
+  int[] loaded;
+  int[] backend;
+  void create() { loaded = new int[12]; backend = new int[12]; }
+  int count() { return 12; }
+  boolean isNative(int id) { return id == 0; }
+  string nameOf(int id) {
+    if (id == 0) { return "Raw Video"; }
+    if (id == 1) { return "H.264/AVC"; }
+    if (id == 3) { return "AV1"; }
+    if (id == 10) { return "Apple ProRes"; }
+    return "codec#" + id;
+  }
+  int load(int id) { loaded[id] = 1; return 0; }
+  boolean isLoaded(int id) { return loaded[id] == 1; }
+  void unloadAll() { int i = 0; while (i < 12) { loaded[i] = 0; i = i + 1; } }
+  int registerBackend(int id) { backend[id] = 1; return 0; }
+  boolean hasBackend(int id) { return backend[id] == 1; }
+  int loadedCount() {
+    int n = 0; int i = 0;
+    while (i < 12) { if (loaded[i] == 1) { n = n + 1; } i = i + 1; }
+    return n;
+  }
+
+  void main() {
+    print("=== SLeeLa video codec pipeline (Controller/Loader/Verifier/Processor) ===");
+    Verifier verifier = new Verifier();
+    Processor processor = new Processor();
+    create();
+    print("video codecs known: " + count());
+
+    int raw = verifier.resolveExtension(".yuv");
+    int av1 = verifier.resolveExtension(".av1");
+    print("resolve .yuv -> " + raw + " (" + nameOf(raw) + ")");
+    print("resolve .av1 -> " + av1 + " (" + nameOf(av1) + ")");
+
+    print("decode .av1 before load: " + verifier.resultText(processor.decode(isLoaded(av1), isNative(av1), hasBackend(av1))));
+
+    load(raw);
+    print("decode raw loaded (native): " + verifier.resultText(processor.decode(isLoaded(raw), isNative(raw), hasBackend(raw))));
+
+    load(av1);
+    print("decode .av1 no backend: " + verifier.resultText(processor.decode(isLoaded(av1), isNative(av1), hasBackend(av1))));
+    registerBackend(av1);
+    print("decode .av1 backend:    " + verifier.resultText(processor.decode(isLoaded(av1), isNative(av1), hasBackend(av1))));
+
+    print("loaded count=" + loadedCount());
+    unloadAll();
+    print("after unloadAll, raw loaded? " + isLoaded(raw));
+    print("done");
+  }
+}

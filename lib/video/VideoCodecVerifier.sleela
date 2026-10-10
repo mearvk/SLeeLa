@@ -1,0 +1,51 @@
+/*
+ * lib/video/VideoCodecVerifier.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines the SLeeLa standard-library type VideoCodecVerifier used within the video library family.
+ */
+#sleela 1.3
+// Family: video. The verification layer for video codecs — the SLeeLa mirror
+// of sleela_video_codec_by_extension (video/codecs/src/sleela_video_codecs.c).
+// A GUI or app uses it to answer "which video codec is this file?" and to turn
+// a result code into human-readable text before decoding.
+//
+// Result codes follow the audio codec convention (sleela_codec_result):
+//   0 ok, -1 unsupported, -2 invalid, -3 format, -4 io, -5 state(not loaded).
+class VideoCodecVerifier {
+
+  // Resolve a video codec id from a file extension, or -1 if unknown.
+  // Extensions are taken verbatim from the native video registry; note some
+  // containers (.webm, .mov) are shared and resolve to a representative codec.
+  int resolveExtension(string ext){
+    if(ext == ".yuv" || ext == ".rgb"){ return 0; }        // Raw Video
+    if(ext == ".h264" || ext == ".264"){ return 1; }       // H.264
+    if(ext == ".h265" || ext == ".hevc"){ return 2; }      // HEVC
+    if(ext == ".av1"){ return 3; }                         // AV1
+    if(ext == ".ivf"){ return 5; }                         // VP8/VP9 (VP9 default)
+    if(ext == ".webm"){ return 5; }                        // WebM video (VP9 default)
+    if(ext == ".mpg" || ext == ".mpeg" || ext == ".m2v"){ return 6; } // MPEG-2
+    if(ext == ".ogv"){ return 7; }                         // Theora
+    if(ext == ".mjpg" || ext == ".mjpeg"){ return 8; }     // Motion JPEG
+    if(ext == ".ffv1"){ return 9; }                        // FFV1
+    if(ext == ".mov"){ return 10; }                        // ProRes (default .mov)
+    if(ext == ".mxf"){ return 11; }                        // DNxHD/DNxHR
+    return -1;
+  }
+
+  int verifyLoadable(int id){
+    if(id >= 0 && id < 12){ return 0; }
+    return -2;
+  }
+
+  string resultText(int code){
+    if(code == 0){ return "ok"; }
+    if(code == -1){ return "unsupported (backend not present)"; }
+    if(code == -2){ return "invalid arguments"; }
+    if(code == -3){ return "input is not this codec's format"; }
+    if(code == -4){ return "I/O or allocation failure"; }
+    if(code == -5){ return "codec not loaded"; }
+    return "unknown";
+  }
+
+  boolean ok(int code){ return code == 0; }
+}

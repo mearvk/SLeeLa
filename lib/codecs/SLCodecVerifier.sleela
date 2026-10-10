@@ -1,0 +1,96 @@
+/*
+ * lib/codecs/SLCodecVerifier.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines the SLeeLa standard-library type SLCodecVerifier used within the codecs library family.
+ */
+#sleela 1.3
+// Family: codecs. The verification layer for codecs — the SLeeLa mirror of the
+// native manager's resolve/probe path (sleela_codec_manager_resolve_extension,
+// sleela_codec_manager_resolve_probe) and each plugin's probe() contract
+// (codecs/include/sleela_codec_plugin.h). A GUI or app uses the Verifier to
+// answer "which codec is this?" and "is this input actually that codec's
+// format?" before asking the Controller to decode.
+//
+// Verification has three layers, matching the native design:
+//   1. resolveExtension(ext)  -- filename extension -> codec id
+//   2. probeMagic(tag)        -- a leading content signature -> codec id
+//   3. result codes           -- honest status, never a false success
+//
+// Result codes (sleela_codec_result): 0 ok, -1 unsupported, -2 invalid,
+// -3 format, -4 io, -5 state(not loaded).
+class SLCodecVerifier {
+
+  // ---- extension resolution (mirrors sleela_codec_by_extension) -------
+  // Returns the codec id for a known extension, or -1 if unrecognized.
+  // Extensions are taken verbatim from each codec's registry metadata.
+  int resolveExtension(String ext) {
+    if (ext == ".wav") { return 0; }
+    if (ext == ".aif" || ext == ".aiff") { return 1; }
+    if (ext == ".flac") { return 2; }
+    if (ext == ".caf") { return 3; }
+    if (ext == ".mp3") { return 4; }
+    if (ext == ".aac") { return 5; }
+    if (ext == ".m4a") { return 5; }        // AAC family container
+    if (ext == ".ogg") { return 7; }        // Vorbis is the default .ogg audio
+    if (ext == ".opus") { return 8; }
+    if (ext == ".spx") { return 9; }
+    if (ext == ".wma") { return 10; }
+    if (ext == ".ac3") { return 11; }
+    if (ext == ".eac3" || ext == ".ec3") { return 12; }
+    if (ext == ".amr") { return 13; }
+    if (ext == ".awb") { return 14; }
+    if (ext == ".ulaw") { return 15; }
+    if (ext == ".alaw") { return 16; }
+    if (ext == ".mid" || ext == ".midi") { return 17; }
+    if (ext == ".mka") { return 18; }
+    if (ext == ".webm") { return 19; }
+    return -1;
+  }
+
+  // ---- content-signature probe (mirrors each plugin's probe()) --------
+  // Given a short leading-byte signature tag (as text, e.g. "RIFF", "fLaC",
+  // "MThd", "OggS", "FORM", "1A45DFA3" for EBML), return the codec id that
+  // claims it, or -1. This is the SLeeLa expression of the native byte probe:
+  // the actual byte comparison lives in the native plugin; here the Verifier
+  // encodes which magic belongs to which codec so a GUI can pre-classify.
+  int probeMagic(String tag) {
+    if (tag == "RIFF") { return 0; }        // RIFF/WAVE -> PCM/WAV
+    if (tag == "FORM") { return 1; }        // FORM/AIFF -> AIFF
+    if (tag == "fLaC") { return 2; }        // FLAC stream marker
+    if (tag == "ID3" || tag == "FFFB" || tag == "FFF3") { return 4; } // MP3 frame/ID3
+    if (tag == "OggS") { return 7; }        // Ogg container (Vorbis/Speex/Opus)
+    if (tag == "OpusHead") { return 8; }    // Opus identification header
+    if (tag == "0B77") { return 11; }       // AC-3 sync word
+    if (tag == "#!AMR") { return 13; }      // AMR-NB magic
+    if (tag == "#!AMR-WB") { return 14; }   // AMR-WB magic
+    if (tag == "MThd") { return 17; }       // Standard MIDI header
+    if (tag == "1A45DFA3") { return 18; }   // EBML -> Matroska/WebM
+    return -1;
+  }
+
+  // headerless(id): true for codecs with no reliable magic (G.711 telephony),
+  // where probing by content cannot confirm the format — the caller must know
+  // the format out-of-band. Mirrors the mu-law/A-law probe comment.
+  boolean headerless(int id) { return id == 15 || id == 16; }
+
+  // ---- loadability / lifecycle verification ---------------------------
+  // verifyLoadable(id): 0 if the id is a real codec that can be loaded,
+  // else -2 (invalid). Mirrors the manager's id_ok guard.
+  int verifyLoadable(int id) {
+    if (id >= 0 && id < 20) { return 0; }
+    return -2;
+  }
+
+  // ---- result-code text (mirrors sleela_codec_result_text) ------------
+  String resultText(int code) {
+    if (code == 0) { return "ok"; }
+    if (code == -1) { return "unsupported (backend not present)"; }
+    if (code == -2) { return "invalid arguments"; }
+    if (code == -3) { return "input is not this codec's format"; }
+    if (code == -4) { return "I/O or allocation failure"; }
+    if (code == -5) { return "codec not loaded"; }
+    return "unknown";
+  }
+
+  boolean ok(int code) { return code == 0; }
+}
