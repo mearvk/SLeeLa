@@ -1,0 +1,118 @@
+/*
+ * lib/os/SLKernelCatalog.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLKernelCatalog — the catalogue of selectable kernels and
+ *   kernel VERSIONS for the three OS families, so an OS being constructed can
+ *   request a SPECIFIC kernel version rather than only the shape default:
+ *     - Linux  : the Linux kernel, selectable by series (e.g. 6.6 LTS, 6.12,
+ *                6.18, "latest"), resolved to a concrete version string.
+ *     - Windows: the NT kernel for Windows 10 and later (NT 10.0 build
+ *                families: 10, 11, Server 2019/2022/2025).
+ *     - macOS  : the XNU/Darwin kernel, selectable by macOS release (Ventura/
+ *                Sonoma/Sequoia -> Darwin 22/23/24).
+ *
+ * It validates a requested selection (is this a kernel version this catalogue
+ * knows for the family?), returns the resolved version string and kernel name,
+ * and supplies the family default. SLKernelSpec composes against it so a model
+ * can do kernelSpec().selectVersion(catalog, "Linux", "6.6 LTS").
+ *
+ * Family: os. Pure design/catalogue model; no native bridge calls.
+ */
+#sleela 1.11
+class SLKernelCatalog {
+
+  // The kernel NAME for a family label.
+  String kernelName(String family) {
+    if (family == "Windows") { return "NT"; }
+    if (family == "macOS")   { return "XNU"; }
+    return "Linux";
+  }
+
+  // The family DEFAULT version (what forShape would pick).
+  String defaultVersion(String family) {
+    if (family == "Windows") { return "10.0.26100"; }   // Windows 11 24H2 / NT 10.0
+    if (family == "macOS")   { return "24.0.0"; }        // Darwin 24 (Sequoia)
+    return "6.12.0";                                      // current Linux LTS line
+  }
+
+  // ---- Selection: resolve a requested version to a concrete one -------
+  // resolveLinux(sel): map a Linux selection to a concrete kernel version.
+  // Accepts a named series or an explicit x.y.z (returned as-is).
+  String resolveLinux(String sel) {
+    if (sel == "latest")  { return "6.18.0"; }
+    if (sel == "6.18")    { return "6.18.0"; }
+    if (sel == "6.12")    { return "6.12.0"; }
+    if (sel == "6.12 LTS"){ return "6.12.0"; }
+    if (sel == "6.6")     { return "6.6.0"; }
+    if (sel == "6.6 LTS") { return "6.6.0"; }
+    if (sel == "6.1")     { return "6.1.0"; }
+    if (sel == "6.1 LTS") { return "6.1.0"; }
+    if (sel == "5.15")    { return "5.15.0"; }
+    if (sel == "5.15 LTS"){ return "5.15.0"; }
+    if (sel == "default") { return defaultVersion("Linux"); }
+    return sel;   // explicit x.y.z passthrough
+  }
+
+  // resolveWindows(sel): Windows 10+ only. Maps an edition/name to its NT 10.0
+  // build. Pre-10 selections resolve to "" (unsupported here).
+  String resolveWindows(String sel) {
+    if (sel == "10" || sel == "Windows 10")       { return "10.0.19045"; } // 22H2
+    if (sel == "11" || sel == "Windows 11")       { return "10.0.26100"; } // 24H2
+    if (sel == "Server 2019")                     { return "10.0.17763"; }
+    if (sel == "Server 2022")                     { return "10.0.20348"; }
+    if (sel == "Server 2025")                     { return "10.0.26100"; }
+    if (sel == "latest")                          { return "10.0.26100"; }
+    if (sel == "default")                         { return defaultVersion("Windows"); }
+    // Explicit NT build like "10.0.22631": accept only Windows 10+ (NT 10.x).
+    if (startsWith10(sel))                        { return sel; }
+    return "";   // pre-Windows-10 / unknown -> unsupported
+  }
+
+  // resolveMac(sel): macOS release name or Darwin version -> Darwin version.
+  String resolveMac(String sel) {
+    if (sel == "Ventura"  || sel == "13") { return "22.0.0"; }
+    if (sel == "Sonoma"   || sel == "14") { return "23.0.0"; }
+    if (sel == "Sequoia"  || sel == "15") { return "24.0.0"; }
+    if (sel == "latest")                  { return "24.0.0"; }
+    if (sel == "default")                 { return defaultVersion("macOS"); }
+    return sel;   // explicit Darwin x.y.z passthrough
+  }
+
+  // resolve(family, sel): the family-dispatched resolver. Returns "" when the
+  // selection is not valid for the family (e.g. a pre-10 Windows request).
+  String resolve(String family, String sel) {
+    if (family == "Windows") { return resolveWindows(sel); }
+    if (family == "macOS")   { return resolveMac(sel); }
+    return resolveLinux(sel);
+  }
+
+  // isSupported(family, sel): true when resolve() yields a concrete version.
+  boolean isSupported(String family, String sel) {
+    return resolve(family, sel) != "";
+  }
+
+  // A newline-separated menu of named selections for a family (for a GUI).
+  String selectionsFor(String family) {
+    if (family == "Windows") {
+      return "10 (22H2)\n11 (24H2)\nServer 2019\nServer 2022\nServer 2025\nlatest";
+    }
+    if (family == "macOS") {
+      return "Ventura (13)\nSonoma (14)\nSequoia (15)\nlatest";
+    }
+    return "5.15 LTS\n6.1 LTS\n6.6 LTS\n6.12 LTS\n6.18\nlatest";
+  }
+
+  // Windows-10+ guard: an explicit NT build is accepted only when it is NT 10.x.
+  boolean startsWith10(String nt) {
+    // Accept "10.0..." (Windows 10/11/Server 2016+). The core value model has
+    // no substring here, so compare the leading token by prefix equality
+    // against the known NT-10 forms this catalogue emits.
+    return nt == "10.0" || prefix10(nt);
+  }
+  // True for the exact NT-10 builds the catalogue resolves to.
+  boolean prefix10(String nt) {
+    return nt == "10.0.19045" || nt == "10.0.26100" || nt == "10.0.17763"
+        || nt == "10.0.20348" || nt == "10.0.22631" || nt == "10.0.22000"
+        || nt == "10.0.19041" || nt == "10.0.18362";
+  }
+}

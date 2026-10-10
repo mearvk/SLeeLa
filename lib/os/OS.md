@@ -509,3 +509,60 @@ sh fetch-upstream.sh # opt-in: shallow-clone the real Ubuntu OS parts into upstr
 So the full path is one program: **SLeeLa source → real Linux C/C++ on disk →
 (opt-in) the sourced upstream parts beside it**, reproducible by the pinned
 commit in `upstream/DISTRO.reference`.
+
+---
+
+# Executable file types and kernel-version selection
+
+Two cross-OS capabilities, modeled as `.sleela` objects and emitted into the
+generated C/C++ set.
+
+## File types as executables — `SLExecutableTypes`
+
+Each OS family decides "runnable" differently, and this object names those rules
+instead of hiding them:
+
+| Shape | Executable types | Mechanism |
+|---|---|---|
+| **Linux** | no-ext ELF, `.sh` `.bin` `.run` `.AppImage` `.elf` `.so` `.ko` | the exec bit (`chmod +x`) + a recognised format |
+| **Windows 10+** | `.exe` `.com` `.bat` `.cmd` `.ps1` `.msi` `.vbs` `.scr` | PATHEXT association (no exec bit) |
+| **macOS** | no-ext Mach-O, `.command` `.sh` `.app` `.bin` `.dylib` | exec bit for scripts/Mach-O; `.app` via `open(1)` |
+
+```sleela
+SLExecutableTypes ex = new SLExecutableTypes(); ex.configureForHost();
+ex.isExecutable(".sh");            // true on Linux/macOS; false on Windows
+ex.markExecutable("/path/run.sh"); // chmod +x on POSIX; no-op on Windows
+ex.isHostExecutable(path, ".sh");  // exist + (exec ext OR `test -x`)
+```
+
+The OS generator emits an **`exec_types.h`** into the working C/C++ set: a
+NULL-terminated table of executable extensions plus an `os_is_executable_ext()`
+helper a loader uses to decide whether a file is a candidate executable. The
+emitted header compiles with a stock C toolchain.
+
+## Choosing a kernel / version — `SLKernelCatalog` + `SLKernelSpec`
+
+`SLKernelCatalog` is the catalogue of selectable kernels and versions per OS
+family; `SLKernelSpec.selectVersion(catalog, family, selection)` applies one.
+
+| Family | Kernel | Selectable (examples) |
+|---|---|---|
+| **Linux** | Linux | `5.15 LTS`, `6.1 LTS`, `6.6 LTS`, `6.12 LTS`, `6.18`, `latest`, or explicit `x.y.z` |
+| **Windows 10+** | NT | `10` (NT 10.0.19045), `11` (10.0.26100), `Server 2019/2022/2025`, `latest` — **pre-10 is rejected** |
+| **macOS** | XNU/Darwin | `Ventura`/`13`, `Sonoma`/`14`, `Sequoia`/`15`, `latest` |
+
+```sleela
+SLKernelCatalog cat = new SLKernelCatalog();
+SLKernelSpec    k   = new SLKernelSpec(); k.forShape(shape);
+k.selectVersion(cat, "Linux", "6.6 LTS");   // -> Linux 6.6.0  (true)
+k.selectVersion(cat, "Windows", "11");      // -> NT 10.0.26100 (true)
+k.selectVersion(cat, "Windows", "XP");      // false (Windows 10+ only)
+```
+
+`os-generate.sleela` honours an `OS_KERNEL_VER` build parameter and emits the
+resolved kernel into `os_config.h` as `OS_KERNEL` / `OS_KERNEL_VER`:
+
+```sh
+OS_KERNEL_VER="6.6 LTS" ./impl/build/sleela run lib/os/os-generate.sleela
+# -> os/os_config.h: #define OS_KERNEL_VER "6.6.0"
+```

@@ -51,6 +51,19 @@ class SLKernelSpec {
     configure("Linux", "6.18.27");
   }
 
+  // Request a SPECIFIC kernel version via SLKernelCatalog. `family` is
+  // "Linux"/"Windows"/"macOS" and `selection` is a named series/edition
+  // ("6.6 LTS", "11", "Sonoma", "latest", "default") or an explicit version.
+  // Returns true when the selection is supported for the family; on success the
+  // kernel name and resolved version are applied, otherwise the spec is left
+  // unchanged. Windows requests below Windows 10 are unsupported (return false).
+  boolean selectVersion(SLKernelCatalog catalog, String family, String selection) {
+    String resolved = catalog.resolve(family, selection);
+    if (resolved == "") { return false; }
+    configure(catalog.kernelName(family), resolved);
+    return true;
+  }
+
   void setCmdline(String line) { cmdline = line; }
   void appendCmdline(String arg) { cmdline = cmdline + " " + arg; }
   void requireSecurity(boolean on) { if (on) { security = 1; } else { security = 0; } }
