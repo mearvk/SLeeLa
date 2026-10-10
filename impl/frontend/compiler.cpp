@@ -426,7 +426,28 @@ private:
     // Determine the struct type name an expression evaluates to, or "" if it is
     // not statically known to be a struct. Used to resolve field offsets.
     std::string exprStructType(const Expr* e){
-        if(auto v=dynamic_cast<const VarExpr*>(e)){auto it=varType_.find(v->name);return it==varType_.end()?"":it->second;}
+        if(auto v=dynamic_cast<const VarExpr*>(e)){
+            auto it=varType_.find(v->name);
+            if(it!=varType_.end()) return it->second;
+            // Fall back to an instance field of the current class: a bare field
+            // read (parsed as a VarExpr) carries a known struct/class type even
+            // though it is not a local/param. This lets a method call resolve on
+            // a class-typed field receiver -- e.g. `this.engine.rating()` written
+            // as `engine.rating()` -- the same way emitVar resolves the field's
+            // offset. The field's declared type is read from the current class's
+            // layout; empty when the field is scalar or the name is not a field.
+            if(!currentClass_.empty()){
+                auto lit=structLayout_.find(currentClass_);
+                if(lit!=structLayout_.end()){
+                    auto oit=lit->second.fieldOffset.find(v->name);
+                    if(oit!=lit->second.fieldOffset.end()){
+                        const std::string& ft=lit->second.fieldType[oit->second];
+                        if(structLayout_.count(ft)) return ft;
+                    }
+                }
+            }
+            return "";
+        }
         if(dynamic_cast<const ThisExpr*>(e))return currentClass_;
         if(auto m=dynamic_cast<const MemberAccess*>(e)){std::string bt=exprStructType(m->base.get());if(bt.empty())return "";auto lit=structLayout_.find(bt);if(lit==structLayout_.end())return "";int idx=-1;auto oit=lit->second.fieldOffset.find(m->field);if(oit!=lit->second.fieldOffset.end())idx=oit->second;if(idx<0)return "";return lit->second.fieldType[idx];}
         if(auto n=dynamic_cast<const NewExpr*>(e))return n->typeName;

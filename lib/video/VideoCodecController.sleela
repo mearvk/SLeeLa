@@ -3,15 +3,15 @@
  * SLeeLa Standard Library Definition.
  * Definition: Defines the SLeeLa standard-library type VideoCodecController used within the video library family.
  */
-#sleela 1.3
+#sleela 1.11
 // Family: video. The video Codec Management Controller — the single surface a
 // GUI or application drives to use video codecs, parallel to the audio
 // SLCodecController. It owns each codec's loaded lifecycle and backend table,
 // and cooperates with VideoCodecLoader (classification), VideoCodecVerifier
 // (extension resolution + result text), and VideoCodecProcessor (decode/encode
-// dispatch). A caller passes a Verifier in as a parameter rather than the
-// Controller storing one as a field (method calls resolve on parameters, not
-// class-typed fields, on this surface); lifecycle state lives in int[] tables.
+// dispatch). As of syntax 1.11 the Controller holds its Verifier as a field and
+// calls through it directly (method calls resolve on class-typed fields);
+// lifecycle state lives in int[] tables.
 //
 // Video codec ids mirror sleela_video_codec_id:
 //   0 RAW  1 H264  2 HEVC  3 AV1  4 VP8  5 VP9  6 MPEG2  7 THEORA
@@ -23,11 +23,13 @@ class VideoCodecController {
 
   int[] loaded;
   int[] backend;
+  VideoCodecVerifier verifier;   // wired by create(), called via the field
   int ready;
 
   void create(){
     loaded = new int[12];
     backend = new int[12];
+    verifier = new VideoCodecVerifier();
     ready = 1;
   }
 
@@ -104,8 +106,8 @@ class VideoCodecController {
     return backend[id] == 1;
   }
 
-  // Resolve a codec id from a file extension via a passed-in Verifier.
-  int resolveExtension(VideoCodecVerifier verifier, string extension){
+  // Resolve a codec id from a file extension via the wired Verifier.
+  int resolveExtension(string extension){
     return verifier.resolveExtension(extension);
   }
 
@@ -125,7 +127,7 @@ class VideoCodecController {
     return -1;
   }
 
-  string resultText(VideoCodecVerifier verifier, int code){
+  string resultText(int code){
     return verifier.resultText(code);
   }
 }
