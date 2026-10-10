@@ -1,0 +1,66 @@
+/*
+ * lib/os/hdd/SLHardDisk.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLHardDisk — a named rotational hard disk drive. It
+ *   extends SLHardwareComponent and models the finite catalogue of HDD variants
+ *   by the dimensions that distinguish them: form factor (3.5" / 2.5"),
+ *   spindle speed (5400 / 7200 / 10000 / 15000 RPM), host interface (SATA III /
+ *   SAS), recording technology (CMR vs SMR), cache size, capacity, and
+ *   representative sustained transfer rate. A machine description requests an
+ *   HDD by manufacturer + model and composes it as a bulk/boot storage device.
+ *
+ * Like SLSSD it is a storage device whose capacity-in-blocks maps onto the VM
+ * block store; media kind is rotational so SLMachineModel marks it MEDIA_HDD.
+ *
+ * Family: os. Extends SLHardwareComponent.
+ */
+#sleela 1.5
+class SLHardDisk extends SLHardwareComponent {
+  // Interface ordinals.
+  static final int IF_SATA3 = 0;  // 6 Gb/s
+  static final int IF_SAS   = 1;  // 12 Gb/s enterprise
+  // Recording technology.
+  static final int REC_CMR = 0;   // conventional (preferred)
+  static final int REC_SMR = 1;   // shingled (higher density, slower random writes)
+
+  int iface;          // IF_*
+  String formFactor;  // "3.5\"" / "2.5\""
+  int rpm;            // spindle speed
+  int recording;      // REC_*
+  int cacheMb;        // DRAM cache
+  int capacityGb;
+  int sustainedMBps;  // representative sustained transfer rate
+  int blockBytes;     // logical block size
+
+  void configure(String manufacturer, String partName, int interfaceKind, int rpmSpeed, int capacityGigabytes) {
+    configureComponent(manufacturer, partName, CLASS_HDD);
+    iface = interfaceKind; rpm = rpmSpeed; capacityGb = capacityGigabytes;
+    recording = REC_CMR; cacheMb = 256; blockBytes = 4096; formFactor = "3.5\"";
+    // Sustained rate scales roughly with areal density + spindle speed.
+    if (rpm >= 15000)      { sustainedMBps = 300; }
+    else if (rpm >= 10000) { sustainedMBps = 250; }
+    else if (rpm >= 7200)  { sustainedMBps = 260; }
+    else                   { sustainedMBps = 180; }
+  }
+
+  void setRecording(int tech) { recording = tech; }
+  void setCache(int megabytes) { cacheMb = megabytes; }
+  void setFormFactor(String ff) { formFactor = ff; }
+  void setSustained(int mbps) { sustainedMBps = mbps; }
+
+  boolean isSas()  { return iface == IF_SAS; }
+  boolean isSmr()  { return recording == REC_SMR; }
+  String interfaceName() { if (iface == IF_SAS) { return "SAS"; } return "SATA III"; }
+  String recordingName() { if (recording == REC_SMR) { return "SMR"; } return "CMR"; }
+  String form()          { return formFactor; }
+  int spindleRpm()       { return rpm; }
+  int cacheMegabytes()   { return cacheMb; }
+  int capacityGigabytes(){ return capacityGb; }
+  int transferMBps()     { return sustainedMBps; }
+  int blockSize()        { return blockBytes; }
+
+  int capacityBlocks() {
+    int bytes = capacityGb * 1073741824;
+    return bytes / blockBytes;
+  }
+}

@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 10504
+library-source-files: 10520
 library-packages: 88
 module-facade-symbols: 60
-total-symbol-records: 10564
+total-symbol-records: 10580
 
 package	symbol	path	kind
 alphabet	Alphabet.sleela	lib/alphabet/Alphabet.sleela	source
@@ -10250,6 +10250,8 @@ os	SLEventSignal.sleela	lib/os/SLEventSignal.sleela	source
 os	SLFile.sleela	lib/os/SLFile.sleela	source
 os	SLFileSystem.sleela	lib/os/SLFileSystem.sleela	source
 os	SLFilesystemLayout.sleela	lib/os/SLFilesystemLayout.sleela	source
+os	SLHardwareComponent.sleela	lib/os/SLHardwareComponent.sleela	source
+os	SLHardwareRegistry.sleela	lib/os/SLHardwareRegistry.sleela	source
 os	SLISOBuilder.sleela	lib/os/SLISOBuilder.sleela	source
 os	SLInstallerGenerator.sleela	lib/os/SLInstallerGenerator.sleela	source
 os	SLKernelSpec.sleela	lib/os/SLKernelSpec.sleela	source
@@ -10257,6 +10259,8 @@ os	SLLinuxOS.sleela	lib/os/SLLinuxOS.sleela	source
 os	SLLinuxOSModel.sleela	lib/os/SLLinuxOSModel.sleela	source
 os	SLMacOS.sleela	lib/os/SLMacOS.sleela	source
 os	SLMacOSModel.sleela	lib/os/SLMacOSModel.sleela	source
+os	SLMachineBuilder.sleela	lib/os/SLMachineBuilder.sleela	source
+os	SLMachineModel.sleela	lib/os/SLMachineModel.sleela	source
 os	SLOSArchitecture.sleela	lib/os/SLOSArchitecture.sleela	source
 os	SLOSArtifact.sleela	lib/os/SLOSArtifact.sleela	source
 os	SLOSBuildReport.sleela	lib/os/SLOSBuildReport.sleela	source
@@ -10271,7 +10275,19 @@ os	SLProcess.sleela	lib/os/SLProcess.sleela	source
 os	SLServiceSet.sleela	lib/os/SLServiceSet.sleela	source
 os	SLWindowsOS.sleela	lib/os/SLWindowsOS.sleela	source
 os	SLWindowsOSModel.sleela	lib/os/SLWindowsOSModel.sleela	source
+os	SLHardDisk.sleela	lib/os/hdd/SLHardDisk.sleela	source
+os	SLHardDiskCatalog.sleela	lib/os/hdd/SLHardDiskCatalog.sleela	source
+os	machine-build.sleela	lib/os/machine-build.sleela	source
+os	SLDDRCatalog.sleela	lib/os/memory-ddr/SLDDRCatalog.sleela	source
+os	SLDDRModule.sleela	lib/os/memory-ddr/SLDDRModule.sleela	source
 os	os-build.sleela	lib/os/os-build.sleela	source
+os	SLSSD.sleela	lib/os/ssd/SLSSD.sleela	source
+os	SLSSDCatalog.sleela	lib/os/ssd/SLSSDCatalog.sleela	source
+os	SLUEFIFirmware.sleela	lib/os/uefi/SLUEFIFirmware.sleela	source
+os	SLUSBCatalog.sleela	lib/os/usb/SLUSBCatalog.sleela	source
+os	SLUSBDevice.sleela	lib/os/usb/SLUSBDevice.sleela	source
+os	SLVideoCard.sleela	lib/os/video-cards/SLVideoCard.sleela	source
+os	SLVideoCardCatalog.sleela	lib/os/video-cards/SLVideoCardCatalog.sleela	source
 politico	SLPackage.sleela	lib/politico/SLPackage.sleela	facade
 process	SLAtomic.sleela	lib/process/SLAtomic.sleela	source
 process	SLBarrier.sleela	lib/process/SLBarrier.sleela	source

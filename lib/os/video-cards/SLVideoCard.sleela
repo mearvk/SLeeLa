@@ -1,0 +1,79 @@
+/*
+ * lib/os/video-cards/SLVideoCard.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLVideoCard — a named graphics card (GPU). It extends
+ *   SLHardwareComponent and models the finite set of GPU variants by the
+ *   attributes a machine description needs: the GPU vendor (NVIDIA, AMD, Intel)
+ *   and architecture family, the board interface (PCIe generation and lane
+ *   count), video memory size and type (GDDR6/GDDR6X/GDDR7/HBM), display
+ *   outputs (HDMI/DisplayPort counts), board power (watts), and the APIs it
+ *   advertises (Vulkan, OpenGL, Direct3D, compute). A machine description
+ *   requests a card by vendor + model and composes it as the display adapter.
+ *
+ * Family: os. Extends SLHardwareComponent.
+ */
+#sleela 1.5
+class SLVideoCard extends SLHardwareComponent {
+  // GPU vendor ordinals.
+  static final int GPU_NVIDIA = 0;
+  static final int GPU_AMD    = 1;
+  static final int GPU_INTEL  = 2;
+  // Video-memory type ordinals.
+  static final int VRAM_GDDR6  = 0;
+  static final int VRAM_GDDR6X = 1;
+  static final int VRAM_GDDR7  = 2;
+  static final int VRAM_HBM    = 3;
+
+  int gpuVendor;      // GPU_*
+  String architecture;// e.g. "Ada Lovelace", "RDNA 3", "Xe-HPG"
+  int pcieGen;        // PCIe generation (3,4,5)
+  int pcieLanes;      // typically 16
+  int vramMb;         // video memory in MB
+  int vramType;       // VRAM_*
+  int hdmiPorts;
+  int displayPorts;
+  int boardPowerW;    // typical board power (TGP) in watts
+  int vulkan;         // 1 if Vulkan supported
+  int direct3d;       // 1 if Direct3D 12 supported
+
+  void configure(String vendorName, String partName, int vendorOrdinal, int vramMegabytes) {
+    configureComponent(vendorName, partName, CLASS_VIDEO);
+    gpuVendor = vendorOrdinal; vramMb = vramMegabytes;
+    pcieGen = 4; pcieLanes = 16; vramType = VRAM_GDDR6;
+    hdmiPorts = 1; displayPorts = 3; boardPowerW = 200;
+    vulkan = 1; direct3d = 1;
+    if (vendorOrdinal == GPU_NVIDIA) { architecture = "Ada Lovelace"; vramType = VRAM_GDDR6X; }
+    if (vendorOrdinal == GPU_AMD)    { architecture = "RDNA 3"; vramType = VRAM_GDDR6; }
+    if (vendorOrdinal == GPU_INTEL)  { architecture = "Xe-HPG"; vramType = VRAM_GDDR6; }
+  }
+
+  // Configure by vendor name ("NVIDIA"/"AMD"/"Intel").
+  void configureByVendor(String vendorName, String partName, int vramMb) {
+    if (vendorName == "NVIDIA") { configure(vendorName, partName, GPU_NVIDIA, vramMb); return; }
+    if (vendorName == "AMD")    { configure(vendorName, partName, GPU_AMD, vramMb); return; }
+    if (vendorName == "Intel")  { configure(vendorName, partName, GPU_INTEL, vramMb); return; }
+    configure(vendorName, partName, GPU_NVIDIA, vramMb);
+  }
+
+  void setArchitecture(String arch) { architecture = arch; }
+  void setPcie(int gen, int lanes) { pcieGen = gen; pcieLanes = lanes; }
+  void setVram(int megabytes, int type) { vramMb = megabytes; vramType = type; }
+  void setOutputs(int hdmi, int dp) { hdmiPorts = hdmi; displayPorts = dp; }
+  void setBoardPower(int watts) { boardPowerW = watts; }
+
+  String vendorName()   { return vendor; }
+  String architectureName() { return architecture; }
+  int pcieGeneration()  { return pcieGen; }
+  int lanes()           { return pcieLanes; }
+  int vramMegabytes()   { return vramMb; }
+  String vramTypeName() {
+    if (vramType == VRAM_GDDR7)  { return "GDDR7"; }
+    if (vramType == VRAM_GDDR6X) { return "GDDR6X"; }
+    if (vramType == VRAM_HBM)    { return "HBM"; }
+    return "GDDR6";
+  }
+  int outputsTotal()    { return hdmiPorts + displayPorts; }
+  int boardPower()      { return boardPowerW; }
+  boolean supportsVulkan()   { return vulkan == 1; }
+  boolean supportsDirect3D() { return direct3d == 1; }
+}

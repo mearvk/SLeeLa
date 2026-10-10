@@ -1,0 +1,55 @@
+/*
+ * lib/os/hdd/SLHardDiskCatalog.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLHardDiskCatalog — a by-name factory for rotational hard
+ *   disks from the surviving HDD manufacturers. The spinning-disk market has
+ *   consolidated to a finite set — Seagate, Western Digital, and Toshiba — so a
+ *   machine description can request bulk storage by maker and model name and
+ *   get a representative, correctly-specified SLHardDisk back.
+ *
+ * Representative family names (Seagate IronWolf/Exos, WD Red/Gold, Toshiba
+ * MG/N300) stand in for identity; exact capacity/RPM bins vary by SKU.
+ *
+ * Family: os. Produces SLHardDisk.
+ */
+#sleela 1.5
+class SLHardDiskCatalog {
+  void configure() {}
+
+  // A 7200 RPM SATA desktop/NAS drive from a named manufacturer.
+  SLHardDisk sata7200(String manufacturer, int capacityGb) {
+    SLHardDisk d = new SLHardDisk();
+    d.configure(manufacturer, desktopPart(manufacturer), d.IF_SATA3, 7200, capacityGb);
+    return d;
+  }
+  // A 7200 RPM SAS enterprise drive from a named manufacturer.
+  SLHardDisk enterprise(String manufacturer, int capacityGb) {
+    SLHardDisk d = new SLHardDisk();
+    d.configure(manufacturer, enterprisePart(manufacturer), d.IF_SAS, 7200, capacityGb);
+    return d;
+  }
+  // A high-RPM (10k/15k) SAS performance drive.
+  SLHardDisk performance(String manufacturer, int rpm, int capacityGb) {
+    SLHardDisk d = new SLHardDisk();
+    d.configure(manufacturer, enterprisePart(manufacturer), d.IF_SAS, rpm, capacityGb);
+    return d;
+  }
+
+  boolean known(String manufacturer) {
+    return manufacturer == "Seagate" || manufacturer == "Western Digital"
+        || manufacturer == "Toshiba";
+  }
+
+  String desktopPart(String mfr) {
+    if (mfr == "Seagate")         { return "IronWolf"; }
+    if (mfr == "Western Digital") { return "WD Red Plus"; }
+    if (mfr == "Toshiba")         { return "N300"; }
+    return "Desktop-HDD";
+  }
+  String enterprisePart(String mfr) {
+    if (mfr == "Seagate")         { return "Exos X"; }
+    if (mfr == "Western Digital") { return "WD Gold"; }
+    if (mfr == "Toshiba")         { return "MG Series"; }
+    return "Enterprise-HDD";
+  }
+}
