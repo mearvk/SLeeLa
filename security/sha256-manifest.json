@@ -99,11 +99,11 @@
     },
     {
       "path": "impl/core/sleela_core.c",
-      "sha256": "7679cae1729990e89175f32f67bf7d879b3e60a3efd1a1fbef195729e6515fb9"
+      "sha256": "0328e53fe64c24eb520bb04a068fd6165e9042303d3002a42735e45dc2183d84"
     },
     {
       "path": "impl/core/sleela_core.h",
-      "sha256": "2d38e8b079ff5b248963f85794c806b4fcd5e1e9c4fbf48543da6026fa97a644"
+      "sha256": "32678ffe271942d16992ea03a854a304ada85e8bfee98c7832f5b90d05b15328"
     },
     {
       "path": "impl/core/sleela_design_activity.c",
@@ -315,11 +315,11 @@
     },
     {
       "path": "impl/frontend/ast.h",
-      "sha256": "41d02bae7c3ab604fdc5f8c47252ec784e30f7408c45a797452aa773894b01b0"
+      "sha256": "18a9961dd844bdad28c7d1c4d83ffe379393931f295277dc16e73009b957f411"
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "2a35bab9199af8c48d1d84f54610bb82985203a76c7a6cbfbd065e316938a1a0"
+      "sha256": "fc962a3b58f20ce0d1270c58bb35a74641a0558f031bb62f9f6c5add6882d2a8"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -375,11 +375,11 @@
     },
     {
       "path": "impl/frontend/lexer.cpp",
-      "sha256": "5bf4c7c12cc1e194eaaecfca0e6c9b2772f40e6060c17630615e862099acdfec"
+      "sha256": "906662b2ba0652c90b30505afd589563097dc3c28ca17e7c385a98d8e69694bf"
     },
     {
       "path": "impl/frontend/lexer.h",
-      "sha256": "e5a03e63e2bc6c3b217a35f955bc46159eec45b870183b9cea5555f6c995cf7b"
+      "sha256": "3875a0eb86c615601d184d61c4bdd841bc3d573b129bd1c0ea754f3fa422eb34"
     },
     {
       "path": "impl/frontend/library_index.cpp",
@@ -391,7 +391,7 @@
     },
     {
       "path": "impl/frontend/parser.cpp",
-      "sha256": "4b07dfa6a9a8d758f3c7d95aa150138cb69b1497cc2dc2b69fd1a7ee5dd77fad"
+      "sha256": "9c6b744769e9e9e495a271555333ec67aaf692b3cdb8a32fb8f597926532fd91"
     },
     {
       "path": "impl/frontend/parser.h",
@@ -407,7 +407,7 @@
     },
     {
       "path": "impl/frontend/semantic.cpp",
-      "sha256": "9a731a8d9835826c7f566ab6c490f5ccb4ef2f3ada2a8d567234fd201b926fe3"
+      "sha256": "3dd752008f7300d74934628e246ae9a143ef8fffc48c0163819c877d1350f35b"
     },
     {
       "path": "impl/frontend/semantic.h",
@@ -423,7 +423,7 @@
     },
     {
       "path": "impl/frontend/version.h",
-      "sha256": "92e38e50f29e89a6e4a6f9ae0051f87e4212e6240b30dee5bc1e15c601cd5960"
+      "sha256": "3a46b6017564351797f9502fa40f89ed32ff046ef0f5cf88489cdb382c681f64"
     },
     {
       "path": "impl/nordshrift/complete/class_bindings.cpp",

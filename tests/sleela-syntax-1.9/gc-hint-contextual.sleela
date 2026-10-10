@@ -1,0 +1,13 @@
+#sleela 1.9
+class GcHintContextual {
+    static void main() {
+        // `gc` and `mem` remain ordinary identifiers everywhere except as the
+        // whole RHS of an assignment. Here `gc` is a plain int variable used in
+        // an expression, which must NOT be taken as a GC hint.
+        let gc = 10;
+        let x = gc + 5;      // normal assignment: x = 15
+        print(x);
+        x = gc;              // whole-RHS `gc` IS the hint form (gc var is shadowed by intent)
+        print(x);            // x unchanged by the hint -> still 15
+    }
+}

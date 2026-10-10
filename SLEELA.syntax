@@ -1,25 +1,28 @@
 # Sleela — Language Syntax Specification
 
     Language:        Sleela
-    Syntax version:  1.8   (1.3..1.7 baseline plus inferred local declarations)
-    Compiler:        Sleelvac(TM) 0.3.29-dev  (version gate accepts syntax 1.3 .. 1.8)
+    Syntax version:  1.9   (1.3..1.8 baseline plus the GC-hint statement)
+    Compiler:        Sleelvac(TM) 0.3.29-dev  (version gate accepts syntax 1.3 .. 1.9)
     Surface:         Java-like
     Core:            Turing-complete, thread-friendly C/C++ execution core
     Companion:       SHEET.sheet (system-object catalog), SST.model (NS-SST-0001),
                      lib/LIBRARY.SYMBOLS.md (authoritative /lib class vocabulary)
-    Status:          Normative for the syntax 1.3..1.8 surface
+    Status:          Normative for the syntax 1.3..1.9 surface
 
     Versioning note: two distinct version numbers apply and must not be
     conflated. The **syntax version** (MAJOR.MINOR, declared per file with
-    `#sleela 1.8`) is the grammar version defined here and enforced by
-    `impl/frontend/version.{h,cpp}` (documented supported range 1.3 .. 1.8).
+    `#sleela 1.9`) is the grammar version defined here and enforced by
+    `impl/frontend/version.{h,cpp}` (documented supported range 1.3 .. 1.9).
     Syntax 1.8 adds two features over the 1.3..1.7 baseline: inferred local
     declarations using `let`, and constructor arguments on `new Type(args)`
-    (see section 12). The semantic analyzer infers `let` locals from non-null,
-    non-void, statically known initializers, and binds constructor arguments to
-    a single declared constructor. Constructor overload resolution and
-    `this(...)`/base delegation remain outside the verified 1.8 implementation
-    and are rejected explicitly; do not infer their support from the
+    (see section 12). Syntax 1.9 adds the **GC-hint statement** `x = gc N;` /
+    `x = mem N;` — a short-term garbage-collection cleanup request with a 0..100
+    aggressiveness (see section 13). The semantic analyzer infers `let` locals
+    from non-null, non-void, statically known initializers, binds constructor
+    arguments to a single declared constructor, and gates the GC hint on a
+    valid in-scope target and a 0..100 band. Constructor overload resolution and
+    `this(...)`/base delegation remain outside the verified implementation and
+    are rejected explicitly; do not infer their support from the
     constructor-series design documents. The **compiler/tool version** (Sleelvac™ 0.3.29-dev, printed by
     `sleela version`) is the implementation release and evolves independently.
     A file must declare a syntax version within the verified supported range;
@@ -172,6 +175,7 @@ instances are runtime-only (a struct-typed global reloads as `null`).
                  | var-decl
                  | assign
                  | field-assign
+                 | gc-hint-stmt                      // §13 (syntax 1.9)
                  | if-stmt
                  | while-stmt
                  | for-stmt
@@ -191,6 +195,11 @@ field of the same name).
     member       ::= primary ("." ident)+
 `box.width = 20;` and `box.origin.x = 1;` write through a struct handle. The
 base's struct type is resolved at compile time to compute the field offset.
+
+A `gc-hint-stmt` (syntax 1.9, §13) shares the `ident "=" ...` shape but is NOT an
+assignment: `x = gc N;` / `x = mem N;` is a short-term GC-cleanup request, not a
+store. It is recognised when the whole right-hand side is the contextual word
+`gc`/`mem` (optionally followed by a 0..100 int). The target keeps its value.
 
 ### 4.3 If / else
     if-stmt    ::= "if" "(" expr ")" statement ["else" statement]
@@ -382,6 +391,8 @@ Expected output (order of the concurrent phase aside):
                     bestOfRecord bestOfScore bestOfBest bestOfChoice bestOfReport
                     bestOfClose bestOfMean bestOfLoss bestOfJitter bestOfCertainty
                     bestOfArch bestOfArchParam bestOfArchState   (syntax 1.3+)
+    gc-hint (2):    gc mem        contextual; only as the whole RHS of
+                    `x = gc N;` / `x = mem N;`, N in 0..100  (syntax 1.9+)
 
 Contextual built-ins are recognized in call position only (they are not reserved
 words). The Munction fluent chain is one sane reach sentence of 4..16 calls; see
@@ -583,3 +594,72 @@ These limits are enforced rather than silently narrowed: unsupported constructor
 forms produce an explicit semantic error (see `impl/frontend/semantic.cpp` and
 `impl/frontend/compiler.cpp`). Regression fixtures live in
 `tests/sleela-syntax-1.8/`.
+
+--------------------------------------------------------------------------------
+## 13. Syntax 1.9 — the GC-hint statement (`x = gc N;` / `x = mem N;`)
+
+Syntax 1.9 adds one feature over the 1.3..1.8 baseline: an explicit, developer-
+emitted request for a **short-term garbage-collection cleanup** of unreachable
+allocations once a value is finished being used.
+
+### 13.1 Form
+
+    gc-hint-stmt ::= ident "=" ("gc" | "mem") int-lit? ";"
+
+```sleela
+#sleela 1.9
+class Example {
+    static void main() {
+        let x = new Widget();
+        // ... use x ...
+        x = gc 100;     // most-aggressive short-term cleanup after use
+        let y = new Buffer();
+        y = mem 25;     // the `mem` spelling, a modest cleanup
+        let z = new Cache();
+        z = gc;         // bare form: a default modest cleanup
+    }
+}
+```
+
+The two spellings `gc` and `mem` are equivalent; both name the same hint. `N` is
+the **aggressiveness**, an integer in the inclusive band **0..100**:
+
+  * `0`                 — a no-op (the hint is recorded but asks for nothing).
+  * `1..99`             — a young-only safepoint collection, sized to the level.
+  * `100`               — the strongest claim: a full (not young-only) collection.
+  * omitted (bare form) — defaults to a modest cleanup (level 50).
+
+### 13.2 Contextual, not reserved
+
+`gc` and `mem` are **contextual** words, not reserved keywords. They are special
+only as the *whole* right-hand side of an assignment; everywhere else they are
+ordinary identifiers. So a variable may still be named `gc` or `mem`, and an
+expression RHS that merely begins with such a name is not a hint:
+
+```sleela
+let gc = 10;
+let x = gc + 5;   // normal assignment: x = 15 (gc is a plain variable)
+x = gc;           // the WHOLE RHS is `gc`: this is the GC hint
+```
+
+### 13.3 Semantics and limits
+
+  * The **target** must be an in-scope value (a local, instance field, or static
+    field). Naming the value the developer is done with keeps the hint honest:
+    it marks a real binding as releasable. An unknown target is a semantic error.
+  * The **aggressiveness** must be within `0..100`; an out-of-range literal is a
+    semantic error, not silently clamped.
+  * The hint reclaims **only genuinely unreachable** objects. It never frees a
+    live value, and it does not change the program's observable result — the
+    target's value is unchanged by the hint.
+  * Collection is a VM safepoint, so (like every collection) it is **deferred
+    while worker threads are active** and runs at structured-concurrency
+    quiescence.
+  * The hint lowers to a single VM opcode, `OP_GC_HINT`, whose operand is the
+    0..100 aggressiveness; the VM runs a `gc_safepoint_with_roots` collection at
+    that strength (young-only below 100, full at 100).
+
+These constraints are enforced rather than silently narrowed: an unsupported
+target or band produces an explicit semantic error (see
+`impl/frontend/semantic.cpp` and `impl/frontend/compiler.cpp`). Regression
+fixtures live in `tests/sleela-syntax-1.9/`.

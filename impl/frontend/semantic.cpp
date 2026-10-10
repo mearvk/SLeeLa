@@ -111,6 +111,17 @@ class Analyzer{
   }
   if(auto a=dynamic_cast<const Assign*>(&s)){Type t=lookup(a->name);if(t.kind==Kind::Error){err("assignment to undeclared variable '"+a->name+"'");return;}Type g=expr(*a->value);if(!assignable(t,g))err("cannot assign "+nameOf(g)+" to '"+a->name+"' of type "+nameOf(t));return;}
   if(auto f=dynamic_cast<const FieldAssign*>(&s)){Type t=member(*f->base,f->field),g=expr(*f->value);if(t.kind!=Kind::Error&&!assignable(t,g))err("cannot assign "+nameOf(g)+" to field '"+f->field+"' of type "+nameOf(t));return;}
+  if(auto gh=dynamic_cast<const GcHintStmt*>(&s)){
+   // GC hint (syntax 1.9): `x = gc N;` / `x = mem N;`. The target must be an
+   // in-scope value the developer is releasing, and the aggressiveness must be
+   // within the 0..100 band. Both constraints are enforced rather than silently
+   // narrowed, so a mistaken target or an out-of-range level is a clear error.
+   if(syntax<SyntaxVersion{1,9}){err("GC hint 'x = "+gh->spelling+" N;' requires syntax 1.9");return;}
+   Type t=lookup(gh->target);
+   if(t.kind==Kind::Error){err("GC hint target '"+gh->target+"' is not an in-scope variable");return;}
+   if(gh->aggressiveness<0||gh->aggressiveness>100){err("GC hint aggressiveness must be 0..100");return;}
+   return;
+  }
   if(auto e=dynamic_cast<const ExprStmt*>(&s)){expr(*e->expr);return;} if(auto p=dynamic_cast<const PrintStmt*>(&s)){Type t=expr(*p->expr);if(t.kind==Kind::Void)err("print() cannot print void");return;}
   if(auto x=dynamic_cast<const ReturnStmt*>(&s)){Type want=tn(cur->retType);
    if(want.kind==Kind::Void){if(x->value){expr(*x->value);err("void method '"+cur->name+"' cannot return a value");}return;}

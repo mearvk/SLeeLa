@@ -217,6 +217,36 @@ Method Parser::parseMethod(bool isStatic,bool isProtected,unsigned modifiers,std
 // field, or a bare expression statement. Used by parseStatement() and by the
 // for-statement init/update clauses.
 StmtP Parser::parseSimpleStatement(){
+    // GC hint (syntax 1.9): `x = gc [N];` or `x = mem [N];`. Recognised
+    // positionally before ordinary assignment: target identifier, `=`, then the
+    // contextual word `gc`/`mem` as the WHOLE right-hand side, optionally with a
+    // 0..100 aggressiveness int, then `;`. The lookahead requires the terminator
+    // to immediately follow the word (or the word + one int literal), so a real
+    // expression RHS that merely begins with a variable named `gc`/`mem`
+    // (e.g. `x = gc + 1;` or `x = gc.field;`) is NOT taken as a hint.
+    if(cur().kind==Tok::Ident && peek(1).kind==Tok::Assign
+       && peek(2).kind==Tok::Ident && isGcHintWord(peek(2).text)){
+        bool bareHint = (peek(3).kind==Tok::Semicolon);
+        bool levelHint = (peek(3).kind==Tok::Int && peek(4).kind==Tok::Semicolon);
+        if(bareHint || levelHint){
+            auto h=std::make_unique<GcHintStmt>();
+            h->target=cur().text;           // the value being released
+            i_+=2;                          // consume target and '='
+            h->spelling=cur().text;         // "gc" or "mem"
+            i_++;                           // consume the GC-hint word
+            if(levelHint){
+                // Preserve the raw level so the semantic analyzer can reject an
+                // out-of-range band (0..100) rather than silently clamping it.
+                long long n=std::stoll(cur().text); i_++;   // consume the int level
+                if(n>1000000) n=1000000;   // guard only absurd input for int fit
+                h->aggressiveness=(int)n;
+            } else {
+                // Bare `x = gc;` defaults to a modest short-term cleanup.
+                h->aggressiveness=50;
+            }
+            return h;   // the terminating ';' is consumed by parseStatement()
+        }
+    }
     // Declaration: `Type name [= expr]`. A struct type name is a valid Type.
     // Disambiguate from `structVar.field = ...` / `structVar = ...` by requiring
     // the token after a bare-identifier "type" to be another identifier.

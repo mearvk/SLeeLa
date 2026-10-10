@@ -940,6 +940,31 @@ static SLResult run_thread(SLThread* t) {
         switch (in.op) {
         case OP_NOP: break;
         case OP_HALT: return SLR_HALT;
+        case OP_GC_HINT: {
+            /* Short-term GC cleanup requested by `x = gc N;` / `x = mem N;`.
+             * operand a is the 0..100 aggressiveness. 0 is a no-op. Higher
+             * levels run a larger safepoint collection; the ceiling requests a
+             * full (not young-only) collection. Only unreachable objects are
+             * reclaimed; a hint never frees a live value. Collection is a
+             * safepoint, so it is deferred while worker threads are active (the
+             * same discipline as the per-instruction safepoint above). */
+            int level = in.a;
+            if (level < 0) level = 0;
+            if (level > SL_GC_HINT_MAX) level = SL_GC_HINT_MAX;
+            if (level > 0) {
+                pthread_mutex_lock(&vm->thr_mtx);
+                int workers = vm->nthreads;
+                pthread_mutex_unlock(&vm->thr_mtx);
+                if (workers == 0) {
+                    SLGCRootContext roots = { vm, t };
+                    int young_only = (level >= SL_GC_HINT_FULL) ? 0 : 1;
+                    /* Budget scales with the requested aggressiveness. */
+                    size_t budget = (size_t)level;
+                    gc_safepoint_with_roots(&vm->gc, gc_mark_vm_roots, &roots,
+                                            young_only, budget);
+                }
+            }
+        } break;
         case OP_CONST: PUSH(vm->consts[in.a]); break;
         case OP_POP: (void)POP(); break;
         case OP_DUP: { SLValue dupv = t->stack[t->sp-1]; PUSH(dupv); } break;

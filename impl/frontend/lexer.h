@@ -37,5 +37,8 @@ private:
 };
 const char* tokName(Tok t);
 bool isContextualBuiltin(const std::string& name);
+// True for the GC-hint spellings `gc` / `mem` recognised positionally as the
+// right-hand side of `x = gc N;` / `x = mem N;` (syntax 1.9). Contextual only.
+bool isGcHintWord(const std::string& name);
 } // namespace sleela
 #endif // SLEELA_LEXER_H

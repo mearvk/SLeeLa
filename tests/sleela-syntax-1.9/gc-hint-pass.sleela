@@ -1,0 +1,14 @@
+#sleela 1.9
+class GcHintPass {
+    static void main() {
+        let x = 7;
+        print(x);
+        x = gc 100;        // most-aggressive short-term cleanup after use
+        let y = 42;
+        print(y);
+        y = mem 25;        // the `mem` spelling, modest aggressiveness
+        let z = 1;
+        z = gc;            // bare form -> default modest cleanup
+        print(z);
+    }
+}
