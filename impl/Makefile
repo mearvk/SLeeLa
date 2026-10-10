@@ -492,6 +492,8 @@ test-class-dispatch: $(SLEELA_BIN)
 	@cd $(CURDIR)/.. && bash impl/tests/class_dispatch/run_class_dispatch_tests.sh $(CURDIR)/$(SLEELA_BIN)
 test-version: $(SLEELA_BIN)
 	@export SLEELA_SHEET=$(CURDIR)/../SHEET.sheet; export SLEELA_SHA256_MANIFEST=$${SLEELA_SHA256_MANIFEST:-$(CURDIR)/../security/sha256-manifest.json}; cd $(CURDIR)/.. && bash impl/tests/version/run_version_tests.sh $(CURDIR)/$(SLEELA_BIN)
+test-syntax-1.8: $(SLEELA_BIN)
+	@export SLEELA_SHEET=$(CURDIR)/../SHEET.sheet; export SLEELA_SHA256_MANIFEST=$${SLEELA_SHA256_MANIFEST:-$(CURDIR)/../security/sha256-manifest.json}; cd $(CURDIR)/.. && bash tests/sleela-syntax-1.8/run_syntax_1_8_tests.sh $(CURDIR)/$(SLEELA_BIN)
 test-nordshrift: $(NORDSHRIFT_BIN)
 	@export SLEELA_SHA256_MANIFEST=${SLEELA_SHA256_MANIFEST:-$(CURDIR)/../security/sha256-manifest.json}; cd $(CURDIR)/.. && echo "=== check examples/nordshrift/subject-libraries.sst ===" && $(CURDIR)/$(NORDSHRIFT_BIN) check examples/nordshrift/subject-libraries.sst
 	@export SLEELA_SHA256_MANIFEST=$${SLEELA_SHA256_MANIFEST:-$(CURDIR)/../security/sha256-manifest.json}; cd $(CURDIR)/.. && for f in impl/nordshrift/examples/*.sst; do echo "=== check $$f ==="; $(CURDIR)/$(NORDSHRIFT_BIN) check $$f || exit 1; done
