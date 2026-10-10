@@ -4,11 +4,11 @@
   "files": [
     {
       "path": "README.md",
-      "sha256": "58a318c3e2fc3b4cee01077e07be2d7a599d92fe9473949f2e2ee7853252725e"
+      "sha256": "4d54de07e00702ecb26d772ab140618729dc754b826a0417b1d261bf35d2b15c"
     },
     {
       "path": "SLEELA.syntax",
-      "sha256": "243d006ed31a0618c816b09ac628c3d8993b305a3cb7adb185a02ed2002df2fd"
+      "sha256": "309a372ac6c8748eff06c5daae91411053225e0ddc1ca2078c7c13c033e3a7e3"
     },
     {
       "path": "SST-2.0.model",
@@ -4143,6 +4143,14 @@
       "sha256": "8a3c56c0766d53078656b24f21c5dc8d39ebf0cba00aa70403ed808abe21a387"
     },
     {
+      "path": "examples/extends/document_grouping.sleela",
+      "sha256": "2d98b98ea433031f4c15e980aacf9ee79cf798c25a7e607f0d1d4d368b9bc4c2"
+    },
+    {
+      "path": "examples/extends/inheritance.sleela",
+      "sha256": "915210a883d62d150ec279dff467ab957b756e2c974d70225821a24c7a7659bf"
+    },
+    {
       "path": "examples/nordshrift/complete-application.sst",
       "sha256": "dc8bd108c17b754de5899f4531721a481cf4a4b984fa47bd450b59f409f0d54e"
     },
@@ -5136,11 +5144,11 @@
     },
     {
       "path": "impl/core/sleela_core.c",
-      "sha256": "7679cae1729990e89175f32f67bf7d879b3e60a3efd1a1fbef195729e6515fb9"
+      "sha256": "de45276eef78a74fd89ab798fde5e4a42dfe2b0e0eac13c7029f4a38b3a6d020"
     },
     {
       "path": "impl/core/sleela_core.h",
-      "sha256": "2d38e8b079ff5b248963f85794c806b4fcd5e1e9c4fbf48543da6026fa97a644"
+      "sha256": "ae205390492ae20e00d37757e2eeffed6160c65149a8c5ba77c7080cde313ee8"
     },
     {
       "path": "impl/core/sleela_design_activity.c",
@@ -5544,11 +5552,11 @@
     },
     {
       "path": "impl/frontend/ast.h",
-      "sha256": "41d02bae7c3ab604fdc5f8c47252ec784e30f7408c45a797452aa773894b01b0"
+      "sha256": "e25944eb6483a1cf01e4e1d0f5a627d62b393d23309626f11a195a201d62be50"
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "2a35bab9199af8c48d1d84f54610bb82985203a76c7a6cbfbd065e316938a1a0"
+      "sha256": "fe4af4a8635965c7a30918dd70e15c15c6264e612645e7c93cd904c0229fcdfd"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -5604,11 +5612,11 @@
     },
     {
       "path": "impl/frontend/lexer.cpp",
-      "sha256": "5bf4c7c12cc1e194eaaecfca0e6c9b2772f40e6060c17630615e862099acdfec"
+      "sha256": "cb9fa6a08ad5df50aa6bb527974b9e735fad2a6390266d2f8a0528dca54e8485"
     },
     {
       "path": "impl/frontend/lexer.h",
-      "sha256": "e5a03e63e2bc6c3b217a35f955bc46159eec45b870183b9cea5555f6c995cf7b"
+      "sha256": "3875a0eb86c615601d184d61c4bdd841bc3d573b129bd1c0ea754f3fa422eb34"
     },
     {
       "path": "impl/frontend/library_index.cpp",
@@ -5620,11 +5628,11 @@
     },
     {
       "path": "impl/frontend/parser.cpp",
-      "sha256": "4b07dfa6a9a8d758f3c7d95aa150138cb69b1497cc2dc2b69fd1a7ee5dd77fad"
+      "sha256": "89cfd3fc180262976a40e508f0d52a48bce989ff029a2646d8d18ffdc927b575"
     },
     {
       "path": "impl/frontend/parser.h",
-      "sha256": "d3e3e1761ed2fb49812e6b1261d0bffe7385bc708c703a2094676b9294ea3aa5"
+      "sha256": "2e71d3887e2797b640086b2def38204dd5d1f61a7565156453db201f39cdf338"
     },
     {
       "path": "impl/frontend/permissible.cpp",
@@ -5636,7 +5644,7 @@
     },
     {
       "path": "impl/frontend/semantic.cpp",
-      "sha256": "9a731a8d9835826c7f566ab6c490f5ccb4ef2f3ada2a8d567234fd201b926fe3"
+      "sha256": "2b8b5a13eb7a8ea1fc9a0181182b4ec01a470e1a38c1703a4f44ff1c5ef25235"
     },
     {
       "path": "impl/frontend/semantic.h",
@@ -5652,7 +5660,7 @@
     },
     {
       "path": "impl/frontend/version.h",
-      "sha256": "92e38e50f29e89a6e4a6f9ae0051f87e4212e6240b30dee5bc1e15c601cd5960"
+      "sha256": "582189e732a785b963a618fac1900ea114e5e7d2699182d1ae2a379f0629881f"
     },
     {
       "path": "impl/fundamental/Buffer.cpp",
@@ -6588,7 +6596,7 @@
     },
     {
       "path": "impl/tests/version/minor_ahead.sleela",
-      "sha256": "27b3af7fd9ad647abd25cc5bb6d4cf42c581f65fb2193712ccf218105e5bda2d"
+      "sha256": "ced6e79586d475895a91c2d9d9eae5b9e3ce02be7c4c56ada7f363e2e1814bad"
     },
     {
       "path": "impl/tests/version/network_1_1.sleela",
@@ -6604,7 +6612,7 @@
     },
     {
       "path": "impl/tests/version/run_version_tests.sh",
-      "sha256": "c136d09b1af7429d88708a5ebc4ab01ba8d35ed408032fb48c7bfa7f97eb3a80"
+      "sha256": "373537bebce97876b56e251446030889cbe5716d21dd06f5b295ef9f43bb08ff"
     },
     {
       "path": "impl/tests/version/syntax_1_2.sleela",
@@ -51697,6 +51705,42 @@
     {
       "path": "tests/sleela-syntax-1.8/run_syntax_1_8_tests.sh",
       "sha256": "47cf1dbe3ee3c17639e3a86e6d9ff9733b54af56e413f5653117cf8368b73d2b"
+    },
+    {
+      "path": "tests/sleela-syntax-1.9/gc-hint-contextual.sleela",
+      "sha256": "b1b93c46e56e938780845a063bb9285665a7182558d1cad755dad2b104e5661b"
+    },
+    {
+      "path": "tests/sleela-syntax-1.9/gc-hint-liveness.sleela",
+      "sha256": "588aa230a5f3e3853b98c7f486cc665d278acbb5ed36b2ccf0aa94a72120f45d"
+    },
+    {
+      "path": "tests/sleela-syntax-1.9/gc-hint-pass.sleela",
+      "sha256": "3a834b299970b1e68edc946bb90d1de006199ca2052e8f468009e41fb9f964a3"
+    },
+    {
+      "path": "tests/sleela-syntax-1.9/gc-hint-range-invalid.sleela",
+      "sha256": "ae945ad18fabb4be75befe790bd78c7d275c5235373f5e9db3608373bfc48242"
+    },
+    {
+      "path": "tests/sleela-syntax-1.9/gc-hint-stress-arrays.sleela",
+      "sha256": "06ce3bc070a2b01ff9e7f5dd717da1312f08c54b13374c72238a7403a0b106eb"
+    },
+    {
+      "path": "tests/sleela-syntax-1.9/gc-hint-stress-structs.sleela",
+      "sha256": "c12f763b2a6284dcd33af15c958a3f9b239029fb81d969eb023d76aafed9d917"
+    },
+    {
+      "path": "tests/sleela-syntax-1.9/gc-hint-version-invalid.sleela",
+      "sha256": "efe25ba64eadc95f5eb28905c6b75d12dec0340a92337439b6259d5b559d3000"
+    },
+    {
+      "path": "tests/sleela-syntax-1.9/ran-namespace-pass.sleela",
+      "sha256": "91b3d09cc7e6b030f2a120ef3b9dbe0e90fd5de888366424ce56b4c8b01a731c"
+    },
+    {
+      "path": "tests/sleela-syntax-1.9/ran-namespace-unknown.sleela",
+      "sha256": "1b8257b28d7e98aec3f252ee6c780d109b7c9a2251ebd0076b47ab425427a696"
     },
     {
       "path": "tools/add-country-existence-dates.py",
