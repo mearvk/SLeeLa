@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <cctype>
 #include <cstdio>
+#include <limits>
 #include <dirent.h>
 #include <pwd.h>
 #include <sys/stat.h>
@@ -15,6 +16,17 @@
 namespace sleela::sh {
 
 namespace {
+
+constexpr std::size_t kMaxBraceResults = 4096;
+constexpr std::size_t kMaxBraceDepth = 64;
+
+// Recursive brace expansion is deliberately bounded: expansion is user input
+// and must not be able to exhaust memory or the process stack.
+thread_local std::size_t braceDepth = 0;
+struct BraceDepthGuard {
+    BraceDepthGuard() { ++braceDepth; }
+    ~BraceDepthGuard() { --braceDepth; }
+};
 
 bool isNameStart(char c) {
     return std::isalpha(static_cast<unsigned char>(c)) || c == '_';
@@ -331,6 +343,9 @@ std::string tildeExpand(const std::string& word, const Environment& env) {
 // groups combine. Supports comma lists {a,b,c} and numeric ranges {m..n}.
 // If no valid group, returns {word}.
 std::vector<std::string> braceExpand(const std::string& word) {
+    BraceDepthGuard guard;
+    if (braceDepth > kMaxBraceDepth || word.size() > (1u << 20)) return {word};
+
     // find a top-level '{'
     const std::size_t open = word.find('{');
     if (open == std::string::npos) return {word};
@@ -366,9 +381,29 @@ std::vector<std::string> braceExpand(const std::string& word) {
         };
         if (isInt(a) && isInt(b)) {
             numericRange = true;
-            long lo = std::stol(a), hi = std::stol(b);
-            if (lo <= hi) for (long v = lo; v <= hi; ++v) alts.push_back(std::to_string(v));
-            else          for (long v = lo; v >= hi; --v) alts.push_back(std::to_string(v));
+            try {
+                const long lo = std::stol(a), hi = std::stol(b);
+                // Avoid signed overflow in span calculations and loop increments.
+                const unsigned long long span = lo <= hi
+                    ? static_cast<unsigned long long>(hi) - static_cast<unsigned long long>(lo)
+                    : static_cast<unsigned long long>(lo) - static_cast<unsigned long long>(hi);
+                if (span >= kMaxBraceResults) return {word};
+                if (lo <= hi) {
+                    for (long v = lo;; ++v) {
+                        alts.push_back(std::to_string(v));
+                        if (v == hi) break;
+                    }
+                } else {
+                    for (long v = lo;; --v) {
+                        alts.push_back(std::to_string(v));
+                        if (v == hi) break;
+                    }
+                }
+            } catch (const std::exception&) {
+                // Out-of-range numeric syntax is not allowed to escape as an
+                // uncaught exception from a shell expansion.
+                return {word};
+            }
         }
     }
 
@@ -395,6 +430,7 @@ std::vector<std::string> braceExpand(const std::string& word) {
     for (const auto& alt : alts) {
         for (const auto& altExpanded : braceExpand(alt)) {
             for (const auto& p : posts) {
+                if (out.size() >= kMaxBraceResults) return {word};
                 out.push_back(pre + altExpanded + p);
             }
         }
