@@ -1,3 +1,5 @@
-# Add a column. Existing rows receive an empty string.
-ALTER TABLE contacts ADD COLUMN phone
-SELECT * FROM contacts
+# Standalone example: add a column; old rows receive an empty string.
+CREATE TABLE contacts_phone (id, name)
+INSERT INTO contacts_phone VALUES (1, 'Ada')
+ALTER TABLE contacts_phone ADD COLUMN phone
+SELECT * FROM contacts_phone
