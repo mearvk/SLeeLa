@@ -1,0 +1,36 @@
+#sleela 1.10
+/*
+ * CharacterSkillStats.sleela
+ * SLeeLa CharacterStats component: general and trade skills.
+ *
+ * This focused value class separates one coherent group of CharacterStats
+ * fields for reuse by games, simulations, and interactive fiction. Values and
+ * scales are defined by the consuming game's ruleset; no universal caps are
+ * assumed unless explicitly enforced by a method.
+ */
+class CharacterSkillStats {
+    int athletics;
+    int acrobatics;
+    int sleightOfHand;
+    int arcana;
+    int history;
+    int nature;
+    int religion;
+    int crafting;
+    int alchemy;
+    int engineering;
+    int computing;
+    int diplomacy;
+    int bargaining;
+    int leadership;
+    int cooking;
+    int fishing;
+    int hunting;
+    int mining;
+    int farming;
+    int riding;
+    int swimming;
+    int climbing;
+
+    int hasTradeSkill() { return crafting > 0 || alchemy > 0 || engineering > 0 || computing > 0; }
+}
