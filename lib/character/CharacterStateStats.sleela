@@ -1,0 +1,25 @@
+#sleela 1.10
+/*
+ * CharacterStateStats.sleela
+ * SLeeLa CharacterStats component: lifetime and state flags.
+ *
+ * This focused value class separates one coherent group of CharacterStats
+ * fields for reuse by games, simulations, and interactive fiction. Values and
+ * scales are defined by the consuming game's ruleset; no universal caps are
+ * assumed unless explicitly enforced by a method.
+ */
+class CharacterStateStats {
+    int alive;
+    int conscious;
+    int incapacitated;
+    int hostile;
+    int playerControlled;
+    int summoned;
+    int undead;
+    int construct;
+    int boss;
+    int elite;
+
+    int isAlive() { return alive != 0; }
+    int isConscious() { return isAlive() && conscious != 0 && incapacitated == 0; }
+}
