@@ -29,3 +29,15 @@ jobs:
         run: build/compiler/sleelac --emit-ir compiler/examples/arithmetic.sleela
       - name: Run example
         run: build/compiler/sleelac --run compiler/examples/arithmetic.sleela
+      - name: Emit native C and C++
+        run: |
+          build/compiler/sleelac --emit-c build/compiler/arithmetic.c compiler/examples/arithmetic.sleela
+          build/compiler/sleelac --emit-cpp build/compiler/arithmetic.cpp compiler/examples/arithmetic.sleela
+      - name: Compile generated native sources
+        run: |
+          cc -std=c11 -Wall -Wextra -Werror build/compiler/arithmetic.c -o build/compiler/arithmetic-c
+          c++ -std=c++20 -Wall -Wextra -Werror build/compiler/arithmetic.cpp -o build/compiler/arithmetic-cpp
+      - name: Execute generated native programs
+        run: |
+          test "$(build/compiler/arithmetic-c)" = "42"
+          test "$(build/compiler/arithmetic-cpp)" = "42"
