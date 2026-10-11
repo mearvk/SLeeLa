@@ -42,7 +42,7 @@ jobs:
                   if image in line and ("![SLeeLa]" in line or "<img" in line):
                       continue
                   lines.append(line)
-              new_text = html + "\\n\\n" + "\\n".join(lines).lstrip("\\n")
+              new_text = html + "\n\n" + "\n".join(lines).lstrip("\n")
               if new_text != text:
                   path.write_text(new_text, encoding="utf-8")
                   changed += 1
