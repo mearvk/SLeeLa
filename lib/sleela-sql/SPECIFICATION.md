@@ -15,12 +15,14 @@ Classic SQL and fluent SLeeLaSQL are front ends to one parser/compiler and one e
 | Create | `CREATE TABLE [IF NOT EXISTS] t (c1, c2, ...)` | Creates `t.csv` with a header; optional clause makes existing-table creation idempotent |
 | Drop | `DROP TABLE t`; `DROP TABLE IF EXISTS t` | Removes table file |
 | Insert | `INSERT INTO t VALUES (v1, ...)` | Appends one positional row |
+| Update | `UPDATE t SET c = v [, ...] [WHERE c = v]` | Rewrites matching rows; omitted WHERE updates all rows |
+| Delete | `DELETE FROM t [WHERE c = v]` | Removes matching rows; omitted WHERE deletes all rows |
 | Select | `SELECT * FROM t [WHERE c = v]`; `SELECT COUNT(*) FROM t [WHERE c = v]` | Reads projected rows or counts matching rows; one equality predicate |
 | List | `SHOW TABLES` | Emits CSV table names |
 
 Fluent equivalents: `table('t').create(c1, c2)`, `from('t').drop()`, `from('t').drop(ifExists)`, `into('t').insert(v1, v2)`, `from('t').select(*)`, `from('t').select(count(*))`, `from('t').select(c1).where(c == v)`, and `tables()`.
 
-This is a subset. It is **not** MySQL/PostgreSQL/SQLite wire-protocol compatible and does not implement joins, general aggregate functions beyond `COUNT(*)`, indexes, schema types, constraints, subqueries, ordering, grouping, or general transactions.
+This is a subset. It is **not** MySQL/PostgreSQL/SQLite wire-protocol compatible. UPDATE and DELETE are currently SQL-dialect-only and support a single equality predicate; fluent equivalents, compound predicates, joins, general aggregate functions beyond `COUNT(*)`, indexes, schema types, constraints, subqueries, ordering, grouping, and explicit multi-statement transactions are not implemented.
 
 ## 3. Prepared statements
 
@@ -39,7 +41,7 @@ This is a subset. It is **not** MySQL/PostgreSQL/SQLite wire-protocol compatible
 - Maximum 64 columns/values (`SSQL_MAX_COLS`).
 - Field and directory buffers are bounded by `SSQL_MAX_FIELD = 512`.
 - Values are strings; there is no SQL type system or numeric coercion.
-- CSV is the persistence format, not an ACID database file format.
+- CSV is the persistence format, not an ACID database file format. UPDATE/DELETE write a temporary file and replace the table; this reduces partial-write risk but does not provide crash-recoverable transactions, durable multi-table commits, or concurrent-writer isolation.
 - Only use trusted table names and a directory not writable by hostile users; this implementation does not provide a hardened path sandbox.
 
 ## 6. C and C++ contracts

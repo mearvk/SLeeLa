@@ -23,7 +23,7 @@ make test
 
 Outputs are kept under `build/`: CLI, C static library, and C++ facade library. Consumers of the C++ facade must link both the C++ and C core libraries. `ssql_open` creates the final database directory if absent; it does not recursively create parent directories.
 
-The SQL subset also supports idempotent `CREATE TABLE IF NOT EXISTS` and `SELECT COUNT(*) ... [WHERE column = value]`; the fluent dialect accepts `from('table').select(count(*))`.
+The SQL subset supports idempotent `CREATE TABLE IF NOT EXISTS`, `SELECT COUNT(*) ... [WHERE column = value]`, `UPDATE table SET column = value [, ...] [WHERE column = value]`, and `DELETE FROM table [WHERE column = value]`. UPDATE/DELETE rewrite a temporary CSV and replace the table file; on Windows a backup is used to restore the original if replacement fails. These statements currently use equality-only WHERE predicates and are SQL-dialect features; fluent SLeeLaSQL update/delete and richer predicates are not yet implemented.
 
 ## C example
 
