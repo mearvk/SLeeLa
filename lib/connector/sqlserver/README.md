@@ -1,0 +1,3 @@
+# Microsoft SQL Server connector profile
+
+Uses the shared ODBC C/C++ connector in `../odbc` with Microsoft's ODBC Driver for SQL Server installed and configured by the operator. Supply a DSN or connection string at runtime; do not embed passwords in source or commit configuration files. Enable encryption and certificate validation in the driver connection options. The shared ODBC baseline currently provides connection lifecycle, statement execution, and affected-row count only; result fetching and portable typed parameter binding are not yet implemented, so do not execute SQL containing untrusted input.
