@@ -1,0 +1,38 @@
+/*
+ * Result envelope for a compiler-workbench build request.
+ * Success is only reported by the native bridge after validation and emission.
+ */
+#sleela 1.3
+class SLCompilerBuildResult {
+  boolean succeeded;
+  String outputFile;
+  String target;
+  String statusText;
+  String diagnosticText;
+
+  void configure() {
+    succeeded = false;
+    outputFile = "";
+    target = "";
+    statusText = "not-run";
+    diagnosticText = "";
+  }
+
+  void fail(String message) {
+    succeeded = false;
+    statusText = "failed";
+    diagnosticText = message;
+  }
+
+  void complete(String path, String targetName) {
+    succeeded = true;
+    outputFile = path;
+    target = targetName;
+    statusText = "emitted";
+    diagnosticText = "";
+  }
+
+  boolean ok() { return succeeded; }
+  String status() { return statusText; }
+  String diagnostics() { return diagnosticText; }
+}
