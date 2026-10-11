@@ -7,6 +7,10 @@ json_connector.o: json_connector.c json_connector.h
 	$(CC) $(CFLAGS) -c $< -o $@
 json_connector_cpp.o: json_connector.cpp json_connector.hpp json_connector.h
 	$(CXX) $(CXXFLAGS) -c $< -o $@
+test_json_connector: test_json_connector.c json_connector.c json_connector.h
+	$(CC) $(CFLAGS) test_json_connector.c json_connector.c -o $@
+test: test_json_connector
+	./test_json_connector
 clean:
-	rm -f *.o
-.PHONY: all clean
+	rm -f *.o test_json_connector
+.PHONY: all test clean
