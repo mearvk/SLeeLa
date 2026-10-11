@@ -1,3 +1,5 @@
+<img align="right" src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="75" height="75" alt="SLeeLa">
+
 # Senior — CompilerPipeline
 
 **Goal:** build a maintainable compiler pipeline with typed intermediate stages, symbol validation, diagnostics, and backend separation.

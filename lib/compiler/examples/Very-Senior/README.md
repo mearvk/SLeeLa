@@ -1,3 +1,5 @@
+<img align="right" src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="75" height="75" alt="SLeeLa">
+
 # Very Senior — BootstrapCompiler
 
 **Goal:** design and validate a bootstrap path for a compiler written in SLeeLa. Writing a compiler in SLeeLa does not, by itself, prove it is self-hosting.
