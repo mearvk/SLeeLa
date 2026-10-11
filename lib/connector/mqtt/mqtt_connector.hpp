@@ -8,7 +8,7 @@ namespace sleela::connector {
 class MqttClient {
  sleela_mqtt c_{};
  std::function<void(const std::string&,const std::string&,int)> callback_;
- static void dispatch(void*ctx,const char*topic,const void*payload,size_t size,int qos){auto*self=static_cast<MqttClient*>(ctx);if(self&&self->callback_)self->callback_(topic?topic:"",std::string(static_cast<const char*>(payload),size),qos);}
+ static void dispatch(void*ctx,const char*topic,const void*payload,size_t size,int qos){auto*self=static_cast<MqttClient*>(ctx);if(self&&self->callback_){const char*data=payload?static_cast<const char*>(payload):"";self->callback_(topic?topic:"",std::string(data,payload?size:0),qos);}}
 public:
  MqttClient(const std::string&id,const std::string&host,int port=1883,int keepalive=30){if(!sleela_mqtt_open(&c_,id.c_str(),host.c_str(),port,keepalive))throw std::runtime_error(sleela_mqtt_error(&c_));}
  ~MqttClient(){sleela_mqtt_close(&c_);}
