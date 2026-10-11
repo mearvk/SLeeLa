@@ -18,5 +18,8 @@ if(SLEELA_COMPILER_BUILD_TESTS)
  target_link_libraries(sleela_compiler_tests PRIVATE sleela_compiler_core)
  add_test(NAME sleela_compiler_tests COMMAND sleela_compiler_tests)
 endif()
-install(TARGETS sleelac RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+install(TARGETS sleela_compiler_core sleelac
+ ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+ LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+ RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 install(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
