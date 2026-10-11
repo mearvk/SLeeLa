@@ -8,7 +8,7 @@
     },
     {
       "path": "SLEELA.syntax",
-      "sha256": "96305dff7bb2ec9d0bb9fcbf721a6dc4e876b41365d8d2c848be24c5c44a210a"
+      "sha256": "9b9fef0355e9a1b2859a09d9ef4dc6ef4e311e40caaddc8c49740a4391f38f04"
     },
     {
       "path": "SST-2.0.model",
@@ -2651,6 +2651,10 @@
       "sha256": "8e1ecae3364d96778f5a3d7224fd36339fd24c025f24d2e230b918f5715de7a5"
     },
     {
+      "path": "character/sleela/CharacterStats.sleela",
+      "sha256": "17b49b5063ae649bbd4c1fb8ae3b1be089c3ce9120566318d4a3c9bd39ed4d17"
+    },
+    {
       "path": "churn/1/assumptions/assumptions.sleela",
       "sha256": "7209ddb6f93236f337ed12178f40a8ae4442fc7209ab186711da49daa3b86550"
     },
@@ -2697,6 +2701,10 @@
     {
       "path": "citizen/sleela/CitizenDemo.sleela",
       "sha256": "f11c816d4907e80037a678e1310920042647ed8be0f4ade48d925b4bd33dbc5f"
+    },
+    {
+      "path": "citizen/sleela/CitizenStats.sleela",
+      "sha256": "bf07b5c810d9cdfcd37d0269073bde1bfdc057d526c70cfab2f33a700e3ed620"
     },
     {
       "path": "codecs/codecs/aac/aac.c",
@@ -5584,11 +5592,11 @@
     },
     {
       "path": "impl/frontend/ast.h",
-      "sha256": "276c2a363d6f1f63cd8e34e2de83e69d150091a59a69afe0c57e5061cad6a035"
+      "sha256": "672e9f2eb3674bca4bfd534457720a35cc64553ed2440032e4e1384ca242f0ed"
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "21bd2a6e16828bd39b922dfa7c4468e5c826681289d9e360e42d0caa3f6b9dd4"
+      "sha256": "4d6e4975861ed9428651a1abc3f27651f497a33afdc39fdb6e0b8d4faf273f81"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -5660,7 +5668,7 @@
     },
     {
       "path": "impl/frontend/parser.cpp",
-      "sha256": "3c4ca549e63b6fbc468c67d2fc20430144b0d69c0e97f7e6cf76a0e6f2dd5498"
+      "sha256": "c775537a409248e06fcb33b688212f6a26451a3a3ff49b8fe162fdea5d9725be"
     },
     {
       "path": "impl/frontend/parser.h",
@@ -5676,7 +5684,7 @@
     },
     {
       "path": "impl/frontend/semantic.cpp",
-      "sha256": "69c5743a2b1b08d912c79d27b88aada4cf2978c0a10486e085676c5f7d2be270"
+      "sha256": "5bdc373f941a1479d0d95473f04f8928e017456e2162966ac20c56f4a3fa41b3"
     },
     {
       "path": "impl/frontend/semantic.h",
@@ -8127,6 +8135,54 @@
       "sha256": "9150ec974ae8048b71713eb2417cd6e7566e0cacd0ffaaa2716eda0b60bd1fa1"
     },
     {
+      "path": "lib/character/CharacterAbilityStats.sleela",
+      "sha256": "0b5660101c27b82ffe074816758ca2eded18b3798a51afa1b3689c391615e55a"
+    },
+    {
+      "path": "lib/character/CharacterBodyStats.sleela",
+      "sha256": "c7dd1389d928e3a72da005534752f4bac0321a69b0d4f158329ff6d595cc7882"
+    },
+    {
+      "path": "lib/character/CharacterCombatStats.sleela",
+      "sha256": "2822a85e24936a9b97abb817a8b4c3c36adf4b745e96accce5d0a1df3f2287d7"
+    },
+    {
+      "path": "lib/character/CharacterConditionStats.sleela",
+      "sha256": "1588f9ecdff08762136950f86b9041ebe444fd1edd2b028bc25dfbd3641c99c7"
+    },
+    {
+      "path": "lib/character/CharacterEconomyStats.sleela",
+      "sha256": "d8cf7e75c293a5aba911b551b365294b3a8e443a40f963475e1549867499e507"
+    },
+    {
+      "path": "lib/character/CharacterExplorationStats.sleela",
+      "sha256": "73a09edd1cf347d6d256aef269b0cabf61b633ac96d91db1627f218745a77e72"
+    },
+    {
+      "path": "lib/character/CharacterIdentityStats.sleela",
+      "sha256": "232ced61a7a06947b42491bf911c6287f4fb65000397a33fbeaa9db62ef4bd95"
+    },
+    {
+      "path": "lib/character/CharacterResistanceStats.sleela",
+      "sha256": "6353ed25657d51b6dc5a0458301b9ab1000695889537f90de4e74203705426cb"
+    },
+    {
+      "path": "lib/character/CharacterSkillStats.sleela",
+      "sha256": "1bb06141d4760c5ab13e1f676ce2cf271aaa049831ecf95f1f08c3d217532c5a"
+    },
+    {
+      "path": "lib/character/CharacterSocialStats.sleela",
+      "sha256": "65407d7f197d33119ca23737d85646b7a035e4f276b0cd0995a933a49674ca32"
+    },
+    {
+      "path": "lib/character/CharacterStateStats.sleela",
+      "sha256": "bf9761194c2772668591741e573155d87503be000015484766b8594d9600651e"
+    },
+    {
+      "path": "lib/character/CharacterSurvivalStats.sleela",
+      "sha256": "11160c3283a1da89f405751fb6edc0f36005271d86322aa46129fe2cc70232fd"
+    },
+    {
       "path": "lib/character/ConsultingModel.sleela",
       "sha256": "727c5a7e9ced87da2095da53813d02aa868c4c17144d7eb9fa4eded3c6ef2e7e"
     },
@@ -8181,6 +8237,58 @@
     {
       "path": "lib/citizen/Citizen.sleela",
       "sha256": "affe6bec17a15af3d9ba31a0a9cada5a6f6656e7de6180bb511c6619628aeedc"
+    },
+    {
+      "path": "lib/citizen/CitizenCommunityRelationshipsAndCivicParticipationStats.sleela",
+      "sha256": "4b277bbc20df2afeeb2c07861e894ae325babb965de06e98e0c13f69ede7a5f5"
+    },
+    {
+      "path": "lib/citizen/CitizenDigitalAccessAndSafetyStats.sleela",
+      "sha256": "53747227a21a4702123067da8fa90253f8b3cab5bce00c76c48bc450d1c64631"
+    },
+    {
+      "path": "lib/citizen/CitizenEducationAndKnowledgeStats.sleela",
+      "sha256": "bd9b00b8a303b9977c197bf0eba7dc8a8ce5141f665e03a6504a4d80362775e4"
+    },
+    {
+      "path": "lib/citizen/CitizenEmploymentWorkAndProfessionalLifeStats.sleela",
+      "sha256": "013a838943bc08712231c2d22535c21dfe96f65ad92c3359b12bca5709a23128"
+    },
+    {
+      "path": "lib/citizen/CitizenHousingUtilitiesAndHouseholdServicesStats.sleela",
+      "sha256": "594485b31887555645139b6349cec97207b694fbb07fc5d763725ef0a0ffd7ae"
+    },
+    {
+      "path": "lib/citizen/CitizenIdentityAndDemographicProfileStats.sleela",
+      "sha256": "4eef9e37e6f28b529a74227d133e1543ef81a246dcdcded68b3aa39b63030656"
+    },
+    {
+      "path": "lib/citizen/CitizenLegalAndAdministrativeStandingStats.sleela",
+      "sha256": "5b540136f4490cab7075a400877245395a2c6c85453430a803404d3b5e1645fa"
+    },
+    {
+      "path": "lib/citizen/CitizenLifeStageGoalsAndPersonalStatusStats.sleela",
+      "sha256": "c484e3810f19bb202e6c61413c9e148170a8734bc7e311a45dfba7a7a4ad0a40"
+    },
+    {
+      "path": "lib/citizen/CitizenMobilityTransportAndEnvironmentalImpactStats.sleela",
+      "sha256": "1e087c59f38a5f06b108b108db947cc62c64e94522bee9eb4b45be9ad89beafa"
+    },
+    {
+      "path": "lib/citizen/CitizenPersonalFinanceAndEconomicResilienceStats.sleela",
+      "sha256": "2faa5a7e3ea3a0207608e088eba433ed6c11c4015b2cb9c418a9559748b56fc1"
+    },
+    {
+      "path": "lib/citizen/CitizenPersonalityAbilitiesAndPersonalCapabilitiesStats.sleela",
+      "sha256": "b276269877d136c93428b25ba9638f9b46978913718ef5736e7fce0aaea6111f"
+    },
+    {
+      "path": "lib/citizen/CitizenPhysicalHealthAndDailyWellbeingStats.sleela",
+      "sha256": "72cccd71b6c1742c444f397a3672518612f8eaeed43e325b67155ea584d365d9"
+    },
+    {
+      "path": "lib/citizen/CitizenSchemaAndRulesMetadataStats.sleela",
+      "sha256": "dcbd63132a6aab6f16ef91a18778835e2eb5dc0ade459502e06436846a808795"
     },
     {
       "path": "lib/citizen/FederalReserveID.sleela",
@@ -8761,6 +8869,198 @@
     {
       "path": "lib/connector/SLPackage.sleela",
       "sha256": "dae53a83d331cb0b7d6ed7d59db3d2fc86db35d4019b2512c62b5fbeb6aa6933"
+    },
+    {
+      "path": "lib/connector/build.sh",
+      "sha256": "ab47ae38634f090261d529425d4320ee537ff4a104243c49c289b940f2793656"
+    },
+    {
+      "path": "lib/connector/connector_registry.c",
+      "sha256": "145a9a48de1e8d573f7754d8a971c5e95ad47f6681b9b777e1a10973fb5f44bc"
+    },
+    {
+      "path": "lib/connector/connector_registry.cpp",
+      "sha256": "4d16be00670c801ba862560e1654e3e02b33ace9b6fd5dd958f8f4d6b2291870"
+    },
+    {
+      "path": "lib/connector/connector_registry.h",
+      "sha256": "d8fff55937c8e45a741e3efee8941baf145dc6752925ea21454c07d44465f82e"
+    },
+    {
+      "path": "lib/connector/connector_registry.hpp",
+      "sha256": "3bd95227e0d2423cc656a829d1093a2768726c83d3df6aede985af2f35e8f18a"
+    },
+    {
+      "path": "lib/connector/delimited/delimited_connector.c",
+      "sha256": "40921b77efd0acd3f4be8ec00c50b6a7e5fa64e143eb160f82d6ff6634e83120"
+    },
+    {
+      "path": "lib/connector/delimited/delimited_connector.cpp",
+      "sha256": "cea1157297b64c65fbc2a6d1d85fa9b98e4de00d5fd2f9639dd0cb3a057cac25"
+    },
+    {
+      "path": "lib/connector/delimited/delimited_connector.h",
+      "sha256": "a1cf5cb7e55ba2cf47d0fa1f684ed24b429628751dfb11e9d03aef0b120749ab"
+    },
+    {
+      "path": "lib/connector/delimited/delimited_connector.hpp",
+      "sha256": "48562a75b7d58dc6b87eb4d76aa807a49842a59b2a9f2b689a68d8d49029c064"
+    },
+    {
+      "path": "lib/connector/delimited/test_delimited_connector.c",
+      "sha256": "532646b4e82ce456158d46cd9f2b8256945ef63e24e7aacf5efb49b2cc2347df"
+    },
+    {
+      "path": "lib/connector/json/json_connector.c",
+      "sha256": "11a92a6bad9b7db1191425c4755c589ff1352cf6d72115ecfab2e3fe37d328c8"
+    },
+    {
+      "path": "lib/connector/json/json_connector.cpp",
+      "sha256": "5c3cf61e9f3a8ee002036d2a5372b7bde1542bef7337ad4e27d65ad03fe39783"
+    },
+    {
+      "path": "lib/connector/json/json_connector.h",
+      "sha256": "5ea5cb20bd271db00dd5e8777e09e6623348bf7d987f8aabc3176b2d3b6c51d9"
+    },
+    {
+      "path": "lib/connector/json/json_connector.hpp",
+      "sha256": "5793046b16c4d5b44db57281528bff52791b7e231536631a3afa2e57ca866702"
+    },
+    {
+      "path": "lib/connector/json/test_json_connector.c",
+      "sha256": "5191f7d28d41ec7bd5ceaa1d050433d05e5445636afbb4a202cf33fdd00cafc3"
+    },
+    {
+      "path": "lib/connector/mqtt/mqtt_connector.c",
+      "sha256": "0d5b502e938a62ec9f6be0cbfbcfd660376d3e61b113ea5313ef4298fd5e565d"
+    },
+    {
+      "path": "lib/connector/mqtt/mqtt_connector.cpp",
+      "sha256": "4a2ea8b70095e6a68cb774b9c5f40368740b6539c4bf684e5ba4aa1badb2eac9"
+    },
+    {
+      "path": "lib/connector/mqtt/mqtt_connector.h",
+      "sha256": "3db5e25b849103ad97200ce98cc6dd8a47f4556955d8764ece6f48303a9809f4"
+    },
+    {
+      "path": "lib/connector/mqtt/mqtt_connector.hpp",
+      "sha256": "3303d93993eae8f2ddbcf135c3c269dc9a167a7f5f1efc3cdbeaa69a74bedc10"
+    },
+    {
+      "path": "lib/connector/mqtt/test_mqtt_connector.c",
+      "sha256": "a4b18e00319374d3815704a504e6732537658c62fcd335c232da42bcf6d25751"
+    },
+    {
+      "path": "lib/connector/mysql/mysql_connector.c",
+      "sha256": "420cfeccd01ee105634c4154b31d239c0975387ee9b74cea267a0f3a3720d872"
+    },
+    {
+      "path": "lib/connector/mysql/mysql_connector.cpp",
+      "sha256": "41ee345d1c6daa3289b95753f97687ca4e558a4690210a672929718dc3361e14"
+    },
+    {
+      "path": "lib/connector/mysql/mysql_connector.h",
+      "sha256": "7d580529561c557e8bc34d1b7ad8d0d4e639445297df9e1d01a42a21b55fc5a5"
+    },
+    {
+      "path": "lib/connector/mysql/mysql_connector.hpp",
+      "sha256": "0383a3ae6a4fd44f87305da2513781eb49af0e9588d5f7cfcb81e1d137a227d4"
+    },
+    {
+      "path": "lib/connector/mysql/test_mysql_connector.c",
+      "sha256": "67bee465a8b018e62be5386fb831a17a6505d93a24a12bf12730ef7cb28dfc18"
+    },
+    {
+      "path": "lib/connector/odbc/odbc_connector.c",
+      "sha256": "62fd1b0c1305f9a6194cacb127a7526dcf814910f4cb64ee0503dcbf30d8fece"
+    },
+    {
+      "path": "lib/connector/odbc/odbc_connector.cpp",
+      "sha256": "5120f6ce5e875c067b4c8cf56b4259ff60272711d87ff8fada1225020632e8eb"
+    },
+    {
+      "path": "lib/connector/odbc/odbc_connector.h",
+      "sha256": "e7b1ee0bbdba280d6824a2034d2de010c18e58403acf59c338f57bf12ca62bcf"
+    },
+    {
+      "path": "lib/connector/odbc/odbc_connector.hpp",
+      "sha256": "1854a5374bf2cba9a67c8548ce02b0c7de03116adc7c14a574f28fe01f442092"
+    },
+    {
+      "path": "lib/connector/postgres/postgres_connector.c",
+      "sha256": "df4559033f520a40bd1f217f0f1bbb272fa9b5f6ef9ffa0c2e8ae2e167e33c73"
+    },
+    {
+      "path": "lib/connector/postgres/postgres_connector.cpp",
+      "sha256": "aefc9fbb3850d05c62ac7c74b2181b5c5026a6c1732c0b1678468644b41f3b7a"
+    },
+    {
+      "path": "lib/connector/postgres/postgres_connector.h",
+      "sha256": "c193abed873bf4bc06e3431045790f3f517ebf6e7355d290d508362160415fe8"
+    },
+    {
+      "path": "lib/connector/postgres/postgres_connector.hpp",
+      "sha256": "342809501eb76dfdbb1f1eece0e4315ced1d199e9c421d42cf57342c904d3334"
+    },
+    {
+      "path": "lib/connector/rest/rest_connector.c",
+      "sha256": "b6e96996c989cd5c3fd5b0e03196bf251eda000a026ede31c843114ec00183f3"
+    },
+    {
+      "path": "lib/connector/rest/rest_connector.cpp",
+      "sha256": "08ea0a16c4a0aca9776e7db38b19438ec3732411416be26651f936ea584ef84b"
+    },
+    {
+      "path": "lib/connector/rest/rest_connector.h",
+      "sha256": "6454a56e6ab8784997147d4924fbfc17d9975a9758c4c4a90a3bf4280569020d"
+    },
+    {
+      "path": "lib/connector/rest/rest_connector.hpp",
+      "sha256": "24fccbb78cb1215b22cb1b5001d9f69bf9caf36a8942c81129feb9ccc27a7cdd"
+    },
+    {
+      "path": "lib/connector/rest/test_rest_connector.c",
+      "sha256": "225dfc8c22f30dbe895c2f0f871cf9cc26777c78979f74c77a9a3d3203c4c0f7"
+    },
+    {
+      "path": "lib/connector/sqlite/sqlite_connector.c",
+      "sha256": "aba05af879ce871cda171cfa9621d971fc6f8c9553bfcec76c8d95eba94994cd"
+    },
+    {
+      "path": "lib/connector/sqlite/sqlite_connector.cpp",
+      "sha256": "ac3910ed02cfb1bb25f63bdd8893c3f83372334e12e65583ac846b1e1caaf4fb"
+    },
+    {
+      "path": "lib/connector/sqlite/sqlite_connector.h",
+      "sha256": "9169c605825ee1bde3d55c1c33e1e5a361467667f42a92ae84dcd7a22e0de915"
+    },
+    {
+      "path": "lib/connector/sqlite/sqlite_connector.hpp",
+      "sha256": "2b4e2335983f5e041020a5c827f790b4eb84ba9b85824c12fb78630ccbe0927b"
+    },
+    {
+      "path": "lib/connector/test_connector_registry.c",
+      "sha256": "f6b3ffb53c5b21e30730da58747a78a3055ef5c5de2ec68119fb2de2c6c5d40d"
+    },
+    {
+      "path": "lib/connector/xml/test_xml_connector.c",
+      "sha256": "97261fa5e83f8e214b8aa521db58879c41fc3b315a5369d8780f84f0dcc97764"
+    },
+    {
+      "path": "lib/connector/xml/xml_connector.c",
+      "sha256": "89d287f1bb45df1350201a00c355653f36c6411fb203edac09b8a9c4ccb53181"
+    },
+    {
+      "path": "lib/connector/xml/xml_connector.cpp",
+      "sha256": "29ea59b5736791349b8376a57197c49f0cb2d00efdce6aa98b7c4eecfe8c762b"
+    },
+    {
+      "path": "lib/connector/xml/xml_connector.h",
+      "sha256": "66aa007d81e00ae05b50fc7351b0d2e8d5f5fbab8bde4d64c5badf323d47a070"
+    },
+    {
+      "path": "lib/connector/xml/xml_connector.hpp",
+      "sha256": "9b7c8c2b5f68dd321381b2a453dcd6cb1330f036610902beca752022009a3896"
     },
     {
       "path": "lib/coorenagraph/Coorenagraph.sleela",
@@ -49996,7 +50296,7 @@
     },
     {
       "path": "lib/sleela-sql/SqlModel.sleela",
-      "sha256": "2de95cf1f0434ad42404ad205245a665dc625493be5a8aead8d764ce05f6d1de"
+      "sha256": "390a42817addb3100aa41c10ca13f85239fac91cd739a8458a6b23e4f00f0cee"
     },
     {
       "path": "lib/sleela-sql/cpp/include/sleela_sql.hpp",
@@ -50007,12 +50307,20 @@
       "sha256": "2303d879d06952f1f53c549661fbc6356723fbd7a45523038e84eefa54e71162"
     },
     {
+      "path": "lib/sleela-sql/examples/08-prepared-statements.c",
+      "sha256": "0d9eefa66eb536a91f24d11af019bd5fa9f40bbe89303d2d2684b1ae85edf700"
+    },
+    {
+      "path": "lib/sleela-sql/examples/slsql/04-prepared-statements.c",
+      "sha256": "201dc8261ba3fe61593c4fa806eead0e08fc010db92591427abfc7045264aa12"
+    },
+    {
       "path": "lib/sleela-sql/native/include/sleela_sql.h",
-      "sha256": "c09999c0b608a60cf89ce4170a0bca0527cce74fd82abe87c7f37340e3afabc2"
+      "sha256": "b79f1921086c9d316f7524c805b6075867d1a14a25bb72792d04e2b8ca7e6c1b"
     },
     {
       "path": "lib/sleela-sql/native/src/sleela_sql.c",
-      "sha256": "d991874724329a90b2faee29f25a9a033a0b1b1fa6119289f06b168b7d2bcce4"
+      "sha256": "b8ca04c30c96ede70936fff253b784c619108486ce62211ea8110ed9bbcfd43a"
     },
     {
       "path": "lib/sleela-sql/native/src/sleela_sql_cli.c",
@@ -50020,7 +50328,7 @@
     },
     {
       "path": "lib/sleela-sql/tests/test_c.c",
-      "sha256": "7c0a30767e41b0323588c454210936736d88011663d041b903a1059307ca30ca"
+      "sha256": "8bbdcdca2ed50c4c3b22cb15de9d398b2c0b99769b7b56c8257007d0ca1cc461"
     },
     {
       "path": "lib/sleela-sql/tests/test_cpp.cpp",
@@ -51640,11 +51948,11 @@
     },
     {
       "path": "scripts/build-linux.sh",
-      "sha256": "43779b1a7d60d61d722d44563250f27ed3a76b12705f94f608fa85382ea2e92a"
+      "sha256": "5e9373beaf3cbdc994d05d00f4b7a68ab95c242a4823c85c88cb10b716b97fca"
     },
     {
       "path": "scripts/build-macos.sh",
-      "sha256": "5d9e4f7d4500dd8c34824f64b77a7f0b100abab60f5aeb03dbbe6726e9c0732b"
+      "sha256": "0ebe9c0a18105ddac3d070d9c3864f2794ddf470e9a4405608b604ef313e2b36"
     },
     {
       "path": "scripts/clean-build.sh",
@@ -53361,6 +53669,10 @@
     {
       "path": "tests/nordshrift_complete_smoke.cpp",
       "sha256": "853dcd56ab21712760eada700d2ea006e9b63b637a33ee2b36e2499e13198cb4"
+    },
+    {
+      "path": "tests/proposals/extended-for-loop-health-guards.sleela",
+      "sha256": "ff7946d3c9758d3bff31d2281db512f3842ddf244ad8d504876f9de9869a7173"
     },
     {
       "path": "tests/reflection_smoke.cpp",
