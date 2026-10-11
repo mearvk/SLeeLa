@@ -32,6 +32,10 @@ jobs:
           brew install pkg-config mariadb-connector-c sqlite libpq unixodbc curl libxml2 mosquitto
           echo "$(brew --prefix libpq)/bin" >> "$GITHUB_PATH"
           echo "PKG_CONFIG_PATH=$(brew --prefix libpq)/lib/pkgconfig:$(brew --prefix libxml2)/lib/pkgconfig:$(brew --prefix curl)/lib/pkgconfig:$(brew --prefix mariadb-connector-c)/lib/pkgconfig" >> "$GITHUB_ENV"
+      - name: Build and test connector registry
+        run: |
+          make -C lib/connector
+          make -C lib/connector test
       - name: Build database connectors
         run: |
           make -C lib/connector/mysql
@@ -56,6 +60,6 @@ jobs:
       - name: Clean generated connector artifacts
         if: always()
         run: |
-          for d in mysql mariadb sqlite postgres odbc sqlserver oracle delimited json xml rest mqtt; do
+          for d in . mysql mariadb sqlite postgres odbc sqlserver oracle delimited json xml rest mqtt; do
             make -C "lib/connector/$d" clean || true
           done
