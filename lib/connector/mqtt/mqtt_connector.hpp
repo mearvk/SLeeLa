@@ -4,6 +4,7 @@
 #include <functional>
 #include <stdexcept>
 #include <string>
+#include <utility>
 namespace sleela::connector {
 class MqttClient {
  sleela_mqtt c_{};
