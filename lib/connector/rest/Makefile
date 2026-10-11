@@ -15,7 +15,7 @@ rest_connector_cpp.o: rest_connector.cpp rest_connector.hpp rest_connector.h
 libsleela_rest.a: rest_connector.o
 	$(AR) rcs $@ $^
 test_rest_connector: test_rest_connector.c rest_connector.c rest_connector.h
-	$(CC) $(CFLAGS) $(CURL_CFLAGS) $^ $(CURL_LIBS) -o $@
+	$(CC) $(CFLAGS) $(CURL_CFLAGS) test_rest_connector.c rest_connector.c $(CURL_LIBS) -o $@
 test: test_rest_connector
 	./test_rest_connector
 clean:
