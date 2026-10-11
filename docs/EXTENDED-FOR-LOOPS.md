@@ -64,3 +64,15 @@ The first three terms retain their current meaning. The fourth and fifth terms a
 - Both guards true permit the body to run.
 - Non-Boolean fourth/fifth terms fail semantic analysis.
 - Guards are evaluated once per iteration, in thread-then-heap order.
+
+## Verification matrix
+
+The native compiler CI should verify these cases against the implementation:
+
+- Existing three-term loops retain their previous behavior.
+- Four-term loops parse and require a Boolean thread-stability guard.
+- Five-term loops parse and require Boolean thread-stability and heap-health guards.
+- Each guard is evaluated once per iteration; a false guard skips the body.
+- `continue` still runs the update expression, and `break` exits the loop.
+- Non-Boolean guards are rejected by semantic analysis.
+- The host/VM test harness supplies guard values explicitly; no health state is inferred from variable names.
