@@ -54,12 +54,16 @@ jobs:
           fi
       - name: Synchronize Ubuntu contacts into SLeeLa
         if: github.event_name != 'pull_request'
+        continue-on-error: true
+        timeout-minutes: 3
         shell: bash
         run: |
           set -euo pipefail
           tmpdir="$(mktemp -d)"
           trap 'rm -rf "$tmpdir"' EXIT
-          git clone --depth 1 --branch main https://github.com/mearvk/Ubuntu.Determinant.Beta.Restricted.git "$tmpdir/source"
+          echo "Cloning Ubuntu contacts with a 90-second bound."
+          timeout 90s git clone --depth 1 --branch main https://github.com/mearvk/Ubuntu.Determinant.Beta.Restricted.git "$tmpdir/source"
+          test -d "$tmpdir/source/contacts" || { echo "::error::Source repository has no contacts directory."; exit 1; }
           rm -rf contacts
           cp -a "$tmpdir/source/contacts" ./contacts
           git config user.name "SLeeLa Automation"
@@ -68,7 +72,10 @@ jobs:
           if ! git diff --cached --quiet; then
             git commit -m "Sync contacts from Ubuntu.Determinant.Beta.Restricted"
             target="${GITHUB_HEAD_REF:-${GITHUB_REF_NAME}}"
-            git push origin "HEAD:refs/heads/$target"
+            echo "Pushing synchronized contacts with a 30-second bound."
+            timeout 30s git push origin "HEAD:refs/heads/$target"
+          else
+            echo "Contacts are already current."
           fi
       - name: Test suite
         run: bash ./test-suites/run-all.sh --all
