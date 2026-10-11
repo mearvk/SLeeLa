@@ -1,0 +1,27 @@
+#sleela 1.10
+/*
+ * CharacterSurvivalStats.sleela
+ * SLeeLa CharacterStats component: health, mana, stamina, shield, and barrier pools.
+ *
+ * This focused value class separates one coherent group of CharacterStats
+ * fields for reuse by games, simulations, and interactive fiction. Values and
+ * scales are defined by the consuming game's ruleset; no universal caps are
+ * assumed unless explicitly enforced by a method.
+ */
+class CharacterSurvivalStats {
+    int health;
+    int maxHealth;
+    int healthRegen;
+    int mana;
+    int maxMana;
+    int manaRegen;
+    int stamina;
+    int maxStamina;
+    int staminaRegen;
+    int shield;
+    int maxShield;
+    int barrier;
+    int maxBarrier;
+
+    void normalize() { if (maxHealth < 0) maxHealth = 0; if (maxMana < 0) maxMana = 0; if (maxStamina < 0) maxStamina = 0; if (health < 0) health = 0; if (mana < 0) mana = 0; if (stamina < 0) stamina = 0; if (health > maxHealth) health = maxHealth; if (mana > maxMana) mana = maxMana; if (stamina > maxStamina) stamina = maxStamina; }
+}
