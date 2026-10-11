@@ -1,0 +1,27 @@
+#sleela 1.10
+/*
+ * CharacterConditionStats.sleela
+ * SLeeLa CharacterStats component: needs and long-duration conditions.
+ *
+ * This focused value class separates one coherent group of CharacterStats
+ * fields for reuse by games, simulations, and interactive fiction. Values and
+ * scales are defined by the consuming game's ruleset; no universal caps are
+ * assumed unless explicitly enforced by a method.
+ */
+class CharacterConditionStats {
+    int hunger;
+    int thirst;
+    int fatigue;
+    int stress;
+    int morale;
+    int temperature;
+    int cleanliness;
+    int sleepDebt;
+    int sanity;
+    int corruption;
+    int infection;
+    int intoxication;
+
+    int needsRest() { return fatigue > 0 || sleepDebt > 0; }
+    int isUnderStress() { return stress > 0; }
+}
