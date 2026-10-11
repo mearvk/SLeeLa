@@ -36,10 +36,13 @@ Use a fresh database directory if you want to replay the create-table example fr
 | `06-list-and-drop.sql` | List tables and drop a table |
 | `07-fluent.ssql` | Examples using the fluent SLeeLaSQL dialect |
 | `08-prepared-statements.c` | Reuse a prepared statement with bound parameters |
-| `09-alter-table-proposal.sql` | Reference syntax for adding a column with ALTER TABLE |
+| `09-alter-table-add-column.sql` | Add a column with an empty default for existing rows |
+| `09-alter-table-proposal.sql` | Historical design note; the feature is now implemented |
+| `10-alter-table-default.sql` | Add a column and populate existing rows with a default value |
+| `11-alter-table-errors.sql` | Demonstrate duplicate-column rejection (second statement expects an error) |
 
-## Important: ALTER TABLE support
+## ALTER TABLE / ADD COLUMN
 
-The current native engine does **not** implement `ALTER TABLE` or `ADD COLUMN`. The file `09-alter-table-proposal.sql` is a design/example reference only and must not be passed to the current CLI expecting it to execute. To change a schema today, create a new table with the desired columns and migrate rows through supported operations, after backing up the CSV data. The fluent dialect currently supports create, drop, insert, select, filtering, and listing tables; UPDATE and DELETE are classic-SQL-only in the current implementation.
+The native engine supports classic-SQL `ALTER TABLE table ADD [COLUMN] column [DEFAULT value]`. Existing rows receive the supplied default or an empty string. The operation writes a temporary CSV and replaces the original using the platform-specific replacement routine; it rejects duplicate columns and tables already at the 64-column limit. Back up important CSV data before schema migrations. The fluent SLeeLaSQL dialect does not yet expose ALTER TABLE, UPDATE, or DELETE.
 
 These are examples of the implemented SQL subset, not a claim of full SQL-standard compatibility.
