@@ -1,0 +1,4 @@
+#include "sleela/compiler.hpp"
+#include <cstdlib>
+#include <iostream>
+int main(){using namespace sleela::compiler;int fail=0;auto check=[&](bool x,const char*m){if(!x){std::cerr<<"FAIL "<<m<<'\n';++fail;}};auto p=compile("let a = 6 * 7; print a; return a + 1;");check(p.ok(),"compile arithmetic");auto r=run(p);check(r.ok(),"run");check(r.printed_values.size()==1&&r.printed_values[0]==42,"print 42");check(r.return_value==43,"return 43");check(!compile("print unknown;").ok(),"unknown variable");check(!compile("let a = 1; let a = 2;").ok(),"duplicate variable");auto z=run(compile("print 1 / 0;"));check(!z.ok()&&z.error=="division by zero","division by zero");auto q=run(compile("print (2 + 3) * -4;"));check(q.ok()&&q.printed_values.size()==1&&q.printed_values[0]==-20,"precedence");check(!compile("print 1").ok(),"semicolon required");if(fail)return EXIT_FAILURE;std::cout<<"All native compiler tests passed\n";return EXIT_SUCCESS;}
