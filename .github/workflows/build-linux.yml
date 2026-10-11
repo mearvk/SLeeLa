@@ -11,11 +11,15 @@ on:
     branches: [master, main]
     paths:
       - 'impl/**'
+      - 'tests/**'
+      - 'SHEET.sheet'
+      - 'Makefile'
+      - 'scripts/autocheck-toolchain.sh'
+      - 'security/**'
       - 'runtime/**'
       - 'bash/pixel_terminal.cpp'
       - 'bash/pixel_terminal.hpp'
       - 'scripts/build-linux.sh'
-      - 'security/sha256-manifest.json'
       - '.github/workflows/build-linux.yml'
   pull_request:
     paths:
