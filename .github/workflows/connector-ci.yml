@@ -1,0 +1,62 @@
+name: SLeeLa Connector CI
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - "lib/connector/**"
+      - ".github/workflows/connector-ci.yml"
+  pull_request:
+    branches: [main, master]
+    paths:
+      - "lib/connector/**"
+      - ".github/workflows/connector-ci.yml"
+  workflow_dispatch:
+
+jobs:
+  native-connectors:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install native dependencies (Ubuntu)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential pkg-config default-libmysqlclient-dev libsqlite3-dev libpq-dev unixodbc-dev libcurl4-openssl-dev libxml2-dev libmosquitto-dev
+      - name: Install native dependencies (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          brew install pkg-config mariadb-connector-c sqlite libpq unixodbc curl libxml2 mosquitto
+          echo "$(brew --prefix libpq)/bin" >> "$GITHUB_PATH"
+          echo "PKG_CONFIG_PATH=$(brew --prefix libpq)/lib/pkgconfig:$(brew --prefix libxml2)/lib/pkgconfig:$(brew --prefix curl)/lib/pkgconfig:$(brew --prefix mariadb-connector-c)/lib/pkgconfig" >> "$GITHUB_ENV"
+      - name: Build database connectors
+        run: |
+          make -C lib/connector/mysql
+          make -C lib/connector/mariadb
+          make -C lib/connector/sqlite
+          make -C lib/connector/postgres
+          make -C lib/connector/odbc
+          make -C lib/connector/sqlserver
+          make -C lib/connector/oracle
+      - name: Build document, REST, and event connectors
+        run: |
+          make -C lib/connector/delimited
+          make -C lib/connector/json
+          make -C lib/connector/xml
+          make -C lib/connector/rest
+          make -C lib/connector/mqtt
+      - name: Run dependency-free and XML unit tests
+        run: |
+          make -C lib/connector/delimited test
+          make -C lib/connector/json test
+          make -C lib/connector/xml test
+      - name: Clean generated connector artifacts
+        if: always()
+        run: |
+          for d in mysql mariadb sqlite postgres odbc sqlserver oracle delimited json xml rest mqtt; do
+            make -C "lib/connector/$d" clean || true
+          done
