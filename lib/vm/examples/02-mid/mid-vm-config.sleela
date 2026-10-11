@@ -1,0 +1,82 @@
+#sleela 1.11
+// 02-mid: configuring a VM with options and a build plan -- compilable.
+//
+// A mid-level user composes a VM from option objects (memory, CPU, execution)
+// and feature bits, validates the configuration, then produces a build plan.
+// This mirrors the real lib/vm option/plan classes (SleelaVMMemoryOptions,
+// SleelaVMCpuOptions, SleelaVMExecutionOptions, SleelaVMFeatureBits,
+// SleelaVMBuildPlan) as composed objects in one runnable file.
+//
+// New ideas over novice: object composition (fields of class type), a validity
+// gate, feature flags as a small bitset, and emitting a plan.
+//
+// Run:  ./impl/build/sleela run lib/vm/examples/02-mid/mid-vm-config.sleela
+
+class MemoryOptions {
+  int heapMb; int stackKb; boolean managed;
+  void configure(int h, int s, boolean m) { heapMb = h; stackKb = s; managed = m; }
+  boolean valid() { return heapMb > 0 && stackKb > 0; }
+  String summary() { return "heap=" + heapMb + "MB stack=" + stackKb + "KB managed=" + managed; }
+}
+
+class CpuOptions {
+  int cores; int clockMhz;
+  void configure(int c, int mhz) { cores = c; clockMhz = mhz; }
+  boolean valid() { return cores > 0 && clockMhz > 0; }
+  String summary() { return cores + " cores @ " + clockMhz + "MHz"; }
+}
+
+class ExecutionOptions {
+  String mode;   // "interpret" / "jit"
+  boolean threads;
+  void configure(String m, boolean t) { mode = m; threads = t; }
+  boolean valid() { return mode == "interpret" || mode == "jit"; }
+  String summary() { return "mode=" + mode + " threads=" + threads; }
+}
+
+// A tiny feature bitset (GC, PROCESS/OS syscalls, NATIVE bindings).
+class FeatureBits {
+  int bits;
+  void configure() { bits = 0; }
+  void enableGc()      { bits = bits + 1; }   // bit 0
+  void enableProcess() { bits = bits + 2; }   // bit 1
+  void enableNative()  { bits = bits + 4; }   // bit 2
+  boolean gc()      { return (bits / 1) - ((bits / 2) * 2) == 1; }
+  int value() { return bits; }
+}
+
+class BuildPlan {
+  // Takes the validated option objects (as parameters -- method calls resolve
+  // on parameters) and renders a plan.
+  String render(MemoryOptions mem, CpuOptions cpu, ExecutionOptions exe, int features) {
+    String s = "VM build plan:\n";
+    s = s + "  memory:    " + mem.summary() + "\n";
+    s = s + "  cpu:       " + cpu.summary() + "\n";
+    s = s + "  execution: " + exe.summary() + "\n";
+    s = s + "  features:  bits=" + features + "\n";
+    return s;
+  }
+}
+
+class MidVMConfig {
+  void main() {
+    print("=== mid: VM configuration + build plan ===");
+
+    MemoryOptions mem = new MemoryOptions(); mem.configure(512, 256, true);
+    CpuOptions cpu = new CpuOptions(); cpu.configure(4, 3200);
+    ExecutionOptions exe = new ExecutionOptions(); exe.configure("jit", true);
+    FeatureBits feat = new FeatureBits(); feat.configure();
+    feat.enableGc(); feat.enableProcess();
+
+    // Validate before planning -- a careful user gates on this.
+    boolean ok = mem.valid() && cpu.valid() && exe.valid();
+    print("configuration valid? " + ok + " (gc enabled=" + feat.gc() + ")");
+    if (!ok) { print("REFUSED: invalid configuration"); return; }
+    print("");
+
+    BuildPlan plan = new BuildPlan();
+    print(plan.render(mem, cpu, exe, feat.value()));
+
+    print("done");
+  }
+}

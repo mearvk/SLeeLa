@@ -1,0 +1,117 @@
+#sleela 1.11
+// 03-senior: a VM orchestrated through its managers -- compilable.
+//
+// A senior user wires the subsystem managers a real VM runs on: a memory
+// manager (managed heap with a limit), a security manager (a tier/policy), a
+// linking manager (resolve module symbols), a module loader + heap, and a GC
+// pass. The VM boots the managers in order, loads a module, allocates on the
+// heap, runs a step, and reclaims. This mirrors the lib/vm manager tiers
+// (SleelaVMMemoryManagement*, SleelaVMSecurityManagement*, SleelaVMLinking
+// Manager*, SLVMHeap/SLVMModuleLoader/GarbageCollector) as composed objects.
+//
+// New ideas over mid: ordered subsystem bring-up with a failure gate, a managed
+// heap with allocation accounting, symbol resolution through a linker, and a GC
+// reclaim cycle.
+//
+// Run:  ./impl/build/sleela run lib/vm/examples/03-senior/senior-vm-managers.sleela
+
+// ---- Managed heap: allocate against a limit, track live bytes ----------
+class ManagedHeap {
+  int limitKb; int liveKb; int allocs; int frees;
+  void configure(int limit) { limitKb = limit; liveKb = 0; allocs = 0; frees = 0; }
+  // Returns 1 on success, 0 if the allocation would exceed the limit.
+  int alloc(int kb) {
+    if (liveKb + kb > limitKb) { return 0; }
+    liveKb = liveKb + kb; allocs = allocs + 1; return 1;
+  }
+  void free(int kb) { if (liveKb >= kb) { liveKb = liveKb - kb; frees = frees + 1; } }
+  int live() { return liveKb; }
+  String summary() { return "heap " + liveKb + "/" + limitKb + "KB (allocs=" + allocs + " frees=" + frees + ")"; }
+}
+
+// ---- Memory manager: owns the heap, enforces the managed-memory scheme --
+class MemoryManager {
+  ManagedHeap heap; int ready;
+  void boot(int limitKb) { heap = new ManagedHeap(); heap.configure(limitKb); ready = 1; }
+  boolean up() { return ready == 1; }
+  ManagedHeap managedHeap() { return heap; }
+}
+
+// ---- Security manager: a tier + an enforce/permissive policy -----------
+class SecurityManager {
+  String tier; String policy; int ready;
+  void boot(String t, String p) { tier = t; policy = p; ready = 1; }
+  boolean up() { return ready == 1; }
+  // A load is admitted when the policy is permissive, or enforce + trusted.
+  boolean admit(boolean trusted) { if (policy == "permissive") { return true; } return trusted; }
+  String summary() { return "security tier=" + tier + " policy=" + policy; }
+}
+
+// ---- Linking manager: resolve a module's symbols -----------------------
+class LinkingManager {
+  int resolved; int unresolved; int ready;
+  void boot() { resolved = 0; unresolved = 0; ready = 1; }
+  boolean up() { return ready == 1; }
+  void resolve(int symbols, int missing) { resolved = resolved + symbols; unresolved = unresolved + missing; }
+  boolean linked() { return ready == 1 && unresolved == 0; }
+  String summary() { return "linker resolved=" + resolved + " unresolved=" + unresolved; }
+}
+
+// ---- Garbage collector: one reclaim pass over the heap -----------------
+class Collector {
+  int cycles;
+  void configure() { cycles = 0; }
+  // Reclaim `kb` of dead objects from the heap, counting the cycle.
+  void collect(ManagedHeap heap, int kb) { heap.free(kb); cycles = cycles + 1; }
+  int ran() { return cycles; }
+}
+
+class SeniorVMManagers {
+  void banner(String t) { print("---- " + t + " ----"); }
+
+  void main() {
+    print("=== senior: VM orchestrated through its managers ===");
+
+    MemoryManager mem = new MemoryManager();
+    SecurityManager sec = new SecurityManager();
+    LinkingManager link = new LinkingManager();
+    Collector gc = new Collector();
+
+    // Bring the subsystems up in order; gate on all being ready.
+    mem.boot(1024);                 // 1 MB managed heap
+    sec.boot("managed", "enforce");
+    link.boot();
+    gc.configure();
+    boolean up = mem.up() && sec.up() && link.up();
+    print("subsystems up? " + up);
+    if (!up) { print("REFUSED: a subsystem failed to boot"); return; }
+    print(sec.summary());
+    print("");
+
+    // Load a (trusted) module: security admits it, the linker resolves it,
+    // and it allocates working memory on the managed heap.
+    banner("load module 'kernel-core' (trusted)");
+    boolean admitted = sec.admit(true);
+    print("security admit = " + admitted);
+    if (admitted) {
+      link.resolve(42, 0);          // 42 symbols, none missing
+      ManagedHeap heap = mem.managedHeap();
+      int ok1 = heap.alloc(256);
+      int ok2 = heap.alloc(512);
+      print(link.summary() + " linked=" + link.linked());
+      print("after load: " + heap.summary() + " (alloc ok: " + ok1 + "," + ok2 + ")");
+    }
+    print("");
+
+    // Run a step that over-allocates past the limit (handled, not crashed),
+    // then a GC pass reclaims dead objects.
+    banner("execute + reclaim");
+    ManagedHeap heap = mem.managedHeap();
+    int over = heap.alloc(512);     // 256+512+512 = 1280 > 1024 -> refused
+    print("over-limit alloc refused? " + (over == 0));
+    gc.collect(heap, 256);          // reclaim the first 256 KB
+    print("after gc (" + gc.ran() + " cycle): " + heap.summary());
+
+    print("done");
+  }
+}

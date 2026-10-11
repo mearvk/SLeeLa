@@ -1,0 +1,47 @@
+#sleela 1.11
+// 01-novice: the simplest useful SLVM program -- compilable and runnable.
+//
+// A novice learns the VM lifecycle in four calls: configure -> start -> use ->
+// stop. This mirrors lib/vm/SLVM.sleela (name/state/count, start/stop/active,
+// register) in one self-contained file, because `sleela run` compiles one file
+// as a single unit and the split lib/vm classes are not visible to an importing
+// program (see examples/README.md "Issues and notes").
+//
+// Run:  ./impl/build/sleela run lib/vm/examples/01-novice/novice-vm.sleela
+
+// A minimal VM, exactly the shape of lib/vm/SLVM.sleela.
+class Vm {
+  String name;
+  int state;      // 0 stopped, 1 running
+  int modules;
+
+  void configure(String n) { name = n; state = 0; modules = 0; }
+  void start() { state = 1; }
+  void stop()  { state = 0; }
+  boolean active() { return state == 1; }
+  void loadModule() { modules = modules + 1; }   // "register" a module
+  int moduleCount() { return modules; }
+}
+
+class NoviceVM {
+  void main() {
+    print("=== novice: VM lifecycle ===");
+
+    Vm vm = new Vm();
+    vm.configure("hello-vm");
+    print("configured: " + vm.name + " (active=" + vm.active() + ")");
+
+    vm.start();
+    print("started: active=" + vm.active());
+
+    // Load a couple of modules into the running VM.
+    vm.loadModule();
+    vm.loadModule();
+    print("modules loaded: " + vm.moduleCount());
+
+    vm.stop();
+    print("stopped: active=" + vm.active());
+
+    print("done");
+  }
+}
