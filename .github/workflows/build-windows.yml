@@ -23,11 +23,15 @@ on:
   pull_request:
     paths:
       - 'impl/**'
+      - 'tests/**'
+      - 'SHEET.sheet'
+      - 'Makefile'
+      - 'scripts/autocheck-toolchain.sh'
+      - 'security/**'
       - 'runtime/**'
       - 'bash/pixel_terminal.cpp'
       - 'bash/pixel_terminal.hpp'
       - 'build-windows.ps1'
-      - 'security/sha256-manifest.json'
       - '.github/workflows/build-windows.yml'
   workflow_dispatch:
 
