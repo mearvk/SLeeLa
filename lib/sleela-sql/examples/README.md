@@ -42,6 +42,7 @@ Use a fresh database directory if you want to replay the create-table example fr
 | `09-alter-table-proposal.sql` | Historical design note; the feature is now implemented |
 | `10-alter-table-default.sql` | Add a column and populate existing rows with a default value |
 | `11-alter-table-errors.sql` | Demonstrate duplicate-column rejection (second statement expects an error) |
+| [`slsql/`](slsql/README.md) | Dedicated SLSQL language walkthrough with runnable `.ssql` examples, prepared statements, and SQL equivalents |
 
 ## ALTER TABLE / ADD COLUMN
 
