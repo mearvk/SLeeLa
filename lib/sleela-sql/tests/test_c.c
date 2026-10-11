@@ -8,6 +8,16 @@ int main(int argc, char **argv) {
     if (ssql_exec(&db, "CREATE TABLE items (id, name)", NULL) != SSQL_OK) return 4;
     if (ssql_exec(&db, "INSERT INTO items VALUES (1, 'alpha')", NULL) != SSQL_OK) return 5;
     if (ssql_exec(&db, "CREATE TABLE IF NOT EXISTS items (id, name)", NULL) != SSQL_OK) return 10;
+    if (ssql_exec(&db, "CREATE TABLE ../escape (x)", NULL) != SSQL_ERR_SYNTAX) return 9;
+    FILE *out = tmpfile();
+    if (!out) return 6;
+    ssql_status status = ssql_exec(&db, "SELECT name FROM items WHERE id = 1", out);
+    if (status != SSQL_OK) { fclose(out); return 7; }
+    rewind(out);
+    char line[128];
+    int ok = fgets(line, sizeof line, out) != NULL;
+    fclose(out);
+    if (!ok) return 8;
     if (ssql_exec(&db, "ALTER TABLE items ADD COLUMN category DEFAULT 'general'", NULL) != SSQL_OK) return 19;
     if (ssql_exec(&db, "ALTER TABLE items ADD COLUMN category", NULL) != SSQL_ERR_DUPCOL) return 20;
     out = tmpfile();
@@ -21,16 +31,6 @@ int main(int argc, char **argv) {
                    strcmp(alter_value, "general\n") == 0;
     fclose(out);
     if (!alter_ok) return 22;
-    if (ssql_exec(&db, "CREATE TABLE ../escape (x)", NULL) != SSQL_ERR_SYNTAX) return 9;
-    FILE *out = tmpfile();
-    if (!out) return 6;
-    ssql_status status = ssql_exec(&db, "SELECT name FROM items WHERE id = 1", out);
-    if (status != SSQL_OK) { fclose(out); return 7; }
-    rewind(out);
-    char line[128];
-    int ok = fgets(line, sizeof line, out) != NULL;
-    fclose(out);
-    if (!ok) return 8;
     out = tmpfile();
     if (!out) return 11;
     status = ssql_exec(&db, "SELECT COUNT(*) FROM items WHERE id = 1", out);
