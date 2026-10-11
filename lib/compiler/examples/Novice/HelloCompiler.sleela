@@ -1,0 +1,40 @@
+/* Novice lesson: recognize one quoted-string statement. Educational scaffold. */
+#sleela 1.3
+
+class HelloCompiler {
+  String diagnostic;
+  String statementValue;
+  boolean valid;
+
+  void configure() {
+    diagnostic = "";
+    statementValue = "";
+    valid = false;
+  }
+
+  boolean acceptSayStatement(String keyword, String quotedValue, boolean closedQuote) {
+    diagnostic = "";
+    statementValue = "";
+    valid = false;
+    if (keyword != "say") {
+      diagnostic = "expected statement keyword 'say'";
+      return false;
+    }
+    if (!closedQuote) {
+      diagnostic = "string literal is not terminated";
+      return false;
+    }
+    statementValue = quotedValue;
+    valid = true;
+    return true;
+  }
+
+  String emitNormalizedRecord() {
+    if (!valid) {
+      diagnostic = "cannot emit: source has not passed validation";
+      return "";
+    }
+    return "SAY_STRING:" + statementValue;
+  }
+  String message() { return diagnostic; }
+}
