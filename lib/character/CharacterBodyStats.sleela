@@ -1,0 +1,24 @@
+#sleela 1.10
+/*
+ * CharacterBodyStats.sleela
+ * SLeeLa CharacterStats component: body measurements and movement capabilities.
+ *
+ * This focused value class separates one coherent group of CharacterStats
+ * fields for reuse by games, simulations, and interactive fiction. Values and
+ * scales are defined by the consuming game's ruleset; no universal caps are
+ * assumed unless explicitly enforced by a method.
+ */
+class CharacterBodyStats {
+    int height;
+    int weight;
+    int reach;
+    int jumpHeight;
+    int fallResistance;
+    int swimSpeed;
+    int climbSpeed;
+    int flightSpeed;
+    int encumbrance;
+
+    int canSwim() { return swimSpeed > 0; }
+    int canFly() { return flightSpeed > 0; }
+}
