@@ -6,6 +6,7 @@ This directory contains native C interfaces and C++17 facades for database and n
 
 | Connector | Build command | External dependency |
 |---|---|---|
+| Registry and scoped properties | `make -C lib/connector` | None |
 | MySQL | `make -C lib/connector/mysql` | mysqlclient or MariaDB Connector/C |
 | MariaDB profile | `make -C lib/connector/mariadb` | MariaDB Connector/C |
 | SQLite | `make -C lib/connector/sqlite` | SQLite |
@@ -20,6 +21,10 @@ This directory contains native C interfaces and C++17 facades for database and n
 | MQTT client | `make -C lib/connector/mqtt` | Eclipse Mosquitto client |
 
 Override each Makefile's `*_CFLAGS` and `*_LIBS` variables for nonstandard installations. The vendor profile directories reuse shared adapters rather than duplicating vendor protocol code.
+
+## Named connector registry
+
+The shared registry supports deterministic references such as `mysql`, `postgres`, and `sqlite`, keeps properties scoped to each reference, rejects duplicate names, and rejects ambiguous unnamed lookup. It stores native connector handles as non-owning pointers; the caller remains responsible for opening and closing each connector.
 
 ## API and security notes
 
