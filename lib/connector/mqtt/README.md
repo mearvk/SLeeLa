@@ -1,3 +1,3 @@
 # MQTT event connector
 
-Uses Eclipse Mosquitto C client for MQTT connection, publish, and network-loop operations. Subscription callbacks, TLS configuration, authentication helpers, and reconnect policy are not yet exposed. Until those features are added, use only with a trusted/local test broker; production deployments require broker ACLs and TLS configured through a hardened integration layer. Network access starts only when `sleela_mqtt_open` is called.
+Uses Eclipse Mosquitto's C client library for MQTT connect, publish, subscribe, and message callback dispatch. The C++17 `MqttClient` facade supports callback-based subscriptions. Call `sleela_mqtt_global_cleanup()` once, after all clients have been closed. TLS/authentication configuration helpers and automatic reconnect policy are not exposed yet; configure a trusted test broker or provide an externally hardened deployment setup before production use. Network access starts only when `sleela_mqtt_open` is called.
