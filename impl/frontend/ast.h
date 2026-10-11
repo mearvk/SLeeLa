@@ -126,7 +126,7 @@ struct ReturnStmt:Stmt{ExprP value;};
 struct Block:Stmt{std::vector<StmtP> stmts;};
 struct IfStmt:Stmt{ExprP cond;StmtP thenS,elseS;};
 struct WhileStmt:Stmt{ExprP cond;StmtP body;};
-struct ForStmt:Stmt{StmtP init;ExprP cond;StmtP update,body;};
+struct ForStmt:Stmt{StmtP init;ExprP cond;StmtP update,body;ExprP threadStable,heapHealthy;};
 // --- Java statement forms (surface completeness). --------------------------
 struct DoStmt:Stmt{StmtP body;ExprP cond;};
 struct BreakStmt:Stmt{std::string label;};

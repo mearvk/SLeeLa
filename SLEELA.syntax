@@ -221,8 +221,25 @@ store. It is recognised when the whole right-hand side is the contextual word
     while-stmt ::= "while" "(" expr ")" statement
 
 ### 4.5 For
-    for-stmt   ::= "for" "(" [simple] ";" [expr] ";" [simple] ")" statement
+    for-stmt   ::= "for" "(" [simple] ";" [expr] ";" [simple]
+                   [ ";" expr [ ";" expr ] ] ")" statement
     simple     ::= var-decl-noSemi | assign-noSemi | expr
+
+The first three terms retain the standard initializer, condition, and update
+semantics. The optional fourth term is a Boolean thread-loop stability guard;
+the optional fifth term is a Boolean VM GC/heap health guard. Guards are
+evaluated once at the start of each iteration, after the loop condition and
+before the body. A false guard exits the loop before the body executes.
+The thread guard is evaluated before the heap guard. Both guards are
+statically required to have Boolean type. The heap guard must be connected
+to a real VM/GC health signal by the host/runtime; a source expression alone
+does not inspect VM internals or automatically raise an exception. Hosts may
+set a diagnostic flag or raise their configured memory-health exception
+before making the guard false. Existing three-term loops are unchanged.
+
+Examples:
+    for (let i = 0; i < limit; i = i + 1; threadStable) work(i);
+    for (let i = 0; i < limit; i = i + 1; threadStable; heapHealthy) work(i);
 
 ### 4.6 Print (built-in output)
     print-stmt ::= "print" "(" expr ")" ";"
