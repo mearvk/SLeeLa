@@ -49780,7 +49780,7 @@
     },
     {
       "path": "lib/sleela-sql/native/src/sleela_sql.c",
-      "sha256": "4a734ee5cdc7847d531c13b63f8aaa4d63d1076808d10abd9a7a3c28d93fd7c5"
+      "sha256": "d991874724329a90b2faee29f25a9a033a0b1b1fa6119289f06b168b7d2bcce4"
     },
     {
       "path": "lib/sleela-sql/native/src/sleela_sql_cli.c",
@@ -49788,11 +49788,11 @@
     },
     {
       "path": "lib/sleela-sql/tests/test_c.c",
-      "sha256": "dab2eed3884ad43cbeaf58346c2544d26c1118b04aa7bb2e13c1e5b232e56af6"
+      "sha256": "7c0a30767e41b0323588c454210936736d88011663d041b903a1059307ca30ca"
     },
     {
       "path": "lib/sleela-sql/tests/test_cpp.cpp",
-      "sha256": "8e10fe9d6b6317251612e3cc349d4ecaba3957000300eb0fc257474bf103eebe"
+      "sha256": "46d0f377c545d2266ede263df50aaf4d791ae604cb7612bb01aaa74a3c3dc5a2"
     },
     {
       "path": "lib/sleela-terminal/SLPackage.sleela",
