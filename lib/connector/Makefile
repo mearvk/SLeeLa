@@ -40,8 +40,9 @@ test: test_connector_registry
 	$(MAKE) -C json test
 	$(MAKE) -C xml test
 
+# Keep the header as a dependency, but compile only the C translation unit.
 test_connector_registry: test_connector_registry.c connector_registry.c connector_registry.h
-	$(CC) $(CPPFLAGS) $(CFLAGS) -O2 -Wall -Wextra -Wpedantic $^ -o $@
+	$(CC) $(CPPFLAGS) $(CFLAGS) -O2 -Wall -Wextra -Wpedantic test_connector_registry.c connector_registry.c -o $@
 
 test-rest:
 	$(MAKE) -C rest test
