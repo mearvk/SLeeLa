@@ -1,0 +1,62 @@
+#sleela 1.10
+/*
+ * CitizenHousingUtilitiesAndHouseholdServicesStats.sleela
+ * Individual category class extracted from citizen/sleela/CitizenStats.sleela.
+ * Source category: Housing, utilities, and household services.
+ * Monetary values use integer minor units where the field name says Cents.
+ */
+class CitizenHousingUtilitiesAndHouseholdServicesStats {
+    string housingType;
+    string tenureType;
+    int housingQuality;
+    int housingSecurity;
+    int roomsInHome;
+    int peoplePerRoom;
+    int overcrowdingRisk;
+    int homelessnessRisk;
+    int waterAccess;
+    int sanitationAccess;
+    int electricityAccess;
+    int heatingAccess;
+    int coolingAccess;
+    int internetAccess;
+    int phoneAccess;
+    int wasteCollectionAccess;
+    int publicTransportAccess;
+    int distanceToHealthcare;
+    int distanceToSchool;
+    int neighborhoodSafety;
+    int neighborhoodQuality;
+    int environmentalQuality;
+    int householdEnergyUse;
+    int householdWaterUse;
+    int housingAssistance;
+
+    CitizenHousingUtilitiesAndHouseholdServicesStats() {
+        housingType = "unknown";
+        tenureType = "unknown";
+        housingQuality = 0;
+        housingSecurity = 0;
+        roomsInHome = 0;
+        peoplePerRoom = 0;
+        overcrowdingRisk = 0;
+        homelessnessRisk = 0;
+        waterAccess = 0;
+        sanitationAccess = 0;
+        electricityAccess = 0;
+        heatingAccess = 0;
+        coolingAccess = 0;
+        internetAccess = 0;
+        phoneAccess = 0;
+        wasteCollectionAccess = 0;
+        publicTransportAccess = 0;
+        distanceToHealthcare = 0;
+        distanceToSchool = 0;
+        neighborhoodSafety = 0;
+        neighborhoodQuality = 0;
+        environmentalQuality = 0;
+        householdEnergyUse = 0;
+        householdWaterUse = 0;
+        housingAssistance = 0;
+    }
+}
