@@ -1,0 +1,16 @@
+#sleela 1.10
+/*
+ * CitizenSchemaAndRulesMetadataStats.sleela
+ * Individual category class extracted from citizen/sleela/CitizenStats.sleela.
+ * Source category: Schema and rules metadata.
+ * Monetary values use integer minor units where the field name says Cents.
+ */
+class CitizenSchemaAndRulesMetadataStats {
+    int schemaVersion;
+    int rulesetId;
+
+    CitizenSchemaAndRulesMetadataStats() {
+        schemaVersion = 1;
+        rulesetId = 0;
+    }
+}
