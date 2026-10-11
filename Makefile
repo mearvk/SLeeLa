@@ -3,9 +3,9 @@
 # Product-specific Makefiles remain authoritative. This root dispatcher only
 # enters those existing build systems; it does not duplicate their source lists.
 
-.PHONY: all autocheck core java28 regex compiler decompiler vm scripting jetbrains install install-product tutorial-check tests server config route clean help
+.PHONY: all autocheck core java28 regex compiler decompiler vm scripting jetbrains connector connector-test connector-check-deps install install-product tutorial-check tests server config route clean help
 
-all: autocheck core java28 regex compiler decompiler vm scripting jetbrains install tutorial-check tests config route
+all: core java28 regex compiler decompiler vm scripting jetbrains install tutorial-check tests config route
 
 # The impl build is fail-closed on a trusted SHA-256 manifest. Default it to the
 # repository's manifest (absolute path) so `make` works from the repo root; an
@@ -39,6 +39,16 @@ scripting:
 
 jetbrains:
 	$(MAKE) -C jetbrains all
+
+# Optional native connectors have third-party client-library dependencies.
+connector:
+	$(MAKE) -C lib/connector all
+
+connector-test:
+	$(MAKE) -C lib/connector test
+
+connector-check-deps:
+	$(MAKE) -C lib/connector check-deps
 
 install:
 	$(MAKE) -C install all
@@ -84,6 +94,9 @@ help:
 	@echo "  make decompiler Build lib/decompiler/"
 	@echo "  make vm        Build lib/vm/"
 	@echo "  make jetbrains Show JetBrains source acquisition helpers"
+	@echo "  make connector Build optional native connectors"
+	@echo "  make connector-test Run offline connector tests"
+	@echo "  make connector-check-deps Report native connector dependencies"
 	@echo "  make install     Verify Quick and Safe installer entry points"
 	@echo "  make install-product  Build and interactively install compiled products (user-local or system-wide)"
 	@echo "  make tutorial-check Verify tutorial lesson sequence, example XML, and expected-evidence pairing"

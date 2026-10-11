@@ -9,11 +9,13 @@ From the repository root, use:
 - `make -C lib/connector build` — build the registry, all database connectors, and all data-source connectors.
 - `make -C lib/connector database` — build MySQL, MariaDB, SQLite, PostgreSQL, ODBC, SQL Server, and Oracle profiles.
 - `make -C lib/connector data` — build CSV/TSV, JSON, XML, REST, and MQTT connectors.
-- `make -C lib/connector test` — run the registry, CSV/TSV, JSON, and XML smoke tests.
-- `make -C lib/connector check-deps` — report dependencies discoverable through pkg-config.
+- `make -C lib/connector test` — run dependency-free registry, CSV/TSV, JSON, and XML smoke tests.
+- `make -C lib/connector test-rest` — run REST invalid-argument guards (requires libcurl development files; no network request is made).
+- `make -C lib/connector test-mqtt` — run MQTT invalid-state guards (requires libmosquitto development files; no broker is contacted).
+- `make -C lib/connector check-deps` — report the compiler toolchain and optional dependencies discoverable through pkg-config.
 - `make -C lib/connector clean` — clean connector build outputs.
 
-If your current directory is `lib/connector`, the equivalent commands are `make build`, `make database`, `make data`, `make test`, `make check-deps`, and `make clean`. The `build` target is an alias for `all`.
+If your current directory is `lib/connector`, the equivalent commands are `make all`, `make database`, `make data`, `make test`, `make check-deps`, and `make clean`. Use `make all` to avoid confusion with connector-specific `build/` output directories.
 
 Convenience entry points are `sh lib/connector/build.sh all` on Linux/macOS from the repository root, or `build.bat all` from a Windows command prompt while in `lib/connector`. Windows requires GNU Make (or MinGW Make), a configured C/C++ toolchain, and development headers/libraries for every selected connector; set connector-specific `*_CFLAGS` and `*_LIBS` variables when pkg-config metadata is unavailable. The Windows build has not yet been verified by the connector CI.
 
@@ -24,18 +26,18 @@ Commands in this table are run from the repository root.
 | Connector | Build command | External dependency |
 |---|---|---|
 | Registry and scoped properties | `make -C lib/connector registry` | None |
-| MySQL | `make -C lib/connector/mysql build` | mysqlclient or MariaDB Connector/C |
-| MariaDB profile | `make -C lib/connector/mariadb build` | MariaDB Connector/C |
-| SQLite | `make -C lib/connector/sqlite build` | SQLite |
-| PostgreSQL | `make -C lib/connector/postgres build` | libpq |
-| Generic ODBC | `make -C lib/connector/odbc build` | ODBC development package and configured driver |
-| SQL Server profile | `make -C lib/connector/sqlserver build` | Microsoft ODBC Driver + ODBC |
-| Oracle profile | `make -C lib/connector/oracle build` | Oracle ODBC driver + ODBC |
-| CSV/TSV | `make -C lib/connector/delimited build` | None |
-| JSON tokenizer | `make -C lib/connector/json build` | None |
-| XML validator | `make -C lib/connector/xml build` | libxml2 |
-| HTTP/REST | `make -C lib/connector/rest build` | libcurl |
-| MQTT client | `make -C lib/connector/mqtt build` | Eclipse Mosquitto client |
+| MySQL | `make -C lib/connector/mysql all` | mysqlclient or MariaDB Connector/C |
+| MariaDB profile | `make -C lib/connector/mariadb all` | MariaDB Connector/C |
+| SQLite | `make -C lib/connector/sqlite all` | SQLite |
+| PostgreSQL | `make -C lib/connector/postgres all` | libpq |
+| Generic ODBC | `make -C lib/connector/odbc all` | ODBC development package and configured driver |
+| SQL Server profile | `make -C lib/connector/sqlserver all` | Microsoft ODBC Driver + ODBC |
+| Oracle profile | `make -C lib/connector/oracle all` | Oracle ODBC driver + ODBC |
+| CSV/TSV | `make -C lib/connector/delimited all` | None |
+| JSON tokenizer | `make -C lib/connector/json all` | None |
+| XML validator | `make -C lib/connector/xml all` | libxml2 |
+| HTTP/REST | `make -C lib/connector/rest all` | libcurl |
+| MQTT client | `make -C lib/connector/mqtt all` | Eclipse Mosquitto client |
 
 The SQL Server and Oracle profiles reuse the shared ODBC implementation; they are not separate protocol implementations. Build each family independently if you do not need every optional third-party dependency.
 
@@ -51,5 +53,5 @@ The shared registry supports deterministic references such as `mysql`, `postgres
 - HTTP responses must be checked for HTTP status separately from transport success. REST redirects are disabled and TLS verification remains enabled.
 - JSON support is a structural tokenizer, not a semantic JSON parser or complete standards validator. Validate untrusted input with a standards-compliant parser. XML validation uses libxml2 with network fetching disabled; review DTD/entity handling for untrusted documents.
 - MQTT supports publish and callback-based subscribe; call `sleela_mqtt_global_cleanup()` only after all MQTT clients are closed. TLS/auth helpers and reconnect policy are not exposed yet.
-- The CI workflow builds and runs smoke tests on Linux and macOS. It does not connect to live databases, REST endpoints, or MQTT brokers; Windows is not currently covered. A queued or running workflow is not a passing result.
+- The default offline suite does not connect to live databases, REST endpoints, or MQTT brokers. Optional REST/MQTT guard tests also avoid network services but require their native development packages. Check current CI results before treating a platform as verified.
 - Review [CONNECTOR-CATALOG.md](CONNECTOR-CATALOG.md) for exact capabilities and known gaps. These baseline adapters are not represented as production-certified.

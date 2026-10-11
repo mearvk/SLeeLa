@@ -8,14 +8,14 @@ From the `sleela-terminal` directory:
 make
 ```
 
-The build produces both the shell and the dedicated graphical terminal:
+The default build is CLI-only and does not require GTK/VTE development packages:
 
 ```text
 build/slsh
-build/SleelaTerminal
+build/smoke
 ```
 
-The GUI uses GTK 4 and VTE. On Debian/Ubuntu systems, install the corresponding GTK 4 and VTE GTK 4 development packages before building the GUI.
+The optional GUI uses GTK 4 and VTE. On Debian/Ubuntu systems, install the corresponding GTK 4 and VTE GTK 4 development packages before building it.
 
 To build only the graphical terminal:
 
@@ -65,13 +65,7 @@ The default installation prefix is `/usr/local`:
 sudo make install
 ```
 
-This installs:
-
-```text
-/usr/local/bin/slsh
-/usr/local/bin/SleelaTerminal
-/usr/local/share/applications/SleelaTerminal.desktop
-```
+This installs only `/usr/local/bin/slsh`. To build and install the GUI explicitly, run `make all-gui install-gui`; for CLI plus GUI, run `make install-all` after building. Use `sudo` only when the chosen prefix requires elevated permissions.
 
 The desktop entry launches the GUI as a normal desktop application; it does not open another terminal emulator around SLeeLa.
 

@@ -30,9 +30,13 @@ GUI   := $(BUILD)/SleelaTerminal
 GTK4_VTE_CFLAGS := $(shell $(PKG_CONFIG) --cflags $(GTK4_VTE_PKGS) 2>/dev/null)
 GTK4_VTE_LIBS   := $(shell $(PKG_CONFIG) --libs $(GTK4_VTE_PKGS) 2>/dev/null)
 
-.PHONY: all smoke test m5-smoke gui sanitize fuzz install install-strip uninstall clean
+.PHONY: all cli all-gui smoke test m5-smoke gui sanitize fuzz install install-gui install-all install-strip uninstall clean
 
-all: $(SLSH) $(SMOKE) $(GUI)
+all: cli
+
+cli: $(SLSH) $(SMOKE)
+
+all-gui: cli $(GUI)
 
 $(SLSH): $(CLI_SRC) $(HEADERS) | $(BUILD)
 	$(CXX) $(CXXFLAGS) $(CLI_SRC) -o $@
@@ -58,12 +62,17 @@ m5-smoke: $(SLSH)
 
 test: smoke m5-smoke
 
-install: $(SLSH) $(GUI)
+install: $(SLSH)
+	$(INSTALL) -d $(DESTDIR)$(BINDIR)
+	$(INSTALL) -m 0755 $(SLSH) $(DESTDIR)$(BINDIR)/slsh
+
+install-gui: $(GUI)
 	$(INSTALL) -d $(DESTDIR)$(BINDIR)
 	$(INSTALL) -d $(DESTDIR)$(DESKTOPDIR)
-	$(INSTALL) -m 0755 $(SLSH) $(DESTDIR)$(BINDIR)/slsh
 	$(INSTALL) -m 0755 $(GUI) $(DESTDIR)$(BINDIR)/SleelaTerminal
 	$(INSTALL) -m 0644 SleelaTerminal.desktop $(DESTDIR)$(DESKTOPDIR)/SleelaTerminal.desktop
+
+install-all: install install-gui
 
 install-strip: CXXFLAGS += -s
 install-strip: clean install
