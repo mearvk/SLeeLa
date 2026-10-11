@@ -3128,19 +3128,19 @@
     },
     {
       "path": "compiler/include/sleela/compiler.hpp",
-      "sha256": "85042731f90246f79db2ed4c884e3845aa109bf7745b8432faa257897643002d"
+      "sha256": "d2ff638a306fb4b237183b3ec91db83fbb7fe227d01fc1113de280ad63f645b8"
     },
     {
       "path": "compiler/src/compiler.cpp",
-      "sha256": "4f0a81b70b5ad00433be5248ab4237e35b553bfe1f37dc0e9bf5a4540dfc5d66"
+      "sha256": "c8b90e6bf150f1d5b65bb5c77348a7cffa994f83aadd3edfd53f0cfa5c98e110"
     },
     {
       "path": "compiler/src/main.cpp",
-      "sha256": "2e7b952884d9798dd595f91627d6b883b43b3839db54062543a6e0b94caa6aff"
+      "sha256": "0b724732e76a6791e37c3db19975db90d92edf1b1416dcebb3a3251bebbffea9"
     },
     {
       "path": "compiler/tests/compiler_tests.cpp",
-      "sha256": "7f32c3aecbd18b239c4f0199e909ec065cd67a915f6be4fc1de1b338dc765f83"
+      "sha256": "d652ee4d24ad9987cd377aa9f9e9e382c11708dde9e684aab44ece4c7ca00e61"
     },
     {
       "path": "coorenagraph/Coorenagraph.sleela",
@@ -8375,8 +8375,24 @@
       "sha256": "b22bc6693224c06fb4c8d1eb02549521ae740d0fa35e7d45671ed312b59a4769"
     },
     {
+      "path": "lib/compiler/SLCompilerBuildRequest.sleela",
+      "sha256": "f6fe3c757d8e963c9de6d5f3fabd2963954e9a40c3d3e8d974ea54f83a566267"
+    },
+    {
+      "path": "lib/compiler/SLCompilerBuildResult.sleela",
+      "sha256": "5833b94883f5d1503c807a19aad7ef9bb378180b09ce26070acbc0a32e8ec361"
+    },
+    {
+      "path": "lib/compiler/SLCompilerDeveloperCLI.sleela",
+      "sha256": "09fb059d75e1a9d4b02fb0df324e8be2fce7237a0024d026d123f908e6d0fc15"
+    },
+    {
       "path": "lib/compiler/SLCompilerDiagnostic.sleela",
       "sha256": "00f33fc4715ef958ec2d610dd5abb122b7b0550903140b8a43df365d06299f54"
+    },
+    {
+      "path": "lib/compiler/SLCompilerNativeBackend.sleela",
+      "sha256": "e54030a573e80769781fbbd029f6407bb997101420935164c527bcd506bfc829"
     },
     {
       "path": "lib/compiler/SLCompilerPipeline.sleela",
@@ -8385,6 +8401,14 @@
     {
       "path": "lib/compiler/SLCompilerRegistry.sleela",
       "sha256": "b9deb728dca2a39fd907ca59beafe710169cad8c47aff4194515edb631de5826"
+    },
+    {
+      "path": "lib/compiler/SLCompilerToolchain.sleela",
+      "sha256": "c90da65d9c342e0c335b7072bb6c6243cee7305a338a196670eb0efeca7ff56c"
+    },
+    {
+      "path": "lib/compiler/SLCompilerWorkbench.sleela",
+      "sha256": "ffa7cf9eba9b0b723b85e70a485ec2b7de2949177f56d57fa4e5fd2435cfb8ac"
     },
     {
       "path": "lib/compiler/SLConstructorSeries.sleela",
@@ -8409,6 +8433,10 @@
     {
       "path": "lib/compiler/SLNativeCompiler.sleela",
       "sha256": "1706455cf4f73f1aecc0f456356a054bb107e44b85cefd9ce71e20f504fe868e"
+    },
+    {
+      "path": "lib/compiler/SLNativeSourceEmitter.sleela",
+      "sha256": "be0d1107b78e2aabde4e85191214a123990162c46efbdb56a4ab474e53006859"
     },
     {
       "path": "lib/compiler/SLObjectCreationResolver.sleela",
@@ -49733,6 +49761,38 @@
     {
       "path": "lib/sleela/SLPackage.sleela",
       "sha256": "7dc65186a98053bbeaf6aa38c6173fcc2a862390b9df1e080bc8c3fc57c920c2"
+    },
+    {
+      "path": "lib/sleela-sql/SqlModel.sleela",
+      "sha256": "2de95cf1f0434ad42404ad205245a665dc625493be5a8aead8d764ce05f6d1de"
+    },
+    {
+      "path": "lib/sleela-sql/cpp/include/sleela_sql.hpp",
+      "sha256": "862baa59e541330630e4774dc17a997cfc6770de3e8fb7f33f1bfd4a43dc31ac"
+    },
+    {
+      "path": "lib/sleela-sql/cpp/src/sleela_sql.cpp",
+      "sha256": "2303d879d06952f1f53c549661fbc6356723fbd7a45523038e84eefa54e71162"
+    },
+    {
+      "path": "lib/sleela-sql/native/include/sleela_sql.h",
+      "sha256": "c09999c0b608a60cf89ce4170a0bca0527cce74fd82abe87c7f37340e3afabc2"
+    },
+    {
+      "path": "lib/sleela-sql/native/src/sleela_sql.c",
+      "sha256": "9e113a26e25075fe1ee9a906f0d95cc5bf96e3c3442944626ba58c3ddfd899ba"
+    },
+    {
+      "path": "lib/sleela-sql/native/src/sleela_sql_cli.c",
+      "sha256": "d2a2ec4af6d309a74f1122bff3bc037e8751eb707d88a9b124fb3c457fd475fe"
+    },
+    {
+      "path": "lib/sleela-sql/tests/test_c.c",
+      "sha256": "c8b1edd7beea4bd6d84f619d86645fb2aa077930474c267c1fe40e108d3da1a9"
+    },
+    {
+      "path": "lib/sleela-sql/tests/test_cpp.cpp",
+      "sha256": "8e10fe9d6b6317251612e3cc349d4ecaba3957000300eb0fc257474bf103eebe"
     },
     {
       "path": "lib/sleela-terminal/SLPackage.sleela",
