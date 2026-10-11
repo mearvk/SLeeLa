@@ -1,0 +1,13 @@
+/*
+ * SLCompilerPipeline: descriptive stage names shared by compiler front ends.
+ * Concrete execution is supplied by each registered compiler backend.
+ */
+#sleela 1.10
+class SLCompilerPipeline {
+    let stages;
+    SLCompilerPipeline() {
+        this.stages = "source,lex,parse,semantic,lower,verify,emit";
+    }
+    stageList() { return this.stages; }
+    hasRequiredStages() { return this.stages == "source,lex,parse,semantic,lower,verify,emit"; }
+}

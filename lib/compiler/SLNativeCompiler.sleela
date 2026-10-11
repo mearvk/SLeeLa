@@ -1,0 +1,26 @@
+/*
+ * SLNativeCompiler: declarative capability metadata for the native prototype.
+ * It does not execute native code and explicitly marks this backend experimental.
+ */
+#sleela 1.10
+class SLNativeCompiler {
+    let name;
+    let version;
+    let languageSpec;
+    let supportedForms;
+    let supportsBytecode;
+    let supportsNativeCode;
+    let experimental;
+    SLNativeCompiler() {
+        this.name = "SLeeLa Native Compiler";
+        this.version = "0.1.0";
+        this.languageSpec = "1.10";
+        this.supportedForms = ".sleela-subset";
+        this.supportsBytecode = true;
+        this.supportsNativeCode = false;
+        this.experimental = true;
+    }
+    isCompatibleWith(specVersion) { return specVersion == this.languageSpec; }
+    canEmitNativeCode() { return this.supportsNativeCode; }
+    status() { return "experimental-subset"; }
+}

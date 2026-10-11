@@ -106,3 +106,7 @@ SLeeLa source-level reference handlers are provided by `SLCaseHandler.sleela`, `
 ## Authoritative language specification (syntax 1.7)
 
 The native compiler and all compiler front ends must validate against the repository-root [`SLEELA.syntax`](../../SLEELA.syntax) specification. Its active version is `1.7` and the native frontend's supported range is `1.3..1.7`. The `U<n>` unsigned fixed-width family accepts widths from `U1` through `U1048576`. Do not lower these types to signed or 64-bit host integers silently; unsupported runtime paths must emit an explicit diagnostic. The shared type-signature contract is in [`markdown/SOURCE.md`](../../markdown/SOURCE.md), and the runtime implementation boundary is tracked by the tests in `impl/tests/unsigned_integer_test.cpp`.
+
+## Native C++20 compiler prototype
+
+The top-level /compiler directory provides a separately buildable native C++20 compiler subset with lexer, expression parser, local-name checks, stack-bytecode lowering, interpreter, disassembler, emitter, and tests. It is not feature-equivalent to the production compiler in /impl; read /compiler/README.md before using it. The SLeeLa capability metadata and pipeline-stage contracts are SLNativeCompiler.sleela and SLCompilerPipeline.sleela.
