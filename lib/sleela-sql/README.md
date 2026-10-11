@@ -23,6 +23,8 @@ make test
 
 Outputs are kept under `build/`: CLI, C static library, and C++ facade library. Consumers of the C++ facade must link both the C++ and C core libraries. `ssql_open` creates the final database directory if absent; it does not recursively create parent directories.
 
+The SQL subset also supports idempotent `CREATE TABLE IF NOT EXISTS` and `SELECT COUNT(*) ... [WHERE column = value]`; the fluent dialect accepts `from('table').select(count(*))`.
+
 ## C example
 
 ```c

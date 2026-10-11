@@ -12,7 +12,7 @@ int main(int argc, char** argv) {
     if (insert.run(nullptr) != SSQL_OK) return 8;
     FILE* out = std::tmpfile();
     if (!out) return 9;
-    auto status = db.execute("SELECT name FROM items WHERE id = '7'", out);
+    auto status = db.execute("SELECT COUNT(*) FROM items WHERE id = '7'", out);
     std::fclose(out);
     return status == SSQL_OK ? 0 : 10;
 }

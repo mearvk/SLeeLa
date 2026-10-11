@@ -253,6 +253,8 @@ struct ssql_stmt {
     ssql_val  where_val;
 
     int       drop_if_exists;
+    int       create_if_not_exists;
+    int       count_star;
 
     int       nparams;         /* total '?' placeholders                    */
 };
@@ -298,6 +300,14 @@ static int val_set(ssql_stmt *st, ssql_val *v, const char *token) {
 
 /* CREATE TABLE <name> (<c1>, <c2>, ...) */
 static ssql_status sql_create(ssql_stmt *st, char *rest) {
+    if (kw_eq(rest, "if")) {
+        rest = trim(rest + 2);
+        if (!kw_eq(rest, "not")) return SSQL_ERR_SYNTAX;
+        rest = trim(rest + 3);
+        if (!kw_eq(rest, "exists")) return SSQL_ERR_SYNTAX;
+        rest = trim(rest + 6);
+        st->create_if_not_exists = 1;
+    }
     char *lp = strchr(rest, '(');
     char *rp = strrchr(rest, ')');
     if (!lp || !rp || rp < lp) return SSQL_ERR_SYNTAX;
@@ -405,7 +415,9 @@ static ssql_status sql_select(ssql_stmt *st, char *rest) {
     if (!*name) return SSQL_ERR_SYNTAX;
     snprintf(st->table, sizeof(st->table), "%s", name);
 
-    if (strcmp(proj, "*") == 0) {
+    if (strcasecmp(proj, "count(*)") == 0) {
+        st->count_star = 1;
+    } else if (strcmp(proj, "*") == 0) {
         st->star = 1;
     } else {
         char *pcols[SSQL_MAX_COLS];
@@ -577,7 +589,9 @@ static ssql_status compile_sleela(ssql_stmt *st, char *src) {
     if (is_from && strcmp(method, "select") == 0) {
         if (take_parens(&p, args, sizeof(args)) != 0) return SSQL_ERR_SYNTAX;
         char *proj = trim(args);
-        if (strcmp(proj, "*") == 0 || *proj == '\0') {
+        if (strcasecmp(proj, "count(*)") == 0) {
+            st->count_star = 1;
+        } else if (strcmp(proj, "*") == 0 || *proj == '\0') {
             st->star = 1;
         } else {
             char *pcols[SSQL_MAX_COLS];
@@ -644,7 +658,7 @@ static ssql_status val_resolve(const ssql_val *v, const char **out) {
 }
 
 static ssql_status exec_create(ssql_stmt *st) {
-    if (table_exists(st->db, st->table)) return SSQL_ERR_EXISTS;
+    if (table_exists(st->db, st->table)) return st->create_if_not_exists ? SSQL_OK : SSQL_ERR_EXISTS;
     char path[SSQL_MAX_PATH];
     table_path(st->db, st->table, path, sizeof(path));
     FILE *f = fopen(path, "wb");
@@ -725,7 +739,8 @@ static ssql_status exec_select(ssql_stmt *st, FILE *out) {
         if (where_idx < 0) { fclose(f); return SSQL_ERR_NOCOL; }
     }
 
-    if (out) {
+    long long count = 0;
+    if (out && !st->count_star) {
         for (int i = 0; i < nproj; i++) {
             if (i) fputc(',', out);
             csv_write_field(out, cols[proj_idx[i]]);
@@ -743,6 +758,7 @@ static ssql_status exec_select(ssql_stmt *st, FILE *out) {
             if (where_idx >= nf) continue;
             if (strcmp(fields[where_idx], where_val) != 0) continue;
         }
+        if (st->count_star) { count++; continue; }
         if (out) {
             for (int i = 0; i < nproj; i++) {
                 if (i) fputc(',', out);
@@ -753,6 +769,7 @@ static ssql_status exec_select(ssql_stmt *st, FILE *out) {
         }
     }
     fclose(f);
+    if (st->count_star && out) fprintf(out, "COUNT(*)\n%lld\n", count);
     return SSQL_OK;
 }
 

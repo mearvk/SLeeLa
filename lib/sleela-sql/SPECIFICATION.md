@@ -12,15 +12,15 @@ Classic SQL and fluent SLeeLaSQL are front ends to one parser/compiler and one e
 
 | Operation | SQL syntax | Semantics |
 |---|---|---|
-| Create | `CREATE TABLE t (c1, c2, ...)` | Creates `t.csv` with a header |
+| Create | `CREATE TABLE [IF NOT EXISTS] t (c1, c2, ...)` | Creates `t.csv` with a header; optional clause makes existing-table creation idempotent |
 | Drop | `DROP TABLE t`; `DROP TABLE IF EXISTS t` | Removes table file |
 | Insert | `INSERT INTO t VALUES (v1, ...)` | Appends one positional row |
-| Select | `SELECT * FROM t [WHERE c = v]` | Reads all/projected columns; one equality predicate |
+| Select | `SELECT * FROM t [WHERE c = v]`; `SELECT COUNT(*) FROM t [WHERE c = v]` | Reads projected rows or counts matching rows; one equality predicate |
 | List | `SHOW TABLES` | Emits CSV table names |
 
-Fluent equivalents: `table('t').create(c1, c2)`, `from('t').drop()`, `from('t').drop(ifExists)`, `into('t').insert(v1, v2)`, `from('t').select(*)`, `from('t').select(c1).where(c == v)`, and `tables()`.
+Fluent equivalents: `table('t').create(c1, c2)`, `from('t').drop()`, `from('t').drop(ifExists)`, `into('t').insert(v1, v2)`, `from('t').select(*)`, `from('t').select(count(*))`, `from('t').select(c1).where(c == v)`, and `tables()`.
 
-This is a subset. It is **not** MySQL/PostgreSQL/SQLite wire-protocol compatible and does not implement joins, aggregates, indexes, schema types, constraints, subqueries, ordering, grouping, or general transactions.
+This is a subset. It is **not** MySQL/PostgreSQL/SQLite wire-protocol compatible and does not implement joins, general aggregate functions beyond `COUNT(*)`, indexes, schema types, constraints, subqueries, ordering, grouping, or general transactions.
 
 ## 3. Prepared statements
 
