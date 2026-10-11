@@ -1,6 +1,7 @@
 #ifndef SLEELA_CONNECTOR_REGISTRY_HPP
 #define SLEELA_CONNECTOR_REGISTRY_HPP
 #include "connector_registry.h"
+#include <new>
 #include <stdexcept>
 #include <string>
 namespace sleela::connector {
