@@ -1,0 +1,32 @@
+#sleela 1.10
+/*
+ * CitizenDigitalAccessAndSafetyStats.sleela
+ * Individual category class extracted from citizen/sleela/CitizenStats.sleela.
+ * Source category: Digital access and safety.
+ * Monetary values use integer minor units where the field name says Cents.
+ */
+class CitizenDigitalAccessAndSafetyStats {
+    int deviceAccess;
+    int computerAccess;
+    int broadbandQuality;
+    int onlineServiceUse;
+    int cybersecurityAwareness;
+    int digitalPrivacyAwareness;
+    int accessibilityTechnologyAccess;
+    int digitalSkills;
+    int digitalExclusionRisk;
+    int telehealthCapability;
+
+    CitizenDigitalAccessAndSafetyStats() {
+        deviceAccess = 0;
+        computerAccess = 0;
+        broadbandQuality = 0;
+        onlineServiceUse = 0;
+        cybersecurityAwareness = 0;
+        digitalPrivacyAwareness = 0;
+        accessibilityTechnologyAccess = 0;
+        digitalSkills = 0;
+        digitalExclusionRisk = 0;
+        telehealthCapability = 0;
+    }
+}
