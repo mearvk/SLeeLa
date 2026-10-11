@@ -1,3 +1,5 @@
+<img align="right" src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="75" height="75" alt="SLeeLa">
+
 # SLeeLa SQL — native C/C++ engine and SLeeLa model
 
 This package groups the SLeeLa model with the native C SQL engine and a C++17 RAII wrapper.
