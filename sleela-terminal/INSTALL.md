@@ -8,20 +8,22 @@ From the `sleela-terminal` directory:
 make
 ```
 
-The build produces both the shell and the dedicated graphical terminal:
+The default build is CLI-only and does not require GTK/VTE development packages:
 
 ```text
 build/slsh
-build/SleelaTerminal
+build/smoke
 ```
 
-The GUI uses GTK 4 and VTE. On Debian/Ubuntu systems, install the corresponding GTK 4 and VTE GTK 4 development packages before building the GUI.
+The GUI is optional and uses GTK 4 and VTE. On Debian/Ubuntu systems, install the corresponding GTK 4 and VTE GTK 4 development packages before building it.
 
 To build only the graphical terminal:
 
 ```sh
 make gui
 ```
+
+Run `make all-gui` is not required; the `gui` target builds the GUI only. `make test` runs the core smoke and M5 shell tests.
 
 ## Run the GUI
 
@@ -65,13 +67,19 @@ The default installation prefix is `/usr/local`:
 sudo make install
 ```
 
-This installs:
+This installs only the CLI shell:
 
 ```text
 /usr/local/bin/slsh
-/usr/local/bin/SleelaTerminal
-/usr/local/share/applications/SleelaTerminal.desktop
 ```
+
+To separately install the GUI executable and desktop entry, build and install the GUI explicitly:
+
+```sh
+make install-gui
+```
+
+For both CLI and GUI, run `make install-all`. Use `sudo` only when the chosen prefix requires elevated permissions.
 
 The desktop entry launches the GUI as a normal desktop application; it does not open another terminal emulator around SLeeLa.
 
@@ -111,7 +119,7 @@ For a user-local installation:
 make uninstall PREFIX="$HOME/.local"
 ```
 
-The uninstall target removes only the SLeeLa shell, GUI executable, and SLeeLa desktop entry installed by this Makefile.
+The uninstall target removes the SLeeLa shell, GUI executable, and SLeeLa desktop entry if installed by this Makefile.
 
 ## Clean
 
