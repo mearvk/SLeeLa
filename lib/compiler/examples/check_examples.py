@@ -10,7 +10,7 @@ import re
 import sys
 
 ROOT = Path(__file__).resolve().parent
-REPO = ROOT.parents[3]
+REPO = ROOT.parents[2]
 failures = []
 
 
