@@ -28,7 +28,7 @@ bool parse_modrm(const std::vector<std::uint8_t>& b,std::size_t p,std::size_t en
     if(mod==3){out.kind=Operand::Kind::Register;out.operand=reg_name(rm,wide64);return true;}
     out.kind=Operand::Kind::Memory;t<<"[";
     if(rm==4){
-        if(p+1>=end)return false; const auto sib=b[p+1],scale=1u<<(sib>>6),index=(sib>>3)&7,base_r=sib&7; n++;
+        if(p+1>=end)return false; const std::uint8_t sib=b[p+1]; const unsigned scale=1u<<(sib>>6),index=(sib>>3)&7u,base_r=sib&7u; n++;
         if(index!=4)t<<reg_name(index,wide64)<<"*"<<unsigned(scale);
         if(index!=4&&base_r!=5)t<<"+";
         if(mod==0&&base_r==5){
@@ -63,7 +63,7 @@ std::vector<Instruction> Decoder::decode(const Artifact& a,std::uint64_t address
         for(;p<end;++p){auto i=base(b,p,"db",0.25);i.operands.push_back({Operand::Kind::Immediate,hex(b[p]),b[p]});out.push_back(std::move(i));}return out;
     }
     while(p<end){
-        const auto start=p,op=b[p];Instruction i;std::size_t n=1;
+        const std::size_t start=p; const std::uint8_t op=b[p]; Instruction i; std::size_t n=1;
         if(op==0x90)i=base(b,p,"nop");
         else if(op>=0x50&&op<=0x5f){i=base(b,p,op<0x58?"push":"pop");i.operands.push_back({Operand::Kind::Register,reg_name(op&7,a.architecture()==Architecture::X86_64),0});}
         else if(op==0xc3){i=base(b,p,"ret");i.is_return=true;}
@@ -83,3 +83,4 @@ std::vector<Instruction> Decoder::decode(const Artifact& a,std::uint64_t address
     }
     return out;
 }
+} // namespace sleela::decompiler
