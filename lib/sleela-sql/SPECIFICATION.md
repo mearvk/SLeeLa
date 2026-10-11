@@ -13,6 +13,7 @@ Classic SQL and fluent SLeeLaSQL are front ends to one parser/compiler and one e
 | Operation | SQL syntax | Semantics |
 |---|---|---|
 | Create | `CREATE TABLE [IF NOT EXISTS] t (c1, c2, ...)` | Creates `t.csv` with a header; optional clause makes existing-table creation idempotent |
+| Alter | `ALTER TABLE t ADD [COLUMN] c [DEFAULT value]` | Rewrites table with a new column; existing rows receive the default or an empty string; duplicate names are rejected |
 | Drop | `DROP TABLE t`; `DROP TABLE IF EXISTS t` | Removes table file |
 | Insert | `INSERT INTO t VALUES (v1, ...)` | Appends one positional row |
 | Update | `UPDATE t SET c = v [, ...] [WHERE c = v]` | Rewrites matching rows; omitted WHERE updates all rows |
@@ -22,7 +23,7 @@ Classic SQL and fluent SLeeLaSQL are front ends to one parser/compiler and one e
 
 Fluent equivalents: `table('t').create(c1, c2)`, `from('t').drop()`, `from('t').drop(ifExists)`, `into('t').insert(v1, v2)`, `from('t').select(*)`, `from('t').select(count(*))`, `from('t').select(c1).where(c == v)`, and `tables()`.
 
-This is a subset. It is **not** MySQL/PostgreSQL/SQLite wire-protocol compatible. UPDATE and DELETE are currently SQL-dialect-only and support a single equality predicate; fluent equivalents, compound predicates, joins, general aggregate functions beyond `COUNT(*)`, indexes, schema types, constraints, subqueries, ordering, grouping, and explicit multi-statement transactions are not implemented.
+This is a subset. It is **not** MySQL/PostgreSQL/SQLite wire-protocol compatible. ALTER TABLE ADD COLUMN, UPDATE, and DELETE are currently SQL-dialect-only; UPDATE/DELETE support a single equality predicate. Compound predicates, joins, general aggregate functions beyond `COUNT(*)`, indexes, schema types, constraints, subqueries, ordering, grouping, and explicit multi-statement transactions are not implemented.
 
 ## 3. Prepared statements
 
@@ -34,11 +35,11 @@ This is a subset. It is **not** MySQL/PostgreSQL/SQLite wire-protocol compatible
 
 ## 4. Status codes
 
-`SSQL_OK`, `SSQL_ERR_IO`, `SSQL_ERR_SYNTAX`, `SSQL_ERR_NOTABLE`, `SSQL_ERR_EXISTS`, `SSQL_ERR_NOCOL`, `SSQL_ERR_ARITY`, `SSQL_ERR_ARG`, `SSQL_ERR_BIND`, `SSQL_ERR_OOM`.
+`SSQL_OK`, `SSQL_ERR_IO`, `SSQL_ERR_SYNTAX`, `SSQL_ERR_NOTABLE`, `SSQL_ERR_EXISTS`, `SSQL_ERR_NOCOL`, `SSQL_ERR_ARITY`, `SSQL_ERR_ARG`, `SSQL_ERR_BIND`, `SSQL_ERR_OOM`, `SSQL_ERR_DUPCOL`.
 
 ## 5. Bounds and persistence
 
-- Maximum 64 columns/values (`SSQL_MAX_COLS`).
+- Maximum 64 columns/values (`SSQL_MAX_COLS`); ALTER TABLE refuses to exceed this limit.
 - Field and directory buffers are bounded by `SSQL_MAX_FIELD = 512`.
 - Values are strings; there is no SQL type system or numeric coercion.
 - CSV is the persistence format, not an ACID database file format. UPDATE/DELETE write a temporary file and replace the table; this reduces partial-write risk but does not provide crash-recoverable transactions, durable multi-table commits, or concurrent-writer isolation.
