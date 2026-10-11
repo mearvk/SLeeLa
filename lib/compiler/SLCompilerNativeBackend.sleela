@@ -1,0 +1,48 @@
+/*
+ * Fail-closed native backend selection. C/C++ are generated outputs; SLeeLa
+ * remains the source-level contract and language semantics authority.
+ */
+#sleela 1.3
+class SLCompilerNativeBackend {
+  SLNativeSourceEmitter emitter;
+  SLCompilerToolchain toolchain;
+  String target;
+  String diagnostic;
+
+  void configure(SLCompilerToolchain selectedToolchain) {
+    toolchain = selectedToolchain;
+    emitter = new SLNativeSourceEmitter();
+    target = "";
+    diagnostic = "";
+  }
+
+  boolean selectTarget(String targetName, String specVersion) {
+    target = targetName;
+    emitter.configure(targetName, specVersion);
+    if (!emitter.validateTarget()) {
+      diagnostic = emitter.diagnostics();
+      return false;
+    }
+    if (toolchain == null) {
+      diagnostic = "toolchain is not configured";
+      return false;
+    }
+    if (target == "C" && !toolchain.readyForC()) {
+      diagnostic = "C compiler toolchain is not configured";
+      return false;
+    }
+    if (target == "CPP" && !toolchain.readyForCPP()) {
+      diagnostic = "C++ compiler toolchain is not configured";
+      return false;
+    }
+    return true;
+  }
+
+  boolean canBuildNative() {
+    return toolchain != null && toolchain.nativeBuildAllowed() &&
+      ((target == "C" && toolchain.readyForC()) ||
+       (target == "CPP" && toolchain.readyForCPP()));
+  }
+
+  String diagnostics() { return diagnostic; }
+}
