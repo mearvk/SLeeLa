@@ -38,16 +38,16 @@ bool write_native_source(const CompileResult&p,const std::filesystem::path&path,
    << "#define SL_PROGRAM_COUNT (sizeof(program)/sizeof(program[0]))\n"
    << "int main(void){int64_t stack[65536],locals[SL_LOCAL_COUNT]={0},ret=0;size_t sp=0,pc=0;for(;;){if(pc>=SL_PROGRAM_COUNT){fputs(\"program counter out of range\\n\",stderr);return 2;}sl_insn i=program[pc++];int64_t a,b,v;switch(i.op){"
    << "case 1:if(sp>=65536){fputs(\"stack overflow\\n\",stderr);return 2;}stack[sp++]=i.arg;break;"
-   << "case 2:if(i.arg<0||(uint64_t)i.arg>=SL_LOCAL_COUNT||sp>=65536)return 2;stack[sp++]=locals[i.arg];break;"
-   << "case 3:if(i.arg<0||(uint64_t)i.arg>=SL_LOCAL_COUNT||sp==0)return 2;locals[i.arg]=stack[--sp];break;"
-   << "case 4:case 5:case 6:case 7:if(sp<2)return 2;b=stack[--sp];a=stack[--sp];"
+   << "case 2:if(i.arg<0||(uint64_t)i.arg>=SL_LOCAL_COUNT){fputs(\"invalid local slot\\n\",stderr);return 2;}if(sp>=65536){fputs(\"stack overflow\\n\",stderr);return 2;}stack[sp++]=locals[i.arg];break;"
+   << "case 3:if(i.arg<0||(uint64_t)i.arg>=SL_LOCAL_COUNT){fputs(\"invalid local slot\\n\",stderr);return 2;}if(sp==0){fputs(\"stack underflow\\n\",stderr);return 2;}locals[i.arg]=stack[--sp];break;"
+   << "case 4:case 5:case 6:case 7:if(sp<2){fputs(\"stack underflow\\n\",stderr);return 2;}b=stack[--sp];a=stack[--sp];"
    << "if(i.op==4){if(!sl_add(a,b,&v)){fputs(\"integer overflow\\n\",stderr);return 2;}}"
    << "else if(i.op==5){if(!sl_sub(a,b,&v)){fputs(\"integer overflow\\n\",stderr);return 2;}}"
    << "else if(i.op==6){if(!sl_mul(a,b,&v)){fputs(\"integer overflow\\n\",stderr);return 2;}}"
    << "else{if(b==0){fputs(\"division by zero\\n\",stderr);return 2;}if(a==INT64_MIN&&b==-1){fputs(\"integer overflow\\n\",stderr);return 2;}v=a/b;}stack[sp++]=v;break;"
-   << "case 8:if(sp==0)return 2;if(stack[sp-1]==INT64_MIN){fputs(\"integer overflow\\n\",stderr);return 2;}stack[sp-1]=-stack[sp-1];break;"
-   << "case 9:if(sp==0)return 2;printf(\"%lld\\n\",(long long)stack[--sp]);break;"
-   << "case 10:if(sp==0)return 2;ret=stack[--sp];return (int)((uint64_t)ret&255u);"
+   << "case 8:if(sp==0){fputs(\"stack underflow\\n\",stderr);return 2;}if(stack[sp-1]==INT64_MIN){fputs(\"integer overflow\\n\",stderr);return 2;}stack[sp-1]=-stack[sp-1];break;"
+   << "case 9:if(sp==0){fputs(\"stack underflow\\n\",stderr);return 2;}printf(\"%lld\\n\",(long long)stack[--sp]);break;"
+   << "case 10:if(sp==0){fputs(\"stack underflow\\n\",stderr);return 2;}ret=stack[--sp];return (int)((uint64_t)ret&255u)"
    << "case 255:return (int)((uint64_t)ret&255u);default:fputs(\"invalid opcode\\n\",stderr);return 2;}}}\n";
  f.flush();if(!f){e="native source write failed: "+path.string();return false;}
  (void)cpp;return true;
