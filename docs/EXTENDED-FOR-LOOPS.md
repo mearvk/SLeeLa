@@ -1,8 +1,6 @@
 # Extended `for` Loops: Thread and VM-Heap Health
 
-Status: proposed syntax and runtime contract for SLeeLa syntax 1.11+
-
-This document specifies the four-term and five-term `for` loop forms. It is not a claim that the native compiler/runtime already implements these forms; parser, AST, semantic analysis, code generation, VM health probes, and regression tests must be updated together before the feature is considered supported.
+Status: parser, AST, semantic Boolean checks, and bytecode lowering are implemented on this feature branch. Runtime health signals remain supplied by the caller/VM host; the compiler does not fabricate thread or heap state. Regression builds and end-to-end tests are still required before merge.
 
 ## Compatibility
 
