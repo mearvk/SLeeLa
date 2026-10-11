@@ -61,7 +61,11 @@ class SLOSCreator {
     SLOSBuildReport report = new SLOSBuildReport();
     report.configure(m.identity());
 
-    if (!m.isBuildable()) {
+    // Gate: refuse to materialise the tree unless the model is buildable AND
+    // the related download URLs and the required pre-compile settings files are
+    // declared ready. This is the "have the URLs and config in place before we
+    // compile or convert the ISO" check.
+    if (!m.readyToCompile()) {
       report.fail();
       return report;
     }
@@ -73,8 +77,12 @@ class SLOSCreator {
     tree.configure(root);
     tree.layout(withDesktop);
 
-    // 2. Global config.
+    // 2. Global config + the resolved download URLs and the fetch script, so the
+    //    related downloads and OS settings are recorded before compile/ISO.
     tree.writeFile("/config/os.conf", toolchain.emitOsConf(m));
+    tree.writeFile("/config/downloads.conf", downloadsConf(m));
+    tree.writeFile("/config/config-manifest.conf", m.configSet().configManifest());
+    tree.writeFile("/fetch-downloads.sh", m.downloadSet().fetchScript(0));
 
     // 3. Pieces 1-7: C + C++ + config for each stage of the boot chain.
     writePiece(uefi.emit(m), report);
@@ -115,6 +123,15 @@ class SLOSCreator {
     report.record(sourceArtifact("/MANIFEST.md"));
 
     return report;
+  }
+
+  // The resolved download URLs for the model, as a conf header + the set's
+  // manifest ("<kind> <phase> <url>" lines from SLDownloadSet).
+  String downloadsConf(SLOSModel m) {
+    String s = "# downloads.conf - related download URLs for " + m.identity() + "\n";
+    s = s + "# resolved before compile / ISO; format: <kind> <phase> <url>\n";
+    s = s + m.downloadSet().downloadManifest() + "\n";
+    return s;
   }
 
   // plan() returns a human description of what create() would write, without

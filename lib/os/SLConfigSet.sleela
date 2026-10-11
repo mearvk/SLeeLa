@@ -1,0 +1,163 @@
+/*
+ * lib/os/SLConfigSet.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLConfigSet — the assorted and specific CONFIGURATION
+ *   FILES (the OS's settings) that must be present and correct BEFORE the OS is
+ *   compiled or the ISO is authored. The build does not just emit source: it
+ *   lays down settings — the global os.conf, the swap and filesystem settings,
+ *   the base-driver and foreign-exec policy, the service manifest, the kernel
+ *   command line, plus any developer-specified extra config file. This object
+ *   enumerates each required config file by its target path, format, and whether
+ *   it must exist before compile or before the final ISO conversion, so a tool
+ *   can confirm the settings are in place and refuse to proceed if they are not.
+ *
+ * It composes with the other layers (swap/filesystem/base-drivers/compat/
+ * services already know how to emit their own config text); SLConfigSet is the
+ * single checklist of which settings files the build expects and at which phase,
+ * and the gate the OS Creator consults before compile and before ISO.
+ *
+ * The entries are fixed, well-known slots plus a bounded number of developer
+ * extras (array-free, like the rest of the model).
+ *
+ * Family: os. Pure design model; the presence check crosses the osExists bridge
+ *   (requires #sleela 1.5).
+ */
+#sleela 1.11
+class SLConfigSet {
+  // Phase: when the config file must be present.
+  static final int PHASE_COMPILE = 0;
+  static final int PHASE_ISO     = 1;
+
+  // Well-known settings files: 1 if required, with their path/format fixed.
+  int wantOsConf;        // config/os.conf        (global settings)      compile
+  int wantSwap;          // config/swap.conf      (paging)               iso
+  int wantFilesystems;   // config/filesystems.txt(file-table choices)   compile
+  int wantBaseDrivers;   // kernel/base-drivers/base-drivers.conf        compile
+  int wantServices;      // userspace/os-loader/services.conf            iso
+  int wantCompat;        // userspace/compat-loader/compat.conf          iso
+  int wantCmdline;       // config/cmdline.conf   (kernel command line)  compile
+  int wantDownloads;     // config/downloads.conf (resolved URLs)        compile
+  // Up to four developer extras: each "path|format|phase".
+  String extra0; String extra1; String extra2; String extra3; int extraCount;
+  int configured;
+
+  void configure() {
+    wantOsConf = 1; wantSwap = 1; wantFilesystems = 1; wantBaseDrivers = 1;
+    wantServices = 1; wantCompat = 0; wantCmdline = 1; wantDownloads = 1;
+    extra0 = ""; extra1 = ""; extra2 = ""; extra3 = ""; extraCount = 0;
+    configured = 1;
+  }
+
+  // Seed from a model's shape/compat: a desktop/server always wants os.conf,
+  // swap, filesystems, base-drivers, services, cmdline, downloads; the compat
+  // config is wanted only when the model ships foreign-exec routes.
+  void forModel(boolean hasCompat) {
+    configure();
+    if (hasCompat) { wantCompat = 1; } else { wantCompat = 0; }
+  }
+
+  // Add a developer config file: target path, format ("conf"/"ini"/"json"/
+  // "yaml"/"xml"/"text"), and the phase it is needed. Up to four.
+  int addExtra(String path, String format, int phase) {
+    String ph = "compile";
+    if (phase == PHASE_ISO) { ph = "iso"; }
+    String rec = path + "|" + format + "|" + ph;
+    if (extraCount == 0) { extra0 = rec; }
+    else if (extraCount == 1) { extra1 = rec; }
+    else if (extraCount == 2) { extra2 = rec; }
+    else if (extraCount == 3) { extra3 = rec; }
+    else { return -1; }
+    extraCount = extraCount + 1;
+    return 0;
+  }
+
+  // ---- The checklist --------------------------------------------------
+  // A newline manifest "<path> <format> <phase> required|optional" of every
+  // settings file the build expects.
+  String configManifest() {
+    String m = "";
+    m = row(m, "config/os.conf", "conf", "compile", wantOsConf);
+    m = row(m, "config/cmdline.conf", "conf", "compile", wantCmdline);
+    m = row(m, "config/downloads.conf", "conf", "compile", wantDownloads);
+    m = row(m, "config/filesystems.txt", "text", "compile", wantFilesystems);
+    m = row(m, "kernel/base-drivers/base-drivers.conf", "conf", "compile", wantBaseDrivers);
+    m = row(m, "config/swap.conf", "conf", "iso", wantSwap);
+    m = row(m, "userspace/os-loader/services.conf", "conf", "iso", wantServices);
+    m = row(m, "userspace/compat-loader/compat.conf", "conf", "iso", wantCompat);
+    m = rowExtra(m, extra0);
+    m = rowExtra(m, extra1);
+    m = rowExtra(m, extra2);
+    m = rowExtra(m, extra3);
+    return m;
+  }
+  String row(String acc, String path, String fmt, String phase, int want) {
+    if (want != 1) { return acc; }
+    String l = path + " " + fmt + " " + phase + " required";
+    if (acc == "") { return l; }
+    return acc + "\n" + l;
+  }
+  String rowExtra(String acc, String rec) {
+    if (rec == "") { return acc; }
+    if (acc == "") { return rec; }
+    return acc + "\n" + rec;
+  }
+
+  // Count of required compile-phase / iso-phase settings files.
+  int compilePhaseCount() {
+    int n = 0;
+    if (wantOsConf == 1) { n = n + 1; }
+    if (wantCmdline == 1) { n = n + 1; }
+    if (wantDownloads == 1) { n = n + 1; }
+    if (wantFilesystems == 1) { n = n + 1; }
+    if (wantBaseDrivers == 1) { n = n + 1; }
+    return n;
+  }
+  int isoPhaseCount() {
+    int n = 0;
+    if (wantSwap == 1) { n = n + 1; }
+    if (wantServices == 1) { n = n + 1; }
+    if (wantCompat == 1) { n = n + 1; }
+    return n;
+  }
+
+  // ---- Phase gates ----------------------------------------------------
+  // Before COMPILE: the irreducible settings — a global os.conf, the kernel
+  // command line, the filesystem choice, and the base-driver policy — must be
+  // declared wanted. Before ISO: additionally the service manifest.
+  boolean readyForCompile() {
+    if (configured != 1) { return false; }
+    return wantOsConf == 1 && wantCmdline == 1 && wantFilesystems == 1 && wantBaseDrivers == 1;
+  }
+  boolean readyForIso() {
+    if (!readyForCompile()) { return false; }
+    return wantServices == 1;
+  }
+
+  // ---- Presence check (host) ------------------------------------------
+  // allPresent(root): are the required compile-phase settings files actually on
+  // disk under `root`? A pre-flight the Creator runs before compiling. Returns 1
+  // if every required compile file exists, else 0 (missing one is honest, not
+  // faked). Only checks the well-known fixed slots (extras are developer-owned).
+  int compileFilesPresent(String root) {
+    if (wantOsConf == 1       && osExists(root + "/config/os.conf") != 1) { return 0; }
+    if (wantCmdline == 1      && osExists(root + "/config/cmdline.conf") != 1) { return 0; }
+    if (wantFilesystems == 1  && osExists(root + "/config/filesystems.txt") != 1) { return 0; }
+    if (wantBaseDrivers == 1  && osExists(root + "/kernel/base-drivers/base-drivers.conf") != 1) { return 0; }
+    return 1;
+  }
+
+  // ---- Default content for the global settings file -------------------
+  // os.conf aggregates the top-level knobs; the per-layer files are emitted by
+  // their own layers. This gives the build one authoritative settings header.
+  String emitOsConf(String osName, String osVersion, String shape, String arch) {
+    String s = "# os.conf - global OS settings (generated by SLeeLa lib/os)\n";
+    s = s + "name = " + osName + "\n";
+    s = s + "version = " + osVersion + "\n";
+    s = s + "shape = " + shape + "\n";
+    s = s + "arch = " + arch + "\n";
+    s = s + "# per-layer settings live in: config/swap.conf, config/filesystems.txt,\n";
+    s = s + "# kernel/base-drivers/base-drivers.conf, userspace/os-loader/services.conf,\n";
+    s = s + "# userspace/compat-loader/compat.conf, config/downloads.conf\n";
+    return s;
+  }
+}

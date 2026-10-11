@@ -872,3 +872,76 @@ Creator schema version** (`maxSupportedSchema()` = `1.0.0`). A source with no
 Full structural XSD validation of an exported Creator document is done by
 tooling/CI against the same XSD; the compiler guarantees reference integrity and
 version compatibility at build time.
+
+---
+
+# Downloads and settings — resolved before compile / ISO
+
+Before an OS is compiled or the ISO is authored, the build needs two things in
+hand: **the URLs for its related downloads**, and **the specific configuration
+files (its settings)**. Two layers capture these and gate the build.
+
+## Related download URLs — `SLDownloadSet`
+
+The external sources a build pulls from, each a kind + URL + a phase (needed
+before **compile** or before the final **ISO** conversion):
+
+| Kind | Phase | Linux default |
+|---|---|---|
+| package-repo | compile | `http://archive.ubuntu.com/ubuntu` |
+| kernel-src | compile | `https://cdn.kernel.org/pub/linux/kernel` |
+| upstream (distro) | compile | `…/Ubuntu.Determinant.Beta.Restricted.git` |
+| firmware-src | iso | `…/linux-firmware.git` |
+| runtime-wine | iso | `https://dl.winehq.org/wine-builds` |
+| runtime-qemu | iso | `https://www.qemu.org/download` |
+
+`forShape()` seeds the family defaults; `setPackageRepo()`/`setKernelSrc()`/…
+and `addExtra(kind,url,phase)` override/extend. `readyForCompile()` requires a
+package repo + kernel source; `readyForIso()` additionally requires the firmware
+source. `downloadManifest()` lists every URL; `fetchScript(phase)` emits a
+phase-aware fetch (git clone for repos, curl for payloads) — an explicit,
+opt-in step, never run during compile.
+
+## Configuration files (OS settings) — `SLConfigSet`
+
+The settings checklist: which config files must be present, their path/format,
+and the phase they are needed:
+
+| File | Phase |
+|---|---|
+| `config/os.conf` (global), `config/cmdline.conf` (kernel cmdline) | compile |
+| `config/downloads.conf` (resolved URLs), `config/filesystems.txt` | compile |
+| `kernel/base-drivers/base-drivers.conf` | compile |
+| `config/swap.conf`, `userspace/os-loader/services.conf` | iso |
+| `userspace/compat-loader/compat.conf` (when compat is shipped) | iso |
+
+`forModel(hasCompat)` seeds the checklist; `addExtra(path,format,phase)` adds a
+developer settings file; `readyForCompile()`/`readyForIso()` are the phase
+gates; `compileFilesPresent(root)` checks the required files are actually on
+disk (over the `osExists` bridge). `emitOsConf(...)` writes the global header.
+
+## The build gate
+
+`SLOSModel` composes both (`downloadSet()`, `configSet()`), seeded by `shapeAs`,
+and exposes the combined readiness gates:
+
+```sleela
+os.readyToCompile();   // isBuildable() AND downloads+settings ready for compile
+os.readyForIso();      // readyToCompile() AND iso-phase downloads+settings ready
+```
+
+**`SLOSCreator.create()` now refuses unless `readyToCompile()` holds** — it will
+not emit/compile a tree whose download URLs or required settings are missing —
+and it writes `config/downloads.conf`, `config/config-manifest.conf`, and
+`fetch-downloads.sh` alongside `config/os.conf`. The runnable
+`os-generate.sleela` emits the same into its tree:
+
+```text
+<OS_OUT>/config/os.conf          # global settings (+ kernel version)
+<OS_OUT>/config/cmdline.conf     # kernel command line
+<OS_OUT>/config/downloads.conf   # every related download URL, by phase
+<OS_OUT>/fetch-downloads.sh      # opt-in fetch of the compile/iso sources
+```
+
+So the final `gen-iso.sh` / compile step runs only once the URLs are resolved
+and the OS settings are laid down.

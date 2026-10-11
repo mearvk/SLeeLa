@@ -44,6 +44,8 @@ class SLOSModel {
   SLServiceSet services;
   SLDesktopSpec desktop;
   SLCompatSet compat;      // foreign-OS execution capability (optional layer)
+  SLDownloadSet downloads; // URLs for related downloads (pre-compile / pre-ISO)
+  SLConfigSet configFiles; // the settings files that must be present pre-build
   int configured;
 
   // Begin a model with a product name and version. Layers are created empty;
@@ -63,6 +65,8 @@ class SLOSModel {
     services = new SLServiceSet();
     desktop = new SLDesktopSpec();
     compat = new SLCompatSet();
+    downloads = new SLDownloadSet();
+    configFiles = new SLConfigSet();
     configured = 1;
   }
 
@@ -86,6 +90,8 @@ class SLOSModel {
     services.forShape(shape);
     desktop.forShape(shape);
     compat.forShape(shape);   // seed the family's foreign-exec defaults
+    downloads.forShape(shape); // seed the family's download URLs
+    configFiles.forModel(compat.hasAny());  // seed the settings checklist
   }
 
   // Mark this as a server edition: drop the desktop layer.
@@ -108,6 +114,8 @@ class SLOSModel {
   SLServiceSet serviceSet()      { return services; }
   SLDesktopSpec desktopSpec()    { return desktop; }
   SLCompatSet compatSet()        { return compat; }
+  SLDownloadSet downloadSet()    { return downloads; }
+  SLConfigSet configSet()        { return configFiles; }
 
   String name()    { return osName; }
   String osVersion() { return version; }
@@ -124,6 +132,25 @@ class SLOSModel {
     if (!filesystem.isComplete()) { return false; }
     if (packages.isEmpty()) { return false; }
     if (!services.hasServices()) { return false; }
+    return true;
+  }
+
+  // ---- Pre-build readiness: downloads + settings in place -----------------
+  // Before the OS is COMPILED, the model must be buildable AND the related
+  // download URLs and the required settings files for the compile phase must be
+  // declared. This is the gate the OS Creator checks before emitting/compiling.
+  boolean readyToCompile() {
+    if (!isBuildable()) { return false; }
+    if (!downloads.readyForCompile()) { return false; }
+    if (!configFiles.readyForCompile()) { return false; }
+    return true;
+  }
+  // Before the final ISO conversion, additionally the ISO-phase downloads
+  // (firmware, runtime payloads) and settings (services, swap) must be ready.
+  boolean readyForIso() {
+    if (!readyToCompile()) { return false; }
+    if (!downloads.readyForIso()) { return false; }
+    if (!configFiles.readyForIso()) { return false; }
     return true;
   }
 

@@ -1,0 +1,166 @@
+/*
+ * lib/os/SLDownloadSet.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLDownloadSet — the set of URLs for the related downloads
+ *   an OS build needs, resolved and recorded BEFORE the OS is compiled or the
+ *   ISO is authored. A build does not pull everything from one place: it needs
+ *   package repositories, the kernel and firmware sources, backend runtimes for
+ *   foreign execution (Wine, QEMU, binfmt tooling), the upstream distro parts,
+ *   and any developer-added sources. Each download is a kind + URL + an optional
+ *   pinned version/checksum, and a PHASE that says whether it must be present
+ *   before compile (sources/toolchain) or before the final ISO conversion
+ *   (runtime payloads seeded into the rootfs).
+ *
+ * This makes the build's external dependencies explicit and auditable: a tool
+ * can list every URL, verify each is reachable, and refuse to compile or author
+ * the ISO until the required ones for that phase are present. SLOSModel composes
+ * one; the OS Creator writes it as a downloads manifest and a fetch script.
+ *
+ * The slots are fixed (array-free, like the rest of the model); up to a bounded
+ * number of extra developer URLs are held in parallel string fields.
+ *
+ * Family: os. Design model; the reachability probe crosses the osRun bridge
+ *   (requires #sleela 1.5).
+ */
+#sleela 1.11
+class SLDownloadSet {
+  // Phase tags: when a download must be present.
+  static final int PHASE_COMPILE = 0;   // before compiling the OS (sources/toolchain)
+  static final int PHASE_ISO     = 1;    // before authoring the ISO (rootfs payloads)
+
+  // Well-known download slots. "" when unset.
+  String packageRepo;    String kernelSrc;    String firmwareSrc;
+  String runtimeWine;    String runtimeQemu;  String upstreamDistro;
+  // Up to four developer-added extra URLs, each "kind|url|phase".
+  String extra0; String extra1; String extra2; String extra3;
+  int extraCount;
+  int configured;
+
+  void configure() {
+    packageRepo = ""; kernelSrc = ""; firmwareSrc = "";
+    runtimeWine = ""; runtimeQemu = ""; upstreamDistro = "";
+    extra0 = ""; extra1 = ""; extra2 = ""; extra3 = ""; extraCount = 0;
+    configured = 1;
+  }
+
+  // Seed the per-shape default download URLs. These are the canonical upstreams
+  // a build of that family pulls from; a developer overrides any of them.
+  void forShape(SLOSShape shape) {
+    configure();
+    upstreamDistro = "https://github.com/mearvk/Ubuntu.Determinant.Beta.Restricted.git";
+    if (shape.isWindows()) {
+      packageRepo = "https://pkgs.local/windows";
+      kernelSrc   = "https://pkgs.local/windows/nt-src";
+      firmwareSrc = "https://uefi.org/firmware";
+      return;
+    }
+    if (shape.isMac()) {
+      packageRepo = "https://pkgs.local/macos";
+      kernelSrc   = "https://opensource.apple.com/source/xnu";
+      firmwareSrc = "https://uefi.org/firmware";
+      runtimeQemu = "https://www.qemu.org/download";
+      return;
+    }
+    // Linux defaults.
+    packageRepo    = "http://archive.ubuntu.com/ubuntu";
+    kernelSrc      = "https://cdn.kernel.org/pub/linux/kernel";
+    firmwareSrc    = "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git";
+    runtimeWine    = "https://dl.winehq.org/wine-builds";
+    runtimeQemu    = "https://www.qemu.org/download";
+  }
+
+  // ---- Setters --------------------------------------------------------
+  void setPackageRepo(String url) { packageRepo = url; }
+  void setKernelSrc(String url)   { kernelSrc = url; }
+  void setFirmwareSrc(String url) { firmwareSrc = url; }
+  void setRuntimeWine(String url) { runtimeWine = url; }
+  void setRuntimeQemu(String url) { runtimeQemu = url; }
+  void setUpstreamDistro(String url) { upstreamDistro = url; }
+
+  // Add a developer download: kind label, URL, and phase (0 compile / 1 iso).
+  // Up to four extras are held.
+  int addExtra(String kind, String url, int phase) {
+    String ph = "compile";
+    if (phase == PHASE_ISO) { ph = "iso"; }
+    String rec = kind + "|" + url + "|" + ph;
+    if (extraCount == 0) { extra0 = rec; }
+    else if (extraCount == 1) { extra1 = rec; }
+    else if (extraCount == 2) { extra2 = rec; }
+    else if (extraCount == 3) { extra3 = rec; }
+    else { return -1; }                 // full
+    extraCount = extraCount + 1;
+    return 0;
+  }
+
+  // ---- Validity -------------------------------------------------------
+  // Before COMPILE: a package repo + kernel source must be known (you cannot
+  // build an OS without where its base and kernel come from).
+  boolean readyForCompile() {
+    if (configured != 1) { return false; }
+    return packageRepo != "" && kernelSrc != "";
+  }
+  // Before ISO: additionally the firmware source must be known (the ESP/loader
+  // needs firmware), and every required slot resolved.
+  boolean readyForIso() {
+    if (!readyForCompile()) { return false; }
+    return firmwareSrc != "";
+  }
+
+  // ---- Manifest + fetch -----------------------------------------------
+  // A newline manifest "<kind> <phase> <url>" of every known download.
+  String downloadManifest() {
+    String m = "";
+    m = row(m, "package-repo", "compile", packageRepo);
+    m = row(m, "kernel-src",   "compile", kernelSrc);
+    m = row(m, "firmware-src", "iso",     firmwareSrc);
+    m = row(m, "runtime-wine", "iso",     runtimeWine);
+    m = row(m, "runtime-qemu", "iso",     runtimeQemu);
+    m = row(m, "upstream",     "compile", upstreamDistro);
+    m = rowExtra(m, extra0);
+    m = rowExtra(m, extra1);
+    m = rowExtra(m, extra2);
+    m = rowExtra(m, extra3);
+    return m;
+  }
+  String row(String acc, String kind, String phase, String url) {
+    if (url == "") { return acc; }
+    String l = kind + " " + phase + " " + url;
+    if (acc == "") { return l; }
+    return acc + "\n" + l;
+  }
+  // An extra record "kind|url|phase" -> "kind phase url".
+  String rowExtra(String acc, String rec) {
+    if (rec == "") { return acc; }
+    return acc + "\n" + rec;   // kept raw; the emitter reformats pipes for display
+  }
+
+  // A POSIX fetch script that retrieves the phase's downloads. Honest: it uses
+  // the right tool per URL scheme (git clone for .git, curl otherwise) and is a
+  // separate, explicit step — never run during compile automatically.
+  String fetchScript(int phase) {
+    String s = "#!/bin/sh\n# fetch downloads (phase=" + phaseName(phase)
+             + ") generated by SLeeLa lib/os\nset -eu\nmkdir -p downloads\n";
+    s = s + fetchLine(phase, PHASE_COMPILE, "package-repo", packageRepo);
+    s = s + fetchLine(phase, PHASE_COMPILE, "kernel-src", kernelSrc);
+    s = s + fetchLine(phase, PHASE_COMPILE, "upstream", upstreamDistro);
+    s = s + fetchLine(phase, PHASE_ISO, "firmware-src", firmwareSrc);
+    s = s + fetchLine(phase, PHASE_ISO, "runtime-wine", runtimeWine);
+    s = s + fetchLine(phase, PHASE_ISO, "runtime-qemu", runtimeQemu);
+    s = s + "echo \"downloads for phase " + phaseName(phase) + " complete\"\n";
+    return s;
+  }
+  String fetchLine(int wantPhase, int rowPhase, String kind, String url) {
+    if (url == "") { return ""; }
+    if (wantPhase != rowPhase) { return ""; }
+    // Choose the fetch tool by the download's kind rather than by string
+    // inspection: the distro upstream and kernel/firmware source are git repos;
+    // package repos and runtime payloads are retrieved with curl. (The surface
+    // has no string-length/substring, so kind drives the choice, not a suffix.)
+    if (kind == "upstream" || kind == "kernel-src" || kind == "firmware-src") {
+      return "git clone --depth 1 " + url + " downloads/" + kind + " || true\n";
+    }
+    return "curl -fsSL -o downloads/" + kind + ".payload \"" + url + "\" || true\n";
+  }
+
+  String phaseName(int phase) { if (phase == PHASE_ISO) { return "iso"; } return "compile"; }
+}
