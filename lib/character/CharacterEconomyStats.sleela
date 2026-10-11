@@ -1,0 +1,25 @@
+#sleela 1.10
+/*
+ * CharacterEconomyStats.sleela
+ * SLeeLa CharacterStats component: carrying, inventory, currency, and reputation.
+ *
+ * This focused value class separates one coherent group of CharacterStats
+ * fields for reuse by games, simulations, and interactive fiction. Values and
+ * scales are defined by the consuming game's ruleset; no universal caps are
+ * assumed unless explicitly enforced by a method.
+ */
+class CharacterEconomyStats {
+    int carryCapacity;
+    int carriedWeight;
+    int inventoryCapacity;
+    int equipmentSlots;
+    int gold;
+    int silver;
+    int copper;
+    int reputation;
+    int notoriety;
+    int factionStanding;
+
+    int isOverburdened() { return carriedWeight > carryCapacity; }
+    int hasCurrency() { return gold > 0 || silver > 0 || copper > 0; }
+}
