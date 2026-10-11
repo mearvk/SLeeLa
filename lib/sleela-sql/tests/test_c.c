@@ -8,6 +8,19 @@ int main(int argc, char **argv) {
     if (ssql_exec(&db, "CREATE TABLE items (id, name)", NULL) != SSQL_OK) return 4;
     if (ssql_exec(&db, "INSERT INTO items VALUES (1, 'alpha')", NULL) != SSQL_OK) return 5;
     if (ssql_exec(&db, "CREATE TABLE IF NOT EXISTS items (id, name)", NULL) != SSQL_OK) return 10;
+    if (ssql_exec(&db, "ALTER TABLE items ADD COLUMN category DEFAULT 'general'", NULL) != SSQL_OK) return 19;
+    if (ssql_exec(&db, "ALTER TABLE items ADD COLUMN category", NULL) != SSQL_ERR_DUPCOL) return 20;
+    out = tmpfile();
+    if (!out) return 21;
+    status = ssql_exec(&db, "SELECT category FROM items WHERE id = 1", out);
+    rewind(out);
+    char alter_header[128], alter_value[128];
+    int alter_ok = status == SSQL_OK &&
+                   fgets(alter_header, sizeof alter_header, out) != NULL &&
+                   fgets(alter_value, sizeof alter_value, out) != NULL &&
+                   strcmp(alter_value, "general\n") == 0;
+    fclose(out);
+    if (!alter_ok) return 22;
     if (ssql_exec(&db, "CREATE TABLE ../escape (x)", NULL) != SSQL_ERR_SYNTAX) return 9;
     FILE *out = tmpfile();
     if (!out) return 6;
