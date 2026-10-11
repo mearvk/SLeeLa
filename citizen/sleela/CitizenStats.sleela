@@ -1,0 +1,648 @@
+#sleela 1.10
+/*
+ * CitizenStats.sleela
+ * Broad civic, personal, economic, health, education, household, and
+ * community-statistics model for SLeeLa citizen simulations.
+ *
+ * Scores and rates use game-defined scales unless the field name specifies
+ * a unit. Monetary amounts are integer minor units (for example, cents).
+ * Keep personal identity data separate from public aggregate statistics.
+ */
+class CitizenStats {
+    // Identity and demographic profile
+    string citizenId;
+    string legalName;
+    string preferredName;
+    string householdId;
+    string familyId;
+    string citizenshipCode;
+    string residencyCode;
+    string birthPlace;
+    string currentAddress;
+    string postalCode;
+    string municipality;
+    string region;
+    string countryCode;
+    string primaryLanguage;
+    int ageYears;
+    int ageMonths;
+    int birthYear;
+    int birthMonth;
+    int birthDay;
+    int lifeExpectancyYears;
+    int householdSize;
+    int dependents;
+    int isAlive;
+    int isResident;
+    int isCitizen;
+    int isRegisteredVoter;
+    int isEmancipated;
+    int hasDisability;
+    int accessibilityNeeds;
+
+    // Physical health and daily wellbeing (game-defined scales)
+    int healthScore;
+    int maxHealthScore;
+    int fitness;
+    int mobility;
+    int vision;
+    int hearing;
+    int speech;
+    int nutrition;
+    int hydration;
+    int sleepQuality;
+    int stressLevel;
+    int mentalWellbeing;
+    int physicalWellbeing;
+    int chronicConditionCount;
+    int acuteConditionSeverity;
+    int injurySeverity;
+    int infectionRisk;
+    int vaccinationStatus;
+    int healthcareAccess;
+    int healthInsuranceCoverage;
+    int medicationAdherence;
+    int substanceRisk;
+    int disabilitySupportLevel;
+
+    // Personality, abilities, and personal capabilities
+    int INT;   // Intelligence and learning
+    int CON;   // Constitution and resilience
+    int WIS;   // Judgment and awareness
+    int CHA;   // Communication and social presence
+    int STR;   // Physical strength
+    int DEX;   // Coordination and dexterity
+    int EMP;   // Empathy
+    int WILL;  // Willpower
+    int LCK;   // Luck or favorable circumstance
+    int creativity;
+    int adaptability;
+    int reliability;
+    int conscientiousness;
+    int curiosity;
+    int patience;
+    int emotionalStability;
+    int conflictResolution;
+    int civicMindedness;
+    int trustworthiness;
+    int riskTolerance;
+    int leadership;
+    int teamwork;
+    int communication;
+    int negotiation;
+    int problemSolving;
+
+    // Education and knowledge
+    int educationLevel;
+    int yearsOfEducation;
+    int literacy;
+    int numeracy;
+    int digitalLiteracy;
+    int financialLiteracy;
+    int civicLiteracy;
+    int scientificLiteracy;
+    int highestQualification;
+    int schoolAttendanceRate;
+    int academicPerformance;
+    int vocationalTraining;
+    int apprenticeshipProgress;
+    int certifications;
+    int skillsCount;
+    int languagesSpoken;
+    int readingProficiency;
+    int writingProficiency;
+    int mathematicsProficiency;
+    int researchSkill;
+    int teachingSkill;
+    int lifelongLearning;
+    int educationDebtCents;
+
+    // Employment, work, and professional life
+    string employerId;
+    string occupationCode;
+    string industryCode;
+    string employmentStatus;
+    int employed;
+    int selfEmployed;
+    int seekingWork;
+    int workExperienceYears;
+    int tenureMonths;
+    int hoursWorkedPerWeek;
+    int contractedHoursPerWeek;
+    int productivity;
+    int workQuality;
+    int attendanceReliability;
+    int jobSatisfaction;
+    int careerProgress;
+    int leadershipAtWork;
+    int workplaceSafety;
+    int remoteWorkCapability;
+    int unionMembership;
+    int unemploymentMonths;
+    long grossIncomeCentsPerMonth;
+    long netIncomeCentsPerMonth;
+    long annualIncomeCents;
+    long benefitsValueCentsPerMonth;
+    long pensionContributionCentsPerMonth;
+    int incomeStability;
+    int jobSecurity;
+    int workLifeBalance;
+
+    // Personal finance and economic resilience
+    long cashBalanceCents;
+    long bankBalanceCents;
+    long savingsCents;
+    long investmentValueCents;
+    long debtBalanceCents;
+    long monthlyDebtPaymentCents;
+    long monthlyExpensesCents;
+    long monthlyHousingCostCents;
+    long monthlyFoodCostCents;
+    long monthlyTransportCostCents;
+    long monthlyHealthcareCostCents;
+    long monthlyUtilityCostCents;
+    long creditLimitCents;
+    int creditScore;
+    int financialStress;
+    int emergencyFundMonths;
+    int povertyRisk;
+    int foodSecurity;
+    int economicResilience;
+    int taxCompliance;
+    int taxBracket;
+    int taxRateBasisPoints;
+    int receivesPublicBenefits;
+    long publicBenefitsCentsPerMonth;
+    int pensionEligibility;
+    int retirementReadiness;
+    int financialDependents;
+
+    // Housing, utilities, and household services
+    string housingType;
+    string tenureType;
+    int housingQuality;
+    int housingSecurity;
+    int roomsInHome;
+    int peoplePerRoom;
+    int overcrowdingRisk;
+    int homelessnessRisk;
+    int waterAccess;
+    int sanitationAccess;
+    int electricityAccess;
+    int heatingAccess;
+    int coolingAccess;
+    int internetAccess;
+    int phoneAccess;
+    int wasteCollectionAccess;
+    int publicTransportAccess;
+    int distanceToHealthcare;
+    int distanceToSchool;
+    int neighborhoodSafety;
+    int neighborhoodQuality;
+    int environmentalQuality;
+    int householdEnergyUse;
+    int householdWaterUse;
+    int housingAssistance;
+
+    // Community, relationships, and civic participation
+    int socialConnection;
+    int familySupport;
+    int friendNetworkSize;
+    int communityBelonging;
+    int socialTrust;
+    int institutionalTrust;
+    int volunteerHoursPerMonth;
+    int communityServiceHours;
+    int civicParticipation;
+    int votingParticipation;
+    int publicMeetingParticipation;
+    int localOrganizationMemberships;
+    int charitableGivingCentsPerYear;
+    int neighborliness;
+    int socialIsolationRisk;
+    int discriminationExposure;
+    int inclusionAccess;
+    int culturalParticipation;
+    int recreationHoursPerWeek;
+    int libraryUse;
+    int publicServiceSatisfaction;
+    int communityContribution;
+
+    // Legal and administrative standing
+    string civilStatus;
+    string residencyStatus;
+    string voterRegistrationStatus;
+    string taxAccountId;
+    int identityVerified;
+    int addressVerified;
+    int permitsHeld;
+    int licensesHeld;
+    int legalCaseCount;
+    int unresolvedLegalCases;
+    int fineBalanceCents;
+    int complianceScore;
+    int civicObligationsComplete;
+    int juryServiceEligible;
+    int juryServiceCompleted;
+    int publicRecordsConsent;
+    int privacyPreferenceLevel;
+
+    // Mobility, transport, and environmental impact
+    string primaryTransportMode;
+    int hasDrivingLicense;
+    int hasVehicle;
+    int commuteMinutes;
+    int commuteDistanceMeters;
+    int walkingAbility;
+    int cyclingAbility;
+    int transitUseDaysPerWeek;
+    int transportReliability;
+    int mobilityAccess;
+    int travelIndependence;
+    int estimatedCarbonKgPerMonth;
+    int energyConservation;
+    int recyclingParticipation;
+    int environmentalStewardship;
+
+    // Digital access and safety
+    int deviceAccess;
+    int computerAccess;
+    int broadbandQuality;
+    int onlineServiceUse;
+    int cybersecurityAwareness;
+    int digitalPrivacyAwareness;
+    int accessibilityTechnologyAccess;
+    int digitalSkills;
+    int digitalExclusionRisk;
+    int telehealthCapability;
+
+    // Life stage, goals, and personal status
+    int lifeSatisfaction;
+    int happiness;
+    int morale;
+    int motivation;
+    int futureOutlook;
+    int personalGoalProgress;
+    int retirementStatus;
+    int caregiverStatus;
+    int parentingStatus;
+    int studentStatus;
+    int veteranStatus;
+    int newcomerStatus;
+    int displacedStatus;
+    int disasterExposure;
+    int emergencyPreparedness;
+    int resilienceAfterCrisis;
+    int lastSurveyYear;
+    int dataCompleteness;
+    int dataConfidence;
+
+    // Schema and rules metadata
+    int schemaVersion;
+    int rulesetId;
+
+    CitizenStats() {
+        citizenId = "";
+        legalName = "";
+        preferredName = "";
+        householdId = "";
+        familyId = "";
+        citizenshipCode = "";
+        residencyCode = "";
+        birthPlace = "";
+        currentAddress = "";
+        postalCode = "";
+        municipality = "";
+        region = "";
+        countryCode = "";
+        primaryLanguage = "";
+        ageYears = 0;
+        ageMonths = 0;
+        birthYear = 0;
+        birthMonth = 0;
+        birthDay = 0;
+        lifeExpectancyYears = 80;
+        householdSize = 1;
+        dependents = 0;
+        isAlive = 1;
+        isResident = 1;
+        isCitizen = 0;
+        isRegisteredVoter = 0;
+        isEmancipated = 0;
+        hasDisability = 0;
+        accessibilityNeeds = 0;
+
+        healthScore = 100;
+        maxHealthScore = 100;
+        fitness = 50;
+        mobility = 100;
+        vision = 100;
+        hearing = 100;
+        speech = 100;
+        nutrition = 100;
+        hydration = 100;
+        sleepQuality = 100;
+        stressLevel = 0;
+        mentalWellbeing = 100;
+        physicalWellbeing = 100;
+        chronicConditionCount = 0;
+        acuteConditionSeverity = 0;
+        injurySeverity = 0;
+        infectionRisk = 0;
+        vaccinationStatus = 0;
+        healthcareAccess = 0;
+        healthInsuranceCoverage = 0;
+        medicationAdherence = 100;
+        substanceRisk = 0;
+        disabilitySupportLevel = 0;
+
+        INT = 10;
+        CON = 10;
+        WIS = 10;
+        CHA = 10;
+        STR = 10;
+        DEX = 10;
+        EMP = 10;
+        WILL = 10;
+        LCK = 10;
+        creativity = 50;
+        adaptability = 50;
+        reliability = 50;
+        conscientiousness = 50;
+        curiosity = 50;
+        patience = 50;
+        emotionalStability = 50;
+        conflictResolution = 50;
+        civicMindedness = 50;
+        trustworthiness = 50;
+        riskTolerance = 50;
+        leadership = 50;
+        teamwork = 50;
+        communication = 50;
+        negotiation = 50;
+        problemSolving = 50;
+
+        educationLevel = 0;
+        yearsOfEducation = 0;
+        literacy = 0;
+        numeracy = 0;
+        digitalLiteracy = 0;
+        financialLiteracy = 0;
+        civicLiteracy = 0;
+        scientificLiteracy = 0;
+        highestQualification = 0;
+        schoolAttendanceRate = 0;
+        academicPerformance = 0;
+        vocationalTraining = 0;
+        apprenticeshipProgress = 0;
+        certifications = 0;
+        skillsCount = 0;
+        languagesSpoken = 1;
+        readingProficiency = 0;
+        writingProficiency = 0;
+        mathematicsProficiency = 0;
+        researchSkill = 0;
+        teachingSkill = 0;
+        lifelongLearning = 0;
+        educationDebtCents = 0;
+
+        employerId = "";
+        occupationCode = "";
+        industryCode = "";
+        employmentStatus = "not-employed";
+        employed = 0;
+        selfEmployed = 0;
+        seekingWork = 0;
+        workExperienceYears = 0;
+        tenureMonths = 0;
+        hoursWorkedPerWeek = 0;
+        contractedHoursPerWeek = 0;
+        productivity = 0;
+        workQuality = 0;
+        attendanceReliability = 0;
+        jobSatisfaction = 0;
+        careerProgress = 0;
+        leadershipAtWork = 0;
+        workplaceSafety = 0;
+        remoteWorkCapability = 0;
+        unionMembership = 0;
+        unemploymentMonths = 0;
+        grossIncomeCentsPerMonth = 0;
+        netIncomeCentsPerMonth = 0;
+        annualIncomeCents = 0;
+        benefitsValueCentsPerMonth = 0;
+        pensionContributionCentsPerMonth = 0;
+        incomeStability = 0;
+        jobSecurity = 0;
+        workLifeBalance = 50;
+
+        cashBalanceCents = 0;
+        bankBalanceCents = 0;
+        savingsCents = 0;
+        investmentValueCents = 0;
+        debtBalanceCents = 0;
+        monthlyDebtPaymentCents = 0;
+        monthlyExpensesCents = 0;
+        monthlyHousingCostCents = 0;
+        monthlyFoodCostCents = 0;
+        monthlyTransportCostCents = 0;
+        monthlyHealthcareCostCents = 0;
+        monthlyUtilityCostCents = 0;
+        creditLimitCents = 0;
+        creditScore = 0;
+        financialStress = 0;
+        emergencyFundMonths = 0;
+        povertyRisk = 0;
+        foodSecurity = 100;
+        economicResilience = 0;
+        taxCompliance = 100;
+        taxBracket = 0;
+        taxRateBasisPoints = 0;
+        receivesPublicBenefits = 0;
+        publicBenefitsCentsPerMonth = 0;
+        pensionEligibility = 0;
+        retirementReadiness = 0;
+        financialDependents = 0;
+
+        housingType = "unknown";
+        tenureType = "unknown";
+        housingQuality = 0;
+        housingSecurity = 0;
+        roomsInHome = 0;
+        peoplePerRoom = 0;
+        overcrowdingRisk = 0;
+        homelessnessRisk = 0;
+        waterAccess = 0;
+        sanitationAccess = 0;
+        electricityAccess = 0;
+        heatingAccess = 0;
+        coolingAccess = 0;
+        internetAccess = 0;
+        phoneAccess = 0;
+        wasteCollectionAccess = 0;
+        publicTransportAccess = 0;
+        distanceToHealthcare = 0;
+        distanceToSchool = 0;
+        neighborhoodSafety = 0;
+        neighborhoodQuality = 0;
+        environmentalQuality = 0;
+        householdEnergyUse = 0;
+        householdWaterUse = 0;
+        housingAssistance = 0;
+
+        socialConnection = 50;
+        familySupport = 0;
+        friendNetworkSize = 0;
+        communityBelonging = 50;
+        socialTrust = 50;
+        institutionalTrust = 50;
+        volunteerHoursPerMonth = 0;
+        communityServiceHours = 0;
+        civicParticipation = 0;
+        votingParticipation = 0;
+        publicMeetingParticipation = 0;
+        localOrganizationMemberships = 0;
+        charitableGivingCentsPerYear = 0;
+        neighborliness = 50;
+        socialIsolationRisk = 0;
+        discriminationExposure = 0;
+        inclusionAccess = 0;
+        culturalParticipation = 0;
+        recreationHoursPerWeek = 0;
+        libraryUse = 0;
+        publicServiceSatisfaction = 50;
+        communityContribution = 0;
+
+        civilStatus = "unknown";
+        residencyStatus = "unknown";
+        voterRegistrationStatus = "unknown";
+        taxAccountId = "";
+        identityVerified = 0;
+        addressVerified = 0;
+        permitsHeld = 0;
+        licensesHeld = 0;
+        legalCaseCount = 0;
+        unresolvedLegalCases = 0;
+        fineBalanceCents = 0;
+        complianceScore = 100;
+        civicObligationsComplete = 0;
+        juryServiceEligible = 0;
+        juryServiceCompleted = 0;
+        publicRecordsConsent = 0;
+        privacyPreferenceLevel = 0;
+
+        primaryTransportMode = "unknown";
+        hasDrivingLicense = 0;
+        hasVehicle = 0;
+        commuteMinutes = 0;
+        commuteDistanceMeters = 0;
+        walkingAbility = 100;
+        cyclingAbility = 0;
+        transitUseDaysPerWeek = 0;
+        transportReliability = 0;
+        mobilityAccess = 0;
+        travelIndependence = 0;
+        estimatedCarbonKgPerMonth = 0;
+        energyConservation = 0;
+        recyclingParticipation = 0;
+        environmentalStewardship = 0;
+
+        deviceAccess = 0;
+        computerAccess = 0;
+        broadbandQuality = 0;
+        onlineServiceUse = 0;
+        cybersecurityAwareness = 0;
+        digitalPrivacyAwareness = 0;
+        accessibilityTechnologyAccess = 0;
+        digitalSkills = 0;
+        digitalExclusionRisk = 0;
+        telehealthCapability = 0;
+
+        lifeSatisfaction = 50;
+        happiness = 50;
+        morale = 50;
+        motivation = 50;
+        futureOutlook = 50;
+        personalGoalProgress = 0;
+        retirementStatus = 0;
+        caregiverStatus = 0;
+        parentingStatus = 0;
+        studentStatus = 0;
+        veteranStatus = 0;
+        newcomerStatus = 0;
+        displacedStatus = 0;
+        disasterExposure = 0;
+        emergencyPreparedness = 0;
+        resilienceAfterCrisis = 0;
+        lastSurveyYear = 0;
+        dataCompleteness = 0;
+        dataConfidence = 0;
+
+        schemaVersion = 1;
+        rulesetId = 0;
+    }
+
+    int isAdult() {
+        return ageYears >= 18;
+    }
+
+    int isWorkingAge() {
+        return ageYears >= 16 && ageYears < 75;
+    }
+
+    int isEmployed() {
+        return employed == 1 || selfEmployed == 1;
+    }
+
+    int isFinanciallyStable() {
+        return povertyRisk < 50 && financialStress < 70;
+    }
+
+    int hasBasicUtilities() {
+        return waterAccess == 1 && sanitationAccess == 1 && electricityAccess == 1;
+    }
+
+    int hasDigitalAccess() {
+        return deviceAccess == 1 && internetAccess == 1;
+    }
+
+    int canParticipateCivically() {
+        return isAlive == 1 && isResident == 1 && ageYears >= 18;
+    }
+
+    int adjustHealth(int delta) {
+        healthScore = healthScore + delta;
+        if (healthScore < 0) healthScore = 0;
+        if (healthScore > maxHealthScore) healthScore = maxHealthScore;
+        return healthScore;
+    }
+
+    int setAge(int years, int months) {
+        if (years < 0) years = 0;
+        if (months < 0) months = 0;
+        if (months > 11) months = 11;
+        ageYears = years;
+        ageMonths = months;
+        return ageYears;
+    }
+
+    int normalize() {
+        if (maxHealthScore < 1) maxHealthScore = 1;
+        if (healthScore < 0) healthScore = 0;
+        if (healthScore > maxHealthScore) healthScore = maxHealthScore;
+        if (ageYears < 0) ageYears = 0;
+        if (ageMonths < 0) ageMonths = 0;
+        if (ageMonths > 11) ageMonths = 11;
+        if (householdSize < 1) householdSize = 1;
+        if (dependents < 0) dependents = 0;
+        if (hoursWorkedPerWeek < 0) hoursWorkedPerWeek = 0;
+        if (hoursWorkedPerWeek > 168) hoursWorkedPerWeek = 168;
+        if (taxRateBasisPoints < 0) taxRateBasisPoints = 0;
+        if (taxRateBasisPoints > 10000) taxRateBasisPoints = 10000;
+        if (dataCompleteness < 0) dataCompleteness = 0;
+        if (dataCompleteness > 100) dataCompleteness = 100;
+        if (dataConfidence < 0) dataConfidence = 0;
+        if (dataConfidence > 100) dataConfidence = 100;
+        return 1;
+    }
+}
