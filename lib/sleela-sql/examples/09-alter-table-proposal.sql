@@ -1,16 +1,14 @@
-# DESIGN REFERENCE ONLY — NOT EXECUTABLE BY THE CURRENT ENGINE.
+# HISTORICAL DESIGN NOTE — ALTER TABLE ADD COLUMN IS NOW IMPLEMENTED.
 #
-# The current SLeeLa SQL native engine does not implement ALTER TABLE or
-# ADD COLUMN. This file records the intended shape of a future feature.
-# Do not feed these statements to the current CLI and expect success.
+# Current executable examples:
+#   09-alter-table-add-column.sql
+#   10-alter-table-default.sql
+#   11-alter-table-errors.sql
 #
-# Proposed syntax:
-# ALTER TABLE contacts ADD COLUMN phone
-# ALTER TABLE contacts ADD COLUMN created_at
+# Supported classic-SQL syntax:
+#   ALTER TABLE contacts ADD COLUMN phone
+#   ALTER TABLE contacts ADD COLUMN status DEFAULT 'active'
 #
-# Migration behavior should be specified before implementation:
-# - preserve existing rows;
-# - define the value for the new column in old rows (e.g. empty string);
-# - reject duplicate column names;
-# - write to a temporary file and replace the table file safely;
-# - leave the original data intact if migration fails.
+# Existing rows receive the declared DEFAULT value, or an empty string when
+# DEFAULT is omitted. Duplicate column names are rejected. This file remains
+# only as the original design note; use the numbered executable examples.
