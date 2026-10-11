@@ -1,0 +1,26 @@
+name: SLeeLa SQL Native CI
+
+on:
+  push:
+    paths:
+      - "lib/sleela-sql/**"
+      - ".github/workflows/sleela-sql.yml"
+  pull_request:
+    paths:
+      - "lib/sleela-sql/**"
+      - ".github/workflows/sleela-sql.yml"
+  workflow_dispatch:
+
+jobs:
+  native-build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build C engine, CLI, and C++ facade
+        run: make -C lib/sleela-sql clean all
+      - name: Run C and C++ smoke tests
+        run: make -C lib/sleela-sql test
