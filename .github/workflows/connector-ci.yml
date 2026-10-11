@@ -4,6 +4,7 @@ on:
   push:
     branches: [main, master]
     paths:
+      - "lib/connector/**"
       - ".github/workflows/connector-ci.yml"
   pull_request:
     branches: [main, master]
@@ -38,7 +39,7 @@ jobs:
           echo "$(brew --prefix libpq)/bin" >> "$GITHUB_PATH"
           echo "PKG_CONFIG_PATH=$(brew --prefix libpq)/lib/pkgconfig:$(brew --prefix libxml2)/lib/pkgconfig:$(brew --prefix curl)/lib/pkgconfig:$(brew --prefix mariadb-connector-c)/lib/pkgconfig" >> "$GITHUB_ENV"
       - name: Build all connector families through group Makefile
-        run: make -C lib/connector all
+        run: make -C lib/connector build
       - name: Run group smoke tests
         run: make -C lib/connector test
       - name: Clean all connector outputs
