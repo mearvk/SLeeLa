@@ -1,7 +1,7 @@
 #sleela 1.8
 // SqlModel.sleela -- the MODEL for the CSV-backed SQL engine, in SLeeLa.
 //
-// Part of mearvk/Nintendo. Counterpart to the C engine in /sleela-sql. The C
+// Part of mearvk/SLeeLa. Counterpart to the native C engine in lib/sleela-sql/native. The C
 // tool does the byte/file work (parsing statements, reading and writing the CSV
 // table files); SLeeLa's file surface is string-oriented, not raw-byte, so it
 // owns the *model and validation* layer -- it reasons about whether a planned
@@ -99,11 +99,11 @@ class SqlModel {
         print("Invariants: INSERT arity == column count; columns must exist.");
         print("");
 
-        // The worked schema mirrors the C engine's demo (see /sleela-sql):
+        // The worked schema mirrors the native engine's demo (see lib/sleela-sql/samples):
         //   CREATE TABLE games (id, title, year)
         Schema games = schema("games", "id, title, year", 3);
 
-        // These mirror /sleela-sql/samples/demo.sql so the model and the byte
+        // These mirror lib/sleela-sql/samples/demo.sql so the model and the byte
         // tool agree on which statements are accepted and which are refused.
         // (colFound / exists are the facts the byte engine derives from the CSV
         //  header; here we supply them, as NesEditModel supplies encoded len.)
@@ -118,7 +118,7 @@ class SqlModel {
         checkSelect(plan("SELECT", "games", 0, "score", 0, 1), games); // unknown-> REFUSE
 
         print("");
-        print("Hand the OK statements to the byte engine, in either dialect:");
+        print("Hand the OK statements to the native byte engine, in either dialect:");
         print("  SQL:       sleela-sql ./data \"SELECT title FROM games WHERE year = '1986'\"");
         print("  SLeeLaSQL: sleela-sql ./data \"from('games').select(title).where(year == '1986')\"");
         print("  Prepared:  into('games').insert(?, ?, ?)  -- compile once, bind + run many");
