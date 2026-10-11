@@ -6,12 +6,12 @@ Finite connector registry. "Baseline adapter" means a C/C++ API and build target
 
 | Family / reference | Implementation | Current capability and limitation |
 |---|---|---|
-| `mysql` | MySQL-compatible C client API | C ABI, C++17 RAII, connect/ping/execute/error/affected rows; no row retrieval or typed prepared-statement API yet |
+| `mysql` | MySQL-compatible C client API | C ABI, C++17 RAII, connect/ping/execute/errors, native typed prepared-statement parameter/result binding and fetch wrappers; result binding uses MySQL's `MYSQL_BIND` API |
 | `mariadb` | Shared `mysql` adapter, MariaDB Connector/C build profile | API-compatible profile; validate against target versions |
 | `sqlite` | SQLite C API | C/C++ connection wrapper, prepared statements, text/int64/double/NULL binds, step/finalize |
 | `postgres` | libpq | C/C++ connection wrapper and parameterized `PQexecParams`; results remain native `PGresult` objects |
-| `odbc` | ODBC 3.x driver manager | Connection lifecycle, direct statement execution, row count; no portable parameter binding or row fetch yet |
-| `sqlserver` | ODBC profile | Uses operator-installed Microsoft ODBC Driver for SQL Server through `odbc`; same limitations apply |
+| `odbc` | ODBC 3.x driver manager | Connection lifecycle, direct/prepared execution, row fetch and column reads; native `SQLBindParameter` is available through the exposed statement handle |
+| `sqlserver` | ODBC profile | Uses operator-installed Microsoft ODBC Driver for SQL Server through `odbc`; same API/capabilities apply |
 | `oracle` | ODBC profile | Uses operator-installed Oracle ODBC driver through `odbc`; this is not a direct OCI implementation |
 | Generic ODBC | ODBC 3.x | Supports configured DSN/driver connections through the generic adapter |
 
@@ -31,11 +31,11 @@ Use explicit names such as `mysql`, `postgres`, `sqlite`, `odbc`, `sqlserver`, `
 
 ## Production-readiness checklist
 
-The baseline is deliberately honest about missing features. Before marking a family production-ready, add:
-1. Typed prepared-parameter binding wherever the protocol supports it; never concatenate untrusted values into SQL.
-2. Complete result/row streaming, deterministic cleanup, and documented cancellation/timeout semantics.
+Before marking a family production-ready, add:
+1. Integration tests against configured database/services and verified platform builds.
+2. Fully documented parameter lifetimes, result ownership, transactions, cancellation, and timeout semantics.
 3. TLS/authentication configuration appropriate to each driver and safe secret handling.
-4. Unit tests and opt-in integration tests against configured services.
+4. Full result/row streaming and capability discovery where relevant.
 5. Verified builds on Linux, macOS, and Windows 10+ with documented dependency versions.
 
-No live database, REST endpoint, or MQTT broker integration test was run as part of these file additions.
+A connector build/test workflow has been added for Linux and macOS. It is not yet a verified result until the workflow finishes; no live database, REST endpoint, or MQTT broker integration test was run during these edits.
