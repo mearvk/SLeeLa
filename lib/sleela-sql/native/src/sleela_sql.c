@@ -788,6 +788,8 @@ static ssql_status exec_create(ssql_stmt *st) {
     return SSQL_OK;
 }
 
+static ssql_status replace_table_file(const char *tmp, const char *path);
+
 static ssql_status exec_alter(ssql_stmt *st) {
     const char *default_value = "";
     ssql_status status = val_resolve(&st->vals[0], &default_value);
