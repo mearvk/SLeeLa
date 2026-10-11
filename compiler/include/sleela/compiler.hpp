@@ -16,5 +16,6 @@ struct RunResult{std::int64_t return_value{0};std::vector<std::int64_t> printed_
 [[nodiscard]] RunResult run(const CompileResult& program);
 [[nodiscard]] std::string disassemble(const CompileResult& program);
 [[nodiscard]] bool write_bytecode(const CompileResult& program,const std::filesystem::path& output,std::string& error);
+[[nodiscard]] bool write_native_source(const CompileResult& program,const std::filesystem::path& output,bool cpp,std::string& error);
 [[nodiscard]] std::string read_text_file(const std::filesystem::path& path,std::string& error);
 }
