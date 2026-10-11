@@ -1,0 +1,37 @@
+#sleela 1.10
+/*
+ * CharacterResistanceStats.sleela
+ * SLeeLa CharacterStats component: saving throws and damage/status resistances.
+ *
+ * This focused value class separates one coherent group of CharacterStats
+ * fields for reuse by games, simulations, and interactive fiction. Values and
+ * scales are defined by the consuming game's ruleset; no universal caps are
+ * assumed unless explicitly enforced by a method.
+ */
+class CharacterResistanceStats {
+    int saveStrength;
+    int saveDexterity;
+    int saveConstitution;
+    int saveIntelligence;
+    int saveWisdom;
+    int saveCharisma;
+    int physicalResistance;
+    int magicalResistance;
+    int poisonResistance;
+    int diseaseResistance;
+    int fireResistance;
+    int coldResistance;
+    int lightningResistance;
+    int acidResistance;
+    int necroticResistance;
+    int radiantResistance;
+    int psychicResistance;
+    int forceResistance;
+    int bleedResistance;
+    int stunResistance;
+    int fearResistance;
+    int charmResistance;
+    int curseResistance;
+
+    int hasAnyResistance() { return physicalResistance != 0 || magicalResistance != 0 || poisonResistance != 0 || diseaseResistance != 0; }
+}
