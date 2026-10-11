@@ -13,7 +13,7 @@ Run from this directory:
 - `make check-deps` — report dependencies discoverable through pkg-config.
 - `make clean` — clean all connector build outputs.
 
-Convenience entry points: `./build.sh all` on Linux/macOS and `build.bat all` on Windows with GNU Make plus a configured C/C++ toolchain. Windows requires each third-party development library and its headers/libraries to be installed for the selected compiler; set the connector `*_CFLAGS` and `*_LIBS` variables when pkg-config metadata is unavailable.
+Convenience entry points: `sh build.sh all` on Linux/macOS and `build.bat all` on Windows with GNU Make plus a configured C/C++ toolchain. Windows requires each third-party development library and its headers/libraries to be installed for the selected compiler; set the connector `*_CFLAGS` and `*_LIBS` variables when pkg-config metadata is unavailable.
 
 ## Individual connector builds
 
