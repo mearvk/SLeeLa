@@ -110,3 +110,16 @@ The native compiler and all compiler front ends must validate against the reposi
 ## Native C++20 compiler prototype
 
 The top-level /compiler directory provides a separately buildable native C++20 compiler subset with lexer, expression parser, local-name checks, stack-bytecode lowering, interpreter, disassembler, emitter, and tests. It is not feature-equivalent to the production compiler in /impl; read /compiler/README.md before using it. The SLeeLa capability metadata and pipeline-stage contracts are SLNativeCompiler.sleela and SLCompilerPipeline.sleela.
+
+## SLeeLa compiler workbench and native C/C++ output
+
+The SLeeLa-facing developer interface is defined by [COMPILER-DEVELOPER-INTERFACE.md](COMPILER-DEVELOPER-INTERFACE.md). New source units provide:
+
+- `SLCompilerWorkbench.sleela` and `SLCompilerDeveloperCLI.sleela` — runnable-facing orchestration for terminal, IDE, or build integration.
+- `SLCompilerBuildRequest.sleela` and `SLCompilerBuildResult.sleela` — explicit build request validation and structured result reporting.
+- `SLCompilerNativeBackend.sleela`, `SLNativeSourceEmitter.sleela`, and `SLCompilerToolchain.sleela` — target selection and the verified-IR-to-C/C++ backend contract.
+- [Lesson 05](tutorials/05-sleela-compiler-to-c-cpp.md) — developer workflow and native-generation safety rules.
+
+The intended native path is `.sleela compiler source -> validated compiler IR -> C or C++ source -> explicitly selected native toolchain -> native artifact`. The SLeeLa/SLVM route remains the primary VM-oriented path.
+
+**Implementation boundary:** these additions establish the SLeeLa source API and native bridge contract. The native `sleela_compiler_workbench_build` and `sleela_compiler_emit_verified_ir` bridge entry points must be implemented and covered by end-to-end tests before C/C++ source generation can be claimed as operational. Native build authorization defaults to disabled; compilation does not execute the produced program.
