@@ -818,7 +818,11 @@ ssql_status ssql_open(ssql_db *db, const char *dir) {
         if (errno != ENOENT || SSQL_MKDIR(dir) != 0) return SSQL_ERR_IO;
         if (stat(dir, &st) != 0) return SSQL_ERR_IO;
     }
-    if ((st.st_mode & S_IFMT) != S_IFDIR) return SSQL_ERR_IO;
+#ifdef _WIN32
+    if ((st.st_mode & _S_IFMT) != _S_IFDIR) return SSQL_ERR_IO;
+#else
+    if (!S_ISDIR(st.st_mode)) return SSQL_ERR_IO;
+#endif
     snprintf(db->dir, sizeof(db->dir), "%s", dir);
     return SSQL_OK;
 }
