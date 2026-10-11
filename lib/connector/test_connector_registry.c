@@ -1,0 +1,4 @@
+#include "connector_registry.h"
+#include <assert.h>
+#include <string.h>
+int main(void){char e[128];int mysql=1,pg=2;sleela_connector_view v;sleela_connector_registry*r=sleela_connector_registry_create();assert(r);assert(sleela_connector_register(r,"mysql","mysql",&mysql,e,sizeof e));assert(!sleela_connector_register(r,"mysql","postgres",&pg,e,sizeof e));assert(strstr(e,"duplicate")!=0);assert(sleela_connector_resolve(r,"mysql",&v,e,sizeof e));assert(v.handle==&mysql);assert(!sleela_connector_resolve_unnamed(r,&v,e,sizeof e));assert(strstr(e,"ambiguous")!=0);assert(sleela_connector_register(r,"postgres","postgres",&pg,e,sizeof e));assert(sleela_connector_property_set(r,"mysql","database","appdb",e,sizeof e));assert(sleela_connector_property_get(r,"mysql","database")!=0);assert(sleela_connector_property_get(r,"postgres","database")==0);sleela_connector_registry_destroy(r);return 0;}
