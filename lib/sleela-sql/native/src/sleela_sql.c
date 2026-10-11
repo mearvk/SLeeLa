@@ -197,9 +197,13 @@ static int valid_table_name(const char *name) {
 }
 
 static int valid_column_name(const char *name) {
-    if (!name || !((((name[0] >= 'A') && (name[0] <= 'Z')) || ((name[0] >= 'a') && (name[0] <= 'z'))) || name[0] == '_')) return 0;
+    if (!name || !*name) return 0;
+    unsigned char first = (unsigned char)name[0];
+    if (!((first >= 'A' && first <= 'Z') ||
+          (first >= 'a' && first <= 'z') || first == '_')) return 0;
     for (const unsigned char *p = (const unsigned char *)name + 1; *p; ++p)
-        if (!((*p >= 'A' && *p <= 'Z') || (*p >= 'a' && *p <= 'z') || (*p >= '0' && *p <= '9') || *p == '_' || *p == '-')) return 0;
+        if (!((*p >= 'A' && *p <= 'Z') || (*p >= 'a' && *p <= 'z') ||
+              (*p >= '0' && *p <= '9') || *p == '_' || *p == '-')) return 0;
     return 1;
 }
 
