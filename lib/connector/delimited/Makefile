@@ -9,6 +9,10 @@ delimited_connector_cpp.o: delimited_connector.cpp delimited_connector.hpp delim
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 libsleela_delimited.a: delimited_connector.o
 	ar rcs $@ $^
+test_delimited_connector: test_delimited_connector.c delimited_connector.c delimited_connector.h
+	$(CC) $(CFLAGS) test_delimited_connector.c delimited_connector.c -o $@
+test: test_delimited_connector
+	./test_delimited_connector
 clean:
-	rm -f *.o *.a
-.PHONY: all clean
+	rm -f *.o *.a test_delimited_connector
+.PHONY: all test clean
