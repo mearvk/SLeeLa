@@ -1,0 +1,13 @@
+# Extended for-loop health guards (proposed)
+
+# The fourth term is a Boolean thread-memory stability signal.
+for (let i = 0; i < 100; i = i + 1; threadStable) {
+    processItem(i);
+}
+
+# The fifth term is a Boolean VM GC/heap health signal.
+# A false heapHealthy value must follow the runtime's configured
+# diagnostic-flag or memory-health-exception policy.
+for (let i = 0; i < 100; i = i + 1; threadStable; heapHealthy) {
+    processItem(i);
+}
