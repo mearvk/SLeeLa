@@ -1,0 +1,126 @@
+#sleela 1.3
+// SqlModel.sleela -- the MODEL for the CSV-backed SQL engine, in SLeeLa.
+//
+// Part of mearvk/Nintendo. Counterpart to the C engine in /sleela-sql. The C
+// tool does the byte/file work (parsing statements, reading and writing the CSV
+// table files); SLeeLa's file surface is string-oriented, not raw-byte, so it
+// owns the *model and validation* layer -- it reasons about whether a planned
+// statement is well-formed against a table's schema BEFORE any CSV byte is
+// touched, and prints a clear verdict. This runs on the SLeeLa Native VM
+// (sleela run lib/sleela-sql/SqlModel.sleela).
+//
+// DIALECT-AGNOSTIC. The engine accepts two surface languages -- classic SQL and
+// the fluent SLeeLaSQL -- but both lower to the SAME compiled operation. This
+// model validates that lowered operation, so a single verdict covers a plan no
+// matter which dialect expressed it (and whether or not it used '?' prepared-
+// statement placeholders, since binding only fills values, not shape).
+//
+// Like NesEditModel.sleela, the model stays within SLeeLa's string surface: the
+// caller supplies the already-computed facts (value count, column count, and
+// whether a referenced column was found in the schema), exactly as the byte
+// engine computes them from the CSV header. SLeeLa then applies the rules and
+// renders the verdict.
+//
+// Invariants the model checks, mirroring sleela_sql.c:
+//   * INSERT value count must equal the table's column count (ARITY).
+//   * every projected / WHERE column must exist in the schema (NOCOL).
+//   * CREATE must not collide with an existing table (EXISTS).
+
+// A table schema: a name, the column list (for reporting), and its arity.
+struct Schema {
+    String name;      // table name
+    String cols;      // "id, title, year" (display only)
+    int    ncols;     // column count
+}
+
+// One planned statement to validate. The caller precomputes the facts the
+// SLeeLa string surface cannot derive from raw bytes (counts, column found).
+struct Plan {
+    String op;        // "CREATE" | "INSERT" | "SELECT"
+    String table;     // target table
+    int    nvalues;   // INSERT: number of VALUES supplied
+    String col;       // SELECT: a projected / WHERE column ("" or "*" = all)
+    int    colFound;  // SELECT: 1 if `col` exists in the schema, else 0
+    int    exists;    // CREATE: 1 if a table of this name already exists
+}
+
+class SqlModel {
+
+    // Verdict for a CREATE plan (table must not already exist).
+    void checkCreate(Plan p) {
+        if (p.exists == 1) {
+            print("REFUSE CREATE " + p.table + "  (table already exists)");
+        } else {
+            print("OK     CREATE " + p.table);
+        }
+    }
+
+    // Verdict for an INSERT plan against a schema (arity invariant).
+    void checkInsert(Plan p, Schema s) {
+        if (p.nvalues == s.ncols) {
+            print("OK     INSERT " + p.table + "  (" + p.nvalues + "/"
+                  + s.ncols + " values)");
+        } else {
+            print("REFUSE INSERT " + p.table + "  (" + p.nvalues + " values vs "
+                  + s.ncols + " columns -- ARITY)");
+        }
+    }
+
+    // Verdict for a SELECT plan against a schema (column existence).
+    void checkSelect(Plan p, Schema s) {
+        if (p.col == "" || p.col == "*") {
+            print("OK     SELECT " + p.table + "  (all columns)");
+        } else {
+            if (p.colFound == 1) {
+                print("OK     SELECT " + p.table + "  (column '" + p.col + "')");
+            } else {
+                print("REFUSE SELECT " + p.table + "  (no column '" + p.col
+                      + "' in [" + s.cols + "] -- NOCOL)");
+            }
+        }
+    }
+
+    Schema schema(String name, String cols, int ncols) {
+        Schema s = new Schema();
+        s.name = name; s.cols = cols; s.ncols = ncols;
+        return s;
+    }
+
+    Plan plan(String op, String table, int nvalues, String col,
+              int colFound, int exists) {
+        Plan p = new Plan();
+        p.op = op; p.table = table; p.nvalues = nvalues; p.col = col;
+        p.colFound = colFound; p.exists = exists;
+        return p;
+    }
+
+    void main() {
+        print("== sleela-sql -- SLeeLa validation model ==");
+        print("Invariants: INSERT arity == column count; columns must exist.");
+        print("");
+
+        // The worked schema mirrors the C engine's demo (see /sleela-sql):
+        //   CREATE TABLE games (id, title, year)
+        Schema games = schema("games", "id, title, year", 3);
+
+        // These mirror /sleela-sql/samples/demo.sql so the model and the byte
+        // tool agree on which statements are accepted and which are refused.
+        // (colFound / exists are the facts the byte engine derives from the CSV
+        //  header; here we supply them, as NesEditModel supplies encoded len.)
+        checkCreate(plan("CREATE", "games", 0, "",      0, 0)); // fresh  -> OK
+        checkCreate(plan("CREATE", "games", 0, "",      0, 1)); // dup    -> REFUSE
+
+        checkInsert(plan("INSERT", "games", 3, "",      0, 1), games); // 3/3 -> OK
+        checkInsert(plan("INSERT", "games", 2, "",      0, 1), games); // 2/3 -> REFUSE
+
+        checkSelect(plan("SELECT", "games", 0, "*",     0, 1), games); // *     -> OK
+        checkSelect(plan("SELECT", "games", 0, "title", 1, 1), games); // known -> OK
+        checkSelect(plan("SELECT", "games", 0, "score", 0, 1), games); // unknown-> REFUSE
+
+        print("");
+        print("Hand the OK statements to the byte engine, in either dialect:");
+        print("  SQL:       sleela-sql ./data \"SELECT title FROM games WHERE year = '1986'\"");
+        print("  SLeeLaSQL: sleela-sql ./data \"from('games').select(title).where(year == '1986')\"");
+        print("  Prepared:  into('games').insert(?, ?, ?)  -- compile once, bind + run many");
+    }
+}
