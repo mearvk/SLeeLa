@@ -41,7 +41,10 @@ jobs:
       - name: Build all connector families through group Makefile
         run: make -C lib/connector build
       - name: Run group smoke tests
-        run: make -C lib/connector test
+        run: |
+          make -C lib/connector test
+          make -C lib/connector test-rest
+          make -C lib/connector test-mqtt
       - name: Clean all connector outputs
         if: always()
         run: make -C lib/connector clean
