@@ -23,7 +23,7 @@ To build only the graphical terminal:
 make gui
 ```
 
-Run `make all-gui` is not required; the `gui` target builds the GUI only. `make test` runs the core smoke and M5 shell tests.
+Use `make all-gui` to build both the CLI and GUI. The `gui` target builds the GUI only. `make test` runs the core smoke and M5 shell tests.
 
 ## Run the GUI
 
