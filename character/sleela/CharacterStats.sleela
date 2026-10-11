@@ -1,0 +1,471 @@
+#sleela 1.10
+/*
+ * CharacterStats.sleela
+ * Canonical character attribute and derived-stat model for SLeeLa games,
+ * simulations, and interactive fiction.
+ *
+ * Design notes:
+ * - STR, DEX, CON, INT, WIS, and CHA are the six classic primary abilities.
+ * - Scores are raw numeric values; the owning game defines its scale and caps.
+ * - Derived values are kept separate from primary abilities and should be
+ *   recalculated by the game rules when equipment, level, effects, or stats change.
+ * - Resistances, skills, and status effects are represented as extensible
+ *   named collections when the consuming runtime supports collections.
+ */
+
+class CharacterStats {
+    // Identity and progression
+    string characterId;
+    string characterName;
+    string characterClass;
+    string characterRace;
+    string characterArchetype;
+    int level;
+    long experience;
+    long experienceToNextLevel;
+    int proficiencyBonus;
+    int alignment;
+
+    // Six primary abilities
+    int STR; // Strength: force, lifting, melee power
+    int DEX; // Dexterity: agility, precision, reflexes
+    int CON; // Constitution: endurance and resilience
+    int INT; // Intelligence: reasoning, memory, learned knowledge
+    int WIS; // Wisdom: awareness, intuition, judgment
+    int CHA; // Charisma: presence, persuasion, leadership
+
+    // Optional expanded abilities
+    int LCK; // Luck
+    int PER; // Perception / sensory awareness
+    int WILL; // Willpower and mental resistance
+    int SPI; // Spirit / spiritual affinity
+    int TEC; // Technical aptitude
+    int CRAFT; // Crafting aptitude
+
+    // Core survival pools
+    int health;
+    int maxHealth;
+    int healthRegen;
+    int mana;
+    int maxMana;
+    int manaRegen;
+    int stamina;
+    int maxStamina;
+    int staminaRegen;
+    int shield;
+    int maxShield;
+    int barrier;
+    int maxBarrier;
+
+    // Combat and action economy
+    int attackPower;
+    int spellPower;
+    int rangedPower;
+    int defense;
+    int armorClass;
+    int magicDefense;
+    int initiative;
+    int accuracy;
+    int criticalChance;
+    int criticalMultiplier;
+    int evasion;
+    int blockChance;
+    int parryChance;
+    int dodgeChance;
+    int attackSpeed;
+    int castSpeed;
+    int movementSpeed;
+    int actionPoints;
+    int maxActionPoints;
+    int reactionPoints;
+    int maxReactionPoints;
+
+    // Saving throws and resistance scores
+    int saveStrength;
+    int saveDexterity;
+    int saveConstitution;
+    int saveIntelligence;
+    int saveWisdom;
+    int saveCharisma;
+    int physicalResistance;
+    int magicalResistance;
+    int poisonResistance;
+    int diseaseResistance;
+    int fireResistance;
+    int coldResistance;
+    int lightningResistance;
+    int acidResistance;
+    int necroticResistance;
+    int radiantResistance;
+    int psychicResistance;
+    int forceResistance;
+    int bleedResistance;
+    int stunResistance;
+    int fearResistance;
+    int charmResistance;
+    int curseResistance;
+
+    // Exploration and interaction
+    int perception;
+    int insight;
+    int investigation;
+    int stealth;
+    int survival;
+    int tracking;
+    int lockpicking;
+    int disarmTraps;
+    int persuasion;
+    int deception;
+    int intimidation;
+    int performance;
+    int animalHandling;
+    int medicine;
+    int navigation;
+    int luckCheck;
+
+    // Skills: systems may use these as ranks, bonuses, or proficiency values
+    int athletics;
+    int acrobatics;
+    int sleightOfHand;
+    int arcana;
+    int history;
+    int nature;
+    int religion;
+    int crafting;
+    int alchemy;
+    int engineering;
+    int computing;
+    int diplomacy;
+    int bargaining;
+    int leadership;
+    int cooking;
+    int fishing;
+    int hunting;
+    int mining;
+    int farming;
+    int riding;
+    int swimming;
+    int climbing;
+
+    // Carrying capacity, economy, and equipment
+    int carryCapacity;
+    int carriedWeight;
+    int inventoryCapacity;
+    int equipmentSlots;
+    int gold;
+    int silver;
+    int copper;
+    int reputation;
+    int notoriety;
+    int factionStanding;
+
+    // Body and movement
+    int height;
+    int weight;
+    int reach;
+    int jumpHeight;
+    int fallResistance;
+    int swimSpeed;
+    int climbSpeed;
+    int flightSpeed;
+    int encumbrance;
+
+    // Needs and long-duration condition (game-defined scales)
+    int hunger;
+    int thirst;
+    int fatigue;
+    int stress;
+    int morale;
+    int temperature;
+    int cleanliness;
+    int sleepDebt;
+    int sanity;
+    int corruption;
+    int infection;
+    int intoxication;
+
+    // Social, knowledge, and reputation
+    int socialStanding;
+    int fame;
+    int infamy;
+    int knowledge;
+    int languagesKnown;
+    int companionsLimit;
+    int commandLimit;
+    int relationshipScore;
+
+    // Lifetime and current state
+    int age;
+    int lifespan;
+    int alive;
+    int conscious;
+    int incapacitated;
+    int hostile;
+    int playerControlled;
+    int summoned;
+    int undead;
+    int construct;
+    int boss;
+    int elite;
+
+    // Versioned rules metadata
+    int schemaVersion;
+    int rulesetId;
+
+    CharacterStats() {
+        characterId = "";
+        characterName = "";
+        characterClass = "";
+        characterRace = "";
+        characterArchetype = "";
+        level = 1;
+        experience = 0;
+        experienceToNextLevel = 0;
+        proficiencyBonus = 0;
+        alignment = 0;
+
+        STR = 10;
+        DEX = 10;
+        CON = 10;
+        INT = 10;
+        WIS = 10;
+        CHA = 10;
+        LCK = 10;
+        PER = 10;
+        WILL = 10;
+        SPI = 10;
+        TEC = 10;
+        CRAFT = 10;
+
+        health = 100;
+        maxHealth = 100;
+        healthRegen = 0;
+        mana = 100;
+        maxMana = 100;
+        manaRegen = 0;
+        stamina = 100;
+        maxStamina = 100;
+        staminaRegen = 0;
+        shield = 0;
+        maxShield = 0;
+        barrier = 0;
+        maxBarrier = 0;
+
+        attackPower = 0;
+        spellPower = 0;
+        rangedPower = 0;
+        defense = 0;
+        armorClass = 10;
+        magicDefense = 0;
+        initiative = 0;
+        accuracy = 0;
+        criticalChance = 0;
+        criticalMultiplier = 2;
+        evasion = 0;
+        blockChance = 0;
+        parryChance = 0;
+        dodgeChance = 0;
+        attackSpeed = 100;
+        castSpeed = 100;
+        movementSpeed = 100;
+        actionPoints = 1;
+        maxActionPoints = 1;
+        reactionPoints = 1;
+        maxReactionPoints = 1;
+
+        saveStrength = 0;
+        saveDexterity = 0;
+        saveConstitution = 0;
+        saveIntelligence = 0;
+        saveWisdom = 0;
+        saveCharisma = 0;
+        physicalResistance = 0;
+        magicalResistance = 0;
+        poisonResistance = 0;
+        diseaseResistance = 0;
+        fireResistance = 0;
+        coldResistance = 0;
+        lightningResistance = 0;
+        acidResistance = 0;
+        necroticResistance = 0;
+        radiantResistance = 0;
+        psychicResistance = 0;
+        forceResistance = 0;
+        bleedResistance = 0;
+        stunResistance = 0;
+        fearResistance = 0;
+        charmResistance = 0;
+        curseResistance = 0;
+
+        perception = 0;
+        insight = 0;
+        investigation = 0;
+        stealth = 0;
+        survival = 0;
+        tracking = 0;
+        lockpicking = 0;
+        disarmTraps = 0;
+        persuasion = 0;
+        deception = 0;
+        intimidation = 0;
+        performance = 0;
+        animalHandling = 0;
+        medicine = 0;
+        navigation = 0;
+        luckCheck = 0;
+
+        athletics = 0;
+        acrobatics = 0;
+        sleightOfHand = 0;
+        arcana = 0;
+        history = 0;
+        nature = 0;
+        religion = 0;
+        crafting = 0;
+        alchemy = 0;
+        engineering = 0;
+        computing = 0;
+        diplomacy = 0;
+        bargaining = 0;
+        leadership = 0;
+        cooking = 0;
+        fishing = 0;
+        hunting = 0;
+        mining = 0;
+        farming = 0;
+        riding = 0;
+        swimming = 0;
+        climbing = 0;
+
+        carryCapacity = 0;
+        carriedWeight = 0;
+        inventoryCapacity = 0;
+        equipmentSlots = 0;
+        gold = 0;
+        silver = 0;
+        copper = 0;
+        reputation = 0;
+        notoriety = 0;
+        factionStanding = 0;
+
+        height = 0;
+        weight = 0;
+        reach = 1;
+        jumpHeight = 0;
+        fallResistance = 0;
+        swimSpeed = 0;
+        climbSpeed = 0;
+        flightSpeed = 0;
+        encumbrance = 0;
+
+        hunger = 0;
+        thirst = 0;
+        fatigue = 0;
+        stress = 0;
+        morale = 100;
+        temperature = 0;
+        cleanliness = 100;
+        sleepDebt = 0;
+        sanity = 100;
+        corruption = 0;
+        infection = 0;
+        intoxication = 0;
+
+        socialStanding = 0;
+        fame = 0;
+        infamy = 0;
+        knowledge = 0;
+        languagesKnown = 1;
+        companionsLimit = 0;
+        commandLimit = 0;
+        relationshipScore = 0;
+
+        age = 0;
+        lifespan = 0;
+        alive = 1;
+        conscious = 1;
+        incapacitated = 0;
+        hostile = 0;
+        playerControlled = 0;
+        summoned = 0;
+        undead = 0;
+        construct = 0;
+        boss = 0;
+        elite = 0;
+
+        schemaVersion = 1;
+        rulesetId = 0;
+    }
+
+    int abilityModifier(int score) {
+        return (score - 10) / 2;
+    }
+
+    int strengthModifier() { return abilityModifier(STR); }
+    int dexterityModifier() { return abilityModifier(DEX); }
+    int constitutionModifier() { return abilityModifier(CON); }
+    int intelligenceModifier() { return abilityModifier(INT); }
+    int wisdomModifier() { return abilityModifier(WIS); }
+    int charismaModifier() { return abilityModifier(CHA); }
+
+    int isAlive() { return alive != 0 && health > 0; }
+    int isConscious() { return isAlive() && conscious != 0 && incapacitated == 0; }
+
+    void restoreHealth(int amount) {
+        if (amount <= 0 || !isAlive()) return;
+        health = health + amount;
+        if (health > maxHealth) health = maxHealth;
+    }
+
+    void restoreMana(int amount) {
+        if (amount <= 0) return;
+        mana = mana + amount;
+        if (mana > maxMana) mana = maxMana;
+    }
+
+    void restoreStamina(int amount) {
+        if (amount <= 0) return;
+        stamina = stamina + amount;
+        if (stamina > maxStamina) stamina = maxStamina;
+    }
+
+    void applyDamage(int amount) {
+        if (amount <= 0 || !isAlive()) return;
+        if (shield > 0) {
+            int absorbed = amount;
+            if (absorbed > shield) absorbed = shield;
+            shield = shield - absorbed;
+            amount = amount - absorbed;
+        }
+        if (amount > 0) {
+            health = health - amount;
+            if (health <= 0) {
+                health = 0;
+                alive = 0;
+                conscious = 0;
+            }
+        }
+    }
+
+    void normalizePools() {
+        if (maxHealth < 0) maxHealth = 0;
+        if (maxMana < 0) maxMana = 0;
+        if (maxStamina < 0) maxStamina = 0;
+        if (maxShield < 0) maxShield = 0;
+        if (maxBarrier < 0) maxBarrier = 0;
+        if (health < 0) health = 0;
+        if (mana < 0) mana = 0;
+        if (stamina < 0) stamina = 0;
+        if (shield < 0) shield = 0;
+        if (barrier < 0) barrier = 0;
+        if (health > maxHealth) health = maxHealth;
+        if (mana > maxMana) mana = maxMana;
+        if (stamina > maxStamina) stamina = maxStamina;
+        if (shield > maxShield) shield = maxShield;
+        if (barrier > maxBarrier) barrier = maxBarrier;
+        if (health == 0) {
+            alive = 0;
+            conscious = 0;
+        }
+    }
+}
