@@ -37,7 +37,7 @@ bool write_native_source(const CompileResult&p,const std::filesystem::path&path,
    << "static int sl_mul(int64_t a,int64_t b,int64_t*r){if(a==0||b==0){*r=0;return 1;}if((a==-1&&b==INT64_MIN)||(b==-1&&a==INT64_MIN))return 0;if(a>0){if((b>0&&a>INT64_MAX/b)||(b<0&&b<INT64_MIN/a))return 0;}else{if((b>0&&a<INT64_MIN/b)||(b<0&&b<INT64_MAX/a))return 0;}*r=a*b;return 1;}\n"
    << "#define SL_PROGRAM_COUNT (sizeof(program)/sizeof(program[0]))\n"
    << "int main(void){int64_t stack[65536],locals[SL_LOCAL_COUNT]={0},ret=0;size_t sp=0,pc=0;for(;;){if(pc>=SL_PROGRAM_COUNT){fputs(\"program counter out of range\\n\",stderr);return 2;}sl_insn i=program[pc++];int64_t a,b,v;switch(i.op){"
-   << "case 1:if(sp>=65536){fputs(\\"stack overflow\\n\\",stderr);return 2;}stack[sp++]=i.arg;break;"
+   << "case 1:if(sp>=65536){fputs(\"stack overflow\\n\",stderr);return 2;}stack[sp++]=i.arg;break;"
    << "case 2:if(i.arg<0||(uint64_t)i.arg>=SL_LOCAL_COUNT||sp>=65536)return 2;stack[sp++]=locals[i.arg];break;"
    << "case 3:if(i.arg<0||(uint64_t)i.arg>=SL_LOCAL_COUNT||sp==0)return 2;locals[i.arg]=stack[--sp];break;"
    << "case 4:case 5:case 6:case 7:if(sp<2)return 2;b=stack[--sp];a=stack[--sp];"
