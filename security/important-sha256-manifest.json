@@ -5568,7 +5568,7 @@
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "292bbb66a7c4a76e4c3db909b16e654a2ff926cf085dfbfe8976bb2a7016f3b9"
+      "sha256": "21bd2a6e16828bd39b922dfa7c4468e5c826681289d9e360e42d0caa3f6b9dd4"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -5576,7 +5576,7 @@
     },
     {
       "path": "impl/frontend/driver.cpp",
-      "sha256": "dc3919861f1eff58ffb76ab41e4ee83022f906ab550b8954e3fd6dafae7b4228"
+      "sha256": "cedeac734a14350db11b9ed3aa516851682c40ae718895fcb220a74679d10149"
     },
     {
       "path": "impl/frontend/dynamite.cpp",
@@ -5668,11 +5668,11 @@
     },
     {
       "path": "impl/frontend/version.cpp",
-      "sha256": "b82f4c8c588550481347989d37c97e68211c70aec26cf368151e1a006867d2e0"
+      "sha256": "141c2567fd738838908d91288ad4d16275cd2a1d9cea459179ae9531dbb30916"
     },
     {
       "path": "impl/frontend/version.h",
-      "sha256": "1754088bb4af8f07c3937154ee03a595f7bf351d178ea9e6bdfb2c68f7418c92"
+      "sha256": "505c6ab161762d0b4ce923e700c8a8b2cc906c8c6cbf73f5fda48f446fb64837"
     },
     {
       "path": "impl/fundamental/Buffer.cpp",
@@ -6561,6 +6561,10 @@
     {
       "path": "impl/tests/runtime/runtime_smoke.c",
       "sha256": "af5348c459fe6c7abd888fb87621ef6de5248a92ebb5cb82620684421f6cd519"
+    },
+    {
+      "path": "impl/tests/static_init/chained_method_call.sleela",
+      "sha256": "427ca06e964779fa19ae9e630a09325f6e150b9c681a4e7bd4c3ed7566c6465d"
     },
     {
       "path": "impl/tests/static_init/run_static_init_tests.sh",
@@ -49195,6 +49199,10 @@
       "sha256": "7cde65d0433ca14745e448af53a1dc1be52a515f51a4016d5580bde4b365ecb2"
     },
     {
+      "path": "lib/os/SLBaseDriverSeries.sleela",
+      "sha256": "d49fc34e5f553de55b0b4801f32e313c2b158f16a99c255452269b2f5d44709b"
+    },
+    {
       "path": "lib/os/SLBootloaderSpec.sleela",
       "sha256": "3827165b94aaabf82e7c404fc49e7cfbbded624739cbd4a2f8df278bcae4ff87"
     },
@@ -49205,6 +49213,14 @@
     {
       "path": "lib/os/SLClock.sleela",
       "sha256": "715591db8f8fc6ea7eb8b50345108c10e289d9690fd906dc39056bb4943ba468"
+    },
+    {
+      "path": "lib/os/SLCompatLayer.sleela",
+      "sha256": "eae51cffefdc9f2f9ab89cbce8560001dec74338a68ec718e930285832063b0f"
+    },
+    {
+      "path": "lib/os/SLCompatSet.sleela",
+      "sha256": "aa03745bb11f6a7e5ca961e8dacaa5ca1f1d38ed1b477a1a72ced878415cd43d"
     },
     {
       "path": "lib/os/SLCppEmitter.sleela",
@@ -49231,6 +49247,10 @@
       "sha256": "bfa0e311fec2d9305143f7c7f74ff3160da494d86005c45870e2dfdda714490a"
     },
     {
+      "path": "lib/os/SLDriverSource.sleela",
+      "sha256": "5021e1a8ac1e7028409b879b6d32e738d0bd8b159c2b45dd4a4729824084bc2b"
+    },
+    {
       "path": "lib/os/SLEnvironment.sleela",
       "sha256": "d617095eefa4b905e8305a03e171a275cd50035fc9a0567d6e6eb912564142bf"
     },
@@ -49253,6 +49273,10 @@
     {
       "path": "lib/os/SLFileSystem.sleela",
       "sha256": "f160f4898d15fbde828788b4b2db3fcd54dc3536e87e9709f4295b59f0dc6985"
+    },
+    {
+      "path": "lib/os/SLFilesystemCatalog.sleela",
+      "sha256": "cb736337a281feba43fd589323b18634827bedc16504eac09067aacad200871f"
     },
     {
       "path": "lib/os/SLFilesystemLayout.sleela",
@@ -49324,7 +49348,7 @@
     },
     {
       "path": "lib/os/SLOSModel.sleela",
-      "sha256": "45d145e33f3c48e8292a37c143026481600f143012bcadd8b4223b17293f4b42"
+      "sha256": "e06bf1781151336c91cb7663a635416f5cf49b9ac015d1965cf2663aa6ab91e8"
     },
     {
       "path": "lib/os/SLOSShape.sleela",
@@ -49353,6 +49377,10 @@
     {
       "path": "lib/os/SLServiceSet.sleela",
       "sha256": "0e150bd624eaca97de7b50a1ae0e170005603aca0980e1de1452fb29f59bdd4f"
+    },
+    {
+      "path": "lib/os/SLSwapConfig.sleela",
+      "sha256": "aa566998917cd159fea8b8a9ff608412d9d2eef46cdf6ba142919de5f04d5b69"
     },
     {
       "path": "lib/os/SLWindowsOS.sleela",
@@ -49395,8 +49423,16 @@
       "sha256": "4a64d8c66ff052138f6baf74a030a395a27bb025687e65003ad4e9e8a87957ed"
     },
     {
+      "path": "lib/os/os-creator/SLBaseDriverEmitter.sleela",
+      "sha256": "5e3248b330fd6bb76da65b1668b2358b53e4684156d88895d3cdd40ab7979da5"
+    },
+    {
       "path": "lib/os/os-creator/SLBootLoaderEmitter.sleela",
       "sha256": "acd0ae72fd776a54b4cd88d05a7fca0596213e3dfbb5a6072ddc32cf65c203c4"
+    },
+    {
+      "path": "lib/os/os-creator/SLCompatLoaderEmitter.sleela",
+      "sha256": "6974a8d07c25ad432874f71071110bae4e548beaac256523ce3667e1c3700490"
     },
     {
       "path": "lib/os/os-creator/SLDesktopLoaderEmitter.sleela",
@@ -49412,7 +49448,7 @@
     },
     {
       "path": "lib/os/os-creator/SLOSCreator.sleela",
-      "sha256": "7a66fbded060b98b627382c08f602bd9a3271acf53ff0953439e0ac79a9d3738"
+      "sha256": "ec5d4b55cb7279371347fb17a5db5c9b0bfb67c3f82db147c29a888b80a8cc98"
     },
     {
       "path": "lib/os/os-creator/SLOSDevTree.sleela",
@@ -49444,7 +49480,7 @@
     },
     {
       "path": "lib/os/os-generate.sleela",
-      "sha256": "42d038e9e0eca48351948f3655517b2c1cfef2453e20649f91a949269c7d4fc7"
+      "sha256": "fb2dd3a9b1df77f157353e574113d3a9228ffe8a89bcc8d4ed665c3efad66d41"
     },
     {
       "path": "lib/os/ssd/SLSSD.sleela",
@@ -51249,6 +51285,18 @@
     {
       "path": "native/src/sleela_sldocument_cli.cpp",
       "sha256": "7084846eca30234e1716a7540806c0822c3f28b9f3fe7bcf1f8e1803a17e6c56"
+    },
+    {
+      "path": "os/base_drivers.c",
+      "sha256": "389375fe4fff3b7af7360f1ee9bcc7804947ba8dfc772c5e51ac3e5579d6312c"
+    },
+    {
+      "path": "os/base_drivers.cpp",
+      "sha256": "b1770d1379bad0d09b6fb6eeb8ad5245107264c802e4fdbb2671eac8f55dd012"
+    },
+    {
+      "path": "os/base_drivers.h",
+      "sha256": "817251021c6a239be0fecec7bb6b455831a51abddd0273c93c1e7fc861182f75"
     },
     {
       "path": "preferred-routers/preferred_router.c",
