@@ -5,7 +5,9 @@ int main(void) {
     sleela_mqtt client = {0};
     assert(sleela_mqtt_open(NULL, "test", "127.0.0.1", 1883, 5) == 0);
     assert(sleela_mqtt_open(&client, NULL, "127.0.0.1", 1883, 5) == 0);
+    assert(sleela_mqtt_error(&client)[0] != '\0');
     assert(sleela_mqtt_open(&client, "test", NULL, 1883, 5) == 0);
+    assert(sleela_mqtt_error(&client)[0] != '\0');
     assert(sleela_mqtt_set_message_callback(&client, NULL, NULL) == 0);
     assert(sleela_mqtt_subscribe(&client, "test/topic", 0) == 0);
     assert(sleela_mqtt_publish(&client, "test/topic", "x", 1, 0, 0) == 0);
