@@ -28,6 +28,11 @@ int main() {
 
     check(!compile("print unknown;").ok(), "unknown variable");
     check(!compile("let a = 1; let a = 2;").ok(), "duplicate variable");
+    std::string tooManyLocals;
+    for (std::size_t i = 0; i < 65537; ++i) {
+        tooManyLocals += "let v" + std::to_string(i) + " = 0;";
+    }
+    check(!compile(tooManyLocals).ok(), "local variable limit");
     check(!compile("print 1").ok(), "semicolon required");
     check(!compile("print 9223372036854775808;").ok(), "positive integer literal out of range");
     check(compile("").ok(), "empty source is a valid empty program");
