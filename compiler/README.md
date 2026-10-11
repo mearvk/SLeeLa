@@ -20,6 +20,10 @@ Try it:
     ./build/compiler/sleelac --emit-ir compiler/examples/arithmetic.sleela
     ./build/compiler/sleelac --run compiler/examples/arithmetic.sleela
     ./build/compiler/sleelac --emit-bytecode /tmp/arithmetic.slbc compiler/examples/arithmetic.sleela
+    ./build/compiler/sleelac --emit-c /tmp/arithmetic.c compiler/examples/arithmetic.sleela
+    ./build/compiler/sleelac --emit-cpp /tmp/arithmetic.cpp compiler/examples/arithmetic.sleela
+    cc -std=c11 -Wall -Wextra -Werror /tmp/arithmetic.c -o /tmp/arithmetic-c
+    c++ -std=c++20 -Wall -Wextra -Werror /tmp/arithmetic.cpp -o /tmp/arithmetic-cpp
 
 ## Implemented subset
 
@@ -28,3 +32,9 @@ Lexer with source locations, integer literals, identifiers and line comments; re
 ## Scope
 
 This is an experimental subset, not full SLeeLa 1.10 support. Classes, methods, inheritance, imports, strings, unsigned integer families, character sets, and the full grammar are not implemented here. The authoritative grammar and compatibility gate remain SLEELA.syntax and impl/frontend/version.{h,cpp}. Do not replace sleelvac with this prototype before feature-parity tests. See ARCHITECTURE.md and API.md.
+
+## Native C/C++ source emission (experimental subset)
+
+`--emit-c` and `--emit-cpp` generate standalone C-compatible source containing validated-subset bytecode and a small checked interpreter. Compile generated output with a C11 or C++20 toolchain. This is a usable native build path for the prototype's supported subset, not a full SLeeLa-to-native compiler or replacement for `/impl`.
+
+The emitter does not execute generated programs. Source compilation, native compilation, and execution remain separate developer-controlled steps. Unsupported source syntax is rejected before emission; inspect generated source and run tests before using artifacts.
