@@ -23,7 +23,7 @@ make test
 
 Outputs are kept under `build/`: CLI, C static library, and C++ facade library. Consumers of the C++ facade must link both the C++ and C core libraries. `ssql_open` creates the final database directory if absent; it does not recursively create parent directories.
 
-The SQL subset supports idempotent `CREATE TABLE IF NOT EXISTS`, `SELECT COUNT(*) ... [WHERE column = value]`, `UPDATE table SET column = value [, ...] [WHERE column = value]`, and `DELETE FROM table [WHERE column = value]`. UPDATE/DELETE rewrite a temporary CSV and replace the table file; on Windows a backup is used to restore the original if replacement fails. These statements currently use equality-only WHERE predicates and are SQL-dialect features; fluent SLeeLaSQL update/delete and richer predicates are not yet implemented.
+The SQL subset supports idempotent `CREATE TABLE IF NOT EXISTS`, `ALTER TABLE table ADD [COLUMN] column [DEFAULT value]`, `SELECT COUNT(*) ... [WHERE column = value]`, `UPDATE table SET column = value [, ...] [WHERE column = value]`, and `DELETE FROM table [WHERE column = value]`. ALTER TABLE rewrites through a temporary CSV, preserves existing values, initializes old rows with the specified default (or an empty string), rejects duplicate columns, and uses the platform-specific replacement routine. UPDATE/DELETE rewrite a temporary CSV and replace the table file; on Windows a backup is used to restore the original if replacement fails. UPDATE, DELETE, and ALTER TABLE ADD COLUMN are SQL-dialect features; fluent SLeeLaSQL schema migration, update/delete, and richer predicates are not yet implemented.
 
 ## C example
 
@@ -53,4 +53,4 @@ Classic SQL and fluent SLeeLaSQL compile to the same internal statement and exec
 `SqlModel.sleela` validates planned operations using schema facts supplied by the caller: CREATE collisions, INSERT arity, and projected-column existence. It is a SLeeLa-side model/validation example, not an automatic runtime bridge to the native C engine.
 ## Examples
 
-See [`examples/`](examples/README.md) for runnable SQL examples covering table creation, inserts, SELECT/filter/count, UPDATE, DELETE, table listing/drop, the fluent SLeeLaSQL dialect, prepared statements, and a clearly marked ALTER TABLE proposal (not yet supported by the current engine).
+See [`examples/`](examples/README.md) for runnable SQL examples covering table creation, inserts, SELECT/filter/count, UPDATE, DELETE, table listing/drop, the fluent SLeeLaSQL dialect, prepared statements, and ALTER TABLE ADD COLUMN migration examples.
