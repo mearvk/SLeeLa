@@ -3123,6 +3123,26 @@
       "sha256": "2752763320b61a04e70748adc13331062041ac1480c0bd73492e5f327159cc5a"
     },
     {
+      "path": "compiler/examples/arithmetic.sleela",
+      "sha256": "c9bfed18dd5e5d9b695b0376d09e36dbd10e8df35be99c93f8b850dae16c952f"
+    },
+    {
+      "path": "compiler/include/sleela/compiler.hpp",
+      "sha256": "85042731f90246f79db2ed4c884e3845aa109bf7745b8432faa257897643002d"
+    },
+    {
+      "path": "compiler/src/compiler.cpp",
+      "sha256": "4f0a81b70b5ad00433be5248ab4237e35b553bfe1f37dc0e9bf5a4540dfc5d66"
+    },
+    {
+      "path": "compiler/src/main.cpp",
+      "sha256": "2e7b952884d9798dd595f91627d6b883b43b3839db54062543a6e0b94caa6aff"
+    },
+    {
+      "path": "compiler/tests/compiler_tests.cpp",
+      "sha256": "7f32c3aecbd18b239c4f0199e909ec065cd67a915f6be4fc1de1b338dc765f83"
+    },
+    {
       "path": "coorenagraph/Coorenagraph.sleela",
       "sha256": "348168aff2aedd9a07c6430a4d0306bb091f243271329acb0c12561effb3e1e7"
     },
@@ -8359,6 +8379,10 @@
       "sha256": "00f33fc4715ef958ec2d610dd5abb122b7b0550903140b8a43df365d06299f54"
     },
     {
+      "path": "lib/compiler/SLCompilerPipeline.sleela",
+      "sha256": "a17525267618fb7a272d0bb4842a318956b62f5c6e1cd07e9b9b1068ee0c6c78"
+    },
+    {
       "path": "lib/compiler/SLCompilerRegistry.sleela",
       "sha256": "b9deb728dca2a39fd907ca59beafe710169cad8c47aff4194515edb631de5826"
     },
@@ -8381,6 +8405,10 @@
     {
       "path": "lib/compiler/SLNameResolver.sleela",
       "sha256": "374d6f6183c65aeac53fd01551e9d19d7169a4ace13c19fe1bf737f4f1de3645"
+    },
+    {
+      "path": "lib/compiler/SLNativeCompiler.sleela",
+      "sha256": "1706455cf4f73f1aecc0f456356a054bb107e44b85cefd9ce71e20f504fe868e"
     },
     {
       "path": "lib/compiler/SLObjectCreationResolver.sleela",
