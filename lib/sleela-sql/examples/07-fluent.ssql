@@ -1,0 +1,13 @@
+# Fluent SLeeLaSQL examples for currently supported fluent operations.
+table('contacts').create(id, name, email)
+
+into('contacts').insert(1, 'Ada Lovelace', 'ada@example.test')
+into('contacts').insert(2, 'Grace Hopper', 'grace@example.test')
+
+from('contacts').select(*)
+from('contacts').select(name, email).where(id == 1)
+
+# List tables.
+tables()
+
+# Fluent UPDATE and DELETE are not implemented in the current engine.
