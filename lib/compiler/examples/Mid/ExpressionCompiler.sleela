@@ -1,0 +1,52 @@
+/* Mid lesson: separate lexing, parsing, semantics, and IR emission. */
+#sleela 1.3
+
+class ExpressionCompiler {
+  String diagnostic;
+  String sourceName;
+  boolean lexed;
+  boolean parsed;
+  boolean validated;
+
+  void configure(String name) {
+    sourceName = name;
+    diagnostic = "";
+    lexed = false;
+    parsed = false;
+    validated = false;
+  }
+
+  boolean recordLexingResult(boolean success, String detail) {
+    lexed = success;
+    if (!success) diagnostic = "lexer: " + detail;
+    return success;
+  }
+
+  boolean recordParsingResult(boolean success, String detail) {
+    if (!lexed) {
+      diagnostic = "parser cannot run before lexing succeeds";
+      return false;
+    }
+    parsed = success;
+    if (!success) diagnostic = "parser: " + detail;
+    return success;
+  }
+
+  boolean recordSemanticResult(boolean success, String detail) {
+    if (!parsed) {
+      diagnostic = "semantic analysis cannot run before parsing succeeds";
+      return false;
+    }
+    validated = success;
+    if (!success) diagnostic = "semantic: " + detail;
+    return success;
+  }
+
+  String status() {
+    if (validated) return "READY_FOR_IR_EMISSION";
+    if (parsed) return "PARSED_NOT_VALIDATED";
+    if (lexed) return "LEXED_NOT_PARSED";
+    return "NOT_READY";
+  }
+  String message() { return diagnostic; }
+}
