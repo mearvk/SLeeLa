@@ -1,0 +1,70 @@
+#sleela 1.10
+/*
+ * CitizenIdentityAndDemographicProfileStats.sleela
+ * Individual category class extracted from citizen/sleela/CitizenStats.sleela.
+ * Source category: Identity and demographic profile.
+ * Monetary values use integer minor units where the field name says Cents.
+ */
+class CitizenIdentityAndDemographicProfileStats {
+    string citizenId;
+    string legalName;
+    string preferredName;
+    string householdId;
+    string familyId;
+    string citizenshipCode;
+    string residencyCode;
+    string birthPlace;
+    string currentAddress;
+    string postalCode;
+    string municipality;
+    string region;
+    string countryCode;
+    string primaryLanguage;
+    int ageYears;
+    int ageMonths;
+    int birthYear;
+    int birthMonth;
+    int birthDay;
+    int lifeExpectancyYears;
+    int householdSize;
+    int dependents;
+    int isAlive;
+    int isResident;
+    int isCitizen;
+    int isRegisteredVoter;
+    int isEmancipated;
+    int hasDisability;
+    int accessibilityNeeds;
+
+    CitizenIdentityAndDemographicProfileStats() {
+        citizenId = "";
+        legalName = "";
+        preferredName = "";
+        householdId = "";
+        familyId = "";
+        citizenshipCode = "";
+        residencyCode = "";
+        birthPlace = "";
+        currentAddress = "";
+        postalCode = "";
+        municipality = "";
+        region = "";
+        countryCode = "";
+        primaryLanguage = "";
+        ageYears = 0;
+        ageMonths = 0;
+        birthYear = 0;
+        birthMonth = 0;
+        birthDay = 0;
+        lifeExpectancyYears = 80;
+        householdSize = 1;
+        dependents = 0;
+        isAlive = 1;
+        isResident = 1;
+        isCitizen = 0;
+        isRegisteredVoter = 0;
+        isEmancipated = 0;
+        hasDisability = 0;
+        accessibilityNeeds = 0;
+    }
+}
