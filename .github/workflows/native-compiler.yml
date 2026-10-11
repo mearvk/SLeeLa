@@ -28,7 +28,7 @@ jobs:
       - name: Unit tests
         run: ctest --test-dir build/compiler --build-config Release --output-on-failure
       - name: Verify user-controlled install prefix
-        run: cmake --install build/compiler --config Release --prefix build/compiler/stage
+        run: cmake --install build/compiler --config Release --prefix "${{ github.workspace }}/build/compiler/stage"
       - name: Validate example
         if: runner.os == 'Linux'
         run: build/compiler/sleelac --check compiler/examples/arithmetic.sleela
