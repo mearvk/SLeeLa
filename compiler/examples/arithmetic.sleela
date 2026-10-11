@@ -3,4 +3,4 @@ let width = 6;
 let height = 7;
 let area = width * height;
 print area;
-return area;
+return 0;
