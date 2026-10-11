@@ -1,0 +1,54 @@
+/* Very Senior lesson: model bootstrap stages and reproducibility checks. */
+#sleela 1.3
+
+class BootstrapCompiler {
+  String diagnostic;
+  String sourceRevision;
+  String toolchainVersion;
+  String stage0Hash;
+  String stage1Hash;
+  boolean stage0Passed;
+  boolean stage1Passed;
+  boolean outputsCompared;
+  boolean reproducible;
+
+  void configure(String revision, String version) {
+    diagnostic = "";
+    sourceRevision = revision;
+    toolchainVersion = version;
+    stage0Hash = "";
+    stage1Hash = "";
+    stage0Passed = false;
+    stage1Passed = false;
+    outputsCompared = false;
+    reproducible = false;
+  }
+  boolean recordStage0(boolean success, String artifactHash) {
+    stage0Passed = success && artifactHash != "";
+    if (!stage0Passed) { diagnostic = "E_STAGE0: Stage 0 artifact not verified"; return false; }
+    stage0Hash = artifactHash;
+    return true;
+  }
+  boolean recordStage1(boolean success, String artifactHash) {
+    if (!stage0Passed) { diagnostic = "E_ORDER: Stage 0 must pass before Stage 1"; return false; }
+    stage1Passed = success && artifactHash != "";
+    if (!stage1Passed) { diagnostic = "E_STAGE1: Stage 1 artifact not verified"; return false; }
+    stage1Hash = artifactHash;
+    return true;
+  }
+  boolean compareNormalizedOutputs(boolean equal) {
+    if (!stage0Passed || !stage1Passed) { diagnostic = "E_ORDER: both stages must pass before comparison"; return false; }
+    outputsCompared = true;
+    reproducible = equal;
+    if (!equal) diagnostic = "E_REPRODUCIBILITY: normalized artifacts differ";
+    return equal;
+  }
+  String status() {
+    if (outputsCompared && reproducible) return "BOOTSTRAP_MATCH";
+    if (outputsCompared) return "BOOTSTRAP_MISMATCH";
+    if (stage1Passed) return "STAGE1_VERIFIED";
+    if (stage0Passed) return "STAGE0_VERIFIED";
+    return "NOT_STARTED";
+  }
+  String message() { return diagnostic; }
+}
