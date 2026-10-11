@@ -898,6 +898,13 @@ std::string captureCommand(const std::string& src, Environment& env) {
     pid_t wr;
     do { wr = ::waitpid(pid, &st, 0); }
     while (wr < 0 && errno == EINTR);
+    if (wr == pid) {
+        if (WIFEXITED(st)) env.setLastStatus(WEXITSTATUS(st));
+        else if (WIFSIGNALED(st)) env.setLastStatus(128 + WTERMSIG(st));
+        else env.setLastStatus(1);
+    } else {
+        env.setLastStatus(1);
+    }
     return out;
 }
 
