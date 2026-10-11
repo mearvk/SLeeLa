@@ -1,0 +1,8 @@
+# List tables in the current database directory.
+tables()
+
+# Drop an existing table.
+from('temporary_notes').drop()
+
+# Safe when the table may not exist.
+from('temporary_notes').drop(ifExists)
