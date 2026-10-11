@@ -8,7 +8,7 @@
     },
     {
       "path": "SLEELA.syntax",
-      "sha256": "641bfd4ae26b03f422d3dfb6f3a6f2cb0b0dc5912b593a7313bd20fe1ed072e4"
+      "sha256": "96305dff7bb2ec9d0bb9fcbf721a6dc4e876b41365d8d2c848be24c5c44a210a"
     },
     {
       "path": "SST-2.0.model",
@@ -49223,6 +49223,10 @@
       "sha256": "aa03745bb11f6a7e5ca961e8dacaa5ca1f1d38ed1b477a1a72ced878415cd43d"
     },
     {
+      "path": "lib/os/SLConfigSet.sleela",
+      "sha256": "048cc0822bad1116e4e4f7828fa35b6fbaa4f1c6f867669eaa37d13c1656272b"
+    },
+    {
       "path": "lib/os/SLCppEmitter.sleela",
       "sha256": "3388f98e3098ecd6628ae93d1ecad69d36423e8860d02c112c74146244e44175"
     },
@@ -49241,6 +49245,10 @@
     {
       "path": "lib/os/SLDistroSource.sleela",
       "sha256": "f71b789fe2df90060dcad17d5347e518afec198f421dcb40aacf850681b4c719"
+    },
+    {
+      "path": "lib/os/SLDownloadSet.sleela",
+      "sha256": "7f8246006f8d8106f342185ea2e318ad7ec31aed22f75addbd66c71fb23017c8"
     },
     {
       "path": "lib/os/SLDriverSet.sleela",
@@ -49348,7 +49356,7 @@
     },
     {
       "path": "lib/os/SLOSModel.sleela",
-      "sha256": "e06bf1781151336c91cb7663a635416f5cf49b9ac015d1965cf2663aa6ab91e8"
+      "sha256": "03be1fd0e530b5f408ea6a6c085640b953b745ca1228c1d98ba7a2ed15310e0c"
     },
     {
       "path": "lib/os/SLOSShape.sleela",
@@ -49379,6 +49387,10 @@
       "sha256": "0e150bd624eaca97de7b50a1ae0e170005603aca0980e1de1452fb29f59bdd4f"
     },
     {
+      "path": "lib/os/SLSupportDownloader.sleela",
+      "sha256": "dc4a9bc8eba5fa2bd599fa9489872600128ca0c13d20b4d11f7550d646afc020"
+    },
+    {
       "path": "lib/os/SLSwapConfig.sleela",
       "sha256": "aa566998917cd159fea8b8a9ff608412d9d2eef46cdf6ba142919de5f04d5b69"
     },
@@ -49393,6 +49405,18 @@
     {
       "path": "lib/os/distro-source.sleela",
       "sha256": "112f75067e6afd571f8426851e94a76aae81a8d080cc5a5264028ee28fc71a5f"
+    },
+    {
+      "path": "lib/os/examples/linux/linux-creator.sleela",
+      "sha256": "7fab332de21515b8800616651cfadcd5f78d8a0a6ee040ba759c4bd1a2018563"
+    },
+    {
+      "path": "lib/os/examples/macos/macos-creator.sleela",
+      "sha256": "939c48d3f0282a4d577edb3f08461570612c4c1f53863389016c04aab3f9ffa0"
+    },
+    {
+      "path": "lib/os/examples/windows/windows-creator.sleela",
+      "sha256": "efdf01ab2c2deba315b8382c9e315c50aef57295ccbb40d2be3bb6400e9ac636"
     },
     {
       "path": "lib/os/hdd/SLHardDisk.sleela",
@@ -49448,7 +49472,7 @@
     },
     {
       "path": "lib/os/os-creator/SLOSCreator.sleela",
-      "sha256": "ec5d4b55cb7279371347fb17a5db5c9b0bfb67c3f82db147c29a888b80a8cc98"
+      "sha256": "0d2e3ddd75cef0e9fe34d4139c42f68048909a73afb3369d04824fd1de90f512"
     },
     {
       "path": "lib/os/os-creator/SLOSDevTree.sleela",
@@ -49480,7 +49504,7 @@
     },
     {
       "path": "lib/os/os-generate.sleela",
-      "sha256": "fb2dd3a9b1df77f157353e574113d3a9228ffe8a89bcc8d4ed665c3efad66d41"
+      "sha256": "9e21e035a2da569c75470004737003641a6ae80bd8ce06902bddc3671bddfe8b"
     },
     {
       "path": "lib/os/ssd/SLSSD.sleela",
@@ -50483,6 +50507,10 @@
       "sha256": "a8c30907f2c55550ffff9ff07c2b059eb4175c82ee191c5624d0c406fbbf7519"
     },
     {
+      "path": "lib/vm/SLVMComponentFetcher.sleela",
+      "sha256": "036422f5afda7bca0577f8b8e8ef1fd7fdda95f7d316ed0fd10c93325a701e82"
+    },
+    {
       "path": "lib/vm/SLVMField.sleela",
       "sha256": "e490bdee16899c8f96b728dca40e93e5c0e2a690d6423ce3c146782e21cab847"
     },
@@ -50757,6 +50785,22 @@
     {
       "path": "lib/vm/creator/SleelaVMGenerationCatalog.sleela",
       "sha256": "6647f71c3d8f4e3939191923eb2a081810539d0330b4f83866a12575538cdc97"
+    },
+    {
+      "path": "lib/vm/examples/01-novice/novice-vm.sleela",
+      "sha256": "e87dd365e9678e24f979b0b6f44f7babf781dfd4614d6923a6e81065f752d9eb"
+    },
+    {
+      "path": "lib/vm/examples/02-mid/mid-vm-config.sleela",
+      "sha256": "1c9a3ad98e27d34dd8133afca813358d69ed70ed70ff584c26bc86efc4c8fda9"
+    },
+    {
+      "path": "lib/vm/examples/03-senior/senior-vm-managers.sleela",
+      "sha256": "19cd698536b3d1f6d0c64b10806fb085f21b2cb773b47889051c149b7afcfe80"
+    },
+    {
+      "path": "lib/vm/examples/04-very-senior/very-senior-vm.sleela",
+      "sha256": "a0a77adedced44de3bacb2c59866ad22ffbe9d01b0ebe816ada5b2bafcb600bb"
     },
     {
       "path": "lib/vm/include/sleela_vm_builder.hpp",
