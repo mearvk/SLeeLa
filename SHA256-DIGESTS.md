@@ -17359,12 +17359,12 @@ e67d6059fe35e4f54eedafe508fbcb12f4faad99564bd1db1f538172fa99b03b  lib/sleela-sql
 1e1ffd96352502de75298ceb63a271b363690158b2a6dfec6a695395f835a093  lib/sleela-sql/examples/07-fluent.ssql
 0d9eefa66eb536a91f24d11af019bd5fa9f40bbe89303d2d2684b1ae85edf700  lib/sleela-sql/examples/08-prepared-statements.c
 25c1d452fefd6256430b1d64658b004ef754819ea005b53cbf933e0bded5f298  lib/sleela-sql/examples/09-alter-table-add-column.sql
-e7d73b7994abf5b7226cf36f872345386ae44d9d6cce97392137a27f55fa501d  lib/sleela-sql/examples/09-alter-table-proposal.sql
+34d38625b55ee392181bc645add57d1635f6c692357f176fd1450895b432df79  lib/sleela-sql/examples/09-alter-table-proposal.sql
 266748c021800d906c277f7ebd6b73cf40da0cc515a21c5e75f07b13498b7bca  lib/sleela-sql/examples/10-alter-table-default.sql
 f609fc5fa88991d2c55883ca919a9ddb21c9a4b4ddd91213c83f4a6fb835f466  lib/sleela-sql/examples/11-alter-table-errors.sql
 6aa8958f1d7fe5671e2a5d109dd0b2ee77193954ae40db088c46a16070dedf67  lib/sleela-sql/examples/README.md
 b79f1921086c9d316f7524c805b6075867d1a14a25bb72792d04e2b8ca7e6c1b  lib/sleela-sql/native/include/sleela_sql.h
-8602d7ae2d82fe6df0ae5cea98c00d4eb145b90bfbf62bb82958cc6223fbcc8f  lib/sleela-sql/native/src/sleela_sql.c
+b8ca04c30c96ede70936fff253b784c619108486ce62211ea8110ed9bbcfd43a  lib/sleela-sql/native/src/sleela_sql.c
 d2a2ec4af6d309a74f1122bff3bc037e8751eb707d88a9b124fb3c457fd475fe  lib/sleela-sql/native/src/sleela_sql_cli.c
 96894bda240b1e12f814521a3014a1944ed2933072dad9fed71609993d61c7dc  lib/sleela-sql/samples/demo.sql
 2a1bbebc0132edd60b5cf3854315f6606779ea0a38e1a2a388988b3cc9698a59  lib/sleela-sql/samples/demo.ssql
