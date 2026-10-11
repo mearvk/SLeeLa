@@ -1,0 +1,43 @@
+/*
+ * Backend contract for translating validated SLeeLa compiler IR into portable
+ * C or C++ source. Unsupported constructs must be rejected, never approximated.
+ */
+#sleela 1.3
+class SLNativeSourceEmitter {
+  String target;
+  String languageVersion;
+  boolean strict;
+  String diagnostic;
+
+  void configure(String targetName, String specVersion) {
+    target = targetName;
+    languageVersion = specVersion;
+    strict = true;
+    diagnostic = "";
+  }
+
+  boolean validateTarget() {
+    if (target != "C" && target != "CPP") {
+      diagnostic = "native source target must be C or CPP";
+      return false;
+    }
+    if (languageVersion == null || languageVersion == "") {
+      diagnostic = "SLeeLa language version is required";
+      return false;
+    }
+    return true;
+  }
+
+  // The native bridge consumes verified compiler IR, not unchecked source text.
+  boolean emitVerifiedIR(String irPath, String outputPath) {
+    if (!validateTarget()) return false;
+    if (irPath == null || irPath == "" || outputPath == null || outputPath == "") {
+      diagnostic = "IR input and output path are required";
+      return false;
+    }
+    return native sleela_compiler_emit_verified_ir(
+      irPath, outputPath, target, languageVersion, strict);
+  }
+
+  String diagnostics() { return diagnostic; }
+}
