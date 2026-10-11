@@ -218,6 +218,8 @@ typedef enum {
     OP_CREATE,       /* CREATE TABLE                                        */
     OP_DROP,         /* DROP TABLE                                          */
     OP_INSERT,       /* INSERT                                              */
+    OP_UPDATE,       /* UPDATE                                              */
+    OP_DELETE,       /* DELETE                                              */
     OP_SELECT,       /* SELECT                                              */
     OP_SHOW_TABLES   /* SHOW TABLES                                         */
 } ssql_op;
@@ -439,6 +441,73 @@ static ssql_status sql_select(ssql_stmt *st, char *rest) {
     return SSQL_OK;
 }
 
+/* UPDATE <table> SET c=v [, c=v ...] [WHERE c = v] */
+static ssql_status sql_update(ssql_stmt *st, char *rest) {
+    char *setpos = rest;
+    while (*setpos && !((setpos == rest || isspace((unsigned char)setpos[-1])) &&
+                         kw_eq(setpos, "set"))) setpos++;
+    if (!*setpos) return SSQL_ERR_SYNTAX;
+    *setpos = '\0';
+    char *name = trim(rest);
+    if (!*name || strlen(name) >= sizeof(st->table)) return SSQL_ERR_SYNTAX;
+    snprintf(st->table, sizeof(st->table), "%s", name);
+    char *assignments = trim(setpos + 3);
+    char *wpos = assignments;
+    while (*wpos && !((wpos == assignments || isspace((unsigned char)wpos[-1])) &&
+                       kw_eq(wpos, "where"))) wpos++;
+    char assignbuf[SSQL_MAX_FIELD];
+    size_t alen = (size_t)(wpos - assignments);
+    if (alen == 0 || alen >= sizeof(assignbuf)) return SSQL_ERR_SYNTAX;
+    memcpy(assignbuf, assignments, alen);
+    assignbuf[alen] = '\0';
+    char *items[SSQL_MAX_COLS];
+    int n = split_fields(assignbuf, items, SSQL_MAX_COLS);
+    if (n < 1) return SSQL_ERR_SYNTAX;
+    for (int i = 0; i < n; ++i) {
+        char *eq = strchr(items[i], '=');
+        if (!eq) return SSQL_ERR_SYNTAX;
+        *eq = '\0';
+        char *col = trim(items[i]);
+        char *value = trim(eq + 1);
+        if (!*col || !*value) return SSQL_ERR_SYNTAX;
+        st->cols[i] = str_dup(col);
+        if (!st->cols[i]) return SSQL_ERR_OOM;
+        value = unquote(value);
+        if (val_set(st, &st->vals[i], value) != 0) return SSQL_ERR_OOM;
+        st->ncols++;
+        st->nvals++;
+    }
+    if (*wpos) {
+        ssql_status status = parse_where(st, trim(wpos + 5));
+        if (status != SSQL_OK) return status;
+    }
+    st->op = OP_UPDATE;
+    return SSQL_OK;
+}
+
+/* DELETE FROM <table> [WHERE c = v] */
+static ssql_status sql_delete(ssql_stmt *st, char *rest) {
+    if (!kw_eq(rest, "from")) return SSQL_ERR_SYNTAX;
+    rest = trim(rest + 4);
+    char *wpos = rest;
+    while (*wpos && !((wpos == rest || isspace((unsigned char)wpos[-1])) &&
+                       kw_eq(wpos, "where"))) wpos++;
+    char namebuf[SSQL_MAX_FIELD];
+    size_t n = (size_t)(wpos - rest);
+    if (!n || n >= sizeof(namebuf)) return SSQL_ERR_SYNTAX;
+    memcpy(namebuf, rest, n);
+    namebuf[n] = '\0';
+    char *name = trim(namebuf);
+    if (!*name || strlen(name) >= sizeof(st->table)) return SSQL_ERR_SYNTAX;
+    snprintf(st->table, sizeof(st->table), "%s", name);
+    if (*wpos) {
+        ssql_status status = parse_where(st, trim(wpos + 5));
+        if (status != SSQL_OK) return status;
+    }
+    st->op = OP_DELETE;
+    return SSQL_OK;
+}
+
 static ssql_status compile_sql(ssql_stmt *st, char *stmt) {
     if (kw_eq(stmt, "create")) {
         char *r = trim(stmt + 6);
@@ -451,6 +520,8 @@ static ssql_status compile_sql(ssql_stmt *st, char *stmt) {
         return sql_drop(st, trim(r + 5));
     }
     if (kw_eq(stmt, "insert")) return sql_insert(st, trim(stmt + 6));
+    if (kw_eq(stmt, "update")) return sql_update(st, trim(stmt + 6));
+    if (kw_eq(stmt, "delete")) return sql_delete(st, trim(stmt + 6));
     if (kw_eq(stmt, "select")) return sql_select(st, trim(stmt + 6));
     if (kw_eq(stmt, "show")) {
         char *r = trim(stmt + 4);
@@ -773,6 +844,95 @@ static ssql_status exec_select(ssql_stmt *st, FILE *out) {
     return SSQL_OK;
 }
 
+/* Replace a rewritten table safely on POSIX and with rollback on Windows. */
+static ssql_status replace_table_file(const char *tmp, const char *path) {
+#ifdef _WIN32
+    char backup[SSQL_MAX_PATH];
+    if (snprintf(backup, sizeof(backup), "%s.bak", path) >= (int)sizeof(backup))
+        return SSQL_ERR_IO;
+    (void)remove(backup);
+    if (rename(path, backup) != 0) return SSQL_ERR_IO;
+    if (rename(tmp, path) != 0) {
+        (void)rename(backup, path);
+        return SSQL_ERR_IO;
+    }
+    (void)remove(backup);
+#else
+    if (rename(tmp, path) != 0) return SSQL_ERR_IO;
+#endif
+    return SSQL_OK;
+}
+
+/* UPDATE and DELETE share a bounded, streaming CSV rewrite. */
+static ssql_status exec_rewrite(ssql_stmt *st, int deleting) {
+    const char *where_value = NULL;
+    if (st->have_where) {
+        ssql_status status = val_resolve(&st->where_val, &where_value);
+        if (status != SSQL_OK) return status;
+    }
+    const char *set_values[SSQL_MAX_COLS];
+    if (!deleting) {
+        for (int i = 0; i < st->nvals; ++i) {
+            ssql_status status = val_resolve(&st->vals[i], &set_values[i]);
+            if (status != SSQL_OK) return status;
+        }
+    }
+    char path[SSQL_MAX_PATH], tmp[SSQL_MAX_PATH];
+    table_path(st->db, st->table, path, sizeof(path));
+    if (snprintf(tmp, sizeof(tmp), "%s.tmp", path) >= (int)sizeof(tmp))
+        return SSQL_ERR_IO;
+    FILE *in = fopen(path, "rb");
+    if (!in) return SSQL_ERR_NOTABLE;
+    FILE *out = fopen(tmp, "wb");
+    if (!out) { fclose(in); return SSQL_ERR_IO; }
+    char line[SSQL_MAX_FIELD * 8];
+    char *columns[SSQL_MAX_COLS];
+    int ncolumns = 0;
+    if (!fgets(line, sizeof(line), in)) {
+        fclose(in); fclose(out); remove(tmp); return SSQL_ERR_IO;
+    }
+    ncolumns = csv_parse_line(line, columns, SSQL_MAX_COLS);
+    if (ncolumns < 1) { fclose(in); fclose(out); remove(tmp); return SSQL_ERR_IO; }
+    int set_idx[SSQL_MAX_COLS];
+    if (!deleting) {
+        for (int i = 0; i < st->ncols; ++i) {
+            set_idx[i] = find_col(columns, ncolumns, st->cols[i]);
+            if (set_idx[i] < 0) { fclose(in); fclose(out); remove(tmp); return SSQL_ERR_NOCOL; }
+            for (int j = 0; j < i; ++j)
+                if (set_idx[i] == set_idx[j]) { fclose(in); fclose(out); remove(tmp); return SSQL_ERR_SYNTAX; }
+        }
+    }
+    int where_idx = -1;
+    if (st->have_where) {
+        where_idx = find_col(columns, ncolumns, st->where_col);
+        if (where_idx < 0) { fclose(in); fclose(out); remove(tmp); return SSQL_ERR_NOCOL; }
+    }
+    csv_write_row(out, columns, ncolumns);
+    while (fgets(line, sizeof(line), in)) {
+        char rowbuf[SSQL_MAX_FIELD * 8];
+        snprintf(rowbuf, sizeof(rowbuf), "%s", line);
+        char *fields[SSQL_MAX_COLS];
+        int nf = csv_parse_line(rowbuf, fields, SSQL_MAX_COLS);
+        if (nf == 0) continue;
+        if (nf != ncolumns) { fclose(in); fclose(out); remove(tmp); return SSQL_ERR_IO; }
+        int matches = !st->have_where ||
+                      (where_idx < nf && strcmp(fields[where_idx], where_value) == 0);
+        if (deleting && matches) continue;
+        if (!deleting && matches)
+            for (int i = 0; i < st->ncols; ++i) fields[set_idx[i]] = (char *)set_values[i];
+        csv_write_row(out, fields, nf);
+        if (ferror(out)) { fclose(in); fclose(out); remove(tmp); return SSQL_ERR_IO; }
+    }
+    int input_error = ferror(in);
+    int output_error = ferror(out);
+    if (fclose(in) != 0) input_error = 1;
+    if (fclose(out) != 0) output_error = 1;
+    if (input_error || output_error) { remove(tmp); return SSQL_ERR_IO; }
+    ssql_status status = replace_table_file(tmp, path);
+    if (status != SSQL_OK) remove(tmp);
+    return status;
+}
+
 static void emit_table_name(FILE *out, const char *filename) {
     size_t len = strlen(filename);
     if (len <= 4 || strcmp(filename + len - 4, ".csv") != 0) return;
@@ -817,6 +977,8 @@ static ssql_status exec_stmt(ssql_stmt *st, FILE *out) {
         case OP_CREATE:      return exec_create(st);
         case OP_DROP:        return exec_drop(st);
         case OP_INSERT:      return exec_insert(st);
+        case OP_UPDATE:      return exec_rewrite(st, 0);
+        case OP_DELETE:      return exec_rewrite(st, 1);
         case OP_SELECT:      return exec_select(st, out);
         case OP_SHOW_TABLES: return exec_show_tables(st, out);
         default:             return SSQL_ERR_SYNTAX;

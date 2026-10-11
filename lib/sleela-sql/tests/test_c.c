@@ -26,5 +26,31 @@ int main(int argc, char **argv) {
     int count_ok = status == SSQL_OK && fgets(header, sizeof header, out) != NULL &&
                    fgets(count, sizeof count, out) != NULL && strcmp(count, "1\n") == 0;
     fclose(out);
-    return count_ok ? 0 : 12;
+    if (!count_ok) return 12;
+
+    if (ssql_exec(&db, "UPDATE items SET name = 'gamma' WHERE id = 1", NULL) != SSQL_OK) return 13;
+    out = tmpfile();
+    if (!out) return 14;
+    status = ssql_exec(&db, "SELECT name FROM items WHERE id = 1", out);
+    rewind(out);
+    char updated_header[128], updated_value[128];
+    int update_ok = status == SSQL_OK &&
+                    fgets(updated_header, sizeof updated_header, out) != NULL &&
+                    fgets(updated_value, sizeof updated_value, out) != NULL &&
+                    strcmp(updated_value, "gamma\n") == 0;
+    fclose(out);
+    if (!update_ok) return 15;
+
+    if (ssql_exec(&db, "DELETE FROM items WHERE id = 1", NULL) != SSQL_OK) return 16;
+    out = tmpfile();
+    if (!out) return 17;
+    status = ssql_exec(&db, "SELECT COUNT(*) FROM items", out);
+    rewind(out);
+    char delete_header[128], delete_count[128];
+    int delete_ok = status == SSQL_OK &&
+                    fgets(delete_header, sizeof delete_header, out) != NULL &&
+                    fgets(delete_count, sizeof delete_count, out) != NULL &&
+                    strcmp(delete_count, "0\n") == 0;
+    fclose(out);
+    return delete_ok ? 0 : 18;
 }
