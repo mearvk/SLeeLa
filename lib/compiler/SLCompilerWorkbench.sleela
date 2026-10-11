@@ -1,0 +1,46 @@
+/*
+ * SLeeLa compiler developer workbench: runnable-facing build coordinator.
+ * File I/O and process creation remain in the explicitly enabled native bridge.
+ */
+#sleela 1.3
+class SLCompilerWorkbench {
+  SLCompilerRegistry registry;
+  SLCompilerPipeline pipeline;
+  SLCompilerBuildRequest request;
+  SLCompilerBuildResult result;
+  String diagnostic;
+
+  void configure() {
+    registry = new SLCompilerRegistry();
+    pipeline = new SLCompilerPipeline();
+    request = new SLCompilerBuildRequest();
+    result = new SLCompilerBuildResult();
+    result.configure();
+    diagnostic = "";
+  }
+
+  boolean configureBuild(String sourcePath, String outputPath, String target, String compilerPath) {
+    request.configure(sourcePath, outputPath, target, compilerPath);
+    diagnostic = request.validate();
+    return diagnostic == "";
+  }
+
+  SLCompilerBuildResult build() {
+    if (request == null) {
+      result.fail("workbench is not configured");
+      return result;
+    }
+    diagnostic = request.validate();
+    if (diagnostic != "") {
+      result.fail(diagnostic);
+      return result;
+    }
+    result = native sleela_compiler_workbench_build(
+      request.sourcePath(), request.outputPath(), request.targetName(),
+      request.compilerPath(), request.strictMode());
+    return result;
+  }
+
+  String status() { return result.status(); }
+  String diagnostics() { return diagnostic + result.diagnostics(); }
+}
