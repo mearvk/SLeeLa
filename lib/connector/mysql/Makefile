@@ -2,12 +2,12 @@ CC ?= cc
 CXX ?= c++
 AR ?= ar
 PKG_CONFIG ?= pkg-config
-MYSQL_PKG ?= libmariadb
+MYSQL_PKG ?= $(shell if $(PKG_CONFIG) --exists libmariadb 2>/dev/null; then echo libmariadb; elif $(PKG_CONFIG) --exists mysqlclient 2>/dev/null; then echo mysqlclient; else echo libmariadb; fi)
 CFLAGS ?= -O2
 CXXFLAGS ?= -O2
 CPPFLAGS ?=
-MYSQL_CFLAGS ?= $(shell $(PKG_CONFIG) --cflags $(MYSQL_PKG) 2>/dev/null)
-MYSQL_LIBS ?= $(shell $(PKG_CONFIG) --libs $(MYSQL_PKG) 2>/dev/null)
+MYSQL_CFLAGS ?= $(shell $(PKG_CONFIG) --cflags $(MYSQL_PKG) 2>/dev/null || $(PKG_CONFIG) --cflags mysqlclient 2>/dev/null)
+MYSQL_LIBS ?= $(shell $(PKG_CONFIG) --libs $(MYSQL_PKG) 2>/dev/null || $(PKG_CONFIG) --libs mysqlclient 2>/dev/null)
 BUILD_DIR ?= build
 
 .PHONY: all clean test
@@ -27,7 +27,3 @@ test: $(BUILD_DIR)/test_mysql_connector
 	$(BUILD_DIR)/test_mysql_connector
 clean:
 	rm -rf $(BUILD_DIR)
-
-# Explicit alias for scripts and IDE build actions.
-build: all
-.PHONY: build

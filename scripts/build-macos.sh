@@ -1,18 +1,18 @@
 #!/bin/bash
 
 # =============================================================================
-# build-macos.sh — Build SLeeLa for macOS and install to /usr/local/bin
+# build-macos.sh — Build SLeeLa for macOS; optional install when BIN_DIR is set
 # =============================================================================
 # 
 # Usage:
-#   ./build-macos.sh              # Build with default flags
+#   ./build-macos.sh              # Build only (no install)
 #   CC=clang CXX=clang++ ./build-macos.sh
-#   BIN_DIR=/usr/local/bin ./build-macos.sh
+#   BIN_DIR="$HOME/bin" ./build-macos.sh
 #
 # Environment variables (optional):
 #   CC              C compiler (default: clang)
 #   CXX             C++ compiler (default: clang++)
-#   BIN_DIR         Installation directory (default: /usr/local/bin)
+#   BIN_DIR         Optional installation directory (unset means build only)
 #   CFLAGS          Custom C compiler flags
 #   CXXFLAGS        Custom C++ compiler flags
 #
@@ -27,7 +27,7 @@
 set -e  # Exit on error
 
 # Configuration
-BIN_DIR="${BIN_DIR:-/usr/local/bin}"
+BIN_DIR="${BIN_DIR:-}"
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 IMPL_DIR="$REPO_ROOT/impl"
@@ -48,7 +48,7 @@ echo "SLeeLa macOS Build Configuration"
 echo "=========================================="
 echo "C Compiler:       $CC"
 echo "C++ Compiler:     $CXX"
-echo "Installation Dir: $BIN_DIR"
+echo "Installation Dir: ${BIN_DIR:-<build only>}"
 echo "Build Dir:        $BUILD_DIR"
 echo "========================================"
 echo ""
@@ -115,7 +115,7 @@ ls -lh "$BUILD_DIR/sleela" "$BUILD_DIR/nordshrift"
 echo ""
 
 # Check if we have write permission to BIN_DIR
-if [ "$BIN_DIR" != "$BUILD_DIR" ]; then
+if [ -n "$BIN_DIR" ] && [ "$BIN_DIR" != "$BUILD_DIR" ]; then
     if [ ! -d "$BIN_DIR" ]; then
         echo "ERROR: Installation directory '$BIN_DIR' does not exist."
         echo "Create it first, or set BIN_DIR to an existing directory."
