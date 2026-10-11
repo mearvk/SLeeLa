@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 10907
+library-source-files: 10933
 library-packages: 90
 module-facade-symbols: 62
-total-symbol-records: 10969
+total-symbol-records: 10995
 
 package	symbol	path	kind
 alphabet	Alphabet.sleela	lib/alphabet/Alphabet.sleela	source
@@ -10564,22 +10564,34 @@ opcodes	SLOpcodeGroupSet.sleela	lib/opcodes/running/SLOpcodeGroupSet.sleela	sour
 opcodes	SLOpcodeReactorBank.sleela	lib/opcodes/running/SLOpcodeReactorBank.sleela	source
 opcodes	SLOpcodeWarmer.sleela	lib/opcodes/running/SLOpcodeWarmer.sleela	source
 os	SLArchitectureSet.sleela	lib/os/SLArchitectureSet.sleela	source
+os	SLBaseDriverSeries.sleela	lib/os/SLBaseDriverSeries.sleela	source
 os	SLBootloaderSpec.sleela	lib/os/SLBootloaderSpec.sleela	source
 os	SLCEmitter.sleela	lib/os/SLCEmitter.sleela	source
 os	SLClock.sleela	lib/os/SLClock.sleela	source
+os	SLCompatLayer.sleela	lib/os/SLCompatLayer.sleela	source
+os	SLCompatSet.sleela	lib/os/SLCompatSet.sleela	source
+os	SLConfigSet.sleela	lib/os/SLConfigSet.sleela	source
 os	SLCppEmitter.sleela	lib/os/SLCppEmitter.sleela	source
 os	SLDesktopSpec.sleela	lib/os/SLDesktopSpec.sleela	source
 os	SLDirectory.sleela	lib/os/SLDirectory.sleela	source
+os	SLDistroFetch.sleela	lib/os/SLDistroFetch.sleela	source
+os	SLDistroSource.sleela	lib/os/SLDistroSource.sleela	source
+os	SLDownloadSet.sleela	lib/os/SLDownloadSet.sleela	source
 os	SLDriverSet.sleela	lib/os/SLDriverSet.sleela	source
+os	SLDriverSource.sleela	lib/os/SLDriverSource.sleela	source
 os	SLEnvironment.sleela	lib/os/SLEnvironment.sleela	source
 os	SLEventSignal.sleela	lib/os/SLEventSignal.sleela	source
+os	SLExecutableTranslator.sleela	lib/os/SLExecutableTranslator.sleela	source
+os	SLExecutableTypes.sleela	lib/os/SLExecutableTypes.sleela	source
 os	SLFile.sleela	lib/os/SLFile.sleela	source
 os	SLFileSystem.sleela	lib/os/SLFileSystem.sleela	source
+os	SLFilesystemCatalog.sleela	lib/os/SLFilesystemCatalog.sleela	source
 os	SLFilesystemLayout.sleela	lib/os/SLFilesystemLayout.sleela	source
 os	SLHardwareComponent.sleela	lib/os/SLHardwareComponent.sleela	source
 os	SLHardwareRegistry.sleela	lib/os/SLHardwareRegistry.sleela	source
 os	SLISOBuilder.sleela	lib/os/SLISOBuilder.sleela	source
 os	SLInstallerGenerator.sleela	lib/os/SLInstallerGenerator.sleela	source
+os	SLKernelCatalog.sleela	lib/os/SLKernelCatalog.sleela	source
 os	SLKernelSpec.sleela	lib/os/SLKernelSpec.sleela	source
 os	SLLinuxOS.sleela	lib/os/SLLinuxOS.sleela	source
 os	SLLinuxOSModel.sleela	lib/os/SLLinuxOSModel.sleela	source
@@ -10599,8 +10611,14 @@ os	SLPath.sleela	lib/os/SLPath.sleela	source
 os	SLPermissions.sleela	lib/os/SLPermissions.sleela	source
 os	SLProcess.sleela	lib/os/SLProcess.sleela	source
 os	SLServiceSet.sleela	lib/os/SLServiceSet.sleela	source
+os	SLSupportDownloader.sleela	lib/os/SLSupportDownloader.sleela	source
+os	SLSwapConfig.sleela	lib/os/SLSwapConfig.sleela	source
 os	SLWindowsOS.sleela	lib/os/SLWindowsOS.sleela	source
 os	SLWindowsOSModel.sleela	lib/os/SLWindowsOSModel.sleela	source
+os	distro-source.sleela	lib/os/distro-source.sleela	source
+os	linux-creator.sleela	lib/os/examples/linux/linux-creator.sleela	source
+os	macos-creator.sleela	lib/os/examples/macos/macos-creator.sleela	source
+os	windows-creator.sleela	lib/os/examples/windows/windows-creator.sleela	source
 os	SLHardDisk.sleela	lib/os/hdd/SLHardDisk.sleela	source
 os	SLHardDiskCatalog.sleela	lib/os/hdd/SLHardDiskCatalog.sleela	source
 os	machine-build.sleela	lib/os/machine-build.sleela	source
@@ -10608,7 +10626,9 @@ os	SLDDRCatalog.sleela	lib/os/memory-ddr/SLDDRCatalog.sleela	source
 os	SLDDRModule.sleela	lib/os/memory-ddr/SLDDRModule.sleela	source
 os	os-build.sleela	lib/os/os-build.sleela	source
 os	SLBIOSEmitter.sleela	lib/os/os-creator/SLBIOSEmitter.sleela	source
+os	SLBaseDriverEmitter.sleela	lib/os/os-creator/SLBaseDriverEmitter.sleela	source
 os	SLBootLoaderEmitter.sleela	lib/os/os-creator/SLBootLoaderEmitter.sleela	source
+os	SLCompatLoaderEmitter.sleela	lib/os/os-creator/SLCompatLoaderEmitter.sleela	source
 os	SLDesktopLoaderEmitter.sleela	lib/os/os-creator/SLDesktopLoaderEmitter.sleela	source
 os	SLDriverLoaderEmitter.sleela	lib/os/os-creator/SLDriverLoaderEmitter.sleela	source
 os	SLKernelLoaderEmitter.sleela	lib/os/os-creator/SLKernelLoaderEmitter.sleela	source
@@ -10620,6 +10640,7 @@ os	SLSourceDropper.sleela	lib/os/os-creator/SLSourceDropper.sleela	source
 os	SLToolchainEmitter.sleela	lib/os/os-creator/SLToolchainEmitter.sleela	source
 os	SLUEFIEmitter.sleela	lib/os/os-creator/SLUEFIEmitter.sleela	source
 os	os-creator.sleela	lib/os/os-creator/os-creator.sleela	source
+os	os-generate.sleela	lib/os/os-generate.sleela	source
 os	SLSSD.sleela	lib/os/ssd/SLSSD.sleela	source
 os	SLSSDCatalog.sleela	lib/os/ssd/SLSSDCatalog.sleela	source
 os	SLUEFIFirmware.sleela	lib/os/uefi/SLUEFIFirmware.sleela	source
@@ -10855,6 +10876,7 @@ vm	GarbageCollector.sleela	lib/vm/GarbageCollector.sleela	source
 vm	InstructionSet.sleela	lib/vm/InstructionSet.sleela	source
 vm	SLVM.sleela	lib/vm/SLVM.sleela	source
 vm	SLVMClass.sleela	lib/vm/SLVMClass.sleela	source
+vm	SLVMComponentFetcher.sleela	lib/vm/SLVMComponentFetcher.sleela	source
 vm	SLVMField.sleela	lib/vm/SLVMField.sleela	source
 vm	SLVMFrame.sleela	lib/vm/SLVMFrame.sleela	source
 vm	SLVMHeap.sleela	lib/vm/SLVMHeap.sleela	source
@@ -10924,6 +10946,10 @@ vm	SLVMSpecialist.sleela	lib/vm/creator/SLVMSpecialist.sleela	source
 vm	SLVMSupervisor.sleela	lib/vm/creator/SLVMSupervisor.sleela	source
 vm	SleelaVMCore.sleela	lib/vm/creator/SleelaVMCore.sleela	source
 vm	SleelaVMGenerationCatalog.sleela	lib/vm/creator/SleelaVMGenerationCatalog.sleela	source
+vm	novice-vm.sleela	lib/vm/examples/01-novice/novice-vm.sleela	source
+vm	mid-vm-config.sleela	lib/vm/examples/02-mid/mid-vm-config.sleela	source
+vm	senior-vm-managers.sleela	lib/vm/examples/03-senior/senior-vm-managers.sleela	source
+vm	very-senior-vm.sleela	lib/vm/examples/04-very-senior/very-senior-vm.sleela	source
 vm	basic-vm.sleela	lib/vm/tutorials/examples/basic-vm.sleela	source
 vm	startup-and-memory-guard.sleela	lib/vm/tutorials/examples/startup-and-memory-guard.sleela	source
 website	SLWebsiteDesign.sleela	lib/website/SLWebsiteDesign.sleela	source
