@@ -1,0 +1,178 @@
+/*
+ * lib/os/SLFilesystemCatalog.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLFilesystemCatalog — the catalogue of filesystem (file
+ *   table) types still in use, with the real properties a builder needs to
+ *   choose one: the family (FAT / NTFS / ext / Apple / Unix / network /
+ *   pseudo / optical), journaling, case sensitivity, the native OS, a typical
+ *   maximum file size, and whether it is bootable as a root filesystem. It
+ *   covers the FAT lineage (FAT12/16/32, exFAT, vFAT), Windows (NTFS, ReFS),
+ *   Linux (ext2/3/4, XFS, Btrfs, F2FS, JFS, ReiserFS), cross-platform (ZFS),
+ *   Apple (APFS, HFS+), classic Unix (UFS), optical/removable (ISO9660, UDF),
+ *   compressed/pseudo (SquashFS, tmpfs, swap), and network (NFS, SMB/CIFS).
+ *
+ * It answers "is <fs> a known table type?", "which OS owns it?", "can it root a
+ * boot?", "does it journal?", and returns a mkfs-style tool name — so the OS
+ * model's SLFilesystemLayout and the installer can pick and format correctly.
+ *
+ * Family: os. Pure design/catalogue model; no native bridge calls.
+ */
+#sleela 1.11
+class SLFilesystemCatalog {
+
+  // Canonical, lowercase filesystem identifiers this catalogue knows.
+  boolean isKnown(String fs) {
+    return family(fs) != "unknown";
+  }
+
+  // The family a filesystem belongs to, or "unknown".
+  String family(String fs) {
+    if (fs == "fat12" || fs == "fat16" || fs == "fat32" || fs == "vfat" || fs == "exfat") { return "FAT"; }
+    if (fs == "ntfs" || fs == "refs") { return "Windows"; }
+    if (fs == "ext2" || fs == "ext3" || fs == "ext4") { return "ext"; }
+    if (fs == "xfs" || fs == "btrfs" || fs == "f2fs" || fs == "jfs" || fs == "reiserfs") { return "Linux"; }
+    if (fs == "zfs") { return "cross-platform"; }
+    if (fs == "apfs" || fs == "hfs+" || fs == "hfsplus") { return "Apple"; }
+    if (fs == "ufs") { return "Unix"; }
+    if (fs == "iso9660" || fs == "udf") { return "optical"; }
+    if (fs == "squashfs" || fs == "tmpfs" || fs == "swap" || fs == "overlayfs") { return "pseudo"; }
+    if (fs == "nfs" || fs == "smb" || fs == "cifs") { return "network"; }
+    return "unknown";
+  }
+
+  // The OS that natively owns/defaults to this filesystem.
+  String nativeOs(String fs) {
+    String f = family(fs);
+    if (f == "FAT")     { return "cross-platform"; }  // universally supported
+    if (f == "Windows") { return "Windows"; }
+    if (f == "ext" || f == "Linux") { return "Linux"; }
+    if (f == "Apple")   { return "macOS"; }
+    if (f == "Unix")    { return "BSD/Unix"; }
+    if (f == "cross-platform") { return "cross-platform"; }
+    return f;
+  }
+
+  // Does it journal (crash-consistent metadata)? FAT and classic HFS do not.
+  boolean journaling(String fs) {
+    if (fs == "ext3" || fs == "ext4" || fs == "ntfs" || fs == "xfs"
+     || fs == "jfs" || fs == "reiserfs" || fs == "refs") { return true; }
+    // Copy-on-write filesystems are crash-consistent without a classic journal.
+    if (fs == "btrfs" || fs == "zfs" || fs == "apfs" || fs == "f2fs") { return true; }
+    return false;   // fat*, exfat, ext2, hfs+, iso9660, tmpfs, swap, ...
+  }
+
+  // Copy-on-write (snapshotting) filesystems.
+  boolean copyOnWrite(String fs) {
+    return fs == "btrfs" || fs == "zfs" || fs == "apfs";
+  }
+
+  // Case sensitivity of file names by default.
+  String caseSensitivity(String fs) {
+    if (fs == "ntfs" || fs == "refs") { return "case-insensitive (case-preserving)"; }
+    if (family(fs) == "FAT") { return "case-insensitive (case-preserving)"; }
+    if (fs == "apfs") { return "case-insensitive by default (case-sensitive variant exists)"; }
+    if (fs == "hfs+" || fs == "hfsplus") { return "case-insensitive by default"; }
+    return "case-sensitive";   // ext*, xfs, btrfs, zfs, f2fs, ufs, ...
+  }
+
+  // A typical maximum single-file size, as human text (real per-fs limits).
+  String maxFileSize(String fs) {
+    if (fs == "fat12" || fs == "fat16") { return "2 GB"; }
+    if (fs == "fat32") { return "4 GB (minus 1 byte)"; }
+    if (fs == "exfat")  { return "16 EB"; }
+    if (fs == "ntfs")   { return "16 TB (typical; up to 8 PB)"; }
+    if (fs == "refs")   { return "35 PB"; }
+    if (fs == "ext4")   { return "16 TB"; }
+    if (fs == "ext3")   { return "2 TB"; }
+    if (fs == "ext2")   { return "2 TB"; }
+    if (fs == "xfs")    { return "8 EB"; }
+    if (fs == "btrfs")  { return "16 EB"; }
+    if (fs == "zfs")    { return "16 EB"; }
+    if (fs == "apfs")   { return "8 EB"; }
+    if (fs == "f2fs")   { return "3.94 TB"; }
+    if (fs == "hfs+" || fs == "hfsplus") { return "8 EB"; }
+    return "n/a";
+  }
+
+  // Can this filesystem hold a bootable root? (optical/pseudo/network cannot
+  // serve as a general writable root; FAT/EFI can host an ESP but not a Linux
+  // root.) True for the mainstream rootable filesystems.
+  boolean rootable(String fs) {
+    return fs == "ext4" || fs == "ext3" || fs == "xfs" || fs == "btrfs"
+        || fs == "zfs"  || fs == "f2fs" || fs == "ntfs" || fs == "refs"
+        || fs == "apfs" || fs == "hfs+" || fs == "hfsplus" || fs == "ufs";
+  }
+
+  // Suitable for the EFI System Partition (must be FAT).
+  boolean efiSystemPartition(String fs) {
+    return fs == "fat32" || fs == "vfat" || fs == "fat16";
+  }
+
+  // The mkfs-style tool that formats this filesystem.
+  String mkfsTool(String fs) {
+    if (fs == "fat12" || fs == "fat16" || fs == "fat32" || fs == "vfat") { return "mkfs.vfat"; }
+    if (fs == "exfat") { return "mkfs.exfat"; }
+    if (fs == "ntfs")  { return "mkfs.ntfs (mkntfs)"; }
+    if (fs == "refs")  { return "Format-Volume -FileSystem ReFS"; }
+    if (fs == "ext2")  { return "mkfs.ext2"; }
+    if (fs == "ext3")  { return "mkfs.ext3"; }
+    if (fs == "ext4")  { return "mkfs.ext4"; }
+    if (fs == "xfs")   { return "mkfs.xfs"; }
+    if (fs == "btrfs") { return "mkfs.btrfs"; }
+    if (fs == "f2fs")  { return "mkfs.f2fs"; }
+    if (fs == "zfs")   { return "zpool create"; }
+    if (fs == "apfs")  { return "newfs_apfs (diskutil)"; }
+    if (fs == "hfs+" || fs == "hfsplus") { return "newfs_hfs"; }
+    if (fs == "ufs")   { return "newfs"; }
+    if (fs == "iso9660") { return "mkisofs/xorriso"; }
+    if (fs == "udf")   { return "mkudffs"; }
+    if (fs == "squashfs") { return "mksquashfs"; }
+    return "n/a";
+  }
+
+  // A one-line use-case note for a GUI/menu.
+  String useCase(String fs) {
+    if (family(fs) == "FAT") { return "removable media / EFI System Partition; universal compatibility"; }
+    if (fs == "ntfs") { return "Windows system and data volumes"; }
+    if (fs == "refs") { return "Windows Server resilient data volumes"; }
+    if (fs == "ext4") { return "default Linux root/data filesystem"; }
+    if (fs == "xfs")  { return "large-file / high-throughput Linux volumes (RHEL default)"; }
+    if (fs == "btrfs"){ return "Linux snapshots/subvolumes (CoW)"; }
+    if (fs == "zfs")  { return "pooled storage with integrity + snapshots"; }
+    if (fs == "f2fs") { return "flash/SSD-optimised (log-structured)"; }
+    if (fs == "apfs") { return "modern macOS/iOS default (CoW, snapshots)"; }
+    if (fs == "hfs+" || fs == "hfsplus") { return "legacy macOS volumes"; }
+    if (fs == "iso9660") { return "optical media (CD/DVD)"; }
+    if (fs == "udf")  { return "optical media (DVD/Blu-ray) and large images"; }
+    if (fs == "squashfs") { return "read-only compressed images (live media)"; }
+    if (fs == "tmpfs") { return "RAM-backed temporary storage"; }
+    if (fs == "swap") { return "paging/swap area (see SLSwapConfig)"; }
+    if (family(fs) == "network") { return "network/remote filesystem"; }
+    return "general-purpose";
+  }
+
+  // The default root filesystem for an OS shape (what forShape would pick).
+  String defaultRootFor(String shapeName) {
+    if (shapeName == "Windows") { return "ntfs"; }
+    if (shapeName == "macOS")   { return "apfs"; }
+    return "ext4";
+  }
+
+  // A newline menu of the catalogue's rootable choices for a shape, for a GUI.
+  String rootChoicesFor(String shapeName) {
+    if (shapeName == "Windows") { return "ntfs\nrefs"; }
+    if (shapeName == "macOS")   { return "apfs\nhfs+"; }
+    return "ext4\nxfs\nbtrfs\nzfs\nf2fs";
+  }
+
+  // A compact spec line a tool can print for one filesystem.
+  String describe(String fs) {
+    if (!isKnown(fs)) { return fs + ": unknown filesystem"; }
+    String s = fs + " [" + family(fs) + "] native=" + nativeOs(fs);
+    s = s + " journaling=" + yn(journaling(fs)) + " cow=" + yn(copyOnWrite(fs));
+    s = s + " maxfile=" + maxFileSize(fs) + " rootable=" + yn(rootable(fs));
+    s = s + " mkfs=" + mkfsTool(fs);
+    return s;
+  }
+  String yn(boolean b) { if (b) { return "yes"; } return "no"; }
+}

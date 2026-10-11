@@ -701,3 +701,83 @@ The emitted `compat_loader.c` compiles with a stock C toolchain. So the path is
 complete: declare foreign-exec support on the OS model → OS Creator writes the
 loader component → the built OS loads binfmt + Wine (etc.) and runs the guest's
 executables and libraries.
+
+---
+
+# Swap (paging) — kind and quality (`SLSwapConfig`)
+
+`SLSwapConfig` models an OS's swap/paging store: its **kind** and its **quality**.
+
+| Kind | Meaning | Family |
+|---|---|---|
+| `file` | a swap file (e.g. `/swapfile`) | Linux (also macOS) |
+| `partition` | a dedicated swap partition | Linux |
+| `zram` | a compressed RAM block device | Linux |
+| `zswap` | a compressed in-RAM cache in front of a backing swap | Linux |
+| `pagefile` | `pagefile.sys` (system-managed) | Windows |
+| `dynamic` | kernel-managed swap files under `/private/var/vm` | macOS |
+| `none` | swap disabled | any |
+
+**Quality** is the tunable set: size (absolute MB or a RAM multiple), swappiness
+(`0..100` reclaim aggressiveness), compression algorithm + level for zram/zswap
+(`lzo`/`lz4`/`zstd`, with a level knob), and swap priority.
+
+```sleela
+SLSwapConfig s = new SLSwapConfig(); s.forShape(shape);   // Linux: file @ 1.0x RAM, swappiness 60
+s.setSizeMb(8192); s.setSwappiness(10);                   // 8 GB, low reclaim
+print(s.emitLinux());                                      // vm.swappiness + /etc/fstab entry
+
+SLSwapConfig z = new SLSwapConfig();
+z.configure("zram", 4096, 100); z.setCompression("zstd", 3);  // 4 GB zram, zstd level 3
+z.isValid();                                                   // true (compressed kind names an algo)
+```
+
+`forShape()` seeds the family default (Linux swap file, Windows pagefile, macOS
+dynamic); `validForShape()` rejects a kind the family does not use (e.g. `zram`
+on Windows). `emitLinux()` writes the `vm.swappiness` sysctl plus the fstab /
+zram-generator / zswap-cmdline line; `emitForShape()` writes the Windows/macOS
+equivalent note.
+
+# Filesystem (file-table) types — all still in use (`SLFilesystemCatalog`)
+
+`SLFilesystemCatalog` is the catalogue of filesystem table types a builder can
+choose and validate, covering every family still in use:
+
+| Family | Types |
+|---|---|
+| **FAT** | `fat12` `fat16` `fat32` `vfat` `exfat` |
+| **Windows** | `ntfs` `refs` |
+| **ext** | `ext2` `ext3` `ext4` |
+| **Linux** | `xfs` `btrfs` `f2fs` `jfs` `reiserfs` |
+| **cross-platform** | `zfs` |
+| **Apple** | `apfs` `hfs+` |
+| **Unix** | `ufs` |
+| **optical** | `iso9660` `udf` |
+| **pseudo/compressed** | `squashfs` `tmpfs` `swap` `overlayfs` |
+| **network** | `nfs` `smb` `cifs` |
+
+Per type it answers: `family`, `nativeOs`, `journaling`, `copyOnWrite`,
+`caseSensitivity`, `maxFileSize` (real limits), `rootable`,
+`efiSystemPartition`, `mkfsTool`, `useCase`, and `describe` (a one-line spec).
+`defaultRootFor(shape)` / `rootChoicesFor(shape)` drive a format picker.
+
+```sleela
+SLFilesystemCatalog c = new SLFilesystemCatalog();
+c.describe("ext4");               // ext4 [ext] native=Linux journaling=yes cow=no maxfile=16 TB rootable=yes mkfs=mkfs.ext4
+c.efiSystemPartition("fat32");    // true  (an ESP must be FAT)
+c.rootable("iso9660");            // false (optical media is not a writable root)
+c.mkfsTool("btrfs");              // mkfs.btrfs
+c.defaultRootFor("macOS");        // apfs
+```
+
+## In the master document and OS Creator
+
+`SLOSModel` composes an `SLSwapConfig` (`swapConfig()`), seeded per shape by
+`shapeAs`, and exposes `fsCatalog()` for choosing/validating the root filesystem
+that `SLFilesystemLayout` formats. The runnable `os-generate.sleela` writes both
+into the generated tree:
+
+```text
+<OS_OUT>/config/swap.conf          # kind + size + vm.swappiness + fstab entry
+<OS_OUT>/config/filesystems.txt    # chosen root/ESP + the full catalogue of table types
+```

@@ -36,6 +36,7 @@ class SLOSModel {
   SLBootloaderSpec boot;
   SLKernelSpec kernel;
   SLFilesystemLayout filesystem;
+  SLSwapConfig swap;         // swap/paging kind + quality
   SLDriverSet drivers;
   SLPackageSet packages;
   SLServiceSet services;
@@ -52,6 +53,7 @@ class SLOSModel {
     boot = new SLBootloaderSpec();
     kernel = new SLKernelSpec();
     filesystem = new SLFilesystemLayout();
+    swap = new SLSwapConfig();
     drivers = new SLDriverSet();
     packages = new SLPackageSet();
     services = new SLServiceSet();
@@ -72,6 +74,7 @@ class SLOSModel {
     boot.forShape(shape);
     kernel.forShape(shape);
     filesystem.forShape(shape);
+    swap.forShape(shape);
     drivers.forShape(shape);
     packages.baseSeedForShape(shape);
     services.forShape(shape);
@@ -88,7 +91,11 @@ class SLOSModel {
   SLBootloaderSpec bootloader()  { return boot; }
   SLKernelSpec kernelSpec()      { return kernel; }
   SLFilesystemLayout layout()    { return filesystem; }
+  SLSwapConfig swapConfig()      { return swap; }
   SLDriverSet driverSet()        { return drivers; }
+  // The filesystem (file-table) type catalogue — a fresh reference helper for
+  // choosing/validating a filesystem format (FAT/NTFS/ext4/APFS/...).
+  SLFilesystemCatalog fsCatalog() { return new SLFilesystemCatalog(); }
   SLPackageSet packageSet()      { return packages; }
   SLServiceSet serviceSet()      { return services; }
   SLDesktopSpec desktopSpec()    { return desktop; }
