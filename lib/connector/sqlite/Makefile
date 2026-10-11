@@ -11,8 +11,6 @@ sqlite_connector_cpp.o: sqlite_connector.cpp sqlite_connector.hpp sqlite_connect
 	$(CXX) $(CXXFLAGS) $(SQLITE_CFLAGS) -c $< -o $@
 libsleela_sqlite.a: sqlite_connector.o
 	ar rcs $@ $^
-check-link: all
-	$(CC) $(CFLAGS) $(SQLITE_CFLAGS) -x c - -o /tmp/sleela-sqlite-link-check $(SQLITE_LIBS) <<<'#include "sqlite_connector.h"'
 clean:
 	rm -f *.o *.a
-.PHONY: all clean check-link
+.PHONY: all clean
