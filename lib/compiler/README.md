@@ -123,3 +123,8 @@ The SLeeLa-facing developer interface is defined by [COMPILER-DEVELOPER-INTERFAC
 The intended native path is `.sleela compiler source -> validated compiler IR -> C or C++ source -> explicitly selected native toolchain -> native artifact`. The SLeeLa/SLVM route remains the primary VM-oriented path.
 
 **Implementation boundary:** these additions establish the SLeeLa source API and native bridge contract. The native `sleela_compiler_workbench_build` and `sleela_compiler_emit_verified_ir` bridge entry points must be implemented and covered by end-to-end tests before C/C++ source generation can be claimed as operational. Native build authorization defaults to disabled; compilation does not execute the produced program.
+
+
+## Compiler construction examples
+
+The four-stage learning path for implementing a compiler in SLeeLa source is available under [`examples/`](examples/README.md): **Novice**, **Mid**, **Senior**, and **Very Senior**. Each level includes a SLeeLa scaffold, exercises, validation goals, and appropriate safety/reproducibility guidance. These examples are educational scaffolds and do not imply that full self-hosting or complete language coverage has already been verified.
