@@ -37,7 +37,7 @@ This is an experimental subset, not full SLeeLa 1.10 support. Classes, methods, 
 
 `--emit-c` and `--emit-cpp` generate standalone C-compatible source containing validated-subset bytecode and a small checked interpreter. Compile generated output with a C11 or C++20 toolchain. This is a usable native build path for the prototype's supported subset, not a full SLeeLa-to-native compiler or replacement for `/impl`.
 
-The emitter does not execute generated programs. Source compilation, native compilation, and execution remain separate developer-controlled steps. Unsupported source syntax is rejected before emission; inspect generated source and run tests before using artifacts. The interpreter enforces a 65,536-value stack limit and rejects arithmetic overflow, division by zero, invalid opcodes, and invalid local slots.
+The emitter does not execute generated programs. Source compilation, native compilation, and execution remain separate developer-controlled steps. Unsupported source syntax is rejected before emission; inspect generated source and run tests before using artifacts. The interpreter enforces a 65,536-value stack limit and a 65,536-local limit, and rejects arithmetic overflow, division by zero, invalid opcodes, and invalid local slots. Generated runtime arrays use static storage rather than consuming the process's default stack.
 
 CMake uses platform-aware install directories. To stage a user-controlled install without modifying system paths:
 
