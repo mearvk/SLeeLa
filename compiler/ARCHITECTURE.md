@@ -4,7 +4,7 @@ Source -> Lexer -> recursive-descent parser and AST -> semantic checks and lower
 
 The public C++ API is in include/sleela/compiler.hpp. Implementation stages are private to src/compiler.cpp.
 
-Diagnostics include source line and column. Compilation fails for invalid characters, malformed syntax, unknown locals, duplicate declarations, and out-of-range positive integer literals. The interpreter and emitted native interpreter enforce a 65,536-value operand-stack limit, check stack underflow and local-slot bounds, reject invalid opcodes, and diagnose signed arithmetic overflow and division by zero.
+Diagnostics include source line and column. Compilation fails for invalid characters, malformed syntax, unknown locals, duplicate declarations, and out-of-range positive integer literals. The interpreter and emitted native interpreter enforce a 65,536-value operand-stack limit and 65,536-local limit, check stack underflow and local-slot bounds, reject invalid opcodes, and diagnose signed arithmetic overflow and division by zero. The emitted runtime uses static storage for its bounded stack and local arrays to avoid exhausting small default process stacks.
 
 The C11/C++20 source backend serializes the validated bytecode as a static instruction array and emits a small checked runtime. It never executes the generated artifact. A separate native toolchain invocation and a separate explicit run are required. CI builds and unit-tests on Linux, Windows, and macOS; Linux additionally compiles emitted C/C++ with warnings treated as errors and executes normal and arithmetic-fault fixtures.
 
