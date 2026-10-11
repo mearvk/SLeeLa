@@ -12,8 +12,13 @@ on:
       - ".github/workflows/connector-ci.yml"
   workflow_dispatch:
 
+concurrency:
+  group: connector-ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   native-connectors:
+    timeout-minutes: 30
     strategy:
       fail-fast: false
       matrix:
