@@ -27,3 +27,7 @@ test: $(BUILD_DIR)/test_mysql_connector
 	$(BUILD_DIR)/test_mysql_connector
 clean:
 	rm -rf $(BUILD_DIR)
+
+# Explicit alias for scripts and IDE build actions.
+build: all
+.PHONY: build
