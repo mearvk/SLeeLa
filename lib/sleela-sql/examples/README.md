@@ -1,3 +1,5 @@
+<img align="right" src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="75" height="75" alt="SLeeLa">
+
 # SLeeLa SQL examples
 
 These examples use the local CSV-backed `sleela-sql` command-line engine. Run commands from the repository root or adjust paths as needed.
