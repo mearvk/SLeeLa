@@ -10,6 +10,12 @@ on:
 permissions:
   contents: write
 
+# Serialize digest updates per branch. A retry loop below also handles commits
+# pushed by other workflows while this job is running.
+concurrency:
+  group: sha256-digests-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   generate:
     runs-on: ubuntu-latest
@@ -19,17 +25,41 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Generate digest document
-        run: bash tools/generate-all-sha256-md.sh
-
-      - name: Commit digest document
+      - name: Generate and safely publish digest document
+        shell: bash
         run: |
-          if git diff --quiet -- SHA256-DIGESTS.md; then
-            echo "SHA256-DIGESTS.md is already current."
-            exit 0
-          fi
+          set -euo pipefail
+          branch="${GITHUB_REF_NAME}"
+
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add SHA256-DIGESTS.md
-          git commit -m "Generate repository SHA-256 digest document"
-          git push
+
+          # Another workflow may push while the digest is being calculated.
+          # Always regenerate from the latest remote tree, and retry a
+          # non-fast-forward race without force-pushing or dropping commits.
+          for attempt in 1 2 3 4 5; do
+            echo "Digest publication attempt ${attempt}/5"
+            git fetch origin "${branch}"
+            git reset --hard "origin/${branch}"
+
+            bash tools/generate-all-sha256-md.sh
+
+            if git diff --quiet -- SHA256-DIGESTS.md; then
+              echo "SHA256-DIGESTS.md is already current."
+              exit 0
+            fi
+
+            git add SHA256-DIGESTS.md
+            git commit -m "Generate repository SHA-256 digest document"
+
+            if git push origin "HEAD:${branch}"; then
+              echo "Published SHA256-DIGESTS.md successfully."
+              exit 0
+            fi
+
+            echo "Push raced with another update; refreshing and regenerating."
+            sleep 2
+          done
+
+          echo "::error::Could not publish SHA256-DIGESTS.md after five attempts."
+          exit 1
