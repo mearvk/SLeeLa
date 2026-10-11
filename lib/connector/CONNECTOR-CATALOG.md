@@ -20,10 +20,10 @@ Finite connector registry. "Baseline adapter" means a C/C++ API and build target
 | Family / reference | Implementation | Current capability and limitation |
 |---|---|---|
 | `delimited` | Dependency-free C parser + C++ facade | One CSV/TSV record, quoted fields and doubled quotes; caller owns file iteration and encoding |
-| `json` | Dependency-free structural tokenizer + C++ facade | Token offsets and parent links; not a full standards-compliant JSON DOM/validator |
+| `json` | Dependency-free structural tokenizer + C++ facade | Token offsets and parent links; validates nesting and string escapes but is not a full standards-compliant JSON DOM/validator |
 | `xml` | libxml2 validator + C++ facade | Well-formedness validation with network fetching disabled; no XPath/DOM/schema API |
 | `rest` | libcurl C API + C++ facade | GET and JSON POST, timeouts, TLS peer/host verification, redirects disabled; no OAuth/arbitrary-header/retry layer |
-| `mqtt` | Eclipse Mosquitto C API + C++ publisher facade | Connect/publish/network loop; subscriptions, TLS/auth configuration helpers, and reconnect policy not exposed yet |
+| `mqtt` | Eclipse Mosquitto C API + C++ client facade | Connect/publish/subscribe/callback dispatch/network loop; TLS/auth configuration helpers and reconnect policy not exposed yet |
 
 ## Deterministic connector references
 
