@@ -161,7 +161,7 @@ int main() {
             auto hugeRange = expandWord("{1..5000}", env, none);
             assert(hugeRange.size() == 1 && hugeRange[0] == "{1..5000}");
             auto hugeProduct = expandWord("{a,b,c,d}{1,2,3,4}{x,y,z}", env, none);
-            assert(hugeProduct.size() == 36);
+            assert(hugeProduct.size() == 48);
             std::string tooDeep(70, '{');
             tooDeep += "x";
             tooDeep.append(70, '}');
