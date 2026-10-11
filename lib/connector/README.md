@@ -19,14 +19,14 @@ This directory contains native C interfaces and C++17 facades for database and n
 | HTTP/REST | `make -C lib/connector/rest` | libcurl |
 | MQTT publisher | `make -C lib/connector/mqtt` | Eclipse Mosquitto client |
 
-Override each Makefile's `*_CFLAGS` and `*_LIBS` variables for Windows toolchains or nonstandard installations. The vendor profile directories reuse shared adapters rather than duplicating vendor protocol code.
+Override each Makefile's `*_CFLAGS` and `*_LIBS` variables for nonstandard installations. The vendor profile directories reuse shared adapters rather than duplicating vendor protocol code.
 
 ## API and security notes
 
 - Store credentials in environment/configuration or a secret manager; never commit passwords or tokens.
 - Use TLS with certificate verification for remote services. SQL Server and Oracle require their vendor drivers to be installed and configured by the operator.
-- SQLite and PostgreSQL expose prepared/parameterized SQL primitives. The current MySQL and generic ODBC baselines do **not** yet expose portable typed parameter binding or complete result fetching; do not execute SQL containing untrusted input through those APIs.
+- SQLite, PostgreSQL, MySQL, and ODBC expose prepared/parameterized statement paths. For MySQL, keep `MYSQL_BIND` buffers and length indicators alive through execution/fetch. For ODBC, use `SQLBindParameter` with the native statement handle and maintain bound values/indicators for the driver's documented lifetime.
 - HTTP responses must be checked for HTTP status separately from transport success. REST redirects are disabled and TLS verification remains enabled.
 - JSON support is a structural tokenizer, not a full semantic parser. XML validation uses libxml2 with network fetching disabled; harden DTD/entity handling for untrusted documents.
 - MQTT currently exposes publish, not subscription callback dispatch, and does not yet expose TLS/auth helpers or automatic reconnect policy.
-- Review [CONNECTOR-CATALOG.md](CONNECTOR-CATALOG.md) for exact capabilities and gaps. Baseline code is not represented as production-certified, and external integration tests have not been run.
+- Review [CONNECTOR-CATALOG.md](CONNECTOR-CATALOG.md) for exact capabilities and gaps. Baseline code is not represented as production-certified. The connector CI workflow is configured for Linux and macOS; check its run result before treating builds as verified.
