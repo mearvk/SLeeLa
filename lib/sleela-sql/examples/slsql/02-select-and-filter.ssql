@@ -1,0 +1,11 @@
+# Read every column.
+from('contacts').select(*)
+
+# Project only the requested columns.
+from('contacts').select(name, email)
+
+# Equality filter. SLSQL accepts == (and also =).
+from('contacts').select(name, email).where(id == 2)
+
+# COUNT(*) is supported by the current fluent dialect.
+from('contacts').select(count(*))
