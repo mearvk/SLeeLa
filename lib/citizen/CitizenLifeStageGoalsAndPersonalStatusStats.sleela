@@ -1,0 +1,50 @@
+#sleela 1.10
+/*
+ * CitizenLifeStageGoalsAndPersonalStatusStats.sleela
+ * Individual category class extracted from citizen/sleela/CitizenStats.sleela.
+ * Source category: Life stage, goals, and personal status.
+ * Monetary values use integer minor units where the field name says Cents.
+ */
+class CitizenLifeStageGoalsAndPersonalStatusStats {
+    int lifeSatisfaction;
+    int happiness;
+    int morale;
+    int motivation;
+    int futureOutlook;
+    int personalGoalProgress;
+    int retirementStatus;
+    int caregiverStatus;
+    int parentingStatus;
+    int studentStatus;
+    int veteranStatus;
+    int newcomerStatus;
+    int displacedStatus;
+    int disasterExposure;
+    int emergencyPreparedness;
+    int resilienceAfterCrisis;
+    int lastSurveyYear;
+    int dataCompleteness;
+    int dataConfidence;
+
+    CitizenLifeStageGoalsAndPersonalStatusStats() {
+        lifeSatisfaction = 50;
+        happiness = 50;
+        morale = 50;
+        motivation = 50;
+        futureOutlook = 50;
+        personalGoalProgress = 0;
+        retirementStatus = 0;
+        caregiverStatus = 0;
+        parentingStatus = 0;
+        studentStatus = 0;
+        veteranStatus = 0;
+        newcomerStatus = 0;
+        displacedStatus = 0;
+        disasterExposure = 0;
+        emergencyPreparedness = 0;
+        resilienceAfterCrisis = 0;
+        lastSurveyYear = 0;
+        dataCompleteness = 0;
+        dataConfidence = 0;
+    }
+}
