@@ -1,3 +1,5 @@
+<img align="right" src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="75" height="75" alt="SLeeLa">
+
 # lib/sleela-sql — the SLeeLa model for the CSV SQL engine
 
 The **SLeeLa counterpart** to the C engine in [`/sleela-sql`](../../sleela-sql/).
