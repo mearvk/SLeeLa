@@ -26,7 +26,7 @@ Commands in this table are run from the repository root.
 | Connector | Build command | External dependency |
 |---|---|---|
 | Registry and scoped properties | `make -C lib/connector registry` | None |
-| MySQL | `make -C lib/connector/mysql build` | mysqlclient or MariaDB Connector/C |
+| MySQL | `make -C lib/connector/mysql all` | mysqlclient or MariaDB Connector/C |
 | MariaDB profile | `make -C lib/connector/mariadb build` | MariaDB Connector/C |
 | SQLite | `make -C lib/connector/sqlite build` | SQLite |
 | PostgreSQL | `make -C lib/connector/postgres build` | libpq |
