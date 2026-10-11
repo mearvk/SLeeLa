@@ -107,6 +107,8 @@ int main() {
               "report native output path failure");
         check(!write_bytecode(nativeProgram, impossiblePath, nativeError),
               "report bytecode output path failure");
+        check(!write_bytecode(compile("print missing;"), nativePath, nativeError),
+              "refuse bytecode emission after failed compilation");
     }
     std::filesystem::remove_all(tempRoot, fsError);
 
