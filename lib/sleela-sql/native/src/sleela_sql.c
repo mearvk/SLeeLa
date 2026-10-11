@@ -22,8 +22,25 @@
 #include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
-#include <strings.h>  /* strcasecmp */
-#include <dirent.h>
+#include <errno.h>
+#include <sys/stat.h>
+#ifdef _WIN32
+#  include <direct.h>
+#  include <io.h>
+#  define strcasecmp _stricmp
+#  define SSQL_MKDIR(path) _mkdir(path)
+#  ifndef S_IFMT
+#    define S_IFMT _S_IFMT
+#  endif
+#  ifndef S_IFDIR
+#    define S_IFDIR _S_IFDIR
+#  endif
+#else
+#  include <strings.h>
+#  include <dirent.h>
+#  include <unistd.h>
+#  define SSQL_MKDIR(path) mkdir((path), 0775)
+#endif
 
 /* ===================================================================== *
  *  Small string helpers
@@ -169,6 +186,14 @@ static int csv_parse_line(char *line, char **out, int max) {
 
 static void table_path(const ssql_db *db, const char *name, char *buf, size_t cap) {
     snprintf(buf, cap, "%s/%s.csv", db->dir, name);
+}
+
+static int valid_table_name(const char *name) {
+    if (!name || !(((*name >= 'A') && (*name <= 'Z')) || ((*name >= 'a') && (*name <= 'z')) || *name == '_')) return 0;
+    for (const unsigned char *p = (const unsigned char *)name + 1; *p; ++p) {
+        if (!((*p >= 'A' && *p <= 'Z') || (*p >= 'a' && *p <= 'z') || (*p >= '0' && *p <= '9') || *p == '_' || *p == '-')) return 0;
+    }
+    return 1;
 }
 
 static int table_exists(const ssql_db *db, const char *name) {
@@ -731,27 +756,42 @@ static ssql_status exec_select(ssql_stmt *st, FILE *out) {
     return SSQL_OK;
 }
 
-static ssql_status exec_show_tables(ssql_stmt *st, FILE *out) {
-    DIR *d = opendir(st->db->dir);
-    if (!d) return SSQL_ERR_IO;
-    if (out) fputs("Tables_in_sleela_sql\n", out);
-    struct dirent *e;
-    while ((e = readdir(d)) != NULL) {
-        const char *n = e->d_name;
-        size_t len = strlen(n);
-        if (len > 4 && strcmp(n + len - 4, ".csv") == 0) {
-            if (out) {
-                char base[SSQL_MAX_FIELD];
-                size_t blen = len - 4;
-                if (blen >= sizeof(base)) blen = sizeof(base) - 1;
-                memcpy(base, n, blen);
-                base[blen] = '\0';
-                csv_write_field(out, base);
-                fputc('\n', out);
-            }
-        }
+static void emit_table_name(FILE *out, const char *filename) {
+    size_t len = strlen(filename);
+    if (len <= 4 || strcmp(filename + len - 4, ".csv") != 0) return;
+    if (out) {
+        char base[SSQL_MAX_FIELD];
+        size_t blen = len - 4;
+        if (blen >= sizeof(base)) blen = sizeof(base) - 1;
+        memcpy(base, filename, blen);
+        base[blen] = '\0';
+        csv_write_field(out, base);
+        fputc('\n', out);
     }
-    closedir(d);
+}
+
+static ssql_status exec_show_tables(ssql_stmt *st, FILE *out) {
+    if (out) fputs("Tables_in_sleela_sql\n", out);
+#ifdef _WIN32
+    {
+        char pattern[SSQL_MAX_PATH];
+        struct _finddata_t entry;
+        intptr_t handle;
+        snprintf(pattern, sizeof(pattern), "%s/*.csv", st->db->dir);
+        handle = _findfirst(pattern, &entry);
+        if (handle == -1L) return errno == ENOENT ? SSQL_OK : SSQL_ERR_IO;
+        do { emit_table_name(out, entry.name); } while (_findnext(handle, &entry) == 0);
+        _findclose(handle);
+    }
+#else
+    {
+        DIR *d = opendir(st->db->dir);
+        struct dirent *e;
+        if (!d) return SSQL_ERR_IO;
+        while ((e = readdir(d)) != NULL) emit_table_name(out, e->d_name);
+        closedir(d);
+    }
+#endif
     return SSQL_OK;
 }
 
@@ -771,7 +811,14 @@ static ssql_status exec_stmt(ssql_stmt *st, FILE *out) {
  * ===================================================================== */
 
 ssql_status ssql_open(ssql_db *db, const char *dir) {
-    if (!db || !dir) return SSQL_ERR_ARG;
+    struct stat st;
+    if (!db || !dir || !*dir) return SSQL_ERR_ARG;
+    if (strlen(dir) >= sizeof(db->dir)) return SSQL_ERR_ARG;
+    if (stat(dir, &st) != 0) {
+        if (errno != ENOENT || SSQL_MKDIR(dir) != 0) return SSQL_ERR_IO;
+        if (stat(dir, &st) != 0) return SSQL_ERR_IO;
+    }
+    if ((st.st_mode & S_IFMT) != S_IFDIR) return SSQL_ERR_IO;
     snprintf(db->dir, sizeof(db->dir), "%s", dir);
     return SSQL_OK;
 }
@@ -797,6 +844,7 @@ ssql_status ssql_prepare(ssql_db *db, const char *text,
     ssql_status s = (dialect == SSQL_DIALECT_SLEELA)
                         ? compile_sleela(st, stmt)
                         : compile_sql(st, stmt);
+    if (s == SSQL_OK && st->op != OP_SHOW_TABLES && !valid_table_name(st->table)) s = SSQL_ERR_SYNTAX;
     free(buf);
     if (s != SSQL_OK) { ssql_finalize(st); return s; }
 

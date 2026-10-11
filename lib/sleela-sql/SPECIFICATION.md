@@ -46,6 +46,14 @@ This is a subset. It is **not** MySQL/PostgreSQL/SQLite wire-protocol compatible
 
 The C API is the core ABI. Include `native/include/sleela_sql.h`, link the C library, and compile as C11. The C++17 facade in `cpp/include/sleela_sql.hpp` wraps that API through `sleela::sql::Database` and move-only `sleela::sql::Statement`; it does not fork SQL semantics.
 
-## 7. Build and verification
+## 7. Portable file I/O
 
-From `lib/sleela-sql`, run `make` and `make test`. The engine currently uses POSIX directory enumeration (`dirent.h`); do not claim an MSVC/Windows build until a Windows directory-enumeration adapter is implemented and tested.
+- macOS and other POSIX platforms use `opendir`/`readdir`, `mkdir`, and standard C file streams.
+- Windows builds use the CRT directory-search adapter (`_findfirst`/`_findnext`), `_mkdir`, and `_stricmp`; MinGW-w64 is the supported Windows toolchain in CI.
+- `ssql_open` creates the final database directory when it does not exist, and rejects paths that exceed the fixed directory buffer or resolve to a non-directory.
+- Table identifiers must begin with an ASCII letter or underscore and contain only ASCII letters, digits, underscore, or hyphen. This prevents table-name path traversal. Parent directories are not created recursively.
+- Windows file paths are passed through the active C runtime; non-ASCII Windows path behavior depends on the runtime's locale/code-page configuration.
+
+## 8. Build and verification
+
+From `lib/sleela-sql`, run `make` and `make test`. CI builds and runs the C11 core and C++17 facade on Linux, macOS, and Windows (MinGW-w64).
