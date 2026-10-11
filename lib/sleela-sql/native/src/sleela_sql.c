@@ -196,6 +196,13 @@ static int valid_table_name(const char *name) {
     return 1;
 }
 
+static int valid_column_name(const char *name) {
+    if (!name || !((((name[0] >= 'A') && (name[0] <= 'Z')) || ((name[0] >= 'a') && (name[0] <= 'z'))) || name[0] == '_')) return 0;
+    for (const unsigned char *p = (const unsigned char *)name + 1; *p; ++p)
+        if (!((*p >= 'A' && *p <= 'Z') || (*p >= 'a' && *p <= 'z') || (*p >= '0' && *p <= '9') || *p == '_' || *p == '-')) return 0;
+    return 1;
+}
+
 static int table_exists(const ssql_db *db, const char *name) {
     char path[SSQL_MAX_PATH];
     table_path(db, name, path, sizeof(path));
@@ -216,6 +223,7 @@ static int find_col(char **cols, int ncols, const char *name) {
 
 typedef enum {
     OP_CREATE,       /* CREATE TABLE                                        */
+    OP_ALTER,        /* ALTER TABLE ADD COLUMN                              */
     OP_DROP,         /* DROP TABLE                                          */
     OP_INSERT,       /* INSERT                                              */
     OP_UPDATE,       /* UPDATE                                              */
@@ -328,6 +336,42 @@ static ssql_status sql_create(ssql_stmt *st, char *rest) {
     }
     st->ncols = ncols;
     st->op = OP_CREATE;
+    return SSQL_OK;
+}
+
+/* ALTER TABLE <name> ADD [COLUMN] <column> [DEFAULT <value>] */
+static ssql_status sql_alter(ssql_stmt *st, char *rest) {
+    char *name = trim(rest), *space = name;
+    while (*space && !isspace((unsigned char)*space)) space++;
+    if (!*space) return SSQL_ERR_SYNTAX;
+    *space++ = '\0';
+    if (!valid_table_name(name)) return SSQL_ERR_SYNTAX;
+    snprintf(st->table, sizeof(st->table), "%s", name);
+    rest = trim(space);
+    if (!kw_eq(rest, "add")) return SSQL_ERR_SYNTAX;
+    rest = trim(rest + 3);
+    if (kw_eq(rest, "column")) rest = trim(rest + 6);
+    char *end = rest;
+    while (*end && !isspace((unsigned char)*end)) end++;
+    if (end == rest) return SSQL_ERR_SYNTAX;
+    char saved = *end;
+    *end = '\0';
+    if (!valid_column_name(rest)) return SSQL_ERR_SYNTAX;
+    st->cols[0] = str_dup(rest);
+    if (!st->cols[0]) return SSQL_ERR_OOM;
+    st->ncols = 1;
+    *end = saved;
+    rest = trim(end);
+    const char *default_value = "";
+    if (*rest) {
+        if (!kw_eq(rest, "default")) return SSQL_ERR_SYNTAX;
+        rest = trim(rest + 7);
+        if (!*rest) return SSQL_ERR_SYNTAX;
+        default_value = unquote(rest);
+    }
+    if (val_set(st, &st->vals[0], default_value) != 0) return SSQL_ERR_OOM;
+    st->nvals = 1;
+    st->op = OP_ALTER;
     return SSQL_OK;
 }
 
@@ -513,6 +557,11 @@ static ssql_status compile_sql(ssql_stmt *st, char *stmt) {
         char *r = trim(stmt + 6);
         if (!kw_eq(r, "table")) return SSQL_ERR_SYNTAX;
         return sql_create(st, trim(r + 5));
+    }
+    if (kw_eq(stmt, "alter")) {
+        char *r = trim(stmt + 5);
+        if (!kw_eq(r, "table")) return SSQL_ERR_SYNTAX;
+        return sql_alter(st, trim(r + 5));
     }
     if (kw_eq(stmt, "drop")) {
         char *r = trim(stmt + 4);
@@ -739,7 +788,54 @@ static ssql_status exec_create(ssql_stmt *st) {
     return SSQL_OK;
 }
 
-static ssql_status exec_drop(ssql_stmt *st) {
+static ssql_status replace_table_file(const char *tmp, const char *path);
+
+static ssql_status exec_alter(ssql_stmt *st) {
+    const char *default_value = "";
+    ssql_status status = val_resolve(&st->vals[0], &default_value);
+    if (status != SSQL_OK) return status;
+    char path[SSQL_MAX_PATH], tmp[SSQL_MAX_PATH];
+    table_path(st->db, st->table, path, sizeof(path));
+    if (snprintf(tmp, sizeof(tmp), "%s.tmp", path) >= (int)sizeof(tmp)) return SSQL_ERR_IO;
+    FILE *in = fopen(path, "rb");
+    if (!in) return SSQL_ERR_NOTABLE;
+    FILE *out = fopen(tmp, "wb");
+    if (!out) { fclose(in); return SSQL_ERR_IO; }
+    char line[SSQL_MAX_FIELD * 8];
+    char *fields[SSQL_MAX_COLS];
+    if (!fgets(line, sizeof(line), in)) {
+        fclose(in); fclose(out); remove(tmp); return SSQL_ERR_IO;
+    }
+    int ncolumns = csv_parse_line(line, fields, SSQL_MAX_COLS);
+    if (ncolumns < 1) {
+        fclose(in); fclose(out); remove(tmp); return SSQL_ERR_IO;
+    }
+    if (ncolumns >= SSQL_MAX_COLS) {
+        fclose(in); fclose(out); remove(tmp); return SSQL_ERR_ARITY;
+    }
+    if (find_col(fields, ncolumns, st->cols[0]) >= 0) {
+        fclose(in); fclose(out); remove(tmp); return SSQL_ERR_DUPCOL;
+    }
+    fields[ncolumns] = st->cols[0];
+    csv_write_row(out, fields, ncolumns + 1);
+    while (fgets(line, sizeof(line), in)) {
+        int nfields = csv_parse_line(line, fields, SSQL_MAX_COLS);
+        if (nfields != ncolumns) {
+            fclose(in); fclose(out); remove(tmp); return SSQL_ERR_IO;
+        }
+        fields[ncolumns] = (char *)default_value;
+        csv_write_row(out, fields, ncolumns + 1);
+    }
+    int input_error = ferror(in), output_error = ferror(out);
+    if (fclose(out) != 0) output_error = 1;
+    fclose(in);
+    if (input_error || output_error) { remove(tmp); return SSQL_ERR_IO; }
+    status = replace_table_file(tmp, path);
+    if (status != SSQL_OK) remove(tmp);
+    return status;
+}
+
+static ssql_status exec_drop(ssql_stmt *st)
     if (!table_exists(st->db, st->table))
         return st->drop_if_exists ? SSQL_OK : SSQL_ERR_NOTABLE;
     char path[SSQL_MAX_PATH];
@@ -975,6 +1071,7 @@ static ssql_status exec_show_tables(ssql_stmt *st, FILE *out) {
 static ssql_status exec_stmt(ssql_stmt *st, FILE *out) {
     switch (st->op) {
         case OP_CREATE:      return exec_create(st);
+        case OP_ALTER:       return exec_alter(st);
         case OP_DROP:        return exec_drop(st);
         case OP_INSERT:      return exec_insert(st);
         case OP_UPDATE:      return exec_rewrite(st, 0);
@@ -1099,6 +1196,7 @@ const char *ssql_strerror(ssql_status s) {
         case SSQL_ERR_ARG:     return "bad argument";
         case SSQL_ERR_BIND:    return "unbound or out-of-range placeholder";
         case SSQL_ERR_OOM:     return "out of memory";
+        case SSQL_ERR_DUPCOL:   return "column already exists";
         default:               return "unknown error";
     }
 }
