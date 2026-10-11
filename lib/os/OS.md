@@ -623,3 +623,81 @@ records the specifics:
 In short: **all of the OS *source* can be downloaded** (shallow is enough for the
 distro's own tree); **the ≥50 MB prebuilt artifacts cannot** (excluded by policy —
 build them from source); and **GraalVM is a separate, opt-in submodule fetch**.
+
+---
+
+# Foreign-OS execution components — load, run, unload (`SLCompatLayer` / `SLCompatSet`)
+
+`SLExecutableTranslator` (above) *classifies* which translator a foreign type
+needs. `SLCompatLayer` is the **lifecycle** layer on top of it: the OS components
+a host must **load** to run a guest OS's executables (and the libraries those
+executables call), how it **handles** a foreign executable once loaded, and how
+to **unload** the components. `SLCompatSet` is the set of such layers a built OS
+ships, and composes into the master `SLOSModel`.
+
+## The 3×3 host → guest matrix (round)
+
+Every host/guest pair is covered — same-family is native (no layer); each
+cross-pair names a real runtime + the guest's shared libraries:
+
+| Host ↓ \ Guest → | Linux | Windows | macOS |
+|---|---|---|---|
+| **Linux** | native | Wine + **binfmt_misc** + win32-libs | Darling + binfmt_misc + darwin-libs |
+| **Windows** | WSL2 + linux-userland | native | QEMU VM + darwin-libs |
+| **macOS** | Lima VM + linux-userland | Wine/CrossOver + win32-libs | native (+ Rosetta 2 for x86-64) |
+
+A layer loads up to three components — an FS-level **interpreter**
+(`binfmt_misc`, Linux only), the translation **runtime** (Wine/QEMU/WSL/Rosetta/
+Darling), and the guest **library** set — and dispatches a foreign executable, or
+a **library + executable** pair, to the runtime.
+
+```sleela
+// A Linux variant running a Windows .exe (the canonical case):
+SLCompatLayer w = new SLCompatLayer(); w.configure("Linux", "Windows");
+w.summary();                       // "Linux runs Windows via wine + binfmt_misc + win32-libs"
+w.componentManifest();             // binfmt_misc interpreter / wine runtime / win32-libs library
+w.load("/usr/bin/wine");           // register binfmt + bring the runtime up (0 ok; -2 if absent)
+w.handle("/opt/app.exe");          // -> the .exe (binfmt routes it) or "wine /opt/app.exe"
+w.handlePair("/opt/dlls", "/opt/app.exe");  // -> "WINEDLLPATH=/opt/dlls <handle>"  (lib + exe)
+w.unload();                        // unregister binfmt + drop the runtime
+```
+
+The lifecycle mirrors the codec loader (`configure → load → handle → unload`,
+idempotent), and is honest: `present()`/`load()` check the runtime binary and
+the `binfmt_misc` control file actually exist, so a missing component is reported
+(`-1`/`-2`) rather than faked.
+
+## In the master Sleela OS document
+
+`SLOSModel` composes an `SLCompatSet` as an (optional) layer. `shapeAs(family,…)`
+seeds the family's foreign-exec defaults — a **Linux** build ships Windows +
+macOS support, a **Windows** build ships Linux (WSL2), a **macOS** build ships
+Windows + Linux — and a builder refines it:
+
+```sleela
+SLOSModel os = new SLOSModel();
+os.configure("Determinant", "1.0");
+os.shapeAs("Linux", "amd64");          // seeds compat: runs Windows + macOS
+os.compatSet().support("Windows");     // (already seeded; explicit add/drop available)
+os.compatSet().drop("macOS");          // e.g. Windows-only foreign support
+```
+
+## Moved to OS Creator for real components
+
+`SLCompatLoaderEmitter` (an OS Creator piece emitter) turns the model's
+`SLCompatSet` into a real **compat-loader** OS component: `compat_loader.c` /
+`compat_loader.cpp` that register each route's binfmt interpreter, load its
+runtime, provide its guest libraries, and dispatch foreign executables — plus a
+`compat.conf` listing the routes. `SLOSCreator` writes it under
+`userspace/compat-loader/` whenever the model declares any guest. The runnable
+`os-generate.sleela` emits the same piece into its on-disk tree:
+
+```text
+<OS_OUT>/userspace/compat-loader/compat_loader.c   # load/unload/run the components
+<OS_OUT>/userspace/compat-loader/compat.conf        # route = Linux runs Windows via wine + ...
+```
+
+The emitted `compat_loader.c` compiles with a stock C toolchain. So the path is
+complete: declare foreign-exec support on the OS model → OS Creator writes the
+loader component → the built OS loads binfmt + Wine (etc.) and runs the guest's
+executables and libraries.

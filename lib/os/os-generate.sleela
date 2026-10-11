@@ -135,6 +135,43 @@ class OsGenerator {
     return h;
   }
 
+  // The foreign-executable compatibility loader for the Linux shape: load the
+  // OS components (binfmt_misc + Wine/Darling/QEMU + guest libraries) so this
+  // Linux OS runs Windows .exe and macOS executables. Compact mirror of
+  // SLCompatLoaderEmitter for the Linux host (runs Windows + macOS guests).
+  String compatLoaderC(OsModel m) {
+    String c = "/* compat_loader.c - foreign-executable compatibility loader for " + m.name + " */\n";
+    c = c + "/* Host OS: Linux. Loads binfmt_misc interpreters + translation runtimes\n";
+    c = c + "   + guest libraries so this OS can run other families' executables. */\n";
+    c = c + "extern int binfmt_register(const char *rule);\n";
+    c = c + "extern int runtime_load(const char *runtime);\n";
+    c = c + "extern int libs_provide(const char *libset);\n";
+    c = c + "extern int run_foreign(const char *runtime, const char *path);\n\n";
+    c = c + "int compat_load_all(void) {\n";
+    c = c + "    /* Linux runs Windows via wine + binfmt_misc + win32-libs */\n";
+    c = c + "    binfmt_register(\"exe -> wine\");\n";
+    c = c + "    runtime_load(\"wine\");\n";
+    c = c + "    libs_provide(\"win32-libs\");\n";
+    c = c + "    /* Linux runs macOS via darling + binfmt_misc + darwin-libs */\n";
+    c = c + "    binfmt_register(\"app -> darling\");\n";
+    c = c + "    runtime_load(\"darling\");\n";
+    c = c + "    libs_provide(\"darwin-libs\");\n";
+    c = c + "    return 0;\n}\n\n";
+    c = c + "/* Run a foreign executable; empty runtime => binfmt routes it. */\n";
+    c = c + "int compat_run(const char *runtime, const char *path) {\n";
+    c = c + "    if (runtime == 0 || runtime[0] == 0) return run_foreign(\"\", path);\n";
+    c = c + "    return run_foreign(runtime, path);\n}\n";
+    return c;
+  }
+
+  String compatConf(OsModel m) {
+    String s = "# compat.conf - foreign-executable routes for " + m.name + " (host Linux)\n";
+    s = s + "host = Linux\n";
+    s = s + "route = Linux runs Windows via wine + binfmt_misc + win32-libs\n";
+    s = s + "route = Linux runs macOS via darling + binfmt_misc + darwin-libs\n";
+    return s;
+  }
+
   // The executable file-type table for Linux (compact mirror of
   // SLExecutableTypes.emitExecTypesHeader for the Linux shape).
   String execTypesHeader(OsModel m) {
@@ -278,6 +315,9 @@ class OsGenerator {
     writeFile("/os/exec_types.h", execTypesHeader(m));
     writeFile("/os/exec_translate.h", execTranslateHeader(m));
     writeFile("/userspace/os-loader/os_loader.c", osLoaderC(m));
+    makeDir("/userspace/compat-loader");
+    writeFile("/userspace/compat-loader/compat_loader.c", compatLoaderC(m));
+    writeFile("/userspace/compat-loader/compat.conf", compatConf(m));
 
     // Build tooling + ISO recipe.
     writeFile("/tools/gen-iso.sh", isoRecipe(m));

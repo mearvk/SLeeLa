@@ -1,0 +1,116 @@
+/*
+ * lib/os/SLCompatSet.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLCompatSet — the compatibility layer of an OS being
+ *   constructed: the set of foreign-OS execution capabilities the built OS
+ *   ships, so it can run guest executables (and their libraries) from other OS
+ *   families. In the firmware -> boot -> kernel -> userspace -> desktop model
+ *   this is a userspace capability node; SLOSModel composes one, and the OS
+ *   Creator's SLCompatLoaderEmitter turns it into real OS components.
+ *
+ * The set is keyed by the OS's own shape (its host family) and records which
+ * guest families it supports running, each realised by an SLCompatLayer
+ * (binfmt_misc + Wine/QEMU/WSL/Rosetta/Darling + the guest libraries). A Linux
+ * variant that wants to run Windows .exe adds the "Windows" guest; forShape()
+ * seeds the common defaults for the host family.
+ *
+ * Family: os. Composes SLCompatLayer (up to three guests). Pure design model
+ *   for composition/validity; the layers' own load/unload cross the os* bridge.
+ */
+#sleela 1.11
+class SLCompatSet {
+  String host;              // the built OS's own family
+  // Up to three guest layers (Linux/Windows/macOS). Fixed slots keep the model
+  // array-free; an unused slot has an empty guest.
+  SLCompatLayer linuxGuest;
+  SLCompatLayer windowsGuest;
+  SLCompatLayer macGuest;
+  int hasLinux;
+  int hasWindows;
+  int hasMac;
+  int configured;
+
+  void configure(String hostFamily) {
+    host = norm(hostFamily);
+    hasLinux = 0; hasWindows = 0; hasMac = 0;
+    configured = 1;
+  }
+  String norm(String s) {
+    if (s == "Windows") { return "Windows"; }
+    if (s == "macOS")   { return "macOS"; }
+    return "Linux";
+  }
+
+  // Seed the common foreign-exec defaults for the host family. A Linux build
+  // ships Windows (Wine) + macOS (Darling) support; a Windows build ships Linux
+  // (WSL2); a macOS build ships Windows (Wine) + Linux (Lima). Refine with
+  // support()/drop() afterward.
+  void forShape(SLOSShape shape) {
+    configure(shape.name());
+    if (host == "Linux")   { support("Windows"); support("macOS"); return; }
+    if (host == "Windows") { support("Linux"); return; }
+    support("Windows"); support("Linux");   // macOS host
+  }
+
+  // Add support for running a guest family's executables on this OS.
+  void support(String guestFamily) {
+    String g = norm(guestFamily);
+    if (g == host) { return; }                 // native; no layer needed
+    SLCompatLayer layer = new SLCompatLayer();
+    layer.configure(host, g);
+    if (g == "Linux")   { linuxGuest = layer;   hasLinux = 1; return; }
+    if (g == "Windows") { windowsGuest = layer; hasWindows = 1; return; }
+    macGuest = layer; hasMac = 1;
+  }
+
+  // Remove a previously added guest.
+  void drop(String guestFamily) {
+    String g = norm(guestFamily);
+    if (g == "Linux")   { hasLinux = 0; return; }
+    if (g == "Windows") { hasWindows = 0; return; }
+    hasMac = 0;
+  }
+
+  boolean supports(String guestFamily) {
+    String g = norm(guestFamily);
+    if (g == host) { return true; }            // native
+    if (g == "Linux")   { return hasLinux == 1; }
+    if (g == "Windows") { return hasWindows == 1; }
+    return hasMac == 1;
+  }
+
+  // The layer object for a guest family (null if not supported). Lets a caller
+  // load/unload/handle through it.
+  SLCompatLayer layerFor(String guestFamily) {
+    String g = norm(guestFamily);
+    if (g == "Linux"   && hasLinux == 1)   { return linuxGuest; }
+    if (g == "Windows" && hasWindows == 1) { return windowsGuest; }
+    if (g == "macOS"   && hasMac == 1)     { return macGuest; }
+    return null;
+  }
+
+  int guestCount() {
+    int n = 0;
+    if (hasLinux == 1)   { n = n + 1; }
+    if (hasWindows == 1) { n = n + 1; }
+    if (hasMac == 1)     { n = n + 1; }
+    return n;
+  }
+
+  boolean hasAny() { return guestCount() > 0; }
+  String hostName() { return host; }
+
+  // A newline manifest "<host> runs <guest> via <runtime>" per supported guest,
+  // for the generated config and for logs.
+  String compatManifest() {
+    String m = "";
+    if (hasWindows == 1) { m = add(m, windowsGuest.summary()); }
+    if (hasLinux == 1)   { m = add(m, linuxGuest.summary()); }
+    if (hasMac == 1)     { m = add(m, macGuest.summary()); }
+    return m;
+  }
+  String add(String acc, String line) {
+    if (acc == "") { return line; }
+    return acc + "\n" + line;
+  }
+}

@@ -1,0 +1,199 @@
+/*
+ * lib/os/SLCompatLayer.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLCompatLayer — one HOST->GUEST compatibility layer: the
+ *   set of OS components a host OS must load to run a guest OS's executables
+ *   (and the libraries those executables call). It is the lifecycle object that
+ *   sits on top of SLExecutableTranslator (which only CLASSIFIES which layer
+ *   applies): SLCompatLayer names the concrete components, loads and unloads
+ *   them, reports whether they are present, and says how a foreign executable
+ *   (or a library + executable) is handled once the layer is up.
+ *
+ * The canonical case is a Linux variant running a Windows .exe: the layer binds
+ * three components — the kernel's binfmt_misc interpreter registration, the
+ * Wine Win32 runtime, and the Wine/Win32 shared libraries (gdi32/user32/...) —
+ * and once loaded, a .exe (or a .dll + .exe pair) is dispatched to Wine. Every
+ * host->guest pair in the 3x3 matrix (Linux/Windows/macOS) is covered so the
+ * capability is "round": Windows runs Linux (WSL2), Linux runs macOS (Darling),
+ * macOS runs x86 (Rosetta 2) / Linux (a Linux VM), and so on.
+ *
+ * Lifecycle mirrors the codec loader: configure -> load -> (handle) -> unload.
+ * load()/unload()/present() cross the os* host bridge where the component binary
+ * exists; naming a component never fakes its presence.
+ *
+ * Family: os. Design + host roles; load/unload/present cross the osRun /
+ *   osExists bridge (requires #sleela 1.5).
+ */
+#sleela 1.11
+class SLCompatLayer {
+  String host;        // the OS doing the running: "Linux"/"Windows"/"macOS"
+  String guest;       // the OS whose executables we run: "Linux"/"Windows"/"macOS"
+  int loaded;         // 1 once the layer's components are loaded
+
+  void configure(String hostOs, String guestOs) {
+    host = normalize(hostOs); guest = normalize(guestOs); loaded = 0;
+  }
+  String normalize(String s) {
+    if (s == "Windows") { return "Windows"; }
+    if (s == "macOS")   { return "macOS"; }
+    return "Linux";
+  }
+  String hostName()  { return host; }
+  String guestName() { return guest; }
+
+  // Same host and guest need no layer (native execution).
+  boolean isNative() { return host == guest; }
+
+  // ---- Which components this host->guest layer requires ---------------
+  // runtime(): the primary translation runtime/container for this pair.
+  String runtime() {
+    if (isNative()) { return ""; }
+    if (host == "Linux") {
+      if (guest == "Windows") { return "wine"; }
+      if (guest == "macOS")   { return "darling"; }
+      return "qemu-user";                    // cross-arch Linux ELF
+    }
+    if (host == "macOS") {
+      if (guest == "Windows") { return "wine"; }           // or CrossOver
+      if (guest == "Linux")   { return "lima";  }          // Linux VM (Lima/Docker)
+      return "rosetta2";                                   // x86-64 on Apple Silicon
+    }
+    // Windows host.
+    if (guest == "Linux") { return "wsl2"; }               // Windows Subsystem for Linux
+    if (guest == "macOS") { return "qemu-system"; }        // VM (no native layer)
+    return "qemu-system";
+  }
+
+  // fsInterpreter(): the filesystem-level interpreter facility, when the host
+  // has one (only Linux's binfmt_misc). Empty elsewhere.
+  String fsInterpreter() {
+    if (!isNative() && host == "Linux") { return "binfmt_misc"; }
+    return "";
+  }
+
+  // libraryPackage(): the shared-library set the guest's executables link
+  // against, which the layer must provide so a library + executable both load.
+  String libraryPackage() {
+    if (isNative()) { return ""; }
+    if (guest == "Windows") { return "win32-libs (gdi32,user32,kernel32,ntdll,...)"; }
+    if (guest == "Linux")   { return "linux-userland (glibc,ld-linux,...)"; }
+    return "darwin-libs (libSystem,Foundation,...)";
+  }
+
+  // The ordered component manifest: "<name> <kind>" per line. Kinds:
+  //   interpreter (FS-level), runtime (translation layer), library (guest libs).
+  String componentManifest() {
+    if (isNative()) { return ""; }
+    String m = "";
+    String fs = fsInterpreter();
+    if (fs != "") { m = m + fs + " interpreter\n"; }
+    m = m + runtime() + " runtime\n";
+    m = m + guestLibToken() + " library";
+    return m;
+  }
+  String guestLibToken() {
+    if (guest == "Windows") { return "win32-libs"; }
+    if (guest == "Linux")   { return "linux-userland"; }
+    return "darwin-libs";
+  }
+
+  // Number of components this layer loads (interpreter? + runtime + libraries).
+  int componentCount() {
+    if (isNative()) { return 0; }
+    if (fsInterpreter() != "") { return 3; }
+    return 2;
+  }
+
+  // ---- Load / unload lifecycle ----------------------------------------
+  // load(): bring the layer's components up. On a Linux host this registers the
+  // binfmt_misc interpreter (binding the runtime), then marks the layer loaded;
+  // elsewhere it marks the container runtime ready. Returns a result code:
+  //   0 ok, -1 unsupported (no path for this pair), -2 a required component is
+  //   absent on the host. Idempotent.
+  int load(String runtimePath) {
+    if (isNative()) { loaded = 1; return 0; }     // nothing to load
+    if (loaded == 1) { return 0; }                // idempotent
+    if (runtime() == "") { return -1; }
+    if (osExists(runtimePath) != 1) { return -2; }// the runtime binary must exist
+    if (fsInterpreter() == "binfmt_misc") {
+      // Register the FS interpreter only when binfmt_misc is actually mounted
+      // (its `register` control file is present). A half-present facility is
+      // skipped quietly; the runtime still drives execution.
+      if (osExists("/proc/sys/fs/binfmt_misc/register") == 1) {
+        osRun(binfmtRegister(runtimePath) + " 2>/dev/null");
+      }
+    }
+    loaded = 1;
+    return 0;
+  }
+
+  // unload(): tear the layer down. On Linux unregister the binfmt_misc rule;
+  // elsewhere drop the ready flag. Returns 0 ok. Idempotent.
+  int unload() {
+    if (loaded == 0) { return 0; }
+    if (fsInterpreter() == "binfmt_misc") {
+      osRun("echo -1 > /proc/sys/fs/binfmt_misc/" + binfmtName() + " 2>/dev/null");
+    }
+    loaded = 0;
+    return 0;
+  }
+
+  boolean isLoaded() { return loaded == 1; }
+
+  // present(runtimePath): is the layer's primary runtime installed on the host
+  // right now? (A pre-flight a GUI runs before offering to load it.)
+  boolean present(String runtimePath) {
+    if (isNative()) { return true; }
+    return osExists(runtimePath) == 1;
+  }
+
+  // ---- Handling a foreign executable (or library + executable) --------
+  // handle(exePath): how the loaded layer runs a guest executable. With a
+  // registered FS interpreter the file runs directly (the kernel routes it);
+  // otherwise it is launched through the runtime. "" if the layer is not loaded.
+  String handle(String exePath) {
+    if (loaded == 0) { return ""; }
+    if (isNative()) { return exePath; }
+    if (fsInterpreter() == "binfmt_misc") { return exePath; }  // kernel routes via binfmt
+    return runtime() + " " + exePath;
+  }
+
+  // handlePair(libPath, exePath): run an executable that depends on a guest
+  // library. The library is made resolvable to the runtime (its loader search
+  // path), then the executable is handled. Returned as the composed command.
+  String handlePair(String libPath, String exePath) {
+    if (loaded == 0) { return ""; }
+    if (isNative()) { return exePath; }
+    // Point the runtime's loader at the guest library, then run the exe.
+    return libEnv(libPath) + " " + handle(exePath);
+  }
+  // The environment prefix that adds a guest library dir to the runtime's
+  // search path (WINEDLLPATH for Wine, LD_LIBRARY_PATH for ELF, etc.).
+  String libEnv(String libDir) {
+    if (guest == "Windows") { return "WINEDLLPATH=" + libDir; }
+    if (guest == "Linux")   { return "LD_LIBRARY_PATH=" + libDir; }
+    return "DYLD_LIBRARY_PATH=" + libDir;
+  }
+
+  // ---- binfmt_misc helpers (Linux FS interpreter) ---------------------
+  String binfmtName() { return host + "-runs-" + guest; }
+  String binfmtRegister(String interp) {
+    // :name:E:extension::interpreter:flags  (extension form; magic also valid)
+    return "echo ':" + binfmtName() + ":E::" + guestExt()
+         + "::" + interp + ":OC' > /proc/sys/fs/binfmt_misc/register";
+  }
+  String guestExt() {
+    if (guest == "Windows") { return "exe"; }
+    if (guest == "macOS")   { return "app"; }
+    return "elf";
+  }
+
+  // ---- A human/log summary --------------------------------------------
+  String summary() {
+    if (isNative()) { return host + " runs " + guest + ": native (no layer)"; }
+    String s = host + " runs " + guest + " via " + runtime();
+    if (fsInterpreter() != "") { s = s + " + " + fsInterpreter(); }
+    s = s + " + " + guestLibToken();
+    return s;
+  }
+}

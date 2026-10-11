@@ -40,6 +40,7 @@ class SLOSModel {
   SLPackageSet packages;
   SLServiceSet services;
   SLDesktopSpec desktop;
+  SLCompatSet compat;      // foreign-OS execution capability (optional layer)
   int configured;
 
   // Begin a model with a product name and version. Layers are created empty;
@@ -55,6 +56,7 @@ class SLOSModel {
     packages = new SLPackageSet();
     services = new SLServiceSet();
     desktop = new SLDesktopSpec();
+    compat = new SLCompatSet();
     configured = 1;
   }
 
@@ -74,6 +76,7 @@ class SLOSModel {
     packages.baseSeedForShape(shape);
     services.forShape(shape);
     desktop.forShape(shape);
+    compat.forShape(shape);   // seed the family's foreign-exec defaults
   }
 
   // Mark this as a server edition: drop the desktop layer.
@@ -89,6 +92,7 @@ class SLOSModel {
   SLPackageSet packageSet()      { return packages; }
   SLServiceSet serviceSet()      { return services; }
   SLDesktopSpec desktopSpec()    { return desktop; }
+  SLCompatSet compatSet()        { return compat; }
 
   String name()    { return osName; }
   String osVersion() { return version; }

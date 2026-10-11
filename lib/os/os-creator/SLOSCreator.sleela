@@ -29,6 +29,7 @@ class SLOSCreator {
   SLDriverLoaderEmitter driverLoader;
   SLOSLoaderEmitter osLoader;
   SLDesktopLoaderEmitter desktopLoader;
+  SLCompatLoaderEmitter compatLoader;
   SLCEmitter cEmit;
   SLCppEmitter cppEmit;
   SLToolchainEmitter toolchain;
@@ -43,6 +44,7 @@ class SLOSCreator {
     driverLoader = new SLDriverLoaderEmitter();
     osLoader = new SLOSLoaderEmitter();
     desktopLoader = new SLDesktopLoaderEmitter();
+    compatLoader = new SLCompatLoaderEmitter();
     cEmit = new SLCEmitter();
     cppEmit = new SLCppEmitter();
     toolchain = new SLToolchainEmitter();
@@ -79,6 +81,9 @@ class SLOSCreator {
     writePiece(kernelLoader.emit(m), report);
     writePiece(driverLoader.emit(m), report);
     writePiece(osLoader.emit(m), report);
+    // Foreign-executable compatibility loader: only when the model declares
+    // guest families to support (an SLCompatSet with at least one route).
+    if (m.compatSet().hasAny()) { writePiece(compatLoader.emit(m), report); }
     if (withDesktop) { writePiece(desktopLoader.emit(m), report); }
 
     // 4. Piece 8: the OS itself (reuse the existing C/C++ emitters).
