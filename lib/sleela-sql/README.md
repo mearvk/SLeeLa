@@ -51,4 +51,3 @@ The engine is a local CSV-backed SQL subset, not a network database server or a 
 Classic SQL and fluent SLeeLaSQL compile to the same internal statement and executor. The C API supports reusable prepared statements in either dialect with positional `?` placeholders (`ssql_prepare`, `ssql_bind`, `ssql_reset`, `ssql_run`, and `ssql_finalize`). See [`docs/SLEELASQL.md`](docs/SLEELASQL.md) for grammar and examples.
 
 `SqlModel.sleela` validates planned operations using schema facts supplied by the caller: CREATE collisions, INSERT arity, and projected-column existence. It is a SLeeLa-side model/validation example, not an automatic runtime bridge to the native C engine.
-
