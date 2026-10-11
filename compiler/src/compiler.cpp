@@ -47,7 +47,7 @@ bool write_native_source(const CompileResult&p,const std::filesystem::path&path,
    << "else{if(b==0){fputs(\"division by zero\\n\",stderr);return 2;}if(a==INT64_MIN&&b==-1){fputs(\"integer overflow\\n\",stderr);return 2;}v=a/b;}stack[sp++]=v;break;"
    << "case 8:if(sp==0){fputs(\"stack underflow\\n\",stderr);return 2;}if(stack[sp-1]==INT64_MIN){fputs(\"integer overflow\\n\",stderr);return 2;}stack[sp-1]=-stack[sp-1];break;"
    << "case 9:if(sp==0){fputs(\"stack underflow\\n\",stderr);return 2;}printf(\"%lld\\n\",(long long)stack[--sp]);break;"
-   << "case 10:if(sp==0){fputs(\"stack underflow\\n\",stderr);return 2;}ret=stack[--sp];return (int)((uint64_t)ret&255u)"
+   << "case 10:if(sp==0){fputs(\"stack underflow\\n\",stderr);return 2;}ret=stack[--sp];return (int)((uint64_t)ret&255u);"
    << "case 255:return (int)((uint64_t)ret&255u);default:fputs(\"invalid opcode\\n\",stderr);return 2;}}}\n";
  f.flush();if(!f){e="native source write failed: "+path.string();return false;}
  (void)cpp;return true;
