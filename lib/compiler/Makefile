@@ -37,6 +37,11 @@ tutorial-check:
 	@printf '%s\n' 'SLeeLa compiler tutorial check'
 	@printf '%s\n' '  lessons: 01-source-to-vm 02-compiler-manager-and-profiles 03-language-and-binary-format-reference 04-building-a-language-front-end'
 	@printf '%s\n' '  examples: tutorials/examples/*.sleela'
+# Structural CI checks for the four compiler-construction example levels.
+# Complementary to, not a substitute for, compiling the .sleela sources.
+examples-check:
+	python3 examples/check_examples.py
+
 sanity:
 	@printf '%s\n' 'SLeeLa compiler package sanity check'
 	@printf '%s\n' '  pipeline: source lexer parser symbols semantics IR lowering codegen VM-target'
@@ -62,4 +67,5 @@ help:
 	@printf '%s\n' '  make selftest  Build and run the multi-language framework self-test'
 	@printf '%s\n' '  make sanity    Print compiler contract'
 	@printf '%s\n' '  make tutorial-check  Print compiler tutorial and example inventory'
+	@printf '%s\n' '  make examples-check Run structural CI checks for compiler-construction examples'
 	@printf '%s\n' '  make clean     Remove package build objects'
