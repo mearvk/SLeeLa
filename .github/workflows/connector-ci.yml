@@ -4,7 +4,6 @@ on:
   push:
     branches: [main, master]
     paths:
-      - "lib/connector/**"
       - ".github/workflows/connector-ci.yml"
   pull_request:
     branches: [main, master]
@@ -49,7 +48,7 @@ jobs:
           make -C lib/connector/xml
           make -C lib/connector/rest
           make -C lib/connector/mqtt
-      - name: Run dependency-free and XML unit tests
+      - name: Run parser and XML smoke tests
         run: |
           make -C lib/connector/delimited test
           make -C lib/connector/json test
