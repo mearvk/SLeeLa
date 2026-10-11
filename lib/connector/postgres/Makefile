@@ -14,3 +14,7 @@ libsleela_postgres.a: postgres_connector.o
 clean:
 	rm -f *.o *.a
 .PHONY: all clean
+
+# Explicit alias for scripts and IDE build actions.
+build: all
+.PHONY: build
