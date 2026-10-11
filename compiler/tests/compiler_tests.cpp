@@ -1,5 +1,6 @@
 #include "sleela/compiler.hpp"
 
+#include <chrono>
 #include <cstdlib>
 #include <filesystem>
 #include <fstream>
@@ -66,10 +67,10 @@ int main() {
     minLiteral.code.push_back({OpCode::negate, 0});
     minLiteral.code.push_back({OpCode::halt, 0});
 
-    const auto tempRoot = std::filesystem::temp_directory_path() / "sleela-native-compiler-tests";
+    const auto tempRoot = std::filesystem::temp_directory_path() /
+        (std::string("sleela-native-compiler-tests-") +
+         std::to_string(std::chrono::steady_clock::now().time_since_epoch().count()));
     std::error_code fsError;
-    std::filesystem::remove_all(tempRoot, fsError);
-    fsError.clear();
     std::filesystem::create_directories(tempRoot, fsError);
     check(!fsError, "create temporary test directory");
     if (!fsError) {
