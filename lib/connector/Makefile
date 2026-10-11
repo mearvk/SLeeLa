@@ -62,3 +62,7 @@ help:
 	@echo "make test         Run registry, delimited, JSON and XML smoke tests"
 	@echo "make check-deps   Report native dependencies discoverable through pkg-config"
 	@echo "make clean        Clean generated files for all connector families"
+
+# Explicit alias for scripts and IDE build actions.
+build: all
+.PHONY: build
