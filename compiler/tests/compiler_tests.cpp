@@ -91,6 +91,8 @@ int main() {
               "generated C diagnoses stack underflow");
         check(nativeText.find("invalid local slot") != std::string::npos,
               "generated C diagnoses invalid local slots");
+        check(nativeText.find("return (int)((uint64_t)ret&255u);") != std::string::npos,
+              "generated C return opcode has valid statement syntax");
 
         check(!write_native_source(compile("print missing;"), nativePath, false, nativeError),
               "refuse native emission after failed compilation");
