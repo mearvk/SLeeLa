@@ -43,7 +43,7 @@ jobs:
           test "$(build/compiler/arithmetic-cpp)" = "42"
       - name: Verify generated runtime rejects arithmetic overflow
         run: |
-          printf "print 9223372036854775807 + 1;\\nreturn 0;\\n" > build/compiler/overflow.sleela
+          printf '%s\n' 'print 9223372036854775807 + 1;' 'return 0;' > build/compiler/overflow.sleela
           build/compiler/sleelac --emit-c build/compiler/overflow.c build/compiler/overflow.sleela
           build/compiler/sleelac --emit-cpp build/compiler/overflow.cpp build/compiler/overflow.sleela
           cc -std=c11 -Wall -Wextra -Werror build/compiler/overflow.c -o build/compiler/overflow-c
@@ -52,7 +52,7 @@ jobs:
           if build/compiler/overflow-cpp >build/compiler/overflow-cpp.out 2>build/compiler/overflow-cpp.err; then echo "C++ runtime accepted signed overflow"; exit 1; fi
           grep -q "integer overflow" build/compiler/overflow-c.err
           grep -q "integer overflow" build/compiler/overflow-cpp.err
-          printf "print 1 / 0;\\nreturn 0;\\n" > build/compiler/divzero.sleela
+          printf '%s\n' 'print 1 / 0;' 'return 0;' > build/compiler/divzero.sleela
           build/compiler/sleelac --emit-c build/compiler/divzero.c build/compiler/divzero.sleela
           build/compiler/sleelac --emit-cpp build/compiler/divzero.cpp build/compiler/divzero.sleela
           cc -std=c11 -Wall -Wextra -Werror build/compiler/divzero.c -o build/compiler/divzero-c
