@@ -1,0 +1,41 @@
+/*
+ * SLeeLa-level command interface for terminal and IDE integration. Native
+ * filesystem and process operations are delegated to approved bridge APIs.
+ */
+#sleela 1.3
+class SLCompilerDeveloperCLI {
+  SLCompilerWorkbench workbench;
+  String lastCommand;
+  String lastMessage;
+
+  void configure() {
+    workbench = new SLCompilerWorkbench();
+    workbench.configure();
+    lastCommand = "";
+    lastMessage = "";
+  }
+
+  boolean prepare(String sourcePath, String outputPath, String target, String compilerPath) {
+    lastCommand = "build";
+    if (!workbench.configureBuild(sourcePath, outputPath, target, compilerPath)) {
+      lastMessage = workbench.diagnostics();
+      return false;
+    }
+    lastMessage = "request-validated";
+    return true;
+  }
+
+  SLCompilerBuildResult runBuild() {
+    if (lastCommand != "build") {
+      SLCompilerBuildResult failed = new SLCompilerBuildResult();
+      failed.configure();
+      failed.fail("prepare a build request before running build");
+      return failed;
+    }
+    SLCompilerBuildResult built = workbench.build();
+    lastMessage = built.diagnostics();
+    return built;
+  }
+
+  String message() { return lastMessage; }
+}
