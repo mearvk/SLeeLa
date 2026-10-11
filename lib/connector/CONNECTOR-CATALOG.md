@@ -25,9 +25,9 @@ Finite connector registry. "Baseline adapter" means a C/C++ API and build target
 | `rest` | libcurl C API + C++ facade | GET and JSON POST, timeouts, TLS peer/host verification, redirects disabled; no OAuth/arbitrary-header/retry layer |
 | `mqtt` | Eclipse Mosquitto C API + C++ client facade | Connect/publish/subscribe/callback dispatch/network loop; TLS/auth configuration helpers and reconnect policy not exposed yet |
 
-## Deterministic connector references
+## Connector reference registry
 
-Use explicit names such as `mysql`, `postgres`, `sqlite`, `odbc`, `sqlserver`, `oracle`, `rest`, and `mqtt`. A future SLeeLa/Dynamite registry must reject duplicate references and ambiguous unnamed connectors rather than silently selecting one. Keep per-connector properties scoped to the chosen reference.
+`connector_registry.h/.c` and the C++17 facade provide explicit named references, non-owning native handles, per-reference properties, and deterministic lookup. Duplicate references are rejected. Unnamed lookup succeeds only with exactly one registered connector; zero or multiple candidates are errors. This prevents a configuration such as `mysql` plus `postgres` from silently resolving to an arbitrary connection.
 
 ## Production-readiness checklist
 
