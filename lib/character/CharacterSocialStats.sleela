@@ -1,0 +1,23 @@
+#sleela 1.10
+/*
+ * CharacterSocialStats.sleela
+ * SLeeLa CharacterStats component: social standing, knowledge, language, and relationships.
+ *
+ * This focused value class separates one coherent group of CharacterStats
+ * fields for reuse by games, simulations, and interactive fiction. Values and
+ * scales are defined by the consuming game's ruleset; no universal caps are
+ * assumed unless explicitly enforced by a method.
+ */
+class CharacterSocialStats {
+    int socialStanding;
+    int fame;
+    int infamy;
+    int knowledge;
+    int languagesKnown;
+    int companionsLimit;
+    int commandLimit;
+    int relationshipScore;
+
+    int canLeadCompanions() { return companionsLimit > 0; }
+    int hasLanguages() { return languagesKnown > 0; }
+}
