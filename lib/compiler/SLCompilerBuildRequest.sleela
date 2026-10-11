@@ -1,0 +1,35 @@
+/*
+ * Validated request for generating C or C++ source from SLeeLa compiler source.
+ * This object describes intent; it does not execute a toolchain.
+ */
+#sleela 1.3
+class SLCompilerBuildRequest {
+  String inputSource;
+  String outputPath;
+  String target;
+  String nativeCompiler;
+  boolean strict;
+
+  void configure(String sourcePath, String destinationPath, String targetName, String compilerPath) {
+    inputSource = sourcePath;
+    outputPath = destinationPath;
+    target = targetName;
+    nativeCompiler = compilerPath;
+    strict = true;
+  }
+
+  String validate() {
+    if (inputSource == null || inputSource == "") return "source path is required";
+    if (outputPath == null || outputPath == "") return "output path is required";
+    if (target != "C" && target != "CPP") return "target must be C or CPP";
+    if (nativeCompiler == null || nativeCompiler == "") return "native compiler toolchain path is required";
+    return "";
+  }
+
+  void allowNonStrictPlanning() { strict = false; }
+  String sourcePath() { return inputSource; }
+  String outputPath() { return outputPath; }
+  String targetName() { return target; }
+  String compilerPath() { return nativeCompiler; }
+  boolean strictMode() { return strict; }
+}
