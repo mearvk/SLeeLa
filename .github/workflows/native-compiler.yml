@@ -52,3 +52,12 @@ jobs:
           if build/compiler/overflow-cpp >build/compiler/overflow-cpp.out 2>build/compiler/overflow-cpp.err; then echo "C++ runtime accepted signed overflow"; exit 1; fi
           grep -q "integer overflow" build/compiler/overflow-c.err
           grep -q "integer overflow" build/compiler/overflow-cpp.err
+          printf "print 1 / 0;\\nreturn 0;\\n" > build/compiler/divzero.sleela
+          build/compiler/sleelac --emit-c build/compiler/divzero.c build/compiler/divzero.sleela
+          build/compiler/sleelac --emit-cpp build/compiler/divzero.cpp build/compiler/divzero.sleela
+          cc -std=c11 -Wall -Wextra -Werror build/compiler/divzero.c -o build/compiler/divzero-c
+          c++ -std=c++20 -Wall -Wextra -Werror build/compiler/divzero.cpp -o build/compiler/divzero-cpp
+          if build/compiler/divzero-c >build/compiler/divzero-c.out 2>build/compiler/divzero-c.err; then echo "C runtime accepted division by zero"; exit 1; fi
+          if build/compiler/divzero-cpp >build/compiler/divzero-cpp.out 2>build/compiler/divzero-cpp.err; then echo "C++ runtime accepted division by zero"; exit 1; fi
+          grep -q "division by zero" build/compiler/divzero-c.err
+          grep -q "division by zero" build/compiler/divzero-cpp.err
