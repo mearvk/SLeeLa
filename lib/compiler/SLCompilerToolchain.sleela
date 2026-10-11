@@ -1,0 +1,30 @@
+/*
+ * Explicit native C/C++ toolchain descriptor. No PATH probing or process
+ * execution occurs in this descriptor.
+ */
+#sleela 1.3
+class SLCompilerToolchain {
+  String cCompiler;
+  String cppCompiler;
+  String cStandard;
+  String cppStandard;
+  String platform;
+  boolean allowNativeBuild;
+
+  void configure(String cPath, String cppPath, String osName) {
+    cCompiler = cPath;
+    cppCompiler = cppPath;
+    cStandard = "C11";
+    cppStandard = "C++20";
+    platform = osName;
+    allowNativeBuild = false;
+  }
+
+  void authorizeNativeBuild() { allowNativeBuild = true; }
+  boolean readyForC() { return cCompiler != null && cCompiler != ""; }
+  boolean readyForCPP() { return cppCompiler != null && cppCompiler != ""; }
+  boolean nativeBuildAllowed() { return allowNativeBuild; }
+  String targetPlatform() { return platform; }
+  String cMode() { return cStandard; }
+  String cppMode() { return cppStandard; }
+}
