@@ -206,7 +206,7 @@ class Analyzer{
    Type g=expr(*x->value);if(!assignable(want,g))err("method '"+cur->name+"' returns "+nameOf(g)+", expected "+nameOf(want));return;}
   if(auto i=dynamic_cast<const IfStmt*>(&s)){requireBool(expr(*i->cond),"if condition");stmt(*i->thenS);if(i->elseS)stmt(*i->elseS);return;}
   if(auto w=dynamic_cast<const WhileStmt*>(&s)){requireBool(expr(*w->cond),"while condition");stmt(*w->body);return;}
-  if(auto f=dynamic_cast<const ForStmt*>(&s)){push();if(f->init)stmt(*f->init);if(f->cond)requireBool(expr(*f->cond),"for condition");if(f->update)stmt(*f->update);stmt(*f->body);pop();return;}
+  if(auto f=dynamic_cast<const ForStmt*>(&s)){push();if(f->init)stmt(*f->init);if(f->cond)requireBool(expr(*f->cond),"for condition");if(f->threadStable)requireBool(expr(*f->threadStable),"for thread-stability guard");if(f->heapHealthy)requireBool(expr(*f->heapHealthy),"for VM heap-health guard");if(f->update)stmt(*f->update);stmt(*f->body);pop();return;}
   if(auto d=dynamic_cast<const DoStmt*>(&s)){stmt(*d->body);requireBool(expr(*d->cond),"do-while condition");return;}
   if(dynamic_cast<const BreakStmt*>(&s))return;
   if(dynamic_cast<const ContinueStmt*>(&s))return;
