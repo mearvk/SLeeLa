@@ -50,7 +50,8 @@ typedef enum {
     SSQL_ERR_ARITY    = -6,  /* INSERT value count != column count          */
     SSQL_ERR_ARG      = -7,  /* bad argument                                */
     SSQL_ERR_BIND     = -8,  /* unbound placeholder / bad bind index        */
-    SSQL_ERR_OOM      = -9   /* allocation failed                           */
+    SSQL_ERR_OOM      = -9,  /* allocation failed                           */
+    SSQL_ERR_DUPCOL   = -10  /* ALTER TABLE column already exists            */
 } ssql_status;
 
 /* Which surface language a statement was written in. */
@@ -85,6 +86,8 @@ ssql_status ssql_exec(ssql_db *db, const char *text, FILE *out);
 /* As ssql_exec, but force a specific dialect (no sniffing). */
 ssql_status ssql_exec_dialect(ssql_db *db, const char *text,
                               ssql_dialect dialect, FILE *out);
+
+/* ALTER TABLE ADD COLUMN is available in the classic SQL dialect. Existing rows receive DEFAULT value or an empty string. */
 
 /* ---- prepared statements (both dialects) ----------------------------- */
 
