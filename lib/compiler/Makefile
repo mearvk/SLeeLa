@@ -13,8 +13,8 @@ CPP_SOURCES := src/sleela_compiler.cpp src/sleela_langc.cpp
 C_OBJECTS := $(patsubst src/%.c,$(BUILD_DIR)/%.c.o,$(C_SOURCES))
 CPP_OBJECTS := $(patsubst src/%.cpp,$(BUILD_DIR)/%.cpp.o,$(CPP_SOURCES))
 
-.PHONY: all native runtime inventory sanity tutorial-check selftest clean help
-all: native selftest runtime inventory sanity tutorial-check
+.PHONY: all native runtime inventory sanity tutorial-check examples-check selftest clean help
+all: native selftest runtime inventory sanity tutorial-check examples-check
 native: $(C_OBJECTS) $(CPP_OBJECTS)
 
 # Behavioral self-test for the multi-language front-end framework ABI. Links the
