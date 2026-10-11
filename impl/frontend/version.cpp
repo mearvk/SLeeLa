@@ -5,6 +5,8 @@
 #include "version.h"
 
 #include <cctype>
+#include <filesystem>
+#include <vector>
 
 namespace sleela {
 
@@ -147,6 +149,83 @@ VersionResolution resolveSyntaxVersion(const std::string& source) {
                 defaultSyntaxVersion().str() +
                 " (declare it with '#sleela " + defaultSyntaxVersion().str() +
                 "' on the first line)";
+    return r;
+}
+
+SchemaResolution resolveSchemaReference(const std::string& source,
+                                        const std::string& sourceDir) {
+    SchemaResolution r;
+    // Scan every line of the (small) prologue for a line whose first non-space
+    // token is "#schema". The pragma may follow the #sleela line and comments.
+    size_t p = 0;
+    const size_t n = source.size();
+    while (p < n) {
+        // start of a line
+        size_t ls = p;
+        while (ls < n && (source[ls] == ' ' || source[ls] == '\t')) ls++;
+        size_t le = ls;
+        while (le < n && source[le] != '\n') le++;
+        std::string line = source.substr(ls, le - ls);
+        p = (le < n) ? le + 1 : n;
+
+        // Only scan the prologue: stop at the first `class`/`struct` declaration.
+        if (line.rfind("class ", 0) == 0 || line.rfind("struct ", 0) == 0) break;
+
+        const std::string kw = "#schema";
+        if (line.rfind(kw, 0) != 0) continue;
+
+        // Parse: #schema <path> <version>
+        std::string rest = line.substr(kw.size());
+        // split rest into whitespace-separated tokens
+        std::vector<std::string> tok;
+        size_t i = 0;
+        while (i < rest.size()) {
+            while (i < rest.size() && std::isspace((unsigned char)rest[i])) i++;
+            size_t s = i;
+            while (i < rest.size() && !std::isspace((unsigned char)rest[i])) i++;
+            if (i > s) tok.push_back(rest.substr(s, i - s));
+        }
+        if (tok.size() < 2) {
+            r.status = SchemaStatus::Malformed;
+            r.message = "malformed #schema pragma: expected '#schema <path> <version>'";
+            return r;
+        }
+        r.path = tok[0];
+        r.version = tok[1];
+
+        // Resolve the path: relative to the source dir, then the current dir.
+        namespace fs = std::filesystem;
+        std::vector<fs::path> candidates;
+        if (!sourceDir.empty()) candidates.push_back(fs::path(sourceDir) / r.path);
+        candidates.push_back(fs::path(r.path));
+        bool found = false;
+        for (const auto& c : candidates) {
+            std::error_code ec;
+            if (fs::is_regular_file(c, ec)) { r.resolvedPath = c.string(); found = true; break; }
+        }
+        if (!found) {
+            r.status = SchemaStatus::Missing;
+            r.message = "schema '" + r.path + "' declared by #schema was not found";
+            return r;
+        }
+
+        // Version check: the declared schema version must not exceed the one
+        // this compiler understands (string compare on dotted MAJOR.MINOR.PATCH
+        // via SyntaxVersion ordering).
+        SyntaxVersion want, have;
+        if (parseSyntaxVersion(r.version, want) && parseSyntaxVersion(maxSupportedSchema(), have)) {
+            if (want > have) {
+                r.status = SchemaStatus::VersionUnsupported;
+                r.message = "schema version " + r.version + " exceeds the compiler's "
+                            "supported Creator schema version " + maxSupportedSchema();
+                return r;
+            }
+        }
+        r.status = SchemaStatus::Ok;
+        r.message = "schema '" + r.resolvedPath + "' v" + r.version + " recognised";
+        return r;
+    }
+    r.status = SchemaStatus::Absent;   // no #schema pragma — not an error
     return r;
 }
 

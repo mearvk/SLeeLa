@@ -319,7 +319,7 @@
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "292bbb66a7c4a76e4c3db909b16e654a2ff926cf085dfbfe8976bb2a7016f3b9"
+      "sha256": "21bd2a6e16828bd39b922dfa7c4468e5c826681289d9e360e42d0caa3f6b9dd4"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -327,7 +327,7 @@
     },
     {
       "path": "impl/frontend/driver.cpp",
-      "sha256": "dc3919861f1eff58ffb76ab41e4ee83022f906ab550b8954e3fd6dafae7b4228"
+      "sha256": "cedeac734a14350db11b9ed3aa516851682c40ae718895fcb220a74679d10149"
     },
     {
       "path": "impl/frontend/dynamite.cpp",
@@ -419,11 +419,11 @@
     },
     {
       "path": "impl/frontend/version.cpp",
-      "sha256": "b82f4c8c588550481347989d37c97e68211c70aec26cf368151e1a006867d2e0"
+      "sha256": "141c2567fd738838908d91288ad4d16275cd2a1d9cea459179ae9531dbb30916"
     },
     {
       "path": "impl/frontend/version.h",
-      "sha256": "1754088bb4af8f07c3937154ee03a595f7bf351d178ea9e6bdfb2c68f7418c92"
+      "sha256": "505c6ab161762d0b4ce923e700c8a8b2cc906c8c6cbf73f5fda48f446fb64837"
     },
     {
       "path": "impl/nordshrift/complete/class_bindings.cpp",

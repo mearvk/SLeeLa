@@ -172,6 +172,37 @@ class OsGenerator {
     return s;
   }
 
+  // The minimum-boot base-driver series table for the Linux shape, plugging
+  // into os/base_drivers.h. Compact mirror of SLBaseDriverEmitter for Linux.
+  String baseDriversTableC(OsModel m) {
+    String c = "/* base_drivers_table.c - minimum-boot driver series for " + m.name + " */\n";
+    c = c + "/* Plugs into os/base_drivers.h; the kernel brings these up in class order. */\n";
+    c = c + "#include \"base_drivers.h\"\n\n";
+    c = c + "static const sleela_driver k_series[] = {\n";
+    c = c + "    { SL_DRV_BUS, \"pci + acpi\", SL_PHASE_BOOT, SL_ORIGIN_INTREE },\n";
+    c = c + "    { SL_DRV_STORAGE, \"ahci + nvme + virtio_blk\", SL_PHASE_BOOT, SL_ORIGIN_INTREE },\n";
+    c = c + "    { SL_DRV_DISPLAY, \"efifb / drm fbdev\", SL_PHASE_BOOT, SL_ORIGIN_INTREE },\n";
+    c = c + "    { SL_DRV_KEYBOARD, \"atkbd + usbhid\", SL_PHASE_BOOT, SL_ORIGIN_INTREE },\n";
+    c = c + "    { SL_DRV_MOUSE, \"usbhid\", SL_PHASE_EARLY, SL_ORIGIN_INTREE },\n";
+    c = c + "    { SL_DRV_USB, \"xhci_hcd\", SL_PHASE_EARLY, SL_ORIGIN_INTREE },\n";
+    c = c + "    { SL_DRV_AUDIO, \"snd_hda_intel\", SL_PHASE_EARLY, SL_ORIGIN_INTREE },\n";
+    c = c + "};\n\n";
+    c = c + "const sleela_driver *sleela_base_drivers(void) { return k_series; }\n";
+    c = c + "size_t sleela_base_driver_count(void) { return sizeof(k_series)/sizeof(k_series[0]); }\n";
+    c = c + "const char *sleela_os_host_family(void) { return \"Linux\"; }\n";
+    return c;
+  }
+
+  String baseDriversConf(OsModel m) {
+    String s = "# base-drivers.conf - minimum-boot driver series for " + m.name + " (host Linux)\n";
+    s = s + "# format: <class> <driver> <phase>\n";
+    s = s + "bus pci+acpi boot\nstorage ahci+nvme boot\ndisplay efifb boot\nkeyboard atkbd+usbhid boot\n";
+    s = s + "mouse usbhid early\nusb xhci_hcd early\naudio snd_hda_intel early\n";
+    s = s + "# driver source policy: unknown=permissive (taint), foreign=bridge-only\n";
+    s = s + "# cross-OS bridge: Linux + Windows network driver -> ndiswrapper; gpu -> none\n";
+    return s;
+  }
+
   // Swap configuration for the Linux shape: a zstd-compressed swap at 1.0x RAM
   // with a conservative swappiness. Mirror of SLSwapConfig.emitLinux (file kind
   // here; a builder can switch to zram/zswap via SLSwapConfig).
@@ -355,6 +386,10 @@ class OsGenerator {
     makeDir("/config");
     writeFile("/config/swap.conf", swapConf(m));
     writeFile("/config/filesystems.txt", filesystemsConf(m));
+    makeDir("/kernel");
+    makeDir("/kernel/base-drivers");
+    writeFile("/kernel/base-drivers/base_drivers_table.c", baseDriversTableC(m));
+    writeFile("/kernel/base-drivers/base-drivers.conf", baseDriversConf(m));
 
     // Build tooling + ISO recipe.
     writeFile("/tools/gen-iso.sh", isoRecipe(m));

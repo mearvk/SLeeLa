@@ -467,6 +467,20 @@ private:
         if(dynamic_cast<const ThisExpr*>(e))return currentClass_;
         if(auto m=dynamic_cast<const MemberAccess*>(e)){std::string bt=exprStructType(m->base.get());if(bt.empty())return "";auto lit=structLayout_.find(bt);if(lit==structLayout_.end())return "";int idx=-1;auto oit=lit->second.fieldOffset.find(m->field);if(oit!=lit->second.fieldOffset.end())idx=oit->second;if(idx<0)return "";return lit->second.fieldType[idx];}
         if(auto n=dynamic_cast<const NewExpr*>(e))return n->typeName;
+        // A method-call receiver carries the called method's declared return
+        // type, so a chained call -- obj.getX().method() -- resolves: find the
+        // receiver's type, look up receiverType::method, and return that
+        // method's return type when it names a known struct/class. Empty when
+        // the return type is scalar or the method cannot be resolved.
+        if(auto mc=dynamic_cast<const MethodCall*>(e)){
+            std::string rt=exprStructType(mc->receiver.get());
+            if(rt.empty()) return "";
+            auto fi=funcIndex_.find(rt+"::"+mc->method);
+            if(fi==funcIndex_.end()) return "";
+            const std::string& ret=methods_[fi->second].method->retType;
+            if(structLayout_.count(ret)) return ret;
+            return "";
+        }
         return "";
     }
     // Resolve (layout, offset) for base.field; throws a clear semantic error if

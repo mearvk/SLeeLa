@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  os-creator.xsd — the schema the SLeeLa OS Creator documents conform to.
+
+  This is the normative description of HOW the Creator parts compose: the
+  ordered firmware -> boot -> kernel -> userspace -> desktop sequence, which
+  layers are required vs. optional, and the valid value sets for shapes, kernel
+  families, filesystems, swap kinds, driver phases/origins, and compat routes.
+  A SLeeLa source that drives the OS Creator declares, via a `#schema` pragma,
+  that it conforms to this schema at a version; the compiler validates that the
+  schema is present and version-compatible (see lib/os/os-creator/CREATOR.DOCTRINE.md),
+  and tooling/CI validate an exported Creator document against this XSD.
+
+  The `order` of <xs:sequence> elements below IS the doctrine: the layers must
+  appear in boot order, not in an arbitrary order.
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified"
+           version="1.0.0">
+
+  <!-- Root: one OS model, its layers in strict boot order. -->
+  <xs:element name="os-model">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="identity"   type="IdentityType"/>
+        <xs:element name="shape"      type="ShapeType"/>
+        <xs:element name="arch"       type="ArchType"      maxOccurs="unbounded"/>
+        <xs:element name="bootloader" type="BootloaderType"/>
+        <xs:element name="kernel"     type="KernelType"/>
+        <xs:element name="base-drivers" type="BaseDriversType"/>
+        <xs:element name="filesystem" type="FilesystemType"/>
+        <xs:element name="swap"       type="SwapType"       minOccurs="0"/>
+        <xs:element name="packages"   type="PackagesType"/>
+        <xs:element name="services"   type="ServicesType"/>
+        <xs:element name="compat"     type="CompatType"     minOccurs="0"/>
+        <xs:element name="desktop"    type="DesktopType"    minOccurs="0"/>
+      </xs:sequence>
+      <xs:attribute name="schema-version" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:complexType name="IdentityType">
+    <xs:attribute name="name"    type="xs:string" use="required"/>
+    <xs:attribute name="version" type="xs:string" use="required"/>
+    <xs:attribute name="edition">
+      <xs:simpleType><xs:restriction base="xs:string">
+        <xs:enumeration value="Desktop"/><xs:enumeration value="Server"/>
+      </xs:restriction></xs:simpleType>
+    </xs:attribute>
+  </xs:complexType>
+
+  <xs:complexType name="ShapeType">
+    <xs:attribute name="family" use="required">
+      <xs:simpleType><xs:restriction base="xs:string">
+        <xs:enumeration value="Linux"/><xs:enumeration value="Windows"/><xs:enumeration value="macOS"/>
+      </xs:restriction></xs:simpleType>
+    </xs:attribute>
+  </xs:complexType>
+
+  <xs:complexType name="ArchType">
+    <xs:attribute name="name"   type="xs:string" use="required"/>
+    <xs:attribute name="triple" type="xs:string"/>
+    <xs:attribute name="bits"   type="xs:unsignedByte"/>
+  </xs:complexType>
+
+  <xs:complexType name="BootloaderType">
+    <xs:attribute name="firmware" type="xs:string" use="required"/>
+    <xs:attribute name="loader"   type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="KernelType">
+    <xs:attribute name="family" use="required">
+      <xs:simpleType><xs:restriction base="xs:string">
+        <xs:enumeration value="Linux"/><xs:enumeration value="NT"/><xs:enumeration value="XNU"/>
+      </xs:restriction></xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="version" type="xs:string" use="required"/>
+    <xs:attribute name="cmdline" type="xs:string"/>
+  </xs:complexType>
+
+  <!-- The minimum-boot driver series: at least a boot bus + boot storage. -->
+  <xs:complexType name="BaseDriversType">
+    <xs:sequence>
+      <xs:element name="driver" minOccurs="2" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:attribute name="class" use="required">
+            <xs:simpleType><xs:restriction base="xs:string">
+              <xs:enumeration value="bus"/><xs:enumeration value="storage"/>
+              <xs:enumeration value="display"/><xs:enumeration value="keyboard"/>
+              <xs:enumeration value="mouse"/><xs:enumeration value="usb"/>
+              <xs:enumeration value="audio"/>
+            </xs:restriction></xs:simpleType>
+          </xs:attribute>
+          <xs:attribute name="name"  type="xs:string" use="required"/>
+          <xs:attribute name="phase" use="required">
+            <xs:simpleType><xs:restriction base="xs:string">
+              <xs:enumeration value="boot"/><xs:enumeration value="early"/>
+            </xs:restriction></xs:simpleType>
+          </xs:attribute>
+          <xs:attribute name="origin">
+            <xs:simpleType><xs:restriction base="xs:string">
+              <xs:enumeration value="in-tree"/><xs:enumeration value="vendor-signed"/>
+              <xs:enumeration value="unknown-source"/><xs:enumeration value="foreign-OS"/>
+            </xs:restriction></xs:simpleType>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="allow-unknown" type="xs:boolean" default="false"/>
+    <xs:attribute name="allow-foreign" type="xs:boolean" default="false"/>
+  </xs:complexType>
+
+  <xs:complexType name="FilesystemType">
+    <xs:attribute name="root" use="required">
+      <xs:simpleType><xs:restriction base="xs:string">
+        <xs:enumeration value="ext4"/><xs:enumeration value="ext3"/><xs:enumeration value="xfs"/>
+        <xs:enumeration value="btrfs"/><xs:enumeration value="zfs"/><xs:enumeration value="f2fs"/>
+        <xs:enumeration value="ntfs"/><xs:enumeration value="refs"/>
+        <xs:enumeration value="apfs"/><xs:enumeration value="hfs+"/><xs:enumeration value="ufs"/>
+      </xs:restriction></xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="esp">
+      <xs:simpleType><xs:restriction base="xs:string">
+        <xs:enumeration value="fat32"/><xs:enumeration value="fat16"/><xs:enumeration value="vfat"/>
+      </xs:restriction></xs:simpleType>
+    </xs:attribute>
+  </xs:complexType>
+
+  <xs:complexType name="SwapType">
+    <xs:attribute name="kind" use="required">
+      <xs:simpleType><xs:restriction base="xs:string">
+        <xs:enumeration value="file"/><xs:enumeration value="partition"/>
+        <xs:enumeration value="zram"/><xs:enumeration value="zswap"/>
+        <xs:enumeration value="pagefile"/><xs:enumeration value="dynamic"/><xs:enumeration value="none"/>
+      </xs:restriction></xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="size"        type="xs:string"/>
+    <xs:attribute name="swappiness"  type="xs:unsignedByte"/>
+    <xs:attribute name="compression" type="xs:string"/>
+  </xs:complexType>
+
+  <xs:complexType name="PackagesType">
+    <xs:sequence>
+      <xs:element name="package" minOccurs="1" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:attribute name="name"    type="xs:string" use="required"/>
+          <xs:attribute name="version" type="xs:string"/>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ServicesType">
+    <xs:sequence>
+      <xs:element name="service" minOccurs="1" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:attribute name="unit" type="xs:string" use="required"/>
+          <xs:attribute name="mode">
+            <xs:simpleType><xs:restriction base="xs:string">
+              <xs:enumeration value="boot"/><xs:enumeration value="ondemand"/>
+            </xs:restriction></xs:simpleType>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="manager" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <!-- Foreign-OS execution routes (SLCompatSet). -->
+  <xs:complexType name="CompatType">
+    <xs:sequence>
+      <xs:element name="route" minOccurs="0" maxOccurs="3">
+        <xs:complexType>
+          <xs:attribute name="guest" use="required">
+            <xs:simpleType><xs:restriction base="xs:string">
+              <xs:enumeration value="Linux"/><xs:enumeration value="Windows"/><xs:enumeration value="macOS"/>
+            </xs:restriction></xs:simpleType>
+          </xs:attribute>
+          <xs:attribute name="runtime" type="xs:string" use="required"/>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="DesktopType">
+    <xs:attribute name="shell" type="xs:string" use="required"/>
+  </xs:complexType>
+
+</xs:schema>

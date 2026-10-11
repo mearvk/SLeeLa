@@ -781,3 +781,94 @@ into the generated tree:
 <OS_OUT>/config/swap.conf          # kind + size + vm.swappiness + fstab entry
 <OS_OUT>/config/filesystems.txt    # chosen root/ESP + the full catalogue of table types
 ```
+
+---
+
+# Minimum-boot base drivers, driver sourcing, and the Creator doctrine
+
+## Base driver series — `SLBaseDriverSeries`
+
+The irreducible drivers an OS needs to come up and be usable at first boot,
+one per class, each marked `boot` (built-in / initramfs) or `early`:
+
+| Class | Required at boot? | Linux example |
+|---|---|---|
+| bus (motherboard/chipset) | **yes** | `pci + acpi` |
+| storage (reach the rootfs) | **yes** | `ahci + nvme + virtio_blk` |
+| display / console | yes | `efifb / drm fbdev` |
+| keyboard | yes | `atkbd + usbhid` |
+| mouse | early | `usbhid` |
+| usb host | early | `xhci_hcd` |
+| audio | early (never boot) | `snd_hda_intel` |
+
+`forShape()` seeds the series per family (Windows `.sys` drivers, macOS IOKit
+families); `canBoot()` requires the irreducible trio (bus + storage + keyboard),
+and `SLOSModel.isBuildable()` now enforces it.
+
+## Driver sourcing + the cross-OS driver bridge — `SLDriverSource`
+
+Drivers come from four origins, with a trust policy:
+
+| Origin | Default admission |
+|---|---|
+| in-tree | load |
+| vendor-signed | load |
+| **unknown-source** | permissive → load (kernel tainted); `allowUnknown(false)` → refuse |
+| **foreign-OS** | bridge-only; `allowForeign(false)` → refuse |
+
+The **cross-OS driver bridge** adapts a driver written for another family — and
+is honest about the hard kernel-ABI limits:
+
+| Host + foreign driver | Bridge |
+|---|---|
+| Linux + Windows **network** (NDIS) | `ndiswrapper` |
+| Linux + Windows **filesystem** | `fuse-shim` |
+| Linux + Windows gpu/storage/audio | **none** (no in-kernel bridge — reported, not faked) |
+| any + a device for VM passthrough | `vm-passthrough` (hosts the driver in its own OS) |
+
+## Generated C/C++ in `/os`
+
+The native base-driver runtime lives in `/os`:
+
+- `os/base_drivers.h` — the driver-class enum, record, bring-up, and the source
+  policy + bridge C ABI.
+- `os/base_drivers.c` — `sleela_base_drivers_bringup()` (walks the series in
+  class order, binds boot drivers, honours the source policy) and the
+  admission/bridge logic.
+- `os/base_drivers.cpp` — a typed C++ view (`sleela_os::BaseDrivers`).
+
+`SLBaseDriverEmitter` (OS Creator piece) + `os-generate.sleela` emit the per-OS
+`base_drivers_table.c` (the ordered `sleela_driver[]` series) + `base-drivers.conf`
+that plug into those files. All of it compiles with a stock C/C++ toolchain.
+
+## The Creator schema and doctrine
+
+How these parts compose is pinned, not arbitrary:
+
+- [`os-creator/os-creator.xsd`](os-creator/os-creator.xsd) — the normative schema:
+  the ordered `identity → shape → arch → bootloader → kernel → base-drivers →
+  filesystem → [swap] → packages → services → [compat] → [desktop]` sequence,
+  required vs. optional layers, and the closed value sets (shapes, kernel
+  families, filesystems, swap kinds, driver phases/origins, compat guests).
+- [`os-creator/CREATOR.DOCTRINE.md`](os-creator/CREATOR.DOCTRINE.md) — the
+  rationale: why each layer follows the one before, what may not go together,
+  and the versioning rules.
+
+### The compiler recognises the binding — by version
+
+A Creator source declares its schema with a pragma after `#sleela`:
+
+```java
+#sleela 1.11
+#schema os-creator/os-creator.xsd 1.0.0
+```
+
+On every `check`/`run`/`compile` the compiler (`resolveSchemaReference`) does
+**code recognition** of this binding: it resolves the schema path (relative to
+the source, then the repo root) and **errors if the schema is absent**, reads
+the declared **version** and **errors if it exceeds the compiler's supported
+Creator schema version** (`maxSupportedSchema()` = `1.0.0`). A source with no
+`#schema` is accepted — the binding is opt-in, but once declared it is enforced.
+Full structural XSD validation of an exported Creator document is done by
+tooling/CI against the same XSD; the compiler guarantees reference integrity and
+version compatibility at build time.

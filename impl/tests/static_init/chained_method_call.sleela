@@ -1,0 +1,17 @@
+#sleela 1.11
+// Regression: a method call on the return value of another method call must
+// resolve (chained obj.getX().method()). exprStructType gained a MethodCall
+// case that reads the called method's declared return type. (Fixed 2026-10.)
+class Shape { String name() { return "Linux"; } }
+class Model {
+  Shape sh;
+  void init() { sh = new Shape(); }
+  Shape osShape() { return sh; }
+}
+class Main {
+  String grab(Model m) { return m.osShape().name(); }   // chained
+  void main() {
+    Model m = new Model(); m.init();
+    print(grab(m));   // Linux
+  }
+}

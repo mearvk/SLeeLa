@@ -30,6 +30,7 @@ class SLOSCreator {
   SLOSLoaderEmitter osLoader;
   SLDesktopLoaderEmitter desktopLoader;
   SLCompatLoaderEmitter compatLoader;
+  SLBaseDriverEmitter baseDriverEmit;
   SLCEmitter cEmit;
   SLCppEmitter cppEmit;
   SLToolchainEmitter toolchain;
@@ -45,6 +46,7 @@ class SLOSCreator {
     osLoader = new SLOSLoaderEmitter();
     desktopLoader = new SLDesktopLoaderEmitter();
     compatLoader = new SLCompatLoaderEmitter();
+    baseDriverEmit = new SLBaseDriverEmitter();
     cEmit = new SLCEmitter();
     cppEmit = new SLCppEmitter();
     toolchain = new SLToolchainEmitter();
@@ -80,6 +82,7 @@ class SLOSCreator {
     writePiece(bootLoader.emit(m), report);
     writePiece(kernelLoader.emit(m), report);
     writePiece(driverLoader.emit(m), report);
+    writePiece(baseDriverEmit.emit(m), report);   // minimum-boot driver series table
     writePiece(osLoader.emit(m), report);
     // Foreign-executable compatibility loader: only when the model declares
     // guest families to support (an SLCompatSet with at least one route).

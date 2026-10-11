@@ -37,6 +37,8 @@ class SLOSModel {
   SLKernelSpec kernel;
   SLFilesystemLayout filesystem;
   SLSwapConfig swap;         // swap/paging kind + quality
+  SLBaseDriverSeries baseDrivers;  // minimum-boot driver series
+  SLDriverSource driverSource;     // driver provenance/trust + cross-OS bridge
   SLDriverSet drivers;
   SLPackageSet packages;
   SLServiceSet services;
@@ -54,6 +56,8 @@ class SLOSModel {
     kernel = new SLKernelSpec();
     filesystem = new SLFilesystemLayout();
     swap = new SLSwapConfig();
+    baseDrivers = new SLBaseDriverSeries();
+    driverSource = new SLDriverSource();
     drivers = new SLDriverSet();
     packages = new SLPackageSet();
     services = new SLServiceSet();
@@ -75,6 +79,8 @@ class SLOSModel {
     kernel.forShape(shape);
     filesystem.forShape(shape);
     swap.forShape(shape);
+    baseDrivers.forShape(shape);
+    driverSource.configure(shape.name());
     drivers.forShape(shape);
     packages.baseSeedForShape(shape);
     services.forShape(shape);
@@ -92,6 +98,8 @@ class SLOSModel {
   SLKernelSpec kernelSpec()      { return kernel; }
   SLFilesystemLayout layout()    { return filesystem; }
   SLSwapConfig swapConfig()      { return swap; }
+  SLBaseDriverSeries baseDriverSeries() { return baseDrivers; }
+  SLDriverSource driverPolicy()  { return driverSource; }
   SLDriverSet driverSet()        { return drivers; }
   // The filesystem (file-table) type catalogue — a fresh reference helper for
   // choosing/validating a filesystem format (FAT/NTFS/ext4/APFS/...).
@@ -111,6 +119,7 @@ class SLOSModel {
     if (configured != 1) { return false; }
     if (!boot.isComplete()) { return false; }
     if (!kernel.isBootable()) { return false; }
+    if (!baseDrivers.canBoot()) { return false; }
     if (!drivers.canReachRootfs()) { return false; }
     if (!filesystem.isComplete()) { return false; }
     if (packages.isEmpty()) { return false; }

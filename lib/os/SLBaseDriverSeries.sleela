@@ -1,0 +1,139 @@
+/*
+ * lib/os/SLBaseDriverSeries.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLBaseDriverSeries — the minimum-boot driver series an OS
+ *   needs to come up: the irreducible set of device drivers that must be present
+ *   (built into the kernel or in the initramfs) for first bootup, plus the early
+ *   input/console drivers a user needs at the console. It names, per class, the
+ *   motherboard/chipset bus, the storage controller (so the kernel can reach the
+ *   root filesystem), the input devices (keyboard, mouse), the display/console,
+ *   USB host, and audio, and marks which are REQUIRED for boot vs. merely
+ *   early-available.
+ *
+ * In the firmware -> boot -> kernel -> userspace -> desktop model this refines
+ * the kernel's driver node for the earliest phase: the "can we even boot and
+ * interact" set, distinct from the fuller SLDriverSet. SLOSModel composes one;
+ * the OS Creator's SLBaseDriverEmitter turns it into real driver-table C/C++.
+ *
+ * Family: os. Pure design model; the series is consumed by the kernel/initramfs
+ *   emitters. No native bridge calls.
+ */
+#sleela 1.11
+class SLBaseDriverSeries {
+  // Fixed component slots keep the model array-free. Each holds a driver name
+  // ("" if unset) and whether it is required at boot.
+  String busDrv;      int busBoot;      // motherboard/chipset bus (PCI/ACPI)
+  String storageDrv;  int storageBoot;  // storage controller (AHCI/NVMe/virtio)
+  String keyboardDrv; int keyboardBoot; // keyboard (i8042/USB HID)
+  String mouseDrv;    int mouseBoot;    // mouse/pointer (USB HID / PS2)
+  String displayDrv;  int displayBoot;  // console/framebuffer display
+  String usbDrv;      int usbBoot;      // USB host controller (xHCI)
+  String audioDrv;    int audioBoot;    // audio (HD-Audio) — not boot-required
+  int configured;
+
+  void configure() {
+    busDrv = ""; storageDrv = ""; keyboardDrv = ""; mouseDrv = "";
+    displayDrv = ""; usbDrv = ""; audioDrv = "";
+    busBoot = 0; storageBoot = 0; keyboardBoot = 0; mouseBoot = 0;
+    displayBoot = 0; usbBoot = 0; audioBoot = 0;
+    configured = 1;
+  }
+
+  // Seed the minimum-boot series for a shape. The bus + storage + console +
+  // keyboard are REQUIRED at boot; USB and mouse are early-available; audio is
+  // non-boot. Driver names reflect each family's real early drivers.
+  void forShape(SLOSShape shape) {
+    configure();
+    if (shape.isWindows()) {
+      setBus("pci.sys / acpi.sys", true);
+      setStorage("storahci.sys / stornvme.sys", true);
+      setKeyboard("i8042prt / kbdhid.sys", true);
+      setMouse("mouhid.sys", false);
+      setDisplay("BasicDisplay.sys", true);
+      setUsb("usbxhci.sys", false);
+      setAudio("HDAudio.sys", false);
+      return;
+    }
+    if (shape.isMac()) {
+      setBus("IOPCIFamily / AppleACPIPlatform", true);
+      setStorage("IOAHCIFamily / IONVMeFamily", true);
+      setKeyboard("AppleHIDKeyboard", true);
+      setMouse("AppleHIDMouse", false);
+      setDisplay("AppleDisplay / framebuffer", true);
+      setUsb("IOUSBHostFamily", false);
+      setAudio("AppleHDA", false);
+      return;
+    }
+    // Linux early drivers.
+    setBus("pci + acpi", true);
+    setStorage("ahci + nvme + virtio_blk", true);
+    setKeyboard("atkbd + usbhid", true);
+    setMouse("usbhid (mouse)", false);
+    setDisplay("efifb / drm fbdev", true);
+    setUsb("xhci_hcd", false);
+    setAudio("snd_hda_intel", false);
+  }
+
+  // ---- Setters -------------------------------------------------------
+  void setBus(String n, boolean boot)      { busDrv = n;      busBoot = b(boot); }
+  void setStorage(String n, boolean boot)  { storageDrv = n;  storageBoot = b(boot); }
+  void setKeyboard(String n, boolean boot) { keyboardDrv = n; keyboardBoot = b(boot); }
+  void setMouse(String n, boolean boot)    { mouseDrv = n;    mouseBoot = b(boot); }
+  void setDisplay(String n, boolean boot)  { displayDrv = n;  displayBoot = b(boot); }
+  void setUsb(String n, boolean boot)      { usbDrv = n;      usbBoot = b(boot); }
+  void setAudio(String n, boolean boot)    { audioDrv = n;    audioBoot = b(boot); }
+  int b(boolean x) { if (x) { return 1; } return 0; }
+
+  // ---- Validity ------------------------------------------------------
+  // A series can boot only with the irreducible trio: a bus to enumerate
+  // hardware, a storage controller to reach the rootfs, and a keyboard for the
+  // console. Display is strongly expected; audio/mouse/usb are not required.
+  boolean canBoot() {
+    if (configured != 1) { return false; }
+    if (busDrv == "" || busBoot != 1) { return false; }
+    if (storageDrv == "" || storageBoot != 1) { return false; }
+    if (keyboardDrv == "") { return false; }
+    return true;
+  }
+
+  // Count of boot-required drivers present.
+  int bootRequiredCount() {
+    int n = 0;
+    if (busBoot == 1 && busDrv != "") { n = n + 1; }
+    if (storageBoot == 1 && storageDrv != "") { n = n + 1; }
+    if (keyboardBoot == 1 && keyboardDrv != "") { n = n + 1; }
+    if (displayBoot == 1 && displayDrv != "") { n = n + 1; }
+    return n;
+  }
+
+  // ---- Manifest ------------------------------------------------------
+  // Newline "class name boot" lines (boot = boot|early) for the emitters.
+  String seriesManifest() {
+    String m = "";
+    m = line(m, "bus", busDrv, busBoot);
+    m = line(m, "storage", storageDrv, storageBoot);
+    m = line(m, "keyboard", keyboardDrv, keyboardBoot);
+    m = line(m, "mouse", mouseDrv, mouseBoot);
+    m = line(m, "display", displayDrv, displayBoot);
+    m = line(m, "usb", usbDrv, usbBoot);
+    m = line(m, "audio", audioDrv, audioBoot);
+    return m;
+  }
+  String line(String acc, String cls, String name, int boot) {
+    if (name == "") { return acc; }
+    String mode = "early";
+    if (boot == 1) { mode = "boot"; }
+    String l = cls + " " + name + " " + mode;
+    if (acc == "") { return l; }
+    return acc + "\n" + l;
+  }
+
+  // Accessors for the emitters.
+  String bus()      { return busDrv; }
+  String storage()  { return storageDrv; }
+  String keyboard() { return keyboardDrv; }
+  String mouse()    { return mouseDrv; }
+  String display()  { return displayDrv; }
+  String usb()      { return usbDrv; }
+  String audio()    { return audioDrv; }
+}
