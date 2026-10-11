@@ -17362,7 +17362,13 @@ e67d6059fe35e4f54eedafe508fbcb12f4faad99564bd1db1f538172fa99b03b  lib/sleela-sql
 34d38625b55ee392181bc645add57d1635f6c692357f176fd1450895b432df79  lib/sleela-sql/examples/09-alter-table-proposal.sql
 266748c021800d906c277f7ebd6b73cf40da0cc515a21c5e75f07b13498b7bca  lib/sleela-sql/examples/10-alter-table-default.sql
 f609fc5fa88991d2c55883ca919a9ddb21c9a4b4ddd91213c83f4a6fb835f466  lib/sleela-sql/examples/11-alter-table-errors.sql
-6aa8958f1d7fe5671e2a5d109dd0b2ee77193954ae40db088c46a16070dedf67  lib/sleela-sql/examples/README.md
+c4f8576ad36b05855ce7ef01412559a7faf83b0ca749e33dd7252d303c7e6d3b  lib/sleela-sql/examples/README.md
+dd635373c5eca58977fc1475494f00b670bd0617e84fb457e362f599cd12640b  lib/sleela-sql/examples/slsql/01-contacts.ssql
+6c827a6957cb62407145f937ae04de0bae07f5979823430da5d875456c094a9f  lib/sleela-sql/examples/slsql/02-select-and-filter.ssql
+5f34225384d26dae3ec4349806f4ee3015c0a7a0f709718b6205c9d1201e0f0f  lib/sleela-sql/examples/slsql/03-table-management.ssql
+201dc8261ba3fe61593c4fa806eead0e08fc010db92591427abfc7045264aa12  lib/sleela-sql/examples/slsql/04-prepared-statements.c
+d2f81ed7264df5f43b9ebd0b98c50e67a55ded6f5d64f3cbead39ed6ab4fda08  lib/sleela-sql/examples/slsql/05-sql-equivalents.md
+32a679b9b4a4b25ab06fc0126795a2c967f3f4ceb0792f807c703fae369ae92e  lib/sleela-sql/examples/slsql/README.md
 b79f1921086c9d316f7524c805b6075867d1a14a25bb72792d04e2b8ca7e6c1b  lib/sleela-sql/native/include/sleela_sql.h
 b8ca04c30c96ede70936fff253b784c619108486ce62211ea8110ed9bbcfd43a  lib/sleela-sql/native/src/sleela_sql.c
 d2a2ec4af6d309a74f1122bff3bc037e8751eb707d88a9b124fb3c457fd475fe  lib/sleela-sql/native/src/sleela_sql_cli.c
