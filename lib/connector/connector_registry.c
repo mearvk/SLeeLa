@@ -1,0 +1,19 @@
+#include "connector_registry.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+typedef struct property { char *key; char *value; } property;
+typedef struct entry { char *reference; char *kind; void *handle; property *properties; size_t property_count; } entry;
+struct sleela_connector_registry { entry *items; size_t count; };
+static char *dupstr(const char*s){if(!s)return NULL;size_t n=strlen(s)+1;char*p=(char*)malloc(n);if(p)memcpy(p,s,n);return p;}
+static void seterr(char*e,size_t n,const char*s){if(e&&n)snprintf(e,n,"%s",s?s:"connector registry error");}
+static entry *find(sleela_connector_registry*r,const char*ref){if(!r||!ref)return NULL;for(size_t i=0;i<r->count;i++)if(strcmp(r->items[i].reference,ref)==0)return &r->items[i];return NULL;}
+sleela_connector_registry *sleela_connector_registry_create(void){return (sleela_connector_registry*)calloc(1,sizeof(sleela_connector_registry));}
+void sleela_connector_registry_destroy(sleela_connector_registry*r){if(!r)return;for(size_t i=0;i<r->count;i++){entry*e=&r->items[i];free(e->reference);free(e->kind);for(size_t j=0;j<e->property_count;j++){free(e->properties[j].key);free(e->properties[j].value);}free(e->properties);}free(r->items);free(r);}
+int sleela_connector_register(sleela_connector_registry*r,const char*ref,const char*kind,void*h,char*err,size_t es){if(err&&es)err[0]=0;if(!r||!ref||!ref[0]||!kind||!kind[0]){seterr(err,es,"connector reference and kind are required");return 0;}if(find(r,ref)){seterr(err,es,"duplicate connector reference");return 0;}entry*items=(entry*)realloc(r->items,(r->count+1)*sizeof(entry));if(!items){seterr(err,es,"out of memory");return 0;}r->items=items;entry*e=&r->items[r->count];memset(e,0,sizeof *e);e->reference=dupstr(ref);e->kind=dupstr(kind);e->handle=h;if(!e->reference||!e->kind){free(e->reference);free(e->kind);memset(e,0,sizeof *e);seterr(err,es,"out of memory");return 0;}r->count++;return 1;}
+static int view(entry*e,sleela_connector_view*out){if(!e||!out)return 0;out->reference=e->reference;out->kind=e->kind;out->handle=e->handle;return 1;}
+int sleela_connector_resolve(sleela_connector_registry*r,const char*ref,sleela_connector_view*out,char*err,size_t es){entry*e=find(r,ref);if(!e){seterr(err,es,"connector reference not found");return 0;}return view(e,out);}
+int sleela_connector_resolve_unnamed(sleela_connector_registry*r,sleela_connector_view*out,char*err,size_t es){if(!r||r->count==0){seterr(err,es,"no connectors are registered");return 0;}if(r->count!=1){seterr(err,es,"ambiguous unnamed connector; provide an explicit reference");return 0;}return view(&r->items[0],out);}
+int sleela_connector_property_set(sleela_connector_registry*r,const char*ref,const char*k,const char*v,char*err,size_t es){entry*e=find(r,ref);if(!e||!k||!k[0]||!v){seterr(err,es,"connector reference, property key, and value are required");return 0;}for(size_t i=0;i<e->property_count;i++)if(strcmp(e->properties[i].key,k)==0){char*n=dupstr(v);if(!n){seterr(err,es,"out of memory");return 0;}free(e->properties[i].value);e->properties[i].value=n;return 1;}property*p=(property*)realloc(e->properties,(e->property_count+1)*sizeof(property));if(!p){seterr(err,es,"out of memory");return 0;}e->properties=p;property*x=&e->properties[e->property_count];x->key=dupstr(k);x->value=dupstr(v);if(!x->key||!x->value){free(x->key);free(x->value);seterr(err,es,"out of memory");return 0;}e->property_count++;return 1;}
+const char*sleela_connector_property_get(const sleela_connector_registry*r,const char*ref,const char*k){if(!r||!ref||!k)return NULL;for(size_t i=0;i<r->count;i++)if(strcmp(r->items[i].reference,ref)==0)for(size_t j=0;j<r->items[i].property_count;j++)if(strcmp(r->items[i].properties[j].key,k)==0)return r->items[i].properties[j].value;return NULL;}
+size_t sleela_connector_count(const sleela_connector_registry*r){return r?r->count:0;}
