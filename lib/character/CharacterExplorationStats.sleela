@@ -1,0 +1,30 @@
+#sleela 1.10
+/*
+ * CharacterExplorationStats.sleela
+ * SLeeLa CharacterStats component: exploration and interaction skills.
+ *
+ * This focused value class separates one coherent group of CharacterStats
+ * fields for reuse by games, simulations, and interactive fiction. Values and
+ * scales are defined by the consuming game's ruleset; no universal caps are
+ * assumed unless explicitly enforced by a method.
+ */
+class CharacterExplorationStats {
+    int perception;
+    int insight;
+    int investigation;
+    int stealth;
+    int survival;
+    int tracking;
+    int lockpicking;
+    int disarmTraps;
+    int persuasion;
+    int deception;
+    int intimidation;
+    int performance;
+    int animalHandling;
+    int medicine;
+    int navigation;
+    int luckCheck;
+
+    int canDetect(int difficulty) { return perception >= difficulty; }
+}
