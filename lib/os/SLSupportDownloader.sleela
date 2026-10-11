@@ -1,0 +1,180 @@
+/*
+ * lib/os/SLSupportDownloader.sleela
+ * SLeeLa Standard Library Definition.
+ * Definition: Defines SLSupportDownloader — the resilient fallback downloader
+ *   for OS components. When a primary component URL returns 404 (or any
+ *   non-success), the build must not simply fail: this module supplies, for
+ *   each download kind, a PRIORITIZED list of SUPPORT (mirror / alternate)
+ *   URLs and falls through to the next until one succeeds. The priority order
+ *   is by LIKELIHOOD OF BEING A FINAL / AUTHORITATIVE OR COLLEGE (institutional)
+ *   REFERENCE — the sources most likely to still be there and to be canonical:
+ *
+ *     1. authoritative  — the project's own canonical host (highest trust)
+ *     2. official-mirror— an official CDN / primary mirror
+ *     3. college/edu     — a university / institutional mirror (long-lived,
+ *                          .edu / national research networks)
+ *     4. archive         — a long-term archival "final reference" (e.g. the
+ *                          Internet Archive) — the last resort that persists
+ *
+ * A tool resolves the ranked list for a kind, emits a fetch loop that tries each
+ * in order and continues past a 404/failure, or probes which is reachable now.
+ * It hooks into the OS document (SLOSModel, via SLDownloadSet) and the VM series
+ * (SLVM) so either can obtain components resiliently.
+ *
+ * Family: os. Design model; reachability/fetch cross the osRun bridge
+ *   (requires #sleela 1.5 for curl probing).
+ */
+#sleela 1.11
+class SLSupportDownloader {
+  // Priority ordinals (lower = tried first; by likelihood of a final/edu ref).
+  static final int PRIO_AUTHORITATIVE   = 0;
+  static final int PRIO_OFFICIAL_MIRROR = 1;
+  static final int PRIO_COLLEGE         = 2;
+  static final int PRIO_ARCHIVE         = 3;
+
+  int configured;
+  void configure() { configured = 1; }
+
+  // ---- Support URL tables, by component kind --------------------------
+  // Each kind returns up to four candidate URLs in priority order. These are
+  // the real, long-lived mirrors most likely to resolve when a primary 404s.
+  // The college/edu tier favours university mirrors that persist for decades.
+
+  // Linux kernel source mirrors.
+  String kernelPrimary() { return "https://cdn.kernel.org/pub/linux/kernel"; }
+  String kernelSupport(int prio) {
+    if (prio == PRIO_AUTHORITATIVE)   { return "https://cdn.kernel.org/pub/linux/kernel"; }
+    if (prio == PRIO_OFFICIAL_MIRROR) { return "https://mirrors.kernel.org/pub/linux/kernel"; }
+    if (prio == PRIO_COLLEGE)         { return "https://mirror.math.princeton.edu/pub/kernel/linux/kernel"; }
+    return "https://web.archive.org/web/2id_/https://cdn.kernel.org/pub/linux/kernel";
+  }
+
+  // Ubuntu/Debian package archive mirrors.
+  String packagePrimary() { return "http://archive.ubuntu.com/ubuntu"; }
+  String packageSupport(int prio) {
+    if (prio == PRIO_AUTHORITATIVE)   { return "http://archive.ubuntu.com/ubuntu"; }
+    if (prio == PRIO_OFFICIAL_MIRROR) { return "http://mirror.ubuntu.com/ubuntu"; }
+    if (prio == PRIO_COLLEGE)         { return "https://mirrors.mit.edu/ubuntu"; }
+    return "https://web.archive.org/web/2id_/http://archive.ubuntu.com/ubuntu"; }
+
+  // linux-firmware source mirrors.
+  String firmwarePrimary() { return "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git"; }
+  String firmwareSupport(int prio) {
+    if (prio == PRIO_AUTHORITATIVE)   { return "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git"; }
+    if (prio == PRIO_OFFICIAL_MIRROR) { return "https://kernel.googlesource.com/pub/scm/linux/kernel/git/firmware/linux-firmware"; }
+    if (prio == PRIO_COLLEGE)         { return "https://mirrors.edge.kernel.org/pub/linux/kernel/firmware"; }
+    return "https://web.archive.org/web/2id_/https://git.kernel.org/.../linux-firmware.git"; }
+
+  // The upstream Determinant distro mirrors.
+  String upstreamPrimary() { return "https://github.com/mearvk/Ubuntu.Determinant.Beta.Restricted.git"; }
+  String upstreamSupport(int prio) {
+    if (prio == PRIO_AUTHORITATIVE)   { return "https://github.com/mearvk/Ubuntu.Determinant.Beta.Restricted.git"; }
+    if (prio == PRIO_OFFICIAL_MIRROR) { return "https://gitlab.com/mearvk/Ubuntu.Determinant.Beta.Restricted.git"; }
+    if (prio == PRIO_COLLEGE)         { return "https://sourceforge.net/p/determinant/code"; }
+    return "https://web.archive.org/web/2id_/https://github.com/mearvk/Ubuntu.Determinant.Beta.Restricted"; }
+
+  // Wine runtime mirrors.
+  String winePrimary() { return "https://dl.winehq.org/wine-builds"; }
+  String wineSupport(int prio) {
+    if (prio == PRIO_AUTHORITATIVE)   { return "https://dl.winehq.org/wine-builds"; }
+    if (prio == PRIO_OFFICIAL_MIRROR) { return "https://mirrors.kernel.org/wine"; }
+    if (prio == PRIO_COLLEGE)         { return "https://mirror.cs.uchicago.edu/winehq"; }
+    return "https://web.archive.org/web/2id_/https://dl.winehq.org/wine-builds"; }
+
+  // QEMU runtime mirrors.
+  String qemuPrimary() { return "https://download.qemu.org"; }
+  String qemuSupport(int prio) {
+    if (prio == PRIO_AUTHORITATIVE)   { return "https://download.qemu.org"; }
+    if (prio == PRIO_OFFICIAL_MIRROR) { return "https://mirrors.kernel.org/qemu"; }
+    if (prio == PRIO_COLLEGE)         { return "https://mirror.cs.princeton.edu/qemu"; }
+    return "https://web.archive.org/web/2id_/https://download.qemu.org"; }
+
+  // ---- Generic access by kind ----------------------------------------
+  // supportUrl(kind, prio): the support URL for a kind at a priority, or "" when
+  // the kind is unknown. kind is one of: kernel/package/firmware/upstream/
+  // wine/qemu.
+  String supportUrl(String kind, int prio) {
+    if (kind == "kernel")   { return kernelSupport(prio); }
+    if (kind == "package")  { return packageSupport(prio); }
+    if (kind == "firmware") { return firmwareSupport(prio); }
+    if (kind == "upstream") { return upstreamSupport(prio); }
+    if (kind == "wine")     { return wineSupport(prio); }
+    if (kind == "qemu")     { return qemuSupport(prio); }
+    return "";
+  }
+  boolean knownKind(String kind) { return supportUrl(kind, PRIO_AUTHORITATIVE) != ""; }
+
+  String priorityName(int prio) {
+    if (prio == PRIO_AUTHORITATIVE)   { return "authoritative"; }
+    if (prio == PRIO_OFFICIAL_MIRROR) { return "official-mirror"; }
+    if (prio == PRIO_COLLEGE)         { return "college"; }
+    return "archive";
+  }
+
+  // The ranked list "<priority> <url>" for a kind (primary first, archive last).
+  String rankedList(String kind) {
+    if (!knownKind(kind)) { return ""; }
+    String s = "";
+    int p = 0;
+    while (p <= PRIO_ARCHIVE) {
+      s = add(s, priorityName(p) + " " + supportUrl(kind, p));
+      p = p + 1;
+    }
+    return s;
+  }
+  String add(String acc, String line) {
+    if (acc == "") { return line; }
+    return acc + "\n" + line;
+  }
+
+  // ---- 404-tolerant fetch --------------------------------------------
+  // fetchWithFallback(kind, dest): emit a POSIX shell block that tries each
+  // support URL in priority order, continuing past a 404/failure to the next,
+  // and stops at the first success. Git kinds use `git clone`, others `curl`.
+  String fetchWithFallback(String kind, String dest) {
+    if (!knownKind(kind)) { return "# unknown download kind: " + kind + "\n"; }
+    boolean git = isGitKind(kind);
+    String s = "# resilient fetch of '" + kind + "' (primary -> mirrors -> archive)\n";
+    s = s + "fetch_" + kind + "() {\n";
+    int p = 0;
+    while (p <= PRIO_ARCHIVE) {
+      String url = supportUrl(kind, p);
+      s = s + "  # " + priorityName(p) + "\n";
+      if (git) {
+        s = s + "  git clone --depth 1 \"" + url + "\" \"" + dest + "\" && return 0\n";
+      } else {
+        s = s + "  curl -fsSL --retry 2 -o \"" + dest + "\" \"" + url + "\" && return 0\n";
+      }
+      p = p + 1;
+    }
+    s = s + "  echo \"all support URLs for " + kind + " failed\" >&2; return 1\n";
+    s = s + "}\nfetch_" + kind + "\n";
+    return s;
+  }
+  boolean isGitKind(String kind) {
+    return kind == "kernel" || kind == "firmware" || kind == "upstream";
+  }
+
+  // ---- Host-side resolution (reachability) ----------------------------
+  // firstReachable(kind): return the highest-priority support URL that answers
+  // now (HTTP HEAD / git ls-remote), or "" if none respond. Probes via osRun.
+  String firstReachable(String kind) {
+    if (!knownKind(kind)) { return ""; }
+    int p = 0;
+    while (p <= PRIO_ARCHIVE) {
+      String url = supportUrl(kind, p);
+      if (reachable(kind, url)) { return url; }
+      p = p + 1;
+    }
+    return "";
+  }
+  boolean reachable(String kind, String url) {
+    if (isGitKind(kind)) {
+      return osRun("git ls-remote " + url + " >/dev/null 2>&1") == 0;
+    }
+    // curl -fsI returns non-zero on 404/4xx/5xx, so success == reachable.
+    return osRun("curl -fsI \"" + url + "\" >/dev/null 2>&1") == 0;
+  }
+
+  boolean ready() { return configured == 1; }
+}

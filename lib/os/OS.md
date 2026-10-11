@@ -945,3 +945,64 @@ and it writes `config/downloads.conf`, `config/config-manifest.conf`, and
 
 So the final `gen-iso.sh` / compile step runs only once the URLs are resolved
 and the OS settings are laid down.
+
+---
+
+# Resilient downloads — support/mirror fallback on 404 (`SLSupportDownloader`)
+
+A primary OS-component URL can go away (404, 410, DNS death). `SLSupportDownloader`
+is the fallback downloader: for each component kind it supplies a **prioritized
+list of support (mirror / alternate) URLs** and the build falls through to the
+next until one succeeds. The priority order is by **likelihood of being a final
+/ authoritative or college (institutional) reference** — the sources most likely
+to still be there and to be canonical:
+
+| Tier | Priority | Why it ranks here |
+|---|---|---|
+| **authoritative** | 0 (first) | the project's own canonical host |
+| **official-mirror** | 1 | an official CDN / primary mirror |
+| **college / edu** | 2 | a long-lived university / institutional mirror (`.edu`, research networks) |
+| **archive** | 3 (last) | a long-term archival "final reference" (Internet Archive) that persists |
+
+Every component kind (`package`, `kernel`, `firmware`, `upstream`, `wine`,
+`qemu`) carries all four tiers.
+
+```sleela
+SLSupportDownloader d = new SLSupportDownloader(); d.configure();
+d.rankedList("kernel");                 // 4 URLs, authoritative -> archive
+d.fetchWithFallback("kernel", "downloads/kernel-src");  // sh loop: try each, continue past 404
+d.firstReachable("upstream");           // probe the mirrors now; the live one, or ""
+```
+
+`fetchWithFallback` emits a `fetch_<kind>()` shell function that tries each tier
+(`git clone`/`curl … && return 0`) and only fails if **every** support URL —
+including the archive — fails. `firstReachable` probes with `git ls-remote` /
+`curl -fsI` over the `osRun` bridge; a 404 is detected (non-zero) and the next
+tier is tried.
+
+## Hooks — into the OS document AND the VM series
+
+The module hooks into both, as a shared fallback policy:
+
+- **OS document.** `SLDownloadSet` (held by `SLOSModel`) now composes an
+  `SLSupportDownloader` (`downloadSet().supportDownloader()`) and emits
+  `supportFetchScript(phase)` — the 404-tolerant fetch for every component of a
+  phase — and `supportManifest()`, the full support-URL table.
+- **VM series.** `lib/vm/SLVMComponentFetcher` wires an `SLVM` to an
+  `SLSupportDownloader`: the VM calls `resolve(kind)` for the first reachable
+  mirror or `fetch(kind, dest)` to run the fallback acquisition at run time.
+  `configureShared(vm, downloader)` lets the VM and the OS model use **one and
+  the same** `SLSupportDownloader`, so build-time and run-time acquisition share
+  identical fallback behaviour.
+
+## In the generated tree
+
+`os-generate.sleela` writes the support table and the resilient fetch script:
+
+```text
+<OS_OUT>/config/support-urls.conf          # the mirror tiers per component
+<OS_OUT>/fetch-downloads-resilient.sh      # 404-tolerant fetch (sh -n clean)
+```
+
+So if a primary URL 404s, the build (or the VM) walks the mirror tiers — official,
+then a college/edu mirror, then the archive — before giving up.
