@@ -45,3 +45,10 @@ if (db.status() == SSQL_OK)
 ```
 
 The engine is a local CSV-backed SQL subset, not a network database server or a full MySQL implementation. Read `SPECIFICATION.md` before relying on it for production data. `SqlModel.sleela` validates planned operations but does not automatically invoke the native library; that runtime bridge remains separate integration work.
+
+## Dialects, prepared statements, and model boundary
+
+Classic SQL and fluent SLeeLaSQL compile to the same internal statement and executor. The C API supports reusable prepared statements in either dialect with positional `?` placeholders (`ssql_prepare`, `ssql_bind`, `ssql_reset`, `ssql_run`, and `ssql_finalize`). See [`docs/SLEELASQL.md`](docs/SLEELASQL.md) for grammar and examples.
+
+`SqlModel.sleela` validates planned operations using schema facts supplied by the caller: CREATE collisions, INSERT arity, and projected-column existence. It is a SLeeLa-side model/validation example, not an automatic runtime bridge to the native C engine.
+
