@@ -1,0 +1,56 @@
+#sleela 1.10
+/*
+ * CitizenCommunityRelationshipsAndCivicParticipationStats.sleela
+ * Individual category class extracted from citizen/sleela/CitizenStats.sleela.
+ * Source category: Community, relationships, and civic participation.
+ * Monetary values use integer minor units where the field name says Cents.
+ */
+class CitizenCommunityRelationshipsAndCivicParticipationStats {
+    int socialConnection;
+    int familySupport;
+    int friendNetworkSize;
+    int communityBelonging;
+    int socialTrust;
+    int institutionalTrust;
+    int volunteerHoursPerMonth;
+    int communityServiceHours;
+    int civicParticipation;
+    int votingParticipation;
+    int publicMeetingParticipation;
+    int localOrganizationMemberships;
+    int charitableGivingCentsPerYear;
+    int neighborliness;
+    int socialIsolationRisk;
+    int discriminationExposure;
+    int inclusionAccess;
+    int culturalParticipation;
+    int recreationHoursPerWeek;
+    int libraryUse;
+    int publicServiceSatisfaction;
+    int communityContribution;
+
+    CitizenCommunityRelationshipsAndCivicParticipationStats() {
+        socialConnection = 50;
+        familySupport = 0;
+        friendNetworkSize = 0;
+        communityBelonging = 50;
+        socialTrust = 50;
+        institutionalTrust = 50;
+        volunteerHoursPerMonth = 0;
+        communityServiceHours = 0;
+        civicParticipation = 0;
+        votingParticipation = 0;
+        publicMeetingParticipation = 0;
+        localOrganizationMemberships = 0;
+        charitableGivingCentsPerYear = 0;
+        neighborliness = 50;
+        socialIsolationRisk = 0;
+        discriminationExposure = 0;
+        inclusionAccess = 0;
+        culturalParticipation = 0;
+        recreationHoursPerWeek = 0;
+        libraryUse = 0;
+        publicServiceSatisfaction = 50;
+        communityContribution = 0;
+    }
+}
