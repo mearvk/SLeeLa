@@ -16,11 +16,28 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-latest]
+        os: [ubuntu-latest, macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
-      - name: Build C engine, CLI, and C++ facade
+      - name: Set up MinGW-w64
+        if: runner.os == 'Windows'
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: MINGW64
+          update: true
+          install: mingw-w64-x86_64-gcc mingw-w64-x86_64-gcc-c++ make
+      - name: Build C engine, CLI, and C++ facade (Unix)
+        if: runner.os != 'Windows'
         run: make -C lib/sleela-sql clean all
-      - name: Run C and C++ smoke tests
+      - name: Build C engine, CLI, and C++ facade (Windows)
+        if: runner.os == 'Windows'
+        shell: msys2 {0}
+        run: make -C lib/sleela-sql clean all
+      - name: Run C and C++ smoke tests (Unix)
+        if: runner.os != 'Windows'
+        run: make -C lib/sleela-sql test
+      - name: Run C and C++ smoke tests (Windows)
+        if: runner.os == 'Windows'
+        shell: msys2 {0}
         run: make -C lib/sleela-sql test

@@ -11,6 +11,7 @@ This package groups the SLeeLa model with the native C SQL engine and a C++17 RA
 - `docs/SLEELASQL.md`: fluent dialect grammar.
 - `SPECIFICATION.md`: supported subset, bounds, API, and limitations.
 - `samples/`: classic SQL and fluent SLeeLaSQL sessions.
+- Portable storage I/O: POSIX directory enumeration on macOS/Linux and a MinGW-w64 CRT adapter on Windows.
 
 ## Build and test
 
@@ -20,7 +21,7 @@ make
 make test
 ```
 
-Outputs are kept under `build/`: CLI, C static library, and C++ facade library. Consumers of the C++ facade must link both the C++ and C core libraries.
+Outputs are kept under `build/`: CLI, C static library, and C++ facade library. Consumers of the C++ facade must link both the C++ and C core libraries. `ssql_open` creates the final database directory if absent; it does not recursively create parent directories.
 
 ## C example
 
