@@ -1,0 +1,70 @@
+#sleela 1.10
+/*
+ * CitizenEmploymentWorkAndProfessionalLifeStats.sleela
+ * Individual category class extracted from citizen/sleela/CitizenStats.sleela.
+ * Source category: Employment, work, and professional life.
+ * Monetary values use integer minor units where the field name says Cents.
+ */
+class CitizenEmploymentWorkAndProfessionalLifeStats {
+    string employerId;
+    string occupationCode;
+    string industryCode;
+    string employmentStatus;
+    int employed;
+    int selfEmployed;
+    int seekingWork;
+    int workExperienceYears;
+    int tenureMonths;
+    int hoursWorkedPerWeek;
+    int contractedHoursPerWeek;
+    int productivity;
+    int workQuality;
+    int attendanceReliability;
+    int jobSatisfaction;
+    int careerProgress;
+    int leadershipAtWork;
+    int workplaceSafety;
+    int remoteWorkCapability;
+    int unionMembership;
+    int unemploymentMonths;
+    long grossIncomeCentsPerMonth;
+    long netIncomeCentsPerMonth;
+    long annualIncomeCents;
+    long benefitsValueCentsPerMonth;
+    long pensionContributionCentsPerMonth;
+    int incomeStability;
+    int jobSecurity;
+    int workLifeBalance;
+
+    CitizenEmploymentWorkAndProfessionalLifeStats() {
+        employerId = "";
+        occupationCode = "";
+        industryCode = "";
+        employmentStatus = "not-employed";
+        employed = 0;
+        selfEmployed = 0;
+        seekingWork = 0;
+        workExperienceYears = 0;
+        tenureMonths = 0;
+        hoursWorkedPerWeek = 0;
+        contractedHoursPerWeek = 0;
+        productivity = 0;
+        workQuality = 0;
+        attendanceReliability = 0;
+        jobSatisfaction = 0;
+        careerProgress = 0;
+        leadershipAtWork = 0;
+        workplaceSafety = 0;
+        remoteWorkCapability = 0;
+        unionMembership = 0;
+        unemploymentMonths = 0;
+        grossIncomeCentsPerMonth = 0;
+        netIncomeCentsPerMonth = 0;
+        annualIncomeCents = 0;
+        benefitsValueCentsPerMonth = 0;
+        pensionContributionCentsPerMonth = 0;
+        incomeStability = 0;
+        jobSecurity = 0;
+        workLifeBalance = 50;
+    }
+}
