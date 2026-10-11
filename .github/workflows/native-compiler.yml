@@ -14,58 +14,65 @@ on:
   workflow_dispatch:
 jobs:
   native-compiler:
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
       - name: Configure
-        run: cmake -S compiler -B build/compiler -DSLEELA_COMPILER_BUILD_TESTS=ON
+        run: cmake -S compiler -B build/compiler -DSLEELA_COMPILER_BUILD_TESTS=ON -DCMAKE_BUILD_TYPE=Release
       - name: Build
-        run: cmake --build build/compiler --parallel 2
+        run: cmake --build build/compiler --config Release --parallel 2
       - name: Unit tests
-        run: ctest --test-dir build/compiler --output-on-failure
+        run: ctest --test-dir build/compiler --build-config Release --output-on-failure
+      - name: Verify user-controlled install prefix
+        run: cmake --install build/compiler --config Release --prefix build/compiler/stage
       - name: Validate example
+        if: runner.os == 'Linux'
         run: build/compiler/sleelac --check compiler/examples/arithmetic.sleela
       - name: Inspect bytecode
+        if: runner.os == 'Linux'
         run: build/compiler/sleelac --emit-ir compiler/examples/arithmetic.sleela
       - name: Run example
+        if: runner.os == 'Linux'
         run: build/compiler/sleelac --run compiler/examples/arithmetic.sleela
       - name: Emit native C and C++
+        if: runner.os == 'Linux'
         run: |
           build/compiler/sleelac --emit-c build/compiler/arithmetic.c compiler/examples/arithmetic.sleela
           build/compiler/sleelac --emit-cpp build/compiler/arithmetic.cpp compiler/examples/arithmetic.sleela
       - name: Compile generated native sources
+        if: runner.os == 'Linux'
         run: |
           cc -std=c11 -Wall -Wextra -Werror build/compiler/arithmetic.c -o build/compiler/arithmetic-c
           c++ -std=c++20 -Wall -Wextra -Werror build/compiler/arithmetic.cpp -o build/compiler/arithmetic-cpp
       - name: Execute generated native programs
+        if: runner.os == 'Linux'
         run: |
           test "$(build/compiler/arithmetic-c)" = "42"
           test "$(build/compiler/arithmetic-cpp)" = "42"
-      - name: Verify generated runtime rejects arithmetic overflow
+      - name: Verify generated runtime rejects arithmetic faults
+        if: runner.os == 'Linux'
         run: |
           printf '%s\n' 'print 9223372036854775807 + 1;' 'return 0;' > build/compiler/overflow.sleela
-          build/compiler/sleelac --emit-c build/compiler/overflow.c build/compiler/overflow.sleela
-          build/compiler/sleelac --emit-cpp build/compiler/overflow.cpp build/compiler/overflow.sleela
-          cc -std=c11 -Wall -Wextra -Werror build/compiler/overflow.c -o build/compiler/overflow-c
-          c++ -std=c++20 -Wall -Wextra -Werror build/compiler/overflow.cpp -o build/compiler/overflow-cpp
+          printf '%s\n' 'print 1 / 0;' 'return 0;' > build/compiler/divzero.sleela
+          printf '%s\n' 'let min = -9223372036854775807 - 1;' 'print min / -1;' 'return 0;' > build/compiler/divoverflow.sleela
+          for fault in overflow divzero divoverflow; do
+            build/compiler/sleelac --emit-c "build/compiler/$fault.c" "build/compiler/$fault.sleela"
+            build/compiler/sleelac --emit-cpp "build/compiler/$fault.cpp" "build/compiler/$fault.sleela"
+            cc -std=c11 -Wall -Wextra -Werror "build/compiler/$fault.c" -o "build/compiler/$fault-c"
+            c++ -std=c++20 -Wall -Wextra -Werror "build/compiler/$fault.cpp" -o "build/compiler/$fault-cpp"
+          done
           if build/compiler/overflow-c >build/compiler/overflow-c.out 2>build/compiler/overflow-c.err; then echo "C runtime accepted signed overflow"; exit 1; fi
           if build/compiler/overflow-cpp >build/compiler/overflow-cpp.out 2>build/compiler/overflow-cpp.err; then echo "C++ runtime accepted signed overflow"; exit 1; fi
           grep -q "integer overflow" build/compiler/overflow-c.err
           grep -q "integer overflow" build/compiler/overflow-cpp.err
-          printf '%s\n' 'print 1 / 0;' 'return 0;' > build/compiler/divzero.sleela
-          build/compiler/sleelac --emit-c build/compiler/divzero.c build/compiler/divzero.sleela
-          build/compiler/sleelac --emit-cpp build/compiler/divzero.cpp build/compiler/divzero.sleela
-          cc -std=c11 -Wall -Wextra -Werror build/compiler/divzero.c -o build/compiler/divzero-c
-          c++ -std=c++20 -Wall -Wextra -Werror build/compiler/divzero.cpp -o build/compiler/divzero-cpp
           if build/compiler/divzero-c >build/compiler/divzero-c.out 2>build/compiler/divzero-c.err; then echo "C runtime accepted division by zero"; exit 1; fi
           if build/compiler/divzero-cpp >build/compiler/divzero-cpp.out 2>build/compiler/divzero-cpp.err; then echo "C++ runtime accepted division by zero"; exit 1; fi
           grep -q "division by zero" build/compiler/divzero-c.err
           grep -q "division by zero" build/compiler/divzero-cpp.err
-          printf '%s\n' 'let min = -9223372036854775807 - 1;' 'print min / -1;' 'return 0;' > build/compiler/divoverflow.sleela
-          build/compiler/sleelac --emit-c build/compiler/divoverflow.c build/compiler/divoverflow.sleela
-          build/compiler/sleelac --emit-cpp build/compiler/divoverflow.cpp build/compiler/divoverflow.sleela
-          cc -std=c11 -Wall -Wextra -Werror build/compiler/divoverflow.c -o build/compiler/divoverflow-c
-          c++ -std=c++20 -Wall -Wextra -Werror build/compiler/divoverflow.cpp -o build/compiler/divoverflow-cpp
           if build/compiler/divoverflow-c >build/compiler/divoverflow-c.out 2>build/compiler/divoverflow-c.err; then echo "C runtime accepted division overflow"; exit 1; fi
           if build/compiler/divoverflow-cpp >build/compiler/divoverflow-cpp.out 2>build/compiler/divoverflow-cpp.err; then echo "C++ runtime accepted division overflow"; exit 1; fi
           grep -q "integer overflow" build/compiler/divoverflow-c.err
