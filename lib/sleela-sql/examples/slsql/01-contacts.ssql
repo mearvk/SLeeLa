@@ -1,0 +1,10 @@
+# SLSQL walkthrough: create a table and insert rows.
+# Run this file against a fresh database directory.
+
+table('contacts').create(id, name, email)
+
+into('contacts').insert(1, 'Ada Lovelace', 'ada@example.test')
+into('contacts').insert(2, 'Grace Hopper', 'grace@example.test')
+into('contacts').insert(3, 'Katherine Johnson', 'kj@example.test')
+
+from('contacts').select(*)
