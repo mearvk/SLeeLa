@@ -1,0 +1,19 @@
+# demo.ssql -- a worked session in the fluent SLeeLaSQL dialect.
+# Feed it on stdin:   sleela-sql ./data --sleela < samples/demo.ssql
+# (or without --sleela; the engine auto-detects the dialect per line.)
+# Each non-comment line is one statement.
+
+table('games').create(id, title, year)
+
+into('games').insert(1, 'Metroid', 1986)
+into('games').insert(2, 'Mega Man', 1987)
+into('games').insert(3, 'Castlevania, Deluxe', 1986)
+
+# all columns
+from('games').select(*)
+
+# projection + equality filter (== reads like SLeeLa; = also works)
+from('games').select(title, year).where(year == '1986')
+
+# list tables
+tables()

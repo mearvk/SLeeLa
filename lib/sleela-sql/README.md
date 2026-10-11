@@ -1,48 +1,42 @@
-<img align="right" src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="75" height="75" alt="SLeeLa">
+# SLeeLa SQL — native C/C++ engine and SLeeLa model
 
-# lib/sleela-sql — the SLeeLa model for the CSV SQL engine
+This package groups the SLeeLa model with the native C SQL engine and a C++17 RAII wrapper.
 
-The **SLeeLa counterpart** to the C engine in [`/sleela-sql`](../../sleela-sql/).
-Part of `mearvk/Nintendo`.
+- `SqlModel.sleela`: SLeeLa-side plan validation and verdicts.
+- `native/include/sleela_sql.h`, `native/src/sleela_sql.c`: C11 engine and public API.
+- `native/src/sleela_sql_cli.c`: `sleela-sql` command-line program.
+- `cpp/include/sleela_sql.hpp`, `cpp/src/sleela_sql.cpp`: C++17 facade over the same C API.
+- `docs/SLEELASQL.md`: fluent dialect grammar.
+- `SPECIFICATION.md`: supported subset, bounds, API, and limitations.
+- `samples/`: classic SQL and fluent SLeeLaSQL sessions.
 
-SLeeLa's file surface is **string-oriented, not raw-byte**, so — exactly as with
-`NesEditModel.sleela` in the Professional Editor — it does not touch the CSV
-bytes. Instead it owns the **model and validation** layer: given a planned
-statement and a table's schema, it decides whether the statement is well-formed
-*before* the byte engine runs, and prints a clear `OK` / `REFUSE` verdict.
-
-The engine accepts two surface languages — classic **SQL** and the fluent
-**SLeeLaSQL** (see [`/sleela-sql/docs/SLEELASQL.md`](../../sleela-sql/docs/SLEELASQL.md)) —
-but both lower to the **same compiled operation**. This model validates that
-lowered form, so one verdict covers a plan regardless of which dialect expressed
-it, and regardless of whether it used `?` prepared-statement placeholders
-(binding fills values, not shape).
-
-It runs on the **SLeeLa Native VM**:
+## Build and test
 
 ```sh
-sleela run lib/sleela-sql/SqlModel.sleela
+cd lib/sleela-sql
+make
+make test
 ```
 
-## Invariants it checks (mirroring `sleela_sql.c`)
+Outputs are kept under `build/`: CLI, C static library, and C++ facade library. Consumers of the C++ facade must link both the C++ and C core libraries.
 
-| Invariant | Byte-engine status it mirrors |
-|---|---|
-| `INSERT` value count == column count | `SSQL_ERR_ARITY` |
-| projected / `WHERE` column exists in the schema | `SSQL_ERR_NOCOL` |
-| `CREATE` does not collide with an existing table | `SSQL_ERR_EXISTS` |
+## C example
 
-The worked plans in `main()` mirror [`/sleela-sql/samples/demo.sql`](../../sleela-sql/samples/demo.sql),
-so the model and the byte tool agree on which statements are accepted and which
-are refused.
-
-## The A→B relationship
-
-```
-SqlModel.sleela   validates the planned statement against the schema  (model)
-        │
-        ▼
-sleela-sql (C)    parses the SQL and reads/writes the CSV table files (bytes)
+```c
+#include "sleela_sql.h"
+ssql_db db;
+ssql_open(&db, "./data");
+ssql_exec(&db, "CREATE TABLE games (id, title)", NULL);
+ssql_exec(&db, "INSERT INTO games VALUES (1, 'Metroid')", NULL);
 ```
 
-SLeeLa reasons about the plan; the C tool in `/sleela-sql` executes it.
+## C++ example
+
+```cpp
+#include "sleela_sql.hpp"
+sleela::sql::Database db("./data");
+if (db.status() == SSQL_OK)
+    db.execute("from('games').select(*)", stdout);
+```
+
+The engine is a local CSV-backed SQL subset, not a network database server or a full MySQL implementation. Read `SPECIFICATION.md` before relying on it for production data. `SqlModel.sleela` validates planned operations but does not automatically invoke the native library; that runtime bridge remains separate integration work.
