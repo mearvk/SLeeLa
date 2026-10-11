@@ -30,11 +30,13 @@ GUI   := $(BUILD)/SleelaTerminal
 GTK4_VTE_CFLAGS := $(shell $(PKG_CONFIG) --cflags $(GTK4_VTE_PKGS) 2>/dev/null)
 GTK4_VTE_LIBS   := $(shell $(PKG_CONFIG) --libs $(GTK4_VTE_PKGS) 2>/dev/null)
 
-.PHONY: all cli smoke test m5-smoke gui install install-gui install-all install-strip uninstall clean sanitize fuzz
+.PHONY: all cli all-gui smoke test m5-smoke gui install install-gui install-all install-strip uninstall clean sanitize fuzz
 
 all: cli
 
 cli: $(SLSH) $(SMOKE)
+
+all-gui: cli $(GUI)
 
 $(SLSH): $(CLI_SRC) $(HEADERS) | $(BUILD)
 	$(CXX) $(CXXFLAGS) $(CLI_SRC) -o $@
