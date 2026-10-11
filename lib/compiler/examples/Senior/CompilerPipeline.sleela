@@ -1,0 +1,62 @@
+/* Senior lesson: phase orchestration with fail-closed boundaries. */
+#sleela 1.3
+
+class CompilerPipeline {
+  String diagnostic;
+  boolean sourceLoaded;
+  boolean frontendPassed;
+  boolean semanticPassed;
+  boolean irValidated;
+  boolean artifactWritten;
+
+  void configure() {
+    diagnostic = "";
+    sourceLoaded = false;
+    frontendPassed = false;
+    semanticPassed = false;
+    irValidated = false;
+    artifactWritten = false;
+  }
+
+  boolean markSourceLoaded(boolean ok, String detail) {
+    sourceLoaded = ok;
+    if (!ok) diagnostic = "E_SOURCE: " + detail;
+    return ok;
+  }
+  boolean markFrontend(boolean ok, String detail) {
+    if (!sourceLoaded) { diagnostic = "E_ORDER: source must load first"; return false; }
+    frontendPassed = ok;
+    if (!ok) diagnostic = "E_FRONTEND: " + detail;
+    return ok;
+  }
+  boolean markSemanticAnalysis(boolean ok, String detail) {
+    if (!frontendPassed) { diagnostic = "E_ORDER: frontend must pass first"; return false; }
+    semanticPassed = ok;
+    if (!ok) diagnostic = "E_SEMANTIC: " + detail;
+    return ok;
+  }
+  boolean markIRValidation(boolean ok, String detail) {
+    if (!semanticPassed) { diagnostic = "E_ORDER: semantics must pass first"; return false; }
+    irValidated = ok;
+    if (!ok) diagnostic = "E_IR: " + detail;
+    return ok;
+  }
+  boolean mayEmitArtifact() {
+    return sourceLoaded && frontendPassed && semanticPassed && irValidated;
+  }
+  boolean markArtifactWritten(boolean ok, String detail) {
+    if (!mayEmitArtifact()) { diagnostic = "E_ORDER: artifact emission blocked"; return false; }
+    artifactWritten = ok;
+    if (!ok) diagnostic = "E_OUTPUT: " + detail;
+    return ok;
+  }
+  String status() {
+    if (artifactWritten) return "ARTIFACT_WRITTEN";
+    if (mayEmitArtifact()) return "READY_TO_EMIT";
+    if (semanticPassed) return "SEMANTICS_PASSED";
+    if (frontendPassed) return "FRONTEND_PASSED";
+    if (sourceLoaded) return "SOURCE_LOADED";
+    return "NOT_STARTED";
+  }
+  String message() { return diagnostic; }
+}
