@@ -3,3 +3,7 @@ all:
 clean:
 	$(MAKE) -C ../mysql clean
 .PHONY: all clean
+
+# Explicit alias for scripts and IDE build actions.
+build: all
+.PHONY: build
