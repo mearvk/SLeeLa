@@ -50012,7 +50012,7 @@
     },
     {
       "path": "lib/sleela-sql/native/src/sleela_sql.c",
-      "sha256": "88a649709b314ebfdeed174579c3d4a64ee66dd31124e50881d9dd0afd7272d2"
+      "sha256": "4a734ee5cdc7847d531c13b63f8aaa4d63d1076808d10abd9a7a3c28d93fd7c5"
     },
     {
       "path": "lib/sleela-sql/native/src/sleela_sql_cli.c",
