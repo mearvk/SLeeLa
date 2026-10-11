@@ -15,7 +15,7 @@ mqtt_connector_cpp.o: mqtt_connector.cpp mqtt_connector.hpp mqtt_connector.h
 libsleela_mqtt.a: mqtt_connector.o
 	$(AR) rcs $@ $^
 test_mqtt_connector: test_mqtt_connector.c mqtt_connector.c mqtt_connector.h
-	$(CC) $(CFLAGS) $(MQTT_CFLAGS) $^ $(MQTT_LIBS) -o $@
+	$(CC) $(CFLAGS) $(MQTT_CFLAGS) test_mqtt_connector.c mqtt_connector.c $(MQTT_LIBS) -o $@
 test: test_mqtt_connector
 	./test_mqtt_connector
 clean:
