@@ -17,7 +17,7 @@ This directory contains native C interfaces and C++17 facades for database and n
 | JSON tokenizer | `make -C lib/connector/json` | None |
 | XML validator | `make -C lib/connector/xml` | libxml2 |
 | HTTP/REST | `make -C lib/connector/rest` | libcurl |
-| MQTT publisher | `make -C lib/connector/mqtt` | Eclipse Mosquitto client |
+| MQTT client | `make -C lib/connector/mqtt` | Eclipse Mosquitto client |
 
 Override each Makefile's `*_CFLAGS` and `*_LIBS` variables for nonstandard installations. The vendor profile directories reuse shared adapters rather than duplicating vendor protocol code.
 
@@ -28,5 +28,5 @@ Override each Makefile's `*_CFLAGS` and `*_LIBS` variables for nonstandard insta
 - SQLite, PostgreSQL, MySQL, and ODBC expose prepared/parameterized statement paths. For MySQL, keep `MYSQL_BIND` buffers and length indicators alive through execution/fetch. For ODBC, use `SQLBindParameter` with the native statement handle and maintain bound values/indicators for the driver's documented lifetime.
 - HTTP responses must be checked for HTTP status separately from transport success. REST redirects are disabled and TLS verification remains enabled.
 - JSON support is a structural tokenizer, not a full semantic parser. XML validation uses libxml2 with network fetching disabled; harden DTD/entity handling for untrusted documents.
-- MQTT currently exposes publish, not subscription callback dispatch, and does not yet expose TLS/auth helpers or automatic reconnect policy.
+- MQTT supports publish and callback-based subscribe; call `sleela_mqtt_global_cleanup()` only after all MQTT clients are closed. TLS/auth helpers and reconnect policy are not exposed yet.
 - Review [CONNECTOR-CATALOG.md](CONNECTOR-CATALOG.md) for exact capabilities and gaps. Baseline code is not represented as production-certified. The connector CI workflow is configured for Linux and macOS; check its run result before treating builds as verified.
