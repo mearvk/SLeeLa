@@ -41,3 +41,14 @@ jobs:
         run: |
           test "$(build/compiler/arithmetic-c)" = "42"
           test "$(build/compiler/arithmetic-cpp)" = "42"
+      - name: Verify generated runtime rejects arithmetic overflow
+        run: |
+          printf "print 9223372036854775807 + 1;\\nreturn 0;\\n" > build/compiler/overflow.sleela
+          build/compiler/sleelac --emit-c build/compiler/overflow.c build/compiler/overflow.sleela
+          build/compiler/sleelac --emit-cpp build/compiler/overflow.cpp build/compiler/overflow.sleela
+          cc -std=c11 -Wall -Wextra -Werror build/compiler/overflow.c -o build/compiler/overflow-c
+          c++ -std=c++20 -Wall -Wextra -Werror build/compiler/overflow.cpp -o build/compiler/overflow-cpp
+          if build/compiler/overflow-c >build/compiler/overflow-c.out 2>build/compiler/overflow-c.err; then echo "C runtime accepted signed overflow"; exit 1; fi
+          if build/compiler/overflow-cpp >build/compiler/overflow-cpp.out 2>build/compiler/overflow-cpp.err; then echo "C++ runtime accepted signed overflow"; exit 1; fi
+          grep -q "integer overflow" build/compiler/overflow-c.err
+          grep -q "integer overflow" build/compiler/overflow-cpp.err
