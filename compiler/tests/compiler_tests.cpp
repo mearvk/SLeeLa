@@ -57,6 +57,9 @@ int main() {
     CompileResult stackUnderflow;
     stackUnderflow.code.push_back({OpCode::add, 0});
     check(run(stackUnderflow).error == "stack underflow", "reject stack underflow");
+    CompileResult stackOverflow;
+    stackOverflow.code.assign(65537, {OpCode::push_integer, 1});
+    check(run(stackOverflow).error == "stack overflow", "reject stack overflow");
 
     CompileResult minLiteral;
     minLiteral.code.push_back({OpCode::push_integer, std::numeric_limits<std::int64_t>::min()});
