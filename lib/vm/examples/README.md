@@ -1,3 +1,5 @@
+<img align="right" src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="75" height="75" alt="SLeeLa">
+
 # SLeeLa VM examples — novice → very senior
 
 Compilable, runnable examples that build up the SLeeLa VM model across four
