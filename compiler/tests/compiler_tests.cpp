@@ -86,6 +86,10 @@ int main() {
               "generated C bounds-checks program counter");
         check(nativeText.find("stack overflow") != std::string::npos,
               "generated C diagnoses stack overflow");
+        check(nativeText.find("stack underflow") != std::string::npos,
+              "generated C diagnoses stack underflow");
+        check(nativeText.find("invalid local slot") != std::string::npos,
+              "generated C diagnoses invalid local slots");
 
         check(!write_native_source(compile("print missing;"), nativePath, false, nativeError),
               "refuse native emission after failed compilation");
