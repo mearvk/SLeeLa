@@ -1,0 +1,46 @@
+#sleela 1.10
+/*
+ * CitizenLegalAndAdministrativeStandingStats.sleela
+ * Individual category class extracted from citizen/sleela/CitizenStats.sleela.
+ * Source category: Legal and administrative standing.
+ * Monetary values use integer minor units where the field name says Cents.
+ */
+class CitizenLegalAndAdministrativeStandingStats {
+    string civilStatus;
+    string residencyStatus;
+    string voterRegistrationStatus;
+    string taxAccountId;
+    int identityVerified;
+    int addressVerified;
+    int permitsHeld;
+    int licensesHeld;
+    int legalCaseCount;
+    int unresolvedLegalCases;
+    int fineBalanceCents;
+    int complianceScore;
+    int civicObligationsComplete;
+    int juryServiceEligible;
+    int juryServiceCompleted;
+    int publicRecordsConsent;
+    int privacyPreferenceLevel;
+
+    CitizenLegalAndAdministrativeStandingStats() {
+        civilStatus = "unknown";
+        residencyStatus = "unknown";
+        voterRegistrationStatus = "unknown";
+        taxAccountId = "";
+        identityVerified = 0;
+        addressVerified = 0;
+        permitsHeld = 0;
+        licensesHeld = 0;
+        legalCaseCount = 0;
+        unresolvedLegalCases = 0;
+        fineBalanceCents = 0;
+        complianceScore = 100;
+        civicObligationsComplete = 0;
+        juryServiceEligible = 0;
+        juryServiceCompleted = 0;
+        publicRecordsConsent = 0;
+        privacyPreferenceLevel = 0;
+    }
+}
