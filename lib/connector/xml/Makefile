@@ -16,3 +16,7 @@ test: test_xml_connector
 clean:
 	rm -f *.o test_xml_connector
 .PHONY: all test clean
+
+# Explicit alias for scripts and IDE build actions.
+build: all
+.PHONY: build
