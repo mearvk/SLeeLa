@@ -36,3 +36,8 @@ Implementations must:
 ## 5. Versioning
 
 Any change to identifier bounds, field widths, bit order, registry count, hash seeds, or record interpretation requires a new format/manifest version. This experimental contract makes no claim of Unicode compatibility or standards approval.
+
+
+## 6. Input-map traversal metadata
+
+Input-map coordinates and pressure iterations are separate from registry identifiers and glyph serialization. Follow [INPUT-MAP-AND-PRESSURE.md](INPUT-MAP-AND-PRESSURE.md) for top-left, left-to-right, top-to-bottom, then next-z traversal and pressure levels 1–50. The National Lien subject order is specified separately in [NATIONAL-LIEN-REGISTER.md](NATIONAL-LIEN-REGISTER.md). Do not encode coordinates, alphabetic ranks, or pressure levels into an identifier unless a future version explicitly defines a versioned serialization format.
