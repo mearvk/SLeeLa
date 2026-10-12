@@ -1,40 +1,27 @@
 # SLeeLa Alphabet
 
-The `alphabet/sleela` directory documents alphabet and character representation within the SLeeLa language ecosystem.
-
-Its purpose is to provide a clear home for alphabet-related conventions used by source files, language tools, educators, and future character-set libraries. This documentation is intended to distinguish language-level rules from implementation-specific behavior.
-
-## Goals
-
-- Explain the role of alphabet and character data in SLeeLa.
-- Establish a place to document supported letters, symbols, ordering, and naming conventions.
-- Clarify the relationship between textual source, character encoding, and character-set libraries.
-- Provide guidance for educators and contributors creating examples or learning materials.
-- Keep documented behavior aligned with the language specification and the actual implementation.
+The alphabet documentation directory describes alphabet, character, and character-set behavior across SLeeLa source, libraries, and language tooling. It now includes an explicit Unicode/UTF-4088 boundary contract, examples, and conformance requirements.
 
 ## Directory guide
 
-- **[PURPOSE.md](PURPOSE.md)** — scope, intended audiences, and responsibilities of this directory.
-- **[SPECIFICATION.md](SPECIFICATION.md)** — documentation checklist and proposed organization for alphabet and character rules.
+- PURPOSE.md — scope and responsibilities.
+- SPECIFICATION.md — terminology and documentation rules.
+- UNICODE-AND-CHARACTER-SETS.md — UTF-8, Unicode scalar values, grapheme clusters, C<n>, and UTF-4088 namespace boundaries.
+- EXAMPLES.md — illustrative SLeeLa 1.9 usage.
+- CONFORMANCE-TESTS.md — implemented native checks and remaining compiler/VM integration tests.
 
-These documents describe the intended documentation structure. They do not, by themselves, assert that a particular alphabet, encoding, parser feature, or runtime capability has already been implemented.
+## Related implementation
+
+- lib/alphabet/ — SLeeLa alphabet classes and native character runtime.
+- lib/alphabet/native/ — C++17 UTF-8 validation/encoding, scalar counting, C<n> capacity parsing, and bounded set membership.
+- utf-4088/ — experimental catalogue and SLeeLa adapter.
 
 ## Design principles
 
-1. **Unicode-aware:** document characters as text/code points where appropriate; do not assume one byte equals one character.
-2. **Encoding clarity:** distinguish source-file encoding, Unicode code points, grapheme clusters, and display glyphs.
-3. **Explicit behavior:** specify case handling, normalization, ordering, and invalid-input behavior wherever the implementation defines them.
-4. **Compatibility:** defer to the canonical SLeeLa language specification when rules are already defined there.
-5. **Testability:** pair normative rules with examples and tests when the relevant implementation exists.
+1. Never assume one UTF-8 byte equals one character.
+2. Distinguish bytes, Unicode scalar values, grapheme clusters, glyphs, and catalogue identifiers.
+3. Keep UTF-4088 experimental identifiers separate from Unicode scalar values.
+4. Treat C<n> as catalogue capacity, not encoding width or populated-entry count.
+5. Do not claim full compiler/SLVM support until end-to-end tests prove it.
 
-## Contribution workflow
-
-When adding alphabet-related functionality:
-
-1. Identify the canonical language-specification section that governs the behavior.
-2. Document the intended rule and its compatibility implications.
-3. Add valid and invalid examples.
-4. Add or update tests in the appropriate test suite.
-5. Update this directory's documents and any affected top-level language/API documentation.
-
-Do not describe planned behavior as implemented until the corresponding code and tests support the claim.
+Run the native C++ runtime tests with: make -C lib/alphabet/native test. Compiler parsing of C<n>, SLeeLa-facing native bindings, normalization, and grapheme segmentation remain separate integration work.
