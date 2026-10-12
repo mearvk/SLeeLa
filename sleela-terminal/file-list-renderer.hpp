@@ -103,7 +103,9 @@ inline void populate(BrowserState *state) {
     GtkWidget *child = gtk_widget_get_first_child(state->items);
     while (child) {
         GtkWidget *next = gtk_widget_get_next_sibling(child);
-        gtk_flow_box_remove(GTK_FLOW_BOX(state->items), child);
+        GtkWidget *item = GTK_IS_FLOW_BOX_CHILD(child)
+            ? gtk_flow_box_child_get_child(GTK_FLOW_BOX_CHILD(child)) : child;
+        if (item) gtk_flow_box_remove(GTK_FLOW_BOX(state->items), item);
         child = next;
     }
 
