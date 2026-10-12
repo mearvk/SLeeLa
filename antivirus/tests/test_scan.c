@@ -40,6 +40,10 @@ int main(void)
     file.feature_mask = UINT64_MAX;
     assert(sleelavirin_hashmap_scan(map, &file, 2, &match) == 0);
     assert(match.kind == SLEELAVIRIN_SEMI_MATCH);
+    file.feature_mask = 0;
+    assert(sleelavirin_hashmap_scan(map, &file, 2, &match) == 0);
+    assert(match.kind == SLEELAVIRIN_UNKNOWN);
+    assert(match.confidence == 0);
     assert(sleelavirin_trap2_evaluate(&profile, indicators, 2, &heuristic) == 0);
     assert(heuristic.trap_level == 2);
     assert(heuristic.action_permitted == 1);
