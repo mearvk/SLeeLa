@@ -222,3 +222,33 @@ python3 antivirus/tools/sleelavirin_import_clamav.py \\
 ```
 
 Per-file engine processes have a 120-second default timeout. Configure `--scan-timeout N`; use `0` only when intentionally disabling the timeout. A timeout is a scan error, never a clean verdict.
+
+
+## Official ClamAV database acquisition and SHA-256 snapshots
+
+Use the official ClamAV update client rather than downloading CVD files from arbitrary mirrors. FreshClam retrieves and verifies database updates using ClamAV's supported update protocol; the updater then asks the ClamAV engine to load the staged databases before activating them.
+
+Official references:
+- Database distribution: https://database.clamav.net/
+- FreshClam guide: https://docs.clamav.net/faq/faq-freshclam.html
+- Signature formats and verification: https://docs.clamav.net/manual/Signatures.html
+
+Install ClamAV so both `freshclam` and `clamscan` are available, then run from the repository root:
+
+```sh
+python3 antivirus/tools/sleelavirin_update_clamav.py \
+  --root antivirus/signatures/clamav-cache
+```
+
+The updater downloads into a separate staging directory, requires FreshClam success, validates the staged databases by running ClamAV against an empty directory, calculates SHA-256 for every `.cvd`/`.cld` file, stores an immutable snapshot under its content-derived ID, and atomically replaces `current.json` only after validation. Previous snapshots are retained for rollback. Generated databases are local artifacts and should not be committed to Git.
+
+To check a snapshot's recorded file sizes and hashes:
+
+```sh
+python3 antivirus/tools/sleelavirin_update_clamav.py \
+  --check antivirus/signatures/clamav-cache/snapshots/<SNAPSHOT_ID>
+```
+
+`current.json` identifies the active snapshot and its manifest. Protect that pointer, the manifest, and the expected snapshot ID with appropriate filesystem permissions or independent trusted storage. SHA-256 detects changes relative to a trusted expected value; a manifest and hash stored together are not an independent publisher signature. FreshClam and ClamAV's database validation establish the upstream trust check; SHA-256 then provides local integrity tracking.
+
+This full ClamAV snapshot is for the secondary ClamAV engine. The native SLeeLa SHA-256 importer remains a limited subset importer: it does not turn all CVD/CLD signature families into native whole-file hash signatures.
