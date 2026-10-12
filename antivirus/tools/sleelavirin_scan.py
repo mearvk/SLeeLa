@@ -3,11 +3,14 @@
 import argparse
 import fnmatch
 import hashlib
+import json
 import os
 from pathlib import Path
 import shutil
 import subprocess
 import sys
+import tempfile
+from datetime import datetime, timezone
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 
@@ -285,6 +288,7 @@ def main():
     parser.add_argument("--extension", action="append", default=[], metavar=".EXT")
     parser.add_argument("--follow-symlinks", action="store_true")
     parser.add_argument("--action", choices=("report", "quarantine", "stop"), default="report")
+    parser.add_argument("--report-json", help="write an atomic JSON scan report to this path")
     parser.add_argument("--quarantine-dir", default=str(package / "quarantine"))
     parser.add_argument("paths", nargs="+")
     args = parser.parse_args()
@@ -321,6 +325,8 @@ def main():
 
     native_exe = Path(args.native_scanner).expanduser()
     found, errors = [], 0
+    records = []
+    interrupted = False
     if args.engine in ("native", "both"):
         database = Path(args.database).expanduser()
         if not native_exe.is_file() or not database.is_file():
@@ -330,13 +336,19 @@ def main():
         with ThreadPoolExecutor(max_workers=workers) as pool:
             futures = {pool.submit(native_scan, native_exe, database, path, initial_stamps.get(path), args.scan_timeout or None): path for path in paths}
             for future in as_completed(futures):
-                verdict, path, message = future.result()
+                try:
+                    verdict, path, message = future.result()
+                except Exception as exc:
+                    path = futures[future]
+                    verdict, message = "ERROR", f"ERROR native worker failure for {path}: {type(exc).__name__}: {exc}"
                 print(message)
+                records.append({"engine": "native", "path": str(path), "verdict": verdict, "message": message})
                 if verdict == "DETECTED":
                     found.append(path)
                     if args.action == "stop":
                         for pending in futures:
                             pending.cancel()
+                        interrupted = True
                         break
                 elif verdict == "ERROR":
                     errors += 1
@@ -349,8 +361,13 @@ def main():
         with ThreadPoolExecutor(max_workers=workers) as pool:
             futures = {pool.submit(clamav_scan_one, clam, path, args.max_file_size, args.clamav_max_scansize, args.clamav_max_recursion, initial_stamps.get(path), args.scan_timeout or None): path for path in paths}
             for future in as_completed(futures):
-                verdict, path, message = future.result()
+                try:
+                    verdict, path, message = future.result()
+                except Exception as exc:
+                    path = futures[future]
+                    verdict, message = "ERROR", f"ERROR ClamAV worker failure for {path}: {type(exc).__name__}: {exc}"
                 print(message)
+                records.append({"engine": "clamav", "path": str(path), "verdict": verdict, "message": message})
                 if verdict == "DETECTED":
                     found.append(path)
                     if args.action == "stop":
@@ -369,8 +386,34 @@ def main():
             except (OSError, ValueError) as exc:
                 print(f"ERROR quarantine failed for {path}: {exc}", file=sys.stderr)
                 errors += 1
+    if interrupted:
+        incomplete = True
+        print("INCOMPLETE_SCAN: stopped early after a detection; remaining files were not fully checked", file=sys.stderr)
     if incomplete:
         print("INCOMPLETE_SCAN: one or more paths/files were skipped or could not be enumerated", file=sys.stderr)
+    status = "DETECTED" if unique else ("INCOMPLETE" if errors or incomplete else "CLEAN_NO_MATCH")
+    summary = {"schema": "sleelavirin-scan-report-v1", "finished_at_utc": datetime.now(timezone.utc).isoformat(), "engines": args.engine, "status": status, "complete": not (errors or incomplete), "eligible_file_count": len(paths), "detection_count": len(unique), "error_count": errors, "records": records, "limitations": "CLEAN_NO_MATCH means no enabled engine matched; it is not proof that files are harmless. Native signatures are a limited subset."}
+    print(f"SCAN_SUMMARY status={status} eligible={len(paths)} detections={len(unique)} errors={errors} complete={str(summary['complete']).lower()}")
+    if args.report_json:
+        report_path = Path(args.report_json).expanduser()
+        try:
+            report_path.parent.mkdir(parents=True, exist_ok=True)
+            fd, temp_name = tempfile.mkstemp(prefix=report_path.name + ".", suffix=".tmp", dir=str(report_path.parent))
+            try:
+                with os.fdopen(fd, "w", encoding="utf-8") as report:
+                    json.dump(summary, report, indent=2, sort_keys=True)
+                    report.write(chr(10))
+                    report.flush()
+                    os.fsync(report.fileno())
+                os.replace(temp_name, report_path)
+            finally:
+                try:
+                    os.unlink(temp_name)
+                except OSError:
+                    pass
+        except OSError as exc:
+            print(f"ERROR writing scan report: {exc}", file=sys.stderr)
+            errors += 1
     return 1 if unique else (2 if errors or incomplete else 0)
 
 
