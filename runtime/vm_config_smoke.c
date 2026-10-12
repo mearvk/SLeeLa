@@ -20,9 +20,11 @@ int main(void) {
     CHECK(sleela_vm_config_load("config/vm.conf", &c) == 0 && c.version == 11, 4);
     CHECK(set_env("SLEELA_VM_VERSION", "7") == 0, 5);
     CHECK(sleela_vm_config_apply_environment(&c) == 0 && c.version == 7, 6);
-    CHECK(set_env("SLEELA_VM_VERSION", "4294967297") == 0, 7);
+    CHECK(set_env("SLEELA_VM_VERSION", "99999999999999999999999999999999") == 0, 7);
     CHECK(sleela_vm_config_apply_environment(&c) != 0, 8);
-    CHECK(set_env("SLEELA_VM_VERSION", NULL) == 0, 9);
+    CHECK(set_env("SLEELA_VM_VERSION", "11x") == 0, 9);
+    CHECK(sleela_vm_config_apply_environment(&c) != 0, 10);
+    CHECK(set_env("SLEELA_VM_VERSION", NULL) == 0, 11);
     puts("VM CONFIG: PASS");
     return 0;
 }
