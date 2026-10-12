@@ -74,10 +74,9 @@ struct AppState {
     gint64 feed_last_fetch = 0;
     AppConfig config;
 
-    // Title-bar throbber: a thin living light-blue strip along the bottom of
-    // the title bar (replacing the static border highlight). It is a flowing
-    // field of discrete excitations ("children of wattage") that stream mainly
-    // left->right at ~20 Hz; see throbber_tick / throbber_draw.
+    // Full-width 4px pure-white throbber rail under the title bar. The existing
+    // coloured cells move and sway within its pixels; only those coloured cells
+    // may cast reflected light onto the terminal text pane.
     GtkWidget *throbber = nullptr;
     GtkWidget *terminal_glow = nullptr; // non-interactive overlay lit by throbber cells
     guint throbber_tick = 0; // GTK frame-clock callback ID (main thread only)
@@ -282,7 +281,7 @@ void install_css(AppState *state) {
         }
         /* The throbber occupies the thin seam between the title bar and the
            terminal; its colour is painted per-frame by the draw function. */
-        drawingarea.sleela-throbber { background: @sl_chrome; min-height: 2px; }
+        drawingarea.sleela-throbber { background: #ffffff; min-height: 4px; }
         headerbar.sleela-titlebar label {
             color: #ffffff;
             font-weight: 600;
@@ -1350,26 +1349,16 @@ void throbber_draw(GtkDrawingArea *, cairo_t *cr, int width, int height, gpointe
     if (width <= 0 || height <= 0) return;
     state->throbber_w = width;
 
-    // At rest the strip IS the title bar: the resting shade equals the chrome
-    // colour (@sl_chrome #24103f). Excitations move a column, relative to that
-    // chrome base, toward a darker purple or an airy light blue -- so the seam
-    // reads as the title-bar colour coming alive, not a separate band.
-    //   dark ~ #190b2c    rest(chrome) ~ #24103f    light ~ #a9dcff
+    // The throbber is a continuous, pure-white 4px rail across the entire
+    // terminal. The existing moving colour field is composited into its pixels;
+    // it never replaces the rail or paints a separate seam.
+    cairo_set_source_rgb(cr, 1.0, 1.0, 1.0);
+    cairo_paint(cr);
+
     auto mix = [](double c0, double c1, double k) { return c0 + (c1 - c0) * k; };
-    const double rest_r = 0.141, rest_g = 0.063, rest_b = 0.247; // #24103f
-
-    // Strong-amplification colour: only when the wattage field is driven hard
-    // (~18/20) do latent hues (orange/green/blue/red) surface. This ramps from
-    // 0 below ~0.80 amp to full by ~0.95, so normal operation stays on-brand.
     const double amp = state->throbber_amp;
-    const double colour_gate = std::max(0.0, (amp - 0.80) / 0.15); // 0..1
-    const double colour_gate_c = colour_gate > 1.0 ? 1.0 : colour_gate;
+    const double colour_gate = std::clamp((amp - 0.80) / 0.15, 0.0, 1.0);
 
-    // Build the light field by visiting only each cell's visible footprint.
-    // The previous pixel-major loop evaluated every cell at every pixel; this
-    // cell-major pass skips pixels more than ~3 sigma from a pulse, where its
-    // contribution is visually negligible. Arrays are local to this draw and
-    // bounded by the strip width, which is only a few pixels high.
     std::vector<double> field(static_cast<size_t>(width), 0.0);
     std::vector<double> hue_r(static_cast<size_t>(width), 0.0);
     std::vector<double> hue_g(static_cast<size_t>(width), 0.0);
@@ -1383,8 +1372,8 @@ void throbber_draw(GtkDrawingArea *, cairo_t *cr, int width, int height, gpointe
         const double flick = 0.85 + 0.15 * std::sin(flick_time + c.phase);
         for (int x = x0; x <= x1; ++x) {
             const double dx = (x + 0.5) - c.x;
-            const double s = std::max(0.5, (dx < 0.0) ? c.sigma * 1.6 : c.sigma * 0.8);
-            const double e = dx / s;
+            const double sigma = std::max(0.5, (dx < 0.0) ? c.sigma * 1.6 : c.sigma * 0.8);
+            const double e = dx / sigma;
             const double contrib = c.intensity * std::exp(-0.5 * e * e) * flick;
             const size_t ix = static_cast<size_t>(x);
             field[ix] += contrib;
@@ -1397,40 +1386,30 @@ void throbber_draw(GtkDrawingArea *, cairo_t *cr, int width, int height, gpointe
         }
     }
 
+    // A slow travelling envelope gives the white rail its own coursing sway.
+    // It only shades pixels where the coloured field is active; untouched pixels
+    // remain pure white from edge to edge.
     for (int x = 0; x < width; ++x) {
         const size_t ix = static_cast<size_t>(x);
-        double f = field[ix] * (0.5 + 0.9 * amp);
-        double hr = hue_r[ix], hg = hue_g[ix], hb = hue_b[ix], hw = hue_w[ix];
-        if (f > 1.2) f = 1.2;
+        const double f = std::clamp(field[ix] * (0.5 + 0.9 * amp), 0.0, 1.0);
+        if (f < 0.004) continue;
 
-        // Relative shade of the chrome base.
-        double k = f;
-        double r, g, b;
-        if (k >= 0.0) {
-            double kk = k > 1.0 ? 1.0 : k;
-            r = mix(rest_r, 0.663, kk);   // chrome -> #a9dcff
-            g = mix(rest_g, 0.863, kk);
-            b = mix(rest_b, 1.000, kk);
-        } else {
-            double kk = -k; if (kk > 1.0) kk = 1.0;
-            r = mix(rest_r, 0.098, kk);   // chrome -> #190b2c
-            g = mix(rest_g, 0.043, kk);
-            b = mix(rest_b, 0.173, kk);
+        const double sway = 0.82 + 0.18 * (0.5 + 0.5 *
+            std::sin((static_cast<double>(x) / std::max(1, width)) * 6.2831853
+                     - state->throbber_t * 1.15));
+        const double strength = std::clamp(f * sway, 0.0, 0.92);
+
+        // Cells tint the white rail. Their latent hues emerge under strong
+        // amplification; otherwise the moving light reads as cool navy/blue.
+        double tr = 0.07, tg = 0.16, tb = 0.34;
+        const double hw = hue_w[ix];
+        if (hw > 0.0001 && colour_gate > 0.0) {
+            const double hue_strength = colour_gate * std::min(1.0, f);
+            tr = mix(tr, hue_r[ix] / hw, hue_strength);
+            tg = mix(tg, hue_g[ix] / hw, hue_strength);
+            tb = mix(tb, hue_b[ix] / hw, hue_strength);
         }
-
-        // Under strong amplification, bend bright columns toward the local hue.
-        if (colour_gate_c > 0.0 && hw > 0.0 && k > 0.0) {
-            double thr = (hr / hw), tg2 = (hg / hw), tb2 = (hb / hw);
-            double w = colour_gate_c * std::min(1.0, k);  // only where it's bright
-            r = mix(r, thr, w);
-            g = mix(g, tg2, w);
-            b = mix(b, tb2, w);
-        }
-
-        r = std::clamp(r, 0.0, 1.0);
-        g = std::clamp(g, 0.0, 1.0);
-        b = std::clamp(b, 0.0, 1.0);
-        cairo_set_source_rgb(cr, r, g, b);
+        cairo_set_source_rgba(cr, tr, tg, tb, strength);
         cairo_rectangle(cr, x, 0, 1, height);
         cairo_fill(cr);
     }
@@ -1450,29 +1429,23 @@ void terminal_glow_draw(GtkDrawingArea *, cairo_t *cr, int width, int height, gp
 
     const double pane_scale = static_cast<double>(width) / state->throbber_w;
     for (const auto &c : state->throbber_cells) {
-        if (!c.alive || c.intensity < 0.008) continue;
+        // The white rail is deliberately not reflected onto the text pane.
+        // Only explicitly coloured cells cast light into the terminal.
+        if (!c.alive || !c.tinted || c.intensity < 0.008) continue;
         const double x = c.x * pane_scale;
-        const double visual_width = std::max(1.0, c.sigma * 2.4);
         const double sigma = std::max(14.0, c.sigma * 2.8 * pane_scale);
-        // Wider source strips emit a proportionally stronger and broader reflection,
-        // capped to protect text contrast on the terminal surface.
+        const double visual_width = std::max(1.0, c.sigma * 2.4);
         const double width_energy = std::clamp(visual_width / 50.0, 0.35, 2.8);
-        const double strength = std::clamp(c.intensity *
-            (0.045 + 0.060 * state->throbber_amp) * width_energy, 0.0, 0.16);
-        double r = 0.42, g = 0.67, b = 1.0; // light-blue reflected from the strip
-        if (c.tinted && state->throbber_amp > 0.82) {
-            const double tint = std::clamp((state->throbber_amp - 0.82) / 0.18, 0.0, 0.25);
-            r = r * (1.0 - tint) + c.tr * tint;
-            g = g * (1.0 - tint) + c.tg * tint;
-            b = b * (1.0 - tint) + c.tb * tint;
-        }
+        const double colour_gate = std::clamp((state->throbber_amp - 0.80) / 0.15, 0.0, 1.0);
+        const double strength = std::clamp(
+            c.intensity * colour_gate * 0.12 * width_energy, 0.0, 0.12);
+        if (strength < 0.001) continue;
+
         cairo_pattern_t *glow = cairo_pattern_create_radial(x, 0.0, 1.0, x, 0.0, sigma);
-        cairo_pattern_add_color_stop_rgba(glow, 0.0, r, g, b, strength);
-        cairo_pattern_add_color_stop_rgba(glow, 1.0, r, g, b, 0.0);
-        // The radial gradient is transparent beyond sigma. Restrict the fill
-        // to its actual vertical footprint instead of repainting the full
-        // terminal pane for every cell.
-        cairo_rectangle(cr, 0, 0, width, std::min(height, static_cast<int>(std::ceil(sigma))));
+        cairo_pattern_add_color_stop_rgba(glow, 0.0, c.tr, c.tg, c.tb, strength);
+        cairo_pattern_add_color_stop_rgba(glow, 1.0, c.tr, c.tg, c.tb, 0.0);
+        cairo_rectangle(cr, 0, 0, width,
+                        std::min(height, static_cast<int>(std::ceil(sigma))));
         cairo_set_source(cr, glow);
         cairo_fill(cr);
         cairo_pattern_destroy(glow);
@@ -1754,14 +1727,14 @@ void activate(GtkApplication *application, gpointer user_data) {
 
     GtkWidget *root = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
 
-    // Living throbber strip: a thin drawing area immediately below the title
-    // bar, replacing the old static bottom border. Its light-blue shade is
-    // repainted ~20x/second by throbber_tick while the terminal is open.
+    // Full-width 4px pure-white throbber rail below the title bar. The moving
+    // coloured field is composited inside the white pixels; the frame clock
+    // animates the cells and their slow travelling sway.
     GtkWidget *throbber = gtk_drawing_area_new();
     state->throbber = throbber;
     gtk_widget_add_css_class(throbber, "sleela-throbber");
     gtk_widget_set_hexpand(throbber, TRUE);
-    gtk_widget_set_size_request(throbber, -1, 2);
+    gtk_widget_set_size_request(throbber, -1, 4);
     gtk_drawing_area_set_draw_func(GTK_DRAWING_AREA(throbber), throbber_draw, state, nullptr);
     gtk_box_append(GTK_BOX(root), throbber);
 
