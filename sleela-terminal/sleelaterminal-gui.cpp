@@ -12,6 +12,7 @@
 #include <csignal>
 #include <filesystem>
 #include <fstream>
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -61,6 +62,15 @@ struct AppConfig {
 };
 
 struct AppState {
+    // The first AppState owns the window and all tab sessions. Each additional
+    // AppState is an independent VTE/PTY shell session in the same notebook.
+    AppState *owner = nullptr;
+    GtkWidget *notebook = nullptr;
+    GtkWidget *page = nullptr;
+    std::vector<AppState *> tab_states;
+    std::vector<std::unique_ptr<AppState>> owned_tabs;
+    bool tab_removed = false;
+
     std::string shell_path;
     GtkWindow *window = nullptr;
     VteTerminal *terminal = nullptr;
@@ -1073,6 +1083,34 @@ gboolean terminal_key_pressed(GtkEventControllerKey *, guint keyval, guint,
     const bool ctrl = (state & GDK_CONTROL_MASK) != 0;
     const bool shift = (state & GDK_SHIFT_MASK) != 0;
 
+    AppState *session = static_cast<AppState *>(
+        g_object_get_data(G_OBJECT(terminal), "sleela-session-state"));
+    AppState *owner = session ? root_state(session) : nullptr;
+    if (ctrl && shift && (keyval == GDK_KEY_t || keyval == GDK_KEY_T) && owner) {
+        create_new_tab(owner);
+        return TRUE;
+    }
+    if (ctrl && shift && (keyval == GDK_KEY_w || keyval == GDK_KEY_W) && session) {
+        close_tab(session);
+        return TRUE;
+    }
+    if (ctrl && (keyval == GDK_KEY_Tab || keyval == GDK_KEY_Page_Down) && owner && owner->notebook) {
+        int count = gtk_notebook_get_n_pages(GTK_NOTEBOOK(owner->notebook));
+        if (count > 1) {
+            int page = gtk_notebook_get_current_page(GTK_NOTEBOOK(owner->notebook));
+            gtk_notebook_set_current_page(GTK_NOTEBOOK(owner->notebook), (page + 1) % count);
+        }
+        return TRUE;
+    }
+    if (ctrl && ((shift && keyval == GDK_KEY_Tab) || keyval == GDK_KEY_Page_Up) && owner && owner->notebook) {
+        int count = gtk_notebook_get_n_pages(GTK_NOTEBOOK(owner->notebook));
+        if (count > 1) {
+            int page = gtk_notebook_get_current_page(GTK_NOTEBOOK(owner->notebook));
+            gtk_notebook_set_current_page(GTK_NOTEBOOK(owner->notebook), (page + count - 1) % count);
+        }
+        return TRUE;
+    }
+
     if (ctrl && keyval == GDK_KEY_c) {
         if (shift || vte_terminal_get_has_selection(terminal)) {
             vte_terminal_copy_clipboard_format(terminal, VTE_FORMAT_TEXT);
@@ -1086,6 +1124,14 @@ gboolean terminal_key_pressed(GtkEventControllerKey *, guint keyval, guint,
     }
     return FALSE;
 }
+
+AppState *root_state(AppState *state) {
+    return state && state->owner ? state->owner : state;
+}
+
+void create_new_tab(AppState *owner);
+void close_tab(AppState *session);
+void remove_tab(AppState *session);
 
 void terminal_copy(GtkWidget *, gpointer user_data) {
     auto *terminal = VTE_TERMINAL(user_data);
@@ -1357,27 +1403,67 @@ const std::vector<std::string> &footer_messages() {
     return messages;
 }
 
+void remove_tab(AppState *session) {
+    if (!session || session->tab_removed) return;
+    AppState *owner = root_state(session);
+    session->tab_removed = true;
+    session->child_pid = 0;
+    VteTerminal *removed_terminal = session->terminal;
+    if (session->throbber_tick != 0 && session->throbber != nullptr) {
+        gtk_widget_remove_tick_callback(session->throbber, session->throbber_tick);
+        session->throbber_tick = 0;
+    }
+    if (session->terminal_glow) session->terminal_glow = nullptr;
+    if (owner && owner->notebook && session->page) {
+        int page_num = gtk_notebook_page_num(GTK_NOTEBOOK(owner->notebook), session->page);
+        if (page_num >= 0) gtk_notebook_remove_page(GTK_NOTEBOOK(owner->notebook), page_num);
+    }
+    session->page = nullptr;
+    session->terminal = nullptr;
+    if (owner) {
+        owner->tab_states.erase(std::remove(owner->tab_states.begin(), owner->tab_states.end(), session),
+                                owner->tab_states.end());
+        if (owner->terminal == nullptr || owner->terminal == removed_terminal) {
+            int current = owner->notebook ? gtk_notebook_get_current_page(GTK_NOTEBOOK(owner->notebook)) : -1;
+            GtkWidget *child = (owner->notebook && current >= 0)
+                ? gtk_notebook_get_nth_page(GTK_NOTEBOOK(owner->notebook), current) : nullptr;
+            owner->terminal = nullptr;
+            for (auto *candidate : owner->tab_states) {
+                if (candidate && candidate->page == child) { owner->terminal = candidate->terminal; break; }
+            }
+        }
+        if (owner->tab_states.empty()) {
+            if (owner->footer_tick) { g_source_remove(owner->footer_tick); owner->footer_tick = 0; }
+            if (owner->footer_scroll_tick) { g_source_remove(owner->footer_scroll_tick); owner->footer_scroll_tick = 0; }
+            if (owner->throbber_tick && owner->throbber) {
+                gtk_widget_remove_tick_callback(owner->throbber, owner->throbber_tick);
+                owner->throbber_tick = 0;
+            }
+            GtkApplication *application = owner->window
+                ? gtk_window_get_application(owner->window) : nullptr;
+            if (owner->window) {
+                GtkWindow *window = owner->window;
+                owner->window = nullptr;
+                gtk_window_destroy(window);
+            }
+            if (application) g_application_quit(G_APPLICATION(application));
+        }
+    }
+}
+
+void close_tab(AppState *session) {
+    if (!session || session->tab_removed) return;
+    if (session->child_pid > 0) {
+        ::kill(static_cast<pid_t>(session->child_pid), SIGHUP);
+        return; // child-exited performs the final page removal
+    }
+    remove_tab(session);
+}
+
 void child_exited(VteTerminal *, int, gpointer user_data) {
-    auto *state = static_cast<AppState *>(user_data);
-    if (state->footer_tick != 0) {
-        g_source_remove(state->footer_tick);
-        state->footer_tick = 0;
-    }
-    if (state->footer_scroll_tick != 0) { g_source_remove(state->footer_scroll_tick); state->footer_scroll_tick = 0; }
-    if (state->throbber_tick != 0 && state->throbber != nullptr) {
-        gtk_widget_remove_tick_callback(state->throbber, state->throbber_tick);
-        state->throbber_tick = 0;
-    }
-    state->throbber = nullptr;
-    state->footer_text = nullptr;
-    state->child_pid = 0;
-    if (state->window != nullptr) {
-        GtkApplication *application = gtk_window_get_application(state->window);
-        GtkWindow *window = state->window;
-        state->window = nullptr;
-        gtk_window_destroy(window);
-        if (application != nullptr) g_application_quit(G_APPLICATION(application));
-    }
+    auto *session = static_cast<AppState *>(user_data);
+    session->child_pid = 0;
+    remove_tab(session);
 }
 
 void shell_spawned(VteTerminal *, GPid child_pid, GError *error, gpointer user_data) {
@@ -1390,10 +1476,12 @@ void shell_spawned(VteTerminal *, GPid child_pid, GError *error, gpointer user_d
 }
 
 gboolean window_close_request(GtkWindow *window, gpointer user_data) {
-    auto *state = static_cast<AppState *>(user_data);
-    if (state->child_pid > 0) {
-        ::kill(static_cast<pid_t>(state->child_pid), SIGHUP);
-        state->child_pid = 0;
+    auto *state = root_state(static_cast<AppState *>(user_data));
+    for (auto *session : state->tab_states) {
+        if (session && session->child_pid > 0) {
+            ::kill(static_cast<pid_t>(session->child_pid), SIGHUP);
+            session->child_pid = 0;
+        }
     }
     if (state->footer_tick != 0) {
         g_source_remove(state->footer_tick);
@@ -1507,8 +1595,9 @@ void throbber_draw(GtkDrawingArea *, cairo_t *cr, int width, int height, gpointe
 // terminal pane. The overlay is non-interactive, so terminal input and selection
 // remain owned by VTE. Keep alpha low so text contrast remains the priority.
 void terminal_glow_draw(GtkDrawingArea *, cairo_t *cr, int width, int height, gpointer user_data) {
-    auto *state = static_cast<AppState *>(user_data);
-    if (width <= 0 || height <= 0 || state->throbber_w <= 0) return;
+    auto *session = static_cast<AppState *>(user_data);
+    auto *state = root_state(session);
+    if (width <= 0 || height <= 0 || !state || state->throbber_w <= 0) return;
 
     const double pane_scale = static_cast<double>(width) / state->throbber_w;
     for (const auto &c : state->throbber_cells) {
@@ -1672,13 +1761,89 @@ gboolean throbber_tick(GtkWidget *, GdkFrameClock *frame_clock, gpointer user_da
         state->throbber_cells.end());
 
     gtk_widget_queue_draw(state->throbber);
-    if (state->terminal_glow != nullptr) gtk_widget_queue_draw(state->terminal_glow);
+    for (auto *session : state->tab_states) {
+        if (session && session->terminal_glow) gtk_widget_queue_draw(session->terminal_glow);
+    }
     return G_SOURCE_CONTINUE;
 }
 
 
+void create_new_tab(AppState *owner) {
+    if (!owner || !owner->window || !owner->notebook) return;
+    auto session = std::make_unique<AppState>();
+    session->owner = owner;
+    session->window = owner->window;
+    session->shell_path = owner->shell_path;
+    session->executable_path = owner->executable_path;
+    session->config = owner->config;
+    AppState *tab = session.get();
+    owner->owned_tabs.push_back(std::move(session));
+    owner->tab_states.push_back(tab);
+
+    GtkWidget *page_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+    GtkWidget *terminal = vte_terminal_new();
+    tab->terminal = VTE_TERMINAL(terminal);
+    gtk_widget_set_hexpand(terminal, TRUE);
+    gtk_widget_set_vexpand(terminal, TRUE);
+    vte_terminal_set_scrollback_lines(tab->terminal, 10000);
+    apply_terminal_style(tab);
+
+    GtkEventController *keys = gtk_event_controller_key_new();
+    gtk_event_controller_set_propagation_phase(keys, GTK_PHASE_CAPTURE);
+    g_signal_connect(keys, "key-pressed", G_CALLBACK(terminal_key_pressed), terminal);
+    gtk_widget_add_controller(terminal, keys);
+    GtkGesture *right_click = gtk_gesture_click_new();
+    gtk_gesture_single_set_button(GTK_GESTURE_SINGLE(right_click), GDK_BUTTON_SECONDARY);
+    g_signal_connect(right_click, "pressed", G_CALLBACK(terminal_mouse_menu), terminal);
+    gtk_widget_add_controller(terminal, GTK_EVENT_CONTROLLER(right_click));
+
+    GtkWidget *overlay = gtk_overlay_new();
+    gtk_widget_add_css_class(overlay, "sleela-terminal-panel");
+    gtk_widget_set_overflow(overlay, GTK_OVERFLOW_HIDDEN);
+    gtk_widget_set_hexpand(overlay, TRUE);
+    gtk_widget_set_vexpand(overlay, TRUE);
+    gtk_overlay_set_child(GTK_OVERLAY(overlay), terminal);
+    GtkWidget *glow = gtk_drawing_area_new();
+    tab->terminal_glow = glow;
+    gtk_widget_add_css_class(glow, "sleela-terminal-glow");
+    gtk_widget_set_hexpand(glow, TRUE);
+    gtk_widget_set_vexpand(glow, TRUE);
+    gtk_widget_set_can_target(glow, FALSE);
+    gtk_drawing_area_set_draw_func(GTK_DRAWING_AREA(glow), terminal_glow_draw, tab, nullptr);
+    gtk_overlay_add_overlay(GTK_OVERLAY(overlay), glow);
+    gtk_overlay_set_measure_overlay(GTK_OVERLAY(overlay), glow, FALSE);
+    gtk_box_append(GTK_BOX(page_box), overlay);
+    tab->page = page_box;
+
+    const std::string tab_title = "Terminal " + std::to_string(owner->tab_states.size());
+    GtkWidget *tab_label = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 6);
+    gtk_box_append(GTK_BOX(tab_label), gtk_label_new(tab_title.c_str()));
+    GtkWidget *close = gtk_button_new_from_icon_name("window-close-symbolic");
+    gtk_widget_add_css_class(close, "flat");
+    gtk_widget_set_focus_on_click(close, FALSE);
+    gtk_widget_set_tooltip_text(close, "Close tab (Ctrl+Shift+W)");
+    gtk_box_append(GTK_BOX(tab_label), close);
+    g_signal_connect(close, "clicked", G_CALLBACK(+[](GtkButton *, gpointer data) {
+        close_tab(static_cast<AppState *>(data));
+    }), tab);
+    int page_num = gtk_notebook_append_page(GTK_NOTEBOOK(owner->notebook), page_box, tab_label);
+    gtk_notebook_set_tab_reorderable(GTK_NOTEBOOK(owner->notebook), page_box, TRUE);
+    gtk_notebook_set_current_page(GTK_NOTEBOOK(owner->notebook), page_num);
+
+    g_object_set_data(G_OBJECT(terminal), "sleela-session-state", tab);
+    g_signal_connect(terminal, "child-exited", G_CALLBACK(child_exited), tab);
+
+    std::vector<char *> shell_argv;
+    shell_argv.push_back(const_cast<char *>(tab->shell_path.c_str()));
+    shell_argv.push_back(nullptr);
+    vte_terminal_spawn_async(tab->terminal, VTE_PTY_DEFAULT, nullptr, shell_argv.data(),
+        nullptr, G_SPAWN_DEFAULT, nullptr, nullptr, nullptr, -1, nullptr, shell_spawned, tab);
+    gtk_widget_grab_focus(terminal);
+}
+
 void activate(GtkApplication *application, gpointer user_data) {
     auto *state = static_cast<AppState *>(user_data);
+    state->owner = state;
     install_css(state);
     load_config(state->config);
 
@@ -1704,6 +1869,15 @@ void activate(GtkApplication *application, gpointer user_data) {
     gtk_widget_set_valign(logo, GTK_ALIGN_CENTER);
     gtk_widget_set_tooltip_text(logo, "SleelaTerminal™ — Debian / Windows Terminal");
     gtk_header_bar_pack_start(GTK_HEADER_BAR(header), logo);
+
+    GtkWidget *new_tab = gtk_button_new_with_label("+");
+    gtk_widget_add_css_class(new_tab, "sleela-new-tab");
+    gtk_widget_set_tooltip_text(new_tab, "New terminal tab (Ctrl+Shift+T)");
+    gtk_widget_set_valign(new_tab, GTK_ALIGN_CENTER);
+    g_signal_connect(new_tab, "clicked", G_CALLBACK(+[](GtkButton *, gpointer data) {
+        create_new_tab(static_cast<AppState *>(data));
+    }), state);
+    gtk_header_bar_pack_start(GTK_HEADER_BAR(header), new_tab);
 
     // Settings control on the RIGHT of the title bar: a custom three-bar
     // hamburger glyph, filled title-bar blue with a 1px black outline. Clicking
@@ -1814,7 +1988,36 @@ void activate(GtkApplication *application, gpointer user_data) {
     gtk_drawing_area_set_draw_func(GTK_DRAWING_AREA(glow), terminal_glow_draw, state, nullptr);
     gtk_overlay_add_overlay(GTK_OVERLAY(terminal_overlay), glow);
     gtk_overlay_set_measure_overlay(GTK_OVERLAY(terminal_overlay), glow, FALSE);
-    gtk_box_append(GTK_BOX(root), terminal_overlay);
+    state->page = terminal_overlay;
+    state->notebook = gtk_notebook_new();
+    gtk_notebook_set_scrollable(GTK_NOTEBOOK(state->notebook), TRUE);
+    gtk_notebook_set_show_border(GTK_NOTEBOOK(state->notebook), FALSE);
+    gtk_widget_set_hexpand(state->notebook, TRUE);
+    gtk_widget_set_vexpand(state->notebook, TRUE);
+    GtkWidget *first_tab_label = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 6);
+    GtkWidget *first_tab_title = gtk_label_new("Terminal 1");
+    gtk_box_append(GTK_BOX(first_tab_label), first_tab_title);
+    GtkWidget *first_tab_close = gtk_button_new_from_icon_name("window-close-symbolic");
+    gtk_widget_add_css_class(first_tab_close, "flat");
+    gtk_widget_set_tooltip_text(first_tab_close, "Close tab (Ctrl+Shift+W)");
+    gtk_widget_set_focus_on_click(first_tab_close, FALSE);
+    gtk_box_append(GTK_BOX(first_tab_label), first_tab_close);
+    gtk_notebook_append_page(GTK_NOTEBOOK(state->notebook), terminal_overlay, first_tab_label);
+    gtk_notebook_set_tab_reorderable(GTK_NOTEBOOK(state->notebook), terminal_overlay, TRUE);
+    g_signal_connect(first_tab_close, "clicked", G_CALLBACK(+[](GtkButton *, gpointer data) {
+        close_tab(static_cast<AppState *>(data));
+    }), state);
+    state->tab_states.push_back(state);
+    g_signal_connect(state->notebook, "switch-page", G_CALLBACK(+[](GtkNotebook *, GtkWidget *page, guint, gpointer data) {
+        auto *owner = static_cast<AppState *>(data);
+        for (auto *session : owner->tab_states) {
+            if (session && session->page == page) {
+                owner->terminal = session->terminal;
+                break;
+            }
+        }
+    }), state);
+    gtk_box_append(GTK_BOX(root), state->notebook);
 
     GtkWidget *footer = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
     gtk_widget_add_css_class(footer, "sleela-footer");
@@ -1861,6 +2064,7 @@ void activate(GtkApplication *application, gpointer user_data) {
 
     gtk_box_append(GTK_BOX(root), footer);
     gtk_window_set_child(state->window, root);
+    g_object_set_data(G_OBJECT(terminal), "sleela-session-state", state);
     g_signal_connect(terminal, "child-exited", G_CALLBACK(child_exited), state);
     g_signal_connect(state->window, "close-request", G_CALLBACK(window_close_request), state);
 
