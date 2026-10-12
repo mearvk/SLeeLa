@@ -150,4 +150,4 @@ The existing CLI shell remains a C++17 program and does not depend on GTK or VTE
 
 ## Title-bar gradient presets
 
-The title-bar gradient is stored in `assets/HORIZONTAL.cfg` and `assets/VERTICAL.cfg`. Both presets preserve the same seven color stops and positions; only the distribution axis changes. `assets/GRADIENT.cfg` selects the active preset. The current selection is `active=VERTICAL.cfg`, which distributes the gradient from top to bottom. To restore the original left-to-right sweep, change the selection to `active=HORIZONTAL.cfg` and restart SleelaTerminal.
+The title-bar gradient is stored in `assets/HORIZONTAL.cfg` and `assets/VERTICAL.cfg`; each preset supplies both its direction and its own color stops. The active vertical preset uses a predominantly dark-navy palette, with a narrow silver-white glint and darker blue transitions to suggest a restrained 3D bevel. `assets/GRADIENT.cfg` selects the active preset. The current selection is `active=VERTICAL.cfg`, which distributes the gradient from top to bottom. To restore the saved purple/blue left-to-right sweep, change the selection to `active=HORIZONTAL.cfg` and restart SleelaTerminal.
