@@ -28,8 +28,7 @@ build: configure
 
 test: build
 	$(CMAKE) --build "$(BUILD_DIR)" --config $(BUILD_TYPE) --target sleela-decompiler-test
-	$(CMAKE) -E chdir "$(BUILD_DIR)" $(CMAKE) -E env CTEST_OUTPUT_ON_FAILURE=1 $(CMAKE) -E echo "Running Slecompiler tests"
-	$(CMAKE) --build "$(BUILD_DIR)" --config $(BUILD_TYPE) --target test
+	$(CMAKE) -E chdir "$(BUILD_DIR)" ctest --output-on-failure -C $(BUILD_TYPE)
 
 check: test
 
