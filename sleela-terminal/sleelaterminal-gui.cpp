@@ -1094,7 +1094,7 @@ gboolean terminal_key_pressed(GtkEventControllerKey *, guint keyval, guint,
         close_tab(session);
         return TRUE;
     }
-    if (ctrl && keyval == GDK_KEY_Page_Down && owner && owner->notebook) {
+    if (ctrl && (keyval == GDK_KEY_Tab || keyval == GDK_KEY_Page_Down) && owner && owner->notebook) {
         int count = gtk_notebook_get_n_pages(GTK_NOTEBOOK(owner->notebook));
         if (count > 1) {
             int page = gtk_notebook_get_current_page(GTK_NOTEBOOK(owner->notebook));
@@ -1102,7 +1102,7 @@ gboolean terminal_key_pressed(GtkEventControllerKey *, guint keyval, guint,
         }
         return TRUE;
     }
-    if (ctrl && keyval == GDK_KEY_Page_Up && owner && owner->notebook) {
+    if (ctrl && ((shift && keyval == GDK_KEY_Tab) || keyval == GDK_KEY_Page_Up) && owner && owner->notebook) {
         int count = gtk_notebook_get_n_pages(GTK_NOTEBOOK(owner->notebook));
         if (count > 1) {
             int page = gtk_notebook_get_current_page(GTK_NOTEBOOK(owner->notebook));
@@ -1408,6 +1408,7 @@ void remove_tab(AppState *session) {
     AppState *owner = root_state(session);
     session->tab_removed = true;
     session->child_pid = 0;
+    VteTerminal *removed_terminal = session->terminal;
     if (session->throbber_tick != 0 && session->throbber != nullptr) {
         gtk_widget_remove_tick_callback(session->throbber, session->throbber_tick);
         session->throbber_tick = 0;
@@ -1422,7 +1423,7 @@ void remove_tab(AppState *session) {
     if (owner) {
         owner->tab_states.erase(std::remove(owner->tab_states.begin(), owner->tab_states.end(), session),
                                 owner->tab_states.end());
-        if (owner->terminal == nullptr || owner->terminal == session->terminal) {
+        if (owner->terminal == nullptr || owner->terminal == removed_terminal) {
             int current = owner->notebook ? gtk_notebook_get_current_page(GTK_NOTEBOOK(owner->notebook)) : -1;
             GtkWidget *child = (owner->notebook && current >= 0)
                 ? gtk_notebook_get_nth_page(GTK_NOTEBOOK(owner->notebook), current) : nullptr;
@@ -2002,6 +2003,7 @@ void activate(GtkApplication *application, gpointer user_data) {
     gtk_widget_set_focus_on_click(first_tab_close, FALSE);
     gtk_box_append(GTK_BOX(first_tab_label), first_tab_close);
     gtk_notebook_append_page(GTK_NOTEBOOK(state->notebook), terminal_overlay, first_tab_label);
+    gtk_notebook_set_tab_reorderable(GTK_NOTEBOOK(state->notebook), terminal_overlay, TRUE);
     g_signal_connect(first_tab_close, "clicked", G_CALLBACK(+[](GtkButton *, gpointer data) {
         close_tab(static_cast<AppState *>(data));
     }), state);
