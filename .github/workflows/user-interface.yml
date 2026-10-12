@@ -33,7 +33,8 @@ jobs:
         run: make smoke
       - name: Confirm the X11 backend was selected
         run: |
-          make help | grep -qi "backend auto-detected: linux"
+          make help > backend-help.txt
+          grep -qi "backend auto-detected: linux" backend-help.txt
 
   macos:
     name: macOS (Cocoa backend)
@@ -52,7 +53,8 @@ jobs:
         run: make smoke
       - name: Confirm the Cocoa backend was selected
         run: |
-          make help | grep -qi "backend auto-detected: macos"
+          make help > backend-help.txt
+          grep -qi "backend auto-detected: macos" backend-help.txt
 
   windows:
     name: Windows 10+ (Win32 backend, MinGW)
@@ -80,4 +82,5 @@ jobs:
         run: make smoke
       - name: Confirm the Win32 backend was selected
         run: |
-          make help | grep -qi "backend auto-detected: windows"
+          make help > backend-help.txt
+          grep -qi "backend auto-detected: windows" backend-help.txt
