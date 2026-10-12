@@ -1,0 +1,3 @@
+# Sleelavirin native SHA-256 signature database
+# Format: <64-character SHA-256 hex digest> [optional display name]
+# Add only trusted, provenance-documented signatures. This starter database is intentionally empty.
