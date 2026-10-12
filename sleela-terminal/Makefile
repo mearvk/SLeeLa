@@ -39,7 +39,7 @@ cli: $(SLSH) $(SMOKE)
 all-gui: cli $(GUI)
 
 $(SLSH): $(CLI_SRC) $(HEADERS) | $(BUILD)
-	$(CXX) $(CXXFLAGS) $(CLI_SRC) -o $@
+	$(CXX) $(CXXFLAGS) -pthread $(CLI_SRC) -o $@
 
 $(SMOKE): $(SMOKE_SRC) $(HEADERS) | $(BUILD)
 	$(CXX) $(CXXFLAGS) $(SMOKE_SRC) -o $@
@@ -94,7 +94,7 @@ clean:
 # Security validation builds. These intentionally use debug-friendly flags.
 SANITIZE_FLAGS := -std=c++17 -O1 -g -Wall -Wextra -fno-omit-frame-pointer -fsanitize=address,undefined
 sanitize: | $(BUILD)
-	$(CXX) $(SANITIZE_FLAGS) $(CLI_SRC) -o $(BUILD)/slsh-sanitize
+	$(CXX) $(SANITIZE_FLAGS) -pthread $(CLI_SRC) -o $(BUILD)/slsh-sanitize
 	$(CXX) $(SANITIZE_FLAGS) $(SMOKE_SRC) -o $(BUILD)/smoke-sanitize
 	ASAN_OPTIONS=detect_leaks=1:halt_on_error=1 $(BUILD)/smoke-sanitize
 
