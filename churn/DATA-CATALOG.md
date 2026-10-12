@@ -8,8 +8,6 @@ This catalog defines how the five Churn dimensions fit together and how new data
 
 ## Existing data inventory
 
-The current repository already contains representative data in multiple formats:
-
 | Set | Dimension | Existing examples | Integration role |
 |---|---|---|---|
 | [1 — Longs](1/README.md) | Time series | `longs.csv`, assumptions CSV and SLeeLa model | Period-based measurements and assumptions |
@@ -18,75 +16,86 @@ The current repository already contains representative data in multiple formats:
 | [4 — Areas](4/README.md) | Two-dimensional extent | Geometry areas, country areas, Earth surface, Great Lakes, continents, US density | Area values and spatial context |
 | [5 — Lines](5/README.md) | One-dimensional length or count | Integers, geometry lengths, physical lengths, US lengths, common counts | Count/length values and derived line measures |
 
-These examples establish useful coverage, but the files must be checked individually before being treated as authoritative. File presence alone does not prove correctness, completeness, or currentness.
+The repository has broad representative coverage. File presence alone does not prove correctness, completeness, licensing, or currentness; do not label a dataset authoritative without checking its publisher and source document.
 
 ## Shared record contract
 
-New machine-readable records should provide the following fields where applicable:
+For newly normalized machine-readable datasets, use the following fields where applicable:
 
-- `id`: stable, unique identifier within the dataset.
+- `id`: stable, unique identifier within the dataset (prefer publisher identifiers where available; otherwise use a documented namespace such as `churn.line.us-state-count`).
 - `label`: human-readable name.
 - `dimension`: `LONG`, `STRUCTURE`, `FACET`, `AREA`, or `LINE`.
 - `domain`: `MATH`, `PHYSICS`, or `SOCIAL` (or a documented extension).
-- `value` or `values`: numeric or structured value; never encode a numeric quantity only in prose.
+- `value` or `values`: numeric or structured value; do not encode a numeric quantity only in prose.
 - `unit`: explicit unit or `1` for dimensionless values.
 - `evidence_kind`: `EXACT`, `MEASURED`, `OBSERVED`, `ASSUMED`, or `DERIVED`.
-- `source_uri`: stable source URL or a repository-relative source document.
-- `retrieved_at` / `valid_period`: retrieval date or period for values that change.
-- `uncertainty`: measurement uncertainty or a documented reason it is unavailable, when relevant.
+- `source_uri`: canonical publisher URL or repository-relative source document.
+- `retrieved_at`, `published_at`, or `valid_period`: date/period where the value can change.
+- `license` / `attribution`: license or terms and required attribution for imported data.
+- `uncertainty`: uncertainty or a documented reason it is unavailable, when relevant.
 - `derived_from`: source record IDs for derived values; empty for primary facts.
 
-This is a proposed data contract. Existing records need not be bulk-rewritten until a migration and compatibility plan is reviewed.
+New normalized JSON datasets may opt into the validator's strict contract by setting top-level `"record_contract": "churn-1"` and supplying top-level `source_uri` and `license`. This is an opt-in migration path; legacy data is not silently rewritten.
 
 ## Cross-dimensional relationships
 
-Use explicit identifiers rather than relying on filenames or matching display labels.
+Use explicit identifiers rather than relying on filenames or matching display labels. A relationship record should contain `from_id`, `relationship`, and `to_id`; derived relationships also need `method` or `formula` and explicit unit handling.
 
-- **Long → Structure:** a time-series observation references the scalar definition, unit, and series identity it measures.
+- **Long → Structure:** a time-series observation references the scalar definition, unit, series identity, and period it measures.
 - **Structure → Facet:** a facet references its subject object and the property definition/value it describes.
 - **Facet → Area:** an area can reference the geographic or geometric object whose extent it represents.
-- **Structure/Facet → Line:** a line record references the count or length definition, source, and unit.
-- **Area ↔ Line:** a relationship is valid only when the operation is defined (for example, perimeter is a length derived from a boundary; area divided by length has units of length). Do not infer relationships from similar names alone.
+- **Structure/Facet → Line:** a line references the count/length definition, source, and unit.
+- **Area ↔ Line:** only connect when the operation is defined (for example, perimeter is a length derived from a boundary; area divided by length has units of length). Never infer links from similar labels alone.
 
-A cross-dimensional relationship should record at least `from_id`, `relationship`, `to_id`, and, for derived relationships, the method/formula and unit handling.
+## Formulas and dimensional compatibility
+
+Store formula identity separately from observed values. A formula record should document its inputs, output unit, and assumptions. Validate unit compatibility before comparing or combining quantities. Examples of expected dimensional checks:
+
+- Area: length × length → length².
+- Perimeter/circumference: length → length.
+- Density: count ÷ area → count/area.
+- A time-series correlation is dimensionless and descriptive, not causal.
+- Unit conversions must record the conversion factor and source; do not compare unlike units before conversion.
 
 ## Inheritance and composition
 
-Prefer composition for cross-dimensional records: a measurement references a Structure, a Facet references an object and a property definition, and derived records reference their inputs. This avoids pretending that a time series, an area, and a line are interchangeable types.
+Prefer composition for cross-dimensional records: a Long observation references a Structure definition, a Facet references an object and a property, and derived records reference their inputs. This avoids pretending that a time series, area, and line are interchangeable types.
 
-If actual SLeeLa class inheritance is introduced later, keep a small shared evidence/provenance base contract and make the five dimension types distinct descendants only if the language/compiler semantics support that design. Do not claim runtime inheritance merely because the documentation describes conceptual relationships. The existing Java constraint-report classes are build/test utilities, not the data-model inheritance hierarchy.
+If actual SLeeLa class inheritance is introduced later, keep a small shared evidence/provenance contract and make the five dimension types distinct descendants only if compiler semantics support that design. The Java constraint-report classes are build/test utilities, not the data-model inheritance hierarchy. The current sets should therefore be described as related by composition and shared validation, not as implemented subclasses.
 
 ## Import policy
 
 Before importing a dataset:
 
 1. Identify the publisher and canonical source URL.
-2. Record retrieval date, license/terms, version, and any attribution requirements.
-3. Preserve the source file or a reproducible retrieval procedure; do not silently overwrite original data.
+2. Record retrieval date, license/terms, version, and attribution requirements.
+3. Preserve the original source file or a reproducible retrieval procedure.
 4. Normalize units and document conversion formulas.
-5. Map records to stable IDs and check for duplicates against existing canonical records.
-6. Label data as primary, observed, assumed, or derived; never present assumptions as measurements.
-7. Add source-specific notes and a small fixture/test for parsing and key invariants.
+5. Map records to stable IDs and check duplicates against canonical records.
+6. Label primary, observed, assumed, or derived data correctly.
+7. Add a source-specific note and a parsing/invariant test.
 8. Update the relevant set README and this catalog in the same change.
 
-Do not add bulk external data merely to increase file count. Import only when it adds a clear dimension/domain, has verifiable provenance, and can be validated.
+Do not import bulk data merely to increase file count. Prefer authoritative publisher sources, but import only when the data adds a clear dimension/domain, provenance is verifiable, and the data can be validated. Respect source terms and licenses.
 
-## Validation roadmap
+## Validation and test coverage
 
-The current `validate_data.py` checks JSON/XML parsing, CSV column counts, and nonempty TXT files. Expand validation incrementally to include:
+`validate_data.py` currently checks JSON/XML parseability, CSV header/row consistency, duplicate CSV IDs where an `id` column exists, duplicate IDs in record-array JSON, known evidence-kind values, and the opt-in `churn-1` JSON contract. These structural checks do not establish scientific correctness or that a source remains current.
 
-1. Required headers/fields and duplicate IDs within each dataset.
-2. Referential integrity for `derived_from` and cross-dimensional links.
-3. Unit presence and compatible dimensions before arithmetic or comparison.
-4. Range and invariant checks that are justified by the dataset's source/specification.
-5. Provenance and license metadata for imported data.
-6. Deterministic smoke tests for each SLeeLa model and each Java constraint report.
+The validation roadmap is:
 
-Keep validation fail-closed for malformed records, but report warnings separately for missing optional metadata in legacy datasets so migration can proceed deliberately.
+1. Required fields and stable IDs for normalized datasets.
+2. Referential integrity for `derived_from` and cross-dimensional relationship records.
+3. Unit compatibility before arithmetic or comparison.
+4. Source-backed range/invariant checks.
+5. Provenance, license, and retrieval metadata for imports.
+6. Deterministic smoke tests for each SLeeLa model and Java constraint report.
+
+Legacy files may remain outside the strict contract until migrated; do not turn missing optional legacy metadata into false validation failures. Invalid syntax and explicit contract violations fail the check.
 
 ## Build entry points
 
-From the repository root:
+From repository root:
 
 ```sh
 make churn
@@ -103,12 +112,13 @@ make test
 make clean
 ```
 
-The root Makefile already dispatches `churn`, `churn-data-check`, and `churn-test`. Avoid duplicating the Churn compiler commands in the root Makefile; keep the local Makefile authoritative.
+The root Makefile already dispatches these targets. Keep the local Makefile authoritative and avoid duplicating compiler commands at the repository root.
 
-## Immediate priorities
+## Immediate implementation status
 
-- [ ] Add this catalog to the set documentation links.
-- [ ] Review the existing JSON/CSV/XML schemas and document source/license/retrieval metadata.
-- [ ] Add cross-dimensional IDs and reference checks where the current records support them.
-- [ ] Check mathematical invariants and unit consistency with source-backed expected values.
-- [ ] Only then import additional source-backed data in targeted gaps.
+- [x] Document the five dimensions and composition-first relationship model.
+- [x] Strengthen structural checks while preserving a deliberate legacy migration path.
+- [x] Define stable-ID, provenance, evidence-kind, formula, and license expectations.
+- [x] Keep build/test entry points connected through the root Makefile.
+- [ ] Add normalized cross-dimensional link files only when their endpoint IDs are grounded in existing source records.
+- [ ] Run the complete build/test suite in a checkout with the required toolchain and verify branch parity.
