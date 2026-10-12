@@ -40,6 +40,16 @@ normative specifications from implementation notes and live validation results.
 - [Native implementation guide](../impl/README.md) — authoritative C/C++ build.
 - [Testing guide](../markdown/TESTING.md) — local tests and translation-unit audit.
 - [Test-suite guide](../test-suites/README.md) — broader suite entry points.
+- [Sleelavirin antivirus build and integrity](../antivirus/README.md) — native scanner, optional ClamAV integration, SHA-256 source/index manifest, and release package checksums.
+- [Antivirus security and release checklist](../antivirus/SECURITY.md) — index provenance, database snapshot integrity, safe scan behavior, and release gates.
+- [Antivirus binary build workflow](../.github/workflows/antivirus-binaries.yml) — supported build matrix and release artifact packaging.
+
+From the repository root, run `make antivirus`, `make antivirus-test`,
+`make antivirus-integrity`, and
+`make antivirus-integrity-check MANIFEST=build/INTEGRITY-MANIFEST.json`.
+These checks document the build and integrity process; they do not replace
+review of the exact commit's CI results or independently trusted release hashes.
+
 - [GitHub Actions](https://github.com/mearvk/SLeeLa/actions) — current run results.
 
 **Status note:** the latest inspected Linux and Windows subject-test runs reported
