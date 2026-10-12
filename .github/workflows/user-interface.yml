@@ -1,5 +1,6 @@
 name: Build SleelaUI toolkit
 
+# A workflow run with zero jobs is not evidence of a successful platform check.
 # Proves SLeeLa's own cross-platform User Interface toolkit (user-interface/)
 # builds its native backend on every modern desktop OS and that the portable
 # core passes the headless smoke test everywhere:
