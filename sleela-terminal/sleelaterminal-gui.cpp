@@ -703,6 +703,7 @@ void make_software_menu(AppState *state, GtkWidget *anchor) {
 
 void show_install_prompt(AppState *state, GtkWidget *, const char *product, const char *display_name) {
     GtkWidget *dialog = gtk_window_new();
+    gtk_widget_add_css_class(dialog, "sleela-installer");
     gtk_window_set_title(GTK_WINDOW(dialog), "SleelaTerminal — Java Installer");
     gtk_window_set_default_size(GTK_WINDOW(dialog), 520, 300);
     gtk_window_set_modal(GTK_WINDOW(dialog), TRUE);
@@ -751,6 +752,7 @@ void show_install_prompt(AppState *state, GtkWidget *, const char *product, cons
     g_signal_connect_data(yes, "clicked", G_CALLBACK(+[](GtkButton *, gpointer data) {
         auto *p = static_cast<InstallPayload *>(data);
         GtkWidget *result_window = gtk_window_new();
+        gtk_widget_add_css_class(result_window, "sleela-installer");
         gtk_window_set_title(GTK_WINDOW(result_window), "SleelaTerminal — Installer Output");
         gtk_window_set_default_size(GTK_WINDOW(result_window), 620, 360);
         gtk_window_set_modal(GTK_WINDOW(result_window), TRUE);
