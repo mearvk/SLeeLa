@@ -196,5 +196,19 @@ class DefinitionImporterTests(unittest.TestCase):
             self.assertIn("must differ", errors.getvalue())
 
 
+    def test_quarantine_refuses_symlink_path(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            target = root / "target.bin"
+            target.write_text("detected")
+            link = root / "link.bin"
+            try:
+                link.symlink_to(target)
+            except (OSError, NotImplementedError):
+                self.skipTest("symbolic links are not available in this environment")
+            with self.assertRaises(ValueError):
+                scan.safe_quarantine(link, root / "quarantine", [str(root)], scan.file_stamp(link))
+
+
 if __name__ == "__main__":
     unittest.main()
