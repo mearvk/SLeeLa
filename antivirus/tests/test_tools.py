@@ -159,7 +159,7 @@ class DefinitionImporterTests(unittest.TestCase):
             root = Path(temp)
             source = root / "source"
             source.mkdir()
-            (source / "daily.hsb").write_text(f"{digest}:7:Example.Signature\\n")
+            (source / "daily.hsb").write_text(f"{digest}:7:Example.Signature\n")
             output = root / "native.txt"
             with mock.patch("sys.argv", [
                 "importer", "--source", str(source), "--output", str(output),
@@ -181,9 +181,9 @@ class DefinitionImporterTests(unittest.TestCase):
             root = Path(temp)
             source = root / "source"
             source.mkdir()
-            (source / "daily.hsb").write_text(f"{digest}:7:Example.Signature\\n")
+            (source / "daily.hsb").write_text(f"{digest}:7:Example.Signature\n")
             output = root / "native.txt"
-            output.write_text("# keep previous index\\n" + "e" * 64 + " old\\n")
+            output.write_text("# keep previous index\n" + "e" * 64 + " old\n")
             previous = output.read_text()
             errors = io.StringIO()
             with mock.patch("sys.argv", [
