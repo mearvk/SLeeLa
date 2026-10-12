@@ -54,6 +54,7 @@ struct AppConfig {
     bool persons_of_interest = false;
     bool parametric_documents = false;
     bool national_identifiers = false;
+    unsigned footer_scroll_delay_minutes = 5;
 };
 
 struct AppState {
@@ -64,7 +65,10 @@ struct AppState {
     std::string executable_path;
     GPid child_pid = 0;
     guint footer_tick = 0;
+    guint footer_scroll_tick = 0;
     guint footer_position = 0;
+    gint64 footer_text_changed_us = 0;
+    std::string footer_full_text;
     std::string feed_topics_signature;
     bool feed_fetching = false;
     gint64 feed_last_fetch = 0;
@@ -109,6 +113,7 @@ void save_config(const AppConfig &config) {
     out << "persons_of_interest=" << (config.persons_of_interest ? "true" : "false") << '\n';
     out << "parametric_documents=" << (config.parametric_documents ? "true" : "false") << '\n';
     out << "national_identifiers=" << (config.national_identifiers ? "true" : "false") << '\n';
+    out << "footer_scroll_delay_minutes=" << config.footer_scroll_delay_minutes << '\n';
 }
 
 void load_config(AppConfig &config) {
@@ -131,6 +136,10 @@ void load_config(AppConfig &config) {
         else if (key == "persons_of_interest") config.persons_of_interest = value == "true";
         else if (key == "parametric_documents") config.parametric_documents = value == "true";
         else if (key == "national_identifiers") config.national_identifiers = value == "true";
+        else if (key == "footer_scroll_delay_minutes") {
+            try { unsigned delay = static_cast<unsigned>(std::stoul(value)); if (delay >= 5 && delay <= 60) config.footer_scroll_delay_minutes = delay; }
+            catch (...) { /* retain default */ }
+        }
     }
 }
 
@@ -397,7 +406,13 @@ void install_css() {
         box.sleela-footer label { color: @sl_fg; font-weight: 600; }
         label.sleela-footer-brand { font-weight: 800; letter-spacing: 0.5px; }
         label.sleela-footer-separator { color: alpha(@sl_fg, 0.42); padding-left: 8px; padding-right: 8px; }
-        label.sleela-footer-ticker { padding-left: 8px; padding-right: 8px; }
+        label.sleela-footer-ticker {
+            color: #b8b8b8;
+            text-shadow: -1px -1px 0 #ffffff, 0 -1px 0 #ffffff, 1px -1px 0 #ffffff,
+                         -1px 0 0 #ffffff, 1px 0 0 #ffffff,
+                         -1px 1px 0 #ffffff, 0 1px 0 #ffffff, 1px 1px 0 #ffffff;
+            padding-left: 8px; padding-right: 8px;
+        }
         button.sleela-footer-java {
             min-width: 32px; min-height: 32px; padding: 0; margin: 0 8px;
             background: transparent; border: none; box-shadow: none; border-radius: 0;
@@ -564,6 +579,27 @@ void make_settings_menu(AppState *state, GtkWidget *settings_button_widget) {
     gtk_widget_add_css_class(title, "heading");
     gtk_widget_set_halign(title, GTK_ALIGN_START);
     gtk_box_append(GTK_BOX(box), title);
+
+    GtkWidget *footer_section = gtk_label_new("Footer ticker");
+    gtk_widget_add_css_class(footer_section, "section");
+    gtk_widget_set_halign(footer_section, GTK_ALIGN_START);
+    gtk_box_append(GTK_BOX(box), footer_section);
+    GtkWidget *footer_delay_note = gtk_label_new("Start rightward scrolling after:");
+    gtk_widget_set_halign(footer_delay_note, GTK_ALIGN_START);
+    gtk_box_append(GTK_BOX(box), footer_delay_note);
+    const unsigned footer_delays[] = {5, 10, 15, 30, 45, 60};
+    for (unsigned delay : footer_delays) {
+        const std::string label = std::to_string(delay) + " minutes";
+        GtkWidget *button = gtk_button_new_with_label(label.c_str());
+        g_object_set_data(G_OBJECT(button), "sleela-delay", GUINT_TO_POINTER(delay));
+        if (delay == state->config.footer_scroll_delay_minutes) gtk_widget_add_css_class(button, "suggested-action");
+        g_signal_connect(button, "clicked", G_CALLBACK(+[](GtkButton *button, gpointer data) {
+            auto *state = static_cast<AppState *>(data);
+            state->config.footer_scroll_delay_minutes = std::clamp(GPOINTER_TO_UINT(g_object_get_data(G_OBJECT(button), "sleela-delay")), 5u, 60u);
+            state->footer_position = 0; state->footer_text_changed_us = g_get_monotonic_time(); save_config(state->config);
+        }), state);
+        gtk_box_append(GTK_BOX(box), button);
+    }
 
     GtkWidget *appearance = gtk_label_new("Presentation");
     gtk_widget_add_css_class(appearance, "section");
@@ -990,6 +1026,12 @@ std::string readFooterbarTopics() {
     return joined;
 }
 
+void set_footer_text(AppState *state, const std::string &value) {
+    if (!state || state->footer_full_text == value) return;
+    state->footer_full_text = value; state->footer_position = 0; state->footer_text_changed_us = g_get_monotonic_time();
+    if (state->footer_text) gtk_label_set_text(state->footer_text, value.c_str());
+}
+
 std::string cleanFeedTitle(std::string value) {
     if (value.size() >= 12 && value.compare(0, 9, "<![CDATA[") == 0 &&
         value.compare(value.size() - 3, 3, "]]>") == 0)
@@ -1013,7 +1055,8 @@ std::string cleanFeedTitle(std::string value) {
 
 void footer_feed_worker(GTask *task, gpointer, gpointer task_data, GCancellable *) {
     const std::string topics = static_cast<const char *>(task_data);
-    gchar *escaped = g_uri_escape_string(topics.c_str(), nullptr, FALSE);
+    const std::string fresh_query = topics + " when:1d";
+    gchar *escaped = g_uri_escape_string(fresh_query.c_str(), nullptr, FALSE);
     const std::string query = "https://news.google.com/rss/search?q=" +
         std::string(escaped ? escaped : "") + "&hl=en-US&gl=US&ceid=US:en";
     g_free(escaped);
@@ -1028,10 +1071,14 @@ void footer_feed_worker(GTask *task, gpointer, gpointer task_data, GCancellable 
     std::string headline;
     if (spawned && g_spawn_check_wait_status(wait_status, nullptr) && stdout_text) {
         const std::string xml(stdout_text);
-        const std::regex item_title("<item[^>]*>[\\s\\S]*?<title[^>]*>([\\s\\S]*?)</title>",
-                                    std::regex::icase);
-        std::smatch match;
-        if (std::regex_search(xml, match, item_title)) headline = cleanFeedTitle(match[1].str());
+        const std::regex item_title("<item[^>]*>[\\s\\S]*?<title[^>]*>([\\s\\S]*?)</title>", std::regex::icase);
+        unsigned headline_count = 0;
+        for (std::sregex_iterator it(xml.begin(), xml.end(), item_title), end; it != end && headline_count < 8; ++it, ++headline_count) {
+            const std::string title = cleanFeedTitle((*it)[1].str());
+            if (title.empty()) continue;
+            if (!headline.empty()) headline += "   •   ";
+            headline += title;
+        }
     }
     if (headline.empty()) headline = "No current headlines returned; check network access and curl";
     g_free(stdout_text);
@@ -1049,13 +1096,24 @@ void footer_feed_finished(GObject *source, GAsyncResult *result, gpointer user_d
     if (state->footer_text != nullptr) {
         if (headline) {
             const std::string display = "RSS  •  " + state->feed_topics_signature + "  —  " + headline;
-            gtk_label_set_text(state->footer_text, display.c_str());
+            set_footer_text(state, display);
         } else if (error) {
-            gtk_label_set_text(state->footer_text, "RSS feed unavailable");
+            set_footer_text(state, "RSS feed unavailable");
         }
     }
     if (headline) g_free(headline);
     if (error) g_error_free(error);
+}
+
+gboolean footer_scroll_tick(gpointer user_data) {
+    auto *state = static_cast<AppState *>(user_data);
+    if (!state->footer_text || state->footer_full_text.empty()) return G_SOURCE_CONTINUE;
+    const gint64 now = g_get_monotonic_time();
+    const gint64 delay = static_cast<gint64>(state->config.footer_scroll_delay_minutes) * 60 * G_USEC_PER_SEC;
+    if (state->footer_text_changed_us == 0 || now - state->footer_text_changed_us < delay) return G_SOURCE_CONTINUE;
+    state->footer_position = (state->footer_position + 1) % 36;
+    gtk_label_set_text(state->footer_text, (std::string(state->footer_position, ' ') + state->footer_full_text).c_str());
+    return G_SOURCE_CONTINUE;
 }
 
 gboolean footer_feed_tick(gpointer user_data) {
@@ -1064,7 +1122,7 @@ gboolean footer_feed_tick(gpointer user_data) {
     if (topics.empty()) {
         state->feed_topics_signature.clear();
         if (state->footer_text != nullptr)
-            gtk_label_set_text(state->footer_text, "Secure Shell Interface  •  Interactive session");
+            set_footer_text(state, "Secure Shell Interface  •  Interactive session");
         return G_SOURCE_CONTINUE;
     }
     const gint64 now = g_get_monotonic_time();
@@ -1073,7 +1131,11 @@ gboolean footer_feed_tick(gpointer user_data) {
         state->feed_last_fetch = 0;
     }
     if (!state->feed_fetching && (state->feed_last_fetch == 0 ||
-        now - state->feed_last_fetch >= 15 * 60 * G_USEC_PER_SEC)) {
+        now - state->feed_last_fetch >= ([&]() {
+            GDateTime *local = g_date_time_new_now_local(); const int hour = local ? g_date_time_get_hour(local) : 12;
+            if (local) g_date_time_unref(local);
+            return (hour >= 9 && hour < 17 ? 15LL : 60LL) * 60 * G_USEC_PER_SEC;
+        })())) {
         state->feed_fetching = true;
         state->feed_last_fetch = now;
         GTask *task = g_task_new(nullptr, nullptr, footer_feed_finished, state);
@@ -1082,7 +1144,7 @@ gboolean footer_feed_tick(gpointer user_data) {
         g_object_unref(task);
         if (state->footer_text != nullptr) {
             const std::string display = "RSS  •  " + topics + "  —  loading headlines…";
-            gtk_label_set_text(state->footer_text, display.c_str());
+            set_footer_text(state, display);
         }
     }
     return G_SOURCE_CONTINUE;
@@ -1103,6 +1165,7 @@ void child_exited(VteTerminal *, int, gpointer user_data) {
         g_source_remove(state->footer_tick);
         state->footer_tick = 0;
     }
+    if (state->footer_scroll_tick != 0) { g_source_remove(state->footer_scroll_tick); state->footer_scroll_tick = 0; }
     if (state->throbber_tick != 0 && state->throbber != nullptr) {
         gtk_widget_remove_tick_callback(state->throbber, state->throbber_tick);
         state->throbber_tick = 0;
@@ -1629,7 +1692,8 @@ void activate(GtkApplication *application, gpointer user_data) {
     gtk_widget_set_hexpand(footer_text, TRUE);
     gtk_widget_set_halign(footer_text, GTK_ALIGN_START);
     gtk_widget_set_valign(footer_text, GTK_ALIGN_CENTER);
-    gtk_label_set_ellipsize(state->footer_text, PANGO_ELLIPSIZE_END);
+    gtk_label_set_ellipsize(state->footer_text, PANGO_ELLIPSIZE_NONE);
+    gtk_label_set_width_chars(state->footer_text, 28);
     gtk_box_append(GTK_BOX(footer), footer_text);
 
     // CMD footer control: strict image only; the image itself is the clickable surface.
@@ -1655,7 +1719,10 @@ void activate(GtkApplication *application, gpointer user_data) {
     // terminal content, which is the hero. See UI-PRINCIPLES.md (principle 6).
     // The footer shows a single clear status string; no rotation timer runs.
     state->footer_position = 0;
+    state->footer_text_changed_us = g_get_monotonic_time();
+    state->footer_full_text = footer_messages().front();
     state->footer_tick = g_timeout_add_seconds(30, footer_feed_tick, state);
+    state->footer_scroll_tick = g_timeout_add(150, footer_scroll_tick, state);
     footer_feed_tick(state);
 
     // GTK's frame clock schedules updates with display frames and naturally
