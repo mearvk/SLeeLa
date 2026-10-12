@@ -408,9 +408,9 @@ void install_css() {
         label.sleela-footer-separator { color: alpha(@sl_fg, 0.42); padding-left: 8px; padding-right: 8px; }
         label.sleela-footer-ticker, drawingarea.sleela-footer-ticker {
             color: #b8b8b8;
-            text-shadow: -1px -1px 0 #ffffff, 0 -1px 0 #ffffff, 1px -1px 0 #ffffff,
-                         -1px 0 0 #ffffff, 1px 0 0 #ffffff,
-                         -1px 1px 0 #ffffff, 0 1px 0 #ffffff, 1px 1px 0 #ffffff;
+            text-shadow: -1px -1px 0 #000000, 0 -1px 0 #000000, 1px -1px 0 #000000,
+                         -1px 0 0 #000000, 1px 0 0 #000000,
+                         -1px 1px 0 #000000, 0 1px 0 #000000, 1px 1px 0 #000000;
             padding-left: 8px; padding-right: 8px;
         }
         button.sleela-footer-java {
@@ -1106,6 +1106,8 @@ void footer_feed_finished(GObject *source, GAsyncResult *result, gpointer user_d
     if (error) g_error_free(error);
 }
 
+gboolean footer_feed_tick(gpointer user_data);
+
 void footer_ticker_draw(GtkDrawingArea *area, cairo_t *cr, int width, int height, gpointer user_data) {
     auto *state = static_cast<AppState *>(user_data);
     if (!state || state->footer_full_text.empty() || width <= 0 || height <= 0) return;
@@ -1119,28 +1121,34 @@ void footer_ticker_draw(GtkDrawingArea *area, cairo_t *cr, int width, int height
     const gint64 delay = static_cast<gint64>(state->config.footer_scroll_delay_minutes) * 60 * G_USEC_PER_SEC;
     const bool scrolling = state->footer_text_changed_us != 0 &&
         now - state->footer_text_changed_us >= delay && text_width > width;
+    // Keep the beginning of the message readable during the configured pause.
+    // Then start fully off the left edge and move right so every character,
+    // including the end of a long RSS headline, crosses the fixed viewport.
     double x = 0.0;
+    double alpha = 1.0;
     if (scrolling) {
-        // Pixel offset advances to the right; once the complete message exits,
-        // restart just beyond the left edge for a continuous, clipped marquee.
         const double cycle = static_cast<double>(std::max(1, width + text_width));
-        const double phase = std::fmod(static_cast<double>(state->footer_position), cycle);
-        // First move the current line right; then bring it back in from the
-        // left so every character can pass through the clipped footer viewport.
-        x = phase < width ? phase : phase - cycle;
+        const double phase = std::min(static_cast<double>(state->footer_position), cycle);
+        x = -static_cast<double>(text_width) + phase;
+        // Fade the message gently as it completes its rightward exit.
+        const double fade_start = static_cast<double>(width) * 0.55;
+        if (x > fade_start) {
+            alpha = std::clamp((static_cast<double>(width) - x) /
+                               std::max(1.0, static_cast<double>(width) - fade_start), 0.0, 1.0);
+        }
     }
     const double y = std::max(0.0, (height - text_height) / 2.0);
     cairo_save(cr);
     cairo_rectangle(cr, 0, 0, width, height);
     cairo_clip(cr);
-    // Preserve the subtle grey lettering with a crisp one-pixel white outline.
+    // Draw a crisp 1px black outline around the grey ticker lettering.
     const double outline[][2] = {{-1,-1},{0,-1},{1,-1},{-1,0},{1,0},{-1,1},{0,1},{1,1}};
-    cairo_set_source_rgb(cr, 1.0, 1.0, 1.0);
+    cairo_set_source_rgba(cr, 0.0, 0.0, 0.0, alpha);
     for (const auto &offset : outline) {
         cairo_move_to(cr, x + offset[0], y + offset[1]);
         pango_cairo_show_layout(cr, layout);
     }
-    cairo_set_source_rgb(cr, 0.72, 0.72, 0.72);
+    cairo_set_source_rgba(cr, 0.72, 0.72, 0.72, alpha);
     cairo_move_to(cr, x, y);
     pango_cairo_show_layout(cr, layout);
     cairo_restore(cr);
@@ -1155,7 +1163,28 @@ gboolean footer_scroll_tick(gpointer user_data) {
     const gint64 now = g_get_monotonic_time();
     const gint64 delay = static_cast<gint64>(state->config.footer_scroll_delay_minutes) * 60 * G_USEC_PER_SEC;
     if (state->footer_text_changed_us != 0 && now - state->footer_text_changed_us >= delay) {
-        state->footer_position += 2; // ~13 px/s at the 150 ms timer cadence
+        // Approx. 13 px/s at the 150ms cadence. The full line travels from
+        // entirely off-screen left until it has exited the right edge.
+        state->footer_position += 2;
+        PangoLayout *layout = gtk_widget_create_pango_layout(state->footer_text, state->footer_full_text.c_str());
+        PangoFontDescription *font = pango_font_description_from_string("Sans Bold 10");
+        pango_layout_set_font_description(layout, font);
+        int text_width = 0, text_height = 0;
+        pango_layout_get_pixel_size(layout, &text_width, &text_height);
+        pango_font_description_free(font);
+        g_object_unref(layout);
+        const int width = gtk_widget_get_width(state->footer_text);
+        const guint cycle = static_cast<guint>(std::max(1, width + text_width));
+        if (state->footer_position >= cycle) {
+            // Once the complete line has faded off the right, refresh the feed
+            // immediately (when topics are enabled) and restart the quiet period.
+            state->footer_position = 0;
+            state->footer_text_changed_us = now;
+            if (!readFooterbarTopics().empty()) {
+                state->feed_last_fetch = 0;
+                footer_feed_tick(state);
+            }
+        }
         gtk_widget_queue_draw(state->footer_text);
     }
     return G_SOURCE_CONTINUE;
@@ -1764,9 +1793,8 @@ void activate(GtkApplication *application, gpointer user_data) {
     g_signal_connect(terminal, "child-exited", G_CALLBACK(child_exited), state);
     g_signal_connect(state->window, "close-request", G_CALLBACK(window_close_request), state);
 
-    // Resting-state status is static: moving/scrolling text competes with the
-    // terminal content, which is the hero. See UI-PRINCIPLES.md (principle 6).
-    // The footer shows a single clear status string; no rotation timer runs.
+    // Keep the status stable for the configured delay, then run a complete
+    // rightward marquee pass and refresh the RSS feed after the line exits.
     state->footer_position = 0;
     state->footer_text_changed_us = g_get_monotonic_time();
     state->footer_full_text = footer_messages().front();
