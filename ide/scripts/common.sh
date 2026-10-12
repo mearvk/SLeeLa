@@ -68,10 +68,17 @@ ensure_jdk21() {
 # Prefer the project wrapper (reproducible 8.14.3). Fall back to a system gradle
 # only when the wrapper jar has not been generated yet.
 gradle_cmd() {
-  if [ -f "$PLUGIN_DIR/gradle/wrapper/gradle-wrapper.jar" ] && [ -x "$PLUGIN_DIR/gradlew" ]; then
-    echo "$PLUGIN_DIR/gradlew"
+  # Prefer the wrapper whenever its jar exists. Invoke via `sh gradlew` so a
+  # missing execute bit (git may not preserve it on checkout) does not force a
+  # fallback to a system gradle — which would not have the IntelliJ Platform
+  # plugin's tasks (e.g. buildPlugin) and would fail with "task not found".
+  if [ -f "$PLUGIN_DIR/gradle/wrapper/gradle-wrapper.jar" ] && [ -f "$PLUGIN_DIR/gradlew" ]; then
+    chmod +x "$PLUGIN_DIR/gradlew" 2>/dev/null || true
+    echo "sh $PLUGIN_DIR/gradlew"
   elif command -v gradle >/dev/null 2>&1; then
     warn "Wrapper jar missing; using system 'gradle' ($(command -v gradle))." >&2
+    warn "The IntelliJ plugin tasks (buildPlugin/runIde) need the pinned wrapper;" >&2
+    warn "run gen-gradle-wrapper.sh first if 'buildPlugin' is reported missing." >&2
     echo "gradle"
   else
     die "Neither ./gradlew (wrapper jar) nor a system 'gradle' is available. Run gen-gradle-wrapper.sh first."
