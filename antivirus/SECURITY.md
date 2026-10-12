@@ -83,3 +83,10 @@ Release checklist:
 - **Auditability:** preserve JSON scan reports and updater provenance with restricted access and retention. Protect reports because file paths may disclose sensitive information. Escape control characters when rendering untrusted paths to terminals or dashboards.
 - **EICAR and adversarial tests:** use the harmless EICAR test pattern only to validate antivirus plumbing; never use live malware as a routine CI fixture. Test corrupted archives, deep nesting, decompression bombs, symlink and file-replacement races, disk-full conditions, interrupted updates, signature failure, worker exceptions, and missing databases.
 - **Platform matrix:** run unit/static checks on supported operating systems; test quarantine semantics and permission handling on the actual target filesystem. A green Linux job alone does not certify Windows/macOS behavior.
+
+
+## Source-tree and release-file SHA-256 inventory
+
+Use `make -C antivirus integrity-manifest` to inventory the source tree, then verify with `make -C antivirus integrity-check MANIFEST=build/INTEGRITY-MANIFEST.json`. The manifest includes ordinary source and documentation files as well as signature-index files, but excludes generated build/dist output and the mutable ClamAV cache, whose snapshots have their own validated manifests.
+
+Platform release archives include an `INTEGRITY-MANIFEST.json`, a `SHA256SUMS` file, and a separate `.sha256` sidecar for the ZIP. CI verifies the package manifest before creating the archive. Keep an independently trusted copy of the archive digest or use a detached signature whose public key was obtained independently; hashes stored next to the files they describe do not provide publisher authentication.
