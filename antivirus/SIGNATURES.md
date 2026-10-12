@@ -30,3 +30,18 @@ Example:
 python3 antivirus/tools/sleelavirin_import_clamav.py --source ./clamav-extracted --output antivirus/signatures/native-sha256.txt
 python3 antivirus/tools/sleelavirin_import_clamav.py --check antivirus/signatures/native-sha256.txt
 ```
+
+
+## Import provenance and safe replacement
+
+The ClamAV subset importer writes an adjacent `native-sha256.txt.manifest.json` by default. The manifest records the source version/identifier, optional source URL, import time, signature count, skipped record count, and SHA-256 digest of the resulting native index. Supply `--source-version` and `--source-url` so the origin can be audited.
+
+The importer validates a temporary candidate before activation, stages the provenance manifest, and attempts to roll back the index if publication fails. Failed imports with no compatible records leave the active index unchanged. Verify both the index and manifest after any filesystem or power failure. This is an offline import workflow, not an automatic ClamAV database updater.
+
+```sh
+python3 antivirus/tools/sleelavirin_import_clamav.py \
+  --source ./clamav-extracted \
+  --source-version "daily-<database-version>" \
+  --source-url "trusted-internal-artifact-id" \
+  --output antivirus/signatures/native-sha256.txt
+```
