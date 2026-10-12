@@ -52228,7 +52228,7 @@
     },
     {
       "path": "sleela-terminal/sleelaterminal-gui.cpp",
-      "sha256": "d8a57f851a81fc10bb0bf2a752e5fe66652a3c55d5629e5f955cdc8833a21fb4"
+      "sha256": "ab6a7dd3414d911d3c9121541eb523e02f56921e09d180a3ea972d4ee69c016b"
     },
     {
       "path": "sleela-terminal/slsh.cpp",
