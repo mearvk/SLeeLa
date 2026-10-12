@@ -46,7 +46,11 @@ int main(void) {
     CHECK(strcmp(sleela_config_location_root(&c), ENV_ROOT) == 0, 14);
     CHECK(set_env("SLEELA_CONFIG_ROOT", NULL) == 0, 15);
     memset(long_path, 'x', sizeof(long_path) - 1);
+#ifdef _WIN32
+    long_path[0] = 'C'; long_path[1] = ':'; long_path[2] = '\\';
+#else
     long_path[0] = '/';
+#endif
     long_path[sizeof(long_path) - 1] = '\\0';
     sleela_config_location_defaults(&c);
     CHECK(!sleela_config_location_resolve(&c, long_path, NULL, NULL), 16);
