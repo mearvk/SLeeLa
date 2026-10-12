@@ -3,9 +3,9 @@
 # Product-specific Makefiles remain authoritative. This root dispatcher only
 # enters those existing build systems; it does not duplicate their source lists.
 
-.PHONY: all autocheck core java28 regex compiler decompiler vm scripting jetbrains connector connector-test connector-check-deps install install-product tutorial-check tests server config route common-rails clean help
+.PHONY: all autocheck core java28 regex compiler decompiler vm scripting jetbrains connector connector-test connector-check-deps codecs codecs-test install install-product tutorial-check tests server config route common-rails clean help
 
-all: core java28 regex compiler decompiler vm scripting jetbrains install tutorial-check tests config route common-rails
+all: core java28 regex compiler decompiler vm scripting jetbrains install tutorial-check tests config route common-rails codecs
 
 # The impl build is fail-closed on a trusted SHA-256 manifest. Default it to the
 # repository's manifest (absolute path) so `make` works from the repo root; an
@@ -51,6 +51,13 @@ connector-test:
 connector-check-deps:
 	$(MAKE) -C lib/connector check-deps
 
+# Audio codec registry/plugins use the codecs package's own build and test rules.
+codecs:
+	$(MAKE) -C codecs all
+
+codecs-test:
+	$(MAKE) -C codecs test
+
 install:
 	$(MAKE) -C install all
 
@@ -85,17 +92,20 @@ clean:
 	$(MAKE) -C lib/decompiler clean
 	$(MAKE) -C lib/vm clean
 	$(MAKE) -C tests clean
+	$(MAKE) -C codecs clean
 	@make -C config clean
 
 help:
 	@echo "SLeeLa repository build dispatcher"
-	@echo "  make all       Build core, Java 28, regex, compiler, decompiler, VM, JetBrains helper, and tests"
+	@echo "  make all       Build core, Java 28, regex, compiler, decompiler, VM, codecs, and tests"
 	@echo "  make core      Build impl/"
 	@echo "  make java28    Build java28/"
 	@echo "  make regex     Build regex/ and its test suites"
 	@echo "  make compiler  Build lib/compiler/"
 	@echo "  make decompiler Build lib/decompiler/"
 	@echo "  make vm        Build lib/vm/"
+	@echo "  make codecs    Build the C/C++ codec registry and plugins"
+	@echo "  make codecs-test Build and run codec registry/manager tests"
 	@echo "  make jetbrains Show JetBrains source acquisition helpers"
 	@echo "  make connector Build all optional native database/data-source connectors"
 	@echo "  make connector-test Run available offline connector tests"
