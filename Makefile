@@ -72,9 +72,7 @@ route:
 	@echo "SLeeLa unified route data: route/ROUTE.DATA.json"
 
 config:
-	@echo "SLeeLa unified configuration: config/sleela.conf"
-	@echo "Canonical runtime location: <PROJECT_ROOT>/.sleela/config"
-	@echo "Override with config.mode=absolute and config.absolute_path"
+	@make -C config test
 
 clean:
 	$(MAKE) -C impl clean
@@ -84,6 +82,7 @@ clean:
 	$(MAKE) -C lib/decompiler clean
 	$(MAKE) -C lib/vm clean
 	$(MAKE) -C tests clean
+	@make -C config clean
 
 help:
 	@echo "SLeeLa repository build dispatcher"
