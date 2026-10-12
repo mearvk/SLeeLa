@@ -51,14 +51,17 @@ this three-colour hierarchy consistent: near-white workspace, dark terminal
 surface, light readable terminal text. The purple/black palette belongs to the
 surrounding window chrome only.
 
-**Implementation boundary:** VTE presents an ongoing interactive PTY stream,
-not discrete command-result widgets. The current design therefore applies the
-charcoal surface to the whole interactive terminal, including the prompt and
-empty terminal state. It does not yet create a separate rounded panel that
-appears only around each command's output. Do not describe per-command
-response panels as implemented until a separate output-view architecture can
-preserve arbitrary interactive programs, stdout/stderr, terminal control
-sequences, scrollback, selection, pipelines, and redirection.
+**Command summary row:** after an interactive command is submitted, `slsh`
+prints a muted warm-brown summary strip containing the entered command and
+local date/time. The command's output begins on the following line. This is
+ANSI background applied to the summary text cells, not a separate GTK panel.
+The terminal/workspace colours remain unchanged. Non-interactive scripts do
+not receive these presentation rows.
+
+**Implementation boundary:** VTE still presents an ongoing interactive PTY
+stream, not discrete command-result widgets. The summary strip does not yet
+create a separate rounded output panel that appears only when output exists.
+Do not describe that larger output-view architecture as implemented.
 
 ## 3. Restraint over effects
 
@@ -124,26 +127,16 @@ spacing value, it must either fit these principles or update them deliberately.
 
 — SleelaTerminal™ · MEARVK LLC
 
-## 11. Rounded file-item renderer
+## 11. File browsing and `ls` output
 
-The title-bar **Files** control opens a GTK FlowBox browser. Every entry is a
-separate rounded button, not terminal text with ANSI colouring. Regular files
-use a charcoal-gray chip (`#626262`) and white text; directories use a muted
-purple chip. The browser supports path entry, parent navigation, directory
-sorting, and opening files with the desktop's associated application.
+The main workspace remains near-white (`#FCFCFC`); the interactive terminal
+uses charcoal (`#4B4B4B`) with light text (`#F2F2F2`). The shell's `ls`
+builtin emits conventional plain text instead of custom rounded tiles. It
+supports common flags including clustered `-la`, long format `-l`, hidden
+entries `-a` / `-A`, human-readable sizes `-h`, classification suffixes
+`-F`, directory operands `-d`, and `--` to end option parsing. Redirected
+output and pipelines remain free of ANSI styling sequences.
 
-The main workspace remains near-white (`#fcfcfc`); the terminal and file
-browser use a charcoal surface (`#4b4b4b`). The VTE surface has a light
-foreground (`#f2f2f2`) and is clipped to the rounded terminal container.
-Individual `ls` tiles are legacy ANSI styling, not the global output model.
-
-## Interactive `ls` presentation
-
-The `slsh` shell provides an interactive `ls` builtin. In a terminal session it
-renders each entry as a compact, rounded-corner Unicode tile with a lighter
-background; directories use a distinct muted-purple shade. The surrounding
-terminal remains the charcoal output surface (`#4B4B4B`) on the near-white
-workspace (`#FCFCFC`). Redirected output stays plain, newline-separated names
-so scripts and pipelines do not receive presentation escape sequences. The
-builtin currently supports `ls`, `ls -a` / `ls -A`, and path arguments; it
-does not yet implement the full option set of system `ls`.
+The command summary strip is separate from command output: it shows the command
+text and local timestamp, then the result follows on the next line. It does
+not alter command arguments, stdout bytes, or redirection contents.
