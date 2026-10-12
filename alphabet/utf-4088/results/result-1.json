@@ -1,0 +1,314 @@
+{
+  "result_schema": "utf4088-alphabet-probe-result-v1",
+  "input_id": 1,
+  "input_name": "Input 1 — layer zero, top-left",
+  "execution": {
+    "engine": "python-reference-probe-v1",
+    "status": "executed",
+    "reference_set_id": "utf4088-known-terms-v1",
+    "native_cpp_equivalence": "not_verified",
+    "meaning_validation": "not_performed"
+  },
+  "symbol": {
+    "derived_symbol_key_u64": "0xAFA5577333931820",
+    "is_unicode_codepoint": false,
+    "registry_status": "provisional candidate; not published or semantically validated"
+  },
+  "coordinates": {
+    "location": {
+      "x": 0.05,
+      "y": 0.05,
+      "z_layer": 0
+    },
+    "pressure_iteration": 1,
+    "normalized_depth": 0,
+    "voltage_normalized": 0.12,
+    "space_time_vector_4d": {
+      "x": 0.05,
+      "y": 0.05,
+      "normalized_depth": 0,
+      "normalized_voltage": 0.12
+    },
+    "logical_time_seconds": 0,
+    "delta_time_seconds_from_previous_input": null,
+    "z_layer_and_time_are_not_dimensions_in_4d_match_distance": true
+  },
+  "semantic_profile": {
+    "status": "provisional curated scores; not measured linguistic data",
+    "scores": {
+      "merit": 0.2,
+      "time": 0.12,
+      "space": 0.95,
+      "importance": 0.3,
+      "eccentricity": 0.25,
+      "cause": 0.2,
+      "distance": 0.82,
+      "definability": 0.28,
+      "relation": 0.3
+    },
+    "overall_merit_score": 0.25
+  },
+  "wording": {
+    "top_axes": [
+      "space",
+      "distance"
+    ],
+    "ranked_axes": [
+      {
+        "axis": "space",
+        "score": 0.95
+      },
+      {
+        "axis": "distance",
+        "score": 0.82
+      },
+      {
+        "axis": "importance",
+        "score": 0.3
+      },
+      {
+        "axis": "relation",
+        "score": 0.3
+      },
+      {
+        "axis": "definability",
+        "score": 0.28
+      },
+      {
+        "axis": "eccentricity",
+        "score": 0.25
+      },
+      {
+        "axis": "merit",
+        "score": 0.2
+      },
+      {
+        "axis": "cause",
+        "score": 0.2
+      },
+      {
+        "axis": "time",
+        "score": 0.12
+      }
+    ],
+    "anglophone_wording": "spatial distance",
+    "latin_wording": "distantia spatialis",
+    "wording_status": "provisional generated wording; not a verified dictionary entry"
+  },
+  "matching": {
+    "geometry_metric": "4D Euclidean distance on x,y,normalized_depth,normalized_voltage",
+    "geometry_proximity_kernel": "exp(-distance / 0.25)",
+    "composite_formula": "0.65 * geometry_proximity + 0.35 * semantic_proximity",
+    "nearest_geometric_term": {
+      "term_id": "TERM-SPATIUM",
+      "concept": "space",
+      "english": "space",
+      "latin": "spatium",
+      "latin_status": "classical lexical form",
+      "euclidean_distance_4d": 0.052915026221291815,
+      "geometry_proximity": 0.8092397074498852,
+      "semantic_proximity": 0.9733333333333334,
+      "composite_proximity": 0.8666724765090921,
+      "time_delta_seconds": 0
+    },
+    "nearest_composite_term": {
+      "term_id": "TERM-SPATIUM",
+      "concept": "space",
+      "english": "space",
+      "latin": "spatium",
+      "latin_status": "classical lexical form",
+      "euclidean_distance_4d": 0.052915026221291815,
+      "geometry_proximity": 0.8092397074498852,
+      "semantic_proximity": 0.9733333333333334,
+      "composite_proximity": 0.8666724765090921,
+      "time_delta_seconds": 0
+    },
+    "runner_up_composite_term": {
+      "term_id": "TERM-TEMPUS",
+      "concept": "time",
+      "english": "time",
+      "latin": "tempus",
+      "latin_status": "classical lexical form",
+      "euclidean_distance_4d": 0.42473521163190603,
+      "geometry_proximity": 0.18287711644551072,
+      "semantic_proximity": 0.6488888888888888,
+      "composite_proximity": 0.34598123680069304,
+      "time_delta_seconds": 1
+    },
+    "composite_margin": 0.520691239708399,
+    "match_status": "provisional-leading-match",
+    "top_5_by_composite": [
+      {
+        "term_id": "TERM-SPATIUM",
+        "concept": "space",
+        "english": "space",
+        "latin": "spatium",
+        "latin_status": "classical lexical form",
+        "euclidean_distance_4d": 0.052915026221291815,
+        "geometry_proximity": 0.8092397074498852,
+        "semantic_proximity": 0.9733333333333334,
+        "composite_proximity": 0.8666724765090921,
+        "time_delta_seconds": 0
+      },
+      {
+        "term_id": "TERM-TEMPUS",
+        "concept": "time",
+        "english": "time",
+        "latin": "tempus",
+        "latin_status": "classical lexical form",
+        "euclidean_distance_4d": 0.42473521163190603,
+        "geometry_proximity": 0.18287711644551072,
+        "semantic_proximity": 0.6488888888888888,
+        "composite_proximity": 0.34598123680069304,
+        "time_delta_seconds": 1
+      },
+      {
+        "term_id": "TERM-DISTANTIA",
+        "concept": "distance",
+        "english": "distance",
+        "latin": "distantia",
+        "latin_status": "classical lexical form",
+        "euclidean_distance_4d": 1.5127458477880544,
+        "geometry_proximity": 0.002355544445576116,
+        "semantic_proximity": 0.8611111111111112,
+        "composite_proximity": 0.30291999277851334,
+        "time_delta_seconds": 4
+      },
+      {
+        "term_id": "TERM-ECCENTRICITAS",
+        "concept": "eccentricity",
+        "english": "eccentricity",
+        "latin": "eccentricitas",
+        "latin_status": "technical/late Latin form; provisional for this catalogue",
+        "euclidean_distance_4d": 1.2065239326262867,
+        "geometry_proximity": 0.008017763747150722,
+        "semantic_proximity": 0.8133333333333334,
+        "composite_proximity": 0.28987821310231465,
+        "time_delta_seconds": 5.2
+      },
+      {
+        "term_id": "TERM-RELATIO",
+        "concept": "relation",
+        "english": "relation",
+        "latin": "relatio",
+        "latin_status": "classical lexical form",
+        "euclidean_distance_4d": 0.7780745465570764,
+        "geometry_proximity": 0.0444985717323041,
+        "semantic_proximity": 0.6311111111111112,
+        "composite_proximity": 0.24981296051488655,
+        "time_delta_seconds": 2
+      }
+    ],
+    "all_terms_by_composite": [
+      {
+        "term_id": "TERM-SPATIUM",
+        "concept": "space",
+        "english": "space",
+        "latin": "spatium",
+        "latin_status": "classical lexical form",
+        "euclidean_distance_4d": 0.052915026221291815,
+        "geometry_proximity": 0.8092397074498852,
+        "semantic_proximity": 0.9733333333333334,
+        "composite_proximity": 0.8666724765090921,
+        "time_delta_seconds": 0
+      },
+      {
+        "term_id": "TERM-TEMPUS",
+        "concept": "time",
+        "english": "time",
+        "latin": "tempus",
+        "latin_status": "classical lexical form",
+        "euclidean_distance_4d": 0.42473521163190603,
+        "geometry_proximity": 0.18287711644551072,
+        "semantic_proximity": 0.6488888888888888,
+        "composite_proximity": 0.34598123680069304,
+        "time_delta_seconds": 1
+      },
+      {
+        "term_id": "TERM-DISTANTIA",
+        "concept": "distance",
+        "english": "distance",
+        "latin": "distantia",
+        "latin_status": "classical lexical form",
+        "euclidean_distance_4d": 1.5127458477880544,
+        "geometry_proximity": 0.002355544445576116,
+        "semantic_proximity": 0.8611111111111112,
+        "composite_proximity": 0.30291999277851334,
+        "time_delta_seconds": 4
+      },
+      {
+        "term_id": "TERM-ECCENTRICITAS",
+        "concept": "eccentricity",
+        "english": "eccentricity",
+        "latin": "eccentricitas",
+        "latin_status": "technical/late Latin form; provisional for this catalogue",
+        "euclidean_distance_4d": 1.2065239326262867,
+        "geometry_proximity": 0.008017763747150722,
+        "semantic_proximity": 0.8133333333333334,
+        "composite_proximity": 0.28987821310231465,
+        "time_delta_seconds": 5.2
+      },
+      {
+        "term_id": "TERM-RELATIO",
+        "concept": "relation",
+        "english": "relation",
+        "latin": "relatio",
+        "latin_status": "classical lexical form",
+        "euclidean_distance_4d": 0.7780745465570764,
+        "geometry_proximity": 0.0444985717323041,
+        "semantic_proximity": 0.6311111111111112,
+        "composite_proximity": 0.24981296051488655,
+        "time_delta_seconds": 2
+      },
+      {
+        "term_id": "TERM-CAUSA",
+        "concept": "cause",
+        "english": "cause",
+        "latin": "causa",
+        "latin_status": "classical lexical form",
+        "euclidean_distance_4d": 0.8748714191239761,
+        "geometry_proximity": 0.0302129186410964,
+        "semantic_proximity": 0.6188888888888889,
+        "composite_proximity": 0.23624950822782378,
+        "time_delta_seconds": 2.5
+      },
+      {
+        "term_id": "TERM-DEFINIBILITAS",
+        "concept": "definability",
+        "english": "definability",
+        "latin": "definibilitas",
+        "latin_status": "provisional Latinized technical coinage; not claimed as a classical attestation",
+        "euclidean_distance_4d": 1.0616496597277276,
+        "geometry_proximity": 0.01431283432611095,
+        "semantic_proximity": 0.6055555555555555,
+        "composite_proximity": 0.22124778675641651,
+        "time_delta_seconds": 2.8
+      },
+      {
+        "term_id": "TERM-MOMENTUM",
+        "concept": "importance",
+        "english": "importance",
+        "latin": "momentum",
+        "latin_status": "Latin lexical form used for significance/importance",
+        "euclidean_distance_4d": 1.239112585683803,
+        "geometry_proximity": 0.007037865556816042,
+        "semantic_proximity": 0.6077777777777779,
+        "composite_proximity": 0.21729683483415266,
+        "time_delta_seconds": 3.8
+      },
+      {
+        "term_id": "TERM-MERITUM",
+        "concept": "merit",
+        "english": "merit",
+        "latin": "meritum",
+        "latin_status": "classical lexical form",
+        "euclidean_distance_4d": 1.1307077429645558,
+        "geometry_proximity": 0.010858240742343045,
+        "semantic_proximity": 0.5933333333333334,
+        "composite_proximity": 0.21472452314918963,
+        "time_delta_seconds": 3.5
+      }
+    ]
+  },
+  "interpretation": "Coordinates, weights, and reference anchors are curated demonstration inputs. Proximity is a numeric result of this declared prototype, not proof that a glyph has an established natural-language meaning."
+}
