@@ -31,6 +31,44 @@ The response surface should only appear when output exists. Empty commands shoul
 
 The intended design is a visually unified, rounded response rectangle/panel. Do not interpret this as requiring a separate background rectangle for every line or filename. The earlier per-file tile colors were an experiment for `ls`; the broader output-panel rule supersedes that treatment as the overall direction.
 
+### GUI component labels and visual inventory
+
+Use the following names consistently in issues, code reviews, screenshots, and future GUI work. These labels describe the visible part and its role; they are documentation labels, not a request to add permanent text labels to every widget.
+
+| Label | Location / appearance | Function and behavior |
+|---|---|---|
+| **Application title bar** | Top edge; dark-purple/blue gradient | Shared window chrome for the SleelaTerminal application. |
+| **SLeeLa title-bar logo** | Far left of the title bar | Branding image; decorative, with a tooltip describing the application. |
+| **New Tab (+) button** | Title bar, beside the logo | Opens a new independent terminal session. Shortcut: Ctrl+Shift+T. |
+| **Window controls** | Right side of the title bar | Native minimize, maximize/restore, and close controls. |
+| **Settings button (hamburger)** | Right side of the title bar, before the window controls | Opens the settings interface. |
+| **Throbber / activity rail** | Thin, bright strip directly below the title bar | Animated light-blue cells indicate ambient activity; this is decorative and not a command-progress indicator. |
+| **Terminal tab strip** | Above the terminal content | Switches between independent shell sessions. Tabs can be reordered. |
+| **Terminal tab title** | Inside each tab, e.g. “Terminal 1” | Identifies the session. Titles are currently sequential labels, not live shell-directory names. |
+| **Close Tab (×) button** | Inside each tab | Closes only that tab's shell session. Shortcut: Ctrl+Shift+W. Closing the final tab closes the application. |
+| **Terminal workspace** | Main near-white outer work area, `#FCFCFC` | GTK workspace surrounding the active terminal view. |
+| **Interactive terminal surface** | Main charcoal area, `#4B4B4B` | VTE terminal receiving keyboard input and displaying the PTY stream; text defaults to `#F2F2F2`. |
+| **Terminal glow overlay** | Subtle light effect over the terminal surface | Decorative reflection from the activity rail. It must not intercept mouse or keyboard input. |
+| **Command summary rectangle / warm-brown command strip** | Brown-toned row printed immediately after an interactive command is submitted | Summarizes the exact command text and its local date/time. This is the command-append summary row; the command's actual output begins on the following line. The brown appearance is ANSI background applied to VTE text cells, **not** a standalone GTK rectangle or a command-output panel. |
+| **Command output** | Terminal lines after the command summary row | Actual stdout/stderr and interactive-program output. It remains in the charcoal terminal surface and must retain shell/PTY semantics. |
+| **Footer brand** | Bottom-left, “SLeeLa” | Static product branding. |
+| **Footer separator** | Vertical divider beside the footer brand | Separates branding from the footer message. |
+| **Footer status/ticker text** | Middle of the footer | Displays the configured status/feed text within the available width. |
+| **CMD / software launcher control** | Image control toward the footer's right side | Opens the software/install menu; it is a launcher, not a shell tab. |
+| **Version label** | Bottom-right of the footer | Displays the GUI version string. |
+| **Terminal context menu** | Right-click inside a terminal | Context actions for terminal interaction, such as copy/paste/select-all where available. |
+| **Settings interface** | Opened from the title-bar Settings button | Holds presentation and data-orientation preferences; settings are shared by tabs. |
+
+#### Command summary strip: exact meaning
+
+The warm-brown row is specifically the **command summary rectangle** (also called the **command summary strip** or **command-append row**). It records what interactive command was submitted and when it was submitted, using the local timestamp. It is distinct from both the shell prompt and the output produced by the command:
+
+1. **Prompt/input** — the user enters a command.
+2. **Command summary strip** — the submitted command and local date/time are shown with the muted warm-brown ANSI cell background.
+3. **Command output** — the command's actual result starts on the next line.
+
+The strip is a presentation row for interactive shell use. It must not inject styling into scripts, pipelines, redirected file contents, or the actual command's argv. Do not describe it as a separate rounded GTK widget unless a future implementation actually creates one.
+
 ### Important implementation distinction
 
 The current terminal uses GTK 4 with VTE. ANSI background sequences can color terminal cells, but they do **not** create a true independent GTK rounded rectangle around a block of output.
