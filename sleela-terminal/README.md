@@ -199,3 +199,7 @@ specifications; no shell source was copied.*
 ## Footerbar topic news feed
 
 Configure the footerbar from the shell with `footerbar chemistry`, `footerbar pharmacology`, or `footerbar chemistry pharmacology` to select one or multiple topics. Use `footerbar list` to see the 100-term catalog, `footerbar status` to inspect the saved selection, and `footerbar clear` to disable it. The GUI polls for changes and displays RSS headlines for the selected topics. See [FOOTERBAR-TOPICS.md](FOOTERBAR-TOPICS.md).
+
+### Interactive Tab completion
+
+In an interactive terminal, press **Tab** to complete a command from shell builtins and executable programs on `PATH`, or to complete a file or directory name. A unique directory completion keeps a trailing slash; a unique command/file completion adds a space. When several names match, Tab expands their shared prefix; pressing Tab again lists the matching candidates. Hidden files are offered when the typed prefix begins with a dot. Completion is part of the CLI line editor and does not change non-interactive script input.
