@@ -32,7 +32,7 @@ GTK4_VTE_LIBS   := $(shell $(PKG_CONFIG) --libs $(GTK4_VTE_PKGS) 2>/dev/null)
 
 .PHONY: all cli all-gui smoke test m5-smoke install-smoke gui sanitize fuzz install install-gui install-all install-strip uninstall clean
 
-all: cli
+all: all-gui
 
 cli: $(SLSH) $(SMOKE)
 
