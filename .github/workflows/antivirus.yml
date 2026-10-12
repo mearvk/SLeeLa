@@ -51,3 +51,21 @@ jobs:
         run: |
           make -C antivirus clean
           make -C antivirus test
+
+  security-static-analysis:
+    name: Antivirus security static analysis
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: Compile Python tools
+        run: python -m compileall -q antivirus/tools antivirus/tests
+      - name: Install Bandit
+        run: python -m pip install --disable-pip-version-check bandit
+      - name: Static security analysis
+        run: bandit -r antivirus/tools -ll
