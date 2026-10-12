@@ -290,6 +290,8 @@ When a public API is added: update its implementation, add a focused /api refere
 
 ## Module completeness audit (A–E)
 
+See [MODULE-COMPLETENESS.md](MODULE-COMPLETENESS.md) for the API-folder inventory and observed build integration.
+
 The API tree intentionally contains a mixture of detailed API references, navigation pages, declarative schemas, and native facades. Uniformity means every module explains its contract and links to source/tests; it does not mean every folder must own a duplicate implementation or standalone build.
 
 | Module area | Existing entry point | Follow-up rule |
