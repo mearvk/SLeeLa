@@ -59,8 +59,8 @@ test check: all
 	$(MAKE) native-test
 
 native-test: $(NATIVE_BIN)
-	@set -eu; output=$("./$(NATIVE_BIN)" --database tests/native-sha256.txt tests/native_sample.txt); echo "$output"; echo "$output" | grep -q '^DETECTED tests/native_sample.txt : test-sample$'
-	@set -eu; output=$("./$(NATIVE_BIN)" --database signatures/native-sha256.txt tests/native_sample.txt); echo "$output"; echo "$output" | grep -q '^NO_MATCH tests/native_sample.txt$'
+	@set +e; output=$$("./$(NATIVE_BIN)" --database tests/native-sha256.txt tests/native_sample.txt); status=$$?; set -e; test "$$status" -eq 1; echo "$$output"; echo "$$output" | grep -q '^DETECTED tests/native_sample.txt : test-sample$$'
+	@set -e; output=$$("./$(NATIVE_BIN)" --database signatures/native-sha256.txt tests/native_sample.txt); status=$$?; test "$$status" -eq 0; echo "$$output"; echo "$$output" | grep -q '^NO_MATCH tests/native_sample.txt$$'
 	@echo "Native scanner signature/no-match tests: PASS"
 
 clamav: clamav-check
