@@ -57,6 +57,8 @@ $(TEST_BIN): $(TEST_DIR)/test_scan.c $(LIBRARY) $(SRC_DIR)/sleelavirin_scan.h $(
 test check: all
 	"$(TEST_BIN)"
 	$(MAKE) native-test
+	python3 -m py_compile tools/sleelavirin_scan.py tools/sleelavirin_clamav.py tools/sleelavirin_import_clamav.py
+	$(MAKE) definitions-check
 
 native-test: $(NATIVE_BIN)
 	@set +e; output=$$("./$(NATIVE_BIN)" --database tests/native-sha256.txt tests/native_sample.txt); status=$$?; set -e; test "$$status" -eq 1; echo "$$output"; echo "$$output" | grep -q '^DETECTED tests/native_sample.txt : test-sample$$'
