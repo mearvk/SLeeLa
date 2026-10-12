@@ -35,8 +35,9 @@ The intended design is a visually unified, rounded response rectangle/panel. Do 
 
 The current terminal uses GTK 4 with VTE. ANSI background sequences can color terminal cells, but they do **not** create a true independent GTK rounded rectangle around a block of output.
 
-- The GUI's supported compromise is a near-white workspace surrounding one rounded charcoal interactive-terminal surface, with light output text. This is consistent for all VTE output, but the surface remains visible around the prompt and while the terminal is empty.
-- A per-command response panel that appears only when output exists is **not implemented**. It requires an output-view architecture that can distinguish completed-command output from prompts and interactive PTY programs without breaking shell behavior. Do not claim that milestone complete until tested.
+- The near-white workspace and charcoal interactive terminal remain unchanged.
+- After each submitted interactive command, the shell prints a muted warm-brown summary strip with the command and local date/time; actual command output begins on the following line. This is ANSI styling on text cells, not an independent GTK panel.
+- A separate rounded response panel that appears only when output exists is **not implemented** and remains a distinct architecture task.
 
 Any new output presentation must preserve shell behavior:
 - stdout and stderr should remain understandable and not be silently lost;
@@ -46,19 +47,11 @@ Any new output presentation must preserve shell behavior:
 
 ## 3. `ls` output and shell behavior
 
-A custom `ls` shell builtin has been added in `sleela-terminal/executor.cpp`.
+The `ls` shell builtin now emits conventional plain text instead of custom rounded tiles. It parses clustered flags such as `-la` and supports `-l`, `-a`, `-A`, `-h`, `-1`, `-F`, `-d`, and `--`. Long format includes permissions, link count, numeric uid/gid, size, modification time, and name. Styling escapes are not written into normal, redirected, or piped command output.
 
-Current intended/implemented behavior from the previous work:
-- Enumerates directory entries using `std::filesystem`.
-- Sorts directories before files.
-- Supports `ls`, `ls -a`, `ls -A`, and path arguments.
-- On a TTY, renders entries with Unicode rounded-corner tiles and ANSI background colors.
-- On redirected/non-TTY output, emits plain newline-separated names without styling escape codes.
-- A separate GUI “Files” button was removed; file listing belongs to the command output itself, not a separate Files option.
+External commands continue to receive option flags in argv; the leading hyphen is not stripped by the shell. Regression checks have been added for the built-in's common flags and an external command receiving `-la` as an argument.
 
-The current per-entry rendering uses a charcoal file color (`#626262`) and a muted purple directory color (`#6A5B7D`). Treat these as **legacy/current implementation details, not the new global visual rule**. Revisit the builtin so its output aligns with the unified command-response design while preserving normal `ls` semantics and plain output for pipes/redirection.
-
-Known limitation to check: the current tile sizing uses byte length and truncation, which may misalign or truncate Unicode-wide filenames. Add tests for long names, Unicode names, hidden files, paths with spaces, empty directories, and redirected output.
+Continue testing long and Unicode filenames, paths with spaces, empty directories, and output redirection.
 
 ## 4. Window chrome and motion
 
@@ -133,7 +126,7 @@ Relevant source links:
 - [ ] Implement a distinct per-command rounded response panel that appears only when output exists; this requires an architecture change beyond VTE cell styling.
 - [ ] Keep the workspace at `#FCFCFC`.
 - [ ] Ensure no output means no response panel.
-- [ ] Retire or adapt the `ls`-specific per-file colors so the behavior matches the unified design.
+- [x] Retire the `ls`-specific per-file tiles and return to conventional plain-text output.
 - [ ] Preserve selectable text, scrolling, stdout/stderr visibility, and correct redirection/pipeline behavior.
 
 ### Priority 3 — Build and verify
