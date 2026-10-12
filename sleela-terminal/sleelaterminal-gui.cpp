@@ -220,7 +220,7 @@ void apply_terminal_style(AppState *state) {
     vte_terminal_set_colors(state->terminal, &foreground, &background, palette, 16);
 }
 
-void install_css() {
+void install_css(AppState *state) {
     // One palette, one source of truth (see UI-PRINCIPLES.md). Every colour
     // below is a named token; selectors never carry raw hex values. The window
     // and terminal share @sl_bg so the terminal does not float as a separate
@@ -508,8 +508,42 @@ void install_css() {
         }
     )CSS";
 
+    // Load the active title-bar gradient preset. GRADIENT.cfg selects either
+    // HORIZONTAL.cfg or VERTICAL.cfg; each preset carries the same palette and
+    // stop positions, changing only the gradient axis.
+    std::string active_preset = "VERTICAL.cfg";
+    {
+        std::ifstream selector(asset_path(state, "GRADIENT.cfg"));
+        std::string line;
+        while (std::getline(selector, line)) {
+            if (line.rfind("active=", 0) == 0) {
+                const std::string candidate = line.substr(7);
+                if (candidate == "HORIZONTAL.cfg" || candidate == "VERTICAL.cfg")
+                    active_preset = candidate;
+            }
+        }
+    }
+    std::string gradient_direction = "to bottom";
+    {
+        std::ifstream preset(asset_path(state, active_preset.c_str()));
+        std::string line;
+        while (std::getline(preset, line)) {
+            if (line.rfind("direction=", 0) == 0) {
+                const std::string candidate = line.substr(10);
+                if (candidate == "to right" || candidate == "to bottom")
+                    gradient_direction = candidate;
+            }
+        }
+    }
+    std::string css_text(css);
+    const std::string gradient_anchor = "linear-gradient(to right,";
+    const auto gradient_pos = css_text.find(gradient_anchor);
+    if (gradient_pos != std::string::npos)
+        css_text.replace(gradient_pos, gradient_anchor.size(),
+                         "linear-gradient(" + gradient_direction + ",");
+
     GtkCssProvider *provider = gtk_css_provider_new();
-    gtk_css_provider_load_from_string(provider, css);
+    gtk_css_provider_load_from_string(provider, css_text.c_str());
     // Use USER priority (above the system theme) so our window-control and
     // chrome rules actually win over the installed GTK theme -- at APPLICATION
     // priority the theme's more specific `windowcontrols` selectors override
@@ -1594,7 +1628,7 @@ gboolean throbber_tick(GtkWidget *, GdkFrameClock *frame_clock, gpointer user_da
 
 void activate(GtkApplication *application, gpointer user_data) {
     auto *state = static_cast<AppState *>(user_data);
-    install_css();
+    install_css(state);
     load_config(state->config);
 
     GtkWidget *window = gtk_application_window_new(application);
