@@ -124,6 +124,135 @@ bool readByte(char& c) {
 // (non-tty EOF, Ctrl+D on an empty line, or a read failure) so the caller can
 // terminate the REPL instead of spinning on repeated empty results. A Ctrl+C
 // cancel is NOT end-of-input: it returns an empty line with eof left false.
+// Tab completion for the interactive line editor. Command-position completion
+// combines shell builtins with executable files found on PATH; other positions
+// complete filesystem entries, including directory traversal.
+struct CompletionCandidate {
+    std::string text;
+    bool is_directory = false;
+};
+
+bool startsWith(const std::string& value, const std::string& prefix) {
+    return value.size() >= prefix.size() && value.compare(0, prefix.size(), prefix) == 0;
+}
+
+std::string escapeCompletion(const std::string& value) {
+    std::string escaped;
+    for (char c : value) {
+        if (c == ' ' || c == '\t' || c == '\\' || c == '$' || c == '&' ||
+            c == '(' || c == ')' || c == '[' || c == ']' || c == '{' ||
+            c == '}' || c == ';' || c == '|' || c == '<' || c == '>' ||
+            c == '*' || c == '?' || c == '\'' || c == '"') escaped.push_back('\\');
+        escaped.push_back(c);
+    }
+    return escaped;
+}
+
+std::vector<CompletionCandidate> completionCandidates(const std::string& line,
+                                                       std::size_t cursor,
+                                                       std::size_t token_start) {
+    const std::string token = line.substr(token_start, cursor - token_start);
+    const bool command_position =
+        line.substr(0, token_start).find_first_not_of(" \t") == std::string::npos &&
+        token.find('/') == std::string::npos;
+    std::vector<std::string> names;
+    if (command_position) {
+        static const std::vector<std::string> builtins = {
+            ":", "[", "bg", "break", "cd", "continue", "echo", "eval", "exec",
+            "exit", "export", "false", "fg", "getopts", "help", "jobs", "pwd",
+            "read", "return", "set", "shift", "test", "times", "trap", "true",
+            "type", "umask", "unalias", "unset", "wait", "footerbar", "prompt",
+            "soros", "select"
+        };
+        for (const auto& name : builtins)
+            if (startsWith(name, token)) names.push_back(name);
+
+        const char* path_env = std::getenv("PATH");
+        std::istringstream paths(path_env ? path_env : "");
+        std::string path_entry;
+        while (std::getline(paths, path_entry, ':')) {
+            if (path_entry.empty()) path_entry = ".";
+            std::error_code ec;
+            for (std::filesystem::directory_iterator it(path_entry, ec), end;
+                 !ec && it != end; it.increment(ec)) {
+                const std::string name = it->path().filename().string();
+                if (!startsWith(name, token) || name.empty() || name[0] == '.') continue;
+                std::error_code type_ec;
+                if (::access(it->path().c_str(), X_OK) == 0 &&
+                    !std::filesystem::is_directory(it->path(), type_ec)) names.push_back(name);
+            }
+        }
+    } else {
+        const std::size_t slash = token.find_last_of('/');
+        const std::string directory_part = slash == std::string::npos ? "" : token.substr(0, slash + 1);
+        const std::string base = slash == std::string::npos ? token : token.substr(slash + 1);
+        const std::filesystem::path directory = directory_part.empty()
+            ? std::filesystem::path(".") : std::filesystem::path(directory_part);
+        std::error_code ec;
+        for (std::filesystem::directory_iterator it(directory, ec), end;
+             !ec && it != end; it.increment(ec)) {
+            const std::string name = it->path().filename().string();
+            if (!startsWith(name, base)) continue;
+            if ((base.empty() || base[0] != '.') && !name.empty() && name[0] == '.') continue;
+            std::error_code type_ec;
+            const bool is_dir = std::filesystem::is_directory(it->path(), type_ec);
+            names.push_back(directory_part + name + (is_dir ? "/" : ""));
+        }
+    }
+    std::sort(names.begin(), names.end());
+    names.erase(std::unique(names.begin(), names.end()), names.end());
+    std::vector<CompletionCandidate> found;
+    for (const auto& name : names) {
+        std::error_code ec;
+        found.push_back({name, std::filesystem::is_directory(std::filesystem::path(name), ec)});
+    }
+    return found;
+}
+
+void applyTabCompletion(std::string& line, std::size_t& cursor, const std::string& prompt) {
+    std::size_t token_start = cursor;
+    while (token_start > 0) {
+        const char c = line[token_start - 1];
+        if (c == ' ' || c == '\t' || c == ';' || c == '|' || c == '&' ||
+            c == '(' || c == ')' || c == '<' || c == '>') break;
+        --token_start;
+    }
+    const std::string prefix = line.substr(token_start, cursor - token_start);
+    if (prefix.empty()) return;
+    const auto matches = completionCandidates(line, cursor, token_start);
+    if (matches.empty()) return;
+
+    std::string replacement;
+    std::string suffix;
+    if (matches.size() == 1) {
+        replacement = matches.front().text;
+        if (matches.front().is_directory) {
+            if (replacement.empty() || replacement.back() != '/') suffix = "/";
+        } else suffix = " ";
+    } else {
+        replacement = matches.front().text;
+        for (std::size_t i = 1; i < matches.size(); ++i) {
+            std::size_t n = 0;
+            while (n < replacement.size() && n < matches[i].text.size() &&
+                   replacement[n] == matches[i].text[n]) ++n;
+            replacement.resize(n);
+        }
+        if (replacement.size() <= prefix.size()) {
+            writeBytes("\r\n");
+            for (std::size_t i = 0; i < matches.size(); ++i) {
+                writeBytes(matches[i].text);
+                writeBytes((i + 1) % 4 == 0 || i + 1 == matches.size() ? "\r\n" : "\t");
+            }
+            redrawLine(prompt, line, cursor);
+            return;
+        }
+    }
+    replacement = escapeCompletion(replacement) + suffix;
+    line.replace(token_start, cursor - token_start, replacement);
+    cursor = token_start + replacement.size();
+    redrawLine(prompt, line, cursor);
+}
+
 std::string readInteractiveLine(const std::string& prompt,
                                 std::vector<std::string>& history,
                                 bool& eof) {
@@ -146,6 +275,11 @@ std::string readInteractiveLine(const std::string& prompt,
     for (;;) {
         char c = 0;
         if (!readByte(c)) { eof = true; return {}; }
+
+        if (c == '\t') { // Tab: command or filesystem completion.
+            applyTabCompletion(line, cursor, prompt);
+            continue;
+        }
 
         if (c == '\n' || c == '\r') {
             writeBytes("\r\n");
