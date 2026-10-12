@@ -14,9 +14,9 @@ static int copy_text(char *dst, size_t cap, const char *src) {
 static int is_absolute_path(const char *path) {
     if (!path || !path[0]) return 0;
 #ifdef _WIN32
-    return path[0] == '/' || path[0] == '\\' ||
-           (((path[0] >= 'A' && path[0] <= 'Z') ||
-             (path[0] >= 'a' && path[0] <= 'z')) && path[1] == ':');
+    return (((path[0] >= 'A' && path[0] <= 'Z') ||
+             (path[0] >= 'a' && path[0] <= 'z')) && path[1] == ':' &&
+            (path[2] == '\\' || path[2] == '/'));
 #else
     return path[0] == '/';
 #endif
@@ -27,6 +27,10 @@ static int join_path(char *dst, size_t cap, const char *base, const char *leaf) 
     int w = snprintf(dst, cap, "%s\\%s", base, leaf);
 #else
     int w = snprintf(dst, cap, "%s/%s", base, leaf);
+#endif
+    /* Normalize separators in relative policy paths on Windows. */
+#ifdef _WIN32
+    { char *p; for (p = dst; *p; ++p) if (*p == '/') *p = '\\'; }
 #endif
     /* snprintf returns the length it *would* have written; a value >= cap means
        the joined path was truncated and must not be treated as a valid path. */
