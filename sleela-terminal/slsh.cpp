@@ -17,6 +17,9 @@
 #include <csignal>
 #include <ctime>
 #include <chrono>
+#include <cctype>
+#include <cstdlib>
+#include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -311,6 +314,195 @@ bool runPromptCommand(const std::string& line, Environment& env) {
     return true;
 }
 
+
+const std::vector<std::string>& footerbarTopicCatalog() {
+    static const std::vector<std::string> topics = {
+        "academia",
+        "agriculture",
+        "ai-research",
+        "anatomy",
+        "anthropology",
+        "archaeology",
+        "astronomy",
+        "astrophysics",
+        "artificial-intelligence",
+        "behavioral-science",
+        "biochemistry",
+        "biodiversity",
+        "bioinformatics",
+        "biology",
+        "biomedical-engineering",
+        "biophysics",
+        "biotechnology",
+        "botany",
+        "business",
+        "cancer-research",
+        "chemistry",
+        "climate-science",
+        "cognitive-science",
+        "computational-biology",
+        "computer-science",
+        "conservation",
+        "data-science",
+        "dentistry",
+        "developmental-biology",
+        "drug-discovery",
+        "ecology",
+        "economics",
+        "education",
+        "electrical-engineering",
+        "energy",
+        "engineering",
+        "environmental-science",
+        "epidemiology",
+        "ethics",
+        "evolution",
+        "finance",
+        "food-science",
+        "forensic-science",
+        "genetics",
+        "geochemistry",
+        "geography",
+        "geology",
+        "global-health",
+        "health-policy",
+        "history",
+        "immunology",
+        "infectious-disease",
+        "information-security",
+        "materials-science",
+        "mathematics",
+        "mechanical-engineering",
+        "medicine",
+        "microbiology",
+        "molecular-biology",
+        "nanotechnology",
+        "neuroscience",
+        "nuclear-physics",
+        "nutrition",
+        "oceanography",
+        "oncology",
+        "optics",
+        "paleontology",
+        "pharmacology",
+        "pharmacy",
+        "philosophy",
+        "physics",
+        "physiology",
+        "plant-science",
+        "political-science",
+        "psychology",
+        "public-health",
+        "quantum-computing",
+        "quantum-physics",
+        "robotics",
+        "science-policy",
+        "software-engineering",
+        "statistics",
+        "sustainability",
+        "systems-biology",
+        "toxicology",
+        "veterinary-medicine",
+        "virology",
+        "volcanology",
+        "water-resources",
+        "wildlife",
+        "anxiety-research",
+        "clinical-trials",
+        "digital-health",
+        "medical-devices",
+        "mental-health",
+        "pharmacogenomics",
+        "regenerative-medicine",
+        "stem-cells",
+        "surgery",
+        "vaccinology"
+    };
+    return topics;
+}
+
+std::filesystem::path footerbarTopicsPath() {
+    const char *xdg = std::getenv("XDG_CONFIG_HOME");
+    const char *home = std::getenv("HOME");
+    std::filesystem::path base = (xdg && *xdg) ? xdg :
+        ((home && *home) ? (std::filesystem::path(home) / ".config").string() : ".config");
+    return base / "sleela" / "footerbar-topics.conf";
+}
+
+std::string lowerTopic(std::string value) {
+    std::transform(value.begin(), value.end(), value.begin(),
+        [](unsigned char c) { return static_cast<char>(std::tolower(c)); });
+    return value;
+}
+
+bool runFooterbarCommand(const std::string& line, Environment& env) {
+    if (line != "footerbar" && line.rfind("footerbar ", 0) != 0) return false;
+    std::istringstream input(line);
+    std::string command, arg;
+    input >> command;
+    std::vector<std::string> requested;
+    while (input >> arg) requested.push_back(lowerTopic(arg));
+    const auto &catalog = footerbarTopicCatalog();
+    const auto path = footerbarTopicsPath();
+    std::vector<std::string> current;
+    {
+        std::ifstream in(path);
+        while (in >> arg) current.push_back(lowerTopic(arg));
+    }
+    if (requested.empty() || requested.front() == "status") {
+        std::cout << "footerbar topics:";
+        if (current.empty()) std::cout << " (none; feed inactive)";
+        for (const auto &topic : current) std::cout << " " << topic;
+        std::cout << "\nUse: footerbar chemistry pharmacology\n"
+                     "Use 'footerbar list' to show the 100 supported topics, or 'footerbar clear' to disable.\n";
+        env.setLastStatus(0);
+        return true;
+    }
+    if (requested.size() == 1 && requested[0] == "list") {
+        for (std::size_t i = 0; i < catalog.size(); ++i)
+            std::cout << catalog[i] << ((i + 1) % 5 == 0 ? "\n" : "\t");
+        if (catalog.size() % 5 != 0) std::cout << "\n";
+        env.setLastStatus(0);
+        return true;
+    }
+    if (requested.size() == 1 && requested[0] == "clear") {
+        std::error_code ec;
+        std::filesystem::remove(path, ec);
+        std::cout << "footerbar: topic feed disabled\n";
+        env.setLastStatus(0);
+        return true;
+    }
+    std::vector<std::string> selected;
+    for (const auto &topic : requested) {
+        if (std::find(catalog.begin(), catalog.end(), topic) == catalog.end()) {
+            std::cerr << "footerbar: unsupported topic '" << topic
+                      << "'; use 'footerbar list' to see supported topics\n";
+            env.setLastStatus(2);
+            return true;
+        }
+        if (std::find(selected.begin(), selected.end(), topic) == selected.end()) selected.push_back(topic);
+    }
+    std::error_code ec;
+    std::filesystem::create_directories(path.parent_path(), ec);
+    if (ec) {
+        std::cerr << "footerbar: cannot create config directory: " << ec.message() << "\n";
+        env.setLastStatus(1);
+        return true;
+    }
+    std::ofstream out(path, std::ios::trunc);
+    if (!out) {
+        std::cerr << "footerbar: cannot write " << path << "\n";
+        env.setLastStatus(1);
+        return true;
+    }
+    for (const auto &topic : selected) out << topic << "\n";
+    std::cout << "footerbar: RSS topic feed enabled for";
+    for (const auto &topic : selected) std::cout << " " << topic;
+    std::cout << "\n";
+    env.setLastStatus(0);
+    return true;
+}
+
 bool runSorosTimeCommand(const std::string& line, Environment& env) {
     if (line != "soros time") return false;
 
@@ -361,6 +553,7 @@ int runNormalScript(const std::string& src, Environment& env) {
 
 int runScript(const std::string& src, Environment& env) {
     if (runPromptCommand(src, env)) return env.lastStatus();
+    if (runFooterbarCommand(src, env)) return env.lastStatus();
     if (runSorosTimeCommand(src, env)) return env.lastStatus();
 
     int status = 0;
